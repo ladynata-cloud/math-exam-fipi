@@ -389,3 +389,8 @@ body {
     padding-bottom: 1rem;
     border-bottom: 1px solid #eee;
 }
+
+/* Цвет для карточек геометрии */
+.task-card:nth-child(4) { /* Это 4-я карточка в списке */
+    border-left: 4px solid #9c27b0; /* Фиолетовый для геометрии */
+}
