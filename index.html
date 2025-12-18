@@ -3,325 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Exam FIPI | Задания ОГЭ и ЕГЭ</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #34495e;
-            --accent: #16a085;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --success: #27ae60;
-            --info: #2980b9;
-        }
-        
-        body { 
-            padding-top: 20px; 
-            background-color: #fdfdfd;
-            color: #333;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-        }
-        
-        .header { 
-            background: linear-gradient(to right, #2c3e50, #34495e);
-            color: white; 
-            padding: 50px 0; 
-            border-radius: 0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            margin-bottom: 40px;
-        }
-        
-        .header h1 {
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-        
-        .header .lead {
-            font-weight: 300;
-            opacity: 0.9;
-        }
-        
-        .task-card { 
-            transition: transform 0.3s; 
-            border: 1px solid #e0e0e0;
-            border-top: 4px solid var(--accent);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            margin-bottom: 25px;
-            background: white;
-        }
-        
-        .task-card:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            border-color: #bdc3c7;
-        }
-        
-        .card-title {
-            color: var(--primary);
-            font-weight: 600;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-        
-        .btn-primary {
-            background-color: var(--info);
-            border-color: var(--info);
-            font-weight: 500;
-            padding: 8px 20px;
-        }
-        
-        .btn-primary:hover {
-            background-color: #2471a3;
-            border-color: #2471a3;
-        }
-        
-        .btn-success {
-            background-color: var(--success);
-            border-color: var(--success);
-            font-weight: 500;
-            padding: 8px 20px;
-        }
-        
-        .btn-success:hover {
-            background-color: #219653;
-            border-color: #219653;
-        }
-        
-        .example-card {
-            border-left: 4px solid #e74c3c;
-            background-color: #fff;
-            margin-top: 30px;
-        }
-        
-        .example-card .card-header {
-            background-color: #fff;
-            border-bottom: 1px solid #eee;
-            color: #c0392b;
-            font-weight: 600;
-            padding: 15px 20px;
-        }
-        
-        .footer { 
-            margin-top: 60px; 
-            padding: 30px; 
-            background-color: var(--primary);
-            color: #ecf0f1;
-            border-top: 4px solid var(--accent);
-        }
-        
-        .footer a {
-            color: #1abc9c;
-            text-decoration: none;
-        }
-        
-        .footer a:hover {
-            color: #16a085;
-            text-decoration: underline;
-        }
-        
-        .stat-block {
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 20px;
-            text-align: center;
-            transition: all 0.3s;
-            margin-bottom: 20px;
-        }
-        
-        .stat-block:hover {
-            border-color: var(--accent);
-            box-shadow: 0 5px 15px rgba(22, 160, 133, 0.1);
-        }
-        
-        .stat-block h2 {
-            color: var(--primary);
-            font-weight: 700;
-            margin-bottom: 5px;
-            font-size: 2.2rem;
-        }
-        
-        .stat-block p {
-            color: #7f8c8d;
-            font-size: 0.95rem;
-        }
-        
-        .badge {
-            background-color: #ecf0f1;
-            color: var(--primary);
-            font-weight: 500;
-            padding: 6px 12px;
-            margin: 0 5px 5px 0;
-            border-radius: 4px;
-        }
-        
-        /* Методические заметки */
-        .methodical-note {
-            background-color: #f8f9fa;
-            border-left: 4px solid #3498db;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 0 4px 4px 0;
-            font-size: 0.95rem;
-        }
-        
-        .methodical-note strong {
-            color: #2980b9;
-        }
-        
-        /* Навигационные элементы */
-        .nav-link {
-            color: var(--primary);
-        }
-        
-        /* Убираем все жёлтые и кислотные оттенки */
-        .alert-warning, .bg-warning, .text-warning,
-        .alert-yellow, .bg-yellow {
-            display: none;
-        }
-        
-        /* Для формул */
-        .mjx-math {
-            font-size: 1.1em;
-        }
-        
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            .header {
-                padding: 30px 0;
-            }
-            
-            .header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .stat-block h2 {
-                font-size: 1.8rem;
-            }
-        }
-    </style>
+    <title>ОГЭ по математике | Math Exam FIPI</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Шапка -->
-        <div class="header text-center">
-            <div class="container">
-                <h1 class="display-5 fw-light">📚 Math Exam FIPI</h1>
-                <p class="lead mt-3">Структурированные задания из открытого банка ФИПИ с методическими решениями</p>
-                <div class="mt-4">
-                    <span class="badge">ОГЭ 9 класс</span>
-                    <span class="badge">ЕГЭ 11 класс</span>
-                    <span class="badge">Профильная математика</span>
-                    <span class="badge">Аналитические разборы</span>
-                </div>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-calculator"></i> Math Exam FIPI</h1>
+                <p class="tagline">Спокойная подготовка к экзаменам</p>
             </div>
+            <nav class="nav">
+                <a href="/" class="nav-link">Главная</a>
+                <a href="/oge/" class="nav-link active">ОГЭ</a>
+                <a href="/ege-profile/" class="nav-link">ЕГЭ Профиль</a>
+                <a href="/ege-base/" class="nav-link">ЕГЭ База</a>
+                <a href="/vpr/" class="nav-link">ВПР</a>
+            </nav>
         </div>
+    </header>
 
-        <!-- Основные разделы -->
-        <div class="row">
-            <!-- ОГЭ -->
-            <div class="col-lg-6 mb-4">
-                <div class="card task-card h-100">
-                    <div class="card-body">
-                        <h3 class="card-title">📘 ОГЭ (9 класс)</h3>
-                        <p class="card-text text-secondary">Задания 1-20 с подробными разборами и методическими комментариями.</p>
-                        <div class="mb-3">
-                            <strong class="text-dark">Популярные темы:</strong>
-                            <ul class="mt-2">
-                                <li>Задание 17 — Геометрия (планиметрия)</li>
-                                <li>Задание 19 — Статистика и вероятность</li>
-                                <li>Задание 20 — Логические задачи</li>
-                            </ul>
-                        </div>
-                        <a href="oge/index.html" class="btn btn-success">Перейти к ОГЭ →</a>
+    <main class="container">
+        <div class="section">
+            <h1 class="section-title">ОГЭ по математике (9 класс)</h1>
+            <p class="section-description">Все 20 заданий с подробными разборами. Задания взяты из открытого банка ФИПИ.</p>
+            
+            <div class="tasks-grid">
+                <!-- Задача 9 -->
+                <a href="/oge/algebra/task-09-linear-equations.html" class="task-card">
+                    <div class="task-number">9</div>
+                    <div class="task-info">
+                        <h3>Линейные уравнения</h3>
+                        <p>Решение уравнений вида ax + b = cx + d</p>
+                        <span class="difficulty medium">Средняя</span>
                     </div>
-                </div>
-            </div>
-
-            <!-- ЕГЭ -->
-            <div class="col-lg-6 mb-4">
-                <div class="card task-card h-100">
-                    <div class="card-body">
-                        <h3 class="card-title">📗 ЕГЭ профиль (11 класс)</h3>
-                        <p class="card-text text-secondary">Задания 1-18 с решениями, теорией и разбором типовых ошибок.</p>
-                        <div class="mb-3">
-                            <strong class="text-dark">Сложные разделы:</strong>
-                            <ul class="mt-2">
-                                <li>Задание 13 — Уравнения и неравенства</li>
-                                <li>Задание 16 — Планиметрия</li>
-                                <li>Задание 17 — Экономические задачи</li>
-                                <li>Задание 18 — Параметры</li>
-                            </ul>
-                        </div>
-                        <a href="ege/index.html" class="btn btn-primary">Перейти к ЕГЭ →</a>
+                </a>
+                
+                <!-- Задача 10 -->
+                <a href="/oge/probability/task-10-probability.html" class="task-card">
+                    <div class="task-number">10</div>
+                    <div class="task-info">
+                        <h3>Теория вероятностей</h3>
+                        <p>Классическое определение вероятности</p>
+                        <span class="difficulty medium">Средняя</span>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Пример задачи -->
-        <div class="card example-card">
-            <div class="card-header">
-                <h5 class="mb-0">📝 Пример аналитического разбора</h5>
-            </div>
-            <div class="card-body">
-                <h6 class="text-dark">Задача (ОГЭ, задание 17)</h6>
-                <p class="text-secondary">В треугольнике ABC известно, что AB = 5, BC = 6, AC = 7. Найдите площадь треугольника.</p>
+                </a>
                 
-                <h6 class="text-dark mt-4">Решение:</h6>
-                <p>Используем формулу Герона:</p>
-                <p>\[p = \frac{5+6+7}{2} = 9\]</p>
-                <p>\[S = \sqrt{p(p-a)(p-b)(p-c)} = \sqrt{9 \cdot 4 \cdot 3 \cdot 2} = \sqrt{216} = 6\sqrt{6}\]</p>
-                <p class="mt-3"><strong>Ответ:</strong> \(6\sqrt{6}\)</p>
-                
-                <div class="methodical-note">
-                    <strong>📌 Методический комментарий:</strong> Эта задача проверяет знание формулы Герона и работу с квадратными корнями. Обратите внимание на порядок вычислений: сначала находим полупериметр, затем произведение разностей.
-                </div>
+                <!-- Задача 14 -->
+                <a href="/oge/algebra/task-14-sequences.html" class="task-card">
+                    <div class="task-number">14</div>
+                    <div class="task-info">
+                        <h3>Арифметическая прогрессия</h3>
+                        <p>Нахождение n-го члена прогрессии</p>
+                        <span class="difficulty hard">Сложная</span>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="section-footer">
+                <p>Ещё 17 заданий будут добавлены постепенно...</p>
+                <a href="/" class="btn">← Вернуться на главную</a>
             </div>
         </div>
-
-        <!-- Статистика -->
-        <div class="row mt-5">
-            <div class="col-md-4 mb-4">
-                <div class="stat-block">
-                    <h2>250+</h2>
-                    <p>разобранных задач</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="stat-block">
-                    <h2>20+</h2>
-                    <p>тематических разделов</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="stat-block">
-                    <h2>100%</h2>
-                    <p>открытый код</p>
-                </div>
-            </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Math Exam FIPI. Образовательный проект.</p>
+            <p class="footer-note">Все задания взяты из открытого банка ФИПИ</p>
         </div>
-
-        <!-- Подвал -->
-        <div class="footer text-center">
-            <div class="container">
-                <p class="mb-3">© 2024 Math Exam FIPI. Открытый банк заданий ФИПИ.</p>
-                <p class="mb-0">
-                    <a href="https://github.com/ladynata-cloud/math-exam-fipi">GitHub репозиторий</a> • 
-                    <a href="LICENSE">Лицензия MIT</a> • 
-                    <a href="#">Обратная связь</a>
-                </p>
-                <p class="mt-3 small opacity-75">
-                    Проект создан для систематизации знаний и методической поддержки учащихся.
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </footer>
 </body>
 </html>
