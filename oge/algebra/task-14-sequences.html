@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ОГЭ. Задание 14 — Последовательности | Math Exam FIPI</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .task-page {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .task-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+        .formula {
+            font-family: "Cambria Math", serif;
+            font-size: 1.1em;
+            background: #f5f5f5;
+            padding: 0.3em 0.6em;
+            border-radius: 4px;
+            margin: 0.5em 0;
+            display: inline-block;
+        }
+        .answer-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            font-weight: bold;
+        }
+        .formula-box {
+            background: #f0f7ff;
+            border-left: 4px solid #2196f3;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+        .sequence-example {
+            font-family: monospace;
+            background: #f5f5f5;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin: 0.5rem 0;
+        }
+        .step {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed #eee;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-calculator"></i> Math Exam FIPI</h1>
+                <p class="tagline">Спокойная подготовка к экзаменам</p>
+            </div>
+            <nav class="nav">
+                <a href="/" class="nav-link">Главная</a>
+                <a href="/oge/" class="nav-link active">ОГЭ</a>
+                <a href="/ege-profile/" class="nav-link">ЕГЭ Профиль</a>
+                <a href="/ege-base/" class="nav-link">ЕГЭ База</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container task-page">
+        <div class="task-content">
+            <h1>Задание 14: Арифметическая прогрессия</h1>
+            <p class="task-meta">ОГЭ по математике • Алгебра • Повышенная сложность</p>
+            
+            <div class="step">
+                <h2>Условие задачи (из ФИПИ)</h2>
+                <p>Дана арифметическая прогрессия: 3, 7, 11, ... Найдите её пятнадцатый член.</p>
+            </div>
+            
+            <div class="formula-box">
+                <h3>📐 Формулы арифметической прогрессии</h3>
+                <p><strong>1. Разность прогрессии:</strong></p>
+                <p class="formula">d = a₂ - a₁</p>
+                
+                <p><strong>2. n-й член прогрессии:</strong></p>
+                <p class="formula">aₙ = a₁ + d·(n - 1)</p>
+                
+                <p>где:</p>
+                <ul>
+                    <li><strong>a₁</strong> — первый член прогрессии</li>
+                    <li><strong>d</strong> — разность прогрессии</li>
+                    <li><strong>n</strong> — номер искомого члена</li>
+                    <li><strong>aₙ</strong> — n-й член прогрессии</li>
+                </ul>
+            </div>
+            
+            <div class="step">
+                <h2>Решение</h2>
+                <p><strong>Шаг 1.</strong> Находим разность прогрессии:</p>
+                <p>Из условия: a₁ = 3, a₂ = 7</p>
+                <p class="formula">d = a₂ - a₁ = 7 - 3 = 4</p>
+                
+                <p><strong>Шаг 2.</strong> Записываем формулу для n-го члена:</p>
+                <p class="formula">aₙ = a₁ + d·(n - 1)</p>
+                
+                <p><strong>Шаг 3.</strong> Подставляем известные значения (n = 15):</p>
+                <p class="formula">a₁₅ = 3 + 4·(15 - 1)</p>
+                <p class="formula">a₁₅ = 3 + 4·14</p>
+                <p class="formula">a₁₅ = 3 + 56</p>
+                <p class="formula">a₁₅ = 59</p>
+            </div>
+            
+            <div class="answer-box">
+                <strong>Ответ:</strong> 59
+            </div>
+            
+            <div class="step">
+                <h2>Проверка и понимание</h2>
+                
+                <p><strong>Первые члены прогрессии:</strong></p>
+                <div class="sequence-example">
+                    a₁ = 3<br>
+                    a₂ = 3 + 4 = 7<br>
+                    a₃ = 7 + 4 = 11<br>
+                    a₄ = 11 + 4 = 15<br>
+                    a₅ = 15 + 4 = 19<br>
+                    ...<br>
+                    a₁₅ = 59
+                </div>
+                
+                <p><strong>Можно решить другим способом:</strong></p>
+                <p>От первого до пятнадцатого члена нужно сделать 14 шагов по 4:</p>
+                <p class="formula">3 + 14·4 = 3 + 56 = 59</p>
+                
+                <p><strong>Общая формула для этой прогрессии:</strong></p>
+                <p class="formula">aₙ = 3 + 4·(n - 1)</p>
+                <p class="formula">aₙ = 4n - 1</p>
+                
+                <p>Проверим для n = 15: 4·15 - 1 = 60 - 1 = 59 ✓</p>
+            </div>
+            
+            <div class="nav-buttons">
+                <a href="/oge/probability/task-10.html" class="btn">← Задание 10</a>
+                <a href="/" class="btn">На главную</a>
+                <a href="/oge/geometry/task-15.html" class="btn">Задание 15 →</a>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Math Exam FIPI. Образовательный проект.</p>
+            <p class="footer-note">Задание из открытого банка ФИПИ</p>
+        </div>
+    </footer>
+</body>
+</html>
