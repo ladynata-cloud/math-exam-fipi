@@ -1,1 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ОГЭ. Задание 9 — Линейные уравнения | Math Exam FIPI</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .task-page {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .task-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+        .formula {
+            font-family: "Cambria Math", serif;
+            font-size: 1.1em;
+            background: #f5f5f5;
+            padding: 0.3em 0.6em;
+            border-radius: 4px;
+        }
+        .answer-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            font-weight: bold;
+        }
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+        .step {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed #eee;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-calculator"></i> Math Exam FIPI</h1>
+                <p class="tagline">Спокойная подготовка к экзаменам</p>
+            </div>
+            <nav class="nav">
+                <a href="/" class="nav-link">Главная</a>
+                <a href="/oge/" class="nav-link active">ОГЭ</a>
+                <a href="/ege-profile/" class="nav-link">ЕГЭ Профиль</a>
+                <a href="/ege-base/" class="nav-link">ЕГЭ База</a>
+            </nav>
+        </div>
+    </header>
 
+    <main class="container task-page">
+        <div class="task-content">
+            <h1>Задание 9: Уравнения и их системы</h1>
+            <p class="task-meta">ОГЭ по математике • Алгебра • Средняя сложность</p>
+            
+            <div class="step">
+                <h2>Условие задачи (из ФИПИ)</h2>
+                <p>Решите уравнение:</p>
+                <p class="formula">5x + 4 = 3x - 8</p>
+            </div>
+            
+            <div class="step">
+                <h2>Решение</h2>
+                <p><strong>Шаг 1.</strong> Переносим слагаемые с x в одну сторону, числа — в другую:</p>
+                <p class="formula">5x - 3x = -8 - 4</p>
+                
+                <p><strong>Шаг 2.</strong> Упрощаем:</p>
+                <p class="formula">2x = -12</p>
+                
+                <p><strong>Шаг 3.</strong> Делим обе части на коэффициент при x:</p>
+                <p class="formula">x = -12 ÷ 2</p>
+                <p class="formula">x = -6</p>
+            </div>
+            
+            <div class="answer-box">
+                <strong>Ответ:</strong> -6
+            </div>
+            
+            <div class="warning-box">
+                <h3>⚠️ Типичные ошибки</h3>
+                <ul>
+                    <li><strong>Ошибка знаков:</strong> При переносе через "=" знак меняется на противоположный</li>
+                    <li><strong>Потеря минуса:</strong> -8 - 4 = -12, а не -4</li>
+                    <li><strong>Деление:</strong> -12 ÷ 2 = -6, а не 6</li>
+                </ul>
+            </div>
+            
+            <div class="step">
+                <h2>Проверка решения</h2>
+                <p>Подставим найденное значение в исходное уравнение:</p>
+                <p class="formula">5·(-6) + 4 = 3·(-6) - 8</p>
+                <p class="formula">-30 + 4 = -18 - 8</p>
+                <p class="formula">-26 = -26 ✓</p>
+                <p>Равенство верное, значит решение правильное.</p>
+            </div>
+            
+            <div class="nav-buttons">
+                <a href="/oge/algebra/task-08.html" class="btn">← Задание 8</a>
+                <a href="/" class="btn">На главную</a>
+                <a href="/oge/probability/task-10.html" class="btn">Задание 10 →</a>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Math Exam FIPI. Образовательный проект.</p>
+            <p class="footer-note">Задание из открытого банка ФИПИ</p>
+        </div>
+    </footer>
+</body>
+</html>
