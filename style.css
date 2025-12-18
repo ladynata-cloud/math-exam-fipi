@@ -375,3 +375,17 @@ body {
 .section {
     animation: fadeIn 0.6s ease-out;
 }
+/* Для сложности задач */
+.difficulty.hard {
+    background: #ffebee;
+    color: #c62828;
+}
+
+/* Заголовок страницы задачи */
+.task-meta {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
