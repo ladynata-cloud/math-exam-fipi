@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ОГЭ. Задание 17 — Внешний угол треугольника | Math Exam FIPI</title>
+    <meta name="description" content="Разбор задания 17 ОГЭ: нахождение внешнего угла треугольника. Подробное решение, формула, типичная ошибка.">
+    <link rel="stylesheet" href="/style.css">
+    <!-- MathJax для отображения формул -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        .task-container { max-width: 800px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .task-header { border-bottom: 2px solid #eaeaea; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+        .task-title { color: #2c3e50; font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .task-meta { color: #7f8c8d; font-size: 0.95rem; }
+        .step { margin-bottom: 1.8rem; padding-bottom: 1.5rem; border-bottom: 1px dashed #eee; }
+        .formula { font-size: 1.1em; background: #f8f9fa; padding: 0.8rem; border-radius: 8px; border-left: 4px solid #3498db; margin: 1rem 0; }
+        .answer-box { background: #e8f5e9; border-left: 4px solid #2ecc71; padding: 1.2rem; margin: 1.5rem 0; font-weight: bold; font-size: 1.1em; }
+        .warning-box { background: #fff3cd; border-left: 4px solid #f39c12; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0 8px 8px 0; }
+        .tip-box { background: #e3f2fd; border-left: 4px solid #3498db; padding: 1.2rem; margin: 1.5rem 0; border-radius: 0 8px 8px 0; }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 2.5rem; }
+        .btn { padding: 0.8rem 1.5rem; background: #3498db; color: white; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background 0.3s; }
+        .btn:hover { background: #2980b9; }
+    </style>
+</head>
+<body>
+    <!-- Навигация (можно скопировать из других страниц) -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-calculator"></i> Math Exam FIPI</h1>
+                <p class="tagline">Спокойная подготовка к экзаменам</p>
+            </div>
+            <nav class="nav">
+                <a href="/" class="nav-link">Главная</a>
+                <a href="/oge/" class="nav-link active">ОГЭ</a>
+                <a href="/ege-profile/" class="nav-link">ЕГЭ Профиль</a>
+                <a href="/ege-base/" class="nav-link">ЕГЭ База</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="task-container">
+            <div class="task-header">
+                <h1 class="task-title">Задание 17: Внешний угол треугольника</h1>
+                <p class="task-meta">ОГЭ по математике • Геометрия • Средняя сложность</p>
+            </div>
+
+            <!-- Условие -->
+            <div class="step">
+                <h2>📝 Условие задачи</h2>
+                <p>В треугольнике \( ABC \) угол \( C \) равен \( 142^\circ \). Найдите внешний угол при вершине \( C \). Ответ дайте в градусах.</p>
+                <div class="formula">
+                    <strong>Дано:</strong> \( \angle C = 142^\circ \)<br>
+                    <strong>Найти:</strong> внешний \( \angle C_{\text{внеш}} \)
+                </div>
+            </div>
+
+            <!-- Решение -->
+            <div class="step">
+                <h2>🔍 Решение</h2>
+                <p><strong>Шаг 1.</strong> Вспомним определение. Внешний угол треугольника при данной вершине — это угол, смежный с внутренним углом треугольника при этой вершине.</p>
+                <p><strong>Шаг 2.</strong> Сумма смежных углов равна \( 180^\circ \).</p>
+                <p><strong>Шаг 3.</strong> Так как внутренний угол \( \angle C = 142^\circ \), то внешний угол при этой же вершине вычисляется по формуле:</p>
+                <div class="formula">
+                    \[
+                    \angle C_{\text{внеш}} = 180^\circ - \angle C
+                    \]
+                </div>
+                <p><strong>Шаг 4.</strong> Подставляем значение:</p>
+                <div class="formula">
+                    \[
+                    \angle C_{\text{внеш}} = 180^\circ - 142^\circ = 38^\circ
+                    \]
+                </div>
+            </div>
+
+            <!-- Ответ -->
+            <div class="answer-box">
+                <strong>✅ Ответ:</strong> \( 38^\circ \)
+            </div>
+
+            <!-- Типичная ошибка -->
+            <div class="warning-box">
+                <h3>⚠️ Типичная ошибка</h3>
+                <p>Самая распространённая ошибка — <strong>выдать значение внутреннего угла за внешний</strong>. Ученик видит число \( 142^\circ \) в условии и автоматически записывает его в ответ, не вдумываясь в вопрос.</p>
+                <p><strong>Важно:</strong> Внешний угол всегда <em>смежный</em> с внутренним, поэтому их сумма равна \( 180^\circ \). Если внутренний угол больше \( 90^\circ \) (как здесь), то внешний будет <em>острым</em> (меньше \( 90^\circ \)).</p>
+            </div>
+
+            <!-- Совет -->
+            <div class="tip-box">
+                <h3>💡 Совет для решения</h3>
+                <p>Чтобы никогда не путаться, можно мысленно представлять или помечать на чертеже:</p>
+                <ol>
+                    <li>Отметьте внутренний угол \( \angle C \) внутри треугольника.</li>
+                    <li>Продолжите одну из сторон (например, \( BC \)) за точку \( C \).</li>
+                    <li>Угол между продолжением стороны и другой стороной (\( AC \)) — это и есть искомый внешний угол.</li>
+                </ol>
+                <p>Это наглядно показывает, что два угла (внутренний и внешний) в сумме дают развёрнутый угол (\( 180^\circ \)).</p>
+            </div>
+
+            <!-- Навигация -->
+            <div class="nav-buttons">
+                <a href="/oge/geometry/task-16.html" class="btn">← Задание 16</a>
+                <a href="/oge/" class="btn">К списку заданий ОГЭ</a>
+                <a href="/oge/geometry/task-18.html" class="btn">Задание 18 →</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Math Exam FIPI. Образовательный проект.</p>
+            <p class="footer-note">Задание из открытого банка ФИПИ</p>
+        </div>
+    </footer>
+</body>
+</html>
