@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Exam FIPI | Задания ОГЭ и ЕГЭ</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body { padding-top: 20px; background-color: #f8f9fa; }
+        .header { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); color: white; padding: 40px 0; border-radius: 10px; }
+        .task-card { transition: transform 0.3s; border-left: 5px solid #2575fc; }
+        .task-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .footer { margin-top: 40px; padding: 20px; background-color: #343a40; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header text-center mb-5">
+            <h1 class="display-4">🎯 Math Exam FIPI</h1>
+            <p class="lead">Структурированные задания из открытого банка ФИПИ с решениями</p>
+            <div class="mt-3">
+                <span class="badge bg-light text-dark me-2">ОГЭ 9 класс</span>
+                <span class="badge bg-light text-dark me-2">ЕГЭ 11 класс</span>
+                <span class="badge bg-light text-dark">Профильная математика</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card task-card h-100">
+                    <div class="card-body">
+                        <h3 class="card-title text-primary">📘 ОГЭ (9 класс)</h3>
+                        <p class="card-text">Задания 1-20 с подробными разборами и методическими комментариями.</p>
+                        <div class="mb-3">
+                            <strong>Популярные темы:</strong>
+                            <ul>
+                                <li>Задание 17 — Геометрия (планиметрия)</li>
+                                <li>Задание 19 — Статистика и вероятность</li>
+                                <li>Задание 20 — Логические задачи</li>
+                            </ul>
+                        </div>
+                        <a href="oge/index.html" class="btn btn-primary">Перейти к ОГЭ →</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card task-card h-100">
+                    <div class="card-body">
+                        <h3 class="card-title text-success">📗 ЕГЭ профиль (11 класс)</h3>
+                        <p class="card-text">Задания 1-18 с решениями, теорией и типовыми ошибками.</p>
+                        <div class="mb-3">
+                            <strong>Сложные разделы:</strong>
+                            <ul>
+                                <li>Задание 13 — Уравнения и неравенства</li>
+                                <li>Задание 16 — Планиметрия</li>
+                                <li>Задание 17 — Экономические задачи</li>
+                                <li>Задание 18 — Параметры</li>
+                            </ul>
+                        </div>
+                        <a href="ege/index.html" class="btn btn-success">Перейти к ЕГЭ →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mt-5">
+            <div class="card-header bg-warning">
+                <h4>📝 Пример задачи с решением</h4>
+            </div>
+            <div class="card-body">
+                <h5>Задача (ОГЭ, задание 17)</h5>
+                <p>В треугольнике ABC известно, что AB = 5, BC = 6, AC = 7. Найдите площадь треугольника.</p>
+                
+                <h6>Решение:</h6>
+                <p>Используем формулу Герона:</p>
+                <p>\[p = \frac{5+6+7}{2} = 9\]</p>
+                <p>\[S = \sqrt{p(p-a)(p-b)(p-c)} = \sqrt{9 \cdot 4 \cdot 3 \cdot 2} = \sqrt{216} = 6\sqrt{6}\]</p>
+                <p><strong>Ответ:</strong> \(6\sqrt{6}\)</p>
+                
+                <div class="alert alert-info mt-3">
+                    <small>🔍 <strong>Методический комментарий:</strong> Эта задача проверяет знание формулы Герона и работу с квадратными корнями.</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4 text-center">
+                <div class="p-3 border rounded">
+                    <h2>250+</h2>
+                    <p>разобранных задач</p>
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="p-3 border rounded">
+                    <h2>20+</h2>
+                    <p>тематических разделов</p>
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="p-3 border rounded">
+                    <h2>100%</h2>
+                    <p>открытый код</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer text-center mt-5 rounded">
+            <p>© 2024 Math Exam FIPI. Открытый банк заданий ФИПИ.</p>
+            <p>
+                <a href="https://github.com/ladynata-cloud/math-exam-fipi" class="text-white me-3">GitHub</a> • 
+                <a href="LICENSE" class="text-white me-3">Лицензия MIT</a> • 
+                <a href="#" class="text-white">Обратная связь</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
