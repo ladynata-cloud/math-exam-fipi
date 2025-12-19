@@ -1,1107 +1,836 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Деление уголком — российская запись (ОГЭ)</title>
-
-  <link rel="stylesheet" href="../../style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Деление уголком (тетрадный формат) — тренажёр</title>
+  <link rel="stylesheet" href="../../style.css" />
 
   <style>
     :root{
-      --bg:#fbfbfa;
-      --paper:#ffffff;
-      --text:#0f172a;
-      --muted:#64748b;
-      --border: rgba(15,23,42,.12);
-      --accent:#2f5f73;
-      --soft: rgba(47,95,115,.10);
-      --ok: rgba(22,163,74,.12);
-      --bad: rgba(239,68,68,.10);
-      --shadow: 0 10px 26px rgba(15,23,42,.06);
-      --r:16px;
-
-      --cell: 1.55em;
-      --barw: 2px;
-      --line: rgba(15,23,42,.35);
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-    }
-    *{ box-sizing:border-box; }
-    body{ margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background: var(--bg); color: var(--text); line-height: 1.35; }
-    .wrap{ width:min(1180px, calc(100% - 32px)); margin: 18px auto 30px; }
-    h1{ margin:0 0 6px; font-size:20px; }
-    .sub{ margin:0 0 14px; color: var(--muted); }
-
-    .nav{ display:flex; gap:10px; flex-wrap:wrap; margin: 10px 0 14px; }
-    .nav a{
-      text-decoration:none;
-      padding:8px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.75);
-      border: 1px solid rgba(15,23,42,.12);
-      color: var(--accent);
-      font-weight: 900;
-    }
-    .nav a:hover{ background: rgba(47,95,115,.08); border-color: rgba(47,95,115,.25); }
-
-    .bar{ display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin: 10px 0 14px; }
-    .field{ display:flex; flex-direction:column; gap:6px; }
-    .label{ font-size:12px; font-weight:900; color: var(--muted); }
-    input[type="number"]{
-      padding:10px 12px; border-radius: 12px; border:1px solid rgba(15,23,42,.14);
-      background:#fff; outline:none; font-size:14px; width: 190px;
-    }
-    input[type="number"]:focus{ border-color: rgba(47,95,115,.45); box-shadow: 0 0 0 3px rgba(47,95,115,.12); }
-
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:8px;
-      padding: 10px 14px; border-radius: 12px;
-      border: 1px solid rgba(47,95,115,.25);
-      background: var(--accent); color:#fff;
-      font-weight: 900; cursor:pointer; user-select:none;
-    }
-    .btn:hover{ filter:brightness(.98); }
-    .btn.soft{ background: rgba(255,255,255,.75); color: var(--text); border-color: rgba(15,23,42,.14); }
-    .btn.soft:hover{ background: rgba(47,95,115,.08); border-color: rgba(47,95,115,.25); }
-
-    .status{
-      flex:1; min-width: 280px;
-      padding: 10px 12px; border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,.65); color: var(--muted);
-    }
-    .status.ok{ background: var(--ok); border-color: rgba(22,163,74,.25); color: rgba(21,128,61,.95); }
-    .status.bad{ background: var(--bad); border-color: rgba(239,68,68,.25); color: rgba(185,28,28,.95); }
-
-    .grid{ display:grid; grid-template-columns: 1.35fr .65fr; gap: 14px; align-items:start; }
-    @media (max-width: 980px){ .grid{ grid-template-columns: 1fr; } }
-    .card{ background: var(--paper); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); padding: 14px; }
-
-    .paper{
-      border-radius: var(--r);
-      border: 1px solid var(--border);
-      background:
-        radial-gradient(circle at 1px 1px, rgba(15,23,42,.06) 1px, transparent 1px) 0 0/18px 18px,
-        linear-gradient(#fff,#fff);
-      padding: 14px;
-      overflow:auto;
+      --cell: 34px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --ink: #0f172a;
+      --soft: rgba(15,23,42,.08);
+      --accent: rgba(47,95,115,.20);
+      --ok: rgba(34,197,94,.18);
+      --bad: rgba(239,68,68,.16);
+      --hi: rgba(245,158,11,.22);
     }
 
-    /* 3 колонки: тетрадь / ученик / проверка */
-    .paperInner{
-      display:flex;
-      gap: 14px;
-      align-items:flex-start;
-    }
-    @media (max-width: 980px){
-      .paperInner{ flex-direction: column; }
-    }
-    .paperLeft{ flex: 0 0 auto; }
-    .paperMid{
-      flex: 0 0 320px;
-      min-height: 560px;
-      border-radius: 14px;
-      border: 1px solid rgba(15,23,42,.14);
-      background: rgba(255,255,255,.88);
-      padding: 12px;
-    }
-    .paperRight{
-      flex: 1 1 auto;
-      min-width: 320px;
-      border-radius: 14px;
-      border: 1px dashed rgba(15,23,42,.18);
-      background: rgba(255,255,255,.70);
-      padding: 12px;
-      background-image: radial-gradient(circle at 1px 1px, rgba(15,23,42,.05) 1px, transparent 1px);
-      background-size: 18px 18px;
-    }
-    @media (max-width: 980px){
-      .paperMid{ flex: 1 1 auto; min-height: 0; width: 100%; }
-      .paperRight{ min-width: 0; width: 100%; }
-    }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 14px; }
+    h1 { margin: 0 0 6px; font-size: 20px; }
+    .sub { margin: 0 0 14px; color: var(--muted); }
 
-    /* ====== Российская тетрадная сетка:
-       [pad] [минус] [делимое n цифр] [|] [правая зона n клеток]
-    */
-    .divGrid{
-      font-family: var(--mono);
-      --n: 6;
+    .layout{
       display: grid;
-      grid-template-columns:
-        1.2em
-        var(--cell)
-        repeat(var(--n), var(--cell))
-        var(--barw)
-        repeat(var(--n), var(--cell));
-
-      grid-auto-rows: 1.55em;
-      align-items: center;
-      justify-content: start;
-      position: relative;
-      min-width: calc(1.2em + var(--cell) + var(--n) * var(--cell) + var(--barw) + var(--n) * var(--cell));
-    }
-
-    .cell{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      font-size:26px;
-      line-height:1;
-      padding:0 .05em;
-      user-select:none;
-    }
-    .cell.small{ font-size: 18px; color: var(--muted); }
-
-    .rbar{ background: var(--line); align-self: stretch; justify-self: stretch; }
-    .hlineR{
-      height:0;
-      border-top: 2px solid var(--line);
-      align-self: start;
-      margin-top: .18em;
-    }
-    .divisorR{
-      font-size: 26px;
-      font-weight: 900;
-      color: rgba(15,23,42,.92);
-      text-align:left;
-      justify-self: start;
-      padding-left: .25em;
-      white-space: nowrap;
-    }
-    .qCell{ font-size: 26px; font-weight: 900; color: rgba(15,23,42,.92); }
-
-    .hlBring{ background: rgba(245,158,11,.18); border: 1px solid rgba(245,158,11,.30); border-radius: 8px; padding-top: .06em; padding-bottom: .06em; }
-    .hlCurrent{ background: rgba(47,95,115,.14); border: 1px solid rgba(47,95,115,.22); border-radius: 8px; padding-top: .06em; padding-bottom: .06em; }
-
-    .minusCell{
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      color: rgba(15,23,42,.65);
-      font-weight: 900;
-      padding-right: .15em;
-      line-height: 1;
-    }
-
-    .underline{ border-bottom: 2px solid rgba(15,23,42,.45); padding-bottom: .15em; }
-    .remainder{ color: rgba(15,23,42,.90); font-weight: 800; }
-
-    .miniOut{
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(15,23,42,.12);
-      background: rgba(255,255,255,.60);
-      color: var(--muted);
-      margin-bottom: 10px;
-      font-size: 14px;
-      font-weight: 800;
-    }
-    .miniOut.ok{ background: rgba(22,163,74,.12); border-color: rgba(22,163,74,.25); color: rgba(21,128,61,.95); }
-    .miniOut.bad{ background: rgba(239,68,68,.10); border-color: rgba(239,68,68,.25); color: rgba(185,28,28,.95); }
-
-    .check{ display:flex; gap:8px; align-items:center; color: var(--muted); font-size: 14px; user-select:none; }
-
-    .levelBox{
-      margin-top: 10px;
-      border: 1px solid rgba(15,23,42,.10);
-      border-radius: 12px;
-      padding: 10px;
-      background: rgba(15,23,42,.02);
-      display:flex;
+      grid-template-columns: 1.5fr .9fr;
       gap: 12px;
-      flex-wrap: wrap;
-      align-items:center;
+      align-items: start;
     }
-    .levelBox b{ margin-right: 6px; }
-    .levelOpt{ display:flex; gap:8px; align-items:center; color: var(--muted); font-size: 14px; }
+    @media (max-width: 980px){
+      .layout{ grid-template-columns: 1fr; }
+    }
 
-    .log{
-      margin-top: 12px;
+    .paperCard{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+
+    /* “Тетрадный” фон */
+    .paper{
+      border-radius: 14px;
+      padding: 14px;
+      background:
+        radial-gradient(circle at 1px 1px, rgba(15,23,42,.10) 1px, transparent 1.4px) 0 0 / 18px 18px,
+        linear-gradient(#fff, #fff);
+      border: 1px solid rgba(15,23,42,.08);
+      overflow: auto;
+    }
+
+    .divGrid{
+      display: grid;
+      grid-template-columns: auto auto;
+      align-items: start;
+      gap: 14px;
+    }
+
+    .leftArea{ min-width: calc(var(--cell) * 6); }
+
+    .digitsRow{
       font-family: var(--mono);
-      font-size: 13px;
-      white-space: pre-wrap;
-      background: rgba(15,23,42,.02);
-      border: 1px solid rgba(15,23,42,.10);
-      border-radius: 12px;
-      padding: 10px;
-      min-height: 130px;
-      color: rgba(100,116,139,.95);
+      font-size: 28px;
+      line-height: 1;
+      display: flex;
+      gap: 2px;
+      align-items: center;
+      color: var(--ink);
+    }
+    .cell{
+      width: var(--cell);
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      padding: 4px 0;
+      border-radius: 10px;
+    }
+    .cell.hi{ background: var(--hi); }
+    .cell.soft{ background: rgba(15,23,42,.05); }
+
+    .rightBox{
+      position: relative;
+      padding-left: 12px;
+      border-left: 3px solid rgba(15,23,42,.45);
+      border-top: 3px solid rgba(15,23,42,.45);
+      border-radius: 6px;
+      min-width: 210px;
+    }
+    .divisor{
+      font-family: var(--mono);
+      font-size: 30px;
+      line-height: 1;
+      padding: 4px 0 10px;
+      display:flex;
+      gap:2px;
+      justify-content:flex-start;
+    }
+    .quotient{
+      font-family: var(--mono);
+      font-size: 30px;
+      line-height: 1;
+      padding: 10px 0 4px;
+      border-top: 2px solid rgba(15,23,42,.35);
+      display:flex;
+      gap:2px;
+      flex-wrap: nowrap;
     }
 
-    .workTitle{
-      margin: 0 0 8px;
+    .qInput{
+      width: var(--cell);
+      height: 42px;
+      font-family: var(--mono);
+      font-size: 28px;
+      text-align: center;
+      border-radius: 10px;
+      border: 1px solid rgba(15,23,42,.20);
+      outline: none;
+      background: #fff;
+    }
+    .qInput:focus{ border-color: rgba(47,95,115,.60); box-shadow: 0 0 0 4px rgba(47,95,115,.12); }
+
+    .work{
+      margin-top: 10px;
+      font-family: var(--mono);
+      font-size: 28px;
+      line-height: 1.05;
+      color: var(--ink);
+    }
+
+    .rowNum{
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      margin: 2px 0;
+    }
+    .rowNum .minus{
+      width: var(--cell);
+      display: inline-flex;
+      justify-content: center;
+      opacity: .9;
+    }
+
+    .numInput{
+      height: 42px;
+      font-family: var(--mono);
+      font-size: 26px;
+      text-align: center;
+      border-radius: 10px;
+      border: 1px solid rgba(15,23,42,.20);
+      outline: none;
+      background: #fff;
+      padding: 0 10px;
+    }
+    .numInput:focus{ border-color: rgba(47,95,115,.60); box-shadow: 0 0 0 4px rgba(47,95,115,.12); }
+
+    .line{
+      height: 0;
+      border-top: 2px solid rgba(15,23,42,.35);
+      margin: 6px 0 6px;
+    }
+
+    .answerLine{
+      margin-top: 10px;
       font-size: 14px;
-      font-weight: 900;
-      color: rgba(15,23,42,.85);
-    }
-    .workRow{
-      display:flex;
-      gap: 10px;
-      align-items:flex-end;
-      margin-bottom: 10px;
-      flex-wrap: wrap;
-    }
-    .workRow .field input[type="number"]{ width: 160px; }
-    .workNote{
       color: var(--muted);
-      font-size: 12px;
-      margin-top: -4px;
     }
+    .answerLine b{ color: var(--text); }
 
-    .mulBox{
-      border: 1px solid rgba(15,23,42,.12);
-      border-radius: 12px;
-      background: rgba(15,23,42,.02);
-      padding: 10px;
-      margin: 8px 0 10px;
+    .panel{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+      position: sticky;
+      top: 70px;
     }
-    .mulTitle{
-      font-weight: 900;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 8px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .mulSteps{
+    .panel h2{ margin:0 0 10px; font-size: 14px; }
+    .panel .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    .field{
       display:flex;
       flex-direction:column;
-      gap: 8px;
+      gap:6px;
+      margin: 10px 0;
     }
-    .mulStep{
-      display:grid;
-      grid-template-columns: 1fr 90px 90px;
-      gap: 8px;
-      align-items:center;
-      padding: 8px;
-      border-radius: 10px;
-      background: rgba(255,255,255,.75);
-      border: 1px solid rgba(15,23,42,.10);
-    }
-    .mulStep .txt{
-      font-family: var(--mono);
-      font-size: 13px;
-      color: rgba(15,23,42,.85);
-      line-height: 1.25;
-    }
-    .mulStep input[type="number"]{
+    label{ font-size: 12px; color: var(--muted); }
+
+    input[type="number"], input[type="text"]{
       width: 100%;
-      padding: 9px 10px;
-      border-radius: 10px;
-      border: 1px solid rgba(15,23,42,.14);
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(15,23,42,.18);
+      outline: none;
       font-size: 14px;
     }
-    .mulHint{
-      font-family: var(--mono);
-      font-size: 12px;
-      color: rgba(100,116,139,.95);
-      margin-top: 8px;
-      white-space: pre-wrap;
+    input[type="number"]:focus, input[type="text"]:focus{
+      border-color: rgba(47,95,115,.60);
+      box-shadow: 0 0 0 4px rgba(47,95,115,.12);
     }
 
-    .scratch textarea{
-      width: 100%;
-      min-height: 140px;
-      resize: vertical;
+    .btnWide{
+      width:100%;
       padding: 10px 12px;
       border-radius: 12px;
-      border: 1px solid rgba(15,23,42,.14);
-      background: rgba(255,255,255,.92);
-      font-family: var(--mono);
-      font-size: 13px;
-      outline:none;
+      border: 1px solid rgba(47,95,115,.25);
+      background: rgba(47,95,115,.10);
+      color: #2f5f73;
+      font-weight: 900;
+      cursor:pointer;
     }
-    .scratch textarea:focus{
-      border-color: rgba(47,95,115,.45);
-      box-shadow: 0 0 0 3px rgba(47,95,115,.12);
+    .btnWide:hover{ filter: brightness(.98); }
+
+    .mini{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height: 1.45;
+      white-space: pre-line;
+    }
+
+    .status{
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: rgba(15,23,42,.04);
+      border: 1px solid rgba(15,23,42,.08);
+      margin-top: 10px;
+      font-size: 13px;
+    }
+    .status.ok{ background: var(--ok); border-color: rgba(34,197,94,.25); }
+    .status.bad{ background: var(--bad); border-color: rgba(239,68,68,.25); }
+
+    .hint{
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      white-space: pre-line;
+    }
+
+    .linkRow{ margin-top: 10px; display:flex; gap:10px; flex-wrap:wrap; }
+    .linkBtn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border:1px solid rgba(15,23,42,.12);
+      background: rgba(255,255,255,.7);
+      color: var(--text);
+      font-weight: 800;
+      font-size: 12px;
+      text-decoration: none;
     }
   </style>
 </head>
 
 <body>
-<div class="wrap">
-  <h1>Деление уголком — российская запись</h1>
-  <p class="sub">Цепочка навыков: подбор q → умножение делителя на q (столбиком) → вычитание → снос цифры.</p>
-
-  <div class="nav">
-    <a href="../../index.html">← Главная</a>
-    <a href="./long-multiplication.html">Умножение столбиком →</a>
-    <a href="../multiplication-table/index.html">Таблица умножения →</a>
-  </div>
-
-  <div class="bar">
-    <div class="field">
-      <div class="label">Делимое</div>
-      <input id="dividendIn" type="number" min="0" step="1" value="41608"/>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="brand-title">MathExam</div>
+        <div class="brand-sub">Тренажёры письменных навыков</div>
+      </div>
+      <nav class="nav">
+        <a class="nav-link" href="../../">Главная</a>
+        <a class="nav-link" href="../">Тренажёры</a>
+      </nav>
     </div>
-    <div class="field">
-      <div class="label">Делитель</div>
-      <input id="divisorIn" type="number" min="1" step="1" value="56"/>
-    </div>
+  </header>
 
-    <button class="btn" id="startBtn">Старт</button>
-    <button class="btn soft" id="randomBtn">Случайный</button>
-    <button class="btn soft" id="resetBtn">Сброс</button>
+  <main class="wrap">
+    <h1>Деление уголком — тетрадный формат</h1>
+    <p class="sub">Уровни: 1) только цифра частного • 2) + произведение и вычитание • 3) + следующий блок (сносим цифру).</p>
 
-    <div class="status" id="status">Введи числа и нажми «Старт».</div>
-  </div>
-
-  <div class="grid">
-    <div class="card">
-      <div class="paper">
-        <div class="paperInner">
-          <div class="paperLeft">
-            <div id="divArea"></div>
-          </div>
-
-          <div class="paperMid">
-            <div class="workTitle">Здесь считает ученик</div>
-
-            <div class="workRow">
-              <div class="field">
-                <div class="label">Цифра частного q (0–9)</div>
-                <input id="qDigitIn" type="number" min="0" max="9" step="1" placeholder="0–9" disabled>
-                <div class="workNote" id="qNote">—</div>
-              </div>
+    <div class="layout">
+      <section class="paperCard">
+        <div class="paper" id="paper">
+          <div class="divGrid">
+            <div class="leftArea">
+              <div class="digitsRow" id="dividendRow"></div>
+              <div class="work" id="work"></div>
+              <div class="answerLine" id="answerLine"></div>
             </div>
 
-            <!-- УМНОЖЕНИЕ ВНУТРИ ДЕЛЕНИЯ -->
-            <div class="mulBox" id="mulBox" style="display:none;">
-              <div class="mulTitle">
-                <span>Умножение столбиком: <span id="mulTitleNums">d × q</span></span>
-                <label class="check" style="margin:0;">
-                  <input id="trainMul" type="checkbox" checked>
-                  <span>тренировать умножение</span>
-                </label>
-              </div>
-              <div class="mulSteps" id="mulSteps"></div>
-              <div class="mulHint" id="mulHint">—</div>
+            <div class="rightBox">
+              <div class="divisor" id="divisorRow"></div>
+              <div class="quotient" id="quotientRow"></div>
             </div>
-
-            <div class="workRow" id="remRow">
-              <div class="field">
-                <div class="label">Остаток шага N−prod</div>
-                <input id="remIn" type="number" min="0" step="1" placeholder="например 416−392=24" disabled>
-                <div class="workNote" id="remNote">—</div>
-              </div>
-            </div>
-
-            <div class="workRow" id="nextRow">
-              <div class="field">
-                <div class="label">Новый кусок после сноса</div>
-                <input id="nextChunkIn" type="number" min="0" step="1" placeholder="например 24 и снесли 0 → 240" disabled>
-                <div class="workNote" id="nextNote">—</div>
-              </div>
-            </div>
-
-            <div class="scratch" style="margin-top:10px;">
-              <div class="label">Черновик (любые вычисления)</div>
-              <textarea id="scratch" placeholder="Например: 56×7=392, 416−392=24..."></textarea>
-            </div>
-          </div>
-
-          <div class="paperRight">
-            <div class="miniOut" id="miniOut">Поле проверки: вводи шаги слева и нажимай «Проверить».</div>
-
-            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
-              <button class="btn" id="checkBtn" disabled>Проверить шаг</button>
-              <button class="btn soft" id="hintBtn" disabled>Подсказка</button>
-            </div>
-
-            <label class="check">
-              <input id="calmMode" type="checkbox" checked>
-              <span><b>Режим спокойствия</b> (объяснять “мало/велико”)</span>
-            </label>
-
-            <label class="check" style="margin-top:6px;">
-              <input id="autoZero" type="checkbox" checked>
-              <span>Разрешать нули в частном (если кусок &lt; делителя)</span>
-            </label>
-
-            <div class="levelBox" aria-label="Уровень цепочки">
-              <b>Уровень:</b>
-              <label class="levelOpt"><input type="radio" name="lvl" value="1" checked> 1 — только q</label>
-              <label class="levelOpt"><input type="radio" name="lvl" value="2"> 2 — q + умножение + остаток</label>
-              <label class="levelOpt"><input type="radio" name="lvl" value="3"> 3 — полный ( + nextChunk )</label>
-            </div>
-
-            <div class="log" id="logOut">—</div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="card">
-      <div style="font-weight:900; margin-bottom:8px;">Правило подбора цифры</div>
-      <div style="color:#64748b; font-size:14px;">
-        Для текущего куска <b>N</b> ищем <b>q</b>, чтобы:<br>
-        <b>d×q ≤ N</b>, а <b>d×(q+1) &gt; N</b>.<br><br>
-        Подсказка показывает q = ⌊N/d⌋ и мини-проверку.
-      </div>
+      <aside class="panel">
+        <h2>Управление</h2>
+
+        <div class="field">
+          <label>Делимое</label>
+          <input id="inDividend" type="number" min="0" step="1" value="41608" />
+        </div>
+
+        <div class="field">
+          <label>Делитель</label>
+          <input id="inDivisor" type="number" min="1" step="1" value="56" />
+        </div>
+
+        <div class="row">
+          <button class="btnWide" id="btnStart">Старт / обновить пример</button>
+        </div>
+
+        <div class="field">
+          <label>Уровень</label>
+          <div class="row" style="gap:12px">
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text)">
+              <input type="radio" name="lvl" value="1" checked />
+              1 — только q
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text)">
+              <input type="radio" name="lvl" value="2" />
+              2 — q + умножение + вычитание
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text)">
+              <input type="radio" name="lvl" value="3" />
+              3 — полный шаг (+ следующий блок)
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label style="display:flex;align-items:center;gap:8px;color:var(--text)">
+            <input id="calmMode" type="checkbox" checked />
+            Режим спокойствия (объяснять “мало/велико”)
+          </label>
+        </div>
+
+        <div class="row">
+          <button class="btnWide" id="btnCheck">Проверить шаг</button>
+        </div>
+
+        <div id="status" class="status" style="display:none"></div>
+        <div id="hint" class="hint"></div>
+
+        <div class="linkRow">
+          <a class="linkBtn" href="./long-multiplication.html">Перейти к умножению столбиком</a>
+          <a class="linkBtn" href="../multiplication-table/">Таблица умножения</a>
+        </div>
+
+        <div class="mini" id="miniLog"></div>
+      </aside>
     </div>
-  </div>
-</div>
+  </main>
 
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
-  const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
-  const dividendIn = $("dividendIn");
-  const divisorIn  = $("divisorIn");
-  const startBtn = $("startBtn");
-  const randomBtn = $("randomBtn");
-  const resetBtn = $("resetBtn");
+  const elDividendRow = $("dividendRow");
+  const elDivisorRow = $("divisorRow");
+  const elQuotientRow = $("quotientRow");
+  const elWork = $("work");
+  const elAnswer = $("answerLine");
+  const elStatus = $("status");
+  const elHint = $("hint");
+  const elMiniLog = $("miniLog");
 
-  const statusEl = $("status");
-  const miniOut = $("miniOut");
-  const divArea = $("divArea");
-  const logOut = $("logOut");
-
-  const qDigitIn = $("qDigitIn");
-  const checkBtn = $("checkBtn");
-  const hintBtn = $("hintBtn");
-
+  const inDividend = $("inDividend");
+  const inDivisor = $("inDivisor");
+  const btnStart = $("btnStart");
+  const btnCheck = $("btnCheck");
   const calmMode = $("calmMode");
-  const autoZero = $("autoZero");
-
-  const remRow  = $("remRow");
-  const nextRow = $("nextRow");
-
-  const remIn  = $("remIn");
-  const nextChunkIn = $("nextChunkIn");
-
-  const qNote = $("qNote");
-  const remNote  = $("remNote");
-  const nextNote = $("nextNote");
-
-  // Умножение внутри деления
-  const mulBox = $("mulBox");
-  const mulSteps = $("mulSteps");
-  const mulHint = $("mulHint");
-  const mulTitleNums = $("mulTitleNums");
-  const trainMul = $("trainMul");
-
-  let st = null;
-  let level = 1;
-
-  function setStatus(text, kind=""){
-    statusEl.className = "status" + (kind ? " " + kind : "");
-    statusEl.textContent = text;
-    miniOut.className = "miniOut" + (kind ? " " + kind : "");
-    miniOut.textContent = text;
-  }
-
-  function sInt(v, fb=null){
-    if (v === "" || v === null || v === undefined) return fb;
-    const n = Number(v);
-    if (!Number.isFinite(n)) return fb;
-    return Math.trunc(n);
-  }
-  function randInt(a,b){ return a + Math.floor(Math.random()*(b-a+1)); }
 
   function getLevel(){
-    const v = document.querySelector('input[name="lvl"]:checked')?.value ?? "1";
-    return Number(v);
+    const r = document.querySelector('input[name="lvl"]:checked');
+    return Number(r ? r.value : 1);
   }
 
-  function applyLevelUI(){
-    level = getLevel();
+  function digitsOf(n){ return String(Math.floor(Math.abs(n))).split(""); }
 
-    // Умножение показываем при уровне 2/3
-    mulBox.style.display = (level >= 2) ? "" : "none";
-    remRow.style.display  = (level >= 2) ? "" : "none";
-    nextRow.style.display = (level >= 3) ? "" : "none";
-
-    const enabled = !!(st && st.phase === "ask");
-    qDigitIn.disabled = !enabled;
-    remIn.disabled  = !(enabled && level >= 2);
-    nextChunkIn.disabled = !(enabled && level >= 3);
-
-    if (!enabled){
-      qNote.textContent = "—";
-      remNote.textContent  = "—";
-      nextNote.textContent = "—";
-      mulSteps.innerHTML = "";
-      mulHint.textContent = "—";
-      mulTitleNums.textContent = "d × q";
-      return;
-    }
-    updateNotes();
-    buildMulUI(); // перестроить умножение под текущий делитель
+  function clampInt(v){
+    if (v === "" || v === null || v === undefined) return null;
+    const s = String(v).trim();
+    if (!/^-?\d+$/.test(s)) return null;
+    return Number(s);
   }
 
-  function updateNotes(){
-    if (!st || st.phase !== "ask"){
-      qNote.textContent = "—";
-      remNote.textContent  = "—";
-      nextNote.textContent = "—";
-      return;
-    }
-    const N = st.chunk, d = st.divisor;
-    qNote.textContent = `Сейчас: N=${N}, d=${d}`;
-    if (level >= 2){
-      remNote.textContent  = `rem = ${N} − (d×q)`;
-    } else {
-      remNote.textContent  = "—";
-    }
-    if (level >= 3){
-      if (st.nextDigitIndex < st.n){
-        const b = st.digits[st.nextDigitIndex];
-        nextNote.textContent = `Сносим цифру ${b}: next = rem×10 + ${b}`;
-      } else {
-        nextNote.textContent = `Цифр больше нет — next не нужен.`;
-      }
-    } else {
-      nextNote.textContent = "—";
-    }
+  function makeCell(ch, cls=""){
+    const sp = document.createElement("span");
+    sp.className = "cell" + (cls ? (" " + cls) : "");
+    sp.textContent = ch;
+    return sp;
   }
 
-  function expectedDigit(){
-    let q = Math.floor(st.chunk / st.divisor);
-    if (q > 9) q = 9;
-    if (q < 0) q = 0;
-    return q;
-  }
-
-  function explainTooSmall(q){
-    const d = st.divisor, N = st.chunk;
-    const next = d * (q + 1);
-    return `${d}×(${q}+1) = ${next} > ${N} — значит можно увеличивать. Твоя цифра ${q} мала.`;
-  }
-  function explainTooBig(q){
-    const d = st.divisor, N = st.chunk;
-    const cur = d * q;
-    return `${d}×${q} = ${cur} > ${N} — цифра ${q} велика.`;
-  }
-  function explainCorrect(q){
-    const d = st.divisor, N = st.chunk;
-    const cur = d*q;
-    const nxt = d*(q+1);
-    return `Проверка: ${d}×${q}=${cur} ≤ ${N}, а ${d}×(${q}+1)=${nxt} > ${N}.`;
-  }
-
-  function hint(){
-    if (!st || st.phase !== "ask") return;
-    const q = expectedDigit();
-    setStatus(`Подсказка: q=${q}. ${explainCorrect(q)}`, "ok");
-    st.log.push(`Подсказка: q=${q}. ${explainCorrect(q)}`);
-    logOut.textContent = st.log.join("\n");
-    updateNotes();
-    qDigitIn.value = String(q);
-    buildMulUI();
-  }
-
-  // ===== УМНОЖЕНИЕ: многозначное (делитель) × однозначное (q) =====
-  function divisorDigitsRev(){
-    return String(st.divisor).split("").map(Number).reverse(); // справа налево
-  }
-
-  function buildMulUI(){
-    if (!st || st.phase !== "ask" || level < 2){
-      mulSteps.innerHTML = "";
-      mulHint.textContent = "—";
-      return;
-    }
-    const q = sInt(qDigitIn.value, null);
-    const d = st.divisor;
-    mulTitleNums.textContent = `${d} × q`;
-
-    // Если q ещё не введён — просто покажем заготовку
-    const digs = divisorDigitsRev();
-    mulSteps.innerHTML = "";
-
-    // Заготовка строк: шаги справа налево (единицы → десятки → ...)
-    digs.forEach((digit, i) => {
-      const row = document.createElement("div");
-      row.className = "mulStep";
-
-      const txt = document.createElement("div");
-      txt.className = "txt";
-      const stepName = (i === 0) ? "единицы" : (i === 1 ? "десятки" : `10^${i}`);
-      txt.textContent = `Шаг ${i+1} (${stepName}): ${digit} × q + перенос`;
-
-      const out = document.createElement("input");
-      out.type = "number";
-      out.min = "0";
-      out.max = "9";
-      out.step = "1";
-      out.placeholder = "пишем";
-      out.id = `mul_out_${i}`;
-      out.disabled = (q === null);
-
-      const carry = document.createElement("input");
-      carry.type = "number";
-      carry.min = "0";
-      carry.max = "9";
-      carry.step = "1";
-      carry.placeholder = "перенос";
-      carry.id = `mul_carry_${i}`;
-      carry.disabled = (q === null);
-
-      // enter → проверить шаг деления
-      out.addEventListener("keydown", (e)=>{ if(e.key==="Enter") check(); });
-      carry.addEventListener("keydown", (e)=>{ if(e.key==="Enter") check(); });
-
-      row.appendChild(txt);
-      row.appendChild(out);
-      row.appendChild(carry);
-      mulSteps.appendChild(row);
-    });
-
-    mulHint.textContent = (q === null)
-      ? "Сначала введи q. Потом заполни «пишем» и «перенос» для каждого разряда делителя."
-      : "Заполняй справа налево: сначала единицы. «Перенос» — это то, что пойдёт на следующий разряд слева.";
-  }
-
-  function validateMul(q){
-    // Если выключили тренировку умножения — просто считаем автоматически
-    const d = st.divisor;
-    const N = st.chunk;
-
-    const digs = divisorDigitsRev();
-    let carryIn = 0;
-    const outDigits = [];
-
-    for (let i=0; i<digs.length; i++){
-      const digit = digs[i];
-
-      const t = q*digit + carryIn;
-      const outExp = t % 10;
-      const carryOutExp = Math.floor(t / 10);
-
-      if (trainMul.checked){
-        const outVal = sInt(document.getElementById(`mul_out_${i}`)?.value, null);
-        const carryVal = sInt(document.getElementById(`mul_carry_${i}`)?.value, null);
-
-        if (outVal === null || carryVal === null){
-          return { ok:false, msg:`Умножение: заполни шаг ${i+1} («пишем» и «перенос»).` };
-        }
-        if (outVal !== outExp || carryVal !== carryOutExp){
-          return {
-            ok:false,
-            msg:`Умножение: шаг ${i+1} неверен. Проверка: ${digit}×${q} + перенос ${carryIn} = ${t}. Значит пишем ${outExp}, перенос ${carryOutExp}.`
-          };
-        }
-      }
-
-      outDigits.push(outExp);
-      carryIn = carryOutExp;
-    }
-
-    // Собираем произведение
-    const productStr = (carryIn ? String(carryIn) : "") + outDigits.slice().reverse().join("");
-    const product = Number(productStr) || 0;
-
-    return { ok:true, product, msg:`Умножение верно: ${d}×${q}=${product}.` };
-  }
-
-  // ===== Деление =====
-  function start(){
-    const dividend = sInt(dividendIn.value, null);
-    const divisor  = sInt(divisorIn.value, null);
-
-    if (dividend === null || divisor === null || dividend < 0 || divisor <= 0){
-      setStatus("Проверь числа: делимое ≥ 0, делитель > 0.", "bad");
-      return;
-    }
-
-    const digits = String(dividend).split("").map(Number);
-    const n = digits.length;
-
-    let chunk = 0;
-    let end = -1;
-    while (end + 1 < n){
-      end++;
-      chunk = chunk * 10 + digits[end];
-      if (chunk >= divisor) break;
-    }
-
-    if (chunk < divisor && end === n-1){
-      st = { dividend, divisor, digits, n, quotient: Array(n).fill(""), steps: [], curEnd: n-1, chunk: dividend, nextDigitIndex: n, remainder: dividend, phase:"done", bringIndex:null, log:[] };
-      st.quotient[n-1] = "0";
-      setStatus(`Готово: ${dividend} < ${divisor}. Частное 0, остаток ${dividend}.`, "ok");
-      st.log = [statusEl.textContent];
-      logOut.textContent = st.log.join("\n");
-      render();
-      checkBtn.disabled = true;
-      hintBtn.disabled = true;
-      applyLevelUI();
-      return;
-    }
-
-    st = {
-      dividend, divisor, digits, n,
-      quotient: Array(n).fill(""),
-      steps: [],
-      curEnd: end,
-      chunk,
-      nextDigitIndex: end+1,
-      remainder: null,
-      phase:"ask",
-      bringIndex: end,
-      log:[`Старт: первый кусок N=${chunk}.`]
-    };
-
-    qDigitIn.value = "";
-    remIn.value = "";
-    nextChunkIn.value = "";
-
-    checkBtn.disabled = false;
-    hintBtn.disabled = false;
-
-    setStatus("Подбираем цифру частного и умножаем делитель на q.", "");
-    logOut.textContent = st.log.join("\n");
-
-    render();
-    applyLevelUI();
-    qDigitIn.focus();
-  }
-
-  function check(){
-    if (!st || st.phase !== "ask") return;
-
-    const q = sInt(qDigitIn.value, null);
-    if (q === null || q < 0 || q > 9){
-      setStatus("Введи цифру q от 0 до 9.", "bad");
-      return;
-    }
-
-    const d = st.divisor;
-    const N = st.chunk;
-
-    if (N < d && !autoZero.checked){
-      setStatus("Сейчас N < d. Обычно пишем 0 и сносим следующую цифру (включи галочку).", "bad");
-      st.log.push(`Ситуация: ${N} < ${d}. Включи “нули в частном”.`);
-      logOut.textContent = st.log.join("\n");
-      return;
-    }
-
-    const corr = expectedDigit();
-    if (N >= d && q < corr){
-      setStatus("Цифра слишком маленькая.", "bad");
-      st.log.push(calmMode.checked ? explainTooSmall(q) : "Мало: можно увеличить цифру.");
-      logOut.textContent = st.log.join("\n");
-      return;
-    }
-
-    // Уровень 2/3: сначала проверяем умножение d×q (либо вводом, либо автоматически)
-    let prod = d * q;
-    if (level >= 2){
-      const mul = validateMul(q);
-      if (!mul.ok){
-        setStatus(mul.msg, "bad");
-        st.log.push(mul.msg);
-        logOut.textContent = st.log.join("\n");
-        return;
-      }
-      prod = mul.product;
-      st.log.push(mul.msg);
-      logOut.textContent = st.log.join("\n");
-    }
-
-    if (prod > N){
-      setStatus("Слишком большая цифра (произведение больше текущего куска).", "bad");
-      st.log.push(calmMode.checked ? explainTooBig(q) : `Велико: ${d}×${q} > ${N}.`);
-      logOut.textContent = st.log.join("\n");
-      return;
-    }
-
-    if (level >= 2){
-      const remUser  = sInt(remIn.value, null);
-      const remExp   = N - prod;
-
-      if (remUser === null){
-        setStatus("Уровень 2/3: введи остаток N−prod.", "bad");
-        return;
-      }
-      if (remUser !== remExp){
-        setStatus(`Вычитание неверно. Нужно: ${N}-${prod}=${remExp}`, "bad");
-        st.log.push(`Остаток: ожидали ${remExp}, получили ${remUser}.`);
-        logOut.textContent = st.log.join("\n");
-        return;
-      }
-
-      if (level >= 3 && st.nextDigitIndex < st.n){
-        const bringDigit = st.digits[st.nextDigitIndex];
-        const nextExp = remExp * 10 + bringDigit;
-        const nextUser = sInt(nextChunkIn.value, null);
-        if (nextUser === null){
-          setStatus("Уровень 3: введи новый кусок после сноса.", "bad");
-          return;
-        }
-        if (nextUser !== nextExp){
-          setStatus(`Снос неверно. Нужно: ${remExp} и снесли ${bringDigit} → ${nextExp}`, "bad");
-          st.log.push(`Снос: ожидали ${nextExp}, получили ${nextUser}.`);
-          logOut.textContent = st.log.join("\n");
-          return;
-        }
-      }
-
-      if (calmMode.checked){
-        st.log.push(explainCorrect(q));
-        logOut.textContent = st.log.join("\n");
-      }
-
-      applyStep(q, prod);
-      return;
-    }
-
-    // Уровень 1: только q
-    applyStep(q, d*q);
-  }
-
-  function applyStep(q, prod){
-    const d = st.divisor;
-    const N = st.chunk;
-
-    const rem = N - prod;
-
-    st.quotient[st.curEnd] = String(q);
-
-    st.steps.push({ kind: "product", end: st.curEnd, text: String(prod), minus: true });
-    st.steps.push({ kind: "line", end: st.curEnd, len: Math.max(String(prod).length, String(N).length) + 1 });
-    st.steps.push({ kind: "remainder", end: st.curEnd, text: String(rem) });
-
-    st.log.push(`Шаг: N=${N}, q=${q}, prod=${prod}, остаток=${rem}.`);
-
-    if (st.nextDigitIndex < st.n){
-      const bringIdx = st.nextDigitIndex;
-      const bringDigit = st.digits[bringIdx];
-      const nextChunk = rem * 10 + bringDigit;
-
-      st.steps.push({ kind: "nextchunk", end: bringIdx, text: String(nextChunk), highlightLast: true });
-
-      st.curEnd = bringIdx;
-      st.chunk = nextChunk;
-      st.nextDigitIndex = bringIdx + 1;
-      st.bringIndex = bringIdx;
-
-      st.log.push(`Снесли цифру ${bringDigit} → новый кусок ${nextChunk}.`);
-      logOut.textContent = st.log.join("\n");
-
-      qDigitIn.value = "";
-      remIn.value = "";
-      nextChunkIn.value = "";
-      setStatus("Верно. Следующий шаг.", "ok");
-
-      render();
-      applyLevelUI();
-      qDigitIn.focus();
-      return;
-    }
-
-    st.phase = "done";
-    st.remainder = rem;
-
-    qDigitIn.disabled = true;
-    checkBtn.disabled = true;
-    hintBtn.disabled = true;
-
-    applyLevelUI();
-
-    const qStr = (st.quotient.join("").replace(/^0+(?=\d)/,"") || "0");
-    setStatus(`Готово! Ответ: ${st.dividend} : ${st.divisor} = ${qStr}${rem ? ` (ост. ${rem})` : ""}`, "ok");
-    st.log.push(`Финиш. Остаток = ${rem}.`);
-    logOut.textContent = st.log.join("\n");
-    render();
-  }
-
-  function render(){
-    if (!st){ divArea.innerHTML = "<div style='color:#64748b'>—</div>"; return; }
-
-    const n = st.n;
-
-    const digitStart = 3;
-    const barCol = digitStart + n;
-    const rightStart = barCol + 1;
-    const lastColEnd = rightStart + n;
-
-    const grid = document.createElement("div");
-    grid.className = "divGrid";
-    grid.style.setProperty("--n", String(n));
-
-    const bar = document.createElement("div");
-    bar.className = "rbar";
-    bar.style.gridColumn = String(barCol);
-    bar.style.gridRow = `1 / ${Math.max(14, st.steps.length + 12)}`;
-    grid.appendChild(bar);
-
-    for (let i=0; i<n; i++){
+  function renderNumberRow(container, strDigits, hiToIdx = -1, hiSingleIdx = -1){
+    container.innerHTML = "";
+    for (let i=0;i<strDigits.length;i++){
       let cls = "";
-      if (st.phase === "ask" && i === st.bringIndex) cls = "hlBring";
-      if (st.phase === "ask" && i === st.curEnd) cls = cls ? (cls + " hlCurrent") : "hlCurrent";
-
-      const d = document.createElement("div");
-      d.className = "cell" + (cls ? " " + cls : "");
-      d.style.gridColumn = String(digitStart + i);
-      d.style.gridRow = "1";
-      d.textContent = String(st.digits[i]);
-      grid.appendChild(d);
+      if (hiSingleIdx === i) cls = "hi";
+      else if (hiToIdx >= 0 && i <= hiToIdx) cls = "soft";
+      container.appendChild(makeCell(strDigits[i], cls));
     }
-
-    const divisorText = String(st.divisor);
-    const divEl = document.createElement("div");
-    divEl.className = "divisorR";
-    divEl.style.gridRow = "1";
-    divEl.style.gridColumn = `${rightStart} / ${rightStart + Math.max(2, divisorText.length)}`;
-    divEl.textContent = divisorText;
-    grid.appendChild(divEl);
-
-    const hline = document.createElement("div");
-    hline.className = "hlineR";
-    hline.style.gridRow = "2";
-    hline.style.gridColumn = `${barCol} / ${lastColEnd}`;
-    grid.appendChild(hline);
-
-    const firstQ = st.quotient.findIndex(x => x !== "");
-    const qStrPartial = (firstQ === -1) ? "" : st.quotient.slice(firstQ).join("");
-    if (qStrPartial){
-      for (let k=0; k<qStrPartial.length && k<n; k++){
-        const c = document.createElement("div");
-        c.className = "cell qCell";
-        c.style.gridRow = "2";
-        c.style.gridColumn = String(rightStart + k);
-        c.textContent = qStrPartial[k];
-        grid.appendChild(c);
-      }
-    }
-
-    let row = 2;
-
-    function placeNumber(r, endIdx, text, opts={}){
-      const s = String(text);
-      const L = s.length;
-      const startIdx = endIdx - L + 1;
-
-      if (opts.minus){
-        const minus = document.createElement("div");
-        minus.className = "cell minusCell";
-        minus.style.gridRow = String(r);
-        minus.style.gridColumn = String(digitStart + startIdx - 1);
-        minus.textContent = "−";
-        grid.appendChild(minus);
-      }
-
-      for (let k=0; k<L; k++){
-        const idx = startIdx + k;
-        if (idx < 0 || idx >= n) continue;
-
-        const cell = document.createElement("div");
-        cell.className = "cell" + (opts.remainder ? " remainder" : "");
-        cell.style.gridColumn = String(digitStart + idx);
-        cell.style.gridRow = String(r);
-        cell.textContent = s[k];
-
-        if (opts.highlightLast && k === L-1){
-          cell.classList.add("hlBring");
-        }
-        grid.appendChild(cell);
-      }
-
-      if (opts.underline){
-        const uLen = opts.underlineLen ?? L;
-        const uStart = Math.max(0, endIdx - (uLen - 1));
-        const uEnd = Math.min(n-1, endIdx);
-        for (let idx=uStart; idx<=uEnd; idx++){
-          const u = document.createElement("div");
-          u.className = "cell underline";
-          u.style.gridColumn = String(digitStart + idx);
-          u.style.gridRow = String(r);
-          u.textContent = "";
-          grid.appendChild(u);
-        }
-      }
-    }
-
-    for (const it of st.steps){
-      if (it.kind === "product"){ placeNumber(row, it.end, it.text, {minus:true}); row++; }
-      else if (it.kind === "line"){ placeNumber(row, it.end, "", {underline:true, underlineLen: it.len}); row++; }
-      else if (it.kind === "remainder"){ placeNumber(row, it.end, it.text, {remainder:true}); row++; }
-      else if (it.kind === "nextchunk"){ placeNumber(row, it.end, it.text, {highlightLast: !!it.highlightLast}); row++; }
-    }
-
-    if (st.phase === "done"){
-      row++;
-      const qStr = (st.quotient.join("").replace(/^0+(?=\d)/,"") || "0");
-      const res = document.createElement("div");
-      res.className = "cell small";
-      res.style.gridColumn = `1 / ${digitStart + n}`;
-      res.style.gridRow = String(row);
-      res.style.justifySelf = "start";
-      res.style.textAlign = "left";
-      res.textContent = `Ответ: ${st.dividend} : ${st.divisor} = ${qStr}${st.remainder ? ` (ост. ${st.remainder})` : ""}`;
-      grid.appendChild(res);
-    }
-
-    divArea.innerHTML = "";
-    divArea.appendChild(grid);
-
-    updateNotes();
   }
 
-  function random(){
-    const divisor = randInt(12, 98);
-    const len = randInt(4, 6);
-    const min = Math.pow(10, len-1);
-    const max = Math.pow(10, len) - 1;
-    let dividend = randInt(min, max);
+  function rowOffsetPx(cells){ return `calc(var(--cell) * ${cells})`; }
 
-    if (Math.random() < 0.35){
-      const s = String(dividend).split("");
-      const pos = randInt(1, s.length-2);
-      s[pos] = "0";
-      dividend = Number(s.join(""));
+  function renderRowNumber({minus=false, numberStr, endPos, highlightLast=false, asInput=false, inputId="", inputWidthDigits=3, inputValue=""}){
+    const digitsLen = numberStr.length;
+    const startPos = (endPos + 1) - digitsLen;
+    const rowStart = minus ? Math.max(0, startPos - 1) : startPos;
+
+    const row = document.createElement("div");
+    row.className = "rowNum";
+    row.style.marginLeft = rowOffsetPx(rowStart);
+
+    if (minus){
+      const m = document.createElement("span");
+      m.className = "minus";
+      m.textContent = "−";
+      row.appendChild(m);
     }
 
-    if (dividend < divisor) dividend += divisor;
-    dividendIn.value = dividend;
-    divisorIn.value = divisor;
-    start();
+    const leftPadCells = minus ? (startPos - rowStart) : 0;
+    if (leftPadCells > 0){
+      const pad = document.createElement("span");
+      pad.style.width = `calc(var(--cell) * ${leftPadCells})`;
+      row.appendChild(pad);
+    }
+
+    if (asInput){
+      const inp = document.createElement("input");
+      inp.className = "numInput";
+      inp.type = "text";
+      inp.inputMode = "numeric";
+      inp.autocomplete = "off";
+      inp.spellcheck = false;
+      inp.id = inputId;
+      inp.value = inputValue;
+      inp.style.width = `calc(var(--cell) * ${Math.max(2, inputWidthDigits)})`;
+      row.appendChild(inp);
+      return row;
+    }
+
+    for (let i=0;i<numberStr.length;i++){
+      const isLast = (i === numberStr.length - 1);
+      row.appendChild(makeCell(numberStr[i], (highlightLast && isLast) ? "hi" : ""));
+    }
+    return row;
   }
+
+  function renderLine(endPos, widthDigits){
+    const startPos = (endPos + 1) - widthDigits;
+    const line = document.createElement("div");
+    line.className = "line";
+    line.style.marginLeft = rowOffsetPx(startPos);
+    line.style.width = `calc(var(--cell) * ${widthDigits})`;
+    return line;
+  }
+
+  function buildSteps(dividend, divisor){
+    const ds = String(dividend);
+    const digits = ds.split("").map(d => Number(d));
+    let rem = 0;
+    let started = false;
+    let steps = [];
+    let firstEndPos = -1;
+
+    for (let i=0;i<digits.length;i++){
+      rem = rem*10 + digits[i];
+
+      if (!started){
+        if (rem >= divisor){
+          started = true;
+          firstEndPos = i;
+        } else {
+          continue;
+        }
+      }
+
+      const chunk = rem;
+      const q = Math.floor(chunk / divisor);
+      const prod = q * divisor;
+      const newRem = chunk - prod;
+
+      steps.push({
+        i,
+        chunk,
+        q,
+        prod,
+        remAfter: newRem,
+        chunkStr: String(chunk),
+        prodStr: String(prod),
+        remStr: String(newRem),
+        broughtDigit: digits[i],
+      });
+
+      rem = newRem;
+    }
+
+    const quotientStr = steps.map(s => String(s.q)).join("") || "0";
+    return {
+      digitsStr: ds,
+      digits,
+      firstEndPos,
+      steps,
+      quotientStr,
+      remainder: rem
+    };
+  }
+
+  let state = {
+    dividend: 41608,
+    divisor: 56,
+    model: null,
+    stepIdx: 0,
+    answers: [] // {q, prod, rem, nextChunk}
+  };
 
   function resetAll(){
-    st = null;
-    divArea.innerHTML = "<div style='color:#64748b'>—</div>";
-    logOut.textContent = "—";
-    qDigitIn.value = "";
-    remIn.value = "";
-    nextChunkIn.value = "";
-    mulSteps.innerHTML = "";
-    mulHint.textContent = "—";
-    mulTitleNums.textContent = "d × q";
-    checkBtn.disabled = true;
-    hintBtn.disabled = true;
-    setStatus("Введи числа и нажми «Старт».", "");
-    applyLevelUI();
+    const dividend = clampInt(inDividend.value);
+    const divisor = clampInt(inDivisor.value);
+
+    if (!Number.isFinite(dividend) || dividend < 0){
+      showStatus("bad", "Делимое должно быть целым числом ≥ 0.");
+      return;
+    }
+    if (!Number.isFinite(divisor) || divisor <= 0){
+      showStatus("bad", "Делитель должен быть целым числом > 0.");
+      return;
+    }
+
+    const model = buildSteps(dividend, divisor);
+
+    if (model.steps.length === 0){
+      // Делимое < делителя
+      state = { dividend, divisor, model, stepIdx: 0, answers: [] };
+      render();
+      showStatus("ok", "Делимое меньше делителя: частное 0, остаток = делимое.");
+      return;
+    }
+
+    state = { dividend, divisor, model, stepIdx: 0, answers: model.steps.map(() => ({q:"", prod:"", rem:"", nextChunk:""})) };
+    render();
+    showStatus(null, "");
   }
 
-  startBtn.addEventListener("click", start);
-  randomBtn.addEventListener("click", random);
-  resetBtn.addEventListener("click", resetAll);
-  checkBtn.addEventListener("click", check);
-  hintBtn.addEventListener("click", hint);
+  function showStatus(kind, text){
+    if (!text){
+      elStatus.style.display = "none";
+      elStatus.className = "status";
+      elStatus.textContent = "";
+      return;
+    }
+    elStatus.style.display = "block";
+    elStatus.className = "status" + (kind ? (" " + kind) : "");
+    elStatus.textContent = text;
+  }
 
-  qDigitIn.addEventListener("input", () => {
-    if (st && st.phase === "ask" && level >= 2) buildMulUI();
+  function setHint(text){ elHint.textContent = text || ""; }
+
+  function render(){
+    const m = state.model;
+    const digitsStr = m.digitsStr;
+
+    // Dividend highlight:
+    // - подсветим “рабочую” цифру (ту, что сейчас сносим/используем)
+    const curStep = m.steps[state.stepIdx] || null;
+    const hiIdx = curStep ? curStep.i : -1;
+    const softTo = m.firstEndPos;
+
+    renderNumberRow(elDividendRow, digitsStr.split(""), softTo, hiIdx);
+
+    // Divisor
+    elDivisorRow.innerHTML = "";
+    String(state.divisor).split("").forEach(ch => elDivisorRow.appendChild(makeCell(ch)));
+
+    // Quotient area (по шагам)
+    elQuotientRow.innerHTML = "";
+    const lvl = getLevel();
+
+    m.steps.forEach((s, idx) => {
+      if (idx < state.stepIdx){
+        const ch = String(m.steps[idx].q);
+        elQuotientRow.appendChild(makeCell(ch));
+      } else if (idx === state.stepIdx){
+        const inp = document.createElement("input");
+        inp.className = "qInput";
+        inp.type = "text";
+        inp.inputMode = "numeric";
+        inp.maxLength = 1;
+        inp.autocomplete = "off";
+        inp.spellcheck = false;
+        inp.id = "qInput";
+        inp.value = state.answers[idx]?.q ?? "";
+        elQuotientRow.appendChild(inp);
+        // autofocus
+        setTimeout(() => inp.focus(), 30);
+      } else {
+        elQuotientRow.appendChild(makeCell("·", "soft"));
+      }
+    });
+
+    // Work rows
+    elWork.innerHTML = "";
+
+    // Первый шаг: не пишем “блок” отдельно, он виден в делимом.
+    // Со второго шага показываем блок (остаток + снесённая цифра) отдельной строкой.
+    for (let idx=0; idx<m.steps.length; idx++){
+      const s = m.steps[idx];
+      const endPos = s.i;
+
+      const isDone = idx < state.stepIdx;
+      const isCur = idx === state.stepIdx;
+
+      // Блок перед действием (кроме первого шага)
+      if (idx > 0){
+        // показываем блок строки: например 240, 168...
+        const blockStr = String(s.chunk);
+        const row = renderRowNumber({
+          minus:false,
+          numberStr:blockStr,
+          endPos:endPos,
+          highlightLast:true,
+          asInput: (isCur && lvl === 3),
+          inputId: "nextChunkInput",
+          inputWidthDigits: blockStr.length,
+          inputValue: state.answers[idx]?.nextChunk ?? ""
+        });
+        elWork.appendChild(row);
+      }
+
+      // Произведение (минусом)
+      const prodStr = String(s.prod);
+      const prodRow = renderRowNumber({
+        minus:true,
+        numberStr: prodStr,
+        endPos:endPos,
+        highlightLast:false,
+        asInput: (isCur && lvl >= 2),
+        inputId: "prodInput",
+        inputWidthDigits: prodStr.length,
+        inputValue: state.answers[idx]?.prod ?? ""
+      });
+      elWork.appendChild(prodRow);
+
+      // Линия
+      const widthDigits = Math.max(String(s.chunk).length, String(s.prod).length);
+      elWork.appendChild(renderLine(endPos, widthDigits));
+
+      // Остаток
+      const remStr = String(s.remAfter);
+      const remRow = renderRowNumber({
+        minus:false,
+        numberStr: remStr,
+        endPos:endPos,
+        highlightLast:false,
+        asInput: (isCur && lvl >= 2),
+        inputId: "remInput",
+        inputWidthDigits: remStr.length,
+        inputValue: state.answers[idx]?.rem ?? ""
+      });
+      elWork.appendChild(remRow);
+
+      // Доп. линия между шагами (как в тетради часто оставляют маленький зазор)
+      if (idx < m.steps.length - 1){
+        const spacer = document.createElement("div");
+        spacer.style.height = "8px";
+        elWork.appendChild(spacer);
+      }
+
+      // Если ещё не дошли — не рисуем дальше (чтобы было “пошагово”)
+      if (!isDone && !isCur) break;
+    }
+
+    // Answer line
+    if (m.steps.length === 0){
+      elAnswer.innerHTML = `Ответ: <b>${state.dividend}</b> : <b>${state.divisor}</b> = <b>0</b> (остаток <b>${state.dividend}</b>)`;
+    } else {
+      const doneQ = m.steps.slice(0, state.stepIdx).map(s => s.q).join("");
+      const qShown = doneQ || "…";
+      elAnswer.innerHTML = `Ответ: <b>${state.dividend}</b> : <b>${state.divisor}</b> = <b>${qShown}</b>${state.stepIdx >= m.steps.length ? ` (остаток <b>${m.remainder}</b>)` : ""}`;
+    }
+
+    // mini log
+    elMiniLog.textContent = buildMiniLog();
+    setHint(buildHintText());
+  }
+
+  function buildHintText(){
+    const m = state.model;
+    if (!m || m.steps.length === 0) return "";
+
+    const s = m.steps[state.stepIdx];
+    const stepNo = state.stepIdx + 1;
+
+    let t = `Шаг ${stepNo}/${m.steps.length}\n`;
+    t += `Текущий блок: ${s.chunk}\n`;
+    t += `Нужно подобрать q так, чтобы ${state.divisor}×q ≤ ${s.chunk} и ${state.divisor}×(q+1) > ${s.chunk}.\n`;
+    if (getLevel() >= 2){
+      t += `Потом умножаем: ${state.divisor}×q = произведение, и вычитаем из блока.\n`;
+    }
+    if (getLevel() === 3 && state.stepIdx > 0){
+      t += `На уровне 3 ещё вводим сам блок (снесли цифру и получили число для деления).\n`;
+    }
+    return t;
+  }
+
+  function buildMiniLog(){
+    const m = state.model;
+    if (!m) return "";
+    if (m.steps.length === 0) return "Делимое меньше делителя — деление в столбик не требуется.";
+
+    let out = "";
+    for (let i=0;i<m.steps.length;i++){
+      const s = m.steps[i];
+      if (i > state.stepIdx) break;
+      if (i === state.stepIdx){
+        out += `Сейчас: блок=${s.chunk}, делитель=${state.divisor}\n`;
+        out += `Введи q (и на уровнях 2–3 ещё умножение/вычитание).\n`;
+      } else {
+        out += `Шаг ${i+1}: блок=${s.chunk}, q=${s.q}, произведение=${s.prod}, остаток=${s.remAfter}\n`;
+      }
+    }
+    return out.trim();
+  }
+
+  function checkCurrentStep(){
+    const m = state.model;
+    if (!m || m.steps.length === 0) return;
+
+    const idx = state.stepIdx;
+    const s = m.steps[idx];
+    const lvl = getLevel();
+
+    const qEl = document.getElementById("qInput");
+    const prodEl = document.getElementById("prodInput");
+    const remEl = document.getElementById("remInput");
+    const nextChunkEl = document.getElementById("nextChunkInput");
+
+    const qVal = qEl ? clampInt(qEl.value) : null;
+    if (!Number.isFinite(qVal) || qVal < 0 || qVal > 9){
+      showStatus("bad", "Введите цифру q (0–9).");
+      return;
+    }
+
+    state.answers[idx].q = String(qVal);
+
+    // q check
+    if (qVal !== s.q){
+      const cm = calmMode.checked;
+      if (cm){
+        if (qVal < s.q){
+          const test = state.divisor * (qVal + 1);
+          showStatus("bad", `q = ${qVal} — мало. Проверка: ${state.divisor}×(${qVal}+1) = ${test} ${test <= s.chunk ? "≤" : ">"} ${s.chunk}.`);
+        } else {
+          const test = state.divisor * qVal;
+          showStatus("bad", `q = ${qVal} — велико. Проверка: ${state.divisor}×${qVal} = ${test} > ${s.chunk}.`);
+        }
+      } else {
+        showStatus("bad", "Неверно. Подбери другую цифру q.");
+      }
+      return;
+    }
+
+    // if lvl >=2 check prod and rem
+    if (lvl >= 2){
+      const prodVal = prodEl ? clampInt(prodEl.value) : null;
+      const remVal = remEl ? clampInt(remEl.value) : null;
+
+      if (!Number.isFinite(prodVal)){
+        showStatus("bad", "Введите произведение (делитель × q).");
+        return;
+      }
+      if (!Number.isFinite(remVal)){
+        showStatus("bad", "Введите остаток (блок − произведение).");
+        return;
+      }
+
+      state.answers[idx].prod = String(prodVal);
+      state.answers[idx].rem = String(remVal);
+
+      if (prodVal !== s.prod){
+        showStatus("bad", `Произведение неверно. Должно быть ${state.divisor}×${s.q} = ${s.prod}.`);
+        return;
+      }
+      if (remVal !== s.remAfter){
+        showStatus("bad", `Вычитание неверно. ${s.chunk} − ${s.prod} = ${s.remAfter}.`);
+        return;
+      }
+    }
+
+    // lvl 3: nextChunk input (только если idx>0, потому что у первого шага блок не вводим отдельной строкой)
+    if (lvl === 3 && idx > 0){
+      const nextChunkVal = nextChunkEl ? clampInt(nextChunkEl.value) : null;
+      if (!Number.isFinite(nextChunkVal)){
+        showStatus("bad", "Введите блок (число, полученное после сноса цифры).");
+        return;
+      }
+      state.answers[idx].nextChunk = String(nextChunkVal);
+      if (nextChunkVal !== s.chunk){
+        showStatus("bad", `Блок введён неверно. Здесь должен быть блок ${s.chunk}.`);
+        return;
+      }
+    }
+
+    // Success
+    showStatus("ok", "Верно. Переходим к следующему шагу.");
+    state.stepIdx++;
+
+    if (state.stepIdx >= m.steps.length){
+      // Finished
+      render();
+      showStatus("ok", `Готово! Частное = ${m.quotientStr}, остаток = ${m.remainder}.`);
+      return;
+    }
+
+    render();
+  }
+
+  btnStart.addEventListener("click", resetAll);
+  btnCheck.addEventListener("click", checkCurrentStep);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Enter"){
+      const active = document.activeElement;
+      // Если фокус в любом из полей тренажёра — проверяем шаг
+      if (active && (active.id === "qInput" || active.id === "prodInput" || active.id === "remInput" || active.id === "nextChunkInput")){
+        e.preventDefault();
+        checkCurrentStep();
+      }
+    }
   });
-  qDigitIn.addEventListener("keydown", (e) => { if (e.key === "Enter") check(); });
-  remIn.addEventListener("keydown", (e) => { if (e.key === "Enter") check(); });
-  nextChunkIn.addEventListener("keydown", (e) => { if (e.key === "Enter") check(); });
 
-  trainMul.addEventListener("change", () => {
-    if (st && st.phase === "ask" && level >= 2) buildMulUI();
-  });
-
-  $$('input[name="lvl"]').forEach(r => r.addEventListener("change", () => {
-    applyLevelUI();
-    if (st && st.phase === "ask") qDigitIn.focus();
-  }));
-
+  // init
   resetAll();
 })();
 </script>
