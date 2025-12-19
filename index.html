@@ -10,127 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Стили для блока с тренажёром */
-        .trainers-preview {
-            background: linear-gradient(135deg, #f8fafc 0%, #e3f2fd 100%);
-            border-radius: 16px;
-            padding: 2.5rem;
-            margin: 3rem 0;
-            border-left: 6px solid #9c27b0;
-            box-shadow: 0 6px 20px rgba(156, 39, 176, 0.1);
-        }
-        
-        .trainers-preview h2 {
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            font-size: 1.8rem;
-        }
-        
-        .trainers-preview h2 i {
-            color: #9c27b0;
-            margin-right: 12px;
-        }
-        
-        .trainer-highlight {
-            display: flex;
-            align-items: center;
-            background: white;
-            border-radius: 12px;
-            padding: 1.8rem;
-            margin-top: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border: 2px solid transparent;
-            transition: all 0.3s;
-            text-decoration: none;
-            color: inherit;
-        }
-        
-        .trainer-highlight:hover {
-            border-color: #9c27b0;
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(156, 39, 176, 0.15);
-        }
-        
-        .trainer-icon {
-            background: #9c27b0;
-            color: white;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            margin-right: 1.5rem;
-            flex-shrink: 0;
-        }
-        
-        .trainer-info h3 {
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-            font-size: 1.4rem;
-        }
-        
-        .trainer-info p {
-            color: #666;
-            margin-bottom: 0.8rem;
-            line-height: 1.5;
-        }
-        
-        .trainer-tag {
-            display: inline-block;
-            background: #e1bee7;
-            color: #7b1fa2;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-        
-        .more-trainers {
-            text-align: center;
-            margin-top: 1.5rem;
-        }
-        
-        .more-trainers a {
-            color: #7b1fa2;
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .more-trainers a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Обновлённые стили для навигации */
-        .nav {
-            display: flex;
-            gap: 1.2rem;
-            margin-top: 0.5rem;
-            flex-wrap: wrap;
-        }
-        
-        .nav-link {
-            color: #555;
-            text-decoration: none;
-            font-weight: 600;
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-        
-        .nav-link:hover,
-        .nav-link.active {
-            color: #9c27b0;
-            background: rgba(156, 39, 176, 0.05);
-            border-color: rgba(156, 39, 176, 0.2);
-        }
-    </style>
 </head>
 <body>
     <!-- Шапка -->
@@ -155,27 +34,171 @@
         <div class="container">
             <h1 class="hero-title">Математика без суеты</h1>
             <p class="hero-subtitle">Разборы задач, которые действительно помогают понять</p>
+            <div class="hero-tags">
+                <span class="tag">ОГЭ 9 класс</span>
+                <span class="tag">ЕГЭ 11 класс</span>
+                <span class="tag">ВПР 5-10 класс</span>
+                <span class="tag">Тренажёры</span>
+            </div>
         </div>
     </section>
 
     <!-- Разделы -->
-    <main class="container">
+    <main class="container main-content">
+        <!-- Тренажёры -->
+        <section id="trainers" class="trainers-preview">
+            <h2><i class="fas fa-dumbbell"></i> Тренажёры</h2>
+            <p>Переходите от теории к практике. Интерактивные задания с автоматической проверкой и подробными решениями.</p>
+            
+            <a href="long-division.html" class="trainer-highlight">
+                <div class="trainer-icon">
+                    <i class="fas fa-divide"></i>
+                </div>
+                <div class="trainer-info">
+                    <h3>Деление уголком</h3>
+                    <p>Научитесь делить, не боясь ошибиться. Просто подбирайте цифры. Подходит для подготовки к ОГЭ.</p>
+                    <span class="trainer-tag">Навык</span>
+                    <span class="trainer-tag">ОГЭ</span>
+                    <span class="trainer-tag">Арифметика</span>
+                </div>
+            </a>
+            
+            <div class="more-trainers">
+                <a href="#trainers">
+                    <i class="fas fa-arrow-right"></i> Смотреть все тренажёры
+                </a>
+            </div>
+        </section>
+
         <!-- ОГЭ -->
         <section id="oge" class="section">
-            <h2 class="section-title">ОГЭ (9 класс)</h2>
-            <p class="section-description">20 заданий с постепенным разбором. От простого к сложному.</p>
+            <div class="section-header">
+                <h2 class="section-title">ОГЭ (9 класс)</h2>
+                <p class="section-subtitle">20 заданий с постепенным разбором. От простого к сложному.</p>
+            </div>
             
-            <div class="tasks-grid">
-                <!-- Задача 9 -->
-                <a href="oge/algebra/task-09-linear-equations.html" class="task-card">
-                    <div class="task-number">9</div>
-                    <div class="task-info">
-                        <h3>Линейные уравнения</h3>
-                        <p>Решение уравнений вида ax + b = cx + d</p>
+            <div class="subsection">
+                <h3 class="subsection-title">Алгебра</h3>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <div class="task-number">Задача 9</div>
+                        <div class="task-topic">Линейные уравнения</div>
                         <span class="difficulty medium">Средняя</span>
-                    </div>
+                    </li>
+                    <li class="task-item">
+                        <div class="task-number">Задача 10</div>
+                        <div class="task-topic">Вероятность</div>
+                        <span class="difficulty easy">Легкая</span>
+                    </li>
+                    <li class="task-item">
+                        <div class="task-number">Задача 11</div>
+                        <div class="task-topic">Функции и графики</div>
+                        <span class="difficulty hard">Сложная</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="subsection">
+                <h3 class="subsection-title">Геометрия</h3>
+                <ul class="task-list">
+                    <li class="task-item">
+                        <div class="task-number">Задача 15</div>
+                        <div class="task-topic">Площади фигур</div>
+                        <span class="difficulty medium">Средняя</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="cta-button-container">
+                <a href="#oge" class="cta-button">
+                    <i class="fas fa-play-circle"></i> Начать подготовку к ОГЭ
                 </a>
+                <p class="button-hint">Доступ ко всем 20 заданиям с подробными разборами</p>
+            </div>
+        </section>
+
+        <!-- ЕГЭ -->
+        <section id="ege" class="section">
+            <div class="section-header">
+                <h2 class="section-title">ЕГЭ (11 класс)</h2>
+                <p class="section-subtitle">Профильный и базовый уровни. Разбор сложных задач.</p>
+            </div>
+            
+            <div class="cta-button-container">
+                <a href="#ege" class="cta-button cta-button-secondary">
+                    <i class="fas fa-chart-line"></i> Перейти к ЕГЭ
+                </a>
+                <p class="button-hint">Разборы задач профильного уровня с 13 по 19</p>
+            </div>
+        </section>
+
+        <!-- ВПР -->
+        <section id="vpr" class="section">
+            <div class="section-header">
+                <h2 class="section-title">ВПР (5-10 класс)</h2>
+                <p class="section-subtitle">Подготовка к всероссийским проверочным работам</p>
+            </div>
+            
+            <div class="cta-button-container">
+                <a href="#vpr" class="cta-button">
+                    <i class="fas fa-clipboard-check"></i> К заданиям ВПР
+                </a>
+                <p class="button-hint">Материалы с 5 по 10 класс</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Подвал -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-info">
+                <h3>Math Exam FIPI</h3>
+                <p>Образовательный проект для подготовки к экзаменам по математике. Структурированные разборы задач из банка ФИПИ.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#home">Главная</a>
+                <a href="#oge">ОГЭ</a>
+                <a href="#ege">ЕГЭ</a>
+                <a href="#vpr">ВПР</a>
+                <a href="#trainers">Тренажёры</a>
+            </div>
+        </div>
+        <div class="container">
+            <p style="text-align: center; margin-top: 2rem; color: #b0bec5; font-size: 0.9rem;">
+                © 2024 Math Exam FIPI. Для образовательных целей.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Простая навигация по якорям
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Удаляем активный класс у всех ссылок
+                document.querySelectorAll('.nav-link').forEach(item => {
+                    item.classList.remove('active');
+                });
+                // Добавляем активный класс текущей ссылке
+                this.classList.add('active');
+            });
+        });
+        
+        // Плавная прокрутка
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
                 
-                <!-- Задача 10 -->
-                <a href="oge/probability/task-10-probability.html" class="task-card">
-                    <div class="task-number">
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
