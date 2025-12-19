@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Умножение столбиком — ОГЭ тренажёр</title>
+  <style>
+    :root { --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; }
+    body { margin: 20px; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height: 1.35; }
+    .wrap { max-width: 1120px; margin: 0 auto; }
+    h1 { font-size: 20px; margin: 0 0 10px; }
+
+    .bar { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin: 12px 0 16px; }
+    button { padding: 8px 12px; cursor:pointer; }
+    input[type="number"] { width: 140px; padding:6px 8px; }
+    .status { padding: 8px 10px; border-radius: 10px; background: #f3f4f6; }
+    .ok { background:#ecfdf5; }
+    .bad { background:#fef2f2; }
+
+    .board { display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start; }
+    .card { border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; }
+    .problem { min-width: 440px; }
+    .side { flex:1; min-width: 340px; }
+
+    .col {
+      font-family: var(--mono);
+      font-size: 34px;
+      line-height: 1.1;
+      white-space: pre;
+    }
+
+    .mode {
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      padding: 10px 12px; border:1px solid #e5e7eb; border-radius: 12px;
+      background:#fff; margin-top: 10px;
+    }
+
+    .grid {
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 14px;
+      align-items:end;
+      margin-top: 10px;
+    }
+    .cell { display:flex; flex-direction:column; gap:6px; }
+    .cell input[type="number"] { width: 100%; }
+
+    .actions { margin-top: 12px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+
+    .small { font-size: 14px; opacity: .85; }
+    .pill { display:inline-block; padding:2px 8px; border-radius:999px; background:#f3f4f6; font-size: 13px; }
+    .kbd { font-family: var(--mono); padding:2px 6px; border:1px solid #e5e7eb; border-bottom-width:2px; border-radius: 8px; }
+
+    .boxTitle { font-weight: 700; margin-bottom: 8px; }
+    .log {
+      font-family: var(--mono);
+      font-size: 16px;
+      white-space: pre-wrap;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 12px;
+    }
+  </style>
+</head>
+
+<body>
+<div class="wrap">
+  <h1>Умножение столбиком — “жёсткий” ОГЭ-режим (переносы по шагам)</h1>
+
+  <div class="bar">
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+      <label><b>Верхнее число:</b></label>
+      <input id="aIn" type="number" min="0" step="1" value="347">
+      <label><b>Нижнее число:</b></label>
+      <input id="bIn" type="number" min="0" step="1" value="56">
+    </div>
+
+    <button id="startBtn">Начать</button>
+    <button id="randomBtn">Случайный пример</button>
+    <button id="resetBtn">Сброс</button>
+
+    <div id="status" class="status">Введи числа и нажми «Начать».</div>
+  </div>
+
+  <div class="board">
+    <div class="card problem">
+      <div class="col" id="colOut">—</div>
+
+      <div class="mode">
+        <label style="display:flex; align-items:center; gap:8px;">
+          <input id="strictMode" type="checkbox" checked>
+          <span><b>ОГЭ-контроль переносов</b> (поразрядно вводим цифру и перенос)</span>
+        </label>
+        <label style="display:flex; align-items:center; gap:8px;">
+          <input id="needFinal" type="checkbox" checked>
+          <span><b>Требовать итог</b> (ученик вводит финальный ответ)</span>
+        </label>
+        <span class="small">Если снять ОГЭ-контроль — можно вводить частичные произведения целиком.</span>
+      </div>
+
+      <div class="grid" id="inputsStrict">
+        <div class="cell">
+          <label for="digitAns">Цифра в этом разряде</label>
+          <input id="digitAns" type="number" min="0" max="9" step="1">
+          <div class="small" id="noteDigit">—</div>
+        </div>
+        <div class="cell">
+          <label for="carryAns">Перенос в следующий разряд</label>
+          <input id="carryAns" type="number" min="0" step="1">
+          <div class="small" id="noteCarry">—</div>
+        </div>
+      </div>
+
+      <div class="grid" id="inputsLite" style="display:none;">
+        <div class="cell">
+          <label for="partAns">Частичное произведение (верхнее × текущая цифра снизу)</label>
+          <input id="partAns" type="number" min="0" step="1">
+          <div class="small" id="notePart">—</div>
+        </div>
+        <div class="cell">
+          <label for="digitControl">Текущая цифра снизу (контроль)</label>
+          <input id="digitControl" type="number" min="0" max="9" step="1">
+          <div class="small" id="noteCtrl">—</div>
+        </div>
+      </div>
+
+      <div class="grid" id="inputsFinal">
+        <div class="cell">
+          <label for="finalAns">Итоговое произведение</label>
+          <input id="finalAns" type="number" min="0" step="1">
+          <div class="small" id="noteFinal">—</div>
+        </div>
+        <div class="cell">
+          <div class="small">
+            <span class="pill">Порядок</span>
+            идём по нижнему числу справа налево: умножили на цифру → записали строку → сдвиг → в конце итог.
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="checkBtn">Проверить шаг</button>
+        <span class="small">Enter: <span class="kbd">Enter</span></span>
+      </div>
+    </div>
+
+    <div class="card side">
+      <div class="boxTitle">Лог (для тебя / для ученика)</div>
+      <div class="log" id="logOut">—</div>
+
+      <hr style="border:none; border-top:1px solid #e5e7eb; margin: 14px 0;">
+      <div class="small">
+        В ОГЭ-режиме тренажёр заставляет “помнить алгоритм”: каждое действие — это “цифра ответа” и “перенос”.
+        Это то, что чаще всего и разваливается у подростков.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const el = (id) => document.getElementById(id);
+
+  const aIn = el('aIn');
+  const bIn = el('bIn');
+
+  const startBtn = el('startBtn');
+  const randomBtn = el('randomBtn');
+  const resetBtn = el('resetBtn');
+  const checkBtn = el('checkBtn');
+
+  const status = el('status');
+  const colOut = el('colOut');
+  const logOut = el('logOut');
+
+  const strictMode = el('strictMode');
+  const needFinal = el('needFinal');
+
+  const inputsStrict = el('inputsStrict');
+  const inputsLite = el('inputsLite');
+
+  const digitAns = el('digitAns');
+  const carryAns = el('carryAns');
+
+  const partAns = el('partAns');
+  const digitControl = el('digitControl');
+
+  const finalAns = el('finalAns');
+
+  const noteDigit = el('noteDigit');
+  const noteCarry = el('noteCarry');
+  const notePart = el('notePart');
+  const noteCtrl = el('noteCtrl');
+  const noteFinal = el('noteFinal');
+
+  let st = null;
+
+  function setStatus(text, kind = 'neutral') {
+    status.textContent = text;
+    status.className = 'status' + (kind === 'ok' ? ' ok' : kind === 'bad' ? ' bad' : '');
+  }
+
+  function sanitizeInt(v, fallback = null) {
+    if (v === '' || v === null || v === undefined) return fallback;
+    const n = Number(v);
+    if (!Number.isFinite(n)) return fallback;
+    return Math.trunc(n);
+  }
+
+  function spaces(n){ return n > 0 ? ' '.repeat(n) : ''; }
+
+  function resetUI() {
+    colOut.textContent = '—';
+    logOut.textContent = '—';
+
+    digitAns.value = '';
+    carryAns.value = '';
+    partAns.value = '';
+    digitControl.value = '';
+    finalAns.value = '';
+
+    noteDigit.textContent = '—';
+    noteCarry.textContent = '—';
+    notePart.textContent = '—';
+    noteCtrl.textContent = '—';
+    noteFinal.textContent = '—';
+  }
+
+  function formatColumn(a, b, partialsShifted, showFinal, finalValue) {
+    // Русский формат:
+    //    a
+    // ×  b
+    // ----
+    //   p0
+    //  p1
+    // ----
+    //  ab
+    const aStr = String(a);
+    const bStr = String(b);
+    const finalStr = String(finalValue ?? (a * b));
+
+    const width = Math.max(
+      aStr.length,
+      bStr.length + 2,
+      finalStr.length,
+      ...partialsShifted.map(s => s.length)
+    );
+
+    const lineA = spaces(width - aStr.length) + aStr;
+    const lineB = spaces(width - (bStr.length + 2)) + '× ' + bStr;
+    const bar = '-'.repeat(width);
+
+    let out = [lineA, lineB, bar];
+
+    for (const p of partialsShifted) out.push(spaces(width - p.length) + p);
+
+    if (showFinal) {
+      out.push(bar);
+      out.push(spaces(width - finalStr.length) + finalStr);
+    }
+
+    return out.join('\n');
+  }
+
+  function start() {
+    const a = sanitizeInt(aIn.value, null);
+    const b = sanitizeInt(bIn.value, null);
+
+    if (a === null || b === null || a < 0 || b < 0) {
+      setStatus('Проверь числа: оба должны быть целые и ≥ 0.', 'bad');
+      return;
+    }
+
+    const aDigits = String(a).split('').map(Number).reverse(); // справа налево
+    const bDigits = String(b).split('').map(Number).reverse(); // справа налево
+
+    st = {
+      a, b,
+      aDigits,
+      bDigits,
+      row: 0,          // по какой цифре b идём (0=единицы)
+      col: 0,          // по какой цифре a идём (0=единицы)
+      carry: 0,        // текущий перенос внутри строки
+      rowDigits: [],   // собранные цифры текущего частичного произведения (в обратном порядке)
+      partialsShifted: [],
+      log: [],
+      finished: false
+    };
+
+    resetUI();
+    render();
+    setStatus('Начинаем с правой цифры нижнего числа (единицы).', 'neutral');
+    focusSmart();
+  }
+
+  function makeRandom() {
+    // под ОГЭ удобно: 3-4 цифры сверху, 2-3 цифры снизу
+    const a = Math.floor(Math.random() * 9000) + 100; // 100..9099
+    const b = Math.floor(Math.random() * 900) + 10;   // 10..909
+    aIn.value = a;
+    bIn.value = b;
+    start();
+  }
+
+  function currentContext() {
+    const dB = st.bDigits[st.row]; // текущая цифра снизу
+    const dA = st.aDigits[st.col]; // текущая цифра сверху
+    const placeRow = st.row;       // сдвиг строки (0=единицы,1=десятки)
+    const placeCol = st.col;       // разряд внутри строки
+    return { dB, dA, placeRow, placeCol };
+  }
+
+  function expectedStrictStep() {
+    // Если дошли до конца цифр сверху — нужно "сбросить перенос" (если он есть) и закончить строку
+    const { dB, dA } = currentContext();
+    const t = dA * dB + st.carry;
+    const digit = t % 10;
+    const carry = Math.floor(t / 10);
+    return { digit, carry, t };
+  }
+
+  function finishRowIfNeeded() {
+    // Если мы обработали все цифры a (col == aDigits.length), добавим перенос если есть, сформируем строку
+    if (st.col < st.aDigits.length) return false;
+
+    if (st.carry > 0) {
+      // перенос становится старшей цифрой строки
+      st.rowDigits.push(st.carry);
+      st.log.push(`В конце строки дописываем перенос ${st.carry}.`);
+      st.carry = 0;
+    }
+
+    // rowDigits собраны справа налево → переворачиваем
+    const part = Number(st.rowDigits.slice().reverse().join('') || '0');
+    const shifted = String(part) + '0'.repeat(st.row);
+
+    st.partialsShifted.push(shifted);
+    st.log.push(`Строка готова: ${part} (сдвиг на ${st.row} нулей → ${shifted})`);
+    st.log.push('');
+
+    // переход к следующей строке
+    st.row += 1;
+    st.col = 0;
+    st.carry = 0;
+    st.rowDigits = [];
+
+    // если строк больше нет — переходим к финалу
+    if (st.row >= st.bDigits.length) {
+      // всё, ждём итог (или сразу показываем)
+      return true;
+    }
+    return false;
+  }
+
+  function renderNotes() {
+    if (!st) return;
+
+    if (st.finished) {
+      noteFinal.textContent = `Готово: ${st.a}×${st.b}=${st.a * st.b}`;
+      noteDigit.textContent = '—';
+      noteCarry.textContent = '—';
+      notePart.textContent = '—';
+      noteCtrl.textContent = '—';
+      return;
+    }
+
+    const strict = strictMode.checked;
+
+    // Если уже все строки готовы — режим финала
+    if (st.row >= st.bDigits.length) {
+      noteFinal.textContent = `Введи итог: ${st.a} × ${st.b}`;
+      noteDigit.textContent = '—';
+      noteCarry.textContent = '—';
+      notePart.textContent = '—';
+      noteCtrl.textContent = '—';
+      return;
+    }
+
+    const { dB, dA, placeRow, placeCol } = currentContext();
+
+    if (strict) {
+      noteDigit.textContent = `Строка: умножаем на цифру снизу ${dB} (разряд: ${placeRow === 0 ? 'единицы' : placeRow === 1 ? 'десятки' : placeRow + '-й'}). Сейчас: ${dA}×${dB} + перенос ${st.carry}`;
+      noteCarry.textContent = `Перенос — это ⌊( ${dA}×${dB}+${st.carry} ) / 10⌋`;
+      noteFinal.textContent = `Итог будет после всех строк.`;
+      notePart.textContent = '—';
+      noteCtrl.textContent = '—';
+    } else {
+      noteCtrl.textContent = `Сейчас цифра снизу: ${dB} (справа налево).`;
+      notePart.textContent = `Нужно: ${st.a} × ${dB} (без сдвига).`;
+      noteFinal.textContent = `Итог после всех строк.`;
+      noteDigit.textContent = '—';
+      noteCarry.textContent = '—';
+    }
+  }
+
+  function render() {
+    if (!st) return;
+
+    inputsStrict.style.display = strictMode.checked ? 'grid' : 'none';
+    inputsLite.style.display = strictMode.checked ? 'none' : 'grid';
+
+    const showFinal = st.finished || (!needFinal.checked && st.row >= st.bDigits.length);
+    const finalValue = st.a * st.b;
+
+    colOut.textContent = formatColumn(st.a, st.b, st.partialsShifted, showFinal, finalValue);
+    logOut.textContent = st.log.length ? st.log.join('\n') : '—';
+
+    renderNotes();
+  }
+
+  function focusSmart() {
+    if (!st) return;
+    if (st.finished) return;
+    if (st.row >= st.bDigits.length) { finalAns.focus(); return; }
+    if (strictMode.checked) digitAns.focus();
+    else digitControl.focus();
+  }
+
+  function onCheck() {
+    if (!st) { setStatus('Сначала нажми «Начать».', 'bad'); return; }
+    if (st.finished) { setStatus('Уже готово 🙂', 'neutral'); return; }
+
+    // Финал?
+    if (st.row >= st.bDigits.length) {
+      if (!needFinal.checked) {
+        st.finished = true;
+        render();
+        setStatus(`Готово! Ответ: ${st.a * st.b}.`, 'ok');
+        return;
+      }
+
+      const fin = sanitizeInt(finalAns.value, null);
+      if (fin === null) { setStatus('Введи итоговое произведение.', 'bad'); return; }
+      if (fin !== st.a * st.b) {
+        setStatus(`Итог неверный. Проверь сумму строк/перемножение: ${st.a}×${st.b}.`, 'bad');
+        return;
+      }
+      st.finished = true;
+      st.log.push(`Итог: ${st.a}×${st.b} = ${fin}`);
+      render();
+      setStatus(`Готово! Ответ: ${fin}.`, 'ok');
+      return;
+    }
+
+    // Ещё строим строки
+    if (strictMode.checked) {
+      const da = sanitizeInt(digitAns.value, null);
+      const ca = sanitizeInt(carryAns.value, null);
+      if (da === null || ca === null) {
+        setStatus('В ОГЭ-режиме введи и цифру, и перенос.', 'bad');
+        return;
+      }
+      if (da < 0 || da > 9) { setStatus('Цифра должна быть 0–9.', 'bad'); return; }
+      if (ca < 0) { setStatus('Перенос не может быть отрицательным.', 'bad'); return; }
+
+      const { dB, dA } = currentContext();
+      const exp = expectedStrictStep();
+
+      if (da !== exp.digit) {
+        setStatus(`Цифра в этом разряде неверная. Проверь: ${dA}×${dB}+перенос ${st.carry} = ${exp.t}.`, 'bad');
+        return;
+      }
+      if (ca !== exp.carry) {
+        setStatus(`Перенос неверный. Должно быть: ${exp.carry}. (потому что ${exp.t} = ${exp.carry} десятков и ${exp.digit} единиц)`, 'bad');
+        return;
+      }
+
+      // применяем шаг
+      st.rowDigits.push(exp.digit);
+      st.carry = exp.carry;
+      st.log.push(`${dA}×${dB}+перенос → ${exp.t}: пишем ${exp.digit}, перенос ${exp.carry}`);
+
+      // двигаемся по верхнему числу
+      st.col += 1;
+
+      // если дошли до конца верхнего — завершаем строку
+      if (st.col >= st.aDigits.length) {
+        st.log.push(`Конец строки по цифре снизу ${dB}.`);
+        const rowDone = finishRowIfNeeded();
+        if (rowDone && st.row >= st.bDigits.length) {
+          setStatus('Все строки готовы. Введи итог.', 'ok');
+          render();
+          finalAns.focus();
+          digitAns.value = '';
+          carryAns.value = '';
+          return;
+        }
+      }
+
+      digitAns.value = '';
+      carryAns.value = '';
+      render();
+      setStatus('Верно! Следующий разряд.', 'ok');
+      focusSmart();
+      return;
+    }
+
+    // Lite-режим (частичная строка целиком)
+    const part = sanitizeInt(partAns.value, null);
+    const d = sanitizeInt(digitControl.value, null);
+    if (part === null || d === null) { setStatus('Введи цифру снизу и частичное произведение.', 'bad'); return; }
+    if (d < 0 || d > 9) { setStatus('Цифра должна быть 0–9.', 'bad'); return; }
+
+    const curDigit = st.bDigits[st.row];
+    if (d !== curDigit) {
+      setStatus(`Сейчас должна быть цифра снизу ${curDigit} (идём справа налево).`, 'bad');
+      return;
+    }
+
+    const expPart = st.a * curDigit;
+    if (part !== expPart) {
+      setStatus(`Частичное произведение неверно: должно быть ${st.a}×${curDigit} = ${expPart}.`, 'bad');
+      return;
+    }
+
+    const shifted = String(expPart) + '0'.repeat(st.row);
+    st.partialsShifted.push(shifted);
+    st.log.push(`Строка: ${st.a}×${curDigit}=${expPart}, со сдвигом (${st.row} нулей) → ${shifted}`);
+    st.log.push('');
+
+    st.row += 1;
+
+    partAns.value = '';
+    digitControl.value = '';
+
+    render();
+    if (st.row >= st.bDigits.length) {
+      setStatus('Все строки готовы. Введи итог.', 'ok');
+      finalAns.focus();
+    } else {
+      setStatus('Верно! Следующая цифра снизу.', 'ok');
+      focusSmart();
+    }
+  }
+
+  // events
+  startBtn.addEventListener('click', start);
+  randomBtn.addEventListener('click', makeRandom);
+  resetBtn.addEventListener('click', () => { st = null; resetUI(); setStatus('Сброшено. Введи числа и нажми «Начать».'); });
+
+  checkBtn.addEventListener('click', onCheck);
+
+  [digitAns, carryAns, partAns, digitControl, finalAns].forEach(inp => {
+    inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') onCheck(); });
+  });
+
+  strictMode.addEventListener('change', () => {
+    if (!st) { render(); return; }
+    setStatus(strictMode.checked
+      ? 'ОГЭ-контроль включён: вводим цифру и перенос по каждому разряду.'
+      : 'Упрощённый режим: вводим частичные произведения целиком.', 'neutral');
+    render();
+    focusSmart();
+  });
+
+  needFinal.addEventListener('change', () => {
+    if (!st) return;
+    setStatus(needFinal.checked ? 'Итог обязателен.' : 'Итог можно не вводить (покажем автоматически).', 'neutral');
+  });
+})();
+</script>
+</body>
+</html>
