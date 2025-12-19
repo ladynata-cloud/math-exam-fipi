@@ -22,8 +22,7 @@
       --r:16px;
 
       --cell: 1.55em;
-      --gutter: 3.2em;          /* слева поле под "−" и воздух */
-      --barw: 2px;              /* вертикальная черта */
+      --barw: 2px;
       --line: rgba(15,23,42,.35);
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
     }
@@ -74,7 +73,7 @@
     .status.ok{ background: var(--ok); border-color: rgba(22,163,74,.25); color: rgba(21,128,61,.95); }
     .status.bad{ background: var(--bad); border-color: rgba(239,68,68,.25); color: rgba(185,28,28,.95); }
 
-    .grid{ display:grid; grid-template-columns: 1.25fr .75fr; gap: 14px; align-items:start; }
+    .grid{ display:grid; grid-template-columns: 1.35fr .65fr; gap: 14px; align-items:start; }
     @media (max-width: 980px){ .grid{ grid-template-columns: 1fr; } }
     .card{ background: var(--paper); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); padding: 14px; }
 
@@ -88,39 +87,70 @@
       overflow:auto;
     }
 
-    .paperInner{ display:flex; gap: 16px; align-items:flex-start; }
+    /* 3 колонки как на твоём макете: слева тетрадь, середина — “ученик считает”, справа — проверка */
+    .paperInner{
+      display:flex;
+      gap: 14px;
+      align-items:flex-start;
+    }
+    @media (max-width: 980px){
+      .paperInner{ flex-direction: column; }
+    }
     .paperLeft{ flex: 0 0 auto; }
+    .paperMid{
+      flex: 0 0 260px;
+      min-height: 520px;
+      border-radius: 14px;
+      border: 1px solid rgba(15,23,42,.14);
+      background: rgba(255,255,255,.88);
+      padding: 12px;
+    }
     .paperRight{
       flex: 1 1 auto;
       min-width: 320px;
-      background: rgba(255,255,255,.70);
-      border: 1px dashed rgba(15,23,42,.18);
       border-radius: 14px;
+      border: 1px dashed rgba(15,23,42,.18);
+      background: rgba(255,255,255,.70);
       padding: 12px;
       background-image: radial-gradient(circle at 1px 1px, rgba(15,23,42,.05) 1px, transparent 1px);
       background-size: 18px 18px;
     }
     @media (max-width: 980px){
-      .paperInner{ flex-direction: column; }
-      .paperRight{ min-width: 0; }
+      .paperMid{ flex: 1 1 auto; min-height: 0; width: 100%; }
+      .paperRight{ min-width: 0; width: 100%; }
     }
 
-    /* ====== ВАЖНО: новая сетка под "российскую запись" ======
-       [gutter] [делимое n цифр] [вертикальная черта] [правая зона n клеток]
+    /* ====== Российская тетрадная сетка:
+       [pad] [минус-ячейка] [делимое n цифр] [|] [правая зона n клеток]
     */
     .divGrid{
       font-family: var(--mono);
       --n: 6;
       display: grid;
-      grid-template-columns: var(--gutter) repeat(var(--n), var(--cell)) var(--barw) repeat(var(--n), var(--cell));
+      grid-template-columns:
+        1.2em
+        var(--cell)
+        repeat(var(--n), var(--cell))
+        var(--barw)
+        repeat(var(--n), var(--cell));
+
       grid-auto-rows: 1.55em;
       align-items: center;
       justify-content: start;
       position: relative;
-      min-width: calc(var(--gutter) + var(--n) * var(--cell) + var(--barw) + var(--n) * var(--cell));
+      min-width: calc(1.2em + var(--cell) + var(--n) * var(--cell) + var(--barw) + var(--n) * var(--cell));
     }
 
-    .cell{ text-align:center; font-size:26px; line-height:1; padding:0 .05em; user-select:none; }
+    .cell{
+      display:flex;
+      align-items:center;        /* ⬅ поднимает минус и цифры на одну линию */
+      justify-content:center;
+      text-align:center;
+      font-size:26px;
+      line-height:1;
+      padding:0 .05em;
+      user-select:none;
+    }
     .cell.small{ font-size: 18px; color: var(--muted); }
 
     .rbar{
@@ -143,24 +173,36 @@
       padding-left: .25em;
       white-space: nowrap;
     }
-
     .qCell{ font-size: 26px; font-weight: 900; color: rgba(15,23,42,.92); }
 
     .hlBring{ background: rgba(245,158,11,.18); border: 1px solid rgba(245,158,11,.30); border-radius: 8px; padding-top: .06em; padding-bottom: .06em; }
     .hlCurrent{ background: rgba(47,95,115,.14); border: 1px solid rgba(47,95,115,.22); border-radius: 8px; padding-top: .06em; padding-bottom: .06em; }
 
-    .minusCell{ justify-self:end; color: rgba(15,23,42,.65); font-weight: 900; }
+    .minusCell{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      color: rgba(15,23,42,.65);
+      font-weight: 900;
+      padding-right: .15em;
+      line-height: 1;
+    }
+
     .underline{ border-bottom: 2px solid rgba(15,23,42,.45); padding-bottom: .15em; }
     .remainder{ color: rgba(15,23,42,.90); font-weight: 800; }
 
-    .controls{
-      margin-top: 10px;
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px 12px;
-      align-items:end;
+    .miniOut{
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(15,23,42,.12);
+      background: rgba(255,255,255,.60);
+      color: var(--muted);
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 800;
     }
-    @media (max-width: 520px){ .controls{ grid-template-columns: 1fr; } }
+    .miniOut.ok{ background: rgba(22,163,74,.12); border-color: rgba(22,163,74,.25); color: rgba(21,128,61,.95); }
+    .miniOut.bad{ background: rgba(239,68,68,.10); border-color: rgba(239,68,68,.25); color: rgba(185,28,28,.95); }
 
     .check{ display:flex; gap:8px; align-items:center; color: var(--muted); font-size: 14px; user-select:none; }
 
@@ -178,17 +220,6 @@
     .levelBox b{ margin-right: 6px; }
     .levelOpt{ display:flex; gap:8px; align-items:center; color: var(--muted); font-size: 14px; }
 
-    .stepInputs{
-      margin-top: 10px;
-      display:grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px 12px;
-      align-items:end;
-    }
-    @media (max-width: 980px){ .stepInputs{ grid-template-columns: 1fr; } }
-
-    .mutedNote{ margin-top: 6px; color: var(--muted); font-size: 13px; }
-
     .log{
       margin-top: 12px;
       font-family: var(--mono);
@@ -198,57 +229,42 @@
       border: 1px solid rgba(15,23,42,.10);
       border-radius: 12px;
       padding: 10px;
-      min-height: 120px;
+      min-height: 130px;
       color: rgba(100,116,139,.95);
     }
 
-    .right h2{ margin:0 0 10px; font-size:16px; }
-    .small{ color: var(--muted); font-size: 14px; }
-    .pill{
-      display:inline-flex; align-items:center; gap:6px;
-      padding: 4px 10px; border-radius: 999px;
-      background: var(--soft);
-      border: 1px solid rgba(47,95,115,.18);
-      color: var(--accent);
-      font-size: 12px; font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .miniOut{
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(15,23,42,.12);
-      background: rgba(255,255,255,.60);
-      color: var(--muted);
-      margin-bottom: 10px;
+    .workTitle{
+      margin: 0 0 8px;
       font-size: 14px;
-      font-weight: 800;
+      font-weight: 900;
+      color: rgba(15,23,42,.85);
     }
-    .miniOut.ok{
-      background: rgba(22,163,74,.12);
-      border-color: rgba(22,163,74,.25);
-      color: rgba(21,128,61,.95);
+    .workRow{
+      display:flex;
+      gap: 10px;
+      align-items:flex-end;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
     }
-    .miniOut.bad{
-      background: rgba(239,68,68,.10);
-      border-color: rgba(239,68,68,.25);
-      color: rgba(185,28,28,.95);
+    .workRow .field input[type="number"]{ width: 160px; }
+    .workNote{
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: -4px;
     }
-
-    .scratchArea{ margin-top: 10px; }
-    .scratchArea textarea{
+    .scratch textarea{
       width: 100%;
-      min-height: 140px;
+      min-height: 160px;
       resize: vertical;
       padding: 10px 12px;
       border-radius: 12px;
       border: 1px solid rgba(15,23,42,.14);
-      background: rgba(255,255,255,.85);
+      background: rgba(255,255,255,.92);
       font-family: var(--mono);
       font-size: 13px;
       outline:none;
     }
-    .scratchArea textarea:focus{
+    .scratch textarea:focus{
       border-color: rgba(47,95,115,.45);
       box-shadow: 0 0 0 3px rgba(47,95,115,.12);
     }
@@ -258,7 +274,7 @@
 <body>
 <div class="wrap">
   <h1>Деление уголком — российская запись</h1>
-  <p class="sub">Как на твоём примере: делимое слева, делитель справа сверху, частное справа под чертой.</p>
+  <p class="sub">Делимое слева, делитель справа сверху, частное справа под чертой. Минусы “впритык”, как в тетрадке.</p>
 
   <div class="nav">
     <a href="../../index.html">← Главная</a>
@@ -291,33 +307,64 @@
             <div id="divArea"></div>
           </div>
 
-          <div class="paperRight">
-            <div class="miniOut" id="miniOut">Поле ученика: вводи шаги и проверяй себя.</div>
+          <div class="paperMid">
+            <div class="workTitle">Здесь считает ученик</div>
 
-            <div class="controls">
+            <div class="workRow">
               <div class="field">
-                <div class="label">Цифра частного (0–9)</div>
+                <div class="label">Цифра частного q (0–9)</div>
                 <input id="qDigitIn" type="number" min="0" max="9" step="1" placeholder="0–9" disabled>
+                <div class="workNote" id="qNote">—</div>
               </div>
-
-              <div class="field">
-                <div class="label">Действия</div>
-                <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                  <button class="btn" id="checkBtn" disabled>Проверить шаг</button>
-                  <button class="btn soft" id="hintBtn" disabled>Подсказка</button>
-                </div>
-              </div>
-
-              <label class="check">
-                <input id="calmMode" type="checkbox" checked>
-                <span><b>Режим спокойствия</b> (объяснять “мало/велико”)</span>
-              </label>
-
-              <label class="check">
-                <input id="autoZero" type="checkbox" checked>
-                <span>Разрешать нули в частном (если кусок &lt; делителя)</span>
-              </label>
             </div>
+
+            <div class="workRow" id="prodRow">
+              <div class="field">
+                <div class="label">Произведение d×q</div>
+                <input id="prodIn" type="number" min="0" step="1" placeholder="например 56×7=392" disabled>
+                <div class="workNote" id="prodNote">—</div>
+              </div>
+            </div>
+
+            <div class="workRow" id="remRow">
+              <div class="field">
+                <div class="label">Остаток шага N−prod</div>
+                <input id="remIn" type="number" min="0" step="1" placeholder="например 416−392=24" disabled>
+                <div class="workNote" id="remNote">—</div>
+              </div>
+            </div>
+
+            <div class="workRow" id="nextRow">
+              <div class="field">
+                <div class="label">Новый кусок после сноса</div>
+                <input id="nextChunkIn" type="number" min="0" step="1" placeholder="например 24 и снесли 0 → 240" disabled>
+                <div class="workNote" id="nextNote">—</div>
+              </div>
+            </div>
+
+            <div class="scratch" style="margin-top:10px;">
+              <div class="label">Черновик (любые вычисления)</div>
+              <textarea id="scratch" placeholder="Например: 56×7=392, 416−392=24..."></textarea>
+            </div>
+          </div>
+
+          <div class="paperRight">
+            <div class="miniOut" id="miniOut">Поле проверки: вводи шаги слева и нажимай «Проверить».</div>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px;">
+              <button class="btn" id="checkBtn" disabled>Проверить шаг</button>
+              <button class="btn soft" id="hintBtn" disabled>Подсказка</button>
+            </div>
+
+            <label class="check">
+              <input id="calmMode" type="checkbox" checked>
+              <span><b>Режим спокойствия</b> (объяснять “мало/велико”)</span>
+            </label>
+
+            <label class="check" style="margin-top:6px;">
+              <input id="autoZero" type="checkbox" checked>
+              <span>Разрешать нули в частном (если кусок &lt; делителя)</span>
+            </label>
 
             <div class="levelBox" aria-label="Уровень цепочки">
               <b>Уровень:</b>
@@ -326,50 +373,18 @@
               <label class="levelOpt"><input type="radio" name="lvl" value="3"> 3 — полный ( + nextChunk )</label>
             </div>
 
-            <div id="stepBox" class="stepInputs">
-              <div class="field" id="prodField">
-                <div class="label">Произведение (d×q)</div>
-                <input id="prodIn" type="number" min="0" step="1" placeholder="например 56×7=392" disabled>
-                <div class="mutedNote" id="prodNote">—</div>
-              </div>
-
-              <div class="field" id="remField">
-                <div class="label">Остаток шага (N−prod)</div>
-                <input id="remIn" type="number" min="0" step="1" placeholder="например 416−392=24" disabled>
-                <div class="mutedNote" id="remNote">—</div>
-              </div>
-
-              <div class="field" id="nextField">
-                <div class="label">Новый кусок после сноса</div>
-                <input id="nextChunkIn" type="number" min="0" step="1" placeholder="например 24 и снесли 0 → 240" disabled>
-                <div class="mutedNote" id="nextNote">—</div>
-              </div>
-            </div>
-
-            <div class="mutedNote" id="formulaNote" style="margin-top:8px;">—</div>
             <div class="log" id="logOut">—</div>
-
-            <div class="scratchArea">
-              <div class="label">Черновик (любые вычисления)</div>
-              <textarea id="scratch" placeholder="Например: 56×7=392, 416−392=24..."></textarea>
-            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="card right">
-      <h2>Что сейчас происходит</h2>
-      <div class="small" id="sideInfo">Нажми «Старт».</div>
-
-      <hr style="border:none; border-top:1px solid rgba(15,23,42,.10); margin: 12px 0;">
-
-      <div class="small">
-        <div class="pill">Правило</div>
-        <div style="margin-top:8px;">
-          Для текущего куска <b>N</b> ищем цифру <b>q</b>, чтобы:<br>
-          <b>d×q ≤ N</b>, а <b>d×(q+1) &gt; N</b>.
-        </div>
+    <div class="card">
+      <div style="font-weight:900; margin-bottom:8px;">Правило подбора цифры</div>
+      <div style="color:#64748b; font-size:14px;">
+        Для текущего куска <b>N</b> ищем <b>q</b>, чтобы:<br>
+        <b>d×q ≤ N</b>, а <b>d×(q+1) &gt; N</b>.<br><br>
+        Подсказка показывает q = ⌊N/d⌋ и мини-проверку.
       </div>
     </div>
   </div>
@@ -397,20 +412,19 @@
 
   const calmMode = $("calmMode");
   const autoZero = $("autoZero");
-  const sideInfo = $("sideInfo");
 
-  const prodField = $("prodField");
-  const remField  = $("remField");
-  const nextField = $("nextField");
+  const prodRow = $("prodRow");
+  const remRow  = $("remRow");
+  const nextRow = $("nextRow");
 
   const prodIn = $("prodIn");
   const remIn  = $("remIn");
   const nextChunkIn = $("nextChunkIn");
 
+  const qNote = $("qNote");
   const prodNote = $("prodNote");
   const remNote  = $("remNote");
   const nextNote = $("nextNote");
-  const formulaNote = $("formulaNote");
 
   let st = null;
   let level = 1;
@@ -418,11 +432,8 @@
   function setStatus(text, kind=""){
     statusEl.className = "status" + (kind ? " " + kind : "");
     statusEl.textContent = text;
-
-    if (miniOut){
-      miniOut.className = "miniOut" + (kind ? " " + kind : "");
-      miniOut.textContent = text;
-    }
+    miniOut.className = "miniOut" + (kind ? " " + kind : "");
+    miniOut.textContent = text;
   }
 
   function sInt(v, fb=null){
@@ -440,18 +451,21 @@
 
   function applyLevelUI(){
     level = getLevel();
-    prodField.style.display = (level >= 2) ? "" : "none";
-    remField.style.display  = (level >= 2) ? "" : "none";
-    nextField.style.display = (level >= 3) ? "" : "none";
+    prodRow.style.display = (level >= 2) ? "" : "none";
+    remRow.style.display  = (level >= 2) ? "" : "none";
+    nextRow.style.display = (level >= 3) ? "" : "none";
 
     const enabled = !!(st && st.phase === "ask");
+    qDigitIn.disabled = !enabled;
     prodIn.disabled = !(enabled && level >= 2);
     remIn.disabled  = !(enabled && level >= 2);
     nextChunkIn.disabled = !(enabled && level >= 3);
 
     if (!enabled){
-      prodIn.value = ""; remIn.value = ""; nextChunkIn.value = "";
-      prodNote.textContent = "—"; remNote.textContent = "—"; nextNote.textContent="—"; formulaNote.textContent="—";
+      qNote.textContent = "—";
+      prodNote.textContent = "—";
+      remNote.textContent = "—";
+      nextNote.textContent = "—";
     } else {
       updateNotes();
     }
@@ -459,26 +473,27 @@
 
   function updateNotes(){
     if (!st || st.phase !== "ask"){
-      prodNote.textContent = "—"; remNote.textContent = "—"; nextNote.textContent="—"; formulaNote.textContent="—";
+      qNote.textContent = "—";
+      prodNote.textContent = "—";
+      remNote.textContent = "—";
+      nextNote.textContent = "—";
       return;
     }
     const N = st.chunk, d = st.divisor;
-    formulaNote.textContent = `Сейчас: N=${N}, d=${d}. (Уровень ${level})`;
-
+    qNote.textContent = `Сейчас: N=${N}, d=${d}`;
     if (level >= 2){
       prodNote.textContent = `prod = ${d}×q`;
       remNote.textContent  = `rem = ${N} − prod`;
     } else {
       prodNote.textContent = "—";
-      remNote.textContent = "—";
+      remNote.textContent  = "—";
     }
-
     if (level >= 3){
       if (st.nextDigitIndex < st.n){
         const b = st.digits[st.nextDigitIndex];
         nextNote.textContent = `Сносим цифру ${b}: next = rem×10 + ${b}`;
       } else {
-        nextNote.textContent = `Цифр больше нет — поле next не нужно (финал).`;
+        nextNote.textContent = `Цифр больше нет — next не нужен.`;
       }
     } else {
       nextNote.textContent = "—";
@@ -495,17 +510,12 @@
   function explainTooSmall(q){
     const d = st.divisor, N = st.chunk;
     const next = d * (q + 1);
-    return `${d}×(${q}+1) = ${next} ${next <= N ? "≤" : ">"} ${N} → цифра ${q} мала.`;
+    return `${d}×(${q}+1) = ${next} > ${N} — значит можно увеличивать. Твоя цифра ${q} мала.`;
   }
   function explainTooBig(q){
     const d = st.divisor, N = st.chunk;
     const cur = d * q;
-    const prev = q > 0 ? d * (q - 1) : null;
-    let s = `${d}×${q} = ${cur} > ${N} → цифра ${q} велика.`;
-    if (prev !== null){
-      s += ` Проверка снизу: ${d}×(${q}-1) = ${prev} ${prev <= N ? "≤" : ">"} ${N}.`;
-    }
-    return s;
+    return `${d}×${q} = ${cur} > ${N} — цифра ${q} велика.`;
   }
   function explainCorrect(q){
     const d = st.divisor, N = st.chunk;
@@ -517,9 +527,8 @@
   function hint(){
     if (!st || st.phase !== "ask") return;
     const q = expectedDigit();
-    const msg = `Подсказка: q=⌊${st.chunk}/${st.divisor}⌋=${q}. ${explainCorrect(q)}`;
-    setStatus("Подсказка показана.", "ok");
-    st.log.push(msg);
+    setStatus(`Подсказка: q=${q}. ${explainCorrect(q)}`, "ok");
+    st.log.push(`Подсказка: q=${q}. ${explainCorrect(q)}`);
     logOut.textContent = st.log.join("\n");
     updateNotes();
   }
@@ -536,7 +545,6 @@
     const digits = String(dividend).split("").map(Number);
     const n = digits.length;
 
-    // берём первый кусок >= делителя
     let chunk = 0;
     let end = -1;
     while (end + 1 < n){
@@ -545,18 +553,15 @@
       if (chunk >= divisor) break;
     }
 
-    // если всё делимое < делителя
     if (chunk < divisor && end === n-1){
       st = { dividend, divisor, digits, n, quotient: Array(n).fill(""), steps: [], curEnd: n-1, chunk: dividend, nextDigitIndex: n, remainder: dividend, phase:"done", bringIndex:null, log:[] };
       st.quotient[n-1] = "0";
-      qDigitIn.disabled = true;
-      checkBtn.disabled = true;
-      hintBtn.disabled = true;
-      setStatus("Готово: делимое меньше делителя.", "ok");
-      sideInfo.textContent = `Так как ${dividend} < ${divisor}, частное 0, остаток ${dividend}.`;
-      st.log = [sideInfo.textContent];
+      setStatus(`Готово: ${dividend} < ${divisor}. Частное 0, остаток ${dividend}.`, "ok");
+      st.log = [statusEl.textContent];
       logOut.textContent = st.log.join("\n");
       render();
+      checkBtn.disabled = true;
+      hintBtn.disabled = true;
       applyLevelUI();
       return;
     }
@@ -574,20 +579,20 @@
       log:[`Старт: первый кусок N=${chunk}.`]
     };
 
-    qDigitIn.disabled = false;
+    qDigitIn.value = "";
+    prodIn.value = "";
+    remIn.value = "";
+    nextChunkIn.value = "";
+
     checkBtn.disabled = false;
     hintBtn.disabled = false;
-    qDigitIn.value = "";
-    qDigitIn.focus();
-
-    prodIn.value = ""; remIn.value = ""; nextChunkIn.value = "";
 
     setStatus("Подбираем цифру частного.", "");
-    sideInfo.textContent = `Сейчас N=${st.chunk}, d=${st.divisor}.`;
     logOut.textContent = st.log.join("\n");
 
-    applyLevelUI();
     render();
+    applyLevelUI();
+    qDigitIn.focus();
   }
 
   function check(){
@@ -595,7 +600,7 @@
 
     const q = sInt(qDigitIn.value, null);
     if (q === null || q < 0 || q > 9){
-      setStatus("Введи цифру 0–9.", "bad");
+      setStatus("Введи цифру q от 0 до 9.", "bad");
       return;
     }
 
@@ -632,29 +637,25 @@
       const prodExp  = d * q;
       const remExp   = N - prodExp;
 
-      updateNotes();
-
       if (prodUser === null){
-        setStatus("Уровень 2/3: введи произведение (d×q).", "bad");
+        setStatus("Уровень 2/3: введи произведение d×q.", "bad");
         return;
       }
       if (prodUser !== prodExp){
-        setStatus("Произведение неверно.", "bad");
-        st.log.push(`Произведение: ожидали ${d}×${q}=${prodExp}, получено ${prodUser}.`);
+        setStatus(`Произведение неверно. Нужно: ${d}×${q}=${prodExp}`, "bad");
+        st.log.push(`Произведение: ожидали ${prodExp}, получили ${prodUser}.`);
         logOut.textContent = st.log.join("\n");
-        prodNote.textContent = `Нужно: ${d}×${q} = ${prodExp}`;
         return;
       }
 
       if (remUser === null){
-        setStatus("Уровень 2/3: введи остаток шага (N−prod).", "bad");
+        setStatus("Уровень 2/3: введи остаток N−prod.", "bad");
         return;
       }
       if (remUser !== remExp){
-        setStatus("Вычитание неверно (остаток шага).", "bad");
-        st.log.push(`Вычитание: ожидали ${N}-${prodExp}=${remExp}, получено ${remUser}.`);
+        setStatus(`Вычитание неверно. Нужно: ${N}-${prodExp}=${remExp}`, "bad");
+        st.log.push(`Остаток: ожидали ${remExp}, получили ${remUser}.`);
         logOut.textContent = st.log.join("\n");
-        remNote.textContent = `Нужно: ${N} − ${prodExp} = ${remExp}`;
         return;
       }
 
@@ -662,16 +663,14 @@
         const bringDigit = st.digits[st.nextDigitIndex];
         const nextExp = remExp * 10 + bringDigit;
         const nextUser = sInt(nextChunkIn.value, null);
-
         if (nextUser === null){
           setStatus("Уровень 3: введи новый кусок после сноса.", "bad");
           return;
         }
         if (nextUser !== nextExp){
-          setStatus("Новый кусок после сноса — неверно.", "bad");
-          st.log.push(`Снос: ожидали ${remExp} и снесли ${bringDigit} → ${nextExp}, получено ${nextUser}.`);
+          setStatus(`Снос неверно. Нужно: ${remExp} и снесли ${bringDigit} → ${nextExp}`, "bad");
+          st.log.push(`Снос: ожидали ${nextExp}, получили ${nextUser}.`);
           logOut.textContent = st.log.join("\n");
-          nextNote.textContent = `Нужно: ${remExp} и снесли ${bringDigit} → ${nextExp}`;
           return;
         }
       }
@@ -694,13 +693,12 @@
 
     st.quotient[st.curEnd] = String(q);
 
-    const skipRows = (N < d && q === 0);
-
-    if (!skipRows){
-      st.steps.push({ kind: "product", end: st.curEnd, text: String(prod), minus: true });
-      st.steps.push({ kind: "line", end: st.curEnd, len: Math.max(String(prod).length, String(N).length) + 1 });
-      st.steps.push({ kind: "remainder", end: st.curEnd, text: String(rem) });
-    }
+    // продукт
+    st.steps.push({ kind: "product", end: st.curEnd, text: String(prod), minus: true });
+    // линия
+    st.steps.push({ kind: "line", end: st.curEnd, len: Math.max(String(prod).length, String(N).length) + 1 });
+    // остаток
+    st.steps.push({ kind: "remainder", end: st.curEnd, text: String(rem) });
 
     st.log.push(`Шаг: N=${N}, q=${q}, prod=${prod}, остаток=${rem}.`);
 
@@ -722,7 +720,6 @@
       qDigitIn.value = "";
       prodIn.value = ""; remIn.value = ""; nextChunkIn.value = "";
       setStatus("Верно. Следующий шаг.", "ok");
-      sideInfo.textContent = `Теперь N=${st.chunk}.`;
 
       render();
       applyLevelUI();
@@ -740,8 +737,7 @@
     applyLevelUI();
 
     const qStr = (st.quotient.join("").replace(/^0+(?=\d)/,"") || "0");
-    setStatus("Готово! Частное и остаток получены.", "ok");
-    sideInfo.textContent = `Ответ: ${st.dividend} : ${st.divisor} = ${qStr}${rem ? ` (ост. ${rem})` : ""}.`;
+    setStatus(`Готово! Ответ: ${st.dividend} : ${st.divisor} = ${qStr}${rem ? ` (ост. ${rem})` : ""}`, "ok");
     st.log.push(`Финиш. Остаток = ${rem}.`);
     logOut.textContent = st.log.join("\n");
     render();
@@ -751,26 +747,29 @@
     if (!st){ divArea.innerHTML = "<div style='color:#64748b'>—</div>"; return; }
 
     const n = st.n;
-    const totalCols = 2*n + 2;
-    const lastLine = totalCols + 1;
 
-    const leftStart = 2;
-    const barCol = n + 2;        // после делимого
-    const rightStart = n + 3;    // зона делителя/частного справа
+    // Новая раскладка колонок:
+    // 1: pad, 2: минус, 3..(3+n-1): цифры делимого, затем "|" и правая зона
+    const padCol = 1;
+    const minusCol = 2;
+    const digitStart = 3;
+
+    const barCol = digitStart + n;
+    const rightStart = barCol + 1;
+    const lastColEnd = rightStart + n;
 
     const grid = document.createElement("div");
     grid.className = "divGrid";
     grid.style.setProperty("--n", String(n));
 
-    // Вертикальная черта (справа от делимого)
+    // вертикальная черта
     const bar = document.createElement("div");
     bar.className = "rbar";
     bar.style.gridColumn = String(barCol);
-    bar.style.gridRow = `1 / ${Math.max(10, st.steps.length + 10)}`;
+    bar.style.gridRow = `1 / ${Math.max(14, st.steps.length + 12)}`;
     grid.appendChild(bar);
 
-    // Делимое (верхняя строка слева)
-    const rowDividend = 1;
+    // делимое
     for (let i=0; i<n; i++){
       let cls = "";
       if (st.phase === "ask" && i === st.bringIndex) cls = "hlBring";
@@ -778,13 +777,13 @@
 
       const d = document.createElement("div");
       d.className = "cell" + (cls ? " " + cls : "");
-      d.style.gridColumn = String(leftStart + i);
-      d.style.gridRow = String(rowDividend);
+      d.style.gridColumn = String(digitStart + i);
+      d.style.gridRow = "1";
       d.textContent = String(st.digits[i]);
       grid.appendChild(d);
     }
 
-    // Делитель справа сверху
+    // делитель справа сверху
     const divisorText = String(st.divisor);
     const divEl = document.createElement("div");
     divEl.className = "divisorR";
@@ -793,14 +792,14 @@
     divEl.textContent = divisorText;
     grid.appendChild(divEl);
 
-    // Горизонтальная черта под делителем (как на образце)
+    // горизонтальная черта справа
     const hline = document.createElement("div");
     hline.className = "hlineR";
     hline.style.gridRow = "2";
-    hline.style.gridColumn = `${barCol} / ${lastLine}`;
+    hline.style.gridColumn = `${barCol} / ${lastColEnd}`;
     grid.appendChild(hline);
 
-    // Частное справа (под чертой)
+    // частное справа (под чертой)
     const firstQ = st.quotient.findIndex(x => x !== "");
     const qStrPartial = (firstQ === -1) ? "" : st.quotient.slice(firstQ).join("");
     if (qStrPartial){
@@ -814,7 +813,6 @@
       }
     }
 
-    // Шаги (начинаются со 2-й строки слева: там же стоит 1-й вычитаемый)
     let row = 2;
 
     function placeNumber(r, endIdx, text, opts={}){
@@ -826,13 +824,8 @@
         const minus = document.createElement("div");
         minus.className = "cell minusCell";
         minus.style.gridRow = String(r);
-        if (startIdx <= 0){
-          minus.style.gridColumn = "1";
-          minus.style.justifySelf = "end";
-          minus.style.paddingRight = ".35em";
-        } else {
-          minus.style.gridColumn = String(leftStart + startIdx - 1);
-        }
+        // Минус ставим “впритык”: ровно слева от первой цифры числа
+        minus.style.gridColumn = String(digitStart + startIdx - 1);
         minus.textContent = "−";
         grid.appendChild(minus);
       }
@@ -843,7 +836,7 @@
 
         const cell = document.createElement("div");
         cell.className = "cell" + (opts.remainder ? " remainder" : "");
-        cell.style.gridColumn = String(leftStart + idx);
+        cell.style.gridColumn = String(digitStart + idx);
         cell.style.gridRow = String(r);
         cell.textContent = s[k];
 
@@ -860,7 +853,7 @@
         for (let idx=uStart; idx<=uEnd; idx++){
           const u = document.createElement("div");
           u.className = "cell underline";
-          u.style.gridColumn = String(leftStart + idx);
+          u.style.gridColumn = String(digitStart + idx);
           u.style.gridRow = String(r);
           u.textContent = "";
           grid.appendChild(u);
@@ -880,7 +873,7 @@
       const qStr = (st.quotient.join("").replace(/^0+(?=\d)/,"") || "0");
       const res = document.createElement("div");
       res.className = "cell small";
-      res.style.gridColumn = `1 / ${leftStart + n}`;
+      res.style.gridColumn = `1 / ${digitStart + n}`;
       res.style.gridRow = String(row);
       res.style.justifySelf = "start";
       res.style.textAlign = "left";
@@ -890,6 +883,8 @@
 
     divArea.innerHTML = "";
     divArea.appendChild(grid);
+
+    updateNotes();
   }
 
   function random(){
@@ -916,12 +911,12 @@
     st = null;
     divArea.innerHTML = "<div style='color:#64748b'>—</div>";
     logOut.textContent = "—";
-    sideInfo.textContent = "Нажми «Старт».";
     qDigitIn.value = "";
-    qDigitIn.disabled = true;
+    prodIn.value = "";
+    remIn.value = "";
+    nextChunkIn.value = "";
     checkBtn.disabled = true;
     hintBtn.disabled = true;
-    prodIn.value = ""; remIn.value = ""; nextChunkIn.value = "";
     setStatus("Введи числа и нажми «Старт».", "");
     applyLevelUI();
   }
