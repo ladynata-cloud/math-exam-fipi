@@ -1,149 +1,103 @@
-:root{
-  --bg: #f6f7fb;
-  --card: #ffffff;
-  --text: #0f172a;
-  --muted: #66728a;
-  --line: rgba(15,23,42,.12);
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MathExam — ОГЭ по математике и тренажёры</title>
+  <meta name="description" content="Спокойная подготовка к ОГЭ по математике: задания из банка ФИПИ и тренажёры письменных вычислений." />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="brand-title">MathExam</div>
+        <div class="brand-sub">Спокойная подготовка к ОГЭ + тренажёры вычислений</div>
+      </div>
 
-  --primary: #2f5f73;
-  --primarySoft: rgba(47,95,115,.10);
+      <nav class="nav">
+        <a class="nav-link" href="./">Главная</a>
+        <a class="nav-link" href="./oge/">ОГЭ</a>
+        <a class="nav-link" href="./trainers/">Тренажёры</a>
+      </nav>
+    </div>
+  </header>
 
-  --shadow: 0 10px 28px rgba(15,23,42,.06);
-  --radius: 16px;
-}
+  <main class="container">
+    <section class="hero">
+      <div class="hero-card">
+        <h1 class="hero-title">ОГЭ по математике — по-человечески</h1>
+        <p class="hero-text">
+          Здесь будут: задания из открытого банка ФИПИ (структурировано) и тренажёры,
+          которые распутывают “узел” письменных навыков: умножение, вычитание столбиком,
+          деление уголком, таблица умножения, переход через 10.
+        </p>
+        <div class="hero-actions">
+          <a class="btn" href="./oge/">Открыть задания ОГЭ</a>
+          <a class="btn btn-ghost" href="./trainers/">Открыть тренажёры</a>
+        </div>
+        <div class="pill-row">
+          <span class="pill">ОГЭ</span>
+          <span class="pill">деление уголком</span>
+          <span class="pill">умножение столбиком</span>
+          <span class="pill">таблица умножения</span>
+          <span class="pill">переход через 10</span>
+        </div>
+      </div>
+    </section>
 
-*{ box-sizing: border-box; }
-html, body{ margin:0; padding:0; }
+    <section class="section">
+      <h2>Быстрый доступ</h2>
 
-body{
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.55;
-}
+      <div class="grid">
+        <article class="card">
+          <h3>Задания ОГЭ (банк ФИПИ)</h3>
+          <p class="muted">Список заданий и разборы — постепенно расширяем.</p>
+          <a class="btn btn-small" href="./oge/">Перейти в ОГЭ</a>
+        </article>
 
-a{ color: var(--primary); text-decoration: none; }
-a:hover{ text-decoration: underline; }
+        <article class="card">
+          <h3>Деление уголком (тетрадный формат)</h3>
+          <p class="muted">С уровнями: только цифра частного → + умножение → + вычитание → полный шаг.</p>
+          <div class="row">
+            <a class="btn btn-small" href="./trainers/trainers/long-division.html">Открыть тренажёр</a>
+            <a class="btn btn-small btn-ghost" href="./trainers/long-division.html">Короткая ссылка</a>
+          </div>
+        </article>
 
-.container{
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 14px;
-}
+        <article class="card">
+          <h3>Умножение столбиком</h3>
+          <p class="muted">Тренажёр письменного умножения (важен для деления уголком).</p>
+          <a class="btn btn-small" href="./trainers/trainers/long-multiplication.html">Открыть</a>
+        </article>
 
-.site-header{
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  backdrop-filter: blur(8px);
-  background: rgba(255,255,255,.78);
-  border-bottom: 1px solid var(--line);
-}
+        <article class="card">
+          <h3>Таблица умножения — раздел</h3>
+          <p class="muted">Игровые тренажёры: Пифагор, “рыбалка”, спринт, умножение на 9 и т.д.</p>
+          <a class="btn btn-small" href="./trainers/multiplication-table/">Открыть</a>
+        </article>
+      </div>
+    </section>
 
-.header-inner{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 12px;
-  padding: 10px 0;
-}
+    <section class="section">
+      <h2>План развития (чтобы не утонуть)</h2>
+      <div class="card">
+        <ul class="list">
+          <li><b>Сейчас:</b> деление уголком + умножение столбиком + таблица умножения.</li>
+          <li><b>Далее:</b> сложение/вычитание с переходом через 10 (разные методики).</li>
+          <li><b>Потом:</b> вычитание столбиком как отдельный тренажёр (для деления уголком).</li>
+          <li><b>И только после:</b> масштабирование контента по задачам ОГЭ.</li>
+        </ul>
+        <p class="muted" style="margin:0">
+          Идея: ученик не “угадывает цифру”, а тренирует цепочку навыков — ровно то, что нужно на ОГЭ без калькулятора.
+        </p>
+      </div>
+    </section>
 
-.brand{
-  display:flex;
-  flex-direction:column;
-  gap: 2px;
-}
-
-.brand-title{
-  font-weight: 900;
-  letter-spacing: .2px;
-}
-
-.brand-sub{
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.nav{
-  display:flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  align-items:center;
-  justify-content:flex-end;
-}
-
-.nav a{
-  display:inline-flex;
-  align-items:center;
-  gap: 8px;
-  padding: 8px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(15,23,42,.12);
-  background: rgba(255,255,255,.70);
-  font-weight: 800;
-}
-.nav a:hover{
-  background: rgba(47,95,115,.08);
-  border-color: rgba(47,95,115,.25);
-  text-decoration: none;
-}
-
-.hero{
-  padding: 18px 0 14px;
-}
-
-.hero-card{
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 16px;
-}
-
-.hero-title{
-  margin: 0 0 6px;
-  font-size: 22px;
-  line-height: 1.25;
-}
-
-.hero-text{
-  margin: 0 0 10px;
-  color: var(--muted);
-  max-width: 860px;
-}
-
-.pills{
-  display:flex;
-  gap: 8px;
-  flex-wrap:wrap;
-  margin-top: 10px;
-}
-
-.pill{
-  display:inline-flex;
-  align-items:center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: var(--primarySoft);
-  border: 1px solid rgba(47,95,115,.18);
-  color: var(--primary);
-  font-size: 12px;
-  font-weight: 900;
-  white-space: nowrap;
-}
-
-.section{
-  margin: 16px 0 22px;
-}
-
-.section h2{
-  margin: 0 0 10px;
-  font-size: 16px;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:
+    <footer class="footer">
+      <div class="muted">© 2025 MathExam. Образовательный проект.</div>
+    </footer>
+  </main>
+</body>
+</html>
 
