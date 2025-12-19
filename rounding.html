@@ -1,1 +1,254 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Тренажёр округления — ОГЭ</title>
+
+  <!-- Важно: относительный путь, чтобы работало и на домене, и на github.io/repo/ -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Фолбэк-стили, если style.css не загрузился -->
+  <style>
+    :root { --bg:#0b0d10; --card:#12151b; --text:#e8eef6; --muted:#aab6c5; --line:#273042; --ok:#37d67a; --bad:#ff5c5c; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif; background: var(--bg); color: var(--text); }
+    a { color: inherit; }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 18px 14px 40px; }
+    header { display:flex; gap:12px; align-items:center; justify-content:space-between; margin-bottom:14px; }
+    .brand { display:flex; flex-direction:column; gap:3px; }
+    .brand h1 { margin:0; font-size: 18px; font-weight: 700; }
+    .brand p { margin:0; font-size: 13px; color: var(--muted); }
+    .btnlink { padding:10px 12px; border:1px solid var(--line); border-radius: 12px; text-decoration:none; background: rgba(255,255,255,0.02); }
+    .grid { display:grid; grid-template-columns: 1.2fr 0.8fr; gap: 12px; }
+    @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+
+    .card { background: var(--card); border:1px solid var(--line); border-radius: 16px; padding: 14px; box-shadow: 0 10px 25px rgba(0,0,0,0.25); }
+    .card h2 { margin:0 0 10px; font-size: 15px; }
+    .row { display:flex; gap:10px; flex-wrap: wrap; align-items:end; }
+    label { display:block; font-size: 12px; color: var(--muted); margin: 0 0 6px; }
+    select, input[type="text"], input[type="number"] {
+      background: rgba(255,255,255,0.03);
+      border:1px solid var(--line);
+      border-radius: 12px;
+      color: var(--text);
+      padding: 10px 12px;
+      font-size: 14px;
+      outline: none;
+    }
+    input[type="text"] { width: 100%; }
+    .field { min-width: 220px; flex: 1 1 220px; }
+    .field.small { min-width: 160px; flex: 0 0 160px; }
+    .actions { display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
+    button {
+      background: rgba(255,255,255,0.06);
+      border:1px solid var(--line);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 14px;
+      cursor:pointer;
+    }
+    button.primary { background: rgba(255,255,255,0.12); }
+    button:active { transform: translateY(1px); }
+
+    .taskNum { font-size: 34px; font-weight: 800; letter-spacing: 0.3px; margin: 6px 0 2px; }
+    .taskText { color: var(--muted); margin: 0 0 12px; font-size: 14px; }
+    .feedback { margin-top: 10px; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,0.02); }
+    .feedback.ok { border-color: rgba(55,214,122,0.45); }
+    .feedback.bad { border-color: rgba(255,92,92,0.45); }
+    .feedback b { font-weight: 800; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    .muted { color: var(--muted); }
+    .stats { display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .stat { border:1px solid var(--line); border-radius: 14px; padding: 10px 12px; background: rgba(255,255,255,0.02); }
+    .stat .v { font-size: 20px; font-weight: 800; }
+    details { margin-top: 10px; }
+    summary { cursor:pointer; color: var(--muted); }
+    .help { margin-top: 10px; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .kbd { border:1px solid var(--line); padding: 2px 6px; border-radius: 8px; background: rgba(255,255,255,0.02); font-family: ui-monospace, monospace; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <h1>Тренажёр округления (ОГЭ-скоропомощь)</h1>
+        <p>Округляем до: миллионов… единиц… десятых, сотых, тысячных и дальше.</p>
+      </div>
+      <a class="btnlink" href="index.html">← На главную</a>
+    </header>
+
+    <div class="grid">
+      <section class="card" aria-label="Задание">
+        <h2>Задание</h2>
+
+        <div class="row">
+          <div class="field">
+            <label for="placeSelect">Округлять до</label>
+            <select id="placeSelect"></select>
+          </div>
+
+          <div class="field">
+            <label for="modeSelect">Какие числа</label>
+            <select id="modeSelect">
+              <option value="auto">Авто (под разряд)</option>
+              <option value="int">Только целые</option>
+              <option value="dec">Только десятичные</option>
+            </select>
+          </div>
+
+          <div class="field small">
+            <label for="negToggle">Отрицательные</label>
+            <select id="negToggle">
+              <option value="off" selected>Нет</option>
+              <option value="on">Иногда</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top: 10px;">
+          <div id="taskNum" class="taskNum mono">—</div>
+          <p id="taskText" class="taskText">—</p>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="answerInput">Твой ответ</label>
+            <input id="answerInput" type="text" inputmode="decimal" autocomplete="off" placeholder="Например: 12 300 или 4,57" />
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="primary" id="checkBtn">Проверить <span class="muted">(Enter)</span></button>
+          <button id="nextBtn">Новый пример <span class="muted">(Ctrl+Enter)</span></button>
+          <button id="showBtn">Показать решение</button>
+          <button id="resetBtn" title="Сбросить статистику на этой странице">Сбросить статистику</button>
+        </div>
+
+        <div id="feedback" class="feedback" style="display:none;"></div>
+
+        <details id="solutionBox">
+          <summary>Разбор шага округления</summary>
+          <div id="solutionText" class="help"></div>
+        </details>
+
+        <div class="help">
+          Подсказка: вводи как удобно — с пробелами, с запятой или точкой:
+          <span class="mono">12 345,6</span> / <span class="mono">12345.6</span>.
+        </div>
+      </section>
+
+      <aside class="card" aria-label="Статистика">
+        <h2>Статистика</h2>
+        <div class="stats">
+          <div class="stat">
+            <div class="muted">Правильно</div>
+            <div class="v" id="statCorrect">0</div>
+          </div>
+          <div class="stat">
+            <div class="muted">Всего</div>
+            <div class="v" id="statTotal">0</div>
+          </div>
+          <div class="stat">
+            <div class="muted">Серия</div>
+            <div class="v" id="statStreak">0</div>
+          </div>
+          <div class="stat">
+            <div class="muted">Лучшая серия</div>
+            <div class="v" id="statBest">0</div>
+          </div>
+        </div>
+
+        <div class="help" style="margin-top: 12px;">
+          Горячие клавиши:<br />
+          <span class="kbd">Enter</span> — проверить<br />
+          <span class="kbd">Ctrl</span> + <span class="kbd">Enter</span> — новый пример
+        </div>
+
+        <div class="help" style="margin-top: 12px;">
+          Правило: смотри на <b>следующий</b> разряд.<br/>
+          Если он <b>5–9</b> — увеличиваем нужный разряд на 1.<br/>
+          Если <b>0–4</b> — оставляем как есть.<br/>
+          Все правее — заменяем нулями (или отбрасываем после запятой).
+        </div>
+      </aside>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const PLACES = [
+    { p: 6,  name: "до миллионов (1 000 000)" },
+    { p: 5,  name: "до сотен тысяч (100 000)" },
+    { p: 4,  name: "до десятков тысяч (10 000)" },
+    { p: 3,  name: "до тысяч (1 000)" },
+    { p: 2,  name: "до сотен (100)" },
+    { p: 1,  name: "до десятков (10)" },
+    { p: 0,  name: "до единиц (1)" },
+    { p: -1, name: "до десятых (0,1)" },
+    { p: -2, name: "до сотых (0,01)" },
+    { p: -3, name: "до тысячных (0,001)" },
+    { p: -4, name: "до десяти-тысячных (0,0001)" },
+    { p: -5, name: "до стотысячных (0,00001)" },
+    { p: -6, name: "до миллионных (0,000001)" }
+  ];
+
+  const $ = (id) => document.getElementById(id);
+
+  const placeSelect = $("placeSelect");
+  const modeSelect  = $("modeSelect");
+  const negToggle   = $("negToggle");
+
+  const taskNumEl = $("taskNum");
+  const taskTextEl = $("taskText");
+  const answerInput = $("answerInput");
+
+  const checkBtn = $("checkBtn");
+  const nextBtn  = $("nextBtn");
+  const showBtn  = $("showBtn");
+  const resetBtn = $("resetBtn");
+
+  const feedbackEl = $("feedback");
+  const solutionBox = $("solutionBox");
+  const solutionText = $("solutionText");
+
+  const statCorrect = $("statCorrect");
+  const statTotal   = $("statTotal");
+  const statStreak  = $("statStreak");
+  const statBest    = $("statBest");
+
+  const LS_KEY = "rounding_trainer_stats_v1";
+  let current = { n: "0", p: 0, expectedNorm: "0", explainHtml: "" };
+
+  function loadStats() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (!raw) return { correct: 0, total: 0, streak: 0, best: 0 };
+      const s = JSON.parse(raw);
+      return { correct:+s.correct||0, total:+s.total||0, streak:+s.streak||0, best:+s.best||0 };
+    } catch { return { correct:0, total:0, streak:0, best:0 }; }
+  }
+  function saveStats(s) { localStorage.setItem(LS_KEY, JSON.stringify(s)); }
+  function renderStats(s) {
+    statCorrect.textContent = s.correct;
+    statTotal.textContent   = s.total;
+    statStreak.textContent  = s.streak;
+    statBest.textContent    = s.best;
+  }
+
+  function normalizeInput(str) {
+    if (str == null) return "";
+    let s = String(str).trim().replace(/\s+/g,"").replace(/,/g,".");
+    if (s.startsWith("+")) s = s.slice(1);
+    if (!s || s === ".") return "";
+    let sign = "";
+    if (s.startsWith("-")) { sign="-"; s=s.slice(1); }
+    if (!/^\d+(\.\d+)?$/.test(s)) return "NaN";
+    let [ip, fp=""] = s.split(".");
+    ip = ip.replace(/^0+(?=\d)/,"");
+    fp = fp.replace(/0+$/,"");
+    let out = ip + (fp ? "."+fp : "");
+    if (out === "0") sign = "";
+    return
 
