@@ -250,5 +250,237 @@
     fp = fp.replace(/0+$/,"");
     let out = ip + (fp ? "."+fp : "");
     if (out === "0") sign = "";
-    return
+    return sign + out;
+  }
+
+  function formatForDisplay(numStr) {
+    let s = numStr, sign = "";
+    if (s.startsWith("-")) { sign="−"; s=s.slice(1); }
+    let [ip, fp=""] = s.split(".");
+    ip = ip.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    return sign + ip + (fp ? ","+fp : "");
+  }
+
+  function padRight(str, len){ while(str.length<len) str+="0"; return str; }
+  function incrementDigits(digs){
+    let i=digs.length-1;
+    while(i>=0){
+      if(digs[i]!=="9"){ digs[i]=String(+digs[i]+1); return digs; }
+      digs[i]="0"; i--;
+    }
+    digs.unshift("1"); return digs;
+  }
+
+  function roundStringHalfUp(numStr, p) {
+    let s = numStr, sign = "";
+    if (s.startsWith("-")) { sign="-"; s=s.slice(1); }
+    let [ip, fp=""] = s.split(".");
+    const decIndex = ip.length;
+    let digits = (ip+fp).split("");
+
+    const idxNext = decIndex - p;
+    while (digits.length < Math.max(idxNext+1, 1)) digits.push("0");
+
+    const nextDigit = (idxNext>=0 && idxNext<digits.length) ? digits[idxNext] : "0";
+    const roundUp = nextDigit >= "5";
+
+    const keepLen = Math.max(0, idxNext);
+    let kept = digits.slice(0, keepLen);
+    if (kept.length === 0) kept = ["0"];
+    if (roundUp) kept = incrementDigits(kept);
+
+    if (p >= 0) {
+      let out = kept.join("") + "0".repeat(p);
+      out = out.replace(/^0+(?=\d)/,"");
+      if (!out) out="0";
+      if (out === "0") sign = "";
+      return sign + out;
+    } else {
+      const fracLen = -p;
+      if (kept.length <= fracLen) {
+        const pad = fracLen - kept.length + 1;
+        kept = Array(pad).fill("0").concat(kept);
+      }
+      const intLen = kept.length - fracLen;
+      let outIp = kept.slice(0,intLen).join("").replace(/^0+(?=\d)/,"");
+      if (!outIp) outIp="0";
+      let outFp = padRight(kept.slice(intLen).join(""), fracLen).slice(0, fracLen);
+      let out = outIp + "." + outFp;
+      if (/^0(\.0+)?$/.test(out)) sign="";
+      return sign + out;
+    }
+  }
+
+  function explainRounding(numStr, p, expectedCanonical) {
+    const displayN = formatForDisplay(numStr);
+    const displayExpected = formatForDisplay(normalizeInput(expectedCanonical));
+    const placeName = PLACES.find(x => x.p === p)?.name || ("10^" + p);
+
+    let s = numStr, sign = "";
+    if (s.startsWith("-")) { sign="−"; s=s.slice(1); }
+    let [ip, fp=""] = s.split(".");
+    const decIndex = ip.length;
+    const digits = (ip+fp).split("");
+    const idxNext = decIndex - p;
+    const idxKeepLast = decIndex - 1 - p;
+    const getDigit = (i) => (i>=0 && i<digits.length) ? digits[i] : "0";
+
+    const dKeep = getDigit(idxKeepLast);
+    const dNext = getDigit(idxNext);
+
+    const rule = (dNext >= "5")
+      ? "Следующая цифра ≥ 5, значит увеличиваем нужный разряд на 1."
+      : "Следующая цифра ≤ 4, значит нужный разряд оставляем без изменения.";
+
+    const rightAction = (p >= 0)
+      ? "Все цифры правее заменяем нулями."
+      : `После запятой оставляем ровно ${-p} знак(а/ов), остальное отбрасываем (с учётом правила).`;
+
+    return `
+      <div>
+        <div><b>Число:</b> <span class="mono">${sign}${displayN}</span></div>
+        <div><b>Округляем:</b> ${placeName}</div>
+        <hr style="border:0; border-top:1px solid var(--line); margin:10px 0;">
+        <div><b>Цифра нужного разряда:</b> <span class="mono">${dKeep}</span></div>
+        <div><b>Следующая цифра:</b> <span class="mono">${dNext}</span></div>
+        <div style="margin-top:8px;">${rule}</div>
+        <div style="margin-top:8px;">${rightAction}</div>
+        <hr style="border:0; border-top:1px solid var(--line); margin:10px 0;">
+        <div><b>Ответ:</b> <span class="mono">${displayExpected}</span></div>
+      </div>
+    `;
+  }
+
+  function randomInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+
+  function generateNumber(p, mode, allowNeg) {
+    let wantDec = false;
+    if (mode === "int") wantDec = false;
+    else if (mode === "dec") wantDec = true;
+    else wantDec = (p < 0) ? true : (Math.random() < 0.25);
+
+    let minLen, maxLen;
+    if (p >= 0) { minLen = Math.max(1, p+1); maxLen = Math.min(9, p+4); }
+    else { minLen = 1; maxLen = 4; }
+    const len = randomInt(minLen, maxLen);
+
+    let ip = "";
+    for (let i=0;i<len;i++){
+      const d = (i===0) ? randomInt(1,9) : randomInt(0,9);
+      ip += String(d);
+    }
+
+    let fp = "";
+    if (wantDec) {
+      const needAtLeast = (p < 0) ? (-p + 1) : 1;
+      const fpLen = randomInt(needAtLeast, Math.min(8, needAtLeast + 3));
+      for (let i=0;i<fpLen;i++) fp += String(randomInt(0,9));
+    }
+
+    let sign = "";
+    if (allowNeg && Math.random() < 0.25) sign = "-";
+
+    if (p >= 3 && Math.random() < 0.08) ip = String(randomInt(0,999)) || "0";
+    ip = ip.replace(/^0+(?=\d)/,"") || "0";
+
+    return sign + ip + (fp ? "."+fp : "");
+  }
+
+  function setFeedback(type, html) {
+    feedbackEl.style.display = "block";
+    feedbackEl.classList.remove("ok","bad");
+    feedbackEl.classList.add(type);
+    feedbackEl.innerHTML = html;
+  }
+  function clearFeedback() {
+    feedbackEl.style.display = "none";
+    feedbackEl.innerHTML = "";
+    solutionBox.open = false;
+    solutionText.innerHTML = "";
+  }
+
+  function newTask() {
+    clearFeedback();
+    answerInput.value = "";
+    answerInput.focus();
+
+    const p = +placeSelect.value;
+    const mode = modeSelect.value;
+    const allowNeg = (negToggle.value === "on");
+
+    const nNorm = normalizeInput(generateNumber(p, mode, allowNeg));
+    const expected = roundStringHalfUp(nNorm, p);
+    const expectedNorm = normalizeInput(expected);
+
+    current = {
+      n: nNorm,
+      p,
+      expectedNorm,
+      explainHtml: explainRounding(nNorm, p, expected)
+    };
+
+    taskNumEl.textContent = formatForDisplay(nNorm);
+    const placeName = PLACES.find(x => x.p === p)?.name || ("10^" + p);
+    taskTextEl.textContent = `Округлите число до: ${placeName}.`;
+  }
+
+  function check() {
+    const stats = loadStats();
+    const userNorm = normalizeInput(answerInput.value);
+
+    if (userNorm === "" || userNorm === "NaN") {
+      setFeedback("bad", `<b>Проверь ввод.</b> Пример: <span class="mono">12 300</span> или <span class="mono">4,57</span>.`);
+      return;
+    }
+
+    stats.total += 1;
+    const ok = (userNorm === current.expectedNorm);
+
+    if (ok) {
+      stats.correct += 1;
+      stats.streak += 1;
+      stats.best = Math.max(stats.best, stats.streak);
+      setFeedback("ok", `✅ <b>Верно!</b> Ответ: <span class="mono">${formatForDisplay(current.expectedNorm)}</span>.`);
+    } else {
+      stats.streak = 0;
+      setFeedback("bad",
+        `❌ <b>Неверно.</b> Правильный ответ: <span class="mono">${formatForDisplay(current.expectedNorm)}</span>.<br>
+         Ты ввёл(а): <span class="mono">${formatForDisplay(userNorm)}</span>.`
+      );
+    }
+
+    saveStats(stats);
+    renderStats(stats);
+  }
+
+  function showSolution(){ solutionText.innerHTML = current.explainHtml || ""; solutionBox.open = true; }
+  function resetStats(){ localStorage.removeItem(LS_KEY); renderStats({correct:0,total:0,streak:0,best:0}); clearFeedback(); }
+
+  function init() {
+    placeSelect.innerHTML = PLACES.map(pl => `<option value="${pl.p}">${pl.name}</option>`).join("");
+    placeSelect.value = "0";
+
+    checkBtn.addEventListener("click", check);
+    nextBtn.addEventListener("click", newTask);
+    showBtn.addEventListener("click", showSolution);
+    resetBtn.addEventListener("click", resetStats);
+
+    placeSelect.addEventListener("change", newTask);
+    modeSelect.addEventListener("change", newTask);
+    negToggle.addEventListener("change", newTask);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && e.ctrlKey) { e.preventDefault(); newTask(); return; }
+      if (e.key === "Enter") { e.preventDefault(); check(); return; }
+    });
+
+    renderStats(loadStats());
+    newTask();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
 
