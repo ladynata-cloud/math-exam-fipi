@@ -1,227 +1,284 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Деление уголком (по-русски)</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Деление уголком — тетрадный вид (ОГЭ)</title>
+
+  <!-- общий стиль сайта (не обязателен, но пусть будет) -->
+  <link rel="stylesheet" href="../../style.css">
+
   <style>
-    :root {
+    :root{
+      --bg:#fbfbfa;
+      --paper:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border: rgba(15,23,42,.12);
+      --accent:#2f5f73;
+      --soft: rgba(47,95,115,.10);
+      --ok: rgba(22,163,74,.12);
+      --bad: rgba(239,68,68,.10);
+      --shadow: 0 10px 26px rgba(15,23,42,.06);
+      --r:16px;
+
+      --cell: 1.55em;
+      --divcol: 4.2em;
+      --line: rgba(15,23,42,.28);
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
     }
-    body { margin: 20px; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height: 1.35; }
-    .wrap { max-width: 1100px; margin: 0 auto; }
-    h1 { font-size: 20px; margin: 0 0 10px; }
+    *{ box-sizing:border-box; }
+    body{ margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background: var(--bg); color: var(--text); line-height: 1.35; }
+    .wrap{ width:min(1180px, calc(100% - 32px)); margin: 18px auto 30px; }
+    h1{ margin:0 0 6px; font-size:20px; }
+    .sub{ margin:0 0 14px; color: var(--muted); }
 
-    .bar { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin: 12px 0 16px; }
-    button { padding: 8px 12px; cursor:pointer; }
-    input[type="number"] { width: 120px; padding:6px 8px; }
-    .status { padding: 8px 10px; border-radius: 10px; background: #f3f4f6; }
-    .ok { background:#ecfdf5; }
-    .bad { background:#fef2f2; }
+    .nav{ display:flex; gap:10px; flex-wrap:wrap; margin: 10px 0 14px; }
+    .nav a{
+      text-decoration:none;
+      padding:8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(15,23,42,.12);
+      color: var(--accent);
+      font-weight: 900;
+    }
+    .nav a:hover{ background: rgba(47,95,115,.08); border-color: rgba(47,95,115,.25); }
 
-    .board { display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start; }
-    .card { border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; }
-    .problem { min-width: 430px; }
-    .side { flex:1; min-width: 330px; }
+    .bar{ display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin: 10px 0 14px; }
+    .field{ display:flex; flex-direction:column; gap:6px; }
+    .label{ font-size:12px; font-weight:900; color: var(--muted); }
+    input[type="number"]{
+      padding:10px 12px; border-radius: 12px; border:1px solid rgba(15,23,42,.14);
+      background:#fff; outline:none; font-size:14px; width: 190px;
+    }
+    input[type="number"]:focus{ border-color: rgba(47,95,115,.45); box-shadow: 0 0 0 3px rgba(47,95,115,.12); }
 
-    /* RU-уголок: делимое слева, делитель справа сверху, частное справа снизу */
-    .ru-corner {
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding: 10px 14px; border-radius: 12px;
+      border: 1px solid rgba(47,95,115,.25);
+      background: var(--accent); color:#fff;
+      font-weight: 900; cursor:pointer; user-select:none;
+    }
+    .btn:hover{ filter:brightness(.98); }
+    .btn.soft{ background: rgba(255,255,255,.75); color: var(--text); border-color: rgba(15,23,42,.14); }
+    .btn.soft:hover{ background: rgba(47,95,115,.08); border-color: rgba(47,95,115,.25); }
+
+    .status{
+      flex:1; min-width: 280px;
+      padding: 10px 12px; border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.65); color: var(--muted);
+    }
+    .status.ok{ background: var(--ok); border-color: rgba(22,163,74,.25); color: rgba(21,128,61,.95); }
+    .status.bad{ background: var(--bad); border-color: rgba(239,68,68,.25); color: rgba(185,28,28,.95); }
+
+    .grid{ display:grid; grid-template-columns: 1.25fr .75fr; gap: 14px; align-items:start; }
+    @media (max-width: 980px){ .grid{ grid-template-columns: 1fr; } }
+    .card{ background: var(--paper); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow); padding: 14px; }
+
+    .paper{
+      border-radius: var(--r);
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(circle at 1px 1px, rgba(15,23,42,.06) 1px, transparent 1px) 0 0/18px 18px,
+        linear-gradient(#fff,#fff);
+      padding: 14px; overflow:auto;
+    }
+
+    .divGrid{
+      font-family: var(--mono);
+      --n: 6;
       display: grid;
-      grid-template-columns: auto 18px auto;
-      grid-template-rows: auto 10px auto;
-      column-gap: 10px;
-      align-items: start;
-      font-family: var(--mono);
-      font-size: 34px;
-      line-height: 1.1;
-    }
-    .ru-dividend { grid-column: 1; grid-row: 1; padding-left: 2px; position: relative; }
-    .ru-vline {
-      grid-column: 2; grid-row: 1 / 4;
-      border-left: 4px solid #111827;
-      border-radius: 2px;
-    }
-    .ru-divisor  { grid-column: 3; grid-row: 1; padding-left: 6px; }
-    .ru-hline {
-      grid-column: 2 / 4; grid-row: 2;
-      border-top: 4px solid #111827;
-      margin-top: 2px;
-      height: 0;
-    }
-    .ru-quotient { grid-column: 3; grid-row: 3; padding-left: 6px; min-height: 38px; }
-
-    /* Делимое по цифрам + дуга */
-    .digits {
-      font-family: var(--mono);
-      display: inline-block;
+      grid-template-columns: var(--divcol) repeat(var(--n), var(--cell));
+      grid-auto-rows: 1.55em;
+      align-items: center;
+      justify-content: start;
+      min-width: calc(var(--divcol) + var(--n) * var(--cell));
       position: relative;
-      letter-spacing: 0;
     }
-    .digits .d { display:inline-block; width: 1ch; text-align:center; }
-    .arc {
-      position: absolute;
-      left: calc(var(--arc-start, 0) * 1ch);
-      width: calc(var(--arc-len, 0) * 1ch);
-      top: -14px;
-      height: 14px;
-      border-top: 3px solid #111827;
-      border-radius: 999px 999px 0 0;
-      opacity: 0.9;
-      pointer-events:none;
-    }
+    .cell{ text-align:center; font-size:26px; line-height:1; padding:0 .05em; user-select:none; }
+    .cell.small{ font-size: 18px; color: var(--muted); }
 
-    /* Столбик под делимым */
-    .work {
-      margin-top: 14px;
-      font-family: var(--mono);
-      font-size: 28px;
-      white-space: pre;
-    }
+    .vline{ grid-column: 1 / 2; grid-row: 2 / span 2; justify-self: end; align-self: stretch; width: 0; border-right: 2px solid var(--line); margin-right: .15em; }
+    .hline{ grid-column: 2 / span var(--n); grid-row: 2 / 3; align-self: start; height: 0; border-top: 2px solid var(--line); margin-top: .18em; }
+    .divisor{ grid-column: 1 / 2; grid-row: 2 / 3; justify-self: end; padding-right: .35em; font-size: 26px; font-weight: 800; }
+    .qCell{ font-size: 26px; font-weight: 900; color: rgba(15,23,42,.92); }
 
-    .row { display:flex; gap: 10px; align-items:center; margin: 8px 0; flex-wrap:wrap; }
-    .row label { font-weight: 600; }
-    .small { font-size: 14px; opacity: .85; }
-    .pill { display:inline-block; padding:2px 8px; border-radius:999px; background:#f3f4f6; font-size: 13px; }
-    .kbd { font-family: var(--mono); padding:2px 6px; border:1px solid #e5e7eb; border-bottom-width:2px; border-radius: 8px; }
+    .hlBring{ background: rgba(245,158,11,.18); border: 1px solid rgba(245,158,11,.30); border-radius: 8px; padding-top: .06em; padding-bottom: .06em; }
+    .hlCurrent{ background: rgba(47,95,115,.14); border: 1px solid rgba(47,95,115,.22); border-radius: 8px; padding-top: .06em; padding-bottom: .06em; }
 
-    .split { display:flex; gap:16px; flex-wrap:wrap; align-items:flex-start; }
-    .boxTitle { font-weight: 700; margin-bottom: 8px; }
+    .minusCell{ justify-self:end; color: rgba(15,23,42,.65); font-weight: 900; }
+    .underline{ border-bottom: 2px solid rgba(15,23,42,.45); padding-bottom: .15em; }
+    .remainder{ color: rgba(15,23,42,.90); font-weight: 800; }
 
-    /* Умножалка */
-    .mul {
-      font-family: var(--mono);
-      font-size: 24px;
-      white-space: pre;
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 12px;
-    }
-    .log {
-      font-family: var(--mono);
-      font-size: 16px;
-      white-space: pre-wrap;
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      padding: 12px;
-    }
-
-    .mode {
-      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
-      padding: 10px 12px; border:1px solid #e5e7eb; border-radius: 12px;
-      background:#fff;
-    }
-    .mode input { width:auto; }
-    .fieldNote { font-size: 13px; opacity: .8; }
-
-    .gridInputs {
+    .controls{
+      margin-top: 10px;
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px 14px;
+      gap: 10px 12px;
       align-items:end;
-      margin-top: 10px;
     }
-    .gridInputs .cell { display:flex; flex-direction:column; gap:6px; }
-    .gridInputs input[type="number"] { width: 100%; }
-    .actions { margin-top: 12px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    @media (max-width: 520px){ .controls{ grid-template-columns: 1fr; } }
+
+    .check{ display:flex; gap:8px; align-items:center; color: var(--muted); font-size: 14px; user-select:none; }
+
+    .levelBox{
+      margin-top: 10px;
+      border: 1px solid rgba(15,23,42,.10);
+      border-radius: 12px;
+      padding: 10px;
+      background: rgba(15,23,42,.02);
+      display:flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+    .levelBox b{ margin-right: 6px; }
+    .levelOpt{ display:flex; gap:8px; align-items:center; color: var(--muted); font-size: 14px; }
+
+    .stepInputs{
+      margin-top: 10px;
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px 12px;
+      align-items:end;
+    }
+    @media (max-width: 980px){ .stepInputs{ grid-template-columns: 1fr; } }
+
+    .mutedNote{ margin-top: 6px; color: var(--muted); font-size: 13px; }
+
+    .log{
+      margin-top: 12px;
+      font-family: var(--mono);
+      font-size: 13px;
+      white-space: pre-wrap;
+      background: rgba(15,23,42,.02);
+      border: 1px solid rgba(15,23,42,.10);
+      border-radius: 12px;
+      padding: 10px;
+      min-height: 140px;
+      color: rgba(100,116,139,.95);
+    }
+
+    .right h2{ margin:0 0 10px; font-size:16px; }
+    .small{ color: var(--muted); font-size: 14px; }
+    .pill{
+      display:inline-flex; align-items:center; gap:6px;
+      padding: 4px 10px; border-radius: 999px;
+      background: var(--soft);
+      border: 1px solid rgba(47,95,115,.18);
+      color: var(--accent);
+      font-size: 12px; font-weight: 900;
+      white-space: nowrap;
+    }
   </style>
 </head>
 
 <body>
 <div class="wrap">
-  <h1>Деление уголком — российский стандарт (максимально подробно)</h1>
+  <h1>Деление уголком — тетрадный вид</h1>
+  <p class="sub">Уровни: 1) только q, 2) q+произведение+вычитание, 3) полный шаг со “сносом”.</p>
 
-  <div class="bar">
-    <div class="row">
-      <label>Делимое:</label>
-      <input id="dividendIn" type="number" min="0" step="1" value="41608">
-    </div>
-    <div class="row">
-      <label>Делитель:</label>
-      <input id="divisorIn" type="number" min="1" step="1" value="56">
-    </div>
-    <button id="startBtn">Начать</button>
-    <button id="randomBtn">Случайный пример</button>
-    <button id="resetBtn">Сброс</button>
-    <div id="status" class="status">Введи числа и нажми «Начать».</div>
+  <div class="nav">
+    <a href="../../index.html">← Главная</a>
+    <a href="./long-multiplication.html">Умножение столбиком →</a>
+    <a href="../multiplication-table/index.html">Таблица умножения →</a>
   </div>
 
-  <div class="board">
-    <!-- Основная карточка -->
-    <div class="card problem">
-      <div class="ru-corner" aria-label="деление уголком (RU)">
-        <div class="ru-dividend">
-          <div id="dividendDigits" class="digits">
-            <div class="arc" id="arc"></div>
-          </div>
-        </div>
-        <div class="ru-vline"></div>
-        <div class="ru-divisor"  id="divisorOut"></div>
-        <div class="ru-hline"></div>
-        <div class="ru-quotient" id="quotientOut"></div>
-      </div>
-
-      <div class="work" id="workOut"></div>
-
-      <div class="mode" style="margin-top:12px;">
-        <label style="display:flex; align-items:center; gap:8px;">
-          <input id="detailedMode" type="checkbox" checked>
-          <span><b>Подробный режим</b> (проверяем как в тетради: цифра частного → произведение → остаток → “снесённое” число)</span>
-        </label>
-        <span class="fieldNote">Если снять галочку — останутся только «цифра частного» и «остаток».</span>
-      </div>
-
-      <div class="gridInputs" id="inputsBlock">
-        <div class="cell">
-          <label for="qDigit">Цифра частного (0–9)</label>
-          <input id="qDigit" type="number" min="0" max="9" step="1">
-          <div class="fieldNote" id="noteQ"></div>
-        </div>
-        <div class="cell">
-          <label for="product">Произведение (делитель × цифра)</label>
-          <input id="product" type="number" min="0" step="1">
-          <div class="fieldNote" id="noteP"></div>
-        </div>
-        <div class="cell">
-          <label for="remainder">Остаток (после вычитания)</label>
-          <input id="remainder" type="number" min="0" step="1">
-          <div class="fieldNote" id="noteR"></div>
-        </div>
-        <div class="cell">
-          <label for="nextNum">Число после “сноса”</label>
-          <input id="nextNum" type="number" min="0" step="1">
-          <div class="fieldNote" id="noteN"></div>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button id="checkBtn">Проверить шаг</button>
-        <span class="small">Enter работает в любом поле: <span class="kbd">Enter</span></span>
-      </div>
-
-      <div class="small" style="margin-top:10px;">
-        Подсказка: тренажёр всегда работает так, как в школе: берём слева минимальный кусок делимого ≥ делителя → делим → умножаем → вычитаем → сносим следующую цифру.
-      </div>
+  <div class="bar">
+    <div class="field">
+      <div class="label">Делимое</div>
+      <input id="dividendIn" type="number" min="0" step="1" value="41608"/>
+    </div>
+    <div class="field">
+      <div class="label">Делитель</div>
+      <input id="divisorIn" type="number" min="1" step="1" value="56"/>
     </div>
 
-    <!-- Боковая карточка -->
-    <div class="card side">
-      <div class="split">
-        <div style="flex:1; min-width: 260px;">
-          <div class="boxTitle">Умножалка (как справа у тебя)</div>
-          <div class="mul" id="mulOut">—</div>
+    <button class="btn" id="startBtn">Старт</button>
+    <button class="btn soft" id="randomBtn">Случайный</button>
+    <button class="btn soft" id="resetBtn">Сброс</button>
+
+    <div class="status" id="status">Введи числа и нажми «Старт».</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="paper">
+        <div id="divArea"></div>
+      </div>
+
+      <div class="controls">
+        <div class="field">
+          <div class="label">Цифра частного (0–9)</div>
+          <input id="qDigitIn" type="number" min="0" max="9" step="1" placeholder="0–9" disabled>
         </div>
-        <div style="flex:1; min-width: 260px;">
-          <div class="boxTitle">Лог шагов (для учителя)</div>
-          <div class="log" id="logOut">—</div>
+
+        <div class="field">
+          <div class="label">Действия</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn" id="checkBtn" disabled>Проверить шаг</button>
+            <button class="btn soft" id="hintBtn" disabled>Подсказка</button>
+          </div>
+        </div>
+
+        <label class="check">
+          <input id="calmMode" type="checkbox" checked>
+          <span><b>Режим спокойствия</b> (объяснять “мало/велико”)</span>
+        </label>
+
+        <label class="check">
+          <input id="autoZero" type="checkbox" checked>
+          <span>Разрешать нули в частном (если кусок &lt; делителя)</span>
+        </label>
+      </div>
+
+      <div class="levelBox" aria-label="Уровень цепочки">
+        <b>Уровень:</b>
+        <label class="levelOpt"><input type="radio" name="lvl" value="1" checked> 1 — только q</label>
+        <label class="levelOpt"><input type="radio" name="lvl" value="2"> 2 — q + prod + rem</label>
+        <label class="levelOpt"><input type="radio" name="lvl" value="3"> 3 — полный ( + nextChunk )</label>
+      </div>
+
+      <div id="stepBox" class="stepInputs">
+        <div class="field" id="prodField">
+          <div class="label">Произведение (d×q)</div>
+          <input id="prodIn" type="number" min="0" step="1" placeholder="например 56×7=392" disabled>
+          <div class="mutedNote" id="prodNote">—</div>
+        </div>
+
+        <div class="field" id="remField">
+          <div class="label">Остаток шага (N−prod)</div>
+          <input id="remIn" type="number" min="0" step="1" placeholder="например 416−392=24" disabled>
+          <div class="mutedNote" id="remNote">—</div>
+        </div>
+
+        <div class="field" id="nextField">
+          <div class="label">Новый кусок после сноса</div>
+          <input id="nextChunkIn" type="number" min="0" step="1" placeholder="например 24 и снесли 0 → 240" disabled>
+          <div class="mutedNote" id="nextNote">—</div>
         </div>
       </div>
 
-      <hr style="border:none; border-top:1px solid #e5e7eb; margin: 14px 0;">
+      <div class="mutedNote" id="formulaNote" style="margin-top:8px;">—</div>
+
+      <div class="log" id="logOut">—</div>
+    </div>
+
+    <div class="card right">
+      <h2>Что сейчас происходит</h2>
+      <div class="small" id="sideInfo">Нажми «Старт».</div>
+
+      <hr style="border:none; border-top:1px solid rgba(15,23,42,.10); margin: 12px 0;">
 
       <div class="small">
-        Если захочешь — добавлю ещё один уровень “жёсткости”: чтобы ученик вводил не только произведение, но и **строку вычитания с минусом** (например, “-392”) и чтобы проверялась форма записи.
+        <div class="pill">Правило</div>
+        <div style="margin-top:8px;">
+          Для текущего куска <b>N</b> ищем цифру <b>q</b>, чтобы:<br>
+          <b>d×q ≤ N</b>, а <b>d×(q+1) > N</b>.
+        </div>
       </div>
     </div>
   </div>
@@ -229,445 +286,530 @@
 
 <script>
 (() => {
-  const el = (id) => document.getElementById(id);
+  const $ = (id) => document.getElementById(id);
+  const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
-  const dividendIn = el('dividendIn');
-  const divisorIn  = el('divisorIn');
+  const dividendIn = $("dividendIn");
+  const divisorIn  = $("divisorIn");
+  const startBtn = $("startBtn");
+  const randomBtn = $("randomBtn");
+  const resetBtn = $("resetBtn");
 
-  const startBtn   = el('startBtn');
-  const randomBtn  = el('randomBtn');
-  const resetBtn   = el('resetBtn');
-  const checkBtn   = el('checkBtn');
+  const statusEl = $("status");
+  const divArea = $("divArea");
+  const logOut = $("logOut");
 
-  const status     = el('status');
-  const divisorOut = el('divisorOut');
-  const quotientOut= el('quotientOut');
-  const workOut    = el('workOut');
+  const qDigitIn = $("qDigitIn");
+  const checkBtn = $("checkBtn");
+  const hintBtn = $("hintBtn");
 
-  const digitsBox  = el('dividendDigits');
-  const arcEl      = el('arc');
+  const calmMode = $("calmMode");
+  const autoZero = $("autoZero");
+  const sideInfo = $("sideInfo");
 
-  const detailedMode = el('detailedMode');
+  const prodField = $("prodField");
+  const remField  = $("remField");
+  const nextField = $("nextField");
 
-  const qDigitIn   = el('qDigit');
-  const productIn  = el('product');
-  const remainderIn= el('remainder');
-  const nextNumIn  = el('nextNum');
+  const prodIn = $("prodIn");
+  const remIn  = $("remIn");
+  const nextChunkIn = $("nextChunkIn");
 
-  const noteQ = el('noteQ');
-  const noteP = el('noteP');
-  const noteR = el('noteR');
-  const noteN = el('noteN');
-
-  const mulOut = el('mulOut');
-  const logOut = el('logOut');
+  const prodNote = $("prodNote");
+  const remNote  = $("remNote");
+  const nextNote = $("nextNote");
+  const formulaNote = $("formulaNote");
 
   let st = null;
+  let level = 1;
 
-  function setStatus(text, kind = 'neutral') {
-    status.textContent = text;
-    status.className = 'status' + (kind === 'ok' ? ' ok' : kind === 'bad' ? ' bad' : '');
+  function setStatus(text, kind=""){
+    statusEl.className = "status" + (kind ? " " + kind : "");
+    statusEl.textContent = text;
   }
-
-  function sanitizeInt(v, fallback = null) {
-    if (v === '' || v === null || v === undefined) return fallback;
+  function sInt(v, fb=null){
+    if (v === "" || v === null || v === undefined) return fb;
     const n = Number(v);
-    if (!Number.isFinite(n)) return fallback;
+    if (!Number.isFinite(n)) return fb;
     return Math.trunc(n);
   }
+  function randInt(a,b){ return a + Math.floor(Math.random()*(b-a+1)); }
 
-  function spaces(n) { return n > 0 ? ' '.repeat(n) : ''; }
-
-  function resetUI() {
-    divisorOut.textContent = '';
-    quotientOut.textContent = '';
-    workOut.textContent = '';
-    mulOut.textContent = '—';
-    logOut.textContent = '—';
-
-    qDigitIn.value = '';
-    productIn.value = '';
-    remainderIn.value = '';
-    nextNumIn.value = '';
-
-    noteQ.textContent = '';
-    noteP.textContent = '';
-    noteR.textContent = '';
-    noteN.textContent = '';
-
-    digitsBox.innerHTML = '<div class="arc" id="arc"></div>';
+  function getLevel(){
+    const v = document.querySelector('input[name="lvl"]:checked')?.value ?? "1";
+    return Number(v);
   }
 
-  function renderDividendDigits(numStr) {
-    digitsBox.innerHTML = '';
-    digitsBox.appendChild(arcEl); // arc уже создан в DOM, просто возвращаем внутрь контейнера
-    for (const ch of numStr) {
-      const s = document.createElement('span');
-      s.className = 'd';
-      s.textContent = ch;
-      digitsBox.appendChild(s);
+  function applyLevelUI(){
+    level = getLevel();
+    prodField.style.display = (level >= 2) ? "" : "none";
+    remField.style.display  = (level >= 2) ? "" : "none";
+    nextField.style.display = (level >= 3) ? "" : "none";
+
+    const enabled = !!(st && st.phase === "ask");
+    prodIn.disabled = !(enabled && level >= 2);
+    remIn.disabled  = !(enabled && level >= 2);
+    nextChunkIn.disabled = !(enabled && level >= 3);
+
+    if (!enabled){
+      prodIn.value = ""; remIn.value = ""; nextChunkIn.value = "";
+      prodNote.textContent = "—"; remNote.textContent = "—"; nextNote.textContent="—"; formulaNote.textContent="—";
+    } else {
+      updateNotes();
     }
   }
 
-  function setArc(start, len) {
-    // start, len в "количестве цифр"
-    digitsBox.style.setProperty('--arc-start', String(start));
-    digitsBox.style.setProperty('--arc-len', String(len));
-    arcEl.style.display = (len > 0 ? 'block' : 'none');
+  function updateNotes(){
+    if (!st || st.phase !== "ask"){
+      prodNote.textContent = "—"; remNote.textContent = "—"; nextNote.textContent="—"; formulaNote.textContent="—";
+      return;
+    }
+    const N = st.chunk, d = st.divisor;
+    formulaNote.textContent = `Сейчас: N=${N}, d=${d}. (Уровень ${level})`;
+
+    if (level >= 2){
+      prodNote.textContent = `prod = ${d}×q`;
+      remNote.textContent  = `rem = ${N} − prod`;
+    } else {
+      prodNote.textContent = "—";
+      remNote.textContent = "—";
+    }
+
+    if (level >= 3){
+      if (st.nextDigitIndex < st.n){
+        const b = st.digits[st.nextDigitIndex];
+        nextNote.textContent = `Сносим цифру ${b}: next = rem×10 + ${b}`;
+      } else {
+        nextNote.textContent = `Цифр больше нет — поле next не нужно (финал).`;
+      }
+    } else {
+      nextNote.textContent = "—";
+    }
   }
 
-  function makeRandom() {
-    const divisor = Math.floor(Math.random() * 90) + 10;        // 10..99
-    const dividend = Math.floor(Math.random() * 90000) + 1000;  // 1000..99999
+  function expectedDigit(){
+    let q = Math.floor(st.chunk / st.divisor);
+    if (q > 9) q = 9;
+    if (q < 0) q = 0;
+    return q;
+  }
+  function explainTooSmall(q){
+    const d = st.divisor, N = st.chunk;
+    const next = d * (q + 1);
+    return `${d}×(${q}+1) = ${next} ${next <= N ? "≤" : ">"} ${N} → цифра ${q} мала.`;
+  }
+  function explainTooBig(q){
+    const d = st.divisor, N = st.chunk;
+    const cur = d * q;
+    const prev = q > 0 ? d * (q - 1) : null;
+    let s = `${d}×${q} = ${cur} > ${N} → цифра ${q} велика.`;
+    if (prev !== null){
+      s += ` Проверка снизу: ${d}×(${q}-1) = ${prev} ${prev <= N ? "≤" : ">"} ${N}.`;
+    }
+    return s;
+  }
+  function explainCorrect(q){
+    const d = st.divisor, N = st.chunk;
+    const cur = d*q;
+    const nxt = d*(q+1);
+    return `Проверка: ${d}×${q}=${cur} ≤ ${N}, а ${d}×(${q}+1)=${nxt} > ${N}.`;
+  }
+
+  function hint(){
+    if (!st || st.phase !== "ask") return;
+    const q = expectedDigit();
+    const msg = `Подсказка: q=⌊${st.chunk}/${st.divisor}⌋=${q}. ${explainCorrect(q)}`;
+    setStatus("Подсказка показана.", "ok");
+    st.log.push(msg);
+    logOut.textContent = st.log.join("\n");
+    updateNotes();
+  }
+
+  function start(){
+    const dividend = sInt(dividendIn.value, null);
+    const divisor  = sInt(divisorIn.value, null);
+
+    if (dividend === null || divisor === null || dividend < 0 || divisor <= 0){
+      setStatus("Проверь числа: делимое ≥ 0, делитель > 0.", "bad");
+      return;
+    }
+
+    const digits = String(dividend).split("").map(Number);
+    const n = digits.length;
+
+    let chunk = 0;
+    let end = -1;
+    while (end + 1 < n){
+      end++;
+      chunk = chunk * 10 + digits[end];
+      if (chunk >= divisor) break;
+    }
+
+    if (chunk < divisor && end === n-1){
+      st = { dividend, divisor, digits, n, quotient: Array(n).fill(""), steps: [], curEnd: n-1, chunk: dividend, nextDigitIndex: n, remainder: dividend, phase:"done", bringIndex:null, log:[] };
+      st.quotient[n-1] = "0";
+      qDigitIn.disabled = true;
+      checkBtn.disabled = true;
+      hintBtn.disabled = true;
+      setStatus("Готово: делимое меньше делителя.", "ok");
+      sideInfo.textContent = `Так как ${dividend} < ${divisor}, частное 0, остаток ${dividend}.`;
+      st.log = [sideInfo.textContent];
+      logOut.textContent = st.log.join("\n");
+      render();
+      applyLevelUI();
+      return;
+    }
+
+    st = { dividend, divisor, digits, n, quotient: Array(n).fill(""), steps: [], curEnd: end, chunk, nextDigitIndex: end+1, remainder:null, phase:"ask", bringIndex:end, log:[`Старт: первый кусок N=${chunk}.`] };
+
+    qDigitIn.disabled = false;
+    checkBtn.disabled = false;
+    hintBtn.disabled = false;
+    qDigitIn.value = "";
+    qDigitIn.focus();
+
+    prodIn.value = ""; remIn.value = ""; nextChunkIn.value = "";
+
+    setStatus("Подбираем цифру частного.", "");
+    sideInfo.textContent = `Сейчас N=${st.chunk}, d=${st.divisor}.`;
+    logOut.textContent = st.log.join("\n");
+
+    applyLevelUI();
+    render();
+  }
+
+  function check(){
+    if (!st || st.phase !== "ask") return;
+
+    const q = sInt(qDigitIn.value, null);
+    if (q === null || q < 0 || q > 9){
+      setStatus("Введи цифру 0–9.", "bad");
+      return;
+    }
+
+    const d = st.divisor;
+    const N = st.chunk;
+
+    if (N < d && !autoZero.checked){
+      setStatus("Сейчас N < d. В классике здесь ставят 0 и сносят следующую цифру.", "bad");
+      st.log.push(`Ситуация: ${N} < ${d}. Включи “нули в частном” или выбери другой пример.`);
+      logOut.textContent = st.log.join("\n");
+      return;
+    }
+
+    const prod = d * q;
+
+    if (prod > N){
+      setStatus("Слишком большая цифра.", "bad");
+      st.log.push(calmMode.checked ? explainTooBig(q) : `Велико: ${d}×${q} > ${N}.`);
+      logOut.textContent = st.log.join("\n");
+      return;
+    }
+
+    const corr = expectedDigit();
+    if (N >= d && q < corr){
+      setStatus("Цифра слишком маленькая.", "bad");
+      st.log.push(calmMode.checked ? explainTooSmall(q) : "Мало: можно увеличить цифру.");
+      logOut.textContent = st.log.join("\n");
+      return;
+    }
+
+    if (level >= 2){
+      const prodUser = sInt(prodIn.value, null);
+      const remUser  = sInt(remIn.value, null);
+      const prodExp  = d * q;
+      const remExp   = N - prodExp;
+
+      updateNotes();
+
+      if (prodUser === null){
+        setStatus("Уровень 2/3: введи произведение (d×q).", "bad");
+        return;
+      }
+      if (prodUser !== prodExp){
+        setStatus("Произведение неверно.", "bad");
+        st.log.push(`Произведение: ожидали ${d}×${q}=${prodExp}, получено ${prodUser}.`);
+        logOut.textContent = st.log.join("\n");
+        prodNote.textContent = `Нужно: ${d}×${q} = ${prodExp}`;
+        return;
+      }
+
+      if (remUser === null){
+        setStatus("Уровень 2/3: введи остаток шага (N−prod).", "bad");
+        return;
+      }
+      if (remUser !== remExp){
+        setStatus("Вычитание неверно (остаток на шаге).", "bad");
+        st.log.push(`Вычитание: ожидали ${N}-${prodExp}=${remExp}, получено ${remUser}.`);
+        logOut.textContent = st.log.join("\n");
+        remNote.textContent = `Нужно: ${N} − ${prodExp} = ${remExp}`;
+        return;
+      }
+
+      if (level >= 3 && st.nextDigitIndex < st.n){
+        const bringDigit = st.digits[st.nextDigitIndex];
+        const nextExp = remExp * 10 + bringDigit;
+        const nextUser = sInt(nextChunkIn.value, null);
+
+        if (nextUser === null){
+          setStatus("Уровень 3: введи новый кусок после сноса.", "bad");
+          return;
+        }
+        if (nextUser !== nextExp){
+          setStatus("Новый кусок после сноса — неверно.", "bad");
+          st.log.push(`Снос: ожидали ${remExp} и снесли ${bringDigit} → ${nextExp}, получено ${nextUser}.`);
+          logOut.textContent = st.log.join("\n");
+          nextNote.textContent = `Нужно: ${remExp} и снесли ${bringDigit} → ${nextExp}`;
+          return;
+        }
+      }
+
+      if (calmMode.checked){
+        st.log.push(explainCorrect(q));
+        logOut.textContent = st.log.join("\n");
+      }
+    }
+
+    applyStep(q);
+  }
+
+  function applyStep(q){
+    const d = st.divisor;
+    const prod = d * q;
+    const rem = st.chunk - prod;
+
+    st.quotient[st.curEnd] = String(q);
+
+    st.steps.push({ kind: "product", end: st.curEnd, text: String(prod), minus: true });
+    st.steps.push({ kind: "line", end: st.curEnd, len: Math.max(String(prod).length, String(st.chunk).length) + 1 });
+    st.steps.push({ kind: "remainder", end: st.curEnd, text: String(rem) });
+
+    st.log.push(`Шаг: N=${st.chunk}, q=${q}, prod=${prod}, остаток=${rem}.`);
+
+    if (st.nextDigitIndex < st.n){
+      const bringIdx = st.nextDigitIndex;
+      const bringDigit = st.digits[bringIdx];
+      const nextChunk = rem * 10 + bringDigit;
+
+      st.steps.push({ kind: "nextchunk", end: bringIdx, text: String(nextChunk), highlightLast: true });
+
+      st.curEnd = bringIdx;
+      st.chunk = nextChunk;
+      st.nextDigitIndex = bringIdx + 1;
+      st.bringIndex = bringIdx;
+
+      st.log.push(`Снесли цифру ${bringDigit} → новый кусок ${nextChunk}.`);
+      logOut.textContent = st.log.join("\n");
+
+      qDigitIn.value = "";
+      prodIn.value = ""; remIn.value = ""; nextChunkIn.value = "";
+      setStatus("Верно. Следующий шаг.", "ok");
+      sideInfo.textContent = `Теперь N=${st.chunk}.`;
+
+      render();
+      applyLevelUI();
+      qDigitIn.focus();
+      return;
+    }
+
+    st.phase = "done";
+    st.remainder = rem;
+
+    qDigitIn.disabled = true;
+    checkBtn.disabled = true;
+    hintBtn.disabled = true;
+
+    applyLevelUI();
+
+    const qStr = (st.quotient.join("").replace(/^0+(?=\d)/,"") || "0");
+    setStatus("Готово! Частное и остаток получены.", "ok");
+    sideInfo.textContent = `Ответ: ${st.dividend} : ${st.divisor} = ${qStr}${rem ? ` (ост. ${rem})` : ""}.`;
+    st.log.push(`Финиш. Остаток = ${rem}.`);
+    logOut.textContent = st.log.join("\n");
+    render();
+  }
+
+  function render(){
+    if (!st){ divArea.innerHTML = "<div style='color:#64748b'>—</div>"; return; }
+
+    const n = st.n;
+    const grid = document.createElement("div");
+    grid.className = "divGrid";
+    grid.style.setProperty("--n", String(n));
+    let row = 1;
+
+    for (let i=0; i<n; i++){
+      const c = document.createElement("div");
+      c.className = "cell qCell";
+      c.style.gridColumn = String(2 + i);
+      c.style.gridRow = String(row);
+      c.textContent = st.quotient[i] || "";
+      grid.appendChild(c);
+    }
+    const empty = document.createElement("div");
+    empty.className = "cell small";
+    empty.style.gridColumn = "1";
+    empty.style.gridRow = String(row);
+    grid.appendChild(empty);
+    row++;
+
+    const vline = document.createElement("div");
+    vline.className = "vline";
+    vline.style.gridColumn = "1";
+    vline.style.gridRow = `${row} / ${row+2}`;
+    grid.appendChild(vline);
+
+    const hline = document.createElement("div");
+    hline.className = "hline";
+    hline.style.gridColumn = `2 / span ${n}`;
+    hline.style.gridRow = `${row} / ${row+1}`;
+    grid.appendChild(hline);
+
+    const divCell = document.createElement("div");
+    divCell.className = "divisor";
+    divCell.style.gridColumn = "1";
+    divCell.style.gridRow = String(row);
+    divCell.textContent = String(st.divisor);
+    grid.appendChild(divCell);
+
+    for (let i=0; i<n; i++){
+      let cls = "";
+      if (st.phase === "ask" && i === st.bringIndex) cls = "hlBring";
+      if (st.phase === "ask" && i === st.curEnd) cls = cls ? (cls + " hlCurrent") : "hlCurrent";
+
+      const d = document.createElement("div");
+      d.className = "cell" + (cls ? " " + cls : "");
+      d.style.gridColumn = String(2 + i);
+      d.style.gridRow = String(row);
+      d.textContent = String(st.digits[i]);
+      grid.appendChild(d);
+    }
+    row++;
+
+    function placeNumber(r, endIdx, text, opts={}){
+      const s = String(text);
+      const L = s.length;
+      const startIdx = endIdx - L + 1;
+
+      if (opts.minus){
+        const minus = document.createElement("div");
+        minus.className = "cell minusCell";
+        minus.style.gridRow = String(r);
+        if (startIdx <= 0){
+          minus.style.gridColumn = "1";
+          minus.style.justifySelf = "end";
+          minus.style.paddingRight = ".35em";
+        } else {
+          minus.style.gridColumn = String(2 + startIdx - 1);
+        }
+        minus.textContent = "−";
+        grid.appendChild(minus);
+      }
+
+      for (let k=0; k<L; k++){
+        const idx = startIdx + k;
+        if (idx < 0 || idx >= n) continue;
+
+        const cell = document.createElement("div");
+        cell.className = "cell" + (opts.remainder ? " remainder" : "");
+        cell.style.gridColumn = String(2 + idx);
+        cell.style.gridRow = String(r);
+        cell.textContent = s[k];
+
+        if (opts.highlightLast && k === L-1){
+          cell.classList.add("hlBring");
+        }
+        grid.appendChild(cell);
+      }
+
+      if (opts.underline){
+        const uLen = opts.underlineLen ?? L;
+        const uStart = Math.max(0, endIdx - (uLen - 1));
+        const uEnd = Math.min(n-1, endIdx);
+        for (let idx=uStart; idx<=uEnd; idx++){
+          const u = document.createElement("div");
+          u.className = "cell underline";
+          u.style.gridColumn = String(2 + idx);
+          u.style.gridRow = String(r);
+          u.textContent = "";
+          grid.appendChild(u);
+        }
+      }
+    }
+
+    for (const it of st.steps){
+      if (it.kind === "product"){ placeNumber(row, it.end, it.text, {minus:true}); row++; }
+      else if (it.kind === "line"){ placeNumber(row, it.end, "", {underline:true, underlineLen: it.len}); row++; }
+      else if (it.kind === "remainder"){ placeNumber(row, it.end, it.text, {remainder:true}); row++; }
+      else if (it.kind === "nextchunk"){ placeNumber(row, it.end, it.text, {highlightLast: !!it.highlightLast}); row++; }
+    }
+
+    if (st.phase === "done"){
+      row++;
+      const qStr = (st.quotient.join("").replace(/^0+(?=\d)/,"") || "0");
+      const res = document.createElement("div");
+      res.className = "cell small";
+      res.style.gridColumn = `1 / span ${n+1}`;
+      res.style.gridRow = String(row);
+      res.style.justifySelf = "start";
+      res.style.textAlign = "left";
+      res.textContent = `Ответ: ${st.dividend} : ${st.divisor} = ${qStr}${st.remainder ? ` (ост. ${st.remainder})` : ""}`;
+      grid.appendChild(res);
+    }
+
+    divArea.innerHTML = "";
+    divArea.appendChild(grid);
+  }
+
+  function random(){
+    const divisor = randInt(12, 98);
+    const len = randInt(4, 6);
+    const min = Math.pow(10, len-1);
+    const max = Math.pow(10, len) - 1;
+    let dividend = randInt(min, max);
+    if (Math.random() < 0.35){
+      const s = String(dividend).split("");
+      const pos = randInt(1, s.length-2);
+      s[pos] = "0";
+      dividend = Number(s.join(""));
+    }
+    if (dividend < divisor) dividend += divisor;
     dividendIn.value = dividend;
     divisorIn.value = divisor;
     start();
   }
 
-  function start() {
-    const dividend = sanitizeInt(dividendIn.value, null);
-    const divisor  = sanitizeInt(divisorIn.value, null);
-
-    if (dividend === null || divisor === null || divisor <= 0 || dividend < 0) {
-      setStatus('Проверь числа: делимое ≥ 0, делитель > 0.', 'bad');
-      return;
-    }
-
-    const digits = String(dividend).split('').map(d => Number(d));
-
-    st = {
-      dividend,
-      divisor,
-      digits,
-      totalLen: digits.length,
-      i: 0,                 // сколько цифр делимого уже вовлечено (правый край текущего кусочка)
-      current: 0,
-      quotientDigits: [],
-      workLines: [],
-      mulLines: [],
-      logLines: [],
-      finished: false,
-      lastChunkStart: 0,     // начало текущего кусочка (для дуги)
-      lastChunkLen: 0        // длина текущего кусочка (для дуги)
-    };
-
-    resetUI();
-    divisorOut.textContent = String(divisor);
-    renderDividendDigits(String(dividend));
-
-    buildNextCurrentToAtLeastDivisor(/*isInitial=*/true);
-
-    // случай dividend < divisor
-    if (st.i >= st.digits.length && st.current < st.divisor) {
-      st.finished = true;
-      quotientOut.textContent = '0';
-      setArc(0, st.totalLen);
-      setStatus(`Готово! Частное: 0, остаток: ${st.dividend}.`, 'ok');
-      return;
-    }
-
-    render();
-    setStatus('Шаг 1: введи данные для следующего действия (как в тетради).', 'neutral');
-    qDigitIn.focus();
-  }
-
-  function buildNextCurrentToAtLeastDivisor(isInitial = false) {
-    // Собираем current, снося цифры, пока current >= divisor (или цифры не кончатся).
-    // Если мы уже начали частное — каждый "доснос" добавляет 0 в частное (как в тетради).
-    let startIndex = st.i; // потенциальное начало куска
-    if (isInitial) startIndex = 0;
-
-    while (st.i < st.digits.length && st.current < st.divisor) {
-      st.current = st.current * 10 + st.digits[st.i];
-      st.i++;
-      if (!isInitial && st.quotientDigits.length > 0) st.quotientDigits.push(0);
-    }
-
-    // вычислим дугу: кусок — это последние len(current) цифр, заканчивающиеся в позиции i
-    const curStr = String(st.current);
-    st.lastChunkLen = curStr.length;
-    st.lastChunkStart = st.i - st.lastChunkLen;
-
-    // если current всё ещё < divisor и цифры кончились — дуга будет на всём, но это финиш обработаем выше
-    setArc(st.lastChunkStart, st.lastChunkLen);
-  }
-
-  function expectedStep() {
-    if (!st || st.finished) return null;
-
-    if (st.i >= st.digits.length && st.current < st.divisor) {
-      return {
-        done: true,
-        quotient: st.quotientDigits.length ? st.quotientDigits.join('') : '0',
-        remainder: st.current
-      };
-    }
-
-    const q = Math.floor(st.current / st.divisor);
-    const prod = q * st.divisor;
-    const rem = st.current - prod;
-
-    let bringDownDigit = null;
-    let nextCurrent = rem;
-    let nextRightPos = st.i;
-
-    if (st.i < st.digits.length) {
-      bringDownDigit = st.digits[st.i];
-      nextCurrent = rem * 10 + bringDownDigit;
-      nextRightPos = st.i + 1;
-    }
-
-    // для выравнивания столбика:
-    const currentStr = String(st.current);
-    const prodStr = String(prod);
-    const barWidth = Math.max(currentStr.length, prodStr.length);
-
-    const rightPos = st.i; // правый край текущего куска по делимому
-
-    return {
-      done: false,
-      current: st.current,
-      rightPos,
-      qDigit: q,
-      product: prod,
-      remainder: rem,
-      bringDownDigit,
-      nextCurrent,
-      nextRightPos,
-      barWidth
-    };
-  }
-
-  function setFieldNotes(exp) {
-    if (!exp || exp.done) {
-      noteQ.textContent = '';
-      noteP.textContent = '';
-      noteR.textContent = '';
-      noteN.textContent = '';
-      return;
-    }
-    // Ненавязчивые подсказки “что сейчас делаем” (без ответа)
-    noteQ.textContent = `Сейчас делим: ${exp.current} : ${st.divisor}`;
-    noteP.textContent = `Должно быть: ${st.divisor} × (цифра частного)`;
-    noteR.textContent = `Остаток = ${exp.current} − произведение`;
-    noteN.textContent = exp.bringDownDigit === null
-      ? `Цифр больше нет → здесь обычно остаётся остаток`
-      : `Сносим следующую цифру делимого: ${exp.bringDownDigit}`;
-  }
-
-  function render() {
-    if (!st) return;
-
-    quotientOut.textContent = st.quotientDigits.length ? st.quotientDigits.join('') : '';
-    workOut.textContent = st.workLines.join('\n');
-
-    mulOut.textContent = st.mulLines.length ? st.mulLines.slice(-6).join('\n') : '—';
-    logOut.textContent = st.logLines.length ? st.logLines.join('\n') : '—';
-
-    const exp = expectedStep();
-    setFieldNotes(exp);
-
-    // дуга обновляется в buildNextCurrentToAtLeastDivisor, но на всякий случай:
-    if (st.lastChunkLen > 0) setArc(st.lastChunkStart, st.lastChunkLen);
-
-    // показываем/скрываем поля подробного режима
-    const on = detailedMode.checked;
-    productIn.parentElement.style.display = on ? 'flex' : 'none';
-    nextNumIn.parentElement.style.display = on ? 'flex' : 'none';
-    noteP.parentElement.style.display = on ? 'flex' : 'none';
-    noteN.parentElement.style.display = on ? 'flex' : 'none';
-  }
-
-  function addNotebookLines(exp) {
-    // Столбик "по-русски" под делимым:
-    //  -XXX
-    //  ----
-    //  YYY (после сноса)
-    const currentStr = String(exp.current);
-    const productStr = String(exp.product);
-    const barWidth = exp.barWidth;
-
-    const indentProd = exp.rightPos - productStr.length;
-    const indentBar  = exp.rightPos - barWidth;
-
-    st.workLines.push(spaces(indentProd) + '-' + productStr);
-    st.workLines.push(spaces(indentBar)  + '-'.repeat(barWidth));
-
-    const nextLineValue = (exp.bringDownDigit === null) ? exp.remainder : exp.nextCurrent;
-    const nextStr = String(nextLineValue);
-    const indentNext = exp.nextRightPos - nextStr.length;
-
-    st.workLines.push(spaces(indentNext) + nextStr);
-  }
-
-  function addMul(exp) {
-    // Умножалка “как на полях”: показываем последнюю операцию (делитель × цифра = произведение)
-    // Формат близкий к школьному:
-    //   56
-    // ×  7
-    // ----
-    //  392
-    const a = String(st.divisor);
-    const b = String(exp.qDigit);
-    const p = String(exp.product);
-
-    const w = Math.max(a.length, b.length + 2, p.length); // +2 под "× "
-    const line1 = spaces(w - a.length) + a;
-    const line2 = spaces(w - (b.length + 2)) + '× ' + b;
-    const line3 = '-'.repeat(w);
-    const line4 = spaces(w - p.length) + p;
-
-    st.mulLines.push(line1);
-    st.mulLines.push(line2);
-    st.mulLines.push(line3);
-    st.mulLines.push(line4);
-    st.mulLines.push(''); // пустая строка между примерами
-  }
-
-  function applyStep(user) {
-    const exp = expectedStep();
-    if (!exp) return;
-
-    if (exp.done) {
-      st.finished = true;
-      render();
-      setStatus(`Готово! Частное: ${exp.quotient}, остаток: ${exp.remainder}.`, 'ok');
-      return;
-    }
-
-    // Проверки (в зависимости от режима)
-    const detailed = detailedMode.checked;
-
-    if (user.qDigit !== exp.qDigit) {
-      setStatus(`Не сходится цифра частного. Проверь: ${exp.current} : ${st.divisor}.`, 'bad');
-      return;
-    }
-
-    if (detailed && user.product !== exp.product) {
-      setStatus(`Произведение неверное. Должно быть: ${st.divisor} × ${exp.qDigit}.`, 'bad');
-      return;
-    }
-
-    if (user.remainder !== exp.remainder) {
-      setStatus(`Остаток неверный. Проверь вычитание: ${exp.current} − ${exp.product}.`, 'bad');
-      return;
-    }
-
-    if (detailed) {
-      // В подробном режиме проверяем и “число после сноса”
-      const expectedNext = (exp.bringDownDigit === null) ? exp.remainder : exp.nextCurrent;
-      if (user.nextNum !== expectedNext) {
-        if (exp.bringDownDigit === null) {
-          setStatus(`Цифр больше нет — здесь должно быть просто ${exp.remainder}.`, 'bad');
-        } else {
-          setStatus(`После “сноса” должно получиться ${exp.nextCurrent} (снесли ${exp.bringDownDigit}).`, 'bad');
-        }
-        return;
-      }
-    }
-
-    // Записываем цифру частного
-    st.quotientDigits.push(exp.qDigit);
-
-    // Рисуем столбик и умножалку
-    addNotebookLines(exp);
-    addMul(exp);
-
-    // Лог “для учителя”
-    st.logLines.push(`Берём ${exp.current}, делим на ${st.divisor} → цифра ${exp.qDigit}`);
-    st.logLines.push(`${st.divisor}×${exp.qDigit}=${exp.product}, остаток ${exp.remainder}`);
-    if (exp.bringDownDigit !== null) st.logLines.push(`Снесли ${exp.bringDownDigit} → ${exp.nextCurrent}`);
-    else st.logLines.push(`Цифры кончились, остаток: ${exp.remainder}`);
-    st.logLines.push('');
-
-    // Переходим к следующему шагу
-    st.current = exp.remainder;
-
-    if (exp.bringDownDigit !== null) {
-      st.current = exp.nextCurrent;
-      st.i += 1;
-    }
-
-    // Если current < divisor и цифры ещё есть — “досносим” и добавляем нули в частном
-    if (st.i < st.digits.length && st.current < st.divisor) {
-      buildNextCurrentToAtLeastDivisor(false);
-    } else {
-      // обновим дугу на следующий кусок
-      const curStr = String(st.current);
-      st.lastChunkLen = curStr.length;
-      st.lastChunkStart = st.i - st.lastChunkLen;
-      setArc(st.lastChunkStart, st.lastChunkLen);
-    }
-
-    // очистим ввод
-    qDigitIn.value = '';
-    productIn.value = '';
-    remainderIn.value = '';
-    nextNumIn.value = '';
-
-    render();
-
-    const exp2 = expectedStep();
-    if (exp2 && exp2.done) {
-      st.finished = true;
-      render();
-      setStatus(`Готово! Частное: ${exp2.quotient}, остаток: ${exp2.remainder}.`, 'ok');
-      return;
-    }
-
-    setStatus('Верно! Следующий шаг.', 'ok');
-    qDigitIn.focus();
-  }
-
-  function onCheck() {
-    if (!st) { setStatus('Сначала нажми «Начать».', 'bad'); return; }
-    if (st.finished) { setStatus('Уже готово 🙂 Нажми «Случайный пример» или «Сброс».', 'neutral'); return; }
-
-    const qd = sanitizeInt(qDigitIn.value, null);
-    const pr = sanitizeInt(productIn.value, null);
-    const rm = sanitizeInt(remainderIn.value, null);
-    const nx = sanitizeInt(nextNumIn.value, null);
-
-    if (qd === null || rm === null) {
-      setStatus('Минимум нужно: «цифра частного» и «остаток».', 'bad');
-      return;
-    }
-    if (qd < 0 || qd > 9) { setStatus('Цифра частного должна быть 0–9.', 'bad'); return; }
-    if (rm < 0) { setStatus('Остаток не может быть отрицательным.', 'bad'); return; }
-
-    const detailed = detailedMode.checked;
-    if (detailed && (pr === null || nx === null)) {
-      setStatus('В подробном режиме заполни ещё «произведение» и «число после сноса».', 'bad');
-      return;
-    }
-
-    applyStep({ qDigit: qd, product: pr, remainder: rm, nextNum: nx });
-  }
-
-  // Events
-  startBtn.addEventListener('click', start);
-  randomBtn.addEventListener('click', makeRandom);
-  resetBtn.addEventListener('click', () => {
+  function resetAll(){
     st = null;
-    resetUI();
-    setStatus('Сброшено. Введи числа и нажми «Начать».');
-  });
+    divArea.innerHTML = "<div style='color:#64748b'>—</div>";
+    logOut.textContent = "—";
+    sideInfo.textContent = "Нажми «Старт».";
+    qDigitIn.value = "";
+    qDigitIn.disabled = true;
+    checkBtn.disabled = true;
+    hintBtn.disabled = true;
+    prodIn.value = ""; remIn.value = ""; nextChunkIn.value = "";
+    setStatus("Введи числа и нажми «Старт».", "");
+    applyLevelUI();
+  }
 
-  checkBtn.addEventListener('click', onCheck);
+  startBtn.addEventListener("click", start);
+  randomBtn.addEventListener("click", random);
+  resetBtn.addEventListener("click", resetAll);
+  checkBtn.addEventListener("click", check);
+  hintBtn.addEventListener("click", hint);
 
-  [qDigitIn, productIn, remainderIn, nextNumIn].forEach(inp => {
-    inp.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') onCheck();
-    });
-  });
+  qDigitIn.addEventListener("keydown", (e) => { if (e.key === "Enter") check(); });
+  prodIn.addEventListener("keydown", (e) => { if (e.key === "Enter") check(); });
+  remIn.addEventListener("keydown", (e) => { if (e.key === "Enter") check(); });
+  nextChunkIn.addEventListener("keydown", (e) => { if (e.key === "Enter") check(); });
 
-  detailedMode.addEventListener('change', () => {
-    render();
-    setStatus(detailedMode.checked
-      ? 'Подробный режим включён: проверяем произведение и число после сноса.'
-      : 'Упрощённый режим: проверяем цифру частного и остаток.', 'neutral');
-  });
+  $$('input[name="lvl"]').forEach(r => r.addEventListener("change", () => {
+    applyLevelUI();
+    if (st && st.phase === "ask") qDigitIn.focus();
+  }));
 
+  resetAll();
 })();
 </script>
 </body>
