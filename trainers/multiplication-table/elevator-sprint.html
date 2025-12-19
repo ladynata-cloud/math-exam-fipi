@@ -1,1 +1,948 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Таблица умножения — «Лифт» (спринт)</title>
+  <style>
+    :root{
+      --bg:#fbfbfa;
+      --surface:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border: rgba(15, 23, 42, .12);
+      --accent:#2f5f73;
+      --soft: rgba(47,95,115,.10);
+      --ok: rgba(22,163,74,.12);
+      --bad: rgba(239,68,68,.10);
+      --shadow: 0 10px 26px rgba(15, 23, 42, .06);
+      --r: 16px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.35;
+    }
+    .wrap{
+      width:min(1100px, calc(100% - 32px));
+      margin: 18px auto 30px;
+    }
+    h1{ margin:0 0 6px; font-size: 20px; }
+    .sub{ margin:0 0 14px; color:var(--muted); }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 14px;
+      align-items:start;
+    }
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius: var(--r);
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+
+    .topbar{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom: 12px;
+    }
+
+    .status{
+      padding: 10px 12px;
+      border-radius: 12px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.65);
+      color: var(--muted);
+    }
+    .status.ok{ background: var(--ok); border-color: rgba(22,163,74,.25); color: rgba(21,128,61,.95); }
+    .status.bad{ background: var(--bad); border-color: rgba(239,68,68,.25); color: rgba(185,28,28,.95); }
+
+    .controls{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 12px;
+      align-items:end;
+      margin-top: 10px;
+    }
+    @media (max-width: 520px){
+      .controls{ grid-template-columns: 1fr; }
+    }
+
+    .field{ display:flex; flex-direction:column; gap:6px; }
+    .label{ font-size: 12px; font-weight: 700; color:var(--muted); }
+    .input, select{
+      padding: 10px 12px;
+      border-radius: 12px;
+      border:1px solid rgba(15,23,42,.14);
+      background: var(--surface);
+      outline:none;
+      font-size: 14px;
+    }
+    .input:focus, select:focus{
+      border-color: rgba(47,95,115,.45);
+      box-shadow: 0 0 0 3px rgba(47,95,115,.12);
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border:1px solid rgba(47,95,115,.25);
+      background: var(--accent);
+      color:#fff;
+      font-weight:800;
+      cursor:pointer;
+      user-select:none;
+    }
+    .btn:hover{ filter: brightness(.98); }
+    .btn.soft{
+      background: rgba(255,255,255,.75);
+      color: var(--text);
+      border-color: rgba(15,23,42,.14);
+      font-weight: 800;
+    }
+    .btn.soft:hover{ background: rgba(47,95,115,.08); border-color: rgba(47,95,115,.25); }
+
+    .check{
+      display:flex; gap:8px; align-items:center;
+      font-size: 14px; color: var(--muted);
+      user-select:none;
+    }
+
+    /* Game area */
+    .game{
+      display:grid;
+      grid-template-columns: 1fr 260px;
+      gap: 14px;
+      align-items: start;
+    }
+    @media (max-width: 900px){
+      .game{ grid-template-columns: 1fr; }
+    }
+
+    .question{
+      border:1px solid var(--border);
+      border-radius: var(--r);
+      padding: 14px;
+      background: rgba(15,23,42,.02);
+    }
+    .qline{
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
+    }
+    .qtext{
+      font-family: var(--mono);
+      font-size: 30px;
+      letter-spacing: .3px;
+    }
+    .timer{
+      font-family: var(--mono);
+      font-size: 16px;
+      color: var(--muted);
+      padding: 6px 10px;
+      border:1px solid rgba(15,23,42,.10);
+      border-radius: 999px;
+      background: rgba(255,255,255,.65);
+    }
+
+    .answers{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .ans{
+      padding: 12px 10px;
+      border-radius: 14px;
+      border:1px solid rgba(15,23,42,.12);
+      background: #fff;
+      cursor:pointer;
+      font-size: 18px;
+      font-weight: 900;
+      text-align:center;
+      user-select:none;
+    }
+    .ans:hover{ background: rgba(47,95,115,.06); border-color: rgba(47,95,115,.25); }
+    .ans.ok{ background: var(--ok); border-color: rgba(22,163,74,.30); }
+    .ans.bad{ background: var(--bad); border-color: rgba(239,68,68,.30); }
+
+    .hint{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--soft);
+      border: 1px solid rgba(47,95,115,.18);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 800;
+      white-space:nowrap;
+    }
+
+    /* Elevator */
+    .elevator{
+      border:1px solid var(--border);
+      border-radius: var(--r);
+      background: rgba(255,255,255,.75);
+      box-shadow: var(--shadow);
+      padding: 12px;
+      position: sticky;
+      top: 76px;
+    }
+    @media (max-width: 900px){
+      .elevator{ position: static; }
+    }
+    .eTitle{ font-weight: 900; margin-bottom: 8px; }
+    .shaft{
+      height: 360px;
+      border-radius: 14px;
+      border: 1px solid rgba(15,23,42,.10);
+      background:
+        linear-gradient(to bottom, rgba(15,23,42,.03), rgba(15,23,42,.00)),
+        repeating-linear-gradient(to bottom, rgba(15,23,42,.10) 0 1px, transparent 1px 36px);
+      position: relative;
+      overflow: hidden;
+    }
+    .cab{
+      width: calc(100% - 26px);
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(47,95,115,.14);
+      border: 1px solid rgba(47,95,115,.28);
+      position: absolute;
+      left: 13px;
+      bottom: 6px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      padding: 0 10px;
+      transition: transform .18s ease;
+    }
+    .cab .icon{ font-size: 18px; }
+    .cab .floor{ font-family: var(--mono); font-weight: 800; color: var(--accent); }
+    .progress{
+      margin-top: 10px;
+      display:grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .bar{
+      height: 10px;
+      border-radius: 999px;
+      border:1px solid rgba(15,23,42,.10);
+      background: rgba(15,23,42,.04);
+      overflow:hidden;
+    }
+    .bar > div{
+      height: 100%;
+      width: 0%;
+      background: rgba(47,95,115,.55);
+      transition: width .18s ease;
+    }
+    .stats{
+      margin-top: 12px;
+      display:grid;
+      gap: 6px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .stats b{ color: var(--text); }
+
+    /* Weak list */
+    .weak{
+      margin-top: 12px;
+      border-top: 1px solid rgba(15,23,42,.10);
+      padding-top: 10px;
+    }
+    .weak h3{
+      margin: 0 0 8px;
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 900;
+    }
+    .weakList{
+      font-family: var(--mono);
+      font-size: 13px;
+      color: rgba(100,116,139,.95);
+      white-space: pre-wrap;
+      background: rgba(15,23,42,.02);
+      border: 1px solid rgba(15,23,42,.10);
+      border-radius: 12px;
+      padding: 10px;
+      min-height: 70px;
+    }
+
+    .footerNote{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div>
+      <h1>Таблица умножения — «Лифт»</h1>
+      <p class="sub">Быстрая тренировка. Можно “по одной таблице” или “смешанные примеры”. Ошибки и медленные пары повторяются чаще.</p>
+    </div>
+    <div id="status" class="status">Настрой режим и нажми «Старт».</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="row" style="justify-content:space-between; gap:12px;">
+        <div class="row" style="gap:10px;">
+          <button class="btn" id="startBtn">Старт</button>
+          <button class="btn soft" id="pauseBtn" disabled>Пауза</button>
+          <button class="btn soft" id="resetBtn">Сброс</button>
+        </div>
+        <div class="row">
+          <span class="pill" id="modePill">Режим: 6–9</span>
+          <span class="pill" id="levelPill">Этажи: 0/10</span>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="field">
+          <span class="label">Режим</span>
+          <select id="mode">
+            <option value="mixed">Смешанные примеры</option>
+            <option value="single">Одна таблица (например, на 8)</option>
+          </select>
+        </div>
+
+        <div class="field" id="singleWrap" style="display:none;">
+          <span class="label">Таблица на…</span>
+          <select id="singleBase">
+            <option>2</option><option>3</option><option>4</option><option>5</option>
+            <option selected>6</option><option>7</option><option>8</option><option>9</option>
+          </select>
+        </div>
+
+        <div class="field" id="rangeWrap">
+          <span class="label">Диапазон множителей</span>
+          <select id="rangePreset">
+            <option value="2-9">2–9 (всё)</option>
+            <option value="2-5">2–5 (лёгкий разогрев)</option>
+            <option value="6-9" selected>6–9 (часто “провал”)</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <span class="label">Второй множитель (обычно 1–10)</span>
+          <select id="bRange">
+            <option value="1-10" selected>1–10</option>
+            <option value="2-9">2–9</option>
+            <option value="1-9">1–9</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <span class="label">Длительность спринта</span>
+          <select id="timeLimit">
+            <option value="60" selected>60 секунд</option>
+            <option value="90">90 секунд</option>
+            <option value="120">120 секунд</option>
+            <option value="180">180 секунд</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <span class="label">Порядок (для “одной таблицы”)</span>
+          <select id="orderMode">
+            <option value="random" selected>Вразброс</option>
+            <option value="ordered">По порядку (1..10)</option>
+          </select>
+        </div>
+
+        <label class="check">
+          <input id="repeatWeak" type="checkbox" checked>
+          <span>Повторять слабые места чаще</span>
+        </label>
+
+        <label class="check">
+          <input id="sound" type="checkbox">
+          <span>Звук (тихий “клик”)</span>
+        </label>
+      </div>
+
+      <div class="game" style="margin-top:14px;">
+        <div class="question">
+          <div class="qline">
+            <div class="qtext" id="qText">—</div>
+            <div class="timer" id="timer">⏱ 60</div>
+          </div>
+
+          <div class="answers" id="answers">
+            <div class="ans">—</div><div class="ans">—</div><div class="ans">—</div><div class="ans">—</div>
+          </div>
+
+          <div class="hint">
+            <span class="pill">Подсказка</span>
+            <span id="hintText">Если сомневаешься — можно считать шагами. Потом будет быстрее.</span>
+          </div>
+
+          <div class="footerNote">
+            Управление: кликай по ответу. В конце покажем слабые пары (ошибки и “слишком медленно”).
+          </div>
+        </div>
+
+        <div class="elevator">
+          <div class="eTitle">Лифт прогресса</div>
+          <div class="shaft" aria-label="Лифт">
+            <div class="cab" id="cab">
+              <span class="icon">🛗</span>
+              <span class="floor" id="floorText">0 этаж</span>
+            </div>
+          </div>
+          <div class="progress">
+            <div class="bar"><div id="barFill"></div></div>
+            <div class="stats" id="stats">
+              <div>Правильно: <b>0</b></div>
+              <div>Ошибок: <b>0</b></div>
+              <div>Серия: <b>0</b></div>
+              <div>Точность: <b>—</b></div>
+              <div>Среднее время: <b>—</b></div>
+            </div>
+          </div>
+
+          <div class="weak">
+            <h3>Слабые пары (топ)</h3>
+            <div class="weakList" id="weakList">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0 0 10px; font-size:16px;">Как это “учит”, а не просто проверяет</h2>
+      <div style="color:var(--muted); font-size:14px; display:grid; gap:10px;">
+        <div><b>1) Надёжность.</b> Если не знаешь — можно дойти счётом. Это снимает страх.</div>
+        <div><b>2) Повторы слабого.</b> Ошибки и “слишком медленные” пары будут появляться чаще.</div>
+        <div><b>3) Автоматизм.</b> Спринты короткие — мозг закрепляет быстро.</div>
+        <div class="pill">Рекомендация: 1–2 спринта в день по 60 сек</div>
+      </div>
+
+      <hr style="border:none; border-top:1px solid rgba(15,23,42,.10); margin: 14px 0;">
+
+      <button class="btn soft" id="clearStatsBtn">Стереть историю слабых мест</button>
+      <div style="margin-top:10px; color:var(--muted); font-size:13px;">
+        История хранится в браузере (localStorage). На телефоне/компьютере будет своя.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+
+  const statusEl = $("status");
+  const startBtn = $("startBtn");
+  const pauseBtn = $("pauseBtn");
+  const resetBtn = $("resetBtn");
+
+  const modeSel = $("mode");
+  const singleWrap = $("singleWrap");
+  const singleBaseSel = $("singleBase");
+  const rangeWrap = $("rangeWrap");
+  const rangePresetSel = $("rangePreset");
+  const bRangeSel = $("bRange");
+  const timeLimitSel = $("timeLimit");
+  const orderModeSel = $("orderMode");
+  const repeatWeakChk = $("repeatWeak");
+  const soundChk = $("sound");
+
+  const modePill = $("modePill");
+  const levelPill = $("levelPill");
+
+  const qText = $("qText");
+  const timerEl = $("timer");
+  const answersBox = $("answers");
+  const hintText = $("hintText");
+
+  const cab = $("cab");
+  const floorText = $("floorText");
+  const barFill = $("barFill");
+  const statsEl = $("stats");
+  const weakList = $("weakList");
+  const clearStatsBtn = $("clearStatsBtn");
+
+  const STORE_KEY = "mathexam_mul_weak_v1";
+
+  // === state ===
+  let running = false;
+  let paused = false;
+  let tLeft = 60;
+  let timerId = null;
+
+  let correct = 0;
+  let wrong = 0;
+  let streak = 0;
+  let bestStreak = 0;
+  let sumTime = 0;
+  let answered = 0;
+
+  let levelCorrect = 0;     // для лифта (0..10)
+  let buildingLevel = 1;
+
+  let orderedNextB = 1;     // для режима "по порядку"
+  let current = null;       // {a,b,ans,choices,startTs}
+
+  // weak store: key "a×b" -> {wrong: n, slow: n}
+  let weak = loadWeak();
+
+  function loadWeak(){
+    try{
+      const raw = localStorage.getItem(STORE_KEY);
+      if (!raw) return {};
+      const obj = JSON.parse(raw);
+      return (obj && typeof obj === "object") ? obj : {};
+    } catch { return {}; }
+  }
+  function saveWeak(){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(weak)); } catch {}
+  }
+
+  function setStatus(text, kind=""){
+    statusEl.className = "status" + (kind ? " " + kind : "");
+    statusEl.textContent = text;
+  }
+
+  function beep(ok=true){
+    if (!soundChk.checked) return;
+    // тихий клик через WebAudio
+    try{
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = "sine";
+      o.frequency.value = ok ? 740 : 220;
+      g.gain.value = 0.04;
+      o.connect(g); g.connect(ctx.destination);
+      o.start();
+      setTimeout(() => { o.stop(); ctx.close(); }, 60);
+    } catch {}
+  }
+
+  function parseRange(val){
+    const [a,b] = val.split("-").map(Number);
+    return {min: a, max: b};
+  }
+
+  function pickWeightedWeakPair(aMin, aMax, bMin, bMax){
+    // выбираем из weak с весом (wrong*3 + slow)
+    const items = [];
+    for (const k in weak){
+      const m = k.match(/^(\d+)\×(\d+)$/);
+      if (!m) continue;
+      const a = Number(m[1]), b = Number(m[2]);
+      if (a < aMin || a > aMax || b < bMin || b > bMax) continue;
+      const w = (weak[k].wrong || 0) * 3 + (weak[k].slow || 0);
+      if (w > 0) items.push({a,b,w});
+    }
+    if (!items.length) return null;
+
+    const total = items.reduce((s,x)=>s+x.w,0);
+    let r = Math.random() * total;
+    for (const it of items){
+      r -= it.w;
+      if (r <= 0) return {a: it.a, b: it.b};
+    }
+    return {a: items[0].a, b: items[0].b};
+  }
+
+  function makeChoices(ans, a, b){
+    const set = new Set([ans]);
+
+    // “похожие” отвлекающие
+    const candidates = [
+      ans + a, ans - a, ans + b, ans - b,
+      ans + 1, ans - 1, ans + 2, ans - 2
+    ].filter(x => Number.isFinite(x) && x > 0);
+
+    // добавим типичные ошибки (соседний множитель)
+    candidates.push(a * Math.max(1, b-1));
+    candidates.push(a * (b+1));
+    candidates.push(Math.max(1, a-1) * b);
+    candidates.push((a+1) * b);
+
+    // добиваем случайными
+    while (set.size < 4){
+      let v = candidates.length ? candidates[Math.floor(Math.random()*candidates.length)] : null;
+      if (!v || v === ans || v <= 0) v = ans + (Math.floor(Math.random()*7)-3);
+      if (v > 0) set.add(v);
+      if (set.size < 4 && Math.random() < .25) set.add(Math.max(1, ans + (Math.floor(Math.random()*20)-10)));
+    }
+
+    const arr = Array.from(set).slice(0,4);
+
+    // перемешаем
+    for (let i = arr.length-1; i>0; i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]] = [arr[j],arr[i]];
+    }
+    return arr;
+  }
+
+  function getSettings(){
+    const mode = modeSel.value; // mixed | single
+    const bR = parseRange(bRangeSel.value);
+    let aR;
+
+    if (mode === "single"){
+      const base = Number(singleBaseSel.value);
+      aR = {min: base, max: base};
+    } else {
+      aR = parseRange(rangePresetSel.value);
+    }
+
+    return {
+      mode,
+      aMin: aR.min, aMax: aR.max,
+      bMin: bR.min, bMax: bR.max,
+      timeLimit: Number(timeLimitSel.value),
+      orderMode: orderModeSel.value, // random|ordered
+      repeatWeak: repeatWeakChk.checked,
+    };
+  }
+
+  function updateBadges(){
+    const s = getSettings();
+    if (s.mode === "single"){
+      modePill.textContent = `Режим: таблица на ${s.aMin}`;
+    } else {
+      modePill.textContent = `Режим: ${s.aMin}–${s.aMax}`;
+    }
+    levelPill.textContent = `Этажи: ${levelCorrect}/10 • Уровень ${buildingLevel}`;
+  }
+
+  function updateStats(){
+    const acc = answered ? Math.round((correct / answered) * 100) : null;
+    const avg = answered ? (sumTime / answered) : null;
+
+    statsEl.innerHTML = `
+      <div>Правильно: <b>${correct}</b></div>
+      <div>Ошибок: <b>${wrong}</b></div>
+      <div>Серия: <b>${streak}</b> (лучшее: ${bestStreak})</div>
+      <div>Точность: <b>${acc === null ? "—" : acc + "%"}</b></div>
+      <div>Среднее время: <b>${avg === null ? "—" : avg.toFixed(2) + "с"}</b></div>
+    `;
+
+    // лифт: 10 этажей = 10 правильных в текущем уровне
+    const pct = Math.min(100, Math.round((levelCorrect / 10) * 100));
+    barFill.style.width = pct + "%";
+
+    const shaftH = 360;
+    const cabH = 44;
+    const bottomPad = 6;
+    const topPad = 6;
+
+    // этаж 0 внизу, этаж 10 наверху
+    const yMax = shaftH - cabH - bottomPad - topPad;
+    const y = (levelCorrect / 10) * yMax;
+    cab.style.transform = `translateY(${-y}px)`;
+    floorText.textContent = `${levelCorrect} этаж`;
+    updateBadges();
+  }
+
+  function weakTopText(){
+    // покажем топ-8 по весу
+    const arr = Object.entries(weak).map(([k,v]) => {
+      const w = (v.wrong||0)*3 + (v.slow||0);
+      return {k, wrong: v.wrong||0, slow: v.slow||0, w};
+    }).filter(x => x.w > 0).sort((a,b)=>b.w-a.w).slice(0,8);
+
+    if (!arr.length) return "Пока пусто 🙂\nОшибки/медленные пары появятся тут.";
+    return arr.map(x => `${x.k}  |  ошибки:${x.wrong}  медленно:${x.slow}`).join("\n");
+  }
+
+  function renderWeak(){
+    weakList.textContent = weakTopText();
+  }
+
+  function newQuestion(){
+    const s = getSettings();
+    updateBadges();
+
+    let a, b;
+
+    // вероятность взять слабое место
+    if (s.repeatWeak && Math.random() < 0.55){
+      const w = pickWeightedWeakPair(s.aMin, s.aMax, s.bMin, s.bMax);
+      if (w){ a = w.a; b = w.b; }
+    }
+
+    if (a == null || b == null){
+      if (s.mode === "single"){
+        a = s.aMin;
+        if (s.orderMode === "ordered"){
+          b = orderedNextB;
+          orderedNextB++;
+          if (orderedNextB > s.bMax) orderedNextB = s.bMin; // циклом
+        } else {
+          b = randInt(s.bMin, s.bMax);
+        }
+      } else {
+        a = randInt(s.aMin, s.aMax);
+        b = randInt(s.bMin, s.bMax);
+      }
+    }
+
+    const ans = a * b;
+    const choices = makeChoices(ans, a, b);
+
+    current = {a, b, ans, choices, startTs: performance.now()};
+
+    qText.textContent = `${a} × ${b} = ?`;
+    hintText.textContent = (a === 9 || b === 9)
+      ? "Подсказка: 9×n = 10×n − n."
+      : "Если сомневаешься — можно считать шагами. Потом будет быстрее.";
+
+    answersBox.innerHTML = "";
+    choices.forEach(val => {
+      const div = document.createElement("div");
+      div.className = "ans";
+      div.textContent = String(val);
+      div.addEventListener("click", () => answer(val, div));
+      answersBox.appendChild(div);
+    });
+  }
+
+  function markWeak(a,b, kind){
+    const key = `${a}×${b}`;
+    if (!weak[key]) weak[key] = {wrong:0, slow:0};
+    if (kind === "wrong") weak[key].wrong += 1;
+    if (kind === "slow") weak[key].slow += 1;
+    saveWeak();
+  }
+
+  function answer(val, elDiv){
+    if (!running || paused || !current) return;
+
+    const dt = (performance.now() - current.startTs) / 1000;
+    answered++;
+    sumTime += dt;
+
+    // считаем "слишком медленно" как слабое место
+    if (dt > 3.2) markWeak(current.a, current.b, "slow");
+
+    const ok = (val === current.ans);
+
+    // подсветим все кнопки на мгновение
+    const all = Array.from(answersBox.querySelectorAll(".ans"));
+    all.forEach(x => {
+      const n = Number(x.textContent);
+      if (n === current.ans) x.classList.add("ok");
+    });
+
+    if (ok){
+      correct++;
+      streak++;
+      bestStreak = Math.max(bestStreak, streak);
+      levelCorrect++;
+
+      beep(true);
+      setStatus(`Верно! (${current.a}×${current.b}=${current.ans})`, "ok");
+
+      if (levelCorrect >= 10){
+        buildingLevel++;
+        levelCorrect = 0;
+        setStatus(`Отлично! Новый уровень: ${buildingLevel}. Продолжаем 🙂`, "ok");
+      }
+    } else {
+      wrong++;
+      streak = 0;
+      markWeak(current.a, current.b, "wrong");
+
+      beep(false);
+      elDiv.classList.add("bad");
+      setStatus(`Ошибка. Правильно: ${current.a}×${current.b}=${current.ans}`, "bad");
+    }
+
+    updateStats();
+    renderWeak();
+
+    // новый вопрос через короткую паузу
+    setTimeout(() => {
+      if (running && !paused) newQuestion();
+    }, ok ? 260 : 520);
+  }
+
+  function randInt(a,b){
+    return a + Math.floor(Math.random() * (b - a + 1));
+  }
+
+  function tick(){
+    if (!running || paused) return;
+    tLeft--;
+    timerEl.textContent = `⏱ ${tLeft}`;
+    if (tLeft <= 0){
+      endSprint();
+    }
+  }
+
+  function start(){
+    const s = getSettings();
+
+    running = true;
+    paused = false;
+
+    tLeft = s.timeLimit;
+    timerEl.textContent = `⏱ ${tLeft}`;
+
+    correct = 0; wrong = 0; streak = 0; bestStreak = 0;
+    sumTime = 0; answered = 0;
+    levelCorrect = 0; buildingLevel = 1;
+
+    orderedNextB = parseRange(bRangeSel.value).min;
+
+    updateBadges();
+    updateStats();
+    renderWeak();
+
+    startBtn.disabled = true;
+    pauseBtn.disabled = false;
+    pauseBtn.textContent = "Пауза";
+    setStatus("Поехали! Выбирай правильный ответ.", "");
+
+    clearInterval(timerId);
+    timerId = setInterval(tick, 1000);
+
+    newQuestion();
+  }
+
+  function pause(){
+    if (!running) return;
+    paused = !paused;
+    pauseBtn.textContent = paused ? "Продолжить" : "Пауза";
+    setStatus(paused ? "Пауза. Нажми «Продолжить»." : "Продолжаем!", "");
+  }
+
+  function endSprint(){
+    running = false;
+    paused = false;
+    clearInterval(timerId);
+    timerId = null;
+
+    startBtn.disabled = false;
+    pauseBtn.disabled = true;
+
+    const acc = answered ? Math.round((correct / answered) * 100) : 0;
+    const avg = answered ? (sumTime / answered).toFixed(2) : "—";
+
+    qText.textContent = "Спринт завершён ✅";
+    timerEl.textContent = "⏱ 0";
+    answersBox.innerHTML = `
+      <div class="ans" style="grid-column:1/-1; cursor:default;">
+        Итог: правильно ${correct}, ошибок ${wrong}, точность ${acc}%, среднее время ${avg}с
+      </div>
+    `;
+
+    setStatus("Готово. Можно нажать «Старт» ещё раз или сменить режим.", "ok");
+  }
+
+  function reset(){
+    running = false;
+    paused = false;
+    clearInterval(timerId);
+    timerId = null;
+
+    startBtn.disabled = false;
+    pauseBtn.disabled = true;
+
+    tLeft = Number(timeLimitSel.value);
+    timerEl.textContent = `⏱ ${tLeft}`;
+
+    qText.textContent = "—";
+    answersBox.innerHTML = `<div class="ans">—</div><div class="ans">—</div><div class="ans">—</div><div class="ans">—</div>`;
+    setStatus("Настрой режим и нажми «Старт».", "");
+
+    correct = 0; wrong = 0; streak = 0; bestStreak = 0;
+    sumTime = 0; answered = 0;
+    levelCorrect = 0; buildingLevel = 1;
+
+    updateStats();
+    renderWeak();
+    updateBadges();
+  }
+
+  function onModeChange(){
+    const m = modeSel.value;
+    singleWrap.style.display = (m === "single") ? "block" : "none";
+    rangeWrap.style.display = (m === "mixed") ? "block" : "none";
+    updateBadges();
+  }
+
+  // events
+  startBtn.addEventListener("click", start);
+  pauseBtn.addEventListener("click", pause);
+  resetBtn.addEventListener("click", reset);
+
+  modeSel.addEventListener("change", () => { onModeChange(); reset(); });
+  singleBaseSel.addEventListener("change", reset);
+  rangePresetSel.addEventListener("change", reset);
+  bRangeSel.addEventListener("change", reset);
+  timeLimitSel.addEventListener("change", reset);
+  orderModeSel.addEventListener("change", reset);
+  repeatWeakChk.addEventListener("change", () => { renderWeak(); });
+  soundChk.addEventListener("change", () => { /* nothing */ });
+
+  clearStatsBtn.addEventListener("click", () => {
+    if (!confirm("Стереть историю слабых мест в этом браузере?")) return;
+    weak = {};
+    saveWeak();
+    renderWeak();
+    setStatus("История слабых мест очищена.", "ok");
+  });
+
+  // init
+  onModeChange();
+  renderWeak();
+  updateBadges();
+  reset();
+})();
+</script>
+</body>
+</html>
 
