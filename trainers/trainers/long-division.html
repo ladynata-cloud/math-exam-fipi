@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Деление уголком — тетрадный вид (ОГЭ)</title>
+  <title>Деление уголком — российская запись (ОГЭ)</title>
 
   <link rel="stylesheet" href="../../style.css">
 
@@ -22,8 +22,9 @@
       --r:16px;
 
       --cell: 1.55em;
-      --divcol: 4.2em;
-      --line: rgba(15,23,42,.28);
+      --gutter: 3.2em;          /* слева поле под "−" и воздух */
+      --barw: 2px;              /* вертикальная черта */
+      --line: rgba(15,23,42,.35);
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
     }
     *{ box-sizing:border-box; }
@@ -104,23 +105,45 @@
       .paperRight{ min-width: 0; }
     }
 
+    /* ====== ВАЖНО: новая сетка под "российскую запись" ======
+       [gutter] [делимое n цифр] [вертикальная черта] [правая зона n клеток]
+    */
     .divGrid{
       font-family: var(--mono);
       --n: 6;
       display: grid;
-      grid-template-columns: var(--divcol) repeat(var(--n), var(--cell));
+      grid-template-columns: var(--gutter) repeat(var(--n), var(--cell)) var(--barw) repeat(var(--n), var(--cell));
       grid-auto-rows: 1.55em;
       align-items: center;
       justify-content: start;
-      min-width: calc(var(--divcol) + var(--n) * var(--cell));
       position: relative;
+      min-width: calc(var(--gutter) + var(--n) * var(--cell) + var(--barw) + var(--n) * var(--cell));
     }
+
     .cell{ text-align:center; font-size:26px; line-height:1; padding:0 .05em; user-select:none; }
     .cell.small{ font-size: 18px; color: var(--muted); }
 
-    .vline{ grid-column: 1 / 2; grid-row: 2 / span 2; justify-self: end; align-self: stretch; width: 0; border-right: 2px solid var(--line); margin-right: .15em; }
-    .hline{ grid-column: 2 / span var(--n); grid-row: 2 / 3; align-self: start; height: 0; border-top: 2px solid var(--line); margin-top: .18em; }
-    .divisor{ grid-column: 1 / 2; grid-row: 2 / 3; justify-self: end; padding-right: .35em; font-size: 26px; font-weight: 800; }
+    .rbar{
+      background: var(--line);
+      align-self: stretch;
+      justify-self: stretch;
+    }
+    .hlineR{
+      height:0;
+      border-top: 2px solid var(--line);
+      align-self: start;
+      margin-top: .18em;
+    }
+    .divisorR{
+      font-size: 26px;
+      font-weight: 900;
+      color: rgba(15,23,42,.92);
+      text-align:left;
+      justify-self: start;
+      padding-left: .25em;
+      white-space: nowrap;
+    }
+
     .qCell{ font-size: 26px; font-weight: 900; color: rgba(15,23,42,.92); }
 
     .hlBring{ background: rgba(245,158,11,.18); border: 1px solid rgba(245,158,11,.30); border-radius: 8px; padding-top: .06em; padding-bottom: .06em; }
@@ -234,8 +257,8 @@
 
 <body>
 <div class="wrap">
-  <h1>Деление уголком — тетрадный вид</h1>
-  <p class="sub">Слева — “тетрадка”, справа — поле ученика (ввод/вывод). Уровни: 1) q, 2) q+prod+rem, 3) полный шаг со “сносом”.</p>
+  <h1>Деление уголком — российская запись</h1>
+  <p class="sub">Как на твоём примере: делимое слева, делитель справа сверху, частное справа под чертой.</p>
 
   <div class="nav">
     <a href="../../index.html">← Главная</a>
@@ -671,8 +694,6 @@
 
     st.quotient[st.curEnd] = String(q);
 
-    // Если N < d и q=0 — по школьной тетрадке часто просто "пишем 0 и сносим",
-    // без промежуточных строк умножения/вычитания. Сделаем так.
     const skipRows = (N < d && q === 0);
 
     if (!skipRows){
@@ -730,49 +751,26 @@
     if (!st){ divArea.innerHTML = "<div style='color:#64748b'>—</div>"; return; }
 
     const n = st.n;
+    const totalCols = 2*n + 2;
+    const lastLine = totalCols + 1;
+
+    const leftStart = 2;
+    const barCol = n + 2;        // после делимого
+    const rightStart = n + 3;    // зона делителя/частного справа
+
     const grid = document.createElement("div");
     grid.className = "divGrid";
     grid.style.setProperty("--n", String(n));
-    let row = 1;
 
-    // строка частного
-    for (let i=0; i<n; i++){
-      const c = document.createElement("div");
-      c.className = "cell qCell";
-      c.style.gridColumn = String(2 + i);
-      c.style.gridRow = String(row);
-      c.textContent = st.quotient[i] || "";
-      grid.appendChild(c);
-    }
-    const empty = document.createElement("div");
-    empty.className = "cell small";
-    empty.style.gridColumn = "1";
-    empty.style.gridRow = String(row);
-    grid.appendChild(empty);
-    row++;
+    // Вертикальная черта (справа от делимого)
+    const bar = document.createElement("div");
+    bar.className = "rbar";
+    bar.style.gridColumn = String(barCol);
+    bar.style.gridRow = `1 / ${Math.max(10, st.steps.length + 10)}`;
+    grid.appendChild(bar);
 
-    // линии деления
-    const vline = document.createElement("div");
-    vline.className = "vline";
-    vline.style.gridColumn = "1";
-    vline.style.gridRow = `${row} / ${row+2}`;
-    grid.appendChild(vline);
-
-    const hline = document.createElement("div");
-    hline.className = "hline";
-    hline.style.gridColumn = `2 / span ${n}`;
-    hline.style.gridRow = `${row} / ${row+1}`;
-    grid.appendChild(hline);
-
-    // делитель
-    const divCell = document.createElement("div");
-    divCell.className = "divisor";
-    divCell.style.gridColumn = "1";
-    divCell.style.gridRow = String(row);
-    divCell.textContent = String(st.divisor);
-    grid.appendChild(divCell);
-
-    // делимое с подсветкой
+    // Делимое (верхняя строка слева)
+    const rowDividend = 1;
     for (let i=0; i<n; i++){
       let cls = "";
       if (st.phase === "ask" && i === st.bringIndex) cls = "hlBring";
@@ -780,12 +778,44 @@
 
       const d = document.createElement("div");
       d.className = "cell" + (cls ? " " + cls : "");
-      d.style.gridColumn = String(2 + i);
-      d.style.gridRow = String(row);
+      d.style.gridColumn = String(leftStart + i);
+      d.style.gridRow = String(rowDividend);
       d.textContent = String(st.digits[i]);
       grid.appendChild(d);
     }
-    row++;
+
+    // Делитель справа сверху
+    const divisorText = String(st.divisor);
+    const divEl = document.createElement("div");
+    divEl.className = "divisorR";
+    divEl.style.gridRow = "1";
+    divEl.style.gridColumn = `${rightStart} / ${rightStart + Math.max(2, divisorText.length)}`;
+    divEl.textContent = divisorText;
+    grid.appendChild(divEl);
+
+    // Горизонтальная черта под делителем (как на образце)
+    const hline = document.createElement("div");
+    hline.className = "hlineR";
+    hline.style.gridRow = "2";
+    hline.style.gridColumn = `${barCol} / ${lastLine}`;
+    grid.appendChild(hline);
+
+    // Частное справа (под чертой)
+    const firstQ = st.quotient.findIndex(x => x !== "");
+    const qStrPartial = (firstQ === -1) ? "" : st.quotient.slice(firstQ).join("");
+    if (qStrPartial){
+      for (let k=0; k<qStrPartial.length && k<n; k++){
+        const c = document.createElement("div");
+        c.className = "cell qCell";
+        c.style.gridRow = "2";
+        c.style.gridColumn = String(rightStart + k);
+        c.textContent = qStrPartial[k];
+        grid.appendChild(c);
+      }
+    }
+
+    // Шаги (начинаются со 2-й строки слева: там же стоит 1-й вычитаемый)
+    let row = 2;
 
     function placeNumber(r, endIdx, text, opts={}){
       const s = String(text);
@@ -801,7 +831,7 @@
           minus.style.justifySelf = "end";
           minus.style.paddingRight = ".35em";
         } else {
-          minus.style.gridColumn = String(2 + startIdx - 1);
+          minus.style.gridColumn = String(leftStart + startIdx - 1);
         }
         minus.textContent = "−";
         grid.appendChild(minus);
@@ -813,7 +843,7 @@
 
         const cell = document.createElement("div");
         cell.className = "cell" + (opts.remainder ? " remainder" : "");
-        cell.style.gridColumn = String(2 + idx);
+        cell.style.gridColumn = String(leftStart + idx);
         cell.style.gridRow = String(r);
         cell.textContent = s[k];
 
@@ -830,7 +860,7 @@
         for (let idx=uStart; idx<=uEnd; idx++){
           const u = document.createElement("div");
           u.className = "cell underline";
-          u.style.gridColumn = String(2 + idx);
+          u.style.gridColumn = String(leftStart + idx);
           u.style.gridRow = String(r);
           u.textContent = "";
           grid.appendChild(u);
@@ -838,7 +868,6 @@
       }
     }
 
-    // шаги
     for (const it of st.steps){
       if (it.kind === "product"){ placeNumber(row, it.end, it.text, {minus:true}); row++; }
       else if (it.kind === "line"){ placeNumber(row, it.end, "", {underline:true, underlineLen: it.len}); row++; }
@@ -846,13 +875,12 @@
       else if (it.kind === "nextchunk"){ placeNumber(row, it.end, it.text, {highlightLast: !!it.highlightLast}); row++; }
     }
 
-    // финальный ответ
     if (st.phase === "done"){
       row++;
       const qStr = (st.quotient.join("").replace(/^0+(?=\d)/,"") || "0");
       const res = document.createElement("div");
       res.className = "cell small";
-      res.style.gridColumn = `1 / span ${n+1}`;
+      res.style.gridColumn = `1 / ${leftStart + n}`;
       res.style.gridRow = String(row);
       res.style.justifySelf = "start";
       res.style.textAlign = "left";
@@ -871,7 +899,6 @@
     const max = Math.pow(10, len) - 1;
     let dividend = randInt(min, max);
 
-    // иногда вставим 0 внутри (частая "боль" в делении)
     if (Math.random() < 0.35){
       const s = String(dividend).split("");
       const pos = randInt(1, s.length-2);
