@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Деление уголком — тетрадный вид (ОГЭ)</title>
 
-  <!-- общий стиль сайта (не обязателен, но пусть будет) -->
   <link rel="stylesheet" href="../../style.css">
 
   <style>
@@ -84,7 +83,25 @@
       background:
         radial-gradient(circle at 1px 1px, rgba(15,23,42,.06) 1px, transparent 1px) 0 0/18px 18px,
         linear-gradient(#fff,#fff);
-      padding: 14px; overflow:auto;
+      padding: 14px;
+      overflow:auto;
+    }
+
+    .paperInner{ display:flex; gap: 16px; align-items:flex-start; }
+    .paperLeft{ flex: 0 0 auto; }
+    .paperRight{
+      flex: 1 1 auto;
+      min-width: 320px;
+      background: rgba(255,255,255,.70);
+      border: 1px dashed rgba(15,23,42,.18);
+      border-radius: 14px;
+      padding: 12px;
+      background-image: radial-gradient(circle at 1px 1px, rgba(15,23,42,.05) 1px, transparent 1px);
+      background-size: 18px 18px;
+    }
+    @media (max-width: 980px){
+      .paperInner{ flex-direction: column; }
+      .paperRight{ min-width: 0; }
     }
 
     .divGrid{
@@ -158,7 +175,7 @@
       border: 1px solid rgba(15,23,42,.10);
       border-radius: 12px;
       padding: 10px;
-      min-height: 140px;
+      min-height: 120px;
       color: rgba(100,116,139,.95);
     }
 
@@ -173,13 +190,52 @@
       font-size: 12px; font-weight: 900;
       white-space: nowrap;
     }
+
+    .miniOut{
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(15,23,42,.12);
+      background: rgba(255,255,255,.60);
+      color: var(--muted);
+      margin-bottom: 10px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+    .miniOut.ok{
+      background: rgba(22,163,74,.12);
+      border-color: rgba(22,163,74,.25);
+      color: rgba(21,128,61,.95);
+    }
+    .miniOut.bad{
+      background: rgba(239,68,68,.10);
+      border-color: rgba(239,68,68,.25);
+      color: rgba(185,28,28,.95);
+    }
+
+    .scratchArea{ margin-top: 10px; }
+    .scratchArea textarea{
+      width: 100%;
+      min-height: 140px;
+      resize: vertical;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(15,23,42,.14);
+      background: rgba(255,255,255,.85);
+      font-family: var(--mono);
+      font-size: 13px;
+      outline:none;
+    }
+    .scratchArea textarea:focus{
+      border-color: rgba(47,95,115,.45);
+      box-shadow: 0 0 0 3px rgba(47,95,115,.12);
+    }
   </style>
 </head>
 
 <body>
 <div class="wrap">
   <h1>Деление уголком — тетрадный вид</h1>
-  <p class="sub">Уровни: 1) только q, 2) q+произведение+вычитание, 3) полный шаг со “сносом”.</p>
+  <p class="sub">Слева — “тетрадка”, справа — поле ученика (ввод/вывод). Уровни: 1) q, 2) q+prod+rem, 3) полный шаг со “сносом”.</p>
 
   <div class="nav">
     <a href="../../index.html">← Главная</a>
@@ -207,64 +263,76 @@
   <div class="grid">
     <div class="card">
       <div class="paper">
-        <div id="divArea"></div>
-      </div>
+        <div class="paperInner">
+          <div class="paperLeft">
+            <div id="divArea"></div>
+          </div>
 
-      <div class="controls">
-        <div class="field">
-          <div class="label">Цифра частного (0–9)</div>
-          <input id="qDigitIn" type="number" min="0" max="9" step="1" placeholder="0–9" disabled>
-        </div>
+          <div class="paperRight">
+            <div class="miniOut" id="miniOut">Поле ученика: вводи шаги и проверяй себя.</div>
 
-        <div class="field">
-          <div class="label">Действия</div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button class="btn" id="checkBtn" disabled>Проверить шаг</button>
-            <button class="btn soft" id="hintBtn" disabled>Подсказка</button>
+            <div class="controls">
+              <div class="field">
+                <div class="label">Цифра частного (0–9)</div>
+                <input id="qDigitIn" type="number" min="0" max="9" step="1" placeholder="0–9" disabled>
+              </div>
+
+              <div class="field">
+                <div class="label">Действия</div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                  <button class="btn" id="checkBtn" disabled>Проверить шаг</button>
+                  <button class="btn soft" id="hintBtn" disabled>Подсказка</button>
+                </div>
+              </div>
+
+              <label class="check">
+                <input id="calmMode" type="checkbox" checked>
+                <span><b>Режим спокойствия</b> (объяснять “мало/велико”)</span>
+              </label>
+
+              <label class="check">
+                <input id="autoZero" type="checkbox" checked>
+                <span>Разрешать нули в частном (если кусок &lt; делителя)</span>
+              </label>
+            </div>
+
+            <div class="levelBox" aria-label="Уровень цепочки">
+              <b>Уровень:</b>
+              <label class="levelOpt"><input type="radio" name="lvl" value="1" checked> 1 — только q</label>
+              <label class="levelOpt"><input type="radio" name="lvl" value="2"> 2 — q + prod + rem</label>
+              <label class="levelOpt"><input type="radio" name="lvl" value="3"> 3 — полный ( + nextChunk )</label>
+            </div>
+
+            <div id="stepBox" class="stepInputs">
+              <div class="field" id="prodField">
+                <div class="label">Произведение (d×q)</div>
+                <input id="prodIn" type="number" min="0" step="1" placeholder="например 56×7=392" disabled>
+                <div class="mutedNote" id="prodNote">—</div>
+              </div>
+
+              <div class="field" id="remField">
+                <div class="label">Остаток шага (N−prod)</div>
+                <input id="remIn" type="number" min="0" step="1" placeholder="например 416−392=24" disabled>
+                <div class="mutedNote" id="remNote">—</div>
+              </div>
+
+              <div class="field" id="nextField">
+                <div class="label">Новый кусок после сноса</div>
+                <input id="nextChunkIn" type="number" min="0" step="1" placeholder="например 24 и снесли 0 → 240" disabled>
+                <div class="mutedNote" id="nextNote">—</div>
+              </div>
+            </div>
+
+            <div class="mutedNote" id="formulaNote" style="margin-top:8px;">—</div>
+            <div class="log" id="logOut">—</div>
+
+            <div class="scratchArea">
+              <div class="label">Черновик (любые вычисления)</div>
+              <textarea id="scratch" placeholder="Например: 56×7=392, 416−392=24..."></textarea>
+            </div>
           </div>
         </div>
-
-        <label class="check">
-          <input id="calmMode" type="checkbox" checked>
-          <span><b>Режим спокойствия</b> (объяснять “мало/велико”)</span>
-        </label>
-
-        <label class="check">
-          <input id="autoZero" type="checkbox" checked>
-          <span>Разрешать нули в частном (если кусок &lt; делителя)</span>
-        </label>
       </div>
-
-      <div class="levelBox" aria-label="Уровень цепочки">
-        <b>Уровень:</b>
-        <label class="levelOpt"><input type="radio" name="lvl" value="1" checked> 1 — только q</label>
-        <label class="levelOpt"><input type="radio" name="lvl" value="2"> 2 — q + prod + rem</label>
-        <label class="levelOpt"><input type="radio" name="lvl" value="3"> 3 — полный ( + nextChunk )</label>
-      </div>
-
-      <div id="stepBox" class="stepInputs">
-        <div class="field" id="prodField">
-          <div class="label">Произведение (d×q)</div>
-          <input id="prodIn" type="number" min="0" step="1" placeholder="например 56×7=392" disabled>
-          <div class="mutedNote" id="prodNote">—</div>
-        </div>
-
-        <div class="field" id="remField">
-          <div class="label">Остаток шага (N−prod)</div>
-          <input id="remIn" type="number" min="0" step="1" placeholder="например 416−392=24" disabled>
-          <div class="mutedNote" id="remNote">—</div>
-        </div>
-
-        <div class="field" id="nextField">
-          <div class="label">Новый кусок после сноса</div>
-          <input id="nextChunkIn" type="number" min="0" step="1" placeholder="например 24 и снесли 0 → 240" disabled>
-          <div class="mutedNote" id="nextNote">—</div>
-        </div>
-      </div>
-
-      <div class="mutedNote" id="formulaNote" style="margin-top:8px;">—</div>
-
-      <div class="log" id="logOut">—</div>
     </div>
 
     <div class="card right">
@@ -277,7 +345,7 @@
         <div class="pill">Правило</div>
         <div style="margin-top:8px;">
           Для текущего куска <b>N</b> ищем цифру <b>q</b>, чтобы:<br>
-          <b>d×q ≤ N</b>, а <b>d×(q+1) > N</b>.
+          <b>d×q ≤ N</b>, а <b>d×(q+1) &gt; N</b>.
         </div>
       </div>
     </div>
@@ -296,6 +364,7 @@
   const resetBtn = $("resetBtn");
 
   const statusEl = $("status");
+  const miniOut = $("miniOut");
   const divArea = $("divArea");
   const logOut = $("logOut");
 
@@ -326,7 +395,13 @@
   function setStatus(text, kind=""){
     statusEl.className = "status" + (kind ? " " + kind : "");
     statusEl.textContent = text;
+
+    if (miniOut){
+      miniOut.className = "miniOut" + (kind ? " " + kind : "");
+      miniOut.textContent = text;
+    }
   }
+
   function sInt(v, fb=null){
     if (v === "" || v === null || v === undefined) return fb;
     const n = Number(v);
@@ -393,6 +468,7 @@
     if (q < 0) q = 0;
     return q;
   }
+
   function explainTooSmall(q){
     const d = st.divisor, N = st.chunk;
     const next = d * (q + 1);
@@ -437,6 +513,7 @@
     const digits = String(dividend).split("").map(Number);
     const n = digits.length;
 
+    // берём первый кусок >= делителя
     let chunk = 0;
     let end = -1;
     while (end + 1 < n){
@@ -445,6 +522,7 @@
       if (chunk >= divisor) break;
     }
 
+    // если всё делимое < делителя
     if (chunk < divisor && end === n-1){
       st = { dividend, divisor, digits, n, quotient: Array(n).fill(""), steps: [], curEnd: n-1, chunk: dividend, nextDigitIndex: n, remainder: dividend, phase:"done", bringIndex:null, log:[] };
       st.quotient[n-1] = "0";
@@ -460,7 +538,18 @@
       return;
     }
 
-    st = { dividend, divisor, digits, n, quotient: Array(n).fill(""), steps: [], curEnd: end, chunk, nextDigitIndex: end+1, remainder:null, phase:"ask", bringIndex:end, log:[`Старт: первый кусок N=${chunk}.`] };
+    st = {
+      dividend, divisor, digits, n,
+      quotient: Array(n).fill(""),
+      steps: [],
+      curEnd: end,
+      chunk,
+      nextDigitIndex: end+1,
+      remainder: null,
+      phase:"ask",
+      bringIndex: end,
+      log:[`Старт: первый кусок N=${chunk}.`]
+    };
 
     qDigitIn.disabled = false;
     checkBtn.disabled = false;
@@ -491,8 +580,8 @@
     const N = st.chunk;
 
     if (N < d && !autoZero.checked){
-      setStatus("Сейчас N < d. В классике здесь ставят 0 и сносят следующую цифру.", "bad");
-      st.log.push(`Ситуация: ${N} < ${d}. Включи “нули в частном” или выбери другой пример.`);
+      setStatus("Сейчас N < d. Обычно пишем 0 и сносим следующую цифру (включи галочку).", "bad");
+      st.log.push(`Ситуация: ${N} < ${d}. Включи “нули в частном”.`);
       logOut.textContent = st.log.join("\n");
       return;
     }
@@ -539,7 +628,7 @@
         return;
       }
       if (remUser !== remExp){
-        setStatus("Вычитание неверно (остаток на шаге).", "bad");
+        setStatus("Вычитание неверно (остаток шага).", "bad");
         st.log.push(`Вычитание: ожидали ${N}-${prodExp}=${remExp}, получено ${remUser}.`);
         logOut.textContent = st.log.join("\n");
         remNote.textContent = `Нужно: ${N} − ${prodExp} = ${remExp}`;
@@ -575,16 +664,24 @@
 
   function applyStep(q){
     const d = st.divisor;
+    const N = st.chunk;
+
     const prod = d * q;
-    const rem = st.chunk - prod;
+    const rem = N - prod;
 
     st.quotient[st.curEnd] = String(q);
 
-    st.steps.push({ kind: "product", end: st.curEnd, text: String(prod), minus: true });
-    st.steps.push({ kind: "line", end: st.curEnd, len: Math.max(String(prod).length, String(st.chunk).length) + 1 });
-    st.steps.push({ kind: "remainder", end: st.curEnd, text: String(rem) });
+    // Если N < d и q=0 — по школьной тетрадке часто просто "пишем 0 и сносим",
+    // без промежуточных строк умножения/вычитания. Сделаем так.
+    const skipRows = (N < d && q === 0);
 
-    st.log.push(`Шаг: N=${st.chunk}, q=${q}, prod=${prod}, остаток=${rem}.`);
+    if (!skipRows){
+      st.steps.push({ kind: "product", end: st.curEnd, text: String(prod), minus: true });
+      st.steps.push({ kind: "line", end: st.curEnd, len: Math.max(String(prod).length, String(N).length) + 1 });
+      st.steps.push({ kind: "remainder", end: st.curEnd, text: String(rem) });
+    }
+
+    st.log.push(`Шаг: N=${N}, q=${q}, prod=${prod}, остаток=${rem}.`);
 
     if (st.nextDigitIndex < st.n){
       const bringIdx = st.nextDigitIndex;
@@ -638,6 +735,7 @@
     grid.style.setProperty("--n", String(n));
     let row = 1;
 
+    // строка частного
     for (let i=0; i<n; i++){
       const c = document.createElement("div");
       c.className = "cell qCell";
@@ -653,6 +751,7 @@
     grid.appendChild(empty);
     row++;
 
+    // линии деления
     const vline = document.createElement("div");
     vline.className = "vline";
     vline.style.gridColumn = "1";
@@ -665,6 +764,7 @@
     hline.style.gridRow = `${row} / ${row+1}`;
     grid.appendChild(hline);
 
+    // делитель
     const divCell = document.createElement("div");
     divCell.className = "divisor";
     divCell.style.gridColumn = "1";
@@ -672,6 +772,7 @@
     divCell.textContent = String(st.divisor);
     grid.appendChild(divCell);
 
+    // делимое с подсветкой
     for (let i=0; i<n; i++){
       let cls = "";
       if (st.phase === "ask" && i === st.bringIndex) cls = "hlBring";
@@ -737,6 +838,7 @@
       }
     }
 
+    // шаги
     for (const it of st.steps){
       if (it.kind === "product"){ placeNumber(row, it.end, it.text, {minus:true}); row++; }
       else if (it.kind === "line"){ placeNumber(row, it.end, "", {underline:true, underlineLen: it.len}); row++; }
@@ -744,6 +846,7 @@
       else if (it.kind === "nextchunk"){ placeNumber(row, it.end, it.text, {highlightLast: !!it.highlightLast}); row++; }
     }
 
+    // финальный ответ
     if (st.phase === "done"){
       row++;
       const qStr = (st.quotient.join("").replace(/^0+(?=\d)/,"") || "0");
@@ -767,12 +870,15 @@
     const min = Math.pow(10, len-1);
     const max = Math.pow(10, len) - 1;
     let dividend = randInt(min, max);
+
+    // иногда вставим 0 внутри (частая "боль" в делении)
     if (Math.random() < 0.35){
       const s = String(dividend).split("");
       const pos = randInt(1, s.length-2);
       s[pos] = "0";
       dividend = Number(s.join(""));
     }
+
     if (dividend < divisor) dividend += divisor;
     dividendIn.value = dividend;
     divisorIn.value = divisor;
@@ -814,3 +920,4 @@
 </script>
 </body>
 </html>
+
