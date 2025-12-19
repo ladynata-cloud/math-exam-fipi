@@ -1,339 +1,382 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тренажёр: Деление уголком | Math Exam FIPI</title>
-    <meta name="description" content="Простой тренажёр для обучения делению уголком. Понимание через перебор вариантов. Подготовка к ОГЭ по математике.">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Все остальные стили из предыдущей версии оставляем как есть */
-        .trainer-container { max-width: 900px; margin: 2rem auto; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        /* ... и все остальные стили ... */
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Деление уголком — тренажёр</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+    body { margin: 20px; line-height: 1.35; }
+    .wrap { max-width: 920px; margin: 0 auto; }
+    h1 { font-size: 20px; margin: 0 0 10px; }
+    .bar { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin: 12px 0 16px; }
+    button { padding: 8px 12px; cursor:pointer; }
+    input[type="number"]{ width: 90px; padding:6px 8px; }
+    .status { padding: 8px 10px; border-radius: 10px; background: #f3f4f6; }
+    .ok { background:#ecfdf5; }
+    .bad { background:#fef2f2; }
+    .board { margin-top: 10px; display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start; }
+    .problem {
+      border: 1px solid #e5e7eb; border-radius: 14px; padding: 16px; min-width: 340px;
+    }
+    .hint {
+      border: 1px dashed #e5e7eb; border-radius: 14px; padding: 16px; flex: 1;
+      min-width: 280px;
+    }
+
+    /* “уголок” */
+    .corner {
+      display: grid;
+      grid-template-columns: auto 12px auto;
+      grid-template-rows: auto auto;
+      column-gap: 8px;
+      align-items: end;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 28px;
+    }
+    .divisor { grid-column: 1; grid-row: 2; text-align:right; padding-right: 6px; }
+    .bracket { grid-column: 2; grid-row: 2; font-weight: 700; }
+    .dividend { grid-column: 3; grid-row: 2; border-top: 3px solid #111827; padding-left: 10px; }
+    .quotient { grid-column: 3; grid-row: 1; padding-left: 10px; letter-spacing: 1px; min-height: 34px; }
+
+    .steps {
+      margin-top: 18px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 24px;
+      white-space: pre;
+    }
+    .row { display:flex; gap: 10px; align-items:center; margin: 8px 0; flex-wrap:wrap; }
+    .row label { font-weight: 600; }
+    .small { font-size: 14px; opacity: .8; }
+    .pill { display:inline-block; padding:2px 8px; border-radius:999px; background:#f3f4f6; font-size: 13px; }
+    .kbd { font-family: ui-monospace, monospace; padding:2px 6px; border:1px solid #e5e7eb; border-bottom-width:2px; border-radius: 8px; }
+  </style>
 </head>
 <body>
-    <!-- ОБНОВЛЁННАЯ НАВИГАЦИЯ -->
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <h1><i class="fas fa-calculator"></i> Math Exam FIPI</h1>
-                <p class="tagline">Спокойная подготовка к экзаменам</p>
-            </div>
-            <nav class="nav">
-                <a href="/" class="nav-link"><i class="fas fa-home"></i> Главная</a>
-                <a href="/oge/" class="nav-link">ОГЭ</a>
-                <a href="/trainers/long-division.html" class="nav-link active"><i class="fas fa-dumbbell"></i> Тренажёры</a>
-            </nav>
+<div class="wrap">
+  <h1>Деление уголком — по шагам (как в тетради)</h1>
+
+  <div class="bar">
+    <div class="row">
+      <label>Делимое:</label>
+      <input id="dividendIn" type="number" min="0" step="1" value="7564">
+    </div>
+    <div class="row">
+      <label>Делитель:</label>
+      <input id="divisorIn" type="number" min="1" step="1" value="23">
+    </div>
+    <button id="startBtn">Начать</button>
+    <button id="randomBtn">Случайный пример</button>
+    <button id="resetBtn">Сброс</button>
+    <div id="status" class="status">Введи числа и нажми «Начать».</div>
+  </div>
+
+  <div class="board">
+    <div class="problem">
+      <div class="corner" aria-label="деление уголком">
+        <div class="quotient" id="quotientOut"></div>
+        <div class="divisor" id="divisorOut"></div>
+        <div class="bracket">)</div>
+        <div class="dividend" id="dividendOut"></div>
+      </div>
+
+      <div class="steps" id="stepsOut"></div>
+
+      <div style="margin-top: 14px;">
+        <div class="row">
+          <span class="pill">Текущий шаг</span>
+          <span class="small">Сначала введи следующую цифру частного, затем остаток после вычитания.</span>
         </div>
-    </header>
-
-    <main class="container">
-        <div class="trainer-container">
-            <div class="trainer-header">
-                <h1><i class="fas fa-divide"></i> Тренажёр: Деление уголком</h1>
-                <p>Научись делить, не боясь ошибиться. Просто подбирай цифры.</p>
-            </div>
-
-            <!-- Философия -->
-            <div class="philosophy-box">
-                <p><i class="fas fa-lightbulb"></i> <strong>Главная мысль:</strong> Деление уголком — это просто перебор цифр. Цифр всего 10, а в каждом шаге ты выбираешь всего из 2-3 вариантов. Если просто рискнёшь попробовать — быстро подберёшь правильную цифру. <em>Терпение и труд всё перетрут, дорогу осилит идущий.</em></p>
-            </div>
-
-            <!-- Пример -->
-            <div class="division-area" id="divisionExample">
-                <!-- Здесь будет генерироваться пример деления -->
-            </div>
-
-            <!-- Подсказка к текущему шагу -->
-            <div class="step-hint" id="stepHint">
-                <strong>Что делать:</strong> Смотри на число <span id="currentDividend">??</span>. Подумай, сколько раз <span id="currentDivisor">??</span> помещается в это число или в его первую часть. Попробуй подставить цифры от 1 до 9.
-            </div>
-
-            <!-- Ввод цифр -->
-            <div class="input-row">
-                <label for="digitInput">Введите цифру для ответа:</label>
-                <input type="number" min="0" max="9" id="digitInput" class="digit-input" autocomplete="off">
-                <button onclick="submitDigit()" class="btn btn-primary">
-                    <i class="fas fa-check"></i> Проверить
-                </button>
-            </div>
-
-            <!-- Обратная связь -->
-            <div class="feedback" id="feedback"></div>
-
-            <!-- Управление -->
-            <div class="controls">
-                <button onclick="newProblem()" class="btn btn-warning">
-                    <i class="fas fa-redo"></i> Новый пример
-                </button>
-                <button onclick="showHint()" class="btn btn-primary">
-                    <i class="fas fa-question-circle"></i> Подсказка
-                </button>
-                <button onclick="showSolution()" class="btn btn-success">
-                    <i class="fas fa-eye"></i> Показать решение
-                </button>
-            </div>
-
-            <!-- Статистика -->
-            <div class="stats">
-                <div class="stat-box">
-                    <div class="stat-number" id="problemsSolved">0</div>
-                    <div class="stat-label">Примеров решено</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number" id="correctDigits">0</div>
-                    <div class="stat-label">Верных цифр</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-number" id="attempts">0</div>
-                    <div class="stat-label">Попыток</div>
-                </div>
-            </div>
-
-            <!-- Алгоритм -->
-            <div class="step">
-                <h3><i class="fas fa-list-ol"></i> Алгоритм деления уголком (запомни шаги):</h3>
-                <ol>
-                    <li>Смотри на <strong>первую цифру</strong> делимого. Если она меньше делителя, бери две цифры.</li>
-                    <li><strong>Подбери цифру</strong> для частного: умножай делитель на числа от 1 до 9, пока не найдёшь самое большое число, которое меньше или равно взятому числу.</li>
-                    <li><strong>Запиши цифру</strong> в ответ, а результат умножения запиши под взятым числом.</li>
-                    <li><strong>Вычти</strong> и снеси следующую цифру.</li>
-                    <li><strong>Повторяй</strong> шаги 2-4, пока не снесёшь все цифры.</li>
-                </ol>
-                <p><strong>Секрет:</strong> Если не уверен в цифре — попробуй на черновике умножить. Ошибка не страшна — просто попробуй другую цифру.</p>
-            </div>
+        <div class="row">
+          <label for="qDigit">Цифра частного:</label>
+          <input id="qDigit" type="number" min="0" max="9" step="1">
+          <label for="remAfter">Остаток:</label>
+          <input id="remAfter" type="number" min="0" step="1">
+          <button id="checkBtn">Проверить шаг</button>
         </div>
-    </main>
+        <div class="small">Подсказка: можно жать <span class="kbd">Enter</span> в любом поле.</div>
+      </div>
+    </div>
 
-    <footer class="footer">
-        <div class="container">
-            <p>© 2024 Math Exam FIPI. Образовательный проект.</p>
-            <p class="footer-note">Тренажёр создан для устранения страха перед вычислениями.</p>
-        </div>
-    </footer>
+    <div class="hint">
+      <div style="font-weight:700; margin-bottom:8px;">Как это работает</div>
+      <ol style="margin:0; padding-left:18px;">
+        <li>Берём слева минимальный кусок делимого, который ≥ делителя.</li>
+        <li>Подбираем цифру частного (0–9).</li>
+        <li>Умножаем делитель на эту цифру, вычитаем.</li>
+        <li>“Сносим” следующую цифру делимого — получаем новое число для деления.</li>
+      </ol>
+      <div style="margin-top:10px;" class="small">
+        Тренажёр сам рисует промежуточные произведения и “снос цифры”.
+        Ты вводишь только: <b>цифру частного</b> и <b>остаток</b> — как контроль понимания.
+      </div>
+      <hr style="border:none; border-top:1px solid #e5e7eb; margin: 12px 0;">
+      <div class="small">
+        Если хочешь — добавлю режим «всё руками» (чтобы ученик вводил ещё и произведение, и разность построчно).
+      </div>
+    </div>
+  </div>
+</div>
 
-    <script>
-        // Переменные для задачи
-        let currentProblem = null;
-        let currentStep = 0;
-        let userAnswer = [];
-        let solvedCount = 0;
-        let correctDigitsCount = 0;
-        let totalAttempts = 0;
+<script>
+(() => {
+  const el = (id) => document.getElementById(id);
 
-        // Создаём новую задачу
-        function newProblem() {
-            const dividends = [126, 348, 572, 945, 684, 812, 567, 729, 483, 396];
-            const divisors = [2, 3, 4, 6, 7, 8, 9];
-            
-            const dividend = dividends[Math.floor(Math.random() * dividends.length)];
-            const divisor = divisors[Math.floor(Math.random() * divisors.length)];
-            
-            // Убедимся, что делится без остатка для простоты
-            if (dividend % divisor !== 0) return newProblem();
-            
-            currentProblem = {
-                dividend: dividend,
-                divisor: divisor,
-                answer: dividend / divisor,
-                answerStr: String(dividend / divisor)
-            };
-            
-            currentStep = 0;
-            userAnswer = [];
-            
-            // Показываем пример
-            document.getElementById('divisionExample').innerHTML = `
-                <div style="font-size: 1.4em; margin-bottom: 1rem;">
-                    <strong>${dividend} ÷ ${divisor} = ?</strong>
-                </div>
-                <div style="color: #666; font-size: 0.9em;">
-                    В ответе ${currentProblem.answerStr.length} цифр(ы)
-                </div>
-            `;
-            
-            // Обновляем подсказку
-            document.getElementById('currentDividend').textContent = String(dividend).substring(0, 2);
-            document.getElementById('currentDivisor').textContent = divisor;
-            
-            // Очищаем обратную связь
-            document.getElementById('feedback').style.display = 'none';
-            document.getElementById('digitInput').value = '';
-            document.getElementById('digitInput').className = 'digit-input';
-            document.getElementById('digitInput').focus();
-            
-            // Показываем подсказку для первого шага
-            updateStepHint();
-        }
+  const dividendIn = el('dividendIn');
+  const divisorIn  = el('divisorIn');
 
-        // Обновляем подсказку для текущего шага
-        function updateStepHint() {
-            const hint = document.getElementById('stepHint');
-            if (currentStep === 0) {
-                hint.innerHTML = `<strong>Шаг 1:</strong> Смотри на первые цифры делимого <kbd>${String(currentProblem.dividend).substring(0, 2)}</kbd>. Сколько раз <kbd>${currentProblem.divisor}</kbd> помещается в это число? Попробуй цифры от 1 до 9.`;
-            } else if (currentStep < currentProblem.answerStr.length) {
-                hint.innerHTML = `<strong>Шаг ${currentStep + 1}:</strong> Теперь работаем с остатком и следующей цифрой. Попробуй цифру <kbd>${currentProblem.answerStr[currentStep]}</kbd> или соседние.`;
-            } else {
-                hint.innerHTML = `<strong>Готово!</strong> Ты решил пример! Попробуй новый.`;
-            }
-        }
+  const startBtn   = el('startBtn');
+  const randomBtn  = el('randomBtn');
+  const resetBtn   = el('resetBtn');
+  const checkBtn   = el('checkBtn');
 
-        // Проверяем введённую цифру
-        function submitDigit() {
-            const input = document.getElementById('digitInput');
-            const digit = parseInt(input.value);
-            const feedback = document.getElementById('feedback');
-            
-            if (isNaN(digit) || digit < 0 || digit > 9) {
-                feedback.className = 'feedback feedback-hint';
-                feedback.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Введите цифру от 0 до 9';
-                feedback.style.display = 'block';
-                return;
-            }
-            
-            totalAttempts++;
-            document.getElementById('attempts').textContent = totalAttempts;
-            
-            const correctDigit = parseInt(currentProblem.answerStr[currentStep]);
-            
-            if (digit === correctDigit) {
-                // Правильно
-                input.className = 'digit-input digit-correct';
-                userAnswer.push(digit);
-                currentStep++;
-                correctDigitsCount++;
-                
-                feedback.className = 'feedback feedback-correct';
-                feedback.innerHTML = `
-                    <i class="fas fa-check-circle"></i> <strong>Верно!</strong> Цифра ${digit} подходит.
-                    ${currentStep < currentProblem.answerStr.length ? 'Переходи к следующей цифре.' : 'Поздравляю, ты решил весь пример!'}
-                `;
-                feedback.style.display = 'block';
-                
-                document.getElementById('correctDigits').textContent = correctDigitsCount;
-                
-                if (currentStep >= currentProblem.answerStr.length) {
-                    // Пример решён полностью
-                    solvedCount++;
-                    document.getElementById('problemsSolved').textContent = solvedCount;
-                    
-                    // Показываем полное решение через 1.5 секунды
-                    setTimeout(showSolution, 1500);
-                } else {
-                    updateStepHint();
-                }
-            } else {
-                // Неправильно
-                input.className = 'digit-input digit-wrong';
-                
-                let hint = '';
-                if (digit < correctDigit) {
-                    hint = 'Попробуй цифру побольше';
-                } else {
-                    hint = 'Попробуй цифру поменьше';
-                }
-                
-                feedback.className = 'feedback feedback-hint';
-                feedback.innerHTML = `
-                    <i class="fas fa-times-circle"></i> <strong>Не совсем.</strong> Цифра ${digit} не подходит. ${hint}.
-                    <br><small>Помни: ${currentProblem.divisor} × ${digit} = ${currentProblem.divisor * digit}. Нужно число, близкое к ${String(currentProblem.dividend).substring(0, 2)}.</small>
-                `;
-                feedback.style.display = 'block';
-            }
-            
-            input.value = '';
-            setTimeout(() => input.focus(), 100);
-        }
+  const status     = el('status');
+  const divisorOut = el('divisorOut');
+  const dividendOut= el('dividendOut');
+  const quotientOut= el('quotientOut');
+  const stepsOut   = el('stepsOut');
 
-        // Показать подсказку
-        function showHint() {
-            const feedback = document.getElementById('feedback');
-            const correctDigit = currentProblem.answerStr[currentStep];
-            
-            feedback.className = 'feedback feedback-hint';
-            feedback.innerHTML = `
-                <i class="fas fa-question-circle"></i> <strong>Подсказка:</strong> 
-                Правильная цифра — <strong>${correctDigit}</strong>. 
-                Проверь: ${currentProblem.divisor} × ${correctDigit} = ${currentProblem.divisor * correctDigit}.
-                <br>Теперь попробуй ввести эту цифру сам.
-            `;
-            feedback.style.display = 'block';
-        }
+  const qDigitIn   = el('qDigit');
+  const remAfterIn = el('remAfter');
 
-        // Показать полное решение
-        function showSolution() {
-            const feedback = document.getElementById('feedback');
-            const divisionDisplay = document.getElementById('divisionExample');
-            
-            // Показываем уголок
-            const dividend = currentProblem.dividend;
-            const divisor = currentProblem.divisor;
-            const answer = currentProblem.answer;
-            
-            let solutionHTML = `
-                <div style="text-align: left; font-family: 'Courier New', monospace; font-size: 1.1em; line-height: 1.8;">
-                    <div>${dividend} │ ${divisor}</div>
-                    <div>${divisor * Math.floor(dividend / 100)}  │ ${answer}</div>
-                    <div>---</div>
-                    <div>${dividend - (divisor * Math.floor(dividend / 100))}${dividend.toString()[2]}</div>
-                    <div>${divisor * Math.floor((dividend % 100) / 10)}</div>
-                    <div>---</div>
-                    <div>${dividend % divisor === 0 ? '0 (без остатка)' : dividend % divisor}</div>
-                </div>
-                <div style="margin-top: 1rem; color: #4caf50;">
-                    <i class="fas fa-check"></i> Полный ответ: <strong>${answer}</strong>
-                </div>
-            `;
-            
-            divisionDisplay.innerHTML = solutionHTML;
-            
-            feedback.className = 'feedback feedback-correct';
-            feedback.innerHTML = `
-                <i class="fas fa-graduation-cap"></i> <strong>Разбор решения:</strong>
-                <ol style="margin: 0.5rem 0 0 1.5rem;">
-                    <li>Берём ${Math.floor(dividend / 100)} (первые цифры)</li>
-                    <li>${divisor} × ${Math.floor(dividend / 100)} = ${divisor * Math.floor(dividend / 100)}</li>
-                    <li>Вычитаем, сносим следующую цифру</li>
-                    <li>Повторяем для нового числа</li>
-                </ol>
-            `;
-            feedback.style.display = 'block';
-            
-            document.getElementById('stepHint').innerHTML = 
-                '<strong>Итог:</strong> Ты научился! Деление — это просто последовательность шагов. Каждый шаг — подбор одной цифры.';
-        }
+  let st = null;
 
-        // Обработка нажатия Enter в поле ввода
-        document.getElementById('digitInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                submitDigit();
-            }
-        });
+  function setStatus(text, kind = 'neutral') {
+    status.textContent = text;
+    status.className = 'status' + (kind === 'ok' ? ' ok' : kind === 'bad' ? ' bad' : '');
+  }
 
-        // Инициализация при загрузке страницы
-        window.onload = function() {
-            newProblem();
-            // Загружаем сохранённую статистику из localStorage
-            const savedStats = JSON.parse(localStorage.getItem('divisionStats')) || {};
-            solvedCount = savedStats.solved || 0;
-            correctDigitsCount = savedStats.correctDigits || 0;
-            totalAttempts = savedStats.attempts || 0;
-            
-            document.getElementById('problemsSolved').textContent = solvedCount;
-            document.getElementById('correctDigits').textContent = correctDigitsCount;
-            document.getElementById('attempts').textContent = totalAttempts;
-            
-            // Сохраняем статистику при закрытии страницы
-            window.addEventListener('beforeunload', function() {
-                localStorage.setItem('divisionStats', JSON.stringify({
-                    solved: solvedCount,
-                    correctDigits: correctDigitsCount,
-                    attempts: totalAttempts
-                }));
-            });
-        };
-    </script>
+  function sanitizeInt(v, fallback = null) {
+    if (v === '' || v === null || v === undefined) return fallback;
+    const n = Number(v);
+    if (!Number.isFinite(n)) return fallback;
+    return Math.trunc(n);
+  }
+
+  function makeRandom() {
+    // 2–4 цифры делимое, 1–2 цифры делитель, не 0.
+    const divisor = Math.floor(Math.random() * 89) + 11;      // 11..99
+    const dividend = Math.floor(Math.random() * 9000) + 1000; // 1000..9999
+    dividendIn.value = dividend;
+    divisorIn.value = divisor;
+    start();
+  }
+
+  function resetUI() {
+    divisorOut.textContent = '';
+    dividendOut.textContent = '';
+    quotientOut.textContent = '';
+    stepsOut.textContent = '';
+    qDigitIn.value = '';
+    remAfterIn.value = '';
+  }
+
+  function start() {
+    const dividend = sanitizeInt(dividendIn.value, null);
+    const divisor  = sanitizeInt(divisorIn.value, null);
+
+    if (dividend === null || divisor === null || divisor <= 0 || dividend < 0) {
+      setStatus('Проверь числа: делимое ≥ 0, делитель > 0.', 'bad');
+      return;
+    }
+
+    // Состояние
+    const digits = String(dividend).split('').map(d => Number(d));
+
+    st = {
+      dividend,
+      divisor,
+      digits,
+      i: 0,              // индекс следующей цифры делимого для "сноса"
+      current: 0,        // текущее число для деления
+      quotientDigits: [],// массив цифр частного (в т.ч. нули внутри)
+      steps: [],         // текстовые строки для отображения "тетрадного" вида
+      finished: false
+    };
+
+    resetUI();
+    divisorOut.textContent = String(divisor);
+    dividendOut.textContent = String(dividend);
+
+    // Подготовим первый current: берём минимальный префикс >= divisor (или весь, если меньше)
+    buildNextCurrentToAtLeastDivisor();
+
+    render();
+    setStatus('Шаг 1: введи следующую цифру частного и остаток.', 'neutral');
+    qDigitIn.focus();
+  }
+
+  function buildNextCurrentToAtLeastDivisor() {
+    // "Сносим" цифры, пока current < divisor и есть ещё цифры,
+    // при этом если уже есть цифры частного — добавляем 0 в частное (как в обычном делении).
+    while (st.i < st.digits.length && st.current < st.divisor) {
+      st.current = st.current * 10 + st.digits[st.i];
+      st.i++;
+      if (st.quotientDigits.length > 0) st.quotientDigits.push(0);
+    }
+    // Если мы в самом начале и всё ещё current < divisor и цифры кончились:
+    // частное будет 0, остаток = dividend.
+  }
+
+  function expectedStep() {
+    if (!st || st.finished) return null;
+
+    // Если уже не осталось цифр и current < divisor: завершаем
+    if (st.i >= st.digits.length && st.current < st.divisor) {
+      return {
+        done: true,
+        quotient: st.quotientDigits.length ? st.quotientDigits.join('') : '0',
+        remainder: st.current
+      };
+    }
+
+    // Ожидаемую цифру частного
+    const q = Math.floor(st.current / st.divisor);
+    const prod = q * st.divisor;
+    const rem = st.current - prod;
+
+    // Следующее число после "сноса"
+    let nextCurrent = rem;
+    let bringDownDigit = null;
+    if (st.i < st.digits.length) {
+      bringDownDigit = st.digits[st.i];
+      nextCurrent = rem * 10 + bringDownDigit;
+    }
+
+    return {
+      done: false,
+      qDigit: q,
+      product: prod,
+      remainder: rem,
+      bringDownDigit,
+      nextCurrent
+    };
+  }
+
+  function applyStep(userQDigit, userRemainder) {
+    const exp = expectedStep();
+    if (!exp) return;
+
+    if (exp.done) {
+      st.finished = true;
+      return;
+    }
+
+    // Проверка пользователя
+    if (userQDigit !== exp.qDigit) {
+      setStatus(`Не сходится цифра частного. Подумай: ${st.current} : ${st.divisor}.`, 'bad');
+      return;
+    }
+    if (userRemainder !== exp.remainder) {
+      setStatus(`Остаток после вычитания неверный. Проверь: ${st.current} - ${st.divisor}×${exp.qDigit}.`, 'bad');
+      return;
+    }
+
+    // Записываем цифру частного
+    st.quotientDigits.push(exp.qDigit);
+
+    // Рисуем “тетрадный” шаг
+    // Будем выравнивать по правому краю текущего блока: width = количество цифр в current
+    const width = String(st.current).length;
+
+    const line1 = padLeft(String(exp.product), width);
+    const line2 = padLeft('-'.repeat(String(exp.product).length), width); // условная черта
+    const line3 = padLeft(String(exp.remainder), width);
+
+    st.steps.push(`Текущее число: ${st.current}`);
+    st.steps.push(`  ${line1}`);
+    st.steps.push(`  ${line2}`);
+    st.steps.push(`  ${line3}`);
+
+    // Сносим следующую цифру, если есть
+    st.current = exp.remainder;
+    if (exp.bringDownDigit !== null) {
+      st.steps.push(`  ↓ сносим ${exp.bringDownDigit}`);
+      st.current = exp.nextCurrent;
+      st.i += 1;
+    } else {
+      // цифр больше нет — дальше просто будем проверять, что current < divisor
+      st.steps.push(`  (цифры кончились)`);
+    }
+
+    // Если current < divisor, но цифры ещё есть — нужно “досносить” и поставить нули в частном
+    if (st.i < st.digits.length && st.current < st.divisor) {
+      buildNextCurrentToAtLeastDivisor();
+    }
+
+    // Очистим ввод
+    qDigitIn.value = '';
+    remAfterIn.value = '';
+    render();
+
+    // Если дошли до конца — сообщим итог
+    const exp2 = expectedStep();
+    if (exp2 && exp2.done) {
+      st.finished = true;
+      render();
+      setStatus(`Готово! Частное: ${exp2.quotient}, остаток: ${exp2.remainder}.`, 'ok');
+      return;
+    }
+
+    setStatus('Верно! Идём дальше: следующая цифра частного и остаток.', 'ok');
+    qDigitIn.focus();
+  }
+
+  function padLeft(s, width) {
+    return s.length >= width ? s : ' '.repeat(width - s.length) + s;
+  }
+
+  function render() {
+    if (!st) return;
+
+    // Частное сверху
+    quotientOut.textContent = st.quotientDigits.length ? st.quotientDigits.join('') : '';
+
+    // Шаги
+    stepsOut.textContent = st.steps.join('\n');
+
+    // Подпись текущего состояния
+    if (!st.finished) {
+      const exp = expectedStep();
+      if (exp && !exp.done) {
+        // Можно показать текущий блок (без спойлеров)
+        // Не показываем qDigit/product/rem — только текущее число.
+        // status уже есть — оставим.
+      }
+    }
+  }
+
+  function onCheck() {
+    if (!st) { setStatus('Сначала нажми «Начать».', 'bad'); return; }
+    if (st.finished) { setStatus('Уже готово 🙂 Нажми «Случайный пример» или «Сброс».', 'neutral'); return; }
+
+    const qd = sanitizeInt(qDigitIn.value, null);
+    const rem = sanitizeInt(remAfterIn.value, null);
+
+    if (qd === null || rem === null) {
+      setStatus('Заполни оба поля: цифра частного и остаток.', 'bad');
+      return;
+    }
+    if (qd < 0 || qd > 9) { setStatus('Цифра частного должна быть 0–9.', 'bad'); return; }
+    if (rem < 0) { setStatus('Остаток не может быть отрицательным.', 'bad'); return; }
+
+    applyStep(qd, rem);
+  }
+
+  // Events
+  startBtn.addEventListener('click', start);
+  randomBtn.addEventListener('click', makeRandom);
+  resetBtn.addEventListener('click', () => { st = null; resetUI(); setStatus('Сброшено. Введи числа и нажми «Начать».'); });
+
+  checkBtn.addEventListener('click', onCheck);
+
+  [qDigitIn, remAfterIn].forEach(inp => {
+    inp.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') onCheck();
+    });
+  });
+
+})();
+</script>
 </body>
 </html>
