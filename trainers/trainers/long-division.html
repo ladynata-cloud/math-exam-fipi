@@ -1,1 +1,545 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тренажёр: Деление уголком | Math Exam FIPI</title>
+    <meta name="description" content="Простой тренажёр для обучения делению уголком. Понимание через перебор вариантов. Подготовка к ОГЭ по математике.">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .trainer-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
 
+        .trainer-header {
+            border-bottom: 2px solid #eaeaea;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .philosophy-box {
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            border-left: 5px solid #7b1fa2;
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin: 1.5rem 0;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .philosophy-box i {
+            color: #7b1fa2;
+            margin-right: 10px;
+        }
+
+        .division-area {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px dashed #bdbdbd;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            text-align: center;
+        }
+
+        .input-row {
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .digit-input {
+            width: 60px;
+            height: 60px;
+            font-size: 1.8em;
+            text-align: center;
+            border: 3px solid #ccc;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .digit-input:focus {
+            border-color: #4285f4;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(66, 133, 244, 0.3);
+        }
+
+        .digit-correct {
+            border-color: #4caf50 !important;
+            background-color: #e8f5e9;
+        }
+
+        .digit-wrong {
+            border-color: #f44336 !important;
+            background-color: #ffebee;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.9rem 2rem;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: #4285f4;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3367d6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(66, 133, 244, 0.3);
+        }
+
+        .btn-success {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #388e3c;
+        }
+
+        .btn-warning {
+            background: #ff9800;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #f57c00;
+        }
+
+        .feedback {
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            display: none;
+        }
+
+        .feedback-correct {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            color: #2e7d32;
+        }
+
+        .feedback-hint {
+            background: #fff3e0;
+            border-left: 4px solid #ff9800;
+            color: #ef6c00;
+        }
+
+        .step-hint {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-size: 1em;
+        }
+
+        .step-hint kbd {
+            background: #555;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: #f5f5f5;
+            border-radius: 10px;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #4285f4;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .trainer-container {
+                padding: 1rem;
+            }
+            
+            .digit-input {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5em;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><i class="fas fa-calculator"></i> Math Exam FIPI</h1>
+                <p class="tagline">Спокойная подготовка к экзаменам</p>
+            </div>
+            <nav class="nav">
+                <a href="/" class="nav-link">Главная</a>
+                <a href="/oge/" class="nav-link">ОГЭ</a>
+                <a href="/trainers/" class="nav-link active">Тренажёры</a>
+                <a href="/ege-profile/" class="nav-link">ЕГЭ Профиль</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="trainer-container">
+            <div class="trainer-header">
+                <h1><i class="fas fa-divide"></i> Тренажёр: Деление уголком</h1>
+                <p>Научись делить, не боясь ошибиться. Просто подбирай цифры.</p>
+            </div>
+
+            <!-- Философия -->
+            <div class="philosophy-box">
+                <p><i class="fas fa-lightbulb"></i> <strong>Главная мысль:</strong> Деление уголком — это просто перебор цифр. Цифр всего 10, а в каждом шаге ты выбираешь всего из 2-3 вариантов. Если просто рискнёшь попробовать — быстро подберёшь правильную цифру. <em>Терпение и труд всё перетрут, дорогу осилит идущий.</em></p>
+            </div>
+
+            <!-- Пример -->
+            <div class="division-area" id="divisionExample">
+                <!-- Здесь будет генерироваться пример деления -->
+            </div>
+
+            <!-- Подсказка к текущему шагу -->
+            <div class="step-hint" id="stepHint">
+                <strong>Что делать:</strong> Смотри на число <span id="currentDividend">??</span>. Подумай, сколько раз <span id="currentDivisor">??</span> помещается в это число или в его первую часть. Попробуй подставить цифры от 1 до 9.
+            </div>
+
+            <!-- Ввод цифр -->
+            <div class="input-row">
+                <label for="digitInput">Введите цифру для ответа:</label>
+                <input type="number" min="0" max="9" id="digitInput" class="digit-input" autocomplete="off">
+                <button onclick="submitDigit()" class="btn btn-primary">
+                    <i class="fas fa-check"></i> Проверить
+                </button>
+            </div>
+
+            <!-- Обратная связь -->
+            <div class="feedback" id="feedback"></div>
+
+            <!-- Управление -->
+            <div class="controls">
+                <button onclick="newProblem()" class="btn btn-warning">
+                    <i class="fas fa-redo"></i> Новый пример
+                </button>
+                <button onclick="showHint()" class="btn btn-primary">
+                    <i class="fas fa-question-circle"></i> Подсказка
+                </button>
+                <button onclick="showSolution()" class="btn btn-success">
+                    <i class="fas fa-eye"></i> Показать решение
+                </button>
+            </div>
+
+            <!-- Статистика -->
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number" id="problemsSolved">0</div>
+                    <div class="stat-label">Примеров решено</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="correctDigits">0</div>
+                    <div class="stat-label">Верных цифр</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="attempts">0</div>
+                    <div class="stat-label">Попыток</div>
+                </div>
+            </div>
+
+            <!-- Алгоритм -->
+            <div class="step">
+                <h3><i class="fas fa-list-ol"></i> Алгоритм деления уголком (запомни шаги):</h3>
+                <ol>
+                    <li>Смотри на <strong>первую цифру</strong> делимого. Если она меньше делителя, бери две цифры.</li>
+                    <li><strong>Подбери цифру</strong> для частного: умножай делитель на числа от 1 до 9, пока не найдёшь самое большое число, которое меньше или равно взятому числу.</li>
+                    <li><strong>Запиши цифру</strong> в ответ, а результат умножения запиши под взятым числом.</li>
+                    <li><strong>Вычти</strong> и снеси следующую цифру.</li>
+                    <li><strong>Повторяй</strong> шаги 2-4, пока не снесёшь все цифры.</li>
+                </ol>
+                <p><strong>Секрет:</strong> Если не уверен в цифре — попробуй на черновике умножить. Ошибка не страшна — просто попробуй другую цифру.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Math Exam FIPI. Образовательный проект.</p>
+            <p class="footer-note">Тренажёр создан для устранения страха перед вычислениями.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Переменные для задачи
+        let currentProblem = null;
+        let currentStep = 0;
+        let userAnswer = [];
+        let solvedCount = 0;
+        let correctDigitsCount = 0;
+        let totalAttempts = 0;
+
+        // Создаём новую задачу
+        function newProblem() {
+            const dividends = [126, 348, 572, 945, 684, 812, 567, 729, 483, 396];
+            const divisors = [2, 3, 4, 6, 7, 8, 9];
+            
+            const dividend = dividends[Math.floor(Math.random() * dividends.length)];
+            const divisor = divisors[Math.floor(Math.random() * divisors.length)];
+            
+            // Убедимся, что делится без остатка для простоты
+            if (dividend % divisor !== 0) return newProblem();
+            
+            currentProblem = {
+                dividend: dividend,
+                divisor: divisor,
+                answer: dividend / divisor,
+                answerStr: String(dividend / divisor)
+            };
+            
+            currentStep = 0;
+            userAnswer = [];
+            
+            // Показываем пример
+            document.getElementById('divisionExample').innerHTML = `
+                <div style="font-size: 1.4em; margin-bottom: 1rem;">
+                    <strong>${dividend} ÷ ${divisor} = ?</strong>
+                </div>
+                <div style="color: #666; font-size: 0.9em;">
+                    В ответе ${currentProblem.answerStr.length} цифр(ы)
+                </div>
+            `;
+            
+            // Обновляем подсказку
+            document.getElementById('currentDividend').textContent = String(dividend).substring(0, 2);
+            document.getElementById('currentDivisor').textContent = divisor;
+            
+            // Очищаем обратную связь
+            document.getElementById('feedback').style.display = 'none';
+            document.getElementById('digitInput').value = '';
+            document.getElementById('digitInput').className = 'digit-input';
+            document.getElementById('digitInput').focus();
+            
+            // Показываем подсказку для первого шага
+            updateStepHint();
+        }
+
+        // Обновляем подсказку для текущего шага
+        function updateStepHint() {
+            const hint = document.getElementById('stepHint');
+            if (currentStep === 0) {
+                hint.innerHTML = `<strong>Шаг 1:</strong> Смотри на первые цифры делимого <kbd>${String(currentProblem.dividend).substring(0, 2)}</kbd>. Сколько раз <kbd>${currentProblem.divisor}</kbd> помещается в это число? Попробуй цифры от 1 до 9.`;
+            } else if (currentStep < currentProblem.answerStr.length) {
+                hint.innerHTML = `<strong>Шаг ${currentStep + 1}:</strong> Теперь работаем с остатком и следующей цифрой. Попробуй цифру <kbd>${currentProblem.answerStr[currentStep]}</kbd> или соседние.`;
+            } else {
+                hint.innerHTML = `<strong>Готово!</strong> Ты решил пример! Попробуй новый.`;
+            }
+        }
+
+        // Проверяем введённую цифру
+        function submitDigit() {
+            const input = document.getElementById('digitInput');
+            const digit = parseInt(input.value);
+            const feedback = document.getElementById('feedback');
+            
+            if (isNaN(digit) || digit < 0 || digit > 9) {
+                feedback.className = 'feedback feedback-hint';
+                feedback.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Введите цифру от 0 до 9';
+                feedback.style.display = 'block';
+                return;
+            }
+            
+            totalAttempts++;
+            document.getElementById('attempts').textContent = totalAttempts;
+            
+            const correctDigit = parseInt(currentProblem.answerStr[currentStep]);
+            
+            if (digit === correctDigit) {
+                // Правильно
+                input.className = 'digit-input digit-correct';
+                userAnswer.push(digit);
+                currentStep++;
+                correctDigitsCount++;
+                
+                feedback.className = 'feedback feedback-correct';
+                feedback.innerHTML = `
+                    <i class="fas fa-check-circle"></i> <strong>Верно!</strong> Цифра ${digit} подходит.
+                    ${currentStep < currentProblem.answerStr.length ? 'Переходи к следующей цифре.' : 'Поздравляю, ты решил весь пример!'}
+                `;
+                feedback.style.display = 'block';
+                
+                document.getElementById('correctDigits').textContent = correctDigitsCount;
+                
+                if (currentStep >= currentProblem.answerStr.length) {
+                    // Пример решён полностью
+                    solvedCount++;
+                    document.getElementById('problemsSolved').textContent = solvedCount;
+                    
+                    // Показываем полное решение через 1.5 секунды
+                    setTimeout(showSolution, 1500);
+                } else {
+                    updateStepHint();
+                }
+            } else {
+                // Неправильно
+                input.className = 'digit-input digit-wrong';
+                
+                let hint = '';
+                if (digit < correctDigit) {
+                    hint = 'Попробуй цифру побольше';
+                } else {
+                    hint = 'Попробуй цифру поменьше';
+                }
+                
+                feedback.className = 'feedback feedback-hint';
+                feedback.innerHTML = `
+                    <i class="fas fa-times-circle"></i> <strong>Не совсем.</strong> Цифра ${digit} не подходит. ${hint}.
+                    <br><small>Помни: ${currentProblem.divisor} × ${digit} = ${currentProblem.divisor * digit}. Нужно число, близкое к ${String(currentProblem.dividend).substring(0, 2)}.</small>
+                `;
+                feedback.style.display = 'block';
+            }
+            
+            input.value = '';
+            setTimeout(() => input.focus(), 100);
+        }
+
+        // Показать подсказку
+        function showHint() {
+            const feedback = document.getElementById('feedback');
+            const correctDigit = currentProblem.answerStr[currentStep];
+            
+            feedback.className = 'feedback feedback-hint';
+            feedback.innerHTML = `
+                <i class="fas fa-question-circle"></i> <strong>Подсказка:</strong> 
+                Правильная цифра — <strong>${correctDigit}</strong>. 
+                Проверь: ${currentProblem.divisor} × ${correctDigit} = ${currentProblem.divisor * correctDigit}.
+                <br>Теперь попробуй ввести эту цифру сам.
+            `;
+            feedback.style.display = 'block';
+        }
+
+        // Показать полное решение
+        function showSolution() {
+            const feedback = document.getElementById('feedback');
+            const divisionDisplay = document.getElementById('divisionExample');
+            
+            // Показываем уголок
+            const dividend = currentProblem.dividend;
+            const divisor = currentProblem.divisor;
+            const answer = currentProblem.answer;
+            
+            let solutionHTML = `
+                <div style="text-align: left; font-family: 'Courier New', monospace; font-size: 1.1em; line-height: 1.8;">
+                    <div>${dividend} │ ${divisor}</div>
+                    <div>${divisor * Math.floor(dividend / 100)}  │ ${answer}</div>
+                    <div>---</div>
+                    <div>${dividend - (divisor * Math.floor(dividend / 100))}${dividend.toString()[2]}</div>
+                    <div>${divisor * Math.floor((dividend % 100) / 10)}</div>
+                    <div>---</div>
+                    <div>${dividend % divisor === 0 ? '0 (без остатка)' : dividend % divisor}</div>
+                </div>
+                <div style="margin-top: 1rem; color: #4caf50;">
+                    <i class="fas fa-check"></i> Полный ответ: <strong>${answer}</strong>
+                </div>
+            `;
+            
+            divisionDisplay.innerHTML = solutionHTML;
+            
+            feedback.className = 'feedback feedback-correct';
+            feedback.innerHTML = `
+                <i class="fas fa-graduation-cap"></i> <strong>Разбор решения:</strong>
+                <ol style="margin: 0.5rem 0 0 1.5rem;">
+                    <li>Берём ${Math.floor(dividend / 100)} (первые цифры)</li>
+                    <li>${divisor} × ${Math.floor(dividend / 100)} = ${divisor * Math.floor(dividend / 100)}</li>
+                    <li>Вычитаем, сносим следующую цифру</li>
+                    <li>Повторяем для нового числа</li>
+                </ol>
+            `;
+            feedback.style.display = 'block';
+            
+            document.getElementById('stepHint').innerHTML = 
+                '<strong>Итог:</strong> Ты научился! Деление — это просто последовательность шагов. Каждый шаг — подбор одной цифры.';
+        }
+
+        // Обработка нажатия Enter в поле ввода
+        document.getElementById('digitInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                submitDigit();
+            }
+        });
+
+        // Инициализация при загрузке страницы
+        window.onload = function() {
+            newProblem();
+            // Загружаем сохранённую статистику из localStorage
+            const savedStats = JSON.parse(localStorage.getItem('divisionStats')) || {};
+            solvedCount = savedStats.solved || 0;
+            correctDigitsCount = savedStats.correctDigits || 0;
+            totalAttempts = savedStats.attempts || 0;
+            
+            document.getElementById('problemsSolved').textContent = solvedCount;
+            document.getElementById('correctDigits').textContent = correctDigitsCount;
+            document.getElementById('attempts').textContent = totalAttempts;
+            
+            // Сохраняем статистику при закрытии страницы
+            window.addEventListener('beforeunload', function() {
+                localStorage.setItem('divisionStats', JSON.stringify({
+                    solved: solvedCount,
+                    correctDigits: correctDigitsCount,
+                    attempts: totalAttempts
+                }));
+            });
+        };
+    </script>
+</body>
+</html>
