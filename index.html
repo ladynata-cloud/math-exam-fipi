@@ -1,204 +1,397 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Exam FIPI | Подготовка к ОГЭ, ЕГЭ, ВПР + тренажёры</title>
-    <meta name="description" content="Структурированные разборы задач из банка ФИПИ. ОГЭ, ЕГЭ профиль и база, ВПР с 5 по 10 класс. Тренажёры базовых навыков.">
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MathExam — ОГЭ (ФИПИ) • тренажёры и задачи</title>
+  <meta name="description" content="Тренажёры и задачи по математике (ОГЭ/ФИПИ). Удобная навигация, спокойный дизайн." />
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-    <!-- Шапка -->
-    <header class="header">
-        <div class="container">
-            <div class="logo">
-                <h1><i class="fas fa-calculator"></i> Math Exam FIPI</h1>
-                <p class="tagline">Спокойная подготовка к экзаменам</p>
-            </div>
-            <nav class="nav">
-                <a href="#home" class="nav-link active">Главная</a>
-                <a href="#oge" class="nav-link">ОГЭ</a>
-                <a href="#ege" class="nav-link">ЕГЭ</a>
-                <a href="#vpr" class="nav-link">ВПР</a>
-                <a href="#trainers" class="nav-link">Тренажёры</a>
-            </nav>
-        </div>
-    </header>
 
-    <!-- Главный баннер -->
-    <section class="hero" id="home">
-        <div class="container">
-            <h1 class="hero-title">Математика без суеты</h1>
-            <p class="hero-subtitle">Разборы задач, которые действительно помогают понять</p>
-            <div class="hero-tags">
-                <span class="tag">ОГЭ 9 класс</span>
-                <span class="tag">ЕГЭ 11 класс</span>
-                <span class="tag">ВПР 5-10 класс</span>
-                <span class="tag">Тренажёры</span>
-            </div>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <div class="brand">
+        <div class="brand__logo" aria-hidden="true">∑</div>
+        <div class="brand__text">
+          <div class="brand__title">MathExam</div>
+          <div class="brand__subtitle">ОГЭ (ФИПИ) • тренажёры • задачи</div>
         </div>
+      </div>
+
+      <nav class="nav">
+        <a class="nav__link" href="#trainers">Тренажёры</a>
+        <a class="nav__link" href="#materials">Задачи</a>
+        <a class="nav__link" href="#all">Все страницы</a>
+        <a class="nav__link nav__link--ghost" href="https://github.com/ladynata-cloud/math-exam-fipi" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero__left">
+        <h1 class="hero__title">Домашний “ФИПИ-удобно”</h1>
+        <p class="hero__text">
+          Тренажёры и странички с задачами. Главная страница сама подхватывает всё, что ты уже добавила в репозиторий —
+          не нужно вручную править меню каждый раз.
+        </p>
+
+        <div class="hero__actions">
+          <a class="btn" href="#trainers">Открыть тренажёры</a>
+          <a class="btn btn--soft" href="#materials">Открыть задачи</a>
+        </div>
+
+        <div class="hero__note">
+          <span class="pill">Совет</span>
+          Ссылки ниже обновятся автоматически после коммита новых HTML-страниц в репозиторий.
+        </div>
+      </div>
+
+      <div class="hero__right">
+        <div class="panel">
+          <div class="panel__title">Быстрый доступ</div>
+          <div class="panel__grid">
+            <a class="mini" href="trainers/trainers/long-division.html">
+              <div class="mini__title">Деление уголком</div>
+              <div class="mini__text">Пошагово, как в тетради</div>
+            </a>
+            <a class="mini" href="trainers/trainers/long-multiplication-oge.html">
+              <div class="mini__title">Умножение столбиком</div>
+              <div class="mini__text">ОГЭ-режим: переносы</div>
+            </a>
+          </div>
+
+          <div class="panel__footer">
+            <span class="muted">Если ссылка не открылась — проверь, что файл лежит по указанному пути.</span>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <!-- Разделы -->
-    <main class="container main-content">
-        <!-- Тренажёры -->
-        <section id="trainers" class="trainers-preview">
-            <h2><i class="fas fa-dumbbell"></i> Тренажёры</h2>
-            <p>Переходите от теории к практике. Интерактивные задания с автоматической проверкой и подробными решениями.</p>
-            
-            <a href="trainers/trainers/long-division.html" class="trainer-highlight">
-                <div class="trainer-icon">
-                    <i class="fas fa-divide"></i>
-                </div>
-                <div class="trainer-info">
-                    <h3>Деление уголком</h3>
-                    <p>Научитесь делить, не боясь ошибиться. Просто подбирайте цифры. Подходит для подготовки к ОГЭ.</p>
-                    <span class="trainer-tag">Навык</span>
-                    <span class="trainer-tag">ОГЭ</span>
-                    <span class="trainer-tag">Арифметика</span>
-                </div>
-            </a>
-            
-            <div class="more-trainers">
-                <a href="#trainers">
-                    <i class="fas fa-arrow-right"></i> Смотреть все тренажёры
-                </a>
-            </div>
-        </section>
+    <!-- TRAINERS -->
+    <section id="trainers" class="section">
+      <div class="section__head">
+        <h2 class="section__title">Тренажёры</h2>
+        <p class="section__desc">Все тренажёры из папки <span class="mono">trainers/</span> (и вложенных).</p>
+      </div>
 
-        <!-- ОГЭ -->
-        <section id="oge" class="section">
-            <div class="section-header">
-                <h2 class="section-title">ОГЭ (9 класс)</h2>
-                <p class="section-subtitle">20 заданий с постепенным разбором. От простого к сложному.</p>
-            </div>
-            
-            <div class="subsection">
-                <h3 class="subsection-title">Алгебра</h3>
-                <ul class="task-list">
-                    <li class="task-item">
-                        <div class="task-number">Задача 9</div>
-                        <div class="task-topic">Линейные уравнения</div>
-                        <span class="difficulty medium">Средняя</span>
-                    </li>
-                    <li class="task-item">
-                        <div class="task-number">Задача 10</div>
-                        <div class="task-topic">Вероятность</div>
-                        <span class="difficulty easy">Легкая</span>
-                    </li>
-                    <li class="task-item">
-                        <div class="task-number">Задача 11</div>
-                        <div class="task-topic">Функции и графики</div>
-                        <span class="difficulty hard">Сложная</span>
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="subsection">
-                <h3 class="subsection-title">Геометрия</h3>
-                <ul class="task-list">
-                    <li class="task-item">
-                        <div class="task-number">Задача 15</div>
-                        <div class="task-topic">Площади фигур</div>
-                        <span class="difficulty medium">Средняя</span>
-                    </li>
-                </ul>
-            </div>
-            
-            <div class="cta-button-container">
-                <a href="#oge" class="cta-button">
-                    <i class="fas fa-play-circle"></i> Начать подготовку к ОГЭ
-                </a>
-                <p class="button-hint">Доступ ко всем 20 заданиям с подробными разборами</p>
-            </div>
-        </section>
+      <div class="cards" id="trainersList">
+        <!-- Fallback (если GitHub API недоступен) -->
+        <a class="card" href="trainers/trainers/long-division.html">
+          <div class="card__title">Деление уголком</div>
+          <div class="card__meta">trainers/trainers/long-division.html</div>
+          <div class="card__text">Алгоритм деления “как в школе”, по шагам.</div>
+        </a>
 
-        <!-- ЕГЭ -->
-        <section id="ege" class="section">
-            <div class="section-header">
-                <h2 class="section-title">ЕГЭ (11 класс)</h2>
-                <p class="section-subtitle">Профильный и базовый уровни. Разбор сложных задач.</p>
-            </div>
-            
-            <div class="cta-button-container">
-                <a href="#ege" class="cta-button cta-button-secondary">
-                    <i class="fas fa-chart-line"></i> Перейти к ЕГЭ
-                </a>
-                <p class="button-hint">Разборы задач профильного уровня с 13 по 19</p>
-            </div>
-        </section>
+        <a class="card" href="trainers/trainers/long-multiplication-oge.html">
+          <div class="card__title">Умножение столбиком (ОГЭ)</div>
+          <div class="card__meta">trainers/trainers/long-multiplication-oge.html</div>
+          <div class="card__text">Поразрядно + переносы: для тех, кто забывает алгоритм.</div>
+        </a>
+      </div>
+    </section>
 
-        <!-- ВПР -->
-        <section id="vpr" class="section">
-            <div class="section-header">
-                <h2 class="section-title">ВПР (5-10 класс)</h2>
-                <p class="section-subtitle">Подготовка к всероссийским проверочным работам</p>
-            </div>
-            
-            <div class="cta-button-container">
-                <a href="#vpr" class="cta-button">
-                    <i class="fas fa-clipboard-check"></i> К заданиям ВПР
-                </a>
-                <p class="button-hint">Материалы с 5 по 10 класс</p>
-            </div>
-        </section>
-    </main>
+    <!-- MATERIALS / TASKS -->
+    <section id="materials" class="section">
+      <div class="section__head">
+        <h2 class="section__title">Задачи и материалы</h2>
+        <p class="section__desc">
+          Автосбор: странички из репозитория (кроме <span class="mono">index.html</span> и тренажёров).
+          ЕГЭ/ВПР скрыты по умолчанию.
+        </p>
+      </div>
 
-    <!-- Подвал -->
+      <div class="toolbar">
+        <label class="field">
+          <span class="field__label">Поиск</span>
+          <input id="q" class="input" type="search" placeholder="например: 1-20, проценты, дроби, ФИПИ..." />
+        </label>
+
+        <label class="check">
+          <input id="showAll" type="checkbox" />
+          <span>Показывать всё (включая ЕГЭ/ВПР/черновики)</span>
+        </label>
+
+        <button id="reload" class="btn btn--soft" type="button">Обновить список</button>
+      </div>
+
+      <div class="notice" id="statusBox">
+        Загружаю список файлов из GitHub…
+      </div>
+
+      <div class="cards" id="materialsList"></div>
+    </section>
+
+    <!-- ALL PAGES -->
+    <section id="all" class="section">
+      <div class="section__head">
+        <h2 class="section__title">Все HTML-страницы (списком)</h2>
+        <p class="section__desc">Если нужно просто быстро открыть всё, что уже есть на сайте.</p>
+      </div>
+
+      <div class="list" id="allList"></div>
+    </section>
+
     <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-info">
-                <h3>Math Exam FIPI</h3>
-                <p>Образовательный проект для подготовки к экзаменам по математике. Структурированные разборы задач из банка ФИПИ.</p>
-            </div>
-            <div class="footer-links">
-                <a href="#home">Главная</a>
-                <a href="#oge">ОГЭ</a>
-                <a href="#ege">ЕГЭ</a>
-                <a href="#vpr">ВПР</a>
-                <a href="#trainers">Тренажёры</a>
-            </div>
-        </div>
-        <div class="container">
-            <p style="text-align: center; margin-top: 2rem; color: #b0bec5; font-size: 0.9rem;">
-                © 2024 Math Exam FIPI. Для образовательных целей.
-            </p>
-        </div>
+      <div class="footer__row">
+        <div class="muted">© <span id="year"></span> mathexam.space</div>
+        <div class="muted">Сделано спокойно и читабельно ✦</div>
+      </div>
     </footer>
+  </main>
 
-    <script>
-        // Простая навигация по якорям
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Удаляем активный класс у всех ссылок
-                document.querySelectorAll('.nav-link').forEach(item => {
-                    item.classList.remove('active');
-                });
-                // Добавляем активный класс текущей ссылке
-                this.classList.add('active');
-            });
-        });
-        
-        // Плавная прокрутка
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-    </script>
+<script>
+(() => {
+  // ==== НАСТРОЙКА (если когда-то сменишь репозиторий/ветку) ====
+  const CONFIG = {
+    owner: "ladynata-cloud",
+    repo: "math-exam-fipi",
+    branch: "main",
+  };
+
+  // По умолчанию скрываем “не то”
+  const HIDE_DIRS_DEFAULT = new Set([
+    ".github", "assets", "img", "images", "css", "js",
+    "ege", "vpr", "drafts", "archive", "tmp"
+  ]);
+
+  // Допускаем html/htm/pdf (если вдруг есть pdf-разборы)
+  const ALLOW_EXT = new Set([".html", ".htm", ".pdf"]);
+
+  const el = (id) => document.getElementById(id);
+
+  const trainersList = el("trainersList");
+  const materialsList = el("materialsList");
+  const allList = el("allList");
+  const statusBox = el("statusBox");
+
+  const qInput = el("q");
+  const showAll = el("showAll");
+  const reloadBtn = el("reload");
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const API_BASE = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents`;
+
+  function ext(name) {
+    const i = name.lastIndexOf(".");
+    return i >= 0 ? name.slice(i).toLowerCase() : "";
+  }
+
+  function isAllowedFile(item) {
+    if (item.type !== "file") return false;
+    const e = ext(item.name);
+    return ALLOW_EXT.has(e);
+  }
+
+  function isHtmlFile(item) {
+    const e = ext(item.name);
+    return item.type === "file" && (e === ".html" || e === ".htm");
+  }
+
+  function niceTitleFromPath(path) {
+    // trainers/trainers/long-division.html -> long-division
+    const base = path.split("/").pop().replace(/\.(html|htm|pdf)$/i, "");
+    return base
+      .replace(/[-_]+/g, " ")
+      .replace(/\b(oge|ege|vpr|fipi)\b/gi, (m) => m.toUpperCase())
+      .trim()
+      .replace(/^./, c => c.toUpperCase());
+  }
+
+  function hrefFromPath(path) {
+    // index.html в корне -> "index.html" (но мы его не показываем)
+    return path;
+  }
+
+  function cardHTML(item, badge) {
+    const title = item.title || niceTitleFromPath(item.path);
+    const meta = item.path;
+    const desc = item.desc || "";
+    return `
+      <a class="card" href="${hrefFromPath(item.path)}">
+        <div class="card__row">
+          <div class="card__title">${title}</div>
+          ${badge ? `<div class="badge">${badge}</div>` : ``}
+        </div>
+        <div class="card__meta">${meta}</div>
+        ${desc ? `<div class="card__text">${desc}</div>` : ``}
+      </a>
+    `;
+  }
+
+  function listItemHTML(item) {
+    const title = item.title || niceTitleFromPath(item.path);
+    return `<a class="list__item" href="${hrefFromPath(item.path)}">${title}<span class="list__meta">${item.path}</span></a>`;
+  }
+
+  async function fetchJSON(url) {
+    const res = await fetch(url, { headers: { "Accept": "application/vnd.github+json" } });
+    if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+    return res.json();
+  }
+
+  async function listDir(path = "") {
+    const url = `${API_BASE}/${path ? encodeURI(path) : ""}?ref=${encodeURIComponent(CONFIG.branch)}`;
+    return fetchJSON(url);
+  }
+
+  async function scanSelectedDirs(root) {
+    // Берём “понятные” директории, чтобы не делать сотни запросов
+    // + trainers (отдельно)
+    const dirs = root
+      .filter(x => x.type === "dir")
+      .map(x => x.name);
+
+    const candidates = new Set();
+
+    for (const d of dirs) {
+      // В задачи обычно кладут так:
+      if (/oge|fipi|tasks|task|materials|variants|variant|problems|problem|lessons|topics/i.test(d)) {
+        candidates.add(d);
+      }
+      if (d.toLowerCase() === "trainers") candidates.add(d);
+    }
+
+    // На всякий случай: если задач пока мало, всё равно покажем html из корня
+    return Array.from(candidates);
+  }
+
+  function shouldHidePath(path, showAllChecked) {
+    if (showAllChecked) return false;
+    const parts = path.split("/").map(p => p.toLowerCase());
+    return parts.some(p => HIDE_DIRS_DEFAULT.has(p));
+  }
+
+  function applyQuery(items, query) {
+    const q = (query || "").trim().toLowerCase();
+    if (!q) return items;
+    return items.filter(it =>
+      it.path.toLowerCase().includes(q) ||
+      (it.title && it.title.toLowerCase().includes(q))
+    );
+  }
+
+  async function build() {
+    statusBox.textContent = "Загружаю список файлов из GitHub…";
+    statusBox.className = "notice";
+
+    let root;
+    try {
+      root = await listDir("");
+    } catch (e) {
+      statusBox.textContent =
+        "Не получилось загрузить список с GitHub (возможны ограничения сети). " +
+        "Ниже остаются рабочие “ручные” ссылки на тренажёры.";
+      statusBox.className = "notice notice--warn";
+      return;
+    }
+
+    // 1) Собираем тренажёры: trainers/… (глубина 2)
+    const trainers = [];
+    const materials = [];
+    const allPages = [];
+
+    // html/pdf в корне (кроме index.html)
+    for (const it of root) {
+      if (isAllowedFile(it) && it.name.toLowerCase() !== "index.html") {
+        const obj = { path: it.path, title: niceTitleFromPath(it.path) };
+        allPages.push(obj);
+
+        // в материалы — только не trainers
+        if (!it.path.toLowerCase().includes("trainers/")) {
+          materials.push(obj);
+        }
+      }
+    }
+
+    const dirsToScan = await scanSelectedDirs(root);
+
+    // ограничим число запросов: сканируем только выбранные директории, максимум 10
+    const limited = dirsToScan.slice(0, 10);
+
+    for (const d of limited) {
+      // trainers — особый случай: там часто trainers/trainers/…
+      try {
+        const level1 = await listDir(d);
+        for (const it of level1) {
+          if (it.type === "dir") {
+            // один уровень внутрь
+            const level2 = await listDir(it.path);
+            for (const f of level2) {
+              if (isAllowedFile(f) && f.name.toLowerCase() !== "index.html") {
+                const obj = { path: f.path, title: niceTitleFromPath(f.path) };
+                allPages.push(obj);
+
+                if (obj.path.toLowerCase().includes("trainers/")) trainers.push(obj);
+                else materials.push(obj);
+              }
+            }
+          } else if (isAllowedFile(it) && it.name.toLowerCase() !== "index.html") {
+            const obj = { path: it.path, title: niceTitleFromPath(it.path) };
+            allPages.push(obj);
+
+            if (obj.path.toLowerCase().includes("trainers/")) trainers.push(obj);
+            else materials.push(obj);
+          }
+        }
+      } catch (e) {
+        // если директория не читается — просто пропускаем
+      }
+    }
+
+    // дедуп
+    const uniqByPath = (arr) => {
+      const m = new Map();
+      for (const x of arr) m.set(x.path, x);
+      return Array.from(m.values()).sort((a,b) => a.path.localeCompare(b.path, "ru"));
+    };
+
+    const trainersU = uniqByPath(trainers);
+    const materialsU = uniqByPath(materials);
+    const allU = uniqByPath(allPages).filter(x => isHtmlFile({type:"file", name:x.path, path:x.path}));
+
+    // Фильтрация (по умолчанию скрываем ege/vpr и т.п.)
+    const showAllChecked = showAll.checked;
+    const q = qInput.value;
+
+    const trainersV = applyQuery(trainersU, q).filter(x => !shouldHidePath(x.path, showAllChecked));
+    const materialsV = applyQuery(materialsU, q).filter(x => !shouldHidePath(x.path, showAllChecked));
+
+    // trainers section
+    if (trainersV.length) {
+      trainersList.innerHTML = trainersV.map(x => cardHTML(x, "Тренажёр")).join("");
+    }
+
+    // materials section
+    materialsList.innerHTML = materialsV.length
+      ? materialsV.map(x => cardHTML(x, "Страница")).join("")
+      : `<div class="empty">Пока не нашла подходящих страниц. Проверь, что они лежат в репозитории и имеют расширение .html</div>`;
+
+    // all pages list (только html)
+    const allFiltered = applyQuery(allU, q).filter(x => !shouldHidePath(x.path, showAllChecked));
+    allList.innerHTML = allFiltered.length
+      ? allFiltered.map(x => listItemHTML(x)).join("")
+      : `<div class="empty">Список пуст (возможно, всё скрыто фильтрами).</div>`;
+
+    statusBox.textContent = `Готово: тренажёров — ${trainersV.length}, страниц — ${materialsV.length}.`;
+    statusBox.className = "notice notice--ok";
+  }
+
+  // events
+  reloadBtn.addEventListener("click", build);
+  qInput.addEventListener("input", () => {
+    // лёгкий дебаунс
+    clearTimeout(window.__t);
+    window.__t = setTimeout(build, 200);
+  });
+  showAll.addEventListener("change", build);
+
+  // start
+  build();
+})();
+</script>
 </body>
 </html>
+
