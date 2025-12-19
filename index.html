@@ -1,172 +1,149 @@
-<!doctype html>
-<html lang="ru">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MathExam — ОГЭ: тренажёры и задачи</title>
-  <link rel="stylesheet" href="./style.css" />
-</head>
+:root{
+  --bg: #f6f7fb;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #66728a;
+  --line: rgba(15,23,42,.12);
 
-<body>
-<header class="site-header">
-  <div class="container">
-    <div class="brand">
-      <div class="logo">ME</div>
-      <div>
-        <h1>MathExam</h1>
-        <p>ОГЭ по математике — тренажёры базовых навыков и задачи (пополняется).</p>
-      </div>
-    </div>
+  --primary: #2f5f73;
+  --primarySoft: rgba(47,95,115,.10);
 
-    <nav class="top-nav">
-      <a href="#trainers">Тренажёры</a>
-      <a href="#mult">Таблица умножения</a>
-      <a href="#tasks">Задачи</a>
-      <a href="#about">О проекте</a>
-    </nav>
-  </div>
-</header>
+  --shadow: 0 10px 28px rgba(15,23,42,.06);
+  --radius: 16px;
+}
 
-<main class="container">
-  <section class="hero">
-    <div>
-      <h2>Распутываем “узел” арифметики для ОГЭ</h2>
-      <p>
-        Деление уголком, умножение столбиком, вычитание столбиком, переход через 10 и таблица умножения —
-        это один клубок. Здесь мы тренируем его кусочками, чтобы ребёнку стало спокойно.
-      </p>
+*{ box-sizing: border-box; }
+html, body{ margin:0; padding:0; }
 
-      <div class="hero-actions">
-        <a class="btn primary" href="./trainers/trainers/long-division.html">Деление уголком</a>
-        <a class="btn" href="./trainers/trainers/long-multiplication.html">Умножение столбиком</a>
-      </div>
-    </div>
+body{
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+}
 
-    <div class="card soft">
-      <h3>Как заниматься (простая схема)</h3>
-      <ol class="olist">
-        <li>10–15 минут тренажёр</li>
-        <li>3–5 задач по теме</li>
-        <li>Вернуться в тренажёр и поднять уровень</li>
-      </ol>
-      <p class="muted">Цель — не “умность”, а уверенность руками.</p>
-    </div>
-  </section>
+a{ color: var(--primary); text-decoration: none; }
+a:hover{ text-decoration: underline; }
 
-  <section id="trainers" class="section">
-    <h2>Тренажёры</h2>
+.container{
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 14px;
+}
 
-    <div class="grid">
-      <a class="card link" href="./trainers/trainers/long-division.html">
-        <h3>Деление уголком (как в тетрадке)</h3>
-        <p class="muted">Тетрадный вид + белое поле справа для ввода/вывода. Уровни: q / q+prod+rem / полный шаг.</p>
-        <span class="go">Открыть →</span>
-      </a>
+.site-header{
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+  background: rgba(255,255,255,.78);
+  border-bottom: 1px solid var(--line);
+}
 
-      <a class="card link" href="./trainers/trainers/long-multiplication.html">
-        <h3>Умножение столбиком</h3>
-        <p class="muted">Разряды, переносы, промежуточные результаты, контроль ошибок.</p>
-        <span class="go">Открыть →</span>
-      </a>
+.header-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  padding: 10px 0;
+}
 
-      <a class="card link" href="./trainers/multiplication-table/index.html">
-        <h3>Таблица умножения (раздел)</h3>
-        <p class="muted">Несколько тренажёров: скорость, игры, “таблица Пифагора”, умножение на 9.</p>
-        <span class="go">Открыть →</span>
-      </a>
-    </div>
-  </section>
+.brand{
+  display:flex;
+  flex-direction:column;
+  gap: 2px;
+}
 
-  <section id="mult" class="section">
-    <h2>Таблица умножения — быстрые ссылки</h2>
-    <p class="muted">Это уже есть у тебя в папке <b>trainers/multiplication-table</b>.</p>
+.brand-title{
+  font-weight: 900;
+  letter-spacing: .2px;
+}
 
-    <div class="grid">
-      <a class="card link" href="./trainers/multiplication-table/pythagoras.html">
-        <h3>Таблица Пифагора</h3>
-        <p class="muted">Заполнение квадрата 10×10 и закономерности.</p>
-        <span class="go">Открыть →</span>
-      </a>
+.brand-sub{
+  font-size: 12px;
+  color: var(--muted);
+}
 
-      <a class="card link" href="./trainers/multiplication-table/times-9.html">
-        <h3>Умножение на 9</h3>
-        <p class="muted">Отдельный тренажёр на “9” (очень полезно для слабых).</p>
-        <span class="go">Открыть →</span>
-      </a>
+.nav{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items:center;
+  justify-content:flex-end;
+}
 
-      <a class="card link" href="./trainers/multiplication-table/elevator-sprint.html">
-        <h3>Лифт-спринт</h3>
-        <p class="muted">Скоростная тренировка на время.</p>
-        <span class="go">Открыть →</span>
-      </a>
+.nav a{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(15,23,42,.12);
+  background: rgba(255,255,255,.70);
+  font-weight: 800;
+}
+.nav a:hover{
+  background: rgba(47,95,115,.08);
+  border-color: rgba(47,95,115,.25);
+  text-decoration: none;
+}
 
-      <a class="card link" href="./trainers/multiplication-table/speed-test.html">
-        <h3>Speed-test</h3>
-        <p class="muted">Проверка скорости и ошибок.</p>
-        <span class="go">Открыть →</span>
-      </a>
+.hero{
+  padding: 18px 0 14px;
+}
 
-      <a class="card link" href="./trainers/multiplication-table/memory-fishing.html">
-        <h3>Memory “Рыбалка”</h3>
-        <p class="muted">Пары: пример ↔ ответ (игровое закрепление).</p>
-        <span class="go">Открыть →</span>
-      </a>
+.hero-card{
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
 
-      <a class="card link" href="./trainers/multiplication-table/index.html">
-        <h3>Стартовая страница раздела</h3>
-        <p class="muted">Хаб — будем улучшать.</p>
-        <span class="go">Открыть →</span>
-      </a>
-    </div>
-  </section>
+.hero-title{
+  margin: 0 0 6px;
+  font-size: 22px;
+  line-height: 1.25;
+}
 
-  <section id="tasks" class="section">
-    <h2>Задачи</h2>
-    <p class="muted">Пока — аккуратные входы. Позже можно сделать “каталог ОГЭ”.</p>
+.hero-text{
+  margin: 0 0 10px;
+  color: var(--muted);
+  max-width: 860px;
+}
 
-    <div class="grid">
-      <a class="card link" href="./oge/">
-        <h3>ОГЭ — папка задач</h3>
-        <p class="muted">Если внутри есть index.html — откроется он.</p>
-        <span class="go">Открыть →</span>
-      </a>
+.pills{
+  display:flex;
+  gap: 8px;
+  flex-wrap:wrap;
+  margin-top: 10px;
+}
 
-      <div class="card soft">
-        <h3>План пополнения</h3>
-        <ul class="ulist">
-          <li>ОГЭ: базовые задания</li>
-          <li>Потом — варианты</li>
-          <li>Потом — расширение базы (по желанию)</li>
-        </ul>
-        <p class="muted">Главное — регулярность и ясная структура.</p>
-      </div>
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--primarySoft);
+  border: 1px solid rgba(47,95,115,.18);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 900;
+  white-space: nowrap;
+}
 
-      <div class="card soft">
-        <h3>Важно</h3>
-        <p class="muted">
-          Ссылки будем держать “железно”: все тренажёры — в <b>trainers/</b>.
-          Тогда главная станет твоим пультом управления.
-        </p>
-      </div>
-    </div>
-  </section>
+.section{
+  margin: 16px 0 22px;
+}
 
-  <section id="about" class="section">
-    <h2>О проекте</h2>
-    <div class="card soft">
-      <p>
-        Этот сайт — для спокойной математики: без стыда и “ты должен это знать”.
-        Если ученик не может 13−7 — он делает 13−1 семь раз. Экзамен длинный: важнее выдержка и алгоритм.
-      </p>
-      <p class="muted">© 2025</p>
-    </div>
-  </section>
-</main>
+.section h2{
+  margin: 0 0 10px;
+  font-size: 16px;
+}
 
-<footer class="site-footer">
-  <div class="container">
-    <div class="muted">© 2025 MathExam. Сделано для спокойной математики.</div>
-  </div>
-</footer>
-</body>
-</html>
+.grid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:
+
