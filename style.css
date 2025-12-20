@@ -210,4 +210,117 @@ h1 {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-   
+   /* --- rounding trainer additions --- */
+
+.panel {
+  padding: 12px;
+  border: 1px solid #e6e6e6;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+}
+
+.meta {
+  justify-content: space-between;
+  opacity: 0.9;
+}
+
+.task {
+  padding: 16px;
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+}
+
+.task-text {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+}
+
+.answer-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+#answerInput {
+  min-width: 220px;
+  padding: 10px 12px;
+  border: 1px solid #cfcfcf;
+  border-radius: 10px;
+}
+
+#answerInput:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.input-error {
+  border-color: #dc3545 !important;
+}
+
+.btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid #d0d0d0;
+  background: #f6f6f6;
+  cursor: pointer;
+}
+
+.btn:hover { filter: brightness(0.98); }
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn.secondary {
+  background: #ffffff;
+}
+
+.btn.ghost {
+  background: transparent;
+}
+
+.feedback {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #e6e6e6;
+  min-height: 22px;
+}
+
+.feedback.correct {
+  border-color: #b7e4c7;
+  color: #1b7a3a;
+  font-weight: 700;
+}
+
+.feedback.incorrect {
+  border-color: #ffd6d6;
+  color: #a61b1b;
+}
+
+.rule {
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px dashed #d6d6d6;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.is-hidden { display: none; }
+
+.hint {
+  margin-top: 8px;
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
