@@ -2,654 +2,747 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Тренажёр: округление (ОГЭ-режим)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Тренажёр округления — mathexam.space</title>
   <style>
     :root{
-      --bg:#0b0f14;
-      --card:#121824;
-      --text:#e9f0f7;
-      --muted:#9fb0c3;
+      color-scheme: dark;
+      --bg0:#0b1220;
+      --bg1:#0f1b2f;
+      --card:#121f36;
       --line:rgba(255,255,255,.12);
-      --accent:#5aa7ff;
-      --ok:#39d98a;
-      --bad:#ff5a6b;
+      --txt:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.72);
+      --muted2:rgba(255,255,255,.55);
+      --good:#39d98a;
+      --bad:#ff5c5c;
+      --accent:#7aa7ff;
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --r:16px;
+      --pad:18px;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 900px at 10% -10%, rgba(90,167,255,.18), transparent 60%),
-                  radial-gradient(900px 700px at 110% 0%, rgba(255,90,107,.12), transparent 55%),
-                  var(--bg);
-      color:var(--text);
-      line-height:1.45;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 700px at 20% 0%, #13254a 0%, var(--bg0) 55%),
+                  radial-gradient(900px 600px at 80% 20%, #1d2f57 0%, var(--bg0) 60%);
+      color:var(--txt);
+      min-height:100svh;
     }
-    .wrap{max-width:860px;margin:0 auto;padding:18px 14px 40px;}
-    .card{
-      background: rgba(18,24,36,.92);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 14px;
-    }
-    h1{margin:0;font-size:20px}
-    .sub{margin:6px 0 0;color:var(--muted);font-size:13px}
-    a{color:var(--accent);text-decoration:none}
+    a{color:var(--accent); text-decoration:none}
     a:hover{text-decoration:underline}
-
-    .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    label{display:block;color:var(--muted);font-size:12px;margin:0 0 6px}
-    select, input{
-      width:100%;
-      padding: 11px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(7,10,16,.55);
-      color: var(--text);
-      outline: none;
-      font-size: 14px;
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 22px 14px 40px;
     }
-    select:focus,input:focus{
-      border-color: rgba(90,167,255,.55);
-      box-shadow: 0 0 0 3px rgba(90,167,255,.15);
+    .topline{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 14px;
+      color:var(--muted2);
+      font-size:14px;
     }
-    .col{flex:1 1 180px;min-width:180px}
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid var(--line);
+      border-radius: calc(var(--r) + 6px);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    header{
+      padding: 20px var(--pad) 14px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(122,167,255,.10), rgba(0,0,0,0));
+    }
+    h1{
+      margin:0 0 6px;
+      font-size: 28px;
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin:0;
+      color:var(--muted);
+      line-height:1.4;
+    }
 
-    .task{
-      margin-top:12px;
+    .grid{
+      display:grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 14px;
+      padding: 14px var(--pad);
+    }
+    @media (max-width: 820px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .panel{
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      background: rgba(0,0,0,.18);
       padding: 14px;
-      border-radius: 14px;
-      border: 1px dashed rgba(255,255,255,.18);
-      background: rgba(7,10,16,.32);
     }
-    .taskline{
-      display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
-      color:var(--muted);font-size:12px;margin-bottom:8px
-    }
-    .tasktext{font-size:18px;margin:0}
-    .mono{font-variant-numeric: tabular-nums}
-    .pill{
-      display:inline-block;padding:2px 8px;border-radius:999px;
-      border:1px solid rgba(90,167,255,.30);
-      background: rgba(90,167,255,.10);
+    .panel h2{
+      margin:0 0 10px;
+      font-size: 16px;
+      color: var(--muted);
+      font-weight: 600;
     }
 
-    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    button{
-      padding: 11px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      cursor:pointer;
-      font-size: 14px;
+    .row{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+    }
+
+    label.lbl{
+      display:block;
+      font-size: 13px;
+      color: var(--muted2);
+      margin-bottom: 6px;
+    }
+
+    .field{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.22);
+      color: var(--txt);
+      outline:none;
+      font-size: 15px;
+    }
+    .field:focus{
+      border-color: rgba(122,167,255,.55);
+      box-shadow: 0 0 0 3px rgba(122,167,255,.12);
+    }
+
+    .checkline{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
       user-select:none;
     }
-    button:hover{background: rgba(255,255,255,.09)}
-    button.primary{border-color: rgba(90,167,255,.38);background: rgba(90,167,255,.18)}
-    button.primary:hover{background: rgba(90,167,255,.24)}
-    button[disabled]{opacity:.55;cursor:not-allowed}
+    .checkline input{ transform: translateY(3px) scale(1.05); }
 
-    /* аудит Алисы */
-    .correct { color: var(--ok); font-weight: 700; }
-    .incorrect { color: var(--bad); font-weight: 700; }
-    .hint { color: var(--muted); font-size: 0.95em; }
-
-    #feedback{
-      margin-top:10px;
+    .btn{
+      border:1px solid var(--line);
+      background: rgba(122,167,255,.12);
+      color: var(--txt);
       padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(7,10,16,.32);
-      min-height: 44px;
+      border-radius: 14px;
+      cursor:pointer;
+      font-weight: 650;
+      transition: transform .05s ease, background .15s ease;
     }
+    .btn:hover{ background: rgba(122,167,255,.18); }
+    .btn:active{ transform: translateY(1px); }
+    .btn.secondary{ background: rgba(255,255,255,.06); }
+    .btn.secondary:hover{ background: rgba(255,255,255,.10); }
+    .btn.danger{ background: rgba(255,92,92,.12); }
+    .btn.danger:hover{ background: rgba(255,92,92,.18); }
 
-    #rule{
-      display:none;
-      margin-top:10px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(7,10,16,.32);
+    .rulebox{
+      margin-top: 10px;
+      padding: 12px;
+      border: 1px dashed rgba(255,255,255,.18);
+      border-radius: 14px;
       color: var(--muted);
+      line-height: 1.45;
+      display:none;
+    }
+    .rulebox ol{ margin: 0 0 0 18px; padding:0; }
+    .rulebox ul{ margin: 6px 0 0 18px; padding:0; }
+
+    .status{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .statusline{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      gap:10px;
+      align-items:baseline;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .bar{
+      width:100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      border:1px solid var(--line);
+      overflow:hidden;
+    }
+    #barFill{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, rgba(122,167,255,.8), rgba(57,217,138,.85));
+    }
+    .saved{
+      color: var(--muted2);
       font-size: 13px;
     }
-    #rule ol{margin:8px 0 0 18px}
-    #rule li{margin:6px 0}
 
-    .footer{
-      margin-top:12px;
-      color:var(--muted);
-      font-size:13px;
+    .task{
+      padding: 14px;
+      border-radius: var(--r);
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.20);
     }
-
-    .toggle{
-      display:flex;align-items:center;gap:10px;
-      padding:10px 12px;border-radius:12px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(7,10,16,.32);
+    .prompt{
+      margin: 0 0 12px;
+      font-size: 18px;
+      line-height: 1.4;
+    }
+    .prompt .num{
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .prompt .place{
+      font-weight: 700;
+      color: rgba(255,255,255,.9);
+    }
+    .inputrow{
+      display:flex;
+      gap:10px;
+      align-items:stretch;
+      flex-wrap:wrap;
+    }
+    #answer{
+      flex: 1 1 240px;
+      min-width: 200px;
+    }
+    .feedback{
+      margin-top: 10px;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+    .feedback.ok{ color: var(--good); font-weight: 700; }
+    .feedback.bad{ color: var(--bad); font-weight: 700; }
+    .hint{
+      margin-top: 8px;
       color: var(--muted);
+      font-size: 14px;
+      line-height:1.35;
     }
-    .toggle input{width:auto}
 
-    @media (max-width: 768px) {
-      #answer, #checkBtn {
-        width: 100%;
-        margin: 10px 0;
-        padding: 15px;
-        font-size: 18px;
-      }
-      #progress { font-size: 16px; }
-      button{width:100%;}
-      .toggle{width:100%}
+    footer{
+      padding: 14px var(--pad) 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    @media (max-width: 520px){
+      h1{ font-size:24px; }
+      .prompt{ font-size:16px; }
+      .btn{ width:100%; }
+      #answer{ min-width: 100%; }
     }
   </style>
 </head>
-
 <body>
   <div class="wrap">
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-start">
-        <div>
-          <h1>Тренажёр округления</h1>
-          <div class="sub">ОГЭ-режим по умолчанию • строгая проверка • подсказки • сохранение прогресса</div>
-        </div>
-        <div class="sub"><a href="./index.html">← На главную</a></div>
-      </div>
+    <div class="topline">
+      <a href="./index.html">← На главную</a>
+      <div>mathexam.space</div>
+    </div>
 
-      <div class="row">
-        <div class="col">
-          <label>Режим</label>
-          <div class="toggle">
-            <input type="checkbox" id="ogeMode" checked />
+    <div class="card">
+      <header>
+        <h1>Тренажёр округления</h1>
+        <p class="sub">ОГЭ-режим по умолчанию • строгая проверка • подсказки • сохранение прогресса</p>
+      </header>
+
+      <div class="grid">
+        <div class="panel">
+          <h2>Настройки</h2>
+          <div class="row">
             <div>
-              <b>ОГЭ-режим</b> (только целые, разряды: десятки → миллионы)
-              <div class="sub" style="margin:4px 0 0">Выключите — появятся десятые/сотые/тысячные.</div>
+              <label class="lbl">Режим</label>
+              <div class="checkline">
+                <input id="ogeMode" type="checkbox" checked />
+                <div>
+                  <div style="font-weight:700;">ОГЭ-режим</div>
+                  <div style="color:var(--muted2); font-size:13px; line-height:1.35;">
+                    Только целые числа. Разряды: десятки → миллионы.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="lbl" for="countSel">Сколько заданий</label>
+              <select id="countSel" class="field">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+              </select>
+            </div>
+
+            <div>
+              <button id="ruleBtn" class="btn secondary" type="button">Напомнить правило</button>
+              <div id="ruleBox" class="rulebox"></div>
+            </div>
+
+            <div>
+              <button id="resetBtn" class="btn danger" type="button">Сбросить прогресс</button>
             </div>
           </div>
         </div>
 
-        <div class="col">
-          <label for="placeSel">Округлять до</label>
-          <select id="placeSel"></select>
-        </div>
+        <div class="panel">
+          <h2>Задание</h2>
 
-        <div class="col">
-          <label for="countSel">Сколько заданий в сессии</label>
-          <select id="countSel">
-            <option value="10" selected>10</option>
-            <option value="20">20</option>
-          </select>
-        </div>
-      </div>
+          <div class="row" style="margin-bottom:12px;">
+            <div>
+              <label class="lbl" for="placeSel">Округлять до</label>
+              <select id="placeSel" class="field" aria-label="Округлять до">
+                <!-- options заполняются скриптом -->
+              </select>
+            </div>
 
-      <!-- СЧЁТЧИК ЗАДАНИЙ -->
-      <div id="progress" class="sub" style="margin-top:10px">
-        Задание <span id="current">1</span> из <span id="total">10</span>
-      </div>
-      <div id="savedLine" class="sub" style="margin-top:6px; display:none;"></div>
+            <div class="status">
+              <div class="statusline">
+                <div id="progress">Задание <span id="current">1</span> из <span id="total">10</span></div>
+                <div>Верных: <span id="done">0</span>/<span id="tot2">10</span> • Попытки: <span id="attempts">0</span></div>
+              </div>
+              <div class="bar" aria-hidden="true"><div id="barFill"></div></div>
+              <div id="savedLine" class="saved"></div>
+            </div>
+          </div>
 
-      <div class="task">
-        <div class="taskline">
-          <div>Попыток в этом задании: <span class="mono" id="attempts">0</span></div>
-          <div>Прогресс: <span class="mono" id="done">0</span>/<span class="mono" id="tot2">10</span></div>
-        </div>
+          <div class="task">
+            <p class="prompt">Округли <span id="num" class="num">…</span> до <span id="placeSpan" class="place">…</span>.</p>
 
-        <p class="tasktext" id="taskText">
-          Округли число <span class="pill mono" id="numSpan">—</span> до <b id="placeSpan">—</b>.
-        </p>
+            <div class="inputrow">
+              <input id="answer" class="field" type="text" inputmode="decimal" autocomplete="off" placeholder="Введи ответ" />
+              <button id="checkBtn" class="btn" type="button">Проверить</button>
+              <button id="nextBtn" class="btn secondary" type="button" style="display:none;">Далее</button>
+            </div>
 
-        <div style="margin-top:10px">
-          <input id="answer" type="text" inputmode="numeric" autocomplete="off" placeholder="Введи ответ" />
-        </div>
-
-        <div class="btns">
-          <button class="primary" id="checkBtn">Проверить</button>
-          <button id="nextBtn" style="display:none;">Далее</button>
-          <button id="ruleBtn">Напомнить правило</button>
-          <button id="resetBtn">Сбросить прогресс</button>
-        </div>
-
-        <div id="feedback" class="hint">Введите ответ и нажмите «Проверить».</div>
-
-        <div id="rule"></div>
-
-        <div class="footer" id="usefulness">
-          <b>Как это пригодится?</b><br/>
-          При делении <span class="mono">473 : 8</span> можно округлить <span class="mono">473 → 480</span> → <span class="mono">480 : 8 = 60</span>.
-          Это помогает быстро подобрать первую цифру частного.
+            <div id="feedback" class="feedback" aria-live="polite"></div>
+            <div id="hint" class="hint"></div>
+          </div>
         </div>
       </div>
+
+      <footer>
+        <div><strong>Как это пригодится в делении уголком:</strong> при делении <span style="font-variant-numeric:tabular-nums;">473 : 8</span> можно округлить 473 до 480 → 480 : 8 = 60. Это помогает быстро прикинуть первую цифру частного.</div>
+        <div style="color:var(--muted2);">Если после обновления на GitHub Pages что-то «не меняется» — сделайте жёсткое обновление: <strong>Ctrl+F5</strong>.</div>
+      </footer>
     </div>
   </div>
 
-<script>
-(function(){
-  const LS_KEY = "roundingProgress_v2";
+  <script>
+  (function(){
+    "use strict";
 
-  const ogeModeEl = document.getElementById("ogeMode");
-  const placeSel  = document.getElementById("placeSel");
-  const countSel  = document.getElementById("countSel");
+    const LS_KEY = "roundingProgress_v3";
 
-  const currentEl = document.getElementById("current");
-  const totalEl   = document.getElementById("total");
-  const doneEl    = document.getElementById("done");
-  const tot2El    = document.getElementById("tot2");
+    const OGE_PLACES  = [1,2,3,4,5,6];
+    const FULL_PLACES = [-3,-2,-1,0,1,2,3,4,5,6];
 
-  const savedLine = document.getElementById("savedLine");
+    const PLACE_LABEL = new Map([
+      [-3, "тысячных"],
+      [-2, "сотых"],
+      [-1, "десятых"],
+      [ 0, "единиц"],
+      [ 1, "десятков"],
+      [ 2, "сотен"],
+      [ 3, "тысяч"],
+      [ 4, "десятков тысяч"],
+      [ 5, "сотен тысяч"],
+      [ 6, "миллионов"],
+    ]);
 
-  const attemptsEl = document.getElementById("attempts");
-  const numSpan    = document.getElementById("numSpan");
-  const placeSpan  = document.getElementById("placeSpan");
-
-  const answerEl = document.getElementById("answer");
-  const checkBtn = document.getElementById("checkBtn");
-  const nextBtn  = document.getElementById("nextBtn");
-  const feedback = document.getElementById("feedback");
-
-  const ruleBtn = document.getElementById("ruleBtn");
-  const ruleBox = document.getElementById("rule");
-  const resetBtn= document.getElementById("resetBtn");
-
-  const PLACE_LABEL = {
-    6:"миллионов",5:"сотен тысяч",4:"десятков тысяч",3:"тысяч",2:"сотен",1:"десятков",
-    0:"единиц",-1:"десятых",-2:"сотых",-3:"тысячных"
-  };
-
-  const OGE_PLACES = [1,2,3,4,5,6];
-  const FULL_PLACES = [1,2,3,4,5,6,-1,-2,-3];
-
-  let totalTasks = Number(countSel.value) || 10;
-  let currentTask = 0;
-  let completedTasks = 0;
-  let score = 0;
-  let attempts = 0;
-
-  let task = null; // { exp, num, numDisplay, correct, correctDisplay, correctStr }
-
-  function saveProgress(){
-    localStorage.setItem(LS_KEY, JSON.stringify({
-      completed: completedTasks,
-      total: totalTasks,
-      score: score,
-      currentTask: currentTask,
-      place: placeSel.value,
-      count: countSel.value,
-      oge: ogeModeEl.checked
-    }));
-  }
-
-  function loadProgress(){
-    const raw = localStorage.getItem(LS_KEY);
-    if(!raw) return;
-    try{
-      const data = JSON.parse(raw);
-      if(typeof data.completed === "number") completedTasks = data.completed;
-      if(typeof data.total === "number") totalTasks = data.total;
-      if(typeof data.score === "number") score = data.score;
-      if(typeof data.currentTask === "number") currentTask = data.currentTask;
-
-      if(typeof data.oge === "boolean") ogeModeEl.checked = data.oge;
-      if(data.count != null) countSel.value = String(data.count);
-
-      totalTasks = Number(countSel.value) || totalTasks;
-
-      // placeSel заполним после rebuild, потом выставим
-      return data.place;
-    }catch(e){}
-  }
-
-  function rebuildPlaceOptions(){
-    const oge = ogeModeEl.checked;
-    const places = oge ? OGE_PLACES : FULL_PLACES;
-
-    placeSel.innerHTML = "";
-    for(const p of places){
-      const opt = document.createElement("option");
-      opt.value = String(p);
-      opt.textContent = PLACE_LABEL[p] || ("10^" + p);
-      placeSel.appendChild(opt);
-    }
-
-    // В ОГЭ-режиме хотим стартовать с "сотен" (часто полезно для оценки),
-    // но если раньше было сохранено — восстановим позже.
-    if(oge){
-      placeSel.value = "2";
-      answerEl.setAttribute("inputmode", "numeric");
-      answerEl.placeholder = "Введи целое число";
-    }else{
-      placeSel.value = "1";
-      answerEl.setAttribute("inputmode", "decimal");
-      answerEl.placeholder = "Введи число";
-    }
-
-    renderRuleText();
-  }
-
-  function renderRuleText(){
-    const oge = ogeModeEl.checked;
-    // блок "правило" делаем внутренним HTML
-    ruleBox.style.display = "none";
-    ruleBox.innerHTML = oge
-      ? `
-        <ol>
-          <li>Определи разряд, до которого округляешь (десятки, сотни, тысячи...).</li>
-          <li>Посмотри на цифру справа:
-            <ul>
-              <li>0–4 → разряд не меняем;</li>
-              <li>5–9 → увеличиваем разряд на 1.</li>
-            </ul>
-          </li>
-          <li>Все цифры справа заменяем на нули.</li>
-        </ol>
-      `
-      : `
-        <ol>
-          <li>Определи разряд, до которого округляешь (десятки/сотни/… или десятые/сотые/тысячные).</li>
-          <li>Посмотри на цифру справа:
-            <ul>
-              <li>0–4 → разряд не меняем;</li>
-              <li>5–9 → увеличиваем разряд на 1.</li>
-            </ul>
-          </li>
-          <li>Цифры справа заменяем на нули (или оставляем нужное число знаков после запятой).</li>
-        </ol>
-      `;
-  }
-
-  function updateProgressUI(){
-    totalEl.textContent = String(totalTasks);
-    tot2El.textContent  = String(totalTasks);
-    currentEl.textContent = String(currentTask + 1);
-    doneEl.textContent = String(completedTasks);
-  }
-
-  function roundTo(value, exp){
-    if(exp >= 0){
-      const factor = Math.pow(10, exp);
-      return Math.round(value / factor) * factor;
-    }else{
-      const factor = Math.pow(10, -exp);
-      return Math.round(value * factor) / factor;
-    }
-  }
-
-  function nextDigit(value, exp){
-    // цифра справа от разряда exp
-    const e = exp - 1;
-    const abs = Math.abs(value);
-    if(e >= 0){
-      const div = Math.pow(10, e);
-      return Math.floor(abs / div) % 10;
-    }else{
-      const mul = Math.pow(10, -e);
-      return Math.floor(abs * mul + 1e-10) % 10;
-    }
-  }
-
-  function formatNumberRu(n, fixed=null){
-    const opt = { useGrouping:true };
-    if(fixed !== null){
-      opt.minimumFractionDigits = fixed;
-      opt.maximumFractionDigits = fixed;
-    }else{
-      opt.maximumFractionDigits = 12;
-    }
-    return new Intl.NumberFormat("ru-RU", opt).format(n);
-  }
-
-  function buildHint(num, exp, correctDisplay){
-    const nd = nextDigit(num, exp);
-    const place = PLACE_LABEL[exp] || ("10^" + exp);
-    const nextLabel = PLACE_LABEL[exp-1] || "следующий разряд";
-    const up = nd >= 5;
-
-    return `
-      <div class="hint">
-        Подсказка: округляем до <b>${place}</b>. Смотрим на <b>${nextLabel}</b>: там цифра <b>${nd}</b>.<br/>
-        ${up ? `Так как <b>${nd} ≥ 5</b>, увеличиваем разряд «${place}» на 1.` : `Так как <b>${nd} < 5</b>, разряд «${place}» не меняем.`}<br/>
-        <b>Ответ:</b> <span class="mono">${correctDisplay}</span>
-      </div>
+    const RULE_TEXT_HTML = `
+      <ol>
+        <li>Определи разряд, <strong>до которого</strong> округляешь.</li>
+        <li>Посмотри на цифру <strong>справа</strong> от этого разряда:
+          <ul>
+            <li>если она <strong>0–4</strong> → разряд не меняем;</li>
+            <li>если она <strong>5–9</strong> → увеличиваем разряд на 1.</li>
+          </ul>
+        </li>
+        <li>Все цифры справа заменяем на нули (или на 0 в десятичной части — до нужного знака).</li>
+      </ol>
     `;
-  }
 
-  function generateTask(){
-    attempts = 0;
-    attemptsEl.textContent = "0";
-    nextBtn.style.display = "none";
-    answerEl.value = "";
-    answerEl.disabled = false;
-    checkBtn.disabled = false;
+    const ogeModeEl = document.getElementById("ogeMode");
+    const placeSel  = document.getElementById("placeSel");
+    const countSel  = document.getElementById("countSel");
 
-    const exp = Number(placeSel.value);
-    const oge = ogeModeEl.checked;
+    const currentEl = document.getElementById("current");
+    const totalEl   = document.getElementById("total");
+    const doneEl    = document.getElementById("done");
+    const tot2El    = document.getElementById("tot2");
 
-    let num;
-    if(oge){
-      // ТОЛЬКО целые
-      const minDigits = Math.max(2, exp + 2);
-      const min = Math.pow(10, minDigits - 1);
-      const max = Math.pow(10, minDigits) - 1;
-      num = Math.floor(Math.random() * (max - min + 1)) + min;
-    }else{
-      // Полный режим: целые + десятичные
-      if(exp >= 0){
-        const minDigits = Math.max(2, exp + 2);
-        const min = Math.pow(10, minDigits - 1);
-        const max = Math.pow(10, minDigits) - 1;
-        num = Math.floor(Math.random() * (max - min + 1)) + min;
-      }else{
-        const intPart = Math.floor(Math.random() * 9000) + 100;
-        const extraDigits = Math.max(1, (-exp) + 1);
-        const fracMax = Math.pow(10, extraDigits) - 1;
-        const frac = Math.floor(Math.random() * fracMax) + 1;
-        num = Number(intPart + "." + String(frac).padStart(extraDigits, "0"));
+    const attemptsEl = document.getElementById("attempts");
+    const progressEl = document.getElementById("progress");
+    const barFillEl  = document.getElementById("barFill");
+    const savedLine  = document.getElementById("savedLine");
+
+    const numEl      = document.getElementById("num");
+    const placeSpan  = document.getElementById("placeSpan");
+    const answerEl   = document.getElementById("answer");
+
+    const checkBtn   = document.getElementById("checkBtn");
+    const nextBtn    = document.getElementById("nextBtn");
+
+    const feedbackEl = document.getElementById("feedback");
+    const hintEl     = document.getElementById("hint");
+
+    const ruleBtn    = document.getElementById("ruleBtn");
+    const ruleBox    = document.getElementById("ruleBox");
+
+    const resetBtn   = document.getElementById("resetBtn");
+
+    let totalTasks = Number(countSel.value) || 10;
+    let currentTask = 0;
+    let score = 0;
+    let attempts = 0;
+    let locked = false;
+    let task = null;
+
+    function clamp(n, a, b){ return Math.min(b, Math.max(a, n)); }
+
+    function fmtNumberRU(x, exp){
+      if (exp < 0){
+        const dec = clamp((-exp) + 1, 1, 6);
+        const s = Number(x).toFixed(dec).replace(".", ",");
+        return s.replace(/,?0+$/, (m)=> m.startsWith(",") ? "" : m);
+      }
+      return Number(x).toLocaleString("ru-RU");
+    }
+
+    function rndInt(min, max){
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function roundToPlace(value, exp){
+      if (exp >= 0){
+        const unit = Math.pow(10, exp);
+        return Math.round(value / unit) * unit;
+      } else {
+        const scale = Math.pow(10, -exp);
+        return Math.round(value * scale) / scale;
       }
     }
 
-    const correct = roundTo(num, exp);
-    const fixed = exp < 0 ? (-exp) : 0;
+    function buildStepHint(original, exp){
+      if (exp >= 0){
+        const unit = Math.pow(10, exp);
+        const rightDigitPlace = exp - 1;
+        const rightUnit = Math.pow(10, rightDigitPlace);
+        const rightDigit = Math.floor((original % unit) / rightUnit);
 
-    const numDisplay = oge
-      ? formatNumberRu(num, 0)
-      : formatNumberRu(num, exp < 0 ? Math.max(1, (-exp) + 1) : 0);
+        const roundName = PLACE_LABEL.get(exp) || `10^${exp}`;
+        const rightName = PLACE_LABEL.get(rightDigitPlace) || `10^${rightDigitPlace}`;
 
-    const correctDisplay = formatNumberRu(correct, fixed);
-    const correctStr = exp < 0 ? correct.toFixed(-exp) : String(correct);
-
-    task = { exp, num, numDisplay, correct, correctDisplay, correctStr };
-
-    numSpan.textContent = numDisplay;
-    placeSpan.textContent = PLACE_LABEL[exp] || ("10^" + exp);
-
-    feedback.className = "hint";
-    feedback.innerHTML = "Введите ответ и нажмите «Проверить».";
-    updateProgressUI();
-    saveProgress();
-    answerEl.focus();
-  }
-
-  // ====== ВАЛИДАЦИЯ ======
-  function validateInput(raw, exp){
-    const s = String(raw || "").trim();
-    if(s === "") return { ok:false, msg:"Введите число!" };
-
-    // ОГЭ-режим: строго целое
-    if(ogeModeEl.checked){
-      if(!/^\d+$/.test(s)) return { ok:false, msg:"Введите целое число!" };
-      return { ok:true, norm:s };
+        return `Подсказка: округляем до ${roundName}. Смотрим на разряд ${rightName}: цифра ${rightDigit} ${rightDigit >= 5 ? "≥" : "<"} 5 → ${rightDigit >= 5 ? "увеличиваем" : "оставляем"} округляемый разряд.`;
+      }
+      const roundName = PLACE_LABEL.get(exp) || `10^${exp}`;
+      return `Подсказка: округляем до ${roundName}. Смотрим на следующий знак справа.`;
     }
 
-    // Полный режим
-    if(exp >= 0){
-      if(!/^\d+$/.test(s)) return { ok:false, msg:"Введите целое число!" };
-      return { ok:true, norm:s };
-    }else{
-      const dec = -exp;
-      const cleaned = s.replace(",", ".");
-      if(!/^\d+(\.\d+)?$/.test(cleaned)) return { ok:false, msg:"Введите число (можно с запятой)!" };
-      const parts = cleaned.split(".");
-      const fracLen = parts[1] ? parts[1].length : 0;
-      if(fracLen > dec) return { ok:false, msg:`Введите число не точнее, чем до ${PLACE_LABEL[exp]}!` };
-      return { ok:true, norm:cleaned };
-    }
-  }
+    function validateAndParseInput(raw, exp){
+      const s = String(raw || "").trim();
+      if (!s) return { ok:false, msg:"Введите ответ." };
 
-  function strictEqualCheck(userNorm, exp){
-    // ОГЭ-режим: всё целое, строго
-    if(ogeModeEl.checked){
-      return parseInt(userNorm, 10) === Number(task.correctStr);
-    }
+      const oge = ogeModeEl.checked;
+      if (oge){
+        if (!/^\d+$/.test(s)) return { ok:false, msg:"Введите целое число (без запятых и точек)." };
+        return { ok:true, value: Number.parseInt(s, 10) };
+      }
 
-    // Полный режим
-    if(exp >= 0){
-      return parseInt(userNorm, 10) === Number(task.correctStr);
-    }else{
-      const dec = -exp;
-      const userFixed = Number(userNorm).toFixed(dec);
-      return userFixed === task.correctStr;
-    }
-  }
+      if (exp >= 0){
+        if (!/^\d+$/.test(s)) return { ok:false, msg:"Введите целое число." };
+        return { ok:true, value: Number.parseInt(s, 10) };
+      }
 
-  function checkAnswer(){
-    if(!task) return;
-
-    const userInput = answerEl.value.trim();
-    const v = validateInput(userInput, task.exp);
-    if(!v.ok){
-      feedback.className = "incorrect";
-      feedback.textContent = v.msg;
-      return;
+      if (!/^\d+(?:[.,]\d+)?$/.test(s)) return { ok:false, msg:"Введите число (можно с запятой)." };
+      const v = Number.parseFloat(s.replace(",", "."));
+      if (!Number.isFinite(v)) return { ok:false, msg:"Введите число (можно с запятой)." };
+      return { ok:true, value: v };
     }
 
-    // сброс поля + блокировка кнопки (по аудиту)
-    answerEl.value = "";
-    checkBtn.disabled = true;
-    setTimeout(() => {
-      // если за это время задание уже “закрыто” (верный ответ) — не включаем обратно
-      if(answerEl.disabled) return;
+    function isCorrect(userValue, correctValue, exp){
+      if (exp >= 0) return Number(userValue) === Number(correctValue);
+      const scale = Math.pow(10, -exp);
+      return Math.round(Number(userValue) * scale) === Math.round(Number(correctValue) * scale);
+    }
+
+    function updateUI(){
+      totalTasks = Number(countSel.value) || 10;
+
+      currentEl.textContent = String(clamp(currentTask + 1, 1, Math.max(1, totalTasks)));
+      totalEl.textContent   = String(totalTasks);
+      doneEl.textContent    = String(score);
+      tot2El.textContent    = String(totalTasks);
+
+      const done = clamp(currentTask, 0, totalTasks);
+      const pct = totalTasks ? Math.round((done / totalTasks) * 100) : 0;
+      barFillEl.style.width = pct + "%";
+
+      attemptsEl.textContent = String(attempts);
+    }
+
+    function saveProgress(){
+      const data = {
+        oge: ogeModeEl.checked,
+        place: placeSel.value,
+        count: countSel.value,
+        score,
+        currentTask,
+        savedAt: Date.now()
+      };
+      try{ localStorage.setItem(LS_KEY, JSON.stringify(data)); }catch(e){}
+    }
+
+    function loadProgress(){
+      try{
+        const raw = localStorage.getItem(LS_KEY);
+        if (!raw) return null;
+        const data = JSON.parse(raw);
+
+        if (typeof data.oge === "boolean") ogeModeEl.checked = data.oge;
+        if (data.count) countSel.value = String(data.count);
+
+        const savedPlace = data.place;
+
+        score = Number(data.score) || 0;
+        currentTask = Number(data.currentTask) || 0;
+        currentTask = clamp(currentTask, 0, (Number(countSel.value) || 10) - 1);
+
+        if (data.savedAt){
+          const dt = new Date(data.savedAt);
+          savedLine.textContent = `Восстановлен прогресс (последний раз: ${dt.toLocaleString("ru-RU")}).`;
+        } else {
+          savedLine.textContent = "Восстановлен прогресс.";
+        }
+        return savedPlace ?? null;
+      }catch(e){
+        return null;
+      }
+    }
+
+    function rebuildPlaceOptions(){
+      const oge = ogeModeEl.checked;
+      const places = oge ? OGE_PLACES : FULL_PLACES;
+
+      const prev = placeSel.value;
+      placeSel.innerHTML = "";
+
+      for (const exp of places){
+        const opt = document.createElement("option");
+        opt.value = String(exp);
+        opt.textContent = PLACE_LABEL.get(exp) || `10^${exp}`;
+        placeSel.appendChild(opt);
+      }
+
+      if (prev && Array.from(placeSel.options).some(o => o.value === prev)){
+        placeSel.value = prev;
+      } else {
+        placeSel.value = oge ? "1" : "0";
+      }
+    }
+
+    function makeTask(){
+      const exp = Number(placeSel.value);
+      let value;
+
+      if (exp >= 0){
+        const minDigits = Math.max(2, exp + 1);
+        const maxDigits = Math.min(8, exp + 5);
+        const digits = rndInt(minDigits, maxDigits);
+
+        const min = Math.pow(10, digits - 1);
+        const max = Math.pow(10, digits) - 1;
+        value = rndInt(min, max);
+
+        if (value % Math.pow(10, exp) === 0){
+          value += rndInt(1, 9) * Math.pow(10, Math.max(0, exp-1));
+        }
+      } else {
+        const intPart = rndInt(0, 999);
+        const decPlaces = clamp((-exp) + 2, 2, 6);
+        const frac = rndInt(0, Math.pow(10, decPlaces) - 1) / Math.pow(10, decPlaces);
+        value = intPart + frac;
+      }
+
+      const correct = roundToPlace(value, exp);
+      return { value, exp, correct };
+    }
+
+    function renderTask(){
+      attempts = 0;
+      locked = false;
+      feedbackEl.textContent = "";
+      feedbackEl.className = "feedback";
+      hintEl.textContent = "";
+      nextBtn.style.display = "none";
       checkBtn.disabled = false;
-    }, 2000);
+      answerEl.value = "";
+      answerEl.disabled = false;
+      answerEl.focus();
 
-    nextBtn.style.display = "inline-block";
+      task = makeTask();
+      numEl.textContent = fmtNumberRU(task.value, task.exp);
+      placeSpan.textContent = PLACE_LABEL.get(task.exp) || `10^${task.exp}`;
 
-    const ok = strictEqualCheck(v.norm, task.exp);
+      updateUI();
+      saveProgress();
+    }
 
-    if(ok){
-      feedback.className = "correct";
-      feedback.innerHTML = `Верно! ✅<br/><span class="hint">${task.numDisplay} → <span class="mono">${task.correctDisplay}</span></span>`;
-      score += 1;
-
-      answerEl.disabled = true;
+    function finish(){
+      locked = true;
       checkBtn.disabled = true;
-      completedTasks += 1;
-    }else{
+      nextBtn.style.display = "none";
+      answerEl.disabled = true;
+
+      feedbackEl.className = "feedback ok";
+      feedbackEl.textContent = `Готово! Верных ответов: ${score} из ${totalTasks}.`;
+      hintEl.textContent = "Можно сменить разряд/режим и потренироваться ещё.";
+      saveProgress();
+    }
+
+    function checkAnswer(){
+      if (locked) return;
+
+      const exp = Number(placeSel.value);
+      const parsed = validateAndParseInput(answerEl.value, exp);
+
+      if (!parsed.ok){
+        feedbackEl.className = "feedback bad";
+        feedbackEl.textContent = parsed.msg;
+        return;
+      }
+
       attempts += 1;
       attemptsEl.textContent = String(attempts);
 
-      feedback.className = "incorrect";
-      feedback.textContent = "Неверно. Попробуй ещё.";
+      const ok = isCorrect(parsed.value, task.correct, exp);
 
-      if(attempts >= 2){
-        feedback.innerHTML = `Неверно. Попробуй ещё.<br/>` + buildHint(task.num, task.exp, task.correctDisplay);
+      if (ok){
+        feedbackEl.className = "feedback ok";
+        feedbackEl.textContent = `Верно! ${fmtNumberRU(task.value, task.exp)} → ${fmtNumberRU(task.correct, task.exp)}.`;
+        hintEl.textContent = "";
+        locked = true;
+
+        score += 1;
+        doneEl.textContent = String(score);
+
+        nextBtn.style.display = "inline-block";
+        checkBtn.disabled = true;
+
+        saveProgress();
+        return;
       }
+
+      feedbackEl.className = "feedback bad";
+      feedbackEl.textContent = "Неверно. Попробуй ещё.";
+
+      if (attempts >= 2){
+        hintEl.textContent = buildStepHint(task.value, exp);
+      }
+
+      if (attempts >= 3){
+        hintEl.textContent = `${buildStepHint(task.value, exp)} Ответ: ${fmtNumberRU(task.correct, task.exp)}.`;
+        locked = true;
+        nextBtn.style.display = "inline-block";
+        checkBtn.disabled = true;
+      }
+
+      saveProgress();
     }
 
-    saveProgress();
-    updateProgressUI();
-  }
+    function next(){
+      if (!locked) return;
 
-  function loadNextTask(){
-    // если ученик нажал “Далее”, но не решил — считаем как пройденное (пропуск),
-    // чтобы прогресс шёл и ребёнок не “залипал”
-    if(task && completedTasks < (currentTask + 1)){
-      completedTasks += 1;
+      currentTask += 1;
+      if (currentTask >= totalTasks){
+        finish();
+        return;
+      }
+      renderTask();
     }
 
-    currentTask += 1;
-    if(currentTask >= totalTasks){
+    function resetAll(){
+      try{ localStorage.removeItem(LS_KEY); }catch(e){}
+      score = 0;
       currentTask = 0;
-      completedTasks = 0;
+      savedLine.textContent = "Прогресс сброшен. Начнём заново.";
+      renderTask();
     }
-    generateTask();
-  }
 
-  function toggleRule(){
-    ruleBox.style.display = (ruleBox.style.display === "none" || ruleBox.style.display === "") ? "block" : "none";
-  }
+    ruleBtn.addEventListener("click", ()=>{
+      const isOpen = ruleBox.style.display === "block";
+      ruleBox.innerHTML = RULE_TEXT_HTML;
+      ruleBox.style.display = isOpen ? "none" : "block";
+      ruleBtn.textContent = isOpen ? "Напомнить правило" : "Скрыть правило";
+    });
 
-  function resetAll(){
-    localStorage.removeItem(LS_KEY);
-    currentTask = 0;
-    completedTasks = 0;
-    score = 0;
-    attempts = 0;
-    savedLine.style.display = "none";
+    resetBtn.addEventListener("click", resetAll);
+    checkBtn.addEventListener("click", checkAnswer);
+    nextBtn.addEventListener("click", next);
+
+    answerEl.addEventListener("keydown", (e)=>{
+      if (e.key === "Enter"){
+        e.preventDefault();
+        if (locked) next();
+        else checkAnswer();
+      }
+    });
+
+    ogeModeEl.addEventListener("change", ()=>{
+      const savedPlace = placeSel.value;
+      rebuildPlaceOptions();
+      if (savedPlace && Array.from(placeSel.options).some(o => o.value === savedPlace)){
+        placeSel.value = savedPlace;
+      }
+      score = 0;
+      currentTask = 0;
+      savedLine.textContent = "Режим изменён. Начинаем заново (статистика обнулена).";
+      renderTask();
+    });
+
+    placeSel.addEventListener("change", ()=>{
+      score = 0;
+      currentTask = 0;
+      savedLine.textContent = "Разряд изменён. Начинаем заново (статистика обнулена).";
+      renderTask();
+    });
+
+    countSel.addEventListener("change", ()=>{
+      score = 0;
+      currentTask = 0;
+      savedLine.textContent = "Количество заданий изменено. Начинаем заново (статистика обнулена).";
+      renderTask();
+    });
+
+    const savedPlace = loadProgress();
     rebuildPlaceOptions();
-    generateTask();
-    feedback.className = "hint";
-    feedback.textContent = "Прогресс сброшен. Начнём заново.";
-  }
 
-  // ====== INIT ======
-  const savedPlace = loadProgress(); // вернёт сохранённый place, если был
-  rebuildPlaceOptions();
-  if(savedPlace != null){
-    // если сохранённый разряд не доступен в ОГЭ-режиме — оставим текущий
-    const exists = Array.from(placeSel.options).some(o => o.value === String(savedPlace));
-    if(exists) placeSel.value = String(savedPlace);
-  }
+    if (savedPlace != null){
+      const exists = Array.from(placeSel.options).some(o => o.value === String(savedPlace));
+      if (exists) placeSel.value = String(savedPlace);
+    }
 
-  totalTasks = Number(countSel.value) || totalTasks;
-  updateProgressUI();
-
-  // показываем строку сохранённого прогресса (чтобы не ломать счётчик 1/10)
-  const raw = localStorage.getItem(LS_KEY);
-  if(raw){
-    try{
-      const data = JSON.parse(raw);
-      savedLine.style.display = "block";
-      savedLine.textContent = `Сохранено: выполнено ${data.completed} из ${data.total}.`;
-    }catch(e){}
-  }
-
-  checkBtn.addEventListener("click", checkAnswer);
-  nextBtn.addEventListener("click", loadNextTask);
-  ruleBtn.addEventListener("click", toggleRule);
-  resetBtn.addEventListener("click", resetAll);
-
-  ogeModeEl.addEventListener("change", () => {
-    // при смене режима перестраиваем разряды и начинаем сессию заново
-    currentTask = 0;
-    completedTasks = 0;
-    attempts = 0;
-    rebuildPlaceOptions();
-    generateTask();
-    saveProgress();
-  });
-
-  placeSel.addEventListener("change", () => {
-    currentTask = 0;
-    completedTasks = 0;
-    generateTask();
-  });
-
-  countSel.addEventListener("change", () => {
     totalTasks = Number(countSel.value) || 10;
-    currentTask = 0;
-    completedTasks = 0;
-    generateTask();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if(e.key === "Enter"){
-      e.preventDefault();
-      if(!checkBtn.disabled) checkAnswer();
-    }
-  });
-
-  generateTask();
-})();
-</script>
+    updateUI();
+    renderTask();
+  })();
+  </script>
 </body>
 </html>
+
