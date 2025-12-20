@@ -46,6 +46,10 @@
   justify-content: space-between;
 }
 
+.rv2__row--series {
+  justify-content: space-between;
+}
+
 .rv2__label {
   font-weight: 600;
 }
@@ -142,6 +146,12 @@
   opacity: 0.85;
 }
 
+.rv2__seriesStatus {
+  font-weight: 800;
+  opacity: 0.85;
+  text-align: right;
+}
+
 .rv2__footer {
   margin-top: 12px;
   opacity: 0.75;
@@ -164,3 +174,4 @@
 .rv2__toggle input {
   transform: translateY(1px);
 }
+
