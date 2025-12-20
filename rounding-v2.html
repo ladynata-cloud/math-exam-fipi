@@ -1,1 +1,322 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Тренажёр округления v2</title>
+
+  <!-- Твой общий стиль сайта -->
+  <link rel="stylesheet" href="style.css" />
+  <!-- Отдельный стиль только для v2 -->
+  <link rel="stylesheet" href="rounding-v2.css" />
+</head>
+<body>
+  <main class="rv2">
+    <header class="rv2__header">
+      <h1 class="rv2__title">Тренажёр округления v2</h1>
+      <p class="rv2__subtitle">
+        Песочница: здесь можно экспериментировать, не ломая рабочую версию.
+      </p>
+      <p class="rv2__links">
+        <a href="rounding.html">← Вернуться к текущей версии</a>
+      </p>
+    </header>
+
+    <section class="rv2__card">
+      <div class="rv2__row">
+        <label class="rv2__label" for="roundTo">Округляем до:</label>
+        <select id="roundTo" class="rv2__select">
+          <option value="1">целых</option>
+          <option value="10">десятков</option>
+          <option value="100">сотен</option>
+          <option value="1000">тысяч</option>
+          <option value="10000">десятков тысяч</option>
+          <option value="100000">сотен тысяч</option>
+          <option value="1000000">миллионов</option>
+
+          <option value="0.1">десятых</option>
+          <option value="0.01">сотых</option>
+          <option value="0.001">тысячных</option>
+        </select>
+
+        <button id="newBtn" class="rv2__btn">Новый пример</button>
+      </div>
+
+      <div class="rv2__task" aria-live="polite">
+        <div class="rv2__taskLabel">Задание</div>
+        <div id="taskText" class="rv2__taskText">Нажми «Новый пример»</div>
+      </div>
+
+      <div class="rv2__row rv2__row--answer">
+        <label class="rv2__label" for="answer">Ответ:</label>
+        <input id="answer" class="rv2__input" inputmode="decimal" placeholder="например: 120 или 3,14" />
+        <button id="checkBtn" class="rv2__btn rv2__btn--primary">Проверить</button>
+      </div>
+
+      <div class="rv2__row rv2__row--meta">
+        <button id="ruleBtn" class="rv2__btn rv2__btn--ghost">Напомнить правило</button>
+        <button id="solutionBtn" class="rv2__btn rv2__btn--ghost">Показать решение</button>
+        <div class="rv2__score" id="score">0 / 0</div>
+      </div>
+
+      <div id="feedback" class="rv2__feedback" aria-live="polite" style="display:none;"></div>
+
+      <details id="ruleBox" class="rv2__details">
+        <summary>Правило округления (коротко)</summary>
+        <ol class="rv2__list">
+          <li>Определи разряд, до которого округляешь.</li>
+          <li>Посмотри на цифру справа от этого разряда:</li>
+          <ul>
+            <li>0–4 → разряд не меняем.</li>
+            <li>5–9 → увеличиваем разряд на 1.</li>
+          </ul>
+          <li>Цифры справа заменяем нулями (для целых) или отбрасываем (для дробных разрядов).</li>
+        </ol>
+      </details>
+
+      <div id="solutionBox" class="rv2__solution" style="display:none;"></div>
+    </section>
+
+    <footer class="rv2__footer">
+      <p>
+        Подсказка: ввод можно писать с запятой или точкой — тренажёр поймёт.
+      </p>
+    </footer>
+  </main>
+
+<script>
+(() => {
+  const elRoundTo = document.getElementById('roundTo');
+  const elNew = document.getElementById('newBtn');
+  const elCheck = document.getElementById('checkBtn');
+  const elAnswer = document.getElementById('answer');
+  const elTask = document.getElementById('taskText');
+  const elFeedback = document.getElementById('feedback');
+  const elScore = document.getElementById('score');
+  const elRuleBtn = document.getElementById('ruleBtn');
+  const elRuleBox = document.getElementById('ruleBox');
+  const elSolutionBtn = document.getElementById('solutionBtn');
+  const elSolutionBox = document.getElementById('solutionBox');
+
+  let current = null; // { n, step, label, displayN, displayAnswer }
+  let correct = 0;
+  let total = 0;
+
+  const stepToLabel = (step) => {
+    const s = String(step);
+    const map = {
+      "1": "целых",
+      "10": "десятков",
+      "100": "сотен",
+      "1000": "тысяч",
+      "10000": "десятков тысяч",
+      "100000": "сотен тысяч",
+      "1000000": "миллионов",
+      "0.1": "десятых",
+      "0.01": "сотых",
+      "0.001": "тысячных"
+    };
+    return map[s] || `шага ${s}`;
+  };
+
+  const decimalsFromStep = (step) => {
+    if (step >= 1) return 0;
+    const s = String(step);
+    return s.includes('.') ? (s.split('.')[1].length) : 0; // 0.1 -> 1, 0.01 -> 2 ...
+  };
+
+  // Сколько знаков показать у исходного числа, чтобы была видна "цифра справа"
+  const displayDecimalsForTask = (step) => {
+    const d = decimalsFromStep(step);
+    if (d === 0) return 0;
+    // чтобы была цифра справа от нужного разряда
+    return d + 1; // до десятых -> 2 знака, до сотых -> 3, до тысячных -> 4
+  };
+
+  const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+  const formatNumberRu = (n, decimals) => {
+    const str = decimals > 0 ? n.toFixed(decimals) : String(n);
+    return str.replace('.', ',');
+  };
+
+  const normalizeInput = (s) => (s || '').trim().replace(/\s+/g, '').replace(',', '.');
+
+  const roundSchool = (n, step) => {
+    // Для положительных чисел школьное округление совпадает с Math.round(n/step)*step
+    return Math.round(n / step) * step;
+  };
+
+  const makeExample = (step) => {
+    const label = stepToLabel(step);
+    const dTask = displayDecimalsForTask(step);
+
+    let n;
+    if (step >= 1) {
+      // диапазон под размер шага, чтобы было что округлять
+      if (step === 1) n = randInt(1, 999);
+      else if (step === 10) n = randInt(10, 9999);
+      else if (step === 100) n = randInt(100, 99999);
+      else if (step === 1000) n = randInt(1000, 999999);
+      else if (step === 10000) n = randInt(10000, 9999999);
+      else if (step === 100000) n = randInt(100000, 99999999);
+      else n = randInt(1000000, 999999999);
+
+      const ans = roundSchool(n, step);
+      return {
+        n, step, label,
+        displayN: formatNumberRu(n, 0),
+        displayAnswer: formatNumberRu(ans, 0)
+      };
+    } else {
+      // дробные: сделаем число с нужным количеством знаков, чтобы "цифра справа" была видна
+      const intPart = randInt(0, 999);
+      const scale = Math.pow(10, dTask);
+      const frac = randInt(0, scale - 1);
+      n = intPart + frac / scale;
+
+      const ans = roundSchool(n, step);
+      const dAns = decimalsFromStep(step); // результат должен быть с 1/2/3 знаками
+      return {
+        n, step, label,
+        displayN: formatNumberRu(n, dTask),
+        displayAnswer: formatNumberRu(ans, dAns)
+      };
+    }
+  };
+
+  const digitForExplanation = (n, step) => {
+    // Возвращает цифру "справа", на которую смотрим
+    if (step >= 1) {
+      const k = Math.round(Math.log10(step)); // 10 -> 1, 100 -> 2 ...
+      const div = Math.pow(10, k - 1);
+      return Math.floor(n / div) % 10;
+    } else {
+      const d = decimalsFromStep(step);
+      // до десятых (d=1) смотрим на сотые => *10^(d+1)
+      const mult = Math.pow(10, d + 1);
+      return Math.floor(n * mult) % 10;
+    }
+  };
+
+  const placeNameRight = (step) => {
+    if (step >= 1) {
+      const map = {
+        1: "десятые",
+        10: "единицы",
+        100: "десятки",
+        1000: "сотни",
+        10000: "тысячи",
+        100000: "десятки тысяч",
+        1000000: "сотни тысяч"
+      };
+      return map[step] || "следующий разряд";
+    } else {
+      const map = {
+        0.1: "сотые",
+        0.01: "тысячные",
+        0.001: "десятитысячные"
+      };
+      return map[step] || "следующий разряд";
+    }
+  };
+
+  const updateUI = () => {
+    if (!current) return;
+    elTask.textContent = `Округлите число ${current.displayN} до ${current.label}.`;
+    elFeedback.style.display = 'none';
+    elSolutionBox.style.display = 'none';
+    elSolutionBox.textContent = '';
+    elAnswer.value = '';
+    elAnswer.focus();
+  };
+
+  const newExample = () => {
+    const step = Number(elRoundTo.value);
+    current = makeExample(step);
+    updateUI();
+  };
+
+  const setFeedback = (ok, text) => {
+    elFeedback.style.display = 'block';
+    elFeedback.className = 'rv2__feedback ' + (ok ? 'rv2__feedback--ok' : 'rv2__feedback--bad');
+    elFeedback.textContent = text;
+  };
+
+  const updateScore = () => {
+    elScore.textContent = `${correct} / ${total}`;
+  };
+
+  const checkAnswer = () => {
+    if (!current) {
+      setFeedback(false, 'Сначала нажмите «Новый пример».');
+      return;
+    }
+
+    const user = normalizeInput(elAnswer.value);
+    if (!user) {
+      setFeedback(false, 'Введите ответ.');
+      return;
+    }
+
+    const userVal = Number(user);
+    if (!Number.isFinite(userVal)) {
+      setFeedback(false, 'Ответ не распознан. Можно писать через запятую или точку.');
+      return;
+    }
+
+    const ansVal = Number(normalizeInput(current.displayAnswer));
+    const ok = Math.abs(userVal - ansVal) < 1e-9;
+
+    total += 1;
+    if (ok) correct += 1;
+    updateScore();
+
+    if (ok) {
+      setFeedback(true, 'Верно ✅');
+    } else {
+      setFeedback(false, `Неверно ❌ Правильный ответ: ${current.displayAnswer}`);
+    }
+  };
+
+  const toggleSolution = () => {
+    if (!current) return;
+
+    if (elSolutionBox.style.display === 'none') {
+      const step = current.step;
+      const d = digitForExplanation(current.n, step);
+      const rightPlace = placeNameRight(step);
+
+      const sign = (d >= 5) ? '≥ 5 → увеличиваем разряд слева' : '< 5 → оставляем без изменения';
+      elSolutionBox.style.display = 'block';
+      elSolutionBox.innerHTML =
+        `<div class="rv2__solutionTitle">Разбор</div>
+         <div>Смотрим на <b>${rightPlace}</b>: цифра <b>${d}</b>, значит ${sign}.</div>
+         <div class="rv2__solutionAnswer">Ответ: <b>${current.displayAnswer}</b></div>`;
+    } else {
+      elSolutionBox.style.display = 'none';
+      elSolutionBox.textContent = '';
+    }
+  };
+
+  elNew.addEventListener('click', newExample);
+  elCheck.addEventListener('click', checkAnswer);
+
+  elAnswer.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') checkAnswer();
+  });
+
+  elRuleBtn.addEventListener('click', () => {
+    elRuleBox.open = !elRuleBox.open;
+    elRuleBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  elSolutionBtn.addEventListener('click', toggleSolution);
+
+  // старт
+  updateScore();
+})();
+</script>
+</body>
+</html>
 
