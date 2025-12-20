@@ -1,216 +1,507 @@
-.rv2 {
-  max-width: 980px;
-  margin: 0 auto;
-  padding: 20px;
-}
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Тренажёр округления v2</title>
 
-.rv2__header {
-  margin-bottom: 14px;
-}
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="rounding-v2.css" />
+</head>
+<body>
+  <main class="rv2">
+    <header class="rv2__header">
+      <h1 class="rv2__title">Тренажёр округления v2</h1>
+      <p class="rv2__subtitle">
+        Песочница: здесь можно экспериментировать, не ломая рабочую версию.
+      </p>
+      <p class="rv2__links">
+        <a href="rounding.html">← Вернуться к текущей версии</a>
+      </p>
+    </header>
 
-.rv2__title {
-  margin: 0 0 6px 0;
-  font-size: 28px;
-}
+    <section class="rv2__card">
+      <div class="rv2__row">
+        <label class="rv2__label" for="roundTo">Округляем до:</label>
 
-.rv2__subtitle {
-  margin: 0 0 6px 0;
-  opacity: 0.85;
-}
+        <select id="roundTo" class="rv2__select" aria-label="Выбор разряда округления">
+          <option value="1">целых</option>
+          <option value="10">десятков</option>
+          <option value="100">сотен</option>
+          <option value="1000">тысяч</option>
+          <option value="10000">десятков тысяч</option>
+          <option value="100000">сотен тысяч</option>
+          <option value="1000000">миллионов</option>
 
-.rv2__links a {
-  text-decoration: none;
-}
+          <option value="0.1">десятых</option>
+          <option value="0.01">сотых</option>
+          <option value="0.001">тысячных</option>
+        </select>
 
-.rv2__card {
-  background: rgba(255,255,255,0.8);
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 14px;
-  padding: 16px;
-}
+        <label class="rv2__toggle" title="Оставляет только самые нужные разряды для ОГЭ">
+          <input type="checkbox" id="ogeMode" checked />
+          <span>ОГЭ-режим</span>
+        </label>
 
-.rv2__row {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-}
+        <label class="rv2__label" for="level">Уровень:</label>
+        <select id="level" class="rv2__select rv2__select--small" aria-label="Уровень сложности">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
 
-.rv2__row--answer .rv2__input {
-  flex: 1;
-  min-width: 220px;
-}
+        <label class="rv2__toggle" title="Иногда добавляет жизненные формулировки задач">
+          <input type="checkbox" id="appliedMode" checked />
+          <span>Прикладные</span>
+        </label>
 
-.rv2__row--meta {
-  justify-content: space-between;
-}
+        <button id="newBtn" class="rv2__btn" type="button" aria-label="Сгенерировать новый пример">Новый пример</button>
+      </div>
 
-.rv2__row--series {
-  justify-content: space-between;
-}
+      <!-- Серия -->
+      <div class="rv2__row rv2__row--series">
+        <button id="startSeriesBtn" class="rv2__btn rv2__btn--primary" type="button" aria-label="Запустить серию из 10 примеров">
+          Серия: 10 примеров
+        </button>
+        <button id="resetSeriesBtn" class="rv2__btn rv2__btn--ghost" type="button" style="display:none;" aria-label="Сбросить серию">
+          Сбросить серию
+        </button>
+        <div id="seriesStatus" class="rv2__seriesStatus">Серия не запущена</div>
+      </div>
 
-.rv2__label {
-  font-weight: 600;
-}
+      <div class="rv2__task" aria-live="polite">
+        <div class="rv2__taskLabel">Задание</div>
+        <div id="taskText" class="rv2__taskText">Нажми «Новый пример»</div>
+      </div>
 
-.rv2__select,
-.rv2__input {
-  border: 1px solid rgba(0,0,0,0.18);
-  border-radius: 10px;
-  padding: 10px 12px;
-  font-size: 16px;
-  background: white;
-}
+      <div class="rv2__row rv2__row--answer">
+        <label class="rv2__label" for="answer">Ответ:</label>
+        <input id="answer" class="rv2__input" inputmode="decimal" placeholder="например: 120 или 3,14" aria-label="Поле ввода ответа" />
+        <button id="checkBtn" class="rv2__btn rv2__btn--check" type="button" aria-label="Проверить ответ">Проверить</button>
+        <button id="nextBtn" class="rv2__btn rv2__btn--next" type="button" aria-label="Перейти к следующему примеру">Дальше</button>
+      </div>
 
-.rv2__btn {
-  border: 1px solid rgba(0,0,0,0.18);
-  border-radius: 10px;
-  padding: 10px 12px;
-  font-size: 15px;
-  cursor: pointer;
-  background: white;
-  transition: transform .05s ease, box-shadow .15s ease, background .15s ease;
-}
+      <div class="rv2__row rv2__row--meta">
+        <button id="ruleBtn" class="rv2__btn rv2__btn--ghost" type="button">Напомнить правило</button>
+        <button id="solutionBtn" class="rv2__btn rv2__btn--ghost" type="button">Показать решение</button>
+        <div class="rv2__score" id="score">0 / 0</div>
+      </div>
 
-.rv2__btn:hover {
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-}
+      <div id="feedback" class="rv2__feedback" aria-live="polite" style="display:none;"></div>
 
-.rv2__btn:active {
-  transform: translateY(1px);
-}
+      <details id="ruleBox" class="rv2__details">
+        <summary>Правило округления (коротко)</summary>
+        <ol class="rv2__list">
+          <li>Определи разряд, до которого округляешь.</li>
+          <li>Посмотри на цифру справа от этого разряда:</li>
+          <ul>
+            <li>0–4 → разряд не меняем.</li>
+            <li>5–9 → увеличиваем разряд на 1.</li>
+          </ul>
+          <li>Для целых: цифры справа заменяем нулями. Для дробных разрядов: оставляем нужное число знаков.</li>
+        </ol>
+      </details>
 
-.rv2__btn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-  box-shadow: none;
-}
+      <div id="solutionBox" class="rv2__solution" style="display:none;"></div>
 
-.rv2__btn--primary {
-  font-weight: 800;
-}
+      <div id="storageNote" class="rv2__storageNote" style="display:none;">
+        Прогресс не сохраняется (в этом режиме браузер запрещает хранилище). Это нормально — просто не закрывайте страницу.
+      </div>
+    </section>
 
-.rv2__btn--ghost {
-  background: rgba(0,0,0,0.03);
-}
+    <footer class="rv2__footer">
+      <p>Подсказка: ввод можно писать с запятой или точкой — тренажёр поймёт.</p>
+    </footer>
+  </main>
 
-.rv2__btn--check {
-  font-weight: 800;
-  border-color: rgba(0,0,0,0.24);
-  background: rgba(30, 108, 229, 0.10);
-}
+<script>
+(() => {
+  const CONFIG = {
+    STORAGE_KEY: 'roundingV2_state_v22',
+    SERIES_TARGET: 10,
+    CHECK_LOCK_MS: 1500,
+    APPLIED_PROB: 0.22,          // доля прикладных формулировок
+    EPS: 1e-9
+  };
 
-.rv2__btn--check:hover {
-  background: rgba(30, 108, 229, 0.16);
-}
+  const elRoundTo = document.getElementById('roundTo');
+  const elOgeMode = document.getElementById('ogeMode');
+  const elLevel = document.getElementById('level');
+  const elApplied = document.getElementById('appliedMode');
 
-.rv2__btn--next {
-  background: rgba(0,0,0,0.04);
-}
+  const elNew = document.getElementById('newBtn');
+  const elCheck = document.getElementById('checkBtn');
+  const elNext = document.getElementById('nextBtn');
+  const elAnswer = document.getElementById('answer');
+  const elTask = document.getElementById('taskText');
+  const elFeedback = document.getElementById('feedback');
+  const elScore = document.getElementById('score');
+  const elRuleBtn = document.getElementById('ruleBtn');
+  const elRuleBox = document.getElementById('ruleBox');
+  const elSolutionBtn = document.getElementById('solutionBtn');
+  const elSolutionBox = document.getElementById('solutionBox');
+  const elStorageNote = document.getElementById('storageNote');
 
-.rv2__task {
-  border: 1px dashed rgba(0,0,0,0.2);
-  border-radius: 12px;
-  padding: 12px;
-  margin: 10px 0 14px;
-}
+  const elStartSeries = document.getElementById('startSeriesBtn');
+  const elResetSeries = document.getElementById('resetSeriesBtn');
+  const elSeriesStatus = document.getElementById('seriesStatus');
 
-.rv2__taskLabel {
-  font-size: 13px;
-  opacity: 0.75;
-  margin-bottom: 6px;
-}
+  // Безопасный localStorage (Safari private / строгие режимы могут запрещать)
+  const storage = (() => {
+    try {
+      const t = '__t';
+      localStorage.setItem(t, '1');
+      localStorage.removeItem(t);
+      return localStorage;
+    } catch {
+      return null;
+    }
+  })();
 
-.rv2__taskText {
-  font-size: 18px;
-  line-height: 1.35;
-}
+  if (!storage) elStorageNote.style.display = 'block';
 
-.rv2__feedback {
-  border-radius: 12px;
-  padding: 12px;
-  margin-top: 10px;
-  border: 1px solid rgba(0,0,0,0.12);
-}
+  const loadState = () => {
+    if (!storage) return null;
+    try {
+      const raw = storage.getItem(CONFIG.STORAGE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  };
 
-.rv2__feedback--ok {
-  background: rgba(46, 204, 113, 0.12);
-}
+  // состояния
+  let current = null;     // { n, step, label, displayN, displayAnswer, isApplied, appliedText? }
+  let correct = 0;
+  let total = 0;
 
-.rv2__feedback--bad {
-  background: rgba(231, 76, 60, 0.12);
-}
+  let seriesActive = false;
+  let seriesDone = 0;
+  let seriesCorrect = 0;
 
-.rv2__details {
-  margin-top: 12px;
-  border-top: 1px solid rgba(0,0,0,0.08);
-  padding-top: 10px;
-}
+  let taskAttempts = 0;
+  let taskSolved = false;
 
-.rv2__list {
-  margin: 10px 0 0 18px;
-}
+  let checkLocked = false;
+  const CHECK_TEXT = 'Проверить';
+  const CHECK_TEXT_BUSY = 'Проверяю…';
 
-.rv2__solution {
-  margin-top: 10px;
-  padding: 12px;
-  border-radius: 12px;
-  background: rgba(0,0,0,0.03);
-  border: 1px solid rgba(0,0,0,0.10);
-}
+  const saveState = () => {
+    if (!storage) return;
+    try {
+      storage.setItem(CONFIG.STORAGE_KEY, JSON.stringify({
+        roundTo: elRoundTo.value,
+        ogeMode: !!elOgeMode.checked,
+        level: elLevel.value,
+        appliedMode: !!elApplied.checked,
+        correct, total,
+        seriesActive, seriesDone, seriesCorrect,
+        current,
+        taskAttempts,
+        taskSolved
+      }));
+    } catch {
+      // ignore
+    }
+  };
 
-.rv2__solutionTitle {
-  font-weight: 800;
-  margin-bottom: 6px;
-}
+  const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-.rv2__solutionAnswer {
-  margin-top: 8px;
-  font-size: 16px;
-}
+  const stepToLabel = (step) => {
+    const s = String(step);
+    const map = {
+      "1": "целых",
+      "10": "десятков",
+      "100": "сотен",
+      "1000": "тысяч",
+      "10000": "десятков тысяч",
+      "100000": "сотен тысяч",
+      "1000000": "миллионов",
+      "0.1": "десятых",
+      "0.01": "сотых",
+      "0.001": "тысячных"
+    };
+    return map[s] || `шага ${s}`;
+  };
 
-.rv2__score {
-  font-weight: 800;
-  opacity: 0.85;
-}
+  const decimalsFromStep = (step) => {
+    if (step >= 1) return 0;
+    const s = String(step);
+    return s.includes('.') ? (s.split('.')[1].length) : 0;
+  };
 
-.rv2__seriesStatus {
-  font-weight: 800;
-  opacity: 0.85;
-  text-align: right;
-}
+  // Чтобы была видна цифра справа от нужного разряда (для дробных)
+  const displayDecimalsForTask = (step) => {
+    const d = decimalsFromStep(step);
+    if (d === 0) return 0;
+    return d + 1; // до десятых -> 2 знака, до сотых -> 3, до тысячных -> 4
+  };
 
-.rv2__footer {
-  margin-top: 12px;
-  opacity: 0.75;
-  font-size: 13px;
-}
+  const formatNumberRu = (n, decimals) => {
+    const str = decimals > 0 ? n.toFixed(decimals) : String(n);
+    return str.replace('.', ',');
+  };
 
-/* Переключатель “ОГЭ-режим” */
-.rv2__toggle {
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-  padding: 8px 10px;
-  border-radius: 10px;
-  border: 1px solid rgba(0,0,0,0.18);
-  background: rgba(0,0,0,0.03);
-  cursor: pointer;
-  user-select: none;
-}
+  // нормализация ввода: пробелы, запятая->точка, ведущие нули
+  const normalizeInput = (s) => {
+    let t = (s || '').trim().replace(/\s+/g, '').replace(',', '.');
+    if (!t) return '';
 
-.rv2__toggle input {
-  transform: translateY(1px);
-}
+    let sign = '';
+    if (t[0] === '+' || t[0] === '-') {
+      sign = t[0];
+      t = t.slice(1);
+    }
 
-.rv2__storageNote {
-  margin-top: 10px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px dashed rgba(0,0,0,0.18);
-  background: rgba(0,0,0,0.03);
-  font-size: 13px;
-  opacity: 0.85;
-}
+    const parts = t.split('.');
+    let intPart = parts[0] || '0';
+    const fracPart = parts[1] ?? null;
+
+    intPart = intPart.replace(/^0+(?=\d)/, '');
+    if (intPart === '') intPart = '0';
+
+    if (fracPart === null) return sign + intPart;
+    return sign + intPart + '.' + fracPart;
+  };
+
+  const roundSchool = (n, step) => Math.round(n / step) * step;
+
+  const applyMode = () => {
+    const oge = elOgeMode.checked;
+    const allowed = oge
+      ? new Set(["1", "10", "100", "1000", "0.1", "0.01", "0.001"])
+      : null;
+
+    for (const opt of elRoundTo.options) {
+      const show = !allowed || allowed.has(opt.value);
+      opt.hidden = !show;
+      opt.disabled = !show;
+    }
+
+    if (allowed && !allowed.has(elRoundTo.value)) elRoundTo.value = "1";
+  };
+
+  const setFeedback = (ok, text) => {
+    elFeedback.style.display = 'block';
+    elFeedback.className = 'rv2__feedback ' + (ok ? 'rv2__feedback--ok' : 'rv2__feedback--bad');
+    elFeedback.textContent = text;
+  };
+
+  const updateScore = () => {
+    elScore.textContent = `${correct} / ${total}`;
+  };
+
+  const setTaskStateDefault = () => {
+    taskAttempts = 0;
+    taskSolved = false;
+  };
+
+  const setSeriesControls = () => {
+    elRoundTo.disabled = seriesActive;
+    elOgeMode.disabled = seriesActive;
+    elLevel.disabled = seriesActive;
+    elApplied.disabled = seriesActive;
+    elNew.disabled = seriesActive;
+  };
+
+  const updateSeriesUI = () => {
+    if (!seriesActive && seriesDone === 0) {
+      elSeriesStatus.textContent = 'Серия не запущена';
+      elResetSeries.style.display = 'none';
+      return;
+    }
+
+    if (seriesActive) {
+      const currentIndex = Math.min(seriesDone + 1, CONFIG.SERIES_TARGET);
+      const left = Math.max(0, CONFIG.SERIES_TARGET - seriesDone);
+      elSeriesStatus.textContent = `Задание ${currentIndex} из ${CONFIG.SERIES_TARGET} (осталось ${left}) • Верно: ${seriesCorrect}`;
+      elResetSeries.style.display = 'inline-flex';
+    } else {
+      elSeriesStatus.textContent = `Серия завершена: ${seriesCorrect}/${CONFIG.SERIES_TARGET} верно`;
+      elResetSeries.style.display = 'none';
+    }
+  };
+
+  const lockCheckTemporarily = () => {
+    checkLocked = true;
+    elCheck.disabled = true;
+    elCheck.textContent = CHECK_TEXT_BUSY;
+
+    window.setTimeout(() => {
+      checkLocked = false;
+      elCheck.disabled = false;
+      elCheck.textContent = CHECK_TEXT;
+      saveState();
+    }, CONFIG.CHECK_LOCK_MS);
+  };
+
+  const hintTextForCurrent = () => {
+    if (!current) return '';
+    const step = current.step;
+
+    if (step === 1) return 'Округляем до целых: смотрим на десятые. 0–4 → целая часть без изменений; 5–9 → +1.';
+    if (step === 10) return 'Округляем до десятков: смотрим на единицы. 0–4 → десятки не меняем; 5–9 → +1 десяток.';
+    if (step === 100) return 'Округляем до сотен: смотрим на десятки. 0–4 → сотни не меняем; 5–9 → +1 сотня.';
+    if (step === 1000) return 'Округляем до тысяч: смотрим на сотни. 0–4 → тысячи не меняем; 5–9 → +1 тысяча.';
+
+    if (step === 0.1) return 'Округляем до десятых: смотрим на сотые. 0–4 → десятые не меняем; 5–9 → +0,1.';
+    if (step === 0.01) return 'Округляем до сотых: смотрим на тысячные. 0–4 → сотые не меняем; 5–9 → +0,01.';
+    if (step === 0.001) return 'Округляем до тысячных: смотрим на десятитысячные. 0–4 → тысячные не меняем; 5–9 → +0,001.';
+
+    return 'Смотрим на цифру справа от разряда округления: 0–4 — не меняем, 5–9 — увеличиваем.';
+  };
+
+  const digitForExplanation = (n, step) => {
+    if (step === 1) {
+      // десятые
+      return Math.floor(Math.abs(n) * 10) % 10;
+    }
+    if (step >= 1) {
+      const k = Math.round(Math.log10(step));
+      const div = Math.pow(10, k - 1);
+      return Math.floor(n / div) % 10;
+    } else {
+      const d = decimalsFromStep(step);
+      const mult = Math.pow(10, d + 1);
+      return Math.floor(n * mult) % 10;
+    }
+  };
+
+  const placeNameRight = (step) => {
+    if (step >= 1) {
+      const map = {
+        1: "десятые",
+        10: "единицы",
+        100: "десятки",
+        1000: "сотни",
+        10000: "тысячи",
+        100000: "десятки тысяч",
+        1000000: "сотни тысяч"
+      };
+      return map[step] || "следующий разряд";
+    } else {
+      const map = {
+        0.1: "сотые",
+        0.01: "тысячные",
+        0.001: "десятитысячные"
+      };
+      return map[step] || "следующий разряд";
+    }
+  };
+
+  const rangesByLevel = (step, level) => {
+    const lvl = Number(level) || 1;
+
+    // Если округление "крупное" — автоматически расширяем диапазон, но учитываем уровень
+    if (step === 10) {
+      if (lvl === 1) return [10, 99];
+      if (lvl === 2) return [100, 999];
+      return [1000, 9999];
+    }
+    if (step === 100) {
+      if (lvl === 1) return [100, 999];
+      if (lvl === 2) return [1000, 9999];
+      return [10000, 99999];
+    }
+    if (step === 1000) {
+      if (lvl === 1) return [1000, 9999];
+      if (lvl === 2) return [10000, 99999];
+      return [100000, 999999];
+    }
+    if (step >= 10000) {
+      // для больших разрядов — просто “разумный” диапазон по уровню
+      if (lvl === 1) return [step, step * 99 + step - 1];
+      if (lvl === 2) return [step * 10, step * 999 + step - 1];
+      return [step * 100, step * 9999 + step - 1];
+    }
+
+    // до целых и дробные
+    if (step === 1) {
+      if (lvl === 1) return [0, 99];
+      if (lvl === 2) return [0, 999];
+      return [0, 9999];
+    }
+    // дробные (0.1/0.01/0.001): меняем целую часть
+    if (step < 1) {
+      if (lvl === 1) return [0, 99];
+      if (lvl === 2) return [0, 999];
+      return [0, 9999];
+    }
+
+    return [1, 999];
+  };
+
+  const makeAppliedText = (nStr, stepLabel, step) => {
+    const templatesInt = [
+      (x) => `Цена товара ${x} руб. Округлите до ${stepLabel} для быстрой оценки.`,
+      (x) => `Расстояние ${x} км. Округлите до ${stepLabel}.`,
+      (x) => `В городе ${x} жителей. Округлите до ${stepLabel}.`,
+      (x) => `На складе ${x} коробок. Округлите до ${stepLabel}.`,
+    ];
+
+    const templatesDec = [
+      (x) => `Длина доски ${x} м. Округлите до ${stepLabel}.`,
+      (x) => `Масса товара ${x} кг. Округлите до ${stepLabel}.`,
+      (x) => `Ширина ленты ${x} м. Округлите до ${stepLabel}.`,
+    ];
+
+    const pool = step >= 1 ? templatesInt : templatesDec;
+    const t = pool[randInt(0, pool.length - 1)];
+    return t(nStr);
+  };
+
+  const makeExample = (step) => {
+    const label = stepToLabel(step);
+    const level = elLevel.value;
+
+    const useApplied = elApplied.checked && Math.random() < CONFIG.APPLIED_PROB;
+
+    if (step === 1) {
+      // округление до целых: число с 1 знаком после запятой
+      const [a, b] = rangesByLevel(step, level);
+      const intPart = randInt(a, b);
+      const tenth = randInt(0, 9);
+      const n = intPart + tenth / 10;
+
+      const ans = roundSchool(n, step);
+      const displayN = formatNumberRu(n, 1);
+      const displayAnswer = formatNumberRu(ans, 0);
+
+      return {
+        n, step, label,
+        displayN,
+        displayAnswer,
+        isApplied: useApplied,
+        appliedText: useApplied ? makeAppliedText(displayN, label, step) : null
+      };
+    }
+
+    if (step >= 1) {
+      const [minN, maxN] = rangesByLevel(step, level);
+      const n = randInt(minN, maxN);
+      const ans = roundSchool(n, step);
+
+      const displayN = formatNumberRu(n, 0);
+      const displayAnswer = formatNumberRu(ans, 0);
+
+      return {
+        n, step, label,
+        displayN,
+        displayAnswer,
+        isApplied: useApplied,
+        appliedText: useApplied ? makeAppliedText(displayN, label, step) : null
+      };
+    }
+
+    // дробные
+    const dTask = displayDecimalsForTask(step);
+    const [a, b] = rangesByLevel(step, level);
+    const intPart = randInt(a, b);
+    const scale = Math.pow(10, dTask);
+    const frac = randInt(0, scale - 1);
+    const n = intPart + frac / scale;
+
+    const ans = roundSchool(n, step);
+    const dAns = decimalsFro
 
