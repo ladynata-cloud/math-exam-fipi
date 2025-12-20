@@ -1,4 +1,5 @@
-::root{
+
+:root{
   --bg: #f6f7fb;
   --card: #ffffff;
   --border: rgba(0,0,0,.12);
@@ -31,15 +32,15 @@ body{
   line-height: 1.35;
 }
 
-.rf{
+.rf5{
   max-width: 980px;
   margin: 0 auto;
   padding: 18px 14px 40px;
 }
 
-.rf__header{ margin-bottom: 14px; }
-.rf__title{ margin:0 0 6px 0; font-size: 28px; letter-spacing: -0.02em; }
-.rf__badge{
+.rf5__header{ margin-bottom: 14px; }
+.rf5__title{ margin:0 0 6px 0; font-size: 28px; letter-spacing: -0.02em; }
+.rf5__badge{
   font-size: 12px;
   padding: 2px 10px;
   border-radius: 999px;
@@ -48,10 +49,10 @@ body{
   vertical-align: middle;
   margin-left: 8px;
 }
-.rf__subtitle{ margin:0 0 6px 0; color: var(--muted); }
-.rf__back a{ text-decoration:none; }
+.rf5__subtitle{ margin:0 0 6px 0; color: var(--muted); }
+.rf5__back a{ text-decoration:none; }
 
-.rf__panel{
+.rf5__panel{
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -59,7 +60,7 @@ body{
   box-shadow: 0 6px 26px rgba(0,0,0,.05);
 }
 
-.rf__row{
+.rf5__row{
   display:flex;
   flex-wrap:wrap;
   gap:10px;
@@ -67,14 +68,14 @@ body{
   margin-bottom: 12px;
 }
 
-.rf__row--series{
+.rf5__row--series{
   justify-content: space-between;
   gap: 14px;
 }
 
-.rf__label{ font-weight: 700; color: rgba(0,0,0,.88); }
+.rf5__label{ font-weight: 700; color: rgba(0,0,0,.88); }
 
-.rf__select, .rf__input{
+.rf5__select, .rf5__input{
   border: 1px solid rgba(0,0,0,.20);
   border-radius: 12px;
   padding: 10px 12px;
@@ -82,20 +83,20 @@ body{
   background: white;
 }
 
-.rf__select--small{ min-width: 72px; }
+.rf5__select--small{ min-width: 72px; }
 
-.rf__input:focus{
+.rf5__input:focus{
   outline:none;
   border-color: rgba(30, 108, 229, .55);
   box-shadow: 0 0 0 4px rgba(30, 108, 229, .14);
 }
 
-.rf__input--tiny{
+.rf5__input--tiny{
   width: 86px;
   padding: 10px 10px;
 }
 
-.rf__btn{
+.rf5__btn{
   border: 1px solid rgba(0,0,0,.20);
   border-radius: 12px;
   padding: 10px 12px;
@@ -105,27 +106,27 @@ body{
   transition: box-shadow .15s ease, transform .05s ease, background .15s ease;
 }
 
-.rf__btn:hover{ box-shadow: 0 8px 22px rgba(0,0,0,.10); }
-.rf__btn:active{ transform: translateY(1px); }
-.rf__btn:disabled{ opacity: .55; cursor: not-allowed; box-shadow:none; }
+.rf5__btn:hover{ box-shadow: 0 8px 22px rgba(0,0,0,.10); }
+.rf5__btn:active{ transform: translateY(1px); }
+.rf5__btn:disabled{ opacity: .55; cursor: not-allowed; box-shadow:none; }
 
-.rf__btn--primary{
+.rf5__btn--primary{
   font-weight: 850;
   background: rgba(30, 108, 229, .14);
   border-color: rgba(30,108,229,.45);
 }
 
-.rf__btn--ghost{ background: rgba(0,0,0,.03); }
+.rf5__btn--ghost{ background: rgba(0,0,0,.03); }
 
-.rf__btn--check{
+.rf5__btn--check{
   font-weight: 850;
   background: rgba(30, 108, 229, .18);
   border-color: rgba(30,108,229,.50);
 }
 
-.rf__btn--next{ background: rgba(0,0,0,.05); }
+.rf5__btn--next{ background: rgba(0,0,0,.05); }
 
-.rf__toggle{
+.rf5__toggle{
   display:inline-flex;
   align-items:center;
   gap:8px;
@@ -136,49 +137,48 @@ body{
   user-select:none;
   cursor:pointer;
 }
+.rf5__toggle input{ transform: translateY(1px); }
 
-.rf__toggle input{ transform: translateY(1px); }
-
-.rf__seriesLeft{
+.rf5__seriesLeft{
   display:flex;
   flex-wrap:wrap;
   gap:10px;
   align-items:center;
 }
 
-.rf__seriesRight{
+.rf5__seriesRight{
   min-width: 260px;
   flex: 1;
 }
 
-.rf__seriesText{
+.rf5__seriesText{
   font-weight: 800;
   color: rgba(0,0,0,.78);
   text-align: right;
   margin-bottom: 6px;
 }
 
-.rf__bar{
+.rf5__bar{
   height: 10px;
   border-radius: 999px;
   background: rgba(0,0,0,.08);
   overflow: hidden;
 }
 
-.rf__barFill{
+.rf5__barFill{
   height: 100%;
   width: 0%;
   background: rgba(30, 108, 229, .45);
 }
 
-.rf__stats{
+.rf5__stats{
   display:grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
   margin-top: 6px;
 }
 
-.rf__stat{
+.rf5__stat{
   border: 1px solid rgba(0,0,0,.10);
   border-radius: 14px;
   padding: 10px;
@@ -186,10 +186,10 @@ body{
   background: rgba(0,0,0,.02);
 }
 
-.rf__statValue{ font-weight: 900; font-size: 20px; }
-.rf__statLabel{ color: var(--muted); font-size: 13px; margin-top: 2px; }
+.rf5__statValue{ font-weight: 900; font-size: 20px; }
+.rf5__statLabel{ color: var(--muted); font-size: 13px; margin-top: 2px; }
 
-.rf__card{
+.rf5__card{
   margin-top: 14px;
   background: var(--card);
   border: 1px solid var(--border);
@@ -198,10 +198,10 @@ body{
   box-shadow: 0 6px 26px rgba(0,0,0,.05);
 }
 
-.rf__taskLabel{ font-size: 13px; color: var(--muted); margin-bottom: 6px; }
-.rf__taskText{ font-size: 18px; line-height: 1.35; margin-bottom: 12px; }
+.rf5__taskLabel{ font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+.rf5__taskText{ font-size: 18px; line-height: 1.35; margin-bottom: 12px; }
 
-.rf__answerRow{
+.rf5__answerRow{
   display:flex;
   flex-wrap:wrap;
   gap:10px;
@@ -209,26 +209,23 @@ body{
   margin-bottom: 10px;
 }
 
-.rf__input{ flex: 1 1 240px; min-width: 220px; }
-
-.rf__actions{
+.rf5__actions{
   display:flex;
   flex-wrap:wrap;
   gap:10px;
   margin-bottom: 10px;
 }
 
-.rf__message{
+.rf5__message{
   border-radius: 14px;
   padding: 12px;
   border: 1px solid rgba(0,0,0,.12);
 }
+.rf5__message--ok{ background: var(--ok); }
+.rf5__message--bad{ background: var(--bad); }
+.rf5__message--info{ background: var(--info); }
 
-.rf__message--ok{ background: var(--ok); }
-.rf__message--bad{ background: var(--bad); }
-.rf__message--info{ background: var(--info); }
-
-.rf__solution{
+.rf5__solution{
   margin-top: 10px;
   padding: 12px;
   border-radius: 14px;
@@ -236,10 +233,10 @@ body{
   background: rgba(0,0,0,.03);
 }
 
-.rf__solutionTitle{ font-weight: 900; margin-bottom: 6px; }
-.rf__solutionAnswer{ margin-top: 8px; font-size: 16px; }
+.rf5__solutionTitle{ font-weight: 900; margin-bottom: 6px; }
+.rf5__solutionAnswer{ margin-top: 8px; font-size: 16px; }
 
-.rf__storageNote{
+.rf5__storageNote{
   margin-top: 10px;
   padding: 10px 12px;
   border-radius: 14px;
@@ -249,8 +246,8 @@ body{
   font-size: 13px;
 }
 
-/* === Guide === */
-.rf__guide{
+/* === GUIDE COLORS === */
+.rf5__guide{
   margin: 10px 0 12px;
   padding: 12px;
   border-radius: 14px;
@@ -258,13 +255,13 @@ body{
   background: rgba(0,0,0,.02);
 }
 
-.rf__guideLabel{
+.rf5__guideLabel{
   font-weight: 900;
   margin-bottom: 8px;
   color: rgba(0,0,0,.80);
 }
 
-.rf__guideDigits{
+.rf5__guideDigits{
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 22px;
   line-height: 1.1;
@@ -275,13 +272,13 @@ body{
   overflow-x: auto;
 }
 
-.rf__guideText{
+.rf5__guideText{
   margin-top: 6px;
   color: rgba(0,0,0,.78);
   font-weight: 650;
 }
 
-.rf__d{
+.rf5__d{
   display:inline-block;
   min-width: .8ch;
   text-align:center;
@@ -290,39 +287,39 @@ body{
   position: relative;
 }
 
-.rf__d--comma{
+.rf5__d--comma{
   padding: 2px 2px;
   border-radius: 0;
   opacity: .85;
 }
 
-.rf__d--round{
+.rf5__d--round{
   background: var(--blue-bg);
   border: 1px solid var(--blue-bd);
   font-weight: 900;
 }
 
-.rf__d--look{
+.rf5__d--look{
   background: var(--orange-bg);
   border: 1px solid var(--orange-bd);
   font-weight: 900;
 }
 
-.rf__d--look::before{
+.rf5__d--look::before{
   content: "↑";
   position: absolute;
   left: 50%;
   top: -14px;
   transform: translateX(-50%);
   font-size: 12px;
-  opacity: .9;
+  opacity: .95;
 }
 
-.rf__d--tozero{
-  opacity: .65;
+.rf5__d--tozero{
+  opacity: .70;
 }
 
-.rf__d--tozero::after{
+.rf5__d--tozero::after{
   content: "0";
   position: absolute;
   left: 50%;
@@ -334,37 +331,25 @@ body{
   border-radius: 999px;
   background: var(--zero-bg);
   border: 1px solid var(--zero-bd);
-  opacity: .95;
+  opacity: .98;
 }
 
-.rf__d--drop{
+.rf5__d--drop{
   opacity: .45;
 }
 
-.rf__rules{
+.rf5__rules{
   margin-top: 14px;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 12px 14px;
 }
-
-.rf__rules summary{
-  cursor:pointer;
-  font-weight: 850;
-}
-
-.rf__rulesBody{
-  margin-top: 10px;
-  color: rgba(0,0,0,.86);
-}
-
-.rf__rulesBody ol{
-  margin: 0;
-  padding-left: 18px;
-}
+.rf5__rules summary{ cursor:pointer; font-weight: 850; }
+.rf5__rulesBody{ margin-top: 10px; color: rgba(0,0,0,.86); }
+.rf5__rulesBody ol{ margin: 0; padding-left: 18px; }
 
 @media (max-width: 720px){
-  .rf__stats{ grid-template-columns: repeat(2, minmax(0,1fr)); }
-  .rf__seriesText{ text-align: left; }
+  .rf5__stats{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .rf5__seriesText{ text-align: left; }
 }
