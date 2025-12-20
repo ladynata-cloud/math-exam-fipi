@@ -4,89 +4,132 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Тренажёр округления чисел — mathexam.space</title>
-    <meta name="description" content="Полный тренажёр для отработки округления чисел: целые числа, десятки, сотни, десятые, сотые, тысячные">
+    <meta name="description" content="Тренажёр для отработки всех видов округления чисел: целые, десятки, сотни, десятые, сотые">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔢</text></svg>">
-    <link rel="stylesheet" href="rounding.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Дополнительные стили для улучшения визуализации */
+        .visual-guide {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(67, 97, 238, 0.05);
+            border-radius: var(--radius);
+            border: 1px solid rgba(67, 97, 238, 0.1);
+        }
+        
+        .digit-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.25rem;
+            margin: 0.5rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .digit {
+            padding: 4px 8px;
+            border-radius: 4px;
+            min-width: 28px;
+            text-align: center;
+        }
+        
+        .digit.kept {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+        
+        .digit.rounding {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--error);
+            border: 1px solid var(--error);
+            font-weight: bold;
+        }
+        
+        .digit.dropped {
+            background: rgba(148, 163, 184, 0.2);
+            color: var(--text-muted);
+            text-decoration: line-through;
+        }
+        
+        .decimal-point {
+            font-weight: bold;
+            color: var(--primary);
+            padding: 0 2px;
+        }
+        
+        .guide-text {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <!-- Header -->
-        <header class="header" role="banner">
+        <header>
             <h1>🔢 Тренажёр округления чисел</h1>
-            <p>Отработайте все виды округления: целые числа, десятки, сотни, десятые, сотые, тысячные</p>
+            <p class="subtitle">Отработайте все виды округления: целые числа, десятки, сотни, десятые, сотые</p>
         </header>
 
-        <!-- Stats Bar -->
-        <div class="stats-bar card" role="region" aria-label="Статистика выполнения">
-            <div class="stats-info">
-                <div class="stat-item">
-                    <span class="stat-value" id="completedCount">0</span>
-                    <span class="stat-label">Решено</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="correctCount">0</span>
-                    <span class="stat-label">Верно</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="accuracy">0%</span>
-                    <span class="stat-label">Точность</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-value" id="streak">0</span>
-                    <span class="stat-label">Серия</span>
-                </div>
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-value" id="completedCount">0</div>
+                <div class="stat-label">Решено</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="correctCount">0</div>
+                <div class="stat-label">Верно</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="accuracy">0%</div>
+                <div class="stat-label">Точность</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="streak">0</div>
+                <div class="stat-label">Серия</div>
             </div>
         </div>
 
         <!-- Category Selector -->
         <div class="category-selector">
-            <!-- Целые числа -->
-            <button class="category-btn active" data-category="integers" aria-label="Округление до целых чисел">
-                <span class="category-icon">🔢</span>
-                Целые числа
-                <span class="category-desc">Округление до целых</span>
+            <button class="category-btn active" data-category="integers">
+                🔢 Целые
             </button>
-            
-            <!-- Десятки/сотни -->
-            <button class="category-btn" data-category="tens_hundreds" aria-label="Округление до десятков и сотен">
-                <span class="category-icon">💯</span>
-                Десятки/сотни
-                <span class="category-desc">10, 100, 1000</span>
+            <button class="category-btn" data-category="tens">
+                💯 Десятки
             </button>
-            
-            <!-- Десятичные дроби -->
-            <button class="category-btn" data-category="decimals" aria-label="Округление десятичных дробей">
-                <span class="category-icon">📊</span>
-                Десятичные
-                <span class="category-desc">0.1, 0.01, 0.001</span>
+            <button class="category-btn" data-category="hundreds">
+                🔢 Сотни
             </button>
-            
-            <!-- Смешанный -->
-            <button class="category-btn" data-category="mixed" aria-label="Случайный тип округления">
-                <span class="category-icon">🎲</span>
-                Смешанный
-                <span class="category-desc">Все виды</span>
+            <button class="category-btn" data-category="decimals">
+                📊 Десятичные
+            </button>
+            <button class="category-btn" data-category="mixed">
+                🎲 Смешанный
             </button>
         </div>
 
         <!-- Main Card -->
-        <main class="card" role="main">
+        <main class="task-card">
             <!-- Task Display -->
-            <section class="task-section">
-                <span class="task-label">Текущее задание</span>
-                <div id="task" role="status" aria-live="polite">
-                    <span id="taskInstruction" class="task-instruction">Загрузка задания...</span>
-                    <span id="taskNumber" class="task-number"></span>
-                </div>
+            <section class="task-display">
+                <div class="task-instruction" id="taskInstruction">Загрузка задания...</div>
+                <div class="task-number" id="taskNumber"></div>
             </section>
 
-            <!-- Visualization (only for certain categories) -->
-            <div class="visualization" id="visualization" style="display: none;">
-                <div class="number-display" id="numberDisplay">
-                    <!-- Digits will be inserted here by JavaScript -->
+            <!-- Visual Guide (for decimals) -->
+            <div class="visual-guide" id="visualGuide" style="display: none;">
+                <div class="digit-display" id="digitDisplay">
+                    <!-- Digits will be inserted here -->
                 </div>
-                <div class="rounding-rule" id="roundingRule">
-                    <!-- Rule will be inserted here -->
+                <div class="guide-text" id="guideText">
+                    <!-- Guide text will be inserted here -->
                 </div>
             </div>
 
@@ -96,59 +139,55 @@
                     <input 
                         type="text" 
                         id="userAnswer" 
-                        placeholder="Введите ответ (используйте точку для десятичных дробей)"
-                        aria-label="Ваш ответ"
+                        placeholder="Введите ответ..."
                         autocomplete="off"
-                        aria-describedby="inputHint"
+                        aria-label="Ваш ответ"
                     />
-                    <button id="checkBtn" class="btn btn-primary" aria-label="Проверить ответ">
+                    <button id="checkBtn" class="btn btn-primary">
                         ✅ Проверить
                     </button>
                 </div>
-                <div id="inputHint" class="sr-only">
-                    Введите число. Для десятичных дробей используйте точку, например: 3.14
-                </div>
             </section>
 
-            <!-- Feedback Section -->
+            <!-- Feedback -->
             <section class="feedback-section">
                 <div id="feedback" role="alert" aria-live="assertive">
-                    <!-- Feedback will be inserted here -->
+                    <!-- Feedback appears here -->
                 </div>
-                <div id="hint" class="hint" style="display: none;">
-                    <!-- Hint will be inserted here -->
+                <div id="hint" class="guide-text" style="display: none; margin-top: 1rem;">
+                    <!-- Hint appears here -->
                 </div>
             </section>
 
             <!-- Action Buttons -->
             <div class="action-buttons">
-                <button id="hintBtn" class="btn btn-secondary" aria-label="Показать подсказку">
+                <button id="hintBtn" class="btn btn-secondary">
                     💡 Подсказка
                 </button>
-                <button id="nextBtn" class="btn btn-primary" aria-label="Следующее задание" style="display: none;">
-                    ➡ Следующий пример
+                <button id="nextBtn" class="btn btn-primary" style="display: none;">
+                    ➡ Далее
                 </button>
-                <button id="showSolutionBtn" class="btn btn-secondary" aria-label="Показать решение" style="display: none;">
-                    📝 Показать решение
+                <button id="solutionBtn" class="btn btn-secondary" style="display: none;">
+                    📝 Решение
                 </button>
             </div>
         </main>
 
-        <!-- Rules Section -->
-        <section class="rules-section card" role="complementary">
-            <div class="rules-header" id="rulesToggle" aria-expanded="false" role="button">
-                📚 Все правила округления
-                <span aria-hidden="true">▼</span>
+        <!-- Rules -->
+        <section class="rules-section">
+            <div class="rules-header" id="rulesToggle">
+                📚 Правила округления
+                <span>▼</span>
             </div>
-            <div class="rules-content" id="rulesContent" aria-hidden="true">
-                <!-- Rules will be inserted by JavaScript -->
+            <div class="rules-content" id="rulesContent">
+                <!-- Rules content inserted by JavaScript -->
             </div>
         </section>
 
         <!-- Footer -->
-        <footer class="footer" role="contentinfo">
-            <p>💡 Используйте точку для десятичных дробей (например: 3.14, 0.5, 12.345)</p>
-            <p>© 2024 Математический тренажёр • Полный курс округления чисел • mathexam.space</p>
+        <footer>
+            <p>💡 Используйте точку для десятичных дробей (например: 3.14)</p>
+            <p>© 2025 Математический тренажёр • Подготовка к ОГЭ • mathexam.space</p>
         </footer>
     </div>
 
@@ -162,47 +201,46 @@
         let bestStreak = 0;
         let isButtonLocked = false;
 
-        // ===== CATEGORY CONFIGURATION =====
+        // ===== CATEGORY CONFIG =====
         const categories = {
             integers: {
-                name: 'Целые числа',
-                icon: '🔢',
+                name: 'целых чисел',
                 types: [
-                    { name: 'до целых', roundTo: 1, min: 1.5, max: 99.99, decimalPlaces: 2 }
+                    { name: 'до целых', roundTo: 1, min: 1.1, max: 99.99, decimals: 2 }
                 ]
             },
-            tens_hundreds: {
-                name: 'Десятки/сотни',
-                icon: '💯',
+            tens: {
+                name: 'десятков',
                 types: [
-                    { name: 'до десятков', roundTo: 10, min: 15, max: 999, decimalPlaces: 0 },
-                    { name: 'до сотен', roundTo: 100, min: 150, max: 9999, decimalPlaces: 0 },
-                    { name: 'до тысяч', roundTo: 1000, min: 1500, max: 99999, decimalPlaces: 0 }
+                    { name: 'до десятков', roundTo: 10, min: 15, max: 999, decimals: 0 }
+                ]
+            },
+            hundreds: {
+                name: 'сотен',
+                types: [
+                    { name: 'до сотен', roundTo: 100, min: 150, max: 9999, decimals: 0 }
                 ]
             },
             decimals: {
-                name: 'Десятичные дроби',
-                icon: '📊',
+                name: 'десятичных дробей',
                 types: [
-                    { name: 'до десятых', roundTo: 0.1, min: 1, max: 99, decimalPlaces: 3 },
-                    { name: 'до сотых', roundTo: 0.01, min: 1, max: 99, decimalPlaces: 4 },
-                    { name: 'до тысячных', roundTo: 0.001, min: 1, max: 99, decimalPlaces: 5 }
+                    { name: 'до десятых', roundTo: 0.1, min: 1, max: 99, decimals: 3 },
+                    { name: 'до сотых', roundTo: 0.01, min: 1, max: 99, decimals: 4 }
                 ]
             },
             mixed: {
-                name: 'Смешанный',
-                icon: '🎲',
+                name: 'смешанный',
                 types: [
-                    { name: 'до целых', roundTo: 1, min: 1.5, max: 99.99, decimalPlaces: 2 },
-                    { name: 'до десятков', roundTo: 10, min: 15, max: 999, decimalPlaces: 0 },
-                    { name: 'до сотен', roundTo: 100, min: 150, max: 9999, decimalPlaces: 0 },
-                    { name: 'до десятых', roundTo: 0.1, min: 1, max: 99, decimalPlaces: 3 },
-                    { name: 'до сотых', roundTo: 0.01, min: 1, max: 99, decimalPlaces: 4 }
+                    { name: 'до целых', roundTo: 1, min: 1.1, max: 99.99, decimals: 2 },
+                    { name: 'до десятков', roundTo: 10, min: 15, max: 999, decimals: 0 },
+                    { name: 'до сотен', roundTo: 100, min: 150, max: 9999, decimals: 0 },
+                    { name: 'до десятых', roundTo: 0.1, min: 1, max: 99, decimals: 3 },
+                    { name: 'до сотых', roundTo: 0.01, min: 1, max: 99, decimals: 4 }
                 ]
             }
         };
 
-        // ===== STORAGE MANAGEMENT =====
+        // ===== STORAGE =====
         function saveProgress() {
             const progress = {
                 totalAttempts,
@@ -210,20 +248,21 @@
                 currentCategory,
                 currentStreak,
                 bestStreak,
-                lastUpdated: new Date().toISOString()
+                timestamp: new Date().toISOString()
             };
-            localStorage.setItem('roundingFullProgress', JSON.stringify(progress));
+            localStorage.setItem('roundingTrainer2025', JSON.stringify(progress));
         }
 
         function loadProgress() {
             try {
-                const saved = JSON.parse(localStorage.getItem('roundingFullProgress'));
+                const saved = localStorage.getItem('roundingTrainer2025');
                 if (saved) {
-                    totalAttempts = saved.totalAttempts || 0;
-                    correctAttempts = saved.correctAttempts || 0;
-                    currentCategory = saved.currentCategory || 'integers';
-                    currentStreak = saved.currentStreak || 0;
-                    bestStreak = saved.bestStreak || 0;
+                    const progress = JSON.parse(saved);
+                    totalAttempts = progress.totalAttempts || 0;
+                    correctAttempts = progress.correctAttempts || 0;
+                    currentCategory = progress.currentCategory || 'integers';
+                    currentStreak = progress.currentStreak || 0;
+                    bestStreak = progress.bestStreak || 0;
                     
                     // Update category buttons
                     document.querySelectorAll('.category-btn').forEach(btn => {
@@ -231,10 +270,10 @@
                     });
                     
                     updateStats();
-                    updateRulesContent();
+                    updateRules();
                 }
             } catch (e) {
-                console.log('Starting fresh progress');
+                console.log('Начинаем новый прогресс');
             }
         }
 
@@ -243,170 +282,133 @@
             const category = categories[currentCategory];
             const type = category.types[Math.floor(Math.random() * category.types.length)];
             
+            // Generate number
             let number;
-            if (type.decimalPlaces > 0) {
-                // Generate decimal number
-                const multiplier = Math.pow(10, type.decimalPlaces);
-                const minInt = Math.floor(type.min * multiplier);
-                const maxInt = Math.floor(type.max * multiplier);
-                number = (Math.floor(Math.random() * (maxInt - minInt + 1)) + minInt) / multiplier;
+            if (type.decimals > 0) {
+                const multiplier = Math.pow(10, type.decimals);
+                const min = Math.floor(type.min * multiplier);
+                const max = Math.floor(type.max * multiplier);
+                number = (Math.floor(Math.random() * (max - min + 1)) + min) / multiplier;
             } else {
-                // Generate integer
                 number = Math.floor(Math.random() * (type.max - type.min + 1)) + type.min;
             }
 
-            // Round the number
+            // Calculate correct answer
             let correctAnswer;
             if (type.roundTo >= 1) {
                 correctAnswer = Math.round(number / type.roundTo) * type.roundTo;
             } else {
-                // For decimal rounding
                 const multiplier = 1 / type.roundTo;
                 correctAnswer = Math.round(number * multiplier) / multiplier;
             }
 
-            // Format numbers for display
+            // Format for display
             const formatNumber = (num) => {
-                if (type.roundTo >= 1 && Number.isInteger(num)) {
+                if (Number.isInteger(num) && type.roundTo >= 1) {
                     return num.toLocaleString('ru-RU');
                 }
-                return num.toString().replace('.', ',');
+                // For decimals, show 2-4 decimal places
+                let decimalPlaces = 0;
+                if (type.roundTo === 1) decimalPlaces = 2;
+                else if (type.roundTo === 0.1) decimalPlaces = 3;
+                else if (type.roundTo === 0.01) decimalPlaces = 4;
+                else decimalPlaces = 2;
+                
+                return num.toFixed(decimalPlaces).replace('.', ',');
             };
 
             currentExample = {
                 number,
                 type,
                 correctAnswer,
-                formattedNumber: formatNumber(number),
-                formattedAnswer: formatNumber(correctAnswer)
+                displayNumber: formatNumber(number),
+                displayAnswer: formatNumber(correctAnswer)
             };
 
-            // Update UI
-            updateTaskDisplay();
-            resetInput();
-            
-            // Update visualization
-            updateVisualization();
-            
-            // Show/hide visualization based on category
-            const viz = document.getElementById('visualization');
-            viz.style.display = currentCategory === 'decimals' || currentCategory === 'mixed' ? 'block' : 'none';
+            updateDisplay();
+            updateVisualGuide();
         }
 
-        function updateTaskDisplay() {
-            const taskInstruction = document.getElementById('taskInstruction');
-            const taskNumber = document.getElementById('taskNumber');
+        function updateDisplay() {
+            document.getElementById('taskInstruction').textContent = 
+                `Округлите число до ${currentExample.type.name}:`;
+            document.getElementById('taskNumber').textContent = 
+                currentExample.displayNumber;
+            document.getElementById('taskNumber').classList.add('fade-in');
             
-            const typeName = currentExample.type.name;
-            const number = currentExample.formattedNumber;
-            
-            taskInstruction.textContent = `Округлите число до ${typeName}:`;
-            taskNumber.textContent = number;
-            
-            // Add animation
-            taskNumber.style.animation = 'pulse 0.5s ease';
-            setTimeout(() => {
-                taskNumber.style.animation = '';
-            }, 500);
-        }
-
-        function resetInput() {
-            const userInput = document.getElementById('userAnswer');
-            const checkBtn = document.getElementById('checkBtn');
-            
-            userInput.value = '';
-            userInput.disabled = false;
-            userInput.classList.remove('input-error');
-            
-            checkBtn.disabled = false;
-            checkBtn.textContent = '✅ Проверить';
-            
+            // Reset UI
+            document.getElementById('userAnswer').value = '';
+            document.getElementById('userAnswer').disabled = false;
+            document.getElementById('userAnswer').classList.remove('error');
+            document.getElementById('checkBtn').disabled = false;
             document.getElementById('feedback').innerHTML = '';
-            document.getElementById('feedback').className = '';
             document.getElementById('hint').style.display = 'none';
             document.getElementById('nextBtn').style.display = 'none';
-            document.getElementById('showSolutionBtn').style.display = 'none';
-            
+            document.getElementById('solutionBtn').style.display = 'none';
             isButtonLocked = false;
             
-            // Focus on input
-            userInput.focus();
+            // Focus input
+            setTimeout(() => {
+                document.getElementById('userAnswer').focus();
+            }, 100);
         }
 
-        // ===== VISUALIZATION =====
-        function updateVisualization() {
-            const numberDisplay = document.getElementById('numberDisplay');
-            const roundingRule = document.getElementById('roundingRule');
+        function updateVisualGuide() {
+            const guide = document.getElementById('visualGuide');
+            const digitDisplay = document.getElementById('digitDisplay');
+            const guideText = document.getElementById('guideText');
             
-            if (!currentExample || currentExample.type.roundTo >= 10) {
-                numberDisplay.innerHTML = '';
-                roundingRule.textContent = '';
-                return;
-            }
-
-            const numberStr = currentExample.number.toString();
-            const roundTo = currentExample.type.roundTo;
-            let decimalIndex = numberStr.indexOf('.');
-            
-            if (decimalIndex === -1) {
-                decimalIndex = numberStr.length;
-            }
-
-            // Determine which digit to look at for rounding
-            let roundingDigitIndex;
-            if (roundTo === 1) {
-                roundingDigitIndex = decimalIndex;
-            } else if (roundTo === 0.1) {
-                roundingDigitIndex = decimalIndex + 1;
-            } else if (roundTo === 0.01) {
-                roundingDigitIndex = decimalIndex + 2;
-            } else if (roundTo === 0.001) {
-                roundingDigitIndex = decimalIndex + 3;
-            }
-
-            let html = '';
-            for (let i = 0; i < numberStr.length; i++) {
-                const char = numberStr[i];
+            if (currentCategory === 'decimals' || currentCategory === 'mixed') {
+                guide.style.display = 'block';
                 
-                if (char === '.') {
-                    html += `<span class="decimal-point">,</span>`;
-                } else if (i < roundingDigitIndex) {
-                    html += `<span class="digit kept">${char}</span>`;
-                } else if (i === roundingDigitIndex) {
-                    html += `<span class="digit rounding">${char}</span>`;
-                } else {
-                    html += `<span class="digit dropped">${char}</span>`;
+                const numStr = currentExample.number.toString();
+                const roundTo = currentExample.type.roundTo;
+                
+                let roundingIndex;
+                if (roundTo === 1) roundingIndex = numStr.indexOf('.');
+                else if (roundTo === 0.1) roundingIndex = numStr.indexOf('.') + 1;
+                else if (roundTo === 0.01) roundingIndex = numStr.indexOf('.') + 2;
+                else roundingIndex = -1;
+                
+                let html = '';
+                for (let i = 0; i < numStr.length; i++) {
+                    const char = numStr[i];
+                    if (char === '.') {
+                        html += `<span class="decimal-point">,</span>`;
+                    } else if (i < roundingIndex) {
+                        html += `<span class="digit kept">${char}</span>`;
+                    } else if (i === roundingIndex) {
+                        html += `<span class="digit rounding">${char}</span>`;
+                    } else {
+                        html += `<span class="digit dropped">${char}</span>`;
+                    }
                 }
-            }
-
-            numberDisplay.innerHTML = html;
-            
-            // Update rule text
-            const roundingDigit = numberStr[roundingDigitIndex];
-            const digitValue = parseInt(roundingDigit);
-            
-            let ruleText = '';
-            if (digitValue >= 5) {
-                ruleText = `Цифра ${roundingDigit} ≥ 5 → увеличиваем предыдущий разряд на 1`;
+                
+                digitDisplay.innerHTML = html;
+                
+                if (roundingIndex !== -1) {
+                    const roundingDigit = parseInt(numStr[roundingIndex]);
+                    guideText.textContent = roundingDigit >= 5 ? 
+                        `Цифра ${roundingDigit} ≥ 5 → увеличиваем предыдущий разряд` :
+                        `Цифра ${roundingDigit} < 5 → оставляем как есть`;
+                }
             } else {
-                ruleText = `Цифра ${roundingDigit} < 5 → предыдущий разряд не меняем`;
+                guide.style.display = 'none';
             }
-            
-            roundingRule.textContent = ruleText;
         }
 
         // ===== INPUT VALIDATION =====
         function validateInput(value) {
             if (!value.trim()) {
-                showError('Введите ответ!');
+                showError('Введите ответ');
                 return false;
             }
             
-            // Replace comma with dot for parsing
+            // Allow both comma and dot as decimal separator
             const normalized = value.replace(',', '.');
             
             if (!/^-?\d*\.?\d+$/.test(normalized)) {
-                showError('Введите число! Можно использовать точку или запятую для десятичных дробей.');
+                showError('Введите число (можно использовать точку или запятую)');
                 return false;
             }
             
@@ -415,55 +417,37 @@
 
         function showError(message) {
             const input = document.getElementById('userAnswer');
-            input.classList.add('input-error');
-            
             const feedback = document.getElementById('feedback');
+            
+            input.classList.add('error');
             feedback.innerHTML = `<div class="feedback-incorrect">❌ ${message}</div>`;
             
-            setTimeout(() => {
-                input.classList.remove('input-error');
-            }, 1000);
+            setTimeout(() => input.classList.remove('error'), 1000);
         }
 
         // ===== ANSWER CHECKING =====
         function checkAnswer() {
             if (isButtonLocked) return;
             
-            const userInput = document.getElementById('userAnswer');
-            const userAnswerStr = userInput.value.trim();
+            const input = document.getElementById('userAnswer');
+            const value = input.value.trim();
             
-            if (!validateInput(userAnswerStr)) {
-                return;
-            }
+            if (!validateInput(value)) return;
             
-            // Normalize and parse user's answer
-            const normalizedAnswer = userAnswerStr.replace(',', '.');
-            const userAnswer = parseFloat(normalizedAnswer);
+            // Parse answer
+            const normalized = value.replace(',', '.');
+            const userAnswer = parseFloat(normalized);
             
-            // Compare with tolerance for floating point numbers
-            let isCorrect;
-            if (currentExample.type.roundTo < 1) {
-                // For decimal rounding, use tolerance
-                const tolerance = currentExample.type.roundTo / 100;
-                isCorrect = Math.abs(userAnswer - currentExample.correctAnswer) < tolerance;
-            } else {
-                // For integer rounding, exact match
-                isCorrect = Math.abs(userAnswer - currentExample.correctAnswer) < 0.0001;
-            }
+            // Check correctness with tolerance
+            const tolerance = currentExample.type.roundTo < 1 ? 0.0001 : 0.1;
+            const isCorrect = Math.abs(userAnswer - currentExample.correctAnswer) < tolerance;
             
-            // Lock interface
-            isButtonLocked = true;
-            userInput.disabled = true;
-            document.getElementById('checkBtn').disabled = true;
-            
-            // Update statistics
+            // Update stats
             totalAttempts++;
             if (isCorrect) {
                 correctAttempts++;
                 currentStreak++;
-                if (currentStreak > bestStreak) {
-                    bestStreak = currentStreak;
-                }
+                if (currentStreak > bestStreak) bestStreak = currentStreak;
             } else {
                 currentStreak = 0;
             }
@@ -471,105 +455,37 @@
             updateStats();
             
             // Show feedback
-            showFeedback(isCorrect, userAnswerStr);
-            
-            // Show next and solution buttons
-            document.getElementById('nextBtn').style.display = 'block';
-            document.getElementById('showSolutionBtn').style.display = 'block';
-            
-            // Save progress
-            saveProgress();
-            
-            // Confetti for streaks
-            if (isCorrect && currentStreak % 5 === 0) {
-                createConfetti();
-            }
-        }
-
-        function showFeedback(isCorrect, userAnswerStr) {
             const feedback = document.getElementById('feedback');
-            
             if (isCorrect) {
                 feedback.innerHTML = `
                     <div class="feedback-correct">
-                        ✅ Верно! ${currentExample.formattedNumber} → ${currentExample.formattedAnswer}
-                        ${currentStreak > 1 ? `<br>🎯 Серия правильных ответов: ${currentStreak}` : ''}
+                        ✅ Верно! ${currentExample.displayNumber} → ${currentExample.displayAnswer}
+                        ${currentStreak > 1 ? `<br>🔥 Серия: ${currentStreak}` : ''}
                     </div>
                 `;
             } else {
                 feedback.innerHTML = `
                     <div class="feedback-incorrect">
-                        ❌ Неверно. Вы ввели: ${userAnswerStr.replace('.', ',')}<br>
-                        Правильный ответ: <strong>${currentExample.formattedAnswer}</strong>
+                        ❌ Неверно. Правильно: ${currentExample.displayAnswer}
                     </div>
                 `;
-                
-                // Show hint after incorrect answer
-                showHint();
-            }
-        }
-
-        // ===== HINTS AND SOLUTIONS =====
-        function showHint() {
-            const hint = document.getElementById('hint');
-            const type = currentExample.type;
-            
-            let hintText = '';
-            
-            if (type.roundTo === 1) {
-                hintText = `Смотрим на первую цифру после запятой. Если она 5 или больше, увеличиваем целую часть на 1.`;
-            } else if (type.roundTo === 10) {
-                hintText = `Смотрим на цифру единиц. Если 5-9 → увеличиваем десятки на 1, если 0-4 → оставляем как есть.`;
-            } else if (type.roundTo === 100) {
-                hintText = `Смотрим на цифру десятков. Если 5-9 → увеличиваем сотни на 1, если 0-4 → оставляем как есть.`;
-            } else if (type.roundTo === 0.1) {
-                hintText = `Смотрим на вторую цифру после запятой (сотые). Если 5-9 → увеличиваем десятые на 1.`;
-            } else if (type.roundTo === 0.01) {
-                hintText = `Смотрим на третью цифру после запятой (тысячные). Если 5-9 → увеличиваем сотые на 1.`;
-            } else if (type.roundTo === 0.001) {
-                hintText = `Смотрим на четвёртую цифру после запятой (десятитысячные). Если 5-9 → увеличиваем тысячные на 1.`;
             }
             
-            hint.innerHTML = hintText;
-            hint.style.display = 'block';
+            // Lock interface
+            isButtonLocked = true;
+            input.disabled = true;
+            document.getElementById('checkBtn').disabled = true;
+            document.getElementById('nextBtn').style.display = 'inline-flex';
+            document.getElementById('solutionBtn').style.display = 'inline-flex';
+            
+            // Save progress
+            saveProgress();
         }
 
-        function showSolution() {
-            const number = currentExample.number;
-            const roundTo = currentExample.type.roundTo;
-            const correctAnswer = currentExample.correctAnswer;
-            
-            let solutionSteps = '';
-            
-            if (roundTo >= 1) {
-                solutionSteps = `
-                    <strong>Решение:</strong><br>
-                    1. Число: ${number}<br>
-                    2. Округляем до ${currentExample.type.name}<br>
-                    3. ${number} ÷ ${roundTo} = ${(number/roundTo).toFixed(2)}<br>
-                    4. Округляем до целого: ${Math.round(number/roundTo)}<br>
-                    5. Умножаем на ${roundTo}: ${Math.round(number/roundTo)} × ${roundTo} = ${correctAnswer}
-                `;
-            } else {
-                const multiplier = 1 / roundTo;
-                solutionSteps = `
-                    <strong>Решение:</strong><br>
-                    1. Число: ${number}<br>
-                    2. Округляем до ${currentExample.type.name}<br>
-                    3. ${number} × ${multiplier} = ${(number*multiplier).toFixed(4)}<br>
-                    4. Округляем до целого: ${Math.round(number*multiplier)}<br>
-                    5. Делим на ${multiplier}: ${Math.round(number*multiplier)} ÷ ${multiplier} = ${correctAnswer}
-                `;
-            }
-            
-            const hint = document.getElementById('hint');
-            hint.innerHTML = solutionSteps;
-            hint.style.display = 'block';
-        }
-
-        // ===== STATISTICS =====
+        // ===== STATS =====
         function updateStats() {
-            const accuracy = totalAttempts > 0 ? Math.round((correctAttempts / totalAttempts) * 100) : 0;
+            const accuracy = totalAttempts > 0 ? 
+                Math.round((correctAttempts / totalAttempts) * 100) : 0;
             
             document.getElementById('completedCount').textContent = totalAttempts;
             document.getElementById('correctCount').textContent = correctAttempts;
@@ -578,121 +494,43 @@
             
             // Color coding
             const accuracyElem = document.getElementById('accuracy');
-            const streakElem = document.getElementById('streak');
-            
-            if (accuracy >= 90) accuracyElem.style.color = '#2ecc71';
-            else if (accuracy >= 70) accuracyElem.style.color = '#f39c12';
-            else accuracyElem.style.color = '#e74c3c';
-            
-            if (currentStreak >= 10) streakElem.style.color = '#f39c12';
-            else if (currentStreak >= 5) streakElem.style.color = '#3498db';
-            else streakElem.style.color = 'var(--primary)';
+            if (accuracy >= 90) accuracyElem.style.color = '#10b981';
+            else if (accuracy >= 70) accuracyElem.style.color = '#f59e0b';
+            else accuracyElem.style.color = '#ef4444';
         }
 
-        // ===== CATEGORY MANAGEMENT =====
-        function setCategory(category) {
-            currentCategory = category;
-            
-            // Update UI
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.category === category);
-            });
-            
-            // Save and generate new example
-            saveProgress();
-            generateExample();
-            updateRulesContent();
-        }
-
-        // ===== RULES CONTENT =====
-        function updateRulesContent() {
-            const rulesContent = document.getElementById('rulesContent');
-            
-            let html = '';
-            
-            // Целые числа
-            html += `
-                <div class="rule-category">
-                    <div class="rule-title">🔢 Округление до целых чисел</div>
-                    <div class="rule-items">
-                        <div class="rule-item">• Смотрим на первую цифру после запятой</div>
-                        <div class="rule-item">• Если 0-4 → целая часть не меняется</div>
-                        <div class="rule-item">• Если 5-9 → увеличиваем целую часть на 1</div>
-                        <div class="rule-example">Пример: 3.14 → 3, 7.68 → 8, 5.5 → 6</div>
-                    </div>
+        // ===== RULES =====
+        function updateRules() {
+            const content = document.getElementById('rulesContent');
+            content.innerHTML = `
+                <div class="rule-item">
+                    <div class="rule-title">🔢 До целых чисел</div>
+                    <div class="rule-text">Смотрим на первую цифру после запятой. Если 5-9 → увеличиваем целую часть на 1. Пример: 3.14 → 3, 7.68 → 8</div>
+                </div>
+                
+                <div class="rule-item">
+                    <div class="rule-title">💯 До десятков</div>
+                    <div class="rule-text">Смотрим на цифру единиц. Если 5-9 → увеличиваем десятки на 1. Пример: 47 → 50, 43 → 40</div>
+                </div>
+                
+                <div class="rule-item">
+                    <div class="rule-title">🔢 До сотен</div>
+                    <div class="rule-text">Смотрим на цифру десятков. Если 5-9 → увеличиваем сотни на 1. Пример: 478 → 500, 432 → 400</div>
+                </div>
+                
+                <div class="rule-item">
+                    <div class="rule-title">📊 До десятых (0.1)</div>
+                    <div class="rule-text">Смотрим на сотые. Если 5-9 → увеличиваем десятые на 1. Пример: 3.141 → 3.1, 2.768 → 2.8</div>
+                </div>
+                
+                <div class="rule-item">
+                    <div class="rule-title">📊 До сотых (0.01)</div>
+                    <div class="rule-text">Смотрим на тысячные. Если 5-9 → увеличиваем сотые на 1. Пример: 3.1416 → 3.14, 2.7689 → 2.77</div>
                 </div>
             `;
-            
-            // Десятки/сотни
-            html += `
-                <div class="rule-category">
-                    <div class="rule-title">💯 Округление до десятков, сотен, тысяч</div>
-                    <div class="rule-items">
-                        <div class="rule-item"><strong>Десятки:</strong> смотрим на единицы (последняя цифра)</div>
-                        <div class="rule-example">47 → 50 (7 ≥ 5), 43 → 40 (3 < 5)</div>
-                        
-                        <div class="rule-item"><strong>Сотни:</strong> смотрим на десятки (вторая цифра справа)</div>
-                        <div class="rule-example">478 → 500 (7 ≥ 5), 432 → 400 (3 < 5)</div>
-                        
-                        <div class="rule-item"><strong>Тысячи:</strong> смотрим на сотни (третья цифра справа)</div>
-                        <div class="rule-example">4567 → 5000 (5 ≥ 5), 4123 → 4000 (1 < 5)</div>
-                    </div>
-                </div>
-            `;
-            
-            // Десятичные дроби
-            html += `
-                <div class="rule-category">
-                    <div class="rule-title">📊 Округление десятичных дробей</div>
-                    <div class="rule-items">
-                        <div class="rule-item"><strong>До десятых (0.1):</strong> смотрим на сотые (вторая цифра после запятой)</div>
-                        <div class="rule-example">3.141 → 3.1 (4 < 5), 2.768 → 2.8 (6 ≥ 5)</div>
-                        
-                        <div class="rule-item"><strong>До сотых (0.01):</strong> смотрим на тысячные (третья цифра после запятой)</div>
-                        <div class="rule-example">3.1416 → 3.14 (1 < 5), 2.7689 → 2.77 (8 ≥ 5)</div>
-                        
-                        <div class="rule-item"><strong>До тысячных (0.001):</strong> смотрим на десятитысячные (четвёртая цифра после запятой)</div>
-                        <div class="rule-example">3.14159 → 3.142 (5 ≥ 5), 2.71828 → 2.718 (2 < 5)</div>
-                    </div>
-                </div>
-            `;
-            
-            rulesContent.innerHTML = html;
         }
 
-        // ===== ANIMATIONS =====
-        function createConfetti() {
-            const colors = ['#4361ee', '#7209b7', '#2ecc71', '#e74c3c', '#f39c12'];
-            const container = document.querySelector('.container');
-            
-            for (let i = 0; i < 30; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.position = 'fixed';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.top = '-20px';
-                confetti.style.width = Math.random() * 10 + 5 + 'px';
-                confetti.style.height = confetti.style.width;
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.borderRadius = '50%';
-                confetti.style.zIndex = '1000';
-                confetti.style.pointerEvents = 'none';
-                
-                document.body.appendChild(confetti);
-                
-                const animation = confetti.animate([
-                    { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
-                    { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }
-                ], {
-                    duration: Math.random() * 1000 + 1000,
-                    easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)'
-                });
-                
-                animation.onfinish = () => confetti.remove();
-            }
-        }
-
-        // ===== EVENT LISTENERS =====
+        // ===== EVENT HANDLERS =====
         document.addEventListener('DOMContentLoaded', function() {
             // Load progress
             loadProgress();
@@ -700,18 +538,76 @@
             // Generate first example
             generateExample();
             
-            // Event listeners
-            document.getElementById('checkBtn').addEventListener('click', checkAnswer);
-            document.getElementById('hintBtn').addEventListener('click', showHint);
-            document.getElementById('nextBtn').addEventListener('click', generateExample);
-            document.getElementById('showSolutionBtn').addEventListener('click', showSolution);
-            document.getElementById('rulesToggle').addEventListener('click', toggleRules);
-            
             // Category buttons
             document.querySelectorAll('.category-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    setCategory(this.dataset.category);
+                    document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentCategory = this.dataset.category;
+                    saveProgress();
+                    generateExample();
                 });
+            });
+            
+            // Check button
+            document.getElementById('checkBtn').addEventListener('click', checkAnswer);
+            
+            // Next button
+            document.getElementById('nextBtn').addEventListener('click', generateExample);
+            
+            // Solution button
+            document.getElementById('solutionBtn').addEventListener('click', function() {
+                const hint = document.getElementById('hint');
+                const roundTo = currentExample.type.roundTo;
+                const number = currentExample.number;
+                
+                let solution = '';
+                if (roundTo === 1) {
+                    solution = `Число ${number}. Первая цифра после запятой: ${Math.floor((number * 10) % 10)}. `;
+                    solution += Math.floor((number * 10) % 10) >= 5 ? 
+                        `≥ 5 → ${Math.floor(number) + 1}` : `< 5 → ${Math.floor(number)}`;
+                } else if (roundTo === 10) {
+                    solution = `Число ${number}. Единицы: ${number % 10}. `;
+                    solution += number % 10 >= 5 ? 
+                        `≥ 5 → ${Math.floor(number / 10) * 10 + 10}` : `< 5 → ${Math.floor(number / 10) * 10}`;
+                } else if (roundTo === 0.1) {
+                    solution = `Число ${number}. Сотые: ${Math.floor(number * 100) % 10}. `;
+                    solution += Math.floor(number * 100) % 10 >= 5 ? 
+                        `≥ 5 → ${(Math.floor(number * 10) + 1) / 10}` : `< 5 → ${Math.floor(number * 10) / 10}`;
+                }
+                
+                hint.textContent = solution;
+                hint.style.display = 'block';
+            });
+            
+            // Hint button
+            document.getElementById('hintBtn').addEventListener('click', function() {
+                const hint = document.getElementById('hint');
+                const roundTo = currentExample.type.roundTo;
+                
+                let hintText = '';
+                if (roundTo === 1) {
+                    hintText = 'Смотрите на первую цифру после запятой. Если 5-9 → +1 к целой части';
+                } else if (roundTo === 10) {
+                    hintText = 'Смотрите на единицы. Если 5-9 → увеличивайте десятки';
+                } else if (roundTo === 100) {
+                    hintText = 'Смотрите на десятки. Если 5-9 → увеличивайте сотни';
+                } else if (roundTo === 0.1) {
+                    hintText = 'Смотрите на сотые (вторая цифра после запятой)';
+                } else if (roundTo === 0.01) {
+                    hintText = 'Смотрите на тысячные (третья цифра после запятой)';
+                }
+                
+                hint.textContent = hintText;
+                hint.style.display = 'block';
+            });
+            
+            // Rules toggle
+            document.getElementById('rulesToggle').addEventListener('click', function() {
+                const content = document.getElementById('rulesContent');
+                const arrow = this.querySelector('span');
+                content.classList.toggle('show');
+                arrow.textContent = content.classList.contains('show') ? '▲' : '▼';
             });
             
             // Enter key support
@@ -720,19 +616,7 @@
                     checkAnswer();
                 }
             });
-            
-            // Initial rules content
-            updateRulesContent();
         });
-
-        function toggleRules() {
-            const content = document.getElementById('rulesContent');
-            const toggle = document.getElementById('rulesToggle');
-            const isExpanded = content.classList.toggle('show');
-            
-            toggle.setAttribute('aria-expanded', isExpanded);
-            toggle.querySelector('span').textContent = isExpanded ? '▲' : '▼';
-        }
     </script>
 </body>
 </html>
