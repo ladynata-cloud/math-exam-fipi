@@ -543,4 +543,34 @@
             document.getElementById('checkBtn').addEventListener('click', checkAnswer);
             document.getElementById('hintBtn').addEventListener('click', showHint);
             document.getElementById('nextBtn').addEventListener('click', generateExample);
-            document.getElementById('resetBtn').
+            document.getElementById('resetBtn').addEventListener('click', generateExample);
+            document.getElementById('rulesToggle').addEventListener('click', toggleRules);
+            
+            // Level buttons
+            document.querySelectorAll('.level-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const level = parseInt(this.dataset.level);
+                    setLevel(level);
+                });
+            });
+            
+            // Enter key support
+            document.getElementById('userAnswer').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkAnswer();
+                }
+            });
+        });
+
+        // ===== HELPER FUNCTIONS =====
+        function toggleRules() {
+            const content = document.getElementById('rulesContent');
+            const toggle = document.getElementById('rulesToggle');
+            const isExpanded = content.classList.toggle('show');
+            
+            toggle.setAttribute('aria-expanded', isExpanded);
+            toggle.querySelector('span').textContent = isExpanded ? '▲' : '▼';
+        }
+    </script>
+</body>
+</html>
