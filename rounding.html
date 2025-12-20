@@ -3,923 +3,642 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Тренажёр округления — ОГЭ</title>
+  <title>Тренажёр: округление (ОГЭ-режим)</title>
   <style>
     :root{
       --bg:#0b0f14;
       --card:#121824;
-      --muted:#9fb0c3;
       --text:#e9f0f7;
-      --line:rgba(255,255,255,.10);
+      --muted:#9fb0c3;
+      --line:rgba(255,255,255,.12);
       --accent:#5aa7ff;
-      --good:#39d98a;
+      --ok:#39d98a;
       --bad:#ff5a6b;
-      --warn:#ffd166;
-      --shadow: 0 12px 40px rgba(0,0,0,.35);
-      --radius: 16px;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 900px at 10% -10%, rgba(90,167,255,.20), transparent 60%),
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 900px at 10% -10%, rgba(90,167,255,.18), transparent 60%),
                   radial-gradient(900px 700px at 110% 0%, rgba(255,90,107,.12), transparent 55%),
                   var(--bg);
       color:var(--text);
-      line-height:1.5;
+      line-height:1.45;
     }
-    a{color:var(--accent); text-decoration:none}
-    a:hover{text-decoration:underline}
-    .wrap{
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 18px 16px 40px;
-    }
-    header{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom: 12px;
-    }
-    h1{margin:0;font-size:22px;letter-spacing:.2px}
-    .subtitle{margin-top:6px;color:var(--muted);font-size:14px}
-    .toplink{margin-top:2px;white-space:nowrap;font-size:14px;opacity:.95}
-
-    .grid{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 14px;
-      margin-top: 12px;
-    }
-    @media (max-width: 880px){
-      .grid{grid-template-columns: 1fr}
-    }
-
+    .wrap{max-width:860px;margin:0 auto;padding:18px 14px 40px;}
     .card{
       background: rgba(18,24,36,.92);
       border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      border-radius: 16px;
       padding: 14px;
-      backdrop-filter: blur(6px);
     }
-    .card h2{
-      margin: 0 0 10px;
-      font-size: 16px;
-      color: #dbe7f3;
-      font-weight: 650;
-    }
+    h1{margin:0;font-size:20px}
+    .sub{margin:6px 0 0;color:var(--muted);font-size:13px}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
 
-    .controls{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    @media (max-width: 560px){
-      .controls{grid-template-columns:1fr}
-    }
-    label{
-      display:block;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
+    .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    label{display:block;color:var(--muted);font-size:12px;margin:0 0 6px}
     select, input{
       width:100%;
-      background: rgba(7,10,16,.7);
-      color: var(--text);
-      border:1px solid rgba(255,255,255,.16);
+      padding: 11px 12px;
       border-radius: 12px;
-      padding: 10px 12px;
-      outline:none;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(7,10,16,.55);
+      color: var(--text);
+      outline: none;
       font-size: 14px;
     }
-    select:focus, input:focus{
+    select:focus,input:focus{
       border-color: rgba(90,167,255,.55);
       box-shadow: 0 0 0 3px rgba(90,167,255,.15);
     }
+    .col{flex:1 1 180px;min-width:180px}
 
     .task{
-      margin-top: 12px;
+      margin-top:12px;
       padding: 14px;
       border-radius: 14px;
       border: 1px dashed rgba(255,255,255,.18);
-      background: rgba(7,10,16,.35);
+      background: rgba(7,10,16,.32);
     }
-    .task-title{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-      flex-wrap:wrap;
+    .taskline{
+      display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      color:var(--muted);font-size:12px;margin-bottom:8px
     }
-    .task-text{
-      font-size: 18px;
-      margin: 0;
-    }
-    .task-text .num{
-      font-variant-numeric: tabular-nums;
-      padding: 1px 8px;
-      border-radius: 10px;
-      background: rgba(90,167,255,.12);
-      border: 1px solid rgba(90,167,255,.28);
-      display:inline-block;
-    }
-    .task-text .place{color:#dbe7f3;font-weight:650}
-
-    .answer-row{
-      display:flex;
-      gap:10px;
-      align-items:stretch;
-      margin-top: 10px;
-    }
-    .answer-row input{flex: 1 1 auto;font-size:16px}
-    @media (max-width: 560px){
-      .answer-row{flex-direction:column}
+    .tasktext{font-size:18px;margin:0}
+    .mono{font-variant-numeric: tabular-nums}
+    .pill{
+      display:inline-block;padding:2px 8px;border-radius:999px;
+      border:1px solid rgba(90,167,255,.30);
+      background: rgba(90,167,255,.10);
     }
 
-    .btns{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-top: 10px;
-    }
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
     button{
+      padding: 11px 12px;
+      border-radius: 12px;
       border: 1px solid rgba(255,255,255,.16);
       background: rgba(255,255,255,.06);
       color: var(--text);
-      padding: 10px 12px;
-      border-radius: 12px;
       cursor:pointer;
       font-size: 14px;
-      transition: transform .06s ease, background .12s ease, border-color .12s ease;
       user-select:none;
     }
-    button:hover{
-      background: rgba(255,255,255,.09);
-      border-color: rgba(255,255,255,.24);
-    }
-    button:active{transform: translateY(1px)}
-    button.primary{
-      background: rgba(90,167,255,.18);
-      border-color: rgba(90,167,255,.38);
-    }
-    button.primary:hover{
-      background: rgba(90,167,255,.24);
-      border-color: rgba(90,167,255,.55);
-    }
-    button.danger{
-      background: rgba(255,90,107,.14);
-      border-color: rgba(255,90,107,.38);
-    }
-    button.danger:hover{
-      background: rgba(255,90,107,.18);
-      border-color: rgba(255,90,107,.55);
-    }
+    button:hover{background: rgba(255,255,255,.09)}
+    button.primary{border-color: rgba(90,167,255,.38);background: rgba(90,167,255,.18)}
+    button.primary:hover{background: rgba(90,167,255,.24)}
     button[disabled]{opacity:.55;cursor:not-allowed}
 
-    .feedback{
-      margin-top: 10px;
+    /* аудит Алисы */
+    .correct { color: var(--ok); font-weight: 700; }
+    .incorrect { color: var(--bad); font-weight: 700; }
+    .hint { color: var(--muted); font-size: 0.95em; }
+
+    #feedback{
+      margin-top:10px;
       padding: 10px 12px;
       border-radius: 12px;
       border: 1px solid rgba(255,255,255,.12);
-      background: rgba(7,10,16,.35);
-      font-size: 14px;
+      background: rgba(7,10,16,.32);
       min-height: 44px;
-      display:flex;
-      align-items:center;
-      gap:10px;
     }
-    .dot{width:10px;height:10px;border-radius:999px;background: rgba(255,255,255,.30);flex:0 0 auto}
-    .feedback.good{border-color: rgba(57,217,138,.35)}
-    .feedback.good .dot{background: var(--good)}
-    .feedback.bad{border-color: rgba(255,90,107,.40)}
-    .feedback.bad .dot{background: var(--bad)}
-    .feedback.warn{border-color: rgba(255,209,102,.35)}
-    .feedback.warn .dot{background: var(--warn)}
 
-    details{
-      margin-top: 10px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(7,10,16,.35);
-      border-radius: 12px;
-      padding: 8px 10px;
-    }
-    summary{cursor:pointer;font-weight:650;color:#dbe7f3}
-    .rule{margin: 8px 0 0;color: var(--muted);font-size: 13px}
-    .rule ol{margin: 8px 0 0 18px}
-    .rule li{margin:6px 0}
-
-    .stepbox{
-      margin-top: 10px;
+    #rule{
+      display:none;
+      margin-top:10px;
       padding: 10px 12px;
       border-radius: 12px;
       border: 1px solid rgba(255,255,255,.12);
-      background: rgba(7,10,16,.35);
-      font-size: 14px;
-      color: #dbe7f3;
+      background: rgba(7,10,16,.32);
+      color: var(--muted);
+      font-size: 13px;
     }
-    .stepbox .small{font-size: 13px; color: var(--muted); margin-top:6px}
-    .mono{font-variant-numeric: tabular-nums}
+    #rule ol{margin:8px 0 0 18px}
+    #rule li{margin:6px 0}
 
-    .stats{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-top: 10px;
-    }
-    .stat{
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(7,10,16,.35);
-    }
-    .stat .k{font-size: 12px; color: var(--muted)}
-    .stat .v{font-size: 20px; font-weight: 750; margin-top: 3px}
-    .stat .v.small{font-size:16px; font-weight:650}
-
-    .progressbar{
-      margin-top: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.10);
-      overflow:hidden;
-      border: 1px solid rgba(255,255,255,.12);
-    }
-    .progressbar > div{
-      height:100%;
-      width:0%;
-      background: rgba(90,167,255,.55);
-      transition: width .18s ease;
+    .footer{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:13px;
     }
 
-    .footer-note{margin-top: 12px;color: var(--muted);font-size: 13px}
+    .toggle{
+      display:flex;align-items:center;gap:10px;
+      padding:10px 12px;border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(7,10,16,.32);
+      color: var(--muted);
+    }
+    .toggle input{width:auto}
 
-    /* мобильный комфорт */
     @media (max-width: 768px) {
-      #progressLine { font-size: 16px; }
-      .answer-row input { font-size: 18px; padding: 15px 12px; }
-      button { padding: 15px 14px; font-size: 16px; }
-      .btns { gap: 8px; }
+      #answer, #checkBtn {
+        width: 100%;
+        margin: 10px 0;
+        padding: 15px;
+        font-size: 18px;
+      }
+      #progress { font-size: 16px; }
+      button{width:100%;}
+      .toggle{width:100%}
     }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <header>
-      <div>
-        <h1>Тренажёр округления (ОГЭ)</h1>
-        <div class="subtitle">Точная проверка • подсказка после 2 ошибок • прогресс сохраняется</div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:flex-start">
+        <div>
+          <h1>Тренажёр округления</h1>
+          <div class="sub">ОГЭ-режим по умолчанию • строгая проверка • подсказки • сохранение прогресса</div>
+        </div>
+        <div class="sub"><a href="./index.html">← На главную</a></div>
       </div>
-      <div class="toplink"><a href="./index.html">← На главную</a></div>
-    </header>
 
-    <div class="grid">
-      <section class="card">
-        <h2>Задание</h2>
-
-        <div class="controls">
-          <div>
-            <label for="placeSel">Округлять до</label>
-            <select id="placeSel">
-              <option value="auto">Авто (под разряд)</option>
-              <option value="6">миллионов</option>
-              <option value="5">сотен тысяч</option>
-              <option value="4">десятков тысяч</option>
-              <option value="3">тысяч</option>
-              <option value="2">сотен</option>
-              <option value="1">десятков</option>
-              <option value="0">единиц</option>
-              <option value="-1">десятых</option>
-              <option value="-2">сотых</option>
-              <option value="-3">тысячных</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="modeSel">Какие числа</label>
-            <select id="modeSel">
-              <option value="auto">Авто</option>
-              <option value="ints">Только целые</option>
-              <option value="dec">Только десятичные</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="negSel">Отрицательные</label>
-            <select id="negSel">
-              <option value="no">Нет</option>
-              <option value="sometimes">Иногда</option>
-              <option value="yes">Да</option>
-            </select>
-          </div>
-
-          <div>
-            <label for="sessionSel">Сессия</label>
-            <select id="sessionSel">
-              <option value="10">10 заданий</option>
-              <option value="20">20 заданий</option>
-              <option value="inf">Бесконечно</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="task" aria-live="polite">
-          <div class="task-title" id="progressLine">
-            <div>Задание <span class="mono" id="current">1</span> из <span class="mono" id="total">10</span></div>
-            <div>Попыток в этом задании: <span class="mono" id="tries">0</span></div>
-          </div>
-
-          <p class="task-text" id="taskText">
-            Округли число <span class="num mono" id="numSpan">—</span> до <span class="place" id="placeSpan">—</span>.
-          </p>
-
-          <div class="answer-row">
-            <input id="answer" type="text" inputmode="decimal" autocomplete="off"
-                   placeholder="Твой ответ" aria-label="Твой ответ" />
-          </div>
-
-          <div class="btns">
-            <button class="primary" id="checkBtn" type="button">Проверить (Enter)</button>
-            <button id="nextBtn" type="button" style="display:none;">Далее</button>
-            <button id="solBtn" type="button">Показать решение</button>
-            <button class="danger" id="resetBtn" type="button">Сбросить статистику</button>
-          </div>
-
-          <div class="feedback" id="feedback">
-            <span class="dot" aria-hidden="true"></span>
-            <span class="msg" id="feedbackMsg" style="color: var(--muted);">
-              Введите ответ и нажмите «Проверить».
-            </span>
-          </div>
-
-          <div class="stepbox" id="stepBox">
-            <strong>Подсказка / разбор</strong>
-            <div class="small" id="stepText">
-              После 2 ошибок появится подсказка с разбором.
-            </div>
-          </div>
-
-          <div class="progressbar" title="Прогресс сессии">
-            <div id="barFill"></div>
-          </div>
-
-          <details>
-            <summary>Правило округления (напомнить)</summary>
-            <div class="rule">
-              <ol>
-                <li>Определи разряд, до которого округляешь.</li>
-                <li>Посмотри на цифру справа:
-                  <ul>
-                    <li><b>0–4</b> → разряд не меняем;</li>
-                    <li><b>5–9</b> → увеличиваем разряд на 1.</li>
-                  </ul>
-                </li>
-                <li>Цифры справа заменяем на нули (или оставляем нужное число знаков после запятой).</li>
-              </ol>
-            </div>
-          </details>
-
-          <div class="footer-note">
-            Как это пригодится: при делении <span class="mono">473 : 8</span> можно округлить <span class="mono">473 → 480</span>, и быстро прикинуть <span class="mono">480 : 8 = 60</span>.
-          </div>
-        </div>
-      </section>
-
-      <aside class="card">
-        <h2>Статистика</h2>
-
-        <div class="stats">
-          <div class="stat">
-            <div class="k">Правильно</div>
-            <div class="v" id="sCorrect">0</div>
-          </div>
-          <div class="stat">
-            <div class="k">Всего попыток</div>
-            <div class="v" id="sTotal">0</div>
-          </div>
-          <div class="stat">
-            <div class="k">Серия</div>
-            <div class="v" id="sStreak">0</div>
-          </div>
-          <div class="stat">
-            <div class="k">Лучшая серия</div>
-            <div class="v" id="sBest">0</div>
-          </div>
-          <div class="stat" style="grid-column: 1 / -1;">
-            <div class="k">Примечание</div>
-            <div class="v small">
-              Прогресс и настройки сохраняются в браузере (localStorage).
+      <div class="row">
+        <div class="col">
+          <label>Режим</label>
+          <div class="toggle">
+            <input type="checkbox" id="ogeMode" checked />
+            <div>
+              <b>ОГЭ-режим</b> (только целые, разряды: десятки → миллионы)
+              <div class="sub" style="margin:4px 0 0">Выключите — появятся десятые/сотые/тысячные.</div>
             </div>
           </div>
         </div>
-      </aside>
+
+        <div class="col">
+          <label for="placeSel">Округлять до</label>
+          <select id="placeSel"></select>
+        </div>
+
+        <div class="col">
+          <label for="countSel">Сколько заданий в сессии</label>
+          <select id="countSel">
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- СЧЁТЧИК ЗАДАНИЙ -->
+      <div id="progress" class="sub" style="margin-top:10px">
+        Задание <span id="current">1</span> из <span id="total">10</span>
+      </div>
+      <div id="savedLine" class="sub" style="margin-top:6px; display:none;"></div>
+
+      <div class="task">
+        <div class="taskline">
+          <div>Попыток в этом задании: <span class="mono" id="attempts">0</span></div>
+          <div>Прогресс: <span class="mono" id="done">0</span>/<span class="mono" id="tot2">10</span></div>
+        </div>
+
+        <p class="tasktext" id="taskText">
+          Округли число <span class="pill mono" id="numSpan">—</span> до <b id="placeSpan">—</b>.
+        </p>
+
+        <div style="margin-top:10px">
+          <input id="answer" type="text" inputmode="numeric" autocomplete="off" placeholder="Введи ответ" />
+        </div>
+
+        <div class="btns">
+          <button class="primary" id="checkBtn">Проверить</button>
+          <button id="nextBtn" style="display:none;">Далее</button>
+          <button id="ruleBtn">Напомнить правило</button>
+          <button id="resetBtn">Сбросить прогресс</button>
+        </div>
+
+        <div id="feedback" class="hint">Введите ответ и нажмите «Проверить».</div>
+
+        <div id="rule"></div>
+
+        <div class="footer" id="usefulness">
+          <b>Как это пригодится?</b><br/>
+          При делении <span class="mono">473 : 8</span> можно округлить <span class="mono">473 → 480</span> → <span class="mono">480 : 8 = 60</span>.
+          Это помогает быстро подобрать первую цифру частного.
+        </div>
+      </div>
     </div>
   </div>
 
 <script>
-(() => {
-  const STORAGE_KEY = "mathexam_rounding_v4";
+(function(){
+  const LS_KEY = "roundingProgress_v2";
 
-  const POS_LABEL = {0:"единиц",1:"десятков",2:"сотен",3:"тысяч",4:"десятков тысяч",5:"сотен тысяч",6:"миллионов"};
-  const NEG_LABEL = {"-1":"десятых","-2":"сотых","-3":"тысячных"};
-  const NEXT_LABEL = {
-    "-4":"десятитысячных","-3":"тысячных","-2":"сотых","-1":"десятых",
-     0:"десятых",1:"единиц",2:"десятков",3:"сотен",4:"тысяч",5:"десятков тысяч",6:"сотен тысяч"
-  };
+  const ogeModeEl = document.getElementById("ogeMode");
+  const placeSel  = document.getElementById("placeSel");
+  const countSel  = document.getElementById("countSel");
 
-  const placeSel = document.getElementById("placeSel");
-  const modeSel = document.getElementById("modeSel");
-  const negSel = document.getElementById("negSel");
-  const sessionSel = document.getElementById("sessionSel");
-
-  const numSpan = document.getElementById("numSpan");
-  const placeSpan = document.getElementById("placeSpan");
   const currentEl = document.getElementById("current");
-  const totalEl = document.getElementById("total");
-  const triesEl = document.getElementById("tries");
+  const totalEl   = document.getElementById("total");
+  const doneEl    = document.getElementById("done");
+  const tot2El    = document.getElementById("tot2");
+
+  const savedLine = document.getElementById("savedLine");
+
+  const attemptsEl = document.getElementById("attempts");
+  const numSpan    = document.getElementById("numSpan");
+  const placeSpan  = document.getElementById("placeSpan");
 
   const answerEl = document.getElementById("answer");
   const checkBtn = document.getElementById("checkBtn");
-  const nextBtn = document.getElementById("nextBtn");
-  const solBtn = document.getElementById("solBtn");
-  const resetBtn = document.getElementById("resetBtn");
+  const nextBtn  = document.getElementById("nextBtn");
+  const feedback = document.getElementById("feedback");
 
-  const feedbackEl = document.getElementById("feedback");
-  const feedbackMsgEl = document.getElementById("feedbackMsg");
-  const stepTextEl = document.getElementById("stepText");
-  const barFill = document.getElementById("barFill");
+  const ruleBtn = document.getElementById("ruleBtn");
+  const ruleBox = document.getElementById("rule");
+  const resetBtn= document.getElementById("resetBtn");
 
-  const sCorrect = document.getElementById("sCorrect");
-  const sTotal = document.getElementById("sTotal");
-  const sStreak = document.getElementById("sStreak");
-  const sBest = document.getElementById("sBest");
-
-  const state = {
-    settings: { place:"auto", mode:"auto", negatives:"no", sessionSize:"10" },
-    stats: { correct:0, total:0, streak:0, best:0 },
-    session: { done:0 },
-    task: null
+  const PLACE_LABEL = {
+    6:"миллионов",5:"сотен тысяч",4:"десятков тысяч",3:"тысяч",2:"сотен",1:"десятков",
+    0:"единиц",-1:"десятых",-2:"сотых",-3:"тысячных"
   };
 
-  function save(){
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-      settings: state.settings,
-      stats: state.stats,
-      session: state.session
+  const OGE_PLACES = [1,2,3,4,5,6];
+  const FULL_PLACES = [1,2,3,4,5,6,-1,-2,-3];
+
+  let totalTasks = Number(countSel.value) || 10;
+  let currentTask = 0;
+  let completedTasks = 0;
+  let score = 0;
+  let attempts = 0;
+
+  let task = null; // { exp, num, numDisplay, correct, correctDisplay, correctStr }
+
+  function saveProgress(){
+    localStorage.setItem(LS_KEY, JSON.stringify({
+      completed: completedTasks,
+      total: totalTasks,
+      score: score,
+      currentTask: currentTask,
+      place: placeSel.value,
+      count: countSel.value,
+      oge: ogeModeEl.checked
     }));
   }
-  function load(){
+
+  function loadProgress(){
+    const raw = localStorage.getItem(LS_KEY);
+    if(!raw) return;
     try{
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if(!raw) return;
       const data = JSON.parse(raw);
-      if(data.settings) Object.assign(state.settings, data.settings);
-      if(data.stats) Object.assign(state.stats, data.stats);
-      if(data.session) Object.assign(state.session, data.session);
+      if(typeof data.completed === "number") completedTasks = data.completed;
+      if(typeof data.total === "number") totalTasks = data.total;
+      if(typeof data.score === "number") score = data.score;
+      if(typeof data.currentTask === "number") currentTask = data.currentTask;
+
+      if(typeof data.oge === "boolean") ogeModeEl.checked = data.oge;
+      if(data.count != null) countSel.value = String(data.count);
+
+      totalTasks = Number(countSel.value) || totalTasks;
+
+      // placeSel заполним после rebuild, потом выставим
+      return data.place;
     }catch(e){}
   }
 
-  function fmtDisplay(value, fixedDigits=null){
-    const opts = { useGrouping:true };
-    if(fixedDigits !== null){
-      opts.minimumFractionDigits = fixedDigits;
-      opts.maximumFractionDigits = fixedDigits;
+  function rebuildPlaceOptions(){
+    const oge = ogeModeEl.checked;
+    const places = oge ? OGE_PLACES : FULL_PLACES;
+
+    placeSel.innerHTML = "";
+    for(const p of places){
+      const opt = document.createElement("option");
+      opt.value = String(p);
+      opt.textContent = PLACE_LABEL[p] || ("10^" + p);
+      placeSel.appendChild(opt);
+    }
+
+    // В ОГЭ-режиме хотим стартовать с "сотен" (часто полезно для оценки),
+    // но если раньше было сохранено — восстановим позже.
+    if(oge){
+      placeSel.value = "2";
+      answerEl.setAttribute("inputmode", "numeric");
+      answerEl.placeholder = "Введи целое число";
     }else{
-      opts.maximumFractionDigits = 12;
-    }
-    return new Intl.NumberFormat("ru-RU", opts).format(value);
-  }
-
-  function setFeedback(kind, html){
-    feedbackEl.classList.remove("good","bad","warn");
-    if(kind) feedbackEl.classList.add(kind);
-    feedbackMsgEl.innerHTML = html;
-  }
-
-  function updateStatsUI(){
-    sCorrect.textContent = state.stats.correct;
-    sTotal.textContent = state.stats.total;
-    sStreak.textContent = state.stats.streak;
-    sBest.textContent = state.stats.best;
-  }
-
-  function sessionSizeNumber(){
-    if(state.settings.sessionSize === "inf") return Infinity;
-    return Number(state.settings.sessionSize) || 10;
-  }
-  function updateSessionUI(){
-    const size = sessionSizeNumber();
-    const done = state.session.done;
-
-    currentEl.textContent = size === Infinity ? (done + 1) : Math.min(done + 1, size);
-    totalEl.textContent = size === Infinity ? "∞" : String(size);
-
-    const pct = (size === Infinity) ? 0 : Math.round((done / size) * 100);
-    barFill.style.width = (size === Infinity ? "0%" : (pct + "%"));
-  }
-
-  function applySettingsFromUI(){
-    state.settings.place = placeSel.value;
-    state.settings.mode = modeSel.value;
-    state.settings.negatives = negSel.value;
-    state.settings.sessionSize = sessionSel.value;
-    save();
-  }
-
-  function chance(p){ return Math.random() < p; }
-  function randomInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
-  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
-  function getPlaceLabel(exp){
-    if(exp >= 0) return POS_LABEL[exp] || ("10^" + exp);
-    return NEG_LABEL[String(exp)] || ("10^" + exp);
-  }
-  function getNextLabel(exp){
-    const nextExp = exp - 1;
-    return NEXT_LABEL[String(nextExp)] || "следующий разряд";
-  }
-  function expectedDecimalsForExp(exp){
-    return exp < 0 ? -exp : 0;
-  }
-
-  // === ВАЛИДАЦИЯ ВВОДА ПО ТЗ (целое/десятичное + отрицательные) ===
-  function validateAndParse(raw, exp){
-    const s = String(raw ?? "").trim().replace(/\s+/g, "");
-    if(s === "") return { ok:false, reason:"Ошибка: введите число" };
-
-    const allowNegative = state.settings.negatives !== "no";
-    const isIntegerAnswer = exp >= 0;
-
-    // Если ответ должен быть целым — принимаем только целые (без . и ,)
-    if(isIntegerAnswer){
-      const re = allowNegative ? /^-?\d+$/ : /^\d+$/;
-      if(!re.test(s)) return { ok:false, reason:"Ошибка: введите целое число" };
-      if(!allowNegative && s.startsWith("-")) return { ok:false, reason:"Ошибка: отрицательные числа отключены" };
-      const n = Number(s);
-      if(!Number.isFinite(n)) return { ok:false, reason:"Ошибка: некорректный ввод" };
-      return { ok:true, kind:"int", num:n, raw:s };
+      placeSel.value = "1";
+      answerEl.setAttribute("inputmode", "decimal");
+      answerEl.placeholder = "Введи число";
     }
 
-    // Если округляем до десятых/сотых/тысячных — допускаем десятичные
-    const reDec = allowNegative ? /^-?\d+([.,]\d+)?$/ : /^\d+([.,]\d+)?$/;
-    if(!reDec.test(s)) return { ok:false, reason:"Ошибка: введите число (можно с запятой)" };
-    if(!allowNegative && s.startsWith("-")) return { ok:false, reason:"Ошибка: отрицательные числа отключены" };
-
-    const normalized = s.replace(",", ".");
-    const n = Number(normalized);
-    if(!Number.isFinite(n)) return { ok:false, reason:"Ошибка: некорректный ввод" };
-
-    return { ok:true, kind:"dec", num:n, raw:normalized };
+    renderRuleText();
   }
 
-  function correctToFixedString(value, exp){
-    const dec = expectedDecimalsForExp(exp);
-    if(dec === 0){
-      const roundedInt = Math.round(value);
-      return String(Object.is(roundedInt, -0) ? 0 : roundedInt);
-    }
-    const s = (Object.is(value, -0) ? 0 : value).toFixed(dec);
-    if(/^-\s*0(\.0+)?$/.test(s)) return s.replace("-", "");
-    return s;
+  function renderRuleText(){
+    const oge = ogeModeEl.checked;
+    // блок "правило" делаем внутренним HTML
+    ruleBox.style.display = "none";
+    ruleBox.innerHTML = oge
+      ? `
+        <ol>
+          <li>Определи разряд, до которого округляешь (десятки, сотни, тысячи...).</li>
+          <li>Посмотри на цифру справа:
+            <ul>
+              <li>0–4 → разряд не меняем;</li>
+              <li>5–9 → увеличиваем разряд на 1.</li>
+            </ul>
+          </li>
+          <li>Все цифры справа заменяем на нули.</li>
+        </ol>
+      `
+      : `
+        <ol>
+          <li>Определи разряд, до которого округляешь (десятки/сотни/… или десятые/сотые/тысячные).</li>
+          <li>Посмотри на цифру справа:
+            <ul>
+              <li>0–4 → разряд не меняем;</li>
+              <li>5–9 → увеличиваем разряд на 1.</li>
+            </ul>
+          </li>
+          <li>Цифры справа заменяем на нули (или оставляем нужное число знаков после запятой).</li>
+        </ol>
+      `;
+  }
+
+  function updateProgressUI(){
+    totalEl.textContent = String(totalTasks);
+    tot2El.textContent  = String(totalTasks);
+    currentEl.textContent = String(currentTask + 1);
+    doneEl.textContent = String(completedTasks);
   }
 
   function roundTo(value, exp){
     if(exp >= 0){
-      const factor = 10 ** exp;
-      const res = Math.round(value / factor) * factor;
-      return Object.is(res, -0) ? 0 : res;
+      const factor = Math.pow(10, exp);
+      return Math.round(value / factor) * factor;
     }else{
-      const factor = 10 ** (-exp);
-      const res = Math.round(value * factor) / factor;
-      return Object.is(res, -0) ? 0 : res;
+      const factor = Math.pow(10, -exp);
+      return Math.round(value * factor) / factor;
     }
   }
 
   function nextDigit(value, exp){
+    // цифра справа от разряда exp
     const e = exp - 1;
     const abs = Math.abs(value);
     if(e >= 0){
-      const div = 10 ** e;
+      const div = Math.pow(10, e);
       return Math.floor(abs / div) % 10;
     }else{
-      const mul = 10 ** (-e);
+      const mul = Math.pow(10, -e);
       return Math.floor(abs * mul + 1e-10) % 10;
     }
   }
 
-  function chooseSign(){
-    const m = state.settings.negatives;
-    if(m === "no") return 1;
-    if(m === "yes") return chance(0.5) ? -1 : 1;
-    return chance(0.25) ? -1 : 1;
-  }
-
-  function chooseExp(){
-    if(state.settings.place !== "auto") return Number(state.settings.place);
-
-    const pos = [0,1,2,3,4,5,6];
-    const neg = [-1,-2,-3];
-
-    if(state.settings.mode === "ints") return pick(pos);
-    if(state.settings.mode === "dec") return pick(neg);
-
-    return chance(0.30) ? pick(neg) : pick(pos);
-  }
-
-  function shouldGenerateDecimal(exp){
-    if(state.settings.mode === "ints") return false;
-    if(state.settings.mode === "dec") return true;
-    if(exp < 0) return true;
-    return chance(0.20);
-  }
-
-  function generateInteger(exp){
-    const sign = chooseSign();
-    const extraDigits = randomInt(1, 3);
-    const digits = Math.max(2, exp + extraDigits + 1);
-
-    const min = 10 ** (digits - 1);
-    const max = (10 ** digits) - 1;
-    let n = randomInt(min, max);
-
-    if(exp >= 1){
-      const factor = 10 ** exp;
-      if(n % factor === 0) n += randomInt(1, 9) * (10 ** (exp-1));
+  function formatNumberRu(n, fixed=null){
+    const opt = { useGrouping:true };
+    if(fixed !== null){
+      opt.minimumFractionDigits = fixed;
+      opt.maximumFractionDigits = fixed;
+    }else{
+      opt.maximumFractionDigits = 12;
     }
-    return sign * n;
+    return new Intl.NumberFormat("ru-RU", opt).format(n);
   }
 
-  function generateDecimal(exp){
-    const sign = chooseSign();
-    const need = expectedDecimalsForExp(exp);
-    const digitsAfter = Math.max(need + 1, need + randomInt(1, 2));
-
-    const intMax = 99999;
-    const intPart = randomInt(0, intMax);
-
-    const fracMax = (10 ** digitsAfter) - 1;
-    let frac = randomInt(0, fracMax);
-    if(frac === 0) frac = randomInt(1, fracMax);
-
-    const fracStr = String(frac).padStart(digitsAfter, "0");
-    const raw = intPart + "." + fracStr;
-    const num = Number(raw);
-    return { value: sign * num, digitsAfter };
-  }
-
-  function buildHint(task, showAnswer){
-    const exp = task.exp;
-    const nd = nextDigit(task.value, exp);
+  function buildHint(num, exp, correctDisplay){
+    const nd = nextDigit(num, exp);
+    const place = PLACE_LABEL[exp] || ("10^" + exp);
+    const nextLabel = PLACE_LABEL[exp-1] || "следующий разряд";
     const up = nd >= 5;
 
-    const place = getPlaceLabel(exp);
-    const next = getNextLabel(exp);
-
-    const dec = expectedDecimalsForExp(exp);
-    const correctFixed = task.correctFixed;
-    const correctDisplay = fmtDisplay(Number(correctFixed), dec);
-
-    const ruleLine = up
-      ? `Так как <b>${nd} ≥ 5</b>, <b>увеличиваем</b> разряд «${place}» на 1.`
-      : `Так как <b>${nd} < 5</b>, разряд «${place}» <b>не меняем</b>.`;
-
-    const tailLine = exp >= 0
-      ? `Все цифры правее заменяем нулями.`
-      : `После запятой оставляем <b>${dec}</b> знак(а/ов).`;
-
-    const ans = showAnswer ? `<div class="small"><b>Ответ:</b> <span class="mono">${correctDisplay}</span></div>` : "";
-
     return `
-      <div>Округляем <span class="mono">${task.valueDisplay}</span> до <b>${place}</b>.</div>
-      <div>Смотрим на следующий разряд: <b>${next}</b>. Там цифра <b>${nd}</b>.</div>
-      <div>${ruleLine}</div>
-      <div>${tailLine}</div>
-      ${ans}
+      <div class="hint">
+        Подсказка: округляем до <b>${place}</b>. Смотрим на <b>${nextLabel}</b>: там цифра <b>${nd}</b>.<br/>
+        ${up ? `Так как <b>${nd} ≥ 5</b>, увеличиваем разряд «${place}» на 1.` : `Так как <b>${nd} < 5</b>, разряд «${place}» не меняем.`}<br/>
+        <b>Ответ:</b> <span class="mono">${correctDisplay}</span>
+      </div>
     `;
   }
 
-  function lockCheckTemporarily(ms){
-    checkBtn.disabled = true;
-    setTimeout(() => {
-      // если задание уже завершено — не разблокируем
-      if(state.task && !state.task.finished){
-        checkBtn.disabled = false;
-      }
-    }, ms);
-  }
-
-  function showNext(){
-    nextBtn.style.display = "inline-block";
-  }
-
-  function newTask(){
-    applySettingsFromUI();
-
-    const exp = chooseExp();
-
-    let value, digitsAfter = 0, valueDisplay;
-
-    if(shouldGenerateDecimal(exp)){
-      const d = generateDecimal(exp);
-      value = d.value;
-      digitsAfter = d.digitsAfter;
-      valueDisplay = fmtDisplay(value, digitsAfter);
-    }else{
-      value = generateInteger(Math.max(0, exp));
-      valueDisplay = fmtDisplay(value, 0);
-    }
-
-    const correctValue = roundTo(value, exp);
-    const correctFixed = correctToFixedString(correctValue, exp);
-
-    state.task = {
-      exp,
-      value,
-      valueDisplay,
-      correctValue,
-      correctFixed,
-      attempts: 0,
-      finished: false
-    };
-
-    numSpan.textContent = valueDisplay;
-    placeSpan.textContent = getPlaceLabel(exp);
-
-    triesEl.textContent = "0";
+  function generateTask(){
+    attempts = 0;
+    attemptsEl.textContent = "0";
+    nextBtn.style.display = "none";
     answerEl.value = "";
     answerEl.disabled = false;
     checkBtn.disabled = false;
-    nextBtn.style.display = "none";
 
-    setFeedback(null, "Введите ответ и нажмите «Проверить».");
-    stepTextEl.textContent = "После 2 ошибок появится подсказка с разбором.";
+    const exp = Number(placeSel.value);
+    const oge = ogeModeEl.checked;
 
+    let num;
+    if(oge){
+      // ТОЛЬКО целые
+      const minDigits = Math.max(2, exp + 2);
+      const min = Math.pow(10, minDigits - 1);
+      const max = Math.pow(10, minDigits) - 1;
+      num = Math.floor(Math.random() * (max - min + 1)) + min;
+    }else{
+      // Полный режим: целые + десятичные
+      if(exp >= 0){
+        const minDigits = Math.max(2, exp + 2);
+        const min = Math.pow(10, minDigits - 1);
+        const max = Math.pow(10, minDigits) - 1;
+        num = Math.floor(Math.random() * (max - min + 1)) + min;
+      }else{
+        const intPart = Math.floor(Math.random() * 9000) + 100;
+        const extraDigits = Math.max(1, (-exp) + 1);
+        const fracMax = Math.pow(10, extraDigits) - 1;
+        const frac = Math.floor(Math.random() * fracMax) + 1;
+        num = Number(intPart + "." + String(frac).padStart(extraDigits, "0"));
+      }
+    }
+
+    const correct = roundTo(num, exp);
+    const fixed = exp < 0 ? (-exp) : 0;
+
+    const numDisplay = oge
+      ? formatNumberRu(num, 0)
+      : formatNumberRu(num, exp < 0 ? Math.max(1, (-exp) + 1) : 0);
+
+    const correctDisplay = formatNumberRu(correct, fixed);
+    const correctStr = exp < 0 ? correct.toFixed(-exp) : String(correct);
+
+    task = { exp, num, numDisplay, correct, correctDisplay, correctStr };
+
+    numSpan.textContent = numDisplay;
+    placeSpan.textContent = PLACE_LABEL[exp] || ("10^" + exp);
+
+    feedback.className = "hint";
+    feedback.innerHTML = "Введите ответ и нажмите «Проверить».";
+    updateProgressUI();
+    saveProgress();
     answerEl.focus();
-    updateSessionUI();
-    save();
   }
 
-  function finishTask(){
-    if(!state.task || state.task.finished) return;
-    state.task.finished = true;
-    state.session.done += 1;
+  // ====== ВАЛИДАЦИЯ ======
+  function validateInput(raw, exp){
+    const s = String(raw || "").trim();
+    if(s === "") return { ok:false, msg:"Введите число!" };
 
-    const size = sessionSizeNumber();
-    if(size !== Infinity && state.session.done >= size){
-      state.session.done = 0;
-      setFeedback("warn", "Сессия завершена ✅ Нажмите «Далее» — начнём заново (статистика сохранена).");
+    // ОГЭ-режим: строго целое
+    if(ogeModeEl.checked){
+      if(!/^\d+$/.test(s)) return { ok:false, msg:"Введите целое число!" };
+      return { ok:true, norm:s };
     }
 
-    updateSessionUI();
-    save();
+    // Полный режим
+    if(exp >= 0){
+      if(!/^\d+$/.test(s)) return { ok:false, msg:"Введите целое число!" };
+      return { ok:true, norm:s };
+    }else{
+      const dec = -exp;
+      const cleaned = s.replace(",", ".");
+      if(!/^\d+(\.\d+)?$/.test(cleaned)) return { ok:false, msg:"Введите число (можно с запятой)!" };
+      const parts = cleaned.split(".");
+      const fracLen = parts[1] ? parts[1].length : 0;
+      if(fracLen > dec) return { ok:false, msg:`Введите число не точнее, чем до ${PLACE_LABEL[exp]}!` };
+      return { ok:true, norm:cleaned };
+    }
   }
 
-  function nextTask(){
-    // Если ученик нажал «Далее» и задание не завершено — считаем, что он пропустил
-    if(state.task && !state.task.finished){
-      state.stats.streak = 0;
-      finishTask();
-      updateStatsUI();
-      save();
+  function strictEqualCheck(userNorm, exp){
+    // ОГЭ-режим: всё целое, строго
+    if(ogeModeEl.checked){
+      return parseInt(userNorm, 10) === Number(task.correctStr);
     }
-    newTask();
+
+    // Полный режим
+    if(exp >= 0){
+      return parseInt(userNorm, 10) === Number(task.correctStr);
+    }else{
+      const dec = -exp;
+      const userFixed = Number(userNorm).toFixed(dec);
+      return userFixed === task.correctStr;
+    }
   }
 
   function checkAnswer(){
-    if(!state.task || state.task.finished) return;
+    if(!task) return;
 
-    const parsed = validateAndParse(answerEl.value, state.task.exp);
-    state.stats.total += 1;
-
-    // по ТЗ: сброс поля после проверки
-    answerEl.value = "";
-    answerEl.focus();
-
-    // по ТЗ: блокируем кнопку на 2 секунды (анти-накрутка)
-    lockCheckTemporarily(2000);
-
-    // «Далее» показываем после проверки (по ТЗ)
-    showNext();
-
-    if(!parsed.ok){
-      setFeedback("bad", `❌ ${parsed.reason}`);
-      state.stats.streak = 0;
-      updateStatsUI();
-      save();
+    const userInput = answerEl.value.trim();
+    const v = validateInput(userInput, task.exp);
+    if(!v.ok){
+      feedback.className = "incorrect";
+      feedback.textContent = v.msg;
       return;
     }
 
-    const userStr = state.task.exp >= 0
-      ? String(parseInt(parsed.raw, 10))
-      : String(parsed.raw); // для десятичных сравним по числу внизу
+    // сброс поля + блокировка кнопки (по аудиту)
+    answerEl.value = "";
+    checkBtn.disabled = true;
+    setTimeout(() => {
+      // если за это время задание уже “закрыто” (верный ответ) — не включаем обратно
+      if(answerEl.disabled) return;
+      checkBtn.disabled = false;
+    }, 2000);
 
-    // строгое сравнение:
-    if(state.task.exp >= 0){
-      if(userStr === state.task.correctFixed){
-        state.stats.correct += 1;
-        state.stats.streak += 1;
-        state.stats.best = Math.max(state.stats.best, state.stats.streak);
+    nextBtn.style.display = "inline-block";
 
-        const correctDisplay = fmtDisplay(Number(state.task.correctFixed), 0);
-        setFeedback("good", `✅ Верно! ${state.task.valueDisplay} → <span class="mono">${correctDisplay}</span>.`);
-        stepTextEl.innerHTML = buildHint(state.task, true);
+    const ok = strictEqualCheck(v.norm, task.exp);
 
-        // фикс «накрутки баллов»: задание завершаем, дальше только «Далее»
-        checkBtn.disabled = true;
-        answerEl.disabled = true;
-        finishTask();
-      }else{
-        state.task.attempts += 1;
-        triesEl.textContent = String(state.task.attempts);
-        state.stats.streak = 0;
+    if(ok){
+      feedback.className = "correct";
+      feedback.innerHTML = `Верно! ✅<br/><span class="hint">${task.numDisplay} → <span class="mono">${task.correctDisplay}</span></span>`;
+      score += 1;
 
-        setFeedback("bad", "❌ Неверно. Попробуй ещё.");
-        if(state.task.attempts >= 2){
-          stepTextEl.innerHTML = buildHint(state.task, true);
-          const correctDisplay = fmtDisplay(Number(state.task.correctFixed), 0);
-          setFeedback("bad", `❌ Неверно. Подсказка в разборе. Правильный ответ: <span class="mono">${correctDisplay}</span>.`);
-        }
-      }
+      answerEl.disabled = true;
+      checkBtn.disabled = true;
+      completedTasks += 1;
     }else{
-      // округление до десятых/сотых/тысячных: сравнение по строке fixed (точность знаков)
-      const dec = expectedDecimalsForExp(state.task.exp);
-      const userFixed = Number(parsed.num).toFixed(dec);
-      if(userFixed === state.task.correctFixed){
-        state.stats.correct += 1;
-        state.stats.streak += 1;
-        state.stats.best = Math.max(state.stats.best, state.stats.streak);
+      attempts += 1;
+      attemptsEl.textContent = String(attempts);
 
-        const correctDisplay = fmtDisplay(Number(state.task.correctFixed), dec);
-        setFeedback("good", `✅ Верно! ${state.task.valueDisplay} → <span class="mono">${correctDisplay}</span>.`);
-        stepTextEl.innerHTML = buildHint(state.task, true);
+      feedback.className = "incorrect";
+      feedback.textContent = "Неверно. Попробуй ещё.";
 
-        checkBtn.disabled = true;
-        answerEl.disabled = true;
-        finishTask();
-      }else{
-        state.task.attempts += 1;
-        triesEl.textContent = String(state.task.attempts);
-        state.stats.streak = 0;
-
-        setFeedback("bad", "❌ Неверно. Попробуй ещё.");
-        if(state.task.attempts >= 2){
-          stepTextEl.innerHTML = buildHint(state.task, true);
-          const correctDisplay = fmtDisplay(Number(state.task.correctFixed), dec);
-          setFeedback("bad", `❌ Неверно. Подсказка в разборе. Правильный ответ: <span class="mono">${correctDisplay}</span>.`);
-        }
+      if(attempts >= 2){
+        feedback.innerHTML = `Неверно. Попробуй ещё.<br/>` + buildHint(task.num, task.exp, task.correctDisplay);
       }
     }
 
-    updateStatsUI();
-    save();
+    saveProgress();
+    updateProgressUI();
   }
 
-  function showSolution(){
-    if(!state.task || state.task.finished) return;
+  function loadNextTask(){
+    // если ученик нажал “Далее”, но не решил — считаем как пройденное (пропуск),
+    // чтобы прогресс шёл и ребёнок не “залипал”
+    if(task && completedTasks < (currentTask + 1)){
+      completedTasks += 1;
+    }
 
-    state.stats.total += 1;
-    state.stats.streak = 0;
-
-    stepTextEl.innerHTML = buildHint(state.task, true);
-    setFeedback("warn", "ℹ️ Показано решение. Нажмите «Далее».");
-
-    // блокируем проверку, чтобы не накрутить
-    checkBtn.disabled = true;
-    answerEl.disabled = true;
-
-    showNext();
-    finishTask();
-
-    updateStatsUI();
-    save();
+    currentTask += 1;
+    if(currentTask >= totalTasks){
+      currentTask = 0;
+      completedTasks = 0;
+    }
+    generateTask();
   }
 
-  function resetStats(){
-    state.stats = { correct:0, total:0, streak:0, best:0 };
-    state.session = { done:0 };
-    updateStatsUI();
-    updateSessionUI();
-    setFeedback("warn", "Статистика сброшена.");
-    save();
-    newTask();
+  function toggleRule(){
+    ruleBox.style.display = (ruleBox.style.display === "none" || ruleBox.style.display === "") ? "block" : "none";
   }
 
-  // events
+  function resetAll(){
+    localStorage.removeItem(LS_KEY);
+    currentTask = 0;
+    completedTasks = 0;
+    score = 0;
+    attempts = 0;
+    savedLine.style.display = "none";
+    rebuildPlaceOptions();
+    generateTask();
+    feedback.className = "hint";
+    feedback.textContent = "Прогресс сброшен. Начнём заново.";
+  }
+
+  // ====== INIT ======
+  const savedPlace = loadProgress(); // вернёт сохранённый place, если был
+  rebuildPlaceOptions();
+  if(savedPlace != null){
+    // если сохранённый разряд не доступен в ОГЭ-режиме — оставим текущий
+    const exists = Array.from(placeSel.options).some(o => o.value === String(savedPlace));
+    if(exists) placeSel.value = String(savedPlace);
+  }
+
+  totalTasks = Number(countSel.value) || totalTasks;
+  updateProgressUI();
+
+  // показываем строку сохранённого прогресса (чтобы не ломать счётчик 1/10)
+  const raw = localStorage.getItem(LS_KEY);
+  if(raw){
+    try{
+      const data = JSON.parse(raw);
+      savedLine.style.display = "block";
+      savedLine.textContent = `Сохранено: выполнено ${data.completed} из ${data.total}.`;
+    }catch(e){}
+  }
+
   checkBtn.addEventListener("click", checkAnswer);
-  solBtn.addEventListener("click", showSolution);
-  nextBtn.addEventListener("click", nextTask);
-  resetBtn.addEventListener("click", resetStats);
+  nextBtn.addEventListener("click", loadNextTask);
+  ruleBtn.addEventListener("click", toggleRule);
+  resetBtn.addEventListener("click", resetAll);
 
-  [placeSel, modeSel, negSel, sessionSel].forEach(el => {
-    el.addEventListener("change", () => {
-      applySettingsFromUI();
-      setFeedback("warn", "Настройки сохранены. Они применятся со следующего задания («Далее»).");
-    });
+  ogeModeEl.addEventListener("change", () => {
+    // при смене режима перестраиваем разряды и начинаем сессию заново
+    currentTask = 0;
+    completedTasks = 0;
+    attempts = 0;
+    rebuildPlaceOptions();
+    generateTask();
+    saveProgress();
+  });
+
+  placeSel.addEventListener("change", () => {
+    currentTask = 0;
+    completedTasks = 0;
+    generateTask();
+  });
+
+  countSel.addEventListener("change", () => {
+    totalTasks = Number(countSel.value) || 10;
+    currentTask = 0;
+    completedTasks = 0;
+    generateTask();
   });
 
   document.addEventListener("keydown", (e) => {
@@ -929,18 +648,8 @@
     }
   });
 
-  // init
-  load();
-  placeSel.value = state.settings.place;
-  modeSel.value = state.settings.mode;
-  negSel.value = state.settings.negatives;
-  sessionSel.value = state.settings.sessionSize;
-
-  updateStatsUI();
-  updateSessionUI();
-  newTask();
+  generateTask();
 })();
 </script>
 </body>
 </html>
-
