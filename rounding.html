@@ -114,6 +114,7 @@
       font-size: 12px;
       color: var(--muted);
       margin-bottom: 6px;
+      flex-wrap:wrap;
     }
     .task-text{
       font-size: 18px;
@@ -259,8 +260,9 @@
 
     /* мобильный комфорт */
     @media (max-width: 768px) {
-      .answer-row input { font-size: 18px; padding: 14px 12px; }
-      button { padding: 14px 14px; font-size: 16px; }
+      #progressLine { font-size: 16px; }
+      .answer-row input { font-size: 18px; padding: 15px 12px; }
+      button { padding: 15px 14px; font-size: 16px; }
       .btns { gap: 8px; }
     }
   </style>
@@ -270,8 +272,8 @@
   <div class="wrap">
     <header>
       <div>
-        <h1>Тренажёр округления (ОГЭ-скоропомощь)</h1>
-        <div class="subtitle">Проверка + подсказки + разбор шага. Прогресс сохраняется в браузере.</div>
+        <h1>Тренажёр округления (ОГЭ)</h1>
+        <div class="subtitle">Точная проверка • подсказка после 2 ошибок • прогресс сохраняется</div>
       </div>
       <div class="toplink"><a href="./index.html">← На главную</a></div>
     </header>
@@ -327,9 +329,9 @@
         </div>
 
         <div class="task" aria-live="polite">
-          <div class="task-title">
-            <div>Задание <span class="mono" id="taskN">1</span> из <span class="mono" id="taskTotal">10</span></div>
-            <div>Ошибок в этом задании: <span class="mono" id="tries">0</span></div>
+          <div class="task-title" id="progressLine">
+            <div>Задание <span class="mono" id="current">1</span> из <span class="mono" id="total">10</span></div>
+            <div>Попыток в этом задании: <span class="mono" id="tries">0</span></div>
           </div>
 
           <p class="task-text" id="taskText">
@@ -344,7 +346,6 @@
           <div class="btns">
             <button class="primary" id="checkBtn" type="button">Проверить (Enter)</button>
             <button id="nextBtn" type="button" style="display:none;">Далее</button>
-            <button id="newBtn" type="button">Новый пример</button>
             <button id="solBtn" type="button">Показать решение</button>
             <button class="danger" id="resetBtn" type="button">Сбросить статистику</button>
           </div>
@@ -352,14 +353,14 @@
           <div class="feedback" id="feedback">
             <span class="dot" aria-hidden="true"></span>
             <span class="msg" id="feedbackMsg" style="color: var(--muted);">
-              Вводи число как удобно: <span class="mono">12 345,6</span> или <span class="mono">12345.6</span>.
+              Введите ответ и нажмите «Проверить».
             </span>
           </div>
 
           <div class="stepbox" id="stepBox">
-            <strong>Разбор</strong>
+            <strong>Подсказка / разбор</strong>
             <div class="small" id="stepText">
-              Нажми «Проверить», и здесь появится подсказка/разбор.
+              После 2 ошибок появится подсказка с разбором.
             </div>
           </div>
 
@@ -384,7 +385,7 @@
           </details>
 
           <div class="footer-note">
-            Связь с делением уголком: <span class="mono">473 : 8</span> ≈ <span class="mono">480 : 8 = 60</span> — помогает подобрать первую цифру частного.
+            Как это пригодится: при делении <span class="mono">473 : 8</span> можно округлить <span class="mono">473 → 480</span>, и быстро прикинуть <span class="mono">480 : 8 = 60</span>.
           </div>
         </div>
       </section>
@@ -422,7 +423,7 @@
 
 <script>
 (() => {
-  const STORAGE_KEY = "mathexam_rounding_v3";
+  const STORAGE_KEY = "mathexam_rounding_v4";
 
   const POS_LABEL = {0:"единиц",1:"десятков",2:"сотен",3:"тысяч",4:"десятков тысяч",5:"сотен тысяч",6:"миллионов"};
   const NEG_LABEL = {"-1":"десятых","-2":"сотых","-3":"тысячных"};
@@ -438,14 +439,13 @@
 
   const numSpan = document.getElementById("numSpan");
   const placeSpan = document.getElementById("placeSpan");
-  const taskNEl = document.getElementById("taskN");
-  const taskTotalEl = document.getElementById("taskTotal");
+  const currentEl = document.getElementById("current");
+  const totalEl = document.getElementById("total");
   const triesEl = document.getElementById("tries");
 
   const answerEl = document.getElementById("answer");
   const checkBtn = document.getElementById("checkBtn");
   const nextBtn = document.getElementById("nextBtn");
-  const newBtn = document.getElementById("newBtn");
   const solBtn = document.getElementById("solBtn");
   const resetBtn = document.getElementById("resetBtn");
 
@@ -516,8 +516,8 @@
     const size = sessionSizeNumber();
     const done = state.session.done;
 
-    taskNEl.textContent = size === Infinity ? (done + 1) : Math.min(done + 1, size);
-    taskTotalEl.textContent = size === Infinity ? "∞" : String(size);
+    currentEl.textContent = size === Infinity ? (done + 1) : Math.min(done + 1, size);
+    totalEl.textContent = size === Infinity ? "∞" : String(size);
 
     const pct = (size === Infinity) ? 0 : Math.round((done / size) * 100);
     barFill.style.width = (size === Infinity ? "0%" : (pct + "%"));
@@ -536,8 +536,8 @@
   function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
   function getPlaceLabel(exp){
-    if(exp >= 0) return POS_LABEL[exp] || "разряда 10^" + exp;
-    return NEG_LABEL[String(exp)] || "10^" + exp;
+    if(exp >= 0) return POS_LABEL[exp] || ("10^" + exp);
+    return NEG_LABEL[String(exp)] || ("10^" + exp);
   }
   function getNextLabel(exp){
     const nextExp = exp - 1;
@@ -547,61 +547,34 @@
     return exp < 0 ? -exp : 0;
   }
 
-  function normalizeInput(raw){
-    // разрешаем пробелы, запятую, точку
-    const s = String(raw ?? "").trim().replace(/\s+/g, "").replace(",", ".");
-    if(s === "") return { ok:false, reason:"Введите число." };
+  // === ВАЛИДАЦИЯ ВВОДА ПО ТЗ (целое/десятичное + отрицательные) ===
+  function validateAndParse(raw, exp){
+    const s = String(raw ?? "").trim().replace(/\s+/g, "");
+    if(s === "") return { ok:false, reason:"Ошибка: введите число" };
 
-    // допустимы: -123, 123.45
-    if(!/^-?\d+(\.\d+)?$/.test(s)){
-      return { ok:false, reason:"Введите число (можно с запятой/точкой). Без букв и символов." };
+    const allowNegative = state.settings.negatives !== "no";
+    const isIntegerAnswer = exp >= 0;
+
+    // Если ответ должен быть целым — принимаем только целые (без . и ,)
+    if(isIntegerAnswer){
+      const re = allowNegative ? /^-?\d+$/ : /^\d+$/;
+      if(!re.test(s)) return { ok:false, reason:"Ошибка: введите целое число" };
+      if(!allowNegative && s.startsWith("-")) return { ok:false, reason:"Ошибка: отрицательные числа отключены" };
+      const n = Number(s);
+      if(!Number.isFinite(n)) return { ok:false, reason:"Ошибка: некорректный ввод" };
+      return { ok:true, kind:"int", num:n, raw:s };
     }
 
-    const neg = s.startsWith("-");
-    const t = neg ? s.slice(1) : s;
-    const parts = t.split(".");
-    let intPart = parts[0] || "0";
-    let fracPart = parts[1] || "";
+    // Если округляем до десятых/сотых/тысячных — допускаем десятичные
+    const reDec = allowNegative ? /^-?\d+([.,]\d+)?$/ : /^\d+([.,]\d+)?$/;
+    if(!reDec.test(s)) return { ok:false, reason:"Ошибка: введите число (можно с запятой)" };
+    if(!allowNegative && s.startsWith("-")) return { ok:false, reason:"Ошибка: отрицательные числа отключены" };
 
-    intPart = intPart.replace(/^0+(?=\d)/, "");
-    if(intPart === "") intPart = "0";
+    const normalized = s.replace(",", ".");
+    const n = Number(normalized);
+    if(!Number.isFinite(n)) return { ok:false, reason:"Ошибка: некорректный ввод" };
 
-    let sign = neg ? "-" : "";
-    if(intPart === "0" && /^0*$/.test(fracPart)) sign = ""; // -0 -> 0
-
-    const num = Number(sign + intPart + (fracPart ? "." + fracPart : ""));
-    if(!Number.isFinite(num)) return { ok:false, reason:"Не получилось распознать число." };
-
-    return { ok:true, sign, intPart, fracPart, num };
-  }
-
-  function normalizeForCompare(parsed, exp){
-    const dec = expectedDecimalsForExp(exp);
-
-    // если нужно целое — дробная часть допустима только нулевая
-    if(dec === 0){
-      if(parsed.fracPart && !/^0*$/.test(parsed.fracPart)){
-        return { ok:false, reason:"Ответ должен быть целым числом." };
-      }
-      // строгая проверка целого: строка целого (это и есть “строгое равенство” без допусков)
-      return { ok:true, str: parsed.sign + parsed.intPart };
-    }
-
-    // если нужны десятичные: приводим к ровно dec знакам, лишние допускаем только нулевые
-    let frac = parsed.fracPart || "";
-    if(frac.length < dec) frac = frac + "0".repeat(dec - frac.length);
-    if(frac.length > dec){
-      const extra = frac.slice(dec);
-      if(!/^0*$/.test(extra)){
-        return { ok:false, reason:`Нужно не больше ${dec} знаков после запятой.` };
-      }
-      frac = frac.slice(0, dec);
-    }
-
-    let sign = parsed.sign;
-    if(parsed.intPart === "0" && /^0*$/.test(frac)) sign = ""; // -0.00 -> 0.00
-
-    return { ok:true, str: sign + parsed.intPart + "." + frac };
+    return { ok:true, kind:"dec", num:n, raw:normalized };
   }
 
   function correctToFixedString(value, exp){
@@ -655,15 +628,14 @@
     if(state.settings.mode === "ints") return pick(pos);
     if(state.settings.mode === "dec") return pick(neg);
 
-    // авто: иногда десятичные, чаще целые
-    return chance(0.35) ? pick(neg) : pick(pos);
+    return chance(0.30) ? pick(neg) : pick(pos);
   }
 
   function shouldGenerateDecimal(exp){
     if(state.settings.mode === "ints") return false;
     if(state.settings.mode === "dec") return true;
     if(exp < 0) return true;
-    return chance(0.25);
+    return chance(0.20);
   }
 
   function generateInteger(exp){
@@ -685,9 +657,9 @@
   function generateDecimal(exp){
     const sign = chooseSign();
     const need = expectedDecimalsForExp(exp);
-    const digitsAfter = Math.max(1, need + randomInt(1, 2));
+    const digitsAfter = Math.max(need + 1, need + randomInt(1, 2));
 
-    const intMax = exp >= 4 ? 999999 : 99999;
+    const intMax = 99999;
     const intPart = randomInt(0, intMax);
 
     const fracMax = (10 ** digitsAfter) - 1;
@@ -700,7 +672,7 @@
     return { value: sign * num, digitsAfter };
   }
 
-  function buildExplanation(task, showAnswer){
+  function buildHint(task, showAnswer){
     const exp = task.exp;
     const nd = nextDigit(task.value, exp);
     const up = nd >= 5;
@@ -731,21 +703,23 @@
     `;
   }
 
-  function lockAfterFinish(){
+  function lockCheckTemporarily(ms){
     checkBtn.disabled = true;
-    answerEl.disabled = true;
-    nextBtn.style.display = "inline-block";
+    setTimeout(() => {
+      // если задание уже завершено — не разблокируем
+      if(state.task && !state.task.finished){
+        checkBtn.disabled = false;
+      }
+    }, ms);
   }
-  function unlockForNew(){
-    checkBtn.disabled = false;
-    answerEl.disabled = false;
-    nextBtn.style.display = "none";
+
+  function showNext(){
+    nextBtn.style.display = "inline-block";
   }
 
   function newTask(){
     applySettingsFromUI();
 
-    // если сменили сессию — индикатор честный, но текущую сессию не трогаем
     const exp = chooseExp();
 
     let value, digitsAfter = 0, valueDisplay;
@@ -770,22 +744,22 @@
       correctValue,
       correctFixed,
       attempts: 0,
-      finished: false,
-      decExpected: expectedDecimalsForExp(exp),
-      placeLabel: getPlaceLabel(exp)
+      finished: false
     };
 
     numSpan.textContent = valueDisplay;
-    placeSpan.textContent = state.task.placeLabel;
+    placeSpan.textContent = getPlaceLabel(exp);
 
     triesEl.textContent = "0";
     answerEl.value = "";
+    answerEl.disabled = false;
+    checkBtn.disabled = false;
+    nextBtn.style.display = "none";
+
+    setFeedback(null, "Введите ответ и нажмите «Проверить».");
+    stepTextEl.textContent = "После 2 ошибок появится подсказка с разбором.";
+
     answerEl.focus();
-
-    unlockForNew();
-    setFeedback(null, `Вводи число как удобно: <span class="mono">12 345,6</span> или <span class="mono">12345.6</span>.`);
-    stepTextEl.textContent = "Нажми «Проверить», и здесь появится подсказка/разбор.";
-
     updateSessionUI();
     save();
   }
@@ -798,78 +772,106 @@
     const size = sessionSizeNumber();
     if(size !== Infinity && state.session.done >= size){
       state.session.done = 0;
-      setFeedback("warn", "Сессия завершена ✅ Нажми «Далее» или «Новый пример» — начнём заново (статистика сохранена).");
+      setFeedback("warn", "Сессия завершена ✅ Нажмите «Далее» — начнём заново (статистика сохранена).");
     }
 
     updateSessionUI();
     save();
   }
 
+  function nextTask(){
+    // Если ученик нажал «Далее» и задание не завершено — считаем, что он пропустил
+    if(state.task && !state.task.finished){
+      state.stats.streak = 0;
+      finishTask();
+      updateStatsUI();
+      save();
+    }
+    newTask();
+  }
+
   function checkAnswer(){
     if(!state.task || state.task.finished) return;
 
-    const parsed = normalizeInput(answerEl.value);
-
-    // валидация нечислового ввода (критично)
-    if(!parsed.ok){
-      setFeedback("warn", `⚠️ ${parsed.reason}`);
-      // сброс поля после проверки (по требованию аудита)
-      answerEl.value = "";
-      answerEl.focus();
-      return;
-    }
-
-    const normUser = normalizeForCompare(parsed, state.task.exp);
-
+    const parsed = validateAndParse(answerEl.value, state.task.exp);
     state.stats.total += 1;
 
-    // сброс поля после проверки (по требованию аудита)
-    const rawBeforeClear = answerEl.value;
+    // по ТЗ: сброс поля после проверки
     answerEl.value = "";
     answerEl.focus();
 
-    if(!normUser.ok){
+    // по ТЗ: блокируем кнопку на 2 секунды (анти-накрутка)
+    lockCheckTemporarily(2000);
+
+    // «Далее» показываем после проверки (по ТЗ)
+    showNext();
+
+    if(!parsed.ok){
+      setFeedback("bad", `❌ ${parsed.reason}`);
       state.stats.streak = 0;
-      state.task.attempts += 1;
-      triesEl.textContent = String(state.task.attempts);
-
-      setFeedback("bad", `❌ ${normUser.reason}`);
-      stepTextEl.innerHTML = buildExplanation(state.task, state.task.attempts >= 2);
-
       updateStatsUI();
       save();
       return;
     }
 
-    const userStr = normUser.str;
-    const correctStr = state.task.correctFixed;
+    const userStr = state.task.exp >= 0
+      ? String(parseInt(parsed.raw, 10))
+      : String(parsed.raw); // для десятичных сравним по числу внизу
 
-    // строгое равенство (никаких допусков)
-    if(userStr === correctStr){
-      state.stats.correct += 1;
-      state.stats.streak += 1;
-      state.stats.best = Math.max(state.stats.best, state.stats.streak);
+    // строгое сравнение:
+    if(state.task.exp >= 0){
+      if(userStr === state.task.correctFixed){
+        state.stats.correct += 1;
+        state.stats.streak += 1;
+        state.stats.best = Math.max(state.stats.best, state.stats.streak);
 
-      stepTextEl.innerHTML = buildExplanation(state.task, true);
+        const correctDisplay = fmtDisplay(Number(state.task.correctFixed), 0);
+        setFeedback("good", `✅ Верно! ${state.task.valueDisplay} → <span class="mono">${correctDisplay}</span>.`);
+        stepTextEl.innerHTML = buildHint(state.task, true);
 
-      const correctDisplay = fmtDisplay(Number(correctStr), state.task.decExpected);
-      setFeedback("good", `✅ Верно! <span class="mono">${state.task.valueDisplay}</span> → <span class="mono">${correctDisplay}</span>.`);
-
-      lockAfterFinish();
-      finishTask();
-    }else{
-      state.stats.streak = 0;
-      state.task.attempts += 1;
-      triesEl.textContent = String(state.task.attempts);
-
-      // после 2 ошибок показываем разбор уже с ответом (как в аудите)
-      stepTextEl.innerHTML = buildExplanation(state.task, state.task.attempts >= 2);
-
-      if(state.task.attempts >= 2){
-        const correctDisplay = fmtDisplay(Number(correctStr), state.task.decExpected);
-        setFeedback("bad", `❌ Неверно. Подсказка в разборе. Правильный ответ: <span class="mono">${correctDisplay}</span>.`);
+        // фикс «накрутки баллов»: задание завершаем, дальше только «Далее»
+        checkBtn.disabled = true;
+        answerEl.disabled = true;
+        finishTask();
       }else{
-        setFeedback("bad", "❌ Неверно. Подсказка: смотри на следующий разряд справа.");
+        state.task.attempts += 1;
+        triesEl.textContent = String(state.task.attempts);
+        state.stats.streak = 0;
+
+        setFeedback("bad", "❌ Неверно. Попробуй ещё.");
+        if(state.task.attempts >= 2){
+          stepTextEl.innerHTML = buildHint(state.task, true);
+          const correctDisplay = fmtDisplay(Number(state.task.correctFixed), 0);
+          setFeedback("bad", `❌ Неверно. Подсказка в разборе. Правильный ответ: <span class="mono">${correctDisplay}</span>.`);
+        }
+      }
+    }else{
+      // округление до десятых/сотых/тысячных: сравнение по строке fixed (точность знаков)
+      const dec = expectedDecimalsForExp(state.task.exp);
+      const userFixed = Number(parsed.num).toFixed(dec);
+      if(userFixed === state.task.correctFixed){
+        state.stats.correct += 1;
+        state.stats.streak += 1;
+        state.stats.best = Math.max(state.stats.best, state.stats.streak);
+
+        const correctDisplay = fmtDisplay(Number(state.task.correctFixed), dec);
+        setFeedback("good", `✅ Верно! ${state.task.valueDisplay} → <span class="mono">${correctDisplay}</span>.`);
+        stepTextEl.innerHTML = buildHint(state.task, true);
+
+        checkBtn.disabled = true;
+        answerEl.disabled = true;
+        finishTask();
+      }else{
+        state.task.attempts += 1;
+        triesEl.textContent = String(state.task.attempts);
+        state.stats.streak = 0;
+
+        setFeedback("bad", "❌ Неверно. Попробуй ещё.");
+        if(state.task.attempts >= 2){
+          stepTextEl.innerHTML = buildHint(state.task, true);
+          const correctDisplay = fmtDisplay(Number(state.task.correctFixed), dec);
+          setFeedback("bad", `❌ Неверно. Подсказка в разборе. Правильный ответ: <span class="mono">${correctDisplay}</span>.`);
+        }
       }
     }
 
@@ -883,11 +885,14 @@
     state.stats.total += 1;
     state.stats.streak = 0;
 
-    stepTextEl.innerHTML = buildExplanation(state.task, true);
-    setFeedback("warn", "ℹ️ Показано решение. Нажми «Далее».");
+    stepTextEl.innerHTML = buildHint(state.task, true);
+    setFeedback("warn", "ℹ️ Показано решение. Нажмите «Далее».");
 
-    // блокируем, чтобы нельзя было “накликать”
-    lockAfterFinish();
+    // блокируем проверку, чтобы не накрутить
+    checkBtn.disabled = true;
+    answerEl.disabled = true;
+
+    showNext();
     finishTask();
 
     updateStatsUI();
@@ -901,19 +906,19 @@
     updateSessionUI();
     setFeedback("warn", "Статистика сброшена.");
     save();
+    newTask();
   }
 
   // events
   checkBtn.addEventListener("click", checkAnswer);
   solBtn.addEventListener("click", showSolution);
-  newBtn.addEventListener("click", newTask);
-  nextBtn.addEventListener("click", newTask);
+  nextBtn.addEventListener("click", nextTask);
   resetBtn.addEventListener("click", resetStats);
 
   [placeSel, modeSel, negSel, sessionSel].forEach(el => {
     el.addEventListener("change", () => {
       applySettingsFromUI();
-      setFeedback("warn", "Настройки сохранены. Нажми «Новый пример», чтобы применить.");
+      setFeedback("warn", "Настройки сохранены. Они применятся со следующего задания («Далее»).");
     });
   });
 
@@ -921,7 +926,6 @@
     if(e.key === "Enter"){
       e.preventDefault();
       if(!checkBtn.disabled) checkAnswer();
-      else newTask();
     }
   });
 
@@ -934,8 +938,6 @@
 
   updateStatsUI();
   updateSessionUI();
-
-  // first task
   newTask();
 })();
 </script>
