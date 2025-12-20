@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Тренажёр округления (fresh)</title>
 
-  <!-- общий стиль сайта (если есть) -->
   <link rel="stylesheet" href="style.css" />
-  <!-- стиль тренажёра -->
   <link rel="stylesheet" href="rounding-fresh.css" />
 </head>
 <body>
@@ -78,6 +76,13 @@
       <div class="rf__taskLabel">Задание</div>
       <div id="taskText" class="rf__taskText">Нажми «Новый пример» (или «Старт», если хочешь серию).</div>
 
+      <!-- Визуальный указатель -->
+      <div id="guide" class="rf__guide" hidden>
+        <div class="rf__guideLabel">На что смотрим</div>
+        <div id="guideDigits" class="rf__guideDigits" aria-label="Визуальная подсказка по разрядам"></div>
+        <div id="guideText" class="rf__guideText"></div>
+      </div>
+
       <div class="rf__answerRow">
         <label class="rf__label" for="answerInput">Ответ:</label>
         <input id="answerInput" class="rf__input" inputmode="decimal" placeholder="например: 350 или 3,14" aria-label="Поле ввода ответа" />
@@ -117,11 +122,9 @@
 (() => {
   "use strict";
 
-  // ====== Конфиг ======
-  const BASE_SCALE = 10000;         // 4 знака после запятой "внутри" (хватает до тысячных)
+  const BASE_SCALE = 10000;
   const BASE_DECIMALS = 4;
-  const EPS = 0;                    // работаем в целых scaled, так что EPS не нужен
-  const STORAGE_KEY = "rounding_fresh_state_v1";
+  const STORAGE_KEY = "rounding_fresh_state_v3";
   const CHECK_LOCK_MS = 1200;
   const APPLIED_PROB = 0.22;
 
@@ -145,6 +148,10 @@
     statStreak: $("statStreak"),
 
     taskText: $("taskText"),
+    guide: $("guide"),
+    guideDigits: $("guideDigits"),
+    guideText: $("guideText"),
+
     answerInput: $("answerInput"),
     checkBtn: $("checkBtn"),
     nextBtn: $("nextBtn"),
@@ -158,7 +165,6 @@
     storageNote: $("storageNote"),
   };
 
-  // ====== Безопасное localStorage ======
   const storage = (() => {
     try {
       const t = "__t";
@@ -187,14 +193,9 @@
     if (!storage) return;
     try {
       storage.setItem(STORAGE_KEY, JSON.stringify(obj));
-    } catch {
-      // ignore
-    }
+    } catch {}
   };
 
-  // ====== Справочник целей ======
-  // step: шаг округления (в "обычных" единицах)
-  // decimalsAnswer: сколько знаков показываем в ответе
   const TARGETS = [
     { id: "tens",        label: "до десятков",        step: 10,    decimalsAnswer: 0 },
     { id: "hundreds",    label: "до сотен",          step: 100,   decimalsAnswer: 0 },
@@ -207,7 +208,6 @@
     { id: "thousandths", label: "до тысячных",       step: 0.001, decimalsAnswer: 3 },
   ];
 
-  // Наполняем select
   const fillTargetSelect = () => {
     el.targetSelect.innerHTML = "";
     for (const t of TARGETS) {
@@ -220,19 +220,14 @@
 
   const getTarget = (id) => TARGETS.find(t => t.id === id) || TARGETS[0];
 
-  // ====== Состояние ======
   let stats = { solved: 0, correct: 0, streak: 0, bestStreak: 0 };
-  let series = { active: false, size: 10, index: 0, correct: 0 }; // index = сколько задач завершено
-  let current = null; // текущая задача
+  let series = { active: false, size: 10, index: 0, correct: 0 };
+  let current = null;
   let checkLocked = false;
 
-  // ====== Утилиты форматирования/парсинга ======
   const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-  const toRu = (s) => String(s).replace(".", ",");
-
   const scaledToStringRu = (scaled, decimals) => {
-    // scaled — целое в BASE_SCALE
     const sign = scaled < 0 ? "-" : "";
     const abs = Math.abs(scaled);
 
@@ -250,20 +245,14 @@
     let t = (s || "").trim().replace(/\s+/g, "").replace(",", ".");
     if (!t) return "";
 
-    // разрешим +
     if (t[0] === "+") t = t.slice(1);
-
-    // только неотрицательные (5 класс)
     if (t[0] === "-") return "NEGATIVE_NOT_ALLOWED";
-
-    // проверка формата
     if (!/^\d+(\.\d+)?$/.test(t)) return "BAD_FORMAT";
 
     const parts = t.split(".");
     let intPart = parts[0] || "0";
-    let fracPart = parts[1] ?? null;
+    const fracPart = parts[1] ?? null;
 
-    // ведущие нули у целой части: 0005 -> 5 (но 0 остаётся)
     intPart = intPart.replace(/^0+(?=\d)/, "");
     if (intPart === "") intPart = "0";
 
@@ -271,22 +260,19 @@
     return intPart + "." + fracPart;
   };
 
-  // Парсим в scaled int (BASE_SCALE) + флаг лишних НЕнулевых цифр после разрешённой точности
   const parseToScaled = (inputNorm, allowedDecimals) => {
     const parts = inputNorm.split(".");
     const intStr = parts[0];
     const fracStrRaw = parts[1] || "";
 
     const intVal = parseInt(intStr, 10);
-    if (!Number.isFinite(intVal)) return { ok: false, reason: "format" };
+    if (!Number.isFinite(intVal)) return { ok: false };
 
-    // лишние цифры после allowedDecimals (если они не нули — ответ "не округлён")
     let extraNonZero = false;
     if (fracStrRaw.length > allowedDecimals) {
       extraNonZero = [...fracStrRaw.slice(allowedDecimals)].some(ch => ch !== "0");
     }
 
-    // берём первые BASE_DECIMALS знаков, недостающее — нули
     const fracPadded = (fracStrRaw + "0".repeat(BASE_DECIMALS)).slice(0, BASE_DECIMALS);
     const fracVal = parseInt(fracPadded || "0", 10);
 
@@ -294,14 +280,38 @@
     return { ok: true, scaled, extraNonZero };
   };
 
-  // ====== Логика генерации задач ======
   const stepToScaled = (step) => Math.round(step * BASE_SCALE);
-
   const rightPlaceScaled = (stepScaled) => Math.floor(stepScaled / 10);
 
   const digitAt = (nScaled, placeScaled) => {
     if (placeScaled <= 0) return 0;
     return Math.floor(nScaled / placeScaled) % 10;
+  };
+
+  const placeNameRight = (targetId) => {
+    const map = {
+      tens: "единицы",
+      hundreds: "десятки",
+      thousands: "сотни",
+      units: "десятые",
+      tenths: "сотые",
+      hundredths: "тысячные",
+      thousandths: "десятитысячные",
+    };
+    return map[targetId] || "следующий разряд";
+  };
+
+  const placeNameRound = (targetId) => {
+    const map = {
+      tens: "десятки",
+      hundreds: "сотни",
+      thousands: "тысячи",
+      units: "целые",
+      tenths: "десятые",
+      hundredths: "сотые",
+      thousandths: "тысячные",
+    };
+    return map[targetId] || "разряд округления";
   };
 
   const getRange = (target, level) => {
@@ -313,27 +323,23 @@
       if (lvl === 2) return [100, 999];
       return [1000, 9999];
     }
-
     if (step === 100) {
       if (lvl === 1) return [100, 999];
       if (lvl === 2) return [1000, 9999];
       return [10000, 99999];
     }
-
     if (step === 1000) {
       if (lvl === 1) return [1000, 9999];
       if (lvl === 2) return [10000, 99999];
       return [100000, 999999];
     }
 
-    // до целых и десятичные: меняем целую часть
     if (step <= 1) {
       if (lvl === 1) return [0, 99];
       if (lvl === 2) return [0, 999];
       return [0, 9999];
     }
 
-    // запасной вариант
     return [1, 999];
   };
 
@@ -341,39 +347,112 @@
     const isIntLike = target.step >= 1;
 
     const intTemplates = [
-      (x) => `Цена товара ${x} руб. Округлите до ${targetLabel} для быстрой оценки.`,
-      (x) => `Расстояние ${x} км. Округлите до ${targetLabel}.`,
-      (x) => `В зале ${x} зрителей. Округлите до ${targetLabel}.`,
-      (x) => `На складе ${x} коробок. Округлите до ${targetLabel}.`,
+      (x) => `Цена товара ${x} руб. Округлите ${targetLabel} для быстрой оценки.`,
+      (x) => `Расстояние ${x} км. Округлите ${targetLabel}.`,
+      (x) => `В зале ${x} зрителей. Округлите ${targetLabel}.`,
+      (x) => `На складе ${x} коробок. Округлите ${targetLabel}.`,
     ];
 
     const decTemplates = [
-      (x) => `Длина доски ${x} м. Округлите до ${targetLabel}.`,
-      (x) => `Масса товара ${x} кг. Округлите до ${targetLabel}.`,
-      (x) => `Ширина ленты ${x} м. Округлите до ${targetLabel}.`,
+      (x) => `Длина доски ${x} м. Округлите ${targetLabel}.`,
+      (x) => `Масса товара ${x} кг. Округлите ${targetLabel}.`,
+      (x) => `Ширина ленты ${x} м. Округлите ${targetLabel}.`,
     ];
 
     const pool = isIntLike ? intTemplates : decTemplates;
     return pool[randInt(0, pool.length - 1)](displayN);
   };
 
+  // ===== Guide =====
+  const getParts = (nScaled, decimalsInTask) => {
+    const intPart = Math.floor(nScaled / BASE_SCALE);
+    const frac = nScaled % BASE_SCALE;
+    const fracStrFull = String(frac).padStart(BASE_DECIMALS, "0");
+    const fracStr = decimalsInTask > 0 ? fracStrFull.slice(0, decimalsInTask) : "";
+    return { intStr: String(intPart), fracStr };
+  };
+
+  const digitIndexFromPlace = (placeScaled, intLen) => {
+    if (placeScaled >= BASE_SCALE) {
+      const k = Math.round(Math.log10(placeScaled / BASE_SCALE)); // 1->0, 10->1, 100->2...
+      return intLen - 1 - k;
+    } else {
+      const d = Math.round(Math.log10(BASE_SCALE / placeScaled)); // tenths:1, hundredths:2...
+      return intLen + 1 + (d - 1);
+    }
+  };
+
+  const renderGuide = () => {
+    if (!current) {
+      el.guide.hidden = true;
+      el.guideDigits.innerHTML = "";
+      el.guideText.textContent = "";
+      return;
+    }
+
+    const { intStr, fracStr } = getParts(current.nScaled, current.decimalsInTask);
+    const full = fracStr ? `${intStr},${fracStr}` : intStr;
+
+    const roundIdx = digitIndexFromPlace(current.roundPlaceScaled, intStr.length);
+    const lookIdx  = digitIndexFromPlace(current.lookPlaceScaled,  intStr.length);
+
+    if (roundIdx < 0 || roundIdx >= full.length || lookIdx < 0 || lookIdx >= full.length) {
+      el.guide.hidden = true;
+      return;
+    }
+
+    const toZero = current.turnToZero; // для десятков/сотен/тысяч
+    let html = "";
+
+    for (let i = 0; i < full.length; i++) {
+      const ch = full[i];
+      let cls = "rf__d";
+
+      if (ch === ",") {
+        cls += " rf__d--comma";
+      } else {
+        if (i === roundIdx) cls += " rf__d--round";
+        if (i === lookIdx)  cls += " rf__d--look";
+
+        if (i > roundIdx) {
+          if (toZero) cls += " rf__d--tozero";
+          else cls += " rf__d--drop";
+        }
+      }
+
+      html += `<span class="${cls}">${ch}</span>`;
+    }
+
+    el.guide.hidden = false;
+    el.guideDigits.innerHTML = html;
+
+    let rule = current.lookDigit >= 5
+      ? "Цифра ≥ 5 → увеличиваем разряд."
+      : "Цифра < 5 → разряд не меняем.";
+
+    const tailRule = toZero
+      ? "Цифры справа заменяются на нули (показано снизу)."
+      : "Лишние знаки справа отбрасываются.";
+
+    el.guideText.textContent =
+      `Синий — разряд (${current.roundName}). Оранжевый — смотрим на ${current.rightName}: цифра ${current.lookDigit}. ${rule} ${tailRule}`;
+  };
+
+  // ===== Tasks =====
   const generateTask = () => {
     const target = getTarget(el.targetSelect.value);
     const level = el.levelSelect.value;
 
     const stepScaled = stepToScaled(target.step);
-    const allowedDecimals = target.decimalsAnswer; // сколько знаков допустимо в ответе
+    const allowedDecimals = target.decimalsAnswer;
 
-    // сколько знаков показываем в самом числе, чтобы была "цифра справа"
     let decimalsInTask = allowedDecimals;
     if (target.id === "units") {
-      // округление до целых — пусть будут десятые/сотые, чтобы было смысл округлять
       decimalsInTask = Math.random() < 0.5 ? 1 : 2;
     } else if (target.step < 1) {
-      // до десятых нужен как минимум 2 знака, до сотых — 3, до тысячных — 4
       decimalsInTask = Math.min(BASE_DECIMALS, allowedDecimals + 1);
     } else {
-      decimalsInTask = 0; // натуральные числа
+      decimalsInTask = 0;
     }
 
     const [minInt, maxInt] = getRange(target, level);
@@ -381,28 +460,18 @@
     let nScaled = 0;
 
     if (decimalsInTask === 0) {
-      // целое
       let n = randInt(minInt, maxInt);
-
-      // избегаем скучных кратных шагу (чуть-чуть)
-      if (target.step >= 10) {
-        const step = target.step;
-        if (n % step === 0) {
-          const add = randInt(1, Math.min(9, step - 1));
-          if (n + add <= maxInt) n += add;
-        }
+      if (target.step >= 10 && n % target.step === 0) {
+        const add = randInt(1, Math.min(9, target.step - 1));
+        if (n + add <= maxInt) n += add;
       }
-
       nScaled = n * BASE_SCALE;
     } else {
-      // десятичное: берём нужное количество знаков
       const intPart = randInt(minInt, maxInt);
       const digits = decimalsInTask;
-
       const denom = Math.pow(10, digits);
       const frac = randInt(0, denom - 1);
 
-      // переводим frac в BASE_SCALE
       const shift = Math.pow(10, BASE_DECIMALS - digits);
       nScaled = intPart * BASE_SCALE + frac * shift;
     }
@@ -417,23 +486,8 @@
       ? makeAppliedText(displayN, target.label, target)
       : `Округлите число ${displayN} ${target.label}.`;
 
-    // цифра справа (для объяснения)
-    const rightScaled = rightPlaceScaled(stepScaled);
-    const lookDigit = digitAt(nScaled, rightScaled);
-
-    // названия разрядов справа (для подсказки/решения)
-    const rightName = (() => {
-      const map = {
-        "tens": "единицы",
-        "hundreds": "десятки",
-        "thousands": "сотни",
-        "units": "десятые",
-        "tenths": "сотые",
-        "hundredths": "тысячные",
-        "thousandths": "десятитысячные",
-      };
-      return map[target.id] || "следующий разряд";
-    })();
+    const lookPlace = rightPlaceScaled(stepScaled);
+    const lookDigit = digitAt(nScaled, lookPlace);
 
     return {
       targetId: target.id,
@@ -442,21 +496,25 @@
       stepScaled,
       allowedDecimals,
       decimalsInTask,
+
       nScaled,
       displayN,
       answerScaled,
       displayAnswer,
       prompt,
-      rightName,
+
+      roundPlaceScaled: stepScaled,
+      lookPlaceScaled: lookPlace,
+      roundName: placeNameRound(target.id),
+      rightName: placeNameRight(target.id),
       lookDigit,
 
-      // прогресс по задаче
+      turnToZero: target.step >= 10, // вот оно: подсветка нулей
       attempts: 0,
       solved: false,
     };
   };
 
-  // ====== UI / сообщения ======
   const setMessage = (text, kind) => {
     if (!text) {
       el.message.style.display = "none";
@@ -510,12 +568,10 @@
       targetId: el.targetSelect.value,
       level: el.levelSelect.value,
       applied: !!el.appliedToggle.checked,
-
       stats,
       series,
-
       current,
-      checkLocked: false, // чтобы после обновления не застрять
+      checkLocked: false
     });
   };
 
@@ -523,16 +579,12 @@
     const saved = safeLoad();
     if (!saved) return;
 
-    // настройки
     if (typeof saved.targetId === "string") el.targetSelect.value = saved.targetId;
     if (typeof saved.level === "string") el.levelSelect.value = saved.level;
     if (typeof saved.applied === "boolean") el.appliedToggle.checked = saved.applied;
 
-    // статистика
     if (saved.stats) stats = { ...stats, ...saved.stats };
     if (saved.series) series = { ...series, ...saved.series };
-
-    // текущая задача
     if (saved.current) current = saved.current;
 
     updateStatsUI();
@@ -540,11 +592,11 @@
 
     if (current) {
       el.taskText.textContent = current.prompt || `Округлите число ${current.displayN} ${current.targetLabel}.`;
+      renderGuide();
       el.answerInput.focus();
     }
   };
 
-  // ====== Поведение ======
   const setCheckLocked = (locked) => {
     checkLocked = locked;
     el.checkBtn.disabled = locked;
@@ -554,13 +606,13 @@
   const newTask = () => {
     current = generateTask();
 
-    // обновляем текст
     el.taskText.textContent = current.prompt;
     el.answerInput.value = "";
     el.answerInput.focus();
 
     setMessage("", "");
     hideSolution();
+    renderGuide();
 
     persist();
   };
@@ -588,13 +640,21 @@
       series.active = false;
       updateSeriesUI();
       setMessage(`Серия завершена ✅ Результат: ${series.correct}/${series.size}`, "ok");
+
+      current = null;
+      el.taskText.textContent = "Серия завершена. Нажми «Старт» или «Новый пример».";
+      el.answerInput.value = "";
+      el.answerInput.blur();
+      hideSolution();
+      renderGuide();
+
       persist();
     }
   };
 
   const hintText = () => {
     if (!current) return "";
-    return `Подсказка: при округлении ${current.targetLabel} смотрим на ${current.rightName}. Если цифра 0–4 — разряд не меняем; если 5–9 — увеличиваем.`;
+    return `Подсказка: при округлении ${current.targetLabel} смотрим на ${current.rightName}. 0–4 → не меняем; 5–9 → увеличиваем.`;
   };
 
   const solutionHTML = () => {
@@ -647,10 +707,8 @@
     }
 
     current.attempts += 1;
-
     const ok = (parsed.scaled === current.answerScaled);
 
-    // статистика: считаем проверки всегда (это честнее как тренажёр)
     stats.solved += 1;
 
     if (ok) {
@@ -660,7 +718,6 @@
       }
       stats.streak += 1;
       stats.bestStreak = Math.max(stats.bestStreak, stats.streak);
-
       setMessage("Верно ✅", "ok");
     } else {
       stats.streak = 0;
@@ -685,7 +742,6 @@
       return;
     }
 
-    // если серия активна — считаем задачу завершённой по кнопке "Дальше"
     if (series.active) {
       series.index += 1;
       if (current.solved) series.correct += 1;
@@ -693,16 +749,7 @@
       updateSeriesUI();
       persist();
       finishSeriesIfNeeded();
-
-      if (!series.active) {
-        // серия закончилась — не создаём новую автоматически
-        current = null;
-        el.taskText.textContent = "Серия завершена. Нажми «Старт» или «Новый пример».";
-        el.answerInput.value = "";
-        el.answerInput.blur();
-        hideSolution();
-        return;
-      }
+      if (!series.active) return;
     }
 
     newTask();
@@ -720,23 +767,19 @@
     updateSeriesUI();
     setMessage("Прогресс сброшен.", "info");
     hideSolution();
+    renderGuide();
 
     if (storage) {
       try { storage.removeItem(STORAGE_KEY); } catch {}
     }
   };
 
-  // ====== События ======
   window.addEventListener("error", (e) => {
     console.error(e);
-    setMessage("Упс, ошибка на странице. Попробуй «Сбросить прогресс» или обновить страницу.", "bad");
+    setMessage("Упс, ошибка на странице. Попробуй «Сбросить прогресс» или обнови страницу.", "bad");
   });
 
-  el.newBtn.addEventListener("click", () => {
-    // в серии "Новый пример" не запрещаем, но лучше использовать "Дальше"
-    newTask();
-  });
-
+  el.newBtn.addEventListener("click", newTask);
   el.startSeriesBtn.addEventListener("click", startSeries);
   el.stopSeriesBtn.addEventListener("click", stopSeries);
 
@@ -760,21 +803,19 @@
 
   el.resetProgressBtn.addEventListener("click", resetProgress);
 
-  // при смене настроек — сохраняем, текущую задачу не ломаем
-  el.targetSelect.addEventListener("change", () => { persist(); });
+  el.targetSelect.addEventListener("change", () => { persist(); if (current) renderGuide(); });
   el.levelSelect.addEventListener("change", () => { persist(); });
   el.appliedToggle.addEventListener("change", () => { persist(); });
 
-  // ====== Инициализация ======
   fillTargetSelect();
-
-  // дефолт: 5 класс — десятки
   el.targetSelect.value = "tens";
 
   restore();
   updateStatsUI();
   updateSeriesUI();
+  renderGuide();
 })();
 </script>
 </body>
 </html>
+
