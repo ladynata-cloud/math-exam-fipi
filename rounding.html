@@ -1,932 +1,261 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Тренажёр округления — ОГЭ</title>
+  <meta name="description" content="Округление чисел (целые и десятичные): от миллионов до тысячных и дальше. С подсказками, решениями и статистикой." />
   <style>
     :root{
       --bg:#0b1220;
-      --card:#0e1830;
-      --card2:#0b1428;
-      --text:#e8eefc;
-      --muted:#a9b4d0;
-      --line:#223153;
-      --accent:#5aa7ff;
-      --ok:#41d17c;
-      --bad:#ff5a6f;
-      --warn:#ffd166;
+      --card:#111a2e;
+      --card2:#0f172a;
+      --text:#e6eaf2;
+      --muted:#a9b3c7;
+      --line:rgba(255,255,255,.12);
+      --accent:#5aa2ff;
+      --good:#2dd4bf;
+      --bad:#fb7185;
+      --warn:#fbbf24;
       --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius: 16px;
+      --radius: 18px;
     }
-    *{box-sizing:border-box}
+    *{ box-sizing:border-box; }
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
-      background: radial-gradient(1200px 600px at 20% 0%, #14244a 0%, var(--bg) 55%) fixed;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 700px at 30% -10%, rgba(90,162,255,.25), transparent 60%),
+                  radial-gradient(900px 600px at 90% 10%, rgba(45,212,191,.18), transparent 55%),
+                  var(--bg);
       color:var(--text);
       line-height:1.45;
     }
-    a{color:var(--accent); text-decoration:none}
-    a:hover{text-decoration:underline}
-    .wrap{max-width:1000px; margin:0 auto; padding:22px}
-    .top{
-      display:flex; flex-wrap:wrap; gap:12px;
-      align-items:baseline; justify-content:space-between;
-      margin-bottom:14px;
+    a{ color: var(--accent); text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 22px 16px 48px;
     }
-    h1{font-size:22px; margin:0; letter-spacing:.2px}
-    .sub{color:var(--muted); font-size:13px}
+
+    header{
+      display:flex;
+      flex-wrap:wrap;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+    h1{
+      font-size: 26px;
+      margin: 0;
+      letter-spacing: .2px;
+    }
+    .subtitle{
+      color: var(--muted);
+      margin-top: 6px;
+      font-size: 14px;
+    }
+    .toplink{
+      font-size:14px;
+      opacity:.95;
+      padding: 10px 12px;
+      border:1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255,255,255,.03);
+    }
+
     .grid{
       display:grid;
       grid-template-columns: 1.25fr .75fr;
-      gap:14px;
+      gap: 14px;
+      margin-top: 14px;
     }
-    @media (max-width: 920px){
-      .grid{grid-template-columns:1fr}
-    }
+
     .card{
-      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border: 1px solid var(--line);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding:16px;
+      padding: 16px;
+      overflow:hidden;
     }
 
-    .controls{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-      margin:10px 0 14px;
-    }
-    @media (max-width: 720px){
-      .controls{grid-template-columns:1fr}
-    }
-    label{display:block; color:var(--muted); font-size:12px; margin-bottom:6px}
-    select, input[type="text"]{
-      width:100%;
-      padding:12px 12px;
-      border-radius: 12px;
-      border:1px solid var(--line);
-      background: var(--card2);
-      color:var(--text);
-      outline:none;
-      font-size:16px; /* важно для мобилки: не зумит */
-    }
-    select:focus, input[type="text"]:focus{
-      border-color: rgba(90,167,255,.7);
-      box-shadow: 0 0 0 3px rgba(90,167,255,.15)
-    }
-
-    .taskline{
-      margin-top:8px;
-      padding:14px;
-      border-radius: 14px;
-      border:1px dashed rgba(90,167,255,.35);
-      background: rgba(90,167,255,.06);
-    }
-    .taskline .title{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .taskline .t{
-      font-size:18px;
-    }
-    .pill{
-      display:inline-block;
-      padding:4px 10px;
-      border-radius:999px;
-      border:1px solid rgba(169,180,208,.28);
-      background: rgba(255,255,255,.03);
-      color: var(--muted);
-      font-size:12px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    .card h2{
+      margin:0 0 10px;
+      font-size: 16px;
+      color: var(--text);
+      letter-spacing: .2px;
     }
 
     .row{
-      display:flex; gap:10px; flex-wrap:wrap;
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
       align-items:flex-end;
-      margin-top:12px;
     }
-    .row .grow{flex:1 1 260px}
-    .btn{
-      border:none;
-      background: rgba(90,167,255,.16);
-      color:var(--text);
-      padding:11px 12px;
+
+    label{
+      display:flex;
+      flex-direction:column;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    select, input[type="text"], input[type="number"]{
+      appearance:none;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.12);
+      color: var(--text);
+      padding: 12px 12px;
       border-radius: 12px;
-      cursor:pointer;
-      border:1px solid rgba(90,167,255,.35);
-      transition: transform .04s ease, background .15s ease, border-color .15s ease, opacity .15s ease;
-      user-select:none;
-      min-height:44px; /* удобнее на мобилке */
+      font-size: 16px;
+      outline: none;
+      min-width: 220px;
     }
-    .btn:hover{background: rgba(90,167,255,.22)}
-    .btn:active{transform: translateY(1px)}
+    select:focus, input:focus{
+      border-color: rgba(90,162,255,.7);
+      box-shadow: 0 0 0 4px rgba(90,162,255,.16);
+    }
+
+    .taskBox{
+      margin-top: 10px;
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.14);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .taskLine{
+      font-size: 18px;
+      margin: 0 0 6px;
+      letter-spacing: .2px;
+    }
+    .taskHint{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .answerRow{
+      margin-top: 12px;
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      align-items:center;
+    }
+
+    .btn{
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      padding: 12px 12px;
+      border-radius: 12px;
+      font-size: 15px;
+      cursor:pointer;
+      transition: transform .03s ease, background .15s ease, border-color .15s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn:hover{
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.18);
+    }
+    .btn:active{ transform: translateY(1px); }
     .btn.primary{
-      background: rgba(90,167,255,.28);
-      border-color: rgba(90,167,255,.55);
+      background: rgba(90,162,255,.18);
+      border-color: rgba(90,162,255,.45);
+    }
+    .btn.primary:hover{
+      background: rgba(90,162,255,.26);
+      border-color: rgba(90,162,255,.65);
     }
     .btn.ghost{
       background: transparent;
-      border-color: rgba(169,180,208,.25);
-      color: var(--muted);
+    }
+    .btn.danger{
+      background: rgba(251,113,133,.12);
+      border-color: rgba(251,113,133,.40);
     }
     .btn:disabled{
-      opacity:.45;
+      opacity:.55;
       cursor:not-allowed;
-      transform:none;
     }
 
     .feedback{
-      margin-top:12px;
-      padding:12px 12px;
-      border-radius: 12px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.02);
-      font-size: 14px;
-      display:none;
+      margin-top: 10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.14);
+      min-height: 46px;
     }
-    .feedback.ok{border-color: rgba(65,209,124,.35); background: rgba(65,209,124,.08)}
-    .feedback.bad{border-color: rgba(255,90,111,.35); background: rgba(255,90,111,.08)}
-    .feedback.warn{border-color: rgba(255,209,102,.35); background: rgba(255,209,102,.08)}
-    .hint{
-      margin-top:10px;
-      padding:12px 12px;
-      border-radius: 12px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.02);
+    .feedback.good{ border-color: rgba(45,212,191,.45); }
+    .feedback.bad{ border-color: rgba(251,113,133,.45); }
+    .feedback.warn{ border-color: rgba(251,191,36,.45); }
+    .feedback .small{
       color: var(--muted);
       font-size: 13px;
-      display:none;
+      margin-top: 6px;
     }
 
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace}
+    .explain{
+      margin-top: 12px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.14);
+    }
+    .explainTitle{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin: 0 0 8px;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .explainText{
+      margin:0;
+      color: var(--muted);
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
 
-    .stats{
+    .statGrid{
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap:10px;
-      margin-top:10px;
+      gap: 10px;
+      margin-top: 10px;
     }
     .stat{
-      padding:12px;
-      border:1px solid var(--line);
+      padding: 12px;
       border-radius: 14px;
-      background: rgba(255,255,255,.02);
+      background: rgba(0,0,0,.14);
+      border: 1px solid rgba(255,255,255,.10);
     }
-    .stat .k{color:var(--muted); font-size:12px}
-    .stat .v{font-size:20px; margin-top:4px}
-
-    .progress{
-      margin-top:10px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.02);
-      border-radius: 999px;
-      overflow:hidden;
-      height: 12px;
-    }
-    .bar{
-      height:100%;
-      width:0%;
-      background: linear-gradient(90deg, rgba(90,167,255,.25), rgba(65,209,124,.35));
-      transition: width .2s ease;
-    }
-    .small{
-      color:var(--muted);
-      font-size:12px;
-      margin-top:10px;
-    }
-    .kbd{
-      display:inline-block;
-      border:1px solid rgba(169,180,208,.35);
-      border-bottom-color: rgba(169,180,208,.2);
-      background: rgba(255,255,255,.03);
-      padding:2px 7px;
-      border-radius: 8px;
+    .stat .k{
       font-size: 12px;
       color: var(--muted);
-      margin:0 2px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+    .stat .v{
+      font-size: 20px;
+      margin-top: 4px;
+      letter-spacing: .2px;
     }
 
-    /* Modal */
-    .modalWrap{
-      position:fixed;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
-      background: rgba(0,0,0,.55);
-      z-index: 50;
+    .progressWrap{
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.14);
+      border: 1px solid rgba(255,255,255,.10);
     }
-    .modal{
-      width:min(720px, 100%);
-      border-radius: 18px;
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(16,26,45,.98), rgba(11,18,32,.98));
-      box-shadow: var(--shadow);
-      padding:16px;
+    .progressTop{
+      display:flex;
+      justify-content:space-between;
+      gap: 10px;
+      align-items:baseline;
+      margin-bottom: 8px;
     }
-    .modal h2{
-      margin:0 0 8px 0;
-      font-size:18px;
-    }
-    .modal p{margin:8px 0; color: var(--text)}
-    .modal .sub{margin-top:0}
-    .modal .footer{
-      display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap;
-      margin-top:12px;
-    }
-    .hr{height:1px; background: rgba(34,49,83,.9); margin:12px 0}
-  </style>
-</head>
-
-<body>
-<div class="wrap">
-  <div class="top">
-    <div>
-      <h1>Тренажёр округления (ОГЭ)</h1>
-      <div class="sub">Блок из 10 заданий: делаем быстро и без лишней драмы. Подсказка после 1 ошибки, решение — после 2.</div>
-    </div>
-    <div class="sub"><a href="index.html">← На главную</a></div>
-  </div>
-
-  <div class="grid">
-    <!-- LEFT -->
-    <div class="card">
-      <div class="controls">
-        <div>
-          <label for="mode">Режим тренировки</label>
-          <select id="mode">
-            <option value="custom">По выбранному разряду</option>
-            <option value="ogeInt">ОГЭ: случайный разряд (целые)</option>
-            <option value="decimals">Десятичные: случайный разряд</option>
-            <option value="mixed">Смешанный (целые + десятичные)</option>
-            <option value="easy">Лёгкий (десятки/сотни, числа небольшие)</option>
-          </select>
-        </div>
-        <div>
-          <label for="place">Округлять до</label>
-          <select id="place"></select>
-        </div>
-      </div>
-
-      <div class="taskline">
-        <div class="title">
-          <div class="t">
-            Округли <span id="num" class="mono"></span> до <span id="placeLabel"></span>.
-          </div>
-          <span class="pill" id="taskCounter">Задание 1/10</span>
-        </div>
-        <div class="sub" style="margin-top:6px" id="miniInfo">Подсказка: смотрим на следующий разряд справа.</div>
-      </div>
-
-      <div class="row">
-        <div class="grow">
-          <label for="answer">Твой ответ</label>
-          <input id="answer" type="text" inputmode="decimal" autocomplete="off" placeholder="Например: 12 300 или 12 345,6" />
-        </div>
-        <button class="btn ghost" id="btnClear">Очистить</button>
-        <button class="btn primary" id="btnCheck">Проверить <span class="sub">(Enter)</span></button>
-        <button class="btn" id="btnNext" disabled>Следующее <span class="sub">(Ctrl+Enter)</span></button>
-        <button class="btn ghost" id="btnRule">Напомнить правило</button>
-      </div>
-
-      <div id="feedback" class="feedback"></div>
-      <div id="solution" class="hint"></div>
-
-      <div class="small" style="margin-top:12px">
-        Ввод: можно с пробелами, с запятой или точкой. Примеры: <span class="mono">12 345,6</span> / <span class="mono">12345.6</span> / <span class="mono">-1 250</span>
-      </div>
-    </div>
-
-    <!-- RIGHT -->
-    <div class="card">
-      <div class="sub">Статистика</div>
-
-      <div class="stats">
-        <div class="stat">
-          <div class="k">Правильно (всего)</div>
-          <div class="v" id="stOk">0</div>
-        </div>
-        <div class="stat">
-          <div class="k">Всего (всего)</div>
-          <div class="v" id="stAll">0</div>
-        </div>
-        <div class="stat">
-          <div class="k">Серия</div>
-          <div class="v" id="stStreak">0</div>
-        </div>
-        <div class="stat">
-          <div class="k">Лучшая серия</div>
-          <div class="v" id="stBest">0</div>
-        </div>
-      </div>
-
-      <div class="small" style="margin-top:12px">
-        Блок: <b><span id="blkOk">0</span>/<span id="blkAll">0</span></b> (цель — 10 заданий)
-      </div>
-      <div class="progress" aria-label="Прогресс блока">
-        <div class="bar" id="bar"></div>
-      </div>
-
-      <div class="row" style="margin-top:10px">
-        <button class="btn ghost" id="btnResetBlock">Сбросить блок</button>
-        <button class="btn ghost" id="btnResetAll">Сбросить всё</button>
-      </div>
-
-      <div class="hr"></div>
-
-      <div class="sub">Как это пригодится (ОГЭ)</div>
-      <div class="small">
-        1) Быстрая проверка “похоже ли на правду”: округлил — прикинул — сравнил.<br/>
-        2) При делении можно прикинуть первую цифру частного: например, <span class="mono">473 : 8</span> ≈ <span class="mono">480 : 8 = 60</span>.<br/>
-        3) В задачах на проценты и оценки — помогает не утонуть в больших числах.
-      </div>
-
-      <div class="small" style="margin-top:12px">
-        Горячие клавиши: <span class="kbd">Enter</span> — проверить, <span class="kbd">Ctrl</span> + <span class="kbd">Enter</span> — следующее
-      </div>
-    </div>
-  </div>
-
-  <div class="small" style="margin-top:14px">
-    Версия: rounding.html v3 (статичный, без сервера). Статистика хранится в браузере (localStorage).
-  </div>
-</div>
-
-<!-- RULE MODAL -->
-<div class="modalWrap" id="ruleModal">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ruleTitle">
-    <h2 id="ruleTitle">Правило округления (очень коротко)</h2>
-    <div class="sub">Смотрим на цифру справа от того разряда, до которого округляем.</div>
-
-    <div class="hr"></div>
-
-    <p>Если справа <b>5–9</b> → нужный разряд <b>увеличиваем на 1</b>.</p>
-    <p>Если справа <b>0–4</b> → нужный разряд <b>оставляем</b>.</p>
-    <p>Все цифры правее заменяем нулями (для целых) или отбрасываем (для десятичных).</p>
-    <p class="sub">Для отрицательных чисел правило то же: <span class="mono">-145</span> до десятков → <span class="mono">-150</span>.</p>
-
-    <div class="hr"></div>
-
-    <p><b>Пример:</b> <span class="mono">473</span> до десятков → смотрим на единицы (3) → 3 &lt; 5 → <span class="mono">470</span>.</p>
-
-    <div class="footer">
-      <button class="btn primary" id="btnCloseRule">Понятно</button>
-    </div>
-  </div>
-</div>
-
-<script>
-(() => {
-  // =======================
-  // 1) BigInt рациональные
-  // =======================
-  const pow10 = (n) => 10n ** BigInt(n);
-
-  const simplifyPow10 = (num, den) => {
-    let n = num, d = den;
-    let sign = 1n;
-    if (n < 0n) { sign = -1n; n = -n; }
-    while (d > 1n && (d % 10n === 0n) && (n % 10n === 0n)) {
-      n /= 10n;
-      d /= 10n;
-    }
-    return { num: sign * n, den: d };
-  };
-
-  const parseToRational = (s) => {
-    if (!s) return null;
-    let t = String(s).trim();
-    if (!t) return null;
-
-    // пробелы внутри числа разрешаем, запятая = точка
-    t = t.replace(/\s+/g, '');
-    t = t.replace(',', '.');
-
-    if (!/^[-+]?\d+(\.\d+)?$/.test(t)) return null;
-
-    let sign = 1n;
-    if (t[0] === '-') { sign = -1n; t = t.slice(1); }
-    if (t[0] === '+') { t = t.slice(1); }
-
-    const parts = t.split('.');
-    const intPart = parts[0] || '0';
-    const fracPart = parts[1] || '';
-    const fracLen = fracPart.length;
-
-    const digits = (intPart + fracPart).replace(/^0+(?=\d)/, '');
-    const den = pow10(fracLen);
-    let num = BigInt(digits || '0');
-    num *= sign;
-
-    return simplifyPow10(num, den);
-  };
-
-  const addSpaces = (intStr) => {
-    let s = intStr;
-    let sign = '';
-    if (s[0] === '-') { sign = '-'; s = s.slice(1); }
-    s = s.replace(/^0+(?=\d)/, '');
-    const out = s.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    return sign + out;
-  };
-
-  const formatRational = (rat) => {
-    const { num, den } = rat;
-    if (den === 1n) return addSpaces(num.toString());
-    let n = num;
-    let sign = '';
-    if (n < 0n) { sign = '-'; n = -n; }
-    const denPow = String(den).length - 1; // 10^k
-    let s = n.toString();
-    if (s.length <= denPow) s = '0'.repeat(denPow - s.length + 1) + s;
-    const i = s.slice(0, s.length - denPow);
-    const f = s.slice(s.length - denPow);
-    return sign + addSpaces(i) + '.' + f;
-  };
-
-  // школьное правило: 0.5 -> вверх по модулю (от нуля)
-  const roundHalfAwayFromZero = (N, D) => {
-    if (D <= 0n) throw new Error('Denominator must be positive');
-    if (N === 0n) return 0n;
-    const sign = (N < 0n) ? -1n : 1n;
-    const a = (N < 0n) ? -N : N;
-    let q = a / D;
-    const r = a % D;
-    if (2n * r >= D) q += 1n;
-    return sign * q;
-  };
-
-  // округление: value ≈ k * place
-  const toPlace = (valueRat, placeRat) => {
-    const N = valueRat.num * placeRat.den;
-    const D = valueRat.den * placeRat.num;
-    const k = roundHalfAwayFromZero(N, D);
-    return simplifyPow10(k * placeRat.num, placeRat.den);
-  };
-
-  const floorDiv = (A, B) => A / B; // A>=0 B>0
-
-  const digitAt = (absValueRat, stepRat) => {
-    // digit = floor(absValue / step) % 10
-    const N = absValueRat.num * stepRat.den;
-    const D = absValueRat.den * stepRat.num;
-    const q = floorDiv(N, D);
-    return Number(q % 10n);
-  };
-
-  // =======================
-  // 2) Разряды
-  // =======================
-  const PLACE_ITEMS = [
-    { id: 'p:6', label: 'миллионов', pretty: '1 000 000' },
-    { id: 'p:5', label: 'сотен тысяч', pretty: '100 000' },
-    { id: 'p:4', label: 'десятков тысяч', pretty: '10 000' },
-    { id: 'p:3', label: 'тысяч', pretty: '1 000' },
-    { id: 'p:2', label: 'сотен', pretty: '100' },
-    { id: 'p:1', label: 'десятков', pretty: '10' },
-    { id: 'p:0', label: 'единиц', pretty: '1' },
-    { id: 'd:1', label: 'десятых', pretty: '0.1' },
-    { id: 'd:2', label: 'сотых', pretty: '0.01' },
-    { id: 'd:3', label: 'тысячных', pretty: '0.001' },
-  ];
-
-  const placeToObj = (id) => {
-    const [kind, nStr] = id.split(':');
-    const n = Number(nStr);
-    if (kind === 'p') return { kind, n, rat: { num: pow10(n), den: 1n } };
-    if (kind === 'd') return { kind, n, rat: { num: 1n, den: pow10(n) } };
-    throw new Error('Bad place id');
-  };
-
-  const nextStepRat = (placeObj) => {
-    // "следующий разряд справа"
-    if (placeObj.kind === 'p') {
-      if (placeObj.n > 0) return { num: pow10(placeObj.n - 1), den: 1n };
-      return { num: 1n, den: 10n }; // единицы -> десятые
-    } else {
-      return { num: 1n, den: pow10(placeObj.n + 1) }; // десятые->сотые->тысячные...
-    }
-  };
-
-  // =======================
-  // 3) Генерация примера
-  // =======================
-  const rndInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-
-  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
-  const makeRandomValue = (mode, placeObj) => {
-    // иногда отрицательные (для ОГЭ можно очень редко, чтобы не мешало)
-    const negChance = (mode === 'easy') ? 0.0 : 0.15;
-    const sign = (Math.random() < negChance) ? -1n : 1n;
-
-    const makeInt = (maxExclusive) => {
-      let x = rndInt(0, maxExclusive - 1);
-      if (x === 0) x = rndInt(1, maxExclusive - 1);
-      return simplifyPow10(sign * BigInt(x), 1n);
-    };
-
-    const makeDecimal = (intMax, fracDigits) => {
-      const den = pow10(fracDigits);
-      const intPart = rndInt(0, intMax);
-      const fracPart = rndInt(0, (10 ** fracDigits) - 1);
-      const numAbs = BigInt(intPart) * den + BigInt(fracPart);
-      return simplifyPow10(sign * numAbs, den);
-    };
-
-    if (mode === 'easy') {
-      // небольшие целые
-      return makeInt(2000);
-    }
-
-    if (mode === 'decimals') {
-      // для десятичного режима делаем дроби с запасом разрядов
-      const target = (placeObj.kind === 'd') ? placeObj.n : 1;
-      const digits = Math.min(6, Math.max(2, target + rndInt(1, 3)));
-      return makeDecimal(9999, digits);
-    }
-
-    if (mode === 'mixed') {
-      // 60% целые, 40% десятичные
-      if (Math.random() < 0.6) {
-        const max = 10 ** 7; // до миллионов-ish
-        return makeInt(max);
-      }
-      const digits = rndInt(2, 5);
-      return makeDecimal(99999, digits);
-    }
-
-    // ogeInt или custom -> под разряд делаем адекватный масштаб
-    if (placeObj.kind === 'p') {
-      // чтобы разряд имел смысл, делаем число примерно на 2-3 разряда "шире"
-      const pow = Math.min(9, Math.max(3, placeObj.n + 3));
-      const max = 10 ** pow;
-      return makeInt(max);
-    } else {
-      // десятичные даже в custom возможны
-      const target = placeObj.n;
-      const digits = Math.min(6, Math.max(2, target + rndInt(1, 3)));
-      return makeDecimal(99999, digits);
-    }
-  };
-
-  const pickPlaceByMode = (mode, currentPlaceId) => {
-    const ints = PLACE_ITEMS.filter(x => x.id.startsWith('p:'));
-    const decs = PLACE_ITEMS.filter(x => x.id.startsWith('d:'));
-
-    if (mode === 'custom') return currentPlaceId;
-    if (mode === 'ogeInt') return pick(ints).id;
-    if (mode === 'decimals') return pick(decs).id;
-    if (mode === 'mixed') return (Math.random() < 0.65) ? pick(ints).id : pick(decs).id;
-    if (mode === 'easy') return (Math.random() < 0.6) ? 'p:1' : 'p:2'; // десятки/сотни
-    return currentPlaceId;
-  };
-
-  // =======================
-  // 4) Объяснения/подсказки
-  // =======================
-  const placeText = (placeId) => {
-    const item = PLACE_ITEMS.find(x => x.id === placeId);
-    return item ? item.label : 'нужного разряда';
-  };
-
-  const buildHint = (valueRat, placeObj) => {
-    const abs = { num: valueRat.num < 0n ? -valueRat.num : valueRat.num, den: valueRat.den };
-    const step = nextStepRat(placeObj);
-    const d = digitAt(abs, step);
-
-    const where = (placeObj.kind === 'p')
-      ? (placeObj.n === 0 ? 'на десятые (после запятой)' :
-         placeObj.n === 1 ? 'на единицы' :
-         placeObj.n === 2 ? 'на десятки' :
-         placeObj.n === 3 ? 'на сотни' :
-         placeObj.n === 4 ? 'на тысячи' :
-         placeObj.n === 5 ? 'на десятки тысяч' : 'на сотни тысяч')
-      : (placeObj.n === 1 ? 'на сотые' : placeObj.n === 2 ? 'на тысячные' : 'на следующий разряд');
-
-    const rule = (d >= 5)
-      ? `Там цифра <b>${d}</b> (это 5–9) → округляем “вверх” по этому разряду.`
-      : `Там цифра <b>${d}</b> (это 0–4) → округляем “вниз” (разряд не увеличиваем).`;
-
-    return `Подсказка: округляем до <b>${placeText(placeObj.kind + ':' + placeObj.n)}</b>. Смотрим ${where}. ${rule}`;
-  };
-
-  const buildSolution = (valueRat, placeObj, roundedRat) => {
-    const abs = { num: valueRat.num < 0n ? -valueRat.num : valueRat.num, den: valueRat.den };
-    const step = nextStepRat(placeObj);
-    const d = digitAt(abs, step);
-
-    const orig = formatRational(valueRat).replace(/\./g, ',');
-    const ans  = formatRational(roundedRat).replace(/\./g, ',');
-
-    const ruleLine = (d >= 5)
-      ? `Следующая цифра = ${d} (5–9) → увеличиваем нужный разряд на 1.`
-      : `Следующая цифра = ${d} (0–4) → нужный разряд оставляем как есть.`;
-
-    const negLine = (valueRat.num < 0n)
-      ? `Число отрицательное — правило то же, знак сохраняется.`
-      : '';
-
-    return `
-<b>Решение</b><br/>
-Округляем <span class="mono">${orig}</span> до <b>${placeText(placeObj.kind + ':' + placeObj.n)}</b>.<br/>
-Смотрим на следующий разряд справа.<br/>
-${ruleLine}<br/>
-Дальше: всё правее разряда округления превращаем в нули (для целых) или отбрасываем (для десятичных).<br/>
-${negLine ? (negLine + '<br/>') : ''}
-<b>Ответ:</b> <span class="mono">${ans}</span>
-    `.trim();
-  };
-
-  // =======================
-  // 5) Статистика (localStorage)
-  // =======================
-  const LS_KEY = 'rounding_v3_stats';
-
-  const loadStats = () => {
-    try{
-      const raw = localStorage.getItem(LS_KEY);
-      if(!raw) return { ok:0, all:0, streak:0, best:0, blkOk:0, blkAll:0, blkIndex:1 };
-      const s = JSON.parse(raw);
-      return {
-        ok:+s.ok||0, all:+s.all||0, streak:+s.streak||0, best:+s.best||0,
-        blkOk:+s.blkOk||0, blkAll:+s.blkAll||0, blkIndex:+s.blkIndex||1
-      };
-    }catch{
-      return { ok:0, all:0, streak:0, best:0, blkOk:0, blkAll:0, blkIndex:1 };
-    }
-  };
-  const saveStats = () => localStorage.setItem(LS_KEY, JSON.stringify(stats));
-
-  let stats = loadStats();
-
-  // =======================
-  // 6) UI + логика задания
-  // =======================
-  const elMode = document.getElementById('mode');
-  const elPlace = document.getElementById('place');
-  const elNum = document.getElementById('num');
-  const elPlaceLabel = document.getElementById('placeLabel');
-  const elMiniInfo = document.getElementById('miniInfo');
-
-  const elAns = document.getElementById('answer');
-  const elFb = document.getElementById('feedback');
-  const elSol = document.getElementById('solution');
-
-  const elTaskCounter = document.getElementById('taskCounter');
-  const elStOk = document.getElementById('stOk');
-  const elStAll = document.getElementById('stAll');
-  const elStStreak = document.getElementById('stStreak');
-  const elStBest = document.getElementById('stBest');
-
-  const elBlkOk = document.getElementById('blkOk');
-  const elBlkAll = document.getElementById('blkAll');
-  const elBar = document.getElementById('bar');
-
-  const btnClear = document.getElementById('btnClear');
-  const btnCheck = document.getElementById('btnCheck');
-  const btnNext = document.getElementById('btnNext');
-  const btnRule = document.getElementById('btnRule');
-  const btnResetBlock = document.getElementById('btnResetBlock');
-  const btnResetAll = document.getElementById('btnResetAll');
-
-  // rule modal
-  const ruleModal = document.getElementById('ruleModal');
-  const btnCloseRule = document.getElementById('btnCloseRule');
-
-  // init place dropdown
-  PLACE_ITEMS.forEach(p => {
-    const opt = document.createElement('option');
-    opt.value = p.id;
-    opt.textContent = `${p.label} (${p.pretty})`;
-    elPlace.appendChild(opt);
-  });
-  elPlace.value = 'p:2'; // сотни (удобный дефолт)
-
-  // состояние текущей задачи
-  let current = null; // { valueRat, placeObj, placeId, correctRat }
-  let attemptsForThisTask = 0;
-  let checkedThisTask = false;
-
-  const renderStats = () => {
-    elStOk.textContent = stats.ok;
-    elStAll.textContent = stats.all;
-    elStStreak.textContent = stats.streak;
-    elStBest.textContent = stats.best;
-
-    elBlkOk.textContent = stats.blkOk;
-    elBlkAll.textContent = stats.blkAll;
-
-    // прогресс-бар и счётчик задач блока
-    const idx = Math.min(10, Math.max(1, stats.blkIndex));
-    elTaskCounter.textContent = `Задание ${idx}/10`;
-    elBar.style.width = ((idx - 1) / 10 * 100) + '%';
-  };
-
-  const setFeedback = (type, html) => {
-    elFb.style.display = 'block';
-    elFb.classList.remove('ok','bad','warn');
-    if(type) elFb.classList.add(type);
-    elFb.innerHTML = html;
-  };
-  const hideFeedback = () => {
-    elFb.style.display = 'none';
-    elFb.classList.remove('ok','bad','warn');
-    elFb.innerHTML = '';
-  };
-
-  const showSolution = (html) => {
-    elSol.style.display = 'block';
-    elSol.innerHTML = html;
-  };
-  const hideSolution = () => {
-    elSol.style.display = 'none';
-    elSol.innerHTML = '';
-  };
-
-  const setCheckedState = (isChecked) => {
-    checkedThisTask = isChecked;
-    btnCheck.disabled = isChecked;     // после проверки проверять повторно не надо
-    btnNext.disabled = !isChecked;     // следующее доступно только после проверки
-    elAns.disabled = isChecked;
-  };
-
-  const resetTaskState = () => {
-    attemptsForThisTask = 0;
-    setCheckedState(false);
-    elAns.disabled = false;
-    elAns.value = '';
-    elAns.focus();
-    hideFeedback();
-    hideSolution();
-  };
-
-  const startNewBlockIfNeeded = () => {
-    if (stats.blkIndex > 10) {
-      // новый блок
-      stats.blkIndex = 1;
-      stats.blkOk = 0;
-      stats.blkAll = 0;
-    }
-  };
-
-  const newTask = () => {
-    startNewBlockIfNeeded();
-
-    const mode = elMode.value;
-    const placeId = pickPlaceByMode(mode, elPlace.value);
-    elPlace.value = placeId; // синхронизируем UI
-
-    const placeObj = placeToObj(placeId);
-    const valueRat = makeRandomValue(mode, placeObj);
-    const correct = toPlace(valueRat, placeObj.rat);
-
-    current = { valueRat, placeObj, placeId, correctRat: correct };
-
-    elNum.textContent = formatRational(valueRat).replace(/\./g, ',');
-    elPlaceLabel.textContent = placeText(placeId);
-
-    elMiniInfo.innerHTML = (mode === 'easy')
-      ? 'Режим «Лёгкий»: тренируем основу — десятки и сотни.'
-      : 'Подсказка: смотрим на следующий разряд справа (0–4 вниз, 5–9 вверх).';
-
-    resetTaskState();
-    renderStats();
-  };
-
-  const check = () => {
-    if (!current || checkedThisTask) return;
-
-    const user = parseToRational(elAns.value);
-    if (!user) {
-      setFeedback('warn', '⚠️ Введите число. Пример: <span class="mono">12345</span> или <span class="mono">12 345,6</span>.');
-      return;
-    }
-
-    attemptsForThisTask += 1;
-
-    const u = simplifyPow10(user.num, user.den);
-    const c = simplifyPow10(current.correctRat.num, current.correctRat.den);
-
-    const ok = (u.num === c.num && u.den === c.den);
-
-    if (ok) {
-      stats.ok += 1;
-      stats.all += 1;
-      stats.streak += 1;
-      stats.best = Math.max(stats.best, stats.streak);
-
-      stats.blkOk += 1;
-      stats.blkAll += 1;
-
-      setFeedback('ok', `✅ Верно! Ответ: <b>${formatRational(c).replace(/\./g, ',')}</b>`);
-      hideSolution();
-      setCheckedState(true);
-    } else {
-      // неверно
-      stats.all += 1;
-      stats.streak = 0;
-
-      stats.blkAll += 1;
-
-      const hint = buildHint(current.valueRat, current.placeObj);
-      const sol  = buildSolution(current.valueRat, current.placeObj, c);
-
-      if (attemptsForThisTask === 1) {
-        setFeedback('bad', `❌ Пока нет. ${hint}`);
-        hideSolution();
-      } else {
-        setFeedback('bad', `❌ Неверно. Показываю решение (2 попытки). Правильный ответ: <b>${formatRational(c).replace(/\./g, ',')}</b>`);
-        showSolution(sol);
-        setCheckedState(true); // после 2 ошибок фиксируем и идём дальше
-      }
-    }
-
-    // сдвигаем прогресс по блоку (задание считается выполненным после проверки/2 попыток)
-    // Важно: в статистике блока мы уже увеличили blkAll внутри ok/else.
-    // Переход к следующему номеру задания блока делаем при фиксации задания:
-    if (ok || attemptsForThisTask >= 2) {
-      stats.blkIndex += 1;
-    }
-
-    saveStats();
-    renderStats();
-  };
-
-  // =======================
-  // 7) кнопки и события
-  // =======================
-  btnClear.addEventListener('click', () => {
-    elAns.value = '';
-    elAns.focus();
-  });
-
-  btnCheck.addEventListener('click', check);
-
-  btnNext.addEventListener('click', () => {
-    // если блок закончился (после 10 задания), следующее начнёт новый блок
-    newTask();
-  });
-
-  elMode.addEventListener('change', () => {
-    // в custom место можно выбирать вручную, в остальных — авто, но пусть остаётся видимым
-    newTask();
-  });
-
-  elPlace.addEventListener('change', () => {
-    if (elMode.value === 'custom') newTask();
-  });
-
-  btnResetBlock.addEventListener('click', () => {
-    stats.blkOk = 0;
-    stats.blkAll = 0;
-    stats.blkIndex = 1;
-    saveStats();
-    newTask();
-  });
-
-  btnResetAll.addEventListener('click', () => {
-    stats = { ok:0, all:0, streak:0, best:0, blkOk:0, blkAll:0, blkIndex:1 };
-    saveStats();
-    newTask();
-  });
-
-  // hotkeys
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault();
-      if (!btnNext.disabled) newTask();
-      return;
-    }
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      check();
-    }
-  });
-
-  // rule modal
-  const openRule = () => { ruleModal.style.display = 'flex'; };
-  const closeRule = () => { ruleModal.style.display = 'none'; };
-
-  btnRule.addEventListener('click', openRule);
-  btnCloseRule.addEventListener('click', closeRule);
-  ruleModal.addEventListener('click', (e) => {
-    if (e.target === ruleModal) closeRule();
-  });
-
-  // старт
-  renderStats();
-  newTask();
-})();
-</script>
-</body>
-</html>
 
