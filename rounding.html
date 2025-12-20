@@ -258,4 +258,912 @@
       align-items:baseline;
       margin-bottom: 8px;
     }
+    .progressTop .k{
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .bar{
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .bar > div{
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(90,162,255,.95), rgba(45,212,191,.85));
+      border-radius: 999px;
+      transition: width .25s ease;
+    }
 
+    details{
+      margin-top: 12px;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      background: rgba(0,0,0,.14);
+      padding: 10px 12px;
+    }
+    details summary{
+      cursor:pointer;
+      color: var(--text);
+      font-size: 14px;
+    }
+    details .inside{
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .kbd{
+      display:inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      font-size: 12px;
+      color: var(--text);
+      margin: 0 4px;
+    }
+
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px){
+      select, input[type="text"]{ min-width: 100%; width:100%; }
+      .btn{ width: 100%; }
+      .answerRow{ align-items:stretch; }
+      .toplink{ width: 100%; text-align:center; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Тренажёр округления (ОГЭ-скоропомощь)</h1>
+        <div class="subtitle">Округляем до миллионов… единиц… десятых, сотых, тысячных и дальше.</div>
+      </div>
+      <a class="toplink" href="index.html">← На главную</a>
+    </header>
+
+    <div class="grid">
+      <!-- LEFT -->
+      <section class="card" aria-label="Тренировка">
+        <h2>Задание</h2>
+
+        <div class="row">
+          <label>
+            Округлять до
+            <select id="placeSelect"></select>
+          </label>
+
+          <label>
+            Какие числа
+            <select id="kindSelect">
+              <option value="auto">Авто (под разряд)</option>
+              <option value="int">Только целые</option>
+              <option value="dec">Только десятичные</option>
+            </select>
+          </label>
+
+          <label>
+            Отрицательные
+            <select id="negSelect">
+              <option value="no">Нет</option>
+              <option value="sometimes">Иногда</option>
+              <option value="yes">Да</option>
+            </select>
+          </label>
+
+          <label>
+            Сессия
+            <select id="sessionSelect">
+              <option value="10">10 заданий</option>
+              <option value="15">15 заданий</option>
+              <option value="20">20 заданий</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="taskBox" role="group" aria-label="Текущее задание">
+          <p class="taskLine" id="taskLine">—</p>
+          <p class="taskHint" id="taskHint">Подсказка: вводи как удобно — с пробелами, с запятой или точкой: <b>12 345,6</b> / <b>12345.6</b>.</p>
+        </div>
+
+        <div class="answerRow">
+          <label style="flex:1; min-width: 260px;">
+            Твой ответ
+            <input
+              id="answerInput"
+              type="text"
+              inputmode="decimal"
+              autocomplete="off"
+              placeholder="Например: 12 300"
+              aria-label="Поле ввода ответа"
+            />
+          </label>
+
+          <button class="btn primary" id="checkBtn" type="button">Проверить <span class="small">(Enter)</span></button>
+          <button class="btn" id="newBtn" type="button">Новый пример <span class="small">(Ctrl+Enter)</span></button>
+          <button class="btn ghost" id="solveBtn" type="button">Показать решение</button>
+          <button class="btn danger" id="resetBtn" type="button">Сбросить статистику</button>
+        </div>
+
+        <div id="feedback" class="feedback" aria-live="polite"></div>
+
+        <div class="explain" aria-label="Разбор">
+          <div class="explainTitle">
+            <b>Разбор шага округления</b>
+            <span style="color:var(--muted); font-size:12px;" id="attemptsInfo">Попыток: 0</span>
+          </div>
+          <p class="explainText" id="explainText">—</p>
+        </div>
+
+        <details>
+          <summary>Правило округления (напомнить)</summary>
+          <div class="inside">
+            <ol style="margin:8px 0 0 18px;">
+              <li>Определи разряд, <b>до которого</b> округляешь (десятки, сотни, тысячные…).</li>
+              <li>Посмотри на цифру <b>справа</b> от нужного разряда:
+                <ul style="margin:6px 0 0 18px;">
+                  <li>если <b>0–4</b> — оставляем разряд как есть;</li>
+                  <li>если <b>5–9</b> — увеличиваем нужный разряд на 1.</li>
+                </ul>
+              </li>
+              <li>Все цифры правее заменяем нулями (или отбрасываем лишние после запятой).</li>
+            </ol>
+            <div style="margin-top:10px; color:var(--muted);">
+              Быстрый смысл: <b>смотри на следующий разряд</b>.
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>Как это пригодится в ОГЭ (оценка результата)</summary>
+          <div class="inside">
+            При делении и прикидке удобно округлять:
+            <br><br>
+            Пример: <b>473 : 8</b>. Округлим 473 до <b>480</b> → <b>480 : 8 = 60</b>.  
+            Это помогает быстро подобрать первую цифру частного и проверить “похожесть” ответа.
+          </div>
+        </details>
+      </section>
+
+      <!-- RIGHT -->
+      <aside class="card" aria-label="Статистика">
+        <h2>Статистика</h2>
+
+        <div class="statGrid">
+          <div class="stat">
+            <div class="k">Правильно</div>
+            <div class="v" id="statCorrect">0</div>
+          </div>
+          <div class="stat">
+            <div class="k">Всего</div>
+            <div class="v" id="statTotal">0</div>
+          </div>
+          <div class="stat">
+            <div class="k">Серия</div>
+            <div class="v" id="statStreak">0</div>
+          </div>
+          <div class="stat">
+            <div class="k">Лучшая серия</div>
+            <div class="v" id="statBest">0</div>
+          </div>
+        </div>
+
+        <div class="progressWrap">
+          <div class="progressTop">
+            <div>
+              <div class="k">Сессия</div>
+              <div style="font-size:16px; margin-top:3px;" id="sessionLabel">Задание 1 из 10</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="k">Выполнено</div>
+              <div style="font-size:16px; margin-top:3px;" id="sessionDoneLabel">0</div>
+            </div>
+          </div>
+          <div class="bar" aria-label="Прогресс сессии">
+            <div id="sessionBar"></div>
+          </div>
+
+          <div style="margin-top:12px; color:var(--muted); font-size:13px;">
+            Горячие клавиши:
+            <span class="kbd">Enter</span> — проверить
+            <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span> — новый пример
+          </div>
+        </div>
+
+        <div style="margin-top:12px; color:var(--muted); font-size:13px;">
+          Совет: если ученик “плывёт”, включайте <b>авто-подсказку</b>: два промаха подряд → показываем разбор.
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    // =========================
+    //  Настройки и состояние
+    // =========================
+    const LS_STATS_KEY = "rounding_stats_v2";
+    const LS_SETTINGS_KEY = "rounding_settings_v2";
+
+    const places = [
+      { exp: 6,  label: "миллионов (1 000 000)" },
+      { exp: 5,  label: "сотен тысяч (100 000)" },
+      { exp: 4,  label: "десятков тысяч (10 000)" },
+      { exp: 3,  label: "тысяч (1 000)" },
+      { exp: 2,  label: "сотен (100)" },
+      { exp: 1,  label: "десятков (10)" },
+      { exp: 0,  label: "единиц (1)" },
+      { exp: -1, label: "десятых (0,1)" },
+      { exp: -2, label: "сотых (0,01)" },
+      { exp: -3, label: "тысячных (0,001)" },
+      { exp: -4, label: "десятитысячных (0,0001)" },
+      { exp: -5, label: "стотысячных (0,00001)" },
+      { exp: -6, label: "миллионных (0,000001)" }
+    ];
+
+    const el = (id) => document.getElementById(id);
+
+    const placeSelect = el("placeSelect");
+    const kindSelect = el("kindSelect");
+    const negSelect = el("negSelect");
+    const sessionSelect = el("sessionSelect");
+
+    const taskLine = el("taskLine");
+    const answerInput = el("answerInput");
+
+    const checkBtn = el("checkBtn");
+    const newBtn = el("newBtn");
+    const solveBtn = el("solveBtn");
+    const resetBtn = el("resetBtn");
+
+    const feedback = el("feedback");
+    const explainText = el("explainText");
+    const attemptsInfo = el("attemptsInfo");
+
+    const statCorrect = el("statCorrect");
+    const statTotal = el("statTotal");
+    const statStreak = el("statStreak");
+    const statBest = el("statBest");
+
+    const sessionLabel = el("sessionLabel");
+    const sessionDoneLabel = el("sessionDoneLabel");
+    const sessionBar = el("sessionBar");
+
+    let stats = {
+      correct: 0,
+      total: 0,
+      streak: 0,
+      bestStreak: 0
+    };
+
+    let settings = {
+      exp: 0,
+      kind: "auto",
+      neg: "no",
+      sessionLen: 10
+    };
+
+    let current = null; // { displayNumber, normalized, exp, correctDisplay, explanation, nextDigit, targetLabel }
+    let attempts = 0;
+    let solvedThisTask = false;
+
+    // Сессия: считаем, сколько раз нажали "Проверить" (валидных) и закрыли пример
+    let sessionDone = 0;
+    let sessionIndex = 1;
+
+    // =========================
+    //  BigInt-округление без float
+    // =========================
+    function absBigInt(x){ return x < 0n ? -x : x; }
+
+    function pow10BigInt(k){
+      if (k <= 0) return 1n;
+      return BigInt("1" + "0".repeat(k));
+    }
+
+    // Нормализуем ввод: пробелы убираем, запятую -> точка
+    // Разрешаем: -123, 123, 123.45, -0.001, 12 345,6
+    function normalizeNumberString(raw){
+      const s = (raw ?? "").trim().replace(/\s+/g, "").replace(",", ".");
+      return s;
+    }
+
+    function isValidNumberString(s){
+      // целое или десятичное, минус допустим
+      return /^-?\d+(\.\d+)?$/.test(s);
+    }
+
+    function parseToBigIntAndScale(norm){
+      // norm вида -?\d+(\.\d+)?
+      const neg = norm.startsWith("-");
+      const t = neg ? norm.slice(1) : norm;
+
+      const [ip, fp = ""] = t.split(".");
+      const scale = fp.length;
+
+      const digits = (ip === "" ? "0" : ip) + fp;
+      // убираем ведущие нули аккуратно (но оставляем хотя бы один)
+      const safeDigits = digits.replace(/^0+(?=\d)/, "");
+
+      let n = BigInt(safeDigits === "" ? "0" : safeDigits);
+      if (neg) n = -n;
+
+      return { n, scale };
+    }
+
+    // Округление "половина вверх" от нуля (school-friendly)
+    // exp >= 0: до десятков/сотен/...
+    // exp < 0: до десятых/сотых/...
+    function roundScaled(value, exp){
+      const { n, scale } = value;
+
+      if (exp >= 0){
+        // округляем до 10^exp
+        const unitScaled = pow10BigInt(exp + scale); // 10^(exp+scale) в "целых" единицах n
+        if (unitScaled === 0n) return { n: n, scale: 0 };
+
+        let q = n / unitScaled;
+        let r = n % unitScaled;
+
+        if (absBigInt(r) * 2n >= unitScaled){
+          q += (n >= 0n ? 1n : -1n);
+        }
+        const roundedN = q * unitScaled;
+        // результат без десятичной части (scaleOut = 0)
+        const scaleFactor = pow10BigInt(scale);
+        const outInt = roundedN / scaleFactor;
+        return { n: outInt, scale: 0 };
+      } else {
+        const d = -exp; // сколько знаков после запятой хотим оставить
+        if (scale <= d){
+          // уже достаточно "грубо": просто дополним нулями при отображении
+          return { n, scale };
+        }
+        const k = scale - d; // сколько цифр "срезаем"
+        const factor = pow10BigInt(k);
+
+        let q = n / factor;
+        let r = n % factor;
+
+        if (absBigInt(r) * 2n >= factor){
+          q += (n >= 0n ? 1n : -1n);
+        }
+        // теперь q соответствует числу, умноженному на 10^d
+        return { n: q, scale: d };
+      }
+    }
+
+    function formatWithSpaces(intStr){
+      // группировка 12 345 678
+      return intStr.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    }
+
+    function toDisplayString(value, forceScale = null){
+      // value: { n: BigInt, scale: int }
+      // forceScale: если не null, то отображаем ровно столько знаков после запятой
+      let n = value.n;
+      const neg = n < 0n;
+      if (neg) n = -n;
+
+      const s = n.toString();
+      const scale = (forceScale !== null) ? forceScale : value.scale;
+
+      if (scale === 0){
+        const i = formatWithSpaces(s);
+        return (neg ? "-" : "") + i;
+      }
+
+      // гарантируем длину
+      const pad = Math.max(0, scale - s.length + 1);
+      const full = "0".repeat(pad) + s;
+
+      const cut = full.length - scale;
+      const intPart = full.slice(0, cut);
+      const fracPart = full.slice(cut);
+
+      const intNice = formatWithSpaces(intPart === "" ? "0" : intPart);
+      // показываем запятую как в РФ
+      return (neg ? "-" : "") + intNice + "," + fracPart;
+    }
+
+    // Для пояснения найдём "следующую цифру" (на которую смотрим)
+    function getNextDigitInfo(value, exp){
+      // value: {n, scale} после парса (до округления)
+      // Возьмём абсолют, работаем со строкой цифр.
+      let n = value.n;
+      const neg = n < 0n;
+      if (neg) n = -n;
+
+      const digits = n.toString();
+      const scale = value.scale;
+
+      // Представление: digits — это число без точки, scale — сколько цифр после точки
+      // Позиция "нужного разряда" относительно конца строки:
+      // exp>=0: округляем по целым, смотрим на разряд 10^(exp-1) ? проще вычислить индекс "следующей цифры"
+      //
+      // Делать аккуратно так:
+      // Создадим "полную" строку с достаточной длиной, где десятичная точка стоит перед последними scale цифрами.
+      // Нужно определить: какую цифру смотрим (справа от округляемого разряда).
+      //
+      // exp = 0 (единицы) -> смотрим на десятые => это первая цифра дроби (если есть), иначе 0
+      // exp = 1 (десятки) -> смотрим на единицы
+      // exp = -2 (сотые) -> смотрим на тысячные
+      //
+      // Универсально: "смотрим на разряд 10^(exp-1)"? нет, путает с десятичными.
+      // Проще: округляем до 10^exp => смотрим на 10^(exp-1) если exp>0,
+      // а если exp<=0, смотрим на 10^(exp-1) в дробной части.
+      //
+      // Сведём к "позиции относительно десятичной точки":
+      // Округляем до exp => сохраняем все разряды >= exp, а "следующий" — exp-1.
+      // Значит, ищем цифру разряда (exp-1).
+      //
+      // Построим индекс в строке digitsWithPoint.
+      // Пусть decimalIndex — индекс точки (между int и frac) в терминах количества цифр слева.
+      const decimalDigitsLeft = digits.length - scale; // может быть <=0
+
+      // Подготовим строку так, чтобы слева было хотя бы 1 цифра
+      let left = decimalDigitsLeft;
+      let work = digits;
+      if (left <= 0){
+        // число меньше 1: добавим ведущие нули
+        const need = 1 - left;
+        work = "0".repeat(need) + work;
+        left = 1;
+      }
+
+      // Теперь точка после left цифр (work[0..left-1] целая часть)
+      // Разряд 10^k находится на позиции: если k>=0 — это k-й справа от точки в целой части.
+      // А разряд 10^(-m) — это m-й справа от точки в дробной части.
+      //
+      // Нам нужен разряд (exp-1).
+      const lookExp = exp - 1;
+
+      let digit = "0";
+      if (lookExp >= 0){
+        // целая часть: позиция справа: единицы k=0, десятки k=1...
+        // индекс в work целой части: left-1-k
+        const idx = left - 1 - lookExp;
+        digit = (idx >= 0 && idx < work.length) ? work[idx] : "0";
+      } else {
+        // дробная часть: lookExp = -m, m>=1 => m-я цифра после точки
+        const m = -lookExp;
+        const idx = left + (m - 1);
+        digit = (idx >= 0 && idx < work.length) ? work[idx] : "0";
+      }
+
+      return { digit };
+    }
+
+    function placeLabel(exp){
+      const p = places.find(x => x.exp === exp);
+      return p ? p.label : ("10^" + exp);
+    }
+
+    // =========================
+    //  Генерация заданий
+    // =========================
+    function randInt(min, max){
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function shouldBeNegative(mode){
+      if (mode === "no") return false;
+      if (mode === "yes") return true;
+      // sometimes
+      return Math.random() < 0.35;
+    }
+
+    function buildRandomNumber(exp, kind, negMode){
+      // kind: auto/int/dec
+      // exp: целевой разряд округления
+      // Генерируем так, чтобы округление было "не тривиальным" (не всегда уже круглое)
+      let wantDec;
+      if (kind === "auto") wantDec = (exp < 0);
+      else if (kind === "int") wantDec = false;
+      else wantDec = true;
+
+      // Если пользователь выбрал "только целые", но округляет до десятых/сотых — это странно.
+      // Сделаем мягко: всё равно дадим десятичное, иначе тренажёр теряет смысл.
+      if (kind === "int" && exp < 0) wantDec = true;
+
+      const neg = shouldBeNegative(negMode);
+
+      // Подберём масштаб
+      // Целые: от 2–7 знаков, под разряд
+      // Десятичные: целая часть 1–5 знаков + дробь
+      let intDigits;
+      if (exp >= 0){
+        // если округляем до тысяч/миллионов, число должно быть достаточно большим
+        intDigits = Math.max(exp + 1, randInt(exp + 1, Math.min(exp + 4, 8)));
+      } else {
+        intDigits = randInt(1, 5);
+      }
+
+      // дробные знаки
+      let fracDigits = 0;
+      if (wantDec){
+        const need = Math.max(1, Math.max(0, -exp) + 1); // чтобы был "следующий" знак для округления
+        fracDigits = randInt(need, Math.min(need + 3, 10));
+      }
+
+      // генерим цифры
+      let intPart = "";
+      for (let i = 0; i < intDigits; i++){
+        const d = (i === 0) ? randInt(1, 9) : randInt(0, 9);
+        intPart += String(d);
+      }
+
+      let fracPart = "";
+      for (let i = 0; i < fracDigits; i++){
+        fracPart += String(randInt(0, 9));
+      }
+
+      // сделаем число "не кругляком": чтобы справа от нужного разряда была не только 0
+      // Для exp>=0: справа от 10^exp должен быть хоть один не-ноль в младших разрядах
+      if (exp >= 0){
+        const tailLen = exp; // сколько младших разрядов "занулим" при округлении
+        if (tailLen > 0){
+          const tail = intPart.slice(-tailLen);
+          if (/^0+$/.test(tail)){
+            // заменим последнюю цифру хвоста на не-ноль
+            const pos = intPart.length - 1;
+            const newDigit = randInt(1, 9);
+            intPart = intPart.slice(0, pos) + String(newDigit);
+          }
+        }
+      } else {
+        // exp<0: надо, чтобы за нужным количеством дробных знаков был "смотрящий" знак
+        // мы уже делали fracDigits >= (-exp)+1, но пусть хотя бы иногда digit >=5
+        // без навязчивости.
+      }
+
+      const num = (neg ? "-" : "") + intPart + (fracDigits ? "." + fracPart : "");
+      return num;
+    }
+
+    function buildTask(){
+      const exp = settings.exp;
+      const kind = settings.kind;
+      const negMode = settings.neg;
+
+      const raw = buildRandomNumber(exp, kind, negMode);
+      const norm = normalizeNumberString(raw);
+      const parsed = parseToBigIntAndScale(norm);
+
+      const rounded = roundScaled(parsed, exp);
+      const outScale = (exp < 0) ? (-exp) : 0;
+      const correct = toDisplayString(rounded, outScale);
+
+      const nextDigit = getNextDigitInfo(parsed, exp).digit;
+      const target = placeLabel(exp);
+
+      // число для показа: хотим пробелы и запятую
+      const displayNumber = toDisplayString(parsed, parsed.scale);
+
+      const explanation = makeExplanation({
+        displayNumber,
+        exp,
+        targetLabel: target,
+        nextDigit
+      }, correct);
+
+      return {
+        exp,
+        targetLabel: target,
+        displayNumber,
+        normalized: norm,
+        parsed,
+        correctDisplay: correct,
+        nextDigit,
+        explanation
+      };
+    }
+
+    function makeExplanation(info, correct){
+      const { displayNumber, exp, targetLabel, nextDigit } = info;
+      const look = Number(nextDigit);
+
+      const line1 = `Число: ${displayNumber}`;
+      const line2 = `Округляем до: ${targetLabel}.`;
+      const line3 = `Смотрим на следующий разряд: ${nextDigit}.`;
+      const line4 = (look >= 5)
+        ? `Так как ${nextDigit} ≥ 5 — увеличиваем нужный разряд на 1.`
+        : `Так как ${nextDigit} < 5 — нужный разряд оставляем без изменений.`;
+      const line5 = (exp >= 0)
+        ? `Все младшие разряды заменяем нулями.`
+        : `Лишние знаки после запятой отбрасываем (или заменяем на нули до нужной точности).`;
+      const line6 = `Ответ: ${correct}`;
+
+      return [line1, line2, line3, line4, line5, line6].join("\n");
+    }
+
+    // =========================
+    //  UI / Логика тренажёра
+    // =========================
+    function setFeedback(type, mainText, smallText = ""){
+      feedback.className = "feedback" + (type ? (" " + type) : "");
+      feedback.innerHTML = "";
+      const main = document.createElement("div");
+      main.textContent = mainText;
+      feedback.appendChild(main);
+
+      if (smallText){
+        const small = document.createElement("div");
+        small.className = "small";
+        small.textContent = smallText;
+        feedback.appendChild(small);
+      }
+    }
+
+    function renderStats(){
+      statCorrect.textContent = stats.correct;
+      statTotal.textContent = stats.total;
+      statStreak.textContent = stats.streak;
+      statBest.textContent = stats.bestStreak;
+    }
+
+    function renderSession(){
+      const len = settings.sessionLen;
+      sessionLabel.textContent = `Задание ${sessionIndex} из ${len}`;
+      sessionDoneLabel.textContent = `${sessionDone}/${len}`;
+
+      const pct = len > 0 ? Math.min(100, Math.round((sessionDone / len) * 100)) : 0;
+      sessionBar.style.width = pct + "%";
+    }
+
+    function saveStats(){
+      localStorage.setItem(LS_STATS_KEY, JSON.stringify(stats));
+    }
+
+    function loadStats(){
+      try{
+        const raw = localStorage.getItem(LS_STATS_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        if (typeof data?.correct === "number") stats = data;
+      } catch(_){}
+    }
+
+    function saveSettings(){
+      localStorage.setItem(LS_SETTINGS_KEY, JSON.stringify(settings));
+    }
+
+    function loadSettings(){
+      try{
+        const raw = localStorage.getItem(LS_SETTINGS_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+
+        if (typeof data?.exp === "number") settings.exp = data.exp;
+        if (typeof data?.kind === "string") settings.kind = data.kind;
+        if (typeof data?.neg === "string") settings.neg = data.neg;
+        if (typeof data?.sessionLen === "number") settings.sessionLen = data.sessionLen;
+      } catch(_){}
+    }
+
+    function resetTaskState(){
+      attempts = 0;
+      solvedThisTask = false;
+      attemptsInfo.textContent = "Попыток: 0";
+      answerInput.value = "";
+      setFeedback("", "", "");
+      solveBtn.disabled = false;
+      checkBtn.disabled = false;
+      answerInput.focus();
+    }
+
+    function loadNewTask(isNewSessionStep = false){
+      current = buildTask();
+      taskLine.textContent = `Округли число ${current.displayNumber} до ${current.targetLabel}.`;
+      explainText.textContent = "—";
+      resetTaskState();
+
+      if (isNewSessionStep){
+        sessionIndex = Math.min(settings.sessionLen, sessionIndex + 1);
+      }
+      renderSession();
+    }
+
+    function normalizeAnswerInputForCompare(raw){
+      const norm = normalizeNumberString(raw);
+      if (!isValidNumberString(norm)) return null;
+      // приводим к нашему "человеческому" формату для сравнения:
+      // сравниваем численно через BigInt/scale, чтобы "12 300" и "12300" были равны.
+      // Для этого парсим и потом отображаем по нужной точности (exp<0 => фиксируем scale).
+      const parsed = parseToBigIntAndScale(norm);
+      const outScale = (current.exp < 0) ? (-current.exp) : 0;
+      const rounded = roundScaled(parsed, current.exp); // если ученик ввёл "уже округлённый" — лишняя точность не мешает
+      // Но сравнивать надо "как число", а не "как строку"
+      // -> приведём к строке с нужной точностью:
+      return toDisplayString(rounded, outScale);
+    }
+
+    function check(){
+      if (!current) return;
+
+      const raw = answerInput.value;
+      const norm = normalizeNumberString(raw);
+
+      if (!norm){
+        setFeedback("warn", "Введите число.", "Например: 12 300 или 12 345,6");
+        return;
+      }
+      if (!isValidNumberString(norm)){
+        setFeedback("warn", "Ошибка: введите корректное число.", "Можно с пробелами и с запятой/точкой. Пример: 12 345,6");
+        return;
+      }
+
+      // Валидная попытка
+      attempts++;
+      attemptsInfo.textContent = "Попыток: " + attempts;
+
+      const userDisplay = normalizeAnswerInputForCompare(raw);
+      const correct = current.correctDisplay;
+
+      if (userDisplay === correct){
+        if (!solvedThisTask){
+          stats.correct++;
+          stats.total++;
+          stats.streak++;
+          stats.bestStreak = Math.max(stats.bestStreak, stats.streak);
+
+          sessionDone++;
+          solvedThisTask = true;
+
+          // если сессия закончена — начнём заново, но статистику не трогаем
+          if (sessionDone >= settings.sessionLen){
+            setFeedback("good", "✅ Верно! Сессия завершена.", "Нажмите «Новый пример», чтобы начать следующую сессию.");
+          } else {
+            setFeedback("good", "✅ Верно!", "Можно идти дальше: «Новый пример».");
+          }
+
+          explainText.textContent = current.explanation;
+
+          saveStats();
+          renderStats();
+          renderSession();
+        } else {
+          setFeedback("good", "✅ Уже было верно.", "Нажмите «Новый пример», чтобы продолжить.");
+        }
+
+        // чтобы “накликиванием” не накручивали — блокируем проверку до нового примера
+        checkBtn.disabled = true;
+        return;
+      }
+
+      // Неверно
+      stats.total++;
+      stats.streak = 0;
+      saveStats();
+      renderStats();
+
+      // Подсказка после 2 ошибок — показываем разбор
+      if (attempts >= 2){
+        setFeedback("bad", "❌ Неверно.", "Два промаха — включаю разбор ниже. Можно также нажать «Показать решение».");
+        explainText.textContent = current.explanation;
+      } else {
+        setFeedback("bad", "❌ Неверно.", "Подсказка: смотри на следующий разряд. Если 5–9 — увеличиваем, если 0–4 — оставляем.");
+      }
+    }
+
+    function showSolution(){
+      if (!current) return;
+      explainText.textContent = current.explanation;
+      setFeedback("warn", "Решение показано.", "Сначала попробуй ещё раз — и только потом смотри разбор 😉");
+    }
+
+    function newExample(){
+      // Если сессия закончилась — начнём новую сессию автоматически
+      const finished = sessionDone >= settings.sessionLen;
+
+      if (finished){
+        sessionDone = 0;
+        sessionIndex = 1;
+      } else {
+        // если текущий пример был решён, двигаем "номер задания" вперёд
+        if (solvedThisTask){
+          sessionIndex = Math.min(settings.sessionLen, sessionIndex + 1);
+        }
+      }
+
+      loadNewTask(false);
+    }
+
+    function resetAllStats(){
+      const ok = confirm("Точно сбросить статистику? (Правильно/Всего/Серии)");
+      if (!ok) return;
+      stats = { correct: 0, total: 0, streak: 0, bestStreak: 0 };
+      saveStats();
+      renderStats();
+
+      sessionDone = 0;
+      sessionIndex = 1;
+      renderSession();
+
+      setFeedback("", "Статистика сброшена.", "");
+    }
+
+    function fillPlaces(){
+      placeSelect.innerHTML = "";
+      for (const p of places){
+        const opt = document.createElement("option");
+        opt.value = String(p.exp);
+        opt.textContent = p.label;
+        placeSelect.appendChild(opt);
+      }
+    }
+
+    function applySettingsToUI(){
+      placeSelect.value = String(settings.exp);
+      kindSelect.value = settings.kind;
+      negSelect.value = settings.neg;
+      sessionSelect.value = String(settings.sessionLen);
+    }
+
+    function readSettingsFromUI(){
+      settings.exp = parseInt(placeSelect.value, 10);
+      settings.kind = kindSelect.value;
+      settings.neg = negSelect.value;
+      settings.sessionLen = parseInt(sessionSelect.value, 10);
+
+      saveSettings();
+
+      // При смене настроек — начинаем новую сессию
+      sessionDone = 0;
+      sessionIndex = 1;
+      renderSession();
+      loadNewTask(false);
+    }
+
+    // =========================
+    //  Инициализация
+    // =========================
+    function init(){
+      fillPlaces();
+      loadStats();
+      loadSettings();
+      applySettingsToUI();
+      renderStats();
+
+      sessionDone = 0;
+      sessionIndex = 1;
+      renderSession();
+
+      loadNewTask(false);
+
+      // События
+      placeSelect.addEventListener("change", readSettingsFromUI);
+      kindSelect.addEventListener("change", readSettingsFromUI);
+      negSelect.addEventListener("change", readSettingsFromUI);
+      sessionSelect.addEventListener("change", readSettingsFromUI);
+
+      checkBtn.addEventListener("click", check);
+      newBtn.addEventListener("click", newExample);
+      solveBtn.addEventListener("click", showSolution);
+      resetBtn.addEventListener("click", resetAllStats);
+
+      // Горячие клавиши
+      document.addEventListener("keydown", (e) => {
+        // Enter
+        if (e.key === "Enter" && !e.ctrlKey){
+          e.preventDefault();
+          if (!checkBtn.disabled) check();
+          return;
+        }
+        // Ctrl+Enter
+        if (e.key === "Enter" && e.ctrlKey){
+          e.preventDefault();
+          newExample();
+          return;
+        }
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>
