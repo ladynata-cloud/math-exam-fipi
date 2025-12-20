@@ -1,0 +1,962 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Тренажёр округления — v7</title>
+  <link rel="stylesheet" href="rounding-fresh-v7.css?v=1" />
+</head>
+<body>
+  <main class="rf7">
+    <header class="rf7__header">
+      <h1 class="rf7__title">Тренажёр округления <span class="rf7__badge">v7</span></h1>
+      <p class="rf7__subtitle">Подсветка разрядов + нули снизу + умные подсказки + повтор ошибок + динамика.</p>
+      <p class="rf7__back"><a href="index.html">← На главную</a></p>
+    </header>
+
+    <section class="rf7__panel">
+      <div class="rf7__row">
+        <label class="rf7__label" for="targetSelect">Округляем:</label>
+        <select id="targetSelect" class="rf7__select" aria-label="Выбор разряда округления"></select>
+
+        <label class="rf7__label" for="levelSelect">Уровень:</label>
+        <select id="levelSelect" class="rf7__select rf7__select--small" aria-label="Уровень сложности">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+
+        <label class="rf7__toggle" title="Иногда будут задачи “из жизни”">
+          <input type="checkbox" id="appliedToggle" checked />
+          <span>Прикладные</span>
+        </label>
+
+        <button id="newBtn" class="rf7__btn" type="button">Новый пример</button>
+      </div>
+
+      <div class="rf7__row rf7__row--series">
+        <div class="rf7__seriesLeft">
+          <span class="rf7__label">Серия:</span>
+          <select id="taskCount" class="rf7__select rf7__select--small" aria-label="Количество заданий в серии">
+            <option value="5">5</option>
+            <option value="10" selected>10</option>
+            <option value="15">15</option>
+          </select>
+
+          <button id="startSeriesBtn" class="rf7__btn rf7__btn--primary" type="button">Старт</button>
+          <button id="stopSeriesBtn" class="rf7__btn rf7__btn--ghost" type="button" style="display:none;">Сброс</button>
+
+          <button id="repeatErrorsBtn" class="rf7__btn rf7__btn--ghost" type="button" style="display:none;"
+                  title="Запустить серию только из задач, где были ошибки">
+            Повторить ошибки
+          </button>
+        </div>
+
+        <div class="rf7__seriesRight">
+          <div id="seriesText" class="rf7__seriesText">Серия не запущена</div>
+          <div class="rf7__bar" aria-hidden="true">
+            <div id="seriesBarFill" class="rf7__barFill" style="width:0%"></div>
+          </div>
+          <div id="seriesMini" class="rf7__seriesMini">Последние серии: —</div>
+        </div>
+      </div>
+
+      <div class="rf7__stats">
+        <div class="rf7__stat">
+          <div class="rf7__statValue" id="statSolved">0</div>
+          <div class="rf7__statLabel">Проверок</div>
+        </div>
+        <div class="rf7__stat">
+          <div class="rf7__statValue" id="statCorrect">0</div>
+          <div class="rf7__statLabel">Верно</div>
+        </div>
+        <div class="rf7__stat">
+          <div class="rf7__statValue" id="statAccuracy">0%</div>
+          <div class="rf7__statLabel">Точность</div>
+        </div>
+        <div class="rf7__stat">
+          <div class="rf7__statValue" id="statStreak">0</div>
+          <div class="rf7__statLabel">Серия верных</div>
+        </div>
+      </div>
+
+      <div class="rf7__meta">
+        Среднее время на задание: <b id="avgTime">—</b> • Чаще ошибки: <b id="mostMistakes">—</b>
+      </div>
+    </section>
+
+    <section class="rf7__card">
+      <div class="rf7__taskLabel">Задание</div>
+      <div id="taskText" class="rf7__taskText">Нажми «Новый пример» (или «Старт» для серии).</div>
+
+      <div id="guide" class="rf7__guide" hidden>
+        <div class="rf7__guideLabel">На что смотрим</div>
+        <div id="guideDigits" class="rf7__guideDigits"></div>
+        <div id="guideText" class="rf7__guideText"></div>
+      </div>
+
+      <div class="rf7__answerRow">
+        <label class="rf7__label" for="answerInput">Ответ:</label>
+        <input id="answerInput" class="rf7__input" inputmode="decimal" placeholder="например: 350 или 3,14" aria-label="Поле ввода ответа" />
+        <button id="checkBtn" class="rf7__btn rf7__btn--check" type="button" aria-label="Проверить ответ">Проверить</button>
+        <button id="nextBtn" class="rf7__btn rf7__btn--next" type="button" aria-label="Следующий пример">Дальше</button>
+      </div>
+
+      <div class="rf7__actions">
+        <button id="hintBtn" class="rf7__btn rf7__btn--ghost" type="button">Подсказка</button>
+        <button id="solutionBtn" class="rf7__btn rf7__btn--ghost" type="button">Решение</button>
+        <button id="resetProgressBtn" class="rf7__btn rf7__btn--ghost" type="button">Сбросить прогресс</button>
+      </div>
+
+      <div id="message" class="rf7__message" aria-live="polite" style="display:none;"></div>
+      <div id="solutionBox" class="rf7__solution" style="display:none;"></div>
+
+      <div id="storageNote" class="rf7__storageNote" style="display:none;">
+        Прогресс не сохраняется (браузер запретил хранилище). Ничего страшного — просто не закрывайте страницу.
+      </div>
+    </section>
+
+    <details class="rf7__rules">
+      <summary>Правило округления</summary>
+      <div class="rf7__rulesBody">
+        <div class="rf7__step"><b>Шаг 1.</b> Определи разряд, до которого округляешь.</div>
+        <div class="rf7__step"><b>Шаг 2.</b> Посмотри на цифру справа от этого разряда.</div>
+        <div class="rf7__step"><b>Шаг 3.</b> 0–4 → разряд не меняем; 5–9 → увеличиваем на 1.</div>
+        <div class="rf7__step"><b>Шаг 4.</b> Для целых справа становятся нули, для дробей лишние знаки справа отбрасываем.</div>
+      </div>
+    </details>
+  </main>
+
+  <div id="toast" class="rf7__toast" aria-live="polite"></div>
+
+<script>
+(() => {
+  "use strict";
+
+  // ===== config =====
+  const BASE_SCALE = 10000;
+  const BASE_DECIMALS = 4;
+  const STORAGE_KEY = "rounding_fresh_v7_state";
+  const CHECK_LOCK_MS = 1100;
+  const APPLIED_PROB = 0.22;
+  const DUP_GUARD_TRIES = 12;
+
+  const $ = (id) => document.getElementById(id);
+
+  const el = {
+    targetSelect: $("targetSelect"),
+    levelSelect: $("levelSelect"),
+    appliedToggle: $("appliedToggle"),
+    newBtn: $("newBtn"),
+
+    taskCount: $("taskCount"),
+    startSeriesBtn: $("startSeriesBtn"),
+    stopSeriesBtn: $("stopSeriesBtn"),
+    repeatErrorsBtn: $("repeatErrorsBtn"),
+
+    seriesText: $("seriesText"),
+    seriesBarFill: $("seriesBarFill"),
+    seriesMini: $("seriesMini"),
+
+    statSolved: $("statSolved"),
+    statCorrect: $("statCorrect"),
+    statAccuracy: $("statAccuracy"),
+    statStreak: $("statStreak"),
+
+    avgTime: $("avgTime"),
+    mostMistakes: $("mostMistakes"),
+
+    taskText: $("taskText"),
+    guide: $("guide"),
+    guideDigits: $("guideDigits"),
+    guideText: $("guideText"),
+
+    answerInput: $("answerInput"),
+    checkBtn: $("checkBtn"),
+    nextBtn: $("nextBtn"),
+
+    hintBtn: $("hintBtn"),
+    solutionBtn: $("solutionBtn"),
+    resetProgressBtn: $("resetProgressBtn"),
+
+    message: $("message"),
+    solutionBox: $("solutionBox"),
+    storageNote: $("storageNote"),
+    toast: $("toast"),
+  };
+
+  // ===== storage safe =====
+  const storage = (() => {
+    try {
+      const t = "__t";
+      localStorage.setItem(t, "1");
+      localStorage.removeItem(t);
+      return localStorage;
+    } catch { return null; }
+  })();
+
+  if (!storage) el.storageNote.style.display = "block";
+
+  const safeLoad = () => {
+    if (!storage) return null;
+    try {
+      const raw = storage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch { return null; }
+  };
+
+  const safeSave = (obj) => {
+    if (!storage) return;
+    try { storage.setItem(STORAGE_KEY, JSON.stringify(obj)); } catch {}
+  };
+
+  // ===== helpers =====
+  const nowMs = () => (typeof performance !== "undefined" ? performance.now() : Date.now());
+  const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+  const toast = (text) => {
+    if (!text) return;
+    el.toast.textContent = text;
+    el.toast.classList.add("is-show");
+    window.setTimeout(() => el.toast.classList.remove("is-show"), 1600);
+  };
+
+  const formatTime = (ms) => {
+    if (!Number.isFinite(ms) || ms <= 0) return "—";
+    const s = Math.round(ms / 1000);
+    const m = Math.floor(s / 60);
+    const r = s % 60;
+    return m > 0 ? `${m}:${String(r).padStart(2, "0")}` : `${r}с`;
+  };
+
+  const scaledToStringRu = (scaled, decimals) => {
+    const abs = Math.abs(scaled);
+    const intPart = Math.floor(abs / BASE_SCALE);
+    const frac = abs % BASE_SCALE;
+    if (decimals <= 0) return String(intPart);
+    const fracStrFull = String(frac).padStart(BASE_DECIMALS, "0");
+    return `${intPart},${fracStrFull.slice(0, decimals)}`;
+  };
+
+  const normalizeInputDetailed = (raw, allowedDecimals) => {
+    const original = String(raw || "").trim();
+    let t = original.replace(/\s+/g, "").replace(",", ".");
+    if (!t) return { kind: "empty" };
+
+    if (t[0] === "+") t = t.slice(1);
+    if (t[0] === "-") return { kind: "negative" };
+    if (!/^\d+(\.\d+)?$/.test(t)) return { kind: "bad" };
+
+    const parts = t.split(".");
+    let intPart = (parts[0] || "0").replace(/^0+(?=\d)/, "");
+    if (intPart === "") intPart = "0";
+
+    const frac = parts[1] ?? null;
+    const norm = frac === null ? intPart : (intPart + "." + frac);
+
+    let hasExtraZeros = false;
+    if (frac !== null && frac.length > allowedDecimals) {
+      const extra = frac.slice(allowedDecimals);
+      hasExtraZeros = extra.length > 0 && [...extra].every(ch => ch === "0");
+    }
+    return { kind: "ok", norm, hasExtraZeros };
+  };
+
+  const parseToScaled = (inputNorm, allowedDecimals) => {
+    const parts = inputNorm.split(".");
+    const intVal = parseInt(parts[0], 10);
+    if (!Number.isFinite(intVal)) return { ok: false };
+    const fracRaw = parts[1] || "";
+
+    let extraNonZero = false;
+    if (fracRaw.length > allowedDecimals) {
+      extraNonZero = [...fracRaw.slice(allowedDecimals)].some(ch => ch !== "0");
+    }
+
+    const fracPadded = (fracRaw + "0".repeat(BASE_DECIMALS)).slice(0, BASE_DECIMALS);
+    const fracVal = parseInt(fracPadded || "0", 10);
+
+    const scaled = intVal * BASE_SCALE + (Number.isFinite(fracVal) ? fracVal : 0);
+    return { ok: true, scaled, extraNonZero };
+  };
+
+  const stepToScaled = (step) => Math.round(step * BASE_SCALE);
+  const rightPlaceScaled = (stepScaled) => Math.floor(stepScaled / 10);
+  const digitAt = (nScaled, placeScaled) => Math.floor(nScaled / placeScaled) % 10;
+
+  // ===== targets =====
+  const TARGETS = [
+    { id: "tens",        label: "до десятков",        step: 10,    decimalsAnswer: 0 },
+    { id: "hundreds",    label: "до сотен",          step: 100,   decimalsAnswer: 0 },
+    { id: "thousands",   label: "до тысяч",          step: 1000,  decimalsAnswer: 0 },
+    { id: "units",       label: "до целых",          step: 1,     decimalsAnswer: 0 },
+    { id: "tenths",      label: "до десятых",        step: 0.1,   decimalsAnswer: 1 },
+    { id: "hundredths",  label: "до сотых",          step: 0.01,  decimalsAnswer: 2 },
+    { id: "thousandths", label: "до тысячных",       step: 0.001, decimalsAnswer: 3 },
+  ];
+
+  const fillTargetSelect = () => {
+    el.targetSelect.innerHTML = "";
+    for (const t of TARGETS) {
+      const opt = document.createElement("option");
+      opt.value = t.id;
+      opt.textContent = t.label;
+      el.targetSelect.appendChild(opt);
+    }
+  };
+
+  const getTarget = (id) => TARGETS.find(t => t.id === id) || TARGETS[0];
+
+  const roundName = (id) => ({
+    tens: "десятки", hundreds: "сотни", thousands: "тысячи",
+    units: "целые", tenths: "десятые", hundredths: "сотые", thousandths: "тысячные"
+  }[id] || "разряд");
+
+  const rightName = (id) => ({
+    tens: "единицы", hundreds: "десятки", thousands: "сотни",
+    units: "десятые", tenths: "сотые", hundredths: "тысячные", thousandths: "десятитысячные"
+  }[id] || "следующий разряд");
+
+  const getRange = (target, level) => {
+    const lvl = Number(level) || 1;
+    const step = target.step;
+    if (step === 10)   return lvl === 1 ? [10,99] : (lvl === 2 ? [100,999] : [1000,9999]);
+    if (step === 100)  return lvl === 1 ? [100,999] : (lvl === 2 ? [1000,9999] : [10000,99999]);
+    if (step === 1000) return lvl === 1 ? [1000,9999] : (lvl === 2 ? [10000,99999] : [100000,999999]);
+    if (step <= 1)     return lvl === 1 ? [0,99] : (lvl === 2 ? [0,999] : [0,9999]);
+    return [1,999];
+  };
+
+  const appliedText = (displayN, targetLabel, isInt) => {
+    const ints = [
+      (x) => `Цена товара ${x} руб. Округлите ${targetLabel} для быстрой оценки.`,
+      (x) => `Расстояние ${x} км. Округлите ${targetLabel}.`,
+      (x) => `Скорость ${x} км/ч. Округлите ${targetLabel}.`,
+      (x) => `В зале ${x} зрителей. Округлите ${targetLabel}.`,
+      (x) => `Температура ${x}°C. Округлите ${targetLabel}.`,
+    ];
+    const decs = [
+      (x) => `Длина доски ${x} м. Округлите ${targetLabel}.`,
+      (x) => `Масса товара ${x} кг. Округлите ${targetLabel}.`,
+      (x) => `Ширина ленты ${x} м. Округлите ${targetLabel}.`,
+    ];
+    const pool = isInt ? ints : decs;
+    return pool[randInt(0, pool.length - 1)](displayN);
+  };
+
+  // ===== state =====
+  let stats = { solved: 0, correct: 0, streak: 0 };
+  let series = { active: false, size: 10, index: 0, correct: 0, mode: "normal" }; // mode: normal|repeat
+  let current = null;
+  let locked = false;
+
+  let timeSumMs = 0;
+  let timeCount = 0;
+  let taskStartMs = null;
+
+  let mistakesByTarget = {};
+  let mistakesThisSeries = {};
+  let sessions = []; // last 3 series summaries
+
+  // tasks with mistakes to repeat
+  let repeatPool = [];   // array of task snapshots
+  let repeatQueue = [];  // queue for repeat-mode
+  let recentKeys = [];   // for anti-repeat
+
+  const persist = (withToast=false) => {
+    safeSave({
+      targetId: el.targetSelect.value,
+      level: el.levelSelect.value,
+      applied: !!el.appliedToggle.checked,
+      taskCount: el.taskCount.value,
+
+      stats, series, current,
+      timeSumMs, timeCount, taskStartMs,
+      mistakesByTarget, mistakesThisSeries,
+      sessions,
+      repeatPool
+    });
+    if (withToast) toast("Прогресс сохранён");
+  };
+
+  const restore = () => {
+    const s = safeLoad();
+    if (!s) return;
+
+    if (typeof s.targetId === "string") el.targetSelect.value = s.targetId;
+    if (typeof s.level === "string") el.levelSelect.value = s.level;
+    if (typeof s.applied === "boolean") el.appliedToggle.checked = s.applied;
+    if (typeof s.taskCount === "string") el.taskCount.value = s.taskCount;
+
+    if (s.stats) stats = { ...stats, ...s.stats };
+    if (s.series) series = { ...series, ...s.series };
+
+    if (Number.isFinite(s.timeSumMs)) timeSumMs = s.timeSumMs;
+    if (Number.isFinite(s.timeCount)) timeCount = s.timeCount;
+    if (Number.isFinite(s.taskStartMs)) taskStartMs = s.taskStartMs;
+
+    if (s.mistakesByTarget && typeof s.mistakesByTarget === "object") mistakesByTarget = s.mistakesByTarget;
+    if (s.mistakesThisSeries && typeof s.mistakesThisSeries === "object") mistakesThisSeries = s.mistakesThisSeries;
+
+    if (Array.isArray(s.sessions)) sessions = s.sessions.slice(0, 3);
+    if (Array.isArray(s.repeatPool)) repeatPool = s.repeatPool;
+
+    if (s.current && Number.isFinite(s.current.nScaled)) {
+      current = s.current;
+      el.taskText.textContent = current.prompt;
+      renderGuide();
+    }
+  };
+
+  // ===== UI =====
+  const setMessage = (text, kind) => {
+    if (!text) { el.message.style.display = "none"; return; }
+    el.message.style.display = "block";
+    el.message.textContent = text;
+    el.message.className = "rf7__message " + (kind ? `rf7__message--${kind}` : "");
+  };
+
+  const updateStatsUI = () => {
+    el.statSolved.textContent = String(stats.solved);
+    el.statCorrect.textContent = String(stats.correct);
+    el.statAccuracy.textContent = stats.solved ? `${Math.round((stats.correct / stats.solved) * 100)}%` : "0%";
+    el.statStreak.textContent = String(stats.streak);
+  };
+
+  const updateSeriesUI = () => {
+    if (!series.active) {
+      el.seriesText.textContent = "Серия не запущена";
+      el.seriesBarFill.style.width = "0%";
+      el.stopSeriesBtn.style.display = "none";
+      return;
+    }
+    el.stopSeriesBtn.style.display = "inline-flex";
+    const done = series.index, total = series.size, left = Math.max(0, total - done);
+    const modeTxt = series.mode === "repeat" ? " (повтор ошибок)" : "";
+    el.seriesText.textContent = `Задание ${Math.min(done + 1, total)} из ${total}${modeTxt} • Верно: ${series.correct} • Осталось: ${left}`;
+    el.seriesBarFill.style.width = `${Math.round((done / total) * 100)}%`;
+  };
+
+  const updateMeta = () => {
+    const avg = timeCount > 0 ? (timeSumMs / timeCount) : null;
+    el.avgTime.textContent = avg ? formatTime(avg) : "—";
+
+    // most mistakes
+    const entries = Object.entries(mistakesByTarget);
+    if (entries.length === 0) el.mostMistakes.textContent = "—";
+    else {
+      entries.sort((a,b) => b[1] - a[1]);
+      const topId = entries[0][0];
+      el.mostMistakes.textContent = (getTarget(topId)?.label) || "—";
+    }
+
+    // last 3 series
+    if (!Array.isArray(sessions) || sessions.length === 0) {
+      el.seriesMini.textContent = "Последние серии: —";
+      return;
+    }
+    const sTxt = sessions.map(x => `${x.correct}/${x.total}`).join(" → ");
+    let trend = "";
+    if (sessions.length >= 2) {
+      const a = sessions[0].correct / sessions[0].total;
+      const b = sessions[1].correct / sessions[1].total;
+      const diff = Math.round((a - b) * 100);
+      if (diff !== 0) trend = diff > 0 ? ` (лучше на +${diff}%)` : ` (хуже на ${diff}%)`;
+    }
+    el.seriesMini.textContent = `Последние серии: ${sTxt}${trend}`;
+  };
+
+  const setLocked = (v) => {
+    locked = v;
+    el.checkBtn.disabled = v;
+    el.checkBtn.textContent = v ? "Проверяю…" : "Проверить";
+  };
+
+  const addMistake = (targetId, isSeries) => {
+    mistakesByTarget[targetId] = (mistakesByTarget[targetId] || 0) + 1;
+    if (isSeries) mistakesThisSeries[targetId] = (mistakesThisSeries[targetId] || 0) + 1;
+  };
+
+  // ===== guide =====
+  const digitIndexFromPlace = (placeScaled, intLen) => {
+    if (placeScaled >= BASE_SCALE) {
+      const k = Math.round(Math.log10(placeScaled / BASE_SCALE));
+      return intLen - 1 - k;
+    } else {
+      const d = Math.round(Math.log10(BASE_SCALE / placeScaled));
+      return intLen + 1 + (d - 1);
+    }
+  };
+
+  const renderGuide = () => {
+    if (!current) { el.guide.hidden = true; return; }
+
+    const intPart = Math.floor(current.nScaled / BASE_SCALE);
+    const frac = current.nScaled % BASE_SCALE;
+
+    const intStr = String(intPart);
+    const fracStrFull = String(frac).padStart(BASE_DECIMALS, "0");
+    const fracStr = current.decimalsInTask > 0 ? fracStrFull.slice(0, current.decimalsInTask) : "";
+    const full = fracStr ? `${intStr},${fracStr}` : intStr;
+
+    const roundIdx = digitIndexFromPlace(current.roundPlaceScaled, intStr.length);
+    const lookIdx  = digitIndexFromPlace(current.lookPlaceScaled,  intStr.length);
+
+    let html = "";
+    for (let i = 0; i < full.length; i++) {
+      const ch = full[i];
+      let cls = "rf7__d";
+      if (ch === ",") cls += " rf7__d--comma";
+      else {
+        if (i === roundIdx) cls += " rf7__d--round";
+        if (i === lookIdx)  cls += " rf7__d--look";
+        if (i > roundIdx)   cls += (current.turnToZero ? " rf7__d--tozero" : " rf7__d--drop");
+      }
+      html += `<span class="${cls}">${ch}</span>`;
+    }
+
+    el.guide.hidden = false;
+    el.guideDigits.innerHTML = html;
+
+    const rule = current.lookDigit >= 5 ? "Цифра ≥ 5 → увеличиваем разряд." : "Цифра < 5 → разряд не меняем.";
+    const tail = current.turnToZero ? "Справа будут нули (0 показаны снизу)." : "Лишние знаки справа отбрасываем.";
+    el.guideText.textContent = `Синий — разряд (${current.roundName}). Оранжевый — смотрим на ${current.rightName}: цифра ${current.lookDigit}. ${rule} ${tail}`;
+  };
+
+  // ===== task generation =====
+  const makeTask = () => {
+    const target = getTarget(el.targetSelect.value);
+    const level = el.levelSelect.value;
+
+    const stepScaled = stepToScaled(target.step);
+    const allowedDecimals = target.decimalsAnswer;
+
+    let decimalsInTask;
+    if (target.id === "units") decimalsInTask = Math.random() < 0.5 ? 1 : 2;
+    else if (target.step < 1)  decimalsInTask = Math.min(BASE_DECIMALS, allowedDecimals + 1);
+    else                       decimalsInTask = 0;
+
+    const [minInt, maxInt] = getRange(target, level);
+
+    let nScaled;
+    if (decimalsInTask === 0) {
+      let n = randInt(minInt, maxInt);
+      if (target.step >= 10 && n % target.step === 0) n += 1;
+      nScaled = n * BASE_SCALE;
+    } else {
+      const intPart = randInt(minInt, maxInt);
+      const denom = Math.pow(10, decimalsInTask);
+      const frac = randInt(0, denom - 1);
+      const shift = Math.pow(10, BASE_DECIMALS - decimalsInTask);
+      nScaled = intPart * BASE_SCALE + frac * shift;
+    }
+
+    const answerScaled = Math.round(nScaled / stepScaled) * stepScaled;
+    const displayN = scaledToStringRu(nScaled, decimalsInTask);
+    const displayAnswer = scaledToStringRu(answerScaled, allowedDecimals);
+
+    const useApplied = el.appliedToggle.checked && Math.random() < APPLIED_PROB;
+    const prompt = useApplied
+      ? appliedText(displayN, target.label, target.step >= 1)
+      : `Округлите число ${displayN} ${target.label}.`;
+
+    const lookPlace = rightPlaceScaled(stepScaled);
+    const lookDigit = digitAt(nScaled, lookPlace);
+
+    return {
+      targetId: target.id,
+      targetLabel: target.label,
+      allowedDecimals,
+      decimalsInTask,
+
+      nScaled,
+      answerScaled,
+      displayAnswer,
+      prompt,
+
+      roundPlaceScaled: stepScaled,
+      lookPlaceScaled: lookPlace,
+      roundName: roundName(target.id),
+      rightName: rightName(target.id),
+      lookDigit,
+
+      turnToZero: target.step >= 10,
+      attempts: 0,
+      solved: false,
+      hadMistake: false
+    };
+  };
+
+  const nextGeneratedTask = () => {
+    // анти-повторы в одной сессии
+    for (let i = 0; i < DUP_GUARD_TRIES; i++) {
+      const t = makeTask();
+      const key = `${t.targetId}:${t.nScaled}:${t.decimalsInTask}`;
+      if (!recentKeys.includes(key)) {
+        recentKeys.push(key);
+        if (recentKeys.length > 50) recentKeys.shift();
+        return t;
+      }
+    }
+    return makeTask();
+  };
+
+  const snapshotForRepeat = (t) => ({
+    targetId: t.targetId,
+    targetLabel: t.targetLabel,
+    allowedDecimals: t.allowedDecimals,
+    decimalsInTask: t.decimalsInTask,
+    nScaled: t.nScaled,
+    answerScaled: t.answerScaled,
+    displayAnswer: t.displayAnswer,
+    // для повтора уберём "прикладную обвязку", чтобы было коротко
+    prompt: `Округлите число ${scaledToStringRu(t.nScaled, t.decimalsInTask)} ${t.targetLabel}.`,
+    roundPlaceScaled: t.roundPlaceScaled,
+    lookPlaceScaled: t.lookPlaceScaled,
+    roundName: t.roundName,
+    rightName: t.rightName,
+    lookDigit: t.lookDigit,
+    turnToZero: t.turnToZero
+  });
+
+  // ===== timer =====
+  const startTaskTimer = () => { taskStartMs = nowMs(); };
+  const finishTaskTimer = () => {
+    if (!Number.isFinite(taskStartMs)) return;
+    const dt = nowMs() - taskStartMs;
+    timeSumMs += dt;
+    timeCount += 1;
+    taskStartMs = null;
+  };
+
+  const setRepeatButtonVisibility = () => {
+    el.repeatErrorsBtn.style.display = (!series.active && repeatPool.length > 0) ? "inline-flex" : "none";
+  };
+
+  const newTask = () => {
+    if (series.active && series.mode === "repeat") {
+      // repeat queue
+      const next = repeatQueue.shift();
+      if (!next) {
+        // закончились повторы
+        series.active = false;
+        updateSeriesUI();
+        setMessage("Повтор ошибок завершён ✅", "ok");
+        setRepeatButtonVisibility();
+        persist(true);
+        current = null;
+        el.taskText.textContent = "Нажми «Новый пример» или начни новую серию.";
+        el.answerInput.value = "";
+        el.answerInput.blur();
+        el.guide.hidden = true;
+        return;
+      }
+      current = { ...next, attempts: 0, solved: false, hadMistake: false };
+    } else {
+      current = nextGeneratedTask();
+    }
+
+    el.taskText.textContent = current.prompt;
+    el.answerInput.value = "";
+    el.answerInput.focus();
+
+    el.solutionBox.style.display = "none";
+    el.solutionBox.innerHTML = "";
+    el.message.style.display = "none";
+
+    renderGuide();
+    startTaskTimer();
+    persist(false);
+  };
+
+  const startSeries = () => {
+    const size = Number(el.taskCount.value) || 10;
+    series = { active: true, size, index: 0, correct: 0, mode: "normal" };
+    mistakesThisSeries = {};
+    repeatPool = [];
+    updateSeriesUI();
+    setRepeatButtonVisibility();
+    setMessage("Серия запущена ✅ Решай и жми «Дальше».", "ok");
+    newTask();
+    persist(true);
+  };
+
+  const stopSeries = () => {
+    series = { active: false, size: 10, index: 0, correct: 0, mode: "normal" };
+    mistakesThisSeries = {};
+    updateSeriesUI();
+    setMessage("Серия сброшена.", "info");
+    setRepeatButtonVisibility();
+    persist(true);
+  };
+
+  const startRepeatErrors = () => {
+    if (repeatPool.length === 0) return;
+    // очередь = уникальные по ключу
+    const seen = new Set();
+    repeatQueue = [];
+    for (const t of repeatPool) {
+      const key = `${t.targetId}:${t.nScaled}:${t.decimalsInTask}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        repeatQueue.push(t);
+      }
+    }
+
+    series = { active: true, size: repeatQueue.length, index: 0, correct: 0, mode: "repeat" };
+    mistakesThisSeries = {};
+    updateSeriesUI();
+    setRepeatButtonVisibility();
+    setMessage("Повтор ошибок запущен ✅", "ok");
+    newTask();
+    persist(true);
+  };
+
+  const hintText = () => {
+    if (!current) return "";
+    return `Подсказка: округляем ${current.targetLabel} → смотрим на ${current.rightName}. 0–4 → не меняем; 5–9 → увеличиваем.`;
+  };
+
+  const solutionHTML = () => {
+    if (!current) return "";
+    const d = current.lookDigit;
+    const rule = d >= 5 ? `Цифра ${d} ≥ 5 → увеличиваем разряд.` : `Цифра ${d} < 5 → разряд не меняем.`;
+    return `<div class="rf7__solutionTitle">Разбор</div>
+      <div>Округляем <b>${current.targetLabel}</b>.</div>
+      <div>Смотрим на <b>${current.rightName}</b>: цифра <b>${d}</b>.</div>
+      <div>${rule}</div>
+      <div class="rf7__solutionAnswer">Ответ: <b>${current.displayAnswer}</b></div>`;
+  };
+
+  const diagnoseMistake = (userScaled) => {
+    // A) не кратно шагу, если округляем до десятков/сотен/тысяч
+    if (current.turnToZero && (userScaled % current.roundPlaceScaled !== 0)) {
+      return `Проверь нули справа: при округлении ${current.targetLabel} ответ должен быть кратен шагу.`;
+    }
+
+    // B) промах ровно на один шаг округления
+    const diff = userScaled - current.answerScaled;
+    if (Math.abs(diff) === current.roundPlaceScaled) {
+      return `Промах на 1 шаг. Проверь цифру справа: 5–9 → увеличиваем, 0–4 → не увеличиваем.`;
+    }
+
+    // C) возможно округлил до другого разряда (слишком “крупно”)
+    if (current.turnToZero) {
+      const bigger = current.roundPlaceScaled * 10;
+      const ansBigger = Math.round(current.nScaled / bigger) * bigger;
+      if (userScaled === ansBigger) {
+        const cur = getTarget(current.targetId)?.label || "этого разряда";
+        // попробуем назвать “на один разряд крупнее”
+        let msg = "Похоже, ты округлил до более крупного разряда. ";
+        msg += `Нужно ${cur}.`;
+        return msg;
+      }
+    }
+
+    // D) общий совет
+    return `Проверь: мы округляем ${current.targetLabel} и смотрим на ${current.rightName}.`;
+  };
+
+  const checkAnswer = () => {
+    if (locked) return;
+    if (!current) { setMessage("Сначала нажми «Новый пример».", "info"); return; }
+
+    setLocked(true);
+    setTimeout(() => setLocked(false), CHECK_LOCK_MS);
+
+    const det = normalizeInputDetailed(el.answerInput.value, current.allowedDecimals);
+    if (det.kind === "negative") { setMessage("Тренируем округление для положительных чисел 🙂", "bad"); return; }
+    if (det.kind === "bad" || det.kind === "empty") { setMessage("Введите число (можно с запятой или точкой).", "info"); return; }
+
+    const parsed = parseToScaled(det.norm, current.allowedDecimals);
+    if (!parsed.ok) { setMessage("Не получилось прочитать ответ.", "bad"); return; }
+
+    if (parsed.extraNonZero) {
+      current.hadMistake = true;
+      setMessage("Лишние цифры после запятой: округли до нужного количества знаков.", "bad");
+      return;
+    }
+
+    current.attempts += 1;
+    const ok = (parsed.scaled === current.answerScaled);
+
+    stats.solved += 1;
+
+    if (ok) {
+      if (!current.solved) { current.solved = true; stats.correct += 1; }
+      stats.streak += 1;
+
+      if (det.hasExtraZeros && current.allowedDecimals > 0) {
+        setMessage(`Верно ✅ (можно короче: ${current.displayAnswer})`, "ok");
+      } else {
+        setMessage("Верно ✅", "ok");
+      }
+    } else {
+      stats.streak = 0;
+      current.hadMistake = true;
+
+      const diag = diagnoseMistake(parsed.scaled);
+
+      if (current.attempts >= 3) {
+        setMessage(`Неверно ❌ ${diag} Правильный ответ: ${current.displayAnswer}`, "bad");
+        el.solutionBox.style.display = "block";
+        el.solutionBox.innerHTML = solutionHTML();
+      } else if (current.attempts >= 2) {
+        setMessage(`Неверно ❌ ${diag}`, "bad");
+      } else {
+        setMessage("Неверно ❌ Попробуй ещё раз.", "bad");
+      }
+    }
+
+    updateStatsUI();
+    updateMeta();
+    persist(false);
+  };
+
+  const finishSeriesIfNeeded = () => {
+    if (!series.active) return;
+    if (series.index >= series.size) {
+      series.active = false;
+      updateSeriesUI();
+
+      // сохраним “динамику” (последние 3 серии)
+      const summary = {
+        ts: Date.now(),
+        correct: series.correct,
+        total: series.size,
+        avgMs: (timeCount > 0 ? (timeSumMs / timeCount) : null)
+      };
+      sessions = [summary, ...sessions].slice(0, 3);
+
+      // покажем где чаще ошибка в этой серии
+      let most = "—";
+      const entries = Object.entries(mistakesThisSeries);
+      if (entries.length > 0) {
+        entries.sort((a,b) => b[1] - a[1]);
+        most = getTarget(entries[0][0])?.label || "—";
+      }
+
+      const medal = series.correct === series.size ? " 🏅 100%" : "";
+      const msg = most !== "—"
+        ? `Серия завершена ✅ ${series.correct}/${series.size}${medal}. Чаще ошибки: ${most}.`
+        : `Серия завершена ✅ ${series.correct}/${series.size}${medal}.`;
+
+      setMessage(msg, "ok");
+
+      updateMeta();
+      setRepeatButtonVisibility();
+      persist(true);
+    }
+  };
+
+  const nextTask = () => {
+    if (!current) { newTask(); return; }
+
+    finishTaskTimer();
+    updateMeta();
+
+    if (series.active) {
+      series.index += 1;
+      if (current.solved) series.correct += 1;
+
+      // фиксируем ошибочные/слабые места
+      if (!current.solved || current.hadMistake) {
+        addMistake(current.targetId, true);
+        // сохраняем в repeatPool только если была ошибка
+        repeatPool.push(snapshotForRepeat(current));
+      }
+
+      updateSeriesUI();
+      finishSeriesIfNeeded();
+
+      if (!series.active) {
+        // остановимся
+        current = null;
+        el.taskText.textContent = "Серия завершена. Нажми «Повторить ошибки» или начни новую серию.";
+        el.answerInput.value = "";
+        el.answerInput.blur();
+        el.guide.hidden = true;
+        el.solutionBox.style.display = "none";
+        el.solutionBox.innerHTML = "";
+        persist(false);
+        return;
+      }
+    }
+
+    newTask();
+  };
+
+  const resetProgress = () => {
+    const ok = confirm("Сбросить прогресс этого тренажёра?");
+    if (!ok) return;
+
+    stats = { solved: 0, correct: 0, streak: 0 };
+    series = { active: false, size: 10, index: 0, correct: 0, mode: "normal" };
+    current = null;
+
+    timeSumMs = 0; timeCount = 0; taskStartMs = null;
+    mistakesByTarget = {}; mistakesThisSeries = {};
+    sessions = [];
+    repeatPool = []; repeatQueue = [];
+    recentKeys = [];
+
+    updateStatsUI();
+    updateSeriesUI();
+    updateMeta();
+    setRepeatButtonVisibility();
+
+    el.taskText.textContent = "Прогресс сброшен. Нажми «Новый пример» или начни серию.";
+    el.answerInput.value = "";
+    el.guide.hidden = true;
+    el.message.style.display = "none";
+    el.solutionBox.style.display = "none";
+    el.solutionBox.innerHTML = "";
+
+    if (storage) { try { storage.removeItem(STORAGE_KEY); } catch {} }
+  };
+
+  // ===== events =====
+  el.newBtn.addEventListener("click", () => { newTask(); persist(true); });
+
+  el.startSeriesBtn.addEventListener("click", startSeries);
+  el.stopSeriesBtn.addEventListener("click", stopSeries);
+  el.repeatErrorsBtn.addEventListener("click", startRepeatErrors);
+
+  el.checkBtn.addEventListener("click", checkAnswer);
+  el.nextBtn.addEventListener("click", nextTask);
+
+  el.answerInput.addEventListener("keydown", (e) => { if (e.key === "Enter") checkAnswer(); });
+
+  el.hintBtn.addEventListener("click", () => { if (current) setMessage(hintText(), "info"); });
+
+  el.solutionBtn.addEventListener("click", () => {
+    if (!current) return;
+    if (el.solutionBox.style.display === "none") {
+      el.solutionBox.style.display = "block";
+      el.solutionBox.innerHTML = solutionHTML();
+    } else {
+      el.solutionBox.style.display = "none";
+      el.solutionBox.innerHTML = "";
+    }
+  });
+
+  el.resetProgressBtn.addEventListener("click", resetProgress);
+
+  el.targetSelect.addEventListener("change", () => { persist(true); if (current) renderGuide(); });
+  el.levelSelect.addEventListener("change", () => { persist(true); });
+  el.appliedToggle.addEventListener("change", () => { persist(true); });
+  el.taskCount.addEventListener("change", () => { persist(true); });
+
+  // ===== init =====
+  fillTargetSelect();
+  el.targetSelect.value = "tens";
+  restore();
+  updateStatsUI();
+  updateSeriesUI();
+  updateMeta();
+  setRepeatButtonVisibility();
+})();
+</script>
+</body>
+</html>
