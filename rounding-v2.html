@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Тренажёр округления v2</title>
 
-  <!-- Общий стиль сайта -->
   <link rel="stylesheet" href="style.css" />
-  <!-- Отдельный стиль только для v2 -->
   <link rel="stylesheet" href="rounding-v2.css" />
 </head>
 <body>
@@ -26,7 +24,7 @@
       <div class="rv2__row">
         <label class="rv2__label" for="roundTo">Округляем до:</label>
 
-        <select id="roundTo" class="rv2__select">
+        <select id="roundTo" class="rv2__select" aria-label="Выбор разряда округления">
           <option value="1">целых</option>
           <option value="10">десятков</option>
           <option value="100">сотен</option>
@@ -45,13 +43,17 @@
           <span>ОГЭ-режим</span>
         </label>
 
-        <button id="newBtn" class="rv2__btn">Новый пример</button>
+        <button id="newBtn" class="rv2__btn" type="button" aria-label="Сгенерировать новый пример">Новый пример</button>
       </div>
 
       <!-- Серия -->
       <div class="rv2__row rv2__row--series">
-        <button id="startSeriesBtn" class="rv2__btn rv2__btn--primary">Серия: 10 примеров</button>
-        <button id="resetSeriesBtn" class="rv2__btn rv2__btn--ghost" style="display:none;">Сбросить серию</button>
+        <button id="startSeriesBtn" class="rv2__btn rv2__btn--primary" type="button" aria-label="Запустить серию из 10 примеров">
+          Серия: 10 примеров
+        </button>
+        <button id="resetSeriesBtn" class="rv2__btn rv2__btn--ghost" type="button" style="display:none;" aria-label="Сбросить серию">
+          Сбросить серию
+        </button>
         <div id="seriesStatus" class="rv2__seriesStatus">Серия не запущена</div>
       </div>
 
@@ -62,13 +64,14 @@
 
       <div class="rv2__row rv2__row--answer">
         <label class="rv2__label" for="answer">Ответ:</label>
-        <input id="answer" class="rv2__input" inputmode="decimal" placeholder="например: 120 или 3,14" />
-        <button id="checkBtn" class="rv2__btn rv2__btn--primary">Проверить</button>
+        <input id="answer" class="rv2__input" inputmode="decimal" placeholder="например: 120 или 3,14" aria-label="Поле ввода ответа" />
+        <button id="checkBtn" class="rv2__btn rv2__btn--check" type="button" aria-label="Проверить ответ">Проверить</button>
+        <button id="nextBtn" class="rv2__btn rv2__btn--next" type="button" aria-label="Перейти к следующему примеру">Дальше</button>
       </div>
 
       <div class="rv2__row rv2__row--meta">
-        <button id="ruleBtn" class="rv2__btn rv2__btn--ghost">Напомнить правило</button>
-        <button id="solutionBtn" class="rv2__btn rv2__btn--ghost">Показать решение</button>
+        <button id="ruleBtn" class="rv2__btn rv2__btn--ghost" type="button">Напомнить правило</button>
+        <button id="solutionBtn" class="rv2__btn rv2__btn--ghost" type="button">Показать решение</button>
         <div class="rv2__score" id="score">0 / 0</div>
       </div>
 
@@ -80,6 +83,590 @@
           <li>Определи разряд, до которого округляешь.</li>
           <li>Посмотри на цифру справа от этого разряда:</li>
           <ul>
-            <li>0–4 → разряд
+            <li>0–4 → разряд не меняем.</li>
+            <li>5–9 → увеличиваем разряд на 1.</li>
+          </ul>
+          <li>Для целых: цифры справа заменяем нулями. Для дробных разрядов: оставляем нужное число знаков.</li>
+        </ol>
+      </details>
+
+      <div id="solutionBox" class="rv2__solution" style="display:none;"></div>
+
+      <div id="storageNote" class="rv2__storageNote" style="display:none;">
+        Прогресс не сохраняется (в этом режиме браузер запрещает хранилище). Это нормально — просто не закрывайте страницу.
+      </div>
+    </section>
+
+    <footer class="rv2__footer">
+      <p>Подсказка: ввод можно писать с запятой или точкой — тренажёр поймёт.</p>
+    </footer>
+  </main>
+
+<script>
+(() => {
+  const elRoundTo = document.getElementById('roundTo');
+  const elOgeMode = document.getElementById('ogeMode');
+  const elNew = document.getElementById('newBtn');
+  const elCheck = document.getElementById('checkBtn');
+  const elNext = document.getElementById('nextBtn');
+  const elAnswer = document.getElementById('answer');
+  const elTask = document.getElementById('taskText');
+  const elFeedback = document.getElementById('feedback');
+  const elScore = document.getElementById('score');
+  const elRuleBtn = document.getElementById('ruleBtn');
+  const elRuleBox = document.getElementById('ruleBox');
+  const elSolutionBtn = document.getElementById('solutionBtn');
+  const elSolutionBox = document.getElementById('solutionBox');
+  const elStorageNote = document.getElementById('storageNote');
+
+  // Серия
+  const elStartSeries = document.getElementById('startSeriesBtn');
+  const elResetSeries = document.getElementById('resetSeriesBtn');
+  const elSeriesStatus = document.getElementById('seriesStatus');
+
+  // Безопасный localStorage (Safari private / строгие режимы могут запрещать)
+  const STORAGE_KEY = 'roundingV2_state_v2';
+  const storage = (() => {
+    try {
+      const t = '__t';
+      localStorage.setItem(t, '1');
+      localStorage.removeItem(t);
+      return localStorage;
+    } catch {
+      return null;
+    }
+  })();
+
+  if (!storage) {
+    elStorageNote.style.display = 'block';
+  }
+
+  const loadState = () => {
+    if (!storage) return null;
+    try {
+      const raw = storage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  };
+
+  const saveState = () => {
+    if (!storage) return;
+    try {
+      storage.setItem(STORAGE_KEY, JSON.stringify({
+        // UI
+        roundTo: elRoundTo.value,
+        ogeMode: !!elOgeMode.checked,
+
+        // общий счёт
+        correct, total,
+
+        // серия
+        seriesActive, seriesDone, seriesCorrect,
+
+        // текущий пример
+        current,
+        taskAttempts,
+        taskSolved,
+
+        // чтобы не застревать на "Проверяю..."
+        checkLocked: false
+      }));
+    } catch {
+      // игнорируем
+    }
+  };
+
+  let current = null; // { n, step, label, displayN, displayAnswer }
+  let correct = 0;
+  let total = 0;
+
+  const SERIES_TARGET = 10;
+  let seriesActive = false;
+  let seriesDone = 0;
+  let seriesCorrect = 0;
+
+  // попытки по текущему примеру
+  let taskAttempts = 0;
+  let taskSolved = false;
+
+  // блокировка кнопки "Проверить"
+  let checkLocked = false;
+  const CHECK_LOCK_MS = 1500;
+  const CHECK_TEXT = 'Проверить';
+  const CHECK_TEXT_BUSY = 'Проверяю…';
+
+  const stepToLabel = (step) => {
+    const s = String(step);
+    const map = {
+      "1": "целых",
+      "10": "десятков",
+      "100": "сотен",
+      "1000": "тысяч",
+      "10000": "десятков тысяч",
+      "100000": "сотен тысяч",
+      "1000000": "миллионов",
+      "0.1": "десятых",
+      "0.01": "сотых",
+      "0.001": "тысячных"
+    };
+    return map[s] || `шага ${s}`;
+  };
+
+  const decimalsFromStep = (step) => {
+    if (step >= 1) return 0;
+    const s = String(step);
+    return s.includes('.') ? (s.split('.')[1].length) : 0;
+  };
+
+  // Чтобы была видна цифра справа от нужного разряда
+  const displayDecimalsForTask = (step) => {
+    const d = decimalsFromStep(step);
+    if (d === 0) return 0;
+    return d + 1; // до десятых -> 2 знака, до сотых -> 3, до тысячных -> 4
+  };
+
+  const applyMode = () => {
+    const oge = elOgeMode.checked;
+    const allowed = oge
+      ? new Set(["1", "10", "100", "1000", "0.1", "0.01", "0.001"])
+      : null;
+
+    for (const opt of elRoundTo.options) {
+      const show = !allowed || allowed.has(opt.value);
+      opt.hidden = !show;
+      opt.disabled = !show;
+    }
+
+    if (allowed && !allowed.has(elRoundTo.value)) {
+      elRoundTo.value = "1";
+    }
+  };
+
+  const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+  const formatNumberRu = (n, decimals) => {
+    const str = decimals > 0 ? n.toFixed(decimals) : String(n);
+    return str.replace('.', ',');
+  };
+
+  // нормализация ввода: пробелы, запятая->точка, ведущие нули
+  const normalizeInput = (s) => {
+    let t = (s || '').trim().replace(/\s+/g, '').replace(',', '.');
+    if (!t) return '';
+
+    // Разрешаем +/-
+    let sign = '';
+    if (t[0] === '+' || t[0] === '-') {
+      sign = t[0];
+      t = t.slice(1);
+    }
+
+    // split int/frac
+    const parts = t.split('.');
+    let intPart = parts[0] || '0';
+    const fracPart = parts[1] ?? null;
+
+    // убрать ведущие нули у целой части
+    intPart = intPart.replace(/^0+(?=\d)/, ''); // 0005 -> 5, но 0 -> 0
+
+    if (intPart === '') intPart = '0';
+
+    if (fracPart === null) {
+      return sign + intPart;
+    }
+
+    return sign + intPart + '.' + fracPart;
+  };
+
+  const roundSchool = (n, step) => {
+    return Math.round(n / step) * step;
+  };
+
+  const makeExample = (step) => {
+    const label = stepToLabel(step);
+    const dTask = displayDecimalsForTask(step);
+
+    let n;
+    if (step >= 1) {
+      if (step === 1) n = randInt(1, 999);
+      else if (step === 10) n = randInt(10, 9999);
+      else if (step === 100) n = randInt(100, 99999);
+      else if (step === 1000) n = randInt(1000, 999999);
+      else if (step === 10000) n = randInt(10000, 9999999);
+      else if (step === 100000) n = randInt(100000, 99999999);
+      else n = randInt(1000000, 999999999);
+
+      const ans = roundSchool(n, step);
+      return {
+        n, step, label,
+        displayN: formatNumberRu(n, 0),
+        displayAnswer: formatNumberRu(ans, 0)
+      };
+    } else {
+      const intPart = randInt(0, 999);
+      const scale = Math.pow(10, dTask);
+      const frac = randInt(0, scale - 1);
+      n = intPart + frac / scale;
+
+      const ans = roundSchool(n, step);
+      const dAns = decimalsFromStep(step);
+      return {
+        n, step, label,
+        displayN: formatNumberRu(n, dTask),
+        displayAnswer: formatNumberRu(ans, dAns)
+      };
+    }
+  };
+
+  const hintTextForCurrent = () => {
+    if (!current) return '';
+    const step = current.step;
+
+    if (step === 1) return 'Округляем до целых: смотрим на десятые. 0–4 → целая часть без изменений; 5–9 → +1.';
+    if (step === 10) return 'Округляем до десятков: смотрим на единицы. 0–4 → десятки не меняем; 5–9 → +1 десяток.';
+    if (step === 100) return 'Округляем до сотен: смотрим на десятки. 0–4 → сотни не меняем; 5–9 → +1 сотня.';
+    if (step === 1000) return 'Округляем до тысяч: смотрим на сотни. 0–4 → тысячи не меняем; 5–9 → +1 тысяча.';
+
+    if (step === 0.1) return 'Округляем до десятых: смотрим на сотые. 0–4 → десятые не меняем; 5–9 → +0,1.';
+    if (step === 0.01) return 'Округляем до сотых: смотрим на тысячные. 0–4 → сотые не меняем; 5–9 → +0,01.';
+    if (step === 0.001) return 'Округляем до тысячных: смотрим на десятитысячные. 0–4 → тысячные не меняем; 5–9 → +0,001.';
+
+    return 'Смотрим на цифру справа от разряда округления: 0–4 — не меняем, 5–9 — увеличиваем.';
+  };
+
+  const digitForExplanation = (n, step) => {
+    if (step >= 1) {
+      if (step === 1) return 0;
+      const k = Math.round(Math.log10(step));
+      const div = Math.pow(10, k - 1);
+      return Math.floor(n / div) % 10;
+    } else {
+      const d = decimalsFromStep(step);
+      const mult = Math.pow(10, d + 1);
+      return Math.floor(n * mult) % 10;
+    }
+  };
+
+  const placeNameRight = (step) => {
+    if (step >= 1) {
+      const map = {
+        1: "десятые",
+        10: "единицы",
+        100: "десятки",
+        1000: "сотни",
+        10000: "тысячи",
+        100000: "десятки тысяч",
+        1000000: "сотни тысяч"
+      };
+      return map[step] || "следующий разряд";
+    } else {
+      const map = {
+        0.1: "сотые",
+        0.01: "тысячные",
+        0.001: "десятитысячные"
+      };
+      return map[step] || "следующий разряд";
+    }
+  };
+
+  const setFeedback = (ok, text) => {
+    elFeedback.style.display = 'block';
+    elFeedback.className = 'rv2__feedback ' + (ok ? 'rv2__feedback--ok' : 'rv2__feedback--bad');
+    elFeedback.textContent = text;
+  };
+
+  const updateScore = () => {
+    elScore.textContent = `${correct} / ${total}`;
+  };
+
+  const updateSeriesUI = () => {
+    if (!seriesActive && seriesDone === 0) {
+      elSeriesStatus.textContent = 'Серия не запущена';
+      elResetSeries.style.display = 'none';
+      return;
+    }
+
+    const left = Math.max(0, SERIES_TARGET - seriesDone);
+
+    if (seriesActive) {
+      elSeriesStatus.textContent = `Серия: ${seriesDone}/${SERIES_TARGET} (осталось ${left}) • Верно: ${seriesCorrect}`;
+      elResetSeries.style.display = 'inline-flex';
+    } else {
+      elSeriesStatus.textContent = `Серия завершена: ${seriesCorrect}/${SERIES_TARGET} верно`;
+      elResetSeries.style.display = 'none';
+    }
+  };
+
+  const lockCheckTemporarily = () => {
+    checkLocked = true;
+    elCheck.disabled = true;
+    elCheck.textContent = CHECK_TEXT_BUSY;
+
+    window.setTimeout(() => {
+      checkLocked = false;
+      elCheck.disabled = false;
+      elCheck.textContent = CHECK_TEXT;
+      saveState();
+    }, CHECK_LOCK_MS);
+  };
+
+  const setSeriesControls = () => {
+    // чтобы серия была “режимом”, а не хаосом
+    elRoundTo.disabled = seriesActive;
+    elOgeMode.disabled = seriesActive;
+    elNew.disabled = seriesActive;
+  };
+
+  const setTaskStateDefault = () => {
+    taskAttempts = 0;
+    taskSolved = false;
+  };
+
+  const updateUI = () => {
+    if (!current) return;
+
+    elTask.textContent = `Округлите число ${current.displayN} до ${current.label}.`;
+    elFeedback.style.display = 'none';
+    elSolutionBox.style.display = 'none';
+    elSolutionBox.textContent = '';
+    elAnswer.value = '';
+    elAnswer.focus();
+
+    setTaskStateDefault();
+    saveState();
+  };
+
+  const newExample = () => {
+    const step = Number(elRoundTo.value);
+    current = makeExample(step);
+    updateUI();
+  };
+
+  const startSeries = () => {
+    seriesActive = true;
+    seriesDone = 0;
+    seriesCorrect = 0;
+    updateSeriesUI();
+    setSeriesControls();
+    setFeedback(true, 'Серия запущена ✅ Решайте и нажимайте «Дальше» для перехода.');
+    newExample();
+    saveState();
+  };
+
+  const resetSeries = () => {
+    seriesActive = false;
+    seriesDone = 0;
+    seriesCorrect = 0;
+    updateSeriesUI();
+    setSeriesControls();
+    setFeedback(true, 'Серия сброшена.');
+    saveState();
+  };
+
+  const finishSeriesIfNeeded = () => {
+    if (!seriesActive) return;
+    if (seriesDone >= SERIES_TARGET) {
+      seriesActive = false;
+      updateSeriesUI();
+      setSeriesControls();
+      setFeedback(true, `Серия завершена ✅ Результат: ${seriesCorrect}/${SERIES_TARGET}`);
+      saveState();
+    }
+  };
+
+  const checkAnswer = () => {
+    if (checkLocked) return;
+
+    if (!current) {
+      setFeedback(false, 'Сначала нажмите «Новый пример».');
+      return;
+    }
+
+    // блокируем кнопку + показываем "Проверяю..."
+    lockCheckTemporarily();
+
+    const userNorm = normalizeInput(elAnswer.value);
+    if (!userNorm) {
+      setFeedback(false, 'Введите ответ.');
+      return;
+    }
+
+    const userVal = Number(userNorm);
+    if (!Number.isFinite(userVal)) {
+      setFeedback(false, 'Ответ не распознан. Можно писать через запятую или точку.');
+      return;
+    }
+
+    const ansVal = Number(normalizeInput(current.displayAnswer));
+    const ok = Math.abs(userVal - ansVal) < 1e-9;
+
+    // общий счётчик попыток (как тренажёр)
+    total += 1;
+    if (ok) correct += 1;
+    updateScore();
+
+    // попытки по текущему примеру
+    taskAttempts += 1;
+    if (ok) taskSolved = true;
+
+    if (ok) {
+      setFeedback(true, 'Верно ✅');
+    } else {
+      // после 2 ошибок — короткая подсказка
+      if (taskAttempts >= 2) {
+        setFeedback(false, `Неверно ❌ Правильный ответ: ${current.displayAnswer}. Подсказка: ${hintTextForCurrent()}`);
+      } else {
+        setFeedback(false, `Неверно ❌ Попробуйте ещё раз.`);
+      }
+    }
+
+    saveState();
+  };
+
+  const nextExample = () => {
+    if (!current) {
+      // если ещё не было примера
+      newExample();
+      return;
+    }
+
+    // если серия активна — закрываем текущий пример как "один из 10"
+    if (seriesActive) {
+      seriesDone += 1;
+      if (taskSolved) seriesCorrect += 1;
+
+      updateSeriesUI();
+      saveState();
+      finishSeriesIfNeeded();
+
+      if (!seriesActive) {
+        // серия закончилась — не создаём новый пример автоматически
+        current = null;
+        elTask.textContent = 'Серия завершена. Нажмите «Серия: 10 примеров» или «Новый пример».';
+        elAnswer.value = '';
+        elAnswer.blur();
+        return;
+      }
+    }
+
+    newExample();
+  };
+
+  const toggleSolution = () => {
+    if (!current) return;
+
+    if (elSolutionBox.style.display === 'none') {
+      const step = current.step;
+      const d = digitForExplanation(current.n, step);
+      const rightPlace = placeNameRight(step);
+      const sign = (d >= 5) ? '≥ 5 → увеличиваем разряд слева' : '< 5 → оставляем без изменения';
+
+      elSolutionBox.style.display = 'block';
+      elSolutionBox.innerHTML =
+        `<div class="rv2__solutionTitle">Разбор</div>
+         <div>Смотрим на <b>${rightPlace}</b>: цифра <b>${d}</b>, значит ${sign}.</div>
+         <div class="rv2__solutionAnswer">Ответ: <b>${current.displayAnswer}</b></div>`;
+
+      // если ученик открыл решение — это почти "сдался", пусть кнопка "Дальше" будет логичным продолжением
+    } else {
+      elSolutionBox.style.display = 'none';
+      elSolutionBox.textContent = '';
+    }
+
+    saveState();
+  };
+
+  // события
+  elNew.addEventListener('click', () => {
+    if (seriesActive) {
+      setFeedback(false, 'Сейчас идёт серия. Используйте «Дальше» или «Сбросить серию».');
+      return;
+    }
+    newExample();
+  });
+
+  elCheck.addEventListener('click', checkAnswer);
+
+  elNext.addEventListener('click', nextExample);
+
+  elAnswer.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') checkAnswer();
+  });
+
+  elRuleBtn.addEventListener('click', () => {
+    elRuleBox.open = !elRuleBox.open;
+    elRuleBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  elSolutionBtn.addEventListener('click', toggleSolution);
+
+  elOgeMode.addEventListener('change', () => {
+    if (seriesActive) return;
+    applyMode();
+    saveState();
+  });
+
+  elRoundTo.addEventListener('change', () => {
+    if (seriesActive) return;
+    saveState();
+  });
+
+  elStartSeries.addEventListener('click', startSeries);
+  elResetSeries.addEventListener('click', resetSeries);
+
+  // старт: восстановление состояния
+  applyMode();
+
+  const saved = loadState();
+  if (saved) {
+    // восстанавливаем UI
+    if (typeof saved.ogeMode === 'boolean') elOgeMode.checked = saved.ogeMode;
+    applyMode();
+
+    if (typeof saved.roundTo === 'string') {
+      // если этот пункт скрыт в ОГЭ-режиме — уйдём в "1"
+      const optionExists = Array.from(elRoundTo.options).some(o => o.value === saved.roundTo && !o.disabled);
+      elRoundTo.value = optionExists ? saved.roundTo : "1";
+    }
+
+    // восстанавливаем счёт
+    if (Number.isFinite(saved.correct)) correct = saved.correct;
+    if (Number.isFinite(saved.total)) total = saved.total;
+
+    // серия
+    seriesActive = !!saved.seriesActive;
+    seriesDone = Number.isFinite(saved.seriesDone) ? saved.seriesDone : 0;
+    seriesCorrect = Number.isFinite(saved.seriesCorrect) ? saved.seriesCorrect : 0;
+
+    // текущий пример
+    if (saved.current && typeof saved.current === 'object') {
+      current = saved.current;
+      elTask.textContent = `Округлите число ${current.displayN} до ${current.label}.`;
+    }
+
+    taskAttempts = Number.isFinite(saved.taskAttempts) ? saved.taskAttempts : 0;
+    taskSolved = !!saved.taskSolved;
+
+    // показать последнее состояние
+    updateScore();
+    updateSeriesUI();
+    setSeriesControls();
+
+    // если пример был — фокус в поле
+    if (current) {
+      elAnswer.focus();
+    }
+  } else {
+    updateScore();
+    updateSeriesUI();
+    setSeriesControls();
+  }
+})();
+</script>
+</body>
+</html>
 
 
