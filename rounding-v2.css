@@ -70,14 +70,43 @@
   font-size: 15px;
   cursor: pointer;
   background: white;
+  transition: transform .05s ease, box-shadow .15s ease, background .15s ease;
+}
+
+.rv2__btn:hover {
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.rv2__btn:active {
+  transform: translateY(1px);
+}
+
+.rv2__btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .rv2__btn--primary {
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .rv2__btn--ghost {
   background: rgba(0,0,0,0.03);
+}
+
+.rv2__btn--check {
+  font-weight: 800;
+  border-color: rgba(0,0,0,0.24);
+  background: rgba(30, 108, 229, 0.10);
+}
+
+.rv2__btn--check:hover {
+  background: rgba(30, 108, 229, 0.16);
+}
+
+.rv2__btn--next {
+  background: rgba(0,0,0,0.04);
 }
 
 .rv2__task {
@@ -173,5 +202,15 @@
 
 .rv2__toggle input {
   transform: translateY(1px);
+}
+
+.rv2__storageNote {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px dashed rgba(0,0,0,0.18);
+  background: rgba(0,0,0,0.03);
+  font-size: 13px;
+  opacity: 0.85;
 }
 
