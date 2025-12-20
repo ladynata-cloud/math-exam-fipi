@@ -1,1 +1,615 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Тренажёр округления — v5</title>
+
+  <!-- ВАЖНО: автономные стили, без style.css -->
+  <link rel="stylesheet" href="rounding-fresh-v5.css?v=1" />
+</head>
+<body>
+  <main class="rf5">
+    <header class="rf5__header">
+      <h1 class="rf5__title">Тренажёр округления <span class="rf5__badge">v5</span></h1>
+      <p class="rf5__subtitle">Подсветка разрядов + стрелка + “нули снизу” (для округления целых).</p>
+      <p class="rf5__back"><a href="index.html">← На главную</a></p>
+    </header>
+
+    <section class="rf5__panel">
+      <div class="rf5__row">
+        <label class="rf5__label" for="targetSelect">Округляем:</label>
+        <select id="targetSelect" class="rf5__select"></select>
+
+        <label class="rf5__label" for="levelSelect">Уровень:</label>
+        <select id="levelSelect" class="rf5__select rf5__select--small">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
+
+        <label class="rf5__toggle" title="Иногда будут задачи “из жизни”">
+          <input type="checkbox" id="appliedToggle" checked />
+          <span>Прикладные</span>
+        </label>
+
+        <button id="newBtn" class="rf5__btn" type="button">Новый пример</button>
+      </div>
+
+      <div class="rf5__row rf5__row--series">
+        <div class="rf5__seriesLeft">
+          <span class="rf5__label">Серия:</span>
+          <input id="seriesSize" class="rf5__input rf5__input--tiny" type="number" min="5" max="30" value="10" />
+          <button id="startSeriesBtn" class="rf5__btn rf5__btn--primary" type="button">Старт</button>
+          <button id="stopSeriesBtn" class="rf5__btn rf5__btn--ghost" type="button" style="display:none;">Сброс</button>
+        </div>
+
+        <div class="rf5__seriesRight">
+          <div id="seriesText" class="rf5__seriesText">Серия не запущена</div>
+          <div class="rf5__bar" aria-hidden="true">
+            <div id="seriesBarFill" class="rf5__barFill" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rf5__stats">
+        <div class="rf5__stat">
+          <div class="rf5__statValue" id="statSolved">0</div>
+          <div class="rf5__statLabel">Проверок</div>
+        </div>
+        <div class="rf5__stat">
+          <div class="rf5__statValue" id="statCorrect">0</div>
+          <div class="rf5__statLabel">Верно</div>
+        </div>
+        <div class="rf5__stat">
+          <div class="rf5__statValue" id="statAccuracy">0%</div>
+          <div class="rf5__statLabel">Точность</div>
+        </div>
+        <div class="rf5__stat">
+          <div class="rf5__statValue" id="statStreak">0</div>
+          <div class="rf5__statLabel">Серия верных</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="rf5__card">
+      <div class="rf5__taskLabel">Задание</div>
+      <div id="taskText" class="rf5__taskText">Нажми «Новый пример» (или «Старт» для серии).</div>
+
+      <div id="guide" class="rf5__guide" hidden>
+        <div class="rf5__guideLabel">На что смотрим</div>
+        <div id="guideDigits" class="rf5__guideDigits"></div>
+        <div id="guideText" class="rf5__guideText"></div>
+      </div>
+
+      <div class="rf5__answerRow">
+        <label class="rf5__label" for="answerInput">Ответ:</label>
+        <input id="answerInput" class="rf5__input" inputmode="decimal" placeholder="например: 350 или 3,14" />
+        <button id="checkBtn" class="rf5__btn rf5__btn--check" type="button">Проверить</button>
+        <button id="nextBtn" class="rf5__btn rf5__btn--next" type="button">Дальше</button>
+      </div>
+
+      <div class="rf5__actions">
+        <button id="hintBtn" class="rf5__btn rf5__btn--ghost" type="button">Подсказка</button>
+        <button id="solutionBtn" class="rf5__btn rf5__btn--ghost" type="button">Решение</button>
+        <button id="resetProgressBtn" class="rf5__btn rf5__btn--ghost" type="button">Сбросить прогресс</button>
+      </div>
+
+      <div id="message" class="rf5__message" aria-live="polite" style="display:none;"></div>
+      <div id="solutionBox" class="rf5__solution" style="display:none;"></div>
+
+      <div id="storageNote" class="rf5__storageNote" style="display:none;">
+        Прогресс не сохраняется (браузер запретил хранилище). Ничего страшного — просто не закрывайте страницу.
+      </div>
+    </section>
+
+    <details class="rf5__rules">
+      <summary>Правило округления (коротко)</summary>
+      <div class="rf5__rulesBody">
+        <ol>
+          <li>Определи разряд, <b>до которого округляешь</b>.</li>
+          <li>Посмотри на цифру <b>справа</b> от этого разряда.</li>
+          <li>Если справа <b>0–4</b> — разряд не меняем.</li>
+          <li>Если справа <b>5–9</b> — увеличиваем разряд на 1.</li>
+          <li>Для целых: цифры справа становятся нулями. Для десятичных: лишние знаки справа отбрасываем.</li>
+        </ol>
+      </div>
+    </details>
+  </main>
+
+<script>
+(() => {
+  "use strict";
+
+  const BASE_SCALE = 10000;
+  const BASE_DECIMALS = 4;
+  const STORAGE_KEY = "rounding_fresh_v5_state";
+  const CHECK_LOCK_MS = 1100;
+  const APPLIED_PROB = 0.22;
+
+  const $ = (id) => document.getElementById(id);
+
+  const el = {
+    targetSelect: $("targetSelect"),
+    levelSelect: $("levelSelect"),
+    appliedToggle: $("appliedToggle"),
+    newBtn: $("newBtn"),
+
+    seriesSize: $("seriesSize"),
+    startSeriesBtn: $("startSeriesBtn"),
+    stopSeriesBtn: $("stopSeriesBtn"),
+    seriesText: $("seriesText"),
+    seriesBarFill: $("seriesBarFill"),
+
+    statSolved: $("statSolved"),
+    statCorrect: $("statCorrect"),
+    statAccuracy: $("statAccuracy"),
+    statStreak: $("statStreak"),
+
+    taskText: $("taskText"),
+    guide: $("guide"),
+    guideDigits: $("guideDigits"),
+    guideText: $("guideText"),
+
+    answerInput: $("answerInput"),
+    checkBtn: $("checkBtn"),
+    nextBtn: $("nextBtn"),
+
+    hintBtn: $("hintBtn"),
+    solutionBtn: $("solutionBtn"),
+    resetProgressBtn: $("resetProgressBtn"),
+
+    message: $("message"),
+    solutionBox: $("solutionBox"),
+    storageNote: $("storageNote"),
+  };
+
+  // localStorage safe
+  const storage = (() => {
+    try {
+      const t = "__t";
+      localStorage.setItem(t, "1");
+      localStorage.removeItem(t);
+      return localStorage;
+    } catch { return null; }
+  })();
+  if (!storage) el.storageNote.style.display = "block";
+
+  const safeLoad = () => {
+    if (!storage) return null;
+    try {
+      const raw = storage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch { return null; }
+  };
+  const safeSave = (obj) => {
+    if (!storage) return;
+    try { storage.setItem(STORAGE_KEY, JSON.stringify(obj)); } catch {}
+  };
+
+  const TARGETS = [
+    { id: "tens",        label: "до десятков",        step: 10,    decimalsAnswer: 0 },
+    { id: "hundreds",    label: "до сотен",          step: 100,   decimalsAnswer: 0 },
+    { id: "thousands",   label: "до тысяч",          step: 1000,  decimalsAnswer: 0 },
+    { id: "units",       label: "до целых",          step: 1,     decimalsAnswer: 0 },
+    { id: "tenths",      label: "до десятых",        step: 0.1,   decimalsAnswer: 1 },
+    { id: "hundredths",  label: "до сотых",          step: 0.01,  decimalsAnswer: 2 },
+    { id: "thousandths", label: "до тысячных",       step: 0.001, decimalsAnswer: 3 },
+  ];
+
+  const fillTargetSelect = () => {
+    el.targetSelect.innerHTML = "";
+    for (const t of TARGETS) {
+      const opt = document.createElement("option");
+      opt.value = t.id;
+      opt.textContent = t.label;
+      el.targetSelect.appendChild(opt);
+    }
+  };
+  const getTarget = (id) => TARGETS.find(t => t.id === id) || TARGETS[0];
+
+  let stats = { solved: 0, correct: 0, streak: 0 };
+  let series = { active: false, size: 10, index: 0, correct: 0 };
+  let current = null;
+  let locked = false;
+
+  const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+  const scaledToStringRu = (scaled, decimals) => {
+    const abs = Math.abs(scaled);
+    const intPart = Math.floor(abs / BASE_SCALE);
+    const frac = abs % BASE_SCALE;
+    if (decimals <= 0) return String(intPart);
+    const fracStrFull = String(frac).padStart(BASE_DECIMALS, "0");
+    return `${intPart},${fracStrFull.slice(0, decimals)}`;
+  };
+
+  const normalizeInput = (s) => {
+    let t = (s || "").trim().replace(/\s+/g, "").replace(",", ".");
+    if (!t) return "";
+    if (t[0] === "+") t = t.slice(1);
+    if (t[0] === "-") return "NEGATIVE_NOT_ALLOWED";
+    if (!/^\d+(\.\d+)?$/.test(t)) return "BAD_FORMAT";
+    const parts = t.split(".");
+    let intPart = (parts[0] || "0").replace(/^0+(?=\d)/, "");
+    if (intPart === "") intPart = "0";
+    const frac = parts[1] ?? null;
+    return frac === null ? intPart : (intPart + "." + frac);
+  };
+
+  const parseToScaled = (inputNorm, allowedDecimals) => {
+    const parts = inputNorm.split(".");
+    const intVal = parseInt(parts[0], 10);
+    if (!Number.isFinite(intVal)) return { ok: false };
+    const fracRaw = parts[1] || "";
+
+    let extraNonZero = false;
+    if (fracRaw.length > allowedDecimals) {
+      extraNonZero = [...fracRaw.slice(allowedDecimals)].some(ch => ch !== "0");
+    }
+
+    const fracPadded = (fracRaw + "0".repeat(BASE_DECIMALS)).slice(0, BASE_DECIMALS);
+    const fracVal = parseInt(fracPadded || "0", 10);
+    const scaled = intVal * BASE_SCALE + (Number.isFinite(fracVal) ? fracVal : 0);
+    return { ok: true, scaled, extraNonZero };
+  };
+
+  const stepToScaled = (step) => Math.round(step * BASE_SCALE);
+  const rightPlaceScaled = (stepScaled) => Math.floor(stepScaled / 10);
+  const digitAt = (nScaled, placeScaled) => Math.floor(nScaled / placeScaled) % 10;
+
+  const roundName = (id) => ({
+    tens: "десятки", hundreds: "сотни", thousands: "тысячи",
+    units: "целые", tenths: "десятые", hundredths: "сотые", thousandths: "тысячные"
+  }[id] || "разряд");
+
+  const rightName = (id) => ({
+    tens: "единицы", hundreds: "десятки", thousands: "сотни",
+    units: "десятые", tenths: "сотые", hundredths: "тысячные", thousandths: "десятитысячные"
+  }[id] || "следующий разряд");
+
+  const getRange = (target, level) => {
+    const lvl = Number(level) || 1;
+    const step = target.step;
+    if (step === 10)   return lvl === 1 ? [10,99] : (lvl === 2 ? [100,999] : [1000,9999]);
+    if (step === 100)  return lvl === 1 ? [100,999] : (lvl === 2 ? [1000,9999] : [10000,99999]);
+    if (step === 1000) return lvl === 1 ? [1000,9999] : (lvl === 2 ? [10000,99999] : [100000,999999]);
+    if (step <= 1)     return lvl === 1 ? [0,99] : (lvl === 2 ? [0,999] : [0,9999]);
+    return [1,999];
+  };
+
+  const appliedText = (displayN, targetLabel, isInt) => {
+    const ints = [
+      (x) => `Цена товара ${x} руб. Округлите ${targetLabel} для быстрой оценки.`,
+      (x) => `Расстояние ${x} км. Округлите ${targetLabel}.`,
+      (x) => `В зале ${x} зрителей. Округлите ${targetLabel}.`,
+    ];
+    const decs = [
+      (x) => `Длина доски ${x} м. Округлите ${targetLabel}.`,
+      (x) => `Масса товара ${x} кг. Округлите ${targetLabel}.`,
+    ];
+    const pool = isInt ? ints : decs;
+    return pool[randInt(0, pool.length - 1)](displayN);
+  };
+
+  const digitIndexFromPlace = (placeScaled, intLen) => {
+    if (placeScaled >= BASE_SCALE) {
+      const k = Math.round(Math.log10(placeScaled / BASE_SCALE)); // 1->0, 10->1...
+      return intLen - 1 - k;
+    } else {
+      const d = Math.round(Math.log10(BASE_SCALE / placeScaled)); // tenths:1, hundredths:2...
+      return intLen + 1 + (d - 1);
+    }
+  };
+
+  const renderGuide = () => {
+    if (!current) { el.guide.hidden = true; return; }
+
+    const intPart = Math.floor(current.nScaled / BASE_SCALE);
+    const frac = current.nScaled % BASE_SCALE;
+
+    const intStr = String(intPart);
+    const fracStrFull = String(frac).padStart(BASE_DECIMALS, "0");
+    const fracStr = current.decimalsInTask > 0 ? fracStrFull.slice(0, current.decimalsInTask) : "";
+    const full = fracStr ? `${intStr},${fracStr}` : intStr;
+
+    const roundIdx = digitIndexFromPlace(current.roundPlaceScaled, intStr.length);
+    const lookIdx  = digitIndexFromPlace(current.lookPlaceScaled,  intStr.length);
+
+    let html = "";
+    for (let i = 0; i < full.length; i++) {
+      const ch = full[i];
+      let cls = "rf5__d";
+      if (ch === ",") cls += " rf5__d--comma";
+      else {
+        if (i === roundIdx) cls += " rf5__d--round";
+        if (i === lookIdx)  cls += " rf5__d--look";
+        if (i > roundIdx)   cls += (current.turnToZero ? " rf5__d--tozero" : " rf5__d--drop");
+      }
+      html += `<span class="${cls}">${ch}</span>`;
+    }
+
+    el.guide.hidden = false;
+    el.guideDigits.innerHTML = html;
+
+    const rule = current.lookDigit >= 5 ? "Цифра ≥ 5 → увеличиваем разряд." : "Цифра < 5 → разряд не меняем.";
+    const tail = current.turnToZero ? "Справа будут нули (0 показаны снизу)." : "Лишние знаки справа отбрасываем.";
+    el.guideText.textContent = `Синий — разряд (${current.roundName}). Оранжевый — смотрим на ${current.rightName}: цифра ${current.lookDigit}. ${rule} ${tail}`;
+  };
+
+  const generateTask = () => {
+    const target = getTarget(el.targetSelect.value);
+    const level = el.levelSelect.value;
+
+    const stepScaled = stepToScaled(target.step);
+    const allowedDecimals = target.decimalsAnswer;
+
+    let decimalsInTask;
+    if (target.id === "units") decimalsInTask = Math.random() < 0.5 ? 1 : 2;
+    else if (target.step < 1)  decimalsInTask = Math.min(BASE_DECIMALS, allowedDecimals + 1);
+    else                       decimalsInTask = 0;
+
+    const [minInt, maxInt] = getRange(target, level);
+
+    let nScaled;
+    if (decimalsInTask === 0) {
+      let n = randInt(minInt, maxInt);
+      if (target.step >= 10 && n % target.step === 0) n += 1;
+      nScaled = n * BASE_SCALE;
+    } else {
+      const intPart = randInt(minInt, maxInt);
+      const denom = Math.pow(10, decimalsInTask);
+      const frac = randInt(0, denom - 1);
+      const shift = Math.pow(10, BASE_DECIMALS - decimalsInTask);
+      nScaled = intPart * BASE_SCALE + frac * shift;
+    }
+
+    const answerScaled = Math.round(nScaled / stepScaled) * stepScaled;
+
+    const displayN = scaledToStringRu(nScaled, decimalsInTask);
+    const displayAnswer = scaledToStringRu(answerScaled, allowedDecimals);
+
+    const useApplied = el.appliedToggle.checked && Math.random() < APPLIED_PROB;
+    const prompt = useApplied
+      ? appliedText(displayN, target.label, target.step >= 1)
+      : `Округлите число ${displayN} ${target.label}.`;
+
+    const lookPlace = rightPlaceScaled(stepScaled);
+    const lookDigit = digitAt(nScaled, lookPlace);
+
+    return {
+      targetId: target.id,
+      targetLabel: target.label,
+      allowedDecimals,
+      decimalsInTask,
+      nScaled,
+      answerScaled,
+      displayAnswer,
+      prompt,
+
+      roundPlaceScaled: stepScaled,
+      lookPlaceScaled: lookPlace,
+      roundName: roundName(target.id),
+      rightName: rightName(target.id),
+      lookDigit,
+
+      turnToZero: target.step >= 10,
+      attempts: 0,
+      solved: false,
+    };
+  };
+
+  const setMessage = (text, kind) => {
+    if (!text) { el.message.style.display = "none"; return; }
+    el.message.style.display = "block";
+    el.message.textContent = text;
+    el.message.className = "rf5__message " + (kind ? `rf5__message--${kind}` : "");
+  };
+
+  const updateStatsUI = () => {
+    el.statSolved.textContent = String(stats.solved);
+    el.statCorrect.textContent = String(stats.correct);
+    el.statAccuracy.textContent = stats.solved ? `${Math.round((stats.correct / stats.solved) * 100)}%` : "0%";
+    el.statStreak.textContent = String(stats.streak);
+  };
+
+  const updateSeriesUI = () => {
+    if (!series.active) {
+      el.seriesText.textContent = "Серия не запущена";
+      el.seriesBarFill.style.width = "0%";
+      el.stopSeriesBtn.style.display = "none";
+      return;
+    }
+    const done = series.index, total = series.size, left = Math.max(0, total - done);
+    el.seriesText.textContent = `Задание ${Math.min(done + 1, total)} из ${total} • Верно: ${series.correct} • Осталось: ${left}`;
+    el.seriesBarFill.style.width = `${Math.round((done / total) * 100)}%`;
+    el.stopSeriesBtn.style.display = "inline-flex";
+  };
+
+  const persist = () => safeSave({
+    targetId: el.targetSelect.value,
+    level: el.levelSelect.value,
+    applied: !!el.appliedToggle.checked,
+    stats, series, current
+  });
+
+  const restore = () => {
+    const saved = safeLoad();
+    if (!saved) return;
+    if (typeof saved.targetId === "string") el.targetSelect.value = saved.targetId;
+    if (typeof saved.level === "string") el.levelSelect.value = saved.level;
+    if (typeof saved.applied === "boolean") el.appliedToggle.checked = saved.applied;
+
+    if (saved.stats) stats = { ...stats, ...saved.stats };
+    if (saved.series) series = { ...series, ...saved.series };
+
+    if (saved.current && Number.isFinite(saved.current.nScaled)) {
+      current = saved.current;
+      el.taskText.textContent = current.prompt;
+      renderGuide();
+    }
+
+    updateStatsUI();
+    updateSeriesUI();
+  };
+
+  const setLocked = (v) => {
+    locked = v;
+    el.checkBtn.disabled = v;
+    el.checkBtn.textContent = v ? "Проверяю…" : "Проверить";
+  };
+
+  const newTask = () => {
+    current = generateTask();
+    el.taskText.textContent = current.prompt;
+    el.answerInput.value = "";
+    el.answerInput.focus();
+    el.solutionBox.style.display = "none";
+    el.solutionBox.innerHTML = "";
+    el.message.style.display = "none";
+    renderGuide();
+    persist();
+  };
+
+  const startSeries = () => {
+    const size = Math.max(5, Math.min(30, Number(el.seriesSize.value) || 10));
+    series = { active: true, size, index: 0, correct: 0 };
+    updateSeriesUI();
+    setMessage("Серия запущена ✅ Решай и жми «Дальше».", "ok");
+    newTask();
+  };
+
+  const stopSeries = () => {
+    series = { active: false, size: 10, index: 0, correct: 0 };
+    updateSeriesUI();
+    setMessage("Серия сброшена.", "info");
+    persist();
+  };
+
+  const hintText = () => {
+    if (!current) return "";
+    return `Подсказка: округляем ${current.targetLabel} → смотрим на ${current.rightName}. 0–4 → не меняем; 5–9 → увеличиваем.`;
+  };
+
+  const solutionHTML = () => {
+    if (!current) return "";
+    const d = current.lookDigit;
+    const rule = d >= 5 ? `Цифра ${d} ≥ 5 → увеличиваем разряд.` : `Цифра ${d} < 5 → разряд не меняем.`;
+    return `<div class="rf5__solutionTitle">Разбор</div>
+      <div>Округляем <b>${current.targetLabel}</b>.</div>
+      <div>Смотрим на <b>${current.rightName}</b>: цифра <b>${d}</b>.</div>
+      <div>${rule}</div>
+      <div class="rf5__solutionAnswer">Ответ: <b>${current.displayAnswer}</b></div>`;
+  };
+
+  const checkAnswer = () => {
+    if (locked) return;
+    if (!current) { setMessage("Сначала нажми «Новый пример».", "info"); return; }
+
+    setLocked(true);
+    setTimeout(() => setLocked(false), CHECK_LOCK_MS);
+
+    const norm = normalizeInput(el.answerInput.value);
+    if (norm === "NEGATIVE_NOT_ALLOWED") { setMessage("Тренируем округление для положительных чисел 🙂", "bad"); return; }
+    if (norm === "BAD_FORMAT" || !norm) { setMessage("Введите число (можно с запятой или точкой).", "info"); return; }
+
+    const parsed = parseToScaled(norm, current.allowedDecimals);
+    if (!parsed.ok) { setMessage("Не получилось прочитать ответ.", "bad"); return; }
+    if (parsed.extraNonZero) { setMessage("Ответ ещё не округлён (лишние цифры после запятой).", "bad"); return; }
+
+    current.attempts += 1;
+    const ok = (parsed.scaled === current.answerScaled);
+
+    stats.solved += 1;
+    if (ok) {
+      if (!current.solved) { current.solved = true; stats.correct += 1; }
+      stats.streak += 1;
+      setMessage("Верно ✅", "ok");
+    } else {
+      stats.streak = 0;
+      if (current.attempts >= 3) {
+        setMessage(`Неверно ❌ Правильный ответ: ${current.displayAnswer}`, "bad");
+        el.solutionBox.style.display = "block";
+        el.solutionBox.innerHTML = solutionHTML();
+      } else if (current.attempts >= 2) {
+        setMessage("Неверно ❌ " + hintText(), "bad");
+      } else {
+        setMessage("Неверно ❌ Попробуй ещё раз.", "bad");
+      }
+    }
+
+    updateStatsUI();
+    persist();
+  };
+
+  const nextTask = () => {
+    if (!current) { newTask(); return; }
+
+    if (series.active) {
+      series.index += 1;
+      if (current.solved) series.correct += 1;
+      updateSeriesUI();
+
+      if (series.index >= series.size) {
+        series.active = false;
+        updateSeriesUI();
+        setMessage(`Серия завершена ✅ Результат: ${series.correct}/${series.size}`, "ok");
+        current = null;
+        el.taskText.textContent = "Серия завершена. Нажми «Старт» или «Новый пример».";
+        el.answerInput.value = "";
+        el.answerInput.blur();
+        el.guide.hidden = true;
+        persist();
+        return;
+      }
+    }
+
+    newTask();
+  };
+
+  const resetProgress = () => {
+    const ok = confirm("Сбросить прогресс этого тренажёра?");
+    if (!ok) return;
+    stats = { solved: 0, correct: 0, streak: 0 };
+    series = { active: false, size: 10, index: 0, correct: 0 };
+    current = null;
+    updateStatsUI(); updateSeriesUI();
+    el.taskText.textContent = "Прогресс сброшен. Нажми «Новый пример».";
+    el.answerInput.value = "";
+    el.guide.hidden = true;
+    el.message.style.display = "none";
+    el.solutionBox.style.display = "none";
+    el.solutionBox.innerHTML = "";
+    if (storage) { try { storage.removeItem(STORAGE_KEY); } catch {} }
+  };
+
+  // events
+  el.newBtn.addEventListener("click", newTask);
+  el.startSeriesBtn.addEventListener("click", startSeries);
+  el.stopSeriesBtn.addEventListener("click", stopSeries);
+  el.checkBtn.addEventListener("click", checkAnswer);
+  el.nextBtn.addEventListener("click", nextTask);
+  el.answerInput.addEventListener("keydown", (e) => { if (e.key === "Enter") checkAnswer(); });
+  el.hintBtn.addEventListener("click", () => { if (current) setMessage(hintText(), "info"); });
+  el.solutionBtn.addEventListener("click", () => {
+    if (!current) return;
+    if (el.solutionBox.style.display === "none") { el.solutionBox.style.display = "block"; el.solutionBox.innerHTML = solutionHTML(); }
+    else { el.solutionBox.style.display = "none"; el.solutionBox.innerHTML = ""; }
+  });
+  el.resetProgressBtn.addEventListener("click", resetProgress);
+  el.targetSelect.addEventListener("change", () => { persist(); if (current) renderGuide(); });
+  el.levelSelect.addEventListener("change", persist);
+  el.appliedToggle.addEventListener("change", persist);
+
+  // init
+  fillTargetSelect();
+  el.targetSelect.value = "tens";
+  restore();
+  updateStatsUI();
+  updateSeriesUI();
+})();
+</script>
+</body>
+</html>
 
