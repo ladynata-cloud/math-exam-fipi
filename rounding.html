@@ -66,6 +66,51 @@
             font-size: 0.875rem;
             margin-top: 0.5rem;
         }
+
+        /* ===== AI Helper (Cloudflare Workers AI) ===== */
+        .ai-tutor {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: rgba(67, 97, 238, 0.05);
+            border-radius: var(--radius);
+            border: 1px solid rgba(67, 97, 238, 0.12);
+        }
+
+        .ai-tutor .ai-title {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .ai-controls {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+
+        .ai-textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #d6d6e6;
+            background: #fff;
+            resize: vertical;
+        }
+
+        .ai-answer {
+            margin-top: 0.75rem;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(67, 97, 238, 0.15);
+            background: #ffffff;
+            white-space: pre-wrap;
+        }
+
+        .ai-note {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
     </style>
 </head>
 <body>
@@ -171,6 +216,31 @@
                     📝 Решение
                 </button>
             </div>
+
+            <!-- AI Helper -->
+            <section class="ai-tutor" id="aiTutor">
+                <div class="ai-title">🤖 ИИ-помощник</div>
+
+                <div class="ai-controls">
+                    <button id="aiHintBtn" class="btn btn-secondary" type="button">
+                        🤖 Подсказка
+                    </button>
+                    <button id="aiExplainBtn" class="btn btn-secondary" type="button" disabled>
+                        🤖 Объясни ошибку
+                    </button>
+                    <button id="aiSolutionBtn" class="btn btn-secondary" type="button">
+                        🤖 Решение
+                    </button>
+                </div>
+
+                <textarea id="aiQuestion" class="ai-textarea" rows="2" placeholder="Можно написать вопрос (не обязательно)"></textarea>
+
+                <div id="aiAnswerBox" class="ai-answer" style="display:none" aria-live="polite"></div>
+
+                <div class="ai-note">
+                    ИИ даёт подсказки и объяснения. В режиме «Подсказка» ответ не должен раскрываться.
+                </div>
+            </section>
         </main>
 
         <!-- Rules -->
@@ -200,6 +270,92 @@
         let currentStreak = 0;
         let bestStreak = 0;
         let isButtonLocked = false;
+
+        // ===== AI (Cloudflare Workers AI) =====
+        const AI_ENDPOINT = "https://mathexam-ai.ladynata3000.workers.dev/api/tutor";
+        let attemptsThisTask = 0;
+        let lastUserAnswerRaw = "";
+        let aiExplainAvailable = false;
+        let aiBusy = false;
+
+        function resetAIUI(clearAnswer = true) {
+            attemptsThisTask = 0;
+            lastUserAnswerRaw = "";
+            aiExplainAvailable = false;
+
+            const explainBtn = document.getElementById('aiExplainBtn');
+            if (explainBtn) explainBtn.disabled = true;
+
+            const box = document.getElementById('aiAnswerBox');
+            if (box && clearAnswer) {
+                box.style.display = 'none';
+                box.textContent = '';
+            }
+        }
+
+        function setAIButtonsDisabled(disabled) {
+            const hintBtn = document.getElementById('aiHintBtn');
+            const explainBtn = document.getElementById('aiExplainBtn');
+            const solutionBtn = document.getElementById('aiSolutionBtn');
+
+            if (hintBtn) hintBtn.disabled = disabled;
+            if (solutionBtn) solutionBtn.disabled = disabled;
+            if (explainBtn) explainBtn.disabled = disabled || !aiExplainAvailable;
+        }
+
+        function buildAITaskPayload(mode, reveal) {
+            if (!currentExample) return null;
+
+            return {
+                topic: "rounding",
+                question: `Округлите число ${currentExample.displayNumber} ${currentExample.type.name}.`,
+                number: String(currentExample.number),
+                roundTo: String(currentExample.type.roundTo),
+                userAnswer: lastUserAnswerRaw,
+                attempts: attemptsThisTask,
+                reveal: !!reveal,
+                correctAnswer: String(currentExample.correctAnswer),
+                teacherNotes: "Если reveal=false, не называй финальный ответ. Дай 1–2 шага и вопрос ученику."
+            };
+        }
+
+        async function callAI(mode) {
+            if (!currentExample) return;
+            if (aiBusy) return;
+
+            const reveal = (mode === 'solution');
+            const task = buildAITaskPayload(mode, reveal);
+            if (!task) return;
+
+            const userText = (document.getElementById('aiQuestion')?.value || '').trim();
+
+            const box = document.getElementById('aiAnswerBox');
+            if (box) {
+                box.style.display = 'block';
+                box.textContent = '…думаю';
+            }
+
+            aiBusy = true;
+            setAIButtonsDisabled(true);
+
+            try {
+                const resp = await fetch(AI_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ mode, task, userText })
+                });
+
+                const data = await resp.json();
+                if (!data.ok) throw new Error(data.error || 'AI error');
+
+                if (box) box.textContent = data.text;
+            } catch (e) {
+                if (box) box.textContent = 'ИИ временно недоступен. Попробуйте ещё раз.';
+            } finally {
+                aiBusy = false;
+                setAIButtonsDisabled(false);
+            }
+        }
 
         // ===== CATEGORY CONFIG =====
         const categories = {
@@ -346,7 +502,10 @@
             document.getElementById('nextBtn').style.display = 'none';
             document.getElementById('solutionBtn').style.display = 'none';
             isButtonLocked = false;
-            
+
+            // Reset AI helper
+            resetAIUI(true);
+
             // Focus input
             setTimeout(() => {
                 document.getElementById('userAnswer').focus();
@@ -434,6 +593,10 @@
             
             if (!validateInput(value)) return;
             
+            // Store attempt for AI helper
+            lastUserAnswerRaw = value;
+            attemptsThisTask += 1;
+
             // Parse answer
             const normalized = value.replace(',', '.');
             const userAnswer = parseFloat(normalized);
@@ -441,7 +604,12 @@
             // Check correctness with tolerance
             const tolerance = currentExample.type.roundTo < 1 ? 0.0001 : 0.1;
             const isCorrect = Math.abs(userAnswer - currentExample.correctAnswer) < tolerance;
-            
+
+            // AI helper: enable "Explain error" only after wrong answer
+            aiExplainAvailable = !isCorrect;
+            const aiExplainBtn = document.getElementById("aiExplainBtn");
+            if (aiExplainBtn) aiExplainBtn.disabled = aiBusy || isCorrect;
+
             // Update stats
             totalAttempts++;
             if (isCorrect) {
@@ -601,6 +769,11 @@
                 hint.textContent = hintText;
                 hint.style.display = 'block';
             });
+
+            // AI helper buttons
+            document.getElementById('aiHintBtn').addEventListener('click', () => callAI('hint'));
+            document.getElementById('aiExplainBtn').addEventListener('click', () => callAI('explain'));
+            document.getElementById('aiSolutionBtn').addEventListener('click', () => callAI('solution'));
             
             // Rules toggle
             document.getElementById('rulesToggle').addEventListener('click', function() {
@@ -620,3 +793,4 @@
     </script>
 </body>
 </html>
+
