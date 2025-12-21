@@ -1,1 +1,779 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Тренажёр: торможение и прыжки (лесенка и деление)</title>
+
+  <!-- Если файл в папке trainers/, а style.css в корне репозитория: -->
+  <link rel="stylesheet" href="../style.css">
+
+  <style>
+    :root { --bg:#f7f7fb; --card:#fff; --text:#111; --muted:#666; --accent:#2b6cb0; --bad:#b00020; --good:#0a7a28; }
+    body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--text); }
+    .container { max-width: 980px; margin: 0 auto; padding: 16px; }
+    .card { background:var(--card); border-radius: 14px; padding: 16px; box-shadow: 0 4px 14px rgba(0,0,0,.06); }
+    .row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+    h1 { font-size: 22px; margin: 0 0 10px; }
+    .small { color:var(--muted); font-size: 14px; }
+    .task { font-size: 18px; line-height: 1.45; }
+    input[type="text"] { font-size: 18px; padding: 10px 12px; border-radius: 10px; border: 1px solid #d0d4dc; min-width: 160px; }
+    select { font-size:16px; padding:10px 12px; border-radius:10px; border:1px solid #d0d4dc; }
+    button { font-size: 16px; padding: 10px 12px; border-radius: 10px; border: 1px solid #d0d4dc; background: #fff; cursor:pointer; }
+    button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    button:disabled { opacity:.55; cursor:not-allowed; }
+    .badge { padding: 2px 8px; border-radius: 999px; background: #eef2ff; font-size: 13px; }
+    .feedback { margin-top: 10px; padding: 10px 12px; border-radius: 10px; background: #f0f7ff; border: 1px solid #d6e9ff; }
+    .feedback.good { background: #f2fff5; border-color: #ccefd4; color: var(--good); }
+    .feedback.bad { background: #fff3f3; border-color: #ffd2d2; color: var(--bad); }
+    details { margin-top: 10px; }
+    pre { white-space: pre-wrap; background:#0b1020; color:#eef; padding: 12px; border-radius: 12px; overflow:auto; }
+    table { border-collapse: collapse; width: 100%; }
+    td, th { border-bottom: 1px solid #eceff4; padding: 8px; text-align:left; vertical-align: middle; }
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size: .95em; background:#eef1f6; padding: 2px 6px; border-radius: 6px; }
+    hr { border:none;border-top:1px solid #eceff4;margin:14px 0; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .stepbox { margin-top: 12px; padding: 12px; border-radius: 12px; border: 1px dashed #cbd5e1; background: #fbfdff; }
+    .pill { display:inline-block; padding:2px 10px; border-radius:999px; background:#eef1f6; font-size:13px; }
+    .okcell { color: var(--good); font-weight: 700; }
+    .lock { opacity:.85; }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="row" style="justify-content:space-between;">
+        <div>
+          <h1>Тренажёр ОГЭ: торможение и прыжки — “лесенка” и “деление”</h1>
+          <div class="small">Без “тем”. Просто повторяем одно действие и аккуратно считаем.</div>
+        </div>
+        <a href="../index.html" class="small">← На главную</a>
+      </div>
+
+      <hr>
+
+      <div class="row">
+        <label class="small">Режим:</label>
+        <select id="mode">
+          <option value="fixed">Ваши 4 задачи (1–4)</option>
+          <option value="mix">Смешанный (рандом)</option>
+          <option value="brake">Только торможение</option>
+          <option value="bounce">Только прыжки</option>
+        </select>
+
+        <label class="small" style="display:flex;align-items:center;gap:8px;">
+          <input type="checkbox" id="stepMode" checked>
+          Пошагово (с таблицей)
+        </label>
+
+        <button id="btnNew" class="primary">Новый пример</button>
+        <button id="btnHow">Как решать</button>
+        <span class="badge" id="stat">0 решено · 0% · ср. 0.0 с</span>
+      </div>
+
+      <div id="how" class="feedback" style="display:none;">
+        <b>Как решать (по-простому)</b>
+        <ul style="margin:8px 0 0 18px;">
+          <li><b>Торможение</b>: каждую секунду <b>минус одно и то же</b>. Пишем числа “лесенкой”, потом <b>складываем</b>.</li>
+          <li><b>До остановки</b>: считаем только пока числа положительные (последняя секунда — ещё едет).</li>
+          <li><b>Прыжки</b>: каждый раз высота <b>делится</b> на 2 или на 3. Ищем первый прыжок, где стало <b>меньше 15 см</b>.</li>
+          <li>Для прыжков удобнее считать <b>в сантиметрах</b> (порог ведь в сантиметрах).</li>
+        </ul>
+      </div>
+
+      <div style="margin-top:14px;">
+        <div class="task" id="taskText">Нажмите <span class="kbd">«Новый пример»</span>.</div>
+
+        <div id="stepPanel" class="stepbox" style="display:none;">
+          <div class="row" style="justify-content:space-between;">
+            <div class="small" id="stepHint">Считаем по шагам.</div>
+            <span class="pill" id="stepUnit">ед.</span>
+          </div>
+
+          <div style="margin-top:10px; overflow:auto;">
+            <table id="stepTable"></table>
+          </div>
+
+          <div class="row" style="margin-top:10px;">
+            <button id="btnStepCheck">Проверить шаг</button>
+            <button id="btnStepSkip" title="Если сейчас не готовы к таблице — можно отвечать сразу">Пропустить пошагово</button>
+            <span class="small" id="stepStatus" style="margin-left:auto;"></span>
+          </div>
+
+          <div id="stepFeedback" class="feedback" style="display:none;"></div>
+        </div>
+
+        <div class="row" style="margin-top:12px;">
+          <label for="answer"><b>Ответ:</b></label>
+          <input id="answer" type="text" inputmode="decimal" placeholder="введите число">
+          <button id="btnCheck">Проверить</button>
+          <button id="btnShow" style="margin-left:auto;">Показать разбор</button>
+        </div>
+
+        <div id="feedback" class="feedback" style="display:none;"></div>
+
+        <details id="solutionBox" style="display:none;">
+          <summary><b>Разбор</b></summary>
+          <div class="small" style="margin:8px 0 6px;">Без формул: “лесенка” + “складываем” + “сравнили с 15 см”.</div>
+          <pre id="solutionText"></pre>
+        </details>
+
+        <div class="row" style="margin-top:12px;">
+          <button id="btnExport">Скачать результаты CSV</button>
+          <button id="btnReset" style="margin-left:auto;">Сбросить статистику</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+
+  const modeEl = $("mode");
+  const stepModeEl = $("stepMode");
+
+  const taskTextEl = $("taskText");
+  const ansEl = $("answer");
+
+  const feedbackEl = $("feedback");
+  const solutionBoxEl = $("solutionBox");
+  const solutionTextEl = $("solutionText");
+
+  const statEl = $("stat");
+  const howEl = $("how");
+
+  const stepPanelEl = $("stepPanel");
+  const stepTableEl = $("stepTable");
+  const stepHintEl = $("stepHint");
+  const stepUnitEl = $("stepUnit");
+  const stepStatusEl = $("stepStatus");
+  const stepFeedbackEl = $("stepFeedback");
+
+  const btnNew = $("btnNew");
+  const btnCheck = $("btnCheck");
+  const btnShow = $("btnShow");
+  const btnHow = $("btnHow");
+  const btnExport = $("btnExport");
+  const btnReset = $("btnReset");
+
+  const btnStepCheck = $("btnStepCheck");
+  const btnStepSkip = $("btnStepSkip");
+
+  let current = null;
+  let startTs = null;
+  let lastSignature = null;
+
+  // Пошаговое состояние
+  let stepExpected = [];
+  let stepIndex = 2;            // начинаем проверять со 2-го значения
+  let stepDone = false;
+  let stepTol = 0.05;           // допуск для округлений (особенно при делении на 3)
+  let stepLabelLeft = "№";
+  let stepLabelRight = "значение";
+
+  const state = {
+    solved: 0,
+    correct: 0,
+    times: [],
+    attemptsLog: []
+  };
+
+  function fmtSmart(x, digits=4) {
+    if (Number.isInteger(x)) return String(x);
+    const v = Math.round(x * Math.pow(10, digits)) / Math.pow(10, digits);
+    let s = String(v);
+    if (s.includes(".")) s = s.replace(".", ",");
+    return s;
+  }
+
+  function fmtMeters(m) {
+    const v = Math.round(m * 100) / 100;
+    let s = String(v);
+    if (s.includes(".")) s = s.replace(".", ",");
+    return s;
+  }
+
+  function parseUserNumber(s) {
+    if (typeof s !== "string") return NaN;
+    const t = s.trim().replace(",", ".").replace(/\s+/g, "");
+    if (t === "") return NaN;
+
+    // на всякий случай: "1/3"
+    if (t.includes("/")) {
+      const parts = t.split("/");
+      if (parts.length === 2) {
+        const a = Number(parts[0]);
+        const b = Number(parts[1]);
+        if (Number.isFinite(a) && Number.isFinite(b) && b !== 0) return a / b;
+      }
+    }
+
+    const n = Number(t);
+    return Number.isFinite(n) ? n : NaN;
+  }
+
+  function closeEnough(a, b, tol) {
+    return Math.abs(a - b) <= tol;
+  }
+
+  function showFeedback(kind, html) {
+    feedbackEl.className = "feedback " + (kind || "");
+    feedbackEl.innerHTML = html;
+    feedbackEl.style.display = "block";
+  }
+  function hideFeedback() { feedbackEl.style.display = "none"; }
+
+  function showStepFeedback(kind, html) {
+    stepFeedbackEl.className = "feedback " + (kind || "");
+    stepFeedbackEl.innerHTML = html;
+    stepFeedbackEl.style.display = "block";
+  }
+  function hideStepFeedback() { stepFeedbackEl.style.display = "none"; }
+
+  function setStat() {
+    const acc = state.solved ? (state.correct / state.solved) : 0;
+    const avg = state.times.length ? (state.times.reduce((a,b)=>a+b,0) / state.times.length) : 0;
+    statEl.textContent = `${state.solved} решено · ${(acc*100).toFixed(0)}% · ср. ${avg.toFixed(1)} с`;
+  }
+
+  function resetUIForNewTask() {
+    ansEl.value = "";
+    hideFeedback();
+
+    solutionBoxEl.style.display = "none";
+    solutionBoxEl.open = false;
+    btnShow.textContent = "Показать разбор";
+
+    btnCheck.disabled = false;
+
+    stepDone = !stepModeEl.checked;
+    ansEl.disabled = !stepDone;
+    btnCheck.disabled = !stepDone;
+
+    stepPanelEl.style.display = stepModeEl.checked ? "block" : "none";
+    hideStepFeedback();
+  }
+
+  // ======= Ваши 4 задачи (1–4) =======
+  function task1_fixed() {
+    const a1 = 36, dec = 6;
+    const terms = [];
+    for (let x=a1; x>0; x-=dec) terms.push(x);
+    const sum = terms.reduce((p,c)=>p+c,0);
+
+    return {
+      id: "fixed_1",
+      signature: "fixed_1",
+      kind: "brake",
+      question: `1) Водитель начал торможение. За первую секунду он проехал 36 м, а за каждую следующую — на 6 м меньше. Сколько метров он проехал до полной остановки?`,
+      answer: sum,
+      terms,
+      unit: "м",
+      stepUnit: "м",
+      stepTol: 0,
+      stepLeft: "секунда №",
+      stepRight: "метров за секунду",
+      stepHint: `Составьте лесенку: каждый раз минус 6. Остановились там, где дальше было бы 0.`,
+      solution: (() => {
+        const lines = [];
+        lines.push(`Лесенка (метров за секунду): ${terms.join(", ")}.`);
+        lines.push(`Складываем: ${terms.join(" + ")} = ${sum}.`);
+        lines.push(`Ответ: ${sum}.`);
+        return lines.join("\n");
+      })()
+    };
+  }
+
+  function task2_fixed() {
+    const a1 = 21, dec = 3, n = 5;
+    const terms = [];
+    for (let i=0;i<n;i++) terms.push(a1 - dec*i);
+    const sum = terms.reduce((p,c)=>p+c,0);
+
+    return {
+      id: "fixed_2",
+      signature: "fixed_2",
+      kind: "brake",
+      question: `2) Водитель начал торможение. За первую секунду он проехал 21 м, а за каждую следующую — на 3 м меньше. Сколько метров он прошёл за первые 5 секунд торможения?`,
+      answer: sum,
+      terms,
+      unit: "м",
+      stepUnit: "м",
+      stepTol: 0,
+      stepLeft: "секунда №",
+      stepRight: "метров за секунду",
+      stepHint: `Сделайте 5 шагов лесенки: каждый раз минус 3. Потом сложите 5 чисел.`,
+      solution: (() => {
+        const lines = [];
+        lines.push(`Лесенка (5 секунд): ${terms.join(", ")}.`);
+        lines.push(`Складываем: ${terms.join(" + ")} = ${sum}.`);
+        lines.push(`Ответ: ${sum}.`);
+        return lines.join("\n");
+      })()
+    };
+  }
+
+  function task3_fixed() {
+    const h1m = 3.6, factor = 2, thresholdCm = 15;
+    const h1cm = h1m * 100;
+
+    const heights = [h1cm];
+    while (heights[heights.length-1] >= thresholdCm && heights.length < 60) {
+      heights.push(heights[heights.length-1] / factor);
+    }
+    const answer = heights.length;
+
+    return {
+      id: "fixed_3",
+      signature: "fixed_3",
+      kind: "bounce",
+      question: `3) Мячик отскочил на 3,6 м, а дальше каждый раз подпрыгивал в 2 раза ниже. На каком прыжке он впервые не достигнет 15 см?`,
+      answer,
+      terms: heights,
+      unit: "см",
+      stepUnit: "см",
+      stepTol: 0.05,
+      stepLeft: "прыжок №",
+      stepRight: "высота",
+      stepHint: `Считаем в сантиметрах: 3,6 м = 360 см. Каждый раз делим на 2, пока не станет < 15.`,
+      solution: (() => {
+        const show = heights.slice(0, Math.min(10, heights.length)).map((v,i)=>`${i+1}) ${fmtSmart(v)} см`).join("\n");
+        const lines = [];
+        lines.push(`3,6 м = 360 см.`);
+        lines.push(`Делим на 2 каждый раз:`);
+        lines.push(show);
+        lines.push(`Первый раз ниже 15 см — на ${answer}-м прыжке.`);
+        lines.push(`Ответ: ${answer}.`);
+        return lines.join("\n");
+      })()
+    };
+  }
+
+  function task4_fixed() {
+    const h1m = 4.8, factor = 3, thresholdCm = 15;
+    const h1cm = h1m * 100;
+
+    const heights = [h1cm];
+    while (heights[heights.length-1] >= thresholdCm && heights.length < 60) {
+      heights.push(heights[heights.length-1] / factor);
+    }
+    const answer = heights.length;
+
+    return {
+      id: "fixed_4",
+      signature: "fixed_4",
+      kind: "bounce",
+      question: `4) Мячик отскочил на 4,8 м, а дальше каждый раз подпрыгивал в 3 раза ниже. На каком прыжке он впервые не достигнет 15 см?`,
+      answer,
+      terms: heights,
+      unit: "см",
+      stepUnit: "см",
+      stepTol: 0.05,
+      stepLeft: "прыжок №",
+      stepRight: "высота",
+      stepHint: `Считаем в сантиметрах: 4,8 м = 480 см. Каждый раз делим на 3 (можно округлять до сотых).`,
+      solution: (() => {
+        const show = heights.slice(0, Math.min(12, heights.length)).map((v,i)=>`${i+1}) ${fmtSmart(v)} см`).join("\n");
+        const lines = [];
+        lines.push(`4,8 м = 480 см.`);
+        lines.push(`Делим на 3 каждый раз:`);
+        lines.push(show);
+        lines.push(`Первый раз ниже 15 см — на ${answer}-м прыжке.`);
+        lines.push(`Ответ: ${answer}.`);
+        return lines.join("\n");
+      })()
+    };
+  }
+
+  const fixedSet = [task1_fixed, task2_fixed, task3_fixed, task4_fixed];
+
+  // ======= Рандом =======
+  function randInt(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+
+  function genBrakeStop() {
+    const dec = [2,3,4,5,6,7,8,9][randInt(0,7)];
+    const k = randInt(4, 12);
+    const a1 = dec * k;
+
+    const terms = [];
+    for (let x=a1; x>0; x-=dec) terms.push(x);
+    const sum = terms.reduce((p,c)=>p+c,0);
+
+    return {
+      id: "brake_stop",
+      signature: `brake_stop|${a1}|${dec}`,
+      kind: "brake",
+      question: `Водитель начал торможение. За первую секунду он проехал ${a1} м, а за каждую следующую — на ${dec} м меньше. Сколько метров он проехал до полной остановки?`,
+      answer: sum,
+      terms,
+      unit: "м",
+      stepUnit: "м",
+      stepTol: 0,
+      stepLeft: "секунда №",
+      stepRight: "метров за секунду",
+      stepHint: `Составьте лесенку: каждый раз минус ${dec}. Остановились там, где дальше было бы 0.`,
+      solution: `Лесенка: ${terms.join(", ")}.\nСумма: ${terms.join(" + ")} = ${sum}.\nОтвет: ${sum}.`
+    };
+  }
+
+  function genBrakeFirstN() {
+    const dec = [2,3,4,5,6][randInt(0,4)];
+    const n = randInt(4, 8);
+    const a1 = dec * randInt(n+2, n+10);
+
+    const terms = [];
+    for (let i=0;i<n;i++) terms.push(a1 - dec*i);
+    const sum = terms.reduce((p,c)=>p+c,0);
+
+    return {
+      id: "brake_first_n",
+      signature: `brake_first_n|${a1}|${dec}|${n}`,
+      kind: "brake",
+      question: `Водитель начал торможение. За первую секунду он проехал ${a1} м, а за каждую следующую — на ${dec} м меньше. Сколько метров он прошёл за первые ${n} секунд торможения?`,
+      answer: sum,
+      terms,
+      unit: "м",
+      stepUnit: "м",
+      stepTol: 0,
+      stepLeft: "секунда №",
+      stepRight: "метров за секунду",
+      stepHint: `Сделайте ${n} шагов лесенки: каждый раз минус ${dec}. Потом сложите ${n} чисел.`,
+      solution: `Лесенка: ${terms.join(", ")}.\nСумма: ${terms.join(" + ")} = ${sum}.\nОтвет: ${sum}.`
+    };
+  }
+
+  function genBounceThreshold() {
+    const factor = (Math.random() < 0.5) ? 2 : 3;
+    const answerWanted = randInt(4, 8); // чтобы не было слишком коротко/длинно
+    const thresholdCm = 15;
+
+    const m = (factor === 3) ? [1,2][randInt(0,1)] : 1;
+    const h1cm = thresholdCm * m * Math.pow(factor, answerWanted-2);
+    const h1m = h1cm / 100;
+
+    const heights = [h1cm];
+    while (heights[heights.length-1] >= thresholdCm && heights.length < 60) {
+      heights.push(heights[heights.length-1] / factor);
+    }
+
+    return {
+      id: "bounce_threshold",
+      signature: `bounce|${factor}|${h1cm}`,
+      kind: "bounce",
+      question: `Мячик отскочил на ${fmtMeters(h1m)} м, а дальше каждый раз подпрыгивал в ${factor} раза ниже. На каком прыжке он впервые не достигнет 15 см?`,
+      answer: heights.length,
+      terms: heights,
+      unit: "см",
+      stepUnit: "см",
+      stepTol: 0.05,
+      stepLeft: "прыжок №",
+      stepRight: "высота",
+      stepHint: `Считаем в сантиметрах: ${fmtMeters(h1m)} м = ${fmtSmart(h1cm)} см. Каждый раз делим на ${factor}.`,
+      solution: (() => {
+        const show = heights.map((v,i)=>`${i+1}) ${fmtSmart(v)} см`).join("\n");
+        return `Переводим в см: ${fmtMeters(h1m)} м = ${fmtSmart(h1cm)} см.\nДелим на ${factor}:\n${show}\nОтвет: ${heights.length}.`;
+      })()
+    };
+  }
+
+  function chooseTask() {
+    const mode = modeEl.value;
+
+    if (mode === "fixed") {
+      let idx = 0;
+      if (current && current.id.startsWith("fixed_")) {
+        const curIdx = ["fixed_1","fixed_2","fixed_3","fixed_4"].indexOf(current.id);
+        idx = (curIdx + 1) % 4;
+      }
+      return fixedSet[idx]();
+    }
+
+    const gens = [];
+    if (mode === "mix" || mode === "brake") gens.push(genBrakeStop, genBrakeFirstN);
+    if (mode === "mix" || mode === "bounce") gens.push(genBounceThreshold);
+
+    for (let tries=0; tries<20; tries++){
+      const t = gens[randInt(0, gens.length-1)]();
+      if (t.signature !== lastSignature) return t;
+    }
+    return gens[0]();
+  }
+
+  function buildStepPanel(task) {
+    stepExpected = task.terms.slice();
+    stepIndex = 2;
+    stepDone = !stepModeEl.checked;
+
+    stepTol = task.stepTol ?? 0.05;
+    stepLabelLeft = task.stepLeft ?? "№";
+    stepLabelRight = task.stepRight ?? "значение";
+
+    stepUnitEl.textContent = task.stepUnit ? `ед.: ${task.stepUnit}` : "ед.";
+    stepHintEl.textContent = task.stepHint || "Считаем по шагам.";
+    stepStatusEl.textContent = stepModeEl.checked ? `Шаг: 2 из ${stepExpected.length}` : "";
+
+    stepTableEl.innerHTML = "";
+
+    const thead = document.createElement("thead");
+    const trh = document.createElement("tr");
+    ["", stepLabelLeft, stepLabelRight].forEach(h => {
+      const th = document.createElement("th");
+      th.textContent = h;
+      trh.appendChild(th);
+    });
+    thead.appendChild(trh);
+    stepTableEl.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+
+    for (let i=1; i<=stepExpected.length; i++) {
+      const tr = document.createElement("tr");
+
+      const tdMark = document.createElement("td");
+      tdMark.id = `mark_${i}`;
+      tdMark.textContent = (i===1) ? "дано" : "";
+      tr.appendChild(tdMark);
+
+      const tdIdx = document.createElement("td");
+      tdIdx.textContent = i;
+      tr.appendChild(tdIdx);
+
+      const tdVal = document.createElement("td");
+
+      if (i === 1) {
+        tdVal.textContent = `${fmtSmart(stepExpected[0])} ${task.stepUnit || ""}`.trim();
+        tdVal.classList.add("lock");
+      } else {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.inputMode = "decimal";
+        input.placeholder = "введите";
+        input.style.minWidth = "140px";
+        input.id = `step_in_${i}`;
+        input.disabled = (i !== 2);
+        if (i !== 2) input.style.display = "none";
+        tdVal.appendChild(input);
+
+        input.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") checkStep();
+        });
+      }
+
+      tr.appendChild(tdVal);
+      tbody.appendChild(tr);
+    }
+
+    stepTableEl.appendChild(tbody);
+    hideStepFeedback();
+
+    const firstInput = document.getElementById("step_in_2");
+    if (firstInput) firstInput.focus();
+  }
+
+  function renderTask(t) {
+    current = t;
+    lastSignature = t.signature;
+    startTs = Date.now();
+
+    taskTextEl.textContent = t.question;
+    solutionTextEl.textContent = t.solution || "";
+
+    resetUIForNewTask();
+
+    if (stepModeEl.checked) {
+      stepPanelEl.style.display = "block";
+      buildStepPanel(t);
+      ansEl.disabled = true;
+      btnCheck.disabled = true;
+    } else {
+      stepPanelEl.style.display = "none";
+      stepDone = true;
+      ansEl.disabled = false;
+      btnCheck.disabled = false;
+      ansEl.focus();
+    }
+  }
+
+  function checkStep() {
+    if (!current || !stepModeEl.checked) return;
+    if (stepIndex > stepExpected.length) return;
+
+    const input = document.getElementById(`step_in_${stepIndex}`);
+    if (!input) return;
+
+    const user = parseUserNumber(input.value);
+    const need = stepExpected[stepIndex-1];
+
+    if (!Number.isFinite(user)) {
+      showStepFeedback("bad", `Введите число. Можно с запятой. При делении на 3 допустимо округлять (хотя бы до сотых).`);
+      return;
+    }
+
+    const ok = closeEnough(user, need, stepTol);
+
+    if (!ok) {
+      showStepFeedback("bad", `Пока нет. Проверьте одно действие шага (минус одно и то же / делим на одно и то же) и попробуйте ещё раз.`);
+      return;
+    }
+
+    const mark = document.getElementById(`mark_${stepIndex}`);
+    if (mark) { mark.textContent = "✓"; mark.classList.add("okcell"); }
+
+    input.disabled = true;
+    input.style.display = "inline-block";
+    input.classList.add("lock");
+
+    stepIndex++;
+
+    if (stepIndex <= stepExpected.length) {
+      const next = document.getElementById(`step_in_${stepIndex}`);
+      if (next) {
+        next.style.display = "inline-block";
+        next.disabled = false;
+        next.focus();
+      }
+      stepStatusEl.textContent = `Шаг: ${stepIndex} из ${stepExpected.length}`;
+      hideStepFeedback();
+    } else {
+      stepDone = true;
+      stepStatusEl.textContent = `Готово: таблица заполнена`;
+      showStepFeedback("good", `Отлично. Теперь введите итоговый ответ ниже (сумма или номер прыжка).`);
+      ansEl.disabled = false;
+      btnCheck.disabled = false;
+      ansEl.focus();
+    }
+  }
+
+  function checkAnswer() {
+    if (!current) return;
+
+    if (stepModeEl.checked && !stepDone) {
+      showFeedback("bad", `Сначала доведите пошаговую таблицу до конца (или нажмите “Пропустить пошагово”).`);
+      return;
+    }
+
+    const userRaw = ansEl.value;
+    const elapsed = startTs ? ((Date.now()-startTs)/1000) : 0;
+
+    state.solved++;
+    state.times.push(elapsed);
+
+    const n = parseUserNumber(userRaw);
+    const ok = Number.isFinite(n) && Math.round(n) === n && n === current.answer;
+
+    if (ok) state.correct++;
+
+    state.attemptsLog.push({
+      ts: new Date().toISOString(),
+      taskId: current.id,
+      signature: current.signature,
+      correctAnswer: current.answer,
+      userAnswer: userRaw.trim(),
+      isCorrect: ok ? 1 : 0,
+      timeSec: elapsed.toFixed(1)
+    });
+
+    setStat();
+
+    if (ok) {
+      showFeedback("good", `✅ Верно. <b>Ответ: ${current.answer}</b>. Время: ${elapsed.toFixed(1)} с.`);
+      btnCheck.disabled = true;
+    } else {
+      const hint = (current.kind === "bounce")
+        ? `Подсказка: считайте высоты шагами (удобно в сантиметрах) и найдите первый раз, когда стало < 15.`
+        : `Подсказка: сначала сделайте “лесенку” чисел, потом сложите.`;
+      showFeedback("bad", `❌ Пока нет. ${hint} Если нужно — откройте “Разбор”.`);
+    }
+  }
+
+  function toggleSolution() {
+    if (!current) return;
+    const shown = solutionBoxEl.style.display !== "none";
+    if (shown) {
+      solutionBoxEl.style.display = "none";
+      solutionBoxEl.open = false;
+      btnShow.textContent = "Показать разбор";
+    } else {
+      solutionBoxEl.style.display = "block";
+      solutionBoxEl.open = true;
+      btnShow.textContent = "Скрыть разбор";
+    }
+  }
+
+  function exportCSV() {
+    const headers = ["timestamp_iso","task_id","signature","correct_answer","user_answer","is_correct","time_sec"];
+    const lines = [headers.join(",")];
+
+    state.attemptsLog.forEach(r => {
+      const row = [
+        r.ts,
+        r.taskId,
+        `"${String(r.signature).replace(/"/g,'""')}"`,
+        r.correctAnswer,
+        `"${String(r.userAnswer).replace(/"/g,'""')}"`,
+        r.isCorrect,
+        r.timeSec
+      ];
+      lines.push(row.join(","));
+    });
+
+    const blob = new Blob([lines.join("\n")], {type:"text/csv;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "trainer_braking_bounces_results.csv";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+  }
+
+  function resetStats() {
+    state.solved = 0;
+    state.correct = 0;
+    state.times = [];
+    state.attemptsLog = [];
+    setStat();
+    hideFeedback();
+  }
+
+  function toggleHow() {
+    howEl.style.display = (howEl.style.display === "none") ? "block" : "none";
+  }
+
+  function skipStep() {
+    stepDone = true;
+    stepStatusEl.textContent = `Пошагово пропущено`;
+    hideStepFeedback();
+    ansEl.disabled = false;
+    btnCheck.disabled = false;
+    ansEl.focus();
+  }
+
+  btnNew.addEventListener("click", () => renderTask(chooseTask()));
+  btnCheck.addEventListener("click", checkAnswer);
+  btnShow.addEventListener("click", toggleSolution);
+  btnHow.addEventListener("click", toggleHow);
+  btnExport.addEventListener("click", exportCSV);
+  btnReset.addEventListener("click", resetStats);
+
+  btnStepCheck.addEventListener("click", checkStep);
+  btnStepSkip.addEventListener("click", skipStep);
+
+  ansEl.addEventListener("keydown", (e) => { if (e.key === "Enter") checkAnswer(); });
+
+  // если переключили пошаговый режим — просто перерисуем текущую задачу (если она уже выбрана)
+  stepModeEl.addEventListener("change", () => {
+    if (!current) return;
+    renderTask(current);
+  });
+
+  setStat();
+})();
+</script>
+</body>
+</html>
 
