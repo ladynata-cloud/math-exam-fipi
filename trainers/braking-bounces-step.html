@@ -38,6 +38,7 @@
     .pill { display:inline-block; padding:2px 10px; border-radius:999px; background:#eef1f6; font-size:13px; }
     .okcell { color: var(--good); font-weight: 700; }
     .lock { opacity:.85; }
+    .tight { line-height: 1.45; }
   </style>
 </head>
 
@@ -103,6 +104,33 @@
           </div>
 
           <div id="stepFeedback" class="feedback" style="display:none;"></div>
+
+          <!-- Блок “сложение парами” + проверка умножения -->
+          <div id="pairPanel" class="stepbox" style="display:none; margin-top:10px;">
+            <div class="row" style="justify-content:space-between;">
+              <div><b>Быстрый способ сложить лесенку</b></div>
+              <span class="pill" id="pairInfo">—</span>
+            </div>
+
+            <div class="small tight" id="pairLines" style="margin-top:8px;"></div>
+
+            <div class="row" style="margin-top:10px;">
+              <div class="small" style="min-width: 210px;">
+                <b id="mulLabel">Посчитайте:</b> <span id="mulExpr"></span>
+              </div>
+              <input id="mulInput" type="text" inputmode="decimal" placeholder="введите число">
+              <button id="btnMulCheck">Проверить</button>
+              <button id="btnMulSkip" title="Если пока трудно — можно пропустить">Пропустить умножение</button>
+            </div>
+
+            <div id="mulFeedback" class="feedback" style="display:none;"></div>
+
+            <!-- Новое: кнопка “подставить в ответ” -->
+            <div class="row" style="margin-top:10px;">
+              <button id="btnFillAnswer" disabled>Подставить сумму в ответ</button>
+              <span class="small" id="fillNote"></span>
+            </div>
+          </div>
         </div>
 
         <div class="row" style="margin-top:12px;">
@@ -152,6 +180,19 @@
   const stepStatusEl = $("stepStatus");
   const stepFeedbackEl = $("stepFeedback");
 
+  const pairPanelEl = $("pairPanel");
+  const pairInfoEl = $("pairInfo");
+  const pairLinesEl = $("pairLines");
+  const mulLabelEl = $("mulLabel");
+  const mulExprEl = $("mulExpr");
+  const mulInputEl = $("mulInput");
+  const mulFeedbackEl = $("mulFeedback");
+  const btnMulCheck = $("btnMulCheck");
+  const btnMulSkip = $("btnMulSkip");
+
+  const btnFillAnswer = $("btnFillAnswer");
+  const fillNoteEl = $("fillNote");
+
   const btnNew = $("btnNew");
   const btnCheck = $("btnCheck");
   const btnShow = $("btnShow");
@@ -173,6 +214,17 @@
   let stepTol = 0.05;           // допуск для округлений (особенно при делении на 3)
   let stepLabelLeft = "№";
   let stepLabelRight = "значение";
+
+  // Мини-упражнение “сложение парами”
+  let pairRequired = false;
+  let pairDone = false;
+  let pairStage = 0;        // 1: произведение, 2: +середина
+  let pairSum = 0;
+  let pairPairs = 0;
+  let pairMiddle = null;
+  let pairProduct = 0;
+  let pairTotal = 0;
+  let pairUnit = "";
 
   const state = {
     solved: 0,
@@ -233,10 +285,42 @@
   }
   function hideStepFeedback() { stepFeedbackEl.style.display = "none"; }
 
+  function showMulFeedback(kind, html) {
+    mulFeedbackEl.className = "feedback " + (kind || "");
+    mulFeedbackEl.innerHTML = html;
+    mulFeedbackEl.style.display = "block";
+  }
+  function hideMulFeedback() { mulFeedbackEl.style.display = "none"; }
+
   function setStat() {
     const acc = state.solved ? (state.correct / state.solved) : 0;
     const avg = state.times.length ? (state.times.reduce((a,b)=>a+b,0) / state.times.length) : 0;
     statEl.textContent = `${state.solved} решено · ${(acc*100).toFixed(0)}% · ср. ${avg.toFixed(1)} с`;
+  }
+
+  function resetPairExerciseUI() {
+    pairRequired = false;
+    pairDone = false;
+    pairStage = 0;
+    pairSum = 0;
+    pairPairs = 0;
+    pairMiddle = null;
+    pairProduct = 0;
+    pairTotal = 0;
+    pairUnit = "";
+
+    pairPanelEl.style.display = "none";
+    pairInfoEl.textContent = "—";
+    pairLinesEl.innerHTML = "";
+    mulLabelEl.textContent = "Посчитайте:";
+    mulExprEl.textContent = "";
+    mulInputEl.value = "";
+    mulInputEl.disabled = false;
+    btnMulCheck.disabled = false;
+    hideMulFeedback();
+
+    btnFillAnswer.disabled = true;
+    fillNoteEl.textContent = "";
   }
 
   function resetUIForNewTask() {
@@ -248,6 +332,9 @@
     btnShow.textContent = "Показать разбор";
 
     btnCheck.disabled = false;
+
+    // сброс мини-упражнения
+    resetPairExerciseUI();
 
     stepDone = !stepModeEl.checked;
     ansEl.disabled = !stepDone;
@@ -280,7 +367,7 @@
       solution: (() => {
         const lines = [];
         lines.push(`Лесенка (метров за секунду): ${terms.join(", ")}.`);
-        lines.push(`Складываем: ${terms.join(" + ")} = ${sum}.`);
+        lines.push(`Можно сложить “в лоб”, а можно быстро — парами (первое+последнее и т.д.).`);
         lines.push(`Ответ: ${sum}.`);
         return lines.join("\n");
       })()
@@ -309,7 +396,7 @@
       solution: (() => {
         const lines = [];
         lines.push(`Лесенка (5 секунд): ${terms.join(", ")}.`);
-        lines.push(`Складываем: ${terms.join(" + ")} = ${sum}.`);
+        lines.push(`Удобно сложить парами: (первое+последнее), (второе+предпоследнее), и если останется середина — прибавить её.`);
         lines.push(`Ответ: ${sum}.`);
         return lines.join("\n");
       })()
@@ -415,7 +502,7 @@
       stepLeft: "секунда №",
       stepRight: "метров за секунду",
       stepHint: `Составьте лесенку: каждый раз минус ${dec}. Остановились там, где дальше было бы 0.`,
-      solution: `Лесенка: ${terms.join(", ")}.\nСумма: ${terms.join(" + ")} = ${sum}.\nОтвет: ${sum}.`
+      solution: `Лесенка: ${terms.join(", ")}.\nСумму удобно сложить парами (первое+последнее и т.д.).\nОтвет: ${sum}.`
     };
   }
 
@@ -441,13 +528,13 @@
       stepLeft: "секунда №",
       stepRight: "метров за секунду",
       stepHint: `Сделайте ${n} шагов лесенки: каждый раз минус ${dec}. Потом сложите ${n} чисел.`,
-      solution: `Лесенка: ${terms.join(", ")}.\nСумма: ${terms.join(" + ")} = ${sum}.\nОтвет: ${sum}.`
+      solution: `Лесенка: ${terms.join(", ")}.\nСумму удобно сложить парами (первое+последнее и т.д.).\nОтвет: ${sum}.`
     };
   }
 
   function genBounceThreshold() {
     const factor = (Math.random() < 0.5) ? 2 : 3;
-    const answerWanted = randInt(4, 8); // чтобы не было слишком коротко/длинно
+    const answerWanted = randInt(4, 8);
     const thresholdCm = 15;
 
     const m = (factor === 3) ? [1,2][randInt(0,1)] : 1;
@@ -514,6 +601,9 @@
     stepUnitEl.textContent = task.stepUnit ? `ед.: ${task.stepUnit}` : "ед.";
     stepHintEl.textContent = task.stepHint || "Считаем по шагам.";
     stepStatusEl.textContent = stepModeEl.checked ? `Шаг: 2 из ${stepExpected.length}` : "";
+
+    // сброс “сложения парами”
+    resetPairExerciseUI();
 
     stepTableEl.innerHTML = "";
 
@@ -597,6 +687,138 @@
     }
   }
 
+  function setupPairExercise(terms, unit) {
+    const n = terms.length;
+    if (n < 2) return;
+
+    pairUnit = unit || "";
+    pairPairs = Math.floor(n / 2);
+    pairSum = terms[0] + terms[n - 1];
+    pairMiddle = (n % 2 === 1) ? terms[pairPairs] : null;
+    pairProduct = pairSum * pairPairs;
+    pairTotal = pairProduct + (pairMiddle ?? 0);
+
+    pairRequired = true;
+    pairDone = false;
+    pairStage = 1;
+
+    // Кнопка подстановки пока заблокирована
+    btnFillAnswer.disabled = true;
+    fillNoteEl.textContent = "Станет доступна после правильного счёта.";
+
+    // Текст “первое+последнее=…”
+    const lines = [];
+    for (let i = 0; i < pairPairs; i++) {
+      const a = terms[i];
+      const b = terms[n - 1 - i];
+      lines.push(`${a} + ${b} = ${a + b}`);
+    }
+
+    const unitTail = pairUnit ? ` ${pairUnit}` : "";
+    let html = `Складываем парами: <b>первое + последнее</b>, <b>второе + предпоследнее</b> и так далее.<br>`;
+    html += lines.map(s => `• ${s}${unitTail}`).join("<br>");
+    html += `<br><br>`;
+    html += `Получилось <b>${pairPairs}</b> одинаковых сумм по <b>${pairSum}${unitTail}</b>.`;
+
+    if (pairMiddle !== null) {
+      html += `<br>И есть “середина”: <b>${pairMiddle}${unitTail}</b> (её прибавим в конце).`;
+    }
+
+    pairLinesEl.innerHTML = html;
+    pairInfoEl.textContent = `${pairPairs} пар`;
+
+    pairPanelEl.style.display = "block";
+    hideMulFeedback();
+
+    setMulStageUI();
+  }
+
+  function setMulStageUI() {
+    mulInputEl.value = "";
+    mulInputEl.disabled = false;
+    btnMulCheck.disabled = false;
+
+    const unitTail = pairUnit ? ` ${pairUnit}` : "";
+
+    if (pairStage === 1) {
+      mulLabelEl.textContent = "Посчитайте:";
+      mulExprEl.textContent = `${pairSum} × ${pairPairs}${unitTail}`;
+    } else {
+      mulLabelEl.textContent = "А теперь:";
+      mulExprEl.textContent = `${pairProduct} + ${pairMiddle}${unitTail}`;
+    }
+
+    setTimeout(() => mulInputEl.focus(), 0);
+  }
+
+  function enableFillAnswerButton() {
+    btnFillAnswer.disabled = false;
+    fillNoteEl.textContent = "Можно подставить сумму и проверить.";
+  }
+
+  function fillAnswerFromPair() {
+    if (!current || !pairRequired || !pairDone) return;
+    ansEl.value = String(current.answer);
+    ansEl.disabled = false;
+    btnCheck.disabled = false;
+    ansEl.focus();
+    ansEl.select();
+    showFeedback("good", "Сумма подставлена в поле «Ответ». Теперь нажмите «Проверить».");
+  }
+
+  function completePairExercise() {
+    pairDone = true;
+    mulInputEl.disabled = true;
+    btnMulCheck.disabled = true;
+
+    enableFillAnswerButton();
+
+    // Теперь можно вводить ответ
+    ansEl.disabled = false;
+    btnCheck.disabled = false;
+    ansEl.focus();
+  }
+
+  function checkMul() {
+    if (!pairRequired || pairDone) return;
+
+    const user = parseUserNumber(mulInputEl.value);
+    if (!Number.isFinite(user)) {
+      showMulFeedback("bad", "Введите число.");
+      return;
+    }
+
+    const expected = (pairStage === 1) ? pairProduct : pairTotal;
+    const ok = closeEnough(user, expected, 0.0001);
+
+    if (!ok) {
+      showMulFeedback("bad", "Пока нет. Проверьте вычисления и попробуйте ещё раз.");
+      return;
+    }
+
+    if (pairStage === 1 && pairMiddle !== null) {
+      showMulFeedback("good", `✅ Верно: <b>${pairSum} × ${pairPairs} = ${pairProduct}</b>. Теперь добавьте середину.`);
+      pairStage = 2;
+      setMulStageUI();
+      return;
+    }
+
+    showMulFeedback("good", `✅ Отлично. Сумма получилась <b>${pairTotal}</b>${pairUnit ? " " + pairUnit : ""}. Теперь можно подставить её в ответ ниже.`);
+    completePairExercise();
+  }
+
+  function skipMul() {
+    pairDone = true;
+    showMulFeedback("good", "Ок, пропускаем умножение. Но помните: лесенку удобно складывать парами.");
+
+    // Даже при пропуске дадим кнопку подстановки (сумма известна)
+    enableFillAnswerButton();
+
+    ansEl.disabled = false;
+    btnCheck.disabled = false;
+    ansEl.focus();
+  }
+
   function checkStep() {
     if (!current || !stepModeEl.checked) return;
     if (stepIndex > stepExpected.length) return;
@@ -640,19 +862,33 @@
     } else {
       stepDone = true;
       stepStatusEl.textContent = `Готово: таблица заполнена`;
-      showStepFeedback("good", `Отлично. Теперь введите итоговый ответ ниже (сумма или номер прыжка).`);
-      ansEl.disabled = false;
-      btnCheck.disabled = false;
-      ansEl.focus();
+
+      if (current.kind === "brake") {
+        showStepFeedback("good", `Отлично. Теперь можно сложить быстрее: первое + последнее, второе + предпоследнее — получаются одинаковые суммы.`);
+        setupPairExercise(stepExpected, current.stepUnit || "");
+        ansEl.disabled = true;
+        btnCheck.disabled = true;
+      } else {
+        showStepFeedback("good", `Отлично. Теперь введите итоговый ответ ниже (сумма или номер прыжка).`);
+        ansEl.disabled = false;
+        btnCheck.disabled = false;
+        ansEl.focus();
+      }
     }
   }
 
   function checkAnswer() {
     if (!current) return;
 
-    if (stepModeEl.checked && !stepDone) {
-      showFeedback("bad", `Сначала доведите пошаговую таблицу до конца (или нажмите “Пропустить пошагово”).`);
-      return;
+    if (stepModeEl.checked) {
+      if (!stepDone) {
+        showFeedback("bad", `Сначала доведите пошаговую таблицу до конца (или нажмите “Пропустить пошагово”).`);
+        return;
+      }
+      if (current.kind === "brake" && pairRequired && !pairDone) {
+        showFeedback("bad", `Сначала выполните мини-шаг “умножение” (или нажмите “Пропустить умножение”).`);
+        return;
+      }
     }
 
     const userRaw = ansEl.value;
@@ -684,7 +920,7 @@
     } else {
       const hint = (current.kind === "bounce")
         ? `Подсказка: считайте высоты шагами (удобно в сантиметрах) и найдите первый раз, когда стало < 15.`
-        : `Подсказка: сначала сделайте “лесенку” чисел, потом сложите.`;
+        : `Подсказка: сначала сделайте “лесенку” чисел, потом сложите (можно парами).`;
       showFeedback("bad", `❌ Пока нет. ${hint} Если нужно — откройте “Разбор”.`);
     }
   }
@@ -748,11 +984,15 @@
     stepDone = true;
     stepStatusEl.textContent = `Пошагово пропущено`;
     hideStepFeedback();
+
+    resetPairExerciseUI();
+
     ansEl.disabled = false;
     btnCheck.disabled = false;
     ansEl.focus();
   }
 
+  // handlers
   btnNew.addEventListener("click", () => renderTask(chooseTask()));
   btnCheck.addEventListener("click", checkAnswer);
   btnShow.addEventListener("click", toggleSolution);
@@ -763,9 +1003,19 @@
   btnStepCheck.addEventListener("click", checkStep);
   btnStepSkip.addEventListener("click", skipStep);
 
-  ansEl.addEventListener("keydown", (e) => { if (e.key === "Enter") checkAnswer(); });
+  btnMulCheck.addEventListener("click", checkMul);
+  btnMulSkip.addEventListener("click", skipMul);
 
-  // если переключили пошаговый режим — просто перерисуем текущую задачу (если она уже выбрана)
+  btnFillAnswer.addEventListener("click", fillAnswerFromPair);
+
+  mulInputEl.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") checkMul();
+  });
+
+  ansEl.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") checkAnswer();
+  });
+
   stepModeEl.addEventListener("change", () => {
     if (!current) return;
     renderTask(current);
