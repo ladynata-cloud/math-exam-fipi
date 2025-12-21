@@ -39,6 +39,10 @@
     .okcell { color: var(--good); font-weight: 700; }
     .lock { opacity:.85; }
     .tight { line-height: 1.45; }
+
+    /* ===== AI helper ===== */
+    .aiTextarea { width:100%; font-size:16px; padding:10px 12px; border-radius:10px; border:1px solid #d0d4dc; background:#fff; resize: vertical; }
+    #aiAnswerBox { white-space: pre-wrap; }
   </style>
 </head>
 
@@ -142,6 +146,30 @@
 
         <div id="feedback" class="feedback" style="display:none;"></div>
 
+        <!-- ===== ИИ-помощник ===== -->
+        <div id="aiBox" class="stepbox" style="margin-top:12px;">
+          <div class="row" style="justify-content:space-between;">
+            <div><b>🤖 ИИ-помощник</b> <span class="small">подсказки и объяснения</span></div>
+            <span class="pill" id="aiPill">готов</span>
+          </div>
+
+          <div class="row" style="margin-top:10px;">
+            <button id="aiHintBtn">🤖 Подсказка</button>
+            <button id="aiExplainBtn" disabled>🤖 Объясни ошибку</button>
+            <button id="aiSolutionBtn">🤖 Решение</button>
+          </div>
+
+          <div style="margin-top:10px;">
+            <textarea id="aiQuestion" class="aiTextarea" rows="2" placeholder="Можно написать вопрос (не обязательно)"></textarea>
+          </div>
+
+          <div id="aiAnswerBox" class="feedback" style="display:none; margin-top:10px;"></div>
+
+          <div class="small" style="margin-top:8px;">
+            В «Подсказке» ИИ не должен выдавать финальный ответ. Для полного разбора нажмите «Решение».
+          </div>
+        </div>
+
         <details id="solutionBox" style="display:none;">
           <summary><b>Разбор</b></summary>
           <div class="small" style="margin:8px 0 6px;">Без формул: “лесенка” + “складываем” + “сравнили с 15 см”.</div>
@@ -203,6 +231,14 @@
   const btnStepCheck = $("btnStepCheck");
   const btnStepSkip = $("btnStepSkip");
 
+  // ===== AI elements =====
+  const aiPillEl = $("aiPill");
+  const aiHintBtn = $("aiHintBtn");
+  const aiExplainBtn = $("aiExplainBtn");
+  const aiSolutionBtn = $("aiSolutionBtn");
+  const aiQuestionEl = $("aiQuestion");
+  const aiAnswerBoxEl = $("aiAnswerBox");
+
   let current = null;
   let startTs = null;
   let lastSignature = null;
@@ -232,6 +268,189 @@
     times: [],
     attemptsLog: []
   };
+
+  // ===== AI state =====
+  const AI_ENDPOINT = "https://mathexam-ai.ladynata3000.workers.dev/api/tutor";
+  let aiBusy = false;
+  let aiExplainAvailable = false;
+  let aiAttemptsThisTask = 0;
+  let aiLastStage = "final";      // "step" | "mul" | "final"
+  let aiLastUserValue = "";
+
+  function aiSetPill(text, busy=false) {
+    if (!aiPillEl) return;
+    aiPillEl.textContent = text;
+    aiPillEl.style.background = busy ? "#fff7ed" : "#eef1f6";
+  }
+
+  function aiShowAnswer(kind, text) {
+    if (!aiAnswerBoxEl) return;
+    aiAnswerBoxEl.className = "feedback " + (kind || "");
+    aiAnswerBoxEl.textContent = text;
+    aiAnswerBoxEl.style.display = "block";
+  }
+
+  function aiHideAnswer() {
+    if (!aiAnswerBoxEl) return;
+    aiAnswerBoxEl.style.display = "none";
+    aiAnswerBoxEl.textContent = "";
+  }
+
+  function aiUpdateExplainButton() {
+    if (!aiExplainBtn) return;
+    aiExplainBtn.disabled = aiBusy || !aiExplainAvailable || !current;
+  }
+
+  function aiSetButtonsDisabled(disabled) {
+    const dis = disabled || !current;
+    if (aiHintBtn) aiHintBtn.disabled = dis;
+    if (aiSolutionBtn) aiSolutionBtn.disabled = dis;
+    aiUpdateExplainButton();
+  }
+
+  function aiResetForNewTask(clearQuestion=true) {
+    aiBusy = false;
+    aiExplainAvailable = false;
+    aiAttemptsThisTask = 0;
+    aiLastStage = "final";
+    aiLastUserValue = "";
+
+    if (aiQuestionEl && clearQuestion) aiQuestionEl.value = "";
+    aiHideAnswer();
+    aiSetPill("готов", false);
+    aiSetButtonsDisabled(false);
+  }
+
+  function inferStageNow() {
+    if (stepModeEl.checked && !stepDone) return "step";
+    if (stepModeEl.checked && current && current.kind === "brake" && pairRequired && !pairDone) return "mul";
+    return "final";
+  }
+
+  function termsPreview(arr) {
+    if (!Array.isArray(arr)) return { total: 0, all: [] };
+    if (arr.length <= 24) return { total: arr.length, all: arr };
+    return { total: arr.length, first: arr.slice(0, 12), last: arr.slice(-12) };
+  }
+
+  function buildAITask(mode, reveal) {
+    if (!current) return null;
+
+    const stageNow = inferStageNow();
+
+    // простые вычисляемые параметры
+    let delta = null;
+    let factor = null;
+    if (current.kind === "brake" && Array.isArray(current.terms) && current.terms.length >= 2) {
+      delta = current.terms[0] - current.terms[1];
+    }
+    if (current.kind === "bounce" && Array.isArray(current.terms) && current.terms.length >= 2) {
+      // h2 = h1 / factor => factor = h1 / h2
+      const raw = current.terms[1] !== 0 ? (current.terms[0] / current.terms[1]) : null;
+      if (raw) factor = Math.round(raw * 1000) / 1000;
+    }
+
+    const teacherNotesBrake =
+      "Торможение: каждую секунду минус одно и то же (лесенка). " +
+      "Для 'до полной остановки' считаем только положительные значения (0 не включаем). " +
+      "Для 'за первые n секунд' берем ровно n членов. " +
+      "Сумму можно сложить парами (первый+последний и т.д.). " +
+      "Если reveal=false (hint/explain) — НЕ называй итоговую сумму.";
+
+    const teacherNotesBounce =
+      "Прыжки: удобно перевести в сантиметры (порог 15 см). " +
+      "Дальше каждый прыжок делим на 2 или на 3. " +
+      "Нужен номер первого прыжка, где стало < 15 см. " +
+      "Если reveal=false (hint/explain) — НЕ называй номер прыжка-ответ.";
+
+    const task = {
+      topic: "braking-bounces",
+      kind: current.kind,                // "brake" | "bounce"
+      stage: stageNow,
+      lastErrorStage: aiLastStage,
+      question: current.question,
+      unit: current.unit,
+      stepMode: !!stepModeEl.checked,
+      stepDone: !!stepDone,
+      stepIndex: stepModeEl.checked ? stepIndex : null,
+      stepTotal: stepModeEl.checked ? stepExpected.length : null,
+      stepTolerance: stepTol,
+      terms: termsPreview(current.terms || []),
+      delta,
+      factor,
+      thresholdCm: (current.kind === "bounce") ? 15 : null,
+
+      pair: (current.kind === "brake") ? {
+        required: pairRequired,
+        done: pairDone,
+        stage: pairStage,
+        pairs: pairPairs,
+        pairSum: pairSum,
+        middle: pairMiddle,
+      } : null,
+
+      userAnswer: aiLastUserValue,
+      attempts: aiAttemptsThisTask,
+      reveal: !!reveal,
+      correctAnswer: String(current.answer),
+      teacherNotes: (current.kind === "brake") ? teacherNotesBrake : teacherNotesBounce
+    };
+
+    // Если ученик ошибся именно в шаге, полезно подсветить "какой шаг сейчас"
+    if (aiLastStage === "step" && stepModeEl.checked && !stepDone) {
+      const need = stepExpected[stepIndex - 1];
+      task.stepNeedNow = Number.isFinite(need) ? need : null;
+      const prev = stepIndex > 2 ? stepExpected[stepIndex - 2] : stepExpected[0];
+      task.stepPrev = Number.isFinite(prev) ? prev : null;
+    }
+
+    // Если ошибся в умножении — добавим ожидаемое выражение
+    if (aiLastStage === "mul" && pairRequired && !pairDone) {
+      task.mulExpected =
+        (pairStage === 1) ? `${pairSum} × ${pairPairs}` :
+        (pairMiddle !== null) ? `${pairProduct} + ${pairMiddle}` :
+        `${pairProduct}`;
+    }
+
+    return task;
+  }
+
+  async function callAI(mode) {
+    if (!current) {
+      aiShowAnswer("bad", "Сначала нажмите «Новый пример».");
+      return;
+    }
+    if (aiBusy) return;
+
+    const reveal = (mode === "solution");
+    const task = buildAITask(mode, reveal);
+    if (!task) return;
+
+    const userText = aiQuestionEl ? aiQuestionEl.value.trim() : "";
+
+    aiBusy = true;
+    aiSetPill("думаю…", true);
+    aiSetButtonsDisabled(true);
+    aiShowAnswer("", "…думаю");
+
+    try {
+      const resp = await fetch(AI_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode, task, userText })
+      });
+      const data = await resp.json();
+      if (!data.ok) throw new Error(data.error || "AI error");
+      aiShowAnswer("", data.text);
+      aiSetPill("готов", false);
+    } catch (e) {
+      aiShowAnswer("bad", "ИИ временно недоступен. Попробуйте ещё раз.");
+      aiSetPill("ошибка", false);
+    } finally {
+      aiBusy = false;
+      aiSetButtonsDisabled(false);
+    }
+  }
 
   function fmtSmart(x, digits=4) {
     if (Number.isInteger(x)) return String(x);
@@ -342,6 +561,9 @@
 
     stepPanelEl.style.display = stepModeEl.checked ? "block" : "none";
     hideStepFeedback();
+
+    // AI reset
+    aiResetForNewTask(true);
   }
 
   // ======= Ваши 4 задачи (1–4) =======
@@ -702,11 +924,9 @@
     pairDone = false;
     pairStage = 1;
 
-    // Кнопка подстановки пока заблокирована
     btnFillAnswer.disabled = true;
     fillNoteEl.textContent = "Станет доступна после правильного счёта.";
 
-    // Текст “первое+последнее=…”
     const lines = [];
     for (let i = 0; i < pairPairs; i++) {
       const a = terms[i];
@@ -773,7 +993,6 @@
 
     enableFillAnswerButton();
 
-    // Теперь можно вводить ответ
     ansEl.disabled = false;
     btnCheck.disabled = false;
     ansEl.focus();
@@ -782,8 +1001,15 @@
   function checkMul() {
     if (!pairRequired || pairDone) return;
 
+    // AI: фиксируем попытку в блоке умножения
+    aiAttemptsThisTask += 1;
+    aiLastStage = "mul";
+    aiLastUserValue = (mulInputEl.value || "").trim();
+
     const user = parseUserNumber(mulInputEl.value);
     if (!Number.isFinite(user)) {
+      aiExplainAvailable = true;
+      aiUpdateExplainButton();
       showMulFeedback("bad", "Введите число.");
       return;
     }
@@ -792,9 +1018,15 @@
     const ok = closeEnough(user, expected, 0.0001);
 
     if (!ok) {
+      aiExplainAvailable = true;
+      aiUpdateExplainButton();
       showMulFeedback("bad", "Пока нет. Проверьте вычисления и попробуйте ещё раз.");
       return;
     }
+
+    // всё верно — объяснять ошибку не нужно
+    aiExplainAvailable = false;
+    aiUpdateExplainButton();
 
     if (pairStage === 1 && pairMiddle !== null) {
       showMulFeedback("good", `✅ Верно: <b>${pairSum} × ${pairPairs} = ${pairProduct}</b>. Теперь добавьте середину.`);
@@ -811,7 +1043,6 @@
     pairDone = true;
     showMulFeedback("good", "Ок, пропускаем умножение. Но помните: лесенку удобно складывать парами.");
 
-    // Даже при пропуске дадим кнопку подстановки (сумма известна)
     enableFillAnswerButton();
 
     ansEl.disabled = false;
@@ -826,10 +1057,17 @@
     const input = document.getElementById(`step_in_${stepIndex}`);
     if (!input) return;
 
+    // AI: фиксируем попытку в шаге
+    aiAttemptsThisTask += 1;
+    aiLastStage = "step";
+    aiLastUserValue = (input.value || "").trim();
+
     const user = parseUserNumber(input.value);
     const need = stepExpected[stepIndex-1];
 
     if (!Number.isFinite(user)) {
+      aiExplainAvailable = true;
+      aiUpdateExplainButton();
       showStepFeedback("bad", `Введите число. Можно с запятой. При делении на 3 допустимо округлять (хотя бы до сотых).`);
       return;
     }
@@ -837,9 +1075,15 @@
     const ok = closeEnough(user, need, stepTol);
 
     if (!ok) {
+      aiExplainAvailable = true;
+      aiUpdateExplainButton();
       showStepFeedback("bad", `Пока нет. Проверьте одно действие шага (минус одно и то же / делим на одно и то же) и попробуйте ещё раз.`);
       return;
     }
+
+    // шаг верный — объяснять ошибку не нужно
+    aiExplainAvailable = false;
+    aiUpdateExplainButton();
 
     const mark = document.getElementById(`mark_${stepIndex}`);
     if (mark) { mark.textContent = "✓"; mark.classList.add("okcell"); }
@@ -892,6 +1136,12 @@
     }
 
     const userRaw = ansEl.value;
+
+    // AI: фиксируем попытку в финальном ответе
+    aiAttemptsThisTask += 1;
+    aiLastStage = "final";
+    aiLastUserValue = (userRaw || "").trim();
+
     const elapsed = startTs ? ((Date.now()-startTs)/1000) : 0;
 
     state.solved++;
@@ -901,6 +1151,10 @@
     const ok = Number.isFinite(n) && Math.round(n) === n && n === current.answer;
 
     if (ok) state.correct++;
+
+    // AI: объяснение ошибки доступно только если неверно
+    aiExplainAvailable = !ok;
+    aiUpdateExplainButton();
 
     state.attemptsLog.push({
       ts: new Date().toISOString(),
@@ -921,7 +1175,7 @@
       const hint = (current.kind === "bounce")
         ? `Подсказка: считайте высоты шагами (удобно в сантиметрах) и найдите первый раз, когда стало < 15.`
         : `Подсказка: сначала сделайте “лесенку” чисел, потом сложите (можно парами).`;
-      showFeedback("bad", `❌ Пока нет. ${hint} Если нужно — откройте “Разбор”.`);
+      showFeedback("bad", `❌ Пока нет. ${hint} Если нужно — откройте “Разбор” или спросите ИИ-помощника.`);
     }
   }
 
@@ -1008,6 +1262,10 @@
 
   btnFillAnswer.addEventListener("click", fillAnswerFromPair);
 
+  if (aiHintBtn) aiHintBtn.addEventListener("click", () => callAI("hint"));
+  if (aiExplainBtn) aiExplainBtn.addEventListener("click", () => callAI("explain"));
+  if (aiSolutionBtn) aiSolutionBtn.addEventListener("click", () => callAI("solution"));
+
   mulInputEl.addEventListener("keydown", (e) => {
     if (e.key === "Enter") checkMul();
   });
@@ -1022,8 +1280,10 @@
   });
 
   setStat();
+  aiSetButtonsDisabled(true);
 })();
 </script>
 </body>
 </html>
+
 
