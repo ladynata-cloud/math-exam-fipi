@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import re
+from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, List, Optional
@@ -18,7 +19,9 @@ import pdfplumber
 
 
 VARIANT_PATTERN = re.compile(r"Вариант\s*№?\s*(\d+)", re.IGNORECASE)
-TASK_PATTERN = re.compile(r"(?m)^(\d{1,2})\s*[\.)]")
+TASK_PATTERN = re.compile(
+    r"(?mi)^\s*(?:задание\s+|№\s*)?(\d{1,2})(?:\s*[\.)])?\b"
+)
 
 
 @dataclass
@@ -69,17 +72,51 @@ def extract_variant(text: str) -> Optional[int]:
 
 def extract_tasks_from_page(text: str) -> Iterable[int]:
     for match in TASK_PATTERN.finditer(text):
-        yield int(match.group(1))
+        task_number = int(match.group(1))
+        if 1 <= task_number <= 25:
+            yield task_number
 
 
-def build_entries(pdf_path: Path) -> List[TaskEntry]:
+def rebuild_text_from_words(words: List[dict]) -> str:
+    lines: dict[float, List[dict]] = defaultdict(list)
+    for word in words:
+        lines[round(word.get("top", 0))].append(word)
+
+    rebuilt_lines = []
+    for _, line_words in sorted(lines.items()):
+        sorted_words = sorted(line_words, key=lambda w: w.get("x0", 0))
+        rebuilt_lines.append(" ".join(word.get("text", "") for word in sorted_words))
+
+    return "\n".join(rebuilt_lines)
+
+
+def extract_page_text(page: pdfplumber.page.Page) -> str:
+    text = page.extract_text() or ""
+    if text.strip():
+        return text
+
+    words = page.extract_words() or []
+    if not words:
+        return ""
+
+    return rebuild_text_from_words(words)
+
+
+def build_entries(pdf_path: Path, debug: bool = False) -> List[TaskEntry]:
     entries: List[TaskEntry] = []
     current_variant: Optional[int] = None
 
     with pdfplumber.open(pdf_path) as pdf:
         for index, page in enumerate(pdf.pages):
             page_number = index + 1
-            text = page.extract_text() or ""
+            text = extract_page_text(page)
+
+            if debug and page_number <= 3:
+                snippet = " ".join(text.split())[:200]
+                print(
+                    f"[DEBUG] Page {page_number}: chars={len(page.chars)} snippet='{snippet}'"
+                )
+
             variant = extract_variant(text)
             if variant is not None:
                 current_variant = variant
@@ -127,6 +164,11 @@ def parse_args() -> argparse.Namespace:
         default=Path("tools/oge_db/out"),
         help="Output directory for oge_db.xlsx and oge_db.csv",
     )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Print debug information for the first few pages",
+    )
     return parser.parse_args()
 
 
@@ -140,9 +182,12 @@ def main() -> None:
 
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    entries = build_entries(pdf_path)
+    entries = build_entries(pdf_path, debug=args.debug)
     if not entries:
-        raise RuntimeError("Не удалось найти номера задач в PDF")
+        raise RuntimeError(
+            "Не удалось найти номера задач в PDF. Запустите с --debug и"
+            " убедитесь, что PDF содержит текстовый слой (не сканы)."
+        )
 
     df = build_dataframe(entries)
 
