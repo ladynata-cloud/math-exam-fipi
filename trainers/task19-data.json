@@ -1,0 +1,608 @@
+{
+  "version": "2025-12-23",
+  "cards": [
+    {
+      "id": "perpendicular_bisector_point_equidistant_endpoints",
+      "statement": "Точка на серединном перпендикуляре к отрезку равноудалена от его концов.",
+      "truth": true,
+      "topic": "Геом. места точек",
+      "seen_in_variants": [
+        33
+      ]
+    },
+    {
+      "id": "point_on_angle_bisector_equidistant_sides",
+      "statement": "Если точка лежит на биссектрисе угла, то она равноудалена от сторон угла.",
+      "truth": true,
+      "topic": "Геом. места точек",
+      "seen_in_variants": [
+        27
+      ]
+    },
+    {
+      "id": "circle_intersection_point_equidistant_centers",
+      "statement": "Точка пересечения двух окружностей всегда равноудалена от их центров.",
+      "truth": false,
+      "topic": "Окружность",
+      "seen_in_variants": [
+        26,
+        31
+      ]
+    },
+    {
+      "id": "circles_intersect_if_radius_bigger",
+      "statement": "Если радиус одной окружности больше радиуса другой, то окружности обязательно пересекаются.",
+      "truth": false,
+      "topic": "Окружность",
+      "seen_in_variants": [
+        10
+      ]
+    },
+    {
+      "id": "all_diameters_equal",
+      "statement": "Все диаметры одной и той же окружности равны.",
+      "truth": true,
+      "topic": "Окружность: диаметр",
+      "seen_in_variants": [
+        14,
+        18,
+        36
+      ]
+    },
+    {
+      "id": "tangent_parallel_radius",
+      "statement": "Касательная к окружности параллельна радиусу, проведённому в точку касания.",
+      "truth": false,
+      "topic": "Окружность: касательная",
+      "seen_in_variants": [
+        2,
+        32
+      ]
+    },
+    {
+      "id": "point_on_circle_distance_radius",
+      "statement": "Расстояние от точки на окружности до её центра равно радиусу.",
+      "truth": true,
+      "topic": "Окружность: радиус/точки",
+      "seen_in_variants": [
+        8,
+        23,
+        28
+      ]
+    },
+    {
+      "id": "inscribed_angle_over_diameter_right",
+      "statement": "Вписанный угол, опирающийся на диаметр, равен 90°.",
+      "truth": true,
+      "topic": "Окружность: углы",
+      "seen_in_variants": [
+        34
+      ]
+    },
+    {
+      "id": "inscribed_equals_central",
+      "statement": "Вписанный угол, опирающийся на дугу, равен соответствующему центральному углу (на ту же дугу).",
+      "truth": false,
+      "topic": "Окружность: углы",
+      "seen_in_variants": [
+        1
+      ]
+    },
+    {
+      "id": "all_chords_equal",
+      "statement": "Все хорды одной окружности равны между собой.",
+      "truth": false,
+      "topic": "Окружность: хорды",
+      "seen_in_variants": [
+        19
+      ]
+    },
+    {
+      "id": "triangle_area_less_than_product_two_sides",
+      "statement": "Площадь треугольника меньше произведения двух его сторон.",
+      "truth": true,
+      "topic": "Площади",
+      "seen_in_variants": [
+        17
+      ]
+    },
+    {
+      "id": "similar_triangles_area_ratio_equals_k",
+      "statement": "Отношение площадей подобных треугольников равно коэффициенту подобия.",
+      "truth": false,
+      "topic": "Подобие и масштабы",
+      "seen_in_variants": [
+        20,
+        34
+      ]
+    },
+    {
+      "id": "adjacent_angles_always_equal",
+      "statement": "Смежные углы всегда равны.",
+      "truth": false,
+      "topic": "Прямые и углы",
+      "seen_in_variants": [
+        25
+      ]
+    },
+    {
+      "id": "adjacent_angles_one_acute_one_obtuse_always",
+      "statement": "У любых двух смежных углов один острый, а другой тупой.",
+      "truth": false,
+      "topic": "Прямые и углы",
+      "seen_in_variants": [
+        15
+      ]
+    },
+    {
+      "id": "angle_acute_adjacent_acute",
+      "statement": "Если угол острый, то смежный с ним угол тоже острый.",
+      "truth": false,
+      "topic": "Прямые и углы",
+      "seen_in_variants": [
+        30
+      ]
+    },
+    {
+      "id": "parallel_through_point_exists",
+      "statement": "Через точку вне прямой можно провести прямую, параллельную данной прямой.",
+      "truth": true,
+      "topic": "Прямые и углы",
+      "seen_in_variants": [
+        3,
+        4,
+        23
+      ]
+    },
+    {
+      "id": "perp_through_point_exists",
+      "statement": "Через точку вне прямой можно провести прямую, перпендикулярную данной прямой.",
+      "truth": true,
+      "topic": "Прямые и углы",
+      "seen_in_variants": [
+        11
+      ]
+    },
+    {
+      "id": "three_lines_through_one_point_exist",
+      "statement": "Существуют три разные прямые, проходящие через одну точку.",
+      "truth": true,
+      "topic": "Прямые и углы",
+      "seen_in_variants": [
+        35
+      ]
+    },
+    {
+      "id": "two_parallel_to_third_parallel",
+      "statement": "Если две прямые параллельны третьей, то они параллельны друг другу.",
+      "truth": true,
+      "topic": "Прямые и углы",
+      "seen_in_variants": [
+        7
+      ]
+    },
+    {
+      "id": "two_parallel_to_third_perpendicular",
+      "statement": "Если две прямые параллельны третьей, то они перпендикулярны.",
+      "truth": false,
+      "topic": "Прямые и углы",
+      "seen_in_variants": [
+        13
+      ]
+    },
+    {
+      "id": "two_perp_to_third_perp",
+      "statement": "Две прямые, перпендикулярные одной и той же прямой, всегда перпендикулярны между собой.",
+      "truth": false,
+      "topic": "Прямые и углы",
+      "seen_in_variants": [
+        8
+      ]
+    },
+    {
+      "id": "isosceles_trapezoid_bases_equal",
+      "statement": "У равнобедренной трапеции основания равны.",
+      "truth": false,
+      "topic": "Трапеция",
+      "seen_in_variants": [
+        16
+      ]
+    },
+    {
+      "id": "trap_bases_trapezoid_parallel",
+      "statement": "У любой трапеции два основания параллельны.",
+      "truth": true,
+      "topic": "Трапеция",
+      "seen_in_variants": [
+        2
+      ]
+    },
+    {
+      "id": "trapezoid_area_base_times_height",
+      "statement": "Площадь трапеции равна произведению одного её основания на высоту.",
+      "truth": false,
+      "topic": "Трапеция",
+      "seen_in_variants": [
+        9
+      ]
+    },
+    {
+      "id": "trapezoid_diagonal_makes_equal_triangles",
+      "statement": "Диагональ трапеции всегда делит её на два равных треугольника.",
+      "truth": false,
+      "topic": "Трапеция",
+      "seen_in_variants": [
+        10
+      ]
+    },
+    {
+      "id": "trapezoid_diagonals_bisect",
+      "statement": "В трапеции диагонали пересекаются и делятся точкой пересечения пополам.",
+      "truth": false,
+      "topic": "Трапеция",
+      "seen_in_variants": [
+        17
+      ]
+    },
+    {
+      "id": "trapezoid_midline_equals_sum_bases",
+      "statement": "Средняя линия трапеции равна сумме её оснований.",
+      "truth": false,
+      "topic": "Трапеция",
+      "seen_in_variants": [
+        33
+      ]
+    },
+    {
+      "id": "obtuse_triangle_all_obtuse",
+      "statement": "В тупоугольном треугольнике все углы тупые.",
+      "truth": false,
+      "topic": "Треугольники",
+      "seen_in_variants": [
+        35
+      ]
+    },
+    {
+      "id": "right_triangle_angles_sum_90",
+      "statement": "Сумма углов прямоугольного треугольника равна 90°.",
+      "truth": false,
+      "topic": "Треугольники: базовые факты",
+      "seen_in_variants": [
+        36
+      ]
+    },
+    {
+      "id": "triangle_angles_sum_180",
+      "statement": "Сумма углов любого треугольника равна 180°.",
+      "truth": true,
+      "topic": "Треугольники: базовые факты",
+      "seen_in_variants": [
+        10,
+        12
+      ]
+    },
+    {
+      "id": "triangle_angles_sum_360",
+      "statement": "Сумма углов любого треугольника равна 360°.",
+      "truth": false,
+      "topic": "Треугольники: базовые факты",
+      "seen_in_variants": [
+        14
+      ]
+    },
+    {
+      "id": "triangle_has_angle_le_60",
+      "statement": "В любом треугольнике найдётся угол, который не больше 60°.",
+      "truth": true,
+      "topic": "Треугольники: базовые факты",
+      "seen_in_variants": [
+        13,
+        17
+      ]
+    },
+    {
+      "id": "bisector_bisects_opposite_side",
+      "statement": "Биссектриса треугольника всегда делит противоположную сторону пополам.",
+      "truth": false,
+      "topic": "Треугольники: медиана/биссектриса",
+      "seen_in_variants": [
+        20
+      ]
+    },
+    {
+      "id": "median_bisects_angle",
+      "statement": "Любая медиана треугольника делит пополам угол, из вершины которого она проведена.",
+      "truth": false,
+      "topic": "Треугольники: медиана/биссектриса",
+      "seen_in_variants": [
+        18
+      ]
+    },
+    {
+      "id": "circumcenter_always_inside",
+      "statement": "Центр описанной окружности треугольника всегда лежит внутри треугольника.",
+      "truth": false,
+      "topic": "Треугольники: окружность",
+      "seen_in_variants": [
+        16,
+        29
+      ]
+    },
+    {
+      "id": "hypotenuse_equals_sum_legs",
+      "statement": "В прямоугольном треугольнике гипотенуза равна сумме катетов.",
+      "truth": false,
+      "topic": "Треугольники: прямоугольный",
+      "seen_in_variants": [
+        26,
+        30
+      ]
+    },
+    {
+      "id": "hypotenuse_less_than_sum_legs",
+      "statement": "Гипотенуза прямоугольного треугольника меньше суммы его катетов.",
+      "truth": true,
+      "topic": "Треугольники: прямоугольный",
+      "seen_in_variants": [
+        27
+      ]
+    },
+    {
+      "id": "right_triangle_acute_sum_90",
+      "statement": "В прямоугольном треугольнике сумма двух острых углов равна 90°.",
+      "truth": true,
+      "topic": "Треугольники: прямоугольный",
+      "seen_in_variants": [
+        9,
+        32
+      ]
+    },
+    {
+      "id": "right_triangle_area_equals_product_legs",
+      "statement": "Площадь прямоугольного треугольника равна произведению его катетов.",
+      "truth": false,
+      "topic": "Треугольники: прямоугольный",
+      "seen_in_variants": [
+        15,
+        20,
+        22,
+        28
+      ]
+    },
+    {
+      "id": "tri_aa_similarity",
+      "statement": "Если два угла одного треугольника равны двум углам другого, то треугольники подобны.",
+      "truth": true,
+      "topic": "Треугольники: равенство/подобие",
+      "seen_in_variants": [
+        3,
+        21
+      ]
+    },
+    {
+      "id": "tri_aaa_congruent",
+      "statement": "Если у двух треугольников совпадают все три угла, то эти треугольники обязательно равны (конгруэнтны).",
+      "truth": false,
+      "topic": "Треугольники: равенство/подобие",
+      "seen_in_variants": [
+        1,
+        34
+      ]
+    },
+    {
+      "id": "tri_two_sides_congruent",
+      "statement": "Равенства двух сторон у двух треугольников достаточно, чтобы заключить их равенство.",
+      "truth": false,
+      "topic": "Треугольники: равенство/подобие",
+      "seen_in_variants": [
+        7,
+        31
+      ]
+    },
+    {
+      "id": "isosceles_all_bisectors_are_altitudes",
+      "statement": "Любая биссектриса равнобедренного треугольника обязательно является высотой.",
+      "truth": false,
+      "topic": "Треугольники: равнобедренный",
+      "seen_in_variants": [
+        25
+      ]
+    },
+    {
+      "id": "isosceles_all_bisectors_are_medians",
+      "statement": "Любая биссектриса равнобедренного треугольника обязательно является медианой.",
+      "truth": false,
+      "topic": "Треугольники: равнобедренный",
+      "seen_in_variants": [
+        9,
+        22
+      ]
+    },
+    {
+      "id": "equilateral_altitudes_equal",
+      "statement": "У равностороннего треугольника все высоты равны.",
+      "truth": true,
+      "topic": "Треугольники: равносторонний",
+      "seen_in_variants": [
+        16
+      ]
+    },
+    {
+      "id": "tri_1_2_4_exists",
+      "statement": "Треугольник со сторонами 1, 2 и 4 может существовать.",
+      "truth": false,
+      "topic": "Треугольники: существование",
+      "seen_in_variants": [
+        2,
+        4
+      ]
+    },
+    {
+      "id": "tri_2_4_6_not_exist",
+      "statement": "Треугольника со сторонами 2, 4 и 6 не существует.",
+      "truth": true,
+      "topic": "Треугольники: существование",
+      "seen_in_variants": [
+        18
+      ]
+    },
+    {
+      "id": "tan_acute_less_than_1",
+      "statement": "Тангенс любого острого угла меньше 1.",
+      "truth": false,
+      "topic": "Тригонометрия",
+      "seen_in_variants": [
+        12,
+        21,
+        33
+      ]
+    },
+    {
+      "id": "parallelogram_cyclic",
+      "statement": "Любой параллелограмм можно вписать в окружность.",
+      "truth": false,
+      "topic": "Четырёхугольники: вписанные",
+      "seen_in_variants": [
+        32
+      ]
+    },
+    {
+      "id": "square_area_adjacent_sides_product",
+      "statement": "Площадь квадрата равна произведению длин двух его смежных сторон.",
+      "truth": true,
+      "topic": "Четырёхугольники: квадрат",
+      "seen_in_variants": [
+        13
+      ]
+    },
+    {
+      "id": "equidiagonal_orthogonal_quadrilateral_square",
+      "statement": "Любой выпуклый четырёхугольник с равными и перпендикулярными диагоналями — квадрат.",
+      "truth": false,
+      "topic": "Четырёхугольники: общее",
+      "seen_in_variants": [
+        11
+      ]
+    },
+    {
+      "id": "quadrilaterals_equal_if_corresponding_sides_equal",
+      "statement": "Если четыре стороны одного четырёхугольника по парам равны сторонам другого, то четырёхугольники обязательно равны.",
+      "truth": false,
+      "topic": "Четырёхугольники: общее",
+      "seen_in_variants": [
+        19
+      ]
+    },
+    {
+      "id": "parallelogram_adjacent_sides_equal_rhombus",
+      "statement": "Если у параллелограмма равны две соседние стороны, то это ромб.",
+      "truth": true,
+      "topic": "Четырёхугольники: параллелограмм",
+      "seen_in_variants": [
+        14
+      ]
+    },
+    {
+      "id": "parallelogram_equal_diagonals_rhombus",
+      "statement": "Если у параллелограмма диагонали равны, то он обязательно ромб.",
+      "truth": false,
+      "topic": "Четырёхугольники: параллелограмм",
+      "seen_in_variants": [
+        12,
+        23,
+        27
+      ]
+    },
+    {
+      "id": "parallelogram_has_two_equal_angles",
+      "statement": "У параллелограмма есть два равных угла.",
+      "truth": true,
+      "topic": "Четырёхугольники: параллелограмм",
+      "seen_in_variants": [
+        29,
+        30
+      ]
+    },
+    {
+      "id": "rect_perp_diagonals_exists",
+      "statement": "Существует прямоугольник, у которого диагонали пересекаются под прямым углом.",
+      "truth": true,
+      "topic": "Четырёхугольники: прямоугольник/квадрат",
+      "seen_in_variants": [
+        1,
+        15,
+        25
+      ]
+    },
+    {
+      "id": "rect_diagonals_bisect",
+      "statement": "В прямоугольнике диагонали пересекаются и делятся точкой пересечения пополам.",
+      "truth": true,
+      "topic": "Четырёхугольники: прямоугольник/параллелограмм",
+      "seen_in_variants": [
+        7,
+        20,
+        22,
+        28
+      ]
+    },
+    {
+      "id": "rhombus_all_angles_equal",
+      "statement": "В любом ромбе все четыре угла равны.",
+      "truth": false,
+      "topic": "Четырёхугольники: ромб",
+      "seen_in_variants": [
+        3,
+        11
+      ]
+    },
+    {
+      "id": "rhombus_area_ab_sin",
+      "statement": "Площадь ромба равна произведению двух смежных сторон на синус угла между ними.",
+      "truth": true,
+      "topic": "Четырёхугольники: ромб",
+      "seen_in_variants": [
+        35
+      ]
+    },
+    {
+      "id": "rhombus_area_side_times_height",
+      "statement": "Площадь ромба равна произведению стороны на высоту, опущенную на эту сторону.",
+      "truth": true,
+      "topic": "Четырёхугольники: ромб",
+      "seen_in_variants": [
+        19
+      ]
+    },
+    {
+      "id": "rhombus_diagonals_bisect",
+      "statement": "В ромбе диагонали делятся точкой пересечения пополам.",
+      "truth": true,
+      "topic": "Четырёхугольники: ромб",
+      "seen_in_variants": [
+        4,
+        31,
+        36
+      ]
+    },
+    {
+      "id": "rhombus_diagonals_equal",
+      "statement": "У ромба диагонали равны.",
+      "truth": false,
+      "topic": "Четырёхугольники: ромб",
+      "seen_in_variants": [
+        21
+      ]
+    },
+    {
+      "id": "rhombus_right_angle_square",
+      "statement": "Если в ромбе есть прямой угол, то этот ромб — квадрат.",
+      "truth": true,
+      "topic": "Четырёхугольники: ромб/квадрат",
+      "seen_in_variants": [
+        8,
+        26
+      ]
+    }
+  ]
+}
