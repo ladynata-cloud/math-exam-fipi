@@ -30,7 +30,6 @@
     .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; border:1px solid #ddd; border-bottom-width:2px; border-radius: 8px; padding: 2px 6px; background:#fff; }
     a { color: inherit; }
     .small { font-size: 12px; color:#666; }
-    textarea { width:100%; min-height: 90px; border-radius: 12px; border: 1px solid #ddd; padding: 10px; font: inherit; }
     .hr { height:1px; background:#eee; margin: 12px 0; }
   </style>
 </head>
@@ -42,7 +41,7 @@
       <small>Карточки с утверждениями: «верно / неверно» + Leitner (простое интервальное повторение)</small>
     </div>
     <div class="small">
-      <span class="kbd">J</span>/<span class="kbd">N</span> — ответ • <span class="kbd">Пробел</span> — показать/скрыть
+      <span class="kbd">J</span>/<span class="kbd">N</span> — ответ
     </div>
   </div>
 </header>
@@ -66,10 +65,6 @@
       <div class="row">
         <button class="good" id="btnTrue">Верно</button>
         <button class="bad" id="btnFalse">Неверно</button>
-        <label class="row muted" style="gap:8px;">
-          <input type="checkbox" id="chkShowAnswer"/>
-          показывать ответ сразу
-        </label>
       </div>
 
       <div class="hr"></div>
@@ -81,17 +76,6 @@
         <div class="meta"><b>Варианты на скриншотах:</b> <span id="variantsText"></span></div>
         <div class="meta" id="explanationBlock" style="display:none;"><b>Пояснение:</b> <span id="explanationText"></span></div>
         <div class="meta" id="supportBlock" style="display:none;"><b>Опора:</b> <span id="supportText"></span></div>
-        <div class="hr"></div>
-        <details>
-          <summary class="meta"><b>Хочешь объяснение от ИИ?</b> Скопируй промпт ниже в ChatGPT/другую модель.</summary>
-          <textarea id="aiPrompt" readonly></textarea>
-          <div class="row">
-            <button id="btnCopy">Скопировать промпт</button>
-          </div>
-          <div class="small">
-            Важно: если это материалы из сборника/пособия, проверь права на публичное размещение оригинальных формулировок.
-          </div>
-        </details>
       </div>
     </section>
 
@@ -132,7 +116,6 @@
     cards: [],
     topic: 'Все темы',
     current: null,
-    showAnswer: false,
     stats: { doneToday: 0, correctToday: 0, totalToday: 0, dayKey: '' },
     progress: {}, // id -> { box: 1..5, seen: n, correct: n }
   };
@@ -196,7 +179,7 @@
     el('statement').textContent = card.statement;
 
     // answer block reset
-    el('answerBlock').style.display = state.showAnswer ? 'block' : 'none';
+    el('answerBlock').style.display = 'block';
     el('resultText').textContent = '—';
     el('answerText').textContent = card.truth ? 'Верно' : 'Неверно';
     el('variantsText').textContent = (card.seen_in_variants || []).join(', ');
@@ -218,13 +201,6 @@
     el('explanationText').textContent = explanation || '—';
     el('supportText').textContent = support;
 
-    const prompt = [
-      'Ты — учитель математики. Объясни школьнику (ОГЭ) почему утверждение ниже верно/неверно.',
-      'Дай короткую проверку на контрпример (если неверно) или опорный факт/теорему (если верно).',
-      'Утверждение:',
-      card.statement,
-    ].join('\n');
-    el('aiPrompt').value = prompt;
   }
 
   function nextCard() {
@@ -235,10 +211,6 @@
 
   function reveal() {
     el('answerBlock').style.display = 'block';
-  }
-
-  function hideReveal() {
-    el('answerBlock').style.display = 'none';
   }
 
   function answer(userTruth) {
@@ -266,10 +238,6 @@
     updateStatsUI();
     reveal();
 
-    // Auto-next if "showAnswer" is on
-    if (el('chkShowAnswer').checked) {
-      setTimeout(nextCard, 450);
-    }
   }
 
   function updateStatsUI() {
@@ -297,7 +265,6 @@
       el('btnNext').disabled = true;
       el('btnTrue').disabled = true;
       el('btnFalse').disabled = true;
-      el('chkShowAnswer').disabled = true;
       el('selTopic').disabled = true;
       return;
     }
@@ -307,7 +274,6 @@
       el('btnNext').disabled = true;
       el('btnTrue').disabled = true;
       el('btnFalse').disabled = true;
-      el('chkShowAnswer').disabled = true;
       el('selTopic').disabled = true;
       return;
     }
@@ -334,21 +300,6 @@
     el('btnTrue').addEventListener('click', () => answer(true));
     el('btnFalse').addEventListener('click', () => answer(false));
 
-    el('chkShowAnswer').addEventListener('change', (e) => {
-      state.showAnswer = e.target.checked;
-      if (state.showAnswer) reveal(); else hideReveal();
-    });
-
-    el('btnCopy').addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(el('aiPrompt').value);
-        el('btnCopy').textContent = 'Скопировано ✓';
-        setTimeout(() => el('btnCopy').textContent = 'Скопировать промпт', 900);
-      } catch (e) {
-        alert('Не получилось скопировать. Выдели текст и скопируй вручную.');
-      }
-    });
-
     el('btnReset').addEventListener('click', () => {
       if (!confirm('Сбросить прогресс?')) return;
       localStorage.removeItem(LS_KEY);
@@ -359,16 +310,11 @@
       nextCard();
     });
 
-    // Hotkeys: J (true), N (false), Space (toggle answer)
+    // Hotkeys: J (true), N (false)
     document.addEventListener('keydown', (e) => {
       if (e.target && (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT')) return;
       if (e.code === 'KeyJ') answer(true);
       if (e.code === 'KeyN') answer(false);
-      if (e.code === 'Space') {
-        e.preventDefault();
-        const isVisible = el('answerBlock').style.display !== 'none';
-        if (isVisible) hideReveal(); else reveal();
-      }
     });
 
     updateStatsUI();
