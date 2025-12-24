@@ -1,6 +1,7 @@
 (() => {
   const LS_KEY = 'task14_progressions_trainer_v1';
   const TOLERANCE = 1e-6;
+  const DATA_URL = './task14-progressions-screenshots-data.json';
 
   const el = (id) => document.getElementById(id);
 
@@ -16,6 +17,7 @@
       bestStreak: 0,
       byType: {},
     },
+    tasks: [],
     current: null,
     checked: false,
     hintIndex: 0,
@@ -27,8 +29,6 @@
     { id: 'gp', label: 'Геометрическая прогрессия' },
     { id: 'story', label: 'Сюжетные задачи' },
   ];
-
-  const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
   const randomChoice = (list) => list[Math.floor(Math.random() * list.length)];
 
@@ -58,167 +58,19 @@
     }
   };
 
-  const randomRatio = (mode) => {
-    if (mode === 'basic') {
-      return randomChoice([2, 3, 4, 0.5]);
-    }
-    return randomChoice([1.2, 1.5, 2, 0.5, 0.8]);
+  const getTasksByTopic = (topicId, mode) => {
+    const list = state.tasks.filter((task) => task.mode === mode);
+    if (topicId === 'all') return list;
+    return list.filter((task) => task.topic === topicId);
   };
 
-  const randomDiff = (mode) => {
-    if (mode === 'basic') return randomChoice([2, 3, 4, 5, 6, 8]);
-    return randomChoice([1.5, 2.5, 3, 4, 5.5]);
-  };
-
-  const templates = [
-    {
-      id: 'ap-nth',
-      topic: 'ap',
-      label: 'АП: n-й член',
-      build(mode) {
-        const a1 = mode === 'basic' ? randomInt(1, 9) : randomChoice([1.5, 2, 2.5, 3, 4]);
-        const d = randomDiff(mode);
-        const n = randomInt(6, 12);
-        const an = a1 + (n - 1) * d;
-        return {
-          question: `Арифметическая прогрессия: a₁ = ${formatNumber(a1)}, d = ${formatNumber(d)}. Найдите aₙ при n = ${n}.`,
-          answer: an,
-          steps: [
-            'Используем формулу aₙ = a₁ + (n − 1)·d.',
-            `Подставляем: aₙ = ${formatNumber(a1)} + (${n} − 1)·${formatNumber(d)}.`,
-            `Вычисляем: aₙ = ${formatNumber(an)}.`,
-          ],
-        };
-      },
-    },
-    {
-      id: 'ap-sum',
-      topic: 'ap',
-      label: 'АП: сумма',
-      build(mode) {
-        const a1 = mode === 'basic' ? randomInt(1, 10) : randomChoice([1.5, 2, 3, 4.5]);
-        const d = randomDiff(mode);
-        const n = randomInt(6, 12);
-        const an = a1 + (n - 1) * d;
-        const sum = (n * (a1 + an)) / 2;
-        return {
-          question: `Арифметическая прогрессия: a₁ = ${formatNumber(a1)}, d = ${formatNumber(d)}, n = ${n}. Найдите сумму первых n членов.`,
-          answer: sum,
-          steps: [
-            'Сначала найдём aₙ по формуле aₙ = a₁ + (n − 1)·d.',
-            `aₙ = ${formatNumber(a1)} + (${n} − 1)·${formatNumber(d)} = ${formatNumber(an)}.`,
-            'Используем формулу суммы Sₙ = n·(a₁ + aₙ) / 2.',
-            `Sₙ = ${n}·(${formatNumber(a1)} + ${formatNumber(an)}) / 2 = ${formatNumber(sum)}.`,
-          ],
-        };
-      },
-    },
-    {
-      id: 'gp-nth',
-      topic: 'gp',
-      label: 'ГП: n-й член',
-      build(mode) {
-        const a1 = mode === 'basic' ? randomInt(1, 6) : randomChoice([1.2, 2, 2.5, 3]);
-        const q = randomRatio(mode);
-        const n = randomInt(5, 9);
-        const an = a1 * Math.pow(q, n - 1);
-        return {
-          question: `Геометрическая прогрессия: a₁ = ${formatNumber(a1)}, q = ${formatNumber(q)}. Найдите aₙ при n = ${n}.`,
-          answer: an,
-          steps: [
-            'Используем формулу aₙ = a₁·qⁿ⁻¹.',
-            `aₙ = ${formatNumber(a1)}·${formatNumber(q)}^${n - 1}.`,
-            `aₙ = ${formatNumber(an)}.`,
-          ],
-        };
-      },
-    },
-    {
-      id: 'gp-sum',
-      topic: 'gp',
-      label: 'ГП: сумма',
-      build(mode) {
-        const a1 = mode === 'basic' ? randomInt(1, 5) : randomChoice([1.5, 2, 3]);
-        let q = randomRatio(mode);
-        if (Math.abs(q - 1) < 0.2) q = 2;
-        const n = randomInt(4, 8);
-        const sum = a1 * (Math.pow(q, n) - 1) / (q - 1);
-        return {
-          question: `Геометрическая прогрессия: a₁ = ${formatNumber(a1)}, q = ${formatNumber(q)}, n = ${n}. Найдите сумму первых n членов.`,
-          answer: sum,
-          steps: [
-            'Используем формулу суммы Sₙ = a₁·(qⁿ − 1) / (q − 1).',
-            `Sₙ = ${formatNumber(a1)}·(${formatNumber(q)}^${n} − 1) / (${formatNumber(q)} − 1).`,
-            `Sₙ = ${formatNumber(sum)}.`,
-          ],
-        };
-      },
-    },
-    {
-      id: 'story-distance',
-      topic: 'story',
-      label: 'Сюжет: шаги',
-      build(mode) {
-        const a1 = mode === 'basic' ? randomInt(8, 14) : randomChoice([8.5, 9, 10.5, 12]);
-        const d = mode === 'basic' ? randomInt(1, 3) : randomChoice([1.5, 2.5]);
-        const n = randomInt(6, 10);
-        const sum = (n * (2 * a1 + (n - 1) * d)) / 2;
-        return {
-          question: `Спортсмен в первый день пробежал ${formatNumber(a1)} км, а затем ежедневно увеличивал дистанцию на ${formatNumber(d)} км. Сколько км он пробежал за первые ${n} дней?`,
-          answer: sum,
-          steps: [
-            'Это арифметическая прогрессия: a₁ = первая дистанция, d = прирост.',
-            'Используем формулу суммы Sₙ = n·(2a₁ + (n − 1)·d) / 2.',
-            `Sₙ = ${formatNumber(sum)} км.`,
-          ],
-        };
-      },
-    },
-    {
-      id: 'story-deposit',
-      topic: 'story',
-      label: 'Сюжет: вклад',
-      build(mode) {
-        const a1 = mode === 'basic' ? randomInt(10, 20) * 1000 : randomChoice([12500, 15000, 17500]);
-        const q = mode === 'basic' ? 1.1 : randomChoice([1.08, 1.12, 1.15]);
-        const n = randomInt(3, 5);
-        const an = a1 * Math.pow(q, n - 1);
-        return {
-          question: `На счёте было ${formatNumber(a1)} ₽. Каждый год сумма увеличивается в ${formatNumber(q)} раза. Какой будет сумма через ${n} года (n-й член)?`,
-          answer: an,
-          steps: [
-            'Это геометрическая прогрессия с множителем q.',
-            'Используем формулу aₙ = a₁·qⁿ⁻¹.',
-            `aₙ = ${formatNumber(an)} ₽.`,
-          ],
-        };
-      },
-    },
-    {
-      id: 'story-production',
-      topic: 'story',
-      label: 'Сюжет: выпуск',
-      build(mode) {
-        const a1 = mode === 'basic' ? randomInt(30, 40) : randomChoice([32.5, 35, 37.5]);
-        const q = mode === 'basic' ? 0.9 : randomChoice([0.85, 0.92]);
-        const n = randomInt(4, 6);
-        const sum = a1 * (Math.pow(q, n) - 1) / (q - 1);
-        return {
-          question: `Выпуск продукции в первый месяц составил ${formatNumber(a1)} тыс. шт., затем каждый месяц уменьшался в ${formatNumber(q)} раза. Сколько всего продукции выпустили за ${n} месяцев?`,
-          answer: sum,
-          steps: [
-            'Это геометрическая прогрессия (уменьшение в q раз).',
-            'Используем формулу суммы Sₙ = a₁·(qⁿ − 1) / (q − 1).',
-            `Sₙ = ${formatNumber(sum)} тыс. шт.`,
-          ],
-        };
-      },
-    },
-  ];
-
-  const getTemplatesByTopic = (topicId) => {
-    if (topicId === 'all') return templates;
-    return templates.filter((item) => item.topic === topicId);
+  const renderLoadError = (message) => {
+    el('taskText').textContent = message;
+    el('taskTypePill').textContent = '—';
+    el('taskModePill').textContent = '—';
+    el('answerInput').value = '';
+    resetHints();
+    resetResultBlocks();
   };
 
   const updateSettings = () => {
@@ -302,15 +154,19 @@
   };
 
   const renderTask = () => {
-    const list = getTemplatesByTopic(state.settings.topic);
-    const template = randomChoice(list);
-    const task = template.build(state.settings.mode);
-    state.current = { ...task, id: template.id, label: template.label };
+    const list = getTasksByTopic(state.settings.topic, state.settings.mode);
+    if (list.length === 0) {
+      state.current = null;
+      renderLoadError('Нет задач для выбранных фильтров.');
+      return;
+    }
+    const task = randomChoice(list);
+    state.current = { ...task };
     state.checked = false;
 
     el('taskText').textContent = task.question;
-    el('taskTypePill').textContent = template.label;
-    el('taskModePill').textContent = state.settings.mode === 'basic' ? 'Базовый' : 'Стандарт';
+    el('taskTypePill').textContent = task.label;
+    el('taskModePill').textContent = task.mode === 'basic' ? 'Базовый' : 'Стандарт';
     el('answerInput').value = '';
 
     resetHints();
@@ -379,8 +235,35 @@
     updateStats(isCorrect, state.current);
   };
 
-  const init = () => {
+  const loadTasks = async () => {
+    try {
+      const response = await fetch(DATA_URL, { cache: 'no-store' });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      const payload = await response.json();
+      if (!payload || !Array.isArray(payload.tasks)) {
+        throw new Error('Неверный формат данных');
+      }
+      if (payload.tasks.length !== 44) {
+        throw new Error('Ожидалось ровно 44 задачи');
+      }
+      state.tasks = payload.tasks.map((task) => ({
+        ...task,
+        answer: Number(task.answer),
+        steps: Array.isArray(task.steps) ? task.steps : [],
+      }));
+      return true;
+    } catch (err) {
+      console.error('Не удалось загрузить задания', err);
+      renderLoadError('Не удалось загрузить задания. Обновите страницу.');
+      return false;
+    }
+  };
+
+  const init = async () => {
     loadState();
+    const loaded = await loadTasks();
 
     const topicSelect = el('topicSelect');
     topicSelect.innerHTML = '';
@@ -405,7 +288,9 @@
     });
 
     renderStats();
-    renderTask();
+    if (loaded) {
+      renderTask();
+    }
   };
 
   init();
