@@ -1,5 +1,5 @@
 {
-  "version": "2025-12-23",
+  "version": "2025-03-08",
   "cards": [
     {
       "id": "perpendicular_bisector_point_equidistant_endpoints",
@@ -444,6 +444,15 @@
       "topic": "Треугольники: существование",
       "seen_in_variants": [
         18
+      ]
+    },
+    {
+      "id": "triangle_inequality_sum_two_sides_gt_third",
+      "statement": "Сумма длин любых двух сторон треугольника больше длины третьей стороны.",
+      "truth": true,
+      "topic": "Треугольники: существование",
+      "seen_in_variants": [
+        5
       ]
     },
     {

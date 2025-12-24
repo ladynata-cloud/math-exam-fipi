@@ -101,6 +101,7 @@
 
       <h2 style="margin:0 0 8px; font-size:16px;">Статистика</h2>
       <div class="meta">Карточек всего: <b id="statTotal">…</b></div>
+      <div class="meta">Версия базы: <b id="statVersion">—</b></div>
       <div class="meta">Сделано сегодня: <b id="statDone">0</b></div>
       <div class="meta">Точность: <b id="statAcc">—</b></div>
 
@@ -128,6 +129,7 @@
     current: null,
     showAnswer: false,
     stats: { doneToday: 0, correctToday: 0, totalToday: 0, dayKey: '' },
+    version: '—',
     progress: {}, // id -> { box: 1..5, seen: n, correct: n }
   };
 
@@ -248,6 +250,7 @@
 
   function updateStatsUI() {
     el('statTotal').textContent = String(state.cards.length);
+    el('statVersion').textContent = state.version;
     el('statDone').textContent = String(state.stats.doneToday);
     if (state.stats.totalToday > 0) {
       const acc = Math.round(100 * state.stats.correctToday / state.stats.totalToday);
@@ -261,6 +264,7 @@
     const res = await fetch(DATA_URL, { cache: 'no-store' });
     const data = await res.json();
     state.cards = data.cards || [];
+    state.version = data.version || '—';
 
     loadProgress();
 
