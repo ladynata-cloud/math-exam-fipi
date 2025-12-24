@@ -75,17 +75,22 @@
       <div class="hr"></div>
 
       <div id="answerBlock" style="display:none;">
-        <div class="meta"><b>Ответ:</b> <span id="answerText"></span></div>
+        <div class="meta"><b>Ответ:</b> <span id="resultText"></span></div>
+        <div class="meta"><b>Правильный ответ:</b> <span id="answerText"></span></div>
+        <div class="meta"><b>Пояснение:</b> <span id="explanationText"></span></div>
+        <div class="meta" id="tipBlock"><b>Опора:</b> <span id="tipText"></span></div>
         <div class="meta"><b>Варианты на скриншотах:</b> <span id="variantsText"></span></div>
         <div class="hr"></div>
-        <div class="meta"><b>Хочешь объяснение от ИИ?</b> Скопируй промпт ниже в ChatGPT/другую модель:</div>
-        <textarea id="aiPrompt" readonly></textarea>
-        <div class="row">
-          <button id="btnCopy">Скопировать промпт</button>
-        </div>
-        <div class="small">
-          Важно: если это материалы из сборника/пособия, проверь права на публичное размещение оригинальных формулировок.
-        </div>
+        <details>
+          <summary class="meta"><b>Хочешь объяснение от ИИ?</b> Скопируй промпт ниже в ChatGPT/другую модель.</summary>
+          <textarea id="aiPrompt" readonly></textarea>
+          <div class="row">
+            <button id="btnCopy">Скопировать промпт</button>
+          </div>
+          <div class="small">
+            Важно: если это материалы из сборника/пособия, проверь права на публичное размещение оригинальных формулировок.
+          </div>
+        </details>
       </div>
     </section>
 
@@ -191,8 +196,19 @@
 
     // answer block reset
     el('answerBlock').style.display = state.showAnswer ? 'block' : 'none';
+    el('resultText').textContent = '—';
     el('answerText').textContent = card.truth ? 'Верно' : 'Неверно';
     el('variantsText').textContent = (card.seen_in_variants || []).join(', ');
+    const explanation = card.explanation ? String(card.explanation).trim() : '';
+    el('explanationText').textContent = explanation || '—';
+    const tip = card.tip ? String(card.tip).trim() : '';
+    if (tip) {
+      el('tipText').textContent = tip;
+      el('tipBlock').style.display = 'block';
+    } else {
+      el('tipText').textContent = '';
+      el('tipBlock').style.display = 'none';
+    }
 
     const prompt = [
       'Ты — учитель математики. Объясни школьнику (ОГЭ) почему утверждение ниже верно/неверно.',
@@ -235,6 +251,8 @@
     } else {
       p.box = 1;
     }
+
+    el('resultText').textContent = correct ? 'Верно' : 'Неверно';
 
     saveProgress();
     updateStatsUI();
