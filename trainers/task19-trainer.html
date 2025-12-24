@@ -77,6 +77,8 @@
       <div id="answerBlock" style="display:none;">
         <div class="meta"><b>Ответ:</b> <span id="answerText"></span></div>
         <div class="meta"><b>Варианты на скриншотах:</b> <span id="variantsText"></span></div>
+        <div class="meta" id="explanationBlock" style="display:none;"><b>Пояснение:</b> <span id="explanationText"></span></div>
+        <div class="meta" id="supportBlock" style="display:none;"><b>Опора:</b> <span id="supportText"></span></div>
         <div class="hr"></div>
         <div class="meta"><b>Хочешь объяснение от ИИ?</b> Скопируй промпт ниже в ChatGPT/другую модель:</div>
         <textarea id="aiPrompt" readonly></textarea>
@@ -194,6 +196,15 @@
     el('answerText').textContent = card.truth ? 'Верно' : 'Неверно';
     el('variantsText').textContent = (card.seen_in_variants || []).join(', ');
 
+    const explanation = card.explanation || '';
+    const support = card.support || '';
+    const showExplanation = Boolean(explanation);
+    const showSupport = Boolean(support);
+    el('explanationBlock').style.display = showExplanation ? 'block' : 'none';
+    el('supportBlock').style.display = showSupport ? 'block' : 'none';
+    el('explanationText').textContent = explanation;
+    el('supportText').textContent = support;
+
     const prompt = [
       'Ты — учитель математики. Объясни школьнику (ОГЭ) почему утверждение ниже верно/неверно.',
       'Дай короткую проверку на контрпример (если неверно) или опорный факт/теорему (если верно).',
@@ -258,9 +269,33 @@
   }
 
   async function init() {
-    const res = await fetch(DATA_URL, { cache: 'no-store' });
-    const data = await res.json();
-    state.cards = data.cards || [];
+    try {
+      const res = await fetch(DATA_URL, { cache: 'no-store' });
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      state.cards = Array.isArray(data.cards) ? data.cards : [];
+    } catch (error) {
+      console.error('Не удалось загрузить данные карточек:', error);
+      el('statement').textContent = 'Ошибка загрузки карточек. Проверь файл task19-data.json.';
+      el('btnNext').disabled = true;
+      el('btnTrue').disabled = true;
+      el('btnFalse').disabled = true;
+      el('chkShowAnswer').disabled = true;
+      el('selTopic').disabled = true;
+      return;
+    }
+
+    if (state.cards.length === 0) {
+      el('statement').textContent = 'Карточки не найдены. Проверь файл task19-data.json.';
+      el('btnNext').disabled = true;
+      el('btnTrue').disabled = true;
+      el('btnFalse').disabled = true;
+      el('chkShowAnswer').disabled = true;
+      el('selTopic').disabled = true;
+      return;
+    }
 
     loadProgress();
 
