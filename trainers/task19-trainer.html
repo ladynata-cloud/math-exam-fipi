@@ -70,9 +70,9 @@
       <div class="hr"></div>
 
       <div id="answerBlock" style="display:none;">
-        <div class="meta"><b>Ответ:</b> <span id="resultText"></span></div>
+        <div class="meta"><b>Ваш ответ:</b> <span id="resultText"></span></div>
         <div class="meta"><b>Правильный ответ:</b> <span id="answerText"></span></div>
-        <div class="meta" id="tipBlock"><b>Опора:</b> <span id="tipText"></span></div>
+        <div class="meta" id="tipBlock" style="display:none;"><b>Опора:</b> <span id="tipText"></span></div>
         <div class="meta"><b>Варианты на скриншотах:</b> <span id="variantsText"></span></div>
         <div class="meta" id="explanationBlock" style="display:none;"><b>Пояснение:</b> <span id="explanationText"></span></div>
         <div class="meta" id="supportBlock" style="display:none;"><b>Опора:</b> <span id="supportText"></span></div>
@@ -178,28 +178,17 @@
 
     el('statement').textContent = card.statement;
 
-    // answer block reset
-    el('answerBlock').style.display = 'block';
-    el('resultText').textContent = '—';
-    el('answerText').textContent = card.truth ? 'Верно' : 'Неверно';
-    el('variantsText').textContent = (card.seen_in_variants || []).join(', ');
-    const explanation = card.explanation ? String(card.explanation).trim() : '';
-    const tip = card.tip ? String(card.tip).trim() : '';
-    if (tip) {
-      el('tipText').textContent = tip;
-      el('tipBlock').style.display = 'block';
-    } else {
-      el('tipText').textContent = '';
-      el('tipBlock').style.display = 'none';
-    }
-
-    const support = card.support ? String(card.support).trim() : '';
-    const showExplanation = Boolean(explanation);
-    const showSupport = Boolean(support);
-    el('explanationBlock').style.display = showExplanation ? 'block' : 'none';
-    el('supportBlock').style.display = showSupport ? 'block' : 'none';
-    el('explanationText').textContent = explanation || '—';
-    el('supportText').textContent = support;
+    // answer block reset (hide all result info before answer)
+    el('answerBlock').style.display = 'none';
+    el('resultText').textContent = '';
+    el('answerText').textContent = '';
+    el('variantsText').textContent = '';
+    el('tipText').textContent = '';
+    el('tipBlock').style.display = 'none';
+    el('explanationText').textContent = '';
+    el('explanationBlock').style.display = 'none';
+    el('supportText').textContent = '';
+    el('supportBlock').style.display = 'none';
 
   }
 
@@ -232,7 +221,21 @@
       p.box = 1;
     }
 
-    el('resultText').textContent = correct ? 'Верно' : 'Неверно';
+    el('resultText').textContent = userTruth ? 'Верно' : 'Неверно';
+    el('answerText').textContent = card.truth ? 'Верно' : 'Неверно';
+    el('variantsText').textContent = (card.seen_in_variants || []).join(', ') || '—';
+
+    const explanation = card.explanation ? String(card.explanation).trim() : '';
+    const tip = card.tip ? String(card.tip).trim() : '';
+    const support = card.support ? String(card.support).trim() : '';
+    el('tipText').textContent = tip;
+    el('tipBlock').style.display = tip ? 'block' : 'none';
+
+    const explanationText = explanation || tip || '—';
+    el('explanationText').textContent = explanationText;
+    el('explanationBlock').style.display = explanationText ? 'block' : 'none';
+    el('supportText').textContent = support;
+    el('supportBlock').style.display = support ? 'block' : 'none';
 
     saveProgress();
     updateStatsUI();
