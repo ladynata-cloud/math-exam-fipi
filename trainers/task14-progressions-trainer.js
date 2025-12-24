@@ -1,7 +1,7 @@
 (() => {
   const LS_KEY = 'task14_progressions_trainer_v1';
   const TOLERANCE = 1e-6;
-  const DATA_URL = './task14-progressions-screenshots-data.json';
+  const DATA_URL = './data/task14_bank.json';
 
   const el = (id) => document.getElementById(id);
 
