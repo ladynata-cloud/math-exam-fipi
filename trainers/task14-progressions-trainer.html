@@ -320,7 +320,12 @@
 
 <script>
 (() => {
-  const DATA_URL = "../data/task14-progressions-2022-2025.json";
+  const DATA_URLS = [
+    "../data/task14-progressions-2022-2025.json",
+    "/data/task14-progressions-2022-2025.json",
+    "./data/task14-progressions-2022-2025.json"
+  ];
+  const FETCH_TIMEOUT_MS = 8000;
 
   // На всякий случай — если в JSON нет image, покажем по id:
   const IMAGE_BY_ID = {
@@ -1334,18 +1339,55 @@
   // ---------------------------
   // Загрузка банка
   // ---------------------------
+  async function fetchTasksWithTimeout(url){
+    const controller = new AbortController();
+    const timerId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    try{
+      const res = await fetch(url, { cache: "no-store", signal: controller.signal });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const json = await res.json();
+      const tasks = Array.isArray(json) ? json : (json.tasks || []);
+      if (!Array.isArray(tasks) || tasks.length === 0) throw new Error("В JSON нет tasks или он пустой.");
+      return tasks;
+    }catch(e){
+      if (e?.name === "AbortError") {
+        throw new Error("Таймаут 8 с");
+      }
+      throw e;
+    }finally{
+      clearTimeout(timerId);
+    }
+  }
+
   async function boot(){
     ui.topicSelect.innerHTML = `<option value="all">Все</option>`;
     ui.taskText.textContent = "Загружаю базу…";
 
     try{
-      const res = await fetch(DATA_URL, { cache: "no-store" });
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const json = await res.json();
-      const tasks = Array.isArray(json) ? json : (json.tasks || json.items || []);
-      if (!Array.isArray(tasks) || tasks.length === 0) throw new Error("В JSON нет tasks или он пустой.");
+      const attempts = [];
+      let loaded = false;
+      for (const url of DATA_URLS){
+        ui.taskText.textContent = "Пробую загрузить банк: " + url;
+        try{
+          TASKS = await fetchTasksWithTimeout(url);
+          attempts.push({ url, status: "OK" });
+          loaded = true;
+          break;
+        }catch(e){
+          attempts.push({ url, status: e?.message || String(e) });
+        }
+      }
 
-      TASKS = tasks;
+      if (!loaded) {
+        const attemptsText = attempts
+          .map((item) => `- ${item.url}: ${item.status}`)
+          .join("\n");
+        throw new Error(
+          "Попытки:\n" + attemptsText +
+          "\n\nПроверьте, что файл существует по одному из путей:\n" +
+          DATA_URLS.join("\n")
+        );
+      }
 
       // темы
       const topics = Array.from(new Set(TASKS.map(getTopic).filter(Boolean))).sort();
@@ -1379,11 +1421,7 @@
       ui.taskText.textContent =
         "Ошибка: база задач не загрузилась.
 " +
-        "Проверьте, что файл существует по пути:
-" + DATA_URL + "
-
-" +
-        "Текст ошибки: " + (e?.message || e);
+        (e?.message || e);
       ui.numPad.style.display="none";
     }
   }
