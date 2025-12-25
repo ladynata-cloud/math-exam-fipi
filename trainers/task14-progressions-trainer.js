@@ -1,238 +1,159 @@
 (() => {
-  const LS_KEY = 'task14_progressions_trainer_v1';
+  const DATA_URL = '../data/task14-progressions-2022-2025.json';
   const TOLERANCE = 1e-6;
-  const DATA_URL = './data/task14_bank.json';
+
+  const IMAGE_BY_ID = {
+    7: '../assets/task14/snake.jpeg',
+    8: '../assets/task14/snake.jpeg',
+    9: '../assets/task14/tables.jpeg',
+    10: '../assets/task14/tables.jpeg',
+    25: '../assets/task14/logs.jpeg',
+    26: '../assets/task14/logs.jpeg',
+  };
+
+  const HINTS_BY_TOPIC = {
+    'Арифметическая прогрессия': [
+      'Определи разность между соседними членами.',
+      'Найди первый член и номер нужного элемента.',
+      'Выбери нужный тип вычисления: n-й член или сумма.',
+    ],
+    'Геометрическая прогрессия': [
+      'Определи знаменатель прогрессии.',
+      'Найди первый член и число шагов.',
+      'Выбери нужный тип вычисления: n-й член или сумма.',
+    ],
+  };
 
   const el = (id) => document.getElementById(id);
 
   const state = {
-    settings: {
-      topic: 'all',
-      mode: 'basic',
-    },
-    stats: {
-      total: 0,
-      correct: 0,
-      streak: 0,
-      bestStreak: 0,
-      byType: {},
-    },
     tasks: [],
     current: null,
-    checked: false,
-    hintIndex: 0,
+    loaded: false,
   };
 
-  const topics = [
-    { id: 'all', label: 'Все темы' },
-    { id: 'ap', label: 'Арифметическая прогрессия' },
-    { id: 'gp', label: 'Геометрическая прогрессия' },
-    { id: 'story', label: 'Сюжетные задачи' },
-  ];
-
-  const randomChoice = (list) => list[Math.floor(Math.random() * list.length)];
-
-  const formatNumber = (num) => {
-    const rounded = Math.abs(num) < TOLERANCE ? 0 : num;
-    const str = Number.isInteger(rounded) ? String(rounded) : rounded.toFixed(6);
-    return str.replace(/\.?0+$/, '');
-  };
+  const normalizeInput = (value) => value.trim().replace(/\s+/g, '').replace(',', '.');
 
   const parseNumber = (value) => {
     if (!value) return NaN;
-    const cleaned = value.replace(/\s+/g, '').replace(',', '.');
-    if (cleaned.includes('/')) {
-      const [left, right] = cleaned.split('/');
+    if (value.includes('/')) {
+      const [left, right] = value.split('/');
       const a = Number(left);
       const b = Number(right);
       if (!Number.isFinite(a) || !Number.isFinite(b) || b === 0) return NaN;
       return a / b;
     }
-    const num = Number(cleaned);
+    const num = Number(value);
     return Number.isFinite(num) ? num : NaN;
   };
 
-  const safePushStatType = (typeId) => {
-    if (!state.stats.byType[typeId]) {
-      state.stats.byType[typeId] = { total: 0, correct: 0, label: '' };
+  const getAcceptedAnswers = (task) => {
+    if (!task || !task.answer) return [];
+    const alternatives = Array.isArray(task.answer.alternatives) ? task.answer.alternatives : [];
+    return [task.answer.canonical, ...alternatives].filter(Boolean);
+  };
+
+  const isCorrectAnswer = (input, accepted) => {
+    const normalized = normalizeInput(input);
+    if (!normalized) {
+      return { ok: false, message: 'Введите ответ.' };
     }
+    const inputNumber = parseNumber(normalized);
+    for (const raw of accepted) {
+      const normalizedAccepted = normalizeInput(String(raw));
+      if (normalizedAccepted === normalized) {
+        return { ok: true, message: 'Верно! Отличная работа.' };
+      }
+      const acceptedNumber = parseNumber(normalizedAccepted);
+      if (Number.isFinite(inputNumber) && Number.isFinite(acceptedNumber)) {
+        const diff = Math.abs(inputNumber - acceptedNumber);
+        if (diff <= TOLERANCE) {
+          return { ok: true, message: 'Верно! Отличная работа.' };
+        }
+      }
+    }
+    return { ok: false, message: 'Пока неверно — попробуйте ещё.' };
   };
 
-  const getTasksByTopic = (topicId, mode) => {
-    const list = state.tasks.filter((task) => task.mode === mode);
-    if (topicId === 'all') return list;
-    return list.filter((task) => task.topic === topicId);
-  };
-
-  const renderLoadError = (message) => {
+  const renderError = (message) => {
     el('taskText').textContent = message;
-    el('taskTypePill').textContent = '—';
-    el('taskModePill').textContent = '—';
+    el('taskTopic').textContent = 'Ошибка';
+    el('taskSubtype').textContent = 'Банк не загружен';
+    el('taskImage').hidden = true;
     el('answerInput').value = '';
-    resetHints();
-    resetResultBlocks();
+    el('checkBtn').disabled = true;
+    el('newTaskBtn').disabled = true;
+    el('resetBtn').disabled = true;
+    el('hintList').innerHTML = '';
+    el('resultBlock').hidden = true;
   };
 
-  const updateSettings = () => {
-    state.settings.topic = el('topicSelect').value;
-    state.settings.mode = el('modeSelect').value;
-    saveState();
-    renderTask();
-  };
-
-  const saveState = () => {
-    localStorage.setItem(LS_KEY, JSON.stringify({
-      settings: state.settings,
-      stats: state.stats,
-    }));
-  };
-
-  const loadState = () => {
-    try {
-      const raw = localStorage.getItem(LS_KEY);
-      if (!raw) return;
-      const parsed = JSON.parse(raw);
-      if (parsed.settings) state.settings = { ...state.settings, ...parsed.settings };
-      if (parsed.stats) state.stats = { ...state.stats, ...parsed.stats };
-    } catch (err) {
-      console.warn('Не удалось загрузить состояние', err);
-    }
-  };
-
-  const resetStats = () => {
-    state.stats = { total: 0, correct: 0, streak: 0, bestStreak: 0, byType: {} };
-    saveState();
-    renderStats();
-  };
-
-  const renderStats = () => {
-    el('statAccuracy').textContent = `${state.stats.correct} / ${state.stats.total}`;
-    el('statStreak').textContent = String(state.stats.streak);
-    el('statBestStreak').textContent = String(state.stats.bestStreak);
-
-    const list = el('statTypesList');
+  const renderHints = (task) => {
+    const hints = HINTS_BY_TOPIC[task.topic] || [
+      'Определи тип прогрессии.',
+      'Найди первый член и шаг изменения.',
+      'Проверь, что ответ соответствует условию.',
+    ];
+    const list = el('hintList');
     list.innerHTML = '';
-    const typeEntries = Object.entries(state.stats.byType);
-    if (typeEntries.length === 0) {
+    hints.forEach((hint) => {
       const li = document.createElement('li');
-      li.textContent = 'Нет решённых задач';
-      list.appendChild(li);
-      return;
-    }
-    typeEntries.forEach(([typeId, stats]) => {
-      const li = document.createElement('li');
-      li.innerHTML = `<span>${stats.label || typeId}</span><span>${stats.correct} / ${stats.total}</span>`;
+      li.textContent = hint;
       list.appendChild(li);
     });
   };
 
-  const resetResultBlocks = () => {
+  const resetResult = () => {
     el('resultBlock').hidden = true;
     el('resultLine').textContent = '—';
     el('userAnswerText').textContent = '—';
     el('correctAnswerText').textContent = '—';
-    el('solutionBtn').disabled = true;
-    el('solutionBlock').hidden = true;
-    el('solutionList').innerHTML = '';
-  };
-
-  const resetHints = () => {
-    state.hintIndex = 0;
-    el('hintList').innerHTML = '';
-  };
-
-  const renderHints = () => {
-    if (!state.current) return;
-    const list = el('hintList');
-    const steps = state.current.steps;
-    list.innerHTML = '';
-    steps.slice(0, state.hintIndex).forEach((step) => {
-      const li = document.createElement('li');
-      li.textContent = step;
-      list.appendChild(li);
-    });
   };
 
   const renderTask = () => {
-    const list = getTasksByTopic(state.settings.topic, state.settings.mode);
-    if (list.length === 0) {
-      state.current = null;
-      renderLoadError('Нет задач для выбранных фильтров.');
+    if (!state.loaded || state.tasks.length === 0) {
+      renderError('Банк заданий не загружен. Обновите страницу и попробуйте снова.');
       return;
     }
-    const task = randomChoice(list);
-    state.current = { ...task };
-    state.checked = false;
+    const task = state.tasks[Math.floor(Math.random() * state.tasks.length)];
+    state.current = task;
 
-    el('taskText').textContent = task.question;
-    el('taskTypePill').textContent = task.label;
-    el('taskModePill').textContent = task.mode === 'basic' ? 'Базовый' : 'Стандарт';
-    el('answerInput').value = '';
+    el('taskText').textContent = task.text;
+    el('taskTopic').textContent = task.topic || 'Прогрессии';
+    el('taskSubtype').textContent = task.subtype || 'Банк ОГЭ';
 
-    resetHints();
-    resetResultBlocks();
-  };
-
-  const revealHint = () => {
-    if (!state.current) return;
-    if (state.hintIndex < state.current.steps.length) {
-      state.hintIndex += 1;
-      renderHints();
-    }
-  };
-
-  const showSolution = () => {
-    if (!state.checked || !state.current) return;
-    const list = el('solutionList');
-    list.innerHTML = '';
-    state.current.steps.forEach((step) => {
-      const li = document.createElement('li');
-      li.textContent = step;
-      list.appendChild(li);
-    });
-    el('solutionBlock').hidden = false;
-  };
-
-  const updateStats = (isCorrect, task) => {
-    state.stats.total += 1;
-    if (isCorrect) {
-      state.stats.correct += 1;
-      state.stats.streak += 1;
-      state.stats.bestStreak = Math.max(state.stats.bestStreak, state.stats.streak);
+    const image = el('taskImage');
+    const imageSrc = IMAGE_BY_ID[task.id];
+    if (imageSrc) {
+      image.src = imageSrc;
+      image.alt = 'Иллюстрация к задаче';
+      image.hidden = false;
     } else {
-      state.stats.streak = 0;
+      image.hidden = true;
+      image.removeAttribute('src');
+      image.alt = '';
     }
-    safePushStatType(task.id);
-    state.stats.byType[task.id].total += 1;
-    if (isCorrect) state.stats.byType[task.id].correct += 1;
-    state.stats.byType[task.id].label = task.label;
-    saveState();
-    renderStats();
+
+    el('answerInput').value = '';
+    renderHints(task);
+    resetResult();
   };
 
   const checkAnswer = () => {
     if (!state.current) return;
     const value = el('answerInput').value;
-    const parsed = parseNumber(value);
-    if (!Number.isFinite(parsed)) {
-      el('resultBlock').hidden = false;
-      el('resultLine').textContent = 'Введите числовой ответ (можно с запятой или дробью).';
-      el('userAnswerText').textContent = value || '—';
-      el('correctAnswerText').textContent = formatNumber(state.current.answer);
-      el('solutionBtn').disabled = true;
-      return;
-    }
-
-    const diff = Math.abs(parsed - state.current.answer);
-    const isCorrect = diff <= TOLERANCE;
-    state.checked = true;
+    const accepted = getAcceptedAnswers(state.current);
+    const result = isCorrectAnswer(value, accepted);
 
     el('resultBlock').hidden = false;
-    el('resultLine').textContent = isCorrect ? 'Верно! Отличная работа.' : 'Пока неверно — попробуйте ещё.';
-    el('userAnswerText').textContent = formatNumber(parsed);
-    el('correctAnswerText').textContent = formatNumber(state.current.answer);
-    el('solutionBtn').disabled = false;
-    updateStats(isCorrect, state.current);
+    el('resultLine').textContent = result.message;
+    el('userAnswerText').textContent = value || '—';
+    el('correctAnswerText').textContent = accepted[0] ?? '—';
+  };
+
+  const resetAnswer = () => {
+    el('answerInput').value = '';
+    resetResult();
   };
 
   const loadTasks = async () => {
@@ -245,49 +166,23 @@
       if (!payload || !Array.isArray(payload.tasks)) {
         throw new Error('Неверный формат данных');
       }
-      if (payload.tasks.length !== 44) {
-        throw new Error('Ожидалось ровно 44 задачи');
-      }
-      state.tasks = payload.tasks.map((task) => ({
-        ...task,
-        answer: Number(task.answer),
-        steps: Array.isArray(task.steps) ? task.steps : [],
-      }));
+      state.tasks = payload.tasks;
+      state.loaded = true;
       return true;
-    } catch (err) {
-      console.error('Не удалось загрузить задания', err);
-      renderLoadError('Не удалось загрузить задания. Обновите страницу.');
+    } catch (error) {
+      console.error('Не удалось загрузить банк заданий', error);
+      state.loaded = false;
+      renderError('Не удалось загрузить банк заданий. Проверьте подключение и обновите страницу.');
       return false;
     }
   };
 
   const init = async () => {
-    loadState();
-    const loaded = await loadTasks();
-
-    const topicSelect = el('topicSelect');
-    topicSelect.innerHTML = '';
-    topics.forEach((topic) => {
-      const opt = document.createElement('option');
-      opt.value = topic.id;
-      opt.textContent = topic.label;
-      topicSelect.appendChild(opt);
-    });
-    topicSelect.value = state.settings.topic;
-    el('modeSelect').value = state.settings.mode;
-
-    topicSelect.addEventListener('change', updateSettings);
-    el('modeSelect').addEventListener('change', updateSettings);
-    el('newTaskBtn').addEventListener('click', renderTask);
     el('checkBtn').addEventListener('click', checkAnswer);
-    el('hintBtn').addEventListener('click', revealHint);
-    el('solutionBtn').addEventListener('click', showSolution);
-    el('resetBtn').addEventListener('click', () => {
-      resetStats();
-      renderTask();
-    });
+    el('newTaskBtn').addEventListener('click', renderTask);
+    el('resetBtn').addEventListener('click', resetAnswer);
 
-    renderStats();
+    const loaded = await loadTasks();
     if (loaded) {
       renderTask();
     }

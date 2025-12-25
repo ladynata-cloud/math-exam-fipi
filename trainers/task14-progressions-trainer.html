@@ -3,61 +3,43 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>ОГЭ №14 — тренажёр прогрессий</title>
+  <title>ОГЭ №14 — тренажёр прогрессий (банк)</title>
   <link rel="stylesheet" href="./task14-progressions.css"/>
 </head>
 <body>
   <header class="hero">
     <div class="wrap hero__content">
       <div>
-        <h1>ОГЭ №14 — тренажёр прогрессий</h1>
-        <p class="muted">
-          Арифметические и геометрические прогрессии: n-й член, сумма и сюжетные задачи.
-        </p>
+        <h1>ОГЭ №14 — прогрессии</h1>
+        <p class="muted">Банк заданий ОГЭ 2022–2025. Только задачи из официальной подборки.</p>
       </div>
       <div class="hero__meta">
-        <span class="pill">режимы: Базовый / Стандарт</span>
-        <span class="pill">подсказки по шагам</span>
+        <span class="pill">только банк ОГЭ</span>
+        <span class="pill">случайная задача</span>
       </div>
     </div>
   </header>
 
-  <main class="wrap layout">
+  <main class="wrap">
     <section class="card" id="trainerCard">
-      <div class="panel">
-        <div class="panel__block">
-          <label class="label" for="topicSelect">Тема</label>
-          <select id="topicSelect"></select>
-        </div>
-        <div class="panel__block">
-          <label class="label" for="modeSelect">Режим</label>
-          <select id="modeSelect">
-            <option value="basic">Базовый</option>
-            <option value="standard">Стандарт</option>
-          </select>
-        </div>
-        <div class="panel__block panel__actions">
-          <button id="resetBtn" class="ghost">Сброс</button>
-          <button id="newTaskBtn" class="primary">Новая задача</button>
-        </div>
-      </div>
-
       <article class="task-card">
         <div class="task-header">
-          <span class="pill" id="taskTypePill">…</span>
-          <span class="pill muted" id="taskModePill">…</span>
+          <span class="pill muted" id="taskTopic">…</span>
+          <span class="pill muted" id="taskSubtype">…</span>
         </div>
-        <p class="task-text" id="taskText">Загрузка задания…</p>
+        <p class="task-text" id="taskText">Загрузка банка заданий…</p>
+        <img id="taskImage" alt="" hidden/>
 
         <div class="answer-row">
-          <input id="answerInput" type="text" placeholder="Введите ответ" inputmode="decimal"/>
+          <input id="answerInput" type="text" placeholder="Ответ" inputmode="decimal"/>
           <button id="checkBtn" class="primary">Проверить</button>
+          <button id="newTaskBtn">Новая задача</button>
+          <button id="resetBtn" class="ghost">Сброс</button>
         </div>
 
         <div class="hint-block">
           <div class="hint-header">
             <span class="label">Подсказки</span>
-            <button id="hintBtn">Подсказка</button>
           </div>
           <ul id="hintList" class="hint-list"></ul>
         </div>
@@ -66,37 +48,9 @@
           <div class="result-line" id="resultLine">—</div>
           <div class="result-line"><b>Ваш ответ:</b> <span id="userAnswerText">—</span></div>
           <div class="result-line"><b>Правильный ответ:</b> <span id="correctAnswerText">—</span></div>
-          <button id="solutionBtn" class="ghost" disabled>Показать решение</button>
-          <div id="solutionBlock" class="solution-block" hidden>
-            <div class="label">Разбор</div>
-            <ol id="solutionList"></ol>
-          </div>
         </div>
       </article>
     </section>
-
-    <aside class="card stats-card">
-      <h2>Статистика</h2>
-      <div class="stats-grid">
-        <div>
-          <div class="stat-label">Верно / всего</div>
-          <div class="stat-value" id="statAccuracy">0 / 0</div>
-        </div>
-        <div>
-          <div class="stat-label">Серия</div>
-          <div class="stat-value" id="statStreak">0</div>
-        </div>
-        <div>
-          <div class="stat-label">Лучшая серия</div>
-          <div class="stat-value" id="statBestStreak">0</div>
-        </div>
-      </div>
-
-      <div class="stat-types">
-        <h3>По типам задач</h3>
-        <ul id="statTypesList"></ul>
-      </div>
-    </aside>
   </main>
 
   <script src="./task14-progressions-trainer.js"></script>
