@@ -769,7 +769,7 @@
 
     const f1 = document.createElement("div");
     f1.className = "field";
-    f1.innerHTML = `<label>Где известно? (x₀)</label><input id="x0" type="text" placeholder="например: 2205 или 1" />`;
+    f1.innerHTML = `<label>Где/когда известно значение</label><input id="x0" type="text" placeholder="например: 2205 или 1" />`;
     const x0 = f1.querySelector("#x0");
     if (W.x0 !== null) x0.value = W.x0;
     bindActive(x0);
@@ -777,7 +777,7 @@
 
     const f2 = document.createElement("div");
     f2.className = "field";
-    f2.innerHTML = `<label>Значение там (y₀)</label><input id="y0" type="text" placeholder="например: 550" />`;
+    f2.innerHTML = `<label>Какое значение там известно</label><input id="y0" type="text" placeholder="например: 550" />`;
     const y0 = f2.querySelector("#y0");
     if (W.y0 !== null) y0.value = W.y0;
     bindActive(y0);
@@ -807,7 +807,7 @@
 
     const fDX = document.createElement("div");
     fDX.className = "field";
-    fDX.innerHTML = `<label>Размер шага по x (Δx)</label><input id="dx" type="text" placeholder="обычно 1 (ряд/день), или 10,5, или 7..." />`;
+    fDX.innerHTML = `<label>Размер шага (по времени/месту)</label><input id="dx" type="text" placeholder="обычно 1 (ряд/день), или 10,5, или 7..." />`;
     const dx = fDX.querySelector("#dx");
     dx.value = String(W.dx ?? 1);
     bindActive(dx);
@@ -821,13 +821,13 @@
 
     if (W.op === "add") {
       fRule.innerHTML = `
-        <label>Когда x увеличивается на Δx, y…</label>
+        <label>Когда делаем один шаг, значение…</label>
         <select id="addDir">
           <option value="up">увеличивается</option>
           <option value="down">уменьшается</option>
         </select>
         <div style="height:10px"></div>
-        <label>…на сколько? (Δy)</label>
+        <label>…на сколько меняется за один шаг</label>
         <input id="dy" type="text" placeholder="например: 1 или 2,5" />
       `;
       const addDir = fRule.querySelector("#addDir");
@@ -839,13 +839,13 @@
       dy.addEventListener("input", () => W.dy = toNum(dy.value));
     } else {
       fRule.innerHTML = `
-        <label>Когда x увеличивается на Δx, y…</label>
+        <label>Когда делаем один шаг, значение…</label>
         <select id="mulOp">
           <option value="mul">умножается</option>
           <option value="div">делится</option>
         </select>
         <div style="height:10px"></div>
-        <label>…на сколько раз? (q)</label>
+        <label>…во сколько раз меняется за один шаг</label>
         <input id="q" type="text" placeholder="например: 2 или 3" />
       `;
       const mulOp = fRule.querySelector("#mulOp");
@@ -993,8 +993,8 @@
     fInfo.innerHTML = `
       <label>Что дальше?</label>
       <div class="hintSmall">
-        1) Найди разницу по x: x₁ − x₀<br>
-        2) Сколько шагов: разница / Δx<br>
+        1) Найди разницу: где нужно − где известно<br>
+        2) Сколько шагов: разница / размер шага<br>
         3) Сделай столько шагов и получи y₁
       </div>
     `;
@@ -1033,7 +1033,7 @@
       }
     }
 
-    mini.appendChild(mkRow("1) Разница по x (x₁ − x₀)", "m_dx", (inp, row) => {
+    mini.appendChild(mkRow("1) Разница: где нужно − где известно", "m_dx", (inp, row) => {
       const v = toNum(inp.value);
       if (!canCompute || !built) return;
       if (approxEq(v, W.computed.dxTotal)) { row.classList.add("ok"); inp.disabled=true; W.m1_ok=true; }
@@ -1041,7 +1041,7 @@
       row.querySelector("button").className = W.m1_ok ? "btn good" : "btn bad";
     }));
 
-    mini.appendChild(mkRow("2) Сколько шагов? (|разница| / Δx)", "m_steps", (inp, row) => {
+    mini.appendChild(mkRow("2) Сколько шагов: разница / размер шага", "m_steps", (inp, row) => {
       const v = toNum(inp.value);
       if (!canCompute || !built) return;
       if (approxEq(v, W.computed.steps)) { row.classList.add("ok"); inp.disabled=true; W.m2_ok=true; }
