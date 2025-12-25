@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ОГЭ №14 — Прогрессии (тренажёр)</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --panel:#f6f7fb;
+      --text:#111827;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --btn:#111827;
+      --btnText:#ffffff;
+      --ok:#166534;
+      --bad:#991b1b;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:var(--bg);
+    }
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+    h1{
+      font-size: 20px;
+      margin: 0 0 14px;
+      font-weight: 700;
+    }
+    .toolbar{
+      display:flex;
+      gap:16px;
+      align-items:flex-end;
+      flex-wrap:wrap;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: #fbfbfd;
+    }
+    .field{
+      min-width: 240px;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .field label{
+      font-size: 12px;
+      letter-spacing: .08em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    select{
+      height: 54px;
+      font-size: 18px;
+      padding: 10px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: white;
+      outline: none;
+    }
+    .btnRow{
+      margin-left:auto;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    button{
+      height: 54px;
+      padding: 0 18px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: #f3f4f6;
+      cursor:pointer;
+      font-size: 18px;
+    }
+    button.primary{
+      border-color: transparent;
+      background: var(--btn);
+      color: var(--btnText);
+    }
+    button:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+    }
+    .pill{
+      display:inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #3730a3;
+      font-size: 14px;
+      border: 1px solid #e0e7ff;
+      margin: 16px 0;
+    }
+    .taskCard{
+      margin-top: 18px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: #fff;
+    }
+    .taskText{
+      font-size: 34px;
+      line-height: 1.2;
+      margin: 0 0 18px;
+      word-break: break-word;
+    }
+    .taskMeta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px 14px;
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .taskImage{
+      margin: 12px 0 18px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow:hidden;
+      background: #fff;
+    }
+    .taskImage img{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+    .answerRow{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top: 14px;
+    }
+    input[type="text"]{
+      flex: 1 1 420px;
+      min-width: 280px;
+      height: 58px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      font-size: 22px;
+      padding: 0 16px;
+      outline:none;
+    }
+    .status{
+      margin-top: 12px;
+      font-size: 16px;
+      color: var(--muted);
+    }
+    .status.ok{color: var(--ok)}
+    .status.bad{color: var(--bad)}
+    details.hints{
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px dashed var(--border);
+      background: #fafafa;
+    }
+    details.hints summary{
+      cursor: pointer;
+      font-weight: 700;
+      user-select: none;
+    }
+    .hintLine{
+      margin-top: 10px;
+      padding: 12px 12px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid var(--border);
+      font-size: 16px;
+    }
+    .scratch{
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+    }
+    .scratch h3{
+      margin:0 0 10px;
+      font-size: 16px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap:10px;
+    }
+    .cell{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .cell input{
+      height: 44px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 0 10px;
+      font-size: 16px;
+      background: #fff;
+    }
+    .smallRow{
+      display:flex;
+      gap:10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+    .note{
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+    @media (max-width: 760px){
+      .taskText{font-size: 26px}
+      select, button{font-size: 16px}
+    }
+  </style>
+
+  <!-- Банк задач (ваш PDF). Если файл не найден — тренажёр НЕ генерирует задания. -->
+  <script src="../data/task14-progressions-2022-2025.js"></script>
+</head>
+
+<body>
+  <div class="wrap">
+    <h1>ОГЭ №14 — Прогрессии (тренажёр по вашему банку)</h1>
+
+    <div class="toolbar">
+      <div class="field">
+        <label for="topicSelect">Тема</label>
+        <select id="topicSelect">
+          <option value="all">Все задачи ОГЭ №14 (прогрессии)</option>
+          <option value="Арифметическая прогрессия">Арифметическая (каждый шаг +/−)</option>
+          <option value="Геометрическая прогрессия">Геометрическая (каждый шаг ×/÷)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="modeSelect">Режим</label>
+        <select id="modeSelect">
+          <option value="learn">Учусь (с подсказками)</option>
+          <option value="standard">Стандарт</option>
+        </select>
+      </div>
+
+      <div class="btnRow">
+        <button id="resetBtn">Сброс</button>
+        <button id="newBtn" class="primary">Новая задача</button>
+      </div>
+    </div>
+
+    <div class="pill" id="modePill">Учусь</div>
+
+    <div class="taskCard">
+      <div class="taskMeta" id="taskMeta"></div>
+
+      <div class="taskText" id="taskText">
+        Загрузка…
+      </div>
+
+      <div class="taskImage" id="taskImage" style="display:none;">
+        <img id="taskImg" alt="Рисунок к задаче" />
+      </div>
+
+      <div class="answerRow">
+        <input id="answerInput" type="text" inputmode="decimal" placeholder="Введите ответ" autocomplete="off" />
+        <button id="checkBtn" class="primary">Проверить</button>
+      </div>
+
+      <div class="status" id="status"></div>
+
+      <details class="hints" id="hintsBox">
+        <summary>Подсказки (по шагам, без формул)</summary>
+        <div id="hintList"></div>
+
+        <div class="scratch">
+          <h3>Черновик (впишите ряд/шаги сами)</h3>
+          <div class="grid" id="scratchGrid"></div>
+          <div class="smallRow">
+            <button id="clearScratchBtn">Очистить черновик</button>
+          </div>
+          <div class="note">
+            Идея простая: выписываем ряд значений по шагам (по минутам/дням/рядам), считаем «сколько шагов», потом считаем прямым счётом.
+            Если нужна сумма за много шагов — удобно складывать попарно: первый с последним, второй с предпоследним…
+          </div>
+        </div>
+      </details>
+    </div>
+  </div>
+
+<script>
+(function(){
+  // ---------------------------
+  // 1) Загрузка банка
+  // ---------------------------
+  const bank = (window.TASK14_BANK && Array.isArray(window.TASK14_BANK.tasks)) ? window.TASK14_BANK.tasks : null;
+
+  const elTopic = document.getElementById('topicSelect');
+  const elMode  = document.getElementById('modeSelect');
+  const elPill  = document.getElementById('modePill');
+  const elMeta  = document.getElementById('taskMeta');
+  const elText  = document.getElementById('taskText');
+  const elImgWrap = document.getElementById('taskImage');
+  const elImg   = document.getElementById('taskImg');
+  const elAns   = document.getElementById('answerInput');
+  const elStatus= document.getElementById('status');
+  const elHintBox = document.getElementById('hintsBox');
+  const elHintList = document.getElementById('hintList');
+  const elNew   = document.getElementById('newBtn');
+  const elReset = document.getElementById('resetBtn');
+  const elCheck = document.getElementById('checkBtn');
+  const elScratch = document.getElementById('scratchGrid');
+  const elClearScratch = document.getElementById('clearScratchBtn');
+
+  let bag = [];          // перемешанный список задач для текущего фильтра
+  let bagIndex = 0;      // текущая позиция
+  let current = null;    // текущая задача
+
+  function setStatus(text, kind){
+    elStatus.textContent = text || '';
+    elStatus.className = 'status' + (kind ? (' ' + kind) : '');
+  }
+
+  function normalizeAnswer(s){
+    if (s == null) return '';
+    return String(s)
+      .trim()
+      .replace(/\s+/g,'')
+      .replace(',', '.');
+  }
+
+  function answersFor(task){
+    const canon = task?.answer?.canonical ?? '';
+    const alts = Array.isArray(task?.answer?.alternatives) ? task.answer.alternatives : [];
+    return [canon, ...alts].map(normalizeAnswer).filter(Boolean);
+  }
+
+  // ---------------------------
+  // 2) Подсказки (простые инструкции)
+  // ---------------------------
+  function buildHints(task){
+    // Главное: очень простые команды, без формул.
+    const t = task || {};
+    const topic = t.topic || '';
+    const subtype = (t.subtype || '').toLowerCase();
+
+    // Базовые «универсальные» подсказки
+    const H = [];
+
+    // Хинт 1: найти «что происходит каждый шаг»
+    if (topic === 'Арифметическая прогрессия'){
+      H.push('1) Найди, на сколько меняется значение каждый шаг. Здесь это «каждый раз +…» или «каждый раз −…».');
+      H.push('2) Посчитай, сколько шагов нужно сделать (сколько переходов по минутам/дням/рядам).');
+      H.push('3) Считай прямым счётом: начинай с первого значения и прибавляй/вычитай нужное число раз. Если нужна сумма — выпиши ряд и сложи, либо сложи попарно (первый+последний…).');
+      return H;
+    }
+
+    if (topic === 'Геометрическая прогрессия'){
+      H.push('1) Найди, что происходит каждый шаг: «умножаем на …» или «делим на …».');
+      H.push('2) Посчитай, сколько раз повторяется действие (например, 42 минуты по 7 минут — это 6 одинаковых шагов).');
+      H.push('3) Сделай действие нужное число раз (умножай/дели последовательно). Если спрашивают «сколько было сначала» — делай шаги назад.');
+      return H;
+    }
+
+    // На всякий случай
+    H.push('1) Выпиши первые 2–3 шага (значения) и посмотри, что одинаково повторяется.');
+    H.push('2) Посчитай количество шагов (переходов).');
+    H.push('3) Считай по шагам или выпиши ряд и сложи.');
+    return H;
+  }
+
+  // ---------------------------
+  // 3) Черновик (10 ячеек)
+  // ---------------------------
+  function buildScratch(){
+    elScratch.innerHTML = '';
+    for (let i=1;i<=10;i++){
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      const label = document.createElement('div');
+      label.textContent = 'Шаг ' + i;
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.inputMode = 'decimal';
+      input.placeholder = '';
+      cell.appendChild(label);
+      cell.appendChild(input);
+      elScratch.appendChild(cell);
+    }
+  }
+
+  function clearScratch(){
+    elScratch.querySelectorAll('input').forEach(inp => inp.value = '');
+  }
+
+  // ---------------------------
+  // 4) Мешок задач (чтобы не повторялись, пока не пройдём все)
+  // ---------------------------
+  function filteredTasks(){
+    if (!bank) return [];
+    const v = elTopic.value;
+    if (v === 'all') return bank.slice();
+    return bank.filter(t => t.topic === v);
+  }
+
+  function shuffle(arr){
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function refillBag(){
+    bag = shuffle(filteredTasks());
+    bagIndex = 0;
+  }
+
+  // ---------------------------
+  // 5) Рендер задачи
+  // ---------------------------
+  function renderTask(task){
+    current = task;
+
+    // мета (для вас/ориентации; ученику можно не читать)
+    const metaParts = [];
+    if (task?.topic) metaParts.push('Тема: ' + task.topic);
+    if (task?.subtype) metaParts.push('Тип: ' + task.subtype);
+    metaParts.push('№ ' + task.id + ' из ' + (bank ? bank.length : '—'));
+    elMeta.textContent = metaParts.join(' · ');
+
+    // текст
+    elText.textContent = task?.text || '';
+
+    // картинка
+    if (task?.image){
+      elImgWrap.style.display = '';
+      // task.image хранится как путь от корня проекта (assets/…),
+      // а файл тренажёра лежит в /trainers, поэтому добавляем ../
+      elImg.src = '../' + task.image;
+    } else {
+      elImgWrap.style.display = 'none';
+      elImg.removeAttribute('src');
+    }
+
+    // подсказки
+    elHintList.innerHTML = '';
+    const mode = elMode.value;
+    if (mode === 'learn'){
+      const hints = buildHints(task);
+      hints.forEach(h => {
+        const div = document.createElement('div');
+        div.className = 'hintLine';
+        div.textContent = h;
+        elHintList.appendChild(div);
+      });
+      elHintBox.open = false; // по умолчанию свернуты
+      elHintBox.style.display = '';
+    } else {
+      elHintBox.open = false;
+      elHintBox.style.display = 'none';
+    }
+
+    // сброс ответа
+    elAns.value = '';
+    elAns.focus();
+    setStatus('', '');
+
+    // черновик
+    clearScratch();
+  }
+
+  function nextTask(){
+    if (!bank){
+      elText.textContent = 'База задач не загружена. Проверьте, что файл ../data/task14-progressions-2022-2025.js существует на сайте.';
+      setStatus('Тренажёр ничего не генерирует сам — только работает с вашим банком.', 'bad');
+      elNew.disabled = true;
+      elCheck.disabled = true;
+      return;
+    }
+
+    if (bag.length === 0 || bagIndex >= bag.length){
+      refillBag();
+    }
+
+    const t = bag[bagIndex++];
+    renderTask(t);
+  }
+
+  // ---------------------------
+  // 6) Проверка ответа
+  // ---------------------------
+  function check(){
+    if (!current) return;
+    const user = normalizeAnswer(elAns.value);
+    if (!user){
+      setStatus('Введите ответ.', '');
+      return;
+    }
+    const acceptable = answersFor(current);
+    const ok = acceptable.includes(user);
+    if (ok){
+      setStatus('Верно ✅', 'ok');
+    } else {
+      setStatus('Неверно ❌ Попробуйте ещё раз. (Если совсем трудно — откройте подсказки и выпишите ряд по шагам.)', 'bad');
+    }
+  }
+
+  // ---------------------------
+  // 7) События
+  // ---------------------------
+  elMode.addEventListener('change', () => {
+    elPill.textContent = (elMode.value === 'learn') ? 'Учусь' : 'Стандарт';
+    if (current) renderTask(current);
+  });
+
+  elTopic.addEventListener('change', () => {
+    refillBag();
+    nextTask();
+  });
+
+  elNew.addEventListener('click', nextTask);
+
+  elReset.addEventListener('click', () => {
+    elTopic.value = 'all';
+    elMode.value = 'learn';
+    elPill.textContent = 'Учусь';
+    refillBag();
+    nextTask();
+  });
+
+  elCheck.addEventListener('click', check);
+  elAns.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') check();
+  });
+
+  elClearScratch.addEventListener('click', clearScratch);
+
+  // init
+  buildScratch();
+  refillBag();
+  nextTask();
+})();
+</script>
+</body>
+</html>
