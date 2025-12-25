@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ОГЭ №14 — тренажёр прогрессий (банк)</title>
+  <link rel="stylesheet" href="./task14-progressions.css"/>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap hero__content">
+      <div>
+        <h1>ОГЭ №14 — прогрессии</h1>
+        <p class="muted">Банк заданий ОГЭ 2022–2025. Только задачи из официальной подборки.</p>
+      </div>
+      <div class="hero__meta">
+        <span class="pill">только банк ОГЭ</span>
+        <span class="pill">случайная задача</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="card" id="trainerCard">
+      <article class="task-card">
+        <div class="task-header">
+          <span class="pill muted" id="taskTopic">…</span>
+          <span class="pill muted" id="taskSubtype">…</span>
+        </div>
+        <p class="task-text" id="taskText">Загрузка банка заданий…</p>
+        <img id="taskImage" alt="" hidden/>
+
+        <div class="answer-row">
+          <input id="answerInput" type="text" placeholder="Ответ" inputmode="decimal"/>
+          <button id="checkBtn" class="primary">Проверить</button>
+          <button id="newTaskBtn">Новая задача</button>
+          <button id="resetBtn" class="ghost">Сброс</button>
+        </div>
+
+        <div class="hint-block">
+          <div class="hint-header">
+            <span class="label">Подсказки</span>
+          </div>
+          <ul id="hintList" class="hint-list"></ul>
+        </div>
+
+        <div id="resultBlock" class="result-block" hidden>
+          <div class="result-line" id="resultLine">—</div>
+          <div class="result-line"><b>Ваш ответ:</b> <span id="userAnswerText">—</span></div>
+          <div class="result-line"><b>Правильный ответ:</b> <span id="correctAnswerText">—</span></div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script src="./task14-progressions-trainer.js"></script>
+</body>
+</html>
