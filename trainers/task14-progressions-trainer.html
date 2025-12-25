@@ -1418,10 +1418,7 @@
       newTask();
 
     }catch(e){
-      ui.taskText.textContent =
-        "Ошибка: база задач не загрузилась.
-" +
-        (e?.message || e);
+      ui.taskText.textContent = "Ошибка: база задач не загрузилась.\n" + (e?.message || e);
       ui.numPad.style.display="none";
     }
   }
