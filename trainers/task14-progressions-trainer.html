@@ -114,6 +114,40 @@
     }
     .numChip:active{transform:translateY(1px)}
     .hintSmall{font-size:13px;color:var(--muted);margin-top:6px}
+    .helpCard{
+      margin-top:14px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:12px;
+      background:var(--soft);
+    }
+    .helpTitle{
+      font-weight:900;
+      margin:0 0 8px;
+      font-size:16px;
+    }
+    .helpTextarea{
+      width:100%;
+      min-height:150px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      padding:10px 12px;
+      font-size:14px;
+      resize:vertical;
+      background:#fff;
+      color:#111;
+    }
+    .helpActions{
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .helpMsg{
+      margin-top:8px;
+      font-size:13px;
+      color:var(--muted);
+    }
 
     .stepper{
       margin-top:14px;
@@ -278,6 +312,16 @@
     <div class="taskText" id="taskText">Загружаю базу…</div>
     <img id="taskImg" class="taskImg" alt="Рисунок к задаче" style="display:none;" />
 
+    <div class="helpCard" id="deepSeekCard">
+      <div class="helpTitle">Помощь (DeepSeek)</div>
+      <textarea id="deepSeekPrompt" class="helpTextarea" readonly></textarea>
+      <div class="helpActions">
+        <button class="btn" id="deepSeekCopyBtn" type="button">Скопировать запрос</button>
+        <button class="btn" id="deepSeekOpenBtn" type="button">Открыть DeepSeek</button>
+      </div>
+      <div class="helpMsg" id="deepSeekMsg"></div>
+    </div>
+
     <div class="numPad" id="numPad" style="display:none;">
       <div class="numPadTitle">Числа из условия (можно нажимать — вставится в поле)</div>
       <div class="hintSmall">Совет: сначала щёлкните в поле, потом нажмите число.</div>
@@ -361,6 +405,10 @@
     quickCheckBtn: $("quickCheckBtn"),
     quickMsg: $("quickMsg"),
     quickCorrect: $("quickCorrect"),
+    deepSeekPrompt: $("deepSeekPrompt"),
+    deepSeekCopyBtn: $("deepSeekCopyBtn"),
+    deepSeekOpenBtn: $("deepSeekOpenBtn"),
+    deepSeekMsg: $("deepSeekMsg"),
   };
 
   let TASKS = [];
@@ -492,6 +540,7 @@
     ui.modeHint.textContent = steps
       ? "Пошагово: ученик отвечает на маленькие вопросы и считает по шагам."
       : "Быстро: просто введи ответ и проверь.";
+    updateDeepSeekPrompt();
   }
 
   function renderChips(task){
@@ -547,6 +596,44 @@
     }
   }
 
+  function buildDeepSeekPrompt(taskText){
+    return [
+      "Объясни решение очень простыми шагами.",
+      "Не используй формулы и названия методов.",
+      "Пиши коротко и понятно.",
+      "",
+      "Текст задачи:",
+      taskText
+    ].join("\n");
+  }
+
+  function updateDeepSeekPrompt(){
+    const taskText = currentTask ? getText(currentTask) : "";
+    ui.deepSeekPrompt.value = buildDeepSeekPrompt(taskText);
+    ui.deepSeekMsg.textContent = "";
+  }
+
+  function fallbackCopyPrompt(){
+    ui.deepSeekPrompt.focus();
+    ui.deepSeekPrompt.select();
+    ui.deepSeekMsg.textContent = "Скопируйте вручную: Ctrl+C.";
+  }
+
+  async function copyDeepSeekPrompt(){
+    const text = ui.deepSeekPrompt.value;
+    if (navigator.clipboard?.writeText) {
+      try{
+        await navigator.clipboard.writeText(text);
+        ui.deepSeekMsg.textContent = "Запрос скопирован.";
+        return;
+      }catch(e){
+        fallbackCopyPrompt();
+        return;
+      }
+    }
+    fallbackCopyPrompt();
+  }
+
   function pickRandom(list){
     if (!list.length) return null;
     const i = Math.floor(Math.random() * list.length);
@@ -569,6 +656,7 @@
     ui.quickMsg.textContent = "";
     ui.quickCorrect.textContent = "";
     ui.quickAnswer.value = "";
+    updateDeepSeekPrompt();
     showStep(0);
   }
 
@@ -1413,6 +1501,11 @@
 
       ui.quickCheckBtn.addEventListener("click", quickCheck);
       ui.quickAnswer.addEventListener("keydown", (e) => { if (e.key === "Enter") quickCheck(); });
+
+      ui.deepSeekCopyBtn.addEventListener("click", copyDeepSeekPrompt);
+      ui.deepSeekOpenBtn.addEventListener("click", () => {
+        window.open("https://chat.deepseek.com/", "_blank", "noopener,noreferrer");
+      });
 
       setUIMode("steps");
       newTask();
