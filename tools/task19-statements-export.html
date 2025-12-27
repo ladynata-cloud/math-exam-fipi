@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ОГЭ №19 — экспорт утверждений</title>
+  <style>
+    :root {
+      color-scheme: light;
+    }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.45;
+      color: #111;
+      background: #fafafa;
+    }
+    header {
+      background: #111;
+      color: #fff;
+      padding: 16px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    main {
+      padding: 16px;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
+    }
+    .controls label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+    }
+    .controls input[type="text"] {
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #d9d9d9;
+      min-width: 240px;
+      font: inherit;
+    }
+    button {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #d0d0d0;
+      background: #fff;
+      font: inherit;
+      cursor: pointer;
+    }
+    button.primary {
+      background: #111;
+      color: #fff;
+      border-color: #111;
+    }
+    .count {
+      font-weight: 600;
+    }
+    .status {
+      margin: 8px 0 12px;
+      color: #444;
+    }
+    .error {
+      background: #fff4f4;
+      border: 1px solid #f1c0c0;
+      padding: 12px;
+      border-radius: 10px;
+      white-space: pre-wrap;
+      color: #8a1f1f;
+    }
+    ol {
+      padding-left: 24px;
+      margin: 0;
+    }
+    li {
+      margin-bottom: 10px;
+      white-space: pre-wrap;
+    }
+    .source {
+      color: #999;
+      font-size: 12px;
+      margin-left: 6px;
+    }
+    .hide-sources .source {
+      display: none;
+    }
+    @media print {
+      body {
+        background: #fff;
+      }
+      header {
+        color: #111;
+        background: #fff;
+        padding: 0 0 8px;
+        border-bottom: 1px solid #ddd;
+      }
+      .controls,
+      .status,
+      .error {
+        display: none !important;
+      }
+      main {
+        padding: 0;
+      }
+      .wrap {
+        max-width: none;
+        margin: 0;
+      }
+      li {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>ОГЭ №19 — экспорт утверждений</h1>
+    </div>
+  </header>
+  <main>
+    <div class="wrap">
+      <div class="controls" id="controls">
+        <button class="primary" id="printBtn">Печать / Сохранить PDF</button>
+        <label>
+          <input type="checkbox" id="toggleSources" checked />
+          показывать пометки (задача №ID)
+        </label>
+        <label>
+          Поиск:
+          <input type="text" id="searchInput" placeholder="Подстрока для фильтра" />
+        </label>
+        <div class="count" id="count">Найдено утверждений: 0</div>
+      </div>
+
+      <div class="status" id="status">Загрузка базы…</div>
+      <div class="error" id="error" style="display:none;"></div>
+
+      <ol id="statementsList"></ol>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      const DATA_URLS = [
+        "../trainers/task19-data.json"
+      ];
+      const FETCH_TIMEOUT_MS = 8000;
+
+      const ui = {
+        printBtn: document.getElementById("printBtn"),
+        toggleSources: document.getElementById("toggleSources"),
+        searchInput: document.getElementById("searchInput"),
+        count: document.getElementById("count"),
+        status: document.getElementById("status"),
+        error: document.getElementById("error"),
+        list: document.getElementById("statementsList"),
+        wrap: document.querySelector(".wrap")
+      };
+
+      const state = {
+        items: []
+      };
+
+      function setCount(visibleCount) {
+        ui.count.textContent = `Найдено утверждений: ${visibleCount}`;
+      }
+
+      function normalizeText(text) {
+        return String(text || "").trim();
+      }
+
+      function getTaskId(task) {
+        return task?.id ?? task?.ID ?? task?.taskId ?? task?.number ?? null;
+      }
+
+      function extractStatements(task) {
+        const possibleArrays = [task?.statements, task?.assertions, task?.items];
+        for (const arr of possibleArrays) {
+          if (Array.isArray(arr)) {
+            return arr.map((item) => {
+              if (typeof item === "string") return normalizeText(item);
+              if (item && typeof item === "object") {
+                return normalizeText(item.text ?? item.statement ?? item.value);
+              }
+              return "";
+            }).filter(Boolean);
+          }
+        }
+        const fallback = task?.text ?? task?.problem ?? task?.question ?? task?.statement;
+        const normalized = normalizeText(fallback);
+        return normalized ? [normalized] : [];
+      }
+
+      function renderList(items) {
+        ui.list.innerHTML = "";
+        const fragment = document.createDocumentFragment();
+
+        items.forEach((item) => {
+          const li = document.createElement("li");
+          li.dataset.search = item.text.toLowerCase();
+          li.textContent = item.text;
+
+          if (item.id) {
+            const source = document.createElement("span");
+            source.className = "source";
+            source.textContent = `задача №${item.id}`;
+            li.appendChild(source);
+          }
+
+          fragment.appendChild(li);
+        });
+
+        ui.list.appendChild(fragment);
+        applyFilter();
+      }
+
+      function applyFilter() {
+        const query = ui.searchInput.value.trim().toLowerCase();
+        const items = Array.from(ui.list.querySelectorAll("li"));
+        let visible = 0;
+        items.forEach((li) => {
+          const match = !query || li.dataset.search.includes(query);
+          li.style.display = match ? "list-item" : "none";
+          if (match) visible += 1;
+        });
+        setCount(visible);
+      }
+
+      async function fetchTasksWithTimeout(url) {
+        const controller = new AbortController();
+        const timerId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+        try {
+          const res = await fetch(url, { cache: "no-store", signal: controller.signal });
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          const json = await res.json();
+          const tasks = Array.isArray(json)
+            ? json
+            : (json.tasks || json.cards || []);
+          if (!Array.isArray(tasks) || tasks.length === 0) {
+            throw new Error("В JSON нет tasks/cards или он пустой.");
+          }
+          return tasks;
+        } catch (err) {
+          if (err?.name === "AbortError") {
+            throw new Error("Таймаут 8 с");
+          }
+          throw err;
+        } finally {
+          clearTimeout(timerId);
+        }
+      }
+
+      async function boot() {
+        ui.status.textContent = "Загружаю базу…";
+        ui.error.style.display = "none";
+        const attempts = [];
+
+        let tasks = null;
+        for (const url of DATA_URLS) {
+          ui.status.textContent = `Пробую загрузить банк: ${url}`;
+          try {
+            tasks = await fetchTasksWithTimeout(url);
+            attempts.push({ url, status: "OK" });
+            break;
+          } catch (err) {
+            attempts.push({ url, status: err?.message || String(err) });
+          }
+        }
+
+        if (!tasks) {
+          const attemptsText = attempts
+            .map((item) => `- ${item.url}: ${item.status}`)
+            .join("\n");
+          ui.error.textContent = "Ошибка: база задач не загрузилась.\n\nПопытки:\n" + attemptsText +
+            "\n\nПроверьте, что файл существует по одному из путей:\n" + DATA_URLS.join("\n");
+          ui.error.style.display = "block";
+          ui.status.textContent = "";
+          setCount(0);
+          return;
+        }
+
+        const collected = [];
+        tasks.forEach((task) => {
+          const id = getTaskId(task);
+          const statements = extractStatements(task);
+          statements.forEach((text) => {
+            collected.push({ text, id });
+          });
+        });
+
+        state.items = collected;
+        renderList(state.items);
+        ui.status.textContent = "";
+      }
+
+      ui.printBtn.addEventListener("click", () => window.print());
+      ui.toggleSources.addEventListener("change", () => {
+        document.body.classList.toggle("hide-sources", !ui.toggleSources.checked);
+      });
+      ui.searchInput.addEventListener("input", applyFilter);
+
+      boot();
+    })();
+  </script>
+</body>
+</html>
