@@ -4,6 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>ОГЭ №19 — тренажёр «умной зубрёжки»</title>
+  <link rel="stylesheet" href="./solution-view.css">
   <style>
     :root { --w: 980px; }
     body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background: #fafafa; color:#111; }
@@ -72,10 +73,8 @@
       <div id="answerBlock" style="display:none;">
         <div class="meta"><b>Ваш ответ:</b> <span id="resultText"></span></div>
         <div class="meta"><b>Правильный ответ:</b> <span id="answerText"></span></div>
-        <div class="meta" id="tipBlock" style="display:none;"><b>Опора:</b> <span id="tipText"></span></div>
         <div class="meta"><b>Варианты на скриншотах:</b> <span id="variantsText"></span></div>
-        <div class="meta" id="explanationBlock" style="display:none;"><b>Пояснение:</b> <span id="explanationText"></span></div>
-        <div class="meta" id="supportBlock" style="display:none;"><b>Опора:</b> <span id="supportText"></span></div>
+        <div id="solutionView"></div>
       </div>
     </section>
 
@@ -105,6 +104,7 @@
   </div>
 </main>
 
+<script src="./solution-view.js"></script>
 <script>
 (function () {
   const DATA_URL = './task19-data.json';
@@ -183,12 +183,7 @@
     el('resultText').textContent = '';
     el('answerText').textContent = '';
     el('variantsText').textContent = '';
-    el('tipText').textContent = '';
-    el('tipBlock').style.display = 'none';
-    el('explanationText').textContent = '';
-    el('explanationBlock').style.display = 'none';
-    el('supportText').textContent = '';
-    el('supportBlock').style.display = 'none';
+    el('solutionView').innerHTML = '';
 
   }
 
@@ -228,14 +223,14 @@
     const explanation = card.explanation ? String(card.explanation).trim() : '';
     const tip = card.tip ? String(card.tip).trim() : '';
     const support = card.support ? String(card.support).trim() : '';
-    el('tipText').textContent = tip;
-    el('tipBlock').style.display = tip ? 'block' : 'none';
-
-    const explanationText = explanation || tip || '—';
-    el('explanationText').textContent = explanationText;
-    el('explanationBlock').style.display = explanationText ? 'block' : 'none';
-    el('supportText').textContent = support;
-    el('supportBlock').style.display = support ? 'block' : 'none';
+    const fallbackText = explanation || tip || support || '';
+    renderSolutionView(el('solutionView'), {
+      text: fallbackText,
+      parts: {
+        answer: card.truth ? 'Верно' : 'Неверно',
+        short: tip || support || '',
+      },
+    });
 
     saveProgress();
     updateStatsUI();
