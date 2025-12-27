@@ -485,6 +485,7 @@
   let ALL_TASKS = [];
   let currentTask = null;
   let activeInput = null;
+  let hasAttempt = false;
 
   // состояние “пошагового” решения
   const W = {
@@ -560,6 +561,16 @@
     W.m1_ok = W.m2_ok = W.m3_ok = W.m4_ok = false;
     W.seq = [];
     W.computed = { dxTotal:null, steps:null, sign:1, yFinal:null, sum:null };
+  }
+  function updateHelpVisibility(){
+    ui.deepSeekCard.style.display = hasAttempt ? "" : "none";
+    ui.deepSeekJump.textContent = hasAttempt ? "Нужна помощь? (DeepSeek)" : "Нужна помощь?";
+  }
+
+  function registerAttempt(){
+    if (hasAttempt) return;
+    hasAttempt = true;
+    updateHelpVisibility();
   }
 
   function normNumStr(s){
@@ -752,6 +763,8 @@
     ui.quickMsg.textContent = "";
     ui.quickCorrect.textContent = "";
     ui.quickAnswer.value = "";
+    hasAttempt = false;
+    updateHelpVisibility();
     updateDeepSeekPrompt();
     showStep(0);
   }
@@ -1137,6 +1150,7 @@
     }
 
     mini.appendChild(mkRow("1) Разница: где нужно − где известно", "m_dx", (inp, row) => {
+      registerAttempt();
       const v = toNum(inp.value);
       if (!canCompute || !built) return;
       if (approxEq(v, W.computed.dxTotal)) { row.classList.add("ok"); inp.disabled=true; W.m1_ok=true; }
@@ -1145,6 +1159,7 @@
     }));
 
     mini.appendChild(mkRow("2) Сколько шагов: разница / размер шага", "m_steps", (inp, row) => {
+      registerAttempt();
       const v = toNum(inp.value);
       if (!canCompute || !built) return;
       if (approxEq(v, W.computed.steps)) { row.classList.add("ok"); inp.disabled=true; W.m2_ok=true; }
@@ -1153,6 +1168,7 @@
     }));
 
     mini.appendChild(mkRow("3) Значение в точке x₁ (y₁)", "m_y1", (inp, row) => {
+      registerAttempt();
       const v = toNum(inp.value);
       if (!canCompute || !built) return;
       if (approxEq(v, W.computed.yFinal)) { row.classList.add("ok"); inp.disabled=true; W.m3_ok=true; }
@@ -1257,6 +1273,7 @@
     const inp1 = row1.querySelector("input"); bindActive(inp1);
     const b1 = document.createElement("button"); b1.className="btn"; b1.textContent="Проверить";
     b1.addEventListener("click", () => {
+      registerAttempt();
       const v = toNum(inp1.value);
       if (approxEq(v, pairSum)) { b1.className="btn good"; inp1.disabled=true; }
       else { b1.className="btn bad"; }
@@ -1270,6 +1287,7 @@
     const inp2 = row2.querySelector("input"); bindActive(inp2);
     const b2 = document.createElement("button"); b2.className="btn"; b2.textContent="Проверить";
     b2.addEventListener("click", () => {
+      registerAttempt();
       const v = toNum(inp2.value);
       if (approxEq(v, sum)) { b2.className="btn good"; inp2.disabled=true; }
       else { b2.className="btn bad"; }
@@ -1414,6 +1432,7 @@
     checkBtn.className="btn";
     checkBtn.textContent="Проверить";
     checkBtn.addEventListener("click", () => {
+      registerAttempt();
       const v = toNum(inp.value);
       if (approxEq(v, steps) && stepBtn.disabled) {
         checkBtn.className="btn good";
@@ -1478,6 +1497,7 @@
     }
 
     box.querySelector("#finalCheck").addEventListener("click", () => {
+      registerAttempt();
       const ok = isCorrect(ans.value);
       if (ok){
         msg.textContent = "✅ Верно!";
@@ -1503,6 +1523,7 @@
   // Быстрый режим
   // ---------------------------
   function quickCheck(){
+    registerAttempt();
     const canon = getCanonicalAnswer(currentTask);
     if (!canon) {
       ui.quickMsg.textContent = "В базе нет ответа для этой задачи.";
@@ -1632,11 +1653,13 @@
         window.open("https://chat.deepseek.com/", "_blank", "noopener,noreferrer");
       });
       ui.deepSeekJump.addEventListener("click", () => {
+        if (!hasAttempt) return;
         ui.deepSeekCard.open = true;
         ui.deepSeekCard.scrollIntoView({ behavior: "smooth", block: "start" });
       });
 
       setUIMode("steps");
+      updateHelpVisibility();
       newTask();
 
     }catch(e){
