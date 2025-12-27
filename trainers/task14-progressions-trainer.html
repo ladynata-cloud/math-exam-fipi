@@ -121,10 +121,28 @@
       padding:12px;
       background:var(--soft);
     }
+    .helpCard > summary{
+      list-style:none;
+    }
+    .helpCard > summary::-webkit-details-marker{
+      display:none;
+    }
     .helpTitle{
       font-weight:900;
-      margin:0 0 8px;
+      margin:0;
       font-size:16px;
+      cursor:pointer;
+    }
+    .helpCard[open] .helpTitle{ margin-bottom:8px; }
+    .helpJumpRow{ margin-top:10px; }
+    .helpJump{
+      border:none;
+      background:none;
+      padding:0;
+      font-size:13px;
+      color:var(--accent);
+      text-decoration:underline;
+      cursor:pointer;
     }
     .helpTextarea{
       width:100%;
@@ -342,22 +360,6 @@
       <div class="msg bad" id="groupEmpty" style="display:none;"></div>
       <img id="taskImg" class="taskImg" alt="Рисунок к задаче" style="display:none;" />
 
-      <div class="helpCard" id="deepSeekCard">
-        <div class="helpTitle">Помощь (DeepSeek)</div>
-        <textarea id="deepSeekPrompt" class="helpTextarea" readonly></textarea>
-        <div class="helpActions">
-          <button class="btn" id="deepSeekCopyBtn" type="button">Скопировать запрос</button>
-          <button class="btn" id="deepSeekOpenBtn" type="button">Открыть DeepSeek</button>
-        </div>
-        <div class="helpMsg" id="deepSeekMsg"></div>
-      </div>
-
-      <div class="numPad" id="numPad" style="display:none;">
-        <div class="numPadTitle">Числа из условия (можно нажимать — вставится в поле)</div>
-        <div class="hintSmall">Совет: сначала щёлкните в поле, потом нажмите число.</div>
-        <div id="numPadBtns"></div>
-      </div>
-
       <div class="section">
         <div class="modeRow">
           <button class="modeBtn active" id="modeStepsBtn">Пошагово</button>
@@ -388,7 +390,27 @@
             <div class="footerNote" id="quickCorrect"></div>
           </div>
         </div>
+
+        <div class="helpJumpRow">
+          <button class="helpJump" id="deepSeekJump" type="button">Нужна помощь? (DeepSeek)</button>
+        </div>
       </div>
+
+      <div class="numPad" id="numPad" style="display:none;">
+        <div class="numPadTitle">Числа из условия (можно нажимать — вставится в поле)</div>
+        <div class="hintSmall">Совет: сначала щёлкните в поле, потом нажмите число.</div>
+        <div id="numPadBtns"></div>
+      </div>
+
+      <details class="helpCard ai-help" id="deepSeekCard">
+        <summary class="helpTitle">Помощь (DeepSeek)</summary>
+        <textarea id="deepSeekPrompt" class="helpTextarea" readonly></textarea>
+        <div class="helpActions">
+          <button class="btn" id="deepSeekCopyBtn" type="button">Скопировать запрос</button>
+          <button class="btn" id="deepSeekOpenBtn" type="button">Открыть DeepSeek</button>
+        </div>
+        <div class="helpMsg" id="deepSeekMsg"></div>
+      </details>
     </div>
   </div>
 </main>
@@ -439,10 +461,12 @@
     quickCheckBtn: $("quickCheckBtn"),
     quickMsg: $("quickMsg"),
     quickCorrect: $("quickCorrect"),
+    deepSeekCard: $("deepSeekCard"),
     deepSeekPrompt: $("deepSeekPrompt"),
     deepSeekCopyBtn: $("deepSeekCopyBtn"),
     deepSeekOpenBtn: $("deepSeekOpenBtn"),
     deepSeekMsg: $("deepSeekMsg"),
+    deepSeekJump: $("deepSeekJump"),
     hubUI: $("hubUI"),
     hubGrid: $("hubGrid"),
     trainerUI: $("trainerUI"),
@@ -1606,6 +1630,10 @@
       ui.deepSeekCopyBtn.addEventListener("click", copyDeepSeekPrompt);
       ui.deepSeekOpenBtn.addEventListener("click", () => {
         window.open("https://chat.deepseek.com/", "_blank", "noopener,noreferrer");
+      });
+      ui.deepSeekJump.addEventListener("click", () => {
+        ui.deepSeekCard.open = true;
+        ui.deepSeekCard.scrollIntoView({ behavior: "smooth", block: "start" });
       });
 
       setUIMode("steps");
