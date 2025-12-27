@@ -7,6 +7,7 @@
 
   <!-- Если файл в папке trainers/, а style.css в корне репозитория: -->
   <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="./solution-view.css">
 
   <style>
     :root { --bg:#f7f7fb; --card:#fff; --text:#111; --muted:#666; --accent:#2b6cb0; --bad:#b00020; --good:#0a7a28; }
@@ -142,11 +143,7 @@
 
         <div id="feedback" class="feedback" style="display:none;"></div>
 
-        <details id="solutionBox" style="display:none;">
-          <summary><b>Разбор</b></summary>
-          <div class="small" style="margin:8px 0 6px;">Без формул: “лесенка” + “складываем” + “сравнили с 15 см”.</div>
-          <pre id="solutionText"></pre>
-        </details>
+        <div id="solutionView" style="display:none;"></div>
 
         <div class="row" style="margin-top:12px;">
           <button id="btnExport">Скачать результаты CSV</button>
@@ -156,6 +153,7 @@
     </div>
   </div>
 
+<script src="./solution-view.js"></script>
 <script>
 (() => {
   const $ = (id) => document.getElementById(id);
@@ -167,8 +165,8 @@
   const ansEl = $("answer");
 
   const feedbackEl = $("feedback");
-  const solutionBoxEl = $("solutionBox");
-  const solutionTextEl = $("solutionText");
+  const solutionViewEl = $("solutionView");
+  let solutionDetailsEl = null;
 
   const statEl = $("stat");
   const howEl = $("how");
@@ -327,8 +325,8 @@
     ansEl.value = "";
     hideFeedback();
 
-    solutionBoxEl.style.display = "none";
-    solutionBoxEl.open = false;
+    solutionViewEl.style.display = "none";
+    if (solutionDetailsEl) solutionDetailsEl.open = false;
     btnShow.textContent = "Показать разбор";
 
     btnCheck.disabled = false;
@@ -669,7 +667,12 @@
     startTs = Date.now();
 
     taskTextEl.textContent = t.question;
-    solutionTextEl.textContent = t.solution || "";
+    renderSolutionView(solutionViewEl, {
+      text: t.solution || "",
+      parts: { answer: current && current.answer !== undefined ? String(current.answer) : "" },
+      intro: "Без формул: “лесенка” + “складываем” + “сравнили с 15 см”.",
+    });
+    solutionDetailsEl = solutionViewEl.querySelector(".solution-view__details");
 
     resetUIForNewTask();
 
@@ -927,14 +930,14 @@
 
   function toggleSolution() {
     if (!current) return;
-    const shown = solutionBoxEl.style.display !== "none";
+    const shown = solutionViewEl.style.display !== "none";
     if (shown) {
-      solutionBoxEl.style.display = "none";
-      solutionBoxEl.open = false;
+      solutionViewEl.style.display = "none";
+      if (solutionDetailsEl) solutionDetailsEl.open = false;
       btnShow.textContent = "Показать разбор";
     } else {
-      solutionBoxEl.style.display = "block";
-      solutionBoxEl.open = true;
+      solutionViewEl.style.display = "block";
+      if (solutionDetailsEl) solutionDetailsEl.open = true;
       btnShow.textContent = "Скрыть разбор";
     }
   }
