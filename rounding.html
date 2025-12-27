@@ -103,7 +103,40 @@
             border-radius: 10px;
             border: 1px solid rgba(67, 97, 238, 0.15);
             background: #ffffff;
+        }
+
+        .ai-solution {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .ai-solution__section-title {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .ai-solution__text {
             white-space: pre-wrap;
+        }
+
+        .ai-solution details {
+            border-top: 1px solid rgba(67, 97, 238, 0.1);
+            padding-top: 0.5rem;
+        }
+
+        .ai-solution summary {
+            cursor: pointer;
+            font-weight: 600;
+            list-style: none;
+        }
+
+        .ai-solution summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .ai-solution details[open] summary {
+            margin-bottom: 0.5rem;
         }
 
         .ai-note {
@@ -261,6 +294,7 @@
         </footer>
     </div>
 
+    <script src="utils/lib.js"></script>
     <script>
         // ===== GLOBAL VARIABLES =====
         let currentExample = null;
@@ -301,6 +335,54 @@
             if (hintBtn) hintBtn.disabled = disabled;
             if (solutionBtn) solutionBtn.disabled = disabled;
             if (explainBtn) explainBtn.disabled = disabled || !aiExplainAvailable;
+        }
+
+        function renderAISolution(box, text) {
+            const parsed = parseSolution(text);
+
+            box.innerHTML = '';
+
+            if (!parsed.final && !parsed.short && !parsed.full) return;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'ai-solution';
+
+            const addSection = (title, content) => {
+                if (!content) return;
+                const section = document.createElement('div');
+                section.className = 'ai-solution__section';
+
+                const heading = document.createElement('div');
+                heading.className = 'ai-solution__section-title';
+                heading.textContent = title;
+
+                const body = document.createElement('div');
+                body.className = 'ai-solution__text';
+                body.textContent = content;
+
+                section.append(heading, body);
+                wrapper.append(section);
+            };
+
+            addSection('Ответ', parsed.final);
+            addSection('Коротко', parsed.short);
+
+            if (parsed.full) {
+                const details = document.createElement('details');
+                details.className = 'ai-solution__details';
+
+                const summary = document.createElement('summary');
+                summary.textContent = 'Показать разбор';
+
+                const body = document.createElement('div');
+                body.className = 'ai-solution__text';
+                body.textContent = parsed.full;
+
+                details.append(summary, body);
+                wrapper.append(details);
+            }
+
+            box.append(wrapper);
         }
 
         function buildAITaskPayload(mode, reveal) {
@@ -348,7 +430,7 @@
                 const data = await resp.json();
                 if (!data.ok) throw new Error(data.error || 'AI error');
 
-                if (box) box.textContent = data.text;
+                if (box) renderAISolution(box, data.text);
             } catch (e) {
                 if (box) box.textContent = 'ИИ временно недоступен. Попробуйте ещё раз.';
             } finally {
@@ -793,4 +875,3 @@
     </script>
 </body>
 </html>
-
