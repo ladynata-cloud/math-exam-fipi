@@ -271,9 +271,31 @@
       flex:1;
     }
     .footerNote{ margin-top:10px; color:var(--muted); font-size:13px }
+    .hubTitle{ margin:0 0 14px; font-size:22px; font-weight:900; }
+    .hubGrid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(180px, 1fr));
+      gap:12px;
+    }
+    .hubBtn{
+      text-decoration:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:12px 10px;
+      min-height:64px;
+    }
+    .groupNav{
+      margin-bottom:12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
     @media (max-width: 720px){
       .grid{grid-template-columns: 1fr;}
       .taskText{font-size:22px}
+      .hubGrid{grid-template-columns: repeat(2, minmax(160px, 1fr));}
     }
   </style>
 </head>
@@ -283,7 +305,7 @@
     <h1>ОГЭ №14 — прогрессии</h1>
     <div class="sub">Пошаговый тренажёр: ученик решает маленькими шагами, с полями и проверкой каждого шага.</div>
 
-    <div class="bar">
+    <div class="bar" id="topBar">
       <div>
         <label>ТЕМА</label>
         <select id="topicSelect"></select>
@@ -307,55 +329,64 @@
 
 <main>
   <div class="card">
-    <div class="chips" id="chips"></div>
-
-    <div class="taskText" id="taskText">Загружаю базу…</div>
-    <img id="taskImg" class="taskImg" alt="Рисунок к задаче" style="display:none;" />
-
-    <div class="helpCard" id="deepSeekCard">
-      <div class="helpTitle">Помощь (DeepSeek)</div>
-      <textarea id="deepSeekPrompt" class="helpTextarea" readonly></textarea>
-      <div class="helpActions">
-        <button class="btn" id="deepSeekCopyBtn" type="button">Скопировать запрос</button>
-        <button class="btn" id="deepSeekOpenBtn" type="button">Открыть DeepSeek</button>
-      </div>
-      <div class="helpMsg" id="deepSeekMsg"></div>
+    <div id="hubUI" style="display:none;">
+      <div class="hubTitle">Тренажёр 14 — выбери тип задач</div>
+      <div class="hubGrid" id="hubGrid"></div>
     </div>
 
-    <div class="numPad" id="numPad" style="display:none;">
-      <div class="numPadTitle">Числа из условия (можно нажимать — вставится в поле)</div>
-      <div class="hintSmall">Совет: сначала щёлкните в поле, потом нажмите число.</div>
-      <div id="numPadBtns"></div>
-    </div>
+    <div id="trainerUI">
+      <div class="groupNav" id="groupNav" style="display:none;"></div>
+      <div class="chips" id="chips"></div>
 
-    <div class="section">
-      <div class="modeRow">
-        <button class="modeBtn active" id="modeStepsBtn">Пошагово</button>
-        <button class="modeBtn" id="modeQuickBtn">Быстро</button>
-        <span class="hintSmall" id="modeHint">Пошагово: ученик отвечает на маленькие вопросы и считает по шагам.</span>
-      </div>
+      <div class="taskText" id="taskText">Загружаю базу…</div>
+      <div class="msg bad" id="groupEmpty" style="display:none;"></div>
+      <img id="taskImg" class="taskImg" alt="Рисунок к задаче" style="display:none;" />
 
-      <!-- ПОШАГОВЫЙ РЕЖИМ -->
-      <div id="stepsUI">
-        <div class="stepper">
-          <div class="stepHead">
-            <div class="stepTitle" id="stepTitle">Шаг 1</div>
-            <div class="progress" id="progress">1/5</div>
-          </div>
-          <div class="stepBody" id="stepBody"></div>
+      <div class="helpCard" id="deepSeekCard">
+        <div class="helpTitle">Помощь (DeepSeek)</div>
+        <textarea id="deepSeekPrompt" class="helpTextarea" readonly></textarea>
+        <div class="helpActions">
+          <button class="btn" id="deepSeekCopyBtn" type="button">Скопировать запрос</button>
+          <button class="btn" id="deepSeekOpenBtn" type="button">Открыть DeepSeek</button>
         </div>
+        <div class="helpMsg" id="deepSeekMsg"></div>
       </div>
 
-      <!-- БЫСТРЫЙ РЕЖИМ -->
-      <div id="quickUI" style="display:none;">
-        <div class="answerBox">
-          <div class="q">Введи ответ</div>
-          <div class="answerRow">
-            <input id="quickAnswer" type="text" placeholder="Ответ" />
-            <button class="btn primary" id="quickCheckBtn">Проверить</button>
+      <div class="numPad" id="numPad" style="display:none;">
+        <div class="numPadTitle">Числа из условия (можно нажимать — вставится в поле)</div>
+        <div class="hintSmall">Совет: сначала щёлкните в поле, потом нажмите число.</div>
+        <div id="numPadBtns"></div>
+      </div>
+
+      <div class="section">
+        <div class="modeRow">
+          <button class="modeBtn active" id="modeStepsBtn">Пошагово</button>
+          <button class="modeBtn" id="modeQuickBtn">Быстро</button>
+          <span class="hintSmall" id="modeHint">Пошагово: ученик отвечает на маленькие вопросы и считает по шагам.</span>
+        </div>
+
+        <!-- ПОШАГОВЫЙ РЕЖИМ -->
+        <div id="stepsUI">
+          <div class="stepper">
+            <div class="stepHead">
+              <div class="stepTitle" id="stepTitle">Шаг 1</div>
+              <div class="progress" id="progress">1/5</div>
+            </div>
+            <div class="stepBody" id="stepBody"></div>
           </div>
-          <div class="msg" id="quickMsg"></div>
-          <div class="footerNote" id="quickCorrect"></div>
+        </div>
+
+        <!-- БЫСТРЫЙ РЕЖИМ -->
+        <div id="quickUI" style="display:none;">
+          <div class="answerBox">
+            <div class="q">Введи ответ</div>
+            <div class="answerRow">
+              <input id="quickAnswer" type="text" placeholder="Ответ" />
+              <button class="btn primary" id="quickCheckBtn">Проверить</button>
+            </div>
+            <div class="msg" id="quickMsg"></div>
+            <div class="footerNote" id="quickCorrect"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -388,8 +419,11 @@
     uiMode: $("uiMode"),
     newBtn: $("newBtn"),
     resetBtn: $("resetBtn"),
+    topBar: $("topBar"),
     chips: $("chips"),
     taskText: $("taskText"),
+    groupNav: $("groupNav"),
+    groupEmpty: $("groupEmpty"),
     taskImg: $("taskImg"),
     numPad: $("numPad"),
     numPadBtns: $("numPadBtns"),
@@ -409,9 +443,22 @@
     deepSeekCopyBtn: $("deepSeekCopyBtn"),
     deepSeekOpenBtn: $("deepSeekOpenBtn"),
     deepSeekMsg: $("deepSeekMsg"),
+    hubUI: $("hubUI"),
+    hubGrid: $("hubGrid"),
+    trainerUI: $("trainerUI"),
+  };
+
+  const GROUPS = {
+    add_value: { op: "add", goal: "value", title: "Арифм + значение" },
+    add_sum: { op: "add", goal: "sum", title: "Арифм + сумма" },
+    add_steps: { op: "add", goal: "steps", title: "Арифм + до условия" },
+    mul_value: { op: "mul", goal: "value", title: "Геом + значение" },
+    mul_sum: { op: "mul", goal: "sum", title: "Геом + сумма" },
+    mul_steps: { op: "mul", goal: "steps", title: "Геом + до условия" },
   };
 
   let TASKS = [];
+  let ALL_TASKS = [];
   let currentTask = null;
   let activeInput = null;
 
@@ -440,13 +487,37 @@
       sign: 1,
       yFinal: null,
       sum: null
-    }
+    },
+
+    groupLocked: false,
+    groupOp: null,
+    groupGoal: null,
+    groupKey: null,
+    groupTitle: null
   };
+
+  function isTruthyParam(val){
+    if (!val) return false;
+    return val === "1" || val.toLowerCase() === "true";
+  }
+
+  const urlParams = new URL(window.location.href).searchParams;
+  const groupKey = urlParams.get("group");
+  const hubMode = isTruthyParam(urlParams.get("hub"));
+  const groupConfig = groupKey && GROUPS[groupKey] ? GROUPS[groupKey] : null;
+
+  if (groupConfig) {
+    W.groupLocked = true;
+    W.groupOp = groupConfig.op;
+    W.groupGoal = groupConfig.goal;
+    W.groupKey = groupKey;
+    W.groupTitle = groupConfig.title;
+  }
 
   function resetWorkState() {
     W.stepIndex = 0;
-    W.goal = guessGoal(currentTask);
-    W.op = guessOp(currentTask);
+    W.goal = W.groupLocked ? W.groupGoal : guessGoal(currentTask);
+    W.op = W.groupLocked ? W.groupOp : guessOp(currentTask);
 
     W.x0 = null; W.y0 = null;
     W.dx = 1;
@@ -642,8 +713,9 @@
 
   function filteredTasks(){
     const v = ui.topicSelect.value;
-    if (v === "all") return TASKS;
-    return TASKS.filter(t => getTopic(t) === v);
+    const base = (v === "all") ? TASKS : TASKS.filter(t => getTopic(t) === v);
+    if (!W.groupLocked) return base;
+    return base.filter(t => guessOp(t) === W.groupOp && guessGoal(t) === W.groupGoal);
   }
 
   function newTask(){
@@ -712,7 +784,7 @@
     const h = document.createElement("div");
     h.innerHTML = `
       <div class="q">Выбираем, что нужно найти</div>
-      <div class="qSub">Если ты не уверен — выбери “найти значение”, это чаще всего.</div>
+      <div class="qSub">${W.groupLocked ? "Тип уже выбран — менять не нужно." : "Если ты не уверен — выбери “найти значение”, это чаще всего."}</div>
     `;
     ui.stepBody.appendChild(h);
 
@@ -732,6 +804,7 @@
     const goalSel = f1.querySelector("#goalSel");
     goalSel.value = W.goal;
     goalSel.addEventListener("change", () => W.goal = goalSel.value);
+    goalSel.disabled = W.groupLocked;
 
     const f2 = document.createElement("div");
     f2.className = "field";
@@ -746,6 +819,7 @@
     const opSel = f2.querySelector("#opSel");
     opSel.value = W.op;
     opSel.addEventListener("change", () => W.op = opSel.value);
+    opSel.disabled = W.groupLocked;
 
     grid.appendChild(f1);
     grid.appendChild(f2);
@@ -964,6 +1038,11 @@
     const goalSel2 = goalBlock.querySelector("#goalSel2");
     goalSel2.value = W.goal;
     goalSel2.addEventListener("change", () => { W.goal = goalSel2.value; showStep(3); });
+    if (W.groupLocked) {
+      goalSel2.disabled = true;
+      const hint = goalBlock.querySelector(".hintSmall");
+      hint.textContent = "Тип задачи задан заранее.";
+    }
     ui.stepBody.appendChild(goalBlock);
 
     // В зависимости от цели — разные поля
@@ -1452,12 +1531,24 @@
     ui.taskText.textContent = "Загружаю базу…";
 
     try{
+      if (hubMode && !groupConfig) {
+        renderHub();
+        ui.trainerUI.style.display = "none";
+        ui.hubUI.style.display = "";
+        ui.topBar.style.display = "none";
+        return;
+      }
+
+      if (W.groupLocked) {
+        renderGroupNav();
+      }
+
       const attempts = [];
       let loaded = false;
       for (const url of DATA_URLS){
         ui.taskText.textContent = "Пробую загрузить банк: " + url;
         try{
-          TASKS = await fetchTasksWithTimeout(url);
+          ALL_TASKS = await fetchTasksWithTimeout(url);
           attempts.push({ url, status: "OK" });
           loaded = true;
           break;
@@ -1475,6 +1566,16 @@
           "\n\nПроверьте, что файл существует по одному из путей:\n" +
           DATA_URLS.join("\n")
         );
+      }
+
+      TASKS = ALL_TASKS.slice();
+
+      if (W.groupLocked) {
+        TASKS = TASKS.filter(t => guessOp(t) === W.groupOp && guessGoal(t) === W.groupGoal);
+        if (TASKS.length === 0) {
+          showEmptyGroupMessage();
+          return;
+        }
       }
 
       // темы
@@ -1514,6 +1615,56 @@
       ui.taskText.textContent = "Ошибка: база задач не загрузилась.\n" + (e?.message || e);
       ui.numPad.style.display="none";
     }
+  }
+
+  function renderHub(){
+    ui.hubGrid.innerHTML = "";
+    Object.entries(GROUPS).forEach(([key, cfg]) => {
+      const link = document.createElement("a");
+      link.className = "btn primary hubBtn";
+      link.textContent = cfg.title;
+      link.href = buildGroupUrl(key);
+      link.target = "_blank";
+      link.rel = "noopener";
+      ui.hubGrid.appendChild(link);
+    });
+  }
+
+  function renderGroupNav(){
+    const link = document.createElement("a");
+    link.className = "btn";
+    link.textContent = "Выбрать другой тип";
+    link.href = buildHubUrl();
+    ui.groupNav.innerHTML = "";
+    ui.groupNav.appendChild(link);
+    ui.groupNav.style.display = "";
+  }
+
+  function showEmptyGroupMessage(){
+    renderGroupNav();
+    ui.groupEmpty.style.display = "";
+    ui.groupEmpty.innerHTML = `В этой группе нет задач. <a href="${buildHubUrl()}">Вернуться в хаб</a>`;
+    ui.taskText.style.display = "none";
+    ui.taskImg.style.display = "none";
+    ui.numPad.style.display = "none";
+    ui.stepsUI.style.display = "none";
+    ui.quickUI.style.display = "none";
+    ui.newBtn.disabled = true;
+    ui.resetBtn.disabled = true;
+  }
+
+  function buildGroupUrl(key){
+    const url = new URL(window.location.href);
+    url.searchParams.set("group", key);
+    url.searchParams.delete("hub");
+    return url.toString();
+  }
+
+  function buildHubUrl(){
+    const url = new URL(window.location.href);
+    url.searchParams.set("hub", "1");
+    url.searchParams.delete("group");
+    return url.toString();
   }
 
   boot();
