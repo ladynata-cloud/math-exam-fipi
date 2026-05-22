@@ -27,6 +27,7 @@
     button.active,button.primary{background:var(--blue);color:#fff}
     button.good{background:var(--green);color:#fff}
     button.warn{background:var(--amber);color:#111827}
+    button.danger{background:#fee4e2;color:#7a271a}
     .task{background:#f8fafc;border:2px solid #e5e7eb;border-radius:22px;padding:18px;margin-bottom:16px}
     .taskTop{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
     .expr{font-size:clamp(40px,8vw,64px);font-weight:900;text-align:center;margin:10px 0 12px;letter-spacing:.02em}
@@ -47,8 +48,9 @@
     input[type=number]{width:130px;border:2px solid #cbd5e1;border-radius:16px;padding:12px;font-size:24px;text-align:center}
     .fb{min-height:62px;border-radius:18px;background:#f8fafc;padding:14px 16px;font-size:18px;margin-top:14px;border:1px solid #e5e7eb}
     .fb.ok{background:#dcfce7;color:#14532d;border-color:#bbf7d0}.fb.err{background:#fee4e2;color:#7a271a;border-color:#fecdc9}.fb.tip{background:#fffbeb;color:#713f12;border-color:#fde68a}
-    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
     .stat{background:#f8fafc;border:1px solid #e5e7eb;border-radius:18px;padding:14px;text-align:center}.stat b{display:block;font-size:30px}.stat span{color:var(--muted);font-size:13px;font-weight:700}
+    .course{background:#eef4ff;border:1px solid #bfdbfe;border-radius:22px;padding:16px;margin-bottom:16px}.course h2{font-size:20px;margin:0 0 8px}.course p{margin:6px 0}.status{display:inline-block;background:#fff;border:1px solid #bfdbfe;border-radius:999px;padding:6px 10px;font-weight:900;color:#102a56}.mini{color:var(--muted);font-size:14px}
     .rules{background:#fff7ed;border:1px solid #fed7aa;border-radius:22px;padding:16px;margin-bottom:16px}.rules h2{font-size:20px;margin:0 0 8px}.rules p{margin:6px 0}
     .history{display:flex;flex-direction:column;gap:8px;max-height:260px;overflow:auto}.hist{background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:10px;font-size:14px}
     @media(max-width:880px){.grid{grid-template-columns:1fr}.line{min-width:760px}}
@@ -81,6 +83,8 @@
 
       <aside class="card">
         <div class="stats"><div class="stat"><b id="total">0</b><span>решено</span></div><div class="stat"><b id="right">0</b><span>верно</span></div><div class="stat"><b id="streak">0</b><span>серия</span></div></div>
+        <div class="stats"><div class="stat"><b id="accuracy">0%</b><span>точность</span></div><div class="stat"><b id="bestStreak">0</b><span>лучшая серия</span></div><div class="stat"><b id="lastDate">—</b><span>последнее занятие</span></div></div>
+        <div class="course"><h2>Прогресс темы</h2><p><span id="status" class="status">тема начата</span></p><p id="advice" class="mini">Реши первые 10 примеров, чтобы увидеть устойчивость навыка.</p><button id="resetStats" class="danger" type="button">Сбросить статистику</button></div>
         <div class="rules"><h2>Правило</h2><p><b>+ положительное</b> — идём вправо.</p><p><b>+ отрицательное</b> — идём влево.</p><p><b>Вычесть число</b> — значит прибавить противоположное.</p><p>Например: 5 − (−4) = 5 + 4.</p></div>
         <h2>История</h2><div id="history" class="history"></div>
       </aside>
@@ -89,15 +93,24 @@
 
 <script>
 const MIN=-10, MAX=10;
+const STORAGE_KEY='mathExamCourseProgress.v1';
+const TOPIC_ID='negativeNumbersLine';
 const line=document.getElementById('line'), arrow=document.getElementById('arrow');
 const exprEl=document.getElementById('expr'), instr=document.getElementById('instruction'), fb=document.getElementById('fb');
 const answer=document.getElementById('answer'), hist=document.getElementById('history');
-let mode='add', level='easy', task, step=1, stats={total:0,right:0,streak:0};
+const statEls={total:document.getElementById('total'),right:document.getElementById('right'),streak:document.getElementById('streak'),accuracy:document.getElementById('accuracy'),bestStreak:document.getElementById('bestStreak'),lastDate:document.getElementById('lastDate'),status:document.getElementById('status'),advice:document.getElementById('advice')};
+let mode='add', level='easy', task, step=1, solvedThisTask=false;
+let stats={total:0,right:0,streak:0,bestStreak:0,lastDate:null,history:[]};
 function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a}
 function fmtN(n){return n<0?'('+n+')':''+n}
 function fmt(t){return `${t.a} ${t.op} ${fmtN(t.b)}`}
 function eff(t){return t.op==='+'?t.b:-t.b}
 function pos(v){return 35+(v-MIN)/(MAX-MIN)*(750)}
+function today(){return new Date().toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'})}
+function loadCourse(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{topics:{}}}catch(e){return{topics:{}}}}
+function saveCourse(){const course=loadCourse();course.topics=course.topics||{};course.topics[TOPIC_ID]={...stats,updatedAt:new Date().toISOString()};localStorage.setItem(STORAGE_KEY,JSON.stringify(course))}
+function loadStats(){const course=loadCourse();const saved=course.topics&&course.topics[TOPIC_ID];if(saved)stats={...stats,...saved,history:Array.isArray(saved.history)?saved.history:[]}}
+function getStatus(){const acc=stats.total?Math.round(stats.right/stats.total*100):0;if(stats.total<10)return['тема начата','Реши первые 10 примеров, чтобы увидеть устойчивость навыка.'];if(stats.total>=40&&acc>=90)return['тема освоена','Отлично: можно переходить к более быстрым заданиям без числовой прямой.'];if(stats.total>=20&&acc>=80)return['почти освоено','Хороший уровень. Добей точность до 90% и закрепи смешанный режим.'];if(acc<70)return['нужно тренироваться','Главное сейчас — не скорость, а аккуратный выбор направления.'];return['тренируется','Продолжай: навык уже появляется, нужна устойчивость.']}
 function makeTask(){let lim=level==='easy'?7:10,a,b,op,ans;do{a=rnd(-lim,lim);b=rnd(-lim,lim);if(b===0)b=rnd(1,lim);op=mode==='mix'?(Math.random()<.5?'+':'-'):(mode==='sub'?'-':'+');ans=op==='+'?a+b:a-b}while(ans<MIN||ans>MAX);return{a,b,op,ans}}
 function buildLine(){for(let n=MIN;n<=MAX;n++){let x=pos(n);let p=document.createElement('button');p.className='tick';p.style.left=x+'px';p.dataset.v=n;p.setAttribute('aria-label','Число '+n);p.onclick=()=>clickNum(n);line.appendChild(p);let lab=document.createElement('div');lab.className='num';lab.style.left=x+'px';lab.textContent=n;lab.onclick=()=>clickNum(n);line.appendChild(lab)}}
 function clearMarks(){document.querySelectorAll('.tick').forEach(p=>p.className='tick');arrow.style.display='none';arrow.className='arrow'}
@@ -105,18 +118,20 @@ function mark(v,cls){let p=document.querySelector(`.tick[data-v="${v}"]`); if(p)
 function drawArrow(a,b){let x1=pos(a),x2=pos(b),l=Math.min(x1,x2),w=Math.abs(x2-x1);arrow.style.left=l+'px';arrow.style.width=Math.max(w,18)+'px';arrow.style.display='block';arrow.className='arrow '+(b>=a?'right':'left')}
 function msg(text,type=''){fb.textContent=text;fb.className='fb '+type}
 function setInstr(){if(step===1)instr.textContent='1) Нажми на первое число. Это старт.';else{let m=eff(task);instr.textContent=`2) Сделай шаг: ${Math.abs(m)} клеток ${m>0?'вправо':'влево'}. Нажми, куда пришли.`}}
-function clickNum(v){if(step===1){clearMarks();mark(v,'start');if(v===task.a){step=2;setInstr();msg('Старт выбран верно. Теперь покажи конечную точку.','ok')}else msg(`Пока нет. Старт — это первое число: ${task.a}.`,'err');return}
+function clickNum(v){if(solvedThisTask)return;if(step===1){clearMarks();mark(v,'start');if(v===task.a){step=2;setInstr();msg('Старт выбран верно. Теперь покажи конечную точку.','ok')}else msg(`Пока нет. Старт — это первое число: ${task.a}.`,'err');return}
  if(step===2){clearMarks();mark(task.a,'start');mark(v,'result');drawArrow(task.a,v);if(v===task.ans){msg('Отлично, на прямой результат показан верно. Теперь введи ответ.','ok');answer.focus()}else{let m=eff(task);msg(`Проверь направление: от ${task.a} нужно пройти ${Math.abs(m)} клеток ${m>0?'вправо':'влево'}.`,'err')}}}
-function nextTask(){task=makeTask();step=1;answer.value='';exprEl.textContent=fmt(task);clearMarks();setInstr();msg('Сначала покажи решение на прямой, затем введи ответ.');}
-function check(){if(answer.value.trim()===''){msg('Введите ответ числом.','err');return}let u=Number(answer.value),ok=u===task.ans;stats.total++;if(ok){stats.right++;stats.streak++;msg('Верно! Можно брать следующий пример.','ok')}else{stats.streak=0;msg(`Пока ошибка. Правильный ответ: ${task.ans}. ${explain()}`,'err')}renderStats();addHist(ok,u)}
+function nextTask(){task=makeTask();step=1;solvedThisTask=false;answer.value='';exprEl.textContent=fmt(task);clearMarks();setInstr();msg('Сначала покажи решение на прямой, затем введи ответ.');}
+function check(){if(solvedThisTask){msg('Этот пример уже учтён в статистике. Нажми «Следующий пример».','tip');return}if(answer.value.trim()===''){msg('Введите ответ числом.','err');return}let u=Number(answer.value),ok=u===task.ans;solvedThisTask=true;stats.total++;stats.lastDate=today();if(ok){stats.right++;stats.streak++;stats.bestStreak=Math.max(stats.bestStreak,stats.streak);msg('Верно! Статистика сохранена. Можно брать следующий пример.','ok')}else{stats.streak=0;msg(`Пока ошибка. Правильный ответ: ${task.ans}. ${explain()}`,'err')}addHist(ok,u);saveCourse();renderStats()}
 function explain(){let m=eff(task);if(task.op==='-')return `Вычитание заменяем сложением с противоположным числом: ${task.a} + ${-task.b}.`;return `Мы прибавляем ${task.b}, значит идём ${m>0?'вправо':'влево'}.`}
 function hint(){let m=eff(task);msg(`Подсказка: старт — ${task.a}. Дальше ${Math.abs(m)} клеток ${m>0?'вправо':'влево'}.`,'tip')}
 function showSol(){clearMarks();mark(task.a,'start');mark(task.ans,'result');drawArrow(task.a,task.ans);answer.value=task.ans;msg(`${fmt(task)} = ${task.ans}. ${explain()}`,'tip')}
-function renderStats(){total.textContent=stats.total;right.textContent=stats.right;streak.textContent=stats.streak}
-function addHist(ok,u){let d=document.createElement('div');d.className='hist';d.textContent=`${fmt(task)} = ${task.ans}. Ваш ответ: ${u}. ${ok?'Верно.':'Ошибка.'}`;hist.prepend(d)}
+function renderStats(){let acc=stats.total?Math.round(stats.right/stats.total*100):0;let st=getStatus();statEls.total.textContent=stats.total;statEls.right.textContent=stats.right;statEls.streak.textContent=stats.streak;statEls.accuracy.textContent=acc+'%';statEls.bestStreak.textContent=stats.bestStreak||0;statEls.lastDate.textContent=stats.lastDate||'—';statEls.status.textContent=st[0];statEls.advice.textContent=st[1];renderHistory()}
+function addHist(ok,u){stats.history=stats.history||[];stats.history.unshift({text:`${fmt(task)} = ${task.ans}. Ваш ответ: ${u}. ${ok?'Верно.':'Ошибка.'}`,ok,date:new Date().toISOString()});stats.history=stats.history.slice(0,12)}
+function renderHistory(){hist.innerHTML='';(stats.history||[]).forEach(item=>{let d=document.createElement('div');d.className='hist';d.textContent=item.text;hist.appendChild(d)});if(!stats.history||stats.history.length===0){let d=document.createElement('div');d.className='hist';d.textContent='Пока история пуста. Реши первый пример.';hist.appendChild(d)}}
+function resetStats(){if(!confirm('Сбросить сохранённую статистику по этой теме?'))return;stats={total:0,right:0,streak:0,bestStreak:0,lastDate:null,history:[]};saveCourse();renderStats();msg('Статистика сброшена. Можно начать заново.','tip')}
 function setMode(m){mode=m;['mAdd','mSub','mMix'].forEach(id=>document.getElementById(id).classList.remove('active'));document.getElementById(m==='add'?'mAdd':m==='sub'?'mSub':'mMix').classList.add('active');nextTask()}
 function setLevel(l){level=l;['lEasy','lMed'].forEach(id=>document.getElementById(id).classList.remove('active'));document.getElementById(l==='easy'?'lEasy':'lMed').classList.add('active');nextTask()}
-document.getElementById('mAdd').onclick=()=>setMode('add');document.getElementById('mSub').onclick=()=>setMode('sub');document.getElementById('mMix').onclick=()=>setMode('mix');document.getElementById('lEasy').onclick=()=>setLevel('easy');document.getElementById('lMed').onclick=()=>setLevel('med');document.getElementById('check').onclick=check;document.getElementById('next').onclick=nextTask;document.getElementById('hintBtn').onclick=hint;document.getElementById('solution').onclick=showSol;answer.onkeydown=e=>{if(e.key==='Enter')check()};buildLine();nextTask();renderStats();
+document.getElementById('mAdd').onclick=()=>setMode('add');document.getElementById('mSub').onclick=()=>setMode('sub');document.getElementById('mMix').onclick=()=>setMode('mix');document.getElementById('lEasy').onclick=()=>setLevel('easy');document.getElementById('lMed').onclick=()=>setLevel('med');document.getElementById('check').onclick=check;document.getElementById('next').onclick=nextTask;document.getElementById('hintBtn').onclick=hint;document.getElementById('solution').onclick=showSol;document.getElementById('resetStats').onclick=resetStats;answer.onkeydown=e=>{if(e.key==='Enter')check()};loadStats();buildLine();nextTask();renderStats();
 </script>
 </body>
 </html>
