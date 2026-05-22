@@ -13,11 +13,35 @@
       display:grid;
       place-items:center;
       min-height:100vh;
+      padding:24px;
+    }
+    .wrap{
+      width:min(760px,94vw);
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:clamp(28px,5vw,44px);
+      text-align:center;
+    }
+    .subtitle{
+      margin:0 0 26px;
+      color:#cbd5e1;
+      text-align:center;
+      font-size:18px;
+    }
+    .section{
+      margin:22px 0;
+    }
+    .sectionTitle{
+      font-size:18px;
+      font-weight:900;
+      color:#e5e7eb;
+      margin:0 0 12px;
+      letter-spacing:.02em;
     }
     .links{
       display:grid;
-      gap:20px;
-      width:min(520px,90vw);
+      gap:16px;
     }
     a{
       color:#111;
@@ -29,14 +53,39 @@
       font-size:20px;
       text-align:center;
       box-shadow:0 10px 20px rgba(0,0,0,0.25);
+      transition:.15s transform,.15s box-shadow;
+    }
+    a:hover{
+      transform:translateY(-2px);
+      box-shadow:0 16px 28px rgba(0,0,0,0.32);
+    }
+    .basic a{
+      background:#dbeafe;
+      color:#102a56;
     }
   </style>
 </head>
 <body>
-  <div class="links">
-    <a href="trainers/task19-trainer.html">Тренажёр ОГЭ №19</a>
-    <a href="trainers/task14-progressions-trainer.html?hub=1">Тренажёр ОГЭ №14 (прогрессии)</a>
-    <a href="ggb/15/">GeoGebra Offline Demo</a>
-  </div>
+  <main class="wrap">
+    <h1>math-exam-fipi</h1>
+    <p class="subtitle">Тренажёры по математике: база, ОГЭ и интерактивные модели.</p>
+
+    <section class="section basic">
+      <h2 class="sectionTitle">Базовый курс</h2>
+      <div class="links">
+        <a href="trainers/negative-numbers-line.html">Отрицательные числа: числовая прямая</a>
+        <a href="rounding-fresh.html">Округление чисел</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="sectionTitle">ОГЭ и модели</h2>
+      <div class="links">
+        <a href="trainers/task19-trainer.html">Тренажёр ОГЭ №19</a>
+        <a href="trainers/task14-progressions-trainer.html?hub=1">Тренажёр ОГЭ №14 (прогрессии)</a>
+        <a href="ggb/15/">GeoGebra Offline Demo</a>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
