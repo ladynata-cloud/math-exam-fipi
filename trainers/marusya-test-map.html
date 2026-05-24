@@ -3,67 +3,102 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Карта тестирования — Mathexam.space</title>
+  <title>Маршрут Маруси на вторник — Mathexam.space</title>
   <style>
     :root{
-      --bg:#eef3f8;--ink:#0f172a;--muted:#64748b;--card:#ffffff;--line:#dbe4ee;
+      --bg:#eef3f8;--ink:#0f172a;--muted:#64748b;--card:#fff;--line:#dbe4ee;
       --blue:#2563eb;--blueSoft:#dbeafe;--green:#15803d;--greenSoft:#dcfce7;
       --amber:#92400e;--amberSoft:#fef3c7;--violet:#6d28d9;--violetSoft:#ede9fe;
-      --red:#b91c1c;--redSoft:#fee2e2;--shadow:0 18px 45px rgba(15,23,42,.08);
+      --red:#b91c1c;--redSoft:#fee2e2;--gray:#475569;--graySoft:#f1f5f9;
+      --shadow:0 18px 45px rgba(15,23,42,.08);
     }
-    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,#ffffff 0,#eef3f8 38%,#e8edf4 100%);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);min-height:100vh}
+    *{box-sizing:border-box}
+    body{margin:0;background:radial-gradient(circle at top left,#fff 0,#eef3f8 38%,#e8edf4 100%);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);min-height:100vh}
     .wrap{width:min(1120px,94vw);margin:0 auto;padding:28px 0 52px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}.back{color:var(--blue);font-weight:800;text-decoration:none}.back:hover{text-decoration:underline}
-    .hero{background:linear-gradient(135deg,#ffffff 0%,#eef6ff 55%,#f7fbff 100%);border:1px solid #dbeafe;border-radius:28px;padding:30px 28px;box-shadow:var(--shadow);margin-bottom:22px}.kicker{display:inline-flex;gap:8px;align-items:center;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;font-weight:900;font-size:13px;padding:8px 12px;margin-bottom:14px}.hero h1{font-size:clamp(32px,5vw,58px);line-height:.98;margin:0 0 12px;letter-spacing:-.05em}.hero p{margin:0;color:#475569;font-size:18px;line-height:1.55;max-width:820px}.route{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0 0}@media(max-width:800px){.route{grid-template-columns:1fr 1fr}}@media(max-width:460px){.route{grid-template-columns:1fr}}
-    .routeStep{background:#fff;border:1px solid #dbeafe;border-radius:18px;padding:13px 14px}.num{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--blue);color:#fff;align-items:center;justify-content:center;font-weight:900;font-size:13px;margin-right:7px}.routeStep strong{font-size:14px}.routeStep span{display:block;margin-top:7px;color:#64748b;font-size:13px;line-height:1.35}
-    .section{margin-top:26px}.section h2{font-size:22px;margin:0 0 12px;letter-spacing:-.02em}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}@media(max-width:900px){.grid{grid-template-columns:1fr 1fr}}@media(max-width:620px){.grid{grid-template-columns:1fr}}
-    .card{position:relative;display:flex;flex-direction:column;gap:10px;min-height:210px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;text-decoration:none;color:var(--ink);box-shadow:0 10px 26px rgba(15,23,42,.06);transition:.18s transform,.18s box-shadow,.18s border-color;overflow:hidden}.card:hover{transform:translateY(-3px);box-shadow:0 22px 48px rgba(15,23,42,.12);border-color:#bfdbfe}.card.disabled{opacity:.72;cursor:not-allowed}.card.disabled:hover{transform:none;box-shadow:0 10px 26px rgba(15,23,42,.06);border-color:var(--line)}.card:before{content:"";position:absolute;right:-38px;top:-44px;width:116px;height:116px;border-radius:50%;background:var(--blueSoft)}.card.green:before{background:var(--greenSoft)}.card.amber:before{background:var(--amberSoft)}.card.violet:before{background:var(--violetSoft)}.card.red:before{background:var(--redSoft)}.emoji{font-size:34px;position:relative}.tag{display:inline-flex;align-self:flex-start;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900;background:#f1f5f9;color:#475569}.tag.ready{background:var(--greenSoft);color:var(--green)}.tag.test{background:var(--amberSoft);color:var(--amber)}.tag.soon{background:#e2e8f0;color:#475569}.tag.new{background:var(--blueSoft);color:#1d4ed8}.title{font-size:21px;font-weight:950;letter-spacing:-.03em;position:relative}.desc{font-size:14px;line-height:1.52;color:var(--muted);position:relative}.open{margin-top:auto;font-weight:900;color:var(--blue);font-size:14px;position:relative}.disabled .open{color:#64748b}.noteBox{background:#fff7ed;border:1px solid #fed7aa;border-radius:20px;padding:16px 18px;color:#7c2d12;font-size:15px;line-height:1.55;margin-top:16px}.noteBox strong{color:#9a3412}.footer{margin-top:28px;color:#64748b;text-align:center;font-size:13px}
+    .hero{background:linear-gradient(135deg,#fff 0%,#eef6ff 55%,#f7fbff 100%);border:1px solid #dbeafe;border-radius:28px;padding:30px 28px;box-shadow:var(--shadow);margin-bottom:22px}.kicker{display:inline-flex;gap:8px;align-items:center;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;font-weight:900;font-size:13px;padding:8px 12px;margin-bottom:14px}.hero h1{font-size:clamp(32px,5vw,58px);line-height:.98;margin:0 0 12px;letter-spacing:-.05em}.hero p{margin:0;color:#475569;font-size:18px;line-height:1.55;max-width:850px}
+    .principles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}@media(max-width:760px){.principles{grid-template-columns:1fr}}
+    .principle{background:#fff;border:1px solid #dbeafe;border-radius:18px;padding:13px 14px;color:#475569;font-size:14px;line-height:1.4}.principle strong{display:block;color:#0f172a;margin-bottom:4px}
+    .section{margin-top:26px}.section h2{font-size:24px;margin:0 0 8px;letter-spacing:-.03em}.lead{margin:0 0 14px;color:#64748b;line-height:1.55}.lesson{display:grid;gap:14px}.lessonCard{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:16px;text-decoration:none;color:var(--ink);box-shadow:0 10px 26px rgba(15,23,42,.06);transition:.18s transform,.18s box-shadow,.18s border-color;position:relative;overflow:hidden}.lessonCard:hover{transform:translateY(-2px);box-shadow:0 22px 48px rgba(15,23,42,.12);border-color:#bfdbfe}.lessonCard.disabled{opacity:.72;cursor:not-allowed}.lessonCard.disabled:hover{transform:none;box-shadow:0 10px 26px rgba(15,23,42,.06);border-color:var(--line)}@media(max-width:640px){.lessonCard{grid-template-columns:1fr}.lessonNum{width:44px}}
+    .lessonNum{width:54px;height:54px;border-radius:18px;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:950;font-size:24px;box-shadow:0 8px 18px rgba(37,99,235,.18)}.lessonCard.green .lessonNum{background:var(--green)}.lessonCard.amber .lessonNum{background:#d97706}.lessonCard.violet .lessonNum{background:var(--violet)}.lessonCard.gray .lessonNum{background:#64748b}.lessonCard.red .lessonNum{background:var(--red)}
+    .lessonTitle{font-size:22px;font-weight:950;letter-spacing:-.03em;margin-bottom:4px}.lessonDesc{font-size:15px;color:#64748b;line-height:1.5}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}.tag{display:inline-flex;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:900;background:#f1f5f9;color:#475569}.tag.ready{background:var(--greenSoft);color:var(--green)}.tag.careful{background:var(--amberSoft);color:var(--amber)}.tag.reserve{background:var(--violetSoft);color:var(--violet)}.tag.teacher{background:var(--redSoft);color:var(--red)}.tag.soon{background:#e2e8f0;color:#475569}.open{font-weight:950;color:var(--blue);white-space:nowrap}.disabled .open{color:#64748b}.mini{font-size:13px;color:#64748b;margin-top:4px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}@media(max-width:900px){.grid{grid-template-columns:1fr 1fr}}@media(max-width:620px){.grid{grid-template-columns:1fr}}.card{position:relative;display:flex;flex-direction:column;gap:10px;min-height:190px;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;text-decoration:none;color:var(--ink);box-shadow:0 10px 26px rgba(15,23,42,.06);transition:.18s transform,.18s box-shadow,.18s border-color;overflow:hidden}.card:hover{transform:translateY(-3px);box-shadow:0 22px 48px rgba(15,23,42,.12);border-color:#bfdbfe}.card.disabled{opacity:.72;cursor:not-allowed}.card.disabled:hover{transform:none;box-shadow:0 10px 26px rgba(15,23,42,.06);border-color:var(--line)}.card:before{content:"";position:absolute;right:-38px;top:-44px;width:116px;height:116px;border-radius:50%;background:var(--blueSoft)}.card.green:before{background:var(--greenSoft)}.card.amber:before{background:var(--amberSoft)}.card.violet:before{background:var(--violetSoft)}.card.red:before{background:var(--redSoft)}.emoji{font-size:32px;position:relative}.title{font-size:20px;font-weight:950;letter-spacing:-.03em;position:relative}.desc{font-size:14px;line-height:1.52;color:var(--muted);position:relative}.noteBox{background:#fff7ed;border:1px solid #fed7aa;border-radius:20px;padding:16px 18px;color:#7c2d12;font-size:15px;line-height:1.55;margin-top:16px}.noteBox strong{color:#9a3412}.footer{margin-top:28px;color:#64748b;text-align:center;font-size:13px}
   </style>
 </head>
 <body>
   <main class="wrap">
     <div class="top"><a class="back" href="../index.html">← На главную</a><span style="color:#64748b;font-weight:800">Mathexam.space</span></div>
+
     <section class="hero">
-      <div class="kicker">🧪 Тестовый стенд для Маруси</div>
-      <h1>Новые тренажёры в одном месте</h1>
-      <p>Это рабочая карта для проверки на учениках. Здесь собраны новые и экспериментальные тренажёры: отрицательные числа, сложение со знаками, уравнения, деление уголком, неравенства и геометрические модели.</p>
-      <div class="route">
-        <div class="routeStep"><strong><span class="num">1</span>Потрогать число</strong><span>движение по прямой и маркер</span></div>
-        <div class="routeStep"><strong><span class="num">2</span>Понять знак</strong><span>кто сильнее по модулю</span></div>
-        <div class="routeStep"><strong><span class="num">3</span>Найти x</strong><span>обратное действие и сборка решения</span></div>
-        <div class="routeStep"><strong><span class="num">4</span>Проверить базу</strong><span>деление, неравенства, геометрия</span></div>
+      <div class="kicker">🧪 Маршрут на вторник · тестирование без перегруза</div>
+      <h1>Маруся: один понятный путь</h1>
+      <p>Это не просто список тренажёров, а порядок занятия: медленный разгон, маленькие победы, осторожный переход от отрицательных чисел к уравнениям. Главная задача — посмотреть, где ей становится понятно, а где интерфейс или тема начинают пугать.</p>
+      <div class="principles">
+        <div class="principle"><strong>Не даём выбирать из хаоса</strong>Идём сверху вниз, по одному шагу.</div>
+        <div class="principle"><strong>Один блок = 5–7 минут</strong>Лучше остановиться раньше, чем довести до усталости.</div>
+        <div class="principle"><strong>Фиксируем наблюдения</strong>Где угадывает, где читает, где просит подсказку.</div>
       </div>
     </section>
 
     <section class="section">
-      <h2>Отрицательные числа и знаки</h2>
+      <h2>Основной маршрут занятия</h2>
+      <p class="lead">Начать с визуального и спокойного. Уравнения — только если первые шаги идут без паники.</p>
+      <div class="lesson">
+        <a class="lessonCard" href="negative-numbers-line.html">
+          <div class="lessonNum">1</div>
+          <div><div class="lessonTitle">Числовая прямая</div><div class="lessonDesc">Понять, что есть числа меньше нуля. Визуально, без резкого входа в вычисления.</div><div class="meta"><span class="tag ready">можно сразу</span><span class="tag">5–7 минут</span></div></div>
+          <div class="open">Открыть →</div>
+        </a>
+        <a class="lessonCard green" href="negative-numbers-alternative.html">
+          <div class="lessonNum">2</div>
+          <div><div class="lessonTitle">Отрицательные числа: версия с маркером</div><div class="lessonDesc">Та же идея, другой интерфейс. Закрепление без нового стресса и сравнение: какая механика ей легче.</div><div class="meta"><span class="tag ready">можно сразу</span><span class="tag">альтернатива</span></div></div>
+          <div class="open">Открыть →</div>
+        </a>
+        <a class="lessonCard amber" href="who-is-stronger.html">
+          <div class="lessonNum">3</div>
+          <div><div class="lessonTitle">Кто сильнее по модулю?</div><div class="lessonDesc">Переход к вычислениям: знаки одинаковые или разные, чей модуль больше, какой знак будет у ответа.</div><div class="meta"><span class="tag careful">осторожно</span><span class="tag">если понимает модуль</span></div></div>
+          <div class="open">Открыть →</div>
+        </a>
+        <a class="lessonCard green" href="rounding-stepwise.html">
+          <div class="lessonNum">4</div>
+          <div><div class="lessonTitle">Округление чисел</div><div class="lessonDesc">Отдых от знаков. Изолированная тема с понятным правилом — хороший блок для уверенности.</div><div class="meta"><span class="tag ready">можно сразу</span><span class="tag">переключение</span></div></div>
+          <div class="open">Открыть →</div>
+        </a>
+        <a class="lessonCard violet" href="simple-equations-stepwise.html">
+          <div class="lessonNum">5</div>
+          <div><div class="lessonTitle">Простые уравнения: обратное действие</div><div class="lessonDesc">Новая большая тема. Давать после отрицательных чисел, только если Маруся не перегружена.</div><div class="meta"><span class="tag careful">давать осторожно</span><span class="tag">новая абстракция x</span></div></div>
+          <div class="open">Открыть →</div>
+        </a>
+        <a class="lessonCard violet" href="equations-builder.html">
+          <div class="lessonNum">6</div>
+          <div><div class="lessonTitle">Собери решение уравнения</div><div class="lessonDesc">Продолжение простых уравнений: собрать решение из блоков. Только если шаг 5 прошёл без паники.</div><div class="meta"><span class="tag careful">после шага 5</span><span class="tag">Duolingo-логика</span></div></div>
+          <div class="open">Открыть →</div>
+        </a>
+      </div>
+      <div class="noteBox"><strong>Правило на вторник:</strong> если на каком-то шаге пошла тревога, не «дожимаем», а возвращаемся на предыдущий успешный тренажёр или переключаемся на округление.</div>
+    </section>
+
+    <section class="section">
+      <h2>Резерв, если останутся силы</h2>
+      <p class="lead">Эти блоки не основная линия занятия. Их можно открыть только как смену деятельности или для учителя.</p>
       <div class="grid">
-        <a class="card" href="negative-numbers-line.html"><div class="emoji">➖</div><span class="tag ready">работает</span><div class="title">Числовая прямая</div><div class="desc">Первое число — старт. Дальше двигаемся вправо или влево и получаем ответ.</div><div class="open">Открыть →</div></a>
-        <a class="card green" href="negative-numbers-alternative.html"><div class="emoji">📍</div><span class="tag ready">альтернатива</span><div class="title">Версия с маркером</div><div class="desc">Альтернативная логика для сравнения: что лучше сработает у конкретного ученика.</div><div class="open">Открыть →</div></a>
-        <a class="card amber" href="who-is-stronger.html"><div class="emoji">⚔️</div><span class="tag new">новое</span><div class="title">Кто сильнее по модулю?</div><div class="desc">4 шага: знаки одинаковые/разные, знак ответа, действие с модулями, итоговый ответ.</div><div class="open">Открыть →</div></a>
-        <div class="card disabled"><div class="emoji">✍️</div><span class="tag soon">готовится</span><div class="title">Сначала перепиши, потом считай</div><div class="desc">Шаг между вычитанием и вычислением: сначала переписать выражение как алгебраическую сумму.</div><div class="open">Добавим после загрузки файла</div></div>
+        <a class="card green" href="jsxgraph-midpoint.html"><div class="emoji">🟢</div><span class="tag reserve">смена деятельности</span><div class="title">Середина отрезка</div><div class="desc">Визуальная геометрия. Можно дать как разрядку между алгебраическими темами.</div><div class="open">Открыть →</div></a>
+        <a class="card amber" href="bisector-trainer-v2.html"><div class="emoji">📐</div><span class="tag teacher">лучше позже</span><div class="title">Биссектриса угла</div><div class="desc">Сложнее, чем середина отрезка. Лучше после спокойной визуальной геометрии.</div><div class="open">Открыть →</div></a>
+        <a class="card green" href="long-division-stepwise.html"><div class="emoji">➗</div><span class="tag teacher">пока учителю</span><div class="title">Деление уголком</div><div class="desc">Многошаговый алгоритм. Вводить только когда она спокойна и готова к длинной процедуре.</div><div class="open">Открыть →</div></a>
+        <a class="card red" href="linear-inequalities-stepwise.html"><div class="emoji">📈</div><span class="tag teacher">в конце маршрута</span><div class="title">Линейные неравенства</div><div class="desc">Только после уверенных простых уравнений. Иначе будет слишком большой скачок.</div><div class="open">Открыть →</div></a>
+        <div class="card disabled"><div class="emoji">✍️</div><span class="tag soon">готовится</span><div class="title">Сначала перепиши, потом считай</div><div class="desc">Очень нужный мостик между вычитанием и алгебраической суммой. Включим в маршрут после загрузки файла.</div><div class="open">Добавим после публикации</div></div>
       </div>
     </section>
 
     <section class="section">
-      <h2>Уравнения, арифметика, неравенства</h2>
+      <h2>Что наблюдать</h2>
       <div class="grid">
-        <a class="card violet" href="simple-equations-stepwise.html"><div class="emoji">🔎</div><span class="tag ready">работает</span><div class="title">Простые уравнения</div><div class="desc">Учимся видеть обратное действие: что сделали с x, то нужно отменить.</div><div class="open">Открыть →</div></a>
-        <a class="card violet" href="equations-builder.html"><div class="emoji">🧩</div><span class="tag test">тест</span><div class="title">Собери решение уравнения</div><div class="desc">Duolingo-подход: собрать решение из блоков и проверить ход рассуждения.</div><div class="open">Открыть →</div></a>
-        <a class="card" href="rounding-stepwise.html"><div class="emoji">🎯</div><span class="tag ready">работает</span><div class="title">Округление чисел</div><div class="desc">Пошаговый тренажёр округления: разряд, соседняя цифра, решение.</div><div class="open">Открыть →</div></a>
-        <a class="card green" href="long-division-stepwise.html"><div class="emoji">➗</div><span class="tag ready">работает</span><div class="title">Деление уголком</div><div class="desc">Базовый навык для слабых учеников: аккуратный алгоритм деления.</div><div class="open">Открыть →</div></a>
-        <a class="card red" href="linear-inequalities-stepwise.html"><div class="emoji">📈</div><span class="tag ready">работает</span><div class="title">Линейные неравенства</div><div class="desc">Пошаговое решение неравенств с контролем логики и результата.</div><div class="open">Открыть →</div></a>
+        <div class="card"><div class="emoji">👀</div><span class="tag">поведение</span><div class="title">Читает или угадывает?</div><div class="desc">Смотрим: она читает инструкцию, делает паузу, объясняет вслух — или сразу кликает наугад.</div></div>
+        <div class="card amber"><div class="emoji">⚠️</div><span class="tag careful">тревога</span><div class="title">Где стало слишком трудно?</div><div class="desc">Молчание, случайные клики, «я не понимаю» в первые секунды — это сигнал остановиться.</div></div>
+        <div class="card green"><div class="emoji">🌱</div><span class="tag ready">рост</span><div class="title">Где появилась маленькая победа?</div><div class="desc">После ошибки прочитала сообщение и исправилась — значит тренажёр реально работает.</div></div>
       </div>
     </section>
 
-    <section class="section">
-      <h2>Геометрические эксперименты</h2>
-      <div class="grid">
-        <a class="card amber" href="bisector-trainer-v2.html"><div class="emoji">📐</div><span class="tag test">эксперимент</span><div class="title">Биссектриса угла</div><div class="desc">Циркуль и линейка: тестируем механику построения и собираем список улучшений.</div><div class="open">Открыть →</div></a>
-        <a class="card green" href="jsxgraph-midpoint.html"><div class="emoji">🟢</div><span class="tag test">эксперимент</span><div class="title">Середина отрезка</div><div class="desc">Первый опыт открытой веб-геометрии на JSXGraph: двигаем точку C.</div><div class="open">Открыть →</div></a>
-      </div>
-      <div class="noteBox"><strong>Как использовать на уроке:</strong> открыть карту, дать ученику один тренажёр на 5–7 минут, записать где застрял: непонятная фраза, неверная кнопка, слишком лёгкий пример, страх перед вводом ответа.</div>
-    </section>
-    <div class="footer">Карта тестирования · обновляется по мере появления новых HTML-тренажёров</div>
+    <div class="footer">Маршрут для тестирования · обновлено по методической ревизии Claude</div>
   </main>
 </body>
 </html>
