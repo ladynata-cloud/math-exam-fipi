@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Квадратные неравенства — парабола и интервалы</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#1f2937;padding:18px}
+    .app{max-width:1080px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+    .head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+    .title{font-size:20px;font-weight:900}.sub{font-size:12px;opacity:.72;margin-top:2px}.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}.back:hover{color:#fff}
+    .main{display:grid;grid-template-columns:minmax(0,1fr) 320px}.boardWrap{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}.board{width:100%;height:auto;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;display:block}.panel{padding:14px;display:flex;flex-direction:column;gap:10px}.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}.task{font-size:22px;font-weight:900;font-family:Georgia,serif;text-align:center;color:#111827;line-height:1.35}.small{font-size:12px;color:#64748b;line-height:1.45}.row{display:flex;justify-content:space-between;gap:10px;font-size:14px;line-height:1.5;border-bottom:1px dashed #e5e7eb;padding:5px 0}.row:last-child{border-bottom:0}.value{font-weight:900}.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}.info{background:#eff6ff;color:#1d4ed8}.ok{background:#f0fdf4;color:#15803d}.err{background:#fef2f2;color:#b91c1c}.warn{background:#fff7ed;color:#c2410c}.hintBox{display:none;background:#fff7ed;color:#9a3412;border:1.5px solid #fed7aa;border-radius:12px;padding:12px;font-size:13px;line-height:1.5}.hintBox.on{display:block}.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb}button{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:8px 13px;font:800 13px system-ui;cursor:pointer}button:hover{background:#f3f4f6}.primary{background:#1a1a2e;color:white;border-color:#1a1a2e}.good{background:#15803d;color:white;border-color:#15803d}.warnBtn{background:#fff7ed;color:#c2410c;border-color:#fdba74}.danger{background:#fee2e2;color:#991b1b;border-color:#fecaca}.chipRow{display:flex;gap:8px;flex-wrap:wrap}.chip{display:inline-flex;align-items:center;border:1px solid #d1d5db;background:#fff;border-radius:999px;padding:6px 9px;font-size:12px;font-weight:800}.chip.on{background:#dcfce7;border-color:#86efac;color:#166534}.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.lg{font-size:12px;color:#64748b;display:inline-flex;align-items:center;gap:5px}.sq{width:16px;height:8px;border-radius:999px;display:inline-block}.blue{background:#2563eb}.green{background:#16a34a}.red{background:#dc2626}.violet{background:#7c3aed}.zone{cursor:pointer}.zone:hover{opacity:.88}.tickLabel{font:800 12px Georgia,serif;fill:#374151}.rootLabel{font:900 14px Georgia,serif;fill:#7c3aed}.statLine{font-size:12px;color:#64748b}.formula{font-family:Georgia,serif;font-weight:900;color:#111827}.hidden{display:none}
+    @media(max-width:840px){body{padding:8px}.main{grid-template-columns:1fr}.boardWrap{border-right:0;border-bottom:1px solid #e5e2d9}.head{flex-direction:column;align-items:flex-start}.panel{padding:12px}.task{font-size:19px}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div><div class="title">📈 Квадратные неравенства</div><div class="sub">ОГЭ №13 · парабола → нули → интервалы</div></div>
+    <a class="back" href="../index.html">← к списку тренажёров</a>
+  </div>
+  <div class="main">
+    <div class="boardWrap">
+      <svg id="board" class="board" viewBox="0 0 720 560" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+    <aside class="panel">
+      <div class="card"><h2>Задание</h2><div class="task" id="taskText"></div><p class="small">Кликните по промежуткам на нижней числовой прямой. Можно выбрать один или два промежутка.</p></div>
+      <div class="card"><h2>Опорные данные</h2><div class="row"><span>Нули выражения</span><span class="value" id="rootsText">—</span></div><div class="row"><span>Парабола</span><span class="value" id="dirText">вверх</span></div><div class="row"><span>Ищем</span><span class="value" id="seekText">—</span></div><div class="row"><span>Точки корней</span><span class="value" id="pointsText">—</span></div></div>
+      <div id="msg" class="msg info">Выберите промежутки, где выражение имеет нужный знак.</div>
+      <div id="hintBox" class="hintBox"></div>
+      <div class="card"><h2>Выбрано</h2><div class="chipRow" id="chips"></div><p class="small" id="answerPreview">Ответ пока не выбран.</p></div>
+      <div class="card"><h2>Статистика</h2><p class="statLine">Решено: <b id="solved">0</b> · верно: <b id="correct">0</b> · серия: <b id="streak">0</b></p><button class="danger" onclick="resetStats()">Сбросить статистику</button></div>
+    </aside>
+  </div>
+  <div class="bar">
+    <button class="primary" onclick="checkAnswer()">Проверить</button>
+    <button id="hintBtn" class="warnBtn" onclick="toggleHint()">Подсказка</button>
+    <button onclick="showSolution()">Показать решение</button>
+    <button class="good" onclick="nextTask()">Следующее задание</button>
+  </div>
+</div>
+<script>
+const KEY='mathExamCourseProgress.v1', TOPIC='quadraticInequalitiesLab';
+const TASKS=[
+  {e:'(x + 2)(x − 7) > 0',r1:-2,r2:7,l1:'−2',l2:'7',sign:'gt',a:1,note:'Произведение двух скобок'},
+  {e:'(x − 3)(x + 5) < 0',r1:-5,r2:3,l1:'−5',l2:'3',sign:'lt',a:1,note:'Между корнями'},
+  {e:'x² − 64 < 0',r1:-8,r2:8,l1:'−8',l2:'8',sign:'lt',a:1,note:'Квадрат меньше числа'},
+  {e:'x² − 49 > 0',r1:-7,r2:7,l1:'−7',l2:'7',sign:'gt',a:1,note:'Вне корней'},
+  {e:'81x² ≥ 16',r1:-4/9,r2:4/9,l1:'−4/9',l2:'4/9',sign:'gte',a:81,note:'Корни-дроби'},
+  {e:'25x² < 9',r1:-3/5,r2:3/5,l1:'−3/5',l2:'3/5',sign:'lt',a:25,note:'Дробные корни'},
+  {e:'x² − 7x < 0',r1:0,r2:7,l1:'0',l2:'7',sign:'lt',a:1,note:'Вынесение x'},
+  {e:'x² − 7x > 0',r1:0,r2:7,l1:'0',l2:'7',sign:'gt',a:1,note:'Вне 0 и 7'},
+  {e:'x² − 16 ≤ 0',r1:-4,r2:4,l1:'−4',l2:'4',sign:'lte',a:1,note:'Нестрогое между корнями'},
+  {e:'4x² > 36',r1:-3,r2:3,l1:'−3',l2:'3',sign:'gt',a:4,note:'Коэффициент при x²'}
+];
+let idx=0, selected=[false,false,false], checked=false, solutionShown=false;
+const $=id=>document.getElementById(id);
+function loadStats(){try{const d=JSON.parse(localStorage.getItem(KEY)||'{}');return d[TOPIC]||{solved:0,correct:0,streak:0,bestStreak:0,history:[]}}catch{return{solved:0,correct:0,streak:0,bestStreak:0,history:[]}}}
+function saveStats(s){try{const d=JSON.parse(localStorage.getItem(KEY)||'{}');d[TOPIC]=s;localStorage.setItem(KEY,JSON.stringify(d))}catch{}}
+function record(ok){const s=loadStats();s.solved++;if(ok){s.correct++;s.streak++;s.bestStreak=Math.max(s.bestStreak||0,s.streak)}else{s.streak=0}s.history=[ok?1:0,...(s.history||[])].slice(0,10);saveStats(s);renderStats()}
+function resetStats(){if(confirm('Сбросить статистику?')){const d=JSON.parse(localStorage.getItem(KEY)||'{}');d[TOPIC]={solved:0,correct:0,streak:0,bestStreak:0,history:[]};localStorage.setItem(KEY,JSON.stringify(d));renderStats()}}
+function renderStats(){const s=loadStats();$('solved').textContent=s.solved||0;$('correct').textContent=s.correct||0;$('streak').textContent=s.streak||0}
+function signText(s){return s==='gt'?'> 0':s==='gte'?'≥ 0':s==='lt'?'< 0':'≤ 0'}
+function isStrict(s){return s==='gt'||s==='lt'}
+function correctZones(t){const outside=t.sign==='gt'||t.sign==='gte';return outside?[true,false,true]:[false,true,false]}
+function zoneLabel(i,t){if(i===0)return `(−∞; ${t.l1}${isStrict(t.sign)?')':']'}`;if(i===1)return `${isStrict(t.sign)?'(':'['}${t.l1}; ${t.l2}${isStrict(t.sign)?')':']'}`;return `${isStrict(t.sign)?'(':'['}${t.l2}; +∞)`}
+function selectedAnswer(t){let parts=[];for(let i=0;i<3;i++)if(selected[i])parts.push(zoneLabel(i,t));return parts.length?parts.join(' ∪ '):'—'}
+function setMsg(txt,cls='info'){const el=$('msg');el.innerHTML=txt;el.className='msg '+cls}
+function xMap(x){const t=TASKS[idx];let min=Math.min(-10,t.r1-2),max=Math.max(10,t.r2+2);return 64+(x-min)/(max-min)*592}
+function yMap(y,scale){return 248-y*scale}
+function make(tag,attrs){const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const k in attrs)e.setAttribute(k,attrs[k]);return e}
+function renderBoard(){const t=TASKS[idx],svg=$('board');svg.innerHTML='';let min=Math.min(-10,t.r1-2),max=Math.max(10,t.r2+2);let maxY=1;for(let i=0;i<=160;i++){let x=min+(max-min)*i/160,y=t.a*(x-t.r1)*(x-t.r2);maxY=Math.max(maxY,Math.abs(y))}let scale=160/maxY;
+  svg.appendChild(make('rect',{x:0,y:0,width:720,height:560,fill:'#fffdf7'}));
+  for(let gx=Math.ceil(min);gx<=Math.floor(max);gx++){let px=xMap(gx);svg.appendChild(make('line',{x1:px,y1:42,x2:px,y2:330,stroke:'#eee9df','stroke-width':1}));if(gx%2===0){let tx=make('text',{x:px,y:323,'text-anchor':'middle','font-size':10,fill:'#9ca3af'});tx.textContent=gx;svg.appendChild(tx)}}
+  svg.appendChild(make('line',{x1:44,y1:248,x2:676,y2:248,stroke:'#374151','stroke-width':2}));svg.appendChild(make('line',{x1:xMap(0),y1:38,x2:xMap(0),y2:326,stroke:'#d1d5db','stroke-width':1.5}));
+  let pts=[];for(let i=0;i<=220;i++){let x=min+(max-min)*i/220,y=t.a*(x-t.r1)*(x-t.r2);pts.push(`${xMap(x).toFixed(1)},${yMap(y,scale).toFixed(1)}`)}svg.appendChild(make('polyline',{points:pts.join(' '),fill:'none',stroke:'#1a1a2e','stroke-width':4,'stroke-linecap':'round','stroke-linejoin':'round'}));
+  [t.r1,t.r2].forEach((r,k)=>{let px=xMap(r);svg.appendChild(make('circle',{cx:px,cy:248,r:6,fill:'#7c3aed',stroke:'#fff','stroke-width':2}));let lab=make('text',{x:px,y:270,'text-anchor':'middle','font-family':'Georgia,serif','font-size':14,'font-weight':'900',fill:'#7c3aed'});lab.textContent=k===0?t.l1:t.l2;svg.appendChild(lab)});
+  let cap=make('text',{x:360,y:28,'text-anchor':'middle','font-size':14,'font-weight':'900',fill:'#374151'});cap.textContent='График выражения: выше оси x — положительно, ниже — отрицательно';svg.appendChild(cap);
+  renderNumberLine(svg,t);
+}
+function renderNumberLine(svg,t){const y=432,l=64,r=656,p1=xMap(t.r1),p2=xMap(t.r2),zones=[[l,p1],[p1,p2],[p2,r]],corr=correctZones(t);
+  svg.appendChild(make('text',{x:360,y:382,'text-anchor':'middle','font-size':15,'font-weight':'900',fill:'#374151'})).textContent='Числовая прямая: кликните по промежуткам';
+  svg.appendChild(make('line',{x1:l,y1:y,x2:r,y2:y,stroke:'#475569','stroke-width':3,'stroke-linecap':'round'}));
+  zones.forEach((z,i)=>{let color='transparent',op=.1;if(solutionShown&&corr[i]){color='#16a34a';op=.55}else if(checked&&selected[i]&&!corr[i]){color='#dc2626';op=.55}else if(checked&&selected[i]&&corr[i]){color='#16a34a';op=.55}else if(selected[i]){color='#2563eb';op=.35}svg.appendChild(make('rect',{class:'zone',x:z[0],y:y-22,width:z[1]-z[0],height:44,rx:10,fill:color,opacity:op,'data-zone':i}));});
+  [p1,p2].forEach((px,k)=>{svg.appendChild(make('circle',{cx:px,cy:y,r:8,fill:isStrict(t.sign)?'#fff':'#7c3aed',stroke:'#7c3aed','stroke-width':3}));let tx=make('text',{x:px,y:y+33,'text-anchor':'middle','font-family':'Georgia,serif','font-size':15,'font-weight':'900',fill:'#7c3aed'});tx.textContent=k===0?t.l1:t.l2;svg.appendChild(tx)});
+  svg.querySelectorAll('.zone').forEach(z=>z.addEventListener('click',()=>toggleZone(Number(z.getAttribute('data-zone')))));
+}
+function toggleZone(i){if(checked||solutionShown)return;selected[i]=!selected[i];renderAll()}
+function renderChips(){const t=TASKS[idx],box=$('chips');box.innerHTML='';for(let i=0;i<3;i++){const sp=document.createElement('span');sp.className='chip '+(selected[i]?'on':'');sp.textContent=zoneLabel(i,t);sp.onclick=()=>toggleZone(i);box.appendChild(sp)}$('answerPreview').innerHTML='Ваш выбор: <span class="formula">'+selectedAnswer(t)+'</span>'}
+function renderText(){const t=TASKS[idx];$('taskText').textContent=t.e;$('rootsText').textContent=t.l1+' и '+t.l2;$('dirText').textContent=t.a>0?'вверх':'вниз';$('seekText').textContent=signText(t.sign);$('pointsText').textContent=isStrict(t.sign)?'пустые':'закрашенные';let hb='Нули делят прямую на три промежутка. Если парабола вверх, то вне корней выражение положительно, между корнями отрицательно. Для знаков > и < корни не входят, для ≥ и ≤ входят.';$('hintBox').innerHTML=hb}
+function renderAll(){renderText();renderBoard();renderChips();renderStats()}
+function checkAnswer(){const t=TASKS[idx],corr=correctZones(t),ok=selected.every((v,i)=>v===corr[i]);checked=true;if(ok){setMsg('Верно. Ответ: <b>'+selectedAnswer(t)+'</b>','ok');record(true)}else{let need=(t.sign==='gt'||t.sign==='gte')?'вне корней':'между корнями';let strict=isStrict(t.sign)?'Корни не входят, точки пустые.':'Корни входят, точки закрашенные.';setMsg('Пока ошибка. Здесь нужно выбрать промежутки <b>'+need+'</b>. '+strict+' Нажмите «Подсказка» или «Показать решение».','err');record(false)}renderAll()}
+function toggleHint(){const h=$('hintBox');h.classList.toggle('on')}
+function showSolution(){solutionShown=true;checked=true;selected=correctZones(TASKS[idx]).slice();setMsg('Показано решение: <b>'+selectedAnswer(TASKS[idx])+'</b>','warn');renderAll()}
+function nextTask(){idx=(idx+1)%TASKS.length;selected=[false,false,false];checked=false;solutionShown=false;$('hintBox').classList.remove('on');setMsg('Выберите промежутки, где выражение имеет нужный знак.','info');renderAll()}
+renderAll();
+</script>
+</body>
+</html>
