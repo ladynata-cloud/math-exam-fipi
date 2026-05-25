@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Рекурсивная лестница и дерево путей</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #181c27;
+    --surface2: #1f2535;
+    --border: #2a3050;
+    --accent: #4f8ef7;
+    --accent2: #7c3aed;
+    --green: #22c55e;
+    --red: #ef4444;
+    --yellow: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --mono: 'Consolas', 'Courier New', monospace;
+    --sans: system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── NAV ── */
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: color .2s;
+  }
+  .nav a:hover { color: var(--text); }
+  .nav-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-left: 8px;
+  }
+  .nav-badge {
+    margin-left: auto;
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--accent);
+    background: rgba(79,142,247,.12);
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(79,142,247,.25);
+  }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    gap: 0;
+    padding: 16px 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .tab {
+    padding: 10px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all .2s;
+    font-family: var(--sans);
+  }
+  .tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .tab:hover:not(.active) { color: var(--text); }
+
+  /* ── SECTIONS ── */
+  .section { display: none; flex: 1; padding: 20px; gap: 20px; }
+  .section.active { display: flex; }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    padding: 10px 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+  .stat { display: flex; align-items: center; gap: 6px; }
+  .stat-label { color: var(--muted); }
+  .stat-val { font-weight: 700; font-family: var(--mono); }
+  .stat-val.green { color: var(--green); }
+  .stat-val.yellow { color: var(--yellow); }
+  .stat-val.accent { color: var(--accent); }
+  .stat-sep { color: var(--border); }
+  .btn-reset-stats {
+    margin-left: auto;
+    font-size: 12px;
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--sans);
+    transition: all .2s;
+  }
+  .btn-reset-stats:hover { border-color: var(--red); color: var(--red); }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--muted);
+  }
+
+  /* ── MODE TOGGLE ── */
+  .mode-row {
+    display: flex;
+    gap: 8px;
+    padding: 0 20px;
+    padding-top: 12px;
+  }
+  .mode-btn {
+    padding: 6px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: var(--sans);
+    transition: all .2s;
+  }
+  .mode-btn.active {
+    background: var(--accent2);
+    border-color: var(--accent2);
+    color: #fff;
+  }
+
+  /* ══════════════════════════════════
+     PART 1 — LADDER
+  ══════════════════════════════════ */
+  #sec-ladder {
+    flex-direction: column;
+  }
+  .ladder-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    flex: 1;
+  }
+  @media(max-width:700px){ .ladder-layout { grid-template-columns: 1fr; } }
+
+  /* Formula display */
+  .formula-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 2;
+  }
+  .formula-line { color: var(--text); }
+  .formula-line span.kw { color: var(--accent); }
+  .formula-line span.num { color: var(--green); }
+  .formula-line span.cond { color: var(--yellow); }
+
+  /* Ladder visual */
+  .ladder-visual {
+    position: relative;
+    min-height: 200px;
+    padding: 10px 0;
+  }
+  .ladder-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity .35s, transform .35s;
+    font-family: var(--mono);
+    font-size: 15px;
+  }
+  .ladder-step.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .step-n {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--accent2);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .step-n.base { background: var(--green); }
+  .step-expr { color: var(--text); font-size: 14px; }
+  .step-arrow {
+    color: var(--muted);
+    font-size: 18px;
+    margin: 0 4px;
+  }
+  .ladder-rung {
+    width: 3px;
+    height: 18px;
+    background: var(--border);
+    margin-left: 16px;
+    opacity: 0;
+    transition: opacity .3s .1s;
+  }
+  .ladder-rung.visible { opacity: 1; }
+
+  /* Steps panel */
+  .steps-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .step-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.6;
+    transition: border-color .3s;
+  }
+  .step-item.current { border-color: var(--accent); }
+  .step-item.done { border-color: var(--green); color: var(--green); }
+
+  /* Choices */
+  .choice-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .choice-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 600;
+    transition: all .2s;
+  }
+  .choice-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .choice-btn.correct { background: rgba(34,197,94,.15); border-color: var(--green); color: var(--green); }
+  .choice-btn.wrong { background: rgba(239,68,68,.15); border-color: var(--red); color: var(--red); }
+
+  /* Answer assembly */
+  .answer-slots {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 15px;
+    min-height: 42px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+  }
+  .slot { color: var(--accent); font-weight: 700; }
+  .slot-op { color: var(--muted); }
+
+  /* Feedback banner */
+  .feedback {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    display: none;
+  }
+  .feedback.ok { background: rgba(34,197,94,.15); border: 1px solid var(--green); color: var(--green); display: block; }
+  .feedback.err { background: rgba(239,68,68,.15); border: 1px solid var(--red); color: var(--red); display: block; }
+  .feedback.info { background: rgba(79,142,247,.12); border: 1px solid var(--accent); color: var(--accent); display: block; }
+
+  /* Buttons row */
+  .btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .btn {
+    padding: 9px 18px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: var(--sans);
+    transition: all .2s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #3a7cf5; }
+  .btn-secondary { background: var(--surface2); border: 1px solid var(--border); color: var(--text); }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-danger { background: transparent; border: 1px solid var(--red); color: var(--red); }
+  .btn-danger:hover { background: rgba(239,68,68,.1); }
+  .btn-success { background: var(--green); color: #fff; }
+  .btn-success:hover { background: #16a34a; }
+
+  /* Phase label */
+  .phase-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--yellow);
+    margin-bottom: 2px;
+  }
+
+  /* Input number */
+  .num-input {
+    font-family: var(--mono);
+    font-size: 16px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    width: 100px;
+    text-align: center;
+  }
+  .num-input:focus { outline: none; border-color: var(--accent); }
+
+  /* ══════════════════════════════════
+     PART 2 — TREE
+  ══════════════════════════════════ */
+  #sec-tree { flex-direction: column; }
+  .tree-layout {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 20px;
+    flex: 1;
+  }
+  @media(max-width:700px){ .tree-layout { grid-template-columns: 1fr; } }
+
+  /* SVG tree */
+  .tree-canvas-wrap {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: auto;
+    min-height: 300px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+  }
+  #tree-svg { display: block; }
+
+  /* Tree legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; }
+  .legend-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+  }
+
+  /* Formula ref */
+  .formula-ref {
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 2;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--text);
+  }
+  .formula-ref .kw { color: var(--accent); }
+  .formula-ref .g { color: var(--green); }
+  .formula-ref .r { color: var(--red); }
+  .formula-ref .y { color: var(--yellow); }
+
+  /* Task display */
+  .task-box {
+    background: linear-gradient(135deg, rgba(79,142,247,.07), rgba(124,58,237,.07));
+    border: 1px solid rgba(79,142,247,.25);
+    border-radius: 10px;
+    padding: 14px 18px;
+  }
+  .task-line {
+    font-size: 14px;
+    line-height: 1.9;
+    font-family: var(--mono);
+  }
+  .task-line b { color: var(--yellow); }
+  .task-line .green { color: var(--green); }
+  .task-line .red { color: var(--red); }
+
+  /* Mandatory checkpoint note */
+  .checkpoint-note {
+    font-size: 13px;
+    color: var(--yellow);
+    background: rgba(245,158,11,.1);
+    border: 1px solid rgba(245,158,11,.25);
+    border-radius: 8px;
+    padding: 8px 12px;
+  }
+
+  /* History list */
+  .history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    max-height: 120px;
+    overflow-y: auto;
+  }
+  .hist-item {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 3px 6px;
+    border-radius: 5px;
+    background: var(--surface2);
+    font-family: var(--mono);
+  }
+  .hist-item .h-badge {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; color: #fff;
+  }
+  .h-badge.ok { background: var(--green); }
+  .h-badge.err { background: var(--red); }
+  .hist-item .h-text { color: var(--muted); flex: 1; }
+  .hist-item .h-ans { color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav">
+  <a href="../index.html">
+    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    Назад
+  </a>
+  <span class="nav-title">Рекурсивная лестница и дерево путей</span>
+  <span class="nav-badge" id="nav-badge">Загрузка…</span>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat"><span class="stat-label">Решено:</span><span class="stat-val accent" id="st-solved">0</span></div>
+  <span class="stat-sep">|</span>
+  <div class="stat"><span class="stat-label">Верно:</span><span class="stat-val green" id="st-correct">0</span></div>
+  <span class="stat-sep">|</span>
+  <div class="stat"><span class="stat-label">Серия:</span><span class="stat-val yellow" id="st-streak">0</span></div>
+  <span class="stat-sep">|</span>
+  <div class="stat"><span class="stat-label">Рекорд:</span><span class="stat-val yellow" id="st-best">0</span></div>
+  <button class="btn-reset-stats" onclick="resetStats()">Сбросить статистику</button>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('ladder',this)">📐 Часть 1: Лестница</button>
+  <button class="tab" onclick="switchTab('tree',this)">🌳 Часть 2: Дерево путей</button>
+</div>
+
+<!-- MODE ROW -->
+<div class="mode-row">
+  <button class="mode-btn active" id="mode-learn" onclick="setMode('learn',this)">📖 Обучение</button>
+  <button class="mode-btn" id="mode-train" onclick="setMode('train',this)">🏋 Тренировка</button>
+</div>
+
+<!-- ═══════════════════════════ PART 1: LADDER ═══════════════════════════ -->
+<div class="section active" id="sec-ladder">
+
+  <div class="ladder-layout">
+
+    <!-- LEFT: visual ladder + formula -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div class="card">
+        <div class="card-title">Функция</div>
+        <div class="formula-box">
+          <div class="formula-line">G(n) = <span class="num">2 · n</span>,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span class="cond">если n &lt; 10</span></div>
+          <div class="formula-line">G(n) = G(n − 2) + 1, <span class="cond">если n ≥ 10</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Раскрытие — визуальная лестница</div>
+        <div class="ladder-visual" id="ladder-visual">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: interactive steps -->
+    <div style="display:flex;flex-direction:column;gap:14px;">
+
+      <div class="card" id="ladder-task-card">
+        <div class="card-title">Задача</div>
+        <div class="task-box" id="ladder-task-box">
+          <div class="task-line">Вычислите <b id="l-task-expr">G(15)</b></div>
+        </div>
+      </div>
+
+      <!-- Phase 1: unrolling -->
+      <div class="card" id="l-phase1">
+        <div class="phase-label">Шаг 1 — Раскрываем рекурсию</div>
+        <div style="font-size:13px;color:var(--muted);">G(<span id="l-cur-n" style="color:var(--accent);font-family:var(--mono);font-weight:700">15</span>) — какое следующее выражение?</div>
+        <div class="choice-row" id="l-choices1"></div>
+        <div class="feedback" id="l-fb1"></div>
+      </div>
+
+      <!-- Phase 2: base case -->
+      <div class="card" id="l-phase2" style="display:none;">
+        <div class="phase-label">Шаг 2 — Базовый случай</div>
+        <div style="font-size:13px;color:var(--muted);">n = <span id="l-base-n" style="color:var(--green);font-family:var(--mono);font-weight:700"></span> &lt; 10 → G(n) = 2 · n = ?</div>
+        <div class="choice-row" id="l-choices2"></div>
+        <div class="feedback" id="l-fb2"></div>
+      </div>
+
+      <!-- Phase 3: final answer -->
+      <div class="card" id="l-phase3" style="display:none;">
+        <div class="phase-label">Шаг 3 — Итог</div>
+        <div class="answer-slots" id="l-answer-display"></div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <span style="font-size:13px;color:var(--muted);">Ответ G(<span id="l-final-n" style="font-family:var(--mono);color:var(--accent)"></span>) =</span>
+          <input type="number" class="num-input" id="l-answer-input" placeholder="?"/>
+        </div>
+        <div class="feedback" id="l-fb3"></div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="l-btn-check" onclick="lCheck()">Проверить</button>
+        <button class="btn btn-secondary" onclick="lHint()">Подсказка</button>
+        <button class="btn btn-secondary" onclick="lShowSolution()">Показать решение</button>
+        <button class="btn btn-success" onclick="lNext()">Следующий пример</button>
+      </div>
+
+      <!-- History -->
+      <div class="card" id="l-history-card">
+        <div class="card-title">История (последние 10)</div>
+        <div class="history-list" id="l-history-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ PART 2: TREE ═══════════════════════════ -->
+<div class="section" id="sec-tree">
+
+  <div class="tree-layout">
+
+    <!-- LEFT: tree canvas -->
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card">
+        <div class="card-title">Дерево переходов</div>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div> Обычный узел</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div> Цель (finish)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--red)"></div> Запрещённый</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--yellow)"></div> Обязательная точка</div>
+        </div>
+        <div class="tree-canvas-wrap">
+          <svg id="tree-svg" width="420" height="300"></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: task + formula + answer -->
+    <div style="display:flex;flex-direction:column;gap:14px;">
+
+      <div class="card">
+        <div class="card-title">Команды исполнителя</div>
+        <div class="formula-ref">
+          <div><span class="kw">A:</span> n → n − 1</div>
+          <div><span class="kw">B:</span> n → n − 4</div>
+          <div><span class="kw">C:</span> n → n ÷ 3 <span style="color:var(--muted)">(целая часть)</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Задача</div>
+        <div class="task-box" id="tree-task-box">
+          <div class="task-line">Старт: <b id="t-start">18</b></div>
+          <div class="task-line">Финиш: <span class="green" id="t-finish">2</span></div>
+          <div class="task-line">Запрещено: <span class="red" id="t-bad">7</span></div>
+          <div class="task-line" id="t-cp-line" style="display:none;">Обязательная точка: <b style="color:var(--yellow)" id="t-cp">—</b></div>
+        </div>
+      </div>
+
+      <div class="card" id="t-formula-card" style="display:none;">
+        <div class="card-title">Шаблон рекурсии</div>
+        <div class="formula-ref">
+          <div><span class="kw">f</span>(n) :</div>
+          <div>&nbsp;&nbsp;<span class="g">если n == finish → 1</span></div>
+          <div>&nbsp;&nbsp;<span class="r">если n &lt; finish → 0</span></div>
+          <div>&nbsp;&nbsp;<span class="r">если n == bad → 0</span></div>
+          <div>&nbsp;&nbsp;иначе: f(n−1) + f(n−4) + f(n÷3)</div>
+        </div>
+      </div>
+
+      <div class="checkpoint-note" id="t-cp-note" style="display:none;"></div>
+
+      <div class="card">
+        <div class="phase-label">Ваш ответ</div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <span style="font-size:14px;color:var(--muted);">Количество программ =</span>
+          <input type="number" class="num-input" id="t-answer-input" placeholder="?"/>
+        </div>
+        <div class="feedback" id="t-fb"></div>
+      </div>
+
+      <!-- Table of computed values (learning mode) -->
+      <div class="card" id="t-table-card" style="display:none;">
+        <div class="card-title">Таблица f(n)</div>
+        <div style="overflow-x:auto;">
+          <table id="t-table" style="border-collapse:collapse;font-family:var(--mono);font-size:13px;width:100%;"></table>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="tCheck()">Проверить</button>
+        <button class="btn btn-secondary" onclick="tHint()">Подсказка</button>
+        <button class="btn btn-secondary" onclick="tShowSolution()">Показать решение</button>
+        <button class="btn btn-success" onclick="tNext()">Следующий пример</button>
+      </div>
+
+      <!-- History -->
+      <div class="card">
+        <div class="card-title">История (последние 10)</div>
+        <div class="history-list" id="t-history-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   STORAGE & STATS
+═══════════════════════════════════════════════════ */
+const STORAGE_KEY = 'mathExamCourseProgress.v1';
+const TOPIC_ID    = 'recursionLadderPaths';
+
+function loadData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const all = raw ? JSON.parse(raw) : {};
+    return all[TOPIC_ID] || { solved:0, correct:0, streak:0, bestStreak:0, history:[] };
+  } catch { return { solved:0, correct:0, streak:0, bestStreak:0, history:[] }; }
+}
+function saveData(d) {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const all = raw ? JSON.parse(raw) : {};
+    all[TOPIC_ID] = d;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+  } catch {}
+}
+
+let stats = loadData();
+
+function recordAttempt(correct, label, userAns, rightAns) {
+  stats.solved++;
+  if (correct) { stats.correct++; stats.streak++; }
+  else { stats.streak = 0; }
+  if (stats.streak > stats.bestStreak) stats.bestStreak = stats.streak;
+  const entry = { correct, label, userAns, rightAns, ts: Date.now() };
+  stats.history.unshift(entry);
+  if (stats.history.length > 10) stats.history.pop();
+  saveData(stats);
+  renderStats();
+  renderHistories();
+}
+
+function resetStats() {
+  if (!confirm('Сбросить статистику?')) return;
+  stats = { solved:0, correct:0, streak:0, bestStreak:0, history:[] };
+  saveData(stats);
+  renderStats();
+  renderHistories();
+}
+
+function renderStats() {
+  document.getElementById('st-solved').textContent  = stats.solved;
+  document.getElementById('st-correct').textContent = stats.correct;
+  document.getElementById('st-streak').textContent  = stats.streak;
+  document.getElementById('st-best').textContent    = stats.bestStreak;
+  const pct = stats.solved ? Math.round(stats.correct/stats.solved*100) : 0;
+  document.getElementById('nav-badge').textContent = `${pct}% верно`;
+}
+
+function renderHistories() {
+  [document.getElementById('l-history-list'), document.getElementById('t-history-list')].forEach(el => {
+    el.innerHTML = '';
+    stats.history.forEach(h => {
+      const d = document.createElement('div');
+      d.className = 'hist-item';
+      d.innerHTML = `<div class="h-badge ${h.correct?'ok':'err'}">${h.correct?'✓':'✗'}</div>
+        <span class="h-text">${h.label}</span>
+        <span class="h-ans">${h.userAns} ${h.correct?'':'→ '+h.rightAns}</span>`;
+      el.appendChild(d);
+    });
+  });
+}
+
+renderStats();
+renderHistories();
+
+/* ═══════════════════════════════════════════════════
+   TABS & MODE
+═══════════════════════════════════════════════════ */
+let currentTab  = 'ladder';
+let currentMode = 'learn';
+
+function switchTab(tab, btn) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-'+tab).classList.add('active');
+  if (tab === 'tree') { applyTreeMode(); }
+}
+
+function setMode(m, btn) {
+  currentMode = m;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (currentTab === 'tree') applyTreeMode();
+  if (currentTab === 'ladder') applyLadderMode();
+}
+
+function applyLadderMode() {
+  // In train mode, choices are hidden until phase
+  lInit(ladderTask);
+}
+
+function applyTreeMode() {
+  document.getElementById('t-formula-card').style.display = currentMode==='learn' ? 'flex' : 'none';
+  document.getElementById('t-table-card').style.display   = currentMode==='learn' ? 'flex' : 'none';
+  if (currentMode==='learn') tBuildTable();
+}
+
+/* ═══════════════════════════════════════════════════
+   PART 1: LADDER LOGIC
+═══════════════════════════════════════════════════ */
+function G(n) { return n < 10 ? 2*n : G(n-2)+1; }
+
+// Generate full unrolling trace
+function ladderTrace(n) {
+  // Returns array of {n, expr, isBase}
+  const steps = [];
+  let cur = n;
+  while (cur >= 10) {
+    steps.push({ n: cur, isBase: false });
+    cur -= 2;
+  }
+  steps.push({ n: cur, isBase: true });
+  return steps;
+}
+
+const LADDER_TASKS = [15,17,13,19,21,23,25,11,20,18,16,14,22,24,26];
+let ladderTaskIdx = 0;
+let ladderTask = LADDER_TASKS[ladderTaskIdx];
+let lTrace = [];
+let lPhase = 1;   // 1=unroll, 2=base, 3=final
+let lStep  = 0;   // which unroll step we're at
+let lHintUsed = false;
+let lSolutionShown = false;
+
+function lInit(n) {
+  ladderTask = n;
+  lTrace = ladderTrace(n);
+  lPhase = 1;
+  lStep  = 0;
+  lHintUsed = false;
+  lSolutionShown = false;
+
+  document.getElementById('l-task-expr').textContent = `G(${n})`;
+  document.getElementById('l-phase2').style.display = 'none';
+  document.getElementById('l-phase3').style.display = 'none';
+  document.getElementById('l-phase1').style.display = '';
+  document.getElementById('l-fb1').className = 'feedback';
+  document.getElementById('l-fb2').className = 'feedback';
+  document.getElementById('l-fb3').className = 'feedback';
+
+  lRenderLadder();
+  lRenderUnrollPhase();
+}
+
+function lRenderLadder() {
+  const vis = document.getElementById('ladder-visual');
+  vis.innerHTML = '';
+  // Show steps we've already revealed
+  for (let i = 0; i <= lStep && i < lTrace.length; i++) {
+    const s = lTrace[i];
+    // rung above
+    if (i > 0) {
+      const rung = document.createElement('div');
+      rung.className = 'ladder-rung visible';
+      vis.appendChild(rung);
+    }
+    const step = document.createElement('div');
+    step.className = 'ladder-step';
+    const nb = lPhase >= 2 && s.isBase ? 'base' : '';
+    let exprHtml = '';
+    if (lPhase === 1 && i === lStep) {
+      exprHtml = `<span class="step-expr" style="color:var(--muted)">…</span>`;
+    } else if (s.isBase) {
+      exprHtml = `<span class="step-arrow">→</span><span class="step-expr">2 · ${s.n} = ${2*s.n}</span>`;
+    } else {
+      // Show accumulated +k
+      const k = i; // number of +1's added
+      let tail = k > 0 ? ' + '+k : '';
+      exprHtml = `<span class="step-arrow">→</span><span class="step-expr">G(${lTrace[i].n})${tail}</span>`;
+    }
+    step.innerHTML = `<div class="step-n ${nb}">${s.n}</div>${exprHtml}`;
+    vis.appendChild(step);
+    // trigger animation
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => step.classList.add('visible'));
+    });
+  }
+}
+
+function lRenderUnrollPhase() {
+  const cur = lTrace[lStep];
+  document.getElementById('l-cur-n').textContent = cur.n;
+
+  // Generate choices
+  const correct = cur.n - 2;
+  const wrongs = generateWrongChoices(correct, [cur.n-1, cur.n+2, cur.n-3, cur.n*2]);
+  const opts = shuffle([correct, ...wrongs.slice(0,3)]);
+  const row = document.getElementById('l-choices1');
+  row.innerHTML = '';
+  opts.forEach(v => {
+    const b = document.createElement('button');
+    b.className = 'choice-btn';
+    b.textContent = `G(${v})`;
+    b.onclick = () => lChooseUnroll(v, correct, b, row);
+    row.appendChild(b);
+  });
+}
+
+function lChooseUnroll(chosen, correct, btn, row) {
+  const fb = document.getElementById('l-fb1');
+  Array.from(row.children).forEach(b => {
+    if (+b.textContent.replace('G(','').replace(')','') === correct)
+      b.classList.add('correct');
+  });
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    fb.className = 'feedback ok';
+    fb.textContent = `Верно! G(${lTrace[lStep].n}) = G(${correct}) + 1`;
+    lStep++;
+    lRenderLadder();
+    setTimeout(() => {
+      fb.className = 'feedback';
+      const nextS = lTrace[lStep];
+      if (nextS.isBase) {
+        // move to phase 2
+        lPhase = 2;
+        document.getElementById('l-phase1').style.display = 'none';
+        document.getElementById('l-phase2').style.display = '';
+        const bn = lTrace[lStep].n;
+        document.getElementById('l-base-n').textContent = bn;
+        lRenderBaseChoices(bn);
+      } else {
+        lRenderUnrollPhase();
+      }
+    }, 600);
+  } else {
+    btn.classList.add('wrong');
+    fb.className = 'feedback err';
+    fb.textContent = `Не верно. G(${lTrace[lStep].n}) = G(${correct}) + 1, так как n = ${lTrace[lStep].n} ≥ 10.`;
+  }
+}
+
+function lRenderBaseChoices(bn) {
+  const correct = 2*bn;
+  const wrongs = [2*bn+2, 2*bn-2, 2*(bn+1), bn+10].filter(v=>v!==correct);
+  const opts = shuffle([correct, ...wrongs.slice(0,3)]);
+  const row = document.getElementById('l-choices2');
+  row.innerHTML = '';
+  opts.forEach(v => {
+    const b = document.createElement('button');
+    b.className = 'choice-btn';
+    b.textContent = v;
+    b.onclick = () => lChooseBase(v, correct, b, row, bn);
+    row.appendChild(b);
+  });
+}
+
+function lChooseBase(chosen, correct, btn, row, bn) {
+  const fb = document.getElementById('l-fb2');
+  Array.from(row.children).forEach(b => {
+    if (+b.textContent === correct) b.classList.add('correct');
+  });
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    fb.className = 'feedback ok';
+    fb.textContent = `Верно! G(${bn}) = 2 · ${bn} = ${correct}`;
+    lRenderLadder();
+    setTimeout(() => {
+      fb.className = 'feedback';
+      lPhase = 3;
+      document.getElementById('l-phase2').style.display = 'none';
+      document.getElementById('l-phase3').style.display = '';
+      const n0 = ladderTask;
+      document.getElementById('l-final-n').textContent = n0;
+      // Build display
+      const baseVal = 2*bn;
+      const plusOnes = lTrace.length - 1; // number of recursion steps
+      const display = document.getElementById('l-answer-display');
+      let html = `<span class="slot">${baseVal}</span>`;
+      for (let i=0; i<plusOnes; i++) html += `<span class="slot-op"> + 1</span>`;
+      html += `<span class="slot-op"> = ?</span>`;
+      display.innerHTML = html;
+      document.getElementById('l-answer-input').value = '';
+      document.getElementById('l-answer-input').focus();
+    }, 600);
+  } else {
+    btn.classList.add('wrong');
+    fb.className = 'feedback err';
+    fb.textContent = `Не верно. G(${bn}) = 2 · ${bn} = ${correct}, так как ${bn} < 10.`;
+  }
+}
+
+function lCheck() {
+  if (lPhase !== 3) { return; }
+  const val = parseInt(document.getElementById('l-answer-input').value);
+  const right = G(ladderTask);
+  const fb = document.getElementById('l-fb3');
+  const isOk = val === right;
+  fb.className = 'feedback ' + (isOk?'ok':'err');
+  fb.textContent = isOk
+    ? `✓ Правильно! G(${ladderTask}) = ${right}`
+    : `✗ Неверно. Правильный ответ: ${right}`;
+  if (!lSolutionShown) {
+    recordAttempt(isOk, `G(${ladderTask})`, val, right);
+  }
+  lSolutionShown = true;
+}
+
+function lHint() {
+  lHintUsed = true;
+  const fb = document.getElementById('l-fb1');
+  if (lPhase === 1) {
+    const cur = lTrace[lStep];
+    fb.className = 'feedback info';
+    fb.textContent = `Подсказка: ${cur.n} ≥ 10, поэтому G(${cur.n}) = G(${cur.n-2}) + 1`;
+  } else if (lPhase === 2) {
+    const bn = lTrace[lStep].n;
+    document.getElementById('l-fb2').className = 'feedback info';
+    document.getElementById('l-fb2').textContent = `Подсказка: ${bn} < 10, поэтому G(${bn}) = 2 · ${bn} = ${2*bn}`;
+  } else {
+    const right = G(ladderTask);
+    const bn    = lTrace[lTrace.length-1].n;
+    const plus  = lTrace.length-1;
+    document.getElementById('l-fb3').className = 'feedback info';
+    document.getElementById('l-fb3').textContent = `Подсказка: ${2*bn} + ${plus} = ${right}`;
+  }
+}
+
+function lShowSolution() {
+  lSolutionShown = true;
+  const right = G(ladderTask);
+  const bn = lTrace[lTrace.length-1].n;
+  const plus = lTrace.length-1;
+  lPhase = 3;
+  document.getElementById('l-phase1').style.display = 'none';
+  document.getElementById('l-phase2').style.display = 'none';
+  document.getElementById('l-phase3').style.display = '';
+  document.getElementById('l-final-n').textContent = ladderTask;
+  const display = document.getElementById('l-answer-display');
+  let html = `<span class="slot">${2*bn}</span>`;
+  for(let i=0;i<plus;i++) html+=`<span class="slot-op"> + 1</span>`;
+  html += `<span class="slot-op"> = <b style="color:var(--green)">${right}</b></span>`;
+  display.innerHTML = html;
+  document.getElementById('l-answer-input').value = right;
+  lStep = lTrace.length-1;
+  lRenderLadder();
+  const fb = document.getElementById('l-fb3');
+  fb.className = 'feedback info';
+  fb.textContent = `Решение: G(${ladderTask}) = ${right}`;
+}
+
+function lNext() {
+  ladderTaskIdx = (ladderTaskIdx+1) % LADDER_TASKS.length;
+  if (currentMode === 'train') {
+    // random task
+    ladderTask = 10 + 2*Math.floor(Math.random()*9);
+  } else {
+    ladderTask = LADDER_TASKS[ladderTaskIdx];
+  }
+  lInit(ladderTask);
+}
+
+// init
+lInit(ladderTask);
+
+/* ═══════════════════════════════════════════════════
+   PART 2: TREE LOGIC
+═══════════════════════════════════════════════════ */
+const TREE_TASKS = [
+  { start:18, finish:2, bad:7,  cp:null },
+  { start:15, finish:3, bad:8,  cp:null },
+  { start:20, finish:2, bad:5,  cp:6    },
+  { start:24, finish:0, bad:9,  cp:null },
+  { start:21, finish:3, bad:6,  cp:9    },
+  { start:12, finish:0, bad:4,  cp:null },
+  { start:16, finish:4, bad:7,  cp:null },
+  { start:27, finish:3, bad:12, cp:9    },
+  { start:30, finish:6, bad:11, cp:null },
+  { start:18, finish:0, bad:5,  cp:6    },
+];
+
+let tTaskIdx = 0;
+let tTask = TREE_TASKS[tTaskIdx];
+let tMemo = {};
+let tSolutionShown = false;
+
+function countPaths(n, finish, bad, cp, memo) {
+  if (memo[n] !== undefined) return memo[n];
+  if (n === finish) { memo[n]=1; return 1; }
+  if (n < finish || n === bad) { memo[n]=0; return 0; }
+  const res = countPaths(n-1,finish,bad,cp,memo)
+            + (n>=4 ? countPaths(n-4,finish,bad,cp,memo) : 0)
+            + countPaths(Math.floor(n/3),finish,bad,cp,memo);
+  memo[n] = res;
+  return res;
+}
+
+function countPathsCP(start, finish, bad, cp, memo) {
+  if (!cp) return countPaths(start,finish,bad,cp,memo);
+  // must pass through cp
+  const m1={}, m2={};
+  const a = countPaths(start,cp,bad,null,m1);
+  const b = countPaths(cp,finish,bad,null,m2);
+  // store partial memos for display
+  Object.assign(memo, m1, m2);
+  return a*b;
+}
+
+function tInit(task) {
+  tTask = task;
+  tMemo = {};
+  tSolutionShown = false;
+  document.getElementById('t-start').textContent  = task.start;
+  document.getElementById('t-finish').textContent = task.finish;
+  document.getElementById('t-bad').textContent    = task.bad;
+  document.getElementById('t-answer-input').value = '';
+  document.getElementById('t-fb').className = 'feedback';
+
+  const cpLine = document.getElementById('t-cp-line');
+  const cpNote = document.getElementById('t-cp-note');
+  if (task.cp) {
+    cpLine.style.display = '';
+    document.getElementById('t-cp').textContent = task.cp;
+    cpNote.style.display = '';
+    cpNote.textContent = `⚠ Обязательная точка ${task.cp} разбивает задачу на два независимых отрезка: `
+      +`[${task.start}→${task.cp}] и [${task.cp}→${task.finish}]. Ответ = пути(${task.start}→${task.cp}) × пути(${task.cp}→${task.finish})`;
+  } else {
+    cpLine.style.display = 'none';
+    cpNote.style.display = 'none';
+  }
+
+  // Compute full table
+  tMemo = {};
+  if (task.cp) {
+    countPathsCP(task.start, task.finish, task.bad, task.cp, tMemo);
+  } else {
+    countPaths(task.start, task.finish, task.bad, null, tMemo);
+  }
+
+  if (currentMode === 'learn') {
+    tBuildTable();
+    document.getElementById('t-table-card').style.display = 'flex';
+    document.getElementById('t-formula-card').style.display = 'flex';
+  } else {
+    document.getElementById('t-table-card').style.display = 'none';
+    document.getElementById('t-formula-card').style.display = 'none';
+  }
+
+  tDrawTree();
+}
+
+function tBuildTable() {
+  const { start, finish, bad, cp } = tTask;
+  const table = document.getElementById('t-table');
+  table.innerHTML = '';
+  // Header
+  const thead = table.createTHead();
+  const hr = thead.insertRow();
+  ['n','f(n)','примечание'].forEach(h => {
+    const th = document.createElement('th');
+    th.textContent = h;
+    th.style.cssText = 'padding:4px 10px;border-bottom:1px solid var(--border);color:var(--muted);text-align:left;font-size:11px;';
+    hr.appendChild(th);
+  });
+  const tbody = table.createTBody();
+  for (let n = finish; n <= start; n++) {
+    let val, note='', color='var(--text)';
+    if (n === bad) { val=0; note='запрещён'; color='var(--red)'; }
+    else if (n === finish) { val=1; note='финиш'; color='var(--green)'; }
+    else if (cp && n === cp) { color='var(--yellow)'; note='обяз.точка'; val=tMemo[n]!==undefined?tMemo[n]:'—'; }
+    else { val=tMemo[n]!==undefined?tMemo[n]:0; }
+    const tr = tbody.insertRow();
+    [n,val,note].forEach((c,i) => {
+      const td = tr.insertCell();
+      td.textContent = c;
+      td.style.cssText = `padding:3px 10px;border-bottom:1px solid #1e2535;font-size:12px;color:${i===0?color:'var(--muted)'};`;
+      if(i===1) td.style.color = color;
+    });
+  }
+}
+
+/* ── TREE DRAWING ── */
+function tDrawTree() {
+  const { start, finish, bad, cp } = tTask;
+  const svg = document.getElementById('tree-svg');
+  svg.innerHTML = '';
+
+  // BFS-style layout: collect all reachable nodes up to depth limit
+  const DEPTH_LIMIT = 5;
+  const nodes = {}; // n -> {x,y,depth,parent,cmd}
+  const edges = [];
+  const queue = [{ n: start, depth: 0, parentKey: null, cmd: null }];
+  const visited = new Set();
+
+  // Layout params
+  const NODE_R = 18;
+  const H_GAP  = 70;
+  const V_GAP  = 54;
+
+  // We'll do a tree layout: track children per (depth,slotX) using column counter per depth
+  const depthCols = {};
+  const nodeList = [];
+
+  while (queue.length) {
+    const { n, depth, parentKey, cmd } = queue.shift();
+    if (depth > DEPTH_LIMIT) continue;
+    const key = `${n}_${depth}_${parentKey}`;
+    if (!depthCols[depth]) depthCols[depth] = 0;
+    const col = depthCols[depth]++;
+    nodes[key] = { n, depth, col, parentKey, cmd };
+    nodeList.push(key);
+
+    // Do not expand terminal nodes
+    if (n !== finish && n > finish && n !== bad) {
+      const nexts = [
+        { nn: n-1, c:'A' },
+        { nn: n-4, c:'B' },
+        { nn: Math.floor(n/3), c:'C' }
+      ].filter(({nn}) => nn >= 0);
+      nexts.forEach(({nn,c}) => {
+        queue.push({ n:nn, depth:depth+1, parentKey:key, cmd:c });
+        edges.push({ from:key, to:`${nn}_${depth+1}_${key}`, cmd:c });
+      });
+    }
+  }
+
+  // Compute max depth and max cols
+  const maxDepth = Math.max(...nodeList.map(k=>nodes[k].depth));
+  const maxCols  = Math.max(...Object.values(depthCols));
+
+  const svgW = Math.max(420, (maxCols+1)*H_GAP + 40);
+  const svgH = (maxDepth+1)*V_GAP + 60;
+  svg.setAttribute('width', svgW);
+  svg.setAttribute('height', svgH);
+
+  // Assign positions
+  const depthColPos = {};
+  nodeList.forEach(key => {
+    const nd = nodes[key];
+    const totalInDepth = depthCols[nd.depth];
+    const x = (svgW / (totalInDepth+1)) * (nd.col+1);
+    const y = 30 + nd.depth * V_GAP;
+    nd.x = x; nd.y = y;
+    depthColPos[key] = {x,y};
+  });
+
+  const ns = 'http://www.w3.org/2000/svg';
+
+  // Draw edges
+  edges.forEach(({from,to,cmd}) => {
+    const fn = nodes[from]; const tn = nodes[to];
+    if (!fn || !tn) return;
+    const line = document.createElementNS(ns,'line');
+    line.setAttribute('x1',fn.x); line.setAttribute('y1',fn.y+NODE_R);
+    line.setAttribute('x2',tn.x); line.setAttribute('y2',tn.y-NODE_R);
+    line.setAttribute('stroke','#2a3050'); line.setAttribute('stroke-width','1.5');
+    svg.appendChild(line);
+    // edge label
+    const mx = (fn.x+tn.x)/2+4, my = (fn.y+tn.y)/2;
+    const lbl = document.createElementNS(ns,'text');
+    lbl.setAttribute('x',mx); lbl.setAttribute('y',my);
+    lbl.setAttribute('fill','#4f5e80');
+    lbl.setAttribute('font-size','10');
+    lbl.setAttribute('font-family','Consolas,monospace');
+    lbl.textContent = cmd;
+    svg.appendChild(lbl);
+  });
+
+  // Draw nodes
+  nodeList.forEach(key => {
+    const nd = nodes[key];
+    const n = nd.n;
+    let color = '#4f8ef7';
+    if (n === finish) color = '#22c55e';
+    else if (n === bad) color = '#ef4444';
+    else if (cp && n === cp) color = '#f59e0b';
+
+    const circle = document.createElementNS(ns,'circle');
+    circle.setAttribute('cx',nd.x); circle.setAttribute('cy',nd.y);
+    circle.setAttribute('r',NODE_R);
+    circle.setAttribute('fill',color);
+    circle.setAttribute('stroke','#0f1117');
+    circle.setAttribute('stroke-width','2');
+    svg.appendChild(circle);
+
+    const text = document.createElementNS(ns,'text');
+    text.setAttribute('x',nd.x); text.setAttribute('y',nd.y+4);
+    text.setAttribute('text-anchor','middle');
+    text.setAttribute('fill','#fff');
+    text.setAttribute('font-size','12');
+    text.setAttribute('font-weight','700');
+    text.setAttribute('font-family','Consolas,monospace');
+    text.textContent = n;
+    svg.appendChild(text);
+
+    // f(n) label below node
+    if (tMemo[n] !== undefined && currentMode === 'learn') {
+      const flbl = document.createElementNS(ns,'text');
+      flbl.setAttribute('x',nd.x); flbl.setAttribute('y',nd.y+NODE_R+13);
+      flbl.setAttribute('text-anchor','middle');
+      flbl.setAttribute('fill','#64748b');
+      flbl.setAttribute('font-size','9');
+      flbl.setAttribute('font-family','Consolas,monospace');
+      flbl.textContent = `f=${tMemo[n]}`;
+      svg.appendChild(flbl);
+    }
+  });
+}
+
+function tCheck() {
+  const { start, finish, bad, cp } = tTask;
+  const memo = {};
+  const right = cp
+    ? countPathsCP(start,finish,bad,cp,memo)
+    : countPaths(start,finish,bad,null,memo);
+  const val = parseInt(document.getElementById('t-answer-input').value);
+  const fb = document.getElementById('t-fb');
+  const isOk = val === right;
+  fb.className = 'feedback ' + (isOk?'ok':'err');
+  fb.textContent = isOk
+    ? `✓ Правильно! Количество программ = ${right}`
+    : `✗ Неверно. Правильный ответ: ${right}`;
+  if (!tSolutionShown) {
+    recordAttempt(isOk, `[${start}→${finish}]`, val, right);
+  }
+  tSolutionShown = true;
+}
+
+function tHint() {
+  const { start, finish, bad, cp } = tTask;
+  const fb = document.getElementById('t-fb');
+  fb.className = 'feedback info';
+  if (cp) {
+    const m1={},m2={};
+    const a = countPaths(start,cp,bad,null,m1);
+    const b = countPaths(cp,finish,bad,null,m2);
+    fb.textContent = `Подсказка: пути(${start}→${cp}) = ${a}, пути(${cp}→${finish}) = ${b}. Ответ = ${a}×${b} = ${a*b}`;
+  } else {
+    const n1 = start-1, n4 = start-4, n3 = Math.floor(start/3);
+    const m={};
+    const v1 = countPaths(n1,finish,bad,null,m);
+    const v4 = n1>=3?countPaths(n4,finish,bad,null,m):0;
+    const v3 = countPaths(n3,finish,bad,null,m);
+    fb.textContent = `Подсказка: f(${start}) = f(${n1}) + f(${n4}) + f(${n3}) = ${v1} + ${v4} + ${v3} = ${v1+v4+v3}`;
+  }
+}
+
+function tShowSolution() {
+  tSolutionShown = true;
+  const { start, finish, bad, cp } = tTask;
+  const memo={};
+  const right = cp
+    ? countPathsCP(start,finish,bad,cp,memo)
+    : countPaths(start,finish,bad,null,memo);
+  document.getElementById('t-answer-input').value = right;
+  const fb = document.getElementById('t-fb');
+  fb.className = 'feedback info';
+  fb.textContent = `Решение: количество программ = ${right}`;
+  if (currentMode !== 'learn') {
+    tMemo = memo;
+    tBuildTable();
+    document.getElementById('t-table-card').style.display = 'flex';
+    tDrawTree();
+  }
+}
+
+function tNext() {
+  tTaskIdx = (tTaskIdx+1) % TREE_TASKS.length;
+  if (currentMode === 'train') {
+    // Random task
+    const s = 12 + Math.floor(Math.random()*18);
+    const f = Math.floor(Math.random()*3);
+    const b = f+1+Math.floor(Math.random()*(s-f-2));
+    tTask = { start:s, finish:f, bad:b, cp:null };
+  } else {
+    tTask = TREE_TASKS[tTaskIdx];
+  }
+  tInit(tTask);
+}
+
+/* ═══════════════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════════════ */
+function generateWrongChoices(correct, candidates) {
+  return candidates.filter(v => v !== correct && v > 0);
+}
+function shuffle(arr) {
+  for (let i=arr.length-1;i>0;i--) {
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+
+// Init tree
+tInit(tTask);
+</script>
+</body>
+</html>
