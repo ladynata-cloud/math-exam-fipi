@@ -1,0 +1,2716 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Финансовая математика: нестандартные схемы — Mathexam.space</title>
+<style>
+/* ============================================================
+   ТРЕНАЖЁР «ФИНАНСОВАЯ МАТЕМАТИКА: НЕСТАНДАРТНЫЕ СХЕМЫ»
+   Тема ЕГЭ-уровня, для онлайн-курса Mathexam.space
+   ============================================================ */
+
+:root{
+  --bg:           #f5f2eb;
+  --bg-paper:    #fbf9f3;
+  --card:         #ffffff;
+  --ink:          #1d2326;
+  --ink-soft:     #4a5258;
+  --muted:        #7a8087;
+  --line:         #e3ddcf;
+  --line-soft:    #efebe0;
+
+  --primary:      #2c5f5d;
+  --primary-soft: #d7e6e3;
+  --primary-deep: #1f4747;
+
+  --accent:       #b88842;
+  --accent-soft:  #f3e6cd;
+
+  --ok:           #5e7d3a;
+  --ok-soft:      #e6efd5;
+  --warn:         #a16026;
+  --warn-soft:    #f5e2cd;
+
+  --shadow-sm: 0 1px 2px rgba(20,30,30,.05), 0 1px 1px rgba(20,30,30,.04);
+  --shadow:    0 6px 18px -8px rgba(20,30,30,.15), 0 2px 4px rgba(20,30,30,.06);
+  --shadow-lg: 0 18px 40px -18px rgba(20,30,30,.25), 0 4px 10px rgba(20,30,30,.06);
+
+  --radius-sm: 6px;
+  --radius:    10px;
+  --radius-lg: 16px;
+
+  --serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', Palatino, 'URW Palladio L', serif;
+  --sans:  -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', system-ui, sans-serif;
+  --mono:  ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--ink);
+  font-size:15.5px;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+button{font-family:inherit;color:inherit}
+input{font-family:inherit}
+
+/* ---------- Шапка ---------- */
+.topbar{
+  background:linear-gradient(180deg, #ffffff 0%, #fbf9f3 100%);
+  border-bottom:1px solid var(--line);
+  padding:18px 28px 16px;
+}
+.topbar-inner{
+  max-width:1400px;
+  margin:0 auto;
+  display:flex;
+  align-items:flex-end;
+  gap:24px;
+  flex-wrap:wrap;
+}
+.brand h1{
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:26px;
+  margin:0 0 4px;
+  letter-spacing:-0.01em;
+  color:var(--primary-deep);
+}
+.brand p{
+  margin:0;
+  color:var(--ink-soft);
+  font-size:14px;
+}
+.home-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color:var(--primary);
+  text-decoration:none;
+  font-size:13px;
+  font-weight:500;
+  margin-bottom:8px;
+  padding:6px 10px;
+  border-radius:var(--radius-sm);
+  background:rgba(44,95,93,.06);
+  transition:background .15s;
+}
+.home-link:hover{background:rgba(44,95,93,.12)}
+
+.mode-switch{
+  margin-left:auto;
+  display:flex;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:3px;
+  box-shadow:var(--shadow-sm);
+}
+.mode-switch button{
+  background:transparent;
+  border:0;
+  padding:7px 16px;
+  font-size:13.5px;
+  font-weight:500;
+  color:var(--ink-soft);
+  cursor:pointer;
+  border-radius:7px;
+  transition:all .15s;
+}
+.mode-switch button.active{
+  background:var(--primary);
+  color:#fff;
+  box-shadow:var(--shadow-sm);
+}
+.mode-switch button:not(.active):hover{background:var(--line-soft)}
+
+/* ---------- Панель типов задач ---------- */
+.task-types{
+  background:var(--bg-paper);
+  border-bottom:1px solid var(--line);
+  padding:14px 28px;
+}
+.task-types-inner{
+  max-width:1400px;
+  margin:0 auto;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+}
+.types-label{
+  font-size:12px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  font-weight:600;
+  margin-right:6px;
+}
+.type-btn{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:7px 14px;
+  font-size:13px;
+  color:var(--ink-soft);
+  cursor:pointer;
+  transition:all .15s;
+  white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.type-btn .badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:18px;
+  height:18px;
+  padding:0 5px;
+  font-size:11px;
+  font-weight:600;
+  color:var(--primary);
+  background:var(--primary-soft);
+  border-radius:9px;
+}
+.type-btn:hover{
+  border-color:var(--primary);
+  color:var(--primary);
+}
+.type-btn.active{
+  background:var(--primary);
+  color:#fff;
+  border-color:var(--primary);
+}
+.type-btn.active .badge{
+  background:rgba(255,255,255,.2);
+  color:#fff;
+}
+.type-btn.done::before{
+  content:'✓ ';
+  color:var(--ok);
+  margin-right:2px;
+}
+.type-btn.active.done::before{color:#fff}
+
+/* ---------- Главная область ---------- */
+main{
+  max-width:1400px;
+  margin:0 auto;
+  padding:24px 28px 60px;
+  display:grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap:24px;
+  align-items:start;
+}
+@media (max-width: 1080px){
+  main{grid-template-columns: 1fr; gap:18px}
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-sm);
+  overflow:hidden;
+}
+.card + .card{margin-top:18px}
+
+.card-header{
+  padding:14px 20px 10px;
+  border-bottom:1px solid var(--line-soft);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.card-header h3{
+  margin:0;
+  font-family:var(--serif);
+  font-size:17px;
+  font-weight:600;
+  color:var(--primary-deep);
+}
+.card-header .pill{
+  font-size:11px;
+  padding:2px 8px;
+  border-radius:999px;
+  background:var(--accent-soft);
+  color:var(--warn);
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin-left:auto;
+}
+.card-body{padding:18px 20px}
+
+/* ---------- Условие задачи ---------- */
+.task-title{
+  font-family:var(--serif);
+  font-size:20px;
+  font-weight:600;
+  color:var(--primary-deep);
+  margin:0 0 4px;
+}
+.task-subtitle{
+  color:var(--muted);
+  font-size:13px;
+  margin:0 0 14px;
+}
+.task-statement{
+  font-size:15px;
+  line-height:1.65;
+  color:var(--ink);
+  margin:0;
+}
+.task-statement ul{
+  margin:8px 0 8px;
+  padding-left:22px;
+}
+.task-statement li{margin:4px 0}
+.task-statement em{
+  font-style:normal;
+  font-weight:600;
+  color:var(--primary-deep);
+  background:var(--primary-soft);
+  padding:0 4px;
+  border-radius:3px;
+}
+
+/* ---------- Данные/обозначения ---------- */
+.data-list{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 14px;
+  margin:0;
+  font-size:14px;
+}
+.data-list dt{
+  color:var(--muted);
+  font-weight:500;
+}
+.data-list dd{
+  margin:0;
+  font-weight:600;
+  font-family:var(--serif);
+}
+
+/* ---------- Таблица ---------- */
+.fin-table-wrap{overflow-x:auto; margin:0 -2px}
+table.fin-table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  font-size:13.5px;
+  background:#fff;
+}
+.fin-table th{
+  background:var(--primary-soft);
+  color:var(--primary-deep);
+  font-weight:600;
+  font-size:12.5px;
+  text-align:center;
+  padding:9px 10px;
+  border-bottom:2px solid var(--primary);
+  letter-spacing:.01em;
+}
+.fin-table td{
+  padding:9px 10px;
+  text-align:center;
+  border-bottom:1px solid var(--line-soft);
+  color:var(--ink);
+  font-variant-numeric:tabular-nums;
+  background:#fff;
+}
+.fin-table tr:last-child td{border-bottom:0}
+.fin-table td.hidden-cell{
+  background:repeating-linear-gradient(45deg, #f5f1e6, #f5f1e6 4px, #fbf9f3 4px, #fbf9f3 8px);
+  color:transparent;
+}
+.fin-table td.revealed{
+  background:var(--ok-soft);
+  color:var(--ink);
+  font-weight:600;
+  animation: cellPop .35s ease-out;
+}
+@keyframes cellPop{
+  from{transform:scale(.85); opacity:0}
+  to{transform:scale(1); opacity:1}
+}
+.fin-table td.muted{color:var(--muted)}
+.fin-table .formula{font-family:var(--serif); font-style:italic}
+
+/* двойная таблица для сравнения планов */
+.plan-tables{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+@media (max-width: 720px){.plan-tables{grid-template-columns:1fr}}
+.plan-tables h4{
+  margin:0 0 6px;
+  font-family:var(--serif);
+  font-size:14px;
+  color:var(--primary-deep);
+  text-align:center;
+}
+
+/* ---------- График акций (SVG) ---------- */
+.chart-wrap{
+  background:#fbf9f3;
+  border:1px solid var(--line-soft);
+  border-radius:var(--radius);
+  padding:14px;
+  margin-top:8px;
+}
+.chart-wrap svg{display:block; width:100%; height:auto}
+.chart-caption{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:8px;
+  text-align:center;
+}
+
+/* ---------- Шаги (правая колонка) ---------- */
+.steps-progress{
+  display:flex;
+  gap:6px;
+  margin:0 0 16px;
+  flex-wrap:wrap;
+}
+.step-dot{
+  flex:1;
+  min-width:22px;
+  height:6px;
+  border-radius:3px;
+  background:var(--line);
+  transition:background .2s;
+}
+.step-dot.active{background:var(--accent)}
+.step-dot.done{background:var(--ok)}
+.step-dot.skipped{background:var(--warn-soft)}
+
+.step-header{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  margin-bottom:10px;
+}
+.step-number{
+  font-family:var(--serif);
+  font-size:13px;
+  color:var(--muted);
+  letter-spacing:.04em;
+}
+.step-prompt{
+  font-size:15.5px;
+  font-weight:600;
+  color:var(--ink);
+  margin:0 0 14px;
+  line-height:1.45;
+}
+
+.opts{display:grid; gap:8px}
+.opt{
+  text-align:left;
+  background:var(--bg-paper);
+  border:1.5px solid var(--line);
+  border-radius:var(--radius);
+  padding:11px 14px;
+  font-size:14.5px;
+  cursor:pointer;
+  transition:all .15s;
+  color:var(--ink);
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+}
+.opt .letter{
+  flex-shrink:0;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:var(--card);
+  border:1.5px solid var(--line);
+  font-size:11.5px;
+  font-weight:600;
+  color:var(--muted);
+  margin-top:1px;
+}
+.opt:hover:not(.locked){
+  border-color:var(--primary);
+  background:#fff;
+}
+.opt:hover:not(.locked) .letter{
+  border-color:var(--primary);
+  color:var(--primary);
+}
+.opt.correct{
+  background:var(--ok-soft);
+  border-color:var(--ok);
+  color:var(--ink);
+}
+.opt.correct .letter{
+  background:var(--ok);
+  border-color:var(--ok);
+  color:#fff;
+}
+.opt.wrong{
+  background:var(--warn-soft);
+  border-color:var(--warn);
+  color:var(--ink);
+}
+.opt.wrong .letter{
+  background:var(--warn);
+  border-color:var(--warn);
+  color:#fff;
+}
+.opt.locked{cursor:default; opacity:.7}
+.opt.locked.correct,
+.opt.locked.wrong{opacity:1}
+
+.opt-formula{
+  font-family:var(--serif);
+  font-size:15.5px;
+  letter-spacing:.01em;
+}
+
+.num-input-row{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.num-input{
+  flex:0 1 200px;
+  padding:11px 14px;
+  font-size:16px;
+  border:1.5px solid var(--line);
+  border-radius:var(--radius);
+  background:var(--bg-paper);
+  font-family:var(--serif);
+  transition:border-color .15s;
+}
+.num-input:focus{
+  outline:none;
+  border-color:var(--primary);
+  background:#fff;
+}
+.num-input.correct{border-color:var(--ok); background:var(--ok-soft)}
+.num-input.wrong{border-color:var(--warn); background:var(--warn-soft)}
+.unit{
+  color:var(--muted);
+  font-size:14px;
+}
+
+.btn{
+  background:var(--primary);
+  color:#fff;
+  border:0;
+  padding:10px 18px;
+  border-radius:var(--radius);
+  font-size:14.5px;
+  font-weight:500;
+  cursor:pointer;
+  transition:all .15s;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.btn:hover{background:var(--primary-deep)}
+.btn:disabled{opacity:.5; cursor:default}
+.btn.secondary{
+  background:var(--card);
+  color:var(--primary);
+  border:1.5px solid var(--primary);
+}
+.btn.secondary:hover{background:var(--primary-soft); color:var(--primary-deep)}
+.btn.ghost{
+  background:transparent;
+  color:var(--ink-soft);
+  border:1.5px solid var(--line);
+  font-weight:500;
+}
+.btn.ghost:hover{border-color:var(--muted); color:var(--ink)}
+.btn.small{padding:7px 12px; font-size:13px}
+
+.step-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
+}
+
+.feedback{
+  margin-top:12px;
+  padding:11px 14px;
+  border-radius:var(--radius);
+  font-size:14px;
+  line-height:1.55;
+}
+.feedback.ok{background:var(--ok-soft); color:#3b4f23; border-left:3px solid var(--ok)}
+.feedback.tip{background:var(--accent-soft); color:#5b3a17; border-left:3px solid var(--accent)}
+.feedback.warn{background:var(--warn-soft); color:#5d3514; border-left:3px solid var(--warn)}
+.feedback.explain{background:#f3f0e6; color:var(--ink); border-left:3px solid var(--muted)}
+.feedback strong{color:inherit}
+
+/* ---------- Нижняя зона ---------- */
+.final-box{
+  background:linear-gradient(180deg, #fff 0%, #fbf9f3 100%);
+  border:1px solid var(--line);
+  border-radius:var(--radius-lg);
+  padding:18px 22px;
+  margin-top:18px;
+}
+.final-eq-label{
+  font-size:12px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  font-weight:600;
+  margin-bottom:6px;
+}
+.final-eq{
+  font-family:var(--serif);
+  font-size:18px;
+  text-align:center;
+  color:var(--primary-deep);
+  padding:8px 0;
+  background:#fff;
+  border-radius:var(--radius);
+  border:1px dashed var(--line);
+  min-height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:0 6px;
+}
+.final-eq.empty{color:var(--muted); font-style:italic; font-size:13px}
+
+.final-answer-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:12px;
+  flex-wrap:wrap;
+}
+.final-answer-row label{
+  font-weight:600;
+  color:var(--primary-deep);
+}
+
+/* ---------- Статистика ---------- */
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:10px;
+  margin-top:12px;
+}
+@media (max-width: 540px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+.stat-cell{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:10px 12px;
+}
+.stat-cell .lbl{
+  font-size:11.5px;
+  color:var(--muted);
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.stat-cell .val{
+  font-family:var(--serif);
+  font-size:22px;
+  font-weight:600;
+  color:var(--primary-deep);
+  line-height:1.1;
+}
+
+/* ---------- Учитель-режим: всё раскрыто ---------- */
+.teacher-banner{
+  background:var(--accent-soft);
+  color:#5b3a17;
+  font-size:13px;
+  padding:10px 16px;
+  border-left:3px solid var(--accent);
+  border-radius:6px;
+  margin-bottom:14px;
+}
+.teacher-commentary{
+  font-size:13.5px;
+  color:var(--ink-soft);
+  font-style:italic;
+  background:#f7f3e8;
+  padding:9px 12px;
+  border-radius:8px;
+  margin-top:6px;
+  border-left:3px solid var(--accent);
+}
+
+/* ---------- Утилиты ---------- */
+.formula{font-family:var(--serif); font-style:italic}
+.formula-bold{font-family:var(--serif); font-weight:600}
+sup{font-size:.7em; vertical-align:super}
+sub{font-size:.7em; vertical-align:sub}
+.frac{
+  display:inline-flex;
+  flex-direction:column;
+  align-items:center;
+  vertical-align:middle;
+  font-size:.85em;
+  margin:0 2px;
+}
+.frac > span:first-child{
+  border-bottom:1px solid currentColor;
+  padding:0 4px;
+}
+.frac > span:last-child{padding:0 4px}
+.nowrap{white-space:nowrap}
+.hint-icon{
+  display:inline-flex;
+  width:18px;
+  height:18px;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:var(--accent-soft);
+  color:var(--warn);
+  font-size:11px;
+  font-weight:700;
+  font-family:var(--serif);
+}
+
+.fade-in{animation: fadeIn .3s ease-out}
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(4px)}
+  to{opacity:1; transform:translateY(0)}
+}
+
+.empty-state{
+  text-align:center;
+  padding:40px 20px;
+  color:var(--muted);
+  font-size:14px;
+}
+
+@media (max-width: 720px){
+  .topbar{padding:14px 16px 12px}
+  .task-types{padding:12px 16px}
+  main{padding:16px 16px 40px}
+  .card-body{padding:14px 16px}
+  .brand h1{font-size:22px}
+  .mode-switch{margin-left:0}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <a href="../index.html" class="home-link">← На главную</a>
+      <h1>Финансовая математика: нестандартные схемы</h1>
+      <p>Вклады, графики, кредиты, штрафы, сравнение планов.</p>
+    </div>
+    <div class="mode-switch" id="modeSwitch" role="tablist" aria-label="Режим работы">
+      <button data-mode="learn" class="active" role="tab">Обучение</button>
+      <button data-mode="practice" role="tab">Тренировка</button>
+      <button data-mode="teacher" role="tab">Учитель</button>
+    </div>
+  </div>
+</header>
+
+<nav class="task-types">
+  <div class="task-types-inner" id="taskTypes">
+    <span class="types-label">Тип задачи:</span>
+    <!-- кнопки вставляются скриптом -->
+  </div>
+</nav>
+
+<main id="mainArea">
+  <!-- Левая колонка: условие, данные, таблица, график -->
+  <section class="left-col" id="leftCol"></section>
+
+  <!-- Правая колонка: шаги решения -->
+  <section class="right-col" id="rightCol"></section>
+</main>
+
+<script>
+/* =================================================================
+   ДВИЖОК И ДАННЫЕ ТРЕНАЖЁРА
+   ================================================================= */
+
+/* ------- константы и состояние ------- */
+const TOPIC_ID = 'financeNonstandardTrainer';
+const STORAGE_KEY = 'mathExamCourseProgress.v1';
+
+const STATE = {
+  mode: 'learn',                  // learn | practice | teacher
+  currentTaskId: null,
+  currentStepIdx: 0,
+  stepStates: {},                 // {stepIdx: {answered, correct, attempts, hintUsed}}
+  tableReveals: {},               // {rowIdx-colIdx: true} — какие ячейки таблицы раскрыты
+  finalAnswerGiven: false,
+  finalAnswerCorrect: false,
+  finalAnswerAttempts: 0,
+  startedAt: Date.now(),
+};
+
+/* ------- утилиты для формул (минимальная HTML-разметка) ------- */
+function pow(base, exp){ return `${base}<sup>${exp}</sup>`; }
+function frac(num, den){ return `<span class="frac"><span>${num}</span><span>${den}</span></span>`; }
+function rub(n){ return `${formatNum(n)} ₽`; }
+function thsd(n){ return `${formatNum(n)} тыс. ₽`; }
+function mln(n){ return `${formatNum(n)} млн ₽`; }
+function formatNum(n){
+  if (Math.abs(n) >= 1000 && Number.isInteger(n)) {
+    return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+  // дробные — заменяем точку на запятую
+  return String(n).replace('.', ',');
+}
+
+/* ============================================================
+   ДАННЫЕ ЗАДАЧ
+   Архитектура: TASKS — массив, каждая задача описывается объектом.
+   Поля:
+     id           — уникальный идентификатор
+     typeId       — категория (deposit, credit-table, ...)
+     typeLabel    — название типа (в панели)
+     title        — заголовок задачи
+     difficulty   — 'легко' | 'средне' | 'сложно'
+     statement    — текст условия (HTML)
+     data         — массив [{label, value}] для блока «Данные»
+     table        — описание таблицы движения денег (объект)
+     graph        — функция-генератор SVG (или null)
+     steps        — массив шагов
+     finalEquation — итоговое уравнение (HTML)
+     finalAnswer  — { value, tolerance, unit, label }
+     summary      — текст-вывод (виден в режиме «Учитель»)
+   Шаги:
+     {kind:'choose', prompt, options:[{html, correct, explain}], hint}
+     {kind:'choose', ..., reveals:[[r,c], ...] }   — какие ячейки раскрывать
+     {kind:'num',    prompt, answer, tolerance, unit, hint, explain}
+   ============================================================ */
+
+const TASKS = [];   // заполняется ниже отдельными блоками
+
+
+/* ---------- helper: добавить задачу в массив ---------- */
+function addTask(t){ TASKS.push(t); }
+
+/* =============== ЗАДАЧА 1: Сравнение двух вкладов (Тип A) =============== */
+addTask({
+  id: 'A1',
+  typeId: 'deposit',
+  typeLabel: 'Вклады: два клиента',
+  title: 'Сравнение вкладов на разные сроки',
+  difficulty: 'легко',
+  statement: `
+    <p>Клиент <em>А</em> внёс в банк <em>5200 ₽</em> на два года, а клиент <em>Б</em> внёс в тот же банк
+    под тот же годовой процент <em>5200 ₽</em>, но на один год.</p>
+    <p>Через положенный срок каждый из них получил свой вклад вместе с процентами. При этом клиент <em>А</em>
+    получил на <em>572 ₽</em> больше, чем клиент <em>Б</em>.</p>
+    <p><strong>Найди годовой процент по вкладу.</strong></p>
+  `,
+  data: [
+    {label:'Начальная сумма S', value:'5200 ₽'},
+    {label:'Срок клиента А', value:'2 года'},
+    {label:'Срок клиента Б', value:'1 год'},
+    {label:'Разница выплат', value:'572 ₽'},
+    {label:'Коэффициент роста', value:'y = 1 + r/100'},
+  ],
+  table: {
+    title: 'Что получит каждый клиент',
+    columns: ['Клиент', 'Срок', 'Сумма к концу срока'],
+    rows: [
+      ['А', '2 года', '5200·y<sup>2</sup>'],
+      ['Б', '1 год',  '5200·y'],
+    ],
+    hiddenCells: [[0,2],[1,2]],
+  },
+  steps: [
+    { kind:'choose',
+      prompt:'Какой тип финансовой схемы здесь работает?',
+      options:[
+        { html:'Вклад: сумма растёт, процент прибавляется к телу.', correct:true,
+          explain:'Верно. Это вклад под сложный процент: каждый год сумма умножается на коэффициент y = 1 + r/100.' },
+        { html:'Кредит: долг уменьшается за счёт ежегодных платежей.', correct:false,
+          explain:'Нет, в условии нет ни долга, ни платежей. Деньги вложены, а не одолжены.' },
+        { html:'Дифференцированный платёж: долг падает равномерно.', correct:false,
+          explain:'Это про погашение кредита равными частями долга. Здесь не тот сюжет.' },
+      ],
+      hint:'Слова «внёс в банк под процент» — характерны для вклада.' },
+
+    { kind:'choose',
+      prompt:'Сколько получит клиент А через 2 года, если обозначить y = 1 + r/100?',
+      options:[
+        { html:`<span class="opt-formula">5200·y</span>`, correct:false,
+          explain:'Это сумма через один год. У клиента А — два года.' },
+        { html:`<span class="opt-formula">5200·y<sup>2</sup></span>`, correct:true,
+          explain:'Да. Через 2 года сумма умножается на y дважды: 5200·y·y = 5200·y<sup>2</sup>.' },
+        { html:`<span class="opt-formula">2·5200·y</span>`, correct:false,
+          explain:'Это «простой» процент, удвоенный. Не подходит: у нас сложный процент.' },
+      ],
+      reveals:[[0,2]],
+      hint:'Если ставка одна и та же, то после каждого года сумма умножается на y.' },
+
+    { kind:'choose',
+      prompt:'А сколько получит клиент Б через 1 год?',
+      options:[
+        { html:`<span class="opt-formula">5200·y</span>`, correct:true,
+          explain:'Верно. За один год сумма умножилась на y один раз.' },
+        { html:`<span class="opt-formula">5200·y<sup>2</sup></span>`, correct:false,
+          explain:'Это уже два года.' },
+        { html:`<span class="opt-formula">5200/y</span>`, correct:false,
+          explain:'Деление на y — это движение «назад во времени», нам нужно вперёд.' },
+      ],
+      reveals:[[1,2]],
+      hint:'У клиента Б срок ровно один год.' },
+
+    { kind:'choose',
+      prompt:'Какое уравнение связывает суммы клиентов А и Б?',
+      options:[
+        { html:`<span class="opt-formula">5200·y<sup>2</sup> = 5200·y + 572</span>`, correct:true,
+          explain:'Да. Клиент А получил больше на 572 ₽, поэтому его сумма равна сумме Б плюс 572.' },
+        { html:`<span class="opt-formula">5200·y<sup>2</sup> + 572 = 5200·y</span>`, correct:false,
+          explain:'Здесь больше получает Б — а по условию больше у А.' },
+        { html:`<span class="opt-formula">5200·y<sup>2</sup> · 572 = 5200·y</span>`, correct:false,
+          explain:'Разница — это сложение/вычитание, а не умножение.' },
+      ],
+      hint:'«На 572 рубля больше» переводится в +572 к меньшей сумме.' },
+
+    { kind:'num',
+      prompt:'Реши уравнение и найди годовой процент r (в процентах).',
+      answer: 10,
+      tolerance: 0.01,
+      unit:'%',
+      hint:'5200y² − 5200y − 572 = 0. Раздели всё на 4: 1300y² − 1300y − 143 = 0. Корни y = 1,1 и y = −0,1. Положительный y = 1,1, значит r = 10%.',
+      explain:'5200y² − 5200y = 572, то есть y(y−1) = 572/5200 = 0,11. Подбором y = 1,1, откуда r = 10%.' },
+  ],
+  finalEquation: `5200·y<sup>2</sup> = 5200·y + 572,&nbsp;&nbsp; y = 1 + <span class="frac"><span>r</span><span>100</span></span>`,
+  finalAnswer: { value: 10, tolerance: 0.01, unit:'%', label:'Годовой процент r' },
+  summary: 'Положительный корень уравнения y = 1,1, отсюда r = 10%.',
+});
+
+/* =============== ЗАДАЧА 2: Вклады с разными ставками (Тип B) =============== */
+addTask({
+  id: 'B1',
+  typeId: 'deposit',
+  typeLabel: 'Вклады: разные ставки',
+  title: 'Подбор минимального процента для победы вклада Б',
+  difficulty: 'средне',
+  statement: `
+    <p>По вкладу <em>А</em> банк в течение трёх лет в конце каждого года увеличивает сумму на <em>12%</em>.</p>
+    <p>По вкладу <em>Б</em> банк в первые два года увеличивает сумму на <em>13%</em> ежегодно.</p>
+    <p><strong>Какое наименьшее целое число процентов должен начислить банк по вкладу Б за третий год,
+    чтобы вклад Б оказался выгоднее вклада А?</strong></p>
+  `,
+  data: [
+    {label:'Начальная сумма', value:'S (произвольное)'},
+    {label:'Вклад А: ставка', value:'12% × 3 года'},
+    {label:'Вклад Б: 1-2 годы', value:'13% × 2 года'},
+    {label:'Вклад Б: 3-й год', value:'r % — искать'},
+  ],
+  table: {
+    title: 'Сравнение вкладов',
+    columns: ['Вклад', 'После 2 лет', 'После 3 лет'],
+    rows: [
+      ['А', 'S·1,12<sup>2</sup>', 'S·1,12<sup>3</sup>'],
+      ['Б', 'S·1,13<sup>2</sup>', 'S·1,13<sup>2</sup>·(1 + r/100)'],
+    ],
+    hiddenCells: [[0,2],[1,2]],
+  },
+  steps: [
+    { kind:'choose',
+      prompt:'Сколько будет на вкладе А через 3 года?',
+      options:[
+        { html:`<span class="opt-formula">S·1,12<sup>3</sup></span>`, correct:true,
+          explain:'Три года роста на 12% подряд — три раза умножаем на 1,12.' },
+        { html:`<span class="opt-formula">S·(1+3·0,12) = 1,36S</span>`, correct:false,
+          explain:'Это простой процент, а у нас сложный (начисление в конце каждого года).' },
+        { html:`<span class="opt-formula">S·1,12·2</span>`, correct:false,
+          explain:'Это даже не выражение для двух лет — это вообще не та формула.' },
+      ],
+      reveals:[[0,2]],
+      hint:'Каждый год сумма умножается на 1,12.' },
+
+    { kind:'choose',
+      prompt:'Сколько будет на вкладе Б через 3 года, если в третий год процент равен r?',
+      options:[
+        { html:`<span class="opt-formula">S·1,13<sup>3</sup></span>`, correct:false,
+          explain:'Это если бы и третий год был под 13%, но он под r%.' },
+        { html:`<span class="opt-formula">S·1,13<sup>2</sup>·(1 + r/100)</span>`, correct:true,
+          explain:'Первые 2 года — по 13%, третий — на (1 + r/100) умножаем.' },
+        { html:`<span class="opt-formula">S·(1,13<sup>2</sup> + r/100)</span>`, correct:false,
+          explain:'Процент прибавляется не к сумме, а как множитель к ней.' },
+      ],
+      reveals:[[1,2]],
+      hint:'Третий год умножается отдельно: ·(1 + r/100).' },
+
+    { kind:'choose',
+      prompt:'Какое неравенство выражает, что вклад Б оказался выгоднее?',
+      options:[
+        { html:`<span class="opt-formula">1,13<sup>2</sup>·(1+r/100) &gt; 1,12<sup>3</sup></span>`, correct:true,
+          explain:'Сократили на S (S &gt; 0) и записали условие «Б больше, чем А».' },
+        { html:`<span class="opt-formula">1,13<sup>2</sup>·(1+r/100) &lt; 1,12<sup>3</sup></span>`, correct:false,
+          explain:'Это наоборот: выгоднее был бы А.' },
+        { html:`<span class="opt-formula">1,13<sup>2</sup> + r/100 &gt; 1,12<sup>3</sup></span>`, correct:false,
+          explain:'r/100 — множитель внутри скобки, а не отдельное слагаемое.' },
+      ],
+      hint:'Сначала сократи обе части на S, чтобы избавиться от него.' },
+
+    { kind:'choose',
+      prompt:'Посчитаем числа: 1,12<sup>3</sup> ≈ 1,404928, а 1,13<sup>2</sup> = 1,2769. Возьмём r = 10. Что получится?',
+      options:[
+        { html:`<span class="opt-formula">1,2769·1,10 = 1,40459 &lt; 1,404928</span> — недостаточно`,
+          correct:true,
+          explain:'При r = 10 вклад Б ещё проигрывает. Значит 10 не подходит, надо больше.' },
+        { html:`<span class="opt-formula">1,2769·1,10 = 1,40459 &gt; 1,404928</span> — хватает`,
+          correct:false,
+          explain:'Сравни числа аккуратнее: 1,40459 < 1,404928.' },
+      ],
+      hint:'Сравни 1,40459 и 1,404928 — что больше?' },
+
+    { kind:'num',
+      prompt:'Найди наименьшее целое r, при котором вклад Б становится выгоднее.',
+      answer: 11,
+      tolerance: 0.001,
+      unit:'%',
+      hint:'Проверь r = 11: 1,2769·1,11 = 1,417359 — это уже больше 1,404928. Значит ответ 11.',
+      explain:'При r = 11: 1,2769·1,11 = 1,417359 &gt; 1,404928. Это наименьшее целое значение.' },
+  ],
+  finalEquation: `1,13<sup>2</sup>·<span class="nowrap">(1 + r/100)</span> &gt; 1,12<sup>3</sup>,&nbsp;&nbsp; r &gt; 9,9…`,
+  finalAnswer: { value: 11, tolerance: 0.001, unit:'%', label:'Минимальное целое r' },
+  summary: 'При r = 10% Б проигрывает (1,40459 &lt; 1,404928). При r = 11% Б побеждает.',
+});
+
+
+/* =============== ЗАДАЧА 3: Акции и график цены (Тип C) =============== */
+addTask({
+  id: 'C1',
+  typeId: 'shares',
+  typeLabel: 'Акции и график',
+  title: 'Цена акций и прибыль 12,5 %',
+  difficulty: 'легко',
+  statement: `
+    <p>На графике изображён процесс изменения стоимости одной акции с <em>14</em> по <em>30 апреля</em>.</p>
+    <p>В один из этих дней Пётр купил пакет из <em>400 акций</em>, а <em>30 апреля</em> продал весь пакет,
+    получив прибыль <em>12,5 %</em> от цены покупки.</p>
+    <p><strong>По какой цене Пётр приобрёл пакет акций? Ответ дай в рублях.</strong></p>
+  `,
+  data: [
+    {label:'Кол-во акций', value:'400'},
+    {label:'Цена продажи (30 апр)', value:'54 ₽ за акцию'},
+    {label:'Прибыль', value:'12,5 % от цены покупки'},
+    {label:'Цена продажи как доля', value:'112,5 % от покупной'},
+  ],
+  table: {
+    title: 'Цена акций по дням (фрагмент)',
+    columns: ['Дата', 'Цена за акцию, ₽'],
+    rows: [
+      ['15 апреля', '54'],
+      ['18 апреля', '46'],
+      ['22 апреля', '42'],
+      ['26 апреля', '48'],
+      ['28 апреля', '44'],
+      ['30 апреля', '54'],
+    ],
+    hiddenCells: [],
+  },
+  graph: 'shares-chart',
+  steps: [
+    { kind:'choose',
+      prompt:'Что именно ученик «считывает» с графика?',
+      options:[
+        { html:'Только цену продажи 30 апреля.', correct:false,
+          explain:'Цена покупки тоже нужна — она спрятана внутри условия «прибыль 12,5 %».' },
+        { html:'Только цену покупки.', correct:false,
+          explain:'Цены покупки на графике мы напрямую не знаем — её мы и ищем.' },
+        { html:'Цену продажи на 30 апреля, а цена покупки получится из условия «прибыль 12,5 %».',
+          correct:true,
+          explain:'Верно. Сначала с графика берём цену продажи 54 ₽, потом из неё считаем покупную.' },
+      ],
+      hint:'Прибыль 12,5 % — это связь между ценой покупки и ценой продажи.' },
+
+    { kind:'choose',
+      prompt:'Цена продажи — это какая доля от цены покупки?',
+      options:[
+        { html:'12,5 % от цены покупки.', correct:false,
+          explain:'Так получится в восемь раз меньше — наоборот.' },
+        { html:'112,5 % = 1,125 от цены покупки.', correct:true,
+          explain:'Цена покупки — это 100 %, прибыль — ещё 12,5 %, итого 112,5 %.' },
+        { html:'87,5 % от цены покупки.', correct:false,
+          explain:'Это было бы при убытке, а у нас прибыль.' },
+      ],
+      hint:'Прибыль прибавляется к покупной, не вычитается.' },
+
+    { kind:'num',
+      prompt:'Если цена продажи 54 ₽ — это 1,125 от цены покупки, какова цена покупки одной акции?',
+      answer: 48,
+      tolerance: 0.01,
+      unit:'₽',
+      hint:'54 / 1,125 = ?  Удобно: 54 / 1,125 = 54·8/9 = 48.',
+      explain:'54 ÷ 1,125 = 48 рублей за одну акцию.' },
+
+    { kind:'num',
+      prompt:'Сколько стоил весь пакет из 400 акций при покупке?',
+      answer: 19200,
+      tolerance: 1,
+      unit:'₽',
+      hint:'48 ₽ × 400 акций = ?',
+      explain:'48 × 400 = 19 200 рублей.' },
+  ],
+  finalEquation: `Цена покупки за акцию = <span class="frac"><span>54</span><span>1,125</span></span> = 48 ₽,&nbsp;&nbsp; стоимость пакета = 48 · 400`,
+  finalAnswer: { value: 19200, tolerance: 1, unit:'₽', label:'Стоимость пакета при покупке' },
+  summary: 'С графика цена продажи 54 ₽; цена покупки 48 ₽; пакет — 19 200 ₽.',
+});
+
+/* =============== ЗАДАЧА 4: Кредит с таблицей остатков (Тип D, вариант 1) =============== */
+addTask({
+  id: 'D1',
+  typeId: 'credit-table',
+  typeLabel: 'Кредит: таблица остатков',
+  title: 'Платёж в декабре по заданной таблице (10 %)',
+  difficulty: 'легко',
+  statement: `
+    <p>В январе планируется взять кредит в банке на <em>три года</em> в размере <em>900 тыс. ₽</em>. Условия его возврата таковы:</p>
+    <ul>
+      <li>каждый ноябрь долг увеличивается на <em>10 %</em> по сравнению с концом предыдущего года;</li>
+      <li>в декабре каждого года заёмщик выплачивает одним платежом часть долга;</li>
+      <li>в январе следующего года остаток долга (в тыс. ₽) соответствует таблице:</li>
+    </ul>
+  `,
+  data: [
+    {label:'Сумма кредита', value:'900 тыс. ₽'},
+    {label:'Ставка', value:'10% — коэффициент q = 1,1'},
+    {label:'Цель', value:'Платёж во второй год (2-й декабрь)'},
+  ],
+  table: {
+    title: 'Движение долга по годам (в тыс. ₽)',
+    columns: ['Год', 'Долг в январе', 'После 10 %', 'Платёж', 'Остаток в январе след. года'],
+    rows: [
+      ['1', '900', '990', '290', '700'],
+      ['2', '700', '770', '370', '400'],
+      ['3', '400', '440', '440', '0'],
+    ],
+    hiddenCells: [[0,2],[0,3],[1,2],[1,3],[2,2],[2,3]],
+  },
+  steps: [
+    { kind:'choose',
+      prompt:'Какой коэффициент роста долга q использовать?',
+      options:[
+        { html:`q = 1 + 10/100 = <span class="opt-formula">1,1</span>`, correct:true,
+          explain:'Долг растёт на 10 %, поэтому умножаем на 1 + 10/100 = 1,1.' },
+        { html:`q = 0,9`, correct:false,
+          explain:'q = 0,9 означало бы уменьшение на 10 % — наоборот.' },
+        { html:`q = 1,10 % = 0,011`, correct:false,
+          explain:'10 % — это 0,1, прибавлено к 1, получится 1,1.' },
+      ],
+      hint:'Когда долг растёт на 10 %, к 1 прибавляется 0,1.' },
+
+    { kind:'choose',
+      prompt:'Год 1: долг в январе 900. После начисления процентов в ноябре он равен…',
+      options:[
+        { html:`<span class="opt-formula">900·1,1 = 990</span>`, correct:true,
+          explain:'900 · 1,1 = 990 тыс. ₽.' },
+        { html:`<span class="opt-formula">900 + 10 = 910</span>`, correct:false,
+          explain:'10 % — это не 10 рублей, а 10 % от долга.' },
+        { html:`<span class="opt-formula">900 − 10 % = 810</span>`, correct:false,
+          explain:'Долг растёт, а не убывает.' },
+      ],
+      reveals:[[0,2]],
+      hint:'Умножь 900 на 1,1.' },
+
+    { kind:'choose',
+      prompt:'Какой платёж был в декабре первого года?',
+      options:[
+        { html:`<span class="opt-formula">990 − 700 = 290</span>`, correct:true,
+          explain:'Долг после процентов был 990, после платежа стал 700. Значит платёж 290.' },
+        { html:`<span class="opt-formula">900 − 700 = 200</span>`, correct:false,
+          explain:'Платёж снижает долг уже после начисления процентов, поэтому отнимать надо от 990.' },
+        { html:`<span class="opt-formula">990 + 700 = 1690</span>`, correct:false,
+          explain:'Платёж не прибавляется к долгу, а вычитается.' },
+      ],
+      reveals:[[0,3]],
+      hint:'Платёж = (долг после процентов) − (следующий остаток).' },
+
+    { kind:'choose',
+      prompt:'Год 2: долг в январе 700. После начисления процентов он равен…',
+      options:[
+        { html:`<span class="opt-formula">700·1,1 = 770</span>`, correct:true,
+          explain:'700 · 1,1 = 770 тыс. ₽.' },
+        { html:`<span class="opt-formula">700 + 70 = 770</span>`, correct:true,
+          explain:'Тоже правильно: 10 % от 700 равно 70, и 700 + 70 = 770.' },
+        { html:`<span class="opt-formula">700·0,1 = 70</span>`, correct:false,
+          explain:'Это только процент. Надо ещё прибавить к самому долгу.' },
+      ],
+      reveals:[[1,2]],
+      hint:'Снова умножаем долг на 1,1.' },
+
+    { kind:'num',
+      prompt:'Сколько тыс. ₽ нужно заплатить в декабре второго года, чтобы остаток стал 400?',
+      answer: 370,
+      tolerance: 0.5,
+      unit:'тыс. ₽',
+      hint:'Платёж = (долг после процентов) − (следующий остаток) = 770 − 400 = ?',
+      explain:'770 − 400 = 370 тыс. ₽.',
+      reveals:[[1,3]] },
+  ],
+  finalEquation: `Платёж = долг после % − следующий остаток = 700·1,1 − 400 = 770 − 400`,
+  finalAnswer: { value: 370, tolerance: 0.5, unit:'тыс. ₽', label:'Платёж во 2-й декабрь' },
+  summary: 'Год 2: 700 → 770 → платёж 370 → остаток 400. Ответ: 370 тыс. ₽.',
+});
+
+
+/* =============== ЗАДАЧА 5: Кредит с таблицей остатков, ставка 20 % (Тип D, вариант 2) =============== */
+addTask({
+  id: 'D2',
+  typeId: 'credit-table',
+  typeLabel: 'Кредит: таблица остатков',
+  title: 'Платёж в декабре 2-го года (20 %)',
+  difficulty: 'легко',
+  statement: `
+    <p>В январе планируется взять кредит в банке на <em>три года</em> в размере <em>800 тыс. ₽</em>. Условия:</p>
+    <ul>
+      <li>каждый ноябрь долг увеличивается на <em>20 %</em>;</li>
+      <li>в декабре каждого года выплачивается часть долга одним платежом;</li>
+      <li>в январе остаток долга по годам соответствует таблице.</li>
+    </ul>
+  `,
+  data: [
+    {label:'Сумма кредита', value:'800 тыс. ₽'},
+    {label:'Ставка', value:'20% — q = 1,2'},
+    {label:'Цель', value:'Платёж во 2-й декабрь'},
+  ],
+  table: {
+    title: 'Движение долга по годам (в тыс. ₽)',
+    columns: ['Год', 'Долг в январе', 'После 20 %', 'Платёж', 'Остаток'],
+    rows: [
+      ['1', '800', '960', '360', '600'],
+      ['2', '600', '720', '420', '300'],
+      ['3', '300', '360', '360', '0'],
+    ],
+    hiddenCells: [[0,2],[0,3],[1,2],[1,3]],
+  },
+  steps: [
+    { kind:'choose',
+      prompt:'Коэффициент роста долга q равен:',
+      options:[
+        { html:'1,2', correct:true, explain:'q = 1 + 20/100 = 1,2.' },
+        { html:'1,02', correct:false, explain:'Это 2 %, а у нас 20 %.' },
+        { html:'2,0', correct:false, explain:'Это удвоение, а не +20 %.' },
+      ],
+      hint:'+20 % к долгу — это умножение на 1,2.' },
+
+    { kind:'num',
+      prompt:'Год 1: после начисления процентов долг равен … тыс. ₽',
+      answer: 960, tolerance: 0.5, unit:'тыс. ₽',
+      hint:'800 · 1,2 = ?', explain:'800 · 1,2 = 960.',
+      reveals:[[0,2]] },
+
+    { kind:'num',
+      prompt:'Год 2: долг 600 после начисления процентов составит … тыс. ₽',
+      answer: 720, tolerance: 0.5, unit:'тыс. ₽',
+      hint:'600 · 1,2 = ?', explain:'600 · 1,2 = 720.',
+      reveals:[[1,2]] },
+
+    { kind:'num',
+      prompt:'Сколько тыс. ₽ нужно заплатить в декабре 2-го года, чтобы остаток стал 300?',
+      answer: 420, tolerance: 0.5, unit:'тыс. ₽',
+      hint:'Платёж = 720 − 300 = ?', explain:'720 − 300 = 420.',
+      reveals:[[1,3]] },
+  ],
+  finalEquation: `Платёж = 600·1,2 − 300 = 720 − 300`,
+  finalAnswer: { value: 420, tolerance: 0.5, unit:'тыс. ₽', label:'Платёж во 2-й декабрь' },
+  summary: 'Долг 600 после процентов даёт 720; чтобы получить остаток 300, надо заплатить 420.',
+});
+
+/* =============== ЗАДАЧА 6: Вклад с пополнениями (Тип E) =============== */
+addTask({
+  id: 'E1',
+  typeId: 'deposit-refill',
+  typeLabel: 'Вклад с пополнениями',
+  title: 'Минимальное целое вложение для роста > 20 млн',
+  difficulty: 'средне',
+  statement: `
+    <p>Вклад планируется открыть на <em>четыре года</em>. Первоначальный вклад составляет
+    <em>целое число миллионов рублей</em>.</p>
+    <p>В конце каждого года вклад увеличивается на <em>10 %</em>. Кроме этого, в начале <em>третьего</em> и
+    <em>четвёртого</em> годов вклад ежегодно пополняется на <em>3 млн ₽</em>.</p>
+    <p><strong>Найди наименьший размер первоначального вклада, при котором через четыре года вклад будет больше
+    20 млн ₽.</strong></p>
+  `,
+  data: [
+    {label:'Срок', value:'4 года'},
+    {label:'Ставка', value:'10 %, q = 1,1'},
+    {label:'Пополнения', value:'+3 млн в начале 3-го и 4-го годов'},
+    {label:'Цель', value:'После 4 лет сумма > 20 млн ₽'},
+  ],
+  table: {
+    title: 'Сумма по годам (S — начальный вклад в млн ₽)',
+    columns: ['Год', 'Начало года', 'Пополнение', 'После пополнения', 'После начисления %'],
+    rows: [
+      ['1', 'S',                                'нет', 'S',                                  '1,1·S'],
+      ['2', '1,1·S',                            'нет', '1,1·S',                              '1,1<sup>2</sup>·S'],
+      ['3', '1,1<sup>2</sup>·S',                '+3',  '1,1<sup>2</sup>·S + 3',              '1,1<sup>3</sup>·S + 3·1,1'],
+      ['4', '1,1<sup>3</sup>·S + 3·1,1',        '+3',  '1,1<sup>3</sup>·S + 3·1,1 + 3',      '1,1<sup>4</sup>·S + 3·1,1<sup>2</sup> + 3·1,1'],
+    ],
+    hiddenCells: [[2,2],[2,4],[3,2],[3,4]],
+  },
+  steps: [
+    { kind:'choose',
+      prompt:'Когда добавляется пополнение — до или после начисления процентов?',
+      options:[
+        { html:'В начале года: значит ДО начисления процентов в конце.', correct:true,
+          explain:'Да. Сначала вкладчик докладывает деньги, потом банк начисляет 10 % на новую сумму.' },
+        { html:'В конце года, после процентов.', correct:false,
+          explain:'В условии чётко: «в начале третьего и четвёртого годов».' },
+      ],
+      hint:'Внимательно посмотри на формулировку условия.' },
+
+    { kind:'choose',
+      prompt:'Чему равна сумма после третьего года?',
+      options:[
+        { html:`<span class="opt-formula">1,1<sup>3</sup>·S + 3·1,1</span>`, correct:true,
+          explain:'В начале 3-го года добавили 3, потом всё умножили на 1,1. То есть (1,1<sup>2</sup>S + 3)·1,1 = 1,1<sup>3</sup>S + 3·1,1.' },
+        { html:`<span class="opt-formula">1,1<sup>3</sup>·S + 3</span>`, correct:false,
+          explain:'Тогда забыли, что пополнение тоже выросло на 10 % к концу года.' },
+        { html:`<span class="opt-formula">1,1<sup>2</sup>·S + 3·1,1<sup>3</sup></span>`, correct:false,
+          explain:'Пополнение 3 успело подрасти один раз, а не три.' },
+      ],
+      reveals:[[2,4]],
+      hint:'Пополнение умножается на 1,1 столько раз, сколько лет прошло после него.' },
+
+    { kind:'choose',
+      prompt:'А после четвёртого года?',
+      options:[
+        { html:`<span class="opt-formula">1,1<sup>4</sup>·S + 3·1,1<sup>2</sup> + 3·1,1</span>`, correct:true,
+          explain:'Пополнение из 3-го года подросло 2 раза (·1,1²), пополнение из 4-го — 1 раз (·1,1).' },
+        { html:`<span class="opt-formula">1,1<sup>4</sup>·S + 3 + 3</span>`, correct:false,
+          explain:'Пополнения тоже росли на 10 %, нельзя считать их просто как 3 + 3.' },
+        { html:`<span class="opt-formula">1,1<sup>4</sup>·S + 6·1,1</span>`, correct:false,
+          explain:'Два пополнения росли разное число раз, нельзя их объединять одним множителем.' },
+      ],
+      reveals:[[3,4]],
+      hint:'Каждое пополнение умножается на 1,1 столько раз, сколько лет осталось до конца.' },
+
+    { kind:'choose',
+      prompt:'Получаем: 1,1<sup>4</sup>·S + 3,63 + 3,3 = 1,4641·S + 6,93. Какое неравенство решаем?',
+      options:[
+        { html:`<span class="opt-formula">1,4641·S + 6,93 &gt; 20</span>`, correct:true,
+          explain:'Нужно, чтобы сумма через 4 года была больше 20 млн.' },
+        { html:`<span class="opt-formula">1,4641·S + 6,93 &lt; 20</span>`, correct:false,
+          explain:'Это наоборот — «меньше», а нужно «больше».' },
+        { html:`<span class="opt-formula">1,4641·S = 20</span>`, correct:false,
+          explain:'Это равенство, а ищем строгое неравенство.' },
+      ],
+      hint:'Условие — «больше 20 млн».' },
+
+    { kind:'num',
+      prompt:'Наименьшее целое S, при котором 1,4641·S + 6,93 > 20.',
+      answer: 9, tolerance: 0.001, unit:'млн ₽',
+      hint:'1,4641·S > 13,07 → S > 13,07 / 1,4641 ≈ 8,93. Наименьшее целое — 9.',
+      explain:'S > 13,07 / 1,4641 = 8,927… Наименьшее целое S = 9 млн ₽.' },
+  ],
+  finalEquation: `1,1<sup>4</sup>·S + 3·1,1<sup>2</sup> + 3·1,1 &gt; 20`,
+  finalAnswer: { value: 9, tolerance: 0.001, unit:'млн ₽', label:'Наименьшее S' },
+  summary: 'S > 13,07/1,4641 ≈ 8,93 → наименьшее целое S = 9 млн ₽.',
+});
+
+
+/* =============== ЗАДАЧА 7: Два равных платежа и третий отличный (Тип G) =============== */
+addTask({
+  id: 'G1',
+  typeId: 'two-equal',
+  typeLabel: 'Два равных + третий',
+  title: 'Найти сумму кредита по трём платежам',
+  difficulty: 'средне',
+  statement: `
+    <p>В июле <em>2026 г.</em> планируется взять кредит на <em>3 года</em>. Условия возврата:</p>
+    <ul>
+      <li>каждый январь долг увеличивается на <em>20 %</em>;</li>
+      <li>с февраля по июнь выплачивается часть долга одним платежом;</li>
+      <li>платежи в <em>2027</em> и <em>2028</em> годах равны и составляют по <em>300 тыс. ₽</em>;</li>
+      <li>платёж в <em>2029</em> году равен <em>417,6 тыс. ₽</em>;</li>
+      <li>к июлю 2029 года долг должен быть выплачен полностью.</li>
+    </ul>
+    <p><strong>Какую сумму планируется взять в кредит?</strong></p>
+  `,
+  data: [
+    {label:'q = 1,2', value:'процент 20 %'},
+    {label:'Платёж X', value:'в 2027 и 2028: по 300'},
+    {label:'Платёж Y', value:'в 2029: 417,6'},
+    {label:'Срок', value:'3 года, к июлю 2029 — 0'},
+  ],
+  table: {
+    title: 'Долг по годам в тыс. ₽',
+    columns: ['Год', 'Долг в июле', 'После начисления %', 'Платёж', 'Долг после платежа'],
+    rows: [
+      ['2026', 'S',                                        'Sq',                                                'X = 300', 'Sq − 300'],
+      ['2027', 'Sq − 300',                                 'Sq<sup>2</sup> − 300q',                            'X = 300', 'Sq<sup>2</sup> − 300(q+1)'],
+      ['2028', 'Sq<sup>2</sup> − 300(q+1)',               'Sq<sup>3</sup> − 300(q<sup>2</sup>+q)',            'Y = 417,6', 'Sq<sup>3</sup> − 300(q<sup>2</sup>+q) − 417,6'],
+    ],
+    hiddenCells: [[0,4],[1,4],[2,4]],
+  },
+  steps: [
+    { kind:'choose',
+      prompt:'После платежа 2027 года долг будет:',
+      options:[
+        { html:`<span class="opt-formula">Sq − X</span>`, correct:true,
+          explain:'Сначала долг стал Sq (после начисления процентов), потом из него вычли платёж X.' },
+        { html:`<span class="opt-formula">S − X</span>`, correct:false,
+          explain:'Так бы было, если бы проценты не начислялись. Но они начисляются.' },
+      ],
+      reveals:[[0,4]],
+      hint:'Порядок такой: сначала проценты, потом платёж.' },
+
+    { kind:'choose',
+      prompt:'После второго платежа долг становится:',
+      options:[
+        { html:`<span class="opt-formula">Sq<sup>2</sup> − Xq − X = Sq<sup>2</sup> − X(q+1)</span>`, correct:true,
+          explain:'Долг (Sq − X) после процентов умножается на q, потом вычитаем платёж X.' },
+        { html:`<span class="opt-formula">Sq<sup>2</sup> − 2X</span>`, correct:false,
+          explain:'Платёж первого года тоже подрос на проценты, нельзя просто складывать X+X.' },
+      ],
+      reveals:[[1,4]],
+      hint:'Платёж первого года потом ещё раз умножается на q.' },
+
+    { kind:'choose',
+      prompt:'Долг после третьего платежа равен нулю. Какое уравнение?',
+      options:[
+        { html:`<span class="opt-formula">Sq<sup>3</sup> − X(q<sup>2</sup>+q) − Y = 0</span>`, correct:true,
+          explain:'Долг после третьего года — Sq³, минус два первых платежа с процентами, минус последний Y.' },
+        { html:`<span class="opt-formula">Sq<sup>3</sup> − 2X − Y = 0</span>`, correct:false,
+          explain:'Без множителей q² и q, то есть забыли, что платежи росли.' },
+      ],
+      hint:'Каждый платёж умножается на q столько раз, сколько лет осталось после него.' },
+
+    { kind:'num',
+      prompt:'Подставь X = 300, Y = 417,6, q = 1,2. Найди S (в тыс. ₽).',
+      answer: 700, tolerance: 1, unit:'тыс. ₽',
+      hint:'1,2³·S − 300·(1,44 + 1,2) − 417,6 = 0  →  1,728·S − 792 = 417,6  →  S = 1209,6 / 1,728 = 700.',
+      explain:'1,728·S = 417,6 + 792 = 1209,6  →  S = 700 тыс. ₽.' },
+  ],
+  finalEquation: `S·q<sup>3</sup> − X(q<sup>2</sup>+q) − Y = 0,&nbsp;&nbsp; X = 300, Y = 417,6, q = 1,2`,
+  finalAnswer: { value: 700, tolerance: 1, unit:'тыс. ₽', label:'Сумма кредита S' },
+  summary: '1,728·S − 792 = 417,6 → S = 1209,6/1,728 = 700.',
+});
+
+/* =============== ЗАДАЧА 8: Платежи X, X (по сумме всех платежей) (Тип G, вариант 2) =============== */
+addTask({
+  id: 'G2',
+  typeId: 'two-equal',
+  typeLabel: 'Два равных + третий',
+  title: 'Платёж 2027 г. при известной сумме всех выплат',
+  difficulty: 'средне',
+  statement: `
+    <p>В июле <em>2026 г.</em> планируется взять кредит на <em>3 года</em> в размере <em>800 тыс. ₽</em>. Условия:</p>
+    <ul>
+      <li>каждый январь долг возрастает на <em>20 %</em>;</li>
+      <li>платежи в <em>2027</em> и <em>2028</em> годах равны;</li>
+      <li>к июлю 2029 года кредит полностью выплачен;</li>
+      <li>сумма всех платежей после полного погашения составит <em>1254,4 тыс. ₽</em>.</li>
+    </ul>
+    <p><strong>Сколько тыс. ₽ составит платёж 2027 года?</strong></p>
+  `,
+  data: [
+    {label:'S = 800', value:'сумма кредита'},
+    {label:'q = 1,2', value:'процент 20 %'},
+    {label:'Платежи 2027, 2028', value:'равны X'},
+    {label:'Платёж 2029', value:'Y'},
+    {label:'Сумма всех платежей', value:'2X + Y = 1254,4'},
+  ],
+  table: null,
+  steps: [
+    { kind:'choose',
+      prompt:'Какое уравнение полного погашения долга?',
+      options:[
+        { html:`<span class="opt-formula">Sq<sup>3</sup> − X(q<sup>2</sup>+q) − Y = 0</span>`, correct:true,
+          explain:'Долг через 3 года стал Sq³, и его обнуляют три платежа: X в 2027 (растёт ·q²), X в 2028 (·q), Y в 2029.' },
+        { html:`<span class="opt-formula">Sq<sup>3</sup> − 2X − Y = 0</span>`, correct:false,
+          explain:'Платежи прошлых лет тоже подрастают на проценты, нельзя их складывать без множителей.' },
+      ],
+      hint:'Каждый ранний платёж потом ещё раз начисляется на проценты.' },
+
+    { kind:'choose',
+      prompt:'Какое второе уравнение даёт условие «сумма всех платежей = 1254,4»?',
+      options:[
+        { html:`<span class="opt-formula">2X + Y = 1254,4</span>`, correct:true,
+          explain:'Платежи 2027, 2028 равны X (поэтому 2X), плюс Y в 2029.' },
+        { html:`<span class="opt-formula">X · Y · 2 = 1254,4</span>`, correct:false,
+          explain:'Это произведение, а сумма пишется через сложение.' },
+      ],
+      hint:'«Сумма всех платежей» — это арифметическая сумма трёх чисел.' },
+
+    { kind:'choose',
+      prompt:'Выразим Y = 1254,4 − 2X из второго уравнения и подставим в первое. Что получится?',
+      options:[
+        { html:`<span class="opt-formula">800·1,2<sup>3</sup> − X(1,44 + 1,2) − (1254,4 − 2X) = 0</span>`, correct:true,
+          explain:'Подставили q = 1,2 и Y = 1254,4 − 2X. Дальше упрощаем: 1382,4 − 2,64X − 1254,4 + 2X = 0.' },
+        { html:`<span class="opt-formula">800·1,2<sup>3</sup> − 2X − (1254,4 − 2X) = 0</span>`, correct:false,
+          explain:'Здесь не учли, что платежи росли на проценты (X должен умножаться на q² и q).' },
+      ],
+      hint:'Это просто подстановка чисел в первое уравнение.' },
+
+    { kind:'num',
+      prompt:'Реши и найди X (в тыс. ₽).',
+      answer: 200, tolerance: 1, unit:'тыс. ₽',
+      hint:'1382,4 − 2,64X − 1254,4 + 2X = 0  →  128 − 0,64X = 0  →  X = 128 / 0,64 = 200.',
+      explain:'128 = 0,64·X  →  X = 200 тыс. ₽. Тогда Y = 1254,4 − 400 = 854,4 тыс. ₽.' },
+  ],
+  finalEquation: `Sq<sup>3</sup> − X(q<sup>2</sup>+q) − Y = 0&nbsp;&nbsp;и&nbsp;&nbsp;2X + Y = 1254,4,&nbsp;&nbsp; S=800, q=1,2`,
+  finalAnswer: { value: 200, tolerance: 1, unit:'тыс. ₽', label:'Платёж X (2027)' },
+  summary: 'Из системы 0,64·X = 128, поэтому X = 200 тыс. ₽; Y = 854,4 тыс. ₽.',
+});
+
+
+/* =============== ЗАДАЧА 9: Платежи x, x/2, x/3 (Тип H) =============== */
+addTask({
+  id: 'H1',
+  typeId: 'fractional-pay',
+  typeLabel: 'Платежи x, x/2, x/3',
+  title: 'Кредит со снижающимися дробными платежами',
+  difficulty: 'сложно',
+  statement: `
+    <p>Арина взяла кредит в банке. Каждый год долг возрастает на <em>20 %</em>. В конце каждого года она вносит платёж:</p>
+    <ul>
+      <li>в конце <em>1-го</em> года — <em>x</em> ₽;</li>
+      <li>в конце <em>2-го</em> года — <em>x/2</em> ₽;</li>
+      <li>в конце <em>3-го</em> года — <em>x/3</em> ₽.</li>
+    </ul>
+    <p>После третьего платежа долг полностью погашен. Общая сумма платежей оказалась на <em>149 000 ₽</em> больше суммы кредита.</p>
+    <p><strong>Сколько ₽ всего выплатила Арина банку?</strong></p>
+  `,
+  data: [
+    {label:'q = 1,2', value:'+20 % в год'},
+    {label:'Платежи', value:'x, x/2, x/3'},
+    {label:'Превышение', value:'+149 000 ₽ к сумме кредита S'},
+    {label:'Цель', value:'общая сумма платежей'},
+  ],
+  table: {
+    title: 'Долг по годам',
+    columns: ['Год', 'Долг в начале', 'После начисления %', 'Платёж', 'Долг после платежа'],
+    rows: [
+      ['1', 'S',                                                'Sq',                                            'x',   'Sq − x'],
+      ['2', 'Sq − x',                                            'Sq<sup>2</sup> − xq',                          'x/2', 'Sq<sup>2</sup> − xq − x/2'],
+      ['3', 'Sq<sup>2</sup> − xq − x/2',                         'Sq<sup>3</sup> − xq<sup>2</sup> − xq/2',       'x/3', 'Sq<sup>3</sup> − xq<sup>2</sup> − xq/2 − x/3'],
+    ],
+    hiddenCells: [[0,4],[1,4],[2,4]],
+  },
+  steps: [
+    { kind:'choose',
+      prompt:'Что важно понять про платёж первого года x?',
+      options:[
+        { html:'После уплаты x остаётся (Sq − x), это значение потом два раза умножается на q.', correct:true,
+          explain:'Именно так. Платёж первого года «проходит через» все последующие начисления процентов.' },
+        { html:'Платёж первого года просто вычитается из общей суммы кредита в конце.', correct:false,
+          explain:'Нет, проценты начисляются на ту сумму, которая в данный момент в долге.' },
+      ],
+      hint:'Платежи прошлых лет влияют на остаток долга, на который начисляются проценты.' },
+
+    { kind:'choose',
+      prompt:'Долг полностью выплачен в конце 3-го года. Уравнение?',
+      options:[
+        { html:`<span class="opt-formula">Sq<sup>3</sup> − xq<sup>2</sup> − xq/2 − x/3 = 0</span>`, correct:true,
+          explain:'Долг после процентов в 3-м году минус суммарное «потомство» всех платежей даёт ноль.' },
+        { html:`<span class="opt-formula">Sq<sup>3</sup> − x − x/2 − x/3 = 0</span>`, correct:false,
+          explain:'Здесь не учли, что платёж первого года потом ещё раз умножили на q² (за 2 последующих года).' },
+      ],
+      reveals:[[0,4],[1,4],[2,4]],
+      hint:'Платёж первого года эквивалентен xq² в конце третьего года.' },
+
+    { kind:'choose',
+      prompt:'Условие «общая сумма платежей на 149 000 больше суммы кредита» даёт:',
+      options:[
+        { html:`<span class="opt-formula">x + x/2 + x/3 = S + 149 000</span>`, correct:true,
+          explain:'Сумма всех платежей = тело кредита + 149 000.' },
+        { html:`<span class="opt-formula">x − x/2 − x/3 = S + 149 000</span>`, correct:false,
+          explain:'Сумма не предполагает вычитаний между платежами.' },
+      ],
+      hint:'Все три платежа складываются, ведь это «сумма платежей».' },
+
+    { kind:'choose',
+      prompt:'Подставь q = 1,2 в первое уравнение. Получится:',
+      options:[
+        { html:`<span class="opt-formula">1,728·S − 1,44·x − 0,6·x − x/3 = 0</span>`, correct:true,
+          explain:'1,2³ = 1,728; 1,2² = 1,44; 1,2/2 = 0,6.' },
+        { html:`<span class="opt-formula">1,728·S − x·(1,2 + 0,5 + 0,333…) = 0</span>`, correct:false,
+          explain:'Множители у разных степеней разные: 1,44, потом 0,6, потом 1/3.' },
+      ],
+      hint:'1,2² = 1,44, поэтому первый множитель — 1,44.' },
+
+    { kind:'num',
+      prompt:'Решая систему, найдёшь x. А затем общую сумму выплат x + x/2 + x/3 (в рублях).',
+      answer: 594000, tolerance: 10, unit:'₽',
+      hint:'Из первого: S = 121/324 · x · ... Получается x = 324 000 ₽. Тогда x + x/2 + x/3 = 11x/6 = 11·54 000 = 594 000 ₽.',
+      explain:'x = 324 000, общая сумма = 11x/6 = 594 000 ₽.' },
+  ],
+  finalEquation: `Sq<sup>3</sup> − xq<sup>2</sup> − xq/2 − x/3 = 0,&nbsp;&nbsp; x + x/2 + x/3 = S + 149 000`,
+  finalAnswer: { value: 594000, tolerance: 10, unit:'₽', label:'Общая сумма выплат' },
+  summary: 'Из системы x = 324 000 ₽; общая сумма платежей 11x/6 = 594 000 ₽.',
+});
+
+/* =============== ЗАДАЧА 10: Пени за задержку платежа (Тип I) =============== */
+addTask({
+  id: 'I1',
+  typeId: 'penalty',
+  typeLabel: 'Пени за задержку',
+  title: 'Сумма сверх кредита из-за просрочек',
+  difficulty: 'сложно',
+  statement: `
+    <p>15 января был взят кредит в размере <em>1 000 тыс. ₽</em>. Условия:</p>
+    <ul>
+      <li>каждый месяц <em>25-го</em> числа долг увеличивается на <em>10 %</em>;</li>
+      <li>с 1-го по 10-е число каждого месяца заёмщик должен вносить платёж так, чтобы остаток уменьшался по таблице: 1000 → 700 → 500 → 300 → 200 → 100 → 0;</li>
+      <li>за каждый просроченный день начисляется пеня <em>3 %</em> от текущей выплаты.</li>
+    </ul>
+    <p>В феврале выплата была <em>15-го</em> числа (просрочка 5 дней), а в мае — <em>19-го</em> (просрочка 9 дней). Остальные платежи — вовремя.</p>
+    <p><strong>На сколько тыс. ₽ всего заёмщик выплатит больше, чем взял?</strong></p>
+  `,
+  data: [
+    {label:'S = 1000', value:'кредит, тыс. ₽'},
+    {label:'q = 1,1', value:'+10 % в месяц'},
+    {label:'Пени', value:'3 % от выплаты × дни просрочки'},
+    {label:'Просрочки', value:'февраль 5 дн., май 9 дн.'},
+  ],
+  table: {
+    title: 'Движение долга по месяцам (тыс. ₽)',
+    columns: ['Месяц', 'Долг 25-го', 'После 10 %', 'Обяз. выплата', 'Пени', 'Долг после'],
+    rows: [
+      ['Январь',  '1000', '1000·1,1 = 1100', '1100 − 700 = 400',     '0',                                 '700'],
+      ['Февраль', '700',  '770',             '770 − 500 = 270',      '270·5·0,03 = 40,5',                 '500'],
+      ['Март',    '500',  '550',             '550 − 300 = 250',      '0',                                 '300'],
+      ['Апрель',  '300',  '330',             '330 − 200 = 130',      '0',                                 '200'],
+      ['Май',     '200',  '220',             '220 − 100 = 120',      '120·9·0,03 = 32,4',                 '100'],
+      ['Июнь',    '100',  '110',             '110 (последний)',      '0',                                 '0'],
+    ],
+    hiddenCells: [[1,4],[4,4]],
+  },
+  steps: [
+    { kind:'choose',
+      prompt:'Пени считаются от чего?',
+      options:[
+        { html:'От всей суммы долга на момент задержки.', correct:false,
+          explain:'Нет: в условии сказано «3 % от текущей выплаты», то есть от ОБЯЗАТЕЛЬНОЙ выплаты, а не от долга.' },
+        { html:'От обязательной выплаты, которую должны были внести в срок.', correct:true,
+          explain:'Точно. Пени = выплата × 0,03 × число дней просрочки.' },
+      ],
+      hint:'Это часто проверяет внимательность к словам условия.' },
+
+    { kind:'num',
+      prompt:'Пени за февраль (тыс. ₽). Выплата 270, просрочка 5 дней.',
+      answer: 40.5, tolerance: 0.01, unit:'тыс. ₽',
+      hint:'270 · 5 · 0,03 = ?',
+      explain:'270 · 5 · 0,03 = 40,5 тыс. ₽.',
+      reveals:[[1,4]] },
+
+    { kind:'num',
+      prompt:'Пени за май (тыс. ₽). Выплата 120, просрочка 9 дней.',
+      answer: 32.4, tolerance: 0.01, unit:'тыс. ₽',
+      hint:'120 · 9 · 0,03 = ?',
+      explain:'120 · 9 · 0,03 = 32,4 тыс. ₽.',
+      reveals:[[4,4]] },
+
+    { kind:'choose',
+      prompt:'Общая сумма выплат (без учёта тела кредита 1000) складывается из:',
+      options:[
+        { html:'(400 + 270 + 250 + 130 + 120 + 110) + (40,5 + 32,4) = 1280 + 72,9 = 1352,9', correct:true,
+          explain:'Шесть обязательных выплат (всего 1280 тыс.) + две пени (всего 72,9 тыс.) = 1352,9 тыс. ₽.' },
+        { html:'1000 · 1,1 = 1100', correct:false,
+          explain:'Это только один месяц. Нам нужна сумма всех платежей.' },
+      ],
+      hint:'Складываем все «обязательные выплаты» и обе пени.' },
+
+    { kind:'num',
+      prompt:'На сколько тыс. ₽ больше заёмщик выплатил, чем взял (1000)?',
+      answer: 352.9, tolerance: 0.5, unit:'тыс. ₽',
+      hint:'1352,9 − 1000 = 352,9.',
+      explain:'Общие выплаты 1352,9 тыс. ₽ минус кредит 1000 тыс. ₽ = 352,9 тыс. ₽.' },
+  ],
+  finalEquation: `Σ выплат + пени − S = 1352,9 − 1000`,
+  finalAnswer: { value: 352.9, tolerance: 0.5, unit:'тыс. ₽', label:'Переплата сверх кредита' },
+  summary: '6 платежей в сумме 1280 тыс. + пени 72,9 тыс. = 1352,9; переплата сверх кредита = 352,9 тыс. ₽.',
+});
+
+
+/* =============== ЗАДАЧА 11: Сравнение двух планов (Тип J) =============== */
+addTask({
+  id: 'J1',
+  typeId: 'compare-plans',
+  typeLabel: 'Сравнение планов',
+  title: 'Годовые равные платежи vs месячный дифференциальный',
+  difficulty: 'сложно',
+  statement: `
+    <p>Кредит размером <em>364 000 ₽</em>. Банк предлагает два плана:</p>
+    <ul>
+      <li><strong>План № 1:</strong> 3 года, каждый январь долг растёт на <em>20 %</em>, в течение года — один равный платёж, кредит погашается за 3 года тремя равными платежами;</li>
+      <li><strong>План № 2:</strong> 36 месяцев, каждый месяц долг растёт на <em>2 %</em>, ежемесячно долг уменьшается на одну и ту же сумму (дифференцированный).</li>
+    </ul>
+    <p><strong>На сколько ₽ меньше окажется общая сумма выплат по более выгодному плану?</strong></p>
+  `,
+  data: [
+    {label:'S = 364 000', value:'кредит'},
+    {label:'План 1', value:'q = 1,2; 3 равных платежа X'},
+    {label:'План 2', value:'a = 0,02; долг падает на S/36 каждый месяц'},
+  ],
+  table: {
+    title: 'План 1 — три равных годовых платежа',
+    columns: ['Год', 'Долг до %', 'После %', 'Платёж', 'Остаток'],
+    rows: [
+      ['1', 'S',                                'Sq',                                            'X', 'Sq − X'],
+      ['2', 'Sq − X',                            'Sq<sup>2</sup> − Xq',                          'X', 'Sq<sup>2</sup> − X(q+1)'],
+      ['3', 'Sq<sup>2</sup> − X(q+1)',           'Sq<sup>3</sup> − X(q<sup>2</sup>+q)',          'X', 'Sq<sup>3</sup> − X(q<sup>2</sup>+q+1)'],
+    ],
+    hiddenCells: [],
+  },
+  steps: [
+    { kind:'choose',
+      prompt:'В плане №1 какое условие даёт уравнение для X?',
+      options:[
+        { html:`<span class="opt-formula">Sq<sup>3</sup> − X(q<sup>2</sup>+q+1) = 0</span>`, correct:true,
+          explain:'После трёх платежей долг 0. Платёж 1-го года растёт ·q², 2-го — ·q, третий — без изменения.' },
+        { html:`<span class="opt-formula">Sq<sup>3</sup> − 3X = 0</span>`, correct:false,
+          explain:'Так платежи не учитывают начисление процентов в более поздние годы.' },
+      ],
+      hint:'Помни: ранний платёж потом ещё умножается на q.' },
+
+    { kind:'num',
+      prompt:'Найди размер ежегодного платежа X в плане №1 (в рублях). Подсказка: q = 1,2.',
+      answer: 172800, tolerance: 50, unit:'₽',
+      hint:'X = S·q³ / (q²+q+1) = 364 000 · 1,728 / 3,64 = 629 ... × ≈ 172 800.',
+      explain:'X = 364 000 · 1,728 / (1,44+1,2+1) = 628 992 / 3,64 = 172 800 ₽.' },
+
+    { kind:'num',
+      prompt:'Общая сумма выплат по плану №1 за 3 года (в рублях).',
+      answer: 518400, tolerance: 50, unit:'₽',
+      hint:'3 · X = 3 · 172 800 = ?',
+      explain:'3 · 172 800 = 518 400 ₽.' },
+
+    { kind:'choose',
+      prompt:'В плане №2 ежемесячно долг уменьшается на S/36. Платёж в k-й месяц равен:',
+      options:[
+        { html:'(S/36) + (остаток · 0,02) — основная часть плюс проценты на остаток.', correct:true,
+          explain:'Дифференцированный платёж: тело S/36 + проценты на оставшийся долг.' },
+        { html:'Просто S/36, без процентов.', correct:false,
+          explain:'Проценты тоже надо платить — они начисляются на долг.' },
+      ],
+      hint:'Это дифференцированный платёж: основная часть фиксированная, проценты тают.' },
+
+    { kind:'num',
+      prompt:'Общая сумма выплат по плану №2. Сумма процентов = a·S·(1 + 2/36 + 3/36 + … + 36/36) = a·S·(36+1)·36/(2·36) = a·S·37/2.',
+      answer: 498680, tolerance: 100, unit:'₽',
+      hint:'Тело = S = 364 000. Проценты = 0,02 · 364 000 · 37/2 = 134 680. Сумма = 364 000 + 134 680 = 498 680 ₽.',
+      explain:'364 000 + 134 680 = 498 680 ₽.' },
+
+    { kind:'num',
+      prompt:'На сколько ₽ план №2 выгоднее плана №1?',
+      answer: 19720, tolerance: 100, unit:'₽',
+      hint:'518 400 − 498 680 = ?',
+      explain:'518 400 − 498 680 = 19 720 ₽. План №2 экономит почти 20 тыс. рублей.' },
+  ],
+  finalEquation: `План 1: 3X = 518 400.&nbsp; План 2: S + a·S·37/2 = 498 680.&nbsp; Δ = 19 720`,
+  finalAnswer: { value: 19720, tolerance: 100, unit:'₽', label:'Выгода более дешёвого плана' },
+  summary: 'План 2 выгоднее на 19 720 ₽.',
+});
+
+/* =============== ЗАДАЧА 12: Льготный кредит (Тип K) =============== */
+addTask({
+  id: 'K1',
+  typeId: 'soft-loan',
+  typeLabel: 'Льготный кредит',
+  title: 'Максимальный кредит, если общие выплаты < 6 млн',
+  difficulty: 'сложно',
+  statement: `
+    <p>Планируется выдать льготный кредит на <em>5 лет</em> в размере <em>S млн ₽</em> (S — целое).</p>
+    <ul>
+      <li>В середине каждого года долг возрастает на <em>10 %</em>.</li>
+      <li>В конце <em>1-го, 2-го, 3-го</em> годов заёмщик платит только проценты, не уменьшая тела долга.</li>
+      <li>В конце <em>4-го</em> и <em>5-го</em> годов одинаковыми платежами кредит гасится полностью.</li>
+    </ul>
+    <p><strong>Найди наибольший размер кредита S, при котором общая сумма выплат меньше <em>6 млн ₽</em>.</strong></p>
+  `,
+  data: [
+    {label:'q = 1,1', value:'+10 %'},
+    {label:'Годы 1-3', value:'платят только проценты = 0,1·S'},
+    {label:'Годы 4, 5', value:'равные платежи, погашают долг'},
+    {label:'Цель', value:'общие выплаты < 6 млн ₽'},
+  ],
+  table: {
+    title: 'Структура выплат',
+    columns: ['Год', 'Долг в начале', 'Платёж', 'Долг после'],
+    rows: [
+      ['1', 'S',     '0,1·S',                            'S'],
+      ['2', 'S',     '0,1·S',                            'S'],
+      ['3', 'S',     '0,1·S',                            'S'],
+      ['4', 'S',     'X',                                'S·1,1 − X'],
+      ['5', 'S·1,1 − X', 'X (долг обнуляется)',          '0'],
+    ],
+    hiddenCells: [],
+  },
+  steps: [
+    { kind:'choose',
+      prompt:'В первые три года долг не уменьшается, потому что:',
+      options:[
+        { html:'Платежи равны только процентам — тело S не трогается.', correct:true,
+          explain:'Платим ровно 0,1·S каждый год — это в точности проценты, начисленные на S.' },
+        { html:'Деньги не платятся вообще.', correct:false,
+          explain:'Платятся, но только проценты, не тело.' },
+      ],
+      hint:'Если платим ровно проценты, остаток не меняется.' },
+
+    { kind:'choose',
+      prompt:'В 4-й год долг S, после процентов 1,1·S, платим X. В 5-й — то же. Уравнение полного погашения:',
+      options:[
+        { html:`<span class="opt-formula">(1,1·S − X)·1,1 − X = 0</span>`, correct:true,
+          explain:'Долг после 4-го платежа = 1,1·S − X. Он растёт ещё на 10 % к концу 5-го и обнуляется платежом X.' },
+        { html:`<span class="opt-formula">1,1·S − 2X = 0</span>`, correct:false,
+          explain:'Здесь не учитывают, что остаток в 5-м году тоже подрос на 10 %.' },
+      ],
+      hint:'В 5-й год сначала долг (1,1S − X), потом умножается на 1,1, потом вычитается X.' },
+
+    { kind:'num',
+      prompt:'Выразив X из уравнения: X = 1,1²·S / (1,1+1) = 1,21·S / 2,1 ≈ 0,5762·S. Общая сумма выплат = 3·0,1·S + 2·X. Запиши её через S.',
+      answer: 1.4524, tolerance: 0.01, unit:'·S млн ₽',
+      hint:'3·0,1·S + 2·0,5762·S = 0,3·S + 1,1524·S = 1,4524·S.',
+      explain:'Общие выплаты = 0,3·S + 1,1524·S ≈ 1,4524·S млн ₽.' },
+
+    { kind:'num',
+      prompt:'Условие: 1,4524·S < 6. Найди наибольшее целое S.',
+      answer: 4, tolerance: 0.01, unit:'млн ₽',
+      hint:'S < 6/1,4524 ≈ 4,131. Наибольшее целое S = 4.',
+      explain:'S < 4,131…, поэтому наибольшее целое S = 4 млн ₽.' },
+  ],
+  finalEquation: `3·0,1·S + 2·X &lt; 6,&nbsp;&nbsp; X = 1,21·S/2,1`,
+  finalAnswer: { value: 4, tolerance: 0.01, unit:'млн ₽', label:'Наибольшее S' },
+  summary: 'Сумма выплат ≈ 1,4524·S. Условие S < 4,13… → S = 4 млн ₽.',
+});
+
+
+/* =============== ЗАДАЧА 13: Две фазы погашения (Тип L) =============== */
+addTask({
+  id: 'L1',
+  typeId: 'two-phase',
+  typeLabel: 'Две фазы погашения',
+  title: 'Долг через 5 лет при разных платежах в двух фазах',
+  difficulty: 'сложно',
+  statement: `
+    <p>В июле <em>2025 г.</em> взят кредит на <em>10 лет</em> в размере <em>1300 тыс. ₽</em>. Условия:</p>
+    <ul>
+      <li>каждый январь долг возрастает на <em>20 %</em>;</li>
+      <li>в июле <em>2026—2030</em> годов (первые 5 лет) долг должен быть меньше долга предыдущего года на одну и ту же величину <em>a</em>;</li>
+      <li>в июле <em>2031—2035</em> (последние 5 лет) долг должен уменьшаться на другую одинаковую величину <em>b</em>;</li>
+      <li>к июлю 2035 долг выплачен полностью.</li>
+    </ul>
+    <p>Общая сумма всех выплат равна <em>2580 тыс. ₽</em>.</p>
+    <p><strong>Найди величину долга в июле 2030 года (тыс. ₽).</strong></p>
+  `,
+  data: [
+    {label:'S = 1300', value:'тыс. ₽'},
+    {label:'q = 1,2', value:'+20 % в год'},
+    {label:'Срок', value:'10 лет, две фазы по 5 лет'},
+    {label:'Σ выплат', value:'2580 тыс. ₽'},
+  ],
+  table: {
+    title: 'Долг по годам (упрощённо)',
+    columns: ['Год', 'Фаза', 'Долг в июле', 'Уменьшение к след. году'],
+    rows: [
+      ['2025', 'I', '1300',           'на a'],
+      ['2026', 'I', '1300 − a',       'на a'],
+      ['2027', 'I', '1300 − 2a',      'на a'],
+      ['2028', 'I', '1300 − 3a',      'на a'],
+      ['2029', 'I', '1300 − 4a',      'на a'],
+      ['2030', 'I→II', '1300 − 5a',   'на b'],
+      ['2031', 'II', '1300 − 5a − b', 'на b'],
+      ['2034', 'II', '1300 − 5a − 4b','на b'],
+      ['2035', '—',  '0',              '—'],
+    ],
+    hiddenCells: [],
+  },
+  steps: [
+    { kind:'choose',
+      prompt:'Из условия «к июлю 2035 долг = 0» с учётом 5 шагов фазы II:',
+      options:[
+        { html:`<span class="opt-formula">1300 − 5a − 5b = 0</span>`, correct:true,
+          explain:'5 уменьшений на a и 5 уменьшений на b обнулят 1300.' },
+        { html:`<span class="opt-formula">1300 − 5a − b = 0</span>`, correct:false,
+          explain:'Уменьшений на b — пять, а не одно.' },
+      ],
+      hint:'Считаем: между 2025 и 2030 прошло 5 лет (фаза I), между 2030 и 2035 — ещё 5 (фаза II).' },
+
+    { kind:'choose',
+      prompt:'Платёж в год k фазы I = (долг до %) − (долг следующего года). Какой формат у этого платежа?',
+      options:[
+        { html:`<span class="opt-formula">1,2·(долг текущего года) − (долг след. года)</span>`, correct:true,
+          explain:'Сначала долг подрос на 20 %, потом из него вычитают, чтобы получить остаток.' },
+        { html:'Просто a, без процентов.', correct:false,
+          explain:'Платёж включает и проценты, а уменьшается долг на a — это разные вещи.' },
+      ],
+      hint:'Платёж за год = (долг до %) · q − (остаток).' },
+
+    { kind:'num',
+      prompt:'Сумма всех 10 платежей = 0,2·(сумма всех «долгов в июле» за 10 лет) + 1300. Это формула: сумма платежей = тело + проценты на «среднюю» сумму долга. Найди a из системы (тыс. ₽).',
+      answer: 200, tolerance: 5, unit:'тыс. ₽',
+      hint:'Из уравнения 2580 = тело + проценты + … получаем a ≈ 200.',
+      explain:'a = 200 тыс. ₽. Тогда b = (1300 − 5·200)/5 = 60.' },
+
+    { kind:'num',
+      prompt:'Долг в июле 2030 года = 1300 − 5a (тыс. ₽).',
+      answer: 300, tolerance: 5, unit:'тыс. ₽',
+      hint:'1300 − 5·200 = ?',
+      explain:'1300 − 1000 = 300 тыс. ₽.' },
+  ],
+  finalEquation: `1300 − 5a − 5b = 0;&nbsp; Σ выплат = 2580 → a = 200, b = 60`,
+  finalAnswer: { value: 300, tolerance: 5, unit:'тыс. ₽', label:'Долг в июле 2030' },
+  summary: 'a = 200, b = 60 → долг в 2030 г. = 300 тыс. ₽.',
+});
+
+/* =============== ЗАДАЧА 14: Пенсионный фонд (Тип M, оптимизация) =============== */
+addTask({
+  id: 'M1',
+  typeId: 'optimization',
+  typeLabel: 'Оптимизация: максимум',
+  title: 'При каких r максимум именно в n = 21?',
+  difficulty: 'сложно',
+  statement: `
+    <p>Пенсионный фонд владеет ценными бумагами стоимостью <em>t<sup>2</sup></em> тыс. ₽ в конце года <em>t</em> (t = 1, 2, …).</p>
+    <p>В конце любого года фонд может продать бумаги и положить деньги в банк, где сумма растёт ежегодно на <em>(1 + r)</em>.</p>
+    <p>Если продать в конце года <em>n</em>, то к концу <em>25-го</em> года на счёте будет <em>n<sup>2</sup>·(1+r)<sup>25−n</sup></em> тыс. ₽.</p>
+    <p>Известно, что максимум этой суммы строго достигается при <em>n = 21</em>.</p>
+    <p><strong>При каких положительных r это возможно?</strong></p>
+  `,
+  data: [
+    {label:'f(n)', value:'n²·(1+r)^(25−n)'},
+    {label:'Цель', value:'f(21) > f(20) и f(21) > f(22)'},
+  ],
+  table: null,
+  steps: [
+    { kind:'choose',
+      prompt:'Условие «максимум именно в n = 21» означает:',
+      options:[
+        { html:'f(21) &gt; f(20) и f(21) &gt; f(22).', correct:true,
+          explain:'Целочисленный максимум — это просто строгие неравенства с соседями.' },
+        { html:'f′(21) = 0.', correct:false,
+          explain:'Это инструмент для непрерывного аргумента. В школьной задаче проще сравнить соседей.' },
+      ],
+      hint:'У нас n — целое. Достаточно сравнить со «соседями».' },
+
+    { kind:'choose',
+      prompt:'Сравнение f(21) и f(20). Обе содержат (1+r)<sup>4</sup>. После сокращения:',
+      options:[
+        { html:`<span class="opt-formula">21<sup>2</sup>·(1+r)<sup>4</sup> &gt; 20<sup>2</sup>·(1+r)<sup>5</sup></span>`, correct:true,
+          explain:'f(21) = 21²·(1+r)⁴, f(20) = 20²·(1+r)⁵.' },
+        { html:`<span class="opt-formula">21·(1+r) &gt; 20</span>`, correct:false,
+          explain:'Здесь степени учитываются неправильно.' },
+      ],
+      hint:'25 − 21 = 4, 25 − 20 = 5.' },
+
+    { kind:'choose',
+      prompt:'Сокращая на (1+r)<sup>4</sup> &gt; 0, получаем:',
+      options:[
+        { html:`<span class="opt-formula">441 &gt; 400·(1+r)</span>, то есть <span class="opt-formula">1 + r &lt; 441/400</span>`, correct:true,
+          explain:'21² = 441, 20² = 400. После деления получаем границу сверху.' },
+        { html:`<span class="opt-formula">1 + r &gt; 441/400</span>`, correct:false,
+          explain:'Неравенство в обратную сторону. Перенесли множитель не туда.' },
+      ],
+      hint:'Деление обеих частей на (1+r)⁴ оставит ту же сторону.' },
+
+    { kind:'choose',
+      prompt:'Аналогично сравнение f(21) и f(22):',
+      options:[
+        { html:`<span class="opt-formula">21<sup>2</sup>·(1+r)<sup>4</sup> &gt; 22<sup>2</sup>·(1+r)<sup>3</sup></span> → <span class="opt-formula">441·(1+r) &gt; 484</span>`, correct:true,
+          explain:'f(22) = 22²·(1+r)³. Сокращаем на (1+r)³ и получаем нижнюю границу.' },
+        { html:`<span class="opt-formula">441 &gt; 484</span>`, correct:false,
+          explain:'Это вообще без учёта (1+r) — теряется главное.' },
+      ],
+      hint:'25 − 22 = 3.' },
+
+    { kind:'choose',
+      prompt:'Получаем систему: 1 + r > 484/441 и 1 + r < 441/400. Переводим в r:',
+      options:[
+        { html:`<span class="opt-formula">484/441 − 1 &lt; r &lt; 441/400 − 1</span>, то есть <span class="opt-formula">43/441 &lt; r &lt; 41/400</span>`, correct:true,
+          explain:'484 − 441 = 43; 441 − 400 = 41.' },
+        { html:`<span class="opt-formula">r ∈ (1, 484/441)</span>`, correct:false,
+          explain:'1 + r — это не r, надо вычесть единицу.' },
+      ],
+      hint:'Вычти 1 из каждой границы и сравнения.' },
+
+    { kind:'num',
+      prompt:'Левая граница r (десятичная дробь, с точностью до 0,001).',
+      answer: 0.0975, tolerance: 0.001, unit:'',
+      hint:'43/441 ≈ 0,0975.',
+      explain:'43/441 ≈ 0,09750566… То есть r ≈ 9,75 %.' },
+
+    { kind:'num',
+      prompt:'Правая граница r (десятичная дробь).',
+      answer: 0.1025, tolerance: 0.001, unit:'',
+      hint:'41/400 = 0,1025.',
+      explain:'41/400 = 0,1025. То есть r ≈ 10,25 %.' },
+  ],
+  finalEquation: `r ∈ (43/441;&nbsp; 41/400) ≈ (0,0975;&nbsp; 0,1025)`,
+  finalAnswer: { value: 0.1025, tolerance: 0.001, unit:'', label:'Правая граница r' },
+  summary: 'Из неравенств f(21) > f(20) и f(21) > f(22) получаем r ∈ (43/441; 41/400).',
+});
+
+
+/* =================================================================
+   КАТЕГОРИИ (для верхней панели)
+   ================================================================= */
+const TASK_TYPES = [
+  { id:'deposit',         label:'Вклады и сравнение' },
+  { id:'shares',          label:'Акции и график' },
+  { id:'credit-table',    label:'Кредит с таблицей остатков' },
+  { id:'two-equal',       label:'Два равных платежа + третий' },
+  { id:'fractional-pay',  label:'Платежи x, x/2, x/3' },
+  { id:'deposit-refill',  label:'Вклад с пополнениями' },
+  { id:'penalty',         label:'Пени за задержку' },
+  { id:'compare-plans',   label:'Сравнение двух планов' },
+  { id:'soft-loan',       label:'Льготный кредит' },
+  { id:'two-phase',       label:'Две фазы погашения' },
+  { id:'optimization',    label:'Оптимизация / максимум' },
+];
+
+/* =================================================================
+   ХРАНЕНИЕ В LOCALSTORAGE
+   ================================================================= */
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return {};
+    const data = JSON.parse(raw);
+    return (data && data[TOPIC_ID]) ? data[TOPIC_ID] : {};
+  } catch(e){ return {}; }
+}
+function saveProgress(progress){
+  try{
+    let allData = {};
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw){ try { allData = JSON.parse(raw) || {}; } catch(e){ allData = {}; } }
+    allData[TOPIC_ID] = progress;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
+  } catch(e){ /* silent */ }
+}
+function getStats(){
+  const p = loadProgress();
+  return p.stats || { solved:0, correct:0, attempts:0, hints:0, doneTasks:{} };
+}
+function setStats(stats){
+  const p = loadProgress();
+  p.stats = stats;
+  saveProgress(p);
+}
+
+/* =================================================================
+   ВСПОМОГАТЕЛЬНЫЕ
+   ================================================================= */
+function getTask(id){ return TASKS.find(t => t.id === id); }
+function getTasksByType(typeId){ return TASKS.filter(t => t.typeId === typeId); }
+function el(tag, attrs, ...children){
+  const e = document.createElement(tag);
+  if (attrs){
+    for (const k in attrs){
+      if (k === 'class')      e.className = attrs[k];
+      else if (k === 'html')  e.innerHTML = attrs[k];
+      else if (k.startsWith('on')) e.addEventListener(k.slice(2), attrs[k]);
+      else                    e.setAttribute(k, attrs[k]);
+    }
+  }
+  for (const c of children){
+    if (c == null) continue;
+    e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  }
+  return e;
+}
+
+/* =================================================================
+   РЕНДЕР ВЕРХНЕЙ ПАНЕЛИ ТИПОВ
+   ================================================================= */
+function renderTypePanel(){
+  const wrap = document.getElementById('taskTypes');
+  // оставляем только лейбл
+  wrap.querySelectorAll('.type-btn').forEach(b => b.remove());
+  const stats = getStats();
+  for (const t of TASK_TYPES){
+    const tasksOfType = getTasksByType(t.id);
+    if (tasksOfType.length === 0) continue;
+    const doneCount = tasksOfType.filter(x => stats.doneTasks && stats.doneTasks[x.id]).length;
+    const btn = el('button', {
+      class:'type-btn' + (STATE.currentTaskId && getTask(STATE.currentTaskId).typeId === t.id ? ' active' : '')
+                       + (doneCount === tasksOfType.length ? ' done' : ''),
+      onclick: () => {
+        // если внутри типа несколько задач — циклически переключаем
+        const cur = STATE.currentTaskId && getTask(STATE.currentTaskId).typeId === t.id
+                     ? tasksOfType.findIndex(x => x.id === STATE.currentTaskId) : -1;
+        const next = (cur + 1) % tasksOfType.length;
+        selectTask(tasksOfType[next].id);
+      }
+    });
+    btn.appendChild(document.createTextNode(t.label + ' '));
+    const badge = el('span', {class:'badge'}, String(tasksOfType.length));
+    btn.appendChild(badge);
+    wrap.appendChild(btn);
+  }
+}
+
+/* =================================================================
+   ВЫБОР ЗАДАЧИ
+   ================================================================= */
+function selectTask(taskId){
+  STATE.currentTaskId = taskId;
+  STATE.currentStepIdx = 0;
+  STATE.stepStates = {};
+  STATE.tableReveals = {};
+  STATE.finalAnswerGiven = false;
+  STATE.finalAnswerCorrect = false;
+  STATE.finalAnswerAttempts = 0;
+  // в режиме «Учитель» все ячейки раскрыты
+  if (STATE.mode === 'teacher'){
+    const task = getTask(taskId);
+    if (task.table && task.table.hiddenCells){
+      for (const [r,c] of task.table.hiddenCells) STATE.tableReveals[`${r}-${c}`] = true;
+    }
+  }
+  // сохраняем последнюю выбранную задачу
+  const p = loadProgress();
+  p.lastTaskId = taskId;
+  saveProgress(p);
+
+  renderTypePanel();
+  renderAll();
+}
+
+/* =================================================================
+   РЕНДЕР ВСЕЙ СТРАНИЦЫ
+   ================================================================= */
+function renderAll(){
+  renderLeft();
+  renderRight();
+}
+
+/* ---------- ЛЕВАЯ КОЛОНКА ---------- */
+function renderLeft(){
+  const left = document.getElementById('leftCol');
+  left.innerHTML = '';
+  if (!STATE.currentTaskId){
+    left.appendChild(el('div', {class:'card', html:`
+      <div class="empty-state">
+        <p>Выбери тип задачи в верхней панели — и поехали.</p>
+      </div>`}));
+    return;
+  }
+  const task = getTask(STATE.currentTaskId);
+
+  /* — карточка «Условие» — */
+  const condCard = el('div', {class:'card fade-in'});
+  const condHead = el('div', {class:'card-header'});
+  condHead.appendChild(el('h3', null, 'Условие'));
+  const diffPill = el('span', {class:'pill'}, task.difficulty);
+  condHead.appendChild(diffPill);
+  condCard.appendChild(condHead);
+  const condBody = el('div', {class:'card-body'});
+  condBody.appendChild(el('h2', {class:'task-title'}, task.title));
+  condBody.appendChild(el('p', {class:'task-subtitle'}, 'Финансовая математика, нестандартная схема'));
+  condBody.appendChild(el('div', {class:'task-statement', html: task.statement}));
+  condCard.appendChild(condBody);
+  left.appendChild(condCard);
+
+  /* — карточка «Данные и обозначения» — */
+  if (task.data && task.data.length){
+    const dataCard = el('div', {class:'card fade-in'});
+    const dh = el('div', {class:'card-header'});
+    dh.appendChild(el('h3', null, 'Данные и обозначения'));
+    dataCard.appendChild(dh);
+    const dl = el('dl', {class:'data-list'});
+    for (const d of task.data){
+      dl.appendChild(el('dt', null, d.label));
+      dl.appendChild(el('dd', {html: d.value}));
+    }
+    const db = el('div', {class:'card-body'});
+    db.appendChild(dl);
+    dataCard.appendChild(db);
+    left.appendChild(dataCard);
+  }
+
+  /* — карточка «График» (если есть) — */
+  if (task.graph === 'shares-chart'){
+    const chartCard = el('div', {class:'card fade-in'});
+    const ch = el('div', {class:'card-header'});
+    ch.appendChild(el('h3', null, 'График цены акции'));
+    chartCard.appendChild(ch);
+    const cb = el('div', {class:'card-body'});
+    cb.appendChild(el('div', {class:'chart-wrap', html: buildSharesChart()}));
+    cb.appendChild(el('div', {class:'chart-caption'}, '15 апреля цена 54 ₽ → провал → 30 апреля снова 54 ₽.'));
+    chartCard.appendChild(cb);
+    left.appendChild(chartCard);
+  }
+
+  /* — карточка «Таблица» — */
+  if (task.table){
+    const tCard = el('div', {class:'card fade-in'});
+    const th = el('div', {class:'card-header'});
+    th.appendChild(el('h3', null, task.table.title || 'Таблица движения'));
+    tCard.appendChild(th);
+    const tb = el('div', {class:'card-body'});
+    tb.appendChild(buildTable(task));
+    tCard.appendChild(tb);
+    left.appendChild(tCard);
+  }
+
+  /* — итоговое уравнение и ответ внизу левой колонки — */
+  const finalCard = el('div', {class:'final-box fade-in'});
+  finalCard.appendChild(el('div', {class:'final-eq-label'}, 'Итоговое уравнение / неравенство'));
+  const eqHtml = task.finalEquation || '';
+  finalCard.appendChild(el('div', {
+    class:'final-eq' + (revealFinalEq() ? '' : ' empty'),
+    html: revealFinalEq() ? eqHtml : 'появится по мере решения шагов'
+  }));
+
+  // итоговый ответ
+  const ansRow = el('div', {class:'final-answer-row'});
+  ansRow.appendChild(el('label', null, 'Ответ:'));
+  if (STATE.mode === 'teacher' || STATE.finalAnswerCorrect){
+    ansRow.appendChild(el('div', {class:'opt-formula', style:'font-size:18px;color:var(--ok);font-weight:600'},
+      formatNum(task.finalAnswer.value) + (task.finalAnswer.unit ? ' ' + task.finalAnswer.unit : '')));
+  } else {
+    const inp = el('input', {
+      class:'num-input' + (STATE.finalAnswerGiven && !STATE.finalAnswerCorrect ? ' wrong' : ''),
+      type:'text', inputmode:'decimal',
+      placeholder:'число',
+      id:'finalAnswerInput',
+      'aria-label':'Итоговый ответ'
+    });
+    ansRow.appendChild(inp);
+    if (task.finalAnswer.unit) ansRow.appendChild(el('span', {class:'unit'}, task.finalAnswer.unit));
+    ansRow.appendChild(el('button', {
+      class:'btn',
+      onclick: ()=> handleFinalAnswer()
+    }, 'Проверить'));
+  }
+  finalCard.appendChild(ansRow);
+
+  // фидбек по итоговому ответу
+  if (STATE.finalAnswerGiven){
+    const fb = el('div', {
+      class:'feedback ' + (STATE.finalAnswerCorrect ? 'ok' : 'warn'),
+      html: STATE.finalAnswerCorrect
+              ? `<strong>Правильно!</strong> ${task.summary || ''}`
+              : `Не сходится. ${STATE.finalAnswerAttempts >= 2
+                  ? '<strong>Подсказка:</strong> ' + (task.summary || '') : 'Попробуй ещё раз — проверь арифметику и единицы измерения.'}`
+    });
+    finalCard.appendChild(fb);
+  }
+
+  // блок статистики
+  const stats = getStats();
+  const sg = el('div', {class:'stats-grid'});
+  sg.appendChild(makeStat('Решено задач', stats.solved || 0));
+  sg.appendChild(makeStat('Верных ответов', stats.correct || 0));
+  sg.appendChild(makeStat('Всего попыток', stats.attempts || 0));
+  sg.appendChild(makeStat('Подсказок', stats.hints || 0));
+  finalCard.appendChild(sg);
+
+  left.appendChild(finalCard);
+}
+
+function makeStat(lbl, val){
+  const c = el('div', {class:'stat-cell'});
+  c.appendChild(el('div', {class:'lbl'}, lbl));
+  c.appendChild(el('div', {class:'val'}, String(val)));
+  return c;
+}
+
+/* условие «уже виден ли итог»: достаточно, чтобы прошли все шаги, либо чтобы режим был «учитель» */
+function revealFinalEq(){
+  if (STATE.mode === 'teacher') return true;
+  const task = getTask(STATE.currentTaskId);
+  if (!task) return false;
+  return STATE.currentStepIdx >= task.steps.length;
+}
+
+/* ---------- ТАБЛИЦА (с раскрытием по шагам) ---------- */
+function buildTable(task){
+  const wrap = el('div', {class:'fin-table-wrap'});
+  const tab = el('table', {class:'fin-table'});
+  const thead = el('thead');
+  const trh = el('tr');
+  for (const c of task.table.columns) trh.appendChild(el('th', null, c));
+  thead.appendChild(trh);
+  tab.appendChild(thead);
+  const tbody = el('tbody');
+  const hidden = new Set((task.table.hiddenCells || []).map(([r,c]) => `${r}-${c}`));
+  task.table.rows.forEach((row, ri) => {
+    const tr = el('tr');
+    row.forEach((cell, ci) => {
+      const isHidden = hidden.has(`${ri}-${ci}`);
+      const revealed = STATE.tableReveals[`${ri}-${ci}`];
+      const cls = isHidden ? (revealed ? 'revealed' : 'hidden-cell') : '';
+      tr.appendChild(el('td', {class:cls, html: cell}));
+    });
+    tbody.appendChild(tr);
+  });
+  tab.appendChild(tbody);
+  wrap.appendChild(tab);
+  return wrap;
+}
+
+/* ---------- ГРАФИК АКЦИЙ (SVG) ---------- */
+function buildSharesChart(){
+  // даты 14-30 апреля, упрощённый зигзаг с пиками 54 в начале и конце
+  const W = 480, H = 220, padL = 38, padR = 14, padT = 18, padB = 30;
+  const days = [14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
+  const prices = [50,54,52,48,46,45,46,48,47,45,46,48,47,49,44,49,54];
+  const minP = 40, maxP = 56;
+  const xs = days.map((d,i) => padL + (W - padL - padR) * i / (days.length - 1));
+  const ys = prices.map(p => padT + (H - padT - padB) * (maxP - p) / (maxP - minP));
+  // оси и сетка
+  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="График цены акций">`;
+  // фон + сетка
+  svg += `<rect x="0" y="0" width="${W}" height="${H}" fill="#fbf9f3"/>`;
+  for (let p = minP; p <= maxP; p += 4){
+    const y = padT + (H - padT - padB) * (maxP - p) / (maxP - minP);
+    svg += `<line x1="${padL}" y1="${y}" x2="${W-padR}" y2="${y}" stroke="#e3ddcf" stroke-width="1"/>`;
+    svg += `<text x="${padL - 6}" y="${y+4}" text-anchor="end" font-size="11" fill="#7a8087" font-family="Georgia,serif">${p}</text>`;
+  }
+  // оси
+  svg += `<line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H-padB}" stroke="#7a8087" stroke-width="1.2"/>`;
+  svg += `<line x1="${padL}" y1="${H-padB}" x2="${W-padR}" y2="${H-padB}" stroke="#7a8087" stroke-width="1.2"/>`;
+  // подписи оси X
+  [15,20,25,30].forEach(d => {
+    const i = days.indexOf(d);
+    if (i >= 0){
+      svg += `<text x="${xs[i]}" y="${H - padB + 16}" text-anchor="middle" font-size="11" fill="#7a8087" font-family="Georgia,serif">${d} апр</text>`;
+    }
+  });
+  // линия графика
+  let path = '';
+  for (let i = 0; i < xs.length; i++){
+    path += (i===0 ? 'M' : 'L') + xs[i].toFixed(1) + ',' + ys[i].toFixed(1) + ' ';
+  }
+  svg += `<path d="${path}" fill="none" stroke="#2c5f5d" stroke-width="1.6" stroke-linejoin="round"/>`;
+  // точки
+  for (let i = 0; i < xs.length; i++){
+    const isKey = (days[i] === 15 || days[i] === 30);
+    svg += `<circle cx="${xs[i].toFixed(1)}" cy="${ys[i].toFixed(1)}" r="${isKey ? 4.5 : 2.5}" fill="${isKey ? '#b88842' : '#2c5f5d'}"/>`;
+  }
+  // подписи ключевых точек
+  const i15 = days.indexOf(15), i30 = days.indexOf(30);
+  svg += `<text x="${xs[i15]}" y="${ys[i15]-10}" text-anchor="middle" font-size="11" fill="#b88842" font-weight="600" font-family="Georgia,serif">54</text>`;
+  svg += `<text x="${xs[i30]}" y="${ys[i30]-10}" text-anchor="middle" font-size="11" fill="#b88842" font-weight="600" font-family="Georgia,serif">54</text>`;
+  // надпись «Цена, ₽»
+  svg += `<text x="${padL - 4}" y="${padT - 4}" text-anchor="end" font-size="11" fill="#4a5258" font-family="Georgia,serif" font-style="italic">Цена, ₽</text>`;
+  svg += `</svg>`;
+  return svg;
+}
+
+
+/* ---------- ПРАВАЯ КОЛОНКА: ШАГИ ---------- */
+function renderRight(){
+  const right = document.getElementById('rightCol');
+  right.innerHTML = '';
+  if (!STATE.currentTaskId) return;
+  const task = getTask(STATE.currentTaskId);
+
+  /* — карточка прогресса по шагам — */
+  const card = el('div', {class:'card fade-in'});
+  const head = el('div', {class:'card-header'});
+  head.appendChild(el('h3', null, STATE.mode === 'teacher' ? 'Полное решение' : 'Пошаговое решение'));
+  card.appendChild(head);
+  const body = el('div', {class:'card-body'});
+
+  // прогресс
+  const prog = el('div', {class:'steps-progress'});
+  task.steps.forEach((_, i) => {
+    let cls = 'step-dot';
+    if (STATE.stepStates[i] && STATE.stepStates[i].correct) cls += ' done';
+    else if (i === STATE.currentStepIdx && STATE.mode !== 'teacher') cls += ' active';
+    else if (STATE.stepStates[i] && STATE.stepStates[i].skipped) cls += ' skipped';
+    prog.appendChild(el('span', {class:cls}));
+  });
+  body.appendChild(prog);
+
+  if (STATE.mode === 'teacher'){
+    body.appendChild(renderTeacherView(task));
+  } else {
+    if (STATE.currentStepIdx >= task.steps.length){
+      // все шаги пройдены
+      body.appendChild(el('div', {class:'feedback ok',
+        html:'<strong>Шаги пройдены.</strong> Теперь введи итоговый ответ в нижней панели слева.'}));
+      body.appendChild(el('div', {class:'step-actions'},
+        el('button', {class:'btn ghost', onclick: ()=>resetCurrentTask()}, 'Начать заново'),
+      ));
+    } else {
+      body.appendChild(renderStep(task, STATE.currentStepIdx));
+    }
+  }
+
+  card.appendChild(body);
+  right.appendChild(card);
+}
+
+function renderTeacherView(task){
+  const wrap = el('div');
+  wrap.appendChild(el('div', {class:'teacher-banner',
+    html:'<strong>Режим «Учитель».</strong> Все шаги и пояснения раскрыты — удобно показывать на экране и объяснять словами.'}));
+  task.steps.forEach((step, i) => {
+    const sec = el('div', {class:'fade-in', style:'margin-top:14px; padding-top:12px; border-top:1px solid var(--line-soft)'});
+    sec.appendChild(el('div', {class:'step-header'},
+      el('span', {class:'step-number'}, `Шаг ${i+1} из ${task.steps.length}`)
+    ));
+    sec.appendChild(el('div', {class:'step-prompt', html: step.prompt}));
+    if (step.kind === 'choose'){
+      const opts = el('div', {class:'opts'});
+      step.options.forEach((o, oi) => {
+        const opt = el('div', {class:'opt locked ' + (o.correct ? 'correct' : '')},
+          el('span', {class:'letter'}, String.fromCharCode(0x0410 + oi)) // А, Б, В…
+        );
+        opt.appendChild(el('span', {html: o.html}));
+        opts.appendChild(opt);
+      });
+      sec.appendChild(opts);
+      // комментарий учителя — это объяснение правильного варианта
+      const correctOpt = step.options.find(o => o.correct);
+      if (correctOpt && correctOpt.explain){
+        sec.appendChild(el('div', {class:'teacher-commentary', html: correctOpt.explain}));
+      }
+    } else if (step.kind === 'num'){
+      sec.appendChild(el('div', {class:'num-input-row'},
+        el('div', {class:'num-input correct', style:'flex:0 1 200px'}, formatNum(step.answer)),
+        step.unit ? el('span', {class:'unit'}, step.unit) : null
+      ));
+      if (step.explain){
+        sec.appendChild(el('div', {class:'teacher-commentary', html: step.explain}));
+      }
+    }
+    wrap.appendChild(sec);
+  });
+
+  // финальное замечание
+  if (task.summary){
+    const fin = el('div', {class:'feedback ok', style:'margin-top:18px',
+      html:'<strong>Итог.</strong> ' + task.summary});
+    wrap.appendChild(fin);
+  }
+  return wrap;
+}
+
+/* — один шаг (Обучение / Тренировка) — */
+function renderStep(task, idx){
+  const step = task.steps[idx];
+  const state = STATE.stepStates[idx] || {};
+  const wrap = el('div', {class:'fade-in'});
+
+  wrap.appendChild(el('div', {class:'step-header'},
+    el('span', {class:'step-number'}, `Шаг ${idx+1} из ${task.steps.length}`)
+  ));
+  wrap.appendChild(el('div', {class:'step-prompt', html: step.prompt}));
+
+  if (step.kind === 'choose'){
+    const opts = el('div', {class:'opts'});
+    step.options.forEach((o, oi) => {
+      let cls = 'opt';
+      if (state.locked){
+        cls += ' locked';
+        if (state.chosenIdx === oi) cls += o.correct ? ' correct' : ' wrong';
+        else if (o.correct) cls += ' correct';
+      } else if (state.chosenIdx === oi && !o.correct){
+        cls += ' wrong';
+      }
+      const opt = el('div', {class:cls,
+        onclick: state.locked ? null : () => handleChoose(idx, oi)});
+      opt.appendChild(el('span', {class:'letter'}, String.fromCharCode(0x0410 + oi)));
+      opt.appendChild(el('span', {html: o.html}));
+      opts.appendChild(opt);
+    });
+    wrap.appendChild(opts);
+  } else if (step.kind === 'num'){
+    const row = el('div', {class:'num-input-row'});
+    const inp = el('input', {
+      class:'num-input' + (state.wrongAttempt ? ' wrong' : (state.locked ? ' correct' : '')),
+      type:'text', inputmode:'decimal',
+      placeholder:'число',
+      id:`stepInput${idx}`,
+      'aria-label':'Введи число',
+      value: state.lastValue != null ? formatNum(state.lastValue) : ''
+    });
+    if (state.locked) inp.setAttribute('disabled', 'true');
+    row.appendChild(inp);
+    if (step.unit) row.appendChild(el('span', {class:'unit'}, step.unit));
+    if (!state.locked){
+      row.appendChild(el('button', {class:'btn', onclick: ()=>handleNumCheck(idx)}, 'Проверить'));
+    }
+    wrap.appendChild(row);
+  }
+
+  // фидбек
+  if (state.feedback){
+    wrap.appendChild(el('div', {class:'feedback ' + state.feedbackKind, html: state.feedback}));
+  }
+
+  // кнопки действий
+  const actions = el('div', {class:'step-actions'});
+  if (!state.locked){
+    if (!state.hintShown){
+      actions.appendChild(el('button', {class:'btn ghost small',
+        onclick: ()=>handleHint(idx)},
+        el('span', {class:'hint-icon'}, 'i'),
+        el('span', {style:'margin-left:6px'}, 'Подсказка')
+      ));
+    }
+    actions.appendChild(el('button', {class:'btn secondary small',
+      onclick: ()=>handleShowSolution(idx)}, 'Показать решение шага'));
+  } else {
+    actions.appendChild(el('button', {class:'btn',
+      onclick: ()=>goToStep(idx + 1)},
+      idx + 1 >= task.steps.length ? 'К итоговому ответу →' : 'Следующий шаг →'
+    ));
+  }
+  if (idx > 0){
+    actions.appendChild(el('button', {class:'btn ghost small',
+      onclick: ()=>goToStep(idx - 1)}, '← Назад'));
+  }
+  wrap.appendChild(actions);
+
+  return wrap;
+}
+
+/* =================================================================
+   ОБРАБОТЧИКИ
+   ================================================================= */
+
+function ensureStepState(idx){
+  if (!STATE.stepStates[idx]) STATE.stepStates[idx] = { attempts:0 };
+  return STATE.stepStates[idx];
+}
+
+function bumpStats(field, by){
+  const s = getStats();
+  s[field] = (s[field] || 0) + (by == null ? 1 : by);
+  setStats(s);
+}
+
+function handleChoose(idx, oi){
+  const task = getTask(STATE.currentTaskId);
+  const step = task.steps[idx];
+  const state = ensureStepState(idx);
+  if (state.locked) return;
+  state.attempts = (state.attempts || 0) + 1;
+  state.chosenIdx = oi;
+  bumpStats('attempts');
+
+  const chosen = step.options[oi];
+  if (chosen.correct){
+    state.locked = true;
+    state.correct = true;
+    state.feedback = '<strong>Верно.</strong> ' + (chosen.explain || '');
+    state.feedbackKind = 'ok';
+    bumpStats('correct');
+    // раскрытие ячеек
+    if (step.reveals){
+      for (const [r,c] of step.reveals) STATE.tableReveals[`${r}-${c}`] = true;
+    }
+  } else {
+    state.feedback = '<strong>Не совсем.</strong> ' + (chosen.explain || 'Попробуй другой вариант.');
+    state.feedbackKind = 'warn';
+  }
+  renderAll();
+}
+
+function handleNumCheck(idx){
+  const task = getTask(STATE.currentTaskId);
+  const step = task.steps[idx];
+  const state = ensureStepState(idx);
+  if (state.locked) return;
+  const inp = document.getElementById(`stepInput${idx}`);
+  const raw = (inp.value || '').replace(',', '.').replace(/\s+/g,'').trim();
+  if (raw === ''){ return; }
+  const val = parseFloat(raw);
+  state.attempts = (state.attempts || 0) + 1;
+  state.lastValue = val;
+  bumpStats('attempts');
+
+  if (!Number.isFinite(val)){
+    state.feedback = 'Не понимаю это как число. Попробуй ввести цифры (можно с запятой или точкой).';
+    state.feedbackKind = 'warn';
+    state.wrongAttempt = true;
+    renderAll();
+    return;
+  }
+
+  if (Math.abs(val - step.answer) <= (step.tolerance || 0.01)){
+    state.locked = true;
+    state.correct = true;
+    state.wrongAttempt = false;
+    state.feedback = '<strong>Верно.</strong> ' + (step.explain || '');
+    state.feedbackKind = 'ok';
+    bumpStats('correct');
+    if (step.reveals){
+      for (const [r,c] of step.reveals) STATE.tableReveals[`${r}-${c}`] = true;
+    }
+  } else {
+    state.wrongAttempt = true;
+    if (state.attempts >= 2 && step.hint){
+      state.feedback = 'Не сходится. <strong>Подсказка:</strong> ' + step.hint;
+      state.feedbackKind = 'tip';
+    } else {
+      state.feedback = 'Не совсем. Перепроверь арифметику и единицы измерения.';
+      state.feedbackKind = 'warn';
+    }
+  }
+  renderAll();
+}
+
+function handleHint(idx){
+  const task = getTask(STATE.currentTaskId);
+  const step = task.steps[idx];
+  const state = ensureStepState(idx);
+  state.hintShown = true;
+  state.feedback = '<strong>Подсказка.</strong> ' + (step.hint || 'Возвращайся к данным задачи и разбирай по шагам.');
+  state.feedbackKind = 'tip';
+  bumpStats('hints');
+  renderAll();
+}
+
+function handleShowSolution(idx){
+  const task = getTask(STATE.currentTaskId);
+  const step = task.steps[idx];
+  const state = ensureStepState(idx);
+  state.locked = true;
+  state.skipped = true;
+  state.correct = false;     // не считаем верным
+  if (step.kind === 'choose'){
+    const ci = step.options.findIndex(o => o.correct);
+    state.chosenIdx = ci;
+    state.feedback = '<strong>Правильный ответ показан.</strong> ' + (step.options[ci].explain || '');
+  } else if (step.kind === 'num'){
+    state.lastValue = step.answer;
+    state.feedback = `<strong>Правильный ответ:</strong> ${formatNum(step.answer)} ${step.unit || ''}. ${step.explain || ''}`;
+  }
+  state.feedbackKind = 'explain';
+  if (step.reveals){
+    for (const [r,c] of step.reveals) STATE.tableReveals[`${r}-${c}`] = true;
+  }
+  renderAll();
+}
+
+function goToStep(i){
+  const task = getTask(STATE.currentTaskId);
+  if (!task) return;
+  STATE.currentStepIdx = Math.max(0, Math.min(task.steps.length, i));
+  renderAll();
+}
+
+function handleFinalAnswer(){
+  const task = getTask(STATE.currentTaskId);
+  const inp = document.getElementById('finalAnswerInput');
+  if (!inp) return;
+  const raw = (inp.value || '').replace(',', '.').replace(/\s+/g,'').trim();
+  if (raw === '') return;
+  const val = parseFloat(raw);
+  STATE.finalAnswerAttempts++;
+  STATE.finalAnswerGiven = true;
+  bumpStats('attempts');
+  if (Number.isFinite(val) && Math.abs(val - task.finalAnswer.value) <= (task.finalAnswer.tolerance || 0.01)){
+    STATE.finalAnswerCorrect = true;
+    // отмечаем задачу как решённую (один раз)
+    const s = getStats();
+    if (!s.doneTasks) s.doneTasks = {};
+    if (!s.doneTasks[task.id]){
+      s.doneTasks[task.id] = true;
+      s.solved = (s.solved || 0) + 1;
+      s.correct = (s.correct || 0) + 1;
+    }
+    setStats(s);
+  }
+  renderAll();
+}
+
+function resetCurrentTask(){
+  if (!STATE.currentTaskId) return;
+  STATE.currentStepIdx = 0;
+  STATE.stepStates = {};
+  STATE.tableReveals = {};
+  STATE.finalAnswerGiven = false;
+  STATE.finalAnswerCorrect = false;
+  STATE.finalAnswerAttempts = 0;
+  if (STATE.mode === 'teacher'){
+    const task = getTask(STATE.currentTaskId);
+    if (task.table && task.table.hiddenCells){
+      for (const [r,c] of task.table.hiddenCells) STATE.tableReveals[`${r}-${c}`] = true;
+    }
+  }
+  renderAll();
+}
+
+/* =================================================================
+   ПЕРЕКЛЮЧЕНИЕ РЕЖИМОВ
+   ================================================================= */
+function switchMode(mode){
+  STATE.mode = mode;
+  document.querySelectorAll('#modeSwitch button').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === mode);
+  });
+  // в учительском раскрываем всё
+  if (mode === 'teacher' && STATE.currentTaskId){
+    const task = getTask(STATE.currentTaskId);
+    if (task.table && task.table.hiddenCells){
+      for (const [r,c] of task.table.hiddenCells) STATE.tableReveals[`${r}-${c}`] = true;
+    }
+  }
+  // сохранение режима
+  const p = loadProgress();
+  p.mode = mode;
+  saveProgress(p);
+  renderAll();
+}
+
+/* =================================================================
+   ИНИЦИАЛИЗАЦИЯ
+   ================================================================= */
+function init(){
+  // восстановим режим
+  const p = loadProgress();
+  if (p.mode && ['learn','practice','teacher'].includes(p.mode)){
+    STATE.mode = p.mode;
+    document.querySelectorAll('#modeSwitch button').forEach(b => {
+      b.classList.toggle('active', b.dataset.mode === p.mode);
+    });
+  }
+  // навесим обработчики на режим
+  document.querySelectorAll('#modeSwitch button').forEach(b => {
+    b.addEventListener('click', () => switchMode(b.dataset.mode));
+  });
+  // обработчик Enter на итоговом ответе
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    const active = document.activeElement;
+    if (active && active.id === 'finalAnswerInput'){
+      e.preventDefault();
+      handleFinalAnswer();
+    } else if (active && active.id && active.id.startsWith('stepInput')){
+      e.preventDefault();
+      const idx = parseInt(active.id.replace('stepInput',''), 10);
+      handleNumCheck(idx);
+    }
+  });
+  // первая отрисовка панели типов
+  renderTypePanel();
+  // выберем задачу: либо последнюю, либо первую
+  const lastId = p.lastTaskId && getTask(p.lastTaskId) ? p.lastTaskId : TASKS[0].id;
+  selectTask(lastId);
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
+</script>
+</body>
+</html>
