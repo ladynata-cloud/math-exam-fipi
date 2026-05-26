@@ -1,0 +1,1365 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дифференцированные платежи — табличный тренажёр | Mathexam.space</title>
+<style>
+/* === Базовые переменные === */
+:root{
+  --bg: #f6f4ee;
+  --bg-card: #ffffff;
+  --bg-soft: #efece3;
+  --ink: #1c2231;
+  --ink-soft: #4a5365;
+  --ink-mute: #7c8497;
+  --line: #d9d3c2;
+  --line-soft: #e8e3d4;
+  --accent: #1f5c8f;          /* приглушённый синий */
+  --accent-soft: #e2ecf4;
+  --accent-deep: #143f63;
+  --warm: #b56b1f;            /* янтарь, акцент */
+  --warm-soft: #fbeed6;
+  --ok: #3f7a4a;              /* спокойный зелёный */
+  --ok-soft: #e0f0e2;
+  --hint: #c4842c;
+  --hint-soft: #fff2dc;
+  --soft-red: #a05050;        /* мягкий, без агрессии */
+  --soft-red-bg: #f6e6e2;
+  --shadow: 0 1px 0 rgba(28,34,49,.04), 0 6px 18px rgba(28,34,49,.05);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --formula-font: "Cambria Math", "STIX Two Math", "Cambria", Georgia, "Times New Roman", serif;
+  --ui-font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:var(--ui-font);font-size:16px;line-height:1.5}
+button{font-family:inherit}
+
+/* === Шапка === */
+.topbar{
+  background:linear-gradient(180deg,#fbfaf4 0%, #f6f4ee 100%);
+  border-bottom:1px solid var(--line);
+  padding:18px 24px 0;
+}
+.topbar-inner{
+  display:flex; align-items:flex-start; gap:24px;
+  max-width:1400px; margin:0 auto;
+}
+.home-link{
+  color:var(--ink-soft); text-decoration:none; font-size:14px;
+  padding:6px 10px; border-radius:var(--radius-sm);
+  transition:background .15s;
+}
+.home-link:hover{background:var(--bg-soft); color:var(--accent)}
+.title-block{flex:1; min-width:0}
+.suptitle{font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-mute); margin-bottom:4px}
+.title-block h1{
+  font-size:26px; margin:0 0 4px; font-weight:650; letter-spacing:-.01em;
+  color:var(--accent-deep);
+}
+.subtitle{font-size:14px; color:var(--ink-soft); max-width:62ch}
+
+/* Переключатель режимов */
+.mode-switch{
+  display:flex; gap:2px;
+  background:var(--bg-soft); padding:4px; border-radius:var(--radius);
+  border:1px solid var(--line-soft);
+}
+.mode-btn{
+  background:transparent; border:0; padding:8px 16px; cursor:pointer;
+  font-size:14px; color:var(--ink-soft); border-radius:var(--radius-sm);
+  transition:all .15s; font-weight:500;
+}
+.mode-btn:hover{color:var(--accent)}
+.mode-btn.active{background:var(--accent); color:#fff; box-shadow:0 1px 2px rgba(0,0,0,.1)}
+
+/* Навигация по задачам */
+.task-nav{
+  display:flex; gap:6px; padding:14px 0 12px; flex-wrap:wrap;
+  max-width:1400px; margin:0 auto;
+  border-top:1px dashed var(--line-soft); margin-top:18px;
+}
+.task-pill{
+  background:#fff; border:1px solid var(--line); color:var(--ink-soft);
+  padding:6px 12px; border-radius:999px; font-size:13px; cursor:pointer;
+  transition:all .15s; display:flex; align-items:center; gap:6px;
+}
+.task-pill:hover{border-color:var(--accent); color:var(--accent)}
+.task-pill.active{background:var(--accent); color:#fff; border-color:var(--accent)}
+.task-pill.done::before{content:"✓"; color:var(--ok); font-weight:bold; font-size:14px}
+.task-pill.active.done::before{color:#cde7d2}
+
+/* === Сетка === */
+.layout{
+  display:grid; grid-template-columns: 1.25fr 1fr; gap:20px;
+  max-width:1400px; margin:24px auto; padding:0 24px;
+}
+@media (max-width: 1100px){
+  .layout{grid-template-columns:1fr}
+}
+
+/* === Карточки === */
+.card{
+  background:var(--bg-card); border:1px solid var(--line-soft);
+  border-radius:var(--radius); padding:18px 20px; margin-bottom:16px;
+  box-shadow:var(--shadow);
+}
+.card-head{
+  display:flex; align-items:baseline; gap:10px; margin-bottom:10px;
+  flex-wrap:wrap;
+}
+.card-title{font-weight:600; color:var(--accent-deep); font-size:15px}
+.help-text{font-size:12.5px; color:var(--ink-mute); margin-left:auto}
+.badge{
+  display:inline-block; background:var(--warm-soft); color:var(--warm);
+  padding:3px 10px; border-radius:999px; font-size:12px; font-weight:600;
+  letter-spacing:.02em;
+}
+.task-title{font-weight:600; color:var(--ink); font-size:16px}
+
+/* Задача */
+.task-text{
+  font-size:15.5px; line-height:1.55; color:var(--ink);
+  background:var(--bg-soft); padding:14px 16px; border-radius:var(--radius-sm);
+  border-left:3px solid var(--accent);
+}
+.task-text p{margin:0 0 8px}
+.task-text p:last-child{margin-bottom:0}
+.data-row{
+  display:flex; gap:14px; flex-wrap:wrap; margin-top:12px;
+  font-size:14px;
+}
+.data-chip{
+  background:var(--accent-soft); color:var(--accent-deep);
+  padding:5px 12px; border-radius:var(--radius-sm);
+  font-family:var(--formula-font); font-size:15px;
+}
+.data-chip b{font-weight:700}
+
+/* Шаг q */
+.q-explainer{
+  font-size:14.5px; color:var(--ink-soft); margin-bottom:12px; line-height:1.55;
+}
+.q-choices{display:flex; gap:8px; flex-wrap:wrap}
+.q-choice{
+  background:#fff; border:1.5px solid var(--line); color:var(--ink);
+  padding:10px 16px; border-radius:var(--radius-sm); cursor:pointer;
+  font-family:var(--formula-font); font-size:17px;
+  transition:all .15s;
+}
+.q-choice:hover{border-color:var(--accent); background:var(--accent-soft)}
+.q-choice.correct{background:var(--ok-soft); border-color:var(--ok); color:var(--ok)}
+.q-choice.wrong{background:var(--soft-red-bg); border-color:var(--soft-red); color:var(--soft-red)}
+.q-choice.locked{pointer-events:none; opacity:.7}
+.q-result{
+  margin-top:12px; padding:10px 14px; background:var(--ok-soft);
+  border-left:3px solid var(--ok); border-radius:var(--radius-sm);
+  font-family:var(--formula-font); font-size:16px;
+}
+
+/* Формула */
+.formula{
+  font-family:var(--formula-font); font-size:1.08em;
+  background:#fafaf3; padding:0 4px; border-radius:3px;
+  white-space:nowrap;
+}
+.formula-big{
+  font-family:var(--formula-font); font-size:22px;
+  text-align:center; padding:14px 18px;
+  background:#fbf9ef; border:1px solid var(--line-soft);
+  border-radius:var(--radius-sm); line-height:1.4;
+}
+
+/* === Таблица долга === */
+.table-wrap{overflow-x:auto; margin:6px -4px 0; padding:0 4px}
+.debt-table{
+  width:100%; border-collapse:separate; border-spacing:0;
+  font-size:15px; min-width:620px;
+}
+.debt-table th{
+  background:var(--accent-deep); color:#fff;
+  padding:10px 12px; text-align:left; font-weight:500; font-size:13.5px;
+  border-right:1px solid rgba(255,255,255,.15);
+}
+.debt-table th:first-child{border-top-left-radius:var(--radius-sm); width:64px; text-align:center}
+.debt-table th:last-child{border-top-right-radius:var(--radius-sm); border-right:0}
+.debt-table td{
+  padding:10px 12px; border-bottom:1px solid var(--line-soft);
+  font-family:var(--formula-font); font-size:15.5px;
+  vertical-align:middle;
+}
+.debt-table td:first-child{
+  text-align:center; font-family:var(--ui-font); font-weight:600;
+  color:var(--accent-deep); width:64px;
+  background:var(--bg-soft);
+}
+.debt-table tr:last-child td{border-bottom:0}
+.debt-table tr:last-child td:first-child{border-bottom-left-radius:var(--radius-sm)}
+.debt-table tr:last-child td:last-child{border-bottom-right-radius:var(--radius-sm)}
+
+.debt-table .cell-empty{
+  background:repeating-linear-gradient(45deg, #fefcf2, #fefcf2 4px, #faf5e0 4px, #faf5e0 8px);
+  color:var(--ink-mute); cursor:pointer; min-width:120px;
+}
+.debt-table .cell-empty:hover{outline:2px solid var(--warm); outline-offset:-2px}
+.debt-table .cell-filled{background:var(--ok-soft); color:var(--ink)}
+.debt-table .cell-wrong{background:var(--soft-red-bg); color:var(--soft-red)}
+.debt-table .cell-hint{background:var(--hint-soft); animation:hintPulse 1.4s ease-in-out 2}
+@keyframes hintPulse{
+  0%,100%{background:var(--hint-soft)}
+  50%{background:#ffe4b3}
+}
+.debt-table .cell-given{color:var(--ink-soft); font-style:italic}
+
+.table-note{
+  margin-top:10px; font-size:13.5px; color:var(--ink-soft);
+  padding:8px 12px; background:var(--bg-soft); border-radius:var(--radius-sm);
+}
+
+/* === Правая колонка: работа ученика === */
+.work-area{font-size:15px; line-height:1.55}
+.work-step{
+  padding:10px 0; border-bottom:1px dashed var(--line-soft);
+}
+.work-step:last-child{border-bottom:0}
+.work-q{color:var(--ink-soft); margin-bottom:6px; font-size:14px}
+.work-input{
+  display:flex; gap:8px; align-items:center; flex-wrap:wrap;
+}
+.work-input input{
+  font-family:var(--formula-font); font-size:17px;
+  padding:8px 12px; border:1.5px solid var(--line);
+  border-radius:var(--radius-sm); width:160px;
+  background:#fff; color:var(--ink);
+}
+.work-input input:focus{outline:none; border-color:var(--accent); background:#fff}
+.work-input input.ok{border-color:var(--ok); background:var(--ok-soft)}
+.work-input input.bad{border-color:var(--soft-red); background:var(--soft-red-bg)}
+.work-input .unit{color:var(--ink-soft); font-size:14px}
+.work-explain{
+  margin-top:8px; padding:8px 12px; background:var(--accent-soft);
+  border-radius:var(--radius-sm); font-size:14px; color:var(--accent-deep);
+}
+
+/* Выражения-карточки для сбора уравнения */
+.expr-tray{
+  display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;
+  padding:8px; background:var(--bg-soft); border-radius:var(--radius-sm);
+  min-height:44px;
+}
+.expr-card{
+  background:#fff; border:1.5px solid var(--line); padding:6px 12px;
+  border-radius:var(--radius-sm); cursor:pointer;
+  font-family:var(--formula-font); font-size:16px;
+  transition:all .15s; user-select:none;
+}
+.expr-card:hover{border-color:var(--accent); transform:translateY(-1px)}
+.expr-card.selected{background:var(--accent); color:#fff; border-color:var(--accent)}
+.expr-card.locked{opacity:.5; pointer-events:none}
+
+.expr-slot{
+  min-height:44px; border:2px dashed var(--line);
+  border-radius:var(--radius-sm); padding:8px 12px;
+  display:flex; flex-wrap:wrap; gap:6px; align-items:center;
+  background:#fdfcf7; margin-top:6px;
+}
+.expr-slot.filled{border-color:var(--ok); background:var(--ok-soft)}
+
+/* Equation box */
+.equation-box{
+  font-family:var(--formula-font); font-size:20px;
+  text-align:center; padding:18px;
+  background:linear-gradient(180deg, #fdfbf2, #fbf9ef);
+  border:1px solid var(--line); border-radius:var(--radius-sm);
+  line-height:1.5;
+  min-height:60px;
+  display:flex; align-items:center; justify-content:center;
+}
+.equation-box.empty{color:var(--ink-mute); font-style:italic; font-size:14px; font-family:var(--ui-font)}
+
+/* Answer */
+.answer-area{font-size:15px}
+.answer-final{
+  font-family:var(--formula-font); font-size:22px;
+  padding:14px 18px; background:var(--ok-soft); color:var(--accent-deep);
+  border-left:4px solid var(--ok); border-radius:var(--radius-sm);
+  margin-top:8px;
+}
+.answer-final b{color:var(--ok); font-weight:700}
+
+/* === Кнопки === */
+.actions-card{display:flex; flex-wrap:wrap; gap:8px; padding:14px 16px}
+.btn{
+  border:0; padding:10px 18px; border-radius:var(--radius-sm);
+  font-size:14px; cursor:pointer; font-weight:500;
+  transition:all .15s;
+}
+.btn-primary{background:var(--accent); color:#fff}
+.btn-primary:hover{background:var(--accent-deep)}
+.btn-accent{background:var(--warm); color:#fff; margin-left:auto}
+.btn-accent:hover{background:#945514}
+.btn-soft{background:var(--accent-soft); color:var(--accent-deep)}
+.btn-soft:hover{background:#cfdcec}
+.btn-ghost{background:transparent; color:var(--ink-soft); border:1px solid var(--line)}
+.btn-ghost:hover{background:var(--bg-soft)}
+
+/* === Статистика === */
+.stats{display:flex; gap:14px; flex-wrap:wrap; font-size:14px}
+.stat{
+  display:flex; flex-direction:column; align-items:flex-start; gap:2px;
+  padding:8px 14px; background:var(--bg-soft); border-radius:var(--radius-sm);
+  min-width:90px;
+}
+.stat-val{font-size:22px; font-weight:600; color:var(--accent-deep); line-height:1}
+.stat-label{font-size:12px; color:var(--ink-mute)}
+
+/* === Сообщения === */
+.message-area{
+  position:fixed; bottom:24px; right:24px; z-index:50;
+  display:flex; flex-direction:column; gap:8px;
+  max-width:360px;
+}
+.toast{
+  padding:12px 16px; background:#fff; border:1px solid var(--line);
+  border-radius:var(--radius); box-shadow:var(--shadow);
+  font-size:14px; animation:toastIn .3s ease-out;
+  border-left:4px solid var(--accent);
+}
+.toast.ok{border-left-color:var(--ok)}
+.toast.hint{border-left-color:var(--hint); background:var(--hint-soft)}
+.toast.bad{border-left-color:var(--soft-red); background:var(--soft-red-bg)}
+@keyframes toastIn{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* === Учительский режим === */
+body.mode-teacher .debt-table .cell-empty{
+  background:var(--ok-soft); color:var(--ink); cursor:default;
+  font-style:normal;
+}
+body.mode-teacher .teacher-only{display:block !important}
+body:not(.mode-teacher) .teacher-only{display:none !important}
+.teacher-note{
+  background:var(--warm-soft); border-left:3px solid var(--warm);
+  padding:10px 14px; border-radius:var(--radius-sm); margin-top:10px;
+  font-size:14px; color:#5c3a0d;
+}
+.teacher-note b{color:var(--warm)}
+
+/* === Подвал === */
+.footer{
+  max-width:1400px; margin:30px auto 18px; padding:0 24px;
+  display:flex; justify-content:space-between; align-items:center;
+  font-size:12px; color:var(--ink-mute); border-top:1px solid var(--line-soft);
+  padding-top:14px;
+}
+.footer code{
+  background:var(--bg-soft); padding:2px 6px; border-radius:3px;
+  font-family:"SF Mono", Menlo, Consolas, monospace; font-size:11px;
+}
+@media (max-width: 700px){
+  .topbar-inner{flex-direction:column; gap:14px}
+  .mode-switch{align-self:flex-start}
+  .title-block h1{font-size:22px}
+  .footer{flex-direction:column; gap:6px; text-align:center}
+}
+
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="home-link" href="/">← На главную</a>
+    <div class="title-block">
+      <div class="suptitle">Mathexam.space · Финансовая математика</div>
+      <h1>Дифференцированные платежи</h1>
+      <div class="subtitle">Табличный метод. Учимся строить таблицу убывающего долга и выводить формулы платежа.</div>
+    </div>
+    <div class="mode-switch" role="tablist" aria-label="Режим">
+      <button class="mode-btn active" data-mode="learn" role="tab">Обучение</button>
+      <button class="mode-btn" data-mode="practice" role="tab">Тренировка</button>
+      <button class="mode-btn" data-mode="teacher" role="tab">Учитель</button>
+    </div>
+  </div>
+  <nav class="task-nav" id="taskNav" aria-label="Задачи"></nav>
+</header>
+
+<main class="layout">
+  <section class="col-left">
+    <article class="card task-card">
+      <div class="card-head">
+        <span class="badge" id="taskTypeBadge">Тип 1</span>
+        <span class="task-title" id="taskTitle">Задача</span>
+      </div>
+      <div class="task-text" id="taskText"></div>
+      <div class="data-row" id="taskData"></div>
+    </article>
+
+    <article class="card q-card">
+      <div class="card-head"><span class="card-title">Шаг 1. Коэффициент роста долга</span></div>
+      <div class="q-explainer">
+        За год долг увеличивается в <span class="formula">q = 1 + r/100</span> раз.
+        Но при дифференцированных платежах долг <b>обязан уменьшаться равномерно</b>:
+        каждый год на <span class="formula">S/n</span>. Платёж — это <b>основная часть</b> S/n плюс <b>проценты</b> с остатка долга.
+      </div>
+      <div class="q-choices" id="qChoices"></div>
+      <div class="q-result" id="qResult" hidden></div>
+    </article>
+
+    <article class="card table-card">
+      <div class="card-head"><span class="card-title">Шаг 2. Таблица движения долга</span>
+        <span class="help-text">Заполняй строки сверху вниз. Подсказки появятся при ошибке.</span>
+      </div>
+      <div class="table-wrap">
+        <table class="debt-table" id="debtTable">
+          <thead>
+            <tr>
+              <th>Год k</th>
+              <th>Долг до начисления %</th>
+              <th>Долг после начисления %</th>
+              <th>Платёж в k-м году</th>
+              <th>Долг после платежа</th>
+            </tr>
+          </thead>
+          <tbody id="debtTableBody"></tbody>
+        </table>
+      </div>
+      <div class="table-note" id="tableNote"></div>
+    </article>
+  </section>
+
+  <section class="col-right">
+    <article class="card work-card">
+      <div class="card-head"><span class="card-title">Шаг 3. Что нужно найти</span></div>
+      <div class="work-area" id="workArea"></div>
+    </article>
+
+    <article class="card equation-card">
+      <div class="card-head"><span class="card-title">Шаг 4. Итоговое выражение</span></div>
+      <div class="equation-box" id="equationBox"></div>
+    </article>
+
+    <article class="card answer-card">
+      <div class="card-head"><span class="card-title">Шаг 5. Ответ</span></div>
+      <div class="answer-area" id="answerArea"></div>
+    </article>
+
+    <article class="card actions-card">
+      <button class="btn btn-primary" id="btnCheck">Проверить шаг</button>
+      <button class="btn btn-soft" id="btnHint">Подсказка</button>
+      <button class="btn btn-soft" id="btnSolution">Показать решение</button>
+      <button class="btn btn-ghost" id="btnReset">Сбросить пример</button>
+      <button class="btn btn-accent" id="btnNext">Следующая задача →</button>
+    </article>
+
+    <article class="card stats-card">
+      <div class="card-head"><span class="card-title">Прогресс</span></div>
+      <div class="stats" id="statsBox"></div>
+    </article>
+  </section>
+</main>
+
+<aside class="message-area" id="messageArea" aria-live="polite"></aside>
+
+<footer class="footer">
+  <span>Mathexam.space · тренажёр по дифференцированным платежам · v1.0</span>
+  <span class="footer-key">прогресс сохраняется локально (ключ <code>mathExamCourseProgress.v1</code>)</span>
+</footer>
+
+<script>
+/* ============================================================
+   ДИФФЕРЕНЦИРОВАННЫЕ ПЛАТЕЖИ — ТРЕНАЖЁР
+   ============================================================
+   Главные формулы:
+     Долг в начале года k:  D_k = S(n-k+1)/n
+     Долг после начисления %:  D_k * q,   где q = 1 + r/100
+     Платёж в k-м году:  P_k = S/n + (r/100) * S(n-k+1)/n
+     Первый платёж:  P_1 = S/n * (1 + rn/100)
+     Последний платёж:  P_n = S/n * (1 + r/100)
+     Разность P_1 - P_n = (S/n) * (r/100) * (n-1) = Sr(n-1)/(100n)
+     Общая сумма выплат:  T = S * (1 + r(n+1)/200)
+     Переплата:  I = S * r(n+1)/200
+   ============================================================ */
+
+const TOPIC_ID = "creditDifferentialPaymentTrainer";
+const STORAGE_KEY = "mathExamCourseProgress.v1";
+
+/* ---------- Утилиты форматирования ---------- */
+function fmtNum(x){
+  if(Number.isInteger(x)) return x.toLocaleString("ru-RU").replace(/\u00A0/g," ");
+  return x.toFixed(2).replace(".",",");
+}
+function fmtR(r){
+  if(Number.isInteger(r)) return r+"";
+  return r.toString().replace(".",",");
+}
+function qFromR(r){ return 1 + r/100; }
+function fmtQ(q){
+  // Красивое представление q
+  if(q===1.1) return "1,1";
+  if(q===1.2) return "1,2";
+  if(q===1.25) return "1,25";
+  if(q===1.125) return "1,125";
+  if(q===1.4) return "1,4";
+  if(q===1.01) return "1,01";
+  if(q===1.5) return "1,5";
+  return q.toString().replace(".",",");
+}
+
+/* ---------- ЗАДАЧИ ---------- */
+const TASKS = [
+  /* ========== Задача 1: один период — найти платёж в год k ========== */
+  {
+    id: "diff-1",
+    type: 1,
+    badge: "Тип 1",
+    title: "Один период: платёж в k-м году",
+    text: `<p>1 марта 2024 года Иван взял в банке кредит на сумму <b>1 200 000 рублей</b> под <b>10%</b> годовых на <b>4 года</b>. По условиям договора долг должен <b>уменьшаться равномерно</b>: каждый год на одну и ту же сумму.</p>
+           <p>1 марта каждого следующего года банк начисляет проценты на оставшийся долг, после чего Иван вносит платёж.</p>
+           <p><b>Сколько рублей составит платёж за второй год?</b></p>`,
+    data: { S: 1200000, r: 10, n: 4, k: 2 },
+    chips: ["S = 1 200 000 руб.", "r = 10%", "n = 4 года", "год k = 2"],
+    q: { value: 1.1, choices: ["1,1","1,2","1,01","1,25"] },
+    table: {
+      // Каждая ячейка: {expr, given?, target?}
+      // given=true — заполнено сразу; target=true — нужно заполнить, expr — правильный ответ
+      rows: [
+        ["1", "S", "Sq = 1,1S", "P\u2081", "S − S/4 = 3S/4"],
+        ["2", "3S/4", "1,1·(3S/4) = 33S/40", "P\u2082", "S − 2S/4 = S/2"],
+        ["3", "S/2", "1,1·(S/2) = 11S/20", "P\u2083", "S − 3S/4 = S/4"],
+        ["4", "S/4", "1,1·(S/4) = 11S/40", "P\u2084", "0"],
+      ],
+      highlightRow: 1, // подсветить второй год
+      note: "Главная идея дифференцированного платежа: долг убывает на S/n каждый год. Платёж — это та сумма, которой долг приводится к новому, «плановому» уровню. Иначе говоря: <i>платёж = основная часть S/n + начисленные проценты с остатка долга</i>."
+    },
+    work: {
+      kind: "compute-payment",
+      formulaText: "P\u2082 = S/n + (r/100) · S(n−k+1)/n",
+      // Для k=2: P_2 = 1200000/4 + 0.10*1200000*3/4 = 300000 + 90000 = 390000
+      mainPart: 300000,
+      interestPart: 90000,
+      total: 390000,
+      explainSteps: [
+        "Долг до второго платежа: S − S/n = S·(n−1)/n = 1 200 000 · 3/4 = <b>900 000</b> руб.",
+        "Начисленные проценты во втором году: 10% от 900 000 = <b>90 000</b> руб.",
+        "Основная часть платежа (постоянна для всех лет): S/n = 1 200 000 / 4 = <b>300 000</b> руб.",
+        "Платёж во втором году: 300 000 + 90 000 = <b>390 000</b> руб."
+      ]
+    },
+    equation: "P\u2082 = S/n + (r/100)·S(n−k+1)/n = 1 200 000/4 + 0,1·1 200 000·3/4 = 300 000 + 90 000",
+    answer: { value: 390000, unit: "руб.", label: "Платёж за второй год" },
+    hints: [
+      "В дифференцированной схеме долг к началу k-го года равен S·(n−k+1)/n. Для k=2 и n=4 это S·3/4.",
+      "Проценты начисляются на долг до платежа. Платёж = S/n + (r/100)·(долг до платежа).",
+      "S/n = 300 000. Проценты с 900 000 под 10% — это 90 000. Сложите."
+    ]
+  },
+
+  /* ========== Задача 2: первый платёж ========== */
+  {
+    id: "diff-2",
+    type: 2,
+    badge: "Тип 2",
+    title: "Первый платёж: общая формула",
+    text: `<p>Кредит на сумму <b>S = 800 000 рублей</b> выдан под <b>20%</b> годовых на срок <b>n = 5 лет</b>. Долг должен убывать равномерно (на S/n в год). Проценты начисляются раз в год на остаток долга, после чего вносится очередной платёж.</p>
+           <p><b>Чему равен первый платёж?</b> Дополнительно: убедись, что первый платёж — самый большой.</p>`,
+    data: { S: 800000, r: 20, n: 5, k: 1 },
+    chips: ["S = 800 000 руб.", "r = 20%", "n = 5 лет"],
+    q: { value: 1.2, choices: ["1,1","1,2","1,25","1,5"] },
+    table: {
+      rows: [
+        ["1", "S", "1,2S", "P\u2081", "4S/5"],
+        ["2", "4S/5", "1,2·(4S/5)", "P\u2082", "3S/5"],
+        ["3", "3S/5", "1,2·(3S/5)", "P\u2083", "2S/5"],
+        ["4", "2S/5", "1,2·(2S/5)", "P\u2084", "S/5"],
+        ["5", "S/5", "1,2·(S/5)", "P\u2085", "0"]
+      ],
+      highlightRow: 0,
+      note: "Первый платёж приходится на самый большой долг (равный S), поэтому проценты в первом году самые большие. Платежи будут убывать с каждым годом ровно на (r/100)·(S/n)."
+    },
+    work: {
+      kind: "compute-payment",
+      formulaText: "P\u2081 = S/n + (r/100) · S = (S/n)·(1 + rn/100)",
+      mainPart: 160000,        // 800000/5
+      interestPart: 160000,    // 0.20*800000
+      total: 320000,
+      explainSteps: [
+        "Долг перед первым платежом — это вся сумма S = 800 000 руб.",
+        "Проценты за первый год: 20% от 800 000 = <b>160 000</b> руб.",
+        "Основная часть: S/n = 800 000/5 = <b>160 000</b> руб.",
+        "Первый платёж: 160 000 + 160 000 = <b>320 000</b> руб.",
+        "Проверка убывания: каждый следующий платёж меньше предыдущего на (20%)·(160 000) = 32 000."
+      ]
+    },
+    equation: "P\u2081 = (S/n)·(1 + r·n/100) = (800 000/5)·(1 + 20·5/100) = 160 000 · 2 = 320 000",
+    answer: { value: 320000, unit: "руб.", label: "Первый платёж" },
+    hints: [
+      "Первый платёж — самый большой, потому что начисляется на полный долг S.",
+      "Формула: P\u2081 = S/n + (r/100)·S.",
+      "Подставь: 800 000/5 + 0,20·800 000."
+    ]
+  },
+
+  /* ========== Задача 3: разность первого и последнего платежей ========== */
+  {
+    id: "diff-3",
+    type: 3,
+    badge: "Тип 3",
+    title: "Разность первого и последнего платежей",
+    text: `<p>Кредит в размере <b>1 500 000 рублей</b> погашается дифференцированными платежами в течение <b>5 лет</b>. Ставка банка — <b>10%</b> годовых.</p>
+           <p><b>На сколько рублей первый платёж больше последнего?</b></p>`,
+    data: { S: 1500000, r: 10, n: 5 },
+    chips: ["S = 1 500 000 руб.", "r = 10%", "n = 5 лет"],
+    q: { value: 1.1, choices: ["1,1","1,2","1,01","1,25"] },
+    table: {
+      rows: [
+        ["1", "S", "1,1S", "S/n + 0,1S = 300 000 + 150 000", "4S/5"],
+        ["2", "4S/5", "1,1·(4S/5)", "S/n + 0,1·(4S/5)", "3S/5"],
+        ["...","...","...","...","..."],
+        ["5", "S/5", "1,1·(S/5)", "S/n + 0,1·(S/5) = 300 000 + 30 000", "0"]
+      ],
+      note: "Платёж убывает каждый год на одну и ту же величину (r/100)·(S/n). Это арифметическая прогрессия. Разность между первым и последним платежом = (S/n)·(r/100)·(n−1)."
+    },
+    work: {
+      kind: "compute-diff",
+      formulaText: "P\u2081 − P\u2099 = (S/n)·(r/100)·(n−1)",
+      firstPayment: 450000,
+      lastPayment: 330000,
+      diff: 120000,
+      explainSteps: [
+        "Первый платёж: S/n + r/100·S = 300 000 + 150 000 = <b>450 000</b>.",
+        "Последний платёж: S/n + (r/100)·(S/n) = 300 000 + 30 000 = <b>330 000</b>.",
+        "Разность: 450 000 − 330 000 = <b>120 000</b>.",
+        "Или через формулу: (S/n)·(r/100)·(n−1) = 300 000 · 0,1 · 4 = 120 000."
+      ]
+    },
+    equation: "P\u2081 − P\u2099 = (S/n)·(r/100)·(n−1) = 300 000 · 0,1 · 4 = 120 000",
+    answer: { value: 120000, unit: "руб.", label: "Разность первого и последнего платежа" },
+    hints: [
+      "Каждый год долг уменьшается на S/n, поэтому проценты от года к году уменьшаются на (r/100)·(S/n).",
+      "За n−1 «шагов» проценты в платеже уменьшатся на (S/n)·(r/100)·(n−1).",
+      "Подставь: (1 500 000 / 5) · 0,1 · 4."
+    ]
+  },
+
+  /* ========== Задача 4: общая сумма выплат и переплата ========== */
+  {
+    id: "diff-4",
+    type: 4,
+    badge: "Тип 4",
+    title: "Общая сумма выплат и переплата",
+    text: `<p>Кредит на <b>1 000 000 рублей</b> взят под <b>20%</b> годовых на <b>4 года</b>. Долг погашается дифференцированными платежами (равные основные части, проценты с остатка).</p>
+           <p><b>Какова общая сумма выплат банку?</b> Сколько составит переплата (общие проценты)?</p>`,
+    data: { S: 1000000, r: 20, n: 4 },
+    chips: ["S = 1 000 000 руб.", "r = 20%", "n = 4 года"],
+    q: { value: 1.2, choices: ["1,1","1,2","1,25","1,4"] },
+    table: {
+      rows: [
+        ["1", "S", "1,2S",       "S/4 + 0,2·S = 450 000",      "3S/4"],
+        ["2", "3S/4", "1,2·(3S/4)", "S/4 + 0,2·(3S/4) = 400 000", "S/2"],
+        ["3", "S/2", "1,2·(S/2)",   "S/4 + 0,2·(S/2) = 350 000", "S/4"],
+        ["4", "S/4", "1,2·(S/4)",   "S/4 + 0,2·(S/4) = 300 000", "0"]
+      ],
+      note: "Сумма всех платежей: 450 + 400 + 350 + 300 = 1 500 тыс. руб. Это арифметическая прогрессия. В общем виде: T = S + S·r(n+1)/200, где второе слагаемое — переплата."
+    },
+    work: {
+      kind: "compute-total",
+      formulaText: "T = S · (1 + r(n+1)/200)",
+      total: 1500000,
+      overpay: 500000,
+      explainSteps: [
+        "Сумма платежей: P\u2081 + P\u2082 + P\u2083 + P\u2084 = 450 000 + 400 000 + 350 000 + 300 000 = <b>1 500 000</b>.",
+        "Это арифметическая прогрессия: первый член 450 000, последний 300 000, четыре члена. Сумма = (450 000+300 000)/2 · 4 = 1 500 000.",
+        "По общей формуле T = S·(1 + r(n+1)/200) = 1 000 000·(1 + 20·5/200) = 1 000 000·1,5 = <b>1 500 000</b>.",
+        "Переплата (общие проценты): T − S = 1 500 000 − 1 000 000 = <b>500 000</b> руб."
+      ]
+    },
+    equation: "T = S·(1 + r(n+1)/200) = 1 000 000·(1 + 20·5/200) = 1 000 000 · 1,5 = 1 500 000",
+    answer: { value: 1500000, unit: "руб.", label: "Общая сумма выплат (переплата 500 000)" },
+    hints: [
+      "Все n платежей образуют арифметическую прогрессию: P\u2081, P\u2081 − d, P\u2081 − 2d, ..., где d = (r/100)·(S/n).",
+      "Сумма арифметической прогрессии: T = (P\u2081 + P\u2099)/2 · n.",
+      "Можно сразу: T = S·(1 + r·(n+1)/200). Подставь r=20, n=4."
+    ]
+  },
+
+  /* ========== Задача 5: минимальный срок при ограничении первого платежа ========== */
+  {
+    id: "diff-5",
+    type: 5,
+    badge: "Тип 5",
+    title: "Минимальный срок при ограничении платежа",
+    text: `<p>Планируется взять кредит на <b>900 000 рублей</b> под <b>20%</b> годовых. Долг должен убывать равномерно (дифференцированные платежи).</p>
+           <p>Заёмщик хочет, чтобы <b>наибольший годовой платёж не превышал 280 000 рублей</b>.</p>
+           <p><b>На какой минимальный срок n (в годах) можно взять кредит?</b></p>`,
+    data: { S: 900000, r: 20, Pmax: 280000 },
+    chips: ["S = 900 000 руб.", "r = 20%", "P\u2081 ≤ 280 000 руб."],
+    q: { value: 1.2, choices: ["1,1","1,2","1,25","1,4"] },
+    table: {
+      rows: [
+        ["1", "S", "1,2S", "S/n + 0,2S", "S − S/n"],
+        ["2", "S − S/n", "1,2·(S − S/n)", "S/n + 0,2·(S − S/n)", "S − 2S/n"],
+        ["...","...","...","...","..."],
+        ["n", "S/n", "1,2·(S/n)", "S/n + 0,2·(S/n)", "0"]
+      ],
+      note: "Платежи убывают: первый = S/n + 0,2·S — самый большой. Чтобы P\u2081 не превышал заданную границу, выбираем достаточно большое n."
+    },
+    work: {
+      kind: "min-term",
+      formulaText: "P\u2081 = S/n + (r/100)·S ≤ P_max",
+      ineq: "900 000/n + 180 000 ≤ 280 000",
+      simplified: "900 000/n ≤ 100 000",
+      nMin: 9,
+      explainSteps: [
+        "Самый большой платёж — первый: P\u2081 = S/n + (r/100)·S.",
+        "Подставляем: 900 000/n + 0,2·900 000 ≤ 280 000.",
+        "Получаем: 900 000/n + 180 000 ≤ 280 000, то есть 900 000/n ≤ 100 000.",
+        "Отсюда n ≥ 9. Минимальный срок — <b>9 лет</b>.",
+        "Проверка при n=9: P\u2081 = 100 000 + 180 000 = 280 000 руб. — ровно граница."
+      ]
+    },
+    equation: "S/n + (r/100)·S ≤ P_max  ⇒  900 000/n ≤ 100 000  ⇒  n ≥ 9",
+    answer: { value: 9, unit: "лет", label: "Минимальный срок кредита" },
+    hints: [
+      "В дифференцированной схеме первый платёж — самый большой. Остальные меньше, значит автоматически не превысят границу.",
+      "Условие: S/n + (r/100)·S ≤ P_max.",
+      "Выражаем n: n ≥ S / (P_max − (r/100)·S). Считай: 900 000 / (280 000 − 180 000)."
+    ]
+  },
+
+  /* ========== Задача 6: обратная — найти S по общей сумме выплат ========== */
+  {
+    id: "diff-6",
+    type: 6,
+    badge: "Тип 6",
+    title: "Найти сумму кредита по общей выплате",
+    text: `<p>Кредит взят под <b>25%</b> годовых на <b>3 года</b>, погашается дифференцированными платежами. По окончании срока заёмщик выплатил банку всего <b>2 250 000 рублей</b>.</p>
+           <p><b>Какова была сумма кредита S?</b></p>`,
+    data: { S: null, r: 25, n: 3, total: 2250000 },
+    chips: ["T = 2 250 000 руб.", "r = 25%", "n = 3 года"],
+    q: { value: 1.25, choices: ["1,1","1,2","1,25","1,5"] },
+    table: {
+      rows: [
+        ["1", "S", "1,25S", "S/3 + 0,25·S", "2S/3"],
+        ["2", "2S/3", "1,25·(2S/3)", "S/3 + 0,25·(2S/3)", "S/3"],
+        ["3", "S/3", "1,25·(S/3)", "S/3 + 0,25·(S/3)", "0"]
+      ],
+      note: "Сумма всех платежей выражается через S по формуле T = S·(1 + r(n+1)/200). Зная T, r и n, выразим S."
+    },
+    work: {
+      kind: "solve-for-S",
+      formulaText: "T = S · (1 + r(n+1)/200)  ⇒  S = T / (1 + r(n+1)/200)",
+      // 1 + 25*4/200 = 1 + 0.5 = 1.5
+      coef: 1.5,
+      S: 1500000,
+      explainSteps: [
+        "По общей формуле: T = S·(1 + r(n+1)/200).",
+        "Подставим r=25, n=3: коэффициент равен 1 + 25·4/200 = 1 + 0,5 = <b>1,5</b>.",
+        "Значит T = 1,5·S, откуда S = T/1,5 = 2 250 000 / 1,5 = <b>1 500 000</b> руб."
+      ]
+    },
+    equation: "S = T / (1 + r(n+1)/200) = 2 250 000 / 1,5 = 1 500 000",
+    answer: { value: 1500000, unit: "руб.", label: "Сумма кредита" },
+    hints: [
+      "Общая сумма выплат равна T = S·(1 + r(n+1)/200).",
+      "Здесь r(n+1)/200 = 25·4/200 = 0,5, значит коэффициент 1,5.",
+      "Делим: 2 250 000 / 1,5."
+    ]
+  }
+];
+
+
+/* ============================================================
+   ЛОГИКА ТРЕНАЖЁРА
+   ============================================================ */
+
+/* ---------- Состояние ---------- */
+const State = {
+  mode: "learn",         // learn | practice | teacher
+  taskIdx: 0,
+  // Для каждой задачи:
+  // {qChosen, qOk, payments:{main,interest,total,...}, answerOk, hintsShown, attempts, done}
+  perTask: {},
+  // Глобальные статы:
+  stats: { solved: 0, attempts: 0, hints: 0 }
+};
+
+function currentTask(){ return TASKS[State.taskIdx]; }
+function currentProg(){
+  const id = currentTask().id;
+  if(!State.perTask[id]){
+    State.perTask[id] = {
+      qChosen:null, qOk:false,
+      cells:{}, // table cell answers
+      inputs:{}, // work-area inputs
+      hintsShown:0, attempts:0, done:false,
+      solutionShown:false
+    };
+  }
+  return State.perTask[id];
+}
+
+/* ---------- localStorage ---------- */
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return;
+    const all = JSON.parse(raw);
+    const mine = all && all[TOPIC_ID];
+    if(!mine) return;
+    if(mine.perTask) State.perTask = mine.perTask;
+    if(mine.stats) State.stats = mine.stats;
+    if(typeof mine.taskIdx === "number" && mine.taskIdx >= 0 && mine.taskIdx < TASKS.length){
+      State.taskIdx = mine.taskIdx;
+    }
+    if(mine.mode) State.mode = mine.mode;
+  }catch(e){ console.warn("Не удалось загрузить прогресс", e); }
+}
+function saveProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const all = raw ? JSON.parse(raw) : {};
+    all[TOPIC_ID] = {
+      version: 1,
+      perTask: State.perTask,
+      stats: State.stats,
+      taskIdx: State.taskIdx,
+      mode: State.mode,
+      savedAt: Date.now()
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+  }catch(e){ console.warn("Не удалось сохранить прогресс", e); }
+}
+
+/* ---------- Toast ---------- */
+function toast(msg, kind){
+  const box = document.getElementById("messageArea");
+  const el = document.createElement("div");
+  el.className = "toast " + (kind || "");
+  el.innerHTML = msg;
+  box.appendChild(el);
+  setTimeout(()=>{ el.style.transition="opacity .3s"; el.style.opacity="0"; setTimeout(()=>el.remove(),300); }, 3200);
+}
+
+/* ============================================================
+   РЕНДЕР
+   ============================================================ */
+function renderAll(){
+  document.body.classList.toggle("mode-teacher", State.mode === "teacher");
+  document.body.classList.toggle("mode-learn", State.mode === "learn");
+  document.body.classList.toggle("mode-practice", State.mode === "practice");
+
+  // mode buttons
+  document.querySelectorAll(".mode-btn").forEach(b=>{
+    b.classList.toggle("active", b.dataset.mode === State.mode);
+  });
+
+  renderTaskNav();
+  renderTaskCard();
+  renderQStep();
+  renderTable();
+  renderWorkArea();
+  renderEquation();
+  renderAnswer();
+  renderStats();
+}
+
+function renderTaskNav(){
+  const nav = document.getElementById("taskNav");
+  nav.innerHTML = "";
+  TASKS.forEach((t,i)=>{
+    const b = document.createElement("button");
+    b.className = "task-pill" + (i===State.taskIdx?" active":"") + (State.perTask[t.id]?.done?" done":"");
+    b.innerHTML = `<span>Задача ${i+1}</span> <span style="opacity:.7">· ${t.badge}</span>`;
+    b.addEventListener("click", ()=>{ State.taskIdx=i; saveProgress(); renderAll(); });
+    nav.appendChild(b);
+  });
+}
+
+function renderTaskCard(){
+  const t = currentTask();
+  document.getElementById("taskTypeBadge").textContent = t.badge;
+  document.getElementById("taskTitle").textContent = t.title;
+  document.getElementById("taskText").innerHTML = t.text;
+  const data = document.getElementById("taskData");
+  data.innerHTML = "";
+  (t.chips || []).forEach(c => {
+    const chip = document.createElement("span");
+    chip.className = "data-chip";
+    chip.innerHTML = c;
+    data.appendChild(chip);
+  });
+}
+
+/* ---------- Шаг 1: q ---------- */
+function renderQStep(){
+  const t = currentTask();
+  const p = currentProg();
+  const root = document.getElementById("qChoices");
+  const res  = document.getElementById("qResult");
+  root.innerHTML = "";
+  res.hidden = true;
+
+  const showAll = State.mode === "teacher" || p.solutionShown;
+
+  t.q.choices.forEach(ch => {
+    const b = document.createElement("button");
+    b.className = "q-choice";
+    b.textContent = "q = " + ch;
+    const isCorrect = parseFloat(ch.replace(",",".")) === t.q.value;
+
+    if(p.qOk || showAll){
+      if(isCorrect) b.classList.add("correct","locked");
+      else b.classList.add("locked");
+    }
+    if(p.qChosen === ch && !p.qOk){
+      b.classList.add("wrong");
+    }
+
+    b.addEventListener("click", ()=>{
+      if(p.qOk) return;
+      p.qChosen = ch; p.attempts++;
+      if(isCorrect){
+        p.qOk = true;
+        State.stats.attempts++;
+        toast("Верно. Коэффициент роста q = " + ch + ".", "ok");
+        saveProgress();
+        renderAll();
+      } else {
+        State.stats.attempts++;
+        toast("Не тот коэффициент. Подсказка: q = 1 + r/100. Здесь r = " + fmtR(t.data.r) + "%.", "bad");
+        saveProgress();
+        renderAll();
+      }
+    });
+    root.appendChild(b);
+  });
+
+  if(p.qOk || showAll){
+    res.hidden = false;
+    const r = t.data.r;
+    res.innerHTML = `q = 1 + r/100 = 1 + ${fmtR(r)}/100 = <b>${fmtQ(t.q.value)}</b>. ` +
+      `Каждый год долг до платежа умножается на ${fmtQ(t.q.value)}.`;
+  }
+}
+
+/* ---------- Шаг 2: таблица ---------- */
+function renderTable(){
+  const t = currentTask();
+  const p = currentProg();
+  const tbody = document.getElementById("debtTableBody");
+  tbody.innerHTML = "";
+
+  const teacher = State.mode === "teacher" || p.solutionShown;
+  const tableNoteEl = document.getElementById("tableNote");
+
+  t.table.rows.forEach((row, idx) => {
+    const tr = document.createElement("tr");
+    if(t.table.highlightRow === idx) tr.style.boxShadow = "inset 0 0 0 2px var(--warm)";
+    row.forEach((cell, ci) => {
+      const td = document.createElement("td");
+      td.innerHTML = cell;
+      // в обучении/тренировке первая ячейка — Год — всегда показана
+      if(ci === 0){
+        td.className = "";
+      } else {
+        // В учебных режимах не делаем интерактив здесь — таблица служит наглядной справкой.
+        // Подсветка ячейки, относящейся к нужному году (если задача про конкретный k).
+        if(t.data.k && t.data.k === idx+1){
+          td.style.background = "var(--hint-soft)";
+        }
+        if(teacher) td.classList.add("cell-filled");
+      }
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+
+  tableNoteEl.innerHTML = t.table.note ? `<b>Идея:</b> ${t.table.note}` : "";
+}
+
+/* ---------- Шаг 3: рабочая область ---------- */
+function renderWorkArea(){
+  const t = currentTask();
+  const p = currentProg();
+  const root = document.getElementById("workArea");
+  root.innerHTML = "";
+
+  if(!p.qOk && State.mode !== "teacher"){
+    root.innerHTML = `<div class="work-q">Сначала выбери коэффициент q слева. После этого появятся шаги расчёта.</div>`;
+    return;
+  }
+
+  const w = t.work;
+  const teacher = State.mode === "teacher" || p.solutionShown;
+
+  // Header — формула
+  const head = document.createElement("div");
+  head.className = "formula-big";
+  head.innerHTML = w.formulaText;
+  root.appendChild(head);
+
+  // По типу work — разные поля
+  if(w.kind === "compute-payment"){
+    addInput(root, "main", "Основная часть платежа: S/n =", w.mainPart, "руб.", teacher,
+      "S/n — это «тело кредита», делённое поровну на n лет. Постоянная величина.");
+    addInput(root, "interest", "Проценты во второй части: (r/100)·(долг до платежа) =", w.interestPart, "руб.", teacher,
+      "Берётся r% от долга, который был перед платежом.");
+    addInput(root, "total", "Платёж = основная часть + проценты =", w.total, "руб.", teacher,
+      "Просто сумма двух найденных значений.");
+  }
+  else if(w.kind === "compute-diff"){
+    addInput(root, "first", "Первый платёж P₁ = S/n + (r/100)·S =", w.firstPayment, "руб.", teacher,
+      "Первый платёж: основная часть плюс проценты со всей суммы S.");
+    addInput(root, "last",  "Последний платёж P\u2099 = S/n + (r/100)·(S/n) =", w.lastPayment, "руб.", teacher,
+      "Последний платёж: основная часть плюс проценты с долга S/n.");
+    addInput(root, "diff",  "Разность P₁ − P\u2099 =", w.diff, "руб.", teacher,
+      "Эта разность равна (S/n)·(r/100)·(n−1).");
+  }
+  else if(w.kind === "compute-total"){
+    addInput(root, "total", "Общая сумма выплат T = S·(1 + r(n+1)/200) =", w.total, "руб.", teacher,
+      "Сумма арифметической прогрессии платежей.");
+    addInput(root, "overpay", "Переплата (общие проценты) T − S =", w.overpay, "руб.", teacher,
+      "Это то, что заплачено сверх взятой суммы.");
+  }
+  else if(w.kind === "min-term"){
+    const ineqBox = document.createElement("div");
+    ineqBox.className = "work-explain";
+    ineqBox.innerHTML = `Условие: <span class="formula">${w.formulaText}</span><br>` +
+      `Подставляем: <span class="formula">${w.ineq}</span><br>` +
+      `Упрощаем: <span class="formula">${w.simplified}</span>`;
+    root.appendChild(ineqBox);
+    addInput(root, "nmin", "Минимальное целое n =", w.nMin, "лет", teacher,
+      "Выражаем n из неравенства и берём наименьшее целое.");
+  }
+  else if(w.kind === "solve-for-S"){
+    addInput(root, "coef", "Коэффициент 1 + r(n+1)/200 =", w.coef, "", teacher,
+      "Зависит только от r и n.");
+    addInput(root, "S",    "Сумма кредита S = T / коэффициент =", w.S, "руб.", teacher,
+      "Делим заданную общую выплату T на найденный коэффициент.");
+  }
+
+  // Объяснения «как считать» — только в режиме Обучение или Учитель
+  if((State.mode === "learn" || teacher) && w.explainSteps){
+    const exp = document.createElement("div");
+    exp.className = "work-explain";
+    exp.innerHTML = "<b>Разбор по шагам:</b><br>" + w.explainSteps.map((s,i)=>`${i+1}) ${s}`).join("<br>");
+    root.appendChild(exp);
+  }
+}
+
+function addInput(root, key, label, correctValue, unit, teacher, explainOnFocus){
+  const p = currentProg();
+  const step = document.createElement("div");
+  step.className = "work-step";
+  const q = document.createElement("div");
+  q.className = "work-q";
+  q.innerHTML = label;
+  const ir = document.createElement("div");
+  ir.className = "work-input";
+  const inp = document.createElement("input");
+  inp.type = "text";
+  inp.inputMode = "decimal";
+  inp.dataset.key = key;
+  inp.dataset.correct = correctValue;
+
+  const stored = p.inputs[key];
+  if(stored !== undefined){
+    inp.value = stored.value;
+    if(stored.ok) inp.classList.add("ok");
+    else if(stored.bad) inp.classList.add("bad");
+  }
+  if(teacher){
+    inp.value = fmtNum(correctValue);
+    inp.classList.add("ok");
+    inp.readOnly = true;
+  }
+  inp.addEventListener("change", ()=>{
+    checkInput(inp, correctValue);
+  });
+  inp.addEventListener("keydown", (e)=>{
+    if(e.key === "Enter"){ checkInput(inp, correctValue); inp.blur(); }
+  });
+
+  const u = document.createElement("span");
+  u.className = "unit";
+  u.textContent = unit;
+
+  ir.appendChild(inp);
+  ir.appendChild(u);
+  step.appendChild(q);
+  step.appendChild(ir);
+
+  if(State.mode === "learn" && explainOnFocus){
+    const ex = document.createElement("div");
+    ex.className = "work-explain";
+    ex.style.fontSize = "13px";
+    ex.style.marginTop = "8px";
+    ex.innerHTML = explainOnFocus;
+    step.appendChild(ex);
+  }
+
+  root.appendChild(step);
+}
+
+function parseNumInput(s){
+  if(typeof s !== "string") return NaN;
+  s = s.trim().replace(/\s/g,"").replace(",",".");
+  if(!s) return NaN;
+  return Number(s);
+}
+
+function checkInput(inp, correct){
+  const p = currentProg();
+  const val = parseNumInput(inp.value);
+  const key = inp.dataset.key;
+  if(isNaN(val)){
+    inp.classList.remove("ok","bad");
+    delete p.inputs[key];
+    saveProgress();
+    return;
+  }
+  // допуск — 0.01 для дробных, 0 для целых
+  const eps = Number.isInteger(correct) ? 0.5 : 0.01;
+  const ok = Math.abs(val - correct) < eps;
+  inp.classList.toggle("ok", ok);
+  inp.classList.toggle("bad", !ok);
+  p.inputs[key] = { value: inp.value, ok, bad: !ok };
+  State.stats.attempts++;
+  if(ok){
+    toast("Верно: " + fmtNum(correct) + (inp.nextSibling?.textContent ? " " + inp.nextSibling.textContent : ""), "ok");
+  } else {
+    toast(softErrorFor(key), "bad");
+  }
+  saveProgress();
+  renderEquation();
+  renderAnswer();
+}
+
+function softErrorFor(key){
+  const map = {
+    main: "Основная часть платежа — это S/n: вся сумма кредита, делённая на число лет.",
+    interest: "Проценты считаются от долга <i>до</i> платежа за этот год. Не от первоначальной суммы S, а от текущего остатка.",
+    total: "Сложи основную часть и проценты этого года.",
+    first: "Первый платёж: проценты считаются со всей суммы S.",
+    last: "Последний платёж: остался только последний кусок S/n, проценты с него.",
+    diff: "Разность равна (S/n)·(r/100)·(n−1).",
+    overpay: "Переплата = T − S. Это общие проценты, заплаченные банку.",
+    nmin: "Возьми <b>наименьшее целое</b>, которое удовлетворяет неравенству.",
+    coef: "Коэффициент = 1 + r(n+1)/200. Подставь конкретные r и n.",
+    S: "S = T / коэффициент. Просто разделить."
+  };
+  return map[key] || "Проверь арифметику и порядок действий: сначала проценты, затем сложение/деление.";
+}
+
+/* ---------- Шаг 4: итоговое уравнение ---------- */
+function renderEquation(){
+  const t = currentTask();
+  const p = currentProg();
+  const box = document.getElementById("equationBox");
+
+  const allInputsOk = checkAllInputsOk();
+  const teacher = State.mode === "teacher" || p.solutionShown;
+
+  if(!p.qOk && !teacher){
+    box.className = "equation-box empty";
+    box.textContent = "Появится после выбора q.";
+    return;
+  }
+  if(!allInputsOk && !teacher){
+    box.className = "equation-box empty";
+    box.textContent = "Появится после правильных значений на шаге 3.";
+    return;
+  }
+  box.className = "equation-box";
+  box.innerHTML = t.equation;
+}
+
+function checkAllInputsOk(){
+  const inputs = document.querySelectorAll("#workArea input");
+  if(inputs.length === 0) return false;
+  for(const i of inputs){
+    if(!i.classList.contains("ok")) return false;
+  }
+  return true;
+}
+
+/* ---------- Шаг 5: ответ ---------- */
+function renderAnswer(){
+  const t = currentTask();
+  const p = currentProg();
+  const root = document.getElementById("answerArea");
+  root.innerHTML = "";
+
+  const teacher = State.mode === "teacher" || p.solutionShown;
+  const eqReady = p.qOk && checkAllInputsOk();
+
+  if(!eqReady && !teacher){
+    root.innerHTML = `<div class="work-q">Введи ответ после того, как пройдены предыдущие шаги.</div>`;
+    return;
+  }
+
+  const lbl = document.createElement("div");
+  lbl.className = "work-q";
+  lbl.textContent = t.answer.label + ":";
+  root.appendChild(lbl);
+
+  const ir = document.createElement("div");
+  ir.className = "work-input";
+  const inp = document.createElement("input");
+  inp.id = "finalAnswerInput";
+  inp.type = "text";
+  inp.inputMode = "decimal";
+  inp.placeholder = "введите число";
+
+  if(p.done || teacher){
+    inp.value = fmtNum(t.answer.value);
+    inp.classList.add("ok");
+    inp.readOnly = true;
+  }
+
+  inp.addEventListener("keydown",(e)=>{
+    if(e.key==="Enter"){ submitFinal(inp); }
+  });
+
+  const u = document.createElement("span"); u.className="unit"; u.textContent = t.answer.unit;
+  ir.appendChild(inp); ir.appendChild(u);
+  root.appendChild(ir);
+
+  if(p.done || teacher){
+    const final = document.createElement("div");
+    final.className = "answer-final";
+    final.innerHTML = `Ответ: <b>${fmtNum(t.answer.value)}</b> ${t.answer.unit}`;
+    root.appendChild(final);
+  }
+}
+
+function submitFinal(inp){
+  const t = currentTask();
+  const p = currentProg();
+  const val = parseNumInput(inp.value);
+  if(isNaN(val)){
+    toast("Введи число.", "bad");
+    return;
+  }
+  State.stats.attempts++;
+  p.attempts++;
+  const eps = Number.isInteger(t.answer.value) ? 0.5 : 0.01;
+  if(Math.abs(val - t.answer.value) < eps){
+    if(!p.done){
+      State.stats.solved++;
+    }
+    p.done = true;
+    toast("Задача решена! Ответ: " + fmtNum(t.answer.value) + " " + t.answer.unit, "ok");
+    saveProgress();
+    renderAll();
+  } else {
+    inp.classList.remove("ok"); inp.classList.add("bad");
+    toast("Не совсем. Проверь финальную арифметику.", "bad");
+    saveProgress();
+  }
+}
+
+/* ---------- Статистика ---------- */
+function renderStats(){
+  const box = document.getElementById("statsBox");
+  const solvedCount = TASKS.filter(t => State.perTask[t.id]?.done).length;
+  const totalAttempts = Object.values(State.perTask).reduce((s,p)=>s+(p.attempts||0),0);
+  const totalHints = Object.values(State.perTask).reduce((s,p)=>s+(p.hintsShown||0),0);
+  box.innerHTML = `
+    <div class="stat"><span class="stat-val">${solvedCount}</span><span class="stat-label">решено из ${TASKS.length}</span></div>
+    <div class="stat"><span class="stat-val">${totalAttempts}</span><span class="stat-label">шагов выполнено</span></div>
+    <div class="stat"><span class="stat-val">${totalHints}</span><span class="stat-label">подсказок</span></div>
+    <div class="stat"><span class="stat-val">${currentProg().done ? "✓" : "…"}</span><span class="stat-label">текущая задача</span></div>
+  `;
+}
+
+/* ============================================================
+   КНОПКИ
+   ============================================================ */
+document.getElementById("btnHint").addEventListener("click", ()=>{
+  const t = currentTask();
+  const p = currentProg();
+  const hints = t.hints || [];
+  if(p.hintsShown >= hints.length){
+    toast("Подсказки закончились. Попробуй кнопку «Показать решение».", "hint");
+    return;
+  }
+  const h = hints[p.hintsShown];
+  p.hintsShown++;
+  State.stats.hints++;
+  toast("Подсказка " + p.hintsShown + ": " + h, "hint");
+  saveProgress();
+  renderStats();
+});
+
+document.getElementById("btnSolution").addEventListener("click", ()=>{
+  const p = currentProg();
+  p.solutionShown = true;
+  p.qOk = true;
+  saveProgress();
+  renderAll();
+  toast("Решение раскрыто. Изучи таблицу и шаги.", "ok");
+});
+
+document.getElementById("btnCheck").addEventListener("click", ()=>{
+  const p = currentProg();
+  if(!p.qOk){
+    toast("Сначала выбери q.", "hint");
+    return;
+  }
+  if(!checkAllInputsOk()){
+    // Найдём пустые/неверные
+    let firstBad = null;
+    document.querySelectorAll("#workArea input").forEach(i=>{
+      if(!i.classList.contains("ok") && !firstBad) firstBad = i;
+    });
+    if(firstBad){
+      firstBad.focus();
+      toast("Заполни и проверь каждое поле на шаге 3.", "hint");
+    } else {
+      toast("Заверши шаг 3.", "hint");
+    }
+    return;
+  }
+  const finalInp = document.getElementById("finalAnswerInput");
+  if(finalInp){
+    submitFinal(finalInp);
+  }
+});
+
+document.getElementById("btnReset").addEventListener("click", ()=>{
+  if(!confirm("Сбросить эту задачу? Прогресс именно этой задачи будет очищен.")) return;
+  const id = currentTask().id;
+  delete State.perTask[id];
+  saveProgress();
+  renderAll();
+  toast("Задача сброшена.", "ok");
+});
+
+document.getElementById("btnNext").addEventListener("click", ()=>{
+  State.taskIdx = (State.taskIdx + 1) % TASKS.length;
+  saveProgress();
+  renderAll();
+  window.scrollTo({top:0, behavior:"smooth"});
+});
+
+document.querySelectorAll(".mode-btn").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    State.mode = b.dataset.mode;
+    saveProgress();
+    renderAll();
+    toast("Режим: " + b.textContent, "ok");
+  });
+});
+
+/* ============================================================
+   СТАРТ
+   ============================================================ */
+loadProgress();
+renderAll();
+
+</script>
+</body>
+</html>
