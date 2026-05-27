@@ -423,7 +423,7 @@
     border-left: 3px solid var(--ink);
     line-height: 1.5;
   }
-  .question .q-tag {
+  .question .y-tag {
     display: inline-block;
     font-size: 0.7rem;
     color: var(--ink-mute);
@@ -577,7 +577,7 @@
     margin: 0 0 8px;
     color: var(--ink);
   }
-  .completion p {
+  .completion x {
     color: var(--ink-soft);
     margin: 0 0 18px;
     font-size: 0.92rem;
@@ -770,6 +770,526 @@
     .step-line, .option-card { font-size: 1rem; }
     .controls .btn { flex: 1 1 calc(50% - 4px); }
   }
+
+  /* ===========================================================
+     NEW CSS — onboarding, color system, builder, traps, test,
+     mobile reorder. Added without touching the original rules.
+     =========================================================== */
+
+  /* ---------- COLOR SYSTEM for half-sum / half-diff / cancel / warn ---------- */
+  .frac.sum-frac .num,
+  .frac.sum-frac .den {
+    background: var(--gold-soft);
+  }
+  .frac.sum-frac .num { border-bottom-color: var(--gold-deep); }
+  .frac.diff-frac .num,
+  .frac.diff-frac .den {
+    background: var(--blue-soft);
+  }
+  .frac.diff-frac .num { border-bottom-color: var(--blue); }
+  /* Half-sum / half-diff inline marker for textual mentions */
+  .tag-sum {
+    background: var(--gold-soft);
+    color: var(--gold-deep);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .tag-diff {
+    background: var(--blue-soft);
+    color: var(--blue);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  /* Warn accent for the minus sign in cos α − cos β */
+  .sign-warn {
+    color: var(--warn);
+    font-weight: 700;
+    background: var(--warn-soft);
+    padding: 0 5px;
+    border-radius: 4px;
+    margin: 0 2px;
+  }
+  /* Stronger cancellation color */
+  .cancel-strong {
+    position: relative;
+    background: var(--green-soft);
+    color: var(--green-deep);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .cancel-strong::after {
+    content: '';
+    position: absolute;
+    left: 4%; right: 4%; top: 50%;
+    height: 1.5px;
+    background: var(--green-deep);
+    transform: rotate(-2deg);
+  }
+
+  /* ---------- GRID AREAS for 3-panel layout ---------- */
+  .main {
+    grid-template-areas: "goal goal" "left right";
+  }
+  #goal-panel { grid-area: goal; min-height: auto; }
+  #left-panel { grid-area: left; }
+  #right-panel { grid-area: right; }
+  @media (max-width: 920px) {
+    .main {
+      grid-template-areas:
+        "goal"
+        "right"
+        "left";
+    }
+  }
+
+  /* Goal panel keeps the goal + sub-block compact */
+  #goal-panel {
+    padding: 18px 24px 14px;
+    min-height: 0;
+  }
+  #goal-panel .goal { margin-bottom: 12px; }
+  #goal-panel .sub-block { margin-bottom: 0; }
+
+  /* ---------- ONBOARDING OVERLAY ---------- */
+  .onboarding-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(28, 34, 56, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 16px;
+    animation: fadeIn 0.25s ease;
+  }
+  .onboarding-overlay.show { display: flex; }
+  .onboarding-card {
+    background: var(--card);
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    max-width: 580px;
+    width: 100%;
+    padding: 30px 32px 26px;
+    box-shadow: 0 20px 60px rgba(28,34,56,0.25);
+    animation: slideIn 0.3s ease;
+  }
+  .onboarding-card .ob-eyebrow {
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--gold-deep);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .onboarding-card .ob-title {
+    font-family: var(--serif);
+    font-size: 1.55rem;
+    line-height: 1.25;
+    margin-bottom: 14px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .onboarding-card .ob-lead {
+    color: var(--ink-soft);
+    font-size: 0.97rem;
+    line-height: 1.55;
+    margin-bottom: 22px;
+  }
+  .onboarding-card .ob-lead em {
+    background: var(--gold-soft);
+    color: var(--gold-deep);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 600;
+  }
+  .ob-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .ob-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: var(--card);
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    transition: all 0.15s;
+    color: var(--ink);
+  }
+  .ob-option:hover {
+    border-color: var(--gold);
+    background: var(--gold-glow);
+    transform: translateY(-1px);
+  }
+  .ob-option.primary {
+    background: linear-gradient(180deg, var(--gold-glow) 0%, var(--gold-soft) 100%);
+    border-color: var(--gold);
+  }
+  .ob-option.primary:hover { box-shadow: 0 6px 16px rgba(176,138,60,0.18); }
+  .ob-option .ob-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    background: var(--gold-soft);
+    color: var(--gold-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .ob-option .ob-text { flex: 1; }
+  .ob-option .ob-name {
+    font-size: 0.96rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .ob-option .ob-desc {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+  .ob-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+    font-size: 0.85rem;
+    color: var(--ink-mute);
+  }
+  .ob-skip-btn {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.88rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.15s;
+  }
+  .ob-skip-btn:hover { background: var(--bg-deep); }
+
+  /* Header "С чего начать?" button */
+  .start-help-btn {
+    background: var(--card);
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    padding: 7px 12px;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 0.86rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .start-help-btn:hover { background: var(--gold-soft); }
+
+  /* ---------- X/Y MINI-INTRO ---------- */
+  .pq-intro {
+    background: linear-gradient(180deg, var(--blue-soft) 0%, #eaf0f8 100%);
+    border: 1.5px solid var(--blue);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .pq-intro .pqi-eyebrow {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+  .pq-intro .pqi-title {
+    font-family: var(--serif);
+    font-size: 1.18rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .pq-intro .pqi-body {
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .pq-intro .pqi-setup {
+    background: var(--card);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 18px;
+  }
+  @media (max-width: 480px) {
+    .pq-intro .pqi-setup { grid-template-columns: 1fr; }
+  }
+  .pq-intro .pqi-step {
+    background: var(--card);
+    border-radius: 8px;
+    padding: 14px 16px;
+    border-left: 3px solid var(--blue);
+  }
+  .pq-intro .pqi-y {
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin-bottom: 10px;
+    font-family: var(--serif);
+  }
+  .pq-intro .pqi-final {
+    background: var(--green-soft);
+    color: var(--green-deep);
+    padding: 14px 16px;
+    border-radius: 8px;
+    border-left: 3px solid var(--green);
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+  .pq-skip {
+    text-align: right;
+    margin-top: 10px;
+  }
+  .pq-skip-btn {
+    background: none;
+    border: none;
+    color: var(--ink-mute);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.82rem;
+    text-decoration: underline;
+  }
+  .pq-skip-btn:hover { color: var(--ink-soft); }
+
+  /* ---------- ACTIVE BUILDER inside derivation step ---------- */
+  .builder-toggle {
+    display: inline-flex;
+    background: var(--bg-deep);
+    border-radius: 7px;
+    padding: 3px;
+    margin-bottom: 12px;
+    border: 1px solid var(--line);
+    font-size: 0.8rem;
+  }
+  .builder-toggle button {
+    background: transparent;
+    border: none;
+    padding: 5px 11px;
+    border-radius: 5px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.82rem;
+  }
+  .builder-toggle button.active {
+    background: var(--card);
+    color: var(--ink);
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(28,34,56,0.08);
+  }
+  .builder-canvas {
+    min-height: 64px;
+    background: var(--gold-glow);
+    border: 1.5px dashed var(--gold);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    line-height: 1.6;
+  }
+  .builder-canvas .placeholder {
+    color: var(--ink-mute);
+    font-style: italic;
+    font-size: 0.88rem;
+    font-family: var(--sans);
+  }
+  .builder-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 12px;
+  }
+  .builder-chip {
+    display: inline-block;
+    padding: 8px 12px;
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: var(--serif);
+    font-size: 0.98rem;
+    color: var(--ink);
+    transition: all 0.15s;
+  }
+  .builder-chip:hover:not(.used) {
+    border-color: var(--gold);
+    background: var(--gold-glow);
+  }
+  .builder-chip.used {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  .builder-chip.sign { font-weight: 700; min-width: 26px; text-align: center; }
+  .builder-canvas .placed-chip {
+    display: inline-block;
+    padding: 5px 10px;
+    background: var(--gold);
+    color: white;
+    border-radius: 6px;
+    font-family: var(--serif);
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .builder-canvas .placed-chip:hover { transform: scale(1.04); }
+
+  /* ---------- TRAPS section ---------- */
+  .trap-formula {
+    background: var(--warn-soft);
+    border: 1.5px solid var(--warn);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    text-align: center;
+    color: var(--ink);
+    position: relative;
+  }
+  .trap-formula .trap-tag {
+    position: absolute;
+    top: -9px;
+    left: 14px;
+    background: var(--warn);
+    color: white;
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .trap-list-header {
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .trap-intro-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .trap-intro-card strong { color: var(--ink); }
+
+  /* ---------- FINAL MINI-TEST ---------- */
+  .final-test-banner {
+    background: linear-gradient(180deg, var(--gold-glow) 0%, var(--gold-soft) 100%);
+    border: 1.5px solid var(--gold);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    box-shadow: var(--shadow);
+  }
+  .final-test-banner .ftb-text {
+    font-size: 0.92rem;
+    color: var(--ink);
+  }
+  .final-test-banner .ftb-text strong {
+    color: var(--gold-deep);
+    font-weight: 700;
+  }
+  .test-progress-pill {
+    display: inline-block;
+    background: var(--ink);
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .test-final-screen {
+    text-align: center;
+    padding: 30px 16px;
+  }
+  .test-final-screen .test-score {
+    font-family: var(--serif);
+    font-size: 2.8rem;
+    color: var(--gold-deep);
+    font-weight: 700;
+    line-height: 1;
+    margin: 10px 0 8px;
+  }
+  .test-final-screen .test-score-tag {
+    font-size: 0.8rem;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 18px;
+  }
+
+  /* ---------- ANIMATIONS ---------- */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ---------- Mobile reorder + tab text ---------- */
+  .formula-tab .tab-name {
+    display: inline-block;
+    margin-left: 4px;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .formula-tab.active .tab-name { color: rgba(255,255,255,0.85); }
+  .formula-tab.completed .tab-name { color: var(--green-deep); }
+  .formula-tab.active.completed .tab-name { color: rgba(255,255,255,0.85); }
+
+  @media (max-width: 760px) {
+    .formula-tab .tab-name { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -781,10 +1301,11 @@
       <a href="https://mathexam.space" class="home-link">← На главную</a>
       <div class="title-block">
         <div class="title">Преобразование суммы синусов и косинусов в произведение</div>
-        <div class="subtitle">Учимся выводить четыре формулы через замену <em>p, q</em></div>
+        <div class="subtitle">Учимся выводить четыре формулы через замену <em>x, y</em></div>
       </div>
     </div>
     <div class="modes" role="tablist">
+      <button class="start-help-btn" id="start-help-btn" type="button" title="Открыть стартовый экран">С чего начать?</button>
       <button class="mode-btn active" data-mode="learn" type="button">Обучение</button>
       <button class="mode-btn" data-mode="practice" type="button">Тренировка</button>
       <button class="mode-btn" data-mode="teacher" type="button">Учитель</button>
@@ -798,12 +1319,14 @@
       <button class="section-btn active" data-section="derive" type="button">1. Вывод формул</button>
       <button class="section-btn" data-section="assemble" type="button">2. Сборка формулы</button>
       <button class="section-btn" data-section="product" type="button">3. Произведение</button>
+      <button class="section-btn" data-section="traps" type="button">4. Ловушки</button>
     </div>
     <div class="formula-tabs" id="formula-tabs"></div>
   </div>
 
   <!-- MAIN -->
   <div class="main">
+    <div class="panel" id="goal-panel"></div>
     <div class="panel" id="left-panel"></div>
     <div class="panel" id="right-panel"></div>
   </div>
@@ -819,6 +1342,47 @@
       <span class="stat"><span class="dot"></span>ошибок: <strong id="stat-err">0</strong></span>
     </div>
     <button class="btn btn-warn" id="reset-btn" type="button">Сбросить прогресс</button>
+  </div>
+
+  <!-- FINAL TEST BANNER (appears when user has completed all 4 derivations) -->
+  <div id="final-test-banner-slot"></div>
+</div>
+
+<!-- ONBOARDING OVERLAY -->
+<div class="onboarding-overlay" id="onboarding-overlay">
+  <div class="onboarding-card">
+    <div class="ob-eyebrow">С чего начать?</div>
+    <div class="ob-title">Сумма синусов и косинусов&nbsp;→&nbsp;произведение</div>
+    <div class="ob-lead">
+      Сегодня учимся превращать <em>сумму или разность</em> синусов и косинусов в произведение.
+      Не надо зубрить сразу все четыре формулы — сначала поймём <em>одну</em>, а остальные будут даваться легко.
+    </div>
+    <div class="ob-options">
+      <button class="ob-option primary" id="ob-start-simple" type="button">
+        <div class="ob-icon">1</div>
+        <div class="ob-text">
+          <div class="ob-name">Начать с самой простой формулы: sin α + sin β</div>
+          <div class="ob-desc">Полный путь: сначала разберёмся, что такое x и y, затем выведем формулу пошагово.</div>
+        </div>
+      </button>
+      <button class="ob-option" id="ob-assemble" type="button">
+        <div class="ob-icon" style="background:var(--blue-soft);color:var(--blue);">2</div>
+        <div class="ob-text">
+          <div class="ob-name">Я уже знаю формулы — перейти к сборке</div>
+          <div class="ob-desc">Быстрый режим: соберите четыре формулы из блоков, чтобы закрепить структуру.</div>
+        </div>
+      </button>
+      <button class="ob-option" id="ob-teacher" type="button">
+        <div class="ob-icon" style="background:var(--green-soft);color:var(--green-deep);">3</div>
+        <div class="ob-text">
+          <div class="ob-name">Режим учителя</div>
+          <div class="ob-desc">Весь вывод сразу — для объяснения у доски или повторения.</div>
+        </div>
+      </button>
+    </div>
+    <div class="ob-footer">
+      <button class="ob-skip-btn" id="ob-dismiss" type="button">Закрыть и работать как обычно</button>
+    </div>
   </div>
 </div>
 
@@ -841,20 +1405,24 @@ const el = (tag, attrs = {}, html = '') => {
   return e;
 };
 const F = (n, d) => `<span class="frac"><span class="num">${n}</span><span class="den">${d}</span></span>`;
+// Colored helpers — half-sum (gold) and half-diff (blue).
+// Used everywhere half-sum / half-diff appears so the student sees structure visually.
+const FS = () => `<span class="frac sum-frac"><span class="num">α + β</span><span class="den">2</span></span>`;
+const FD = () => `<span class="frac diff-frac"><span class="num">α − β</span><span class="den">2</span></span>`;
 
 // ---------- ERROR HINTS ----------
 const ERR = {
-  order_pq:       'Порядок важен. У нас β = p − q, поэтому второй sin внутри — это sin(p − q). Поменяешь местами — получится −sin(p−q).',
-  sign_flip:      'Между sin α и sin β у нас знак <strong>+</strong>. После замены он сохраняется: sin α + sin β = sin(p+q) <strong>+</strong> sin(p−q).',
-  sign_flip_min:  'Между функциями стоит <strong>минус</strong>, он сохраняется. После замены: sin α − sin β = sin(p+q) <strong>−</strong> sin(p−q).',
-  sign_flip_cosp: 'Между cos α и cos β у нас знак <strong>+</strong>. После замены он сохраняется: cos α + cos β = cos(p+q) <strong>+</strong> cos(p−q).',
-  sign_flip_cosm: 'Между функциями стоит <strong>минус</strong>, он сохраняется. После замены: cos α − cos β = cos(p+q) <strong>−</strong> cos(p−q).',
+  order_pq:       'Порядок важен. У нас β = x − y, поэтому второй sin внутри — это sin(x − y). Поменяешь местами — получится −sin(x−y).',
+  sign_flip:      'Между sin α и sin β у нас знак <strong>+</strong>. После замены он сохраняется: sin α + sin β = sin(x+y) <strong>+</strong> sin(x−y).',
+  sign_flip_min:  'Между функциями стоит <strong>минус</strong>, он сохраняется. После замены: sin α − sin β = sin(x+y) <strong>−</strong> sin(x−y).',
+  sign_flip_cosp: 'Между cos α и cos β у нас знак <strong>+</strong>. После замены он сохраняется: cos α + cos β = cos(x+y) <strong>+</strong> cos(x−y).',
+  sign_flip_cosm: 'Между функциями стоит <strong>минус</strong>, он сохраняется. После замены: cos α − cos β = cos(x+y) <strong>−</strong> cos(x−y).',
   wrong_formula:  'Это формула для другой функции. У нас раскрывается синус, а не косинус.',
   wrong_formula_c:'Это формула для другой функции. У нас раскрывается косинус, а не синус.',
-  sign_inside_p:  'У нас sin(p <strong>+</strong> q). Формула суммы: sin(x+y) = sin x cos y <strong>+</strong> cos x sin y — знак сохраняется.',
-  sign_inside_m:  'У нас sin(p <strong>−</strong> q). Формула разности: sin(x−y) = sin x cos y <strong>−</strong> cos x sin y — со знаком минус.',
-  sign_cos_p:     'У нас cos(p <strong>+</strong> q). Формула: cos(x+y) = cos x cos y <strong>−</strong> sin x sin y — со знаком минус!',
-  sign_cos_m:     'У нас cos(p <strong>−</strong> q). Формула: cos(x−y) = cos x cos y <strong>+</strong> sin x sin y — со знаком плюс.',
+  sign_inside_p:  'У нас sin(x <strong>+</strong> y). Формула суммы: sin(x+y) = sin x cos y <strong>+</strong> cos x sin y — знак сохраняется.',
+  sign_inside_m:  'У нас sin(x <strong>−</strong> y). Формула разности: sin(x−y) = sin x cos y <strong>−</strong> cos x sin y — со знаком минус.',
+  sign_cos_p:     'У нас cos(x <strong>+</strong> y). Формула: cos(x+y) = cos x cos y <strong>−</strong> sin x sin y — со знаком минус!',
+  sign_cos_m:     'У нас cos(x <strong>−</strong> y). Формула: cos(x−y) = cos x cos y <strong>+</strong> sin x sin y — со знаком плюс.',
   no_bracket:     '<strong>Перед скобкой стоит минус!</strong> Значит, знак каждого слагаемого внутри скобки меняется на противоположный. Сначала запиши со скобками, потом аккуратно раскрой.',
   bracket_err:    '<strong>Внимание со знаками!</strong> Перед скобкой стоит минус — каждое слагаемое внутри меняет знак на противоположный.',
   order_only:     'Слагаемые те же, но порядок другой. Сейчас важно записать <em>именно в том порядке</em>, в котором мы получили после раскрытия.',
@@ -862,15 +1430,15 @@ const ERR = {
   cancel_same:    'Эти слагаемые одинаковые по знаку — они не сокращаются, а складываются.',
   cancel_miss:    'Посмотри внимательно: ищем пару одинаковых выражений с противоположными знаками — <strong>+ X</strong> и <strong>− X</strong>.',
   cancel_wrong:   'Эти слагаемые не одинаковы. Сокращаются только идентичные по виду выражения.',
-  sin_cos_swap:   'У нас именно sin <em>p</em> cos <em>q</em>: синус берётся от p, косинус — от q. Перепутать порядок легко.',
-  cos_sin_swap:   'У нас именно cos <em>p</em> sin <em>q</em>: косинус от p, синус от q.',
+  sin_cos_swap:   'У нас именно sin <em>x</em> cos <em>y</em>: синус берётся от x, косинус — от y. Перепутать порядок легко.',
+  cos_sin_swap:   'У нас именно cos <em>x</em> sin <em>y</em>: косинус от x, синус от y.',
   forgot_two:     'Два одинаковых слагаемых дают <strong>удвоение</strong>: X + X = 2X.',
   forgot_minus:   'После сокращения остался <strong>минус</strong>. Не пропусти его.',
-  pq_swap_back:   'p = (α+β)/2 — это полусумма, q = (α−β)/2 — это полуразность. Проверь, что подставляешь.',
-  pq_sin_cos:     'Мы получили <strong>2 sin p cos q</strong>. Внутри sin — это <em>p</em> = (α+β)/2, внутри cos — это <em>q</em> = (α−β)/2.',
-  pq_cos_sin:     'Мы получили <strong>2 cos p sin q</strong>. Внутри cos — это <em>p</em> = (α+β)/2, внутри sin — это <em>q</em> = (α−β)/2.',
-  pq_cos_cos:     'Мы получили <strong>2 cos p cos q</strong>. Внутри обоих косинусов — разные аргументы: p и q.',
-  pq_sin_sin:     'Мы получили <strong>−2 sin p sin q</strong>. Не забудь минус! Внутри синусов — p и q.'
+  pq_swap_back:   'x = (α+β)/2 — это полусумма, y = (α−β)/2 — это полуразность. Проверь, что подставляешь.',
+  pq_sin_cos:     'Мы получили <strong>2 sin x cos y</strong>. Внутри sin — это <em>x</em> = (α+β)/2, внутри cos — это <em>y</em> = (α−β)/2.',
+  pq_cos_sin:     'Мы получили <strong>2 cos x sin y</strong>. Внутри cos — это <em>x</em> = (α+β)/2, внутри sin — это <em>y</em> = (α−β)/2.',
+  pq_cos_cos:     'Мы получили <strong>2 cos x cos y</strong>. Внутри обоих косинусов — разные аргументы: x и y.',
+  pq_sin_sin:     'Мы получили <strong>−2 sin x sin y</strong>. Не забудь минус! Внутри синусов — x и y.'
 };
 
 // ---------- DERIVATIONS ----------
@@ -888,42 +1456,42 @@ const DERIVATIONS = [
     id: 'sin_sum',
     label: '1',
     lhs: 'sin α + sin β',
-    target: '2 sin' + F('α + β', '2') + ' cos' + F('α − β', '2'),
+    target: '2 sin' + FS() + ' cos' + FD(),
     steps: [
       {
         stepName: 'Замена',
-        prompt: 'Применяем замену <strong>α = p + q</strong>, <strong>β = p − q</strong>. Что получится?',
+        prompt: 'Применяем замену <strong>α = x + y</strong>, <strong>β = x − y</strong>. Что получится?',
         hint: 'Заменяй α и β по отдельности. Знак между ними (плюс) сохраняется.',
         options: [
-          { html: 'sin(p + q) + sin(p − q)', correct: true },
-          { html: 'sin(p − q) + sin(p + q)', err: 'order_pq' },
-          { html: 'sin(p + q) − sin(p − q)', err: 'sign_flip' }
+          { html: 'sin(x + y) + sin(x − y)', correct: true },
+          { html: 'sin(x − y) + sin(x + y)', err: 'order_pq' },
+          { html: 'sin(x + y) − sin(x − y)', err: 'sign_flip' }
         ],
-        line: 'sin α + sin β &nbsp;=&nbsp; sin(p + q) + sin(p − q)',
-        comment: 'Просто подставили α = p + q и β = p − q. Знак между функциями сохранился.'
+        line: 'sin α + sin β &nbsp;=&nbsp; sin(x + y) + sin(x − y)',
+        comment: 'Просто подставили α = x + y и β = x − y. Знак между функциями сохранился.'
       },
       {
-        stepName: 'Раскрываем sin(p + q)',
-        prompt: 'Раскрой <strong>sin(p + q)</strong> по формуле синуса суммы.',
+        stepName: 'Раскрываем sin(x + y)',
+        prompt: 'Раскрой <strong>sin(x + y)</strong> по формуле синуса суммы.',
         hint: 'sin(x + y) = sin x · cos y + cos x · sin y',
         options: [
-          { html: 'sin p cos q + cos p sin q', correct: true },
-          { html: 'sin p cos q − cos p sin q', err: 'sign_inside_p' },
-          { html: 'cos p cos q − sin p sin q', err: 'wrong_formula' }
+          { html: 'sin x cos y + cos x sin y', correct: true },
+          { html: 'sin x cos y − cos x sin y', err: 'sign_inside_p' },
+          { html: 'cos x cos y − sin x sin y', err: 'wrong_formula' }
         ],
-        line: 'sin(p + q) &nbsp;=&nbsp; sin p cos q + cos p sin q',
+        line: 'sin(x + y) &nbsp;=&nbsp; sin x cos y + cos x sin y',
         comment: 'Применили формулу синуса суммы.'
       },
       {
-        stepName: 'Раскрываем sin(p − q)',
-        prompt: 'Раскрой <strong>sin(p − q)</strong> по формуле синуса разности.',
+        stepName: 'Раскрываем sin(x − y)',
+        prompt: 'Раскрой <strong>sin(x − y)</strong> по формуле синуса разности.',
         hint: 'sin(x − y) = sin x · cos y − cos x · sin y',
         options: [
-          { html: 'sin p cos q − cos p sin q', correct: true },
-          { html: 'sin p cos q + cos p sin q', err: 'sign_inside_m' },
-          { html: 'cos p cos q + sin p sin q', err: 'wrong_formula' }
+          { html: 'sin x cos y − cos x sin y', correct: true },
+          { html: 'sin x cos y + cos x sin y', err: 'sign_inside_m' },
+          { html: 'cos x cos y + sin x sin y', err: 'wrong_formula' }
         ],
-        line: 'sin(p − q) &nbsp;=&nbsp; sin p cos q − cos p sin q',
+        line: 'sin(x − y) &nbsp;=&nbsp; sin x cos y − cos x sin y',
         comment: 'Применили формулу синуса разности.'
       },
       {
@@ -931,11 +1499,11 @@ const DERIVATIONS = [
         prompt: 'Запиши сумму двух раскрытых выражений (без преобразований).',
         hint: 'Просто запиши одно за другим: первое + второе.',
         options: [
-          { html: 'sin p cos q + cos p sin q + sin p cos q − cos p sin q', correct: true },
-          { html: '2 sin p cos q + 2 cos p sin q', err: 'too_early' },
-          { html: 'sin p cos q − cos p sin q + sin p cos q + cos p sin q', err: 'order_only' }
+          { html: 'sin x cos y + cos x sin y + sin x cos y − cos x sin y', correct: true },
+          { html: '2 sin x cos y + 2 cos x sin y', err: 'too_early' },
+          { html: 'sin x cos y − cos x sin y + sin x cos y + cos x sin y', err: 'order_only' }
         ],
-        line: 'sin α + sin β &nbsp;=&nbsp; sin p cos q + cos p sin q + sin p cos q − cos p sin q',
+        line: 'sin α + sin β &nbsp;=&nbsp; sin x cos y + cos x sin y + sin x cos y − cos x sin y',
         comment: 'Записали сумму. Между функциями стоял плюс, скобки не нужны.'
       },
       {
@@ -943,35 +1511,35 @@ const DERIVATIONS = [
         prompt: 'Найди пару слагаемых, которые сокращаются.',
         hint: 'Ищи два одинаковых выражения с противоположными знаками.',
         options: [
-          { html: '<span class="hl">+ cos p sin q</span> и <span class="hl">− cos p sin q</span>', correct: true },
-          { html: '<span class="hl">+ sin p cos q</span> и <span class="hl">+ sin p cos q</span>', err: 'cancel_same' },
+          { html: '<span class="hl">+ cos x sin y</span> и <span class="hl">− cos x sin y</span>', correct: true },
+          { html: '<span class="hl">+ sin x cos y</span> и <span class="hl">+ sin x cos y</span>', err: 'cancel_same' },
           { html: 'Ничего не сокращается', err: 'cancel_miss' }
         ],
-        line: 'sin α + sin β &nbsp;=&nbsp; sin p cos q + <span class="cancel">cos p sin q</span> + sin p cos q <span class="cancel">− cos p sin q</span>',
-        comment: 'Слагаемые + cos p sin q и − cos p sin q взаимно уничтожаются.'
+        line: 'sin α + sin β &nbsp;=&nbsp; sin x cos y + <span class="cancel">cos x sin y</span> + sin x cos y <span class="cancel">− cos x sin y</span>',
+        comment: 'Слагаемые + cos x sin y и − cos x sin y взаимно уничтожаются.'
       },
       {
         stepName: 'Результат',
         prompt: 'Что осталось после сокращения?',
-        hint: 'Осталось: sin p cos q + sin p cos q.',
+        hint: 'Осталось: sin x cos y + sin x cos y.',
         options: [
-          { html: '2 sin p cos q', correct: true },
-          { html: '2 cos p sin q', err: 'sin_cos_swap' },
-          { html: 'sin p cos q', err: 'forgot_two' }
+          { html: '2 sin x cos y', correct: true },
+          { html: '2 cos x sin y', err: 'sin_cos_swap' },
+          { html: 'sin x cos y', err: 'forgot_two' }
         ],
-        line: 'sin α + sin β &nbsp;=&nbsp; 2 sin p cos q',
+        line: 'sin α + sin β &nbsp;=&nbsp; 2 sin x cos y',
         comment: 'Два одинаковых слагаемых превращаются в удвоение.'
       },
       {
         stepName: 'Возврат к α и β',
-        prompt: 'Вернись от p, q обратно к α, β. Что в итоге?',
-        hint: 'p = (α + β)/2, q = (α − β)/2.',
+        prompt: 'Вернись от x, y обратно к α, β. Что в итоге?',
+        hint: 'x = (α + β)/2, y = (α − β)/2.',
         options: [
-          { html: '2 sin' + F('α + β', '2') + ' cos' + F('α − β', '2'), correct: true },
-          { html: '2 sin' + F('α − β', '2') + ' cos' + F('α + β', '2'), err: 'pq_sin_cos' },
-          { html: '2 cos' + F('α + β', '2') + ' sin' + F('α − β', '2'), err: 'sin_cos_swap' }
+          { html: '2 sin' + FS() + ' cos' + FD(), correct: true },
+          { html: '2 sin' + FD() + ' cos' + FS(), err: 'pq_sin_cos' },
+          { html: '2 cos' + FS() + ' sin' + FD(), err: 'sin_cos_swap' }
         ],
-        line: '<strong>sin α + sin β &nbsp;=&nbsp; 2 sin' + F('α + β', '2') + ' cos' + F('α − β', '2') + '</strong>',
+        line: '<strong>sin α + sin β &nbsp;=&nbsp; 2 sin' + FS() + ' cos' + FD() + '</strong>',
         comment: 'Это и есть искомая формула: сумма синусов = 2 · sin полусуммы · cos полуразности.'
       }
     ]
@@ -982,42 +1550,42 @@ const DERIVATIONS = [
     id: 'sin_diff',
     label: '2',
     lhs: 'sin α − sin β',
-    target: '2 sin' + F('α − β', '2') + ' cos' + F('α + β', '2'),
+    target: '2 sin' + FD() + ' cos' + FS(),
     steps: [
       {
         stepName: 'Замена',
-        prompt: 'Применяем замену α = p + q, β = p − q. Что получится?',
+        prompt: 'Применяем замену α = x + y, β = x − y. Что получится?',
         hint: 'Знак минус между функциями сохраняется.',
         options: [
-          { html: 'sin(p + q) − sin(p − q)', correct: true },
-          { html: 'sin(p − q) − sin(p + q)', err: 'order_pq' },
-          { html: 'sin(p + q) + sin(p − q)', err: 'sign_flip_min' }
+          { html: 'sin(x + y) − sin(x − y)', correct: true },
+          { html: 'sin(x − y) − sin(x + y)', err: 'order_pq' },
+          { html: 'sin(x + y) + sin(x − y)', err: 'sign_flip_min' }
         ],
-        line: 'sin α − sin β &nbsp;=&nbsp; sin(p + q) − sin(p − q)',
+        line: 'sin α − sin β &nbsp;=&nbsp; sin(x + y) − sin(x − y)',
         comment: 'Просто подставили. Минус между функциями сохранился.'
       },
       {
-        stepName: 'Раскрываем sin(p + q)',
-        prompt: 'Раскрой sin(p + q).',
+        stepName: 'Раскрываем sin(x + y)',
+        prompt: 'Раскрой sin(x + y).',
         hint: 'sin(x + y) = sin x cos y + cos x sin y',
         options: [
-          { html: 'sin p cos q + cos p sin q', correct: true },
-          { html: 'sin p cos q − cos p sin q', err: 'sign_inside_p' },
-          { html: 'cos p cos q − sin p sin q', err: 'wrong_formula' }
+          { html: 'sin x cos y + cos x sin y', correct: true },
+          { html: 'sin x cos y − cos x sin y', err: 'sign_inside_p' },
+          { html: 'cos x cos y − sin x sin y', err: 'wrong_formula' }
         ],
-        line: 'sin(p + q) &nbsp;=&nbsp; sin p cos q + cos p sin q',
+        line: 'sin(x + y) &nbsp;=&nbsp; sin x cos y + cos x sin y',
         comment: 'Формула синуса суммы.'
       },
       {
-        stepName: 'Раскрываем sin(p − q)',
-        prompt: 'Раскрой sin(p − q).',
+        stepName: 'Раскрываем sin(x − y)',
+        prompt: 'Раскрой sin(x − y).',
         hint: 'sin(x − y) = sin x cos y − cos x sin y',
         options: [
-          { html: 'sin p cos q − cos p sin q', correct: true },
-          { html: 'sin p cos q + cos p sin q', err: 'sign_inside_m' },
-          { html: 'cos p cos q + sin p sin q', err: 'wrong_formula' }
+          { html: 'sin x cos y − cos x sin y', correct: true },
+          { html: 'sin x cos y + cos x sin y', err: 'sign_inside_m' },
+          { html: 'cos x cos y + sin x sin y', err: 'wrong_formula' }
         ],
-        line: 'sin(p − q) &nbsp;=&nbsp; sin p cos q − cos p sin q',
+        line: 'sin(x − y) &nbsp;=&nbsp; sin x cos y − cos x sin y',
         comment: 'Формула синуса разности.'
       },
       {
@@ -1025,11 +1593,11 @@ const DERIVATIONS = [
         prompt: 'Между функциями стоит <strong>минус</strong>. Как правильно записать вычитание?',
         hint: 'Когда перед второй скобкой стоит минус — обязательно заключи второе выражение в скобки!',
         options: [
-          { html: '(sin p cos q + cos p sin q) − (sin p cos q − cos p sin q)', correct: true },
-          { html: 'sin p cos q + cos p sin q − sin p cos q − cos p sin q', err: 'no_bracket' },
-          { html: 'sin p cos q + cos p sin q − sin p cos q + cos p sin q', err: 'no_bracket' }
+          { html: '(sin x cos y + cos x sin y) − (sin x cos y − cos x sin y)', correct: true },
+          { html: 'sin x cos y + cos x sin y − sin x cos y − cos x sin y', err: 'no_bracket' },
+          { html: 'sin x cos y + cos x sin y − sin x cos y + cos x sin y', err: 'no_bracket' }
         ],
-        line: 'sin α − sin β &nbsp;=&nbsp; (sin p cos q + cos p sin q) − (sin p cos q − cos p sin q)',
+        line: 'sin α − sin β &nbsp;=&nbsp; (sin x cos y + cos x sin y) − (sin x cos y − cos x sin y)',
         comment: 'Внимание: вычитаем целое выражение, поэтому ставим скобки.'
       },
       {
@@ -1037,47 +1605,47 @@ const DERIVATIONS = [
         prompt: 'Раскрой скобки. <strong>Внимание со знаками!</strong>',
         hint: 'Перед второй скобкой минус: знак <em>каждого</em> слагаемого внутри меняется на противоположный.',
         options: [
-          { html: 'sin p cos q + cos p sin q − sin p cos q + cos p sin q', correct: true },
-          { html: 'sin p cos q + cos p sin q − sin p cos q − cos p sin q', err: 'bracket_err' },
-          { html: 'sin p cos q − cos p sin q − sin p cos q + cos p sin q', err: 'bracket_err' }
+          { html: 'sin x cos y + cos x sin y − sin x cos y + cos x sin y', correct: true },
+          { html: 'sin x cos y + cos x sin y − sin x cos y − cos x sin y', err: 'bracket_err' },
+          { html: 'sin x cos y − cos x sin y − sin x cos y + cos x sin y', err: 'bracket_err' }
         ],
-        line: 'sin α − sin β &nbsp;=&nbsp; sin p cos q + cos p sin q − sin p cos q + cos p sin q',
-        comment: 'Минус перед скобкой поменял знаки: −sin p cos q стало … (минус минус = плюс) cos p sin q.'
+        line: 'sin α − sin β &nbsp;=&nbsp; sin x cos y + cos x sin y − sin x cos y + cos x sin y',
+        comment: 'Минус перед скобкой поменял знаки: −sin x cos y стало … (минус минус = плюс) cos x sin y.'
       },
       {
         stepName: 'Что сокращается?',
         prompt: 'Найди сокращающуюся пару.',
         hint: 'Ищи одинаковые выражения с противоположными знаками.',
         options: [
-          { html: '<span class="hl">+ sin p cos q</span> и <span class="hl">− sin p cos q</span>', correct: true },
-          { html: '<span class="hl">+ cos p sin q</span> и <span class="hl">+ cos p sin q</span>', err: 'cancel_same' },
+          { html: '<span class="hl">+ sin x cos y</span> и <span class="hl">− sin x cos y</span>', correct: true },
+          { html: '<span class="hl">+ cos x sin y</span> и <span class="hl">+ cos x sin y</span>', err: 'cancel_same' },
           { html: 'Ничего не сокращается', err: 'cancel_miss' }
         ],
-        line: 'sin α − sin β &nbsp;=&nbsp; <span class="cancel">sin p cos q</span> + cos p sin q <span class="cancel">− sin p cos q</span> + cos p sin q',
-        comment: 'sin p cos q и − sin p cos q взаимно уничтожаются.'
+        line: 'sin α − sin β &nbsp;=&nbsp; <span class="cancel">sin x cos y</span> + cos x sin y <span class="cancel">− sin x cos y</span> + cos x sin y',
+        comment: 'sin x cos y и − sin x cos y взаимно уничтожаются.'
       },
       {
         stepName: 'Результат',
         prompt: 'Что осталось после сокращения?',
-        hint: 'Осталось: cos p sin q + cos p sin q.',
+        hint: 'Осталось: cos x sin y + cos x sin y.',
         options: [
-          { html: '2 cos p sin q', correct: true },
-          { html: '2 sin p cos q', err: 'cos_sin_swap' },
-          { html: 'cos p sin q', err: 'forgot_two' }
+          { html: '2 cos x sin y', correct: true },
+          { html: '2 sin x cos y', err: 'cos_sin_swap' },
+          { html: 'cos x sin y', err: 'forgot_two' }
         ],
-        line: 'sin α − sin β &nbsp;=&nbsp; 2 cos p sin q',
-        comment: 'Два одинаковых слагаемых cos p sin q.'
+        line: 'sin α − sin β &nbsp;=&nbsp; 2 cos x sin y',
+        comment: 'Два одинаковых слагаемых cos x sin y.'
       },
       {
         stepName: 'Возврат к α и β',
-        prompt: 'Вернись от p, q к α, β.',
-        hint: 'p = (α+β)/2, q = (α−β)/2. Удобно сначала записать с sin (так традиционно ставят в формуле).',
+        prompt: 'Вернись от x, y к α, β.',
+        hint: 'x = (α+β)/2, y = (α−β)/2. Удобно сначала записать с sin (так традиционно ставят в формуле).',
         options: [
-          { html: '2 sin' + F('α − β', '2') + ' cos' + F('α + β', '2'), correct: true },
-          { html: '2 sin' + F('α + β', '2') + ' cos' + F('α − β', '2'), err: 'pq_cos_sin' },
-          { html: '2 cos' + F('α − β', '2') + ' sin' + F('α + β', '2'), err: 'cos_sin_swap' }
+          { html: '2 sin' + FD() + ' cos' + FS(), correct: true },
+          { html: '2 sin' + FS() + ' cos' + FD(), err: 'pq_cos_sin' },
+          { html: '2 cos' + FD() + ' sin' + FS(), err: 'cos_sin_swap' }
         ],
-        line: '<strong>sin α − sin β &nbsp;=&nbsp; 2 sin' + F('α − β', '2') + ' cos' + F('α + β', '2') + '</strong>',
+        line: '<strong>sin α − sin β &nbsp;=&nbsp; 2 sin' + FD() + ' cos' + FS() + '</strong>',
         comment: 'Можно записать и как 2 cos((α+β)/2) sin((α−β)/2) — это одно и то же.'
       }
     ]
@@ -1088,42 +1656,42 @@ const DERIVATIONS = [
     id: 'cos_sum',
     label: '3',
     lhs: 'cos α + cos β',
-    target: '2 cos' + F('α + β', '2') + ' cos' + F('α − β', '2'),
+    target: '2 cos' + FS() + ' cos' + FD(),
     steps: [
       {
         stepName: 'Замена',
-        prompt: 'Применяем замену α = p + q, β = p − q. Что получится?',
+        prompt: 'Применяем замену α = x + y, β = x − y. Что получится?',
         hint: 'Знак плюс между функциями сохраняется.',
         options: [
-          { html: 'cos(p + q) + cos(p − q)', correct: true },
-          { html: 'cos(p − q) + cos(p + q)', err: 'order_pq' },
-          { html: 'cos(p + q) − cos(p − q)', err: 'sign_flip_cosp' }
+          { html: 'cos(x + y) + cos(x − y)', correct: true },
+          { html: 'cos(x − y) + cos(x + y)', err: 'order_pq' },
+          { html: 'cos(x + y) − cos(x − y)', err: 'sign_flip_cosp' }
         ],
-        line: 'cos α + cos β &nbsp;=&nbsp; cos(p + q) + cos(p − q)',
+        line: 'cos α + cos β &nbsp;=&nbsp; cos(x + y) + cos(x − y)',
         comment: 'Подставили α и β.'
       },
       {
-        stepName: 'Раскрываем cos(p + q)',
-        prompt: 'Раскрой cos(p + q).',
+        stepName: 'Раскрываем cos(x + y)',
+        prompt: 'Раскрой cos(x + y).',
         hint: 'cos(x + y) = cos x cos y − sin x sin y  (внимание: внутри минус!)',
         options: [
-          { html: 'cos p cos q − sin p sin q', correct: true },
-          { html: 'cos p cos q + sin p sin q', err: 'sign_cos_p' },
-          { html: 'sin p cos q + cos p sin q', err: 'wrong_formula_c' }
+          { html: 'cos x cos y − sin x sin y', correct: true },
+          { html: 'cos x cos y + sin x sin y', err: 'sign_cos_p' },
+          { html: 'sin x cos y + cos x sin y', err: 'wrong_formula_c' }
         ],
-        line: 'cos(p + q) &nbsp;=&nbsp; cos p cos q − sin p sin q',
+        line: 'cos(x + y) &nbsp;=&nbsp; cos x cos y − sin x sin y',
         comment: 'Формула косинуса суммы. Знак внутри становится противоположным.'
       },
       {
-        stepName: 'Раскрываем cos(p − q)',
-        prompt: 'Раскрой cos(p − q).',
+        stepName: 'Раскрываем cos(x − y)',
+        prompt: 'Раскрой cos(x − y).',
         hint: 'cos(x − y) = cos x cos y + sin x sin y  (внутри знак становится плюс)',
         options: [
-          { html: 'cos p cos q + sin p sin q', correct: true },
-          { html: 'cos p cos q − sin p sin q', err: 'sign_cos_m' },
-          { html: 'sin p cos q − cos p sin q', err: 'wrong_formula_c' }
+          { html: 'cos x cos y + sin x sin y', correct: true },
+          { html: 'cos x cos y − sin x sin y', err: 'sign_cos_m' },
+          { html: 'sin x cos y − cos x sin y', err: 'wrong_formula_c' }
         ],
-        line: 'cos(p − q) &nbsp;=&nbsp; cos p cos q + sin p sin q',
+        line: 'cos(x − y) &nbsp;=&nbsp; cos x cos y + sin x sin y',
         comment: 'Формула косинуса разности.'
       },
       {
@@ -1131,11 +1699,11 @@ const DERIVATIONS = [
         prompt: 'Запиши сумму (между ними плюс — скобки не нужны).',
         hint: 'Просто запиши: первое + второе.',
         options: [
-          { html: 'cos p cos q − sin p sin q + cos p cos q + sin p sin q', correct: true },
-          { html: '2 cos p cos q', err: 'too_early' },
-          { html: 'cos p cos q + sin p sin q + cos p cos q − sin p sin q', err: 'order_only' }
+          { html: 'cos x cos y − sin x sin y + cos x cos y + sin x sin y', correct: true },
+          { html: '2 cos x cos y', err: 'too_early' },
+          { html: 'cos x cos y + sin x sin y + cos x cos y − sin x sin y', err: 'order_only' }
         ],
-        line: 'cos α + cos β &nbsp;=&nbsp; cos p cos q − sin p sin q + cos p cos q + sin p sin q',
+        line: 'cos α + cos β &nbsp;=&nbsp; cos x cos y − sin x sin y + cos x cos y + sin x sin y',
         comment: 'Просто записали сумму.'
       },
       {
@@ -1143,35 +1711,35 @@ const DERIVATIONS = [
         prompt: 'Найди сокращающуюся пару.',
         hint: 'Ищи одинаковые слагаемые с противоположными знаками.',
         options: [
-          { html: '<span class="hl">− sin p sin q</span> и <span class="hl">+ sin p sin q</span>', correct: true },
-          { html: '<span class="hl">+ cos p cos q</span> и <span class="hl">+ cos p cos q</span>', err: 'cancel_same' },
+          { html: '<span class="hl">− sin x sin y</span> и <span class="hl">+ sin x sin y</span>', correct: true },
+          { html: '<span class="hl">+ cos x cos y</span> и <span class="hl">+ cos x cos y</span>', err: 'cancel_same' },
           { html: 'Ничего не сокращается', err: 'cancel_miss' }
         ],
-        line: 'cos α + cos β &nbsp;=&nbsp; cos p cos q <span class="cancel">− sin p sin q</span> + cos p cos q <span class="cancel">+ sin p sin q</span>',
-        comment: '− sin p sin q и + sin p sin q взаимно уничтожаются.'
+        line: 'cos α + cos β &nbsp;=&nbsp; cos x cos y <span class="cancel">− sin x sin y</span> + cos x cos y <span class="cancel">+ sin x sin y</span>',
+        comment: '− sin x sin y и + sin x sin y взаимно уничтожаются.'
       },
       {
         stepName: 'Результат',
         prompt: 'Что осталось?',
-        hint: 'Осталось: cos p cos q + cos p cos q.',
+        hint: 'Осталось: cos x cos y + cos x cos y.',
         options: [
-          { html: '2 cos p cos q', correct: true },
-          { html: '2 sin p sin q', err: 'cancel_wrong' },
-          { html: 'cos p cos q', err: 'forgot_two' }
+          { html: '2 cos x cos y', correct: true },
+          { html: '2 sin x sin y', err: 'cancel_wrong' },
+          { html: 'cos x cos y', err: 'forgot_two' }
         ],
-        line: 'cos α + cos β &nbsp;=&nbsp; 2 cos p cos q',
+        line: 'cos α + cos β &nbsp;=&nbsp; 2 cos x cos y',
         comment: 'Два одинаковых слагаемых.'
       },
       {
         stepName: 'Возврат к α и β',
-        prompt: 'Подставь обратно p и q.',
-        hint: 'Оба косинуса разные: внутри одного p, внутри другого q.',
+        prompt: 'Подставь обратно x и y.',
+        hint: 'Оба косинуса разные: внутри одного x, внутри другого y.',
         options: [
-          { html: '2 cos' + F('α + β', '2') + ' cos' + F('α − β', '2'), correct: true },
-          { html: '2 cos' + F('α − β', '2') + ' cos' + F('α + β', '2'), err: 'pq_cos_cos' },
-          { html: '2 sin' + F('α + β', '2') + ' sin' + F('α − β', '2'), err: 'cancel_wrong' }
+          { html: '2 cos' + FS() + ' cos' + FD(), correct: true },
+          { html: '2 cos' + FD() + ' cos' + FS(), err: 'pq_cos_cos' },
+          { html: '2 sin' + FS() + ' sin' + FD(), err: 'cancel_wrong' }
         ],
-        line: '<strong>cos α + cos β &nbsp;=&nbsp; 2 cos' + F('α + β', '2') + ' cos' + F('α − β', '2') + '</strong>',
+        line: '<strong>cos α + cos β &nbsp;=&nbsp; 2 cos' + FS() + ' cos' + FD() + '</strong>',
         comment: 'Сумма косинусов = 2 · cos полусуммы · cos полуразности.'
       }
     ]
@@ -1182,42 +1750,42 @@ const DERIVATIONS = [
     id: 'cos_diff',
     label: '4',
     lhs: 'cos α − cos β',
-    target: '−2 sin' + F('α + β', '2') + ' sin' + F('α − β', '2'),
+    target: '−2 sin' + FS() + ' sin' + FD(),
     steps: [
       {
         stepName: 'Замена',
-        prompt: 'Применяем замену α = p + q, β = p − q. Что получится?',
+        prompt: 'Применяем замену α = x + y, β = x − y. Что получится?',
         hint: 'Знак минус между функциями сохраняется.',
         options: [
-          { html: 'cos(p + q) − cos(p − q)', correct: true },
-          { html: 'cos(p − q) − cos(p + q)', err: 'order_pq' },
-          { html: 'cos(p + q) + cos(p − q)', err: 'sign_flip_cosm' }
+          { html: 'cos(x + y) − cos(x − y)', correct: true },
+          { html: 'cos(x − y) − cos(x + y)', err: 'order_pq' },
+          { html: 'cos(x + y) + cos(x − y)', err: 'sign_flip_cosm' }
         ],
-        line: 'cos α − cos β &nbsp;=&nbsp; cos(p + q) − cos(p − q)',
+        line: 'cos α − cos β &nbsp;=&nbsp; cos(x + y) − cos(x − y)',
         comment: 'Подставили α и β. Минус сохранился.'
       },
       {
-        stepName: 'Раскрываем cos(p + q)',
-        prompt: 'Раскрой cos(p + q).',
+        stepName: 'Раскрываем cos(x + y)',
+        prompt: 'Раскрой cos(x + y).',
         hint: 'cos(x + y) = cos x cos y − sin x sin y',
         options: [
-          { html: 'cos p cos q − sin p sin q', correct: true },
-          { html: 'cos p cos q + sin p sin q', err: 'sign_cos_p' },
-          { html: 'sin p cos q + cos p sin q', err: 'wrong_formula_c' }
+          { html: 'cos x cos y − sin x sin y', correct: true },
+          { html: 'cos x cos y + sin x sin y', err: 'sign_cos_p' },
+          { html: 'sin x cos y + cos x sin y', err: 'wrong_formula_c' }
         ],
-        line: 'cos(p + q) &nbsp;=&nbsp; cos p cos q − sin p sin q',
+        line: 'cos(x + y) &nbsp;=&nbsp; cos x cos y − sin x sin y',
         comment: 'Формула косинуса суммы.'
       },
       {
-        stepName: 'Раскрываем cos(p − q)',
-        prompt: 'Раскрой cos(p − q).',
+        stepName: 'Раскрываем cos(x − y)',
+        prompt: 'Раскрой cos(x − y).',
         hint: 'cos(x − y) = cos x cos y + sin x sin y',
         options: [
-          { html: 'cos p cos q + sin p sin q', correct: true },
-          { html: 'cos p cos q − sin p sin q', err: 'sign_cos_m' },
-          { html: 'sin p cos q − cos p sin q', err: 'wrong_formula_c' }
+          { html: 'cos x cos y + sin x sin y', correct: true },
+          { html: 'cos x cos y − sin x sin y', err: 'sign_cos_m' },
+          { html: 'sin x cos y − cos x sin y', err: 'wrong_formula_c' }
         ],
-        line: 'cos(p − q) &nbsp;=&nbsp; cos p cos q + sin p sin q',
+        line: 'cos(x − y) &nbsp;=&nbsp; cos x cos y + sin x sin y',
         comment: 'Формула косинуса разности.'
       },
       {
@@ -1225,59 +1793,59 @@ const DERIVATIONS = [
         prompt: 'Между функциями стоит <strong>минус</strong>. Запиши вычитание правильно.',
         hint: 'Вычитаем целое выражение — обязательно ставим скобки.',
         options: [
-          { html: '(cos p cos q − sin p sin q) − (cos p cos q + sin p sin q)', correct: true },
-          { html: 'cos p cos q − sin p sin q − cos p cos q + sin p sin q', err: 'no_bracket' },
-          { html: 'cos p cos q − sin p sin q − cos p cos q − sin p sin q', err: 'no_bracket' }
+          { html: '(cos x cos y − sin x sin y) − (cos x cos y + sin x sin y)', correct: true },
+          { html: 'cos x cos y − sin x sin y − cos x cos y + sin x sin y', err: 'no_bracket' },
+          { html: 'cos x cos y − sin x sin y − cos x cos y − sin x sin y', err: 'no_bracket' }
         ],
-        line: 'cos α − cos β &nbsp;=&nbsp; (cos p cos q − sin p sin q) − (cos p cos q + sin p sin q)',
+        line: 'cos α − cos β &nbsp;=&nbsp; (cos x cos y − sin x sin y) − (cos x cos y + sin x sin y)',
         comment: 'Очень важный момент: записываем со скобками, чтобы потом аккуратно раскрыть.'
       },
       {
         stepName: 'Раскрываем скобки',
         prompt: 'Раскрой скобки. <strong>Перед второй скобкой стоит минус — знаки меняются!</strong>',
-        hint: 'Минус перед скобкой: каждое слагаемое внутри меняет знак на противоположный. + sin p sin q → − sin p sin q.',
+        hint: 'Минус перед скобкой: каждое слагаемое внутри меняет знак на противоположный. + sin x sin y → − sin x sin y.',
         options: [
-          { html: 'cos p cos q − sin p sin q − cos p cos q − sin p sin q', correct: true },
-          { html: 'cos p cos q − sin p sin q − cos p cos q + sin p sin q', err: 'bracket_err' },
-          { html: 'cos p cos q + sin p sin q − cos p cos q − sin p sin q', err: 'bracket_err' }
+          { html: 'cos x cos y − sin x sin y − cos x cos y − sin x sin y', correct: true },
+          { html: 'cos x cos y − sin x sin y − cos x cos y + sin x sin y', err: 'bracket_err' },
+          { html: 'cos x cos y + sin x sin y − cos x cos y − sin x sin y', err: 'bracket_err' }
         ],
-        line: 'cos α − cos β &nbsp;=&nbsp; cos p cos q − sin p sin q − cos p cos q − sin p sin q',
-        comment: 'Внимание: + sin p sin q внутри второй скобки превратилось в − sin p sin q.'
+        line: 'cos α − cos β &nbsp;=&nbsp; cos x cos y − sin x sin y − cos x cos y − sin x sin y',
+        comment: 'Внимание: + sin x sin y внутри второй скобки превратилось в − sin x sin y.'
       },
       {
         stepName: 'Что сокращается?',
         prompt: 'Найди сокращающуюся пару.',
         hint: 'Ищи одинаковые выражения с противоположными знаками.',
         options: [
-          { html: '<span class="hl">+ cos p cos q</span> и <span class="hl">− cos p cos q</span>', correct: true },
-          { html: '<span class="hl">− sin p sin q</span> и <span class="hl">− sin p sin q</span>', err: 'cancel_same' },
+          { html: '<span class="hl">+ cos x cos y</span> и <span class="hl">− cos x cos y</span>', correct: true },
+          { html: '<span class="hl">− sin x sin y</span> и <span class="hl">− sin x sin y</span>', err: 'cancel_same' },
           { html: 'Ничего не сокращается', err: 'cancel_miss' }
         ],
-        line: 'cos α − cos β &nbsp;=&nbsp; <span class="cancel">cos p cos q</span> − sin p sin q <span class="cancel">− cos p cos q</span> − sin p sin q',
-        comment: 'cos p cos q и − cos p cos q взаимно уничтожаются.'
+        line: 'cos α − cos β &nbsp;=&nbsp; <span class="cancel">cos x cos y</span> − sin x sin y <span class="cancel">− cos x cos y</span> − sin x sin y',
+        comment: 'cos x cos y и − cos x cos y взаимно уничтожаются.'
       },
       {
         stepName: 'Результат',
         prompt: 'Что осталось после сокращения?',
-        hint: 'Осталось: − sin p sin q − sin p sin q. Это два одинаковых слагаемых с минусами.',
+        hint: 'Осталось: − sin x sin y − sin x sin y. Это два одинаковых слагаемых с минусами.',
         options: [
-          { html: '−2 sin p sin q', correct: true },
-          { html: '2 sin p sin q', err: 'forgot_minus' },
-          { html: '− sin p sin q', err: 'forgot_two' }
+          { html: '−2 sin x sin y', correct: true },
+          { html: '2 sin x sin y', err: 'forgot_minus' },
+          { html: '− sin x sin y', err: 'forgot_two' }
         ],
-        line: 'cos α − cos β &nbsp;=&nbsp; −2 sin p sin q',
-        comment: 'Два одинаковых отрицательных слагаемых дают −2 sin p sin q. Минус не забываем!'
+        line: 'cos α − cos β &nbsp;=&nbsp; −2 sin x sin y',
+        comment: 'Два одинаковых отрицательных слагаемых дают −2 sin x sin y. Минус не забываем!'
       },
       {
         stepName: 'Возврат к α и β',
-        prompt: 'Подставь обратно p и q.',
-        hint: 'p = (α+β)/2, q = (α−β)/2. Минус сохраняется.',
+        prompt: 'Подставь обратно x и y.',
+        hint: 'x = (α+β)/2, y = (α−β)/2. Минус сохраняется.',
         options: [
-          { html: '−2 sin' + F('α + β', '2') + ' sin' + F('α − β', '2'), correct: true },
-          { html: '2 sin' + F('α + β', '2') + ' sin' + F('α − β', '2'), err: 'forgot_minus' },
-          { html: '−2 cos' + F('α + β', '2') + ' cos' + F('α − β', '2'), err: 'cancel_wrong' }
+          { html: '−2 sin' + FS() + ' sin' + FD(), correct: true },
+          { html: '2 sin' + FS() + ' sin' + FD(), err: 'forgot_minus' },
+          { html: '−2 cos' + FS() + ' cos' + FD(), err: 'cancel_wrong' }
         ],
-        line: '<strong>cos α − cos β &nbsp;=&nbsp; −2 sin' + F('α + β', '2') + ' sin' + F('α − β', '2') + '</strong>',
+        line: '<strong>cos α − cos β &nbsp;=&nbsp; −2 sin' + FS() + ' sin' + FD() + '</strong>',
         comment: 'Можно записать эквивалентно: 2 sin((α+β)/2) sin((β−α)/2), так как sin((β−α)/2) = −sin((α−β)/2). Это формы одной формулы.'
       }
     ]
@@ -1291,11 +1859,11 @@ const ASSEMBLIES = [
     id: 'asm_sin_sum',
     label: 'A1',
     lhs: 'sin α + sin β',
-    target: ['2', 'sin' + F('α + β', '2'), 'cos' + F('α − β', '2')],
+    target: ['2', 'sin' + FS(), 'cos' + FD()],
     pool: [
       '2', '−2',
-      'sin' + F('α + β', '2'), 'sin' + F('α − β', '2'),
-      'cos' + F('α + β', '2'), 'cos' + F('α − β', '2')
+      'sin' + FS(), 'sin' + FD(),
+      'cos' + FS(), 'cos' + FD()
     ],
     hint: 'Вспомни: сумма синусов = 2 · sin полусуммы · cos полуразности.'
   },
@@ -1303,11 +1871,11 @@ const ASSEMBLIES = [
     id: 'asm_sin_diff',
     label: 'A2',
     lhs: 'sin α − sin β',
-    target: ['2', 'sin' + F('α − β', '2'), 'cos' + F('α + β', '2')],
+    target: ['2', 'sin' + FD(), 'cos' + FS()],
     pool: [
       '2', '−2',
-      'sin' + F('α + β', '2'), 'sin' + F('α − β', '2'),
-      'cos' + F('α + β', '2'), 'cos' + F('α − β', '2')
+      'sin' + FS(), 'sin' + FD(),
+      'cos' + FS(), 'cos' + FD()
     ],
     hint: 'Разность синусов: 2 · sin <em>полуразности</em> · cos <em>полусуммы</em>.'
   },
@@ -1315,11 +1883,11 @@ const ASSEMBLIES = [
     id: 'asm_cos_sum',
     label: 'A3',
     lhs: 'cos α + cos β',
-    target: ['2', 'cos' + F('α + β', '2'), 'cos' + F('α − β', '2')],
+    target: ['2', 'cos' + FS(), 'cos' + FD()],
     pool: [
       '2', '−2',
-      'sin' + F('α + β', '2'), 'sin' + F('α − β', '2'),
-      'cos' + F('α + β', '2'), 'cos' + F('α − β', '2')
+      'sin' + FS(), 'sin' + FD(),
+      'cos' + FS(), 'cos' + FD()
     ],
     hint: 'Сумма косинусов: 2 · cos полусуммы · cos полуразности.'
   },
@@ -1327,11 +1895,11 @@ const ASSEMBLIES = [
     id: 'asm_cos_diff',
     label: 'A4',
     lhs: 'cos α − cos β',
-    target: ['−2', 'sin' + F('α + β', '2'), 'sin' + F('α − β', '2')],
+    target: ['−2', 'sin' + FS(), 'sin' + FD()],
     pool: [
       '2', '−2',
-      'sin' + F('α + β', '2'), 'sin' + F('α − β', '2'),
-      'cos' + F('α + β', '2'), 'cos' + F('α − β', '2')
+      'sin' + FS(), 'sin' + FD(),
+      'cos' + FS(), 'cos' + FD()
     ],
     hint: 'Разность косинусов: −2 · sin полусуммы · sin полуразности. Внимание на минус!'
   }
@@ -1380,13 +1948,285 @@ const PRODUCTS = [
   }
 ];
 
+// ---------- LESSON NAMES (point 7 — one formula per lesson) ----------
+// Used to label the formula tabs more humanly: "1. сумма синусов" etc.
+const LESSON_NAMES = {
+  derive: {
+    '1': 'сумма синусов',
+    '2': 'разность синусов',
+    '3': 'сумма косинусов',
+    '4': 'разность косинусов'
+  },
+  assemble: {
+    'A1': 'sin α + sin β',
+    'A2': 'sin α − sin β',
+    'A3': 'cos α + cos β',
+    'A4': 'cos α − cos β'
+  },
+  product: {
+    'P1': 'sin · cos',
+    'P2': 'cos · cos',
+    'P3': 'sin · sin'
+  }
+};
+
+// ---------- ACTIVE BUILDERS for derivation steps (point 3) ----------
+// Maps "formula_id::step_index" → builder config.
+// Each builder shows clickable chips. The student composes the answer by clicking.
+// Order matters: the sequence of chips must exactly match `answer`.
+const BUILDERS = {
+  // sin α + sin β
+  'sin_sum::1': { // sin(x+y) = sin x cos y + cos x sin y
+    chips: ['sin x cos y', 'cos x sin y', '+', '−', 'sin x sin y', 'cos x cos y'],
+    answer: ['sin x cos y', '+', 'cos x sin y'],
+    hint: 'sin(x + y) = sin x · cos y + cos x · sin y. Соберите три блока в нужном порядке.'
+  },
+  'sin_sum::2': { // sin(x−y) = sin x cos y − cos x sin y
+    chips: ['sin x cos y', 'cos x sin y', '+', '−', 'sin x sin y', 'cos x cos y'],
+    answer: ['sin x cos y', '−', 'cos x sin y'],
+    hint: 'sin(x − y) = sin x · cos y − cos x · sin y. Внимание — между ними минус.'
+  },
+  'sin_sum::4': { // cancellation: + cos x sin y  and  − cos x sin y
+    chips: ['+ sin x cos y', '+ cos x sin y', '− cos x sin y', '− sin x cos y', '+ cos x cos y', '− sin x sin y'],
+    answer: ['+ cos x sin y', '− cos x sin y'],
+    hint: 'Какие два слагаемых из выражения «sin x cos y + cos x sin y + sin x cos y − cos x sin y» взаимно уничтожаются?'
+  },
+  // sin α − sin β
+  'sin_diff::1': {
+    chips: ['sin x cos y', 'cos x sin y', '+', '−'],
+    answer: ['sin x cos y', '+', 'cos x sin y'],
+    hint: 'sin(x + y) = sin x cos y + cos x sin y.'
+  },
+  'sin_diff::2': {
+    chips: ['sin x cos y', 'cos x sin y', '+', '−'],
+    answer: ['sin x cos y', '−', 'cos x sin y'],
+    hint: 'sin(x − y) = sin x cos y − cos x sin y.'
+  },
+  'sin_diff::4': { // bracket expansion of (sin x cos y + cos x sin y) − (sin x cos y − cos x sin y)
+    chips: ['sin x cos y', 'cos x sin y', '+', '−'],
+    answer: ['sin x cos y', '+', 'cos x sin y', '−', 'sin x cos y', '+', 'cos x sin y'],
+    hint: 'Перед второй скобкой стоит минус. Каждое слагаемое внутри меняет знак: − sin x cos y стало «− sin x cos y», а − cos x sin y стало «+ cos x sin y».'
+  },
+  // cos α + cos β
+  'cos_sum::1': { // cos(x+y) = cos x cos y − sin x sin y
+    chips: ['cos x cos y', 'sin x sin y', 'sin x cos y', 'cos x sin y', '+', '−'],
+    answer: ['cos x cos y', '−', 'sin x sin y'],
+    hint: 'cos(x + y) = cos x · cos y − sin x · sin y. Знак внутри становится минус!'
+  },
+  'cos_sum::2': { // cos(x−y) = cos x cos y + sin x sin y
+    chips: ['cos x cos y', 'sin x sin y', 'sin x cos y', 'cos x sin y', '+', '−'],
+    answer: ['cos x cos y', '+', 'sin x sin y'],
+    hint: 'cos(x − y) = cos x · cos y + sin x · sin y. Знак внутри — плюс.'
+  },
+  'cos_sum::4': { // cancellation
+    chips: ['+ cos x cos y', '− sin x sin y', '+ sin x sin y', '− cos x cos y'],
+    answer: ['− sin x sin y', '+ sin x sin y'],
+    hint: 'Ищем два одинаковых выражения с противоположными знаками.'
+  },
+  // cos α − cos β
+  'cos_diff::1': {
+    chips: ['cos x cos y', 'sin x sin y', '+', '−'],
+    answer: ['cos x cos y', '−', 'sin x sin y'],
+    hint: 'cos(x + y) = cos x cos y − sin x sin y.'
+  },
+  'cos_diff::2': {
+    chips: ['cos x cos y', 'sin x sin y', '+', '−'],
+    answer: ['cos x cos y', '+', 'sin x sin y'],
+    hint: 'cos(x − y) = cos x cos y + sin x sin y.'
+  },
+  'cos_diff::4': { // bracket expansion
+    chips: ['cos x cos y', 'sin x sin y', '+', '−'],
+    answer: ['cos x cos y', '−', 'sin x sin y', '−', 'cos x cos y', '−', 'sin x sin y'],
+    hint: 'Перед второй скобкой минус. + sin x sin y внутри неё превращается в − sin x sin y.'
+  }
+};
+
+// ---------- X/Y MINI-INTRO data (point 2) ----------
+const PQ_INTRO = {
+  steps: [
+    {
+      y: 'Чему равно <strong>x + y</strong>?',
+      options: ['α', 'β', 'α + β', 'α − β'],
+      correct: 0,
+      hint: 'Подставь: x + y = (α + β)/2 + (α − β)/2. Дроби сокращаются — β взаимно уничтожается.'
+    },
+    {
+      y: 'Чему равно <strong>x − y</strong>?',
+      options: ['β', 'α', 'α + β', 'α − β'],
+      correct: 0,
+      hint: 'Подставь: x − y = (α + β)/2 − (α − β)/2 = (α + β − α + β)/2 = 2β/2 = β.'
+    }
+  ]
+};
+
+// ---------- TRAPS (point 6) ----------
+// Each trap shows a WRONG formula (a typical mistake) and asks: what went wrong?
+const TRAPS = [
+  {
+    id: 't1',
+    formula: 'cos α − cos β &nbsp;=&nbsp; 2 sin' + FS() + ' sin' + FD(),
+    prompt: 'Что не так в формуле?',
+    options: [
+      { html: 'Забыли минус перед двойкой', correct: true },
+      { html: 'Перепутали полусумму и полуразность', err: 'Полусумма и полуразность стоят правильно — ошибка не в них.' },
+      { html: 'Нужно было cos, а не sin', err: 'sin как раз правильно: разность косинусов даёт два синуса. Проблема в другом.' }
+    ],
+    fix: 'Правильно: cos α − cos β = <span class="sign-warn">−2</span> sin' + FS() + ' sin' + FD() + '.'
+  },
+  {
+    id: 't2',
+    formula: 'sin α + sin β &nbsp;=&nbsp; 2 sin' + FD() + ' cos' + FS(),
+    prompt: 'Что не так?',
+    options: [
+      { html: 'Перепутали полусумму и полуразность', correct: true },
+      { html: 'Забыли коэффициент 2', err: 'Двойка на месте. Проблема не в ней.' },
+      { html: 'Нужно sin · sin, а не sin · cos', err: 'sin · cos здесь правильное сочетание. Проверь аргументы.' }
+    ],
+    fix: 'Правильно: sin α + sin β = 2 sin<span class="tag-sum">(α+β)/2</span> cos<span class="tag-diff">(α−β)/2</span>. Внутри sin — <em>полусумма</em>, внутри cos — <em>полуразность</em>.'
+  },
+  {
+    id: 't3',
+    formula: 'sin α − sin β &nbsp;=&nbsp; sin' + FD() + ' cos' + FS(),
+    prompt: 'Что не так?',
+    options: [
+      { html: 'Забыли коэффициент 2', correct: true },
+      { html: 'Перепутали sin и cos', err: 'Функции на месте: sin от полуразности, cos от полусуммы — это верно.' },
+      { html: 'Забыли минус перед формулой', err: 'Минус не нужен — у разности синусов формула без минуса. Проверь коэффициент.' }
+    ],
+    fix: 'Правильно: sin α − sin β = <strong>2</strong> sin' + FD() + ' cos' + FS() + '. Два одинаковых слагаемых складываются в удвоение.'
+  },
+  {
+    id: 't4',
+    formula: 'cos α + cos β &nbsp;=&nbsp; 2 sin' + FS() + ' cos' + FD(),
+    prompt: 'Что не так?',
+    options: [
+      { html: 'Должно быть cos, а не sin', correct: true },
+      { html: 'Перепутали полусумму и полуразность', err: 'Аргументы как раз стоят правильно: полусумма и полуразность.' },
+      { html: 'Забыли минус', err: 'Минус не нужен — в сумме косинусов всё положительное.' }
+    ],
+    fix: 'Правильно: cos α + cos β = 2 <strong>cos</strong>' + FS() + ' cos' + FD() + '. Обе функции — косинусы.'
+  },
+  {
+    id: 't5',
+    formula: 'sin α − sin β &nbsp;=&nbsp; (sin x cos y + cos x sin y) − sin x cos y − cos x sin y',
+    prompt: 'Внимание: после раскрытия второй скобки. Что не так?',
+    options: [
+      { html: 'Перед второй скобкой стоит минус — все знаки внутри неё должны были измениться', correct: true },
+      { html: 'Лишняя скобка вокруг первого выражения', err: 'Первая скобка здесь не мешает.' },
+      { html: 'Перепутаны sin и cos', err: 'Функции на месте. Проблема со знаками после раскрытия.' }
+    ],
+    fix: 'Правильно: (… ) − (sin x cos y − cos x sin y) = … <strong>− sin x cos y + cos x sin y</strong>. Каждое слагаемое внутри второй скобки меняет знак.'
+  },
+  {
+    id: 't6',
+    formula: 'sin α + sin β &nbsp;=&nbsp; 2 sin x cos y (без подстановки x и y обратно)',
+    prompt: 'Решение оборвано на середине. Что осталось сделать?',
+    options: [
+      { html: 'Подставить обратно x = (α+β)/2 и y = (α−β)/2', correct: true },
+      { html: 'Применить ещё одну формулу синуса', err: 'Преобразование уже закончено — осталось вернуться к исходным переменным.' },
+      { html: 'Разделить обе части на 2', err: 'Делить ничего не нужно — коэффициент 2 принадлежит формуле.' }
+    ],
+    fix: 'Финал: 2 sin<span class="tag-sum">(α+β)/2</span> cos<span class="tag-diff">(α−β)/2</span>. Без возврата к α и β формула не выглядит как привычная.'
+  },
+  {
+    id: 't7',
+    formula: '… + cos x sin y + cos x sin y  →  собираем как  <span class="cancel-strong">+ cos x sin y</span>',
+    prompt: 'Ученик объявил эти два слагаемых сокращающимися. Что не так?',
+    options: [
+      { html: 'У них одинаковые знаки (оба плюс) — они складываются, а не сокращаются', correct: true },
+      { html: 'Они на самом деле не одинаковы', err: 'Сами выражения одинаковы — но не сокращаются по другой причине.' },
+      { html: 'Сокращение запрещено формулой', err: 'Сокращать можно — но не такие пары.' }
+    ],
+    fix: 'Сокращаются только <strong>пары с противоположными знаками</strong>: <span class="hl">+ X</span> и <span class="hl">− X</span>. Если знаки одинаковые, слагаемые складываются: + X + X = 2X.'
+  },
+  {
+    id: 't8',
+    formula: '−sin x sin y − sin x sin y &nbsp;=&nbsp; <span class="sign-warn">+</span>2 sin x sin y',
+    prompt: 'Что не так в свёртке?',
+    options: [
+      { html: 'Забыли сохранить минус: должно быть −2 sin x sin y', correct: true },
+      { html: 'Не нужно умножать на 2', err: 'На 2 как раз нужно — два одинаковых слагаемых дают удвоение.' },
+      { html: 'sin x sin y не упростилось', err: 'Упрощать ещё нечего — это просто складывание.' }
+    ],
+    fix: 'Два одинаковых отрицательных слагаемых: −X + (−X) = <span class="sign-warn">−</span>2X. Знак минус не теряется.'
+  },
+  {
+    id: 't9',
+    formula: 'cos α − cos β &nbsp;=&nbsp; −2 sin' + FD() + ' sin' + FS(),
+    prompt: 'Что перепутано?',
+    options: [
+      { html: 'Полусумма и полуразность стоят в обратном порядке', correct: true },
+      { html: 'Забыли минус', err: 'Минус как раз на месте.' },
+      { html: 'Должно быть cos · cos, а не sin · sin', err: 'sin · sin здесь правильно — у разности косинусов так и должно быть.' }
+    ],
+    fix: 'Правильно: −2 sin<span class="tag-sum">(α+β)/2</span> sin<span class="tag-diff">(α−β)/2</span>. В первом sin — полусумма, во втором — полуразность.'
+  },
+  {
+    id: 't10',
+    formula: 'cos α + cos β &nbsp;=&nbsp; 2 cos' + FS() + ' sin' + FD(),
+    prompt: 'Что не так?',
+    options: [
+      { html: 'Вторая функция должна быть cos, а не sin', correct: true },
+      { html: 'Полусумма и полуразность перепутаны', err: 'Аргументы правильно: полусумма у cos, полуразность у второй функции.' },
+      { html: 'Должен быть минус перед двойкой', err: 'Минус не нужен — это сумма косинусов.' }
+    ],
+    fix: 'Правильно: cos α + cos β = 2 cos' + FS() + ' <strong>cos</strong>' + FD() + '. Обе функции — косинусы.'
+  }
+];
+
+// ---------- FINAL TEST (point 9) ----------
+// 5 tasks: 2 assembly + 2 formula selection + 1 trap-style
+// Sequential, fixed order for predictability — but built from the same data style.
+const TEST_TASKS = [
+  {
+    kind: 'assemble',
+    lhs: 'sin α + sin β',
+    target: ['2', 'sin' + FS(), 'cos' + FD()],
+    pool: ['2', '−2', 'sin' + FS(), 'sin' + FD(), 'cos' + FS(), 'cos' + FD()]
+  },
+  {
+    kind: 'select',
+    prompt: 'Чему равно <strong>cos α − cos β</strong>?',
+    options: [
+      { html: '−2 sin' + FS() + ' sin' + FD(), correct: true },
+      { html: '2 sin' + FS() + ' sin' + FD() },
+      { html: '2 cos' + FS() + ' cos' + FD() }
+    ]
+  },
+  {
+    kind: 'assemble',
+    lhs: 'cos α − cos β',
+    target: ['−2', 'sin' + FS(), 'sin' + FD()],
+    pool: ['2', '−2', 'sin' + FS(), 'sin' + FD(), 'cos' + FS(), 'cos' + FD()]
+  },
+  {
+    kind: 'select',
+    prompt: 'Чему равно <strong>sin α − sin β</strong>?',
+    options: [
+      { html: '2 sin' + FD() + ' cos' + FS(), correct: true },
+      { html: '2 sin' + FS() + ' cos' + FD() },
+      { html: '−2 sin' + FD() + ' cos' + FS() }
+    ]
+  },
+  {
+    kind: 'trap',
+    formula: 'cos α + cos β &nbsp;=&nbsp; 2 sin' + FS() + ' cos' + FD(),
+    prompt: 'Что не так?',
+    options: [
+      { html: 'Должно быть cos, а не sin (обе функции — косинусы)', correct: true },
+      { html: 'Полусумма и полуразность перепутаны' },
+      { html: 'Забыли минус перед двойкой' }
+    ]
+  }
+];
+
 // ---------- STATE ----------
 const STORAGE_KEY = 'mathExamCourseProgress.v1';
 const TOPIC_ID = 'trigSumToProductTrainer';
 
 const STATE = {
   mode: 'learn',           // learn | practice | teacher
-  section: 'derive',       // derive | assemble | product
+  section: 'derive',       // derive | assemble | product | traps | test
   formulaIdx: 0,
   stepIdx: 0,
   selectedOpt: null,       // index of selected option
@@ -1397,11 +2237,36 @@ const STATE = {
   asmBuild: [],            // list of pool indices added
   asmFeedback: null,       // 'ok' | 'wrong' | null
   // product state (no internal state beyond formulaIdx/selectedOpt)
+  // ---- NEW: builder mode inside derivation step ----
+  builderActive: false,    // when true, current derivation step is solved by building blocks
+  builderBuild: [],        // chip indices placed
+  // ---- NEW: x/y mini-intro ----
+  pqIntroOpen: false,      // showing mini-intro right now
+  pqIntroStep: 0,          // 0 → x+y, 1 → x−y, 2 → finale
+  pqIntroSelected: null,
+  pqIntroAttempts: 0,
+  // ---- NEW: onboarding ----
+  onboardingDismissed: false,
+  pqIntroSeen: false,      // student already passed the x/y mini-intro
+  // ---- NEW: traps ----
+  trapsIdx: 0,
+  trapSelectedOpt: null,
+  trapAttempted: new Set(),
+  trapRevealed: false,
+  // ---- NEW: final test ----
+  testIdx: 0,
+  testScore: 0,
+  testAnswered: 0,
+  testSelectedOpt: null,
+  testAsmBuild: [],
+  testRevealed: false,
+  testFinished: false,
   // progress
   progress: {
     derive: {},     // {sin_sum: {done:true, withHint:bool, errors:n}}
     assemble: {},
-    product: {}
+    product: {},
+    traps: {}       // NEW
   },
   stats: { done: 0, hint: 0, err: 0 }
 };
@@ -1414,8 +2279,18 @@ function loadProgress() {
     const all = JSON.parse(raw);
     const data = all && all[TOPIC_ID];
     if (data) {
-      STATE.progress = Object.assign(STATE.progress, data.progress || {});
-      STATE.stats = Object.assign(STATE.stats, data.stats || {});
+      // Merge progress with sane defaults — old saves don't have `traps`.
+      const loaded = data.progress || {};
+      STATE.progress = {
+        derive:   Object.assign({}, STATE.progress.derive,   loaded.derive   || {}),
+        assemble: Object.assign({}, STATE.progress.assemble, loaded.assemble || {}),
+        product:  Object.assign({}, STATE.progress.product,  loaded.product  || {}),
+        traps:    Object.assign({}, STATE.progress.traps,    loaded.traps    || {})
+      };
+      STATE.stats = Object.assign({}, STATE.stats, data.stats || {});
+      // Onboarding flags
+      if (data.onboardingDismissed) STATE.onboardingDismissed = true;
+      if (data.pqIntroSeen) STATE.pqIntroSeen = true;
     }
   } catch (e) { console.warn('progress load failed', e); }
 }
@@ -1423,7 +2298,13 @@ function saveProgress() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     const all = raw ? JSON.parse(raw) : {};
-    all[TOPIC_ID] = { progress: STATE.progress, stats: STATE.stats, updatedAt: Date.now() };
+    all[TOPIC_ID] = {
+      progress: STATE.progress,
+      stats: STATE.stats,
+      onboardingDismissed: STATE.onboardingDismissed,
+      pqIntroSeen: STATE.pqIntroSeen,
+      updatedAt: Date.now()
+    };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
   } catch (e) { console.warn('progress save failed', e); }
 }
@@ -1442,12 +2323,21 @@ function renderSections() {
 function renderFormulaTabs() {
   const tabs = $('#formula-tabs');
   tabs.innerHTML = '';
+  // Traps and test don't show formula tabs.
+  if (STATE.section === 'traps' || STATE.section === 'test') {
+    return;
+  }
   const list = currentList();
+  const namesMap = LESSON_NAMES[STATE.section] || {};
   list.forEach((item, idx) => {
-    const tab = el('button', { class: 'formula-tab', type: 'button' }, item.label);
+    const name = namesMap[item.label] || '';
+    const labelHTML = name
+      ? `${item.label}<span class="tab-name">${name}</span>`
+      : item.label;
+    const tab = el('button', { class: 'formula-tab', type: 'button' }, labelHTML);
     if (idx === STATE.formulaIdx) tab.classList.add('active');
-    const p = STATE.progress[STATE.section][item.id];
-    if (p && p.done) tab.classList.add('completed');
+    const x = STATE.progress[STATE.section] && STATE.progress[STATE.section][item.id];
+    if (x && x.done) tab.classList.add('completed');
     tab.addEventListener('click', () => {
       STATE.formulaIdx = idx;
       resetStepState();
@@ -1460,35 +2350,144 @@ function renderFormulaTabs() {
 function currentList() {
   if (STATE.section === 'derive') return DERIVATIONS;
   if (STATE.section === 'assemble') return ASSEMBLIES;
-  return PRODUCTS;
+  if (STATE.section === 'product') return PRODUCTS;
+  if (STATE.section === 'traps') return TRAPS;
+  return [];
 }
 
 // ---------- RENDER: LEFT PANEL ----------
+// Split into two physical panels: #goal-panel (top, formula + x/y substitution)
+// and #left-panel (the derivation lines or section-specific content).
 function renderLeft() {
-  const left = $('#left-panel');
-  left.innerHTML = '';
+  renderGoalPanel();
+  renderHistoryPanel();
+}
 
+function renderGoalPanel() {
+  const goal = $('#goal-panel');
+  if (!goal) return;
+  goal.innerHTML = '';
+  goal.style.display = '';
+
+  if (STATE.section === 'traps') {
+    goal.innerHTML = `
+      <div class="panel-title">Раздел «Ловушки»</div>
+      <div class="trap-intro-card">
+        Здесь показаны <strong>типичные ошибки</strong>, которые ученики делают в этих формулах.
+        Твоя задача — найти, что именно сделано неправильно.<br>
+        Чем больше ловушек распознаешь, тем меньше вероятность ошибиться самому.
+      </div>
+    `;
+    return;
+  }
+  if (STATE.section === 'test') {
+    goal.innerHTML = `
+      <div class="panel-title">Финальный мини-тест</div>
+      <div class="trap-intro-card" style="background:var(--gold-glow);border-color:var(--gold);">
+        <strong>5 заданий:</strong> 2 на сборку формулы, 2 на выбор правильной формулы, 1 на поиск ошибки.
+        Подсказок здесь нет — это финальная проверка.
+      </div>
+    `;
+    return;
+  }
+
+  // For derive / assemble / product — show LHS = ? and (for derive) the x/y substitution.
+  let lhs = '';
+  let rhs = '?';
+  let tagText = 'Левая часть';
   if (STATE.section === 'derive') {
     const f = DERIVATIONS[STATE.formulaIdx];
-    left.innerHTML = `
-      <div class="panel-title">Вывод формулы</div>
-      <div class="goal">
-        <span class="goal-tag">Цель</span>
-        <div>${f.lhs} &nbsp;=&nbsp; ${f.target}</div>
-      </div>
+    lhs = f.lhs;
+    rhs = f.target;
+    tagText = 'Цель';
+  } else if (STATE.section === 'assemble') {
+    const a = ASSEMBLIES[STATE.formulaIdx];
+    lhs = a.lhs;
+  } else if (STATE.section === 'product') {
+    const x = PRODUCTS[STATE.formulaIdx];
+    lhs = x.lhs;
+    tagText = 'Произведение';
+  }
+
+  let html = `
+    <div class="goal">
+      <span class="goal-tag">${tagText}</span>
+      <div>${lhs} &nbsp;=&nbsp; ${rhs}</div>
+    </div>
+  `;
+  if (STATE.section === 'derive') {
+    html += `
       <div class="sub-block">
         <div class="sb-label">Замена переменных</div>
         <div class="sb-grid">
-          <div class="sb-line">p &nbsp;=&nbsp; ${F('α + β', '2')}</div>
-          <div class="sb-line">α &nbsp;=&nbsp; p + q</div>
-          <div class="sb-line">q &nbsp;=&nbsp; ${F('α − β', '2')}</div>
-          <div class="sb-line">β &nbsp;=&nbsp; p − q</div>
+          <div class="sb-line">x &nbsp;=&nbsp; ${FS()}</div>
+          <div class="sb-line">α &nbsp;=&nbsp; x + y</div>
+          <div class="sb-line">y &nbsp;=&nbsp; ${FD()}</div>
+          <div class="sb-line">β &nbsp;=&nbsp; x − y</div>
         </div>
       </div>
-      <div class="panel-title" style="margin-top:6px">Вывод</div>
+    `;
+  }
+  goal.innerHTML = html;
+}
+
+function renderHistoryPanel() {
+  const left = $('#left-panel');
+  left.innerHTML = '';
+
+  // --- TRAPS section ---
+  if (STATE.section === 'traps') {
+    const t = TRAPS[STATE.trapsIdx];
+    left.innerHTML = `
+      <div class="panel-title">Ошибка ученика № ${STATE.trapsIdx + 1} из ${TRAPS.length}</div>
+      <div class="trap-formula">
+        <span class="trap-tag">Так написано</span>
+        <div>${t.formula}</div>
+      </div>
+      <div class="trap-list-header">Что бывает не так</div>
+      <div class="step-line" style="font-family:var(--sans);font-size:0.9rem;color:var(--ink-soft);line-height:1.5;">
+        Типичные ошибки: пропущенный минус перед двойкой; перепутаны полусумма и полуразность;
+        вместо sin поставили cos (или наоборот); знаки после раскрытия скобки с минусом; забытое удвоение.
+      </div>
+    `;
+    return;
+  }
+
+  // --- FINAL TEST section ---
+  if (STATE.section === 'test') {
+    if (STATE.testFinished) {
+      const pct = Math.round((STATE.testScore / TEST_TASKS.length) * 100);
+      left.innerHTML = `
+        <div class="panel-title">Результат</div>
+        <div class="test-final-screen">
+          <div class="test-score">${STATE.testScore} / ${TEST_TASKS.length}</div>
+          <div class="test-score-tag">${pct}% верно</div>
+          <x style="color:var(--ink-soft);font-size:0.95rem;line-height:1.5;">
+            ${STATE.testScore >= 4
+              ? '<strong>Готово</strong>: можно переходить к применению формул в задачах.'
+              : 'Хорошее начало. Повтори раздел «Вывод формул» и пройди тест ещё раз — внимание к знакам решает.'}
+          </x>
+        </div>
+      `;
+      return;
+    }
+    left.innerHTML = `
+      <div class="panel-title">Задание ${STATE.testIdx + 1} из ${TEST_TASKS.length}</div>
+      <div class="step-line" style="font-family:var(--sans);font-size:0.9rem;color:var(--ink-soft);line-height:1.5;">
+        Текущий счёт: <strong>${STATE.testScore}</strong> из ${STATE.testAnswered}.<br>
+        Подсказок и режима «показать решение» в тесте нет.
+      </div>
+    `;
+    return;
+  }
+
+  // --- DERIVE section ---
+  if (STATE.section === 'derive') {
+    const f = DERIVATIONS[STATE.formulaIdx];
+    left.innerHTML = `
+      <div class="panel-title">Вывод</div>
       <div class="derivation" id="derivation"></div>
     `;
-
     const der = $('#derivation');
     if (STATE.mode === 'teacher') {
       der.classList.add('teacher-derivation');
@@ -1498,7 +2497,6 @@ function renderLeft() {
         der.appendChild(line);
       });
     } else {
-      // show all completed step lines + current step's line (if revealed)
       const upTo = STATE.stepRevealed ? STATE.stepIdx + 1 : STATE.stepIdx;
       if (upTo === 0) {
         der.innerHTML = '<div class="derivation-empty">Здесь будут появляться строки вывода по мере прохождения шагов.</div>';
@@ -1513,40 +2511,34 @@ function renderLeft() {
         }
       }
     }
+    return;
   }
 
-  else if (STATE.section === 'assemble') {
+  // --- ASSEMBLE section ---
+  if (STATE.section === 'assemble') {
     const a = ASSEMBLIES[STATE.formulaIdx];
     const isTeacher = STATE.mode === 'teacher';
     left.innerHTML = `
-      <div class="panel-title">Сборка формулы</div>
-      <div class="goal">
-        <span class="goal-tag">Левая часть</span>
-        <div>${a.lhs} &nbsp;=&nbsp; ?</div>
-      </div>
       <div class="sub-block">
         <div class="sb-label">Подсказка по структуре</div>
         <div style="font-family: var(--serif); font-size: 1.05rem;">
-          Все четыре формулы имеют вид: <strong>±2 · f₁(полусумма) · f₂(полуразность)</strong>,<br>
+          Все четыре формулы имеют вид: <strong>±2 · f₁(<span class="tag-sum">полусумма</span>) · f₂(<span class="tag-diff">полуразность</span>)</strong>,<br>
           где f₁, f₂ — это sin или cos в нужном порядке.
         </div>
       </div>
-      <div class="panel-title" style="margin-top:6px">Что собрано</div>
+      <div class="panel-title" style="margin-top:14px">Что собрано</div>
       <div class="assembly-build" id="asm-build"></div>
       ${isTeacher ? `<div class="step-line current" style="margin-top:10px"><span class="step-num">Готовый ответ</span>${a.lhs} &nbsp;=&nbsp; ${a.target.join(' · ')}</div>` : ''}
     `;
     if (!isTeacher) renderAssemblyBuild();
+    return;
   }
 
-  else if (STATE.section === 'product') {
-    const p = PRODUCTS[STATE.formulaIdx];
+  // --- PRODUCT section ---
+  if (STATE.section === 'product') {
+    const x = PRODUCTS[STATE.formulaIdx];
     const isTeacher = STATE.mode === 'teacher';
     left.innerHTML = `
-      <div class="panel-title">Формулы произведения</div>
-      <div class="goal">
-        <span class="goal-tag">Произведение</span>
-        <div>${p.lhs} &nbsp;=&nbsp; ?</div>
-      </div>
       <div class="sub-block">
         <div class="sb-label">Откуда берутся формулы</div>
         <div style="font-family: var(--serif); font-size: 1.05rem; line-height: 1.6;">
@@ -1555,10 +2547,10 @@ function renderLeft() {
         </div>
       </div>
       ${isTeacher ? `
-        <div class="step-line current"><span class="step-num">Ответ</span>${p.lhs} &nbsp;=&nbsp; ${p.options[0].html}</div>
-        <div class="step-line" style="margin-top:10px"><span class="step-num">Объяснение</span><span style="font-family: var(--sans); font-size: 0.92rem; color: var(--ink-soft); line-height: 1.5;">${p.explain}</span></div>
+        <div class="step-line current" style="margin-top:14px"><span class="step-num">Ответ</span>${x.lhs} &nbsp;=&nbsp; ${x.options[0].html}</div>
+        <div class="step-line" style="margin-top:10px"><span class="step-num">Объяснение</span><span style="font-family: var(--sans); font-size: 0.92rem; color: var(--ink-soft); line-height: 1.5;">${x.explain}</span></div>
       ` : `
-        <div class="step-line"><span class="step-num">Совет</span><span style="font-family: var(--sans); font-size: 0.92rem; color: var(--ink-soft);">Каждая такая формула получается обратным преобразованием соответствующей формулы суммы/разности.</span></div>
+        <div class="step-line" style="margin-top:14px"><span class="step-num">Совет</span><span style="font-family: var(--sans); font-size: 0.92rem; color: var(--ink-soft);">Каждая такая формула получается обратным преобразованием соответствующей формулы суммы/разности.</span></div>
       `}
     `;
   }
@@ -1568,6 +2560,10 @@ function renderLeft() {
 function renderRight() {
   const right = $('#right-panel');
   right.innerHTML = '';
+
+  // Traps and test work in any mode (no separate teacher view for them).
+  if (STATE.section === 'traps') { renderTrapsRight(); return; }
+  if (STATE.section === 'test')  { renderTestRight();  return; }
 
   if (STATE.mode === 'teacher') {
     right.innerHTML = `
@@ -1587,6 +2583,12 @@ function renderRight() {
     return;
   }
 
+  // X/Y mini-intro intercepts only the first derivation, first time.
+  if (STATE.section === 'derive' && STATE.pqIntroOpen) {
+    renderPQIntroRight();
+    return;
+  }
+
   if (STATE.section === 'derive') renderDeriveRight();
   else if (STATE.section === 'assemble') renderAssembleRight();
   else if (STATE.section === 'product') renderProductRight();
@@ -1595,7 +2597,6 @@ function renderRight() {
 function renderDeriveRight() {
   const f = DERIVATIONS[STATE.formulaIdx];
   const right = $('#right-panel');
-  // completion screen?
   const prog = STATE.progress.derive[f.id];
   if (STATE.stepIdx >= f.steps.length) {
     right.innerHTML = `
@@ -1603,15 +2604,15 @@ function renderDeriveRight() {
       <div class="completion">
         <div class="seal">✓</div>
         <h3>Отлично!</h3>
-        <p>Вы вывели формулу полностью. Перечитайте ход рассуждения слева — это и есть «авторское решение».</p>
+        <x>Вы вывели формулу полностью. Перечитайте ход рассуждения слева — это и есть «авторское решение».</x>
         <div class="final-formula">${f.lhs} &nbsp;=&nbsp; ${f.target}</div>
         ${f.id === 'cos_diff' ? `
           <div class="sub-block" style="text-align: left; margin-top: 14px;">
             <div class="sb-label">Эквивалентная запись</div>
             <div style="font-family: var(--serif); font-size: 1.05rem; line-height: 1.6;">
-              ${f.lhs} &nbsp;=&nbsp; 2 sin${F('α + β','2')} sin${F('β − α','2')}<br>
+              ${f.lhs} &nbsp;=&nbsp; 2 sin${FS()} sin${F('β − α','2')}<br>
               <span style="font-family: var(--sans); font-size: 0.85rem; color: var(--ink-soft);">
-                Эквивалентно, потому что sin${F('β − α','2')} = −sin${F('α − β','2')}.
+                Эквивалентно, потому что sin${F('β − α','2')} = −sin${FD()}.
               </span>
             </div>
           </div>
@@ -1623,7 +2624,6 @@ function renderDeriveRight() {
       </div>
     `;
     $('#restart-btn').addEventListener('click', () => {
-      // reset only this formula progress flag
       delete STATE.progress.derive[f.id];
       resetStepState();
       saveProgress();
@@ -1634,41 +2634,124 @@ function renderDeriveRight() {
   }
 
   const step = f.steps[STATE.stepIdx];
+  const builderKey = `${f.id}::${STATE.stepIdx}`;
+  const hasBuilder = !!BUILDERS[builderKey];
+
+  // Build mode toggle UI (only if builder is available for this step).
+  const toggleHTML = hasBuilder ? `
+    <div class="builder-toggle" role="tablist">
+      <button type="button" class="${!STATE.builderActive ? 'active' : ''}" data-build="off">Выбрать вариант</button>
+      <button type="button" class="${STATE.builderActive ? 'active' : ''}" data-build="on">Собрать руками</button>
+    </div>
+  ` : '';
+
   right.innerHTML = `
     <div class="panel-title">Шаг ${STATE.stepIdx + 1} из ${f.steps.length} · ${step.stepName}</div>
-    <div class="question"><span class="q-tag">Задание</span>${step.prompt}</div>
+    ${toggleHTML}
+    <div class="question"><span class="y-tag">Задание</span>${step.prompt}</div>
     <div class="feedback" id="feedback"></div>
-    <div class="options" id="options"></div>
+    <div id="step-body"></div>
     <div class="controls">
       <button class="btn btn-primary" id="check-btn" type="button">Проверить шаг</button>
-      <button class="btn" id="hint-btn" type="button" ${STATE.mode === 'practice' ? 'title="В тренировке подсказки тоже доступны, но засчитаются в прогресс"' : ''}>Подсказка</button>
+      <button class="btn" id="hint-btn" type="button">Подсказка</button>
       <button class="btn btn-ghost" id="reveal-btn" type="button">Показать решение</button>
       <button class="btn" id="next-step-btn" type="button" disabled>Дальше →</button>
     </div>
   `;
 
-  // render options
-  const opts = $('#options');
-  step.options.forEach((o, idx) => {
-    const card = el('button', { class: 'option-card', type: 'button', 'data-idx': idx }, o.html);
-    if (STATE.selectedOpt === idx) card.classList.add('selected');
-    if (STATE.attemptedWrong.has(idx)) card.classList.add('wrong', 'disabled');
-    if (STATE.stepRevealed && o.correct) card.classList.add('correct');
-    card.addEventListener('click', () => {
-      if (STATE.stepRevealed) return;
-      if (STATE.attemptedWrong.has(idx)) return;
-      STATE.selectedOpt = idx;
-      renderRight();
+  if (hasBuilder) {
+    $$('.builder-toggle button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const turnOn = btn.dataset.build === 'on';
+        STATE.builderActive = turnOn;
+        STATE.builderBuild = [];
+        STATE.selectedOpt = null;
+        STATE.attemptedWrong.clear();
+        renderRight();
+      });
     });
-    opts.appendChild(card);
-  });
+  }
+
+  const body = $('#step-body');
+  if (hasBuilder && STATE.builderActive) {
+    const cfg = BUILDERS[builderKey];
+    body.innerHTML = `
+      <div class="builder-canvas" id="builder-canvas"></div>
+      <div class="trap-list-header" style="margin-top:8px">Доступные блоки</div>
+      <div class="builder-pool" id="builder-pool"></div>
+    `;
+    renderBuilderCanvas(cfg);
+    renderBuilderPool(cfg);
+    $('#check-btn').disabled = STATE.stepRevealed || STATE.builderBuild.length === 0;
+  } else {
+    body.innerHTML = `<div class="options" id="options"></div>`;
+    const opts = $('#options');
+    step.options.forEach((o, idx) => {
+      const card = el('button', { class: 'option-card', type: 'button', 'data-idx': idx }, o.html);
+      if (STATE.selectedOpt === idx) card.classList.add('selected');
+      if (STATE.attemptedWrong.has(idx)) card.classList.add('wrong', 'disabled');
+      if (STATE.stepRevealed && o.correct) card.classList.add('correct');
+      card.addEventListener('click', () => {
+        if (STATE.stepRevealed) return;
+        if (STATE.attemptedWrong.has(idx)) return;
+        STATE.selectedOpt = idx;
+        renderRight();
+      });
+      opts.appendChild(card);
+    });
+    $('#check-btn').disabled = STATE.selectedOpt === null || STATE.stepRevealed;
+  }
 
   $('#check-btn').addEventListener('click', checkStep);
   $('#hint-btn').addEventListener('click', showHint);
   $('#reveal-btn').addEventListener('click', revealStep);
   $('#next-step-btn').addEventListener('click', nextStep);
   $('#next-step-btn').disabled = !STATE.stepRevealed;
-  $('#check-btn').disabled = STATE.selectedOpt === null || STATE.stepRevealed;
+}
+
+function renderBuilderCanvas(cfg) {
+  const canvas = $('#builder-canvas');
+  if (!canvas) return;
+  canvas.innerHTML = '';
+  if (STATE.builderBuild.length === 0) {
+    canvas.innerHTML = '<span class="placeholder">Кликайте по блокам ниже — они появятся здесь.</span>';
+    return;
+  }
+  STATE.builderBuild.forEach((chipIdx, i) => {
+    const chip = el('span', { class: 'placed-chip' }, cfg.chips[chipIdx]);
+    chip.title = 'Кликни, чтобы убрать';
+    chip.addEventListener('click', () => {
+      STATE.builderBuild.splice(i, 1);
+      renderRight();
+    });
+    canvas.appendChild(chip);
+  });
+}
+
+function renderBuilderPool(cfg) {
+  const pool = $('#builder-pool');
+  if (!pool) return;
+  pool.innerHTML = '';
+  cfg.chips.forEach((c, idx) => {
+    // signs can be reused; other chips are limited by how many times they appear in the answer
+    const answerCount = cfg.answer.filter(x => x === c).length;
+    const placedCount = STATE.builderBuild.filter(i => cfg.chips[i] === c).length;
+    const isSign = (c === '+' || c === '−');
+    const exhausted = !isSign && placedCount >= Math.max(1, answerCount);
+    const chip = el('button', {
+      class: 'builder-chip' + (exhausted ? ' used' : '') + (isSign ? ' sign' : ''),
+      type: 'button'
+    }, c);
+    if (!exhausted) {
+      chip.addEventListener('click', () => {
+        STATE.builderBuild.push(idx);
+        renderRight();
+      });
+    } else {
+      chip.disabled = true;
+    }
+    pool.appendChild(chip);
+  });
 }
 
 function renderAssembleRight() {
@@ -1683,7 +2766,7 @@ function renderAssembleRight() {
       <div class="completion">
         <div class="seal">✓</div>
         <h3>Формула собрана!</h3>
-        <p>Эта формула теперь у вас закреплена.</p>
+        <x>Эта формула теперь у вас закреплена.</x>
         <div class="final-formula">${a.lhs} &nbsp;=&nbsp; ${a.target.join(' · ')}</div>
       </div>
       <div class="controls">
@@ -1703,7 +2786,7 @@ function renderAssembleRight() {
 
   right.innerHTML = `
     <div class="panel-title">Соберите правую часть</div>
-    <div class="question"><span class="q-tag">Задание</span>Кликайте по блокам в нужном порядке, чтобы получить правую часть формулы. Когда соберёте — нажмите «Проверить».</div>
+    <div class="question"><span class="y-tag">Задание</span>Кликайте по блокам в нужном порядке, чтобы получить правую часть формулы. Когда соберёте — нажмите «Проверить».</div>
     <div class="feedback" id="feedback"></div>
     <div class="panel-title" style="margin-top:0">Доступные блоки</div>
     <div class="assembly-pool" id="asm-pool"></div>
@@ -1740,7 +2823,7 @@ function renderAssembleRight() {
     // Set asmBuild to the indices that match target
     STATE.asmBuild = [];
     a.target.forEach(t => {
-      const i = a.pool.findIndex((p, idx) => p === t && !STATE.asmBuild.includes(idx));
+      const i = a.pool.findIndex((x, idx) => x === t && !STATE.asmBuild.includes(idx));
       if (i !== -1) STATE.asmBuild.push(i);
     });
     STATE.asmFeedback = 'ok';
@@ -1775,7 +2858,7 @@ function renderAssemblyBuild() {
 }
 
 function renderProductRight() {
-  const p = PRODUCTS[STATE.formulaIdx];
+  const x = PRODUCTS[STATE.formulaIdx];
   const right = $('#right-panel');
 
   if (STATE.stepRevealed) {
@@ -1784,8 +2867,8 @@ function renderProductRight() {
       <div class="completion">
         <div class="seal">✓</div>
         <h3>Верно!</h3>
-        <div class="final-formula">${p.lhs} &nbsp;=&nbsp; ${p.options[0].html}</div>
-        <p style="text-align: left; font-size: 0.92rem;">${p.explain}</p>
+        <div class="final-formula">${x.lhs} &nbsp;=&nbsp; ${x.options[0].html}</div>
+        <x style="text-align: left; font-size: 0.92rem;">${x.explain}</x>
       </div>
       <div class="controls">
         <button class="btn" id="restart-btn" type="button">Заново</button>
@@ -1794,7 +2877,7 @@ function renderProductRight() {
     `;
     $('#restart-btn').addEventListener('click', () => {
       STATE.selectedOpt = null; STATE.stepRevealed = false; STATE.attemptedWrong.clear();
-      delete STATE.progress.product[p.id];
+      delete STATE.progress.product[x.id];
       saveProgress();
       render();
     });
@@ -1804,7 +2887,7 @@ function renderProductRight() {
 
   right.innerHTML = `
     <div class="panel-title">Выберите правильную формулу</div>
-    <div class="question"><span class="q-tag">Задание</span>${p.prompt}</div>
+    <div class="question"><span class="y-tag">Задание</span>${x.prompt}</div>
     <div class="feedback" id="feedback"></div>
     <div class="options" id="options"></div>
     <div class="controls">
@@ -1815,7 +2898,7 @@ function renderProductRight() {
   `;
 
   const opts = $('#options');
-  p.options.forEach((o, idx) => {
+  x.options.forEach((o, idx) => {
     const card = el('button', { class: 'option-card', type: 'button' }, o.html);
     if (STATE.selectedOpt === idx) card.classList.add('selected');
     if (STATE.attemptedWrong.has(idx)) card.classList.add('wrong', 'disabled');
@@ -1828,10 +2911,10 @@ function renderProductRight() {
   });
 
   $('#check-btn').addEventListener('click', checkProduct);
-  $('#hint-btn').addEventListener('click', () => showFeedback($('#feedback'), 'hint', p.hint));
+  $('#hint-btn').addEventListener('click', () => showFeedback($('#feedback'), 'hint', x.hint));
   $('#reveal-btn').addEventListener('click', () => {
     STATE.stepRevealed = true;
-    STATE.progress.product[p.id] = { done: true, withHint: true };
+    STATE.progress.product[x.id] = { done: true, withHint: true };
     recountStats(); saveProgress();
     render();
   });
@@ -1847,6 +2930,40 @@ function markCurrentWithHint(section, id) {
 function checkStep() {
   const f = DERIVATIONS[STATE.formulaIdx];
   const step = f.steps[STATE.stepIdx];
+  const builderKey = `${f.id}::${STATE.stepIdx}`;
+  const hasBuilder = !!BUILDERS[builderKey];
+
+  // BUILDER MODE
+  if (hasBuilder && STATE.builderActive) {
+    const cfg = BUILDERS[builderKey];
+    const built = STATE.builderBuild.map(i => cfg.chips[i]);
+    const same = built.length === cfg.answer.length && built.every((b, i) => b === cfg.answer[i]);
+    if (same) {
+      STATE.stepRevealed = true;
+      renderLeft();
+      renderRight();
+      showFeedback($('#feedback'), 'success', '<strong>Верно собрано!</strong> ' + (STATE.mode === 'learn' ? step.comment : 'Можно идти дальше.'));
+    } else {
+      STATE.stats.err += 1;
+      saveProgress();
+      let msg;
+      if (built.length !== cfg.answer.length) {
+        msg = `<strong>Нужно ${cfg.answer.length} блоков.</strong> Сейчас собрано: ${built.length}.`;
+      } else {
+        const sortedBuilt = [...built].sort();
+        const sortedAns = [...cfg.answer].sort();
+        if (sortedBuilt.join('|') === sortedAns.join('|')) {
+          msg = '<strong>Блоки правильные, но порядок другой.</strong> Попробуй ещё раз.';
+        } else {
+          msg = '<strong>Не совсем.</strong> Обрати внимание на знаки и какие именно функции стоят.';
+        }
+      }
+      showFeedback($('#feedback'), 'error', msg);
+    }
+    return;
+  }
+
+  // MCQ MODE (existing)
   const sel = STATE.selectedOpt;
   if (sel == null) return;
   const opt = step.options[sel];
@@ -1873,23 +2990,34 @@ function showHint() {
   if (STATE.section === 'derive') {
     const f = DERIVATIONS[STATE.formulaIdx];
     const step = f.steps[STATE.stepIdx];
+    const builderKey = `${f.id}::${STATE.stepIdx}`;
     STATE.hintShown = true;
     markCurrentWithHint('derive', f.id);
     recountStats();
     saveProgress();
     renderProgress();
-    showFeedback($('#feedback'), 'hint', '<strong>Подсказка:</strong> ' + step.hint);
+    const hintText = (STATE.builderActive && BUILDERS[builderKey])
+      ? BUILDERS[builderKey].hint
+      : step.hint;
+    showFeedback($('#feedback'), 'hint', '<strong>Подсказка:</strong> ' + hintText);
   }
 }
 
 function revealStep() {
   const f = DERIVATIONS[STATE.formulaIdx];
   const step = f.steps[STATE.stepIdx];
+  const builderKey = `${f.id}::${STATE.stepIdx}`;
   STATE.stepRevealed = true;
   STATE.hintShown = true;
   markCurrentWithHint('derive', f.id);
-  // auto-select the correct option visually
-  STATE.selectedOpt = step.options.findIndex(o => o.correct);
+
+  if (STATE.builderActive && BUILDERS[builderKey]) {
+    const cfg = BUILDERS[builderKey];
+    // place exactly the correct chips in order
+    STATE.builderBuild = cfg.answer.map(token => cfg.chips.indexOf(token));
+  } else {
+    STATE.selectedOpt = step.options.findIndex(o => o.correct);
+  }
   renderLeft();
   renderRight();
   showFeedback($('#feedback'), 'hint', '<strong>Правильный ответ показан.</strong> ' + step.comment);
@@ -1905,6 +3033,8 @@ function nextStep() {
   STATE.attemptedWrong.clear();
   STATE.stepRevealed = false;
   STATE.hintShown = false;
+  STATE.builderActive = false;
+  STATE.builderBuild = [];
   if (STATE.stepIdx >= f.steps.length) {
     const cur = STATE.progress.derive[f.id] || {};
     STATE.progress.derive[f.id] = { done: true, withHint: cur.withHint || false };
@@ -1978,14 +3108,14 @@ function checkAssembly() {
 
 // ---------- ACTIONS: PRODUCT ----------
 function checkProduct() {
-  const p = PRODUCTS[STATE.formulaIdx];
+  const x = PRODUCTS[STATE.formulaIdx];
   const sel = STATE.selectedOpt;
   if (sel == null) return;
-  const opt = p.options[sel];
+  const opt = x.options[sel];
   if (opt.correct) {
     STATE.stepRevealed = true;
-    const cur = STATE.progress.product[p.id] || {};
-    STATE.progress.product[p.id] = { done: true, withHint: cur.withHint || false };
+    const cur = STATE.progress.product[x.id] || {};
+    STATE.progress.product[x.id] = { done: true, withHint: cur.withHint || false };
     recountStats(); saveProgress();
     render();
   } else {
@@ -1999,6 +3129,370 @@ function checkProduct() {
       : '<strong>Неверно.</strong> Попробуй другой вариант.';
     showFeedback($('#feedback'), 'error', msg);
   }
+}
+
+// ---------- RENDER: X/Y MINI-INTRO (point 2) ----------
+function renderPQIntroRight() {
+  const right = $('#right-panel');
+  if (STATE.pqIntroStep >= PQ_INTRO.steps.length) {
+    right.innerHTML = `
+      <div class="panel-title">Зачем нужна замена x, y?</div>
+      <div class="pq-intro">
+        <div class="pqi-eyebrow">Готово</div>
+        <div class="pqi-title">Замена работает!</div>
+        <div class="pqi-body">
+          Мы только что проверили:<br>
+          <strong>x + y = α</strong> и <strong>x − y = β</strong>.
+        </div>
+        <div class="pqi-final">
+          Вот зачем нужна замена: α превращается в <span class="hl">x + y</span>,
+          β превращается в <span class="hl-blue">x − y</span>.<br>
+          Теперь можно раскрывать <strong>sin(x + y)</strong> и <strong>sin(x − y)</strong>
+          по обычным формулам синуса суммы и разности.
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn btn-primary" id="pqi-continue" type="button">Поехали выводить формулу →</button>
+      </div>
+    `;
+    $('#pqi-continue').addEventListener('click', () => {
+      STATE.pqIntroOpen = false;
+      STATE.pqIntroSeen = true;
+      saveProgress();
+      render();
+    });
+    return;
+  }
+
+  const s = PQ_INTRO.steps[STATE.pqIntroStep];
+  right.innerHTML = `
+    <div class="panel-title">Замена переменных · шаг ${STATE.pqIntroStep + 1} из ${PQ_INTRO.steps.length}</div>
+    <div class="pq-intro">
+      <div class="pqi-eyebrow">Почему x и y?</div>
+      <div class="pqi-title">Сначала поймём саму замену</div>
+      <div class="pqi-body">Введём две новые переменные:</div>
+      <div class="pqi-setup">
+        <div><strong>x</strong> &nbsp;=&nbsp; ${FS()}</div>
+        <div><strong>y</strong> &nbsp;=&nbsp; ${FD()}</div>
+      </div>
+      <div class="pqi-step">
+        <div class="pqi-y">${s.y}</div>
+        <div class="feedback" id="feedback"></div>
+        <div class="options" id="pqi-options"></div>
+        <div class="controls" style="border-top:none;padding-top:8px;margin-top:6px;">
+          <button class="btn btn-primary" id="pqi-check" type="button">Проверить</button>
+          <button class="btn" id="pqi-hint" type="button">Подсказка</button>
+        </div>
+      </div>
+    </div>
+    <div class="pq-skip">
+      <button class="pq-skip-btn" type="button" id="pqi-skip">Я уже знаю — пропустить</button>
+    </div>
+  `;
+
+  const opts = $('#pqi-options');
+  s.options.forEach((html, idx) => {
+    const card = el('button', { class: 'option-card', type: 'button' }, html);
+    if (STATE.pqIntroSelected === idx) card.classList.add('selected');
+    card.addEventListener('click', () => {
+      STATE.pqIntroSelected = idx;
+      renderPQIntroRight();
+    });
+    opts.appendChild(card);
+  });
+
+  $('#pqi-check').disabled = STATE.pqIntroSelected === null;
+  $('#pqi-check').addEventListener('click', () => {
+    if (STATE.pqIntroSelected === s.correct) {
+      STATE.pqIntroStep += 1;
+      STATE.pqIntroSelected = null;
+      STATE.pqIntroAttempts = 0;
+      renderPQIntroRight();
+    } else {
+      STATE.stats.err += 1;
+      STATE.pqIntroAttempts += 1;
+      saveProgress();
+      showFeedback($('#feedback'), 'error',
+        '<strong>Не совсем.</strong> ' + (STATE.pqIntroAttempts >= 1 ? s.hint : 'Попробуй ещё раз — подумай, что сократится.'));
+    }
+  });
+  $('#pqi-hint').addEventListener('click', () => {
+    showFeedback($('#feedback'), 'hint', '<strong>Подсказка:</strong> ' + s.hint);
+  });
+  $('#pqi-skip').addEventListener('click', () => {
+    STATE.pqIntroOpen = false;
+    STATE.pqIntroSeen = true;
+    saveProgress();
+    render();
+  });
+}
+
+// ---------- RENDER: TRAPS (point 6) ----------
+function renderTrapsRight() {
+  const right = $('#right-panel');
+  const t = TRAPS[STATE.trapsIdx];
+
+  const allDone = TRAPS.every(tr => STATE.progress.traps[tr.id] && STATE.progress.traps[tr.id].done);
+  if (allDone && STATE.trapsIdx === TRAPS.length - 1 && STATE.trapRevealed) {
+    right.innerHTML = `
+      <div class="panel-title">Раздел пройден</div>
+      <div class="completion">
+        <div class="seal">✓</div>
+        <h3>Все ловушки пройдены</h3>
+        <x>Теперь ты узнаёшь типичные ошибки сразу. Это сильно снижает число своих ошибок.</x>
+      </div>
+      <div class="controls">
+        <button class="btn" id="trap-restart" type="button">Пройти заново</button>
+        <button class="btn btn-primary" id="trap-go-test" type="button">К финальному тесту →</button>
+      </div>
+    `;
+    $('#trap-restart').addEventListener('click', () => {
+      STATE.progress.traps = {};
+      STATE.trapsIdx = 0;
+      STATE.trapSelectedOpt = null;
+      STATE.trapAttempted = new Set();
+      STATE.trapRevealed = false;
+      saveProgress();
+      render();
+    });
+    $('#trap-go-test').addEventListener('click', () => { startFinalTest(); });
+    return;
+  }
+
+  right.innerHTML = `
+    <div class="panel-title">Найди ошибку</div>
+    <div class="question"><span class="y-tag">Задание</span>${t.prompt}</div>
+    <div class="feedback" id="feedback"></div>
+    <div class="options" id="trap-options"></div>
+    <div class="controls">
+      <button class="btn btn-primary" id="trap-check" type="button">Проверить</button>
+      <button class="btn btn-ghost" id="trap-reveal" type="button">Показать ответ</button>
+      <button class="btn" id="trap-prev" type="button">← Назад</button>
+      <button class="btn" id="trap-next" type="button" ${STATE.trapRevealed ? '' : 'disabled'}>Дальше →</button>
+    </div>
+  `;
+
+  const opts = $('#trap-options');
+  t.options.forEach((o, idx) => {
+    const card = el('button', { class: 'option-card', type: 'button' }, o.html);
+    if (STATE.trapSelectedOpt === idx) card.classList.add('selected');
+    if (STATE.trapAttempted.has(idx)) card.classList.add('wrong', 'disabled');
+    if (STATE.trapRevealed && o.correct) card.classList.add('correct');
+    card.addEventListener('click', () => {
+      if (STATE.trapRevealed) return;
+      if (STATE.trapAttempted.has(idx)) return;
+      STATE.trapSelectedOpt = idx;
+      renderTrapsRight();
+    });
+    opts.appendChild(card);
+  });
+
+  $('#trap-check').disabled = STATE.trapSelectedOpt === null || STATE.trapRevealed;
+  $('#trap-check').addEventListener('click', () => {
+    const sel = STATE.trapSelectedOpt;
+    if (sel == null) return;
+    const opt = t.options[sel];
+    if (opt.correct) {
+      STATE.trapRevealed = true;
+      STATE.progress.traps[t.id] = { done: true };
+      recountStats();
+      saveProgress();
+      renderTrapsRight();
+      showFeedback($('#feedback'), 'success', '<strong>Верно!</strong> ' + t.fix);
+    } else {
+      STATE.trapAttempted.add(sel);
+      STATE.stats.err += 1;
+      STATE.trapSelectedOpt = null;
+      saveProgress();
+      renderTrapsRight();
+      showFeedback($('#feedback'), 'error', opt.err || 'Не совсем. Попробуй другой вариант.');
+    }
+  });
+
+  $('#trap-reveal').addEventListener('click', () => {
+    STATE.trapRevealed = true;
+    STATE.progress.traps[t.id] = { done: true, withHint: true };
+    recountStats();
+    saveProgress();
+    renderTrapsRight();
+    showFeedback($('#feedback'), 'hint', '<strong>Правильный ответ:</strong> ' + t.fix);
+  });
+
+  $('#trap-prev').addEventListener('click', () => {
+    if (STATE.trapsIdx > 0) {
+      STATE.trapsIdx -= 1;
+      STATE.trapSelectedOpt = null;
+      STATE.trapAttempted = new Set();
+      const x = STATE.progress.traps[TRAPS[STATE.trapsIdx].id];
+      STATE.trapRevealed = !!(x && x.done);
+      render();
+    }
+  });
+  $('#trap-prev').disabled = STATE.trapsIdx === 0;
+
+  $('#trap-next').addEventListener('click', () => {
+    if (STATE.trapsIdx < TRAPS.length - 1) {
+      STATE.trapsIdx += 1;
+      STATE.trapSelectedOpt = null;
+      STATE.trapAttempted = new Set();
+      const x = STATE.progress.traps[TRAPS[STATE.trapsIdx].id];
+      STATE.trapRevealed = !!(x && x.done);
+      render();
+    }
+  });
+}
+
+// ---------- RENDER: FINAL MINI-TEST (point 9) ----------
+function startFinalTest() {
+  STATE.section = 'test';
+  STATE.testIdx = 0;
+  STATE.testScore = 0;
+  STATE.testAnswered = 0;
+  STATE.testFinished = false;
+  STATE.testSelectedOpt = null;
+  STATE.testAsmBuild = [];
+  STATE.testRevealed = false;
+  render();
+}
+
+function renderTestRight() {
+  const right = $('#right-panel');
+  if (STATE.testFinished) {
+    const sealOk = STATE.testScore >= 4;
+    right.innerHTML = `
+      <div class="panel-title">Тест завершён</div>
+      <div class="completion">
+        <div class="seal" style="background:${sealOk ? 'var(--green-soft)' : 'var(--gold-soft)'};border-color:${sealOk ? 'var(--green)' : 'var(--gold)'};color:${sealOk ? 'var(--green-deep)' : 'var(--gold-deep)'};">${sealOk ? '✓' : '·'}</div>
+        <h3>${sealOk ? 'Готово!' : 'Ещё чуть-чуть'}</h3>
+        <x>Результат: <strong>${STATE.testScore}</strong> из ${TEST_TASKS.length}.</x>
+      </div>
+      <div class="controls">
+        <button class="btn" id="test-restart" type="button">Пройти ещё раз</button>
+        <button class="btn btn-primary" id="test-go-derive" type="button">К выводам формул →</button>
+      </div>
+    `;
+    $('#test-restart').addEventListener('click', () => startFinalTest());
+    $('#test-go-derive').addEventListener('click', () => {
+      STATE.section = 'derive';
+      STATE.formulaIdx = 0;
+      resetStepState();
+      render();
+    });
+    return;
+  }
+
+  const task = TEST_TASKS[STATE.testIdx];
+  const isAsm = task.kind === 'assemble';
+  const isTrap = task.kind === 'trap';
+  let questionHTML = '';
+  let bodyHTML = '';
+
+  if (isAsm) {
+    questionHTML = `Соберите правую часть для: <strong>${task.lhs}</strong>`;
+    bodyHTML = `
+      <div class="assembly-build" id="test-build"></div>
+      <div class="panel-title" style="margin-top:6px">Доступные блоки</div>
+      <div class="assembly-pool" id="test-pool"></div>
+    `;
+  } else if (isTrap) {
+    questionHTML = task.prompt;
+    bodyHTML = `
+      <div class="trap-formula" style="margin-bottom:14px"><span class="trap-tag">Так написано</span><div>${task.formula}</div></div>
+      <div class="options" id="test-options"></div>
+    `;
+  } else {
+    questionHTML = task.prompt;
+    bodyHTML = `<div class="options" id="test-options"></div>`;
+  }
+
+  right.innerHTML = `
+    <div class="panel-title"><span class="test-progress-pill">Тест · ${STATE.testIdx + 1}/${TEST_TASKS.length}</span></div>
+    <div class="question"><span class="y-tag">Задание</span>${questionHTML}</div>
+    <div class="feedback" id="feedback"></div>
+    ${bodyHTML}
+    <div class="controls">
+      <button class="btn btn-primary" id="test-check" type="button">Проверить</button>
+      ${isAsm ? '<button class="btn btn-ghost" id="test-clear" type="button">Очистить</button>' : ''}
+      <button class="btn" id="test-skip" type="button">Пропустить →</button>
+    </div>
+  `;
+
+  if (isAsm) {
+    const build = $('#test-build');
+    if (STATE.testAsmBuild.length === 0) {
+      build.innerHTML = '<span class="placeholder">Здесь появится правая часть — кликайте по блокам ниже.</span>';
+    } else {
+      STATE.testAsmBuild.forEach((poolIdx, i) => {
+        const block = el('span', { class: 'assembly-block' }, task.pool[poolIdx]);
+        block.title = 'Убрать';
+        block.addEventListener('click', () => {
+          STATE.testAsmBuild.splice(i, 1);
+          renderTestRight();
+        });
+        build.appendChild(block);
+        if (i < STATE.testAsmBuild.length - 1) build.appendChild(el('span', { class: 'muted' }, '·'));
+      });
+    }
+    const pool = $('#test-pool');
+    task.pool.forEach((b, idx) => {
+      const used = STATE.testAsmBuild.includes(idx);
+      const btn = el('button', { class: 'pool-block' + (used ? ' used' : ''), type: 'button' }, b);
+      if (!used) btn.addEventListener('click', () => {
+        STATE.testAsmBuild.push(idx);
+        renderTestRight();
+      });
+      pool.appendChild(btn);
+    });
+    $('#test-clear').addEventListener('click', () => { STATE.testAsmBuild = []; renderTestRight(); });
+    $('#test-check').disabled = STATE.testAsmBuild.length === 0;
+  } else {
+    const opts = $('#test-options');
+    task.options.forEach((o, idx) => {
+      const card = el('button', { class: 'option-card', type: 'button' }, o.html);
+      if (STATE.testSelectedOpt === idx) card.classList.add('selected');
+      card.addEventListener('click', () => {
+        STATE.testSelectedOpt = idx;
+        renderTestRight();
+      });
+      opts.appendChild(card);
+    });
+    $('#test-check').disabled = STATE.testSelectedOpt === null;
+  }
+
+  $('#test-check').addEventListener('click', () => {
+    let correct = false;
+    if (isAsm) {
+      const built = STATE.testAsmBuild.map(i => task.pool[i]);
+      correct = built.length === task.target.length && built.every((b, i) => b === task.target[i]);
+    } else {
+      correct = task.options[STATE.testSelectedOpt] && task.options[STATE.testSelectedOpt].correct === true;
+    }
+    if (correct) STATE.testScore += 1;
+    STATE.testAnswered += 1;
+    advanceTest();
+  });
+  $('#test-skip').addEventListener('click', () => {
+    STATE.testAnswered += 1;
+    advanceTest();
+  });
+}
+
+function advanceTest() {
+  STATE.testIdx += 1;
+  STATE.testSelectedOpt = null;
+  STATE.testAsmBuild = [];
+  if (STATE.testIdx >= TEST_TASKS.length) {
+    STATE.testFinished = true;
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const all = raw ? JSON.parse(raw) : {};
+      all[TOPIC_ID] = all[TOPIC_ID] || {};
+      all[TOPIC_ID].lastTestScore = STATE.testScore;
+      all[TOPIC_ID].lastTestAt = Date.now();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  render();
 }
 
 // ---------- HELPERS ----------
@@ -2016,14 +3510,21 @@ function resetStepState() {
   STATE.hintShown = false;
   STATE.asmBuild = [];
   STATE.asmFeedback = null;
+  STATE.builderActive = false;
+  STATE.builderBuild = [];
+  STATE.trapSelectedOpt = null;
+  STATE.trapAttempted = new Set();
+  STATE.trapRevealed = false;
+  STATE.testSelectedOpt = null;
+  STATE.testAsmBuild = [];
 }
 
 function recountStats() {
   let done = 0, hint = 0;
-  ['derive', 'assemble', 'product'].forEach(sect => {
-    Object.values(STATE.progress[sect]).forEach(p => {
-      if (p.done) done += 1;
-      if (p.withHint) hint += 1;
+  ['derive', 'assemble', 'product', 'traps'].forEach(sect => {
+    Object.values(STATE.progress[sect] || {}).forEach(x => {
+      if (x.done) done += 1;
+      if (x.withHint) hint += 1;
     });
   });
   STATE.stats.done = done;
@@ -2031,11 +3532,29 @@ function recountStats() {
 }
 
 function renderProgress() {
-  const total = DERIVATIONS.length + ASSEMBLIES.length + PRODUCTS.length;
+  const total = DERIVATIONS.length + ASSEMBLIES.length + PRODUCTS.length + TRAPS.length;
   $('#progress-text').textContent = `${STATE.stats.done} / ${total}`;
   $('#stat-done').textContent = STATE.stats.done;
   $('#stat-hint').textContent = STATE.stats.hint;
   $('#stat-err').textContent = STATE.stats.err;
+
+  // Final test banner: show once all 4 derivations are completed.
+  const slot = $('#final-test-banner-slot');
+  if (!slot) return;
+  const allDerivesDone = DERIVATIONS.every(d => STATE.progress.derive[d.id] && STATE.progress.derive[d.id].done);
+  if (allDerivesDone && STATE.section !== 'test') {
+    slot.innerHTML = `
+      <div class="final-test-banner">
+        <div class="ftb-text">
+          <strong>Все 4 формулы выведены.</strong> Готовы пройти <strong>финальный мини-тест</strong> из 5 задач?
+        </div>
+        <button class="btn btn-primary" id="open-final-test-btn" type="button">Начать тест →</button>
+      </div>
+    `;
+    $('#open-final-test-btn').addEventListener('click', () => startFinalTest());
+  } else {
+    slot.innerHTML = '';
+  }
 }
 
 // ---------- MAIN RENDER ----------
@@ -2046,6 +3565,18 @@ function render() {
   renderLeft();
   renderRight();
   renderProgress();
+}
+
+// ---------- ONBOARDING ----------
+function openOnboarding() {
+  const ov = $('#onboarding-overlay');
+  if (ov) ov.classList.add('show');
+}
+function closeOnboarding() {
+  const ov = $('#onboarding-overlay');
+  if (ov) ov.classList.remove('show');
+  STATE.onboardingDismissed = true;
+  saveProgress();
 }
 
 // ---------- INIT ----------
@@ -2060,11 +3591,17 @@ function init() {
     });
   });
 
-  // section buttons
+  // section buttons (now includes "traps")
   $$('.section-btn').forEach(b => {
     b.addEventListener('click', () => {
       STATE.section = b.dataset.section;
       STATE.formulaIdx = 0;
+      STATE.trapsIdx = 0;
+      // Initialise trapRevealed if returning to a completed trap.
+      if (STATE.section === 'traps') {
+        const x = STATE.progress.traps[TRAPS[STATE.trapsIdx].id];
+        STATE.trapRevealed = !!(x && x.done);
+      }
       resetStepState();
       render();
     });
@@ -2073,12 +3610,68 @@ function init() {
   // reset button
   $('#reset-btn').addEventListener('click', () => {
     if (!confirm('Сбросить весь прогресс по этой теме?')) return;
-    STATE.progress = { derive: {}, assemble: {}, product: {} };
+    STATE.progress = { derive: {}, assemble: {}, product: {}, traps: {} };
     STATE.stats = { done: 0, hint: 0, err: 0 };
+    STATE.onboardingDismissed = false;
+    STATE.pqIntroSeen = false;
     resetStepState();
     saveProgress();
     render();
+    openOnboarding();
   });
+
+  // ---- Onboarding ----
+  $('#start-help-btn').addEventListener('click', openOnboarding);
+  $('#ob-dismiss').addEventListener('click', closeOnboarding);
+
+  $('#ob-start-simple').addEventListener('click', () => {
+    STATE.mode = 'learn';
+    STATE.section = 'derive';
+    STATE.formulaIdx = 0;
+    resetStepState();
+    // Trigger the x/y mini-intro for new students.
+    if (!STATE.pqIntroSeen) {
+      STATE.pqIntroOpen = true;
+      STATE.pqIntroStep = 0;
+      STATE.pqIntroSelected = null;
+      STATE.pqIntroAttempts = 0;
+    }
+    closeOnboarding();
+    render();
+  });
+
+  $('#ob-assemble').addEventListener('click', () => {
+    STATE.mode = 'practice';
+    STATE.section = 'assemble';
+    STATE.formulaIdx = 0;
+    resetStepState();
+    closeOnboarding();
+    render();
+  });
+
+  $('#ob-teacher').addEventListener('click', () => {
+    STATE.mode = 'teacher';
+    STATE.section = 'derive';
+    STATE.formulaIdx = 0;
+    resetStepState();
+    closeOnboarding();
+    render();
+  });
+
+  // Close on backdrop click (but not when clicking the card itself)
+  $('#onboarding-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'onboarding-overlay') closeOnboarding();
+  });
+
+  // First-time visit → show onboarding overlay
+  if (!STATE.onboardingDismissed) {
+    openOnboarding();
+  }
+  // If returning to traps section, restore trapRevealed state
+  if (STATE.section === 'traps' && TRAPS[STATE.trapsIdx]) {
+    const x = STATE.progress.traps[TRAPS[STATE.trapsIdx].id];
+    STATE.trapRevealed = !!(x && x.done);
+  }
 
   recountStats();
   render();
