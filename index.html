@@ -10,7 +10,7 @@
     h1{margin:0 0 10px;font-size:clamp(28px,5vw,44px);text-align:center}.subtitle{margin:0 0 26px;color:#cbd5e1;text-align:center;font-size:18px}
     .section{margin:22px 0}.sectionTitle{font-size:18px;font-weight:900;color:#e5e7eb;margin:0 0 12px;letter-spacing:.02em}.links{display:grid;gap:16px}
     a{color:#111;background:#fff;padding:22px 24px;border-radius:16px;text-decoration:none;font-weight:800;font-size:20px;text-align:center;box-shadow:0 10px 20px rgba(0,0,0,0.25);transition:.15s transform,.15s box-shadow}
-    a:hover{transform:translateY(-2px);box-shadow:0 16px 28px rgba(0,0,0,0.32)}.basic a{background:#dbeafe;color:#102a56;text-align:left}.test a{background:#dcfce7;color:#14532d;text-align:left}.finance a{background:#fef3c7;color:#78350f;text-align:left}.ege a{background:#ede9fe;color:#3b0764;text-align:left}.courseLink{display:block}.courseTitle{display:block;text-align:center}.progress{display:block;margin-top:10px;font-size:14px;font-weight:700;color:#344054;text-align:center}.progress strong{color:#102a56}.progress.empty{color:#64748b}.note{display:block;margin-top:10px;font-size:14px;font-weight:700;color:#166534;text-align:center}.new{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;background:#fef3c7;color:#92400e;font-size:12px;vertical-align:middle}
+    a:hover{transform:translateY(-2px);box-shadow:0 16px 28px rgba(0,0,0,0.32)}.basic a{background:#dbeafe;color:#102a56;text-align:left}.test a{background:#dcfce7;color:#14532d;text-align:left}.finance a{background:#fef3c7;color:#78350f;text-align:left}.ege a{background:#ede9fe;color:#3b0764;text-align:left}.python a{background:#e0f2fe;color:#0f172a;text-align:left}.courseLink{display:block}.courseTitle{display:block;text-align:center}.progress{display:block;margin-top:10px;font-size:14px;font-weight:700;color:#344054;text-align:center}.progress strong{color:#102a56}.progress.empty{color:#64748b}.note{display:block;margin-top:10px;font-size:14px;font-weight:700;color:#166534;text-align:center}.new{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;background:#fef3c7;color:#92400e;font-size:12px;vertical-align:middle}
   </style>
 </head>
 <body>
@@ -22,6 +22,13 @@
       <div class="links">
         <a class="courseLink" href="trainers/marusya-test-map.html"><span class="courseTitle">Новые тренажёры в одном месте <span class="new">карта</span></span><span class="note">Для Маруси и тестирования: отрицательные числа, уравнения, деление, неравенства, геометрия</span></a>
         <a class="courseLink" href="trainers/maxim-5-rounding-decimals.html"><span class="courseTitle">Маршрут Максима: 5 класс</span><span class="note">Округление, сложение и вычитание десятичных дробей</span></a>
+      </div>
+    </section>
+    <section class="section python">
+      <h2 class="sectionTitle">Python для Сергея Леонидовича</h2>
+      <div class="links">
+        <a class="courseLink" href="trainers/python-if-for-sergey.html"><span class="courseTitle">Python: if и for</span><span id="pythonIfProgress" class="progress empty">if: прогресс пока не начат</span><span id="pythonForProgress" class="progress empty">for: прогресс пока не начат</span></a>
+        <a class="courseLink" href="trainers/python-if-inside-for-sergey.html"><span class="courseTitle">Python: if внутри for <span class="new">следующий уровень</span></span><span id="pythonIfInsideForProgress" class="progress empty">Прогресс пока не начат</span></a>
       </div>
     </section>
     <section class="section finance">
@@ -71,9 +78,10 @@
   </main>
 <script>
 const STORAGE_KEY='mathExamCourseProgress.v1';
-function getStatus(total,correct){const acc=total?Math.round(correct/total*100):0;if(total<10)return 'тема начата';if(total>=40&&acc>=90)return 'тема освоена';if(total>=20&&acc>=80)return 'почти освоено';if(acc<70)return 'нужно тренироваться';return 'тренируется'}
+function getStatus(total,correct,mastered=40,almost=20){const acc=total?Math.round(correct/total*100):0;if(total<10)return 'тема начата';if(total>=mastered&&acc>=90)return 'тема освоена';if(total>=almost&&acc>=80)return 'почти освоено';if(acc<70)return 'нужно тренироваться';return 'тренируется'}
 function normalizeTopic(t){if(!t)return null;if(t.total!==undefined)return t;if(t.solved!==undefined)return {total:t.solved,right:t.correct||0};return t}
-function fillProgress(id,topic){const el=document.getElementById(id);try{const data=JSON.parse(localStorage.getItem(STORAGE_KEY));let t=data&&(data.topics&&data.topics[topic]||data[topic]);t=normalizeTopic(t);if(!t||!t.total)return;const correct=t.right||0;const total=t.total||0;const acc=Math.round(correct/total*100);el.classList.remove('empty');el.innerHTML=`Решено: <strong>${total}</strong> · Верно: <strong>${correct}</strong> · Точность: <strong>${acc}%</strong> · ${getStatus(total,correct)}`}catch(e){}}
+function fillProgress(id,topic,mastered=40,almost=20){const el=document.getElementById(id);try{const data=JSON.parse(localStorage.getItem(STORAGE_KEY));let t=data&&(data.topics&&data.topics[topic]||data[topic]);t=normalizeTopic(t);if(!el||!t||!t.total)return;const correct=t.right||0;const total=t.total||0;const acc=Math.round(correct/total*100);el.classList.remove('empty');el.innerHTML=`Решено: <strong>${total}</strong> · Верно: <strong>${correct}</strong> · Точность: <strong>${acc}%</strong> · ${getStatus(total,correct,mastered,almost)}`}catch(e){}}
+fillProgress('pythonIfProgress','pythonIfSergeyLeonidovich',30,20);fillProgress('pythonForProgress','pythonForSergeyLeonidovich',30,20);fillProgress('pythonIfInsideForProgress','pythonIfInsideForSergey',25,16);
 fillProgress('negativeProgress','negativeNumbersLine');fillProgress('negativeAltProgress','negativeNumbersAlternative');fillProgress('signedAdditionProgress','signedAdditionTrainer');fillProgress('roundingProgress','roundingStepwise');fillProgress('decimalCashProgress','decimalCashTrainer');fillProgress('equationsProgress','simpleEquationsStepwise');fillProgress('builderProgress','equationsBuilder');fillProgress('systemsProgress','linearSystemsTrainer');fillProgress('divisionProgress','longDivisionStepwise');fillProgress('ineqProgress','linearInequalitiesStepwise');
 </script>
 </body>
