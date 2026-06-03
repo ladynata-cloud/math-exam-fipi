@@ -319,6 +319,55 @@
   }
   .tape-info .kv b { color: var(--text); margin-right: 4px; }
   .tape-cmd { font-family: var(--mono); }
+  .tape-status {
+    margin: 10px 0 0;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--accent-soft);
+    border: 1px solid #c8d6e6;
+    color: var(--accent);
+    font-size: 14.5px;
+    font-weight: 600;
+  }
+  .cmd-note {
+    display: inline-block;
+    margin-left: 8px;
+    color: var(--ok-text);
+    font-family: var(--sans);
+    font-size: 13px;
+  }
+  .sim-final-note {
+    flex-basis: 100%;
+    background: var(--hint-bg);
+    border: 1px solid var(--hint-border);
+    border-radius: var(--radius-sm);
+    color: var(--hint-text);
+    padding: 8px 10px;
+  }
+
+  .tm-scheme {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    margin-top: 12px;
+  }
+  .tm-scheme pre {
+    margin: 6px 0 0;
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.45;
+    overflow-x: auto;
+  }
+  .tm-mini-question {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .tm-mini-question .form-row { gap: 8px; }
 
   .examples-list {
     display: grid;
@@ -2437,6 +2486,30 @@ function renderTabRightTail() {
         то <code>t = 0</code>.
       </p>
       <div class="soft-box">
+        <b>Старт и финал — это разные моменты.</b>
+        <div class="tm-scheme">
+          <div>
+            <span class="small muted">Старт:</span>
+            <pre>1000λ
+    ↑ головка справа</pre>
+          </div>
+          <div>
+            <span class="small muted">После работы:</span>
+            <pre>0111
+↑ головка остановилась на изменённой 1</pre>
+          </div>
+        </div>
+        <div class="tm-mini-question">
+          <p><b>Почему головка в финале оказалась слева?</b></p>
+          <div class="form-row">
+            <button class="secondary" data-tail-head-answer="A">A. Потому что она всегда стартует слева</button>
+            <button class="secondary" data-tail-head-answer="B">B. Потому что машина шла справа налево по хвосту нулей и остановилась на первой 1</button>
+            <button class="secondary" data-tail-head-answer="C">C. Потому что λ считается нулём</button>
+          </div>
+          <div class="feedback" id="tail-head-feedback"></div>
+        </div>
+      </div>
+      <div class="soft-box">
         <div>Строка:</div>
         <div class="drill-string" id="tail-string">—</div>
         <div class="form-row">
@@ -2536,14 +2609,14 @@ function renderTabRightTail() {
       <h2>Симулятор машины Тьюринга</h2>
       <p class="muted small">
         Введите короткую двоичную строку и наблюдайте, как меняется лента.
-        Кнопка «Один шаг» сразу выполняет первый переход.
+        «Один шаг» применяет одну команду машины.
       </p>
       <div class="form-row">
         <label><span>Исходная строка</span>
           <input type="text" id="sim-input" value="1000" maxlength="200" style="width:260px; font-family: var(--mono);">
         </label>
         <button id="btn-run">Запустить полностью</button>
-        <button class="secondary" id="btn-step">Один шаг</button>
+        <button class="secondary" id="btn-step" title="Один шаг: применить одну команду машины">Один шаг: применить одну команду машины</button>
         <button class="ghost" id="btn-reset">Сбросить</button>
       </div>
       <div class="form-row" style="gap: 6px;">
@@ -2552,6 +2625,7 @@ function renderTabRightTail() {
         <button class="ghost small" data-sim-example="0000">0000</button>
         <button class="ghost small" data-sim-example="1111">1111</button>
       </div>
+      <div class="tape-status" id="tape-status"></div>
       <div class="tape" id="tape"></div>
       <div class="tape-info" id="tape-info"></div>
       <div class="feedback err" id="sim-err"></div>
@@ -2786,6 +2860,17 @@ function rtCheckTailDrill() {
     fb.innerHTML = `Пока нет. Считай нули с правого края до первой единицы. Хвост: <span class="mono">${rtHighlightTail(tailDrill.s)}</span>`;
   }
 }
+function rtCheckTailHeadQuestion(answer) {
+  const fb = document.getElementById("tail-head-feedback");
+  if (!fb) return;
+  if (answer === "B") {
+    fb.className = "feedback show ok";
+    fb.textContent = "Верно. Старт и финал — разные моменты. Старт справа, финал там, где программа остановилась.";
+  } else {
+    fb.className = "feedback show hint";
+    fb.textContent = "Старт и финал — разные моменты. Старт справа, финал там, где программа остановилась.";
+  }
+}
 
 /* Гид (6 шагов) */
 function rtMakeFormulaDrill() {
@@ -2969,8 +3054,16 @@ function rtInitSim(input) {
 function rtRenderSim() {
   const tapeEl = document.getElementById("tape");
   const infoEl = document.getElementById("tape-info");
-  tapeEl.innerHTML = ""; infoEl.innerHTML = "";
+  const statusEl = document.getElementById("tape-status");
+  tapeEl.innerHTML = ""; infoEl.innerHTML = ""; statusEl.textContent = "";
   if (!rtSimState) { tapeEl.innerHTML = '<div style="padding: 14px; color: var(--text-dim);">Симуляция не запущена.</div>'; return; }
+  if (rtSimState.finished) {
+    statusEl.textContent = "Финальная конфигурация: машина остановилась. Это НЕ стартовое положение головки.";
+  } else if (rtSimState.step === 0) {
+    statusEl.textContent = "Стартовая конфигурация: головка стоит на λ справа от строки.";
+  } else {
+    statusEl.textContent = "Текущий шаг: машина уже начала движение. Головка показывает текущее положение.";
+  }
   const W = 21;
   let dMin = Math.min(rtSimState.minPos, rtSimState.head);
   let dMax = Math.max(rtSimState.maxPos, rtSimState.head);
@@ -2989,17 +3082,20 @@ function rtRenderSim() {
   const cmdText = rtSimState.lastCommand
     ? `${rtSimState.lastCommand.fromState}, ${rtSimState.lastCommand.fromSymbol} → ${rtSimState.lastCommand.write}, ${rtSimState.lastCommand.move}, ${rtSimState.lastCommand.next}`
     : "—";
+  const cmdNote = rtSimState.finished && rtSimState.lastCommand
+    ? ' <span class="cmd-note">последняя команда привела к остановке</span>'
+    : "";
   const status = rtSimState.finished ? "остановлена" : "работает";
   let finalInfo = "";
   if (rtSimState.finished) {
     const f = readFinalTape(rtSimState);
-    finalInfo = `<span class="kv"><b>Итоговая строка:</b> <code class="mono">${f || LAMBDA}</code></span><span class="kv"><b>Нулей:</b> ${countChar(f, "0")}</span>`;
+    finalInfo = `<span class="kv"><b>Итоговая строка:</b> <code class="mono">${f || LAMBDA}</code></span><span class="kv"><b>Нулей:</b> ${countChar(f, "0")}</span><span class="kv sim-final-note"><b>Пояснение:</b> В начале головка была справа от строки. Машина шла влево по хвосту нулей, превращала 0 в 1 и остановилась на первой 1, превратив её в 0. Поэтому в финале головка может оказаться слева.</span>`;
   }
   infoEl.innerHTML = `<span class="kv"><b>Шаг:</b> ${rtSimState.step}</span>
     <span class="kv"><b>Состояние:</b> <code>${rtSimState.state}</code></span>
-    <span class="kv"><b>Позиция головки:</b> ${rtSimState.head}</span>
+    <span class="kv"><b>Текущая позиция головки:</b> ${rtSimState.head}</span>
     <span class="kv"><b>Под головкой:</b> <code class="mono">${rtSimState.tape.get(rtSimState.head) ?? LAMBDA}</code></span>
-    <span class="kv"><b>Последняя команда:</b> <span class="tape-cmd">${cmdText}</span></span>
+    <span class="kv"><b>Последняя команда:</b> <span class="tape-cmd">${cmdText}</span>${cmdNote}</span>
     <span class="kv"><b>Статус:</b> ${status}</span>${finalInfo}`;
 }
 function rtShowSimErr(m) { const el = document.getElementById("sim-err"); if (!m) { el.className = "feedback err"; el.textContent = ""; return; } el.textContent = m; el.classList.add("show"); }
@@ -3023,7 +3119,12 @@ function rtHandleSimStep() {
   if (!r.ok) rtShowSimErr(r.error);
   rtRenderSim();
 }
-function rtHandleSimReset() { rtShowSimErr(""); rtSimState = null; rtRenderSim(); }
+function rtHandleSimReset() {
+  rtShowSimErr("");
+  const r = rtInitSim(document.getElementById("sim-input").value.trim());
+  if (!r.ok) rtShowSimErr(r.error);
+  rtRenderSim();
+}
 
 function initTabRightTail() {
   renderTabRightTail();
@@ -3039,19 +3140,22 @@ function initTabRightTail() {
   document.getElementById("btn-show-solution").addEventListener("click", rtHandleShowSolution);
   document.getElementById("btn-tail-check").addEventListener("click", rtCheckTailDrill);
   document.getElementById("btn-tail-next").addEventListener("click", rtNewTailDrill);
+  document.querySelectorAll("[data-tail-head-answer]").forEach(btn => {
+    btn.addEventListener("click", () => rtCheckTailHeadQuestion(btn.getAttribute("data-tail-head-answer")));
+  });
   document.getElementById("btn-run").addEventListener("click", rtHandleSimRun);
   document.getElementById("btn-step").addEventListener("click", rtHandleSimStep);
   document.getElementById("btn-reset").addEventListener("click", rtHandleSimReset);
   document.querySelectorAll("[data-sim-example]").forEach(btn => {
     btn.addEventListener("click", () => {
       document.getElementById("sim-input").value = btn.getAttribute("data-sim-example");
-      rtSimState = null; rtRenderSim(); rtShowSimErr("");
+      rtHandleSimReset();
     });
   });
   document.getElementById("user-answer").addEventListener("keydown", e => { if (e.key === "Enter") rtHandleCheck(); });
   ["manual-n", "manual-k"].forEach(id => document.getElementById(id).addEventListener("keydown", e => { if (e.key === "Enter") rtHandleManual(); }));
   document.getElementById("tail-answer").addEventListener("keydown", e => { if (e.key === "Enter") rtCheckTailDrill(); });
-  rtRenderSim();
+  rtHandleSimReset();
 }
 
 /* ============================================================
