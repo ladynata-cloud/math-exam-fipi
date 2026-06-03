@@ -2625,6 +2625,7 @@ function renderTabRightTail() {
         <button class="ghost small" data-sim-example="0000">0000</button>
         <button class="ghost small" data-sim-example="1111">1111</button>
       </div>
+      <div id="rt-sim-phase" class="soft-box small"></div>
       <div class="tape-status" id="tape-status"></div>
       <div class="tape" id="tape"></div>
       <div class="tape-info" id="tape-info"></div>
@@ -3051,18 +3052,37 @@ function rtInitSim(input) {
   rtSimState = createTMSimulation(input, "nearest_blank_right", "q0");
   return { ok: true };
 }
+function rtGetInput() {
+  return document.getElementById("sim-input").value.trim();
+}
+function rtResetSimToStart() {
+  rtShowSimErr("");
+  const r = rtInitSim(rtGetInput());
+  if (!r.ok) {
+    rtShowSimErr(r.error);
+    rtSimState = null;
+  }
+  rtRenderSim();
+}
 function rtRenderSim() {
   const tapeEl = document.getElementById("tape");
   const infoEl = document.getElementById("tape-info");
   const statusEl = document.getElementById("tape-status");
-  tapeEl.innerHTML = ""; infoEl.innerHTML = ""; statusEl.textContent = "";
+  const phaseEl = document.getElementById("rt-sim-phase");
+  if (!tapeEl || !infoEl) return;
+  tapeEl.innerHTML = ""; infoEl.innerHTML = "";
+  if (statusEl) statusEl.textContent = "";
+  if (phaseEl) phaseEl.textContent = "";
   if (!rtSimState) { tapeEl.innerHTML = '<div style="padding: 14px; color: var(--text-dim);">Симуляция не запущена.</div>'; return; }
   if (rtSimState.finished) {
-    statusEl.textContent = "Финальная конфигурация: машина остановилась. Это НЕ стартовое положение головки.";
+    if (statusEl) statusEl.textContent = "Финальная конфигурация: машина остановилась. Это НЕ стартовое положение головки.";
+    if (phaseEl) phaseEl.textContent = "Финал: машина остановилась. Это не стартовое положение головки.";
   } else if (rtSimState.step === 0) {
-    statusEl.textContent = "Стартовая конфигурация: головка стоит на λ справа от строки.";
+    if (statusEl) statusEl.textContent = "Стартовая конфигурация: головка стоит на λ справа от строки.";
+    if (phaseEl) phaseEl.textContent = "Старт: головка стоит на ближайшей справа пустой клетке λ.";
   } else {
-    statusEl.textContent = "Текущий шаг: машина уже начала движение. Головка показывает текущее положение.";
+    if (statusEl) statusEl.textContent = "Текущий шаг: машина уже начала движение. Головка показывает текущее положение.";
+    if (phaseEl) phaseEl.textContent = "Выполнение: машина уже начала движение справа налево.";
   }
   const W = 21;
   let dMin = Math.min(rtSimState.minPos, rtSimState.head);
@@ -3098,32 +3118,29 @@ function rtRenderSim() {
     <span class="kv"><b>Последняя команда:</b> <span class="tape-cmd">${cmdText}</span>${cmdNote}</span>
     <span class="kv"><b>Статус:</b> ${status}</span>${finalInfo}`;
 }
-function rtShowSimErr(m) { const el = document.getElementById("sim-err"); if (!m) { el.className = "feedback err"; el.textContent = ""; return; } el.textContent = m; el.classList.add("show"); }
+function rtShowSimErr(m) { const el = document.getElementById("sim-err"); if (!el) return; if (!m) { el.className = "feedback err"; el.textContent = ""; return; } el.textContent = m; el.classList.add("show"); }
 function rtHandleSimRun() {
   rtShowSimErr("");
   if (!rtSimState || rtSimState.finished) {
-    const r = rtInitSim(document.getElementById("sim-input").value.trim());
+    const r = rtInitSim(rtGetInput());
     if (!r.ok) { rtShowSimErr(r.error); rtRenderSim(); return; }
   }
-  const r = runTMFull(rtSimState, PROG_right_invert_first1);
-  if (!r.ok) rtShowSimErr(r.error);
+  const result = runTMFull(rtSimState, PROG_right_invert_first1);
+  if (!result.ok) rtShowSimErr(result.error);
   rtRenderSim();
 }
 function rtHandleSimStep() {
   rtShowSimErr("");
   if (!rtSimState || rtSimState.finished) {
-    const r = rtInitSim(document.getElementById("sim-input").value.trim());
+    const r = rtInitSim(rtGetInput());
     if (!r.ok) { rtShowSimErr(r.error); rtRenderSim(); return; }
   }
-  const r = stepTM(rtSimState, PROG_right_invert_first1);
-  if (!r.ok) rtShowSimErr(r.error);
+  const result = stepTM(rtSimState, PROG_right_invert_first1);
+  if (!result.ok) rtShowSimErr(result.error);
   rtRenderSim();
 }
 function rtHandleSimReset() {
-  rtShowSimErr("");
-  const r = rtInitSim(document.getElementById("sim-input").value.trim());
-  if (!r.ok) rtShowSimErr(r.error);
-  rtRenderSim();
+  rtResetSimToStart();
 }
 
 function initTabRightTail() {
@@ -3149,13 +3166,14 @@ function initTabRightTail() {
   document.querySelectorAll("[data-sim-example]").forEach(btn => {
     btn.addEventListener("click", () => {
       document.getElementById("sim-input").value = btn.getAttribute("data-sim-example");
-      rtHandleSimReset();
+      rtResetSimToStart();
     });
   });
+  document.getElementById("sim-input").addEventListener("change", rtResetSimToStart);
   document.getElementById("user-answer").addEventListener("keydown", e => { if (e.key === "Enter") rtHandleCheck(); });
   ["manual-n", "manual-k"].forEach(id => document.getElementById(id).addEventListener("keydown", e => { if (e.key === "Enter") rtHandleManual(); }));
   document.getElementById("tail-answer").addEventListener("keydown", e => { if (e.key === "Enter") rtCheckTailDrill(); });
-  rtHandleSimReset();
+  rtResetSimToStart();
 }
 
 /* ============================================================
@@ -3242,6 +3260,7 @@ function renderTabLeftPrefix() {
         <button class="ghost small" data-lpsim-example="1111">1111</button>
         <button class="ghost small" data-lpsim-example="0">0</button>
       </div>
+      <div id="lp-sim-phase" class="soft-box small"></div>
       <div class="tape" id="lp-tape"></div>
       <div class="tape-info" id="lp-tape-info"></div>
       <div class="feedback err" id="lp-sim-err"></div>
@@ -3302,11 +3321,35 @@ function lpInitSim(input) {
   lpSimState = createTMSimulation(input, "nearest_blank_left", "q0");
   return { ok: true };
 }
+function lpGetInput() {
+  return document.getElementById("lp-sim-input").value.trim();
+}
+function lpResetSimToStart() {
+  lpShowSimErr("");
+  const r = lpInitSim(lpGetInput());
+  if (!r.ok) {
+    lpShowSimErr(r.error);
+    lpSimState = null;
+  }
+  lpRenderSim();
+}
 function lpRenderSim() {
   const tapeEl = document.getElementById("lp-tape");
   const infoEl = document.getElementById("lp-tape-info");
+  const phaseEl = document.getElementById("lp-sim-phase");
+  if (!tapeEl || !infoEl) return;
   tapeEl.innerHTML = ""; infoEl.innerHTML = "";
+  if (phaseEl) phaseEl.textContent = "";
   if (!lpSimState) { tapeEl.innerHTML = '<div style="padding: 14px; color: var(--text-dim);">Симуляция не запущена.</div>'; return; }
+  if (phaseEl) {
+    if (lpSimState.step === 0) {
+      phaseEl.textContent = "Старт: головка стоит на ближайшей слева пустой клетке λ.";
+    } else if (!lpSimState.finished) {
+      phaseEl.textContent = "Выполнение: машина уже начала движение слева направо.";
+    } else {
+      phaseEl.textContent = "Финал: машина остановилась. Это не стартовое положение головки.";
+    }
+  }
   const W = 21;
   let dMin = Math.min(lpSimState.minPos, lpSimState.head);
   let dMax = Math.max(lpSimState.maxPos, lpSimState.head);
@@ -3332,33 +3375,35 @@ function lpRenderSim() {
   }
   infoEl.innerHTML = `<span class="kv"><b>Шаг:</b> ${lpSimState.step}</span>
     <span class="kv"><b>Состояние:</b> <code>${lpSimState.state}</code></span>
-    <span class="kv"><b>Позиция головки:</b> ${lpSimState.head}</span>
+    <span class="kv"><b>Текущая позиция головки:</b> ${lpSimState.head}</span>
     <span class="kv"><b>Под головкой:</b> <code class="mono">${lpSimState.tape.get(lpSimState.head) ?? LAMBDA}</code></span>
     <span class="kv"><b>Последняя команда:</b> <span class="tape-cmd">${cmd}</span></span>
     <span class="kv"><b>Статус:</b> ${lpSimState.finished ? "остановлена" : "работает"}</span>${finalInfo}`;
 }
-function lpShowSimErr(m) { const el = document.getElementById("lp-sim-err"); if (!m) { el.className = "feedback err"; el.textContent = ""; return; } el.textContent = m; el.classList.add("show"); }
+function lpShowSimErr(m) { const el = document.getElementById("lp-sim-err"); if (!el) return; if (!m) { el.className = "feedback err"; el.textContent = ""; return; } el.textContent = m; el.classList.add("show"); }
 function lpHandleRun() {
   lpShowSimErr("");
   if (!lpSimState || lpSimState.finished) {
-    const r = lpInitSim(document.getElementById("lp-sim-input").value.trim());
+    const r = lpInitSim(lpGetInput());
     if (!r.ok) { lpShowSimErr(r.error); lpRenderSim(); return; }
   }
-  const r = runTMFull(lpSimState, PROG_left_invert_first0);
-  if (!r.ok) lpShowSimErr(r.error);
+  const result = runTMFull(lpSimState, PROG_left_invert_first0);
+  if (!result.ok) lpShowSimErr(result.error);
   lpRenderSim();
 }
 function lpHandleStep() {
   lpShowSimErr("");
   if (!lpSimState || lpSimState.finished) {
-    const r = lpInitSim(document.getElementById("lp-sim-input").value.trim());
+    const r = lpInitSim(lpGetInput());
     if (!r.ok) { lpShowSimErr(r.error); lpRenderSim(); return; }
   }
-  const r = stepTM(lpSimState, PROG_left_invert_first0);
-  if (!r.ok) lpShowSimErr(r.error);
+  const result = stepTM(lpSimState, PROG_left_invert_first0);
+  if (!result.ok) lpShowSimErr(result.error);
   lpRenderSim();
 }
-function lpHandleReset() { lpShowSimErr(""); lpSimState = null; lpRenderSim(); }
+function lpHandleReset() {
+  lpResetSimToStart();
+}
 
 function lpRenderRelated() {
   const list = document.getElementById("lp-related");
@@ -3393,11 +3438,12 @@ function initTabLeftPrefix() {
   document.querySelectorAll("[data-lpsim-example]").forEach(b => {
     b.addEventListener("click", () => {
       document.getElementById("lp-sim-input").value = b.getAttribute("data-lpsim-example");
-      lpSimState = null; lpRenderSim(); lpShowSimErr("");
+      lpResetSimToStart();
     });
   });
+  document.getElementById("lp-sim-input").addEventListener("change", lpResetSimToStart);
   lpRenderRelated();
-  lpRenderSim();
+  lpResetSimToStart();
 }
 
 /* ============================================================
@@ -4094,15 +4140,16 @@ function renderTabLibrary() {
       <div id="lib-guide-host"></div>
       <div class="solution" id="lib-answer-solution" hidden></div>
 
-      <h3>Симулятор на коротком входе</h3>
+      <h3>Быстрая проверка на коротком входе</h3>
       <p class="muted small">
-        Здесь можно посмотреть, как программа работает на коротких строках — это помогает
-        понять идею решения без перебора всех возможных входов.
+        Здесь программа сразу прогоняется на короткой строке и показывает результат.
+        Для пошагового просмотра используйте вкладку «Универсальный разбор таблицы».
       </p>
       <div class="manual-mode">
         <label for="lib-sim-input" class="small">Вход:</label>
         <input type="text" id="lib-sim-input" maxlength="80" style="width:240px; font-family: var(--mono);">
         <button class="btn small" id="lib-sim-run">Запустить</button>
+        <button class="btn small ghost" id="lib-open-universal">Открыть в универсальном симуляторе</button>
         <span class="small muted" id="lib-sim-examples-label">Примеры:</span>
         <span id="lib-sim-examples"></span>
       </div>
@@ -4653,6 +4700,24 @@ function libRunSim() {
     ${extra}
   `;
 }
+function libOpenInUniversalSimulator() {
+  const task = libGetTask();
+  if (!task) return;
+  const raw = document.getElementById("lib-sim-input")?.value.trim();
+  switchTab("universal");
+  setTimeout(() => {
+    if (!TASK_LIBRARY.some(t => t.shortId === task.shortId)) return;
+    if (raw) uniSimInput = raw;
+    else uniSimInput = exampleInputForTask(task)[0] || "";
+    uniPick(task.shortId);
+    const inp = document.getElementById("uni-sim-input");
+    if (inp && uniSimInput) {
+      inp.value = uniSimInput;
+      uniLoadSim();
+    }
+    document.getElementById("uni-card-sim")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 60);
+}
 
 function initTabLibrary() {
   renderTabLibrary();
@@ -4663,6 +4728,7 @@ function initTabLibrary() {
   document.getElementById("lib-answer-reveal").addEventListener("click", libRevealAnswer);
   document.getElementById("lib-answer-guide").addEventListener("click", libStartGuide);
   document.getElementById("lib-sim-run").addEventListener("click", libRunSim);
+  document.getElementById("lib-open-universal").addEventListener("click", libOpenInUniversalSimulator);
   // Кнопки генераторов
   document.querySelectorAll("#library-generators [data-gen-key]").forEach(b => {
     b.addEventListener("click", () => {
