@@ -901,10 +901,26 @@ const MAX_STEPS = 100000;
  * @param {string} startState
  * @param {string} blankSymbol
  */
-function createTMSimulation(inputString, headStart, startState, blankSymbol = LAMBDA) {
+/**
+ * Создать состояние симуляции МТ.
+ * @param {string} inputString - исходная лента (без пустых символов)
+ * @param {string} headStart - "nearest_blank_right" | "nearest_blank_left" | "first_symbol" | "last_symbol" | "manual"
+ * @param {string} startState
+ * @param {string} blankSymbol
+ * @param {number} [manualPosition] - используется при headStart === "manual"
+ */
+function createTMSimulation(inputString, headStart, startState, blankSymbol = LAMBDA, manualPosition = 0) {
   const tape = new Map();
   for (let i = 0; i < inputString.length; i++) tape.set(i, inputString[i]);
-  const head = headStart === "nearest_blank_right" ? inputString.length : -1;
+  let head;
+  switch (headStart) {
+    case "nearest_blank_right": head = inputString.length; break;
+    case "nearest_blank_left":  head = -1; break;
+    case "first_symbol":        head = 0; break;
+    case "last_symbol":         head = Math.max(0, inputString.length - 1); break;
+    case "manual":              head = Number.isInteger(manualPosition) ? manualPosition : 0; break;
+    default:                    head = inputString.length; // безопасный дефолт
+  }
   return {
     tape,
     head,
@@ -1426,6 +1442,295 @@ function getTaskPattern(task) {
 function getTaskFoundationSkills(task) {
   const p = PATTERN_TAXONOMY[getTaskPattern(task)] || PATTERN_TAXONOMY.unknown;
   return p.foundationSkills.slice();
+}
+
+/* ============================================================
+   АНАЛИЗ ПРОИЗВОЛЬНОЙ ТАБЛИЦЫ МТ
+   Три функции:
+     • analyzeStateSemantics(program, state, alphabet, blank) — короткая роль состояния
+     • detectPatternFromProgram(program, alphabet, blank, headStart) — распознавание паттерна
+     • runOnSampleInputs(program, headStart, startState, blank, inputs) — прогон на наборе входов
+   ============================================================ */
+
+/** Короткое описание роли одного состояния по структуре строки таблицы.
+ *  В нашем движке move === "S" фактически означает halt (после S машина finished),
+ *  поэтому S-команды трактуем как «выход в halt», а L/R с next===state — как реальный цикл.
+ */
+function analyzeStateSemantics(program, state, alphabet, blank) {
+  const row = program[state] || {};
+  const cmds = alphabet.map(s => ({ sym: s, cmd: row[s] })).filter(x => x.cmd);
+  if (cmds.length === 0) return "пустое состояние — машина сюда не идёт";
+
+  const dirWord = m => m === "L" ? "влево" : (m === "R" ? "вправо" : "без сдвига");
+  const symLabel = s => s === blank ? "λ" : s;
+
+  const haltCmds = cmds.filter(c => c.cmd.move === "S");
+  const cycleCmds = cmds.filter(c => c.cmd.move !== "S" && c.cmd.next === state);
+  const transitionCmds = cmds.filter(c => c.cmd.move !== "S" && c.cmd.next !== state);
+
+  // Случай 1: одна команда только на blank, переход в другое состояние — типичный «вход»
+  if (cmds.length === 1 && cmds[0].sym === blank && transitionCmds.length === 1) {
+    const c = cmds[0].cmd;
+    if (c.move === "L") return "вход справа: один шаг влево, попадаем на последний символ строки, переход в " + c.next;
+    if (c.move === "R") return "вход слева: один шаг вправо, попадаем на первый символ строки, переход в " + c.next;
+  }
+
+  // Случай 2: все команды halt (S) — эффективный halt-стейт (любая команда останавливает)
+  if (haltCmds.length === cmds.length) {
+    // Может быть «копирование» — машина переписывает символы, но S после первого же шага halt.
+    // По факту: машина сюда заходит и сразу останавливается. Пытаемся описать что записывается.
+    const changes = haltCmds.filter(c => c.cmd.write !== c.sym).map(c => `${symLabel(c.sym)}→${symLabel(c.cmd.write)}`);
+    if (changes.length > 0) return `halt-стейт: входим сюда, записываем (${changes.join(", ")}) и останавливаемся`;
+    return "halt-стейт: любая команда останавливает машину (S без действий)";
+  }
+
+  // Случай 3: цикл (L/R) + halt (S) — самый частый случай в наших задачах
+  if (cycleCmds.length > 0 && haltCmds.length > 0 && transitionCmds.length === 0) {
+    const moves = new Set(cycleCmds.map(c => c.cmd.move));
+    if (moves.size === 1) {
+      const dir = cycleCmds[0].cmd.move;
+      const cycleSyms = cycleCmds.map(c => symLabel(c.sym)).join("/");
+      const cycleTransforms = cycleCmds.filter(c => c.cmd.write !== c.sym)
+        .map(c => `${symLabel(c.sym)}→${symLabel(c.cmd.write)}`);
+      const cycleDesc = cycleTransforms.length > 0
+        ? `цикл ${dirWord(dir)} по символам ${cycleSyms}, преобразование: ${cycleTransforms.join(", ")}`
+        : `проход ${dirWord(dir)} по символам ${cycleSyms} без изменений`;
+      const haltDesc = haltCmds.map(c => {
+        const change = c.cmd.write !== c.sym ? `, записав ${symLabel(c.cmd.write)}` : "";
+        return `на ${symLabel(c.sym)} → остановка${change}`;
+      }).join("; ");
+      return `${cycleDesc}; ${haltDesc}`;
+    }
+  }
+
+  // Случай 4: только цикл, единое направление, без halt — «проход по ленте»
+  if (cycleCmds.length === cmds.length) {
+    const moves = new Set(cycleCmds.map(c => c.cmd.move));
+    if (moves.size === 1) {
+      const dir = cycleCmds[0].cmd.move;
+      const transforms = cycleCmds.filter(c => c.cmd.write !== c.sym && c.sym !== blank)
+        .map(c => `${symLabel(c.sym)}→${symLabel(c.cmd.write)}`);
+      if (transforms.length > 0) return `проход ${dirWord(dir)} с преобразованием: ${transforms.join(", ")}`;
+      return `проход ${dirWord(dir)} без изменений`;
+    }
+  }
+
+  // Случай 5: смешанный с переходами — описываем по-точечно
+  if (transitionCmds.length > 0) {
+    const parts = [];
+    if (cycleCmds.length > 0) {
+      const moves = new Set(cycleCmds.map(c => c.cmd.move));
+      const dir = moves.size === 1 ? cycleCmds[0].cmd.move : null;
+      const syms = cycleCmds.map(c => symLabel(c.sym)).join("/");
+      parts.push(dir ? `цикл ${dirWord(dir)} (пока видим ${syms})` : `смешанная петля по ${syms}`);
+    }
+    transitionCmds.forEach(c => {
+      parts.push(`на ${symLabel(c.sym)} → переход в ${c.cmd.next}`);
+    });
+    haltCmds.forEach(c => {
+      parts.push(`на ${symLabel(c.sym)} → остановка`);
+    });
+    return parts.join("; ");
+  }
+
+  return "состояние со смешанной логикой";
+}
+
+/** Каталог известных паттернов: эталонная таблица + метаинформация. */
+const PROGRAM_PATTERNS_CATALOG = [
+  {
+    id: "right-tail-zeros",
+    title: "Правый хвост нулей",
+    program: "PROG_right_invert_first1", // имя глобальной программы
+    typicalHeadStart: "nearest_blank_right",
+    mainIdea: "Машина идёт справа налево по нулям, превращая их в единицы. На первой 1 заменяет её на 0 и останавливается. Меняет лишь правый хвост нулей и одну ближайшую единицу слева от него."
+  },
+  {
+    id: "left-prefix-ones",
+    title: "Левый префикс единиц",
+    program: "PROG_left_invert_first0",
+    typicalHeadStart: "nearest_blank_left",
+    mainIdea: "Машина идёт слева направо по единицам, превращая их в нули. На первом 0 заменяет его на 1 и останавливается. Меняет лишь левый префикс единиц и один ближайший 0 справа от него."
+  },
+  {
+    id: "binary-inversion",
+    title: "Побитовое отрицание",
+    program: "PROG_bitwise_invert",
+    typicalHeadStart: "nearest_blank_right",
+    mainIdea: "Машина проходит всю двоичную запись справа налево и меняет каждый бит на противоположный. Для n-битной записи N результат = 2ⁿ − 1 − N."
+  },
+  {
+    id: "clear-lowest-one",
+    title: "Обнуление младшей единицы",
+    program: "PROG_clear_lowest_one",
+    typicalHeadStart: "nearest_blank_right",
+    mainIdea: "Машина идёт справа налево по нулям, не меняя их. На первой 1 заменяет её на 0 и останавливается. Эффект: вычитание степени двойки на позиции младшей единицы."
+  },
+  {
+    id: "clear-left-one",
+    title: "Обнуление старшей единицы",
+    program: "PROG_clear_first_left_one",
+    typicalHeadStart: "nearest_blank_left",
+    mainIdea: "Машина входит слева, на первой 1 заменяет её на 0 и продолжает. Для записи без ведущих нулей это снимает старший бит, то есть вычитает 2^(n−1)."
+  },
+  {
+    id: "first-zero-to-one",
+    title: "Первый ноль слева → единица",
+    program: "PROG_left_first_zero_to_one",
+    typicalHeadStart: "nearest_blank_left",
+    mainIdea: "Машина идёт слева направо по единицам, на первом 0 заменяет его на 1 и останавливается. К числу прибавляется одна степень двойки."
+  }
+];
+
+/** Сравнить две программы. Программы равны если: одинаковый набор состояний,
+ *  одинаковый набор символов, и для каждой пары (state, sym) либо обе команды
+ *  отсутствуют, либо обе присутствуют и (write, move, next) совпадают.
+ *  blank-эквивалентность не делаем — на наших примерах blank всегда λ.
+ */
+function programsEqual(p1, p2) {
+  if (!p1 || !p2) return false;
+  const states1 = Object.keys(p1).sort();
+  const states2 = Object.keys(p2).sort();
+  if (states1.join(",") !== states2.join(",")) return false;
+  for (const st of states1) {
+    const r1 = p1[st] || {}, r2 = p2[st] || {};
+    const syms1 = Object.keys(r1).sort();
+    const syms2 = Object.keys(r2).sort();
+    if (syms1.join("|") !== syms2.join("|")) return false;
+    for (const sym of syms1) {
+      const c1 = r1[sym], c2 = r2[sym];
+      if (!c1 && !c2) continue;
+      if (!c1 || !c2) return false;
+      if (c1.write !== c2.write || c1.move !== c2.move || c1.next !== c2.next) return false;
+    }
+  }
+  return true;
+}
+
+/** Попытка распознать паттерн программы. Возвращает {id, title, mainIdea} | null. */
+function detectPatternFromProgram(program, alphabet, blank, headStart) {
+  // Глобальные программы для сравнения
+  const ref = {
+    PROG_right_invert_first1: typeof PROG_right_invert_first1 !== "undefined" ? PROG_right_invert_first1 : null,
+    PROG_left_invert_first0:  typeof PROG_left_invert_first0  !== "undefined" ? PROG_left_invert_first0  : null,
+    PROG_bitwise_invert:      typeof PROG_bitwise_invert      !== "undefined" ? PROG_bitwise_invert      : null,
+    PROG_clear_lowest_one:    typeof PROG_clear_lowest_one    !== "undefined" ? PROG_clear_lowest_one    : null,
+    PROG_clear_first_left_one:typeof PROG_clear_first_left_one!== "undefined" ? PROG_clear_first_left_one: null,
+    PROG_left_first_zero_to_one: typeof PROG_left_first_zero_to_one !== "undefined" ? PROG_left_first_zero_to_one : null,
+    PROG_binary_decrement:    typeof PROG_binary_decrement    !== "undefined" ? PROG_binary_decrement    : null
+  };
+  for (const meta of PROGRAM_PATTERNS_CATALOG) {
+    const refProg = ref[meta.program];
+    if (!refProg) continue;
+    if (programsEqual(program, refProg)) {
+      return { id: meta.id, title: meta.title, mainIdea: meta.mainIdea, matchType: "exact" };
+    }
+  }
+  // Двоичный декремент имеет ту же таблицу, что и «правый хвост нулей»,
+  // но по семантике это вычитание 1. Различаем по контексту headStart и алфавиту.
+  if (ref.PROG_binary_decrement && programsEqual(program, ref.PROG_binary_decrement)) {
+    return {
+      id: "binary-decrement", title: "Двоичный декремент",
+      mainIdea: "Эта же таблица, интерпретируемая на двоичной записи числа, реализует вычитание единицы: N − 1.",
+      matchType: "exact"
+    };
+  }
+  return null;
+}
+
+/** Прогон программы на наборе тестовых входов. Возвращает массив результатов. */
+function runOnSampleInputs(program, headStart, startState, blank, alphabet, inputs, maxSteps) {
+  maxSteps = maxSteps || 200;
+  const out = [];
+  for (const input of inputs) {
+    // Проверяем, что все символы входа допустимы алфавитом (без blank)
+    let invalidChar = null;
+    const allowed = new Set(alphabet.filter(s => s !== blank));
+    for (const ch of input) if (!allowed.has(ch)) { invalidChar = ch; break; }
+    if (invalidChar) {
+      out.push({ input, output: null, steps: 0, error: `Символ «${invalidChar}» не в алфавите.` });
+      continue;
+    }
+    try {
+      const sim = createTMSimulation(input, headStart, startState, blank, 0);
+      const r = runTMFull(sim, program, maxSteps);
+      // Финальная лента — обрезаем blank-края
+      let s = sim.minPos, e = sim.maxPos;
+      while (s <= e && (sim.tape.get(s) ?? blank) === blank) s++;
+      while (e >= s && (sim.tape.get(e) ?? blank) === blank) e--;
+      let final = "";
+      if (s <= e) for (let i = s; i <= e; i++) final += (sim.tape.get(i) ?? blank);
+      out.push({ input, output: final, steps: sim.step, error: r.ok ? null : r.error });
+    } catch (e) {
+      out.push({ input, output: null, steps: 0, error: e.message });
+    }
+  }
+  return out;
+}
+
+/** Сгенерировать «умный» набор тестовых входов для программы. */
+function defaultSampleInputsFor(alphabet, blank) {
+  const syms = alphabet.filter(s => s !== blank);
+  if (syms.length === 2 && syms.includes("0") && syms.includes("1")) {
+    // Двоичный алфавит
+    return ["1", "10", "11", "100", "101", "111", "1010", "1100"];
+  }
+  // Общий случай: коротенькие комбинации первых двух символов
+  const a = syms[0] || "", b = syms[1] || a;
+  return [a, b, a + b, b + a, a + a + b, a + b + a, b + a + b].filter(x => x.length > 0);
+}
+
+/** Полный HTML-блок «Что делает программа» по таблице. */
+function analyzeProgramHTML(program, alphabet, states, blank, headStart, startState) {
+  const pattern = detectPatternFromProgram(program, alphabet, blank, headStart);
+  const semantics = states.map(st => ({
+    state: st,
+    desc: analyzeStateSemantics(program, st, alphabet, blank)
+  }));
+
+  const patternBlock = pattern
+    ? `<div class="cmd-explain-card" style="background:#eef5e8; border-color:#a9d8a9;">
+        <h5>📌 Распознанный паттерн: ${escapeHTML(pattern.title)}</h5>
+        <p><b>Главная идея:</b> ${escapeHTML(pattern.mainIdea)}</p>
+      </div>`
+    : `<div class="cmd-explain-card" style="background:#fbf3e0; border-color:#e3c4a8;">
+        <h5>📌 Паттерн не распознан автоматически</h5>
+        <p>Таблица не совпадает ни с одной из эталонных программ из библиотеки. Это либо новый тип задачи, либо вариация — изучай по семантике состояний ниже и по прогонам на коротких примерах.</p>
+      </div>`;
+
+  const semHTML = `
+    <div class="cmd-explain-card">
+      <h5>🔍 Роль каждого состояния</h5>
+      <ul style="margin: 4px 0 0 0; padding-left: 20px;">
+        ${semantics.map(s => `<li><code>${escapeHTML(s.state)}</code> — ${escapeHTML(s.desc)}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+
+  return patternBlock + semHTML;
+}
+
+/** HTML-таблица с результатами прогона на наборе входов. */
+function sampleRunsHTML(results) {
+  if (!results || results.length === 0) return `<p class="muted small">Нет результатов.</p>`;
+  const rows = results.map(r => {
+    if (r.error) return `<tr><td><code class="mono">${escapeHTML(r.input)}</code></td><td colspan="2" class="muted">${escapeHTML(r.error)}</td></tr>`;
+    return `<tr>
+      <td><code class="mono">${escapeHTML(r.input)}</code></td>
+      <td><code class="mono">${escapeHTML(r.output)}</code></td>
+      <td class="muted small">${r.steps} ${r.steps === 1 ? "шаг" : (r.steps < 5 ? "шага" : "шагов")}</td>
+    </tr>`;
+  }).join("");
+  return `
+    <div class="cmd-explain-card">
+      <h5>🧪 Прогон на коротких входах</h5>
+      <p class="muted small">Программа автоматически прогнана на нескольких простых входах. Сравни столбцы input → output, чтобы увидеть закономерность.</p>
+      <table class="autotest-table" style="margin-top:6px">
+        <thead><tr><th>вход</th><th>результат</th><th>шагов</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
 }
 
 /* ============================================================
@@ -3631,92 +3936,206 @@ function renderTabUniversal() {
   const panel = document.getElementById("panel-universal");
   panel.innerHTML = `
     <section class="card">
-      <h2>Универсальный модуль</h2>
-      <p>На этой вкладке два блока: «Чтение таблицы команд» (как разобрать любую таблицу программы)
-      и «Симулятор машины» (как прогнать её на конкретном входе с шагом, шагом назад и скоростью).</p>
-    </section>
+      <h2>Универсальный разбор таблицы МТ</h2>
+      <p>Здесь можно разобрать любую таблицу машины Тьюринга: указать состояния, символы, команды, старт головки и входную строку.</p>
 
-    <!-- БЛОК 1: Чтение таблицы команд -->
-    <section class="card" id="uni-card-reading">
-      <h2>1. Чтение таблицы команд</h2>
-      <p>
-        Программа — это таблица. Строки — состояния машины (<code>q0</code>, <code>q1</code> и т. д.),
-        столбцы — символы, которые головка может видеть в текущей ячейке: буквы алфавита и пустой символ
-        <code class="lambda">λ</code>. На пересечении строки и столбца записана команда:
-      </p>
-      <p class="mono" style="margin-left:1.2em;">запись, движение, новое состояние</p>
-      <ul>
-        <li><b>Запись</b> — какой символ положить в текущую ячейку (может совпадать с тем, что уже там лежит, тогда содержимое не меняется).</li>
-        <li><b>Движение</b> — <code>L</code> сдвинуть головку влево, <code>R</code> вправо, <code>S</code> остаться на месте.</li>
-        <li><b>Новое состояние</b> — в какое состояние перейти после этого шага.</li>
-      </ul>
-      <p>
-        Если в клетке стоит прочерк «—», для этой пары (состояние, символ) команды нет.
-        Это значит остановка (<b>halt</b>).
-      </p>
-      <p>
-        Положение головки в начале — это <b>условие задачи</b>. Встречаются два варианта:
-        «ближайшая слева пустая ячейка» (сразу слева от строки) и
-        «ближайшая справа пустая ячейка» (сразу справа от строки).
-        Первый шаг машины всегда сдвигает её внутрь строки.
-      </p>
-    </section>
-
-    <section class="card">
-      <h2>Выберите программу</h2>
-      <p class="muted small">Любая программа из библиотеки. Слева — список, справа — детальный разбор.</p>
-      <div class="uni-program-list" id="uni-program-list"></div>
-    </section>
-
-    <section class="card" id="uni-detail" hidden>
-      <h2 id="uni-title">Программа</h2>
-
-      <h3>Таблица команд</h3>
-      <p class="muted small">Кликни любую клетку, чтобы получить разбор команды на простом языке.
-      Текущие строка (состояние) и столбец (символ под головкой) подсвечены, а активная команда — в зелёной рамке.</p>
-      <div id="uni-program-table"></div>
-      <div id="uni-cmd-explain"></div>
-
-      <h3>Алфавит и состояния</h3>
-      <p class="small" id="uni-alpha"></p>
-
-      <h3>Старт головки</h3>
-      <p class="small" id="uni-head"></p>
-
-      <h3>Как читать конкретную команду</h3>
-      <div id="uni-cmd-reader" class="soft-box"></div>
-    </section>
-
-    <!-- БЛОК 2: Симулятор машины -->
-    <section class="card" id="uni-card-sim" hidden>
-      <h2>2. Симулятор машины</h2>
-      <p class="muted small">Прогон выбранной выше программы на конкретном входе. Можно идти по одному
-      шагу, делать шаг назад, прогонять до конца с настраиваемой скоростью или предсказывать команду.</p>
-
-      <div class="manual-mode">
-        <label for="uni-sim-input" class="small">Входная строка:</label>
-        <input type="text" id="uni-sim-input" maxlength="80" style="width:240px; font-family: var(--mono);">
-        <button class="btn small" id="uni-sim-reset">Загрузить</button>
-        <button class="btn small ghost" id="uni-sim-step">Шаг →</button>
-        <button class="btn small ghost" id="uni-sim-back">← Шаг назад</button>
-        <button class="btn small ghost" id="uni-sim-predict">🔮 Предскажи шаг</button>
-        <button class="btn small ghost" id="uni-sim-run">До конца</button>
-        <button class="btn small ghost" id="uni-sim-stop" style="display:none">⏸ Стоп</button>
-        <button class="btn small ghost" id="uni-sim-clear">Сброс</button>
-        <span class="speed-control">
-          <span class="label">скорость:</span>
-          <button data-speed="slow">медленно</button>
-          <button data-speed="normal" class="active">нормально</button>
-          <button data-speed="fast">быстро</button>
-        </span>
+      <div class="mode-switch" id="uni-mode-switch" role="tablist" style="margin: 8px 0;">
+        <button data-uni-mode="library" class="active">Из библиотеки</button>
+        <button data-uni-mode="custom">Своя таблица</button>
       </div>
-      <div class="feedback err" id="uni-sim-err"></div>
-      <div id="uni-sim-view" class="soft-box" style="margin-top:.6rem;"></div>
-      <div id="uni-predict-host"></div>
-      <h3>Журнал шагов</h3>
-      <p class="muted small" style="margin: 2px 0 8px;">Каждая строка — конфигурация <b>до</b> шага (состояние, позиция головки, видимый символ) и применённая команда (что записали, куда сдвинулись, в какое состояние перешли).</p>
-      <div id="uni-trace" class="trace-log small"></div>
+
+      <details style="margin-top:8px;">
+        <summary><b>Короткая памятка</b></summary>
+        <p>Программа — это таблица. Строки — состояния машины (<code>q0</code>, <code>q1</code> и т. д.),
+        столбцы — символы, которые головка может видеть в текущей ячейке: буквы алфавита и пустой символ
+        <code class="lambda">λ</code>. На пересечении строки и столбца записана команда:</p>
+        <p class="mono" style="margin-left:1.2em;">запись, движение, новое состояние</p>
+        <ul>
+          <li><b>Запись</b> — какой символ положить в текущую ячейку (может совпадать с тем, что уже там лежит).</li>
+          <li><b>Движение</b> — <code>L</code> сдвинуть головку влево, <code>R</code> вправо, <code>S</code> остаться на месте (в нашем движке S означает остановку машины).</li>
+          <li><b>Новое состояние</b> — в какое состояние перейти после этого шага.</li>
+        </ul>
+        <p>Если в клетке стоит прочерк «—», для этой пары команды нет: машина остановится (halt).</p>
+        <p>Старт головки — это условие задачи. Чаще всего: «ближайшая пустая ячейка справа» или «ближайшая пустая ячейка слева» от входной строки. Первый шаг входит головкой внутрь строки.</p>
+      </details>
     </section>
+
+    <!-- ============== РЕЖИМ «ИЗ БИБЛИОТЕКИ» ============== -->
+    <div id="uni-mode-library">
+      <section class="card">
+        <h3>Выберите программу из библиотеки</h3>
+        <p class="muted small">Любая программа из библиотеки. Слева — список, ниже — детальный разбор.</p>
+        <div class="uni-program-list" id="uni-program-list"></div>
+      </section>
+
+      <section class="card" id="uni-detail" hidden>
+        <h2 id="uni-title">Программа</h2>
+
+        <h3>Таблица команд</h3>
+        <p class="muted small">Кликни любую клетку, чтобы получить разбор команды на простом языке.
+        Текущие строка (состояние) и столбец (символ под головкой) подсвечены, а активная команда — в зелёной рамке.</p>
+        <div id="uni-program-table"></div>
+        <div id="uni-cmd-explain"></div>
+
+        <h3>Что делает программа</h3>
+        <p class="muted small">Автоматический анализ таблицы: распознанный паттерн, роль каждого состояния и прогон на коротких входах.</p>
+        <div id="uni-analysis-host"></div>
+        <div class="form-row" style="margin-top:6px;">
+          <button class="btn small ghost" id="uni-run-samples">🧪 Изучить на коротких примерах</button>
+        </div>
+        <div id="uni-samples-host"></div>
+
+        <h3>Алфавит и состояния</h3>
+        <p class="small" id="uni-alpha"></p>
+
+        <h3>Старт головки</h3>
+        <p class="small" id="uni-head"></p>
+
+        <h3>Как читать конкретную команду</h3>
+        <div id="uni-cmd-reader" class="soft-box"></div>
+      </section>
+
+      <section class="card" id="uni-card-sim" hidden>
+        <h2>Симулятор машины</h2>
+        <p class="muted small">Прогон выбранной выше программы на конкретном входе. Можно идти по одному
+        шагу, делать шаг назад, прогонять до конца с настраиваемой скоростью или предсказывать команду.</p>
+
+        <div class="manual-mode">
+          <label for="uni-sim-input" class="small">Входная строка:</label>
+          <input type="text" id="uni-sim-input" maxlength="80" style="width:240px; font-family: var(--mono);">
+          <button class="btn small" id="uni-sim-reset">Загрузить</button>
+          <button class="btn small ghost" id="uni-sim-step">Шаг →</button>
+          <button class="btn small ghost" id="uni-sim-back">← Шаг назад</button>
+          <button class="btn small ghost" id="uni-sim-predict">🔮 Предскажи шаг</button>
+          <button class="btn small ghost" id="uni-sim-run">До конца</button>
+          <button class="btn small ghost" id="uni-sim-stop" style="display:none">⏸ Стоп</button>
+          <button class="btn small ghost" id="uni-sim-clear">Сброс</button>
+          <span class="speed-control">
+            <span class="label">скорость:</span>
+            <button data-speed="slow">медленно</button>
+            <button data-speed="normal" class="active">нормально</button>
+            <button data-speed="fast">быстро</button>
+          </span>
+        </div>
+        <div class="feedback err" id="uni-sim-err"></div>
+        <div id="uni-sim-view" class="soft-box" style="margin-top:.6rem;"></div>
+        <div id="uni-predict-host"></div>
+        <h3>Журнал шагов</h3>
+        <p class="muted small" style="margin: 2px 0 8px;">Каждая строка — конфигурация <b>до</b> шага (состояние, позиция головки, видимый символ) и применённая команда (что записали, куда сдвинулись, в какое состояние перешли).</p>
+        <div id="uni-trace" class="trace-log small"></div>
+      </section>
+    </div>
+
+    <!-- ============== РЕЖИМ «СВОЯ ТАБЛИЦА» ============== -->
+    <div id="uni-mode-custom" hidden>
+      <section class="card">
+        <h3>Своя таблица</h3>
+        <p class="muted small">
+          Введите состояния, символы и команды из вашей задачи. Можно набрать вручную в визуальной
+          таблице или вставить таблицу текстом. Затем выберите старт головки и запустите симулятор.
+        </p>
+
+        <h4>1. Конфигурация</h4>
+        <div class="form-grid">
+          <label class="small">Пустой символ (blank):
+            <input type="text" id="cust-blank" maxlength="2" value="λ" style="width:60px; font-family: var(--mono);">
+          </label>
+          <label class="small">Алфавит (через запятую):
+            <input type="text" id="cust-alphabet" value="λ,0,1" style="width:240px; font-family: var(--mono);">
+          </label>
+          <label class="small">Состояния (через запятую):
+            <input type="text" id="cust-states" value="q0,q1" style="width:240px; font-family: var(--mono);">
+          </label>
+          <label class="small">Стартовое состояние:
+            <input type="text" id="cust-start-state" value="q0" style="width:80px; font-family: var(--mono);">
+          </label>
+        </div>
+        <div class="form-grid" style="margin-top:6px;">
+          <label class="small">Старт головки:
+            <select id="cust-head-mode" style="font-family: inherit;">
+              <option value="nearest_blank_right">Ближайшая справа пустая клетка</option>
+              <option value="nearest_blank_left">Ближайшая слева пустая клетка</option>
+              <option value="first_symbol">Первый символ строки</option>
+              <option value="last_symbol">Последний символ строки</option>
+              <option value="manual">Позиция вручную</option>
+            </select>
+          </label>
+          <label class="small" id="cust-manual-pos-label" style="display:none">Позиция (число):
+            <input type="number" id="cust-manual-pos" value="0" style="width:80px;">
+          </label>
+        </div>
+        <div class="form-row" style="margin-top:8px;">
+          <button class="btn small" id="cust-rebuild-table">Перестроить таблицу</button>
+          <button class="btn small ghost" id="cust-clear-commands">Очистить команды</button>
+        </div>
+
+        <h4 style="margin-top:14px;">2. Готовые примеры</h4>
+        <div class="form-row" id="cust-examples">
+          <button class="btn small ghost" data-cust-example="invert">Побитовое отрицание</button>
+          <button class="btn small ghost" data-cust-example="increment">Увеличение на 1</button>
+          <button class="btn small ghost" data-cust-example="decrement">Уменьшение на 1</button>
+          <button class="btn small ghost" data-cust-example="leftprefix">Левый префикс единиц</button>
+        </div>
+
+        <h4 style="margin-top:14px;">3. Визуальная таблица команд</h4>
+        <p class="muted small">Каждая ячейка — команда вида <code class="mono">запись,движение,новое_состояние</code>. Пустая ячейка или «—» означает halt. Клик по ячейке откроет разбор команды.</p>
+        <div id="cust-table-host"></div>
+        <div id="cust-cmd-explain"></div>
+
+        <h4 style="margin-top:14px;">3a. Что делает эта таблица</h4>
+        <p class="muted small">Автоматический анализ: распознанный паттерн, роли состояний, прогон на коротких входах.</p>
+        <div id="cust-analysis-host"></div>
+        <div class="form-row" style="margin-top:6px;">
+          <button class="btn small ghost" id="cust-run-samples">🧪 Изучить на коротких примерах</button>
+        </div>
+        <div id="cust-samples-host"></div>
+
+        <h4 style="margin-top:14px;">4. Вставить таблицу текстом</h4>
+        <p class="muted small">
+          Формат: первые строки <code>states: …</code>, <code>symbols: …</code>, <code>blank: …</code>,
+          <code>start: …</code>, <code>head: …</code>, затем строки с командами вида
+          <code class="mono">q1,0 -&gt; 1,L,q1</code>.
+        </p>
+        <textarea id="cust-text-import" rows="10" style="width:100%; font-family: var(--mono); font-size: 13px;"></textarea>
+        <div class="form-row" style="margin-top:6px;">
+          <button class="btn small" id="cust-load-from-text">Загрузить из текста</button>
+          <button class="btn small ghost" id="cust-export-text">Скопировать таблицу</button>
+          <button class="btn small ghost" id="cust-clear-text">Очистить</button>
+        </div>
+        <div class="feedback" id="cust-config-feedback"></div>
+
+        <h4 style="margin-top:14px;">5. Сохранение</h4>
+        <div class="form-row">
+          <button class="btn small ghost" id="cust-save-local">Сохранить таблицу</button>
+          <button class="btn small ghost" id="cust-load-local">Загрузить сохранённую</button>
+          <button class="btn small ghost" id="cust-reset-local">Сбросить свою таблицу</button>
+        </div>
+        <p class="muted small" id="cust-save-status"></p>
+      </section>
+
+      <section class="card">
+        <h3>Симулятор своей таблицы</h3>
+        <div class="manual-mode">
+          <label for="cust-sim-input" class="small">Входная строка:</label>
+          <input type="text" id="cust-sim-input" maxlength="80" value="101000001" style="width:240px; font-family: var(--mono);">
+          <button class="btn small" id="cust-sim-reset">Загрузить</button>
+          <button class="btn small ghost" id="cust-sim-step">Шаг →</button>
+          <button class="btn small ghost" id="cust-sim-back">← Шаг назад</button>
+          <button class="btn small ghost" id="cust-sim-predict">🔮 Предскажи шаг</button>
+          <button class="btn small ghost" id="cust-sim-run">До конца</button>
+          <button class="btn small ghost" id="cust-sim-clear">Сброс</button>
+        </div>
+        <div class="feedback err" id="cust-sim-err"></div>
+        <div id="cust-sim-view" class="soft-box" style="margin-top:.6rem;"></div>
+        <div id="cust-predict-host"></div>
+
+        <h4>Журнал шагов</h4>
+        <p class="muted small" style="margin: 2px 0 8px;">Каждая строка — конфигурация <b>до</b> шага и применённая команда. Изменение символа на ленте подсвечивается.</p>
+        <div id="cust-trace" class="trace-log small"></div>
+
+        <div id="cust-summary"></div>
+      </section>
+    </div>
   `;
 }
 
@@ -3773,6 +4192,30 @@ function uniRenderDetail() {
 
   document.getElementById("uni-head").textContent =
     `Головка стартует ${headStartLabel(task.initialTape.headStart)}.`;
+
+  // Анализ программы: распознанный паттерн + семантика состояний
+  const analysisHost = document.getElementById("uni-analysis-host");
+  if (analysisHost) {
+    analysisHost.innerHTML = analyzeProgramHTML(
+      task.program, task.alphabet, task.states, task.blankSymbol,
+      task.initialTape.headStart, task.startState
+    );
+  }
+  // Сбрасываем предыдущий блок прогонов на примерах
+  const samplesHost = document.getElementById("uni-samples-host");
+  if (samplesHost) samplesHost.innerHTML = "";
+  // Привязываем кнопку «Изучить на коротких примерах»
+  const runSamplesBtn = document.getElementById("uni-run-samples");
+  if (runSamplesBtn) {
+    runSamplesBtn.onclick = () => {
+      const inputs = defaultSampleInputsFor(task.alphabet, task.blankSymbol);
+      const results = runOnSampleInputs(
+        task.program, task.initialTape.headStart, task.startState,
+        task.blankSymbol, task.alphabet, inputs, 200
+      );
+      samplesHost.innerHTML = sampleRunsHTML(results);
+    };
+  }
 
   // Пример первой непустой команды
   let example = null;
@@ -4032,9 +4475,855 @@ function uniClearSim() {
   uniRenderSim();
 }
 
+/* ============================================================
+   РЕЖИМ «СВОЯ ТАБЛИЦА» в универсальном табе
+   ============================================================ */
+
+// Состояние конфигурации
+const CUST_DEFAULT_CONFIG = {
+  blank: "λ",
+  alphabet: ["λ", "0", "1"],
+  states: ["q0", "q1"],
+  startState: "q0",
+  headMode: "nearest_blank_right",
+  manualPosition: 0,
+  // commands: { state: { symbol: {write, move, next} | null } }
+  commands: {}
+};
+let custConfig = JSON.parse(JSON.stringify(CUST_DEFAULT_CONFIG));
+custConfig.commands = { q0: { "λ": null, "0": null, "1": null }, q1: { "λ": null, "0": null, "1": null } };
+
+// Состояние симуляции
+let custSim = null;
+let custTrace = [];
+let custSnapshots = [];
+let custLastInput = "";
+let custPredictPending = null;
+
+// Встроенные примеры
+const CUST_EXAMPLES = {
+  invert: {
+    title: "Побитовое отрицание справа налево",
+    text:
+      "states: q0,q1\n" +
+      "symbols: λ,0,1\n" +
+      "blank: λ\n" +
+      "start: q0\n" +
+      "head: nearest_blank_right\n" +
+      "\n" +
+      "q0,λ -> λ,L,q1\n" +
+      "q1,λ -> λ,S,q1\n" +
+      "q1,0 -> 1,L,q1\n" +
+      "q1,1 -> 0,L,q1\n",
+    sampleInput: "101000001",
+    expectedOutput: "010111110"
+  },
+  increment: {
+    title: "Двоичное увеличение на 1",
+    text:
+      "states: q0,q1,q2\n" +
+      "symbols: λ,0,1\n" +
+      "blank: λ\n" +
+      "start: q0\n" +
+      "head: nearest_blank_right\n" +
+      "\n" +
+      "q0,λ -> λ,L,q1\n" +
+      "q1,1 -> 0,L,q1\n" +
+      "q1,0 -> 1,S,q2\n" +
+      "q1,λ -> 1,S,q2\n" +
+      "q2,λ -> λ,S,q2\n" +
+      "q2,0 -> 0,S,q2\n" +
+      "q2,1 -> 1,S,q2\n",
+    sampleInput: "1111111111",
+    expectedOutput: "10000000000"
+  },
+  decrement: {
+    title: "Двоичное уменьшение на 1",
+    text:
+      "states: q0,q1\n" +
+      "symbols: λ,0,1\n" +
+      "blank: λ\n" +
+      "start: q0\n" +
+      "head: nearest_blank_right\n" +
+      "\n" +
+      "q0,λ -> λ,L,q1\n" +
+      "q1,1 -> 0,S,q1\n" +
+      "q1,0 -> 1,L,q1\n" +
+      "q1,λ -> λ,S,q1\n",
+    sampleInput: "10000000",
+    expectedOutput: "01111111"
+  },
+  leftprefix: {
+    title: "Левый префикс единиц",
+    text:
+      "states: q0,q1\n" +
+      "symbols: λ,0,1\n" +
+      "blank: λ\n" +
+      "start: q0\n" +
+      "head: nearest_blank_left\n" +
+      "\n" +
+      "q0,λ -> λ,R,q1\n" +
+      "q1,1 -> 0,R,q1\n" +
+      "q1,0 -> 1,S,q1\n" +
+      "q1,λ -> λ,S,q1\n",
+    sampleInput: "111000",
+    expectedOutput: "000100"
+  }
+};
+
+const CUST_HEAD_LABELS = {
+  nearest_blank_right: "Ближайшая справа пустая клетка",
+  nearest_blank_left:  "Ближайшая слева пустая клетка",
+  first_symbol:        "Первый символ строки",
+  last_symbol:         "Последний символ строки",
+  manual:              "Позиция вручную"
+};
+
+/** Превратить custConfig в готовую программу для движка. */
+function custBuildProgramFromConfig() {
+  const program = {};
+  for (const st of custConfig.states) {
+    program[st] = {};
+    for (const sym of custConfig.alphabet) {
+      const cmd = (custConfig.commands[st] || {})[sym];
+      program[st][sym] = cmd && cmd.write != null ? cmd : null;
+    }
+  }
+  return program;
+}
+
+/** Перестроить таблицу команд под новый набор states/alphabet (сохранив, что можно). */
+function custRebuildCommandSkeleton() {
+  const next = {};
+  for (const st of custConfig.states) {
+    next[st] = {};
+    for (const sym of custConfig.alphabet) {
+      next[st][sym] = ((custConfig.commands[st] || {})[sym]) || null;
+    }
+  }
+  custConfig.commands = next;
+}
+
+function custShowConfigFeedback(msg, kind = "ok") {
+  const el = document.getElementById("cust-config-feedback");
+  if (!el) return;
+  el.className = "feedback " + (kind === "ok" ? "ok show" : "err show");
+  el.textContent = msg;
+}
+function custClearConfigFeedback() {
+  const el = document.getElementById("cust-config-feedback");
+  if (!el) return;
+  el.className = "feedback"; el.textContent = "";
+}
+
+/** Применить конфигурацию из инпутов в custConfig. Возвращает {ok, error}. */
+function custReadConfigFromInputs() {
+  try {
+    const blank = (document.getElementById("cust-blank").value || "λ").trim();
+    const alphabetRaw = document.getElementById("cust-alphabet").value || "";
+    const statesRaw = document.getElementById("cust-states").value || "";
+    const startState = (document.getElementById("cust-start-state").value || "").trim();
+    const headMode = document.getElementById("cust-head-mode").value || "nearest_blank_right";
+    const manualPos = parseInt(document.getElementById("cust-manual-pos").value || "0", 10);
+
+    const alphabet = alphabetRaw.split(",").map(s => s.trim()).filter(Boolean);
+    const states = statesRaw.split(",").map(s => s.trim()).filter(Boolean);
+
+    if (!blank) return { ok: false, error: "Пустой символ не может быть пустым." };
+    if (alphabet.length === 0) return { ok: false, error: "Алфавит не может быть пустым." };
+    if (!alphabet.includes(blank)) alphabet.unshift(blank); // гарантируем blank в алфавите
+    if (states.length === 0) return { ok: false, error: "Список состояний не может быть пустым." };
+    if (!startState) return { ok: false, error: "Не указано стартовое состояние." };
+    if (!states.includes(startState)) return { ok: false, error: `Стартовое состояние «${startState}» не входит в список состояний.` };
+
+    custConfig.blank = blank;
+    custConfig.alphabet = alphabet;
+    custConfig.states = states;
+    custConfig.startState = startState;
+    custConfig.headMode = headMode;
+    custConfig.manualPosition = Number.isInteger(manualPos) ? manualPos : 0;
+    custRebuildCommandSkeleton();
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: "Ошибка чтения конфигурации: " + e.message };
+  }
+}
+
+/** Записать текущий custConfig обратно в инпуты. */
+function custWriteConfigToInputs() {
+  document.getElementById("cust-blank").value = custConfig.blank;
+  document.getElementById("cust-alphabet").value = custConfig.alphabet.join(",");
+  document.getElementById("cust-states").value = custConfig.states.join(",");
+  document.getElementById("cust-start-state").value = custConfig.startState;
+  document.getElementById("cust-head-mode").value = custConfig.headMode;
+  document.getElementById("cust-manual-pos").value = String(custConfig.manualPosition || 0);
+  const manualLabel = document.getElementById("cust-manual-pos-label");
+  if (manualLabel) manualLabel.style.display = (custConfig.headMode === "manual") ? "" : "none";
+}
+
+/** Парсинг команды из строки вида "1,L,q1" или "1 L q1". Возвращает {ok, cmd, error}. */
+function custParseCommandString(raw, alphabet, states, blank) {
+  if (raw == null) return { ok: true, cmd: null };
+  const s = String(raw).trim();
+  if (!s || s === "—" || s === "-" || s.toLowerCase() === "halt") return { ok: true, cmd: null };
+  const parts = s.split(/[,\s]+/).map(p => p.trim()).filter(Boolean);
+  if (parts.length !== 3) return { ok: false, error: `«${s}»: ожидалось 3 части (запись, движение, новое_состояние)` };
+  const [write, move, next] = parts;
+  const moveU = move.toUpperCase();
+  if (!["L", "R", "S"].includes(moveU)) return { ok: false, error: `«${s}»: движение должно быть L, R или S, а не «${move}»` };
+  if (!alphabet.includes(write)) return { ok: false, error: `«${s}»: запись «${write}» не входит в алфавит` };
+  if (!states.includes(next)) return { ok: false, error: `«${s}»: новое состояние «${next}» не входит в список состояний` };
+  return { ok: true, cmd: { write, move: moveU, next } };
+}
+
+/** Текстовый импорт всей таблицы. Возвращает {ok, error?}. */
+function custImportFromText(text) {
+  try {
+    const lines = text.split(/\r?\n/).map(l => l.trim());
+    let states = null, alphabet = null, blank = null, start = null, head = "nearest_blank_right";
+    const cmdLines = [];
+    for (const ln of lines) {
+      if (!ln || ln.startsWith("#")) continue;
+      const m = ln.match(/^(states|symbols|alphabet|blank|start|head)\s*:\s*(.+)$/i);
+      if (m) {
+        const key = m[1].toLowerCase();
+        const val = m[2].trim();
+        if (key === "states") states = val.split(/[,\s]+/).map(s => s.trim()).filter(Boolean);
+        else if (key === "symbols" || key === "alphabet") alphabet = val.split(/[,\s]+/).map(s => s.trim()).filter(Boolean);
+        else if (key === "blank") blank = val.split(/\s+/)[0];
+        else if (key === "start") start = val.split(/\s+/)[0];
+        else if (key === "head") head = val.split(/\s+/)[0];
+      } else if (ln.includes("->") || ln.includes("→")) {
+        cmdLines.push(ln);
+      }
+    }
+    if (!states || states.length === 0) return { ok: false, error: "Не указаны states." };
+    if (!alphabet || alphabet.length === 0) return { ok: false, error: "Не указан алфавит (symbols)." };
+    if (!blank) blank = "λ";
+    if (!alphabet.includes(blank)) alphabet.unshift(blank);
+    if (!start) return { ok: false, error: "Не указано стартовое состояние (start)." };
+    if (!states.includes(start)) return { ok: false, error: `Стартовое состояние «${start}» не входит в states.` };
+
+    const allowedHeads = ["nearest_blank_right","nearest_blank_left","first_symbol","last_symbol","manual"];
+    if (!allowedHeads.includes(head)) head = "nearest_blank_right";
+
+    const commands = {};
+    for (const st of states) { commands[st] = {}; for (const sym of alphabet) commands[st][sym] = null; }
+
+    for (const ln of cmdLines) {
+      const norm = ln.replace("→", "->");
+      const [leftRaw, rightRaw] = norm.split("->").map(s => s.trim());
+      if (!leftRaw || !rightRaw) return { ok: false, error: `Строка «${ln}»: не удалось разделить на «состояние,символ -> команда».` };
+      const leftParts = leftRaw.split(/[,\s]+/).map(s => s.trim()).filter(Boolean);
+      if (leftParts.length !== 2) return { ok: false, error: `Строка «${ln}»: слева ожидаются «состояние,символ».` };
+      const [st, sym] = leftParts;
+      if (!states.includes(st)) return { ok: false, error: `Строка «${ln}»: состояние «${st}» не входит в states.` };
+      if (!alphabet.includes(sym)) return { ok: false, error: `Строка «${ln}»: символ «${sym}» не входит в алфавит.` };
+      const parsed = custParseCommandString(rightRaw, alphabet, states, blank);
+      if (!parsed.ok) return { ok: false, error: `Строка «${ln}»: ${parsed.error}` };
+      commands[st][sym] = parsed.cmd;
+    }
+
+    custConfig.blank = blank;
+    custConfig.alphabet = alphabet;
+    custConfig.states = states;
+    custConfig.startState = start;
+    custConfig.headMode = head;
+    custConfig.commands = commands;
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: "Не удалось разобрать таблицу: " + e.message };
+  }
+}
+
+/** Экспорт текущей custConfig в текстовый формат. */
+function custExportToText() {
+  let out = "";
+  out += "states: " + custConfig.states.join(",") + "\n";
+  out += "symbols: " + custConfig.alphabet.join(",") + "\n";
+  out += "blank: " + custConfig.blank + "\n";
+  out += "start: " + custConfig.startState + "\n";
+  out += "head: " + custConfig.headMode + "\n\n";
+  for (const st of custConfig.states) {
+    for (const sym of custConfig.alphabet) {
+      const c = (custConfig.commands[st] || {})[sym];
+      if (c) out += `${st},${sym} -> ${c.write},${c.move},${c.next}\n`;
+    }
+  }
+  return out;
+}
+
+/** Рендер визуальной таблицы редактирования + просмотра. activeState/activeSymbol — для подсветки. */
+function custRenderTable(opts = {}) {
+  const host = document.getElementById("cust-table-host");
+  if (!host) return;
+  const activeState = opts.activeState || null;
+  const activeSymbol = opts.activeSymbol == null ? null : opts.activeSymbol;
+
+  const headerCells = custConfig.alphabet.map(sym => {
+    const label = sym === custConfig.blank ? `<span class="lambda">${escapeHTML(sym)}</span>` : escapeHTML(sym);
+    const cls = (sym === activeSymbol) ? "col-active" : "";
+    return `<th class="${cls}" data-col-symbol="${escapeHTML(sym)}">${label}</th>`;
+  }).join("");
+
+  const rows = custConfig.states.map(st => {
+    const rowActive = (st === activeState);
+    const cells = custConfig.alphabet.map(sym => {
+      const cmd = (custConfig.commands[st] || {})[sym];
+      const colActive = (sym === activeSymbol);
+      const cellActive = rowActive && colActive;
+      const symAttr = `data-state="${escapeHTML(st)}" data-symbol="${escapeHTML(sym)}"`;
+      const value = cmd ? `${cmd.write === custConfig.blank ? "λ" : cmd.write},${cmd.move},${cmd.next}` : "";
+      const classes = "cmd-cell" + (colActive ? " col-active" : "") + (cellActive ? " cell-active" : "");
+      return `<td class="${classes}" ${symAttr} style="white-space:nowrap;">
+        <input type="text" class="cust-cmd-input" data-state="${escapeHTML(st)}" data-symbol="${escapeHTML(sym)}"
+          value="${escapeHTML(value)}" placeholder="—" style="width:88px; font-family: var(--mono); border:0; background:transparent; padding:2px 4px;">
+        <button type="button" class="cust-cmd-explain-btn" title="Разобрать команду" data-state="${escapeHTML(st)}" data-symbol="${escapeHTML(sym)}"
+          style="background:transparent; border:0; cursor:pointer; padding:0 4px; opacity:0.55; font-size:13px;">🔍</button>
+      </td>`;
+    }).join("");
+    return `<tr class="${rowActive ? "row-active" : ""}"><th class="state-cell" data-state="${escapeHTML(st)}">${escapeHTML(st)}</th>${cells}</tr>`;
+  }).join("");
+
+  host.innerHTML = `<div class="program-table-wrap"><table class="program">
+    <thead><tr><th>состояние</th>${headerCells}</tr></thead>
+    <tbody>${rows}</tbody>
+  </table></div>`;
+
+  // Привязки: клик-на-ячейку показывает explainer
+  host.querySelectorAll("td.cmd-cell").forEach(td => {
+    td.addEventListener("click", e => {
+      // Если кликнули по самому inputу — пусть он получает фокус, а не explainer
+      if (e.target.tagName === "INPUT") return;
+      // Кнопка-иконка имеет свой обработчик
+      if (e.target.classList && e.target.classList.contains("cust-cmd-explain-btn")) return;
+      const st = td.getAttribute("data-state");
+      const sym = td.getAttribute("data-symbol");
+      const program = custBuildProgramFromConfig();
+      const explainHost = document.getElementById("cust-cmd-explain");
+      host.querySelectorAll(".cmd-cell.explained").forEach(c => c.classList.remove("explained"));
+      td.classList.add("explained");
+      explainHost.innerHTML = explainProgramCellHTML(program, st, sym, custConfig.blank);
+    });
+  });
+  // Кнопка-лупа — явный вызов объяснения
+  host.querySelectorAll(".cust-cmd-explain-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const st = btn.getAttribute("data-state");
+      const sym = btn.getAttribute("data-symbol");
+      const program = custBuildProgramFromConfig();
+      const explainHost = document.getElementById("cust-cmd-explain");
+      host.querySelectorAll(".cmd-cell.explained").forEach(c => c.classList.remove("explained"));
+      const td = btn.closest("td"); if (td) td.classList.add("explained");
+      explainHost.innerHTML = explainProgramCellHTML(program, st, sym, custConfig.blank);
+    });
+  });
+  // Изменение input — обновляем custConfig и валидируем
+  host.querySelectorAll(".cust-cmd-input").forEach(inp => {
+    inp.addEventListener("change", () => {
+      const st = inp.getAttribute("data-state");
+      const sym = inp.getAttribute("data-symbol");
+      const parsed = custParseCommandString(inp.value, custConfig.alphabet, custConfig.states, custConfig.blank);
+      if (!parsed.ok) {
+        custShowConfigFeedback(parsed.error, "err");
+        inp.style.background = "#fbe4e4";
+        return;
+      }
+      custClearConfigFeedback();
+      inp.style.background = "transparent";
+      custConfig.commands[st] = custConfig.commands[st] || {};
+      custConfig.commands[st][sym] = parsed.cmd;
+    });
+  });
+  // Клик по th состояния — общий explainer
+  host.querySelectorAll(".state-cell").forEach(th => {
+    th.addEventListener("click", () => {
+      const st = th.getAttribute("data-state");
+      const explainHost = document.getElementById("cust-cmd-explain");
+      explainHost.innerHTML = `<div class="cmd-explain-card">
+        <h5>Состояние <code>${escapeHTML(st)}</code></h5>
+        <p>В этой строке записано, что машина делает в состоянии <code>${escapeHTML(st)}</code>, видя каждый из символов алфавита.</p>
+      </div>`;
+    });
+  });
+}
+
+/** Полный рендер блока конфигурации + таблицы. */
+function custRerender() {
+  custWriteConfigToInputs();
+  custRenderTable();
+  custRenderAnalysis();
+  custRenderSimView(); // обновим и симулятор (на случай если states/alphabet поменялись)
+}
+
+/** Рендер блока «Что делает эта таблица». */
+function custRenderAnalysis() {
+  const host = document.getElementById("cust-analysis-host");
+  if (!host) return;
+  try {
+    const program = custBuildProgramFromConfig();
+    host.innerHTML = analyzeProgramHTML(
+      program, custConfig.alphabet, custConfig.states,
+      custConfig.blank, custConfig.headMode, custConfig.startState
+    );
+  } catch (e) {
+    host.innerHTML = `<p class="muted small">Не удалось проанализировать таблицу: ${escapeHTML(e.message)}</p>`;
+  }
+}
+
+/** Прогон своей таблицы на наборе коротких входов. */
+function custRunSamples() {
+  const host = document.getElementById("cust-samples-host"); if (!host) return;
+  try {
+    const program = custBuildProgramFromConfig();
+    const inputs = defaultSampleInputsFor(custConfig.alphabet, custConfig.blank);
+    const results = runOnSampleInputs(
+      program, custConfig.headMode, custConfig.startState,
+      custConfig.blank, custConfig.alphabet, inputs, 200
+    );
+    host.innerHTML = sampleRunsHTML(results);
+  } catch (e) {
+    host.innerHTML = `<p class="muted small">Не удалось прогнать: ${escapeHTML(e.message)}</p>`;
+  }
+}
+
+/** Симулятор: загрузка стартовой конфигурации. */
+function custSimLoad() {
+  custShowSimErr("");
+  const raw = document.getElementById("cust-sim-input").value.trim();
+  if (raw === "") { custShowSimErr("Введите непустую входную строку."); return; }
+  // Все символы строки должны быть в алфавите (без blank)
+  const allowed = new Set(custConfig.alphabet.filter(s => s !== custConfig.blank));
+  for (const ch of raw) {
+    if (!allowed.has(ch)) { custShowSimErr(`Символ «${ch}» не входит в алфавит (без λ).`); return; }
+  }
+  custLastInput = raw;
+  custSim = createTMSimulation(raw, custConfig.headMode, custConfig.startState, custConfig.blank, custConfig.manualPosition);
+  custTrace = [{
+    step: 0,
+    state: custSim.state,
+    head: custSim.head,
+    symbol: custSim.tape.get(custSim.head) ?? custConfig.blank,
+    note: "стартовая конфигурация"
+  }];
+  custSnapshots = [];
+  custPredictPending = null;
+  document.getElementById("cust-predict-host").innerHTML = "";
+  document.getElementById("cust-summary").innerHTML = "";
+  custRenderSimView();
+}
+function custShowSimErr(m) {
+  const el = document.getElementById("cust-sim-err"); if (!el) return;
+  if (!m) { el.className = "feedback err"; el.textContent = ""; return; }
+  el.textContent = m; el.classList.add("show");
+}
+
+/** Снимок для шага назад. */
+function custSnap() {
+  if (!custSim) return null;
+  return {
+    tapeArr: Array.from(custSim.tape.entries()),
+    head: custSim.head, state: custSim.state, step: custSim.step,
+    finished: custSim.finished, traceLen: custTrace.length,
+    minPos: custSim.minPos, maxPos: custSim.maxPos
+  };
+}
+function custRestore(snap) {
+  if (!custSim || !snap) return;
+  custSim.tape = new Map(snap.tapeArr);
+  custSim.head = snap.head; custSim.state = snap.state; custSim.step = snap.step;
+  custSim.finished = snap.finished; custSim.minPos = snap.minPos; custSim.maxPos = snap.maxPos;
+  custTrace = custTrace.slice(0, snap.traceLen);
+}
+
+function custSimStep() {
+  custShowSimErr("");
+  if (!custSim) { custSimLoad(); return; }
+  if (custSim.finished) { custShowSimErr("Машина уже остановилась."); return; }
+  custSnapshots.push(custSnap());
+  if (custSnapshots.length > 300) custSnapshots.shift();
+  const program = custBuildProgramFromConfig();
+  const before = { state: custSim.state, head: custSim.head, sym: custSim.tape.get(custSim.head) ?? custConfig.blank };
+  const r = stepTM(custSim, program);
+  if (!r.ok) {
+    custTrace.push({ step: custSim.step, state: before.state, head: before.head, symbol: before.sym, note: "нет команды для пары (состояние, символ) → остановка", halted: true });
+    custRenderSimView();
+    return;
+  }
+  const cmd = r.command;
+  const writeLabel = cmd.write === custConfig.blank ? "λ" : cmd.write;
+  const moveWord = { L: "сдвиг влево", R: "сдвиг вправо", S: "без сдвига" }[cmd.move] || cmd.move;
+  const changed = cmd.write !== before.sym;
+  custTrace.push({
+    step: custSim.step,
+    state: before.state, head: before.head, symbol: before.sym,
+    cmd: { write: cmd.write, move: cmd.move, next: cmd.next, fromSymbol: before.sym },
+    note: `(${before.state}, ${before.sym === custConfig.blank ? "λ" : before.sym}) → ${writeLabel},${cmd.move},${cmd.next}; ${moveWord}${changed ? `; символ изменился: ${before.sym === custConfig.blank ? "λ" : before.sym} → ${writeLabel}` : "; символ не изменился"}`
+  });
+  custRenderSimView();
+}
+function custSimRunToEnd() {
+  custShowSimErr("");
+  if (!custSim) { custSimLoad(); if (!custSim) return; }
+  if (custSim.finished) return;
+  let safety = MAX_STEPS;
+  while (custSim && !custSim.finished && safety-- > 0) {
+    custSimStep();
+    if (!custSim) break;
+  }
+  if (safety <= 0 && custSim && !custSim.finished) custShowSimErr("Превышено максимальное число шагов.");
+  if (custSim && custSim.finished) custRenderSummary();
+}
+function custSimStepBack() {
+  custShowSimErr("");
+  if (!custSim) return;
+  const snap = custSnapshots.pop();
+  if (!snap) { custShowSimErr("Нет шагов для возврата."); return; }
+  custRestore(snap);
+  document.getElementById("cust-summary").innerHTML = "";
+  custRenderSimView();
+}
+function custSimReset() {
+  custSim = null; custTrace = []; custSnapshots = []; custPredictPending = null;
+  document.getElementById("cust-predict-host").innerHTML = "";
+  document.getElementById("cust-summary").innerHTML = "";
+  custRenderSimView();
+}
+
+/** Рендер ленты + статуса + журнала. */
+function custRenderSimView() {
+  const viewEl = document.getElementById("cust-sim-view");
+  const traceEl = document.getElementById("cust-trace");
+  if (!viewEl || !traceEl) return;
+  if (!custSim) {
+    viewEl.innerHTML = `<p class="muted small">Введите входную строку и нажмите «Загрузить».</p>`;
+    traceEl.innerHTML = "";
+    // также сбросим подсветку таблицы
+    custRenderTable();
+    return;
+  }
+  const positions = Array.from(custSim.tape.keys());
+  const minP = positions.length ? Math.min(...positions, custSim.head) : custSim.head;
+  const maxP = positions.length ? Math.max(...positions, custSim.head) : custSim.head;
+  const left = Math.min(minP, custSim.head) - 1;
+  const right = Math.max(maxP, custSim.head) + 1;
+  let cells = "";
+  for (let i = left; i <= right; i++) {
+    const sym = custSim.tape.get(i) ?? custConfig.blank;
+    const shown = sym === custConfig.blank ? "λ" : sym;
+    const isHead = i === custSim.head;
+    cells += `<span class="tape-cell${isHead ? " head" : ""}${sym === custConfig.blank ? " blank" : ""}">${escapeHTML(shown)}</span>`;
+  }
+  const curSym = custSim.tape.get(custSim.head) ?? custConfig.blank;
+  viewEl.innerHTML = `
+    <div class="tape-wrap">${cells}</div>
+    <p class="small">Состояние: <code>${escapeHTML(custSim.state)}</code>.
+       Текущая позиция головки: <code>${custSim.head}</code>.
+       Под головкой: <code>${escapeHTML(curSym === custConfig.blank ? "λ" : curSym)}</code>.
+       Шагов: <code>${custSim.step}</code>.
+       ${custSim.finished ? "<b>Остановка.</b>" : ""}
+       ${custSnapshots.length ? `<span class="muted">Снимков для возврата: ${custSnapshots.length}</span>` : ""}</p>
+    <p class="small muted">Сейчас машина в состоянии <code>${escapeHTML(custSim.state)}</code> и видит символ <code>${escapeHTML(curSym === custConfig.blank ? "λ" : curSym)}</code>. Берём клетку: строка <code>${escapeHTML(custSim.state)}</code>, столбец <code>${escapeHTML(curSym === custConfig.blank ? "λ" : curSym)}</code>.</p>
+  `;
+  // Подсветка таблицы
+  custRenderTable({ activeState: custSim.state, activeSymbol: curSym });
+
+  // Журнал
+  const rows = custTrace.slice(-50).map(e => {
+    const symLabel = e.symbol === custConfig.blank ? "λ" : e.symbol;
+    return `<div class="trace-row"><code>#${e.step}</code> состояние <code>${escapeHTML(e.state)}</code>, головка в позиции <code>${e.head}</code>, видит <code>${escapeHTML(symLabel)}</code>. ${escapeHTML(e.note || "")}</div>`;
+  }).join("");
+  traceEl.innerHTML = rows || "<p class='muted small'>Журнал пуст.</p>";
+}
+
+/** Сводка «Что произошло?» после остановки. */
+function custRenderSummary() {
+  const host = document.getElementById("cust-summary"); if (!host) return;
+  if (!custSim || !custSim.finished) { host.innerHTML = ""; return; }
+  // Соберём финальную ленту в окне minPos..maxPos
+  let s = custSim.minPos, e = custSim.maxPos;
+  while (s <= e && (custSim.tape.get(s) ?? custConfig.blank) === custConfig.blank) s++;
+  while (e >= s && (custSim.tape.get(e) ?? custConfig.blank) === custConfig.blank) e--;
+  let final = "";
+  if (s <= e) {
+    for (let i = s; i <= e; i++) final += (custSim.tape.get(i) ?? custConfig.blank);
+  }
+  // visited states
+  const statesVisited = new Set();
+  const commandsUsed = new Set();
+  for (const t of custTrace) {
+    if (t.state) statesVisited.add(t.state);
+    if (t.cmd) commandsUsed.add(`(${t.state},${t.symbol})→${t.cmd.write},${t.cmd.move},${t.cmd.next}`);
+  }
+  // Эвристики
+  const inputStr = custLastInput;
+  const finalStr = final.replace(/λ/g, "");
+  let heuristic = "Операция не распознана автоматически. Разберите трассу по шагам.";
+  if (inputStr && finalStr && /^[01]+$/.test(inputStr) && /^[01]+$/.test(finalStr)) {
+    // Битовая инверсия
+    if (inputStr.length === finalStr.length) {
+      const inverted = inputStr.split("").map(c => c === "0" ? "1" : "0").join("");
+      if (inverted === finalStr) heuristic = "Похоже, программа выполняет побитовое отрицание.";
+    }
+    // Инкремент/декремент
+    try {
+      const a = parseInt(inputStr, 2);
+      const b = parseInt(finalStr, 2);
+      if (Number.isFinite(a) && Number.isFinite(b)) {
+        if (b === a + 1) heuristic = "Похоже, программа увеличивает число на 1.";
+        else if (b === a - 1) heuristic = "Похоже, программа уменьшает число на 1.";
+      }
+    } catch (_) {}
+  }
+  host.innerHTML = `
+    <div class="card" style="margin-top:14px; background:#f6fbf6; border-color:#cde3cd;">
+      <h4>Что произошло?</h4>
+      <ul>
+        <li>Входная строка: <code class="mono">${escapeHTML(inputStr)}</code></li>
+        <li>Финальная лента (без пустых краёв): <code class="mono">${escapeHTML(final || "(пусто)")}</code></li>
+        <li>Шагов сделано: <b>${custSim.step}</b></li>
+        <li>Старт головки: <code>${escapeHTML(CUST_HEAD_LABELS[custConfig.headMode] || custConfig.headMode)}</code></li>
+        <li>Финальная позиция головки: <code>${custSim.head}</code></li>
+        <li>Посещённые состояния: <code>${Array.from(statesVisited).join(", ")}</code></li>
+        <li>Различных применённых команд: <b>${commandsUsed.size}</b></li>
+      </ul>
+      <p><b>${escapeHTML(heuristic)}</b></p>
+    </div>
+  `;
+}
+
+/** Шаговое предсказание для своей таблицы. */
+function custStartPredict() {
+  if (!custSim) custSimLoad();
+  if (!custSim || custSim.finished) return;
+  const program = custBuildProgramFromConfig();
+  const sym = custSim.tape.get(custSim.head) ?? custConfig.blank;
+  const cmd = (program[custSim.state] || {})[sym];
+  let options = [];
+  const fmt = c => c ? `записать «${c.write === custConfig.blank ? "λ" : c.write}», ${({L:"сдвиг влево",R:"сдвиг вправо",S:"без сдвига"}[c.move]||c.move)}, новое состояние ${c.next}` : "команды нет, остановка";
+  if (cmd) {
+    options.push({ text: fmt(cmd), correct: true });
+    // другая команда из той же строки
+    let altRow = null;
+    for (const s of custConfig.alphabet) {
+      if (s === sym) continue;
+      const c2 = (program[custSim.state] || {})[s];
+      if (c2) { altRow = c2; break; }
+    }
+    if (altRow) options.push({ text: fmt(altRow), correct: false, why: "Это команда из той же строки, но другого столбца." });
+    // команда из другой строки/столбца
+    let altOther = null;
+    for (const st of custConfig.states) {
+      if (st === custSim.state) continue;
+      for (const s of custConfig.alphabet) {
+        const c2 = (program[st] || {})[s];
+        if (c2) { altOther = c2; break; }
+      }
+      if (altOther) break;
+    }
+    if (altOther) options.push({ text: fmt(altOther), correct: false, why: "Это команда из другой строки (другое состояние). Смотри строку текущего состояния." });
+    // дополним «команды нет»
+    if (options.length < 3) options.push({ text: "команды нет, остановка", correct: false, why: "Команда есть; «нет команды» означало бы halt — но здесь машина продолжит." });
+  } else {
+    options.push({ text: "команды нет, остановка", correct: true });
+    // добавим заведомо неправильные
+    for (const st of custConfig.states) {
+      for (const s of custConfig.alphabet) {
+        const c2 = (program[st] || {})[s];
+        if (c2 && options.length < 3) options.push({ text: fmt(c2), correct: false, why: "В клетке текущей пары (состояние, символ) пусто — а здесь предложена другая команда." });
+      }
+    }
+  }
+  // Уникализация
+  const seen = new Set(); options = options.filter(o => seen.has(o.text) ? false : (seen.add(o.text), true));
+  // Перемешивание
+  for (let i = options.length - 1; i > 0; i--) { const j = (i * 7 + 3) % (i + 1); [options[i], options[j]] = [options[j], options[i]]; }
+
+  custPredictPending = { state: custSim.state, sym, options };
+  const host = document.getElementById("cust-predict-host");
+  host.innerHTML = `
+    <div class="predict-block">
+      <h5>🔮 Предскажи следующий шаг</h5>
+      <p>Машина в состоянии <code>${escapeHTML(custSim.state)}</code>, видит <code>${escapeHTML(sym === custConfig.blank ? "λ" : sym)}</code>. Какая команда выполнится?</p>
+      ${options.map((o, i) => `<button class="guided-option" data-cpred-opt="${i}">${escapeHTML(o.text)}</button>`).join("")}
+      <div class="guided-explain" data-cpred-explain hidden></div>
+    </div>
+  `;
+  host.querySelectorAll("[data-cpred-opt]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const i = parseInt(btn.getAttribute("data-cpred-opt"), 10);
+      const o = options[i];
+      host.querySelectorAll("[data-cpred-opt]").forEach(b => b.disabled = true);
+      btn.classList.add(o.correct ? "correct" : "wrong");
+      const explain = host.querySelector("[data-cpred-explain]");
+      explain.hidden = false;
+      if (o.correct) {
+        explain.className = "guided-explain";
+        explain.innerHTML = `<b>Верно.</b> <button class="btn small" id="cust-pred-apply">Применить шаг</button>`;
+        host.querySelector("#cust-pred-apply").addEventListener("click", () => {
+          host.innerHTML = ""; custPredictPending = null; custSimStep();
+        });
+      } else {
+        explain.className = "guided-explain wrong-why";
+        explain.innerHTML = `<i>${escapeHTML(o.why || "")}</i><br>Смотри не на соседнюю клетку, а на пересечение строки текущего состояния и столбца текущего символа.`;
+      }
+    });
+  });
+}
+
+/** Загрузка примера. */
+function custLoadExample(key) {
+  const ex = CUST_EXAMPLES[key]; if (!ex) return;
+  document.getElementById("cust-text-import").value = ex.text;
+  const r = custImportFromText(ex.text);
+  if (!r.ok) { custShowConfigFeedback(r.error, "err"); return; }
+  custClearConfigFeedback();
+  document.getElementById("cust-sim-input").value = ex.sampleInput;
+  custSimReset();
+  custRerender();
+  custShowConfigFeedback(`Пример «${ex.title}» загружен. Ожидаемый результат для входа ${ex.sampleInput}: ${ex.expectedOutput}.`, "ok");
+}
+
+/** Сохранение и загрузка в localStorage. */
+const CUST_STORAGE_KEY = "turingTrainer.customProgram.v1";
+function custSaveLocal() {
+  const status = document.getElementById("cust-save-status");
+  try {
+    const data = {
+      config: custConfig,
+      lastInput: document.getElementById("cust-sim-input").value || "",
+      text: document.getElementById("cust-text-import").value || ""
+    };
+    localStorage.setItem(CUST_STORAGE_KEY, JSON.stringify(data));
+    if (status) status.textContent = "Сохранено в этом браузере (localStorage).";
+  } catch (e) { if (status) status.textContent = "Не удалось сохранить: " + e.message; }
+}
+function custLoadLocal() {
+  const status = document.getElementById("cust-save-status");
+  try {
+    const raw = localStorage.getItem(CUST_STORAGE_KEY);
+    if (!raw) { if (status) status.textContent = "Сохранённой таблицы нет."; return; }
+    const data = JSON.parse(raw);
+    if (data && data.config) {
+      custConfig = data.config;
+      if (data.text) document.getElementById("cust-text-import").value = data.text;
+      if (data.lastInput) document.getElementById("cust-sim-input").value = data.lastInput;
+      custSimReset();
+      custRerender();
+      if (status) status.textContent = "Загружена сохранённая таблица.";
+    }
+  } catch (e) { if (status) status.textContent = "Не удалось загрузить: " + e.message; }
+}
+function custResetLocal() {
+  const status = document.getElementById("cust-save-status");
+  try { localStorage.removeItem(CUST_STORAGE_KEY); } catch (_) {}
+  custConfig = JSON.parse(JSON.stringify(CUST_DEFAULT_CONFIG));
+  custConfig.commands = { q0: { "λ": null, "0": null, "1": null }, q1: { "λ": null, "0": null, "1": null } };
+  document.getElementById("cust-text-import").value = "";
+  document.getElementById("cust-sim-input").value = "101000001";
+  custSimReset();
+  custRerender();
+  if (status) status.textContent = "Своя таблица сброшена.";
+}
+
+/** Подключение всех обработчиков «Своя таблица». Вызывается один раз после renderTabUniversal. */
+function custWireUI() {
+  // Переключатель режимов
+  document.querySelectorAll("#uni-mode-switch button[data-uni-mode]").forEach(b => {
+    b.addEventListener("click", () => {
+      const m = b.getAttribute("data-uni-mode");
+      document.querySelectorAll("#uni-mode-switch button[data-uni-mode]").forEach(x => x.classList.toggle("active", x === b));
+      document.getElementById("uni-mode-library").hidden = (m !== "library");
+      document.getElementById("uni-mode-custom").hidden = (m !== "custom");
+    });
+  });
+
+  // Конфигурация — изменения инпутов
+  ["cust-blank","cust-alphabet","cust-states","cust-start-state","cust-head-mode","cust-manual-pos"].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener("change", () => {
+      const r = custReadConfigFromInputs();
+      if (!r.ok) { custShowConfigFeedback(r.error, "err"); return; }
+      custClearConfigFeedback();
+      custRerender();
+    });
+  });
+  // Manual position field — показать/скрыть
+  const headSel = document.getElementById("cust-head-mode");
+  if (headSel) {
+    headSel.addEventListener("change", () => {
+      const lbl = document.getElementById("cust-manual-pos-label");
+      if (lbl) lbl.style.display = (headSel.value === "manual") ? "" : "none";
+    });
+  }
+
+  document.getElementById("cust-rebuild-table").addEventListener("click", () => {
+    const r = custReadConfigFromInputs();
+    if (!r.ok) { custShowConfigFeedback(r.error, "err"); return; }
+    custClearConfigFeedback();
+    custRerender();
+  });
+  document.getElementById("cust-clear-commands").addEventListener("click", () => {
+    for (const st of custConfig.states) for (const sym of custConfig.alphabet) custConfig.commands[st][sym] = null;
+    custRerender();
+  });
+
+  // Примеры
+  document.querySelectorAll("[data-cust-example]").forEach(b => {
+    b.addEventListener("click", () => custLoadExample(b.getAttribute("data-cust-example")));
+  });
+
+  // Текстовый импорт
+  document.getElementById("cust-load-from-text").addEventListener("click", () => {
+    const text = document.getElementById("cust-text-import").value || "";
+    const r = custImportFromText(text);
+    if (!r.ok) { custShowConfigFeedback(r.error, "err"); return; }
+    custClearConfigFeedback();
+    custShowConfigFeedback("Таблица загружена из текста.", "ok");
+    custSimReset();
+    custRerender();
+  });
+  document.getElementById("cust-export-text").addEventListener("click", () => {
+    const text = custExportToText();
+    document.getElementById("cust-text-import").value = text;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(
+        () => custShowConfigFeedback("Таблица в текстовом виде помещена в textarea и скопирована в буфер обмена.", "ok"),
+        () => custShowConfigFeedback("Таблица помещена в textarea (скопировать вручную).", "ok")
+      );
+    } else {
+      custShowConfigFeedback("Таблица помещена в textarea (скопировать вручную).", "ok");
+    }
+  });
+  document.getElementById("cust-clear-text").addEventListener("click", () => {
+    document.getElementById("cust-text-import").value = "";
+    custClearConfigFeedback();
+  });
+
+  // localStorage
+  document.getElementById("cust-save-local").addEventListener("click", custSaveLocal);
+  document.getElementById("cust-load-local").addEventListener("click", custLoadLocal);
+  document.getElementById("cust-reset-local").addEventListener("click", custResetLocal);
+
+  // Симулятор
+  document.getElementById("cust-sim-reset").addEventListener("click", custSimLoad);
+  document.getElementById("cust-sim-step").addEventListener("click", custSimStep);
+  document.getElementById("cust-sim-back").addEventListener("click", custSimStepBack);
+  document.getElementById("cust-sim-run").addEventListener("click", custSimRunToEnd);
+  document.getElementById("cust-sim-clear").addEventListener("click", custSimReset);
+  document.getElementById("cust-sim-predict").addEventListener("click", custStartPredict);
+  document.getElementById("cust-run-samples").addEventListener("click", custRunSamples);
+}
+
 function initTabUniversal() {
   renderTabUniversal();
   uniRenderProgramList();
+  // Авто-выбор первой задачи из библиотеки в режиме «Из библиотеки»
+  if (typeof uniPick === "function" && TASK_LIBRARY && TASK_LIBRARY.length) {
+    try { uniPick(TASK_LIBRARY[0].shortId); } catch (_) {}
+  }
   document.getElementById("uni-sim-reset").addEventListener("click", uniLoadSim);
   document.getElementById("uni-sim-step").addEventListener("click", uniDoStep);
   document.getElementById("uni-sim-back").addEventListener("click", uniStepBack);
@@ -4049,6 +5338,9 @@ function initTabUniversal() {
       document.querySelectorAll("#panel-universal .speed-control button[data-speed]").forEach(x => x.classList.toggle("active", x === b));
     });
   });
+  // «Своя таблица» — подключаем UI и рисуем дефолтную таблицу
+  custWireUI();
+  custRerender();
 }
 
 /* ============================================================
