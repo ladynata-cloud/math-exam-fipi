@@ -1,0 +1,2020 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Логические операции и законы — мини-тренажёр</title>
+<style>
+  /* ============================================================================
+     Design tokens — educational journal aesthetic, system fonts only.
+     Palette mirrors the host app (cream paper + deep ink + crimson accent), so
+     this standalone page slots into the eventual integration without re-skin.
+     ========================================================================== */
+  :root {
+    --font-serif: Georgia, "Times New Roman", "Source Serif Pro", serif;
+    --font-sans:  system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-mono:  ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+
+    --bg:         #f4efe6;
+    --bg-deeper:  #ece5d6;
+    --surface:    #fbf7ef;
+    --surface-2:  #f7f1e3;
+    --ink:        #1c1917;
+    --ink-soft:   #57534e;
+    --ink-faint:  #a8a29e;
+    --rule:       #e3d9c5;
+    --rule-strong:#c8bca0;
+
+    --accent:        #9f1239;
+    --accent-hover:  #7e0f2d;
+    --accent-soft:   #fbe9ee;
+    --accent-ink:    #ffffff;
+
+    --success:      #15803d;
+    --success-soft: #dcfce7;
+    --warn:         #b45309;
+    --warn-soft:    #fef3c7;
+
+    --r-sm: 6px;
+    --r-md: 10px;
+    --r-lg: 14px;
+
+    --shadow-sm: 0 1px 0 rgba(28,25,23,.04), 0 1px 3px rgba(28,25,23,.05);
+    --shadow-md: 0 2px 4px rgba(28,25,23,.05), 0 8px 24px rgba(28,25,23,.06);
+
+    --container: 1100px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { height: 100%; }
+  html { color-scheme: light; }
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+    background:
+      radial-gradient(1200px 600px at 90% -10%, rgba(159,18,57,.05), transparent 60%),
+      radial-gradient(1000px 700px at -10% 110%, rgba(28,25,23,.04), transparent 60%),
+      var(--bg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    margin: 0;
+  }
+  p { margin: 0; }
+  code, kbd { font-family: var(--font-mono); }
+  button { font-family: inherit; }
+  :focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--r-sm);
+  }
+
+  /* ---------- layout shell ---------- */
+  .shell {
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: 28px 24px 64px;
+  }
+  .pageHead {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 22px;
+  }
+  .pageEyebrow {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .pageTitle {
+    font-size: clamp(26px, 4vw, 34px);
+    line-height: 1.2;
+  }
+  .pageLead {
+    color: var(--ink-soft);
+    max-width: 70ch;
+    font-size: 15px;
+  }
+
+  /* ---------- mode tabs ---------- */
+  .modeBar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 14px 0 22px;
+  }
+  .modeChip {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 9px 14px;
+    border-radius: var(--r-md);
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    cursor: pointer;
+    color: var(--ink);
+    min-width: 145px;
+    text-align: left;
+    transition: background .14s, border-color .14s, color .14s;
+  }
+  .modeChip:hover { background: var(--surface-2); border-color: var(--rule-strong); }
+  .modeChip[aria-selected="true"] {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+  .modeChipLabel { font-weight: 600; font-size: 14.5px; }
+  .modeChipSub { font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-soft); }
+  .modeChip[aria-selected="true"] .modeChipSub { color: rgba(255,255,255,.85); }
+
+  /* ---------- cards ---------- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-lg);
+    padding: 22px 24px;
+    box-shadow: var(--shadow-sm);
+  }
+  .card + .card { margin-top: 18px; }
+
+  /* ---------- buttons ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border-radius: var(--r-md);
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .14s, border-color .14s, color .14s, transform .04s;
+  }
+  .btn:hover { background: var(--surface-2); border-color: var(--rule-strong); }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+  .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+  .btn-quiet { background: transparent; border-color: transparent; color: var(--ink-soft); }
+  .btn-quiet:hover { background: var(--surface-2); }
+  .btn[disabled] { opacity: .55; cursor: not-allowed; }
+
+  /* ---------- formula display ---------- */
+  .formula {
+    font-family: var(--font-mono);
+    font-size: 17px;
+    color: var(--ink);
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-sm);
+    padding: 8px 12px;
+    display: inline-block;
+    letter-spacing: .01em;
+  }
+  .formulaBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .formulaLg {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--ink);
+    letter-spacing: .01em;
+  }
+  .formulaLg .op { color: var(--accent); }
+
+  /* ---------- study panel ---------- */
+  .studyLayout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 26px;
+    align-items: start;
+  }
+  @media (max-width: 820px) { .studyLayout { grid-template-columns: 1fr; } }
+
+  .lawList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--rule);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .lawList li + li { border-top: 1px solid var(--rule); }
+  .lawListBtn {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    padding: 11px 14px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    color: var(--ink);
+  }
+  .lawListBtn:hover { background: var(--surface-2); }
+  .lawListBtn[aria-current="true"] {
+    background: var(--accent-soft);
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
+  .lawListIdx {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: .05em;
+  }
+  .lawListTitle {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .lawCard h2 {
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+  .lawCardMeta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: 14px;
+  }
+  .lawSection { margin-top: 18px; }
+  .lawSection h3 {
+    font-size: 13.5px;
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--ink-soft);
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .lawSection p { color: var(--ink); font-size: 15px; line-height: 1.6; }
+  .lawSection .em { color: var(--accent); font-style: italic; font-family: var(--font-serif); }
+
+  .vennPair {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 14px;
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-md);
+  }
+  .vennCol {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .vennCaption {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink);
+    letter-spacing: .01em;
+  }
+  .vennEq {
+    font-family: var(--font-serif);
+    font-size: 30px;
+    color: var(--accent);
+    font-style: italic;
+  }
+  .vennNote {
+    margin-top: 10px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    font-style: italic;
+    text-align: center;
+  }
+
+  .mnemonicBox {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: var(--accent-soft);
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    border-radius: var(--r-md);
+    padding: 10px 14px;
+    color: var(--accent);
+    font-size: 14px;
+  }
+  .mnemonicBox::before {
+    content: "♦";
+    font-family: var(--font-serif);
+    margin-top: 1px;
+  }
+
+  .toggleRow {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 14px;
+  }
+  .lawNav {
+    display: flex;
+    gap: 8px;
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--rule);
+  }
+
+  .example {
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    color: var(--ink);
+    background: var(--surface-2);
+    border-left: 3px solid var(--rule-strong);
+    padding: 8px 12px;
+    border-radius: var(--r-sm);
+    white-space: pre-wrap;
+  }
+
+  /* ---------- bridge (links to main tasks) ---------- */
+  .bridgeList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .bridgeList li {
+    padding: 8px 12px;
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-sm);
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .bridgeList code {
+    background: var(--surface);
+    padding: 1px 5px;
+    border-radius: 4px;
+    border: 1px solid var(--rule);
+  }
+
+  /* ---------- exercise ---------- */
+  .exHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .exTag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--ink-soft);
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+  }
+  .exPrompt {
+    font-size: 16px;
+    color: var(--ink);
+    margin: 6px 0 14px;
+    line-height: 1.6;
+  }
+  .exOptions {
+    display: grid;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .exOption {
+    text-align: left;
+    padding: 11px 14px;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    cursor: pointer;
+    font-size: 15px;
+    color: var(--ink);
+    transition: background .12s, border-color .12s;
+    font-family: var(--font-mono);
+  }
+  .exOption:hover { background: var(--surface-2); border-color: var(--rule-strong); }
+  .exOption.is-correct {
+    background: var(--success-soft);
+    border-color: var(--success);
+    color: var(--success);
+  }
+  .exOption.is-wrong {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .exOption[disabled] { cursor: default; }
+
+  .exInputRow {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .exInput {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    padding: 9px 12px;
+    border: 1px solid var(--rule);
+    border-radius: var(--r-sm);
+    background: var(--surface);
+    color: var(--ink);
+    width: 120px;
+    text-align: center;
+  }
+  .exInput:focus {
+    border-color: var(--accent);
+    outline: none;
+  }
+
+  .exFeedback {
+    margin-top: 14px;
+    padding: 10px 14px;
+    border-radius: var(--r-sm);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .exFeedback.ok {
+    background: var(--success-soft);
+    border: 1px solid color-mix(in srgb, var(--success) 35%, transparent);
+    color: var(--success);
+  }
+  .exFeedback.no {
+    background: var(--accent-soft);
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    color: var(--accent);
+  }
+  .exActions {
+    margin-top: 14px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .exVisualGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 10px;
+    margin-top: 8px;
+  }
+  .exVisualOption {
+    padding: 8px;
+    border: 1px solid var(--rule);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    cursor: pointer;
+    transition: border-color .12s, background .12s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .exVisualOption:hover { background: var(--surface-2); border-color: var(--rule-strong); }
+  .exVisualOption.is-correct { border-color: var(--success); background: var(--success-soft); }
+  .exVisualOption.is-wrong { border-color: var(--accent); background: var(--accent-soft); }
+  .exVisualOption svg { display: block; }
+  .exVisualOption .caption {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--ink);
+  }
+
+  /* ---------- region picker ---------- */
+  .regionPicker { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .regionPickerSvg .region { cursor: pointer; opacity: 0; transition: opacity .15s; }
+  .regionPickerSvg .region:hover { opacity: .35; }
+  .regionPickerSvg .region.picked { opacity: 1; }
+  .regionPickerHint {
+    font-size: 12.5px;
+    color: var(--ink-soft);
+    font-style: italic;
+    text-align: center;
+  }
+
+  /* ---------- quiz ---------- */
+  .quizMeta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .quizCounter { font-family: var(--font-mono); font-size: 13px; color: var(--ink-soft); }
+  .quizBar {
+    height: 6px;
+    background: var(--rule);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .quizBarFill {
+    height: 100%;
+    background: var(--accent);
+    transition: width .25s ease;
+  }
+  .quizResult {
+    text-align: center;
+    padding: 20px 0;
+  }
+  .quizResultScore {
+    font-family: var(--font-serif);
+    font-size: 52px;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .quizResultText {
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+  .quizReviewList {
+    list-style: none;
+    margin: 16px 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+  }
+  .quizReviewItem {
+    padding: 10px 14px;
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-sm);
+    font-size: 14px;
+  }
+  .quizReviewItem.is-ok { border-left: 3px solid var(--success); }
+  .quizReviewItem.is-no { border-left: 3px solid var(--accent); }
+  .quizReviewItem .q { color: var(--ink); }
+  .quizReviewItem .yourA, .quizReviewItem .rightA {
+    font-family: var(--font-mono);
+    font-size: 13px;
+  }
+  .quizReviewItem .yourA { color: var(--ink-soft); }
+  .quizReviewItem .rightA { color: var(--success); }
+
+  /* ---------- footer note ---------- */
+  .footNote {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--rule);
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
+  /* ---------- venn SVG defaults ---------- */
+  .venn {
+    background: var(--bg);
+    border-radius: var(--r-sm);
+    display: block;
+  }
+  .venn .universe {
+    fill: transparent;
+    stroke: var(--ink-faint);
+    stroke-dasharray: 4 3;
+  }
+  .venn .circ {
+    fill: none;
+    stroke: var(--ink-soft);
+    stroke-width: 1.5;
+  }
+  .venn .shade { fill: var(--accent); fill-opacity: 0.22; }
+  .venn .label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    fill: var(--ink-soft);
+  }
+  .vennSm { width: 130px; height: 90px; }
+  .vennMd { width: 220px; height: 150px; }
+  .vennLg { width: 280px; height: 190px; }
+
+  /* ---------- visual select small variants ---------- */
+  .vennMini { width: 150px; height: 100px; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="pageHead">
+    <span class="pageEyebrow">Мини-тренажёр · справочник + практика</span>
+    <h1 class="pageTitle">Логические операции и законы</h1>
+    <p class="pageLead">
+      Учимся не запоминать формулы вслепую, а узнавать их глазами. Каждый закон
+      показан в виде кругов Эйлера: видно, что левая и правая части закрашивают
+      одну и ту же область — значит, выражения равны.
+    </p>
+  </header>
+
+  <nav class="modeBar" role="tablist" aria-label="Режим работы">
+    <button class="modeChip" role="tab" data-mode="study" aria-selected="true">
+      <span class="modeChipLabel">Изучаю</span>
+      <span class="modeChipSub">теория + визуализация</span>
+    </button>
+    <button class="modeChip" role="tab" data-mode="practice" aria-selected="false">
+      <span class="modeChipLabel">Тренируюсь</span>
+      <span class="modeChipSub">короткие упражнения</span>
+    </button>
+    <button class="modeChip" role="tab" data-mode="quiz" aria-selected="false">
+      <span class="modeChipLabel">Проверка</span>
+      <span class="modeChipSub">мини-квиз и разбор</span>
+    </button>
+  </nav>
+
+  <main id="root" aria-live="polite"></main>
+
+  <p class="footNote">
+    Этот мини-тренажёр — supplementary материал для подготовки к задачам на
+    отрезки, множества, делимость и битовые условия.
+  </p>
+</div>
+
+<script>
+"use strict";
+
+/* ============================================================================
+   Data — 11 laws.
+   Each law has: id, title, formulas[], shortExplanation, memoryHint,
+   setInterpretation, whereUsed, example, visType, vennPair?
+   vennPair specifies which regions the left/right expressions shade, so the
+   student can see equality visually.
+   ============================================================================ */
+
+const LAWS = [
+  {
+    id: "commutative",
+    title: "Переместительный закон",
+    subtitle: "коммутативность",
+    formulas: ["A ∨ B = B ∨ A", "A ∧ B = B ∧ A"],
+    shortExplanation:
+      "От перестановки слагаемых сумма не меняется — и в логике это тоже работает. Порядок операндов в ∨ и ∧ не важен.",
+    memoryHint: "Можно поменять местами — результат не изменится.",
+    setInterpretation: "A ∪ B = B ∪ A, A ∩ B = B ∩ A",
+    whereUsed:
+      "Помогает сравнивать формулы, в которых переменные стоят в разном порядке: (x ∈ P) ∧ (x ∈ Q) и (x ∈ Q) ∧ (x ∈ P) — это одно и то же.",
+    example: "A = {1, 2, 3}, B = {3, 4}\nA ∪ B = {1, 2, 3, 4}\nB ∪ A = {1, 2, 3, 4}",
+    vennPair: { left: "union", right: "union", labelLeft: "A ∨ B", labelRight: "B ∨ A" }
+  },
+  {
+    id: "associative",
+    title: "Сочетательный закон",
+    subtitle: "ассоциативность",
+    formulas: [
+      "A ∨ (B ∨ C) = (A ∨ B) ∨ C",
+      "A ∧ (B ∧ C) = (A ∧ B) ∧ C"
+    ],
+    shortExplanation:
+      "Скобки в цепочке из одинаковых операций ∨ или ∧ можно переставлять как угодно. Главное — не смешивать ∨ и ∧.",
+    memoryHint: "Скобки можно переставить, если операция одна и та же.",
+    setInterpretation: "A ∪ (B ∪ C) = (A ∪ B) ∪ C, A ∩ (B ∩ C) = (A ∩ B) ∩ C",
+    whereUsed:
+      "Длинные цепочки условий можно группировать удобным способом, не меняя смысла.",
+    example: "Любая комбинация скобок в A ∨ B ∨ C даёт одну и ту же область — объединение всех трёх.",
+    vennPair3: { left: "union3", right: "union3", labelLeft: "A ∨ (B ∨ C)", labelRight: "(A ∨ B) ∨ C" }
+  },
+  {
+    id: "distributive",
+    title: "Распределительный закон",
+    subtitle: "дистрибутивность",
+    formulas: [
+      "A ∧ (B ∨ C) = (A ∧ B) ∨ (A ∧ C)",
+      "A ∨ (B ∧ C) = (A ∨ B) ∧ (A ∨ C)"
+    ],
+    shortExplanation:
+      "∧ «раскрывается» через ∨ так же, как умножение через сложение в арифметике: a·(b+c) = a·b + a·c. И наоборот.",
+    memoryHint: "Как умножение через сложение: A раскрывается на каждое слагаемое.",
+    setInterpretation: "A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C)",
+    whereUsed:
+      "Позволяет разбить сложное условие на несколько простых: вместо A ∧ (B ∨ C) проверять (A ∧ B) ∨ (A ∧ C).",
+    example: "A = {1,2,3}, B = {2,4}, C = {3,5}\nA ∩ (B ∪ C) = {1,2,3} ∩ {2,3,4,5} = {2,3}\n(A∩B) ∪ (A∩C) = {2} ∪ {3} = {2,3}",
+    vennPair3: { left: "AinterBunionC", right: "AinterBunionC", labelLeft: "A ∧ (B ∨ C)", labelRight: "(A ∧ B) ∨ (A ∧ C)" }
+  },
+  {
+    id: "demorgan",
+    title: "Законы де Моргана",
+    subtitle: "отрицание над ∨ и ∧",
+    formulas: ["¬(A ∨ B) = ¬A ∧ ¬B", "¬(A ∧ B) = ¬A ∨ ¬B"],
+    shortExplanation:
+      "Отрицание «проходит внутрь скобок» и при этом ∨ превращается в ∧, а ∧ — в ∨.",
+    memoryHint: "Отрицание заходит внутрь и переворачивает ∨ ↔ ∧.",
+    setInterpretation: "Дополнение объединения = пересечение дополнений; дополнение пересечения = объединение дополнений.",
+    whereUsed:
+      "Главный инструмент, чтобы упростить отрицание сложного условия. В задачах на отрезки часто помогает понять, какие x нарушают условие.",
+    example: "¬(x ∈ P ∨ x ∈ Q) ⇔ (x ∉ P) ∧ (x ∉ Q)",
+    vennPair: { left: "neither", right: "neither", labelLeft: "¬(A ∨ B)", labelRight: "¬A ∧ ¬B" }
+  },
+  {
+    id: "idempotent",
+    title: "Закон идемпотентности",
+    subtitle: "повтор не добавляет нового",
+    formulas: ["A ∨ A = A", "A ∧ A = A"],
+    shortExplanation:
+      "Повторное A в ∨ или ∧ ничего не добавляет: и объединение, и пересечение множества с собой дают то же множество.",
+    memoryHint: "Сам с собой — всё ещё ты сам.",
+    setInterpretation: "A ∪ A = A, A ∩ A = A",
+    whereUsed:
+      "Помогает свернуть формулы с повторяющимися условиями: (x ∈ P) ∨ (x ∈ P) — это просто x ∈ P.",
+    example: "A = {1, 2, 3}; A ∪ A = {1, 2, 3}; A ∩ A = {1, 2, 3}",
+    vennPair: { left: "a", right: "a", labelLeft: "A ∨ A", labelRight: "A" }
+  },
+  {
+    id: "absorption",
+    title: "Закон поглощения",
+    subtitle: "лишнее условие исчезает",
+    formulas: ["A ∨ (A ∧ B) = A", "A ∧ (A ∨ B) = A"],
+    shortExplanation:
+      "Если A уже есть в формуле, добавление пересечения или объединения с B ничего не меняет — A «поглощает» соседа.",
+    memoryHint: "Если A уже есть, его сосед уже не важен.",
+    setInterpretation: "A ∪ (A ∩ B) = A, A ∩ (A ∪ B) = A",
+    whereUsed: "Позволяет вычёркивать лишние подвыражения и упрощать формулы перед поиском A.",
+    example: "A ∨ (A ∧ B) — в любом случае, если x ∈ A, формула истинна. Достаточно A.",
+    vennPair: { left: "a", right: "a", labelLeft: "A ∨ (A ∧ B)", labelRight: "A" }
+  },
+  {
+    id: "adhesion",
+    title: "Закон склеивания",
+    subtitle: "симметрия с отрицанием",
+    formulas: [
+      "(A ∧ B) ∨ (¬A ∧ B) = B",
+      "(A ∨ B) ∧ (¬A ∨ B) = B"
+    ],
+    shortExplanation:
+      "Если рядом стоят два варианта — с A и с ¬A — а остальная часть совпадает, то A «склеивается» и выпадает: остаётся только общая часть B.",
+    memoryHint: "A и ¬A покрывают весь мир — остаётся только то, что повторяется.",
+    setInterpretation: "(A ∩ B) ∪ (¬A ∩ B) = B — потому что часть в A и часть вне A вместе дают всё B.",
+    whereUsed: "Позволяет сворачивать формулы, в которых A то истинно, то ложно, а остальное условие то же.",
+    example: "(x ∈ A ∧ x ∈ B) ∨ (x ∉ A ∧ x ∈ B) — для любого x достаточно x ∈ B.",
+    vennPair: { left: "b", right: "b", labelLeft: "(A ∧ B) ∨ (¬A ∧ B)", labelRight: "B" }
+  },
+  {
+    id: "excluded",
+    title: "Закон исключённого третьего",
+    subtitle: "A или не-A — всегда истина",
+    formulas: ["A ∨ ¬A = 1"],
+    shortExplanation:
+      "Либо A истинно, либо ¬A истинно — третьего не дано. Объединение A и его дополнения покрывает всё.",
+    memoryHint: "Третьего не дано.",
+    setInterpretation: "A ∪ ¬A = U (универсум — всё пространство).",
+    whereUsed:
+      "Часто встречается в условиях вида (x ∈ A) ∨ (x ∉ A): такое условие истинно всегда и не даёт никакой информации о x.",
+    example: "Любое число x: либо x ≥ 0, либо x < 0 — одно из двух обязательно верно.",
+    vennPair: { left: "full", right: "full", labelLeft: "A ∨ ¬A", labelRight: "1 (универсум)" }
+  },
+  {
+    id: "noncontradiction",
+    title: "Закон непротиворечия",
+    subtitle: "A и не-A — всегда ложь",
+    formulas: ["A ∧ ¬A = 0"],
+    shortExplanation:
+      "Одновременно быть в A и вне A невозможно — пересечение пусто.",
+    memoryHint: "И в A, и не в A — так не бывает.",
+    setInterpretation: "A ∩ ¬A = ∅ (пустое множество).",
+    whereUsed:
+      "Если в формуле находится фрагмент A ∧ ¬A, его можно сразу заменить на 0 и упростить выражение.",
+    example: "(x ∈ A) ∧ (x ∉ A) — ложно для любого x.",
+    vennPair: { left: "empty", right: "empty", labelLeft: "A ∧ ¬A", labelRight: "0 (пусто)" }
+  },
+  {
+    id: "constants",
+    title: "Законы для констант",
+    subtitle: "что даёт 0 и 1",
+    formulas: ["A ∨ 0 = A", "A ∨ 1 = 1", "A ∧ 1 = A", "A ∧ 0 = 0"],
+    shortExplanation:
+      "0 — это «пусто», 1 — это «весь универсум». ∨ с пустым ничего не добавляет; ∨ с универсумом покрывает всё. ∧ работает наоборот.",
+    memoryHint: "0 — нейтрален для ∨ и поглощает для ∧; 1 — наоборот.",
+    setInterpretation: "A ∪ ∅ = A, A ∪ U = U, A ∩ U = A, A ∩ ∅ = ∅",
+    whereUsed: "Помогает упрощать формулы, где встречаются гарантированно истинные или ложные подвыражения.",
+    example: "(x ∈ A) ∨ 1 — это просто 1, истинно для любого x.",
+    vennPair: { left: "a", right: "a", labelLeft: "A ∨ 0", labelRight: "A" }
+  },
+  {
+    id: "doublenot",
+    title: "Закон двойного отрицания",
+    subtitle: "минус на минус",
+    formulas: ["¬¬A = A"],
+    shortExplanation: "Два отрицания подряд возвращают исходное условие.",
+    memoryHint: "Два минуса дают плюс.",
+    setInterpretation: "Дополнение дополнения множества — это само множество.",
+    whereUsed:
+      "Постоянно встречается при раскрытии де Моргана: после второго применения отрицание исчезает.",
+    example: "¬¬(x ∈ A) ⇔ (x ∈ A)",
+    vennPair: { left: "a", right: "a", labelLeft: "¬¬A", labelRight: "A" }
+  }
+];
+
+/* ============================================================================
+   Venn diagram renderer.
+   For 2-set diagrams there are 4 disjoint regions. We name them and a region
+   set is just a list of region names that should be shaded.
+   ============================================================================ */
+
+const REGION_PRESETS_2 = {
+  empty:        [],
+  full:         ["aOnly", "bOnly", "both", "neither"],
+  a:            ["aOnly", "both"],
+  b:            ["bOnly", "both"],
+  notA:         ["bOnly", "neither"],
+  notB:         ["aOnly", "neither"],
+  union:        ["aOnly", "bOnly", "both"],
+  intersection: ["both"],
+  neither:      ["neither"],
+  notIntersection: ["aOnly", "bOnly", "neither"],
+  symdiff:      ["aOnly", "bOnly"]
+};
+
+const REGION_PRESETS_3 = {
+  empty: [],
+  full: ["a","b","c","ab","ac","bc","abc","none"],
+  union3: ["a","b","c","ab","ac","bc","abc"],
+  AinterBunionC: ["ab","ac","abc"], // A ∩ (B ∪ C)
+  intersection3: ["abc"]
+};
+
+/**
+ * Render a 2-set Venn diagram given a preset name (or explicit region list).
+ * The diagram uses two overlapping circles and a dashed universe rectangle.
+ */
+function venn2(preset, size = "md") {
+  const regions = typeof preset === "string" ? REGION_PRESETS_2[preset] || [] : preset;
+  const W = 240, H = 160;
+  const cAx = 90, cBx = 150, cy = 80, r = 55;
+  const sizeClass = size === "lg" ? "vennLg" : size === "sm" ? "vennSm" : "vennMd";
+
+  // Mask definitions for each region (per-instance to keep IDs unique)
+  const uid = "v" + Math.random().toString(36).slice(2, 9);
+  const masks = `
+    <defs>
+      <mask id="${uid}-aOnly">
+        <rect width="${W}" height="${H}" fill="black"/>
+        <circle cx="${cAx}" cy="${cy}" r="${r}" fill="white"/>
+        <circle cx="${cBx}" cy="${cy}" r="${r}" fill="black"/>
+      </mask>
+      <mask id="${uid}-bOnly">
+        <rect width="${W}" height="${H}" fill="black"/>
+        <circle cx="${cBx}" cy="${cy}" r="${r}" fill="white"/>
+        <circle cx="${cAx}" cy="${cy}" r="${r}" fill="black"/>
+      </mask>
+      <mask id="${uid}-neither">
+        <rect width="${W}" height="${H}" fill="white"/>
+        <circle cx="${cAx}" cy="${cy}" r="${r}" fill="black"/>
+        <circle cx="${cBx}" cy="${cy}" r="${r}" fill="black"/>
+      </mask>
+      <clipPath id="${uid}-cA"><circle cx="${cAx}" cy="${cy}" r="${r}"/></clipPath>
+      <clipPath id="${uid}-cB"><circle cx="${cBx}" cy="${cy}" r="${r}"/></clipPath>
+    </defs>`;
+
+  // Build shaded layers
+  let shaded = "";
+  if (regions.includes("aOnly"))
+    shaded += `<rect class="shade" width="${W}" height="${H}" mask="url(#${uid}-aOnly)"/>`;
+  if (regions.includes("bOnly"))
+    shaded += `<rect class="shade" width="${W}" height="${H}" mask="url(#${uid}-bOnly)"/>`;
+  if (regions.includes("both"))
+    shaded += `<g clip-path="url(#${uid}-cA)"><g clip-path="url(#${uid}-cB)">
+      <rect class="shade" width="${W}" height="${H}"/></g></g>`;
+  if (regions.includes("neither"))
+    shaded += `<rect class="shade" width="${W}" height="${H}" mask="url(#${uid}-neither)"/>`;
+
+  return `
+    <svg class="venn ${sizeClass}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Диаграмма Эйлера">
+      ${masks}
+      <rect class="universe" x="6" y="6" width="${W - 12}" height="${H - 12}" rx="6"/>
+      ${shaded}
+      <circle class="circ" cx="${cAx}" cy="${cy}" r="${r}"/>
+      <circle class="circ" cx="${cBx}" cy="${cy}" r="${r}"/>
+      <text class="label" x="${cAx - r - 4}" y="${cy - r - 6}" text-anchor="end">A</text>
+      <text class="label" x="${cBx + r + 4}" y="${cy - r - 6}" text-anchor="start">B</text>
+      <text class="label" x="${W - 12}" y="${H - 10}" text-anchor="end">U</text>
+    </svg>`;
+}
+
+/**
+ * 3-circle Venn. Uses three overlapping circles arranged in the classic
+ * triangle. Per-region masks are computed by combining the three circle
+ * "in/out" states.
+ */
+function venn3(preset) {
+  const regions = typeof preset === "string" ? REGION_PRESETS_3[preset] || [] : preset;
+  const W = 240, H = 180;
+  const cAx = 90, cAy = 75, cBx = 150, cBy = 75, cCx = 120, cCy = 120, r = 50;
+  const uid = "v" + Math.random().toString(36).slice(2, 9);
+
+  // Helper: mask defining a region by triple of in/out (A,B,C). 1=must be inside, 0=must be outside.
+  // We construct it by starting white in A's "in" parts, then masking by B and C as required.
+  // Easier: produce each region as an SVG path/clip combo.
+  // Approach: use nested clipPath + complement layer.
+  // For each region, do:
+  //   rect (shade) clipped to required positive circles, then mask out forbidden ones.
+  function regionLayer(a, b, c) {
+    // a/b/c: 1 = must be inside, 0 = must be outside, -1 = don't care
+    const positives = [];
+    if (a === 1) positives.push("A");
+    if (b === 1) positives.push("B");
+    if (c === 1) positives.push("C");
+    const negatives = [];
+    if (a === 0) negatives.push("A");
+    if (b === 0) negatives.push("B");
+    if (c === 0) negatives.push("C");
+
+    // Build clipping chain via nested g
+    let inner = `<rect class="shade" width="${W}" height="${H}" mask="url(#${uid}-mNeg)"/>`;
+    // We'll always include negatives via a single combined mask. Re-define per call:
+    const mneg = `
+      <mask id="${uid}-mNeg">
+        <rect width="${W}" height="${H}" fill="white"/>
+        ${negatives.includes("A") ? `<circle cx="${cAx}" cy="${cAy}" r="${r}" fill="black"/>` : ""}
+        ${negatives.includes("B") ? `<circle cx="${cBx}" cy="${cBy}" r="${r}" fill="black"/>` : ""}
+        ${negatives.includes("C") ? `<circle cx="${cCx}" cy="${cCy}" r="${r}" fill="black"/>` : ""}
+      </mask>`;
+    let wrapped = inner;
+    if (positives.includes("A")) wrapped = `<g clip-path="url(#${uid}-cA)">${wrapped}</g>`;
+    if (positives.includes("B")) wrapped = `<g clip-path="url(#${uid}-cB)">${wrapped}</g>`;
+    if (positives.includes("C")) wrapped = `<g clip-path="url(#${uid}-cC)">${wrapped}</g>`;
+    return mneg + wrapped;
+  }
+
+  // Each preset region key maps to a triple
+  const REG_DEF = {
+    a:   [1, 0, 0],
+    b:   [0, 1, 0],
+    c:   [0, 0, 1],
+    ab:  [1, 1, 0],
+    ac:  [1, 0, 1],
+    bc:  [0, 1, 1],
+    abc: [1, 1, 1],
+    none:[0, 0, 0]
+  };
+
+  // Because we reuse a single mask id, we need unique IDs per region. Refactor:
+  function regionLayerUid(rid, [a, b, c]) {
+    const positives = [], negatives = [];
+    if (a === 1) positives.push("A"); else negatives.push("A");
+    if (b === 1) positives.push("B"); else negatives.push("B");
+    if (c === 1) positives.push("C"); else negatives.push("C");
+    const mid = `${uid}-${rid}`;
+    const mneg = `
+      <mask id="${mid}-neg">
+        <rect width="${W}" height="${H}" fill="white"/>
+        ${negatives.includes("A") ? `<circle cx="${cAx}" cy="${cAy}" r="${r}" fill="black"/>` : ""}
+        ${negatives.includes("B") ? `<circle cx="${cBx}" cy="${cBy}" r="${r}" fill="black"/>` : ""}
+        ${negatives.includes("C") ? `<circle cx="${cCx}" cy="${cCy}" r="${r}" fill="black"/>` : ""}
+      </mask>`;
+    let wrapped = `<rect class="shade" width="${W}" height="${H}" mask="url(#${mid}-neg)"/>`;
+    if (positives.includes("A")) wrapped = `<g clip-path="url(#${uid}-cA)">${wrapped}</g>`;
+    if (positives.includes("B")) wrapped = `<g clip-path="url(#${uid}-cB)">${wrapped}</g>`;
+    if (positives.includes("C")) wrapped = `<g clip-path="url(#${uid}-cC)">${wrapped}</g>`;
+    return { defs: mneg, body: wrapped };
+  }
+
+  const baseDefs = `
+    <defs>
+      <clipPath id="${uid}-cA"><circle cx="${cAx}" cy="${cAy}" r="${r}"/></clipPath>
+      <clipPath id="${uid}-cB"><circle cx="${cBx}" cy="${cBy}" r="${r}"/></clipPath>
+      <clipPath id="${uid}-cC"><circle cx="${cCx}" cy="${cCy}" r="${r}"/></clipPath>
+    </defs>`;
+
+  let extraDefs = "";
+  let bodies = "";
+  for (const rid of regions) {
+    const triple = REG_DEF[rid];
+    if (!triple) continue;
+    const { defs, body } = regionLayerUid(rid, triple);
+    extraDefs += defs;
+    bodies += body;
+  }
+
+  return `
+    <svg class="venn vennLg" viewBox="0 0 ${W} ${H}" role="img" aria-label="Диаграмма Эйлера (3 множества)">
+      ${baseDefs}
+      <defs>${extraDefs}</defs>
+      <rect class="universe" x="6" y="6" width="${W - 12}" height="${H - 12}" rx="6"/>
+      ${bodies}
+      <circle class="circ" cx="${cAx}" cy="${cAy}" r="${r}"/>
+      <circle class="circ" cx="${cBx}" cy="${cBy}" r="${r}"/>
+      <circle class="circ" cx="${cCx}" cy="${cCy}" r="${r}"/>
+      <text class="label" x="${cAx - r - 4}" y="${cAy - r - 4}" text-anchor="end">A</text>
+      <text class="label" x="${cBx + r + 4}" y="${cBy - r - 4}" text-anchor="start">B</text>
+      <text class="label" x="${cCx}" y="${cCy + r + 14}" text-anchor="middle">C</text>
+      <text class="label" x="${W - 12}" y="${H - 10}" text-anchor="end">U</text>
+    </svg>`;
+}
+
+/* ============================================================================
+   Exercise pool — designed so each exercise has a single deterministic answer.
+   Types: choose-equiv | match-name | fill-symbol | simplify | true-false | pick-venn
+   ============================================================================ */
+
+const EXERCISES = [
+  // ---- choose-equiv (multiple choice equivalence) ----
+  {
+    id: "ex-c1", type: "choose-equiv", lawId: "demorgan",
+    prompt: "Чему равно ¬(A ∧ B)?",
+    options: ["¬A ∧ ¬B", "¬A ∨ ¬B", "A ∨ B", "A ∧ B"],
+    answer: 1,
+    why: "По закону де Моргана отрицание ∧ превращает её в ∨ и распространяется на каждую часть."
+  },
+  {
+    id: "ex-c2", type: "choose-equiv", lawId: "demorgan",
+    prompt: "Чему равно ¬(A ∨ B)?",
+    options: ["¬A ∨ ¬B", "¬A ∧ ¬B", "A ∧ B", "A → B"],
+    answer: 1,
+    why: "Закон де Моргана для ∨: отрицание заходит внутрь, ∨ становится ∧."
+  },
+  {
+    id: "ex-c3", type: "choose-equiv", lawId: "distributive",
+    prompt: "Чему равно A ∧ (B ∨ C)?",
+    options: ["A ∧ B ∧ C", "A ∨ (B ∧ C)", "(A ∧ B) ∨ (A ∧ C)", "(A ∨ B) ∧ (A ∨ C)"],
+    answer: 2,
+    why: "Дистрибутивность ∧ относительно ∨: A раскрывается на каждое слагаемое в скобках."
+  },
+  {
+    id: "ex-c4", type: "choose-equiv", lawId: "doublenot",
+    prompt: "Чему равно ¬¬A?",
+    options: ["¬A", "0", "1", "A"],
+    answer: 3,
+    why: "Двойное отрицание возвращает исходное значение."
+  },
+  {
+    id: "ex-c5", type: "choose-equiv", lawId: "absorption",
+    prompt: "Чему равно A ∨ (A ∧ B)?",
+    options: ["A", "B", "A ∧ B", "A ∨ B"],
+    answer: 0,
+    why: "Закон поглощения: если A уже есть, то добавление A ∧ B не расширяет область."
+  },
+  {
+    id: "ex-c6", type: "choose-equiv", lawId: "absorption",
+    prompt: "Чему равно A ∧ (A ∨ B)?",
+    options: ["B", "A ∨ B", "A", "A ∧ B"],
+    answer: 2,
+    why: "Поглощение в форме ∧: A уже задаёт верхнюю границу области."
+  },
+
+  // ---- match-name (which law does this formula illustrate?) ----
+  {
+    id: "ex-m1", type: "match-name", lawId: "absorption",
+    prompt: "Какой закон выражает формула A ∨ (A ∧ B) = A?",
+    options: ["Де Моргана", "Поглощения", "Идемпотентности", "Дистрибутивности"],
+    answer: 1,
+    why: "Это классическая форма закона поглощения."
+  },
+  {
+    id: "ex-m2", type: "match-name", lawId: "demorgan",
+    prompt: "Какой закон гласит ¬(A ∨ B) = ¬A ∧ ¬B?",
+    options: ["Поглощения", "Двойного отрицания", "Де Моргана", "Склеивания"],
+    answer: 2,
+    why: "Это де Морган: отрицание ∨ превращается в ∧ отрицаний."
+  },
+  {
+    id: "ex-m3", type: "match-name", lawId: "excluded",
+    prompt: "Какой закон выражает формула A ∨ ¬A = 1?",
+    options: ["Исключённого третьего", "Непротиворечия", "Идемпотентности", "Констант"],
+    answer: 0,
+    why: "Третьего не дано: либо A, либо ¬A."
+  },
+  {
+    id: "ex-m4", type: "match-name", lawId: "noncontradiction",
+    prompt: "Какой закон выражает формула A ∧ ¬A = 0?",
+    options: ["Поглощения", "Непротиворечия", "Исключённого третьего", "Двойного отрицания"],
+    answer: 1,
+    why: "Закон непротиворечия: одновременно A и ¬A быть не может."
+  },
+  {
+    id: "ex-m5", type: "match-name", lawId: "commutative",
+    prompt: "Какой закон выражает формула A ∧ B = B ∧ A?",
+    options: ["Коммутативности", "Ассоциативности", "Дистрибутивности", "Идемпотентности"],
+    answer: 0,
+    why: "Это переместительный закон — порядок операндов не важен."
+  },
+  {
+    id: "ex-m6", type: "match-name", lawId: "idempotent",
+    prompt: "Какой закон выражает формула A ∨ A = A?",
+    options: ["Коммутативности", "Поглощения", "Идемпотентности", "Склеивания"],
+    answer: 2,
+    why: "Идемпотентность: повторение A не добавляет новых элементов."
+  },
+
+  // ---- fill-symbol (typed answer) ----
+  {
+    id: "ex-f1", type: "fill-symbol", lawId: "excluded",
+    prompt: "Подставьте недостающее значение: A ∨ ¬A = __",
+    accepted: ["1"],
+    placeholder: "?",
+    why: "Закон исключённого третьего: либо A, либо ¬A истинно."
+  },
+  {
+    id: "ex-f2", type: "fill-symbol", lawId: "noncontradiction",
+    prompt: "Подставьте недостающее значение: A ∧ ¬A = __",
+    accepted: ["0"],
+    placeholder: "?",
+    why: "Непротиворечие: вместе A и ¬A невозможны."
+  },
+  {
+    id: "ex-f3", type: "fill-symbol", lawId: "constants",
+    prompt: "Подставьте недостающее значение: A ∧ 1 = __",
+    accepted: ["a", "A"],
+    placeholder: "?",
+    why: "1 — нейтральный элемент для ∧."
+  },
+  {
+    id: "ex-f4", type: "fill-symbol", lawId: "constants",
+    prompt: "Подставьте недостающее значение: A ∨ 1 = __",
+    accepted: ["1"],
+    placeholder: "?",
+    why: "1 поглощает в операции ∨ — результат всегда универсум."
+  },
+  {
+    id: "ex-f5", type: "fill-symbol", lawId: "constants",
+    prompt: "Подставьте недостающее значение: A ∨ 0 = __",
+    accepted: ["a", "A"],
+    placeholder: "?",
+    why: "0 — нейтральный элемент для ∨."
+  },
+  {
+    id: "ex-f6", type: "fill-symbol", lawId: "doublenot",
+    prompt: "Подставьте недостающее: ¬¬A = __",
+    accepted: ["a", "A"],
+    placeholder: "?",
+    why: "Двойное отрицание возвращает исходное значение."
+  },
+
+  // ---- simplify (single best simplification) ----
+  {
+    id: "ex-s1", type: "simplify", lawId: "absorption",
+    prompt: "Упростите: A ∨ (A ∧ B)",
+    options: ["A ∧ B", "A", "B", "A ∨ B"],
+    answer: 1,
+    why: "Закон поглощения: A ∨ (A ∧ B) = A."
+  },
+  {
+    id: "ex-s2", type: "simplify", lawId: "doublenot",
+    prompt: "Упростите: ¬¬(A ∧ B)",
+    options: ["¬A ∧ ¬B", "A ∧ B", "A ∨ B", "0"],
+    answer: 1,
+    why: "Двойное отрицание убирается, остаётся A ∧ B."
+  },
+  {
+    id: "ex-s3", type: "simplify", lawId: "idempotent",
+    prompt: "Упростите: A ∧ A ∧ A",
+    options: ["0", "1", "A", "A ∧ ¬A"],
+    answer: 2,
+    why: "Идемпотентность: повтор A не меняет результата."
+  },
+  {
+    id: "ex-s4", type: "simplify", lawId: "constants",
+    prompt: "Упростите: (A ∧ 1) ∨ 0",
+    options: ["1", "0", "A", "¬A"],
+    answer: 2,
+    why: "A ∧ 1 = A, далее A ∨ 0 = A."
+  },
+  {
+    id: "ex-s5", type: "simplify", lawId: "adhesion",
+    prompt: "Упростите: (A ∧ B) ∨ (¬A ∧ B)",
+    options: ["A", "B", "A ∧ B", "¬B"],
+    answer: 1,
+    why: "Закон склеивания: A и ¬A покрывают весь универсум, остаётся B."
+  },
+  {
+    id: "ex-s6", type: "simplify", lawId: "excluded",
+    prompt: "Упростите: (A ∨ ¬A) ∧ B",
+    options: ["B", "A", "0", "1"],
+    answer: 0,
+    why: "A ∨ ¬A = 1, значит результат 1 ∧ B = B."
+  },
+
+  // ---- true-false ----
+  {
+    id: "ex-t1", type: "true-false", lawId: "absorption",
+    prompt: "Верно ли, что A ∧ (A ∨ B) = B?",
+    answer: false,
+    why: "По закону поглощения A ∧ (A ∨ B) = A, а не B."
+  },
+  {
+    id: "ex-t2", type: "true-false", lawId: "demorgan",
+    prompt: "Верно ли, что ¬(A ∨ B) = ¬A ∨ ¬B?",
+    answer: false,
+    why: "Это распространённая ошибка. По де Моргану получается ¬A ∧ ¬B."
+  },
+  {
+    id: "ex-t3", type: "true-false", lawId: "commutative",
+    prompt: "Верно ли, что A ∧ B = B ∧ A?",
+    answer: true,
+    why: "Это закон коммутативности для ∧."
+  },
+  {
+    id: "ex-t4", type: "true-false", lawId: "excluded",
+    prompt: "Верно ли, что A ∨ ¬A зависит от значения A?",
+    answer: false,
+    why: "A ∨ ¬A = 1 при любом A — это закон исключённого третьего."
+  },
+  {
+    id: "ex-t5", type: "true-false", lawId: "doublenot",
+    prompt: "Верно ли, что ¬¬¬A = ¬A?",
+    answer: true,
+    why: "Внутреннее ¬¬ убирается, остаётся ¬A."
+  },
+
+  // ---- pick-venn: choose the correct Venn diagram for an expression ----
+  {
+    id: "ex-v1", type: "pick-venn", lawId: "demorgan",
+    prompt: "Какая диаграмма соответствует выражению ¬(A ∨ B)?",
+    correctRegion: "neither",
+    options: ["neither", "intersection", "union", "a"],
+    captions: { neither: "вне A и вне B", intersection: "пересечение A и B", union: "объединение A и B", a: "только A" },
+    why: "¬(A ∨ B) — это всё, что вне объединения, то есть «ни в A, ни в B»."
+  },
+  {
+    id: "ex-v2", type: "pick-venn", lawId: "demorgan",
+    prompt: "Какая диаграмма соответствует выражению ¬A ∧ ¬B?",
+    correctRegion: "neither",
+    options: ["neither", "intersection", "symdiff", "union"],
+    captions: { neither: "вне обоих", intersection: "только пересечение", symdiff: "только в одном", union: "объединение" },
+    why: "¬A ∧ ¬B = «не в A и не в B» — внешняя область вне обоих кругов."
+  },
+  {
+    id: "ex-v3", type: "pick-venn", lawId: "absorption",
+    prompt: "Какая диаграмма соответствует выражению A ∨ (A ∧ B)?",
+    correctRegion: "a",
+    options: ["a", "intersection", "union", "b"],
+    captions: { a: "вся A", intersection: "пересечение", union: "объединение", b: "вся B" },
+    why: "По закону поглощения это просто A — целиком круг A."
+  },
+  {
+    id: "ex-v4", type: "pick-venn", lawId: "excluded",
+    prompt: "Какая диаграмма соответствует A ∨ ¬A?",
+    correctRegion: "full",
+    options: ["full", "empty", "a", "notA"],
+    captions: { full: "весь универсум", empty: "пусто", a: "только A", notA: "только не-A" },
+    why: "A ∨ ¬A покрывает весь универсум — закон исключённого третьего."
+  }
+];
+
+/* ============================================================================
+   App state and persistence.
+   ============================================================================ */
+
+const STORAGE_KEY = "logicTrainer.logicOperations.v1";
+
+const state = {
+  mode: "study",
+  studyLawIdx: 0,
+  showMnemonic: false,
+  practice: { idx: 0, answered: false, picked: null, correct: false },
+  quiz: null   // see startQuiz()
+};
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch { return null; }
+}
+
+function saveProgress() {
+  try {
+    const data = {
+      mode: state.mode,
+      studyLawIdx: state.studyLawIdx,
+      showMnemonic: state.showMnemonic,
+      practiceIdx: state.practice.idx
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch { /* storage may be disabled — ignore */ }
+}
+
+/* ============================================================================
+   Rendering — top-level by mode.
+   ============================================================================ */
+
+const root = document.getElementById("root");
+
+function render() {
+  if (state.mode === "study") renderStudy();
+  else if (state.mode === "practice") renderPractice();
+  else if (state.mode === "quiz") renderQuiz();
+
+  // Sync mode tabs
+  for (const btn of document.querySelectorAll(".modeChip")) {
+    btn.setAttribute("aria-selected", btn.dataset.mode === state.mode ? "true" : "false");
+  }
+  saveProgress();
+}
+
+/* ---------- STUDY ---------- */
+
+function renderStudy() {
+  const law = LAWS[state.studyLawIdx];
+
+  const listHtml = LAWS.map((l, idx) => `
+    <li>
+      <button class="lawListBtn" data-law-idx="${idx}" aria-current="${idx === state.studyLawIdx}">
+        <span class="lawListIdx">${String(idx + 1).padStart(2, "0")}</span>
+        <span class="lawListTitle">${l.title}</span>
+      </button>
+    </li>
+  `).join("");
+
+  // Pick a Venn pair appropriate to this law.
+  let vennHtml = "";
+  if (law.vennPair) {
+    const { left, right, labelLeft, labelRight } = law.vennPair;
+    vennHtml = `
+      <div class="vennPair">
+        <div class="vennCol">
+          ${venn2(left, "md")}
+          <span class="vennCaption">${escapeHtml(labelLeft)}</span>
+        </div>
+        <span class="vennEq" aria-hidden="true">=</span>
+        <div class="vennCol">
+          ${venn2(right, "md")}
+          <span class="vennCaption">${escapeHtml(labelRight)}</span>
+        </div>
+      </div>
+      <p class="vennNote">Обе диаграммы закрашивают одну и ту же область — значит, выражения равны.</p>
+    `;
+  } else if (law.vennPair3) {
+    const { left, right, labelLeft, labelRight } = law.vennPair3;
+    vennHtml = `
+      <div class="vennPair">
+        <div class="vennCol">
+          ${venn3(left)}
+          <span class="vennCaption">${escapeHtml(labelLeft)}</span>
+        </div>
+        <span class="vennEq" aria-hidden="true">=</span>
+        <div class="vennCol">
+          ${venn3(right)}
+          <span class="vennCaption">${escapeHtml(labelRight)}</span>
+        </div>
+      </div>
+      <p class="vennNote">Закрашенная область совпадает на обеих диаграммах.</p>
+    `;
+  }
+
+  const formulasHtml = law.formulas.map(f =>
+    `<div class="formulaLg">${formatFormula(f)}</div>`
+  ).join("");
+
+  const mnemonicHtml = state.showMnemonic ? `
+    <div class="mnemonicBox">
+      <span>${escapeHtml(law.memoryHint)}</span>
+    </div>
+  ` : "";
+
+  const bridgeHtml = law.id === "demorgan" || law.id === "excluded" || law.id === "absorption" ? `
+    <div class="lawSection">
+      <h3>Связь с задачами тренажёра</h3>
+      <ul class="bridgeList">
+        ${bridgeBulletsFor(law.id).map(b => `<li>${b}</li>`).join("")}
+      </ul>
+    </div>
+  ` : "";
+
+  root.innerHTML = `
+    <div class="studyLayout">
+      <aside>
+        <ul class="lawList" role="list">${listHtml}</ul>
+      </aside>
+      <article class="card lawCard" data-law-id="${law.id}">
+        <p class="lawCardMeta">Закон ${String(state.studyLawIdx + 1).padStart(2, "0")} / ${LAWS.length} · ${escapeHtml(law.subtitle)}</p>
+        <h2>${escapeHtml(law.title)}</h2>
+
+        <div class="lawSection">
+          <h3>Формула</h3>
+          <div class="formulaBlock">${formulasHtml}</div>
+        </div>
+
+        <div class="lawSection">
+          <h3>Что это значит</h3>
+          <p>${escapeHtml(law.shortExplanation)}</p>
+        </div>
+
+        ${vennHtml ? `<div class="lawSection"><h3>Визуальная интерпретация</h3>${vennHtml}</div>` : ""}
+
+        <div class="lawSection">
+          <h3>Связь с множествами</h3>
+          <p>${escapeHtml(law.setInterpretation)}</p>
+        </div>
+
+        <div class="lawSection">
+          <h3>Где это пригодится в задачах</h3>
+          <p>${escapeHtml(law.whereUsed)}</p>
+        </div>
+
+        <div class="lawSection">
+          <h3>Пример</h3>
+          <div class="example">${escapeHtml(law.example)}</div>
+        </div>
+
+        ${bridgeHtml}
+
+        <div class="toggleRow">
+          <label style="display:inline-flex;gap:8px;align-items:center;cursor:pointer;font-size:14px;">
+            <input type="checkbox" id="mnemonicToggle" ${state.showMnemonic ? "checked" : ""} style="accent-color: var(--accent);">
+            <span>Показать мнемоподсказку</span>
+          </label>
+        </div>
+        ${mnemonicHtml}
+
+        <div class="lawNav">
+          <button class="btn" id="prevLaw" ${state.studyLawIdx === 0 ? "disabled" : ""}>← Предыдущий</button>
+          <button class="btn btn-primary" id="nextLaw" ${state.studyLawIdx === LAWS.length - 1 ? "disabled" : ""}>Следующий →</button>
+        </div>
+      </article>
+    </div>
+  `;
+
+  // Wire up handlers
+  for (const btn of root.querySelectorAll(".lawListBtn")) {
+    btn.addEventListener("click", () => {
+      state.studyLawIdx = parseInt(btn.dataset.lawIdx, 10);
+      render();
+    });
+  }
+  const prev = root.querySelector("#prevLaw");
+  const next = root.querySelector("#nextLaw");
+  prev && prev.addEventListener("click", () => {
+    if (state.studyLawIdx > 0) { state.studyLawIdx--; render(); }
+  });
+  next && next.addEventListener("click", () => {
+    if (state.studyLawIdx < LAWS.length - 1) { state.studyLawIdx++; render(); }
+  });
+  const tog = root.querySelector("#mnemonicToggle");
+  tog && tog.addEventListener("change", () => {
+    state.showMnemonic = tog.checked;
+    render();
+  });
+}
+
+function bridgeBulletsFor(lawId) {
+  const general = [
+    'В задачах ∧ часто соответствует пересечению условий: <code>x ∈ P ∧ x ∈ Q</code> = <code>x ∈ P ∩ Q</code>.',
+    '∨ — это объединение или альтернатива: «x в P или x в Q».',
+    '¬ — это «не в множестве» или «вне отрезка».',
+  ];
+  if (lawId === "demorgan") return [
+    'Помогает раскрыть отрицание сложного условия: <code>¬(x ∈ P ∨ x ∈ Q)</code> = <code>(x ∉ P) ∧ (x ∉ Q)</code>.',
+    'Часто полезно перед поиском «опасной зоны» — где условие может стать ложным.',
+    ...general.slice(0, 1)
+  ];
+  if (lawId === "excluded") return [
+    'Если в задаче встретилось <code>(x ∈ A) ∨ (x ∉ A)</code> — это всегда истина и никак не ограничивает x.',
+    'Полезно, чтобы вычеркнуть тривиально истинные подвыражения.'
+  ];
+  if (lawId === "absorption") return [
+    'Если перед поиском A в формуле встретилось <code>A ∨ (A ∧ B)</code>, упрощаем до <code>A</code> и работаем с более коротким условием.',
+    'Уменьшает количество подзадач, которые нужно проверять.'
+  ];
+  return general;
+}
+
+/* ---------- PRACTICE ---------- */
+
+function renderPractice() {
+  if (state.practice.idx < 0) state.practice.idx = 0;
+  if (state.practice.idx >= EXERCISES.length) state.practice.idx = 0;
+  const ex = EXERCISES[state.practice.idx];
+
+  const head = `
+    <div class="exHead">
+      <h2 style="font-size:18px;">Упражнение ${state.practice.idx + 1} из ${EXERCISES.length}</h2>
+      <span class="exTag">${labelForExType(ex.type)}</span>
+    </div>
+  `;
+
+  let body = "";
+  if (ex.type === "choose-equiv" || ex.type === "match-name" || ex.type === "simplify") {
+    body = renderMcq(ex);
+  } else if (ex.type === "fill-symbol") {
+    body = renderFill(ex);
+  } else if (ex.type === "true-false") {
+    body = renderTrueFalse(ex);
+  } else if (ex.type === "pick-venn") {
+    body = renderPickVenn(ex);
+  }
+
+  const fb = state.practice.answered ? `
+    <div class="exFeedback ${state.practice.correct ? "ok" : "no"}">
+      <strong>${state.practice.correct ? "Верно." : "Не совсем."}</strong>
+      ${escapeHtml(ex.why)}
+    </div>
+  ` : "";
+
+  const actions = `
+    <div class="exActions">
+      <button class="btn" id="prevEx" ${state.practice.idx === 0 ? "disabled" : ""}>← Предыдущее</button>
+      <button class="btn" id="retryEx" ${state.practice.answered ? "" : "disabled"}>Сбросить</button>
+      <button class="btn btn-primary" id="nextEx">${state.practice.idx === EXERCISES.length - 1 ? "В начало" : "Следующее →"}</button>
+    </div>
+  `;
+
+  root.innerHTML = `<article class="card">${head}<p class="exPrompt">${formatFormula(ex.prompt)}</p>${body}${fb}${actions}</article>`;
+
+  wireMcq(ex);
+  wireFill(ex);
+  wireTrueFalse(ex);
+  wirePickVenn(ex);
+
+  root.querySelector("#prevEx").addEventListener("click", () => {
+    if (state.practice.idx > 0) state.practice.idx--;
+    resetPractice(); render();
+  });
+  root.querySelector("#retryEx").addEventListener("click", () => {
+    resetPractice(); render();
+  });
+  root.querySelector("#nextEx").addEventListener("click", () => {
+    state.practice.idx = (state.practice.idx + 1) % EXERCISES.length;
+    resetPractice(); render();
+  });
+}
+
+function resetPractice() {
+  state.practice.answered = false;
+  state.practice.picked = null;
+  state.practice.correct = false;
+}
+
+function labelForExType(t) {
+  return ({
+    "choose-equiv": "Выбор равного выражения",
+    "match-name":   "Сопоставление с законом",
+    "fill-symbol":  "Подставьте символ",
+    "simplify":     "Упрощение",
+    "true-false":   "Верно / Неверно",
+    "pick-venn":    "Выберите диаграмму"
+  })[t] || t;
+}
+
+function renderMcq(ex) {
+  const opts = ex.options.map((o, i) => {
+    let cls = "exOption";
+    if (state.practice.answered) {
+      if (i === ex.answer) cls += " is-correct";
+      else if (i === state.practice.picked) cls += " is-wrong";
+    }
+    return `<button class="${cls}" data-opt-idx="${i}" ${state.practice.answered ? "disabled" : ""}>${formatFormula(o)}</button>`;
+  }).join("");
+  return `<div class="exOptions">${opts}</div>`;
+}
+
+function wireMcq(ex) {
+  if (!["choose-equiv", "match-name", "simplify"].includes(ex.type)) return;
+  for (const btn of root.querySelectorAll("[data-opt-idx]")) {
+    btn.addEventListener("click", () => {
+      if (state.practice.answered) return;
+      const idx = parseInt(btn.dataset.optIdx, 10);
+      state.practice.picked = idx;
+      state.practice.correct = (idx === ex.answer);
+      state.practice.answered = true;
+      render();
+    });
+  }
+}
+
+function renderFill(ex) {
+  const showAnswer = state.practice.answered && !state.practice.correct;
+  return `
+    <div class="exInputRow">
+      <input class="exInput" id="fillInput" placeholder="${escapeHtml(ex.placeholder || "?")}"
+        ${state.practice.answered && state.practice.correct ? "disabled" : ""}/>
+      <button class="btn btn-primary" id="fillCheck">Проверить</button>
+      ${showAnswer ? `<span class="exTag">Ответ: ${escapeHtml(ex.accepted[0])}</span>` : ""}
+    </div>
+  `;
+}
+function wireFill(ex) {
+  if (ex.type !== "fill-symbol") return;
+  const input = root.querySelector("#fillInput");
+  const btn = root.querySelector("#fillCheck");
+  if (!input || !btn) return;
+  input.focus();
+  function submit() {
+    const v = (input.value || "").trim().toLowerCase();
+    const ok = ex.accepted.map(a => a.toLowerCase()).includes(v);
+    state.practice.picked = v;
+    state.practice.correct = ok;
+    state.practice.answered = true;
+    render();
+  }
+  btn.addEventListener("click", submit);
+  input.addEventListener("keydown", (e) => { if (e.key === "Enter") submit(); });
+}
+
+function renderTrueFalse(ex) {
+  const ans = state.practice.answered;
+  const picked = state.practice.picked;
+  function cls(val) {
+    if (!ans) return "exOption";
+    if (val === ex.answer) return "exOption is-correct";
+    if (val === picked) return "exOption is-wrong";
+    return "exOption";
+  }
+  return `
+    <div class="exOptions" style="grid-template-columns:1fr 1fr;">
+      <button class="${cls(true)}" data-tf="t" ${ans ? "disabled" : ""}>Верно</button>
+      <button class="${cls(false)}" data-tf="f" ${ans ? "disabled" : ""}>Неверно</button>
+    </div>
+  `;
+}
+function wireTrueFalse(ex) {
+  if (ex.type !== "true-false") return;
+  for (const btn of root.querySelectorAll("[data-tf]")) {
+    btn.addEventListener("click", () => {
+      if (state.practice.answered) return;
+      const v = btn.dataset.tf === "t";
+      state.practice.picked = v;
+      state.practice.correct = (v === ex.answer);
+      state.practice.answered = true;
+      render();
+    });
+  }
+}
+
+function renderPickVenn(ex) {
+  const ans = state.practice.answered;
+  const picked = state.practice.picked;
+  const opts = ex.options.map(opt => {
+    let cls = "exVisualOption";
+    if (ans) {
+      if (opt === ex.correctRegion) cls += " is-correct";
+      else if (opt === picked) cls += " is-wrong";
+    }
+    return `
+      <button class="${cls}" data-venn="${opt}" ${ans ? "disabled" : ""}>
+        ${venn2(opt, "sm")}
+        <span class="caption">${escapeHtml(ex.captions[opt] || opt)}</span>
+      </button>
+    `;
+  }).join("");
+  return `<div class="exVisualGrid">${opts}</div>`;
+}
+function wirePickVenn(ex) {
+  if (ex.type !== "pick-venn") return;
+  for (const btn of root.querySelectorAll("[data-venn]")) {
+    btn.addEventListener("click", () => {
+      if (state.practice.answered) return;
+      const v = btn.dataset.venn;
+      state.practice.picked = v;
+      state.practice.correct = (v === ex.correctRegion);
+      state.practice.answered = true;
+      render();
+    });
+  }
+}
+
+/* ---------- QUIZ ---------- */
+
+function startQuiz() {
+  // Random 10 exercises from the pool, no repeats.
+  const pool = [...EXERCISES];
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  const N = Math.min(10, pool.length);
+  state.quiz = {
+    questions: pool.slice(0, N),
+    idx: 0,
+    answers: [],         // {exId, given, correct}
+    finished: false,
+    answered: false,
+    picked: null,
+    correct: false
+  };
+}
+
+function renderQuiz() {
+  if (!state.quiz) startQuiz();
+  const q = state.quiz;
+
+  if (q.finished) {
+    renderQuizResult();
+    return;
+  }
+
+  const ex = q.questions[q.idx];
+  const head = `
+    <div class="quizMeta">
+      <h2 style="font-size:18px;">Проверка знаний</h2>
+      <span class="quizCounter">Вопрос ${q.idx + 1} из ${q.questions.length}</span>
+    </div>
+    <div class="quizBar" aria-hidden="true">
+      <div class="quizBarFill" style="width: ${((q.idx) / q.questions.length) * 100}%"></div>
+    </div>
+  `;
+
+  let body = "";
+  if (ex.type === "choose-equiv" || ex.type === "match-name" || ex.type === "simplify") {
+    body = renderQuizMcq(ex);
+  } else if (ex.type === "fill-symbol") {
+    body = renderQuizFill(ex);
+  } else if (ex.type === "true-false") {
+    body = renderQuizTrueFalse(ex);
+  } else if (ex.type === "pick-venn") {
+    body = renderQuizPickVenn(ex);
+  }
+
+  const fb = q.answered ? `
+    <div class="exFeedback ${q.correct ? "ok" : "no"}">
+      <strong>${q.correct ? "Верно." : "Не совсем."}</strong>
+      ${escapeHtml(ex.why)}
+    </div>
+  ` : "";
+
+  const isLast = q.idx === q.questions.length - 1;
+  const actions = `
+    <div class="exActions">
+      <button class="btn btn-quiet" id="quizRestart">Сбросить</button>
+      ${q.answered ? `<button class="btn btn-primary" id="quizNext">${isLast ? "Показать результат" : "Следующий вопрос →"}</button>` : ""}
+    </div>
+  `;
+
+  root.innerHTML = `<article class="card">${head}<p class="exPrompt">${formatFormula(ex.prompt)}</p>${body}${fb}${actions}</article>`;
+
+  // Wire up answers
+  if (["choose-equiv", "match-name", "simplify"].includes(ex.type)) {
+    for (const btn of root.querySelectorAll("[data-opt-idx]")) {
+      btn.addEventListener("click", () => {
+        if (q.answered) return;
+        const i = parseInt(btn.dataset.optIdx, 10);
+        q.picked = i;
+        q.correct = (i === ex.answer);
+        q.answered = true;
+        q.answers.push({ exId: ex.id, given: ex.options[i], correct: q.correct, rightAnswer: ex.options[ex.answer] });
+        render();
+      });
+    }
+  } else if (ex.type === "fill-symbol") {
+    const input = root.querySelector("#qFillInput");
+    const btn = root.querySelector("#qFillCheck");
+    input && input.focus();
+    function submit() {
+      const v = (input.value || "").trim().toLowerCase();
+      const ok = ex.accepted.map(a => a.toLowerCase()).includes(v);
+      q.picked = v;
+      q.correct = ok;
+      q.answered = true;
+      q.answers.push({ exId: ex.id, given: v || "—", correct: ok, rightAnswer: ex.accepted[0] });
+      render();
+    }
+    btn && btn.addEventListener("click", submit);
+    input && input.addEventListener("keydown", e => { if (e.key === "Enter") submit(); });
+  } else if (ex.type === "true-false") {
+    for (const btn of root.querySelectorAll("[data-tf]")) {
+      btn.addEventListener("click", () => {
+        if (q.answered) return;
+        const v = btn.dataset.tf === "t";
+        q.picked = v;
+        q.correct = (v === ex.answer);
+        q.answered = true;
+        q.answers.push({ exId: ex.id, given: v ? "Верно" : "Неверно", correct: q.correct, rightAnswer: ex.answer ? "Верно" : "Неверно" });
+        render();
+      });
+    }
+  } else if (ex.type === "pick-venn") {
+    for (const btn of root.querySelectorAll("[data-venn]")) {
+      btn.addEventListener("click", () => {
+        if (q.answered) return;
+        const v = btn.dataset.venn;
+        q.picked = v;
+        q.correct = (v === ex.correctRegion);
+        q.answered = true;
+        q.answers.push({ exId: ex.id, given: ex.captions[v] || v, correct: q.correct, rightAnswer: ex.captions[ex.correctRegion] || ex.correctRegion });
+        render();
+      });
+    }
+  }
+
+  const restart = root.querySelector("#quizRestart");
+  restart && restart.addEventListener("click", () => { startQuiz(); render(); });
+  const nextBtn = root.querySelector("#quizNext");
+  nextBtn && nextBtn.addEventListener("click", () => {
+    if (isLast) {
+      q.finished = true;
+    } else {
+      q.idx++;
+      q.answered = false;
+      q.picked = null;
+      q.correct = false;
+    }
+    render();
+  });
+}
+
+// Re-use renderers but produce quiz-flavoured (no "ответ" reveal)
+function renderQuizMcq(ex) {
+  const q = state.quiz;
+  return `<div class="exOptions">
+    ${ex.options.map((o, i) => {
+      let cls = "exOption";
+      if (q.answered) {
+        if (i === ex.answer) cls += " is-correct";
+        else if (i === q.picked) cls += " is-wrong";
+      }
+      return `<button class="${cls}" data-opt-idx="${i}" ${q.answered ? "disabled" : ""}>${formatFormula(o)}</button>`;
+    }).join("")}
+  </div>`;
+}
+function renderQuizFill(ex) {
+  const q = state.quiz;
+  const showAnswer = q.answered && !q.correct;
+  return `
+    <div class="exInputRow">
+      <input class="exInput" id="qFillInput" placeholder="${escapeHtml(ex.placeholder || "?")}" ${q.answered ? "disabled" : ""}/>
+      <button class="btn btn-primary" id="qFillCheck" ${q.answered ? "disabled" : ""}>Проверить</button>
+      ${showAnswer ? `<span class="exTag">Ответ: ${escapeHtml(ex.accepted[0])}</span>` : ""}
+    </div>`;
+}
+function renderQuizTrueFalse(ex) {
+  const q = state.quiz;
+  function cls(val) {
+    if (!q.answered) return "exOption";
+    if (val === ex.answer) return "exOption is-correct";
+    if (val === q.picked) return "exOption is-wrong";
+    return "exOption";
+  }
+  return `
+    <div class="exOptions" style="grid-template-columns:1fr 1fr;">
+      <button class="${cls(true)}" data-tf="t" ${q.answered ? "disabled" : ""}>Верно</button>
+      <button class="${cls(false)}" data-tf="f" ${q.answered ? "disabled" : ""}>Неверно</button>
+    </div>`;
+}
+function renderQuizPickVenn(ex) {
+  const q = state.quiz;
+  return `<div class="exVisualGrid">
+    ${ex.options.map(opt => {
+      let cls = "exVisualOption";
+      if (q.answered) {
+        if (opt === ex.correctRegion) cls += " is-correct";
+        else if (opt === q.picked) cls += " is-wrong";
+      }
+      return `
+        <button class="${cls}" data-venn="${opt}" ${q.answered ? "disabled" : ""}>
+          ${venn2(opt, "sm")}
+          <span class="caption">${escapeHtml(ex.captions[opt] || opt)}</span>
+        </button>`;
+    }).join("")}
+  </div>`;
+}
+
+function renderQuizResult() {
+  const q = state.quiz;
+  const total = q.answers.length;
+  const correct = q.answers.filter(a => a.correct).length;
+  const wrong = q.answers.filter(a => !a.correct);
+
+  const reviewHtml = q.answers.map((a, i) => {
+    const ex = q.questions[i];
+    return `
+      <li class="quizReviewItem ${a.correct ? "is-ok" : "is-no"}">
+        <p class="q"><strong>${i + 1}.</strong> ${escapeHtml(stripFormulaMarkup(ex.prompt))}</p>
+        <p>
+          <span class="yourA">Ваш ответ: ${escapeHtml(String(a.given))}</span>
+          ${a.correct ? "" : ` · <span class="rightA">верно: ${escapeHtml(String(a.rightAnswer))}</span>`}
+        </p>
+        ${!a.correct ? `<p style="margin-top:4px;color:var(--ink-soft);font-size:13.5px;">${escapeHtml(ex.why)}</p>` : ""}
+      </li>
+    `;
+  }).join("");
+
+  const pct = Math.round((correct / total) * 100);
+  const verdict =
+    pct >= 90 ? "Отличный результат." :
+    pct >= 70 ? "Хороший результат." :
+    pct >= 50 ? "Есть над чем поработать." :
+                "Начните с режима «Изучаю».";
+
+  const retryWrong = wrong.length > 0 ? `<button class="btn" id="quizRetryWrong">Повторить ошибки (${wrong.length})</button>` : "";
+
+  root.innerHTML = `
+    <article class="card">
+      <div class="quizResult">
+        <div class="quizResultScore">${correct} / ${total}</div>
+        <p class="quizResultText">${escapeHtml(verdict)}</p>
+        <div class="exActions" style="justify-content:center;margin-top:18px;">
+          <button class="btn btn-primary" id="quizAgain">Начать заново</button>
+          ${retryWrong}
+        </div>
+      </div>
+      <div class="lawSection">
+        <h3>Разбор ответов</h3>
+        <ul class="quizReviewList">${reviewHtml}</ul>
+      </div>
+    </article>
+  `;
+
+  root.querySelector("#quizAgain").addEventListener("click", () => { startQuiz(); render(); });
+  const rw = root.querySelector("#quizRetryWrong");
+  rw && rw.addEventListener("click", () => {
+    // Restart with only the wrong questions.
+    state.quiz = {
+      questions: wrong.map(w => q.questions[q.answers.indexOf(w)]),
+      idx: 0,
+      answers: [],
+      finished: false,
+      answered: false,
+      picked: null,
+      correct: false
+    };
+    render();
+  });
+}
+
+/* ============================================================================
+   Small helpers.
+   ============================================================================ */
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+// Colourize logic operators inside a piece of formula text.
+function formatFormula(s) {
+  let out = escapeHtml(s);
+  // Wrap operators in a span so they pick up accent color in big formulas
+  out = out.replace(/(∧|∨|¬|→|≡|⇔|=)/g, '<span class="op">$1</span>');
+  return out;
+}
+
+function stripFormulaMarkup(s) {
+  return s.replace(/\s+/g, " ").trim();
+}
+
+/* ============================================================================
+   Bootstrap.
+   ============================================================================ */
+
+(function init() {
+  const saved = loadProgress();
+  if (saved) {
+    if (saved.mode === "study" || saved.mode === "practice" || saved.mode === "quiz") {
+      state.mode = saved.mode;
+    }
+    if (Number.isInteger(saved.studyLawIdx) && saved.studyLawIdx >= 0 && saved.studyLawIdx < LAWS.length) {
+      state.studyLawIdx = saved.studyLawIdx;
+    }
+    if (typeof saved.showMnemonic === "boolean") state.showMnemonic = saved.showMnemonic;
+    if (Number.isInteger(saved.practiceIdx) && saved.practiceIdx >= 0 && saved.practiceIdx < EXERCISES.length) {
+      state.practice.idx = saved.practiceIdx;
+    }
+  }
+
+  for (const btn of document.querySelectorAll(".modeChip")) {
+    btn.addEventListener("click", () => {
+      const m = btn.dataset.mode;
+      if (m === state.mode) return;
+      state.mode = m;
+      if (m === "quiz" && !state.quiz) startQuiz();
+      if (m === "practice") resetPractice();
+      render();
+    });
+  }
+
+  // Keyboard: arrow keys to navigate laws in study mode.
+  document.addEventListener("keydown", (e) => {
+    if (state.mode === "study") {
+      if (e.key === "ArrowLeft" && state.studyLawIdx > 0) {
+        state.studyLawIdx--; render();
+      } else if (e.key === "ArrowRight" && state.studyLawIdx < LAWS.length - 1) {
+        state.studyLawIdx++; render();
+      }
+    }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
