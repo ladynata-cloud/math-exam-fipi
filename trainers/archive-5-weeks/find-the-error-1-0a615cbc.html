@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Найди ошибку ученика — боковая миссия</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#eef2f5;--card:#fff;--hdr:#2c3e4e;
+  --blue:#2c7da0;--blue-h:#1f5e7a;--blue-lt:#e0f2fe;
+  --ok:#16a34a;--ok-bg:#dcfce7;--ok-dk:#14532d;
+  --err:#dc2626;--err-bg:#fee2e2;--err-dk:#7f1d1d;
+  --amber:#d97706;--amb-bg:#fef3c7;--amb-dk:#78350f;
+  --muted:#94a3b8;--border:#d1dae4;--text:#1a2c3e;--text-lt:#64748b;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);font-family:'Segoe UI',Roboto,sans-serif;color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+
+/* ШАПКА */
+.hdr{background:var(--hdr);color:#fff;padding:15px 28px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.hdr h1{font-size:1.4rem;font-weight:600;letter-spacing:-.3px}
+.hdr p{font-size:.78rem;opacity:.62;margin-top:2px}
+.back a{color:rgba(255,255,255,.5);font-size:.82rem;text-decoration:none;font-weight:500;transition:color .18s}
+.back a:hover{color:#fff}
+
+/* РЕЖИМЫ */
+.mode-bar{background:#f0f3f7;border-bottom:1px solid var(--border);padding:11px 28px;display:flex;gap:12px}
+.mbtn{background:transparent;border:none;font-size:.97rem;font-weight:600;padding:7px 20px;border-radius:40px;cursor:pointer;color:var(--text);transition:.18s;font-family:inherit}
+.mbtn.active{background:var(--hdr);color:#fff}
+
+/* КОНТЕНТ */
+#app{flex:1;display:flex;flex-direction:column;align-items:center;padding:24px 16px 48px}
+.card{background:var(--card);border-radius:20px;padding:26px;box-shadow:0 4px 20px rgba(0,0,0,.07);width:100%;max-width:600px}
+.card+.card{margin-top:14px}
+
+/* СТАРТОВЫЙ ЭКРАН */
+.s-ico{font-size:2.4rem;margin-bottom:10px}
+.s-ttl{font-size:1.45rem;font-weight:700;margin-bottom:6px}
+.s-sub{font-size:.92rem;color:var(--text-lt);line-height:1.6;margin-bottom:18px}
+.e-list{list-style:none;margin-bottom:20px}
+.e-list li{font-size:.88rem;color:var(--text-lt);padding:7px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px}
+.e-list li:last-child{border-bottom:none}
+.edot{width:8px;height:8px;border-radius:50%;background:var(--err);flex-shrink:0}
+.mc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mc{border:2px solid var(--border);border-radius:14px;padding:18px 16px;cursor:pointer;transition:all .18s;text-align:center;background:var(--card)}
+.mc:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 5px 14px rgba(44,125,160,.14)}
+.mc-ico{font-size:1.6rem;margin-bottom:8px}
+.mc-name{font-size:.97rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.mc-desc{font-size:.76rem;color:var(--text-lt);line-height:1.4}
+
+/* ПРОГРЕСС */
+.sess-hdr{width:100%;max-width:600px;margin-bottom:14px}
+.sess-top{display:flex;justify-content:space-between;font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:8px}
+.prog-bar-w{height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-bar-f{height:100%;background:var(--blue);border-radius:4px;transition:width .4s}
+.pdots{display:flex;gap:6px;flex-wrap:wrap}
+.pdot{width:11px;height:11px;border-radius:50%;background:var(--border);transition:.3s;flex-shrink:0}
+.pdot.ok{background:var(--ok)}
+.pdot.ng{background:var(--err)}
+.pdot.ac{background:var(--blue);transform:scale(1.3)}
+
+/* БЛОК НЕВЕРНОГО РЕШЕНИЯ */
+.sol-wrap{background:#fff6f6;border:2px solid #fca5a5;border-radius:18px;padding:20px 18px 16px;margin-bottom:18px;position:relative}
+.sol-lbl{font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:1.3px;color:var(--err);text-align:center;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:7px}
+.sol-lbl::before,.sol-lbl::after{content:'';flex:1;height:1px;background:#fca5a5}
+.sol-work{font-family:'Courier New',monospace;font-size:1.65rem;font-weight:700;color:var(--text);text-align:center;line-height:1.75;word-break:break-word}
+@media(max-width:480px){.sol-work{font-size:1.25rem}}
+/* Цвета в выражениях */
+.nc{color:#b91c1c}
+.pc{color:#1d6fa4}
+.oc{color:#64748b}
+/* Ошибочный шаг */
+.err-step{transition:all .4s}
+.err-step.revealed{background:#fee2e2;color:#991b1b;text-decoration:underline wavy #dc2626 2px;border-radius:5px;padding:1px 4px}
+.wrong-ans{color:#dc2626;font-weight:900}
+.sol-ok{display:none;text-align:center;font-size:.86rem;font-weight:600;color:#16a34a;margin-top:12px;padding-top:11px;border-top:1px solid #fca5a5;font-family:'Courier New',monospace}
+.sol-ok.vis{display:block}
+
+/* ВАРИАНТЫ */
+.ch-lbl{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.9px;color:var(--muted);margin-bottom:10px}
+.ch-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+@media(max-width:480px){.ch-grid{grid-template-columns:1fr}}
+.ch{padding:12px 14px;border:2px solid var(--border);border-radius:12px;font-size:.86rem;font-weight:600;cursor:pointer;text-align:left;background:#fff;color:var(--text);transition:all .17s;font-family:inherit;line-height:1.4;display:flex;align-items:flex-start;gap:8px}
+.ch::before{content:'○';color:var(--muted);flex-shrink:0;font-size:.85rem;margin-top:1px}
+.ch:hover:not(:disabled)::before{content:'●';color:var(--blue)}
+.ch:hover:not(:disabled){border-color:var(--blue);color:var(--blue)}
+.ch.ok::before{content:'✓';color:var(--ok)}
+.ch.ok{border-color:var(--ok);background:var(--ok-bg);color:var(--ok-dk);pointer-events:none}
+.ch.ng::before{content:'✗';color:var(--err)}
+.ch.ng{border-color:var(--err);background:var(--err-bg);color:var(--err-dk);pointer-events:none;animation:shake .38s}
+.ch.dim{opacity:.3;pointer-events:none}
+.ch:disabled{pointer-events:none}
+
+/* ОБРАТНАЯ СВЯЗЬ */
+.fb{border-radius:14px;padding:13px 16px;font-size:.9rem;line-height:1.65;margin-bottom:13px;display:none;animation:fadeIn .3s ease}
+.fb.vis{display:block}
+.fb-ok{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--ok-dk)}
+.fb-err{background:var(--err-bg);border-left:4px solid var(--err);color:var(--err-dk)}
+.fb-hint{background:var(--amb-bg);border-left:4px solid var(--amber);color:var(--amb-dk)}
+
+/* ОБЪЯСНЕНИЕ */
+.expl{display:none;background:#f7fafc;border-radius:13px;padding:14px 16px;margin-bottom:13px;border-left:3px solid var(--blue);font-size:.88rem;line-height:1.75;color:var(--text-lt)}
+.expl.vis{display:block;animation:fadeIn .35s ease}
+.expl strong{color:var(--text)}
+.expl-sec{margin-bottom:9px}
+.expl-sec:last-child{margin-bottom:0}
+.expl-tag{font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--blue);display:block;margin-bottom:4px}
+
+/* КНОПКИ */
+.btn-row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{padding:11px 22px;border:none;border-radius:40px;font-size:.93rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+.btn-p{background:var(--blue);color:#fff}
+.btn-p:hover{background:var(--blue-h);transform:translateY(-1px)}
+.btn-ok{background:var(--ok);color:#fff}
+.btn-ok:hover{background:#15803d}
+.btn-g{background:transparent;border:2px solid var(--border);color:var(--text-lt)}
+.btn-g:hover{border-color:var(--text-lt);color:var(--text)}
+.btn-h{background:var(--amb-bg);color:var(--amb-dk);border:2px solid var(--amber)}
+.btn-h:hover{background:var(--amber);color:#fff}
+
+/* РЕЗУЛЬТАТЫ */
+.res-score{text-align:center;padding:4px 0 18px}
+.res-big{font-size:3.8rem;font-weight:900;font-family:'Courier New',monospace}
+.res-big.ex{color:var(--ok)}.res-big.go{color:var(--blue)}.res-big.fa{color:var(--amber)}.res-big.po{color:var(--err)}
+.res-lbl{font-size:.97rem;font-weight:600;color:var(--text-lt);margin-top:5px}
+.sec-ttl{font-size:.69rem;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:10px}
+.miss-list{display:flex;flex-direction:column;gap:8px}
+.miss-item{background:var(--err-bg);border-left:3px solid var(--err);border-radius:10px;padding:10px 14px;font-size:.87rem;color:var(--err-dk);display:flex;justify-content:space-between}
+.miss-cnt{font-weight:800}
+.rec-list{display:flex;flex-direction:column;gap:8px}
+.rec-item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--blue-lt);border-radius:10px;padding:9px 14px}
+.rec-name{font-size:.87rem;font-weight:600;color:#0c4a6e}
+.rec-lnk{background:var(--blue);color:#fff;padding:5px 12px;border-radius:20px;font-size:.76rem;font-weight:700;text-decoration:none;flex-shrink:0;transition:background .18s}
+.rec-lnk:hover{background:var(--blue-h)}
+.divider{height:1px;background:var(--border);margin:16px 0}
+
+/* РАЗБОР ОШИБОК */
+.br-toggle{background:transparent;border:2px solid var(--border);border-radius:12px;padding:11px 16px;font-size:.9rem;font-weight:600;cursor:pointer;font-family:inherit;color:var(--text-lt);width:100%;text-align:left;display:flex;justify-content:space-between;align-items:center;transition:.18s}
+.br-toggle:hover{border-color:var(--text-lt);color:var(--text)}
+.chevron{transition:transform .3s}
+.br-toggle.open .chevron{transform:rotate(90deg)}
+.br-items{display:none;padding-top:12px}
+.br-items.vis{display:block}
+.bi{background:#f7fafc;border-radius:12px;padding:13px 15px;margin-bottom:9px;border:1px solid var(--border)}
+.bi-expr{font-family:'Courier New',monospace;font-size:1rem;font-weight:700;margin-bottom:7px}
+.bi-wrong{color:var(--err);font-size:.82rem;margin-bottom:3px}
+.bi-right{color:var(--ok);font-size:.82rem;font-weight:600;margin-bottom:3px}
+.bi-why{font-size:.8rem;color:var(--text-lt)}
+
+.mt12{margin-top:12px}.mt16{margin-top:16px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div>
+    <h1>🔍 Найди ошибку ученика</h1>
+    <p>Боковая миссия · Серия «Действия с рациональными числами»</p>
+  </div>
+  <div class="back"><a href="skill-map.html">← Карта</a></div>
+</header>
+
+<div class="mode-bar">
+  <button id="btnL" class="mbtn active" onclick="setMode('learn')">📘 Обучение</button>
+  <button id="btnP" class="mbtn"        onclick="setMode('practice')">⚡ Тренировка</button>
+</div>
+
+<div id="app"></div>
+
+<script>
+/* ═══════════════════════ ДАННЫЕ ══════════════════════════ */
+const shuf=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;};
+
+/* Типы ошибок */
+const EI={
+  lostMinus:  {label:'Потерян знак «−» у результата',           short:'потерян знак «−»',          t:1},
+  addedMod:   {label:'Сложены модули вместо вычитания',          short:'сложены модули',             t:2},
+  wrongSign:  {label:'Взят знак числа с меньшим модулем',        short:'знак от меньшего модуля',    t:2},
+  noConvert:  {label:'−(−b) не заменено на +b',                 short:'−(−b) не заменено на +b',    t:3},
+  addedInst:  {label:'Прибавлено вместо вычитания',              short:'прибавлено вместо вычитания',t:4},
+  wrongBrack: {label:'Минус перед скобкой не изменил знак внутри',short:'минус не изменил знак',    t:4},
+  mixedConv:  {label:'Вычитание превращено в сложение без смены знака',short:'неверная замена вычитания',t:5},
+};
+
+const TR={
+  1:{name:'Сложение двух отрицательных',           file:'negative-plus-negative.html'},
+  2:{name:'Сложение чисел с разными знаками',      file:'battle-numbers.html'},
+  3:{name:'Вычитание как сложение противоположного',file:'subtraction-as-addition.html'},
+  4:{name:'Скобки и знаки подряд',                 file:'brackets-and-signs.html'},
+  5:{name:'Смешанные выражения',                   file:'mixed-expressions.html'},
+};
+
+/* 14 задач — 2 на каждый тип ошибки */
+const TASKS=[
+  /* lostMinus */
+  {id:'t01',type:'lostMinus',
+   work:`<span class="nc">−4</span><span class="oc"> + </span><span class="nc">(−7)</span> = <span class="err-step wrong-ans">11</span>`,
+   correct:'−4 + (−7) = −11',wrongNum:'11',
+   hint:'Может ли сумма двух отрицательных чисел быть положительной?',
+   what:'Ученик правильно сложил модули (4+7=11), но потерял знак «−». Оба числа отрицательные — результат тоже должен быть отрицательным.',
+   how:'При двух отрицательных: складываем модули и ставим «−». 4+7=11 → ответ <strong>−11</strong>.',
+   dist:['addedMod','wrongSign','noConvert']},
+
+  {id:'t02',type:'lostMinus',
+   work:`<span class="nc">−6</span><span class="oc"> + </span><span class="nc">(−5)</span> = <span class="err-step wrong-ans">11</span>`,
+   correct:'−6 + (−5) = −11',wrongNum:'11',
+   hint:'Оба числа отрицательные. Каким должен быть знак ответа?',
+   what:'Модули сложены верно: 6+5=11. Но знак «−» потерян. Отрицательное + отрицательное = отрицательное.',
+   how:'6+5=11, знак «−» → ответ <strong>−11</strong>.',
+   dist:['wrongSign','wrongBrack','addedMod']},
+
+  /* addedMod */
+  {id:'t03',type:'addedMod',
+   work:`<span class="nc">−8</span><span class="oc"> + </span><span class="pc">3</span> = <span class="err-step wrong-ans">−11</span>`,
+   correct:'−8 + 3 = −5',wrongNum:'−11',
+   hint:'Знаки слагаемых одинаковые или разные? Какое правило применяется при разных знаках?',
+   what:'Ученик сложил модули (8+3=11) и взял знак «−». При разных знаках нужно не складывать, а вычитать меньший модуль из большего.',
+   how:'|−8|=8 > |3|=3. Вычитаем: 8−3=5. Знак «−» (от −8, у него бо́льший модуль) → ответ <strong>−5</strong>.',
+   dist:['wrongSign','lostMinus','noConvert']},
+
+  {id:'t04',type:'addedMod',
+   work:`<span class="pc">5</span><span class="oc"> + </span><span class="nc">(−9)</span> = <span class="err-step wrong-ans">−14</span>`,
+   correct:'5 + (−9) = −4',wrongNum:'−14',
+   hint:'При разных знаках — считаем разность или сумму модулей?',
+   what:'Ученик сложил модули (5+9=14) и взял знак «−». При разных знаках нужно вычитать: 9−5=4.',
+   how:'|5|=5 < |−9|=9. 9−5=4, знак «−» (от −9) → ответ <strong>−4</strong>.',
+   dist:['wrongSign','addedInst','lostMinus']},
+
+  /* wrongSign */
+  {id:'t05',type:'wrongSign',
+   work:`<span class="nc">−9</span><span class="oc"> + </span><span class="pc">4</span> = <span class="err-step wrong-ans">5</span>`,
+   correct:'−9 + 4 = −5',wrongNum:'5',
+   hint:'Модуль ответа (5) верный. А знак? У какого числа бо́льший модуль?',
+   what:'Разность модулей найдена верно (9−4=5), но взят знак «+» от числа +4 (меньший модуль). Знак берётся от числа с бо́льшим модулем.',
+   how:'|−9|=9 > |4|=4. Знак «−» (от −9). 9−4=5 → ответ <strong>−5</strong>.',
+   dist:['addedMod','wrongBrack','addedInst']},
+
+  {id:'t06',type:'wrongSign',
+   work:`<span class="pc">3</span><span class="oc"> + </span><span class="nc">(−8)</span> = <span class="err-step wrong-ans">5</span>`,
+   correct:'3 + (−8) = −5',wrongNum:'5',
+   hint:'Разность 8−3=5 верная. Откуда берётся знак итогового ответа?',
+   what:'Разность модулей верна (8−3=5), но знак взят от +3 (меньший модуль). Знак должен быть от −8 (бо́льший модуль).',
+   how:'|3|=3 < |−8|=8. Знак «−» (от −8). 8−3=5 → ответ <strong>−5</strong>.',
+   dist:['addedMod','lostMinus','noConvert']},
+
+  /* noConvert */
+  {id:'t07',type:'noConvert',
+   work:`<span class="pc">5</span><span class="oc"> − </span><span class="nc">(−3)</span><br>= <span class="err-step">5 − 3</span> = <span class="wrong-ans">2</span>`,
+   correct:'5 − (−3) = 5 + 3 = 8',wrongNum:'2',
+   hint:'Что происходит, когда минус стоит перед скобкой с отрицательным числом?',
+   what:'Ученик вычел 3. Но −(−3) = +3: вычитание отрицательного числа превращается в прибавление положительного.',
+   how:'5 − (−3) = 5 + 3 = <strong>8</strong>. Правило: a − (−b) = a + b.',
+   dist:['addedInst','wrongBrack','lostMinus']},
+
+  {id:'t08',type:'noConvert',
+   work:`<span class="nc">−4</span><span class="oc"> − </span><span class="nc">(−6)</span><br>= <span class="err-step">−4 − 6</span> = <span class="wrong-ans">−10</span>`,
+   correct:'−4 − (−6) = −4 + 6 = 2',wrongNum:'−10',
+   hint:'Как преобразуется запись −(−6)?',
+   what:'Ученик оставил −6. Но −(−6) = +6. Нужно было заменить вычитание на сложение противоположного.',
+   how:'−4 − (−6) = −4 + 6 = <strong>2</strong>.',
+   dist:['addedInst','wrongBrack','mixedConv']},
+
+  /* addedInst */
+  {id:'t09',type:'addedInst',
+   work:`<span class="pc">7</span><span class="oc"> − </span>(<span class="pc">+10</span>)<br>= <span class="err-step">7 + 10</span> = <span class="wrong-ans">17</span>`,
+   correct:'7 − (+10) = 7 − 10 = −3',wrongNum:'17',
+   hint:'−(+10) — это прибавление или вычитание?',
+   what:'Ученик прибавил 10 вместо вычитания. −(+10) означает вычесть 10, а не прибавить.',
+   how:'−(+10) = −10. 7 − (+10) = 7 − 10 = <strong>−3</strong>.',
+   dist:['noConvert','addedMod','wrongSign']},
+
+  {id:'t10',type:'addedInst',
+   work:`<span class="nc">−3</span><span class="oc"> − </span>(<span class="pc">+4</span>)<br>= <span class="err-step">−3 + 4</span> = <span class="wrong-ans">1</span>`,
+   correct:'−3 − (+4) = −3 − 4 = −7',wrongNum:'1',
+   hint:'Что делает знак «−» перед скобкой, если внутри положительное число?',
+   what:'Ученик прибавил 4. −(+4) — это вычесть 4, то есть прибавить −4.',
+   how:'−3 − (+4) = −3 + (−4) = <strong>−7</strong>.',
+   dist:['noConvert','wrongBrack','addedMod']},
+
+  /* wrongBrack */
+  {id:'t11',type:'wrongBrack',
+   work:`<span class="nc">−3</span><span class="oc"> − </span><span class="nc">(−5)</span><br>= <span class="err-step">−3 + (−5)</span> = <span class="wrong-ans">−8</span>`,
+   correct:'−3 − (−5) = −3 + 5 = 2',wrongNum:'−8',
+   hint:'После «−» перед скобкой нужно взять противоположное к содержимому. Каково противоположное к (−5)?',
+   what:'Ученик сохранил −5 внутри скобки. Но минус перед скобкой меняет знак: −(−5) = +5, а не −5.',
+   how:'−3 − (−5) = −3 + 5 = <strong>2</strong>. (Берём противоположное к −5, то есть +5.)',
+   dist:['noConvert','lostMinus','addedMod']},
+
+  {id:'t12',type:'wrongBrack',
+   work:`<span class="pc">8</span><span class="oc"> − </span><span class="nc">(−4)</span><br>= <span class="err-step">8 − 4</span> = <span class="wrong-ans">4</span>`,
+   correct:'8 − (−4) = 8 + 4 = 12',wrongNum:'4',
+   hint:'Вычитание отрицательного числа — это что?',
+   what:'Ученик вычел 4. −(−4) = +4: вычитание отрицательного = прибавление положительного.',
+   how:'8 − (−4) = 8 + 4 = <strong>12</strong>.',
+   dist:['noConvert','addedInst','lostMinus']},
+
+  /* mixedConv */
+  {id:'t13',type:'mixedConv',
+   work:`<span class="nc">−2</span><span class="oc"> − </span><span class="pc">5</span><span class="oc"> + </span><span class="pc">9</span><br>= <span class="err-step">−2 + 5 + 9</span> = <span class="wrong-ans">12</span>`,
+   correct:'−2 − 5 + 9 = −2 + (−5) + 9 = 2',wrongNum:'12',
+   hint:'При переводе «−5» в алгебраическую сумму — +5 или (−5)?',
+   what:'Ученик заменил «−5» на «+5». Вычитание 5 = прибавление противоположного к 5, то есть (−5), а не +5.',
+   how:'−2 − 5 + 9 = −2 + (−5) + 9. Итог: −7 + 9 = <strong>2</strong>.',
+   dist:['wrongBrack','addedMod','lostMinus']},
+
+  {id:'t14',type:'mixedConv',
+   work:`<span class="pc">3</span><span class="oc"> − </span><span class="pc">7</span><span class="oc"> + </span><span class="pc">4</span><br>= <span class="err-step">3 + 7 + 4</span> = <span class="wrong-ans">14</span>`,
+   correct:'3 − 7 + 4 = 3 + (−7) + 4 = 0',wrongNum:'14',
+   hint:'«−7» при переводе в алгебраическую сумму — это (−7) или (+7)?',
+   what:'Ученик заменил «−7» на «+7». При записи алгебраической суммы 7 остаётся отрицательным слагаемым: +(−7).',
+   how:'3 + (−7) + 4 = −4 + 4 = <strong>0</strong>.',
+   dist:['wrongBrack','addedMod','noConvert']},
+];
+
+/* ═══════════════════════ СОСТОЯНИЕ ══════════════════════ */
+const S={
+  mode:'learn',
+  screen:'start',
+  /* обучение */
+  lIdx:0,
+  lChoices:[],
+  lAttempts:0,
+  lAnswered:false,
+  lHint:false,
+  _lPick:null,
+  _lOk:undefined,
+  /* тренировка */
+  pTasks:[],
+  pIdx:0,
+  pChoices:[],
+  pAnswered:false,
+  pAnswers:[],
+  _pPick:null,
+  _pFb:null,
+  brOpen:false,
+};
+
+function makeChoices(task){return shuf([task.type,...task.dist]);}
+function revealSteps(){setTimeout(()=>{document.querySelectorAll('#app .err-step').forEach(el=>el.classList.add('revealed'));},80);}
+
+/* ═══════════════════════ РЕЖИМ ═════════════════════════ */
+function setMode(m){
+  S.mode=m;S.screen='start';
+  document.getElementById('btnL').classList.toggle('active',m==='learn');
+  document.getElementById('btnP').classList.toggle('active',m==='practice');
+  render();
+}
+
+/* ═══════════════════════ РЕНДЕР ════════════════════════ */
+function render(){
+  const app=document.getElementById('app');
+  if(S.screen==='start')    app.innerHTML=buildStart();
+  else if(S.screen==='learn')    app.innerHTML=buildLearn();
+  else if(S.screen==='practice') app.innerHTML=buildPractice();
+  else if(S.screen==='results')  app.innerHTML=buildResults();
+}
+
+/* ── Стартовый экран ── */
+function buildStart(){
+  return`<div class="card" style="margin-top:8px;text-align:center">
+    <div class="s-ico">🔍</div>
+    <p class="s-ttl">Найди ошибку ученика</p>
+    <p class="s-sub">Ты увидишь неверное решение. Определи, <em>какую именно</em> ошибку допустил ученик.<br>Это помогает лучше распознавать собственные ошибки.</p>
+    <ul class="e-list" style="text-align:left">
+      ${Object.values(EI).map(e=>`<li><div class="edot"></div>${e.label}</li>`).join('')}
+    </ul>
+    <div class="mc-grid">
+      <div class="mc" onclick="startLearn()">
+        <div class="mc-ico">📘</div>
+        <div class="mc-name">Обучение</div>
+        <div class="mc-desc">14 примеров · 2 попытки + подсказка · Подробный разбор</div>
+      </div>
+      <div class="mc" onclick="startPractice()">
+        <div class="mc-ico">⚡</div>
+        <div class="mc-name">Тренировка</div>
+        <div class="mc-desc">10 случайных · 1 попытка · Статистика в конце</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ── Обучение ── */
+function buildLearn(){
+  const task=TASKS[S.lIdx];
+  const isLast=S.lIdx===TASKS.length-1;
+  const typeLabel=EI[task.type]?.label||task.type;
+
+  const dotsHtml=TASKS.map((_,i)=>{
+    const c=i<S.lIdx?'ok':i===S.lIdx?'ac':'';
+    return`<div class="pdot ${c}"></div>`;
+  }).join('');
+
+  const chHtml=S.lChoices.map(code=>{
+    const info=EI[code];
+    let cls='';
+    if(S.lAnswered){
+      if(code===task.type)cls='ok';
+      else if(S._lPick===code)cls='ng';
+      else cls='dim';
+    }
+    return`<button class="ch ${cls}" onclick="pickLearn('${code}')" ${S.lAnswered?'disabled':''}>${info.label}</button>`;
+  }).join('');
+
+  const hintHtml=S.lHint?`<div class="fb fb-hint vis">💡 <strong>Подсказка:</strong> ${task.hint}</div>`:'';
+
+  const fbHtml=S.lAnswered&&S._lOk!==undefined
+    ?(S._lOk
+      ?`<div class="fb fb-ok vis">✅ Верно! Тип ошибки: «${EI[task.type].short}».</div>`
+      :`<div class="fb fb-err vis">❌ Не совсем. Смотри объяснение ниже.</div>`)
+    :'';
+
+  const explHtml=S.lAnswered?`<div class="expl vis">
+    <div class="expl-sec"><span class="expl-tag">Что сделал ученик неверно</span>${task.what}</div>
+    <div class="expl-sec"><span class="expl-tag">Как надо было</span>${task.how}</div>
+    <div class="expl-sec"><span class="expl-tag">Верный ответ</span><strong style="font-family:'Courier New',monospace">${task.correct}</strong></div>
+  </div>`:'';
+
+  const nextBtn=S.lAnswered
+    ?`<button class="btn btn-ok" onclick="nextLearn()">${isLast?'Завершить →':'Следующий →'}</button>`:'';
+
+  const hintBtn=!S.lAnswered?`<button class="btn btn-h" onclick="showLHint()">💡 Подсказка</button>`:'';
+
+  return`
+  <div class="sess-hdr">
+    <div class="sess-top">
+      <span>Обучение · ${S.lIdx+1} из ${TASKS.length}</span>
+      <span style="font-size:.74rem;color:var(--blue)">${typeLabel}</span>
+    </div>
+    <div class="pdots">${dotsHtml}</div>
+  </div>
+  <div class="card">
+    <div class="sol-wrap">
+      <div class="sol-lbl">Решение ученика</div>
+      <div class="sol-work">${task.work}</div>
+      <div class="sol-ok ${S.lAnswered?'vis':''}">✓ Верно: ${task.correct}</div>
+    </div>
+    <p class="ch-lbl">Какую ошибку допустил ученик?</p>
+    <div class="ch-grid">${chHtml}</div>
+    ${hintHtml}${fbHtml}${explHtml}
+    <div class="btn-row mt12">
+      ${hintBtn}${nextBtn}
+      <button class="btn btn-g" onclick="S.screen='start';render()">К выбору режима</button>
+    </div>
+  </div>`;
+}
+
+/* ── Тренировка ── */
+function buildPractice(){
+  const task=S.pTasks[S.pIdx];
+  const ok=S.pAnswers.filter(a=>a.ok).length;
+  const ng=S.pAnswers.filter(a=>!a.ok).length;
+  const pct=(S.pIdx/S.pTasks.length)*100;
+
+  const chHtml=S.pChoices.map(code=>{
+    const info=EI[code];
+    let cls='';
+    if(S.pAnswered){
+      if(code===task.type)cls='ok';
+      else if(S._pPick===code)cls='ng';
+      else cls='dim';
+    }
+    return`<button class="ch ${cls}" onclick="pickPractice('${code}')" ${S.pAnswered?'disabled':''}>${info.label}</button>`;
+  }).join('');
+
+  const fbHtml=S.pAnswered&&S._pFb?`<div class="fb ${S._pFb.cls} vis">${S._pFb.msg}</div>`:'';
+
+  const miniExpl=S.pAnswered?`<div class="expl vis" style="font-size:.85rem">
+    ${task.what}<br><br>
+    <span class="expl-tag" style="display:inline">Верно:</span> <strong style="font-family:'Courier New',monospace">${task.correct}</strong>
+  </div>`:'';
+
+  const isLast=S.pIdx===S.pTasks.length-1;
+  const nextBtn=S.pAnswered
+    ?`<button class="btn btn-p" onclick="nextPractice()">${isLast?'Посмотреть результаты →':'Следующий →'}</button>`:'';
+
+  return`
+  <div class="sess-hdr">
+    <div class="sess-top">
+      <span>Тренировка</span>
+      <div style="display:flex;gap:12px">
+        <span style="color:var(--ok);font-weight:700">✓ ${ok}</span>
+        <span style="color:var(--err);font-weight:700">✗ ${ng}</span>
+        <span>${S.pIdx+1} / ${S.pTasks.length}</span>
+      </div>
+    </div>
+    <div class="prog-bar-w"><div class="prog-bar-f" style="width:${pct}%"></div></div>
+  </div>
+  <div class="card">
+    <div class="sol-wrap">
+      <div class="sol-lbl">Решение ученика</div>
+      <div class="sol-work">${task.work}</div>
+      <div class="sol-ok ${S.pAnswered?'vis':''}">✓ Верно: ${task.correct}</div>
+    </div>
+    <p class="ch-lbl">Какую ошибку допустил ученик?</p>
+    <div class="ch-grid">${chHtml}</div>
+    ${fbHtml}${miniExpl}
+    <div class="btn-row mt12">${nextBtn}</div>
+  </div>`;
+}
+
+/* ── Результаты ── */
+function buildResults(){
+  const total=S.pAnswers.length;
+  const corr=S.pAnswers.filter(a=>a.ok).length;
+  const pct=Math.round(corr/total*100);
+  const sc=pct>=90?'ex':pct>=70?'go':pct>=50?'fa':'po';
+  const slbl=pct>=90?'Все типы ошибок распознаны уверенно!':
+             pct>=70?'Хороший результат! Несколько типов стоит повторить.':
+             pct>=50?'Половина верно. Порекомендую тренажёры для повторения.':
+                     'Нужна проработка. Вернись к основным тренажёрам.';
+
+  const misses={};
+  const trNeed=new Set();
+  S.pAnswers.filter(a=>!a.ok).forEach(a=>{
+    misses[a.task.type]=(misses[a.task.type]||0)+1;
+    const tr=EI[a.task.type]?.t;if(tr)trNeed.add(tr);
+  });
+
+  const missHtml=Object.keys(misses).length===0
+    ?`<p style="color:var(--ok);font-weight:600">✓ Все типы ошибок определены верно!</p>`
+    :Object.entries(misses).map(([type,cnt])=>`
+      <div class="miss-item">${EI[type]?.label||type}<span class="miss-cnt">${cnt}×</span></div>`).join('');
+
+  const recHtml=trNeed.size===0
+    ?`<p style="color:var(--ok);font-weight:600">Рекомендации не нужны!</p>`
+    :[...trNeed].sort().map(n=>{
+        const t=TR[n];
+        return`<div class="rec-item"><span class="rec-name">${t.name}</span><a href="${t.file}" class="rec-lnk">Открыть →</a></div>`;
+      }).join('');
+
+  const wrongAnswers=S.pAnswers.filter(a=>!a.ok);
+  const brHtml=wrongAnswers.length===0?'':`
+    <button class="br-toggle ${S.brOpen?'open':''}" onclick="toggleBr()">
+      Разбор пропущенных (${wrongAnswers.length}) <span class="chevron">▶</span>
+    </button>
+    <div class="br-items ${S.brOpen?'vis':''}">
+      ${wrongAnswers.map(a=>`
+        <div class="bi">
+          <div class="bi-expr">${a.task.work}</div>
+          <div class="bi-wrong">Выбрано: ${EI[a.userType]?.label||a.userType}</div>
+          <div class="bi-right">Верно: ${EI[a.task.type]?.label}</div>
+          <div class="bi-why">${a.task.what}</div>
+        </div>`).join('')}
+    </div>`;
+
+  return`<div class="card" style="margin-top:8px">
+    <div class="res-score">
+      <div class="res-big ${sc}">${corr}/${total}</div>
+      <div class="res-lbl">${slbl}</div>
+    </div>
+    <div class="divider"></div>
+    <p class="sec-ttl">Трудные типы ошибок</p>
+    <div class="miss-list mt12">${missHtml}</div>
+    <div class="divider"></div>
+    <p class="sec-ttl">Рекомендации: повторить тренажёры</p>
+    <div class="rec-list mt12">${recHtml}</div>
+    <div class="divider"></div>
+    ${brHtml}
+    <div class="btn-row mt16">
+      <button class="btn btn-p" onclick="startPractice()">Ещё раз</button>
+      <button class="btn btn-g" onclick="S.screen='start';render()">Выбор режима</button>
+    </div>
+  </div>`;
+}
+
+/* ═══════════════════════ ОБРАБОТЧИКИ ═══════════════════ */
+function startLearn(){
+  S.screen='learn';S.lIdx=0;S.lAttempts=0;S.lAnswered=false;
+  S.lHint=false;S._lPick=null;S._lOk=undefined;
+  S.lChoices=makeChoices(TASKS[0]);render();
+}
+
+function pickLearn(code){
+  if(S.lAnswered)return;
+  const task=TASKS[S.lIdx];
+  S._lPick=code;S.lAttempts++;
+  if(code===task.type){
+    S._lOk=true;S.lAnswered=true;render();revealSteps();
+  } else {
+    S._lOk=false;
+    if(S.lAttempts>=2){S.lAnswered=true;render();revealSteps();}
+    else render();
+  }
+}
+
+function showLHint(){S.lHint=true;render();}
+
+function nextLearn(){
+  if(S.lIdx>=TASKS.length-1){S.screen='start';render();return;}
+  S.lIdx++;S.lAttempts=0;S.lAnswered=false;
+  S.lHint=false;S._lPick=null;S._lOk=undefined;
+  S.lChoices=makeChoices(TASKS[S.lIdx]);render();
+}
+
+function startPractice(){
+  S.screen='practice';
+  /* Отбираем 10 задач с гарантированным покрытием всех 7 типов */
+  const byType={};
+  TASKS.forEach(t=>{(byType[t.type]=byType[t.type]||[]).push(t);});
+  let pool=[];
+  Object.values(byType).forEach(arr=>pool.push(arr[Math.floor(Math.random()*arr.length)]));
+  const rest=shuf(TASKS.filter(t=>!pool.find(p=>p.id===t.id)));
+  for(const t of rest){if(pool.length>=10)break;pool.push(t);}
+  pool=shuf(pool.slice(0,10));
+
+  S.pTasks=pool;S.pIdx=0;S.pAnswers=[];
+  S.pAnswered=false;S._pPick=null;S._pFb=null;
+  S.pChoices=makeChoices(pool[0]);S.brOpen=false;render();
+}
+
+function pickPractice(code){
+  if(S.pAnswered)return;
+  const task=S.pTasks[S.pIdx];
+  S._pPick=code;
+  const ok=code===task.type;
+  S.pAnswers.push({task,userType:code,ok});
+  S._pFb=ok
+    ?{cls:'fb-ok',msg:`✅ Верно! Тип ошибки: «${EI[task.type].short}».`}
+    :{cls:'fb-err',msg:`❌ Нет. Правильный тип: <strong>${EI[task.type].label}</strong>.`};
+  S.pAnswered=true;render();revealSteps();
+}
+
+function nextPractice(){
+  if(S.pIdx>=S.pTasks.length-1){S.screen='results';render();return;}
+  S.pIdx++;S.pAnswered=false;S._pPick=null;S._pFb=null;
+  S.pChoices=makeChoices(S.pTasks[S.pIdx]);render();
+}
+
+function toggleBr(){S.brOpen=!S.brOpen;render();}
+
+/* ═══════════════════════ ИНИЦИАЛИЗАЦИЯ ════════════════ */
+render();
+</script>
+</body>
+</html>

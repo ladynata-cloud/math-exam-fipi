@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Задачи на машину Тьюринга</title>
+<style>
+  :root {
+    --bg: #f3f1ea;
+    --bg-soft: #ebe7dc;
+    --card: #ffffff;
+    --card-warm: #fbfaf6;
+    --border: #d8d2c2;
+    --border-strong: #b9b1a0;
+    --text: #1a1d22;
+    --text-soft: #5b6470;
+    --text-dim: #8a8f99;
+    --accent: #1f3a5f;
+    --accent-hover: #2a4d75;
+    --accent-soft: #e3ebf3;
+    --ok-bg: #e7f1e9;
+    --ok-border: #b6d1bd;
+    --ok-text: #155427;
+    --err-bg: #f6e2e1;
+    --err-border: #e3b8b6;
+    --err-text: #7d1f1d;
+    --hint-bg: #fdf3d7;
+    --hint-border: #e6cf86;
+    --hint-text: #5f4a0e;
+    --head: #fbbf24;
+    --head-strong: #b78410;
+    --shadow: 0 1px 2px rgba(20, 24, 30, 0.04), 0 4px 14px rgba(20, 24, 30, 0.05);
+    --radius: 12px;
+    --radius-sm: 7px;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    --serif: ui-serif, Georgia, "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page-header {
+    background: linear-gradient(180deg, #fcfbf7 0%, #f3f1ea 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 36px 20px 28px;
+  }
+  .page-header .inner { max-width: 1060px; margin: 0 auto; }
+  .page-header h1 {
+    font-family: var(--serif);
+    font-weight: 650;
+    font-size: clamp(29px, 4vw, 42px);
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .page-header p.subtitle {
+    margin: 0;
+    max-width: 780px;
+    color: var(--text-soft);
+  }
+
+  main {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 28px 20px 60px;
+    display: grid;
+    gap: 20px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px 22px 24px;
+  }
+  .card h2 {
+    font-family: var(--serif);
+    font-weight: 650;
+    font-size: 23px;
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .card h3 {
+    font-family: var(--serif);
+    font-weight: 650;
+    font-size: 18px;
+    margin: 18px 0 8px;
+  }
+  .card p { margin: 8px 0; }
+  .card ul, .card ol { margin: 8px 0; padding-left: 22px; }
+  .card li { margin: 4px 0; }
+
+  .badge {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+
+  code, .mono {
+    font-family: var(--mono);
+    background: #f1ede2;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.95em;
+    border: 1px solid #e3ddc9;
+  }
+  .lambda { font-family: var(--serif); font-style: italic; }
+  .muted { color: var(--text-soft); }
+  .small { font-size: 13px; }
+  .formula {
+    font-family: var(--mono);
+    background: #fff;
+    border: 1px dashed var(--border-strong);
+    padding: 6px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 4px 0;
+  }
+  .soft-box {
+    background: var(--card-warm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin: 10px 0;
+  }
+
+  .program-table-wrap { overflow-x: auto; margin: 8px 0 4px; }
+  table.program {
+    border-collapse: collapse;
+    margin: 0;
+    font-family: var(--mono);
+    font-size: 15px;
+  }
+  table.program th, table.program td {
+    border: 1px solid var(--border-strong);
+    padding: 10px 16px;
+    text-align: center;
+    min-width: 92px;
+    background: #fbfaf6;
+  }
+  table.program th {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 700;
+    font-family: var(--sans);
+    letter-spacing: 0.02em;
+  }
+  table.program td.empty {
+    background: repeating-linear-gradient(45deg, #faf8f1, #faf8f1 6px, #efece2 6px, #efece2 12px);
+    color: var(--text-dim);
+  }
+  .task-program table.program { font-size: 14px; }
+  .task-program table.program th, .task-program table.program td { padding: 7px 11px; min-width: 68px; }
+
+  button, .btn {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    background: var(--accent);
+    color: #fff;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-sm);
+    padding: 9px 16px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.05s;
+  }
+  button:hover, .btn:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+  button:active { transform: translateY(1px); }
+  button.secondary { background: #fff; color: var(--accent); border-color: var(--border-strong); }
+  button.secondary:hover { background: var(--accent-soft); border-color: var(--accent); }
+  button.ghost { background: transparent; color: var(--accent); border-color: transparent; padding: 6px 10px; }
+  button.ghost:hover { background: var(--accent-soft); }
+  button.warning { background: #8c5b14; border-color: #8c5b14; }
+  button.warning:hover { background: #a46b18; border-color: #a46b18; }
+  button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+  input[type="text"], input[type="number"], select {
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 8px 11px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: #fdfcf9;
+    color: var(--text);
+    width: auto;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(31, 58, 95, 0.12);
+  }
+  label { font-size: 14px; color: var(--text-soft); }
+  .form-row { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin: 10px 0; }
+  .form-row label { display: inline-flex; flex-direction: column; gap: 4px; }
+  .form-row label > span { font-size: 13px; color: var(--text-soft); font-weight: 600; }
+
+  .guide-shell {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 16px;
+  }
+  .guide-nav {
+    display: grid;
+    gap: 8px;
+    align-content: start;
+  }
+  .guide-nav button {
+    background: #fff;
+    color: var(--accent);
+    border-color: var(--border);
+    text-align: left;
+    padding: 10px 12px;
+  }
+  .guide-nav button.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .guide-panel {
+    min-height: 280px;
+    background: var(--card-warm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+  }
+  .guide-panel h3 { margin-top: 0; }
+  .guide-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .choice-list { display: grid; gap: 8px; margin: 10px 0; }
+  .choice-list label {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    color: var(--text);
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 9px 10px;
+  }
+  .tiny-examples {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .tiny-example {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+  }
+  .tiny-example .arrow { color: var(--accent); font-weight: 800; padding: 0 5px; }
+  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 9px 0; }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border: 1px solid #c8d4e2;
+    border-radius: 999px;
+    padding: 3px 9px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .drill-string {
+    font-family: var(--mono);
+    font-size: clamp(22px, 4vw, 32px);
+    letter-spacing: 0.08em;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    display: inline-block;
+    margin: 8px 0;
+    word-break: break-all;
+  }
+  .trail-mark { background: #fff2b8; border-radius: 3px; padding: 1px 2px; }
+
+  .examples-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 6px; }
+  .example { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; background: #fbfaf6; display: flex; flex-direction: column; gap: 8px; }
+  .example .params { font-family: var(--mono); font-size: 14px; color: var(--text); }
+  .example .mode { font-size: 13px; color: var(--text-soft); }
+  .example button { align-self: flex-start; }
+
+  .task-box {
+    background: #fbfaf6;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    margin: 4px 0 14px;
+  }
+  .task-box p { margin: 6px 0; }
+  .task-empty { color: var(--text-dim); font-style: italic; }
+
+  .feedback {
+    margin: 10px 0;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid transparent;
+    font-size: 14px;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: var(--ok-bg); border-color: var(--ok-border); color: var(--ok-text); }
+  .feedback.err { background: var(--err-bg); border-color: var(--err-border); color: var(--err-text); }
+  .feedback.hint { background: var(--hint-bg); border-color: var(--hint-border); color: var(--hint-text); }
+
+  .solution { background: #fbfaf6; border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; margin-top: 12px; }
+  .solution h3:first-child { margin-top: 0; }
+
+  .tape {
+    display: flex;
+    gap: 3px;
+    overflow-x: auto;
+    padding: 18px 4px 8px;
+    background: #fbfaf6;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin: 12px 0 8px;
+    position: relative;
+    scroll-behavior: smooth;
+  }
+  .cell {
+    flex: 0 0 auto;
+    width: 36px;
+    height: 44px;
+    border: 1px solid var(--border-strong);
+    background: #fff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 17px;
+    color: var(--text);
+    position: relative;
+  }
+  .cell.lambda-cell { color: var(--text-dim); background: #f7f4ec; }
+  .cell.head { background: var(--head); border-color: var(--head-strong); color: #1a1d22; box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.35); }
+  .cell.head::before { content: "▼"; position: absolute; top: -16px; left: 50%; transform: translateX(-50%); font-size: 12px; color: var(--head-strong); }
+  .cell .pos { position: absolute; bottom: -14px; left: 50%; transform: translateX(-50%); font-size: 10px; color: var(--text-dim); font-family: var(--sans); }
+  .tape-info { font-size: 14px; color: var(--text-soft); display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 14px; }
+  .tape-info b { color: var(--text); font-weight: 700; }
+  .tape-info .kv { display: inline-flex; gap: 6px; align-items: baseline; }
+  .tape-cmd { font-family: var(--mono); background: var(--accent-soft); color: var(--accent); padding: 2px 8px; border-radius: 4px; border: 1px solid #c8d4e2; font-size: 13px; }
+
+  details.collapsible {
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    margin-top: 4px;
+  }
+  details.collapsible > summary {
+    cursor: pointer;
+    color: var(--accent);
+    font-weight: 700;
+    list-style: none;
+    user-select: none;
+  }
+  details.collapsible > summary::-webkit-details-marker { display: none; }
+  details.collapsible > summary::before { content: "▸ "; display: inline-block; }
+  details.collapsible[open] > summary::before { content: "▾ "; }
+
+  .tests { display: grid; gap: 6px; font-family: var(--mono); font-size: 13.5px; }
+  .test-row { display: flex; align-items: center; gap: 10px; padding: 6px 10px; background: #fbfaf6; border: 1px solid var(--border); border-radius: 4px; }
+  .test-row .status { width: 18px; height: 18px; border-radius: 50%; flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; color: #fff; font-family: var(--sans); font-weight: 800; }
+  .test-row .status.ok { background: #2d7a3f; }
+  .test-row .status.fail { background: #a32424; }
+  .test-summary { font-family: var(--sans); font-weight: 700; margin-top: 4px; color: var(--text); }
+
+  footer { text-align: center; color: var(--text-dim); font-size: 13px; padding: 0 20px 30px; }
+
+  @media (max-width: 760px) {
+    .guide-shell { grid-template-columns: 1fr; }
+    .guide-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 600px) {
+    .page-header { padding: 26px 16px 22px; }
+    main { padding: 20px 14px 50px; gap: 16px; }
+    .card { padding: 18px 16px 20px; }
+    table.program th, table.program td { padding: 8px 12px; min-width: 70px; }
+    .cell { width: 30px; height: 38px; font-size: 15px; }
+    .guide-nav { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <div class="inner">
+    <h1>Задачи на машину Тьюринга</h1>
+    <p class="subtitle">
+      От аккуратного разбора программы к формуле. Сначала смотрим, как машина меняет короткие строки,
+      затем учимся видеть хвост нулей и только потом решаем большие задачи на минимум и максимум.
+    </p>
+  </div>
+</header>
+
+<main>
+  <section class="card" id="guide-card">
+    <h2>Разобраться с нуля <span class="badge">6 шагов</span></h2>
+    <p class="muted small">
+      Этот блок лучше пройти перед генератором. Он объясняет идею не через готовую формулу, а через короткие строки,
+      и в самом конце разбирает одну задачу целиком.
+    </p>
+    <div class="guide-shell">
+      <div class="guide-nav" id="guide-nav"></div>
+      <div class="guide-panel" id="guide-panel"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Основная программа</h2>
+    <p>
+      Все задачи ниже используют одну и ту же программу. Алфавит исполнителя — <code>0</code>, <code>1</code> и
+      пустой символ <code class="lambda">λ</code>. Начальное состояние — <code>q0</code>.
+      Головка стартует в ближайшей пустой ячейке справа от исходной последовательности.
+    </p>
+    <div id="main-program-table"></div>
+    <p class="small muted" style="margin-top:10px">
+      Исходная последовательность состоит из <code>N</code> символов, среди которых только нули и единицы.
+      Все ячейки слева и справа от последовательности заполнены символом <code class="lambda">λ</code>.
+    </p>
+    <details class="collapsible" style="margin-top:10px">
+      <summary>Как работает эта программа</summary>
+      <ol>
+        <li>Сначала головка находится на пустой ячейке справа от последовательности.</li>
+        <li>В состоянии <code>q0</code> на символе <code class="lambda">λ</code> машина записывает <code class="lambda">λ</code>,
+          переходит в состояние <code>q1</code> и сдвигается влево — на последний символ последовательности.</li>
+        <li>В состоянии <code>q1</code>: если текущий символ <code>0</code>, машина заменяет его на <code>1</code> и идёт влево;
+          если текущий символ <code>1</code>, заменяет его на <code>0</code> и останавливается;
+          если текущий символ <code class="lambda">λ</code>, останавливается.</li>
+        <li>Поэтому программа заменяет все нули в конце строки на единицы, а ближайшую слева от них единицу, если она есть, заменяет на ноль.</li>
+        <li>Если исходная строка состоит только из нулей, программа заменяет все нули на единицы и останавливается на пустой ячейке слева от строки.</li>
+      </ol>
+    </details>
+  </section>
+
+  <section class="card">
+    <h2>Мини-тренажёр: хвост нулей <span class="badge">ключ к задаче</span></h2>
+    <p>
+      Хвост нулей — это нули, которые стоят подряд в самом конце строки. Например, у строки
+      <code>101000</code> хвост <code>000</code>, значит <code>t = 3</code>. Если строка заканчивается единицей,
+      то <code>t = 0</code>.
+    </p>
+    <div class="soft-box">
+      <div>Строка:</div>
+      <div class="drill-string" id="tail-string">—</div>
+      <div class="form-row">
+        <label><span>Сколько нулей в конце? t =</span><input type="number" id="tail-answer" step="1" style="width:130px"></label>
+        <button id="btn-tail-check">Проверить</button>
+        <button class="secondary" id="btn-tail-next">Новая строка</button>
+      </div>
+      <div class="feedback" id="tail-feedback"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Как думать в таких задачах</h2>
+    <div class="tiny-examples">
+      <div class="tiny-example"><code>1000</code><span class="arrow">→</span><code>0111</code><br><span class="small muted">хвост 000 исчез, единица стала нулём</span></div>
+      <div class="tiny-example"><code>10110</code><span class="arrow">→</span><code>10101</code><br><span class="small muted">последний 0 стал 1, предыдущая 1 стала 0</span></div>
+      <div class="tiny-example"><code>1111</code><span class="arrow">→</span><code>1110</code><br><span class="small muted">хвоста нулей нет, меняется последняя 1</span></div>
+      <div class="tiny-example"><code>0000</code><span class="arrow">→</span><code>1111</code><br><span class="small muted">особый случай: строка вся из нулей</span></div>
+    </div>
+    <ol>
+      <li>Сначала смотрим на правый конец строки.</li>
+      <li>Обозначаем через <code>t</code> количество нулей на самом конце.</li>
+      <li>Если в строке есть единица, машина превращает <code>u 1 0<sup>t</sup></code> в <code>u 0 1<sup>t</sup></code>.</li>
+      <li>Поэтому из числа нулей исчезают <code>t</code> хвостовых нулей, но появляется один новый ноль.</li>
+      <li>Получаем формулу <span class="formula">K = Z − t + 1</span>, где <code>Z</code> — нули до работы, <code>K</code> — нули после.</li>
+    </ol>
+
+    <h3>Когда K &gt; 0</h3>
+    <ul>
+      <li><b>Минимум:</b> <span class="formula">Z = K − 1</span> — берём самый короткий хвост <code>t = 0</code>, то есть строка заканчивается единицей.</li>
+      <li><b>Максимум:</b> <span class="formula">Z = N − 1</span> — оставляем в исходной строке всего одну единицу, остальные символы делаем нулями.</li>
+    </ul>
+
+    <h3>Когда K = 0</h3>
+    <p>Отдельный случай: исходная строка могла состоять только из нулей. После работы все нули превратятся в единицы, поэтому <span class="formula">Z = N</span> и для минимума, и для максимума.</p>
+
+    <h3>Подробнее про максимум</h3>
+    <p>
+      Если <code>K &gt; 0</code>, значение <code>K</code> влияет только на то, где именно стоит единственная единица в исходной строке,
+      но не меняет максимальное количество нулей: их всё равно ровно <code>N − 1</code>.
+      Подходящий шаблон исходной строки такой:
+    </p>
+    <p><span class="formula">0 × (K − 1), затем 1, затем 0 × (N − K)</span></p>
+    <p>
+      В такой строке ровно <code>N − 1</code> нулей и одна единица. После работы хвостовые <code>N − K</code> нулей превратятся в единицы,
+      а единица посередине — в ноль. На ленте останется <code>K − 1 + 1 = K</code> нулей, что и требовалось.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>Математика решения</h2>
+    <p>Обозначим:</p>
+    <ul>
+      <li><code>N</code> — длина исходной последовательности;</li>
+      <li><code>K</code> — число нулей после выполнения программы;</li>
+      <li><code>Z</code> — число нулей в исходной последовательности;</li>
+      <li><code>t</code> — количество нулей в самом конце исходной последовательности.</li>
+    </ul>
+    <p>Если строка не состоит целиком из нулей, её можно представить так:</p>
+    <p><span class="formula">u 1 0<sup>t</sup></span></p>
+    <p>где <code>0<sup>t</sup></code> — хвост из <code>t</code> нулей, <code>1</code> — ближайшая слева от этого хвоста единица, <code>u</code> — часть строки левее этой единицы.</p>
+    <p>Программа делает преобразование:</p>
+    <p><span class="formula">u 1 0<sup>t</sup>  →  u 0 1<sup>t</sup></span></p>
+    <p>Поэтому число нулей после работы связано с исходным числом нулей формулой:</p>
+    <p><span class="formula">K = Z − t + 1</span>, откуда <span class="formula">Z = K + t − 1</span>.</p>
+    <p>Для <code>K &gt; 0</code>:</p>
+    <ul>
+      <li>минимальное возможное <code>Z</code> получается при <code>t = 0</code> (строка заканчивается единицей): <span class="formula">Z<sub>min</sub> = K − 1</span>;</li>
+      <li>максимальное возможное <code>Z</code> получается, когда в исходной строке ровно одна единица, а остальные символы — нули: <span class="formula">Z<sub>max</sub> = N − 1</span>.</li>
+    </ul>
+    <p>Особый случай <code>K = 0</code>: исходная последовательность могла состоять только из нулей, тогда все нули превратились в единицы. И минимум, и максимум числа нулей в исходной последовательности равны <code>N</code>.</p>
+  </section>
+
+  <section class="card">
+    <h2>Генератор задач</h2>
+    <p class="muted small">
+      Случайные <code>N</code> от 50 до 2000 и корректное <code>K</code> от 0 до <code>N</code>.
+      Чаще выбирается <code>K &gt; 0</code>, чтобы задача не сводилась к особому случаю.
+    </p>
+    <div class="form-row">
+      <button id="btn-generate">Сгенерировать новую задачу</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Готовые задачи</h2>
+    <p class="muted small">Три готовых задачи с известными ответами. Их можно загрузить в текущую задачу.</p>
+    <div class="examples-list" id="examples-list"></div>
+  </section>
+
+  <section class="card">
+    <h2>Ручной режим</h2>
+    <p class="muted small">Задайте свои <code>N</code> и <code>K</code> и выберите, что искать. Дробные значения не принимаются.</p>
+    <div class="form-row">
+      <label><span>Длина строки N</span><input type="number" id="manual-n" min="1" step="1" value="100" style="width:120px"></label>
+      <label><span>Число нулей K после</span><input type="number" id="manual-k" min="0" step="1" value="50" style="width:120px"></label>
+      <label><span>Режим</span>
+        <select id="manual-mode" style="width:160px">
+          <option value="max">максимум</option>
+          <option value="min">минимум</option>
+        </select>
+      </label>
+      <button id="btn-manual">Создать задачу</button>
+    </div>
+    <div class="feedback err" id="manual-err"></div>
+  </section>
+
+  <section class="card" id="current-task-card">
+    <h2>Текущая задача</h2>
+    <div class="task-box" id="task-box">
+      <p class="task-empty">Задача ещё не выбрана. Сгенерируйте новую, загрузите готовую или задайте параметры вручную.</p>
+    </div>
+
+    <div class="form-row">
+      <label><span>Ваш ответ</span><input type="number" id="user-answer" step="1" style="width:160px" placeholder="число"></label>
+      <button id="btn-check">Проверить</button>
+      <button class="secondary" id="btn-hint">Подсказка</button>
+      <button class="warning" id="btn-reveal">Показать ответ</button>
+      <button class="secondary" id="btn-show-solution">Показать решение</button>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+    <div class="solution" id="solution" hidden></div>
+  </section>
+
+  <section class="card">
+    <h2>Симулятор машины Тьюринга</h2>
+    <p class="muted small">
+      Введите короткую двоичную строку. Кнопка «Один шаг» сразу выполняет первый переход, даже если симуляция ещё не была запущена.
+    </p>
+    <div class="form-row">
+      <label><span>Исходная строка</span>
+        <input type="text" id="sim-input" value="1000" maxlength="200" style="width:260px; font-family: var(--mono);">
+      </label>
+      <button id="btn-run">Запустить полностью</button>
+      <button class="secondary" id="btn-step">Один шаг</button>
+      <button class="ghost" id="btn-reset">Сбросить</button>
+    </div>
+    <div class="form-row" style="gap: 6px;">
+      <button class="ghost small" data-sim-example="1000">1000</button>
+      <button class="ghost small" data-sim-example="10110">10110</button>
+      <button class="ghost small" data-sim-example="0000">0000</button>
+      <button class="ghost small" data-sim-example="1111">1111</button>
+    </div>
+    <div class="tape" id="tape"></div>
+    <div class="tape-info" id="tape-info"></div>
+    <div class="feedback err" id="sim-err"></div>
+  </section>
+
+  <section class="card">
+    <h2>Теоретическая часть</h2>
+    <p class="muted small">
+      Развёрнутая постановка и иллюстрация. Можно открывать по мере необходимости — для основной работы с задачами достаточно «Основной программы» сверху.
+    </p>
+
+    <details class="collapsible" style="margin-top:12px">
+      <summary>Описание исполнителя</summary>
+      <p>
+        Исполнитель машины Тьюринга — это читающая и записывающая головка, которая движется
+        вдоль бесконечной горизонтальной ленты, разделённой на равные ячейки.
+        В каждой ячейке стоит ровно один символ из алфавита исполнителя.
+        Алфавит включает специальный пустой символ <code class="lambda">λ</code>.
+      </p>
+      <p>
+        Время работы делится на дискретные такты. На каждом такте головка находится в одном
+        из допустимых состояний <code>Q = {q<sub>0</sub>, q<sub>1</sub>, …, q<sub>m−1</sub>}</code>.
+        В начальный момент головка находится в состоянии <code>q0</code>.
+      </p>
+      <p>
+        За один такт головка обозревает одну ячейку — текущую — и может выполнить одно из действий:
+      </p>
+      <ul>
+        <li>сдвинуться вправо или влево, не меняя символ в текущей ячейке;</li>
+        <li>заменить символ в текущей ячейке без сдвига;</li>
+        <li>заменить символ в текущей ячейке и сдвинуться в соседнюю;</li>
+        <li>завершить работу.</li>
+      </ul>
+      <p>
+        После каждого такта головка переходит в новое состояние или остаётся в прежнем.
+      </p>
+    </details>
+
+    <details class="collapsible" style="margin-top:12px">
+      <summary>Как задаётся программа</summary>
+      <p>
+        Программа работы исполнителя задаётся таблицей.
+        В первой строке перечислены возможные символы в текущей ячейке, в первом столбце — возможные состояния.
+        На пересечении строки и столбца стоит команда. Если такая пара «символ — состояние» невозможна, клетка остаётся пустой.
+      </p>
+      <p>Команда имеет вид:</p>
+      <p><span class="formula">новый_символ, движение, новое_состояние</span></p>
+      <p>Второй элемент — направление движения:</p>
+      <ul>
+        <li><code>L</code> — сдвиг влево;</li>
+        <li><code>R</code> — сдвиг вправо;</li>
+        <li><code>N</code> — отсутствие сдвига;</li>
+        <li><code>S</code> — завершение работы после выполнения текущей команды.</li>
+      </ul>
+      <p class="small muted">
+        Например, команда <code>0, L, q3</code> означает: записать в текущую ячейку <code>0</code>,
+        сдвинуть головку влево и перейти в состояние <code>q3</code>.
+      </p>
+    </details>
+
+    <details class="collapsible" style="margin-top:12px">
+      <summary>Дополнительно: пример чтения другой таблицы команд</summary>
+      <p class="muted small">
+        Этот пример нужен только как иллюстрация того, как читается таблица команд. Он использует другую программу — с символами <code>Z</code> и <code>X</code> вместо нулей и единиц.
+      </p>
+      <p>
+        На ленте записано неизвестное ненулевое количество расположенных подряд в соседних ячейках символов <code>Z</code>;
+        остальные ячейки заполнены пустым символом <code class="lambda">λ</code>. В начальный момент времени
+        головка находится на неизвестном ненулевом расстоянии справа от самого правого символа <code>Z</code>.
+      </p>
+      <div class="program-table-wrap">
+        <table class="program">
+          <thead>
+            <tr><th>состояние</th><th><span class="lambda">λ</span></th><th>Z</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>q0</th><td>λ, L, q0</td><td>X, L, q1</td></tr>
+            <tr><th>q1</th><td>λ, S, q1</td><td>X, L, q1</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Программа заменяет на ленте все символы <code>Z</code> на <code>X</code> и останавливает исполнителя в первой ячейке слева от последовательности.</p>
+      <ol>
+        <li>В состоянии <code>q0</code> машина идёт влево по пустым клеткам, пока не встретит правый край блока символов <code>Z</code>.</li>
+        <li>Первый встреченный <code>Z</code> заменяется на <code>X</code>, машина переходит в состояние <code>q1</code> и продолжает идти влево.</li>
+        <li>В состоянии <code>q1</code> каждый символ <code>Z</code> заменяется на <code>X</code>.</li>
+        <li>Когда слева от блока встречается пустой символ <code class="lambda">λ</code>, машина останавливается.</li>
+      </ol>
+    </details>
+  </section>
+
+  <section class="card">
+    <details class="collapsible" id="dev-tests-details">
+      <summary>Автотесты функции решения и симулятора</summary>
+      <p class="muted small">Спрятано по умолчанию. Можно открыть, чтобы убедиться, что формула и симулятор согласованы между собой.</p>
+      <div class="tests" id="tests"></div>
+      <div class="test-summary" id="tests-summary"></div>
+    </details>
+  </section>
+</main>
+
+<script>
+"use strict";
+
+const LAMBDA = "λ";
+const PROGRAM = {
+  "q0": {
+    [LAMBDA]: { write: LAMBDA, move: "L", next: "q1" },
+    "1": null,
+    "0": null
+  },
+  "q1": {
+    [LAMBDA]: { write: LAMBDA, move: "S", next: "q1" },
+    "1": { write: "0", move: "S", next: "q1" },
+    "0": { write: "1", move: "L", next: "q1" }
+  }
+};
+const MAX_SIM_STEPS = 100000;
+const READY_EXAMPLES = [
+  { N: 333,  K: 120, mode: "max", answer: 332 },
+  { N: 520,  K: 125, mode: "min", answer: 124 },
+  { N: 1300, K: 343, mode: "max", answer: 1299 }
+];
+
+let currentTask = null;
+let simState = null;
+let guideStep = 0;
+let tailDrill = null;
+let formulaDrill = null;
+let minDrill = null;
+let maxDrill = null;
+
+function programTableHTML(extraClass = "") {
+  return `
+    <div class="program-table-wrap ${extraClass}">
+      <table class="program">
+        <thead>
+          <tr><th>состояние</th><th><span class="lambda">λ</span></th><th>1</th><th>0</th></tr>
+        </thead>
+        <tbody>
+          <tr><th>q0</th><td>λ, L, q1</td><td class="empty">—</td><td class="empty">—</td></tr>
+          <tr><th>q1</th><td>λ, S, q1</td><td>0, S, q1</td><td>1, L, q1</td></tr>
+        </tbody>
+      </table>
+    </div>`;
+}
+
+function solveTask(N, K, mode) {
+  if (!Number.isInteger(N) || N <= 0) {
+    return { ok: false, error: "N должно быть целым положительным числом" };
+  }
+  if (!Number.isInteger(K)) {
+    return { ok: false, error: "K должно быть целым числом" };
+  }
+  if (K < 0 || K > N) {
+    return { ok: false, error: "K должно лежать в диапазоне от 0 до " + N };
+  }
+  if (mode !== "min" && mode !== "max") {
+    return { ok: false, error: 'Режим должен быть "min" или "max"' };
+  }
+  if (K === 0) return { ok: true, answer: N };
+  if (mode === "min") return { ok: true, answer: K - 1 };
+  return { ok: true, answer: N - 1 };
+}
+
+function simulateTuringMachine(input) {
+  if (typeof input !== "string" || !/^[01]+$/.test(input)) {
+    return { ok: false, error: "Строка должна состоять только из 0 и 1, минимум 1 символ" };
+  }
+  const tape = new Map();
+  for (let i = 0; i < input.length; i++) tape.set(i, input[i]);
+
+  let head = input.length;
+  let state = "q0";
+  let minPos = 0;
+  let maxPos = input.length - 1;
+  const history = [];
+  history.push({ step: 0, head, state, symbol: tape.get(head) ?? LAMBDA, command: null });
+
+  for (let step = 1; step <= MAX_SIM_STEPS; step++) {
+    const cur = tape.get(head) ?? LAMBDA;
+    const cmd = PROGRAM[state] ? PROGRAM[state][cur] : null;
+    if (!cmd) return { ok: false, error: "Нет команды для (" + state + ", " + cur + ")", history };
+
+    tape.set(head, cmd.write);
+    if (head < minPos) minPos = head;
+    if (head > maxPos) maxPos = head;
+    const fromState = state;
+
+    if (cmd.move === "L") head--;
+    else if (cmd.move === "R") head++;
+    state = cmd.next;
+
+    history.push({ step, head, state, symbol: cmd.write, command: { ...cmd, fromState, fromSymbol: cur } });
+
+    if (cmd.move === "S") {
+      let start = minPos, end = maxPos;
+      while (start <= end && (tape.get(start) ?? LAMBDA) === LAMBDA) start++;
+      while (end >= start && (tape.get(end) ?? LAMBDA) === LAMBDA) end--;
+      let finalStr = "";
+      if (start <= end) for (let i = start; i <= end; i++) finalStr += tape.get(i) ?? LAMBDA;
+      let zeroCount = countZeros(finalStr);
+      return { ok: true, history, finalTape: finalStr, zeroCount };
+    }
+  }
+  return { ok: false, error: "Превышено максимальное число шагов", history };
+}
+
+function initSimulation(input) {
+  if (typeof input !== "string" || !/^[01]+$/.test(input)) {
+    return { ok: false, error: "Строка должна состоять только из 0 и 1, минимум 1 символ" };
+  }
+  if (input.length > 200) return { ok: false, error: "Для симулятора используйте строку до 200 символов" };
+  const tape = new Map();
+  for (let i = 0; i < input.length; i++) tape.set(i, input[i]);
+  simState = { input, tape, head: input.length, state: "q0", step: 0, finished: false, lastCommand: null, minPos: 0, maxPos: input.length - 1 };
+  return { ok: true };
+}
+
+function stepSimulation() {
+  if (!simState) return { ok: false, error: "Симуляция не инициализирована" };
+  if (simState.finished) return { ok: false, error: "Машина уже остановлена" };
+  const cur = simState.tape.get(simState.head) ?? LAMBDA;
+  const cmd = PROGRAM[simState.state] ? PROGRAM[simState.state][cur] : null;
+  if (!cmd) {
+    simState.finished = true;
+    return { ok: false, error: "Нет команды для (" + simState.state + ", " + cur + ")" };
+  }
+  simState.tape.set(simState.head, cmd.write);
+  if (simState.head < simState.minPos) simState.minPos = simState.head;
+  if (simState.head > simState.maxPos) simState.maxPos = simState.head;
+  simState.lastCommand = { ...cmd, fromState: simState.state, fromSymbol: cur };
+
+  if (cmd.move === "L") simState.head--;
+  else if (cmd.move === "R") simState.head++;
+  simState.state = cmd.next;
+  simState.step++;
+  if (cmd.move === "S") simState.finished = true;
+  return { ok: true, finished: simState.finished };
+}
+
+function runSimulation() {
+  if (!simState) return { ok: false, error: "Симуляция не инициализирована" };
+  let n = 0;
+  while (!simState.finished && n < MAX_SIM_STEPS) {
+    const r = stepSimulation();
+    if (!r.ok) return r;
+    n++;
+  }
+  if (n >= MAX_SIM_STEPS) return { ok: false, error: "Превышено максимальное число шагов" };
+  return { ok: true };
+}
+function resetSimulation() { simState = null; }
+
+function countZeros(s) { return [...s].filter(ch => ch === "0").length; }
+function countTrailingZeros(s) {
+  let t = 0;
+  for (let i = s.length - 1; i >= 0 && s[i] === "0"; i--) t++;
+  return t;
+}
+function randInt(a, b) { return Math.floor(a + Math.random() * (b - a + 1)); }
+function modeLabel(mode) { return mode === "max" ? "максимальное" : "минимальное"; }
+function zeroWord(K) {
+  const absK = Math.abs(K), last2 = absK % 100, last1 = absK % 10;
+  if (last2 >= 11 && last2 <= 14) return "нулей";
+  if (last1 === 1) return "ноль";
+  if (last1 >= 2 && last1 <= 4) return "нуля";
+  return "нулей";
+}
+function escapeHTML(s) {
+  return String(s).replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[ch]));
+}
+
+function parseStrictInteger(id, label) {
+  const raw = document.getElementById(id).value.trim();
+  if (raw === "") return { ok: false, error: `${label}: поле не должно быть пустым` };
+  const value = Number(raw);
+  if (!Number.isInteger(value)) return { ok: false, error: `${label}: нужно ввести целое число без дробной части` };
+  return { ok: true, value };
+}
+
+function setTask(N, K, mode) {
+  const res = solveTask(N, K, mode);
+  if (!res.ok) return res;
+  currentTask = { N, K, mode, answer: res.answer, attempts: 0, hintLevel: 0, revealed: false };
+  renderTask();
+  document.getElementById("user-answer").value = "";
+  hideFeedback();
+  hideSolution();
+  document.getElementById("current-task-card").scrollIntoView({ behavior: "smooth", block: "start" });
+  return { ok: true };
+}
+
+function renderTask() {
+  const box = document.getElementById("task-box");
+  if (!currentTask) {
+    box.innerHTML = '<p class="task-empty">Задача ещё не выбрана. Сгенерируйте новую, загрузите готовую или задайте параметры вручную.</p>';
+    return;
+  }
+  const { N, K, mode } = currentTask;
+  box.innerHTML = `
+    <p>На ленте в соседних ячейках записана последовательность из
+    <code>N = ${N}</code> символов, включающая только нули и единицы.
+    Ячейки справа и слева от последовательности заполнены пустыми символами
+    <code class="lambda">λ</code>. В начальный момент времени головка расположена
+    в ближайшей справа к последовательности ячейке.</p>
+    <p>Программа работы исполнителя:</p>
+    <div class="task-program">${programTableHTML()}</div>
+    <p>После выполнения программы на ленте осталось ровно <code>K = ${K}</code> ${zeroWord(K)}.</p>
+    <p><b>Определите ${modeLabel(mode)} возможное число нулей в исходной последовательности.</b></p>
+  `;
+}
+function hideFeedback() { const fb = document.getElementById("feedback"); fb.className = "feedback"; fb.textContent = ""; }
+function showFeedback(kind, html) { const fb = document.getElementById("feedback"); fb.className = "feedback show " + kind; fb.innerHTML = html; }
+function hideSolution() { const s = document.getElementById("solution"); s.hidden = true; s.innerHTML = ""; }
+
+function tieredHints(task) {
+  if (task.K === 0) {
+    return [
+      "Сначала проверь особый случай: после работы нулей не осталось.",
+      "Такое происходит, когда машина шла влево по нулям и встретила пустую ячейку слева, то есть исходная строка была вся из нулей.",
+      `Значит, исходных нулей было ровно N = ${task.N}.`
+    ];
+  }
+  if (task.mode === "min") {
+    return [
+      "Для минимума нужно сделать хвост нулей справа как можно короче.",
+      "Самый короткий хвост нулей — t = 0: строка заканчивается единицей.",
+      `Тогда Z = K − 1 = ${task.K} − 1.`
+    ];
+  }
+  return [
+    "Для максимума нужно сделать исходную строку почти полностью нулевой.",
+    "Оставь в исходной строке всего одну единицу, остальные символы сделай нулями.",
+    `Тогда Z = N − 1 = ${task.N} − 1.`
+  ];
+}
+
+function handleCheck() {
+  if (!currentTask) { showFeedback("err", "Сначала выберите задачу."); return; }
+  const raw = document.getElementById("user-answer").value.trim();
+  if (raw === "") { showFeedback("err", "Введите число."); return; }
+  const value = Number(raw);
+  if (!Number.isInteger(value)) { showFeedback("err", "Ответ должен быть целым числом."); return; }
+
+  if (value === currentTask.answer) {
+    showFeedback("ok", `Верно. Ответ: <b>${currentTask.answer}</b>. Отлично: здесь важен именно правый хвост строки.`);
+    return;
+  }
+
+  currentTask.attempts++;
+  const hints = tieredHints(currentTask);
+  const hintIndex = Math.min(currentTask.attempts - 1, hints.length - 1);
+  currentTask.hintLevel = Math.max(currentTask.hintLevel, hintIndex + 1);
+  if (currentTask.attempts >= 3) {
+    showFeedback("err", `Не получилось с третьей попытки — ничего страшного. Ответ: <b>${currentTask.answer}</b>.<br><span class="small">Почему так: ${hints[hintIndex]}</span>`);
+  } else {
+    showFeedback("hint", `Пока не сходится. Подсказка ${hintIndex + 1}: ${hints[hintIndex]}<br><span class="small">Попробуйте исправить ответ и проверить ещё раз. Правильный ответ пока не показываю.</span>`);
+  }
+}
+
+function handleHint() {
+  if (!currentTask) { showFeedback("err", "Сначала выберите задачу."); return; }
+  const hints = tieredHints(currentTask);
+  const idx = Math.min(currentTask.hintLevel, hints.length - 1);
+  currentTask.hintLevel = Math.min(currentTask.hintLevel + 1, hints.length);
+  showFeedback("hint", `Подсказка ${idx + 1}: ${hints[idx]}` + (idx < hints.length - 1 ? `<br><span class="small">Можно нажать «Подсказка» ещё раз.</span>` : ""));
+}
+
+function handleReveal() {
+  if (!currentTask) { showFeedback("err", "Сначала выберите задачу."); return; }
+  currentTask.revealed = true;
+  showFeedback("err", `Ответ: <b>${currentTask.answer}</b>. Чтобы не просто запомнить формулу, нажмите «Показать решение» и сравните с ходом рассуждения.`);
+}
+
+function buildExampleString(N, K, mode) {
+  const SHORT_LIMIT = 30;
+  if (K === 0) {
+    if (N <= SHORT_LIMIT) return "0".repeat(N);
+    return `0 × ${N}  (строка из ${N} нулей подряд)`;
+  }
+  if (mode === "min") {
+    const zeros = K - 1;
+    const ones = N - K + 1;
+    if (N <= SHORT_LIMIT) return "0".repeat(zeros) + "1".repeat(ones);
+    const parts = [];
+    if (zeros > 0) parts.push(`0 × ${zeros}`);
+    parts.push(`1 × ${ones}`);
+    return parts.join(", затем ") + `  (всего ${N} символов, ${zeros} нулей)`;
+  }
+  const left = K - 1;
+  const right = N - K;
+  if (N <= SHORT_LIMIT) return "0".repeat(left) + "1" + "0".repeat(right);
+  const parts = [];
+  if (left > 0) parts.push(`0 × ${left}`);
+  parts.push("1");
+  if (right > 0) parts.push(`0 × ${right}`);
+  return parts.join(", затем ") + `  (всего ${N} символов, ${N - 1} нулей)`;
+}
+
+function buildSolutionHTML(task) {
+  const { N, K, mode } = task;
+  const ans = task.answer;
+  const example = buildExampleString(N, K, mode);
+  const parts = [];
+
+  parts.push(`<h3>1. Смотрим на правый край строки</h3>
+    <p>Головка стартует справа от строки, в <code>q0</code> делает один шаг влево и попадает на последний символ.</p>
+    <p>Дальше в <code>q1</code>: каждый встреченный <code>0</code> справа заменяется на <code>1</code>, а первая встреченная <code>1</code> заменяется на <code>0</code> и машина останавливается.</p>`);
+
+  parts.push(`<h3>2. Обозначаем хвост нулей</h3>
+    <p>Пусть <code>t</code> — количество нулей в самом конце исходной строки. Если справа был кусок <code>1 0<sup>t</sup></code>, он станет <code>0 1<sup>t</sup></code>.</p>
+    <p>То есть хвостовые <code>t</code> нулей исчезли, но появился один новый ноль.</p>`);
+
+  parts.push(`<h3>3. Получаем формулу</h3>
+    <p>Если до работы было <code>Z</code> нулей, а после работы стало <code>K</code>, то:</p>
+    <p><span class="formula">K = Z − t + 1</span></p>
+    <p>Отсюда <span class="formula">Z = K + t − 1</span>.</p>`);
+
+  parts.push(`<h3>4. Проверяем особый случай</h3>
+    <p>Если исходная строка состоит только из нулей, машина заменит все нули на единицы. Тогда после работы <code>K = 0</code>, а исходных нулей было <code>N</code>.</p>`);
+
+  parts.push(`<h3>5. Решаем текущую задачу</h3>
+    <p>Дано: <code>N = ${N}</code>, <code>K = ${K}</code>. Нужно найти ${modeLabel(mode)} число нулей в исходной последовательности.</p>`);
+
+  if (K === 0) {
+    parts.push(`<p>Так как <code>K = 0</code>, это особый случай: исходная строка могла быть вся из нулей. Ответ: <span class="formula">Z = N = ${ans}</span>.</p>`);
+  } else if (mode === "min") {
+    parts.push(`<p>Для минимума берём минимальный хвост нулей: <code>t = 0</code>. Значит, строка заканчивается единицей.</p>
+      <p><span class="formula">Z<sub>min</sub> = K − 1 = ${K} − 1 = ${ans}</span></p>`);
+  } else {
+    parts.push(`<p>Для максимума оставляем в исходной строке всего одну единицу, остальные символы делаем нулями.</p>
+      <p><span class="formula">Z<sub>max</sub> = N − 1 = ${N} − 1 = ${ans}</span></p>`);
+  }
+
+  parts.push(`<h3>Пример подходящей исходной строки</h3><p><code class="mono">${escapeHTML(example)}</code></p>`);
+  return parts.join("\n");
+}
+
+function handleShowSolution() {
+  if (!currentTask) { showFeedback("err", "Сначала выберите задачу."); return; }
+  const s = document.getElementById("solution");
+  s.innerHTML = buildSolutionHTML(currentTask);
+  s.hidden = false;
+}
+
+function renderExamples() {
+  const list = document.getElementById("examples-list");
+  list.innerHTML = "";
+  READY_EXAMPLES.forEach((ex, idx) => {
+    const wrap = document.createElement("div");
+    wrap.className = "example";
+    wrap.innerHTML = `
+      <div class="params">N = ${ex.N}, K = ${ex.K}</div>
+      <div class="mode">найти ${modeLabel(ex.mode)} число нулей в исходной строке</div>
+      <button class="secondary" data-idx="${idx}">Загрузить</button>`;
+    wrap.querySelector("button").addEventListener("click", () => setTask(ex.N, ex.K, ex.mode));
+    list.appendChild(wrap);
+  });
+}
+function handleGenerate() {
+  const N = randInt(50, 2000);
+  const K = Math.random() < 0.1 ? 0 : randInt(1, N);
+  const mode = Math.random() < 0.5 ? "min" : "max";
+  setTask(N, K, mode);
+}
+function handleManual() {
+  const errEl = document.getElementById("manual-err");
+  errEl.className = "feedback err";
+  errEl.textContent = "";
+
+  const parsedN = parseStrictInteger("manual-n", "N");
+  if (!parsedN.ok) { errEl.textContent = parsedN.error; errEl.classList.add("show"); return; }
+  const parsedK = parseStrictInteger("manual-k", "K");
+  if (!parsedK.ok) { errEl.textContent = parsedK.error; errEl.classList.add("show"); return; }
+  const mode = document.getElementById("manual-mode").value;
+  const res = setTask(parsedN.value, parsedK.value, mode);
+  if (!res.ok) { errEl.textContent = res.error; errEl.classList.add("show"); }
+}
+
+function makeTailString() {
+  const kind = Math.random();
+  const len = randInt(4, 9);
+  if (kind < 0.18) return "0".repeat(len);
+  if (kind < 0.38) return Array.from({ length: len - 1 }, () => Math.random() < 0.45 ? "0" : "1").join("") + "1";
+  const t = randInt(1, Math.min(5, len - 1));
+  let prefix = Array.from({ length: len - t }, () => Math.random() < 0.45 ? "0" : "1").join("");
+  if (!prefix.includes("1")) prefix = "1" + prefix.slice(1);
+  return prefix + "0".repeat(t);
+}
+function highlightTail(s) {
+  const t = countTrailingZeros(s);
+  if (t === 0) return escapeHTML(s);
+  const a = s.slice(0, s.length - t);
+  const b = s.slice(s.length - t);
+  return `${escapeHTML(a)}<span class="trail-mark">${escapeHTML(b)}</span>`;
+}
+function newTailDrill() {
+  const s = makeTailString();
+  tailDrill = { s, t: countTrailingZeros(s) };
+  document.getElementById("tail-string").innerHTML = escapeHTML(s);
+  document.getElementById("tail-answer").value = "";
+  const fb = document.getElementById("tail-feedback");
+  fb.className = "feedback";
+  fb.innerHTML = "";
+}
+function checkTailDrill() {
+  if (!tailDrill) newTailDrill();
+  const raw = document.getElementById("tail-answer").value.trim();
+  const fb = document.getElementById("tail-feedback");
+  if (raw === "" || !Number.isInteger(Number(raw))) {
+    fb.className = "feedback show err";
+    fb.textContent = "Введите целое число.";
+    return;
+  }
+  const value = Number(raw);
+  const special = tailDrill.t === tailDrill.s.length ? " Это ещё и особый случай: вся строка состоит из нулей." : "";
+  if (value === tailDrill.t) {
+    fb.className = "feedback show ok";
+    fb.innerHTML = `Верно: <code>t = ${tailDrill.t}</code>. ${special}<br>Хвост: <span class="mono">${highlightTail(tailDrill.s)}</span>`;
+  } else {
+    fb.className = "feedback show hint";
+    fb.innerHTML = `Пока нет. Считай только нули, которые идут подряд с самого правого края. Строка с выделением: <span class="mono">${highlightTail(tailDrill.s)}</span>`;
+  }
+}
+
+function renderGuideNav() {
+  const labels = ["1. Наблюдаем", "2. Хвост нулей", "3. Считаем K", "4. Минимум", "5. Максимум", "6. Целая задача"];
+  const nav = document.getElementById("guide-nav");
+  nav.innerHTML = "";
+  labels.forEach((label, i) => {
+    const b = document.createElement("button");
+    b.textContent = label;
+    if (i === guideStep) b.classList.add("active");
+    b.addEventListener("click", () => { guideStep = i; renderGuide(); });
+    nav.appendChild(b);
+  });
+}
+function guideNext() { guideStep = Math.min(5, guideStep + 1); renderGuide(); }
+function guidePrev() { guideStep = Math.max(0, guideStep - 1); renderGuide(); }
+function guideButtons() {
+  return `<div class="guide-actions">
+    <button class="secondary" id="guide-prev" ${guideStep === 0 ? "disabled" : ""}>Назад</button>
+    <button id="guide-next" ${guideStep === 5 ? "disabled" : ""}>Дальше</button>
+  </div>`;
+}
+function renderGuide() {
+  renderGuideNav();
+  const panel = document.getElementById("guide-panel");
+  if (guideStep === 0) {
+    panel.innerHTML = `<h3>Шаг 1. Сначала просто наблюдаем</h3>
+      <p>Не начинай с формулы. Посмотри, что машина делает с несколькими строками.</p>
+      <div class="tiny-examples">
+        <div class="tiny-example"><code>1000</code><span class="arrow">→</span><code>0111</code><br><button class="ghost" data-load-sim="1000">в симулятор</button></div>
+        <div class="tiny-example"><code>10110</code><span class="arrow">→</span><code>10101</code><br><button class="ghost" data-load-sim="10110">в симулятор</button></div>
+        <div class="tiny-example"><code>1111</code><span class="arrow">→</span><code>1110</code><br><button class="ghost" data-load-sim="1111">в симулятор</button></div>
+        <div class="tiny-example"><code>0000</code><span class="arrow">→</span><code>1111</code><br><button class="ghost" data-load-sim="0000">в симулятор</button></div>
+      </div>
+      <p><b>Вопрос:</b> что программа меняет в обычном случае, когда в строке есть хотя бы одна единица?</p>
+      <div class="choice-list">
+        <label><input type="radio" name="guide-q1" value="all"> Все символы строки.</label>
+        <label><input type="radio" name="guide-q1" value="right"> Правый хвост нулей и ближайшую слева единицу.</label>
+        <label><input type="radio" name="guide-q1" value="left"> Только самый левый символ.</label>
+      </div>
+      <button id="guide-check-observe" class="secondary">Проверить ответ</button>
+      <div class="feedback" id="guide-feedback"></div>
+      ${guideButtons()}`;
+  } else if (guideStep === 1) {
+    if (!tailDrill) tailDrill = { s: "101000", t: 3 };
+    panel.innerHTML = `<h3>Шаг 2. Учимся видеть хвост нулей</h3>
+      <p>Хвост нулей — это нули подряд с самого правого края. Машина идёт именно по ним.</p>
+      <div class="pill-row"><span class="pill">101000: t = 3</span><span class="pill">1111: t = 0</span><span class="pill">0000: t = 4 и особый случай</span></div>
+      <p>Попробуй в отдельном мини-тренажёре ниже или прямо здесь:</p>
+      <div class="drill-string" id="guide-tail-string">${escapeHTML(tailDrill.s)}</div>
+      <div class="form-row"><label><span>t =</span><input type="number" id="guide-tail-answer" step="1" style="width:110px"></label><button id="guide-tail-check" class="secondary">Проверить</button><button id="guide-tail-new" class="ghost">Другая строка</button></div>
+      <div class="feedback" id="guide-feedback"></div>
+      ${guideButtons()}`;
+  } else if (guideStep === 2) {
+    if (!formulaDrill) formulaDrill = makeFormulaDrill();
+    panel.innerHTML = `<h3>Шаг 3. Считаем, сколько нулей стало после работы</h3>
+      <p>Если в исходной строке было <code>Z</code> нулей, а хвост справа содержит <code>t</code> нулей, то после работы:</p>
+      <p><span class="formula">K = Z − t + 1</span></p>
+      <div class="soft-box">
+        <p>Строка: <span class="mono">${escapeHTML(formulaDrill.s)}</span></p>
+        <p>В ней <code>Z = ${formulaDrill.Z}</code> нулей, хвост <code>t = ${formulaDrill.t}</code>.</p>
+        <div class="form-row"><label><span>Сколько нулей K будет после работы?</span><input type="number" id="guide-formula-answer" step="1" style="width:130px"></label><button id="guide-formula-check" class="secondary">Проверить</button><button id="guide-formula-new" class="ghost">Новый пример</button></div>
+      </div>
+      <div class="feedback" id="guide-feedback"></div>
+      ${guideButtons()}`;
+  } else if (guideStep === 3) {
+    if (!minDrill) minDrill = { K: randInt(3, 30) };
+    panel.innerHTML = `<h3>Шаг 4. Минимум: делаем хвост самым коротким</h3>
+      <p>Для минимума исходных нулей нужно взять <code>t = 0</code>. Значит, строка заканчивается единицей, и машина добавит ровно один новый ноль.</p>
+      <p><span class="formula">Z<sub>min</sub> = K − 1</span></p>
+      <div class="soft-box">
+        <p>После работы осталось <code>K = ${minDrill.K}</code> нулей. Какой минимум нулей был в исходной строке?</p>
+        <div class="form-row"><label><span>Ответ</span><input type="number" id="guide-min-answer" step="1" style="width:130px"></label><button id="guide-min-check" class="secondary">Проверить</button><button id="guide-min-new" class="ghost">Новый K</button></div>
+      </div>
+      <div class="feedback" id="guide-feedback"></div>
+      ${guideButtons()}`;
+  } else if (guideStep === 4) {
+    if (!maxDrill) maxDrill = { N: randInt(20, 90), K: randInt(1, 20) };
+    panel.innerHTML = `<h3>Шаг 5. Максимум: оставляем одну единицу</h3>
+      <p>Чтобы исходных нулей было как можно больше, делаем почти всю строку нулевой. Нельзя сделать все символы нулями при <code>K &gt; 0</code>, поэтому оставляем одну единицу.</p>
+      <p><span class="formula">Z<sub>max</sub> = N − 1</span></p>
+      <p class="small muted">Значение <code>K</code> определяет только место единственной единицы (шаблон: <code>0 × (K − 1)</code>, затем <code>1</code>, затем <code>0 × (N − K)</code>), но не меняет максимальное число нулей.</p>
+      <div class="soft-box">
+        <p>Длина строки <code>N = ${maxDrill.N}</code>, после работы осталось <code>K = ${maxDrill.K}</code> нулей. Какой максимум нулей был в исходной строке?</p>
+        <div class="form-row"><label><span>Ответ</span><input type="number" id="guide-max-answer" step="1" style="width:130px"></label><button id="guide-max-check" class="secondary">Проверить</button><button id="guide-max-new" class="ghost">Новый N</button></div>
+      </div>
+      <div class="feedback" id="guide-feedback"></div>
+      ${guideButtons()}`;
+  } else {
+    panel.innerHTML = `<h3>Шаг 6. Решаем одну задачу целиком</h3>
+      <p>Применим всё, что узнали, на конкретной задаче.</p>
+      <div class="soft-box">
+        <p><b>Дано:</b> длина строки <code>N = 520</code>, число нулей после работы <code>K = 125</code>.</p>
+        <p><b>Найти:</b> минимально возможное число нулей в исходной последовательности.</p>
+        <div class="form-row">
+          <label><span>Ваш ответ Z<sub>min</sub></span><input type="number" id="guide-final-answer" step="1" style="width:140px"></label>
+          <button id="guide-final-check" class="secondary">Проверить</button>
+          <button id="guide-final-load" class="ghost">Открыть как задачу</button>
+        </div>
+      </div>
+      <details class="collapsible" style="margin-top:8px">
+        <summary>Подсказка: разбор по шагам</summary>
+        <ol>
+          <li>Случай: <code>K = 125 &gt; 0</code>, значит работает обычная формула <span class="formula">K = Z − t + 1</span>.</li>
+          <li>Для минимума берём короткий хвост: <code>t = 0</code> (строка заканчивается единицей).</li>
+          <li>Подставляем: <span class="formula">Z<sub>min</sub> = K − 1 = 125 − 1 = 124</span>.</li>
+          <li>Пример подходящей строки: <code>0 × 124</code>, затем <code>1 × 396</code> (всего 520 символов, кончается единицей).</li>
+          <li>Проверка: программа заменит последнюю единицу на ноль; на ленте окажется 124 нуля, 395 единиц и 1 ноль — итого <code>125</code> нулей.</li>
+        </ol>
+      </details>
+      <div class="feedback" id="guide-feedback"></div>
+      ${guideButtons()}`;
+  }
+  attachGuideHandlers();
+}
+function makeFormulaDrill() {
+  const samples = ["101000", "1000", "110100", "10110", "1111", "01000"];
+  const s = samples[randInt(0, samples.length - 1)];
+  const sim = simulateTuringMachine(s);
+  return { s, Z: countZeros(s), t: countTrailingZeros(s), K: sim.ok ? sim.zeroCount : 0, final: sim.ok ? sim.finalTape : "" };
+}
+function setGuideFeedback(kind, html) { const fb = document.getElementById("guide-feedback"); if (fb) { fb.className = "feedback show " + kind; fb.innerHTML = html; } }
+function attachGuideHandlers() {
+  const prev = document.getElementById("guide-prev");
+  const next = document.getElementById("guide-next");
+  if (prev) prev.addEventListener("click", guidePrev);
+  if (next) next.addEventListener("click", guideNext);
+  document.querySelectorAll("[data-load-sim]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.getElementById("sim-input").value = btn.getAttribute("data-load-sim");
+      resetSimulation();
+      const r = initSimulation(document.getElementById("sim-input").value.trim());
+      if (r.ok) runSimulation();
+      renderSimulator();
+      document.querySelector("section.card:nth-last-of-type(2)").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+  const q1 = document.getElementById("guide-check-observe");
+  if (q1) q1.addEventListener("click", () => {
+    const checked = document.querySelector('input[name="guide-q1"]:checked');
+    if (!checked) return setGuideFeedback("err", "Выберите один вариант.");
+    if (checked.value === "right") setGuideFeedback("ok", "Да. В обычном случае меняется правый хвост нулей и ближайшая слева единица.");
+    else setGuideFeedback("hint", "Посмотрите на примеры: изменяется не вся строка, а только самый правый участок.");
+  });
+  const gtCheck = document.getElementById("guide-tail-check");
+  if (gtCheck) gtCheck.addEventListener("click", () => {
+    const raw = document.getElementById("guide-tail-answer").value.trim();
+    if (raw === "" || !Number.isInteger(Number(raw))) return setGuideFeedback("err", "Введите целое число.");
+    const val = Number(raw);
+    if (val === tailDrill.t) setGuideFeedback("ok", `Верно: t = ${tailDrill.t}. Хвост: <span class="mono">${highlightTail(tailDrill.s)}</span>`);
+    else setGuideFeedback("hint", `Пока нет. Считай нули с правого края до первого символа 1. Хвост: <span class="mono">${highlightTail(tailDrill.s)}</span>`);
+  });
+  const gtNew = document.getElementById("guide-tail-new");
+  if (gtNew) gtNew.addEventListener("click", () => { tailDrill = { s: makeTailString(), t: 0 }; tailDrill.t = countTrailingZeros(tailDrill.s); renderGuide(); });
+  const gfCheck = document.getElementById("guide-formula-check");
+  if (gfCheck) gfCheck.addEventListener("click", () => {
+    const raw = document.getElementById("guide-formula-answer").value.trim();
+    if (raw === "" || !Number.isInteger(Number(raw))) return setGuideFeedback("err", "Введите целое число.");
+    const val = Number(raw);
+    if (val === formulaDrill.K) setGuideFeedback("ok", `Да: ${formulaDrill.s} → ${formulaDrill.final}, нулей стало ${formulaDrill.K}.`);
+    else setGuideFeedback("hint", `Формула: K = Z − t + 1 = ${formulaDrill.Z} − ${formulaDrill.t} + 1.`);
+  });
+  const gfNew = document.getElementById("guide-formula-new");
+  if (gfNew) gfNew.addEventListener("click", () => { formulaDrill = makeFormulaDrill(); renderGuide(); });
+  const gmin = document.getElementById("guide-min-check");
+  if (gmin) gmin.addEventListener("click", () => {
+    const raw = document.getElementById("guide-min-answer").value.trim();
+    if (raw === "" || !Number.isInteger(Number(raw))) return setGuideFeedback("err", "Введите целое число.");
+    const ans = minDrill.K - 1;
+    if (Number(raw) === ans) setGuideFeedback("ok", `Верно: минимум = K − 1 = ${minDrill.K} − 1 = ${ans}.`);
+    else setGuideFeedback("hint", "Для минимума строка должна заканчиваться единицей, то есть t = 0.");
+  });
+  const gminNew = document.getElementById("guide-min-new");
+  if (gminNew) gminNew.addEventListener("click", () => { minDrill = { K: randInt(3, 30) }; renderGuide(); });
+  const gmax = document.getElementById("guide-max-check");
+  if (gmax) gmax.addEventListener("click", () => {
+    const raw = document.getElementById("guide-max-answer").value.trim();
+    if (raw === "" || !Number.isInteger(Number(raw))) return setGuideFeedback("err", "Введите целое число.");
+    const ans = maxDrill.N - 1;
+    if (Number(raw) === ans) setGuideFeedback("ok", `Верно: максимум = N − 1 = ${maxDrill.N} − 1 = ${ans}.`);
+    else setGuideFeedback("hint", "Для максимума оставляем одну единицу, а остальные N − 1 символов делаем нулями.");
+  });
+  const gmaxNew = document.getElementById("guide-max-new");
+  if (gmaxNew) gmaxNew.addEventListener("click", () => { maxDrill = { N: randInt(20, 90), K: randInt(1, 20) }; renderGuide(); });
+  const gfin = document.getElementById("guide-final-check");
+  if (gfin) gfin.addEventListener("click", () => {
+    const raw = document.getElementById("guide-final-answer").value.trim();
+    if (raw === "" || !Number.isInteger(Number(raw))) return setGuideFeedback("err", "Введите целое число.");
+    const v = Number(raw);
+    if (v === 124) setGuideFeedback("ok", "Верно: 124. Это и есть минимум для N = 520, K = 125.");
+    else if (v === 125) setGuideFeedback("hint", "Близко, но это значение K, а не Z. Применяем Z<sub>min</sub> = K − 1 = 125 − 1.");
+    else if (v === 519) setGuideFeedback("hint", "Это был бы максимум: Z<sub>max</sub> = N − 1 = 519. А спрашивают минимум.");
+    else setGuideFeedback("hint", "Применяем формулу для минимума: Z<sub>min</sub> = K − 1 = 125 − 1.");
+  });
+  const gfinLoad = document.getElementById("guide-final-load");
+  if (gfinLoad) gfinLoad.addEventListener("click", () => setTask(520, 125, "min"));
+}
+
+function renderSimulator() {
+  const tapeEl = document.getElementById("tape");
+  const infoEl = document.getElementById("tape-info");
+  tapeEl.innerHTML = "";
+  infoEl.innerHTML = "";
+  if (!simState) { tapeEl.innerHTML = '<div style="padding: 14px; color: var(--text-dim);">Симуляция не запущена.</div>'; return; }
+
+  const WINDOW = 21;
+  let dataMin = Math.min(simState.minPos, simState.head);
+  let dataMax = Math.max(simState.maxPos, simState.head);
+  const dataWidth = dataMax - dataMin + 1;
+  let displayMin, displayMax;
+  if (dataWidth <= WINDOW + 4) { displayMin = dataMin - 2; displayMax = dataMax + 2; }
+  else { const half = Math.floor(WINDOW / 2); displayMin = simState.head - half; displayMax = simState.head + half; }
+
+  for (let i = displayMin; i <= displayMax; i++) {
+    const v = simState.tape.get(i) ?? LAMBDA;
+    const cell = document.createElement("div");
+    cell.className = "cell" + (v === LAMBDA ? " lambda-cell" : "") + (i === simState.head ? " head" : "");
+    cell.textContent = v;
+    const pos = document.createElement("span");
+    pos.className = "pos";
+    pos.textContent = i;
+    cell.appendChild(pos);
+    tapeEl.appendChild(cell);
+  }
+
+  const cmdText = simState.lastCommand
+    ? `${simState.lastCommand.fromState}, ${simState.lastCommand.fromSymbol} → ${simState.lastCommand.write}, ${simState.lastCommand.move}, ${simState.lastCommand.next}`
+    : "—";
+  const finishedNote = simState.finished ? `<span class="kv"><b>Статус:</b> остановлена</span>` : `<span class="kv"><b>Статус:</b> работает</span>`;
+  let finalInfo = "";
+  if (simState.finished) {
+    let s = simState.minPos, e = simState.maxPos;
+    while (s <= e && (simState.tape.get(s) ?? LAMBDA) === LAMBDA) s++;
+    while (e >= s && (simState.tape.get(e) ?? LAMBDA) === LAMBDA) e--;
+    let finalStr = "";
+    if (s <= e) for (let i = s; i <= e; i++) finalStr += simState.tape.get(i) ?? LAMBDA;
+    const zeros = countZeros(finalStr);
+    finalInfo = `<span class="kv"><b>Итоговая строка:</b> <code class="mono">${finalStr || LAMBDA}</code></span><span class="kv"><b>Нулей:</b> ${zeros}</span>`;
+  }
+  infoEl.innerHTML = `
+    <span class="kv"><b>Шаг:</b> ${simState.step}</span>
+    <span class="kv"><b>Состояние:</b> <code>${simState.state}</code></span>
+    <span class="kv"><b>Позиция головки:</b> ${simState.head}</span>
+    <span class="kv"><b>Под головкой:</b> <code class="mono">${simState.tape.get(simState.head) ?? LAMBDA}</code></span>
+    <span class="kv"><b>Последняя команда:</b> <span class="tape-cmd">${cmdText}</span></span>
+    ${finishedNote}${finalInfo}`;
+}
+function showSimError(msg) { const el = document.getElementById("sim-err"); if (!msg) { el.className = "feedback err"; el.textContent = ""; return; } el.textContent = msg; el.classList.add("show"); }
+function handleSimRun() {
+  showSimError("");
+  if (!simState || simState.finished) {
+    const input = document.getElementById("sim-input").value.trim();
+    const r = initSimulation(input);
+    if (!r.ok) { showSimError(r.error); renderSimulator(); return; }
+  }
+  const r = runSimulation();
+  if (!r.ok) showSimError(r.error);
+  renderSimulator();
+}
+function handleSimStep() {
+  showSimError("");
+  if (!simState || simState.finished) {
+    const input = document.getElementById("sim-input").value.trim();
+    const init = initSimulation(input);
+    if (!init.ok) { showSimError(init.error); renderSimulator(); return; }
+  }
+  const r = stepSimulation();
+  if (!r.ok) showSimError(r.error);
+  renderSimulator();
+}
+function handleSimReset() { showSimError(""); resetSimulation(); renderSimulator(); }
+
+function runSolveTests() {
+  const cases = [
+    { args: [333, 120, "max"], expected: 332, label: "N=333, K=120, max" },
+    { args: [520, 125, "min"], expected: 124, label: "N=520, K=125, min" },
+    { args: [1300, 343, "max"], expected: 1299, label: "N=1300, K=343, max" },
+    { args: [10, 0, "min"], expected: 10, label: "N=10, K=0, min" },
+    { args: [10, 0, "max"], expected: 10, label: "N=10, K=0, max" },
+    { args: [10, 10, "min"], expected: 9, label: "N=10, K=10, min" },
+    { args: [10, 10, "max"], expected: 9, label: "N=10, K=10, max" },
+    { args: [1, 0, "min"], expected: 1, label: "N=1, K=0, min" },
+    { args: [1, 1, "max"], expected: 0, label: "N=1, K=1, max" },
+    { args: [100, 101, "min"], expectedError: true, label: "N=100, K=101 → ошибка" },
+    { args: [10.5, 1, "max"], expectedError: true, label: "N=10.5 → ошибка" }
+  ];
+  const simCases = [
+    { input: "1000", expectedTape: "0111", expectedZeros: 1 },
+    { input: "0000", expectedTape: "1111", expectedZeros: 0 },
+    { input: "1111", expectedTape: "1110", expectedZeros: 1 },
+    { input: "10110", expectedTape: "10101", expectedZeros: 2 }
+  ];
+  const out = document.getElementById("tests");
+  out.innerHTML = "";
+  let passed = 0;
+  const total = cases.length + simCases.length;
+  cases.forEach(c => {
+    const r = solveTask(...c.args);
+    let ok, detail;
+    if (c.expectedError) { ok = !r.ok; detail = ok ? `ошибка: «${r.error}»` : `ожидалась ошибка, получено ${r.answer}`; }
+    else { ok = r.ok && r.answer === c.expected; detail = r.ok ? `ответ = ${r.answer} (ожидалось ${c.expected})` : `ошибка: ${r.error}`; }
+    if (ok) passed++;
+    out.appendChild(makeTestRow(ok, "solveTask: " + c.label, detail));
+  });
+  simCases.forEach(c => {
+    const r = simulateTuringMachine(c.input);
+    let ok, detail;
+    if (!r.ok) { ok = false; detail = "ошибка симуляции: " + r.error; }
+    else { ok = r.finalTape === c.expectedTape && r.zeroCount === c.expectedZeros; detail = `итог «${r.finalTape}», нулей ${r.zeroCount} (ожидалось «${c.expectedTape}», ${c.expectedZeros})`; }
+    if (ok) passed++;
+    out.appendChild(makeTestRow(ok, `симулятор: вход «${c.input}»`, detail));
+  });
+  const summary = document.getElementById("tests-summary");
+  if (passed === total) { summary.textContent = `Все тесты пройдены: ${passed}/${total}.`; summary.style.color = "var(--ok-text)"; }
+  else { summary.textContent = `Пройдено ${passed} из ${total} тестов.`; summary.style.color = "var(--err-text)"; }
+}
+function makeTestRow(ok, label, detail) {
+  const row = document.createElement("div");
+  row.className = "test-row";
+  row.innerHTML = `<span class="status ${ok ? "ok" : "fail"}">${ok ? "✓" : "✗"}</span><span><b>${label}</b> — ${detail}</span>`;
+  return row;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("main-program-table").innerHTML = programTableHTML();
+  renderGuide();
+  newTailDrill();
+  renderExamples();
+  document.getElementById("btn-generate").addEventListener("click", handleGenerate);
+  document.getElementById("btn-manual").addEventListener("click", handleManual);
+  document.getElementById("btn-check").addEventListener("click", handleCheck);
+  document.getElementById("btn-hint").addEventListener("click", handleHint);
+  document.getElementById("btn-reveal").addEventListener("click", handleReveal);
+  document.getElementById("btn-show-solution").addEventListener("click", handleShowSolution);
+  document.getElementById("btn-tail-check").addEventListener("click", checkTailDrill);
+  document.getElementById("btn-tail-next").addEventListener("click", newTailDrill);
+  document.getElementById("btn-run").addEventListener("click", handleSimRun);
+  document.getElementById("btn-step").addEventListener("click", handleSimStep);
+  document.getElementById("btn-reset").addEventListener("click", handleSimReset);
+  document.querySelectorAll("[data-sim-example]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.getElementById("sim-input").value = btn.getAttribute("data-sim-example");
+      resetSimulation();
+      renderSimulator();
+      showSimError("");
+    });
+  });
+  document.getElementById("user-answer").addEventListener("keydown", e => { if (e.key === "Enter") handleCheck(); });
+  ["manual-n", "manual-k"].forEach(id => document.getElementById(id).addEventListener("keydown", e => { if (e.key === "Enter") handleManual(); }));
+  document.getElementById("tail-answer").addEventListener("keydown", e => { if (e.key === "Enter") checkTailDrill(); });
+  renderSimulator();
+  runSolveTests();
+});
+</script>
+</body>
+</html>

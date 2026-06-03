@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тренажёр: сложение отрицательных чисел — модель долга</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #eef2f5;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 30px 20px;
+            color: #1a2c3e;
+        }
+
+        /* главный контейнер */
+        .trainer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        /* заголовок */
+        .header {
+            background: #2c3e4e;
+            padding: 20px 30px;
+            color: white;
+        }
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            letter-spacing: -0.3px;
+        }
+        .header p {
+            font-size: 0.95rem;
+            opacity: 0.85;
+            margin-top: 6px;
+        }
+
+        /* переключатель режимов */
+        .mode-bar {
+            display: flex;
+            background: #f0f3f7;
+            padding: 12px 30px;
+            gap: 16px;
+            border-bottom: 1px solid #dce4ec;
+        }
+        .mode-btn {
+            background: transparent;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 8px 24px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #2c3e4e;
+        }
+        .mode-btn.active {
+            background: #2c3e4e;
+            color: white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        /* основная сетка: левая колонка (визуал) + правая (интерактив) */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        /* левая панель — выражение и фишки */
+        .visual-panel {
+            background: #fafcfd;
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            border: 1px solid #e2edf2;
+        }
+        .big-expression {
+            background: #f4f9fe;
+            text-align: center;
+            padding: 20px 10px;
+            border-radius: 20px;
+            font-size: 3rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 4px;
+            color: #b91c1c;
+            margin-bottom: 24px;
+            border: 1px solid #d4e2ec;
+        }
+        .chips-area {
+            background: #fff9f0;
+            border-radius: 20px;
+            padding: 16px;
+        }
+        .debt-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 12px 0;
+        }
+        .debt-box {
+            background: #fef2e4;
+            border-radius: 20px;
+            padding: 12px 16px;
+            min-width: 140px;
+            text-align: center;
+        }
+        .debt-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #a1552c;
+        }
+        .chip-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .chip {
+            width: 32px;
+            height: 32px;
+            background: #e34d3a;
+            border-radius: 50%;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .plus-icon {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #2c5a6e;
+            align-self: center;
+        }
+        .note {
+            font-size: 0.8rem;
+            text-align: center;
+            margin-top: 16px;
+            color: #5f7f9c;
+        }
+
+        /* правая панель — обучение / тренировка */
+        .interactive-panel {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 20px;
+            border: 1px solid #e2edf2;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+        .step-box {
+            background: #f8fafd;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .step-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 16px;
+            color: #1f4e6e;
+            border-left: 4px solid #2c7da0;
+            padding-left: 12px;
+        }
+        .step-question {
+            font-size: 1rem;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+        .step-control {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin: 16px 0;
+        }
+        .step-input {
+            padding: 8px 14px;
+            font-size: 1rem;
+            border: 1px solid #bac8d9;
+            border-radius: 48px;
+            width: 110px;
+            text-align: center;
+        }
+        .step-btn {
+            background: #2c7da0;
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.1s;
+        }
+        .step-btn:hover {
+            background: #1f5e7a;
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .feedback {
+            background: #fef6e0;
+            border-radius: 16px;
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            margin-top: 16px;
+            border-left: 4px solid #f4b942;
+        }
+        .train-area {
+            text-align: center;
+        }
+        .answer-input {
+            font-size: 1.6rem;
+            width: 150px;
+            text-align: center;
+            border: 2px solid #cbdbe0;
+            border-radius: 60px;
+            padding: 8px;
+            font-weight: 600;
+        }
+        .button-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .action-btn {
+            background: #eef2f5;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: 0.1s;
+        }
+        .action-btn.hint {
+            background: #e6e9f0;
+        }
+        .action-btn.new {
+            background: #dee2e9;
+        }
+        .footer-rule {
+            background: #eef3f7;
+            padding: 14px 30px;
+            text-align: center;
+            font-size: 0.85rem;
+            border-top: 1px solid #d0dfe8;
+            color: #2c5a6e;
+        }
+        @media (max-width: 780px) {
+            .main-grid { grid-template-columns: 1fr; gap: 20px; }
+            .big-expression { font-size: 2.4rem; }
+        }
+        .hidden-panel { display: none; }
+        .success { color: #2a7f2a; font-weight: 500; }
+        .error { color: #c0392b; }
+    </style>
+</head>
+<body>
+<div class="trainer-container">
+    <div class="header">
+        <h1>Сложение отрицательных чисел</h1>
+        <p>Модель «долги» — удобный способ понять правило. Долг + долг = общий долг → модули складываются, знак «минус».</p>
+    </div>
+    <div class="mode-bar">
+        <button id="modeLearningBtn" class="mode-btn active">📘 Обучение (по шагам)</button>
+        <button id="modeTrainBtn" class="mode-btn">⚡ Тренировка</button>
+    </div>
+
+    <div class="main-grid">
+        <!-- ЛЕВАЯ часть: визуализация (всегда видна) -->
+        <div class="visual-panel">
+            <div class="big-expression" id="exprDisplay"></div>
+            <div class="chips-area" id="chipsContainer">
+                <!-- фишки будут генерироваться динамически -->
+            </div>
+            <div class="note">🔴 Красные фишки — долги. Каждая фишка = 1 единица долга.</div>
+        </div>
+
+        <!-- ПРАВАЯ часть: динамическая (обучение / тренировка) -->
+        <div class="interactive-panel">
+            <!-- панель обучения -->
+            <div id="learningPanel">
+                <div id="stepContainer" class="step-box"></div>
+                <div id="learningFeedback" class="feedback"></div>
+            </div>
+            <!-- панель тренировки -->
+            <div id="trainingPanel" class="hidden-panel">
+                <div class="train-area">
+                    <div style="margin-bottom: 20px;">
+                        <label style="font-size:1.2rem; font-weight:500;">Ваш ответ:</label>
+                        <input type="text" id="trainAnswer" class="answer-input" placeholder="например, -7">
+                    </div>
+                    <button id="checkTrainBtn" class="step-btn" style="background:#2c7da0;">✓ Проверить</button>
+                    <div id="trainFeedback" class="feedback" style="margin-top:20px;"></div>
+                </div>
+            </div>
+            <!-- общие кнопки -->
+            <div class="button-row">
+                <button id="hintBtn" class="action-btn hint">💡 Подсказка</button>
+                <button id="newExampleBtn" class="action-btn new">🔄 Новый пример</button>
+            </div>
+        </div>
+    </div>
+    <div class="footer-rule">
+        Правило: (−a) + (−b) = −(a + b)   |   Модули складываем, знак минус.
+    </div>
+</div>
+
+<script>
+    // --- данные текущего примера (от -1 до -9) ---
+    let currentA = -3;
+    let currentB = -5;
+    let absA = 3;
+    let absB = 5;
+    let expectedSum = -8;
+    let expectedAbsSum = 8;
+
+    // --- режим: 'learning' или 'training' ---
+    let currentMode = 'learning';
+
+    // --- состояние обучения: шаги от 1 до 6 (добавлен шаг выбора действия) ---
+    let learningStep = 1;
+    // флаги корректного прохождения шагов (не обязательны для блокировки, но для логики)
+    let stepCompleted = { step1: false, step2: false, step3: false, step4: false, step5: false, step6: false };
+
+    // DOM элементы
+    const exprDisplay = document.getElementById('exprDisplay');
+    const chipsContainer = document.getElementById('chipsContainer');
+    const learningPanel = document.getElementById('learningPanel');
+    const trainingPanel = document.getElementById('trainingPanel');
+    const modeLearningBtn = document.getElementById('modeLearningBtn');
+    const modeTrainBtn = document.getElementById('modeTrainBtn');
+    const stepContainer = document.getElementById('stepContainer');
+    const learningFeedbackDiv = document.getElementById('learningFeedback');
+    const trainAnswerInput = document.getElementById('trainAnswer');
+    const checkTrainBtn = document.getElementById('checkTrainBtn');
+    const trainFeedbackDiv = document.getElementById('trainFeedback');
+    const hintBtn = document.getElementById('hintBtn');
+    const newExampleBtn = document.getElementById('newExampleBtn');
+
+    // --- вспомогательные функции ---
+    function randomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateNewNumbers() {
+        // числа от -1 до -9
+        let a = -randomInt(1, 9);
+        let b = -randomInt(1, 9);
+        currentA = a;
+        currentB = b;
+        absA = Math.abs(a);
+        absB = Math.abs(b);
+        expectedAbsSum = absA + absB;
+        expectedSum = -expectedAbsSum;
+        updateVisuals();
+    }
+
+    function updateVisuals() {
+        // обновить большое выражение
+        exprDisplay.innerHTML = `${currentA} + (${currentB})`;
+        // обновить фишки (без текста "итого долг")
+        renderChipsOnly();
+    }
+
+    function renderChipsOnly() {
+        let html = `
+            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px;">
+                <div class="debt-box">
+                    <div class="debt-title">Долг 1: ${currentA} (модуль ${absA})</div>
+                    <div class="chip-list" id="chipListA"></div>
+                </div>
+                <div class="plus-icon">+</div>
+                <div class="debt-box">
+                    <div class="debt-title">Долг 2: ${currentB} (модуль ${absB})</div>
+                    <div class="chip-list" id="chipListB"></div>
+                </div>
+            </div>
+        `;
+        chipsContainer.innerHTML = html;
+        const containerA = document.getElementById('chipListA');
+        const containerB = document.getElementById('chipListB');
+        for (let i = 0; i < absA; i++) {
+            let chip = document.createElement('div');
+            chip.className = 'chip';
+            containerA.appendChild(chip);
+        }
+        for (let i = 0; i < absB; i++) {
+            let chip = document.createElement('div');
+            chip.className = 'chip';
+            containerB.appendChild(chip);
+        }
+    }
+
+    // сбросить прогресс обучения
+    function resetLearningState() {
+        learningStep = 1;
+        stepCompleted = { step1: false, step2: false, step3: false, step4: false, step5: false, step6: false };
+        if (currentMode === 'learning') {
+            renderLearningStep(1);
+            learningFeedbackDiv.innerHTML = '🔍 Начнём пошаговое обучение. Следуй инструкциям.';
+        }
+    }
+
+    // --- Шаги обучения ---
+    function renderLearningStep(step) {
+        if (!stepContainer) return;
+        if (step === 1) {
+            stepContainer.innerHTML = `
+                <div class="step-title">Шаг 1. Знаки чисел</div>
+                <div class="step-question">Оба ли числа в выражении <strong>${currentA} + (${currentB})</strong> отрицательные?</div>
+                <div class="step-control">
+                    <button id="step1Yes" class="step-btn">✅ Да, оба отрицательные</button>
+                    <button id="step1No" class="step-btn">❌ Нет</button>
+                </div>
+            `;
+            document.getElementById('step1Yes')?.addEventListener('click', () => handleStep1(true));
+            document.getElementById('step1No')?.addEventListener('click', () => handleStep1(false));
+        } 
+        else if (step === 2) {
+            stepContainer.innerHTML = `
+                <div class="step-title">Шаг 2. Модули чисел</div>
+                <div class="step-question">Чему равны модули (расстояния до нуля)?</div>
+                <div class="step-control">
+                    <label>|${currentA}| = </label>
+                    <input type="number" id="mod1" class="step-input" placeholder="модуль 1">
+                    <label>|${currentB}| = </label>
+                    <input type="number" id="mod2" class="step-input" placeholder="модуль 2">
+                    <button id="checkMods" class="step-btn">Проверить</button>
+                </div>
+            `;
+            document.getElementById('checkMods')?.addEventListener('click', handleStep2);
+        }
+        else if (step === 3) {
+            stepContainer.innerHTML = `
+                <div class="step-title">Шаг 3. Что сделать с модулями?</div>
+                <div class="step-question">При сложении двух отрицательных чисел модули нужно:</div>
+                <div class="step-control radio-group">
+                    <label><input type="radio" name="actionMod" value="add"> ➕ Сложить</label>
+                    <label><input type="radio" name="actionMod" value="sub"> ➖ Вычесть</label>
+                    <label><input type="radio" name="actionMod" value="big"> 📈 Взять больший модуль</label>
+                    <label><input type="radio" name="actionMod" value="small"> 📉 Взять меньший модуль</label>
+                </div>
+                <div><button id="checkAction" class="step-btn">Выбрать</button></div>
+            `;
+            document.getElementById('checkAction')?.addEventListener('click', handleStep3);
+        }
+        else if (step === 4) {
+            stepContainer.innerHTML = `
+                <div class="step-title">Шаг 4. Сложение модулей</div>
+                <div class="step-question">Чему равна сумма модулей ${absA} + ${absB} ?</div>
+                <div class="step-control">
+                    <input type="number" id="sumMod" class="step-input" placeholder="сумма">
+                    <button id="checkSum" class="step-btn">Проверить</button>
+                </div>
+            `;
+            document.getElementById('checkSum')?.addEventListener('click', handleStep4);
+        }
+        else if (step === 5) {
+            stepContainer.innerHTML = `
+                <div class="step-title">Шаг 5. Знак результата</div>
+                <div class="step-question">Сумма двух отрицательных чисел будет:</div>
+                <div class="step-control radio-group">
+                    <label><input type="radio" name="signRes" value="minus"> ➖ Отрицательной (минус)</label>
+                    <label><input type="radio" name="signRes" value="plus"> ➕ Положительной (плюс)</label>
+                </div>
+                <button id="checkSign" class="step-btn">Подтвердить знак</button>
+            `;
+            document.getElementById('checkSign')?.addEventListener('click', handleStep5);
+        }
+        else if (step === 6) {
+            stepContainer.innerHTML = `
+                <div class="step-title">Шаг 6. Запиши ответ</div>
+                <div class="step-question">Полная сумма: ${currentA} + (${currentB}) = ?</div>
+                <div class="step-control">
+                    <input type="text" id="finalAns" class="step-input" placeholder="например, -7">
+                    <button id="finalCheck" class="step-btn">Завершить</button>
+                </div>
+            `;
+            document.getElementById('finalCheck')?.addEventListener('click', handleStep6);
+        }
+    }
+
+    // Обработчики шагов
+    function handleStep1(isBothNegative) {
+        if (isBothNegative) {
+            learningFeedbackDiv.innerHTML = '✅ Верно! Оба числа отрицательные. Это два долга. Переходим к модулям.';
+            stepCompleted.step1 = true;
+            learningStep = 2;
+            renderLearningStep(2);
+        } else {
+            learningFeedbackDiv.innerHTML = '❌ Ошибка: перед каждым числом стоит знак «минус». Они отрицательные. Попробуй ещё раз.';
+        }
+    }
+
+    function handleStep2() {
+        const m1 = parseInt(document.getElementById('mod1')?.value);
+        const m2 = parseInt(document.getElementById('mod2')?.value);
+        if (m1 === absA && m2 === absB) {
+            learningFeedbackDiv.innerHTML = `✅ Правильно! |${currentA}| = ${absA}, |${currentB}| = ${absB}. Модуль — это число без знака.`;
+            stepCompleted.step2 = true;
+            learningStep = 3;
+            renderLearningStep(3);
+        } else {
+            learningFeedbackDiv.innerHTML = `❌ Неверно. Модуль отрицательного числа — его абсолютная величина. |${currentA}| = ${absA}, |${currentB}| = ${absB}.`;
+        }
+    }
+
+    function handleStep3() {
+        const selected = document.querySelector('input[name="actionMod"]:checked');
+        if (!selected) {
+            learningFeedbackDiv.innerHTML = 'Выбери вариант действия с модулями.';
+            return;
+        }
+        const value = selected.value;
+        if (value === 'add') {
+            learningFeedbackDiv.innerHTML = '✅ Правильно! При сложении двух отрицательных чисел модули складываются (долги суммируются).';
+            stepCompleted.step3 = true;
+            learningStep = 4;
+            renderLearningStep(4);
+        } else if (value === 'sub') {
+            learningFeedbackDiv.innerHTML = '⚠️ Вычитание модулей применяется при сложении чисел с разными знаками. А здесь оба числа отрицательные — два долга, значит модули надо сложить. Попробуй ещё раз.';
+        } else if (value === 'big') {
+            learningFeedbackDiv.innerHTML = '❌ Неверно. Берём не больший модуль, а сумму модулей. Вспомни: долг + долг = общий долг (сумма).';
+        } else {
+            learningFeedbackDiv.innerHTML = '❌ Неверно. При сложении двух отрицательных чисел модули складываются, а не выбирается меньший.';
+        }
+    }
+
+    function handleStep4() {
+        const sum = parseFloat(document.getElementById('sumMod')?.value);
+        if (sum === expectedAbsSum) {
+            learningFeedbackDiv.innerHTML = `✅ Верно! ${absA} + ${absB} = ${expectedAbsSum}. Модули сложили. Теперь определим знак.`;
+            stepCompleted.step4 = true;
+            learningStep = 5;
+            renderLearningStep(5);
+        } else {
+            learningFeedbackDiv.innerHTML = `❌ Ошибка: нужно сложить модули ${absA} + ${absB} = ${expectedAbsSum}, а не ${sum}. Долги складываются.`;
+        }
+    }
+
+    function handleStep5() {
+        const selected = document.querySelector('input[name="signRes"]:checked');
+        if (!selected) {
+            learningFeedbackDiv.innerHTML = 'Выбери знак результата.';
+            return;
+        }
+        if (selected.value === 'minus') {
+            learningFeedbackDiv.innerHTML = `✅ Правильно! Сумма двух отрицательных чисел отрицательна. Знак минус. Результат: –${expectedAbsSum}. Запишем ответ.`;
+            stepCompleted.step5 = true;
+            learningStep = 6;
+            renderLearningStep(6);
+        } else {
+            learningFeedbackDiv.innerHTML = '❌ Неверно. Два долга не могут дать положительное число. Результат отрицательный.';
+        }
+    }
+
+    function handleStep6() {
+        const userAnswer = document.getElementById('finalAns')?.value.trim();
+        if (userAnswer === '') {
+            learningFeedbackDiv.innerHTML = 'Введите ответ.';
+            return;
+        }
+        const numAns = Number(userAnswer);
+        if (isNaN(numAns)) {
+            learningFeedbackDiv.innerHTML = 'Введите число.';
+            return;
+        }
+        if (numAns === expectedSum) {
+            learningFeedbackDiv.innerHTML = `🎉 Отлично! ${currentA} + (${currentB}) = ${expectedSum}. Ты применил правило: сложил модули и поставил минус.`;
+            stepCompleted.step6 = true;
+            // можно показать поздравление, но не блокируем
+        } else {
+            // диагностика типичных ошибок
+            if (numAns === expectedAbsSum) {
+                learningFeedbackDiv.innerHTML = `⚠️ Модуль ты посчитал правильно: ${absA} + ${absB} = ${expectedAbsSum}. Но забыл знак минус. Два долга дают общий долг, значит ответ ${expectedSum}.`;
+            } else if (numAns > 0) {
+                learningFeedbackDiv.innerHTML = `❌ Ошибка: получился положительный ответ, но сумма двух отрицательных чисел не может быть положительной. Правильно: ${expectedSum}.`;
+            } else if (numAns === -(Math.abs(absA - absB))) {
+                learningFeedbackDiv.innerHTML = `❌ Ты вычел модули (${absA} - ${absB} = ${Math.abs(absA-absB)}). При сложении двух отрицательных чисел модули складываются! Ответ: ${expectedSum}.`;
+            } else {
+                learningFeedbackDiv.innerHTML = `❌ Неверно. Правильный ответ: ${expectedSum} (модули ${absA}+${absB}=${expectedAbsSum}, знак минус).`;
+            }
+        }
+    }
+
+    // --- ТРЕНИРОВКА ---
+    function checkTraining() {
+        const raw = trainAnswerInput.value.trim();
+        if (raw === '') {
+            trainFeedbackDiv.innerHTML = 'Введите число.';
+            return;
+        }
+        const userNum = Number(raw);
+        if (isNaN(userNum)) {
+            trainFeedbackDiv.innerHTML = 'Введите числовой ответ.';
+            return;
+        }
+        if (userNum === expectedSum) {
+            trainFeedbackDiv.innerHTML = `✅ Верно! ${currentA} + (${currentB}) = ${expectedSum}. Молодец!`;
+        } else {
+            if (userNum === expectedAbsSum) {
+                trainFeedbackDiv.innerHTML = `⚠️ Модуль посчитан верно: ${absA} + ${absB} = ${expectedAbsSum}, но забыт знак минус. Правильный ответ: ${expectedSum}.`;
+            } else if (userNum > 0) {
+                trainFeedbackDiv.innerHTML = `❌ Ошибка: положительное число, но два отрицательных в сумме дают отрицательное. Ответ: ${expectedSum}.`;
+            } else if (userNum === -(Math.abs(absA - absB))) {
+                trainFeedbackDiv.innerHTML = `❌ Ты вычел модули (разность), но нужно сложить. При сложении отрицательных чисел модули складываются. Ответ: ${expectedSum}.`;
+            } else {
+                trainFeedbackDiv.innerHTML = `❌ Неверно. Правило: (–${absA}) + (–${absB}) = –(${absA}+${absB}) = ${expectedSum}.`;
+            }
+        }
+    }
+
+    // --- Подсказка (в зависимости от режима) ---
+    function showHint() {
+        const hintText = `📖 Подсказка (модель долга): ${currentA} + (${currentB}) — это два долга.
+Модули: ${absA} и ${absB}. Складываем модули: ${absA} + ${absB} = ${expectedAbsSum}.
+Оба числа отрицательные, значит результат отрицательный: −${expectedAbsSum} = ${expectedSum}.`;
+        if (currentMode === 'learning') {
+            learningFeedbackDiv.innerHTML = `<span class="success">💡 ${hintText}</span>`;
+        } else {
+            trainFeedbackDiv.innerHTML = `<span class="success">💡 ${hintText}</span>`;
+        }
+    }
+
+    // --- Смена режима ---
+    function setMode(mode) {
+        currentMode = mode;
+        if (mode === 'learning') {
+            learningPanel.classList.remove('hidden-panel');
+            trainingPanel.classList.add('hidden-panel');
+            modeLearningBtn.classList.add('active');
+            modeTrainBtn.classList.remove('active');
+            resetLearningState();
+        } else {
+            learningPanel.classList.add('hidden-panel');
+            trainingPanel.classList.remove('hidden-panel');
+            modeTrainBtn.classList.add('active');
+            modeLearningBtn.classList.remove('active');
+            trainAnswerInput.value = '';
+            trainFeedbackDiv.innerHTML = 'Тренировка: введи сумму двух отрицательных чисел. Используй подсказку при необходимости.';
+        }
+    }
+
+    // --- Новый пример (обновляет числа, сбрасывает обучение) ---
+    function refreshExample() {
+        generateNewNumbers();
+        if (currentMode === 'learning') {
+            resetLearningState();
+        } else {
+            trainAnswerInput.value = '';
+            trainFeedbackDiv.innerHTML = 'Новый пример. Введите ответ и нажмите «Проверить».';
+        }
+    }
+
+    // --- Инициализация ---
+    function init() {
+        generateNewNumbers();
+        setMode('learning');
+        modeLearningBtn.onclick = () => setMode('learning');
+        modeTrainBtn.onclick = () => setMode('training');
+        newExampleBtn.onclick = refreshExample;
+        hintBtn.onclick = showHint;
+        checkTrainBtn.onclick = checkTraining;
+        trainAnswerInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkTraining();
+        });
+    }
+
+    init();
+</script>
+</body>
+</html>

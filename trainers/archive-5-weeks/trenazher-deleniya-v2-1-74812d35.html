@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренажёр деления уголком</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #f5f4f0;
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+  .card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    max-width: 760px;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  }
+  h1 { font-size: 1.25rem; font-weight: 500; margin-bottom: 1rem; text-align: center; }
+  .stats { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; }
+  .stat { text-align: center; }
+  .stat-label { font-size: 0.7rem; text-transform: uppercase; color: #777; }
+  .stat-value { font-size: 1.6rem; font-weight: 500; }
+  .stat-value.ok { color: #1a7a42; }
+  .stat-value.err { color: #c0392b; }
+  .division-block {
+    background: #fefefe;
+    border: 1px solid #e2e0d8;
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+    margin: 0 auto 1rem;
+    overflow-x: auto;
+    max-width: 520px;
+  }
+  .division-top-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 54px;
+    width: fit-content;
+    min-width: 0;
+    margin: 0 auto;
+  }
+  .work-left { min-width: 150px; }
+  .right-stack {
+    min-width: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 72px;
+    padding-top: 8px;
+    padding-left: 16px;
+    border-left: 3px solid #4b0a4b;
+  }
+  .divisor-area {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    background: #f9f8f5;
+    padding: 0 10px;
+    border-radius: 12px;
+  }
+  .divisor-label { font-size: 0.7rem; color: #888; }
+  .divisor-value { font-size: 1.8rem; font-family: monospace; font-weight: 500; }
+  .digit-cell {
+    width: 40px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; font-family: 'Courier New', monospace; font-weight: 500;
+  }
+  .digit-cell.used { color: #aaa; }
+  .digit-cell.sel { background: #eef4ff; border-radius: 8px; color: #1a6abf; }
+  .digit-cell.avail { color: #222; }
+  .step-record { display: flex; align-items: baseline; min-height: 44px; }
+  .step-product { color: #1a1a18; }
+  .step-line { height: 2px; background: #555; margin: 4px 0; }
+  .step-remainder { color: #c47a00; font-weight: 500; }
+  .step-carry {
+    width: 40px; height: 48px;
+    position: relative;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: 'Courier New', monospace; font-size: 1.8rem; font-weight: 500;
+    color: #1a6abf;
+  }
+  .step-carry::before {
+    content: '↓';
+    position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+    font-size: 0.95rem; line-height: 1; color: #1a6abf;
+  }
+  .empty-step { color: #bbb; font-size: 0.8rem; padding: 4px 0; }
+  .current-task-hint {
+    display: inline-block; padding: 6px 10px; border-radius: 10px;
+    background: #fff3e0; border-left: 4px solid #e67e22;
+    color: #9a4b00; font-size: 0.95rem; font-weight: 600;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .quotient-area {
+    display: flex; flex-direction: column; align-items: flex-end;
+    gap: 4px; padding-right: 4px; padding-top: 10px;
+    border-top: 3px solid #4b0a4b; min-width: 120px;
+  }
+  .quotient-digits { display: flex; gap: 2px; }
+  .qdigit {
+    width: 40px; height: 48px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; font-family: monospace;
+    border-bottom: 2px solid #ddd;
+  }
+  .qdigit.filled { border-bottom-color: #1a7a42; color: #1a7a42; }
+  .qdigit.current { border-bottom-color: #1a6abf; animation: blink 0.8s infinite; }
+  @keyframes blink { 50% { border-bottom-color: transparent; } }
+  .ctrl-btn {
+    width: 40px; height: 40px;
+    border: 1px solid #ccc; background: white;
+    border-radius: 12px; font-size: 1.2rem; cursor: pointer;
+  }
+  .ctrl-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .selected-value {
+    font-family: monospace; font-size: 1.2rem; font-weight: 500;
+    min-width: 60px; text-align: center;
+  }
+  .selected-value.valid { color: #1a7a42; }
+  .selected-value.too-big { color: #c0392b; }
+  .answer-panel {
+    background: #f9f8f5; border: 1px solid #ddd;
+    border-radius: 16px; padding: 12px 16px;
+    display: flex; align-items: center; gap: 16px; margin: 12px 0;
+  }
+  .answer-panel label { flex: 1; font-size: 0.9rem; }
+  .answer-panel.mult-phase { background: #f0f7ff; border-color: #90b8e8; }
+  .answer-panel.sub-phase  { background: #fff8f0; border-color: #e8c070; }
+  .answer-input {
+    width: 80px; height: 56px; font-size: 2rem;
+    text-align: center; font-family: monospace;
+    border: 2px solid #1a6abf; border-radius: 12px; background: white;
+  }
+  .answer-input.wide { width: 110px; font-size: 1.6rem; }
+  .answer-input.correct { border-color: #1a7a42; color: #1a7a42; }
+  .answer-input.wrong { border-color: #c0392b; animation: shake 0.2s; }
+  @keyframes shake {
+    0%,100%{ transform: translateX(0); }
+    25%{ transform: translateX(-4px); }
+    75%{ transform: translateX(4px); }
+  }
+  .phase-badge {
+    font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 0.05em; font-weight: 700;
+    padding: 2px 8px; border-radius: 8px;
+    margin-right: 8px; white-space: nowrap;
+  }
+  .phase-badge.mult { background: #dceeff; color: #1a5a9a; }
+  .phase-badge.sub  { background: #ffeedd; color: #9a5010; }
+  .feedback {
+    text-align: center; min-height: 2rem; font-size: 0.92rem;
+    margin: 10px auto; max-width: 620px; line-height: 1.45;
+  }
+  .feedback.ok { color: #1a7a42; }
+  .feedback.err {
+    display: block; background: #fff1e8; color: #9c2f18;
+    border-left: 5px solid #e25b32; border-radius: 12px;
+    padding: 10px 14px; font-weight: 650;
+    box-shadow: 0 2px 8px rgba(156,47,24,0.08);
+  }
+  .action-buttons { display: flex; justify-content: center; gap: 12px; margin: 12px 0; }
+  button {
+    padding: 8px 20px; border: 1px solid #ccc; background: white;
+    border-radius: 30px; font-size: 0.9rem; cursor: pointer;
+  }
+  button.primary { background: #1a6abf; border-color: #1a6abf; color: white; }
+  .level-select {
+    display: flex; justify-content: center; gap: 12px;
+    margin-top: 12px; font-size: 0.8rem;
+  }
+  select { padding: 4px 12px; border-radius: 20px; border: 1px solid #ccc; }
+  .mode-toggle { display: flex; justify-content: center; gap: 6px; margin-top: 10px; }
+  .mode-btn {
+    padding: 5px 14px; border: 1.5px solid #ccc; background: white;
+    border-radius: 20px; font-size: 0.78rem; cursor: pointer;
+    color: #555; transition: all 0.15s;
+  }
+  .mode-btn.active {
+    background: #1a6abf; border-color: #1a6abf;
+    color: white; font-weight: 600;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>📐 Деление уголком</h1>
+  <div class="stats">
+    <div class="stat"><div class="stat-label">Верно</div><div id="stat-correct" class="stat-value ok">0</div></div>
+    <div class="stat"><div class="stat-label">Ошибок</div><div id="stat-wrong" class="stat-value err">0</div></div>
+    <div class="stat"><div class="stat-label">Всего</div><div id="stat-total" class="stat-value">0</div></div>
+  </div>
+
+  <div class="division-block">
+    <div class="division-top-row">
+      <div class="work-left">
+        <div id="dividend-grid" style="display:flex;gap:0;"></div>
+        <div id="long-division-steps" style="margin-top:8px;min-height:60px;"></div>
+      </div>
+      <div class="right-stack">
+        <div class="divisor-area">
+          <span class="divisor-label">делитель</span>
+          <span id="divisor-value" class="divisor-value"></span>
+        </div>
+        <div class="quotient-area">
+          <span class="divisor-label">частное</span>
+          <div id="quotient-digits" class="quotient-digits"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="selection-controls" style="display:flex;justify-content:center;gap:12px;align-items:center;margin:12px 0;">
+    <button id="btn-less" class="ctrl-btn">◄</button>
+    <span id="selected-part" class="selected-value"></span>
+    <button id="btn-more" class="ctrl-btn">►</button>
+  </div>
+
+  <div id="answer-panel" class="answer-panel" style="display:none;">
+    <label id="answer-question"></label>
+    <input id="answer-input" class="answer-input" type="number" min="0" step="1">
+  </div>
+
+  <div id="feedback" class="feedback"></div>
+
+  <div class="action-buttons">
+    <button id="btn-select" class="primary">Выбрать →</button>
+    <button id="btn-check" style="display:none;">Проверить</button>
+    <button id="btn-next" style="display:none;">Следующий →</button>
+  </div>
+
+  <div class="level-select">
+    <label>Уровень:</label>
+    <select id="level-select">
+      <option value="easy">Лёгкий (1 шаг)</option>
+      <option value="medium" selected>Средний (2 шага)</option>
+      <option value="hard">Сложный (3 шага)</option>
+      <option value="zero">Нуль в частном</option>
+    </select>
+  </div>
+  <div class="mode-toggle">
+    <button class="mode-btn active" data-mode="auto">В уме</button>
+    <button class="mode-btn" data-mode="multiply">+ Умножение</button>
+    <button class="mode-btn" data-mode="full">+ Умножение и вычитание</button>
+  </div>
+</div>
+
+<script>
+  function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function generateExample(level) {
+    let divisor = randomInt(2, 9);
+    let quotient;
+    if (level === 'easy') {
+      quotient = randomInt(1, 9);
+    } else if (level === 'medium') {
+      if (Math.random() < 0.4) {
+        quotient = randomInt(1, 9) * 10;
+      } else {
+        do { quotient = randomInt(11, 99); } while (quotient % 10 === 0);
+      }
+    } else if (level === 'hard') {
+      if (Math.random() < 0.2) {
+        const h = randomInt(1, 9), u = randomInt(1, 9);
+        quotient = h * 100 + u;
+      } else {
+        do { quotient = randomInt(111, 999); } while (quotient.toString().includes('0'));
+      }
+    } else {
+      // Нуль в частном: X0Y, критическая цифра ненулевая
+      let attempts = 0, critDigit;
+      do {
+        const a = randomInt(1, 9), b = randomInt(1, 9);
+        quotient = 100 * a + b;
+        const dvd = (divisor * quotient).toString();
+        let sel = 1;
+        while (parseInt(dvd.slice(0, sel)) < divisor && sel < dvd.length) sel++;
+        critDigit = parseInt(dvd[sel]);
+        attempts++;
+      } while (critDigit === 0 && attempts < 100);
+    }
+    const dividend = (divisor * quotient).toString();
+    return { dividend, divisor, quotient: quotient.toString() };
+  }
+
+  let currentTask = null;
+  let phase = 'selecting';
+  let procLen = 0, selLen = 1, prevRemainder = 0;
+  let quotientBuilt = '';
+  let stepsHistory = [];
+  let mistakeMade = false, stepMistakes = 0;
+  let stats = { correct: 0, wrong: 0, total: 0 };
+  let mode = 'auto';
+  let pendingDigit = null, pendingProduct = null;
+  let pendingPartial = null, pendingProductStartCol = null;
+
+  function advanceToNextStep() {
+    if (procLen >= currentTask.dividend.length) {
+      phase = 'done';
+      stats.total++;
+      if (!mistakeMade) stats.correct++; else stats.wrong++;
+      document.getElementById('feedback').textContent =
+        `Готово! ${currentTask.dividend} ÷ ${currentTask.divisor} = ${quotientBuilt}`;
+      document.getElementById('feedback').className = 'feedback ok';
+      render(); return;
+    }
+    selLen = procLen + 1;
+    if (selLen > currentTask.dividend.length) selLen = currentTask.dividend.length;
+    stepMistakes = 0;
+    document.getElementById('feedback').textContent = '';
+    phase = 'entering';
+    render();
+  }
+
+  function getCurrentPartial() {
+    const taken = currentTask.dividend.slice(procLen, selLen);
+    const combined = (prevRemainder === 0 ? '' : prevRemainder.toString()) + taken;
+    return combined ? parseInt(combined, 10) : 0;
+  }
+  function currentQuotientDigit() { return Math.floor(getCurrentPartial() / currentTask.divisor); }
+  function isSelectionTooBig() { return selLen > procLen && currentQuotientDigit() > 9; }
+  function isSelectionValid() {
+    if (selLen <= procLen) return false;
+    const p = getCurrentPartial();
+    if (p === 0) return true;
+    if (p >= currentTask.divisor && currentQuotientDigit() <= 9) return true;
+    if (quotientBuilt.length > 0 && p > 0 && p < currentTask.divisor) return true;
+    return false;
+  }
+
+  function render() {
+    if (!currentTask) return;
+    // 1. Делимое
+    const gridContainer = document.getElementById('dividend-grid');
+    gridContainer.innerHTML = '';
+    currentTask.dividend.split('').forEach((ch, idx) => {
+      const cell = document.createElement('div');
+      cell.className = 'digit-cell';
+      cell.textContent = ch;
+      if (idx < procLen) cell.classList.add('used');
+      else if (idx < selLen) cell.classList.add('sel');
+      else cell.classList.add('avail');
+      gridContainer.appendChild(cell);
+    });
+    // 2. Делитель
+    document.getElementById('divisor-value').textContent = currentTask.divisor;
+    // 3. Записи в столбик
+    const sc = document.getElementById('long-division-steps');
+    sc.innerHTML = '';
+    if (stepsHistory.length === 0 && phase !== 'done') {
+      const e = document.createElement('div');
+      e.className = 'empty-step';
+      e.textContent = 'Здесь будут появляться произведения и остатки...';
+      sc.appendChild(e);
+    } else {
+      stepsHistory.forEach(step => {
+        const prodRow = document.createElement('div');
+        prodRow.className = 'step-record';
+        const pc = document.createElement('div');
+        pc.style.cssText = `display:flex;margin-left:${step.productStartCol*40}px`;
+        step.product.toString().split('').forEach(d => {
+          const c = document.createElement('div');
+          c.className = 'digit-cell step-product'; c.textContent = d;
+          pc.appendChild(c);
+        });
+        prodRow.appendChild(pc); sc.appendChild(prodRow);
+
+        const line = document.createElement('div');
+        line.className = 'step-line';
+        line.style.cssText = `margin-left:${step.productStartCol*40+8}px;width:${Math.max(step.product.toString().length*40,40)}px`;
+        sc.appendChild(line);
+
+        const remRow = document.createElement('div');
+        remRow.className = 'step-record step-remainder';
+        const rc = document.createElement('div');
+        const remStr = step.remainder.toString();
+        rc.style.cssText = `display:flex;margin-left:${step.remainderStartCol*40}px`;
+        remStr.split('').forEach(d => {
+          const c = document.createElement('div'); c.className = 'digit-cell'; c.textContent = d;
+          rc.appendChild(c);
+        });
+        remRow.appendChild(rc);
+        if (step.nextDigit) {
+          const carry = document.createElement('span');
+          carry.className = 'step-carry'; carry.textContent = step.nextDigit;
+          const endCol = step.remainderStartCol + remStr.length;
+          const tgt = step.nextDigitCol ?? endCol;
+          carry.style.marginLeft = (Math.max(0, tgt - endCol) * 40) + 'px';
+          remRow.appendChild(carry);
+        }
+        sc.appendChild(remRow);
+      });
+
+      // Во время вычитания — показываем уже подтверждённое произведение
+      if (phase === 'subtracting' && pendingProduct !== null) {
+        const pr = document.createElement('div'); pr.className = 'step-record';
+        const pc = document.createElement('div');
+        pc.style.cssText = `display:flex;margin-left:${pendingProductStartCol*40}px`;
+        pendingProduct.toString().split('').forEach(d => {
+          const c = document.createElement('div');
+          c.className = 'digit-cell step-product'; c.textContent = d; pc.appendChild(c);
+        });
+        pr.appendChild(pc); sc.appendChild(pr);
+        const pl = document.createElement('div'); pl.className = 'step-line';
+        pl.style.cssText = `margin-left:${pendingProductStartCol*40+8}px;width:${Math.max(pendingProduct.toString().length*40,40)}px`;
+        sc.appendChild(pl);
+      }
+
+      // Молния — только после ошибки
+      if (['entering','multiplying','subtracting'].includes(phase) && stepMistakes > 0) {
+        const curP = phase === 'entering' ? getCurrentPartial() : pendingPartial;
+        const hint = document.createElement('div'); hint.className = 'step-record';
+        const txt = stepMistakes >= 2
+          ? `⚡ Снова: мы делим <strong>${curP}</strong> на <strong>${currentTask.divisor}</strong>. Сколько раз ${currentTask.divisor} входит в ${curP}?`
+          : `⚡ Мы делим число <strong>${curP}</strong> на число <strong>${currentTask.divisor}</strong>`;
+        hint.innerHTML = `<span class="current-task-hint" style="margin-left:${procLen*40}px">${txt}</span>`;
+        sc.appendChild(hint);
+      }
+    }
+    // 4. Частное
+    const qc = document.getElementById('quotient-digits');
+    qc.innerHTML = '';
+    for (let i = 0; i < currentTask.quotient.length; i++) {
+      const d = document.createElement('div'); d.className = 'qdigit';
+      if (i < quotientBuilt.length) { d.textContent = quotientBuilt[i]; d.classList.add('filled'); }
+      else if (i === quotientBuilt.length && phase === 'entering') { d.classList.add('current'); }
+      else { d.textContent = '?'; }
+      qc.appendChild(d);
+    }
+    // 5. Управление
+    const selCtrl = document.getElementById('selection-controls');
+    const ap = document.getElementById('answer-panel');
+    const bSel = document.getElementById('btn-select');
+    const bChk = document.getElementById('btn-check');
+    const bNxt = document.getElementById('btn-next');
+
+    if (phase === 'selecting') {
+      selCtrl.style.display = 'flex'; ap.style.display = 'none';
+      bSel.style.display = 'inline-block'; bChk.style.display = 'none'; bNxt.style.display = 'none';
+      const v = getCurrentPartial(), valid = isSelectionValid(), big = isSelectionTooBig();
+      const sp = document.getElementById('selected-part');
+      sp.textContent = v;
+      sp.classList.toggle('valid', valid); sp.classList.toggle('too-big', big);
+      document.getElementById('btn-less').disabled = (selLen <= procLen + 1);
+      document.getElementById('btn-more').disabled = (selLen >= currentTask.dividend.length);
+    } else if (phase === 'entering') {
+      selCtrl.style.display = 'none'; ap.style.display = 'flex';
+      ap.className = 'answer-panel';
+      bSel.style.display = 'none'; bChk.style.display = 'inline-block'; bNxt.style.display = 'none';
+      document.getElementById('answer-question').innerHTML =
+        `<strong>${getCurrentPartial()} ÷ ${currentTask.divisor}</strong> = ?&nbsp; Введите цифру частного:`;
+      const inp = document.getElementById('answer-input');
+      inp.setAttribute('max','9'); inp.className = 'answer-input';
+      inp.value = ''; inp.focus();
+    } else if (phase === 'multiplying') {
+      selCtrl.style.display = 'none'; ap.style.display = 'flex';
+      ap.className = 'answer-panel mult-phase';
+      bSel.style.display = 'none'; bChk.style.display = 'inline-block'; bNxt.style.display = 'none';
+      document.getElementById('answer-question').innerHTML =
+        `<span class="phase-badge mult">умножение</span><strong>${pendingDigit} × ${currentTask.divisor}</strong> = ?&nbsp; Введите произведение:`;
+      const inp = document.getElementById('answer-input');
+      inp.removeAttribute('max'); inp.className = 'answer-input wide';
+      inp.value = ''; inp.focus();
+    } else if (phase === 'subtracting') {
+      selCtrl.style.display = 'none'; ap.style.display = 'flex';
+      ap.className = 'answer-panel sub-phase';
+      bSel.style.display = 'none'; bChk.style.display = 'inline-block'; bNxt.style.display = 'none';
+      document.getElementById('answer-question').innerHTML =
+        `<span class="phase-badge sub">вычитание</span><strong>${pendingPartial} − ${pendingProduct}</strong> = ?&nbsp; Введите остаток:`;
+      const inp = document.getElementById('answer-input');
+      inp.removeAttribute('max'); inp.className = 'answer-input wide';
+      inp.value = ''; inp.focus();
+    } else if (phase === 'done') {
+      selCtrl.style.display = 'none'; ap.style.display = 'none';
+      bSel.style.display = 'none'; bChk.style.display = 'none'; bNxt.style.display = 'inline-block';
+    }
+
+    document.getElementById('stat-correct').textContent = stats.correct;
+    document.getElementById('stat-wrong').textContent = stats.wrong;
+    document.getElementById('stat-total').textContent = stats.total;
+  }
+
+  function pushStep(product, remainder, psc, rsc, nd, ndc) {
+    stepsHistory.push({ product, remainder, productStartCol: psc, remainderStartCol: rsc, nextDigit: nd, nextDigitCol: ndc });
+  }
+
+  function checkStep() {
+    if (phase !== 'entering') return;
+    const inp = document.getElementById('answer-input');
+    const userDigit = parseInt(inp.value, 10);
+    const partial = getCurrentPartial();
+    const expected = Math.floor(partial / currentTask.divisor);
+
+    if (expected > 9) {
+      document.getElementById('feedback').textContent =
+        `Стоп! Блок слишком большой: ${partial} ÷ ${currentTask.divisor} = ${expected}. Вернитесь и выберите меньший блок.`;
+      document.getElementById('feedback').className = 'feedback err';
+      phase = 'selecting'; render(); return;
+    }
+    if (isNaN(userDigit) || userDigit < 0 || userDigit > 9) {
+      document.getElementById('feedback').textContent = 'Введите цифру от 0 до 9';
+      document.getElementById('feedback').className = 'feedback err';
+      inp.classList.add('wrong'); setTimeout(() => inp.classList.remove('wrong'), 300); return;
+    }
+    if (userDigit !== expected) {
+      mistakeMade = true; stepMistakes++;
+      const tp = userDigit * currentTask.divisor;
+      document.getElementById('feedback').textContent = userDigit > expected
+        ? `Стоп! ${userDigit} слишком много: ${userDigit} × ${currentTask.divisor} = ${tp}, а это больше, чем ${partial}. Нужно взять цифру меньше.`
+        : `Маловато. ${userDigit} × ${currentTask.divisor} = ${tp}. В число ${partial} можно вместить больше.`;
+      document.getElementById('feedback').className = 'feedback err';
+      inp.classList.add('wrong'); setTimeout(() => inp.classList.remove('wrong'), 300);
+      inp.value = ''; inp.focus(); render(); return;
+    }
+
+    // ВЕРНО
+    document.getElementById('feedback').textContent = '✓ Верно!';
+    document.getElementById('feedback').className = 'feedback ok';
+    inp.classList.add('correct');
+    const product = userDigit * currentTask.divisor;
+    const remainder = partial - product;
+    quotientBuilt += userDigit.toString();
+    const psc = Math.max(0, selLen - product.toString().length);
+    const remStr = remainder.toString();
+    const rsc = Math.max(0, psc + product.toString().length - remStr.length);
+    let nd = null, ndc = null;
+    if (selLen < currentTask.dividend.length) { nd = currentTask.dividend[selLen]; ndc = selLen; }
+
+    if (mode === 'auto') {
+      phase = 'animating';
+      pushStep(product, remainder, psc, rsc, nd, ndc);
+      procLen = selLen; prevRemainder = remainder;
+      advanceToNextStep();
+    } else {
+      pendingDigit = userDigit; pendingProduct = product;
+      pendingPartial = partial; pendingProductStartCol = psc;
+      stepMistakes = 0;
+      document.getElementById('feedback').textContent = '';
+      phase = 'multiplying'; render();
+    }
+  }
+
+  function checkMultiply() {
+    if (phase !== 'multiplying') return;
+    const inp = document.getElementById('answer-input');
+    const userVal = parseInt(inp.value, 10);
+    if (isNaN(userVal)) {
+      document.getElementById('feedback').textContent = 'Введите число';
+      document.getElementById('feedback').className = 'feedback err'; return;
+    }
+    if (userVal !== pendingProduct) {
+      mistakeMade = true; stepMistakes++;
+      document.getElementById('feedback').textContent = userVal > pendingProduct
+        ? `Слишком много. ${pendingDigit} × ${currentTask.divisor} даёт меньше. Попробуй ещё.`
+        : `Маловато. ${pendingDigit} × ${currentTask.divisor} = больше. Пересчитай.`;
+      document.getElementById('feedback').className = 'feedback err';
+      inp.classList.add('wrong'); setTimeout(() => inp.classList.remove('wrong'), 300);
+      inp.value = ''; inp.focus(); render(); return;
+    }
+    phase = 'animating';
+    document.getElementById('feedback').textContent = `✓ ${pendingDigit} × ${currentTask.divisor} = ${pendingProduct}`;
+    document.getElementById('feedback').className = 'feedback ok';
+    inp.classList.add('correct');
+    if (mode === 'full') {
+      stepMistakes = 0;
+      setTimeout(() => {
+        document.getElementById('feedback').textContent = '';
+        phase = 'subtracting'; render();
+      }, 500);
+    } else {
+      const rem = pendingPartial - pendingProduct;
+      const rsc = Math.max(0, pendingProductStartCol + pendingProduct.toString().length - rem.toString().length);
+      let nd = null, ndc = null;
+      if (selLen < currentTask.dividend.length) { nd = currentTask.dividend[selLen]; ndc = selLen; }
+      pushStep(pendingProduct, rem, pendingProductStartCol, rsc, nd, ndc);
+      procLen = selLen; prevRemainder = rem;
+      setTimeout(() => advanceToNextStep(), 500);
+    }
+  }
+
+  function checkSubtract() {
+    if (phase !== 'subtracting') return;
+    const inp = document.getElementById('answer-input');
+    const userVal = parseInt(inp.value, 10);
+    const expRem = pendingPartial - pendingProduct;
+    if (isNaN(userVal)) {
+      document.getElementById('feedback').textContent = 'Введите число';
+      document.getElementById('feedback').className = 'feedback err'; return;
+    }
+    if (userVal !== expRem) {
+      mistakeMade = true; stepMistakes++;
+      document.getElementById('feedback').textContent = `Неверно. Проверь: ${pendingPartial} − ${pendingProduct} = ?`;
+      document.getElementById('feedback').className = 'feedback err';
+      inp.classList.add('wrong'); setTimeout(() => inp.classList.remove('wrong'), 300);
+      inp.value = ''; inp.focus(); render(); return;
+    }
+    phase = 'animating';
+    document.getElementById('feedback').textContent = `✓ ${pendingPartial} − ${pendingProduct} = ${expRem}`;
+    document.getElementById('feedback').className = 'feedback ok';
+    inp.classList.add('correct');
+    const rsc = Math.max(0, pendingProductStartCol + pendingProduct.toString().length - expRem.toString().length);
+    let nd = null, ndc = null;
+    if (selLen < currentTask.dividend.length) { nd = currentTask.dividend[selLen]; ndc = selLen; }
+    pushStep(pendingProduct, expRem, pendingProductStartCol, rsc, nd, ndc);
+    procLen = selLen; prevRemainder = expRem;
+    setTimeout(() => advanceToNextStep(), 500);
+  }
+
+  function confirmSelection() {
+    if (isSelectionTooBig()) {
+      mistakeMade = true; stepMistakes++;
+      const p = getCurrentPartial(), wd = currentQuotientDigit();
+      document.getElementById('feedback').innerHTML =
+        `⚡ Блок <strong>${p}</strong> слишком большой: ${p} ÷ ${currentTask.divisor} = <strong>${wd}</strong> — ` +
+        `это больше 9, в одну клетку частного не влезет. Нажмите ◄ и возьмите меньший блок.`;
+      document.getElementById('feedback').className = 'feedback err'; return;
+    }
+    if (!isSelectionValid()) {
+      document.getElementById('feedback').textContent =
+        'Пока рано делить: выбранное число меньше делителя. Нажмите ► и снесите ещё одну цифру.';
+      document.getElementById('feedback').className = 'feedback err'; return;
+    }
+    phase = 'entering';
+    document.getElementById('feedback').textContent = '';
+    render();
+  }
+
+  function nextTask(resetStats = false) {
+    const level = document.getElementById('level-select').value;
+    if (resetStats) stats = { correct: 0, wrong: 0, total: 0 };
+    currentTask = generateExample(level);
+    phase = 'selecting'; procLen = 0; selLen = 1; prevRemainder = 0;
+    quotientBuilt = ''; stepsHistory = [];
+    mistakeMade = false; stepMistakes = 0;
+    pendingDigit = null; pendingProduct = null;
+    pendingPartial = null; pendingProductStartCol = null;
+    while (selLen < currentTask.dividend.length &&
+           getCurrentPartial() > 0 && getCurrentPartial() < currentTask.divisor) selLen++;
+    if (selLen > currentTask.dividend.length) selLen = currentTask.dividend.length;
+    render();
+  }
+
+  function shrinkSel() { if (phase==='selecting' && selLen>procLen+1) { selLen--; render(); } }
+  function extendSel() { if (phase==='selecting' && selLen<currentTask.dividend.length) { selLen++; render(); } }
+
+  document.getElementById('btn-less').onclick = shrinkSel;
+  document.getElementById('btn-more').onclick = extendSel;
+  document.getElementById('btn-select').onclick = confirmSelection;
+  document.getElementById('btn-check').onclick = () => {
+    if (phase==='entering') checkStep();
+    else if (phase==='multiplying') checkMultiply();
+    else if (phase==='subtracting') checkSubtract();
+  };
+  document.getElementById('btn-next').onclick = () => nextTask(false);
+  document.getElementById('level-select').onchange = () => nextTask(true);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      if (phase==='selecting') confirmSelection();
+      else if (phase==='entering') checkStep();
+      else if (phase==='multiplying') checkMultiply();
+      else if (phase==='subtracting') checkSubtract();
+      else if (phase==='done') nextTask(false);
+    }
+    if (phase==='selecting') {
+      if (e.key==='ArrowRight') extendSel();
+      if (e.key==='ArrowLeft') shrinkSel();
+    }
+  });
+  document.querySelectorAll('.mode-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      mode = btn.dataset.mode;
+    });
+  });
+
+  nextTask();
+</script>
+</body>
+</html>

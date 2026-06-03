@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Вертикальные углы равны — тренажёр</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css">
+  <script src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #e8e4db;
+           font-family: system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+           color: #1f2937; padding: 18px; }
+
+    .app { max-width: 980px; margin: auto; background: #fff; border-radius: 18px;
+           overflow: hidden; box-shadow: 0 12px 36px #0002; }
+
+    /* ── Header ── */
+    .head { background: #1a1a2e; color: #fff; padding: 14px 20px;
+            display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .head-left .title { font-size: 19px; font-weight: 900; }
+    .head-left .sub   { font-size: 12px; opacity: .70; margin-top: 2px; }
+    .tabs { display: flex; gap: 6px; }
+    .tab  { background: rgba(255,255,255,.14); border: none; color: rgba(255,255,255,.65);
+            padding: 6px 13px; border-radius: 8px; font: 700 12px system-ui; cursor: pointer; }
+    .tab:hover  { background: rgba(255,255,255,.22); color: #fff; }
+    .tab.active { background: rgba(255,255,255,.92); color: #1a1a2e; }
+
+    /* ── Layout ── */
+    .main { display: grid; grid-template-columns: minmax(0,1fr) 300px; }
+    .boardWrap { background: #faf8f2; padding: 14px; border-right: 1px solid #e5e2d9; }
+    .jxgbox { width: 100%; height: 440px; border: 1px solid #d6d3ca;
+              border-radius: 14px; background: #fffdf7; }
+
+    /* ── Panel ── */
+    .panel { padding: 14px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
+    .card  { border: 1.5px solid #e5e7eb; border-radius: 12px; padding: 12px; background: #f9fafb; }
+    .card h2 { margin: 0 0 9px; font-size: 11px; text-transform: uppercase;
+               letter-spacing: .08em; color: #64748b; }
+    .task-text { font-size: 14px; line-height: 1.55; }
+    .task-sub  { font-size: 12px; color: #64748b; margin: 6px 0 0; line-height: 1.4; }
+
+    /* ── Pair identification buttons ── */
+    .pair-intro { font-size: 12px; color: #64748b; margin: 8px 0 6px; line-height: 1.4; }
+    .pair-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    .pair-btn   { padding: 9px 4px; border-radius: 9px; background: #f8fafc;
+                  border: 2px solid #e2e8f0; font: 700 14px 'Courier New', monospace;
+                  cursor: pointer; text-align: center; letter-spacing: .04em; transition: .15s; }
+    .pair-btn:hover    { border-color: #a5b4fc; background: #eef2ff; }
+    .pair-btn.correct  { background: #f0fdf4; border-color: #6ee7b7; color: #065f46; }
+    .pair-btn.wrong    { background: #fff1f2; border-color: #fda4af; color: #9f1239; }
+
+    /* ── 4-angle display ── */
+    .ang-pair { display: flex; align-items: center; gap: 5px; padding: 5px 0;
+                border-bottom: 1px dashed #e5e7eb; }
+    .ang-pair:last-child { border: 0; }
+    .ang-num  { font-size: 17px; font-weight: 900; font-variant-numeric: tabular-nums;
+                min-width: 44px; }
+    .ang-num.blue  { color: #2563eb; }
+    .ang-num.amber { color: #b45309; }
+    .ang-name { font-size: 11px; color: #94a3b8; min-width: 22px; }
+    .vert-eq  { font-size: 11px; padding: 2px 6px; border-radius: 5px;
+                background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; font-weight: 700; }
+    .adj-row  { font-size: 12px; color: #64748b; padding-top: 7px; margin-top: 2px;
+                border-top: 1px solid #e5e7eb; }
+
+    /* ── Definition card ── */
+    .def-line { font-size: 13px; line-height: 1.55; margin-bottom: 3px; }
+    .def-why  { margin-top: 8px; padding: 8px 10px; background: #ecfdf5;
+                border-radius: 8px; font-size: 13px; color: #14532d; line-height: 1.55; }
+    .diff-box { margin-top: 7px; padding: 8px 10px; background: #faf5ff;
+                border: 1.5px solid #e9d5ff; border-radius: 8px;
+                font-size: 12px; color: #5b21b6; line-height: 1.5; }
+
+    /* ── Messages ── */
+    .msg  { border-radius: 12px; padding: 11px 13px; font-size: 14px;
+            font-weight: 700; line-height: 1.45; }
+    .info { background: #eff6ff; color: #1d4ed8; }
+    .ok   { background: #f0fdf4; color: #15803d; }
+    .err  { background: #fef2f2; color: #b91c1c; }
+    .warn { background: #fff7ed; color: #c2410c; }
+    .proof { display: none; background: #ecfdf5; color: #14532d;
+             border: 1.5px solid #bbf7d0; border-radius: 12px;
+             padding: 12px; font-size: 13px; line-height: 1.55; }
+
+    /* ── Buttons ── */
+    .btn-bar { display: flex; gap: 8px; flex-wrap: wrap; padding: 11px 14px;
+               background: #f9fafb; border-top: 1px solid #e5e7eb; }
+    button { border: 1.5px solid #d1d5db; border-radius: 9px; background: #fff;
+             color: #374151; padding: 8px 13px; font: 800 13px system-ui; cursor: pointer; }
+    button:hover  { background: #f3f4f6; }
+    .primary      { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
+    .primary:hover{ background: #2d2d4a; }
+    .hint-on      { background: #dcfce7; color: #166534; border-color: #86efac; }
+
+    @media (max-width: 820px) {
+      body { padding: 8px; }
+      .main { grid-template-columns: 1fr; }
+      .boardWrap { border-right: 0; border-bottom: 1px solid #e5e2d9; }
+      .jxgbox { height: 340px; }
+      .head { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Header -->
+  <div class="head">
+    <div class="head-left">
+      <div class="title">✕ Вертикальные углы равны</div>
+      <div class="sub">Две пересекающиеся прямые · вращайте фиолетовую прямую за точку C</div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" id="tabObs"  onclick="setMode('observe')">Наблюдение</button>
+      <button class="tab"        id="tabTask" onclick="setMode('task')">Задание</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- Board -->
+    <div class="boardWrap">
+      <div id="jxgboard" class="jxgbox"></div>
+    </div>
+
+    <!-- Panel -->
+    <aside class="panel">
+
+      <!-- Task card -->
+      <div class="card">
+        <h2>Задание</h2>
+        <div id="taskText" class="task-text"></div>
+
+        <!-- Pair identification (observe mode only) -->
+        <div id="pairSection" style="display:none">
+          <p class="pair-intro">Нажмите на пару — узнайте, вертикальная она или смежная:</p>
+          <div class="pair-grid">
+            <button class="pair-btn" id="pb12" onclick="checkPair(1,2)">∠1 и ∠2</button>
+            <button class="pair-btn" id="pb13" onclick="checkPair(1,3)">∠1 и ∠3</button>
+            <button class="pair-btn" id="pb24" onclick="checkPair(2,4)">∠2 и ∠4</button>
+            <button class="pair-btn" id="pb34" onclick="checkPair(3,4)">∠3 и ∠4</button>
+          </div>
+        </div>
+
+        <p id="taskSub" class="task-sub"></p>
+      </div>
+
+      <!-- 4 angles -->
+      <div class="card">
+        <h2>Все 4 угла</h2>
+        <div class="ang-pair">
+          <span class="ang-num blue"  id="v1">—</span>
+          <span class="ang-name">∠1</span>
+          <span style="color:#cbd5e1;font-size:16px">↔</span>
+          <span class="ang-num blue"  id="v3">—</span>
+          <span class="ang-name">∠3</span>
+          <span class="vert-eq">= равны</span>
+        </div>
+        <div class="ang-pair">
+          <span class="ang-num amber" id="v2">—</span>
+          <span class="ang-name">∠2</span>
+          <span style="color:#cbd5e1;font-size:16px">↔</span>
+          <span class="ang-num amber" id="v4">—</span>
+          <span class="ang-name">∠4</span>
+          <span class="vert-eq">= равны</span>
+        </div>
+        <div class="adj-row">
+          ∠1 + ∠2 = <b id="adjSum">—</b> &nbsp;(смежные → всегда 180°)
+        </div>
+      </div>
+
+      <!-- Definition -->
+      <div class="card">
+        <h2>Вертикальные vs смежные</h2>
+        <p class="def-line"><b>Вертикальные</b> (∠1↔∠3, ∠2↔∠4): стороны одного — продолжения сторон другого. <b>Всегда равны.</b></p>
+        <p class="def-line"><b>Смежные</b> (∠1+∠2, ∠2+∠3…): общая сторона, остальные — на одной прямой. <b>Сумма = 180°.</b></p>
+        <div class="def-why">
+          <b>Почему вертикальные равны?</b><br>
+          ∠1 + ∠2 = 180° (смежные)<br>
+          ∠3 + ∠2 = 180° (смежные)<br>
+          ∴ ∠1 = 180° − ∠2 = ∠3 ✓
+        </div>
+        <div class="diff-box">
+          <b>Не путайте:</b> вертикальные — <em>напротив</em> (без общей стороны).
+          Смежные — <em>рядом</em> (с общей стороной).
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div id="msg" class="msg info">Вращайте фиолетовую прямую и наблюдайте за четырьмя углами.</div>
+
+      <!-- Proof -->
+      <div id="proof" class="proof">
+        <b>Вертикальные углы всегда равны</b>, потому что оба равны разности 180° и одного и того же смежного угла. Это свойство не зависит от угла пересечения прямых.
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- Buttons -->
+  <div class="btn-bar">
+    <button class="primary" onclick="checkNow()">Проверить</button>
+    <button id="hintBtn"    onclick="toggleHint()">Подсказка</button>
+    <button onclick="newTask()">Новое задание</button>
+    <button onclick="resetLine()">Сбросить</button>
+  </div>
+
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════════════
+//  Geometry constants
+//  Horizontal line: A(0.5,0)–O(5,0)–B(9.5,0)
+//  Rotatable line:  C(upper arc)–O–D(mirror of C, lower)
+//  theta = angle of ray OC from positive x-axis, clamped to [8°, 172°]
+//
+//  ∠1 (top-right):  CCW from OB to OC  = theta
+//  ∠2 (top-left):   CCW from OC to OA  = 180° − theta
+//  ∠3 (bottom-left):CCW from OA to OD  = theta   (vertical to ∠1)
+//  ∠4 (bottom-right):CCW from OD to OB = 180°−theta (vertical to ∠2)
+// ════════════════════════════════════════════════════════════════════════
+const OX = 5, OY = 0;
+const R  = 1.9;     // constraint arc radius
+const SR = 1.7;     // angle sector visual radius
+const LR = 1.38;    // label placement radius (inside sector)
+const TOL = 2.5;    // task check tolerance (degrees)
+
+// ════════════════════════════════════════════════════════════════════════
+//  State
+// ════════════════════════════════════════════════════════════════════════
+let board = null;
+let ptO, ptA, ptB, ptC, ptD, hintPt;
+let ang1Obj, ang2Obj, ang3Obj, ang4Obj;
+let tickTimer   = null;
+let flashTimer  = null;
+let hintVisible = false;
+let mode        = 'observe';
+let targetAng1  = 65;         // task mode target ∠1 (degrees)
+const pairState = {};         // '12'|'13'|'24'|'34' → 'correct'|'wrong'
+
+// ════════════════════════════════════════════════════════════════════════
+//  Angle computation
+// ════════════════════════════════════════════════════════════════════════
+function getTheta() {
+  if (!ptC) return Math.PI / 3;
+  const raw = Math.atan2(ptC.Y() - OY, ptC.X() - OX);
+  return Math.max(8 * Math.PI / 180, Math.min(172 * Math.PI / 180, raw));
+}
+const getA1 = () => getTheta() * 180 / Math.PI;            // ∠1 (= ∠3 vertical)
+const getA2 = () => (Math.PI - getTheta()) * 180 / Math.PI; // ∠2 (= ∠4 vertical)
+
+// Angle to the midpoint of each sector arc (for label placement)
+function midAngle(s) {
+  const t = getTheta();
+  if (s === 1) return t / 2;                     // midpt of [0 → theta]
+  if (s === 2) return (t + Math.PI) / 2;         // midpt of [theta → pi]
+  if (s === 3) return Math.PI + t / 2;           // midpt of [pi → pi+theta]
+  if (s === 4) return 3 * Math.PI / 2 + t / 2;  // midpt of [pi+theta → 2pi]
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  Board construction
+// ════════════════════════════════════════════════════════════════════════
+function makeBoard(initAng1) {
+  if (tickTimer) { clearInterval(tickTimer); tickTimer = null; }
+  if (board)     { JXG.JSXGraph.freeBoard(board); board = null; }
+
+  board = JXG.JSXGraph.initBoard('jxgboard', {
+    boundingbox   : [-0.3, 3.2, 10.3, -2.7],
+    axis          : false,
+    grid          : true,
+    showCopyright : false,
+    showNavigation: false,
+    pan : { enabled: false },
+    zoom: { enabled: false }
+  });
+
+  // ── Fixed endpoints of horizontal line ────────────────────────
+  ptO = board.create('point', [OX, OY], {
+    name: 'O', fixed: true, size: 7,
+    strokeColor: '#1a1a2e', fillColor: '#1a1a2e',
+    label: { fontSize: 14, fontWeight: 'bold', color: '#1a1a2e', offset: [10, -4] },
+    layer: 6
+  });
+  ptA = board.create('point', [0.5, OY], {
+    name: 'A', fixed: true, size: 4,
+    strokeColor: '#374151', fillColor: '#374151',
+    label: { fontSize: 13, fontWeight: 'bold', offset: [-4, -20] }, layer: 5
+  });
+  ptB = board.create('point', [9.5, OY], {
+    name: 'B', fixed: true, size: 4,
+    strokeColor: '#374151', fillColor: '#374151',
+    label: { fontSize: 13, fontWeight: 'bold', offset: [0, -20] }, layer: 5
+  });
+
+  // ── Horizontal line ────────────────────────────────────────────
+  board.create('segment', [ptA, ptB], {
+    strokeColor: '#374151', strokeWidth: 4.5,
+    highlight: false, layer: 1
+  });
+
+  // ── Constraint arc: upper semicircle ─────────────────────────
+  const aR = board.create('point', [OX + R, OY], { visible: false, fixed: true });
+  const aL = board.create('point', [OX - R, OY], { visible: false, fixed: true });
+  const cArc = board.create('arc', [ptO, aR, aL], { visible: false });
+
+  // ── C: draggable glider on arc ────────────────────────────────
+  const t0 = Math.max(8, Math.min(172, initAng1 !== undefined ? initAng1 : 65)) * Math.PI / 180;
+  ptC = board.create('glider', [OX + R * Math.cos(t0), OY + R * Math.sin(t0), cArc], {
+    name: 'C', size: 9,
+    strokeColor: '#7c3aed', fillColor: '#a78bfa',
+    label: { fontSize: 13, fontWeight: 'bold', color: '#6d28d9', offset: [7, 4] },
+    layer: 7
+  });
+
+  // ── D: mirror of C through O (computed, not draggable) ────────
+  ptD = board.create('point', [
+    () => 2 * OX - ptC.X(),
+    () => 2 * OY - ptC.Y()
+  ], {
+    name: 'D', size: 9,
+    strokeColor: '#7c3aed', fillColor: '#a78bfa',
+    label: { fontSize: 13, fontWeight: 'bold', color: '#6d28d9', offset: [7, -20] },
+    layer: 7
+  });
+
+  // ── Rotatable line through C–O–D ──────────────────────────────
+  board.create('line', [ptO, ptC], {
+    strokeColor: '#7c3aed', strokeWidth: 3.5,
+    highlight: false, layer: 4
+  });
+
+  // ── Four angle sectors ────────────────────────────────────────
+  // ∠1  CCW: OB→OC  top-right  blue
+  ang1Obj = board.create('angle', [ptB, ptO, ptC], {
+    type: 'sector', radius: SR,
+    fillColor: '#dbeafe', fillOpacity: 0.60,
+    strokeColor: '#3b82f6', strokeWidth: 1.5,
+    withLabel: false, highlight: false, layer: 2
+  });
+  // ∠2  CCW: OC→OA  top-left   amber
+  ang2Obj = board.create('angle', [ptC, ptO, ptA], {
+    type: 'sector', radius: SR,
+    fillColor: '#fef3c7', fillOpacity: 0.60,
+    strokeColor: '#f59e0b', strokeWidth: 1.5,
+    withLabel: false, highlight: false, layer: 2
+  });
+  // ∠3  CCW: OA→OD  bottom-left  blue  (vertical to ∠1)
+  ang3Obj = board.create('angle', [ptA, ptO, ptD], {
+    type: 'sector', radius: SR,
+    fillColor: '#dbeafe', fillOpacity: 0.60,
+    strokeColor: '#3b82f6', strokeWidth: 1.5,
+    withLabel: false, highlight: false, layer: 2
+  });
+  // ∠4  CCW: OD→OB  bottom-right amber (vertical to ∠2)
+  ang4Obj = board.create('angle', [ptD, ptO, ptB], {
+    type: 'sector', radius: SR,
+    fillColor: '#fef3c7', fillOpacity: 0.60,
+    strokeColor: '#f59e0b', strokeWidth: 1.5,
+    withLabel: false, highlight: false, layer: 2
+  });
+
+  // ── Degree labels inside each sector ─────────────────────────
+  [1, 2, 3, 4].forEach(s => {
+    board.create('text', [
+      () => OX + LR * Math.cos(midAngle(s)),
+      () => OY + LR * Math.sin(midAngle(s)),
+      () => {
+        const val = (s === 1 || s === 3)
+          ? Math.round(getA1()) : Math.round(getA2());
+        return `∠${s}=${val}°`;
+      }
+    ], {
+      fontSize  : 11,
+      fontWeight: 'bold',
+      color     : (s === 1 || s === 3) ? '#1e40af' : '#92400e',
+      anchorX   : 'middle',
+      anchorY   : 'middle',
+      highlight : false,
+      layer     : 8
+    });
+  });
+
+  // ── Hint point (task mode) ────────────────────────────────────
+  hintPt = board.create('point', [OX + R * 0.71, R * 0.71], {
+    name: '★', fixed: true, visible: false, size: 10,
+    strokeColor: '#7c3aed', fillColor: '#c4b5fd',
+    label: { fontSize: 11, color: '#7c3aed', offset: [0, 18] },
+    layer: 9
+  });
+
+  board.on('update', updatePanel);
+  tickTimer = setInterval(updatePanel, 150);
+  updatePanel();
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  Panel update
+// ════════════════════════════════════════════════════════════════════════
+function updatePanel() {
+  if (!ptC) return;
+  const a1 = getA1(), a2 = getA2();
+  const r  = n => Math.round(n);
+
+  document.getElementById('v1').textContent  = r(a1) + '°';
+  document.getElementById('v3').textContent  = r(a1) + '°';
+  document.getElementById('v2').textContent  = r(a2) + '°';
+  document.getElementById('v4').textContent  = r(a2) + '°';
+  document.getElementById('adjSum').textContent = r(a1 + a2) + '°';
+
+  const proof = document.getElementById('proof');
+
+  if (mode === 'observe') {
+    if (Math.abs(a1 - 90) < 2.5) {
+      setMsg('∠1 = ∠2 = ∠3 = ∠4 = 90° — прямые перпендикулярны!', 'ok');
+    } else {
+      setMsg(`∠1=∠3=${r(a1)}°   ∠2=∠4=${r(a2)}°   ∠1+∠2=180°`, 'ok');
+    }
+    proof.style.display = 'block';
+    return;
+  }
+
+  // Task mode
+  proof.style.display = 'none';
+  const err = Math.abs(a1 - targetAng1);
+  if (err <= TOL) {
+    setMsg(`Верно! ∠1 = ${r(a1)}° = ∠3 (вертикальные = равны). ∠2 = ∠4 = ${r(a2)}°. ✓`, 'ok');
+    proof.style.display = 'block';
+  } else if (a1 < targetAng1 - TOL) {
+    setMsg(`∠1 = ${r(a1)}° — нужно ${targetAng1}°. Поворачивайте C вверх-влево (∠1 растёт).`, 'info');
+  } else {
+    setMsg(`∠1 = ${r(a1)}° — нужно ${targetAng1}°. Поворачивайте C вниз-вправо (∠1 уменьшается).`, 'info');
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  Pair identification
+// ════════════════════════════════════════════════════════════════════════
+const VERT = new Set(['13', '31', '24', '42']);
+
+function checkPair(a, b) {
+  const key    = [a, b].sort().join('');
+  const isVert = VERT.has(`${a}${b}`) || VERT.has(`${b}${a}`);
+
+  pairState[key] = isVert ? 'correct' : 'wrong';
+  refreshPairButtons();
+  flashSectors(a, b, isVert);
+
+  if (isVert) {
+    setMsg(`✓ ∠${a} и ∠${b} — вертикальные. Их стороны продолжают друг друга. ∠${a} = ∠${b} всегда.`, 'ok');
+  } else {
+    setMsg(`∠${a} и ∠${b} — смежные (не вертикальные!). Общая сторона. ∠${a} + ∠${b} = 180°, но они не равны.`, 'warn');
+  }
+
+  // Both correct pairs found?
+  if (pairState['13'] === 'correct' && pairState['24'] === 'correct') {
+    setTimeout(() => {
+      setMsg('Отлично! Обе вертикальные пары найдены. Теперь вращайте прямую — убедитесь, что ∠1=∠3 и ∠2=∠4 при любом угле.', 'ok');
+      document.getElementById('proof').style.display = 'block';
+    }, 1600);
+  }
+}
+
+function refreshPairButtons() {
+  const map = { '12': 'pb12', '13': 'pb13', '24': 'pb24', '34': 'pb34' };
+  for (const [k, id] of Object.entries(map)) {
+    const btn = document.getElementById(id);
+    if (!btn) continue;
+    const st  = pairState[k];
+    btn.className = 'pair-btn' + (st === 'correct' ? ' correct' : st === 'wrong' ? ' wrong' : '');
+  }
+}
+
+function flashSectors(a, b, isVert) {
+  if (flashTimer) clearTimeout(flashTimer);
+
+  const objs   = { 1: ang1Obj, 2: ang2Obj, 3: ang3Obj, 4: ang4Obj };
+  const bright = { 1: '#93c5fd', 2: '#fcd34d', 3: '#93c5fd', 4: '#fcd34d' };
+  const normal = { 1: '#dbeafe', 2: '#fef3c7', 3: '#dbeafe', 4: '#fef3c7' };
+
+  // Highlight the two selected sectors
+  [a, b].forEach(s => objs[s]?.setAttribute({ fillColor: bright[s], fillOpacity: 0.80 }));
+  // Dim the other two
+  [1, 2, 3, 4].filter(s => s !== a && s !== b)
+               .forEach(s => objs[s]?.setAttribute({ fillOpacity: 0.20 }));
+  board?.update();
+
+  flashTimer = setTimeout(() => {
+    [1, 2, 3, 4].forEach(s =>
+      objs[s]?.setAttribute({ fillColor: normal[s], fillOpacity: 0.60 })
+    );
+    board?.update();
+  }, 1800);
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  Modes
+// ════════════════════════════════════════════════════════════════════════
+function setMode(m) {
+  mode = m;
+  document.getElementById('tabObs') .className = 'tab' + (m === 'observe' ? ' active' : '');
+  document.getElementById('tabTask').className  = 'tab' + (m === 'task'    ? ' active' : '');
+  resetHint();
+  document.getElementById('proof').style.display = 'none';
+  Object.keys(pairState).forEach(k => delete pairState[k]);
+  refreshPairButtons();
+  m === 'observe' ? launchObserve() : launchTask();
+}
+
+function launchObserve() {
+  makeBoard(65);
+  document.getElementById('pairSection').style.display = 'block';
+  document.getElementById('taskText').innerHTML =
+    'Нажмите на каждую пару — выясните, вертикальная она или смежная.<br>'
+    + 'Затем вращайте прямую за точку <b>C</b>.';
+  document.getElementById('taskSub').textContent = '';
+  setMsg('Нажмите на пары ниже, потом вращайте прямую.', 'info');
+}
+
+function launchTask() {
+  const opts = [30, 40, 45, 50, 55, 60, 70, 80, 100, 110, 115, 120, 130, 135, 140, 150];
+  targetAng1 = opts[Math.floor(Math.random() * opts.length)];
+  const ang2 = 180 - targetAng1;
+
+  // Start at wrong position
+  const start = Math.max(8, Math.min(172,
+    targetAng1 > 90 ? targetAng1 - 65 : targetAng1 + 65
+  ));
+  makeBoard(start);
+
+  // Hint ★ at correct position
+  const hTheta = targetAng1 * Math.PI / 180;
+  hintPt.moveTo([OX + R * Math.cos(hTheta), OY + R * Math.sin(hTheta)]);
+
+  document.getElementById('pairSection').style.display = 'none';
+  document.getElementById('taskText').innerHTML =
+    `Поставьте прямую так, чтобы <b style="color:#2563eb">∠1 = ${targetAng1}°</b>.<br>`
+    + `Каким будет ∠3? Каким — ∠2 и ∠4?`;
+  document.getElementById('taskSub').innerHTML =
+    `<span style="color:#64748b">∠3 = ∠1 = ${targetAng1}°&nbsp;&nbsp;|&nbsp;&nbsp;`
+    + `∠2 = ∠4 = ${ang2}°</span>`;
+  setMsg(`Задание: поверните прямую, чтобы ∠1 = ${targetAng1}°.`, 'info');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  Buttons
+// ════════════════════════════════════════════════════════════════════════
+function checkNow() {
+  updatePanel();
+  const a1 = getA1(), a2 = getA2(), r = n => Math.round(n);
+
+  if (mode === 'observe') {
+    setMsg(`∠1=∠3=${r(a1)}° (вертикальные = равны). ∠2=∠4=${r(a2)}°. ∠1+∠2=${r(a1+a2)}° ✓`, 'ok');
+    document.getElementById('proof').style.display = 'block';
+    return;
+  }
+  const err = Math.abs(a1 - targetAng1);
+  if (err <= TOL) {
+    setMsg(`Верно! ∠1=∠3=${r(a1)}°, ∠2=∠4=${r(a2)}°. ✓`, 'ok');
+    document.getElementById('proof').style.display = 'block';
+  } else {
+    setMsg(`∠1 = ${r(a1)}°, нужно ${targetAng1}°. `
+         + (a1 < targetAng1 ? 'Поверните прямую — увеличить ∠1.' : 'Поверните прямую — уменьшить ∠1.'),
+         'err');
+  }
+}
+
+function toggleHint() {
+  hintVisible = !hintVisible;
+  const btn = document.getElementById('hintBtn');
+  btn.textContent = hintVisible ? 'Скрыть подсказку' : 'Подсказка';
+  btn.className   = hintVisible ? 'hint-on' : '';
+  if (mode === 'task' && hintPt) {
+    hintPt.setAttribute({ visible: hintVisible });
+    board?.update();
+  }
+  if (hintVisible) {
+    if (mode === 'observe') {
+      setMsg('Подсказка: вертикальные пары — ∠1+∠3 и ∠2+∠4. '
+           + 'Смежные — ∠1+∠2, ∠2+∠3, ∠3+∠4, ∠4+∠1.', 'info');
+    } else {
+      setMsg(`Подсказка: ∠1 = ${targetAng1}° → ∠3 = ${targetAng1}° (вертикальные). `
+           + `∠2 = ∠4 = ${180-targetAng1}° (смежные с ∠1). `
+           + `Правильное положение прямой отмечено ★.`, 'info');
+    }
+  } else {
+    updatePanel();
+  }
+}
+
+function newTask() {
+  resetHint();
+  document.getElementById('proof').style.display = 'none';
+  Object.keys(pairState).forEach(k => delete pairState[k]);
+  refreshPairButtons();
+  mode === 'observe' ? launchObserve() : launchTask();
+}
+
+function resetLine() {
+  if (!ptC || !ptO) return;
+  const ang = mode === 'task'
+    ? Math.max(8, Math.min(172, targetAng1 > 90 ? targetAng1 - 55 : targetAng1 + 55))
+    : 65;
+  ptC.moveTo([OX + R * Math.cos(ang * Math.PI / 180), OY + R * Math.sin(ang * Math.PI / 180)], 280);
+  setMsg('Прямая возвращена. Попробуйте снова.', 'info');
+  document.getElementById('proof').style.display = 'none';
+  updatePanel();
+}
+
+function setMsg(text, type) {
+  const el = document.getElementById('msg');
+  el.textContent = text;
+  el.className   = 'msg ' + type;
+}
+function resetHint() {
+  hintVisible = false;
+  document.getElementById('hintBtn').textContent = 'Подсказка';
+  document.getElementById('hintBtn').className   = '';
+  if (hintPt) hintPt.setAttribute({ visible: false });
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  Boot
+// ════════════════════════════════════════════════════════════════════════
+window.addEventListener('load', () => launchObserve());
+</script>
+</body>
+</html>

@@ -1,0 +1,979 @@
+{
+  "since": "2026-04-29",
+  "generated": "2026-06-03",
+  "count": 108,
+  "items": [
+    {
+      "source": "C:/Users/User/Downloads/ege_trainer (1).html",
+      "file": "trainers/archive-5-weeks/ege-trainer-1-07bef5d3.html",
+      "title": "Тренажёр · ЕГЭ Информатика · Задание 1 (графы)",
+      "h1": "Задание ${t.seq}",
+      "size": 1783785,
+      "mtime": "2026-06-03T14:47:25.206Z",
+      "hash": "07bef5d3275b4b48"
+    },
+    {
+      "source": "C:/Users/User/Downloads/turing-trainer-polish.html",
+      "file": "trainers/archive-5-weeks/turing-trainer-polish-67299827.html",
+      "title": "Задачи на машину Тьюринга",
+      "h1": "Задачи на машину Тьюринга учебная beta-версия · тренажёр развивается",
+      "size": 284779,
+      "mtime": "2026-06-03T06:31:26.049Z",
+      "hash": "6729982749a62b10"
+    },
+    {
+      "source": "C:/Users/User/Documents/Codex/2026-06-03/files-mentioned-by-the-user-files/work/source17/logic-trainer/index.html",
+      "file": "trainers/archive-5-weeks/index-c56cab9d.html",
+      "title": "Тренажёр логики",
+      "h1": "",
+      "size": 3052,
+      "mtime": "2026-06-03T05:17:56.708Z",
+      "hash": "c56cab9dbafa3c6a"
+    },
+    {
+      "source": "C:/Users/User/Downloads/python-if-inside-for-sergey.html",
+      "file": "trainers/archive-5-weeks/python-if-inside-for-sergey-f9cceb78.html",
+      "title": "Сергей Леонидович: Python — if внутри for",
+      "h1": "Сергей Леонидович: if внутри for",
+      "size": 31596,
+      "mtime": "2026-06-02T13:56:26.630Z",
+      "hash": "f9cceb78815a68d5"
+    },
+    {
+      "source": "C:/Users/User/Downloads/preview (16).html",
+      "file": "trainers/archive-5-weeks/preview-16-a91af41f.html",
+      "title": "Задачи на машину Тьюринга",
+      "h1": "Задачи на машину Тьюринга",
+      "size": 168999,
+      "mtime": "2026-06-02T12:02:08.145Z",
+      "hash": "a91af41f1b9fe370"
+    },
+    {
+      "source": "C:/Users/User/Downloads/index (6).html",
+      "file": "trainers/archive-5-weeks/index-6-d363b31c.html",
+      "title": "Задачи на машину Тьюринга",
+      "h1": "Задачи на машину Тьюринга",
+      "size": 148021,
+      "mtime": "2026-06-02T11:18:42.923Z",
+      "hash": "d363b31c21ea3675"
+    },
+    {
+      "source": "C:/Users/User/Downloads/index (5).html",
+      "file": "trainers/archive-5-weeks/index-5-c2e1e6f8.html",
+      "title": "Задачи на машину Тьюринга",
+      "h1": "Задачи на машину Тьюринга",
+      "size": 80674,
+      "mtime": "2026-06-02T10:27:01.953Z",
+      "hash": "c2e1e6f86279467f"
+    },
+    {
+      "source": "C:/Users/User/Downloads/index (4).html",
+      "file": "trainers/archive-5-weeks/index-4-a7387e34.html",
+      "title": "Задачи на машину Тьюринга",
+      "h1": "Задачи на машину Тьюринга",
+      "size": 74885,
+      "mtime": "2026-06-02T10:11:08.510Z",
+      "hash": "a7387e343b004e4f"
+    },
+    {
+      "source": "C:/Users/User/Documents/Codex/2026-06-02/15/work/yandex_task15_page.html",
+      "file": "trainers/archive-5-weeks/yandex-task15-page-f152f3ca.html",
+      "title": "Тренажер для подготовки к ЕГЭ 2026 с Яндекс Учебником для успешной сдачи экзамена с нуля",
+      "h1": "",
+      "size": 38935,
+      "mtime": "2026-06-02T09:19:07.480Z",
+      "hash": "f152f3caec8f59cb"
+    },
+    {
+      "source": "C:/Users/User/Downloads/index (3).html",
+      "file": "trainers/archive-5-weeks/index-3-603a418c.html",
+      "title": "Задачи на машину Тьюринга",
+      "h1": "Задачи на машину Тьюринга",
+      "size": 53239,
+      "mtime": "2026-06-01T19:58:24.884Z",
+      "hash": "603a418c33e0f445"
+    },
+    {
+      "source": "C:/Users/User/Documents/Codex/2026-06-01/https-education-yandex-ru-ege-inf/outputs/yandex_ege_inf_task15_all.html",
+      "file": "trainers/archive-5-weeks/yandex-ege-inf-task15-all-9feb2554.html",
+      "title": "ЕГЭ Информатика. Задание 15 — все задачи Яндекс Учебника",
+      "h1": "ЕГЭ по информатике — задание 15",
+      "size": 149925,
+      "mtime": "2026-06-01T19:14:53.369Z",
+      "hash": "9feb2554e9de0e66"
+    },
+    {
+      "source": "C:/Users/User/Documents/Codex/2026-06-01/https-education-yandex-ru-ege-inf/outputs/yandex_ege_inf_tasks_page.html",
+      "file": "trainers/archive-5-weeks/yandex-ege-inf-tasks-page-45bc8336.html",
+      "title": "Тренажер для подготовки к ЕГЭ 2026 с Яндекс Учебником для успешной сдачи экзамена с нуля",
+      "h1": "",
+      "size": 39328,
+      "mtime": "2026-06-01T19:06:43.217Z",
+      "hash": "45bc833692b6f850"
+    },
+    {
+      "source": "C:/Users/User/Documents/Codex/2026-06-01/https-education-yandex-ru-ege-inf/outputs/yandex_ege_inf_tasks_page_link.html",
+      "file": "trainers/archive-5-weeks/yandex-ege-inf-tasks-page-link-f7e7a14e.html",
+      "title": "Яндекс ЕГЭ Информатика — задание 12",
+      "h1": "Яндекс ЕГЭ Информатика — задание 12",
+      "size": 1161,
+      "mtime": "2026-06-01T19:04:37.134Z",
+      "hash": "f7e7a14e6ff16594"
+    },
+    {
+      "source": "C:/Users/User/Downloads/preview (15).html",
+      "file": "trainers/archive-5-weeks/preview-15-c29f5683.html",
+      "title": "ОГЭ №15 — тренажёр по треугольникам · проверенная версия v10",
+      "h1": "Тренажёр по треугольникам v10",
+      "size": 96546,
+      "mtime": "2026-06-01T13:47:34.402Z",
+      "hash": "c29f56830319236b"
+    },
+    {
+      "source": "C:/Users/User/Downloads/oge17_trainer_v15_polished.html",
+      "file": "trainers/archive-5-weeks/oge17-trainer-v15-polished-b5606e42.html",
+      "title": "ОГЭ №17 — педагогический тренажёр по геометрии v15-polished",
+      "h1": "ОГЭ №17: тренажёр для ученика и учителя v15",
+      "size": 176466,
+      "mtime": "2026-06-01T13:46:15.328Z",
+      "hash": "b5606e42c97ec690"
+    },
+    {
+      "source": "C:/Users/User/Downloads/preview (14).html",
+      "file": "trainers/archive-5-weeks/preview-14-a32d8634.html",
+      "title": "Тренажёр №16 ОГЭ — Окружность",
+      "h1": "Задача №16·окружность",
+      "size": 117381,
+      "mtime": "2026-06-01T13:45:36.705Z",
+      "hash": "a32d863414797899"
+    },
+    {
+      "source": "C:/Users/User/Downloads/oge_task16_trainer_v11_deepseek_patch.html",
+      "file": "trainers/archive-5-weeks/oge-task16-trainer-v11-deepseek-patch-7a63cfda.html",
+      "title": "Тренажёр №16 ОГЭ — Окружность",
+      "h1": "Задача №16·окружность",
+      "size": 139846,
+      "mtime": "2026-06-01T13:45:32.259Z",
+      "hash": "7a63cfdaab210953"
+    },
+    {
+      "source": "C:/Users/User/Downloads/geometry_grid_trainer_student_open (1).html",
+      "file": "trainers/archive-5-weeks/geometry-grid-trainer-student-open-1-9d36f957.html",
+      "title": "Геометрия на клетчатой бумаге · ученическая версия",
+      "h1": "Геометрия на клетчатой бумаге",
+      "size": 148757,
+      "mtime": "2026-06-01T13:42:47.425Z",
+      "hash": "9d36f9579c64b2e3"
+    },
+    {
+      "source": "C:/Users/User/Downloads/oge19_source_aware_trainer.html",
+      "file": "trainers/archive-5-weeks/oge19-source-aware-trainer-a91626ba.html",
+      "title": "ОГЭ №19 — тренажёр утверждений",
+      "h1": "Тренажёр утверждений с источниками",
+      "size": 153510,
+      "mtime": "2026-05-31T11:38:38.300Z",
+      "hash": "a91626babd1fafa2"
+    },
+    {
+      "source": "C:/Users/User/Downloads/oge17_trainer_v14 (2).html",
+      "file": "trainers/archive-5-weeks/oge17-trainer-v14-2-3fb84e69.html",
+      "title": "ОГЭ №17 — педагогический тренажёр по геометрии v10",
+      "h1": "ОГЭ №17: тренажёр для ученика и учителя",
+      "size": 174612,
+      "mtime": "2026-05-29T23:33:00.037Z",
+      "hash": "3fb84e69cbdc3993"
+    },
+    {
+      "source": "C:/Users/User/Downloads/preview (13).html",
+      "file": "trainers/archive-5-weeks/preview-13-338faa2d.html",
+      "title": "ОГЭ №17 — педагогический тренажёр по геометрии v10",
+      "h1": "ОГЭ №17: тренажёр для ученика и учителя",
+      "size": 171927,
+      "mtime": "2026-05-29T23:17:00.803Z",
+      "hash": "338faa2dc164f6a2"
+    },
+    {
+      "source": "C:/Users/User/Downloads/oge15_trainer_v13.html",
+      "file": "trainers/archive-5-weeks/oge15-trainer-v13-850f039a.html",
+      "title": "ОГЭ №15 — тренажёр по треугольникам · v13",
+      "h1": "Тренажёр по треугольникам v13",
+      "size": 97813,
+      "mtime": "2026-05-29T23:14:55.628Z",
+      "hash": "850f039af1dbda6d"
+    },
+    {
+      "source": "C:/Users/User/Downloads/preview (10).html",
+      "file": "trainers/archive-5-weeks/preview-10-82ef23ef.html",
+      "title": "ОГЭ №17 — педагогический тренажёр по геометрии v9",
+      "h1": "ОГЭ №17: тренажёр для ученика и учителя",
+      "size": 155186,
+      "mtime": "2026-05-29T22:23:13.004Z",
+      "hash": "82ef23efd6dad426"
+    },
+    {
+      "source": "C:/Users/User/Downloads/oge15_trainer_v10.html",
+      "file": "trainers/archive-5-weeks/oge15-trainer-v10-0009ae02.html",
+      "title": "ОГЭ №15 — тренажёр по треугольникам · улучшенная версия",
+      "h1": "Тренажёр по треугольникам 2.0",
+      "size": 96983,
+      "mtime": "2026-05-29T22:18:04.382Z",
+      "hash": "0009ae02a2065e19"
+    },
+    {
+      "source": "C:/Users/User/Downloads/preview (9).html",
+      "file": "trainers/archive-5-weeks/preview-9-8f6b8b9f.html",
+      "title": "ОГЭ №15 — тренажёр по треугольникам · улучшенная версия",
+      "h1": "Тренажёр по треугольникам 2.0",
+      "size": 88442,
+      "mtime": "2026-05-29T21:57:36.346Z",
+      "hash": "8f6b8b9f365398c8"
+    },
+    {
+      "source": "C:/Users/User/Downloads/preview (8).html",
+      "file": "trainers/archive-5-weeks/preview-8-e56a50a3.html",
+      "title": "Тренажёр №16 ОГЭ — Окружность",
+      "h1": "Задача №16·окружность",
+      "size": 116992,
+      "mtime": "2026-05-29T21:43:52.285Z",
+      "hash": "e56a50a3886f8f6a"
+    },
+    {
+      "source": "C:/Users/User/Downloads/oge17_trainer_v8.html",
+      "file": "trainers/archive-5-weeks/oge17-trainer-v8-4b0ff8c5.html",
+      "title": "ОГЭ №17 — педагогический тренажёр по геометрии",
+      "h1": "ОГЭ №17: тренажёр для ученика и учителя",
+      "size": 153955,
+      "mtime": "2026-05-29T21:40:42.511Z",
+      "hash": "4b0ff8c5f6d798c9"
+    },
+    {
+      "source": "C:/Users/User/Downloads/preview (7).html",
+      "file": "trainers/archive-5-weeks/preview-7-a9ef2276.html",
+      "title": "ОГЭ №17 — педагогический тренажёр по геометрии",
+      "h1": "ОГЭ №17: тренажёр для ученика и учителя",
+      "size": 142293,
+      "mtime": "2026-05-29T21:25:17.920Z",
+      "hash": "a9ef22762cb4f569"
+    },
+    {
+      "source": "C:/Users/User/Downloads/oge_task15_trainer_improved.html",
+      "file": "trainers/archive-5-weeks/oge-task15-trainer-improved-a69ed031.html",
+      "title": "ОГЭ №15 — тренажёр по треугольникам (улучшенная версия)",
+      "h1": "Тренажёр по треугольникам",
+      "size": 78724,
+      "mtime": "2026-05-29T21:14:52.348Z",
+      "hash": "a69ed031ec9c1e60"
+    },
+    {
+      "source": "C:/Users/User/Downloads/oge17_trainer_improved.html",
+      "file": "trainers/archive-5-weeks/oge17-trainer-improved-800e82f2.html",
+      "title": "ОГЭ №17 — тренажёр по геометрии (улучшенная версия)",
+      "h1": "ОГЭ №17: тренажёр по геометрии",
+      "size": 105730,
+      "mtime": "2026-05-29T20:42:08.881Z",
+      "hash": "800e82f24e43fd1c"
+    },
+    {
+      "source": "C:/Users/User/Downloads/oge_task16_trainer (1).html",
+      "file": "trainers/archive-5-weeks/oge-task16-trainer-1-664537dd.html",
+      "title": "Тренажёр ОГЭ №16 — окружность, углы, длины, площади",
+      "h1": "Тренажёр ОГЭ №16",
+      "size": 59470,
+      "mtime": "2026-05-29T19:48:01.872Z",
+      "hash": "664537dd45d84649"
+    },
+    {
+      "source": "C:/Users/User/Downloads/geometry_grid_trainer_open.html",
+      "file": "trainers/archive-5-weeks/geometry-grid-trainer-open-0adf52dd.html",
+      "title": "Геометрия на клетчатой бумаге · тренажёр",
+      "h1": "Тренажёр не загрузился",
+      "size": 171786,
+      "mtime": "2026-05-29T19:36:13.664Z",
+      "hash": "0adf52dda238fb46"
+    },
+    {
+      "source": "C:/Users/User/Downloads/oge_pythagoras_trainer.html",
+      "file": "trainers/archive-5-weeks/oge-pythagoras-trainer-52dcc755.html",
+      "title": "Тренажёр ОГЭ: теорема Пифагора",
+      "h1": "Тренажёр по теореме Пифагора",
+      "size": 52590,
+      "mtime": "2026-05-29T19:22:07.853Z",
+      "hash": "52dcc755eb1e7c6e"
+    },
+    {
+      "source": "C:/Users/User/Downloads/preview (6).html",
+      "file": "trainers/archive-5-weeks/preview-6-e121380e.html",
+      "title": "Шины · табличный метод",
+      "h1": "Шины · таблица параметров",
+      "size": 145103,
+      "mtime": "2026-05-29T16:36:14.627Z",
+      "hash": "e121380e703db9e6"
+    },
+    {
+      "source": "C:/Users/User/Downloads/tires_table_method_trainer (1).html",
+      "file": "trainers/archive-5-weeks/tires-table-method-trainer-1-37c9a07f.html",
+      "title": "Шины · табличный метод",
+      "h1": "Шины · таблица параметров",
+      "size": 140315,
+      "mtime": "2026-05-29T16:03:31.241Z",
+      "hash": "37c9a07fcdc9795e"
+    },
+    {
+      "source": "C:/Users/User/Downloads/preview (5).html",
+      "file": "trainers/archive-5-weeks/preview-5-8bb7dd76.html",
+      "title": "ОГЭ №19: верные и неверные утверждения",
+      "h1": "ОГЭ №19: верные и неверные утверждения",
+      "size": 194621,
+      "mtime": "2026-05-29T15:47:11.715Z",
+      "hash": "8bb7dd76ffb0af83"
+    },
+    {
+      "source": "C:/Users/User/Downloads/geometry_statements_trainer_improved_updated.html",
+      "file": "trainers/archive-5-weeks/geometry-statements-trainer-improved-updated-22181e31.html",
+      "title": "ОГЭ №19: верные и неверные утверждения",
+      "h1": "ОГЭ №19: верные и неверные утверждения",
+      "size": 194622,
+      "mtime": "2026-05-29T15:45:34.132Z",
+      "hash": "22181e310ad61423"
+    },
+    {
+      "source": "C:/Users/User/Downloads/tires_table_method_trainer.html",
+      "file": "trainers/archive-5-weeks/tires-table-method-trainer-216c2624.html",
+      "title": "Шины · табличный метод",
+      "h1": "Шины · таблица параметров",
+      "size": 110819,
+      "mtime": "2026-05-29T15:40:08.289Z",
+      "hash": "216c2624fa07f4f7"
+    },
+    {
+      "source": "C:/Users/User/Downloads/practice-1-5-tires (1).html",
+      "file": "trainers/archive-5-weeks/practice-1-5-tires-1-7e5b7482.html",
+      "title": "Шины · тренажёр 1–5",
+      "h1": "Шины · маркировка и геометрия колеса",
+      "size": 142998,
+      "mtime": "2026-05-29T15:24:31.691Z",
+      "hash": "7e5b748286c9e845"
+    },
+    {
+      "source": "C:/Users/User/Downloads/geometry_statements_trainer_improved.html",
+      "file": "trainers/archive-5-weeks/geometry-statements-trainer-improved-370628fb.html",
+      "title": "Тренажёр геометрических высказываний",
+      "h1": "Тренажёр геометрических высказываний",
+      "size": 186316,
+      "mtime": "2026-05-29T14:54:21.572Z",
+      "hash": "370628fbc58e331a"
+    },
+    {
+      "source": "C:/Users/User/Downloads/preview (4).html",
+      "file": "trainers/archive-5-weeks/preview-4-8bbb25d6.html",
+      "title": "Тренажёр анализа геометрических высказываний",
+      "h1": "Тренажёр геометрических высказываний",
+      "size": 128821,
+      "mtime": "2026-05-29T14:24:07.528Z",
+      "hash": "8bbb25d6cf51c1b2"
+    },
+    {
+      "source": "C:/Users/User/Downloads/python-if-for-sergey.html",
+      "file": "trainers/archive-5-weeks/python-if-for-sergey-5d0bfcc5.html",
+      "title": "Сергей Леонидович: Python — if и for",
+      "h1": "Сергей Леонидович: if и for",
+      "size": 39737,
+      "mtime": "2026-05-29T08:35:09.263Z",
+      "hash": "5d0bfcc562ac88c2"
+    },
+    {
+      "source": "C:/Users/User/Downloads/preview (3).html",
+      "file": "trainers/archive-5-weeks/preview-3-08705e89.html",
+      "title": "ОГЭ математика — тренажёр задания 19",
+      "h1": "Тренажёр истинных и ложных утверждений",
+      "size": 62136,
+      "mtime": "2026-05-29T05:31:27.878Z",
+      "hash": "08705e8954fa1198"
+    },
+    {
+      "source": "C:/Users/User/Downloads/long-division-stepwise (5).html",
+      "file": "trainers/archive-5-weeks/long-division-stepwise-5-dab0dd89.html",
+      "title": "Деление уголком — методически",
+      "h1": "Деление уголком",
+      "size": 59090,
+      "mtime": "2026-05-28T06:07:01.759Z",
+      "hash": "dab0dd892dbcf4e3"
+    },
+    {
+      "source": "C:/Users/User/Downloads/long-division-stepwise (4).html",
+      "file": "trainers/archive-5-weeks/long-division-stepwise-4-5f2730da.html",
+      "title": "Деление уголком — методически",
+      "h1": "Деление уголком",
+      "size": 59025,
+      "mtime": "2026-05-28T06:00:24.070Z",
+      "hash": "5f2730da6c79d948"
+    },
+    {
+      "source": "C:/Users/User/Downloads/long-division-stepwise (3).html",
+      "file": "trainers/archive-5-weeks/long-division-stepwise-3-a18ba04b.html",
+      "title": "Деление уголком — методически",
+      "h1": "Деление уголком",
+      "size": 56514,
+      "mtime": "2026-05-28T05:45:11.518Z",
+      "hash": "a18ba04b2867f481"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trig-sum-to-product-trainer(3).html",
+      "file": "trainers/archive-5-weeks/trig-sum-to-product-trainer-3-4bbcb5b1.html",
+      "title": "Тренажёр: сумма синусов и косинусов → произведение",
+      "h1": "",
+      "size": 143905,
+      "mtime": "2026-05-28T05:41:52.925Z",
+      "hash": "4bbcb5b148597c83"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trig-sum-to-product-trainer.html.html",
+      "file": "trainers/archive-5-weeks/trig-sum-to-product-trainer-html-4b64ce8d.html",
+      "title": "Тренажёр: сумма синусов и косинусов → произведение",
+      "h1": "",
+      "size": 143904,
+      "mtime": "2026-05-28T05:20:53.853Z",
+      "hash": "4b64ce8d658fba24"
+    },
+    {
+      "source": "C:/Users/User/Downloads/long-division-stepwise (2).html",
+      "file": "trainers/archive-5-weeks/long-division-stepwise-2-2b2187fa.html",
+      "title": "Деление уголком — методически",
+      "h1": "Деление уголком",
+      "size": 50469,
+      "mtime": "2026-05-28T05:16:38.334Z",
+      "hash": "2b2187fad6b665f9"
+    },
+    {
+      "source": "C:/Users/User/Downloads/long-division-stepwise-current-for-claude.html",
+      "file": "trainers/archive-5-weeks/long-division-stepwise-current-for-claude-dd4db0ae.html",
+      "title": "Деление уголком — методически",
+      "h1": "Деление уголком",
+      "size": 40183,
+      "mtime": "2026-05-28T05:04:46.704Z",
+      "hash": "dd4db0ae5f5384bc"
+    },
+    {
+      "source": "C:/Users/User/Downloads/preview (2).html",
+      "file": "trainers/archive-5-weeks/preview-2-2c48ddc0.html",
+      "title": "Деление уголком — методически",
+      "h1": "Деление уголком",
+      "size": 40182,
+      "mtime": "2026-05-28T05:03:49.461Z",
+      "hash": "2c48ddc0e6b243fc"
+    },
+    {
+      "source": "C:/Users/User/Downloads/long-division-stepwise.html",
+      "file": "trainers/archive-5-weeks/long-division-stepwise-ea96a9c6.html",
+      "title": "Деление уголком",
+      "h1": "Деление уголком",
+      "size": 8535,
+      "mtime": "2026-05-27T21:44:02.099Z",
+      "hash": "ea96a9c685928b9b"
+    },
+    {
+      "source": "C:/Users/User/Downloads/02_old_claude_tires_trainer.html",
+      "file": "trainers/archive-5-weeks/02-old-claude-tires-trainer-035aa6bb.html",
+      "title": "Шины · тренажёр 1–5",
+      "h1": "Шины · маркировка и геометрия колеса",
+      "size": 47130,
+      "mtime": "2026-05-27T18:06:24.711Z",
+      "hash": "035aa6bbc30e3448"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trig-sum-to-product-trainer.html",
+      "file": "trainers/archive-5-weeks/trig-sum-to-product-trainer-8946b780.html",
+      "title": "Тренажёр: сумма синусов и косинусов → произведение",
+      "h1": "",
+      "size": 141485,
+      "mtime": "2026-05-27T13:25:01.705Z",
+      "hash": "8946b78023a7f67e"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trig-sum-to-product-trainer-updated.html",
+      "file": "trainers/archive-5-weeks/trig-sum-to-product-trainer-updated-e577f007.html",
+      "title": "Тренажёр: сумма синусов и косинусов → произведение",
+      "h1": "",
+      "size": 141485,
+      "mtime": "2026-05-27T13:11:06.672Z",
+      "hash": "e577f007b7e451c5"
+    },
+    {
+      "source": "C:/Users/User/Downloads/practice-1-5-apartments.html",
+      "file": "trainers/archive-5-weeks/practice-1-5-apartments-2bc2570b.html",
+      "title": "Двухкомнатная квартира · план · задания 1–5 · ОГЭ",
+      "h1": "План двухкомнатной квартиры",
+      "size": 61362,
+      "mtime": "2026-05-26T19:57:13.154Z",
+      "hash": "2bc2570bde0b0a24"
+    },
+    {
+      "source": "C:/Users/User/Downloads/finance-nonstandard-trainer.html",
+      "file": "trainers/archive-5-weeks/finance-nonstandard-trainer-64bebf82.html",
+      "title": "Финансовая математика: нестандартные схемы — Mathexam.space",
+      "h1": "Финансовая математика: нестандартные схемы",
+      "size": 124557,
+      "mtime": "2026-05-26T17:05:45.553Z",
+      "hash": "64bebf8263f47431"
+    },
+    {
+      "source": "C:/Users/User/Downloads/credit-differential-payment-trainer.html",
+      "file": "trainers/archive-5-weeks/credit-differential-payment-trainer-c584585b.html",
+      "title": "Дифференцированные платежи — табличный тренажёр | Mathexam.space",
+      "h1": "Дифференцированные платежи",
+      "size": 58947,
+      "mtime": "2026-05-26T14:10:11.739Z",
+      "hash": "c584585b43e08959"
+    },
+    {
+      "source": "C:/Users/User/Downloads/credit-payment-table-trainer.html",
+      "file": "trainers/archive-5-weeks/credit-payment-table-trainer-755d104c.html",
+      "title": "Тренажёр: Кредиты и вклады — Mathexam.space",
+      "h1": "Тренажёр: Кредиты и вклады",
+      "size": 103619,
+      "mtime": "2026-05-26T13:54:15.000Z",
+      "hash": "755d104c16cb81a1"
+    },
+    {
+      "source": "C:/Users/User/Downloads/linear_equation_drag (1).html",
+      "file": "trainers/archive-5-weeks/linear-equation-drag-1-11ebccdf.html",
+      "title": "Перетаскивание слагаемых — Mathexam.space",
+      "h1": "Перенеси слагаемое сам",
+      "size": 24058,
+      "mtime": "2026-05-26T09:05:17.880Z",
+      "hash": "11ebccdf9a2baf0a"
+    },
+    {
+      "source": "C:/Users/User/Downloads/log_radar.html",
+      "file": "trainers/archive-5-weeks/log-radar-d2854c23.html",
+      "title": "Логарифмический радар",
+      "h1": "Логарифмический радар",
+      "size": 38754,
+      "mtime": "2026-05-25T16:00:09.439Z",
+      "hash": "d2854c23b440b19a"
+    },
+    {
+      "source": "C:/Users/User/Downloads/triangle-inequality-lab.html",
+      "file": "trainers/archive-5-weeks/triangle-inequality-lab-33921565.html",
+      "title": "Лаборатория странных треугольников — Mathexam.space",
+      "h1": "🔺 Лаборатория странных треугольников",
+      "size": 30060,
+      "mtime": "2026-05-24T17:24:06.346Z",
+      "hash": "33921565aa1d188a"
+    },
+    {
+      "source": "C:/Users/User/Downloads/equation-builder.html",
+      "file": "trainers/archive-5-weeks/equation-builder-1c7c63f3.html",
+      "title": "Собери решение уравнения — Mathexam.space",
+      "h1": "🧩 Собери решение уравнения",
+      "size": 35976,
+      "mtime": "2026-05-24T12:05:17.785Z",
+      "hash": "1c7c63f377f6fc4e"
+    },
+    {
+      "source": "C:/Users/User/Downloads/who-is-stronger (1).html",
+      "file": "trainers/archive-5-weeks/who-is-stronger-1-3cab7554.html",
+      "title": "Кто сильнее по модулю?",
+      "h1": "⚔ Кто сильнее по модулю?",
+      "size": 38910,
+      "mtime": "2026-05-24T06:31:45.327Z",
+      "hash": "3cab7554da110aec"
+    },
+    {
+      "source": "C:/Users/User/Downloads/who-is-stronger.html",
+      "file": "trainers/archive-5-weeks/who-is-stronger-11dc99e8.html",
+      "title": "Кто сильнее по модулю?",
+      "h1": "⚔ Кто сильнее по модулю?",
+      "size": 39027,
+      "mtime": "2026-05-24T06:18:58.476Z",
+      "hash": "11dc99e8d5fd3d22"
+    },
+    {
+      "source": "C:/Users/User/Downloads/rewrite-before-calc (1).html",
+      "file": "trainers/archive-5-weeks/rewrite-before-calc-1-7e6bf87d.html",
+      "title": "Сначала перепиши, потом считай",
+      "h1": "✏️ Сначала перепиши, потом считай",
+      "size": 43376,
+      "mtime": "2026-05-24T06:02:29.665Z",
+      "hash": "7e6bf87d1f31e61c"
+    },
+    {
+      "source": "C:/Users/User/Downloads/zero-lake.html",
+      "file": "trainers/archive-5-weeks/zero-lake-1d5fb3a3.html",
+      "title": "Озеро нуля — противоположные числа и их сумма",
+      "h1": "🌊 Озеро нуля",
+      "size": 41750,
+      "mtime": "2026-05-24T05:42:54.372Z",
+      "hash": "1d5fb3a3214de1bd"
+    },
+    {
+      "source": "C:/Users/User/Downloads/opposite-numbers.html",
+      "file": "trainers/archive-5-weeks/opposite-numbers-c45c9e7e.html",
+      "title": "Противоположные числа",
+      "h1": "↔ Противоположные числа",
+      "size": 34699,
+      "mtime": "2026-05-24T01:33:25.880Z",
+      "hash": "c45c9e7efe361564"
+    },
+    {
+      "source": "C:/Users/User/Downloads/module-distance (1).html",
+      "file": "trainers/archive-5-weeks/module-distance-1-743ac077.html",
+      "title": "Модуль как расстояние от нуля",
+      "h1": "📏 Модуль как расстояние от нуля",
+      "size": 32762,
+      "mtime": "2026-05-24T01:22:41.249Z",
+      "hash": "743ac077e595d313"
+    },
+    {
+      "source": "C:/Users/User/Downloads/find-the-error (1).html",
+      "file": "trainers/archive-5-weeks/find-the-error-1-0a615cbc.html",
+      "title": "Найди ошибку ученика — боковая миссия",
+      "h1": "🔍 Найди ошибку ученика",
+      "size": 35793,
+      "mtime": "2026-05-24T00:57:22.445Z",
+      "hash": "0a615cbc4c0e4af8"
+    },
+    {
+      "source": "C:/Users/User/Downloads/quick-skill-check.html",
+      "file": "trainers/archive-5-weeks/quick-skill-check-7668e263.html",
+      "title": "Проверка навыка — Станция 6",
+      "h1": "Проверка навыка",
+      "size": 42330,
+      "mtime": "2026-05-23T16:51:38.000Z",
+      "hash": "7668e26333f7c397"
+    },
+    {
+      "source": "C:/Users/User/Downloads/mixed-expressions.html",
+      "file": "trainers/archive-5-weeks/mixed-expressions-58f0b76f.html",
+      "title": "Тренажёр: смешанные выражения",
+      "h1": "Смешанные выражения",
+      "size": 45508,
+      "mtime": "2026-05-23T16:19:24.672Z",
+      "hash": "58f0b76f17167ff8"
+    },
+    {
+      "source": "C:/Users/User/Downloads/brackets-and-signs.html",
+      "file": "trainers/archive-5-weeks/brackets-and-signs-dc000366.html",
+      "title": "Тренажёр: скобки и знаки подряд",
+      "h1": "Скобки и знаки подряд",
+      "size": 44621,
+      "mtime": "2026-05-23T16:05:54.936Z",
+      "hash": "dc000366108bf8a3"
+    },
+    {
+      "source": "C:/Users/User/Downloads/subtraction-as-addition.html",
+      "file": "trainers/archive-5-weeks/subtraction-as-addition-b5b0d37d.html",
+      "title": "Тренажёр: вычитание как сложение противоположного",
+      "h1": "Вычитание — это сложение противоположного",
+      "size": 43425,
+      "mtime": "2026-05-23T11:55:27.753Z",
+      "hash": "b5b0d37d5ee00d53"
+    },
+    {
+      "source": "C:/Users/User/Downloads/battle-numbers (2).html",
+      "file": "trainers/archive-5-weeks/battle-numbers-2-7a0a8446.html",
+      "title": "Тренажёр: сложение чисел с разными знаками",
+      "h1": "Сложение чисел с разными знаками",
+      "size": 44465,
+      "mtime": "2026-05-23T11:38:48.170Z",
+      "hash": "7a0a84463b832fa0"
+    },
+    {
+      "source": "C:/Users/User/Downloads/negative_plus_negative_debts_deepseek.html",
+      "file": "trainers/archive-5-weeks/negative-plus-negative-debts-deepseek-a7c7c36a.html",
+      "title": "Тренажёр: сложение отрицательных чисел — модель долга",
+      "h1": "Сложение отрицательных чисел",
+      "size": 30357,
+      "mtime": "2026-05-23T11:25:54.808Z",
+      "hash": "a7c7c36a61bd7c2b"
+    },
+    {
+      "source": "C:/Users/User/Downloads/battle-numbers (1).html",
+      "file": "trainers/archive-5-weeks/battle-numbers-1-34db4c39.html",
+      "title": "⚔️ Сражение чисел — тренажёр",
+      "h1": "",
+      "size": 56294,
+      "mtime": "2026-05-23T11:20:32.533Z",
+      "hash": "34db4c395af0e2c6"
+    },
+    {
+      "source": "C:/Users/User/Downloads/jsxgraph-vertical-angles (1).html",
+      "file": "trainers/archive-5-weeks/jsxgraph-vertical-angles-1-cf930d18.html",
+      "title": "Вертикальные углы равны — тренажёр",
+      "h1": "",
+      "size": 30208,
+      "mtime": "2026-05-23T01:26:54.667Z",
+      "hash": "cf930d18e18907a3"
+    },
+    {
+      "source": "C:/Users/User/Downloads/jsxgraph-adjacent-angles.html",
+      "file": "trainers/archive-5-weeks/jsxgraph-adjacent-angles-af17f7b1.html",
+      "title": "Смежные углы: сумма = 180° — тренажёр",
+      "h1": "",
+      "size": 27420,
+      "mtime": "2026-05-23T01:13:28.755Z",
+      "hash": "af17f7b1627c0186"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trainer-name-the-angle.html",
+      "file": "trainers/archive-5-weeks/trainer-name-the-angle-a0960ad5.html",
+      "title": "Назови угол правильно — тренажёр по геометрии",
+      "h1": "",
+      "size": 33944,
+      "mtime": "2026-05-23T01:00:34.781Z",
+      "hash": "a0960ad5860c953f"
+    },
+    {
+      "source": "C:/Users/User/Downloads/jsxgraph-ac-cb-ab.html",
+      "file": "trainers/archive-5-weeks/jsxgraph-ac-cb-ab-ac096517.html",
+      "title": "AC + CB = AB — тренажёр по геометрии",
+      "h1": "",
+      "size": 26519,
+      "mtime": "2026-05-23T01:00:32.037Z",
+      "hash": "ac09651765fc08ac"
+    },
+    {
+      "source": "C:/Users/User/Downloads/bisector_trainer.html",
+      "file": "trainers/archive-5-weeks/bisector-trainer-7828c3c2.html",
+      "title": "Биссектриса угла — тренажёр",
+      "h1": "",
+      "size": 15516,
+      "mtime": "2026-05-22T20:21:29.360Z",
+      "hash": "7828c3c235f6c9d7"
+    },
+    {
+      "source": "C:/Users/User/Downloads/negative-numbers-trainer (2).html",
+      "file": "trainers/archive-5-weeks/negative-numbers-trainer-2-3467e485.html",
+      "title": "Числовая прямая — Тренажёр",
+      "h1": "",
+      "size": 34712,
+      "mtime": "2026-05-22T19:37:58.842Z",
+      "hash": "3467e485e8ec2185"
+    },
+    {
+      "source": "C:/Users/User/Downloads/neravenstva2_stepbystep.html",
+      "file": "trainers/archive-5-weeks/neravenstva2-stepbystep-e270368b.html",
+      "title": "Тренажёр 2: Линейные неравенства — пошаговое решение",
+      "h1": "Тренажёр 2: линейные неравенства",
+      "size": 35195,
+      "mtime": "2026-05-21T10:19:23.467Z",
+      "hash": "e270368ba82447dd"
+    },
+    {
+      "source": "C:/Users/User/Downloads/neravenstva2_trainer.html",
+      "file": "trainers/archive-5-weeks/neravenstva2-trainer-459d2fc9.html",
+      "title": "Тренажёр 2: Линейные неравенства",
+      "h1": "Тренажёр 2: линейные неравенства",
+      "size": 30862,
+      "mtime": "2026-05-21T10:06:06.558Z",
+      "hash": "459d2fc94c7fc07f"
+    },
+    {
+      "source": "C:/Users/User/Downloads/neravenstva_trainer (1).html",
+      "file": "trainers/archive-5-weeks/neravenstva-trainer-1-4ab048e4.html",
+      "title": "Тренажёр: Неравенства на числовой прямой",
+      "h1": "Числовая прямая: неравенства",
+      "size": 22222,
+      "mtime": "2026-05-21T09:53:04.517Z",
+      "hash": "4ab048e4a2143fe0"
+    },
+    {
+      "source": "C:/Users/User/Downloads/neravenstva_trainer.html",
+      "file": "trainers/archive-5-weeks/neravenstva-trainer-eee783f4.html",
+      "title": "Тренажёр: Неравенства на числовой прямой",
+      "h1": "Числовая прямая: неравенства",
+      "size": 22222,
+      "mtime": "2026-05-21T09:45:17.189Z",
+      "hash": "eee783f45868d131"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trenazher_deleniya_v2 (1).html",
+      "file": "trainers/archive-5-weeks/trenazher-deleniya-v2-1-74812d35.html",
+      "title": "Тренажёр деления уголком",
+      "h1": "📐 Деление уголком",
+      "size": 30841,
+      "mtime": "2026-05-21T05:38:52.923Z",
+      "hash": "74812d35153eb0c7"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trenazher_deleniya (1).html",
+      "file": "trainers/archive-5-weeks/trenazher-deleniya-1-16a90b5c.html",
+      "title": "Тренажёр деления уголком — final candidate",
+      "h1": "📐 Деление уголком",
+      "size": 26003,
+      "mtime": "2026-05-21T05:06:36.593Z",
+      "hash": "16a90b5c517dfb8a"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trenazher_deleniya_final_candidate (2).html",
+      "file": "trainers/archive-5-weeks/trenazher-deleniya-final-candidate-2-39a2c980.html",
+      "title": "Тренажёр деления уголком — final candidate",
+      "h1": "📐 Деление уголком",
+      "size": 32901,
+      "mtime": "2026-05-21T04:59:36.446Z",
+      "hash": "39a2c980fb57b53c"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trenazher_deleniya_odnaznachnoe_unified.html",
+      "file": "trainers/archive-5-weeks/trenazher-deleniya-odnaznachnoe-unified-57461105.html",
+      "title": "Тренажёр деления уголком на однозначное число",
+      "h1": "📐 Деление уголком",
+      "size": 27802,
+      "mtime": "2026-05-21T04:49:19.507Z",
+      "hash": "57461105f1522d39"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trenazher_deleniya_final_candidate (1).html",
+      "file": "trainers/archive-5-weeks/trenazher-deleniya-final-candidate-1-e39dd707.html",
+      "title": "Тренажёр деления уголком — final candidate",
+      "h1": "📐 Деление уголком",
+      "size": 32367,
+      "mtime": "2026-05-21T04:39:58.184Z",
+      "hash": "e39dd707c58a301f"
+    },
+    {
+      "source": "C:/Users/User/Downloads/preview.html",
+      "file": "trainers/archive-5-weeks/preview-414dbb07.html",
+      "title": "Тренажёр деления уголком — final candidate",
+      "h1": "📐 Деление уголком",
+      "size": 28724,
+      "mtime": "2026-05-21T03:27:11.671Z",
+      "hash": "414dbb0754d3337a"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trenazher_deleniya_v7_angry_feedback.html",
+      "file": "trainers/archive-5-weeks/trenazher-deleniya-v7-angry-feedback-b1b12dd0.html",
+      "title": "Тренажёр деления уголком",
+      "h1": "📐 Деление уголком",
+      "size": 27934,
+      "mtime": "2026-05-21T01:10:42.443Z",
+      "hash": "b1b12dd0a8af0a7e"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trenazher_deleniya_v6_ugolok_i_block_guard.html",
+      "file": "trainers/archive-5-weeks/trenazher-deleniya-v6-ugolok-i-block-guard-a8083f2f.html",
+      "title": "Тренажёр деления уголком",
+      "h1": "📐 Деление уголком",
+      "size": 27004,
+      "mtime": "2026-05-21T01:07:57.660Z",
+      "hash": "a8083f2f477cafb9"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trenazher_deleniya_v5_chastnoe_pod_delitelem.html",
+      "file": "trainers/archive-5-weeks/trenazher-deleniya-v5-chastnoe-pod-delitelem-a56b7bb1.html",
+      "title": "Тренажёр деления уголком",
+      "h1": "📐 Деление уголком",
+      "size": 25663,
+      "mtime": "2026-05-21T00:47:55.012Z",
+      "hash": "a56b7bb1f72d13ed"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trenazher_deleniya_deepseek_v4_compact_hint.html",
+      "file": "trainers/archive-5-weeks/trenazher-deleniya-deepseek-v4-compact-hint-88ca783a.html",
+      "title": "Тренажёр деления уголком",
+      "h1": "📐 Деление уголком",
+      "size": 25363,
+      "mtime": "2026-05-21T00:44:43.399Z",
+      "hash": "88ca783a9c21a2f0"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trenazher_deleniya_deepseek_v3_carry_arrow.html",
+      "file": "trainers/archive-5-weeks/trenazher-deleniya-deepseek-v3-carry-arrow-1da29354.html",
+      "title": "Тренажёр деления уголком",
+      "h1": "📐 Деление уголком",
+      "size": 24898,
+      "mtime": "2026-05-21T00:38:53.830Z",
+      "hash": "1da29354d090f07c"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trenazher_deleniya_deepseek_v2_shifted.html",
+      "file": "trainers/archive-5-weeks/trenazher-deleniya-deepseek-v2-shifted-9d2314c9.html",
+      "title": "Тренажёр деления уголком",
+      "h1": "📐 Деление уголком",
+      "size": 23937,
+      "mtime": "2026-05-21T00:35:07.008Z",
+      "hash": "9d2314c932c4f689"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trenazher_deleniya_deepseek.html",
+      "file": "trainers/archive-5-weeks/trenazher-deleniya-deepseek-42d14478.html",
+      "title": "Тренажёр деления уголком",
+      "h1": "📐 Деление уголком",
+      "size": 23083,
+      "mtime": "2026-05-21T00:31:53.215Z",
+      "hash": "42d14478dad2f79b"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trenazher_deleniya_v3.html",
+      "file": "trainers/archive-5-weeks/trenazher-deleniya-v3-5a46dba3.html",
+      "title": "Тренажёр деления",
+      "h1": "Тренажёр деления",
+      "size": 17758,
+      "mtime": "2026-05-21T00:18:15.357Z",
+      "hash": "5a46dba33bba5ec1"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trenazher_deleniya_v2.html",
+      "file": "trainers/archive-5-weeks/trenazher-deleniya-v2-35f17735.html",
+      "title": "Тренажёр деления",
+      "h1": "Тренажёр деления",
+      "size": 15838,
+      "mtime": "2026-05-21T00:13:39.139Z",
+      "hash": "35f17735ba819a3a"
+    },
+    {
+      "source": "C:/Users/User/Downloads/trenazher_deleniya.html",
+      "file": "trainers/archive-5-weeks/trenazher-deleniya-0542125c.html",
+      "title": "Тренажёр деления",
+      "h1": "Тренажёр деления",
+      "size": 14297,
+      "mtime": "2026-05-21T00:07:13.081Z",
+      "hash": "0542125c1cc227e2"
+    },
+    {
+      "source": "C:/Users/User/Downloads/bilety_geometriya_7klass (2).html",
+      "file": "trainers/archive-5-weeks/bilety-geometriya-7klass-2-f571b307.html",
+      "title": "Билеты по геометрии — 7 класс (Атанасян)",
+      "h1": "Экзаменационные билеты по геометрии",
+      "size": 121714,
+      "mtime": "2026-05-20T22:55:45.231Z",
+      "hash": "f571b307d959e7c1"
+    },
+    {
+      "source": "C:/Users/User/Downloads/bilety_geometriya_7klass (1).html",
+      "file": "trainers/archive-5-weeks/bilety-geometriya-7klass-1-fac717fb.html",
+      "title": "Билеты по геометрии — 7 класс (Атанасян)",
+      "h1": "Экзаменационные билеты по геометрии",
+      "size": 121454,
+      "mtime": "2026-05-20T22:23:17.690Z",
+      "hash": "fac717fb82792ae3"
+    },
+    {
+      "source": "C:/Users/User/Downloads/bilety_geometriya_7klass.html",
+      "file": "trainers/archive-5-weeks/bilety-geometriya-7klass-94e1b324.html",
+      "title": "Билеты по геометрии — 7 класс (Атанасян)",
+      "h1": "Экзаменационные билеты по геометрии",
+      "size": 74347,
+      "mtime": "2026-05-20T21:24:53.887Z",
+      "hash": "94e1b3241730781f"
+    },
+    {
+      "source": "C:/Users/User/Downloads/Билеты по геометрии 7 класс.html",
+      "file": "trainers/archive-5-weeks/7-db257f21.html",
+      "title": "Билеты по геометрии 7 класс",
+      "h1": "Как нужно было сделать правильно",
+      "size": 756294,
+      "mtime": "2026-05-20T20:18:39.518Z",
+      "hash": "db257f21d57a7a51"
+    },
+    {
+      "source": "C:/Users/User/Downloads/1 Билеты по геометрии 7 класс.html",
+      "file": "trainers/archive-5-weeks/1-7-407fb849.html",
+      "title": "Билеты по геометрии 7 класс",
+      "h1": "Как нужно было сделать правильно",
+      "size": 614491,
+      "mtime": "2026-05-20T20:04:32.722Z",
+      "hash": "407fb8491f9a4ad0"
+    }
+  ]
+}

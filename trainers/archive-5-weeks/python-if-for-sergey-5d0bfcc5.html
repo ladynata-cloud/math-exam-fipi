@@ -1,0 +1,783 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Сергей Леонидович: Python — if и for</title>
+  <style>
+    :root{
+      --bg:#f3f6fb;--ink:#172033;--muted:#667085;--card:#fff;--line:#e5e7eb;
+      --blue:#2563eb;--blueSoft:#eef4ff;--green:#15803d;--greenSoft:#dcfce7;
+      --amber:#92400e;--amberSoft:#fff7ed;--red:#b91c1c;--redSoft:#fee4e2;
+      --violet:#6d28d9;--violetSoft:#f5f3ff;--shadow:0 14px 34px rgba(20,30,50,.12);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Verdana,Arial,sans-serif;background:radial-gradient(circle at top left,#fff 0,#f3f6fb 42%,#e8edf7 100%);color:var(--ink);min-height:100vh}
+    .page{max-width:1120px;margin:0 auto;padding:22px}
+    .hero,.card{background:var(--card);border-radius:24px;padding:22px;box-shadow:var(--shadow);margin-bottom:18px}
+    .back a{color:var(--blue);font-weight:700;text-decoration:none}.back a:hover{text-decoration:underline}
+    .hero{background:linear-gradient(135deg,#fff 0%,#eef4ff 58%,#f8fbff 100%);border:1px solid #dbeafe}
+    .kicker{display:inline-flex;gap:8px;align-items:center;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;font-weight:900;font-size:13px;padding:8px 12px;margin:12px 0}
+    h1{margin:0 0 8px;font-size:clamp(34px,5vw,58px);line-height:.98;letter-spacing:-.05em}
+    h2{margin:0 0 12px;font-size:24px;letter-spacing:-.03em}
+    h3{margin:0 0 10px;font-size:18px}
+    .sub{color:var(--muted);font-size:18px;line-height:1.55;max-width:850px;margin:0}
+    .route{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+    .routeStep{background:#fff;border:1px solid #dbeafe;border-radius:18px;padding:13px 14px;color:#475569;font-size:14px;line-height:1.35}
+    .routeStep strong{display:block;color:#0f172a;margin-bottom:4px}
+    .tabs{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 18px}
+    button{border:0;border-radius:14px;padding:11px 15px;font-weight:800;cursor:pointer;background:#e7ebf3;color:#172033;font-family:inherit}
+    button.primary,button.active{background:var(--blue);color:#fff}
+    button.good{background:var(--green);color:#fff}
+    button.warn{background:#f59e0b;color:#111827}
+    button.danger{background:var(--redSoft);color:#7a271a}
+    button:disabled{opacity:.55;cursor:not-allowed}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+    .trainerHead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+    .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;font-weight:900;font-size:13px;background:var(--blueSoft);color:#1d4ed8;border:1px solid #bfdbfe}
+    .badge.green{background:var(--greenSoft);color:var(--green);border-color:#bbf7d0}
+    .badge.violet{background:var(--violetSoft);color:var(--violet);border-color:#ddd6fe}
+    .lesson{display:none}.lesson.active{display:block}
+    .explain{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:20px;padding:16px;margin-bottom:14px;color:#14532d;line-height:1.55}
+    .explain p{margin:8px 0}.explain code{background:#fff;border:1px solid #bbf7d0;border-radius:8px;padding:2px 6px;color:#0f172a}
+    .taskBox{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px}
+    .taskTitle{font-size:20px;font-weight:900;margin-bottom:10px;line-height:1.35}
+    pre{white-space:pre-wrap;background:#111827;color:#f9fafb;border-radius:18px;padding:16px;overflow:auto;font-size:16px;line-height:1.5;margin:12px 0;font-family:Consolas,Menlo,Monaco,monospace}
+    code{font-family:Consolas,Menlo,Monaco,monospace}
+    .answers{display:grid;gap:10px;margin-top:12px}
+    .answers button{text-align:left;background:#f8fafc;border:1px solid #e5e7eb;line-height:1.35}
+    .answers button:hover{border-color:#bfdbfe;background:#eff6ff}
+    .answers button.correct{background:var(--greenSoft);border-color:#86efac;color:#14532d}
+    .answers button.wrong{background:var(--redSoft);border-color:#fecaca;color:#7a271a}
+    .inputRow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}
+    input,textarea{min-width:260px;max-width:100%;border:2px solid #cbd5e1;border-radius:14px;padding:12px;font-size:18px;font-family:Consolas,Menlo,Monaco,monospace}
+    textarea{width:100%;min-height:118px;resize:vertical;line-height:1.45}
+    .inputRow{align-items:flex-start}
+    .fb{margin-top:14px;border-radius:16px;padding:14px;background:#f8fafc;border:1px solid #e5e7eb;font-size:17px;line-height:1.45}
+    .fb.ok{background:var(--greenSoft);color:#14532d;border-color:#86efac}
+    .fb.err{background:var(--redSoft);color:#7a271a;border-color:#fecaca}
+    .fb.tip{background:#fffbeb;color:#713f12;border-color:#fde68a}
+    .controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+    .stat{background:#f8fafc;border:1px solid #e5e7eb;border-radius:16px;padding:12px;text-align:center}
+    .stat b{display:block;font-size:28px}.stat span{font-size:12px;color:#667085;font-weight:800}
+    .course,.rules,.historyBox{border-radius:20px;padding:16px;margin-bottom:14px}
+    .course{background:#eef4ff;border:1px solid #bfdbfe}
+    .rules{background:#f0fdf4;border:1px solid #bbf7d0}
+    .historyBox{background:#f8fafc;border:1px solid #e5e7eb}
+    .hist{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:9px;margin-bottom:8px;font-size:14px;line-height:1.35}
+    .mini{color:#667085;font-size:14px;line-height:1.45;margin-top:6px}
+    .note{background:#fff7ed;border:1px solid #fed7aa;border-radius:20px;padding:16px;color:#7c2d12;line-height:1.55}
+    .twoCols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .ruleCard{background:#fff;border:1px solid #dbeafe;border-radius:16px;padding:12px}
+    .ruleCard b{display:block;margin-bottom:6px}
+    .footer{margin:24px 0 8px;text-align:center;color:#64748b;font-size:13px}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}.route{grid-template-columns:1fr 1fr}.stats{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:560px){.page{padding:14px}.route,.twoCols,.stats{grid-template-columns:1fr}h1{font-size:36px}input,textarea{min-width:100%}}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="back"><a href="../index.html">← На главную</a></div>
+      <div class="kicker">🐍 Python · взрослый новичок · базовый уровень</div>
+      <h1>Сергей Леонидович: if и for</h1>
+      <p class="sub">Два простых тренажёра для первого знакомства с ветвлением и повторением. Без вложенных циклов, без функций, без сложной математики: читаем код, выбираем ответ, вставляем недостающую часть и закрепляем стартовые задачи по if и for.</p>
+      <div class="route">
+        <div class="routeStep"><strong>1. if = выбор</strong>Если условие верно, программа выполняет один блок.</div>
+        <div class="routeStep"><strong>2. else = иначе</strong>Если условие неверно, можно выполнить запасной блок.</div>
+        <div class="routeStep"><strong>3. for = повтор</strong>Цикл проходит по числам или элементам списка.</div>
+        <div class="routeStep"><strong>4. range = счётчик</strong><code>range(3)</code> даёт 0, 1, 2 — не 1, 2, 3.</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="tabs">
+        <button id="tabIf" class="active">Тренажёр 1: if</button>
+        <button id="tabFor">Тренажёр 2: for</button>
+      </div>
+
+      <div id="lessonIf" class="lesson active">
+        <div class="trainerHead">
+          <div>
+            <h2>if в Python: «если условие верно»</h2>
+            <div class="mini">Цель: понять условия, двоеточие, отступы, <code>==</code> и простую конструкцию <code>if / else</code>.</div>
+          </div>
+          <span class="badge">уровень: самый базовый</span>
+        </div>
+        <div class="explain">
+          <p><b>Главная идея:</b> <code>if</code> нужен, когда программа выбирает, выполнять действие или нет.</p>
+          <p><code>if age &gt;= 18:</code> читаем как «если возраст больше или равен 18».</p>
+          <p>После условия ставим двоеточие <code>:</code>, а команды внутри блока пишем с отступом.</p>
+        </div>
+        <div class="grid">
+          <div class="taskBox">
+            <div class="badge green" id="ifKind">задание</div>
+            <div class="taskTitle" id="ifTitle"></div>
+            <pre id="ifCode"></pre>
+            <div id="ifAnswers" class="answers"></div>
+            <div id="ifInputWrap" class="inputRow" hidden>
+              <textarea id="ifInput" autocomplete="off" spellcheck="false" placeholder="впиши фрагмент кода или маленькую программу"></textarea>
+              <button id="ifCheck" class="primary">Проверить</button>
+            </div>
+            <div id="ifFb" class="fb">Выбери ответ или впиши код. Для проверки можно нажать кнопку или Ctrl+Enter.</div>
+            <div class="controls">
+              <button id="ifSolution" class="warn">Показать решение</button>
+              <button id="ifNext" class="good">Следующее</button>
+            </div>
+          </div>
+          <aside>
+            <div class="card" style="box-shadow:none;border:1px solid var(--line)">
+              <div class="stats">
+                <div class="stat"><b id="ifTotal">0</b><span>решено</span></div>
+                <div class="stat"><b id="ifRight">0</b><span>верно</span></div>
+                <div class="stat"><b id="ifStreak">0</b><span>серия</span></div>
+              </div>
+              <div class="stats">
+                <div class="stat"><b id="ifAcc">0%</b><span>точность</span></div>
+                <div class="stat"><b id="ifBest">0</b><span>лучшая</span></div>
+                <div class="stat"><b id="ifDate">—</b><span>дата</span></div>
+              </div>
+              <div class="course">
+                <h3>Прогресс темы</h3>
+                <p><span id="ifStatus" class="badge">тема начата</span></p>
+                <p id="ifAdvice">Реши первые 10 заданий.</p>
+                <button id="ifReset" class="danger">Сбросить статистику</button>
+              </div>
+              <div class="rules">
+                <h3>Опорные правила</h3>
+                <p><code>=</code> — присвоить значение.</p>
+                <p><code>==</code> — проверить равенство.</p>
+                <p><code>:</code> — открыть блок.</p>
+                <p>Отступ показывает, что команда внутри <code>if</code>.</p>
+              </div>
+              <div class="historyBox">
+                <h3>История</h3>
+                <div id="ifHistory"></div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <div id="lessonFor" class="lesson">
+        <div class="trainerHead">
+          <div>
+            <h2>for в Python: «повтори действие»</h2>
+            <div class="mini">Цель: понять <code>for item in items</code>, повтор через <code>range()</code>, двоеточие и отступы.</div>
+          </div>
+          <span class="badge violet">уровень: самый базовый</span>
+        </div>
+        <div class="explain">
+          <p><b>Главная идея:</b> <code>for</code> нужен, когда одно действие нужно повторить несколько раз или выполнить для каждого элемента списка.</p>
+          <p><code>for name in names:</code> читаем как «для каждого имени в списке names».</p>
+          <p><code>range(4)</code> даёт числа <code>0, 1, 2, 3</code>. Счёт начинается с нуля.</p>
+        </div>
+        <div class="grid">
+          <div class="taskBox">
+            <div class="badge green" id="forKind">задание</div>
+            <div class="taskTitle" id="forTitle"></div>
+            <pre id="forCode"></pre>
+            <div id="forAnswers" class="answers"></div>
+            <div id="forInputWrap" class="inputRow" hidden>
+              <textarea id="forInput" autocomplete="off" spellcheck="false" placeholder="впиши фрагмент кода или маленькую программу"></textarea>
+              <button id="forCheck" class="primary">Проверить</button>
+            </div>
+            <div id="forFb" class="fb">Выбери ответ или впиши код. Для проверки можно нажать кнопку или Ctrl+Enter.</div>
+            <div class="controls">
+              <button id="forSolution" class="warn">Показать решение</button>
+              <button id="forNext" class="good">Следующее</button>
+            </div>
+          </div>
+          <aside>
+            <div class="card" style="box-shadow:none;border:1px solid var(--line)">
+              <div class="stats">
+                <div class="stat"><b id="forTotal">0</b><span>решено</span></div>
+                <div class="stat"><b id="forRight">0</b><span>верно</span></div>
+                <div class="stat"><b id="forStreak">0</b><span>серия</span></div>
+              </div>
+              <div class="stats">
+                <div class="stat"><b id="forAcc">0%</b><span>точность</span></div>
+                <div class="stat"><b id="forBest">0</b><span>лучшая</span></div>
+                <div class="stat"><b id="forDate">—</b><span>дата</span></div>
+              </div>
+              <div class="course">
+                <h3>Прогресс темы</h3>
+                <p><span id="forStatus" class="badge">тема начата</span></p>
+                <p id="forAdvice">Реши первые 10 заданий.</p>
+                <button id="forReset" class="danger">Сбросить статистику</button>
+              </div>
+              <div class="rules">
+                <h3>Опорные правила</h3>
+                <p><code>for</code> читаем как «для каждого».</p>
+                <p><code>in</code> обязательно: <code>for x in items:</code>.</p>
+                <p><code>range(3)</code> повторяет действие 3 раза.</p>
+                <p>Команда внутри цикла пишется с отступом.</p>
+              </div>
+              <div class="historyBox">
+                <h3>История</h3>
+                <div id="forHistory"></div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="note">
+      <b>Как давать Сергею Леонидовичу:</b> сначала 8–10 заданий по <code>if</code>, затем короткие программы; потом перерыв и такая же последовательность по <code>for</code>. Внутри теперь полный стартовый набор: 15 задач по <code>if</code> и 16 задач по <code>for</code>. После этого можно делать следующий тренажёр: <code>if</code> внутри <code>for</code>, но не раньше — иначе смешаются «выбор» и «повтор».
+    </section>
+
+    <div class="footer">Python для Сергея Леонидовича · базовые конструкции if и for · Mathexam.space</div>
+  </main>
+
+<script>
+const STORAGE_KEY = 'mathExamCourseProgress.v1';
+
+const tasks = {
+  "if": [
+    {
+      "kind": "чтение кода",
+      "title": "Что выведет программа?",
+      "code": "age = 25\n\nif age >= 18:\n    print(\"Можно\")\nelse:\n    print(\"Нельзя\")",
+      "options": [
+        "Можно",
+        "Нельзя",
+        "age >= 18"
+      ],
+      "answer": "Можно",
+      "explanation": "25 больше или равно 18, поэтому выполняется блок после if."
+    },
+    {
+      "kind": "чтение кода",
+      "title": "Что выведет программа?",
+      "code": "temperature = 36.6\n\nif temperature > 37:\n    print(\"Температура повышена\")\nelse:\n    print(\"Температура нормальная\")",
+      "options": [
+        "Температура повышена",
+        "Температура нормальная",
+        "Ничего"
+      ],
+      "answer": "Температура нормальная",
+      "explanation": "36.6 не больше 37, поэтому выполняется else."
+    },
+    {
+      "kind": "чтение кода",
+      "title": "Что выведет программа?",
+      "code": "password = \"1234\"\n\nif password == \"1234\":\n    print(\"Вход выполнен\")\nelse:\n    print(\"Неверный пароль\")",
+      "options": [
+        "Вход выполнен",
+        "Неверный пароль",
+        "Ошибка из-за =="
+      ],
+      "answer": "Вход выполнен",
+      "explanation": "== проверяет равенство. Строки совпадают."
+    },
+    {
+      "kind": "чтение кода",
+      "title": "Что выведет программа?",
+      "code": "balance = 500\nprice = 700\n\nif balance >= price:\n    print(\"Покупка возможна\")\nelse:\n    print(\"Недостаточно денег\")",
+      "options": [
+        "Покупка возможна",
+        "Недостаточно денег",
+        "500"
+      ],
+      "answer": "Недостаточно денег",
+      "explanation": "500 меньше 700, условие balance >= price неверно."
+    },
+    {
+      "kind": "вставить условие",
+      "title": "Вставь условие: если число больше 0, вывести \"Положительное\".",
+      "code": "number = 8\n\nif __________:\n    print(\"Положительное\")",
+      "input": true,
+      "answer": "number > 0",
+      "accepted": [
+        "number>0",
+        "number > 0"
+      ],
+      "explanation": "Нужно проверить, что number больше нуля: number > 0."
+    },
+    {
+      "kind": "вставить условие",
+      "title": "Вставь условие: если сумма заказа больше или равна 1000, доставка бесплатная.",
+      "code": "order_sum = 1200\n\nif __________:\n    print(\"Доставка бесплатная\")",
+      "input": true,
+      "answer": "order_sum >= 1000",
+      "accepted": [
+        "order_sum>=1000",
+        "order_sum >= 1000"
+      ],
+      "explanation": "Больше или равно записывается как >=."
+    },
+    {
+      "kind": "вставить условие",
+      "title": "Вставь условие: если логин равен \"admin\", вывести \"Администратор\".",
+      "code": "login = \"admin\"\n\nif __________:\n    print(\"Администратор\")",
+      "input": true,
+      "answer": "login == \"admin\"",
+      "accepted": [
+        "login==\"admin\"",
+        "login == \"admin\"",
+        "login=='admin'",
+        "login == 'admin'"
+      ],
+      "explanation": "Для проверки равенства используется ==, а не =."
+    },
+    {
+      "kind": "вставить условие",
+      "title": "Вставь условие: если число не равно 0, вывести \"Можно делить\".",
+      "code": "number = 5\n\nif __________:\n    print(\"Можно делить\")",
+      "input": true,
+      "answer": "number != 0",
+      "accepted": [
+        "number!=0",
+        "number != 0"
+      ],
+      "explanation": "Не равно записывается как !=."
+    },
+    {
+      "kind": "выбор варианта",
+      "title": "Какой вариант правильный?",
+      "code": "Вариант A:\nif age >= 18\n    print(\"Можно\")\n\nВариант B:\nif age >= 18:\n    print(\"Можно\")",
+      "options": [
+        "Вариант A",
+        "Вариант B"
+      ],
+      "answer": "Вариант B",
+      "explanation": "После условия в if нужно двоеточие."
+    },
+    {
+      "kind": "выбор варианта",
+      "title": "Какой вариант правильный для проверки пароля?",
+      "code": "Вариант A:\nif password = \"1234\":\n    print(\"Вход\")\n\nВариант B:\nif password == \"1234\":\n    print(\"Вход\")",
+      "options": [
+        "Вариант A",
+        "Вариант B"
+      ],
+      "answer": "Вариант B",
+      "explanation": "= присваивает значение, а == проверяет равенство."
+    },
+    {
+      "kind": "выбор варианта",
+      "title": "Какой вариант правильный по отступам?",
+      "code": "Вариант A:\nif price > 1000:\nprint(\"Дорого\")\n\nВариант B:\nif price > 1000:\n    print(\"Дорого\")",
+      "options": [
+        "Вариант A",
+        "Вариант B"
+      ],
+      "answer": "Вариант B",
+      "explanation": "Команда внутри блока if должна быть с отступом."
+    },
+    {
+      "kind": "маленькая программа",
+      "title": "Вставь условие: если скорость больше 60, вывести \"Превышение скорости\".",
+      "code": "speed = 75\n\nif __________:\n    print(\"Превышение скорости\")\nelse:\n    print(\"Скорость в норме\")",
+      "input": true,
+      "answer": "speed > 60",
+      "accepted": [
+        "speed>60",
+        "speed > 60"
+      ],
+      "explanation": "Нужно проверить, что speed больше 60."
+    },
+    {
+      "kind": "маленькая программа",
+      "title": "Вставь условие: если баллов больше или равно 50, вывести \"Зачёт\".",
+      "code": "score = 64\n\nif __________:\n    print(\"Зачёт\")\nelse:\n    print(\"Незачёт\")",
+      "input": true,
+      "answer": "score >= 50",
+      "accepted": [
+        "score>=50",
+        "score >= 50"
+      ],
+      "explanation": "Больше или равно 50 записывается как score >= 50."
+    },
+    {
+      "kind": "маленькая программа",
+      "title": "Вставь условие: если статус равен \"paid\", вывести \"Заказ оплачен\".",
+      "code": "status = \"paid\"\n\nif __________:\n    print(\"Заказ оплачен\")\nelse:\n    print(\"Ожидается оплата\")",
+      "input": true,
+      "answer": "status == \"paid\"",
+      "accepted": [
+        "status==\"paid\"",
+        "status == \"paid\"",
+        "status=='paid'",
+        "status == 'paid'"
+      ],
+      "explanation": "Строки сравниваются через ==."
+    },
+    {
+      "kind": "финальное задание",
+      "title": "Вставь условие: если hour меньше 12, вывести \"Доброе утро\".",
+      "code": "hour = 10\n\nif __________:\n    print(\"Доброе утро\")\nelse:\n    print(\"Добрый день\")",
+      "input": true,
+      "answer": "hour < 12",
+      "accepted": [
+        "hour<12",
+        "hour < 12"
+      ],
+      "explanation": "Меньше 12 записывается как hour < 12."
+    }
+  ],
+  "for": [
+    {
+      "kind": "чтение кода",
+      "title": "Что выведет программа?",
+      "code": "for i in range(3):\n    print(\"Python\")",
+      "options": [
+        "Python\nPython\nPython",
+        "0\n1\n2",
+        "Python"
+      ],
+      "answer": "Python\nPython\nPython",
+      "explanation": "range(3) повторяет действие 3 раза."
+    },
+    {
+      "kind": "чтение кода",
+      "title": "Что выведет программа?",
+      "code": "for i in range(4):\n    print(i)",
+      "options": [
+        "0\n1\n2\n3",
+        "1\n2\n3\n4",
+        "4"
+      ],
+      "answer": "0\n1\n2\n3",
+      "explanation": "range(4) даёт 0, 1, 2, 3. Счёт начинается с нуля."
+    },
+    {
+      "kind": "чтение кода",
+      "title": "Что выведет программа?",
+      "code": "tasks = [\"почта\", \"звонок\", \"отчёт\"]\n\nfor task in tasks:\n    print(task)",
+      "options": [
+        "почта\nзвонок\nотчёт",
+        "tasks",
+        "task"
+      ],
+      "answer": "почта\nзвонок\nотчёт",
+      "explanation": "Цикл проходит по каждому элементу списка tasks."
+    },
+    {
+      "kind": "чтение кода",
+      "title": "Что выведет программа?",
+      "code": "prices = [100, 200, 300]\n\nfor price in prices:\n    print(price)",
+      "options": [
+        "100\n200\n300",
+        "price\nprice\nprice",
+        "0\n1\n2"
+      ],
+      "answer": "100\n200\n300",
+      "explanation": "Переменная price по очереди получает 100, 200 и 300."
+    },
+    {
+      "kind": "вставить часть",
+      "title": "Вставь пропуск, чтобы программа вывела числа от 0 до 4.",
+      "code": "for i in __________:\n    print(i)",
+      "input": true,
+      "answer": "range(5)",
+      "accepted": [
+        "range(5)"
+      ],
+      "explanation": "Чтобы получить 0, 1, 2, 3, 4, нужен range(5)."
+    },
+    {
+      "kind": "вставить часть",
+      "title": "Вставь пропуск, чтобы программа вывела каждое имя из списка.",
+      "code": "names = [\"Иван\", \"Мария\", \"Сергей\"]\n\nfor name in __________:\n    print(name)",
+      "input": true,
+      "answer": "names",
+      "accepted": [
+        "names"
+      ],
+      "explanation": "Нужно идти по списку names: for name in names."
+    },
+    {
+      "kind": "вставить часть",
+      "title": "Вставь пропуск, чтобы программа 5 раз вывела \"Готово\".",
+      "code": "for i in __________:\n    print(\"Готово\")",
+      "input": true,
+      "answer": "range(5)",
+      "accepted": [
+        "range(5)"
+      ],
+      "explanation": "range(5) означает 5 повторений."
+    },
+    {
+      "kind": "вставить часть",
+      "title": "Вставь пропуск, чтобы программа вывела каждый город.",
+      "code": "cities = [\"Алматы\", \"Астана\", \"Шымкент\"]\n\nfor city in __________:\n    print(city)",
+      "input": true,
+      "answer": "cities",
+      "accepted": [
+        "cities"
+      ],
+      "explanation": "Список называется cities, поэтому пишем for city in cities."
+    },
+    {
+      "kind": "выбор варианта",
+      "title": "Какой вариант правильный?",
+      "code": "Вариант A:\nfor i in range(3)\n    print(i)\n\nВариант B:\nfor i in range(3):\n    print(i)",
+      "options": [
+        "Вариант A",
+        "Вариант B"
+      ],
+      "answer": "Вариант B",
+      "explanation": "После строки for нужно двоеточие."
+    },
+    {
+      "kind": "выбор варианта",
+      "title": "Какой вариант правильный?",
+      "code": "Вариант A:\nfor name in names:\n    print(name)\n\nВариант B:\nfor name names:\n    print(name)",
+      "options": [
+        "Вариант A",
+        "Вариант B"
+      ],
+      "answer": "Вариант A",
+      "explanation": "В цикле нужно слово in."
+    },
+    {
+      "kind": "выбор варианта",
+      "title": "Какой вариант правильный по отступам?",
+      "code": "Вариант A:\nfor i in range(3):\nprint(i)\n\nВариант B:\nfor i in range(3):\n    print(i)",
+      "options": [
+        "Вариант A",
+        "Вариант B"
+      ],
+      "answer": "Вариант B",
+      "explanation": "Команда внутри цикла должна быть с отступом."
+    },
+    {
+      "kind": "маленькая программа",
+      "title": "Вставь пропуск: программа должна 3 раза вывести \"Проверка\".",
+      "code": "for i in __________:\n    print(\"Проверка\")",
+      "input": true,
+      "answer": "range(3)",
+      "accepted": [
+        "range(3)"
+      ],
+      "explanation": "Три повтора — это range(3)."
+    },
+    {
+      "kind": "маленькая программа",
+      "title": "Вставь пропуск: выведи каждый товар отдельно.",
+      "code": "products = [\"хлеб\", \"молоко\", \"сыр\"]\n\nfor product in __________:\n    print(product)",
+      "input": true,
+      "answer": "products",
+      "accepted": [
+        "products"
+      ],
+      "explanation": "Список называется products."
+    },
+    {
+      "kind": "маленькая программа",
+      "title": "Вставь пропуск: выведи каждое число из списка.",
+      "code": "numbers = [10, 20, 30, 40]\n\nfor number in __________:\n    print(number)",
+      "input": true,
+      "answer": "numbers",
+      "accepted": [
+        "numbers"
+      ],
+      "explanation": "Список называется numbers."
+    },
+    {
+      "kind": "маленькая программа",
+      "title": "Вставь пропуск: программа должна вывести числа от 0 до 5.",
+      "code": "for i in __________:\n    print(i)",
+      "input": true,
+      "answer": "range(6)",
+      "accepted": [
+        "range(6)"
+      ],
+      "explanation": "Чтобы получить 0, 1, 2, 3, 4, 5, нужен range(6)."
+    },
+    {
+      "kind": "финальное задание",
+      "title": "Вставь строку внутри цикла, чтобы вывести каждое дело в формате \"Дело: ...\".",
+      "code": "tasks = [\"ответить на письмо\", \"позвонить клиенту\", \"проверить отчёт\"]\n\nfor task in tasks:\n    __________",
+      "input": true,
+      "answer": "print(\"Дело:\", task)",
+      "accepted": [
+        "print(\"Дело:\", task)",
+        "print(\"Дело:\",task)",
+        "print('Дело:', task)",
+        "print('Дело:',task)"
+      ],
+      "explanation": "Внутри цикла task по очереди становится каждым делом, поэтому печатаем print(\"Дело:\", task)."
+    }
+  ]
+};
+
+const state = {
+  if: { index: 0, solved: false, stats: emptyStats() },
+  for: { index: 0, solved: false, stats: emptyStats() }
+};
+
+function emptyStats(){return {total:0,right:0,streak:0,best:0,date:null,history:[]}}
+function el(id){return document.getElementById(id)}
+function today(){return new Date().toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'})}
+function topicKey(kind){return kind === 'if' ? 'pythonIfSergeyLeonidovich' : 'pythonForSergeyLeonidovich'}
+function shuffleIndexes(n){
+  const arr = Array.from({length:n},(_,i)=>i);
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}
+  return arr;
+}
+const order = {if: Array.from({length:tasks.if.length},(_,i)=>i), for: Array.from({length:tasks.for.length},(_,i)=>i)};
+
+function load(kind){
+  try{
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    const saved = data && data.topics && data.topics[topicKey(kind)];
+    if(saved){ state[kind].stats = Object.assign(emptyStats(), saved); if(!state[kind].stats.history) state[kind].stats.history=[]; }
+  }catch(e){}
+}
+function save(kind){
+  let data;
+  try{ data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {topics:{}}; }catch(e){ data = {topics:{}}; }
+  data.topics = data.topics || {};
+  data.topics[topicKey(kind)] = state[kind].stats;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+function normalize(s){
+  return String(s).trim()
+    .replace(/[“”«»]/g,'"')
+    .replace(/[−–—]/g,'-')
+    .replace(/\r\n/g,'\n')
+    .replace(/\s+/g,' ')
+    .replace(/\s*([><=!]=?|==)\s*/g,'$1')
+    .replace(/\s*:\s*/g,':')
+    .replace(/\s*,\s*/g,',')
+    .replace(/\s*\(\s*/g,'(')
+    .replace(/\s*\)\s*/g,')');
+}
+function task(kind){ return tasks[kind][order[kind][state[kind].index % order[kind].length]]; }
+
+function render(kind){
+  const t = task(kind), prefix = kind === 'if' ? 'if' : 'for';
+  state[kind].solved = false;
+  el(prefix+'Kind').textContent = t.kind;
+  el(prefix+'Title').textContent = t.title;
+  el(prefix+'Code').textContent = t.code;
+  el(prefix+'Fb').textContent = 'Выбери ответ или впиши код. Для проверки можно нажать кнопку или Ctrl+Enter.';
+  el(prefix+'Fb').className = 'fb';
+  const answers = el(prefix+'Answers');
+  answers.innerHTML = '';
+  el(prefix+'InputWrap').hidden = !t.input;
+  el(prefix+'Input').value = '';
+  if(t.input){
+    el(prefix+'Input').focus();
+  } else {
+    t.options.forEach(opt=>{
+      const b = document.createElement('button');
+      b.textContent = opt;
+      b.onclick = ()=>choose(kind,opt,b);
+      answers.appendChild(b);
+    });
+  }
+  renderStats(kind);
+}
+function choose(kind,opt,button){
+  if(state[kind].solved){ return; }
+  const t = task(kind), prefix = kind === 'if' ? 'if' : 'for';
+  const ok = opt === t.answer;
+  [...el(prefix+'Answers').querySelectorAll('button')].forEach(b=>b.disabled=true);
+  button.classList.add(ok ? 'correct' : 'wrong');
+  if(!ok){
+    [...el(prefix+'Answers').querySelectorAll('button')].forEach(b=>{ if(b.textContent === t.answer) b.classList.add('correct'); });
+  }
+  finish(kind, ok, opt);
+}
+function checkInput(kind){
+  if(state[kind].solved){ return; }
+  const prefix = kind === 'if' ? 'if' : 'for';
+  const t = task(kind);
+  const user = el(prefix+'Input').value;
+  const accepted = (t.accepted || [t.answer]).map(normalize);
+  const ok = accepted.includes(normalize(user));
+  finish(kind, ok, user);
+}
+function finish(kind, ok, userAnswer){
+  const t = task(kind), prefix = kind === 'if' ? 'if' : 'for';
+  const s = state[kind].stats;
+  state[kind].solved = true;
+  s.total++;
+  s.date = today();
+  if(ok){ s.right++; s.streak++; s.best = Math.max(s.best||0, s.streak); }
+  else { s.streak = 0; }
+  s.history.unshift({
+    text: (ok ? '✓ ' : '• ') + t.kind + ': ' + t.title + ' Ответ: ' + String(userAnswer || '—').replace(/\n/g,' / ')
+  });
+  s.history = s.history.slice(0,10);
+  save(kind);
+  el(prefix+'Fb').textContent = ok ? 'Верно. ' + t.explanation : 'Пока ошибка. Правильный ответ: ' + t.answer.replace(/\n/g,' / ') + '. ' + t.explanation;
+  el(prefix+'Fb').className = 'fb ' + (ok ? 'ok' : 'err');
+  renderStats(kind);
+}
+function showSolution(kind){
+  const t = task(kind), prefix = kind === 'if' ? 'if' : 'for';
+  if(t.input){ el(prefix+'Input').value = t.answer; }
+  else {
+    [...el(prefix+'Answers').querySelectorAll('button')].forEach(b=>{
+      if(b.textContent === t.answer) b.classList.add('correct');
+      b.disabled = true;
+    });
+  }
+  el(prefix+'Fb').textContent = 'Решение: ' + t.answer.replace(/\n/g,' / ') + '. ' + t.explanation;
+  el(prefix+'Fb').className = 'fb tip';
+}
+function next(kind){
+  state[kind].index++;
+  render(kind);
+}
+function statusFor(s){
+  const acc = s.total ? Math.round(s.right*100/s.total) : 0;
+  if(s.total < 10) return ['тема начата','Реши первые 10 заданий.'];
+  if(s.total >= 30 && acc >= 90) return ['тема освоена','Можно переходить к смешанным задачам.'];
+  if(s.total >= 20 && acc >= 80) return ['почти освоено','Хорошо. Добей точность до 90%.'];
+  if(acc < 70) return ['нужно тренироваться','Спокойно читать код сверху вниз и проверять отступы.'];
+  return ['тренируется','Навык закрепляется.'];
+}
+function renderStats(kind){
+  const prefix = kind === 'if' ? 'if' : 'for';
+  const s = state[kind].stats;
+  const acc = s.total ? Math.round(s.right*100/s.total) : 0;
+  const st = statusFor(s);
+  el(prefix+'Total').textContent = s.total;
+  el(prefix+'Right').textContent = s.right;
+  el(prefix+'Streak').textContent = s.streak;
+  el(prefix+'Acc').textContent = acc + '%';
+  el(prefix+'Best').textContent = s.best || 0;
+  el(prefix+'Date').textContent = s.date || '—';
+  el(prefix+'Status').textContent = st[0];
+  el(prefix+'Advice').textContent = st[1];
+  el(prefix+'History').innerHTML = s.history.length ? s.history.map(h=>'<div class="hist">'+escapeHtml(h.text)+'</div>').join('') : '<div class="hist">Пока история пуста.</div>';
+}
+function reset(kind){
+  state[kind].stats = emptyStats();
+  save(kind);
+  renderStats(kind);
+  const prefix = kind === 'if' ? 'if' : 'for';
+  el(prefix+'Fb').textContent = 'Статистика сброшена.';
+  el(prefix+'Fb').className = 'fb tip';
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function switchTab(kind){
+  el('lessonIf').classList.toggle('active', kind === 'if');
+  el('lessonFor').classList.toggle('active', kind === 'for');
+  el('tabIf').classList.toggle('active', kind === 'if');
+  el('tabFor').classList.toggle('active', kind === 'for');
+}
+el('tabIf').onclick = ()=>switchTab('if');
+el('tabFor').onclick = ()=>switchTab('for');
+el('ifCheck').onclick = ()=>checkInput('if');
+el('forCheck').onclick = ()=>checkInput('for');
+el('ifNext').onclick = ()=>next('if');
+el('forNext').onclick = ()=>next('for');
+el('ifSolution').onclick = ()=>showSolution('if');
+el('forSolution').onclick = ()=>showSolution('for');
+el('ifReset').onclick = ()=>reset('if');
+el('forReset').onclick = ()=>reset('for');
+el('ifInput').onkeydown = e=>{ if(e.key==='Enter' && (e.ctrlKey || e.metaKey)) checkInput('if'); };
+el('forInput').onkeydown = e=>{ if(e.key==='Enter' && (e.ctrlKey || e.metaKey)) checkInput('for'); };
+
+load('if'); load('for'); render('if'); render('for');
+</script>
+</body>
+</html>

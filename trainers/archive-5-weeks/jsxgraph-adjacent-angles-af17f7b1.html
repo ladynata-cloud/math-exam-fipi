@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Смежные углы: сумма = 180° — тренажёр</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css">
+  <script src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #e8e4db;
+           font-family: system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+           color: #1f2937; padding: 18px; }
+
+    .app { max-width: 980px; margin: auto; background: #fff; border-radius: 18px;
+           overflow: hidden; box-shadow: 0 12px 36px #0002; }
+
+    /* ── Header ── */
+    .head { background: #1a1a2e; color: #fff; padding: 14px 20px;
+            display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .head-left .title { font-size: 19px; font-weight: 900; }
+    .head-left .sub   { font-size: 12px; opacity: .70; margin-top: 2px; }
+    .tabs { display: flex; gap: 6px; }
+    .tab  { background: rgba(255,255,255,.14); border: none; color: rgba(255,255,255,.65);
+            padding: 6px 13px; border-radius: 8px; font: 700 12px system-ui; cursor: pointer; }
+    .tab:hover  { background: rgba(255,255,255,.22); color: #fff; }
+    .tab.active { background: rgba(255,255,255,.92); color: #1a1a2e; }
+
+    /* ── Layout ── */
+    .main { display: grid; grid-template-columns: minmax(0,1fr) 300px; }
+    .boardWrap { background: #faf8f2; padding: 14px; border-right: 1px solid #e5e2d9; }
+    .jxgbox { width: 100%; height: 400px; border: 1px solid #d6d3ca;
+              border-radius: 14px; background: #fffdf7; }
+
+    /* ── Panel ── */
+    .panel { padding: 14px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
+    .card  { border: 1.5px solid #e5e7eb; border-radius: 12px; padding: 12px; background: #f9fafb; }
+    .card h2 { margin: 0 0 9px; font-size: 11px; text-transform: uppercase;
+               letter-spacing: .08em; color: #64748b; }
+    .task-text { font-size: 14px; line-height: 1.55; }
+    .task-sub  { font-size: 12px; color: #64748b; margin: 5px 0 0; line-height: 1.4; }
+
+    /* ── Equality display ── */
+    .eq-box { display: flex; align-items: center; justify-content: center;
+              gap: 5px; padding: 6px 0 3px; }
+    .eq-val  { text-align: center; min-width: 56px; }
+    .eq-num  { font-size: 20px; font-weight: 900; font-variant-numeric: tabular-nums;
+               display: block; line-height: 1.1; }
+    .eq-lbl  { font-size: 10px; color: #94a3b8; display: block; margin-top: 2px; }
+    .eq-num.blue   { color: #2563eb; }
+    .eq-num.amber  { color: #b45309; }
+    .eq-num.green  { color: #15803d; }
+    .eq-op   { font-size: 22px; font-weight: 700; color: #94a3b8; padding-bottom: 14px; }
+    .eq-check { font-size: 22px; padding-bottom: 14px; }
+
+    /* ── Angle bar ── */
+    .angle-bar-wrap { height: 14px; background: #e2e8f0; border-radius: 7px;
+                      overflow: hidden; display: flex; margin-top: 8px; }
+    .angle-bar-1 { background: #3b82f6; height: 100%; transition: width .12s; }
+    .angle-bar-2 { background: #f59e0b; height: 100%; flex: 1; }
+    .bar-labels  { display: flex; justify-content: space-between;
+                   font-size: 11px; font-weight: 700; margin-top: 3px; }
+
+    /* ── Definition card ── */
+    .def-line { font-size: 13px; line-height: 1.55; color: #374151; }
+    .def-line + .def-line { margin-top: 4px; }
+    .def-why  { margin-top: 8px; padding: 8px 10px; background: #f0fdf4;
+                border-radius: 8px; font-size: 13px; color: #14532d; line-height: 1.5; }
+
+    /* ── Perpendicular badge (hidden by default) ── */
+    .perp-badge { display: none; margin-top: 6px; padding: 6px 10px; background: #faf5ff;
+                  border: 1.5px solid #e9d5ff; border-radius: 8px;
+                  font-size: 13px; font-weight: 700; color: #7c3aed; text-align: center; }
+
+    /* ── Messages ── */
+    .msg  { border-radius: 12px; padding: 11px 13px; font-size: 14px;
+            font-weight: 700; line-height: 1.45; }
+    .info { background: #eff6ff; color: #1d4ed8; }
+    .ok   { background: #f0fdf4; color: #15803d; }
+    .err  { background: #fef2f2; color: #b91c1c; }
+    .warn { background: #fff7ed; color: #c2410c; }
+
+    .proof { display: none; background: #ecfdf5; color: #14532d;
+             border: 1.5px solid #bbf7d0; border-radius: 12px;
+             padding: 12px; font-size: 13px; line-height: 1.5; }
+
+    /* ── Buttons ── */
+    .btn-bar { display: flex; gap: 8px; flex-wrap: wrap; padding: 11px 14px;
+               background: #f9fafb; border-top: 1px solid #e5e7eb; }
+    button { border: 1.5px solid #d1d5db; border-radius: 9px; background: #fff;
+             color: #374151; padding: 8px 13px; font: 800 13px system-ui; cursor: pointer; }
+    button:hover  { background: #f3f4f6; }
+    .primary      { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
+    .primary:hover{ background: #2d2d4a; }
+    .hint-on      { background: #dcfce7; color: #166534; border-color: #86efac; }
+
+    @media (max-width: 820px) {
+      body { padding: 8px; }
+      .main { grid-template-columns: 1fr; }
+      .boardWrap { border-right: 0; border-bottom: 1px solid #e5e2d9; }
+      .jxgbox { height: 310px; }
+      .head { flex-direction: column; align-items: flex-start; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Header -->
+  <div class="head">
+    <div class="head-left">
+      <div class="title">∠ Смежные углы: ∠1 + ∠2 = 180°</div>
+      <div class="sub">Двигайте луч OC — и наблюдайте за суммой углов</div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" id="tabObs"  onclick="setMode('observe')">Наблюдение</button>
+      <button class="tab"        id="tabTask" onclick="setMode('task')">Задание</button>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- Board -->
+    <div class="boardWrap">
+      <div id="jxgboard" class="jxgbox"></div>
+    </div>
+
+    <!-- Right panel -->
+    <aside class="panel">
+
+      <!-- Task / description -->
+      <div class="card">
+        <h2>Задание</h2>
+        <div id="taskText" class="task-text"></div>
+        <p   id="taskSub"  class="task-sub"></p>
+      </div>
+
+      <!-- Live angle equality -->
+      <div class="card">
+        <h2>Сумма смежных углов</h2>
+        <div class="eq-box">
+          <div class="eq-val">
+            <span class="eq-num blue"  id="eqA1">—</span>
+            <span class="eq-lbl">∠1</span>
+          </div>
+          <span class="eq-op">+</span>
+          <div class="eq-val">
+            <span class="eq-num amber" id="eqA2">—</span>
+            <span class="eq-lbl">∠2</span>
+          </div>
+          <span class="eq-op">=</span>
+          <div class="eq-val">
+            <span class="eq-num green">180°</span>
+            <span class="eq-lbl">всегда</span>
+          </div>
+          <span class="eq-check" id="eqCheck"></span>
+        </div>
+        <!-- Proportional bar -->
+        <div class="angle-bar-wrap">
+          <div class="angle-bar-1" id="aBar1" style="width:50%"></div>
+          <div class="angle-bar-2" id="aBar2"></div>
+        </div>
+        <div class="bar-labels">
+          <span style="color:#2563eb">← ∠1</span>
+          <span style="color:#b45309">∠2 →</span>
+        </div>
+        <!-- Perpendicular bonus badge -->
+        <div class="perp-badge" id="perpBadge">⊥ Прямые перпендикулярны! ∠1 = ∠2 = 90°</div>
+      </div>
+
+      <!-- Definition -->
+      <div class="card">
+        <h2>Что такое смежные углы</h2>
+        <p class="def-line">• <b>Общая вершина:</b> точка O</p>
+        <p class="def-line">• <b>Общая сторона:</b> луч OC (фиолетовый)</p>
+        <p class="def-line">• <b>Другие стороны</b> OA и OB лежат на одной прямой</p>
+        <div class="def-why">
+          Прямая линия AOB — это развёрнутый угол 180°.<br>
+          Луч OC <em>делит</em> его на две части.<br>
+          Поэтому <b>∠1 + ∠2 = 180°</b> — всегда, при любом положении луча.
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div id="msg" class="msg info">Потяните луч OC и наблюдайте за суммой ∠1 + ∠2.</div>
+
+      <!-- Success proof -->
+      <div id="proof" class="proof">
+        <b>Верно!</b> Смежные углы — это две части развёрнутого угла 180°.
+        Луч OC делит прямую AOB на ∠1 и ∠2.
+        Какой бы ни была позиция луча, <b>∠1 + ∠2 = 180°</b>.
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- Buttons -->
+  <div class="btn-bar">
+    <button class="primary" onclick="checkNow()">Проверить</button>
+    <button id="hintBtn"    onclick="toggleHint()">Подсказка</button>
+    <button onclick="newTask()">Новое задание</button>
+    <button onclick="resetRay()">Сбросить луч</button>
+  </div>
+
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════════════════
+//  Constants
+// ════════════════════════════════════════════════════════════════════════
+const OX = 5, OY = 0;          // vertex O position
+const R  = 2.2;                 // arc / sector radius (board units)
+const TOL = 2.5;                // degree tolerance for task check
+
+// ════════════════════════════════════════════════════════════════════════
+//  State
+// ════════════════════════════════════════════════════════════════════════
+let board      = null;
+let ptO, ptA, ptB, ptC, hintPt;
+let ang1Obj, ang2Obj;           // JSXGraph angle objects (for sectors)
+let tickTimer  = null;
+let hintVisible = false;
+let mode        = 'observe';
+let targetAng1  = 90;           // target ∠1 value (degrees) in task mode
+
+// ════════════════════════════════════════════════════════════════════════
+//  Angle computation
+//  theta = angle of ray OC from positive x-axis (0 to π, C above line)
+//  ∠2 (right) = theta  |  ∠1 (left) = π − theta
+// ════════════════════════════════════════════════════════════════════════
+function getTheta() {
+  if (!ptC || !ptO) return Math.PI / 2;
+  const raw = Math.atan2(ptC.Y() - OY, ptC.X() - OX);
+  // Clamp: keep 5°–175° to avoid degenerate sectors
+  return Math.max(5 * Math.PI / 180, Math.min(175 * Math.PI / 180, raw));
+}
+function getAng1() { return (Math.PI - getTheta()) * 180 / Math.PI; }
+function getAng2() { return  getTheta()            * 180 / Math.PI; }
+
+// ════════════════════════════════════════════════════════════════════════
+//  Board construction
+// ════════════════════════════════════════════════════════════════════════
+function makeBoard(initAngle1Deg) {
+  if (tickTimer) { clearInterval(tickTimer); tickTimer = null; }
+  if (board)     { JXG.JSXGraph.freeBoard(board); board = null; }
+
+  board = JXG.JSXGraph.initBoard('jxgboard', {
+    boundingbox   : [-0.3, 3.5, 10.3, -1.6],
+    axis          : false,
+    grid          : true,
+    showCopyright : false,
+    showNavigation: false,
+    pan : { enabled: false },
+    zoom: { enabled: false }
+  });
+
+  // ── Fixed points ──────────────────────────────────────────────────
+  ptO = board.create('point', [OX, OY], {
+    name: 'O', fixed: true, size: 7,
+    strokeColor: '#1a1a2e', fillColor: '#1a1a2e',
+    label: { fontSize: 14, fontWeight: 'bold', color: '#1a1a2e', offset: [0, -22] },
+    layer: 5
+  });
+  ptA = board.create('point', [0.5, 0], {
+    name: 'A', fixed: true, size: 5,
+    strokeColor: '#374151', fillColor: '#374151',
+    label: { fontSize: 13, fontWeight: 'bold', offset: [-2, -20] }, layer: 5
+  });
+  ptB = board.create('point', [9.5, 0], {
+    name: 'B', fixed: true, size: 5,
+    strokeColor: '#374151', fillColor: '#374151',
+    label: { fontSize: 13, fontWeight: 'bold', offset: [0, -20] }, layer: 5
+  });
+
+  // ── Straight line A–O–B ───────────────────────────────────────────
+  board.create('segment', [ptA, ptB], {
+    strokeColor: '#475569', strokeWidth: 4.5,
+    highlight: false, layer: 1
+  });
+
+  // ── Constraint arc: upper semicircle at radius R centred on O ────
+  // arc goes CCW from right-end-point to left-end-point → upper half
+  const arcR = board.create('point', [OX + R, OY], { visible: false, fixed: true });
+  const arcL = board.create('point', [OX - R, OY], { visible: false, fixed: true });
+  const constraintArc = board.create('arc', [ptO, arcR, arcL], {
+    visible: false, layer: 0
+  });
+
+  // ── Glider C on the constraint arc ───────────────────────────────
+  // Initial angle: derived from initAngle1Deg (∠1 = π − theta)
+  const theta0 = Math.PI - (initAngle1Deg !== undefined
+                              ? initAngle1Deg * Math.PI / 180
+                              : 65 * Math.PI / 180);
+  ptC = board.create('glider',
+    [OX + R * Math.cos(theta0), OY + R * Math.sin(theta0), constraintArc],
+    {
+      name: 'C', size: 9,
+      strokeColor: '#7c3aed', fillColor: '#a78bfa',
+      label: { fontSize: 13, fontWeight: 'bold', color: '#6d28d9', offset: [8, 4] },
+      layer: 6
+    }
+  );
+
+  // ── Sector ∠1 (left, blue): CCW from OC to OA ────────────────────
+  //   board.create('angle', [P1, Vertex, P2]) = CCW from VP1 to VP2
+  //   We want CCW from OC to OA → [ptC, ptO, ptA]
+  ang1Obj = board.create('angle', [ptC, ptO, ptA], {
+    type         : 'sector',
+    radius       : R * 0.88,
+    fillColor    : '#dbeafe',
+    fillOpacity  : 0.55,
+    strokeColor  : '#3b82f6',
+    strokeWidth  : 2,
+    withLabel    : false,
+    highlight    : false,
+    layer        : 2
+  });
+
+  // ── Sector ∠2 (right, amber): CCW from OB to OC ──────────────────
+  ang2Obj = board.create('angle', [ptB, ptO, ptC], {
+    type         : 'sector',
+    radius       : R * 0.88,
+    fillColor    : '#fef3c7',
+    fillOpacity  : 0.55,
+    strokeColor  : '#f59e0b',
+    strokeWidth  : 2,
+    withLabel    : false,
+    highlight    : false,
+    layer        : 2
+  });
+
+  // ── Ray OC: extends from O through C to board edge ────────────────
+  board.create('line', [ptO, ptC], {
+    straightFirst: false,
+    straightLast : true,
+    strokeColor  : '#7c3aed',
+    strokeWidth  : 3.5,
+    highlight    : false,
+    layer        : 4
+  });
+
+  // ── Degree labels inside sectors ──────────────────────────────────
+  // ∠1 label (placed at mid-angle of left sector, radius 1.55)
+  board.create('text', [
+    () => OX + 1.55 * Math.cos((getTheta() + Math.PI) / 2),
+    () => OY + 1.55 * Math.sin((getTheta() + Math.PI) / 2),
+    () => Math.round(getAng1()) + '°'
+  ], {
+    fontSize : 13, fontWeight: 'bold', color: '#1d4ed8',
+    anchorX  : 'middle', anchorY: 'middle',
+    highlight: false, layer: 7
+  });
+
+  // ∠2 label (placed at mid-angle of right sector, radius 1.55)
+  board.create('text', [
+    () => OX + 1.55 * Math.cos(getTheta() / 2),
+    () => OY + 1.55 * Math.sin(getTheta() / 2),
+    () => Math.round(getAng2()) + '°'
+  ], {
+    fontSize : 13, fontWeight: 'bold', color: '#92400e',
+    anchorX  : 'middle', anchorY: 'middle',
+    highlight: false, layer: 7
+  });
+
+  // ── "Общая сторона" label on the ray ─────────────────────────────
+  board.create('text', [
+    () => OX + (R * 1.05) * Math.cos(getTheta()),
+    () => OY + (R * 1.05) * Math.sin(getTheta()) + 0.22,
+    'общая\nсторона'
+  ], {
+    fontSize : 10, color: '#7c3aed', anchorX: 'middle',
+    highlight: false, layer: 7
+  });
+
+  // ── Hint point (task mode only) ───────────────────────────────────
+  hintPt = board.create('point',
+    [OX + R * Math.cos(Math.PI / 2), OY + R * Math.sin(Math.PI / 2)],
+    {
+      name: '★', fixed: true, visible: false, size: 9,
+      strokeColor: '#7c3aed', fillColor: '#c4b5fd',
+      label: { fontSize: 11, color: '#7c3aed', offset: [0, 18] },
+      layer: 7
+    }
+  );
+
+  // ── Events ────────────────────────────────────────────────────────
+  board.on('update', updatePanel);
+  tickTimer = setInterval(updatePanel, 150);
+  updatePanel();
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  Panel update — runs continuously
+// ════════════════════════════════════════════════════════════════════════
+function updatePanel() {
+  if (!ptC) return;
+
+  const a1  = getAng1();
+  const a2  = getAng2();
+  const near90 = Math.abs(a1 - 90) < 2.5;
+
+  // ── Equality display ──
+  document.getElementById('eqA1').textContent = Math.round(a1) + '°';
+  document.getElementById('eqA2').textContent = Math.round(a2) + '°';
+
+  const ck = document.getElementById('eqCheck');
+  ck.textContent = '✓';
+  ck.style.color = '#16a34a';
+
+  // ── Bar ──
+  document.getElementById('aBar1').style.width = (a1 / 180 * 100).toFixed(1) + '%';
+
+  // ── Perpendicular badge ──
+  document.getElementById('perpBadge').style.display = near90 ? 'block' : 'none';
+
+  // ── Proof ──
+  const proof = document.getElementById('proof');
+
+  if (mode === 'observe') {
+    if (near90) {
+      setMsg('Оба угла по 90° — прямые AOB и луч OC перпендикулярны! Двигайте луч дальше.', 'ok');
+    } else {
+      setMsg(`∠1 = ${Math.round(a1)}°, ∠2 = ${Math.round(a2)}°. `
+           + `Сумма = ${Math.round(a1)} + ${Math.round(a2)} = 180°. Двигайте луч!`, 'ok');
+    }
+    proof.style.display = 'block';
+    return;
+  }
+
+  // ── Task mode ──
+  proof.style.display = 'none';
+  const err = Math.abs(a1 - targetAng1);
+
+  if (err <= TOL) {
+    setMsg(`Верно! ∠1 = ${Math.round(a1)}°. `
+         + `∠2 = ${Math.round(a2)}°. Сумма = 180° ✓`, 'ok');
+    proof.style.display = 'block';
+  } else if (a1 < targetAng1 - TOL) {
+    setMsg(`∠1 = ${Math.round(a1)}° — нужно ${targetAng1}°. `
+         + `Поворачивайте луч влево (∠1 растёт).`, 'info');
+  } else {
+    setMsg(`∠1 = ${Math.round(a1)}° — нужно ${targetAng1}°. `
+         + `Поворачивайте луч вправо (∠1 уменьшается).`, 'info');
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  Modes
+// ════════════════════════════════════════════════════════════════════════
+function setMode(m) {
+  mode = m;
+  document.getElementById('tabObs') .className = 'tab' + (m === 'observe' ? ' active' : '');
+  document.getElementById('tabTask').className = 'tab' + (m === 'task'    ? ' active' : '');
+  resetHint();
+  document.getElementById('proof').style.display = 'none';
+  if (m === 'observe') launchObserve();
+  else                 launchTask();
+}
+
+function launchObserve() {
+  makeBoard(115);   // start at ∠1 = 115°, ∠2 = 65° — clearly asymmetric
+  document.getElementById('taskText').innerHTML =
+    'Потяните луч <b>OC</b> в разные стороны. '
+    + 'Следите за тем, как меняются ∠1 и ∠2.';
+  document.getElementById('taskSub').textContent =
+    'Меняется ли сумма ∠1 + ∠2? Попробуйте поставить луч вертикально.';
+  setMsg('Двигайте луч OC. Сумма ∠1 + ∠2 меняется?', 'info');
+}
+
+function launchTask() {
+  // Targets: nice numbers, not too easy (not 90), not degenerate
+  const targets = [30, 40, 45, 50, 55, 60, 70, 80, 100, 110, 120, 130, 135, 140, 150];
+  targetAng1 = targets[Math.floor(Math.random() * targets.length)];
+  const ang2 = 180 - targetAng1;
+
+  // Start C far from correct position
+  const correctTheta = (Math.PI - targetAng1 * Math.PI / 180);  // theta for target ∠1
+  const startAngle1  = targetAng1 > 90
+    ? (targetAng1 - 70)        // start with smaller ∠1
+    : (targetAng1 + 70);       // start with larger ∠1
+  const clamped = Math.max(15, Math.min(165, startAngle1));
+
+  makeBoard(clamped);
+
+  // Place hint at correct position
+  const hx = OX + R * Math.cos(correctTheta);
+  const hy = OY + R * Math.sin(correctTheta);
+  hintPt.moveTo([hx, hy]);
+
+  document.getElementById('taskText').innerHTML =
+    `Поставьте луч OC так, чтобы <b style="color:#2563eb">∠1 = ${targetAng1}°</b>.`
+    + `<br><span style="color:#b45309">∠2 при этом будет ${ang2}°.</span>`;
+  document.getElementById('taskSub').textContent =
+    `Используйте числа на чертеже — следите за значением ∠1.`;
+  setMsg(`Задание: поверните луч OC так, чтобы ∠1 = ${targetAng1}°.`, 'info');
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  Button handlers
+// ════════════════════════════════════════════════════════════════════════
+function checkNow() {
+  updatePanel();
+  const a1 = getAng1(), a2 = getAng2();
+
+  if (mode === 'observe') {
+    setMsg(`∠1 = ${Math.round(a1)}°, ∠2 = ${Math.round(a2)}°. `
+         + `Сумма = ${Math.round(a1 + a2)}°. Это развёрнутый угол — 180°. ✓`, 'ok');
+    document.getElementById('proof').style.display = 'block';
+    return;
+  }
+
+  const err = Math.abs(a1 - targetAng1);
+  if (err <= TOL) {
+    setMsg(`Верно! ∠1 = ${Math.round(a1)}°, ∠2 = ${Math.round(a2)}°. ∠1 + ∠2 = 180° ✓`, 'ok');
+    document.getElementById('proof').style.display = 'block';
+  } else {
+    setMsg(`Пока нет: ∠1 = ${Math.round(a1)}°, нужно ${targetAng1}°. `
+         + (a1 < targetAng1 ? 'Поверните луч влево.' : 'Поверните луч вправо.'), 'err');
+  }
+}
+
+function toggleHint() {
+  hintVisible = !hintVisible;
+  const btn = document.getElementById('hintBtn');
+  btn.textContent = hintVisible ? 'Скрыть подсказку' : 'Подсказка';
+  btn.className   = hintVisible ? 'hint-on' : '';
+
+  if (mode === 'task' && hintPt) {
+    hintPt.setAttribute({ visible: hintVisible });
+    if (board) board.update();
+  }
+
+  if (hintVisible) {
+    if (mode === 'observe') {
+      setMsg('Подсказка: ∠1 + ∠2 = 180° — потому что вместе они образуют развёрнутый угол (прямую линию). '
+           + 'Попробуйте поставить луч вертикально — оба угла станут 90°!', 'info');
+    } else {
+      const ang2 = 180 - targetAng1;
+      setMsg(`Подсказка: ∠1 + ∠2 = 180°. Если ∠1 = ${targetAng1}°, то ∠2 = ${ang2}°. `
+           + `Правильное положение луча отмечено ★.`, 'info');
+    }
+  } else {
+    updatePanel();
+  }
+}
+
+function newTask() {
+  resetHint();
+  document.getElementById('proof').style.display = 'none';
+  if (mode === 'observe') launchObserve();
+  else                    launchTask();
+}
+
+function resetRay() {
+  if (!ptC || !ptO || !board) return;
+  const theta0 = mode === 'task'
+    ? (Math.PI - (180 - targetAng1 + 70) * Math.PI / 180)  // opposite side from correct
+    : Math.PI * 0.55;
+  const nx = OX + R * Math.cos(Math.max(5*Math.PI/180, Math.min(175*Math.PI/180, theta0)));
+  const ny = OY + R * Math.sin(Math.max(5*Math.PI/180, Math.min(175*Math.PI/180, theta0)));
+  ptC.moveTo([nx, ny], 300);
+  setMsg('Луч возвращён. Попробуйте снова.', 'info');
+  document.getElementById('proof').style.display = 'none';
+  updatePanel();
+}
+
+// ── Utilities ────────────────────────────────────────────────────────
+function setMsg(text, type) {
+  const el = document.getElementById('msg');
+  el.textContent = text;
+  el.className   = 'msg ' + type;
+}
+function resetHint() {
+  hintVisible = false;
+  const btn = document.getElementById('hintBtn');
+  btn.textContent = 'Подсказка';
+  btn.className   = '';
+  if (hintPt) hintPt.setAttribute({ visible: false });
+}
+
+// ════════════════════════════════════════════════════════════════════════
+//  Boot
+// ════════════════════════════════════════════════════════════════════════
+window.addEventListener('load', () => launchObserve());
+</script>
+</body>
+</html>

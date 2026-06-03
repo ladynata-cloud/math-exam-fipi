@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шины · тренажёр 1–5</title>
+<style>
+  :root {
+    --bg: #faf7f2; --bg-card: #ffffff; --bg-soft: #f5f1e8;
+    --ink: #1a2332; --ink-soft: #4a5568; --ink-muted: #8a93a3;
+    --line: #e8e3d8; --line-strong: #d4cfc2;
+    --accent: #1e3a5f; --accent-soft: #dbe4f0; --accent-deep: #142a44;
+    --gold: #b8924b; --gold-soft: #f3e9d4;
+    --green: #4a7c59; --green-soft: #dcebe0;
+    --warm: #d4956a; --warm-soft: #f5e3d4;
+    --error-soft: #f7e3dc; --error-ink: #8a4d3a;
+    --shadow: 0 1px 3px rgba(26,35,50,.05), 0 4px 24px rgba(26,35,50,.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PT Sans", Roboto, sans-serif; font-size: 16px; line-height: 1.55; min-height: 100vh; }
+  body { background-image: radial-gradient(circle at 15% 10%, rgba(184,146,75,.04) 0, transparent 40%), radial-gradient(circle at 85% 80%, rgba(30,58,95,.04) 0, transparent 40%); }
+
+  .topnav { border-bottom: 1px solid var(--line); background: rgba(250,247,242,.85); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 50; }
+  .topnav-inner { max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .back-link { color: var(--ink-soft); text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+  .back-link:hover { color: var(--accent); }
+  .topic-id { font-family: monospace; font-size: 11px; color: var(--ink-muted); background: var(--bg-soft); padding: 4px 10px; border-radius: 6px; }
+  .mode-switch { display: flex; background: var(--bg-soft); border-radius: 10px; padding: 3px; gap: 2px; }
+  .mode-switch button { background: none; border: none; padding: 8px 14px; font-family: inherit; font-size: 13px; color: var(--ink-soft); border-radius: 7px; cursor: pointer; }
+  .mode-switch button.active { background: var(--bg-card); color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,.06); font-weight: 500; }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 28px 24px 80px; }
+  .title-block { margin-bottom: 24px; }
+  .eyebrow { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .18em; color: var(--gold); margin-bottom: 10px; }
+  h1 { font-family: Georgia, serif; font-size: clamp(28px, 4vw, 40px); font-weight: 400; line-height: 1.15; letter-spacing: -.01em; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .subtitle { color: var(--ink-soft); margin-top: 8px; max-width: 700px; }
+
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 28px; align-items: start; }
+  @media (max-width: 1040px) { .layout { grid-template-columns: 1fr; } }
+
+  /* Marking decoder card */
+  .marking-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px; padding: 24px; box-shadow: var(--shadow); }
+  .marking-line { display: flex; align-items: center; justify-content: center; gap: 4px; font-family: Georgia, serif; font-size: 36px; color: var(--accent); margin-bottom: 18px; padding: 16px; background: var(--bg-soft); border-radius: 12px; flex-wrap: wrap; }
+  .marking-line .seg { padding: 4px 12px; border-radius: 6px; transition: all .25s; cursor: help; position: relative; }
+  .marking-line .seg.hl-B { background: var(--accent-soft); color: var(--accent); }
+  .marking-line .seg.hl-H { background: var(--gold-soft); color: var(--gold); }
+  .marking-line .seg.hl-R { background: var(--green-soft); color: var(--green); }
+  .marking-line .seg.hl-d { background: var(--warm-soft); color: var(--error-ink); }
+  .marking-line .sep { color: var(--ink-muted); font-size: 30px; }
+
+  .params-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
+  @media (max-width: 700px) { .params-grid { grid-template-columns: 1fr 1fr; } }
+  .param { padding: 12px 14px; border-radius: 10px; border: 1.5px solid; font-size: 13px; }
+  .param.B { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .param.H { background: var(--gold-soft); border-color: var(--gold); color: var(--gold); }
+  .param.R { background: var(--green-soft); border-color: var(--green); color: var(--green); }
+  .param.d { background: var(--warm-soft); border-color: var(--warm); color: var(--error-ink); }
+  .param .name { font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+  .param .formula { font-family: Georgia, serif; font-size: 14px; margin-top: 4px; font-style: italic; }
+  .param .val { font-family: Georgia, serif; font-size: 17px; margin-top: 6px; font-weight: 600; }
+
+  .wheel-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px; padding: 24px; box-shadow: var(--shadow); margin-top: 20px; }
+  .wheel-svg-wrap { background: linear-gradient(180deg, #fdfcf8 0%, #f5f1e8 100%); border-radius: 12px; padding: 14px; display: flex; justify-content: center; }
+  svg.wheel { max-width: 100%; height: auto; }
+
+  .task-stepper { display: flex; gap: 6px; margin-top: 20px; background: var(--bg-card); padding: 8px; border: 1px solid var(--line); border-radius: 12px; }
+  .step-btn { flex: 1; background: var(--bg-soft); border: none; padding: 10px 6px; border-radius: 8px; font-family: inherit; font-size: 12px; color: var(--ink-soft); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .step-btn:hover { background: var(--accent-soft); color: var(--accent); }
+  .step-btn.active { background: var(--accent); color: white; }
+  .step-btn .step-num { font-family: Georgia, serif; font-size: 16px; font-weight: 600; }
+  .step-btn .step-name { font-size: 10px; opacity: .85; }
+
+  .task-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 24px; margin-top: 16px; }
+  .task-meta { font-family: Georgia, serif; font-size: 14px; color: var(--ink-muted); font-style: italic; margin-bottom: 8px; }
+  .task-question { font-size: 16px; line-height: 1.65; color: var(--ink); margin-bottom: 18px; }
+  .task-question b { color: var(--accent); }
+
+  /* Tire compatibility table */
+  .compat-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 12px 0; font-size: 14px; }
+  .compat-table th, .compat-table td { padding: 10px 12px; text-align: center; border-bottom: 1px solid var(--line); }
+  .compat-table th { background: var(--accent); color: white; font-weight: 600; font-size: 13px; }
+  .compat-table th:first-child { border-top-left-radius: 8px; }
+  .compat-table th:last-child { border-top-right-radius: 8px; }
+  .compat-table td:first-child { font-weight: 600; background: var(--bg-soft); }
+  .compat-table .yes { color: var(--green); font-weight: 600; }
+  .compat-table .no { color: var(--ink-muted); }
+  .compat-table .highlight { background: var(--green-soft); color: var(--green); font-weight: 700; }
+
+  .calc-box { margin: 14px 0; padding: 16px; background: var(--bg-soft); border-radius: 10px; border: 1px dashed var(--line-strong); font-family: Georgia, serif; font-size: 15px; color: var(--accent); }
+  .calc-box .formula-line { font-size: 16px; margin-bottom: 6px; font-weight: 600; }
+  .calc-box .step-line { color: var(--ink-soft); font-size: 14px; margin-top: 4px; }
+
+  .answer-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .answer-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .answer-input { flex: 1; min-width: 160px; padding: 12px 16px; border: 1.5px solid var(--line-strong); background: white; border-radius: 10px; font-family: Georgia, serif; font-size: 18px; color: var(--accent); }
+  .answer-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .answer-unit { color: var(--ink-muted); font-size: 14px; }
+
+  .btn { padding: 11px 20px; border-radius: 9px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s; border: 1.5px solid transparent; }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { background: var(--accent-deep); transform: translateY(-1px); }
+  .btn-secondary { background: var(--bg-card); color: var(--ink-soft); border-color: var(--line-strong); }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-ghost { background: none; color: var(--ink-muted); }
+  .btn-gold { background: var(--gold-soft); color: var(--gold); }
+  .btn-gold:hover { background: var(--gold); color: white; }
+  .button-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+
+  .feedback { margin-top: 14px; padding: 12px 16px; border-radius: 10px; font-size: 14px; display: none; }
+  .feedback.correct { background: var(--green-soft); color: var(--green); border: 1px solid var(--green); }
+  .feedback.warn { background: var(--warm-soft); color: var(--error-ink); border: 1px solid var(--warm); }
+  .feedback.show { display: block; animation: fadeup .35s; }
+
+  .hint-box { margin-top: 14px; padding: 14px 18px; background: var(--gold-soft); border-radius: 10px; border-left: 3px solid var(--gold); font-size: 14px; color: var(--ink); display: none; }
+  .hint-box.show { display: block; animation: fadeup .3s; }
+  .hint-box .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--gold); margin-bottom: 6px; }
+  .hint-box ol { margin-left: 18px; margin-top: 4px; }
+  .hint-box b { color: var(--accent); }
+
+  .teacher-block { margin-top: 16px; padding: 14px 18px; background: var(--accent-soft); border-radius: 10px; border-left: 3px solid var(--accent); display: none; font-size: 14px; line-height: 1.7; }
+  .teacher-block.show { display: block; }
+  .teacher-block .label { font-size: 11px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 6px; }
+  .teacher-block .step { padding-left: 18px; position: relative; margin-bottom: 5px; }
+  .teacher-block .step::before { content: "→"; position: absolute; left: 0; color: var(--gold); }
+  .teacher-block .answer-display { display: inline-block; margin-top: 8px; padding: 5px 12px; background: white; border-radius: 7px; color: var(--accent); font-family: Georgia, serif; font-weight: 600; }
+
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .side-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+  .side-card h3 { font-family: Georgia, serif; font-size: 16px; font-weight: 400; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .side-card h3::before { content: ""; display: inline-block; width: 4px; height: 14px; background: var(--gold); border-radius: 2px; }
+
+  .formula { background: var(--accent); color: white; padding: 14px 16px; border-radius: 10px; font-family: Georgia, serif; font-size: 15px; text-align: center; line-height: 1.7; }
+  .formula small { display: block; opacity: .75; font-size: 11px; margin-top: 4px; }
+
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat { background: var(--bg-soft); padding: 12px; border-radius: 10px; text-align: center; }
+  .stat .val { font-family: Georgia, serif; font-size: 22px; color: var(--accent); }
+  .stat .lbl { font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .08em; margin-top: 4px; }
+
+  @keyframes fadeup { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Wheel SVG styles */
+  .tire-outer { fill: #1a2332; stroke: var(--accent-deep); stroke-width: 1.5; }
+  .tire-rubber { fill: #2d3848; }
+  .disk-circle { fill: #c0c5cd; stroke: #888c95; stroke-width: 1; }
+  .disk-rim { fill: #d8dce2; }
+  .disk-bolts { fill: #888c95; }
+  .center-cap { fill: #8a93a3; }
+  .dim-line { stroke: var(--accent); stroke-width: 1.5; fill: none; }
+  .dim-arrow { fill: var(--accent); }
+  .dim-text { font-family: Georgia, serif; font-size: 13px; font-weight: 600; }
+  .dim-text.B { fill: var(--accent); }
+  .dim-text.H { fill: var(--gold); }
+  .dim-text.d { fill: var(--error-ink); }
+  .dim-text.D { fill: var(--green); }
+</style>
+</head>
+<body data-mode="learn">
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="back-link" href="practice-1-5-map.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      ко всем тренажёрам
+    </a>
+    <span class="topic-id">practiceTiresTrainer</span>
+    <div class="mode-switch" id="mode-switch">
+      <button data-mode="learn" class="active">Обучение</button>
+      <button data-mode="practice">Тренировка</button>
+      <button data-mode="teacher">Учитель</button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="title-block">
+    <div class="eyebrow">сюжет 03 · задачи 1–5</div>
+    <h1>Шины · <em>маркировка и геометрия колеса</em></h1>
+    <p class="subtitle">Маркировка 195/65 R15 расшифровывается через простые формулы: ширина → высота боковины (через процент) → диаметр диска (в дюймах) → диаметр колеса. Тренажёр учит читать маркировку и считать изменения после замены шин.</p>
+  </div>
+
+  <div class="layout">
+
+    <main>
+      <!-- MARKING CARD -->
+      <div class="marking-card">
+        <div style="font-size: 13px; color: var(--ink-muted); margin-bottom: 12px; text-align: center; text-transform: uppercase; letter-spacing: .1em;">Заводская маркировка</div>
+        <div class="marking-line">
+          <span class="seg hl-B" id="seg-B">195</span>
+          <span class="sep">/</span>
+          <span class="seg hl-H" id="seg-H">65</span>
+          <span class="seg hl-R" id="seg-R">R</span>
+          <span class="seg hl-d" id="seg-d">15</span>
+        </div>
+
+        <div class="params-grid">
+          <div class="param B">
+            <div class="name">B — ширина</div>
+            <div class="formula">в мм</div>
+            <div class="val" id="param-B">195 мм</div>
+          </div>
+          <div class="param H">
+            <div class="name">65 — H/B × 100%</div>
+            <div class="formula">H = 65 · B / 100</div>
+            <div class="val" id="param-H">126,75 мм</div>
+          </div>
+          <div class="param R">
+            <div class="name">R — радиальная</div>
+            <div class="formula">тип конструкции</div>
+            <div class="val" id="param-R">радиальная</div>
+          </div>
+          <div class="param d">
+            <div class="name">d — диск</div>
+            <div class="formula">в дюймах · 25,4 = мм</div>
+            <div class="val" id="param-d">15″ = 381 мм</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WHEEL DIAGRAM -->
+      <div class="wheel-card">
+        <div style="font-size: 13px; color: var(--ink-muted); margin-bottom: 12px; text-align: center;">Сечение колеса</div>
+        <div class="wheel-svg-wrap">
+          <svg id="wheel" class="wheel" viewBox="0 0 600 460" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+        <div style="margin-top: 12px; padding: 12px 16px; background: var(--accent); color: white; border-radius: 10px; font-family: Georgia, serif; font-size: 16px; text-align: center;">
+          D = d · 25,4 + 2H
+          <div style="font-size: 11px; opacity: .8; margin-top: 4px;">диаметр колеса = диаметр диска (в мм) + удвоенная высота боковины</div>
+        </div>
+      </div>
+
+      <div class="task-stepper" id="task-stepper">
+        <button class="step-btn active" data-task="0"><span class="step-num">№1</span><span class="step-name">ширина</span></button>
+        <button class="step-btn" data-task="1"><span class="step-num">№2</span><span class="step-name">диаметр</span></button>
+        <button class="step-btn" data-task="2"><span class="step-num">№3</span><span class="step-name">радиус</span></button>
+        <button class="step-btn" data-task="3"><span class="step-num">№4</span><span class="step-name">замена</span></button>
+        <button class="step-btn" data-task="4"><span class="step-num">№5</span><span class="step-name">оборот</span></button>
+      </div>
+
+      <div class="task-card" id="task-card"></div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="side-card">
+        <h3>Формулы</h3>
+        <div style="display:flex; flex-direction:column; gap: 10px;">
+          <div class="formula" style="background: var(--gold);">
+            H = <span style="display:inline-flex;flex-direction:column;vertical-align:middle;"><span style="padding:0 6px;">B · процент</span><span style="border-top:1.5px solid white; padding: 1px 6px 0;">100</span></span>
+            <small>высота боковины из процента</small>
+          </div>
+          <div class="formula">
+            D = d · 25,4 + 2H
+            <small>диаметр колеса, мм</small>
+          </div>
+          <div class="formula" style="background: var(--green);">
+            1 дюйм = 25,4 мм
+            <small>перевод диаметра диска</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <h3>Длина окружности</h3>
+        <div class="formula">
+          L = π · D
+          <small>пробег за один оборот пропорционален D</small>
+        </div>
+        <p style="font-size: 13px; color: var(--ink-soft); margin-top: 10px;">
+          Если диаметр изменился на p%, то длина окружности (и пробег за оборот) <b>тоже изменится на p%</b>.
+        </p>
+      </div>
+
+      <div class="side-card">
+        <h3>Прогресс</h3>
+        <div class="stats">
+          <div class="stat"><div class="val" id="stat-solved">0</div><div class="lbl">решено</div></div>
+          <div class="stat"><div class="val" id="stat-streak">0</div><div class="lbl">подряд</div></div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<script>
+'use strict';
+
+// ============================================================
+// TIRE TABLE — typical from ОГЭ
+// Rows: tire width B (mm). Cols: disk diameter d (inches).
+// Cell '+' means combination allowed.
+// ============================================================
+const TIRE_TABLE = {
+  widths: [175, 185, 195, 205, 215, 225],
+  disks: [13, 14, 15, 16, 17],
+  // For each width, which disk sizes are allowed
+  matrix: {
+    175: [13, 14, 15],
+    185: [13, 14, 15, 16],
+    195: [14, 15, 16, 17],
+    205: [15, 16, 17],
+    215: [16, 17],
+    225: [16, 17]
+  }
+};
+
+const FACTORY = {
+  B: 195,
+  percent: 65,  // H/B percent
+  d_inches: 15,
+};
+
+const FACTORY_H = FACTORY.percent * FACTORY.B / 100;       // 126.75 mm
+const FACTORY_D_mm = FACTORY.d_inches * 25.4 + 2 * FACTORY_H; // 15*25.4 + 2*126.75 = 381 + 253.5 = 634.5 mm
+
+// Alternative tire variants for swap problems
+const VARIANTS = [
+  {
+    label: "Заводская 195/65 R15",
+    altB: 195, altPercent: 60, alt_d: 16, // 195/60 R16
+    altLabel: "195/60 R16"
+  },
+  {
+    label: "Заводская 195/65 R15",
+    altB: 205, altPercent: 55, alt_d: 16,
+    altLabel: "205/55 R16"
+  },
+  {
+    label: "Заводская 195/65 R15",
+    altB: 185, altPercent: 70, alt_d: 14,
+    altLabel: "185/70 R14"
+  }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+const STORAGE_KEY = 'mathExamCourseProgress.v1';
+const TOPIC = 'practiceTiresTrainer';
+let state = { variant: 0, task: 0, mode: 'learn', solved: 0, streak: 0 };
+
+function loadProgress() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) { return {}; } }
+function saveProgress() {
+  try {
+    const data = loadProgress();
+    data[TOPIC] = { solved: state.solved, streak: state.streak, total: VARIANTS.length * 5 };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch(e) {}
+}
+
+// ============================================================
+// WHEEL DIAGRAM RENDERING
+// ============================================================
+function renderWheel() {
+  const svg = document.getElementById('wheel');
+  svg.innerHTML = '';
+  const ns = 'http://www.w3.org/2000/svg';
+  const el = (tag, a) => { const n = document.createElementNS(ns, tag); for (const k in a) n.setAttribute(k, a[k]); return n; };
+
+  // Cross-section style: 1) the tire shown as a tall ring (cross-section), 2) disk on right
+  // Diagram is conceptual not to scale
+  const cx = 300, cy = 230;
+  // Tire outer ellipse (front view of wheel)
+  // Outer radius scaled to fit
+  const D_visual = 280; // visual diameter
+  const Outer_R = D_visual / 2;
+  // Disk radius proportional: d_mm / D_mm * Outer_R
+  const Disk_R = FACTORY.d_inches * 25.4 / FACTORY_D_mm * Outer_R;
+
+  // OUTER TIRE
+  svg.appendChild(el('circle', { cx, cy, r: Outer_R, class: 'tire-outer' }));
+  // RUBBER zone (between outer and disk)
+  svg.appendChild(el('circle', { cx, cy, r: Outer_R - 8, class: 'tire-rubber' }));
+  // DISK
+  svg.appendChild(el('circle', { cx, cy, r: Disk_R, class: 'disk-circle' }));
+  // Rim ring (inside disk)
+  svg.appendChild(el('circle', { cx, cy, r: Disk_R - 6, fill: 'none', stroke: '#888c95', 'stroke-width': 0.8 }));
+  // 5 spokes (decorative)
+  for (let i = 0; i < 5; i++) {
+    const a = (i * 72 - 90) * Math.PI / 180;
+    const x = cx + Math.cos(a) * Disk_R * 0.85;
+    const y = cy + Math.sin(a) * Disk_R * 0.85;
+    svg.appendChild(el('line', { x1: cx, y1: cy, x2: x, y2: y, stroke: '#888c95', 'stroke-width': 4, 'stroke-linecap': 'round' }));
+  }
+  // Bolts ring
+  for (let i = 0; i < 5; i++) {
+    const a = (i * 72 - 90 + 36) * Math.PI / 180;
+    const x = cx + Math.cos(a) * Disk_R * 0.45;
+    const y = cy + Math.sin(a) * Disk_R * 0.45;
+    svg.appendChild(el('circle', { cx: x, cy: y, r: 3, class: 'disk-bolts' }));
+  }
+  // Center cap
+  svg.appendChild(el('circle', { cx, cy, r: 8, class: 'center-cap' }));
+
+  // Dimension lines and labels
+  // 1) D (overall diameter) - top
+  const dim_y_D = cy - Outer_R - 24;
+  svg.appendChild(el('line', { x1: cx - Outer_R, y1: dim_y_D, x2: cx + Outer_R, y2: dim_y_D, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: cx - Outer_R, y1: dim_y_D - 4, x2: cx - Outer_R, y2: dim_y_D + 4, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: cx + Outer_R, y1: dim_y_D - 4, x2: cx + Outer_R, y2: dim_y_D + 4, class: 'dim-line' }));
+  // Dotted lines from edges down to tire
+  svg.appendChild(el('line', { x1: cx - Outer_R, y1: dim_y_D, x2: cx - Outer_R, y2: cy - Outer_R + 4, stroke: '#8a93a3', 'stroke-width': 0.8, 'stroke-dasharray': '3,3' }));
+  svg.appendChild(el('line', { x1: cx + Outer_R, y1: dim_y_D, x2: cx + Outer_R, y2: cy - Outer_R + 4, stroke: '#8a93a3', 'stroke-width': 0.8, 'stroke-dasharray': '3,3' }));
+  const dTxt = el('text', { x: cx, y: dim_y_D - 8, class: 'dim-text D', 'text-anchor': 'middle' });
+  dTxt.textContent = 'D = ' + FACTORY_D_mm.toFixed(1) + ' мм';
+  svg.appendChild(dTxt);
+
+  // 2) d (disk diameter) - in the center horizontally
+  svg.appendChild(el('line', { x1: cx - Disk_R, y1: cy, x2: cx + Disk_R, y2: cy, class: 'dim-line', 'stroke-dasharray': '4,3', opacity: 0.6 }));
+  const ddTxt = el('text', { x: cx, y: cy + Disk_R + 20, class: 'dim-text d', 'text-anchor': 'middle' });
+  ddTxt.textContent = 'd = ' + FACTORY.d_inches + '″ = ' + (FACTORY.d_inches * 25.4).toFixed(1) + ' мм';
+  svg.appendChild(ddTxt);
+
+  // 3) H (sidewall height) - right side, between disk edge and tire outer
+  const hStartY = cy - Disk_R;
+  const hEndY = cy - Outer_R;
+  const hX = cx + Outer_R + 30;
+  svg.appendChild(el('line', { x1: hX, y1: hStartY, x2: hX, y2: hEndY, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: hX - 4, y1: hStartY, x2: hX + 4, y2: hStartY, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: hX - 4, y1: hEndY, x2: hX + 4, y2: hEndY, class: 'dim-line' }));
+  // Connector lines
+  svg.appendChild(el('line', { x1: cx + 2, y1: hStartY, x2: hX, y2: hStartY, stroke: '#8a93a3', 'stroke-width': 0.8, 'stroke-dasharray': '3,3' }));
+  svg.appendChild(el('line', { x1: cx + 2, y1: hEndY, x2: hX, y2: hEndY, stroke: '#8a93a3', 'stroke-width': 0.8, 'stroke-dasharray': '3,3' }));
+  const hTxt = el('text', { x: hX + 8, y: (hStartY + hEndY) / 2 + 4, class: 'dim-text H' });
+  hTxt.textContent = 'H = ' + FACTORY_H.toFixed(2) + ' мм';
+  svg.appendChild(hTxt);
+
+  // 4) B (tire width) — label on bottom-left "boket" side
+  // We show schematically as a vertical dimension on left
+  const bX = cx - Outer_R - 30;
+  const bTopY = cy - 20;
+  const bBotY = cy + 20;
+  svg.appendChild(el('line', { x1: bX, y1: bTopY, x2: bX, y2: bBotY, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: bX - 4, y1: bTopY, x2: bX + 4, y2: bTopY, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: bX - 4, y1: bBotY, x2: bX + 4, y2: bBotY, class: 'dim-line' }));
+  const bTxt = el('text', { x: bX - 10, y: (bTopY + bBotY) / 2 + 4, class: 'dim-text B', 'text-anchor': 'end' });
+  bTxt.textContent = 'B = ' + FACTORY.B + ' мм';
+  svg.appendChild(bTxt);
+}
+
+// ============================================================
+// TASKS
+// ============================================================
+function renderTask() {
+  document.querySelectorAll('#task-stepper .step-btn').forEach((b, i) => b.classList.toggle('active', i === state.task));
+  if (state.task === 0) renderTask1();
+  else if (state.task === 1) renderTask2();
+  else if (state.task === 2) renderTask3();
+  else if (state.task === 3) renderTask4();
+  else if (state.task === 4) renderTask5();
+  renderWheel();
+  applyMode();
+}
+
+// ----- Task 1: smallest width allowed for given disk -----
+function renderTask1() {
+  const card = document.getElementById('task-card');
+  // Variant: ask for the smallest width that works with disk d=16
+  const askDisk = 16;
+  // Find min width that has askDisk in its list
+  let minWidth = null;
+  for (const w of TIRE_TABLE.widths) {
+    if (TIRE_TABLE.matrix[w].includes(askDisk)) {
+      if (minWidth === null || w < minWidth) minWidth = w;
+    }
+  }
+
+  // Build table HTML
+  let tableHtml = '<table class="compat-table"><thead><tr><th>Ширина / Диск</th>';
+  TIRE_TABLE.disks.forEach(d => { tableHtml += `<th>${d}″</th>`; });
+  tableHtml += '</tr></thead><tbody>';
+  TIRE_TABLE.widths.forEach(w => {
+    tableHtml += `<tr><td>${w} мм</td>`;
+    TIRE_TABLE.disks.forEach(d => {
+      const ok = TIRE_TABLE.matrix[w].includes(d);
+      const isAnswer = (w === minWidth && d === askDisk);
+      tableHtml += `<td class="${ok ? 'yes' : 'no'} ${isAnswer ? 'highlight' : ''}">${ok ? '✓' : '—'}</td>`;
+    });
+    tableHtml += '</tr>';
+  });
+  tableHtml += '</tbody></table>';
+
+  card.innerHTML = `
+    <div class="task-meta">Задача 1 · подбор шины по диску</div>
+    <div class="task-question">Покупатель хочет поставить шины на диск диаметром <b>${askDisk} дюймов</b>. Какую <b>наименьшую ширину шины</b> (в мм) можно использовать с таким диском по таблице совместимости?</div>
+
+    ${tableHtml}
+
+    <div class="hint-box auto" id="hint-box">
+      <div class="label">Подсказка</div>
+      <ol>
+        <li>Найдите в таблице столбец <b>${askDisk}″</b>.</li>
+        <li>Просмотрите его сверху вниз и найдите <b>первую строку</b>, где стоит «✓».</li>
+        <li>Слева в этой строке — наименьшая подходящая ширина: <b>${minWidth} мм</b>.</li>
+      </ol>
+    </div>
+
+    <div class="answer-section">
+      <div class="answer-row">
+        <input type="text" class="answer-input" id="answer-input" placeholder="введите число" autocomplete="off">
+        <span class="answer-unit">мм</span>
+        <button class="btn btn-primary" id="check-btn">Проверить</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div class="teacher-block" id="teacher-block">
+      <div class="label">Решение</div>
+      <div class="step">В столбце <b>${askDisk}″</b> ищем минимальную ширину с пометкой «✓».</div>
+      <div class="step">Это ширина <b>${minWidth} мм</b>.</div>
+      <div class="answer-display">Ответ: ${minWidth} мм</div>
+    </div>
+
+    <div class="button-row">
+      <button class="btn btn-gold" id="hint-btn">Подсказка</button>
+      <button class="btn btn-secondary" id="show-btn">Показать решение</button>
+      <button class="btn btn-secondary" id="next-btn">Следующая задача →</button>
+    </div>
+  `;
+  bindNumericCheck(minWidth, 'мм');
+  bindCommonButtons();
+}
+
+// ----- Task 2: diameter of factory wheel -----
+function renderTask2() {
+  const card = document.getElementById('task-card');
+  const D = FACTORY_D_mm;
+  card.innerHTML = `
+    <div class="task-meta">Задача 2 · диаметр заводского колеса</div>
+    <div class="task-question">Найдите <b>диаметр колеса с заводской шиной</b> (маркировка <b>195/65 R15</b>). Ответ — в <b>миллиметрах</b>.</div>
+
+    <div class="calc-box">
+      <div class="formula-line">D = d · 25,4 + 2H</div>
+      <div class="step-line">d = 15″ — диаметр диска (число после R)</div>
+      <div class="step-line">B = 195 мм — ширина шины (первое число)</div>
+      <div class="step-line">H = 65 · 195 / 100 = ${FACTORY_H} мм — высота боковины</div>
+      <div class="step-line">D = 15 · 25,4 + 2 · ${FACTORY_H} = 381 + ${2 * FACTORY_H} = <b>${D}</b> мм</div>
+    </div>
+
+    <div class="hint-box auto" id="hint-box">
+      <div class="label">Подсказка</div>
+      <ol>
+        <li>Из маркировки 195/65 R15: <b>B = 195 мм</b>, процент <b>65</b>, диск <b>15″</b>.</li>
+        <li>Высота боковины: H = 65 · 195 / 100 = <b>${FACTORY_H} мм</b>.</li>
+        <li>Перевод диска в миллиметры: 15 · 25,4 = <b>381 мм</b>.</li>
+        <li>Диаметр колеса: D = 381 + 2 · ${FACTORY_H} = <b>${D} мм</b>.</li>
+      </ol>
+    </div>
+
+    <div class="answer-section">
+      <div class="answer-row">
+        <input type="text" class="answer-input" id="answer-input" placeholder="введите число" autocomplete="off">
+        <span class="answer-unit">мм</span>
+        <button class="btn btn-primary" id="check-btn">Проверить</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div class="teacher-block" id="teacher-block">
+      <div class="label">Решение</div>
+      <div class="step">B = 195, процент = 65 → H = 65 · 195 / 100 = <b>${FACTORY_H} мм</b></div>
+      <div class="step">d = 15″ → 15 · 25,4 = <b>381 мм</b></div>
+      <div class="step">D = 381 + 2 · ${FACTORY_H} = <b>${D} мм</b></div>
+      <div class="answer-display">Ответ: ${D} мм</div>
+    </div>
+
+    <div class="button-row">
+      <button class="btn btn-gold" id="hint-btn">Подсказка</button>
+      <button class="btn btn-secondary" id="show-btn">Показать решение</button>
+      <button class="btn btn-secondary" id="next-btn">Следующая задача →</button>
+    </div>
+  `;
+  bindNumericCheck(D, 'мм');
+  bindCommonButtons();
+}
+
+// ----- Task 3: radius difference between factory and alternative tire -----
+function renderTask3() {
+  const card = document.getElementById('task-card');
+  const v = VARIANTS[state.variant];
+  const altH = v.altPercent * v.altB / 100;
+  const altD = v.alt_d * 25.4 + 2 * altH;
+  const factoryR = FACTORY_D_mm / 2;
+  const altR = altD / 2;
+  const diff = Math.abs(altR - factoryR);
+  const isAltLarger = altR > factoryR;
+
+  card.innerHTML = `
+    <div class="task-meta">Задача 3 · разница радиусов</div>
+    <div class="task-question">Покупатель сравнивает заводскую шину <b>195/65 R15</b> и шину <b>${v.altLabel}</b>. На сколько <b>миллиметров</b> отличаются радиусы колёс с этими шинами? Ответ дайте без знака.</div>
+
+    <div class="calc-box">
+      <div class="formula-line">Заводская: D₁ = 15·25,4 + 2·${FACTORY_H} = ${FACTORY_D_mm} мм</div>
+      <div class="formula-line">Альтернатива: D₂ = ${v.alt_d}·25,4 + 2·${altH} = ${altD.toFixed(2).replace('.', ',')} мм</div>
+      <div class="step-line">R₁ = ${factoryR.toFixed(3).replace(/0+$/, '').replace('.', ',')} мм, R₂ = ${altR.toFixed(3).replace(/0+$/, '').replace('.', ',')} мм</div>
+      <div class="step-line">|R₁ − R₂| = <b>${diff.toFixed(2).replace(/0+$/, '').replace('.', ',')}</b> мм</div>
+    </div>
+
+    <div class="hint-box auto" id="hint-box">
+      <div class="label">Подсказка</div>
+      <ol>
+        <li>Найдите диаметр обоих колёс по формуле D = d·25,4 + 2H.</li>
+        <li>Заводская: D₁ = <b>${FACTORY_D_mm} мм</b>. Альтернативная: H = ${v.altPercent}·${v.altB}/100 = ${altH}, D₂ = ${v.alt_d}·25,4 + 2·${altH} = <b>${altD.toFixed(2).replace('.', ',')}</b> мм.</li>
+        <li>Радиусы: R = D/2.</li>
+        <li>Разница радиусов = |D₁ − D₂| / 2 = <b>${diff.toFixed(2).replace(/0+$/, '').replace('.', ',')}</b> мм.</li>
+      </ol>
+    </div>
+
+    <div class="answer-section">
+      <div class="answer-row">
+        <input type="text" class="answer-input" id="answer-input" placeholder="введите число" autocomplete="off">
+        <span class="answer-unit">мм</span>
+        <button class="btn btn-primary" id="check-btn">Проверить</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div class="teacher-block" id="teacher-block">
+      <div class="label">Решение</div>
+      <div class="step">D₁ = 381 + 2·${FACTORY_H} = <b>${FACTORY_D_mm} мм</b></div>
+      <div class="step">H₂ = ${v.altPercent}·${v.altB}/100 = <b>${altH} мм</b></div>
+      <div class="step">D₂ = ${v.alt_d}·25,4 + 2·${altH} = <b>${altD.toFixed(2).replace('.', ',')} мм</b></div>
+      <div class="step">|D₁ − D₂| = ${Math.abs(FACTORY_D_mm - altD).toFixed(2).replace('.', ',')} мм → радиусы отличаются на <b>${diff.toFixed(2).replace(/0+$/, '').replace('.', ',')} мм</b></div>
+      <div class="answer-display">Ответ: ${diff.toFixed(2).replace(/0+$/, '').replace('.', ',')} мм</div>
+    </div>
+
+    <div class="button-row">
+      <button class="btn btn-gold" id="hint-btn">Подсказка</button>
+      <button class="btn btn-secondary" id="show-btn">Показать решение</button>
+      <button class="btn btn-secondary" id="next-btn">Следующая задача →</button>
+    </div>
+  `;
+  bindNumericCheck(diff, 'мм');
+  bindCommonButtons();
+}
+
+// ----- Task 4: diameter change after swap -----
+function renderTask4() {
+  const card = document.getElementById('task-card');
+  const v = VARIANTS[state.variant];
+  const altH = v.altPercent * v.altB / 100;
+  const altD = v.alt_d * 25.4 + 2 * altH;
+  const diff = altD - FACTORY_D_mm; // signed
+  const sign = diff > 0 ? "увеличится" : "уменьшится";
+
+  card.innerHTML = `
+    <div class="task-meta">Задача 4 · изменение диаметра после замены</div>
+    <div class="task-question">Заводскую шину <b>195/65 R15</b> заменили на <b>${v.altLabel}</b>. На сколько <b>миллиметров увеличится или уменьшится диаметр</b> колеса? В ответ запишите модуль (без знака).</div>
+
+    <div class="calc-box">
+      <div class="formula-line">ΔD = D₂ − D₁</div>
+      <div class="step-line">D₁ = ${FACTORY_D_mm} мм (заводская)</div>
+      <div class="step-line">D₂ = ${altD.toFixed(2).replace('.', ',')} мм (${v.altLabel})</div>
+      <div class="step-line">ΔD = ${altD.toFixed(2).replace('.', ',')} − ${FACTORY_D_mm} = <b>${diff.toFixed(2).replace('.', ',')}</b> мм → диаметр ${sign} на <b>${Math.abs(diff).toFixed(2).replace(/0+$/, '').replace('.', ',')}</b> мм</div>
+    </div>
+
+    <div class="hint-box auto" id="hint-box">
+      <div class="label">Подсказка</div>
+      <ol>
+        <li>Считаем диаметры обоих колёс через D = d·25,4 + 2H.</li>
+        <li>Заводская: D₁ = <b>${FACTORY_D_mm} мм</b>.</li>
+        <li>Новая: H = ${v.altPercent}·${v.altB}/100 = ${altH} мм, D₂ = ${v.alt_d}·25,4 + 2·${altH} = <b>${altD.toFixed(2).replace('.', ',')}</b> мм.</li>
+        <li>Изменение: D₂ − D₁ = ${diff.toFixed(2).replace('.', ',')} мм → ${sign} на <b>${Math.abs(diff).toFixed(2).replace(/0+$/, '').replace('.', ',')}</b> мм.</li>
+      </ol>
+    </div>
+
+    <div class="answer-section">
+      <div class="answer-row">
+        <input type="text" class="answer-input" id="answer-input" placeholder="введите число" autocomplete="off">
+        <span class="answer-unit">мм</span>
+        <button class="btn btn-primary" id="check-btn">Проверить</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div class="teacher-block" id="teacher-block">
+      <div class="label">Решение</div>
+      <div class="step">D₁ = <b>${FACTORY_D_mm} мм</b></div>
+      <div class="step">D₂ = ${v.alt_d}·25,4 + 2·${altH} = <b>${altD.toFixed(2).replace('.', ',')} мм</b></div>
+      <div class="step">|ΔD| = <b>${Math.abs(diff).toFixed(2).replace(/0+$/, '').replace('.', ',')} мм</b> (${sign})</div>
+      <div class="answer-display">Ответ: ${Math.abs(diff).toFixed(2).replace(/0+$/, '').replace('.', ',')} мм</div>
+    </div>
+
+    <div class="button-row">
+      <button class="btn btn-gold" id="hint-btn">Подсказка</button>
+      <button class="btn btn-secondary" id="show-btn">Показать решение</button>
+      <button class="btn btn-secondary" id="next-btn">Следующая задача →</button>
+    </div>
+  `;
+  bindNumericCheck(Math.abs(diff), 'мм');
+  bindCommonButtons();
+}
+
+// ----- Task 5: percent change in one revolution -----
+function renderTask5() {
+  const card = document.getElementById('task-card');
+  const v = VARIANTS[state.variant];
+  const altH = v.altPercent * v.altB / 100;
+  const altD = v.alt_d * 25.4 + 2 * altH;
+  // Long of circle proportional to D. Pct change = (altD - factoryD) / factoryD * 100
+  const ratio = altD / FACTORY_D_mm * 100;
+  const diffPct = ratio - 100;
+  const absDiffPct = Math.abs(diffPct);
+  const direction = diffPct > 0 ? "больше" : "меньше";
+  const rounded = Math.round(absDiffPct * 10) / 10;
+
+  card.innerHTML = `
+    <div class="task-meta">Задача 5 · процент изменения пробега за оборот</div>
+    <div class="task-question">На сколько <b>процентов</b> пробег автомобиля за один оборот колеса <b>${direction}</b>, если заводскую шину <b>195/65 R15</b> заменили на <b>${v.altLabel}</b>? Ответ округлите до <b>десятых</b>.</div>
+
+    <div class="calc-box">
+      <div class="formula-line">L = π · D → отношение L₂/L₁ = D₂/D₁</div>
+      <div class="step-line">D₁ = ${FACTORY_D_mm} мм, D₂ = ${altD.toFixed(2).replace('.', ',')} мм</div>
+      <div class="step-line">D₂/D₁ · 100% = ${altD.toFixed(2).replace('.', ',')} · 100 / ${FACTORY_D_mm} = <b>${ratio.toFixed(3).replace(/0+$/, '').replace('.', ',')}%</b></div>
+      <div class="step-line">Изменение = ${ratio.toFixed(3).replace(/0+$/, '').replace('.', ',')} − 100 = <b>${diffPct.toFixed(3).replace(/0+$/, '').replace('.', ',')}%</b> → ${direction} на <b>${rounded.toString().replace('.', ',')}%</b></div>
+    </div>
+
+    <div class="hint-box auto" id="hint-box">
+      <div class="label">Подсказка</div>
+      <ol>
+        <li>Пробег за один оборот L = π · D — пропорционален диаметру D.</li>
+        <li>«На сколько % изменился» = новая величина к старой через 100%.</li>
+        <li>D₂ к D₁: <b>${altD.toFixed(2).replace('.', ',')} · 100 / ${FACTORY_D_mm} = ${ratio.toFixed(3).replace(/0+$/, '').replace('.', ',')}%</b>.</li>
+        <li>Отнимите 100%: <b>${ratio.toFixed(3).replace(/0+$/, '').replace('.', ',')} − 100 = ${diffPct.toFixed(3).replace(/0+$/, '').replace('.', ',')}%</b>.</li>
+        <li>Округлите до десятых: <b>${rounded.toString().replace('.', ',')}%</b>.</li>
+      </ol>
+    </div>
+
+    <div class="answer-section">
+      <div class="answer-row">
+        <input type="text" class="answer-input" id="answer-input" placeholder="введите число" autocomplete="off">
+        <span class="answer-unit">%</span>
+        <button class="btn btn-primary" id="check-btn">Проверить</button>
+      </div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div class="teacher-block" id="teacher-block">
+      <div class="label">Решение</div>
+      <div class="step">L пропорциональна D, значит % изменения L = % изменения D.</div>
+      <div class="step">D₂/D₁ · 100% = ${altD.toFixed(2).replace('.', ',')} · 100 / ${FACTORY_D_mm} = <b>${ratio.toFixed(3).replace(/0+$/, '').replace('.', ',')}%</b></div>
+      <div class="step">% изменения: ${ratio.toFixed(3).replace(/0+$/, '').replace('.', ',')} − 100 = <b>${diffPct.toFixed(3).replace(/0+$/, '').replace('.', ',')}%</b></div>
+      <div class="step">Округление до десятых: <b>${rounded.toString().replace('.', ',')}%</b> (${direction})</div>
+      <div class="answer-display">Ответ: ${rounded.toString().replace('.', ',')}%</div>
+    </div>
+
+    <div class="button-row">
+      <button class="btn btn-gold" id="hint-btn">Подсказка</button>
+      <button class="btn btn-secondary" id="show-btn">Показать решение</button>
+      <button class="btn btn-secondary" id="next-btn">Следующий вариант →</button>
+    </div>
+  `;
+  bindNumericCheck(rounded, '%');
+  bindCommonButtons();
+}
+
+// ============================================================
+// SHARED HANDLERS
+// ============================================================
+function bindNumericCheck(answer, unit) {
+  const check = () => {
+    const input = document.getElementById('answer-input');
+    const fb = document.getElementById('feedback');
+    const raw = input.value.trim().replace(',', '.').replace(/\s/g, '');
+    const val = parseFloat(raw);
+    if (isNaN(val)) {
+      fb.className = 'feedback warn show';
+      fb.innerHTML = 'Введите число.';
+      return;
+    }
+    // For task 5 with rounding, tolerance tighter
+    const tol = unit === '%' ? 0.05 : Math.max(Math.abs(answer) * 0.01, 0.5);
+    if (Math.abs(val - answer) < tol) {
+      fb.className = 'feedback correct show';
+      const display = Number.isInteger(answer) ? answer : answer.toString().replace('.', ',');
+      fb.innerHTML = `<b>Верно!</b> Ответ: ${display} ${unit}.`;
+      state.solved++; state.streak++; saveProgress(); updateStats();
+    } else {
+      fb.className = 'feedback warn show';
+      fb.innerHTML = 'Не совсем. Проверьте расчёт.';
+      state.streak = 0; saveProgress(); updateStats();
+    }
+  };
+  document.getElementById('check-btn').addEventListener('click', check);
+  document.getElementById('answer-input').addEventListener('keydown', e => { if (e.key === 'Enter') check(); });
+}
+
+function bindCommonButtons() {
+  document.getElementById('hint-btn').addEventListener('click', () => {
+    document.getElementById('hint-box').classList.add('show');
+  });
+  document.getElementById('show-btn').addEventListener('click', () => {
+    document.getElementById('hint-box').classList.add('show');
+    document.getElementById('teacher-block').classList.add('show');
+    const input = document.getElementById('answer-input');
+    if (input) {
+      const ans = document.querySelector('#teacher-block .answer-display');
+      if (ans) { const match = ans.textContent.match(/[\d,.]+/); if (match) input.value = match[0]; }
+    }
+  });
+  document.getElementById('next-btn').addEventListener('click', () => {
+    if (state.task < 4) {
+      state.task++;
+    } else {
+      state.variant = (state.variant + 1) % VARIANTS.length;
+      state.task = 0;
+    }
+    renderTask();
+  });
+}
+
+function updateStats() {
+  document.getElementById('stat-solved').textContent = state.solved;
+  document.getElementById('stat-streak').textContent = state.streak;
+}
+
+function applyMode() {
+  document.body.dataset.mode = state.mode;
+  document.querySelectorAll('.hint-box.auto').forEach(b => {
+    if (state.mode === 'practice') b.classList.remove('show');
+    else b.classList.add('show');
+  });
+  document.querySelectorAll('.teacher-block').forEach(b => {
+    if (state.mode === 'teacher') b.classList.add('show');
+    else b.classList.remove('show');
+  });
+}
+
+// ============================================================
+// EVENTS & INIT
+// ============================================================
+document.querySelectorAll('#mode-switch button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#mode-switch button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.mode = btn.dataset.mode;
+    applyMode();
+  });
+});
+
+document.querySelectorAll('#task-stepper .step-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.task = parseInt(btn.dataset.task, 10);
+    renderTask();
+  });
+});
+
+(function init() {
+  const data = loadProgress();
+  if (data[TOPIC]) {
+    state.solved = data[TOPIC].solved || 0;
+    state.streak = data[TOPIC].streak || 0;
+  }
+  renderTask();
+  updateStats();
+})();
+</script>
+</body>
+</html>

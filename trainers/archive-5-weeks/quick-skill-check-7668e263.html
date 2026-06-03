@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Проверка навыка — Станция 6</title>
+<style>
+/* ═══ СЕРИЙНЫЕ ТОКЕНЫ ═══ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg:     #eef2f5;
+  --card:   #ffffff;
+  --hdr:    #2c3e4e;
+  --blue:   #2c7da0;
+  --blue-h: #1f5e7a;
+  --blue-lt:#e0f2fe;
+  --ok:     #16a34a;
+  --ok-bg:  #dcfce7;
+  --ok-dk:  #14532d;
+  --err:    #dc2626;
+  --err-bg: #fee2e2;
+  --err-dk: #7f1d1d;
+  --amber:  #d97706;
+  --amb-bg: #fef3c7;
+  --amb-dk: #78350f;
+  --muted:  #94a3b8;
+  --border: #d1dae4;
+  --text:   #1a2c3e;
+  --text-lt:#64748b;
+  --nc: #b91c1c;   /* negative color */
+  --pc: #1d6fa4;   /* positive color */
+  --oc: #64748b;   /* operator color */
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  color: var(--text); min-height: 100vh;
+  display: flex; flex-direction: column;
+}
+
+/* ── ШАПКА ── */
+.header {
+  background: var(--hdr); color: #fff;
+  padding: 16px 28px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.header-left h1 { font-size: 1.45rem; font-weight: 600; letter-spacing: -.3px; }
+.header-left p  { font-size: .8rem; opacity: .65; margin-top: 2px; }
+.back-link a {
+  color: rgba(255,255,255,.55); font-size: .82rem; text-decoration: none;
+  font-weight: 500; transition: color .18s;
+}
+.back-link a:hover { color: #fff; }
+
+/* ── ГЛАВНЫЙ КОНТЕЙНЕР ── */
+#app {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; padding: 28px 16px 48px;
+}
+
+/* ── КАРТОЧКИ ── */
+.card {
+  background: var(--card); border-radius: 20px;
+  padding: 28px 28px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.07);
+  width: 100%; max-width: 560px;
+}
+.card + .card { margin-top: 16px; }
+
+/* ── НАЧАЛЬНЫЙ ЭКРАН ── */
+.start-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 6px; }
+.start-sub   { font-size: .9rem; color: var(--text-lt); margin-bottom: 20px; line-height: 1.55; }
+.topic-list  { list-style: none; margin-bottom: 22px; }
+.topic-list li {
+  display: flex; align-items: center; gap: 10px;
+  font-size: .9rem; color: var(--text-lt);
+  padding: 6px 0; border-bottom: 1px solid var(--border);
+}
+.topic-list li:last-child { border-bottom: none; }
+.topic-num {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--hdr); color: #fff;
+  font-size: .72rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.mode-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.mode-card {
+  border: 2px solid var(--border); border-radius: 14px;
+  padding: 18px 16px; cursor: pointer;
+  transition: all .18s; text-align: center; background: var(--card);
+}
+.mode-card:hover { border-color: var(--blue); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(44,125,160,.15); }
+.mode-card.primary-mode { border-color: var(--blue); background: var(--blue-lt); }
+.mode-ico   { font-size: 1.8rem; margin-bottom: 8px; }
+.mode-name  { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.mode-desc  { font-size: .78rem; color: var(--text-lt); line-height: 1.4; }
+
+/* ── ПРОГРЕСС ── */
+.session-header {
+  width: 100%; max-width: 560px; margin-bottom: 16px;
+}
+.session-title {
+  font-size: .82rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--muted); margin-bottom: 10px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+/* Dots (warmup) */
+.prog-dots { display: flex; gap: 7px; }
+.prog-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--border); transition: all .3s;
+}
+.prog-dot.done    { background: var(--ok); }
+.prog-dot.done.wrong { background: var(--err); }
+.prog-dot.active  { background: var(--blue); transform: scale(1.3); }
+/* Bar (check) */
+.prog-bar-wrap { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+.prog-bar-fill { height: 100%; background: var(--blue); border-radius: 4px; transition: width .4s ease; }
+.prog-stats    { display: flex; gap: 14px; font-size: .82rem; font-weight: 700; }
+.stat-ok  { color: var(--ok); }
+.stat-err { color: var(--err); }
+
+/* ── БЛОК ВЫРАЖЕНИЯ ── */
+.expr-box {
+  background: #f4f9fe; border-radius: 18px;
+  padding: 26px 16px 22px;
+  text-align: center; border: 1px solid #d4e2ec;
+  margin-bottom: 22px; position: relative;
+}
+.expr-type-tag {
+  position: absolute; top: 12px; left: 14px;
+  font-size: .65rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .8px; color: var(--muted);
+}
+.expr-text {
+  font-size: 3.2rem; font-weight: 700;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px; line-height: 1.2;
+}
+.nc { color: var(--nc); }
+.pc { color: var(--pc); }
+.oc { color: var(--oc); }
+
+/* ── ВВОД ── */
+.answer-row {
+  display: flex; justify-content: center;
+  align-items: center; gap: 12px; margin-bottom: 14px;
+}
+.answer-inp {
+  font-size: 1.6rem; width: 130px; text-align: center;
+  border: 2.5px solid var(--border); border-radius: 50px;
+  padding: 10px 8px; font-weight: 800;
+  font-family: 'Courier New', monospace;
+  outline: none; transition: border-color .2s;
+  appearance: textfield; -moz-appearance: textfield;
+}
+.answer-inp::-webkit-inner-spin-button,
+.answer-inp::-webkit-outer-spin-button { -webkit-appearance: none; }
+.answer-inp:focus { border-color: var(--blue); }
+.answer-inp.inp-ok  { border-color: var(--ok); background: var(--ok-bg); }
+.answer-inp.inp-err { border-color: var(--err); background: var(--err-bg); }
+.submit-btn {
+  background: var(--blue); color: #fff; border: none;
+  border-radius: 40px; padding: 12px 26px;
+  font-size: .97rem; font-weight: 700;
+  cursor: pointer; font-family: inherit; transition: .15s;
+}
+.submit-btn:hover { background: var(--blue-h); }
+.submit-btn:disabled { background: var(--muted); cursor: default; }
+
+/* ── ОБРАТНАЯ СВЯЗЬ ── */
+.feedback {
+  border-radius: 14px; padding: 13px 16px;
+  font-size: .9rem; line-height: 1.65;
+  margin-bottom: 14px; animation: fadeIn .3s ease;
+}
+.fb-ok   { background: var(--ok-bg); border-left: 4px solid var(--ok); color: var(--ok-dk); }
+.fb-err  { background: var(--err-bg); border-left: 4px solid var(--err); color: var(--err-dk); }
+.fb-hint { background: var(--amb-bg); border-left: 4px solid var(--amber); color: var(--amb-dk); }
+.fb-info { background: #f0f6fb; border-left: 4px solid #5b9abb; color: #1a3e54; }
+
+.full-solution {
+  background: #f7fafc; border-radius: 12px;
+  padding: 12px 14px; font-size: .86rem; line-height: 1.75;
+  color: var(--text-lt); margin-top: 8px; margin-bottom: 12px;
+  font-family: 'Courier New', monospace;
+}
+.full-solution strong { color: var(--text); font-family: inherit; }
+
+/* ── КНОПКИ ДЕЙСТВИЙ ── */
+.action-row {
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+}
+.btn {
+  padding: 12px 24px; border: none; border-radius: 40px;
+  font-size: .95rem; font-weight: 700; cursor: pointer;
+  font-family: inherit; transition: .15s;
+}
+.btn-primary { background: var(--blue); color: #fff; }
+.btn-primary:hover { background: var(--blue-h); transform: translateY(-1px); }
+.btn-ok      { background: var(--ok); color: #fff; }
+.btn-ok:hover { background: #15803d; transform: translateY(-1px); }
+.btn-ghost {
+  background: transparent; border: 2px solid var(--border);
+  color: var(--text-lt);
+}
+.btn-ghost:hover { border-color: var(--text-lt); color: var(--text); }
+
+/* ── ЭКРАН РЕЗУЛЬТАТОВ ── */
+.score-header {
+  text-align: center; padding: 8px 0 20px;
+}
+.score-big {
+  font-size: 4rem; font-weight: 900;
+  font-family: 'Courier New', monospace; line-height: 1;
+}
+.score-big.excellent { color: var(--ok); }
+.score-big.good      { color: var(--blue); }
+.score-big.fair      { color: var(--amber); }
+.score-big.poor      { color: var(--err); }
+.score-label { font-size: 1.05rem; font-weight: 600; margin-top: 6px; color: var(--text-lt); }
+.score-bar-wrap { margin: 14px 0; height: 10px; background: var(--border); border-radius: 5px; overflow: hidden; }
+.score-bar-fill { height: 100%; border-radius: 5px; transition: width .6s ease; }
+
+.section-title {
+  font-size: .72rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1.2px; color: var(--muted); margin-bottom: 12px;
+}
+.error-list { display: flex; flex-direction: column; gap: 9px; }
+.error-item {
+  background: var(--err-bg); border-radius: 12px;
+  padding: 11px 14px; font-size: .88rem;
+  border-left: 3px solid var(--err); color: var(--err-dk);
+}
+.error-item .err-count { font-weight: 800; float: right; }
+
+.rec-list { display: flex; flex-direction: column; gap: 9px; }
+.rec-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  background: var(--blue-lt); border-radius: 12px;
+  padding: 10px 14px; font-size: .87rem;
+}
+.rec-name { font-weight: 600; color: #0c4a6e; }
+.rec-link {
+  white-space: nowrap; background: var(--blue); color: #fff;
+  padding: 5px 13px; border-radius: 20px; font-size: .78rem;
+  font-weight: 700; text-decoration: none; flex-shrink: 0;
+  transition: background .18s;
+}
+.rec-link:hover { background: var(--blue-h); }
+.rec-link.disabled-link {
+  background: var(--muted); cursor: default; pointer-events: none;
+}
+
+.no-errors { color: var(--ok); font-size: .92rem; font-weight: 600; }
+
+/* ── РАЗБОР ОШИБОК ── */
+.breakdown-toggle {
+  background: transparent; border: 2px solid var(--border);
+  border-radius: 12px; padding: 11px 16px;
+  font-size: .9rem; font-weight: 600; cursor: pointer;
+  font-family: inherit; color: var(--text-lt);
+  width: 100%; text-align: left; display: flex;
+  justify-content: space-between; align-items: center;
+  transition: .18s;
+}
+.breakdown-toggle:hover { border-color: var(--text-lt); color: var(--text); }
+.breakdown-toggle .chevron { transition: transform .3s; }
+.breakdown-toggle.open .chevron { transform: rotate(90deg); }
+.breakdown-items { display: none; padding-top: 14px; }
+.breakdown-items.visible { display: block; }
+.breakdown-item {
+  background: #f7fafc; border-radius: 12px;
+  padding: 14px 16px; margin-bottom: 10px;
+  border: 1px solid var(--border);
+}
+.bi-expr {
+  font-family: 'Courier New', monospace;
+  font-size: 1.3rem; font-weight: 700; margin-bottom: 8px;
+}
+.bi-ua   { color: var(--err); font-size: .85rem; margin-bottom: 3px; }
+.bi-sol  { font-size: .84rem; line-height: 1.75; color: var(--text-lt); font-family: 'Courier New', monospace; }
+.bi-sol strong { color: var(--text); }
+
+/* ── WARMUP ATTEMPTS ── */
+.attempt-badge {
+  display: inline-block; background: var(--amb-bg);
+  color: var(--amb-dk); border-radius: 20px;
+  padding: 3px 10px; font-size: .72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px;
+}
+
+/* ── УТИЛИТЫ ── */
+.divider { height: 1px; background: var(--border); margin: 18px 0; }
+.hidden  { display: none !important; }
+.text-center { text-align: center; }
+.mt-8  { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+
+/* ── АДАПТИВНОСТЬ ── */
+@media (max-width: 500px) {
+  .expr-text  { font-size: 2.4rem; }
+  .score-big  { font-size: 3rem; }
+  .mode-cards { grid-template-columns: 1fr; }
+  .card       { padding: 20px 18px; }
+}
+
+@keyframes fadeIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+@keyframes shake  { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <h1>Проверка навыка</h1>
+    <p>Станция 6 · Итоговая тренировка: положительные и отрицательные числа</p>
+  </div>
+  <div class="back-link"><a href="skill-map.html">← Карта</a></div>
+</header>
+
+<div id="app"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   УТИЛИТЫ
+═══════════════════════════════════════════════════════════ */
+const rand  = (lo, hi) => lo + Math.floor(Math.random() * (hi - lo + 1));
+const shuffle = a => { const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; };
+const pn    = n => n < 0 ? `<span class="nc">−${Math.abs(n)}</span>` : `<span class="pc">${n}</span>`;
+const ps    = n => n < 0 ? `−${Math.abs(n)}` : `${n}`;
+
+/* ═══════════════════════════════════════════════════════════
+   ГЕНЕРАТОРЫ ВЫРАЖЕНИЙ
+═══════════════════════════════════════════════════════════ */
+function genNegNeg() {
+  const a = rand(2,9), b = rand(2,9);
+  return {
+    type: 'negNeg',
+    html: `<span class="nc">−${a}</span><span class="oc"> + </span><span class="nc">(−${b})</span>`,
+    plain: `−${a} + (−${b})`,
+    result: -(a+b), a, b,
+    typeLabel: 'сложение двух отрицательных'
+  };
+}
+
+function genDiffSign() {
+  let a, b;
+  do { a = rand(2,11); b = rand(2,11); } while (a === b);
+  const firstNeg = Math.random() < 0.5;
+  let html, plain, result;
+  if (firstNeg) {
+    html  = `<span class="nc">−${a}</span><span class="oc"> + </span><span class="pc">${b}</span>`;
+    plain = `−${a} + ${b}`;
+    result = -a + b;
+  } else {
+    html  = `<span class="pc">${a}</span><span class="oc"> + </span><span class="nc">(−${b})</span>`;
+    plain = `${a} + (−${b})`;
+    result = a - b;
+  }
+  return { type: 'diffSign', html, plain, result, absA: a, absB: b, firstNeg, typeLabel: 'сложение с разными знаками' };
+}
+
+function genSubNeg() {
+  const aNeg = Math.random() < 0.5;
+  const aMag = rand(2,9), b = rand(2,9);
+  const a = aNeg ? -aMag : aMag;
+  const aStr = aNeg ? `−${aMag}` : `${aMag}`;
+  const html  = `<span class="${aNeg?'nc':'pc'}">${aStr}</span><span class="oc"> − </span><span class="nc">(−${b})</span>`;
+  return {
+    type: 'subNeg', html,
+    plain: `${aStr} − (−${b})`,
+    result: a + b, a, b, aMag, aNeg,
+    typeLabel: 'вычитание отрицательного числа'
+  };
+}
+
+function genSubPos() {
+  const v = Math.random() < 0.5 ? 0 : 1;
+  if (v === 0) {
+    // −a − b  (two negatives, result is -(a+b))
+    const a = rand(2,9), b = rand(2,9);
+    return {
+      type: 'subPos', variant: 0,
+      html:  `<span class="nc">−${a}</span><span class="oc"> − </span><span class="pc">${b}</span>`,
+      plain: `−${a} − ${b}`,
+      result: -(a+b), a, b,
+      typeLabel: 'отрицательное минус положительное'
+    };
+  } else {
+    // a − (+b) where b > a
+    const b = rand(4,12), a = rand(1, b-2);
+    return {
+      type: 'subPos', variant: 1,
+      html:  `<span class="pc">${a}</span><span class="oc"> − </span>(<span class="pc">+${b}</span>)`,
+      plain: `${a} − (+${b})`,
+      result: a-b, a, b,
+      typeLabel: 'вычитание со скобкой'
+    };
+  }
+}
+
+function genMixed3() {
+  const v = Math.floor(Math.random() * 3);
+  let a, b, c, html, plain, addends;
+  if (v === 0) {
+    // −a + b − (−c) = −a + b + c
+    do { a=rand(2,9); b=rand(2,9); c=rand(2,9); } while (Math.abs(-a+b+c) === 0);
+    html = `<span class="nc">−${a}</span><span class="oc"> + </span><span class="pc">${b}</span><span class="oc"> − </span><span class="nc">(−${c})</span>`;
+    plain = `−${a} + ${b} − (−${c})`; addends = [-a, b, c];
+  } else if (v === 1) {
+    // a − (−b) + (−c) = a + b − c
+    do { a=rand(2,9); b=rand(2,9); c=rand(2,9); } while (Math.abs(a+b-c) === 0);
+    html = `<span class="pc">${a}</span><span class="oc"> − </span><span class="nc">(−${b})</span><span class="oc"> + </span><span class="nc">(−${c})</span>`;
+    plain = `${a} − (−${b}) + (−${c})`; addends = [a, b, -c];
+  } else {
+    // −a − b + c
+    do { a=rand(2,9); b=rand(2,9); c=rand(2,12); } while (Math.abs(-a-b+c) === 0);
+    html = `<span class="nc">−${a}</span><span class="oc"> − </span><span class="pc">${b}</span><span class="oc"> + </span><span class="pc">${c}</span>`;
+    plain = `−${a} − ${b} + ${c}`; addends = [-a, -b, c];
+  }
+  return { type: 'mixed3', html, plain, result: addends.reduce((s,x)=>s+x,0), a, b, c, v, addends, typeLabel: 'смешанное выражение' };
+}
+
+const generators = { negNeg: genNegNeg, diffSign: genDiffSign, subNeg: genSubNeg, subPos: genSubPos, mixed3: genMixed3 };
+
+function generateSession(sessionType) {
+  const base = ['negNeg','diffSign','subNeg','subPos','mixed3'];
+  const pool = sessionType === 'warmup' ? [...base] : [...base, ...base];
+  return shuffle(pool).map(t => generators[t]());
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ДИАГНОСТИКА ОШИБОК
+═══════════════════════════════════════════════════════════ */
+const TRAINERS = {
+  1: { name: 'Сложение двух отрицательных',          file: 'negative-plus-negative.html' },
+  2: { name: 'Сложение чисел с разными знаками',     file: 'battle-numbers.html' },
+  3: { name: 'Вычитание как сложение противоположного', file: 'subtraction-as-addition.html' },
+  4: { name: 'Скобки и знаки подряд',                file: 'brackets-and-signs.html' },
+  5: { name: 'Смешанные выражения',                  file: 'mixed-expressions.html' },
+};
+
+const ERROR_LABELS = {
+  lostSign:    'Потерян знак «−» при сложении двух отрицательных',
+  subtracted:  'Вычел вместо сложения при двух отрицательных',
+  addedModules:'Сложены модули вместо вычитания (разные знаки)',
+  wrongSign:   'Неверный знак при верной величине',
+  noConvert:   'Не заменено вычитание сложением противоположного',
+  addedInstead:'Сложение вместо вычитания (−(+b) = −b)',
+  mixedError:  'Ошибка в смешанном выражении',
+  generic:     'Ошибка в вычислении',
+};
+
+function diagnoseError(expr, ua) {
+  const correct = expr.result;
+  const ua_abs  = Math.abs(ua);
+  const cor_abs = Math.abs(correct);
+
+  // Universal: right magnitude, wrong sign
+  if (ua_abs === cor_abs && Math.sign(ua) !== Math.sign(correct)) {
+    const hint = expr.type === 'negNeg'   ? 'Оба числа отрицательные — ответ всегда отрицательный.' :
+                 expr.type === 'diffSign' ? 'Знак берётся от числа с бо́льшим модулем.' :
+                 expr.type === 'subNeg'   ? 'После замены −(−b) = +b получается положительный вклад.' :
+                 'Проверь знак итогового результата.';
+    return { code: 'wrongSign', short: `Число верное (${ua_abs}), но знак неверный. ${hint}`, trainer: expr.type === 'negNeg' ? 1 : 2 };
+  }
+
+  switch (expr.type) {
+    case 'negNeg': {
+      if (ua === expr.a + expr.b)
+        return { code: 'lostSign', short: `Ты получил +${expr.a + expr.b}. Оба числа отрицательные — их сумма тоже отрицательная: −${expr.a} + (−${expr.b}) = −${expr.a+expr.b}.`, trainer: 1 };
+      if (ua_abs === Math.abs(expr.a - expr.b))
+        return { code: 'subtracted', short: `Ты вычел вместо сложения. При двух отрицательных складываем модули: ${expr.a} + ${expr.b} = ${expr.a+expr.b}.`, trainer: 1 };
+      return { code: 'generic', short: `При двух отрицательных складываем модули (${expr.a} + ${expr.b} = ${expr.a+expr.b}) и ставим «−». Ответ: −${expr.a+expr.b}.`, trainer: 1 };
+    }
+    case 'diffSign': {
+      if (ua_abs === expr.absA + expr.absB)
+        return { code: 'addedModules', short: `Ты сложил модули (${expr.absA} + ${expr.absB} = ${expr.absA+expr.absB}). При разных знаках — вычитай меньший из большего: ${Math.max(expr.absA,expr.absB)} − ${Math.min(expr.absA,expr.absB)} = ${Math.abs(correct)}.`, trainer: 2 };
+      return { code: 'wrongSign', short: `Проверь знак: он берётся от числа с бо́льшим модулем. Бо́льший модуль здесь — ${Math.max(expr.absA,expr.absB)}.`, trainer: 2 };
+    }
+    case 'subNeg': {
+      const noConvertResult = expr.a - expr.b;
+      if (ua === noConvertResult)
+        return { code: 'noConvert', short: `Ты вычел ${expr.b} вместо прибавления. Запомни: −(−${expr.b}) = +${expr.b}. Вычитание отрицательного превращается в сложение.`, trainer: 3 };
+      return { code: 'noConvert', short: `Проверь замену: −(−${expr.b}) = +${expr.b}. Дальше задача на сложение.`, trainer: 3 };
+    }
+    case 'subPos': {
+      if (expr.variant === 1 && ua === expr.a + expr.b)
+        return { code: 'addedInstead', short: `Ты прибавил ${expr.b} вместо вычитания. −(+${expr.b}) = −${expr.b}. ${expr.a} − (+${expr.b}) = ${expr.a} − ${expr.b} = ${expr.result}.`, trainer: 4 };
+      if (expr.variant === 0 && ua === Math.abs(correct))
+        return { code: 'lostSign', short: `Оба числа отрицательные — ответ отрицательный. −${expr.a} − ${expr.b} = −${expr.a+expr.b}.`, trainer: 1 };
+      return { code: 'generic', short: `Ответ: ${ps(correct)}. Проверь порядок действий.`, trainer: expr.variant === 1 ? 4 : 1 };
+    }
+    case 'mixed3': {
+      const sumMods = expr.addends.map(Math.abs).reduce((s,a)=>s+a,0);
+      if (ua_abs === sumMods)
+        return { code: 'addedModules', short: `Ты сложил все модули (${sumMods}). Сначала замени вычитания на сложение противоположных, потом группируй по знакам.`, trainer: 5 };
+      return { code: 'mixedError', short: `Проверь шаги: 1) алгебраическая сумма 2) группировка 3) частичные суммы. Ответ: ${ps(correct)}.`, trainer: 5 };
+    }
+  }
+  return { code: 'generic', short: `Верный ответ: ${ps(correct)}. Разбери по шагам.`, trainer: null };
+}
+
+function correctFeedback(expr) {
+  const msgs = {
+    negNeg:   `Верно! Два отрицательных → складываем модули, знак «−».`,
+    diffSign: `Верно! Разные знаки → вычитаем меньший модуль из большего.`,
+    subNeg:   `Верно! −(−b) = +b — вычитание отрицательного стало сложением.`,
+    subPos:   `Верно! Знак учтён правильно.`,
+    mixed3:   `Верно! Алгебраическая сумма составлена и вычислена верно.`,
+  };
+  return msgs[expr.type] || 'Верно!';
+}
+
+function fullSolution(expr) {
+  const correct = ps(expr.result);
+  switch (expr.type) {
+    case 'negNeg':
+      return `Два отрицательных → складываем модули:<br><strong>${expr.a} + ${expr.b} = ${expr.a+expr.b}</strong>, знак «−» → <strong>−${expr.a+expr.b}</strong>`;
+    case 'diffSign': {
+      const big = Math.max(expr.absA, expr.absB), sml = Math.min(expr.absA, expr.absB);
+      const winNeg = (expr.absA > expr.absB) ? expr.firstNeg : !expr.firstNeg;
+      return `Разные знаки → вычитаем меньший из большего:<br><strong>${big} − ${sml} = ${big-sml}</strong>, знак «${winNeg?'−':'+'}» (от числа с модулем ${big}) → <strong>${winNeg?'−':''}${big-sml}</strong>`;
+    }
+    case 'subNeg': {
+      const aStr = expr.aNeg ? `−${expr.aMag}` : `${expr.aMag}`;
+      return `−(−${expr.b}) = +${expr.b}:<br>${aStr} − (−${expr.b}) = ${aStr} + ${expr.b}<br>→ <strong>${correct}</strong>`;
+    }
+    case 'subPos': {
+      if (expr.variant === 0)
+        return `Отрицательное минус положительное:<br>−${expr.a} − ${expr.b} = −(${expr.a}+${expr.b}) = <strong>−${expr.a+expr.b}</strong>`;
+      return `−(+${expr.b}) = −${expr.b}:<br>${expr.a} − (+${expr.b}) = ${expr.a} − ${expr.b} = <strong>${correct}</strong>`;
+    }
+    case 'mixed3': {
+      const algTerms = expr.addends.map((a,i) => i===0 ? ps(a) : (a<0?` + (−${Math.abs(a)})`:` + ${a}`)).join('');
+      const posArr = expr.addends.filter(a=>a>0);
+      const negArr = expr.addends.filter(a=>a<0);
+      const posSum = posArr.reduce((s,a)=>s+a,0);
+      const negSum = negArr.reduce((s,a)=>s+a,0);
+      return `Алгебраическая сумма: ${algTerms}<br>+ (${posArr.map(a=>'+'+a).join(' ')}) = +${posSum}<br>+ (${negArr.map(ps).join(' ')}) = ${ps(negSum)}<br>+${posSum} + (${ps(negSum)}) = <strong>${correct}</strong>`;
+    }
+  }
+  return `Ответ: <strong>${correct}</strong>`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   СОСТОЯНИЕ
+═══════════════════════════════════════════════════════════ */
+const S = {
+  screen:       'start',   // start | warmup | check | results
+  session:      [],
+  sessionType:  null,
+  current:      0,
+  attempts:     0,         // warmup: attempts on current expr
+  hintShown:    false,     // warmup: hint visible?
+  answers:      [],        // { expr, ua, correct, diag }
+  dotStatus:    [],        // warmup: 'ok'|'wrong'|'pending'|'active'
+  breakdownOpen:false,
+};
+
+/* ═══════════════════════════════════════════════════════════
+   РЕНДЕР
+═══════════════════════════════════════════════════════════ */
+function render() {
+  const app = document.getElementById('app');
+  switch(S.screen) {
+    case 'start':   app.innerHTML = buildStart();   break;
+    case 'warmup':  app.innerHTML = buildWarmup();  break;
+    case 'check':   app.innerHTML = buildCheck();   break;
+    case 'results': app.innerHTML = buildResults(); break;
+  }
+  // Bind Enter on inputs
+  const inp = app.querySelector('.answer-inp');
+  if (inp) {
+    inp.focus();
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') submitAnswer(); });
+  }
+}
+
+/* ── Начальный экран ── */
+function buildStart() {
+  return `
+  <div class="card" style="margin-top:8px">
+    <p class="start-title">🏁 Станция 6: Проверка навыка</p>
+    <p class="start-sub">Итоговая тренировка по всей теме. Никаких пошаговых подсказок — только твои ответы и точная диагностика ошибок.</p>
+    <ul class="topic-list">
+      ${['Знак числа или знак действия','Сложение двух отрицательных','Сложение с разными знаками','Вычитание как сложение противоположного','Скобки и знаки подряд','Смешанные выражения'].map((t,i)=>`
+        <li><span class="topic-num">${i}</span>${t}</li>`).join('')}
+    </ul>
+    <div class="mode-cards">
+      <div class="mode-card" onclick="startSession('warmup')">
+        <div class="mode-ico">🔥</div>
+        <div class="mode-name">Разогрев</div>
+        <div class="mode-desc">5 примеров · При ошибке — подсказка и вторая попытка</div>
+      </div>
+      <div class="mode-card primary-mode" onclick="startSession('check')">
+        <div class="mode-ico">▶</div>
+        <div class="mode-name">Проверка навыка</div>
+        <div class="mode-desc">10 примеров · Краткая диагностика · Разбор в конце</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ── Разогрев ── */
+function buildWarmup() {
+  const expr    = S.session[S.current];
+  const dots    = S.session.map((_,i) => {
+    const ds = S.dotStatus[i] || (i < S.current ? 'done' : i === S.current ? 'active' : '');
+    return `<div class="prog-dot ${ds}"></div>`;
+  }).join('');
+
+  const fbHtml  = S.warmupFeedback ? `<div class="feedback ${S.warmupFeedback.cls}">${S.warmupFeedback.msg}</div>` : '';
+  const solHtml = S.warmupSolution ? `<div class="full-solution">${S.warmupSolution}</div>` : '';
+  const attBadge = S.attempts > 0 ? `<div class="attempt-badge">Попытка ${S.attempts + 1}</div>` : '';
+  const btnDisabled = S.warmupDone ? 'disabled' : '';
+  const nextBtn = S.warmupDone
+    ? `<div class="action-row mt-16"><button class="btn btn-ok" onclick="nextExpr()">${S.current < S.session.length-1 ? 'Следующий →' : 'Завершить разогрев →'}</button></div>`
+    : '';
+
+  return `
+  <div class="session-header">
+    <div class="session-title">
+      <span>Разогрев — 5 примеров</span>
+      <span>${S.current + 1} / ${S.session.length}</span>
+    </div>
+    <div class="prog-dots">${dots}</div>
+  </div>
+  <div class="card">
+    ${attBadge}
+    <div class="expr-box">
+      <span class="expr-type-tag">${expr.typeLabel}</span>
+      <div class="expr-text">${expr.html}</div>
+    </div>
+    ${fbHtml}${solHtml}
+    <div class="answer-row">
+      <input type="number" class="answer-inp" id="ansInp" placeholder="?"
+        ${S.warmupDone ? 'disabled' : ''}>
+      <button class="submit-btn" onclick="submitAnswer()" ${btnDisabled}>Проверить</button>
+    </div>
+    ${nextBtn}
+    ${!S.warmupDone ? `<div class="action-row"><button class="btn btn-ghost" onclick="showWarmupHint()">💡 Подсказка</button></div>` : ''}
+  </div>`;
+}
+
+/* ── Проверка навыка ── */
+function buildCheck() {
+  const expr    = S.session[S.current];
+  const correct = S.answers.filter(a => a.correct).length;
+  const wrong   = S.answers.filter(a => !a.correct).length;
+  const pct     = (S.current / S.session.length) * 100;
+
+  const fbHtml  = S.checkFeedback
+    ? `<div class="feedback ${S.checkFeedback.cls}">${S.checkFeedback.msg}</div>`
+    : '';
+  const nextBtn = S.checkDone
+    ? `<div class="action-row mt-16"><button class="btn btn-primary" onclick="nextExpr()">${S.current < S.session.length-1 ? 'Следующий →' : 'Посмотреть результаты →'}</button></div>`
+    : '';
+  const btnDisabled = S.checkDone ? 'disabled' : '';
+
+  return `
+  <div class="session-header">
+    <div class="session-title">
+      <span>Проверка навыка</span>
+      <div class="prog-stats">
+        <span class="stat-ok">✓ ${correct}</span>
+        <span class="stat-err">✗ ${wrong}</span>
+        <span>${S.current + 1} / ${S.session.length}</span>
+      </div>
+    </div>
+    <div class="prog-bar-wrap">
+      <div class="prog-bar-fill" style="width:${pct}%"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="expr-box">
+      <span class="expr-type-tag">${expr.typeLabel}</span>
+      <div class="expr-text">${expr.html}</div>
+    </div>
+    ${fbHtml}
+    <div class="answer-row">
+      <input type="number" class="answer-inp" id="ansInp" placeholder="?"
+        ${S.checkDone ? 'disabled' : ''}>
+      <button class="submit-btn" onclick="submitAnswer()" ${btnDisabled}>Проверить</button>
+    </div>
+    ${nextBtn}
+  </div>`;
+}
+
+/* ── Результаты ── */
+function buildResults() {
+  const total   = S.session.length;
+  const correct = S.answers.filter(a => a.correct).length;
+  const wrong   = total - correct;
+  const pct     = Math.round(correct / total * 100);
+
+  const scoreClass = pct >= 90 ? 'excellent' : pct >= 70 ? 'good' : pct >= 50 ? 'fair' : 'poor';
+  const scoreLabel = pct >= 90 ? 'Отлично! Тема освоена уверенно.' :
+                     pct >= 70 ? 'Хорошо! Есть небольшие зоны роста.' :
+                     pct >= 50 ? 'Половина верно. Стоит повторить несколько тренажёров.' :
+                                 'Нужна проработка. Вернись к начальным уровням.';
+  const barColor  = pct >= 70 ? '#16a34a' : pct >= 50 ? '#d97706' : '#dc2626';
+
+  // Collect error types
+  const errorCounts = {};
+  const trainerNeeded = new Set();
+  S.answers.filter(a => !a.correct).forEach(a => {
+    const code = a.diag?.code || 'generic';
+    errorCounts[code] = (errorCounts[code] || 0) + 1;
+    if (a.diag?.trainer) trainerNeeded.add(a.diag.trainer);
+  });
+
+  const errorListHtml = wrong === 0
+    ? `<p class="no-errors">✓ Ошибок не обнаружено — все типы задач решены верно!</p>`
+    : Object.entries(errorCounts).map(([code, cnt]) => `
+        <div class="error-item">
+          ${ERROR_LABELS[code] || code}
+          <span class="err-count">${cnt}×</span>
+        </div>`).join('');
+
+  const recHtml = trainerNeeded.size === 0
+    ? `<p class="no-errors" style="margin-top:0">Рекомендации не нужны — продолжай практику!</p>`
+    : [...trainerNeeded].sort().map(n => {
+        const t = TRAINERS[n];
+        return `<div class="rec-item">
+          <span class="rec-name">${t.name}</span>
+          <a href="${t.file}" class="rec-link">Открыть →</a>
+        </div>`;
+      }).join('');
+
+  // Wrong answers for breakdown
+  const wrongAnswers = S.answers.filter(a => !a.correct);
+  const breakdownHtml = wrongAnswers.length === 0 ? '' : `
+    <button class="breakdown-toggle ${S.breakdownOpen?'open':''}" onclick="toggleBreakdown()">
+      Разбор ошибок (${wrongAnswers.length})
+      <span class="chevron">▶</span>
+    </button>
+    <div class="breakdown-items ${S.breakdownOpen?'visible':''}">
+      ${wrongAnswers.map(a => `
+        <div class="breakdown-item">
+          <div class="bi-expr">${a.expr.html}</div>
+          <div class="bi-ua">Твой ответ: ${ps(a.ua)}</div>
+          <div class="bi-sol">${fullSolution(a.expr)}</div>
+        </div>`).join('')}
+    </div>`;
+
+  const retryMode = S.sessionType;
+  const warmupBtn = S.sessionType === 'check'
+    ? `<button class="btn btn-ghost" onclick="startSession('warmup')">🔥 Разогрев</button>` : '';
+
+  return `
+  <div class="card" style="margin-top:8px">
+    <div class="score-header">
+      <div class="score-big ${scoreClass}">${correct}/${total}</div>
+      <div class="score-bar-wrap">
+        <div class="score-bar-fill" style="width:${pct}%; background:${barColor}"></div>
+      </div>
+      <div class="score-label">${scoreLabel}</div>
+    </div>
+    <div class="divider"></div>
+    <div class="section-title">Типы ошибок</div>
+    <div class="error-list">${errorListHtml}</div>
+    <div class="divider"></div>
+    <div class="section-title">Рекомендации</div>
+    <div class="rec-list">${recHtml}</div>
+    <div class="divider"></div>
+    ${breakdownHtml}
+    <div class="action-row mt-16">
+      <button class="btn btn-primary" onclick="startSession('${retryMode}')">Ещё раз</button>
+      ${warmupBtn}
+      <button class="btn btn-ghost" onclick="goStart()">На главную</button>
+    </div>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ОБРАБОТЧИКИ СОБЫТИЙ
+═══════════════════════════════════════════════════════════ */
+function startSession(type) {
+  S.screen       = type === 'warmup' ? 'warmup' : 'check';
+  S.sessionType  = type;
+  S.session      = generateSession(type);
+  S.current      = 0;
+  S.attempts     = 0;
+  S.answers      = [];
+  S.dotStatus    = new Array(S.session.length).fill('pending');
+  S.dotStatus[0] = 'active';
+  S.warmupFeedback = null;
+  S.warmupSolution = null;
+  S.warmupDone   = false;
+  S.checkFeedback  = null;
+  S.checkDone    = false;
+  S.breakdownOpen  = false;
+  render();
+}
+
+function submitAnswer() {
+  const inp = document.getElementById('ansInp');
+  if (!inp) return;
+  const raw = inp.value.replace('−','-').trim();
+  const ua  = parseInt(raw);
+  if (isNaN(ua)) {
+    inp.style.borderColor = '#dc2626';
+    setTimeout(()=>inp.style.borderColor='', 600);
+    return;
+  }
+
+  const expr    = S.session[S.current];
+  const correct_flag = ua === expr.result;
+
+  if (S.screen === 'warmup') handleWarmup(ua, correct_flag, expr);
+  else                       handleCheck(ua, correct_flag, expr);
+}
+
+function handleWarmup(ua, correct_flag, expr) {
+  S.attempts++;
+
+  if (correct_flag) {
+    S.dotStatus[S.current] = 'done';
+    S.warmupFeedback = { cls: 'fb-ok', msg: `✅ ${correctFeedback(expr)}` };
+    S.warmupSolution = null;
+    S.warmupDone     = true;
+    S.answers.push({ expr, ua, correct: true, diag: null });
+    render();
+  } else {
+    if (S.attempts >= 2) {
+      // Show full solution
+      const diag = diagnoseError(expr, ua);
+      S.dotStatus[S.current] = 'wrong';
+      S.warmupFeedback = { cls: 'fb-err', msg: `❌ Верный ответ: <strong>${ps(expr.result)}</strong>. ${diag.short}` };
+      S.warmupSolution = fullSolution(expr);
+      S.warmupDone     = true;
+      S.answers.push({ expr, ua, correct: false, diag });
+    } else {
+      const diag = diagnoseError(expr, ua);
+      S.warmupFeedback = { cls: 'fb-hint', msg: `🔍 ${diag.short}` };
+      S.warmupSolution = null;
+      S.warmupDone     = false;
+    }
+    render();
+    // Shake input
+    const inp2 = document.getElementById('ansInp');
+    if (inp2) {
+      inp2.classList.add('inp-err');
+      inp2.animate && inp2.animate(
+        [{transform:'translateX(0)'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(-3px)'},{transform:'translateX(0)'}],
+        { duration: 380 }
+      );
+      setTimeout(()=>{inp2.classList.remove('inp-err'); inp2.value=''; if(!S.warmupDone)inp2.focus();}, 400);
+    }
+  }
+}
+
+function showWarmupHint() {
+  const expr = S.session[S.current];
+  const hints = {
+    negNeg:   'Оба числа отрицательные — складывай модули и ставь «−».',
+    diffSign: 'Знаки разные — вычти меньший модуль из большего, знак от числа с бо́льшим модулем.',
+    subNeg:   `−(−${expr.b}) = +${expr.b} — вычитание отрицательного превращается в сложение.`,
+    subPos:   expr.variant === 1 ? `−(+${expr.b}) = −${expr.b}` : 'Оба вклада отрицательные.',
+    mixed3:   'Сначала замени все вычитания на сложение противоположных, потом группируй по знаку.',
+  };
+  S.warmupFeedback = { cls: 'fb-info', msg: `💡 ${hints[expr.type] || 'Примени подходящее правило.'}` };
+  render();
+}
+
+function handleCheck(ua, correct_flag, expr) {
+  if (correct_flag) {
+    S.checkFeedback = { cls: 'fb-ok', msg: `✅ ${correctFeedback(expr)}` };
+    S.answers.push({ expr, ua, correct: true, diag: null });
+  } else {
+    const diag = diagnoseError(expr, ua);
+    S.checkFeedback = { cls: 'fb-err', msg: `❌ ${diag.short}` };
+    S.answers.push({ expr, ua, correct: false, diag });
+  }
+  S.checkDone = true;
+  render();
+  // Color the input
+  const inp2 = document.getElementById('ansInp');
+  if (inp2) inp2.classList.add(correct_flag ? 'inp-ok' : 'inp-err');
+}
+
+function nextExpr() {
+  const lastIdx = S.session.length - 1;
+
+  if (S.current >= lastIdx) {
+    // Session complete
+    S.screen = 'results';
+    S.breakdownOpen = false;
+    render();
+    return;
+  }
+
+  S.current++;
+  S.attempts       = 0;
+  S.warmupFeedback = null;
+  S.warmupSolution = null;
+  S.warmupDone     = false;
+  S.checkFeedback  = null;
+  S.checkDone      = false;
+
+  if (S.screen === 'warmup') {
+    if (S.dotStatus[S.current] === 'pending') S.dotStatus[S.current] = 'active';
+  }
+  render();
+}
+
+function toggleBreakdown() {
+  S.breakdownOpen = !S.breakdownOpen;
+  render();
+}
+
+function goStart() {
+  S.screen = 'start';
+  render();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ИНИЦИАЛИЗАЦИЯ
+═══════════════════════════════════════════════════════════ */
+render();
+</script>
+</body>
+</html>

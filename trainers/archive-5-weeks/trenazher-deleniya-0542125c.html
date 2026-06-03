@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренажёр деления</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f5f4f0;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    box-shadow: 0 2px 16px rgba(0,0,0,.08);
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  h1 { font-size: 18px; font-weight: 500; color: #1a1a18; }
+
+  .sr { display: flex; gap: 2rem; }
+  .sc { text-align: center; }
+  .sl { font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: .05em; }
+  .sv { font-size: 26px; font-weight: 500; color: #1a1a18; }
+  .sv.g { color: #1a7a42; } .sv.r { color: #c0392b; }
+
+  .box { position: relative; width: 340px; height: 190px; flex-shrink: 0; }
+  .lh { position: absolute; top: 95px; left: 0; right: 0; height: 1.5px; background: #555; }
+  .lv { position: absolute; top: 0; bottom: 0; left: 170px; width: 1.5px; background: #555; }
+  .q { position: absolute; display: flex; flex-direction: column; }
+  .tl { top:0;left:0;width:170px;height:95px;padding:7px 0 0 12px; }
+  .tr { top:0;right:0;width:170px;height:95px;padding:7px 12px 0 0;align-items:flex-end; }
+  .bl { bottom:0;left:0;width:170px;height:95px;padding:0 0 8px 12px;justify-content:flex-end; }
+  .br { bottom:0;right:0;width:170px;height:95px;display:flex;align-items:center;justify-content:center; }
+
+  .qlbl { font-size: 11px; color: #aaa; letter-spacing: .04em; margin-bottom: 2px; }
+  .bign { font-size: 46px; font-weight: 500; font-family: 'Courier New', monospace; color: #1a1a18; line-height: 1; }
+
+  .drow { display: flex; align-items: center; gap: 2px; margin-top: 4px; }
+  .dg { display: inline-flex; align-items: center; justify-content: center; min-width: 32px; height: 52px; padding: 0 3px; font-size: 42px; font-weight: 500; font-family: 'Courier New', monospace; line-height: 1; border-radius: 4px; }
+  .dg.used { color: #ccc; }
+  .dg.sel { background: #ddeeff; color: #1a6abf; }
+  .dg.avail { color: #aaa; }
+
+  .ctrls { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+  .cbtn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 500; cursor: pointer; border-radius: 8px; padding: 0; border: 1px solid #ddd; background: #fff; }
+  .cbtn:disabled { opacity: .2; cursor: default; }
+  .cbtn.pulse { animation: pls 1s ease-in-out infinite; }
+  @keyframes pls { 0%,100%{opacity:1} 50%{opacity:.25} }
+  .cbtn.pulse:disabled { animation: none; }
+  .pval { font-size: 15px; font-weight: 500; font-family: 'Courier New', monospace; color: #888; min-width: 28px; text-align: center; }
+  .pval.ok { color: #1a7a42; }
+
+  .qd-row { display: flex; gap: 3px; margin-bottom: 5px; }
+  .qd { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; height: 44px; padding: 0 3px; font-size: 36px; font-weight: 500; font-family: 'Courier New', monospace; line-height: 1; }
+  .qd.found { color: #1a1a18; }
+  .qd.ok { color: #1a7a42; }
+  .qd.empty { border-bottom: 1.5px solid #ccc; min-width: 24px; }
+  .qd.current { border-bottom: 2px solid #1a6abf; min-width: 24px; animation: blink-cur .8s ease-in-out infinite; }
+  @keyframes blink-cur { 0%,100%{border-color:#1a6abf} 50%{border-color:transparent} }
+
+  .ans-zone {
+    width: 340px;
+    border: 1.5px solid #ddd;
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #f9f8f5;
+  }
+  .ans-zone-lbl { font-size: 14px; color: #555; flex: 1; line-height: 1.5; }
+  .ans-zone-lbl strong { color: #1a1a18; font-weight: 500; }
+  .ai {
+    width: 74px; height: 58px; font-size: 36px;
+    font-family: 'Courier New', monospace; font-weight: 500;
+    text-align: center;
+    border: 2px solid #1a6abf;
+    border-radius: 8px;
+    background: #fff;
+    color: #1a1a18;
+    outline: none;
+    padding: 0;
+    animation: glow .9s ease-in-out infinite;
+    flex-shrink: 0;
+    -moz-appearance: textfield;
+  }
+  .ai::-webkit-inner-spin-button, .ai::-webkit-outer-spin-button { -webkit-appearance: none; }
+  @keyframes glow { 0%,100%{border-color:#1a6abf} 50%{border-color:#5599ee} }
+  .ai:focus { animation: none; border-color: #1a6abf; box-shadow: 0 0 0 3px rgba(26,106,191,.15); }
+  .ai.aok { animation: none; border-color: #1a7a42; color: #1a7a42; }
+  .ai.abad { animation: none; border-color: #c0392b; color: #c0392b; animation: shk .3s; }
+  @keyframes shk { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+  .ai:disabled { opacity: .2; }
+
+  .hint { font-size: 13px; color: #777; min-height: 18px; text-align: center; width: 340px; }
+  .fb { font-size: 14px; min-height: 20px; text-align: center; }
+  .fb.fok { color: #1a7a42; } .fb.fbad { color: #c0392b; }
+
+  .br-row { display: flex; gap: 10px; }
+  button.action {
+    padding: 9px 22px; font-size: 14px; cursor: pointer;
+    border: 1px solid #ccc; border-radius: 8px;
+    background: #fff; color: #1a1a18;
+    font-family: inherit;
+  }
+  button.action:hover { background: #f0efec; }
+  button.action:active { transform: scale(.98); }
+
+  .lr { display: flex; gap: 8px; align-items: center; font-size: 13px; color: #777; }
+  .lr select { font-size: 13px; padding: 5px 8px; border: 1px solid #ddd; border-radius: 6px; background: #fff; font-family: inherit; cursor: pointer; }
+
+  .rem-badge { text-align: center; }
+  .rem-badge .rem-lbl { font-size: 11px; color: #aaa; margin-bottom: 2px; }
+  .rem-badge .rem-val { font-size: 34px; font-weight: 500; font-family: 'Courier New', monospace; color: #c47a00; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Тренажёр деления</h1>
+
+  <div class="sr">
+    <div class="sc"><div class="sl">Верно</div><div class="sv g" id="sc-c">0</div></div>
+    <div class="sc"><div class="sl">Всего</div><div class="sv" id="sc-t">0</div></div>
+    <div class="sc"><div class="sl">Ошибок</div><div class="sv r" id="sc-w">0</div></div>
+  </div>
+
+  <div class="box">
+    <div class="lh"></div><div class="lv"></div>
+    <div class="q tl">
+      <span class="qlbl">делимое</span>
+      <div class="drow" id="drow"></div>
+      <div class="ctrls" id="ctrls">
+        <button class="cbtn" id="btn-less" onclick="shrinkSel()">◄</button>
+        <span class="pval" id="pval"></span>
+        <button class="cbtn pulse" id="btn-more" onclick="extendSel()">►</button>
+      </div>
+    </div>
+    <div class="q tr">
+      <span class="qlbl">делитель</span>
+      <span class="bign" id="divn"></span>
+    </div>
+    <div class="q bl">
+      <div class="qd-row" id="qdrow"></div>
+      <span class="qlbl">частное</span>
+    </div>
+    <div class="br" id="rem-area"></div>
+  </div>
+
+  <div class="ans-zone" id="ans-zone" style="display:none">
+    <div class="ans-zone-lbl" id="ans-lbl"></div>
+    <input class="ai" id="ans" type="number" min="0" max="9" step="1" autocomplete="off"/>
+  </div>
+
+  <div class="hint" id="hint"></div>
+  <div class="fb" id="fb"> </div>
+
+  <div class="br-row">
+    <button class="action" id="bsel" onclick="confirmSel()">Выбрать →</button>
+    <button class="action" id="bchk" onclick="checkStep()" style="display:none">Проверить</button>
+    <button class="action" id="bnxt" onclick="nextTask()" style="display:none">Следующее →</button>
+  </div>
+
+  <div class="lr">
+    <label>Уровень:</label>
+    <select onchange="lev=this.value;nextTask()">
+      <option value="easy">Лёгкий (1 шаг)</option>
+      <option value="medium" selected>Средний (2 шага)</option>
+      <option value="hard">Сложный (3 шага)</option>
+    </select>
+  </div>
+</div>
+
+<script>
+let lev = 'medium', s = { score: { c: 0, w: 0, t: 0 } }, hadErr = false;
+const ri = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+
+function gen() {
+  let d, q, att = 0;
+  do {
+    d = ri(2, 9);
+    if (lev === 'easy') q = ri(1, 9);
+    else if (lev === 'medium') q = ri(11, 99);
+    else q = ri(111, 999);
+    att++;
+  } while (q.toString().includes('0') && att < 300);
+  return { dStr: (d * q).toString(), dNum: d, qExp: q };
+}
+
+function getPartial() {
+  const rem = s.prevRem, taken = s.dStr.slice(s.procLen, s.selLen);
+  const comb = (rem === 0 ? '' : rem.toString()) + taken;
+  return comb ? parseInt(comb) : 0;
+}
+function selValid() { return s.selLen > s.procLen && getPartial() >= s.dNum; }
+
+function nextTask() {
+  const t = gen(); hadErr = false;
+  s = { ...t, procLen: 0, selLen: 1, prevRem: 0, qBuilt: '', phase: 'selecting', score: s.score };
+  setFb('', ''); render();
+}
+
+function shrinkSel() {
+  if (s.phase !== 'selecting' || s.selLen <= s.procLen + 1) return;
+  s.selLen--; render();
+}
+function extendSel() {
+  if (s.phase !== 'selecting' || s.selLen >= s.dStr.length) return;
+  s.selLen++; render();
+}
+
+function confirmSel() {
+  if (!selValid()) { setFb('Выбранное число меньше делителя — нажмите ►', 'fbad'); return; }
+  setFb('', ''); s.phase = 'entering'; render();
+  setTimeout(() => document.getElementById('ans').focus(), 50);
+}
+
+function checkStep() {
+  const inp = document.getElementById('ans');
+  const val = parseInt(inp.value, 10);
+  const p = getPartial(), exp = Math.floor(p / s.dNum);
+  if (isNaN(val) || val < 0 || val > 9) { setFb('Введите одну цифру от 0 до 9', 'fbad'); return; }
+  if (val !== exp) {
+    hadErr = true;
+    inp.classList.remove('abad'); void inp.offsetWidth; inp.classList.add('abad');
+    setFb('Неверно. ' + p + ' ÷ ' + s.dNum + ' = ' + exp, 'fbad');
+    inp.value = ''; inp.focus(); return;
+  }
+  inp.classList.add('aok');
+  const rem = p - val * s.dNum;
+  s.qBuilt += val.toString();
+  s.procLen = s.selLen; s.prevRem = rem;
+  if (s.procLen >= s.dStr.length) {
+    s.phase = 'done'; s.score.t++;
+    if (!hadErr) s.score.c++; else s.score.w++;
+    setFb(s.dStr + ' ÷ ' + s.dNum + ' = ' + s.qBuilt + '  ✓', 'fok');
+    render(); return;
+  }
+  setTimeout(() => {
+    inp.classList.remove('aok', 'abad'); inp.value = '';
+    s.phase = 'selecting'; s.selLen = s.procLen + 1; setFb('', ''); render();
+  }, 700);
+  render();
+}
+
+function setFb(msg, cls) {
+  const el = document.getElementById('fb');
+  el.textContent = msg || ' '; el.className = 'fb ' + (cls || '');
+}
+
+function render() {
+  const dr = document.getElementById('drow'); dr.innerHTML = '';
+  for (let i = 0; i < s.dStr.length; i++) {
+    const sp = document.createElement('span');
+    sp.textContent = s.dStr[i]; sp.className = 'dg';
+    if (i < s.procLen) sp.classList.add('used');
+    else if (i < s.selLen) sp.classList.add('sel');
+    else sp.classList.add('avail');
+    dr.appendChild(sp);
+  }
+
+  document.getElementById('ctrls').style.display = s.phase === 'selecting' ? 'flex' : 'none';
+  if (s.phase === 'selecting') {
+    const p = getPartial(), valid = selValid(), canMore = s.selLen < s.dStr.length, canLess = s.selLen > s.procLen + 1;
+    document.getElementById('btn-less').disabled = !canLess;
+    const bmore = document.getElementById('btn-more');
+    bmore.disabled = !canMore || valid;
+    if (!canMore || valid) bmore.classList.remove('pulse'); else bmore.classList.add('pulse');
+    const pv = document.getElementById('pval');
+    pv.textContent = p; pv.className = 'pval' + (valid ? ' ok' : '');
+  }
+
+  document.getElementById('divn').textContent = s.dNum;
+
+  const ra = document.getElementById('rem-area');
+  if (s.phase === 'selecting' && s.prevRem > 0) {
+    ra.innerHTML = '<div class="rem-badge"><div class="rem-lbl">остаток</div><div class="rem-val">' + s.prevRem + '</div></div>';
+  } else { ra.innerHTML = ''; }
+
+  const qr = document.getElementById('qdrow'); qr.innerHTML = '';
+  const tLen = s.qExp.toString().length;
+  for (let i = 0; i < tLen; i++) {
+    const sp = document.createElement('span'); sp.className = 'qd';
+    if (i < s.qBuilt.length) { sp.textContent = s.qBuilt[i]; sp.classList.add(s.phase === 'done' ? 'ok' : 'found'); }
+    else if (i === s.qBuilt.length && s.phase === 'entering') { sp.classList.add('current'); }
+    else { sp.classList.add('empty'); }
+    qr.appendChild(sp);
+  }
+
+  const az = document.getElementById('ans-zone');
+  const inp = document.getElementById('ans');
+  if (s.phase === 'entering') {
+    az.style.display = 'flex';
+    inp.disabled = false;
+    document.getElementById('ans-lbl').innerHTML = '<strong>' + getPartial() + ' ÷ ' + s.dNum + '</strong> = ?&nbsp; Введите одну цифру:';
+  } else {
+    az.style.display = 'none';
+    inp.disabled = true; inp.value = ''; inp.className = 'ai';
+  }
+
+  const hel = document.getElementById('hint');
+  if (s.phase === 'selecting') {
+    const p = getPartial(), valid = selValid(), canMore = s.selLen < s.dStr.length;
+    if (valid) hel.textContent = 'Выбрано: ' + p + ' — нажмите «Выбрать»';
+    else if (canMore) hel.textContent = p + ' < ' + s.dNum + ' — нажмите ► чтобы добавить цифру';
+    else hel.textContent = '';
+  } else { hel.textContent = ''; }
+
+  document.getElementById('bsel').style.display = s.phase === 'selecting' ? '' : 'none';
+  document.getElementById('bchk').style.display = s.phase === 'entering' ? '' : 'none';
+  document.getElementById('bnxt').style.display = s.phase === 'done' ? '' : 'none';
+
+  document.getElementById('sc-c').textContent = s.score.c;
+  document.getElementById('sc-w').textContent = s.score.w;
+  document.getElementById('sc-t').textContent = s.score.t;
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    if (s.phase === 'selecting') confirmSel();
+    else if (s.phase === 'entering') checkStep();
+    else if (s.phase === 'done') nextTask();
+  }
+  if (s.phase === 'selecting') {
+    if (e.key === 'ArrowRight') extendSel();
+    if (e.key === 'ArrowLeft') shrinkSel();
+  }
+});
+
+nextTask();
+</script>
+</body>
+</html>

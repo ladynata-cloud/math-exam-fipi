@@ -1,0 +1,2292 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шины · табличный метод</title>
+<style>
+  :root {
+    --bg: #faf7f2; --bg-card: #ffffff; --bg-soft: #f5f1e8; --bg-deeper: #efe9da;
+    --ink: #1a2332; --ink-soft: #4a5568; --ink-muted: #8a93a3;
+    --line: #e8e3d8; --line-strong: #d4cfc2;
+    --accent: #1e3a5f; --accent-soft: #dbe4f0; --accent-deep: #142a44;
+    --gold: #b8924b; --gold-soft: #f3e9d4; --gold-deep: #8a6d33;
+    --green: #4a7c59; --green-soft: #dcebe0;
+    --warm: #d4956a; --warm-soft: #f5e3d4;
+    --error: #b34a3a; --error-soft: #f7e3dc; --error-ink: #8a4d3a;
+    --shadow: 0 1px 3px rgba(26,35,50,.05), 0 4px 24px rgba(26,35,50,.06);
+    --shadow-strong: 0 2px 6px rgba(26,35,50,.08), 0 12px 32px rgba(26,35,50,.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PT Sans", Roboto, sans-serif; font-size: 16px; line-height: 1.55; min-height: 100vh; }
+  body { background-image: radial-gradient(circle at 15% 10%, rgba(184,146,75,.04) 0, transparent 40%), radial-gradient(circle at 85% 80%, rgba(30,58,95,.04) 0, transparent 40%); }
+  @keyframes fadeup { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(184,146,75,.4); } 50% { box-shadow: 0 0 0 6px rgba(184,146,75,0); } }
+
+  /* ===== TOP BAR ===== */
+  .topbar { border-bottom: 1px solid var(--line); background: rgba(250,247,242,.92); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 50; }
+  .topbar-inner { max-width: 1320px; margin: 0 auto; padding: 12px 22px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .brand { font-family: Georgia, serif; font-size: 18px; font-weight: 400; color: var(--ink); }
+  .brand em { font-style: italic; color: var(--accent); }
+  .topbar-spacer { flex: 1; }
+  .ex-select { background: var(--bg-soft); border: 1px solid var(--line-strong); border-radius: 8px; padding: 7px 12px; font-family: inherit; font-size: 13px; color: var(--accent); cursor: pointer; }
+  .ex-select:focus { outline: none; border-color: var(--accent); }
+  .level-switch { display: flex; background: var(--bg-soft); border-radius: 9px; padding: 3px; gap: 2px; }
+  .level-switch button { background: none; border: none; padding: 6px 12px; font-family: inherit; font-size: 12px; color: var(--ink-soft); border-radius: 6px; cursor: pointer; transition: all .15s; }
+  .level-switch button:hover { color: var(--accent); }
+  .level-switch button.active { background: var(--bg-card); color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,.08); font-weight: 500; }
+
+  /* ===== LAYOUT ===== */
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 22px 22px 80px; }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 22px; align-items: start; margin-top: 16px; }
+  @media (max-width: 1080px) { .layout { grid-template-columns: 1fr; } }
+
+  /* ===== TITLE / HERO ===== */
+  .hero { margin-bottom: 16px; }
+  .eyebrow { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .18em; color: var(--gold); margin-bottom: 8px; }
+  h1 { font-family: Georgia, "PT Serif", serif; font-size: clamp(24px, 3.5vw, 32px); font-weight: 400; line-height: 1.2; letter-spacing: -.01em; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .hero p { color: var(--ink-soft); margin-top: 6px; max-width: 760px; font-size: 14.5px; }
+  .ex-meta { display: inline-flex; align-items: center; gap: 8px; margin-top: 10px; padding: 5px 12px; background: var(--bg-soft); border-radius: 6px; font-size: 12px; color: var(--ink-muted); }
+  .ex-meta b { color: var(--accent); font-weight: 600; }
+
+  /* ===== MODE STEPPER ===== */
+  .mode-stepper { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; background: var(--bg-card); padding: 6px; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 18px; box-shadow: var(--shadow); }
+  @media (max-width: 980px) { .mode-stepper { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 720px) { .mode-stepper { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 480px) { .mode-stepper { grid-template-columns: repeat(2, 1fr); } }
+  .mode-btn { background: transparent; border: none; padding: 9px 6px; border-radius: 8px; font-family: inherit; font-size: 11.5px; color: var(--ink-soft); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; transition: all .18s; min-height: 52px; justify-content: center; line-height: 1.2; }
+  .mode-btn:hover { background: var(--accent-soft); color: var(--accent); }
+  .mode-btn.active { background: var(--accent); color: white; }
+  .mode-btn.done { background: var(--green-soft); color: var(--green); }
+  .mode-btn.done.active { background: var(--accent); color: white; }
+  .mode-num { font-family: Georgia, serif; font-size: 14px; font-weight: 600; }
+  .mode-name { font-size: 11px; text-align: center; }
+  body[data-teacher="hidden"] .mode-btn-tch { display: none; }
+  body[data-teacher="hidden"] .mode-stepper { grid-template-columns: repeat(6, 1fr); }
+  @media (max-width: 980px) { body[data-teacher="hidden"] .mode-stepper { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 720px) { body[data-teacher="hidden"] .mode-stepper { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 480px) { body[data-teacher="hidden"] .mode-stepper { grid-template-columns: repeat(2, 1fr); } }
+  .tch-toggle-link { display: block; margin: 18px auto 0; padding: 6px 12px; font-size: 11px; color: var(--ink-muted); background: transparent; border: 1px dashed var(--line-strong); border-radius: 5px; cursor: pointer; font-family: inherit; }
+  .tch-toggle-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  /* ===== CARDS ===== */
+  .card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
+  .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .card-tag { font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .14em; padding: 3px 9px; border-radius: 5px; background: var(--gold-soft); color: var(--gold-deep); }
+  .card-tag.blue { background: var(--accent-soft); color: var(--accent); }
+  .card-tag.green { background: var(--green-soft); color: var(--green); }
+  .card h2 { font-family: Georgia, serif; font-size: 21px; font-weight: 400; color: var(--ink); }
+  .card h2 em { color: var(--accent); font-style: italic; }
+  .card-intro { color: var(--ink-soft); font-size: 14.5px; margin-bottom: 12px; }
+  .mode-section { display: none; }
+  .mode-section.active { display: block; animation: fadeup .3s; }
+
+  /* ===== CALC TABLE (centerpiece) ===== */
+  .calc-frame { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow); padding: 0; overflow: hidden; margin-bottom: 14px; }
+  .calc-frame-head { padding: 14px 18px; background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-soft) 100%); border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .calc-frame-head h3 { font-family: Georgia, serif; font-size: 17px; font-weight: 400; color: var(--accent); }
+  .fill-mode-switch { display: flex; background: var(--bg-soft); border-radius: 8px; padding: 3px; gap: 2px; }
+  .fill-mode-switch button { background: none; border: none; padding: 6px 11px; font-family: inherit; font-size: 12px; color: var(--ink-soft); border-radius: 6px; cursor: pointer; }
+  .fill-mode-switch button.active { background: var(--bg-card); color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,.08); font-weight: 500; }
+  .calc-frame-body { padding: 14px; }
+  .calc-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 8px; }
+  .calc-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; min-width: 820px; }
+  .calc-table th { background: var(--accent); color: white; padding: 9px 6px; font-weight: 600; font-size: 12.5px; text-align: center; position: sticky; top: 0; z-index: 2; }
+  .calc-table th.col-marking { text-align: left; padding-left: 14px; min-width: 110px; }
+  .calc-table th:first-child { border-top-left-radius: 7px; }
+  .calc-table th:last-child { border-top-right-radius: 7px; }
+  .calc-table th .col-formula { display: block; font-family: Georgia, serif; font-size: 10.5px; font-weight: 400; opacity: .8; margin-top: 3px; }
+  .calc-table th.col-active { background: var(--gold); color: white; box-shadow: inset 0 -3px 0 var(--gold-deep); }
+  .calc-table th.col-done { background: var(--green); color: white; }
+  .calc-table td { padding: 8px 6px; border-bottom: 1px solid var(--line); text-align: center; background: var(--bg-card); }
+  .calc-table td.marking { background: var(--bg-soft); font-family: Georgia, serif; font-weight: 600; color: var(--accent); text-align: left; padding-left: 14px; }
+  .calc-table td.cell-pending { background: var(--bg-soft); color: var(--ink-muted); font-family: Georgia, serif; font-size: 13px; font-style: italic; }
+  .calc-table td.cell-active { background: var(--gold-soft); }
+  .calc-table td.cell-done { background: var(--green-soft); font-family: Georgia, serif; color: var(--green); font-weight: 600; }
+  .calc-table tr:last-child td { border-bottom: none; }
+  .calc-input { width: 92px; padding: 7px 6px; border: 1.5px solid var(--line-strong); border-radius: 6px; font-family: Georgia, serif; font-size: 14px; color: var(--accent); text-align: center; background: white; }
+  .calc-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .calc-input.wrong { background: var(--error-soft); border-color: var(--error); color: var(--error-ink); }
+  .calc-input.correct { background: var(--green-soft); border-color: var(--green); color: var(--green); font-weight: 600; }
+  .calc-input:disabled { cursor: not-allowed; opacity: .9; }
+
+  /* ===== ACTIVE-COLUMN PROMPT ===== */
+  .col-prompt { background: linear-gradient(135deg, var(--gold-soft) 0%, var(--bg-soft) 100%); border-left: 3px solid var(--gold); padding: 12px 16px; border-radius: 8px; margin: 12px 0; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .col-prompt .col-prompt-head { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--gold-deep); }
+  .col-prompt .col-prompt-formula { font-family: Georgia, serif; font-size: 16px; color: var(--accent); font-weight: 600; }
+  .col-prompt .col-prompt-formula small { display: inline-block; margin-left: 8px; font-family: -apple-system, sans-serif; font-size: 12px; font-weight: 400; color: var(--ink-soft); }
+  .col-prompt.done-state { background: linear-gradient(135deg, var(--green-soft) 0%, var(--bg-soft) 100%); border-left-color: var(--green); }
+  .col-prompt.done-state .col-prompt-head { color: var(--green); }
+
+  /* ===== TABLE FEEDBACK ===== */
+  .tbl-fb { margin-top: 12px; padding: 10px 14px; border-radius: 8px; font-size: 13px; display: none; line-height: 1.6; }
+  .tbl-fb.show { display: block; animation: fadeup .25s; }
+  .tbl-fb.warn { background: var(--error-soft); color: var(--error-ink); border: 1px solid var(--warm); }
+  .tbl-fb.ok { background: var(--green-soft); color: var(--green); border: 1px solid var(--green); }
+  .tbl-fb b { color: var(--accent); }
+  .tbl-fb.warn b { color: var(--error); }
+
+  /* ===== COMPAT TABLE ===== */
+  .compat-wrap { overflow-x: auto; margin: 12px 0; }
+  .compat-table { border-collapse: separate; border-spacing: 0; font-size: 13.5px; }
+  .compat-table th, .compat-table td { padding: 9px 12px; text-align: center; border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); }
+  .compat-table thead th { background: var(--accent); color: white; font-weight: 600; font-size: 12.5px; }
+  .compat-table thead th:first-child { background: var(--accent-deep); }
+  .compat-table th.row-h { background: var(--bg-soft); color: var(--accent); font-weight: 600; font-family: Georgia, serif; font-size: 14px; min-width: 70px; }
+  .compat-table td.cell-yes { background: var(--green-soft); color: var(--green); font-family: Georgia, serif; font-weight: 600; cursor: pointer; transition: background .15s; }
+  .compat-table td.cell-yes:hover { background: var(--green); color: white; }
+  .compat-table td.cell-no { background: var(--bg-card); color: var(--ink-muted); }
+  .compat-table td.picked { box-shadow: inset 0 0 0 3px var(--gold); background: var(--gold-soft); color: var(--gold-deep); }
+  .compat-result { margin-top: 8px; padding: 10px 14px; background: var(--accent); color: white; border-radius: 8px; font-family: Georgia, serif; font-size: 15px; text-align: center; }
+  .compat-result.empty { background: var(--bg-soft); color: var(--ink-muted); font-family: inherit; font-size: 13px; font-style: italic; }
+
+  /* ===== CROSS-SECTION SVG ===== */
+  .diagram-block { background: linear-gradient(180deg, #fdfcf8 0%, var(--bg-soft) 100%); border-radius: 10px; padding: 10px; display: flex; justify-content: center; }
+  svg.wheel-diagram { max-width: 100%; height: auto; }
+  .dim-line { stroke: var(--accent); stroke-width: 1.5; fill: none; }
+  .dim-text { font-family: Georgia, serif; font-size: 12px; font-weight: 600; }
+  .dim-text.B { fill: var(--accent); }
+  .dim-text.H { fill: var(--gold-deep); }
+  .dim-text.d { fill: var(--error-ink); }
+  .dim-text.D { fill: var(--green); }
+
+  /* ===== MARKING READER ===== */
+  .marking-card { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%); color: white; padding: 22px 18px; border-radius: 12px; text-align: center; margin-bottom: 14px; }
+  .marking-card .mark-big { font-family: Georgia, serif; font-size: clamp(34px, 6vw, 50px); font-weight: 400; letter-spacing: 1px; margin-bottom: 6px; }
+  .marking-card .mark-hint { font-size: 12px; opacity: .8; }
+  .mark-parts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+  @media (max-width: 540px) { .mark-parts { grid-template-columns: 1fr; } }
+  .mark-part { background: var(--bg-soft); padding: 12px 14px; border-radius: 10px; border-left: 3px solid var(--line-strong); }
+  .mark-part.active { border-left-color: var(--gold); background: var(--bg-deeper); }
+  .mark-part.done { border-left-color: var(--green); background: var(--green-soft); }
+  .mark-part-q { font-size: 12px; color: var(--ink-soft); margin-bottom: 6px; font-weight: 500; }
+  .mark-part-q b { color: var(--accent); font-family: Georgia, serif; font-size: 14px; }
+  .mark-part-input { width: 100%; padding: 8px 10px; border: 1.5px solid var(--line-strong); border-radius: 7px; font-family: Georgia, serif; font-size: 16px; color: var(--accent); text-align: center; background: white; }
+  .mark-part-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .mark-part-input.correct { background: var(--green-soft); border-color: var(--green); color: var(--green); font-weight: 600; }
+  .mark-part-input.wrong { background: var(--error-soft); border-color: var(--error); color: var(--error-ink); }
+  .mark-part-unit { font-size: 11px; color: var(--ink-muted); margin-top: 4px; text-align: center; }
+  .mark-fb { margin-top: 10px; padding: 9px 13px; border-radius: 7px; font-size: 13px; display: none; line-height: 1.55; }
+  .mark-fb.show { display: block; animation: fadeup .25s; }
+  .mark-fb.warn { background: var(--error-soft); color: var(--error-ink); border: 1px solid var(--warm); }
+  .mark-fb.ok { background: var(--green-soft); color: var(--green); border: 1px solid var(--green); }
+  .mark-fb b { color: var(--accent); }
+  .mark-fb.warn b { color: var(--error); }
+
+  /* ===== QUESTIONS ===== */
+  .q-block { background: var(--bg-soft); padding: 14px 16px; border-radius: 10px; border-left: 3px solid var(--line-strong); margin-bottom: 12px; transition: all .15s; }
+  .q-block.active-step { border-left-color: var(--gold); background: var(--bg-deeper); }
+  .q-block.done { border-left-color: var(--green); background: var(--green-soft); }
+  .q-block-tag { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-soft); margin-bottom: 8px; }
+  .q-block.done .q-block-tag { color: var(--green); }
+  .q-block-q { font-size: 14.5px; line-height: 1.55; margin-bottom: 10px; }
+  .q-block-q .math { font-family: Georgia, serif; color: var(--accent); font-weight: 600; background: var(--bg-card); padding: 1px 7px; border-radius: 5px; }
+  .q-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .q-input { width: 140px; padding: 8px 11px; border: 1.5px solid var(--line-strong); border-radius: 7px; font-family: Georgia, serif; font-size: 16px; color: var(--accent); background: white; }
+  .q-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .q-input.correct { background: var(--green-soft); border-color: var(--green); color: var(--green); font-weight: 600; }
+  .q-input.wrong { background: var(--error-soft); border-color: var(--error); color: var(--error-ink); }
+  .q-input:disabled { cursor: not-allowed; opacity: .9; }
+  .q-unit { color: var(--ink-muted); font-size: 13px; }
+  .q-btn { padding: 8px 16px; background: var(--accent); color: white; border: none; border-radius: 7px; font-family: inherit; font-size: 13px; cursor: pointer; font-weight: 500; transition: all .15s; }
+  .q-btn:hover { background: var(--accent-deep); transform: translateY(-1px); }
+  .q-btn:disabled { background: var(--green); transform: none; cursor: default; }
+  .q-fb { margin-top: 10px; padding: 9px 13px; border-radius: 7px; font-size: 13px; display: none; line-height: 1.55; }
+  .q-fb.show { display: block; animation: fadeup .25s; }
+  .q-fb.warn { background: var(--error-soft); color: var(--error-ink); border: 1px solid var(--warm); }
+  .q-fb.ok { background: var(--green-soft); color: var(--green); border: 1px solid var(--green); }
+  .q-fb b { color: var(--accent); }
+  .q-fb.warn b { color: var(--error); }
+  .q-hint { display: none; margin-top: 8px; padding: 8px 12px; background: var(--gold-soft); border-radius: 7px; font-size: 12.5px; color: var(--ink); border-left: 3px solid var(--gold); line-height: 1.5; }
+  .q-hint.show { display: block; }
+  .q-hint-btn { background: none; border: none; color: var(--gold-deep); font-family: inherit; font-size: 12px; cursor: pointer; text-decoration: underline; padding: 4px 0; margin-top: 4px; }
+  .q-quiz-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .q-quiz-opt { background: white; border: 1.5px solid var(--line-strong); padding: 7px 12px; border-radius: 7px; font-family: inherit; font-size: 13px; color: var(--ink); cursor: pointer; transition: all .15s; }
+  .q-quiz-opt:hover { border-color: var(--accent); color: var(--accent); }
+  .q-quiz-opt.correct { background: var(--green-soft); border-color: var(--green); color: var(--green); font-weight: 600; }
+  .q-quiz-opt.wrong { background: var(--error-soft); border-color: var(--error); color: var(--error-ink); }
+  .q-quiz-opt:disabled { cursor: not-allowed; }
+
+  body[data-hints="off"] .q-hint-btn { display: none; }
+  body[data-hints="off"] .q-hint { display: none !important; }
+
+  /* ===== 2×2 COMPARE TABLE ===== */
+  .cmp-pickers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  @media (max-width: 540px) { .cmp-pickers { grid-template-columns: 1fr; } }
+  .cmp-picker { background: var(--bg-soft); padding: 12px 14px; border-radius: 10px; }
+  .cmp-picker.old { border-left: 3px solid var(--accent); }
+  .cmp-picker.new { border-left: 3px solid var(--gold); }
+  .cmp-picker-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-soft); margin-bottom: 6px; }
+  .cmp-picker select { width: 100%; padding: 9px 11px; border: 1.5px solid var(--line-strong); border-radius: 7px; font-family: Georgia, serif; font-size: 15px; color: var(--accent); background: white; cursor: pointer; }
+  .cmp-picker select:focus { outline: none; border-color: var(--accent); }
+  .cmp-picker .cmp-meta { margin-top: 6px; font-size: 12.5px; color: var(--ink-soft); }
+  .cmp-picker .cmp-meta b { color: var(--accent); font-family: Georgia, serif; }
+  .prop-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; margin: 14px 0; max-width: 600px; }
+  .prop-table th { background: var(--accent); color: white; padding: 11px 12px; font-weight: 600; font-size: 12.5px; text-align: center; }
+  .prop-table th:first-child { border-top-left-radius: 8px; text-align: left; }
+  .prop-table th:last-child { border-top-right-radius: 8px; }
+  .prop-table td { background: var(--bg-card); padding: 11px 12px; border: 1px solid var(--line); text-align: center; font-family: Georgia, serif; font-size: 15px; color: var(--accent); }
+  .prop-table td:first-child { font-family: inherit; font-weight: 600; background: var(--bg-soft); color: var(--ink); text-align: left; }
+  .prop-table tr.compare td { background: var(--gold-soft); color: var(--gold-deep); }
+  .prop-table tr.base td { background: var(--accent-soft); }
+  .prop-table tr.compare td:first-child, .prop-table tr.base td:first-child { background: var(--bg-soft); color: var(--ink); }
+  .pi-cancel { font-family: Georgia, serif; font-size: 15px; text-align: center; padding: 12px; background: var(--bg-card); border: 1px solid var(--line); border-radius: 8px; margin: 10px 0; color: var(--ink); }
+  .pi-cancel .strike { text-decoration: line-through; color: var(--error); }
+
+  /* ===== ERROR LOG ===== */
+  .err-list { display: flex; flex-direction: column; gap: 8px; }
+  .err-item { background: var(--bg-soft); padding: 10px 14px; border-radius: 8px; border-left: 3px solid var(--warm); display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: center; }
+  .err-item .err-tag { font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--error); background: var(--error-soft); padding: 2px 8px; border-radius: 4px; }
+  .err-item .err-msg { font-size: 13px; line-height: 1.5; color: var(--ink); }
+  .err-item .err-msg b { color: var(--accent); }
+  .err-item .err-meta { font-size: 11px; color: var(--ink-muted); }
+  .err-empty { padding: 20px; text-align: center; color: var(--ink-muted); font-size: 13px; font-style: italic; background: var(--bg-soft); border-radius: 8px; }
+  .err-summary { background: var(--accent-soft); padding: 12px 14px; border-radius: 8px; margin-bottom: 12px; font-size: 13px; color: var(--accent); }
+  .err-summary b { color: var(--accent-deep); }
+
+  /* ===== TEACHER PANEL ===== */
+  .tch-section { margin-bottom: 16px; padding: 14px 16px; background: var(--bg-soft); border-radius: 10px; }
+  .tch-section h4 { font-family: Georgia, serif; font-size: 15px; font-weight: 400; color: var(--accent); margin-bottom: 8px; }
+  .tch-setting { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  .tch-setting label { font-size: 13px; color: var(--ink); }
+  .tch-btn { padding: 8px 14px; background: var(--accent); color: white; border: none; border-radius: 7px; font-family: inherit; font-size: 12.5px; cursor: pointer; font-weight: 500; transition: all .15s; }
+  .tch-btn:hover { background: var(--accent-deep); }
+  .tch-btn.ghost { background: var(--bg-card); color: var(--ink-soft); border: 1.5px solid var(--line-strong); }
+  .tch-btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .tch-textarea { width: 100%; min-height: 140px; padding: 10px 12px; border: 1.5px solid var(--line-strong); border-radius: 7px; font-family: ui-monospace, "SF Mono", monospace; font-size: 12px; color: var(--ink); background: white; resize: vertical; }
+  .tch-textarea:focus { outline: none; border-color: var(--accent); }
+  .tch-hint { font-size: 11.5px; color: var(--ink-muted); margin-top: 6px; }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar { display: flex; flex-direction: column; gap: 14px; position: sticky; top: 80px; max-height: calc(100vh - 100px); overflow-y: auto; }
+  @media (max-width: 1080px) { .sidebar { position: static; max-height: none; } }
+  .side-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; box-shadow: var(--shadow); }
+  .side-card h3 { font-family: Georgia, serif; font-size: 14px; font-weight: 400; color: var(--ink); margin-bottom: 10px; text-transform: uppercase; letter-spacing: .12em; }
+  .formula { background: var(--accent); color: white; padding: 9px 12px; border-radius: 8px; font-family: Georgia, serif; font-size: 15px; margin-bottom: 6px; }
+  .formula small { display: block; font-size: 11px; opacity: .7; margin-top: 2px; font-family: -apple-system, sans-serif; }
+  .formula.gold { background: var(--gold); }
+  .formula.green { background: var(--green); }
+  .formula.ink { background: var(--ink); }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat { background: var(--bg-soft); padding: 8px; border-radius: 7px; text-align: center; }
+  .stat .val { font-family: Georgia, serif; font-size: 22px; color: var(--accent); font-weight: 600; }
+  .stat .lbl { font-size: 10.5px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .1em; }
+  .reset-btn { width: 100%; margin-top: 8px; padding: 7px 10px; background: var(--bg-soft); border: 1px solid var(--line-strong); color: var(--ink-soft); border-radius: 7px; cursor: pointer; font-family: inherit; font-size: 12px; }
+  .reset-btn:hover { background: var(--warm-soft); color: var(--error-ink); border-color: var(--warm); }
+  .legend-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-soft); margin-bottom: 5px; }
+  .legend-swatch { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+  .legend-swatch.pending { background: var(--bg-soft); border: 1px solid var(--line-strong); }
+  .legend-swatch.active { background: var(--gold-soft); border: 1px solid var(--gold); }
+  .legend-swatch.done { background: var(--green-soft); border: 1px solid var(--green); }
+
+  /* ===== UTILITIES ===== */
+  .callout-soft { background: var(--gold-soft); border-left: 3px solid var(--gold); padding: 10px 14px; border-radius: 8px; font-size: 13.5px; line-height: 1.6; margin: 10px 0; color: var(--ink); }
+  .callout-soft b { color: var(--gold-deep); }
+  .compat-task { background: var(--bg-soft); padding: 14px 16px; border-radius: 10px; border-left: 3px solid var(--accent); margin-bottom: 10px; }
+  .compat-task.done { border-left-color: var(--green); background: var(--green-soft); }
+  .compat-task-tag { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-soft); margin-bottom: 6px; }
+  .compat-task.done .compat-task-tag { color: var(--green); }
+  .compat-task-q { font-size: 14px; line-height: 1.55; margin-bottom: 8px; }
+  .compat-task-q b { color: var(--accent); }
+  .compat-task-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .compat-input { padding: 7px 11px; border: 1.5px solid var(--line-strong); border-radius: 7px; font-family: Georgia, serif; font-size: 14px; color: var(--accent); background: white; min-width: 130px; }
+  .compat-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .compat-input.correct { background: var(--green-soft); border-color: var(--green); color: var(--green); font-weight: 600; }
+  .compat-input.wrong { background: var(--error-soft); border-color: var(--error); color: var(--error-ink); }
+  .compat-input:disabled { cursor: not-allowed; opacity: .9; }
+  .compat-task-fb { margin-top: 8px; padding: 8px 12px; border-radius: 7px; font-size: 13px; display: none; line-height: 1.55; }
+  .compat-task-fb.show { display: block; animation: fadeup .25s; }
+  .compat-task-fb.warn { background: var(--error-soft); color: var(--error-ink); border: 1px solid var(--warm); }
+  .compat-task-fb.ok { background: var(--green-soft); color: var(--green); border: 1px solid var(--green); }
+  .compat-task-fb b { color: var(--accent); }
+  .compat-task-fb.warn b { color: var(--error); }
+
+  .report-card { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%); color: white; padding: 18px 20px; border-radius: 12px; margin-bottom: 14px; }
+  .report-card h3 { font-family: Georgia, serif; font-size: 18px; font-weight: 400; margin-bottom: 10px; }
+  .report-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,.12); font-size: 13.5px; }
+  .report-row:last-child { border-bottom: none; }
+  .report-row b { font-family: Georgia, serif; }
+  .report-advice { margin-top: 12px; padding: 10px 12px; background: rgba(255,255,255,.10); border-radius: 7px; font-size: 13px; line-height: 1.55; }
+  .report-advice b { color: var(--gold-soft); }
+
+  .row-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+  .nav-btn { padding: 9px 16px; background: var(--bg-card); color: var(--ink-soft); border: 1.5px solid var(--line-strong); border-radius: 8px; font-family: inherit; font-size: 13px; cursor: pointer; transition: all .15s; }
+  .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .nav-btn:disabled { opacity: .4; cursor: not-allowed; }
+  .nav-btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
+  .nav-btn.primary:hover { background: var(--accent-deep); }
+  .nav-btn.gold { background: var(--gold); color: white; border-color: var(--gold); }
+  .nav-btn.gold:hover { background: var(--gold-deep); }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; background: var(--bg-soft); color: var(--ink-soft); }
+  .pill.ok { background: var(--green-soft); color: var(--green); }
+  .pill.warn { background: var(--error-soft); color: var(--error-ink); }
+  .pill.gold { background: var(--gold-soft); color: var(--gold-deep); }
+
+  /* ===== TEACHER MODE FORCE-SHOW HINTS ===== */
+  body[data-level="teacher"] .q-hint { display: block !important; }
+  body[data-level="teacher"] .mode-section { display: block !important; }
+  body[data-level="teacher"] .mode-stepper { opacity: .65; }
+</style>
+</head>
+<body data-level="learn" data-hints="on">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">Шины · <em>табличный метод</em></div>
+      <div class="topbar-spacer"></div>
+      <select class="ex-select" id="ex-select" title="Выбор набора шин"></select>
+      <div class="level-switch" id="level-switch" title="Уровень помощи">
+        <button data-level="learn" class="active">Обучение</button>
+        <button data-level="practice">Тренировка</button>
+        <button data-level="teacher">Учитель</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="hero">
+      <div class="eyebrow">Единый алгоритм для всех задач на шины</div>
+      <h1 id="ex-title">Шины · <em>таблица параметров</em></h1>
+      <p id="ex-desc">Центром тренажёра является одна большая таблица. Все вычисления — по одному алгоритму, для всех шин сразу.</p>
+      <div class="ex-meta" id="ex-meta"></div>
+    </div>
+
+    <div class="mode-stepper" id="mode-stepper">
+      <button class="mode-btn active" data-mode="compat"><span class="mode-num">1</span><span class="mode-name">Таблица условия</span></button>
+      <button class="mode-btn" data-mode="mark"><span class="mode-num">2</span><span class="mode-name">Маркировка</span></button>
+      <button class="mode-btn" data-mode="table"><span class="mode-num">3</span><span class="mode-name">Расчётная таблица</span></button>
+      <button class="mode-btn" data-mode="ques"><span class="mode-num">4</span><span class="mode-name">Вопросы</span></button>
+      <button class="mode-btn" data-mode="cmp"><span class="mode-num">5</span><span class="mode-name">Сравнение 2×2</span></button>
+      <button class="mode-btn" data-mode="err"><span class="mode-num">6</span><span class="mode-name">Ошибки и отчёт</span></button>
+      <button class="mode-btn mode-btn-tch" data-mode="tch" id="tch-tab"><span class="mode-num">⚙</span><span class="mode-name">Учитель</span></button>
+    </div>
+
+    <div class="layout">
+      <main>
+
+        <!-- ============ MODE 1 — COMPAT TABLE (условие задачи) ============ -->
+        <section class="mode-section active" id="mode-compat">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-tag">Этап 1</span>
+              <h2>Таблица из <em>условия задачи</em></h2>
+            </div>
+            <p class="card-intro">В каждой задаче на шины <b>сначала идёт таблица допустимых маркировок</b>. По ней мы только <b>выбираем шины</b>: строка — ширина, столбец — диск, ячейка — профиль. Полные расчёты пойдут позже, на этапе 3.</p>
+
+            <div class="callout-soft">
+              <b>Не путать с расчётной таблицей!</b><br>
+              Таблица условия → <b>читаем, что разрешено</b>.<br>
+              Расчётная таблица → <b>считаем d, H, D, R</b> (это будет этап 3).
+            </div>
+
+            <div id="compat-host"></div>
+
+            <div id="compat-tasks-host" style="margin-top: 14px;"></div>
+
+            <div class="row-actions">
+              <button class="nav-btn" id="compat-shuffle">↻ другое задание</button>
+              <button class="nav-btn primary" id="compat-to-mark">Дальше: маркировка →</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ MODE 2 — MARKING READER ============ -->
+        <section class="mode-section" id="mode-mark">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-tag">Этап 2</span>
+              <h2>Читаем <em>маркировку шины</em></h2>
+            </div>
+            <p class="card-intro">Маркировка устроена однотипно: <b>B/p R r</b>. Прежде чем строить таблицу, научимся уверенно вытаскивать три числа из любой маркировки.</p>
+
+            <div id="mark-quiz-host"></div>
+
+            <div class="row-actions">
+              <button class="nav-btn" id="mark-back-to-compat">← Назад: таблица условия</button>
+              <button class="nav-btn" id="mark-next-tire">Следующая маркировка ↻</button>
+              <button class="nav-btn primary" id="mark-to-table">Перейти к таблице →</button>
+            </div>
+
+            <div style="margin-top: 16px; padding: 12px 14px; background: var(--bg-soft); border-radius: 8px; font-size: 13.5px; line-height: 1.6;">
+              <b style="color: var(--accent);">Запомнить:</b><br>
+              <b>B</b> — ширина шины в <b>миллиметрах</b> (первое число).<br>
+              <b>p</b> — профиль в <b>процентах</b> (второе число, между <b>/</b> и <b>R</b>). Это процент от ширины, а НЕ миллиметры.<br>
+              <b>R</b> — тип конструкции (радиальная), не радиус.<br>
+              <b>r</b> — диаметр диска в <b>дюймах</b> (число после R). 1 дюйм = 25,4 мм.
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ MODE 2 — THE BIG TABLE ============ -->
+        <section class="mode-section" id="mode-table">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-tag blue">Этап 3 · центр тренажёра</span>
+              <h2>Расчётная <em>таблица параметров</em></h2>
+            </div>
+            <p class="card-intro">Алгоритм для всех шин одинаковый: B → p → r → d → H → D → R. Заполняем таблицу <b>по столбцам</b> — сначала <b>B для всех шин</b>, потом p для всех, и т.д. Так лучше запоминается единый порядок действий.</p>
+
+            <!-- The main calculation table -->
+            <div class="calc-frame">
+              <div class="calc-frame-head">
+                <h3>Расчётная таблица</h3>
+                <div class="fill-mode-switch" id="fill-mode-switch">
+                  <button data-fill="column" class="active" title="Сначала B для всех, потом p для всех, и т.д.">по столбцам</button>
+                  <button data-fill="row" title="Сначала вся первая шина, потом вторая">по строкам</button>
+                  <button data-fill="free" title="Заполняй в любом порядке">свободно</button>
+                </div>
+              </div>
+              <div class="calc-frame-body">
+                <div class="calc-scroll">
+                  <table class="calc-table" id="calc-table"></table>
+                </div>
+                <div id="col-prompt-host"></div>
+                <div class="tbl-fb" id="tbl-fb"></div>
+              </div>
+            </div>
+
+            <div class="row-actions">
+              <button class="nav-btn" id="table-back">← Назад: маркировка</button>
+              <button class="nav-btn primary" id="table-to-ques">К вопросам →</button>
+              <button class="nav-btn ghost" id="table-reset" style="margin-left: auto;">↻ очистить таблицу</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ MODE 3 — QUESTIONS ============ -->
+        <section class="mode-section" id="mode-ques">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-tag green">Этап 4</span>
+              <h2>Практические <em>вопросы</em></h2>
+            </div>
+            <p class="card-intro">Все ответы можно прочитать прямо из заполненной таблицы. Если значение нужно вычислить заново — формула в подсказке.</p>
+
+            <!-- mini reference: filled table -->
+            <details style="margin-bottom: 14px;">
+              <summary style="cursor: pointer; font-size: 13px; color: var(--accent); font-weight: 500; padding: 8px 12px; background: var(--bg-soft); border-radius: 6px;">показать таблицу параметров</summary>
+              <div style="margin-top: 10px;" id="ques-ref-table"></div>
+            </details>
+
+            <div id="ques-host"></div>
+
+            <div class="row-actions">
+              <button class="nav-btn" id="ques-back">← Назад: таблица</button>
+              <button class="nav-btn primary" id="ques-to-cmp">К сравнению 2×2 →</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ MODE 4 — 2×2 COMPARISON ============ -->
+        <section class="mode-section" id="mode-cmp">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-tag">Этап 5</span>
+              <h2>Сравнение <em>пробега 2×2</em></h2>
+            </div>
+            <p class="card-intro">Когда меняем шины, пробег за один оборот = длина окружности C = π·D. Но <b>π сокращается</b>, поэтому достаточно сравнить диаметры. Дальше — классическая таблица 2×2.</p>
+
+            <div class="cmp-pickers">
+              <div class="cmp-picker old">
+                <div class="cmp-picker-label">Старая шина (за 100%)</div>
+                <select id="cmp-old"></select>
+                <div class="cmp-meta" id="cmp-old-meta"></div>
+              </div>
+              <div class="cmp-picker new">
+                <div class="cmp-picker-label">Новая шина (x %)</div>
+                <select id="cmp-new"></select>
+                <div class="cmp-meta" id="cmp-new-meta"></div>
+              </div>
+            </div>
+
+            <div id="pi-cancel-host"></div>
+
+            <table class="prop-table" id="prop-table">
+              <thead>
+                <tr><th>что сравниваем?</th><th>натуральная величина (D, мм)</th><th>процент</th></tr>
+              </thead>
+              <tbody>
+                <tr class="base"><td id="prop-old-name">старая шина</td><td id="prop-old-d">—</td><td>100 %</td></tr>
+                <tr class="compare"><td id="prop-new-name">новая шина</td><td id="prop-new-d">—</td><td>x %</td></tr>
+              </tbody>
+            </table>
+
+            <div style="padding: 12px 14px; background: var(--accent); color: white; border-radius: 8px; font-family: Georgia, serif; font-size: 15px; text-align: center; margin: 10px 0;">
+              D<sub style="font-size:.7em">old</sub> · x = D<sub style="font-size:.7em">new</sub> · 100 &nbsp;⇒&nbsp; <b>x = D<sub style="font-size:.7em">new</sub> · 100 / D<sub style="font-size:.7em">old</sub></b>
+            </div>
+
+            <div id="cmp-quiz-host"></div>
+
+            <div class="row-actions">
+              <button class="nav-btn" id="cmp-back">← Назад: вопросы</button>
+              <button class="nav-btn primary" id="cmp-to-err">К журналу ошибок →</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ MODE 5 — ERRORS LOG ============ -->
+        <section class="mode-section" id="mode-err">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-tag">Этап 6</span>
+              <h2>Ошибки и <em>учебный отчёт</em></h2>
+            </div>
+            <p class="card-intro">Здесь собираются все неверные ответы с диагнозом и итоговый отчёт по работе: где было сложно и что повторить.</p>
+
+            <div id="report-host"></div>
+
+            <div class="err-summary" id="err-summary"></div>
+            <div id="err-list-host" class="err-list"></div>
+
+            <div class="row-actions">
+              <button class="nav-btn" id="err-back">← Назад: сравнение</button>
+              <button class="nav-btn ghost" id="err-clear">очистить журнал</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ MODE 6 — TEACHER ============ -->
+        <section class="mode-section" id="mode-tch">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-tag">⚙</span>
+              <h2>Учительский <em>режим</em></h2>
+            </div>
+            <p class="card-intro">Настройки тренажёра, экспорт/импорт базы заданий, журнал ошибок ученика.</p>
+
+            <div class="tch-section">
+              <h4>Округление в ответах</h4>
+              <div class="tch-setting">
+                <label><input type="radio" name="rounding" value="auto" checked> авто (по типу вопроса)</label>
+                <label><input type="radio" name="rounding" value="tenths"> до десятых</label>
+                <label><input type="radio" name="rounding" value="integer"> до целого</label>
+                <label><input type="radio" name="rounding" value="full"> без округления</label>
+              </div>
+              <div class="tch-hint">«Авто» — стандартно для типовых задач: проценты до десятых, разности диаметров до десятых, ширина в мм до целого.</div>
+            </div>
+
+            <div class="tch-section">
+              <h4>Подсказки</h4>
+              <div class="tch-setting">
+                <label><input type="checkbox" id="toggle-hints" checked> показывать кнопку «подсказка»</label>
+              </div>
+              <div class="tch-hint">В режиме «Учитель» подсказки видны всегда. Здесь — для режимов «Обучение» и «Тренировка».</div>
+            </div>
+
+            <div class="tch-section">
+              <h4>База заданий (JSON)</h4>
+              <textarea class="tch-textarea" id="tch-json" spellcheck="false"></textarea>
+              <div class="row-actions" style="margin-top: 8px;">
+                <button class="tch-btn" id="tch-export">↓ экспорт текущего набора</button>
+                <button class="tch-btn ghost" id="tch-import">↑ импорт из текста выше</button>
+                <button class="tch-btn ghost" id="tch-reset-current">сбросить только текущий набор</button>
+                <button class="tch-btn ghost" id="tch-reset-all">сбросить весь прогресс</button>
+              </div>
+              <div class="tch-hint">Импортированный набор сохраняется в localStorage и переживёт перезагрузку страницы. Формат — JSON одного набора (как в экспорте).</div>
+            </div>
+
+            <div class="tch-section">
+              <h4>Все доступные наборы</h4>
+              <div id="tch-ex-list"></div>
+              <div class="tch-hint">Встроенные наборы удалить нельзя. Пользовательские — можно. Если текущий набор был удалён или его id больше не найден, тренажёр автоматически откроет набор по умолчанию.</div>
+            </div>
+
+            <div class="tch-section">
+              <h4>Журнал ошибок ученика</h4>
+              <div id="tch-err-summary" style="font-size: 13px; color: var(--ink-soft);"></div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- ===================== SIDEBAR ===================== -->
+      <aside class="sidebar">
+        <div class="side-card">
+          <h3>Сечение колеса</h3>
+          <div class="diagram-block">
+            <svg class="wheel-diagram" id="wheel-diagram" viewBox="0 0 320 280" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+          <div style="margin-top: 8px; padding: 8px 11px; background: var(--accent); color: white; border-radius: 7px; font-family: Georgia, serif; font-size: 14px; text-align: center;">
+            D = H + d + H = <b>d + 2H</b>
+          </div>
+        </div>
+
+        <div class="side-card">
+          <h3>Формулы</h3>
+          <div class="formula gold">d = r · 25,4<small>дюймы → мм</small></div>
+          <div class="formula">H = B · p / 100<small>высота боковины</small></div>
+          <div class="formula green">D = d + 2H<small>полный диаметр</small></div>
+          <div class="formula ink">R = D / 2<small>радиус — половина диаметра</small></div>
+          <div class="formula" style="background: var(--accent-deep);">C = π · D<small>пробег за оборот</small></div>
+        </div>
+
+        <div class="side-card">
+          <h3>Цвета в таблице</h3>
+          <div class="legend-row"><div class="legend-swatch pending"></div>ждёт своей очереди</div>
+          <div class="legend-row"><div class="legend-swatch active"></div>сейчас заполняем</div>
+          <div class="legend-row"><div class="legend-swatch done"></div>уже посчитано</div>
+        </div>
+
+        <div class="side-card">
+          <h3>Прогресс</h3>
+          <div class="stats">
+            <div class="stat"><div class="val" id="stat-cells">0</div><div class="lbl">ячеек верно</div></div>
+            <div class="stat"><div class="val" id="stat-errs">0</div><div class="lbl">ошибок</div></div>
+          </div>
+          <button class="reset-btn" id="reset-btn">↻ сбросить прогресс</button>
+        </div>
+
+        <button class="tch-toggle-link" id="tch-toggle-link">≡ режим учителя</button>
+      </aside>
+    </div>
+  </div>
+
+<script>
+'use strict';
+
+// ============================================================
+// EXERCISE DATA
+// ============================================================
+const EXERCISES = {
+  'method-r15': {
+    id: 'method-r15',
+    title: 'Методический пример · R15',
+    source: 'Авторская методика (3 шины: R15 и R17)',
+    description: 'Заводская шина 185/60 R15. Сравним её с 205/55 R15 и 205/45 R17.',
+    initial: '185/60 R15',
+    candidates: ['205/55 R15', '205/45 R17'],
+    compat: {
+      widths: [175, 185, 195, 205, 215],
+      disks: [14, 15, 16, 17],
+      // cell value: profile if allowed, null/false if not
+      profiles: {
+        '175_14': 70, '175_15': 65,
+        '185_15': 60, '185_16': 65, '185_17': 60,
+        '195_15': 55, '195_16': 60, '195_17': 55,
+        '205_15': 55, '205_16': 50, '205_17': 45,
+        '215_16': 50, '215_17': 45,
+      }
+    },
+    questions: [
+      { id: 'q1', type: 'compute_D', tire: '185/60 R15', text: 'Найди полный диаметр заводского колеса 185/60 R15.', unit: 'мм', hint: 'D = d + 2H. По таблице: d = 381, H = 111. D = 381 + 2·111 = 603.' },
+      { id: 'q2', type: 'compare_D', tires: ['205/45 R17', '205/55 R15'], text: 'На сколько мм диаметр колеса 205/45 R17 больше диаметра колеса 205/55 R15?', unit: 'мм', hint: 'D₁ = 616,3; D₂ = 606,5. Разность: 616,3 − 606,5 = 9,8 мм.' },
+      { id: 'q3', type: 'compare_R', tires: ['205/45 R17', '205/55 R15'], text: 'На сколько мм радиусы этих колёс отличаются?', unit: 'мм', hint: 'Радиус — половина диаметра. Если диаметры отличаются на 9,8 мм, то радиусы — на 9,8 / 2 = 4,9 мм.' },
+      { id: 'q4', type: 'pick_closest_D', tires: ['205/55 R15', '205/45 R17'], reference: '185/60 R15', text: 'Какая из шин ближе всего по диаметру к заводской 185/60 R15?', hint: 'Заводская: D = 603. Кандидаты: 606,5 (отличие 3,5) и 616,3 (отличие 13,3). Ближе — 205/55 R15.' },
+      { id: 'q5', type: 'percent_change', oldTire: '185/60 R15', newTire: '205/45 R17', text: 'На сколько процентов увеличится пробег за один оборот при замене 185/60 R15 на 205/45 R17? Округли до десятых.', unit: '%', hint: 'x = D_new · 100 / D_old = 616,3 · 100 / 603 ≈ 102,2 %. Изменение: 102,2 − 100 = 2,2 %.' },
+    ],
+  },
+  'oge-r16': {
+    id: 'oge-r16',
+    title: 'Тренировочный набор · 195/60 R16',
+    source: 'Типовой набор задач на шины (источник не указан)',
+    description: 'Заводская шина 195/60 R16. Стандартный набор замен.',
+    initial: '195/60 R16',
+    candidates: ['185/65 R16', '215/55 R16', '205/50 R17', '215/45 R18'],
+    compat: {
+      widths: [185, 195, 205, 215],
+      disks: [16, 17, 18],
+      profiles: {
+        '185_16': 65, '195_16': 60, '205_16': 55, '215_16': 50,
+        '185_17': 60, '195_17': 55, '205_17': 50, '215_17': 45,
+        '195_18': 50, '205_18': 45, '215_18': 40,
+      }
+    },
+    questions: [
+      { id: 'q1', type: 'pick_min_width_for_disk', diskDiameter: 17, text: 'Какая шина наименьшей разрешённой ширины подойдёт на диск диаметром 17 дюймов? Введи ширину B в мм.', unit: 'мм', hint: 'В строке-столбце 17″ разрешённые ширины: 185, 195, 205, 215. Наименьшая — 185.' },
+      { id: 'q2', type: 'compare_R', tires: ['185/65 R16', '215/55 R16'], text: 'На сколько мм радиус колеса 185/65 R16 больше радиуса колеса 215/55 R16?', unit: 'мм', hint: 'D₁ = 646,9; D₂ = 642,9. Разность диаметров: 4. Разность радиусов: 4 / 2 = 2 мм.' },
+      { id: 'q3', type: 'compute_D', tire: '195/60 R16', text: 'Найди полный диаметр заводского колеса 195/60 R16.', unit: 'мм', hint: 'D = 2·117 + 406,4 = 640,4 мм.' },
+      { id: 'q4', type: 'compare_D', tires: ['195/60 R16', '205/50 R17'], text: 'На сколько мм уменьшится диаметр колеса при замене 195/60 R16 → 205/50 R17?', unit: 'мм', hint: 'D₁ = 640,4; D₂ = 636,8. Разность: 3,6 мм.' },
+      { id: 'q5', type: 'percent_change', oldTire: '195/60 R16', newTire: '215/45 R18', text: 'На сколько процентов увеличится пробег за один оборот при замене 195/60 R16 на 215/45 R18? Округли до десятых.', unit: '%', hint: 'D_new = 650,7; D_old = 640,4. x = 650,7·100/640,4 ≈ 101,6 %. Изменение: 1,6 %.' },
+    ],
+  },
+};
+
+// ============================================================
+// HELPERS — parsing, math, formatting
+// ============================================================
+function parseMarking(m) {
+  const r = m.match(/^\s*(\d+)\s*\/\s*(\d+)\s*R\s*(\d+)\s*$/i);
+  if (!r) return null;
+  return { marking: m, B: +r[1], p: +r[2], r: +r[3] };
+}
+
+function tireParams(m) {
+  const parsed = parseMarking(m);
+  if (!parsed) return null;
+  const d = parsed.r * 25.4;
+  const H = parsed.B * parsed.p / 100;
+  const D = d + 2 * H;
+  const R = D / 2;
+  const C = Math.PI * D;
+  return { ...parsed, d: round2(d), H: round2(H), D: round2(D), R: round2(R), C: round2(C) };
+}
+
+function round2(x) { return Math.round(x * 100) / 100; }
+function round1(x) { return Math.round(x * 10) / 10; }
+
+function fmt(n, digits) {
+  if (n == null || isNaN(n)) return '—';
+  const s = (digits != null) ? Number(n).toFixed(digits) : String(round2(n));
+  return s.replace('.', ',');
+}
+
+function fmtAuto(n) {
+  if (n == null || isNaN(n)) return '—';
+  // strip trailing zeros after decimal
+  const r = round2(n);
+  let s = String(r);
+  if (s.indexOf('.') >= 0) s = s.replace(/0+$/, '').replace(/\.$/, '');
+  return s.replace('.', ',');
+}
+
+function parseNum(raw) {
+  if (raw == null) return null;
+  const s = String(raw).trim().replace(/\s+/g, '').replace(',', '.');
+  if (!s) return null;
+  const v = parseFloat(s);
+  return isNaN(v) ? null : v;
+}
+
+function approxEq(a, b, tol) {
+  return Math.abs(a - b) <= (tol == null ? 0.05 : tol);
+}
+
+const COL_DEFS = [
+  { key: 'marking', label: 'Маркировка', formula: '', tol: null, isInput: false },
+  { key: 'B',  label: 'B, мм',     formula: 'из маркировки',   tol: 0.5,  desc: 'ширина — первое число' },
+  { key: 'p',  label: 'p, %',      formula: 'из маркировки',   tol: 0.5,  desc: 'профиль — второе число (между / и R)' },
+  { key: 'r',  label: 'r, дюйм',   formula: 'из маркировки',   tol: 0.5,  desc: 'диск — число после R, в дюймах' },
+  { key: 'd',  label: 'd, мм',     formula: 'd = r · 25,4',    tol: 0.1,  desc: 'диск в миллиметрах' },
+  { key: 'H',  label: 'H, мм',     formula: 'H = B · p / 100', tol: 0.05, desc: 'высота боковины' },
+  { key: 'D',  label: 'D, мм',     formula: 'D = d + 2H',      tol: 0.1,  desc: 'полный диаметр колеса' },
+  { key: 'R',  label: 'R, мм',     formula: 'R = D / 2',       tol: 0.05, desc: 'радиус' },
+];
+const FILLABLE_COLS = COL_DEFS.slice(1).map(c => c.key); // skip 'marking'
+
+// ============================================================
+// STATE
+// ============================================================
+const STATE_KEY = 'tires_table_method_trainer_v1';
+const USER_EX_KEY = 'tires_table_method_user_exercises_v1';
+const DEFAULT_STATE = {
+  exerciseId: 'method-r15',
+  mode: 'compat',
+  fillMode: 'column',
+  // per-tire per-col entry status: 'empty' | 'correct' | 'wrong'
+  tableEntries: {},     // { tire: { col: { value, status } } }
+  questionsDone: {},    // { qid: true }
+  errors: [],
+  markIdx: 0,           // index into exercise.allTires for marking quiz
+  markPartsDone: {},    // { tire: { B: bool, p: bool, r: bool } }
+  cmpOld: null,
+  cmpNew: null,
+  cmpQuizDone: {},
+  cmpPreQuizDone: {},   // { '100pct': true, 'sub100': true }
+  compatTasksDone: {},  // { ct1: true, ct2: true, ... }
+  compatSeed: 0,        // for shuffling tasks
+  level: 'learn',
+  showHints: true,
+  rounding: 'auto',
+};
+
+let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STATE_KEY);
+    if (raw) {
+      const saved = JSON.parse(raw);
+      state = Object.assign({}, DEFAULT_STATE, saved);
+      // ensure nested objects
+      state.tableEntries = saved.tableEntries || {};
+      state.questionsDone = saved.questionsDone || {};
+      state.errors = saved.errors || [];
+      state.markPartsDone = saved.markPartsDone || {};
+      state.cmpQuizDone = saved.cmpQuizDone || {};
+      state.cmpPreQuizDone = saved.cmpPreQuizDone || {};
+      state.compatTasksDone = saved.compatTasksDone || {};
+    }
+  } catch (e) { console.error('load state failed:', e); }
+  // load user-imported exercises
+  try {
+    const ueRaw = localStorage.getItem(USER_EX_KEY);
+    if (ueRaw) {
+      const ue = JSON.parse(ueRaw);
+      if (ue && typeof ue === 'object') {
+        for (const k in ue) if (ue[k] && ue[k].id) EXERCISES[ue[k].id] = ue[k];
+      }
+    }
+  } catch (e) { console.error('load user exercises failed:', e); }
+  // fallback: if state.exerciseId points to a non-existent set, reset to default
+  if (!EXERCISES[state.exerciseId]) {
+    console.warn('Exercise id "' + state.exerciseId + '" not found, falling back to default');
+    state.exerciseId = DEFAULT_STATE.exerciseId;
+  }
+}
+
+function saveUserExercises() {
+  try {
+    const out = {};
+    for (const id in EXERCISES) if (EXERCISES[id].__user) out[id] = EXERCISES[id];
+    localStorage.setItem(USER_EX_KEY, JSON.stringify(out));
+  } catch (e) { /* quota */ }
+}
+
+function saveState() {
+  try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch (e) { /* quota */ }
+}
+
+function exercise() { return EXERCISES[state.exerciseId]; }
+
+function allTires() {
+  const e = exercise();
+  const out = [e.initial];
+  for (const c of e.candidates) if (!out.includes(c)) out.push(c);
+  return out;
+}
+
+// ============================================================
+// ERROR LOGGING
+// ============================================================
+function logError(entry) {
+  state.errors.push({ ...entry, ts: Date.now() });
+  // dedup obvious near-duplicates (same tire+col with same wrong value within 2s)
+  // (skip for simplicity)
+  saveState();
+  renderErrSidebar();
+}
+
+function diagnoseTableCell(tire, col, gotVal) {
+  // returns a {tag, msg} pair with a specific diagnosis
+  const t = tireParams(tire);
+  if (!t) return { tag: 'Маркировка', msg: 'Не удалось разобрать маркировку.' };
+
+  // ---- specific column heuristics ----
+  if (col === 'B') {
+    if (approxEq(gotVal, t.p, 0.5)) return { tag: 'Спутаны B и p', msg: 'Это процент <b>p</b>, а не ширина. <b>B</b> — это <b>первое</b> число маркировки.' };
+    if (approxEq(gotVal, t.r, 0.5)) return { tag: 'Спутаны B и r', msg: 'Это диаметр диска в дюймах. <b>B</b> — это первое число маркировки.' };
+    if (approxEq(gotVal, t.H, 0.5)) return { tag: 'Спутаны B и H', msg: 'Это уже расчётная высота H. <b>B</b> — это просто первое число маркировки.' };
+    return { tag: 'Ошибка B', msg: 'B — это первое число маркировки. Для <b>' + tire + '</b> — это <b>' + t.B + '</b>.' };
+  }
+  if (col === 'p') {
+    if (approxEq(gotVal, t.B, 0.5)) return { tag: 'Спутаны B и p', msg: 'Это ширина <b>B</b>. <b>p</b> — это <b>второе</b> число маркировки (между / и R).' };
+    if (approxEq(gotVal, t.r, 0.5)) return { tag: 'Спутаны p и r', msg: 'Это диск. <b>p</b> — это второе число маркировки.' };
+    if (approxEq(gotVal, t.H, 0.5)) return { tag: 'Профиль ≠ мм', msg: 'Это уже расчётная высота H в миллиметрах. В столбце <b>p</b> — просто число процента (без %).' };
+    return { tag: 'Ошибка p', msg: 'p — это второе число маркировки. Для <b>' + tire + '</b> — это <b>' + t.p + '</b> (без знака %).' };
+  }
+  if (col === 'r') {
+    if (approxEq(gotVal, t.p, 0.5)) return { tag: 'Спутаны p и r', msg: 'Это процент. <b>r</b> — это число <b>после R</b>, диск в дюймах.' };
+    if (approxEq(gotVal, t.B, 0.5)) return { tag: 'Спутаны B и r', msg: 'Это ширина. <b>r</b> — это число после R.' };
+    if (approxEq(gotVal, t.d, 0.5)) return { tag: 'Дюймы ≠ мм', msg: 'Это уже диск в миллиметрах. В столбце <b>r</b> — в <b>дюймах</b>.' };
+    return { tag: 'Ошибка r', msg: 'r — это число после R. Для <b>' + tire + '</b> — это <b>' + t.r + ' дюймов</b>.' };
+  }
+  if (col === 'd') {
+    if (approxEq(gotVal, t.r, 0.5)) return { tag: 'Забыли перевести в мм', msg: 'Это диск в дюймах. Нужно перевести в миллиметры: <b>d = r · 25,4 = ' + fmtAuto(t.d) + '</b>.' };
+    if (approxEq(gotVal, t.r * 2, 0.5)) return { tag: 'Дюйм ≠ 2 мм', msg: 'Вы умножили на 2, но 1 дюйм = <b>25,4 мм</b>, а не 2. Правильно: ' + t.r + ' · 25,4 = ' + fmtAuto(t.d) + '.' };
+    if (approxEq(gotVal, t.r / 2, 0.1)) return { tag: 'Не та операция', msg: 'Делить не нужно. d = r · 25,4 = ' + fmtAuto(t.d) + '.' };
+    return { tag: 'Ошибка d', msg: 'd = r · 25,4. Для <b>' + tire + '</b>: ' + t.r + ' · 25,4 = <b>' + fmtAuto(t.d) + '</b>.' };
+  }
+  if (col === 'H') {
+    if (approxEq(gotVal, t.p, 0.5)) return { tag: 'Профиль ≠ мм', msg: 'Это процент, а не миллиметры! Высоту боковины надо вычислить: H = B · p / 100.' };
+    if (approxEq(gotVal, t.B * t.p, 1)) return { tag: 'Забыли разделить на 100', msg: 'Вы умножили B · p, но не разделили на 100. ' + t.B + ' · ' + t.p + ' / 100 = <b>' + fmtAuto(t.H) + '</b>.' };
+    if (approxEq(gotVal, t.B + t.p, 0.5)) return { tag: 'Сумма вместо произведения', msg: 'Это B + p. Правильная формула: <b>H = B · p / 100</b>.' };
+    if (approxEq(gotVal, t.H / 2, 0.1)) return { tag: 'Лишнее деление на 2', msg: 'Не нужно делить на 2. H = B · p / 100 = <b>' + fmtAuto(t.H) + '</b>.' };
+    return { tag: 'Ошибка H', msg: 'H = B · p / 100. Для <b>' + tire + '</b>: ' + t.B + ' · ' + t.p + ' / 100 = <b>' + fmtAuto(t.H) + '</b>.' };
+  }
+  if (col === 'D') {
+    if (approxEq(gotVal, t.H + t.d, 0.5)) return { tag: 'Забыты две боковины', msg: 'Вы сложили H + d, но боковин <b>две</b> — сверху и снизу. Правильно: <b>D = d + 2H</b> = ' + fmtAuto(t.d) + ' + 2·' + fmtAuto(t.H) + ' = <b>' + fmtAuto(t.D) + '</b>.' };
+    if (approxEq(gotVal, t.H, 0.5)) return { tag: 'Это только H', msg: 'Это только высота боковины. Диаметр — это диск плюс две боковины: D = d + 2H = <b>' + fmtAuto(t.D) + '</b>.' };
+    if (approxEq(gotVal, t.d, 0.5)) return { tag: 'Это только диск', msg: 'Это только диск без шины. Прибавьте 2H: D = d + 2H = <b>' + fmtAuto(t.D) + '</b>.' };
+    if (approxEq(gotVal, t.D / 2, 0.5)) return { tag: 'Это радиус', msg: 'Вы посчитали радиус — половину диаметра. В столбце D — полный диаметр: <b>' + fmtAuto(t.D) + '</b>.' };
+    if (approxEq(gotVal, 2 * t.H + 2 * t.d, 0.5)) return { tag: 'Лишний коэффициент 2', msg: 'Диск только один, а боковины — две. Правильно: D = d + 2H = <b>' + fmtAuto(t.D) + '</b>.' };
+    return { tag: 'Ошибка D', msg: 'D = d + 2H. Для <b>' + tire + '</b>: ' + fmtAuto(t.d) + ' + 2·' + fmtAuto(t.H) + ' = <b>' + fmtAuto(t.D) + '</b>.' };
+  }
+  if (col === 'R') {
+    if (approxEq(gotVal, t.D, 0.5)) return { tag: 'Спутаны R и D', msg: 'Это полный диаметр. Радиус — <b>половина</b> диаметра: R = D / 2 = <b>' + fmtAuto(t.R) + '</b>.' };
+    if (approxEq(gotVal, 2 * t.D, 1)) return { tag: 'R = D · 2 (наоборот)', msg: 'Наоборот: радиус МЕНЬШЕ диаметра, а не больше. R = D / 2 = <b>' + fmtAuto(t.R) + '</b>.' };
+    return { tag: 'Ошибка R', msg: 'R = D / 2 = <b>' + fmtAuto(t.R) + '</b>.' };
+  }
+  if (col === 'C') {
+    if (approxEq(gotVal, t.D, 0.5)) return { tag: 'Забыто π', msg: 'Длина окружности — это π · D. Не забудьте умножить на π ≈ 3,14159.' };
+    if (approxEq(gotVal, t.R * Math.PI * 2, 1)) return { tag: '2πR vs πD', msg: 'Хорошо, но в этом тренажёре мы пишем C = πD (одно и то же: 2πR = πD).' };
+    if (approxEq(gotVal, t.D / Math.PI, 0.5)) return { tag: 'Делили вместо умножения', msg: 'C = π · D. Не наоборот. Для <b>' + tire + '</b>: π · ' + fmtAuto(t.D) + ' ≈ <b>' + fmtAuto(t.C) + '</b>.' };
+    return { tag: 'Ошибка C', msg: 'C = π · D ≈ <b>' + fmtAuto(t.C) + '</b>.' };
+  }
+  return { tag: 'Ошибка', msg: 'Проверь расчёт.' };
+}
+
+// ============================================================
+// CROSS-SECTION SVG (sidebar)
+// ============================================================
+function renderWheelDiagram() {
+  const svg = document.getElementById('wheel-diagram');
+  if (!svg) return;
+  svg.innerHTML = '';
+  const ns = 'http://www.w3.org/2000/svg';
+  const el = (tag, a) => { const n = document.createElementNS(ns, tag); for (const k in a) n.setAttribute(k, a[k]); return n; };
+  const cx = 160, cy = 145;
+  const Outer_R = 100, Disk_R = 60;
+  svg.appendChild(el('circle', { cx, cy, r: Outer_R, fill: '#1a2332', stroke: '#142a44', 'stroke-width': 1.5 }));
+  svg.appendChild(el('circle', { cx, cy, r: Outer_R - 6, fill: '#2d3848' }));
+  svg.appendChild(el('circle', { cx, cy, r: Disk_R, fill: '#c0c5cd', stroke: '#888c95', 'stroke-width': 1 }));
+  for (let i = 0; i < 5; i++) {
+    const a = (i * 72 - 90) * Math.PI / 180;
+    const x = cx + Math.cos(a) * Disk_R * 0.82;
+    const y = cy + Math.sin(a) * Disk_R * 0.82;
+    svg.appendChild(el('line', { x1: cx, y1: cy, x2: x, y2: y, stroke: '#888c95', 'stroke-width': 3, 'stroke-linecap': 'round' }));
+  }
+  svg.appendChild(el('circle', { cx, cy, r: 6, fill: '#8a93a3' }));
+
+  // Top H bracket (right)
+  const hX = cx + Outer_R + 18;
+  svg.appendChild(el('line', { x1: hX, y1: cy - Outer_R, x2: hX, y2: cy - Disk_R, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: hX - 4, y1: cy - Outer_R, x2: hX + 4, y2: cy - Outer_R, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: hX - 4, y1: cy - Disk_R, x2: hX + 4, y2: cy - Disk_R, class: 'dim-line' }));
+  const tH1 = el('text', { x: hX + 8, y: cy - (Outer_R + Disk_R)/2 + 4, class: 'dim-text H' });
+  tH1.textContent = 'H'; svg.appendChild(tH1);
+  // Bottom H bracket
+  svg.appendChild(el('line', { x1: hX, y1: cy + Disk_R, x2: hX, y2: cy + Outer_R, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: hX - 4, y1: cy + Disk_R, x2: hX + 4, y2: cy + Disk_R, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: hX - 4, y1: cy + Outer_R, x2: hX + 4, y2: cy + Outer_R, class: 'dim-line' }));
+  const tH2 = el('text', { x: hX + 8, y: cy + (Disk_R + Outer_R)/2 + 4, class: 'dim-text H' });
+  tH2.textContent = 'H'; svg.appendChild(tH2);
+  // d bracket on left
+  const dX = cx - Outer_R - 18;
+  svg.appendChild(el('line', { x1: dX, y1: cy - Disk_R, x2: dX, y2: cy + Disk_R, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: dX - 4, y1: cy - Disk_R, x2: dX + 4, y2: cy - Disk_R, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: dX - 4, y1: cy + Disk_R, x2: dX + 4, y2: cy + Disk_R, class: 'dim-line' }));
+  const td = el('text', { x: dX - 8, y: cy + 4, class: 'dim-text d', 'text-anchor': 'end' });
+  td.textContent = 'd'; svg.appendChild(td);
+  // D label on top
+  const dy = cy - Outer_R - 18;
+  svg.appendChild(el('line', { x1: cx - Outer_R, y1: dy, x2: cx + Outer_R, y2: dy, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: cx - Outer_R, y1: dy - 4, x2: cx - Outer_R, y2: dy + 4, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: cx + Outer_R, y1: dy - 4, x2: cx + Outer_R, y2: dy + 4, class: 'dim-line' }));
+  const tD = el('text', { x: cx, y: dy - 6, class: 'dim-text D', 'text-anchor': 'middle' });
+  tD.textContent = 'D'; svg.appendChild(tD);
+  // bottom B label
+  const tBlabel = el('text', { x: cx, y: cy + Outer_R + 30, class: 'dim-text B', 'text-anchor': 'middle' });
+  tBlabel.textContent = 'ширина шины — B'; svg.appendChild(tBlabel);
+}
+
+// ============================================================
+// MODE 1 — MARKING QUIZ
+// ============================================================
+function renderMarkingQuiz() {
+  const host = document.getElementById('mark-quiz-host');
+  const tires = allTires();
+  const idx = state.markIdx % tires.length;
+  const tire = tires[idx];
+  const t = tireParams(tire);
+  if (!t) { host.innerHTML = ''; return; }
+  const done = state.markPartsDone[tire] || {};
+  host.innerHTML = '<div class="marking-card">' +
+    '<div class="mark-big">' + tire + '</div>' +
+    '<div class="mark-hint">Шина ' + (idx + 1) + ' из ' + tires.length + (idx === 0 ? ' (заводская)' : ' (кандидат)') + '. Разложи маркировку на B, p, r.</div>' +
+    '</div>' +
+    '<div class="mark-parts">' +
+      makeMarkPart(tire, 'B', 'B = ?', t.B, 'мм (ширина)', done.B) +
+      makeMarkPart(tire, 'p', 'p = ?', t.p, '% (профиль, без %)', done.p) +
+      makeMarkPart(tire, 'r', 'r = ?', t.r, 'дюйм (диаметр диска)', done.r) +
+    '</div>' +
+    '<div class="mark-fb" id="mark-fb"></div>';
+  // wire up
+  host.querySelectorAll('.mark-part-input').forEach(inp => {
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); checkMarkPart(inp); } });
+    inp.addEventListener('blur', () => checkMarkPart(inp));
+  });
+}
+function makeMarkPart(tire, key, q, correct, unit, isDone) {
+  const cls = isDone ? 'done' : 'active';
+  const val = isDone ? String(correct) : '';
+  const inpCls = isDone ? 'correct' : '';
+  const disabled = isDone ? 'disabled' : '';
+  return '<div class="mark-part ' + cls + '" data-mark-part="' + key + '" data-tire="' + tire + '">' +
+    '<div class="mark-part-q">Часть <b>' + key + '</b>: ' + q + '</div>' +
+    '<input type="text" inputmode="decimal" class="mark-part-input ' + inpCls + '" data-correct="' + correct + '" data-key="' + key + '" data-tire="' + tire + '" value="' + val + '" ' + disabled + '>' +
+    '<div class="mark-part-unit">' + unit + '</div>' +
+  '</div>';
+}
+function checkMarkPart(inp) {
+  const tire = inp.dataset.tire;
+  const key = inp.dataset.key;
+  const correct = parseFloat(inp.dataset.correct);
+  const val = parseNum(inp.value);
+  const fb = document.getElementById('mark-fb');
+  const part = inp.closest('.mark-part');
+  if (val == null) {
+    inp.classList.remove('correct'); inp.classList.add('wrong');
+    showFb(fb, 'warn', '<b>' + key + ':</b> введи число.');
+    return;
+  }
+  if (approxEq(val, correct, 0.5)) {
+    inp.classList.remove('wrong'); inp.classList.add('correct'); inp.disabled = true;
+    part.classList.remove('active'); part.classList.add('done');
+    state.markPartsDone[tire] = state.markPartsDone[tire] || {};
+    state.markPartsDone[tire][key] = true;
+    saveState(); updateStats();
+    const need = ['B', 'p', 'r'].every(k => state.markPartsDone[tire] && state.markPartsDone[tire][k]);
+    if (need) {
+      showFb(fb, 'ok', '<b>Маркировка ' + tire + ' разобрана.</b> B = ' + tireParams(tire).B + ', p = ' + tireParams(tire).p + ', r = ' + tireParams(tire).r + '. Нажми «Следующая маркировка» или сразу к таблице.');
+      markModeAsDone('mark');
+    } else { hideFb(fb); }
+  } else {
+    inp.classList.remove('correct'); inp.classList.add('wrong');
+    const dg = diagnoseTableCell(tire, key, val);
+    showFb(fb, 'warn', '<b>' + dg.tag + ':</b> ' + dg.msg);
+    logError({ mode: 'mark', tire, col: key, got: val, expected: correct, tag: dg.tag, msg: dg.msg });
+  }
+}
+
+// ============================================================
+// MODE 2 — THE CALC TABLE
+// ============================================================
+function getEntry(tire, col) {
+  if (!state.tableEntries[tire]) return { value: '', status: 'empty' };
+  return state.tableEntries[tire][col] || { value: '', status: 'empty' };
+}
+function setEntry(tire, col, value, status) {
+  state.tableEntries[tire] = state.tableEntries[tire] || {};
+  state.tableEntries[tire][col] = { value, status };
+}
+
+function columnStatus(col) {
+  // 'done' iff all tires correct, 'active' iff prev cols all done and this not done, 'pending' otherwise
+  const tires = allTires();
+  const allCorrect = tires.every(t => getEntry(t, col).status === 'correct');
+  if (allCorrect) return 'done';
+  // active if this column is currently the focus
+  return 'open'; // we'll resolve active in renderCalcTable via fillMode
+}
+
+function nextColumnToFill() {
+  const tires = allTires();
+  for (const col of FILLABLE_COLS) {
+    if (tires.some(t => getEntry(t, col).status !== 'correct')) return col;
+  }
+  return null;
+}
+
+function renderCalcTable() {
+  const tires = allTires();
+  const fillMode = state.fillMode;
+  const activeCol = (fillMode === 'column' || fillMode === 'row') ? nextColumnToFill() : null;
+  // ----- build thead -----
+  let head = '<thead><tr>';
+  for (const c of COL_DEFS) {
+    const isMark = c.key === 'marking';
+    let cls = isMark ? 'col-marking' : '';
+    if (!isMark) {
+      const tiresOk = tires.every(t => getEntry(t, c.key).status === 'correct');
+      if (tiresOk) cls += ' col-done';
+      else if (fillMode !== 'free' && c.key === activeCol) cls += ' col-active';
+    }
+    head += '<th class="' + cls + '">' + c.label;
+    if (c.formula) head += '<span class="col-formula">' + c.formula + '</span>';
+    head += '</th>';
+  }
+  head += '</tr></thead>';
+  // ----- build tbody -----
+  let body = '<tbody>';
+  tires.forEach((tire, rowIdx) => {
+    body += '<tr>';
+    for (const c of COL_DEFS) {
+      if (c.key === 'marking') {
+        body += '<td class="marking">' + tire + '</td>';
+        continue;
+      }
+      const e = getEntry(tire, c.key);
+      const colDone = tires.every(t => getEntry(t, c.key).status === 'correct');
+      const colIsActive = (fillMode === 'column' && c.key === activeCol);
+      const rowIsActive = (fillMode === 'row' && isRowActive(tire, c.key, activeCol));
+      const isOpen = (fillMode === 'free') || colIsActive || rowIsActive || e.status === 'correct';
+      let cellCls = '';
+      if (e.status === 'correct') cellCls = 'cell-done';
+      else if (colIsActive || rowIsActive) cellCls = 'cell-active';
+      else if (!isOpen) cellCls = 'cell-pending';
+      body += '<td class="' + cellCls + '">';
+      if (e.status === 'correct') {
+        body += '<span>' + fmtAuto(tireParams(tire)[c.key]) + '</span>';
+      } else if (isOpen) {
+        const inpCls = (e.status === 'wrong') ? 'wrong' : '';
+        body += '<input type="text" inputmode="decimal" class="calc-input ' + inpCls + '" data-tire="' + tire + '" data-col="' + c.key + '" value="' + (e.value || '') + '">';
+      } else {
+        body += '<span style="opacity:.5">·</span>';
+      }
+      body += '</td>';
+    }
+    body += '</tr>';
+  });
+  body += '</tbody>';
+  document.getElementById('calc-table').innerHTML = head + body;
+  // wire up
+  document.querySelectorAll('#calc-table .calc-input').forEach(inp => {
+    inp.addEventListener('blur', () => checkCalcCell(inp));
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const ok = checkCalcCell(inp);
+        if (ok) focusNextCalcCell(inp);
+      }
+    });
+  });
+  renderColPrompt(activeCol, fillMode);
+  updateStats();
+  // if all complete, mark mode done
+  const allDone = tires.every(t => FILLABLE_COLS.every(c => getEntry(t, c).status === 'correct'));
+  if (allDone) markModeAsDone('table');
+}
+
+function isRowActive(tire, col, activeCol) {
+  // In row mode: fill all of tire 1 first, then tire 2, etc.
+  // Active row = first tire that hasn't completed all its cells
+  const tires = allTires();
+  const t = tireParams(tire);
+  if (!t) return false;
+  const activeTire = tires.find(tt => FILLABLE_COLS.some(c => getEntry(tt, c).status !== 'correct'));
+  if (tire !== activeTire) return false;
+  // Within active tire, active col = first col not done
+  const activeColInRow = FILLABLE_COLS.find(c => getEntry(tire, c).status !== 'correct');
+  return col === activeColInRow;
+}
+
+function renderColPrompt(activeCol, fillMode) {
+  const host = document.getElementById('col-prompt-host');
+  if (!host) return;
+  if (!activeCol || fillMode === 'free') {
+    if (fillMode === 'free') {
+      host.innerHTML = '<div class="col-prompt"><span class="col-prompt-head">режим: свободно</span><span class="col-prompt-formula">заполняй ячейки в любом порядке<small>таблица проверяет каждую ячейку отдельно</small></span></div>';
+    } else {
+      host.innerHTML = '<div class="col-prompt done-state"><span class="col-prompt-head">✓ таблица готова</span><span class="col-prompt-formula">Все параметры посчитаны<small>можно переходить к вопросам</small></span></div>';
+    }
+    return;
+  }
+  const def = COL_DEFS.find(c => c.key === activeCol);
+  const label = (fillMode === 'column') ? 'Сейчас заполняем столбец' : 'Сейчас заполняем строку, столбец';
+  host.innerHTML = '<div class="col-prompt"><span class="col-prompt-head">' + label + ' — ' + def.label + '</span><span class="col-prompt-formula">' + (def.formula || 'из маркировки') + '<small>' + (def.desc || '') + '</small></span></div>';
+}
+
+function checkCalcCell(inp) {
+  const tire = inp.dataset.tire;
+  const col = inp.dataset.col;
+  const val = parseNum(inp.value);
+  const def = COL_DEFS.find(c => c.key === col);
+  const t = tireParams(tire);
+  const expected = t[col];
+  const fb = document.getElementById('tbl-fb');
+  if (inp.value.trim() === '') {
+    inp.classList.remove('correct', 'wrong');
+    setEntry(tire, col, '', 'empty');
+    saveState();
+    return false;
+  }
+  if (val == null) {
+    inp.classList.remove('correct'); inp.classList.add('wrong');
+    showFb(fb, 'warn', '<b>' + tire + ' / ' + def.label + ':</b> введи число.');
+    setEntry(tire, col, inp.value, 'wrong');
+    saveState();
+    return false;
+  }
+  if (approxEq(val, expected, def.tol)) {
+    inp.classList.remove('wrong'); inp.classList.add('correct'); inp.disabled = true;
+    setEntry(tire, col, fmtAuto(expected), 'correct');
+    saveState();
+    // smart hide: if no other wrong inputs in this row's view, hide warn
+    if (fb && fb.classList.contains('warn')) hideFb(fb);
+    // re-render to update column state
+    setTimeout(() => renderCalcTable(), 60);
+    return true;
+  } else {
+    inp.classList.remove('correct'); inp.classList.add('wrong');
+    setEntry(tire, col, inp.value, 'wrong');
+    const dg = diagnoseTableCell(tire, col, val);
+    showFb(fb, 'warn', '<b>' + tire + ' · ' + dg.tag + ':</b> ' + dg.msg);
+    logError({ mode: 'table', tire, col, got: val, expected, tag: dg.tag, msg: dg.msg });
+    saveState();
+    return false;
+  }
+}
+
+function focusNextCalcCell(currentInp) {
+  const fillMode = state.fillMode;
+  const allInputs = Array.from(document.querySelectorAll('#calc-table .calc-input'));
+  const idx = allInputs.indexOf(currentInp);
+  if (idx < 0) return;
+  // in column mode: next is the next row in the same column (after re-render — but we re-render so we need to wait)
+  setTimeout(() => {
+    const fresh = Array.from(document.querySelectorAll('#calc-table .calc-input'));
+    if (!fresh.length) return;
+    if (fillMode === 'column' || fillMode === 'free') {
+      // find first input with same col
+      const col = currentInp.dataset.col;
+      let next = fresh.find(x => x.dataset.col === col && x !== currentInp);
+      if (!next) next = fresh[0];
+      if (next) next.focus();
+    } else {
+      // row mode: just next input in DOM
+      const newIdx = fresh.findIndex(x => x === currentInp);
+      const nextOne = (newIdx >= 0 && newIdx + 1 < fresh.length) ? fresh[newIdx + 1] : fresh[0];
+      if (nextOne) nextOne.focus();
+    }
+  }, 80);
+}
+
+// ============================================================
+// COMPAT TABLE BLOCK + INTERACTIVE TASKS (Этап 1)
+// ============================================================
+function renderCompatBlock() {
+  const host = document.getElementById('compat-host');
+  if (!host) return;
+  const e = exercise();
+  if (!e.compat) { host.innerHTML = '<div class="callout-soft">У этого набора нет таблицы условия — переходи к этапу 2.</div>'; return; }
+  const c = e.compat;
+  let html = '<div style="background: var(--bg-soft); border-radius: 10px; padding: 12px 14px;">' +
+    '<p style="margin: 0 0 8px; font-size: 13px; color: var(--ink-soft);">В каждой ячейке стоит допустимый <b>профиль p</b>. Маркировка собирается так: <b>ширина / профиль R диск</b> (пример: строка 205, столбец 17, ячейка 45 → <b>205/45 R17</b>).</p>' +
+    '<div class="compat-wrap"><table class="compat-table"><thead><tr><th>B \\ r</th>';
+  for (const d of c.disks) html += '<th>' + d + '″</th>';
+  html += '</tr></thead><tbody>';
+  for (const w of c.widths) {
+    html += '<tr><th class="row-h">' + w + '</th>';
+    for (const d of c.disks) {
+      const profile = c.profiles[w + '_' + d];
+      if (profile) html += '<td class="cell-yes" data-marking="' + w + '/' + profile + ' R' + d + '" data-w="' + w + '" data-disk="' + d + '" data-p="' + profile + '">' + profile + '</td>';
+      else html += '<td class="cell-no">—</td>';
+    }
+    html += '</tr>';
+  }
+  html += '</tbody></table></div>';
+  html += '<div class="compat-result empty" id="compat-result">кликни по любой зелёной ячейке — увидишь маркировку</div>';
+  html += '</div>';
+  host.innerHTML = html;
+  // wire up clicks
+  host.querySelectorAll('.cell-yes').forEach(td => {
+    td.addEventListener('click', () => {
+      host.querySelectorAll('.cell-yes').forEach(x => x.classList.remove('picked'));
+      td.classList.add('picked');
+      const m = td.dataset.marking;
+      const isInTask = allTires().includes(m);
+      const res = document.getElementById('compat-result');
+      res.classList.remove('empty');
+      res.innerHTML = 'Строка <b>' + td.dataset.w + '</b>, столбец <b>' + td.dataset.disk + '″</b>, ячейка <b>' + td.dataset.p + '</b> → маркировка <b>' + m + '</b>' +
+        (isInTask ? ' &nbsp;<span class="pill ok">входит в текущее задание</span>' : ' &nbsp;<span class="pill">не из текущего задания</span>');
+    });
+  });
+}
+
+// ===== compat tasks (interactive mini-tasks based on the compat table) =====
+function buildCompatTasks() {
+  const e = exercise();
+  if (!e.compat) return [];
+  const c = e.compat;
+  // collect all valid (w,d,p) triples
+  const valid = [];
+  for (const w of c.widths) for (const d of c.disks) {
+    const p = c.profiles[w + '_' + d];
+    if (p) valid.push({ w, d, p, m: w + '/' + p + ' R' + d });
+  }
+  if (!valid.length) return [];
+  // task 1: assemble marking from row/col
+  const pick = valid[(state.compatSeed || 0) % valid.length];
+  const t1 = {
+    id: 'ct1', kind: 'build_marking',
+    q: 'Строка <b>' + pick.w + '</b>, столбец <b>' + pick.d + '″</b>, ячейка <b>' + pick.p + '</b>. Запиши соответствующую маркировку в формате <code>B/p Rr</code>.',
+    correct: pick.m,
+    hint: 'Ширина — первое число, профиль — то, что в ячейке, диск — столбец. Между профилем и диском всегда буква R. Ответ: <b>' + pick.m + '</b>.'
+  };
+  // task 2: is this tire in the table?
+  // make a random invalid combination
+  const allCells = [];
+  for (const w of c.widths) for (const d of c.disks) allCells.push({ w, d, has: !!c.profiles[w + '_' + d] });
+  const invalid = allCells.filter(x => !x.has);
+  // alternate yes/no question per seed
+  const seed = state.compatSeed || 0;
+  let t2;
+  if (seed % 2 === 0 && invalid.length) {
+    const bad = invalid[seed % invalid.length];
+    // assume a hypothetical profile for the bad one
+    const fakeP = 50;
+    t2 = {
+      id: 'ct2', kind: 'yes_no',
+      q: 'Есть ли в таблице шина с шириной <b>' + bad.w + '</b> мм и диском <b>' + bad.d + '″</b>?',
+      correct: 'нет',
+      hint: 'В строке ' + bad.w + ', столбце ' + bad.d + '″ стоит «—» — комбинация не разрешена.'
+    };
+  } else {
+    const good = valid[seed % valid.length];
+    t2 = {
+      id: 'ct2', kind: 'yes_no',
+      q: 'Есть ли в таблице шина с шириной <b>' + good.w + '</b> мм и диском <b>' + good.d + '″</b>?',
+      correct: 'да',
+      hint: 'В строке ' + good.w + ', столбце ' + good.d + '″ стоит число ' + good.p + ' — комбинация разрешена.'
+    };
+  }
+  // task 3: min width for some disk
+  const disks = c.disks.slice();
+  const targetDisk = disks[seed % disks.length];
+  const widthsForDisk = c.widths.filter(w => c.profiles[w + '_' + targetDisk]);
+  const t3 = widthsForDisk.length ? {
+    id: 'ct3', kind: 'num',
+    q: 'Какая наименьшая разрешённая <b>ширина</b> для диска диаметром <b>' + targetDisk + '″</b>?',
+    correct: Math.min(...widthsForDisk),
+    unit: 'мм',
+    hint: 'Посмотри в столбце ' + targetDisk + '″ — найди верхнюю строку с числом (не «—»). Это ' + Math.min(...widthsForDisk) + ' мм.'
+  } : null;
+  // task 4: count tires for some disk
+  const t4 = widthsForDisk.length ? {
+    id: 'ct4', kind: 'num',
+    q: 'Сколько разных маркировок шин разрешено для диска <b>' + targetDisk + '″</b>?',
+    correct: widthsForDisk.length,
+    unit: 'шт',
+    hint: 'В столбце ' + targetDisk + '″ просто посчитай ячейки с числами (не «—»). Их ' + widthsForDisk.length + '.'
+  } : null;
+  return [t1, t2, t3, t4].filter(Boolean);
+}
+
+function renderCompatTasks() {
+  const host = document.getElementById('compat-tasks-host');
+  if (!host) return;
+  const tasks = buildCompatTasks();
+  if (!tasks.length) { host.innerHTML = ''; return; }
+  const done = state.compatTasksDone || {};
+  let html = '<h3 style="font-family: Georgia, serif; font-size: 16px; font-weight: 400; color: var(--accent); margin: 16px 0 10px;">Мини-задания по таблице</h3>';
+  for (const t of tasks) {
+    const isDone = !!done[t.id];
+    html += '<div class="compat-task ' + (isDone ? 'done' : '') + '" data-ct="' + t.id + '">' +
+      '<div class="compat-task-tag">' + ({ build_marking: 'Собери маркировку', yes_no: 'Да/нет', num: 'Число' })[t.kind] + (isDone ? ' · ✓' : '') + '</div>' +
+      '<div class="compat-task-q">' + t.q + '</div>';
+    if (t.kind === 'yes_no') {
+      html += '<div class="compat-task-row">' +
+        '<button class="nav-btn" data-yn="да" data-ct="' + t.id + '" ' + (isDone ? 'disabled' : '') + '>да</button>' +
+        '<button class="nav-btn" data-yn="нет" data-ct="' + t.id + '" ' + (isDone ? 'disabled' : '') + '>нет</button>' +
+      '</div>';
+    } else {
+      const ph = t.kind === 'build_marking' ? '195/55 R16' : '';
+      const unit = t.unit ? '<span class="q-unit">' + t.unit + '</span>' : '';
+      html += '<div class="compat-task-row">' +
+        '<input type="text" class="compat-input" data-ct="' + t.id + '" data-correct="' + t.correct + '" data-kind="' + t.kind + '" placeholder="' + ph + '" ' + (isDone ? 'disabled value="' + t.correct + '"' : '') + '>' +
+        unit +
+        '<button class="nav-btn primary" data-ct-check="' + t.id + '" ' + (isDone ? 'disabled' : '') + '>' + (isDone ? '✓' : 'проверить') + '</button>' +
+      '</div>';
+    }
+    html += '<div class="compat-task-fb"></div>';
+    if (t.hint) html += '<button class="q-hint-btn" data-ct-hint="' + t.id + '">показать подсказку</button><div class="q-hint">' + t.hint + '</div>';
+    html += '</div>';
+  }
+  host.innerHTML = html;
+  // wire events
+  host.querySelectorAll('[data-ct-check]').forEach(b => b.addEventListener('click', () => checkCompatTask(b.dataset.ctCheck)));
+  host.querySelectorAll('.compat-input').forEach(inp => {
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); checkCompatTask(inp.dataset.ct); } });
+  });
+  host.querySelectorAll('[data-yn]').forEach(b => b.addEventListener('click', () => checkCompatYesNo(b.dataset.ct, b.dataset.yn, b)));
+  host.querySelectorAll('[data-ct-hint]').forEach(b => b.addEventListener('click', () => {
+    const block = host.querySelector('[data-ct="' + b.dataset.ctHint + '"]');
+    if (block) { const h = block.querySelector('.q-hint'); if (h) h.classList.add('show'); }
+  }));
+  // mark mode done if all complete
+  const total = tasks.length;
+  const cnt = tasks.filter(t => done[t.id]).length;
+  if (total > 0 && cnt === total) markModeAsDone('compat');
+}
+
+function checkCompatTask(ctId) {
+  const tasks = buildCompatTasks();
+  const t = tasks.find(x => x.id === ctId);
+  if (!t) return;
+  const block = document.querySelector('[data-ct="' + ctId + '"]');
+  const inp = block.querySelector('.compat-input');
+  const fb = block.querySelector('.compat-task-fb');
+  const raw = inp.value.trim();
+  if (!raw) { inp.classList.add('wrong'); showFb(fb, 'warn', 'Введи ответ.'); return; }
+  let ok = false, dg = null;
+  if (t.kind === 'build_marking') {
+    // normalize: strip spaces, uppercase R
+    const norm = s => String(s).replace(/\s+/g, '').toUpperCase();
+    if (norm(raw) === norm(t.correct)) ok = true;
+    else {
+      // try parsing as marking
+      const parsed = parseMarking(raw);
+      if (parsed) {
+        // diagnose specific mistakes
+        const correctParsed = parseMarking(t.correct);
+        if (parsed.B !== correctParsed.B && parsed.p !== correctParsed.p && parsed.r !== correctParsed.r) {
+          dg = { tag: 'Не та маркировка', msg: 'Правильный ответ: <b>' + t.correct + '</b>.' };
+        } else if (parsed.B === correctParsed.p && parsed.p === correctParsed.B) {
+          dg = { tag: 'Поменяны B и p местами', msg: 'B — это <b>строка</b> (' + correctParsed.B + '), p — <b>ячейка</b> (' + correctParsed.p + '). Правильно: <b>' + t.correct + '</b>.' };
+        } else {
+          dg = { tag: 'Не та маркировка', msg: 'Проверь порядок: <b>ширина / профиль R диск</b>. Правильно: <b>' + t.correct + '</b>.' };
+        }
+      } else {
+        dg = { tag: 'Не разобрана', msg: 'Формат: <code>B/p Rr</code>, например <b>' + t.correct + '</b>.' };
+      }
+    }
+  } else if (t.kind === 'num') {
+    const v = parseNum(raw);
+    if (v != null && approxEq(v, t.correct, 0.5)) ok = true;
+    else dg = { tag: 'Не то число', msg: 'Правильный ответ: <b>' + t.correct + '</b> ' + (t.unit || '') + '.' };
+  }
+  if (ok) {
+    inp.classList.remove('wrong'); inp.classList.add('correct'); inp.disabled = true;
+    block.querySelector('[data-ct-check]').disabled = true;
+    block.querySelector('[data-ct-check]').textContent = '✓';
+    block.classList.add('done');
+    showFb(fb, 'ok', '<b>Верно!</b>');
+    state.compatTasksDone = state.compatTasksDone || {};
+    state.compatTasksDone[ctId] = true;
+    saveState();
+    // check all done
+    const tasks2 = buildCompatTasks();
+    if (tasks2.every(x => state.compatTasksDone[x.id])) markModeAsDone('compat');
+  } else {
+    inp.classList.remove('correct'); inp.classList.add('wrong');
+    showFb(fb, 'warn', '<b>' + dg.tag + ':</b> ' + dg.msg);
+    logError({ mode: 'compat', qid: ctId, got: raw, expected: t.correct, tag: dg.tag, msg: dg.msg });
+  }
+}
+
+function checkCompatYesNo(ctId, val, btn) {
+  const tasks = buildCompatTasks();
+  const t = tasks.find(x => x.id === ctId);
+  if (!t) return;
+  const block = document.querySelector('[data-ct="' + ctId + '"]');
+  const fb = block.querySelector('.compat-task-fb');
+  if (val === t.correct) {
+    block.querySelectorAll('[data-yn]').forEach(b => b.disabled = true);
+    btn.style.background = 'var(--green)'; btn.style.color = 'white'; btn.style.borderColor = 'var(--green)';
+    block.classList.add('done');
+    showFb(fb, 'ok', '<b>Верно!</b>');
+    state.compatTasksDone = state.compatTasksDone || {};
+    state.compatTasksDone[ctId] = true;
+    saveState();
+    const tasks2 = buildCompatTasks();
+    if (tasks2.every(x => state.compatTasksDone[x.id])) markModeAsDone('compat');
+  } else {
+    btn.disabled = true; btn.style.background = 'var(--error-soft)'; btn.style.color = 'var(--error-ink)';
+    showFb(fb, 'warn', '<b>Не угадал.</b> ' + (t.hint || ''));
+    logError({ mode: 'compat', qid: ctId, got: val, expected: t.correct, tag: 'Чтение таблицы', msg: t.hint || '' });
+  }
+}
+
+// ============================================================
+// MODE 3 — QUESTIONS
+// ============================================================
+function renderQuestions() {
+  const host = document.getElementById('ques-host');
+  const e = exercise();
+  // also render the ref filled table at top
+  renderQuesRefTable();
+  let html = '';
+  e.questions.forEach((q, i) => {
+    const isDone = !!state.questionsDone[q.id];
+    const isActive = !isDone && (i === 0 || !!state.questionsDone[e.questions[i-1] && e.questions[i-1].id] || true); // keep all visible
+    let cls = isDone ? 'done' : '';
+    html += '<div class="q-block ' + cls + '" data-q="' + q.id + '">' +
+      '<div class="q-block-tag">Вопрос ' + (i + 1) + ' · ' + qTypeLabel(q.type) + (isDone ? ' · ✓' : '') + '</div>' +
+      '<div class="q-block-q">' + q.text + '</div>' +
+      renderQInput(q, isDone) +
+      '<div class="q-fb"></div>' +
+      (q.hint ? '<button class="q-hint-btn">показать подсказку</button><div class="q-hint">' + q.hint + '</div>' : '') +
+    '</div>';
+  });
+  host.innerHTML = html;
+  wireQuestionsHandlers();
+  // count done
+  const total = e.questions.length;
+  const done = e.questions.filter(q => state.questionsDone[q.id]).length;
+  if (done === total && total > 0) markModeAsDone('ques');
+}
+
+function qTypeLabel(type) {
+  return {
+    'compute_D': 'диаметр шины',
+    'compare_D': 'разность диаметров',
+    'compare_R': 'разность радиусов',
+    'pick_closest_D': 'выбор шины',
+    'percent_change': 'процентное изменение',
+    'pick_min_width_for_disk': 'минимальная ширина',
+  }[type] || type;
+}
+
+function renderQInput(q, isDone) {
+  if (q.type === 'pick_closest_D' || q.type === 'pick_min_width_for_disk') {
+    // single-choice
+    const opts = q.options || getDefaultOpts(q);
+    return '<div class="q-quiz-row" data-q-quiz="' + q.id + '">' +
+      opts.map(opt => '<button class="q-quiz-opt" data-val="' + opt.val + '" ' + (isDone ? 'disabled' : '') + '>' + opt.label + '</button>').join('') +
+    '</div>';
+  }
+  // numeric input
+  const unit = q.unit || '';
+  return '<div class="q-row">' +
+    '<input type="text" inputmode="decimal" class="q-input ' + (isDone ? 'correct' : '') + '" data-q="' + q.id + '" ' + (isDone ? 'disabled value="' + qExpectedValue(q) + '"' : '') + '>' +
+    '<span class="q-unit">' + unit + '</span>' +
+    '<button class="q-btn" data-q-check="' + q.id + '" ' + (isDone ? 'disabled' : '') + '>' + (isDone ? '✓ принято' : 'Проверить') + '</button>' +
+  '</div>';
+}
+
+function getDefaultOpts(q) {
+  if (q.type === 'pick_closest_D' && q.tires) {
+    return q.tires.map(m => ({ val: m, label: m }));
+  }
+  if (q.type === 'pick_min_width_for_disk') {
+    const e = exercise();
+    // any width that has a profile entry for this disk
+    const widths = e.compat ? e.compat.widths.filter(w => e.compat.profiles[w + '_' + q.diskDiameter]) : [];
+    return widths.map(w => ({ val: w, label: w + ' мм' }));
+  }
+  return [];
+}
+
+function qExpectedValue(q) {
+  if (q.type === 'compute_D') return fmtAuto(tireParams(q.tire).D);
+  if (q.type === 'compare_D') return fmtAuto(Math.abs(tireParams(q.tires[0]).D - tireParams(q.tires[1]).D));
+  if (q.type === 'compare_R') return fmtAuto(Math.abs(tireParams(q.tires[0]).R - tireParams(q.tires[1]).R));
+  if (q.type === 'percent_change') {
+    const oldD = tireParams(q.oldTire).D, newD = tireParams(q.newTire).D;
+    return fmtAuto(round1(Math.abs(newD / oldD * 100 - 100)));
+  }
+  if (q.type === 'pick_closest_D') {
+    const refD = tireParams(q.reference).D;
+    let best = q.tires[0], bestDiff = Math.abs(tireParams(best).D - refD);
+    for (const t of q.tires) {
+      const diff = Math.abs(tireParams(t).D - refD);
+      if (diff < bestDiff) { bestDiff = diff; best = t; }
+    }
+    return best;
+  }
+  if (q.type === 'pick_min_width_for_disk') {
+    const e = exercise();
+    const widths = e.compat ? e.compat.widths.filter(w => e.compat.profiles[w + '_' + q.diskDiameter]) : [];
+    return widths.length ? Math.min(...widths) : null;
+  }
+  return null;
+}
+
+function wireQuestionsHandlers() {
+  document.querySelectorAll('[data-q-check]').forEach(btn => {
+    btn.addEventListener('click', () => checkQuestion(btn.dataset.qCheck));
+  });
+  document.querySelectorAll('.q-input[data-q]').forEach(inp => {
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') { e.preventDefault(); checkQuestion(inp.dataset.q); }
+    });
+  });
+  document.querySelectorAll('[data-q-quiz] .q-quiz-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const qid = btn.parentElement.dataset.qQuiz;
+      checkQuestionQuiz(qid, btn);
+    });
+  });
+  document.querySelectorAll('.q-hint-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      const h = b.parentElement.querySelector('.q-hint');
+      if (h) h.classList.add('show');
+    });
+  });
+}
+
+function checkQuestion(qid) {
+  const e = exercise();
+  const q = e.questions.find(x => x.id === qid);
+  if (!q) return;
+  const block = document.querySelector('[data-q="' + qid + '"]');
+  const inp = block.querySelector('.q-input');
+  const fb = block.querySelector('.q-fb');
+  const got = parseNum(inp.value);
+  if (got == null) {
+    inp.classList.add('wrong');
+    showFb(fb, 'warn', 'Введи число.');
+    return;
+  }
+  const expected = parseNum(qExpectedValue(q));
+  const tol = qTolerance(q);
+  if (approxEq(got, expected, tol)) {
+    inp.classList.remove('wrong'); inp.classList.add('correct'); inp.disabled = true;
+    block.querySelector('[data-q-check]').disabled = true;
+    block.querySelector('[data-q-check]').textContent = '✓ принято';
+    block.classList.add('done');
+    showFb(fb, 'ok', '<b>Верно!</b> ' + got);
+    state.questionsDone[qid] = true; saveState();
+    // count done
+    const total = e.questions.length;
+    const done = e.questions.filter(x => state.questionsDone[x.id]).length;
+    if (done === total) markModeAsDone('ques');
+  } else {
+    inp.classList.remove('correct'); inp.classList.add('wrong');
+    const dg = diagnoseQuestion(q, got);
+    showFb(fb, 'warn', '<b>' + dg.tag + ':</b> ' + dg.msg);
+    logError({ mode: 'ques', qid, got, expected, tag: dg.tag, msg: dg.msg });
+  }
+}
+
+function checkQuestionQuiz(qid, btn) {
+  const e = exercise();
+  const q = e.questions.find(x => x.id === qid);
+  if (!q) return;
+  const block = document.querySelector('[data-q="' + qid + '"]');
+  const fb = block.querySelector('.q-fb');
+  const expected = String(qExpectedValue(q));
+  const got = btn.dataset.val;
+  if (got === expected) {
+    block.querySelectorAll('.q-quiz-opt').forEach(b => b.disabled = true);
+    btn.classList.add('correct');
+    block.classList.add('done');
+    showFb(fb, 'ok', '<b>Верно!</b>');
+    state.questionsDone[qid] = true; saveState();
+    const total = e.questions.length;
+    const done = e.questions.filter(x => state.questionsDone[x.id]).length;
+    if (done === total) markModeAsDone('ques');
+  } else {
+    btn.classList.add('wrong'); btn.disabled = true;
+    const dg = diagnoseQuestion(q, got);
+    showFb(fb, 'warn', '<b>' + dg.tag + ':</b> ' + dg.msg);
+    logError({ mode: 'ques', qid, got, expected, tag: dg.tag, msg: dg.msg });
+  }
+}
+
+function qTolerance(q) {
+  if (q.type === 'compute_D') return 0.15;
+  if (q.type === 'compare_D' || q.type === 'compare_R') return 0.15;
+  if (q.type === 'percent_change') return 0.1;
+  return 0.5;
+}
+
+function diagnoseQuestion(q, got) {
+  if (q.type === 'compute_D') {
+    const t = tireParams(q.tire);
+    if (approxEq(got, t.R, 0.5)) return { tag: 'Спутаны D и R', msg: 'Это радиус — половина диаметра. Полный диаметр: D = d + 2H = <b>' + fmtAuto(t.D) + '</b>.' };
+    if (approxEq(got, t.H, 0.5)) return { tag: 'Только H', msg: 'Это только высота боковины. Диаметр = диск + 2 боковины: D = ' + fmtAuto(t.d) + ' + 2·' + fmtAuto(t.H) + ' = <b>' + fmtAuto(t.D) + '</b>.' };
+    if (approxEq(got, t.d, 0.5)) return { tag: 'Только диск', msg: 'Это только диск. Прибавь 2H: D = <b>' + fmtAuto(t.D) + '</b>.' };
+    if (approxEq(got, t.d + t.H, 0.5)) return { tag: 'Забыты две боковины', msg: 'Прибавил H один раз. Их две (сверху и снизу): D = d + 2H = <b>' + fmtAuto(t.D) + '</b>.' };
+    return { tag: 'Ошибка', msg: 'D для ' + q.tire + ' = <b>' + fmtAuto(t.D) + '</b>.' };
+  }
+  if (q.type === 'compare_D') {
+    const t1 = tireParams(q.tires[0]), t2 = tireParams(q.tires[1]);
+    const diff = Math.abs(t1.D - t2.D);
+    if (approxEq(got, diff / 2, 0.15)) return { tag: 'Это разность радиусов', msg: 'В этой задаче спрашивают про <b>диаметры</b>, ты посчитал разность радиусов. Разность диаметров = <b>' + fmtAuto(diff) + '</b>.' };
+    if (approxEq(got, diff * 2, 0.15)) return { tag: 'Лишний коэффициент 2', msg: 'Умножил разность на 2. Достаточно просто вычесть: |D₁ − D₂| = <b>' + fmtAuto(diff) + '</b>.' };
+    return { tag: 'Ошибка', msg: '|D(' + q.tires[0] + ') − D(' + q.tires[1] + ')| = ' + fmtAuto(t1.D) + ' − ' + fmtAuto(t2.D) + ' = <b>' + fmtAuto(diff) + '</b>.' };
+  }
+  if (q.type === 'compare_R') {
+    const t1 = tireParams(q.tires[0]), t2 = tireParams(q.tires[1]);
+    const diffD = Math.abs(t1.D - t2.D), diffR = diffD / 2;
+    if (approxEq(got, diffD, 0.15)) return { tag: 'Спутаны R и D', msg: 'Это разность <b>диаметров</b>. Радиус — половина: разность радиусов = ' + fmtAuto(diffD) + ' / 2 = <b>' + fmtAuto(diffR) + '</b>.' };
+    if (approxEq(got, diffD * 2, 0.15)) return { tag: 'Умножил вместо деления', msg: 'Радиус МЕНЬШЕ диаметра в 2 раза, а не больше. Разность радиусов = ' + fmtAuto(diffD) + ' / 2 = <b>' + fmtAuto(diffR) + '</b>.' };
+    return { tag: 'Ошибка', msg: 'R₁ − R₂ = (D₁ − D₂) / 2 = ' + fmtAuto(diffD) + ' / 2 = <b>' + fmtAuto(diffR) + '</b>.' };
+  }
+  if (q.type === 'percent_change') {
+    const oldD = tireParams(q.oldTire).D, newD = tireParams(q.newTire).D;
+    const x = round1(newD / oldD * 100);
+    const change = round1(Math.abs(x - 100));
+    if (approxEq(got, x, 0.2)) return { tag: 'Забыли вычесть 100', msg: 'Это процент НОВОЙ относительно СТАРОЙ (' + fmtAuto(x) + ' %). А спрашивают «на сколько процентов» — вычти 100: <b>' + fmtAuto(change) + ' %</b>.' };
+    if (approxEq(got, round1(oldD / newD * 100), 0.2)) return { tag: 'Перевёрнута пропорция', msg: 'Ты делил старую на новую. За 100 % берём <b>старую</b>: x = D_new · 100 / D_old.' };
+    if (approxEq(got, round1(100 - oldD / newD * 100), 0.2)) return { tag: 'Не та шина за 100%', msg: 'За 100 % надо брать <b>старую</b> шину (то, с чем сравниваем).' };
+    return { tag: 'Ошибка процента', msg: 'x = ' + fmtAuto(newD) + ' · 100 / ' + fmtAuto(oldD) + ' ≈ ' + fmtAuto(x) + ' %. Изменение: |' + fmtAuto(x) + ' − 100| = <b>' + fmtAuto(change) + ' %</b>.' };
+  }
+  if (q.type === 'pick_closest_D') {
+    return { tag: 'Ошибка выбора', msg: 'Сравни модули разностей с эталонной шиной по таблице.' };
+  }
+  if (q.type === 'pick_min_width_for_disk') {
+    return { tag: 'Ошибка выбора', msg: 'Посмотри в таблице, какие ширины разрешены для этого диска, и выбери наименьшую.' };
+  }
+  return { tag: 'Ошибка', msg: 'Проверь расчёт.' };
+}
+
+function renderQuesRefTable() {
+  const host = document.getElementById('ques-ref-table');
+  if (!host) return;
+  const tires = allTires();
+  let html = '<div class="calc-scroll"><table class="calc-table"><thead><tr>';
+  for (const c of COL_DEFS) html += '<th class="' + (c.key === 'marking' ? 'col-marking' : '') + '">' + c.label + '</th>';
+  html += '</tr></thead><tbody>';
+  for (const tire of tires) {
+    const t = tireParams(tire);
+    html += '<tr><td class="marking">' + tire + '</td>';
+    for (const c of FILLABLE_COLS) {
+      const e = getEntry(tire, c);
+      const cls = e.status === 'correct' ? 'cell-done' : 'cell-pending';
+      const val = e.status === 'correct' ? fmtAuto(t[c]) : '—';
+      html += '<td class="' + cls + '">' + val + '</td>';
+    }
+    html += '</tr>';
+  }
+  html += '</tbody></table></div>';
+  host.innerHTML = html;
+}
+
+// ============================================================
+// MODE 4 — 2×2 COMPARISON
+// ============================================================
+function renderCmp() {
+  const tires = allTires();
+  // setup selects
+  const selOld = document.getElementById('cmp-old');
+  const selNew = document.getElementById('cmp-new');
+  if (state.cmpOld == null) state.cmpOld = tires[0];
+  if (state.cmpNew == null) state.cmpNew = tires[1] || tires[0];
+  selOld.innerHTML = tires.map(t => '<option value="' + t + '"' + (t === state.cmpOld ? ' selected' : '') + '>' + t + '</option>').join('');
+  selNew.innerHTML = tires.map(t => '<option value="' + t + '"' + (t === state.cmpNew ? ' selected' : '') + '>' + t + '</option>').join('');
+  selOld.onchange = () => { state.cmpOld = selOld.value; saveState(); renderCmp(); };
+  selNew.onchange = () => { state.cmpNew = selNew.value; saveState(); renderCmp(); };
+
+  const tOld = tireParams(state.cmpOld);
+  const tNew = tireParams(state.cmpNew);
+  document.getElementById('cmp-old-meta').innerHTML = 'D = <b>' + fmtAuto(tOld.D) + '</b> мм &nbsp;·&nbsp; C = π · D ≈ <b>' + fmtAuto(tOld.C) + '</b> мм';
+  document.getElementById('cmp-new-meta').innerHTML = 'D = <b>' + fmtAuto(tNew.D) + '</b> мм &nbsp;·&nbsp; C = π · D ≈ <b>' + fmtAuto(tNew.C) + '</b> мм';
+
+  document.getElementById('prop-old-name').textContent = 'старая · ' + state.cmpOld;
+  document.getElementById('prop-new-name').textContent = 'новая · ' + state.cmpNew;
+  document.getElementById('prop-old-d').textContent = fmtAuto(tOld.D);
+  document.getElementById('prop-new-d').textContent = fmtAuto(tNew.D);
+
+  // π cancellation explainer
+  document.getElementById('pi-cancel-host').innerHTML =
+    '<div class="pi-cancel">C<sub>new</sub> / C<sub>old</sub> = ' +
+    '<span class="strike">π</span> · D<sub>new</sub> / <span class="strike">π</span> · D<sub>old</sub> = ' +
+    '<b>D<sub>new</sub> / D<sub>old</sub></b><br>' +
+    '<small style="color:var(--ink-soft); font-family: -apple-system, sans-serif;">π сокращается — поэтому можно сравнивать диаметры напрямую</small></div>';
+
+  // Quiz: ask the percent and the change
+  const x = round1(tNew.D / tOld.D * 100);
+  const change = round1(Math.abs(x - 100));
+  const isInc = tNew.D > tOld.D;
+  const cmpKey = state.cmpOld + '|' + state.cmpNew;
+  const dn = state.cmpQuizDone[cmpKey] || {};
+  document.getElementById('cmp-quiz-host').innerHTML =
+    '<div style="background: var(--bg-soft); padding: 12px 14px; border-radius: 10px; margin-bottom: 14px;">' +
+      '<div class="compat-task-tag" style="margin-bottom:8px;">Подготовка · ответь до подстановки чисел</div>' +
+      renderCmpPreQ('100pct', 'Что берём за <b>100 %</b>?', [
+        { val: 'old', label: 'старая шина (с чем сравниваем)', correct: true },
+        { val: 'new', label: 'новая шина', correct: false, err: 'За 100 % всегда берётся ТО, с чем сравниваем — то есть <b>старая</b> шина.' },
+        { val: 'avg', label: 'среднее между ними', correct: false, err: 'Среднее тут ни при чём. Сравниваем новую со старой → старая = 100 %.' },
+      ]) +
+      renderCmpPreQ('sub100', 'Когда мы нашли x (например, 102,2 %), это <b>уже ответ</b>?', [
+        { val: 'yes', label: 'да, это и есть ответ', correct: false, err: 'Нет! x = 102,2 % — это процент НОВОЙ относительно старой. А «на сколько процентов изменилось» = |x − 100| = <b>2,2 %</b>.' },
+        { val: 'no_sub', label: 'нет, надо вычесть 100', correct: true },
+        { val: 'no_div', label: 'нет, надо разделить на 100', correct: false, err: 'Делить не нужно. Нужно вычесть 100, чтобы получить «на сколько процентов изменилось».' },
+      ]) +
+    '</div>' +
+    '<div class="q-block ' + (dn.x ? 'done' : '') + '" id="cmp-q-x">' +
+      '<div class="q-block-tag">Шаг А: процент новой относительно старой' + (dn.x ? ' · ✓' : '') + '</div>' +
+      '<div class="q-block-q">x = D<sub>new</sub> · 100 / D<sub>old</sub> = ' + fmtAuto(tNew.D) + ' · 100 / ' + fmtAuto(tOld.D) + ' = ? (округли до десятых)</div>' +
+      '<div class="q-row">' +
+        '<input type="text" inputmode="decimal" class="q-input ' + (dn.x ? 'correct' : '') + '" id="cmp-q-x-inp" ' + (dn.x ? 'disabled value="' + fmtAuto(x) + '"' : '') + '>' +
+        '<span class="q-unit">%</span>' +
+        '<button class="q-btn" id="cmp-q-x-btn" ' + (dn.x ? 'disabled' : '') + '>' + (dn.x ? '✓ принято' : 'Проверить') + '</button>' +
+      '</div>' +
+      '<div class="q-fb" id="cmp-q-x-fb"></div>' +
+    '</div>' +
+    '<div class="q-block ' + (dn.change ? 'done' : '') + '" id="cmp-q-change">' +
+      '<div class="q-block-tag">Шаг Б: на сколько процентов ' + (isInc ? 'увеличилось' : 'уменьшилось') + (dn.change ? ' · ✓' : '') + '</div>' +
+      '<div class="q-block-q">x = ' + fmtAuto(x) + ' % — это <b>процент нового относительно старого</b>. А «на сколько процентов ' + (isInc ? 'увеличится' : 'уменьшится') + '» = ?</div>' +
+      '<div class="q-row">' +
+        '<input type="text" inputmode="decimal" class="q-input ' + (dn.change ? 'correct' : '') + '" id="cmp-q-change-inp" ' + (dn.change ? 'disabled value="' + fmtAuto(change) + '"' : '') + '>' +
+        '<span class="q-unit">%</span>' +
+        '<button class="q-btn" id="cmp-q-change-btn" ' + (dn.change ? 'disabled' : '') + '>' + (dn.change ? '✓ принято' : 'Проверить') + '</button>' +
+      '</div>' +
+      '<div class="q-fb" id="cmp-q-change-fb"></div>' +
+    '</div>';
+
+  if (!dn.x) {
+    document.getElementById('cmp-q-x-btn').addEventListener('click', () => cmpCheckX());
+    document.getElementById('cmp-q-x-inp').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); cmpCheckX(); } });
+  }
+  if (!dn.change) {
+    document.getElementById('cmp-q-change-btn').addEventListener('click', () => cmpCheckChange());
+    document.getElementById('cmp-q-change-inp').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); cmpCheckChange(); } });
+  }
+  // wire pre-quiz
+  document.querySelectorAll('[data-cmp-preq-btn]').forEach(b => {
+    b.addEventListener('click', () => cmpCheckPreQ(b.dataset.cmpPreqBtn, b.dataset.val, b));
+  });
+  if (dn.x && dn.change) markModeAsDone('cmp');
+}
+
+function renderCmpPreQ(qid, qText, options) {
+  const done = (state.cmpPreQuizDone || {})[qid];
+  return '<div style="margin-bottom: 10px;" data-cmp-preq="' + qid + '">' +
+    '<div style="font-size: 13.5px; margin-bottom: 6px;">' + qText + (done ? ' <span class="pill ok">✓</span>' : '') + '</div>' +
+    '<div class="q-quiz-row">' +
+      options.map(opt => '<button class="q-quiz-opt" data-cmp-preq-btn="' + qid + '" data-val="' + opt.val + '" data-correct="' + opt.correct + '" data-err="' + (opt.err || '').replace(/"/g, '&quot;') + '" ' + (done ? 'disabled' : '') + '>' + opt.label + '</button>').join('') +
+    '</div>' +
+    '<div class="compat-task-fb" id="cmp-preq-fb-' + qid + '"></div>' +
+  '</div>';
+}
+
+function cmpCheckPreQ(qid, val, btn) {
+  const isCorrect = btn.dataset.correct === 'true';
+  const fb = document.getElementById('cmp-preq-fb-' + qid);
+  if (isCorrect) {
+    btn.classList.add('correct');
+    btn.parentElement.querySelectorAll('button').forEach(b => b.disabled = true);
+    showFb(fb, 'ok', '<b>Верно.</b>');
+    state.cmpPreQuizDone = state.cmpPreQuizDone || {};
+    state.cmpPreQuizDone[qid] = true;
+    saveState();
+  } else {
+    btn.classList.add('wrong'); btn.disabled = true;
+    const err = btn.dataset.err || 'Не угадал.';
+    showFb(fb, 'warn', '<b>Не так:</b> ' + err);
+    logError({ mode: 'cmp', qid: 'cmp-preq-' + qid, got: val, expected: 'correct option', tag: qid === '100pct' ? 'Не та шина за 100%' : 'Забыли вычесть 100', msg: err });
+  }
+}
+
+function cmpCheckX() {
+  const tOld = tireParams(state.cmpOld), tNew = tireParams(state.cmpNew);
+  const x = round1(tNew.D / tOld.D * 100);
+  const inp = document.getElementById('cmp-q-x-inp');
+  const got = parseNum(inp.value);
+  const fb = document.getElementById('cmp-q-x-fb');
+  if (got == null) { showFb(fb, 'warn', 'Введи число.'); return; }
+  if (approxEq(got, x, 0.1)) {
+    inp.classList.add('correct'); inp.disabled = true;
+    document.getElementById('cmp-q-x-btn').disabled = true;
+    document.getElementById('cmp-q-x-btn').textContent = '✓ принято';
+    document.getElementById('cmp-q-x').classList.add('done');
+    showFb(fb, 'ok', '<b>Верно: x = ' + fmtAuto(x) + ' %.</b>');
+    const key = state.cmpOld + '|' + state.cmpNew;
+    state.cmpQuizDone[key] = state.cmpQuizDone[key] || {};
+    state.cmpQuizDone[key].x = true; saveState();
+  } else {
+    inp.classList.add('wrong');
+    // diagnose
+    const inv = round1(tOld.D / tNew.D * 100);
+    const change = round1(Math.abs(x - 100));
+    let tag = 'Ошибка x', msg = 'x = D_new · 100 / D_old = ' + fmtAuto(x) + ' %.';
+    if (approxEq(got, inv, 0.2)) { tag = 'Перевёрнута пропорция'; msg = 'Ты разделил <b>старую</b> на <b>новую</b>. За 100% — старая, поэтому: x = D_new · 100 / D_old = ' + fmtAuto(x) + ' %.'; }
+    else if (approxEq(got, change, 0.1)) { tag = 'Это уже «на сколько»', msg = 'Это результат шага Б — изменение в процентах. А в этом шаге сначала найди x = ' + fmtAuto(x) + ' %.'; }
+    else if (approxEq(got, 100, 0.1)) { tag = '100% — нет изменения', msg = 'D_new и D_old не равны, поэтому x ≠ 100. Посчитай точно: ' + fmtAuto(tNew.D) + ' · 100 / ' + fmtAuto(tOld.D) + '.'; }
+    showFb(fb, 'warn', '<b>' + tag + ':</b> ' + msg);
+    logError({ mode: 'cmp', qid: 'cmp-x', got, expected: x, tag, msg });
+  }
+}
+
+function cmpCheckChange() {
+  const tOld = tireParams(state.cmpOld), tNew = tireParams(state.cmpNew);
+  const x = round1(tNew.D / tOld.D * 100);
+  const change = round1(Math.abs(x - 100));
+  const inp = document.getElementById('cmp-q-change-inp');
+  const got = parseNum(inp.value);
+  const fb = document.getElementById('cmp-q-change-fb');
+  if (got == null) { showFb(fb, 'warn', 'Введи число.'); return; }
+  if (approxEq(got, change, 0.1)) {
+    inp.classList.add('correct'); inp.disabled = true;
+    document.getElementById('cmp-q-change-btn').disabled = true;
+    document.getElementById('cmp-q-change-btn').textContent = '✓ принято';
+    document.getElementById('cmp-q-change').classList.add('done');
+    showFb(fb, 'ok', '<b>Верно: ' + fmtAuto(change) + ' %.</b>');
+    const key = state.cmpOld + '|' + state.cmpNew;
+    state.cmpQuizDone[key] = state.cmpQuizDone[key] || {};
+    state.cmpQuizDone[key].change = true; saveState();
+    if (state.cmpQuizDone[key].x && state.cmpQuizDone[key].change) markModeAsDone('cmp');
+  } else {
+    inp.classList.add('wrong');
+    let tag = 'Ошибка', msg = 'Изменение = |x − 100| = |' + fmtAuto(x) + ' − 100| = ' + fmtAuto(change) + ' %.';
+    if (approxEq(got, x, 0.2)) { tag = 'Забыли вычесть 100'; msg = 'Это значение x — процент НОВОЙ относительно старой. А «на сколько процентов изменилось» = |' + fmtAuto(x) + ' − 100| = <b>' + fmtAuto(change) + ' %</b>.'; }
+    showFb(fb, 'warn', '<b>' + tag + ':</b> ' + msg);
+    logError({ mode: 'cmp', qid: 'cmp-change', got, expected: change, tag, msg });
+  }
+}
+
+// ============================================================
+// MODE 5 — ERROR LOG
+// ============================================================
+function renderErrorsPanel() {
+  renderReport();
+  const sum = document.getElementById('err-summary');
+  const host = document.getElementById('err-list-host');
+  const errs = state.errors;
+  if (!errs.length) {
+    sum.innerHTML = 'Пока ошибок нет — отлично!';
+    host.innerHTML = '<div class="err-empty">Решай задания: если ошибёшься, здесь появится диагноз и подсказка, как исправить.</div>';
+    return;
+  }
+  // group by tag
+  const byTag = {};
+  for (const e of errs) byTag[e.tag] = (byTag[e.tag] || 0) + 1;
+  const top = Object.entries(byTag).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  sum.innerHTML = '<b>Всего ошибок:</b> ' + errs.length + '. <b>Частые типы:</b> ' + top.map(([t, c]) => t + ' (' + c + ')').join(', ') + '.';
+  let html = '';
+  for (const e of errs.slice().reverse()) {
+    html += '<div class="err-item">' +
+      '<span class="err-tag">' + e.tag + '</span>' +
+      '<div class="err-msg">' + e.msg + ' <br><span class="err-meta">режим: ' + modeLabel(e.mode) + (e.tire ? ' · шина: ' + e.tire : '') + (e.col ? ' · столбец: ' + e.col : '') + (e.got != null ? ' · ввод: ' + e.got : '') + '</span></div>' +
+      '<button class="nav-btn" data-go-mode="' + e.mode + '">→</button>' +
+    '</div>';
+  }
+  host.innerHTML = html;
+  host.querySelectorAll('[data-go-mode]').forEach(b => b.addEventListener('click', () => goToMode(b.dataset.goMode)));
+}
+
+function renderReport() {
+  const host = document.getElementById('report-host');
+  if (!host) return;
+  const tires = allTires();
+  // count completed cells
+  let cellsOk = 0, cellsTotal = tires.length * FILLABLE_COLS.length;
+  for (const t of tires) for (const c of FILLABLE_COLS) if (getEntry(t, c).status === 'correct') cellsOk++;
+  // count completed questions
+  const ex = exercise();
+  const qDone = ex.questions.filter(q => state.questionsDone[q.id]).length;
+  const qTotal = ex.questions.length;
+  // errors by column (table mode)
+  const errByCol = {};
+  for (const e of state.errors) if (e.mode === 'table' && e.col) errByCol[e.col] = (errByCol[e.col] || 0) + 1;
+  const worstCol = Object.entries(errByCol).sort((a, b) => b[1] - a[1])[0];
+  // errors by tag
+  const tagCounts = {};
+  for (const e of state.errors) tagCounts[e.tag] = (tagCounts[e.tag] || 0) + 1;
+  const topTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  // advice
+  const advice = [];
+  if (worstCol) {
+    const colDef = COL_DEFS.find(c => c.key === worstCol[0]);
+    advice.push('Больше всего ошибок в столбце <b>' + (colDef ? colDef.label : worstCol[0]) + '</b> (' + worstCol[1] + '). Повтори формулу: <b>' + (colDef ? colDef.formula : '') + '</b>.');
+  }
+  for (const [tag, cnt] of topTags) {
+    if (tag === 'Забыты две боковины') advice.push('Часто: «забыты две боковины». Помни: <b>D = d + 2H</b>, боковин ДВЕ (сверху и снизу).');
+    if (tag === 'Профиль ≠ мм' || tag === 'Спутаны B и p') advice.push('Часто: путаешь профиль и миллиметры. p — это <b>процент</b>, миллиметры считаются: <b>H = B · p / 100</b>.');
+    if (tag === 'Спутаны R и D' || tag === 'Спутаны D и R') advice.push('Часто: путаешь радиус и диаметр. Запомни: <b>R = D / 2</b>.');
+    if (tag === 'Забыли вычесть 100') advice.push('Часто: после x = 102,2 % забываешь вычесть 100. Изменение = <b>|x − 100|</b>.');
+    if (tag === 'Не та шина за 100%') advice.push('За 100 % берём <b>старую</b> шину (то, с чем сравниваем).');
+  }
+  const noErrors = state.errors.length === 0;
+  const cellsPct = cellsTotal > 0 ? Math.round(cellsOk / cellsTotal * 100) : 0;
+  const qPct = qTotal > 0 ? Math.round(qDone / qTotal * 100) : 0;
+  host.innerHTML =
+    '<div class="report-card">' +
+      '<h3>Учебный отчёт — текущий набор</h3>' +
+      '<div class="report-row"><span>Заполнено ячеек таблицы</span><b>' + cellsOk + ' / ' + cellsTotal + ' (' + cellsPct + ' %)</b></div>' +
+      '<div class="report-row"><span>Решено вопросов</span><b>' + qDone + ' / ' + qTotal + ' (' + qPct + ' %)</b></div>' +
+      '<div class="report-row"><span>Зафиксировано ошибок</span><b>' + state.errors.length + '</b></div>' +
+      (advice.length ? '<div class="report-advice">' + advice.map(a => '• ' + a).join('<br>') + '</div>' : (noErrors ? '<div class="report-advice"><b>Без ошибок!</b> Можно переходить к следующему набору.</div>' : '')) +
+    '</div>';
+}
+
+function renderErrSidebar() {
+  // updates count in sidebar
+  const errEl = document.getElementById('stat-errs');
+  if (errEl) errEl.textContent = state.errors.length;
+}
+
+function modeLabel(m) {
+  return { compat: 'Таблица условия', mark: 'Маркировка', table: 'Расчётная таблица', ques: 'Вопросы', cmp: 'Сравнение 2×2' }[m] || m;
+}
+
+// ============================================================
+// MODE 6 — TEACHER
+// ============================================================
+function renderTeacher() {
+  // export current exercise as JSON
+  document.getElementById('tch-json').value = JSON.stringify(exercise(), null, 2);
+  // settings
+  document.querySelectorAll('input[name="rounding"]').forEach(r => {
+    r.checked = (r.value === state.rounding);
+    r.onchange = () => { state.rounding = r.value; saveState(); };
+  });
+  const hintsCb = document.getElementById('toggle-hints');
+  hintsCb.checked = !!state.showHints;
+  hintsCb.onchange = () => { state.showHints = hintsCb.checked; document.body.dataset.hints = hintsCb.checked ? 'on' : 'off'; saveState(); };
+  document.getElementById('tch-export').onclick = () => {
+    document.getElementById('tch-json').value = JSON.stringify(exercise(), null, 2);
+    document.getElementById('tch-json').select();
+  };
+  document.getElementById('tch-import').onclick = () => {
+    try {
+      const obj = JSON.parse(document.getElementById('tch-json').value);
+      if (!obj.id || !obj.initial || !obj.candidates) {
+        alert('Нужны хотя бы поля: id, initial, candidates.');
+        return;
+      }
+      // mark as user-imported so we can persist + delete
+      obj.__user = true;
+      EXERCISES[obj.id] = obj;
+      saveUserExercises();
+      renderExerciseSelect();
+      state.exerciseId = obj.id;
+      state.tableEntries = {}; state.questionsDone = {}; state.markPartsDone = {};
+      state.cmpQuizDone = {}; state.cmpPreQuizDone = {}; state.compatTasksDone = {};
+      saveState();
+      alert('Импортировано: ' + obj.title + '\n(сохранено в localStorage — переживёт перезагрузку страницы)');
+      renderAll();
+    } catch (e) {
+      alert('Ошибка JSON: ' + e.message);
+    }
+  };
+  document.getElementById('tch-reset-all').onclick = () => {
+    if (confirm('Сбросить весь прогресс ученика?')) {
+      const keepEx = state.exerciseId;
+      doReset();
+      state.exerciseId = EXERCISES[keepEx] ? keepEx : DEFAULT_STATE.exerciseId;
+      saveState();
+      renderAll();
+    }
+  };
+  document.getElementById('tch-reset-current').onclick = () => {
+    if (confirm('Сбросить только прогресс по текущему набору «' + exercise().title + '»?')) {
+      state.tableEntries = {};
+      state.questionsDone = {};
+      state.markPartsDone = {};
+      state.cmpQuizDone = {};
+      state.cmpPreQuizDone = {};
+      state.compatTasksDone = {};
+      state.markIdx = 0;
+      // remove errors related to this exercise — too granular, leave for now
+      saveState();
+      renderAll();
+    }
+  };
+
+  // ===== list all exercises =====
+  const listHost = document.getElementById('tch-ex-list');
+  let listHtml = '';
+  for (const id in EXERCISES) {
+    const ex = EXERCISES[id];
+    const isUser = !!ex.__user;
+    const isCurrent = state.exerciseId === id;
+    listHtml += '<div style="display:flex; gap:8px; align-items:center; padding:8px 12px; background:' + (isCurrent ? 'var(--accent-soft)' : 'var(--bg-card)') + '; border:1px solid var(--line); border-radius:7px; margin-bottom:6px;">' +
+      '<span style="flex:1; font-size:13px;"><b>' + ex.title + '</b>' + (isUser ? ' <span class="pill gold">пользовательский</span>' : ' <span class="pill">встроенный</span>') + (isCurrent ? ' <span class="pill ok">активный</span>' : '') + '</span>' +
+      '<button class="tch-btn ghost" data-use-ex="' + id + '">открыть</button>' +
+      (isUser ? '<button class="tch-btn ghost" data-del-ex="' + id + '" style="color: var(--error-ink); border-color: var(--warm);">удалить</button>' : '') +
+      '</div>';
+  }
+  listHost.innerHTML = listHtml;
+  listHost.querySelectorAll('[data-use-ex]').forEach(b => b.addEventListener('click', () => {
+    state.exerciseId = b.dataset.useEx;
+    state.tableEntries = {}; state.questionsDone = {}; state.markPartsDone = {};
+    state.cmpQuizDone = {}; state.cmpPreQuizDone = {}; state.compatTasksDone = {};
+    state.markIdx = 0;
+    saveState();
+    renderAll();
+  }));
+  listHost.querySelectorAll('[data-del-ex]').forEach(b => b.addEventListener('click', () => {
+    const id = b.dataset.delEx;
+    if (!confirm('Удалить пользовательский набор «' + EXERCISES[id].title + '»?')) return;
+    delete EXERCISES[id];
+    saveUserExercises();
+    if (state.exerciseId === id) state.exerciseId = DEFAULT_STATE.exerciseId;
+    saveState();
+    renderAll();
+  }));
+
+  // student errors summary
+  const sum = document.getElementById('tch-err-summary');
+  if (!state.errors.length) {
+    sum.innerHTML = '<i>Ошибок пока не зафиксировано.</i>';
+  } else {
+    const byTag = {};
+    for (const e of state.errors) byTag[e.tag] = (byTag[e.tag] || 0) + 1;
+    const sorted = Object.entries(byTag).sort((a, b) => b[1] - a[1]);
+    sum.innerHTML = '<b>Всего ошибок: ' + state.errors.length + '.</b><br>' +
+      sorted.map(([t, c]) => '<span class="pill" style="margin: 2px;">' + t + ' × ' + c + '</span>').join(' ');
+  }
+}
+
+// ============================================================
+// COMMON HELPERS
+// ============================================================
+function showFb(el, type, html) {
+  if (!el) return;
+  el.className = el.className.split(' ')[0] + ' ' + type + ' show';
+  el.innerHTML = html;
+}
+function hideFb(el) { if (!el) return; el.className = el.className.split(' ')[0]; el.innerHTML = ''; }
+
+function markModeAsDone(mode) {
+  const btn = document.querySelector('#mode-stepper [data-mode="' + mode + '"]');
+  if (btn) btn.classList.add('done');
+}
+
+function updateStats() {
+  const tires = allTires();
+  let n = 0;
+  for (const t of tires) for (const c of FILLABLE_COLS) if (getEntry(t, c).status === 'correct') n++;
+  document.getElementById('stat-cells').textContent = n;
+  document.getElementById('stat-errs').textContent = state.errors.length;
+}
+
+function goToMode(mode) {
+  state.mode = mode;
+  saveState();
+  document.querySelectorAll('.mode-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('mode-' + mode).classList.add('active');
+  document.querySelectorAll('#mode-stepper .mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+  // re-render the active mode (data may have changed)
+  if (mode === 'compat') { renderCompatBlock(); renderCompatTasks(); }
+  if (mode === 'mark') renderMarkingQuiz();
+  if (mode === 'table') renderCalcTable();
+  if (mode === 'ques') renderQuestions();
+  if (mode === 'cmp') renderCmp();
+  if (mode === 'err') renderErrorsPanel();
+  if (mode === 'tch') renderTeacher();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderExerciseSelect() {
+  const sel = document.getElementById('ex-select');
+  sel.innerHTML = Object.values(EXERCISES).map(e => '<option value="' + e.id + '"' + (e.id === state.exerciseId ? ' selected' : '') + '>' + e.title + '</option>').join('');
+}
+
+function renderHero() {
+  const e = exercise();
+  document.getElementById('ex-title').innerHTML = e.title.replace(/·/g, '<em>·</em>');
+  document.getElementById('ex-desc').textContent = e.description || '';
+  document.getElementById('ex-meta').innerHTML = '<span>Источник: <b>' + (e.source || '—') + '</b></span> · <span>заводская <b>' + e.initial + '</b></span> · <span>кандидатов: <b>' + e.candidates.length + '</b></span>';
+}
+
+function renderAll() {
+  renderHero();
+  renderExerciseSelect();
+  renderWheelDiagram();
+  renderCompatBlock();
+  renderCompatTasks();
+  renderMarkingQuiz();
+  renderCalcTable();
+  renderQuestions();
+  renderCmp();
+  renderErrorsPanel();
+  renderTeacher();
+  updateStats();
+  // restore active mode
+  goToMode(state.mode || 'compat');
+}
+
+function doReset() {
+  state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  saveState();
+  renderAll();
+}
+
+// ============================================================
+// INIT
+// ============================================================
+(function init() {
+  loadState();
+  // exercise selector
+  document.getElementById('ex-select').addEventListener('change', e => {
+    state.exerciseId = e.target.value;
+    // reset per-exercise progress
+    state.tableEntries = {};
+    state.questionsDone = {};
+    state.markPartsDone = {};
+    state.cmpQuizDone = {};
+    state.cmpPreQuizDone = {};
+    state.compatTasksDone = {};
+    state.compatSeed = 0;
+    state.markIdx = 0;
+    state.cmpOld = null;
+    state.cmpNew = null;
+    saveState();
+    renderAll();
+  });
+  // level switch
+  document.querySelectorAll('#level-switch button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#level-switch button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      state.level = b.dataset.level;
+      document.body.dataset.level = state.level;
+      saveState();
+    });
+  });
+  // mode tabs
+  document.querySelectorAll('#mode-stepper .mode-btn').forEach(b => {
+    b.addEventListener('click', () => goToMode(b.dataset.mode));
+  });
+  // fill mode switch
+  document.querySelectorAll('#fill-mode-switch button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#fill-mode-switch button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      state.fillMode = b.dataset.fill;
+      saveState();
+      renderCalcTable();
+    });
+  });
+  // marking buttons
+  document.getElementById('compat-shuffle').addEventListener('click', () => {
+    state.compatSeed = (state.compatSeed || 0) + 1;
+    state.compatTasksDone = {};
+    saveState();
+    renderCompatTasks();
+  });
+  document.getElementById('compat-to-mark').addEventListener('click', () => goToMode('mark'));
+  document.getElementById('mark-back-to-compat').addEventListener('click', () => goToMode('compat'));
+  document.getElementById('mark-next-tire').addEventListener('click', () => {
+    state.markIdx = (state.markIdx + 1) % allTires().length;
+    saveState();
+    renderMarkingQuiz();
+  });
+  document.getElementById('mark-to-table').addEventListener('click', () => goToMode('table'));
+  // navigation
+  document.getElementById('table-back').addEventListener('click', () => goToMode('mark'));
+  document.getElementById('table-to-ques').addEventListener('click', () => goToMode('ques'));
+  document.getElementById('table-reset').addEventListener('click', () => {
+    if (confirm('Очистить расчётную таблицу?')) {
+      state.tableEntries = {}; saveState(); renderCalcTable();
+    }
+  });
+  document.getElementById('ques-back').addEventListener('click', () => goToMode('table'));
+  document.getElementById('ques-to-cmp').addEventListener('click', () => goToMode('cmp'));
+  document.getElementById('cmp-back').addEventListener('click', () => goToMode('ques'));
+  document.getElementById('cmp-to-err').addEventListener('click', () => goToMode('err'));
+  document.getElementById('err-back').addEventListener('click', () => goToMode('cmp'));
+  document.getElementById('err-clear').addEventListener('click', () => {
+    if (confirm('Очистить журнал ошибок?')) { state.errors = []; saveState(); renderErrorsPanel(); updateStats(); }
+  });
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    if (confirm('Сбросить весь прогресс?')) doReset();
+  });
+
+  // apply persisted level/hints
+  document.body.dataset.level = state.level || 'learn';
+  document.body.dataset.hints = state.showHints ? 'on' : 'off';
+  document.querySelectorAll('#level-switch button').forEach(b => {
+    b.classList.toggle('active', b.dataset.level === state.level);
+  });
+  document.querySelectorAll('#fill-mode-switch button').forEach(b => {
+    b.classList.toggle('active', b.dataset.fill === state.fillMode);
+  });
+
+  // ====== Teacher mode visibility (hidden by default; show via ?teacher=1 or toggle) ======
+  const params = new URLSearchParams(location.search);
+  const tParam = params.get('teacher');
+  if (tParam === '1' || state.teacherVisible) {
+    document.body.dataset.teacher = 'shown';
+    state.teacherVisible = true;
+  } else {
+    document.body.dataset.teacher = 'hidden';
+  }
+  document.getElementById('tch-toggle-link').addEventListener('click', () => {
+    const isHidden = document.body.dataset.teacher === 'hidden';
+    document.body.dataset.teacher = isHidden ? 'shown' : 'hidden';
+    state.teacherVisible = isHidden;
+    saveState();
+    document.getElementById('tch-toggle-link').textContent = isHidden ? '× скрыть режим учителя' : '≡ режим учителя';
+    if (isHidden) goToMode('tch');
+  });
+  document.getElementById('tch-toggle-link').textContent = (document.body.dataset.teacher === 'shown') ? '× скрыть режим учителя' : '≡ режим учителя';
+
+  // first render
+  renderAll();
+
+  // ===== self-test sanity (dev safety net) =====
+  const tests = [
+    ['185/60 R15', { d: 381, H: 111, D: 603 }],
+    ['205/55 R15', { d: 381, H: 112.75, D: 606.5 }],
+    ['205/45 R17', { d: 431.8, H: 92.25, D: 616.3 }],
+    ['195/60 R16', { d: 406.4, H: 117, D: 640.4 }],
+    ['215/45 R18', { d: 457.2, H: 96.75, D: 650.7 }],
+  ];
+  for (const [m, exp] of tests) {
+    const t = tireParams(m);
+    if (!approxEq(t.d, exp.d, 0.1) || !approxEq(t.H, exp.H, 0.05) || !approxEq(t.D, exp.D, 0.1)) {
+      console.error('SELF-TEST FAIL for ' + m, t, exp);
+    }
+  }
+  console.log('Tires trainer ready · self-tests passed');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Сергей Леонидович: Python — if внутри for</title>
+  <style>
+    :root{
+      --bg:#f3f6fb;--ink:#172033;--muted:#667085;--card:#fff;--line:#e5e7eb;
+      --blue:#2563eb;--blueSoft:#eef4ff;--green:#15803d;--greenSoft:#dcfce7;
+      --amber:#92400e;--amberSoft:#fff7ed;--red:#b91c1c;--redSoft:#fee4e2;
+      --violet:#6d28d9;--violetSoft:#f5f3ff;--shadow:0 14px 34px rgba(20,30,50,.12);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Verdana,Arial,sans-serif;background:radial-gradient(circle at top left,#fff 0,#f3f6fb 42%,#e8edf7 100%);color:var(--ink);min-height:100vh}
+    .page{max-width:1120px;margin:0 auto;padding:22px}
+    .hero,.card{background:var(--card);border-radius:24px;padding:22px;box-shadow:var(--shadow);margin-bottom:18px}
+    .back{display:flex;gap:14px;flex-wrap:wrap}.back a{color:var(--blue);font-weight:700;text-decoration:none}.back a:hover{text-decoration:underline}
+    .hero{background:linear-gradient(135deg,#fff 0%,#eef4ff 58%,#f8fbff 100%);border:1px solid #dbeafe}
+    .kicker{display:inline-flex;gap:8px;align-items:center;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:999px;font-weight:900;font-size:13px;padding:8px 12px;margin:12px 0}
+    h1{margin:0 0 8px;font-size:clamp(34px,5vw,58px);line-height:.98;letter-spacing:-.05em}
+    h2{margin:0 0 12px;font-size:24px;letter-spacing:-.03em}
+    h3{margin:0 0 10px;font-size:18px}
+    .sub{color:var(--muted);font-size:18px;line-height:1.55;max-width:880px;margin:0}
+    .route{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+    .routeStep{background:#fff;border:1px solid #dbeafe;border-radius:18px;padding:13px 14px;color:#475569;font-size:14px;line-height:1.35}
+    .routeStep strong{display:block;color:#0f172a;margin-bottom:4px}
+    .trainerHead{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+    .badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;background:#eef4ff;color:#1d4ed8;border:1px solid #bfdbfe;font-weight:900;font-size:13px;padding:7px 10px}
+    .badge.green{background:var(--greenSoft);color:#166534;border-color:#86efac}.badge.violet{background:var(--violetSoft);color:var(--violet);border-color:#ddd6fe}.badge.amber{background:var(--amberSoft);color:var(--amber);border-color:#fed7aa}
+    .mini{color:var(--muted);font-size:14px;line-height:1.45;margin-top:6px}
+    .explain{background:#f8fafc;border:1px solid #e5e7eb;border-radius:20px;padding:16px;margin-bottom:16px;line-height:1.55}
+    .explain p{margin:6px 0}.explain code{font-size:15px}
+    .grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}
+    .taskBox{border:1px solid #dbeafe;border-radius:22px;padding:18px;background:#fff;min-width:0}
+    .taskTitle{font-size:21px;line-height:1.35;font-weight:900;margin:12px 0}
+    pre{white-space:pre-wrap;word-break:break-word;background:#101828;color:#ecfdf5;border-radius:18px;padding:16px;font-size:17px;line-height:1.45;overflow:auto;margin:0 0 14px}
+    code{background:#eef4ff;border-radius:8px;padding:2px 5px;color:#1d4ed8}
+    .answers{display:grid;gap:10px}.answers button{text-align:left;white-space:pre-wrap;line-height:1.35}
+    button{border:0;border-radius:14px;padding:11px 15px;font-weight:800;cursor:pointer;background:#e7ebf3;color:#172033;font-family:inherit;font-size:14px}
+    button:hover{filter:brightness(.98)}button.primary{background:var(--blue);color:#fff}button.danger{background:#fee4e2;color:#991b1b}button.correct{background:#dcfce7;color:#14532d;border:1px solid #86efac}button.wrong{background:#fee4e2;color:#7a271a;border:1px solid #fecaca}
+    .inputRow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:start;margin-top:10px}
+    textarea{width:100%;min-height:96px;border:1px solid #cbd5e1;border-radius:14px;padding:12px;font:16px/1.45 Consolas,Monaco,monospace;background:#fff}
+    .fb{margin-top:12px;border-radius:16px;padding:13px;border:1px solid #e5e7eb;font-size:16px;line-height:1.45;background:#f8fafc;color:#475569}.fb.ok{background:var(--greenSoft);color:#14532d;border-color:#86efac}.fb.err{background:var(--redSoft);color:#7a271a;border-color:#fecaca}.fb.tip{background:#fffbeb;color:#713f12;border-color:#fde68a}
+    .controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .side{display:grid;gap:14px}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{background:#f8fafc;border:1px solid #e5e7eb;border-radius:16px;padding:12px;text-align:center}.stat b{display:block;font-size:28px}.stat span{font-size:12px;color:#667085;font-weight:800}
+    .course,.rules,.historyBox{border-radius:20px;padding:16px}.course{background:#eef4ff;border:1px solid #bfdbfe}.rules{background:#f0fdf4;border:1px solid #bbf7d0}.historyBox{background:#f8fafc;border:1px solid #e5e7eb}.hist{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:9px;margin-bottom:8px;font-size:14px;line-height:1.35}
+    .note{background:#fff7ed;border:1px solid #fed7aa;border-radius:20px;padding:16px;color:#7c2d12;line-height:1.55}.footer{margin:24px 0 8px;text-align:center;color:#64748b;font-size:13px}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}.route{grid-template-columns:1fr 1fr}.stats{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:560px){.page{padding:14px}.route,.stats{grid-template-columns:1fr}h1{font-size:36px}.inputRow{grid-template-columns:1fr}textarea{min-width:100%}}
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="back"><a href="./index.html">← На главную</a><a href="./python-if-for-sergey.html">← Предыдущий тренажёр</a></div>
+      <div class="kicker">🐍 Python · взрослый новичок · следующий уровень</div>
+      <h1>Сергей Леонидович: if внутри for</h1>
+      <p class="sub">Теперь соединяем два уже знакомых действия: цикл <b>for</b> идёт по значениям, а условие <b>if</b> внутри цикла выбирает, что именно делать с каждым значением. Без функций и вложенных циклов: только один цикл и одно условие внутри.</p>
+      <div class="route">
+        <div class="routeStep"><strong>1. for берёт значение</strong><code>x</code> по очереди становится каждым числом или словом из списка.</div>
+        <div class="routeStep"><strong>2. if проверяет</strong>Условие проверяется заново на каждом шаге цикла.</div>
+        <div class="routeStep"><strong>3. отступы важны</strong>Команда внутри <code>if</code> имеет двойной отступ: она внутри цикла и внутри условия.</div>
+        <div class="routeStep"><strong>4. счётчик и сумма</strong><code>k += 1</code> считает подходящие элементы, <code>s += x</code> складывает их.</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="trainerHead">
+        <div>
+          <h2>Тренажёр 3: смешанные задачи</h2>
+          <div class="mini">Цель: спокойно читать код сверху вниз: цикл взял значение → условие проверило → команда выполнилась или пропустилась.</div>
+        </div>
+        <span class="badge violet">уровень: if внутри for</span>
+      </div>
+
+      <div class="explain">
+        <p><b>Главная идея:</b> цикл запускает одну и ту же проверку несколько раз.</p>
+        <p><code>for x in numbers:</code> — берём очередное число. <code>if x &gt; 0:</code> — проверяем именно это число.</p>
+        <p>Если команда стоит с двумя отступами, она выполняется только когда условие внутри цикла истинно.</p>
+      </div>
+
+      <div class="grid">
+        <div class="taskBox">
+          <div class="badge green" id="taskKind">задание</div>
+          <div class="taskTitle" id="taskTitle"></div>
+          <pre id="taskCode"></pre>
+          <div id="answers" class="answers"></div>
+          <div id="inputWrap" class="inputRow" hidden>
+            <textarea id="input" autocomplete="off" spellcheck="false" placeholder="впиши фрагмент кода или маленькую программу"></textarea>
+            <button id="check" class="primary">Проверить</button>
+          </div>
+          <div id="fb" class="fb">Выбери ответ или впиши код. Для проверки можно нажать кнопку или Ctrl+Enter.</div>
+          <div class="controls">
+            <button id="solution">Показать решение</button>
+            <button id="next" class="primary">Следующее</button>
+          </div>
+        </div>
+
+        <aside class="side">
+          <div class="stats">
+            <div class="stat"><b id="total">0</b><span>решено</span></div>
+            <div class="stat"><b id="right">0</b><span>верно</span></div>
+            <div class="stat"><b id="streak">0</b><span>серия</span></div>
+            <div class="stat"><b id="acc">0%</b><span>точность</span></div>
+            <div class="stat"><b id="best">0</b><span>лучшая</span></div>
+            <div class="stat"><b id="date">—</b><span>дата</span></div>
+          </div>
+          <div class="course">
+            <h3>Прогресс темы</h3>
+            <p><span id="status" class="badge">тема начата</span></p>
+            <p id="advice">Реши первые 10 заданий.</p>
+            <button id="reset" class="danger">Сбросить статистику</button>
+          </div>
+          <div class="rules">
+            <h3>Опорные правила</h3>
+            <p><code>if</code> внутри <code>for</code> проверяется на каждом шаге.</p>
+            <p><code>% 2 == 0</code> — число чётное.</p>
+            <p><code>k += 1</code> — увеличить счётчик на 1.</p>
+            <p><code>s += x</code> — добавить <code>x</code> к сумме.</p>
+          </div>
+          <div class="historyBox">
+            <h3>История</h3>
+            <div id="history"></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="note">
+      <b>Как давать Сергею Леонидовичу:</b> первые 10–12 заданий — без спешки, вслух: «цикл взял число, if проверил число». Если путается, возвращаться к отступам. После 25+ решений с точностью от 90% можно переходить к задачам на счётчик, сумму и простые фильтры в стиле экзаменационных программ.
+    </section>
+
+    <div class="footer">Python для Сергея Леонидовича · if внутри for · Mathexam.space</div>
+  </main>
+
+<script>
+const STORAGE_KEY = 'mathExamCourseProgress.v1';
+const TOPIC_KEY = 'pythonIfInsideForSergey';
+
+const tasks = [
+  {
+    kind:'чтение кода',
+    title:'Что выведет программа?',
+    code:'numbers = [1, 2, 3, 4]\n\nfor x in numbers:\n    if x > 2:\n        print(x)',
+    options:['3\n4','1\n2','2\n3\n4'],
+    answer:'3\n4',
+    explanation:'Цикл берёт 1, 2, 3, 4. Условие x > 2 верно только для 3 и 4.'
+  },
+  {
+    kind:'чтение кода',
+    title:'Что выведет программа?',
+    code:'for i in range(5):\n    if i == 3:\n        print("нашли")',
+    options:['нашли','0\n1\n2\n3\n4','Ничего'],
+    answer:'нашли',
+    explanation:'range(5) даёт 0, 1, 2, 3, 4. Печать срабатывает только при i == 3.'
+  },
+  {
+    kind:'вставить условие',
+    title:'Вставь условие, чтобы программа печатала только положительные числа.',
+    code:'numbers = [-2, 5, 0, 7]\n\nfor x in numbers:\n    if __________:\n        print(x)',
+    input:true,
+    answer:'x > 0',
+    accepted:['x > 0','x>0'],
+    explanation:'Положительные числа больше нуля, значит условие x > 0.'
+  },
+  {
+    kind:'выбор варианта',
+    title:'Где правильные отступы?',
+    code:'Вариант A:\nfor x in numbers:\nif x > 0:\nprint(x)\n\nВариант B:\nfor x in numbers:\n    if x > 0:\n        print(x)',
+    options:['Вариант A','Вариант B'],
+    answer:'Вариант B',
+    explanation:'if находится внутри for, а print находится внутри if, поэтому нужны два уровня отступов.'
+  },
+  {
+    kind:'чтение кода',
+    title:'Что выведет программа?',
+    code:'words = ["кот", "самолёт", "дом"]\n\nfor word in words:\n    if len(word) > 3:\n        print(word)',
+    options:['самолёт','кот\nдом','кот\nсамолёт\nдом'],
+    answer:'самолёт',
+    explanation:'len(word) считает длину слова. Длиннее 3 букв только слово «самолёт».'
+  },
+  {
+    kind:'вставить условие',
+    title:'Вставь условие, чтобы программа печатала только чётные числа.',
+    code:'numbers = [3, 4, 7, 8]\n\nfor x in numbers:\n    if __________:\n        print(x)',
+    input:true,
+    answer:'x % 2 == 0',
+    accepted:['x % 2 == 0','x%2==0'],
+    explanation:'Остаток от деления на 2 равен 0 у чётных чисел.'
+  },
+  {
+    kind:'чтение кода',
+    title:'Что выведет программа?',
+    code:'for i in range(1, 6):\n    if i % 2 == 0:\n        print(i)',
+    options:['2\n4','1\n2\n3\n4\n5','0\n2\n4'],
+    answer:'2\n4',
+    explanation:'range(1, 6) даёт 1, 2, 3, 4, 5. Чётные среди них — 2 и 4.'
+  },
+  {
+    kind:'вставить часть',
+    title:'Вставь диапазон, чтобы проверить числа от 1 до 5.',
+    code:'for i in __________:\n    if i > 3:\n        print(i)',
+    input:true,
+    answer:'range(1, 6)',
+    accepted:['range(1, 6)','range(1,6)'],
+    explanation:'Чтобы получить 1, 2, 3, 4, 5, пишем range(1, 6).'
+  },
+  {
+    kind:'счётчик',
+    title:'Что будет выведено?',
+    code:'numbers = [10, 25, 7, 30]\nk = 0\n\nfor x in numbers:\n    if x > 20:\n        k += 1\n\nprint(k)',
+    options:['2','25\n30','4'],
+    answer:'2',
+    explanation:'Больше 20 подходят 25 и 30, значит счётчик увеличится два раза.'
+  },
+  {
+    kind:'вставить условие',
+    title:'Вставь условие, чтобы посчитать числа меньше 10.',
+    code:'numbers = [4, 12, 8, 15]\nk = 0\n\nfor x in numbers:\n    if __________:\n        k += 1\n\nprint(k)',
+    input:true,
+    answer:'x < 10',
+    accepted:['x < 10','x<10'],
+    explanation:'Нужно считать элементы, которые меньше 10.'
+  },
+  {
+    kind:'выбор варианта',
+    title:'Какой код считает чётные числа?',
+    code:'Вариант A:\nk = 0\nfor x in numbers:\n    if x % 2 == 0:\n        k += 1\n\nВариант B:\nk = 0\nfor x in numbers:\n    if x % 2 == 0:\n    k += 1',
+    options:['Вариант A','Вариант B'],
+    answer:'Вариант A',
+    explanation:'В варианте A команда k += 1 находится внутри if. В варианте B сломан отступ.'
+  },
+  {
+    kind:'сумма',
+    title:'Что будет выведено?',
+    code:'numbers = [5, -2, 10, -1]\ns = 0\n\nfor x in numbers:\n    if x > 0:\n        s += x\n\nprint(s)',
+    options:['15','12','5\n10'],
+    answer:'15',
+    explanation:'Складываем только положительные: 5 + 10 = 15.'
+  },
+  {
+    kind:'вставить команду',
+    title:'Вставь команду, чтобы складывать подходящие числа.',
+    code:'numbers = [3, 9, 12]\ns = 0\n\nfor x in numbers:\n    if x > 5:\n        __________\n\nprint(s)',
+    input:true,
+    answer:'s += x',
+    accepted:['s += x','s+=x','s = s + x','s=s+x'],
+    explanation:'Когда число подходит, его нужно прибавить к сумме s.'
+  },
+  {
+    kind:'чтение кода',
+    title:'Что выведет программа?',
+    code:'names = ["Анна", "Борис", "Ира"]\n\nfor name in names:\n    if name == "Ира":\n        print("нашли Иру")',
+    options:['нашли Иру','Анна\nБорис\nИра','Ничего'],
+    answer:'нашли Иру',
+    explanation:'Условие истинно только для строки "Ира".'
+  },
+  {
+    kind:'вставить условие',
+    title:'Вставь условие, чтобы печатать слова, которые начинаются с буквы А.',
+    code:'names = ["Анна", "Борис", "Артём"]\n\nfor name in names:\n    if __________:\n        print(name)',
+    input:true,
+    answer:'name[0] == "А"',
+    accepted:['name[0] == "А"','name[0]=="А"','name[0] == "A"','name[0]=="A"','name[0] == \'А\'','name[0]==\'А\'','name[0] == \'A\'','name[0]==\'A\''],
+    explanation:'Первый символ строки — это name[0]. Его сравниваем с "А".'
+  },
+  {
+    kind:'чтение кода',
+    title:'Сколько раз выполнится print?',
+    code:'for i in range(6):\n    if i >= 4:\n        print(i)',
+    options:['2 раза','6 раз','4 раза'],
+    answer:'2 раза',
+    explanation:'range(6) даёт 0, 1, 2, 3, 4, 5. Условие i >= 4 верно для 4 и 5.'
+  },
+  {
+    kind:'вставить условие',
+    title:'Вставь условие, чтобы выбрать числа от 10 включительно.',
+    code:'numbers = [7, 10, 12, 3]\n\nfor x in numbers:\n    if __________:\n        print(x)',
+    input:true,
+    answer:'x >= 10',
+    accepted:['x >= 10','x>=10'],
+    explanation:'«От 10 включительно» означает больше или равно 10.'
+  },
+  {
+    kind:'счётчик',
+    title:'Что будет выведено?',
+    code:'marks = [5, 4, 2, 5, 3]\nk = 0\n\nfor mark in marks:\n    if mark == 5:\n        k += 1\n\nprint(k)',
+    options:['2','5','5\n5'],
+    answer:'2',
+    explanation:'Оценка 5 встречается два раза.'
+  },
+  {
+    kind:'вставить команду',
+    title:'Вставь команду, чтобы считать подходящие элементы.',
+    code:'prices = [100, 250, 80, 300]\nk = 0\n\nfor price in prices:\n    if price > 200:\n        __________\n\nprint(k)',
+    input:true,
+    answer:'k += 1',
+    accepted:['k += 1','k+=1','k = k + 1','k=k+1'],
+    explanation:'Каждый раз, когда цена больше 200, увеличиваем счётчик на 1.'
+  },
+  {
+    kind:'чтение кода',
+    title:'Что выведет программа?',
+    code:'numbers = [2, 5, 8]\n\nfor x in numbers:\n    if x < 5:\n        print("маленькое")\n    else:\n        print("не маленькое")',
+    options:['маленькое\nне маленькое\nне маленькое','маленькое','не маленькое\nне маленькое\nне маленькое'],
+    answer:'маленькое\nне маленькое\nне маленькое',
+    explanation:'Для 2 условие верно. Для 5 и 8 условие x < 5 неверно, поэтому работает else.'
+  },
+  {
+    kind:'вставить условие',
+    title:'Вставь условие, чтобы напечатать числа, которые делятся на 3.',
+    code:'numbers = [4, 6, 9, 10]\n\nfor x in numbers:\n    if __________:\n        print(x)',
+    input:true,
+    answer:'x % 3 == 0',
+    accepted:['x % 3 == 0','x%3==0'],
+    explanation:'Число делится на 3, если остаток от деления на 3 равен 0.'
+  },
+  {
+    kind:'сумма',
+    title:'Что будет выведено?',
+    code:'numbers = [1, 2, 3, 4, 5]\ns = 0\n\nfor x in numbers:\n    if x % 2 == 1:\n        s += x\n\nprint(s)',
+    options:['9','15','6'],
+    answer:'9',
+    explanation:'Нечётные числа: 1, 3, 5. Их сумма равна 9.'
+  },
+  {
+    kind:'маленькая программа',
+    title:'Впиши две строки внутри цикла: условие и команду, чтобы напечатать только отрицательные числа.',
+    code:'numbers = [-3, 4, -1, 8]\n\nfor x in numbers:\n    __________',
+    input:true,
+    answer:'if x < 0:\n    print(x)',
+    accepted:['if x < 0:\n    print(x)','if x<0:\n    print(x)','if x < 0:\n        print(x)','if x<0:\n        print(x)'],
+    explanation:'Внутри цикла сначала ставим if x < 0:, а print(x) пишем ещё глубже, внутри условия.'
+  },
+  {
+    kind:'выбор варианта',
+    title:'Какой вариант выводит только слова длиннее 4 букв?',
+    code:'Вариант A:\nfor word in words:\n    if len(word) > 4:\n        print(word)\n\nВариант B:\nfor word in words:\n    if word > 4:\n        print(word)',
+    options:['Вариант A','Вариант B'],
+    answer:'Вариант A',
+    explanation:'Длину слова проверяют через len(word). Само слово нельзя сравнивать с числом 4.'
+  },
+  {
+    kind:'счётчик',
+    title:'Что будет выведено?',
+    code:'numbers = [11, 14, 18, 21]\nk = 0\n\nfor x in numbers:\n    if x % 2 == 0:\n        k += 1\n\nprint(k)',
+    options:['2','4','14\n18'],
+    answer:'2',
+    explanation:'Чётные числа здесь 14 и 18, их два.'
+  },
+  {
+    kind:'вставить условие',
+    title:'Вставь условие, чтобы выбрать числа, которые НЕ равны нулю.',
+    code:'numbers = [0, 4, 0, 9]\n\nfor x in numbers:\n    if __________:\n        print(x)',
+    input:true,
+    answer:'x != 0',
+    accepted:['x != 0','x!=0'],
+    explanation:'Не равно записывается как !=.'
+  },
+  {
+    kind:'маленькая программа',
+    title:'Впиши программу целиком: посчитать, сколько чисел больше 50.',
+    code:'numbers = [40, 70, 55, 10]\n\n# нужно вывести 2',
+    input:true,
+    answer:'k = 0\nfor x in numbers:\n    if x > 50:\n        k += 1\nprint(k)',
+    accepted:['k = 0\nfor x in numbers:\n    if x > 50:\n        k += 1\nprint(k)','k=0\nfor x in numbers:\n    if x>50:\n        k+=1\nprint(k)'],
+    explanation:'Заводим счётчик k, перебираем числа, подходящие увеличивают k, после цикла печатаем k.'
+  },
+  {
+    kind:'маленькая программа',
+    title:'Впиши программу целиком: сложить положительные числа.',
+    code:'numbers = [-5, 6, 10, -2]\n\n# нужно вывести 16',
+    input:true,
+    answer:'s = 0\nfor x in numbers:\n    if x > 0:\n        s += x\nprint(s)',
+    accepted:['s = 0\nfor x in numbers:\n    if x > 0:\n        s += x\nprint(s)','s=0\nfor x in numbers:\n    if x>0:\n        s+=x\nprint(s)'],
+    explanation:'Положительные числа 6 и 10, их сумма 16. В коде используем накопитель s.'
+  },
+  {
+    kind:'чтение кода',
+    title:'Что выведет программа?',
+    code:'for i in range(1, 8):\n    if i % 3 == 0:\n        print("да")\n    else:\n        print("нет")',
+    options:['нет\nнет\nда\nнет\nнет\nда\nнет','да\nда','нет\nда\nнет'],
+    answer:'нет\nнет\nда\nнет\nнет\nда\nнет',
+    explanation:'От 1 до 7 на 3 делятся только 3 и 6. Для них печатается «да», для остальных — «нет».'
+  },
+  {
+    kind:'финальное задание',
+    title:'Вставь условие: выбрать числа, которые больше 10 и делятся на 2.',
+    code:'numbers = [4, 12, 15, 20]\n\nfor x in numbers:\n    if __________:\n        print(x)',
+    input:true,
+    answer:'x > 10 and x % 2 == 0',
+    accepted:['x > 10 and x % 2 == 0','x>10 and x%2==0','x % 2 == 0 and x > 10','x%2==0 and x>10'],
+    explanation:'Нужны два условия сразу: число больше 10 и остаток при делении на 2 равен 0.'
+  }
+];
+
+const state = { index:0, solved:false, stats:emptyStats() };
+function emptyStats(){return {total:0,right:0,streak:0,best:0,date:null,history:[]}}
+function el(id){return document.getElementById(id)}
+function today(){return new Date().toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'})}
+function load(){
+  try{
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    const saved = data && data.topics && data.topics[TOPIC_KEY];
+    if(saved){ state.stats = Object.assign(emptyStats(), saved); if(!state.stats.history) state.stats.history=[]; }
+  }catch(e){}
+}
+function save(){
+  let data;
+  try{ data = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {topics:{}}; }catch(e){ data = {topics:{}}; }
+  data.topics = data.topics || {};
+  data.topics[TOPIC_KEY] = state.stats;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+function normalize(s){
+  return String(s).trim()
+    .replace(/[“”«»]/g,'"')
+    .replace(/[‘’]/g,"'")
+    .replace(/\r\n/g,'\n')
+    .replace(/[ \t]+/g,' ')
+    .replace(/\s*([><!]=?|==|=|\+\=|\%|\+)\s*/g,'$1')
+    .replace(/\s*,\s*/g,',')
+    .replace(/\s*:\s*/g,':')
+    .replace(/\n+/g,' ')
+    .toLowerCase();
+}
+function currentTask(){ return tasks[state.index % tasks.length]; }
+function render(){
+  const t = currentTask(); state.solved = false;
+  el('taskKind').textContent = t.kind;
+  el('taskTitle').textContent = t.title;
+  el('taskCode').textContent = t.code;
+  el('fb').textContent = 'Выбери ответ или впиши пропущенную часть.';
+  el('fb').className = 'fb';
+  const answers = el('answers'); answers.innerHTML = '';
+  el('inputWrap').hidden = !t.input;
+  el('input').value = '';
+  if(t.input){ el('input').focus(); }
+  else {
+    t.options.forEach(opt=>{
+      const b = document.createElement('button');
+      b.textContent = opt;
+      b.onclick = ()=>choose(opt,b);
+      answers.appendChild(b);
+    });
+  }
+  renderStats();
+}
+function choose(opt,button){
+  if(state.solved){ return; }
+  const t = currentTask();
+  const ok = opt === t.answer;
+  [...el('answers').querySelectorAll('button')].forEach(b=>b.disabled=true);
+  button.classList.add(ok ? 'correct' : 'wrong');
+  if(!ok){ [...el('answers').querySelectorAll('button')].forEach(b=>{ if(b.textContent === t.answer) b.classList.add('correct'); }); }
+  finish(ok,opt);
+}
+function checkInput(){
+  if(state.solved){ return; }
+  const t = currentTask();
+  const user = el('input').value;
+  const accepted = (t.accepted || [t.answer]).map(normalize);
+  const ok = accepted.includes(normalize(user));
+  finish(ok,user);
+}
+function finish(ok,userAnswer){
+  const t = currentTask(); const s = state.stats;
+  state.solved = true;
+  s.total++; s.date = today();
+  if(ok){ s.right++; s.streak++; s.best = Math.max(s.best||0, s.streak); }
+  else { s.streak = 0; }
+  s.history.unshift({text:(ok ? '✓ ' : '• ') + t.kind + ': ' + t.title + ' Ответ: ' + String(userAnswer || '—').replace(/\n/g,' / ')});
+  s.history = s.history.slice(0,10);
+  save();
+  el('fb').textContent = ok ? 'Верно. ' + t.explanation : 'Пока ошибка. Правильный ответ: ' + t.answer.replace(/\n/g,' / ') + '. ' + t.explanation;
+  el('fb').className = 'fb ' + (ok ? 'ok' : 'err');
+  renderStats();
+}
+function showSolution(){
+  const t = currentTask();
+  if(t.input){ el('input').value = t.answer; }
+  else { [...el('answers').querySelectorAll('button')].forEach(b=>{ if(b.textContent === t.answer) b.classList.add('correct'); b.disabled = true; }); }
+  el('fb').textContent = 'Решение: ' + t.answer.replace(/\n/g,' / ') + '. ' + t.explanation;
+  el('fb').className = 'fb tip';
+}
+function next(){ state.index++; render(); }
+function statusFor(s){
+  const acc = s.total ? Math.round(s.right*100/s.total) : 0;
+  if(s.total < 10) return ['тема начата','Реши первые 10 заданий: пока главное — не скорость, а отступы.'];
+  if(s.total >= 25 && acc >= 90) return ['тема освоена','Можно переходить к счётчикам, суммам и простым экзаменационным программам.'];
+  if(s.total >= 16 && acc >= 80) return ['почти освоено','Хорошо. Добей точность до 90%, особенно на счётчиках и суммах.'];
+  if(acc < 70) return ['нужно тренироваться','Сначала проговаривай: for взял значение, if проверил, команда сработала или нет.'];
+  return ['тренируется','Навык закрепляется. Дальше будут счётчик k и сумма s.'];
+}
+function renderStats(){
+  const s = state.stats; const acc = s.total ? Math.round(s.right*100/s.total) : 0; const st = statusFor(s);
+  el('total').textContent = s.total; el('right').textContent = s.right; el('streak').textContent = s.streak; el('acc').textContent = acc + '%'; el('best').textContent = s.best || 0; el('date').textContent = s.date || '—';
+  el('status').textContent = st[0]; el('advice').textContent = st[1];
+  el('history').innerHTML = s.history.length ? s.history.map(h=>'<div class="hist">'+escapeHtml(h.text)+'</div>').join('') : '<div class="hist">Пока история пуста.</div>';
+}
+function reset(){
+  state.stats = emptyStats(); save(); renderStats();
+  el('fb').textContent = 'Статистика сброшена.'; el('fb').className = 'fb tip';
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+el('check').onclick = checkInput; el('next').onclick = next; el('solution').onclick = showSolution; el('reset').onclick = reset;
+el('input').onkeydown = e=>{ if(e.key==='Enter' && (e.ctrlKey || e.metaKey)) checkInput(); };
+load(); render();
+</script>
+</body>
+</html>

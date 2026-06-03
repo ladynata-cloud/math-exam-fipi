@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Билеты по геометрии — 7 класс (Атанасян)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', serif; background: #f5f3ee; color: #1a1a1a; line-height: 1.7; }
+  
+  header {
+    background: #1a2744;
+    color: #fff;
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+  }
+  header h1 { font-size: 2rem; font-weight: normal; letter-spacing: 0.02em; margin-bottom: 0.4rem; }
+  header p { color: #a0aec0; font-size: 0.95rem; font-style: italic; }
+
+  .controls {
+    background: #fff;
+    border-bottom: 1px solid #e2ddd4;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .controls input {
+    flex: 1;
+    padding: 8px 14px;
+    border: 1px solid #d0ccc4;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: 'Georgia', serif;
+    background: #faf9f6;
+    color: #1a1a1a;
+  }
+  .controls input:focus { outline: none; border-color: #1a2744; }
+  .controls span { font-size: 0.85rem; color: #888; white-space: nowrap; }
+
+  main { max-width: 900px; margin: 0 auto; padding: 2rem; }
+
+  .ticket {
+    background: #fff;
+    border: 1px solid #e2ddd4;
+    border-radius: 10px;
+    margin-bottom: 1.25rem;
+    overflow: hidden;
+  }
+  .ticket-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+  .ticket-header:hover { background: #faf9f6; }
+  .ticket-num {
+    min-width: 40px; height: 40px;
+    background: #1a2744; color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; font-weight: bold; font-family: sans-serif;
+    flex-shrink: 0;
+  }
+  .ticket-title { font-size: 1.05rem; color: #1a2744; font-weight: bold; flex: 1; }
+  .ticket-sub { font-size: 0.82rem; color: #888; }
+  .chevron { font-size: 1.1rem; color: #aaa; transition: transform 0.2s; flex-shrink: 0; }
+  .ticket.open .chevron { transform: rotate(180deg); }
+
+  .ticket-body { display: none; border-top: 1px solid #ede9e0; }
+  .ticket.open .ticket-body { display: block; }
+
+  .question-block {
+    padding: 1.5rem 1.5rem 0;
+  }
+  .question-block:last-child { padding-bottom: 1.5rem; }
+  .q-label {
+    display: inline-block;
+    background: #1a2744;
+    color: #fff;
+    font-size: 0.72rem;
+    font-family: sans-serif;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+  }
+  .q-title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #1a2744;
+    margin-bottom: 0.8rem;
+    font-style: italic;
+  }
+  .q-content { font-size: 0.95rem; line-height: 1.8; color: #2a2a2a; }
+  .q-content p { margin-bottom: 0.7rem; }
+  .q-content p:last-child { margin-bottom: 0; }
+
+  .definition {
+    background: #f0f4ff;
+    border-left: 3px solid #1a2744;
+    padding: 0.7rem 1rem;
+    border-radius: 0 6px 6px 0;
+    margin: 0.7rem 0;
+    font-style: italic;
+  }
+  .theorem {
+    background: #fff8e8;
+    border-left: 3px solid #d4a017;
+    padding: 0.7rem 1rem;
+    border-radius: 0 6px 6px 0;
+    margin: 0.7rem 0;
+    font-style: italic;
+  }
+  .proof {
+    background: #f4faf0;
+    border-left: 3px solid #3a7d44;
+    padding: 0.7rem 1rem;
+    border-radius: 0 6px 6px 0;
+    margin: 0.7rem 0;
+  }
+  .note {
+    background: #fdf0f0;
+    border-left: 3px solid #c0392b;
+    padding: 0.6rem 1rem;
+    border-radius: 0 6px 6px 0;
+    margin: 0.7rem 0;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  .divider {
+    height: 1px;
+    background: #ede9e0;
+    margin: 1rem 1.5rem;
+  }
+  b { font-weight: bold; }
+  em { font-style: italic; }
+
+  .hidden { display: none !important; }
+
+  /* SVG figures */
+  .fig-wrap {
+    margin: 1rem 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .fig {
+    background: #f8f7f4;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0.5rem;
+    text-align: center;
+    flex: 0 0 auto;
+  }
+  .fig svg { display: block; margin: 0 auto; }
+  .fig-caption {
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 0.3rem;
+    font-family: sans-serif;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Экзаменационные билеты по геометрии</h1>
+  <p>7 класс &nbsp;·&nbsp; Учебник Атанасяна &nbsp;·&nbsp; Вопросы 1 и 2 (без задач)</p>
+</header>
+
+<div class="controls">
+  <input type="text" id="search" placeholder="Поиск по теме или номеру..." oninput="filter(this.value)" />
+  <span id="count">20 билетов</span>
+</div>
+
+<main id="main"></main>
+
+<script>
+const tickets = [
+
+{n:1,
+q1t:"Прямая, отрезок, ломаная, середина отрезка. Взаимное расположение двух прямых.",
+q1:`<p>Прямая — это основная геометрическая фигура, которую нельзя определить через более простые понятия (принимается как аксиома). Прямую представляем бесконечной в обе стороны. Обозначается малой латинской буквой: <em>a, b, c</em>...</p>
+<div class="definition">Через любые две точки можно провести прямую, и притом только одну (аксиома).</div>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+      <defs></defs>
+      <line x1="10" y1="30" x2="190" y2="30" stroke="#1a2744" stroke-width="2"/>
+      <circle cx="80" cy="30" r="3" fill="#c0392b"/>
+      <circle cx="140" cy="30" r="3" fill="#c0392b"/>
+      <text x="78" y="20" font-size="12" font-family="Georgia,serif" fill="#333" text-anchor="middle">A</text>
+      <text x="140" y="20" font-size="12" font-family="Georgia,serif" fill="#333" text-anchor="middle">B</text>
+      <text x="185" y="20" font-size="11" font-family="Georgia,serif" fill="#1a2744" font-style="italic">a</text>
+    </svg>
+    <div class="fig-caption">Прямая a через точки A и B</div>
+  </div>
+  <div class="fig">
+    <svg width="180" height="60" viewBox="0 0 180 60" xmlns="http://www.w3.org/2000/svg">
+      <line x1="30" y1="30" x2="150" y2="30" stroke="#1a2744" stroke-width="2.5"/>
+      <circle cx="30" cy="30" r="4" fill="#1a2744"/>
+      <circle cx="90" cy="30" r="3" fill="#c0392b"/>
+      <circle cx="150" cy="30" r="4" fill="#1a2744"/>
+      <text x="30" y="20" font-size="12" font-family="Georgia,serif" fill="#333" text-anchor="middle">A</text>
+      <text x="90" y="20" font-size="11" font-family="Georgia,serif" fill="#c0392b" text-anchor="middle">M</text>
+      <text x="150" y="20" font-size="12" font-family="Georgia,serif" fill="#333" text-anchor="middle">B</text>
+      <text x="60" y="48" font-size="10" font-family="sans-serif" fill="#888" text-anchor="middle">AM</text>
+      <text x="120" y="48" font-size="10" font-family="sans-serif" fill="#888" text-anchor="middle">MB</text>
+      <line x1="30" y1="38" x2="90" y2="38" stroke="#aaa" stroke-width="1"/>
+      <line x1="90" y1="38" x2="150" y2="38" stroke="#aaa" stroke-width="1"/>
+    </svg>
+    <div class="fig-caption">Отрезок AB, M — середина</div>
+  </div>
+  <div class="fig">
+    <svg width="180" height="80" viewBox="0 0 180 80" xmlns="http://www.w3.org/2000/svg">
+      <polyline points="15,65 55,20 100,50 145,15 165,45" fill="none" stroke="#1a2744" stroke-width="2"/>
+      <circle cx="15" cy="65" r="3" fill="#1a2744"/>
+      <circle cx="55" cy="20" r="3" fill="#1a2744"/>
+      <circle cx="100" cy="50" r="3" fill="#1a2744"/>
+      <circle cx="145" cy="15" r="3" fill="#1a2744"/>
+      <circle cx="165" cy="45" r="3" fill="#1a2744"/>
+      <text x="10" y="75" font-size="11" font-family="Georgia,serif" fill="#333">A</text>
+      <text x="52" y="14" font-size="11" font-family="Georgia,serif" fill="#333">B</text>
+      <text x="97" y="65" font-size="11" font-family="Georgia,serif" fill="#333">C</text>
+      <text x="142" y="10" font-size="11" font-family="Georgia,serif" fill="#333">D</text>
+      <text x="162" y="58" font-size="11" font-family="Georgia,serif" fill="#333">E</text>
+    </svg>
+    <div class="fig-caption">Ломаная ABCDE</div>
+  </div>
+  <div class="fig">
+    <svg width="160" height="80" viewBox="0 0 160 80" xmlns="http://www.w3.org/2000/svg">
+      <line x1="10" y1="30" x2="150" y2="30" stroke="#1a2744" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="10" y1="55" x2="150" y2="55" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <text x="152" y="34" font-size="11" font-family="Georgia,serif" fill="#1a2744" font-style="italic">a</text>
+      <text x="152" y="59" font-size="11" font-family="Georgia,serif" fill="#e67e22" font-style="italic">b</text>
+      <text x="75" y="46" font-size="10" font-family="sans-serif" fill="#888" text-anchor="middle">∥</text>
+    </svg>
+    <div class="fig-caption">Параллельные прямые a ∥ b</div>
+  </div>
+</div>
+<p><b>Отрезок</b> — часть прямой, ограниченная двумя точками — концами отрезка. Отрезок <em>AB</em> содержит точки <em>A</em> и <em>B</em> и все точки прямой между ними. Обозначается двумя большими буквами: <em>AB</em> или <em>BA</em>.</p>
+<p><b>Ломаная</b> — фигура из последовательно соединённых отрезков так, что смежные отрезки не лежат на одной прямой. Звенья ломаной — её отрезки, вершины — концы звеньев. Ломаная <em>ABCDE</em> имеет звенья <em>AB, BC, CD, DE</em>. Если концы ломаной совпадают — она замкнутая.</p>
+<p><b>Середина отрезка</b> — точка, которая лежит на отрезке и делит его на два равных отрезка. Если M — середина AB, то AM = MB = AB/2.</p>
+<p><b>Взаимное расположение двух прямых на плоскости:</b></p>
+<div class="definition">Две прямые на плоскости либо пересекаются (имеют ровно одну общую точку), либо не пересекаются (параллельны, общих точек нет).</div>
+<p>Пересекающиеся: прямые <em>a</em> и <em>b</em> встречаются в точке <em>O</em>.<br>Параллельные: прямые <em>p ∥ q</em>, общих точек нет.<br><b>Обозначения:</b> «A ∈ a» — точка A лежит на прямой a; «a ∩ b = {O}» — прямые пересекаются в точке O; «p ∥ q» — прямые параллельны.</p>`,
+q2t:"Первый признак равенства треугольников.",
+q2:`<p>Сначала вспомним: два треугольника называются равными, если их можно совместить наложением — тогда попарно совместятся все вершины, стороны и углы. При равенстве треугольников △ABC = △A₁B₁C₁ соответственно равны все три стороны и все три угла.</p>
+<div class="theorem">Теорема (1-й признак): Если два треугольника имеют равные по две стороны и угол между ними, то такие треугольники равны.</div>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="260" height="115" viewBox="0 0 260 115" xmlns="http://www.w3.org/2000/svg">
+      <!-- Triangle 1 -->
+      <polygon points="20,100 70,10 130,100" fill="#e8f0ff" stroke="#1a2744" stroke-width="2"/>
+      <text x="10" y="112" font-size="12" font-family="Georgia,serif" fill="#1a2744">A</text>
+      <text x="65" y="8" font-size="12" font-family="Georgia,serif" fill="#1a2744">B</text>
+      <text x="128" y="112" font-size="12" font-family="Georgia,serif" fill="#1a2744">C</text>
+      <!-- AB side midpoint ~(45,55): one tick -->
+      <line x1="41" y1="58" x2="51" y2="50" stroke="#c0392b" stroke-width="2.5"/>
+      <!-- AC side midpoint ~(75,100): two ticks -->
+      <line x1="71" y1="103" x2="79" y2="97" stroke="#c0392b" stroke-width="2.5"/>
+      <line x1="76" y1="103" x2="84" y2="97" stroke="#c0392b" stroke-width="2.5"/>
+      <!-- angle mark at A -->
+      <path d="M 38,100 A 18,18 0 0,1 28,85" fill="none" stroke="#27ae60" stroke-width="2"/>
+
+      <!-- = sign -->
+      <text x="138" y="62" font-size="18" font-family="sans-serif" fill="#555">=</text>
+
+      <!-- Triangle 2 -->
+      <polygon points="155,100 205,10 265,100" fill="#fff5e0" stroke="#e67e22" stroke-width="2"/>
+      <text x="144" y="112" font-size="12" font-family="Georgia,serif" fill="#e67e22">A₁</text>
+      <text x="200" y="8" font-size="12" font-family="Georgia,serif" fill="#e67e22">B₁</text>
+      <text x="263" y="112" font-size="12" font-family="Georgia,serif" fill="#e67e22">C₁</text>
+      <!-- A₁B₁ side midpoint ~(180,55): one tick -->
+      <line x1="176" y1="58" x2="186" y2="50" stroke="#c0392b" stroke-width="2.5"/>
+      <!-- A₁C₁ side midpoint ~(210,100): two ticks -->
+      <line x1="206" y1="103" x2="214" y2="97" stroke="#c0392b" stroke-width="2.5"/>
+      <line x1="211" y1="103" x2="219" y2="97" stroke="#c0392b" stroke-width="2.5"/>
+      <!-- angle mark at A₁ -->
+      <path d="M 173,100 A 18,18 0 0,1 163,85" fill="none" stroke="#27ae60" stroke-width="2"/>
+    </svg>
+    <div class="fig-caption">1-й признак: две стороны и угол между ними</div>
+  </div>
+</div>
+<p><b>Формально:</b> если AB = A₁B₁, AC = A₁C₁, ∠A = ∠A₁, то △ABC = △A₁B₁C₁.</p>
+<div class="proof"><b>Идея доказательства (наложение):</b><br>
+1) Накладываем △A₁B₁C₁ на △ABC так, чтобы вершина A₁ совпала с A, а луч A₁B₁ — с лучом AB. Так как AB = A₁B₁, точка B₁ попадёт в точку B.<br>
+2) Поскольку ∠A = ∠A₁, луч A₁C₁ совместится с лучом AC. А так как AC = A₁C₁, точка C₁ попадёт в C.<br>
+3) Теперь B₁ = B, C₁ = C, A₁ = A → все три вершины совпали → треугольники совпадают → △ABC = △A₁B₁C₁. ∎</div>
+<div class="note">Запомни: «по двум сторонам и углу МЕЖДУ ними» — угол должен быть именно между этими сторонами!</div>`},
+
+{n:2,
+q1t:"Луч, угол, виды углов, биссектриса угла.",
+q1:`<p><b>Луч</b> — часть прямой, ограниченная с одной стороны точкой — началом луча. Луч уходит в одну сторону бесконечно. Обозначается: луч <em>OA</em> (O — начало, A — точка на луче) или малой буквой.</p>
+<p><b>Угол</b> — геометрическая фигура, образованная двумя лучами с общим началом. Общее начало называется <b>вершиной угла</b>, лучи — <b>сторонами угла</b>.</p>
+<p>Обозначения: ∠AOB (три буквы: средняя — вершина), ∠A, ∠α.</p>
+<p><b>Виды углов по градусной мере:</b></p>
+<div class="definition">
+• Нулевой: 0°<br>
+• Острый: от 0° до 90° (строго)<br>
+• Прямой: ровно 90°<br>
+• Тупой: от 90° до 180°<br>
+• Развёрнутый: ровно 180° (стороны образуют прямую)<br>
+• Полный: 360°
+</div>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="90" height="80" viewBox="0 0 90 80" xmlns="http://www.w3.org/2000/svg">
+      <line x1="10" y1="70" x2="60" y2="10" stroke="#1a2744" stroke-width="2"/>
+      <line x1="10" y1="70" x2="80" y2="65" stroke="#1a2744" stroke-width="2"/>
+      <path d="M 32,70 A 22,22 0 0,0 22,51" fill="#e8f4ff" stroke="#1a2744" stroke-width="1.5"/>
+      <text x="45" y="78" font-size="11" font-family="Georgia,serif" fill="#1a2744" text-anchor="middle">Острый</text>
+    </svg>
+  </div>
+  <div class="fig">
+    <svg width="90" height="80" viewBox="0 0 90 80" xmlns="http://www.w3.org/2000/svg">
+      <line x1="10" y1="70" x2="10" y2="10" stroke="#1a2744" stroke-width="2"/>
+      <line x1="10" y1="70" x2="75" y2="70" stroke="#1a2744" stroke-width="2"/>
+      <rect x="10" y="55" width="15" height="15" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+      <text x="45" y="78" font-size="11" font-family="Georgia,serif" fill="#1a2744" text-anchor="middle">Прямой</text>
+    </svg>
+  </div>
+  <div class="fig">
+    <svg width="110" height="80" viewBox="0 0 110 80" xmlns="http://www.w3.org/2000/svg">
+      <line x1="55" y1="60" x2="5" y2="60" stroke="#1a2744" stroke-width="2"/>
+      <line x1="55" y1="60" x2="95" y2="15" stroke="#1a2744" stroke-width="2"/>
+      <path d="M 30,60 A 25,25 0 0,1 68,38" fill="#fff5e0" stroke="#e67e22" stroke-width="1.5"/>
+      <text x="55" y="75" font-size="11" font-family="Georgia,serif" fill="#1a2744" text-anchor="middle">Тупой</text>
+    </svg>
+  </div>
+  <div class="fig">
+    <svg width="110" height="80" viewBox="0 0 110 80" xmlns="http://www.w3.org/2000/svg">
+      <line x1="5" y1="40" x2="105" y2="40" stroke="#1a2744" stroke-width="2"/>
+      <circle cx="55" cy="40" r="3" fill="#c0392b"/>
+      <text x="55" y="32" font-size="11" font-family="Georgia,serif" fill="#333" text-anchor="middle">O</text>
+      <text x="55" y="75" font-size="11" font-family="Georgia,serif" fill="#1a2744" text-anchor="middle">Развёрнутый 180°</text>
+    </svg>
+  </div>
+</div>
+<p>Единица измерения — <b>градус</b> (1° = 1/180 часть развёрнутого угла). Измеряется транспортиром. 1° = 60′ (минут), 1′ = 60″ (секунд).</p>
+<p><b>Биссектриса угла</b> — луч, выходящий из вершины угла и делящий угол пополам.</p>
+<div class="definition">Биссектриса угла AOB — это луч OC такой, что ∠AOC = ∠COB = ½ ∠AOB.</div>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="140" height="100" viewBox="0 0 140 100" xmlns="http://www.w3.org/2000/svg">
+      <line x1="10" y1="90" x2="120" y2="15" stroke="#1a2744" stroke-width="2"/>
+      <line x1="10" y1="90" x2="130" y2="80" stroke="#1a2744" stroke-width="2"/>
+      <line x1="10" y1="90" x2="115" y2="52" stroke="#c0392b" stroke-width="2" stroke-dasharray="5,3"/>
+      <text x="6" y="100" font-size="12" font-family="Georgia,serif" fill="#1a2744">O</text>
+      <text x="116" y="50" font-size="11" font-family="Georgia,serif" fill="#c0392b">C</text>
+      <text x="118" y="13" font-size="11" font-family="Georgia,serif" fill="#1a2744">A</text>
+      <text x="128" y="90" font-size="11" font-family="Georgia,serif" fill="#1a2744">B</text>
+    </svg>
+    <div class="fig-caption">Биссектриса OC угла AOB</div>
+  </div>
+</div>
+<p>У каждого угла ровно одна биссектриса. Любая точка биссектрисы угла равноудалена от его сторон (это свойство доказывается позже в курсе).</p>`,
+q2t:"Второй признак равенства треугольников.",
+q2:`<div class="theorem">Теорема (2-й признак): Если два треугольника имеют равные сторону и два прилежащих к ней угла, то такие треугольники равны.</div>
+<p><b>Формально:</b> если AB = A₁B₁, ∠A = ∠A₁, ∠B = ∠B₁, то △ABC = △A₁B₁C₁.</p>
+<div class="proof"><b>Доказательство:</b><br>
+1) Накладываем △A₁B₁C₁ на △ABC так, чтобы сторона A₁B₁ совместилась со стороной AB (A₁→A, B₁→B). Это возможно, так как AB = A₁B₁.<br>
+2) Поскольку ∠A = ∠A₁, луч A₁C₁ совместится с лучом AC.<br>
+3) Поскольку ∠B = ∠B₁, луч B₁C₁ совместится с лучом BC.<br>
+4) Точка C₁ лежит одновременно на луче AC и на луче BC → она совпадает с точкой пересечения C.<br>
+5) Все три вершины совпали → △ABC = △A₁B₁C₁. ∎</div>
+<div class="note">Запомни: «по стороне и двум углам, ПРИЛЕЖАЩИМ к ней» — оба угла должны касаться именно этой стороны.</div>`},
+
+{n:3,
+q1t:"Смежные и вертикальные углы. Треугольник — жёсткая фигура.",
+q1:`<p><b>Смежные углы</b> — два угла, у которых одна сторона общая, а две другие стороны образуют прямую (т.е. вместе образуют развёрнутый угол).</p>
+<div class="theorem">Свойство: смежные углы в сумме дают 180°.<br>∠AOB + ∠BOC = 180°, если луч OB — общая сторона, а OA и OC — продолжения.</div>
+<div class="proof">Доказательство: ∠AOC — развёрнутый угол = 180°. Луч OB делит его на два угла. По аксиоме измерения углов: ∠AOB + ∠BOC = ∠AOC = 180°. ∎</div>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="180" height="110" viewBox="0 0 180 110" xmlns="http://www.w3.org/2000/svg">
+      <!-- O=(90,65), B=(113,12), unit vec OB=(0.398,-0.917) -->
+      <!-- horizontal line A-C -->
+      <line x1="10" y1="65" x2="170" y2="65" stroke="#1a2744" stroke-width="2"/>
+      <!-- ray OB -->
+      <line x1="90" y1="65" x2="113" y2="12" stroke="#1a2744" stroke-width="2"/>
+      <!-- beta arc: radius 35, from (90-35,65)=(55,65) to O+35*(0.398,-0.917)=(90+13.9,65-32.1)=(103.9,32.9) sweeping CCW (large arc=0, sweep=1) -->
+      <path d="M 55,65 A 35,35 0 0,1 103.9,32.9" fill="none" stroke="#e67e22" stroke-width="2.5"/>
+      <!-- alpha arc: radius 20, from O+20*(0.398,-0.917)=(90+7.96,65-18.34)=(97.96,46.66) to (90+20,65)=(110,65) sweep CW (large=0,sweep=0) -->
+      <path d="M 97.96,46.66 A 20,20 0 0,1 110,65" fill="none" stroke="#1a2744" stroke-width="2"/>
+      <!-- labels -->
+      <text x="46" y="42" font-size="12" font-family="Georgia,serif" fill="#e67e22">β</text>
+      <text x="116" y="72" font-size="12" font-family="Georgia,serif" fill="#1a2744">α</text>
+      <text x="86" y="80" font-size="12" font-family="Georgia,serif" fill="#1a2744">O</text>
+      <text x="111" y="9" font-size="12" font-family="Georgia,serif" fill="#1a2744">B</text>
+      <text x="4" y="62" font-size="12" font-family="Georgia,serif" fill="#1a2744">A</text>
+      <text x="166" y="62" font-size="12" font-family="Georgia,serif" fill="#1a2744">C</text>
+      <text x="90" y="100" font-size="11" font-family="sans-serif" fill="#555" text-anchor="middle">α + β = 180°</text>
+    </svg>
+    <div class="fig-caption">Смежные углы</div>
+  </div>
+  <div class="fig">
+    <svg width="180" height="145" viewBox="0 0 180 145" xmlns="http://www.w3.org/2000/svg">
+      <!-- O=(90,70) -->
+      <!-- horizontal line -->
+      <line x1="10" y1="70" x2="170" y2="70" stroke="#1a2744" stroke-width="2"/>
+      <!-- diagonal: from (35,115) to (145,25), passes through O(90,70) -->
+      <!-- unit vec = (110,-90)/sqrt(110²+90²) = (110,-90)/142.1 = (0.774,-0.633) -->
+      <line x1="35" y1="115" x2="145" y2="25" stroke="#1a2744" stroke-width="2"/>
+      <circle cx="90" cy="70" r="3" fill="#c0392b"/>
+
+      <!-- r=28 for all arcs -->
+      <!-- Points on rays at distance 28 from O: -->
+      <!-- right of horizontal: (118, 70) -->
+      <!-- left of horizontal:  (62, 70) -->
+      <!-- upper-right on diagonal: (90+28*0.774, 70+28*(-0.633)) = (111.7, 52.3) -->
+      <!-- lower-left on diagonal:  (90-28*0.774, 70+28*0.633)  = (68.3, 87.7) -->
+
+      <!-- beta top-right (acute): from (118,70) to (111.7,52.3), sweep CCW = sweep=0 -->
+      <path d="M 118,70 A 28,28 0 0,0 111.7,52.3" fill="none" stroke="#e67e22" stroke-width="2"/>
+      <!-- beta bottom-left (acute): from (62,70) to (68.3,87.7), sweep CCW = sweep=0 -->
+      <path d="M 62,70 A 28,28 0 0,0 68.3,87.7" fill="none" stroke="#e67e22" stroke-width="2"/>
+
+      <!-- alpha top-left (obtuse ~142°): from (62,70) to (111.7,52.3), sweep CW going up = sweep=1, large-arc=0 -->
+      <path d="M 62,70 A 28,28 0 0,1 111.7,52.3" fill="none" stroke="#1a2744" stroke-width="2"/>
+      <!-- alpha bottom-right (obtuse): from (118,70) to (68.3,87.7), sweep=1, large=0 -->
+      <path d="M 118,70 A 28,28 0 0,1 68.3,87.7" fill="none" stroke="#1a2744" stroke-width="2"/>
+
+      <!-- labels -->
+      <text x="74" y="60" font-size="12" font-family="Georgia,serif" fill="#1a2744">α</text>
+      <text x="98" y="88" font-size="12" font-family="Georgia,serif" fill="#1a2744">α</text>
+      <text x="114" y="62" font-size="12" font-family="Georgia,serif" fill="#e67e22">β</text>
+      <text x="60" y="88" font-size="12" font-family="Georgia,serif" fill="#e67e22">β</text>
+
+      <text x="90" y="133" font-size="10" font-family="sans-serif" fill="#555" text-anchor="middle">Вертикальные: α = α, β = β</text>
+    </svg>
+    <div class="fig-caption">Вертикальные углы</div>
+  </div>
+</div>
+<p><b>Вертикальные углы</b> — два угла, у которых стороны одного являются продолжениями сторон другого (образуются при пересечении двух прямых). Вертикальных пар — две.</p>
+<div class="theorem">Свойство: вертикальные углы равны.</div>
+<div class="proof">Доказательство: пусть прямые пересекаются в точке O, образуя углы α, β, α', β'. Угол α и β — смежные: α + β = 180°. Угол β и α' — смежные: β + α' = 180°. Вычитая: α = α'. Аналогично β = β'. ∎</div>
+<p><b>Треугольник — жёсткая фигура</b> означает: если заданы три стороны треугольника, его форма однозначно определена (в отличие от, например, четырёхугольника, который можно «сложить»). Это следствие 3-го признака равенства треугольников: треугольник с тремя заданными сторонами единственен (с точностью до движения).</p>
+<div class="note">Именно поэтому треугольные фермы используются в строительстве мостов и башен — треугольник не деформируется при нагрузках.</div>`,
+q2t:"Третий признак равенства треугольников.",
+q2:`<div class="theorem">Теорема (3-й признак): Если три стороны одного треугольника равны трём сторонам другого треугольника, то такие треугольники равны.</div>
+<p><b>Формально:</b> если AB = A₁B₁, BC = B₁C₁, CA = C₁A₁, то △ABC = △A₁B₁C₁.</p>
+<div class="proof"><b>Доказательство (схема):</b><br>
+1) Совместим сторону AB с A₁B₁: A₁→A, B₁→B.<br>
+2) Точка C₁ может оказаться по ту же или по другую сторону от AB, что и C. Рассмотрим случай, когда C₁ ≠ C.<br>
+3) Поскольку AC = A₁C₁ (= AC₁), точки C и C₁ равноудалены от A → треугольник ACC₁ равнобедренный, значит ∠ACC₁ = ∠AC₁C.<br>
+4) Аналогично BC = BC₁ → треугольник BCC₁ равнобедренный → ∠BCC₁ = ∠BC₁C.<br>
+5) Из этих равенств следует ∠ACB = ∠AC₁B, то есть углы между сторонами равны. Тогда по 1-му признаку △ABC = △A₁B₁C₁. ∎</div>
+<div class="note">Это самый «тяжёлый» из трёх признаков — три стороны полностью определяют треугольник.</div>`},
+
+{n:4,
+q1t:"Определение и виды треугольников. Элементы, периметр.",
+q1:`<p><b>Треугольник</b> — геометрическая фигура, состоящая из трёх точек (вершин), не лежащих на одной прямой, и трёх отрезков (сторон), соединяющих эти точки.</p>
+<p>Треугольник ABC обозначается △ABC. Элементы: вершины A, B, C; стороны AB, BC, CA; углы ∠A = ∠BAC, ∠B = ∠ABC, ∠C = ∠BCA.</p>
+<p><b>Периметр треугольника</b> — сумма длин всех его сторон: P = AB + BC + CA.</p>
+<p><b>Виды треугольников по сторонам:</b></p>
+<div class="definition">
+• Разносторонний — все три стороны различны.<br>
+• Равнобедренный — две стороны равны (они называются <b>боковыми</b>, третья — <b>основанием</b>).<br>
+• Равносторонний — все три стороны равны.
+</div>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="110" height="100" viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="55,10 15,80 95,80" fill="#e8f0ff" stroke="#1a2744" stroke-width="2"/>
+      <text x="51" y="7" font-size="11" font-family="Georgia,serif" fill="#1a2744">A</text>
+      <text x="5" y="90" font-size="11" font-family="Georgia,serif" fill="#1a2744">B</text>
+      <text x="96" y="90" font-size="11" font-family="Georgia,serif" fill="#1a2744">C</text>
+      <text x="55" y="98" font-size="9" font-family="sans-serif" fill="#666" text-anchor="middle">Разносторонний</text>
+    </svg>
+  </div>
+  <div class="fig">
+    <svg width="110" height="100" viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="55,10 20,80 90,80" fill="#f0fff0" stroke="#27ae60" stroke-width="2"/>
+      <!-- ticks on AB midpoint ~(37,45) perpendicular to AB -->
+      <line x1="34" y1="43" x2="40" y2="49" stroke="#c0392b" stroke-width="2"/>
+      <!-- ticks on AC midpoint ~(73,45) perpendicular to AC -->
+      <line x1="76" y1="43" x2="70" y2="49" stroke="#c0392b" stroke-width="2"/>
+      <text x="51" y="7" font-size="11" font-family="Georgia,serif" fill="#1a2744">A</text>
+      <text x="10" y="90" font-size="11" font-family="Georgia,serif" fill="#1a2744">B</text>
+      <text x="91" y="90" font-size="11" font-family="Georgia,serif" fill="#1a2744">C</text>
+      <text x="55" y="98" font-size="9" font-family="sans-serif" fill="#666" text-anchor="middle">Равнобедренный</text>
+    </svg>
+  </div>
+  <div class="fig">
+    <svg width="110" height="100" viewBox="0 0 110 100" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="55,10 10,82 100,82" fill="#fff8e0" stroke="#d4a017" stroke-width="2"/>
+      <!-- AB midpoint (32,46), direction of AB: (10-55,82-10)=(-45,72), len=85.3, unit=(-0.527,0.844), perp=(0.844,0.527) -->
+      <line x1="29" y1="43" x2="35" y2="49" stroke="#c0392b" stroke-width="2"/>
+      <!-- AC midpoint (77,46), direction AC: (45,72), perp=(-0.844,0.527) rotated -->
+      <line x1="81" y1="43" x2="75" y2="49" stroke="#c0392b" stroke-width="2"/>
+      <!-- BC midpoint (55,82), direction BC: (90,0), perp=(0,1) — vertical tick -->
+      <line x1="52" y1="78" x2="58" y2="78" stroke="#c0392b" stroke-width="2"/>
+      <text x="51" y="7" font-size="11" font-family="Georgia,serif" fill="#1a2744">A</text>
+      <text x="1" y="92" font-size="11" font-family="Georgia,serif" fill="#1a2744">B</text>
+      <text x="101" y="92" font-size="11" font-family="Georgia,serif" fill="#1a2744">C</text>
+      <text x="55" y="100" font-size="9" font-family="sans-serif" fill="#666" text-anchor="middle">Равносторонний</text>
+    </svg>
+  </div>
+</div>
+<p><b>Виды треугольников по углам:</b></p>
+<div class="definition">
+• Остроугольный — все три угла острые (меньше 90°).<br>
+• Прямоугольный — один угол прямой (90°). Стороны при прямом угле — <b>катеты</b>, сторона напротив — <b>гипотенуза</b>.<br>
+• Тупоугольный — один угол тупой (больше 90°).
+</div>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="110" height="90" viewBox="0 0 110 90" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="55,12 15,78 95,78" fill="#e8f0ff" stroke="#1a2744" stroke-width="2"/>
+      <text x="55" y="88" font-size="9" font-family="sans-serif" fill="#666" text-anchor="middle">Остроугольный</text>
+    </svg>
+  </div>
+  <div class="fig">
+    <svg width="110" height="90" viewBox="0 0 110 90" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="15,78 15,15 90,78" fill="#f0f8ff" stroke="#1a2744" stroke-width="2"/>
+      <rect x="15" y="63" width="15" height="15" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+      <text x="55" y="88" font-size="9" font-family="sans-serif" fill="#666" text-anchor="middle">Прямоугольный</text>
+      <text x="6" y="12" font-size="10" font-family="Georgia,serif" fill="#888">гип.</text>
+    </svg>
+  </div>
+  <div class="fig">
+    <svg width="120" height="100" viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+      <!-- Obtuse angle at B(15,70). A=(100,60), C=(55,15) -->
+      <!-- angle at B: BA direction=(85,-10), BC direction=(40,-55) — angle between them is obtuse -->
+      <polygon points="15,70 100,60 55,15" fill="#fff5e8" stroke="#e67e22" stroke-width="2"/>
+      <!-- Arc at B for obtuse angle: 
+           unit BA = (85,-10)/sqrt(85²+10²) = (85,-10)/85.6 = (0.993,-0.117)
+           unit BC = (40,-55)/sqrt(40²+55²) = (40,-55)/68.0 = (0.588,-0.809)
+           r=18: point on BA: (15+18*0.993, 70+18*(-0.117))=(32.9,67.9)
+                 point on BC: (15+18*0.588, 70+18*(-0.809))=(25.6,55.4)
+           angle between is obtuse so large-arc=1, sweep=0 (going the short outside way = large-arc=0 sweep=1?) 
+           Actually: sweep=1 goes CCW. From BA point to BC point CCW is the obtuse interior. large=0,sweep=1 -->
+      <path d="M 32.9,67.9 A 18,18 0 0,1 25.6,55.4" fill="none" stroke="#e67e22" stroke-width="1.8"/>
+      <text x="9" y="83" font-size="11" font-family="Georgia,serif" fill="#e67e22">B</text>
+      <text x="101" y="58" font-size="11" font-family="Georgia,serif" fill="#1a2744">A</text>
+      <text x="53" y="12" font-size="11" font-family="Georgia,serif" fill="#1a2744">C</text>
+      <text x="60" y="96" font-size="9" font-family="sans-serif" fill="#666" text-anchor="middle">Тупоугольный</text>
+    </svg>
+  </div>
+</div>`,
+q2t:"Свойства равнобедренного треугольника.",
+q2:`<div class="theorem">Теорема: В равнобедренном треугольнике углы при основании равны.</div>
+<p><b>Дано:</b> △ABC, AB = BC (боковые стороны). Доказать: ∠A = ∠C.</p>
+<div class="proof"><b>Доказательство (через биссектрису):</b><br>
+Проведём биссектрису BM угла B (M на AC).<br>
+Рассмотрим △ABM и △CBM:<br>
+— AB = CB (по условию)<br>
+— ∠ABM = ∠CBM (BM — биссектриса)<br>
+— BM — общая сторона<br>
+По 1-му признаку: △ABM = △CBM.<br>
+Из равенства треугольников: ∠A = ∠C. ∎</div>
+<div class="theorem">Обратная теорема: Если в треугольнике два угла равны, то он равнобедренный (стороны, противолежащие равным углам, равны).</div>
+<div class="proof"><b>Доказательство обратной теоремы:</b><br>
+Дано: △ABC, ∠A = ∠C. Проведём биссектрису BM.<br>
+В △ABM и △CBM: ∠A = ∠C, ∠ABM = ∠CBM, BM — общая.<br>
+По 2-му признаку: △ABM = △CBM → AB = CB. ∎</div>
+<div class="note">Следствие: биссектриса равнобедренного треугольника, проведённая из вершины при боковых сторонах, является и медианой, и высотой.</div>`},
+
+{n:5,
+q1t:"Параллельные прямые. Аксиома параллельных прямых.",
+q1:`<p><b>Параллельные прямые</b> — две прямые на плоскости, которые не пересекаются (не имеют общих точек). Обозначение: a ∥ b.</p>
+<div class="definition">Определение: две прямые называются параллельными, если они лежат в одной плоскости и не пересекаются.</div>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="200" height="80" viewBox="0 0 200 80" xmlns="http://www.w3.org/2000/svg">
+      <line x1="10" y1="25" x2="185" y2="25" stroke="#1a2744" stroke-width="2"/>
+      <line x1="10" y1="55" x2="185" y2="55" stroke="#1a2744" stroke-width="2"/>
+      <text x="188" y="29" font-size="11" font-family="Georgia,serif" fill="#1a2744" font-style="italic">a</text>
+      <text x="188" y="59" font-size="11" font-family="Georgia,serif" fill="#1a2744" font-style="italic">b</text>
+      <text x="100" y="75" font-size="11" font-family="sans-serif" fill="#555" text-anchor="middle">a ∥ b</text>
+    </svg>
+    <div class="fig-caption">Параллельные прямые</div>
+  </div>
+</div>
+<p>Аналогично: <b>параллельные отрезки</b> (или лучи) — лежат на параллельных прямых.</p>
+<div class="theorem">Аксиома параллельных прямых (Евклида): Через точку, не лежащую на данной прямой, можно провести прямую, параллельную данной, и притом только одну.</div>
+<p><b>Практические способы построения параллельных прямых:</b></p>
+<div class="definition">
+1) С помощью линейки и угольника: прикладываем угольник к прямой одним катетом, прикладываем линейку к гипотенузе. Скользим угольник вдоль линейки — катет рисует параллельную прямую.<br><br>
+2) С помощью циркуля и линейки: через точку P проводим прямую, пересекающую данную. Откладываем равные углы (по признаку накрест лежащих угла = строим параллельную).
+</div>`,
+q2t:"Внешний угол треугольника.",
+q2:`<p><b>Внешний угол треугольника</b> — угол, смежный с одним из углов треугольника (образован стороной треугольника и продолжением другой его стороны).</p>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a5c" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#1a2744"/></marker></defs>
+      <!-- triangle -->
+      <polygon points="30,100 110,15 170,100" fill="#e8f0ff" stroke="#1a2744" stroke-width="2"/>
+      <!-- extension of BC beyond C -->
+      <line x1="170" y1="100" x2="210" y2="100" stroke="#1a2744" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#a5c)"/>
+      <!-- external angle arc -->
+      <path d="M 190,100 A 20,20 0 0,0 172,83" fill="#ffd70055" stroke="#d4a017" stroke-width="2"/>
+      <!-- internal angles -->
+      <path d="M 45,100 A 18,18 0 0,1 33,85" fill="#aaffaa55" stroke="#27ae60" stroke-width="1.5"/>
+      <path d="M 122,15 A 18,18 0 0,1 110,32" fill="#aaaaff55" stroke="#3498db" stroke-width="1.5"/>
+      <!-- labels -->
+      <text x="27" y="110" font-size="12" font-family="Georgia,serif" fill="#27ae60">A</text>
+      <text x="106" y="12" font-size="12" font-family="Georgia,serif" fill="#3498db">B</text>
+      <text x="168" y="112" font-size="12" font-family="Georgia,serif" fill="#1a2744">C</text>
+      <text x="185" y="90" font-size="11" font-family="Georgia,serif" fill="#d4a017">D</text>
+      <text x="49" y="100" font-size="11" font-family="sans-serif" fill="#27ae60">∠A</text>
+      <text x="115" y="32" font-size="11" font-family="sans-serif" fill="#3498db">∠B</text>
+      <text x="182" y="90" font-size="10" font-family="sans-serif" fill="#d4a017">∠BCD</text>
+      <text x="100" y="115" font-size="10" font-family="sans-serif" fill="#555" text-anchor="middle">∠BCD = ∠A + ∠B</text>
+    </svg>
+    <div class="fig-caption">Внешний угол треугольника</div>
+  </div>
+</div>
+<div class="theorem">Теорема о внешнем угле: Внешний угол треугольника равен сумме двух внутренних углов, не смежных с ним.</div>
+<p><b>Дано:</b> △ABC, угол BCD — внешний при вершине C. Доказать: ∠BCD = ∠A + ∠B.</p>
+<div class="proof"><b>Доказательство:</b><br>
+∠ACB + ∠BCD = 180° (смежные углы).<br>
+∠A + ∠B + ∠ACB = 180° (сумма углов треугольника — доказывается в Билете №11).<br>
+Из обоих уравнений: ∠BCD = ∠A + ∠B. ∎</div>
+<div class="theorem">Следствие: Внешний угол треугольника больше любого из внутренних углов, не смежных с ним.</div>
+<div class="note">∠BCD = ∠A + ∠B > ∠A и ∠BCD > ∠B, так как оба слагаемых положительны.</div>`},
+
+{n:6,
+q1t:"Равные фигуры. Построение угла, равного данному.",
+q1:`<p><b>Равные фигуры</b> — фигуры, которые можно совместить наложением (при движении одна накладывается на другую без изменения формы и размера).</p>
+<div class="definition">Два треугольника называются равными, если их можно совместить наложением так, что они полностью совпадут. При этом совпадут попарно все три стороны и все три угла.</div>
+<p>Равные треугольники имеют одинаковые периметры и одинаковые площади (обратное неверно!).</p>
+<p><b>Построение угла, равного данному (циркуль и линейка):</b></p>
+<div class="definition">
+<b>Задача:</b> дан угол ∠AOB, нужно построить равный угол при вершине A' на луче A'B'.<br><br>
+<b>Построение:</b><br>
+1) Из вершины O проводим дугу произвольного радиуса r — пересекает стороны угла в точках M и N.<br>
+2) Из точки A' проводим дугу того же радиуса r — пересекает луч A'B' в точке M'.<br>
+3) Устанавливаем циркуль в раствор MN. Из точки M' проводим дугу радиуса MN — она пересекает ранее нарисованную дугу в точке N'.<br>
+4) Проводим луч A'N'. Угол M'A'N' = ∠AOB.
+</div>
+<p><b>Обоснование:</b> треугольники OMN и A'M'N' равны по 3-му признаку (все три стороны равны), значит ∠O = ∠A'.</p>`,
+q2t:"Первый признак параллельности прямых (накрест лежащие углы).",
+q2:`<p>Пусть прямая <em>c</em> (секущая) пересекает прямые <em>a</em> и <em>b</em>.</p>
+<p><b>Накрест лежащие углы</b> — углы, которые находятся по разные стороны от секущей и при разных прямых. Образуется две пары накрест лежащих углов.</p>
+<p><b>Соответственные углы</b> — одинаковое расположение при каждой прямой (оба «над» прямой или оба «под»).</p>
+<p><b>Односторонние углы</b> — по одну сторону от секущей при разных прямых.</p>
+<div class="theorem">Первый признак параллельности: Если при пересечении двух прямых секущей накрест лежащие углы равны, то прямые параллельны.</div>
+<div class="proof"><b>Доказательство (от противного):</b><br>
+Пусть ∠1 = ∠2 (накрест лежащие), но прямые a и b не параллельны → они пересекаются в некой точке P.<br>
+Тогда образуется треугольник. Угол ∠1 — внешний для этого треугольника при одной вершине, а ∠2 — внутренний при другой. По теореме о внешнем угле: внешний угол больше внутреннего, не смежного с ним → ∠1 > ∠2. Противоречие с ∠1 = ∠2.<br>
+Значит, прямые параллельны. ∎</div>`},
+
+{n:7,
+q1t:"Перпендикулярные прямые. Перпендикуляр и наклонная. Расстояние от точки до прямой.",
+q1:`<p><b>Перпендикулярные прямые</b> — две прямые, пересекающиеся под прямым углом (90°). Обозначение: a ⊥ b.</p>
+<div class="definition">Определение: две прямые называются перпендикулярными, если они пересекаются и образуют прямой угол.</div>
+<p>Аналогично: перпендикулярные отрезки, лучи — лежат на перпендикулярных прямых.</p>
+<div class="theorem">Теорема: Через данную точку можно провести прямую, перпендикулярную данной, и притом только одну.</div>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="160" height="110" viewBox="0 0 160 110" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="a7a" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#1a2744"/></marker>
+        <marker id="a7b" markerWidth="7" markerHeight="7" refX="1" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#1a2744"/></marker>
+        <marker id="a7c" markerWidth="7" markerHeight="7" refX="3" refY="6" orient="auto"><path d="M0,0 L6,0 L3,7 z" fill="#e67e22"/></marker>
+        <marker id="a7d" markerWidth="7" markerHeight="7" refX="3" refY="1" orient="auto"><path d="M0,7 L6,7 L3,0 z" fill="#e67e22"/></marker>
+      </defs>
+      <!-- horizontal line a -->
+      <line x1="10" y1="65" x2="150" y2="65" stroke="#1a2744" stroke-width="2" marker-end="url(#a7a)" marker-start="url(#a7b)"/>
+      <!-- vertical perp -->
+      <line x1="80" y1="100" x2="80" y2="10" stroke="#e67e22" stroke-width="2" marker-end="url(#a7c)" marker-start="url(#a7d)"/>
+      <!-- right angle mark -->
+      <rect x="80" y="55" width="10" height="10" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+      <text x="148" y="60" font-size="11" font-family="Georgia,serif" fill="#1a2744" font-style="italic">a</text>
+      <text x="83" y="12" font-size="11" font-family="Georgia,serif" fill="#e67e22" font-style="italic">b</text>
+      <text x="80" y="108" font-size="10" font-family="sans-serif" fill="#555" text-anchor="middle">a ⊥ b</text>
+    </svg>
+    <div class="fig-caption">Перпендикулярные прямые</div>
+  </div>
+  <div class="fig">
+    <svg width="170" height="110" viewBox="0 0 170 110" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a7e" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#1a2744"/></marker>
+      <marker id="a7f" markerWidth="7" markerHeight="7" refX="1" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#1a2744"/></marker></defs>
+      <!-- line -->
+      <line x1="10" y1="80" x2="160" y2="80" stroke="#1a2744" stroke-width="2" marker-end="url(#a7e)" marker-start="url(#a7f)"/>
+      <!-- point P -->
+      <circle cx="85" cy="25" r="3" fill="#c0392b"/>
+      <text x="89" y="22" font-size="12" font-family="Georgia,serif" fill="#c0392b">P</text>
+      <!-- perpendicular PH -->
+      <line x1="85" y1="25" x2="85" y2="80" stroke="#27ae60" stroke-width="2.5"/>
+      <!-- naklonnaya PA -->
+      <line x1="85" y1="25" x2="135" y2="80" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <!-- right angle -->
+      <rect x="85" y="70" width="10" height="10" fill="none" stroke="#27ae60" stroke-width="1.5"/>
+      <circle cx="85" cy="80" r="3" fill="#27ae60"/>
+      <circle cx="135" cy="80" r="3" fill="#e67e22"/>
+      <text x="80" y="93" font-size="11" font-family="Georgia,serif" fill="#27ae60">H</text>
+      <text x="133" y="93" font-size="11" font-family="Georgia,serif" fill="#e67e22">A</text>
+      <text x="40" y="63" font-size="10" font-family="sans-serif" fill="#27ae60">PH — перп.</text>
+      <text x="108" y="55" font-size="10" font-family="sans-serif" fill="#e67e22">PA — накл.</text>
+    </svg>
+    <div class="fig-caption">Перпендикуляр и наклонная</div>
+  </div>
+</div>
+<p><b>Перпендикуляр из точки к прямой</b> — отрезок, соединяющий точку с прямой под прямым углом (90°). Конец перпендикуляра называется <b>основанием перпендикуляра</b>.</p>
+<p><b>Наклонная</b> — любой другой отрезок от точки до прямой (не под прямым углом). Её проекция — часть прямой от основания перпендикуляра до основания наклонной.</p>
+<div class="definition">Расстояние от точки до прямой — длина перпендикуляра, опущенного из этой точки на прямую. Это наименьшее из расстояний от точки до любой точки прямой.</div>
+<div class="theorem">Перпендикуляр короче любой наклонной, проведённой из той же точки к той же прямой.</div>`,
+q2t:"Признаки равенства прямоугольных треугольников (по гипотенузе и катету).",
+q2:`<p>У прямоугольных треугольников есть особые признаки равенства, которые удобнее общих:</p>
+<div class="theorem">Признак 1: По двум катетам. Если два катета одного прямоугольного треугольника равны двум катетам другого, то треугольники равны.</div>
+<div class="proof">Доказательство: прямой угол у обоих равен (90° = 90°). Два катета — это две стороны, а прямой угол — угол между ними. По 1-му общему признаку → равны. ∎</div>
+<div class="theorem">Признак 2: По гипотенузе и катету. Если гипотенуза и катет одного прямоугольного треугольника равны гипотенузе и катету другого, то треугольники равны.</div>
+<div class="proof"><b>Доказательство:</b><br>
+Дано: △ABC и △A₁B₁C₁, ∠C = ∠C₁ = 90°, AB = A₁B₁ (гипотенузы), AC = A₁C₁ (катеты).<br>
+Приложим △A₁B₁C₁ к △ABC так, чтобы A₁C₁ совместилась с AC. Тогда точка B₁ окажется с другой стороны от AC (симметрично B). Точка B₁ и точка B образуют равнобедренный треугольник BB₁C (т.к. CB = CB₁ — гипотенузы из C одинаковы). Прямые углы → точка C лежит на серединном перпендикуляре → BB₁ ⊥ AC → треугольники симметричны → равны. ∎</div>
+<div class="theorem">Признак 3: По гипотенузе и острому углу — также существует, следует из 2-го общего признака.</div>`},
+
+{n:8,
+q1t:"Секущая. Пары углов при пересечении двух прямых секущей.",
+q1:`<p><b>Секущая</b> — прямая, пересекающая две (или более) другие прямые в разных точках.</p>
+<p>При пересечении двух прямых a и b секущей c образуются 8 углов — по 4 при каждой прямой. Эти углы получают специальные названия:</p>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="220" height="160" viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="a8a" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#1a2744"/></marker>
+        <marker id="a8b" markerWidth="7" markerHeight="7" refX="1" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#1a2744"/></marker>
+        <marker id="a8c" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#e67e22"/></marker>
+        <marker id="a8d" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#27ae60"/></marker>
+      </defs>
+      <!-- line a -->
+      <line x1="10" y1="50" x2="180" y2="50" stroke="#1a2744" stroke-width="2" marker-end="url(#a8a)" marker-start="url(#a8b)"/>
+      <!-- line b -->
+      <line x1="10" y1="110" x2="180" y2="110" stroke="#1a2744" stroke-width="2" marker-end="url(#a8a)" marker-start="url(#a8b)"/>
+      <!-- secant c -->
+      <line x1="55" y1="10" x2="155" y2="155" stroke="#e67e22" stroke-width="2" marker-end="url(#a8c)"/>
+      <!-- intersection points -->
+      <circle cx="82" cy="50" r="3" fill="#c0392b"/>
+      <circle cx="118" cy="110" r="3" fill="#c0392b"/>
+      <!-- angle labels at intersection 1 (line a) -->
+      <text x="92" y="46" font-size="11" font-family="sans-serif" fill="#1a2744">∠1</text>
+      <text x="64" y="46" font-size="11" font-family="sans-serif" fill="#1a2744">∠2</text>
+      <text x="64" y="63" font-size="11" font-family="sans-serif" fill="#1a2744">∠3</text>
+      <text x="92" y="63" font-size="11" font-family="sans-serif" fill="#1a2744">∠4</text>
+      <!-- angle labels at intersection 2 (line b) -->
+      <text x="128" y="106" font-size="11" font-family="sans-serif" fill="#1a2744">∠5</text>
+      <text x="100" y="106" font-size="11" font-family="sans-serif" fill="#1a2744">∠6</text>
+      <text x="100" y="122" font-size="11" font-family="sans-serif" fill="#1a2744">∠7</text>
+      <text x="128" y="122" font-size="11" font-family="sans-serif" fill="#1a2744">∠8</text>
+      <!-- labels -->
+      <text x="178" y="46" font-size="12" font-family="Georgia,serif" fill="#1a2744" font-style="italic">a</text>
+      <text x="178" y="106" font-size="12" font-family="Georgia,serif" fill="#1a2744" font-style="italic">b</text>
+      <text x="152" y="150" font-size="12" font-family="Georgia,serif" fill="#e67e22" font-style="italic">c</text>
+    </svg>
+    <div class="fig-caption">8 углов при секущей</div>
+  </div>
+  <div class="fig">
+    <svg width="200" height="155" viewBox="0 0 200 155" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="a8e" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#555"/></marker>
+        <marker id="a8f" markerWidth="7" markerHeight="7" refX="1" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#555"/></marker>
+      </defs>
+      <line x1="10" y1="50" x2="180" y2="50" stroke="#555" stroke-width="1.5" marker-end="url(#a8e)" marker-start="url(#a8f)"/>
+      <line x1="10" y1="110" x2="180" y2="110" stroke="#555" stroke-width="1.5" marker-end="url(#a8e)" marker-start="url(#a8f)"/>
+      <line x1="55" y1="10" x2="155" y2="155" stroke="#555" stroke-width="1.5" marker-end="url(#a8e)"/>
+      <circle cx="82" cy="50" r="3" fill="#333"/>
+      <circle cx="118" cy="110" r="3" fill="#333"/>
+      <!-- накрест лежащие: ∠3 and ∠5 highlighted -->
+      <path d="M 82,50 L 68,64 A 16,16 0 0,0 82,50" fill="#ffcc0055"/>
+      <path d="M 118,110 L 132,96 A 16,16 0 0,0 118,110" fill="#ffcc0055"/>
+      <text x="63" y="68" font-size="10" font-family="sans-serif" fill="#d4a017">∠3</text>
+      <text x="128" y="102" font-size="10" font-family="sans-serif" fill="#d4a017">∠5</text>
+      <text x="100" y="148" font-size="10" font-family="sans-serif" fill="#d4a017" text-anchor="middle">накрест лежащие</text>
+    </svg>
+    <div class="fig-caption">Накрест лежащие: ∠3 = ∠5</div>
+  </div>
+</div>
+<div class="definition">
+<b>Накрест лежащие углы</b> — пары углов, лежащих по разные стороны от секущей, при разных прямых. (Примеры: ∠3 и ∠5, ∠4 и ∠6.) Всего 2 пары.<br><br>
+<b>Соответственные углы</b> — углы, занимающие одинаковое положение при каждой прямой относительно секущей. (Примеры: ∠1 и ∠5, ∠2 и ∠6.) Всего 4 пары.<br><br>
+<b>Односторонние (со-внутренние) углы</b> — углы, лежащие по одну сторону от секущей между прямыми. (Примеры: ∠3 и ∠6, ∠4 и ∠5.) Всего 2 пары.
+</div>
+<p>Важно уметь находить их на чертеже и правильно называть — это основа для признаков параллельности.</p>`,
+q2t:"Теорема о соотношении сторон и углов треугольника.",
+q2:`<div class="theorem">Теорема: В треугольнике напротив большей стороны лежит больший угол, и наоборот: напротив большего угла лежит большая сторона.</div>
+<p><b>Формально:</b> в △ABC: если AB > BC, то ∠C > ∠A. И наоборот: если ∠C > ∠A, то AB > BC.</p>
+<div class="proof"><b>Доказательство (AB > BC → ∠C > ∠A):</b><br>
+На стороне AB откладываем отрезок BD = BC (D между A и B). Треугольник BDC — равнобедренный → ∠BDC = ∠BCD.<br>
+Угол BDC — внешний угол △ACD → ∠BDC > ∠A.<br>
+∠BCD < ∠ACB = ∠C (так как BCD — часть угла C).<br>
+Значит: ∠C > ∠BCD = ∠BDC > ∠A → ∠C > ∠A. ∎</div>
+<div class="theorem">Следствие (гипотенуза > катета): В прямоугольном треугольнике гипотенуза больше каждого катета.</div>
+<div class="proof">Прямой угол = 90° — самый большой угол в прямоугольном треугольнике (другие два острые). Напротив наибольшего угла — наибольшая сторона → гипотенуза больше каждого катета. ∎</div>`},
+
+{n:9,
+q1t:"Медиана треугольника.",
+q1:`<div class="definition">Медиана треугольника — отрезок, соединяющий вершину треугольника с серединой противоположной стороны.</div>
+<p>В треугольнике три вершины → три медианы: из A — к середине BC, из B — к середине AC, из C — к середине AB.</p>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="180" height="130" viewBox="0 0 180 130" xmlns="http://www.w3.org/2000/svg">
+      <!-- triangle -->
+      <polygon points="90,10 20,115 160,115" fill="#e8f0ff" stroke="#1a2744" stroke-width="2"/>
+      <!-- midpoint of BC -->
+      <circle cx="90" cy="115" r="3" fill="#c0392b"/>
+      <!-- median from A to mid BC -->
+      <line x1="90" y1="10" x2="90" y2="115" stroke="#c0392b" stroke-width="2" stroke-dasharray="5,3"/>
+      <!-- midpoint of AC -->
+      <circle cx="125" cy="62" r="3" fill="#27ae60"/>
+      <!-- median from B -->
+      <line x1="20" y1="115" x2="125" y2="62" stroke="#27ae60" stroke-width="2" stroke-dasharray="5,3"/>
+      <!-- midpoint of AB -->
+      <circle cx="55" cy="62" r="3" fill="#e67e22"/>
+      <!-- median from C -->
+      <line x1="160" y1="115" x2="55" y2="62" stroke="#e67e22" stroke-width="2" stroke-dasharray="5,3"/>
+      <!-- centroid -->
+      <circle cx="90" cy="80" r="4" fill="#8e44ad"/>
+      <text x="95" y="78" font-size="10" font-family="sans-serif" fill="#8e44ad">центроид</text>
+      <!-- labels -->
+      <text x="86" y="7" font-size="12" font-family="Georgia,serif" fill="#1a2744">A</text>
+      <text x="12" y="122" font-size="12" font-family="Georgia,serif" fill="#1a2744">B</text>
+      <text x="158" y="122" font-size="12" font-family="Georgia,serif" fill="#1a2744">C</text>
+      <text x="84" y="126" font-size="10" font-family="Georgia,serif" fill="#c0392b">M</text>
+    </svg>
+    <div class="fig-caption">Три медианы пересекаются в одной точке</div>
+  </div>
+</div>
+<p>Обозначение: медиана из вершины A — обычно m_a, из B — m_b, из C — m_c.</p>
+<p><b>Построение медианы:</b><br>
+1) Найти середину стороны: с помощью циркуля проводим две дуги из концов стороны равного радиуса — они пересекаются в двух точках. Середина — центр отрезка.<br>
+2) Соединить вершину с найденной серединой.</p>
+<p><b>Свойство медиан:</b> все три медианы треугольника пересекаются в одной точке (точка пересечения называется <b>центроидом</b> или центром тяжести). Эта точка делит каждую медиану в отношении 2:1 от вершины. (Это изучается позже.)</p>
+<div class="note">Не путай медиану с высотой и биссектрисой! Медиана идёт в середину стороны, высота — перпендикулярно стороне, биссектриса — делит угол пополам.</div>`,
+q2t:"Свойства параллельных прямых (теоремы об углах с секущей). Доказательство по накрест лежащим углам.",
+q2:`<div class="theorem">Теорема (свойство 1): Если две параллельные прямые пересечены секущей, то накрест лежащие углы равны.</div>
+<div class="proof"><b>Доказательство методом от противного:</b><br>
+Пусть a ∥ b, секущая c пересекает a в точке A и b в точке B. Пусть ∠1 и ∠2 — накрест лежащие углы.<br>
+Допустим, ∠1 ≠ ∠2, например ∠1 > ∠2.<br>
+Проведём через точку A прямую a', образующую с секущей угол ∠2 (накрест лежащий с ∠2). По 1-му признаку параллельности: a' ∥ b.<br>
+Но через точку A уже проходит прямая a ∥ b. Получили две прямые через одну точку, параллельные b — противоречие аксиоме параллельных прямых.<br>
+Значит, ∠1 = ∠2. ∎</div>
+<div class="theorem">Следствие 1: При параллельных прямых соответственные углы равны.<br>
+Следствие 2: При параллельных прямых односторонние углы в сумме дают 180°.</div>
+<div class="proof">Следствие 1: соответственный угол = смежный с накрест лежащим... рассуждение через вертикальные/смежные углы.<br>
+Следствие 2: односторонний угол смежен с накрест лежащим → их сумма 180°.</div>`},
+
+{n:10,
+q1t:"Биссектриса треугольника.",
+q1:`<div class="definition">Биссектриса треугольника — отрезок биссектрисы угла треугольника от вершины до точки пересечения с противоположной стороной.</div>
+<p>В треугольнике три угла → три биссектрисы.</p>
+<p><b>Построение биссектрисы (циркуль и линейка):</b><br>
+1) Из вершины угла A циркулем рисуем дугу, пересекающую стороны угла в точках M и N.<br>
+2) Из точек M и N рисуем дуги одинакового радиуса — они пересекаются в точке P.<br>
+3) Проводим луч AP — это биссектриса угла A.<br>
+4) Отрезок от A до пересечения с BC — биссектриса треугольника.</p>
+<p><b>Свойство биссектрис:</b> все три биссектрисы треугольника пересекаются в одной точке — центре вписанной окружности (инцентре). Эта точка равноудалена от всех трёх сторон.</p>
+<div class="note">Биссектриса делит противоположную сторону в отношении прилежащих сторон (теорема о биссектрисе — изучается позже).</div>`,
+q2t:"Теорема о неравенстве треугольника.",
+q2:`<div class="theorem">Теорема о неравенстве треугольника: Сумма двух сторон треугольника больше третьей стороны.</div>
+<p>Для △ABC: AB + BC > AC, AB + AC > BC, BC + AC > AB.</p>
+<div class="proof"><b>Доказательство (для AB + BC > AC):</b><br>
+На продолжении стороны BA за точку A откладываем отрезок AD = BC. Тогда BD = BA + AD = BA + BC.<br>
+Треугольник ACD: AC = AD = BC → равнобедренный → ∠ACD = ∠ADC = ∠BDC.<br>
+В треугольнике BCD: ∠BCD > ∠BDC (∠BCD = ∠ACB + ∠ACD > ∠ACD = ∠BDC).<br>
+Значит BD > BC — нет, исправляем: в △BCD ∠BCD > ∠BDC → напротив большего угла большая сторона → BD > DC = AC.<br>
+Но BD = AB + BC → AB + BC > AC. ∎</div>
+<div class="theorem">Следствие: Разность двух сторон треугольника меньше третьей стороны: |AB − BC| < AC.</div>
+<div class="note">Практический смысл: три отрезка образуют треугольник тогда и только тогда, когда сумма любых двух больше третьего.</div>`},
+
+{n:11,
+q1t:"Высота треугольника.",
+q1:`<div class="definition">Высота треугольника — перпендикуляр, опущенный из вершины треугольника на противоположную сторону (или её продолжение).</div>
+<p>В треугольнике три вершины → три высоты.</p>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="130" height="120" viewBox="0 0 130 120" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="65,10 15,105 115,105" fill="#e8f0ff" stroke="#1a2744" stroke-width="2"/>
+      <line x1="65" y1="10" x2="65" y2="105" stroke="#c0392b" stroke-width="2"/>
+      <rect x="65" y="95" width="10" height="10" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+      <text x="61" y="7" font-size="12" font-family="Georgia,serif" fill="#1a2744">A</text>
+      <text x="8" y="112" font-size="12" font-family="Georgia,serif" fill="#1a2744">B</text>
+      <text x="113" y="112" font-size="12" font-family="Georgia,serif" fill="#1a2744">C</text>
+      <text x="68" y="112" font-size="10" font-family="Georgia,serif" fill="#c0392b">H</text>
+      <text x="65" y="118" font-size="9" font-family="sans-serif" fill="#888" text-anchor="middle">Остроугольный</text>
+    </svg>
+  </div>
+  <div class="fig">
+    <svg width="130" height="120" viewBox="0 0 130 120" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="15,105 15,15 110,105" fill="#f0f8ff" stroke="#1a2744" stroke-width="2"/>
+      <rect x="15" y="90" width="15" height="15" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+      <rect x="15" y="15" width="15" height="15" fill="none" stroke="#e67e22" stroke-width="1.5"/>
+      <text x="6" y="112" font-size="12" font-family="Georgia,serif" fill="#1a2744">C</text>
+      <text x="6" y="12" font-size="12" font-family="Georgia,serif" fill="#1a2744">A</text>
+      <text x="108" y="112" font-size="12" font-family="Georgia,serif" fill="#1a2744">B</text>
+      <text x="65" y="118" font-size="9" font-family="sans-serif" fill="#888" text-anchor="middle">Прямоугольный</text>
+    </svg>
+  </div>
+  <div class="fig">
+    <svg width="150" height="120" viewBox="0 0 150 120" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="30,105 110,15 130,105" fill="#fff5e8" stroke="#e67e22" stroke-width="2"/>
+      <!-- height from B to AC extended -->
+      <line x1="110" y1="15" x2="30" y2="105" stroke="#888" stroke-width="1" stroke-dasharray="3,3"/>
+      <!-- foot of height outside triangle -->
+      <line x1="30" y1="105" x2="10" y2="105" stroke="#888" stroke-width="1" stroke-dasharray="3,3"/>
+      <circle cx="10" cy="105" r="3" fill="#c0392b"/>
+      <line x1="130" y1="15" x2="10" y2="105" stroke="#c0392b" stroke-width="2"/>
+      <rect x="10" y="97" width="8" height="8" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+      <text x="27" y="112" font-size="12" font-family="Georgia,serif" fill="#e67e22">A</text>
+      <text x="107" y="12" font-size="12" font-family="Georgia,serif" fill="#e67e22">B</text>
+      <text x="128" y="112" font-size="12" font-family="Georgia,serif" fill="#e67e22">C</text>
+      <text x="4" y="112" font-size="10" font-family="Georgia,serif" fill="#c0392b">H</text>
+      <text x="75" y="118" font-size="9" font-family="sans-serif" fill="#888" text-anchor="middle">Тупоугольный</text>
+    </svg>
+  </div>
+</div>
+<p><b>Построение высоты (циркуль и линейка):</b><br>
+Из вершины A нужно опустить перпендикуляр на BC.<br>
+1) Рисуем дугу из A, пересекающую прямую BC в двух точках M и N.<br>
+2) Из M и N рисуем дуги одинакового радиуса — пересекаются в точке H.<br>
+3) AH ⊥ BC — это высота.</p>
+<p><b>Расположение высот в разных треугольниках:</b></p>
+<div class="definition">
+• Остроугольный треугольник: все три высоты пересекают стороны (основания внутри треугольника). Все три высоты лежат внутри.<br>
+• Прямоугольный треугольник: два катета сами являются высотами. Третья высота — из прямого угла на гипотенузу, лежит внутри. Все три высоты пересекаются в вершине прямого угла.<br>
+• Тупоугольный треугольник: две высоты опускаются на продолжения сторон (их основания лежат вне треугольника). Эти высоты проходят вне треугольника.
+</div>
+<p>Все три высоты треугольника пересекаются в одной точке — <b>ортоцентре</b>.</p>`,
+q2t:"Теорема о сумме углов треугольника.",
+q2:`<div class="theorem">Теорема: Сумма углов треугольника равна 180°.</div>
+<p><b>Дано:</b> △ABC. Доказать: ∠A + ∠B + ∠C = 180°.</p>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="210" height="120" viewBox="0 0 210 120" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="a11a" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#c0392b"/></marker>
+        <marker id="a11b" markerWidth="7" markerHeight="7" refX="1" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#c0392b"/></marker>
+      </defs>
+      <!-- parallel line MN through B -->
+      <line x1="10" y1="40" x2="200" y2="40" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#a11a)" marker-start="url(#a11b)"/>
+      <!-- triangle -->
+      <polygon points="105,40 30,105 175,105" fill="#e8f0ff" stroke="#1a2744" stroke-width="2"/>
+      <!-- angle A mark -->
+      <path d="M 44,105 A 16,16 0 0,1 30,90" fill="#ffeeaa55" stroke="#d4a017" stroke-width="1.5"/>
+      <!-- angle B mark at vertex B=105,40 with MN -->
+      <path d="M 91,40 A 14,14 0 0,0 97,53" fill="#ffaaaa55" stroke="#c0392b" stroke-width="1.5"/>
+      <path d="M 119,40 A 14,14 0 0,1 113,53" fill="#aaffaa55" stroke="#27ae60" stroke-width="1.5"/>
+      <!-- angle C mark -->
+      <path d="M 161,105 A 16,16 0 0,0 175,90" fill="#aaffaa55" stroke="#27ae60" stroke-width="1.5"/>
+      <!-- labels -->
+      <text x="100" y="36" font-size="12" font-family="Georgia,serif" fill="#1a2744">B</text>
+      <text x="22" y="112" font-size="12" font-family="Georgia,serif" fill="#1a2744">A</text>
+      <text x="173" y="112" font-size="12" font-family="Georgia,serif" fill="#1a2744">C</text>
+      <text x="8" y="36" font-size="11" font-family="Georgia,serif" fill="#c0392b" font-style="italic">M</text>
+      <text x="195" y="36" font-size="11" font-family="Georgia,serif" fill="#c0392b" font-style="italic">N</text>
+      <!-- angle labels on MN -->
+      <text x="80" y="38" font-size="11" font-family="Georgia,serif" fill="#d4a017">∠A</text>
+      <text x="118" y="38" font-size="11" font-family="Georgia,serif" fill="#27ae60">∠C</text>
+      <text x="100" y="65" font-size="11" font-family="Georgia,serif" fill="#1a2744" text-anchor="middle">∠B</text>
+      <text x="105" y="118" font-size="10" font-family="sans-serif" fill="#555" text-anchor="middle">MN ∥ AC, ∠A+∠B+∠C = 180°</text>
+    </svg>
+    <div class="fig-caption">Доказательство через параллельную прямую</div>
+  </div>
+</div>
+<div class="proof"><b>Доказательство:</b><br>
+Через вершину B проведём прямую MN, параллельную AC (MN ∥ AC). Это возможно по аксиоме параллельных прямых.<br><br>
+∠MBA = ∠BAC = ∠A — как накрест лежащие при MN ∥ AC и секущей AB.<br>
+∠NBС = ∠BCA = ∠C — как накрест лежащие при MN ∥ AC и секущей BC.<br><br>
+Угол MBN = 180° (развёрнутый), и ∠MBN = ∠MBA + ∠ABC + ∠NBC = ∠A + ∠B + ∠C.<br>
+Значит: ∠A + ∠B + ∠C = 180°. ∎</div>
+<div class="theorem">Следствие 1: Сумма острых углов прямоугольного треугольника равна 90°.</div>
+<div class="theorem">Следствие 2: В треугольнике не может быть двух тупых или двух прямых углов.</div>
+<div class="theorem">Следствие 3: Внешний угол треугольника равен сумме двух несмежных с ним внутренних углов.</div>`},
+
+{n:12,
+q1t:"Окружность. Центр, радиус, хорда, диаметр.",
+q1:`<div class="definition">Окружность — геометрическое место точек плоскости, равноудалённых от данной точки (центра) на данное расстояние (радиус).</div>
+<p>Обозначение: окружность с центром O и радиусом r — ω(O, r).</p>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="200" height="180" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+      <!-- circle -->
+      <circle cx="100" cy="90" r="70" fill="#e8f0ff" stroke="#1a2744" stroke-width="2"/>
+      <!-- center -->
+      <circle cx="100" cy="90" r="3" fill="#1a2744"/>
+      <text x="104" y="88" font-size="12" font-family="Georgia,serif" fill="#1a2744">O</text>
+      <!-- radius OA -->
+      <line x1="100" y1="90" x2="163" y2="68" stroke="#c0392b" stroke-width="2"/>
+      <circle cx="163" cy="68" r="3" fill="#c0392b"/>
+      <text x="166" y="66" font-size="11" font-family="Georgia,serif" fill="#c0392b">A</text>
+      <text x="128" y="74" font-size="10" font-family="sans-serif" fill="#c0392b">r</text>
+      <!-- diameter -->
+      <line x1="30" y1="90" x2="170" y2="90" stroke="#27ae60" stroke-width="2"/>
+      <circle cx="30" cy="90" r="3" fill="#27ae60"/>
+      <circle cx="170" cy="90" r="3" fill="#27ae60"/>
+      <text x="18" y="88" font-size="11" font-family="Georgia,serif" fill="#27ae60">D</text>
+      <text x="172" y="88" font-size="11" font-family="Georgia,serif" fill="#27ae60">E</text>
+      <text x="100" y="85" font-size="10" font-family="sans-serif" fill="#27ae60" text-anchor="middle">d=2r</text>
+      <!-- chord -->
+      <line x1="45" y1="130" x2="155" y2="50" stroke="#e67e22" stroke-width="2"/>
+      <circle cx="45" cy="130" r="3" fill="#e67e22"/>
+      <circle cx="155" cy="50" r="3" fill="#e67e22"/>
+      <text x="33" y="135" font-size="11" font-family="Georgia,serif" fill="#e67e22">B</text>
+      <text x="157" y="48" font-size="11" font-family="Georgia,serif" fill="#e67e22">C</text>
+      <!-- legend -->
+      <line x1="10" y1="163" x2="25" y2="163" stroke="#c0392b" stroke-width="2"/>
+      <text x="28" y="167" font-size="10" font-family="sans-serif" fill="#c0392b">радиус OA</text>
+      <line x1="90" y1="163" x2="105" y2="163" stroke="#27ae60" stroke-width="2"/>
+      <text x="108" y="167" font-size="10" font-family="sans-serif" fill="#27ae60">диаметр</text>
+      <line x1="10" y1="176" x2="25" y2="176" stroke="#e67e22" stroke-width="2"/>
+      <text x="28" y="179" font-size="10" font-family="sans-serif" fill="#e67e22">хорда BC</text>
+    </svg>
+    <div class="fig-caption">Окружность: центр, радиус, хорда, диаметр</div>
+  </div>
+</div>
+<div class="definition">
+<b>Центр окружности</b> — фиксированная точка O, от которой все точки окружности находятся на одинаковом расстоянии r.<br><br>
+<b>Радиус</b> — отрезок, соединяющий центр с любой точкой окружности. Все радиусы одной окружности равны.<br><br>
+<b>Хорда</b> — отрезок, соединяющий две любые точки окружности. Хорда лежит внутри круга (кроме концов).<br><br>
+<b>Диаметр</b> — хорда, проходящая через центр окружности. Диаметр = 2r. Диаметр — наибольшая хорда.
+</div>
+<p>Круг — фигура, ограниченная окружностью (внутренняя область вместе с самой окружностью).</p>
+<p>Два радиуса в окружности всегда равны: OA = OB = r. Значит треугольник OAB всегда равнобедренный.</p>`,
+q2t:"Свойства прямоугольных треугольников. Треугольник с углом 30°.",
+q2:`<div class="theorem">Свойство 1: В прямоугольном треугольнике сумма острых углов равна 90°.</div>
+<p>Следует из теоремы о сумме углов: 90° + ∠A + ∠B = 180° → ∠A + ∠B = 90°.</p>
+<div class="theorem">Свойство 2 (медиана к гипотенузе): В прямоугольном треугольнике медиана, проведённая к гипотенузе, равна половине гипотенузы.</div>
+<div class="proof">Дано: △ABC, ∠C = 90°, CM — медиана к AB. Достроим прямоугольник ACBD. Диагонали прямоугольника AB и CD равны и делятся пополам в точке пересечения → CM = AM = BM = AB/2. ∎</div>
+<div class="theorem">Свойство 3 (угол 30°): Катет прямоугольного треугольника, лежащий напротив угла в 30°, равен половине гипотенузы.</div>
+<div class="proof">Дано: △ABC, ∠C = 90°, ∠A = 30°, ∠B = 60°. Отложим CM = CB за точку B → △ACM равнобедренный (CM = CB), ∠A = 30° = ∠CAM → AM = CM = CB + BM... Достраиваем до △ACM, где AM = 2BC. ∠CAM = 30°, AM = AC → △ACM равносторонний → AM = AC = 2BC → BC = AC/2 = AB/2. ∎</div>
+<div class="note">Запомни: в прямоугольном треугольнике с углом 30° катет напротив 30° = половина гипотенузы.</div>`},
+
+{n:13,
+q1t:"Теорема. Условие и заключение. Обратная теорема.",
+q1:`<p><b>Теорема</b> — математическое утверждение, которое доказывается на основе аксиом и ранее доказанных теорем.</p>
+<div class="definition">Любая теорема имеет две части:<br>
+• <b>Условие</b> («если...») — то, что даётся, что считается известным.<br>
+• <b>Заключение</b> («то...») — то, что требуется доказать.
+</div>
+<p><b>Пример:</b> «Если треугольник равнобедренный, то углы при основании равны.»<br>
+Условие: треугольник равнобедренный.<br>
+Заключение: углы при основании равны.</p>
+<p><b>Обратная теорема</b> — теорема, у которой условие и заключение поменяны местами.</p>
+<div class="definition">Если исходная теорема: «если A, то B», то обратная: «если B, то A».</div>
+<p>Обратная теорема не всегда верна! Пример: «если треугольник прямоугольный, то в нём есть угол 90°» — верна. Обратная: «если в треугольнике есть угол 90°, то он прямоугольный» — тоже верна. Но: «если число оканчивается на 0, то оно делится на 5» — верна. Обратная: «если делится на 5, то оканчивается на 0» — неверна (25 делится на 5, но не на 0).</p>`,
+q2t:"Второй признак параллельности прямых (соответственные углы).",
+q2:`<div class="theorem">Второй признак параллельности: Если при пересечении двух прямых секущей соответственные углы равны, то прямые параллельны.</div>
+<div class="proof"><b>Доказательство:</b><br>
+Пусть ∠1 = ∠2 — соответственные углы (при прямых a и b, секущей c).<br>
+Угол ∠2 и накрест лежащий к ∠1 (назовём его ∠1') — вертикальные → ∠1' = ∠1 = ∠2.<br>
+Теперь углы ∠1' и ∠2 — накрест лежащие и равны → по 1-му признаку параллельности: a ∥ b. ∎</div>
+<div class="theorem">Третий признак параллельности: Если при пересечении двух прямых секущей односторонние углы в сумме дают 180°, то прямые параллельны.</div>
+<div class="proof"><b>Доказательство:</b><br>
+Пусть ∠3 + ∠4 = 180°. Угол ∠3 смежен с накрест лежащим углом ∠3' → ∠3 + ∠3' = 180° → ∠3' = 180° − ∠3 = ∠4. Накрест лежащие равны → прямые параллельны (1-й признак). ∎</div>
+<div class="note">Итого три признака параллельности: 1) накрест лежащие равны; 2) соответственные равны; 3) односторонние в сумме 180°.</div>`},
+
+{n:14,
+q1t:"Построение середины отрезка (циркуль и линейка).",
+q1:`<p>Задачи на построение — это задачи, в которых нужно построить геометрическую фигуру, используя только <b>циркуль и нейтральную линейку</b> (без делений).</p>
+<p>Линейкой проводят прямые и отрезки. Циркулем откладывают расстояния и рисуют дуги.</p>
+<div class="definition"><b>Задача:</b> построить середину отрезка AB.<br><br>
+<b>Построение:</b><br>
+1) Раскрываем циркуль больше половины AB. Из точки A проводим дугу.<br>
+2) Тем же раствором циркуля из точки B проводим дугу. Дуги пересекаются в двух точках: P и Q (по разные стороны от AB).<br>
+3) Проводим прямую PQ. Точка пересечения PQ и AB — это середина M отрезка AB.
+</div>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="200" height="150" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+      <!-- segment AB -->
+      <line x1="20" y1="75" x2="180" y2="75" stroke="#1a2744" stroke-width="2.5"/>
+      <circle cx="20" cy="75" r="4" fill="#1a2744"/>
+      <circle cx="180" cy="75" r="4" fill="#1a2744"/>
+      <text x="14" y="68" font-size="13" font-family="Georgia,serif" fill="#1a2744">A</text>
+      <text x="178" y="68" font-size="13" font-family="Georgia,serif" fill="#1a2744">B</text>
+      <!-- arcs from A -->
+      <path d="M 20,75 m 95,0 A 95,95 0 0,0 20,0" fill="none" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <path d="M 20,75 m 95,0 A 95,95 0 0,1 20,150" fill="none" stroke="#c0392b" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <!-- arcs from B -->
+      <path d="M 180,75 m -95,0 A 95,95 0 0,1 180,0" fill="none" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <path d="M 180,75 m -95,0 A 95,95 0 0,0 180,150" fill="none" stroke="#27ae60" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <!-- intersection points P, Q -->
+      <circle cx="100" cy="20" r="4" fill="#e67e22"/>
+      <circle cx="100" cy="130" r="4" fill="#e67e22"/>
+      <text x="104" y="18" font-size="11" font-family="Georgia,serif" fill="#e67e22">P</text>
+      <text x="104" y="143" font-size="11" font-family="Georgia,serif" fill="#e67e22">Q</text>
+      <!-- line PQ = perpendicular bisector -->
+      <line x1="100" y1="15" x2="100" y2="135" stroke="#8e44ad" stroke-width="2"/>
+      <!-- midpoint M -->
+      <circle cx="100" cy="75" r="5" fill="#8e44ad"/>
+      <text x="104" y="73" font-size="12" font-family="Georgia,serif" fill="#8e44ad">M</text>
+      <!-- right angle -->
+      <rect x="100" y="65" width="10" height="10" fill="none" stroke="#8e44ad" stroke-width="1.5"/>
+    </svg>
+    <div class="fig-caption">Построение середины и серединного перпендикуляра</div>
+  </div>
+</div>
+<div class="proof"><b>Обоснование:</b><br>
+AP = AQ = BP = BQ (все — радиусы одинаковых дуг).<br>
+△APB = △AQB (по 3-му признаку: три стороны равны) → PQ — ось симметрии отрезка AB → PQ ⊥ AB и PQ делит AB пополам → M — середина AB. ∎</div>
+<p>Попутно мы построили <b>серединный перпендикуляр</b> к отрезку AB — прямую, перпендикулярную AB и проходящую через его середину.</p>`,
+q2t:"Теорема о катете напротив угла 30°.",
+q2:`<div class="theorem">Теорема: Катет прямоугольного треугольника, лежащий напротив угла в 30°, равен половине гипотенузы.</div>
+<p><b>Дано:</b> △ABC, ∠C = 90°, ∠A = 30°. Доказать: BC = AB/2.</p>
+<div class="proof"><b>Доказательство:</b><br>
+Пристроим к △ABC равный треугольник △A₁BC, где ∠A₁ = 90°, получим прямоугольник... нет, сделаем так:<br><br>
+Отметим точку D на продолжении BC за B так, что BD = BC. Рассмотрим △ACD:<br>
+— AC — общая<br>
+— ∠ACB = ∠ACD = 90° (смежные = 90° каждый? нет...)<br><br>
+<b>Правильное доказательство:</b><br>
+Пусть M — середина AB. Проводим CM. По свойству медианы в прямоугольном треугольнике: CM = AM = MB = AB/2.<br>
+Теперь в △CMB: CM = MB = AB/2. Треугольник CMB равнобедренный → ∠CBM = ∠MCB.<br>
+∠CBM = 90° − 30° = 60° (т.к. ∠A = 30°, ∠B = 60°). Значит ∠MCB = 60°.<br>
+∠CMB = 180° − 60° − 60° = 60° → △CMB равносторонний → CM = MB = BC = AB/2. ∎</div>
+<div class="note">Следствие: в прямоугольном треугольнике с углом 60° — катет напротив 60° = (√3/2)·AB.</div>`},
+
+{n:15,
+q1t:"Построение перпендикулярной прямой через точку на прямой.",
+q1:`<div class="definition"><b>Задача:</b> построить прямую, проходящую через точку A, лежащую на прямой a, перпендикулярно к ней.<br><br>
+<b>Построение:</b><br>
+1) Из точки A циркулем откладываем одинаковые расстояния по прямой a в обе стороны — получаем точки B и C (AB = AC).<br>
+2) Из точек B и C циркулем рисуем дуги одинакового радиуса (больше AB) — они пересекаются в точке D (выше или ниже прямой a).<br>
+3) Проводим прямую AD. Она перпендикулярна к a в точке A.
+</div>
+<div class="proof"><b>Обоснование:</b><br>
+AB = AC (по построению), DB = DC (оба — радиусы одинаковых дуг).<br>
+Значит точки D и A равноудалены от B и C → прямая DA — серединный перпендикуляр к BC → DA ⊥ BC ∥ a → DA ⊥ a. ∎</div>
+<p><b>Случай 2: точка вне прямой.</b> Если точка P не лежит на прямой a:</p>
+<div class="definition">
+1) Из точки P рисуем дугу, пересекающую прямую a в точках M и N.<br>
+2) Из M и N рисуем дуги одинакового радиуса, они пересекаются в точке Q (с другой стороны от a).<br>
+3) Прямая PQ ⊥ a. Основание перпендикуляра H — пересечение PQ с a.
+</div>`,
+q2t:"Третий признак параллельности прямых (односторонние углы).",
+q2:`<div class="theorem">Третий признак параллельности: Если при пересечении двух прямых секущей сумма односторонних углов равна 180°, то прямые параллельны.</div>
+<div class="proof"><b>Доказательство:</b><br>
+Пусть прямая c пересекает прямые a и b. ∠1 и ∠2 — односторонние углы, ∠1 + ∠2 = 180°.<br>
+Угол ∠3 — смежный с ∠1: ∠1 + ∠3 = 180° → ∠3 = ∠2.<br>
+Углы ∠3 и ∠2 — накрест лежащие и равны → по 1-му признаку: a ∥ b. ∎</div>
+<p>Таким образом, все три признака параллельности взаимосвязаны и все доказываются через 1-й признак.</p>
+<div class="definition"><b>Сводная таблица признаков и свойств параллельных прямых:</b><br><br>
+Признаки (≠ → ∥):<br>
+1) Накрест лежащие равны → a ∥ b<br>
+2) Соответственные равны → a ∥ b<br>
+3) Односторонние в сумме 180° → a ∥ b<br><br>
+Свойства (∥ → ≠):<br>
+1) a ∥ b → накрест лежащие равны<br>
+2) a ∥ b → соответственные равны<br>
+3) a ∥ b → односторонние в сумме 180°
+</div>`},
+
+{n:16,
+q1t:"Построение биссектрисы угла.",
+q1:`<div class="definition"><b>Задача:</b> построить биссектрису угла AOB.<br><br>
+<b>Построение:</b><br>
+1) Из вершины O рисуем дугу произвольного радиуса r — она пересекает стороны угла в точках M (на OA) и N (на OB).<br>
+2) Из точек M и N рисуем дуги одинакового радиуса. Они пересекаются в точке P.<br>
+3) Луч OP — биссектриса угла AOB.
+</div>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="180" height="160" viewBox="0 0 180 160" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a16a" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#1a2744"/></marker>
+      <marker id="a16b" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#c0392b"/></marker></defs>
+      <!-- angle sides -->
+      <line x1="20" y1="140" x2="160" y2="30" stroke="#1a2744" stroke-width="2" marker-end="url(#a16a)"/>
+      <line x1="20" y1="140" x2="170" y2="130" stroke="#1a2744" stroke-width="2" marker-end="url(#a16a)"/>
+      <!-- arc from O -->
+      <path d="M 20,140 m 70,0 A 70,70 0 0,0 60.5,73" fill="none" stroke="#888" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <!-- points M and N -->
+      <circle cx="88" cy="73" r="4" fill="#27ae60"/>
+      <circle cx="89" cy="140" r="4" fill="#27ae60"/>
+      <text x="91" y="70" font-size="11" font-family="Georgia,serif" fill="#27ae60">M</text>
+      <text x="91" y="150" font-size="11" font-family="Georgia,serif" fill="#27ae60">N</text>
+      <!-- arcs from M and N -->
+      <path d="M 88,73 m 35,0 A 35,35 0 0,1 110,120" fill="none" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <path d="M 89,140 m 35,0 A 35,35 0 0,0 110,120" fill="none" stroke="#e67e22" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <!-- point P -->
+      <circle cx="112" cy="118" r="4" fill="#e67e22"/>
+      <text x="116" y="116" font-size="11" font-family="Georgia,serif" fill="#e67e22">P</text>
+      <!-- bisector OP -->
+      <line x1="20" y1="140" x2="135" y2="100" stroke="#c0392b" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#a16b)"/>
+      <!-- vertex O -->
+      <circle cx="20" cy="140" r="4" fill="#1a2744"/>
+      <text x="8" y="150" font-size="12" font-family="Georgia,serif" fill="#1a2744">O</text>
+      <text x="158" y="27" font-size="11" font-family="Georgia,serif" fill="#1a2744">A</text>
+      <text x="168" y="140" font-size="11" font-family="Georgia,serif" fill="#1a2744">B</text>
+    </svg>
+    <div class="fig-caption">Построение биссектрисы угла AOB</div>
+  </div>
+</div>
+<div class="proof"><b>Обоснование:</b><br>
+OM = ON = r (радиусы одной дуги). MP = NP (радиусы одинаковых дуг из M и N). OP — общая.<br>
+По 3-му признаку равенства: △OMP = △ONP.<br>
+Из равенства треугольников: ∠MOP = ∠NOP → луч OP делит угол AOB пополам → OP — биссектриса. ∎</div>`,
+q2t:"Свойство медианы прямоугольного треугольника к гипотенузе.",
+q2:`<div class="theorem">Теорема: В прямоугольном треугольнике медиана, проведённая к гипотенузе, равна половине гипотенузы.</div>
+<p><b>Дано:</b> △ABC, ∠C = 90°, M — середина AB. Доказать: CM = AB/2.</p>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="200" height="150" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+      <!-- right triangle ABC with C at left bottom -->
+      <polygon points="20,120 20,20 170,120" fill="#e8f0ff" stroke="#1a2744" stroke-width="2"/>
+      <!-- right angle at C -->
+      <rect x="20" y="105" width="15" height="15" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+      <!-- midpoint M of AB (hypotenuse) -->
+      <circle cx="95" cy="70" r="4" fill="#c0392b"/>
+      <text x="98" y="67" font-size="11" font-family="Georgia,serif" fill="#c0392b">M</text>
+      <!-- median CM -->
+      <line x1="20" y1="120" x2="95" y2="70" stroke="#c0392b" stroke-width="2.5"/>
+      <!-- equal marks: CM = AM = MB -->
+      <line x1="54" y1="97" x2="62" y2="91" stroke="#27ae60" stroke-width="2"/>
+      <line x1="54" y1="103" x2="62" y2="97" stroke="#27ae60" stroke-width="2"/>
+      <line x1="55" y1="88" x2="60" y2="79" stroke="#27ae60" stroke-width="2"/>
+      <line x1="62" y1="75" x2="67" y2="67" stroke="#27ae60" stroke-width="2"/>
+      <!-- labels -->
+      <text x="14" y="12" font-size="12" font-family="Georgia,serif" fill="#1a2744">A</text>
+      <text x="8" y="130" font-size="12" font-family="Georgia,serif" fill="#1a2744">C</text>
+      <text x="168" y="130" font-size="12" font-family="Georgia,serif" fill="#1a2744">B</text>
+      <text x="100" y="140" font-size="10" font-family="sans-serif" fill="#555" text-anchor="middle">CM = AM = MB = AB/2</text>
+    </svg>
+    <div class="fig-caption">Медиана к гипотенузе</div>
+  </div>
+</div>
+<div class="proof"><b>Доказательство:</b><br>
+Проведём точку D так, чтобы MD = MC (M — середина CD).<br>
+Рассмотрим четырёхугольник ACBD: его диагонали AB и CD делятся пополам в точке M → ACBD — параллелограмм.<br>
+Угол ACB = 90° → в параллелограмме ACBD угол C = 90° → ACBD — прямоугольник.<br>
+В прямоугольнике диагонали равны: AB = CD. M — середина AB и CD → CM = CD/2 = AB/2. ∎</div>
+<div class="theorem">Обратная теорема (признак): Если медиана треугольника равна половине стороны, к которой она проведена, то треугольник прямоугольный.</div>
+<div class="proof"><b>Доказательство обратной:</b><br>
+CM = MA = MB = AB/2 → △CMA и △CMB — равнобедренные → ∠MCA = ∠MAC, ∠MCB = ∠MBC.<br>
+∠ACB = ∠MCA + ∠MCB = ∠MAC + ∠MBC. Но ∠MAC + ∠MBC + ∠ACB = 180° → 2∠ACB = 180° → ∠ACB = 90°. ∎</div>`},
+
+{n:17,
+q1t:"Построение треугольника по стороне и двум прилежащим углам.",
+q1:`<div class="definition"><b>Задача:</b> построить △ABC, если известны сторона AB и углы ∠A и ∠B (два угла, прилежащих к стороне AB).<br><br>
+<b>Условие существования:</b> ∠A + ∠B < 180° (иначе треугольник не существует).<br><br>
+<b>Построение:</b><br>
+1) Проводим отрезок AB заданной длины.<br>
+2) При вершине A строим угол, равный ∠A: проводим луч AC' из A под углом ∠A к AB.<br>
+3) При вершине B строим угол, равный ∠B: проводим луч BC'' из B под углом ∠B к BA.<br>
+4) Лучи AC' и BC'' пересекаются в точке C — это третья вершина треугольника.<br>
+5) △ABC — искомый треугольник.
+</div>
+<div class="proof"><b>Обоснование единственности:</b><br>
+Луч AC' и луч BC'' — прямые, не параллельные (т.к. ∠A + ∠B < 180°, углы при секущей AB в сумме < 180°). Две непараллельные прямые пересекаются ровно в одной точке → C единственна → треугольник единственен (с точностью до движения). ∎</div>`,
+q2t:"Признак прямоугольного треугольника по медиане к гипотенузе.",
+q2:`<div class="theorem">Признак: Если в треугольнике медиана равна половине той стороны, к которой проведена, то этот треугольник прямоугольный.</div>
+<p><b>Дано:</b> △ABC, M — середина AB, CM = AB/2. Доказать: ∠C = 90°.</p>
+<div class="proof"><b>Доказательство:</b><br>
+CM = MA = MB (т.к. CM = AB/2 = MA = MB по условию).<br>
+△CMA: CM = MA → равнобедренный → ∠MCA = ∠MAC = ∠A.<br>
+△CMB: CM = MB → равнобедренный → ∠MCB = ∠MBC = ∠B.<br>
+∠ACB = ∠MCA + ∠MCB = ∠A + ∠B.<br>
+По теореме о сумме углов: ∠A + ∠B + ∠C = 180°.<br>
+Подставляем: ∠C + ∠C = 180° → 2∠C = 180° → ∠C = 90°. ∎</div>
+<div class="note">Запомни два утверждения вместе: CM = AB/2 ↔ ∠C = 90°. Они эквивалентны — это теорема и её обратная, и обе верны.</div>`},
+
+{n:18,
+q1t:"Построение треугольника по трём сторонам.",
+q1:`<div class="definition"><b>Задача:</b> построить △ABC, если известны три стороны: a = BC, b = CA, c = AB.<br><br>
+<b>Условие существования (всегда ли имеет решение?):</b> треугольник существует тогда и только тогда, когда выполняются все три неравенства треугольника:<br>
+a + b > c, &nbsp; a + c > b, &nbsp; b + c > a.<br>
+Если хотя бы одно не выполняется — треугольника не существует.<br><br>
+<b>Построение:</b><br>
+1) Проводим отрезок BC = a.<br>
+2) Из точки B циркулем откладываем дугу радиуса c = AB.<br>
+3) Из точки C откладываем дугу радиуса b = CA.<br>
+4) Если неравенства треугольника выполнены — дуги пересекаются в точке A (в двух точках, симметричных относительно BC).<br>
+5) △ABC — искомый треугольник.
+</div>
+<div class="proof"><b>Обоснование:</b> построенный треугольник имеет стороны a, b, c по построению → по 3-му признаку равенства он единственен. Дуги пересекаются ↔ неравенства треугольника выполнены. ∎</div>`,
+q2t:"Признак равнобедренного треугольника.",
+q2:`<div class="theorem">Теорема (признак): Если в треугольнике два угла равны, то он равнобедренный (стороны, противолежащие равным углам, равны).</div>
+<p><b>Дано:</b> △ABC, ∠A = ∠C. Доказать: BC = AB.</p>
+<div class="proof"><b>Доказательство:</b><br>
+Проведём биссектрису BM (M на AC).<br>
+Рассмотрим △ABM и △CBM:<br>
+— ∠A = ∠C (по условию)<br>
+— ∠ABM = ∠CBM (BM — биссектриса)<br>
+— BM — общая сторона<br>
+По 2-му признаку (сторона и два прилежащих угла): △ABM = △CBM.<br>
+Из равенства: AB = CB. ∎</div>
+<p>Это обратная теорема к свойству равнобедренного треугольника. Вместе они дают:</p>
+<div class="definition">Треугольник равнобедренный ↔ два его угла равны.</div>
+<div class="note">Равносторонний треугольник — частный случай равнобедренного. В нём все три угла равны по 60°.</div>`},
+
+{n:19,
+q1t:"Расстояние между параллельными прямыми. Геометрическое место точек.",
+q1:`<div class="definition">Расстояние между двумя параллельными прямыми — длина общего перпендикуляра к этим прямым (расстояние от любой точки одной прямой до другой прямой). Оно одинаково в любом месте.</div>
+<p><b>Почему одинаково?</b> Если провести два перпендикуляра из точек A и B одной прямой к другой прямой (основания H₁ и H₂), то AH₁ = BH₂ (они — противоположные стороны прямоугольника AH₁H₂B).</p>
+<div class="fig-wrap">
+  <div class="fig">
+    <svg width="220" height="110" viewBox="0 0 220 110" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="a19a" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill="#1a2744"/></marker>
+      <marker id="a19b" markerWidth="7" markerHeight="7" refX="1" refY="3" orient="auto"><path d="M7,0 L7,6 L0,3 z" fill="#1a2744"/></marker></defs>
+      <!-- parallel lines -->
+      <line x1="10" y1="25" x2="210" y2="25" stroke="#1a2744" stroke-width="2" marker-end="url(#a19a)" marker-start="url(#a19b)"/>
+      <line x1="10" y1="85" x2="210" y2="85" stroke="#1a2744" stroke-width="2" marker-end="url(#a19a)" marker-start="url(#a19b)"/>
+      <!-- perpendiculars -->
+      <line x1="70" y1="25" x2="70" y2="85" stroke="#c0392b" stroke-width="2"/>
+      <line x1="150" y1="25" x2="150" y2="85" stroke="#c0392b" stroke-width="2"/>
+      <!-- right angle marks -->
+      <rect x="70" y="25" width="8" height="8" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+      <rect x="150" y="25" width="8" height="8" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+      <rect x="70" y="77" width="8" height="8" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+      <rect x="150" y="77" width="8" height="8" fill="none" stroke="#c0392b" stroke-width="1.5"/>
+      <!-- points -->
+      <circle cx="70" cy="25" r="3" fill="#1a2744"/>
+      <circle cx="150" cy="25" r="3" fill="#1a2744"/>
+      <text x="66" y="18" font-size="11" font-family="Georgia,serif" fill="#1a2744">A</text>
+      <text x="146" y="18" font-size="11" font-family="Georgia,serif" fill="#1a2744">B</text>
+      <text x="61" y="98" font-size="11" font-family="Georgia,serif" fill="#1a2744">H₁</text>
+      <text x="141" y="98" font-size="11" font-family="Georgia,serif" fill="#1a2744">H₂</text>
+      <!-- distance label -->
+      <text x="50" y="60" font-size="11" font-family="sans-serif" fill="#c0392b">d</text>
+      <text x="130" y="60" font-size="11" font-family="sans-serif" fill="#c0392b">d</text>
+      <text x="110" y="5" font-size="10" font-family="Georgia,serif" fill="#1a2744" font-style="italic">a</text>
+      <text x="110" y="99" font-size="10" font-family="Georgia,serif" fill="#1a2744" font-style="italic">b</text>
+      <text x="110" y="108" font-size="9" font-family="sans-serif" fill="#555" text-anchor="middle">AH₁ = BH₂ = d</text>
+    </svg>
+    <div class="fig-caption">Расстояние между параллельными прямыми</div>
+  </div>
+  <div class="fig">
+    <svg width="160" height="110" viewBox="0 0 160 110" xmlns="http://www.w3.org/2000/svg">
+      <!-- ГМТ — окружность -->
+      <circle cx="80" cy="55" r="40" fill="none" stroke="#1a2744" stroke-width="2"/>
+      <circle cx="80" cy="55" r="3" fill="#c0392b"/>
+      <text x="83" y="53" font-size="11" font-family="Georgia,serif" fill="#c0392b">O</text>
+      <line x1="80" y1="55" x2="113" y2="27" stroke="#888" stroke-width="1.5"/>
+      <text x="97" y="37" font-size="10" font-family="sans-serif" fill="#888">r</text>
+      <text x="80" y="108" font-size="9" font-family="sans-serif" fill="#555" text-anchor="middle">ГМТ на расстоянии r от O</text>
+    </svg>
+    <div class="fig-caption">ГМТ: окружность</div>
+  </div>
+</div>
+<p><b>Геометрическое место точек (ГМТ)</b> — множество всех точек, обладающих некоторым заданным свойством (и только они).</p>
+<div class="definition">Примеры ГМТ:<br>
+• ГМТ, равноудалённых от данной точки O на расстояние r — <b>окружность</b> с центром O и радиусом r.<br>
+• ГМТ, равноудалённых от двух данных точек A и B — <b>серединный перпендикуляр</b> к отрезку AB.<br>
+• ГМТ, равноудалённых от двух пересекающихся прямых — <b>биссектрисы</b> углов между этими прямыми.<br>
+• ГМТ, находящихся на расстоянии d от прямой a — <b>две прямые</b>, параллельные a на расстоянии d.
+</div>`,
+q2t:"Аксиома параллельных прямых и её следствия.",
+q2:`<p><b>Что такое аксиома?</b> Аксиома — это утверждение, которое принимается без доказательства, как исходная истина. Аксиомы — основа, на которой строится вся геометрия.</p>
+<div class="definition">Примеры аксиом геометрии:<br>
+• Через любые две точки проходит единственная прямая.<br>
+• На каждом луче от его начала можно отложить отрезок данной длины, и притом только один.<br>
+• Откладывание углов: от луча можно отложить угол, равный данному.
+</div>
+<div class="theorem">Аксиома параллельных прямых (аксиома Евклида): Через точку, не лежащую на данной прямой, можно провести прямую, параллельную данной, и притом только одну.</div>
+<p><b>Следствия из аксиомы:</b></p>
+<div class="theorem">Следствие 1: Если прямая пересекает одну из двух параллельных прямых, то она пересекает и другую.</div>
+<div class="proof">Доказательство: пусть a ∥ b, прямая c пересекает a. Предположим, c не пересекает b → c ∥ b. Но тогда через точку пересечения c и a проходят две прямые, параллельные b (это a и c) — противоречие аксиоме. Значит c пересекает b. ∎</div>
+<div class="theorem">Следствие 2: Если две прямые параллельны третьей, то они параллельны друг другу.</div>
+<div class="proof">Если a ∥ c и b ∥ c, и a ≠ b. Допустим a и b пересекаются в точке P. Тогда через P проходят две прямые, параллельные c. Противоречие аксиоме. Значит a ∥ b. ∎</div>`},
+
+{n:20,
+q1t:"Построение треугольника по двум сторонам и углу между ними.",
+q1:`<div class="definition"><b>Задача:</b> построить △ABC, если известны AB = c, AC = b и ∠A (угол между ними).<br><br>
+<b>Условие существования:</b> такой треугольник существует всегда при любых положительных a, b и 0° < ∠A < 180°.<br><br>
+<b>Построение:</b><br>
+1) Проводим луч из точки A.<br>
+2) На этом луче откладываем AB = c — получаем точку B.<br>
+3) При вершине A строим угол, равный данному ∠A: проводим второй луч из A под этим углом к первому.<br>
+4) На втором луче откладываем AC = b — получаем точку C.<br>
+5) Соединяем B и C. △ABC — искомый треугольник.
+</div>
+<div class="proof"><b>Обоснование:</b> построенный треугольник имеет AB = c, AC = b, ∠BAC = ∠A по построению. По 1-му признаку равенства треугольников он единственен (с точностью до движения). ∎</div>`,
+q2t:"Свойства параллельных прямых. Доказательство по соответственным или односторонним углам.",
+q2:`<div class="theorem">Теорема: Если две параллельные прямые пересечены секущей, то соответственные углы равны.</div>
+<div class="proof"><b>Доказательство:</b><br>
+Пусть a ∥ b, секущая c. ∠1 — при прямой a, ∠2 — соответственный при прямой b.<br>
+∠3 — вертикальный к ∠1 → ∠3 = ∠1.<br>
+∠3 и ∠2 — накрест лежащие. По свойству параллельных прямых (доказано через аксиому): ∠3 = ∠2.<br>
+Значит ∠1 = ∠2. ∎</div>
+<div class="theorem">Теорема: Если две параллельные прямые пересечены секущей, то сумма односторонних углов равна 180°.</div>
+<div class="proof"><b>Доказательство:</b><br>
+∠4 — односторонний к ∠2 (смежный с накрест лежащим к ∠2).<br>
+Накрест лежащие: ∠2' = ∠2. Смежные: ∠4 + ∠2' = 180° → ∠4 + ∠2 = 180°. ∎</div>
+<div class="note">Все три свойства параллельных прямых — это «обратные» к трём признакам параллельности. Признаки доказывают параллельность, свойства — используют её.</div>`}
+
+];
+
+const main = document.getElementById('main');
+const countEl = document.getElementById('count');
+
+function render(list) {
+  main.innerHTML = '';
+  countEl.textContent = list.length + ' ' + (list.length === 1 ? 'билет' : list.length < 5 ? 'билета' : 'билетов');
+  list.forEach(t => {
+    const div = document.createElement('div');
+    div.className = 'ticket';
+    div.innerHTML = `
+      <div class="ticket-header" onclick="toggle(this.parentElement)">
+        <div class="ticket-num">${t.n}</div>
+        <div>
+          <div class="ticket-title">Билет №${t.n}</div>
+          <div class="ticket-sub">${t.q1t}</div>
+        </div>
+        <div class="chevron">▾</div>
+      </div>
+      <div class="ticket-body">
+        <div class="question-block">
+          <div class="q-label">Вопрос 1</div>
+          <div class="q-title">${t.q1t}</div>
+          <div class="q-content">${t.q1}</div>
+        </div>
+        <div class="divider"></div>
+        <div class="question-block">
+          <div class="q-label">Вопрос 2</div>
+          <div class="q-title">${t.q2t}</div>
+          <div class="q-content">${t.q2}</div>
+        </div>
+      </div>`;
+    main.appendChild(div);
+  });
+}
+
+function toggle(el) { el.classList.toggle('open'); }
+
+function filter(v) {
+  const q = v.toLowerCase();
+  render(tickets.filter(t =>
+    String(t.n).includes(q) ||
+    t.q1t.toLowerCase().includes(q) ||
+    t.q2t.toLowerCase().includes(q) ||
+    t.q1.toLowerCase().includes(q) ||
+    t.q2.toLowerCase().includes(q)
+  ));
+}
+
+render(tickets);
+</script>
+</body>
+</html>

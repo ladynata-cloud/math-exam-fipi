@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>⚔️ Сражение чисел — тренажёр</title>
+<style>
+/* ═══════════════════════════════════════════
+   ПЕРЕМЕННЫЕ
+════════════════════════════════════════════ */
+:root {
+  --bg:          #f1f3f9;
+  --card:        #ffffff;
+  --hdr:         #1e1b4b;
+  --primary:     #4f46e5;
+  --primary-h:   #4338ca;
+  --primary-lt:  #e0e7ff;
+  --pos:         #0284c7;
+  --pos-bg:      #e0f2fe;
+  --pos-dk:      #075985;
+  --pos-blk:     #38bdf8;
+  --neg:         #e11d48;
+  --neg-bg:      #ffe4e6;
+  --neg-dk:      #9f1239;
+  --neg-blk:     #fb7185;
+  --ok:          #16a34a;
+  --ok-bg:       #dcfce7;
+  --ok-dk:       #14532d;
+  --hint:        #d97706;
+  --hint-bg:     #fef3c7;
+  --hint-dk:     #78350f;
+  --muted:       #94a3b8;
+  --text:        #1e293b;
+  --text-lt:     #64748b;
+  --border:      #e2e8f0;
+  --r:           14px;
+  --r-sm:        10px;
+  --sh:          0 4px 24px rgba(30,27,75,.09);
+  --sh-sm:       0 2px 8px rgba(30,27,75,.06);
+}
+
+/* ═══════════════════════════════════════════
+   СБРОС
+════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+button { font-family: inherit; cursor: pointer; }
+input  { font-family: inherit; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+/* ═══════════════════════════════════════════
+   ШАПКА
+════════════════════════════════════════════ */
+.hdr {
+  background: var(--hdr);
+  color: #fff;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,.25);
+}
+.hdr-brand {
+  font-size: 1.15rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  letter-spacing: -.3px;
+}
+.hdr-brand-ico { font-size: 1.3rem; }
+.mode-sw {
+  display: flex;
+  background: rgba(255,255,255,.1);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 3px;
+}
+.mode-btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: .82rem;
+  font-weight: 700;
+  color: rgba(255,255,255,.65);
+  background: transparent;
+  transition: all .2s;
+  letter-spacing: .2px;
+}
+.mode-btn.active {
+  background: #fff;
+  color: var(--hdr);
+}
+
+/* ═══════════════════════════════════════════
+   ОБЁРТКА
+════════════════════════════════════════════ */
+#app {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 24px 16px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ═══════════════════════════════════════════
+   КАРТОЧКА ВЫРАЖЕНИЯ
+════════════════════════════════════════════ */
+.expr-card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 28px 24px 22px;
+  box-shadow: var(--sh);
+  text-align: center;
+  position: relative;
+}
+.expr-sub {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.expr {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.expr-n {
+  font-size: 3.8rem;
+  font-weight: 900;
+  font-family: Georgia, 'Times New Roman', serif;
+  line-height: 1;
+  letter-spacing: -2px;
+  transition: color .3s;
+}
+.pos-num { color: var(--pos); }
+.neg-num { color: var(--neg); }
+.expr-op {
+  font-size: 3rem;
+  font-weight: 400;
+  color: var(--muted);
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+.btn-new {
+  margin-top: 16px;
+  padding: 7px 16px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--text-lt);
+  background: transparent;
+  transition: all .2s;
+}
+.btn-new:hover { border-color: var(--text-lt); color: var(--text); background: var(--bg); }
+
+/* ═══════════════════════════════════════════
+   ПРОГРЕСС
+════════════════════════════════════════════ */
+.progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 4px;
+}
+.prog-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: all .3s;
+}
+.prog-dot.done {
+  background: var(--ok);
+  transform: scale(1.1);
+}
+.prog-dot.active {
+  background: var(--primary);
+  transform: scale(1.35);
+  box-shadow: 0 0 0 3px var(--primary-lt);
+}
+.prog-label {
+  font-size: .76rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-left: 8px;
+  letter-spacing: .3px;
+}
+
+/* ═══════════════════════════════════════════
+   ШАГ-КАРТОЧКА
+════════════════════════════════════════════ */
+.step-card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 26px 22px;
+  box-shadow: var(--sh);
+  animation: fadeUp .3s ease;
+}
+.step-hdr {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.step-badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: .9rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.step-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.3;
+}
+.step-desc {
+  font-size: .95rem;
+  line-height: 1.65;
+  color: var(--text-lt);
+  margin-bottom: 18px;
+}
+.step-desc strong { color: var(--text); }
+
+/* ═══════════════════════════════════════════
+   БЛОК ВОПРОСА
+════════════════════════════════════════════ */
+.q-block {
+  margin-bottom: 18px;
+  transition: opacity .25s;
+}
+.q-block.muted-q { opacity: .4; pointer-events: none; }
+.q-label {
+  font-size: .93rem;
+  font-weight: 600;
+  color: var(--text-lt);
+  margin-bottom: 10px;
+}
+.q-label .qn { font-family: Georgia, serif; font-weight: 900; font-size: 1.05rem; }
+
+/* ═══════════════════════════════════════════
+   КНОПКИ ВЫБОРА
+════════════════════════════════════════════ */
+.choice-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.choice-btn {
+  flex: 1;
+  min-width: 130px;
+  padding: 12px 16px;
+  border: 2.5px solid var(--border);
+  border-radius: var(--r-sm);
+  font-size: .95rem;
+  font-weight: 700;
+  background: #fff;
+  color: var(--text-lt);
+  transition: all .2s;
+  text-align: center;
+}
+.choice-btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); transform: translateY(-1px); }
+.choice-btn.pos-btn:hover:not(:disabled) { border-color: var(--pos); color: var(--pos); }
+.choice-btn.neg-btn:hover:not(:disabled) { border-color: var(--neg); color: var(--neg); }
+
+.choice-btn.locked-ok {
+  border-color: var(--ok);
+  background: var(--ok-bg);
+  color: var(--ok-dk);
+  cursor: default;
+}
+.choice-btn.locked-wrong {
+  border-color: var(--neg);
+  background: var(--neg-bg);
+  color: var(--neg-dk);
+  animation: shake .4s;
+}
+.choice-btn.winner-pos {
+  border-color: var(--pos);
+  background: var(--pos);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(2,132,199,.3);
+}
+.choice-btn.winner-neg {
+  border-color: var(--neg);
+  background: var(--neg);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(225,29,72,.3);
+}
+.choice-btn.ok-selected {
+  border-color: var(--ok);
+  background: var(--ok);
+  color: #fff;
+}
+.choice-btn.wrong-selected {
+  border-color: var(--neg);
+  background: var(--neg-bg);
+  color: var(--neg-dk);
+  animation: shake .4s;
+}
+.choice-btn:disabled { cursor: default; }
+
+/* ═══════════════════════════════════════════
+   ИНПУТЫ
+════════════════════════════════════════════ */
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.input-lbl {
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-family: Georgia, serif;
+  color: var(--text);
+  white-space: nowrap;
+}
+.input-lbl .abs-bar { font-size: 1.2rem; }
+.math-inp {
+  width: 90px;
+  padding: 10px 12px;
+  border: 2.5px solid var(--border);
+  border-radius: var(--r-sm);
+  font-size: 1.4rem;
+  font-weight: 800;
+  text-align: center;
+  font-family: Georgia, serif;
+  color: var(--text);
+  outline: none;
+  transition: border-color .2s, background .2s;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.math-inp::-webkit-inner-spin-button,
+.math-inp::-webkit-outer-spin-button { -webkit-appearance: none; }
+.math-inp:focus { border-color: var(--primary); }
+.math-inp.inp-ok { border-color: var(--ok); background: var(--ok-bg); }
+.math-inp.inp-err { border-color: var(--neg); background: var(--neg-bg); animation: shake .4s; }
+.math-inp.wide { width: 130px; }
+.inp-eq { font-size: 1.4rem; font-weight: 700; color: var(--muted); }
+
+/* Final answer input special */
+.final-input-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin: 18px 0 8px;
+}
+.sign-prefix {
+  font-size: 1.8rem;
+  font-weight: 900;
+  font-family: Georgia, serif;
+}
+
+/* ═══════════════════════════════════════════
+   СООБЩЕНИЯ
+════════════════════════════════════════════ */
+.msg {
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  padding: 12px 16px;
+  font-size: .9rem;
+  line-height: 1.6;
+  margin-top: 10px;
+  animation: fadeUp .3s ease;
+  border-left: 4px solid transparent;
+}
+.msg-err  { background: var(--neg-bg); border-color: var(--neg);  color: var(--neg-dk); }
+.msg-ok   { background: var(--ok-bg);  border-color: var(--ok);   color: var(--ok-dk); }
+.msg-hint { background: var(--hint-bg); border-color: var(--hint); color: var(--hint-dk); }
+
+/* ═══════════════════════════════════════════
+   КНОПКИ ДЕЙСТВИЙ
+════════════════════════════════════════════ */
+.btn-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+.btn {
+  padding: 13px 22px;
+  border: none;
+  border-radius: var(--r-sm);
+  font-size: .97rem;
+  font-weight: 700;
+  transition: all .2s;
+  letter-spacing: .2px;
+}
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: var(--primary-h); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(79,70,229,.3); }
+.btn-primary:disabled { background: var(--muted); transform: none; box-shadow: none; cursor: default; }
+.btn-ghost  { background: transparent; border: 2px solid var(--border); color: var(--text-lt); }
+.btn-ghost:hover { border-color: var(--text-lt); color: var(--text); }
+.btn-hint  { background: var(--hint-bg); color: var(--hint); border: 2px solid var(--hint); }
+.btn-hint:hover { background: var(--hint); color: #fff; }
+.btn-ok    { background: var(--ok); color: #fff; }
+.btn-ok:hover { background: var(--ok-dk); transform: translateY(-1px); }
+
+/* ═══════════════════════════════════════════
+   ПОЛЕ СРАЖЕНИЯ (БЛОКИ)
+════════════════════════════════════════════ */
+.battle-card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 22px 20px;
+  box-shadow: var(--sh);
+  animation: fadeUp .4s ease;
+}
+.battle-lbl {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  color: var(--muted);
+  text-align: center;
+  margin-bottom: 16px;
+}
+.battle-arena {
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+  min-height: 80px;
+}
+.battle-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.bside-lbl {
+  font-size: .8rem;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: .3px;
+}
+.bside-lbl.pos-lbl { background: var(--pos-bg); color: var(--pos); }
+.bside-lbl.neg-lbl { background: var(--neg-bg); color: var(--neg); }
+.blocks-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  max-width: 220px;
+}
+.blk {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  transition: transform .35s, opacity .35s, background .3s;
+  flex-shrink: 0;
+}
+.blk.pos-blk { background: var(--pos-blk); box-shadow: 0 2px 4px rgba(3,105,161,.15); }
+.blk.neg-blk { background: var(--neg-blk); box-shadow: 0 2px 4px rgba(190,18,60,.15); }
+.blk.blk-in { animation: blkAppear .3s backwards ease-out; }
+.blk.cancelled { transform: scale(0); opacity: 0; }
+.blk.winner { animation: winPulse .6s ease-in-out forwards; }
+.blk.dim { opacity: .25; }
+
+.vs-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  gap: 4px;
+}
+.vs-txt { font-size: 1rem; font-weight: 900; color: var(--muted); }
+.vs-line { width: 2px; height: 32px; background: var(--border); border-radius: 2px; }
+.battle-result {
+  text-align: center;
+  margin-top: 14px;
+  font-size: .88rem;
+  color: var(--text-lt);
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════
+   ЭКРАН ЗАВЕРШЕНИЯ
+════════════════════════════════════════════ */
+.done-card {
+  background: linear-gradient(140deg, #1e1b4b 0%, #312e81 100%);
+  border-radius: 20px;
+  padding: 34px 26px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 10px 40px rgba(30,27,75,.3);
+  animation: celebration .5s ease-out;
+}
+.done-ico { font-size: 2.8rem; margin-bottom: 14px; }
+.done-sub { font-size: .78rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; opacity: .6; margin-bottom: 6px; }
+.done-answer {
+  font-size: 4.2rem;
+  font-weight: 900;
+  font-family: Georgia, serif;
+  letter-spacing: -3px;
+  line-height: 1;
+  margin: 12px 0;
+}
+.done-answer.pos-ans { color: #7dd3fc; }
+.done-answer.neg-ans { color: #fca5a5; }
+.done-explain {
+  background: rgba(255,255,255,.09);
+  border-radius: 12px;
+  padding: 16px 18px;
+  font-size: .93rem;
+  line-height: 1.7;
+  text-align: left;
+  margin: 18px 0 16px;
+}
+.done-rule {
+  background: rgba(255,255,255,.13);
+  border: 1.5px solid rgba(255,255,255,.22);
+  border-radius: 10px;
+  padding: 13px 16px;
+  font-size: .88rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: rgba(255,255,255,.9);
+  margin-bottom: 20px;
+}
+.done-rule strong { font-style: normal; color: #fbbf24; }
+.done-score {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 20px;
+  font-size: .82rem;
+  opacity: .7;
+}
+
+/* ═══════════════════════════════════════════
+   РЕЖИМ ТРЕНИРОВКИ
+════════════════════════════════════════════ */
+.pr-card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 28px 24px;
+  box-shadow: var(--sh);
+}
+.pr-title { font-size: 1rem; font-weight: 800; margin-bottom: 6px; }
+.pr-hint-text { font-size: .88rem; color: var(--text-lt); margin-bottom: 20px; }
+.pr-input-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 18px 0;
+}
+.pr-equals { font-size: 1.6rem; font-weight: 700; color: var(--muted); font-family: Georgia, serif; }
+.pr-score-row {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 4px;
+}
+.sc-item {
+  text-align: center;
+  padding: 10px 18px;
+  border-radius: 12px;
+  background: var(--bg);
+}
+.sc-num { font-size: 1.9rem; font-weight: 900; line-height: 1; }
+.sc-num.green { color: var(--ok); }
+.sc-num.red   { color: var(--neg); }
+.sc-lbl { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-top: 3px; }
+
+/* Solution reveal in practice mode */
+.solution-reveal {
+  background: var(--bg);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-top: 14px;
+  font-size: .9rem;
+  line-height: 1.7;
+  color: var(--text-lt);
+  animation: fadeUp .3s ease;
+}
+.solution-reveal strong { color: var(--text); }
+
+/* ═══════════════════════════════════════════
+   INTRO
+════════════════════════════════════════════ */
+.intro-card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 28px 24px;
+  box-shadow: var(--sh);
+  animation: fadeUp .3s ease;
+}
+.intro-ico { font-size: 2.2rem; text-align: center; margin-bottom: 12px; }
+.intro-desc {
+  font-size: .97rem;
+  line-height: 1.7;
+  color: var(--text-lt);
+  margin-bottom: 22px;
+  text-align: center;
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.intro-legend {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+.leg-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 24px;
+  font-size: .88rem;
+  font-weight: 700;
+}
+.leg-item.pos-leg { background: var(--pos-bg); color: var(--pos-dk); }
+.leg-item.neg-leg { background: var(--neg-bg); color: var(--neg-dk); }
+.leg-blk { width: 22px; height: 22px; border-radius: 5px; }
+.leg-blk.pos-blk { background: var(--pos-blk); }
+.leg-blk.neg-blk { background: var(--neg-blk); }
+
+/* ═══════════════════════════════════════════
+   АНИМАЦИИ
+════════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%     { transform: translateX(-6px); }
+  40%     { transform: translateX(6px); }
+  60%     { transform: translateX(-4px); }
+  80%     { transform: translateX(4px); }
+}
+@keyframes blkAppear {
+  from { opacity: 0; transform: scale(.3); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes winPulse {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.18); filter: brightness(1.2); }
+  100% { transform: scale(1); }
+}
+@keyframes celebration {
+  0%   { opacity: 0; transform: scale(.9) translateY(8px); }
+  60%  { transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<!-- ════ ШАПКА ════ -->
+<header class="hdr">
+  <div class="hdr-brand">
+    <span class="hdr-brand-ico">⚔️</span>
+    <strong>Сражение чисел</strong>
+  </div>
+  <div class="mode-sw">
+    <button id="btnL" class="mode-btn active" onclick="setMode('learning')">Обучение</button>
+    <button id="btnP" class="mode-btn"        onclick="setMode('practice')">Тренировка</button>
+  </div>
+</header>
+
+<!-- ════ КОНТЕНТ ════ -->
+<div id="app"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   СОСТОЯНИЕ
+══════════════════════════════════════════════════════ */
+const G = {
+  mode : 'learning',
+  step : 0,      // 0=intro 1-6=steps 7=done
+  ex   : null,
+  hint : false,
+
+  // шаг 1 — знаки
+  s1a  : null,  // 'pos'|'neg'|null  — ответ ученика для числа a
+  s1b  : null,  // 'pos'|'neg'|null  — ответ ученика для числа b
+
+  // шаг 2 — модули (string, чтобы отслеживать пустые поля)
+  s2a  : '',
+  s2b  : '',
+  s2ok : false,  // true = оба правильно проверены
+
+  // шаг 3 — сравнение
+  s3   : null,  // 'a'|'b'  — чей модуль больше (выбор ученика)
+
+  // шаг 4 — знак ответа
+  s4   : null,  // '+'|'-'
+
+  // шаг 5 — разность
+  s5   : '',
+  s5ok : false,
+
+  // шаг 6 — итоговый ответ
+  s6   : '',
+  s6ok : false,
+
+  // практика
+  pr : { correct: 0, total: 0 },
+  prInput  : '',
+  prResult : null,    // null|'ok'|'wrong'
+  prShowSol: false,
+};
+
+/* ══════════════════════════════════════════════════════
+   ГЕНЕРАЦИЯ ПРИМЕРА
+══════════════════════════════════════════════════════ */
+function genExample() {
+  let absA, absB;
+  do {
+    absA = Math.floor(Math.random() * 10) + 2;  // 2‥11
+    absB = Math.floor(Math.random() * 10) + 2;
+  } while (absA === absB);
+
+  let a, b;
+  if (Math.random() < .5) { a = -absA; b =  absB; }
+  else                     { a =  absA; b = -absB; }
+
+  const bigger = absA > absB ? 'a' : 'b';
+  return {
+    a, b,
+    absA, absB,
+    bigger,
+    bigAbs : Math.max(absA, absB),
+    smlAbs : Math.min(absA, absB),
+    diff   : Math.max(absA, absB) - Math.min(absA, absB),
+    result : a + b,
+    resSign: (a + b) > 0 ? '+' : '-',
+    winSign: bigger === 'a' ? (a < 0 ? '-' : '+') : (b < 0 ? '-' : '+'),
+  };
+}
+
+/* ══════════════════════════════════════════════════════
+   ВСПОМОГАТЕЛЬНЫЕ
+══════════════════════════════════════════════════════ */
+function fmtNum(n) {
+  return n < 0 ? `−${Math.abs(n)}` : `${n}`;
+}
+function fmtExpr(ex) {
+  const a = ex.a;
+  const b = ex.b;
+  const aStr  = a < 0 ? `−${ex.absA}` : `${ex.a}`;
+  const bStr  = b < 0 ? `(−${ex.absB})` : `${b}`;
+  return { aStr, bStr, aClass: a < 0 ? 'neg-num' : 'pos-num', bClass: b < 0 ? 'neg-num' : 'pos-num' };
+}
+function resetStep() {
+  G.hint = false;
+  G.s1a = null; G.s1b = null;
+  G.s2a = ''; G.s2b = ''; G.s2ok = false;
+  G.s3 = null;
+  G.s4 = null;
+  G.s5 = ''; G.s5ok = false;
+  G.s6 = ''; G.s6ok = false;
+  G.step = 0;
+}
+
+/* ══════════════════════════════════════════════════════
+   РЕЖИМ
+══════════════════════════════════════════════════════ */
+function setMode(m) {
+  G.mode = m;
+  G.prInput = ''; G.prResult = null; G.prShowSol = false;
+  document.getElementById('btnL').classList.toggle('active', m === 'learning');
+  document.getElementById('btnP').classList.toggle('active', m === 'practice');
+  if (!G.ex) newExample();
+  else render();
+}
+
+/* ══════════════════════════════════════════════════════
+   НОВЫЙ ПРИМЕР
+══════════════════════════════════════════════════════ */
+function newExample() {
+  G.ex = genExample();
+  G.prInput = ''; G.prResult = null; G.prShowSol = false;
+  resetStep();
+  render();
+}
+
+/* ══════════════════════════════════════════════════════
+   РЕНДЕР
+══════════════════════════════════════════════════════ */
+function render() {
+  document.getElementById('app').innerHTML =
+    G.mode === 'practice' ? buildPractice() : buildLearning();
+}
+
+function buildLearning() {
+  const ex = G.ex;
+  if (!ex) return '';
+  return [
+    buildExprCard(ex),
+    G.step > 0 ? buildProgress() : '',
+    G.step === 0 ? buildIntro() : G.step === 7 ? buildDone(ex) : buildStepCard(ex),
+    G.step >= 2 && G.s2ok ? buildBattle(ex) : '',
+  ].join('');
+}
+
+/* ─── Карточка выражения ─── */
+function buildExprCard(ex) {
+  const f = fmtExpr(ex);
+  return `
+  <div class="expr-card">
+    <div class="expr-sub">Вычисли сумму</div>
+    <div class="expr">
+      <span class="expr-n ${f.aClass}">${f.aStr}</span>
+      <span class="expr-op">+</span>
+      <span class="expr-n ${f.bClass}">${f.bStr}</span>
+    </div>
+    <button class="btn-new" onclick="newExample()">↺ &nbsp;Новый пример</button>
+  </div>`;
+}
+
+/* ─── Прогресс ─── */
+function buildProgress() {
+  const steps = [1,2,3,4,5,6];
+  return `<div class="progress">
+    ${steps.map(i => {
+      const cls = i < G.step ? 'done' : i === G.step ? 'active' : '';
+      return `<div class="prog-dot ${cls}"></div>`;
+    }).join('')}
+    <span class="prog-label">Шаг ${G.step} из 6</span>
+  </div>`;
+}
+
+/* ─── Интро ─── */
+function buildIntro() {
+  return `
+  <div class="intro-card">
+    <div class="intro-ico">⚔️</div>
+    <p class="intro-desc">
+      Когда складываем число <strong>со знаком «+»</strong> и число <strong>со знаком «−»</strong>,
+      они «сражаются». Побеждает то, у кого <strong>больше силы</strong> — то есть больший модуль.
+      Разберём по шагам!
+    </p>
+    <div class="intro-legend">
+      <div class="leg-item pos-leg"><div class="leg-blk pos-blk"></div>Положительные блоки</div>
+      <div class="leg-item neg-leg"><div class="leg-blk neg-blk"></div>Отрицательные блоки</div>
+    </div>
+    <div class="btn-row" style="justify-content:center">
+      <button class="btn btn-primary" onclick="startLearning()">Начать решение →</button>
+    </div>
+  </div>`;
+}
+
+/* ══════════════════════════════════════════════════════
+   ШАГИ
+══════════════════════════════════════════════════════ */
+function buildStepCard(ex) {
+  switch(G.step) {
+    case 1: return buildStep1(ex);
+    case 2: return buildStep2(ex);
+    case 3: return buildStep3(ex);
+    case 4: return buildStep4(ex);
+    case 5: return buildStep5(ex);
+    case 6: return buildStep6(ex);
+  }
+  return '';
+}
+
+/* ─── Шаг 1: знаки ─── */
+function buildStep1(ex) {
+  const f = fmtExpr(ex);
+  const correctA = ex.a < 0 ? 'neg' : 'pos';
+  const correctB = ex.b < 0 ? 'neg' : 'pos';
+  const aOk  = G.s1a === correctA;
+  const bOk  = G.s1b === correctB;
+  const aErr = G.s1a && G.s1a !== correctA;
+  const bErr = G.s1b && G.s1b !== correctB;
+  const bActive = aOk;
+  const allOk = aOk && bOk;
+
+  const hint = G.hint ? `<div class="msg msg-hint">💡 Знак числа — это символ перед ним. Минус «−» означает отрицательное, плюс «+» или отсутствие знака — положительное. Смотри на первый символ числа.</div>` : '';
+
+  return `
+  <div class="step-card">
+    <div class="step-hdr">
+      <div class="step-badge">1</div>
+      <div class="step-title">Определи знаки чисел</div>
+    </div>
+    <p class="step-desc">Прежде чем считать, убедись: какое из чисел положительное, а какое отрицательное?</p>
+
+    <div class="q-block">
+      <div class="q-label">Число <span class="qn ${f.aClass}">${f.aStr}</span> — это:</div>
+      <div class="choice-row">
+        <button class="choice-btn pos-btn ${G.s1a === 'pos' ? (aOk ? 'locked-ok' : 'locked-wrong') : ''}"
+          onclick="clickSign('a','pos')" ${G.s1a && aOk ? 'disabled' : ''}>
+          ➕ Положительное
+        </button>
+        <button class="choice-btn neg-btn ${G.s1a === 'neg' ? (aOk ? 'locked-ok' : 'locked-wrong') : ''}"
+          onclick="clickSign('a','neg')" ${G.s1a && aOk ? 'disabled' : ''}>
+          ➖ Отрицательное
+        </button>
+      </div>
+      ${aErr ? `<div class="msg msg-err">Посмотри внимательнее: перед числом стоит знак «${ex.a < 0 ? '−' : '+'}». Попробуй ещё раз.</div>` : ''}
+      ${aOk  ? `<div class="msg msg-ok">✓ Верно!</div>` : ''}
+    </div>
+
+    <div class="q-block ${bActive ? '' : 'muted-q'}">
+      <div class="q-label">Число <span class="qn ${f.bClass}">${f.bStr}</span> — это:</div>
+      <div class="choice-row">
+        <button class="choice-btn pos-btn ${G.s1b === 'pos' ? (bOk ? 'locked-ok' : 'locked-wrong') : ''}"
+          onclick="clickSign('b','pos')" ${!bActive || (G.s1b && bOk) ? 'disabled' : ''}>
+          ➕ Положительное
+        </button>
+        <button class="choice-btn neg-btn ${G.s1b === 'neg' ? (bOk ? 'locked-ok' : 'locked-wrong') : ''}"
+          onclick="clickSign('b','neg')" ${!bActive || (G.s1b && bOk) ? 'disabled' : ''}>
+          ➖ Отрицательное
+        </button>
+      </div>
+      ${bErr ? `<div class="msg msg-err">Посмотри внимательнее на знак перед числом ${f.bStr}. Попробуй ещё раз.</div>` : ''}
+      ${bOk  ? `<div class="msg msg-ok">✓ Верно!</div>` : ''}
+    </div>
+
+    ${allOk ? `<div class="msg msg-ok">✓ Отлично! Знаки определены верно: одно положительное, одно отрицательное — значит, числа с <strong>разными знаками</strong>.</div>` : ''}
+
+    ${hint}
+    <div class="btn-row">
+      <button class="btn btn-hint" onclick="toggleHint()">${G.hint ? 'Скрыть подсказку' : '💡 Подсказка'}</button>
+      ${allOk ? `<button class="btn btn-primary" onclick="nextStep()">Дальше →</button>` : ''}
+    </div>
+  </div>`;
+}
+
+/* ─── Шаг 2: модули ─── */
+function buildStep2(ex) {
+  const f = fmtExpr(ex);
+  let errMsg = '';
+  if (G.s2_err === 'both') errMsg = `<div class="msg msg-err">Оба ответа неверны. Модуль — это число <em>без знака</em>. |−${ex.absA}| = ${ex.absA}.</div>`;
+  else if (G.s2_err === 'a') errMsg = `<div class="msg msg-err">Модуль числа ${f.aStr} неверен. Убери знак: |${f.aStr}| = ${ex.absA}.</div>`;
+  else if (G.s2_err === 'b') errMsg = `<div class="msg msg-err">Модуль числа ${f.bStr} неверен. Убери знак: |${f.bStr}| = ${ex.absB}.</div>`;
+  const hint = G.hint ? `<div class="msg msg-hint">💡 Модуль числа — это расстояние от нуля: всегда положительное число. Просто убери знак «−» или «+». |−8| = 8, |3| = 3.</div>` : '';
+
+  return `
+  <div class="step-card">
+    <div class="step-hdr">
+      <div class="step-badge">2</div>
+      <div class="step-title">Найди модули чисел</div>
+    </div>
+    <p class="step-desc">Модуль — это число <strong>без знака</strong>. Записывается так: |−8| = 8. Найди модули обоих чисел.</p>
+
+    <div class="input-row">
+      <span class="input-lbl"><span class="abs-bar">|</span>${f.aStr}<span class="abs-bar">|</span> =</span>
+      <input id="inp2a" type="number" class="math-inp ${G.s2ok ? 'inp-ok' : ''}" value="${G.s2a}"
+        placeholder="?" oninput="G.s2a = this.value" onkeydown="if(event.key==='Enter') checkStep2()">
+    </div>
+    <div class="input-row">
+      <span class="input-lbl"><span class="abs-bar">|</span>${f.bStr}<span class="abs-bar">|</span> =</span>
+      <input id="inp2b" type="number" class="math-inp ${G.s2ok ? 'inp-ok' : ''}" value="${G.s2b}"
+        placeholder="?" oninput="G.s2b = this.value" onkeydown="if(event.key==='Enter') checkStep2()">
+    </div>
+
+    ${errMsg}
+    ${G.s2ok ? `<div class="msg msg-ok">✓ Верно! |${f.aStr}| = ${ex.absA},&nbsp; |${f.bStr}| = ${ex.absB}.</div>` : ''}
+    ${hint}
+
+    <div class="btn-row">
+      <button class="btn btn-hint" onclick="toggleHint()">${G.hint ? 'Скрыть подсказку' : '💡 Подсказка'}</button>
+      ${G.s2ok
+        ? `<button class="btn btn-primary" onclick="nextStep()">Дальше →</button>`
+        : `<button class="btn btn-primary" onclick="checkStep2()">Проверить</button>`}
+    </div>
+  </div>`;
+}
+
+/* ─── Шаг 3: сравнение ─── */
+function buildStep3(ex) {
+  const f = fmtExpr(ex);
+  const correctChoice = ex.bigger;  // 'a' or 'b'
+  const chosen = G.s3;
+  const chosenOk = chosen === correctChoice;
+  const chosenWrong = chosen && chosen !== correctChoice;
+
+  const posAbs = ex.a > 0 ? ex.absA : ex.absB;
+  const negAbs = ex.a < 0 ? ex.absA : ex.absB;
+  const posId  = ex.a > 0 ? 'a' : 'b';
+  const negId  = ex.a < 0 ? 'a' : 'b';
+
+  let errMsg = '';
+  if (chosenWrong) {
+    if (chosen === 'a') errMsg = `<div class="msg msg-err">${ex.absA} &lt; ${ex.absB} — модуль числа ${f.aStr} меньше. Сравни ещё раз: какое число из двух больше, ${ex.absA} или ${ex.absB}?</div>`;
+    else               errMsg = `<div class="msg msg-err">${ex.absB} &lt; ${ex.absA} — модуль числа ${f.bStr} меньше. Сравни ещё раз: ${ex.absA} или ${ex.absB}?</div>`;
+  }
+  const hint = G.hint ? `<div class="msg msg-hint">💡 Сравни ${ex.absA} и ${ex.absB} как обычные числа — без знаков. Какое больше?</div>` : '';
+
+  const btnA_cls = chosen === 'a' ? (chosenOk ? (ex.a < 0 ? 'winner-neg' : 'winner-pos') : 'wrong-selected') : '';
+  const btnB_cls = chosen === 'b' ? (chosenOk ? (ex.b < 0 ? 'winner-neg' : 'winner-pos') : 'wrong-selected') : '';
+
+  return `
+  <div class="step-card">
+    <div class="step-hdr">
+      <div class="step-badge">3</div>
+      <div class="step-title">Сравни модули — кто сильнее?</div>
+    </div>
+    <p class="step-desc">У нас есть два модуля: <strong>${ex.absA}</strong> и <strong>${ex.absB}</strong>. Какой из них <strong>больше</strong>?</p>
+
+    <div class="choice-row">
+      <button class="choice-btn ${f.aClass === 'neg-num' ? 'neg-btn' : 'pos-btn'} ${btnA_cls}"
+        onclick="clickBigger('a')" ${chosenOk ? 'disabled' : ''}>
+        |${f.aStr}| = <strong>${ex.absA}</strong>
+      </button>
+      <button class="choice-btn ${f.bClass === 'neg-num' ? 'neg-btn' : 'pos-btn'} ${btnB_cls}"
+        onclick="clickBigger('b')" ${chosenOk ? 'disabled' : ''}>
+        |${f.bStr}| = <strong>${ex.absB}</strong>
+      </button>
+    </div>
+
+    ${errMsg}
+    ${chosenOk ? `<div class="msg msg-ok">✓ Верно! ${ex.bigAbs} > ${ex.smlAbs}. Победитель — <strong>${correctChoice === 'a' ? f.aStr : f.bStr}</strong>.</div>` : ''}
+    ${hint}
+
+    <div class="btn-row">
+      <button class="btn btn-hint" onclick="toggleHint()">${G.hint ? 'Скрыть подсказку' : '💡 Подсказка'}</button>
+      ${chosenOk ? `<button class="btn btn-primary" onclick="nextStep()">Дальше →</button>` : ''}
+    </div>
+  </div>`;
+}
+
+/* ─── Шаг 4: знак ответа ─── */
+function buildStep4(ex) {
+  const f = fmtExpr(ex);
+  const winner = ex.bigger === 'a' ? f.aStr : f.bStr;
+  const winnerIsNeg = (ex.bigger === 'a' && ex.a < 0) || (ex.bigger === 'b' && ex.b < 0);
+  const correctSign = winnerIsNeg ? '-' : '+';
+  const chosenOk    = G.s4 === correctSign;
+  const chosenWrong = G.s4 && G.s4 !== correctSign;
+  const winnerSignWord = winnerIsNeg ? 'отрицательное' : 'положительное';
+
+  let errMsg = '';
+  if (chosenWrong) errMsg = `<div class="msg msg-err">Знак ответа — это знак <em>победителя</em>. Победило число ${winner} — оно ${winnerSignWord}. Значит знак ответа «${winnerIsNeg ? '−' : '+'}».</div>`;
+  const hint = G.hint ? `<div class="msg msg-hint">💡 Знак ответа берётся от числа с <strong>бо́льшим модулем</strong>. Победитель у нас — ${winner}. Оно ${winnerSignWord}.</div>` : '';
+
+  const btnPlus_cls  = G.s4 === '+' ? (chosenOk ? 'ok-selected' : 'wrong-selected') : 'pos-btn';
+  const btnMinus_cls = G.s4 === '-' ? (chosenOk ? 'ok-selected' : 'wrong-selected') : 'neg-btn';
+
+  return `
+  <div class="step-card">
+    <div class="step-hdr">
+      <div class="step-badge">4</div>
+      <div class="step-title">Определи знак ответа</div>
+    </div>
+    <p class="step-desc">Победитель — <strong>${winner}</strong> (у него модуль ${ex.bigAbs}). Знак ответа берётся именно от победителя.</p>
+    <p class="step-desc">Ответ будет:</p>
+
+    <div class="choice-row">
+      <button class="choice-btn ${btnPlus_cls}"
+        onclick="clickSign4('+')" ${chosenOk ? 'disabled' : ''}>
+        ➕ Положительным
+      </button>
+      <button class="choice-btn ${btnMinus_cls}"
+        onclick="clickSign4('-')" ${chosenOk ? 'disabled' : ''}>
+        ➖ Отрицательным
+      </button>
+    </div>
+
+    ${errMsg}
+    ${chosenOk ? `<div class="msg msg-ok">✓ Верно! Ответ будет <strong>${winnerIsNeg ? 'отрицательным' : 'положительным'}</strong>.</div>` : ''}
+    ${hint}
+
+    <div class="btn-row">
+      <button class="btn btn-hint" onclick="toggleHint()">${G.hint ? 'Скрыть подсказку' : '💡 Подсказка'}</button>
+      ${chosenOk ? `<button class="btn btn-primary" onclick="nextStep()">Дальше →</button>` : ''}
+    </div>
+  </div>`;
+}
+
+/* ─── Шаг 5: вычисление разности ─── */
+function buildStep5(ex) {
+  let errMsg = '';
+  if (G.s5_err === 'swap')  errMsg = `<div class="msg msg-err">Ты перепутал порядок: нужно из <em>бо́льшего</em> вычесть меньший. ${ex.bigAbs} − ${ex.smlAbs} = ?</div>`;
+  else if (G.s5_err === 'wrong') errMsg = `<div class="msg msg-err">Проверь вычисление: ${ex.bigAbs} − ${ex.smlAbs}. Посчитай ещё раз.</div>`;
+  const hint = G.hint ? `<div class="msg msg-hint">💡 Просто вычти: ${ex.bigAbs} − ${ex.smlAbs} = ?</div>` : '';
+
+  return `
+  <div class="step-card">
+    <div class="step-hdr">
+      <div class="step-badge">5</div>
+      <div class="step-title">Вычти меньший модуль из большего</div>
+    </div>
+    <p class="step-desc">Блоки-победители «поглощают» блоки-проигравших. Считаем, сколько осталось:</p>
+
+    <div class="input-row">
+      <span class="input-lbl">${ex.bigAbs} − ${ex.smlAbs} =</span>
+      <input id="inp5" type="number" class="math-inp ${G.s5ok ? 'inp-ok' : ''}"
+        value="${G.s5}" placeholder="?"
+        oninput="G.s5 = this.value" onkeydown="if(event.key==='Enter') checkStep5()">
+    </div>
+
+    ${errMsg}
+    ${G.s5ok ? `<div class="msg msg-ok">✓ Верно! Осталось <strong>${ex.diff}</strong>.</div>` : ''}
+    ${hint}
+
+    <div class="btn-row">
+      <button class="btn btn-hint" onclick="toggleHint()">${G.hint ? 'Скрыть подсказку' : '💡 Подсказка'}</button>
+      ${G.s5ok
+        ? `<button class="btn btn-primary" onclick="nextStep()">Дальше →</button>`
+        : `<button class="btn btn-primary" onclick="checkStep5()">Проверить</button>`}
+    </div>
+  </div>`;
+}
+
+/* ─── Шаг 6: итоговый ответ ─── */
+function buildStep6(ex) {
+  const signLabel = ex.result < 0 ? '−' : '';
+  let errMsg = '';
+  if (G.s6_err === 'sign')  errMsg = `<div class="msg msg-err">Ты правильно нашёл модуль, но знак неверный. Вспомни шаг 4: знак ответа — <strong>${ex.result < 0 ? '−' : '+'}</strong>.</div>`;
+  else if (G.s6_err === 'num') errMsg = `<div class="msg msg-err">Знак верный, но число неправильное. Вспомни шаг 5: ${ex.bigAbs} − ${ex.smlAbs} = ${ex.diff}.</div>`;
+  else if (G.s6_err === 'both') errMsg = `<div class="msg msg-err">Проверь оба компонента: знак берём от числа с большим модулем (шаг 4), а само число — это разность модулей (шаг 5).</div>`;
+  const hint = G.hint ? `<div class="msg msg-hint">💡 Ты уже нашёл всё: знак «${ex.result < 0 ? '−' : '+'}» (шаг 4) и число ${ex.diff} (шаг 5). Теперь просто запиши их вместе.</div>` : '';
+
+  return `
+  <div class="step-card">
+    <div class="step-hdr">
+      <div class="step-badge">6</div>
+      <div class="step-title">Запиши итоговый ответ</div>
+    </div>
+    <p class="step-desc">
+      У тебя есть все части:<br>
+      • Знак: <strong>${ex.result < 0 ? '−' : '+'}</strong> (из шага 4)<br>
+      • Модуль: <strong>${ex.diff}</strong> (из шага 5)<br>
+      Напиши их вместе одним числом:
+    </p>
+
+    <div class="final-input-wrap">
+      <span style="font-family:Georgia,serif;font-size:1.8rem;color:var(--text-lt);">=</span>
+      <input id="inp6" type="number" class="math-inp wide ${G.s6ok ? 'inp-ok' : ''}"
+        value="${G.s6}" placeholder="${signLabel}?"
+        oninput="G.s6 = this.value" onkeydown="if(event.key==='Enter') checkStep6()">
+    </div>
+
+    ${errMsg}
+    ${G.s6ok ? `<div class="msg msg-ok">🎉 Отлично! Ответ: <strong>${fmtNum(ex.result)}</strong></div>` : ''}
+    ${hint}
+
+    <div class="btn-row">
+      <button class="btn btn-hint" onclick="toggleHint()">${G.hint ? 'Скрыть подсказку' : '💡 Подсказка'}</button>
+      ${G.s6ok
+        ? `<button class="btn btn-ok" onclick="nextStep()">Посмотреть итог ✓</button>`
+        : `<button class="btn btn-primary" onclick="checkStep6()">Проверить</button>`}
+    </div>
+  </div>`;
+}
+
+/* ─── Экран завершения ─── */
+function buildDone(ex) {
+  const f = fmtExpr(ex);
+  const resNeg = ex.result < 0;
+  const winnerStr = ex.bigger === 'a' ? f.aStr : f.bStr;
+  const loserStr  = ex.bigger === 'a' ? f.bStr : f.aStr;
+  const winAbs    = ex.bigAbs;
+  const loseAbs   = ex.smlAbs;
+  return `
+  <div class="done-card celebration">
+    <div class="done-ico">🏆</div>
+    <div class="done-sub">Ответ</div>
+    <div class="done-answer ${resNeg ? 'neg-ans' : 'pos-ans'}">${fmtNum(ex.result)}</div>
+
+    <div class="done-explain">
+      <strong>${f.aStr} + ${f.bStr}</strong> — числа с разными знаками.<br>
+      Модули: |${f.aStr}| = ${ex.absA},&nbsp; |${f.bStr}| = ${ex.absB}.<br>
+      Больший модуль у <strong>${winnerStr}</strong> (${winAbs} > ${loseAbs}).<br>
+      Победитель «поглотил» ${loseAbs} блоков, осталось: ${winAbs} − ${loseAbs} = <strong>${ex.diff}</strong>.<br>
+      Знак — от <strong>${winnerStr}</strong>, значит ответ <strong>${fmtNum(ex.result)}</strong>.
+    </div>
+
+    <div class="done-rule">
+      <strong>Правило:</strong> при сложении чисел с разными знаками<br>
+      вычти меньший модуль из большего —<br>
+      и возьми знак числа с <strong>бо́льшим модулем</strong>.
+    </div>
+
+    <div class="btn-row" style="justify-content:center">
+      <button class="btn btn-ok" onclick="newExample()">Новый пример →</button>
+    </div>
+  </div>`;
+}
+
+/* ══════════════════════════════════════════════════════
+   ПОЛЕ СРАЖЕНИЯ (БЛОКИ)
+══════════════════════════════════════════════════════ */
+function buildBattle(ex) {
+  const f = fmtExpr(ex);
+  const posAbs = ex.a > 0 ? ex.absA : ex.absB;
+  const negAbs = ex.a < 0 ? ex.absA : ex.absB;
+  const posStr = ex.a > 0 ? f.aStr : f.bStr;
+  const negStr = ex.a < 0 ? f.aStr : f.bStr;
+  const posWins = (ex.a > 0 && ex.bigger === 'a') || (ex.b > 0 && ex.bigger === 'b');
+
+  const showCancel = G.s5ok;
+  const cancelCount = ex.smlAbs;
+  const remain = ex.bigAbs - ex.smlAbs;
+
+  function buildBlocks(count, type, cancel, remainWin) {
+    let html = '';
+    for (let i = 0; i < count; i++) {
+      const isWinner = i < remainWin && remainWin > 0;
+      const isCancelled = cancel && i >= remainWin;
+      const delay = i * 0.04;
+      const cls = [
+        `blk ${type}-blk blk-in`,
+        isCancelled ? 'cancelled' : '',
+        showCancel && isWinner && G.step === 7 ? 'winner' : '',
+      ].join(' ');
+      html += `<div class="${cls}" style="animation-delay:${delay}s"></div>`;
+    }
+    return html;
+  }
+
+  let posRemain = 0, negRemain = 0;
+  if (showCancel) {
+    posRemain = posWins ? remain : 0;
+    negRemain = posWins ? 0 : remain;
+  }
+
+  const posBlocks = buildBlocks(posAbs, 'pos', showCancel, posRemain);
+  const negBlocks = buildBlocks(negAbs, 'neg', showCancel, negRemain);
+
+  let resultLine = '';
+  if (showCancel && G.s5ok) {
+    const winnerColor = posWins ? 'var(--pos)' : 'var(--neg)';
+    resultLine = `<div class="battle-result">Осталось <strong style="color:${winnerColor}">${remain}</strong> блока — это и есть |ответа|</div>`;
+  }
+
+  return `
+  <div class="battle-card">
+    <div class="battle-lbl">⚔️ &nbsp;Поле сражения</div>
+    <div class="battle-arena">
+      <div class="battle-side">
+        <div class="bside-lbl pos-lbl">➕ ${posStr} → ${posAbs} блоков</div>
+        <div class="blocks-wrap">${posBlocks}</div>
+      </div>
+      <div class="vs-col">
+        <div class="vs-line"></div>
+        <div class="vs-txt">VS</div>
+        <div class="vs-line"></div>
+      </div>
+      <div class="battle-side">
+        <div class="bside-lbl neg-lbl">➖ ${negStr} → ${negAbs} блоков</div>
+        <div class="blocks-wrap">${negBlocks}</div>
+      </div>
+    </div>
+    ${resultLine}
+  </div>`;
+}
+
+/* ══════════════════════════════════════════════════════
+   РЕЖИМ ТРЕНИРОВКИ
+══════════════════════════════════════════════════════ */
+function buildPractice() {
+  const ex = G.ex;
+  if (!ex) return '';
+  const f = fmtExpr(ex);
+
+  let feedback = '';
+  if (G.prResult === 'ok') {
+    feedback = `<div class="msg msg-ok">🎉 Верно! ${f.aStr} + ${f.bStr} = <strong>${fmtNum(ex.result)}</strong></div>`;
+  } else if (G.prResult === 'wrong') {
+    const actual = parseInt(G.prInput);
+    let errDetail = '';
+    if (!isNaN(actual)) {
+      if (Math.abs(actual) === ex.result && Math.sign(actual) !== Math.sign(ex.result))
+        errDetail = ' Число правильное, но проверь знак — у какого числа больший модуль?';
+      else if (Math.sign(actual) === Math.sign(ex.result))
+        errDetail = ` Знак верный! Но число должно быть ${Math.abs(ex.result)}, а не ${Math.abs(actual)}.`;
+    }
+    feedback = `<div class="msg msg-err">Не совсем.${errDetail} Правильный ответ: <strong>${fmtNum(ex.result)}</strong></div>`;
+  }
+
+  const solution = G.prShowSol ? buildSolution(ex, f) : '';
+
+  return `
+  ${buildExprCard(ex)}
+  <div class="pr-card">
+    <div class="pr-title">Найди сумму</div>
+    <p class="pr-hint-text">Введи ответ — целое число со знаком (например: −5)</p>
+
+    <div class="pr-input-row">
+      <span class="pr-equals" style="font-family:Georgia,serif;font-size:2rem">${f.aStr} + ${f.bStr} =</span>
+      <input id="prInp" type="number" class="math-inp wide ${G.prResult === 'ok' ? 'inp-ok' : G.prResult === 'wrong' ? 'inp-err' : ''}"
+        value="${G.prInput}" placeholder="?"
+        oninput="G.prInput = this.value" onkeydown="if(event.key==='Enter') checkPractice()">
+    </div>
+
+    ${feedback}
+    ${solution}
+
+    <div class="btn-row">
+      ${G.prResult !== 'ok' ? `<button class="btn btn-primary" onclick="checkPractice()">Проверить</button>` : ''}
+      ${G.prResult === 'wrong' && !G.prShowSol ? `<button class="btn btn-ghost" onclick="G.prShowSol=true;render()">Показать решение</button>` : ''}
+      ${G.prResult === 'ok' ? `<button class="btn btn-ok" onclick="newExample()">Следующий →</button>` : ''}
+    </div>
+
+    <div style="height:20px"></div>
+    <div class="pr-score-row">
+      <div class="sc-item"><div class="sc-num green">${G.pr.correct}</div><div class="sc-lbl">Верно</div></div>
+      <div class="sc-item"><div class="sc-num">${G.pr.total}</div><div class="sc-lbl">Всего</div></div>
+      <div class="sc-item"><div class="sc-num ${G.pr.total > 0 ? (G.pr.correct/G.pr.total >= .7 ? 'green' : 'red') : ''}">${G.pr.total > 0 ? Math.round(G.pr.correct/G.pr.total*100) + '%' : '—'}</div><div class="sc-lbl">Точность</div></div>
+    </div>
+  </div>`;
+}
+
+function buildSolution(ex, f) {
+  const winnerStr = ex.bigger === 'a' ? f.aStr : f.bStr;
+  return `
+  <div class="solution-reveal">
+    <strong>Разбор:</strong><br>
+    1. |${f.aStr}| = ${ex.absA},&nbsp; |${f.bStr}| = ${ex.absB}<br>
+    2. ${ex.bigAbs} > ${ex.smlAbs} — побеждает <strong>${winnerStr}</strong><br>
+    3. Знак ответа: <strong>${ex.result < 0 ? '−' : '+'}</strong> (от победителя)<br>
+    4. ${ex.bigAbs} − ${ex.smlAbs} = <strong>${ex.diff}</strong><br>
+    5. Ответ: <strong>${fmtNum(ex.result)}</strong>
+  </div>`;
+}
+
+/* ══════════════════════════════════════════════════════
+   ОБРАБОТЧИКИ
+══════════════════════════════════════════════════════ */
+function startLearning() { G.step = 1; render(); }
+
+function nextStep() {
+  G.step++;
+  G.hint = false;
+  G.s2_err = null;
+  G.s5_err = null;
+  G.s6_err = null;
+  render();
+}
+
+function toggleHint() { G.hint = !G.hint; render(); }
+
+/* Шаг 1: клик по знаку */
+function clickSign(which, val) {
+  if (which === 'a') {
+    G.s1a = val;
+    const correct = G.ex.a < 0 ? 'neg' : 'pos';
+    if (val !== correct) { render(); return; }  // перерисовать с ошибкой
+  } else {
+    G.s1b = val;
+  }
+  render();
+}
+
+/* Шаг 2: проверка модулей */
+function checkStep2() {
+  const a = parseInt(G.s2a);
+  const b = parseInt(G.s2b);
+  const ex = G.ex;
+  const aOk = a === ex.absA;
+  const bOk = b === ex.absB;
+  if (aOk && bOk) {
+    G.s2ok = true; G.s2_err = null;
+  } else if (!aOk && !bOk) {
+    G.s2_err = 'both';
+  } else if (!aOk) {
+    G.s2_err = 'a';
+  } else {
+    G.s2_err = 'b';
+  }
+  render();
+  // Подсветить поля
+  if (G.s2_err) {
+    const inpA = document.getElementById('inp2a');
+    const inpB = document.getElementById('inp2b');
+    if (!aOk && inpA) { inpA.classList.add('inp-err'); setTimeout(() => inpA.classList.remove('inp-err'), 600); }
+    if (!bOk && inpB) { inpB.classList.add('inp-err'); setTimeout(() => inpB.classList.remove('inp-err'), 600); }
+  }
+}
+
+/* Шаг 3: выбор большего модуля */
+function clickBigger(which) {
+  G.s3 = which;
+  render();
+}
+
+/* Шаг 4: выбор знака */
+function clickSign4(sign) {
+  G.s4 = sign;
+  render();
+}
+
+/* Шаг 5: проверка разности */
+function checkStep5() {
+  const val = parseInt(G.s5);
+  const ex = G.ex;
+  if (val === ex.diff) {
+    G.s5ok = true; G.s5_err = null;
+  } else if (val === ex.smlAbs - ex.bigAbs || val === -(ex.bigAbs - ex.smlAbs)) {
+    G.s5_err = 'swap';
+  } else {
+    G.s5_err = 'wrong';
+  }
+  render();
+  if (G.s5_err) {
+    const inp = document.getElementById('inp5');
+    if (inp) { inp.classList.add('inp-err'); setTimeout(() => inp.classList.remove('inp-err'), 600); }
+  }
+}
+
+/* Шаг 6: итоговый ответ */
+function checkStep6() {
+  const val = parseInt(G.s6);
+  const ex = G.ex;
+  if (val === ex.result) {
+    G.s6ok = true; G.s6_err = null;
+  } else {
+    const correctSign  = Math.sign(ex.result);
+    const actualSign   = Math.sign(val);
+    const correctMag   = Math.abs(ex.result);
+    const actualMag    = Math.abs(val);
+    if (correctSign !== actualSign && correctMag !== actualMag) G.s6_err = 'both';
+    else if (correctSign !== actualSign)  G.s6_err = 'sign';
+    else                                  G.s6_err = 'num';
+  }
+  render();
+  if (G.s6_err) {
+    const inp = document.getElementById('inp6');
+    if (inp) { inp.classList.add('inp-err'); setTimeout(() => inp.classList.remove('inp-err'), 600); }
+  }
+}
+
+/* Практика: проверка */
+function checkPractice() {
+  const val = parseInt(G.prInput);
+  if (isNaN(val)) return;
+  G.pr.total++;
+  if (val === G.ex.result) {
+    G.pr.correct++;
+    G.prResult = 'ok';
+  } else {
+    G.prResult = 'wrong';
+  }
+  render();
+}
+
+/* ══════════════════════════════════════════════════════
+   ИНИЦИАЛИЗАЦИЯ
+══════════════════════════════════════════════════════ */
+newExample();
+</script>
+</body>
+</html>

@@ -1,0 +1,2021 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Шины · тренажёр 1–5</title>
+<style>
+  :root {
+    --bg: #faf7f2; --bg-card: #ffffff; --bg-soft: #f5f1e8; --bg-deeper: #efe9da;
+    --ink: #1a2332; --ink-soft: #4a5568; --ink-muted: #8a93a3;
+    --line: #e8e3d8; --line-strong: #d4cfc2;
+    --accent: #1e3a5f; --accent-soft: #dbe4f0; --accent-deep: #142a44;
+    --gold: #b8924b; --gold-soft: #f3e9d4; --gold-deep: #8a6d33;
+    --green: #4a7c59; --green-soft: #dcebe0;
+    --warm: #d4956a; --warm-soft: #f5e3d4;
+    --error: #b34a3a; --error-soft: #f7e3dc; --error-ink: #8a4d3a;
+    --shadow: 0 1px 3px rgba(26,35,50,.05), 0 4px 24px rgba(26,35,50,.06);
+    --shadow-strong: 0 2px 6px rgba(26,35,50,.08), 0 12px 32px rgba(26,35,50,.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PT Sans", Roboto, sans-serif; font-size: 16px; line-height: 1.55; min-height: 100vh; }
+  body { background-image: radial-gradient(circle at 15% 10%, rgba(184,146,75,.04) 0, transparent 40%), radial-gradient(circle at 85% 80%, rgba(30,58,95,.04) 0, transparent 40%); }
+
+  /* ===== TOP NAV ===== */
+  .topnav { border-bottom: 1px solid var(--line); background: rgba(250,247,242,.85); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 50; }
+  .topnav-inner { max-width: 1240px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .back-link { color: var(--ink-soft); text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+  .back-link:hover { color: var(--accent); }
+  .topic-id { font-family: monospace; font-size: 11px; color: var(--ink-muted); background: var(--bg-soft); padding: 4px 10px; border-radius: 6px; }
+  .mode-switch { display: flex; background: var(--bg-soft); border-radius: 10px; padding: 3px; gap: 2px; }
+  .mode-switch button { background: none; border: none; padding: 8px 14px; font-family: inherit; font-size: 13px; color: var(--ink-soft); border-radius: 7px; cursor: pointer; transition: all .2s; }
+  .mode-switch button:hover { color: var(--accent); }
+  .mode-switch button.active { background: var(--bg-card); color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,.08); font-weight: 500; }
+
+  /* ===== LAYOUT ===== */
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 28px 24px 80px; }
+  .title-block { margin-bottom: 22px; }
+  .eyebrow { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .18em; color: var(--gold); margin-bottom: 10px; }
+  h1 { font-family: Georgia, "PT Serif", serif; font-size: clamp(26px, 4vw, 38px); font-weight: 400; line-height: 1.15; letter-spacing: -.01em; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .subtitle { color: var(--ink-soft); margin-top: 8px; max-width: 720px; font-size: 15px; }
+
+  .helper-cta { margin-top: 16px; }
+  .helper-cta button { background: var(--accent); color: white; border: none; padding: 12px 18px; border-radius: 10px; font-family: inherit; font-size: 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; transition: all .2s; box-shadow: 0 2px 8px rgba(30,58,95,.15); }
+  .helper-cta button:hover { background: var(--accent-deep); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(30,58,95,.25); }
+  .helper-cta button .arrow { font-family: Georgia, serif; font-size: 18px; }
+
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; margin-top: 24px; }
+  @media (max-width: 1040px) { .layout { grid-template-columns: 1fr; } }
+
+  /* ===== STEP STEPPER ===== */
+  .step-stepper { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; background: var(--bg-card); padding: 6px; border: 1px solid var(--line); border-radius: 12px; margin-bottom: 20px; box-shadow: var(--shadow); }
+  @media (max-width: 880px) { .step-stepper { grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 560px) { .step-stepper { grid-template-columns: repeat(2, 1fr); } }
+  .step-btn { background: transparent; border: none; padding: 10px 4px; border-radius: 8px; font-family: inherit; font-size: 11px; color: var(--ink-soft); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; transition: all .2s; min-height: 56px; justify-content: center; }
+  .step-btn:hover { background: var(--accent-soft); color: var(--accent); }
+  .step-btn.active { background: var(--accent); color: white; }
+  .step-btn.done { background: var(--green-soft); color: var(--green); }
+  .step-btn.done.active { background: var(--accent); color: white; }
+  .step-btn .step-num { font-family: Georgia, serif; font-size: 15px; font-weight: 600; }
+  .step-btn .step-name { font-size: 10.5px; opacity: .9; text-align: center; line-height: 1.2; }
+  .step-btn .step-check { display: none; }
+  .step-btn.done .step-check { display: inline; font-size: 10px; }
+  .step-btn.done:not(.active) .step-num { font-size: 13px; }
+
+  /* ===== CARD BASE ===== */
+  .card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px; padding: 24px; box-shadow: var(--shadow); margin-bottom: 16px; }
+  .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .card-tag { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .14em; padding: 3px 9px; border-radius: 5px; background: var(--gold-soft); color: var(--gold-deep); }
+  .card-tag.blue { background: var(--accent-soft); color: var(--accent); }
+  .card-tag.green { background: var(--green-soft); color: var(--green); }
+  .card h2 { font-family: Georgia, serif; font-size: 22px; font-weight: 400; color: var(--ink); }
+  .card h2 em { color: var(--accent); font-style: italic; }
+  .card-intro { color: var(--ink-soft); font-size: 15px; margin-bottom: 16px; }
+
+  /* ===== STEP SECTIONS ===== */
+  .step-section { display: none; }
+  .step-section.active { display: block; animation: fadeup .35s; }
+
+  /* ===== MARKING INTERACTIVE (STEP 1) ===== */
+  .marking-display { background: var(--bg-soft); border-radius: 12px; padding: 22px 16px; margin-bottom: 18px; }
+  .marking-line { display: flex; align-items: center; justify-content: center; gap: 6px; font-family: Georgia, serif; font-size: clamp(34px, 6vw, 48px); color: var(--accent); flex-wrap: wrap; }
+  .marking-line .seg { padding: 6px 14px; border-radius: 8px; transition: all .25s; position: relative; cursor: default; }
+  .marking-line .seg.clickable { cursor: pointer; }
+  .marking-line .seg.clickable:hover { background: var(--bg-card); transform: translateY(-2px); }
+  .marking-line .seg.hl-B { background: var(--accent-soft); color: var(--accent); }
+  .marking-line .seg.hl-p { background: var(--gold-soft); color: var(--gold-deep); }
+  .marking-line .seg.hl-R { background: var(--green-soft); color: var(--green); }
+  .marking-line .seg.hl-d { background: var(--warm-soft); color: var(--error-ink); }
+  .marking-line .sep { color: var(--ink-muted); font-size: 0.85em; padding: 0 2px; }
+  .marking-label { text-align: center; margin-top: 10px; font-size: 12px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .12em; }
+
+  .quiz-block { margin-top: 18px; padding: 18px; background: var(--bg-soft); border-radius: 12px; border: 1px dashed var(--line-strong); }
+  .quiz-block.done { background: var(--green-soft); border-color: var(--green); border-style: solid; }
+  .quiz-q { font-size: 15px; color: var(--ink); margin-bottom: 12px; }
+  .quiz-q b { color: var(--accent); font-family: Georgia, serif; font-size: 18px; padding: 1px 8px; background: var(--bg-card); border-radius: 5px; }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  @media (max-width: 600px) { .quiz-options { grid-template-columns: 1fr; } }
+  .quiz-opt { padding: 11px 14px; background: var(--bg-card); border: 1.5px solid var(--line); border-radius: 9px; cursor: pointer; font-family: inherit; font-size: 14px; color: var(--ink); text-align: left; transition: all .15s; }
+  .quiz-opt:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .quiz-opt:disabled { cursor: not-allowed; opacity: .55; }
+  .quiz-opt.correct { background: var(--green-soft); border-color: var(--green); color: var(--green); font-weight: 600; }
+  .quiz-opt.wrong { background: var(--error-soft); border-color: var(--error); color: var(--error-ink); }
+  .quiz-feedback { margin-top: 12px; padding: 10px 14px; border-radius: 8px; font-size: 13.5px; display: none; line-height: 1.55; }
+  .quiz-feedback.show { display: block; animation: fadeup .25s; }
+  .quiz-feedback.correct { background: var(--green-soft); color: var(--green); border: 1px solid var(--green); }
+  .quiz-feedback.warn { background: var(--error-soft); color: var(--error-ink); border: 1px solid var(--warm); }
+
+  /* ===== PARAMS TABLE (STEP 2) ===== */
+  .params-table-wrap { overflow-x: auto; margin: 16px 0; -webkit-overflow-scrolling: touch; }
+  .params-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; min-width: 620px; }
+  .params-table th { background: var(--accent); color: white; padding: 10px 8px; font-weight: 600; font-size: 12px; text-align: center; }
+  .params-table th:first-child { border-top-left-radius: 8px; text-align: left; padding-left: 14px; }
+  .params-table th:last-child { border-top-right-radius: 8px; }
+  .params-table td { background: var(--bg-card); padding: 8px; border-bottom: 1px solid var(--line); text-align: center; }
+  .params-table td:first-child { font-family: Georgia, serif; color: var(--accent); font-weight: 600; text-align: left; padding-left: 14px; background: var(--bg-soft); }
+  .params-table td.given { color: var(--ink-muted); font-family: Georgia, serif; }
+  .cell-input { width: 90px; padding: 7px 10px; border: 1.5px solid var(--line-strong); border-radius: 7px; font-family: Georgia, serif; font-size: 15px; color: var(--accent); text-align: center; background: white; }
+  .cell-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .cell-input.correct { background: var(--green-soft); border-color: var(--green); color: var(--green); font-weight: 600; }
+  .cell-input.wrong { background: var(--error-soft); border-color: var(--error); color: var(--error-ink); }
+  .cell-input:disabled { cursor: not-allowed; opacity: .9; }
+  .formula-hint { font-size: 11px; color: var(--ink-muted); font-style: italic; margin-top: 2px; }
+
+  /* ===== CALC TABLE (steps 2-ref / 6 / 7) ===== */
+  .calc-table-wrap { overflow-x: auto; margin: 14px 0 6px; -webkit-overflow-scrolling: touch; }
+  .calc-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; min-width: 660px; }
+  .calc-table thead th { background: var(--accent); color: white; padding: 11px 6px; font-weight: 600; font-size: 12px; text-align: center; }
+  .calc-table thead th:first-child { border-top-left-radius: 8px; text-align: left; padding-left: 14px; }
+  .calc-table thead th:last-child { border-top-right-radius: 8px; }
+  .calc-table thead th .formula-mini { display: block; font-size: 10px; opacity: .78; font-weight: 400; margin-top: 3px; font-family: Georgia, serif; }
+  .calc-table td { background: var(--bg-card); padding: 10px 6px; border-bottom: 1px solid var(--line); text-align: center; font-family: Georgia, serif; color: var(--accent); font-size: 15px; }
+  .calc-table td.marking { background: var(--bg-soft); font-weight: 600; text-align: left; padding-left: 14px; min-width: 110px; color: var(--accent); }
+  .calc-table td.given { color: var(--ink-soft); }
+  .calc-table tr.row-old td:not(.marking) { background: var(--accent-soft); }
+  .calc-table tr.row-new td:not(.marking) { background: var(--gold-soft); color: var(--gold-deep); }
+  .calc-table tr.row-new td.has-input { background: var(--bg-card); }
+  .calc-cell { width: 84px; padding: 7px 6px; border: 1.5px solid var(--line-strong); border-radius: 6px; font-family: Georgia, serif; font-size: 14px; color: var(--accent); text-align: center; background: white; }
+  .calc-cell:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .calc-cell.correct { background: var(--green-soft); border-color: var(--green); color: var(--green); font-weight: 600; }
+  .calc-cell.wrong { background: var(--error-soft); border-color: var(--error); color: var(--error-ink); }
+  .calc-cell:disabled { cursor: not-allowed; opacity: .92; }
+  .calc-row-feedback { margin-top: 8px; padding: 9px 14px; border-radius: 7px; font-size: 13px; display: none; line-height: 1.55; }
+  .calc-row-feedback.show { display: block; animation: fadeup .25s; }
+  .calc-row-feedback.correct { background: var(--green-soft); color: var(--green); border: 1px solid var(--green); }
+  .calc-row-feedback.warn { background: var(--error-soft); color: var(--error-ink); border: 1px solid var(--warm); }
+  .calc-row-feedback b { color: var(--accent); }
+  .calc-row-feedback.warn b { color: var(--error); }
+  .calc-table-caption { font-size: 12px; color: var(--ink-muted); margin-top: 4px; font-style: italic; }
+  /* in learn mode, show all calc-cells pre-filled but still validatable (greyed) */
+  body[data-mode="learn"] .calc-cell.prefill { background: var(--gold-soft); border-color: var(--gold); color: var(--gold-deep); font-style: italic; }
+
+  /* ===== REFERENCE TABLE BLOCK (after step 2) ===== */
+  .ref-block { background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-soft) 100%); border: 1px dashed var(--gold); border-radius: 12px; padding: 16px 18px; margin: 18px 0; }
+  .ref-block-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .ref-block-header .badge { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .14em; padding: 3px 9px; border-radius: 5px; background: var(--gold-soft); color: var(--gold-deep); }
+  .ref-block-header h3 { font-family: Georgia, serif; font-size: 17px; font-weight: 400; color: var(--accent); }
+  .ref-block p.intro { font-size: 13.5px; color: var(--ink-soft); margin-bottom: 8px; }
+
+  /* ===== COMPAT TABLE (STEP 3) ===== */
+  .compat-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; margin: 14px 0; }
+  .compat-table th, .compat-table td { padding: 12px 10px; text-align: center; border-bottom: 1px solid var(--line); }
+  .compat-table th { background: var(--accent); color: white; font-weight: 600; font-size: 13px; }
+  .compat-table th:first-child { border-top-left-radius: 8px; }
+  .compat-table th:last-child { border-top-right-radius: 8px; }
+  .compat-table td:first-child { font-weight: 600; background: var(--bg-soft); font-family: Georgia, serif; color: var(--accent); }
+  .compat-table .yes { color: var(--ink); font-family: Georgia, serif; font-size: 13px; }
+  .compat-table .no { color: var(--ink-muted); }
+  .compat-table .col-highlight { background: var(--gold-soft); }
+  .compat-table .row-highlight { background: var(--green-soft) !important; color: var(--green); font-weight: 700; }
+  .compat-table .winner { background: var(--green) !important; color: white !important; font-weight: 700; }
+
+  /* ===== INPUT ROW (generic answer block) ===== */
+  .substep { padding: 14px 16px; background: var(--bg-soft); border-radius: 10px; margin-top: 12px; border-left: 3px solid var(--line-strong); transition: all .2s; }
+  .substep.active-step { border-left-color: var(--gold); background: var(--bg-deeper); }
+  .substep.done { border-left-color: var(--green); background: var(--green-soft); }
+  .substep.locked { opacity: .4; pointer-events: none; }
+  .substep-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-soft); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .substep.done .substep-label { color: var(--green); }
+  .substep-label .step-icon { display: inline-flex; width: 22px; height: 22px; border-radius: 50%; background: var(--bg-card); align-items: center; justify-content: center; font-size: 11px; font-family: Georgia, serif; color: var(--ink-soft); border: 1px solid var(--line-strong); }
+  .substep.done .step-icon { background: var(--green); color: white; border-color: var(--green); }
+  .substep-q { font-size: 15px; line-height: 1.6; margin-bottom: 10px; }
+  .substep-q .math { font-family: Georgia, serif; color: var(--accent); font-weight: 600; background: var(--bg-card); padding: 1px 7px; border-radius: 5px; }
+  .substep-input-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .substep-input { width: 130px; padding: 9px 12px; border: 1.5px solid var(--line-strong); border-radius: 8px; font-family: Georgia, serif; font-size: 16px; color: var(--accent); background: white; }
+  .substep-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .substep-input.correct { background: var(--green-soft); border-color: var(--green); color: var(--green); font-weight: 600; }
+  .substep-input.wrong { background: var(--error-soft); border-color: var(--error); color: var(--error-ink); }
+  .substep-input:disabled { cursor: not-allowed; opacity: .92; }
+  .substep-unit { color: var(--ink-muted); font-size: 14px; }
+  .substep-check-btn { padding: 9px 18px; background: var(--accent); color: white; border: none; border-radius: 8px; font-family: inherit; font-size: 13px; cursor: pointer; font-weight: 500; transition: all .2s; }
+  .substep-check-btn:hover { background: var(--accent-deep); transform: translateY(-1px); }
+  .substep-check-btn:disabled { background: var(--green); cursor: default; transform: none; }
+  .substep-feedback { margin-top: 10px; padding: 10px 14px; border-radius: 7px; font-size: 13px; display: none; line-height: 1.55; }
+  .substep-feedback.show { display: block; animation: fadeup .25s; }
+  .substep-feedback.correct { background: var(--green-soft); color: var(--green); border: 1px solid var(--green); }
+  .substep-feedback.warn { background: var(--error-soft); color: var(--error-ink); border: 1px solid var(--warm); }
+  .substep-feedback b { color: var(--accent); }
+  .substep-feedback.warn b { color: var(--error); }
+  .substep-hint { display: none; margin-top: 8px; padding: 9px 13px; background: var(--gold-soft); border-radius: 7px; font-size: 13px; color: var(--ink); border-left: 3px solid var(--gold); }
+  .substep-hint.show { display: block; }
+  .substep-hint b { color: var(--accent); }
+  .substep-hint-btn { background: none; border: none; color: var(--gold-deep); font-family: inherit; font-size: 12px; cursor: pointer; text-decoration: underline; padding: 4px 0; }
+  .substep-hint-btn:hover { color: var(--accent); }
+
+  body[data-mode="learn"] .substep-hint.auto-learn { display: block; }
+  body[data-mode="practice"] .substep.locked { display: none; }
+  body[data-mode="practice"] .auto-learn-hint-btn { display: inline; }
+  body[data-mode="learn"] .auto-learn-hint-btn { display: none; }
+
+  /* ===== CROSS-SECTION SVG ===== */
+  .wheel-svg-wrap { background: linear-gradient(180deg, #fdfcf8 0%, #f5f1e8 100%); border-radius: 12px; padding: 12px; display: flex; justify-content: center; margin-top: 12px; }
+  svg.wheel { max-width: 100%; height: auto; }
+  .tire-outer { fill: #1a2332; stroke: var(--accent-deep); stroke-width: 1.5; }
+  .tire-rubber { fill: #2d3848; }
+  .disk-circle { fill: #c0c5cd; stroke: #888c95; stroke-width: 1; }
+  .disk-bolts { fill: #888c95; }
+  .center-cap { fill: #8a93a3; }
+  .dim-line { stroke: var(--accent); stroke-width: 1.5; fill: none; }
+  .dim-text { font-family: Georgia, serif; font-size: 13px; font-weight: 600; }
+  .dim-text.B { fill: var(--accent); }
+  .dim-text.H { fill: var(--gold-deep); }
+  .dim-text.d { fill: var(--error-ink); }
+  .dim-text.D { fill: var(--green); }
+
+  /* ===== 2x2 PROPORTION TABLE ===== */
+  .prop-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; margin: 14px 0; max-width: 560px; }
+  .prop-table th { background: var(--accent); color: white; padding: 12px 14px; font-weight: 600; font-size: 13px; text-align: center; }
+  .prop-table th:first-child { border-top-left-radius: 10px; text-align: left; }
+  .prop-table th:last-child { border-top-right-radius: 10px; }
+  .prop-table td { background: var(--bg-card); padding: 12px 14px; border: 1px solid var(--line); text-align: center; font-family: Georgia, serif; font-size: 16px; color: var(--accent); }
+  .prop-table td:first-child { font-family: inherit; font-weight: 600; background: var(--bg-soft); color: var(--ink); text-align: left; }
+  .prop-table tr.compare td { background: var(--accent-soft); }
+  .prop-table tr.base td { background: var(--gold-soft); }
+  .prop-table tr.compare td:first-child, .prop-table tr.base td:first-child { background: var(--bg-soft); }
+  .prop-result { margin-top: 14px; padding: 14px 16px; background: var(--accent); color: white; border-radius: 10px; font-family: Georgia, serif; font-size: 16px; text-align: center; line-height: 1.7; }
+  .prop-result small { display: block; opacity: .8; font-size: 12px; margin-top: 3px; font-family: inherit; }
+
+  /* ===== ANIMATION (STEP 7) ===== */
+  .anim-block { background: linear-gradient(180deg, #fdfcf8 0%, #f5f1e8 100%); border-radius: 14px; padding: 18px; border: 1px solid var(--line); margin: 14px 0; }
+  .anim-controls { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+  .anim-btn { padding: 10px 18px; background: var(--accent); color: white; border: none; border-radius: 9px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s; box-shadow: 0 2px 6px rgba(30,58,95,.15); }
+  .anim-btn:hover { background: var(--accent-deep); transform: translateY(-1px); }
+  .anim-btn:disabled { background: var(--ink-muted); cursor: not-allowed; transform: none; }
+  .anim-btn.gold { background: var(--gold); box-shadow: 0 2px 6px rgba(184,146,75,.2); }
+  .anim-btn.gold:hover { background: var(--gold-deep); }
+  .anim-btn.ghost { background: var(--bg-card); color: var(--ink-soft); border: 1.5px solid var(--line-strong); box-shadow: none; }
+  .anim-btn.ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .anim-svg-wrap { background: var(--bg-card); border-radius: 10px; padding: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  svg.anim-svg { display: block; min-width: 760px; }
+  .anim-tire { fill: #1a2332; stroke: var(--accent-deep); stroke-width: 1.5; }
+  .anim-tire-2 { fill: #1a2a44; stroke: var(--accent); stroke-width: 2; }
+  .anim-tire-inner { fill: #2d3848; }
+  .anim-tire-inner-2 { fill: #3a4658; }
+  .anim-disk { fill: #c0c5cd; stroke: #888c95; stroke-width: 1; }
+  .anim-disk-2 { fill: #d4d9e0; stroke: #7a808a; stroke-width: 1; }
+  .anim-spoke { stroke: var(--gold); stroke-width: 3; stroke-linecap: round; }
+  .anim-spoke-2 { stroke: var(--error); stroke-width: 3; stroke-linecap: round; }
+  .anim-marker { fill: var(--error); }
+  .anim-marker-2 { fill: var(--gold-deep); }
+  .anim-road { stroke: #5a6478; stroke-width: 3; fill: none; }
+  .anim-road-highlight { fill: var(--gold); opacity: .85; }
+  .anim-road-highlight-2 { fill: var(--accent); opacity: .85; }
+  .anim-label { font-family: Georgia, serif; font-size: 14px; font-weight: 600; fill: var(--accent); }
+  .anim-label.gold { fill: var(--gold-deep); }
+  .anim-label.small { font-size: 12px; font-weight: 500; fill: var(--ink-soft); }
+  .anim-label.formula { font-family: Georgia, serif; font-size: 15px; font-weight: 600; fill: var(--accent); }
+  .anim-label.formula-gold { font-family: Georgia, serif; font-size: 15px; font-weight: 600; fill: var(--gold-deep); }
+  .anim-result { margin-top: 12px; padding: 14px 18px; background: var(--accent-soft); border-radius: 10px; font-size: 14px; color: var(--accent); display: none; line-height: 1.7; }
+  .anim-result.show { display: block; animation: fadeup .35s; }
+  .anim-result .formula-strip { font-family: Georgia, serif; font-size: 17px; text-align: center; padding: 10px; background: white; border-radius: 8px; margin: 8px 0; color: var(--accent); }
+  .anim-result .cancel-line { font-family: Georgia, serif; font-size: 16px; text-align: center; padding: 12px; background: var(--bg-card); border-radius: 8px; margin: 8px 0; color: var(--ink); }
+  .anim-result .cancel-line .strike { position: relative; color: var(--error); }
+  .anim-result .cancel-line .strike::before { content: ""; position: absolute; left: -2px; right: -2px; top: 50%; height: 2px; background: var(--error); transform: rotate(-12deg); }
+
+  /* ===== TEACHER BLOCK ===== */
+  .teacher-block { margin-top: 16px; padding: 16px 20px; background: var(--accent-soft); border-radius: 10px; border-left: 3px solid var(--accent); display: none; font-size: 14px; line-height: 1.7; }
+  .teacher-block.show { display: block; animation: fadeup .3s; }
+  body[data-mode="teacher"] .teacher-block { display: block; }
+  .teacher-block .label { font-size: 11px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 8px; }
+  .teacher-block .step { padding-left: 20px; position: relative; margin-bottom: 5px; }
+  .teacher-block .step::before { content: "→"; position: absolute; left: 0; color: var(--gold); }
+  .teacher-block .answer-display { display: inline-block; margin-top: 8px; padding: 6px 14px; background: white; border-radius: 7px; color: var(--accent); font-family: Georgia, serif; font-weight: 600; font-size: 15px; }
+  .teacher-block .note { margin-top: 10px; padding: 10px; background: var(--gold-soft); border-radius: 7px; font-size: 13px; color: var(--ink); border-left: 2px solid var(--gold); }
+
+  /* ===== NAV ROW ===== */
+  .nav-row { display: flex; justify-content: space-between; gap: 10px; margin-top: 20px; flex-wrap: wrap; }
+  .nav-btn { padding: 11px 20px; background: var(--bg-card); color: var(--accent); border: 1.5px solid var(--line-strong); border-radius: 9px; font-family: inherit; font-size: 13px; cursor: pointer; transition: all .2s; }
+  .nav-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .nav-btn:disabled { opacity: .35; cursor: not-allowed; }
+  .nav-btn.next { background: var(--accent); color: white; border-color: var(--accent); }
+  .nav-btn.next:hover { background: var(--accent-deep); }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar { display: flex; flex-direction: column; gap: 14px; position: sticky; top: 86px; }
+  @media (max-width: 1040px) { .sidebar { position: static; } }
+  .side-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; box-shadow: var(--shadow); }
+  .side-card h3 { font-family: Georgia, serif; font-size: 16px; font-weight: 400; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; color: var(--ink); }
+  .side-card h3::before { content: ""; display: inline-block; width: 4px; height: 14px; background: var(--gold); border-radius: 2px; }
+  .formula { background: var(--accent); color: white; padding: 12px 14px; border-radius: 9px; font-family: Georgia, serif; font-size: 14px; text-align: center; line-height: 1.55; margin-bottom: 8px; }
+  .formula:last-child { margin-bottom: 0; }
+  .formula small { display: block; opacity: .75; font-size: 11px; margin-top: 4px; font-family: -apple-system, sans-serif; }
+  .formula.gold { background: var(--gold); }
+  .formula.green { background: var(--green); }
+
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat { background: var(--bg-soft); padding: 12px; border-radius: 9px; text-align: center; }
+  .stat .val { font-family: Georgia, serif; font-size: 22px; color: var(--accent); }
+  .stat .lbl { font-size: 10.5px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .08em; margin-top: 4px; }
+  .reset-btn { width: 100%; margin-top: 10px; padding: 8px; background: none; border: 1px dashed var(--line-strong); border-radius: 7px; color: var(--ink-muted); font-family: inherit; font-size: 12px; cursor: pointer; }
+  .reset-btn:hover { color: var(--error); border-color: var(--error); }
+
+  .mode-help { font-size: 12.5px; color: var(--ink-soft); line-height: 1.55; }
+  .mode-help b { color: var(--accent); }
+
+  @keyframes fadeup { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(184,146,75,.4); } 50% { box-shadow: 0 0 0 8px rgba(184,146,75,0); } }
+  .pulse { animation: pulse 1.8s infinite; }
+</style>
+</head>
+<body data-mode="learn">
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="back-link" href="practice-1-5-map.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      ко всем тренажёрам
+    </a>
+    <span class="topic-id">practiceTiresTrainer</span>
+    <div class="mode-switch" id="mode-switch">
+      <button data-mode="learn" class="active">Обучение</button>
+      <button data-mode="practice">Тренировка</button>
+      <button data-mode="teacher">Учитель</button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="title-block">
+    <div class="eyebrow">сюжет 03 · задачи 1–5 ОГЭ</div>
+    <h1>Шины · <em>маркировка и геометрия колеса</em></h1>
+    <p class="subtitle">Сегодня учимся решать задачи на шины. Сначала разберём маркировку <b>195/60 R16</b>, потом научимся считать высоту боковины, диаметр колеса и сравнивать колёса по пробегу.</p>
+    <div class="helper-cta">
+      <button id="start-btn">Я не понимаю, с чего начать <span class="arrow">→</span></button>
+    </div>
+  </div>
+
+  <div class="layout">
+
+    <main>
+      <div class="step-stepper" id="step-stepper">
+        <button class="step-btn active" data-step="0"><span class="step-num">1<span class="step-check"> ✓</span></span><span class="step-name">Маркировка</span></button>
+        <button class="step-btn" data-step="1"><span class="step-num">2<span class="step-check"> ✓</span></span><span class="step-name">Параметры</span></button>
+        <button class="step-btn" data-step="2"><span class="step-num">3<span class="step-check"> ✓</span></span><span class="step-name">Подбор шины</span></button>
+        <button class="step-btn" data-step="3"><span class="step-num">4<span class="step-check"> ✓</span></span><span class="step-name">Радиус</span></button>
+        <button class="step-btn" data-step="4"><span class="step-num">5<span class="step-check"> ✓</span></span><span class="step-name">Диаметр</span></button>
+        <button class="step-btn" data-step="5"><span class="step-num">6<span class="step-check"> ✓</span></span><span class="step-name">Замена</span></button>
+        <button class="step-btn" data-step="6"><span class="step-num">7<span class="step-check"> ✓</span></span><span class="step-name">Пробег и %</span></button>
+      </div>
+
+      <!-- =========== STEP 1 — MARKING DECODER =========== -->
+      <section class="step-section active" id="section-0">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-tag">Шаг 1</span>
+            <h2>Как читать <em>маркировку шины</em></h2>
+          </div>
+          <p class="card-intro">У каждой автомобильной шины есть маркировка из трёх частей. Разберём заводскую маркировку.</p>
+
+          <div class="marking-display">
+            <div class="marking-line" id="marking-line-1">
+              <span class="seg hl-B">195</span>
+              <span class="sep">/</span>
+              <span class="seg hl-p">60</span>
+              <span class="seg hl-R">R</span>
+              <span class="seg hl-d">16</span>
+            </div>
+            <div class="marking-label">маркировка автомобильной шины</div>
+          </div>
+
+          <div class="quiz-block" id="quiz-B">
+            <div class="quiz-q">Первое число: <b>195</b>. Что оно обозначает?</div>
+            <div class="quiz-options" data-quiz="B">
+              <button class="quiz-opt" data-correct="false" data-err="Это распространённая ошибка. 195 — не диаметр колеса. Диаметр обозначается отдельной формулой D = 2H + d_мм.">диаметр всего колеса в мм</button>
+              <button class="quiz-opt" data-correct="true">ширина шины B в миллиметрах</button>
+              <button class="quiz-opt" data-correct="false" data-err="Высота боковины H в маркировке отдельно не пишется. Её получают из второго числа (процента).">высоту боковины H в мм</button>
+              <button class="quiz-opt" data-correct="false" data-err="195 — точное число в мм, а не процент. Процент — это второе число.">процент от диаметра</button>
+            </div>
+            <div class="quiz-feedback" id="fb-B"></div>
+          </div>
+
+          <div class="quiz-block locked" id="quiz-p">
+            <div class="quiz-q">Второе число: <b>60</b>. Что оно обозначает?</div>
+            <div class="quiz-options" data-quiz="p">
+              <button class="quiz-opt" data-correct="false" data-err="Внимательно: 60 — это НЕ миллиметры. Это процент от ширины. Высоту боковины считают так: H = B · 60 / 100.">высоту боковины 60 мм</button>
+              <button class="quiz-opt" data-correct="true">процент: H = 60% от ширины B</button>
+              <button class="quiz-opt" data-correct="false" data-err="Диаметр диска обозначается после буквы R. Здесь это R16.">диаметр диска в мм</button>
+              <button class="quiz-opt" data-correct="false" data-err="Ширина — это первое число (195). Второе — процент.">ширину шины в см</button>
+            </div>
+            <div class="quiz-feedback" id="fb-p"></div>
+          </div>
+
+          <div class="quiz-block locked" id="quiz-d">
+            <div class="quiz-q">Запись <b>R16</b>. Что обозначает 16?</div>
+            <div class="quiz-options" data-quiz="d">
+              <button class="quiz-opt" data-correct="false" data-err="R — это не «радиус», а тип конструкции (радиальная). 16 после R — это диаметр диска в дюймах.">радиус колеса 16 мм</button>
+              <button class="quiz-opt" data-correct="false" data-err="Это не радиус и не в миллиметрах. 16 — это диаметр диска в дюймах. Чтобы перевести в мм: 16 · 25,4 = 406,4 мм.">радиус диска 16 мм</button>
+              <button class="quiz-opt" data-correct="true">диаметр диска d = 16 дюймов</button>
+              <button class="quiz-opt" data-correct="false" data-err="Диаметр диска даётся в дюймах, не миллиметрах. Чтобы получить мм, умножают на 25,4.">диаметр диска 16 мм</button>
+            </div>
+            <div class="quiz-feedback" id="fb-d"></div>
+          </div>
+
+          <div class="quiz-block locked" id="quiz-R">
+            <div class="quiz-q">Буква <b>R</b> в маркировке. Что она обозначает?</div>
+            <div class="quiz-options" data-quiz="R">
+              <button class="quiz-opt" data-correct="false" data-err="R — это не радиус. Радиус вообще не указывается напрямую в маркировке.">радиус колеса</button>
+              <button class="quiz-opt" data-correct="true">тип конструкции (радиальная)</button>
+              <button class="quiz-opt" data-correct="false" data-err="Это не сезонность. R значит «радиальная конструкция» — у всех легковых шин.">резину (зимнюю/летнюю)</button>
+              <button class="quiz-opt" data-correct="false" data-err="Это не модель. R — стандартное обозначение типа конструкции.">модель шины</button>
+            </div>
+            <div class="quiz-feedback" id="fb-R"></div>
+          </div>
+
+          <div class="teacher-block">
+            <div class="label">Главное</div>
+            <div class="step"><b>B = 195</b> — ширина шины в миллиметрах</div>
+            <div class="step"><b>p = 60</b> — процент: высота боковины = 60% от ширины</div>
+            <div class="step"><b>R</b> — радиальная конструкция (буква без числа)</div>
+            <div class="step"><b>d = 16</b> — диаметр диска в <em>дюймах</em> (1 дюйм = 25,4 мм)</div>
+            <div class="note">Внимание: <b>R</b> — это не радиус! Радиус колеса считается просто: <b>R = D / 2</b> (половина диаметра).</div>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" disabled>← Назад</button>
+            <button class="nav-btn next" data-goto="1">Дальше: собрать параметры →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========== STEP 2 — PARAMS TABLE =========== -->
+      <section class="step-section" id="section-1">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-tag">Шаг 2</span>
+            <h2>Собери <em>таблицу параметров</em></h2>
+          </div>
+          <p class="card-intro">Из маркировки <b>195/60 R16</b> можно вычислить все характеристики колеса. Заполни таблицу по порядку — каждый столбец проверяется отдельно.</p>
+
+          <div class="params-table-wrap">
+            <table class="params-table">
+              <thead>
+                <tr>
+                  <th>Маркировка</th>
+                  <th>B, мм</th>
+                  <th>p, %</th>
+                  <th>d, дюйм</th>
+                  <th>d, мм</th>
+                  <th>H, мм</th>
+                  <th>D, мм</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>195/60 R16</td>
+                  <td><input type="text" class="cell-input" data-key="B"></td>
+                  <td><input type="text" class="cell-input" data-key="p"></td>
+                  <td><input type="text" class="cell-input" data-key="di"></td>
+                  <td><input type="text" class="cell-input" data-key="dm"></td>
+                  <td><input type="text" class="cell-input" data-key="H"></td>
+                  <td><input type="text" class="cell-input" data-key="D"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="formula-hint">формулы: d_мм = d · 25,4 &nbsp;·&nbsp; H = B · p / 100 &nbsp;·&nbsp; D = 2H + d_мм</div>
+
+          <div class="substep-feedback" id="params-feedback"></div>
+
+          <div class="substep-hint auto-learn">
+            <b>Как заполнять:</b> B — первое число (мм). p — второе число (просто число процента, без знака %). d — число после R (в дюймах). d, мм — переведи дюймы в миллиметры (× 25,4). H — найди по формуле H = B · p / 100. D — соедини: D = 2H + d_мм.
+          </div>
+
+          <div class="teacher-block">
+            <div class="label">Образец заполнения</div>
+            <div class="step">B = 195 мм</div>
+            <div class="step">p = 60 (%)</div>
+            <div class="step">d = 16 дюймов</div>
+            <div class="step">d, мм = 16 · 25,4 = <b>406,4 мм</b></div>
+            <div class="step">H = 195 · 60 / 100 = <b>117 мм</b></div>
+            <div class="step">D = 2 · 117 + 406,4 = <b>640,4 мм</b></div>
+            <span class="answer-display">Заводское колесо: D = 640,4 мм</span>
+          </div>
+
+          <div class="wheel-svg-wrap">
+            <svg class="wheel" viewBox="0 0 600 380" id="cross-section-svg" preserveAspectRatio="xMidYMid meet"></svg>
+          </div>
+          <div style="margin-top: 12px; padding: 12px 16px; background: var(--accent); color: white; border-radius: 10px; font-family: Georgia, serif; font-size: 16px; text-align: center;">
+            D = H + d<sub style="font-size:.7em;">мм</sub> + H = 2H + d<sub style="font-size:.7em;">мм</sub>
+            <div style="font-size: 11px; opacity: .8; margin-top: 4px; font-family: -apple-system, sans-serif;">наверху боковина H, диск d, снизу ещё боковина H</div>
+          </div>
+
+          <!-- ===== Reference summary table for all the rest of trainer ===== -->
+          <div class="ref-block">
+            <div class="ref-block-header">
+              <span class="badge">образец</span>
+              <h3>Шаблон итоговой таблицы</h3>
+            </div>
+            <p class="intro">Дальше в задачах 4 и 5 ты будешь заполнять такую таблицу для двух шин сразу. Возвращайся сюда, если запутаешься в формулах.</p>
+            <div class="calc-table-wrap">
+              <table class="calc-table">
+                <thead>
+                  <tr>
+                    <th>Маркировка</th>
+                    <th>B, мм</th>
+                    <th>p, %</th>
+                    <th>d, дюйм</th>
+                    <th>d, мм<span class="formula-mini">d · 25,4</span></th>
+                    <th>H, мм<span class="formula-mini">B · p / 100</span></th>
+                    <th>D, мм<span class="formula-mini">2H + d_мм</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="row-old">
+                    <td class="marking">195/60 R16</td>
+                    <td class="given">195</td>
+                    <td class="given">60</td>
+                    <td class="given">16</td>
+                    <td class="given">406,4</td>
+                    <td class="given">117</td>
+                    <td class="given"><b>640,4</b></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="calc-table-caption">Порядок заполнения слева направо: маркировка → B → p → d (дюйм) → d (мм) → H → D. Сначала таблица, потом сравнения.</div>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" data-goto="0">← Назад</button>
+            <button class="nav-btn next" data-goto="2">Дальше: подбор шины →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========== STEP 3 — TASK 1 (CHOOSE TIRE) =========== -->
+      <section class="step-section" id="section-2">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-tag blue">Задача 1</span>
+            <h2>Подбор шины <em>по таблице</em></h2>
+          </div>
+          <p class="card-intro"><b>Шины какой наименьшей ширины можно устанавливать на автомобиль, если диаметр диска равен 17 дюймов?</b> Ответ — в миллиметрах.</p>
+
+          <div class="params-table-wrap">
+            <table class="compat-table" id="compat-table-1">
+              <thead>
+                <tr><th>Ширина шины (мм)</th><th data-disk="16">16″</th><th data-disk="17">17″</th><th data-disk="18">18″</th></tr>
+              </thead>
+              <tbody>
+                <tr data-w="185"><td>185</td><td class="yes">185/65</td><td class="yes">185/60</td><td class="no">—</td></tr>
+                <tr data-w="195"><td>195</td><td class="yes">195/60</td><td class="yes">195/55</td><td class="no">—</td></tr>
+                <tr data-w="205"><td>205</td><td class="yes">205/55; 205/60</td><td class="yes">205/50</td><td class="yes">205/45</td></tr>
+                <tr data-w="215"><td>215</td><td class="yes">215/55</td><td class="yes">215/50</td><td class="yes">215/40; 215/45</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="substep active-step" id="t1-s1">
+            <div class="substep-label"><span class="step-icon">1</span>Какой столбец таблицы нужен?</div>
+            <div class="substep-q">В задаче спросили про диск <span class="math">17 дюймов</span>. Найди соответствующий столбец и введи его номер.</div>
+            <div class="substep-input-row">
+              <input type="text" class="substep-input" data-step="t1-s1" placeholder="17">
+              <span class="substep-unit">дюйм</span>
+              <button class="substep-check-btn" data-check="t1-s1">Проверить</button>
+            </div>
+            <div class="substep-feedback"></div>
+            <button class="substep-hint-btn auto-learn-hint-btn">показать подсказку</button>
+            <div class="substep-hint auto-learn">В задаче дан диск <b>17 дюймов</b> — значит, и столбец берём 17″.</div>
+          </div>
+
+          <div class="substep locked" id="t1-s2">
+            <div class="substep-label"><span class="step-icon">2</span>Какие ширины подходят?</div>
+            <div class="substep-q">В столбце 17″ выпиши все разрешённые ширины через запятую.</div>
+            <div class="substep-input-row">
+              <input type="text" class="substep-input" data-step="t1-s2" placeholder="185, 195, 205, 215" style="width: 220px;">
+              <span class="substep-unit">мм</span>
+              <button class="substep-check-btn" data-check="t1-s2">Проверить</button>
+            </div>
+            <div class="substep-feedback"></div>
+            <button class="substep-hint-btn auto-learn-hint-btn">показать подсказку</button>
+            <div class="substep-hint auto-learn">В столбце 17″ ✓ стоит во всех четырёх строках: 185, 195, 205, 215.</div>
+          </div>
+
+          <div class="substep locked" id="t1-s3">
+            <div class="substep-label"><span class="step-icon">3</span>Выбери наименьшую</div>
+            <div class="substep-q">Из всех разрешённых ширин <span class="math">{185, 195, 205, 215}</span> в столбце 17″ выбери <b>наименьшую</b>.</div>
+            <div class="substep-input-row">
+              <input type="text" class="substep-input" data-step="t1-s3" placeholder="наименьшее число">
+              <span class="substep-unit">мм</span>
+              <button class="substep-check-btn" data-check="t1-s3">Проверить ответ</button>
+            </div>
+            <div class="substep-feedback"></div>
+            <button class="substep-hint-btn auto-learn-hint-btn">показать подсказку</button>
+            <div class="substep-hint auto-learn">Из чисел 185, 195, 205, 215 наименьшее — это <b>185</b>.</div>
+          </div>
+
+          <div class="teacher-block">
+            <div class="label">Решение задачи 1</div>
+            <div class="step">Смотрим столбец «диаметр диска 17″».</div>
+            <div class="step">В этом столбце ✓ во всех строках: 185, 195, 205, 215.</div>
+            <div class="step">Наименьшее число из них — <b>185 мм</b>.</div>
+            <span class="answer-display">Ответ: 185</span>
+            <div class="note"><b>Типичная ошибка:</b> ученик ищет минимум по всей таблице, а нужно — только в нужном столбце.</div>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" data-goto="1">← Назад</button>
+            <button class="nav-btn next" data-goto="3">Дальше: разница радиусов →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========== STEP 4 — TASK 2 (RADIUS via D/2) =========== -->
+      <section class="step-section" id="section-3">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-tag blue">Задача 2</span>
+            <h2>Сравнение <em>радиусов колёс</em></h2>
+          </div>
+          <p class="card-intro"><b>На сколько миллиметров радиус колеса с шиной 185/65 R16 больше, чем радиус колеса с шиной 215/55 R16?</b></p>
+
+          <div style="background: var(--bg-soft); padding: 14px 16px; border-radius: 10px; margin-bottom: 12px; font-family: Georgia, serif; font-size: 15px; color: var(--accent);">
+            <b>Алгоритм (как во всех задачах на шины):</b><br>
+            <span style="font-size: 14px;">1) заполняем таблицу параметров для обеих шин &nbsp;·&nbsp; 2) находим разность диаметров &nbsp;·&nbsp; 3) если спрашивают про радиус — делим на 2 (ведь R = D/2).</span>
+          </div>
+
+          <div class="calc-table-wrap">
+            <table class="calc-table" data-calc-id="t2" data-unlock-after="t2-d-diff">
+              <thead>
+                <tr>
+                  <th>Маркировка</th>
+                  <th>B, мм</th>
+                  <th>p, %</th>
+                  <th>d, дюйм</th>
+                  <th>d, мм<span class="formula-mini">d · 25,4</span></th>
+                  <th>H, мм<span class="formula-mini">B · p / 100</span></th>
+                  <th>D, мм<span class="formula-mini">2H + d_мм</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row-old" data-tire="t2a">
+                  <td class="marking">185/65 R16</td>
+                  <td class="has-input"><input class="calc-cell" data-cell="B" data-tire="t2a" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="p" data-tire="t2a" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="di" data-tire="t2a" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="dm" data-tire="t2a" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="H" data-tire="t2a" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="D" data-tire="t2a" inputmode="decimal"></td>
+                </tr>
+                <tr class="row-new" data-tire="t2b">
+                  <td class="marking">215/55 R16</td>
+                  <td class="has-input"><input class="calc-cell" data-cell="B" data-tire="t2b" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="p" data-tire="t2b" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="di" data-tire="t2b" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="dm" data-tire="t2b" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="H" data-tire="t2b" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="D" data-tire="t2b" inputmode="decimal"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="calc-row-feedback" id="calc-fb-t2a"></div>
+          <div class="calc-row-feedback" id="calc-fb-t2b"></div>
+          <div class="calc-table-caption">Заполни обе строки слева направо. Только когда таблица собрана — переходим к разности диаметров и радиусов.</div>
+
+          <div class="substep-hint auto-learn" style="margin-top: 10px;">
+            <b>Подсказки:</b> 185/65 R16 → d_мм = 16·25,4 = 406,4; H = 185·65/100 = 120,25; D = 2·120,25 + 406,4 = <b>646,9</b>. &nbsp;·&nbsp; 215/55 R16 → d_мм = 406,4; H = 215·55/100 = 118,25; D = 2·118,25 + 406,4 = <b>642,9</b>.
+          </div>
+
+          <div class="substep locked" id="t2-d-diff" style="margin-top: 18px;">
+            <div class="substep-label"><span class="step-icon">1</span>Разность диаметров</div>
+            <div class="substep-q">D<sub>1</sub> − D<sub>2</sub> = <span class="math">646,9 − 642,9</span> = ?</div>
+            <div class="substep-input-row">
+              <input type="text" class="substep-input" data-step="t2-d-diff" inputmode="decimal">
+              <span class="substep-unit">мм</span>
+              <button class="substep-check-btn" data-check="t2-d-diff">Проверить</button>
+            </div>
+            <div class="substep-feedback"></div>
+            <button class="substep-hint-btn auto-learn-hint-btn">показать подсказку</button>
+            <div class="substep-hint auto-learn">646,9 − 642,9 = <b>4 мм</b>. Это разница ДИАМЕТРОВ. Но в задаче спросили про радиусы — будет ещё один шаг.</div>
+          </div>
+
+          <div class="substep locked" id="t2-op">
+            <div class="substep-label"><span class="step-icon">2</span>Что делать дальше?</div>
+            <div class="substep-q">Мы нашли разницу <b>диаметров</b> — 4 мм. А в задаче спрашивают про <b>радиусы</b>. Что нужно сделать?</div>
+            <div class="quiz-options" style="margin-top: 8px;" data-singlechoice="t2-op">
+              <button class="quiz-opt" data-correct="false" data-err="Наоборот: радиус МЕНЬШЕ диаметра вдвое. Если умножить на 2, получится ещё больше, чем диаметр.">умножить на 2</button>
+              <button class="quiz-opt" data-correct="true">разделить на 2</button>
+              <button class="quiz-opt" data-correct="false" data-err="Разница радиусов — это не то же самое, что разница диаметров. Радиус = половина диаметра, и разница тоже сокращается вдвое.">ничего не делать, ответ — 4</button>
+              <button class="quiz-opt" data-correct="false" data-err="Вычитать 100 — это шаг для процентов. А тут — простая геометрия: R = D / 2.">вычесть 100</button>
+            </div>
+            <div class="substep-feedback"></div>
+            <button class="substep-hint-btn auto-learn-hint-btn">показать подсказку</button>
+            <div class="substep-hint auto-learn">Радиус — это <b>половина</b> диаметра (R = D / 2). Если диаметры отличаются на 4 мм, то радиусы отличаются ровно в 2 раза меньше: 4 : 2 = 2 мм.</div>
+          </div>
+
+          <div class="substep locked" id="t2-r-diff">
+            <div class="substep-label"><span class="step-icon">3</span>Разность радиусов</div>
+            <div class="substep-q">R<sub>1</sub> − R<sub>2</sub> = (D<sub>1</sub> − D<sub>2</sub>) / 2 = <span class="math">4 / 2</span> = ?</div>
+            <div class="substep-input-row">
+              <input type="text" class="substep-input" data-step="t2-r-diff" inputmode="decimal">
+              <span class="substep-unit">мм</span>
+              <button class="substep-check-btn" data-check="t2-r-diff">Проверить ответ</button>
+            </div>
+            <div class="substep-feedback"></div>
+            <button class="substep-hint-btn auto-learn-hint-btn">показать подсказку</button>
+            <div class="substep-hint auto-learn">4 : 2 = <b>2 мм</b>. Это окончательный ответ.</div>
+          </div>
+
+          <div class="teacher-block">
+            <div class="label">Решение задачи 2 — единый табличный метод</div>
+            <div class="step"><b>Шаг 1 — итоговая таблица параметров:</b></div>
+            <div class="step" style="font-family: Georgia, serif; padding-left: 18px;">185/65 R16 → B=185, p=65, d=16″, d_мм=406,4, H=120,25, <b>D₁ = 646,9 мм</b></div>
+            <div class="step" style="font-family: Georgia, serif; padding-left: 18px;">215/55 R16 → B=215, p=55, d=16″, d_мм=406,4, H=118,25, <b>D₂ = 642,9 мм</b></div>
+            <div class="step"><b>Шаг 2 — разность диаметров:</b> D<sub>1</sub> − D<sub>2</sub> = 646,9 − 642,9 = <b>4 мм</b></div>
+            <div class="step"><b>Шаг 3 — переход к радиусам:</b> R = D / 2, поэтому R<sub>1</sub> − R<sub>2</sub> = (D<sub>1</sub> − D<sub>2</sub>) / 2 = 4 / 2 = <b>2 мм</b></div>
+            <span class="answer-display">Ответ: 2</span>
+            <div class="note"><b>Методический комментарий:</b> один алгоритм на все задачи на шины — маркировка → таблица параметров → диаметр → дальше (разность, радиус, проценты). Отдельная формула радиуса R = H + d_мм/2 верна математически, но запоминать её незачем: достаточно знать D = 2H + d_мм и R = D/2.<br><br><b>Главная ошибка:</b> ученик находит разницу диаметров 4 и сразу пишет ответ 4. Нужно помнить, что радиус — это половина диаметра, поэтому ответ — 2 мм.</div>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" data-goto="2">← Назад</button>
+            <button class="nav-btn next" data-goto="4">Дальше: диаметр колеса →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========== STEP 5 — TASK 3 (DIAMETER) =========== -->
+      <section class="step-section" id="section-4">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-tag blue">Задача 3</span>
+            <h2>Диаметр <em>заводского колеса</em></h2>
+          </div>
+          <p class="card-intro"><b>Найдите диаметр колеса автомобиля, выходящего с завода.</b> Заводская маркировка — <b>195/60 R16</b>. Ответ — в миллиметрах.</p>
+
+          <div style="background: var(--bg-soft); padding: 14px 16px; border-radius: 10px; margin-bottom: 12px; font-family: Georgia, serif; font-size: 15px; color: var(--accent);">
+            <b>D = 2H + d<sub style="font-size:.7em">мм</sub></b> &nbsp;·&nbsp; H = B · p / 100 &nbsp;·&nbsp; d<sub style="font-size:.7em">мм</sub> = d · 25,4
+          </div>
+
+          <div class="substep active-step" id="t3-s1">
+            <div class="substep-label"><span class="step-icon">1</span>Параметры из маркировки</div>
+            <div class="substep-q">B = <span class="math">?</span> мм</div>
+            <div class="substep-input-row">
+              <input type="text" class="substep-input" data-step="t3-s1">
+              <span class="substep-unit">мм</span>
+              <button class="substep-check-btn" data-check="t3-s1">Проверить</button>
+            </div>
+            <div class="substep-feedback"></div>
+          </div>
+
+          <div class="substep locked" id="t3-s2">
+            <div class="substep-label"><span class="step-icon">2</span>Высота боковины H</div>
+            <div class="substep-q">H = B · p / 100 = <span class="math">195 · 60 / 100</span> = ?</div>
+            <div class="substep-input-row">
+              <input type="text" class="substep-input" data-step="t3-s2">
+              <span class="substep-unit">мм</span>
+              <button class="substep-check-btn" data-check="t3-s2">Проверить</button>
+            </div>
+            <div class="substep-feedback"></div>
+            <button class="substep-hint-btn auto-learn-hint-btn">показать подсказку</button>
+            <div class="substep-hint auto-learn">195 · 60 = 11700, делим на 100 → <b>117 мм</b>.</div>
+          </div>
+
+          <div class="substep locked" id="t3-s3">
+            <div class="substep-label"><span class="step-icon">3</span>Диск в миллиметрах</div>
+            <div class="substep-q">d<sub>мм</sub> = d · 25,4 = <span class="math">16 · 25,4</span> = ?</div>
+            <div class="substep-input-row">
+              <input type="text" class="substep-input" data-step="t3-s3">
+              <span class="substep-unit">мм</span>
+              <button class="substep-check-btn" data-check="t3-s3">Проверить</button>
+            </div>
+            <div class="substep-feedback"></div>
+            <button class="substep-hint-btn auto-learn-hint-btn">показать подсказку</button>
+            <div class="substep-hint auto-learn">16 · 25,4 = <b>406,4 мм</b>.</div>
+          </div>
+
+          <div class="substep locked" id="t3-s4">
+            <div class="substep-label"><span class="step-icon">4</span>Диаметр колеса</div>
+            <div class="substep-q">D = 2H + d<sub>мм</sub> = <span class="math">2 · 117 + 406,4</span> = ?</div>
+            <div class="substep-input-row">
+              <input type="text" class="substep-input" data-step="t3-s4">
+              <span class="substep-unit">мм</span>
+              <button class="substep-check-btn" data-check="t3-s4">Проверить ответ</button>
+            </div>
+            <div class="substep-feedback"></div>
+            <button class="substep-hint-btn auto-learn-hint-btn">показать подсказку</button>
+            <div class="substep-hint auto-learn">2 · 117 = 234, потом 234 + 406,4 = <b>640,4 мм</b>.</div>
+          </div>
+
+          <div class="teacher-block">
+            <div class="label">Решение задачи 3</div>
+            <div class="step">B = 195 мм, p = 60, d = 16 дюймов</div>
+            <div class="step">H = 195 · 0,6 = <b>117 мм</b></div>
+            <div class="step">d<sub>мм</sub> = 16 · 25,4 = <b>406,4 мм</b></div>
+            <div class="step">D = 2 · 117 + 406,4 = 234 + 406,4 = <b>640,4 мм</b></div>
+            <span class="answer-display">Ответ: 640,4</span>
+            <div class="note"><b>Запомни:</b> D — это полный диаметр колеса. В нём <em>две</em> боковины (сверху и снизу), поэтому именно <b>2H</b>, а не H.</div>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" data-goto="3">← Назад</button>
+            <button class="nav-btn next" data-goto="5">Дальше: замена шин →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========== STEP 6 — TASK 4 (DIAMETER CHANGE) =========== -->
+      <section class="step-section" id="section-5">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-tag blue">Задача 4</span>
+            <h2>Замена шин: <em>изменение диаметра</em></h2>
+          </div>
+          <p class="card-intro"><b>На сколько миллиметров уменьшится диаметр колеса, если заменить заводские шины (195/60 R16) шинами 205/50 R17?</b></p>
+
+          <div style="background: var(--bg-soft); padding: 14px 16px; border-radius: 10px; margin-bottom: 12px; font-family: Georgia, serif; font-size: 15px; color: var(--accent);">
+            <b>Алгоритм:</b> сначала заполняем итоговую таблицу для обеих шин — слева направо, по столбцам. Только после этого считаем разность диаметров.
+          </div>
+
+          <div class="calc-table-wrap">
+            <table class="calc-table" data-calc-id="t4" data-unlock-after="t4-direction">
+              <thead>
+                <tr>
+                  <th>Маркировка</th>
+                  <th>B, мм</th>
+                  <th>p, %</th>
+                  <th>d, дюйм</th>
+                  <th>d, мм<span class="formula-mini">d · 25,4</span></th>
+                  <th>H, мм<span class="formula-mini">B · p / 100</span></th>
+                  <th>D, мм<span class="formula-mini">2H + d_мм</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row-old" data-tire="factory">
+                  <td class="marking">195/60 R16</td>
+                  <td class="given">195</td>
+                  <td class="given">60</td>
+                  <td class="given">16</td>
+                  <td class="given">406,4</td>
+                  <td class="given">117</td>
+                  <td class="given"><b>640,4</b></td>
+                </tr>
+                <tr class="row-new" data-tire="t4new">
+                  <td class="marking">205/50 R17</td>
+                  <td class="has-input"><input class="calc-cell" data-cell="B" data-tire="t4new" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="p" data-tire="t4new" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="di" data-tire="t4new" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="dm" data-tire="t4new" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="H" data-tire="t4new" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="D" data-tire="t4new" inputmode="decimal"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="calc-row-feedback" id="calc-fb-t4new"></div>
+          <div class="calc-table-caption">Сверху — заводское колесо (его параметры уже посчитаны на шаге 2). Снизу — новое: заполни строку <b>слева направо</b>.</div>
+
+          <div class="substep-hint auto-learn" style="margin-top: 10px;">
+            <b>Подсказка для строки 205/50 R17:</b> B=205, p=50, d=17″. d_мм = 17·25,4 = 431,8. H = 205·50/100 = 102,5. D = 2·102,5 + 431,8 = 636,8.
+          </div>
+
+          <div class="substep locked" id="t4-direction" style="margin-top: 18px;">
+            <div class="substep-label"><span class="step-icon">?</span>Что произошло с диаметром?</div>
+            <div class="substep-q">По таблице: D₁ = 640,4 мм, D₂ = 636,8 мм. Диаметр <b>увеличился или уменьшился</b>?</div>
+            <div class="quiz-options" style="margin-top: 8px;" data-singlechoice="t4-direction">
+              <button class="quiz-opt" data-correct="false" data-err="Сравни: 640,4 &gt; 636,8. Новое колесо МЕНЬШЕ, значит диаметр уменьшился.">увеличился</button>
+              <button class="quiz-opt" data-correct="true">уменьшился</button>
+            </div>
+            <div class="substep-feedback"></div>
+          </div>
+
+          <div class="substep locked" id="t4-diff">
+            <div class="substep-label"><span class="step-icon">=</span>На сколько уменьшится?</div>
+            <div class="substep-q">|D₁ − D₂| = <span class="math">640,4 − 636,8</span> = ?</div>
+            <div class="substep-input-row">
+              <input type="text" class="substep-input" data-step="t4-diff" inputmode="decimal">
+              <span class="substep-unit">мм</span>
+              <button class="substep-check-btn" data-check="t4-diff">Проверить ответ</button>
+            </div>
+            <div class="substep-feedback"></div>
+            <button class="substep-hint-btn auto-learn-hint-btn">показать подсказку</button>
+            <div class="substep-hint auto-learn">640,4 − 636,8 = <b>3,6 мм</b>. В ответе пишем положительное число (модуль).</div>
+          </div>
+
+          <div class="teacher-block">
+            <div class="label">Решение задачи 4</div>
+            <div class="step"><b>Шаг 1 — итоговая таблица параметров:</b></div>
+            <div class="step" style="font-family: Georgia, serif; padding-left: 18px;">195/60 R16 → B=195, p=60, d=16″, d_мм=406,4, H=117, <b>D₁ = 640,4 мм</b></div>
+            <div class="step" style="font-family: Georgia, serif; padding-left: 18px;">205/50 R17 → B=205, p=50, d=17″, d_мм=431,8, H=102,5, <b>D₂ = 636,8 мм</b></div>
+            <div class="step"><b>Шаг 2 — сравнение:</b> 640,4 &gt; 636,8 → диаметр уменьшился</div>
+            <div class="step"><b>Шаг 3 — разность:</b> |D₁ − D₂| = 640,4 − 636,8 = <b>3,6 мм</b></div>
+            <span class="answer-display">Ответ: 3,6</span>
+            <div class="note"><b>Методический комментарий:</b> сначала систематически заполняем таблицу для <b>обеих</b> шин — это страхует от путаницы «какой H для какой шины». Только после того, как таблица собрана, делаем сравнение и считаем разность. Типичные ошибки: (1) считать сразу разность, не строя таблицу; (2) забыли модуль и написали −3,6; (3) перепутали столбцы.</div>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" data-goto="4">← Назад</button>
+            <button class="nav-btn next" data-goto="6">Дальше: пробег за оборот →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========== STEP 7 — TASK 5 (PERCENT, ANIMATION) =========== -->
+      <section class="step-section" id="section-6">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-tag blue">Задача 5</span>
+            <h2>Пробег за оборот <em>и проценты</em></h2>
+          </div>
+          <p class="card-intro"><b>На сколько процентов увеличится пробег автомобиля при одном обороте колеса, если заменить заводские шины (195/60 R16) шинами 215/45 R18?</b> Результат округли до десятых.</p>
+
+          <!-- ANIMATION BLOCK -->
+          <div class="anim-block">
+            <div style="font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 10px; font-weight: 600;">наглядно: пробег = длина окружности = π · D</div>
+            <div class="anim-controls">
+              <button class="anim-btn" id="btn-roll-cmp">▶ Прокатить оба колеса</button>
+              <button class="anim-btn ghost" id="btn-roll-reset">↻ Сбросить</button>
+            </div>
+            <div class="anim-svg-wrap">
+              <svg class="anim-svg" id="anim-svg" viewBox="0 0 760 360" preserveAspectRatio="xMidYMid meet"></svg>
+            </div>
+            <div class="anim-result" id="anim-result"></div>
+          </div>
+
+          <!-- MINI QUIZ AFTER ANIMATION -->
+          <div class="substep" id="t5-mq" style="border-left-color: var(--accent); margin-top: 16px;">
+            <div class="substep-label" style="color: var(--accent);"><span class="step-icon" style="background: var(--accent); color: white; border-color: var(--accent);">?</span>Главное наблюдение</div>
+            <div class="substep-q">Почему в задаче 5 можно <b>сравнивать диаметры</b>, а не считать длины окружностей полностью?</div>
+            <div class="quiz-options" style="margin-top: 8px;" data-singlechoice="t5-mq">
+              <button class="quiz-opt" data-correct="true">потому что π в обоих случаях одинаковое и сокращается</button>
+              <button class="quiz-opt" data-correct="false" data-err="Длина окружности как раз и связана с диаметром: C = πD. Без диаметра не обойтись.">потому что длина окружности не связана с диаметром</button>
+              <button class="quiz-opt" data-correct="false" data-err="Профиль (процент) важен — но не «важнее». Он входит в расчёт диаметра.">потому что профиль шины важнее диаметра</button>
+            </div>
+            <div class="substep-feedback"></div>
+          </div>
+
+          <!-- CALC TABLE: factory + new -->
+          <div class="card-header" style="margin-top: 22px; margin-bottom: 8px;">
+            <span class="card-tag">Шаг A · параметры</span>
+          </div>
+          <p style="color: var(--ink-soft); font-size: 14px; margin-bottom: 6px;">Сначала — таблица параметров для обеих шин. Старая строка уже заполнена; заполни новую (215/45 R18) <b>слева направо</b>.</p>
+
+          <div class="calc-table-wrap">
+            <table class="calc-table" data-calc-id="t5" data-unlock-after="t5-prop">
+              <thead>
+                <tr>
+                  <th>Маркировка</th>
+                  <th>B, мм</th>
+                  <th>p, %</th>
+                  <th>d, дюйм</th>
+                  <th>d, мм<span class="formula-mini">d · 25,4</span></th>
+                  <th>H, мм<span class="formula-mini">B · p / 100</span></th>
+                  <th>D, мм<span class="formula-mini">2H + d_мм</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row-old" data-tire="factory">
+                  <td class="marking">195/60 R16</td>
+                  <td class="given">195</td>
+                  <td class="given">60</td>
+                  <td class="given">16</td>
+                  <td class="given">406,4</td>
+                  <td class="given">117</td>
+                  <td class="given"><b>640,4</b></td>
+                </tr>
+                <tr class="row-new" data-tire="t5new">
+                  <td class="marking">215/45 R18</td>
+                  <td class="has-input"><input class="calc-cell" data-cell="B" data-tire="t5new" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="p" data-tire="t5new" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="di" data-tire="t5new" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="dm" data-tire="t5new" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="H" data-tire="t5new" inputmode="decimal"></td>
+                  <td class="has-input"><input class="calc-cell" data-cell="D" data-tire="t5new" inputmode="decimal"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="calc-row-feedback" id="calc-fb-t5new"></div>
+          <div class="calc-table-caption">Параметры строки 215/45 R18: B=215, p=45, d=18″, d_мм=18·25,4, H=215·45/100, D=2H+d_мм.</div>
+
+          <div class="substep-hint auto-learn" style="margin-top: 10px;">
+            <b>Подсказка для строки 215/45 R18:</b> d_мм = 18·25,4 = 457,2. H = 215·45/100 = 96,75. D = 2·96,75 + 457,2 = 193,5 + 457,2 = 650,7.
+          </div>
+
+          <!-- 2x2 PROPORTION TABLE -->
+          <div class="card-header" style="margin-top: 22px; margin-bottom: 8px;">
+            <span class="card-tag green">Шаг Б · проценты (таблица 2×2)</span>
+          </div>
+          <p style="color: var(--ink-soft); font-size: 14px; margin-bottom: 12px;">Из таблицы параметров берём <b>D₁ = 640,4</b> (старое) и <b>D₂ = 650,7</b> (новое). За <b>100%</b> принимаем то, с чем сравниваем — <b>старое</b> заводское колесо.</p>
+
+          <div class="substep locked" id="t5-prop">
+            <table class="prop-table">
+              <thead>
+                <tr><th>что сравниваем?</th><th>натуральная величина</th><th>процент</th></tr>
+              </thead>
+              <tbody>
+                <tr class="compare"><td>новое колесо (D₂)</td><td>650,7 мм</td><td>x %</td></tr>
+                <tr class="base"><td>старое колесо (D₁)</td><td>640,4 мм</td><td>100 %</td></tr>
+              </tbody>
+            </table>
+
+            <div class="prop-result">
+              D₁ &middot; x = D₂ &middot; 100 &nbsp;⇒&nbsp; <b>x = D₂ &middot; 100 / D₁</b>
+              <small>пропорция «крест-накрест»</small>
+            </div>
+
+            <div class="substep-q" style="margin-top: 14px;">Найди x = <span class="math">650,7 · 100 / 640,4</span> = ?  (округли до десятых)</div>
+            <div class="substep-input-row">
+              <input type="text" class="substep-input" data-step="t5-prop" style="width: 160px;" inputmode="decimal">
+              <span class="substep-unit">%</span>
+              <button class="substep-check-btn" data-check="t5-prop">Проверить</button>
+            </div>
+            <div class="substep-feedback"></div>
+            <button class="substep-hint-btn auto-learn-hint-btn">показать подсказку</button>
+            <div class="substep-hint auto-learn">650,7 · 100 = 65070; 65070 / 640,4 ≈ <b>101,6</b>. Это процент НОВОГО относительно старого.</div>
+          </div>
+
+          <div class="substep locked" id="t5-final">
+            <div class="substep-label"><span class="step-icon">=</span>Это процент или «на сколько»?</div>
+            <div class="substep-q">x = 101,6% — это <b>вся величина</b> нового относительно старого. А «<em>на сколько</em> процентов увеличится» = ?</div>
+            <div class="substep-input-row">
+              <input type="text" class="substep-input" data-step="t5-final" inputmode="decimal">
+              <span class="substep-unit">%  (ответ)</span>
+              <button class="substep-check-btn" data-check="t5-final">Проверить ответ</button>
+            </div>
+            <div class="substep-feedback"></div>
+            <button class="substep-hint-btn auto-learn-hint-btn">показать подсказку</button>
+            <div class="substep-hint auto-learn"><b>101,6 − 100 = 1,6 %.</b> «101,6%» — это размер нового пробега относительно старого; вопрос — на сколько процентов <b>увеличилось</b>, поэтому вычитаем 100%.</div>
+          </div>
+
+          <div class="teacher-block">
+            <div class="label">Решение задачи 5</div>
+            <div class="step"><b>Шаг A — таблица параметров:</b></div>
+            <div class="step" style="font-family: Georgia, serif; padding-left: 18px;">195/60 R16 → B=195, p=60, d=16″, d_мм=406,4, H=117, <b>D₁ = 640,4 мм</b></div>
+            <div class="step" style="font-family: Georgia, serif; padding-left: 18px;">215/45 R18 → B=215, p=45, d=18″, d_мм=457,2, H=96,75, <b>D₂ = 650,7 мм</b></div>
+            <div class="step"><b>Шаг Б — почему π сокращается:</b> один оборот = длина окружности C = π·D. Отношение пробегов: C₂/C₁ = π·D₂/π·D₁ = <b>D₂/D₁</b>.</div>
+            <div class="step"><b>Шаг В — пропорция:</b> новое — x %, старое — 100 %. Из таблицы 2×2: x = D₂·100/D₁ = 650,7·100/640,4 ≈ <b>101,6 %</b>.</div>
+            <div class="step"><b>Шаг Г — финал:</b> 101,6 % — это размер нового относительно старого. «На сколько увеличится» = 101,6 − 100 = <b>1,6 %</b>.</div>
+            <span class="answer-display">Ответ: 1,6</span>
+            <div class="note"><b>Методический комментарий:</b> ученики часто пишут в ответе 101,6 — это значит, что они не различают «процент от» и «на сколько процентов». Финальный шаг с вычитанием 100 — обязательный. Также частая ошибка — считать длины окружностей в полном виде с π, не заметив, что π сокращается. Анимация и mini-quiz нужны именно для этого вывода.</div>
+          </div>
+
+          <div class="nav-row">
+            <button class="nav-btn" data-goto="5">← Назад</button>
+            <button class="nav-btn next" id="finish-btn">Все задачи пройдены ✓</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+      <div class="side-card">
+        <h3>Главные формулы</h3>
+        <div class="formula gold">
+          H = B · p / 100
+          <small>высота боковины из процента</small>
+        </div>
+        <div class="formula">
+          D = 2H + d<sub style="font-size:.7em">мм</sub>
+          <small>диаметр всего колеса</small>
+        </div>
+        <div class="formula green">
+          d<sub style="font-size:.7em">мм</sub> = d · 25,4
+          <small>дюймы → мм</small>
+        </div>
+        <div class="formula" style="background: var(--ink);">
+          R = D / 2
+          <small>радиус — половина диаметра</small>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <h3>Пробег за оборот</h3>
+        <div class="formula" style="background: var(--accent-deep);">
+          C = π · D
+          <small>длина окружности = пробег за 1 оборот</small>
+        </div>
+        <p style="font-size: 12.5px; color: var(--ink-soft); margin-top: 10px;">
+          При сравнении двух колёс <b>π сокращается</b> — поэтому работаем только с диаметрами.
+        </p>
+      </div>
+
+      <div class="side-card">
+        <h3>Прогресс</h3>
+        <div class="stats">
+          <div class="stat"><div class="val" id="stat-solved">0</div><div class="lbl">из&nbsp;7&nbsp;шагов</div></div>
+          <div class="stat"><div class="val" id="stat-streak">0</div><div class="lbl">подряд</div></div>
+        </div>
+        <button class="reset-btn" id="reset-btn">Сбросить прогресс</button>
+      </div>
+
+      <div class="side-card">
+        <h3>Режимы</h3>
+        <div class="mode-help">
+          <b>Обучение.</b> Подсказки открыты под каждым шагом.<br>
+          <b>Тренировка.</b> Подсказки скрыты, шаги открываются по очереди.<br>
+          <b>Учитель.</b> Сразу видно полное решение и ответ.
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<script>
+'use strict';
+
+// ============================================================
+// CONSTANTS
+// ============================================================
+const STORAGE_KEY = 'mathExamCourseProgress.v1';
+const TOPIC = 'practiceTiresTrainer';
+const TOTAL_STEPS = 7;
+
+// Factory tire and reference values (from PDF)
+const FACTORY = { B: 195, p: 60, d_in: 16 };
+const D_FACTORY = 2 * FACTORY.B * FACTORY.p / 100 + FACTORY.d_in * 25.4; // 640.4 mm
+
+// ============================================================
+// STATE
+// ============================================================
+let state = {
+  currentStep: 0,
+  mode: 'learn',
+  solvedSteps: [false, false, false, false, false, false, false],
+  streak: 0,
+};
+
+function loadProgress() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e) { return {}; } }
+function saveProgress() {
+  try {
+    const data = loadProgress();
+    data[TOPIC] = {
+      solvedSteps: state.solvedSteps,
+      streak: state.streak,
+      currentStep: state.currentStep,
+      total: TOTAL_STEPS
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch(e) {}
+}
+function clearProgress() {
+  try {
+    const data = loadProgress();
+    delete data[TOPIC];
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  } catch(e) {}
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function parseNum(raw) {
+  if (raw == null) return null;
+  const s = String(raw).trim().replace(/\s+/g, '').replace(',', '.');
+  if (!s) return null;
+  const v = parseFloat(s);
+  return isNaN(v) ? null : v;
+}
+function approxEq(a, b, tol) {
+  return Math.abs(a - b) <= (tol == null ? 0.05 : tol);
+}
+function showFb(el, type, html) {
+  if (!el) return;
+  el.className = 'substep-feedback ' + type + ' show';
+  el.innerHTML = html;
+}
+function hideFb(el) { if (el) el.className = 'substep-feedback'; }
+function showQuizFb(el, type, html) {
+  if (!el) return;
+  el.className = 'quiz-feedback ' + type + ' show';
+  el.innerHTML = html;
+}
+
+function markSubstepDone(substepEl) {
+  substepEl.classList.remove('active-step');
+  substepEl.classList.add('done');
+  const inp = substepEl.querySelector('.substep-input');
+  if (inp) inp.disabled = true;
+  const btn = substepEl.querySelector('.substep-check-btn');
+  if (btn) { btn.disabled = true; btn.textContent = '✓ принято'; }
+}
+function unlockNextSubstep(currentSubstepEl) {
+  let next = currentSubstepEl.nextElementSibling;
+  while (next && !next.classList.contains('substep')) next = next.nextElementSibling;
+  if (next) {
+    next.classList.remove('locked');
+    next.classList.add('active-step');
+    const inp = next.querySelector('.substep-input');
+    if (inp) setTimeout(() => inp.focus(), 80);
+  }
+}
+
+// ============================================================
+// MARK STEP COMPLETE
+// ============================================================
+function markStepDone(stepIdx) {
+  if (!state.solvedSteps[stepIdx]) {
+    state.solvedSteps[stepIdx] = true;
+    state.streak++;
+  }
+  document.querySelectorAll('#step-stepper .step-btn').forEach((b, i) => {
+    if (state.solvedSteps[i]) b.classList.add('done');
+  });
+  updateStats();
+  saveProgress();
+}
+
+function updateStats() {
+  const cnt = state.solvedSteps.filter(Boolean).length;
+  document.getElementById('stat-solved').textContent = cnt;
+  document.getElementById('stat-streak').textContent = state.streak;
+}
+
+// ============================================================
+// STEP 1 — MARKING QUIZ
+// ============================================================
+const QUIZ_ORDER = ['B', 'p', 'd', 'R'];
+let quizProgress = { B: false, p: false, d: false, R: false };
+
+function setupMarkingQuiz() {
+  document.querySelectorAll('.quiz-options[data-quiz] .quiz-opt').forEach(btn => {
+    btn.addEventListener('click', () => handleQuizClick(btn));
+  });
+
+  // also single-choice quizzes inside other steps
+  document.querySelectorAll('.quiz-options[data-singlechoice]').forEach(group => {
+    group.querySelectorAll('.quiz-opt').forEach(btn => {
+      btn.addEventListener('click', () => handleSingleChoice(group, btn));
+    });
+  });
+}
+
+function handleQuizClick(btn) {
+  const group = btn.parentElement;
+  const key = group.dataset.quiz;
+  const fb = document.getElementById('fb-' + key);
+  const isCorrect = btn.dataset.correct === 'true';
+
+  if (isCorrect) {
+    group.querySelectorAll('.quiz-opt').forEach(b => { b.disabled = true; if (b !== btn) b.classList.add('disabled'); });
+    btn.classList.add('correct');
+    const block = document.getElementById('quiz-' + key);
+    block.classList.add('done');
+    showQuizFb(fb, 'correct', '<b>Верно!</b> Идём дальше.');
+    quizProgress[key] = true;
+    // unlock next
+    const idx = QUIZ_ORDER.indexOf(key);
+    if (idx >= 0 && idx + 1 < QUIZ_ORDER.length) {
+      const nextKey = QUIZ_ORDER[idx + 1];
+      const nextBlock = document.getElementById('quiz-' + nextKey);
+      if (nextBlock) nextBlock.classList.remove('locked');
+    }
+    // if all done, mark step
+    if (QUIZ_ORDER.every(k => quizProgress[k])) {
+      markStepDone(0);
+    }
+  } else {
+    btn.classList.add('wrong');
+    btn.disabled = true;
+    showQuizFb(fb, 'warn', btn.dataset.err || 'Не совсем. Попробуй ещё раз.');
+    state.streak = 0; updateStats(); saveProgress();
+  }
+}
+
+function handleSingleChoice(group, btn) {
+  const stepId = group.dataset.singlechoice;
+  const isCorrect = btn.dataset.correct === 'true';
+  // find feedback within the closest substep
+  const substep = group.closest('.substep');
+  const fb = substep ? substep.querySelector('.substep-feedback') : null;
+
+  if (isCorrect) {
+    group.querySelectorAll('.quiz-opt').forEach(b => b.disabled = true);
+    btn.classList.add('correct');
+    if (substep) {
+      markSubstepDone(substep);
+      // t5-mq leads to the calc-table, not the next substep — don't auto-chain
+      if (substep.id !== 't5-mq') {
+        unlockNextSubstep(substep);
+      }
+    }
+    showFb(fb, 'correct', stepId === 't5-mq'
+      ? '<b>Верно!</b> π действительно сокращается. Теперь заполни таблицу параметров ниже.'
+      : '<b>Верно!</b>');
+    handleStepProgress(stepId);
+  } else {
+    btn.classList.add('wrong');
+    btn.disabled = true;
+    showFb(fb, 'warn', btn.dataset.err || 'Не совсем. Подумай ещё.');
+    state.streak = 0; updateStats(); saveProgress();
+  }
+}
+
+// ============================================================
+// STEP 2 — PARAMS TABLE
+// ============================================================
+const PARAMS_CONFIG = {
+  B:  { correct: 195,   errors: { 60: '60 — это процент, не ширина. Ширина — первое число в маркировке.', 16: '16 — это диаметр диска в дюймах. Ширина — первое число.', 117: 'Это высота боковины H, не ширина. Ширина — первое число.' }, fallback: 'B — это просто первое число маркировки. Введи 195.' },
+  p:  { correct: 60,    errors: { 195: '195 — это ширина в мм. Процент — второе число.', 16: '16 — это диаметр диска. Процент — второе число (между / и R).', 117: 'Это уже расчётная высота H. А в столбце p — просто число процента, 60.' }, fallback: 'p — второе число в маркировке. Введи 60 (без знака %).' },
+  di: { correct: 16,    errors: { 60: 'Это процент, а не диск. Диск — число после R.', 195: '195 — это ширина. Диск — число после R (16).', 406.4: 'Это уже диск в мм. А в этом столбце — в дюймах: 16.' }, fallback: 'Диск в дюймах — это число сразу после R. Введи 16.' },
+  dm: { correct: 406.4, tol: 0.1, errors: { 16: '16 — это в дюймах. Переведи в мм: 16 · 25,4 = ?', 25.4: 'Это просто коэффициент. Нужно 16 · 25,4.', 32: 'Это 16 · 2. Но 1 дюйм = 25,4 мм, а не 2.', 8: 'Это половина 16. Формула: d · 25,4.' }, fallback: '1 дюйм = 25,4 мм. d_мм = 16 · 25,4 = ?' },
+  H:  { correct: 117,   tol: 0.1, errors: { 60: '60 — это процент, а не миллиметры! Высота боковины H = B · p / 100 = 195 · 60 / 100.', 11700: 'Ты умножил 195 · 60, но забыл разделить на 100. Делим: 11700 / 100 = ?', 156: 'Это 195 − 39 или что-то ещё. Правильно: 195 · 60 / 100.', 32.5: 'Это p / 100 · что-то. Точная формула: H = B · p / 100 = 195 · 0,6.', 58.5: 'Это половина от ответа. Без деления на 2!' }, fallback: 'H = B · p / 100 = 195 · 60 / 100. Считай аккуратно.' },
+  D:  { correct: 640.4, tol: 0.1, errors: { 523.4: 'Ты сложил H + d_мм, но в полном диаметре ДВЕ боковины! Формула: D = 2H + d_мм.', 117: 'Это только высота боковины H. А диаметр — D = 2H + d_мм.', 234: 'Это только 2H. Не хватает диска. D = 2H + d_мм = 234 + 406,4.', 406.4: 'Это только диаметр диска (без шины). Нужно ещё прибавить 2H.', 320.2: 'Это половина диаметра, то есть радиус. А в задаче — полный диаметр.' }, fallback: 'D = 2H + d_мм = 2 · 117 + 406,4 = ?' }
+};
+
+function setupParamsTable() {
+  document.querySelectorAll('.cell-input[data-key]').forEach(inp => {
+    inp.addEventListener('blur', () => checkParamCell(inp));
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); checkParamCell(inp); focusNextParam(inp); } });
+  });
+}
+function focusNextParam(inp) {
+  const inputs = Array.from(document.querySelectorAll('.cell-input[data-key]'));
+  const idx = inputs.indexOf(inp);
+  if (idx >= 0 && idx + 1 < inputs.length) inputs[idx + 1].focus();
+}
+function checkParamCell(inp) {
+  const key = inp.dataset.key;
+  const cfg = PARAMS_CONFIG[key];
+  if (!cfg) return;
+  const val = parseNum(inp.value);
+  const fb = document.getElementById('params-feedback');
+  if (val == null) {
+    inp.classList.remove('correct'); inp.classList.add('wrong');
+    showFb(fb, 'warn', '<b>' + key.toUpperCase() + ':</b> введи число.');
+    return;
+  }
+  if (approxEq(val, cfg.correct, cfg.tol)) {
+    inp.classList.remove('wrong'); inp.classList.add('correct');
+    inp.disabled = true;
+    // check if all done
+    const allOk = Object.keys(PARAMS_CONFIG).every(k => {
+      const el = document.querySelector('.cell-input[data-key="' + k + '"]');
+      return el && el.classList.contains('correct');
+    });
+    if (allOk) {
+      showFb(fb, 'correct', '<b>Отлично!</b> Все параметры посчитаны верно. D = <b>640,4 мм</b> — это диаметр заводского колеса.');
+      markStepDone(1);
+    } else {
+      hideFb(fb);
+    }
+  } else {
+    inp.classList.remove('correct'); inp.classList.add('wrong');
+    let msg = cfg.fallback || 'Не совсем. Проверь расчёт.';
+    if (cfg.errors) {
+      for (const [w, m] of Object.entries(cfg.errors)) {
+        if (approxEq(val, parseFloat(w), 0.1)) { msg = m; break; }
+      }
+    }
+    showFb(fb, 'warn', '<b>Колонка ' + labelOf(key) + ':</b> ' + msg);
+    state.streak = 0; updateStats(); saveProgress();
+  }
+}
+function labelOf(key) {
+  return { B:'B', p:'p', di:'d, дюйм', dm:'d, мм', H:'H', D:'D' }[key] || key;
+}
+
+// ============================================================
+// CALC TABLES (steps 6, 7) — per-tire / per-cell validation
+// ============================================================
+const CALC_CONFIG = {
+  // ===== 185/65 R16 — task 2 tire A =====
+  't2a:B':  { correct: 185,   errors: { 65: '65 — процент. B — первое число маркировки 185/65 R16.', 16: 'Это диск. B — первое число.', 120.25: 'Это уже H. В столбце B — просто первое число маркировки.', 195: 'Это ширина другой шины (195/60). Здесь — 185.', 215: 'Это ширина второй шины задачи (215/55). Здесь — 185.' }, fallback: 'B — первое число маркировки 185/65 R16. Введи 185.' },
+  't2a:p':  { correct: 65,    errors: { 185: 'Это ширина. Процент — второе число.', 16: 'Это диск. Процент — второе число (между / и R).', 120.25: 'Это H. В столбце p — просто число процента.', 60: 'Это процент шины 195/60. Здесь — 65.', 55: 'Это процент второй шины (215/55). Здесь — 65.' }, fallback: 'p — второе число (без знака %). Введи 65.' },
+  't2a:di': { correct: 16,    errors: { 65: 'Это процент.', 185: 'Это ширина.', 406.4: 'Это диск в мм.', 17: 'Это диск из другой задачи. У 185/65 R16 диск 16″.' }, fallback: 'Диск в дюймах — число после R. Введи 16.' },
+  't2a:dm': { correct: 406.4, tol: 0.1, errors: { 16: 'Это в дюймах. Переведи в мм: 16 · 25,4.', 25.4: 'Это коэффициент.', 32: 'Это 16·2. Дюйм = 25,4 мм, а не 2.', 8: 'Это половина 16.', 431.8: 'Это диск R17 (другая задача).', 457.2: 'Это диск R18 (другая задача).' }, fallback: '16 · 25,4 = 406,4.' },
+  't2a:H':  { correct: 120.25, tol: 0.05, errors: { 65: 'Это процент, не мм. H = B · p / 100 = 185 · 65 / 100.', 12025: 'Не разделил на 100. 12025 / 100 = ?', 250: 'Это B + p (185 + 65). Правильно: B · p / 100.', 117: 'Это H заводской шины.', 118.25: 'Это H второй шины задачи (215/55). А здесь — 185·65/100.', 60.125: 'Это половина H. Без деления на 2!' }, fallback: 'H = 185 · 65 / 100 = 12025 / 100 = 120,25.' },
+  't2a:D':  { correct: 646.9, tol: 0.1, errors: { 526.65: 'Забыл умножить H на 2. D = 2H + d_мм.', 120.25: 'Это только H.', 406.4: 'Это только диск. Прибавь 2H.', 323.45: 'Это половина — радиус, а не диаметр.', 642.9: 'Это D второй шины (215/55 R16). Здесь — 185/65 R16.', 640.4: 'Это D заводской шины (195/60 R16). Здесь — 185/65 R16.', 185: 'Это ширина B. А D — полный диаметр колеса.' }, fallback: 'D = 2 · 120,25 + 406,4 = 240,5 + 406,4 = 646,9.' },
+
+  // ===== 215/55 R16 — task 2 tire B =====
+  't2b:B':  { correct: 215,   errors: { 55: '55 — процент. B — первое число маркировки 215/55 R16.', 16: 'Это диск.', 118.25: 'Это H. В столбце B — первое число.', 185: 'Это ширина первой шины (185/65). Здесь — 215.' }, fallback: 'B — первое число маркировки 215/55 R16. Введи 215.' },
+  't2b:p':  { correct: 55,    errors: { 215: 'Это ширина.', 16: 'Это диск.', 118.25: 'Это H. В столбце p — просто число процента.', 65: 'Это процент первой шины (185/65). Здесь — 55.', 60: 'Это процент заводской шины. Здесь — 55.' }, fallback: 'p — второе число (без знака %). Введи 55.' },
+  't2b:di': { correct: 16,    errors: { 55: 'Это процент.', 215: 'Это ширина.', 406.4: 'Это диск в мм.' }, fallback: 'Диск в дюймах — число после R. Введи 16.' },
+  't2b:dm': { correct: 406.4, tol: 0.1, errors: { 16: 'Это в дюймах. Умножь на 25,4.', 25.4: 'Это коэффициент.', 32: 'Это 16·2. Дюйм = 25,4 мм.', 8: 'Это половина 16.' }, fallback: '16 · 25,4 = 406,4.' },
+  't2b:H':  { correct: 118.25, tol: 0.05, errors: { 55: 'Это процент, не мм. H = 215 · 55 / 100.', 11825: 'Не разделил на 100.', 270: 'Это B + p (215 + 55). Правильно: B · p / 100.', 117: 'Это H заводской.', 120.25: 'Это H первой шины задачи (185/65). А здесь — 215·55/100.', 59.125: 'Это половина H. Без деления на 2!' }, fallback: 'H = 215 · 55 / 100 = 11825 / 100 = 118,25.' },
+  't2b:D':  { correct: 642.9, tol: 0.1, errors: { 524.65: 'Забыл умножить H на 2. D = 2H + d_мм.', 118.25: 'Это только H.', 406.4: 'Это только диск. Прибавь 2H.', 321.45: 'Это половина — радиус.', 646.9: 'Это D первой шины задачи (185/65 R16). Здесь — 215/55.', 640.4: 'Это D заводской.', 215: 'Это ширина B, а не D.' }, fallback: 'D = 2 · 118,25 + 406,4 = 236,5 + 406,4 = 642,9.' },
+
+  // ===== 205/50 R17 — task 4 new tire =====
+  't4new:B':  { correct: 205,   errors: { 50: '50 — это процент, не ширина. B — первое число маркировки.', 17: '17 — это диск. B — первое число.', 102.5: 'Это уже H. В столбце B — просто первое число маркировки.', 195: 'Это ширина заводской шины (195/60 R16). А в этой строке — 205/50 R17.' }, fallback: 'B — первое число маркировки 205/50 R17. Введи 205.' },
+  't4new:p':  { correct: 50,    errors: { 205: 'Это ширина. Процент — второе число.', 17: 'Это диск. Процент — второе число (между / и R).', 102.5: 'Это уже H. В столбце p — просто число процента (без %).', 60: 'Это процент заводской шины. А в этой строке — 50.' }, fallback: 'p — второе число маркировки (без знака %). Введи 50.' },
+  't4new:di': { correct: 17,    errors: { 50: 'Это процент, не диск.', 205: 'Это ширина.', 431.8: 'Это диск в мм. А в этом столбце — в дюймах.', 16: 'Это диск заводской шины. У 205/50 R17 диск 17″.' }, fallback: 'Диск в дюймах — число после R. Введи 17.' },
+  't4new:dm': { correct: 431.8, tol: 0.1, errors: { 17: '17 — это в дюймах. Переведи в мм: 17 · 25,4.', 25.4: 'Это просто коэффициент. Нужно 17 · 25,4.', 34: 'Это 17 · 2. Дюйм = 25,4 мм, а не 2.', 8.5: 'Это половина 17.', 406.4: 'Это диск 16″ (заводская шина). У 205/50 R17 → 17 · 25,4 = 431,8.', 457.2: 'Это диск 18″ — это для задачи 5. Здесь R17.' }, fallback: '17 · 25,4 = 431,8.' },
+  't4new:H':  { correct: 102.5, tol: 0.05, errors: { 50: '50 — это процент, не мм. H = B · p / 100 = 205 · 50 / 100.', 10250: 'Не разделил на 100. 10250 / 100 = ?', 255: 'Это B + p. Правильно: B · p / 100.', 117: 'Это H заводской шины. Здесь: 205 · 50 / 100.', 96.75: 'Это H шины из задачи 5 (215/45). Здесь: 205 · 50 / 100.', 51.25: 'Это половина H. Без деления на 2!' }, fallback: 'H = 205 · 50 / 100 = 205 · 0,5 = 102,5.' },
+  't4new:D':  { correct: 636.8, tol: 0.1, errors: { 534.3: 'Забыл умножить H на 2. D = 2H + d_мм.', 102.5: 'Это только H. А диаметр D = 2H + d_мм.', 431.8: 'Это только диск в мм. Прибавь 2H.', 318.4: 'Это половина — радиус, а не диаметр.', 640.4: 'Это D заводской шины. Здесь — новая 205/50 R17.', 533: 'Кажется, использовал диск 16″, а у этой шины R17 → d_мм = 431,8.', 205: 'Это ширина B. А D — это полный диаметр колеса.' }, fallback: 'D = 2H + d_мм = 2 · 102,5 + 431,8 = 205 + 431,8 = 636,8.' },
+
+  // ===== 215/45 R18 — task 5 new tire =====
+  't5new:B':  { correct: 215,   errors: { 45: '45 — это процент. B — первое число маркировки.', 18: 'Это диск. B — первое число.', 96.75: 'Это уже H. В столбце B — просто первое число.', 195: 'Это ширина заводской шины. А в этой строке — 215/45 R18.', 205: 'Это ширина из задачи 4. А здесь — 215/45 R18.' }, fallback: 'B — первое число маркировки 215/45 R18. Введи 215.' },
+  't5new:p':  { correct: 45,    errors: { 215: 'Это ширина.', 18: 'Это диск.', 96.75: 'Это H. В столбце p — просто число процента.', 60: 'Это процент заводской шины. А здесь — 45.', 50: 'Это процент из задачи 4. А здесь — 45.' }, fallback: 'p — второе число (без знака %). Введи 45.' },
+  't5new:di': { correct: 18,    errors: { 45: 'Это процент.', 215: 'Это ширина.', 457.2: 'Это диск в мм.', 16: 'Это диск заводской.', 17: 'Это диск из задачи 4.' }, fallback: 'Диск в дюймах — число после R. Введи 18.' },
+  't5new:dm': { correct: 457.2, tol: 0.1, errors: { 18: '18 — это в дюймах. Умножь на 25,4.', 25.4: 'Это коэффициент.', 36: 'Это 18 · 2. Дюйм = 25,4 мм, не 2.', 9: 'Это половина 18.', 406.4: 'Это диск R16 (заводская).', 431.8: 'Это диск R17 (задача 4). У 215/45 R18 → 18 · 25,4 = 457,2.' }, fallback: '18 · 25,4 = 457,2.' },
+  't5new:H':  { correct: 96.75, tol: 0.05, errors: { 45: '45 — процент, не мм. H = B · p / 100 = 215 · 45 / 100.', 9675: 'Не разделил на 100. 9675 / 100 = ?', 260: 'Это B + p (215 + 45). Правильно: B · p / 100.', 117: 'Это H заводской шины. Здесь: 215 · 0,45.', 102.5: 'Это H из задачи 4. Здесь: 215 · 0,45.', 48.375: 'Это половина H. Без деления на 2!' }, fallback: 'H = 215 · 45 / 100 = 215 · 0,45 = 96,75.' },
+  't5new:D':  { correct: 650.7, tol: 0.1, errors: { 553.95: 'Забыл умножить H на 2. D = 2H + d_мм.', 96.75: 'Это только H. А D = 2H + d_мм.', 457.2: 'Это только диск. Прибавь 2H.', 325.35: 'Это половина — радиус, не диаметр.', 640.4: 'Это D заводской шины.', 636.8: 'Это D из задачи 4 (R17). Здесь — 215/45 R18.', 215: 'Это ширина B, а не D.' }, fallback: 'D = 2 · 96,75 + 457,2 = 193,5 + 457,2 = 650,7.' },
+};
+
+function formatNumber(n) {
+  // 117 → "117", 406.4 → "406,4", 96.75 → "96,75"
+  return String(n).replace('.', ',');
+}
+
+function cellLabel(c) {
+  return { B:'B, мм', p:'p, %', di:'d, дюйм', dm:'d, мм', H:'H, мм', D:'D, мм' }[c] || c;
+}
+
+function setupCalcTables() {
+  document.querySelectorAll('.calc-cell').forEach(inp => {
+    inp.addEventListener('blur', () => checkCalcCell(inp));
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (checkCalcCell(inp)) focusNextCalcCell(inp);
+      }
+    });
+  });
+}
+
+function focusNextCalcCell(inp) {
+  const tire = inp.dataset.tire;
+  const cells = Array.from(document.querySelectorAll('.calc-cell[data-tire="' + tire + '"]'));
+  const idx = cells.indexOf(inp);
+  if (idx >= 0) {
+    for (let i = idx + 1; i < cells.length; i++) {
+      if (!cells[i].disabled) { cells[i].focus(); return; }
+    }
+  }
+}
+
+function checkCalcCell(inp) {
+  const tire = inp.dataset.tire;
+  const cell = inp.dataset.cell;
+  const cfg = CALC_CONFIG[tire + ':' + cell];
+  if (!cfg) return false;
+  const val = parseNum(inp.value);
+  const fb = document.getElementById('calc-fb-' + tire);
+  if (inp.value.trim() === '') {
+    inp.classList.remove('correct'); inp.classList.remove('wrong');
+    return false;
+  }
+  if (val == null) {
+    inp.classList.remove('correct'); inp.classList.add('wrong');
+    showCalcFb(fb, 'warn', '<b>' + cellLabel(cell) + ':</b> введи число.');
+    return false;
+  }
+  const tol = cfg.tol != null ? cfg.tol : 0.05;
+  if (approxEq(val, cfg.correct, tol)) {
+    inp.classList.remove('wrong'); inp.classList.add('correct');
+    inp.disabled = true;
+    // clear stale warn feedback for this row
+    const cfb = document.getElementById('calc-fb-' + tire);
+    if (cfb && cfb.classList.contains('warn')) {
+      cfb.className = 'calc-row-feedback';
+      cfb.innerHTML = '';
+    }
+    onCalcRowMaybeComplete(tire);
+    return true;
+  } else {
+    inp.classList.remove('correct'); inp.classList.add('wrong');
+    let msg = cfg.fallback || 'Проверь расчёт.';
+    if (cfg.errors) {
+      for (const [w, m] of Object.entries(cfg.errors)) {
+        if (approxEq(val, parseFloat(w), Math.max(0.05, tol))) { msg = m; break; }
+      }
+    }
+    showCalcFb(fb, 'warn', '<b>Колонка ' + cellLabel(cell) + ':</b> ' + msg);
+    state.streak = 0; updateStats(); saveProgress();
+    return false;
+  }
+}
+
+function showCalcFb(el, type, html) {
+  if (!el) return;
+  el.className = 'calc-row-feedback ' + type + ' show';
+  el.innerHTML = html;
+}
+
+const ROW_COMPLETE_MSG = {
+  t4new: '<b>Строка 205/50 R17 заполнена!</b> D₂ = 636,8 мм. Теперь сравни с D₁ = 640,4 мм.',
+  t5new: '<b>Строка 215/45 R18 заполнена!</b> D₂ = 650,7 мм. Теперь — пропорция «новое к старому».',
+  t2a:   '<b>Строка 185/65 R16 заполнена!</b> D₁ = 646,9 мм. Заполни вторую строку — 215/55 R16.',
+  t2b:   '<b>Строка 215/55 R16 заполнена!</b> D₂ = 642,9 мм.',
+};
+
+function onCalcRowMaybeComplete(tire) {
+  const someCell = document.querySelector('.calc-cell[data-tire="' + tire + '"]');
+  if (!someCell) return;
+  const rowCells = document.querySelectorAll('.calc-cell[data-tire="' + tire + '"]');
+  const rowComplete = Array.from(rowCells).every(c => c.classList.contains('correct'));
+  if (!rowComplete) return;
+
+  // show per-row feedback
+  const rowFb = document.getElementById('calc-fb-' + tire);
+  if (rowFb) {
+    const msg = ROW_COMPLETE_MSG[tire] || '<b>Строка заполнена!</b>';
+    showCalcFb(rowFb, 'correct', msg);
+  }
+
+  // check if the whole table is complete
+  const table = someCell.closest('.calc-table');
+  if (!table) return;
+  const allCells = table.querySelectorAll('.calc-cell');
+  const allComplete = Array.from(allCells).every(c => c.classList.contains('correct'));
+  if (!allComplete) return;
+
+  // unlock the next gated substep
+  const nextId = table.dataset.unlockAfter;
+  if (nextId) {
+    const next = document.getElementById(nextId);
+    if (next && next.classList.contains('locked')) {
+      next.classList.remove('locked');
+      next.classList.add('active-step');
+      const inp = next.querySelector('.substep-input');
+      if (inp) setTimeout(() => inp.focus(), 80);
+    }
+  }
+}
+
+// ============================================================
+// SUBSTEP INPUT CONFIG (steps 3..7)
+// ============================================================
+const SUBSTEP_CONFIG = {
+  // ----- task 1 (step 3) -----
+  't1-s1': { correct: 17, tol: 0.5, errors: { 16: 'В задаче спросили про диск 17 дюймов, не 16.', 18: 'В задаче спросили про диск 17 дюймов, не 18.' }, fallback: 'В задаче дан диск 17 дюймов — значит, и столбец 17.', stepIdx: 2 },
+  't1-s2': { custom: 'multi-widths', stepIdx: 2 },
+  't1-s3': { correct: 185, errors: { 195: 'Это не наименьшая. Среди {185, 195, 205, 215} есть число поменьше.', 205: 'Это не наименьшая. Среди {185, 195, 205, 215} есть число поменьше.', 215: 'Это самое БОЛЬШОЕ значение. А нужно — наименьшее.', 60: '60 — это процент. А в ответ ширина шины в мм.', 17: '17 — это диаметр диска. А в ответ — ширина шины.' }, fallback: 'Наименьшее из {185, 195, 205, 215} — это 185.', stepIdx: 2, isFinal: true },
+
+  // ----- task 2 (step 4) — calc-table handles parameters; substeps for D-diff and R-diff -----
+  't2-d-diff': { correct: 4, tol: 0.05, errors: { '-4': 'Знак минус не нужен — порядок вычитания именно 646,9 − 642,9.', 0: 'D₁ и D₂ разные. Перепроверь по таблице.', 8: 'Это удвоенная разница. Без умножения: 646,9 − 642,9 = 4.', 2: 'Это уже разница РАДИУСОВ — будет дальше. Сначала найди разницу диаметров: 646,9 − 642,9 = 4.', 1289.8: 'Это сумма, а нужна разность.', 4.6: 'Где-то ошибка в одной шине. Сверь по таблице: 646,9 − 642,9 = 4.' }, fallback: '646,9 − 642,9 = 4.', stepIdx: 3 },
+  't2-r-diff': { correct: 2, tol: 0.05, errors: { 4: 'Это разница ДИАМЕТРОВ. А в задаче спрашивают про РАДИУСЫ. Радиус — половина диаметра, поэтому 4 нужно РАЗДЕЛИТЬ на 2: 4 : 2 = 2.', 8: 'Наоборот: радиус меньше диаметра вдвое. 4 : 2 = 2, а не 4 · 2.', 1: 'Это четверть. Радиус — половина (D / 2), а не четверть. 4 : 2 = 2.', 0: 'Радиусы различаются — мы только что нашли разницу диаметров 4 мм. Значит R₁ − R₂ = 4 / 2 = 2.', '-2': 'Знак минус не нужен. Радиус 185/65 больше, поэтому R₁ − R₂ > 0.' }, fallback: '4 : 2 = 2.', stepIdx: 3, isFinal: true },
+
+  // ----- task 3 (step 5) -----
+  't3-s1': { correct: 195, errors: { 60: '60 — это процент. B — первое число.', 16: '16 — это диск. B — первое число.' }, fallback: 'B — первое число маркировки (195).', stepIdx: 4 },
+  't3-s2': { correct: 117, tol: 0.05, errors: { 60: '60 — это процент, не мм! H = B · p / 100 = 195 · 60 / 100.', 11700: 'Не забыл разделить на 100? 11700 / 100 = ?', 255: 'Это похоже на B + p. Правильно: B · p / 100.' }, fallback: 'H = 195 · 60 / 100 = 117.', stepIdx: 4 },
+  't3-s3': { correct: 406.4, tol: 0.1, errors: { 16: '16 — в дюймах. Умножь на 25,4.', 25.4: 'Это коэффициент. d · 25,4 = 16 · 25,4.', 32: 'Это 16 · 2, а 1 дюйм = 25,4 мм, не 2.', 401.6: 'Близко, но ошибка: 16 · 25,4 = 406,4.' }, fallback: '16 · 25,4 = 406,4.', stepIdx: 4 },
+  't3-s4': { correct: 640.4, tol: 0.1, errors: { 523.4: 'Забыл умножить на 2. Сверху И снизу — две боковины: D = 2H + d_мм.', 117: 'Это только H. А диаметр включает диск и две боковины.', 406.4: 'Это только диск. Прибавь ещё 2H.', 320.2: 'Это половина — то есть радиус. А нужен полный диаметр.', 757.4: 'Похоже, прибавил 2·H + 2·d_мм. Правильно: 2H + d_мм (один диск).' }, fallback: 'D = 2 · 117 + 406,4 = 640,4.', stepIdx: 4, isFinal: true },
+
+  // ----- task 4 (step 6) — calc-table handles parameters; this is the final difference -----
+  't4-diff': { correct: 3.6, tol: 0.1, errors: { '-3.6': 'Знак минус не нужен — спросили «на сколько уменьшится». В ответ — модуль (положительное число).', 6.4: 'Возможно, ты вычел диски: 431,8 − 406,4 = 25,4. А нужно D₁ − D₂ = 640,4 − 636,8 = 3,6.', 1277.2: 'Это сумма D₁ + D₂. А нужна разность.', 7.2: 'Близко к удвоенной разности. Точно: 640,4 − 636,8 = 3,6.', 4: 'Близко, но проверь точнее: 640,4 − 636,8 = 3,6.', 36: 'Похоже, потерял запятую. 640,4 − 636,8 = 3,6 (не 36).' }, fallback: '640,4 − 636,8 = 3,6.', stepIdx: 5, isFinal: true },
+
+  // ----- task 5 (step 7) — calc-table handles parameters; substeps for proportion and final -----
+  't5-prop': { correct: 101.6, tol: 0.1, errors: { 98.4: 'Перевернул пропорцию. По таблице 2×2: x = D₂ · 100 / D₁ = 650,7 · 100 / 640,4, а не наоборот.', 100: 'Это значит «не изменилось». Но D₂ > D₁, значит x > 100.', 1.6: 'Это уже окончательный ответ. Сначала найди процент НОВОГО относительно старого — 101,6, потом вычти 100.', 10.3: 'Это разница в мм. А в процентах: 650,7 · 100 / 640,4.', 101: 'Округляй до десятых: 101,6, а не 101.', 102: 'Округлено вверх. Точно: 65070/640,4 ≈ 101,6.' }, fallback: 'x = D₂ · 100 / D₁ = 650,7 · 100 / 640,4 ≈ 101,6.', stepIdx: 6 },
+  't5-final': { correct: 1.6, tol: 0.05, errors: { 101.6: 'Это процент НОВОГО относительно СТАРОГО, а вопрос — «на сколько процентов». Вычти 100: 101,6 − 100 = 1,6.', 1: 'Округлено слишком грубо. По задаче — до десятых: 1,6.', 2: 'Округлено вверх. Правильно: 101,6 − 100 = 1,6.', 1.59: 'Округли до десятых: 1,6.', 1.61: 'Округли до десятых: 1,6.', 100: 'Это значит «процент не изменился». Но колесо стало больше — рост 1,6 %.', 16: 'Похоже, потерял запятую: 1,6 ≠ 16.' }, fallback: '101,6 − 100 = 1,6.', stepIdx: 6, isFinal: true },
+};
+
+function setupSubsteps() {
+  document.querySelectorAll('.substep-check-btn').forEach(btn => {
+    btn.addEventListener('click', () => handleSubstepCheck(btn.dataset.check));
+  });
+  document.querySelectorAll('.substep-input').forEach(inp => {
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleSubstepCheck(inp.dataset.step);
+      }
+    });
+  });
+  document.querySelectorAll('.substep-hint-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const hint = btn.parentElement.querySelector('.substep-hint');
+      if (hint) hint.classList.add('show');
+    });
+  });
+}
+
+function handleSubstepCheck(stepId) {
+  const cfg = SUBSTEP_CONFIG[stepId];
+  if (!cfg) return;
+  const substep = document.getElementById(stepId);
+  if (!substep) return;
+  const inp = substep.querySelector('.substep-input');
+  const fb = substep.querySelector('.substep-feedback');
+  if (!inp) return;
+
+  // custom checker for multi-widths
+  if (cfg.custom === 'multi-widths') {
+    const raw = inp.value.trim().replace(/\s/g, '');
+    const got = raw.split(/[,;]/).map(s => parseFloat(s.replace(',', '.'))).filter(v => !isNaN(v)).sort((a,b)=>a-b);
+    const expect = [185, 195, 205, 215];
+    const ok = got.length === expect.length && expect.every((v,i) => Math.abs(v - got[i]) < 0.5);
+    if (ok) {
+      inp.classList.remove('wrong'); inp.classList.add('correct'); inp.disabled = true;
+      showFb(fb, 'correct', '<b>Верно!</b> В столбце 17″ ✓ во всех четырёх строках.');
+      markSubstepDone(substep);
+      unlockNextSubstep(substep);
+    } else {
+      inp.classList.remove('correct'); inp.classList.add('wrong');
+      let msg = 'В столбце 17″ ✓ стоит во всех строках: 185, 195, 205, 215. Введи все четыре через запятую.';
+      if (got.length && got.length < 4) msg = 'Ты пропустил часть. В столбце 17″ ✓ во ВСЕХ строках: 185, 195, 205, 215.';
+      if (got.includes(60) || got.includes(55) || got.includes(50)) msg = 'Это профили (60, 55, 50…). А нужны ШИРИНЫ: 185, 195, 205, 215.';
+      showFb(fb, 'warn', msg);
+      state.streak = 0; updateStats(); saveProgress();
+    }
+    return;
+  }
+
+  const val = parseNum(inp.value);
+  if (val == null) {
+    inp.classList.remove('correct'); inp.classList.add('wrong');
+    showFb(fb, 'warn', 'Введи число.');
+    return;
+  }
+  if (approxEq(val, cfg.correct, cfg.tol)) {
+    inp.classList.remove('wrong'); inp.classList.add('correct'); inp.disabled = true;
+    showFb(fb, 'correct', '<b>Верно!</b> ' + (cfg.isFinal ? 'Это и есть ответ.' : 'Идём дальше.'));
+    markSubstepDone(substep);
+    unlockNextSubstep(substep);
+    if (cfg.isFinal) {
+      markStepDone(cfg.stepIdx);
+    }
+  } else {
+    inp.classList.remove('correct'); inp.classList.add('wrong');
+    let msg = cfg.fallback || 'Не совсем. Проверь расчёт.';
+    if (cfg.errors) {
+      for (const [w, m] of Object.entries(cfg.errors)) {
+        if (approxEq(val, parseFloat(w), Math.max(0.05, cfg.tol || 0.05))) { msg = m; break; }
+      }
+    }
+    showFb(fb, 'warn', msg);
+    state.streak = 0; updateStats(); saveProgress();
+  }
+}
+
+function handleStepProgress(/*stepId*/) {
+  // hook for single-choice cases — currently mark step when all substeps done
+  // Each step's mark happens via isFinal substep. For pure quiz steps we count them as side validations.
+}
+
+// ============================================================
+// CROSS-SECTION DIAGRAM
+// ============================================================
+function renderCrossSection() {
+  const svg = document.getElementById('cross-section-svg');
+  if (!svg) return;
+  svg.innerHTML = '';
+  const ns = 'http://www.w3.org/2000/svg';
+  const el = (tag, a) => { const n = document.createElementNS(ns, tag); for (const k in a) n.setAttribute(k, a[k]); return n; };
+
+  const cx = 300, cy = 190;
+  const Outer_R = 130;
+  const Disk_R = FACTORY.d_in * 25.4 / D_FACTORY * Outer_R;
+
+  svg.appendChild(el('circle', { cx, cy, r: Outer_R, class: 'tire-outer' }));
+  svg.appendChild(el('circle', { cx, cy, r: Outer_R - 8, class: 'tire-rubber' }));
+  svg.appendChild(el('circle', { cx, cy, r: Disk_R, class: 'disk-circle' }));
+  for (let i = 0; i < 5; i++) {
+    const a = (i * 72 - 90) * Math.PI / 180;
+    const x = cx + Math.cos(a) * Disk_R * 0.85;
+    const y = cy + Math.sin(a) * Disk_R * 0.85;
+    svg.appendChild(el('line', { x1: cx, y1: cy, x2: x, y2: y, stroke: '#888c95', 'stroke-width': 4, 'stroke-linecap': 'round' }));
+  }
+  for (let i = 0; i < 5; i++) {
+    const a = (i * 72 - 90 + 36) * Math.PI / 180;
+    const x = cx + Math.cos(a) * Disk_R * 0.45;
+    const y = cy + Math.sin(a) * Disk_R * 0.45;
+    svg.appendChild(el('circle', { cx: x, cy: y, r: 3, class: 'disk-bolts' }));
+  }
+  svg.appendChild(el('circle', { cx, cy, r: 8, class: 'center-cap' }));
+
+  // top H bracket
+  const hX = cx + Outer_R + 32;
+  const hTopStart = cy - Outer_R;
+  const hTopEnd = cy - Disk_R;
+  svg.appendChild(el('line', { x1: hX, y1: hTopStart, x2: hX, y2: hTopEnd, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: hX - 5, y1: hTopStart, x2: hX + 5, y2: hTopStart, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: hX - 5, y1: hTopEnd, x2: hX + 5, y2: hTopEnd, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: cx + 2, y1: hTopStart, x2: hX, y2: hTopStart, stroke: '#8a93a3', 'stroke-width': 0.8, 'stroke-dasharray': '3,3' }));
+  svg.appendChild(el('line', { x1: cx + 2, y1: hTopEnd, x2: hX, y2: hTopEnd, stroke: '#8a93a3', 'stroke-width': 0.8, 'stroke-dasharray': '3,3' }));
+  const tHtop = el('text', { x: hX + 10, y: (hTopStart + hTopEnd)/2 + 5, class: 'dim-text H' });
+  tHtop.textContent = 'H = 117';
+  svg.appendChild(tHtop);
+
+  // bottom H bracket
+  const hBotStart = cy + Disk_R;
+  const hBotEnd = cy + Outer_R;
+  svg.appendChild(el('line', { x1: hX, y1: hBotStart, x2: hX, y2: hBotEnd, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: hX - 5, y1: hBotStart, x2: hX + 5, y2: hBotStart, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: hX - 5, y1: hBotEnd, x2: hX + 5, y2: hBotEnd, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: cx + 2, y1: hBotStart, x2: hX, y2: hBotStart, stroke: '#8a93a3', 'stroke-width': 0.8, 'stroke-dasharray': '3,3' }));
+  svg.appendChild(el('line', { x1: cx + 2, y1: hBotEnd, x2: hX, y2: hBotEnd, stroke: '#8a93a3', 'stroke-width': 0.8, 'stroke-dasharray': '3,3' }));
+  const tHbot = el('text', { x: hX + 10, y: (hBotStart + hBotEnd)/2 + 5, class: 'dim-text H' });
+  tHbot.textContent = 'H = 117';
+  svg.appendChild(tHbot);
+
+  // d (disk) bracket on left
+  const dX = cx - Outer_R - 32;
+  svg.appendChild(el('line', { x1: dX, y1: cy - Disk_R, x2: dX, y2: cy + Disk_R, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: dX - 5, y1: cy - Disk_R, x2: dX + 5, y2: cy - Disk_R, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: dX - 5, y1: cy + Disk_R, x2: dX + 5, y2: cy + Disk_R, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: cx - 2, y1: cy - Disk_R, x2: dX, y2: cy - Disk_R, stroke: '#8a93a3', 'stroke-width': 0.8, 'stroke-dasharray': '3,3' }));
+  svg.appendChild(el('line', { x1: cx - 2, y1: cy + Disk_R, x2: dX, y2: cy + Disk_R, stroke: '#8a93a3', 'stroke-width': 0.8, 'stroke-dasharray': '3,3' }));
+  const tD = el('text', { x: dX - 8, y: cy + 5, class: 'dim-text d', 'text-anchor': 'end' });
+  tD.textContent = 'd = 406,4';
+  svg.appendChild(tD);
+
+  // D top label
+  const dimYD = cy - Outer_R - 26;
+  svg.appendChild(el('line', { x1: cx - Outer_R, y1: dimYD, x2: cx + Outer_R, y2: dimYD, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: cx - Outer_R, y1: dimYD - 5, x2: cx - Outer_R, y2: dimYD + 5, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: cx + Outer_R, y1: dimYD - 5, x2: cx + Outer_R, y2: dimYD + 5, class: 'dim-line' }));
+  svg.appendChild(el('line', { x1: cx - Outer_R, y1: dimYD, x2: cx - Outer_R, y2: cy - Outer_R + 4, stroke: '#8a93a3', 'stroke-width': 0.8, 'stroke-dasharray': '3,3' }));
+  svg.appendChild(el('line', { x1: cx + Outer_R, y1: dimYD, x2: cx + Outer_R, y2: cy - Outer_R + 4, stroke: '#8a93a3', 'stroke-width': 0.8, 'stroke-dasharray': '3,3' }));
+  const tDD = el('text', { x: cx, y: dimYD - 8, class: 'dim-text D', 'text-anchor': 'middle' });
+  tDD.textContent = 'D = 640,4 мм';
+  svg.appendChild(tDD);
+}
+
+// ============================================================
+// ANIMATION — TWO WHEELS, ROLLED IN PARALLEL
+// Visual sizes are intentionally EXAGGERATED so the difference
+// between D₁ and D₂ is obvious. Real ratio is 640.4 : 650.7
+// (only 1.6 % bigger), but visually we use 70 : 100 so students
+// can SEE that the bigger wheel covers more distance per turn.
+// ============================================================
+const ANIM_CFG = {
+  d1_real: 640.4,
+  d2_real: 650.7,
+  d1_vis: 70,     // visual diameter for "old" wheel (px)
+  d2_vis: 100,    // visual diameter for "new" wheel (px) — exaggerated for clarity
+  start_x: 90,
+  road_y_top: 130,
+  road_y_bot: 300,
+  duration: 3000,
+};
+
+let animState = { running: false };
+
+function renderAnimInitial() {
+  drawAnimScene();
+}
+
+function easeInOutQuad(t) { return t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t + 2, 2)/2; }
+function mkSVG(tag, attrs) {
+  const ns = 'http://www.w3.org/2000/svg';
+  const n = document.createElementNS(ns, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  return n;
+}
+
+function drawAnimScene() {
+  const svg = document.getElementById('anim-svg');
+  if (!svg) return;
+  svg.innerHTML = '';
+
+  const r1 = ANIM_CFG.d1_vis / 2;
+  const r2 = ANIM_CFG.d2_vis / 2;
+  const cx = ANIM_CFG.start_x;
+  const cy1 = ANIM_CFG.road_y_top - r1;
+  const cy2 = ANIM_CFG.road_y_bot - r2;
+
+  // ===== TOP ROW (old wheel — 195/60 R16) =====
+  // header
+  const hd1 = mkSVG('text', { x: 30, y: 28, class: 'anim-label small' });
+  hd1.textContent = 'Старое колесо · 195/60 R16';
+  svg.appendChild(hd1);
+  // formula label C₁
+  const fr1 = mkSVG('text', { x: 30, y: 50, class: 'anim-label formula-gold' });
+  fr1.textContent = 'C₁ = π · D₁ = π · 640,4 ≈ 2011 мм';
+  svg.appendChild(fr1);
+
+  // road
+  svg.appendChild(mkSVG('line', { x1: 20, y1: ANIM_CFG.road_y_top, x2: 740, y2: ANIM_CFG.road_y_top, class: 'anim-road' }));
+  for (let x = 40; x <= 720; x += 40) {
+    svg.appendChild(mkSVG('line', { x1: x, y1: ANIM_CFG.road_y_top + 3, x2: x, y2: ANIM_CFG.road_y_top + 8, stroke: '#a8b0c0', 'stroke-width': 1 }));
+  }
+  // start marker
+  const st1 = mkSVG('text', { x: cx, y: ANIM_CFG.road_y_top + 24, class: 'anim-label small', 'text-anchor': 'middle' });
+  st1.textContent = 'старт';
+  svg.appendChild(st1);
+
+  // highlight (gold)
+  svg.appendChild(mkSVG('rect', { id: 'road-hi-1', x: cx, y: ANIM_CFG.road_y_top - 4, width: 0, height: 8, class: 'anim-road-highlight', rx: 2 }));
+
+  // wheel 1
+  const g1 = mkSVG('g', { id: 'wheel-grp-1', transform: 'translate(0 0)' });
+  g1.appendChild(mkSVG('circle', { cx, cy: cy1, r: r1, class: 'anim-tire' }));
+  g1.appendChild(mkSVG('circle', { cx, cy: cy1, r: r1 - 5, class: 'anim-tire-inner' }));
+  g1.appendChild(mkSVG('circle', { cx, cy: cy1, r: r1 * 0.5, class: 'anim-disk' }));
+  g1.appendChild(mkSVG('line', { x1: cx, y1: cy1, x2: cx, y2: cy1 + r1 - 3, class: 'anim-spoke' }));
+  g1.appendChild(mkSVG('circle', { cx, cy: cy1 + r1 - 3, r: 4, class: 'anim-marker' }));
+  g1.appendChild(mkSVG('circle', { cx, cy: cy1, r: 3, fill: '#5a6478' }));
+  svg.appendChild(g1);
+
+  // ===== BOTTOM ROW (new wheel — 215/45 R18) =====
+  const hd2 = mkSVG('text', { x: 30, y: 195, class: 'anim-label small' });
+  hd2.textContent = 'Новое колесо · 215/45 R18 (визуально увеличено для наглядности)';
+  svg.appendChild(hd2);
+  const fr2 = mkSVG('text', { x: 30, y: 217, class: 'anim-label formula' });
+  fr2.textContent = 'C₂ = π · D₂ = π · 650,7 ≈ 2044 мм';
+  svg.appendChild(fr2);
+
+  svg.appendChild(mkSVG('line', { x1: 20, y1: ANIM_CFG.road_y_bot, x2: 740, y2: ANIM_CFG.road_y_bot, class: 'anim-road' }));
+  for (let x = 40; x <= 720; x += 40) {
+    svg.appendChild(mkSVG('line', { x1: x, y1: ANIM_CFG.road_y_bot + 3, x2: x, y2: ANIM_CFG.road_y_bot + 8, stroke: '#a8b0c0', 'stroke-width': 1 }));
+  }
+  const st2 = mkSVG('text', { x: cx, y: ANIM_CFG.road_y_bot + 24, class: 'anim-label small', 'text-anchor': 'middle' });
+  st2.textContent = 'старт';
+  svg.appendChild(st2);
+
+  svg.appendChild(mkSVG('rect', { id: 'road-hi-2', x: cx, y: ANIM_CFG.road_y_bot - 4, width: 0, height: 8, class: 'anim-road-highlight-2', rx: 2 }));
+
+  const g2 = mkSVG('g', { id: 'wheel-grp-2', transform: 'translate(0 0)' });
+  g2.appendChild(mkSVG('circle', { cx, cy: cy2, r: r2, class: 'anim-tire-2' }));
+  g2.appendChild(mkSVG('circle', { cx, cy: cy2, r: r2 - 6, class: 'anim-tire-inner-2' }));
+  g2.appendChild(mkSVG('circle', { cx, cy: cy2, r: r2 * 0.5, class: 'anim-disk-2' }));
+  g2.appendChild(mkSVG('line', { x1: cx, y1: cy2, x2: cx, y2: cy2 + r2 - 4, class: 'anim-spoke-2' }));
+  g2.appendChild(mkSVG('circle', { cx, cy: cy2 + r2 - 4, r: 5, class: 'anim-marker-2' }));
+  g2.appendChild(mkSVG('circle', { cx, cy: cy2, r: 3, fill: '#5a6478' }));
+  svg.appendChild(g2);
+
+  // instruction in the middle gap
+  const inst = mkSVG('text', { x: 380, y: 165, class: 'anim-label small', 'text-anchor': 'middle', id: 'anim-inst' });
+  inst.textContent = '↓ нажми «Прокатить оба колеса» — каждое сделает ровно один оборот ↓';
+  svg.appendChild(inst);
+}
+
+function rollBothWheels() {
+  if (animState.running) return;
+  drawAnimScene();
+  document.getElementById('anim-result').classList.remove('show');
+  const inst = document.getElementById('anim-inst');
+  if (inst) inst.textContent = '...колёса делают по одному обороту...';
+
+  const r1 = ANIM_CFG.d1_vis / 2;
+  const r2 = ANIM_CFG.d2_vis / 2;
+  const C1 = Math.PI * ANIM_CFG.d1_vis;
+  const C2 = Math.PI * ANIM_CFG.d2_vis;
+  const cx0 = ANIM_CFG.start_x;
+  const cy1 = ANIM_CFG.road_y_top - r1;
+  const cy2 = ANIM_CFG.road_y_bot - r2;
+
+  const g1 = document.getElementById('wheel-grp-1');
+  const g2 = document.getElementById('wheel-grp-2');
+  const hi1 = document.getElementById('road-hi-1');
+  const hi2 = document.getElementById('road-hi-2');
+
+  animState.running = true;
+  const start = performance.now();
+
+  function tick(now) {
+    const t = Math.min(1, (now - start) / ANIM_CFG.duration);
+    const eased = easeInOutQuad(t);
+    const d1 = eased * C1, d2 = eased * C2;
+    const a1 = (d1 / r1) * (180 / Math.PI);
+    const a2 = (d2 / r2) * (180 / Math.PI);
+    g1.setAttribute('transform', 'translate(' + d1 + ' 0) rotate(' + a1 + ' ' + cx0 + ' ' + cy1 + ')');
+    g2.setAttribute('transform', 'translate(' + d2 + ' 0) rotate(' + a2 + ' ' + cx0 + ' ' + cy2 + ')');
+    hi1.setAttribute('width', d1);
+    hi2.setAttribute('width', d2);
+    if (t < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      animState.running = false;
+      const i = document.getElementById('anim-inst');
+      if (i) i.textContent = 'один оборот: золотая полоса = π·D₁, синяя = π·D₂';
+      const rEl = document.getElementById('anim-result');
+      rEl.classList.add('show');
+      rEl.innerHTML =
+        '<div style="font-weight:600; color: var(--accent); margin-bottom: 8px;">Оба колеса сделали ровно по одному обороту.</div>' +
+        '<div style="margin-bottom: 6px;">Большее колесо (синяя полоса) прокатилось <b>дальше</b> — у него больше длина окружности. То есть «пробег за один оборот» — это <b>длина окружности</b> колеса.</div>' +
+        '<div class="formula-strip">C₁ = π · D₁ &nbsp;·&nbsp; C₂ = π · D₂</div>' +
+        '<div class="cancel-line">отношение пробегов: &nbsp; C₂ / C₁ = &nbsp;<span style="text-decoration: line-through; color: var(--error);">π</span> · D₂ &nbsp;/&nbsp; <span style="text-decoration: line-through; color: var(--error);">π</span> · D₁ &nbsp;=&nbsp; <b>D₂ / D₁</b></div>' +
+        '<div style="font-size: 13.5px; color: var(--ink-soft); line-height: 1.6;"><b>π сокращается</b>: множитель один и тот же сверху и снизу. Поэтому в задаче на проценты можно работать сразу с диаметрами D₁ и D₂ — без π.</div>';
+    }
+  }
+  requestAnimationFrame(tick);
+}
+
+function resetAnim() {
+  if (animState.running) return;
+  drawAnimScene();
+  document.getElementById('anim-result').classList.remove('show');
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function goToStep(idx) {
+  idx = Math.max(0, Math.min(TOTAL_STEPS - 1, idx));
+  state.currentStep = idx;
+  document.querySelectorAll('.step-section').forEach((s, i) => s.classList.toggle('active', i === idx));
+  document.querySelectorAll('#step-stepper .step-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  saveProgress();
+  if (idx === 1) renderCrossSection();
+  if (idx === 6) renderAnimInitial();
+  window.scrollTo({ top: document.querySelector('.step-stepper').offsetTop - 90, behavior: 'smooth' });
+}
+
+// ============================================================
+// MODE HANDLING
+// ============================================================
+function applyMode() {
+  document.body.dataset.mode = state.mode;
+  document.querySelectorAll('#mode-switch button').forEach(b => b.classList.toggle('active', b.dataset.mode === state.mode));
+  // in practice mode: hide auto-learn hints
+  document.querySelectorAll('.substep-hint.auto-learn').forEach(h => {
+    if (state.mode === 'learn') h.classList.add('show');
+    else h.classList.remove('show');
+  });
+  // teacher mode: ensure teacher blocks visible
+  document.querySelectorAll('.teacher-block').forEach(t => {
+    if (state.mode === 'teacher') t.classList.add('show');
+    else t.classList.remove('show');
+  });
+  // teacher mode: pre-fill calc-table cells with the correct values
+  if (state.mode === 'teacher') {
+    document.querySelectorAll('.calc-cell').forEach(inp => {
+      if (!inp.classList.contains('correct')) {
+        const cfg = CALC_CONFIG[inp.dataset.tire + ':' + inp.dataset.cell];
+        if (cfg) {
+          inp.value = formatNumber(cfg.correct);
+          inp.classList.add('correct');
+          inp.disabled = true;
+        }
+      }
+    });
+    // also pre-fill step-2 params table (factory tire)
+    document.querySelectorAll('.cell-input[data-key]').forEach(inp => {
+      if (!inp.classList.contains('correct')) {
+        const cfg = PARAMS_CONFIG[inp.dataset.key];
+        if (cfg) {
+          inp.value = formatNumber(cfg.correct);
+          inp.classList.add('correct');
+          inp.disabled = true;
+        }
+      }
+    });
+    // trigger row-complete check on each calc-row so dependent substeps unlock
+    new Set(Array.from(document.querySelectorAll('.calc-cell')).map(c => c.dataset.tire)).forEach(tire => {
+      onCalcRowMaybeComplete(tire);
+    });
+  }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+(function init() {
+  // restore progress
+  const data = loadProgress();
+  if (data[TOPIC]) {
+    state.solvedSteps = data[TOPIC].solvedSteps || state.solvedSteps;
+    state.streak = data[TOPIC].streak || 0;
+    state.currentStep = data[TOPIC].currentStep || 0;
+  }
+  // restore stepper "done" marks
+  document.querySelectorAll('#step-stepper .step-btn').forEach((b, i) => {
+    if (state.solvedSteps[i]) b.classList.add('done');
+  });
+
+  // events: mode switch
+  document.querySelectorAll('#mode-switch button').forEach(btn => {
+    btn.addEventListener('click', () => { state.mode = btn.dataset.mode; applyMode(); });
+  });
+
+  // events: step stepper
+  document.querySelectorAll('#step-stepper .step-btn').forEach(btn => {
+    btn.addEventListener('click', () => goToStep(parseInt(btn.dataset.step, 10)));
+  });
+
+  // events: nav buttons
+  document.querySelectorAll('.nav-btn[data-goto]').forEach(btn => {
+    btn.addEventListener('click', () => goToStep(parseInt(btn.dataset.goto, 10)));
+  });
+
+  // start-from-zero CTA
+  document.getElementById('start-btn').addEventListener('click', () => {
+    goToStep(0);
+  });
+
+  // reset
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    if (confirm('Сбросить весь прогресс по тренажёру?')) {
+      state.solvedSteps = [false,false,false,false,false,false,false];
+      state.streak = 0;
+      clearProgress();
+      location.reload();
+    }
+  });
+
+  // finish
+  const finishBtn = document.getElementById('finish-btn');
+  if (finishBtn) finishBtn.addEventListener('click', () => alert('Молодец! Все семь шагов пройдены. Можешь переключиться в режим Тренировка и пройти их без подсказок.'));
+
+  // setup quizzes
+  setupMarkingQuiz();
+  // setup params table
+  setupParamsTable();
+  // setup substeps
+  setupSubsteps();
+  // setup calc tables (steps 6, 7)
+  setupCalcTables();
+
+  // anim buttons
+  const rollCmpBtn = document.getElementById('btn-roll-cmp');
+  if (rollCmpBtn) rollCmpBtn.addEventListener('click', rollBothWheels);
+  const rollResetBtn = document.getElementById('btn-roll-reset');
+  if (rollResetBtn) rollResetBtn.addEventListener('click', resetAnim);
+
+  // initial render
+  goToStep(state.currentStep);
+  applyMode();
+  updateStats();
+  renderCrossSection();
+})();
+</script>
+</body>
+</html>

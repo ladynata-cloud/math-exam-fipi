@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ОГЭ математика — тренажёр задания 19</title>
+  <style>
+    :root{
+      --bg:#f6f3ec;
+      --card:#fffdf7;
+      --ink:#1f2633;
+      --muted:#6f7480;
+      --line:#ded7c8;
+      --accent:#244f9e;
+      --accent-soft:#e9efff;
+      --good:#1f7a4d;
+      --good-soft:#e8f5ee;
+      --bad:#a13b35;
+      --bad-soft:#fff0ef;
+      --warn:#a36a00;
+      --warn-soft:#fff6db;
+      --shadow:0 12px 30px rgba(50,45,35,.10);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:radial-gradient(circle at top left,#fffaf0 0,#f6f3ec 48%,#eee8da 100%);
+      color:var(--ink);
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      line-height:1.45;
+    }
+    button,input,textarea,select{font:inherit}
+    .wrap{max-width:1120px;margin:0 auto;padding:18px 14px 110px}
+    .hero{
+      background:linear-gradient(135deg,#fffdf7,#eef3ff);
+      border:1px solid var(--line);
+      border-radius:24px;
+      padding:22px;
+      box-shadow:var(--shadow);
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:18px;
+      align-items:start;
+    }
+    .eyebrow{font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:800;margin-bottom:6px}
+    h1{font-size:clamp(26px,4vw,42px);line-height:1.05;margin:0 0 8px}
+    .lead{font-size:17px;color:#3f4654;margin:0;max-width:720px}
+    .hero-card{
+      background:rgba(255,255,255,.72);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:14px;
+    }
+    .hero-card b{display:block;margin-bottom:6px}
+    .hero-card ul{margin:8px 0 0 18px;padding:0;color:#4a5260;font-size:14px}
+    .tabs{
+      position:sticky;top:0;z-index:20;
+      margin:14px 0;
+      padding:10px;
+      background:rgba(246,243,236,.92);
+      backdrop-filter:blur(10px);
+      border:1px solid rgba(222,215,200,.8);
+      border-radius:20px;
+      display:flex;gap:8px;flex-wrap:wrap;
+    }
+    .tab,.btn,.chip{
+      border:1px solid var(--line);
+      background:#fffdf9;
+      color:var(--ink);
+      border-radius:999px;
+      padding:10px 14px;
+      cursor:pointer;
+      transition:.15s ease;
+      min-height:42px;
+    }
+    .tab:hover,.btn:hover,.chip:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(40,35,25,.08)}
+    .tab.active,.chip.active{background:var(--accent);border-color:var(--accent);color:white}
+    .grid{display:grid;grid-template-columns:2fr 1fr;gap:14px;align-items:start}
+    .panel,.side,.card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:18px;
+    }
+    .side{position:sticky;top:86px}
+    h2{margin:0 0 12px;font-size:24px}
+    h3{margin:0 0 10px;font-size:18px}
+    .muted{color:var(--muted)}
+    .small{font-size:13px}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn.primary{background:var(--accent);border-color:var(--accent);color:white}
+    .btn.good{background:var(--good);border-color:var(--good);color:white}
+    .btn.bad{background:var(--bad);border-color:var(--bad);color:white}
+    .btn.ghost{background:transparent}
+    .btn.block{width:100%;justify-content:center;display:flex}
+    .theme-bar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+    .chip{font-size:14px;padding:8px 12px;min-height:36px}
+    .exam-list{display:grid;gap:12px;margin:14px 0}
+    .statement{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:14px;
+      padding:14px;
+      display:grid;
+      grid-template-columns:36px 1fr;
+      gap:10px;
+      align-items:start;
+    }
+    .num{
+      width:32px;height:32px;border-radius:50%;
+      background:var(--accent-soft);
+      color:var(--accent);
+      display:grid;place-items:center;font-weight:800;
+    }
+    .statement-text{font-size:17px}
+    .statement .theme{margin-top:7px;font-size:12px;color:var(--muted)}
+    .answer-box{
+      display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
+      margin-top:12px;
+    }
+    .answer-box input{
+      width:100%;border:1px solid var(--line);border-radius:14px;padding:13px 14px;background:white;min-height:48px;
+      font-size:18px;
+    }
+    .check-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .check-pill{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:white;border-radius:999px;padding:9px 12px;cursor:pointer}
+    .check-pill input{width:18px;height:18px}
+    .result{
+      margin-top:14px;padding:14px;border-radius:14px;border:1px solid var(--line);display:none;
+    }
+    .result.show{display:block}
+    .result.good{background:var(--good-soft);border-color:#b8dfc9;color:#123d27}
+    .result.bad{background:var(--bad-soft);border-color:#efc5c2;color:#5e1713}
+    .explain{display:grid;gap:10px;margin-top:12px}
+    .explain-card{background:white;border:1px solid var(--line);border-radius:14px;padding:12px}
+    .tag{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 8px;background:var(--accent-soft);color:var(--accent);font-size:12px;font-weight:700}
+    .tag.good{background:var(--good-soft);color:var(--good)}
+    .tag.bad{background:var(--bad-soft);color:var(--bad)}
+    .tag.warn{background:var(--warn-soft);color:var(--warn)}
+    .big-card{
+      min-height:240px;
+      display:grid;
+      gap:14px;
+      align-content:start;
+    }
+    .card-statement{font-size:22px;line-height:1.35;margin:4px 0 0}
+    .choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+    .choice-grid .btn{border-radius:16px;font-size:18px;font-weight:800;min-height:58px}
+    .progress-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+    .metric{border:1px solid var(--line);border-radius:14px;background:white;padding:10px;text-align:center}
+    .metric .value{font-size:24px;font-weight:900;color:var(--accent)}
+    .metric .label{font-size:12px;color:var(--muted)}
+    .topic-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+    .topic-card{border:1px solid var(--line);border-radius:14px;background:white;padding:12px;cursor:pointer;transition:.15s ease}
+    .topic-card:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(40,35,25,.08)}
+    .topic-card b{display:block;margin-bottom:4px}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px;background:white;margin-top:12px;max-height:560px}
+    table{width:100%;border-collapse:collapse;font-size:14px;min-width:760px}
+    th,td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+    th{position:sticky;top:0;background:#fffaf2;z-index:1}
+    .search{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:white;margin:8px 0}
+    .teacher-tools{display:grid;gap:10px;margin-top:12px}
+    textarea{width:100%;min-height:140px;border:1px solid var(--line);border-radius:14px;padding:12px;background:white;resize:vertical}
+    .note{background:var(--warn-soft);border:1px solid #efd993;border-radius:14px;padding:12px;color:#614300;font-size:14px}
+    .footer-note{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+    .hidden{display:none!important}
+    @media (max-width:820px){
+      .hero{grid-template-columns:1fr;padding:18px}
+      .grid{grid-template-columns:1fr}
+      .side{position:static}
+      .tabs{top:0;border-radius:0;margin-left:-14px;margin-right:-14px;border-left:0;border-right:0;overflow-x:auto;flex-wrap:nowrap}
+      .tab{white-space:nowrap}
+      .answer-box{grid-template-columns:1fr}
+      .choice-grid{grid-template-columns:1fr}
+      .topic-list{grid-template-columns:1fr}
+      .progress-grid{grid-template-columns:1fr 1fr 1fr}
+      .statement-text{font-size:16px}
+      .card-statement{font-size:20px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">ОГЭ математика · задание 19</div>
+        <h1>Тренажёр истинных и ложных утверждений</h1>
+        <p class="lead">Формат: ученик проверяет геометрическое утверждение, ищет ловушку, вспоминает теорему или строит контрпример. Можно дать как домашку после урока.</p>
+      </div>
+      <div class="hero-card">
+        <b>Что внутри</b>
+        <ul>
+          <li>экзаменационный режим: 3 утверждения → ответ цифрами;</li>
+          <li>карточки “верно/неверно” с мгновенным разбором;</li>
+          <li>темы: треугольники, окружность, четырёхугольники, углы, площади;</li>
+          <li>учительский режим: банк утверждений, поиск, экспорт/импорт.</li>
+        </ul>
+      </div>
+    </section>
+
+    <nav class="tabs" aria-label="Режимы тренажёра">
+      <button class="tab active" data-view="exam">Экзамен</button>
+      <button class="tab" data-view="cards">Карточки</button>
+      <button class="tab" data-view="topics">По темам</button>
+      <button class="tab" data-view="mistakes">Ошибки</button>
+      <button class="tab" data-view="teacher">Учитель</button>
+    </nav>
+
+    <div class="grid">
+      <main>
+        <section id="examView" class="panel view">
+          <h2>Экзаменационный режим</h2>
+          <p class="muted">Укажите номера верных утверждений. Ответ записывается без пробелов, например: <b>13</b>.</p>
+          <div class="theme-bar" id="examThemes"></div>
+          <div class="row">
+            <button class="btn primary" id="newExamBtn">Новый вариант</button>
+            <button class="btn ghost" id="explainExamBtn">Показать разбор</button>
+          </div>
+          <div class="exam-list" id="examList"></div>
+          <div class="check-list" id="examCheckboxes"></div>
+          <div class="answer-box">
+            <input id="examAnswer" inputmode="numeric" pattern="[0-9]*" placeholder="Введите ответ, например 12" />
+            <button class="btn good" id="checkExamBtn">Проверить</button>
+          </div>
+          <div class="result" id="examResult"></div>
+          <div class="explain hidden" id="examExplain"></div>
+        </section>
+
+        <section id="cardsView" class="panel view hidden">
+          <h2>Карточки: верно или неверно?</h2>
+          <p class="muted">Лучший режим для закрепления после урока: одно утверждение — один быстрый выбор — короткая причина.</p>
+          <div class="theme-bar" id="cardThemes"></div>
+          <div class="big-card card">
+            <div class="row">
+              <span class="tag" id="cardThemeTag">Тема</span>
+              <span class="tag warn" id="cardCountTag">0 / 0</span>
+            </div>
+            <div class="card-statement" id="cardText"></div>
+            <div class="choice-grid" id="cardChoices">
+              <button class="btn good" data-answer="true">Верно</button>
+              <button class="btn bad" data-answer="false">Неверно</button>
+            </div>
+            <div class="result" id="cardResult"></div>
+            <div class="row">
+              <button class="btn primary" id="nextCardBtn">Следующее</button>
+              <button class="btn ghost" id="shuffleCardBtn">Перемешать</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="topicsView" class="panel view hidden">
+          <h2>Тренировка по темам</h2>
+          <p class="muted">Можно назначать точечно: например, только окружность или только ловушки про параллелограммы.</p>
+          <div class="topic-list" id="topicList"></div>
+        </section>
+
+        <section id="mistakesView" class="panel view hidden">
+          <h2>Ошибки ученика</h2>
+          <p class="muted">Здесь собираются утверждения, в которых ученик ошибался. Очень удобно для “добить слабое место”.</p>
+          <div class="row">
+            <button class="btn primary" id="trainMistakesBtn">Тренировать ошибки</button>
+            <button class="btn ghost" id="clearMistakesBtn">Очистить ошибки</button>
+          </div>
+          <div id="mistakesList" class="explain"></div>
+        </section>
+
+        <section id="teacherView" class="panel view hidden">
+          <h2>Учительский режим</h2>
+          <p class="muted">Банк утверждений можно расширять: добавляй формулировки из архива, свои ловушки и короткие объяснения.</p>
+          <input class="search" id="teacherSearch" placeholder="Поиск по банку: ромб, касательная, медиана…" />
+          <div class="row">
+            <button class="btn primary" id="exportBtn">Скачать банк JSON</button>
+            <button class="btn ghost" id="resetImportedBtn">Убрать импортированные</button>
+          </div>
+          <div class="table-wrap"><table id="teacherTable"></table></div>
+          <div class="teacher-tools">
+            <h3>Быстро добавить утверждения</h3>
+            <div class="note">Формат: массив JSON. Пример: <code>[{"theme":"Окружность","text":"Диаметр является хордой.","correct":true,"explanation":"Диаметр — хорда, проходящая через центр."}]</code></div>
+            <textarea id="importBox" placeholder='[ { "theme":"Треугольники", "text":"...", "correct":true, "explanation":"..." } ]'></textarea>
+            <button class="btn good" id="importBtn">Добавить в банк</button>
+            <div class="result" id="importResult"></div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="side">
+        <h3>Прогресс</h3>
+        <div class="progress-grid">
+          <div class="metric"><div class="value" id="mAttempts">0</div><div class="label">попыток</div></div>
+          <div class="metric"><div class="value" id="mCorrect">0</div><div class="label">верно</div></div>
+          <div class="metric"><div class="value" id="mRate">0%</div><div class="label">точность</div></div>
+        </div>
+        <div style="height:12px"></div>
+        <h3>Мини-алгоритм 19-й</h3>
+        <div class="explain-card small">
+          <b>1.</b> Найди ключевые слова: “любой”, “каждый”, “всегда”, “существует”.<br>
+          <b>2.</b> Вспомни точную теорему, а не “вроде похоже”.<br>
+          <b>3.</b> Для сомнительного утверждения ищи контрпример: прямоугольник не ромб, ромб не квадрат, равные площади не дают равенства фигур.<br>
+          <b>4.</b> В ответ пиши только номера верных утверждений.
+        </div>
+        <div style="height:12px"></div>
+        <button class="btn block ghost" id="resetAllBtn">Сбросить весь прогресс</button>
+      </aside>
+    </div>
+
+    <div class="footer-note">Черновая версия для рабочих домашних заданий. База утверждений авторская, сделана под формат задания 19; архивные формулировки можно докинуть через учительский режим.</div>
+  </div>
+
+<script>
+'use strict';
+
+const BASE_STATEMENTS = [
+  {theme:'Прямые и углы', text:'Вертикальные углы равны.', correct:true, explanation:'При пересечении двух прямых противоположные углы равны. Это базовая теорема про вертикальные углы.'},
+  {theme:'Прямые и углы', text:'Смежные углы всегда равны.', correct:false, explanation:'Смежные углы не обязаны быть равными; их сумма равна 180°. Например, 40° и 140°.'},
+  {theme:'Прямые и углы', text:'Если внутренние односторонние углы при секущей в сумме дают 180°, то прямые параллельны.', correct:true, explanation:'Это признак параллельности прямых.'},
+  {theme:'Прямые и углы', text:'Если при пересечении двух прямых секущей накрест лежащие углы равны, то прямые параллельны.', correct:true, explanation:'Равенство накрест лежащих углов — признак параллельности прямых.'},
+  {theme:'Прямые и углы', text:'При пересечении параллельных прямых секущей соответственные углы равны.', correct:true, explanation:'Это свойство параллельных прямых.'},
+  {theme:'Прямые и углы', text:'Если две прямые перпендикулярны одной и той же третьей прямой, то они параллельны.', correct:true, explanation:'На плоскости две прямые, перпендикулярные одной прямой, параллельны друг другу.'},
+  {theme:'Прямые и углы', text:'Через две различные точки можно провести ровно одну прямую.', correct:true, explanation:'Это одно из базовых свойств прямой.'},
+  {theme:'Прямые и углы', text:'Через точку вне прямой можно провести две разные прямые, параллельные данной.', correct:false, explanation:'Через точку, не лежащую на прямой, проходит ровно одна прямая, параллельная данной.'},
+  {theme:'Прямые и углы', text:'Биссектриса угла делит этот угол на два равных угла.', correct:true, explanation:'Это определение биссектрисы угла.'},
+  {theme:'Прямые и углы', text:'Сумма смежных углов равна 180°.', correct:true, explanation:'Смежные углы образуют развёрнутый угол, поэтому их сумма 180°.'},
+  {theme:'Прямые и углы', text:'Если сумма двух углов равна 180°, то эти углы обязательно смежные.', correct:false, explanation:'Углы могут иметь сумму 180°, но не иметь общей стороны и общей вершины. Для смежных нужны ещё геометрические условия.'},
+
+  {theme:'Треугольники', text:'Сумма внутренних углов любого треугольника равна 180°.', correct:true, explanation:'Это базовая теорема планиметрии о сумме углов треугольника.'},
+  {theme:'Треугольники', text:'В треугольнике против большей стороны лежит больший угол.', correct:true, explanation:'Большей стороне треугольника соответствует больший противолежащий угол.'},
+  {theme:'Треугольники', text:'Если в треугольнике две стороны равны, то он обязательно равносторонний.', correct:false, explanation:'Две равные стороны дают равнобедренный треугольник. Равносторонний — когда равны все три стороны.'},
+  {theme:'Треугольники', text:'В равнобедренном треугольнике углы при основании равны.', correct:true, explanation:'Это основное свойство равнобедренного треугольника.'},
+  {theme:'Треугольники', text:'В равностороннем треугольнике каждый угол равен 60°.', correct:true, explanation:'Все углы равностороннего треугольника равны, а их сумма 180°, значит каждый по 60°.'},
+  {theme:'Треугольники', text:'Треугольник с одним прямым углом называется прямоугольным.', correct:true, explanation:'Это определение прямоугольного треугольника.'},
+  {theme:'Треугольники', text:'В прямоугольном треугольнике гипотенуза является самой длинной стороной.', correct:true, explanation:'Гипотенуза лежит напротив прямого угла, а прямой угол — самый большой угол треугольника.'},
+  {theme:'Треугольники', text:'Медиана, проведённая к гипотенузе прямоугольного треугольника, равна половине гипотенузы.', correct:true, explanation:'Центр описанной окружности прямоугольного треугольника лежит на середине гипотенузы.'},
+  {theme:'Треугольники', text:'Если медиана треугольника равна половине стороны, к которой она проведена, то треугольник прямоугольный.', correct:true, explanation:'Это обратный факт к свойству медианы, проведённой к гипотенузе.'},
+  {theme:'Треугольники', text:'Любая медиана треугольника делит его на два равных треугольника.', correct:false, explanation:'Медиана делит треугольник на две равновеликие части, но сами треугольники не всегда равны.'},
+  {theme:'Треугольники', text:'Любая медиана треугольника делит его на два треугольника равной площади.', correct:true, explanation:'У двух полученных треугольников равные основания и общая высота.'},
+  {theme:'Треугольники', text:'В любом треугольнике высота, проведённая к стороне, совпадает с медианой.', correct:false, explanation:'Так бывает не всегда. Например, в неравнобедренном треугольнике высота и медиана обычно разные.'},
+  {theme:'Треугольники', text:'В равнобедренном треугольнике высота, проведённая к основанию, является и медианой, и биссектрисой.', correct:true, explanation:'Это важное свойство равнобедренного треугольника.'},
+  {theme:'Треугольники', text:'Любая биссектриса равнобедренного треугольника является его медианой.', correct:false, explanation:'В равнобедренном треугольнике гарантированно совпадают высота, медиана и биссектриса, проведённые к основанию. “Любая” — ловушка.'},
+  {theme:'Треугольники', text:'Если две стороны и угол между ними равны соответствующим элементам другого треугольника, то треугольники равны.', correct:true, explanation:'Это первый признак равенства треугольников: две стороны и угол между ними.'},
+  {theme:'Треугольники', text:'Если две стороны и не заключённый между ними угол равны, то треугольники всегда равны.', correct:false, explanation:'Это не является надёжным признаком равенства: возможны разные треугольники.'},
+  {theme:'Треугольники', text:'Если два угла одного треугольника равны двум углам другого, то такие треугольники подобны.', correct:true, explanation:'Это признак подобия треугольников по двум углам.'},
+  {theme:'Треугольники', text:'Если все углы одного треугольника равны соответствующим углам другого, то треугольники обязательно равны.', correct:false, explanation:'Равенство углов даёт подобие, но размеры могут быть разными.'},
+  {theme:'Треугольники', text:'Если три стороны одного треугольника пропорциональны трём сторонам другого, то треугольники подобны.', correct:true, explanation:'Это признак подобия по трём сторонам.'},
+  {theme:'Треугольники', text:'Равные треугольники имеют равные площади.', correct:true, explanation:'У равных фигур все соответствующие элементы совпадают, поэтому площади равны.'},
+  {theme:'Треугольники', text:'Треугольники с равными площадями обязательно равны.', correct:false, explanation:'Равная площадь не гарантирует равенство фигур. Можно построить разные треугольники одной площади.'},
+  {theme:'Треугольники', text:'В любом треугольнике каждый угол меньше 90°.', correct:false, explanation:'Существуют прямоугольные и тупоугольные треугольники.'},
+  {theme:'Треугольники', text:'Внешний угол треугольника равен сумме двух внутренних углов, не смежных с ним.', correct:true, explanation:'Это теорема о внешнем угле треугольника.'},
+  {theme:'Треугольники', text:'Хотя бы один угол любого треугольника не превышает 60°.', correct:true, explanation:'Если бы все три угла были больше 60°, их сумма была бы больше 180°, что невозможно.'},
+  {theme:'Треугольники', text:'В треугольнике могут быть два тупых угла.', correct:false, explanation:'Два тупых угла дали бы сумму больше 180°.'},
+  {theme:'Треугольники', text:'В треугольнике не может быть двух прямых углов.', correct:true, explanation:'Два прямых угла уже дают 180°, а третий угол должен быть положительным.'},
+  {theme:'Треугольники', text:'Треугольник со сторонами 3, 4 и 5 является прямоугольным.', correct:true, explanation:'3² + 4² = 5², значит по обратной теореме Пифагора треугольник прямоугольный.'},
+  {theme:'Треугольники', text:'Существуют треугольники со сторонами 2, 3 и 5.', correct:false, explanation:'Для треугольника сумма любых двух сторон должна быть больше третьей. Здесь 2 + 3 = 5, поэтому треугольник не существует.'},
+  {theme:'Треугольники', text:'Любые три положительные длины могут быть сторонами треугольника.', correct:false, explanation:'Нужно выполнять неравенство треугольника: сумма двух сторон больше третьей.'},
+  {theme:'Треугольники', text:'Если в треугольнике два угла равны, то он равнобедренный.', correct:true, explanation:'Напротив равных углов лежат равные стороны.'},
+  {theme:'Треугольники', text:'Если треугольник равнобедренный, то все его углы равны.', correct:false, explanation:'В равнобедренном треугольнике равны только углы при основании. Все углы равны только у равностороннего.'},
+  {theme:'Треугольники', text:'Средняя линия треугольника параллельна третьей стороне и равна половине этой стороны.', correct:true, explanation:'Это свойство средней линии треугольника.'},
+
+  {theme:'Четырёхугольники', text:'Сумма внутренних углов выпуклого четырёхугольника равна 360°.', correct:true, explanation:'Любой выпуклый четырёхугольник можно разбить диагональю на два треугольника.'},
+  {theme:'Четырёхугольники', text:'Диагонали параллелограмма делятся точкой пересечения пополам.', correct:true, explanation:'Это основное свойство диагоналей параллелограмма.'},
+  {theme:'Четырёхугольники', text:'Если диагонали четырёхугольника делятся точкой пересечения пополам, то этот четырёхугольник — параллелограмм.', correct:true, explanation:'Это признак параллелограмма.'},
+  {theme:'Четырёхугольники', text:'Противоположные стороны параллелограмма равны.', correct:true, explanation:'Это свойство параллелограмма.'},
+  {theme:'Четырёхугольники', text:'В любом параллелограмме диагонали равны.', correct:false, explanation:'Диагонали равны не у любого параллелограмма, а у прямоугольника и квадрата.'},
+  {theme:'Четырёхугольники', text:'Если диагонали параллелограмма равны, то этот параллелограмм является прямоугольником.', correct:true, explanation:'Равенство диагоналей — признак прямоугольника среди параллелограммов.'},
+  {theme:'Четырёхугольники', text:'Если диагонали параллелограмма перпендикулярны, то этот параллелограмм является ромбом.', correct:true, explanation:'Перпендикулярность диагоналей в параллелограмме даёт равенство всех сторон.'},
+  {theme:'Четырёхугольники', text:'Если все стороны параллелограмма равны, то это ромб.', correct:true, explanation:'Ромб — это параллелограмм, у которого все стороны равны.'},
+  {theme:'Четырёхугольники', text:'Каждый квадрат является ромбом.', correct:true, explanation:'У квадрата все стороны равны, значит он подходит под определение ромба.'},
+  {theme:'Четырёхугольники', text:'Каждый ромб является квадратом.', correct:false, explanation:'У ромба все стороны равны, но углы не обязаны быть прямыми.'},
+  {theme:'Четырёхугольники', text:'Каждый прямоугольник является параллелограммом.', correct:true, explanation:'У прямоугольника противоположные стороны параллельны, значит это параллелограмм.'},
+  {theme:'Четырёхугольники', text:'Каждый параллелограмм является прямоугольником.', correct:false, explanation:'У параллелограмма углы не обязаны быть прямыми.'},
+  {theme:'Четырёхугольники', text:'В любом прямоугольнике диагонали равны.', correct:true, explanation:'Это основное свойство прямоугольника.'},
+  {theme:'Четырёхугольники', text:'В любом ромбе диагонали равны.', correct:false, explanation:'У ромба диагонали обычно не равны. Равны они у квадрата.'},
+  {theme:'Четырёхугольники', text:'В любом ромбе диагонали перпендикулярны.', correct:true, explanation:'Это свойство ромба.'},
+  {theme:'Четырёхугольники', text:'Диагонали ромба делят его углы пополам.', correct:true, explanation:'В ромбе каждая диагональ является биссектрисой углов, которые она соединяет.'},
+  {theme:'Четырёхугольники', text:'В любой трапеции боковые стороны равны.', correct:false, explanation:'Боковые стороны равны только у равнобедренной трапеции.'},
+  {theme:'Четырёхугольники', text:'Основания трапеции параллельны.', correct:true, explanation:'Основания — это параллельные стороны трапеции.'},
+  {theme:'Четырёхугольники', text:'Средняя линия трапеции параллельна основаниям.', correct:true, explanation:'Это свойство средней линии трапеции.'},
+  {theme:'Четырёхугольники', text:'Средняя линия трапеции равна полусумме оснований.', correct:true, explanation:'Формула средней линии трапеции: m = (a + b) / 2.'},
+  {theme:'Четырёхугольники', text:'Диагонали любой трапеции равны.', correct:false, explanation:'Диагонали равны у равнобедренной трапеции, но не у любой.'},
+  {theme:'Четырёхугольники', text:'В равнобедренной трапеции диагонали равны.', correct:true, explanation:'Это свойство равнобедренной трапеции.'},
+  {theme:'Четырёхугольники', text:'В равнобедренной трапеции углы при каждом основании равны.', correct:true, explanation:'Это свойство равнобедренной трапеции.'},
+  {theme:'Четырёхугольники', text:'Если стороны двух четырёхугольников попарно равны, то четырёхугольники обязательно равны.', correct:false, explanation:'Контрпример: два ромба с одинаковыми сторонами, но разными углами.'},
+  {theme:'Четырёхугольники', text:'Если один угол параллелограмма прямой, то этот параллелограмм является прямоугольником.', correct:true, explanation:'В параллелограмме соседние углы в сумме 180°. Если один угол 90°, то все углы прямые.'},
+  {theme:'Четырёхугольники', text:'Если один угол ромба прямой, то этот ромб является квадратом.', correct:true, explanation:'Ромб с прямым углом становится прямоугольником, а прямоугольный ромб — квадрат.'},
+  {theme:'Четырёхугольники', text:'Если один угол четырёхугольника прямой, то этот четырёхугольник является прямоугольником.', correct:false, explanation:'Одного прямого угла недостаточно: у четырёхугольника остальные углы могут быть любыми.'},
+  {theme:'Четырёхугольники', text:'Если все углы параллелограмма равны, то он является прямоугольником.', correct:true, explanation:'Сумма углов параллелограмма 360°, значит четыре равных угла по 90°.'},
+  {theme:'Четырёхугольники', text:'Если диагонали четырёхугольника равны и перпендикулярны, то это обязательно квадрат.', correct:false, explanation:'Для квадрата нужно больше условий. Равные и перпендикулярные диагонали сами по себе не гарантируют квадрат.'},
+  {theme:'Четырёхугольники', text:'Если диагонали четырёхугольника равны и делятся точкой пересечения пополам, то это прямоугольник.', correct:true, explanation:'Диагонали делятся пополам — это параллелограмм; равные диагонали в параллелограмме дают прямоугольник.'},
+
+  {theme:'Окружность', text:'Все радиусы одной окружности равны.', correct:true, explanation:'Радиус — расстояние от центра до точки окружности, оно постоянно.'},
+  {theme:'Окружность', text:'Диаметр окружности в два раза больше её радиуса.', correct:true, explanation:'Диаметр состоит из двух радиусов: d = 2r.'},
+  {theme:'Окружность', text:'Расстояние от центра окружности до любой точки этой окружности равно радиусу.', correct:true, explanation:'Это определение окружности.'},
+  {theme:'Окружность', text:'Хорда, проходящая через центр окружности, является диаметром.', correct:true, explanation:'Диаметр — это хорда, проходящая через центр окружности.'},
+  {theme:'Окружность', text:'Диаметр является самой длинной хордой окружности.', correct:true, explanation:'Хорда не может быть длиннее диаметра.'},
+  {theme:'Окружность', text:'Любая хорда окружности является диаметром.', correct:false, explanation:'Диаметром является только хорда, проходящая через центр.'},
+  {theme:'Окружность', text:'Касательная к окружности перпендикулярна радиусу, проведённому в точку касания.', correct:true, explanation:'Это основное свойство касательной.'},
+  {theme:'Окружность', text:'Отрезки касательных, проведённых из одной точки к окружности, равны.', correct:true, explanation:'Если из одной точки провести две касательные к окружности, их отрезки до точек касания равны.'},
+  {theme:'Окружность', text:'Вписанный угол, опирающийся на диаметр, является прямым.', correct:true, explanation:'Вписанный угол, опирающийся на полуокружность, равен 90°.'},
+  {theme:'Окружность', text:'Вписанные углы, опирающиеся на одну и ту же дугу, равны.', correct:true, explanation:'Вписанные углы измеряются половиной дуги, на которую опираются.'},
+  {theme:'Окружность', text:'Центральный угол в два раза больше вписанного угла, опирающегося на ту же дугу.', correct:true, explanation:'Центральный угол равен градусной мере дуги, а вписанный — половине этой меры.'},
+  {theme:'Окружность', text:'Если вписанный угол опирается на диаметр, то он всегда острый.', correct:false, explanation:'Такой угол прямой, то есть равен 90°.'},
+  {theme:'Окружность', text:'Около любого треугольника можно описать окружность.', correct:true, explanation:'У любого треугольника есть описанная окружность.'},
+  {theme:'Окружность', text:'В любой четырёхугольник можно вписать окружность.', correct:false, explanation:'Вписанная окружность существует не у любого четырёхугольника. Нужны специальные условия.'},
+  {theme:'Окружность', text:'Около любого четырёхугольника можно описать окружность.', correct:false, explanation:'Описанная окружность существует не у любого четырёхугольника. Например, не всякий параллелограмм можно вписать в окружность.'},
+  {theme:'Окружность', text:'Центр окружности, описанной около прямоугольного треугольника, лежит на середине гипотенузы.', correct:true, explanation:'У прямоугольного треугольника гипотенуза является диаметром описанной окружности.'},
+  {theme:'Окружность', text:'Касательная имеет с окружностью две общие точки.', correct:false, explanation:'Касательная касается окружности в одной точке.'},
+  {theme:'Окружность', text:'Секущая имеет с окружностью две общие точки.', correct:true, explanation:'Секущая пересекает окружность в двух точках.'},
+
+  {theme:'Площади и подобие', text:'Площадь параллелограмма равна произведению стороны на высоту, проведённую к этой стороне.', correct:true, explanation:'Формула площади параллелограмма: S = a · h.'},
+  {theme:'Площади и подобие', text:'Площадь треугольника равна половине произведения стороны на высоту, проведённую к этой стороне.', correct:true, explanation:'Формула площади треугольника: S = a · h / 2.'},
+  {theme:'Площади и подобие', text:'Если у двух треугольников равны основания и высоты, проведённые к ним, то площади этих треугольников равны.', correct:true, explanation:'Площадь треугольника зависит от основания и соответствующей высоты: S = a · h / 2.'},
+  {theme:'Площади и подобие', text:'Если площади двух треугольников равны, то треугольники обязательно равны.', correct:false, explanation:'Одинаковая площадь не гарантирует одинаковую форму и размеры.'},
+  {theme:'Площади и подобие', text:'Площади подобных фигур относятся как квадраты коэффициента подобия.', correct:true, explanation:'Если стороны увеличились в k раз, площади увеличились в k² раз.'},
+  {theme:'Площади и подобие', text:'Периметры подобных треугольников относятся как коэффициент подобия.', correct:true, explanation:'Все линейные элементы подобных фигур меняются в k раз.'},
+  {theme:'Площади и подобие', text:'Если коэффициент подобия равен 2, то площадь подобной фигуры увеличивается в 2 раза.', correct:false, explanation:'Площадь увеличивается в квадрат коэффициента: 2² = 4 раза.'},
+  {theme:'Площади и подобие', text:'Площадь квадрата со стороной a равна 4a.', correct:false, explanation:'4a — это периметр квадрата. Площадь равна a².'},
+  {theme:'Площади и подобие', text:'Диагональ квадрата со стороной a равна a√2.', correct:true, explanation:'По теореме Пифагора d² = a² + a² = 2a², значит d = a√2.'},
+  {theme:'Площади и подобие', text:'Площадь ромба равна половине произведения его диагоналей.', correct:true, explanation:'Формула площади ромба: S = d₁ · d₂ / 2.'},
+  {theme:'Площади и подобие', text:'Площадь трапеции равна произведению полусуммы оснований на высоту.', correct:true, explanation:'Формула площади трапеции: S = (a + b) · h / 2.'},
+  {theme:'Площади и подобие', text:'Расстояние между точками на координатной прямой равно модулю разности их координат.', correct:true, explanation:'На прямой расстояние между x₁ и x₂ равно |x₁ − x₂|.'},
+  {theme:'Площади и подобие', text:'Координаты середины отрезка равны средним арифметическим соответствующих координат его концов.', correct:true, explanation:'Для концов (x₁;y₁) и (x₂;y₂) середина имеет координаты ((x₁+x₂)/2; (y₁+y₂)/2).'},
+  {theme:'Площади и подобие', text:'Если периметры двух фигур равны, то их площади тоже равны.', correct:false, explanation:'Фигуры с одним и тем же периметром могут иметь разные площади.'}
+];
+
+const STORE_KEY = 'oge19_trainer_v1';
+const IMPORT_KEY = 'oge19_imported_v1';
+let state = loadState();
+let imported = loadImported();
+let allStatements = buildBank();
+let currentExam = [];
+let currentCardDeck = [];
+let currentCardIndex = 0;
+let activeExamTheme = 'Все темы';
+let activeCardTheme = 'Все темы';
+
+function buildBank(){
+  const merged = [...BASE_STATEMENTS, ...imported];
+  return merged.map((s, i) => ({ id: s.id || `s${i+1}`, theme: s.theme || 'Без темы', text: s.text, correct: !!s.correct, explanation: s.explanation || 'Разбор пока не добавлен.' }));
+}
+function loadState(){
+  try{return JSON.parse(localStorage.getItem(STORE_KEY)) || {attempts:0, correct:0, byId:{}, mistakes:{}};}catch(e){return {attempts:0, correct:0, byId:{}, mistakes:{}};}
+}
+function saveState(){localStorage.setItem(STORE_KEY, JSON.stringify(state));}
+function loadImported(){
+  try{return JSON.parse(localStorage.getItem(IMPORT_KEY)) || [];}catch(e){return [];}
+}
+function saveImported(){localStorage.setItem(IMPORT_KEY, JSON.stringify(imported));}
+function themes(){return ['Все темы', ...Array.from(new Set(allStatements.map(s=>s.theme))).sort()];}
+function byTheme(theme){return theme === 'Все темы' ? allStatements : allStatements.filter(s => s.theme === theme);}
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+function normAnswer(s){return String(s || '').replace(/[^123]/g,'').split('').filter((x,i,a)=>a.indexOf(x)===i).sort().join('');}
+function record(statement, isCorrect){
+  state.attempts += 1;
+  if(isCorrect) state.correct += 1;
+  if(!state.byId[statement.id]) state.byId[statement.id] = {attempts:0, correct:0};
+  state.byId[statement.id].attempts += 1;
+  if(isCorrect) state.byId[statement.id].correct += 1;
+  if(isCorrect){ delete state.mistakes[statement.id]; }
+  else { state.mistakes[statement.id] = true; }
+  saveState();
+  renderStats();
+}
+function renderStats(){
+  const rate = state.attempts ? Math.round(state.correct/state.attempts*100) : 0;
+  document.getElementById('mAttempts').textContent = state.attempts;
+  document.getElementById('mCorrect').textContent = state.correct;
+  document.getElementById('mRate').textContent = rate + '%';
+}
+function makeThemeBar(containerId, active, cb){
+  const box = document.getElementById(containerId);
+  box.innerHTML = '';
+  themes().forEach(t=>{
+    const b = document.createElement('button');
+    b.className = 'chip' + (t===active?' active':'');
+    b.textContent = t;
+    b.onclick = () => cb(t);
+    box.appendChild(b);
+  });
+}
+
+function newExam(){
+  const pool = shuffle(byTheme(activeExamTheme));
+  let set = [];
+  for(let attempt=0;attempt<200;attempt++){
+    set = shuffle(pool).slice(0,3);
+    const trues = set.filter(s=>s.correct).length;
+    if(set.length===3 && trues>=1 && trues<=2) break;
+  }
+  currentExam = set;
+  document.getElementById('examAnswer').value = '';
+  document.getElementById('examResult').className = 'result';
+  document.getElementById('examResult').innerHTML = '';
+  document.getElementById('examExplain').classList.add('hidden');
+  renderExam();
+}
+function renderExam(){
+  const list = document.getElementById('examList');
+  list.innerHTML = currentExam.map((s,i)=>`
+    <div class="statement">
+      <div class="num">${i+1}</div>
+      <div><div class="statement-text">${escapeHtml(s.text)}</div><div class="theme">${escapeHtml(s.theme)}</div></div>
+    </div>`).join('');
+  const checks = document.getElementById('examCheckboxes');
+  checks.innerHTML = [1,2,3].map(n=>`<label class="check-pill"><input type="checkbox" data-n="${n}"> утверждение ${n}</label>`).join('');
+  checks.querySelectorAll('input').forEach(ch=>{
+    ch.addEventListener('change',()=>{
+      const ans = Array.from(checks.querySelectorAll('input:checked')).map(x=>x.dataset.n).sort().join('');
+      document.getElementById('examAnswer').value = ans;
+    });
+  });
+  renderExamExplain(false);
+}
+function correctExamAnswer(){return currentExam.map((s,i)=>s.correct?String(i+1):'').join('');}
+function checkExam(){
+  const user = normAnswer(document.getElementById('examAnswer').value);
+  const correct = correctExamAnswer();
+  const ok = user === correct;
+  currentExam.forEach((s,i)=>{
+    const chose = user.includes(String(i+1));
+    const itemOk = chose === s.correct;
+    record(s,itemOk);
+  });
+  const res = document.getElementById('examResult');
+  res.className = 'result show ' + (ok ? 'good' : 'bad');
+  res.innerHTML = ok ? `<b>Верно.</b> Ответ: ${correct}.` : `<b>Пока нет.</b> Правильный ответ: <b>${correct}</b>. Твой ответ: <b>${user || 'пусто'}</b>.`;
+  renderExamExplain(true);
+}
+function renderExamExplain(show){
+  const box = document.getElementById('examExplain');
+  box.innerHTML = currentExam.map((s,i)=>`
+    <div class="explain-card">
+      <span class="tag ${s.correct?'good':'bad'}">${i+1}: ${s.correct?'верно':'неверно'}</span>
+      <div style="margin-top:8px"><b>${escapeHtml(s.text)}</b></div>
+      <div class="muted" style="margin-top:6px">${escapeHtml(s.explanation)}</div>
+    </div>`).join('');
+  if(show) box.classList.remove('hidden');
+}
+
+function buildCardDeck(){
+  currentCardDeck = shuffle(byTheme(activeCardTheme));
+  currentCardIndex = 0;
+  renderCard();
+}
+function renderCard(){
+  if(!currentCardDeck.length) buildCardDeck();
+  const s = currentCardDeck[currentCardIndex];
+  document.getElementById('cardThemeTag').textContent = s.theme;
+  document.getElementById('cardCountTag').textContent = `${currentCardIndex+1} / ${currentCardDeck.length}`;
+  document.getElementById('cardText').textContent = s.text;
+  const res = document.getElementById('cardResult');
+  res.className = 'result';
+  res.innerHTML = '';
+}
+function answerCard(value){
+  const s = currentCardDeck[currentCardIndex];
+  const ok = value === s.correct;
+  record(s,ok);
+  const res = document.getElementById('cardResult');
+  res.className = 'result show ' + (ok ? 'good' : 'bad');
+  res.innerHTML = `<b>${ok?'Верно!':'Не совсем.'}</b> Это утверждение ${s.correct?'верное':'неверное'}.<br><span class="muted">${escapeHtml(s.explanation)}</span>`;
+}
+function nextCard(){
+  currentCardIndex++;
+  if(currentCardIndex >= currentCardDeck.length) currentCardIndex = 0;
+  renderCard();
+}
+
+function renderTopics(){
+  const box = document.getElementById('topicList');
+  box.innerHTML = themes().filter(t=>t!=='Все темы').map(t=>{
+    const count = byTheme(t).length;
+    const attempts = byTheme(t).reduce((sum,s)=>sum+(state.byId[s.id]?.attempts || 0),0);
+    return `<div class="topic-card" data-topic="${escapeAttr(t)}"><b>${escapeHtml(t)}</b><span class="muted">${count} утверждений · ${attempts} попыток</span></div>`;
+  }).join('');
+  box.querySelectorAll('.topic-card').forEach(card=>{
+    card.onclick = () => {
+      activeCardTheme = card.dataset.topic;
+      setView('cards');
+      initThemeBars();
+      buildCardDeck();
+    };
+  });
+}
+
+function renderMistakes(){
+  const ids = Object.keys(state.mistakes || {});
+  const missed = allStatements.filter(s=>ids.includes(s.id));
+  const box = document.getElementById('mistakesList');
+  if(!missed.length){
+    box.innerHTML = '<div class="explain-card">Пока ошибок нет. Чисто, как тетрадь в первый день сентября.</div>';
+    return;
+  }
+  box.innerHTML = missed.map(s=>`
+    <div class="explain-card">
+      <span class="tag">${escapeHtml(s.theme)}</span>
+      <div style="margin-top:8px"><b>${escapeHtml(s.text)}</b></div>
+      <div class="muted" style="margin-top:6px">${escapeHtml(s.explanation)}</div>
+    </div>`).join('');
+}
+function trainMistakes(){
+  const ids = Object.keys(state.mistakes || {});
+  const missed = allStatements.filter(s=>ids.includes(s.id));
+  if(!missed.length) return;
+  currentCardDeck = shuffle(missed);
+  currentCardIndex = 0;
+  setView('cards');
+  renderCard();
+}
+
+function renderTeacher(){
+  const q = document.getElementById('teacherSearch').value.trim().toLowerCase();
+  const rows = allStatements.filter(s=>!q || [s.theme,s.text,s.explanation].join(' ').toLowerCase().includes(q));
+  const table = document.getElementById('teacherTable');
+  table.innerHTML = `<thead><tr><th>№</th><th>Тема</th><th>Утверждение</th><th>Ответ</th><th>Разбор</th></tr></thead><tbody>` +
+    rows.map((s,i)=>`<tr><td>${i+1}</td><td>${escapeHtml(s.theme)}</td><td>${escapeHtml(s.text)}</td><td>${s.correct?'верно':'неверно'}</td><td>${escapeHtml(s.explanation)}</td></tr>`).join('') +
+    `</tbody>`;
+}
+
+function setView(name){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active', b.dataset.view===name));
+  document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));
+  document.getElementById(name+'View').classList.remove('hidden');
+  if(name==='topics') renderTopics();
+  if(name==='mistakes') renderMistakes();
+  if(name==='teacher') renderTeacher();
+}
+function initThemeBars(){
+  makeThemeBar('examThemes', activeExamTheme, (t)=>{activeExamTheme=t; initThemeBars(); newExam();});
+  makeThemeBar('cardThemes', activeCardTheme, (t)=>{activeCardTheme=t; initThemeBars(); buildCardDeck();});
+}
+function downloadJson(){
+  const data = JSON.stringify(allStatements.map(({theme,text,correct,explanation})=>({theme,text,correct,explanation})), null, 2);
+  const blob = new Blob([data], {type:'application/json;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'oge19_statements_bank.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function importJson(){
+  const res = document.getElementById('importResult');
+  try{
+    const raw = document.getElementById('importBox').value.trim();
+    const arr = JSON.parse(raw);
+    if(!Array.isArray(arr)) throw new Error('Нужен массив JSON.');
+    const cleaned = arr.map((x,idx)=>{
+      if(!x.text || typeof x.correct !== 'boolean') throw new Error('У каждого элемента должны быть text и correct. Ошибка в элементе '+(idx+1));
+      return {theme:x.theme || 'Импорт', text:String(x.text), correct:x.correct, explanation:x.explanation || 'Разбор пока не добавлен.'};
+    });
+    imported = [...imported, ...cleaned];
+    saveImported();
+    allStatements = buildBank();
+    initThemeBars();
+    renderTeacher();
+    res.className = 'result show good';
+    res.innerHTML = `<b>Добавлено:</b> ${cleaned.length} утверждений.`;
+    document.getElementById('importBox').value = '';
+  } catch(e){
+    res.className = 'result show bad';
+    res.innerHTML = `<b>Не получилось импортировать.</b> ${escapeHtml(e.message)}`;
+  }
+}
+function escapeHtml(str){return String(str).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+function escapeAttr(str){return escapeHtml(str).replace(/`/g,'&#096;');}
+
+// Events
+for(const b of document.querySelectorAll('.tab')) b.onclick = () => setView(b.dataset.view);
+document.getElementById('newExamBtn').onclick = newExam;
+document.getElementById('checkExamBtn').onclick = checkExam;
+document.getElementById('explainExamBtn').onclick = () => { renderExamExplain(true); document.getElementById('examExplain').classList.remove('hidden'); };
+document.getElementById('examAnswer').addEventListener('keydown', e=>{ if(e.key==='Enter') checkExam(); });
+document.getElementById('cardChoices').querySelectorAll('button').forEach(b=>b.onclick=()=>answerCard(b.dataset.answer==='true'));
+document.getElementById('nextCardBtn').onclick = nextCard;
+document.getElementById('shuffleCardBtn').onclick = buildCardDeck;
+document.getElementById('trainMistakesBtn').onclick = trainMistakes;
+document.getElementById('clearMistakesBtn').onclick = () => { state.mistakes = {}; saveState(); renderMistakes(); };
+document.getElementById('teacherSearch').oninput = renderTeacher;
+document.getElementById('exportBtn').onclick = downloadJson;
+document.getElementById('importBtn').onclick = importJson;
+document.getElementById('resetImportedBtn').onclick = () => { imported = []; saveImported(); allStatements = buildBank(); initThemeBars(); renderTeacher(); };
+document.getElementById('resetAllBtn').onclick = () => { if(confirm('Сбросить весь прогресс ученика?')){ state={attempts:0,correct:0,byId:{},mistakes:{}}; saveState(); renderStats(); renderMistakes(); }};
+
+initThemeBars();
+renderStats();
+newExam();
+buildCardDeck();
+renderTopics();
+</script>
+</body>
+</html>

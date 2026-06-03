@@ -1,0 +1,1441 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Тренажёр геометрических высказываний</title>
+<style>
+:root{
+  --bg:#fff7ed;--panel:#fffdf8;--ink:#1f2937;--muted:#6b7280;--line:#eadcc8;
+  --brand:#7c3aed;--brand2:#ec4899;--accent:#f97316;
+  --good:#138a4b;--good-bg:#e9f8ef;--good-line:#bce8cb;
+  --bad:#b42318;--bad-bg:#fff0ee;--bad-line:#ffd0cc;
+  --warn:#9a6700;--warn-bg:#fff7cc;--warn-line:#f6df7d;
+  --blue:#1d4ed8;--blue-bg:#eff6ff;--blue-line:#bfdbfe;
+  --shadow:0 18px 50px rgba(86,52,18,.12);
+  --r-sm:10px;--r-md:14px;--r-lg:18px;--r-xl:24px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:radial-gradient(circle at top left,#fff 0,#fff7ed 45%,#f8efe1 100%);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Inter,Arial,sans-serif;line-height:1.5;min-height:100vh}
+.wrap{max-width:1180px;margin:0 auto;padding:16px}
+.hero{display:grid;grid-template-columns:1.25fr .75fr;gap:14px;align-items:stretch;margin-bottom:12px}
+.hero-main,.hero-side,.panel,.side{background:rgba(255,253,248,.92);border:1px solid var(--line);border-radius:var(--r-xl);box-shadow:var(--shadow)}
+.hero-main{padding:22px}.hero-side{padding:18px}
+.eyebrow{letter-spacing:.08em;text-transform:uppercase;color:var(--brand);font-weight:800;font-size:12px}
+h1{font-size:clamp(26px,5vw,46px);line-height:1.05;margin:8px 0 10px}
+h2{margin:0 0 8px;font-size:22px}
+h3{margin:14px 0 8px;font-size:16px}
+.lead{font-size:16px;color:#4b5563;max-width:760px;margin:0}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.badge,.tag{display:inline-flex;gap:6px;align-items:center;padding:5px 10px;border-radius:999px;background:#f5f0ff;color:#4c1d95;font-size:12px;font-weight:700;border:1px solid #ddd0ff;line-height:1.2}
+.tag.good{background:var(--good-bg);color:var(--good);border-color:var(--good-line)}
+.tag.bad{background:var(--bad-bg);color:var(--bad);border-color:var(--bad-line)}
+.tag.warn{background:var(--warn-bg);color:var(--warn);border-color:var(--warn-line)}
+.tag.blue{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-line)}
+.tag.neutral{background:#f3f4f6;color:#374151;border-color:#e5e7eb}
+.notice{padding:10px 12px;border-radius:var(--r-md);background:var(--warn-bg);border:1px solid var(--warn-line);color:#694a00;font-size:14px;margin-top:10px}
+.notice.blue{background:var(--blue-bg);border-color:var(--blue-line);color:#1e3a8a}
+.notice.good{background:var(--good-bg);border-color:var(--good-line);color:#075b2e}
+.tabs{position:sticky;top:0;z-index:20;display:flex;gap:6px;flex-wrap:nowrap;padding:8px;margin:10px 0 14px;background:rgba(255,247,237,.96);border:1px solid var(--line);border-radius:var(--r-lg);backdrop-filter:blur(8px);overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tab{flex:0 0 auto;border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;cursor:pointer;font-weight:800;color:#4b5563;font-size:14px;white-space:nowrap;min-height:42px}
+.tab.active{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-color:transparent}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:14px}
+.panel{padding:18px;margin-bottom:14px}
+.side{padding:16px;position:sticky;top:80px;align-self:start}
+.muted{color:var(--muted)}.small{font-size:13px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.between{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap;margin-bottom:8px}
+.btn{border:1px solid var(--line);background:#fff;border-radius:var(--r-md);padding:11px 14px;font-weight:800;cursor:pointer;color:var(--ink);font-size:14px;min-height:44px;line-height:1.2;transition:transform .08s ease}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border-color:transparent}
+.btn.good{background:var(--good);color:#fff;border-color:transparent}
+.btn.bad{background:var(--bad);color:#fff;border-color:transparent}
+.btn.warn{background:#fffbeb;border-color:var(--warn-line);color:#7a4d00}
+.btn.ghost{background:#fff}
+.btn.big{padding:16px 18px;font-size:16px;min-height:56px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+select,input,textarea{width:100%;border:1px solid var(--line);border-radius:var(--r-md);background:#fff;padding:11px 13px;font-size:16px;color:var(--ink);font-family:inherit}
+textarea{min-height:170px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.4}
+.field{display:grid;gap:6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.metric{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:10px 8px;text-align:center}
+.metric .v{font-weight:900;font-size:22px;line-height:1.1}
+.metric .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+.statement-list{display:grid;gap:10px;margin:12px 0}
+.statement{display:grid;grid-template-columns:38px minmax(0,1fr);gap:10px;background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:12px}
+.num{width:38px;height:38px;border-radius:11px;background:#f5f0ff;display:grid;place-items:center;font-weight:900;color:#4c1d95;font-size:16px}
+.statement-text{font-size:17px;font-weight:600;line-height:1.35}
+.source-line{margin-top:4px;color:var(--muted);font-size:12px}
+.answer-box{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;margin-top:10px}
+.result{display:none;margin-top:12px;padding:12px 14px;border-radius:var(--r-md);border:1px solid var(--line);font-size:14px}
+.result.show{display:block}
+.result.good{background:var(--good-bg);border-color:var(--good-line);color:#075b2e}
+.result.bad{background:var(--bad-bg);border-color:var(--bad-line);color:#7a120c}
+.result.warn{background:var(--warn-bg);border-color:var(--warn-line);color:#694a00}
+.explain-grid{display:grid;gap:10px;margin-top:12px}
+.explain-card{display:grid;grid-template-columns:160px minmax(0,1fr);gap:12px;background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:12px}
+.svgbox{border-radius:var(--r-md);background:#f8fafc;border:1px solid #e5e7eb;min-height:120px;display:grid;place-items:center;overflow:hidden;padding:6px}
+.svgbox svg{width:100%;height:auto;max-height:140px;display:block}
+.card-big{background:#fff;border:1px solid var(--line);border-radius:var(--r-xl);padding:18px;margin-top:12px}
+.card-text{font-size:20px;font-weight:700;line-height:1.3;margin:14px 0}
+.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice-grid.full{grid-template-columns:1fr}
+.option-btn{text-align:left;border:1px solid var(--line);background:#fff;border-radius:var(--r-md);padding:14px 16px;cursor:pointer;font-weight:600;color:var(--ink);font-size:15px;display:flex;gap:10px;align-items:flex-start;min-height:54px;line-height:1.35;width:100%}
+.option-btn:hover{background:#fafafa}
+.option-btn.correct{background:var(--good-bg);border-color:var(--good-line);color:#075b2e}
+.option-btn.wrong{background:var(--bad-bg);border-color:var(--bad-line);color:#7a120c}
+.option-btn .letter{flex:0 0 28px;width:28px;height:28px;border-radius:8px;background:#f5f0ff;color:#4c1d95;font-weight:800;display:grid;place-items:center;font-size:13px}
+.option-btn.correct .letter{background:#bce8cb;color:#075b2e}
+.option-btn.wrong .letter{background:#ffd0cc;color:#7a120c}
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.topic-card{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:12px;cursor:pointer;min-height:80px}
+.topic-card.active{outline:3px solid rgba(124,58,237,.25);border-color:#c4b5fd}
+.mini-list{display:grid;gap:8px}
+.mini-item{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px;font-size:13px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:var(--r-md);background:#fff;max-height:560px}
+table{border-collapse:collapse;width:100%;min-width:680px;font-size:14px}
+th,td{padding:9px 10px;border-bottom:1px solid #eee;text-align:left;vertical-align:top}
+th{background:#fff7ed;position:sticky;top:0;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#7a4d00}
+.bank-row.false{background:#fffafa}.bank-row.true{background:#fafffb}
+.bank-row.review{background:#fffbeb}
+.hidden{display:none!important}
+.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f3f4f6;border:1px solid #e5e7eb;padding:2px 7px;border-radius:6px;font-size:13px}
+.ok-dot,.bad-dot,.warn-dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.ok-dot{background:var(--good)}.bad-dot{background:var(--bad)}.warn-dot{background:var(--warn)}
+.bar{height:8px;border-radius:4px;background:#f3f4f6;overflow:hidden;margin-top:6px}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--brand),var(--brand2));border-radius:4px;transition:width .3s ease}
+.bar-fill.bad{background:var(--bad)}
+.bar-fill.good{background:var(--good)}
+.bar-fill.warn{background:var(--warn)}
+.help-toggle{position:fixed;right:14px;bottom:14px;z-index:30;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;border:none;border-radius:50%;width:54px;height:54px;font-size:22px;cursor:pointer;box-shadow:var(--shadow);font-weight:900;display:grid;place-items:center}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40;display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto}
+.modal-bg.show{display:flex}
+.modal{background:#fffdf8;border-radius:var(--r-xl);padding:22px;max-width:600px;width:100%;border:1px solid var(--line);margin-top:40px}
+.modal h2{margin-top:0}
+.steps{display:grid;gap:10px;counter-reset:step}
+.step{display:grid;grid-template-columns:32px 1fr;gap:10px;background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px;align-items:flex-start}
+.step-num{width:32px;height:32px;border-radius:10px;background:#f5f0ff;color:#4c1d95;font-weight:900;display:grid;place-items:center}
+.divider{height:1px;background:var(--line);margin:14px 0}
+.diag-block{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;margin-top:10px}
+.diag-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid #f3f4f6}
+.diag-row:last-child{border-bottom:0}
+.diag-label{font-weight:600;font-size:14px}
+.diag-count{font-weight:800;color:var(--bad);font-size:14px}
+.empty-state{background:#fff;border:1px dashed var(--line);border-radius:var(--r-lg);padding:24px;text-align:center;color:var(--muted)}
+.empty-state b{color:var(--ink);display:block;margin-bottom:6px;font-size:16px}
+.statement-mini{background:#fff;border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px;display:grid;gap:6px}
+.add-form{display:grid;gap:10px;background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:14px;margin-top:10px}
+@media(max-width:900px){
+  .wrap{padding:12px}
+  .hero{grid-template-columns:1fr;gap:10px;margin-bottom:10px}
+  .hero-main{padding:18px}
+  .hero-side{padding:14px}
+  .layout{grid-template-columns:1fr}
+  .side{position:static;padding:14px}
+  .tabs{margin-left:-12px;margin-right:-12px;border-radius:0;border-left:0;border-right:0;padding:6px 8px}
+  .tab{padding:9px 12px;font-size:13px;min-height:40px}
+  .panel{padding:14px}
+  .answer-box,.two,.three{grid-template-columns:1fr}
+  .choice-grid{grid-template-columns:1fr}
+  .explain-card{grid-template-columns:1fr}
+  .svgbox{min-height:auto}
+  .svgbox svg{max-height:160px}
+  .card-text{font-size:18px}
+  .statement-text{font-size:16px}
+  h1{font-size:26px}
+  h2{font-size:20px}
+  .metric-grid{grid-template-columns:repeat(3,1fr)}
+  .metric .v{font-size:18px}
+  .topic-grid{grid-template-columns:1fr 1fr}
+  .help-toggle{width:48px;height:48px;font-size:20px;right:12px;bottom:12px}
+  .modal{padding:16px;margin-top:20px}
+}
+@media(max-width:420px){
+  .topic-grid{grid-template-columns:1fr}
+  .badges{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section class="hero">
+    <div class="hero-main">
+      <div class="eyebrow">Геометрия · анализ высказываний</div>
+      <h1>Тренажёр геометрических высказываний</h1>
+      <p class="lead">Верные и неверные утверждения, контрпримеры, разбор каждой ошибки и диагностика по темам.</p>
+      <div class="badges">
+        <span class="badge">📚 105+ утверждений</span>
+        <span class="badge">🔍 контрпримеры</span>
+        <span class="badge">📐 наглядные схемы</span>
+        <span class="badge">📱 для телефона</span>
+      </div>
+    </div>
+    <div class="hero-side">
+      <b>Как пользоваться</b>
+      <p class="small muted" style="margin:6px 0 10px">В «Карточках» — по одному утверждению, в «Наборах по 3» — выбор номеров верных. В «Контрпримерах» учитесь искать опровержения. На вкладке «Ошибки» — диагностика.</p>
+      <button class="btn ghost" id="openHelpBtn" style="width:100%">📖 Как анализировать высказывание</button>
+    </div>
+  </section>
+
+  <nav class="tabs" aria-label="Режимы">
+    <button class="tab active" data-view="cards">Карточки</button>
+    <button class="tab" data-view="exam">Наборы по 3</button>
+    <button class="tab" data-view="counter">Контрпримеры</button>
+    <button class="tab" data-view="topics">Темы</button>
+    <button class="tab" data-view="errors">Ошибки</button>
+    <button class="tab" data-view="teacher">Учителю</button>
+  </nav>
+
+  <div class="layout">
+    <main>
+
+      <!-- CARDS VIEW -->
+      <section id="cardsView" class="panel view">
+        <div class="between">
+          <div>
+            <h2>Карточки: верно или неверно?</h2>
+            <p class="muted small">Одно утверждение — два больших ответа. Ошибки сохраняются и собираются в раздел «Ошибки».</p>
+          </div>
+          <button class="btn primary" id="newCardBtn">Новая карточка</button>
+        </div>
+        <div class="two">
+          <div class="field"><label class="small"><b>Тема</b></label><select id="cardTheme"></select></div>
+          <div class="field"><label class="small"><b>Источник</b></label><select id="cardSource"><option value="all">любой</option><option value="previous">прежний банк</option><option value="imported">импорт</option><option value="user">мои</option></select></div>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <label class="row small"><input type="checkbox" id="cardOnlyErrors" style="width:auto;margin-right:6px"><span>Только мои ошибки</span></label>
+        </div>
+        <div class="card-big" id="cardBox"></div>
+      </section>
+
+      <!-- EXAM VIEW -->
+      <section id="examView" class="panel view hidden">
+        <div class="between">
+          <div>
+            <h2>Набор из трёх высказываний</h2>
+            <p class="muted small">Выберите набор и укажите номера верных утверждений без пробелов, например <b>13</b>.</p>
+          </div>
+          <button class="btn primary" id="randomVariantBtn">🎲 Случайный набор</button>
+        </div>
+        <div class="two">
+          <div class="field"><label class="small"><b>Источник / набор</b></label><select id="variantSelect"></select></div>
+          <div class="field"><label class="small"><b>Ответ</b></label><input id="examAnswer" inputmode="numeric" pattern="[0-9]*" placeholder="например 13" autocomplete="off" /></div>
+        </div>
+        <div class="statement-list" id="examStatements"></div>
+        <div class="row">
+          <button class="btn good" id="checkExamBtn">Проверить</button>
+          <button class="btn ghost" id="showExplainBtn">Показать разбор</button>
+          <button class="btn ghost" id="copyVariantBtn">Скопировать набор</button>
+        </div>
+        <div class="result" id="examResult"></div>
+        <div class="explain-grid hidden" id="examExplain"></div>
+        <div class="row hidden" id="examPostActions" style="margin-top:12px">
+          <button class="btn warn" id="trainSimilarBtn">📚 Потренировать похожие</button>
+          <button class="btn warn" id="reviewErrorsBtn">🔁 Повторить ошибки</button>
+        </div>
+      </section>
+
+      <!-- COUNTEREXAMPLE VIEW -->
+      <section id="counterView" class="panel view hidden">
+        <div class="between">
+          <div>
+            <h2>Режим контрпримеров</h2>
+            <p class="muted small">Тренируем главный навык: не «неверно», а почему неверно.</p>
+          </div>
+          <button class="btn primary" id="newCounterBtn">Новый</button>
+        </div>
+        <div class="two">
+          <div class="field"><label class="small"><b>Тема</b></label><select id="counterTheme"></select></div>
+          <div class="field"><label class="small"><b>Режим</b></label><select id="counterMode">
+            <option value="show">Посмотреть контрпример</option>
+            <option value="choose">Найди контрпример (выбор)</option>
+          </select></div>
+        </div>
+        <div class="card-big" id="counterBox"></div>
+      </section>
+
+      <!-- TOPICS VIEW -->
+      <section id="topicsView" class="panel view hidden">
+        <h2>Тренировка по темам</h2>
+        <p class="muted small">Выберите тему — увидите утверждения с разбором.</p>
+        <div class="topic-grid" id="topicGrid"></div>
+        <div class="statement-list" id="topicStatements"></div>
+      </section>
+
+      <!-- ERRORS VIEW -->
+      <section id="errorsView" class="panel view hidden">
+        <div class="between">
+          <div>
+            <h2>Ошибки и диагностика</h2>
+            <p class="muted small">Здесь видно, где чаще ошибаешься. Можно повторить именно эти утверждения.</p>
+          </div>
+          <button class="btn warn" id="clearErrorsBtn">Очистить</button>
+        </div>
+        <div id="errorsContent"></div>
+      </section>
+
+      <!-- TEACHER VIEW -->
+      <section id="teacherView" class="panel view hidden">
+        <div class="between">
+          <div>
+            <h2>Учительский режим</h2>
+            <p class="muted small">Банк утверждений, импорт/экспорт, ручное добавление, пометки «требует проверки».</p>
+          </div>
+          <div class="row">
+            <button class="btn ghost" id="exportStatementsBtn">⬇️ Банк JSON</button>
+            <button class="btn ghost" id="exportVariantsBtn">⬇️ Наборы JSON</button>
+          </div>
+        </div>
+        <div class="three" style="margin-bottom:10px">
+          <input id="bankSearch" placeholder="поиск: ромб, касательная…" autocomplete="off"/>
+          <select id="bankTheme"><option value="all">все темы</option></select>
+          <select id="bankCorrect"><option value="all">верные и ложные</option><option value="true">только верные</option><option value="false">только ложные</option><option value="review">требует проверки</option></select>
+        </div>
+        <div class="table-wrap"><table id="bankTable"></table></div>
+
+        <div class="divider"></div>
+        <h3>Добавить утверждение</h3>
+        <div class="add-form">
+          <div class="two">
+            <div class="field"><label class="small"><b>Тема</b></label><select id="addTheme"></select></div>
+            <div class="field"><label class="small"><b>Верно?</b></label><select id="addCorrect"><option value="true">верно</option><option value="false">неверно</option></select></div>
+          </div>
+          <div class="field"><label class="small"><b>Текст утверждения</b></label><textarea id="addText" style="min-height:70px"></textarea></div>
+          <div class="field"><label class="small"><b>Короткое объяснение</b></label><textarea id="addExplanation" style="min-height:60px"></textarea></div>
+          <div class="field"><label class="small"><b>Контрпример (если неверно)</b></label><textarea id="addCounter" style="min-height:60px"></textarea></div>
+          <div class="row"><button class="btn good" id="addStatementBtn">Добавить в банк</button><span class="small muted">Сохраняется в этом браузере.</span></div>
+          <div class="result" id="addResult"></div>
+        </div>
+
+        <div class="divider"></div>
+        <h3>Импорт наборов из JSON</h3>
+        <p class="small muted">В каждом наборе нужно ровно 3 утверждения. Поля кроме <span class="kbd">text</span> и <span class="kbd">correct</span> можно опускать — тренажёр подставит значения по умолчанию.</p>
+        <textarea id="importBox" autocomplete="off" spellcheck="false"></textarea>
+        <div class="row" style="margin-top:8px">
+          <button class="btn good" id="importBtn">Импортировать</button>
+          <button class="btn ghost" id="fillExampleBtn">Вставить пример</button>
+          <button class="btn warn" id="clearImportBtn">Очистить импорт</button>
+        </div>
+        <div class="result" id="importResult"></div>
+      </section>
+
+    </main>
+
+    <aside class="side">
+      <h3 style="margin-top:0">Прогресс сессии</h3>
+      <div class="metric-grid">
+        <div class="metric"><div class="v" id="mAttempts">0</div><div class="l">попыток</div></div>
+        <div class="metric"><div class="v" id="mCorrect">0</div><div class="l">верно</div></div>
+        <div class="metric"><div class="v" id="mRate">0%</div><div class="l">точность</div></div>
+      </div>
+      <h3>Мини-алгоритм анализа</h3>
+      <div class="mini-list">
+        <div class="mini-item"><b>1.</b> Подчеркни «любой», «всегда», «обязательно».</div>
+        <div class="mini-item"><b>2.</b> Свойство, признак или похожая фраза?</div>
+        <div class="mini-item"><b>3.</b> Ложное? — ищи контрпример.</div>
+        <div class="mini-item"><b>4.</b> В наборах пиши только номера верных.</div>
+      </div>
+      <h3>Состав базы</h3>
+      <div id="sourceStats" class="mini-list"></div>
+    </aside>
+  </div>
+
+</div>
+
+<button class="help-toggle" id="helpBtn" title="Как анализировать высказывание">?</button>
+
+<div class="modal-bg" id="helpModal">
+  <div class="modal">
+    <div class="between">
+      <h2 style="margin:0">Как анализировать геометрическое высказывание</h2>
+      <button class="btn ghost" id="closeHelpBtn" style="min-height:36px;padding:6px 12px">✕</button>
+    </div>
+    <p class="muted small">Шесть шагов, которые помогают отличить верное утверждение от ложного.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div><b>Проверь, о какой фигуре идёт речь.</b><br><span class="muted small">Параллелограмм, ромб и квадрат — это разные определения. Не путай.</span></div></div>
+      <div class="step"><div class="step-num">2</div><div><b>Найди опасные слова.</b><br><span class="muted small">«Любой», «всегда», «только», «если…то…» — частая ловушка.</span></div></div>
+      <div class="step"><div class="step-num">3</div><div><b>Вспомни определение.</b><br><span class="muted small">Что именно даёт нам определение этой фигуры? Только это можно использовать без доказательства.</span></div></div>
+      <div class="step"><div class="step-num">4</div><div><b>Отличай свойство от признака.</b><br><span class="muted small">«У ромба диагонали перпендикулярны» — свойство. «Если у параллелограмма диагонали перпендикулярны — это ромб» — признак.</span></div></div>
+      <div class="step"><div class="step-num">5</div><div><b>Если кажется, что неверно — найди контрпример.</b><br><span class="muted small">Один конкретный пример опровергает любое «всегда».</span></div></div>
+      <div class="step"><div class="step-num">6</div><div><b>Не путай частный случай и общий.</b><br><span class="muted small">Квадрат — это ромб, но не каждый ромб — квадрат.</span></div></div>
+    </div>
+    <div class="notice blue" style="margin-top:14px"><b>Совет:</b> сначала прочитай утверждение целиком, потом разбери его по этим шагам. Не торопись — экзаменационные ловушки рассчитаны на быструю реакцию.</div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+const INITIAL_DATA = {"statements":[{"theme":"Прямые и углы","text":"Вертикальные углы равны.","correct":true,"explanation":"При пересечении двух прямых противоположные углы равны. Это базовая теорема про вертикальные углы.","id":"prev-000","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"lines","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Прямые и углы","text":"Смежные углы всегда равны.","correct":false,"explanation":"Смежные углы не обязаны быть равными; их сумма равна 180°. Например, 40° и 140°.","id":"prev-001","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"lines","counterexample":"Смежные углы могут быть 30° и 150°: сумма 180°, но они не равны."},{"theme":"Прямые и углы","text":"Если внутренние односторонние углы при секущей в сумме дают 180°, то прямые параллельны.","correct":true,"explanation":"Это признак параллельности прямых.","id":"prev-002","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"lines","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Прямые и углы","text":"Если при пересечении двух прямых секущей накрест лежащие углы равны, то прямые параллельны.","correct":true,"explanation":"Равенство накрест лежащих углов — признак параллельности прямых.","id":"prev-003","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"lines","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Прямые и углы","text":"При пересечении параллельных прямых секущей соответственные углы равны.","correct":true,"explanation":"Это свойство параллельных прямых.","id":"prev-004","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"lines","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Прямые и углы","text":"Если две прямые перпендикулярны одной и той же третьей прямой, то они параллельны.","correct":true,"explanation":"На плоскости две прямые, перпендикулярные одной прямой, параллельны друг другу.","id":"prev-005","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"lines","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Прямые и углы","text":"Через две различные точки можно провести ровно одну прямую.","correct":true,"explanation":"Это одно из базовых свойств прямой.","id":"prev-006","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"lines","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Прямые и углы","text":"Через точку вне прямой можно провести две разные прямые, параллельные данной.","correct":false,"explanation":"Через точку, не лежащую на прямой, проходит ровно одна прямая, параллельная данной.","id":"prev-007","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"lines","counterexample":"Через точку вне прямой проходит ровно одна прямая, параллельная данной."},{"theme":"Прямые и углы","text":"Биссектриса угла делит этот угол на два равных угла.","correct":true,"explanation":"Это определение биссектрисы угла.","id":"prev-008","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"lines","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Прямые и углы","text":"Сумма смежных углов равна 180°.","correct":true,"explanation":"Смежные углы образуют развёрнутый угол, поэтому их сумма 180°.","id":"prev-009","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"lines","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Прямые и углы","text":"Если сумма двух углов равна 180°, то эти углы обязательно смежные.","correct":false,"explanation":"Углы могут иметь сумму 180°, но не иметь общей стороны и общей вершины. Для смежных нужны ещё геометрические условия.","id":"prev-010","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"lines","counterexample":"Два угла 60° и 120° могут быть нарисованы отдельно и не быть смежными."},{"theme":"Треугольники","text":"Сумма внутренних углов любого треугольника равна 180°.","correct":true,"explanation":"Это базовая теорема планиметрии о сумме углов треугольника.","id":"prev-011","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"В треугольнике против большей стороны лежит больший угол.","correct":true,"explanation":"Большей стороне треугольника соответствует больший противолежащий угол.","id":"prev-012","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"Если в треугольнике две стороны равны, то он обязательно равносторонний.","correct":false,"explanation":"Две равные стороны дают равнобедренный треугольник. Равносторонний — когда равны все три стороны.","id":"prev-013","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Равнобедренный треугольник со сторонами 5, 5 и 6: две стороны равны, но не все три."},{"theme":"Треугольники","text":"В равнобедренном треугольнике углы при основании равны.","correct":true,"explanation":"Это основное свойство равнобедренного треугольника.","id":"prev-014","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"В равностороннем треугольнике каждый угол равен 60°.","correct":true,"explanation":"Все углы равностороннего треугольника равны, а их сумма 180°, значит каждый по 60°.","id":"prev-015","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"Треугольник с одним прямым углом называется прямоугольным.","correct":true,"explanation":"Это определение прямоугольного треугольника.","id":"prev-016","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"В прямоугольном треугольнике гипотенуза является самой длинной стороной.","correct":true,"explanation":"Гипотенуза лежит напротив прямого угла, а прямой угол — самый большой угол треугольника.","id":"prev-017","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"Медиана, проведённая к гипотенузе прямоугольного треугольника, равна половине гипотенузы.","correct":true,"explanation":"Центр описанной окружности прямоугольного треугольника лежит на середине гипотенузы.","id":"prev-018","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"Если медиана треугольника равна половине стороны, к которой она проведена, то треугольник прямоугольный.","correct":true,"explanation":"Это обратный факт к свойству медианы, проведённой к гипотенузе.","id":"prev-019","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"Любая медиана треугольника делит его на два равных треугольника.","correct":false,"explanation":"Медиана делит треугольник на две равновеликие части, но сами треугольники не всегда равны.","id":"prev-020","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Медиана делит треугольник на две равновеликие части, но не обязательно на равные треугольники."},{"theme":"Треугольники","text":"Любая медиана треугольника делит его на два треугольника равной площади.","correct":true,"explanation":"У двух полученных треугольников равные основания и общая высота.","id":"prev-021","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"В любом треугольнике высота, проведённая к стороне, совпадает с медианой.","correct":false,"explanation":"Так бывает не всегда. Например, в неравнобедренном треугольнике высота и медиана обычно разные.","id":"prev-022","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"В разностороннем треугольнике высота к стороне обычно попадает не в середину стороны."},{"theme":"Треугольники","text":"В равнобедренном треугольнике высота, проведённая к основанию, является и медианой, и биссектрисой.","correct":true,"explanation":"Это важное свойство равнобедренного треугольника.","id":"prev-023","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"Любая биссектриса равнобедренного треугольника является его медианой.","correct":false,"explanation":"В равнобедренном треугольнике гарантированно совпадают высота, медиана и биссектриса, проведённые к основанию. “Любая” — ловушка.","id":"prev-024","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"В равнобедренном треугольнике совпадают высота, медиана и биссектриса именно к основанию, а не любая биссектриса."},{"theme":"Треугольники","text":"Если две стороны и угол между ними равны соответствующим элементам другого треугольника, то треугольники равны.","correct":true,"explanation":"Это первый признак равенства треугольников: две стороны и угол между ними.","id":"prev-025","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"Если две стороны и не заключённый между ними угол равны, то треугольники всегда равны.","correct":false,"explanation":"Это не является надёжным признаком равенства: возможны разные треугольники.","id":"prev-026","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"По двум сторонам и углу не между ними возможны два разных треугольника."},{"theme":"Треугольники","text":"Если два угла одного треугольника равны двум углам другого, то такие треугольники подобны.","correct":true,"explanation":"Это признак подобия треугольников по двум углам.","id":"prev-027","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"Если все углы одного треугольника равны соответствующим углам другого, то треугольники обязательно равны.","correct":false,"explanation":"Равенство углов даёт подобие, но размеры могут быть разными.","id":"prev-028","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Треугольники с углами 30°, 60°, 90° могут быть разного размера: они подобны, но не равны."},{"theme":"Треугольники","text":"Если три стороны одного треугольника пропорциональны трём сторонам другого, то треугольники подобны.","correct":true,"explanation":"Это признак подобия по трём сторонам.","id":"prev-029","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"Равные треугольники имеют равные площади.","correct":true,"explanation":"У равных фигур все соответствующие элементы совпадают, поэтому площади равны.","id":"prev-030","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"Треугольники с равными площадями обязательно равны.","correct":false,"explanation":"Равная площадь не гарантирует равенство фигур. Можно построить разные треугольники одной площади.","id":"prev-031","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Прямоугольники 1×6 и 2×3 имеют площадь 6, но сами фигуры не равны."},{"theme":"Треугольники","text":"В любом треугольнике каждый угол меньше 90°.","correct":false,"explanation":"Существуют прямоугольные и тупоугольные треугольники.","id":"prev-032","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Прямоугольный треугольник имеет угол 90°, а тупоугольный — угол больше 90°."},{"theme":"Треугольники","text":"Внешний угол треугольника равен сумме двух внутренних углов, не смежных с ним.","correct":true,"explanation":"Это теорема о внешнем угле треугольника.","id":"prev-033","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"Хотя бы один угол любого треугольника не превышает 60°.","correct":true,"explanation":"Если бы все три угла были больше 60°, их сумма была бы больше 180°, что невозможно.","id":"prev-034","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"В треугольнике могут быть два тупых угла.","correct":false,"explanation":"Два тупых угла дали бы сумму больше 180°.","id":"prev-035","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Два тупых угла уже дают сумму больше 180°, а сумма углов треугольника равна 180°."},{"theme":"Треугольники","text":"В треугольнике не может быть двух прямых углов.","correct":true,"explanation":"Два прямых угла уже дают 180°, а третий угол должен быть положительным.","id":"prev-036","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"Треугольник со сторонами 3, 4 и 5 является прямоугольным.","correct":true,"explanation":"3² + 4² = 5², значит по обратной теореме Пифагора треугольник прямоугольный.","id":"prev-037","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"Существуют треугольники со сторонами 2, 3 и 5.","correct":false,"explanation":"Для треугольника сумма любых двух сторон должна быть больше третьей. Здесь 2 + 3 = 5, поэтому треугольник не существует.","id":"prev-038","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"2 + 3 = 5, значит треугольник не получится: сумма двух сторон должна быть больше третьей."},{"theme":"Треугольники","text":"Любые три положительные длины могут быть сторонами треугольника.","correct":false,"explanation":"Нужно выполнять неравенство треугольника: сумма двух сторон больше третьей.","id":"prev-039","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Длины 1, 2 и 10 положительные, но 1 + 2 < 10, треугольник невозможен."},{"theme":"Треугольники","text":"Если в треугольнике два угла равны, то он равнобедренный.","correct":true,"explanation":"Напротив равных углов лежат равные стороны.","id":"prev-040","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Треугольники","text":"Если треугольник равнобедренный, то все его углы равны.","correct":false,"explanation":"В равнобедренном треугольнике равны только углы при основании. Все углы равны только у равностороннего.","id":"prev-041","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Треугольник 5, 5, 6 равнобедренный, но не равносторонний: равны только углы при основании."},{"theme":"Треугольники","text":"Средняя линия треугольника параллельна третьей стороне и равна половине этой стороны.","correct":true,"explanation":"Это свойство средней линии треугольника.","id":"prev-042","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"triangles","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Сумма внутренних углов выпуклого четырёхугольника равна 360°.","correct":true,"explanation":"Любой выпуклый четырёхугольник можно разбить диагональю на два треугольника.","id":"prev-043","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Диагонали параллелограмма делятся точкой пересечения пополам.","correct":true,"explanation":"Это основное свойство диагоналей параллелограмма.","id":"prev-044","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Если диагонали четырёхугольника делятся точкой пересечения пополам, то этот четырёхугольник — параллелограмм.","correct":true,"explanation":"Это признак параллелограмма.","id":"prev-045","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Противоположные стороны параллелограмма равны.","correct":true,"explanation":"Это свойство параллелограмма.","id":"prev-046","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"В любом параллелограмме диагонали равны.","correct":false,"explanation":"Диагонали равны не у любого параллелограмма, а у прямоугольника и квадрата.","id":"prev-047","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"В обычном наклонном параллелограмме диагонали чаще всего разной длины."},{"theme":"Четырёхугольники","text":"Если диагонали параллелограмма равны, то этот параллелограмм является прямоугольником.","correct":true,"explanation":"Равенство диагоналей — признак прямоугольника среди параллелограммов.","id":"prev-048","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Если диагонали параллелограмма перпендикулярны, то этот параллелограмм является ромбом.","correct":true,"explanation":"Перпендикулярность диагоналей в параллелограмме даёт равенство всех сторон.","id":"prev-049","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Если все стороны параллелограмма равны, то это ромб.","correct":true,"explanation":"Ромб — это параллелограмм, у которого все стороны равны.","id":"prev-050","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Каждый квадрат является ромбом.","correct":true,"explanation":"У квадрата все стороны равны, значит он подходит под определение ромба.","id":"prev-051","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Каждый ромб является квадратом.","correct":false,"explanation":"У ромба все стороны равны, но углы не обязаны быть прямыми.","id":"prev-052","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Ромб с углами 60° и 120°: все стороны равны, но углы не прямые, значит это не квадрат."},{"theme":"Четырёхугольники","text":"Каждый прямоугольник является параллелограммом.","correct":true,"explanation":"У прямоугольника противоположные стороны параллельны, значит это параллелограмм.","id":"prev-053","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Каждый параллелограмм является прямоугольником.","correct":false,"explanation":"У параллелограмма углы не обязаны быть прямыми.","id":"prev-054","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Наклонный параллелограмм не имеет прямых углов."},{"theme":"Четырёхугольники","text":"В любом прямоугольнике диагонали равны.","correct":true,"explanation":"Это основное свойство прямоугольника.","id":"prev-055","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"В любом ромбе диагонали равны.","correct":false,"explanation":"У ромба диагонали обычно не равны. Равны они у квадрата.","id":"prev-056","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"У ромба со стороной 5 и углами 60°/120° диагонали разной длины."},{"theme":"Четырёхугольники","text":"В любом ромбе диагонали перпендикулярны.","correct":true,"explanation":"Это свойство ромба.","id":"prev-057","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Диагонали ромба делят его углы пополам.","correct":true,"explanation":"В ромбе каждая диагональ является биссектрисой углов, которые она соединяет.","id":"prev-058","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"В любой трапеции боковые стороны равны.","correct":false,"explanation":"Боковые стороны равны только у равнобедренной трапеции.","id":"prev-059","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"В обычной трапеции боковые стороны могут быть разной длины; равны они у равнобедренной трапеции."},{"theme":"Четырёхугольники","text":"Основания трапеции параллельны.","correct":true,"explanation":"Основания — это параллельные стороны трапеции.","id":"prev-060","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Средняя линия трапеции параллельна основаниям.","correct":true,"explanation":"Это свойство средней линии трапеции.","id":"prev-061","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Средняя линия трапеции равна полусумме оснований.","correct":true,"explanation":"Формула средней линии трапеции: m = (a + b) / 2.","id":"prev-062","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Диагонали любой трапеции равны.","correct":false,"explanation":"Диагонали равны у равнобедренной трапеции, но не у любой.","id":"prev-063","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"В неравнобедренной трапеции диагонали обычно не равны."},{"theme":"Четырёхугольники","text":"В равнобедренной трапеции диагонали равны.","correct":true,"explanation":"Это свойство равнобедренной трапеции.","id":"prev-064","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"В равнобедренной трапеции углы при каждом основании равны.","correct":true,"explanation":"Это свойство равнобедренной трапеции.","id":"prev-065","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Если стороны двух четырёхугольников попарно равны, то четырёхугольники обязательно равны.","correct":false,"explanation":"Контрпример: два ромба с одинаковыми сторонами, но разными углами.","id":"prev-066","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Из четырёх одинаковых сторон можно получить квадрат и ромб с непрямыми углами: стороны те же, фигуры разные."},{"theme":"Четырёхугольники","text":"Если один угол параллелограмма прямой, то этот параллелограмм является прямоугольником.","correct":true,"explanation":"В параллелограмме соседние углы в сумме 180°. Если один угол 90°, то все углы прямые.","id":"prev-067","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Если один угол ромба прямой, то этот ромб является квадратом.","correct":true,"explanation":"Ромб с прямым углом становится прямоугольником, а прямоугольный ромб — квадрат.","id":"prev-068","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Если один угол четырёхугольника прямой, то этот четырёхугольник является прямоугольником.","correct":false,"explanation":"Одного прямого угла недостаточно: у четырёхугольника остальные углы могут быть любыми.","id":"prev-069","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Четырёхугольник может иметь один прямой угол и при этом не быть прямоугольником."},{"theme":"Четырёхугольники","text":"Если все углы параллелограмма равны, то он является прямоугольником.","correct":true,"explanation":"Сумма углов параллелограмма 360°, значит четыре равных угла по 90°.","id":"prev-070","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Четырёхугольники","text":"Если диагонали четырёхугольника равны и перпендикулярны, то это обязательно квадрат.","correct":false,"explanation":"Для квадрата нужно больше условий. Равные и перпендикулярные диагонали сами по себе не гарантируют квадрат.","id":"prev-071","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Можно построить четырёхугольник с равными перпендикулярными диагоналями, но без условия, что они делятся пополам, квадрат не гарантирован."},{"theme":"Четырёхугольники","text":"Если диагонали четырёхугольника равны и делятся точкой пересечения пополам, то это прямоугольник.","correct":true,"explanation":"Диагонали делятся пополам — это параллелограмм; равные диагонали в параллелограмме дают прямоугольник.","id":"prev-072","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"quads","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Окружность","text":"Все радиусы одной окружности равны.","correct":true,"explanation":"Радиус — расстояние от центра до точки окружности, оно постоянно.","id":"prev-073","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Окружность","text":"Диаметр окружности в два раза больше её радиуса.","correct":true,"explanation":"Диаметр состоит из двух радиусов: d = 2r.","id":"prev-074","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Окружность","text":"Расстояние от центра окружности до любой точки этой окружности равно радиусу.","correct":true,"explanation":"Это определение окружности.","id":"prev-075","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Окружность","text":"Хорда, проходящая через центр окружности, является диаметром.","correct":true,"explanation":"Диаметр — это хорда, проходящая через центр окружности.","id":"prev-076","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Окружность","text":"Диаметр является самой длинной хордой окружности.","correct":true,"explanation":"Хорда не может быть длиннее диаметра.","id":"prev-077","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Окружность","text":"Любая хорда окружности является диаметром.","correct":false,"explanation":"Диаметром является только хорда, проходящая через центр.","id":"prev-078","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Хорда, не проходящая через центр окружности, не является диаметром."},{"theme":"Окружность","text":"Касательная к окружности перпендикулярна радиусу, проведённому в точку касания.","correct":true,"explanation":"Это основное свойство касательной.","id":"prev-079","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Окружность","text":"Отрезки касательных, проведённых из одной точки к окружности, равны.","correct":true,"explanation":"Если из одной точки провести две касательные к окружности, их отрезки до точек касания равны.","id":"prev-080","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Окружность","text":"Вписанный угол, опирающийся на диаметр, является прямым.","correct":true,"explanation":"Вписанный угол, опирающийся на полуокружность, равен 90°.","id":"prev-081","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Окружность","text":"Вписанные углы, опирающиеся на одну и ту же дугу, равны.","correct":true,"explanation":"Вписанные углы измеряются половиной дуги, на которую опираются.","id":"prev-082","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Окружность","text":"Центральный угол в два раза больше вписанного угла, опирающегося на ту же дугу.","correct":true,"explanation":"Центральный угол равен градусной мере дуги, а вписанный — половине этой меры.","id":"prev-083","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Окружность","text":"Если вписанный угол опирается на диаметр, то он всегда острый.","correct":false,"explanation":"Такой угол прямой, то есть равен 90°.","id":"prev-084","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Вписанный угол, опирающийся на диаметр, равен 90°, то есть он прямой, а не острый."},{"theme":"Окружность","text":"Около любого треугольника можно описать окружность.","correct":true,"explanation":"У любого треугольника есть описанная окружность.","id":"prev-085","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Окружность","text":"В любой четырёхугольник можно вписать окружность.","correct":false,"explanation":"Вписанная окружность существует не у любого четырёхугольника. Нужны специальные условия.","id":"prev-086","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"У произвольного четырёхугольника суммы противоположных сторон обычно не равны, значит окружность вписать нельзя."},{"theme":"Окружность","text":"Около любого четырёхугольника можно описать окружность.","correct":false,"explanation":"Описанная окружность существует не у любого четырёхугольника. Например, не всякий параллелограмм можно вписать в окружность.","id":"prev-087","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Около четырёхугольника окружность описывается не всегда; нужен специальный признак, например сумма противоположных углов 180°."},{"theme":"Окружность","text":"Центр окружности, описанной около прямоугольного треугольника, лежит на середине гипотенузы.","correct":true,"explanation":"У прямоугольного треугольника гипотенуза является диаметром описанной окружности.","id":"prev-088","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Окружность","text":"Касательная имеет с окружностью две общие точки.","correct":false,"explanation":"Касательная касается окружности в одной точке.","id":"prev-089","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Касательная имеет ровно одну общую точку с окружностью. Две общие точки — это секущая."},{"theme":"Окружность","text":"Секущая имеет с окружностью две общие точки.","correct":true,"explanation":"Секущая пересекает окружность в двух точках.","id":"prev-090","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"circle","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Площади и подобие","text":"Площадь параллелограмма равна произведению стороны на высоту, проведённую к этой стороне.","correct":true,"explanation":"Формула площади параллелограмма: S = a · h.","id":"prev-091","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"area","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Площади и подобие","text":"Площадь треугольника равна половине произведения стороны на высоту, проведённую к этой стороне.","correct":true,"explanation":"Формула площади треугольника: S = a · h / 2.","id":"prev-092","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"area","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Площади и подобие","text":"Если у двух треугольников равны основания и высоты, проведённые к ним, то площади этих треугольников равны.","correct":true,"explanation":"Площадь треугольника зависит от основания и соответствующей высоты: S = a · h / 2.","id":"prev-093","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"area","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Площади и подобие","text":"Если площади двух треугольников равны, то треугольники обязательно равны.","correct":false,"explanation":"Одинаковая площадь не гарантирует одинаковую форму и размеры.","id":"prev-094","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"area","counterexample":"Контрпример: найди частный случай, где условия выполнены, а вывод не работает. Обычно ловушка в словах “любой”, “всегда”, “обязательно”."},{"theme":"Площади и подобие","text":"Площади подобных фигур относятся как квадраты коэффициента подобия.","correct":true,"explanation":"Если стороны увеличились в k раз, площади увеличились в k² раз.","id":"prev-095","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"area","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Площади и подобие","text":"Периметры подобных треугольников относятся как коэффициент подобия.","correct":true,"explanation":"Все линейные элементы подобных фигур меняются в k раз.","id":"prev-096","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"area","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Площади и подобие","text":"Если коэффициент подобия равен 2, то площадь подобной фигуры увеличивается в 2 раза.","correct":false,"explanation":"Площадь увеличивается в квадрат коэффициента: 2² = 4 раза.","id":"prev-097","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"area","counterexample":"При коэффициенте подобия 2 площадь увеличивается в 2² = 4 раза."},{"theme":"Площади и подобие","text":"Площадь квадрата со стороной a равна 4a.","correct":false,"explanation":"4a — это периметр квадрата. Площадь равна a².","id":"prev-098","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"area","counterexample":"4a — это периметр квадрата, а площадь равна a²."},{"theme":"Площади и подобие","text":"Диагональ квадрата со стороной a равна a√2.","correct":true,"explanation":"По теореме Пифагора d² = a² + a² = 2a², значит d = a√2.","id":"prev-099","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"area","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Площади и подобие","text":"Площадь ромба равна половине произведения его диагоналей.","correct":true,"explanation":"Формула площади ромба: S = d₁ · d₂ / 2.","id":"prev-100","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"area","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Площади и подобие","text":"Площадь трапеции равна произведению полусуммы оснований на высоту.","correct":true,"explanation":"Формула площади трапеции: S = (a + b) · h / 2.","id":"prev-101","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"area","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Площади и подобие","text":"Расстояние между точками на координатной прямой равно модулю разности их координат.","correct":true,"explanation":"На прямой расстояние между x₁ и x₂ равно |x₁ − x₂|.","id":"prev-102","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"area","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Площади и подобие","text":"Координаты середины отрезка равны средним арифметическим соответствующих координат его концов.","correct":true,"explanation":"Для концов (x₁;y₁) и (x₂;y₂) середина имеет координаты ((x₁+x₂)/2; (y₁+y₂)/2).","id":"prev-103","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"area","counterexample":"Для верного утверждения контрпример не нужен: это теорема или определение. Попробуй вспомнить точную формулировку."},{"theme":"Площади и подобие","text":"Если периметры двух фигур равны, то их площади тоже равны.","correct":false,"explanation":"Фигуры с одним и тем же периметром могут иметь разные площади.","id":"prev-104","sourceType":"previous","sourceName":"Прежний банк утверждений","sourceNote":"Стартовая база для тренировки анализа геометрических высказываний.","variant":"прежний банк","visual":"area","counterexample":"Квадрат 4×4 и прямоугольник 2×6 имеют одинаковый периметр 16, но площади 16 и 12."}],"variants":[{"id":"prev-var-01","title":"Набор 01","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-000","prev-001","prev-009"],"answer":"13"},{"id":"prev-var-02","title":"Набор 02","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-003","prev-004","prev-010"],"answer":"12"},{"id":"prev-var-03","title":"Набор 03","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-011","prev-013","prev-014"],"answer":"13"},{"id":"prev-var-04","title":"Набор 04","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-016","prev-017","prev-032"],"answer":"12"},{"id":"prev-var-05","title":"Набор 05","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-018","prev-020","prev-021"],"answer":"13"},{"id":"prev-var-06","title":"Набор 06","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-023","prev-024","prev-040"],"answer":"13"},{"id":"prev-var-07","title":"Набор 07","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-025","prev-026","prev-028"],"answer":"1"},{"id":"prev-var-08","title":"Набор 08","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-029","prev-031","prev-042"],"answer":"13"},{"id":"prev-var-09","title":"Набор 09","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-043","prev-044","prev-047"],"answer":"12"},{"id":"prev-var-10","title":"Набор 10","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-048","prev-049","prev-052"],"answer":"12"},{"id":"prev-var-11","title":"Набор 11","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-055","prev-056","prev-057"],"answer":"13"},{"id":"prev-var-12","title":"Набор 12","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-059","prev-060","prev-063"],"answer":"2"},{"id":"prev-var-13","title":"Набор 13","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-064","prev-065","prev-066"],"answer":"12"},{"id":"prev-var-14","title":"Набор 14","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-073","prev-078","prev-079"],"answer":"13"},{"id":"prev-var-15","title":"Набор 15","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-081","prev-084","prev-083"],"answer":"13"},{"id":"prev-var-16","title":"Набор 16","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-086","prev-087","prev-088"],"answer":"3"},{"id":"prev-var-17","title":"Набор 17","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-091","prev-092","prev-094"],"answer":"12"},{"id":"prev-var-18","title":"Набор 18","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-095","prev-097","prev-099"],"answer":"13"},{"id":"prev-var-19","title":"Набор 19","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-100","prev-101","prev-104"],"answer":"12"},{"id":"prev-var-20","title":"Набор 20","sourceType":"previous","sourceName":"Собрано из прежнего банка утверждений","sourceNote":"Тройка утверждений для тренировки анализа.","statementIds":["prev-071","prev-072","prev-068"],"answer":"23"}],"archiveIndex":[],"meta":{"createdFor":"Тренажёр анализа геометрических высказываний","baseStatements":105,"baseSets":20,"note":"Универсальная тренировка верных и неверных геометрических утверждений."}};
+
+// ===== STORAGE KEYS =====
+const IMPORT_KEY = 'geometryStatements.importedPayload.v1';
+const ERRORS_KEY = 'geometryStatements.errors.v2';
+const USER_ADDED_KEY = 'geometryStatements.userAdded.v1';
+
+// ===== SVG LIBRARY =====
+// Лёгкие учебные схемы. viewBox 0 0 200 130, width=100% — корректно масштабируются.
+const SVGS = {
+  parallelLines: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><line x1="20" y1="50" x2="180" y2="50" stroke="#1d4ed8" stroke-width="3"/><line x1="20" y1="95" x2="180" y2="95" stroke="#1d4ed8" stroke-width="3"/><line x1="55" y1="20" x2="155" y2="120" stroke="#ea580c" stroke-width="3"/><text x="160" y="46" font-size="11" fill="#1d4ed8">a</text><text x="160" y="91" font-size="11" fill="#1d4ed8">b</text><text x="148" y="125" font-size="11" fill="#ea580c">секущая</text></svg>',
+  verticalAngles: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><line x1="25" y1="30" x2="175" y2="100" stroke="#1d4ed8" stroke-width="3"/><line x1="25" y1="100" x2="175" y2="30" stroke="#ea580c" stroke-width="3"/><path d="M 90 65 A 12 12 0 0 1 110 65" stroke="#7c3aed" stroke-width="2" fill="none"/><path d="M 90 65 A 12 12 0 0 0 110 65" stroke="#7c3aed" stroke-width="2" fill="none" transform="translate(0,0) scale(1,-1) translate(0,-130)"/><text x="70" y="120" font-size="11" fill="#111827">вертикальные углы</text></svg>',
+  isoscelesTriangle: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><polygon points="100,20 40,110 160,110" fill="#e0e7ff" stroke="#4f46e5" stroke-width="3"/><line x1="60" y1="110" x2="80" y2="110" stroke="#7c3aed" stroke-width="2"/><line x1="120" y1="110" x2="140" y2="110" stroke="#7c3aed" stroke-width="2"/><path d="M 55 100 L 65 110 M 145 100 L 135 110" stroke="#7c3aed" stroke-width="1.5" fill="none"/><text x="55" y="125" font-size="11" fill="#111827">равнобедренный</text></svg>',
+  rightTriangle: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><polygon points="40,110 40,30 160,110" fill="#fef3c7" stroke="#d97706" stroke-width="3"/><rect x="40" y="98" width="12" height="12" fill="none" stroke="#d97706" stroke-width="2"/><text x="22" y="65" font-size="11" fill="#111827">катет</text><text x="80" y="125" font-size="11" fill="#111827">катет</text><text x="98" y="60" font-size="11" fill="#b42318" transform="rotate(33 105 65)">гипотенуза</text></svg>',
+  medianTriangle: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><polygon points="100,18 30,110 170,110" fill="#e0e7ff" stroke="#4f46e5" stroke-width="3"/><line x1="100" y1="18" x2="100" y2="110" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="5,3"/><circle cx="100" cy="110" r="3" fill="#dc2626"/><line x1="60" y1="115" x2="80" y2="115" stroke="#dc2626" stroke-width="2"/><line x1="120" y1="115" x2="140" y2="115" stroke="#dc2626" stroke-width="2"/><text x="78" y="125" font-size="11" fill="#dc2626">медиана</text></svg>',
+  bisectorTriangle: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><polygon points="40,110 100,15 165,110" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/><line x1="100" y1="15" x2="103" y2="110" stroke="#7c3aed" stroke-width="2.5" stroke-dasharray="5,3"/><path d="M 92 35 A 18 18 0 0 1 108 35" stroke="#7c3aed" stroke-width="1.5" fill="none"/><path d="M 90 45 A 22 22 0 0 1 110 45" stroke="#7c3aed" stroke-width="1.5" fill="none"/><text x="68" y="125" font-size="11" fill="#7c3aed">биссектриса</text></svg>',
+  altitudeTriangle: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><polygon points="35,110 130,30 170,110" fill="#fef3c7" stroke="#d97706" stroke-width="3"/><line x1="130" y1="30" x2="130" y2="110" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="5,3"/><rect x="124" y="104" width="10" height="10" fill="none" stroke="#dc2626" stroke-width="1.5"/><text x="100" y="125" font-size="11" fill="#dc2626">высота</text></svg>',
+  midlineTriangle: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><polygon points="100,18 25,110 175,110" fill="#e0e7ff" stroke="#4f46e5" stroke-width="3"/><line x1="62" y1="64" x2="138" y2="64" stroke="#dc2626" stroke-width="3"/><circle cx="62" cy="64" r="3" fill="#dc2626"/><circle cx="138" cy="64" r="3" fill="#dc2626"/><text x="58" y="55" font-size="11" fill="#dc2626">средняя линия</text></svg>',
+  parallelogram: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><polygon points="50,30 170,30 150,105 30,105" fill="#dcfce7" stroke="#16a34a" stroke-width="3"/><line x1="50" y1="30" x2="150" y2="105" stroke="#7c3aed" stroke-width="2" stroke-dasharray="4,3"/><line x1="170" y1="30" x2="30" y2="105" stroke="#7c3aed" stroke-width="2" stroke-dasharray="4,3"/><circle cx="100" cy="67.5" r="3" fill="#7c3aed"/><text x="46" y="125" font-size="11" fill="#111827">параллелограмм</text></svg>',
+  rectangle: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><rect x="35" y="28" width="130" height="75" fill="#dbeafe" stroke="#1d4ed8" stroke-width="3"/><rect x="35" y="28" width="10" height="10" fill="none" stroke="#1d4ed8" stroke-width="1.5"/><line x1="35" y1="28" x2="165" y2="103" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,3"/><line x1="165" y1="28" x2="35" y2="103" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,3"/><text x="58" y="123" font-size="11" fill="#111827">прямоугольник</text></svg>',
+  rhombus: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><polygon points="100,20 165,65 100,110 35,65" fill="#fce7f3" stroke="#db2777" stroke-width="3"/><line x1="100" y1="20" x2="100" y2="110" stroke="#7c3aed" stroke-width="2" stroke-dasharray="4,3"/><line x1="35" y1="65" x2="165" y2="65" stroke="#7c3aed" stroke-width="2" stroke-dasharray="4,3"/><rect x="94" y="59" width="12" height="12" fill="none" stroke="#7c3aed" stroke-width="1.5"/><text x="85" y="125" font-size="11" fill="#111827">ромб</text></svg>',
+  square: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><rect x="60" y="20" width="85" height="85" fill="#e0e7ff" stroke="#4f46e5" stroke-width="3"/><line x1="60" y1="20" x2="145" y2="105" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,3"/><line x1="145" y1="20" x2="60" y2="105" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,3"/><rect x="60" y="20" width="10" height="10" fill="none" stroke="#4f46e5" stroke-width="1.5"/><text x="85" y="125" font-size="11" fill="#111827">квадрат</text></svg>',
+  trapezoid: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><polygon points="60,30 140,30 175,105 25,105" fill="#fef3c7" stroke="#d97706" stroke-width="3"/><text x="90" y="22" font-size="11" fill="#111827">основание</text><text x="80" y="125" font-size="11" fill="#111827">основание</text></svg>',
+  isoscelesTrapezoid: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><polygon points="65,30 135,30 170,105 30,105" fill="#fce7f3" stroke="#db2777" stroke-width="3"/><line x1="65" y1="30" x2="170" y2="105" stroke="#7c3aed" stroke-width="2" stroke-dasharray="4,3"/><line x1="135" y1="30" x2="30" y2="105" stroke="#7c3aed" stroke-width="2" stroke-dasharray="4,3"/><line x1="42" y1="67" x2="56" y2="67" stroke="#db2777" stroke-width="2"/><line x1="144" y1="67" x2="158" y2="67" stroke="#db2777" stroke-width="2"/><text x="35" y="125" font-size="11" fill="#111827">равнобедренная трапеция</text></svg>',
+  trapezoidMidline: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><polygon points="60,28 140,28 175,103 25,103" fill="#fef3c7" stroke="#d97706" stroke-width="3"/><line x1="42.5" y1="65.5" x2="157.5" y2="65.5" stroke="#dc2626" stroke-width="3"/><circle cx="42.5" cy="65.5" r="3" fill="#dc2626"/><circle cx="157.5" cy="65.5" r="3" fill="#dc2626"/><text x="60" y="58" font-size="11" fill="#dc2626">средняя линия</text></svg>',
+  circleRadius: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><circle cx="100" cy="65" r="45" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/><circle cx="100" cy="65" r="2.5" fill="#1d4ed8"/><line x1="100" y1="65" x2="138" y2="40" stroke="#dc2626" stroke-width="3"/><text x="115" y="58" font-size="11" fill="#dc2626">r</text><text x="80" y="125" font-size="11" fill="#111827">радиус</text></svg>',
+  circleDiameter: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><circle cx="100" cy="65" r="45" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/><line x1="55" y1="65" x2="145" y2="65" stroke="#dc2626" stroke-width="3"/><circle cx="100" cy="65" r="2.5" fill="#1d4ed8"/><text x="92" y="58" font-size="11" fill="#dc2626">d</text><text x="80" y="125" font-size="11" fill="#111827">диаметр</text></svg>',
+  circleChord: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><circle cx="100" cy="65" r="45" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/><line x1="68" y1="35" x2="138" y2="80" stroke="#dc2626" stroke-width="3"/><circle cx="100" cy="65" r="2.5" fill="#1d4ed8"/><text x="98" y="42" font-size="11" fill="#dc2626">хорда</text><text x="85" y="125" font-size="11" fill="#111827">окружность с хордой</text></svg>',
+  circleTangent: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><circle cx="80" cy="65" r="42" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/><circle cx="80" cy="65" r="2.5" fill="#1d4ed8"/><line x1="122" y1="20" x2="122" y2="110" stroke="#ea580c" stroke-width="3"/><line x1="80" y1="65" x2="122" y2="65" stroke="#dc2626" stroke-width="2" stroke-dasharray="3,3"/><rect x="115" y="58" width="9" height="9" fill="none" stroke="#7c3aed" stroke-width="1.5"/><circle cx="122" cy="65" r="3" fill="#ea580c"/><text x="90" y="125" font-size="11" fill="#ea580c">касательная</text></svg>',
+  inscribedAngle: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><circle cx="100" cy="68" r="42" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/><line x1="100" y1="26" x2="60" y2="95" stroke="#dc2626" stroke-width="2.5"/><line x1="100" y1="26" x2="140" y2="95" stroke="#dc2626" stroke-width="2.5"/><line x1="60" y1="95" x2="140" y2="95" stroke="#7c3aed" stroke-width="2" stroke-dasharray="3,3"/><path d="M 93 38 A 10 10 0 0 0 107 38" stroke="#dc2626" stroke-width="1.5" fill="none"/><circle cx="100" cy="26" r="3" fill="#dc2626"/><text x="62" y="125" font-size="11" fill="#dc2626">вписанный угол</text></svg>',
+  centralAngle: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><circle cx="100" cy="68" r="42" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/><line x1="100" y1="68" x2="65" y2="45" stroke="#ea580c" stroke-width="2.5"/><line x1="100" y1="68" x2="135" y2="45" stroke="#ea580c" stroke-width="2.5"/><path d="M 84 60 A 18 18 0 0 1 116 60" stroke="#ea580c" stroke-width="1.5" fill="none"/><circle cx="100" cy="68" r="3" fill="#1d4ed8"/><text x="64" y="125" font-size="11" fill="#ea580c">центральный угол</text></svg>',
+  similarTriangles: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><polygon points="20,100 70,100 45,40" fill="#e0e7ff" stroke="#4f46e5" stroke-width="3"/><polygon points="105,100 195,100 150,28" fill="#fce7f3" stroke="#db2777" stroke-width="3"/><text x="30" y="118" font-size="11" fill="#111827">∼</text><text x="135" y="122" font-size="11" fill="#111827">подобные</text></svg>',
+  area: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><rect x="35" y="30" width="80" height="55" fill="#ffedd5" stroke="#ea580c" stroke-width="3"/><rect x="115" y="55" width="50" height="30" fill="#fed7aa" stroke="#c2410c" stroke-width="3"/><text x="55" y="62" font-size="13" fill="#7a4d00" font-weight="700">S</text><text x="130" y="76" font-size="11" fill="#7a4d00" font-weight="700">S</text><text x="68" y="123" font-size="11" fill="#111827">площади фигур</text></svg>',
+  coordinates: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><line x1="20" y1="105" x2="180" y2="105" stroke="#111827" stroke-width="2"/><line x1="100" y1="20" x2="100" y2="125" stroke="#111827" stroke-width="2"/><polyline points="195,108 180,105 195,102" fill="none" stroke="#111827" stroke-width="2"/><polyline points="97,25 100,20 103,25" fill="none" stroke="#111827" stroke-width="2"/><circle cx="60" cy="65" r="4" fill="#dc2626"/><circle cx="145" cy="85" r="4" fill="#dc2626"/><line x1="60" y1="65" x2="145" y2="85" stroke="#7c3aed" stroke-width="2" stroke-dasharray="4,3"/><circle cx="102.5" cy="75" r="3.5" fill="#16a34a"/><text x="48" y="58" font-size="10" fill="#dc2626">A</text><text x="150" y="80" font-size="10" fill="#dc2626">B</text></svg>',
+  generic: '<svg viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="130" fill="#f8fafc" rx="6"/><polygon points="100,25 165,65 130,110 70,110 35,65" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2.5"/><text x="65" y="123" font-size="11" fill="#111827">геометрическая фигура</text></svg>'
+};
+
+// ===== TOPIC MAPPING (theme -> broader topic from spec) =====
+const THEME_TO_TOPIC = {
+  'Прямые и углы':'углы и прямые',
+  'Треугольники':'треугольники',
+  'Четырёхугольники':'четырёхугольники',
+  'Окружность':'окружность',
+  'Площади и подобие':'площади и подобие'
+};
+
+// ===== VISUAL TYPE DETECTION (heuristic by keywords; order = specificity) =====
+function detectVisualType(text, theme){
+  const t = (text||'').toLowerCase();
+
+  // === Углы — самые специфичные первыми ===
+  if(/вертикальн.*угл|смежн.*угл|сумма смежн/.test(t)) return 'verticalAngles';
+  if(/накрест лежащ|односторонн.*угл|соответственн.*угл|параллельн.*секущ|секущ.*параллельн/.test(t)) return 'parallelLines';
+
+  // === Окружность: специфичные углы ===
+  if(/касательн/.test(t)) return 'circleTangent';
+  if(/вписанн.*угол|вписан.*угла/.test(t)) return 'inscribedAngle';
+  if(/центральн.*угол/.test(t)) return 'centralAngle';
+
+  // === Трапеция — раньше «равнобедренного треугольника» ===
+  if(/средн.*лини.*трапец/.test(t)) return 'trapezoidMidline';
+  if(/равнобедренн.*трапец|трапец.*равнобедренн/.test(t)) return 'isoscelesTrapezoid';
+  if(/трапец/.test(t)) return 'trapezoid';
+
+  // === Четырёхугольники-фигуры — раньше общих «высота треугольника» ===
+  if(/квадрат/.test(t)) return 'square';
+  if(/ромб/.test(t)) return 'rhombus';
+  if(/параллелограмм/.test(t)) return 'parallelogram';
+  if(/прямоугольник/.test(t) && !/прямоугольн.*треугольн/.test(t)) return 'rectangle';
+
+  // === Окружность: общие термины ===
+  if(/диаметр/.test(t)) return 'circleDiameter';
+  if(/хорд/.test(t)) return 'circleChord';
+
+  // === Треугольники: специфичные типы ===
+  if(/прямоугольн.*треугольн|треугольн.*прямоугольн|гипотенуз|катет|пифагор/.test(t)) return 'rightTriangle';
+  if(/равностороннем треугольнике|равностороннего треугольника|равносторонний треугольник|равносторонним треугольником/.test(t)) return 'isoscelesTriangle';
+  if(/средн.*лини.*треугольн|средн.*лини.*стороне/.test(t)) return 'midlineTriangle';
+  if(/медиан/.test(t)) return 'medianTriangle';
+  if(/биссектрис.*треугольн|биссектрис.*угол/.test(t)) return 'bisectorTriangle';
+  if(/высот.*треугольн|треугольн.*высот/.test(t)) return 'altitudeTriangle';
+  if(/равнобедренн/.test(t)) return 'isoscelesTriangle';
+
+  // === Окружность: общие ===
+  if(/окружност|радиус/.test(t)) return 'circleRadius';
+
+  // === Подобие ===
+  if(/подобн/.test(t)) return 'similarTriangles';
+
+  // === Координаты ===
+  if(/координат|середин.*отрезк/.test(t)) return 'coordinates';
+
+  // === Прямые ===
+  if(/параллельн.*прям|перпендикулярн.*прям|через точку.*прям|через две различн|биссектрис/.test(t)) return 'parallelLines';
+
+  // === Площади как fallback ===
+  if(/площад/.test(t)) return 'area';
+
+  // === По теме ===
+  if(theme==='Прямые и углы') return 'parallelLines';
+  if(theme==='Треугольники') return 'isoscelesTriangle';
+  if(theme==='Четырёхугольники') return 'parallelogram';
+  if(theme==='Окружность') return 'circleRadius';
+  if(theme==='Площади и подобие') return 'area';
+  return 'generic';
+}
+
+// ===== TRAP TYPE DETECTION (only for false statements) =====
+function detectTrapType(text, correct){
+  if(correct) return null;
+  const t = (text||'').toLowerCase();
+  if(/любой|любая|любые|всякий|каждый/.test(t)) return 'неверное обобщение';
+  if(/всегда|обязательно/.test(t)) return 'путает «всегда» и «иногда»';
+  if(/^каждый|^каждая|является.*(квадрат|прямоугольник|ромб|параллелограмм)/.test(t)) return 'путает частный и общий случай';
+  if(/если.*то|равны|то этот четырёхугольник|то он/.test(t)) return 'путает свойство и признак';
+  if(/может быть|могут быть|существуют?/.test(t)) return 'не знает базовое определение';
+  return 'не видит контрпример';
+}
+
+// ===== COUNTEREXAMPLE PATCHES (only specific weak ones) =====
+const PATCHES = {
+  'prev-094': {
+    counterexample: 'Треугольник с основанием 4 и высотой 3 имеет площадь 6. Треугольник с основанием 6 и высотой 2 — тоже площадь 6, но это другие треугольники.'
+  }
+};
+
+// ===== ENRICHMENT: extend each statement with new fields without removing old ones =====
+function enrichStatement(s){
+  const enriched = Object.assign({}, s);
+  // Topic (broad category from spec)
+  if(!enriched.topic) enriched.topic = THEME_TO_TOPIC[enriched.theme] || 'общие свойства фигур';
+  // Subtopic = theme by default
+  if(!enriched.subtopic) enriched.subtopic = enriched.theme || '';
+  // Difficulty default
+  if(!enriched.difficulty) enriched.difficulty = 1;
+  // Source (neutral)
+  if(!enriched.source) enriched.source = enriched.sourceName || 'учебная база';
+  // Visual type
+  if(!enriched.visualType){
+    enriched.visualType = detectVisualType(enriched.text, enriched.theme);
+  }
+  // Trap type
+  if(!enriched.trapType && !enriched.correct){
+    enriched.trapType = detectTrapType(enriched.text, enriched.correct);
+  }
+  // Tags
+  if(!Array.isArray(enriched.tags)) enriched.tags = [];
+  // Review flag
+  if(typeof enriched.needsReview !== 'boolean') enriched.needsReview = false;
+  // Apply patches
+  const patch = PATCHES[enriched.id];
+  if(patch) Object.assign(enriched, patch);
+  return enriched;
+}
+
+// ===== COUNTEREXAMPLE MULTIPLE-CHOICE CARDS =====
+// statementId references main bank id; we add 3-4 options for student to pick from.
+const CE_MC_CARDS = [
+  {
+    id:'ce-01',
+    statementId:'prev-052',
+    text:'Если у четырёхугольника все стороны равны, то это квадрат.',
+    options:[
+      {label:'Ромб с углами 60° и 120°: стороны равны, но углы не прямые.', correct:true},
+      {label:'Квадрат со стороной 4.', correct:false},
+      {label:'Прямоугольник 3 × 5.', correct:false},
+      {label:'Равнобедренный треугольник.', correct:false}
+    ],
+    explanation:'У ромба все стороны равны, но он не обязательно квадрат: для квадрата нужны ещё прямые углы.',
+    topic:'четырёхугольники'
+  },
+  {
+    id:'ce-02',
+    statementId:'prev-048-reverse',
+    text:'Если диагонали четырёхугольника равны, то этот четырёхугольник — прямоугольник.',
+    options:[
+      {label:'Равнобедренная трапеция: диагонали равны, но это не прямоугольник.', correct:true},
+      {label:'Квадрат: диагонали равны.', correct:false},
+      {label:'Прямоугольник 3 × 4.', correct:false},
+      {label:'Параллелограмм с непрямыми углами.', correct:false}
+    ],
+    explanation:'У равнобедренной трапеции диагонали тоже равны, но это не прямоугольник.',
+    topic:'четырёхугольники'
+  },
+  {
+    id:'ce-03',
+    statementId:'prev-056',
+    text:'В любом ромбе диагонали равны.',
+    options:[
+      {label:'Ромб со стороной 5 и углами 60°/120°: диагонали разной длины.', correct:true},
+      {label:'Квадрат со стороной 4.', correct:false},
+      {label:'Прямоугольник 3 × 5.', correct:false},
+      {label:'Равносторонний треугольник.', correct:false}
+    ],
+    explanation:'Диагонали равны только у квадрата (частный случай ромба). У обычного ромба они разные.',
+    topic:'четырёхугольники'
+  },
+  {
+    id:'ce-04',
+    statementId:'prev-013',
+    text:'Если в треугольнике две стороны равны, то он обязательно равносторонний.',
+    options:[
+      {label:'Треугольник со сторонами 5, 5 и 6: две стороны равны, но не все три.', correct:true},
+      {label:'Равносторонний треугольник 4, 4, 4.', correct:false},
+      {label:'Прямоугольный треугольник 3, 4, 5.', correct:false},
+      {label:'Тупоугольный треугольник 2, 3, 4.', correct:false}
+    ],
+    explanation:'Две равные стороны дают только равнобедренный треугольник. Чтобы был равносторонний — все три должны быть равны.',
+    topic:'треугольники'
+  },
+  {
+    id:'ce-05',
+    statementId:'prev-094',
+    text:'Если площади двух треугольников равны, то треугольники обязательно равны.',
+    options:[
+      {label:'Треугольники 4×3 и 6×2: площадь 6, но это разные треугольники.', correct:true},
+      {label:'Два равных треугольника со сторонами 3, 4, 5.', correct:false},
+      {label:'Два равнобедренных треугольника с углами 50°/65°/65°.', correct:false},
+      {label:'Два конгруэнтных треугольника, наложенных друг на друга.', correct:false}
+    ],
+    explanation:'Одинаковая площадь не означает одинаковая форма. Размеры и углы могут отличаться.',
+    topic:'площади и подобие'
+  },
+  {
+    id:'ce-06',
+    statementId:'prev-097',
+    text:'Если коэффициент подобия равен 2, то площадь подобной фигуры увеличивается в 2 раза.',
+    options:[
+      {label:'Квадрат 1×1 (S=1) и подобный квадрат 2×2 (S=4): площадь выросла в 4 раза.', correct:true},
+      {label:'Квадрат 3×3 и квадрат 3×3.', correct:false},
+      {label:'Прямоугольник 2×4 и 3×6.', correct:false},
+      {label:'Равные треугольники.', correct:false}
+    ],
+    explanation:'Площадь подобных фигур меняется как квадрат коэффициента: при k = 2 это 4 раза.',
+    topic:'площади и подобие'
+  },
+  {
+    id:'ce-07',
+    statementId:'prev-078',
+    text:'Любая хорда окружности является диаметром.',
+    options:[
+      {label:'Короткая хорда, не проходящая через центр окружности.', correct:true},
+      {label:'Хорда, проходящая через центр.', correct:false},
+      {label:'Радиус.', correct:false},
+      {label:'Дуга окружности.', correct:false}
+    ],
+    explanation:'Диаметром является только хорда, проходящая через центр. Большинство хорд короче и через центр не проходят.',
+    topic:'окружность'
+  },
+  {
+    id:'ce-08',
+    statementId:'prev-024',
+    text:'Любая биссектриса равнобедренного треугольника является его медианой.',
+    options:[
+      {label:'Биссектриса угла при основании равнобедренного треугольника — не медиана.', correct:true},
+      {label:'Биссектриса угла при вершине равнобедренного треугольника.', correct:false},
+      {label:'Биссектриса равностороннего треугольника.', correct:false},
+      {label:'Медиана из вершины к основанию.', correct:false}
+    ],
+    explanation:'Совпадают медиана, биссектриса и высота только из вершины к основанию. Биссектриса из угла при основании — отдельная линия.',
+    topic:'треугольники'
+  },
+  {
+    id:'ce-09',
+    statementId:'prev-039',
+    text:'Любые три положительные длины могут быть сторонами треугольника.',
+    options:[
+      {label:'Длины 1, 2 и 10: 1 + 2 < 10, треугольник невозможен.', correct:true},
+      {label:'Длины 3, 4, 5.', correct:false},
+      {label:'Длины 5, 5, 5.', correct:false},
+      {label:'Длины 7, 8, 9.', correct:false}
+    ],
+    explanation:'Должно выполняться неравенство треугольника: сумма любых двух сторон больше третьей.',
+    topic:'треугольники'
+  },
+  {
+    id:'ce-10',
+    statementId:'prev-104',
+    text:'Если периметры двух фигур равны, то их площади тоже равны.',
+    options:[
+      {label:'Квадрат 4×4 и прямоугольник 2×6: периметр 16, площади 16 и 12.', correct:true},
+      {label:'Два одинаковых квадрата 3×3.', correct:false},
+      {label:'Два равных прямоугольника.', correct:false},
+      {label:'Два конгруэнтных треугольника.', correct:false}
+    ],
+    explanation:'Один и тот же периметр может соответствовать разным площадям. Между периметром и площадью нет однозначной связи.',
+    topic:'площади и подобие'
+  },
+  {
+    id:'ce-11',
+    statementId:'prev-035',
+    text:'В треугольнике могут быть два тупых угла.',
+    options:[
+      {label:'Сумма углов треугольника 180°. Два угла больше 90° дают сумму больше 180°.', correct:true},
+      {label:'Тупоугольный треугольник 100°, 40°, 40°.', correct:false},
+      {label:'Прямоугольный треугольник.', correct:false},
+      {label:'Равносторонний треугольник.', correct:false}
+    ],
+    explanation:'В любом треугольнике сумма углов ровно 180°, поэтому больше одного тупого угла быть не может.',
+    topic:'треугольники'
+  },
+  {
+    id:'ce-12',
+    statementId:'prev-066',
+    text:'Если стороны двух четырёхугольников попарно равны, то четырёхугольники обязательно равны.',
+    options:[
+      {label:'Квадрат и ромб с непрямыми углами: одинаковые стороны, но разные фигуры.', correct:true},
+      {label:'Два одинаковых квадрата 5×5.', correct:false},
+      {label:'Два одинаковых прямоугольника 3×4.', correct:false},
+      {label:'Два совмещаемых параллелограмма.', correct:false}
+    ],
+    explanation:'У четырёхугольника не хватает «жёсткости»: с одинаковыми сторонами можно построить квадрат и наклонный ромб.',
+    topic:'четырёхугольники'
+  }
+];
+
+// ===== HELPERS =====
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function normAns(s){return Array.from(new Set(String(s||'').replace(/\D/g,'').split('').filter(x=>['1','2','3'].includes(x)))).sort().join('');}
+function pick(arr){return arr.length ? arr[Math.floor(Math.random()*arr.length)] : null;}
+function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function lsGet(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):def;}catch(e){return def;}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+
+
+// ===== STATE =====
+let importedPayload = lsGet(IMPORT_KEY, {statements:[], variants:[]});
+let userAdded = lsGet(USER_ADDED_KEY, []);
+let errorLog = lsGet(ERRORS_KEY, []); // [{statementId, ts, mode, wasCorrect:boolean (their answer correctness)}]
+let session = {attempts:0, correct:0};
+let currentCard = null;
+let currentCounter = null;
+let currentCounterMode = 'show';
+
+// Enrich the entire bank lazily (cached).
+let _enrichedCache = null;
+function allStatements(){
+  if(_enrichedCache) return _enrichedCache;
+  const all = []
+    .concat(INITIAL_DATA.statements || [])
+    .concat(importedPayload.statements || [])
+    .concat(userAdded || []);
+  _enrichedCache = all.map(enrichStatement);
+  return _enrichedCache;
+}
+function invalidateCache(){_enrichedCache = null;}
+
+function allVariants(){
+  return (INITIAL_DATA.variants||[]).concat(importedPayload.variants||[]);
+}
+function byId(id){return allStatements().find(s=>s.id===id);}
+function themes(){return Array.from(new Set(allStatements().map(s=>s.theme||'Без темы'))).sort();}
+function sourceName(type){return type==='imported'?'импорт':type==='previous'?'прежний банк':type==='user'?'мои':'другое';}
+function statementsByFilters({theme='all', source='all', onlyFalse=false, onlyErrors=false}={}){
+  const errorIds = new Set(errorLog.map(e=>e.statementId));
+  return allStatements().filter(s=>{
+    if(theme!=='all' && s.theme!==theme) return false;
+    if(source!=='all' && s.sourceType!==source) return false;
+    if(onlyFalse && s.correct) return false;
+    if(onlyErrors && !errorIds.has(s.id)) return false;
+    return true;
+  });
+}
+
+function correctAnswerForVariant(v){
+  if(v.answer) return v.answer;
+  return v.statementIds.map((id,i)=>byId(id)?.correct?String(i+1):'').join('');
+}
+function variantStatements(v){return v.statementIds.map(id=>byId(id)).filter(Boolean);}
+
+// ===== ERROR LOGGING =====
+function logAttempt(statementId, wasCorrect, mode){
+  if(!statementId) return;
+  if(wasCorrect){
+    // Remove from errors if previously failed and now answered correctly
+    errorLog = errorLog.filter(e=>!(e.statementId===statementId && e.mode===mode));
+  } else {
+    // Add new entry (or update existing)
+    const existing = errorLog.find(e=>e.statementId===statementId && e.mode===mode);
+    if(existing){existing.ts=Date.now(); existing.count=(existing.count||1)+1;}
+    else errorLog.push({statementId, ts:Date.now(), mode, count:1});
+  }
+  lsSet(ERRORS_KEY, errorLog);
+}
+
+// ===== STATS =====
+function renderStats(){
+  document.getElementById('mAttempts').textContent = session.attempts;
+  document.getElementById('mCorrect').textContent = session.correct;
+  document.getElementById('mRate').textContent = session.attempts ? Math.round(session.correct/session.attempts*100)+'%' : '0%';
+  const counts = allStatements().reduce((a,s)=>{a[s.sourceType||'previous']=(a[s.sourceType||'previous']||0)+1;return a;},{});
+  document.getElementById('sourceStats').innerHTML = Object.entries(counts).map(([k,v])=>
+    `<div class="mini-item"><b>${esc(sourceName(k))}</b><br><span class="muted small">${v} утверждений</span></div>`
+  ).join('') || '<div class="mini-item">Пусто</div>';
+}
+
+function fillSelect(sel, opts, current){
+  if(!sel) return;
+  sel.innerHTML = opts.map(o=>`<option value="${esc(o.value)}" ${o.value===current?'selected':''}>${esc(o.label)}</option>`).join('');
+}
+function initThemeSelects(){
+  const opts = [{value:'all',label:'все темы'}].concat(themes().map(t=>({value:t,label:t})));
+  ['cardTheme','counterTheme','bankTheme'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) fillSelect(el, opts, el.value||'all');
+  });
+  // For add form theme select — themes without "all"
+  const addTheme = document.getElementById('addTheme');
+  if(addTheme){
+    const opts2 = themes().map(t=>({value:t,label:t}));
+    fillSelect(addTheme, opts2, addTheme.value||themes()[0]);
+  }
+}
+
+function viewSwitch(view){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.view===view));
+  document.querySelectorAll('.view').forEach(v=>v.classList.add('hidden'));
+  const target = document.getElementById(view+'View');
+  if(target) target.classList.remove('hidden');
+  if(view==='cards') renderCard();
+  if(view==='exam') renderExam();
+  if(view==='counter') renderCounter();
+  if(view==='topics') renderTopics();
+  if(view==='errors') renderErrors();
+  if(view==='teacher'){renderBank(); renderImportArchive();}
+  // Scroll to top of view on mobile for clarity
+  if(window.innerWidth<=900) window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ===== SVG RENDER =====
+function svgFor(visualType){return SVGS[visualType] || SVGS.generic;}
+
+// ===== EXPLAIN CARD =====
+function renderOneExplain(s, n=''){
+  const ce = s.counterexample || 'Подумай: где можно подобрать частный случай, опровергающий вывод?';
+  const isCorrect = !!s.correct;
+  return `<div class="explain-card">
+    <div class="svgbox">${svgFor(s.visualType)}</div>
+    <div>
+      <div class="row">
+        <span class="tag ${isCorrect?'good':'bad'}">${n?esc(n)+': ':''}${isCorrect?'верно':'неверно'}</span>
+        <span class="tag blue">${esc(s.theme)}</span>
+        ${s.trapType ? `<span class="tag warn">ловушка: ${esc(s.trapType)}</span>` : ''}
+      </div>
+      <div style="margin-top:8px"><b>${esc(s.text)}</b></div>
+      ${s.explanation ? `<p class="muted small" style="margin:6px 0 0">${esc(s.explanation)}</p>` : ''}
+      <div class="notice ${isCorrect?'good':''}"><b>${isCorrect?'Почему верно':'Контрпример'}:</b> ${esc(isCorrect ? (s.explanation || 'Это теорема или определение.') : ce)}</div>
+      <p class="source-line">Источник: ${esc(s.source || s.sourceName || 'не указан')}</p>
+    </div>
+  </div>`;
+}
+
+// ===== CARDS VIEW =====
+function renderCard(){
+  const theme = document.getElementById('cardTheme').value || 'all';
+  const source = document.getElementById('cardSource').value || 'all';
+  const onlyErrors = document.getElementById('cardOnlyErrors').checked;
+  const arr = statementsByFilters({theme, source, onlyFalse:false, onlyErrors});
+  currentCard = pick(arr);
+  const box = document.getElementById('cardBox');
+  if(!currentCard){
+    box.innerHTML = `<div class="empty-state"><b>Нет карточек под фильтр</b>${onlyErrors?'Похоже, ошибок пока нет — попробуй убрать галочку «только мои ошибки».':'Попробуй сменить тему или источник.'}</div>`;
+    return;
+  }
+  const s = currentCard;
+  box.innerHTML = `
+    <div class="row">
+      <span class="tag blue">${esc(s.theme)}</span>
+      <span class="tag neutral">${esc(sourceName(s.sourceType))}</span>
+      ${s.needsReview?'<span class="tag warn">требует проверки</span>':''}
+    </div>
+    <div class="card-text">${esc(s.text)}</div>
+    <div class="choice-grid">
+      <button class="btn good big" onclick="answerCard(true)">✓ Верно</button>
+      <button class="btn bad big" onclick="answerCard(false)">✗ Неверно</button>
+    </div>
+    <div class="result" id="cardResult"></div>`;
+}
+
+function answerCard(ans){
+  if(!currentCard) return;
+  const ok = !!ans === !!currentCard.correct;
+  session.attempts++; if(ok) session.correct++;
+  logAttempt(currentCard.id, ok, 'cards');
+  renderStats();
+  const r = document.getElementById('cardResult');
+  const ce = currentCard.counterexample || '';
+  r.className = 'result show ' + (ok?'good':'bad');
+  r.innerHTML = `
+    <div><b>${ok?'Да, верно!':'Не совсем.'}</b> Правильный ответ: <b>${currentCard.correct?'верно':'неверно'}</b>.</div>
+    ${currentCard.explanation?`<div style="margin-top:6px">${esc(currentCard.explanation)}</div>`:''}
+    ${!currentCard.correct && ce?`<div style="margin-top:6px"><b>Контрпример:</b> ${esc(ce)}</div>`:''}
+    ${currentCard.trapType?`<div style="margin-top:6px" class="small"><b>Ловушка:</b> ${esc(currentCard.trapType)}</div>`:''}
+    <div style="margin-top:10px"><button class="btn primary" onclick="renderCard()">Следующая →</button></div>
+  `;
+}
+
+// ===== EXAM VIEW =====
+function renderVariantSelect(){
+  const sel = document.getElementById('variantSelect');
+  const vars = allVariants();
+  sel.innerHTML = vars.map(v=>`<option value="${esc(v.id)}">${esc(v.title)} · ${esc(sourceName(v.sourceType))}</option>`).join('');
+  if(!sel.value && vars[0]) sel.value = vars[0].id;
+  renderExam();
+}
+
+function currentVariant(){
+  const id = document.getElementById('variantSelect').value;
+  return allVariants().find(v=>v.id===id) || allVariants()[0];
+}
+
+function renderExam(){
+  const v = currentVariant();
+  const list = document.getElementById('examStatements');
+  if(!v){list.innerHTML = `<div class="empty-state"><b>Нет наборов</b>Импортируй свои или сбрось импорт.</div>`; return;}
+  const sts = variantStatements(v);
+  list.innerHTML = sts.map((s,i)=>`
+    <div class="statement">
+      <div class="num">${i+1}</div>
+      <div>
+        <div class="statement-text">${esc(s.text)}</div>
+        <div class="source-line">${esc(s.theme)} · ${esc(s.sourceName || v.sourceName || '')}</div>
+      </div>
+    </div>`).join('');
+  document.getElementById('examAnswer').value = '';
+  document.getElementById('examResult').className = 'result';
+  document.getElementById('examResult').innerHTML = '';
+  document.getElementById('examExplain').classList.add('hidden');
+  document.getElementById('examPostActions').classList.add('hidden');
+}
+
+function checkExam(){
+  const v = currentVariant();
+  const sts = variantStatements(v);
+  const user = normAns(document.getElementById('examAnswer').value);
+  const corr = correctAnswerForVariant(v);
+  const ok = user === corr;
+  session.attempts++; if(ok) session.correct++;
+  renderStats();
+  // Log per-statement errors: user got each statement right iff their inclusion matches correct
+  sts.forEach((s,i)=>{
+    const num = String(i+1);
+    const userSaid = user.includes(num);
+    const shouldSay = corr.includes(num);
+    logAttempt(s.id, userSaid===shouldSay, 'exam');
+  });
+  const box = document.getElementById('examResult');
+  box.className = 'result show ' + (ok?'good':'bad');
+  box.innerHTML = ok
+    ? `<b>Верно!</b> Ответ: <span class="kbd">${corr || 'пустой ответ'}</span>`
+    : `<b>Пока нет.</b> Правильный ответ: <span class="kbd">${corr || 'пустой ответ'}</span>, твой: <span class="kbd">${user || 'пустой ответ'}</span>`;
+  renderExamExplain(true);
+  document.getElementById('examPostActions').classList.remove('hidden');
+}
+
+function renderExamExplain(show=true){
+  const v = currentVariant();
+  const sts = variantStatements(v);
+  const ex = document.getElementById('examExplain');
+  ex.innerHTML = sts.map((s,i)=>renderOneExplain(s, String(i+1))).join('');
+  if(show) ex.classList.remove('hidden');
+}
+
+function trainSimilar(){
+  // Find first false statement in the current variant; pick a similar one (same theme) for cards.
+  const v = currentVariant();
+  const sts = variantStatements(v);
+  const target = sts.find(s=>!s.correct) || sts[0];
+  if(!target) return;
+  // Switch to cards view filtered by theme
+  document.getElementById('cardTheme').value = target.theme;
+  document.getElementById('cardSource').value = 'all';
+  document.getElementById('cardOnlyErrors').checked = false;
+  viewSwitch('cards');
+}
+
+function reviewErrors(){
+  if(errorLog.length===0){
+    const r = document.getElementById('examResult');
+    r.className = 'result show warn';
+    r.innerHTML = '<b>Ошибок пока нет.</b> Хорошая работа! Поработай в режиме «Карточки», и если ошибёшься — они появятся тут.';
+    return;
+  }
+  document.getElementById('cardOnlyErrors').checked = true;
+  document.getElementById('cardTheme').value = 'all';
+  viewSwitch('cards');
+}
+
+function copyVariant(){
+  const v = currentVariant();
+  const sts = variantStatements(v);
+  const text = `${v.title}\nКакие из следующих высказываний верны?\n` + sts.map((s,i)=>`${i+1}) ${s.text}`).join('\n') + `\nОтвет: ${correctAnswerForVariant(v)}`;
+  try{
+    navigator.clipboard?.writeText(text);
+    const r = document.getElementById('examResult');
+    r.className = 'result show warn';
+    r.textContent = 'Набор скопирован в буфер обмена.';
+  }catch(e){}
+}
+
+// ===== COUNTEREXAMPLE VIEW =====
+function renderCounter(){
+  const theme = document.getElementById('counterTheme').value || 'all';
+  const mode = document.getElementById('counterMode').value || 'show';
+  currentCounterMode = mode;
+  const box = document.getElementById('counterBox');
+
+  if(mode==='choose'){
+    // Pick a multiple-choice card
+    let pool = CE_MC_CARDS.slice();
+    if(theme!=='all'){
+      const topicMap = {'Прямые и углы':'углы и прямые','Треугольники':'треугольники','Четырёхугольники':'четырёхугольники','Окружность':'окружность','Площади и подобие':'площади и подобие'};
+      const wanted = topicMap[theme];
+      const filtered = pool.filter(c=>c.topic===wanted);
+      if(filtered.length) pool = filtered;
+    }
+    const card = pick(pool);
+    if(!card){box.innerHTML=`<div class="empty-state"><b>Карточек пока нет в этой теме</b>Попробуй другую тему.</div>`;return;}
+    currentCounter = card;
+    const opts = shuffle(card.options.map((o,i)=>({...o, origIdx:i})));
+    const letters = ['А','Б','В','Г','Д'];
+    box.innerHTML = `
+      <div class="row">
+        <span class="tag bad">ложное утверждение</span>
+        <span class="tag blue">${esc(card.topic)}</span>
+      </div>
+      <div class="card-text">${esc(card.text)}</div>
+      <p class="small muted">Какой пример опровергает это утверждение?</p>
+      <div class="choice-grid full" id="ceOptions">
+        ${opts.map((o,i)=>`<button class="option-btn" data-correct="${o.correct?1:0}" onclick="answerCE(this)"><span class="letter">${letters[i]}</span><span>${esc(o.label)}</span></button>`).join('')}
+      </div>
+      <div class="result" id="ceResult"></div>
+    `;
+  } else {
+    // "Show counterexample" mode - existing behaviour, improved
+    const arr = statementsByFilters({theme, source:'all', onlyFalse:true});
+    currentCounter = pick(arr);
+    if(!currentCounter){box.innerHTML=`<div class="empty-state"><b>Нет ложных утверждений в этой теме</b></div>`;return;}
+    const s = currentCounter;
+    box.innerHTML = `
+      <div class="row">
+        <span class="tag bad">ложное утверждение</span>
+        <span class="tag blue">${esc(s.theme)}</span>
+        ${s.trapType?`<span class="tag warn">${esc(s.trapType)}</span>`:''}
+      </div>
+      <div class="card-text">${esc(s.text)}</div>
+      <p class="small muted">Подумай: какой пример опровергает это утверждение?</p>
+      <div class="row">
+        <button class="btn primary" onclick="showCounterAnswer()">Показать контрпример</button>
+      </div>
+      <div class="explain-grid hidden" id="counterAnswer">${renderOneExplain(s)}</div>
+    `;
+  }
+}
+
+function showCounterAnswer(){document.getElementById('counterAnswer')?.classList.remove('hidden');}
+
+function answerCE(btn){
+  // Disable all options
+  document.querySelectorAll('#ceOptions .option-btn').forEach(b=>b.disabled=true);
+  const wasCorrect = btn.dataset.correct==='1';
+  btn.classList.add(wasCorrect?'correct':'wrong');
+  // Highlight the correct one if user was wrong
+  if(!wasCorrect){
+    const corr = document.querySelector('#ceOptions .option-btn[data-correct="1"]');
+    if(corr) corr.classList.add('correct');
+  }
+  session.attempts++; if(wasCorrect) session.correct++;
+  if(currentCounter && currentCounter.statementId){
+    logAttempt(currentCounter.statementId, wasCorrect, 'counter');
+  }
+  renderStats();
+  const r = document.getElementById('ceResult');
+  r.className = 'result show ' + (wasCorrect?'good':'bad');
+  r.innerHTML = `<b>${wasCorrect?'Верно.':'Не совсем.'}</b> ${esc(currentCounter.explanation||'')}<div style="margin-top:10px"><button class="btn primary" onclick="renderCounter()">Следующий →</button></div>`;
+}
+
+// ===== TOPICS VIEW =====
+let topicsActive = null;
+function renderTopics(active){
+  const grid = document.getElementById('topicGrid');
+  const ts = themes();
+  const chosen = active || topicsActive || ts[0];
+  topicsActive = chosen;
+  grid.innerHTML = ts.map(t=>{
+    const all = allStatements().filter(s=>s.theme===t);
+    const f = all.filter(s=>!s.correct).length;
+    return `<div class="topic-card ${t===chosen?'active':''}" onclick="renderTopics('${esc(t).replace(/'/g,"\\'")}')">
+      <b>${esc(t)}</b><br>
+      <span class="muted small">${all.length} утверждений · ${f} ложных</span>
+    </div>`;
+  }).join('');
+  document.getElementById('topicStatements').innerHTML = allStatements().filter(s=>s.theme===chosen).map((s,i)=>
+    `<div class="statement">
+      <div class="num">${i+1}</div>
+      <div>
+        <div class="row">
+          <span class="tag ${s.correct?'good':'bad'}">${s.correct?'верно':'неверно'}</span>
+          <span class="tag neutral">${esc(sourceName(s.sourceType))}</span>
+          ${s.trapType?`<span class="tag warn">${esc(s.trapType)}</span>`:''}
+        </div>
+        <div class="statement-text" style="margin-top:6px">${esc(s.text)}</div>
+        <div class="source-line">${esc(s.explanation||'')}</div>
+        ${!s.correct && s.counterexample ? `<div class="source-line" style="color:#7a120c;margin-top:4px"><b>Контрпример:</b> ${esc(s.counterexample)}</div>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+// ===== ERRORS VIEW =====
+function renderErrors(){
+  const box = document.getElementById('errorsContent');
+  if(errorLog.length===0){
+    box.innerHTML = `<div class="empty-state"><b>Пока без ошибок 🎉</b>Тренируйся в «Карточках» или «Наборах по 3» — ошибки будут появляться здесь.</div>`;
+    return;
+  }
+  // Map error stats
+  const byTopic = {};
+  const byTrap = {};
+  const items = [];
+  errorLog.forEach(e=>{
+    const s = byId(e.statementId);
+    if(!s) return;
+    items.push({...e, st:s});
+    const topic = s.topic || THEME_TO_TOPIC[s.theme] || s.theme || 'другое';
+    byTopic[topic] = (byTopic[topic]||0) + (e.count||1);
+    if(s.trapType){byTrap[s.trapType] = (byTrap[s.trapType]||0) + (e.count||1);}
+  });
+  const totalErr = items.reduce((a,e)=>a+(e.count||1),0);
+  const topTopics = Object.entries(byTopic).sort((a,b)=>b[1]-a[1]);
+  const topTraps = Object.entries(byTrap).sort((a,b)=>b[1]-a[1]);
+  const topicMax = topTopics.length ? topTopics[0][1] : 1;
+  const trapMax = topTraps.length ? topTraps[0][1] : 1;
+
+  let recommend = '';
+  if(topTopics.length){
+    const top = topTopics[0][0];
+    recommend = `Повтори тему «${top}» — здесь больше всего ошибок.`;
+  }
+
+  box.innerHTML = `
+    <div class="metric-grid" style="margin-bottom:12px">
+      <div class="metric"><div class="v">${totalErr}</div><div class="l">всего ошибок</div></div>
+      <div class="metric"><div class="v">${items.length}</div><div class="l">утверждений</div></div>
+      <div class="metric"><div class="v">${topTopics.length}</div><div class="l">тем с ошибками</div></div>
+    </div>
+
+    <div class="notice blue"><b>Что повторить:</b> ${esc(recommend)}</div>
+
+    <div class="diag-block">
+      <h3 style="margin-top:0">По темам</h3>
+      ${topTopics.map(([t,c])=>`
+        <div class="diag-row">
+          <div>
+            <div class="diag-label">${esc(t)}</div>
+            <div class="bar"><div class="bar-fill bad" style="width:${Math.round(c/topicMax*100)}%"></div></div>
+          </div>
+          <div class="diag-count">${c}</div>
+        </div>`).join('')}
+    </div>
+
+    ${topTraps.length ? `
+    <div class="diag-block">
+      <h3 style="margin-top:0">По типам ловушек</h3>
+      ${topTraps.map(([t,c])=>`
+        <div class="diag-row">
+          <div>
+            <div class="diag-label">${esc(t)}</div>
+            <div class="bar"><div class="bar-fill warn" style="width:${Math.round(c/trapMax*100)}%"></div></div>
+          </div>
+          <div class="diag-count">${c}</div>
+        </div>`).join('')}
+    </div>` : ''}
+
+    <div class="row" style="margin-top:14px">
+      <button class="btn primary" onclick="document.getElementById('cardOnlyErrors').checked=true;viewSwitch('cards');">📝 Повторить эти ошибки в карточках</button>
+    </div>
+
+    <h3 style="margin-top:18px">Список утверждений с ошибками</h3>
+    <div class="statement-list">
+      ${items.sort((a,b)=>(b.count||1)-(a.count||1)).slice(0,30).map(e=>{
+        const s = e.st;
+        return `<div class="statement-mini">
+          <div class="row">
+            <span class="tag ${s.correct?'good':'bad'}">${s.correct?'верно':'неверно'}</span>
+            <span class="tag blue">${esc(s.theme)}</span>
+            <span class="tag warn">×${e.count||1}</span>
+          </div>
+          <div style="font-weight:600">${esc(s.text)}</div>
+          ${s.explanation?`<div class="small muted">${esc(s.explanation)}</div>`:''}
+          ${!s.correct && s.counterexample?`<div class="small" style="color:#7a120c"><b>Контрпример:</b> ${esc(s.counterexample)}</div>`:''}
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+}
+
+function clearErrors(){
+  if(!confirm('Удалить весь журнал ошибок этого браузера?')) return;
+  errorLog = [];
+  lsSet(ERRORS_KEY, errorLog);
+  renderErrors();
+}
+
+// ===== TEACHER VIEW =====
+function renderBank(){
+  const q = (document.getElementById('bankSearch').value||'').toLowerCase();
+  const th = document.getElementById('bankTheme').value||'all';
+  const filter = document.getElementById('bankCorrect').value||'all';
+
+  let arr = allStatements();
+  if(th!=='all') arr = arr.filter(s=>s.theme===th);
+  if(filter==='true') arr = arr.filter(s=>s.correct);
+  else if(filter==='false') arr = arr.filter(s=>!s.correct);
+  else if(filter==='review') arr = arr.filter(s=>s.needsReview);
+  if(q) arr = arr.filter(s=>[s.text,s.explanation,s.counterexample,s.theme,s.sourceName,s.topic].join(' ').toLowerCase().includes(q));
+
+  // Fill bank theme select (only once content loaded)
+  const themeSel = document.getElementById('bankTheme');
+  if(themeSel && themeSel.options.length<=1){
+    fillSelect(themeSel, [{value:'all',label:'все темы'}].concat(themes().map(t=>({value:t,label:t}))), 'all');
+  }
+
+  document.getElementById('bankTable').innerHTML = `
+    <thead><tr><th>✓</th><th>Тема</th><th>Утверждение</th><th>Разбор / контрпример</th><th>Источник</th><th></th></tr></thead>
+    <tbody>${arr.map(s=>{
+      const id = esc(s.id);
+      return `<tr class="bank-row ${s.correct?'true':'false'} ${s.needsReview?'review':''}">
+        <td>${s.correct?'<span class="ok-dot"></span>':'<span class="bad-dot"></span>'}${s.needsReview?' <span class="warn-dot" title="требует проверки"></span>':''}</td>
+        <td>${esc(s.theme)}</td>
+        <td><b>${esc(s.text)}</b></td>
+        <td>${esc(s.explanation||'')}${s.counterexample?`<br><span class="muted">${esc(s.counterexample)}</span>`:''}</td>
+        <td>${esc(s.source||s.sourceName||'')}</td>
+        <td><button class="btn ghost" style="padding:6px 10px;min-height:32px;font-size:12px" onclick="toggleReview('${id}')">${s.needsReview?'снять метку':'требует проверки'}</button></td>
+      </tr>`;
+    }).join('') || '<tr><td colspan="6" class="muted">Ничего не найдено.</td></tr>'}</tbody>
+  `;
+}
+
+function toggleReview(id){
+  // Find statement in: INITIAL_DATA (read-only) / importedPayload / userAdded
+  // For INITIAL_DATA we can't persist; store in a separate review-set in localStorage
+  const REVIEW_FLAGS = lsGet('geometryStatements.reviewFlags.v1', {});
+  REVIEW_FLAGS[id] = !REVIEW_FLAGS[id];
+  lsSet('geometryStatements.reviewFlags.v1', REVIEW_FLAGS);
+  // Patch enrichment to read these flags
+  invalidateCache();
+  renderBank();
+}
+
+function addStatement(){
+  const text = document.getElementById('addText').value.trim();
+  const theme = document.getElementById('addTheme').value;
+  const correct = document.getElementById('addCorrect').value === 'true';
+  const explanation = document.getElementById('addExplanation').value.trim();
+  const counter = document.getElementById('addCounter').value.trim();
+  const r = document.getElementById('addResult');
+  if(!text){
+    r.className = 'result show bad';
+    r.textContent = 'Введи текст утверждения.';
+    return;
+  }
+  const newSt = {
+    id: 'user-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,6),
+    theme,
+    text,
+    correct,
+    explanation,
+    counterexample: correct ? '' : counter,
+    sourceType: 'user',
+    sourceName: 'мои утверждения',
+    source: 'авторская база',
+    variant: 'мои'
+  };
+  userAdded.push(newSt);
+  lsSet(USER_ADDED_KEY, userAdded);
+  invalidateCache();
+  initThemeSelects();
+  renderBank();
+  renderStats();
+  r.className = 'result show good';
+  r.innerHTML = 'Добавлено в банк. Запись хранится в этом браузере.';
+  // Reset
+  document.getElementById('addText').value='';
+  document.getElementById('addExplanation').value='';
+  document.getElementById('addCounter').value='';
+}
+
+// ===== IMPORT =====
+function renderImportArchive(){
+  const ex = [{
+    title:'Мой набор 1',
+    source:'мои материалы',
+    answer:'13',
+    statements:[
+      {text:'Вертикальные углы равны.', theme:'Прямые и углы', correct:true, explanation:'При пересечении двух прямых вертикальные углы равны.'},
+      {text:'Каждый ромб является квадратом.', theme:'Четырёхугольники', correct:false, explanation:'Ромб не обязан иметь прямые углы.', counterexample:'Ромб с углами 60° и 120° не является квадратом.'},
+      {text:'Диаметр окружности в два раза больше её радиуса.', theme:'Окружность', correct:true, explanation:'d = 2r.'}
+    ]
+  }];
+  const box = document.getElementById('importBox');
+  if(box && !box.value.trim()) box.value = JSON.stringify(ex, null, 2);
+}
+
+function importVariants(){
+  const res = document.getElementById('importResult');
+  try{
+    const raw = JSON.parse(document.getElementById('importBox').value);
+    const arr = Array.isArray(raw) ? raw : [raw];
+    const newStatements = [], newVariants = [];
+    arr.forEach((v,vi)=>{
+      if(!v.statements || !Array.isArray(v.statements) || v.statements.length!==3){
+        throw new Error('В каждом наборе должно быть ровно 3 утверждения.');
+      }
+      const source = v.source || v.sourceName || 'импортированный набор';
+      const title = v.variant || v.title || ('Импорт '+(vi+1));
+      const answer = normAns(v.answer||'');
+      const ids = [];
+      v.statements.forEach((s,si)=>{
+        const id = 'imp-'+Date.now().toString(36)+'-'+vi+'-'+si+'-'+Math.random().toString(36).slice(2,5);
+        const corr = typeof s.correct === 'boolean'
+          ? s.correct
+          : (answer ? answer.includes(String(si+1)) : false);
+        const st = {
+          id,
+          theme: s.theme || 'Без темы',
+          text: (s.text||'').trim(),
+          correct: corr,
+          explanation: s.explanation || '',
+          counterexample: s.counterexample || '',
+          sourceType: 'imported',
+          sourceName: source,
+          source: source,
+          sourceNote: v.note || 'Импортировано вручную',
+          variant: title,
+          difficulty: s.difficulty || 1,
+          tags: Array.isArray(s.tags) ? s.tags : []
+        };
+        if(!st.text) throw new Error('Пустое утверждение в «'+title+'»');
+        newStatements.push(st);
+        ids.push(id);
+      });
+      const ans = answer || ids.map((id,i)=>{
+        const st = newStatements.find(x=>x.id===id);
+        return st && st.correct ? String(i+1) : '';
+      }).join('');
+      newVariants.push({
+        id: 'imp-var-'+Date.now().toString(36)+'-'+vi+'-'+Math.random().toString(36).slice(2,5),
+        title, sourceType:'imported', sourceName:source,
+        sourceNote:v.note||'Импортировано вручную',
+        statementIds: ids, answer: ans
+      });
+    });
+    importedPayload.statements = (importedPayload.statements||[]).concat(newStatements);
+    importedPayload.variants = (importedPayload.variants||[]).concat(newVariants);
+    lsSet(IMPORT_KEY, importedPayload);
+    invalidateCache();
+    res.className = 'result show good';
+    res.innerHTML = `Импортировано: <b>${newVariants.length}</b> набор(ов), <b>${newStatements.length}</b> утверждений.`;
+    initThemeSelects();
+    renderVariantSelect();
+    renderStats();
+    renderBank();
+  }catch(e){
+    res.className = 'result show bad';
+    res.innerHTML = 'Ошибка импорта: ' + esc(e.message);
+  }
+}
+
+function clearImport(){
+  if(!confirm('Удалить все импортированные наборы из этого браузера?')) return;
+  importedPayload = {statements:[], variants:[]};
+  lsSet(IMPORT_KEY, importedPayload);
+  invalidateCache();
+  initThemeSelects();
+  renderVariantSelect();
+  renderStats();
+  renderImportArchive();
+  renderBank();
+}
+
+function downloadJSON(name, obj){
+  const blob = new Blob([JSON.stringify(obj, null, 2)], {type:'application/json;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 500);
+}
+
+// ===== Apply review flags from localStorage during enrichment =====
+const _origEnrich = enrichStatement;
+function enrichStatementWithReview(s){
+  const e = _origEnrich(s);
+  const flags = lsGet('geometryStatements.reviewFlags.v1', {});
+  if(flags[e.id]) e.needsReview = true;
+  return e;
+}
+// Monkey-patch the cache builder to use the review version
+enrichStatement = enrichStatementWithReview;
+
+// ===== HELP MODAL =====
+function showHelp(){document.getElementById('helpModal').classList.add('show');}
+function hideHelp(){document.getElementById('helpModal').classList.remove('show');}
+
+// ===== INIT =====
+function init(){
+  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click', ()=>viewSwitch(t.dataset.view)));
+  initThemeSelects();
+  renderVariantSelect();
+  renderStats();
+  renderCard();
+  renderImportArchive();
+  // Bank theme select fill
+  const bankTheme = document.getElementById('bankTheme');
+  if(bankTheme) fillSelect(bankTheme, [{value:'all',label:'все темы'}].concat(themes().map(t=>({value:t,label:t}))), 'all');
+
+  // Cards
+  ['cardTheme','cardSource'].forEach(id=>document.getElementById(id).addEventListener('change', renderCard));
+  document.getElementById('cardOnlyErrors').addEventListener('change', renderCard);
+  document.getElementById('newCardBtn').addEventListener('click', renderCard);
+
+  // Exam
+  document.getElementById('variantSelect').addEventListener('change', renderExam);
+  document.getElementById('randomVariantBtn').addEventListener('click', ()=>{
+    const vars = allVariants(); const v = pick(vars);
+    if(v){document.getElementById('variantSelect').value = v.id; renderExam();}
+  });
+  document.getElementById('checkExamBtn').addEventListener('click', checkExam);
+  document.getElementById('showExplainBtn').addEventListener('click', ()=>renderExamExplain(true));
+  document.getElementById('copyVariantBtn').addEventListener('click', copyVariant);
+  document.getElementById('examAnswer').addEventListener('keydown', e=>{if(e.key==='Enter')checkExam();});
+  document.getElementById('trainSimilarBtn').addEventListener('click', trainSimilar);
+  document.getElementById('reviewErrorsBtn').addEventListener('click', reviewErrors);
+
+  // Counter
+  ['counterTheme','counterMode'].forEach(id=>document.getElementById(id).addEventListener('change', renderCounter));
+  document.getElementById('newCounterBtn').addEventListener('click', renderCounter);
+
+  // Errors
+  document.getElementById('clearErrorsBtn').addEventListener('click', clearErrors);
+
+  // Teacher
+  ['bankSearch','bankTheme','bankCorrect'].forEach(id=>document.getElementById(id).addEventListener('input', renderBank));
+  document.getElementById('exportStatementsBtn').addEventListener('click', ()=>downloadJSON('geometry_statements_bank.json', allStatements()));
+  document.getElementById('exportVariantsBtn').addEventListener('click', ()=>downloadJSON('geometry_statement_sets.json', allVariants()));
+  document.getElementById('addStatementBtn').addEventListener('click', addStatement);
+  document.getElementById('importBtn').addEventListener('click', importVariants);
+  document.getElementById('clearImportBtn').addEventListener('click', clearImport);
+  document.getElementById('fillExampleBtn').addEventListener('click', ()=>{
+    document.getElementById('importBox').value='';
+    renderImportArchive();
+  });
+
+  // Help modal
+  document.getElementById('helpBtn').addEventListener('click', showHelp);
+  document.getElementById('openHelpBtn').addEventListener('click', showHelp);
+  document.getElementById('closeHelpBtn').addEventListener('click', hideHelp);
+  document.getElementById('helpModal').addEventListener('click', e=>{
+    if(e.target.id==='helpModal') hideHelp();
+  });
+  // Esc to close
+  document.addEventListener('keydown', e=>{if(e.key==='Escape') hideHelp();});
+}
+
+init();
+</script>
+</body>
+</html>

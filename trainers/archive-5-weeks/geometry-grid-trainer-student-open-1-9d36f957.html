@@ -1,0 +1,2767 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Геометрия на клетчатой бумаге · ученическая версия</title>
+</head>
+<body>
+  <div id="root"></div>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel" data-presets="env,react">
+/* eslint-disable react/no-unknown-property */
+// Геометрия на клетчатой бумаге. Модуль 18
+// Интерактивный тренажёр для детей. 13 тем · 4 режима · 3 уровня сложности.
+// Один файл, без внешних библиотек кроме React.
+
+const { useState, useEffect, useMemo, useRef, useCallback } = React;
+
+/* =========================================================================
+   1. HELPERS · RNG · ФОРМАТИРОВАНИЕ
+   ========================================================================= */
+
+// Псевдослучайный генератор с seed для воспроизводимости задач.
+function mulberry32(seed) {
+  let s = seed >>> 0;
+  return function () {
+    s = (s + 0x6d2b79f5) >>> 0;
+    let t = s;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function hashSeed(...parts) {
+  let h = 2166136261 >>> 0;
+  for (const p of parts) {
+    const s = String(p);
+    for (let i = 0; i < s.length; i++) {
+      h ^= s.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+  }
+  return h >>> 0;
+}
+function makeRng(seed) {
+  return mulberry32(seed);
+}
+function pick(rng, arr) {
+  return arr[Math.floor(rng() * arr.length)];
+}
+function rndInt(rng, lo, hi) {
+  return lo + Math.floor(rng() * (hi - lo + 1));
+}
+function uid() {
+  return Math.random().toString(36).slice(2, 9);
+}
+
+// Русский формат: «1,5», «4,25», без лишних нулей.
+function fmt(n) {
+  if (Number.isInteger(n)) return String(n);
+  return (Math.round(n * 1000) / 1000).toString().replace(".", ",");
+}
+function fmtPlain(n) {
+  // Для сравнения, без локали.
+  return Number.isInteger(n) ? String(n) : (Math.round(n * 1000) / 1000).toString();
+}
+function parseAnswer(raw) {
+  if (raw == null) return null;
+  const cleaned = String(raw).trim().replace(/\s+/g, "").replace(",", ".");
+  if (cleaned === "" || cleaned === "-" || cleaned === ".") return null;
+  const v = Number(cleaned);
+  return Number.isFinite(v) ? v : null;
+}
+function eqAns(user, correct, tol = 0.015) {
+  if (user == null) return false;
+  return Math.abs(user - correct) <= tol;
+}
+function checkAnswer(rawInput, task) {
+  const v = parseAnswer(rawInput);
+  if (v == null) return { ok: false, parsed: null, reason: "empty" };
+  return { ok: eqAns(v, task.answer), parsed: v };
+}
+
+
+// Делаем математические записи узнаваемыми для ученика: без мелких юникод-индексов
+// и без «шифра», который плохо читается на телефонах.
+function prettyText(value) {
+  if (value == null) return "";
+  return String(value)
+    .replace(/d₁/g, "d1")
+    .replace(/d₂/g, "d2")
+    .replace(/S₁/g, "S1")
+    .replace(/S₂/g, "S2")
+    .replace(/r₁/g, "r1")
+    .replace(/r₂/g, "r2")
+    .replace(/Δx/g, "горизонтальный шаг")
+    .replace(/Δy/g, "вертикальный шаг")
+    .replace(/²/g, "^2")
+    .replace(/·/g, " × ")
+    .replace(/π/g, "пи")
+    .replace(/√/g, "√")
+    .replace(/\s+×\s+/g, " × ");
+}
+
+/* =========================================================================
+   2. ПАЛИТРА · ТИПОГРАФИКА · СТИЛИ
+   ========================================================================= */
+
+const COL = {
+  paper: "#FBF6E9",      // тёплая «бумага»
+  paperEdge: "#F3EBD2",
+  ink: "#1B2A3D",        // основной чернильно-синий
+  inkSoft: "#48566B",
+  inkMute: "#8A8472",
+  grid: "#D8CDAC",       // линии клетчатой бумаги
+  gridMajor: "#C4B788",
+  accent: "#C84B31",     // терракотовый акцент (основные подсветки)
+  accent2: "#1F6A6D",    // глубокий бирюзовый (вторая подсветка)
+  gold: "#C99738",       // золото (выделение решения)
+  ok: "#3F7A3C",         // зелёный «верно»
+  okSoft: "#E1EED8",
+  err: "#A5341F",        // тёмно-красный «ошибка»
+  errSoft: "#F5DDD3",
+  card: "#FFFCF3",
+  cardEdge: "#EADFC2",
+  shadow: "rgba(27, 42, 61, 0.10)",
+};
+
+const STYLE_SHEET = `
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
+
+* { box-sizing: border-box; }
+html, body, #root { background: ${COL.paper}; }
+body {
+  margin: 0;
+  font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+  color: ${COL.ink};
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.ggt-app { max-width: 1360px; margin: 0 auto; padding: 24px 28px 80px; }
+.ggt-title-row { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; margin-bottom: 6px; }
+.ggt-h1 { font-family: 'Fraunces', Georgia, serif; font-size: 34px; font-weight: 600; letter-spacing: -0.5px; margin: 0; color: ${COL.ink}; }
+.ggt-sub { font-family: 'Fraunces', Georgia, serif; font-style: italic; color: ${COL.accent}; font-size: 17px; }
+.ggt-tag { font-size: 13px; color: ${COL.inkSoft}; letter-spacing: 0.5px; text-transform: uppercase; }
+
+.ggt-card { background: ${COL.card}; border: 1px solid ${COL.cardEdge}; border-radius: 14px; padding: 18px 20px; box-shadow: 0 1px 0 ${COL.shadow}; }
+.ggt-card-tight { padding: 14px 16px; }
+.ggt-card h3 { font-family: 'Fraunces', Georgia, serif; font-size: 18px; font-weight: 600; margin: 0 0 8px; }
+.ggt-card h4 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: ${COL.inkMute}; margin: 0 0 6px; font-weight: 600; }
+
+.ggt-layout { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 22px; margin-top: 18px; }
+@media (max-width: 900px) { .ggt-layout { grid-template-columns: 1fr; } .ggt-app { padding: 18px 14px 60px; } .ggt-h1 { font-size: 26px; } }
+
+.ggt-side { display: flex; flex-direction: column; gap: 14px; }
+.ggt-main { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+
+.ggt-pill { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 999px; background: ${COL.card}; border: 1px solid ${COL.cardEdge}; font-size: 13px; cursor: pointer; user-select: none; transition: all .15s; }
+.ggt-pill:hover { border-color: ${COL.inkSoft}; }
+.ggt-pill.active { background: ${COL.ink}; color: ${COL.paper}; border-color: ${COL.ink}; }
+.ggt-pill.accent.active { background: ${COL.accent}; border-color: ${COL.accent}; }
+
+.ggt-btn { font-family: inherit; font-size: 14px; font-weight: 600; padding: 10px 16px; border-radius: 10px; cursor: pointer; border: 1px solid ${COL.ink}; background: ${COL.ink}; color: ${COL.paper}; transition: all .15s; }
+.ggt-btn:hover { background: #28384c; }
+.ggt-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.ggt-btn.secondary { background: transparent; color: ${COL.ink}; }
+.ggt-btn.secondary:hover { background: ${COL.paperEdge}; }
+.ggt-btn.warm { background: ${COL.accent}; border-color: ${COL.accent}; color: white; }
+.ggt-btn.warm:hover { background: #b13e26; }
+.ggt-btn.ghost { background: transparent; color: ${COL.inkSoft}; border-color: ${COL.cardEdge}; font-weight: 500; }
+.ggt-btn.ghost:hover { color: ${COL.ink}; }
+
+.ggt-input { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 700; padding: 12px 14px; width: 180px; border: 2px solid ${COL.cardEdge}; border-radius: 10px; background: ${COL.paper}; color: ${COL.ink}; text-align: center; outline: none; transition: border-color .15s; }
+.ggt-input:focus { border-color: ${COL.ink}; }
+.ggt-input.ok { border-color: ${COL.ok}; background: ${COL.okSoft}; }
+.ggt-input.err { border-color: ${COL.err}; background: ${COL.errSoft}; }
+
+.ggt-statement { font-family: 'Fraunces', Georgia, serif; font-size: 22px; line-height: 1.45; color: ${COL.ink}; margin-bottom: 10px; }
+.ggt-figure-wrap { display: flex; justify-content: center; padding: 14px 8px 10px; background: linear-gradient(180deg, #FFFDF6 0%, ${COL.paper} 100%); border: 1px solid ${COL.cardEdge}; border-radius: 12px; overflow-x: auto; }
+.ggt-figure-wrap svg { max-width: 100%; height: auto; flex-shrink: 0; }
+.ggt-meta-strip { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; font-size: 13px; color: ${COL.inkSoft}; margin-bottom: 8px; }
+.ggt-tag-chip { font-size: 12px; padding: 3px 9px; border-radius: 999px; background: ${COL.paperEdge}; color: ${COL.inkSoft}; letter-spacing: 0.3px; }
+.ggt-tag-chip.warm { background: #FBE5D9; color: ${COL.accent}; }
+.ggt-tag-chip.cool { background: #D8EBEC; color: ${COL.accent2}; }
+
+.ggt-num { font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+
+.ggt-feedback { padding: 14px 16px; border-radius: 12px; border: 1.5px solid; }
+.ggt-feedback.ok { background: ${COL.okSoft}; border-color: ${COL.ok}; color: ${COL.ok}; }
+.ggt-feedback.err { background: ${COL.errSoft}; border-color: ${COL.err}; color: ${COL.err}; }
+.ggt-feedback h4 { color: inherit; }
+.ggt-feedback .body { color: ${COL.ink}; margin-top: 4px; font-size: 14px; line-height: 1.5; }
+
+.ggt-hint { padding: 12px 14px; background: #FCF1DC; border-left: 3px solid ${COL.gold}; border-radius: 8px; font-size: 14.5px; line-height: 1.55; }
+.ggt-hint .num { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: ${COL.accent}; }
+
+.ggt-step { padding: 10px 12px; border-left: 3px solid ${COL.accent2}; background: #EDF6F6; border-radius: 6px; font-size: 14px; margin-bottom: 6px; }
+
+.ggt-error-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 10px 12px; border-radius: 8px; background: ${COL.paperEdge}; font-size: 13px; margin-bottom: 6px; }
+.ggt-error-row .diag { color: ${COL.err}; margin-top: 4px; }
+
+.ggt-progress-bar { height: 6px; background: ${COL.paperEdge}; border-radius: 999px; overflow: hidden; }
+.ggt-progress-fill { height: 100%; background: ${COL.accent2}; }
+
+
+.ggt-skill-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 1fr); gap: 14px; align-items: stretch; }
+@media (max-width: 760px) { .ggt-skill-grid { grid-template-columns: 1fr; } }
+.ggt-method-card { background: #FFF7E3; border: 1px solid #E7D29A; border-radius: 12px; padding: 12px 14px; line-height: 1.45; }
+.ggt-method-card.compact { padding: 10px 12px; }
+.ggt-method-title { font-family: 'Fraunces', Georgia, serif; font-size: 17px; font-weight: 650; color: ${COL.accent}; margin-bottom: 6px; }
+.ggt-method-idea { font-size: 14px; color: ${COL.ink}; margin-bottom: 8px; }
+.ggt-method-look { font-size: 13px; color: ${COL.inkSoft}; margin-bottom: 8px; }
+.ggt-formula-display { display: inline-block; background: ${COL.ink}; color: ${COL.paper}; border-radius: 10px; padding: 9px 12px; font-family: 'Manrope', system-ui, sans-serif; font-size: 16px; font-weight: 750; letter-spacing: .01em; }
+.ggt-formula-words { font-size: 13px; color: ${COL.inkSoft}; margin-top: 6px; }
+.ggt-method-hidden { background: ${COL.paperEdge}; border: 1px dashed ${COL.cardEdge}; border-radius: 10px; padding: 12px; color: ${COL.inkSoft}; font-size: 14px; }
+.ggt-goal-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; margin-top: 10px; }
+@media (max-width: 700px) { .ggt-goal-grid { grid-template-columns: 1fr; } }
+.ggt-goal-btn, .ggt-method-choice { border: 1.5px solid ${COL.cardEdge}; background: ${COL.paper}; border-radius: 12px; padding: 12px 14px; text-align: left; cursor: pointer; font-family: inherit; color: ${COL.ink}; transition: all .15s; }
+.ggt-goal-btn:hover, .ggt-method-choice:hover { border-color: ${COL.ink}; transform: translateY(-1px); }
+.ggt-goal-btn.chosen, .ggt-method-choice.chosen { border-color: ${COL.ink}; background: ${COL.ink}; color: ${COL.paper}; }
+.ggt-goal-btn.wrong { border-color: ${COL.err}; background: ${COL.errSoft}; color: ${COL.err}; }
+.ggt-goal-btn .big { display: block; font-family: 'Fraunces', Georgia, serif; font-size: 18px; font-weight: 650; margin-bottom: 3px; }
+.ggt-goal-btn .small, .ggt-method-choice .small { display: block; font-size: 12.5px; color: ${COL.inkSoft}; line-height: 1.35; }
+.ggt-goal-btn.chosen .small, .ggt-method-choice.chosen .small { color: ${COL.paperEdge}; }
+.ggt-method-choice { display: flex; flex-direction: column; gap: 6px; min-height: 132px; }
+.ggt-method-choice .label { font-family: 'Fraunces', Georgia, serif; font-size: 17px; font-weight: 650; }
+.ggt-method-choice .formula { align-self: flex-start; background: rgba(27,42,61,.08); border-radius: 8px; padding: 6px 8px; font-weight: 800; font-size: 14px; }
+.ggt-method-choice.chosen .formula { background: rgba(255,252,243,.18); }
+.ggt-count-tip { background: #EDF6F6; border-left: 3px solid ${COL.accent2}; border-radius: 8px; padding: 10px 12px; font-size: 13.5px; color: ${COL.ink}; line-height: 1.5; }
+.ggt-repair { background: #FFF7E3; border-left: 3px solid ${COL.gold}; border-radius: 8px; padding: 11px 13px; margin-top: 10px; color: ${COL.ink}; font-size: 14px; line-height: 1.5; }
+.ggt-toolbar-note { font-size: 13px; color: ${COL.inkSoft}; margin-top: 8px; }
+
+.ggt-formula-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ggt-formula-btn { padding: 12px 14px; border-radius: 10px; border: 1.5px solid ${COL.cardEdge}; background: ${COL.paper}; cursor: pointer; text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 14px; transition: all .15s; }
+.ggt-formula-btn:hover { border-color: ${COL.ink}; }
+.ggt-formula-btn.chosen { background: ${COL.ink}; color: ${COL.paper}; border-color: ${COL.ink}; }
+.ggt-formula-btn .label { font-family: 'Manrope', sans-serif; font-size: 12px; color: ${COL.inkMute}; display: block; margin-bottom: 3px; font-weight: 500; }
+.ggt-formula-btn.chosen .label { color: ${COL.paperEdge}; }
+
+details > summary { cursor: pointer; padding: 8px 0; color: ${COL.inkSoft}; font-size: 13px; }
+details > summary:hover { color: ${COL.ink}; }
+details[open] > summary { color: ${COL.ink}; font-weight: 600; }
+`;
+
+/* =========================================================================
+   3. SVG: GridFigure + конструкторы элементов
+   ========================================================================= */
+
+// Все рисунки заданы декларативно: { cols, rows, cell, pad, elements: [...] }.
+// Координаты элементов — в клетках. SVG отрисовывает их с фиксированным cell.
+//
+// Каждый элемент имеет: { id, type, ...типо-специфичные поля }.
+// hintLevel определяет, какие элементы подсвечивать.
+
+function GridFigure({ data, hintLevel = 0, showSolution = false }) {
+  if (!data) return null;
+  const cell = data.cell ?? 30;
+  const pad = data.pad ?? 18;
+  const W = data.cols * cell + pad * 2;
+  const H = data.rows * cell + pad * 2;
+  const toX = (c) => pad + c * cell;
+  const toY = (r) => pad + r * cell;
+
+  // Какие id подсвечены?
+  const highlightSet = new Set();
+  if (hintLevel >= 1 && data.highlight1) data.highlight1.forEach((id) => highlightSet.add(id));
+  if (hintLevel >= 2 && data.highlight2) data.highlight2.forEach((id) => highlightSet.add(id));
+  if (hintLevel >= 3 && data.highlight3) data.highlight3.forEach((id) => highlightSet.add(id));
+  if (showSolution && data.highlightSolution)
+    data.highlightSolution.forEach((id) => highlightSet.add(id));
+
+  // Сетка
+  const gridLines = [];
+  for (let i = 0; i <= data.cols; i++) {
+    gridLines.push(
+      <line
+        key={`v${i}`}
+        x1={toX(i)}
+        y1={toY(0)}
+        x2={toX(i)}
+        y2={toY(data.rows)}
+        stroke={COL.grid}
+        strokeWidth={i % 5 === 0 ? 0.8 : 0.5}
+      />
+    );
+  }
+  for (let j = 0; j <= data.rows; j++) {
+    gridLines.push(
+      <line
+        key={`h${j}`}
+        x1={toX(0)}
+        y1={toY(j)}
+        x2={toX(data.cols)}
+        y2={toY(j)}
+        stroke={COL.grid}
+        strokeWidth={j % 5 === 0 ? 0.8 : 0.5}
+      />
+    );
+  }
+
+  // Рендер элементов
+  const renderEl = (el, idx) => {
+    const hi = highlightSet.has(el.id);
+    const baseStroke = el.stroke || COL.ink;
+    const stroke = hi ? el.highlightStroke || COL.accent : baseStroke;
+    const sw = hi ? (el.highlightWidth || 3.2) : (el.strokeWidth || 2);
+    const fill = el.fill || "none";
+    const highlightFill = el.highlightFill || "rgba(200, 75, 49, 0.12)";
+    const usedFill = hi && el.highlightFill ? highlightFill : fill;
+    const dash = el.dash ? el.dash : undefined;
+    // Если элемент спрятан до подсказки (opacity: 0), при подсветке он должен стать видимым.
+    // Иначе вспомогательные линии/высоты/проекции технически подсвечиваются, но остаются невидимыми.
+    const op = hi ? (el.highlightOpacity ?? 1) : (el.opacity ?? 1);
+
+    switch (el.type) {
+      case "polygon": {
+        const pts = el.points.map(([c, r]) => `${toX(c)},${toY(r)}`).join(" ");
+        return (
+          <polygon
+            key={idx}
+            points={pts}
+            fill={usedFill}
+            stroke={stroke}
+            strokeWidth={sw}
+            strokeDasharray={dash}
+            strokeLinejoin="round"
+            opacity={op}
+          />
+        );
+      }
+      case "line": {
+        return (
+          <line
+            key={idx}
+            x1={toX(el.from[0])}
+            y1={toY(el.from[1])}
+            x2={toX(el.to[0])}
+            y2={toY(el.to[1])}
+            stroke={stroke}
+            strokeWidth={sw}
+            strokeDasharray={dash}
+            strokeLinecap="round"
+            opacity={op}
+          />
+        );
+      }
+      case "point": {
+        const r = el.r || 4;
+        return (
+          <g key={idx} opacity={op}>
+            <circle
+              cx={toX(el.at[0])}
+              cy={toY(el.at[1])}
+              r={r}
+              fill={hi ? COL.accent : (el.fill || COL.ink)}
+            />
+            {el.label && (
+              <text
+                x={toX(el.at[0]) + (el.labelDx ?? 8)}
+                y={toY(el.at[1]) + (el.labelDy ?? -7)}
+                fontFamily="Fraunces, Georgia, serif"
+                fontSize={15}
+                fontStyle="italic"
+                fontWeight={600}
+                fill={hi ? COL.accent : COL.ink}
+              >
+                {el.label}
+              </text>
+            )}
+          </g>
+        );
+      }
+      case "circle": {
+        return (
+          <g key={idx} opacity={op}>
+            <circle
+              cx={toX(el.center[0])}
+              cy={toY(el.center[1])}
+              r={el.radius * cell}
+              fill={usedFill}
+              stroke={stroke}
+              strokeWidth={sw}
+              strokeDasharray={dash}
+            />
+            {el.showCenter && (
+              <circle cx={toX(el.center[0])} cy={toY(el.center[1])} r={2.4} fill={stroke} />
+            )}
+          </g>
+        );
+      }
+      case "label": {
+        // Измерительные подписи не должны раскрывать числа в проверочном режиме.
+        // По умолчанию показываем их только когда соответствующий id попал в highlightSet.
+        const labelOpacity = hi || el.always ? 1 : (el.opacity ?? 0);
+        return (
+          <text
+            key={idx}
+            x={toX(el.at[0])}
+            y={toY(el.at[1])}
+            fontFamily="JetBrains Mono, monospace"
+            fontSize={el.size || 13}
+            fontWeight={el.weight || 700}
+            fill={hi ? COL.accent : (el.color || COL.inkSoft)}
+            textAnchor={el.anchor || "middle"}
+            dominantBaseline="middle"
+            opacity={labelOpacity}
+          >
+            {prettyText(el.text)}
+          </text>
+        );
+      }
+      case "rightAngle": {
+        // L-индикатор прямого угла.
+        const [c, r] = el.at;
+        const s = el.size || 0.36;
+        const [dx, dy] = el.dir || [1, -1];
+        return (
+          <polyline
+            key={idx}
+            points={[
+              [c + dx * s, r],
+              [c + dx * s, r + dy * s],
+              [c, r + dy * s],
+            ]
+              .map(([cc, rr]) => `${toX(cc)},${toY(rr)}`)
+              .join(" ")}
+            fill="none"
+            stroke={hi ? (el.highlightStroke || COL.accent2) : COL.inkSoft}
+            strokeWidth={hi ? (el.highlightWidth || 1.6) : 1.3}
+            opacity={op}
+          />
+        );
+      }
+      case "bracket": {
+        // Дуга под отрезком для группировки клеток.
+        const x1 = toX(el.from[0]);
+        const x2 = toX(el.to[0]);
+        const y = toY(el.from[1]);
+        const drop = el.drop || 6;
+        return (
+          <g key={idx} opacity={op}>
+            <path
+              d={`M ${x1} ${y + 1} L ${x1} ${y + drop} L ${x2} ${y + drop} L ${x2} ${y + 1}`}
+              fill="none"
+              stroke={COL.accent2}
+              strokeWidth={1.2}
+            />
+            {el.label && (
+              <text
+                x={(x1 + x2) / 2}
+                y={y + drop + 12}
+                fontFamily="JetBrains Mono, monospace"
+                fontSize={11}
+                fill={COL.accent2}
+                textAnchor="middle"
+              >
+                {el.label}
+              </text>
+            )}
+          </g>
+        );
+      }
+      default:
+        return null;
+    }
+  };
+
+  // Сортируем: заливки → линии → точки/подписи. Используем порядок из data.elements,
+  // но точки и подписи рендерим в конце, чтобы они были поверх.
+  const polys = data.elements.filter((e) => e.type === "polygon" || e.type === "circle");
+  const lines = data.elements.filter((e) => e.type === "line" || e.type === "rightAngle" || e.type === "bracket");
+  const points = data.elements.filter((e) => e.type === "point" || e.type === "label");
+
+  return (
+    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} style={{ background: COL.paper, borderRadius: 8 }}>
+      <rect x={0} y={0} width={W} height={H} fill={COL.paper} />
+      <g>{gridLines}</g>
+      <g>{polys.map(renderEl)}</g>
+      <g>{lines.map(renderEl)}</g>
+      <g>{points.map(renderEl)}</g>
+    </svg>
+  );
+}
+
+// Конструкторы элементов — короткие имена.
+const E = {
+  poly: (id, points, opts = {}) => ({ id, type: "polygon", points, ...opts }),
+  line: (id, from, to, opts = {}) => ({ id, type: "line", from, to, ...opts }),
+  dashLine: (id, from, to, opts = {}) => ({ id, type: "line", from, to, dash: "5 4", stroke: COL.inkSoft, strokeWidth: 1.5, ...opts }),
+  pt: (id, at, label, opts = {}) => ({ id, type: "point", at, label, ...opts }),
+  circ: (id, center, radius, opts = {}) => ({ id, type: "circle", center, radius, ...opts }),
+  lab: (id, at, text, opts = {}) => ({ id, type: "label", at, text, ...opts }),
+  ra: (id, at, dir, opts = {}) => ({ id, type: "rightAngle", at, dir, ...opts }),
+  bracket: (id, from, to, label, opts = {}) => ({ id, type: "bracket", from, to, label, ...opts }),
+};
+
+/* =========================================================================
+   4. МЕТАДАННЫЕ ТЕМ
+   ========================================================================= */
+
+const METHODS = {
+  rhombus_area: {
+    goal: "area",
+    label: "Площадь ромба",
+    title: "Площадь ромба",
+    idea: "Ромб удобно представить как половину прямоугольника, построенного на его диагоналях.",
+    lookFor: "Найди две диагонали ромба и посчитай их по клеткам.",
+    formula: "S = (d1 × d2) : 2",
+    formulaWords: "площадь = диагональ 1 × диагональ 2 : 2",
+  },
+  tri_midline: {
+    goal: "length",
+    label: "Средняя линия треугольника",
+    title: "Средняя линия треугольника",
+    idea: "Средняя линия в два раза короче стороны, которой она параллельна.",
+    lookFor: "Найди сторону, параллельную средней линии.",
+    formula: "MN = AC : 2",
+    formulaWords: "средняя линия = параллельная сторона : 2",
+  },
+  leg: {
+    goal: "length",
+    label: "Больший катет",
+    title: "Больший катет",
+    idea: "Катеты — две стороны, которые образуют прямой угол.",
+    lookFor: "Найди прямой угол, посчитай два катета и выбери больший.",
+    formula: "больший из двух катетов",
+    formulaWords: "ответ = более длинный катет",
+  },
+  trap_mid: {
+    goal: "length",
+    label: "Средняя линия трапеции",
+    title: "Средняя линия трапеции",
+    idea: "Средняя линия трапеции — это среднее между двумя основаниями.",
+    lookFor: "Найди две параллельные стороны-основания.",
+    formula: "m = (a + b) : 2",
+    formulaWords: "средняя линия = сумма оснований : 2",
+  },
+  rhombus_diag: {
+    goal: "length",
+    label: "Большая диагональ",
+    title: "Большая диагональ ромба",
+    idea: "У ромба две диагонали. Нужно не площадь, а длина большей диагонали.",
+    lookFor: "Проведи взглядом от вершины к противоположной вершине.",
+    formula: "выбери большую диагональ",
+    formulaWords: "ответ = более длинная диагональ",
+  },
+  tri_area: {
+    goal: "area",
+    label: "Площадь треугольника",
+    title: "Площадь треугольника",
+    idea: "Треугольник — это половина прямоугольника с таким же основанием и высотой.",
+    lookFor: "Найди основание и высоту, а не наклонную сторону.",
+    formula: "S = (a × h) : 2",
+    formulaWords: "площадь = основание × высота : 2",
+  },
+  trap_area: {
+    goal: "area",
+    label: "Площадь трапеции",
+    title: "Площадь трапеции",
+    idea: "Сначала усредняем два основания, потом умножаем на высоту.",
+    lookFor: "Найди оба основания и высоту.",
+    formula: "S = (a + b) × h : 2",
+    formulaWords: "площадь = сумма оснований × высота : 2",
+  },
+  par_area: {
+    goal: "area",
+    label: "Площадь параллелограмма",
+    title: "Площадь параллелограмма",
+    idea: "Параллелограмм можно разрезать и собрать в прямоугольник.",
+    lookFor: "Найди основание и высоту. Наклонная сторона не нужна.",
+    formula: "S = a × h",
+    formulaWords: "площадь = основание × высота",
+  },
+  sim: {
+    goal: "length",
+    label: "Подобные треугольники",
+    title: "Маленький и большой треугольник",
+    idea: "Если треугольники похожи, их соответствующие стороны относятся одинаково.",
+    lookFor: "Найди маленький и большой треугольник и соответствующие стороны.",
+    formula: "x : L = h : H",
+    formulaWords: "маленькая сторона : большая сторона = маленькая высота : большая высота",
+  },
+  proj: {
+    goal: "ratio",
+    label: "Проекции отрезков",
+    title: "Проекции вместо наклонных отрезков",
+    idea: "Если точки лежат на одной прямой, части этой прямой можно сравнивать по клеточным шагам.",
+    lookFor: "Сравни горизонтальные или вертикальные проекции AM и BM.",
+    formula: "AM : BM = шаг AM : шаг BM",
+    formulaWords: "отношение отрезков = отношение их проекций",
+  },
+  circles: {
+    goal: "ratio",
+    label: "Квадраты радиусов",
+    title: "Площади кругов через радиусы",
+    idea: "Площадь круга зависит от квадрата радиуса, поэтому сравниваем R^2 и r^2.",
+    lookFor: "Найди радиусы. Если радиус диагональный, найди сразу его квадрат.",
+    formula: "Sбольшого : Sмаленького = R^2 : r^2",
+    formulaWords: "отношение площадей = отношение квадратов радиусов",
+  },
+  pyth: {
+    goal: "length",
+    label: "Пифагор",
+    title: "Прямоугольный треугольник-помощник",
+    idea: "Расстояние между точками — это гипотенуза прямоугольного треугольника.",
+    lookFor: "Дострой горизонтальный и вертикальный шаги.",
+    formula: "d^2 = dx^2 + dy^2",
+    formulaWords: "квадрат расстояния = квадрат горизонтального шага + квадрат вертикального шага",
+  },
+};
+
+const TOPICS = [
+  { id: 1, title: "Площадь ромба", methodKey: "rhombus_area", formula: METHODS.rhombus_area.formula, skill: "находить обе диагонали ромба и брать половину их произведения." },
+  { id: 2, title: "Средняя линия треугольника", methodKey: "tri_midline", formula: METHODS.tri_midline.formula, skill: "видеть, что средняя линия равна половине параллельной стороны." },
+  { id: 3, title: "Больший катет", methodKey: "leg", formula: METHODS.leg.formula, skill: "распознавать катеты прямоугольного треугольника и выбирать больший." },
+  { id: 4, title: "Средняя линия трапеции", methodKey: "trap_mid", formula: METHODS.trap_mid.formula, skill: "находить оба основания и брать полусумму." },
+  { id: 5, title: "Большая диагональ ромба", methodKey: "rhombus_diag", formula: METHODS.rhombus_diag.formula, skill: "видеть обе диагонали ромба и выбирать большую." },
+  { id: 6, title: "Площадь треугольника", methodKey: "tri_area", formula: METHODS.tri_area.formula, skill: "отличать сторону от высоты и брать половину произведения основания и высоты." },
+  { id: 7, title: "Площадь трапеции", methodKey: "trap_area", formula: METHODS.trap_area.formula, skill: "находить два основания и высоту трапеции." },
+  { id: 8, title: "Площадь параллелограмма", methodKey: "par_area", formula: METHODS.par_area.formula, skill: "брать именно высоту, а не наклонную сторону." },
+  { id: 9, title: "Длина отрезка (подобие)", methodKey: "sim", formula: METHODS.sim.formula, skill: "строить пропорцию через подобные треугольники." },
+  { id: 10, title: "Сравнение отрезков", methodKey: "proj", formula: METHODS.proj.formula, skill: "сравнивать наклонные отрезки через их проекции и не переворачивать отношение." },
+  { id: 11, title: "Площади кругов", methodKey: "circles", formula: METHODS.circles.formula, skill: "сравнивать площади через квадраты радиусов." },
+  { id: 12, title: "Круги · сложные случаи", methodKey: "circles", formula: METHODS.circles.formula, skill: "находить квадрат диагонального радиуса и сравнивать площади через R^2." },
+  { id: 13, title: "Расстояние между точками", methodKey: "pyth", formula: METHODS.pyth.formula, skill: "строить прямоугольный треугольник-помощник и применять Пифагора." },
+];
+
+const GOAL_OPTIONS = [
+  { key: "length", label: "длину", big: "Длину", hint: "отрезок, катет, диагональ, средняя линия или расстояние" },
+  { key: "area", label: "площадь", big: "Площадь", hint: "сколько клеточек занимает фигура" },
+  { key: "ratio", label: "отношение", big: "Во сколько раз", hint: "сравнение: длиннее, короче, больше, меньше" },
+];
+
+const FORMULA_OPTIONS = [
+  { key: "rhombus_area", topics: [1], ...METHODS.rhombus_area },
+  { key: "rhombus_diag", topics: [5], ...METHODS.rhombus_diag },
+  { key: "tri_midline", topics: [2], ...METHODS.tri_midline },
+  { key: "tri_area", topics: [6], ...METHODS.tri_area },
+  { key: "trap_mid", topics: [4], ...METHODS.trap_mid },
+  { key: "trap_area", topics: [7], ...METHODS.trap_area },
+  { key: "par_area", topics: [8], ...METHODS.par_area },
+  { key: "leg", topics: [3], ...METHODS.leg },
+  { key: "sim", topics: [9], ...METHODS.sim },
+  { key: "proj", topics: [10], ...METHODS.proj },
+  { key: "circles", topics: [11, 12], ...METHODS.circles },
+  { key: "pyth", topics: [13], ...METHODS.pyth },
+];
+
+function methodForTopic(topicId) {
+  return FORMULA_OPTIONS.find((o) => o.topics.includes(topicId)) || FORMULA_OPTIONS[0];
+}
+
+/* =========================================================================
+   5. ГЕНЕРАТОРЫ ЗАДАЧ
+   Каждая возвращает полный объект GeneratedTask.
+   ========================================================================= */
+
+// ── Тема 1: Площадь ромба ────────────────────────────────────────────────
+function genRhombusArea(diff, rng) {
+  const pools = {
+    easy: [[4, 6], [6, 4], [4, 4], [6, 6], [6, 4]],
+    medium: [[4, 8], [6, 8], [8, 4], [10, 6], [8, 10], [6, 10]],
+    hard: [[8, 10], [12, 8], [10, 6], [12, 6], [10, 12], [6, 12]],
+  };
+  const [d1, d2] = pick(rng, pools[diff]);
+  const cols = Math.max(d1, d2) + 4;
+  const rows = Math.max(d1, d2) + 4;
+  const cx = Math.floor(cols / 2);
+  const cy = Math.floor(rows / 2);
+  const top = [cx, cy - d2 / 2];
+  const right = [cx + d1 / 2, cy];
+  const bottom = [cx, cy + d2 / 2];
+  const left = [cx - d1 / 2, cy];
+  const answer = (d1 * d2) / 2;
+  return {
+    id: uid(),
+    topicId: 1,
+    topicTitle: TOPICS[0].title,
+    difficulty: diff,
+    statement: "Найдите площадь ромба, изображённого на клетчатой бумаге. Размер клетки 1×1.",
+    svgData: {
+      cols, rows, cell: 30, pad: 18,
+      elements: [
+        E.poly("rh", [top, right, bottom, left], { stroke: COL.ink, strokeWidth: 2.4 }),
+        E.line("d1", left, right, { id: "d1", stroke: COL.accent, strokeWidth: 0, opacity: 0 }),
+        E.line("d2", top, bottom, { id: "d2", stroke: COL.accent2, strokeWidth: 0, opacity: 0 }),
+        // Подсвечиваемые версии диагоналей
+        E.line("d1h", left, right, { stroke: COL.accent, strokeWidth: 2.4, opacity: 0, highlightStroke: COL.accent, highlightWidth: 3 }),
+        E.line("d2h", top, bottom, { stroke: COL.accent2, strokeWidth: 2.4, opacity: 0, highlightStroke: COL.accent2, highlightWidth: 3 }),
+        E.pt("p_top", top, "", { r: 3 }),
+        E.pt("p_right", right, "", { r: 3 }),
+        E.pt("p_bottom", bottom, "", { r: 3 }),
+        E.pt("p_left", left, "", { r: 3 }),
+        E.lab("lab_d1", [cx, cy - 0.35], `d₁ = ${d1}`, { color: COL.accent }),
+        E.lab("lab_d2", [cx + 0.95, cy + 0.7], `d₂ = ${d2}`, { color: COL.accent2 }),
+      ],
+      highlight1: ["d1h", "d2h"],
+      highlight2: ["d1h", "d2h", "lab_d1", "lab_d2"],
+      highlight3: ["d1h", "d2h", "lab_d1", "lab_d2"],
+      highlightSolution: ["d1h", "d2h", "lab_d1", "lab_d2"],
+    },
+    answer,
+    answerDisplay: fmt(answer),
+    hints: [
+      "Подсветим обе диагонали ромба. Их длины удобно посчитать прямо по клеткам — они идут вдоль линий сетки.",
+      "Площадь ромба равна половине произведения диагоналей: S = d₁·d₂/2. Сначала перемножаем диагонали, потом делим на 2.",
+      `Диагонали равны ${d1} и ${d2}. Площадь равна ${d1}·${d2}/2 = ${d1 * d2}/2 = …`,
+    ],
+    solutionSteps: [
+      `Видим ромб. Диагонали идут по линиям сетки: горизонтальная d₁ = ${d1}, вертикальная d₂ = ${d2}.`,
+      `Площадь ромба через диагонали: S = d₁·d₂/2.`,
+      `S = ${d1}·${d2}/2 = ${d1 * d2}/2 = ${fmt(answer)}.`,
+      `Проверка смысла: ромб помещается в прямоугольник ${d1}×${d2}, площадь которого ${d1 * d2}. Ромб занимает половину — это ${fmt(answer)}. Сходится.`,
+    ],
+    commonMistakes: [
+      { value: d1 * d2, hint: "Похоже, ты перемножил диагонали, но забыл разделить на 2. Площадь ромба = d₁·d₂/2." },
+      { value: d1 + d2, hint: "Похоже, ты сложил диагонали вместо того, чтобы перемножить. Формула: S = d₁·d₂/2." },
+      { value: d1, hint: "Это длина одной диагонали, а не площадь. Нужна формула S = d₁·d₂/2." },
+      { value: d2, hint: "Это длина одной диагонали, а не площадь. Нужна формула S = d₁·d₂/2." },
+      { value: answer / 2, hint: "Похоже, ты дважды разделил на 2. Делим только один раз: S = d₁·d₂/2." },
+    ],
+    skillCard: "Находить обе диагонали ромба по клеткам и применять S = d₁·d₂/2.",
+    methodCard: "Формула площади ромба через диагонали.",
+    checkIdea: `Ромб «вписан» в прямоугольник ${d1}×${d2} и занимает ровно его половину.`,
+  };
+}
+
+// ── Тема 2: Средняя линия треугольника ─────────────────────────────────
+function genTriangleMidline(diff, rng) {
+  const pools = {
+    easy: [4, 6, 8],
+    medium: [6, 8, 10, 5, 7],
+    hard: [7, 9, 11, 10, 12],
+  };
+  const AC = pick(rng, pools[diff]);
+  const apexH = rndInt(rng, 3, diff === "easy" ? 4 : diff === "medium" ? 6 : 7);
+  const apexShift = diff === "easy" ? 0 : rndInt(rng, -1, AC - 1) - Math.floor(AC / 2);
+  const cols = AC + 4;
+  const rows = apexH + 3;
+  const A = [2, rows - 1];
+  const C = [2 + AC, rows - 1];
+  const B = [2 + Math.floor(AC / 2) + apexShift, rows - 1 - apexH];
+  const M = [(A[0] + B[0]) / 2, (A[1] + B[1]) / 2]; // середина AB
+  const N = [(C[0] + B[0]) / 2, (C[1] + B[1]) / 2]; // середина BC
+  const answer = AC / 2;
+
+  return {
+    id: uid(),
+    topicId: 2,
+    topicTitle: TOPICS[1].title,
+    difficulty: diff,
+    statement: "На клетчатой бумаге изображён треугольник. Найдите длину его средней линии, параллельной стороне AC.",
+    svgData: {
+      cols, rows, cell: 30, pad: 18,
+      elements: [
+        E.poly("tri", [A, B, C], { stroke: COL.ink, strokeWidth: 2.2 }),
+        E.line("ac_h", A, C, { stroke: COL.accent, strokeWidth: 2.6, opacity: 0, highlightStroke: COL.accent, highlightWidth: 3.4 }),
+        E.line("mid_h", M, N, { stroke: COL.accent2, strokeWidth: 0, opacity: 0, highlightStroke: COL.accent2, highlightWidth: 3 }),
+        E.dashLine("mid_d", M, N, { stroke: COL.accent2, strokeWidth: 1.6, dash: "4 3" }),
+        E.pt("pA", A, "A", { labelDx: -14, labelDy: 16 }),
+        E.pt("pB", B, "B", { labelDx: -4, labelDy: -10 }),
+        E.pt("pC", C, "C", { labelDx: 8, labelDy: 16 }),
+        E.pt("pM", M, "M", { r: 3, labelDx: -16, labelDy: 4 }),
+        E.pt("pN", N, "N", { r: 3, labelDx: 6, labelDy: 4 }),
+        E.lab("ac_lab", [(A[0] + C[0]) / 2, A[1] + 0.55], `AC = ${AC}`, { color: COL.accent }),
+      ],
+      highlight1: ["ac_h", "ac_lab"],
+      highlight2: ["ac_h", "mid_h", "ac_lab"],
+      highlight3: ["ac_h", "mid_h", "ac_lab"],
+      highlightSolution: ["ac_h", "mid_h", "ac_lab"],
+    },
+    answer,
+    answerDisplay: fmt(answer),
+    hints: [
+      "Средняя линия параллельна одной из сторон. Здесь это сторона AC — горизонтальная.",
+      "Средняя линия треугольника равна половине той стороны, которой она параллельна: MN = AC/2.",
+      `Сторона AC = ${AC} клеток. MN = ${AC}/2 = …`,
+    ],
+    solutionSteps: [
+      `Средняя линия MN соединяет середины сторон AB и BC, она параллельна AC.`,
+      `Сторона AC горизонтальная, считаем по клеткам: AC = ${AC}.`,
+      `Средняя линия равна половине параллельной стороны: MN = AC/2 = ${AC}/2 = ${fmt(answer)}.`,
+      `Проверка смысла: средняя линия всегда короче параллельной стороны ровно в 2 раза.`,
+    ],
+    commonMistakes: [
+      { value: AC, hint: "Ты записал длину всей стороны AC. Средняя линия в 2 раза короче: MN = AC/2." },
+      { value: AC * 2, hint: "Похоже, ты удвоил сторону вместо того, чтобы поделить пополам. Средняя линия = AC/2." },
+      { value: apexH, hint: "Похоже, ты посчитал высоту треугольника, а не половину стороны. Средняя линия параллельна AC, нужна AC/2." },
+      { value: apexH / 2, hint: "Похоже, ты разделил высоту, а не сторону. Средняя линия = AC/2." },
+    ],
+    skillCard: "Видеть, что средняя линия равна половине параллельной стороны.",
+    methodCard: "«Средняя линия = половина стороны.»",
+    checkIdea: "Средняя линия всегда ровно в 2 раза короче своей параллельной стороны.",
+  };
+}
+
+// ── Тема 3: Больший катет прямоугольного треугольника ───────────────────
+function genLargerLeg(diff, rng) {
+  const ranges = {
+    easy: [3, 6],
+    medium: [4, 9],
+    hard: [5, 12],
+  };
+  const [lo, hi] = ranges[diff];
+  let a = rndInt(rng, lo, hi);
+  let b = rndInt(rng, lo, hi);
+  while (a === b) b = rndInt(rng, lo, hi);
+  const answer = Math.max(a, b);
+  const small = Math.min(a, b);
+  const cols = Math.max(a, b) + 3;
+  const rows = Math.max(a, b) + 3;
+  // Вершина прямого угла внизу слева; легкие катеты по сетке.
+  const C = [1, rows - 1];
+  const A = [1 + a, rows - 1];   // конец катета а (горизонтального)
+  const B = [1, rows - 1 - b];   // конец катета b (вертикального)
+  return {
+    id: uid(),
+    topicId: 3,
+    topicTitle: TOPICS[2].title,
+    difficulty: diff,
+    statement: "Найдите длину большего катета прямоугольного треугольника, изображённого на клетчатой бумаге.",
+    svgData: {
+      cols, rows, cell: 30, pad: 18,
+      elements: [
+        E.poly("tri", [C, A, B], { stroke: COL.ink, strokeWidth: 2.2 }),
+        E.line("legA", C, A, { id: "legA", stroke: a > b ? COL.accent : COL.accent2, strokeWidth: 0, opacity: 0, highlightStroke: a > b ? COL.accent : COL.accent2, highlightWidth: 3.4 }),
+        E.line("legB", C, B, { id: "legB", stroke: b > a ? COL.accent : COL.accent2, strokeWidth: 0, opacity: 0, highlightStroke: b > a ? COL.accent : COL.accent2, highlightWidth: 3.4 }),
+        E.ra("ra", C, [1, -1]),
+        E.pt("pC", C, "C", { labelDx: -14, labelDy: 16 }),
+        E.pt("pA", A, "A", { labelDx: 6, labelDy: 16 }),
+        E.pt("pB", B, "B", { labelDx: -16, labelDy: 4 }),
+        E.lab("labA", [C[0] + a / 2, C[1] + 0.55], `${a}`, { color: COL.inkSoft }),
+        E.lab("labB", [C[0] - 0.6, C[1] - b / 2], `${b}`, { color: COL.inkSoft }),
+      ],
+      highlight1: ["legA", "legB"],
+      highlight2: ["legA", "legB"],
+      highlight3: a > b ? ["legA", "labA"] : ["legB", "labB"],
+      highlightSolution: a > b ? ["legA", "labA"] : ["legB", "labB"],
+    },
+    answer,
+    answerDisplay: fmt(answer),
+    hints: [
+      "Катеты — это две стороны, образующие прямой угол. Они идут по линиям сетки, их легко посчитать по клеткам.",
+      "Найди длину каждого катета по клеткам и выбери тот, что длиннее.",
+      `Катеты равны ${a} и ${b}. Больший из них — это …`,
+    ],
+    solutionSteps: [
+      `У треугольника прямой угол при вершине C. Катеты — стороны CA и CB.`,
+      `Горизонтальный катет CA = ${a} клеток, вертикальный CB = ${b} клеток.`,
+      `Больший катет: max(${a}, ${b}) = ${answer}.`,
+    ],
+    commonMistakes: [
+      { value: small, hint: "Похоже, ты выбрал меньший катет. Вопрос про БОЛЬШИЙ катет — нужно сравнить длины и взять тот, что длиннее." },
+      { value: a + b, hint: "Похоже, ты сложил катеты. Нужно выбрать тот, что длиннее, а не суммировать." },
+      { value: Math.round(Math.sqrt(a * a + b * b)), hint: "Похоже, ты посчитал гипотенузу. Гипотенуза — это сторона напротив прямого угла, она не катет." },
+      { value: Math.sqrt(a * a + b * b), hint: "Похоже, ты посчитал гипотенузу. Гипотенуза не относится к катетам." },
+    ],
+    skillCard: "Распознавать катеты прямоугольного треугольника и выбирать больший.",
+    methodCard: "Сначала найти оба катета по клеткам, потом взять больший.",
+    checkIdea: "Гипотенуза всегда длиннее любого катета. Если ответ равен гипотенузе — это ошибка.",
+  };
+}
+
+// ── Тема 4: Средняя линия трапеции ──────────────────────────────────────
+function genTrapezoidMidline(diff, rng) {
+  const pools = {
+    easy: [[4, 8], [6, 10], [3, 7], [2, 6]],
+    medium: [[5, 9], [4, 10], [6, 12], [3, 9], [5, 11]],
+    hard: [[5, 12], [7, 14], [4, 11], [3, 12], [6, 13]],
+  };
+  const [a, b] = pick(rng, pools[diff]);
+  const h = rndInt(rng, 3, diff === "easy" ? 4 : 5);
+  const cols = b + 4;
+  const rows = h + 3;
+  const x0 = 2 + Math.floor((b - a) / 2);
+  const A = [2, rows - 1];
+  const B = [2 + b, rows - 1];
+  const C = [x0 + a, rows - 1 - h];
+  const D = [x0, rows - 1 - h];
+  const M = [(A[0] + D[0]) / 2, (A[1] + D[1]) / 2];
+  const N = [(B[0] + C[0]) / 2, (B[1] + C[1]) / 2];
+  const answer = (a + b) / 2;
+  return {
+    id: uid(),
+    topicId: 4,
+    topicTitle: TOPICS[3].title,
+    difficulty: diff,
+    statement: "Найдите длину средней линии трапеции, изображённой на клетчатой бумаге.",
+    svgData: {
+      cols, rows, cell: 30, pad: 18,
+      elements: [
+        E.poly("trap", [A, B, C, D], { stroke: COL.ink, strokeWidth: 2.2 }),
+        E.line("base_a", D, C, { stroke: COL.accent, strokeWidth: 2.6, opacity: 0, highlightStroke: COL.accent, highlightWidth: 3.4 }),
+        E.line("base_b", A, B, { stroke: COL.accent, strokeWidth: 2.6, opacity: 0, highlightStroke: COL.accent, highlightWidth: 3.4 }),
+        E.line("mid_h", M, N, { stroke: COL.accent2, strokeWidth: 0, opacity: 0, highlightStroke: COL.accent2, highlightWidth: 3 }),
+        E.pt("pA", A, "A", { labelDx: -14, labelDy: 16 }),
+        E.pt("pB", B, "B", { labelDx: 6, labelDy: 16 }),
+        E.pt("pC", C, "C", { labelDx: 6, labelDy: -8 }),
+        E.pt("pD", D, "D", { labelDx: -14, labelDy: -8 }),
+        E.lab("lab_a", [(D[0] + C[0]) / 2, D[1] - 0.45], `a = ${a}`, { color: COL.accent }),
+        E.lab("lab_b", [(A[0] + B[0]) / 2, A[1] + 0.55], `b = ${b}`, { color: COL.accent }),
+      ],
+      highlight1: ["base_a", "base_b", "lab_a", "lab_b"],
+      highlight2: ["base_a", "base_b", "mid_h", "lab_a", "lab_b"],
+      highlight3: ["base_a", "base_b", "mid_h", "lab_a", "lab_b"],
+      highlightSolution: ["base_a", "base_b", "mid_h", "lab_a", "lab_b"],
+    },
+    answer,
+    answerDisplay: fmt(answer),
+    hints: [
+      "Основания трапеции — две параллельные горизонтальные стороны.",
+      "Средняя линия трапеции равна полусумме оснований: m = (a + b) / 2.",
+      `Основания равны ${a} и ${b}. Средняя линия = (${a} + ${b})/2 = …`,
+    ],
+    solutionSteps: [
+      `Основания — параллельные стороны. Нижнее AB = ${b}, верхнее DC = ${a}.`,
+      `Средняя линия равна полусумме оснований: m = (a + b)/2.`,
+      `m = (${a} + ${b})/2 = ${a + b}/2 = ${fmt(answer)}.`,
+      `Проверка смысла: средняя линия лежит между основаниями, поэтому её длина между ${a} и ${b}. Так и есть.`,
+    ],
+    commonMistakes: [
+      { value: a + b, hint: "Похоже, ты сложил основания, но забыл разделить на 2. Средняя линия = (a + b)/2." },
+      { value: b - a, hint: "Похоже, ты взял разность оснований вместо суммы. Нужно складывать, а потом делить на 2." },
+      { value: a, hint: "Это одно из оснований, а не средняя линия. Нужно (a + b)/2." },
+      { value: b, hint: "Это одно из оснований, а не средняя линия. Нужно (a + b)/2." },
+      { value: h, hint: "Похоже, ты посчитал высоту трапеции, а не среднюю линию. Средняя линия — это полусумма оснований." },
+    ],
+    skillCard: "Находить оба основания и брать их полусумму.",
+    methodCard: "Полусумма оснований: m = (a + b) / 2.",
+    checkIdea: `Средняя линия должна оказаться где-то между ${a} и ${b}.`,
+  };
+}
+
+// ── Тема 5: Большая диагональ ромба ─────────────────────────────────────
+function genLargerDiagonal(diff, rng) {
+  const pools = {
+    easy: [[6, 4], [4, 8], [8, 6]],
+    medium: [[6, 10], [4, 10], [8, 6], [10, 8], [6, 12]],
+    hard: [[8, 12], [10, 12], [6, 10], [12, 8], [10, 6]],
+  };
+  const [d1, d2] = pick(rng, pools[diff]);
+  const cols = Math.max(d1, d2) + 4;
+  const rows = Math.max(d1, d2) + 4;
+  const cx = Math.floor(cols / 2);
+  const cy = Math.floor(rows / 2);
+  const top = [cx, cy - d2 / 2];
+  const right = [cx + d1 / 2, cy];
+  const bottom = [cx, cy + d2 / 2];
+  const left = [cx - d1 / 2, cy];
+  const answer = Math.max(d1, d2);
+  const big = d1 > d2 ? "d1" : "d2";
+  return {
+    id: uid(),
+    topicId: 5,
+    topicTitle: TOPICS[4].title,
+    difficulty: diff,
+    statement: "Найдите длину большей диагонали ромба, изображённого на клетчатой бумаге.",
+    svgData: {
+      cols, rows, cell: 30, pad: 18,
+      elements: [
+        E.poly("rh", [top, right, bottom, left], { stroke: COL.ink, strokeWidth: 2.4 }),
+        E.line("d1h", left, right, { id: "d1h", stroke: big === "d1" ? COL.accent : COL.accent2, strokeWidth: 0, opacity: 0, highlightStroke: big === "d1" ? COL.accent : COL.accent2, highlightWidth: 3 }),
+        E.line("d2h", top, bottom, { id: "d2h", stroke: big === "d2" ? COL.accent : COL.accent2, strokeWidth: 0, opacity: 0, highlightStroke: big === "d2" ? COL.accent : COL.accent2, highlightWidth: 3 }),
+        E.pt("p_top", top, "", { r: 3 }),
+        E.pt("p_right", right, "", { r: 3 }),
+        E.pt("p_bottom", bottom, "", { r: 3 }),
+        E.pt("p_left", left, "", { r: 3 }),
+        E.lab("lab_d1", [cx, cy - 0.35], `d₁ = ${d1}`, { color: big === "d1" ? COL.accent : COL.accent2 }),
+        E.lab("lab_d2", [cx + 0.95, cy + 0.7], `d₂ = ${d2}`, { color: big === "d2" ? COL.accent : COL.accent2 }),
+      ],
+      highlight1: ["d1h", "d2h"],
+      highlight2: ["d1h", "d2h", "lab_d1", "lab_d2"],
+      highlight3: big === "d1" ? ["d1h", "lab_d1"] : ["d2h", "lab_d2"],
+      highlightSolution: big === "d1" ? ["d1h", "lab_d1"] : ["d2h", "lab_d2"],
+    },
+    answer,
+    answerDisplay: fmt(answer),
+    hints: [
+      "У ромба ровно две диагонали. Они пересекаются под прямым углом и идут по линиям сетки.",
+      "Сосчитай длину каждой диагонали по клеткам и выбери большую.",
+      `Диагонали равны ${d1} и ${d2}. Большая из них — это …`,
+    ],
+    solutionSteps: [
+      `Диагонали ромба пересекаются в центре. Горизонтальная d₁ = ${d1}, вертикальная d₂ = ${d2}.`,
+      `Больше из двух чисел: max(${d1}, ${d2}) = ${answer}.`,
+    ],
+    commonMistakes: [
+      { value: Math.min(d1, d2), hint: "Похоже, ты выбрал меньшую диагональ. Нужно выбрать большую — сравни оба числа." },
+      { value: d1 + d2, hint: "Похоже, ты сложил диагонали. Вопрос про длину одной диагонали — большей из двух." },
+      { value: (d1 * d2) / 2, hint: "Похоже, ты посчитал площадь ромба. Вопрос про длину большей диагонали." },
+    ],
+    skillCard: "Видеть обе диагонали ромба и выбирать большую.",
+    methodCard: "Сравнить длины двух диагоналей.",
+    checkIdea: "Это диагональ, а не площадь. Должно быть число в клетках.",
+  };
+}
+
+// ── Тема 6: Площадь треугольника ────────────────────────────────────────
+function genTriangleArea(diff, rng) {
+  const params = {
+    easy: { baseRange: [4, 6], hRange: [3, 5], apexInside: true },
+    medium: { baseRange: [5, 10], hRange: [4, 7], apexInside: true },
+    hard: { baseRange: [6, 12], hRange: [5, 9], apexInside: false },
+  }[diff];
+  const base = rndInt(rng, params.baseRange[0], params.baseRange[1]);
+  const h = rndInt(rng, params.hRange[0], params.hRange[1]);
+  const apexOffset = params.apexInside
+    ? rndInt(rng, 0, base)
+    : rndInt(rng, 0, 1) === 0
+      ? -rndInt(rng, 1, 3)
+      : base + rndInt(rng, 1, 3);
+  const cols = Math.max(base, apexOffset, 0) - Math.min(0, apexOffset) + 4;
+  const rows = h + 3;
+  const x0 = Math.max(0, -apexOffset) + 1;
+  const A = [x0, rows - 1];
+  const C = [x0 + base, rows - 1];
+  const B = [x0 + apexOffset, rows - 1 - h];
+  // Опора высоты
+  const footX = x0 + apexOffset;
+  const Foot = [footX, rows - 1];
+  const answer = (base * h) / 2;
+  const extElems = params.apexInside
+    ? []
+    : [
+        E.dashLine("ext", apexOffset < 0 ? [A[0], A[1]] : [C[0], C[1]], Foot, {
+          stroke: COL.inkSoft,
+          strokeWidth: 1.4,
+        }),
+      ];
+  return {
+    id: uid(),
+    topicId: 6,
+    topicTitle: TOPICS[5].title,
+    difficulty: diff,
+    statement: "Найдите площадь треугольника, изображённого на клетчатой бумаге.",
+    svgData: {
+      cols, rows, cell: 30, pad: 18,
+      elements: [
+        ...extElems,
+        E.poly("tri", [A, B, C], { stroke: COL.ink, strokeWidth: 2.2 }),
+        E.line("base", A, C, { stroke: COL.accent, strokeWidth: 2.6, opacity: 0, highlightStroke: COL.accent, highlightWidth: 3.4 }),
+        E.dashLine("hgt", B, Foot, { stroke: COL.accent2, strokeWidth: 2, dash: "5 3", opacity: 0, highlightStroke: COL.accent2, highlightWidth: 2.4 }),
+        E.ra("ra", Foot, [B[0] >= Foot[0] ? 1 : -1, -1], { opacity: 0 }),
+        E.pt("pA", A, "A", { labelDx: -14, labelDy: 16 }),
+        E.pt("pB", B, "B", { labelDx: -4, labelDy: -10 }),
+        E.pt("pC", C, "C", { labelDx: 6, labelDy: 16 }),
+        E.lab("lab_b", [(A[0] + C[0]) / 2, A[1] + 0.55], `a = ${base}`, { color: COL.accent }),
+        E.lab("lab_h", [B[0] + (B[0] >= Foot[0] ? 0.7 : -0.7), (B[1] + Foot[1]) / 2], `h = ${h}`, { color: COL.accent2, anchor: B[0] >= Foot[0] ? "start" : "end" }),
+      ],
+      highlight1: ["base", "lab_b"],
+      highlight2: ["base", "hgt", "lab_b", "lab_h", "ra"],
+      highlight3: ["base", "hgt", "lab_b", "lab_h", "ra"],
+      highlightSolution: ["base", "hgt", "lab_b", "lab_h", "ra"],
+    },
+    answer,
+    answerDisplay: fmt(answer),
+    hints: [
+      "Найди основание — обычно это горизонтальная сторона.",
+      "Найди высоту — расстояние от противоположной вершины до прямой основания (по перпендикуляру). И помни: S = a·h/2.",
+      `Основание ${base}, высота ${h}. S = ${base}·${h}/2 = ${base * h}/2 = …`,
+    ],
+    solutionSteps: [
+      `Основание — горизонтальная сторона AC = ${base} клеток.`,
+      `Высота — отрезок от вершины B перпендикулярно прямой AC, она равна ${h}.${params.apexInside ? "" : " (Высота опускается на продолжение основания.)"}`,
+      `S = a·h/2 = ${base}·${h}/2 = ${base * h}/2 = ${fmt(answer)}.`,
+      `Проверка смысла: треугольник в 2 раза меньше прямоугольника со сторонами ${base} и ${h}.`,
+    ],
+    commonMistakes: [
+      { value: base * h, hint: "Похоже, ты забыл разделить на 2. Площадь треугольника = a·h/2, а не a·h." },
+      { value: answer / 2, hint: "Похоже, ты дважды разделил на 2. Делить нужно один раз: S = a·h/2." },
+      { value: base + h, hint: "Похоже, ты сложил основание и высоту. Их нужно перемножить, а потом разделить на 2." },
+      { value: base, hint: "Это длина основания, а не площадь. Площадь = a·h/2." },
+      { value: h, hint: "Это высота, а не площадь. Площадь = a·h/2." },
+    ],
+    skillCard: "Отличать сторону от высоты и применять S = a·h/2.",
+    methodCard: "Основание и высота.",
+    checkIdea: `Треугольник занимает половину прямоугольника ${base}×${h}.`,
+  };
+}
+
+// ── Тема 7: Площадь трапеции ────────────────────────────────────────────
+function genTrapezoidArea(diff, rng) {
+  const pools = {
+    easy: [[4, 8, 4], [6, 10, 3], [3, 7, 4]],
+    medium: [[5, 9, 4], [4, 10, 5], [6, 12, 3], [3, 9, 6]],
+    hard: [[5, 12, 5], [7, 13, 4], [4, 11, 6], [6, 13, 5]],
+  };
+  const [a, b, h] = pick(rng, pools[diff]);
+  const cols = b + 4;
+  const rows = h + 3;
+  const x0 = 2 + Math.floor((b - a) / 2);
+  const A = [2, rows - 1];
+  const B = [2 + b, rows - 1];
+  const C = [x0 + a, rows - 1 - h];
+  const D = [x0, rows - 1 - h];
+  const answer = ((a + b) * h) / 2;
+  return {
+    id: uid(),
+    topicId: 7,
+    topicTitle: TOPICS[6].title,
+    difficulty: diff,
+    statement: "Найдите площадь трапеции, изображённой на клетчатой бумаге.",
+    svgData: {
+      cols, rows, cell: 30, pad: 18,
+      elements: [
+        E.poly("trap", [A, B, C, D], { stroke: COL.ink, strokeWidth: 2.2 }),
+        E.line("base_a", D, C, { stroke: COL.accent, strokeWidth: 2.6, opacity: 0, highlightStroke: COL.accent, highlightWidth: 3.4 }),
+        E.line("base_b", A, B, { stroke: COL.accent, strokeWidth: 2.6, opacity: 0, highlightStroke: COL.accent, highlightWidth: 3.4 }),
+        E.dashLine("hgt", [x0, rows - 1], D, { stroke: COL.accent2, strokeWidth: 2, dash: "5 3", opacity: 0, highlightStroke: COL.accent2, highlightWidth: 2.4 }),
+        E.ra("ra", [x0, rows - 1], [1, -1], { opacity: 0 }),
+        E.pt("pA", A, "A", { labelDx: -14, labelDy: 16 }),
+        E.pt("pB", B, "B", { labelDx: 6, labelDy: 16 }),
+        E.pt("pC", C, "C", { labelDx: 6, labelDy: -8 }),
+        E.pt("pD", D, "D", { labelDx: -14, labelDy: -8 }),
+        E.lab("lab_a", [(D[0] + C[0]) / 2, D[1] - 0.45], `a = ${a}`, { color: COL.accent }),
+        E.lab("lab_b", [(A[0] + B[0]) / 2, A[1] + 0.55], `b = ${b}`, { color: COL.accent }),
+        E.lab("lab_h", [x0 - 0.55, rows - 1 - h / 2], `h = ${h}`, { color: COL.accent2, anchor: "end" }),
+      ],
+      highlight1: ["base_a", "base_b", "lab_a", "lab_b"],
+      highlight2: ["base_a", "base_b", "hgt", "lab_a", "lab_b", "lab_h", "ra"],
+      highlight3: ["base_a", "base_b", "hgt", "lab_a", "lab_b", "lab_h", "ra"],
+      highlightSolution: ["base_a", "base_b", "hgt", "lab_a", "lab_b", "lab_h", "ra"],
+    },
+    answer,
+    answerDisplay: fmt(answer),
+    hints: [
+      "Найди два основания — параллельные горизонтальные стороны.",
+      "Площадь трапеции: S = (a + b)·h/2 — полусумма оснований на высоту.",
+      `Основания ${a} и ${b}, высота ${h}. S = (${a} + ${b})·${h}/2 = ${a + b}·${h}/2 = …`,
+    ],
+    solutionSteps: [
+      `Основания трапеции: a = ${a} и b = ${b}. Высота h = ${h}.`,
+      `Площадь: S = (a + b)·h/2.`,
+      `S = (${a} + ${b})·${h}/2 = ${a + b}·${h}/2 = ${(a + b) * h}/2 = ${fmt(answer)}.`,
+    ],
+    commonMistakes: [
+      { value: (a + b) * h, hint: "Похоже, ты забыл разделить на 2. Формула трапеции: S = (a+b)·h/2." },
+      { value: (a + b) / 2, hint: "Это средняя линия, а не площадь. Чтобы получить площадь, умножь среднюю линию на высоту." },
+      { value: a * h, hint: "Похоже, ты взял только одно основание. В формуле — сумма двух оснований." },
+      { value: b * h, hint: "Похоже, ты взял только одно основание. В формуле — сумма двух оснований." },
+      { value: a + b + h, hint: "Похоже, ты сложил основания и высоту. Нужна формула (a+b)·h/2." },
+    ],
+    skillCard: "Находить оба основания трапеции и её высоту.",
+    methodCard: "Площадь трапеции: S = (a + b)·h / 2.",
+    checkIdea: "Площадь трапеции лежит между площадями прямоугольников a·h и b·h.",
+  };
+}
+
+// ── Тема 8: Площадь параллелограмма ─────────────────────────────────────
+function genParallelogramArea(diff, rng) {
+  const pools = {
+    easy: [[5, 3, 1], [6, 4, 2], [4, 3, 1], [7, 3, 2]],
+    medium: [[6, 4, 3], [7, 5, 2], [8, 4, 3], [5, 5, 2], [9, 4, 3]],
+    hard: [[7, 5, 4], [9, 6, 3], [8, 6, 4], [10, 5, 4], [11, 4, 5]],
+  };
+  const [base, h, slant] = pick(rng, pools[diff]);
+  const cols = base + slant + 3;
+  const rows = h + 3;
+  const A = [1, rows - 1];
+  const B = [1 + base, rows - 1];
+  const C = [1 + base + slant, rows - 1 - h];
+  const D = [1 + slant, rows - 1 - h];
+  const answer = base * h;
+  return {
+    id: uid(),
+    topicId: 8,
+    topicTitle: TOPICS[7].title,
+    difficulty: diff,
+    statement: "Найдите площадь параллелограмма, изображённого на клетчатой бумаге.",
+    svgData: {
+      cols, rows, cell: 30, pad: 18,
+      elements: [
+        E.poly("par", [A, B, C, D], { stroke: COL.ink, strokeWidth: 2.2 }),
+        E.line("base", A, B, { stroke: COL.accent, strokeWidth: 2.6, opacity: 0, highlightStroke: COL.accent, highlightWidth: 3.4 }),
+        E.dashLine("hgt", [1 + slant, rows - 1], D, { stroke: COL.accent2, strokeWidth: 2, dash: "5 3", opacity: 0, highlightStroke: COL.accent2, highlightWidth: 2.4 }),
+        E.ra("ra", [1 + slant, rows - 1], [1, -1], { opacity: 0 }),
+        E.pt("pA", A, "A", { labelDx: -14, labelDy: 16 }),
+        E.pt("pB", B, "B", { labelDx: 6, labelDy: 16 }),
+        E.pt("pC", C, "C", { labelDx: 6, labelDy: -8 }),
+        E.pt("pD", D, "D", { labelDx: -14, labelDy: -8 }),
+        E.lab("lab_b", [(A[0] + B[0]) / 2, A[1] + 0.55], `a = ${base}`, { color: COL.accent }),
+        E.lab("lab_h", [1 + slant - 0.55, rows - 1 - h / 2], `h = ${h}`, { color: COL.accent2, anchor: "end" }),
+      ],
+      highlight1: ["base", "lab_b"],
+      highlight2: ["base", "hgt", "lab_b", "lab_h", "ra"],
+      highlight3: ["base", "hgt", "lab_b", "lab_h", "ra"],
+      highlightSolution: ["base", "hgt", "lab_b", "lab_h", "ra"],
+    },
+    answer,
+    answerDisplay: fmt(answer),
+    hints: [
+      "Найди основание — это горизонтальная сторона, идущая по сетке.",
+      "Для параллелограмма нужна высота, а не наклонная боковая сторона. Высота — перпендикуляр к основанию. S = a·h.",
+      `Основание ${base}, высота ${h}. S = ${base}·${h} = …`,
+    ],
+    solutionSteps: [
+      `Основание AB горизонтальное, a = ${base}.`,
+      `Высота — вертикальное расстояние между основаниями, h = ${h}. Это НЕ наклонная сторона.`,
+      `S = a·h = ${base}·${h} = ${fmt(answer)}.`,
+      `Проверка смысла: параллелограмм можно «разрезать и собрать» в прямоугольник ${base}×${h} — та же площадь.`,
+    ],
+    commonMistakes: [
+      { value: answer / 2, hint: "Похоже, ты разделил на 2, как у треугольника. У параллелограмма S = a·h, без деления на 2." },
+      { value: base + h, hint: "Похоже, ты сложил основание и высоту. Нужно перемножить: S = a·h." },
+      { value: Math.round(base * Math.sqrt(h * h + slant * slant)), hint: "Похоже, ты взял наклонную сторону вместо высоты. Высота — это перпендикуляр к основанию." },
+      { value: 2 * (base + h), hint: "Это что-то похожее на периметр. Нужна площадь S = a·h." },
+    ],
+    skillCard: "Брать именно высоту, а не наклонную сторону.",
+    methodCard: "Площадь параллелограмма: S = a · h.",
+    checkIdea: "Если «разрезать» параллелограмм и собрать прямоугольник — получится та же площадь a·h.",
+  };
+}
+
+// ── Тема 9: Длина отрезка через подобие ─────────────────────────────────
+function genSegmentLength(diff, rng) {
+  // Большой треугольник высотой H и основанием L.
+  // Внутри отрезок параллельно основанию на высоте (H − h) от основания (т.е. высота маленького треугольника h).
+  // Длина отрезка x = L * h / H.
+  const setupsEasy = [
+    { L: 6, H: 6, h: 2 }, // x = 2
+    { L: 8, H: 4, h: 2 }, // x = 4
+    { L: 6, H: 3, h: 2 }, // x = 4
+    { L: 9, H: 3, h: 2 }, // x = 6
+    { L: 6, H: 4, h: 2 }, // x = 3
+  ];
+  const setupsMedium = [
+    { L: 6, H: 4, h: 3 }, // x = 4.5
+    { L: 8, H: 4, h: 3 }, // x = 6
+    { L: 6, H: 4, h: 1 }, // x = 1.5
+    { L: 10, H: 4, h: 3 }, // x = 7.5
+    { L: 8, H: 6, h: 3 }, // x = 4
+  ];
+  const setupsHard = [
+    { L: 8, H: 6, h: 3 }, // x = 4
+    { L: 10, H: 4, h: 3 }, // x = 7.5
+    { L: 6, H: 8, h: 3 }, // x = 2.25 → отфильтруем; см. ниже
+    { L: 12, H: 8, h: 5 }, // x = 7.5
+    { L: 9, H: 6, h: 4 }, // x = 6
+    { L: 10, H: 6, h: 5 }, // x = 25/3 → отфильтруем
+  ];
+  let pool;
+  if (diff === "easy") pool = setupsEasy;
+  else if (diff === "medium") pool = setupsMedium;
+  else pool = setupsHard;
+  // Отфильтруем «грязные» ответы по уровню.
+  const tol = diff === "easy" ? 1e-9 : diff === "medium" ? 0.001 : 0.001;
+  const cleanCheck = (s) => {
+    const x = (s.L * s.h) / s.H;
+    if (diff === "easy") return Number.isInteger(x);
+    if (diff === "medium") return Math.abs(x * 2 - Math.round(x * 2)) < tol; // кратно 0.5
+    return Math.abs(x * 4 - Math.round(x * 4)) < tol; // кратно 0.25
+  };
+  pool = pool.filter(cleanCheck);
+  const cfg = pick(rng, pool);
+  const { L, H, h } = cfg;
+  const x = (L * h) / H;
+
+  const cols = L + 4;
+  const rows = H + 3;
+  const xApex = 1 + Math.floor(L / 2);
+  const A = [1, rows - 1];
+  const C = [1 + L, rows - 1];
+  const B = [xApex, rows - 1 - H];
+  // Внутренний отрезок параллельно основанию: на высоте y_inner = (rows-1) - (H - h) = rows-1 - H + h
+  // Точки P и Q на сторонах AB и CB соответственно.
+  // Параметризуем: P = A + t*(B-A), где (rows-1 - P_y) = h означает t = h/H
+  const t = h / H;
+  const P = [A[0] + t * (B[0] - A[0]), A[1] + t * (B[1] - A[1])];
+  const Q = [C[0] + t * (B[0] - C[0]), C[1] + t * (B[1] - C[1])];
+
+  return {
+    id: uid(),
+    topicId: 9,
+    topicTitle: TOPICS[8].title,
+    difficulty: diff,
+    statement: "В треугольнике ABC проведён отрезок PQ, параллельный основанию AC. Найдите длину PQ.",
+    svgData: {
+      cols, rows, cell: 30, pad: 18,
+      elements: [
+        E.poly("big_tri", [A, B, C], { stroke: COL.ink, strokeWidth: 2.2, fill: "rgba(31, 106, 109, 0.06)", highlightFill: "rgba(31, 106, 109, 0.16)" }),
+        E.poly("small_tri", [P, B, Q], { stroke: COL.ink, strokeWidth: 1.8, fill: "rgba(200, 75, 49, 0.08)", highlightFill: "rgba(200, 75, 49, 0.22)" }),
+        E.line("base_AC", A, C, { stroke: COL.accent2, strokeWidth: 2.4, opacity: 0, highlightStroke: COL.accent2, highlightWidth: 3 }),
+        E.line("seg_PQ", P, Q, { stroke: COL.accent, strokeWidth: 2.8 }),
+        E.dashLine("big_h", B, [B[0], rows - 1], { opacity: 0, highlightStroke: COL.accent2, dash: "4 3", strokeWidth: 1.8 }),
+        E.dashLine("small_h", B, [B[0], P[1]], { opacity: 0, highlightStroke: COL.accent, dash: "4 3", strokeWidth: 1.8 }),
+        E.pt("pA", A, "A", { labelDx: -14, labelDy: 16 }),
+        E.pt("pB", B, "B", { labelDx: -4, labelDy: -10 }),
+        E.pt("pC", C, "C", { labelDx: 6, labelDy: 16 }),
+        E.pt("pP", P, "P", { r: 3, labelDx: -16, labelDy: 4 }),
+        E.pt("pQ", Q, "Q", { r: 3, labelDx: 6, labelDy: 4 }),
+        E.lab("lab_L", [(A[0] + C[0]) / 2, A[1] + 0.55], `L = ${L}`, { color: COL.accent2 }),
+        E.lab("lab_H", [B[0] + 0.45, (B[1] + (rows - 1)) / 2], `H = ${H}`, { color: COL.accent2, anchor: "start" }),
+        E.lab("lab_h", [B[0] + 0.45, (B[1] + P[1]) / 2], `h = ${h}`, { color: COL.accent, anchor: "start" }),
+        E.lab("lab_x", [(P[0] + Q[0]) / 2, P[1] - 0.4], `PQ = ?`, { color: COL.accent }),
+      ],
+      highlight1: ["base_AC", "seg_PQ", "lab_L"],
+      highlight2: ["big_tri", "small_tri", "big_h", "small_h", "lab_L", "lab_H", "lab_h"],
+      highlight3: ["big_tri", "small_tri", "big_h", "small_h", "lab_L", "lab_H", "lab_h", "lab_x"],
+      highlightSolution: ["big_tri", "small_tri", "lab_L", "lab_H", "lab_h", "lab_x"],
+    },
+    answer: x,
+    answerDisplay: fmt(x),
+    hints: [
+      "Найди два похожих треугольника: маленький PBQ и большой ABC. У них одна и та же форма.",
+      "В подобных треугольниках сходственные стороны пропорциональны: PQ/L = h/H. Откуда PQ = L·h/H.",
+      `Большой: основание ${L}, высота ${H}. Маленький: высота ${h}. PQ = ${L}·${h}/${H} = ${L * h}/${H} = …`,
+    ],
+    solutionSteps: [
+      `Отрезок PQ параллелен AC, поэтому треугольники PBQ и ABC подобны.`,
+      `Сходственные стороны пропорциональны: PQ/L = h/H. Можно записать пропорцию таблицей:`,
+      `маленький: PQ ↔ h | большой: L ↔ H.`,
+      `PQ = L·h/H = ${L}·${h}/${H} = ${L * h}/${H} = ${fmt(x)}.`,
+      `Проверка смысла: чем меньше h по сравнению с H, тем короче PQ. Здесь h/H = ${fmt(h / H)}.`,
+    ],
+    commonMistakes: [
+      { value: (L * H) / h, hint: "Похоже, ты перевернул пропорцию. Должно быть PQ/L = h/H, а не h/H = L/PQ." },
+      { value: L, hint: "Это полное основание AC, а не PQ. PQ короче в h/H раз." },
+      { value: H - h, hint: "Похоже, ты взял разность высот вместо PQ. Используй пропорцию PQ/L = h/H." },
+      { value: h, hint: "Это высота маленького треугольника, а не его основание. PQ = L·h/H." },
+      { value: L - h, hint: "Это не связано с подобием. Нужно PQ = L·h/H." },
+    ],
+    skillCard: "Видеть подобные треугольники и строить пропорцию.",
+    methodCard: "Маленький и большой треугольник. Сходственные стороны пропорциональны.",
+    checkIdea: `PQ должно быть короче L = ${L}, ведь маленький треугольник — внутри большого.`,
+  };
+}
+
+// ── Тема 10: Сравнение отрезков ─────────────────────────────────────────
+function genSegmentRatio(diff, rng) {
+  // Точки A, M, B на одной наклонной прямой. M делит AB в отношении m:n по проекциям.
+  const pools = {
+    easy: [[1, 3], [2, 4], [3, 6], [1, 4], [2, 6]],   // целые отношения
+    medium: [[2, 5], [3, 9], [4, 8], [2, 8], [3, 12]],  // целые
+    hard: [[2, 5], [4, 10], [2, 3], [3, 5], [4, 6]],   // могут давать 1.5, 2.5 и т.п.
+  };
+  const [m, n] = pick(rng, pools[diff]);
+  // Рисуем без масштабирования: число клеток на проекции должно совпадать с тем,
+  // что ребёнок реально видит и считает по сетке.
+  const ky = 1;
+  const totalDx = m + n;
+  const totalDy = ky * (m + n);
+  const cols = totalDx + 3;
+  const rows = totalDy + 3;
+  const A = [1, rows - 1];
+  const M = [1 + m, rows - 1 - m * ky];
+  const B = [1 + totalDx, rows - 1 - totalDy];
+
+  const forms = [
+    { label: "AM длиннее BM", longer: "AM", shorter: "BM", val: m / n },
+    { label: "BM длиннее AM", longer: "BM", shorter: "AM", val: n / m },
+    { label: "AM короче BM", longer: "BM", shorter: "AM", val: n / m },
+    { label: "BM короче AM", longer: "AM", shorter: "BM", val: m / n },
+  ];
+  // Фильтруем формы, где ответ < 1 (длиннее/короче в долях — не подходит).
+  const valid = forms.filter((f) => f.val > 1);
+  const chosen = pick(rng, valid);
+  const answer = chosen.val;
+  const isLonger = chosen.label.includes("длиннее");
+  const which = chosen.label.split(" ")[0]; // AM или BM
+  const statement = isLonger
+    ? `Точка M лежит на отрезке AB. Во сколько раз отрезок ${which} длиннее отрезка ${chosen.shorter}?`
+    : `Точка M лежит на отрезке AB. Во сколько раз отрезок ${which} короче отрезка ${chosen.longer}?`;
+
+  return {
+    id: uid(),
+    topicId: 10,
+    topicTitle: TOPICS[9].title,
+    difficulty: diff,
+    statement,
+    svgData: {
+      cols, rows, cell: 30, pad: 18,
+      elements: [
+        E.line("ab", A, B, { stroke: COL.ink, strokeWidth: 2.4 }),
+        // Проекции по горизонтали:
+        E.dashLine("proj_am", [A[0], rows - 0.5], [M[0], rows - 0.5], { stroke: COL.accent, strokeWidth: 1.8, opacity: 0, highlightStroke: COL.accent, highlightWidth: 2.4 }),
+        E.dashLine("proj_mb", [M[0], rows - 0.5], [B[0], rows - 0.5], { stroke: COL.accent2, strokeWidth: 1.8, opacity: 0, highlightStroke: COL.accent2, highlightWidth: 2.4 }),
+        E.dashLine("drop_a", A, [A[0], rows - 0.5], { stroke: COL.inkSoft, strokeWidth: 1, dash: "2 3", opacity: 0 }),
+        E.dashLine("drop_m", M, [M[0], rows - 0.5], { stroke: COL.inkSoft, strokeWidth: 1, dash: "2 3", opacity: 0 }),
+        E.dashLine("drop_b", B, [B[0], rows - 0.5], { stroke: COL.inkSoft, strokeWidth: 1, dash: "2 3", opacity: 0 }),
+        E.pt("pA", A, "A", { labelDx: -14, labelDy: 16 }),
+        E.pt("pM", M, "M", { labelDx: 8, labelDy: -2 }),
+        E.pt("pB", B, "B", { labelDx: 6, labelDy: -10 }),
+        E.lab("lab_am", [(A[0] + M[0]) / 2, rows - 0.05], `${m}`, { color: COL.accent }),
+        E.lab("lab_mb", [(M[0] + B[0]) / 2, rows - 0.05], `${n}`, { color: COL.accent2 }),
+      ],
+      highlight1: ["pA", "pM", "pB"],
+      highlight2: ["proj_am", "proj_mb", "drop_a", "drop_m", "drop_b", "lab_am", "lab_mb"],
+      highlight3: ["proj_am", "proj_mb", "lab_am", "lab_mb"],
+      highlightSolution: ["proj_am", "proj_mb", "lab_am", "lab_mb"],
+    },
+    answer,
+    answerDisplay: fmt(answer),
+    hints: [
+      "Точки A, M, B лежат на одной прямой. Поэтому отрезки AM и BM пропорциональны своим горизонтальным проекциям.",
+      `Сравни проекции AM и BM по клеткам. ${isLonger ? "Если спрашивают «длиннее», делим больший на меньший." : "Если спрашивают «короче», тоже делим больший на меньший — получаем, во сколько раз короче."}`,
+      `Проекция ${chosen.longer} = ${chosen.longer === "AM" ? m : n}, проекция ${chosen.shorter} = ${chosen.shorter === "AM" ? m : n}. Ответ: ${Math.max(m, n)}/${Math.min(m, n)} = …`,
+    ],
+    solutionSteps: [
+      `Точки A, M, B лежат на одной прямой, значит AM:BM = (проекция AM):(проекция BM).`,
+      `Считаем по клеткам: проекция AM = ${m}, проекция BM = ${n}.`,
+      `${isLonger ? `${which} длиннее в ${chosen.longer === "AM" ? m : n}/${chosen.shorter === "AM" ? m : n} раз` : `${which} короче в ${chosen.longer === "AM" ? m : n}/${chosen.shorter === "AM" ? m : n} раз`} = ${fmt(answer)}.`,
+    ],
+    commonMistakes: [
+      { value: 1 / answer, hint: `Похоже, ты перевернул отношение. Если спрашивают «во сколько раз ${which} ${isLonger ? "длиннее" : "короче"}», деление должно дать число больше 1.` },
+      { value: m + n, hint: "Похоже, ты сложил проекции. Нужно их разделить друг на друга." },
+      { value: Math.abs(m - n), hint: "Похоже, ты взял разность вместо отношения. Нужно делить, а не вычитать." },
+    ],
+    skillCard: "Сравнивать наклонные отрезки через их проекции.",
+    methodCard: "Проекции отрезков на одной прямой.",
+    checkIdea: `${isLonger ? "Длиннее" : "Короче"} — значит ответ всегда больше 1.`,
+  };
+}
+
+// ── Тема 11: Площади кругов, целые отношения ────────────────────────────
+function genCirclesRatioInt(diff, rng) {
+  // Радиусы целые, ответ — квадрат отношения.
+  const pools = {
+    easy: [[1, 2], [1, 3], [2, 3]],
+    medium: [[1, 2], [2, 4], [1, 3], [2, 5], [3, 4]],
+    hard: [[2, 5], [3, 5], [3, 4], [2, 6], [1, 4]],
+  };
+  const [rsmall, rbig] = pick(rng, pools[diff]);
+  const answer = (rbig * rbig) / (rsmall * rsmall);
+  const cols = Math.max(8, 2 * rbig + 2 * rsmall + 4);
+  const rows = Math.max(6, 2 * rbig + 2);
+  const cyMid = Math.floor(rows / 2);
+  const cx1 = 1 + rbig;
+  const cx2 = cx1 + rbig + rsmall + 2;
+  return {
+    id: uid(),
+    topicId: 11,
+    topicTitle: TOPICS[10].title,
+    difficulty: diff,
+    statement: `На клетчатой бумаге изображены два круга. Во сколько раз площадь большего круга больше площади меньшего?`,
+    svgData: {
+      cols, rows, cell: 30, pad: 18,
+      elements: [
+        E.circ("c_big", [cx1, cyMid], rbig, { stroke: COL.ink, strokeWidth: 2, fill: "rgba(200, 75, 49, 0.05)", showCenter: true, highlightFill: "rgba(200, 75, 49, 0.18)" }),
+        E.circ("c_small", [cx2, cyMid], rsmall, { stroke: COL.ink, strokeWidth: 2, fill: "rgba(31, 106, 109, 0.05)", showCenter: true, highlightFill: "rgba(31, 106, 109, 0.18)" }),
+        E.line("r_big", [cx1, cyMid], [cx1 + rbig, cyMid], { stroke: COL.accent, strokeWidth: 2.4, opacity: 0, highlightStroke: COL.accent, highlightWidth: 2.8 }),
+        E.line("r_small", [cx2, cyMid], [cx2 + rsmall, cyMid], { stroke: COL.accent2, strokeWidth: 2.4, opacity: 0, highlightStroke: COL.accent2, highlightWidth: 2.8 }),
+        E.lab("lab_R", [cx1 + rbig / 2, cyMid - 0.35], `R = ${rbig}`, { color: COL.accent }),
+        E.lab("lab_r", [cx2 + rsmall / 2, cyMid - 0.35], `r = ${rsmall}`, { color: COL.accent2 }),
+      ],
+      highlight1: ["r_big", "r_small"],
+      highlight2: ["r_big", "r_small", "lab_R", "lab_r"],
+      highlight3: ["r_big", "r_small", "lab_R", "lab_r", "c_big", "c_small"],
+      highlightSolution: ["r_big", "r_small", "lab_R", "lab_r", "c_big", "c_small"],
+    },
+    answer,
+    answerDisplay: fmt(answer),
+    hints: [
+      "Найди радиусы обоих кругов по клеткам.",
+      "Площади кругов сравнивают через квадраты радиусов: S₁/S₂ = r₁²/r₂². Сами радиусы возводить в квадрат, а π сокращается.",
+      `R = ${rbig}, r = ${rsmall}. Отношение площадей = R²/r² = ${rbig}²/${rsmall}² = ${rbig * rbig}/${rsmall * rsmall} = …`,
+    ],
+    solutionSteps: [
+      `Радиусы кругов: R = ${rbig}, r = ${rsmall}.`,
+      `Площадь круга S = πr². При сравнении π сокращается, остаются квадраты радиусов.`,
+      `S_большой / S_маленький = R²/r² = ${rbig * rbig}/${rsmall * rsmall} = ${fmt(answer)}.`,
+      `Проверка смысла: большой круг с радиусом в ${rbig / rsmall} раза больше имеет площадь в ${fmt(answer)} раз больше — это нормально, площадь растёт как квадрат.`,
+    ],
+    commonMistakes: [
+      { value: rbig / rsmall, hint: "Похоже, ты сравнил радиусы, а не площади. Площадь зависит от r², поэтому отношение площадей = R²/r²." },
+      { value: rbig - rsmall, hint: "Похоже, ты вычел радиусы. Нужно отношение квадратов: R²/r²." },
+      { value: rbig + rsmall, hint: "Похоже, ты сложил радиусы. Нужно отношение квадратов: R²/r²." },
+      { value: rbig * rsmall, hint: "Похоже, ты перемножил радиусы. Нужно отношение квадратов: R²/r²." },
+    ],
+    skillCard: "Сравнивать площади кругов через квадраты радиусов.",
+    methodCard: "S₁/S₂ = r₁²/r₂².",
+    checkIdea: "Площадь зависит от радиуса в квадрате — поэтому отношение площадей сильнее, чем отношение радиусов.",
+  };
+}
+
+// ── Тема 12: Площади кругов, диагональные радиусы ───────────────────────
+function genCirclesRatioExtra(diff, rng) {
+  // Радиус — диагональ клеточного прямоугольника: r² = dx² + dy².
+  // Требование: и dx ≥ 1, и dy ≥ 1 (иначе это уже тема 11 с осевым радиусом).
+  // Допустимые «красивые» отношения площадей: кратные 0.25 в диапазоне (1, 8].
+  const dxMax = diff === "easy" ? 2 : diff === "medium" ? 3 : 4;
+  const dyMax = diff === "easy" ? 3 : diff === "medium" ? 4 : 5;
+  const sqPool = [];
+  for (let dx = 1; dx <= dxMax; dx++) {
+    for (let dy = 1; dy <= dyMax; dy++) {
+      sqPool.push({ dx, dy, sq: dx * dx + dy * dy });
+    }
+  }
+  const allCases = [];
+  for (let i = 0; i < sqPool.length; i++) {
+    for (let j = 0; j < sqPool.length; j++) {
+      if (i === j) continue;
+      const a = sqPool[i], b = sqPool[j];
+      if (a.sq <= b.sq) continue;
+      const ratio = a.sq / b.sq;
+      if (ratio <= 1.0001 || ratio > 8.001) continue;
+      if (Math.abs(ratio * 4 - Math.round(ratio * 4)) > 1e-6) continue;
+      // На лёгком уровне — только целые отношения. На среднем и сложном допускаем 0.25-кратные.
+      if (diff === "easy" && Math.abs(ratio - Math.round(ratio)) > 1e-6) continue;
+      allCases.push({ big: a, small: b, ratio });
+    }
+  }
+  // Гарантированный fallback (на случай если фильтрация дала пустой пул).
+  const cases = allCases.length > 0
+    ? allCases
+    : [{ big: { dx: 2, dy: 4, sq: 20 }, small: { dx: 1, dy: 2, sq: 5 }, ratio: 4 }];
+  const cfg = pick(rng, cases);
+  const big = cfg.big;
+  const small = cfg.small;
+  const bigSq = big.sq;
+  const smallSq = small.sq;
+  const answer = bigSq / smallSq;
+
+  const rBig = Math.sqrt(bigSq);
+  const rSmall = Math.sqrt(smallSq);
+
+  const cols = Math.max(10, 2 * Math.ceil(rBig) + 2 * Math.ceil(rSmall) + 4);
+  const rows = Math.max(8, 2 * Math.ceil(rBig) + 2);
+  const cyMid = Math.floor(rows / 2);
+  const cx1 = Math.ceil(rBig) + 1;
+  const cx2 = cx1 + Math.ceil(rBig) + Math.ceil(rSmall) + 2;
+
+  // Радиусы рисуем как диагонали прямоугольников.
+  const bigEnd = [cx1 + big.dx, cyMid - big.dy];
+  const smallEnd = [cx2 + small.dx, cyMid - small.dy];
+
+  return {
+    id: uid(),
+    topicId: 12,
+    topicTitle: TOPICS[11].title,
+    difficulty: diff,
+    statement: `На клетчатой бумаге изображены два круга. Радиус каждого — отрезок от центра до отмеченной точки. Во сколько раз площадь большего круга больше площади меньшего?`,
+    svgData: {
+      cols, rows, cell: 30, pad: 18,
+      elements: [
+        E.circ("c_big", [cx1, cyMid], rBig, { stroke: COL.ink, strokeWidth: 2, fill: "rgba(200, 75, 49, 0.05)", showCenter: true, highlightFill: "rgba(200, 75, 49, 0.18)" }),
+        E.circ("c_small", [cx2, cyMid], rSmall, { stroke: COL.ink, strokeWidth: 2, fill: "rgba(31, 106, 109, 0.05)", showCenter: true, highlightFill: "rgba(31, 106, 109, 0.18)" }),
+        E.line("r_big", [cx1, cyMid], bigEnd, { stroke: COL.accent, strokeWidth: 2.4, opacity: 0, highlightStroke: COL.accent, highlightWidth: 2.8 }),
+        E.line("r_small", [cx2, cyMid], smallEnd, { stroke: COL.accent2, strokeWidth: 2.4, opacity: 0, highlightStroke: COL.accent2, highlightWidth: 2.8 }),
+        // Прямоугольный треугольник-помощник для большего радиуса
+        E.dashLine("aux_big_h", [cx1, cyMid], [cx1 + big.dx, cyMid], { opacity: 0, highlightStroke: COL.accent, dash: "4 3" }),
+        E.dashLine("aux_big_v", [cx1 + big.dx, cyMid], bigEnd, { opacity: 0, highlightStroke: COL.accent, dash: "4 3" }),
+        E.dashLine("aux_small_h", [cx2, cyMid], [cx2 + small.dx, cyMid], { opacity: 0, highlightStroke: COL.accent2, dash: "4 3" }),
+        E.dashLine("aux_small_v", [cx2 + small.dx, cyMid], smallEnd, { opacity: 0, highlightStroke: COL.accent2, dash: "4 3" }),
+        E.pt("p_big", bigEnd, ""),
+        E.pt("p_small", smallEnd, ""),
+        E.lab("lab_R2", [cx1 - 0.6, cyMid + 1], `R² = ${big.dx}²+${big.dy}² = ${bigSq}`, { color: COL.accent, anchor: "start", size: 12 }),
+        E.lab("lab_r2", [cx2 - 0.6, cyMid + 1], `r² = ${small.dx}²+${small.dy}² = ${smallSq}`, { color: COL.accent2, anchor: "start", size: 12 }),
+      ],
+      highlight1: ["r_big", "r_small"],
+      highlight2: ["r_big", "r_small", "aux_big_h", "aux_big_v", "aux_small_h", "aux_small_v"],
+      highlight3: ["aux_big_h", "aux_big_v", "aux_small_h", "aux_small_v", "lab_R2", "lab_r2"],
+      highlightSolution: ["aux_big_h", "aux_big_v", "aux_small_h", "aux_small_v", "lab_R2", "lab_r2"],
+    },
+    answer,
+    answerDisplay: fmt(answer),
+    hints: [
+      "Радиус — отрезок от центра до точки. Если он идёт «по диагонали», построй маленький прямоугольный треугольник-помощник.",
+      "Для отношения площадей сам корень считать НЕ обязательно — достаточно сравнить r². По Пифагору: r² = dx² + dy².",
+      `R² = ${big.dx}² + ${big.dy}² = ${bigSq}. r² = ${small.dx}² + ${small.dy}² = ${smallSq}. Отношение = ${bigSq}/${smallSq} = …`,
+    ],
+    solutionSteps: [
+      `Радиус идёт по диагонали клеточного прямоугольника. По Пифагору r² = dx² + dy².`,
+      `Для большего: R² = ${big.dx}² + ${big.dy}² = ${bigSq}.`,
+      `Для меньшего: r² = ${small.dx}² + ${small.dy}² = ${smallSq}.`,
+      `Отношение площадей: S_большой/S_маленький = R²/r² = ${bigSq}/${smallSq} = ${fmt(answer)}.`,
+      `Проверка смысла: корень считать не пришлось — π и квадратные корни сокращаются.`,
+    ],
+    commonMistakes: [
+      { value: Math.sqrt(answer), hint: "Похоже, ты сравнил радиусы, а не площади. Нужно R²/r², а не R/r." },
+      { value: bigSq - smallSq, hint: "Похоже, ты вычел квадраты вместо того, чтобы поделить. Нужно отношение R²/r²." },
+      { value: bigSq, hint: "Похоже, ты записал только R². Нужно отношение R²/r²." },
+      { value: smallSq, hint: "Похоже, ты записал только r². Нужно отношение R²/r²." },
+    ],
+    skillCard: "Находить r² для диагональных радиусов и сравнивать площади через квадраты.",
+    methodCard: "Квадраты радиусов через Пифагора. Корни считать не обязательно.",
+    checkIdea: "π и корни сокращаются — остаются только квадраты радиусов.",
+  };
+}
+
+// ── Тема 13: Расстояние между точками ───────────────────────────────────
+function genDistance(diff, rng) {
+  // Пифагоровы тройки и их «повороты».
+  const triplesEasy = [[3, 4, 5]];
+  const triplesMed = [[3, 4, 5], [6, 8, 10]];
+  const triplesHard = [[3, 4, 5], [6, 8, 10], [5, 12, 13], [8, 15, 17], [9, 12, 15]];
+  const triples = diff === "easy" ? triplesEasy : diff === "medium" ? triplesMed : triplesHard;
+  const [a, b, c] = pick(rng, triples);
+  // Решаем, какой шаг по горизонтали (dx), какой по вертикали (dy).
+  const swap = rng() < 0.5;
+  const dx = swap ? b : a;
+  const dy = swap ? a : b;
+  const cols = dx + 4;
+  const rows = dy + 3;
+  // Не разворачиваем — точки в "верх-право" направлении.
+  const A = [1, rows - 1];
+  const B = [1 + dx, rows - 1 - dy];
+  const C = [1 + dx, rows - 1]; // вспомогательная точка прямого угла
+  const answer = c;
+  return {
+    id: uid(),
+    topicId: 13,
+    topicTitle: TOPICS[12].title,
+    difficulty: diff,
+    statement: "На клетчатой бумаге отмечены две точки A и B. Найдите расстояние между ними.",
+    svgData: {
+      cols, rows, cell: 30, pad: 18,
+      elements: [
+        E.line("ab", A, B, { stroke: COL.ink, strokeWidth: 2.4 }),
+        E.dashLine("dx", A, C, { stroke: COL.accent, strokeWidth: 1.8, opacity: 0, highlightStroke: COL.accent, highlightWidth: 2.4 }),
+        E.dashLine("dy", C, B, { stroke: COL.accent2, strokeWidth: 1.8, opacity: 0, highlightStroke: COL.accent2, highlightWidth: 2.4 }),
+        E.ra("ra", C, [-1, -1], { opacity: 0 }),
+        E.pt("pA", A, "A", { labelDx: -14, labelDy: 16 }),
+        E.pt("pB", B, "B", { labelDx: 6, labelDy: -10 }),
+        E.pt("pC", C, "", { r: 2.5, opacity: 0 }),
+        E.lab("lab_dx", [(A[0] + C[0]) / 2, A[1] + 0.55], `dx = ${dx}`, { color: COL.accent }),
+        E.lab("lab_dy", [C[0] + 0.55, (C[1] + B[1]) / 2], `dy = ${dy}`, { color: COL.accent2, anchor: "start" }),
+        E.lab("lab_d", [(A[0] + B[0]) / 2 + 0.4, (A[1] + B[1]) / 2 - 0.4], `d = ?`, { color: COL.ink, anchor: "start" }),
+      ],
+      highlight1: ["pA", "pB"],
+      highlight2: ["dx", "dy", "ra", "pC", "lab_dx", "lab_dy"],
+      highlight3: ["dx", "dy", "ra", "lab_dx", "lab_dy"],
+      highlightSolution: ["dx", "dy", "ra", "lab_dx", "lab_dy"],
+    },
+    answer,
+    answerDisplay: fmt(answer),
+    hints: [
+      "Соедини точки и достроить прямоугольный треугольник: один катет — горизонтальный, другой — вертикальный.",
+      "Расстояние между точками — гипотенуза этого треугольника. Применяй Пифагора: d² = dx² + dy².",
+      `dx = ${dx}, dy = ${dy}. d² = ${dx}² + ${dy}² = ${dx * dx} + ${dy * dy} = ${dx * dx + dy * dy}. d = √${dx * dx + dy * dy} = …`,
+    ],
+    solutionSteps: [
+      `Строим прямоугольный треугольник: горизонтальный катет dx = ${dx}, вертикальный dy = ${dy}.`,
+      `По Пифагору: d² = dx² + dy² = ${dx}² + ${dy}² = ${dx * dx} + ${dy * dy} = ${dx * dx + dy * dy}.`,
+      `d = √${dx * dx + dy * dy} = ${answer}. Это пифагорова тройка.`,
+    ],
+    commonMistakes: [
+      { value: dx, hint: "Это только горизонтальный шаг dx. Расстояние = √(dx² + dy²) — нужна гипотенуза, а не катет." },
+      { value: dy, hint: "Это только вертикальный шаг dy. Расстояние = √(dx² + dy²) — нужна гипотенуза, а не катет." },
+      { value: dx + dy, hint: "Похоже, ты сложил dx и dy. По Пифагору сначала возводим в квадрат, потом складываем, потом извлекаем корень: √(dx² + dy²)." },
+      { value: dx * dx + dy * dy, hint: "Это d² — квадрат расстояния. Не забудь извлечь корень." },
+      { value: Math.abs(dx - dy), hint: "Это разность катетов. Расстояние = √(dx² + dy²)." },
+    ],
+    skillCard: "Строить прямоугольный треугольник-помощник и применять Пифагора.",
+    methodCard: "Пифагор: d = √(dx² + dy²).",
+    checkIdea: "Гипотенуза всегда длиннее каждого катета и короче их суммы.",
+  };
+}
+
+// Диспетчер генераторов
+const GENERATORS = {
+  1: genRhombusArea,
+  2: genTriangleMidline,
+  3: genLargerLeg,
+  4: genTrapezoidMidline,
+  5: genLargerDiagonal,
+  6: genTriangleArea,
+  7: genTrapezoidArea,
+  8: genParallelogramArea,
+  9: genSegmentLength,
+  10: genSegmentRatio,
+  11: genCirclesRatioInt,
+  12: genCirclesRatioExtra,
+  13: genDistance,
+};
+
+function groupLabel(n) {
+  if (!Number.isFinite(n) || n < 6) return null;
+  const groups = [];
+  let rest = Math.round(n);
+  const step = rest >= 9 ? 3 : 2;
+  while (rest > step) {
+    groups.push(step);
+    rest -= step;
+  }
+  if (rest > 0) groups.push(rest);
+  return groups.join(" + ") + " = " + Math.round(n);
+}
+
+function enhanceTask(task) {
+  const method = methodForTopic(task.topicId);
+  task.method = method;
+  task.methodCard = method.title;
+  task.methodIdea = method.idea;
+  task.formulaDisplay = method.formula;
+  task.formulaWords = method.formulaWords;
+
+  // Визуальный лайфхак: на длинных горизонтальных отрезках показываем счёт группами.
+  // Скобки появляются только в поздней подсказке/решении, чтобы не раскрывать числа сразу.
+  const data = task.svgData;
+  if (data && Array.isArray(data.elements)) {
+    const candidateIds = new Set(["base", "base_a", "base_b", "ac_h", "legA", "legB", "d1h", "d2h", "proj_am", "proj_mb", "dx"]);
+    const added = [];
+    for (const el of data.elements) {
+      if (el.type !== "line" || !el.from || !el.to) continue;
+      if (!candidateIds.has(el.id)) continue;
+      const [x1, y1] = el.from;
+      const [x2, y2] = el.to;
+      if (Math.abs(y1 - y2) > 1e-6) continue;
+      const len = Math.abs(x2 - x1);
+      const label = groupLabel(len);
+      if (!label) continue;
+      const from = x1 <= x2 ? el.from : el.to;
+      const to = x1 <= x2 ? el.to : el.from;
+      const id = `count_${el.id}`;
+      if (data.elements.some((e) => e.id === id)) continue;
+      added.push(E.bracket(id, from, to, label, { opacity: 0, drop: 8, highlightOpacity: 1 }));
+      data.highlight3 = [...(data.highlight3 || []), id];
+      data.highlightSolution = [...(data.highlightSolution || []), id];
+    }
+    if (added.length) {
+      data.elements.push(...added);
+      task.countingTip = "Лайфхак по клеткам: длинный отрезок не считай по одной клетке. Разбей его на группы: например, 3 + 3 + 3 + 1 = 10.";
+    }
+  }
+  return task;
+}
+
+function generateTask(topicId, difficulty, seed) {
+  const actualSeed = seed ?? Math.floor(Math.random() * 1e9);
+  const rng = makeRng(actualSeed);
+  const task = GENERATORS[topicId](difficulty, rng);
+  task.id = `t${topicId}-${difficulty}-${actualSeed}`;
+  task.seed = actualSeed;
+  return enhanceTask(task);
+}
+function generateMixedTask(difficulty, seed) {
+  const actualSeed = seed ?? Math.floor(Math.random() * 1e9);
+  const rng = makeRng(actualSeed);
+  const topicId = 1 + Math.floor(rng() * 13);
+  const task = GENERATORS[topicId](difficulty, rng);
+  task.id = `mixed-${topicId}-${difficulty}-${actualSeed}`;
+  task.seed = actualSeed;
+  return enhanceTask(task);
+}
+
+/* =========================================================================
+   6. ДИАГНОСТИКА ОШИБОК
+   ========================================================================= */
+
+function diagnoseMistake(userValue, task) {
+  if (userValue == null) {
+    return { kind: "empty", message: "Введи число в поле ответа." };
+  }
+  // 1. Проверяем по списку commonMistakes (точное совпадение с допуском).
+  for (const m of task.commonMistakes || []) {
+    if (Math.abs(userValue - m.value) < 0.015) {
+      return { kind: "matched", message: m.hint };
+    }
+  }
+  // 2. Если ответ ровно вдвое больше/меньше — отдельный диагноз для площадей.
+  if (Math.abs(userValue * 2 - task.answer) < 0.015) {
+    return {
+      kind: "guess",
+      message: "Похоже, ответ в 2 раза меньше нужного. Проверь, не делил ли ты лишний раз на 2.",
+    };
+  }
+  if (Math.abs(userValue / 2 - task.answer) < 0.015 && task.answer !== 0) {
+    return {
+      kind: "guess",
+      message: "Похоже, ответ в 2 раза больше нужного. Проверь, не забыл ли разделить на 2.",
+    };
+  }
+  // 3. Ответ — обратное число (для сравнения отрезков).
+  if (task.answer > 1 && Math.abs(1 / userValue - task.answer) < 0.015) {
+    return {
+      kind: "guess",
+      message: "Похоже, ты перевернул отношение. Когда спрашивают «во сколько раз длиннее/короче», ответ должен быть больше 1.",
+    };
+  }
+  // 4. Ошибка в одну-две клетки.
+  if (Math.abs(userValue - task.answer) < 2.05 && Math.abs(userValue - task.answer) > 0.02) {
+    return {
+      kind: "count",
+      message: "Похоже, ты ошибся на 1–2 клетки при подсчёте. Попробуй посчитать ещё раз, разбивая длинный отрезок на группы по 2–3 клетки.",
+    };
+  }
+  return {
+    kind: "generic",
+    message: "Ответ неверный. Не спеши: сначала назови, что ищем, потом отметь нужные элементы на рисунке и пересчитай клетки.",
+  };
+}
+
+/* =========================================================================
+   7. ПРОГРЕСС · LOCAL STORAGE С FALLBACK
+   ========================================================================= */
+
+const STORAGE_KEY = "ggt_progress_v1";
+const ERR_STORAGE_KEY = "ggt_errors_v1";
+
+function loadJSON(key, fallback) {
+  if (typeof window === "undefined") return fallback;
+  try {
+    const raw = window.localStorage.getItem(key);
+    if (!raw) return fallback;
+    return JSON.parse(raw);
+  } catch (e) {
+    return fallback;
+  }
+}
+function saveJSON(key, value) {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    // тихо игнорируем — продолжаем работать в памяти
+  }
+}
+
+/* =========================================================================
+   8. SELF-TESTS
+   ========================================================================= */
+
+function runSelfTests() {
+  if (typeof console === "undefined") return;
+  let passed = 0;
+  let failed = 0;
+  const errs = [];
+  const check = (label, cond) => {
+    if (cond) passed++;
+    else {
+      failed++;
+      errs.push(label);
+    }
+  };
+
+  // Каждая тема выдаёт задачу со всеми обязательными полями для всех уровней
+  for (const t of TOPICS) {
+    for (const d of ["easy", "medium", "hard"]) {
+      try {
+        const task = GENERATORS[t.id](d, makeRng(12345 + t.id * 11 + d.length));
+        check(`T${t.id}/${d}: statement`, typeof task.statement === "string" && task.statement.length > 5);
+        check(`T${t.id}/${d}: answer numeric`, typeof task.answer === "number" && Number.isFinite(task.answer));
+        check(`T${t.id}/${d}: answerDisplay`, typeof task.answerDisplay === "string");
+        check(`T${t.id}/${d}: 3 hints`, Array.isArray(task.hints) && task.hints.length === 3);
+        check(`T${t.id}/${d}: solution`, Array.isArray(task.solutionSteps) && task.solutionSteps.length >= 2);
+        check(`T${t.id}/${d}: svgData`, task.svgData && Array.isArray(task.svgData.elements) && task.svgData.elements.length > 0);
+        check(`T${t.id}/${d}: cards`, !!task.skillCard && !!task.methodCard);
+        check(`T${t.id}/${d}: mistakes`, Array.isArray(task.commonMistakes));
+      } catch (e) {
+        failed++;
+        errs.push(`T${t.id}/${d}: THROWN ${e.message}`);
+      }
+    }
+  }
+
+  // Сверка формул на одном sample-е
+  const t1 = GENERATORS[1]("easy", makeRng(1)); // S = d1*d2/2 → integer
+  check("T1 answer integer", Number.isInteger(t1.answer));
+  const t13 = GENERATORS[13]("easy", makeRng(2));
+  check("T13 hypotenuse from triple", [5, 10, 13, 15, 17].includes(t13.answer));
+  const t11 = GENERATORS[11]("easy", makeRng(3));
+  check("T11 ratio is square of integer ratio", Number.isFinite(t11.answer) && t11.answer > 1);
+  const s1 = generateTask(12, "medium", 98765);
+  const s2 = generateTask(12, "medium", 98765);
+  check("seeded generation is deterministic", JSON.stringify({ id: s1.id, answer: s1.answer, svgData: s1.svgData }) === JSON.stringify({ id: s2.id, answer: s2.answer, svgData: s2.svgData }));
+  const t12DiagLines = s1.svgData.elements.filter((e) => e.id && (e.id.includes("aux_big") || e.id.includes("aux_small")));
+  check("T12 has diagonal helper legs", t12DiagLines.length >= 4);
+
+  // Проверка checkAnswer
+  check("checkAnswer 1,5 == 1.5", eqAns(parseAnswer("1,5"), 1.5));
+  check("checkAnswer space tolerated", eqAns(parseAnswer(" 2 "), 2));
+  check("checkAnswer wrong rejected", !eqAns(parseAnswer("3"), 5));
+
+  if (failed === 0) {
+    console.log(`Geometry grid trainer ready · self-tests passed (${passed})`);
+  } else {
+    console.warn(`Geometry grid trainer · ${failed} self-tests failed`, errs);
+  }
+}
+
+/* =========================================================================
+   9. UI: МЕЛКИЕ КОМПОНЕНТЫ
+   ========================================================================= */
+
+function Pill({ active, accent, children, onClick }) {
+  return (
+    <span
+      className={`ggt-pill ${active ? "active" : ""} ${accent ? "accent" : ""}`}
+      onClick={onClick}
+    >
+      {children}
+    </span>
+  );
+}
+
+function Card({ children, tight, style }) {
+  return (
+    <div className={`ggt-card ${tight ? "ggt-card-tight" : ""}`} style={style}>
+      {children}
+    </div>
+  );
+}
+
+function ProgressBar({ value, max }) {
+  const pct = max === 0 ? 0 : Math.min(100, Math.round((value / max) * 100));
+  return (
+    <div className="ggt-progress-bar">
+      <div className="ggt-progress-fill" style={{ width: `${pct}%` }} />
+    </div>
+  );
+}
+
+function PrettyText({ children }) {
+  return <>{prettyText(children)}</>;
+}
+
+function FormulaBlock({ formula, words, compact }) {
+  return (
+    <div>
+      <div className="ggt-formula-display" style={compact ? { fontSize: 14, padding: "7px 9px" } : undefined}>
+        {prettyText(formula)}
+      </div>
+      {words && <div className="ggt-formula-words">{prettyText(words)}</div>}
+    </div>
+  );
+}
+
+function MethodCard({ method, compact }) {
+  if (!method) return null;
+  return (
+    <div className={`ggt-method-card ${compact ? "compact" : ""}`}>
+      <div className="ggt-method-title">{method.title}</div>
+      <div className="ggt-method-idea">{method.idea}</div>
+      <div className="ggt-method-look"><b>На рисунке:</b> {method.lookFor}</div>
+      <FormulaBlock formula={method.formula} words={method.formulaWords} compact={compact} />
+    </div>
+  );
+}
+
+function RepairBox({ task, diagnosis }) {
+  if (!diagnosis?.message) return null;
+  let text = "Сделай маленький ремонт: открой следующую подсказку, заново отметь нужные отрезки на рисунке и только потом пересчитай.";
+  const msg = diagnosis.message;
+  if (msg.includes("забыл разделить") || msg.includes("2 раза больше")) {
+    text = "Ремонт: сначала посчитай произведение нужных величин, а потом проверь, нужна ли половина. Для треугольника, трапеции и ромба деление на 2 часто обязательно.";
+  } else if (msg.includes("дважды") || msg.includes("лишний раз")) {
+    text = "Ремонт: найди место, где уже взял половину. Деление на 2 должно появиться только один раз.";
+  } else if (msg.includes("радиусы") || msg.includes("квадрат")) {
+    text = "Ремонт: для кругов не сравнивай сами радиусы. Запиши R^2 и r^2, потом раздели больший квадрат на меньший.";
+  } else if (msg.includes("отношение") || msg.includes("перевернул")) {
+    text = "Ремонт: сначала подпиши, какой отрезок больше. Затем дели больший на меньший — ответ на вопрос «во сколько раз» должен быть больше 1.";
+  } else if (msg.includes("клет") || msg.includes("подсч")) {
+    text = "Ремонт: пересчитай длинный отрезок группами по 2 или по 3 клетки. Не считай точки-узлы — считай промежутки между ними.";
+  } else if (msg.includes("высот") || msg.includes("наклон")) {
+    text = "Ремонт: высота всегда идёт под прямым углом к основанию. Наклонная сторона почти никогда не заменяет высоту.";
+  }
+  return <div className="ggt-repair"><b>Как исправить:</b> {text}</div>;
+}
+
+function FormulaPicker({ task, choice, onGoalChoose, onChoose, disabled }) {
+  const correctOption = useMemo(() => methodForTopic(task.topicId), [task.topicId]);
+  const correctGoal = correctOption.goal;
+  const goalKey = choice?.goalKey;
+  const goalOk = choice?.goalOk;
+
+  const optionsForCard = useMemo(() => {
+    if (!goalKey || !goalOk) return [];
+    const seedRng = makeRng(hashSeed("method", task.id, goalKey));
+    const sameGoal = FORMULA_OPTIONS.filter((o) => o.goal === goalKey && o.key !== correctOption.key);
+    const shuffled = [...sameGoal].sort(() => seedRng() - 0.5).slice(0, 3);
+    const all = [correctOption, ...shuffled];
+    return all.sort(() => seedRng() - 0.5);
+  }, [task.id, correctOption, goalKey, goalOk]);
+
+  return (
+    <Card>
+      <h4>Смешанный режим · сначала распознаём задачу</h4>
+      <div style={{ fontSize: 14, color: COL.inkSoft, lineHeight: 1.5 }}>
+        Не начинай с формулы. Сначала реши: здесь ищут <b>длину</b>, <b>площадь</b> или <b>отношение «во сколько раз»</b>?
+      </div>
+
+      <div className="ggt-goal-grid">
+        {GOAL_OPTIONS.map((g) => {
+          const chosen = goalKey === g.key;
+          const wrong = chosen && goalOk === false;
+          return (
+            <button
+              key={g.key}
+              className={`ggt-goal-btn ${chosen && goalOk ? "chosen" : ""} ${wrong ? "wrong" : ""}`}
+              onClick={() => !disabled && onGoalChoose(g.key, g.key === correctGoal)}
+              disabled={disabled}
+            >
+              <span className="big">{g.big}</span>
+              <span className="small">{g.hint}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {goalKey && goalOk === false && (
+        <div className="ggt-feedback err" style={{ marginTop: 10 }}>
+          <h4>Не туда смотрим</h4>
+          <div className="body">Попробуй ещё раз: в условии просят длину, площадь фигуры или сравнение «во сколько раз»?</div>
+        </div>
+      )}
+
+      {goalOk && (
+        <div style={{ marginTop: 14 }}>
+          <h4>Теперь выбери приём</h4>
+          <div className="ggt-formula-grid">
+            {optionsForCard.map((opt) => (
+              <button
+                key={opt.key}
+                className={`ggt-method-choice ${choice?.key === opt.key ? "chosen" : ""}`}
+                onClick={() => !disabled && onChoose(opt.key, opt.key === correctOption.key)}
+                disabled={disabled}
+              >
+                <span className="label">{opt.label}</span>
+                <span className="small">{opt.idea}</span>
+                <span className="formula">{prettyText(opt.formula)}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </Card>
+  );
+}
+
+/* =========================================================================
+   10. UI: ОСНОВНОЕ ПРИЛОЖЕНИЕ
+   ========================================================================= */
+
+const MODES = [
+  { key: "learn", label: "Учусь", desc: "Пошаговая поддержка, подсказки всегда видны." },
+  { key: "practice", label: "Тренируюсь", desc: "Случайные задачи с подсказками по кнопке." },
+  { key: "test", label: "Проверяю себя", desc: "10 задач подряд без подсказок." },
+  { key: "mixed", label: "Смешанный", desc: "Задачи разных типов вперемешку — учимся распознавать тип." },
+];
+const DIFFS = [
+  { key: "easy", label: "Лёгкий" },
+  { key: "medium", label: "Средний" },
+  { key: "hard", label: "Сложный" },
+];
+
+function App() {
+  // Self-tests при первом рендере
+  useEffect(() => {
+    runSelfTests();
+  }, []);
+
+  // Состояние режимов / выбора
+  const [mode, setMode] = useState("learn");
+  const [topicId, setTopicId] = useState(1);
+  const [diff, setDiff] = useState("easy");
+
+  // Прогресс и журнал ошибок (с localStorage)
+  const [progress, setProgress] = useState(() => loadJSON(STORAGE_KEY, {}));
+  const [errorLog, setErrorLog] = useState(() => loadJSON(ERR_STORAGE_KEY, []));
+  useEffect(() => saveJSON(STORAGE_KEY, progress), [progress]);
+  useEffect(() => saveJSON(ERR_STORAGE_KEY, errorLog), [errorLog]);
+
+  // Текущая задача и её состояние
+  const [task, setTask] = useState(() => generateTask(1, "easy"));
+  const [userAns, setUserAns] = useState("");
+  const [feedback, setFeedback] = useState(null);
+  const [hintsShown, setHintsShown] = useState(mode === "learn" ? 1 : 0);
+  const [solutionShown, setSolutionShown] = useState(false);
+  const [formulaChoice, setFormulaChoice] = useState(null); // для смешанного режима
+
+  // Тест-сессия
+  const [test, setTest] = useState(null); // {questions, idx, answers}
+
+  // Счётчик текущей сессии (сбрасывается при перезагрузке страницы)
+  const [session, setSession] = useState({ attempts: 0, correct: 0 });
+
+  // Перегенерация задачи при изменении темы/сложности/режима
+  useEffect(() => {
+    if (mode === "test") return; // тест управляет задачами сам
+    const t = mode === "mixed" ? generateMixedTask(diff) : generateTask(topicId, diff);
+    setTask(t);
+    setUserAns("");
+    setFeedback(null);
+    setHintsShown(mode === "learn" ? 1 : 0);
+    setSolutionShown(false);
+    setFormulaChoice(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [topicId, diff, mode]);
+
+  const newTask = useCallback(() => {
+    if (mode === "test") return;
+    const t = mode === "mixed" ? generateMixedTask(diff) : generateTask(topicId, diff);
+    setTask(t);
+    setUserAns("");
+    setFeedback(null);
+    setHintsShown(mode === "learn" ? 1 : 0);
+    setSolutionShown(false);
+    setFormulaChoice(null);
+  }, [mode, diff, topicId]);
+
+  // Проверка ответа
+  const checkCurrent = useCallback(() => {
+    const { ok, parsed } = checkAnswer(userAns, task);
+    if (parsed == null) {
+      setFeedback({ ok: false, parsed: null, diag: diagnoseMistake(null, task) });
+      return;
+    }
+    const diag = ok ? null : diagnoseMistake(parsed, task);
+    setFeedback({ ok, parsed, diag });
+    // Счётчик сессии (учитываем только первое нажатие "Проверить" на задаче)
+    if (!feedback) {
+      setSession((s) => ({ attempts: s.attempts + 1, correct: s.correct + (ok ? 1 : 0) }));
+    } else if (!feedback.ok && ok) {
+      // Дозасчитываем верный ответ после ошибки, но без учёта попытки
+      setSession((s) => ({ ...s, correct: s.correct + 1 }));
+    }
+    // Учёт прогресса (вне теста): одну задачу считаем одной попыткой.
+    // Если ребёнок исправил неверный ответ на верный — добавляем solved, но не увеличиваем attempts повторно.
+    if (mode !== "test") {
+      const firstAttempt = !feedback;
+      const improvedToCorrect = feedback && !feedback.ok && ok;
+      if (firstAttempt || improvedToCorrect) {
+        setProgress((p) => {
+          const cur = p[task.topicId] || { solved: 0, attempts: 0 };
+          return {
+            ...p,
+            [task.topicId]: {
+              solved: cur.solved + (ok ? 1 : 0),
+              attempts: cur.attempts + (firstAttempt ? 1 : 0),
+            },
+          };
+        });
+      }
+      if (!ok) {
+        setErrorLog((log) => [
+          {
+            ts: Date.now(),
+            topicId: task.topicId,
+            topicTitle: task.topicTitle,
+            statement: task.statement,
+            userAnswer: parsed,
+            correctAnswer: task.answer,
+            diagnosis: diag?.message || "",
+          },
+          ...log,
+        ].slice(0, 60));
+      }
+    }
+  }, [userAns, task, mode, feedback]);
+
+  /* === Тест-сессия === */
+  const startTest = (kind /* 'topic' | 'mixed' */) => {
+    const questions = [];
+    for (let i = 0; i < 10; i++) {
+      questions.push(
+        kind === "mixed" ? generateMixedTask(diff) : generateTask(topicId, diff)
+      );
+    }
+    setTest({ kind, questions, idx: 0, answers: [], userAns: "", finished: false });
+    setUserAns("");
+    setFeedback(null);
+  };
+  const submitTestAnswer = () => {
+    if (!test) return;
+    const t = test.questions[test.idx];
+    const { ok, parsed } = checkAnswer(userAns, t);
+    const diag = ok ? null : diagnoseMistake(parsed, t);
+    const newAnswers = [...test.answers, { parsed, ok, diag, task: t }];
+    if (test.idx + 1 >= test.questions.length) {
+      // Завершение теста
+      setTest({ ...test, answers: newAnswers, finished: true });
+      // Учитываем все 10 задач в счётчике сессии
+      const testCorrect = newAnswers.filter((a) => a.ok).length;
+      setSession((s) => ({ attempts: s.attempts + newAnswers.length, correct: s.correct + testCorrect }));
+      // Запишем ошибки в журнал
+      newAnswers.forEach((a) => {
+        if (!a.ok) {
+          setErrorLog((log) => [
+            {
+              ts: Date.now(),
+              topicId: a.task.topicId,
+              topicTitle: a.task.topicTitle,
+              statement: a.task.statement,
+              userAnswer: a.parsed,
+              correctAnswer: a.task.answer,
+              diagnosis: a.diag?.message || "",
+            },
+            ...log,
+          ].slice(0, 60));
+        }
+        setProgress((p) => {
+          const cur = p[a.task.topicId] || { solved: 0, attempts: 0 };
+          return {
+            ...p,
+            [a.task.topicId]: {
+              solved: cur.solved + (a.ok ? 1 : 0),
+              attempts: cur.attempts + 1,
+            },
+          };
+        });
+      });
+    } else {
+      setTest({ ...test, idx: test.idx + 1, answers: newAnswers });
+      setUserAns("");
+    }
+  };
+  const exitTest = () => {
+    setTest(null);
+    setUserAns("");
+    setFeedback(null);
+    newTask();
+  };
+
+  /* === Копирование отчёта === */
+  const buildReport = () => {
+    const totalAttempts = Object.values(progress).reduce((s, x) => s + x.attempts, 0);
+    const totalSolved = Object.values(progress).reduce((s, x) => s + x.solved, 0);
+    // Топ-проблемных тем
+    const byTopic = TOPICS.map((t) => {
+      const p = progress[t.id] || { solved: 0, attempts: 0 };
+      const ratio = p.attempts > 0 ? p.solved / p.attempts : 1;
+      return { ...t, ...p, ratio };
+    })
+      .filter((x) => x.attempts > 0)
+      .sort((a, b) => a.ratio - b.ratio);
+
+    const lines = [];
+    lines.push("Отчёт по тренажёру «Геометрия на клетчатой бумаге».");
+    lines.push("");
+    lines.push(`Решено задач: ${totalAttempts}.`);
+    lines.push(`Верно: ${totalSolved}.`);
+    if (totalAttempts > 0) {
+      lines.push(`Процент правильных: ${Math.round((totalSolved / totalAttempts) * 100)}%.`);
+    }
+    if (byTopic.length > 0 && byTopic[0].ratio < 1) {
+      lines.push("");
+      lines.push("Темы, которые стоит повторить:");
+      byTopic
+        .filter((x) => x.ratio < 0.7 || (x.attempts >= 2 && x.solved < x.attempts))
+        .slice(0, 4)
+        .forEach((x) => {
+          lines.push(`— ${x.title}: ${x.solved} из ${x.attempts}.`);
+        });
+    }
+    // Часто встречающиеся диагнозы (последние 15 ошибок)
+    const recentDiag = errorLog.slice(0, 15).map((e) => e.diagnosis).filter(Boolean);
+    if (recentDiag.length > 0) {
+      lines.push("");
+      lines.push("Типичные ошибки:");
+      const uniq = [...new Set(recentDiag)].slice(0, 4);
+      uniq.forEach((d) => lines.push(`— ${d}`));
+    }
+    return lines.join("\n");
+  };
+
+  const copyReport = async () => {
+    const text = buildReport();
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("Отчёт скопирован.");
+    } catch (e) {
+      const win = window.open("", "_blank");
+      if (win) {
+        win.document.write("<pre style='font-family:ui-monospace,monospace;padding:20px'>" + text.replace(/</g, "&lt;") + "</pre>");
+      } else {
+        alert(text);
+      }
+    }
+  };
+
+  /* === Render === */
+  return (
+    <>
+      <style>{STYLE_SHEET}</style>
+      <div className="ggt-app">
+        <div className="ggt-title-row">
+          <h1 className="ggt-h1">Геометрия на клетчатой бумаге</h1>
+          <span className="ggt-sub">сначала поймём рисунок, потом посчитаем</span>
+        </div>
+        <div className="ggt-tag">модуль 18 · интерактивный тренажёр</div>
+
+        {/* Селекторы режима / сложности */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 18 }}>
+          {MODES.map((m) => (
+            <Pill key={m.key} active={mode === m.key} accent onClick={() => { setMode(m.key); setTest(null); }}>
+              {m.label}
+            </Pill>
+          ))}
+          <div style={{ flex: 1 }} />
+          {DIFFS.map((d) => (
+            <Pill key={d.key} active={diff === d.key} onClick={() => setDiff(d.key)}>
+              {d.label}
+            </Pill>
+          ))}
+        </div>
+
+        <div className="ggt-layout">
+          {/* === Боковая панель === */}
+          <div className="ggt-side">
+            <Card tight>
+              <h4>Тема</h4>
+              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                {TOPICS.map((t) => (
+                  <button
+                    key={t.id}
+                    onClick={() => { setTopicId(t.id); if (mode === "mixed") setMode("practice"); }}
+                    style={{
+                      background: topicId === t.id && mode !== "mixed" ? COL.ink : "transparent",
+                      color: topicId === t.id && mode !== "mixed" ? COL.paper : COL.ink,
+                      border: "none",
+                      textAlign: "left",
+                      padding: "8px 10px",
+                      borderRadius: 6,
+                      cursor: "pointer",
+                      fontSize: 13.5,
+                      fontFamily: "inherit",
+                      opacity: mode === "mixed" ? 0.5 : 1,
+                    }}
+                  >
+                    <span style={{ fontFamily: "JetBrains Mono, monospace", color: topicId === t.id && mode !== "mixed" ? COL.gold : COL.inkMute, marginRight: 6 }}>{t.id}.</span>
+                    {t.title}
+                  </button>
+                ))}
+              </div>
+            </Card>
+
+            <Card tight>
+              <h4>Прогресс</h4>
+              {session.attempts > 0 && (
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 10, padding: "6px 8px", background: COL.paperEdge, borderRadius: 6 }}>
+                  <span style={{ color: COL.inkSoft }}>В этой сессии:</span>
+                  <span className="ggt-num"><span style={{ color: COL.ok }}>{session.correct}</span> / {session.attempts}</span>
+                </div>
+              )}
+              {Object.keys(progress).length === 0 && session.attempts === 0 && (
+                <div style={{ fontSize: 13, color: COL.inkSoft }}>Пока нет решённых задач.</div>
+              )}
+              {TOPICS.map((t) => {
+                const p = progress[t.id];
+                if (!p) return null;
+                return (
+                  <div key={t.id} style={{ marginBottom: 8 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, marginBottom: 3 }}>
+                      <span style={{ color: COL.inkSoft }}>{t.title}</span>
+                      <span className="ggt-num" style={{ fontSize: 12 }}>{p.solved}/{p.attempts}</span>
+                    </div>
+                    <ProgressBar value={p.solved} max={p.attempts} />
+                  </div>
+                );
+              })}
+              {Object.keys(progress).length > 0 && (
+                <div style={{ display: "flex", gap: 6, marginTop: 8, flexWrap: "wrap" }}>
+                  <button className="ggt-btn ghost" style={{ fontSize: 12, padding: "6px 10px" }} onClick={copyReport}>
+                    Скопировать отчёт
+                  </button>
+                  <button
+                    className="ggt-btn ghost"
+                    style={{ fontSize: 12, padding: "6px 10px" }}
+                    onClick={() => {
+                      if (confirm("Сбросить весь прогресс и журнал ошибок?")) {
+                        setProgress({});
+                        setErrorLog([]);
+                        setSession({ attempts: 0, correct: 0 });
+                      }
+                    }}
+                  >
+                    Сбросить прогресс
+                  </button>
+                </div>
+              )}
+            </Card>
+
+            {errorLog.length > 0 && (
+              <Card tight>
+                <h4>Журнал ошибок</h4>
+                <div style={{ maxHeight: 220, overflowY: "auto", marginRight: -8, paddingRight: 8 }}>
+                  {errorLog.slice(0, 8).map((e, i) => (
+                    <div key={i} className="ggt-error-row">
+                      <div>
+                        <div style={{ fontWeight: 600 }}>{e.topicTitle}</div>
+                        <div style={{ color: COL.inkSoft, fontSize: 12 }}>Ответил: <span className="ggt-num">{fmt(e.userAnswer)}</span> · верно: <span className="ggt-num">{fmt(e.correctAnswer)}</span></div>
+                        {e.diagnosis && <div className="diag" style={{ fontSize: 12 }}>{e.diagnosis}</div>}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <button className="ggt-btn ghost" style={{ marginTop: 6, fontSize: 12, padding: "6px 10px" }} onClick={() => { setErrorLog([]); }}>
+                  Очистить журнал
+                </button>
+              </Card>
+            )}
+          </div>
+
+          {/* === Основная панель === */}
+          <div className="ggt-main">
+            {mode === "test" && test == null && (
+              <Card>
+                <h3>Режим «Проверяю себя»</h3>
+                <p style={{ color: COL.inkSoft, fontSize: 14, lineHeight: 1.55 }}>
+                  Серия из 10 задач подряд. Подсказок не будет до самого конца. После завершения покажем разбор каждой задачи и темы, которые стоит повторить.
+                </p>
+                <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
+                  <button className="ggt-btn" onClick={() => startTest("topic")}>
+                    Начать тест по теме «{TOPICS[topicId - 1].title}»
+                  </button>
+                  <button className="ggt-btn secondary" onClick={() => startTest("mixed")}>
+                    Тест смешанный
+                  </button>
+                </div>
+              </Card>
+            )}
+
+            {mode === "test" && test != null && !test.finished && (
+              <TestRunner
+                test={test}
+                userAns={userAns}
+                setUserAns={setUserAns}
+                onSubmit={submitTestAnswer}
+                onExit={exitTest}
+              />
+            )}
+
+            {mode === "test" && test != null && test.finished && (
+              <TestResults test={test} onExit={exitTest} />
+            )}
+
+            {mode !== "test" && (
+              <TaskView
+                mode={mode}
+                task={task}
+                userAns={userAns}
+                setUserAns={setUserAns}
+                feedback={feedback}
+                setFeedback={setFeedback}
+                hintsShown={hintsShown}
+                setHintsShown={setHintsShown}
+                solutionShown={solutionShown}
+                setSolutionShown={setSolutionShown}
+                onCheck={checkCurrent}
+                onNew={newTask}
+                formulaChoice={formulaChoice}
+                setFormulaChoice={setFormulaChoice}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* =========================================================================
+   11. ОСНОВНОЙ ВИД ЗАДАЧИ
+   ========================================================================= */
+
+function TaskView({
+  mode, task, userAns, setUserAns, feedback, setFeedback,
+  hintsShown, setHintsShown, solutionShown, setSolutionShown,
+  onCheck, onNew, formulaChoice, setFormulaChoice,
+}) {
+  const isMixed = mode === "mixed";
+  const showHintsByDefault = mode === "learn";
+  const method = methodForTopic(task.topicId);
+  const [methodOpen, setMethodOpen] = useState(mode === "learn");
+
+  useEffect(() => {
+    setMethodOpen(mode === "learn");
+  }, [task.id, mode]);
+
+  // Подсветка SVG: до проверки — по hintsShown; после показа решения — все.
+  const hintLevel = showHintsByDefault ? Math.max(1, hintsShown) : hintsShown;
+  const methodVisible = mode === "learn" || methodOpen || solutionShown || feedback?.ok;
+
+  const handleGoalChoose = useCallback(
+    (goalKey, goalOk) => {
+      setFormulaChoice({ goalKey, goalOk, key: null, isCorrect: false });
+      if (feedback && !feedback.ok) setFeedback(null);
+    },
+    [feedback, setFeedback, setFormulaChoice]
+  );
+
+  const handleFormulaChoose = useCallback(
+    (key, isCorrect) => {
+      setFormulaChoice((prev) => ({ ...(prev || {}), key, isCorrect }));
+      if (feedback && !feedback.ok) setFeedback(null);
+    },
+    [feedback, setFeedback, setFormulaChoice]
+  );
+
+  return (
+    <>
+      <Card tight>
+        <div className="ggt-skill-grid">
+          <div>
+            <h4>Что я тренирую</h4>
+            <div style={{ fontSize: 15, lineHeight: 1.55 }}><PrettyText>{task.skillCard}</PrettyText></div>
+            <div className="ggt-toolbar-note">Главная привычка: сначала понять рисунок, потом считать.</div>
+          </div>
+          <div>
+            <h4>Какой приём здесь нужен?</h4>
+            {isMixed && !solutionShown && !feedback?.ok ? (
+              <div className="ggt-method-hidden">В смешанном режиме сначала выбери это сам ниже.</div>
+            ) : methodVisible ? (
+              <MethodCard method={method} compact />
+            ) : (
+              <div className="ggt-method-hidden">
+                <div>Попробуй сначала сам назвать приём. Это важнее, чем быстро подставить числа.</div>
+                <button className="ggt-btn ghost" style={{ marginTop: 10 }} onClick={() => setMethodOpen(true)}>
+                  Показать приём
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </Card>
+
+      <Card>
+        <div className="ggt-meta-strip">
+          <span className="ggt-tag-chip warm">Тема {task.topicId}. {task.topicTitle}</span>
+          <span className="ggt-tag-chip cool">Уровень: {DIFFS.find((d) => d.key === task.difficulty).label}</span>
+          <span className="ggt-tag-chip"><span className="ggt-num">{task.svgData.cols}×{task.svgData.rows}</span> клеток</span>
+        </div>
+        <div className="ggt-statement"><PrettyText>{task.statement}</PrettyText></div>
+        <div className="ggt-figure-wrap">
+          <GridFigure data={task.svgData} hintLevel={hintLevel} showSolution={solutionShown} />
+        </div>
+        {task.countingTip && (hintsShown >= 2 || solutionShown || feedback?.ok) && (
+          <div className="ggt-count-tip" style={{ marginTop: 10 }}>
+            <b>Счёт клеток:</b> {task.countingTip}
+          </div>
+        )}
+      </Card>
+
+      {isMixed && (
+        <FormulaPicker
+          task={task}
+          choice={formulaChoice}
+          onGoalChoose={handleGoalChoose}
+          onChoose={handleFormulaChoose}
+          disabled={!!feedback?.ok || solutionShown}
+        />
+      )}
+      {isMixed && formulaChoice?.key && !formulaChoice.isCorrect && (
+        <div className="ggt-feedback err">
+          <h4>Не тот приём</h4>
+          <div className="body">
+            Этот приём похож, но не подходит к рисунку. Спроси себя: какие элементы нужны — основания, высота, радиусы, проекции или похожие треугольники?
+          </div>
+        </div>
+      )}
+      {isMixed && formulaChoice?.isCorrect && !feedback && (
+        <div className="ggt-feedback ok">
+          <h4>Приём подходит</h4>
+          <div className="body">Теперь спокойно посчитай нужные клетки и введи ответ.</div>
+        </div>
+      )}
+
+      <Card>
+        <h4>Шаг {isMixed ? 3 : 1}. Введи ответ</h4>
+        <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", marginTop: 8 }}>
+          <input
+            className={`ggt-input ${feedback ? (feedback.ok ? "ok" : "err") : ""}`}
+            type="text"
+            placeholder="?"
+            value={userAns}
+            onChange={(e) => setUserAns(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") onCheck(); }}
+            disabled={!!feedback?.ok || solutionShown}
+          />
+          {!feedback?.ok && !solutionShown && (
+            <button
+              className="ggt-btn"
+              onClick={onCheck}
+              disabled={isMixed && !formulaChoice?.isCorrect}
+            >
+              Проверить
+            </button>
+          )}
+          <button className="ggt-btn warm" onClick={onNew}>Новая задача</button>
+          {!showHintsByDefault && !solutionShown && hintsShown < 3 && (
+            <button className="ggt-btn secondary" onClick={() => setHintsShown((h) => Math.min(3, h + 1))}>
+              {hintsShown === 0 ? "Подсказка" : `Подсказка ${hintsShown + 1}`}
+            </button>
+          )}
+          {!solutionShown && (
+            <button className="ggt-btn ghost" onClick={() => { setSolutionShown(true); setHintsShown(3); setMethodOpen(true); }}>
+              Показать решение
+            </button>
+          )}
+        </div>
+        {isMixed && !formulaChoice?.isCorrect && (
+          <div className="ggt-toolbar-note">В смешанном режиме ответ откроется после выбора подходящего приёма.</div>
+        )}
+      </Card>
+
+      {feedback && (
+        <div className={`ggt-feedback ${feedback.ok ? "ok" : "err"}`}>
+          <h4>{feedback.ok ? "Верно!" : "Пока неверно"}</h4>
+          <div className="body">
+            {feedback.ok
+              ? <>Ответ: <span className="ggt-num">{task.answerDisplay}</span>. <PrettyText>{task.checkIdea}</PrettyText></>
+              : <PrettyText>{feedback.diag?.message}</PrettyText>}
+          </div>
+          {!feedback.ok && <RepairBox task={task} diagnosis={feedback.diag} />}
+        </div>
+      )}
+
+      {(showHintsByDefault || hintsShown > 0) && !solutionShown && !feedback?.ok && (
+        <Card tight>
+          <h4>Подсказки</h4>
+          {task.hints.slice(0, showHintsByDefault ? Math.max(1, hintsShown) : hintsShown).map((h, i) => (
+            <div key={i} className="ggt-hint" style={{ marginBottom: 8 }}>
+              <span className="num">{i + 1}.</span> <PrettyText>{h}</PrettyText>
+            </div>
+          ))}
+          {task.countingTip && hintsShown >= 2 && (
+            <div className="ggt-count-tip" style={{ marginBottom: 8 }}>
+              <b>Чтобы не сбиться:</b> {task.countingTip}
+            </div>
+          )}
+          {showHintsByDefault && hintsShown < 3 && (
+            <button className="ggt-btn ghost" onClick={() => setHintsShown((h) => Math.min(3, h + 1))}>
+              Открыть следующую подсказку
+            </button>
+          )}
+        </Card>
+      )}
+
+      {(solutionShown || feedback?.ok) && (
+        <Card>
+          <h4>Разбор</h4>
+          <MethodCard method={method} compact />
+          <div style={{ marginTop: 10 }}>
+            {task.solutionSteps.map((s, i) => (
+              <div key={i} className="ggt-step">
+                <span className="ggt-num" style={{ color: COL.accent2, marginRight: 8 }}>{i + 1}.</span>
+                <PrettyText>{s}</PrettyText>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 10, fontSize: 13, color: COL.inkSoft, fontStyle: "italic" }}>
+            Проверка смысла: <PrettyText>{task.checkIdea}</PrettyText>
+          </div>
+        </Card>
+      )}
+    </>
+  );
+}
+
+/* =========================================================================
+   12. ТЕСТ-СЕССИЯ
+   ========================================================================= */
+
+function TestRunner({ test, userAns, setUserAns, onSubmit, onExit }) {
+  const t = test.questions[test.idx];
+  return (
+    <>
+      <Card tight>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div style={{ fontSize: 14, color: COL.inkSoft }}>
+            Задача <span className="ggt-num" style={{ color: COL.ink }}>{test.idx + 1}</span> из <span className="ggt-num">{test.questions.length}</span>
+          </div>
+          <button className="ggt-btn ghost" onClick={onExit}>Выйти</button>
+        </div>
+        <div style={{ marginTop: 8 }}>
+          <ProgressBar value={test.idx} max={test.questions.length} />
+        </div>
+      </Card>
+
+      <Card>
+        <div className="ggt-meta-strip">
+          <span className="ggt-tag-chip warm">Тема {t.topicId}. {t.topicTitle}</span>
+        </div>
+        <div className="ggt-statement"><PrettyText>{t.statement}</PrettyText></div>
+        <div className="ggt-figure-wrap">
+          <GridFigure data={t.svgData} hintLevel={0} />
+        </div>
+        <div style={{ display: "flex", gap: 10, alignItems: "center", marginTop: 12, flexWrap: "wrap" }}>
+          <input
+            className="ggt-input"
+            type="text"
+            placeholder="?"
+            value={userAns}
+            onChange={(e) => setUserAns(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") onSubmit(); }}
+            autoFocus
+          />
+          <button className="ggt-btn" onClick={onSubmit}>
+            {test.idx + 1 === test.questions.length ? "Завершить" : "Дальше →"}
+          </button>
+        </div>
+      </Card>
+    </>
+  );
+}
+
+function TestResults({ test, onExit }) {
+  const total = test.answers.length;
+  const correct = test.answers.filter((a) => a.ok).length;
+  const ratio = total === 0 ? 0 : correct / total;
+  const verdict =
+    ratio >= 0.9 ? "Отлично!" : ratio >= 0.7 ? "Хороший результат" : ratio >= 0.5 ? "Есть над чем поработать" : "Стоит повторить тему";
+  const mistakesByTopic = {};
+  test.answers.forEach((a) => {
+    if (!a.ok) {
+      const k = a.task.topicTitle;
+      mistakesByTopic[k] = (mistakesByTopic[k] || 0) + 1;
+    }
+  });
+  const sortedMistakes = Object.entries(mistakesByTopic).sort((a, b) => b[1] - a[1]);
+
+  return (
+    <>
+      <Card>
+        <h3>{verdict}</h3>
+        <div style={{ fontSize: 17, marginTop: 4 }}>
+          Верно решено: <span className="ggt-num" style={{ color: COL.ok, fontSize: 22, fontWeight: 700 }}>{correct}</span> <span style={{ color: COL.inkSoft }}>из {total}</span>
+        </div>
+        <div style={{ marginTop: 10 }}>
+          <ProgressBar value={correct} max={total} />
+        </div>
+        {sortedMistakes.length > 0 && (
+          <div style={{ marginTop: 14 }}>
+            <h4>Темы с ошибками</h4>
+            {sortedMistakes.map(([title, count]) => (
+              <div key={title} style={{ fontSize: 14, marginBottom: 4 }}>
+                <span style={{ color: COL.err }}>● </span>{title} — <span className="ggt-num">{count}</span> ошибки
+              </div>
+            ))}
+          </div>
+        )}
+        <button className="ggt-btn warm" style={{ marginTop: 14 }} onClick={onExit}>К тренировке</button>
+      </Card>
+
+      <Card>
+        <h3>Разбор каждой задачи</h3>
+        {test.answers.map((a, i) => (
+          <details key={i} style={{ borderBottom: `1px solid ${COL.cardEdge}`, paddingBottom: 4 }}>
+            <summary>
+              <span style={{ color: a.ok ? COL.ok : COL.err, marginRight: 8 }}>{a.ok ? "✓" : "✗"}</span>
+              <span style={{ fontWeight: 600 }}>{i + 1}. {a.task.topicTitle}</span>
+              <span style={{ marginLeft: 10, color: COL.inkSoft, fontSize: 13 }}>
+                {a.ok ? `Ответ: ${a.task.answerDisplay}` : `Ты: ${fmt(a.parsed)} · верно: ${a.task.answerDisplay}`}
+              </span>
+            </summary>
+            <div style={{ padding: "8px 4px 12px" }}>
+              {!a.ok && a.diag?.message && (
+                <div className="ggt-feedback err" style={{ marginBottom: 8 }}>
+                  <div className="body"><PrettyText>{a.diag.message}</PrettyText></div>
+                </div>
+              )}
+              <div className="ggt-figure-wrap" style={{ marginBottom: 8 }}>
+                <GridFigure data={a.task.svgData} showSolution={true} />
+              </div>
+              {a.task.solutionSteps.map((s, k) => (
+                <div key={k} className="ggt-step">
+                  <span className="ggt-num" style={{ color: COL.accent2, marginRight: 8 }}>{k + 1}.</span>
+                  {s}
+                </div>
+              ))}
+            </div>
+          </details>
+        ))}
+      </Card>
+    </>
+  );
+}
+
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+
+  </script>
+</body>
+</html>

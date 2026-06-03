@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Противоположные числа</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#eef2f5;--card:#fff;--hdr:#2c3e4e;
+  --blue:#2c7da0;--blue-h:#1f5e7a;--blue-lt:#e0f2fe;
+  --ok:#16a34a;--ok-bg:#dcfce7;--ok-dk:#14532d;
+  --err:#dc2626;--err-bg:#fee2e2;--err-dk:#7f1d1d;
+  --amber:#d97706;--amb-bg:#fef3c7;--amb-dk:#78350f;
+  --muted:#94a3b8;--border:#d1dae4;--text:#1a2c3e;--text-lt:#64748b;
+  --cleft:#b91c1c;--cright:#1d6fa4;--czero:#16a34a;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);font-family:'Segoe UI',Roboto,sans-serif;color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+
+.hdr{background:var(--hdr);color:#fff;padding:15px 28px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.hdr h1{font-size:1.4rem;font-weight:600;letter-spacing:-.3px}
+.hdr p{font-size:.78rem;opacity:.62;margin-top:2px}
+.back a{color:rgba(255,255,255,.5);font-size:.82rem;text-decoration:none;font-weight:500;transition:color .18s}
+.back a:hover{color:#fff}
+
+.mode-bar{background:#f0f3f7;border-bottom:1px solid var(--border);padding:11px 28px;display:flex;gap:12px}
+.mbtn{background:transparent;border:none;font-size:.97rem;font-weight:600;padding:7px 20px;border-radius:40px;cursor:pointer;color:var(--text);transition:.18s;font-family:inherit}
+.mbtn.active{background:var(--hdr);color:#fff}
+
+#app{flex:1;display:flex;flex-direction:column;align-items:center;padding:24px 16px 48px}
+.card{background:var(--card);border-radius:20px;padding:24px 22px;box-shadow:0 4px 20px rgba(0,0,0,.07);width:100%;max-width:640px}
+.card+.card{margin-top:14px}
+
+/* ЧИСЛОВАЯ ПРЯМАЯ */
+.nl-card{background:#f4f9fe;border-radius:18px;padding:18px 14px 10px;border:1px solid #d4e2ec;margin-bottom:16px;overflow:hidden;min-height:130px}
+.nl-card svg{display:block;width:100%}
+
+/* ВЫРАЖЕНИЕ */
+.expr-wrap{text-align:center;margin:10px 0 16px}
+.expr-intro{font-size:.88rem;color:var(--text-lt);margin-bottom:5px}
+.expr-line{font-family:'Courier New',monospace;font-size:2.6rem;font-weight:800;letter-spacing:2px;line-height:1}
+@media(max-width:480px){.expr-line{font-size:2rem}}
+.cleft{color:#b91c1c}.cright{color:#1d6fa4}.czero{color:#16a34a}
+
+/* ВВОД */
+.inp-row{display:flex;justify-content:center;align-items:center;gap:12px;margin-bottom:14px}
+.m-inp{
+  font-size:1.6rem;width:120px;text-align:center;
+  border:2.5px solid var(--border);border-radius:50px;
+  padding:9px 8px;font-weight:800;font-family:'Courier New',monospace;
+  outline:none;transition:border-color .2s;
+  appearance:textfield;-moz-appearance:textfield;
+}
+.m-inp::-webkit-inner-spin-button,.m-inp::-webkit-outer-spin-button{-webkit-appearance:none}
+.m-inp:focus{border-color:var(--blue)}
+.m-inp.inp-ok{border-color:var(--ok);background:var(--ok-bg)}
+.m-inp.inp-err{border-color:var(--err);background:var(--err-bg)}
+.go-btn{background:var(--blue);border:none;color:#fff;padding:11px 24px;border-radius:40px;font-size:.95rem;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit}
+.go-btn:hover{background:var(--blue-h)}
+.go-btn:disabled{background:var(--muted);cursor:default}
+
+/* ОБРАТНАЯ СВЯЗЬ */
+.fb{border-radius:14px;padding:12px 16px;font-size:.9rem;line-height:1.65;margin-bottom:13px;display:none;animation:fadeIn .3s ease}
+.fb.vis{display:block}
+.fb-ok  {background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--ok-dk)}
+.fb-err {background:var(--err-bg);border-left:4px solid var(--err);color:var(--err-dk)}
+.fb-hint{background:var(--amb-bg);border-left:4px solid var(--amber);color:var(--amb-dk)}
+.fb-info{background:var(--blue-lt);border-left:4px solid var(--blue);color:#0c4a6e}
+
+/* ДЕМО-ОБЪЯСНЕНИЕ */
+.demo-box{background:#f0f6fb;border-radius:14px;padding:13px 16px;margin-bottom:14px;border-left:3px solid var(--blue);font-size:.92rem;line-height:1.7;color:#1a3e54}
+.demo-box strong{color:var(--text)}
+.demo-box em{color:var(--blue);font-style:italic}
+.demo-tag{font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--blue);display:block;margin-bottom:5px}
+.demo-ok-box{background:var(--ok-bg);border-left:3px solid var(--ok);border-radius:14px;padding:13px 16px;margin-bottom:14px;font-size:.92rem;line-height:1.7;color:var(--ok-dk)}
+.demo-ok-tag{font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--ok);display:block;margin-bottom:5px}
+
+/* ПРОГРЕСС */
+.pdots{display:flex;gap:6px;justify-content:flex-end;margin-bottom:10px;flex-wrap:wrap}
+.pdot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:.3s;flex-shrink:0}
+.pdot.ok{background:var(--ok)}.pdot.ng{background:var(--err)}.pdot.ac{background:var(--blue);transform:scale(1.35)}.pdot.gd{background:#d4e2ec}
+
+.prog-wrap{width:100%;max-width:640px;margin-bottom:14px}
+.prog-top{display:flex;justify-content:space-between;font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px}
+.prog-bar-w{height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-bar-f{height:100%;background:var(--blue);border-radius:4px;transition:width .4s}
+
+/* КНОПКИ */
+.btn-row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{padding:11px 22px;border:none;border-radius:40px;font-size:.93rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+.btn-p{background:var(--blue);color:#fff}.btn-p:hover{background:var(--blue-h);transform:translateY(-1px)}
+.btn-ok{background:var(--ok);color:#fff}.btn-ok:hover{background:#15803d}
+.btn-show{background:var(--blue-lt);color:var(--blue);border:2px solid var(--blue)}.btn-show:hover{background:var(--blue);color:#fff}
+.btn-g{background:transparent;border:2px solid var(--border);color:var(--text-lt)}.btn-g:hover{border-color:var(--text-lt);color:var(--text)}
+.btn-h{background:var(--amb-bg);color:var(--amb-dk);border:2px solid var(--amber)}.btn-h:hover{background:var(--amber);color:#fff}
+
+/* ПРАВИЛО */
+.rule-card{background:linear-gradient(140deg,#1e3a4e,#2c5c72);border-radius:18px;padding:26px 22px;color:#fff;text-align:center;animation:fadeIn .4s}
+.rule-ico{font-size:2.2rem;margin-bottom:10px}
+.rule-ttl{font-size:1.25rem;font-weight:700;margin-bottom:12px}
+.rule-def{background:rgba(255,255,255,.12);border-radius:12px;padding:14px 18px;font-size:.95rem;line-height:1.65;margin-bottom:14px}
+.rule-ex-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.rule-ex{background:rgba(255,255,255,.1);border-radius:10px;padding:8px 14px;font-family:'Courier New',monospace;font-size:.95rem;font-weight:700}
+.rule-ex.pos{color:#7dd3fc}.rule-ex.neg{color:#fca5a5}.rule-ex.zer{color:#86efac}
+
+/* РЕЗУЛЬТАТЫ */
+.res-score{text-align:center;padding:4px 0 16px}
+.res-big{font-size:3.8rem;font-weight:900;font-family:'Courier New',monospace}
+.res-big.ex{color:var(--ok)}.res-big.go{color:var(--blue)}.res-big.fa{color:var(--amber)}.res-big.po{color:var(--err)}
+.res-lbl{font-size:.97rem;font-weight:600;color:var(--text-lt);margin-top:4px}
+.err-stat{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.err-s-item{background:var(--err-bg);border-left:3px solid var(--err);border-radius:10px;padding:10px 14px;font-size:.87rem;color:var(--err-dk);display:flex;justify-content:space-between}
+.err-cnt{font-weight:800}
+.divider{height:1px;background:var(--border);margin:16px 0}
+
+/* СТАРТ */
+.start-ico{font-size:2.4rem;margin-bottom:10px;text-align:center}
+.start-ttl{font-size:1.45rem;font-weight:700;margin-bottom:8px;text-align:center}
+.start-sub{font-size:.93rem;color:var(--text-lt);line-height:1.65;margin-bottom:20px;text-align:center}
+.key-idea{background:var(--blue-lt);border-radius:14px;padding:14px 16px;margin-bottom:18px;font-size:.93rem;line-height:1.7;color:#0c4a6e;border-left:4px solid var(--blue)}
+.key-idea strong{color:var(--text)}
+.mc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mc{border:2px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;transition:all .18s;text-align:center;background:var(--card)}
+.mc:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 5px 14px rgba(44,125,160,.14)}
+.mc-ico{font-size:1.5rem;margin-bottom:6px}.mc-name{font-size:.97rem;font-weight:700;color:var(--text);margin-bottom:4px}.mc-desc{font-size:.76rem;color:var(--text-lt);line-height:1.4}
+
+.mt12{margin-top:12px}.mt16{margin-top:16px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div>
+    <h1>↔ Противоположные числа</h1>
+    <p>Боковая миссия · Серия «Действия с рациональными числами»</p>
+  </div>
+  <div class="back"><a href="skill-map.html">← Карта</a></div>
+</header>
+
+<div class="mode-bar">
+  <button id="btnL" class="mbtn active" onclick="setMode('learn')">📘 Обучение</button>
+  <button id="btnP" class="mbtn"        onclick="setMode('practice')">⚡ Тренировка</button>
+</div>
+
+<div id="app"></div>
+
+<script>
+/* ══════════════════════ SVG ЧИСЛОВОЙ ПРЯМОЙ ════════════════════ */
+/*  ViewBox 0 0 620 145   Ось y=85   Ноль x=310   1ед=28px  */
+const AY=85, ZX=310, U=28;
+const px = v => ZX + v*U;
+const CL='#b91c1c', CR='#1d6fa4', CZ='#16a34a';
+const nColor = v => v<0?CL:v>0?CR:CZ;
+
+function nlSVG(n, showOpp){
+  const abs = Math.abs(n);
+  const opp = -n;
+  let s=`<svg viewBox="0 0 620 145" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;overflow:visible">`;
+
+  /* ── Симметрия и сегменты ── */
+  if(showOpp && n!==0){
+    const xL=px(-abs), xR=px(abs);
+    /* Цветные подложки на оси */
+    s+=`<line x1="${xL}" y1="${AY}" x2="${ZX}" y2="${AY}" stroke="${CL}" stroke-width="9" stroke-linecap="round" opacity=".22"/>`;
+    s+=`<line x1="${ZX}" y1="${AY}" x2="${xR}" y2="${AY}" stroke="${CR}" stroke-width="9" stroke-linecap="round" opacity=".22"/>`;
+    /* Скобки-измерители */
+    const BY=AY-25;
+    const mL=(xL+ZX)/2, mR=(ZX+xR)/2;
+    /* Левая */
+    s+=`<line x1="${xL}" y1="${BY}" x2="${ZX}" y2="${BY}" stroke="${CL}" stroke-width="2"/>`;
+    s+=`<line x1="${xL}" y1="${BY}" x2="${xL}" y2="${AY}" stroke="${CL}" stroke-width="1.5" stroke-dasharray="3,2" opacity=".6"/>`;
+    s+=`<polygon points="${xL},${BY} ${xL+7},${BY-4} ${xL+7},${BY+4}" fill="${CL}"/>`;
+    s+=`<polygon points="${ZX},${BY} ${ZX-7},${BY-4} ${ZX-7},${BY+4}" fill="${CL}"/>`;
+    s+=`<text x="${mL}" y="${BY-7}" text-anchor="middle" font-size="12" font-weight="700" fill="${CL}" font-family="Segoe UI,sans-serif">${abs} ед.</text>`;
+    /* Правая */
+    s+=`<line x1="${ZX}" y1="${BY}" x2="${xR}" y2="${BY}" stroke="${CR}" stroke-width="2"/>`;
+    s+=`<line x1="${xR}" y1="${BY}" x2="${xR}" y2="${AY}" stroke="${CR}" stroke-width="1.5" stroke-dasharray="3,2" opacity=".6"/>`;
+    s+=`<polygon points="${ZX},${BY} ${ZX+7},${BY-4} ${ZX+7},${BY+4}" fill="${CR}"/>`;
+    s+=`<polygon points="${xR},${BY} ${xR-7},${BY-4} ${xR-7},${BY+4}" fill="${CR}"/>`;
+    s+=`<text x="${mR}" y="${BY-7}" text-anchor="middle" font-size="12" font-weight="700" fill="${CR}" font-family="Segoe UI,sans-serif">${abs} ед.</text>`;
+    /* Вертикальная пунктирная ось симметрии */
+    s+=`<line x1="${ZX}" y1="${BY-16}" x2="${ZX}" y2="${AY+26}" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,3" opacity=".55"/>`;
+    /* Подпись снизу */
+    s+=`<text x="${ZX}" y="${AY+36}" text-anchor="middle" font-size="11" fill="#5f7f9c" font-family="Segoe UI,sans-serif">одинаковое расстояние от нуля</text>`;
+  }
+  if(showOpp && n===0){
+    /* Ноль — только пояснение */
+    s+=`<text x="${ZX}" y="${AY-28}" text-anchor="middle" font-size="12" font-weight="700" fill="${CZ}" font-family="Segoe UI,sans-serif">противоположное к 0 = 0</text>`;
+  }
+
+  /* ── Ось ── */
+  s+=`<line x1="22" y1="${AY}" x2="598" y2="${AY}" stroke="#c8d8e4" stroke-width="1.5"/>`;
+  s+=`<polygon points="598,${AY} 590,${AY-4} 590,${AY+4}" fill="#c8d8e4"/>`;
+  s+=`<polygon points="22,${AY} 30,${AY-4} 30,${AY+4}" fill="#c8d8e4"/>`;
+
+  /* ── Деления ── */
+  for(let i=-10;i<=10;i++){
+    const x=px(i), isZ=i===0, isMaj=i%5===0;
+    const th=isZ?11:isMaj?7:5;
+    s+=`<line x1="${x}" y1="${AY-th}" x2="${x}" y2="${AY+th}" stroke="${isZ?'#1a2c3e':isMaj?'#5f7f9c':'#b0c8d8'}" stroke-width="${isZ?2.5:1}"/>`;
+    if(isZ||isMaj||(Math.abs(i)===1)){
+      s+=`<text x="${x}" y="${AY+20}" text-anchor="middle" font-size="${isZ?13:11}" font-weight="${isZ?700:400}" fill="${isZ?'#1a2c3e':'#7a9db5'}" font-family="Segoe UI,sans-serif">${i}</text>`;
+    }
+  }
+
+  /* ── Ноль-кружок ── */
+  s+=`<circle cx="${ZX}" cy="${AY}" r="5" fill="#1a2c3e"/>`;
+
+  /* ── Исходная точка ── */
+  const xN=px(n), origC=nColor(n);
+  const lblYOrig = (showOpp&&n!==0) ? AY-43 : AY-18;
+  s+=`<circle cx="${xN}" cy="${AY}" r="11" fill="${origC}" stroke="#fff" stroke-width="2.5"/>`;
+  const nLbl=n<0?`−${Math.abs(n)}`:`${n}`;
+  s+=`<text x="${xN}" y="${lblYOrig}" text-anchor="middle" font-size="14" font-weight="800" fill="${origC}" font-family="Courier New,monospace">${nLbl}</text>`;
+
+  /* ── Противоположная точка (если показываем) ── */
+  if(showOpp && n!==0){
+    const xO=px(opp), oppC=nColor(opp);
+    const oppLbl=opp<0?`−${Math.abs(opp)}`:`${opp}`;
+    s+=`<circle cx="${xO}" cy="${AY}" r="11" fill="${oppC}" stroke="#fff" stroke-width="2.5"/>`;
+    s+=`<text x="${xO}" y="${AY-43}" text-anchor="middle" font-size="14" font-weight="800" fill="${oppC}" font-family="Courier New,monospace">${oppLbl}</text>`;
+  }
+
+  s+=`</svg>`;
+  return s;
+}
+
+/* ══════════════════════ ВЫРАЖЕНИЕ ════════════════════════════ */
+function exprHTML(n, ans){
+  const nC=nColor(n);
+  const nLbl=n<0?`−${Math.abs(n)}`:`${n}`;
+  const nSpan=`<span style="color:${nC};font-family:'Courier New',monospace;font-size:2.5rem;font-weight:800">${nLbl}</span>`;
+  let ansSpan;
+  if(ans==='?'){
+    ansSpan=`<span style="color:#94a3b8;font-family:'Courier New',monospace;font-size:2.5rem;font-weight:800">?</span>`;
+  } else {
+    const aNum=parseInt(String(ans).replace('−','-'));
+    const aC=nColor(aNum);
+    const aLbl=aNum<0?`−${Math.abs(aNum)}`:`${aNum}`;
+    ansSpan=`<span style="color:${aC};font-family:'Courier New',monospace;font-size:2.5rem;font-weight:800">${aLbl}</span>`;
+  }
+  return`<div class="expr-wrap">
+    <div class="expr-intro">Противоположное к</div>
+    <div class="expr-line">${nSpan}<span style="color:#94a3b8;font-size:2rem"> = </span>${ansSpan}</div>
+  </div>`;
+}
+
+/* ══════════════════════ ДИАГНОСТИКА ═══════════════════════════ */
+function diagnose(n, ua){
+  const correct=-n;
+  const absN=Math.abs(n);
+
+  if(n===0){
+    return{code:'zeroMiss',msg:`У нуля нет другой стороны: противоположное к 0 — это 0.<br>|0| = 0, и он симметричен сам себе.`};
+  }
+  if(ua===n){
+    const side=n<0?'левой':'правой';
+    return{code:'sameNum',msg:`Ты написал то же число (${n<0?'−'+absN:n}). Нужна точка с <strong>другой</strong> стороны от нуля — симметричная ей.<br>Противоположное к ${n<0?'−'+absN:n} — это ${n<0?'+'+absN:'−'+absN}.`};
+  }
+  if(ua===absN && n>0){
+    /* ua = n = absN — caught above */
+  }
+  if(ua===absN && n<0){
+    /* they found |n| correctly — this IS the correct answer actually */
+    /* wait: if n=-5, correct=-(-5)=5, absN=5, so ua=absN=5=correct. This case shouldn't happen as wrong */
+  }
+  if(ua<0 && n<0){
+    /* Both negative: n=-7, ua=-3 or ua=-7 (caught above) or ua=-5 */
+    return{code:'negToNeg',msg:`Противоположное к ${n<0?'−'+absN:n} — это <strong>положительное</strong> число ${absN}, не отрицательное.<br>Точка ${absN} находится симметрично справа от нуля.`};
+  }
+  if(Math.abs(ua)===absN && Math.sign(ua)!==Math.sign(correct)){
+    /* Right magnitude, wrong sign */
+    return{code:'wrongSide',msg:`Расстояние верное (${absN}), но сторона неверная. Нужна точка с ${correct>0?'правой':'левой'} стороны от нуля.`};
+  }
+  if(ua===absN && n>0){
+    /* n>0, ua=absN=n, already caught by sameNum */
+  }
+  /* Generic wrong magnitude */
+  return{code:'countErr',msg:`Расстояние от ${n<0?'−'+absN:n} до нуля равно ${absN}. Противоположная точка должна быть на расстоянии ${absN} с другой стороны: это ${correct<0?'−'+Math.abs(correct):correct}.`};
+}
+
+/* ══════════════════════ СОСТОЯНИЕ ════════════════════════════ */
+const S={
+  mode:'learn', screen:'start',
+  /* обучение */
+  lStep:0, lAnswered:false, lAttempts:0, lHint:false,
+  lDemoReveal:false, _lErr:null, _lOkMsg:null, lDotStatus:[],
+  /* тренировка */
+  pQ:[], pIdx:0, pAnswered:false, _pFb:null, pAnswers:[],
+};
+
+const DEMOS=[
+  {n:6, title:'Положительное число',
+   before:'На числовой прямой стоит точка <strong>6</strong>. Где находится точка, симметричная ей относительно нуля?',
+   reveal:'Точка <strong>−6</strong> — на 6 единиц левее нуля. Такое же расстояние, другая сторона.<br><em>Противоположное к 6 — это −6.</em>'},
+  {n:-4, title:'Отрицательное число',
+   before:'Точка <strong>−4</strong> слева от нуля. Где её симметричная точка справа?',
+   reveal:'Точка <strong>+4</strong> — на 4 единицы правее нуля.<br><em>Противоположное к −4 — это +4 (положительное!).</em><br><strong>Запомни:</strong> противоположное к отрицательному числу всегда положительное.'},
+  {n:0, title:'Особый случай: ноль',
+   before:'Точка <strong>0</strong>. Она прямо на нуле — ровно посередине. Где её симметричная точка?',
+   reveal:'Ноль симметричен сам себе! Он уже стоит в центре.<br><em>Противоположное к 0 — это 0.</em>'},
+];
+
+const PRAC_NS=[-7, 5, -3, 9, -2];
+
+/* ══════════════════════ РЕЖИМ ════════════════════════════════ */
+function setMode(m){
+  S.mode=m; S.screen='start';
+  document.getElementById('btnL').classList.toggle('active',m==='learn');
+  document.getElementById('btnP').classList.toggle('active',m==='practice');
+  render();
+}
+
+/* ══════════════════════ РЕНДЕР ══════════════════════════════ */
+function render(){
+  const app=document.getElementById('app');
+  if(S.screen==='start')      app.innerHTML=buildStart();
+  else if(S.screen==='learn') app.innerHTML=buildLearn();
+  else if(S.screen==='practice') app.innerHTML=buildPractice();
+  else if(S.screen==='results')  app.innerHTML=buildResults();
+  app.querySelectorAll('.m-inp').forEach(el=>{
+    el.addEventListener('keydown',e=>{if(e.key==='Enter')checkAnswer();});
+  });
+}
+
+/* ── Старт ── */
+function buildStart(){
+  return`<div class="card" style="margin-top:8px">
+    <div class="start-ico">↔</div>
+    <p class="start-ttl">Противоположные числа</p>
+    <p class="start-sub">Два числа называются противоположными, если они находятся на одинаковом расстоянии от нуля, но по разные стороны.</p>
+    <div class="key-idea">
+      Почему 5 и −5 — противоположные?<br>
+      <strong>Не потому что «поменяли знак».</strong><br>
+      Потому что они симметричны относительно нуля: +5 (5 делений вправо) и −5 (5 делений влево).
+    </div>
+    <div class="mc-grid">
+      <div class="mc" onclick="startLearn()">
+        <div class="mc-ico">📘</div>
+        <div class="mc-name">Обучение</div>
+        <div class="mc-desc">3 демо + 5 вопросов + правило</div>
+      </div>
+      <div class="mc" onclick="startPractice()">
+        <div class="mc-ico">⚡</div>
+        <div class="mc-name">Тренировка</div>
+        <div class="mc-desc">10 случайных · статистика ошибок</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ── Обучение ── */
+function buildLearn(){
+  const step=S.lStep;
+
+  /* Шаги 1-3: демо */
+  if(step>=1 && step<=3){
+    const d=DEMOS[step-1];
+    const svgH = nlSVG(d.n, S.lDemoReveal);
+    const dots = learnDots();
+
+    if(!S.lDemoReveal){
+      return`<div class="card" style="margin-top:8px">
+        <div class="pdots">${dots}</div>
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:10px">Демо ${step} из 3 · ${d.title}</div>
+        <div class="nl-card">${svgH}</div>
+        ${exprHTML(d.n,'?')}
+        <div class="demo-box">
+          <span class="demo-tag">Смотри</span>${d.before}
+        </div>
+        <div class="btn-row mt12">
+          <button class="btn btn-show" onclick="revealDemo()">Показать противоположное →</button>
+          <button class="btn btn-g" onclick="S.screen='start';render()">К выбору</button>
+        </div>
+      </div>`;
+    } else {
+      return`<div class="card" style="margin-top:8px">
+        <div class="pdots">${dots}</div>
+        <div style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:10px">Демо ${step} из 3 · ${d.title}</div>
+        <div class="nl-card">${svgH}</div>
+        ${exprHTML(d.n, (-d.n).toString())}
+        <div class="demo-ok-box">
+          <span class="demo-ok-tag">Вывод</span>${d.reveal}
+        </div>
+        <div class="btn-row mt12">
+          <button class="btn btn-ok" onclick="nextLearnStep()">Понятно, дальше →</button>
+          <button class="btn btn-g" onclick="S.screen='start';render()">К выбору</button>
+        </div>
+      </div>`;
+    }
+  }
+
+  /* Шаги 4-8: практика */
+  if(step>=4 && step<=8){
+    const n=PRAC_NS[step-4];
+    const isLast=step===8;
+    const fbHtml=S._lErr?`<div class="fb fb-err vis">${S._lErr}</div>`:S._lOkMsg?`<div class="fb fb-ok vis">${S._lOkMsg}</div>`:'';
+    const hintHtml=S.lHint?`<div class="fb fb-hint vis">💡 Найди точку, симметричную ${n<0?'−'+Math.abs(n):n} относительно нуля — на расстоянии ${Math.abs(n)}, но с другой стороны.</div>`:'';
+    const nextBtn=S.lAnswered?`<button class="btn btn-ok" onclick="nextLearnStep()">${isLast?'К выводу →':'Следующий →'}</button>`:'';
+    const hintBtn=!S.lAnswered?`<button class="btn btn-h" onclick="S.lHint=true;render()">💡 Подсказка</button>`:'';
+    const dis=S.lAnswered?'disabled':'';
+
+    return`<div class="card" style="margin-top:8px">
+      <div class="pdots">${learnDots()}</div>
+      <div class="nl-card">${nlSVG(n, S.lAnswered)}</div>
+      ${exprHTML(n, S.lAnswered?(-n).toString():'?')}
+      ${hintHtml}${fbHtml}
+      <div class="inp-row">
+        <input type="number" class="m-inp ${S.lAnswered?'inp-ok':''}" id="ansInp"
+          placeholder="?" ${dis} value="${S.lAnswered?-n:''}">
+        <button class="go-btn" onclick="checkAnswer()" ${dis}>Проверить</button>
+      </div>
+      <div class="btn-row mt12">
+        ${hintBtn}${nextBtn}
+        <button class="btn btn-g" onclick="S.screen='start';render()">К выбору</button>
+      </div>
+    </div>`;
+  }
+
+  /* Шаг 9: итог */
+  if(step===9){
+    return`<div class="card" style="margin-top:8px">
+      <div class="rule-card">
+        <div class="rule-ico">↔</div>
+        <div class="rule-ttl">Противоположные числа</div>
+        <div class="rule-def">
+          <strong>a</strong> и <strong>−a</strong> — противоположные, потому что<br>
+          они симметричны относительно нуля:<br>
+          одинаковое расстояние, разные стороны.
+        </div>
+        <div class="rule-ex-row">
+          <div class="rule-ex pos">5 ↔ −5</div>
+          <div class="rule-ex neg">−7 ↔ 7</div>
+          <div class="rule-ex zer">0 ↔ 0</div>
+        </div>
+        <div style="font-size:.82rem;opacity:.75;font-style:italic;margin-bottom:16px">
+          a + (−a) = 0 · сумма противоположных = 0
+        </div>
+        <div class="btn-row" style="justify-content:center">
+          <button class="btn" style="background:rgba(255,255,255,.25);color:#fff;border:2px solid rgba(255,255,255,.4)" onclick="startPractice()">⚡ К тренировке</button>
+          <button class="btn btn-g" style="border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.7)" onclick="S.screen='start';render()">К выбору</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  return buildStart();
+}
+
+/* ── Тренировка ── */
+function buildPractice(){
+  if(!S.pQ.length) return buildStart();
+  const q=S.pQ[S.pIdx], n=q.n;
+  const ok=S.pAnswers.filter(a=>a.ok).length;
+  const ng=S.pAnswers.filter(a=>!a.ok).length;
+  const pct=(S.pIdx/S.pQ.length)*100;
+  const isLast=S.pIdx===S.pQ.length-1;
+  const fbHtml=S._pFb?`<div class="fb ${S._pFb.cls} vis">${S._pFb.msg}</div>`:'';
+  const dis=S.pAnswered?'disabled':'';
+  const nextBtn=S.pAnswered?`<button class="btn btn-ok" onclick="nextPractice()">${isLast?'Посмотреть результаты →':'Следующий →'}</button>`:'';
+  return`
+  <div class="prog-wrap">
+    <div class="prog-top">
+      <span>Тренировка</span>
+      <div style="display:flex;gap:12px">
+        <span style="color:var(--ok);font-weight:700">✓ ${ok}</span>
+        <span style="color:var(--err);font-weight:700">✗ ${ng}</span>
+        <span>${S.pIdx+1} / ${S.pQ.length}</span>
+      </div>
+    </div>
+    <div class="prog-bar-w"><div class="prog-bar-f" style="width:${pct}%"></div></div>
+  </div>
+  <div class="card">
+    <div class="nl-card">${nlSVG(n, S.pAnswered)}</div>
+    ${exprHTML(n, S.pAnswered?(-n).toString():'?')}
+    ${fbHtml}
+    <div class="inp-row">
+      <input type="number" class="m-inp" id="ansInp" placeholder="?" ${dis} value="${S.pAnswered?-n:''}">
+      <button class="go-btn" onclick="checkAnswer()" ${dis}>Проверить</button>
+    </div>
+    <div class="btn-row mt12">
+      ${nextBtn}
+      <button class="btn btn-g" onclick="S.screen='start';render()">К выбору</button>
+    </div>
+  </div>`;
+}
+
+/* ── Результаты ── */
+function buildResults(){
+  const total=S.pAnswers.length;
+  const corr=S.pAnswers.filter(a=>a.ok).length;
+  const pct=Math.round(corr/total*100);
+  const sc=pct>=90?'ex':pct>=70?'go':pct>=50?'fa':'po';
+  const slbl=pct>=90?'Отлично! Противоположные числа поняты верно.':
+             pct>=70?'Хороший результат! Ещё немного практики.':
+             pct>=50?'Половина верно. Попробуй пройти демо ещё раз.':
+                     'Рекомендую начать с обучения.';
+  const EC={
+    zeroMiss:'Ошибка с нулём',
+    sameNum:'Написано то же число вместо противоположного',
+    negToNeg:'Ошибка знака: для отрицательного число взято тоже отрицательное',
+    wrongSide:'Верное расстояние, неверная сторона',
+    countErr:'Ошибка при определении расстояния',
+  };
+  const misses={};
+  S.pAnswers.filter(a=>!a.ok).forEach(a=>{misses[a.errCode]=(misses[a.errCode]||0)+1;});
+  const errHtml=Object.keys(misses).length===0
+    ?`<p style="color:var(--ok);font-weight:600">✓ Ни одной ошибки!</p>`
+    :Object.entries(misses).map(([code,cnt])=>`
+      <div class="err-s-item">${EC[code]||code}<span class="err-cnt">${cnt}×</span></div>`).join('');
+  return`<div class="card" style="margin-top:8px">
+    <div class="res-score">
+      <div class="res-big ${sc}">${corr}/${total}</div>
+      <div class="res-lbl">${slbl}</div>
+    </div>
+    <div class="divider"></div>
+    <p style="font-size:.69rem;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:10px">Типы ошибок</p>
+    <div class="err-stat">${errHtml}</div>
+    <div class="divider"></div>
+    <div class="btn-row mt12">
+      <button class="btn btn-p" onclick="startPractice()">Ещё раз</button>
+      <button class="btn btn-g" onclick="startLearn()">Обучение</button>
+      <button class="btn btn-g" onclick="S.screen='start';render()">К выбору</button>
+    </div>
+  </div>`;
+}
+
+/* ══════════════════════ ВСПОМОГАТЕЛЬНЫЕ ══════════════════════ */
+function learnDots(){
+  return[1,2,3,4,5,6,7,8].map(i=>{
+    let cls;
+    if(i<=3) cls=S.lStep>i?'ok':S.lStep===i?'ac':'gd';
+    else{const pi=i-3;
+      if(S.lStep-3>pi)cls=S.lDotStatus[pi-1]||'ok';
+      else if(S.lStep-3===pi)cls='ac';
+      else cls='gd';
+    }
+    return`<div class="pdot ${cls}"></div>`;
+  }).join('');
+}
+
+function shakeInp(){
+  const el=document.getElementById('ansInp');
+  if(el&&el.animate)el.animate([{transform:'translateX(0)'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(-3px)'},{transform:'translateX(0)'}],{duration:380});
+}
+
+/* ══════════════════════ ОБРАБОТЧИКИ ══════════════════════════ */
+function revealDemo(){S.lDemoReveal=true;render();}
+
+function checkAnswer(){
+  const inp=document.getElementById('ansInp');
+  if(!inp)return;
+  const raw=inp.value.trim().replace('−','-');
+  if(!raw){inp.style.borderColor='#dc2626';setTimeout(()=>inp.style.borderColor='',600);return;}
+  const ua=parseInt(raw);
+  if(isNaN(ua)){inp.style.borderColor='#dc2626';setTimeout(()=>inp.style.borderColor='',600);return;}
+  if(S.mode==='learn') handleLearnCheck(ua);
+  else                 handlePracticeCheck(ua);
+}
+
+function handleLearnCheck(ua){
+  const step=S.lStep;
+  if(step<4||step>8)return;
+  const n=PRAC_NS[step-4];
+  const correct=-n;
+  if(ua===correct){
+    S.lAnswered=true;
+    S._lOkMsg=`✅ Верно! ${n<0?'−'+Math.abs(n):n} и ${correct<0?'−'+Math.abs(correct):correct} — противоположные: одинаковое расстояние (${Math.abs(n)}), разные стороны.`;
+    S._lErr=null;S.lHint=false;
+    S.lDotStatus[step-4]='ok';
+    render();
+  } else {
+    S.lAttempts++;
+    const d=diagnose(n,ua);
+    S._lErr=d?d.msg:'Неверно. Найди точку, симметричную исходной относительно нуля.';
+    S._lOkMsg=null;
+    if(S.lAttempts>=2){
+      S.lAnswered=true;
+      S._lErr=`❌ ${S._lErr}`;
+      S.lDotStatus[step-4]='ng';
+    }
+    render();shakeInp();
+  }
+}
+
+function handlePracticeCheck(ua){
+  const q=S.pQ[S.pIdx], n=q.n, correct=-n;
+  if(ua===correct){
+    S.pAnswered=true;
+    S._pFb={cls:'fb-ok',msg:`✅ Верно! Противоположное к ${n<0?'−'+Math.abs(n):n} — это ${correct<0?'−'+Math.abs(correct):correct}. Одинаковое расстояние (${Math.abs(n)}), разные стороны.`};
+    S.pAnswers.push({n,ua,ok:true,errCode:null});
+    render();
+  } else {
+    const d=diagnose(n,ua);
+    S.pAnswered=true;
+    S._pFb={cls:'fb-err',msg:`❌ ${d?d.msg:'Неверно. Верный ответ: '+(correct<0?'−'+Math.abs(correct):correct)+'.'}`};
+    S.pAnswers.push({n,ua,ok:false,errCode:d?d.code:'countErr'});
+    render();shakeInp();
+  }
+}
+
+function nextLearnStep(){
+  S.lStep++;S.lAttempts=0;S.lAnswered=false;
+  S.lHint=false;S.lDemoReveal=false;
+  S._lErr=null;S._lOkMsg=null;
+  render();
+}
+
+function nextPractice(){
+  if(S.pIdx>=S.pQ.length-1){S.screen='results';render();return;}
+  S.pIdx++;S.pAnswered=false;S._pFb=null;render();
+}
+
+/* ══════════════════════ СТАРТ ════════════════════════════════ */
+function startLearn(){
+  S.screen='learn';S.lStep=1;S.lAttempts=0;S.lAnswered=false;
+  S.lHint=false;S.lDemoReveal=false;S._lErr=null;S._lOkMsg=null;
+  S.lDotStatus=new Array(5).fill(null);
+  render();
+}
+
+function startPractice(){
+  S.screen='practice';
+  const negs=sfl([-10,-9,-8,-7,-6,-5,-4,-3,-2,-1]);
+  const poss=sfl([1,2,3,4,5,6,7,8,9,10]);
+  const nums=[0,...negs.slice(0,4),...poss.slice(0,4),...sfl([...negs.slice(4),...poss.slice(4)]).slice(0,1)];
+  S.pQ=sfl(nums).slice(0,10).map(n=>({n}));
+  S.pIdx=0;S.pAnswered=false;S._pFb=null;S.pAnswers=[];
+  render();
+}
+
+function sfl(arr){const b=[...arr];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+render();
+</script>
+</body>
+</html>

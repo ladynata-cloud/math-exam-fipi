@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренажёр: смешанные выражения</title>
+<style>
+/* ═══ СЕРИЙНЫЕ ТОКЕНЫ ═══ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #eef2f5;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  padding: 30px 20px 50px; color: #1a2c3e;
+}
+.trainer {
+  max-width: 1150px; margin: 0 auto;
+  background: #fff; border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.09); overflow: hidden;
+}
+
+/* ── Шапка ── */
+.header { background: #2c3e4e; padding: 20px 30px; color: #fff; }
+.header h1 { font-size: 1.8rem; font-weight: 500; letter-spacing: -.3px; }
+.header .sub { font-size: .93rem; opacity: .85; margin-top: 5px; line-height: 1.5; }
+.header .tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 9px; font-size: .78rem; opacity: .62;
+  background: rgba(255,255,255,.1); border-radius: 20px; padding: 4px 12px;
+}
+
+/* ── Режимы ── */
+.mode-bar {
+  display: flex; background: #f0f3f7;
+  padding: 12px 30px; gap: 14px; border-bottom: 1px solid #dce4ec;
+}
+.mode-btn {
+  background: transparent; border: none; font-size: .98rem; font-weight: 600;
+  padding: 8px 22px; border-radius: 40px; cursor: pointer;
+  color: #2c3e4e; transition: .18s; font-family: inherit;
+}
+.mode-btn.active { background: #2c3e4e; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.1); }
+
+/* ── Сетка ── */
+.main-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 28px; padding: 28px;
+}
+@media (max-width: 800px) { .main-grid { grid-template-columns: 1fr; gap: 20px; } }
+
+/* ══════════════════════
+   ЛЕВАЯ ПАНЕЛЬ
+══════════════════════ */
+.visual-panel {
+  background: #fafcfd; border-radius: 22px; padding: 20px;
+  border: 1px solid #e2edf2; box-shadow: 0 2px 8px rgba(0,0,0,.03);
+  display: flex; flex-direction: column; gap: 14px;
+}
+
+/* Большое выражение */
+.big-expression {
+  background: #f4f9fe; text-align: center; padding: 16px 10px;
+  border-radius: 18px; font-family: 'Courier New', monospace;
+  font-size: 2.1rem; font-weight: 700; letter-spacing: 3px;
+  border: 1px solid #d4e2ec; line-height: 1.4; word-break: break-all;
+}
+.pos-c  { color: #1d6fa4; }
+.neg-c  { color: #b91c1c; }
+.op-c   { color: #64748b; }
+.hi-op  { color: #92400e; background: #fef3c7; border-radius: 4px; padding: 0 3px; }
+
+/* Фишки алгебраической суммы */
+.alg-panel {
+  background: #f2f5f8; border-radius: 14px; padding: 13px 14px;
+  border: 1px solid #e0eaf0;
+}
+.panel-lbl {
+  font-size: .72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: #7a9db5; margin-bottom: 10px; text-align: center;
+}
+.chips-row {
+  display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; min-height: 36px;
+}
+.chip {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 5px 13px; border-radius: 20px;
+  font-size: 1rem; font-weight: 800;
+  font-family: 'Courier New', monospace; transition: all .35s;
+  min-width: 44px;
+}
+.chip-pos  { background: #dbeafe; color: #1e40af; }
+.chip-neg  { background: #fee2e2; color: #991b1b; }
+.chip-pend { background: #f1f5f9; color: #94a3b8; border: 1.5px dashed #cbd5e1; }
+.chip-cur  { background: #fef3c7; color: #92400e; border: 1.5px solid #f59e0b;
+             animation: chipPulse .9s infinite alternate; }
+.chip-op   { background: transparent; color: #64748b; font-size: .9rem; padding: 5px 4px; min-width: 16px; }
+
+/* Блок группировки */
+.group-panel {
+  background: #f2f5f8; border-radius: 14px; padding: 13px 14px;
+  border: 1px solid #e0eaf0; animation: fadeIn .4s ease;
+}
+.group-rows { display: flex; gap: 12px; align-items: flex-start; }
+.group-side { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 7px; }
+.group-lbl {
+  font-size: .72rem; font-weight: 700; padding: 3px 10px;
+  border-radius: 16px; text-transform: uppercase; letter-spacing: .7px;
+}
+.lbl-pos { background: #dbeafe; color: #1e40af; }
+.lbl-neg { background: #fee2e2; color: #991b1b; }
+.group-sum {
+  font-size: .92rem; font-weight: 800; font-family: 'Courier New', monospace;
+  color: #1a2c3e; margin-top: 4px;
+}
+.group-plus-col {
+  display: flex; align-items: center; padding-top: 28px;
+  font-size: 1.1rem; font-weight: 700; color: #94a3b8;
+}
+
+/* Блок частичных сумм */
+.partial-panel {
+  background: #eef6fb; border-radius: 14px; padding: 13px 14px;
+  border-left: 3px solid #2c7da0; animation: fadeIn .4s ease;
+  font-size: .88rem; line-height: 1.7; color: #1a3e54;
+}
+.partial-panel strong { color: #1a2c3e; }
+
+/* ══════════════════════
+   ПРАВАЯ ПАНЕЛЬ
+══════════════════════ */
+.interactive-panel {
+  background: #fff; border-radius: 22px; padding: 20px;
+  border: 1px solid #e2edf2;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.progress-dots { display: flex; gap: 6px; justify-content: flex-end; padding-bottom: 2px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #cdd8e3; transition: all .3s; }
+.dot.done   { background: #3aaa6e; }
+.dot.active { background: #2c7da0; transform: scale(1.4); }
+
+.step-box { background: #f7fafc; border-radius: 18px; padding: 20px; flex: 1; }
+.step-title {
+  font-weight: 700; font-size: 1.1rem; color: #1f4e6e;
+  border-left: 4px solid #2c7da0; padding-left: 11px; margin-bottom: 13px; line-height: 1.3;
+}
+.step-q { font-size: .97rem; line-height: 1.6; color: #2c3e4e; margin-bottom: 11px; }
+.step-q strong { color: #1a2c3e; }
+.step-context {
+  background: #f0f6fb; border-radius: 10px; padding: 9px 13px;
+  font-size: .82rem; color: #1e4060; line-height: 1.55; margin-bottom: 10px;
+}
+.series-link {
+  background: #eef6fb; border-left: 3px solid #5b9abb;
+  border-radius: 0 10px 10px 0; padding: 8px 12px;
+  font-size: .81rem; color: #1e4060; margin-bottom: 11px; line-height: 1.55;
+}
+.series-link strong { color: #1a2c3e; }
+
+/* Выбор */
+.choice-group { display: flex; flex-wrap: wrap; gap: 9px; margin: 11px 0; }
+.ch-btn {
+  padding: 9px 17px; border: 2px solid #bac8d9; border-radius: 40px;
+  font-size: .93rem; font-weight: 600; cursor: pointer;
+  background: #fff; color: #2c3e4e; transition: all .17s; font-family: inherit;
+}
+.ch-btn:hover:not(:disabled) { border-color: #2c7da0; color: #2c7da0; }
+.ch-btn.ok  { background: #2c7da0; color: #fff; border-color: #2c7da0; pointer-events: none; }
+.ch-btn.bad { background: #fee2e2; border-color: #c0392b; color: #991b1b;
+              pointer-events: none; animation: shake .38s; }
+.ch-btn:disabled { pointer-events: none; }
+
+/* Ввод */
+.inp-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 11px 0; }
+.inp-lbl {
+  font-size: .97rem; font-weight: 700; font-family: 'Courier New', monospace;
+  color: #1a2c3e; white-space: nowrap;
+}
+.m-inp {
+  padding: 7px 13px; font-size: 1.05rem; border: 1.5px solid #bac8d9;
+  border-radius: 40px; width: 100px; text-align: center; font-family: inherit;
+  font-weight: 600; outline: none; transition: border-color .2s;
+  appearance: textfield; -moz-appearance: textfield;
+}
+.m-inp::-webkit-inner-spin-button,
+.m-inp::-webkit-outer-spin-button { -webkit-appearance: none; }
+.m-inp:focus { border-color: #2c7da0; }
+.m-inp.wide { width: 130px; }
+.go-btn {
+  background: #2c7da0; border: none; color: #fff; padding: 9px 20px;
+  border-radius: 40px; font-weight: 600; cursor: pointer;
+  font-size: .93rem; transition: .15s; font-family: inherit;
+}
+.go-btn:hover { background: #1f5e7a; }
+
+/* Обратная связь */
+.feedback {
+  border-radius: 14px; padding: 11px 15px; font-size: .88rem;
+  line-height: 1.6; animation: fadeIn .3s ease;
+}
+.fb-info { background: #f0f6fb; border-left: 4px solid #5b9abb; color: #1a3e54; }
+.fb-ok   { background: #edfaf3; border-left: 4px solid #3aaa6e; color: #174d2f; }
+.fb-err  { background: #fff1f1; border-left: 4px solid #e34d3a; color: #7a1a1a; }
+.fb-hint { background: #fef6e0; border-left: 4px solid #e8a030; color: #5c3c0a; }
+
+/* Карточка завершения */
+.done-card {
+  background: linear-gradient(140deg, #1e3a4e 0%, #2c5c72 100%);
+  border-radius: 18px; padding: 26px 22px; color: #fff;
+  text-align: center; animation: fadeIn .45s ease;
+}
+.done-result { font-size: 3.4rem; font-weight: 800; font-family: 'Courier New', monospace; letter-spacing: 2px; margin: 8px 0; }
+.done-result.pos-r { color: #7dd3fc; }
+.done-result.neg-r { color: #fca5a5; }
+.done-result.zero-r { color: #86efac; }
+.done-steps {
+  background: rgba(255,255,255,.1); border-radius: 12px; padding: 13px 16px;
+  font-size: .86rem; line-height: 1.8; text-align: left; margin: 12px 0 14px;
+  font-family: 'Courier New', monospace;
+}
+.done-rule { font-size: .82rem; opacity: .8; font-style: italic; margin-bottom: 16px; line-height: 1.5; }
+.new-btn-w {
+  background: rgba(255,255,255,.18); border: 1.5px solid rgba(255,255,255,.4);
+  color: #fff; padding: 9px 22px; border-radius: 40px;
+  font-weight: 600; cursor: pointer; font-size: .92rem; font-family: inherit; transition: .2s;
+}
+.new-btn-w:hover { background: rgba(255,255,255,.28); }
+
+/* ── Тренировка ── */
+.train-expr { font-family: 'Courier New', monospace; font-size: 1.4rem; font-weight: 700;
+              text-align: center; margin: 12px 0; line-height: 1.5; }
+.t-ans {
+  font-size: 1.45rem; width: 130px; text-align: center;
+  border: 2px solid #bac8d9; border-radius: 50px; padding: 7px;
+  font-weight: 700; font-family: inherit; outline: none; transition: border-color .2s;
+  appearance: textfield; -moz-appearance: textfield;
+}
+.t-ans::-webkit-inner-spin-button,
+.t-ans::-webkit-outer-spin-button { -webkit-appearance: none; }
+.t-ans:focus { border-color: #2c7da0; }
+.score-row { display: flex; justify-content: center; gap: 14px; margin-top: 14px; }
+.sc { text-align: center; padding: 8px 16px; background: #f4f8fb; border-radius: 12px; }
+.sc-n { font-size: 1.8rem; font-weight: 800; line-height: 1; }
+.sc-n.g { color: #3aaa6e; }
+.sc-n.r { color: #e34d3a; }
+.sc-l { font-size: .66rem; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: #7a9db5; margin-top: 2px; }
+.solution-box {
+  background: #eef6fb; border-radius: 12px; padding: 12px 14px;
+  font-size: .85rem; line-height: 1.75; color: #1a3e54; margin-top: 10px;
+  border-left: 3px solid #2c7da0; animation: fadeIn .3s ease;
+  font-family: 'Courier New', monospace;
+}
+
+/* ── Кнопки ── */
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.act-btn {
+  background: #eef2f5; border: none; padding: 9px 18px; border-radius: 40px;
+  font-weight: 500; cursor: pointer; font-size: .86rem;
+  transition: .15s; font-family: inherit; color: #2c3e4e;
+}
+.act-btn:hover { background: #dde4ea; }
+
+/* ── Подвал ── */
+.footer {
+  background: #eef3f7; padding: 13px 30px; text-align: center;
+  font-size: .84rem; border-top: 1px solid #d0dfe8; color: #2c5a6e; font-weight: 500;
+}
+
+.hidden { display: none; }
+@keyframes fadeIn  { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+@keyframes shake   { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-5px)} 40%{transform:translateX(5px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)} }
+@keyframes chipPulse { from{opacity:.75} to{opacity:1; transform:scale(1.05)} }
+</style>
+</head>
+<body>
+
+<div class="trainer">
+
+  <div class="header">
+    <h1>Смешанные выражения</h1>
+    <p class="sub">Сначала приведи к алгебраической сумме — замени все вычитания сложением противоположных. Потом считай.</p>
+    <span class="tag">📚 Тренажёр 5 · Серия «Действия с рациональными числами»</span>
+  </div>
+
+  <div class="mode-bar">
+    <button id="btnLearn"    class="mode-btn active" onclick="setMode('learning')">📘 Обучение (по шагам)</button>
+    <button id="btnPractice" class="mode-btn"        onclick="setMode('practice')">⚡ Тренировка</button>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- ЛЕВАЯ: визуальная модель -->
+    <div class="visual-panel" id="visualPanel"></div>
+
+    <!-- ПРАВАЯ: интерактив -->
+    <div class="interactive-panel">
+
+      <!-- Обучение -->
+      <div id="learnPanel">
+        <div class="progress-dots" id="progDots"></div>
+        <div class="step-box" id="stepBox"></div>
+        <div class="feedback fb-info" id="learnFb">
+          🔍 Главное правило: сначала преобразовать, потом считать.
+        </div>
+      </div>
+
+      <!-- Тренировка -->
+      <div id="practicePanel" class="hidden">
+        <div class="step-box">
+          <div class="step-title">Тренировка</div>
+          <p style="text-align:center; font-size:.95rem; color:#5f7f9c; margin-bottom:6px">Вычисли выражение:</p>
+          <div class="train-expr" id="prExpr"></div>
+          <div style="display:flex; justify-content:center; align-items:center; gap:12px; margin:10px 0">
+            <span style="font-size:1.3rem; font-weight:700; color:#94a3b8">=</span>
+            <input type="number" id="tAns" class="t-ans" placeholder="?">
+          </div>
+          <div style="display:flex; justify-content:center">
+            <button class="go-btn" onclick="checkPractice()">✓ Проверить</button>
+          </div>
+          <div class="feedback fb-info" id="prFb" style="margin-top:12px">Введи ответ и нажми «Проверить».</div>
+          <div id="prSol" class="solution-box hidden"></div>
+        </div>
+        <div class="score-row">
+          <div class="sc"><div class="sc-n g" id="scOk">0</div><div class="sc-l">Верно</div></div>
+          <div class="sc"><div class="sc-n"   id="scAll">0</div><div class="sc-l">Всего</div></div>
+          <div class="sc"><div class="sc-n"   id="scPct">—</div><div class="sc-l">Точность</div></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="act-btn" onclick="showHint()">💡 Подсказка</button>
+        <button class="act-btn" onclick="refreshExample()">🔄 Новый пример</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Алгоритм: 1) найди вычитания → 2) замени на + противоположного → 3) сгруппируй знаки → 4) сложи частичные суммы &nbsp;·&nbsp; Тренажёры 1–3 применяются на каждом шаге
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   МОДЕЛЬ ДАННЫХ
+   Каждый член: { op, innerSign, mag, bracket }
+     op:        '' (первый) | '+' | '-'
+     innerSign: '+' | '-'   (знак числа внутри)
+     mag:       число (> 0)
+     bracket:   bool
+   addend = если op='-': -(innerSign==='+' ? mag : -mag)
+            иначе:        (innerSign==='+' ? mag : -mag)
+═══════════════════════════════════════════════════════════ */
+let E = null;
+let mode     = 'learning';
+let step     = 1;
+let done     = {};
+let subIdx   = 0;       // текущее вычитание в шаге 2
+let filled   = {};      // { termIndex: addendValue } уже заменённые
+
+let prAttempts = 0;
+let score      = { ok: 0, all: 0 };
+
+function rand(lo, hi) { return lo + Math.floor(Math.random() * (hi - lo + 1)); }
+
+/* ── Генерация выражения ── */
+function genEx() {
+  let terms, addends, subIndices, posSum, negSum, result;
+  let attempts = 0;
+
+  do {
+    const n = Math.random() < 0.45 ? 3 : 4; // 3 or 4 terms
+    terms = [];
+
+    // Term 0: plain number
+    terms.push({
+      op: '', mag: rand(2, 9),
+      innerSign: Math.random() < 0.5 ? '+' : '-',
+      bracket: false
+    });
+
+    // Terms 1..n-1
+    for (let i = 1; i < n; i++) {
+      const op = Math.random() < 0.5 ? '+' : '-';
+      const innerSign = Math.random() < 0.5 ? '+' : '-';
+      const mag = rand(2, 9);
+      // bracket required if innerSign='-' (standard notation)
+      // bracket optional if innerSign='+' and op='+'
+      const bracket = innerSign === '-' || (op === '+' && Math.random() < 0.3);
+      terms.push({ op, innerSign, mag, bracket });
+    }
+
+    // Guarantee: at least 2 subtractions
+    const subs = terms.filter(t => t.op === '-');
+    if (subs.length < 2) {
+      // Force terms 1 and (last or 2nd-last) to '-'
+      terms[1].op = '-';
+      if (terms.length > 2) terms[terms.length - 1].op = '-';
+    }
+
+    // Guarantee: at least one -(negative) case [the key case]
+    const hasKeyCase = terms.some(t => t.op === '-' && t.innerSign === '-');
+    if (!hasKeyCase) {
+      const subTerms = terms.filter(t => t.op === '-');
+      subTerms[0].innerSign = '-';
+      subTerms[0].bracket   = true;
+    }
+
+    // Also ensure not all terms have brackets (mix plain and bracketed)
+    const plainTerms = terms.filter(t => !t.bracket && t.op !== '');
+    if (plainTerms.length === 0 && terms.length > 2) {
+      // Make one non-first bracket=false with innerSign='+'
+      for (let i = 1; i < terms.length; i++) {
+        if (terms[i].innerSign === '+') {
+          terms[i].bracket = false; break;
+        }
+      }
+    }
+
+    // Compute
+    addends = terms.map(t => {
+      const v = t.innerSign === '+' ? t.mag : -t.mag;
+      return t.op === '-' ? -v : v;
+    });
+    result    = addends.reduce((a, b) => a + b, 0);
+    subIndices = terms.map((t, i) => t.op === '-' ? i : -1).filter(i => i >= 0);
+    posSum    = addends.filter(a => a > 0).reduce((s, a) => s + a, 0);
+    negSum    = addends.filter(a => a < 0).reduce((s, a) => s + a, 0);
+
+    attempts++;
+  } while ((Math.abs(result) > 20 || (posSum === 0 || negSum === 0)) && attempts < 80);
+
+  return { terms, addends, subIndices, posSum, negSum, result };
+}
+
+/* ── Форматирование ── */
+function ps(n)  { return n < 0 ? `−${Math.abs(n)}` : `${n}`; }
+
+function termHTML(t, idx, hilite) {
+  const innerChar = t.innerSign === '-' ? '−' : '+';
+  const mag = t.mag;
+  const opChar = t.op === '-' ? '−' : '+';
+
+  let inner;
+  if (t.bracket) {
+    const sc = t.innerSign === '-' ? 'neg-c' : 'pos-c';
+    inner = `(<span class="${sc}">${innerChar}${mag}</span>)`;
+  } else {
+    const sc = t.innerSign === '-' ? 'neg-c' : 'pos-c';
+    inner = `<span class="${sc}">${mag}</span>`;
+  }
+
+  if (idx === 0) {
+    const sc = t.innerSign === '-' ? 'neg-c' : 'pos-c';
+    return t.bracket
+      ? `(<span class="${sc}">${innerChar}${mag}</span>)`
+      : `<span class="${sc}">${t.innerSign === '-' ? '−' : ''}${mag}</span>`;
+  }
+
+  const opCls = hilite ? 'hi-op' : 'op-c';
+  return `<span class="${opCls}"> ${opChar} </span>${inner}`;
+}
+
+function origExprHTML(hiliteSubIdx) {
+  return E.terms.map((t, i) => {
+    const hilite = (hiliteSubIdx !== undefined && i === hiliteSubIdx);
+    return termHTML(t, i, hilite);
+  }).join('');
+}
+
+function addendDisplay(addend, isFirst) {
+  if (isFirst) return addend < 0 ? `−${Math.abs(addend)}` : `${addend}`;
+  return addend < 0 ? ` + (−${Math.abs(addend)})` : ` + ${addend}`;
+}
+
+function algSumStr() {
+  return E.addends.map((a, i) => addendDisplay(a, i === 0)).join('');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ЛЕВАЯ ПАНЕЛЬ
+═══════════════════════════════════════════════════════════ */
+function renderVisual() {
+  // Which subtraction term is currently being worked on
+  const curSubTermIdx = step === 2 ? E.subIndices[subIdx] : -1;
+
+  document.getElementById('visualPanel').innerHTML = [
+    buildBigExpr(curSubTermIdx),
+    buildAlgPanel(curSubTermIdx),
+    step >= 4 ? buildGroupPanel() : '',
+    step >= 5 ? buildPartialPanel() : '',
+  ].join('');
+}
+
+function buildBigExpr(hiliteIdx) {
+  return `
+  <div class="big-expression">
+    ${origExprHTML(hiliteIdx)}
+  </div>`;
+}
+
+function buildAlgPanel(curSubTermIdx) {
+  const chips = E.terms.map((t, idx) => {
+    const isSub = t.op === '-';
+    const addend = E.addends[idx];
+
+    if (!isSub) {
+      // Non-subtraction: always shown as colored chip
+      return chipHTML(addend);
+    }
+    if (filled[idx] !== undefined) {
+      // Already replaced
+      return chipHTML(filled[idx]);
+    }
+    if (idx === curSubTermIdx && step === 2) {
+      return `<span class="chip chip-cur">?</span>`;
+    }
+    return `<span class="chip chip-pend">?</span>`;
+  });
+
+  // Insert '+' operators between chips
+  const withOps = chips.map((c, i) => i === 0 ? c : `<span class="chip chip-op">+</span>${c}`);
+
+  return `
+  <div class="alg-panel">
+    <div class="panel-lbl">→ Алгебраическая сумма (слагаемые)</div>
+    <div class="chips-row">${withOps.join('')}</div>
+  </div>`;
+}
+
+function chipHTML(addend) {
+  if (addend > 0) return `<span class="chip chip-pos">+${addend}</span>`;
+  return `<span class="chip chip-neg">−${Math.abs(addend)}</span>`;
+}
+
+function buildGroupPanel() {
+  const posA = E.addends.filter(a => a > 0);
+  const negA = E.addends.filter(a => a < 0);
+  const posChips = posA.map(a => `<span class="chip chip-pos">+${a}</span>`).join(' ');
+  const negChips = negA.map(a => `<span class="chip chip-neg">−${Math.abs(a)}</span>`).join(' ');
+  const posSum = done[4] ? `<div class="group-sum">Σ = +${E.posSum}</div>` : '';
+  const negSum = done[5] ? `<div class="group-sum">Σ = ${ps(E.negSum)}</div>` : '';
+
+  return `
+  <div class="group-panel">
+    <div class="panel-lbl">Группировка по знаку</div>
+    <div class="group-rows">
+      <div class="group-side">
+        <span class="group-lbl lbl-pos">Положительные</span>
+        <div class="chips-row">${posChips || '<span style="color:#94a3b8;font-size:.82rem">нет</span>'}</div>
+        ${posSum}
+      </div>
+      <div class="group-plus-col">+</div>
+      <div class="group-side">
+        <span class="group-lbl lbl-neg">Отрицательные</span>
+        <div class="chips-row">${negChips || '<span style="color:#94a3b8;font-size:.82rem">нет</span>'}</div>
+        ${negSum}
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildPartialPanel() {
+  const showNeg = done[5];
+  const txt = showNeg
+    ? `<strong>Частичные суммы:</strong><br>
+       Положительные: +${E.posSum}<br>
+       Отрицательные: ${ps(E.negSum)}<br>
+       Применяем правило сложения с разными знаками (← Тренажёр 2)`
+    : `<strong>Сумма положительных:</strong> +${E.posSum}<br>
+       Теперь найди сумму отрицательных слагаемых.`;
+  return `<div class="partial-panel">${txt}</div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ПРОГРЕСС И РЕНДЕР ШАГОВ
+═══════════════════════════════════════════════════════════ */
+function renderDots() {
+  document.getElementById('progDots').innerHTML =
+    [1,2,3,4,5,6].map(i => {
+      const c = done[i] ? 'done' : (i === step ? 'active' : '');
+      return `<div class="dot ${c}" title="Шаг ${i}"></div>`;
+    }).join('');
+}
+
+function setFb(html, cls) {
+  const el = document.getElementById('learnFb');
+  el.innerHTML = html; el.className = `feedback ${cls}`;
+}
+
+function goStep(n, delay) {
+  setTimeout(() => {
+    step = n;
+    renderStep();
+    renderVisual();
+  }, delay || 550);
+}
+
+function renderStep() {
+  renderDots();
+  const box = document.getElementById('stepBox');
+  if (!box) return;
+  switch (step) {
+    case 1: box.innerHTML = buildS1(); break;
+    case 2: box.innerHTML = buildS2(); break;
+    case 3: box.innerHTML = buildS3(); break;
+    case 4: box.innerHTML = buildS4(); break;
+    case 5: box.innerHTML = buildS5(); break;
+    case 6: box.innerHTML = buildS6(); break;
+  }
+  box.querySelectorAll('.m-inp').forEach(inp => {
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') box.querySelector('[data-check]')?.click();
+    });
+  });
+}
+
+/* ── Шаг 1: количество вычитаний ── */
+function buildS1() {
+  const subCount = E.subIndices.length;
+  // Generate button options: correct, correct-1 (if > 1), correct+1
+  const opts = new Set([subCount]);
+  if (subCount > 0) opts.add(subCount - 1);
+  opts.add(subCount + 1);
+  if (opts.size < 3) opts.add(subCount + 2);
+  const shuffled = [...opts].sort(() => Math.random() - .5);
+
+  return `
+  <div class="step-title">Шаг 1. Найди операции вычитания</div>
+  <p class="step-q">
+    Знак <strong>«−»</strong> в выражении может быть двух видов:<br>
+    • <em>Знак действия</em> — соединяет два числа (это операция вычитания)<br>
+    • <em>Знак числа</em> — стоит внутри скобки, показывает знак числа<br><br>
+    Сколько знаков <strong>вычитания как операции</strong> в этом выражении?
+  </p>
+  <div class="choice-group">
+    ${shuffled.map(n => `<button class="ch-btn" onclick="checkS1(${n})">${n}</button>`).join('')}
+  </div>`;
+}
+function checkS1(v) {
+  const correct = E.subIndices.length;
+  const btns = document.querySelectorAll('#stepBox .ch-btn');
+  if (v === correct) {
+    setFb(`✅ Верно! ${correct} операции вычитания. Их нужно заменить сложением противоположного — по одной.`, 'fb-ok');
+    btns.forEach(b => { if (parseInt(b.textContent) === v) b.classList.add('ok'); });
+    done[1] = true; goStep(2);
+  } else {
+    btns.forEach(b => { if (parseInt(b.textContent) === v) b.classList.add('bad'); });
+    if (v < correct) {
+      setFb(`❌ Знаков вычитания больше — ты пропустил ${correct - v}. Знаки внутри скобок — это знаки чисел, а не операции. Операция «−» стоит <em>между</em> числами/скобками.`, 'fb-err');
+    } else {
+      setFb(`❌ Ты посчитал знаки чисел внутри скобок как операции. Операций вычитания ${correct}: смотри только на знаки <em>между</em> элементами выражения.`, 'fb-err');
+    }
+  }
+}
+
+/* ── Шаг 2: замена вычитаний (последовательно) ── */
+function buildS2() {
+  const termIdx  = E.subIndices[subIdx];
+  const term     = E.terms[termIdx];
+  const addend   = E.addends[termIdx];
+  const total    = E.subIndices.length;
+  const current  = subIdx + 1;
+
+  const innerVal = term.innerSign === '+' ? term.mag : -term.mag;
+  const bDisp    = term.bracket
+    ? `(${term.innerSign === '-' ? '−' : '+'}${term.mag})`
+    : `${term.mag}`;
+  const oppSign  = addend >= 0 ? '+' : '−';
+
+  return `
+  <div class="step-title">Шаг 2. Замени вычитание ${current} из ${total}</div>
+  <div class="series-link">← Тренажёр 3: a − b = a + (−b) · вычитание = сложение с противоположным</div>
+  <p class="step-q">
+    Текущее вычитание: <strong style="font-family:'Courier New',monospace"> − ${bDisp}</strong><br>
+    Вместо «вычесть ${bDisp}» пишем «прибавить <em>противоположное</em> к ${bDisp}».<br>
+    Чему равно это слагаемое?
+  </p>
+  <div class="inp-row">
+    <span class="inp-lbl">слагаемое =</span>
+    <input id="i2" type="number" class="m-inp" placeholder="?">
+    <button class="go-btn" data-check onclick="checkS2()">Проверить</button>
+  </div>`;
+}
+function checkS2() {
+  const v       = parseInt(document.getElementById('i2')?.value);
+  if (isNaN(v)) return;
+  const termIdx = E.subIndices[subIdx];
+  const term    = E.terms[termIdx];
+  const correct = E.addends[termIdx];
+  const innerVal = term.innerSign === '+' ? term.mag : -term.mag;
+  const bDisp   = term.bracket
+    ? `(${term.innerSign === '-' ? '−' : '+'}${term.mag})`
+    : `${term.mag}`;
+
+  if (v === correct) {
+    filled[termIdx] = correct;
+    const moreLeft = subIdx + 1 < E.subIndices.length;
+    if (moreLeft) {
+      setFb(`✅ Верно! Слагаемое = ${ps(correct)}. Переходим к следующему вычитанию.`, 'fb-ok');
+      subIdx++;
+      setTimeout(() => { renderStep(); renderVisual(); }, 560);
+    } else {
+      setFb(`✅ Верно! Все вычитания заменены. Алгебраическая сумма составлена!`, 'fb-ok');
+      done[2] = true; goStep(3, 650);
+    }
+  } else {
+    setFb(diagS2(v, term, correct, innerVal, bDisp), 'fb-err');
+    markErr('i2');
+  }
+}
+function diagS2(v, term, correct, innerVal, bDisp) {
+  if (v === innerVal) {
+    return `❌ Ты написал само число из скобки (${ps(innerVal)}), а не результат замены вычитания. Вычитание ${bDisp} → слагаемое = противоположному к ${bDisp} = ${ps(correct)}.`;
+  }
+  if (v === -correct) {
+    return `❌ Знак перепутан. Противоположное к ${ps(innerVal)} — это ${ps(correct)}, не ${ps(v)}.`;
+  }
+  if (Math.abs(v) === Math.abs(correct)) {
+    return `❌ Число правильное (${Math.abs(correct)}), но знак неверный. Противоположное к ${ps(innerVal)} — это ${ps(correct)}.`;
+  }
+  return `❌ Неверно. Вычитаем ${bDisp} — значит прибавляем противоположное к ${ps(innerVal)} = ${ps(correct)}.`;
+}
+
+/* ── Шаг 3: сумма положительных ── */
+function buildS3() {
+  const pos = E.addends.filter(a => a > 0);
+  const posStr = pos.map(a => `+${a}`).join(', ');
+  return `
+  <div class="step-title">Шаг 3. Сложи положительные слагаемые</div>
+  <p class="step-q">
+    Алгебраическая сумма составлена. Теперь группируем слагаемые по знаку и считаем отдельно.<br>
+    Положительные слагаемые: <strong style="font-family:'Courier New',monospace">${posStr || 'нет'}</strong>
+  </p>
+  <div class="inp-row">
+    <span class="inp-lbl">Σ положительных =</span>
+    <input id="i3" type="number" class="m-inp wide" placeholder="?">
+    <button class="go-btn" data-check onclick="checkS3()">Проверить</button>
+  </div>`;
+}
+function checkS3() {
+  const v = parseInt(document.getElementById('i3')?.value);
+  if (isNaN(v)) return;
+  if (v === E.posSum) {
+    setFb(`✅ Верно! Сумма положительных = +${E.posSum}.`, 'fb-ok');
+    done[4] = true; goStep(4, 600);
+  } else {
+    if (v < 0) {
+      setFb(`❌ Сумма положительных слагаемых не может быть отрицательной.`, 'fb-err');
+    } else {
+      setFb(`❌ Проверь сложение: ${E.addends.filter(a=>a>0).join(' + ')} = ${E.posSum}.`, 'fb-err');
+    }
+    markErr('i3');
+  }
+}
+
+/* ── Шаг 4: сумма отрицательных ── */
+function buildS4() {
+  const neg = E.addends.filter(a => a < 0);
+  const negStr = neg.map(a => ps(a)).join(', ');
+  return `
+  <div class="step-title">Шаг 4. Сложи отрицательные слагаемые</div>
+  <div class="step-context">← Тренажёр 1: два отрицательных — складывай модули, ставь «−».</div>
+  <p class="step-q">
+    Отрицательные слагаемые: <strong style="font-family:'Courier New',monospace">${negStr || 'нет'}</strong>
+  </p>
+  <div class="inp-row">
+    <span class="inp-lbl">Σ отрицательных =</span>
+    <input id="i4" type="number" class="m-inp wide" placeholder="?">
+    <button class="go-btn" data-check onclick="checkS4()">Проверить</button>
+  </div>`;
+}
+function checkS4() {
+  const v = parseInt(document.getElementById('i4')?.value);
+  if (isNaN(v)) return;
+  if (v === E.negSum) {
+    setFb(`✅ Верно! Сумма отрицательных = ${ps(E.negSum)}.`, 'fb-ok');
+    done[5] = true; goStep(5, 600);
+  } else {
+    if (v > 0) {
+      setFb(`❌ Сумма отрицательных слагаемых не может быть положительной.`, 'fb-err');
+    } else if (v === -E.negSum) {
+      setFb(`❌ Знак неверный. Сумма отрицательных — отрицательное число: ${ps(E.negSum)}.`, 'fb-err');
+    } else {
+      const mods = E.addends.filter(a=>a<0).map(Math.abs);
+      setFb(`❌ Проверь: складываем модули ${mods.join(' + ')} = ${mods.reduce((a,b)=>a+b,0)}, ставим «−». Итог: ${ps(E.negSum)}.`, 'fb-err');
+    }
+    markErr('i4');
+  }
+}
+
+/* ── Шаг 5: итоговый ответ ── */
+function buildS5() {
+  const big = Math.max(Math.abs(E.posSum), Math.abs(E.negSum));
+  const sml = Math.min(Math.abs(E.posSum), Math.abs(E.negSum));
+  const winSign = E.posSum > Math.abs(E.negSum) ? '+' : '−';
+  return `
+  <div class="step-title">Шаг 5. Итоговая сумма</div>
+  <div class="step-context">← Тренажёр 2: разные знаки → вычти меньший модуль из большего, знак от числа с бо́льшим модулем.<br>
+    ${big} − ${sml} = ${big - sml} → знак «${winSign}» → ответ ${winSign}${big - sml}.
+  </div>
+  <p class="step-q">
+    Складываем: <strong style="font-family:'Courier New',monospace">+${E.posSum} + (${ps(E.negSum)})</strong>
+  </p>
+  <div class="inp-row">
+    <span class="inp-lbl">Ответ =</span>
+    <input id="i5" type="number" class="m-inp wide" placeholder="?">
+    <button class="go-btn" data-check onclick="checkS5()">Проверить</button>
+  </div>`;
+}
+function checkS5() {
+  const v = parseInt(document.getElementById('i5')?.value);
+  if (isNaN(v)) return;
+  if (v === E.result) {
+    setFb(`🎉 Отлично! Ответ: <strong>${ps(E.result)}</strong>. Все шаги выполнены верно.`, 'fb-ok');
+    done[6] = true;
+    setTimeout(renderDone, 650);
+  } else {
+    setFb(diagS5(v), 'fb-err');
+    markErr('i5');
+  }
+}
+function diagS5(v) {
+  const cm = Math.abs(E.result), vm = Math.abs(v);
+  if (Math.sign(v) !== Math.sign(E.result) && cm === vm)
+    return `❌ Число верное (${cm}), но знак неверный. Бо́льший модуль у ${E.posSum > Math.abs(E.negSum) ? 'суммы положительных' : 'суммы отрицательных'}.`;
+  if (vm === E.posSum + Math.abs(E.negSum))
+    return `❌ Ты сложил модули (${E.posSum} + ${Math.abs(E.negSum)} = ${vm}). При разных знаках — вычитай: ${Math.max(E.posSum, Math.abs(E.negSum))} − ${Math.min(E.posSum, Math.abs(E.negSum))} = ${Math.abs(E.result)}.`;
+  return `❌ Неверно. Ответ: ${ps(E.posSum)} + (${ps(E.negSum)}) = ${ps(E.result)}.`;
+}
+
+/* Шаг 6 = done card */
+function buildS6() { renderDone(); return ''; }
+
+/* ── Карточка завершения ── */
+function renderDone() {
+  const resClass = E.result > 0 ? 'pos-r' : E.result < 0 ? 'neg-r' : 'zero-r';
+  const exprStr  = E.terms.map((t, i) => {
+    const op  = t.op === '' ? '' : (t.op === '+' ? ' + ' : ' − ');
+    const inner = t.innerSign === '-' ? `(−${t.mag})` : (t.bracket ? `(+${t.mag})` : `${t.mag}`);
+    return i === 0
+      ? (t.innerSign === '-' ? `−${t.mag}` : `${t.mag}`)
+      : `${op}${inner}`;
+  }).join('');
+
+  document.getElementById('stepBox').innerHTML = `
+  <div class="done-card">
+    <div style="font-size:1rem; opacity:.75">Ответ</div>
+    <div class="done-result ${resClass}">${ps(E.result)}</div>
+    <div class="done-steps">
+      ${exprStr}<br>
+      = ${algSumStr()}<br>
+      = (${E.addends.filter(a=>a>0).map(a=>'+'+a).join(' + ')}) + (${E.addends.filter(a=>a<0).map(ps).join(' + ')})<br>
+      = ${E.posSum > 0 ? '+' + E.posSum : E.posSum} + (${ps(E.negSum)})<br>
+      = <strong>${ps(E.result)}</strong>
+    </div>
+    <div class="done-rule">
+      Алгоритм: замени вычитания → алгебраическая сумма → группируй → считай по знакам → итог
+    </div>
+    <button class="new-btn-w" onclick="refreshExample()">🔄 Новый пример</button>
+  </div>`;
+  document.getElementById('progDots').innerHTML = '';
+  document.getElementById('learnFb').innerHTML  = '';
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ТРЕНИРОВКА
+═══════════════════════════════════════════════════════════ */
+function checkPractice() {
+  const raw = document.getElementById('tAns')?.value.trim();
+  const fb  = document.getElementById('prFb');
+  const sol = document.getElementById('prSol');
+  if (!raw) { fb.innerHTML='Введи ответ.'; fb.className='feedback fb-info'; return; }
+  const v = parseInt(raw);
+  if (isNaN(v)) { fb.innerHTML='Введи целое число.'; fb.className='feedback fb-info'; return; }
+
+  score.all++;
+  prAttempts++;
+
+  if (v === E.result) {
+    score.ok++;
+    fb.innerHTML = `✅ Верно! Ответ: <strong>${ps(E.result)}</strong>.`;
+    fb.className = 'feedback fb-ok';
+    sol.classList.add('hidden');
+    prAttempts = 0;
+  } else {
+    fb.className = 'feedback fb-err';
+    const cm = Math.abs(E.result), vm = Math.abs(v);
+
+    if (prAttempts === 1) {
+      if (Math.sign(v) !== Math.sign(E.result) && cm === vm) {
+        fb.innerHTML = `🔍 Число верное (${cm}), но знак неверный. Проверь, у какой частичной суммы больший модуль: +${E.posSum} или ${ps(E.negSum)}.`;
+      } else if (vm === E.posSum + Math.abs(E.negSum)) {
+        fb.innerHTML = `🔍 Ты сложил все модули (${E.posSum} + ${Math.abs(E.negSum)} = ${vm}). При разных знаках нужно вычитать модули. Сначала замени вычитания на сложение противоположных.`;
+      } else {
+        const subCount = E.subIndices.length;
+        fb.innerHTML = `🔍 Проверь шаг 1: в выражении ${subCount} операции вычитания. Замени каждую на сложение с противоположным, потом считай.`;
+      }
+    } else if (prAttempts === 2) {
+      fb.innerHTML = `🔍 Алгебраическая сумма: <strong>${algSumStr()}</strong>. Положительные: +${E.posSum}, отрицательные: ${ps(E.negSum)}. Итог: +${E.posSum} + (${ps(E.negSum)}).`;
+    } else {
+      fb.innerHTML = `❌ Правильный ответ: <strong>${ps(E.result)}</strong>.`;
+      const exStr = E.terms.map((t, i) => {
+        const op = t.op === '' ? '' : (t.op === '+' ? ' + ' : ' − ');
+        const inner = t.innerSign === '-' ? `(−${t.mag})` : (t.bracket ? `(+${t.mag})` : `${t.mag}`);
+        return i === 0 ? (t.innerSign === '-' ? `−${t.mag}` : `${t.mag}`) : `${op}${inner}`;
+      }).join('');
+      sol.innerHTML =
+        `${exStr}<br>= ${algSumStr()}<br>= +${E.posSum} + (${ps(E.negSum)})<br>= <strong>${ps(E.result)}</strong>`;
+      sol.classList.remove('hidden');
+      prAttempts = 0;
+    }
+  }
+  updateScore();
+}
+
+function updateScore() {
+  document.getElementById('scOk').textContent  = score.ok;
+  document.getElementById('scAll').textContent = score.all;
+  const pct = score.all > 0 ? Math.round(score.ok/score.all*100) : null;
+  const el  = document.getElementById('scPct');
+  el.textContent = pct !== null ? pct+'%' : '—';
+  el.className = 'sc-n '+(pct===null?'':pct>=70?'g':'r');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ПОДСКАЗКА
+═══════════════════════════════════════════════════════════ */
+function showHint() {
+  const algStr = algSumStr();
+  const txt = `💡 <strong>Подсказка:</strong><br>
+    1. Алгебраическая сумма: <strong>${algStr}</strong><br>
+    2. Положительные: +${E.posSum} · Отрицательные: ${ps(E.negSum)}<br>
+    3. +${E.posSum} + (${ps(E.negSum)}) = <strong>${ps(E.result)}</strong>`;
+  if (mode === 'learning') {
+    setFb(txt, 'fb-hint');
+  } else {
+    const fb = document.getElementById('prFb');
+    fb.innerHTML = txt; fb.className = 'feedback fb-hint';
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   РЕЖИМ / СБРОС
+═══════════════════════════════════════════════════════════ */
+function setMode(m) {
+  mode = m;
+  document.getElementById('btnLearn').classList.toggle('active',    m === 'learning');
+  document.getElementById('btnPractice').classList.toggle('active', m === 'practice');
+  document.getElementById('learnPanel').classList.toggle('hidden',    m !== 'learning');
+  document.getElementById('practicePanel').classList.toggle('hidden', m !== 'practice');
+  if (m === 'learning') {
+    resetLearning();
+  } else {
+    const ta = document.getElementById('tAns'); if (ta) ta.value = '';
+    document.getElementById('prFb').innerHTML = 'Введи ответ и нажми «Проверить».';
+    document.getElementById('prFb').className = 'feedback fb-info';
+    document.getElementById('prSol').classList.add('hidden');
+    prAttempts = 0;
+    renderVisual();
+    renderPrExpr();
+  }
+}
+
+function renderPrExpr() {
+  const el = document.getElementById('prExpr');
+  if (!el) return;
+  el.innerHTML = origExprHTML(-1);
+}
+
+function resetLearning() {
+  step = 1; done = {}; subIdx = 0; filled = {};
+  renderVisual(); renderStep();
+  setFb('🔍 Главное правило: сначала преобразовать, потом считать.', 'fb-info');
+}
+
+function refreshExample() {
+  E = genEx();
+  prAttempts = 0;
+  document.getElementById('prSol')?.classList.add('hidden');
+  if (mode === 'learning') {
+    resetLearning();
+  } else {
+    const ta = document.getElementById('tAns'); if (ta) ta.value = '';
+    document.getElementById('prFb').innerHTML = 'Новый пример. Введи ответ.';
+    document.getElementById('prFb').className = 'feedback fb-info';
+    renderVisual(); renderPrExpr();
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   УТИЛИТЫ
+═══════════════════════════════════════════════════════════ */
+function markErr(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.borderColor = '#c0392b';
+  if (el.animate) el.animate(
+    [{transform:'translateX(0)'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(-3px)'},{transform:'translateX(0)'}],
+    { duration: 380 }
+  );
+  setTimeout(() => { el.style.borderColor = ''; }, 700);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   ИНИЦИАЛИЗАЦИЯ
+═══════════════════════════════════════════════════════════ */
+(function init() {
+  E = genEx();
+  setMode('learning');
+  document.getElementById('tAns')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPractice();
+  });
+})();
+</script>
+</body>
+</html>

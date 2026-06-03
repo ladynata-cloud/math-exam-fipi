@@ -1,0 +1,2615 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренажёр №16 ОГЭ — Окружность</title>
+<style>
+/* =========================================================================
+   ТРЕНАЖЁР №16 ОГЭ — окружность, углы, длины, площади
+   Standalone HTML. Никаких внешних библиотек.
+   ========================================================================= */
+
+:root {
+  --bg: #FAF7F0;
+  --paper: #FFFFFF;
+  --ink: #1A1A1A;
+  --ink-soft: #4A4A4A;
+  --muted: #7A7568;
+  --rule: #E4DCC8;
+  --rule-soft: #F0E9D8;
+  --accent: #2C5566;
+  --accent-dark: #1F3F4D;
+  --accent-soft: #E8F0F3;
+  --burgundy: #8B2E2E;
+  --burgundy-soft: #F5E8E8;
+  --gold: #B8893D;
+  --green: #2D6A4F;
+  --green-soft: #E0F0E8;
+  --red: #B83A3A;
+  --red-soft: #F8E2E2;
+  --yellow-soft: #FBF3D9;
+
+  --serif: "Charter", "Iowan Old Style", "Cambria", Georgia, "Times New Roman", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "JetBrains Mono", "SF Mono", "Menlo", "Consolas", "Courier New", monospace;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+/* paper-like background grain */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(0,0,0,.014) 0 1px, transparent 1px),
+    radial-gradient(circle at 80% 64%, rgba(0,0,0,.012) 0 1px, transparent 1px);
+  background-size: 7px 7px, 11px 11px;
+  z-index: 0;
+}
+
+.wrap { position: relative; z-index: 1; max-width: 1140px; margin: 0 auto; padding: 28px 26px 40px; }
+
+/* ----- header ----- */
+header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+.title-block { line-height: 1; }
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+h1 {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 38px;
+  margin: 0;
+  letter-spacing: -.01em;
+  color: var(--ink);
+}
+h1 .num { color: var(--burgundy); font-style: italic; }
+h1 .sep { color: var(--rule); margin: 0 10px; font-weight: 300; }
+h1 .sub { font-size: 22px; color: var(--ink-soft); font-style: italic; font-weight: 400; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: 20px;
+  font-family: var(--serif);
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 56px;
+}
+.stat-num {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  line-height: 1;
+}
+.stat-num.green { color: var(--green); }
+.stat-num.red { color: var(--red); }
+.stat-num.accent { color: var(--accent); }
+.stat-lbl {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* ----- mode tabs ----- */
+.modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 4px;
+  margin-bottom: 22px;
+  padding: 4px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+}
+.mode-btn {
+  font-family: var(--sans);
+  font-size: 13px;
+  padding: 8px 14px;
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background .12s, color .12s;
+  white-space: nowrap;
+}
+.mode-btn:hover { background: var(--rule-soft); color: var(--ink); }
+.mode-btn.active {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 500;
+}
+.mode-btn.teacher { margin-left: auto; }
+.mode-btn.teacher.active { background: var(--burgundy); }
+
+
+/* ----- student quick start ----- */
+.more-modes { position: relative; display: flex; align-items: stretch; }
+.more-modes > summary {
+  list-style: none;
+  font-family: var(--sans);
+  font-size: 13px;
+  padding: 8px 14px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-radius: 4px;
+  user-select: none;
+}
+.more-modes > summary::-webkit-details-marker { display: none; }
+.more-modes > summary::after { content: " ▾"; color: var(--muted); }
+.more-modes[open] > summary, .more-modes > summary:hover { background: var(--rule-soft); color: var(--ink); }
+.more-menu {
+  position: absolute;
+  z-index: 25;
+  left: 0;
+  top: 38px;
+  min-width: 230px;
+  padding: 8px;
+  display: grid;
+  gap: 4px;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  box-shadow: 0 14px 30px -20px rgba(0,0,0,.35);
+}
+.more-menu .mode-btn { width: 100%; text-align: left; }
+.learner-note {
+  margin: -10px 0 18px;
+  padding: 10px 14px;
+  background: #FDFCF7;
+  border: 1px dashed var(--rule);
+  border-radius: 6px;
+  font-family: var(--serif);
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+@media (max-width: 760px) {
+  .more-modes { width: 100%; }
+  .more-menu { position: static; width: 100%; box-shadow: none; margin-top: 4px; }
+  .mode-btn.teacher { margin-left: 0; }
+}
+
+
+/* ----- main task panel ----- */
+.task-panel {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 24px 28px 26px;
+  box-shadow: 0 1px 0 rgba(0,0,0,.02), 0 12px 28px -22px rgba(0,0,0,.18);
+}
+
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--rule);
+}
+.task-num {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--muted);
+}
+.tag {
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+.tag-angle { background: var(--accent-soft); color: var(--accent-dark); border-color: #C9D9E0; }
+.tag-length { background: var(--yellow-soft); color: #7A5C1F; border-color: #E8DDB0; }
+.tag-area { background: var(--green-soft); color: #1F4D3B; border-color: #BFD7C9; }
+.tag-archive { background: var(--burgundy-soft); color: var(--burgundy); border-color: #DCBABA; }
+.tag-generated { background: #F4EFE6; color: var(--muted); border-color: var(--rule); }
+.task-source {
+  font-family: var(--serif);
+  font-size: 12px;
+  font-style: italic;
+  color: var(--muted);
+  margin-left: auto;
+}
+
+.task-body {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+@media (max-width: 760px) {
+  .task-body { grid-template-columns: 1fr; }
+}
+
+.diagram {
+  background: #FCFBF6;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.diagram svg { display: block; width: 100%; height: auto; max-width: 320px; }
+
+.task-content { display: flex; flex-direction: column; gap: 14px; }
+.task-text {
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.task-text b { font-weight: 600; }
+
+/* ----- answer area ----- */
+.answer-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.answer-label {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-style: italic;
+  color: var(--muted);
+}
+input.answer {
+  font-family: var(--mono);
+  font-size: 18px;
+  padding: 9px 13px;
+  width: 130px;
+  border: 1.5px solid var(--rule);
+  border-radius: 5px;
+  background: var(--paper);
+  color: var(--ink);
+  outline: none;
+  transition: border-color .12s;
+}
+input.answer:focus { border-color: var(--accent); }
+input.answer.correct { border-color: var(--green); background: var(--green-soft); }
+input.answer.wrong { border-color: var(--red); background: var(--red-soft); }
+
+.btn {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 9px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: all .12s;
+  letter-spacing: .01em;
+}
+.btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn-primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+.btn-ghost { background: transparent; color: var(--accent); border-color: var(--accent); }
+.btn-ghost:hover { background: var(--accent-soft); }
+.btn-soft { background: var(--rule-soft); color: var(--ink); border-color: var(--rule); }
+.btn-soft:hover { background: var(--rule); }
+.btn-burg { background: var(--burgundy); color: #fff; border-color: var(--burgundy); }
+.btn-burg:hover { filter: brightness(.92); }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ----- feedback bubble ----- */
+.feedback {
+  font-family: var(--serif);
+  font-size: 15px;
+  padding: 10px 14px;
+  border-radius: 5px;
+  border-left: 3px solid;
+  display: none;
+}
+.feedback.show { display: block; }
+.feedback.ok { background: var(--green-soft); border-color: var(--green); color: #1F4D3B; }
+.feedback.err { background: var(--red-soft); border-color: var(--red); color: #6E2222; }
+.feedback small { font-family: var(--sans); font-size: 12px; color: var(--muted); font-style: normal; display: block; margin-top: 4px; }
+
+/* ----- collapsible hint / solution ----- */
+details.hint, details.solution {
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  background: #FDFCF7;
+}
+details.hint summary, details.solution summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 9px 14px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent);
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+details.hint summary::-webkit-details-marker, details.solution summary::-webkit-details-marker { display: none; }
+details.hint summary::before, details.solution summary::before {
+  content: "›";
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--muted);
+  transition: transform .15s;
+  display: inline-block;
+}
+details[open].hint summary::before, details[open].solution summary::before { transform: rotate(90deg); }
+details.hint .body, details.solution .body {
+  padding: 4px 14px 14px;
+  font-family: var(--serif);
+  font-size: 15px;
+  color: var(--ink-soft);
+  border-top: 1px dashed var(--rule);
+}
+details.solution .step {
+  margin: 8px 0;
+  padding-left: 26px;
+  position: relative;
+}
+details.solution .step::before {
+  content: counter(step) ".";
+  counter-increment: step;
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--burgundy);
+  font-weight: 600;
+}
+details.solution .body { counter-reset: step; }
+details.solution .pitfalls {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--rule);
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+}
+details.solution .pitfalls strong { font-style: normal; color: var(--burgundy); font-weight: 600; }
+
+/* ----- diagnostic progress ----- */
+.diag-progress {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+.diag-dot {
+  width: 24px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--rule);
+}
+.diag-dot.current { background: var(--accent); }
+.diag-dot.ok { background: var(--green); }
+.diag-dot.err { background: var(--red); }
+
+.diag-results {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 28px;
+}
+.diag-results h2 { font-family: var(--serif); font-size: 26px; margin-top: 0; }
+.diag-score { font-family: var(--serif); font-size: 64px; font-weight: 600; color: var(--accent); }
+.diag-results table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 13px; }
+.diag-results td, .diag-results th { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--rule); }
+.diag-results th { font-family: var(--sans); font-weight: 600; color: var(--muted); text-transform: uppercase; font-size: 11px; letter-spacing: .1em; }
+
+/* ----- teacher panel ----- */
+.teacher-panel {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 24px 28px;
+}
+.teacher-panel h2 {
+  font-family: var(--serif);
+  font-size: 24px;
+  margin: 0 0 6px;
+  letter-spacing: -.01em;
+}
+.teacher-panel .lead {
+  color: var(--muted);
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  margin-bottom: 22px;
+}
+.teacher-section {
+  border-top: 1px solid var(--rule);
+  padding: 18px 0;
+}
+.teacher-section h3 {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 12px;
+  font-weight: 600;
+}
+.cov-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.cov-table th, .cov-table td {
+  padding: 7px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+}
+.cov-table th {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+}
+.cov-table tr:hover { background: var(--rule-soft); }
+.pill { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: 11px; font-weight: 500; }
+.pill.ok { background: var(--green-soft); color: var(--green); }
+.pill.warn { background: var(--yellow-soft); color: #7A5C1F; }
+
+.gen-test-btn {
+  margin-top: 8px;
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 3px 8px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  border-radius: 3px;
+  cursor: pointer;
+}
+.gen-test-btn:hover { background: var(--rule-soft); }
+.gen-sample {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--ink-soft);
+  margin-top: 4px;
+}
+.gen-sample .ans {
+  font-family: var(--mono);
+  font-style: normal;
+  color: var(--accent);
+}
+
+.json-area {
+  width: 100%;
+  min-height: 220px;
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 12px;
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  background: #FDFCF7;
+  resize: vertical;
+  color: var(--ink);
+}
+.json-controls {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.toast {
+  position: fixed;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ink);
+  color: #fff;
+  padding: 11px 22px;
+  border-radius: 6px;
+  font-size: 13px;
+  opacity: 0;
+  transition: opacity .2s, transform .2s;
+  pointer-events: none;
+  z-index: 100;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+.foot {
+  margin-top: 28px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* SVG label text class */
+.lbl { font-family: var(--serif); font-style: italic; font-size: 14px; fill: var(--ink); }
+.lbl-sm { font-family: var(--serif); font-style: italic; font-size: 12px; fill: var(--ink-soft); }
+.angle-lbl { font-family: var(--serif); font-size: 11px; fill: var(--burgundy); font-style: italic; }
+.dim-lbl { font-family: var(--serif); font-size: 12px; fill: var(--accent-dark); font-style: italic; }
+.target-lbl { font-family: var(--serif); font-size: 13px; fill: var(--burgundy); font-weight: 700; }
+.svg-note { font-family: var(--sans); font-size: 11px; fill: var(--ink-soft); }
+.svg-legend-bg { fill: #fff; fill-opacity: .88; stroke: #E4DCC8; stroke-width: 1; }
+
+@media print {
+  body::before { display: none; }
+  .modes, .stats, .answer-row .btn, .foot, .feedback { display: none !important; }
+  .task-panel { border: none; box-shadow: none; }
+  details.hint, details.solution { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header>
+  <div class="title-block">
+    <div class="eyebrow">ОГЭ — Математика — Геометрия</div>
+    <h1>Задача <span class="num">№16</span><span class="sep">·</span><span class="sub">окружность</span></h1>
+  </div>
+  <div class="stats" id="statsBar">
+    <div class="stat"><span class="stat-num" id="stSolved">0</span><span class="stat-lbl">Решено</span></div>
+    <div class="stat"><span class="stat-num green" id="stCorrect">0</span><span class="stat-lbl">Верно</span></div>
+    <div class="stat"><span class="stat-num red" id="stWrong">0</span><span class="stat-lbl">Ошибок</span></div>
+    <div class="stat"><span class="stat-num accent" id="stAcc">—</span><span class="stat-lbl">Точность</span></div>
+  </div>
+</header>
+
+<nav class="modes" id="modeNav" aria-label="Режимы тренажёра">
+  <button class="mode-btn active" data-mode="archive_new">Начать тренировку</button>
+  <button class="mode-btn" data-mode="mistakes">Тренировать ошибки</button>
+  <button class="mode-btn" data-mode="diagnostic">Диагностика · 10</button>
+  <details class="more-modes">
+    <summary>Ещё режимы</summary>
+    <div class="more-menu">
+      <button class="mode-btn" data-mode="archive_exact">Архив: точные</button>
+      <button class="mode-btn" data-mode="archive_similar">Похожие к архиву</button>
+      <button class="mode-btn" data-mode="all">Все типы</button>
+      <button class="mode-btn" data-mode="angle">Только углы</button>
+      <button class="mode-btn" data-mode="length">Только длины</button>
+      <button class="mode-btn" data-mode="area">Только площади</button>
+    </div>
+  </details>
+  <button class="mode-btn teacher" data-mode="teacher">Учитель</button>
+</nav>
+
+<div class="learner-note">
+  Сначала три главные кнопки. «Ещё режимы» — для точной настройки. «Учитель» — методическая проверка и экспорт.
+</div>
+
+<main id="mainArea"></main>
+
+<div class="foot">Тренажёр готовится в браузере — данные не покидают устройство. <span id="lsNote"></span></div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+/* =========================================================================
+   1. УТИЛИТЫ
+   ========================================================================= */
+
+const $  = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+const choice = arr => arr[Math.floor(Math.random() * arr.length)];
+const uid = () => Math.random().toString(36).slice(2, 9);
+const esc = s => String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+// Comparing answers with tolerance for decimals
+function answersMatch(user, correct) {
+  if (user === null || user === '' || user === undefined) return false;
+  // 1) трим, юникод-минусы → дефис, запятая → точка
+  let u = String(user).trim().replace(/[−–—]/g, '-').replace(/,/g, '.');
+  // 2) убираем хвостовой ° и пробелы (в условии может быть «Ответ дайте в градусах»)
+  u = u.replace(/[°\s]+$/, '').replace(/^[+\s]+/, '');
+  if (u === '') return false;
+  // 3) внутренние пробелы — это ошибка ввода (12 5 не должно становиться 125)
+  if (/\s/.test(u)) return false;
+  // 4) дробь вида a/b — поддержим на будущее (например для cos = 24/25)
+  let un;
+  if (/^-?\d+(\.\d+)?\/-?\d+(\.\d+)?$/.test(u)) {
+    const [a, b] = u.split('/').map(Number);
+    if (!isFinite(a) || !isFinite(b) || b === 0) return false;
+    un = a / b;
+  } else if (/^-?(\d+(\.\d+)?|\.\d+)$/.test(u)) {
+    un = Number(u);
+  } else {
+    return false;
+  }
+  if (!isFinite(un)) return false;
+  const cn = Number(correct);
+  // Жёсткое сравнение: для целых ответов погрешность мизерная,
+  // для нецелых (0.96, 56.5) тонкий допуск 1e-3, чтобы покрыть
+  // плавучесть Number('56.5001') − 56.5 ≈ 1.0000000003e-4, но НЕ принимать 56.6 за 56.5.
+  const tol = Number.isInteger(cn) ? 1e-9 : 1e-3;
+  return Math.abs(un - cn) <= tol;
+}
+
+// localStorage safety wrapper (claude.ai artifact would block it; downloaded HTML works)
+const SAFE_LS = {
+  available: (() => {
+    try { localStorage.setItem('__t', '1'); localStorage.removeItem('__t'); return true; }
+    catch (e) { return false; }
+  })(),
+  get(k, fb) { try { const v = localStorage.getItem(k); return v == null ? fb : JSON.parse(v); } catch(e) { return fb; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
+};
+
+// Pythagorean triples (primitive + common multiples), from PDF справочник
+const PYTH_TRIPLES = [
+  [3,4,5], [6,8,10], [9,12,15], [12,16,20], [15,20,25], [18,24,30], [21,28,35],
+  [5,12,13], [10,24,26], [15,36,39],
+  [8,15,17], [16,30,34],
+  [7,24,25], [14,48,50],
+  [9,40,41], [11,60,61], [12,35,37], [13,84,85],
+  [20,21,29], [16,63,65], [33,56,65], [48,55,73],
+  [27,36,45], [28,45,53], [35,84,91], [36,77,85], [39,80,89], [65,72,97]
+];
+
+function findTripleWith(a, b) {
+  // returns the missing leg/hypotenuse for a Pythagorean triple containing a and b
+  for (const t of PYTH_TRIPLES) {
+    if (t.includes(a) && t.includes(b)) {
+      return t.find(x => x !== a && x !== b) ?? t.filter(x => x === a).length > 1 ? a : null;
+    }
+  }
+  return null;
+}
+
+function tripleByLegHyp(leg, hyp) {
+  for (const t of PYTH_TRIPLES) {
+    if (t[2] === hyp && (t[0] === leg || t[1] === leg)) {
+      return t[0] === leg ? t[1] : t[0];
+    }
+  }
+  return null;
+}
+
+function tripleByTwoLegs(a, b) {
+  for (const t of PYTH_TRIPLES) {
+    if (((t[0] === a && t[1] === b) || (t[0] === b && t[1] === a))) return t[2];
+  }
+  return null;
+}
+
+/* =========================================================================
+   2. SVG-РИСУНКИ
+   Каждая функция принимает params, возвращает SVG-строку.
+   viewBox 0 0 400 320.
+   ========================================================================= */
+
+const VB = 'viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg"';
+const CIRC_STROKE = 'stroke="#2C5566" stroke-width="1.8" fill="none"';
+const LINE_STROKE = 'stroke="#8B2E2E" stroke-width="1.6" fill="none"';
+const DASH_STROKE = 'stroke="#7A7568" stroke-width="1.2" stroke-dasharray="4 4" fill="none"';
+const DOT = (x,y) => `<circle cx="${x}" cy="${y}" r="3" fill="#1A1A1A"/>`;
+
+function svgPoint(x, y, label, dx=0, dy=0) {
+  return `${DOT(x,y)}<text x="${x+dx}" y="${y+dy}" class="lbl">${label}</text>`;
+}
+
+function svgArcLabel(cx, cy, angle, text) {
+  // place a small angle label near vertex
+  return `<text x="${cx}" y="${cy}" class="angle-lbl">${text}</text>`;
+}
+
+function svgLegend(items, x=12, y=10) {
+  const clean = (items || []).filter(Boolean).map(String);
+  if (!clean.length) return '';
+  const h = 16 + clean.length * 17;
+  const lines = clean.map((txt, i) =>
+    `<text x="${x+8}" y="${y+19+i*17}" class="svg-note">${esc(txt)}</text>`
+  ).join('');
+  return `<g><rect x="${x}" y="${y}" width="160" height="${h}" rx="6" class="svg-legend-bg"/>${lines}</g>`;
+}
+
+
+function svgPt(cx, cy, r, deg) {
+  const rad = deg * Math.PI / 180;
+  return { x: +(cx + r * Math.cos(rad)).toFixed(1), y: +(cy + r * Math.sin(rad)).toFixed(1) };
+}
+function svgXY(x, y) {
+  return `${+Number(x).toFixed(1)} ${+Number(y).toFixed(1)}`;
+}
+function svgCircleAuditAttr(key, cx, cy, r, labels) {
+  // Не влияет на рисунок: это подсказка для быстрой проверки визуальной геометрии.
+  return `data-audit-key="${key}" data-audit-circle="${cx},${cy},${r}" data-audit-oncircle="${labels}"`;
+}
+
+const SVG = {
+
+// 1. Окружность вписана в угол
+inscribed_in_angle: (p) => {
+  // angle vertex C bottom-left, rays going up-right & right
+  // circle center O, tangent at A (top ray) and B (bottom ray)
+  return `<svg ${VB}>
+    <line x1="40" y1="270" x2="370" y2="210" ${LINE_STROKE}/>
+    <line x1="40" y1="270" x2="370" y2="90" ${LINE_STROKE}/>
+    <circle cx="220" cy="195" r="58" ${CIRC_STROKE}/>
+    ${DOT(40,270)}<text x="22" y="284" class="lbl">C</text>
+    ${DOT(220,195)}<text x="226" y="200" class="lbl">O</text>
+    ${DOT(196,140)}<text x="180" y="134" class="lbl">A</text>
+    ${DOT(244,250)}<text x="252" y="262" class="lbl">B</text>
+    ${p && p.angleC ? `<text x="74" y="262" class="angle-lbl">${p.angleC}°</text>` : ''}
+  </svg>`;
+},
+
+// 2. Две касательные из внешней точки
+two_tangents: (p) => {
+  const cx = 170, cy = 170, r = 70;
+  const M = { x: 350, y: 170 };
+  const d = M.x - cx;
+  const tx = cx + (r*r)/d;
+  const ty = Math.sqrt(r*r - (tx-cx)*(tx-cx));
+  const A = { x: +tx.toFixed(1), y: +(cy-ty).toFixed(1) };
+  const B = { x: +tx.toFixed(1), y: +(cy+ty).toFixed(1) };
+  return `<svg ${VB} ${svgCircleAuditAttr('two_tangents', cx, cy, r, 'A,B')}>
+    <circle cx="${cx}" cy="${cy}" r="${r}" ${CIRC_STROKE}/>
+    ${DOT(cx,cy)}<text x="156" y="166" class="lbl">O</text>
+    <line x1="${M.x}" y1="${M.y}" x2="${A.x}" y2="${A.y}" ${LINE_STROKE}/>
+    <line x1="${M.x}" y1="${M.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    ${DOT(M.x,M.y)}<text x="358" y="174" class="lbl">M</text>
+    ${DOT(A.x,A.y)}<text x="${A.x-16}" y="${A.y-8}" class="lbl">A</text>
+    ${DOT(B.x,B.y)}<text x="${B.x-16}" y="${B.y+18}" class="lbl">B</text>
+    ${p && p.angleM ? `<text x="320" y="174" class="angle-lbl">${p.angleM}°</text>` : ''}
+  </svg>`;
+},
+
+// 3. Два диаметра, центральный угол AOD
+two_diameters: (p) => {
+  // circle, two crossing diameters AC and BD, label central angle AOD
+  return `<svg ${VB}>
+    <circle cx="200" cy="160" r="110" ${CIRC_STROKE}/>
+    <line x1="110" y1="98" x2="290" y2="222" ${LINE_STROKE}/>
+    <line x1="110" y1="222" x2="290" y2="98" ${LINE_STROKE}/>
+    ${DOT(200,160)}<text x="208" y="156" class="lbl">O</text>
+    ${DOT(110,98)}<text x="92" y="92" class="lbl">B</text>
+    ${DOT(290,222)}<text x="296" y="234" class="lbl">D</text>
+    ${DOT(290,98)}<text x="296" y="92" class="lbl">C</text>
+    ${DOT(110,222)}<text x="92" y="236" class="lbl">A</text>
+    ${p && p.AOD ? `<text x="176" y="202" class="angle-lbl">∠AOD=${p.AOD}°</text>` : ''}
+    ${p && p.ACB ? `<text x="268" y="128" class="angle-lbl">∠ACB=${p.ACB}°</text>` : ''}
+    ${p && p.target ? `<text x="214" y="186" class="target-lbl">∠${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 4. Диаметр AB, точки M (внизу) и N (вверху)
+diameter_MN: (p) => {
+  const cx = 200, cy = 160, r = 110;
+  const A = {x:90, y:160}, B = {x:310, y:160};
+  const N = {x:260, y:+(cy - Math.sqrt(r*r - 60*60)).toFixed(1)};
+  const M = {x:240, y:+(cy + Math.sqrt(r*r - 40*40)).toFixed(1)};
+  return `<svg ${VB} ${svgCircleAuditAttr('diameter_MN', cx, cy, r, 'A,B,M,N')}>
+    <circle cx="${cx}" cy="${cy}" r="${r}" ${CIRC_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${N.x}" y2="${N.y}" ${LINE_STROKE}/>
+    <line x1="${N.x}" y1="${N.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${M.x}" y2="${M.y}" ${LINE_STROKE}/>
+    <line x1="${M.x}" y1="${M.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    ${DOT(A.x,A.y)}<text x="70" y="164" class="lbl">A</text>
+    ${DOT(B.x,B.y)}<text x="318" y="164" class="lbl">B</text>
+    ${DOT(N.x,N.y)}<text x="${N.x+2}" y="${N.y-6}" class="lbl">N</text>
+    ${DOT(M.x,M.y)}<text x="${M.x+4}" y="${M.y+18}" class="lbl">M</text>
+    ${p && p.NBA ? `<text x="276" y="150" class="angle-lbl">∠NBA=${p.NBA}°</text>` : ''}
+    ${p && p.target ? `<text x="226" y="248" class="target-lbl">∠${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 5. ABC вписанный + OA-радиус (для типа BCO)
+abc_with_OA: (p) => {
+  const cx = 200, cy = 160, r = 110;
+  const A = svgPt(cx, cy, r, 210);
+  const B = svgPt(cx, cy, r, 335);
+  const C = svgPt(cx, cy, r, 80);
+  return `<svg ${VB} ${svgCircleAuditAttr('abc_with_OA', cx, cy, r, 'A,B,C')}>
+    <circle cx="${cx}" cy="${cy}" r="${r}" ${CIRC_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    <line x1="${B.x}" y1="${B.y}" x2="${C.x}" y2="${C.y}" ${LINE_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${C.x}" y2="${C.y}" ${LINE_STROKE}/>
+    <line x1="${cx}" y1="${cy}" x2="${A.x}" y2="${A.y}" ${LINE_STROKE}/>
+    ${DOT(A.x,A.y)}<text x="${A.x-22}" y="${A.y-6}" class="lbl">A</text>
+    ${DOT(B.x,B.y)}<text x="${B.x+6}" y="${B.y-6}" class="lbl">B</text>
+    ${DOT(C.x,C.y)}<text x="${C.x+4}" y="${C.y+18}" class="lbl">C</text>
+    ${DOT(cx,cy)}<text x="206" y="156" class="lbl">O</text>
+    ${p && p.ABC ? `<text x="270" y="126" class="angle-lbl">∠ABC=${p.ABC}°</text>` : ''}
+    ${p && p.OAB ? `<text x="120" y="124" class="angle-lbl">∠OAB=${p.OAB}°</text>` : ''}
+    ${p && p.target ? `<text x="225" y="252" class="target-lbl">∠${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 6. Касательная в точке B + хорда AB
+chord_and_tangent: (p) => {
+  const cx = 200, cy = 170, r = 100;
+  const A = {x:200, y:70};
+  const B = svgPt(cx, cy, r, 45);
+  const C = {x:340, y:+(B.y - (340 - B.x)).toFixed(1)}; // tangent slope -1 at 45°
+  return `<svg ${VB} ${svgCircleAuditAttr('chord_and_tangent', cx, cy, r, 'A,B')}>
+    <circle cx="${cx}" cy="${cy}" r="${r}" ${CIRC_STROKE}/>
+    <line x1="${B.x}" y1="${B.y}" x2="${C.x}" y2="${C.y}" ${LINE_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    ${DOT(A.x,A.y)}<text x="194" y="60" class="lbl">A</text>
+    ${DOT(B.x,B.y)}<text x="${B.x+5}" y="${B.y+15}" class="lbl">B</text>
+    ${DOT(C.x,C.y)}<text x="346" y="${C.y+4}" class="lbl">C</text>
+    ${p && p.arcAB ? `<text x="112" y="118" class="angle-lbl">⌣AB = ${p.arcAB}°</text>` : ''}
+    ${p && p.target ? `<text x="292" y="218" class="target-lbl">∠${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 7. Вписанный треугольник ABC, центр O
+triangle_inscribed: (p) => {
+  const cx = 200, cy = 170, r = 110;
+  const A = {x:+(cx-Math.sqrt(r*r-70*70)).toFixed(1), y:100};
+  const B = {x:+(cx+Math.sqrt(r*r-70*70)).toFixed(1), y:100};
+  const C = {x:200, y:280};
+  return `<svg ${VB} ${svgCircleAuditAttr('triangle_inscribed', cx, cy, r, 'A,B,C')}>
+    <circle cx="${cx}" cy="${cy}" r="${r}" ${CIRC_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${C.x}" y2="${C.y}" ${LINE_STROKE}/>
+    <line x1="${B.x}" y1="${B.y}" x2="${C.x}" y2="${C.y}" ${LINE_STROKE}/>
+    <line x1="${cx}" y1="${cy}" x2="${A.x}" y2="${A.y}" ${LINE_STROKE}/>
+    <line x1="${cx}" y1="${cy}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    ${DOT(A.x,A.y)}<text x="${A.x-20}" y="${A.y-2}" class="lbl">A</text>
+    ${DOT(B.x,B.y)}<text x="${B.x+8}" y="${B.y-2}" class="lbl">B</text>
+    ${DOT(C.x,C.y)}<text x="194" y="298" class="lbl">C</text>
+    ${DOT(cx,cy)}<text x="206" y="166" class="lbl">O</text>
+    ${p && p.AOB ? `<text x="176" y="146" class="angle-lbl">∠AOB=${p.AOB}°</text>` : ''}
+    ${p && p.target ? `<text x="190" y="262" class="target-lbl">∠${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 8. Вписанный четырёхугольник ABCD
+inscribed_quad: (p) => {
+  const showDiagAC = p && p.diagAC !== false;
+  const showDiagBD = p && p.diagBD !== false;
+  const cx = 200, cy = 170, r = 115;
+  const B = svgPt(cx, cy, r, 225);
+  const C = svgPt(cx, cy, r, 325);
+  const D = svgPt(cx, cy, r, 55);
+  const A = svgPt(cx, cy, r, 145);
+  return `<svg ${VB} ${svgCircleAuditAttr('inscribed_quad', cx, cy, r, 'A,B,C,D')}>
+    <circle cx="${cx}" cy="${cy}" r="${r}" ${CIRC_STROKE}/>
+    <line x1="${B.x}" y1="${B.y}" x2="${C.x}" y2="${C.y}" ${LINE_STROKE}/>
+    <line x1="${C.x}" y1="${C.y}" x2="${D.x}" y2="${D.y}" ${LINE_STROKE}/>
+    <line x1="${D.x}" y1="${D.y}" x2="${A.x}" y2="${A.y}" ${LINE_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    ${showDiagAC ? `<line x1="${A.x}" y1="${A.y}" x2="${C.x}" y2="${C.y}" ${LINE_STROKE}/>` : ''}
+    ${showDiagBD ? `<line x1="${B.x}" y1="${B.y}" x2="${D.x}" y2="${D.y}" ${LINE_STROKE}/>` : ''}
+    ${DOT(B.x,B.y)}<text x="${B.x-20}" y="${B.y-6}" class="lbl">B</text>
+    ${DOT(C.x,C.y)}<text x="${C.x+8}" y="${C.y-4}" class="lbl">C</text>
+    ${DOT(D.x,D.y)}<text x="${D.x+6}" y="${D.y+14}" class="lbl">D</text>
+    ${DOT(A.x,A.y)}<text x="${A.x-22}" y="${A.y+12}" class="lbl">A</text>
+    ${p && p.A ? `<text x="118" y="220" class="angle-lbl">∠A=${p.A}°</text>` : ''}
+    ${p && p.C ? `<text x="260" y="132" class="angle-lbl">∠C=${p.C}°</text>` : ''}
+    ${p && p.ABC ? `<text x="118" y="118" class="angle-lbl">∠ABC=${p.ABC}°</text>` : ''}
+    ${p && p.CAD ? `<text x="112" y="218" class="angle-lbl">∠CAD=${p.CAD}°</text>` : ''}
+    ${p && p.ABD ? `<text x="104" y="138" class="angle-lbl">∠ABD=${p.ABD}°</text>` : ''}
+    ${p && p.target ? `<text x="176" y="36" class="target-lbl">∠${p.target}=?</text>` : ''}
+    ${p ? svgLegend([
+      p.A ? `∠A=${p.A}°` : null,
+      p.C ? `∠C=${p.C}°` : null,
+      p.ABC ? `∠ABC=${p.ABC}°` : null,
+      p.CAD ? `∠CAD=${p.CAD}°` : null,
+      p.ABD ? `∠ABD=${p.ABD}°` : null,
+      p.target ? `найти ∠${p.target}` : null
+    ], 216, 12) : ''}
+  </svg>`;
+},
+
+// 9. Вписанная трапеция ABCD
+inscribed_trapezoid: (p) => {
+  const cx = 200, cy = 170, r = 115;
+  const yTop = 80, yBot = 245;
+  const topDx = Math.sqrt(r*r - (yTop-cy)*(yTop-cy));
+  const botDx = Math.sqrt(r*r - (yBot-cy)*(yBot-cy));
+  const A = {x:+(cx-botDx).toFixed(1), y:yBot};
+  const D = {x:+(cx+botDx).toFixed(1), y:yBot};
+  const B = {x:+(cx-topDx).toFixed(1), y:yTop};
+  const C = {x:+(cx+topDx).toFixed(1), y:yTop};
+  return `<svg ${VB} ${svgCircleAuditAttr('inscribed_trapezoid', cx, cy, r, 'A,B,C,D')}>
+    <circle cx="${cx}" cy="${cy}" r="${r}" ${CIRC_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${D.x}" y2="${D.y}" ${LINE_STROKE}/>
+    <line x1="${B.x}" y1="${B.y}" x2="${C.x}" y2="${C.y}" ${LINE_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    <line x1="${D.x}" y1="${D.y}" x2="${C.x}" y2="${C.y}" ${LINE_STROKE}/>
+    ${DOT(A.x,A.y)}<text x="${A.x-22}" y="${A.y+14}" class="lbl">A</text>
+    ${DOT(D.x,D.y)}<text x="${D.x+8}" y="${D.y+14}" class="lbl">D</text>
+    ${DOT(B.x,B.y)}<text x="${B.x-16}" y="${B.y-8}" class="lbl">B</text>
+    ${DOT(C.x,C.y)}<text x="${C.x+8}" y="${C.y-8}" class="lbl">C</text>
+    <text x="168" y="264" class="svg-note">AD ∥ BC</text>
+    ${p && p.A ? `<text x="112" y="224" class="angle-lbl">∠A=${p.A}°</text>` : ''}
+    ${p && p.target === 'B' ? `<text x="146" y="116" class="target-lbl">∠B=?</text>` : ''}
+    ${p && p.target === 'C' ? `<text x="220" y="116" class="target-lbl">∠C=?</text>` : ''}
+    ${p ? svgLegend([p.A ? `∠A=${p.A}°` : null, p.target ? `найти ∠${p.target}` : null], 14, 12) : ''}
+  </svg>`;
+},
+
+// 10. Равнобедренный треугольник в окружности (для BOC)
+isoceles_in_circle: (p) => {
+  const cx = 200, cy = 170, r = 110;
+  const A = {x:+(cx-Math.sqrt(r*r-50*50)).toFixed(1), y:220};
+  const C = {x:+(cx+Math.sqrt(r*r-50*50)).toFixed(1), y:220};
+  const B = {x:200, y:60};
+  return `<svg ${VB} ${svgCircleAuditAttr('isoceles_in_circle', cx, cy, r, 'A,B,C')}>
+    <circle cx="${cx}" cy="${cy}" r="${r}" ${CIRC_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${C.x}" y2="${C.y}" ${LINE_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    <line x1="${C.x}" y1="${C.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    <line x1="${cx}" y1="${cy}" x2="${A.x}" y2="${A.y}" ${LINE_STROKE}/>
+    <line x1="${cx}" y1="${cy}" x2="${C.x}" y2="${C.y}" ${LINE_STROKE}/>
+    ${DOT(A.x,A.y)}<text x="${A.x-20}" y="${A.y+14}" class="lbl">A</text>
+    ${DOT(C.x,C.y)}<text x="${C.x+8}" y="${C.y+14}" class="lbl">C</text>
+    ${DOT(B.x,B.y)}<text x="194" y="54" class="lbl">B</text>
+    ${DOT(cx,cy)}<text x="184" y="190" class="lbl">O</text>
+    ${p && p.ABC ? `<text x="208" y="96" class="angle-lbl">∠ABC=${p.ABC}°</text>` : ''}
+    ${p && p.target ? `<text x="210" y="184" class="target-lbl">∠${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 11. Центр на стороне треугольника (AB - диаметр)
+center_on_AB: (p) => {
+  const cx = 200, cy = 180, r = 110;
+  const A = {x:90, y:180}, B = {x:310, y:180};
+  const C = {x:260, y:+(cy-Math.sqrt(r*r-60*60)).toFixed(1)};
+  return `<svg ${VB} ${svgCircleAuditAttr('center_on_AB', cx, cy, r, 'A,B,C')}>
+    <circle cx="${cx}" cy="${cy}" r="${r}" ${CIRC_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${C.x}" y2="${C.y}" ${LINE_STROKE}/>
+    <line x1="${C.x}" y1="${C.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    ${DOT(A.x,A.y)}<text x="72" y="184" class="lbl">A</text>
+    ${DOT(B.x,B.y)}<text x="318" y="184" class="lbl">B</text>
+    ${DOT(C.x,C.y)}<text x="${C.x+6}" y="${C.y-8}" class="lbl">C</text>
+    ${DOT(cx,cy)}<text x="194" y="200" class="lbl">O</text>
+    <text x="244" y="114" class="angle-lbl">90°</text>
+    ${p && p.BAC ? `<text x="116" y="174" class="angle-lbl">∠BAC=${p.BAC}°</text>` : ''}
+    ${p && p.BC ? `<text x="286" y="126" class="dim-lbl">BC=${p.BC}</text>` : ''}
+    ${p && p.R ? `<text x="202" y="174" class="dim-lbl">R=${p.R}</text>` : ''}
+    ${p && p.target ? `<text x="262" y="174" class="target-lbl">${p.target.includes('∠') ? p.target : '∠'+p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 12. Центр на стороне AC (AC - диаметр)
+center_on_AC: (p) => {
+  const cx = 200, cy = 180, r = 110;
+  const A = {x:90, y:180}, C = {x:310, y:180};
+  const B = {x:220, y:+(cy-Math.sqrt(r*r-20*20)).toFixed(1)};
+  return `<svg ${VB} ${svgCircleAuditAttr('center_on_AC', cx, cy, r, 'A,B,C')}>
+    <circle cx="${cx}" cy="${cy}" r="${r}" ${CIRC_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${C.x}" y2="${C.y}" ${LINE_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    <line x1="${B.x}" y1="${B.y}" x2="${C.x}" y2="${C.y}" ${LINE_STROKE}/>
+    ${DOT(A.x,A.y)}<text x="72" y="184" class="lbl">A</text>
+    ${DOT(C.x,C.y)}<text x="318" y="184" class="lbl">C</text>
+    ${DOT(B.x,B.y)}<text x="${B.x-4}" y="${B.y-8}" class="lbl">B</text>
+    ${DOT(cx,cy)}<text x="186" y="198" class="lbl">O</text>
+    <text x="216" y="104" class="angle-lbl">90°</text>
+    ${p && p.A ? `<text x="112" y="174" class="angle-lbl">∠A=${p.A}°</text>` : ''}
+    ${p && p.target ? `<text x="270" y="174" class="target-lbl">∠${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 13. Равносторонний в окружности
+equilateral_in_circle: (p) => {
+  return `<svg ${VB}>
+    <circle cx="200" cy="170" r="110" ${CIRC_STROKE}/>
+    <line x1="200" y1="60" x2="295" y2="225" ${LINE_STROKE}/>
+    <line x1="295" y1="225" x2="105" y2="225" ${LINE_STROKE}/>
+    <line x1="105" y1="225" x2="200" y2="60" ${LINE_STROKE}/>
+    ${p && p.side ? `<text x="158" y="244" class="dim-lbl">a=${p.side}</text>` : ''}
+    ${p && p.R ? `<text x="208" y="154" class="dim-lbl">R=${p.R}</text>` : ''}
+    ${p && p.target ? `<text x="214" y="122" class="target-lbl">${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 14. Окружность вписана в равносторонний
+circle_in_equilateral: (p) => {
+  return `<svg ${VB}>
+    <line x1="200" y1="40" x2="332" y2="262" ${LINE_STROKE}/>
+    <line x1="332" y1="262" x2="68" y2="262" ${LINE_STROKE}/>
+    <line x1="68" y1="262" x2="200" y2="40" ${LINE_STROKE}/>
+    <circle cx="200" cy="188" r="73" ${CIRC_STROKE}/>
+    <line x1="200" y1="188" x2="200" y2="262" ${DASH_STROKE}/>
+    <text x="206" y="230" class="dim-lbl">${p && p.r ? 'r='+p.r : 'r'}</text>
+    ${p && p.target ? `<text x="210" y="146" class="target-lbl">${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 15. Квадрат, описанный около круга
+square_around_circle: (p) => {
+  return `<svg ${VB}>
+    <rect x="100" y="60" width="220" height="220" ${LINE_STROKE}/>
+    <circle cx="210" cy="170" r="110" ${CIRC_STROKE}/>
+    <line x1="210" y1="170" x2="320" y2="170" ${DASH_STROKE}/>
+    <text x="252" y="164" class="dim-lbl">${p && p.r ? 'r='+p.r : 'r'}</text>
+    ${p && p.target ? `<text x="134" y="48" class="target-lbl">${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 16. Квадрат в круге
+square_in_circle: (p) => {
+  return `<svg ${VB}>
+    <circle cx="200" cy="170" r="120" ${CIRC_STROKE}/>
+    <rect x="115" y="85" width="170" height="170" ${LINE_STROKE}/>
+    ${p && p.side ? `<text x="160" y="272" class="dim-lbl">a=${p.side}</text>` : ''}
+    ${p && p.R ? `<text x="208" y="164" class="dim-lbl">R=${p.R}</text>` : ''}
+    ${p && p.target ? `<text x="214" y="122" class="target-lbl">${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 17. Описанный четырёхугольник (вокруг круга)
+tangential_quad: (p) => {
+  const lbl = (txt, x, y) => `<text x="${x}" y="${y}" class="dim-lbl">${txt}</text>`;
+  return `<svg ${VB}>
+    <line x1="80" y1="240" x2="320" y2="270" ${LINE_STROKE}/>
+    <line x1="320" y1="270" x2="340" y2="90" ${LINE_STROKE}/>
+    <line x1="340" y1="90" x2="140" y2="60" ${LINE_STROKE}/>
+    <line x1="140" y1="60" x2="80" y2="240" ${LINE_STROKE}/>
+    <circle cx="210" cy="170" r="72" ${CIRC_STROKE}/>
+    ${DOT(80,240)}<text x="58" y="252" class="lbl">A</text>
+    ${DOT(320,270)}<text x="326" y="284" class="lbl">D</text>
+    ${DOT(340,90)}<text x="346" y="82" class="lbl">C</text>
+    ${DOT(140,60)}<text x="124" y="54" class="lbl">B</text>
+    ${p && p.AB ? lbl(p.AB, 100, 140) : ''}
+    ${p && p.BC ? lbl(p.BC, 230, 64) : ''}
+    ${p && p.CD ? lbl(p.CD, 338, 180) : ''}
+    ${p && p.target ? `<text x="184" y="288" class="target-lbl">${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 18. Трапеция с вписанной окружностью
+trapezoid_incircle: (p) => {
+  return `<svg ${VB}>
+    <line x1="60" y1="260" x2="340" y2="260" ${LINE_STROKE}/>
+    <line x1="120" y1="60" x2="280" y2="60" ${LINE_STROKE}/>
+    <line x1="60" y1="260" x2="120" y2="60" ${LINE_STROKE}/>
+    <line x1="340" y1="260" x2="280" y2="60" ${LINE_STROKE}/>
+    <circle cx="200" cy="160" r="100" ${CIRC_STROKE}/>
+    <line x1="200" y1="60" x2="200" y2="260" ${DASH_STROKE}/>
+    <text x="206" y="160" class="dim-lbl">${p && p.r ? 'r='+p.r : 'r'}</text>
+    ${p && p.target ? `<text x="206" y="50" class="target-lbl">${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 19. Хорда и расстояние от центра до хорды
+chord_distance: (p) => {
+  const cx = 200, cy = 170, r = 110;
+  const y = 220;
+  const dx = Math.sqrt(r*r - (y-cy)*(y-cy));
+  const A = {x:+(cx-dx).toFixed(1), y};
+  const B = {x:+(cx+dx).toFixed(1), y};
+  return `<svg ${VB} ${svgCircleAuditAttr('chord_distance', cx, cy, r, 'A,B')}>
+    <circle cx="${cx}" cy="${cy}" r="${r}" ${CIRC_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    <line x1="${cx}" y1="${cy}" x2="${cx}" y2="${y}" ${LINE_STROKE}/>
+    <line x1="${cx}" y1="${cy}" x2="${A.x}" y2="${A.y}" ${LINE_STROKE}/>
+    <rect x="194" y="214" width="6" height="6" fill="none" stroke="#8B2E2E" stroke-width="1"/>
+    ${DOT(cx,cy)}<text x="206" y="166" class="lbl">O</text>
+    ${DOT(A.x,A.y)}<text x="${A.x-16}" y="234" class="lbl">A</text>
+    ${DOT(B.x,B.y)}<text x="${B.x+6}" y="234" class="lbl">B</text>
+    ${p && p.R ? `<text x="128" y="196" class="dim-lbl">R=${p.R}</text>` : ''}
+    ${p && p.dist ? `<text x="206" y="204" class="dim-lbl">d=${p.dist}</text>` : ''}
+    ${p && p.chord ? `<text x="168" y="240" class="dim-lbl">AB=${p.chord}</text>` : ''}
+    ${p && p.target ? `<text x="154" y="260" class="target-lbl">${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 20. Прямоугольный треугольник в окружности
+right_in_circle: (p) => {
+  const cx = 200, cy = 180, r = 110;
+  const A = {x:90, y:180}, B = {x:310, y:180}, C = {x:200, y:70};
+  return `<svg ${VB} ${svgCircleAuditAttr('right_in_circle', cx, cy, r, 'A,B,C')}>
+    <circle cx="${cx}" cy="${cy}" r="${r}" ${CIRC_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    <line x1="${A.x}" y1="${A.y}" x2="${C.x}" y2="${C.y}" ${LINE_STROKE}/>
+    <line x1="${C.x}" y1="${C.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    <polyline points="194,80 200,86 206,80" fill="none" stroke="#8B2E2E" stroke-width="1"/>
+    ${DOT(A.x,A.y)}<text x="72" y="184" class="lbl">A</text>
+    ${DOT(B.x,B.y)}<text x="318" y="184" class="lbl">B</text>
+    ${DOT(C.x,C.y)}<text x="194" y="62" class="lbl">C</text>
+    ${p && p.AC ? `<text x="92" y="116" class="dim-lbl">AC=${p.AC}</text>` : ''}
+    ${p && p.BC ? `<text x="244" y="116" class="dim-lbl">BC=${p.BC}</text>` : ''}
+    ${p && p.target ? `<text x="204" y="170" class="target-lbl">${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 21. Пересекающиеся хорды
+intersecting_chords: (p) => {
+  const cx = 200, cy = 170, r = 115;
+  const yTop = 95, yBot = 245;
+  const dx = Math.sqrt(r*r - (yTop-cy)*(yTop-cy));
+  const D = {x:+(cx-dx).toFixed(1), y:yTop};
+  const A = {x:+(cx+dx).toFixed(1), y:yTop};
+  const C = {x:+(cx-dx).toFixed(1), y:yBot};
+  const B = {x:+(cx+dx).toFixed(1), y:yBot};
+  return `<svg ${VB} ${svgCircleAuditAttr('intersecting_chords', cx, cy, r, 'A,B,C,D')}>
+    <circle cx="${cx}" cy="${cy}" r="${r}" ${CIRC_STROKE}/>
+    <line x1="${D.x}" y1="${D.y}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    <line x1="${C.x}" y1="${C.y}" x2="${A.x}" y2="${A.y}" ${LINE_STROKE}/>
+    ${DOT(D.x,D.y)}<text x="${D.x-20}" y="${D.y-6}" class="lbl">D</text>
+    ${DOT(B.x,B.y)}<text x="${B.x+6}" y="${B.y+12}" class="lbl">B</text>
+    ${DOT(C.x,C.y)}<text x="${C.x-20}" y="${C.y+14}" class="lbl">C</text>
+    ${DOT(A.x,A.y)}<text x="${A.x+6}" y="${A.y-6}" class="lbl">A</text>
+    ${DOT(cx,cy)}<text x="206" y="166" class="lbl">P</text>
+    ${p && p.BP ? `<text x="238" y="218" class="dim-lbl">BP=${p.BP}</text>` : ''}
+    ${p && p.DP ? `<text x="126" y="134" class="dim-lbl">DP=${p.DP}</text>` : ''}
+    ${p && p.CP ? `<text x="128" y="220" class="dim-lbl">CP=${p.CP}</text>` : ''}
+    ${p && p.target ? `<text x="238" y="126" class="target-lbl">${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 22. Сектор круга
+sector: (p) => {
+  const ang = p && p.angle ? p.angle : 120;
+  // sector from angle 90-ang/2 to 90+ang/2 from horizontal (i.e. wedge centered up)
+  // actually simpler: from -90deg upwards
+  const cx = 200, cy = 170, r = 110;
+  const a1 = -Math.PI/2;
+  const a2 = a1 + ang * Math.PI/180;
+  const x1 = cx + r*Math.cos(a1), y1 = cy + r*Math.sin(a1);
+  const x2 = cx + r*Math.cos(a2), y2 = cy + r*Math.sin(a2);
+  const large = ang > 180 ? 1 : 0;
+  return `<svg ${VB}>
+    <circle cx="${cx}" cy="${cy}" r="${r}" ${CIRC_STROKE}/>
+    <path d="M ${cx} ${cy} L ${x1.toFixed(1)} ${y1.toFixed(1)} A ${r} ${r} 0 ${large} 1 ${x2.toFixed(1)} ${y2.toFixed(1)} Z"
+      fill="#C9D9E0" fill-opacity="0.5" stroke="#2C5566" stroke-width="1.6"/>
+    ${DOT(cx,cy)}
+    <text x="${cx+8}" y="${cy-2}" class="angle-lbl">${ang}°</text>
+    ${p && p.S ? `<text x="46" y="50" class="dim-lbl">S круга=${p.S}</text>` : ''}
+    ${p && p.target ? `<text x="224" y="84" class="target-lbl">${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 23. Две дуги (AOB меньшая и большая)
+arc_AB: (p) => {
+  const cx = 200, cy = 170, r = 110;
+  const A = svgPt(cx, cy, r, 325);
+  const B = svgPt(cx, cy, r, 35);
+  return `<svg ${VB} ${svgCircleAuditAttr('arc_AB', cx, cy, r, 'A,B')}>
+    <circle cx="${cx}" cy="${cy}" r="${r}" ${CIRC_STROKE}/>
+    <line x1="${cx}" y1="${cy}" x2="${A.x}" y2="${A.y}" ${LINE_STROKE}/>
+    <line x1="${cx}" y1="${cy}" x2="${B.x}" y2="${B.y}" ${LINE_STROKE}/>
+    ${DOT(cx,cy)}<text x="184" y="170" class="lbl">O</text>
+    ${DOT(A.x,A.y)}<text x="${A.x+6}" y="${A.y-5}" class="lbl">A</text>
+    ${DOT(B.x,B.y)}<text x="${B.x+6}" y="${B.y+15}" class="lbl">B</text>
+    ${p && p.angle ? `<text x="218" y="174" class="angle-lbl">${p.angle}°</text>` : ''}
+    ${p && p.Lmin ? `<text x="304" y="174" class="dim-lbl">меньшая=${p.Lmin}</text>` : ''}
+    ${p && p.target ? `<text x="82" y="170" class="target-lbl">${p.target}=?</text>` : ''}
+  </svg>`;
+},
+
+// 24. Треугольник с вписанной окружностью (для S = rp)
+triangle_with_incircle: (p) => {
+  return `<svg ${VB}>
+    <line x1="60" y1="270" x2="340" y2="270" ${LINE_STROKE}/>
+    <line x1="60" y1="270" x2="180" y2="60" ${LINE_STROKE}/>
+    <line x1="180" y1="60" x2="340" y2="270" ${LINE_STROKE}/>
+    <circle cx="180" cy="205" r="58" ${CIRC_STROKE}/>
+    <line x1="180" y1="205" x2="180" y2="263" ${DASH_STROKE}/>
+    <text x="186" y="240" class="dim-lbl">${p && p.r ? 'r='+p.r : 'r'}</text>
+    ${p && p.P ? `<text x="210" y="284" class="dim-lbl">P=${p.P}</text>` : ''}
+    ${p && p.target ? `<text x="188" y="48" class="target-lbl">${p.target}=?</text>` : ''}
+  </svg>`;
+}
+
+};
+
+/* =========================================================================
+   3. АРХИВ ТОЧНЫХ ЗАДАЧ
+   Только проверенные тексты, exact: true.
+   ========================================================================= */
+
+const ARCHIVE = [
+  {
+    id: 'arc_v13',
+    exact: true,
+    needsReview: true,
+    verificationStatus: 'verified_by_prompt_needs_archive_check',
+    source: 'Доп. вариант 13 · ОГЭ 2026',
+    type: 'angle',
+    subtype: 'cyclic_quad_subtract',
+    subtypeLabel: 'Вписанный 4-угольник: вычитание',
+    text: 'Четырёхугольник ABCD вписан в окружность. Угол ABC равен 56°, угол CAD равен 42°. Найдите угол ABD. Ответ дайте в градусах.',
+    answer: 14,
+    hint: 'Углы ∠CAD и ∠CBD — вписанные и опираются на одну дугу CD.',
+    solution: [
+      'Углы ∠CAD и ∠CBD — вписанные в одну окружность и опираются на одну и ту же дугу CD, значит ∠CBD = ∠CAD = 42°.',
+      'Луч BD лежит внутри угла ABC, поэтому ∠ABD = ∠ABC − ∠CBD = 56° − 42° = 14°.'
+    ],
+    pitfalls: [
+      'Не делите ∠ABC пополам — углы относятся к разным дугам.',
+      'Не складывайте: 56 + 42 = 98 — здесь нужно именно вычитание.'
+    ],
+    svgKey: 'inscribed_quad',
+    svgParams: { diagAC: true, diagBD: true, ABC: 56, CAD: 42, target: 'ABD' }
+  },
+  {
+    id: 'arc_v14',
+    exact: true,
+    needsReview: true,
+    verificationStatus: 'verified_by_prompt_needs_archive_check',
+    source: 'Доп. вариант 14 · ОГЭ 2026',
+    type: 'angle',
+    subtype: 'cyclic_trapezoid',
+    subtypeLabel: 'Вписанная трапеция: ∠A + ∠B',
+    text: 'Угол A трапеции ABCD с основаниями AD и BC, вписанной в окружность, равен 31°. Найдите угол B этой трапеции. Ответ дайте в градусах.',
+    answer: 149,
+    hint: 'AD ∥ BC. Углы A и B — внутренние односторонние при параллельных прямых.',
+    solution: [
+      'Боковая сторона AB — секущая для параллельных оснований AD и BC.',
+      'Углы A и B — внутренние односторонние, поэтому ∠A + ∠B = 180°.',
+      '∠B = 180° − 31° = 149°.'
+    ],
+    pitfalls: [
+      'Не путайте с противоположными углами 4-угольника: ∠A + ∠C = 180 — это другая пара.',
+      'Здесь не нужно знать, что трапеция вписана: достаточно AD ∥ BC.'
+    ],
+    svgKey: 'inscribed_trapezoid',
+    svgParams: { A: 31, target: 'B' }
+  },
+  {
+    id: 'arc_v56',
+    exact: true,
+    needsReview: true,
+    verificationStatus: 'verified_by_prompt_needs_archive_check',
+    source: 'Доп. вариант 56 · ОГЭ 2026',
+    type: 'angle',
+    subtype: 'cyclic_quad_opposite',
+    subtypeLabel: 'Вписанный 4-угольник: противоположные углы',
+    text: 'Угол A четырёхугольника ABCD, вписанного в окружность, равен 112°. Найдите угол C этого четырёхугольника. Ответ дайте в градусах.',
+    answer: 68,
+    hint: 'Сумма противоположных углов вписанного четырёхугольника равна 180°.',
+    solution: [
+      'У вписанного четырёхугольника сумма противоположных углов равна 180°: ∠A + ∠C = 180°.',
+      '∠C = 180° − 112° = 68°.'
+    ],
+    pitfalls: [
+      'Не делите 112 на 2 — это формула вписанного угла, а не свойство 4-угольника.',
+      'Соседние углы (∠A + ∠B) равны 180° только в трапеции, а не в произвольном вписанном 4-угольнике.'
+    ],
+    svgKey: 'inscribed_quad',
+    svgParams: { diagAC: false, diagBD: false, A: 112, target: 'C' }
+  },
+  {
+    id: 'arc_v57',
+    exact: true,
+    needsReview: true,
+    verificationStatus: 'verified_by_prompt_needs_archive_check',
+    source: 'Доп. вариант 57 · ОГЭ 2026',
+    type: 'angle',
+    subtype: 'center_on_AB',
+    subtypeLabel: 'Центр описанной на стороне AB',
+    text: 'Центр окружности, описанной около треугольника ABC, лежит на стороне AB. Найдите угол ABC, если угол BAC равен 44°. Ответ дайте в градусах.',
+    answer: 46,
+    hint: 'Если центр на AB, то AB — диаметр, и угол ACB опирается на диаметр.',
+    solution: [
+      'Центр описанной окружности лежит на AB, значит AB — диаметр.',
+      'Вписанный угол ∠ACB опирается на диаметр, поэтому ∠ACB = 90°.',
+      'Сумма углов треугольника: ∠ABC = 180° − 90° − ∠BAC = 90° − 44° = 46°.'
+    ],
+    pitfalls: [
+      'Не вычитайте из 180: треугольник не равнобедренный.',
+      'Не путайте: на диаметр опирается ∠ACB (угол при C), а не при B.'
+    ],
+    svgKey: 'center_on_AB',
+    svgParams: { BAC: 44, target: 'ABC' }
+  }
+];
+
+/* =========================================================================
+   4. ГЕНЕРАТОРЫ
+   Каждая запись описывает один тип задачи.
+   .generate() возвращает {text, answer, hint, solution, pitfalls, svgKey, svgParams}
+   ========================================================================= */
+
+const GENERATORS = {
+
+  // ===== УГЛЫ ============================================================
+
+  inscribed_in_angle: {
+    type: 'angle',
+    label: 'Окружность вписана в угол',
+    pdfRef: 'Из 180 вычесть известный угол',
+    generate() {
+      const c = randInt(20, 88) * 1 + randInt(0, 11); // 20..99
+      const v = Math.min(98, Math.max(20, c));
+      return {
+        text: `В угол C величиной ${v}° вписана окружность, которая касается сторон угла в точках A и B, точка O — центр окружности. Найдите угол AOB. Ответ дайте в градусах.`,
+        answer: 180 - v,
+        hint: 'OA ⊥ CA и OB ⊥ CB (радиус в точку касания). В четырёхугольнике CAOB два угла прямые.',
+        solution: [
+          'Радиус, проведённый в точку касания, перпендикулярен касательной: ∠OAC = ∠OBC = 90°.',
+          'Сумма углов четырёхугольника CAOB равна 360°: ∠C + 90° + ∠AOB + 90° = 360°.',
+          `∠AOB = 360° − 180° − ${v}° = ${180 - v}°.`
+        ],
+        pitfalls: ['Не делите угол C пополам.', 'Не забывайте, что радиус перпендикулярен касательной.'],
+        svgKey: 'inscribed_in_angle',
+        svgParams: { angleC: v, target: 'AOB' }
+      };
+    }
+  },
+
+  two_tangents: {
+    type: 'angle',
+    label: 'Две касательные из точки',
+    pdfRef: 'Делим угол на 2',
+    generate() {
+      const a = randInt(10, 44) * 2; // even, 20..88
+      return {
+        text: `Касательные в точках A и B к окружности с центром O пересекаются под углом ${a}°. Найдите угол ABO. Ответ дайте в градусах.`,
+        answer: a / 2,
+        hint: 'Отрезки MA и MB равны как касательные из одной точки. Треугольник MAB равнобедренный.',
+        solution: [
+          'Касательные MA и MB равны как отрезки касательных, проведённых из одной точки M.',
+          `Треугольник MAB равнобедренный, ∠MAB = ∠MBA = (180° − ${a}°) / 2 = ${(180-a)/2}°.`,
+          `Радиус OB ⊥ касательной MB, значит ∠OBM = 90°, и ∠ABO = 90° − ${(180-a)/2}° = ${a/2}°.`
+        ],
+        pitfalls: [`Не пишите ${(180-a)/2}° — это угол MBA, а не ABO.`, 'Радиус всегда перпендикулярен касательной.'],
+        svgKey: 'two_tangents',
+        svgParams: { angleM: a, target: 'ABO' }
+      };
+    }
+  },
+
+  two_diameters_to_inscribed: {
+    type: 'angle',
+    label: 'Два диаметра → вписанный угол',
+    pdfRef: '(180 − угол) / 2',
+    generate() {
+      const aod = randInt(20, 80) * 2; // даёт целый ответ
+      return {
+        text: `В окружности с центром O AC и BD — диаметры. Центральный угол AOD равен ${aod}°. Найдите вписанный угол ACB. Ответ дайте в градусах.`,
+        answer: (180 - aod) / 2,
+        hint: 'Углы AOD и BOC — вертикальные, значит ∠BOC = ∠AOD.',
+        solution: [
+          `∠BOC и ∠AOD — вертикальные углы, поэтому ∠BOC = ${aod}°.`,
+          `∠AOB = 180° − ${aod}° = ${180 - aod}° (углы AOB и AOD смежные).`,
+          `∠ACB — вписанный, опирается на дугу AB: ∠ACB = ∠AOB / 2 = ${(180-aod)/2}°.`
+        ],
+        pitfalls: ['Не делите AOD на 2 — это центральный, а не вписанный.', 'Сначала найдите центральный угол AOB.'],
+        svgKey: 'two_diameters',
+        svgParams: { AOD: aod, target: 'ACB' }
+      };
+    }
+  },
+
+  two_diameters_from_inscribed: {
+    type: 'angle',
+    label: 'Два диаметра ← вписанный угол',
+    pdfRef: '180 − 2·угол',
+    generate() {
+      const acb = randInt(15, 80);
+      return {
+        text: `AC и BD — диаметры окружности с центром O. Угол ACB равен ${acb}°. Найдите угол AOD. Ответ дайте в градусах.`,
+        answer: 180 - 2 * acb,
+        hint: '∠AOB = 2·∠ACB (центральный = 2 × вписанный, опирающийся на ту же дугу).',
+        solution: [
+          `Центральный ∠AOB вдвое больше вписанного ∠ACB: ∠AOB = 2 · ${acb}° = ${2*acb}°.`,
+          `∠AOD — смежный с ∠AOB: ∠AOD = 180° − ${2*acb}° = ${180 - 2*acb}°.`,
+          'Можно также заметить, что ∠AOD и ∠BOC вертикальные и оба равны искомому.'
+        ],
+        pitfalls: ['Не вычитайте сразу из 180 — сначала удвойте.', 'Помните: вписанный = половина центрального.'],
+        svgKey: 'two_diameters',
+        svgParams: { ACB: acb, target: 'AOD' }
+      };
+    }
+  },
+
+  diameter_inscribed_right: {
+    type: 'angle',
+    label: 'Точки M, N по разные стороны диаметра',
+    pdfRef: '90 − угол',
+    generate() {
+      const nba = randInt(15, 80);
+      return {
+        text: `На окружности по разные стороны от диаметра AB взяты точки M и N. Известно, что ∠NBA равен ${nba}°. Найдите угол NMB. Ответ дайте в градусах.`,
+        answer: 90 - nba,
+        hint: 'Угол ANB опирается на диаметр, поэтому он прямой.',
+        solution: [
+          'Угол ANB вписан и опирается на диаметр AB, значит ∠ANB = 90°.',
+          `В прямоугольном треугольнике ANB: ∠NAB = 90° − ${nba}° = ${90-nba}°.`,
+          `Углы NMB и NAB — вписанные, опираются на одну дугу NB, значит ∠NMB = ∠NAB = ${90-nba}°.`
+        ],
+        pitfalls: ['Не вычитайте из 180 — нужна другая логика.', 'Углы NMB и NAB равны как вписанные на одну дугу.'],
+        svgKey: 'diameter_MN',
+        svgParams: { NBA: nba, target: 'NMB' }
+      };
+    }
+  },
+
+  inscribed_minus: {
+    type: 'angle',
+    label: 'BCO = ABC − OAB',
+    pdfRef: 'Большее минус меньшее',
+    generate() {
+      const oab = randInt(10, 25);
+      const abc = randInt(oab + 20, oab + 50);
+      return {
+        text: `Точка O — центр окружности, на которой лежат точки A, B и C. Известно, что ∠ABC равен ${abc}° и ∠OAB равен ${oab}°. Найдите угол BCO. Ответ дайте в градусах.`,
+        answer: abc - oab,
+        hint: 'OA = OC = OB = R, значит треугольники OAB и OBC равнобедренные.',
+        solution: [
+          `OA = OB как радиусы, значит △OAB равнобедренный: ∠OBA = ∠OAB = ${oab}°.`,
+          `∠OBC = ∠ABC − ∠OBA = ${abc}° − ${oab}° = ${abc-oab}°.`,
+          `OB = OC как радиусы, △OBC равнобедренный: ∠BCO = ∠OBC = ${abc-oab}°.`
+        ],
+        pitfalls: ['Не складывайте — нужна разность.', 'OA = OB = OC — это ключ ко всем равнобедренным.'],
+        svgKey: 'abc_with_OA',
+        svgParams: { ABC: abc, OAB: oab, target: 'BCO' }
+      };
+    }
+  },
+
+  tangent_chord_arc: {
+    type: 'angle',
+    label: 'Касательная и хорда',
+    pdfRef: 'Делим дугу на 2',
+    generate() {
+      const arc = randInt(20, 80) * 2; // even, 40..160
+      return {
+        text: `На окружности отмечены точки A и B так, что меньшая дуга AB равна ${arc}°. Прямая BC касается окружности в точке B так, что угол ABC острый. Найдите угол ABC. Ответ дайте в градусах.`,
+        answer: arc / 2,
+        hint: 'Угол между касательной и хордой равен половине дуги, заключённой между ними.',
+        solution: [
+          'По теореме об угле между касательной и хордой: угол равен половине дуги, заключённой между ними.',
+          `Дуга AB = ${arc}°, поэтому ∠ABC = ${arc}° / 2 = ${arc/2}°.`
+        ],
+        pitfalls: ['Не вычитайте из 180.', 'Угол равен половине именно той дуги, что внутри угла.'],
+        svgKey: 'chord_and_tangent',
+        svgParams: { arcAB: arc, target: 'ABC' }
+      };
+    }
+  },
+
+  inscribed_from_central: {
+    type: 'angle',
+    label: 'Вписанный угол из центрального',
+    pdfRef: 'Делим на 2',
+    generate() {
+      const aob = randInt(40, 160); // допускаем нечётные центральные углы: 113° → 56.5°
+      return {
+        text: `Треугольник ABC вписан в окружность с центром O. Найдите угол ACB, если угол AOB равен ${aob}°. Ответ дайте в градусах.`,
+        answer: aob / 2,
+        hint: 'Вписанный угол равен половине центрального, опирающегося на ту же дугу.',
+        solution: [
+          `∠AOB — центральный, ∠ACB — вписанный; оба опираются на дугу AB.`,
+          `∠ACB = ∠AOB / 2 = ${aob}° / 2 = ${aob/2}°.`
+        ],
+        pitfalls: ['Не вычитайте из 180.', 'Это работает, только если C на бо́льшей дуге.'],
+        svgKey: 'triangle_inscribed',
+        svgParams: { AOB: aob, target: 'ACB' }
+      };
+    }
+  },
+
+  cyclic_quad_add: {
+    type: 'angle',
+    label: 'Вписанный 4-угольник: сложение',
+    pdfRef: 'Сложить два угла',
+    generate() {
+      const abd = randInt(20, 60);
+      const cad = randInt(15, 50);
+      return {
+        text: `Четырёхугольник ABCD вписан в окружность. Угол ABD равен ${abd}°, угол CAD равен ${cad}°. Найдите угол ABC. Ответ дайте в градусах.`,
+        answer: abd + cad,
+        hint: '∠CAD и ∠CBD опираются на одну дугу CD.',
+        solution: [
+          `Углы ∠CAD и ∠CBD — вписанные на одну дугу CD, значит ∠CBD = ∠CAD = ${cad}°.`,
+          `∠ABC = ∠ABD + ∠DBC = ${abd}° + ${cad}° = ${abd+cad}°.`
+        ],
+        pitfalls: ['Не вычитайте — здесь точка D внутри угла ABC.', 'Сложение, потому что лучи BD внутри.'],
+        svgKey: 'inscribed_quad',
+        svgParams: { diagAC: true, diagBD: true, ABD: abd, CAD: cad, target: 'ABC' }
+      };
+    }
+  },
+
+  cyclic_quad_subtract: {
+    type: 'angle',
+    label: 'Вписанный 4-угольник: вычитание',
+    pdfRef: 'Большее минус меньшее',
+    archetypeOf: 'arc_v13',
+    generate() {
+      const cad = randInt(15, 40);
+      const abc = randInt(cad + 10, cad + 60);
+      return {
+        text: `Четырёхугольник ABCD вписан в окружность. Угол ABC равен ${abc}°, угол CAD равен ${cad}°. Найдите угол ABD. Ответ дайте в градусах.`,
+        answer: abc - cad,
+        hint: '∠CAD и ∠CBD опираются на одну дугу CD.',
+        solution: [
+          `Углы ∠CAD и ∠CBD — вписанные на одну дугу CD, значит ∠CBD = ∠CAD = ${cad}°.`,
+          `∠ABD = ∠ABC − ∠CBD = ${abc}° − ${cad}° = ${abc-cad}°.`
+        ],
+        pitfalls: ['Не делите ∠ABC пополам.', 'Не складывайте — здесь луч BD внутри ∠ABC.'],
+        svgKey: 'inscribed_quad',
+        svgParams: { diagAC: true, diagBD: true, ABC: abc, CAD: cad, target: 'ABD' }
+      };
+    }
+  },
+
+  isoceles_BOC: {
+    type: 'angle',
+    label: 'Равнобедренный, найти ∠BOC',
+    pdfRef: '180 − угол',
+    generate() {
+      const abc = randInt(40, 80);
+      return {
+        text: `Окружность с центром в точке O описана около равнобедренного треугольника ABC, в котором AB = BC и угол ABC равен ${abc}°. Найдите величину угла BOC. Ответ дайте в градусах.`,
+        answer: 180 - abc,
+        hint: 'AB = BC, значит ∠BAC = ∠BCA. Дуга BC соответствует углу BAC.',
+        solution: [
+          `Треугольник ABC равнобедренный: ∠BAC = ∠BCA = (180° − ${abc}°) / 2 = ${(180-abc)/2}°.`,
+          `∠BAC — вписанный, опирается на дугу BC, значит центральный ∠BOC = 2 · ${(180-abc)/2}° = ${180-abc}°.`
+        ],
+        pitfalls: ['Не путайте: ∠BOC опирается на ту же дугу, что и ∠BAC, а не ∠ABC.'],
+        svgKey: 'isoceles_in_circle',
+        svgParams: { ABC: abc, target: 'BOC' }
+      };
+    }
+  },
+
+  center_on_AB: {
+    type: 'angle',
+    label: 'Центр на AB → ∠ABC',
+    pdfRef: '90 − угол',
+    archetypeOf: 'arc_v57',
+    generate() {
+      const bac = randInt(10, 80);
+      return {
+        text: `Центр окружности, описанной около треугольника ABC, лежит на стороне AB. Найдите угол ABC, если угол BAC равен ${bac}°. Ответ дайте в градусах.`,
+        answer: 90 - bac,
+        hint: 'Если центр на AB, то AB — диаметр.',
+        solution: [
+          'Центр описанной окружности на AB ⇒ AB — диаметр.',
+          'Угол ACB опирается на диаметр AB, значит ∠ACB = 90°.',
+          `∠ABC = 180° − 90° − ${bac}° = ${90-bac}°.`
+        ],
+        pitfalls: ['Прямой угол при C, а не при B.', 'Сразу из 180 вычитать нельзя.'],
+        svgKey: 'center_on_AB',
+        svgParams: { BAC: bac, target: 'ABC' }
+      };
+    }
+  },
+
+  center_on_AC_find_C: {
+    type: 'angle',
+    label: 'Центр на AC → ∠C',
+    pdfRef: '90 − угол',
+    generate() {
+      const a = randInt(10, 80);
+      return {
+        text: `Сторона AC треугольника ABC проходит через центр описанной около него окружности. Найдите угол C, если угол A равен ${a}°. Ответ дайте в градусах.`,
+        answer: 90 - a,
+        hint: 'AC — диаметр, угол B прямой.',
+        solution: [
+          'Центр описанной окружности лежит на AC ⇒ AC — диаметр.',
+          '∠ABC опирается на диаметр, значит ∠B = 90°.',
+          `∠C = 180° − 90° − ${a}° = ${90-a}°.`
+        ],
+        pitfalls: ['Прямой угол при B, а не при C.'],
+        svgKey: 'center_on_AC',
+        svgParams: { A: a, target: 'C' }
+      };
+    }
+  },
+
+  cyclic_quad_opposite: {
+    type: 'angle',
+    label: 'Вписанный 4-угольник: ∠A + ∠C = 180',
+    pdfRef: '180 − угол',
+    archetypeOf: 'arc_v56',
+    generate() {
+      const a = randInt(40, 140);
+      return {
+        text: `Угол A четырёхугольника ABCD, вписанного в окружность, равен ${a}°. Найдите угол C этого четырёхугольника. Ответ дайте в градусах.`,
+        answer: 180 - a,
+        hint: 'Противоположные углы вписанного 4-угольника в сумме дают 180°.',
+        solution: [
+          'У вписанного четырёхугольника сумма противоположных углов = 180°: ∠A + ∠C = 180°.',
+          `∠C = 180° − ${a}° = ${180-a}°.`
+        ],
+        pitfalls: ['Не делите 180 на 2.', 'Это работает только для вписанного 4-угольника.'],
+        svgKey: 'inscribed_quad',
+        svgParams: { diagAC: false, diagBD: false, A: a, target: 'C' }
+      };
+    }
+  },
+
+  cyclic_trapezoid: {
+    type: 'angle',
+    label: 'Вписанная трапеция: ∠A + ∠B = 180',
+    pdfRef: '180 − угол',
+    archetypeOf: 'arc_v14',
+    generate() {
+      const a = randInt(20, 80);
+      const findLetter = choice(['B', 'C']);
+      return {
+        text: `Угол A трапеции ABCD с основаниями AD и BC, вписанной в окружность, равен ${a}°. Найдите угол ${findLetter} этой трапеции. Ответ дайте в градусах.`,
+        answer: 180 - a,
+        hint: 'AD ∥ BC, поэтому углы при боковой стороне в сумме дают 180°.',
+        solution: findLetter === 'B' ? [
+          'AD ∥ BC, AB — секущая. ∠A и ∠B — внутренние односторонние, в сумме 180°.',
+          `∠B = 180° − ${a}° = ${180-a}°.`
+        ] : [
+          'Поскольку трапеция вписана в окружность, противоположные углы дают 180°: ∠A + ∠C = 180°.',
+          `∠C = 180° − ${a}° = ${180-a}°.`
+        ],
+        pitfalls: ['Углы по 2 не делим.', 'Не путайте противоположные и соседние.'],
+        svgKey: 'inscribed_trapezoid',
+        svgParams: { A: a, target: findLetter }
+      };
+    }
+  },
+
+  // ===== ДЛИНЫ ===========================================================
+
+  equilateral_R_to_side: {
+    type: 'length',
+    label: 'R вокруг равностороннего, дана сторона',
+    pdfRef: 'Число перед корнем',
+    generate() {
+      const k = randInt(3, 18);
+      return {
+        text: `Сторона равностороннего треугольника равна ${k}√3. Найдите радиус окружности, описанной около этого треугольника.`,
+        answer: k,
+        hint: 'R = a/√3 для равностороннего треугольника.',
+        solution: [
+          'Формула: R = a / √3, где a — сторона равностороннего треугольника.',
+          `R = ${k}√3 / √3 = ${k}.`
+        ],
+        pitfalls: ['Не умножайте на √3 — нужно разделить.', 'Просто запишите число перед корнем.'],
+        svgKey: 'equilateral_in_circle',
+        svgParams: { side: `${k}√3`, target: 'R' }
+      };
+    }
+  },
+
+  equilateral_side_from_R: {
+    type: 'length',
+    label: 'Сторона равностороннего по R',
+    pdfRef: 'R × 3',
+    generate() {
+      // a = R √3, ответ дают как число × 3 (так в PDF), но точная формула a = R√3
+      // PDF говорит: "Радиус ... равен 5√3. Найдите длину стороны." → 5 × 3 = 15
+      // То есть в задаче R = 5√3, тогда a = R√3 = 5√3 · √3 = 15. Это число × 3.
+      const k = randInt(2, 18);
+      return {
+        text: `Радиус окружности, описанной около равностороннего треугольника, равен ${k}√3. Найдите длину стороны этого треугольника.`,
+        answer: k * 3,
+        hint: 'a = R · √3.',
+        solution: [
+          'Формула: сторона a = R · √3 для равностороннего треугольника.',
+          `a = ${k}√3 · √3 = ${k} · 3 = ${k*3}.`
+        ],
+        pitfalls: ['Не делите на √3.', '√3 · √3 = 3.'],
+        svgKey: 'equilateral_in_circle',
+        svgParams: { R: `${k}√3`, target: 'a' }
+      };
+    }
+  },
+
+  larger_arc: {
+    type: 'length',
+    label: 'Длина большей дуги',
+    pdfRef: '(360-α)·L_min / α',
+    generate() {
+      // a — угол; берём L = a·k, тогда ответ = (360-a)·k — всегда целое
+      const angles = [60, 72, 90, 120, 135, 144, 150];
+      const a = choice(angles);
+      const k = randInt(1, 3);
+      const Lact = a * k;
+      const ans = (360 - a) * k;
+      return {
+        text: `На окружности с центром O отмечены точки A и B так, что угол AOB равен ${a}°. Длина меньшей дуги AB равна ${Lact}. Найдите длину большей дуги.`,
+        answer: ans,
+        hint: 'Длины дуг пропорциональны их градусным мерам.',
+        solution: [
+          `Меньшая дуга AB соответствует углу ${a}°, большая — углу 360° − ${a}° = ${360-a}°.`,
+          `Длина дуги пропорциональна градусной мере: L_max = L_min · (360° − ${a}°) / ${a}° = ${Lact} · ${360-a} / ${a} = ${ans}.`
+        ],
+        pitfalls: ['Не путайте: меньшая дуга соответствует меньшему углу.', `Сумма дуг — это длина окружности, а не ${360}.`],
+        svgKey: 'arc_AB',
+        svgParams: { angle: a, Lmin: Lact, target: 'большая дуга' }
+      };
+    }
+  },
+
+  square_R_to_side: {
+    type: 'length',
+    label: 'R вокруг квадрата, дана сторона',
+    pdfRef: 'Число перед корнем',
+    generate() {
+      const k = randInt(2, 18);
+      return {
+        text: `Сторона квадрата равна ${k}√2. Найдите радиус окружности, описанной около этого квадрата.`,
+        answer: k,
+        hint: 'Диагональ квадрата = a√2 = 2R, поэтому R = a/√2.',
+        solution: [
+          'Диагональ квадрата равна a√2 и одновременно равна диаметру описанной окружности 2R.',
+          `2R = ${k}√2 · √2 = ${k} · 2 = ${k*2}; R = ${k}.`,
+          'Короче: R = a/√2 = ' + k + '√2 / √2 = ' + k + '.'
+        ],
+        pitfalls: ['Не путайте радиус и диаметр.', 'Диагональ квадрата = a√2.'],
+        svgKey: 'square_in_circle',
+        svgParams: { side: `${k}√2`, target: 'R' }
+      };
+    }
+  },
+
+  square_side_from_R: {
+    type: 'length',
+    label: 'Сторона квадрата по R',
+    pdfRef: 'R × 2',
+    generate() {
+      const k = randInt(2, 25);
+      return {
+        text: `Радиус окружности, описанной около квадрата, равен ${k}√2. Найдите длину стороны этого квадрата.`,
+        answer: k * 2,
+        hint: '2R — диагональ квадрата = a√2.',
+        solution: [
+          'Диагональ d = 2R = ' + (2*k) + '√2 и d = a√2.',
+          `Получаем a = d / √2 = ${2*k}√2 / √2 = ${2*k}.`
+        ],
+        pitfalls: ['Не делите на 2.', 'Сторона = диаметр / √2 = 2R / √2 = R√2.'],
+        svgKey: 'square_in_circle',
+        svgParams: { R: `${k}√2`, target: 'a' }
+      };
+    }
+  },
+
+  tangential_quad_AD: {
+    type: 'length',
+    label: 'Описанный 4-угольник: AD',
+    pdfRef: 'AB + CD − BC',
+    generate() {
+      const ab = randInt(3, 12);
+      const bc = randInt(8, 20);
+      const cdMin = Math.max(3, bc - ab + 2);
+      const cd = randInt(cdMin, cdMin + 10); // CD > 0 и AD = AB + CD − BC > 0
+      return {
+        text: `Четырёхугольник ABCD описан около окружности, AB = ${ab}, BC = ${bc}, CD = ${cd}. Найдите AD.`,
+        answer: ab + cd - bc,
+        hint: 'У описанного 4-угольника AB + CD = BC + AD.',
+        solution: [
+          'Свойство описанного четырёхугольника: суммы противоположных сторон равны: AB + CD = BC + AD.',
+          `AD = AB + CD − BC = ${ab} + ${cd} − ${bc} = ${ab+cd-bc}.`
+        ],
+        pitfalls: ['Не складывайте все три.', 'Внимательно к знакам: вычитается BC.'],
+        svgKey: 'tangential_quad',
+        svgParams: { AB: 'AB=' + ab, BC: 'BC=' + bc, CD: 'CD=' + cd, target: 'AD' }
+      };
+    }
+  },
+
+  trapezoid_height: {
+    type: 'length',
+    label: 'Высота трапеции с вписанной окружностью',
+    pdfRef: '2r',
+    generate() {
+      const r = randInt(5, 30);
+      return {
+        text: `Радиус окружности, вписанной в трапецию, равен ${r}. Найдите высоту этой трапеции.`,
+        answer: 2 * r,
+        hint: 'Высота трапеции с вписанной окружностью равна диаметру.',
+        solution: [
+          'Окружность вписана в трапецию ⇒ касается обоих оснований.',
+          `Высота трапеции = расстояние между основаниями = 2r = 2 · ${r} = ${2*r}.`
+        ],
+        pitfalls: ['Не путайте радиус и диаметр.'],
+        svgKey: 'trapezoid_incircle',
+        svgParams: { r, target: 'h' }
+      };
+    }
+  },
+
+  equilateral_h_from_r: {
+    type: 'length',
+    label: 'Высота равностороннего по r',
+    pdfRef: 'r × 3',
+    generate() {
+      const r = randInt(3, 20);
+      return {
+        text: `Радиус окружности, вписанной в равносторонний треугольник, равен ${r}. Найдите высоту этого треугольника.`,
+        answer: 3 * r,
+        hint: 'r = h / 3 в равностороннем треугольнике (точка пересечения медиан делит их 2:1).',
+        solution: [
+          'В равностороннем треугольнике центр вписанной окружности = центроид, делящий высоту в отношении 2:1 от вершины.',
+          `Радиус вписанной окружности r = h/3, поэтому h = 3r = 3 · ${r} = ${3*r}.`
+        ],
+        pitfalls: ['Не умножайте на 2 (это для описанной h = 1.5R).'],
+        svgKey: 'circle_in_equilateral',
+        svgParams: { r, target: 'h' }
+      };
+    }
+  },
+
+  equilateral_h_from_R: {
+    type: 'length',
+    label: 'Высота равностороннего по R',
+    pdfRef: 'R × 1.5',
+    generate() {
+      const R = randInt(2, 20) * 2; // чётное, чтобы h целое
+      return {
+        text: `Радиус окружности, описанной около равностороннего треугольника, равен ${R}. Найдите высоту этого треугольника.`,
+        answer: R * 1.5,
+        hint: 'R = 2h/3 в равностороннем треугольнике.',
+        solution: [
+          'Центр описанной окружности равностороннего треугольника = центроид; R = 2h/3 (расстояние от вершины до центроида).',
+          `h = 1.5 · R = 1.5 · ${R} = ${R*1.5}.`
+        ],
+        pitfalls: ['Не делите на 2.', 'Соотношение h:r:R = 3:1:2.'],
+        svgKey: 'equilateral_in_circle',
+        svgParams: { R, target: 'h' }
+      };
+    }
+  },
+
+  chord_length: {
+    type: 'length',
+    label: 'Длина хорды',
+    pdfRef: 'Пифагор × 2',
+    generate() {
+      const t = choice(PYTH_TRIPLES);
+      // t = [a, b, c], c — гипотенуза (радиус), b — половина хорды (которая искомая), a — расстояние от центра
+      const R = t[2];
+      const dist = t[0];
+      const halfChord = t[1];
+      return {
+        text: `Найдите длину хорды окружности радиусом ${R}, если расстояние от центра окружности до хорды равно ${dist}.`,
+        answer: 2 * halfChord,
+        hint: 'Расстояние от центра до хорды — это перпендикуляр, делящий хорду пополам.',
+        solution: [
+          'Перпендикуляр из центра делит хорду на две равные части. Получаем прямоугольный треугольник с гипотенузой R и катетом — расстоянием.',
+          `Пифагорова тройка: ${dist}, ${halfChord}, ${R}.`,
+          `Длина хорды = 2 · ${halfChord} = ${2*halfChord}.`
+        ],
+        pitfalls: ['Не забудьте умножить на 2 — половина хорды и хорда не одно и то же.', 'Гипотенуза — это радиус, не хорда.'],
+        svgKey: 'chord_distance',
+        svgParams: { R, dist, target: 'хорда' }
+      };
+    }
+  },
+
+  center_on_AB_AC: {
+    type: 'length',
+    label: 'Центр на AB, найти AC',
+    pdfRef: 'Пифагор',
+    generate() {
+      const t = choice(PYTH_TRIPLES.filter(tt => tt[2] % 2 === 0)); // нужен чётный c (=2R)
+      const R = t[2] / 2;
+      const BC = t[0]; // меньший катет
+      const AC = t[1];
+      return {
+        text: `Центр окружности, описанной около треугольника ABC, лежит на стороне AB. Радиус окружности равен ${R}. Найдите AC, если BC = ${BC}.`,
+        answer: AC,
+        hint: 'AB = 2R — диаметр; ∠C = 90°.',
+        solution: [
+          `Центр на AB ⇒ AB — диаметр, AB = 2R = ${2*R}.`,
+          'Угол C опирается на диаметр и равен 90°. Треугольник ABC прямоугольный.',
+          `По Пифагору ${t[0]}² + ${t[1]}² = ${t[2]}²: AC = ${AC}.`
+        ],
+        pitfalls: ['Не забудьте удвоить R.', 'Сторона BC — катет, AB — гипотенуза.'],
+        svgKey: 'center_on_AB',
+        svgParams: { R, BC, target: 'AC' }
+      };
+    }
+  },
+
+  diameter_from_chord: {
+    type: 'length',
+    label: 'Диаметр через хорду',
+    pdfRef: 'Пифагор × 2',
+    generate() {
+      const t = choice(PYTH_TRIPLES);
+      // chord = 2 * t[1], distance = t[0], R = t[2]
+      const chord = 2 * t[1];
+      const dist = t[0];
+      const R = t[2];
+      return {
+        text: `Длина хорды окружности равна ${chord}, а расстояние от центра окружности до этой хорды равно ${dist}. Найдите диаметр окружности.`,
+        answer: 2 * R,
+        hint: 'Половина хорды + расстояние + радиус = прямоугольный треугольник.',
+        solution: [
+          `Половина хорды = ${chord}/2 = ${chord/2}.`,
+          `Прямоугольный треугольник: катеты ${dist} и ${chord/2}, гипотенуза R.`,
+          `Пифагорова тройка: ${dist}, ${chord/2}, ${R}. Диаметр = 2R = ${2*R}.`
+        ],
+        pitfalls: ['Сначала делите хорду пополам.', 'В конце удваивайте R, чтобы получить диаметр.'],
+        svgKey: 'chord_distance',
+        svgParams: { dist, chord, target: 'диаметр' }
+      };
+    }
+  },
+
+  right_triangle_R: {
+    type: 'length',
+    label: 'R описанной около прямоугольного треугольника',
+    pdfRef: 'Гипотенуза / 2',
+    generate() {
+      const t = choice(PYTH_TRIPLES.filter(tt => tt[2] % 2 === 0)); // чётная гипотенуза
+      return {
+        text: `В треугольнике ABC известно, что AC = ${t[0]}, BC = ${t[1]}, угол C равен 90°. Найдите радиус описанной около этого треугольника окружности.`,
+        answer: t[2] / 2,
+        hint: 'У прямоугольного треугольника гипотенуза — диаметр описанной окружности.',
+        solution: [
+          'Гипотенуза прямоугольного треугольника = диаметр описанной окружности.',
+          `Пифагор: ${t[0]}² + ${t[1]}² = AB² ⇒ AB = ${t[2]}.`,
+          `R = AB/2 = ${t[2]}/2 = ${t[2]/2}.`
+        ],
+        pitfalls: ['Не забудьте разделить гипотенузу пополам.', 'AC и BC — катеты, не путайте с гипотенузой.'],
+        svgKey: 'right_in_circle',
+        svgParams: { AC: t[0], BC: t[1], target: 'R' }
+      };
+    }
+  },
+
+  intersecting_chords: {
+    type: 'length',
+    label: 'Пересекающиеся хорды',
+    pdfRef: 'Произведение делим',
+    generate() {
+      // выбираем красивые числа: BP * DP = CP * AP, BP, CP даны, найти AP
+      const bp = randInt(5, 18);
+      const cp = randInt(3, 10);
+      const dp = randInt(4, 14);
+      // AP = bp * dp / cp — нужно целое
+      // Перевыберем: возьмём AP и CP, тогда BP·DP = AP·CP
+      const ap = randInt(8, 30);
+      const cp2 = randInt(3, 10);
+      const product = ap * cp2;
+      // разложить product на множители так, чтобы оба были разумные
+      const divisors = [];
+      for (let i = 2; i <= 30; i++) if (product % i === 0 && product / i >= 2 && product / i <= 30) divisors.push(i);
+      if (divisors.length === 0) {
+        // запасной вариант
+        return GENERATORS.intersecting_chords.generate();
+      }
+      const bp2 = choice(divisors);
+      const dp2 = product / bp2;
+      return {
+        text: `Хорды AC и BD окружности пересекаются в точке P, BP = ${bp2}, CP = ${cp2}, DP = ${dp2}. Найдите AP.`,
+        answer: ap,
+        hint: 'BP · DP = CP · AP (произведения отрезков пересекающихся хорд равны).',
+        solution: [
+          'По теореме о пересекающихся хордах: BP · DP = CP · AP.',
+          `${bp2} · ${dp2} = ${cp2} · AP ⇒ AP = ${bp2*dp2}/${cp2} = ${ap}.`
+        ],
+        pitfalls: ['Правильно распределите отрезки: BP·DP относятся к одной хорде BD, CP·AP — к другой.', 'Не складывайте — нужно умножение.'],
+        svgKey: 'intersecting_chords',
+        svgParams: { BP: bp2, CP: cp2, DP: dp2, target: 'AP' }
+      };
+    }
+  },
+
+  // ===== ПЛОЩАДИ =========================================================
+
+  triangle_area_rp: {
+    type: 'area',
+    label: 'S треугольника = r·p',
+    pdfRef: 'P/2 × r',
+    generate() {
+      const perim = randInt(15, 30) * 2; // чётный
+      const maxSide = Math.floor(perim / 2) - 1; // сторона треугольника всегда меньше полупериметра
+      const side = randInt(7, maxSide);
+      const r = randInt(2, 8);
+      return {
+        text: `Периметр треугольника равен ${perim}, а одна из его сторон равна ${side}, а радиус вписанной в него окружности равен ${r}. Найдите площадь этого треугольника.`,
+        answer: (perim / 2) * r,
+        hint: 'S = r · p, где p — полупериметр. Лишние данные про одну сторону игнорируйте.',
+        solution: [
+          'Площадь треугольника через радиус вписанной окружности и полупериметр: S = r · p.',
+          `Полупериметр p = ${perim}/2 = ${perim/2}.`,
+          `S = ${r} · ${perim/2} = ${(perim/2)*r}.`
+        ],
+        pitfalls: ['Не используйте сторону, она дана для отвлечения.', 'p — это половина периметра, а не сам периметр.'],
+        svgKey: 'triangle_with_incircle',
+        svgParams: { P: perim, r, target: 'S' }
+      };
+    }
+  },
+
+  square_around_circle_area: {
+    type: 'area',
+    label: 'S квадрата вокруг круга',
+    pdfRef: '(2r)²',
+    generate() {
+      const r = randInt(3, 25);
+      return {
+        text: `Найдите площадь квадрата, описанного вокруг окружности радиуса ${r}.`,
+        answer: (2 * r) ** 2,
+        hint: 'Сторона квадрата = диаметр окружности = 2r.',
+        solution: [
+          `Сторона квадрата = диаметр окружности = 2r = ${2*r}.`,
+          `S = ${2*r}² = ${(2*r)**2}.`
+        ],
+        pitfalls: ['Сторона = диаметр, а не радиус.', 'Не забудьте возвести в квадрат.'],
+        svgKey: 'square_around_circle',
+        svgParams: { r, target: 'S' }
+      };
+    }
+  },
+
+  sector_area: {
+    type: 'area',
+    label: 'S сектора',
+    pdfRef: 'S × α/360',
+    generate() {
+      // делаем так, чтобы 360/угол делилось, и S тоже целое
+      const angles = [30, 45, 60, 72, 90, 120, 180];
+      const a = choice(angles);
+      const ratio = 360 / a; // целое для всех углов выше
+      const S = randInt(2, 25) * ratio; // S делится на 360/a
+      const ans = S / ratio;
+      return {
+        text: `Площадь круга равна ${S}. Найдите площадь сектора этого круга, центральный угол которого равен ${a}°.`,
+        answer: ans,
+        hint: 'Площадь сектора пропорциональна центральному углу: S_сект = S · α / 360.',
+        solution: [
+          `Доля сектора = α/360° = ${a}/360 = 1/${ratio}.`,
+          `S_сект = S · α/360 = ${S} · ${a}/360 = ${S}/${ratio} = ${ans}.`
+        ],
+        pitfalls: ['Делите площадь, а не угол.', 'Угол в градусах, не в радианах.'],
+        svgKey: 'sector',
+        svgParams: { angle: a, S, target: 'S сектора' }
+      };
+    }
+  }
+
+};
+
+/* =========================================================================
+   5. СОСТОЯНИЕ И ЛОГИКА
+   ========================================================================= */
+
+const state = {
+  mode: 'archive_new',
+  current: null,        // {id, exact, type, subtype, text, answer, hint, solution, ...}
+  checked: false,
+  attempts: 0,
+  showHint: false,
+  showSolution: false,
+  stats: SAFE_LS.get('oge16_stats', { solved: 0, correct: 0, wrong: 0, byType: {} }),
+  archiveSeen: SAFE_LS.get('oge16_archiveSeen', []),
+  diag: null            // {tasks: [...], idx: 0, results: []}
+};
+
+function saveStats() { SAFE_LS.set('oge16_stats', state.stats); SAFE_LS.set('oge16_archiveSeen', state.archiveSeen); }
+
+function refreshStats() {
+  $('#stSolved').textContent = state.stats.solved;
+  $('#stCorrect').textContent = state.stats.correct;
+  $('#stWrong').textContent = state.stats.wrong;
+  const a = state.stats.solved ? Math.round(100 * state.stats.correct / state.stats.solved) : null;
+  $('#stAcc').textContent = a == null ? '—' : (a + '%');
+}
+
+/* ----- генерация задачи ----- */
+
+function genFromKey(key) {
+  const g = GENERATORS[key];
+  if (!g) return null;
+  const raw = g.generate();
+  return {
+    id: 'gen_' + key + '_' + uid(),
+    exact: false,
+    source: null,
+    type: g.type,
+    subtype: key,
+    subtypeLabel: g.label,
+    ...raw
+  };
+}
+
+function pickTask() {
+  switch (state.mode) {
+    case 'archive_new': {
+      const seen = new Set(state.archiveSeen);
+      const fresh = ARCHIVE.filter(t => !seen.has(t.id));
+      if (fresh.length === 0) {
+        // все увидены — выбираем случайно из всего архива
+        return { ...choice(ARCHIVE) };
+      }
+      return { ...choice(fresh) };
+    }
+    case 'archive_exact': {
+      return { ...choice(ARCHIVE) };
+    }
+    case 'mistakes': {
+      const rows = Object.entries(state.stats.byType || {})
+        .filter(([k, v]) => GENERATORS[k] && v.tried > v.right)
+        .map(([k, v]) => ({ key: k, misses: v.tried - v.right, rate: (v.tried - v.right) / Math.max(1, v.tried) }));
+      if (!rows.length) {
+        toast('Ошибок пока нет — включаю все типы');
+        return genFromKey(choice(Object.keys(GENERATORS)));
+      }
+      rows.sort((a, b) => (b.rate - a.rate) || (b.misses - a.misses));
+      const top = rows.slice(0, Math.min(5, rows.length)).map(r => r.key);
+      return genFromKey(choice(top));
+    }
+    case 'archive_similar': {
+      // выбираем тот тип, прототип которого есть в архиве
+      const keys = Object.keys(GENERATORS).filter(k => GENERATORS[k].archetypeOf);
+      const key = choice(keys);
+      return genFromKey(key);
+    }
+    case 'all': {
+      const keys = Object.keys(GENERATORS);
+      return genFromKey(choice(keys));
+    }
+    case 'angle':
+    case 'length':
+    case 'area': {
+      const keys = Object.keys(GENERATORS).filter(k => GENERATORS[k].type === state.mode);
+      return genFromKey(choice(keys));
+    }
+    case 'diagnostic': {
+      // ничего — задача берётся из state.diag.tasks
+      return state.diag.tasks[state.diag.idx];
+    }
+  }
+  return null;
+}
+
+function startDiagnostic() {
+  // 10 задач: 4 углы (включая 1 из архива), 4 длины, 2 площади
+  const angleKeys = Object.keys(GENERATORS).filter(k => GENERATORS[k].type === 'angle');
+  const lengthKeys = Object.keys(GENERATORS).filter(k => GENERATORS[k].type === 'length');
+  const areaKeys = Object.keys(GENERATORS).filter(k => GENERATORS[k].type === 'area');
+  const tasks = [];
+  // 1 архивная
+  tasks.push({ ...choice(ARCHIVE) });
+  // 3 угол (генерированные)
+  const angleSample = [...angleKeys].sort(() => Math.random() - 0.5).slice(0, 3);
+  angleSample.forEach(k => tasks.push(genFromKey(k)));
+  // 4 длины
+  const lenSample = [...lengthKeys].sort(() => Math.random() - 0.5).slice(0, 4);
+  lenSample.forEach(k => tasks.push(genFromKey(k)));
+  // 2 площади
+  const areaSample = [...areaKeys].sort(() => Math.random() - 0.5).slice(0, 2);
+  areaSample.forEach(k => tasks.push(genFromKey(k)));
+  // перемешать порядок
+  tasks.sort(() => Math.random() - 0.5);
+  state.diag = { tasks, idx: 0, results: [] };
+}
+
+/* ----- рендер задачи ----- */
+
+function renderTask() {
+  if (state.mode === 'teacher') return renderTeacher();
+  if (state.mode === 'diagnostic' && !state.diag) startDiagnostic();
+  if (state.mode === 'diagnostic' && state.diag.idx >= state.diag.tasks.length) return renderDiagResults();
+
+  if (!state.current) state.current = pickTask();
+  const t = state.current;
+  state.checked = false;
+  state.attempts = 0;
+  state.showHint = false;
+  state.showSolution = false;
+
+  const svgFn = SVG[t.svgKey];
+  const svg = svgFn ? svgFn(t.svgParams || {}) : '<svg viewBox="0 0 400 200"><text x="200" y="100" text-anchor="middle" font-family="serif" font-style="italic" fill="#888">схема</text></svg>';
+
+  const tagType = t.type === 'angle' ? 'tag-angle' : t.type === 'length' ? 'tag-length' : 'tag-area';
+  const typeName = t.type === 'angle' ? 'УГОЛ' : t.type === 'length' ? 'ДЛИНА' : 'ПЛОЩАДЬ';
+
+  const sourceBadge = t.exact
+    ? `<span class="tag tag-archive">АРХИВ</span>${t.needsReview ? '<span class="tag tag-generated">СВЕРИТЬ</span>' : ''}<span class="task-source">${esc(t.source)}</span>`
+    : `<span class="tag tag-generated">ГЕНЕРАТОР</span><span class="task-source">${esc(t.subtypeLabel || '')}</span>`;
+
+  let progressHtml = '';
+  if (state.mode === 'diagnostic') {
+    progressHtml = `<div class="diag-progress">${state.diag.tasks.map((_, i) => {
+      const r = state.diag.results[i];
+      const cls = r === true ? 'ok' : r === false ? 'err' : i === state.diag.idx ? 'current' : '';
+      return `<div class="diag-dot ${cls}"></div>`;
+    }).join('')}</div>`;
+  }
+
+  const html = `
+    ${progressHtml}
+    <div class="task-panel">
+      <div class="task-meta">
+        <span class="task-num">№16</span>
+        <span class="tag ${tagType}">${typeName}</span>
+        ${sourceBadge}
+      </div>
+      <div class="task-body">
+        <div class="diagram">${svg}</div>
+        <div class="task-content">
+          <div class="task-text">${esc(t.text)}</div>
+          <div class="answer-row">
+            <span class="answer-label">Ответ:</span>
+            <input class="answer" id="ansInput" type="text" inputmode="decimal" autocomplete="off" placeholder="число">
+            <button class="btn btn-primary" id="btnCheck">Проверить</button>
+            <button class="btn btn-ghost" id="btnHint">Подсказка</button>
+            <button class="btn btn-soft" id="btnSolution" disabled>Решение после ответа</button>
+            <button class="btn btn-soft" id="btnNext">Следующая →</button>
+          </div>
+          <div class="feedback" id="fb"></div>
+          <details class="hint" id="hintBox"><summary>Подсказка</summary><div class="body">${esc(t.hint)}</div></details>
+          <details class="solution" id="solBox"><summary>Пошаговое решение</summary><div class="body">
+            ${t.solution.map(s => `<div class="step">${esc(s)}</div>`).join('')}
+            ${t.pitfalls && t.pitfalls.length ? `<div class="pitfalls"><strong>Типичные ошибки:</strong> ${t.pitfalls.map(esc).join(' · ')}</div>` : ''}
+          </div></details>
+        </div>
+      </div>
+    </div>
+  `;
+
+  $('#mainArea').innerHTML = html;
+
+  $('#ansInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkAnswer(); });
+  $('#ansInput').addEventListener('input', () => {
+    if (!state.checked) {
+      $('#ansInput').classList.remove('wrong');
+      const fb = $('#fb');
+      if (fb) fb.className = 'feedback';
+    }
+  });
+  $('#btnCheck').addEventListener('click', checkAnswer);
+  $('#btnHint').addEventListener('click', () => { $('#hintBox').open = true; });
+  $('#btnSolution').addEventListener('click', () => { if (state.checked) $('#solBox').open = true; });
+  $('#solBox').addEventListener('toggle', () => {
+    const box = $('#solBox');
+    if (box.open && !state.checked) {
+      box.open = false;
+      const fb = $('#fb');
+      fb.className = 'feedback show err';
+      fb.innerHTML = 'Сначала сделайте попытку. Решение откроется после верного ответа или после двух ошибок.';
+    }
+  });
+  $('#btnNext').addEventListener('click', nextTask);
+  $('#ansInput').focus();
+}
+
+function finalizeResult(ok) {
+  if (state.checked) return;
+  const t = state.current;
+  state.checked = true;
+
+  state.stats.solved += 1;
+  if (ok) state.stats.correct += 1; else state.stats.wrong += 1;
+  state.stats.byType[t.subtype] = state.stats.byType[t.subtype] || { tried: 0, right: 0 };
+  state.stats.byType[t.subtype].tried += 1;
+  if (ok) state.stats.byType[t.subtype].right += 1;
+
+  if (t.exact && !state.archiveSeen.includes(t.id)) {
+    state.archiveSeen.push(t.id);
+  }
+  saveStats();
+  refreshStats();
+
+  if (state.mode === 'diagnostic') {
+    state.diag.results[state.diag.idx] = ok;
+  }
+}
+
+function checkAnswer() {
+  if (state.checked) return;
+  const t = state.current;
+  const inp = $('#ansInput');
+  const val = inp.value;
+  const ok = answersMatch(val, t.answer);
+  const fb = $('#fb');
+
+  if (ok) {
+    inp.classList.remove('wrong');
+    inp.classList.add('correct');
+    fb.className = 'feedback show ok';
+    fb.innerHTML = `Верно! <small>Ответ: ${t.answer}</small>`;
+    finalizeResult(true);
+    $('#btnCheck').disabled = true;
+    $('#btnSolution').disabled = false;
+    $('#btnSolution').textContent = 'Решение';
+    return;
+  }
+
+  state.attempts += 1;
+  inp.classList.remove('correct');
+  inp.classList.add('wrong');
+
+  // В диагностике засчитываем результат именно первой попытки — без второго шанса.
+  if (state.mode === 'diagnostic') {
+    fb.className = 'feedback show err';
+    fb.innerHTML = `В диагностике вторая попытка не даётся. Правильный ответ: <b>${t.answer}</b>. <small>Разбор появится по кнопке «Решение». Дальше — следующая задача.</small>`;
+    finalizeResult(false);
+    $('#btnCheck').disabled = true;
+    $('#btnSolution').disabled = false;
+    $('#btnSolution').textContent = 'Решение';
+    $('#solBox').open = true;
+    return;
+  }
+
+  if (state.attempts < 2) {
+    fb.className = 'feedback show err';
+    fb.innerHTML = 'Пока не сошлось. Ответ не раскрываю — попробуйте ещё раз. <small>Подсказка уже открыта: проверьте, какой угол/отрезок к чему относится.</small>';
+    $('#hintBox').open = true;
+    $('#btnCheck').textContent = 'Проверить ещё раз';
+    setTimeout(() => { try { inp.focus(); inp.select(); } catch(e) {} }, 30);
+    return;
+  }
+
+  fb.className = 'feedback show err';
+  fb.innerHTML = `Не получилось со второй попытки. Правильный ответ: <b>${t.answer}</b>. <small>Откройте решение и разберите ошибку; этот тип можно потренировать в режиме «Тренировать ошибки».</small>`;
+  finalizeResult(false);
+  $('#btnCheck').disabled = true;
+  $('#btnSolution').disabled = false;
+  $('#btnSolution').textContent = 'Решение';
+  $('#solBox').open = true;
+}
+
+function nextTask() {
+  if (state.mode === 'diagnostic') {
+    if (!state.checked) finalizeResult(false); // пропуск в диагностике считается ошибкой
+    state.diag.idx += 1;
+    state.current = null;
+    if (state.diag.idx >= state.diag.tasks.length) {
+      return renderDiagResults();
+    }
+  } else {
+    state.current = null;
+  }
+  renderTask();
+}
+
+function renderDiagResults() {
+  const tasks = state.diag.tasks;
+  const results = state.diag.results;
+  const correct = results.filter(r => r === true).length;
+  const pct = Math.round(100 * correct / tasks.length);
+
+  // по типам
+  const byType = {};
+  tasks.forEach((t, i) => {
+    byType[t.type] = byType[t.type] || { tried: 0, right: 0 };
+    byType[t.type].tried += 1;
+    if (results[i] === true) byType[t.type].right += 1;
+  });
+  const typeLabel = { angle: 'Углы', length: 'Длины', area: 'Площади' };
+
+  const html = `
+    <div class="diag-results">
+      <h2>Диагностика завершена</h2>
+      <div class="diag-score">${correct}/${tasks.length}</div>
+      <div style="font-family: var(--serif); font-size: 17px; color: var(--ink-soft); margin-top: 6px;">
+        Точность: <b>${pct}%</b>
+      </div>
+      <table>
+        <thead><tr><th>Раздел</th><th>Решено</th><th>Точность</th></tr></thead>
+        <tbody>
+          ${Object.keys(byType).map(k => `
+            <tr>
+              <td>${typeLabel[k] || k}</td>
+              <td>${byType[k].right} / ${byType[k].tried}</td>
+              <td>${Math.round(100 * byType[k].right / byType[k].tried)}%</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+      <div style="margin-top: 22px;">
+        <button class="btn btn-primary" id="diagAgain">Пройти снова</button>
+        <button class="btn btn-ghost" id="diagBack">К свободной тренировке</button>
+      </div>
+    </div>
+  `;
+  $('#mainArea').innerHTML = html;
+  $('#diagAgain').addEventListener('click', () => { state.diag = null; state.current = null; renderTask(); });
+  $('#diagBack').addEventListener('click', () => { state.diag = null; state.current = null; selectMode('all'); });
+}
+
+/* =========================================================================
+   6. РЕЖИМ УЧИТЕЛЯ
+   ========================================================================= */
+
+function renderTeacher() {
+  // Покрытие по типам, источники архива, тест генераторов, импорт/экспорт
+  const gens = Object.keys(GENERATORS);
+  const typeRows = gens.map(k => {
+    const g = GENERATORS[k];
+    const archetype = g.archetypeOf || '';
+    const stats = state.stats.byType[k];
+    const trained = stats ? `${stats.right}/${stats.tried}` : '—';
+    return `
+      <tr data-gen="${k}">
+        <td><code style="font-family: var(--mono); font-size: 12px;">${k}</code></td>
+        <td>${esc(g.label)}</td>
+        <td><span class="pill ok">${g.type === 'angle' ? 'угол' : g.type === 'length' ? 'длина' : 'площадь'}</span></td>
+        <td>${esc(g.pdfRef || '')}</td>
+        <td>${archetype ? `<span class="pill warn">${archetype}</span>` : '—'}</td>
+        <td style="font-family: var(--mono); font-size: 12px;">${trained}</td>
+        <td><button class="gen-test-btn" data-key="${k}">генерация ↻</button></td>
+      </tr>
+      <tr class="gen-sample-row" data-sample-for="${k}"><td colspan="7" style="background:#FDFCF7; padding: 0;"></td></tr>
+    `;
+  }).join('');
+
+  const archRows = ARCHIVE.map(t => `
+    <tr>
+      <td><span class="pill warn">${esc(t.id)}</span></td>
+      <td>${esc(t.source)}</td>
+      <td>${esc(t.subtypeLabel)}</td>
+      <td style="font-family: var(--mono);">${t.answer}</td>
+      <td>${t.needsReview ? '<span class="pill warn">сверить с Archive(4)</span>' : '<span class="pill ok">проверено</span>'}${t.verificationStatus ? `<div class="gen-sample" style="margin-top:3px;">${esc(t.verificationStatus)}</div>` : ''}</td>
+    </tr>
+  `).join('');
+
+  const html = `
+    <div class="teacher-panel">
+      <h2>Режим учителя</h2>
+      <div class="lead">Покрытие типов, источники архива, тест генераторов, импорт/экспорт JSON. Архивные тексты помечены как exact, но статус сверки оставлен осторожным: «verified_by_prompt» до ручной проверки Archive(4).</div>
+
+      <div class="teacher-section">
+        <h3>Архивные задачи (exact)</h3>
+        <table class="cov-table">
+          <thead><tr><th>ID</th><th>Источник</th><th>Тип</th><th>Ответ</th><th>Статус</th></tr></thead>
+          <tbody>${archRows}</tbody>
+        </table>
+      </div>
+
+      <div class="teacher-section">
+        <h3>Покрытие генераторами (${gens.length} типов)</h3>
+        <table class="cov-table">
+          <thead><tr><th>ключ</th><th>описание</th><th>раздел</th><th>правило</th><th>прототип архива</th><th>трен. ученика</th><th></th></tr></thead>
+          <tbody>${typeRows}</tbody>
+        </table>
+      </div>
+
+      <div class="teacher-section">
+        <h3>Экспорт / импорт JSON</h3>
+        <textarea class="json-area" id="jsonArea" placeholder="JSON-индекс архива + генераторов появится здесь"></textarea>
+        <div class="json-controls">
+          <button class="btn btn-soft" id="jsonExport">Экспортировать архив</button>
+          <button class="btn btn-soft" id="jsonExportStats">Экспортировать статистику</button>
+          <button class="btn btn-ghost" id="jsonClearStats">Сбросить статистику</button>
+          <button class="btn btn-ghost" id="jsonClearSeen">Забыть просмотренное</button>
+        </div>
+      </div>
+
+      <div class="teacher-section">
+        <h3>Информация</h3>
+        <div style="font-family: var(--serif); font-size: 14px; color: var(--ink-soft);">
+          Всего архивных задач: <b>${ARCHIVE.length}</b> ·
+          Всего генераторов: <b>${gens.length}</b> ·
+          Углы: <b>${gens.filter(k => GENERATORS[k].type === 'angle').length}</b> ·
+          Длины: <b>${gens.filter(k => GENERATORS[k].type === 'length').length}</b> ·
+          Площади: <b>${gens.filter(k => GENERATORS[k].type === 'area').length}</b> ·
+          localStorage: <b>${SAFE_LS.available ? 'доступен' : 'не доступен'}</b>.
+        </div>
+      </div>
+    </div>
+  `;
+  $('#mainArea').innerHTML = html;
+
+  // тест генератора по клику
+  $$('.gen-test-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.key;
+      const t = genFromKey(key);
+      const row = $(`tr.gen-sample-row[data-sample-for="${key}"] td`);
+      row.innerHTML = `<div class="gen-sample" style="padding: 8px 14px;">${esc(t.text)} <span class="ans">→ ${t.answer}</span></div>`;
+    });
+  });
+
+  // экспорт
+  $('#jsonExport').addEventListener('click', () => {
+    const data = {
+      archive: ARCHIVE.map(t => ({
+        id: t.id, source: t.source, type: t.type, subtype: t.subtype,
+        text: t.text, answer: t.answer, exact: t.exact, needsReview: t.needsReview, verificationStatus: t.verificationStatus || null
+      })),
+      generators: Object.keys(GENERATORS).map(k => ({
+        key: k, label: GENERATORS[k].label, type: GENERATORS[k].type,
+        archetypeOf: GENERATORS[k].archetypeOf || null
+      }))
+    };
+    $('#jsonArea').value = JSON.stringify(data, null, 2);
+    toast('Экспортировано');
+  });
+
+  $('#jsonExportStats').addEventListener('click', () => {
+    $('#jsonArea').value = JSON.stringify({ stats: state.stats, seen: state.archiveSeen }, null, 2);
+    toast('Статистика экспортирована');
+  });
+
+  $('#jsonClearStats').addEventListener('click', () => {
+    if (!confirm('Сбросить всю статистику?')) return;
+    state.stats = { solved: 0, correct: 0, wrong: 0, byType: {} };
+    saveStats(); refreshStats(); renderTeacher();
+    toast('Статистика очищена');
+  });
+
+  $('#jsonClearSeen').addEventListener('click', () => {
+    state.archiveSeen = [];
+    saveStats();
+    toast('Список просмотренных задач очищен');
+  });
+}
+
+/* =========================================================================
+   7. ТОСТЫ И ПРОЧЕЕ
+   ========================================================================= */
+
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1700);
+}
+
+/* ----- переключение режима ----- */
+
+function selectMode(mode) {
+  // Защита от случайного выхода из активной диагностики
+  if (state.mode === 'diagnostic' && mode !== 'diagnostic' && state.diag && state.diag.idx > 0 && state.diag.idx < state.diag.tasks.length) {
+    const ok = confirm(`Прервать диагностику? Сейчас ${state.diag.idx}/${state.diag.tasks.length}. Результат не сохранится.`);
+    if (!ok) return;
+  }
+  state.mode = mode;
+  state.current = null;
+  if (mode === 'diagnostic') state.diag = null;
+  $$('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+  renderTask();
+}
+
+$('#modeNav').addEventListener('click', e => {
+  const btn = e.target.closest('.mode-btn');
+  if (!btn) return;
+  const more = btn.closest('.more-modes');
+  selectMode(btn.dataset.mode);
+  if (more) more.open = false;
+});
+
+/* ----- старт ----- */
+
+if (!SAFE_LS.available) $('#lsNote').textContent = '(статистика не сохраняется между сессиями)';
+refreshStats();
+renderTask();
+</script>
+
+</body>
+</html>

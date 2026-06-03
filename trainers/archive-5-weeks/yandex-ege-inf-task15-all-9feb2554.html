@@ -1,0 +1,2530 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ЕГЭ Информатика. Задание 15 — все задачи Яндекс Учебника</title>
+  <meta name="saved-from" content="https://education.yandex.ru/ege/inf/tasks?task_id=59652c46-cad4-4ec9-a6a2-0c22f626d388&amp;sort_by=newFirst&amp;category_id=e5019d77-8ec1-4e72-9205-483ffc096bdc&amp;category_id=d711d12f-ebb4-4643-8544-beb27c723aa4&amp;category_id=e55a0b89-3969-4477-b6c4-82e51858ebbb&amp;category_id=676a40b3-fdfa-4def-be09-c63f65f3eae5&amp;category_id=12cbe1a7-fe50-4e2c-b9ce-d4c408b51021&amp;category_id=278568fe-6c4b-4eb2-b0e0-2681a636fa4a&amp;level=0&amp;source=all">
+  <style>
+    :root { color-scheme: light; --line:#d8dee9; --muted:#647083; --ink:#162033; --accent:#2454ff; --bg:#f6f7fb; --card:#fff; }
+    body { margin:0; font:16px/1.55 Arial, Helvetica, sans-serif; color:var(--ink); background:var(--bg); }
+    header { position:sticky; top:0; z-index:2; background:#fff; border-bottom:1px solid var(--line); }
+    .wrap { max-width:980px; margin:0 auto; padding:20px; }
+    h1 { margin:0 0 8px; font-size:26px; line-height:1.2; }
+    .meta { color:var(--muted); font-size:14px; }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .chip { border:1px solid var(--line); border-radius:999px; padding:4px 10px; background:#fff; font-size:13px; }
+    main { max-width:980px; margin:0 auto; padding:20px; }
+    article { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:18px 20px; margin:0 0 16px; box-shadow:0 1px 2px rgba(22,32,51,.04); }
+    article h2 { margin:0 0 8px; font-size:20px; }
+    .task-meta { display:flex; flex-wrap:wrap; gap:8px; color:var(--muted); font-size:13px; margin-bottom:14px; }
+    .task-meta span { border:1px solid var(--line); border-radius:6px; padding:2px 8px; background:#fafbfe; }
+    p { margin:0 0 12px; }
+    .answer { margin-top:14px; border-top:1px solid var(--line); padding-top:10px; }
+    summary { cursor:pointer; color:var(--accent); font-weight:700; }
+    code { background:#eef2ff; padding:1px 4px; border-radius:4px; }
+    pre { white-space:pre-wrap; overflow:auto; background:#f0f2f7; border-radius:6px; padding:12px; }
+    img { max-width:100%; height:auto; }
+    a { color:var(--accent); }
+    @media print { header { position:static; } article { break-inside:avoid; box-shadow:none; } body { background:#fff; } }
+  </style>
+  <script>
+    window.MathJax = { tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]] }, svg: { fontCache: "global" } };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>ЕГЭ по информатике — задание 15</h1>
+      <div class="meta">Источник: <a href="https://education.yandex.ru/ege/inf/tasks?task_id=59652c46-cad4-4ec9-a6a2-0c22f626d388&amp;sort_by=newFirst&amp;category_id=e5019d77-8ec1-4e72-9205-483ffc096bdc&amp;category_id=d711d12f-ebb4-4643-8544-beb27c723aa4&amp;category_id=e55a0b89-3969-4477-b6c4-82e51858ebbb&amp;category_id=676a40b3-fdfa-4def-be09-c63f65f3eae5&amp;category_id=12cbe1a7-fe50-4e2c-b9ce-d4c408b51021&amp;category_id=278568fe-6c4b-4eb2-b0e0-2681a636fa4a&amp;level=0&amp;source=all">Яндекс Учебник</a>. Сохранено: 01.06.2026, 22:14. Заданий: 132.</div>
+      <div class="chips">
+        <span class="chip">Отрезки</span>
+        <span class="chip">Множества</span>
+        <span class="chip">Битовые операции</span>
+        <span class="chip">Графики</span>
+        <span class="chip">Арифметические операции</span>
+        <span class="chip">Смешанные операции</span>
+      </div>
+    </div>
+  </header>
+  <main>
+    <article id="task-1">
+      <h2>1. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 1</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 9ef95d7d-b8dd-4003-ba34-2bd4e7f2e641</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через $ДЕЛ(n, m)$ утверждение «натуральное число <em>n</em> делится без остатка на натуральное число <em>m</em>». Для какого наименьшего натурального числа <em>A</em> формула</p>
+<p>$(ДЕЛ(x,12)∧ДЕЛ(x,5))→ ДЕЛ(x,А)$</p>
+<p>тождественно истинна (то есть принимает значение 1 при любом натуральном значении переменной <em>х</em>)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 1</p>
+      </details>
+    </article>
+<article id="task-2">
+      <h2>2. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 1</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 60b92a6e-42d8-4735-ad22-873370e8d5c7</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим как $ДЕЛ(х, А)$ утверждение, что натуральное число <em>х</em> делится на А без остатка.</p>
+<p>Для приведённого ниже выражения укажите минимальное натуральное значение <em>x</em> &gt; 1, при котором выражение будет истинным.</p>
+<p>$(ДЕЛ(x,30)∨ДЕЛ(15, x))$</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 3</p>
+      </details>
+    </article>
+<article id="task-3">
+      <h2>3. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 1</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 51eb7efb-e8ff-41c6-8818-6694bd2ee977</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим как $ДЕЛ(х, А)$ утверждение, что натуральное число х делится на А без остатка.</p>
+<p>Для приведённого ниже выражения укажите значение для <em>х</em> = 30, <em>x</em> = 60, <em>x</em> = 90, если 1 — это истина, а 0 — ложь. В ответе укажите 3 числа без пробелов.</p>
+<p>$(ДЕЛ(x,30)∧¬ДЕЛ(x,45))$</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 110</p>
+      </details>
+    </article>
+<article id="task-4">
+      <h2>4. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 1</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 2273f34b-ce38-42dd-a20d-d63c196554a1</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наименьшего целого неотрицательного числа <em>А</em> выражение</p>
+<p>$(x\ge 45)\vee (A&gt;x)$</p>
+<p>тождественно истинно, то есть принимает значение 1 при любом целом неотрицательном <em>x</em>?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 45</p>
+      </details>
+    </article>
+<article id="task-5">
+      <h2>5. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 1</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 2828b357-65be-4924-b1c8-09276df67fb3</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наименьшего целого неотрицательного числа <em>А</em> выражение</p>
+<p>$(x&gt;78)\vee (A&gt;x)$</p>
+<p>тождественно истинно, то есть принимает значение 1 при любом целом неотрицательном <em>x</em>?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 79</p>
+      </details>
+    </article>
+<article id="task-6">
+      <h2>6. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 1</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 05623483-ea1c-4c11-a815-cc5becb1f5fd</span>
+      </div>
+      <section class="task-text">
+        <p>Введём выражение <em>M &amp; K</em>, обозначающее поразрядную конъюнкцию <em>M</em> и <em>K</em> (логическое «И» между соответствующими битами двоичной записи).</p>
+<p><em>M</em> = 33, <em>K</em> = 78, чему равно <em>M &amp; K</em>?</p>
+<p>Ответ укажите в десятичной системе счисления.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 0</p>
+      </details>
+    </article>
+<article id="task-7">
+      <h2>7. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 1</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: fa5ea4b3-5d30-456d-a514-5bdb996e2814</span>
+      </div>
+      <section class="task-text">
+        <p>Введём выражение <em>M &amp; K</em>, обозначающее поразрядную конъюнкцию <em>M</em> и <em>K</em> (логическое «И» между соответствующими битами двоичной записи).</p>
+<p>$M =100100111_{2}$, $K =1100110010_{2}$, сколько единиц в записи <em>M &amp; K</em>?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 3</p>
+      </details>
+    </article>
+<article id="task-8">
+      <h2>8. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 1</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 602f4f53-56d1-4333-8b72-07f5cf6c7f65</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны три отрезка: $P = [5; 17]$, $Q = [10; 21]$ и $R = [12; 30]$. Укажите значение логического выражения при $x = 30$, $x = 9$, $x = 4$, если $1$ означает истину, а $0$ — ложь. В ответе запишите три числа без пробелов.</p>
+<p>$\lnot(x \in Q) \land \lnot(x \in P) \lor (x \in R)$</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 101</p>
+      </details>
+    </article>
+<article id="task-9">
+      <h2>9. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 1</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 33086ce1-73ee-4621-a158-c9344f666df8</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой дан отрезок: $P = [5; 22]$. Укажите <strong>наименьшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$(x \in P) \land \lnot(x \in A)$</p>
+<p>ложно (т. е. принимает значение $0$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 17</p>
+      </details>
+    </article>
+<article id="task-10">
+      <h2>10. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 1</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 6d3bdf4a-126c-4574-9079-40738cf699b3</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой дан отрезок: $P = [10; 21]$. Укажите <strong>наименьшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$\lnot(x \in P) \lor (x \in A)$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 11</p>
+      </details>
+    </article>
+<article id="task-11">
+      <h2>11. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 1</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 5ca88e8c-e0a3-4d20-aa86-d2fd4f4d3427</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $P$ и $Q$ являются натуральные числа, причём</p>
+<p>$P = \{ 15, 18, 24, 33, 41 \}$ и $Q = \{ 3, 9, 18, 35, 41 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$(x \notin P) \land (x \notin Q)$</p>
+<p>может быть истинным или ложным в зависимости от значениея $x$.</p>
+<p>Определите <strong>количество</strong> значений $x$, при которых значение выражения будет <strong>ложно</strong>.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 8</p>
+      </details>
+    </article>
+<article id="task-12">
+      <h2>12. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 1</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 53070eee-b52a-4688-b8b0-3ec435cd0c77</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $P$ и $Q$ являются натуральные числа, причём</p>
+<p>$P = \{ 1, 12, 14, 31, 40, 94 \}$ и $Q = \{ 1, 10, 12, 13, 40 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$(x \in P) \to (x \notin Q)$</p>
+<p>может быть истинным или ложным в зависимости от значения $x$.</p>
+<p>Определите <strong>количество</strong> значений $x$, при которых значение выражения будет <strong>ложно</strong>.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 3</p>
+      </details>
+    </article>
+<article id="task-13">
+      <h2>13. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 1</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: f21ae570-c087-4654-ba1b-32578c601ab7</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $P$ и $Q$ являются натуральные числа, причём</p>
+<p>$P = \{ 3, 4, 5, 8, 12 \}$ и $Q = \{ 3, 6, 8, 9, 35 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$(x \in P) \land (x \in Q)$</p>
+<p>может быть истинным или ложным в зависимости от значения $x$.</p>
+<p>Определите <strong>количество</strong> значений $x$, при которых значение выражения будет <strong>истинно</strong>.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 2</p>
+      </details>
+    </article>
+<article id="task-14">
+      <h2>14. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 2</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 1e0d34d8-9728-4d55-a0a3-bdbde5927c1d</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через $ДЕЛ (n, m)$ утверждение «натуральное число $n$ делится без остатка на натуральное число $m$».</p>
+<p>Для какого наименьшего натурального числа $A$ выражение</p>
+<p>$ДЕЛ(x, A) \to (\lnot ДЕЛ(x, 25) \lor ДЕЛ(x, 16))$</p>
+<p>истинно (т. е. принимает значение 1) при любом натуральном значении переменной $х$?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 16</p>
+      </details>
+    </article>
+<article id="task-15">
+      <h2>15. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 2</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 64eaf0ef-e15b-40b9-b5d4-d21fb7bc925c</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны отрезки: P = [7;16], Q = [25;32]. Укажите наименьшую длину такого отрезка А, для которого логическое выражение</p>
+<p>$((x \in P) \to (x \in A)) \lor (\lnot (x \in Q) \to (x \in A))$</p>
+<p>истинно (т. е. принимает значение 1) при любом значении переменной x.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 9</p>
+      </details>
+    </article>
+<article id="task-16">
+      <h2>16. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: 605fc61c-bfe9-4169-97a7-57abdd43a5e9</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два отрезка: $B = [22; 40]$ и $C = [32; 50]$. Укажите наименьшую возможную длину такого отрезка $A$, для которого логическое выражение</p>
+<p>$\lnot (x \in A) \to ((x \in B) \equiv (x \in C))$</p>
+<p>истинно (т. е. принимает значение 1) при любом значении переменной $х$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 28</p>
+      </details>
+    </article>
+<article id="task-17">
+      <h2>17. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Профиматика</span>
+        <span>ID: 53b52c31-88b1-44b1-abbb-484f5ed28c3f</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два отрезка: $P$=[19; 142] и $Q$=[75; 185]. Укажите наименьшую возможную длину такого отрезка $A$, для которого логическое выражение</p>
+<p>$\neg((x\in Q)\rightarrow((\neg(x\in A)\land(x\in P))\rightarrow\neg(x \in Q)))$ <br>ложно (т. е. принимает значение 0) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 67</p>
+      </details>
+    </article>
+<article id="task-18">
+      <h2>18. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 550d9b6c-938b-45eb-a529-756e6b8fb638</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наименьшего целого неотрицательного числа А логическое выражение</p>
+<p>$(3y -x &gt; 12) \lor (2x+6y \ge 72) \lor (x &gt; 24) \lor (x \cdot y &lt; A)$</p>
+<p>тождественно истинно (т. е. принимает значение 1) при любых целых неотрицательных x и y?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 103</p>
+      </details>
+    </article>
+<article id="task-19">
+      <h2>19. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: bc3aed9c-9567-44ef-be29-09dd8d74d443</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через $ДЕЛ (n, m)$ утверждение «натуральное число $n$ делится без остатка на натуральное число $m$».</p>
+<p>Для какого наибольшего натурального числа $A$ выражение</p>
+<p>$\lnot ДЕЛ(x, A) \to (\lnot ДЕЛ(x, 48) \lor \lnot ДЕЛ(x, 35))$</p>
+<p>истинно (т. е. принимает значение 1) при любом натуральном значении переменной $х$?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 1680</p>
+      </details>
+    </article>
+<article id="task-20">
+      <h2>20. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 7410b326-8e19-4af5-9be5-5eb8616106ac</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наименьшего целого неотрицательного числа А логическое выражение</p>
+<p>$(2x - y \ge A) \land (y \ge 17) \land (78 \ge x)$</p>
+<p>тождественно ложно (т. е. принимает значение 0) при любых целых неотрицательных x и y?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 140</p>
+      </details>
+    </article>
+<article id="task-21">
+      <h2>21. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: bca7ba80-1b6a-492f-90d8-5662f41036dd</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через $ДЕЛ(n, m)$ утверждение «натуральное число $n$ делится без остатка на натуральное число $m$».</p>
+<p>Для какого наибольшего натурального числа $А$ выражение</p>
+<p>$ДЕЛ(х,128) \to (\lnot ДЕЛ(х,А) \to \lnot ДЕЛ(х,80))$</p>
+<p>истинно (т. е. принимает значение 1) при любом натуральном значении переменной $х$?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 640</p>
+      </details>
+    </article>
+<article id="task-22">
+      <h2>22. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: 53be0ed4-34ae-4b70-8d55-79826fec23e9</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наименьшего целого положительного числа $А$ выражение</p>
+<p>$(x \lt A) \land (y \lt 3A) \lor (2x + y \gt 128)$</p>
+<p>истинно (т. е. принимает значение 1) при любых целых положительных $х$ и $у$?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 64</p>
+      </details>
+    </article>
+<article id="task-23">
+      <h2>23. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: 3edc1dac-4a28-40fc-a559-16cd30ec5fbc</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наибольшего целого неотрицательного числа $А$ логическое выражение</p>
+<p>$(2x + y \ne 110) \lor (x \lt y) \lor (A \lt x)$</p>
+<p>истинно (т. е. принимает значение 1) при любых целых неотрицательных х и у?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 36</p>
+      </details>
+    </article>
+<article id="task-24">
+      <h2>24. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: 3c02abfb-eba4-4b4d-a195-33cb5500870a</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наибольшего целого неотрицательного числа $А$ логическое выражение</p>
+<p>$(x \cdot y \gt A) \lor (x \gt y) \lor (11 \gt x)$</p>
+<p>тождественно истинно (т. е. принимает значение 1) при любых целых неотрицательных $x$ и $y$?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 120</p>
+      </details>
+    </article>
+<article id="task-25">
+      <h2>25. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: 417eec8b-b979-49fd-b8dc-e08a1faac659</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два отрезка: $P = [25; 64]$ и $Q = [40; 115]$. Укажите <strong>наименьшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$(x \in P) \to (((x \in Q) \land \lnot(x \in A)) \to \lnot(x \in P))$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 24</p>
+      </details>
+    </article>
+<article id="task-26">
+      <h2>26. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Попков М.</span>
+        <span>ID: fd96d75e-6e19-4bec-9718-503ad0c1d699</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны три отрезка: $P = [10; 150]$, $Q = [160; 250]$ и $R = [240; 300]$. Укажите <strong>наименьшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$((x \in Q) \to (x \in P)) \lor (\lnot(x \in A) \to (x \in R))$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 80</p>
+      </details>
+    </article>
+<article id="task-27">
+      <h2>27. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: 29b3b068-4516-4c7f-be7b-37a6ec02e62f</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через $m \&amp; n$ поразрядную конъюнкцию неотрицательных целых чисел $m$ и $n$. Так, например, $14 \&amp; 5 = 1110_2 \&amp; 0101_2 = 0100_2 = 4$.</p>
+<p>Для какого наименьшего неотрицательного целого числа А логическое выражение</p>
+<p>$((x \&amp; 52 \neq 0) \land (x \&amp; 48 = 0)) \to \lnot(x \&amp; А = 0)$</p>
+<p>истинно (т. е. принимает значение 1) при любом неотрицательном целом значении переменной $х$?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 4</p>
+      </details>
+    </article>
+<article id="task-28">
+      <h2>28. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 286e220b-c467-4057-b497-4dc918040298</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через $ДЕЛ(n, m)$ утверждение «натуральное число $n$ делится без остатка на натуральное число $m$». Для какого наименьшего натурального числа $А$ логическое выражение</p>
+<p>$(¬ДЕЛ(x,100)∧ДЕЛ(x,4))∨ДЕЛ(x,400)∨¬ДЕЛ(x,A)$</p>
+<p>тождественно истинно (т. е. принимает значение 1 при любом натуральном значении переменной $х$)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 16</p>
+      </details>
+    </article>
+<article id="task-29">
+      <h2>29. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Смешанные операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 092c3e86-8ea1-41ca-8f61-ea6e823536a5</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через $\text{ДЕЛ}(n, m)$ утверждение «натуральное число $n$ делится без остатка на натуральное число $m$». Пусть на числовой прямой дан отрезок $B = [132; 150]$. Для какого наименьшего натурального числа А большего 1 логическое выражение</p>
+<p>$<br>(\lnot\text{ДЕЛ}(x, A) \land (x \in B)) \to \lnot \text{ДЕЛ}(x, 13)<br>$</p>
+<p>истинно (т. е. принимает значение 1) при любом целом положительном значении переменной х?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 11</p>
+      </details>
+    </article>
+<article id="task-30">
+      <h2>30. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: 1452a6ee-c08b-4f20-8169-6fe1a281193d</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два отрезка: $P = [15; 40]$ и $Q = [21; 63]$. Укажите <strong>наименьшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$(x \in P) \to (((x \in Q) \land \lnot(x \in A)) \to \lnot(x \in P))$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 19</p>
+      </details>
+    </article>
+<article id="task-31">
+      <h2>31. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: a63e2b19-84a3-44ac-aa0e-01fea94ebb05</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого <strong>наименьшего</strong> целого неотрицательного числа $A$ логическое выражение</p>
+<p>$(2y &gt; 5x) \lor (xy &lt; a) \lor (x \geq 22)$</p>
+<p>тождественно истинно (т. е. принимает значение $1$) при любых целых неотрицательных $x$ и $y$?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 1093</p>
+      </details>
+    </article>
+<article id="task-32">
+      <h2>32. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Крючков М.</span>
+        <span>ID: ae636d2a-4f9d-4ac3-88b4-f8cfa0888f36</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наименьшего целого числа $A$ выражение</p>
+<p>$((y+x)^2&gt;1048) \lor ((x+20&lt;A) \land (40-y&lt;A))$</p>
+<p>всегда истинно, т. е. принимает значение $1$ при любых целых положительных $x$ и $y$?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 52</p>
+      </details>
+    </article>
+<article id="task-33">
+      <h2>33. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 020dbd7f-2c15-4a0c-af2c-fea4ab2b122a</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через ДЕЛ(n, m) утверждение «натуральное число n делится без остатка на натуральное число m».</p>
+<p>Для какого наименьшего натурального числа А формула</p>
+<p>$\lnot (\text{ДЕЛ}(x, 3) \land \text{ДЕЛ}(x, 5)) \lor (A \geq 42 - x)$</p>
+<p>тождественно истинна (т. е. принимает значение 1) при любом натуральном значении переменной х?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 27</p>
+      </details>
+    </article>
+<article id="task-34">
+      <h2>34. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: f5dc5b2a-ddaf-41fb-93d4-7a698e31cda8</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наибольшего целого числа $A$ выражение</p>
+<p>$((x \geq A) \lor (121 \geq x^2)) \land ((y^2 &lt; 49) \lor (A &lt; y))$</p>
+<p>тождественно истинно, т. е. принимает значение 1 при любых целых неотрицательных $x$ и $y$?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 6</p>
+      </details>
+    </article>
+<article id="task-35">
+      <h2>35. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Джобс Е.</span>
+        <span>ID: c296c796-2220-4011-b7e7-1d3ab474a562</span>
+      </div>
+      <section class="task-text">
+        <p>Сколько существует целых значений $А$, при которых формула</p>
+<p>$$((x &lt; A) \to (x \cdot x \leq 169)) \land ((y \cdot y &lt; 16) \to (y \leq A))$$</p>
+<p>тождественно истинна (то есть принимает значение 1 при любых целых неотрицательных значениях переменных $x$ и $y$)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 12</p>
+      </details>
+    </article>
+<article id="task-36">
+      <h2>36. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 470deeb5-11aa-4486-ae0b-9c2a69879127</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через $\text{ДЕЛ}(n, m)$ утверждение: «натуральное число $n$ делится без остатка на натуральное число $m$».</p>
+<p>Для какого наименьшего натурального числа $A$ формула</p>
+<p>$<br>\lnot\text{ДЕЛ}(x, 72) \lor \text{ДЕЛ}(x, 495) \lor \lnot\text{ДЕЛ}(x, A)<br>$</p>
+<p>тождественно истинна (то есть принимает значение 1 при любом натуральном значении переменной $x$)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 55</p>
+      </details>
+    </article>
+<article id="task-37">
+      <h2>37. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: e4ee1ff0-c06e-478d-b397-be872b454f46</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через $m \&amp; n$ поразрядную конъюнкцию неотрицательных целых чисел $m$ и $n$.</p>
+<p>Так, например,  <br>$14 \&amp; 5 = 1110_2 \&amp; 0101_2 = 0100_2 = 4.$</p>
+<p>Для какого наименьшего неотрицательного целого числа A формула</p>
+<p>$(x \&amp; 91 = 0) \lor ((x \&amp; 77 = 0) \to (x \&amp; A \ne 0))$</p>
+<p>тождественно истинна, т. е. принимает значение 1 при любом неотрицательном целом значении переменной x?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 18</p>
+      </details>
+    </article>
+<article id="task-38">
+      <h2>38. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 9ccc8672-6a8a-463b-ba41-2b379480b4b9</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $A$, $P$ и $Q$ являются целые числа, причём</p>
+<p>$P = \{ -42, -10, -8, 2, 16 \}$ и $Q = \{ -10, -4, 2, 15, 23 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$((x \in A) \to (x \in P)) \lor (x \in Q)$</p>
+<p>истинно (т. е. принимает значение 1) при любом значении переменной $x$.</p>
+<p>Определите <strong>наибольшую</strong> возможную <strong>сумму</strong> элементов множества $A$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 56</p>
+      </details>
+    </article>
+<article id="task-39">
+      <h2>39. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 9785715a-76a3-4747-8ae6-fe6a56597181</span>
+      </div>
+      <section class="task-text">
+        <p>Введём выражение <em>M &amp; K</em>, обозначающее поразрядную конъюнкцию <em>M</em> и <em>K</em> (логическое «И» между соответствующими битами двоичной записи). Так, например,</p>
+<p>$14 \&amp; 5 = 1110_{2} \&amp; 0101_{2} = 0100_{2} = 4$.</p>
+<p>Определите количество натуральных чисел <em>a</em>, таких что выражение</p>
+<p>$(x \&amp; 13 = 0) ∧ (x \&amp; 18 \neq 0) \vee ((x \&amp; 21 = 0) \to ((x \&amp; a = 0) ∧ (x \&amp; 21 = 0)))$</p>
+<p>тождественно истинно, то есть принимает значение 1, при любом неотрицательном целом значении переменной <em>х</em>.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 7</p>
+      </details>
+    </article>
+<article id="task-40">
+      <h2>40. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 32658671-159c-47cf-b8d4-a813c4c826b6</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через <em>m &amp; n</em> поразрядную конъюнкцию неотрицательных целых чисел <em>m</em> и <em>n</em>. Так, например,</p>
+<p>$14 \&amp; 5 = 1110_{2} \&amp; 0101_{2} = 0100_{2} = 4$.</p>
+<p>Для какого наименьшего неотрицательного целого числа <em>А</em> формула</p>
+<p>$((x \&amp; 42=0)→(x \&amp; 51≠0))→(x \&amp; A≠0)$</p>
+<p>тождественно истинна (т. е. принимает значение 1 при любом неотрицательном целом значении переменной <em>х</em>)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 59</p>
+      </details>
+    </article>
+<article id="task-41">
+      <h2>41. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 6a427e57-e7bf-417e-a0b0-caac3d5585ec</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через <em>m &amp; n</em> поразрядную конъюнкцию неотрицательных целых чисел <em>m</em> и <em>n</em>. Так, например,</p>
+<p>$14 \&amp; 5 = 1110_{2} \&amp; 0101_{2} = 0100_{2} = 4$.</p>
+<p>Для какого наибольшего неотрицательного целого числа <em>А</em> формула</p>
+<p>$(x \&amp; 52=4)\to((x \&amp; 26=2)→(x \&amp; A=6))$</p>
+<p>тождественно истинна (т. е. принимает значение 1 при любом неотрицательном целом значении переменной <em>х</em>)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 62</p>
+      </details>
+    </article>
+<article id="task-42">
+      <h2>42. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: febc093f-a6e2-4503-9571-1497a1f4d83d</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $A$, $P$ и $Q$ являются натуральные числа, причём</p>
+<p>$P = \{ 1, 2, 3, 4, 5, 6, 7, 10 \}$ и $Q = \{ 3, 5, 7, 8, 30 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$((x \notin Q) \to (x \notin A)) \land ((x \in P) \to (x \notin A))$</p>
+<p>истинно (т. е. принимает значение 1) при любом значении переменной $x$.</p>
+<p>Определите <strong>наибольшее</strong> возможное <strong>количество</strong> элементов множества $A$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 2</p>
+      </details>
+    </article>
+<article id="task-43">
+      <h2>43. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 5121ae6e-a277-469c-8a3a-1fdee856cff7</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $A$, $P$ и $Q$ являются натуральные числа, причём</p>
+<p>$P = \{ 5, 10, 15, 20, 25, 30 \}$ и $Q = \{ 15, 18, 21, 24, 27, 30 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$\lnot((x \in P) \to \lnot(x \in Q)) \land (x \notin A)$</p>
+<p>ложно (т. е. принимает значение 0) при любом значении переменной $x$.</p>
+<p>Определите <strong>наименьшую</strong> возможную <strong>сумму</strong> элементов множества $A$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 45</p>
+      </details>
+    </article>
+<article id="task-44">
+      <h2>44. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: bda3d22b-8fc3-4be9-be04-c4f2521dd4b3</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через <em>m|n</em> поразрядную дизъюнкцию неотрицательных целых чисел <em>m</em> и <em>n</em>. Так, например,</p>
+<p>$12 | 6= 1100_{2} | 0110_{2} = 1110_{2} = 14$.<br> <br>Определите наибольшее натуральное число <em>A</em>, такое что выражение<br> <br>$((x | 50 &gt; 70) \wedge  (x | 17 \le  108)) \to  ((x | 108 &gt; 17) \wedge  (x | a &lt; 108))$<br> <br>тождественно истинно (то есть принимает значение 1 при любом натуральном значении переменной <em>x</em>)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 95</p>
+      </details>
+    </article>
+<article id="task-45">
+      <h2>45. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: a3f9018d-89cc-4d24-aedc-c9f5f8ed19b3</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через <em>m&amp;n</em> поразрядную конъюнкцию неотрицательных целых чисел <em>m</em> и <em>n</em>. Так, например,</p>
+<p>$13 \&amp; 7=1101_{2} \&amp; 0111_{2}=0101_{2} = 5$.<br> <br>Определите наибольшее натуральное число <em>A</em> из интервала [4, 92] такое, что выражение<br> <br>$((x \&amp; 46 ≠  0) \to  ((x \&amp; A  ≠ 0) \to  (x \&amp; 70  ≠ 0))) \to  ((x \&amp; 6 = 0) \wedge  (x \&amp; A  ≠  0) \wedge  (x \&amp; 70 = 0))$<br> <br>тождественно ложно (то есть принимает значение 0 при любом натуральном значении переменной <em>x</em>).</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 70</p>
+      </details>
+    </article>
+<article id="task-46">
+      <h2>46. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 8a5206aa-8028-4b58-9c42-9ba2d21969a3</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через <em>m&amp;n</em> поразрядную конъюнкцию неотрицательных целых чисел <em>m</em> и <em>n</em>. Так, например,</p>
+<p>$13 \&amp; 7=1101_{2} \&amp; 0111_{2}=0101_{2}=5$.<br> <br>Определите наибольшее натуральное число A, при котором выражение<br> <br>$(x \&amp; A = 0) \vee  ((x \&amp; 44= 4) \to  (x \&amp; 27 = 10))$<br> <br>тождественно истинно (то есть принимает значение 1 при любом натуральном значении переменной  <em>x</em>).</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 40</p>
+      </details>
+    </article>
+<article id="task-47">
+      <h2>47. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 47464272-7ef5-42e0-9327-56bf03e53b71</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через <em>m&amp;n</em> поразрядную конъюнкцию неотрицательных целых чисел <em>m</em> и <em>n</em>. Так, например,</p>
+<p>$13\&amp;7=1101_{2}\&amp;0111_{2}=0101_{2}=5$.<br> <br>Определите наибольшее натуральное число A такое, что выражение<br> <br>$((x \&amp; 49  ≠ 0) \to  ((x \&amp; A ≠ 0) \to  (x \&amp; 108 ≠ 0))) \to  ((x \&amp; 92  = 0) \wedge  (x \&amp; A ≠ 0) \wedge  (x \&amp; 49 ≠ 0))$<br> <br>тождественно ложно (то есть принимает значение 0 при любом натуральном значении переменной <em>x</em>).</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 76</p>
+      </details>
+    </article>
+<article id="task-48">
+      <h2>48. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 0891d1fa-be38-4015-8920-47868754e234</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через <em>m&amp;n</em> поразрядную конъюнкцию неотрицательных целых чисел <em>m</em> и <em>n</em>. Так, например,</p>
+<p>$13 \&amp; 7=1101_{2} \&amp; 0111_{2} = 0101_{2} = 5$.<br> <br>Определите наименьшее натуральное число A, такое что выражение<br> <br>$(( (X \&amp; 28 ≠ 0) \vee  (X \&amp; A = 0)) \to  (X \&amp; 28 ≠ 0)) \vee  (X \&amp; A ≠ 0) \vee  (X \&amp; 39 = 0)$<br> <br>тождественно истинно (то есть принимает значение 1 при любом натуральном значении переменной <em>X</em>).</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 35</p>
+      </details>
+    </article>
+<article id="task-49">
+      <h2>49. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 270eff1c-fe8a-44ab-8390-a9d6e638ae0f</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $A$, $P$ и $Q$ являются натуральные числа, причём</p>
+<p>$P = \{ 1, 3, 5, 7, 9, 11, 13, 15, 17, 19\}$ и $Q = \{ 4, 9, 14, 19, 24, 29, 34, 39, 44, 49\}$.</p>
+<p>Известно, что выражение</p>
+<p>$((x \in A) \to (x \in P)) \lor (\lnot (x \in Q) \to \lnot (x \in A))$</p>
+<p>истинно (т. e. принимает значение 1) при любом значении переменной $x$.</p>
+<p>Определите <strong>наибольшую</strong> возможную <strong>сумму</strong> элементов множества $A$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 337</p>
+      </details>
+    </article>
+<article id="task-50">
+      <h2>50. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: c12df78a-694d-45b5-bbaa-dc86e40ecf61</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $A$, $P$ и $Q$ являются натуральные числа, причём</p>
+<p>$P = \{ 1, 3, 5, 7, 9, 11, 13, 15, 17, 19 \}$ и $Q = \{ 2, 5, 8, 11, 14, 17, 20, 23, 26, 29 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$((x \in A) \to \lnot(x \in P)) \land (\lnot(x \in Q) \to \lnot(x \in A))$</p>
+<p>истинно (т. е. принимает значение 1) при любом значении переменной $x$.</p>
+<p>Определите <strong>наибольшее</strong> возможное <strong>количество</strong> элементов множества $A$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 7</p>
+      </details>
+    </article>
+<article id="task-51">
+      <h2>51. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: e9334713-5e80-4fbc-a6ed-3f3a9b57dd8c</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $A$, $P$ и $Q$ являются натуральные числа, причём</p>
+<p>$P = \{ 18, 20, 22, 26, 27, 30 \}$ и $Q = \{ 20, 21, 27, 30 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$((x \in P) \to (x \in Q)) \lor (x \in A)$</p>
+<p>истинно (т. е. принимает значение 1) при любом значении переменной $x$.</p>
+<p>Определите <strong>наименьшее</strong> возможное <strong>количество</strong> элементов множества $A$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 3</p>
+      </details>
+    </article>
+<article id="task-52">
+      <h2>52. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 43f3e1bc-ddc6-44a4-84d7-25abf7a35f72</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $A$, $P$ и $Q$ являются натуральные числа, причём</p>
+<p>$P = \{ 14, 16, 18, 20, 22, 24 \}$ и $Q = \{ 16, 19, 22, 25, 28 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$(x \notin P) \lor ((x \notin Q) \to (x \in A))$</p>
+<p>истинно (т. е. принимает значение 1) при любом значении переменной $x$.</p>
+<p>Определите <strong>наименьшее</strong> возможное значение <strong>произведения</strong> элементов множества $A$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 120960</p>
+      </details>
+    </article>
+<article id="task-53">
+      <h2>53. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: bbdc7a8c-b582-469b-95a3-c0c2de99b8d4</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $A$, $P$ и $Q$ являются натуральные числа, причём</p>
+<p>$P = \{ 14, 16, 18, 20, 22, 24 \}$ и $Q = \{ 16, 19, 22, 25, 28 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$(x \in P) \to (((x \in Q) \land \lnot(x \in A)) \to \lnot(x \in P))$</p>
+<p>истинно (т. е. принимает значение 1) при любом значении переменной $x$.</p>
+<p>Определите <strong>наименьшее</strong> возможное значение <strong>суммы</strong> элементов множества $A$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 38</p>
+      </details>
+    </article>
+<article id="task-54">
+      <h2>54. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 362b9513-a382-4006-ae68-6d8579603ed4</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наибольшего целого неотрицательного числа <em>А</em> выражение</p>
+<p>$(x\ge 8)\vee (A&lt;(x*y))\vee (y\le 7)$</p>
+<p>тождественно истинно, то есть принимает значение 1 при любых натуральных числах <em>x</em> и <em>y</em>?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 7</p>
+      </details>
+    </article>
+<article id="task-55">
+      <h2>55. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 3e1e71bd-6796-43a0-bd14-8f8cea46a6d6</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наибольшего целого неотрицательного числа <em>А</em> выражение</p>
+<p>$(x&gt;10)\vee (A&lt;(x \cdot y)) ∨(y&lt;5)$</p>
+<p>тождественно истинно, то есть принимает значение 1 при любых натуральных числах <em>x</em> и <em>y</em>?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 4</p>
+      </details>
+    </article>
+<article id="task-56">
+      <h2>56. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: f71d47a8-80ff-416b-97f5-2b76ec1022cc</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наименьшего целого неотрицательного числа $А$ выражение</p>
+<p>$(x\ge 15)\vee (A&gt;(x \cdot y))\vee (y&gt;3)$</p>
+<p>тождественно истинно, то есть принимает значение $1$ при любых целых неотрицательных $x$ и $y$?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 43</p>
+      </details>
+    </article>
+<article id="task-57">
+      <h2>57. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 9ff6dee9-7b77-4354-a417-ac59a1d8399a</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два отрезка: $P = [10; 23]$ и $Q = [12; 30]$. Укажите <strong>наименьшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$\lnot(x \in P) \lor (x \in A) \lor \lnot(x \in Q)$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 11</p>
+      </details>
+    </article>
+<article id="task-58">
+      <h2>58. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: dc5e091e-40d0-47cf-ab05-34f04625e407</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $P$, $Q$ и $R$ являются натуральные числа, причём</p>
+<p>$P = \{ 10, 11, 31, 40, 43 \}$,  <br>$Q = \{ 1, 12, 14, 31, 40, 94 \}$,  <br>$R = \{ 1, 10, 12, 13, 40 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$(x \in P) \lor ((x \in Q) \land (x \notin R))$</p>
+<p>может быть истинным или ложным в зависимости от значения $x$.</p>
+<p>Определите <strong>количество</strong> значений $x$, при которых значение выражения будет <strong>истинно</strong>.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 7</p>
+      </details>
+    </article>
+<article id="task-59">
+      <h2>59. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 9f4505bf-95bb-4dd3-907f-06267d06267e</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $P$, $Q$ и $R$ являются натуральные числа, причём</p>
+<p>$P = \{ 1, 2, 4, 12, 13 \}$,  <br>$Q = \{ 1, 4, 9, 13, 35, 81 \}$,  <br>$R = \{ 2, 10, 13, 15, 35 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$((x \notin P) \land (x \notin Q)) \lor (x \in R)$</p>
+<p>может быть истинным или ложным в зависимости от значения $x$.</p>
+<p>Определите <strong>количество</strong> значений $x$, при которых значение выражения будет <strong>ложно</strong>.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 5</p>
+      </details>
+    </article>
+<article id="task-60">
+      <h2>60. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 8f13d075-e784-4654-ae10-7d109cee90e9</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наименьшего целого неотрицательного числа <em>A</em> выражение</p>
+<p>$(3x + y &gt; A) \land (y &lt; x) \land (x &lt; 30)$</p>
+<p>тождественно ложно, т. е. принимает значение 0 при любых целых неотрицательных <em>x</em> и <em>y</em>?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 115</p>
+      </details>
+    </article>
+<article id="task-61">
+      <h2>61. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Смешанные операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: 055dd302-c963-4b41-aae6-b931c4708fa9</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через ДЕЛ(<em>n, m</em>) утверждение «натуральное число <em>n</em> делится без остатка на натуральное число <em>m</em>»; и пусть на числовой прямой дан отрезок <em>B</em> = [50; 70].</p>
+<p>Для какого наибольшего натурального числа <em>А</em> формула</p>
+<p>$ДЕЛ(x, A) \vee  ((x \in B) \to  \neg ДЕЛ(x, 21))$</p>
+<p>тождественно истинна (т. е. принимает значение 1) при любом натуральном значении переменной <em>х</em>?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 63</p>
+      </details>
+    </article>
+<article id="task-62">
+      <h2>62. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: 8e383cd1-86c7-4ddb-8e69-af16360eb883</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два отрезка: $P = [117; 158]$ и $Q = [129; 180]$. Укажите <strong>наименьшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$(x \in P) \to (((x \in Q) \land \lnot(x \in A)) \to \lnot(x \in P))$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 29</p>
+      </details>
+    </article>
+<article id="task-63">
+      <h2>63. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: 2b80193f-ad6d-4ba2-8ae7-dc3d4ce662e3</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через **ДЕЛ(<em>n, m</em>)** утверждение «натуральное число <em>n</em> делится без остатка на натуральное число <em>m</em>». Для какого наибольшего натурального числа А, <strong>не превышающего 300</strong> логическое выражение</p>
+<p>$(\neg ДЕЛ(x, A) \wedge  ДЕЛ(x, 35)) \to  (\negДЕЛ(x, 21) \vee  \negДЕЛ(x, 35))$</p>
+<p>тождественно истинно (т. е. принимает значение 1 при любом натуральном значении переменной <em>х</em>)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 105</p>
+      </details>
+    </article>
+<article id="task-64">
+      <h2>64. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: d6a82079-e44e-439e-86ed-251db882f265</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через **ДЕЛ(<em>n, m</em>)** утверждение «натуральное число <em>n</em> делится без остатка на натуральное число <em>m</em>». Для какого наименьшего натурального числа А логическое выражение</p>
+<p>$(\neg ДЕЛ(x, 26) \wedge  ДЕЛ(x, A)) \to  (ДЕЛ(x, 39) \vee  \negДЕЛ(x, A))$</p>
+<p>тождественно истинно (т. е. принимает значение 1 при любом неотрицательном целом значении переменной <em>х</em>)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 26</p>
+      </details>
+    </article>
+<article id="task-65">
+      <h2>65. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: a2cc73b6-5da9-42ae-a3cd-f79778d1b6bc</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через **ДЕЛ(<em>n, m</em>)** утверждение «натуральное число <em>n</em> делится без остатка на натуральное число <em>m</em>». Для какого наибольшего натурального числа <em>А</em> логическое выражение</p>
+<p>$(\neg ДЕЛ(x, А) ∧ ДЕЛ(x, 24)) \to  (\negДЕЛ(x, 16) ∨ \negДЕЛ(x, 24))$</p>
+<p>тождественно истинно (т. е. принимает значение 1 при любом неотрицательном целом значении переменной <em>х</em>)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 48</p>
+      </details>
+    </article>
+<article id="task-66">
+      <h2>66. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: 0f3e0dc8-7a59-4354-a888-e77a50742db9</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наибольшего целого неотрицательного числа <em>А</em> логическое выражение</p>
+<p>$(39 \neq  y + 2x)  \vee  (A &lt; x) \vee  (A &lt; y)$</p>
+<p>истинно (т.е. принимает значение 1) при любых целых неотрицательных <em>x</em> и <em>y</em>?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 12</p>
+      </details>
+    </article>
+<article id="task-67">
+      <h2>67. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: ad49b4d3-62dc-420f-aa97-519d891a80f5</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два отрезка: $P = [20; 67]$ и $Q = [33; 98]$. Укажите <strong>наименьшую</strong> возможную длину такого отрезка $A$, для которого логическое выражение</p>
+<p>$(x \in P) \to (((x \in Q) \land \lnot (x \in A)) \to \lnot (x \in P))$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 34</p>
+      </details>
+    </article>
+<article id="task-68">
+      <h2>68. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: 219c0d8e-bf34-4ec2-8f11-cf4d06a6fae7</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два отрезка: $P = [15; 40]$ и $Q = [21; 63]$. Укажите <strong>наименьшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$\lnot(x \in P) \to (((x \in Q) \land \lnot(x \in A)) \to (x \in P))$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 23</p>
+      </details>
+    </article>
+<article id="task-69">
+      <h2>69. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: fd0de4d6-16b4-46bd-a500-5283d78def62</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наибольшего целого неотрицательного числа $А$ выражение</p>
+<p>$(x \cdot y &gt; A) \vee  (x &gt; y) \vee(8 &gt; x)$</p>
+<p>тождественно истинно, то есть принимает значение $1$ при любых целых неотрицательных $x$ и $y$?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 63</p>
+      </details>
+    </article>
+<article id="task-70">
+      <h2>70. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: b4197b61-d861-44bf-993e-e7f1b664376d</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через **ДЕЛ(<em>n, m</em>)** утверждение «натуральное число <em>n</em> делится без остатка на натуральное число <em>m</em>». Для какого наибольшего натурального числа <em>А</em> логическое выражение</p>
+<p>$\neg ДЕЛ(x, А)\to (ДЕЛ(x, 12)\to  \neg ДЕЛ(x, 14))$</p>
+<p>тождественно истинно (т. е. принимает значение 1) при любом натуральном значении переменной <em>х</em>?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 84</p>
+      </details>
+    </article>
+<article id="task-71">
+      <h2>71. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Смешанные операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: f89886b4-de58-4c14-b999-c17d6276c1a8</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через ДЕЛ(<em>n, m</em>) утверждение «натуральное число <em>n</em> делится без остатка на натуральное число <em>m</em>».</p>
+<p>Для какого <strong>наименьшего</strong> натурального числа <em>А</em> формула</p>
+<p>$(ДЕЛ(x, 2) \to  \neg ДЕЛ(x, 3)) \vee  (x + A \ge  100)$</p>
+<p>тождественно истинна (т. е. принимает значение 1) при любом натуральном значении переменной <em>х</em>?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 94</p>
+      </details>
+    </article>
+<article id="task-72">
+      <h2>72. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: 2726d97c-4a83-470a-be75-341f5fa1c65c</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через $m  \&amp;  n$ поразрядную конъюнкцию неотрицательных целых чисел <em>m</em> и <em>n</em>. Так, например,</p>
+<p>$14  \&amp;  5 = 1110_{2}  \&amp;  0101_{2} = 0100_{2} = 4$.</p>
+<p>Для какого наименьшего неотрицательного целого числа <em>А</em> формула</p>
+<p>$((x  \&amp;  42 \neq  0) \wedge  (x  \&amp;  34 = 0)) \to  \neg  (x  \&amp;  А = 0)$</p>
+<p>тождественно истинна (т. е. принимает значение 1) при любом неотрицательном целом значении переменной <em>х</em>?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 8</p>
+      </details>
+    </article>
+<article id="task-73">
+      <h2>73. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: 179ef50c-a5e1-4b8e-84ef-27fc00e595cd</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого <strong>наименьшего</strong> целого неотрицательного числа <em>А</em> логическое выражение</p>
+<p>$(x\ge 12) \vee  (3x &lt; y) \vee  (xy &lt;A)$</p>
+<p>тождественно истинно (т.е. принимает значение 1) при любых целых неотрицательных <em>x</em> и <em>y</em>?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 364</p>
+      </details>
+    </article>
+<article id="task-74">
+      <h2>74. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 3</span>
+        <span>Источник: КомпЕГЭ</span>
+        <span>ID: a44f5179-354c-4844-836a-aa650b38faf4</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $A$, $P$, $Q$ и $R$ являются натуральные числа, причём</p>
+<p>$P = \{ 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 \}$,  <br>$Q = \{ 3, 6, 9, 12, 15, 18, 21, 24, 27, 30 \}$,  <br>$R = \{ 12, 24, 36, 48, 60 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$(x \notin A) \to (((x \in P) \land (x \in Q)) \to (x \in R))$</p>
+<p>истинно (т. е. принимает значение 1) при любом значении переменной $x$.</p>
+<p>Определите <strong>наименьшее</strong> возможное <strong>произведение</strong> элементов множества $A$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 108</p>
+      </details>
+    </article>
+<article id="task-75">
+      <h2>75. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 3</span>
+        <span>Источник: КомпЕГЭ</span>
+        <span>ID: 6e9077ee-9d20-45f5-8ca2-4d98b1550124</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $A$, $P$ и $Q$ являются натуральные числа, причём</p>
+<p>$P = \{ 2, 4, 6, 8, 10, 12, 14, 16, 18, 20 \}$ и $Q = \{ 5, 10, 15, 20, 25, 30, 35, 40, 45, 50 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$((x \in A) \to (x \in P)) \land ((x \in Q) \to \lnot(x \in A))$</p>
+<p>истинно (т. е. принимает значение 1) при любом значении переменной $x$.</p>
+<p>Определите <strong>наибольшее</strong> возможное <strong>количество</strong> элементов множества $A$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 8</p>
+      </details>
+    </article>
+<article id="task-76">
+      <h2>76. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 3</span>
+        <span>Источник: КомпЕГЭ</span>
+        <span>ID: 06e654a6-f0e4-4a80-aded-088f373dd0d5</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $A$, $P$ и $Q$ являются натуральные числа, причём</p>
+<p>$P = \{ 1, 3, 4, 9, 11, 13, 15, 17, 19, 21 \}$ и $Q = \{ 3, 6, 9, 12, 15, 18, 21, 24, 27, 30 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$((x \in P) \to (x \in A)) \lor ((x \notin A) \to (x \notin Q))$</p>
+<p>истинно (т. е. принимает значение 1) при любом значении переменной $x$.</p>
+<p>Определите <strong>наименьшее</strong> возможное <strong>произведение</strong> элементов множества $A$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 8505</p>
+      </details>
+    </article>
+<article id="task-77">
+      <h2>77. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Богданов А.</span>
+        <span>ID: d540f5c1-a3e8-4a96-a490-2b121c880de7</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наибольшего целого неотрицательного числа А выражение</p>
+<p>$(2y + x \neq  70) \vee  (x &lt; y) \vee  (A &lt; x)$</p>
+<p>тождественно истинно, то есть принимает значение 1 при любых целых неотрицательных x и y?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 23</p>
+      </details>
+    </article>
+<article id="task-78">
+      <h2>78. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Рогов А.</span>
+        <span>ID: 851f479a-7b91-4010-8114-08e03f5f5c28</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наименьшего натурального числа А формула</p>
+<p>$\neg ((x + 5 &lt; A) \to (y &gt; A)) \lor (x \cdot y \ge 76)$</p>
+<p>тождественно истинна (т.е. принимает значение 1) при любых натуральных значениях переменных х и y?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 81</p>
+      </details>
+    </article>
+<article id="task-79">
+      <h2>79. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Рыбальченко В.</span>
+        <span>ID: e833a9a3-2790-4be4-bec3-c662b6c81fee</span>
+      </div>
+      <section class="task-text">
+        <p>Определите минимальное натуральное значение А, при котором логическое выражение</p>
+<p>$(x + 2y \neq  58)  \vee  ((A – x &gt; 0) \equiv  (A + y &gt; 0))$</p>
+<p>истинно при любых натуральных значениях x и y.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 57</p>
+      </details>
+    </article>
+<article id="task-80">
+      <h2>80. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Грачев Н.</span>
+        <span>ID: f6eaf9aa-6a68-4886-8781-0e586c1392c8</span>
+      </div>
+      <section class="task-text">
+        <p>Введём выражение M <strong>&amp;</strong> K, обозначающее поразрядную конъюнкцию M и K (логическое «И» между соответствующими битами двоичной записи).</p>
+<p>Определите наименьшее натуральное число A, такое что выражение</p>
+<p>$((x \&amp; 17 \neq  0) \to  ((x \&amp; A \neq 0) \to  (x \&amp; 58 \neq 0))) \to  ((x \&amp; 8  = 0) \wedge  (x \&amp; A \neq 0) \wedge  (x \&amp; 58  = 0))$</p>
+<p>тождественно ложно (то есть принимает значение 0 при любом натуральном значении переменной x).</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 2</p>
+      </details>
+    </article>
+<article id="task-81">
+      <h2>81. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Шагитов М.</span>
+        <span>ID: 16d2707e-b5a1-4ff2-a7d5-3be1a4e61076</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через m &amp; n поразрядную конъюнкцию неотрицательных целых чисел m и n. Так, например,</p>
+<p>$13 \&amp; 7 = 1101_{2} \&amp; 0111_{2} = 0101_{2} = 5$.</p>
+<p>Для какого наименьшего неотрицательного целого числа B формула</p>
+<p>$((x\&amp;500 \neq 0)\wedge (x\&amp;200=0))\to \neg (x\&amp;B=0)$</p>
+<p>тождественно истинна (т.е. принимает значение 1) при любом неотрицательном целом значении переменной х?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 308</p>
+      </details>
+    </article>
+<article id="task-82">
+      <h2>82. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: ФИПИ</span>
+        <span>ID: de253bda-d45a-4a92-a139-ba96506c8f57</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наименьшего целого неотрицательного числа $A$ выражение</p>
+<p>$(x+2y&lt;A) \vee (y&gt;x)\vee (x&gt;60)$</p>
+<p>тождественно истинно, т.е. принимает значение 1 при любых целых неотрицательных $x$ и $y$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 181</p>
+      </details>
+    </article>
+<article id="task-83">
+      <h2>83. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Смешанные операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Шастин Л.</span>
+        <span>ID: 355d827d-e989-4276-879f-deb701655b80</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через ДЕЛ(n, m) утверждение «натуральное число n делится без остатка на натуральное число m»; и пусть на числовой прямой дан отрезок $B = [142; 252]$.</p>
+<p>Для какого наименьшего натурального числа А формула</p>
+<p>$(ДЕЛ(x, 6) \to  \neg ДЕЛ(x, 15)) \vee  \neg (x + A \in  B)$</p>
+<p>тождественно истинна (т. е. принимает значение 1) при любом натуральном значении переменной х?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 223</p>
+      </details>
+    </article>
+<article id="task-84">
+      <h2>84. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Смешанные операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Шубинкин В.</span>
+        <span>ID: 858bb2fd-d9a1-4478-aec2-3941f157eb32</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через ДЕЛ(n, m) утверждение «натуральное число n делится без остатка на натуральное число m». Для какого наибольшего натурального числа A формула</p>
+<p>$((ДЕЛ(x, 36) \wedge ДЕЛ(x, 42)) \to ДЕЛ(x, A)) \wedge  ( A\cdot  (A - 25) &lt; 25\cdot  (A + 200))$</p>
+<p>тождественно истинна (то есть принимает значение 1 при любом натуральном значении переменной х)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 84</p>
+      </details>
+    </article>
+<article id="task-85">
+      <h2>85. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Кабанов А.</span>
+        <span>ID: c78c7574-c421-4115-a8f9-c8cc841215bf</span>
+      </div>
+      <section class="task-text">
+        <p>Укажите наименьшее целое значение $A$, при котором выражение</p>
+<p>$(x &lt; 9) \to ((5y &lt; x) \to (2xy &lt; A))$</p>
+<p>тождественно истинно при любых целых положительных $x$ и $y$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 17</p>
+      </details>
+    </article>
+<article id="task-86">
+      <h2>86. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Смешанные операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Кабанов А.</span>
+        <span>ID: bfdcf7a3-606f-4e4d-ac7e-3a26594a79a2</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через ДЕЛ(n, m) утверждение «натуральное число _n_ делится без остатка на натуральное число _m_»; и пусть на числовой прямой дан отрезок _B_ = [160; 180].</p>
+<p>Для какого количества различных натуральных значений числа _А_ формула</p>
+<p>$(x \in B) \to (ДЕЛ(x, 35) \to ДЕЛ(x, A))$</p>
+<p>тождественно истинна (т. е. принимает значение 1) при любом натуральном значении переменной _х_?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 6</p>
+      </details>
+    </article>
+<article id="task-87">
+      <h2>87. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Джобс Е.</span>
+        <span>ID: 74dfb6df-551b-4a02-9caf-2fd14da0aa41</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наименьшего целого значения параметра А выражение</p>
+<p>$(x &gt; 39) \vee  (y &gt; 26) \vee  (2x + 4y &lt; A)$</p>
+<p>является тождественно истинным, то есть принимает значение 1 при любых целых положительных значениях переменных х и у?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 183</p>
+      </details>
+    </article>
+<article id="task-88">
+      <h2>88. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Джобс Е.</span>
+        <span>ID: 060195de-9f87-40b6-bffd-01ac2364217b</span>
+      </div>
+      <section class="task-text">
+        <p>Найдите минимальное целое значение параметра $А$, при котором выражение</p>
+<p>$(3x + 4y\neq 101) \vee (x &lt; A) \vee (3y \le A)$</p>
+<p>истинно для любых целых положительных значений x и y.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 24</p>
+      </details>
+    </article>
+<article id="task-89">
+      <h2>89. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Джобс Е.</span>
+        <span>ID: 541b43aa-9ff9-4821-b93a-56dd17ec35e9</span>
+      </div>
+      <section class="task-text">
+        <p>Укажите наименьшее целое значение $А$, при котором выражение</p>
+<p>$(2x + 3y \neq 150) \vee (x &lt; A) \wedge (y &lt; A)$</p>
+<p>истинно для любых целых неотрицательных значений $x$ и $y$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 76</p>
+      </details>
+    </article>
+<article id="task-90">
+      <h2>90. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Смешанные операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Кабанов А.</span>
+        <span>ID: 691e4108-0628-4175-90d1-827c5a8b5a94</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через $ДЕЛ(n, m)$ утверждение «натуральное число $n$ делится без остатка на натуральное число $m$»; и пусть на числовой прямой дан отрезок $B = [70; 80]$.</p>
+<p>Для какого количества различных натуральных значений числа $А$ формула</p>
+<p>$ДЕЛ(x, 12) \wedge (x \in B) \wedge \neg ДЕЛ(x, A)$</p>
+<p>тождественно ложна, то есть принимает значение $0$ при любом натуральном значении переменной $х$?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 12</p>
+      </details>
+    </article>
+<article id="task-91">
+      <h2>91. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Смешанные операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Джобс Е.</span>
+        <span>ID: bf940e8a-fa93-4bc7-8a9f-dd6b33c57198</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим ДЕЛ(x, d) утверждение «Натуральное число х делится без остатка на натуральное число d». Укажите максимальное число А, при котором выражение</p>
+<p>$ДЕЛ(x, 10) \wedge ДЕЛ(x, 26) \wedge (x \ge 300) \to (A ≤ x)$</p>
+<p>тождественно истинно.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 390</p>
+      </details>
+    </article>
+<article id="task-92">
+      <h2>92. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Смешанные операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Кабанов А.</span>
+        <span>ID: fd0c928b-5f41-4a18-acf2-75a6503fe8df</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через ДЕЛ(n, m) утверждение «натуральное число _n_ делится без остатка на натуральное число _m_»; и пусть на числовой прямой дан отрезок _B_ = \[50; 70\].</p>
+<p>Для какого наибольшего натурального числа _А_ формула</p>
+<p>$ДЕЛ(x, A) \vee (ДЕЛ(x, 23) \to \neg (x \in B))$</p>
+<p>тождественно истинна (т. е. принимает значение 1) при любом натуральном значении переменной _х_?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 69</p>
+      </details>
+    </article>
+<article id="task-93">
+      <h2>93. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Смешанные операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Кабанов А.</span>
+        <span>ID: ef01bd15-9cad-4c7d-b3ef-42633c6fc757</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через ДЕЛ(_n_,_ m_) утверждение «натуральное число _n_ делится без остатка на натуральное число _m_»; и пусть на числовой прямой дан отрезок _B_ = [70; 80].</p>
+<p>Для какого наибольшего натурального числа _А_ формула</p>
+<p>$ДЕЛ(x, A) \vee ((x \in B) 	\to \neg ДЕЛ(x, 18))$</p>
+<p>тождественно истинна (т. е. принимает значение 1) при любом натуральном значении переменной _х_?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 72</p>
+      </details>
+    </article>
+<article id="task-94">
+      <h2>94. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Джобс Е.</span>
+        <span>ID: 0d90a914-7bc8-49a0-bba5-0349629d92f5</span>
+      </div>
+      <section class="task-text">
+        <p>Укажите наименьшее целое значение $А$, при котором выражение</p>
+<p>$(2x + 3y\neq 150) \vee (x &lt; A) \vee (y &lt; A)$</p>
+<p>истинно для любых целых неотрицательных значений x и y.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 31</p>
+      </details>
+    </article>
+<article id="task-95">
+      <h2>95. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Джобс Е.</span>
+        <span>ID: fb7c0e52-09cc-4351-8a02-87f7e079a74d</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через **ДЕЛ(<em>n, m</em>)** утверждение «натуральное число <em>n</em> делится без остатка на натуральное число <em>m</em>».</p>
+<p>Например, ДЕЛ(21, 3) = ИСТИНА, потому что 21 делится на 3 нацело. ДЕЛ(20, 7) = ЛОЖЬ, так как 20 не делится на 7 нацело.</p>
+<p>Найдите минимальное значение А, для которого приведённое выражение истинно, то есть принимает значение 1 для любого неотрицательного целого значения х.</p>
+<p>$\neg ДЕЛ(x, A) \vee \neg ДЕЛ(x, 5) \vee ДЕЛ(x, 35)$</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 7</p>
+      </details>
+    </article>
+<article id="task-96">
+      <h2>96. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Шубинкин В.</span>
+        <span>ID: df312541-c8cc-4977-b313-084c20db27d0</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через ДЕЛ(n, m) утверждение «натуральное число n делится без остатка на натуральное число m». Для какого наибольшего натурального числа A формула</p>
+<p>$((\neg ДЕЛ(x, A) \wedge ДЕЛ(x, 180)) \to ДЕЛ(x, 130)) \wedge ( A &lt; 100)$</p>
+<p>тождественно истинна (то есть принимает значение 1 при любом натуральном значении переменной х)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 90</p>
+      </details>
+    </article>
+<article id="task-97">
+      <h2>97. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Шастин Л.</span>
+        <span>ID: 059c3be7-e7d3-475e-be40-aeb3443ee648</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого <strong>наименьшего</strong> неотрицательного целого числа $А$ формула</p>
+<p>$(x\ge 11)\vee (3\cdot x &lt; y)∨(x\cdot y &lt; A)$</p>
+<p>тождественно истинна (т. е. принимает значение 1) при любых неотрицательных целых $x$ и $y$?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 301</p>
+      </details>
+    </article>
+<article id="task-98">
+      <h2>98. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Рогов А.</span>
+        <span>ID: 0f43c8c5-d589-4607-a171-e3296b414d5c</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через $m | n$ поразрядную дизъюнкцию неотрицательных целых чисел $m$ и $n$. Так, например,</p>
+<p>$12 | 6 = 1100_{2} | 0110_{2} = 1110_{2} = 14$.</p>
+<p>Для какого наименьшего неотрицательного целого числа А формула</p>
+<p>$((x|42&gt;64)\wedge (x∣34\le 102))\to \neg (x∣A&lt;70)$</p>
+<p>тождественно истинна (т.е. принимает значение 1) при любом неотрицательном целом значении переменной $х$?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 6</p>
+      </details>
+    </article>
+<article id="task-99">
+      <h2>99. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Джобс Е.</span>
+        <span>ID: 52ab73aa-66a8-4ec8-9ac7-0aa372854cf0</span>
+      </div>
+      <section class="task-text">
+        <p>Определите наибольшее натуральное число A, такое что выражение</p>
+<p>$(x\&amp;A \neq  0) \to ((x\&amp;28 = 0) \to  ((x\&amp;53 \neq  0) \wedge (x\&amp;20 = 0)))$</p>
+<p>тождественно истинно (то есть принимает значение 1 при любом натуральном значении переменной X).</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 61</p>
+      </details>
+    </article>
+<article id="task-100">
+      <h2>100. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Джобс Е.</span>
+        <span>ID: ac1394e1-9e24-47fb-a188-a105d55afee7</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $A$, $P$ и $Q$ являются целые числа, причём</p>
+<p>$P = \{ 12, 23, 34, 45, 56 \}$ и $Q = \{ 23, 35, 56, 68, 89 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$(x \in P) \lor (x \in Q) \lor (x \notin A)$</p>
+<p>истинно (т. е. принимает значение 1) при любом значении переменной $x$.</p>
+<p>Определите <strong>максимальное</strong> возможное <strong>количество</strong> целых чисел в множестве $A$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 8</p>
+      </details>
+    </article>
+<article id="task-101">
+      <h2>101. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Рогов А.</span>
+        <span>ID: ed411b53-8e1a-43a7-8982-8d34c31ae7c3</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через $m\&amp;n$ поразрядную конъюнкцию неотрицательных целых чисел m и n. Так, например,</p>
+<p>$14\&amp;5 = 1110_{2}\&amp;0101_{2} = 0100_{2} = 4$.</p>
+<p>Для какого наибольшего неотрицательного целого числа А формула</p>
+<p>$(x\&amp;А \neq 0) \to (( (x\&amp;17=0) \land (x\&amp;5=0)) \to (x\&amp;3 \neq 0))$</p>
+<p>тождественно истинна (т. е. принимает значение 1 при любом неотрицательном целом значении переменной х)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 23</p>
+      </details>
+    </article>
+<article id="task-102">
+      <h2>102. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Джобс Е.</span>
+        <span>ID: b2f81f25-7171-4e9a-8456-607bca827919</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два промежутка: $P = [23; 45)$ и $Q = [34; 56]$. Укажите <strong>наибольшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$(x \notin A) \lor ((x \notin P) \land (x \in Q))$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 11</p>
+      </details>
+    </article>
+<article id="task-103">
+      <h2>103. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Шастин Л.</span>
+        <span>ID: a8ecc068-3399-4876-a293-88beb20c184d</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через $m\&amp;n$ поразрядную конъюнкцию неотрицательных целых чисел $m$ и $n$. Так, например,</p>
+<p>$14\&amp;5 = 1110_{2}\&amp;0101_{2} = 0100_{2} = 4$.</p>
+<p>Для какого наименьшего неотрицательного целого числа А формула <br> <br>$(x\&amp;29=0) \lor ((x\&amp;11=0) \to \lnot (x\&amp;А=0))$ <br> <br> истинна при всех целых значениях переменной $х \in  [15; 30]$?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 16</p>
+      </details>
+    </article>
+<article id="task-104">
+      <h2>104. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Джобс Е.</span>
+        <span>ID: 5ed718bc-b630-46ba-b08b-581549fab275</span>
+      </div>
+      <section class="task-text">
+        <p>Найдите минимальное значение А, при котором выражение</p>
+<p>$(x\&amp;103 = 0) \wedge (x\&amp;94 \neq 0) \to (x\&amp;A \neq 0)$</p>
+<p>тождественно истинно, то есть принимает значение 1 при любом натуральном значении х.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 24</p>
+      </details>
+    </article>
+<article id="task-105">
+      <h2>105. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: c3edcc15-6fdd-4d9b-94d4-ded3836bdc59</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наименьшего целого неотрицательного числа А выражение</p>
+<p>$(2x + y &lt; A) \lor (y &gt; 17) \lor (x &gt; y)$</p>
+<p>тождественно истинно (т. е. принимает значение 1) при любых целых неотрицательных x и y?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 52</p>
+      </details>
+    </article>
+<article id="task-106">
+      <h2>106. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 3</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 55344679-33e9-4a7a-8ba5-e68aaaa1334d</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим как ДЕЛ(х, А) утверждение, что натуральное число х делится на А без остатка.</p>
+<p>Для приведенного ниже выражения укажите минимальное натуральное А, при котором выражение будет истинно для любого натурального х.</p>
+<p>$(ДЕЛ(x,30)\wedge \neg ДЕЛ(x,45))\to \neg ДЕЛ(x,A)$</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 9</p>
+      </details>
+    </article>
+<article id="task-107">
+      <h2>107. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Смешанные операции</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 35b9fae0-5cff-418c-b781-ae1db9db89b5</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой дан отрезок $P = [3; 17]$; $Q$ — множество всех натуральных делителей числа $78$, отличных от единицы и от самого числа $78$; $A$ — множество всех натуральных делителей некоторого натурального числа $y$,  отличных от единицы и от самого числа $y$ (число $y$ таково, что множество $A$ непустое). Укажите наименьшее возможное значение числа $y$, для которого выражение</p>
+<p>$((x \in Q) \to (x \in P)) \lor \lnot (x \in A)$</p>
+<p>истинно (т. е. принимает значение 1) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 9</p>
+      </details>
+    </article>
+<article id="task-108">
+      <h2>108. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Рогов А.</span>
+        <span>ID: 25343130-15c0-4096-a396-4a72c38efffe</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два отрезка: $P = [12; 62]$ и $Q = [52; 92]$. Рассмотрим отрезок $A = [10; X]$. Найдите <strong>наименьшее</strong> значение $X$, при котором логическое выражение</p>
+<p>$\lnot((x \notin A) \land (x \in P)) \lor (x \in Q)$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 52</p>
+      </details>
+    </article>
+<article id="task-109">
+      <h2>109. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Рогов А.</span>
+        <span>ID: ee5e8ba0-73ee-4bcf-ad2b-be94781809a2</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через $m | n$ поразрядную дизъюнкцию неотрицательных целых чисел $m$ и $n$. Так, например, $12 | 6 = 1100_2 | 0110_2 = 1110_2 = 14.$</p>
+<p>Для какого наименьшего неотрицательного целого числа А формула</p>
+<p>$((x | 42 \gt 64) \land (x | 34 \le 102)) \to \neg (x | А \lt 70)$</p>
+<p>тождественно истинна (т. е. принимает значение 1) при любом неотрицательном целом значении переменной $х$?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 6</p>
+      </details>
+    </article>
+<article id="task-110">
+      <h2>110. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 6265fbdf-4b55-4957-9610-3e18a422da7f</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $A$, $P$ и $Q$ являются натуральные числа. Множество $P$ содержит только числа, кратные 5, а множество $Q$ — только числа, кратные 3.</p>
+<p>Известно, что выражение</p>
+<p>$(x \in Q) \to ((x \in P) \to ((x \in Q) \land (x \in A)))$</p>
+<p>истинно (т. е. принимает значение 1) при любом натуральном значении переменной $x$.</p>
+<p>Определите <strong>наибольшее</strong> возможное натуральное число, которому должны быть кратны элементы множества $A$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 15</p>
+      </details>
+    </article>
+<article id="task-111">
+      <h2>111. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 93f27805-f3b8-4151-8125-b3f3d9f61037</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два отрезка: $P = [64; 95]$ и $Q = [72; 106]$. Укажите <strong>наименьшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$((x \in Q) \land (x \notin A)) \to ((x \notin P) \to (x \notin Q))$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 11</p>
+      </details>
+    </article>
+<article id="task-112">
+      <h2>112. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 397f6a09-6a70-4935-846f-e2fc72915ec9</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два отрезка: $P = [1; 9999]$ и $Q = [3648; 6287]$. Укажите <strong>наименьшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$((x \in P) \equiv (x \in Q)) \lor (x \in A) \lor (x &gt; 4200)$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 3647</p>
+      </details>
+    </article>
+<article id="task-113">
+      <h2>113. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 65af06a7-ed7e-423d-ada2-68a85bc1a9e1</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два отрезка: $P = [74; 194]$ и $Q = [152; 223]$. Укажите <strong>наименьшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$(\lnot(x \in A) \land (x \in P)) \to ((x \in P) \to \lnot(x \in Q))$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 42</p>
+      </details>
+    </article>
+<article id="task-114">
+      <h2>114. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 4cb47800-ed22-4851-98b4-dcee23fc0448</span>
+      </div>
+      <section class="task-text">
+        <p>Операция $m\&amp;n$ называется поразрядной конъюнкцией неотрицательных целых чисел m и n. Операция $m|n$ называется поразрядной дизъюнкцией неотрицательных целых чисел m и n. Например:</p>
+<p>$35\&amp;23 = 100011_{2} \&amp;010111_{2} = 000011_{2} = 3$  <br>$35|23 = 100011_{2}|010111_{2} = 110111_{2} = 55$</p>
+<p>Для какого наименьшего натурального числа А формула</p>
+<p>$\lnot ((x∣41=0) \lor (x\&amp;128 \neq 0)) \land (x\&amp;A=0) \land ((x∣A=0) \lor (x\&amp;A=0))$</p>
+<p>истинна при всех положительных целых двузначных значениях переменной х?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 128</p>
+      </details>
+    </article>
+<article id="task-115">
+      <h2>115. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: f1912e9d-bfea-448f-bf17-96b14e7f7b44</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два отрезка: $P = [101; 143]$ и $Q = [144; 199]$. Укажите <strong>наибольшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$(x \in A) \to ((x \in P) \lor (x \in Q))$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 55</p>
+      </details>
+    </article>
+<article id="task-116">
+      <h2>116. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: ec4ba1a8-b53f-4e8b-94e1-7d7c7fc9d89e</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $A$, $P$ и $Q$ являются натуральные числа, причём</p>
+<p>$P = \{ 12, 14, 19, 20, 25 \}$ и $Q = \{ 13, 18, 19, 20, 30 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$\lnot((x \in P) \equiv (x \in A)) \to ((x \in Q) \equiv (x \in A))$</p>
+<p>истинно (т. е. принимает значение 1) при любом значении переменной $x$.</p>
+<p>Определите <strong>наибольшее</strong> возможное значение <strong>произведения</strong> элементов множества $A$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 11203920000</p>
+      </details>
+    </article>
+<article id="task-117">
+      <h2>117. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Богданов А.</span>
+        <span>ID: 7e4937e4-e2f6-48c7-9960-a3bf2dfb4263</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два отрезка: $P = [23; 37]$ и $Q = [41; 73]$. Укажите <strong>наименьшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$\lnot((\lnot(x \in P) \to (x \in Q)) \to (x \in A))$</p>
+<p>ложно (т. е. принимает значение $0$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 50</p>
+      </details>
+    </article>
+<article id="task-118">
+      <h2>118. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Богданов А.</span>
+        <span>ID: 21fef5ec-ac54-4333-b360-20a22600f6c8</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два отрезка: $P = [13; 19]$ и $Q = [17; 23]$. Укажите <strong>наибольшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$\lnot(\lnot(x \in P) \to (x \in Q)) \to ((x \in A) \to (\lnot(x \in Q) \to (x \in P)))$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 10</p>
+      </details>
+    </article>
+<article id="task-119">
+      <h2>119. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Шубинкин В.</span>
+        <span>ID: 95d1df00-4bb0-4a7a-99be-da6b94ae8c07</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через ДЕЛ(n, m) утверждение «натуральное число n делится без остатка на натуральное число m». Для какого наименьшего натурального числа A формула</p>
+<p>$((ДЕЛ(x, A) \wedge ДЕЛ(x, 45)) \to ДЕЛ(x, 162)) \wedge ( A &gt; 200)$</p>
+<p>тождественно истинна (то есть принимает значение 1 при любом натуральном значении переменной х)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 324</p>
+      </details>
+    </article>
+<article id="task-120">
+      <h2>120. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Шубинкин В.</span>
+        <span>ID: f7addc6a-f459-474c-9d46-d999765a5bba</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через ДЕЛ(n, m) утверждение «натуральное число n делится без остатка на натуральное число m». Для какого наименьшего натурального числа A формула</p>
+<p>$((ДЕЛ(x, A) \wedge ДЕЛ(x, 36)) \to ДЕЛ(x, 324)) \wedge ( A &gt; 100)$</p>
+<p>тождественно истинна (то есть принимает значение 1 при любом натуральном значении переменной х)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 162</p>
+      </details>
+    </article>
+<article id="task-121">
+      <h2>121. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Шубинкин В.</span>
+        <span>ID: cf61f112-a1cf-40f3-9fef-d1a97ba29075</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через ДЕЛ(n, m) утверждение «натуральное число n делится без остатка на натуральное число m». Для какого наименьшего натурального числа A формула</p>
+<p>$((ДЕЛ(x, A) \wedge ДЕЛ(x, 375)) \to ДЕЛ(x, 100)) \wedge ( A &gt; 10)$</p>
+<p>тождественно истинна (то есть принимает значение 1 при любом натуральном значении переменной х)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 12</p>
+      </details>
+    </article>
+<article id="task-122">
+      <h2>122. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Арифметические операции</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Джобс Е.</span>
+        <span>ID: e9f0b745-489c-482c-a332-4627a087b00a</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через **ДЕЛ(<em>n, m</em>)** утверждение «натуральное число <em>n</em> делится без остатка на натуральное число <em>m</em>».</p>
+<p>Например, ДЕЛ(21, 3) = ИСТИНА, потому что 21 делится на 3 нацело. ДЕЛ(20, 7) = ЛОЖЬ, так как 20 не делится на 7 нацело.</p>
+<p>Найдите минимальное значение А, для которого приведённое выражение истинно, то есть принимает значение 1 для любого натурального значения х.</p>
+<p>$\neg ДЕЛ(x,A) \vee \neg ДЕЛ(x,2205) \vee ДЕЛ(x,2800)$</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 400</p>
+      </details>
+    </article>
+<article id="task-123">
+      <h2>123. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Рогов А.</span>
+        <span>ID: 62a6ffc3-2e0e-4b8c-afd3-8f4dfd6c726a</span>
+      </div>
+      <section class="task-text">
+        <p>Определите сколько всего существует натуральных чисел R таких, что выражение</p>
+<p>$(((x \&amp; 108 = 0) \vee (x \&amp; 60 = 0)) \to (x \&amp; A = 0)) \vee (x \&amp; R = 0)$</p>
+<p>тождественно истинно при любом натуральном A (то есть принимает значение 1 при любом натуральном значении переменной x и любом натуральном значении A).</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 7</p>
+      </details>
+    </article>
+<article id="task-124">
+      <h2>124. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Джобс Е.</span>
+        <span>ID: 42f2f42f-16cf-4453-a8bf-26afaba65c51</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны три отрезка: $P = [10; 27]$, $Q = [20; 40]$ и $R = [32; 50]$. Укажите <strong>наибольшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$\lnot(x \in A) \lor ((x \in Q) \land ((x \in P) \lor (x \in R)))$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 8</p>
+      </details>
+    </article>
+<article id="task-125">
+      <h2>125. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Отрезки</span>
+        <span>Сложность: 4</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: f21ffc71-18b2-48d5-a4b3-5286316264af</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой даны два отрезка: $P = [3; 87]$ и $Q = [50; 72]$. Укажите <strong>наибольшую</strong> возможную <strong>длину</strong> такого отрезка $A$, для которого логическое выражение</p>
+<p>$((x \in P) \land \lnot((x \in A) \equiv (x \in Q))) \lor \lnot((x \in Q) \lor (x \in A))$</p>
+<p>истинно (т. е. принимает значение $1$) при любом значении переменной $x$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 47</p>
+      </details>
+    </article>
+<article id="task-126">
+      <h2>126. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Графики</span>
+        <span>Сложность: 5</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: d77be3dc-51ca-4902-9e72-0c90e8ff3d86</span>
+      </div>
+      <section class="task-text">
+        <p>Для какого наименьшего целого числа А формула</p>
+<p>$(-(x - 2)^{2}+3&lt;y) \lor ((x-1)^{2}+y^{2}&lt;7) \lor (5x+A&gt;y)$</p>
+<p>тождественно истинна (т. е. принимает значение 1) при любых положительных x и y?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> -4</p>
+      </details>
+    </article>
+<article id="task-127">
+      <h2>127. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 5</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 0721cb7f-43fe-4b69-ab81-31e482c3e8a9</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $W$, $F$ и $M$ являются натуральные числа.</p>
+<p>Новичок хоккейной команды выбирает номера для игровой формы в пределах от 1 до 99. Все числа меньше 22 или больше 70, а также 26 и 40 уже заняты. Самому игроку нравятся двузначные числа, сумма цифр которых больше 5. Если обозначить за $W$ все неподходящие числа, за $F$ — любимые числа, а за $M$ — те числа, которые готов предложить менеджмент команды, то выражение</p>
+<p>$(n \notin W) \to ((n \notin F) \lor (n \in M))$</p>
+<p>истинно (т. е. принимает значение 1) при любом значении переменной $n$.</p>
+<p>Определите, <strong>сколько</strong> номеров может предложить игроку менеджмент команды.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 40</p>
+      </details>
+    </article>
+<article id="task-128">
+      <h2>128. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 5</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 02da09ba-9555-44ca-936b-b3b73582dffd</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $A$, $P$, $Q$ и $R$ являются 8-битовые цепочки, причём</p>
+<p>$P$ — множество всех 8-битовых цепочек с чётным количеством единиц,   <br>$Q$ — множество всех 8﻿-﻿битовых цепочек, начинающихся на 10,  <br>$R$ — множество всех 8﻿-﻿битовых цепочек, оканчивающихся на 101.</p>
+<p>Известно, что выражение</p>
+<p>$\lnot(x \in R) \to ((x \in P) \lor (\lnot(x \in A) \land (x \in Q)) \to ((x \in A) \lor (\lnot(x \in Q) \land (x \in P))))$</p>
+<p>истинно при любой 8-битовой цепочке $x$.</p>
+<p>Сколько элементов содержит <strong>минимальное</strong> множество $A$, при котором это условие выполняется?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 56</p>
+      </details>
+    </article>
+<article id="task-129">
+      <h2>129. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 5</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: fcd4ef3a-8c80-468a-8217-17f9e35df44d</span>
+      </div>
+      <section class="task-text">
+        <p>&quot;Элементами множеств $A$, $P$ и $Q$ являются натуральные числа, причём</p>
+<p>$P = \{ 2, 5, 10, 15, 17, 20, 22, 25 \}$,  <br>$Q = \{ 2, 4, 6, 8, 10, 12, 15, 16, 20, 25 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$((x \in P) \equiv ((x \in A) \land (x \in Q))) \to ((x \in Q) \equiv ((x \in A) \land (x \in P)))$</p>
+<p>тождественно истинно (т. е. принимает значение 1) при любом значении переменной $x$.</p>
+<p>Определите <strong>наименьшую</strong> возможную <strong>сумму</strong> элементов множества $A$.&quot;</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 46</p>
+      </details>
+    </article>
+<article id="task-130">
+      <h2>130. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Смешанные операции</span>
+        <span>Сложность: 5</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: bd2ca87d-5e9a-42d3-baf5-6c56de658ac9</span>
+      </div>
+      <section class="task-text">
+        <p>На числовой прямой дан отрезок <em>B</em> = [20; 47].</p>
+<p>Пусть <em>A</em> – множество чисел <em>a</em>, для которых формула</p>
+<p>$(x \&amp; 45 \neq  0) \to ((x \&amp; 21 = 0) \to (x \&amp; a \neq  0))$</p>
+<p>тождественно истинна при всех натуральных значениях переменной <em>х</em>.</p>
+<p>Для какого <strong>наименьшего</strong> натурального числа $x$ формула</p>
+<p>$(x ∈ A) \to (x ∈ B)$</p>
+<p>ложна?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 56</p>
+      </details>
+    </article>
+<article id="task-131">
+      <h2>131. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Битовые операции</span>
+        <span>Сложность: 5</span>
+        <span>Источник: Яндекс Учебник</span>
+        <span>ID: 40f385cb-9a60-461a-ac05-9a615bc49755</span>
+      </div>
+      <section class="task-text">
+        <p>Обозначим через <em>m XOR n</em> поразрядное исключающее «или» неотрицательных целых чисел <em>m</em> и <em>n</em>. Так, например,</p>
+<p>$14 XOR 5 = 1110_{2} XOR 0101_{2} = 1011_{2} = 11$.</p>
+<p>Для какого наименьшего неотрицательного целого числа <em>А</em> формула</p>
+<p>$(x XOR A≠2)∧¬((x XOR 9≠5)→(x XOR 27≠7))$</p>
+<p>тождественно ложна (т. е. принимает значение 0 при любом неотрицательном целом значении переменной <em>х</em>)?</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 30</p>
+      </details>
+    </article>
+<article id="task-132">
+      <h2>132. Задание 15</h2>
+      <div class="task-meta">
+        <span>Категория: Множества</span>
+        <span>Сложность: 5</span>
+        <span>Источник: КомпЕГЭ</span>
+        <span>ID: 7e59bed3-2ef7-4f3c-989d-90518e9dde1d</span>
+      </div>
+      <section class="task-text">
+        <p>Элементами множеств $A$, $P$ и $Q$ являются натуральные числа, причём</p>
+<p>$P = \{ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 \}$ и $Q = \{ 2, 4, 8, 10 \}$.</p>
+<p>Известно, что выражение</p>
+<p>$((x \in Q) \to (x \in A)) \land ((x \in A) \to (x \in P))$</p>
+<p>истинно (т. е. принимает значение 1) при любом значении переменной $x$.</p>
+<p>Определите <strong>количество</strong> возможных вариантов множества $A$.</p>
+      </section>
+      <details class="answer">
+        <summary>Показать ответ</summary>
+        <p><strong>Ответ:</strong> 64</p>
+      </details>
+    </article>
+  </main>
+</body>
+</html>

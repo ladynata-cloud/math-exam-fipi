@@ -1,0 +1,3283 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Задачи на машину Тьюринга</title>
+<style>
+  :root {
+    --bg: #f3f1ea;
+    --bg-soft: #ebe7dc;
+    --card: #ffffff;
+    --card-warm: #fbfaf6;
+    --border: #d8d2c2;
+    --border-strong: #b9b1a0;
+    --text: #1a1d22;
+    --text-soft: #5b6470;
+    --text-dim: #8a8f99;
+    --accent: #1f3a5f;
+    --accent-hover: #2a4d75;
+    --accent-soft: #e3ebf3;
+    --ok-bg: #e7f1e9;
+    --ok-border: #b6d1bd;
+    --ok-text: #155427;
+    --err-bg: #f6e2e1;
+    --err-border: #e3b8b6;
+    --err-text: #7d1f1d;
+    --hint-bg: #fdf3d7;
+    --hint-border: #e6cf86;
+    --hint-text: #5f4a0e;
+    --head: #fbbf24;
+    --head-strong: #b78410;
+    --shadow: 0 1px 2px rgba(20, 24, 30, 0.04), 0 4px 14px rgba(20, 24, 30, 0.05);
+    --radius: 12px;
+    --radius-sm: 7px;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    --serif: ui-serif, Georgia, "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page-header {
+    background: linear-gradient(180deg, #fcfbf7 0%, #f3f1ea 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 32px 20px 24px;
+  }
+  .page-header .inner { max-width: 1060px; margin: 0 auto; }
+  .page-header h1 {
+    font-family: var(--serif);
+    font-weight: 650;
+    font-size: clamp(27px, 4vw, 38px);
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .page-header p.subtitle {
+    margin: 0;
+    max-width: 780px;
+    color: var(--text-soft);
+  }
+
+  .tab-bar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px 0;
+  }
+  .tab-bar .inner {
+    max-width: 1060px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .tab-btn {
+    appearance: none;
+    background: transparent;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 9px 14px 10px;
+    font-family: var(--sans);
+    font-size: 14.5px;
+    color: var(--text-soft);
+    cursor: pointer;
+    transition: background .12s, color .12s;
+  }
+  .tab-btn:hover { color: var(--text); background: var(--card-warm); }
+  .tab-btn.active {
+    background: var(--card);
+    color: var(--accent);
+    border-color: var(--border);
+    border-bottom: 1px solid var(--card);
+    margin-bottom: -1px;
+    font-weight: 600;
+  }
+
+  main {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 22px 20px 60px;
+    display: grid;
+    gap: 20px;
+  }
+
+  .tab-panel { display: none; gap: 20px; }
+  .tab-panel.active { display: grid; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px 22px 24px;
+  }
+  .card h2 {
+    font-family: var(--serif);
+    font-weight: 650;
+    font-size: 23px;
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .card h3 {
+    font-family: var(--serif);
+    font-weight: 650;
+    font-size: 18px;
+    margin: 18px 0 8px;
+  }
+  .card h4 {
+    font-family: var(--sans);
+    font-weight: 650;
+    font-size: 15px;
+    margin: 14px 0 6px;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .card p { margin: 8px 0; }
+
+  .badge {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid #c8d6e6;
+    border-radius: 999px;
+    padding: 2px 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: var(--sans);
+  }
+  .badge.muted { color: var(--text-soft); background: var(--bg-soft); border-color: var(--border); }
+  .badge.warn { color: var(--hint-text); background: var(--hint-bg); border-color: var(--hint-border); }
+
+  code { font-family: var(--mono); font-size: 0.93em; background: var(--bg-soft); padding: 1px 5px; border-radius: 4px; }
+  code.lambda { background: #fff1cf; border: 1px solid #ecd58f; color: #6a4f0f; }
+  .mono { font-family: var(--mono); }
+  .lambda { font-family: var(--mono); }
+  .formula { font-family: var(--mono); background: #f8f5ec; border: 1px solid #e3dcc4; padding: 2px 7px; border-radius: 5px; }
+
+  .muted { color: var(--text-soft); }
+  .small { font-size: 14px; }
+
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin: 10px 0;
+  }
+  label { display: inline-flex; flex-direction: column; gap: 4px; font-size: 14px; color: var(--text-soft); }
+  label > span { font-weight: 500; }
+  input[type="number"], input[type="text"], select {
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 7px 10px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    background: #fff;
+    color: var(--text);
+    min-width: 0;
+  }
+  input[type="number"]:focus, input[type="text"]:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(31, 58, 95, 0.12);
+  }
+
+  button {
+    appearance: none;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 14.5px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background .12s, border-color .12s, transform .04s;
+  }
+  button:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+  button:active { transform: translateY(1px); }
+  button.secondary { background: var(--accent-soft); color: var(--accent); border-color: #c8d6e6; }
+  button.secondary:hover { background: #d4e1ee; }
+  button.ghost { background: transparent; color: var(--text-soft); border-color: var(--border-strong); }
+  button.ghost:hover { background: var(--bg-soft); color: var(--text); }
+  button.warning { background: #fff; color: var(--err-text); border-color: var(--err-border); }
+  button.warning:hover { background: #fbecea; }
+  button.small { padding: 5px 11px; font-size: 13px; }
+
+  table.program {
+    border-collapse: collapse;
+    margin: 8px 0 4px;
+    font-family: var(--mono);
+    font-size: 14.5px;
+    background: var(--card-warm);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  table.program th, table.program td {
+    border: 1px solid var(--border);
+    padding: 9px 14px;
+    min-width: 80px;
+    text-align: center;
+  }
+  table.program thead th { background: var(--bg-soft); color: var(--text-soft); font-weight: 600; }
+  table.program tbody th { background: var(--bg-soft); color: var(--text); font-weight: 600; }
+  table.program td.empty { color: var(--text-dim); background: #fafaf5; }
+  .program-table-wrap { overflow-x: auto; }
+
+  .feedback {
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 14.5px;
+    display: none;
+    line-height: 1.5;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: var(--ok-bg); border: 1px solid var(--ok-border); color: var(--ok-text); }
+  .feedback.err { background: var(--err-bg); border: 1px solid var(--err-border); color: var(--err-text); }
+  .feedback.hint { background: var(--hint-bg); border: 1px solid var(--hint-border); color: var(--hint-text); }
+
+  .soft-box {
+    background: var(--card-warm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    margin: 10px 0;
+  }
+  .drill-string {
+    font-family: var(--mono);
+    font-size: 22px;
+    letter-spacing: 0.06em;
+    margin: 6px 0 10px;
+  }
+  .trail-mark { background: #fff1cf; padding: 0 3px; border-radius: 3px; }
+
+  .tape {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 10px;
+    background: var(--card-warm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    margin: 10px 0;
+  }
+  .cell {
+    flex: 0 0 auto;
+    width: 36px;
+    height: 44px;
+    border: 1px solid var(--border-strong);
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 17px;
+    margin-right: -1px;
+    position: relative;
+  }
+  .cell.lambda-cell { background: #fff8e1; color: #8a6d1c; }
+  .cell.head {
+    background: var(--head);
+    box-shadow: inset 0 0 0 2px var(--head-strong);
+    font-weight: 700;
+  }
+  .cell .pos {
+    position: absolute;
+    bottom: -16px;
+    font-size: 10px;
+    color: var(--text-dim);
+    font-family: var(--sans);
+  }
+  .tape-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 12px 0 0;
+    color: var(--text-soft);
+    font-size: 14px;
+  }
+  .tape-info .kv b { color: var(--text); margin-right: 4px; }
+  .tape-cmd { font-family: var(--mono); }
+
+  .examples-list {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+  .example {
+    background: var(--card-warm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+  }
+  .example .params { font-family: var(--mono); font-weight: 600; }
+  .example .mode { color: var(--text-soft); font-size: 14px; margin: 4px 0 8px; }
+
+  details.collapsible {
+    background: var(--card-warm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+  }
+  details.collapsible summary { cursor: pointer; font-weight: 600; color: var(--accent); }
+  details.collapsible[open] summary { margin-bottom: 8px; }
+
+  .tiny-examples { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); margin: 10px 0; }
+  .tiny-example { background: var(--card-warm); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; font-family: var(--mono); }
+  .tiny-example .arrow { margin: 0 6px; color: var(--text-soft); }
+
+  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 8px; }
+  .pill { background: var(--bg-soft); border: 1px solid var(--border); padding: 3px 10px; border-radius: 999px; font-size: 13px; color: var(--text-soft); }
+
+  .task-box { background: var(--card-warm); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; margin: 8px 0; }
+  .task-empty { color: var(--text-dim); }
+  .task-program { margin: 8px 0 12px; }
+
+  .solution {
+    margin-top: 12px;
+    padding: 14px 16px;
+    background: #f4f6f1;
+    border: 1px solid #d5dec6;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+  }
+  .solution h3 { margin-top: 6px; }
+
+  .tests { display: grid; gap: 6px; margin-top: 6px; }
+  .test-row { display: flex; gap: 8px; align-items: baseline; font-size: 14px; padding: 5px 8px; border-radius: 4px; }
+  .test-row:nth-child(even) { background: var(--card-warm); }
+  .test-row .status { font-family: var(--mono); font-weight: 700; }
+  .test-row .status.ok { color: var(--ok-text); }
+  .test-row .status.fail { color: var(--err-text); }
+  .test-summary { margin-top: 8px; font-weight: 600; }
+
+  .choice-list { display: grid; gap: 4px; margin: 8px 0; }
+  .choice-list label { flex-direction: row; align-items: flex-start; gap: 8px; color: var(--text); }
+  .choice-list input { margin-top: 4px; }
+
+  .guide-shell { display: grid; gap: 14px; }
+  .guide-nav { display: grid; gap: 6px; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .guide-step { background: var(--card-warm); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 7px 9px; font-size: 13px; color: var(--text-soft); text-align: center; cursor: pointer; transition: background .12s; }
+  .guide-step:hover { background: var(--bg-soft); }
+  .guide-step.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .guide-panel { background: var(--card-warm); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 16px; }
+  .guide-panel h3 { margin-top: 4px; }
+
+  .library-list { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .library-card {
+    background: var(--card-warm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: border-color .12s, box-shadow .12s;
+  }
+  .library-card:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(31,58,95,0.08); }
+  .library-card.active { border-color: var(--accent); background: #fff; box-shadow: 0 2px 12px rgba(31,58,95,0.1); }
+  .library-card .lib-id { font-family: var(--mono); font-size: 12px; color: var(--text-dim); }
+  .library-card .lib-title { font-weight: 600; margin: 4px 0; }
+  .library-card .lib-meta { font-size: 13px; color: var(--text-soft); }
+
+  .library-detail {
+    margin-top: 16px;
+    padding: 16px 18px;
+    background: #fff;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  .library-detail h3 { margin-top: 6px; }
+  .library-detail .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 6px 0 12px;
+    font-size: 14px;
+    color: var(--text-soft);
+  }
+
+  .admin-list { display: grid; gap: 6px; }
+  .admin-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: baseline;
+    padding: 6px 10px;
+    background: var(--card-warm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+  }
+  .admin-row .a-id { font-family: var(--mono); font-weight: 600; color: var(--text); }
+  .admin-row .a-status { font-size: 12px; color: var(--hint-text); background: var(--hint-bg); border: 1px solid var(--hint-border); padding: 1px 7px; border-radius: 999px; }
+
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 6px 0 12px; }
+  .toolbar .filter-btn {
+    appearance: none;
+    background: var(--card-warm);
+    border: 1px solid var(--border);
+    color: var(--text-soft);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .toolbar .filter-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  .uni-editor { display: grid; gap: 10px; }
+  .uni-editor textarea {
+    width: 100%;
+    min-height: 120px;
+    font-family: var(--mono);
+    font-size: 14px;
+    padding: 10px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    resize: vertical;
+  }
+  .uni-program-table input.cmd-input {
+    width: 110px;
+    font-family: var(--mono);
+    font-size: 13px;
+    padding: 4px 6px;
+  }
+  .uni-program-table td.empty-cmd { background: #fafaf5; }
+
+  .binary-converter { display: grid; gap: 6px; background: var(--card-warm); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 14px; margin: 8px 0; }
+  .binary-converter .conv-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .binary-converter .conv-out {
+    font-family: var(--mono);
+    font-size: 17px;
+    background: #fff;
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 4px;
+    min-width: 100px;
+    display: inline-block;
+  }
+
+
+
+  /* Метки учебного маршрута и мини-викторина */
+  .route-box {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+    margin: 10px 0 14px;
+  }
+  .route-step {
+    background: var(--card-warm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+  }
+  .route-step b { color: var(--accent); }
+  .level-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 2px 9px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid var(--border);
+    margin-top: 6px;
+  }
+  .level-badge.start { background: #e7f1e9; color: #155427; border-color: #b6d1bd; }
+  .level-badge.middle { background: #fdf3d7; color: #5f4a0e; border-color: #e6cf86; }
+  .level-badge.harder { background: #eee7f6; color: #4a2a65; border-color: #d7c6e8; }
+  .quiz-options { display: grid; gap: 8px; margin: 10px 0; }
+  .quiz-options button {
+    text-align: left;
+    background: #fff;
+    color: var(--text);
+    border-color: var(--border);
+  }
+  .quiz-options button:hover { border-color: var(--accent); background: var(--accent-soft); }
+
+  @media (max-width: 720px) {
+    .card { padding: 18px 16px 20px; }
+    table.program th, table.program td { padding: 8px 12px; min-width: 70px; }
+    .cell { width: 30px; height: 38px; font-size: 15px; }
+    .guide-nav { grid-template-columns: 1fr; }
+    .tab-btn { padding: 8px 10px; font-size: 13.5px; }
+  }
+
+  /* Доп. классы для вкладок «Универсальный разбор» и «Библиотека» */
+  .library-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    margin-top: 8px;
+  }
+  .uni-program-list {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    margin-top: 8px;
+  }
+  button.library-card {
+    appearance: none;
+    text-align: left;
+    font: inherit;
+    color: var(--text);
+    width: 100%;
+  }
+  .lib-filter { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 12px; }
+  .chip {
+    appearance: none;
+    background: var(--card-warm);
+    border: 1px solid var(--border);
+    color: var(--text-soft);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .chip:hover { border-color: var(--accent); color: var(--text); }
+  .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .chip.small { padding: 3px 9px; font-size: 12.5px; }
+  .lib-pill {
+    display: inline-block;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 1px 9px;
+    font-size: 12px;
+    color: var(--text-soft);
+  }
+
+  /* Лента в универсальном симуляторе и в библиотеке */
+  .tape-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    font-family: var(--mono);
+    font-size: 16px;
+    padding: 6px 0;
+  }
+  .tape-cell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 26px;
+    height: 30px;
+    padding: 0 6px;
+    border: 1px solid var(--border);
+    background: #fff;
+    border-radius: 4px;
+  }
+  .tape-cell.blank { background: #fff8e1; color: #8a6d1c; border-color: #ecd58f; }
+  .tape-cell.head {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(31, 58, 95, 0.18) inset;
+    font-weight: 700;
+  }
+
+  .trace-log {
+    background: var(--card-warm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    max-height: 220px;
+    overflow-y: auto;
+  }
+  .trace-row { padding: 2px 0; border-bottom: 1px dotted #e4e0d3; }
+  .trace-row:last-child { border-bottom: none; }
+
+  /* Служебные блоки */
+  .admin-details, .autotest-host details {
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    background: #fffaf0;
+    margin-top: 14px;
+  }
+  .admin-details > summary, .autotest-host details > summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-soft);
+  }
+  .admin-row .admin-id { font-family: var(--mono); font-weight: 600; }
+  .admin-row .admin-status {
+    font-size: 12px;
+    color: var(--hint-text);
+    background: var(--hint-bg);
+    border: 1px solid var(--hint-border);
+    padding: 1px 7px;
+    border-radius: 999px;
+  }
+  .admin-row .admin-note { flex: 1 1 320px; }
+
+  .autotest-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 14px;
+  }
+  .autotest-table th, .autotest-table td {
+    text-align: left;
+    padding: 5px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .autotest-table tr.ok td { background: #f1faf1; }
+  .autotest-table tr.err td { background: #fdecec; color: #7d1f1f; }
+
+  /* Обёртка для широких таблиц: на узких экранах даёт горизонтальный скролл
+     внутри блока, чтобы страница целиком не съезжала. */
+  .scroll-x-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .scroll-x-wrap > table { min-width: 460px; }
+
+  .badge.ok { background: #d6f1d6; color: #1f5520; border: 1px solid #a9d8a9; }
+  .badge.err { background: #fadcdc; color: #7d1f1f; border: 1px solid #e4a8a8; }
+  .err-text { color: #7d1f1f; }
+</style>
+</head>
+<body>
+<header class="page-header">
+  <div class="inner">
+    <h1>Задачи на машину Тьюринга</h1>
+    <p class="subtitle">
+      Тренажёр-конструктор: универсальное ядро исполнителя, разбор основных типов программ
+      и библиотека из 12 учебных задач разного типа.
+    </p>
+  </div>
+</header>
+
+<nav class="tab-bar">
+  <div class="inner" id="tab-bar"></div>
+</nav>
+
+<main id="main"></main>
+
+<section style="max-width: 1060px; margin: 24px auto 40px; padding: 0 24px;">
+  <div id="autotest-host" class="autotest-host"></div>
+  <div id="admin-host"></div>
+</section>
+
+<script>
+"use strict";
+
+/* ============================================================
+   Константы и универсальное ядро машины Тьюринга
+   ============================================================ */
+const LAMBDA = "λ";
+const MAX_STEPS = 100000;
+
+/**
+ * Создать состояние симуляции МТ.
+ * @param {string} inputString - исходная лента (без пустых символов)
+ * @param {"nearest_blank_right"|"nearest_blank_left"} headStart
+ * @param {string} startState
+ * @param {string} blankSymbol
+ */
+function createTMSimulation(inputString, headStart, startState, blankSymbol = LAMBDA) {
+  const tape = new Map();
+  for (let i = 0; i < inputString.length; i++) tape.set(i, inputString[i]);
+  const head = headStart === "nearest_blank_right" ? inputString.length : -1;
+  return {
+    tape,
+    head,
+    state: startState,
+    step: 0,
+    finished: false,
+    error: null,
+    lastCommand: null,
+    minPos: 0,
+    maxPos: Math.max(inputString.length - 1, 0),
+    inputLength: inputString.length,
+    blankSymbol
+  };
+}
+
+/** Один шаг МТ. Возвращает {ok, finished, error?}. */
+function stepTM(sim, program) {
+  if (sim.finished) return { ok: false, error: "Машина уже остановлена", finished: true };
+  const cur = sim.tape.get(sim.head) ?? sim.blankSymbol;
+  const row = program[sim.state];
+  const cmd = row ? row[cur] : null;
+  if (!cmd) {
+    sim.finished = true;
+    sim.error = `Нет команды для (${sim.state}, ${cur})`;
+    return { ok: false, error: sim.error, finished: true };
+  }
+  sim.tape.set(sim.head, cmd.write);
+  if (sim.head < sim.minPos) sim.minPos = sim.head;
+  if (sim.head > sim.maxPos) sim.maxPos = sim.head;
+  sim.lastCommand = { ...cmd, fromState: sim.state, fromSymbol: cur };
+  if (cmd.move === "L") sim.head--;
+  else if (cmd.move === "R") sim.head++;
+  sim.state = cmd.next;
+  sim.step++;
+  if (cmd.move === "S") sim.finished = true;
+  return { ok: true, finished: sim.finished, command: sim.lastCommand };
+}
+
+/** Запуск до остановки с защитой по MAX_STEPS. */
+function runTMFull(sim, program, maxSteps = MAX_STEPS) {
+  while (!sim.finished && sim.step < maxSteps) {
+    const r = stepTM(sim, program);
+    if (!r.ok) return { ok: false, error: r.error };
+  }
+  if (!sim.finished) return { ok: false, error: "Превышено максимальное число шагов" };
+  return { ok: true };
+}
+
+/** Получить итоговую ленту (между не-пустыми клетками). */
+function readFinalTape(sim) {
+  let s = sim.minPos, e = sim.maxPos;
+  while (s <= e && (sim.tape.get(s) ?? sim.blankSymbol) === sim.blankSymbol) s++;
+  while (e >= s && (sim.tape.get(e) ?? sim.blankSymbol) === sim.blankSymbol) e--;
+  let str = "";
+  if (s <= e) for (let i = s; i <= e; i++) str += (sim.tape.get(i) ?? sim.blankSymbol);
+  return str;
+}
+
+/** Удобная обёртка для тестов. */
+function simulateOnce(input, headStart, program, startState = "q0", blankSymbol = LAMBDA) {
+  const sim = createTMSimulation(input, headStart, startState, blankSymbol);
+  const r = runTMFull(sim, program);
+  if (!r.ok) return { ok: false, error: r.error, sim };
+  return { ok: true, finalTape: readFinalTape(sim), sim };
+}
+
+/* ============================================================
+   Вспомогательные утилиты
+   ============================================================ */
+function decToBin(n) {
+  if (!Number.isInteger(n) || n < 0) return null;
+  if (n === 0) return "0";
+  return n.toString(2);
+}
+function binToDec(s) {
+  if (typeof s !== "string" || s.length === 0) return 0;
+  if (!/^[01]+$/.test(s)) return NaN;
+  return parseInt(s, 2);
+}
+function countChar(s, ch) { let c = 0; for (const x of s) if (x === ch) c++; return c; }
+function countTrailingZeros(s) {
+  let t = 0;
+  for (let i = s.length - 1; i >= 0 && s[i] === "0"; i--) t++;
+  return t;
+}
+function countLeadingOnes(s) {
+  let t = 0;
+  for (let i = 0; i < s.length && s[i] === "1"; i++) t++;
+  return t;
+}
+function randInt(a, b) { return Math.floor(a + Math.random() * (b - a + 1)); }
+function escapeHTML(s) {
+  return String(s).replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[ch]));
+}
+function parseStrictInt(raw) {
+  if (raw === "" || raw == null) return { ok: false, error: "Поле не должно быть пустым" };
+  const v = Number(String(raw).trim());
+  if (!Number.isInteger(v)) return { ok: false, error: "Нужно целое число" };
+  return { ok: true, value: v };
+}
+function zeroWord(K) {
+  const a = Math.abs(K), l2 = a % 100, l1 = a % 10;
+  if (l2 >= 11 && l2 <= 14) return "нулей";
+  if (l1 === 1) return "ноль";
+  if (l1 >= 2 && l1 <= 4) return "нуля";
+  return "нулей";
+}
+function headStartLabel(hs) {
+  return hs === "nearest_blank_right"
+    ? "в ближайшей справа пустой ячейке"
+    : "в ближайшей слева пустой ячейке";
+}
+
+/* ============================================================
+   Программы МТ как переиспользуемые объекты
+   ============================================================ */
+const PROG_right_invert_first1 = {
+  q0: { [LAMBDA]: { write: LAMBDA, move: "L", next: "q1" }, "1": null, "0": null },
+  q1: {
+    [LAMBDA]: { write: LAMBDA, move: "S", next: "q1" },
+    "1": { write: "0", move: "S", next: "q1" },
+    "0": { write: "1", move: "L", next: "q1" }
+  }
+};
+const PROG_left_invert_first0 = {
+  q0: { [LAMBDA]: { write: LAMBDA, move: "R", next: "q1" }, "1": null, "0": null },
+  q1: {
+    [LAMBDA]: { write: LAMBDA, move: "S", next: "q1" },
+    "1": { write: "0", move: "R", next: "q1" },
+    "0": { write: "1", move: "S", next: "q1" }
+  }
+};
+const PROG_bitwise_invert = {
+  q0: { [LAMBDA]: { write: LAMBDA, move: "L", next: "q1" }, "1": null, "0": null },
+  q1: {
+    [LAMBDA]: { write: LAMBDA, move: "S", next: "q1" },
+    "1": { write: "0", move: "L", next: "q1" },
+    "0": { write: "1", move: "L", next: "q1" }
+  }
+};
+const PROG_binary_decrement = {
+  q0: { [LAMBDA]: { write: LAMBDA, move: "L", next: "q1" }, "1": null, "0": null },
+  q1: {
+    [LAMBDA]: { write: LAMBDA, move: "S", next: "q1" },
+    "1": { write: "0", move: "S", next: "q1" },
+    "0": { write: "1", move: "L", next: "q1" }
+  }
+};
+const PROG_clear_lowest_one = {
+  q0: { [LAMBDA]: { write: LAMBDA, move: "L", next: "q1" }, "1": null, "0": null },
+  q1: {
+    [LAMBDA]: { write: LAMBDA, move: "S", next: "q1" },
+    "1": { write: "0", move: "S", next: "q1" },
+    "0": { write: "0", move: "L", next: "q1" }
+  }
+};
+const PROG_clear_first_left_one = {
+  q0: { [LAMBDA]: { write: LAMBDA, move: "R", next: "q1" }, "1": null, "0": null },
+  q1: {
+    [LAMBDA]: { write: LAMBDA, move: "S", next: "q1" },
+    "1": { write: "0", move: "S", next: "q1" },
+    "0": { write: "1", move: "R", next: "q1" }
+  }
+};
+const PROG_left_first_zero_to_one = {
+  q0: { [LAMBDA]: { write: LAMBDA, move: "R", next: "q1" }, "1": null, "0": null },
+  q1: {
+    [LAMBDA]: { write: LAMBDA, move: "S", next: "q1" },
+    "1": { write: "1", move: "R", next: "q1" },
+    "0": { write: "1", move: "S", next: "q1" }
+  }
+};
+
+/* ============================================================
+   TASK_LIBRARY: 12 полностью обработанных задач
+   ============================================================ */
+const TASK_LIBRARY = [
+  {
+    id: "fipi-mr-2026-demo-task12",
+    shortId: "demo",
+    taskType: "right_tail_zero_flip_find_max_initial_zeros",
+    title: "Максимум исходных нулей при известном числе нулей после работы",
+    initialTape: { form: "binary_string", length: 1000, headStart: "nearest_blank_right", composition: "только 0 и 1" },
+    alphabet: [LAMBDA, "1", "0"],
+    states: ["q0", "q1"],
+    blankSymbol: LAMBDA,
+    startState: "q0",
+    program: PROG_right_invert_first1,
+    question: { target: "initial_count", symbol: "0", mode: "max", givenFinalCount: 343 },
+    answer: 999,
+    moduleSuggested: "right_tail_zeros",
+    solutionIdea: "Машина идёт справа налево по хвостовым нулям, превращает их в единицы, а первую встреченную единицу — в ноль. Для максимума исходных нулей при K > 0 оставляем в строке ровно одну единицу: ответ N − 1.",
+    sourceUrl: "https://doc.fipi.ru/navigator-podgotovki/navigator-ege/MR_informatika_ege_2026.pdf"
+  },
+  {
+    id: "fipi-mr-2026-ex01",
+    shortId: "ex01",
+    taskType: "right_tail_zero_flip_find_max_final_zeros",
+    title: "Максимум нулей после работы при фиксированных 1000 нулей и 1000 единиц",
+    initialTape: { form: "binary_string", length: 2000, count0: 1000, count1: 1000, headStart: "nearest_blank_right" },
+    alphabet: [LAMBDA, "1", "0"],
+    states: ["q0", "q1"],
+    blankSymbol: LAMBDA,
+    startState: "q0",
+    program: PROG_right_invert_first1,
+    question: { target: "final_count", symbol: "0", mode: "max" },
+    answer: 1001,
+    moduleSuggested: "right_tail_zeros",
+    solutionIdea: "В правом хвосте из t нулей машина убирает t нулей и добавляет один ноль за счёт первой единицы слева. При фиксированных 1000 нулях максимум после работы — при t = 0: ответ count0 + 1.",
+    sourceUrl: "https://doc.fipi.ru/navigator-podgotovki/navigator-ege/MR_informatika_ege_2026.pdf"
+  },
+  {
+    id: "fipi-mr-2026-ex02",
+    shortId: "ex02",
+    taskType: "left_prefix_ones_flip_find_max_final_zeros",
+    title: "Максимум нулей после работы с левым префиксом единиц",
+    initialTape: { form: "binary_string", length: 400, count0: 200, count1: 200, headStart: "nearest_blank_left" },
+    alphabet: [LAMBDA, "1", "0"],
+    states: ["q0", "q1"],
+    blankSymbol: LAMBDA,
+    startState: "q0",
+    program: PROG_left_invert_first0,
+    question: { target: "final_count", symbol: "0", mode: "max" },
+    answer: 399,
+    moduleSuggested: "left_prefix_ones",
+    solutionIdea: "Машина идёт слева направо по начальному блоку единиц: эти единицы становятся нулями, первый ноль после них — единицей. Максимум нулей — когда все 200 единиц стоят слева, а нули — справа: count1 + count0 − 1.",
+    sourceUrl: "https://doc.fipi.ru/navigator-podgotovki/navigator-ege/MR_informatika_ege_2026.pdf"
+  },
+  {
+    id: "fipi-mr-2026-ex03",
+    shortId: "ex03",
+    taskType: "left_prefix_ones_flip_find_min_final_zeros",
+    title: "Минимум нулей после работы с левым префиксом единиц",
+    initialTape: { form: "binary_string", length: 400, count0: 200, count1: 200, headStart: "nearest_blank_left" },
+    alphabet: [LAMBDA, "1", "0"],
+    states: ["q0", "q1"],
+    blankSymbol: LAMBDA,
+    startState: "q0",
+    program: PROG_left_invert_first0,
+    question: { target: "final_count", symbol: "0", mode: "min" },
+    answer: 199,
+    moduleSuggested: "left_prefix_ones",
+    solutionIdea: "Минимум получается, если начального блока единиц нет: первый символ — ноль, он сразу становится единицей. Итого count0 − 1.",
+    sourceUrl: "https://doc.fipi.ru/navigator-podgotovki/navigator-ege/MR_informatika_ege_2026.pdf"
+  },
+  {
+    id: "fipi-mr-2026-ex04",
+    shortId: "ex04",
+    taskType: "right_tail_zero_flip_find_min_final_zeros",
+    title: "Минимум нулей после работы с правым хвостом нулей",
+    initialTape: { form: "binary_string", length: 2000, count0: 1000, count1: 1000, headStart: "nearest_blank_right" },
+    alphabet: [LAMBDA, "1", "0"],
+    states: ["q0", "q1"],
+    blankSymbol: LAMBDA,
+    startState: "q0",
+    program: PROG_right_invert_first1,
+    question: { target: "final_count", symbol: "0", mode: "min" },
+    answer: 1,
+    moduleSuggested: "right_tail_zeros",
+    solutionIdea: "Минимум — при максимальном правом хвосте нулей: все 1000 нулей справа. Они становятся единицами, ближайшая единица слева — нулём. Итого 1.",
+    sourceUrl: "https://doc.fipi.ru/navigator-podgotovki/navigator-ege/MR_informatika_ege_2026.pdf"
+  },
+  {
+    id: "fipi-mr-2026-ex05",
+    shortId: "ex05",
+    taskType: "bitwise_inversion_decimal_result",
+    title: "Побитовое отрицание двоичной записи числа 257",
+    initialTape: { form: "binary_number", decimal: 257, noLeadingZeros: true, headStart: "nearest_blank_right" },
+    alphabet: [LAMBDA, "1", "0"],
+    states: ["q0", "q1"],
+    blankSymbol: LAMBDA,
+    startState: "q0",
+    program: PROG_bitwise_invert,
+    question: { target: "final_decimal_number" },
+    answer: 254,
+    moduleSuggested: "binary_bitwise_transform",
+    solutionIdea: "Машина идёт справа налево по всей двоичной записи до пустой клетки и меняет каждый бит на противоположный. 257 = 100000001 → 011111110 = 254.",
+    sourceUrl: "https://doc.fipi.ru/navigator-podgotovki/navigator-ege/MR_informatika_ege_2026.pdf"
+  },
+  {
+    id: "fipi-mr-2026-ex06",
+    shortId: "ex06",
+    taskType: "bitwise_inversion_decimal_result",
+    title: "Побитовое отрицание двоичной записи числа 321",
+    initialTape: { form: "binary_number", decimal: 321, noLeadingZeros: true, headStart: "nearest_blank_right" },
+    alphabet: [LAMBDA, "1", "0"],
+    states: ["q0", "q1"],
+    blankSymbol: LAMBDA,
+    startState: "q0",
+    program: PROG_bitwise_invert,
+    question: { target: "final_decimal_number" },
+    answer: 190,
+    moduleSuggested: "binary_bitwise_transform",
+    solutionIdea: "Каждый бит меняется на противоположный. 321 = 101000001 → 010111110 = 190.",
+    sourceUrl: "https://doc.fipi.ru/navigator-podgotovki/navigator-ege/MR_informatika_ege_2026.pdf"
+  },
+  {
+    id: "fipi-mr-2026-ex07",
+    shortId: "ex07",
+    taskType: "binary_decrement_decimal_result",
+    title: "Двоичное уменьшение на единицу для числа 128",
+    initialTape: { form: "binary_number", decimal: 128, noLeadingZeros: true, headStart: "nearest_blank_right" },
+    alphabet: [LAMBDA, "1", "0"],
+    states: ["q0", "q1"],
+    blankSymbol: LAMBDA,
+    startState: "q0",
+    program: PROG_binary_decrement,
+    question: { target: "final_decimal_number" },
+    answer: 127,
+    moduleSuggested: "binary_decrement",
+    solutionIdea: "Машина действует как вычитание единицы: трейлинг-нули превращает в единицы и идёт влево, первую единицу превращает в ноль и останавливается. 128 → 127.",
+    sourceUrl: "https://doc.fipi.ru/navigator-podgotovki/navigator-ege/MR_informatika_ege_2026.pdf"
+  },
+  {
+    id: "fipi-mr-2026-ex08",
+    shortId: "ex08",
+    taskType: "clear_lowest_one_decimal_result",
+    title: "Обнуление младшей единицы в записи числа 150",
+    initialTape: { form: "binary_number", decimal: 150, noLeadingZeros: true, headStart: "nearest_blank_right" },
+    alphabet: [LAMBDA, "1", "0"],
+    states: ["q0", "q1"],
+    blankSymbol: LAMBDA,
+    startState: "q0",
+    program: PROG_clear_lowest_one,
+    question: { target: "final_decimal_number" },
+    answer: 148,
+    moduleSuggested: "clear_lowest_one",
+    solutionIdea: "Машина идёт справа налево по нулям без изменений, первую единицу заменяет на ноль и останавливается. 150 = 10010110 → 10010100 = 148.",
+    sourceUrl: "https://doc.fipi.ru/navigator-podgotovki/navigator-ege/MR_informatika_ege_2026.pdf"
+  },
+  {
+    id: "fipi-mr-2026-ex09",
+    shortId: "ex09",
+    taskType: "clear_first_left_one_decimal_result",
+    title: "Обнуление первой единицы слева в записи числа 99",
+    initialTape: { form: "binary_number", decimal: 99, noLeadingZeros: true, headStart: "nearest_blank_left" },
+    alphabet: [LAMBDA, "1", "0"],
+    states: ["q0", "q1"],
+    blankSymbol: LAMBDA,
+    startState: "q0",
+    program: PROG_clear_first_left_one,
+    question: { target: "final_decimal_number" },
+    answer: 35,
+    moduleSuggested: "leftmost_bit_transform",
+    solutionIdea: "Без ведущих нулей первый символ — единица. Машина входит слева и сразу заменяет её на ноль. 99 = 1100011 → 0100011 = 35.",
+    sourceUrl: "https://doc.fipi.ru/navigator-podgotovki/navigator-ege/MR_informatika_ege_2026.pdf"
+  },
+  {
+    id: "fipi-mr-2026-ex10",
+    shortId: "ex10",
+    taskType: "left_prefix_ones_to_zeros_then_zero_to_one_decimal_result",
+    title: "Замена начального блока единиц и первого нуля в записи числа 99",
+    initialTape: { form: "binary_number", decimal: 99, noLeadingZeros: true, headStart: "nearest_blank_left" },
+    alphabet: [LAMBDA, "1", "0"],
+    states: ["q0", "q1"],
+    blankSymbol: LAMBDA,
+    startState: "q0",
+    program: PROG_left_invert_first0,
+    question: { target: "final_decimal_number" },
+    answer: 19,
+    moduleSuggested: "left_prefix_ones",
+    solutionIdea: "Машина идёт слева направо по блоку единиц, превращая их в нули, затем первый ноль превращает в единицу и останавливается. 99 = 1100011 → 0010011 = 19.",
+    sourceUrl: "https://doc.fipi.ru/navigator-podgotovki/navigator-ege/MR_informatika_ege_2026.pdf"
+  },
+  {
+    id: "fipi-mr-2026-ex11",
+    shortId: "ex11",
+    taskType: "left_first_zero_to_one_decimal_result",
+    title: "Замена первого нуля слева на единицу в записи числа 121",
+    initialTape: { form: "binary_number", decimal: 121, noLeadingZeros: true, headStart: "nearest_blank_left" },
+    alphabet: [LAMBDA, "1", "0"],
+    states: ["q0", "q1"],
+    blankSymbol: LAMBDA,
+    startState: "q0",
+    program: PROG_left_first_zero_to_one,
+    question: { target: "final_decimal_number" },
+    answer: 125,
+    moduleSuggested: "left_first_zero_to_one",
+    solutionIdea: "Машина идёт слева направо по единицам без изменений, первый ноль превращает в единицу и останавливается. 121 = 1111001 → 1111101 = 125.",
+    sourceUrl: "https://doc.fipi.ru/navigator-podgotovki/navigator-ege/MR_informatika_ege_2026.pdf"
+  }
+];
+
+/* Задачи открытого банка, которые пока без полных условий.
+   Используются ТОЛЬКО в служебном блоке. Не выдумываем для них условия. */
+const PENDING_OPEN_BANK = [
+  "0FDD74","B17D75","B1DBB0","4DAF23","75e48D","6A308D","7C9F11","292070","86F876","1F12B7",
+  "36F7BA","BFF710","44CA18","2E3C26","93A713","C6BE13","ABF524","D6A924","C7A492","2ec6e2"
+].map(pid => ({
+  publicId: pid,
+  status: "needs_manual_extraction",
+  note: "Полное условие пока не извлечено. Нужно вручную перенести условие, таблицу программы и ответ в TASK_LIBRARY и классифицировать тип."
+}));
+
+const MODULE_TITLES = {
+  right_tail_zeros: "Правый хвост нулей",
+  left_prefix_ones: "Левый префикс единиц",
+  binary_bitwise_transform: "Побитовое преобразование",
+  binary_decrement: "Двоичное уменьшение на 1",
+  clear_lowest_one: "Обнуление младшей единицы",
+  leftmost_bit_transform: "Изменение старшего бита",
+  left_first_zero_to_one: "Первый ноль слева → единица"
+};
+
+/* ============================================================
+   Рендер таблицы программы из объекта
+   ============================================================ */
+function renderProgramTable(program, alphabet, states, blankSymbol = LAMBDA) {
+  const headerCells = alphabet.map(sym => {
+    const label = sym === blankSymbol ? `<span class="lambda">${escapeHTML(sym)}</span>` : escapeHTML(sym);
+    return `<th>${label}</th>`;
+  }).join("");
+
+  const bodyRows = states.map(st => {
+    const row = program[st] || {};
+    const cells = alphabet.map(sym => {
+      const cmd = row[sym];
+      if (!cmd) return `<td class="empty">—</td>`;
+      const writeStr = cmd.write === blankSymbol ? "λ" : cmd.write;
+      return `<td>${escapeHTML(writeStr)}, ${escapeHTML(cmd.move)}, ${escapeHTML(cmd.next)}</td>`;
+    }).join("");
+    return `<tr><th>${escapeHTML(st)}</th>${cells}</tr>`;
+  }).join("");
+
+  return `<div class="program-table-wrap">
+    <table class="program">
+      <thead><tr><th>состояние</th>${headerCells}</tr></thead>
+      <tbody>${bodyRows}</tbody>
+    </table>
+  </div>`;
+}
+
+/* ============================================================
+   Формульные решения для задач без явного входа
+   (для тех 5 задач, где вход — это множество строк с заданным
+    составом, и ответ — экстремум по этому множеству).
+   ============================================================ */
+function formulaSolveTask(task) {
+  const t = task.taskType;
+  if (t === "right_tail_zero_flip_find_max_initial_zeros") {
+    const N = task.initialTape.length;
+    const K = task.question.givenFinalCount;
+    if (K === 0) return N;
+    return N - 1;
+  }
+  if (t === "right_tail_zero_flip_find_max_final_zeros") {
+    const c0 = task.initialTape.count0, c1 = task.initialTape.count1;
+    if (c1 === 0) return c0; // вся строка из нулей — машина их съест, останется 0; ответ для max final 0 это 0
+    return c0 + 1;
+  }
+  if (t === "right_tail_zero_flip_find_min_final_zeros") {
+    const c0 = task.initialTape.count0, c1 = task.initialTape.count1;
+    if (c1 === 0) return 0;       // вся из нулей → все стали единицами
+    return 1;                     // хвост t = c0, K = c0 − c0 + 1 = 1
+  }
+  if (t === "left_prefix_ones_flip_find_max_final_zeros") {
+    const c0 = task.initialTape.count0, c1 = task.initialTape.count1;
+    if (c0 === 0) return c1;      // все единицы → все стали нулями
+    return c0 + c1 - 1;
+  }
+  if (t === "left_prefix_ones_flip_find_min_final_zeros") {
+    const c0 = task.initialTape.count0, c1 = task.initialTape.count1;
+    if (c0 === 0) return c1;
+    return c0 - 1;
+  }
+  return null;
+}
+
+/* Для бинарных задач прямой вычислитель через симуляцию. */
+function binarySolveTask(task) {
+  if (task.initialTape.form !== "binary_number") return null;
+  const dec = task.initialTape.decimal;
+  const bin = decToBin(dec);
+  const r = simulateOnce(bin, task.initialTape.headStart, task.program, task.startState, task.blankSymbol);
+  if (!r.ok) return null;
+  const finalBin = r.finalTape;
+  if (!/^[01]+$/.test(finalBin)) return null;
+  return binToDec(finalBin);
+}
+
+/** Получить ответ к задаче (универсально). */
+function computeTaskAnswer(task) {
+  if (task.question.target === "final_decimal_number") return binarySolveTask(task);
+  if (task.question.target === "initial_count" || task.question.target === "final_count") {
+    return formulaSolveTask(task);
+  }
+  return null;
+}
+
+/* ============================================================
+   Текстовые описания задач (структурные, не цитата официального
+   условия) — собираем из полей initialTape/question
+   ============================================================ */
+function describeTask(task) {
+  const it = task.initialTape;
+  const q = task.question;
+  const hs = headStartLabel(it.headStart);
+
+  if (it.form === "binary_string") {
+    const parts = [];
+    parts.push(`На ленте записана последовательность из <code>N = ${it.length}</code> символов, среди которых только нули и единицы.`);
+    if (it.count0 != null && it.count1 != null) {
+      parts.push(`Из них <code>${it.count0}</code> ${zeroWord(it.count0)} и <code>${it.count1}</code> единиц в произвольном порядке.`);
+    }
+    parts.push(`Ячейки слева и справа от последовательности заполнены пустыми символами <code class="lambda">λ</code>. Головка стартует ${hs}.`);
+    if (q.target === "initial_count" && q.givenFinalCount != null) {
+      parts.push(`После выполнения программы на ленте осталось ровно <code>${q.givenFinalCount}</code> ${zeroWord(q.givenFinalCount)}.`);
+      parts.push(`<b>Определите ${q.mode === "max" ? "максимально" : "минимально"} возможное число нулей в исходной последовательности.</b>`);
+    } else if (q.target === "final_count") {
+      parts.push(`<b>Определите ${q.mode === "max" ? "максимально" : "минимально"} возможное число нулей после выполнения программы.</b>`);
+    }
+    return parts.join(" ");
+  }
+  if (it.form === "binary_number") {
+    const parts = [];
+    parts.push(`На ленте записано число <code>${it.decimal}</code> в двоичной системе счисления, без ведущих нулей.`);
+    parts.push(`Ячейки слева и справа от записи заполнены пустыми символами <code class="lambda">λ</code>. Головка стартует ${hs}.`);
+    parts.push(`<b>Определите десятичное значение числа, которое окажется на ленте после выполнения программы.</b>`);
+    return parts.join(" ");
+  }
+  return "Условие задачи временно недоступно.";
+}
+
+function exampleInputForTask(task) {
+  // Короткие демонстрационные входы для запуска симуляции в задаче из библиотеки
+  const t = task.taskType;
+  if (t.startsWith("right_tail_zero_flip")) return ["1100100", "1011", "10110", "0000"];
+  if (t.startsWith("left_prefix_ones_flip") || t === "left_prefix_ones_to_zeros_then_zero_to_one_decimal_result")
+    return ["1100100", "11110", "010101", "1111"];
+  if (t === "bitwise_inversion_decimal_result") return ["1011", "10101", "1100", "10000"];
+  if (t === "binary_decrement_decimal_result") return ["10000", "1011", "1100", "11"];
+  if (t === "clear_lowest_one_decimal_result") return ["10010110", "1100", "100", "111"];
+  if (t === "clear_first_left_one_decimal_result") return ["1100011", "1010", "111", "1001"];
+  if (t === "left_first_zero_to_one_decimal_result") return ["1111001", "10101", "1110", "111"];
+  return ["1011", "1100", "1001"];
+}
+
+/* ============================================================
+   Менеджер вкладок
+   ============================================================ */
+const TABS = [
+  { id: "right-tail", title: "Правый хвост нулей" },
+  { id: "left-prefix", title: "Левый префикс единиц" },
+  { id: "binary", title: "Двоичная запись числа" },
+  { id: "universal", title: "Универсальный разбор таблицы" },
+  { id: "library", title: "Библиотека задач" }
+];
+let currentTab = "right-tail";
+
+function renderTabBar() {
+  const bar = document.getElementById("tab-bar");
+  bar.innerHTML = TABS.map(t =>
+    `<button class="tab-btn${t.id === currentTab ? " active" : ""}" data-tab="${t.id}">${escapeHTML(t.title)}</button>`
+  ).join("");
+  bar.querySelectorAll(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => switchTab(btn.getAttribute("data-tab")));
+  });
+}
+
+function switchTab(id) {
+  currentTab = id;
+  renderTabBar();
+  document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.id === "panel-" + id));
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ============================================================
+   ВКЛАДКА 1: «Правый хвост нулей»
+   Сохраняем существующее ядро как первый обучающий модуль
+   ============================================================ */
+function renderTabRightTail() {
+  const panel = document.getElementById("panel-right-tail");
+  panel.innerHTML = `
+    <section class="card" id="guide-card">
+      <h2>Разобраться с нуля <span class="badge">6 шагов</span></h2>
+      <p class="muted small">
+        Этот блок лучше пройти первым. Он объясняет идею не через готовую формулу, а через короткие строки,
+        и в самом конце разбирает одну задачу целиком.
+      </p>
+      <div class="guide-shell">
+        <div class="guide-nav" id="guide-nav"></div>
+        <div class="guide-panel" id="guide-panel"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Основная программа</h2>
+      <p>
+        Алфавит исполнителя — <code>0</code>, <code>1</code> и пустой символ <code class="lambda">λ</code>.
+        Начальное состояние — <code>q0</code>. Головка стартует в ближайшей пустой ячейке справа от исходной последовательности.
+      </p>
+      <div id="main-program-table"></div>
+      <p class="small muted" style="margin-top:10px">
+        Исходная последовательность состоит из <code>N</code> символов, среди которых только нули и единицы.
+        Все ячейки слева и справа от последовательности заполнены символом <code class="lambda">λ</code>.
+      </p>
+      <details class="collapsible" style="margin-top:10px">
+        <summary>Как работает эта программа</summary>
+        <ol>
+          <li>Сначала головка находится на пустой ячейке справа от последовательности.</li>
+          <li>В состоянии <code>q0</code> на символе <code class="lambda">λ</code> машина записывает <code class="lambda">λ</code>,
+            переходит в состояние <code>q1</code> и сдвигается влево — на последний символ последовательности.</li>
+          <li>В состоянии <code>q1</code>: если текущий символ <code>0</code>, машина заменяет его на <code>1</code> и идёт влево;
+            если текущий символ <code>1</code>, заменяет его на <code>0</code> и останавливается;
+            если текущий символ <code class="lambda">λ</code>, останавливается.</li>
+          <li>Поэтому программа заменяет все нули в конце строки на единицы, а ближайшую слева от них единицу, если она есть, — на ноль.</li>
+          <li>Если исходная строка состоит только из нулей, программа заменяет все нули на единицы и останавливается на пустой ячейке слева от строки.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section class="card">
+      <h2>Мини-тренажёр: хвост нулей <span class="badge">ключ к задаче</span></h2>
+      <p>
+        Хвост нулей — это нули, которые стоят подряд в самом конце строки. Например, у строки
+        <code>101000</code> хвост <code>000</code>, значит <code>t = 3</code>. Если строка заканчивается единицей,
+        то <code>t = 0</code>.
+      </p>
+      <div class="soft-box">
+        <div>Строка:</div>
+        <div class="drill-string" id="tail-string">—</div>
+        <div class="form-row">
+          <label><span>Сколько нулей в конце? t =</span><input type="number" id="tail-answer" step="1" style="width:130px"></label>
+          <button id="btn-tail-check">Проверить</button>
+          <button class="secondary" id="btn-tail-next">Новая строка</button>
+        </div>
+        <div class="feedback" id="tail-feedback"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Как думать в таких задачах</h2>
+      <div class="tiny-examples">
+        <div class="tiny-example"><code>1000</code><span class="arrow">→</span><code>0111</code><br><span class="small muted">хвост 000 исчез, единица стала нулём</span></div>
+        <div class="tiny-example"><code>10110</code><span class="arrow">→</span><code>10101</code><br><span class="small muted">последний 0 стал 1, предыдущая 1 стала 0</span></div>
+        <div class="tiny-example"><code>1111</code><span class="arrow">→</span><code>1110</code><br><span class="small muted">хвоста нулей нет, меняется последняя 1</span></div>
+        <div class="tiny-example"><code>0000</code><span class="arrow">→</span><code>1111</code><br><span class="small muted">особый случай: строка вся из нулей</span></div>
+      </div>
+      <ol>
+        <li>Сначала смотрим на правый конец строки.</li>
+        <li>Обозначаем через <code>t</code> количество нулей на самом конце.</li>
+        <li>Если в строке есть единица, машина превращает <code>u 1 0<sup>t</sup></code> в <code>u 0 1<sup>t</sup></code>.</li>
+        <li>Поэтому из числа нулей исчезают <code>t</code> хвостовых нулей, но появляется один новый ноль.</li>
+        <li>Получаем формулу <span class="formula">K = Z − t + 1</span>, где <code>Z</code> — нули до работы, <code>K</code> — нули после.</li>
+      </ol>
+
+      <h3>Когда K &gt; 0</h3>
+      <ul>
+        <li><b>Минимум:</b> <span class="formula">Z = K − 1</span> — берём самый короткий хвост <code>t = 0</code>, то есть строка заканчивается единицей.</li>
+        <li><b>Максимум:</b> <span class="formula">Z = N − 1</span> — оставляем в исходной строке всего одну единицу, остальные символы делаем нулями.</li>
+      </ul>
+
+      <h3>Когда K = 0</h3>
+      <p>Отдельный случай: исходная строка могла состоять только из нулей. После работы все нули превратятся в единицы, поэтому <span class="formula">Z = N</span> и для минимума, и для максимума.</p>
+
+      <h4>Учебная схема: что нужно увидеть в задаче на хвост</h4>
+      <ol>
+        <li>С какого края идёт машина? Здесь — справа (по команде <code>q0, λ, L, q1</code>).</li>
+        <li>Какой фрагмент строки меняется? Правый хвост нулей и ближайшая слева единица.</li>
+        <li>Какая получается формула? <span class="formula">K = Z − t + 1</span>.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>Генератор задач</h2>
+      <p class="muted small">
+        Случайные <code>N</code> от 50 до 2000 и корректное <code>K</code> от 0 до <code>N</code>.
+      </p>
+      <div class="form-row">
+        <button id="btn-generate">Сгенерировать новую задачу</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Готовые задачи</h2>
+      <p class="muted small">Несколько готовых задач с известными ответами.</p>
+      <div class="examples-list" id="examples-list"></div>
+    </section>
+
+    <section class="card">
+      <h2>Ручной режим</h2>
+      <p class="muted small">Задайте свои <code>N</code> и <code>K</code> и выберите, что искать.</p>
+      <div class="form-row">
+        <label><span>Длина строки N</span><input type="number" id="manual-n" min="1" step="1" value="100" style="width:120px"></label>
+        <label><span>Число нулей K после</span><input type="number" id="manual-k" min="0" step="1" value="50" style="width:120px"></label>
+        <label><span>Режим</span>
+          <select id="manual-mode" style="width:160px">
+            <option value="max">максимум</option>
+            <option value="min">минимум</option>
+          </select>
+        </label>
+        <button id="btn-manual">Создать задачу</button>
+      </div>
+      <div class="feedback err" id="manual-err"></div>
+    </section>
+
+    <section class="card" id="current-task-card">
+      <h2>Текущая задача</h2>
+      <div class="task-box" id="task-box">
+        <p class="task-empty">Задача ещё не выбрана. Сгенерируйте новую, загрузите готовую или задайте параметры вручную.</p>
+      </div>
+
+      <div class="form-row">
+        <label><span>Ваш ответ</span><input type="number" id="user-answer" step="1" style="width:160px" placeholder="число"></label>
+        <button id="btn-check">Проверить</button>
+        <button class="secondary" id="btn-hint">Подсказка</button>
+        <button class="warning" id="btn-reveal">Показать ответ</button>
+        <button class="secondary" id="btn-show-solution">Показать решение</button>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+      <div class="solution" id="solution" hidden></div>
+    </section>
+
+    <section class="card">
+      <h2>Симулятор машины Тьюринга</h2>
+      <p class="muted small">
+        Введите короткую двоичную строку и наблюдайте, как меняется лента.
+        Кнопка «Один шаг» сразу выполняет первый переход.
+      </p>
+      <div class="form-row">
+        <label><span>Исходная строка</span>
+          <input type="text" id="sim-input" value="1000" maxlength="200" style="width:260px; font-family: var(--mono);">
+        </label>
+        <button id="btn-run">Запустить полностью</button>
+        <button class="secondary" id="btn-step">Один шаг</button>
+        <button class="ghost" id="btn-reset">Сбросить</button>
+      </div>
+      <div class="form-row" style="gap: 6px;">
+        <button class="ghost small" data-sim-example="1000">1000</button>
+        <button class="ghost small" data-sim-example="10110">10110</button>
+        <button class="ghost small" data-sim-example="0000">0000</button>
+        <button class="ghost small" data-sim-example="1111">1111</button>
+      </div>
+      <div class="tape" id="tape"></div>
+      <div class="tape-info" id="tape-info"></div>
+      <div class="feedback err" id="sim-err"></div>
+    </section>
+  `;
+}
+
+/* Состояние модуля right-tail */
+const READY_EXAMPLES_RT = [
+  { N: 333,  K: 120, mode: "max", answer: 332 },
+  { N: 520,  K: 125, mode: "min", answer: 124 },
+  { N: 1300, K: 343, mode: "max", answer: 1299 }
+];
+let currentRTTask = null;
+let rtSimState = null;
+let guideStep = 0;
+let tailDrill = null;
+let formulaDrill = null;
+let minDrill = null;
+let maxDrill = null;
+
+function rtProgramTableHTML() {
+  return renderProgramTable(PROG_right_invert_first1, [LAMBDA, "1", "0"], ["q0", "q1"]);
+}
+
+function rtSolveTask(N, K, mode) {
+  if (!Number.isInteger(N) || N <= 0) return { ok: false, error: "N должно быть целым положительным числом" };
+  if (!Number.isInteger(K)) return { ok: false, error: "K должно быть целым числом" };
+  if (K < 0 || K > N) return { ok: false, error: "K должно лежать в диапазоне от 0 до " + N };
+  if (mode !== "min" && mode !== "max") return { ok: false, error: 'Режим должен быть "min" или "max"' };
+  if (K === 0) return { ok: true, answer: N };
+  if (mode === "min") return { ok: true, answer: K - 1 };
+  return { ok: true, answer: N - 1 };
+}
+
+function rtSimulate(input) {
+  if (typeof input !== "string" || !/^[01]+$/.test(input)) return { ok: false, error: "Строка должна состоять только из 0 и 1, минимум 1 символ" };
+  return simulateOnce(input, "nearest_blank_right", PROG_right_invert_first1);
+}
+
+function modeLabel(m) { return m === "max" ? "максимальное" : "минимальное"; }
+
+function rtSetTask(N, K, mode) {
+  const r = rtSolveTask(N, K, mode);
+  if (!r.ok) return r;
+  currentRTTask = { N, K, mode, answer: r.answer, attempts: 0, hintLevel: 0, revealed: false };
+  rtRenderTask();
+  document.getElementById("user-answer").value = "";
+  rtHideFeedback();
+  rtHideSolution();
+  document.getElementById("current-task-card").scrollIntoView({ behavior: "smooth", block: "start" });
+  return { ok: true };
+}
+
+function rtRenderTask() {
+  const box = document.getElementById("task-box");
+  if (!currentRTTask) {
+    box.innerHTML = '<p class="task-empty">Задача ещё не выбрана. Сгенерируйте новую, загрузите готовую или задайте параметры вручную.</p>';
+    return;
+  }
+  const { N, K, mode } = currentRTTask;
+  box.innerHTML = `
+    <p>На ленте записана последовательность из <code>N = ${N}</code> символов (только нули и единицы).
+    Ячейки слева и справа от последовательности заполнены пустыми символами <code class="lambda">λ</code>.
+    Головка стартует в ближайшей справа пустой ячейке.</p>
+    <p>Программа работы исполнителя:</p>
+    <div class="task-program">${rtProgramTableHTML()}</div>
+    <p>После выполнения программы на ленте осталось ровно <code>K = ${K}</code> ${zeroWord(K)}.</p>
+    <p><b>Определите ${modeLabel(mode)} возможное число нулей в исходной последовательности.</b></p>
+  `;
+}
+function rtHideFeedback() { const fb = document.getElementById("feedback"); fb.className = "feedback"; fb.textContent = ""; }
+function rtShowFeedback(kind, html) { const fb = document.getElementById("feedback"); fb.className = "feedback show " + kind; fb.innerHTML = html; }
+function rtHideSolution() { const s = document.getElementById("solution"); s.hidden = true; s.innerHTML = ""; }
+
+function rtTieredHints(task) {
+  if (task.K === 0) return [
+    "Сначала проверь особый случай: после работы нулей не осталось.",
+    "Такое происходит, когда машина шла влево по нулям и встретила пустую ячейку слева, то есть исходная строка была вся из нулей.",
+    `Значит, исходных нулей было ровно N = ${task.N}.`
+  ];
+  if (task.mode === "min") return [
+    "Для минимума нужно сделать хвост нулей справа как можно короче.",
+    "Самый короткий хвост нулей — t = 0: строка заканчивается единицей.",
+    `Тогда Z = K − 1 = ${task.K} − 1.`
+  ];
+  return [
+    "Для максимума нужно сделать исходную строку почти полностью нулевой.",
+    "Оставь в исходной строке всего одну единицу, остальные символы сделай нулями.",
+    `Тогда Z = N − 1 = ${task.N} − 1.`
+  ];
+}
+
+function rtHandleCheck() {
+  if (!currentRTTask) { rtShowFeedback("err", "Сначала выберите задачу."); return; }
+  const raw = document.getElementById("user-answer").value.trim();
+  if (raw === "") { rtShowFeedback("err", "Введите число."); return; }
+  const v = Number(raw);
+  if (!Number.isInteger(v)) { rtShowFeedback("err", "Ответ должен быть целым числом."); return; }
+  if (v === currentRTTask.answer) {
+    rtShowFeedback("ok", `Верно. Ответ: <b>${currentRTTask.answer}</b>. Главное — правый хвост строки.`);
+    return;
+  }
+  currentRTTask.attempts++;
+  const hints = rtTieredHints(currentRTTask);
+  const idx = Math.min(currentRTTask.attempts - 1, hints.length - 1);
+  currentRTTask.hintLevel = Math.max(currentRTTask.hintLevel, idx + 1);
+  if (currentRTTask.attempts >= 3)
+    rtShowFeedback("err", `Не получилось с третьей попытки. Ответ: <b>${currentRTTask.answer}</b>.<br><span class="small">${hints[idx]}</span>`);
+  else
+    rtShowFeedback("hint", `Пока не сходится. Подсказка ${idx + 1}: ${hints[idx]}<br><span class="small">Попробуйте ещё раз.</span>`);
+}
+function rtHandleHint() {
+  if (!currentRTTask) { rtShowFeedback("err", "Сначала выберите задачу."); return; }
+  const hints = rtTieredHints(currentRTTask);
+  const idx = Math.min(currentRTTask.hintLevel, hints.length - 1);
+  currentRTTask.hintLevel = Math.min(currentRTTask.hintLevel + 1, hints.length);
+  rtShowFeedback("hint", `Подсказка ${idx + 1}: ${hints[idx]}`);
+}
+function rtHandleReveal() {
+  if (!currentRTTask) { rtShowFeedback("err", "Сначала выберите задачу."); return; }
+  currentRTTask.revealed = true;
+  rtShowFeedback("err", `Ответ: <b>${currentRTTask.answer}</b>. Откройте «Показать решение», чтобы понять, откуда он берётся.`);
+}
+function rtBuildExampleStr(N, K, mode) {
+  const SHORT = 30;
+  if (K === 0) return N <= SHORT ? "0".repeat(N) : `0 × ${N}  (строка из ${N} нулей подряд)`;
+  if (mode === "min") {
+    const zeros = K - 1, ones = N - K + 1;
+    if (N <= SHORT) return "0".repeat(zeros) + "1".repeat(ones);
+    const parts = []; if (zeros > 0) parts.push(`0 × ${zeros}`); parts.push(`1 × ${ones}`);
+    return parts.join(", затем ") + `  (всего ${N} символов, ${zeros} нулей)`;
+  }
+  const left = K - 1, right = N - K;
+  if (N <= SHORT) return "0".repeat(left) + "1" + "0".repeat(right);
+  const parts = []; if (left > 0) parts.push(`0 × ${left}`); parts.push("1"); if (right > 0) parts.push(`0 × ${right}`);
+  return parts.join(", затем ") + `  (всего ${N} символов, ${N - 1} нулей)`;
+}
+function rtBuildSolutionHTML(task) {
+  const { N, K, mode } = task, ans = task.answer;
+  const example = rtBuildExampleStr(N, K, mode);
+  const parts = [];
+  parts.push(`<h3>1. Смотрим на правый край строки</h3>
+    <p>Головка стартует справа от строки, в <code>q0</code> делает шаг влево и попадает на последний символ.
+    В <code>q1</code>: каждый <code>0</code> справа становится <code>1</code>, а первая <code>1</code> становится <code>0</code> и машина останавливается.</p>`);
+  parts.push(`<h3>2. Хвост нулей</h3>
+    <p>Пусть <code>t</code> — нули в самом конце. Если справа был <code>1 0<sup>t</sup></code>, он станет <code>0 1<sup>t</sup></code>.</p>`);
+  parts.push(`<h3>3. Формула</h3>
+    <p><span class="formula">K = Z − t + 1</span>, откуда <span class="formula">Z = K + t − 1</span>.</p>`);
+  parts.push(`<h3>4. Особый случай</h3>
+    <p>Если строка из одних нулей, машина заменит все нули на единицы. <code>K = 0</code> и исходных нулей было ровно <code>N</code>.</p>`);
+  parts.push(`<h3>5. Решаем эту задачу</h3>
+    <p>Дано: <code>N = ${N}</code>, <code>K = ${K}</code>. Найти ${modeLabel(mode)} число нулей в исходной строке.</p>`);
+  if (K === 0) parts.push(`<p>Особый случай: ответ <span class="formula">Z = N = ${ans}</span>.</p>`);
+  else if (mode === "min") parts.push(`<p>Берём <code>t = 0</code>. <span class="formula">Z<sub>min</sub> = K − 1 = ${ans}</span></p>`);
+  else parts.push(`<p>Оставляем одну единицу. <span class="formula">Z<sub>max</sub> = N − 1 = ${ans}</span></p>`);
+  parts.push(`<h3>Пример исходной строки</h3><p><code class="mono">${escapeHTML(example)}</code></p>`);
+  return parts.join("\n");
+}
+function rtHandleShowSolution() {
+  if (!currentRTTask) { rtShowFeedback("err", "Сначала выберите задачу."); return; }
+  const s = document.getElementById("solution");
+  s.innerHTML = rtBuildSolutionHTML(currentRTTask);
+  s.hidden = false;
+}
+function rtRenderExamples() {
+  const list = document.getElementById("examples-list");
+  list.innerHTML = "";
+  READY_EXAMPLES_RT.forEach(ex => {
+    const w = document.createElement("div");
+    w.className = "example";
+    w.innerHTML = `
+      <div class="params">N = ${ex.N}, K = ${ex.K}</div>
+      <div class="mode">найти ${modeLabel(ex.mode)} число нулей в исходной строке</div>
+      <button class="secondary">Загрузить</button>`;
+    w.querySelector("button").addEventListener("click", () => rtSetTask(ex.N, ex.K, ex.mode));
+    list.appendChild(w);
+  });
+}
+function rtHandleGenerate() {
+  const N = randInt(50, 2000);
+  const K = Math.random() < 0.1 ? 0 : randInt(1, N);
+  const mode = Math.random() < 0.5 ? "min" : "max";
+  rtSetTask(N, K, mode);
+}
+function rtHandleManual() {
+  const err = document.getElementById("manual-err");
+  err.className = "feedback err"; err.textContent = "";
+  const pN = parseStrictInt(document.getElementById("manual-n").value);
+  if (!pN.ok) { err.textContent = "N: " + pN.error; err.classList.add("show"); return; }
+  const pK = parseStrictInt(document.getElementById("manual-k").value);
+  if (!pK.ok) { err.textContent = "K: " + pK.error; err.classList.add("show"); return; }
+  const mode = document.getElementById("manual-mode").value;
+  const r = rtSetTask(pN.value, pK.value, mode);
+  if (!r.ok) { err.textContent = r.error; err.classList.add("show"); }
+}
+
+/* Хвост-дрилл */
+function rtMakeTailString() {
+  const k = Math.random(), len = randInt(4, 9);
+  if (k < 0.18) return "0".repeat(len);
+  if (k < 0.38) return Array.from({ length: len - 1 }, () => Math.random() < 0.45 ? "0" : "1").join("") + "1";
+  const t = randInt(1, Math.min(5, len - 1));
+  let prefix = Array.from({ length: len - t }, () => Math.random() < 0.45 ? "0" : "1").join("");
+  if (!prefix.includes("1")) prefix = "1" + prefix.slice(1);
+  return prefix + "0".repeat(t);
+}
+function rtHighlightTail(s) {
+  const t = countTrailingZeros(s);
+  if (t === 0) return escapeHTML(s);
+  return `${escapeHTML(s.slice(0, -t))}<span class="trail-mark">${escapeHTML(s.slice(-t))}</span>`;
+}
+function rtNewTailDrill() {
+  const s = rtMakeTailString();
+  tailDrill = { s, t: countTrailingZeros(s) };
+  document.getElementById("tail-string").innerHTML = escapeHTML(s);
+  document.getElementById("tail-answer").value = "";
+  const fb = document.getElementById("tail-feedback"); fb.className = "feedback"; fb.innerHTML = "";
+}
+function rtCheckTailDrill() {
+  if (!tailDrill) rtNewTailDrill();
+  const raw = document.getElementById("tail-answer").value.trim();
+  const fb = document.getElementById("tail-feedback");
+  if (raw === "" || !Number.isInteger(Number(raw))) { fb.className = "feedback show err"; fb.textContent = "Введите целое число."; return; }
+  const v = Number(raw);
+  const special = tailDrill.t === tailDrill.s.length ? " Это ещё и особый случай: вся строка состоит из нулей." : "";
+  if (v === tailDrill.t) {
+    fb.className = "feedback show ok";
+    fb.innerHTML = `Верно: <code>t = ${tailDrill.t}</code>.${special}<br>Хвост: <span class="mono">${rtHighlightTail(tailDrill.s)}</span>`;
+  } else {
+    fb.className = "feedback show hint";
+    fb.innerHTML = `Пока нет. Считай нули с правого края до первой единицы. Хвост: <span class="mono">${rtHighlightTail(tailDrill.s)}</span>`;
+  }
+}
+
+/* Гид (6 шагов) */
+function rtMakeFormulaDrill() {
+  const samples = ["101000", "1000", "110100", "10110", "1111", "01000"];
+  const s = samples[randInt(0, samples.length - 1)];
+  const sim = rtSimulate(s);
+  return { s, Z: countChar(s, "0"), t: countTrailingZeros(s), K: sim.ok ? countChar(sim.finalTape, "0") : 0, final: sim.ok ? sim.finalTape : "" };
+}
+function rtGuideButtons() {
+  const prevDisabled = guideStep === 0 ? "disabled" : "";
+  const isLast = guideStep >= 5;
+  const nextLabel = isLast ? "Начать сначала" : "Дальше";
+  const nextClass = isLast ? "ghost" : "secondary";
+  const doneBadge = isLast ? `<span class="badge" style="margin-left:8px">Гайд пройден ✓</span>` : "";
+  return `<div class="form-row" style="margin-top:14px"><button class="ghost" id="guide-prev" ${prevDisabled}>Назад</button><button class="${nextClass}" id="guide-next">${nextLabel}</button>${doneBadge}</div>`;
+}
+function rtRenderGuide() {
+  const nav = document.getElementById("guide-nav");
+  const labels = ["1. Что важно", "2. Хвост нулей", "3. Формула", "4. Минимум", "5. Максимум", "6. Задача"];
+  nav.innerHTML = labels.map((t, i) =>
+    `<div class="guide-step ${i === guideStep ? "active" : ""}" data-i="${i}">${t}</div>`
+  ).join("");
+  nav.querySelectorAll(".guide-step").forEach(el => el.addEventListener("click", () => { guideStep = parseInt(el.dataset.i, 10); rtRenderGuide(); }));
+
+  const panel = document.getElementById("guide-panel");
+  if (guideStep === 0) {
+    panel.innerHTML = `<h3>Шаг 1. Что вообще меняется</h3>
+      <p>На длинной строке программа меняет не всё. Посмотри короткие примеры и ответь на вопрос ниже.</p>
+      <div class="tiny-examples">
+        <div class="tiny-example">1<b>00</b><span class="arrow">→</span>0<b>11</b><br><span class="small muted">меняется правый хвост и одна единица слева от него</span></div>
+        <div class="tiny-example">1011<b>00</b><span class="arrow">→</span>1010<b>11</b><br><span class="small muted">меняется правый хвост и одна единица</span></div>
+        <div class="tiny-example">1111<span class="arrow">→</span>111<b>0</b><br><span class="small muted">хвоста нет; меняется последняя единица</span></div>
+      </div>
+      <p><b>Что именно меняет программа?</b></p>
+      <div class="choice-list">
+        <label><input type="radio" name="guide-q1" value="all"> Все символы строки.</label>
+        <label><input type="radio" name="guide-q1" value="right"> Правый хвост нулей и ближайшую слева единицу.</label>
+        <label><input type="radio" name="guide-q1" value="left"> Только самый левый символ.</label>
+      </div>
+      <button id="guide-check-observe" class="secondary">Проверить ответ</button>
+      <div class="feedback" id="guide-feedback"></div>
+      ${rtGuideButtons()}`;
+  } else if (guideStep === 1) {
+    if (!tailDrill) tailDrill = { s: "101000", t: 3 };
+    panel.innerHTML = `<h3>Шаг 2. Учимся видеть хвост нулей</h3>
+      <p>Хвост нулей — это нули подряд с самого правого края.</p>
+      <div class="pill-row"><span class="pill">101000: t = 3</span><span class="pill">1111: t = 0</span><span class="pill">0000: t = 4 (особый случай)</span></div>
+      <div class="drill-string" id="guide-tail-string">${escapeHTML(tailDrill.s)}</div>
+      <div class="form-row"><label><span>t =</span><input type="number" id="guide-tail-answer" step="1" style="width:110px"></label><button id="guide-tail-check" class="secondary">Проверить</button><button id="guide-tail-new" class="ghost">Другая строка</button></div>
+      <div class="feedback" id="guide-feedback"></div>
+      ${rtGuideButtons()}`;
+  } else if (guideStep === 2) {
+    if (!formulaDrill) formulaDrill = rtMakeFormulaDrill();
+    panel.innerHTML = `<h3>Шаг 3. Считаем, сколько нулей стало после работы</h3>
+      <p>Если в исходной строке было <code>Z</code> нулей, а хвост справа — <code>t</code>, то <span class="formula">K = Z − t + 1</span>.</p>
+      <div class="soft-box">
+        <p>Строка: <span class="mono">${escapeHTML(formulaDrill.s)}</span></p>
+        <p>В ней <code>Z = ${formulaDrill.Z}</code> нулей, хвост <code>t = ${formulaDrill.t}</code>.</p>
+        <div class="form-row"><label><span>Сколько K будет после работы?</span><input type="number" id="guide-formula-answer" step="1" style="width:130px"></label><button id="guide-formula-check" class="secondary">Проверить</button><button id="guide-formula-new" class="ghost">Новый пример</button></div>
+      </div>
+      <div class="feedback" id="guide-feedback"></div>
+      ${rtGuideButtons()}`;
+  } else if (guideStep === 3) {
+    if (!minDrill) minDrill = { K: randInt(3, 30) };
+    panel.innerHTML = `<h3>Шаг 4. Минимум: делаем хвост самым коротким</h3>
+      <p>Для минимума берём <code>t = 0</code>. <span class="formula">Z<sub>min</sub> = K − 1</span></p>
+      <div class="soft-box">
+        <p>После работы <code>K = ${minDrill.K}</code> нулей. Какой минимум нулей в исходной строке?</p>
+        <div class="form-row"><label><span>Ответ</span><input type="number" id="guide-min-answer" step="1" style="width:130px"></label><button id="guide-min-check" class="secondary">Проверить</button><button id="guide-min-new" class="ghost">Новый K</button></div>
+      </div>
+      <div class="feedback" id="guide-feedback"></div>
+      ${rtGuideButtons()}`;
+  } else if (guideStep === 4) {
+    if (!maxDrill) maxDrill = { N: randInt(20, 90), K: randInt(1, 20) };
+    panel.innerHTML = `<h3>Шаг 5. Максимум: оставляем одну единицу</h3>
+      <p><span class="formula">Z<sub>max</sub> = N − 1</span></p>
+      <p class="small muted">Шаблон: <code>0 × (K − 1)</code>, затем <code>1</code>, затем <code>0 × (N − K)</code>.</p>
+      <div class="soft-box">
+        <p><code>N = ${maxDrill.N}</code>, <code>K = ${maxDrill.K}</code>. Какой максимум нулей в исходной строке?</p>
+        <div class="form-row"><label><span>Ответ</span><input type="number" id="guide-max-answer" step="1" style="width:130px"></label><button id="guide-max-check" class="secondary">Проверить</button><button id="guide-max-new" class="ghost">Новый N</button></div>
+      </div>
+      <div class="feedback" id="guide-feedback"></div>
+      ${rtGuideButtons()}`;
+  } else {
+    panel.innerHTML = `<h3>Шаг 6. Решаем одну задачу целиком</h3>
+      <div class="soft-box">
+        <p><b>Дано:</b> <code>N = 520</code>, <code>K = 125</code>.</p>
+        <p><b>Найти:</b> минимально возможное число нулей в исходной последовательности.</p>
+        <div class="form-row">
+          <label><span>Ваш ответ Z<sub>min</sub></span><input type="number" id="guide-final-answer" step="1" style="width:140px"></label>
+          <button id="guide-final-check" class="secondary">Проверить</button>
+          <button id="guide-final-load" class="ghost">Открыть как задачу</button>
+        </div>
+      </div>
+      <details class="collapsible" style="margin-top:8px">
+        <summary>Подсказка: разбор по шагам</summary>
+        <ol>
+          <li><code>K = 125 &gt; 0</code> → работает формула <span class="formula">K = Z − t + 1</span>.</li>
+          <li>Для минимума берём <code>t = 0</code> (строка заканчивается единицей).</li>
+          <li><span class="formula">Z<sub>min</sub> = K − 1 = 125 − 1 = 124</span></li>
+          <li>Пример: 124 нуля, затем 396 единиц.</li>
+        </ol>
+      </details>
+      <div class="feedback" id="guide-feedback"></div>
+      ${rtGuideButtons()}`;
+  }
+  rtAttachGuideHandlers();
+}
+function rtSetGuideFB(kind, html) { const fb = document.getElementById("guide-feedback"); if (fb) { fb.className = "feedback show " + kind; fb.innerHTML = html; } }
+function rtAttachGuideHandlers() {
+  const prev = document.getElementById("guide-prev");
+  const next = document.getElementById("guide-next");
+  if (prev) prev.addEventListener("click", () => { if (guideStep > 0) guideStep--; rtRenderGuide(); });
+  if (next) next.addEventListener("click", () => { guideStep = (guideStep + 1) % 6; rtRenderGuide(); });
+  const q1 = document.getElementById("guide-check-observe");
+  if (q1) q1.addEventListener("click", () => {
+    const c = document.querySelector('input[name="guide-q1"]:checked');
+    if (!c) return rtSetGuideFB("err", "Выберите один вариант.");
+    if (c.value === "right") rtSetGuideFB("ok", "Да. Меняется правый хвост нулей и ближайшая слева единица.");
+    else rtSetGuideFB("hint", "Посмотри на примеры: изменяется только самый правый участок.");
+  });
+  const gtC = document.getElementById("guide-tail-check");
+  if (gtC) gtC.addEventListener("click", () => {
+    const raw = document.getElementById("guide-tail-answer").value.trim();
+    if (raw === "" || !Number.isInteger(Number(raw))) return rtSetGuideFB("err", "Введите целое число.");
+    if (Number(raw) === tailDrill.t) rtSetGuideFB("ok", `Верно: t = ${tailDrill.t}. Хвост: <span class="mono">${rtHighlightTail(tailDrill.s)}</span>`);
+    else rtSetGuideFB("hint", `Пока нет. Хвост: <span class="mono">${rtHighlightTail(tailDrill.s)}</span>`);
+  });
+  const gtN = document.getElementById("guide-tail-new");
+  if (gtN) gtN.addEventListener("click", () => { const s = rtMakeTailString(); tailDrill = { s, t: countTrailingZeros(s) }; rtRenderGuide(); });
+  const gfC = document.getElementById("guide-formula-check");
+  if (gfC) gfC.addEventListener("click", () => {
+    const raw = document.getElementById("guide-formula-answer").value.trim();
+    if (raw === "" || !Number.isInteger(Number(raw))) return rtSetGuideFB("err", "Введите целое число.");
+    if (Number(raw) === formulaDrill.K) rtSetGuideFB("ok", `Да: ${formulaDrill.s} → ${formulaDrill.final}, нулей ${formulaDrill.K}.`);
+    else rtSetGuideFB("hint", `Формула: K = Z − t + 1 = ${formulaDrill.Z} − ${formulaDrill.t} + 1.`);
+  });
+  const gfN = document.getElementById("guide-formula-new");
+  if (gfN) gfN.addEventListener("click", () => { formulaDrill = rtMakeFormulaDrill(); rtRenderGuide(); });
+  const gmC = document.getElementById("guide-min-check");
+  if (gmC) gmC.addEventListener("click", () => {
+    const raw = document.getElementById("guide-min-answer").value.trim();
+    if (raw === "" || !Number.isInteger(Number(raw))) return rtSetGuideFB("err", "Введите целое число.");
+    const ans = minDrill.K - 1;
+    if (Number(raw) === ans) rtSetGuideFB("ok", `Верно: K − 1 = ${minDrill.K} − 1 = ${ans}.`);
+    else rtSetGuideFB("hint", "Для минимума строка должна заканчиваться единицей (t = 0).");
+  });
+  const gmN = document.getElementById("guide-min-new");
+  if (gmN) gmN.addEventListener("click", () => { minDrill = { K: randInt(3, 30) }; rtRenderGuide(); });
+  const gMC = document.getElementById("guide-max-check");
+  if (gMC) gMC.addEventListener("click", () => {
+    const raw = document.getElementById("guide-max-answer").value.trim();
+    if (raw === "" || !Number.isInteger(Number(raw))) return rtSetGuideFB("err", "Введите целое число.");
+    const ans = maxDrill.N - 1;
+    if (Number(raw) === ans) rtSetGuideFB("ok", `Верно: N − 1 = ${maxDrill.N} − 1 = ${ans}.`);
+    else rtSetGuideFB("hint", "Для максимума оставляем одну единицу.");
+  });
+  const gMN = document.getElementById("guide-max-new");
+  if (gMN) gMN.addEventListener("click", () => { maxDrill = { N: randInt(20, 90), K: randInt(1, 20) }; rtRenderGuide(); });
+  const gfinC = document.getElementById("guide-final-check");
+  if (gfinC) gfinC.addEventListener("click", () => {
+    const raw = document.getElementById("guide-final-answer").value.trim();
+    if (raw === "" || !Number.isInteger(Number(raw))) return rtSetGuideFB("err", "Введите целое число.");
+    const v = Number(raw);
+    if (v === 124) rtSetGuideFB("ok", "Верно: 124.");
+    else if (v === 125) rtSetGuideFB("hint", "Это значение K, а не Z. Z<sub>min</sub> = K − 1 = 124.");
+    else if (v === 519) rtSetGuideFB("hint", "Это был бы максимум; спрашивают минимум.");
+    else rtSetGuideFB("hint", "Z<sub>min</sub> = K − 1 = 125 − 1.");
+  });
+  const gfinL = document.getElementById("guide-final-load");
+  if (gfinL) gfinL.addEventListener("click", () => rtSetTask(520, 125, "min"));
+}
+
+/* Симулятор right-tail (та же программа) */
+function rtInitSim(input) {
+  if (typeof input !== "string" || !/^[01]+$/.test(input)) return { ok: false, error: "Строка должна состоять только из 0 и 1, минимум 1 символ" };
+  if (input.length > 200) return { ok: false, error: "Для симулятора используйте строку до 200 символов" };
+  rtSimState = createTMSimulation(input, "nearest_blank_right", "q0");
+  return { ok: true };
+}
+function rtRenderSim() {
+  const tapeEl = document.getElementById("tape");
+  const infoEl = document.getElementById("tape-info");
+  tapeEl.innerHTML = ""; infoEl.innerHTML = "";
+  if (!rtSimState) { tapeEl.innerHTML = '<div style="padding: 14px; color: var(--text-dim);">Симуляция не запущена.</div>'; return; }
+  const W = 21;
+  let dMin = Math.min(rtSimState.minPos, rtSimState.head);
+  let dMax = Math.max(rtSimState.maxPos, rtSimState.head);
+  const dw = dMax - dMin + 1;
+  let viewMin, viewMax;
+  if (dw <= W + 4) { viewMin = dMin - 2; viewMax = dMax + 2; }
+  else { const half = Math.floor(W / 2); viewMin = rtSimState.head - half; viewMax = rtSimState.head + half; }
+  for (let i = viewMin; i <= viewMax; i++) {
+    const v = rtSimState.tape.get(i) ?? LAMBDA;
+    const cell = document.createElement("div");
+    cell.className = "cell" + (v === LAMBDA ? " lambda-cell" : "") + (i === rtSimState.head ? " head" : "");
+    cell.textContent = v;
+    const pos = document.createElement("span"); pos.className = "pos"; pos.textContent = i;
+    cell.appendChild(pos); tapeEl.appendChild(cell);
+  }
+  const cmdText = rtSimState.lastCommand
+    ? `${rtSimState.lastCommand.fromState}, ${rtSimState.lastCommand.fromSymbol} → ${rtSimState.lastCommand.write}, ${rtSimState.lastCommand.move}, ${rtSimState.lastCommand.next}`
+    : "—";
+  const status = rtSimState.finished ? "остановлена" : "работает";
+  let finalInfo = "";
+  if (rtSimState.finished) {
+    const f = readFinalTape(rtSimState);
+    finalInfo = `<span class="kv"><b>Итоговая строка:</b> <code class="mono">${f || LAMBDA}</code></span><span class="kv"><b>Нулей:</b> ${countChar(f, "0")}</span>`;
+  }
+  infoEl.innerHTML = `<span class="kv"><b>Шаг:</b> ${rtSimState.step}</span>
+    <span class="kv"><b>Состояние:</b> <code>${rtSimState.state}</code></span>
+    <span class="kv"><b>Позиция головки:</b> ${rtSimState.head}</span>
+    <span class="kv"><b>Под головкой:</b> <code class="mono">${rtSimState.tape.get(rtSimState.head) ?? LAMBDA}</code></span>
+    <span class="kv"><b>Последняя команда:</b> <span class="tape-cmd">${cmdText}</span></span>
+    <span class="kv"><b>Статус:</b> ${status}</span>${finalInfo}`;
+}
+function rtShowSimErr(m) { const el = document.getElementById("sim-err"); if (!m) { el.className = "feedback err"; el.textContent = ""; return; } el.textContent = m; el.classList.add("show"); }
+function rtHandleSimRun() {
+  rtShowSimErr("");
+  if (!rtSimState || rtSimState.finished) {
+    const r = rtInitSim(document.getElementById("sim-input").value.trim());
+    if (!r.ok) { rtShowSimErr(r.error); rtRenderSim(); return; }
+  }
+  const r = runTMFull(rtSimState, PROG_right_invert_first1);
+  if (!r.ok) rtShowSimErr(r.error);
+  rtRenderSim();
+}
+function rtHandleSimStep() {
+  rtShowSimErr("");
+  if (!rtSimState || rtSimState.finished) {
+    const r = rtInitSim(document.getElementById("sim-input").value.trim());
+    if (!r.ok) { rtShowSimErr(r.error); rtRenderSim(); return; }
+  }
+  const r = stepTM(rtSimState, PROG_right_invert_first1);
+  if (!r.ok) rtShowSimErr(r.error);
+  rtRenderSim();
+}
+function rtHandleSimReset() { rtShowSimErr(""); rtSimState = null; rtRenderSim(); }
+
+function initTabRightTail() {
+  renderTabRightTail();
+  document.getElementById("main-program-table").innerHTML = rtProgramTableHTML();
+  rtRenderGuide();
+  rtNewTailDrill();
+  rtRenderExamples();
+  document.getElementById("btn-generate").addEventListener("click", rtHandleGenerate);
+  document.getElementById("btn-manual").addEventListener("click", rtHandleManual);
+  document.getElementById("btn-check").addEventListener("click", rtHandleCheck);
+  document.getElementById("btn-hint").addEventListener("click", rtHandleHint);
+  document.getElementById("btn-reveal").addEventListener("click", rtHandleReveal);
+  document.getElementById("btn-show-solution").addEventListener("click", rtHandleShowSolution);
+  document.getElementById("btn-tail-check").addEventListener("click", rtCheckTailDrill);
+  document.getElementById("btn-tail-next").addEventListener("click", rtNewTailDrill);
+  document.getElementById("btn-run").addEventListener("click", rtHandleSimRun);
+  document.getElementById("btn-step").addEventListener("click", rtHandleSimStep);
+  document.getElementById("btn-reset").addEventListener("click", rtHandleSimReset);
+  document.querySelectorAll("[data-sim-example]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.getElementById("sim-input").value = btn.getAttribute("data-sim-example");
+      rtSimState = null; rtRenderSim(); rtShowSimErr("");
+    });
+  });
+  document.getElementById("user-answer").addEventListener("keydown", e => { if (e.key === "Enter") rtHandleCheck(); });
+  ["manual-n", "manual-k"].forEach(id => document.getElementById(id).addEventListener("keydown", e => { if (e.key === "Enter") rtHandleManual(); }));
+  document.getElementById("tail-answer").addEventListener("keydown", e => { if (e.key === "Enter") rtCheckTailDrill(); });
+  rtRenderSim();
+}
+
+/* ============================================================
+   ВКЛАДКА 2: «Левый префикс единиц»
+   Симметричная схема: машина идёт слева направо
+   ============================================================ */
+function renderTabLeftPrefix() {
+  const panel = document.getElementById("panel-left-prefix");
+  panel.innerHTML = `
+    <section class="card">
+      <h2>Левый префикс единиц <span class="badge">симметрия правого хвоста</span></h2>
+      <p>
+        Этот класс задач устроен зеркально к правому хвосту: машина стартует слева от строки,
+        идёт направо по начальному блоку единиц и обрабатывает первый встреченный ноль.
+      </p>
+      <h3>Программа</h3>
+      <div id="lp-program-table"></div>
+      <p class="small muted">Алфавит — <code>0</code>, <code>1</code>, <code class="lambda">λ</code>. Начальное состояние — <code>q0</code>. Головка стартует в ближайшей слева пустой ячейке.</p>
+      <details class="collapsible" style="margin-top:10px">
+        <summary>Как работает эта программа</summary>
+        <ol>
+          <li>Команда <code>q0, λ, R, q1</code> сдвигает головку с пустой ячейки на первый символ строки и переходит в <code>q1</code>.</li>
+          <li>В <code>q1</code>: если текущий символ <code>1</code>, машина заменяет его на <code>0</code> и идёт направо;
+            если <code>0</code>, заменяет его на <code>1</code> и останавливается;
+            если <code class="lambda">λ</code>, останавливается.</li>
+          <li>Поэтому программа меняет начальный блок единиц на нули, а первый встреченный после них ноль — на единицу.</li>
+        </ol>
+      </details>
+    </section>
+
+    <section class="card">
+      <h2>Учебная схема: как видеть префикс</h2>
+      <ol>
+        <li>С какого края идёт машина? Здесь — слева (по команде <code>q0, λ, R, q1</code>).</li>
+        <li>Какой фрагмент меняется? Начальный блок единиц и первый встреченный ноль.</li>
+        <li>Какая формула? Если <code>k</code> — длина начального блока единиц, то <code>K = Z + k − 1</code> при <code>k &lt; N</code>.</li>
+      </ol>
+      <h3>Тренажёр: длина начального блока единиц</h3>
+      <p>Для строки нужно посчитать, сколько единиц стоит подряд в самом начале.</p>
+      <div class="soft-box">
+        <div>Строка:</div>
+        <div class="drill-string" id="lp-drill-string">—</div>
+        <div class="form-row">
+          <label><span>Сколько единиц в начале? k =</span><input type="number" id="lp-drill-answer" step="1" style="width:130px"></label>
+          <button id="lp-drill-check">Проверить</button>
+          <button class="secondary" id="lp-drill-new">Новая строка</button>
+        </div>
+        <div class="feedback" id="lp-drill-feedback"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Формула</h2>
+      <p>Обозначим: <code>Z</code> — нули до работы, <code>K</code> — нули после, <code>k</code> — длина начального блока единиц.</p>
+      <p>
+        Если в строке есть ноль, программа переводит <code>1<sup>k</sup> 0 v</code> в <code>0<sup>k</sup> 1 v</code>:
+        <code>k</code> единиц станут нулями (плюс <code>k</code> нулей), первый ноль станет единицей (минус 1 ноль).
+        Итого:
+      </p>
+      <p><span class="formula">K = Z + k − 1</span></p>
+      <p>Особый случай: вся строка из единиц. Тогда нулей в начале нет, программа меняет все единицы на нули и останавливается. После работы <code>K = N</code>.</p>
+
+      <h3>Для задач на экстремум числа нулей после работы</h3>
+      <ul>
+        <li><b>Максимум K:</b> максимизируем <code>k</code>. Лучший случай — все единицы в начале: <span class="formula">K<sub>max</sub> = Z + единицы − 1</span> (при <code>Z &gt; 0</code>).</li>
+        <li><b>Минимум K:</b> минимизируем <code>k</code>. Лучший случай — строка начинается с нуля: <code>k = 0</code>, <span class="formula">K<sub>min</sub> = Z − 1</span> (при <code>Z &gt; 0</code>).</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Симулятор</h2>
+      <p class="muted small">Введите короткую двоичную строку и запустите программу из «левого префикса».</p>
+      <div class="form-row">
+        <label><span>Строка</span>
+          <input type="text" id="lp-sim-input" value="111000" maxlength="200" style="width:260px; font-family: var(--mono);">
+        </label>
+        <button id="lp-btn-run">Запустить полностью</button>
+        <button class="secondary" id="lp-btn-step">Один шаг</button>
+        <button class="ghost" id="lp-btn-reset">Сбросить</button>
+      </div>
+      <div class="form-row" style="gap: 6px;">
+        <button class="ghost small" data-lpsim-example="111000">111000</button>
+        <button class="ghost small" data-lpsim-example="01010">01010</button>
+        <button class="ghost small" data-lpsim-example="1111">1111</button>
+        <button class="ghost small" data-lpsim-example="0">0</button>
+      </div>
+      <div class="tape" id="lp-tape"></div>
+      <div class="tape-info" id="lp-tape-info"></div>
+      <div class="feedback err" id="lp-sim-err"></div>
+    </section>
+
+    <section class="card">
+      <h2>Связанные задачи из библиотеки</h2>
+      <p class="muted small">Перейти к задаче — карточка откроется во вкладке «Библиотека задач».</p>
+      <div class="library-list" id="lp-related"></div>
+    </section>
+  `;
+}
+
+let lpSimState = null;
+function lpRenderProgram() {
+  document.getElementById("lp-program-table").innerHTML =
+    renderProgramTable(PROG_left_invert_first0, [LAMBDA, "1", "0"], ["q0", "q1"]);
+}
+function lpMakeDrillString() {
+  const k = Math.random(), len = randInt(4, 9);
+  if (k < 0.18) return "1".repeat(len);
+  if (k < 0.38) return "0" + Array.from({ length: len - 1 }, () => Math.random() < 0.45 ? "0" : "1").join("");
+  const ones = randInt(1, Math.min(5, len - 1));
+  let suffix = Array.from({ length: len - ones }, () => Math.random() < 0.45 ? "0" : "1").join("");
+  if (!suffix.includes("0")) suffix = "0" + suffix.slice(1);
+  return "1".repeat(ones) + suffix;
+}
+function lpHighlight(s) {
+  const k = countLeadingOnes(s);
+  if (k === 0) return escapeHTML(s);
+  return `<span class="trail-mark">${escapeHTML(s.slice(0, k))}</span>${escapeHTML(s.slice(k))}`;
+}
+let lpDrill = null;
+function lpNewDrill() {
+  const s = lpMakeDrillString();
+  lpDrill = { s, k: countLeadingOnes(s) };
+  document.getElementById("lp-drill-string").innerHTML = escapeHTML(s);
+  document.getElementById("lp-drill-answer").value = "";
+  const fb = document.getElementById("lp-drill-feedback"); fb.className = "feedback"; fb.innerHTML = "";
+}
+function lpCheckDrill() {
+  if (!lpDrill) lpNewDrill();
+  const raw = document.getElementById("lp-drill-answer").value.trim();
+  const fb = document.getElementById("lp-drill-feedback");
+  if (raw === "" || !Number.isInteger(Number(raw))) { fb.className = "feedback show err"; fb.textContent = "Введите целое число."; return; }
+  const v = Number(raw);
+  if (v === lpDrill.k) {
+    fb.className = "feedback show ok";
+    fb.innerHTML = `Верно: <code>k = ${lpDrill.k}</code>.<br>Префикс: <span class="mono">${lpHighlight(lpDrill.s)}</span>`;
+  } else {
+    fb.className = "feedback show hint";
+    fb.innerHTML = `Пока нет. Считай единицы с левого края до первого нуля. Префикс: <span class="mono">${lpHighlight(lpDrill.s)}</span>`;
+  }
+}
+function lpInitSim(input) {
+  if (typeof input !== "string" || !/^[01]+$/.test(input)) return { ok: false, error: "Строка должна состоять только из 0 и 1, минимум 1 символ" };
+  if (input.length > 200) return { ok: false, error: "Для симулятора используйте строку до 200 символов" };
+  lpSimState = createTMSimulation(input, "nearest_blank_left", "q0");
+  return { ok: true };
+}
+function lpRenderSim() {
+  const tapeEl = document.getElementById("lp-tape");
+  const infoEl = document.getElementById("lp-tape-info");
+  tapeEl.innerHTML = ""; infoEl.innerHTML = "";
+  if (!lpSimState) { tapeEl.innerHTML = '<div style="padding: 14px; color: var(--text-dim);">Симуляция не запущена.</div>'; return; }
+  const W = 21;
+  let dMin = Math.min(lpSimState.minPos, lpSimState.head);
+  let dMax = Math.max(lpSimState.maxPos, lpSimState.head);
+  const dw = dMax - dMin + 1;
+  let viewMin, viewMax;
+  if (dw <= W + 4) { viewMin = dMin - 2; viewMax = dMax + 2; }
+  else { const half = Math.floor(W / 2); viewMin = lpSimState.head - half; viewMax = lpSimState.head + half; }
+  for (let i = viewMin; i <= viewMax; i++) {
+    const v = lpSimState.tape.get(i) ?? LAMBDA;
+    const cell = document.createElement("div");
+    cell.className = "cell" + (v === LAMBDA ? " lambda-cell" : "") + (i === lpSimState.head ? " head" : "");
+    cell.textContent = v;
+    const pos = document.createElement("span"); pos.className = "pos"; pos.textContent = i;
+    cell.appendChild(pos); tapeEl.appendChild(cell);
+  }
+  const cmd = lpSimState.lastCommand
+    ? `${lpSimState.lastCommand.fromState}, ${lpSimState.lastCommand.fromSymbol} → ${lpSimState.lastCommand.write}, ${lpSimState.lastCommand.move}, ${lpSimState.lastCommand.next}`
+    : "—";
+  let finalInfo = "";
+  if (lpSimState.finished) {
+    const f = readFinalTape(lpSimState);
+    finalInfo = `<span class="kv"><b>Итоговая строка:</b> <code class="mono">${f || LAMBDA}</code></span><span class="kv"><b>Нулей:</b> ${countChar(f, "0")}</span>`;
+  }
+  infoEl.innerHTML = `<span class="kv"><b>Шаг:</b> ${lpSimState.step}</span>
+    <span class="kv"><b>Состояние:</b> <code>${lpSimState.state}</code></span>
+    <span class="kv"><b>Позиция головки:</b> ${lpSimState.head}</span>
+    <span class="kv"><b>Под головкой:</b> <code class="mono">${lpSimState.tape.get(lpSimState.head) ?? LAMBDA}</code></span>
+    <span class="kv"><b>Последняя команда:</b> <span class="tape-cmd">${cmd}</span></span>
+    <span class="kv"><b>Статус:</b> ${lpSimState.finished ? "остановлена" : "работает"}</span>${finalInfo}`;
+}
+function lpShowSimErr(m) { const el = document.getElementById("lp-sim-err"); if (!m) { el.className = "feedback err"; el.textContent = ""; return; } el.textContent = m; el.classList.add("show"); }
+function lpHandleRun() {
+  lpShowSimErr("");
+  if (!lpSimState || lpSimState.finished) {
+    const r = lpInitSim(document.getElementById("lp-sim-input").value.trim());
+    if (!r.ok) { lpShowSimErr(r.error); lpRenderSim(); return; }
+  }
+  const r = runTMFull(lpSimState, PROG_left_invert_first0);
+  if (!r.ok) lpShowSimErr(r.error);
+  lpRenderSim();
+}
+function lpHandleStep() {
+  lpShowSimErr("");
+  if (!lpSimState || lpSimState.finished) {
+    const r = lpInitSim(document.getElementById("lp-sim-input").value.trim());
+    if (!r.ok) { lpShowSimErr(r.error); lpRenderSim(); return; }
+  }
+  const r = stepTM(lpSimState, PROG_left_invert_first0);
+  if (!r.ok) lpShowSimErr(r.error);
+  lpRenderSim();
+}
+function lpHandleReset() { lpShowSimErr(""); lpSimState = null; lpRenderSim(); }
+
+function lpRenderRelated() {
+  const list = document.getElementById("lp-related");
+  const related = TASK_LIBRARY.filter(t =>
+    t.moduleSuggested === "left_prefix_ones" || t.taskType.startsWith("left_prefix_ones")
+  );
+  list.innerHTML = related.map(t => `
+    <div class="library-card" data-go-task="${t.shortId}">
+      <div class="lib-id">${escapeHTML(t.shortId)}</div>
+      <div class="lib-title">${escapeHTML(t.title)}</div>
+      <div class="lib-meta">Тип: <code>${escapeHTML(t.taskType)}</code></div>
+    </div>
+  `).join("");
+  list.querySelectorAll("[data-go-task]").forEach(el => {
+    el.addEventListener("click", () => {
+      switchTab("library");
+      setTimeout(() => libSelect(el.getAttribute("data-go-task")), 60);
+    });
+  });
+}
+
+function initTabLeftPrefix() {
+  renderTabLeftPrefix();
+  lpRenderProgram();
+  lpNewDrill();
+  document.getElementById("lp-drill-check").addEventListener("click", lpCheckDrill);
+  document.getElementById("lp-drill-new").addEventListener("click", lpNewDrill);
+  document.getElementById("lp-drill-answer").addEventListener("keydown", e => { if (e.key === "Enter") lpCheckDrill(); });
+  document.getElementById("lp-btn-run").addEventListener("click", lpHandleRun);
+  document.getElementById("lp-btn-step").addEventListener("click", lpHandleStep);
+  document.getElementById("lp-btn-reset").addEventListener("click", lpHandleReset);
+  document.querySelectorAll("[data-lpsim-example]").forEach(b => {
+    b.addEventListener("click", () => {
+      document.getElementById("lp-sim-input").value = b.getAttribute("data-lpsim-example");
+      lpSimState = null; lpRenderSim(); lpShowSimErr("");
+    });
+  });
+  lpRenderRelated();
+  lpRenderSim();
+}
+
+/* ============================================================
+   ВКЛАДКА 3: «Двоичная запись числа»
+   Учебный модуль: dec → bin → запуск МТ → bin → dec
+   ============================================================ */
+function renderTabBinary() {
+  const panel = document.getElementById("panel-binary");
+  panel.innerHTML = `
+    <section class="card">
+      <h2>Двоичная запись числа <span class="badge">три шага</span></h2>
+      <p>Большая часть задач этой группы устроена одинаково:</p>
+      <ol>
+        <li>Переводим исходное десятичное число в двоичную запись (без ведущих нулей).</li>
+        <li>Запускаем заданную программу МТ на этой двоичной строке.</li>
+        <li>Переводим итоговую двоичную запись обратно в десятичное число.</li>
+      </ol>
+      <p class="muted small">
+        Ключ — узнать, какое преобразование делает программа: побитовое отрицание, минус один, обнуление младшей единицы,
+        замену старшего бита или первого нуля слева.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Перевод между системами счисления</h2>
+      <p>Удобный калькулятор для перевода в обе стороны.</p>
+      <div class="binary-converter">
+        <div class="conv-row">
+          <label><span>Десятичное число</span><input type="number" id="conv-dec" min="0" step="1" value="150" style="width:140px"></label>
+          <button id="conv-to-bin">в двоичную →</button>
+          <div>= <span class="conv-out mono" id="conv-bin-out">10010110</span></div>
+        </div>
+        <div class="conv-row">
+          <label><span>Двоичная запись</span><input type="text" id="conv-bin" value="10010110" maxlength="64" style="width:200px; font-family: var(--mono);"></label>
+          <button id="conv-to-dec">в десятичное →</button>
+          <div>= <span class="conv-out mono" id="conv-dec-out">150</span></div>
+        </div>
+        <div class="feedback err" id="conv-err"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Мини-тренажёр: узнай, что делает программа</h2>
+      <p class="muted small">
+        Посмотри на таблицу и несколько коротких прогонов. Выбери, какое преобразование выполняет программа.
+        Это мостик между «просто прогнал» и «понял закономерность».
+      </p>
+      <div id="bin-quiz-host"></div>
+    </section>
+
+    <section class="card">
+      <h2>Учебный конвейер: число → лента → результат</h2>
+      <p class="muted small">
+        Выберите программу из библиотеки и десятичное число — увидите все три шага сразу.
+      </p>
+      <div class="form-row">
+        <label><span>Программа</span>
+          <select id="bin-program-select" style="width:340px"></select>
+        </label>
+        <label><span>Число (десятичное)</span>
+          <input type="number" id="bin-input-dec" min="0" step="1" value="150" style="width:130px">
+        </label>
+        <button id="bin-run-pipeline">Прогнать</button>
+      </div>
+      <div id="bin-pipeline-out"></div>
+    </section>
+
+    <section class="card">
+      <h2>Сводка преобразований</h2>
+      <p class="muted small">Эта таблица помогает быстро узнавать тип задачи по виду программы.</p>
+      <div class="program-table-wrap">
+        <table class="program">
+          <thead><tr><th>Тип</th><th>Что делает на двоичной записи</th><th>Откуда начинает</th></tr></thead>
+          <tbody>
+            <tr><th class="mono">bitwise_invert</th><td>каждый бит → противоположный</td><td>справа</td></tr>
+            <tr><th class="mono">decrement</th><td>число − 1</td><td>справа</td></tr>
+            <tr><th class="mono">clear_lowest_one</th><td>младшая единица → 0</td><td>справа</td></tr>
+            <tr><th class="mono">clear_first_left_one</th><td>старшая единица → 0</td><td>слева</td></tr>
+            <tr><th class="mono">left_prefix_ones → 0, first 0 → 1</th><td>обнуляет блок ведущих единиц и первый ноль делает 1</td><td>слева</td></tr>
+            <tr><th class="mono">left_first_zero_to_one</th><td>первый ноль после ведущих единиц → 1</td><td>слева</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Связанные задачи из библиотеки</h2>
+      <div class="library-list" id="binary-related"></div>
+    </section>
+  `;
+}
+
+function binProgramOptions() {
+  // Список программ из библиотеки задач (уникальные)
+  const seen = new Set();
+  const items = [];
+  TASK_LIBRARY.filter(t => t.initialTape.form === "binary_number").forEach(t => {
+    if (seen.has(t.taskType)) return;
+    seen.add(t.taskType);
+    items.push({ label: MODULE_TITLES[t.moduleSuggested] || t.taskType, taskType: t.taskType, program: t.program, headStart: t.initialTape.headStart, alphabet: t.alphabet, states: t.states });
+  });
+  return items;
+}
+
+function binPopulateProgramSelect() {
+  const sel = document.getElementById("bin-program-select");
+  const items = binProgramOptions();
+  sel.innerHTML = items.map((it, i) => `<option value="${i}">${escapeHTML(it.label)} — ${escapeHTML(it.taskType)}</option>`).join("");
+  sel._items = items;
+}
+
+function binRunPipeline() {
+  const sel = document.getElementById("bin-program-select");
+  const items = sel._items || binProgramOptions();
+  const idx = Number(sel.value);
+  const item = items[idx];
+  const decRaw = document.getElementById("bin-input-dec").value.trim();
+  const out = document.getElementById("bin-pipeline-out");
+  out.innerHTML = "";
+  const p = parseStrictInt(decRaw);
+  if (!p.ok || p.value < 0) { out.innerHTML = `<div class="feedback show err">Введите неотрицательное целое число.</div>`; return; }
+  const bin = decToBin(p.value);
+  const r = simulateOnce(bin, item.headStart, item.program);
+  if (!r.ok) { out.innerHTML = `<div class="feedback show err">Симулятор: ${escapeHTML(r.error)}</div>`; return; }
+  const finalBin = r.finalTape;
+  const finalDec = /^[01]+$/.test(finalBin) ? binToDec(finalBin) : "—";
+  out.innerHTML = `
+    <div class="soft-box">
+      <h4>Шаг 1. Десятичное → двоичное</h4>
+      <p><code>${p.value}</code><sub>10</sub> = <code class="mono">${escapeHTML(bin)}</code><sub>2</sub></p>
+      <h4>Шаг 2. Запуск программы</h4>
+      <div class="program-table-wrap">${renderProgramTable(item.program, item.alphabet, item.states)}</div>
+      <p class="small muted">Головка стартует ${headStartLabel(item.headStart)}. Шагов: <code>${r.sim.step}</code>.</p>
+      <p>Итоговая запись на ленте: <code class="mono">${escapeHTML(finalBin)}</code></p>
+      <h4>Шаг 3. Двоичное → десятичное</h4>
+      <p><code class="mono">${escapeHTML(finalBin)}</code><sub>2</sub> = <code>${finalDec}</code><sub>10</sub></p>
+    </div>
+  `;
+}
+
+
+let binQuizCurrent = null;
+
+function binQuizItems() {
+  return [
+    {
+      taskType: "bitwise_inversion_decimal_result",
+      label: "каждый бит меняется на противоположный",
+      inputs: ["1011", "1100", "10000"],
+      distractors: ["число уменьшается на 1", "обнуляется младшая единица", "первый ноль слева становится единицей"]
+    },
+    {
+      taskType: "binary_decrement_decimal_result",
+      label: "двоичное число уменьшается на 1",
+      inputs: ["10000", "1011", "1100"],
+      distractors: ["каждый бит меняется на противоположный", "старшая единица становится нулём", "первый ноль слева становится единицей"]
+    },
+    {
+      taskType: "clear_lowest_one_decimal_result",
+      label: "обнуляется младшая единица",
+      inputs: ["10010110", "1100", "111"],
+      distractors: ["число уменьшается на 1", "каждый бит меняется на противоположный", "первый ноль слева становится единицей"]
+    },
+    {
+      taskType: "clear_first_left_one_decimal_result",
+      label: "обнуляется первая единица слева",
+      inputs: ["1100011", "1010", "1001"],
+      distractors: ["обнуляется младшая единица", "число уменьшается на 1", "каждый бит меняется на противоположный"]
+    },
+    {
+      taskType: "left_first_zero_to_one_decimal_result",
+      label: "первый ноль слева превращается в единицу",
+      inputs: ["1111001", "10101", "1110"],
+      distractors: ["каждый бит меняется на противоположный", "обнуляется первая единица слева", "число уменьшается на 1"]
+    }
+  ];
+}
+
+function shuffleArray(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function binNewPatternQuiz() {
+  const host = document.getElementById("bin-quiz-host");
+  if (!host) return;
+  const item = binQuizItems()[randInt(0, binQuizItems().length - 1)];
+  const task = TASK_LIBRARY.find(t => t.taskType === item.taskType);
+  if (!task) { host.innerHTML = `<div class="feedback show err">Не удалось найти программу для викторины.</div>`; return; }
+  const examples = item.inputs.map(input => {
+    const r = simulateOnce(input, task.initialTape.headStart, task.program, task.startState, task.blankSymbol);
+    return { input, output: r.ok ? r.finalTape : "?" };
+  });
+  const options = shuffleArray([item.label, ...item.distractors]);
+  binQuizCurrent = { answer: item.label, task, examples };
+  host.innerHTML = `
+    <div class="soft-box">
+      <p><b>Посмотри на программу и короткие прогоны.</b> Что она делает с двоичной записью?</p>
+      ${renderProgramTable(task.program, task.alphabet, task.states, task.blankSymbol)}
+      <div class="tiny-examples">
+        ${examples.map(ex => `<div class="tiny-example"><code>${escapeHTML(ex.input)}</code><span class="arrow">→</span><code>${escapeHTML(ex.output)}</code></div>`).join("")}
+      </div>
+      <div class="quiz-options">
+        ${options.map(opt => `<button class="secondary" data-bin-quiz-choice="${escapeHTML(opt)}">${escapeHTML(opt)}</button>`).join("")}
+      </div>
+      <button class="ghost" id="bin-quiz-new">Другая программа</button>
+      <div class="feedback" id="bin-quiz-feedback"></div>
+    </div>`;
+  host.querySelectorAll("[data-bin-quiz-choice]").forEach(btn => {
+    btn.addEventListener("click", () => binCheckPatternQuiz(btn.getAttribute("data-bin-quiz-choice")));
+  });
+  document.getElementById("bin-quiz-new").addEventListener("click", binNewPatternQuiz);
+}
+
+function binCheckPatternQuiz(choice) {
+  const fb = document.getElementById("bin-quiz-feedback");
+  if (!fb || !binQuizCurrent) return;
+  if (choice === binQuizCurrent.answer) {
+    fb.className = "feedback show ok";
+    fb.innerHTML = `Верно: программа выполняет преобразование «<b>${escapeHTML(choice)}</b>». Теперь можно перейти к конвейеру ниже и проверить на большом числе.`;
+  } else {
+    fb.className = "feedback show hint";
+    fb.innerHTML = `Пока нет. Сравни вход и выход по каждому биту. Например: <code>${escapeHTML(binQuizCurrent.examples[0].input)}</code> → <code>${escapeHTML(binQuizCurrent.examples[0].output)}</code>.`;
+  }
+}
+
+function binRenderRelated() {
+  const list = document.getElementById("binary-related");
+  const related = TASK_LIBRARY.filter(t => t.initialTape.form === "binary_number");
+  list.innerHTML = related.map(t => `
+    <div class="library-card" data-go-task="${t.shortId}">
+      <div class="lib-id">${escapeHTML(t.shortId)}</div>
+      <div class="lib-title">${escapeHTML(t.title)}</div>
+      <div class="lib-meta">Тип: <code>${escapeHTML(t.taskType)}</code></div>
+    </div>
+  `).join("");
+  list.querySelectorAll("[data-go-task]").forEach(el => {
+    el.addEventListener("click", () => {
+      switchTab("library");
+      setTimeout(() => libSelect(el.getAttribute("data-go-task")), 60);
+    });
+  });
+}
+
+function initTabBinary() {
+  renderTabBinary();
+  binPopulateProgramSelect();
+  binRenderRelated();
+  binNewPatternQuiz();
+  document.getElementById("conv-to-bin").addEventListener("click", () => {
+    const err = document.getElementById("conv-err"); err.className = "feedback err"; err.textContent = "";
+    const p = parseStrictInt(document.getElementById("conv-dec").value);
+    if (!p.ok || p.value < 0) { err.textContent = "Введите неотрицательное целое число."; err.classList.add("show"); return; }
+    document.getElementById("conv-bin-out").textContent = decToBin(p.value);
+  });
+  document.getElementById("conv-to-dec").addEventListener("click", () => {
+    const err = document.getElementById("conv-err"); err.className = "feedback err"; err.textContent = "";
+    const s = document.getElementById("conv-bin").value.trim();
+    if (!/^[01]+$/.test(s)) { err.textContent = "Двоичная запись должна состоять только из 0 и 1."; err.classList.add("show"); return; }
+    document.getElementById("conv-dec-out").textContent = binToDec(s);
+  });
+  document.getElementById("bin-run-pipeline").addEventListener("click", binRunPipeline);
+  binRunPipeline();
+}
+
+/* ============================================================
+   ВКЛАДКА 4: «Универсальный разбор таблицы»
+   Обучающий ридер любой программы из библиотеки:
+   как читать состояние × символ → (запись, движение, новое состояние),
+   что значит остановка, как стартует головка.
+   ============================================================ */
+let uniSelectedShortId = null;
+let uniSimInput = "";
+let uniSim = null;
+let uniLastTrace = [];
+
+function renderTabUniversal() {
+  const panel = document.getElementById("panel-universal");
+  panel.innerHTML = `
+    <section class="card">
+      <h2>Как читать таблицу машины Тьюринга</h2>
+      <p>
+        Программа — это таблица. Строки — состояния машины (<code>q0</code>, <code>q1</code> и т. д.),
+        столбцы — символы, которые головка может видеть в текущей ячейке: буквы алфавита и пустой символ
+        <code class="lambda">λ</code>. На пересечении строки и столбца записана команда:
+      </p>
+      <p class="mono" style="margin-left:1.2em;">
+        запись, движение, новое состояние
+      </p>
+      <ul>
+        <li><b>Запись</b> — какой символ положить в текущую ячейку (может совпадать с тем, что уже там лежит, тогда содержимое не меняется).</li>
+        <li><b>Движение</b> — <code>L</code> сдвинуть головку влево, <code>R</code> вправо, <code>S</code> остаться на месте.</li>
+        <li><b>Новое состояние</b> — в какое состояние перейти после этого шага.</li>
+      </ul>
+      <p>
+        Если в клетке стоит прочерк «—», значит для этой пары (состояние, символ) команды нет.
+        Реальные таблицы из задач устроены так, что машина либо просто никогда не попадает в эту клетку,
+        либо именно её отсутствие означает остановку. В наших симуляциях это трактуется как <b>halt</b>.
+      </p>
+      <p>
+        Положение головки в начале — это <b>условие задачи</b>. В наших задачах встречаются два варианта:
+        «ближайшая слева пустая ячейка» (головка стоит сразу слева от строки) и
+        «ближайшая справа пустая ячейка» (головка стоит сразу справа от строки).
+        Первый шаг машины всегда сдвигает её внутрь строки.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Выберите программу</h2>
+      <p class="muted small">Любая программа из библиотеки. Можно листать по списку, можно пройти по шагам.</p>
+      <div class="uni-program-list" id="uni-program-list"></div>
+    </section>
+
+    <section class="card" id="uni-detail" hidden>
+      <h2 id="uni-title">Программа</h2>
+      <div id="uni-program-table"></div>
+
+      <h3>Алфавит и состояния</h3>
+      <p class="small" id="uni-alpha"></p>
+
+      <h3>Старт головки</h3>
+      <p class="small" id="uni-head"></p>
+
+      <h3>Как читать конкретную команду</h3>
+      <div id="uni-cmd-reader" class="soft-box"></div>
+
+      <h3>Пошаговый запуск</h3>
+      <div class="manual-mode">
+        <label for="uni-sim-input" class="small">Входная строка:</label>
+        <input type="text" id="uni-sim-input" maxlength="80" style="width:240px; font-family: var(--mono);">
+        <button class="btn small" id="uni-sim-reset">Загрузить</button>
+        <button class="btn small ghost" id="uni-sim-step">Шаг</button>
+        <button class="btn small ghost" id="uni-sim-run">До конца</button>
+        <button class="btn small ghost" id="uni-sim-clear">Сброс</button>
+      </div>
+      <div class="feedback err" id="uni-sim-err"></div>
+      <div id="uni-sim-view" class="soft-box" style="margin-top:.6rem;"></div>
+      <h3>Журнал шагов</h3>
+      <p class="muted small" style="margin: 2px 0 8px;">Каждая строка — конфигурация <b>до</b> шага (состояние, позиция головки, видимый символ) и применённая команда (что записали, куда сдвинулись, в какое состояние перешли).</p>
+      <div id="uni-trace" class="trace-log small"></div>
+    </section>
+  `;
+}
+
+function uniRenderProgramList() {
+  const list = document.getElementById("uni-program-list");
+  list.innerHTML = TASK_LIBRARY.map(t => `
+    <button class="library-card${t.shortId === uniSelectedShortId ? " active" : ""}" data-uni-pick="${t.shortId}">
+      <div class="lib-id">${escapeHTML(t.shortId)}</div>
+      <div class="lib-title">${escapeHTML(t.title)}</div>
+      <div class="lib-meta">Модуль: ${escapeHTML(MODULE_TITLES[t.moduleSuggested] || t.moduleSuggested)}</div>
+    </button>
+  `).join("");
+  list.querySelectorAll("[data-uni-pick]").forEach(b => {
+    b.addEventListener("click", () => uniPick(b.getAttribute("data-uni-pick")));
+  });
+}
+
+function uniPick(shortId) {
+  uniSelectedShortId = shortId;
+  uniSim = null;
+  uniLastTrace = [];
+  uniRenderProgramList();
+  uniRenderDetail();
+}
+
+function uniGetTask() {
+  return TASK_LIBRARY.find(t => t.shortId === uniSelectedShortId) || null;
+}
+
+function uniRenderDetail() {
+  const detail = document.getElementById("uni-detail");
+  const task = uniGetTask();
+  if (!task) { detail.hidden = true; return; }
+  detail.hidden = false;
+
+  document.getElementById("uni-title").textContent = `Программа: ${task.title}`;
+  document.getElementById("uni-program-table").innerHTML =
+    renderProgramTable(task.program, task.alphabet, task.states, task.blankSymbol);
+
+  document.getElementById("uni-alpha").innerHTML =
+    `Алфавит: <code class="mono">${task.alphabet.map(s => s === task.blankSymbol ? "λ" : s).join(", ")}</code>. ` +
+    `Состояния: <code class="mono">${task.states.join(", ")}</code>. ` +
+    `Начальное состояние: <code>${task.startState}</code>.`;
+
+  document.getElementById("uni-head").textContent =
+    `Головка стартует ${headStartLabel(task.initialTape.headStart)}.`;
+
+  // Прочитать пример первой непустой команды
+  let example = null;
+  for (const st of task.states) {
+    const row = task.program[st] || {};
+    for (const sym of task.alphabet) {
+      const cmd = row[sym];
+      if (cmd) { example = { st, sym, cmd }; break; }
+    }
+    if (example) break;
+  }
+  const reader = document.getElementById("uni-cmd-reader");
+  if (example) {
+    const symLabel = example.sym === task.blankSymbol ? "λ" : example.sym;
+    const writeLabel = example.cmd.write === task.blankSymbol ? "λ" : example.cmd.write;
+    const moveWord = { L: "сдвинуться влево", R: "сдвинуться вправо", S: "остаться на месте" }[example.cmd.move] || example.cmd.move;
+    reader.innerHTML = `
+      <p>Возьмём клетку в строке <code>${escapeHTML(example.st)}</code>, столбец <code>${escapeHTML(symLabel)}</code>.</p>
+      <p>В ней записано: <code>${escapeHTML(writeLabel)}, ${escapeHTML(example.cmd.move)}, ${escapeHTML(example.cmd.next)}</code>.</p>
+      <p>Это значит: если машина находится в состоянии <code>${escapeHTML(example.st)}</code> и головка видит символ
+        <code>${escapeHTML(symLabel)}</code>, то нужно записать в эту ячейку <code>${escapeHTML(writeLabel)}</code>,
+        ${moveWord} и перейти в состояние <code>${escapeHTML(example.cmd.next)}</code>.</p>
+    `;
+  } else {
+    reader.innerHTML = `<p class="muted">У этой программы нет ни одной заданной команды.</p>`;
+  }
+
+  // Подставим демонстрационный вход
+  const inp = document.getElementById("uni-sim-input");
+  if (!uniSimInput) uniSimInput = exampleInputForTask(task)[0] || "1011";
+  inp.value = uniSimInput;
+  uniLoadSim();
+}
+
+function uniShowErr(m) {
+  const el = document.getElementById("uni-sim-err");
+  if (!m) { el.className = "feedback err"; el.textContent = ""; return; }
+  el.textContent = m; el.classList.add("show");
+}
+
+function uniLoadSim() {
+  uniShowErr("");
+  const task = uniGetTask(); if (!task) return;
+  const raw = document.getElementById("uni-sim-input").value.trim();
+  if (!raw) { uniShowErr("Введите непустую строку."); return; }
+  // Проверка по алфавиту (без λ)
+  const allowed = new Set(task.alphabet.filter(s => s !== task.blankSymbol));
+  for (const ch of raw) {
+    if (!allowed.has(ch)) { uniShowErr(`Символ «${ch}» не входит в алфавит этой программы.`); return; }
+  }
+  uniSimInput = raw;
+  uniSim = createTMSimulation(raw, task.initialTape.headStart, task.startState, task.blankSymbol);
+  uniLastTrace = [{
+    step: 0, state: uniSim.state, head: uniSim.head,
+    symbol: (uniSim.tape.get(uniSim.head) ?? task.blankSymbol),
+    note: "стартовая конфигурация"
+  }];
+  uniRenderSim();
+}
+
+function uniRenderSim() {
+  const task = uniGetTask(); if (!task || !uniSim) {
+    document.getElementById("uni-sim-view").innerHTML = "";
+    document.getElementById("uni-trace").innerHTML = "";
+    return;
+  }
+  // Ленту берём в окне вокруг головы
+  const positions = Array.from(uniSim.tape.keys());
+  const minP = positions.length ? Math.min(...positions, uniSim.head) : uniSim.head;
+  const maxP = positions.length ? Math.max(...positions, uniSim.head) : uniSim.head;
+  const left = Math.min(minP, uniSim.head) - 1;
+  const right = Math.max(maxP, uniSim.head) + 1;
+  let cells = "";
+  for (let i = left; i <= right; i++) {
+    const sym = uniSim.tape.get(i) ?? task.blankSymbol;
+    const shown = sym === task.blankSymbol ? "λ" : sym;
+    const isHead = i === uniSim.head;
+    cells += `<span class="tape-cell${isHead ? " head" : ""}${sym === task.blankSymbol ? " blank" : ""}">${escapeHTML(shown)}</span>`;
+  }
+  document.getElementById("uni-sim-view").innerHTML = `
+    <div class="tape-wrap">${cells}</div>
+    <p class="small">Состояние: <code>${escapeHTML(uniSim.state)}</code>.
+       Шагов сделано: <code>${uniSim.step}</code>. ${uniSim.finished ? "<b>Остановка.</b>" : ""}</p>
+  `;
+
+  // Журнал
+  const rows = uniLastTrace.slice(-30).map(e => {
+    const symLabel = e.symbol === task.blankSymbol ? "λ" : e.symbol;
+    return `<div class="trace-row"><code>#${e.step}</code> состояние <code>${escapeHTML(e.state)}</code>,
+       головка в позиции <code>${e.head}</code>, видит <code>${escapeHTML(symLabel)}</code>.
+       ${escapeHTML(e.note || "")}</div>`;
+  }).join("");
+  document.getElementById("uni-trace").innerHTML = rows || "<p class='muted small'>Журнал пуст.</p>";
+}
+
+function uniDoStep() {
+  uniShowErr("");
+  const task = uniGetTask(); if (!task) return;
+  if (!uniSim) { uniLoadSim(); return; }
+  if (uniSim.finished) { uniShowErr("Машина уже остановилась."); return; }
+  const before = { state: uniSim.state, head: uniSim.head, sym: uniSim.tape.get(uniSim.head) ?? task.blankSymbol };
+  const r = stepTM(uniSim, task.program);
+  if (!r.ok) {
+    uniLastTrace.push({ step: uniSim.step, state: before.state, head: before.head, symbol: before.sym, note: "нет команды для пары (состояние, символ) → остановка" });
+    uniRenderSim();
+    return;
+  }
+  const cmd = r.command || uniSim.lastCommand;
+  const writeLabel = cmd.write === task.blankSymbol ? "λ" : cmd.write;
+  const moveWord = { L: "сдвиг влево", R: "сдвиг вправо", S: "без сдвига" }[cmd.move] || cmd.move;
+  uniLastTrace.push({
+    step: uniSim.step,
+    state: before.state,
+    head: before.head,
+    symbol: before.sym,
+    note: `записали «${writeLabel}», ${moveWord}, новое состояние ${cmd.next}`
+  });
+  uniRenderSim();
+}
+
+function uniRunToEnd() {
+  uniShowErr("");
+  const task = uniGetTask(); if (!task) return;
+  if (!uniSim) uniLoadSim();
+  if (!uniSim || uniSim.finished) return;
+  // Прогоняем по одному шагу, записывая каждый в журнал. Так ученик видит траекторию,
+  // а не только стартовую и финальную точки.
+  let safety = MAX_STEPS;
+  while (!uniSim.finished && safety-- > 0) {
+    const before = {
+      state: uniSim.state,
+      head: uniSim.head,
+      sym: uniSim.tape.get(uniSim.head) ?? task.blankSymbol
+    };
+    const r = stepTM(uniSim, task.program);
+    if (!r.ok) {
+      uniLastTrace.push({
+        step: uniSim.step,
+        state: before.state,
+        head: before.head,
+        symbol: before.sym,
+        note: "нет команды для пары (состояние, символ) → остановка"
+      });
+      break;
+    }
+    const cmd = r.command || uniSim.lastCommand;
+    const writeLabel = cmd.write === task.blankSymbol ? "λ" : cmd.write;
+    const moveWord = { L: "сдвиг влево", R: "сдвиг вправо", S: "без сдвига" }[cmd.move] || cmd.move;
+    uniLastTrace.push({
+      step: uniSim.step,
+      state: before.state,
+      head: before.head,
+      symbol: before.sym,
+      note: `записали «${writeLabel}», ${moveWord}, новое состояние ${cmd.next}`
+    });
+  }
+  if (safety <= 0 && !uniSim.finished) uniShowErr("Превышено максимальное число шагов.");
+  uniRenderSim();
+}
+
+function uniClearSim() {
+  uniSim = null;
+  uniLastTrace = [];
+  uniRenderSim();
+}
+
+function initTabUniversal() {
+  renderTabUniversal();
+  uniRenderProgramList();
+  document.getElementById("uni-sim-reset").addEventListener("click", uniLoadSim);
+  document.getElementById("uni-sim-step").addEventListener("click", uniDoStep);
+  document.getElementById("uni-sim-run").addEventListener("click", uniRunToEnd);
+  document.getElementById("uni-sim-clear").addEventListener("click", uniClearSim);
+}
+
+/* ============================================================
+   ВКЛАДКА 5: «Библиотека задач»
+   Карточки всех 12 полностью обработанных задач + детальный
+   разбор каждой: условие, программа, вопрос, проверка ответа,
+   подсказка, симулятор на коротких входах.
+   ============================================================ */
+let libModuleFilter = "all";
+let libSelectedShortId = null;
+let libSimInput = "";
+let libSimState = null;
+let libHintLevel = 0; // сколько подсказок уже показано в текущей карточке
+
+function libModules() {
+  const set = new Set(TASK_LIBRARY.map(t => t.moduleSuggested));
+  return Array.from(set);
+}
+
+function renderTabLibrary() {
+  const panel = document.getElementById("panel-library");
+  const mods = libModules();
+  panel.innerHTML = `
+    <section class="card">
+      <h2>Библиотека задач</h2>
+      <p class="muted small">
+        Здесь собраны задачи, для которых разобраны таблица программы, начальное положение головки,
+        условие и ответ. Карточку можно открыть и попробовать решить, либо изучить разбор.
+      </p>
+      <div class="route-box">
+        <div class="route-step"><b>Начни здесь</b><br><span class="small muted">правый хвост нулей: demo, ex01, ex04</span></div>
+        <div class="route-step"><b>Средний уровень</b><br><span class="small muted">левый префикс и симметрия: ex02, ex03, ex10</span></div>
+        <div class="route-step"><b>Сложнее</b><br><span class="small muted">двоичные преобразования: ex05–ex11</span></div>
+      </div>
+      <div class="lib-filter" id="lib-filter">
+        <button class="chip${libModuleFilter === "all" ? " active" : ""}" data-mod="all">все (${TASK_LIBRARY.length})</button>
+        ${mods.map(m => `
+          <button class="chip${libModuleFilter === m ? " active" : ""}" data-mod="${escapeHTML(m)}">
+            ${escapeHTML(MODULE_TITLES[m] || m)}
+            (${TASK_LIBRARY.filter(t => t.moduleSuggested === m).length})
+          </button>
+        `).join("")}
+      </div>
+      <div class="library-grid" id="library-grid"></div>
+    </section>
+
+    <section class="card" id="lib-detail" hidden>
+      <h2 id="lib-detail-title">Задача</h2>
+      <p class="muted small" id="lib-detail-meta"></p>
+
+      <h3>Условие</h3>
+      <div id="lib-detail-desc"></div>
+
+      <h3>Программа</h3>
+      <div id="lib-detail-program"></div>
+
+      <h3>Ответ</h3>
+      <div class="manual-mode">
+        <label for="lib-answer-input" class="small">Ваш ответ:</label>
+        <input type="number" id="lib-answer-input" placeholder="число" style="width:160px;">
+        <button class="btn small" id="lib-answer-check">Проверить</button>
+        <button class="btn small ghost" id="lib-answer-hint">Подсказка</button>
+        <button class="btn small ghost" id="lib-answer-reveal">Показать ответ</button>
+      </div>
+      <div class="feedback" id="lib-answer-feedback"></div>
+      <div class="solution" id="lib-answer-solution" hidden></div>
+
+      <h3>Симулятор на коротком входе</h3>
+      <p class="muted small">
+        Здесь можно посмотреть, как программа работает на коротких строках — это помогает
+        понять идею решения без перебора всех возможных входов.
+      </p>
+      <div class="manual-mode">
+        <label for="lib-sim-input" class="small">Вход:</label>
+        <input type="text" id="lib-sim-input" maxlength="80" style="width:240px; font-family: var(--mono);">
+        <button class="btn small" id="lib-sim-run">Запустить</button>
+        <span class="small muted" id="lib-sim-examples-label">Примеры:</span>
+        <span id="lib-sim-examples"></span>
+      </div>
+      <div class="feedback err" id="lib-sim-err"></div>
+      <div id="lib-sim-out" class="soft-box" style="margin-top:.6rem;"></div>
+    </section>
+  `;
+}
+
+function libRenderGrid() {
+  const grid = document.getElementById("library-grid");
+  const items = libModuleFilter === "all"
+    ? TASK_LIBRARY
+    : TASK_LIBRARY.filter(t => t.moduleSuggested === libModuleFilter);
+  if (items.length === 0) {
+    grid.innerHTML = `<p class="muted small">В этой подборке пока нет задач.</p>`;
+    return;
+  }
+  grid.innerHTML = items.map(t => `
+    <button class="library-card${t.shortId === libSelectedShortId ? " active" : ""}" data-lib-pick="${t.shortId}">
+      <div class="lib-id">${escapeHTML(t.shortId)}</div>
+      <div class="lib-title">${escapeHTML(t.title)}</div>
+      <div class="lib-meta">
+        <span class="lib-pill">${escapeHTML(MODULE_TITLES[t.moduleSuggested] || t.moduleSuggested)}</span><br>
+        <span class="level-badge ${libRouteLevel(t).className}">${escapeHTML(libRouteLevel(t).label)}</span>
+      </div>
+    </button>
+  `).join("");
+  grid.querySelectorAll("[data-lib-pick]").forEach(b => {
+    b.addEventListener("click", () => libSelect(b.getAttribute("data-lib-pick")));
+  });
+}
+
+function libRenderFilter() {
+  const bar = document.getElementById("lib-filter");
+  bar.querySelectorAll(".chip").forEach(c => {
+    c.classList.toggle("active", c.getAttribute("data-mod") === libModuleFilter);
+    c.onclick = () => {
+      libModuleFilter = c.getAttribute("data-mod");
+      libRenderFilter();
+      libRenderGrid();
+    };
+  });
+}
+
+// Используется и из других вкладок: переключиться на библиотеку и открыть карточку
+function libSelect(shortId) {
+  libSelectedShortId = shortId;
+  libSimInput = "";
+  libSimState = null;
+  libHintLevel = 0;
+  libRenderGrid();
+  libRenderDetail();
+  const detail = document.getElementById("lib-detail");
+  if (detail) detail.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function libGetTask() {
+  return TASK_LIBRARY.find(t => t.shortId === libSelectedShortId) || null;
+}
+
+function libRouteLevel(task) {
+  if (["demo", "ex01", "ex04"].includes(task.shortId)) return { label: "Начни здесь", className: "start" };
+  if (["ex02", "ex03", "ex10"].includes(task.shortId)) return { label: "Средний уровень", className: "middle" };
+  return { label: "Сложнее", className: "harder" };
+}
+
+function formatHintHTML(s) {
+  let html = escapeHTML(s || "");
+  const formulas = [
+    "K = Z − t + 1", "Z = K + t − 1", "Z = N − 1", "Z = N", "Z = K − 1",
+    "K = c0 − 0 + 1", "K = c1 + c0 − 1", "c0 − 1", "2ⁿ − 1", "2^(n−1)"
+  ];
+  formulas.forEach(f => {
+    html = html.replaceAll(f, `<span class="formula">${f}</span>`);
+  });
+  html = html.replace(/([01]{4,})₂/g, '<code class="mono">$1</code>₂');
+  html = html.replace(/(\d+)₂/g, '<code>$1</code>₂');
+  return html;
+}
+
+/** Трёхуровневая подсказка для задачи библиотеки.
+ *  Уровень 1 — что делает программа (стратегия).
+ *  Уровень 2 — формула или ключевой шаблон.
+ *  Уровень 3 — подставленные числа для конкретной задачи.
+ */
+function libTieredHints(task) {
+  const tt = task.taskType;
+  const it = task.initialTape;
+
+  // --- правый хвост нулей ---
+  if (tt === "right_tail_zero_flip_find_max_initial_zeros") {
+    const N = it.length;
+    return [
+      "Программа меняет только правый хвост строки: хвостовые нули превращает в единицы, а первую единицу слева от них — в ноль.",
+      `Связь: K = Z − t + 1, где Z — исходных нулей, t — длина правого хвоста нулей. Чтобы Z был максимален, оставь в исходной строке всего одну единицу, а остальные ${N - 1} символов — нули.`,
+      `Тогда Z = N − 1 = ${N} − 1 = ${N - 1}. Особый случай — когда после работы нулей нет (K = 0): машина не встретила единиц, значит исходная строка была вся из нулей, Z = N.`
+    ];
+  }
+  if (tt === "right_tail_zero_flip_find_max_final_zeros") {
+    const c0 = it.count0, c1 = it.count1;
+    return [
+      "Программа делает один «переброс»: правый хвост нулей → единицы, ближайшая слева единица → ноль.",
+      "Чтобы в конце было максимум нулей, хвост нулей должен быть как можно короче. Лучше всего t = 0 — строка заканчивается единицей, и она при работе станет нулём.",
+      `При t = 0: K = c0 − 0 + 1 = ${c0} + 1 = ${c0 + 1}. ${c1 === 0 ? "Особый случай: если в строке нет единиц, K = c0 — программа сразу останавливается на пустой клетке." : ""}`
+    ];
+  }
+  if (tt === "right_tail_zero_flip_find_min_final_zeros") {
+    const c0 = it.count0, c1 = it.count1;
+    return [
+      "Программа касается только правого хвоста и одной единицы перед ним.",
+      "Чтобы нулей в конце было как можно меньше, длинный хвост нулей выгоден: пусть все нули будут в самом правом хвосте.",
+      `Тогда t = c0 = ${c0}, и K = Z − t + 1 = ${c0} − ${c0} + 1 = 1. ${c1 === 0 ? "Особый случай: если единиц нет, все нули превратятся в единицы, K = 0." : ""}`
+    ];
+  }
+
+  // --- левый префикс единиц ---
+  if (tt === "left_prefix_ones_flip_find_max_final_zeros") {
+    const c0 = it.count0, c1 = it.count1;
+    return [
+      "Зеркально к правому случаю: программа идёт слева, превращает префиксные единицы в нули, а первый ноль после них — в единицу.",
+      "Чтобы нулей в конце было максимум, префикс единиц делаем максимально длинным: сначала все c1 единиц, потом все c0 нулей.",
+      `Тогда c1 = ${c1} единиц превратятся в нули, а первый из c0 нулей станет единицей: K = c1 + c0 − 1 = ${c1} + ${c0} − 1 = ${c1 + c0 - 1}.`
+    ];
+  }
+  if (tt === "left_prefix_ones_flip_find_min_final_zeros") {
+    const c0 = it.count0;
+    return [
+      "Программа делает «переброс» слева: префикс единиц → нули, первый ноль после них → единица.",
+      "Чтобы нулей в конце было как можно меньше, префикс единиц нужен нулевой — пусть строка начинается с нуля.",
+      `Тогда машина просто заменит этот первый ноль на единицу: нулей было c0 = ${c0}, стало c0 − 1 = ${c0 - 1}.`
+    ];
+  }
+
+  // --- побитовая инверсия ---
+  if (tt === "bitwise_inversion_decimal_result") {
+    const dec = it.decimal, bin = decToBin(dec), n = bin.length;
+    return [
+      "Программа проходит всю двоичную запись справа налево и заменяет каждый бит на противоположный (0↔1).",
+      `Алгоритм: переведи ${dec} в двоичную (получишь ${n}-битное число), инвертируй каждый бит, переведи обратно в десятичную.`,
+      `Для n-битной записи без ведущих нулей результат равен 2ⁿ − 1 − ${dec} = ${Math.pow(2, n) - 1} − ${dec} = ${Math.pow(2, n) - 1 - dec}.`
+    ];
+  }
+
+  // --- двоичный декремент ---
+  if (tt === "binary_decrement_decimal_result") {
+    const dec = it.decimal;
+    return [
+      "Программа реализует вычитание единицы в двоичной записи: хвостовые нули превращает в единицы, первую единицу справа — в ноль и останавливается.",
+      `На исходном числе ${dec} это эквивалентно обычному ${dec} − 1.`,
+      `Ответ: ${dec} − 1 = ${dec - 1}.`
+    ];
+  }
+
+  // --- обнуление младшей единицы ---
+  if (tt === "clear_lowest_one_decimal_result") {
+    const dec = it.decimal, bin = decToBin(dec);
+    let k = 0; for (let i = bin.length - 1; i >= 0; i--) { if (bin[i] === "1") { k = bin.length - 1 - i; break; } }
+    const subtract = Math.pow(2, k);
+    return [
+      "Программа идёт справа налево по нулям, ничего не меняя, и первую встреченную единицу заменяет на ноль (остановка).",
+      "Это снимает самую младшую единицу двоичной записи — то есть вычитает 2 в степени её позиции (нумерация с нуля от младшего бита).",
+      `Для ${dec} = ${bin}₂ самый младший бит-единица стоит на позиции ${k}, значит вычитаем 2^${k} = ${subtract}. Ответ: ${dec} − ${subtract} = ${dec - subtract}.`
+    ];
+  }
+
+  // --- обнуление старшей единицы (первой слева) ---
+  if (tt === "clear_first_left_one_decimal_result") {
+    const dec = it.decimal, bin = decToBin(dec), n = bin.length;
+    const subtract = Math.pow(2, n - 1);
+    return [
+      "Программа стартует слева от строки, делает шаг вправо и сразу заменяет первый увиденный символ-единицу на ноль.",
+      "Если в записи нет ведущих нулей, первый символ слева — старшая единица. Программа её обнуляет, что соответствует вычитанию 2^(n−1), где n — длина двоичной записи.",
+      `Для ${dec} = ${bin}₂ длина n = ${n}, вычитаем 2^${n - 1} = ${subtract}. Ответ: ${dec} − ${subtract} = ${dec - subtract}.`
+    ];
+  }
+
+  // --- левый префикс единиц → нули, затем первый ноль → единица (декретно: ex10) ---
+  if (tt === "left_prefix_ones_to_zeros_then_zero_to_one_decimal_result") {
+    const dec = it.decimal, bin = decToBin(dec);
+    let k = 0; while (k < bin.length && bin[k] === "1") k++;
+    return [
+      "Программа идёт слева направо: каждую единицу префикса превращает в ноль, а первый встретившийся ноль — в единицу и останавливается.",
+      `Для ${dec} = ${bin}₂ префикс единиц имеет длину k = ${k}. Эти k единиц становятся нулями, а нулевой бит на позиции k превращается в единицу.`,
+      `Прогон через симулятор внутри карточки покажет именно эту последовательность изменений и подсветит каждый изменённый бит.`
+    ];
+  }
+
+  // --- левый: первый ноль слева → единица (ex11) ---
+  if (tt === "left_first_zero_to_one_decimal_result") {
+    const dec = it.decimal, bin = decToBin(dec);
+    let k = 0; while (k < bin.length && bin[k] === "1") k++;
+    const add = k < bin.length ? Math.pow(2, bin.length - 1 - k) : 0;
+    return [
+      "Программа идёт слева направо по единицам, не меняя их, а первый встреченный ноль превращает в единицу и останавливается.",
+      `Для ${dec} = ${bin}₂ первый ноль слева стоит на позиции ${k} (от старшего бита). Эта позиция соответствует разряду 2^${bin.length - 1 - k} = ${add}.`,
+      `Ответ: ${dec} + ${add} = ${dec + add}.`
+    ];
+  }
+
+  // Фолбэк: если тип задачи не покрыт, даём общие подсказки
+  return [
+    "Сначала прочитай таблицу программы: какие пары (состояние, символ) есть в таблице, а какие отсутствуют. Отсутствие команды — это остановка.",
+    "Найди, где именно программа остановится и какие позиции в строке она изменит. Помогает прогнать программу на коротком примере в симуляторе ниже.",
+    task.solutionIdea || "Идея решения раскрыта в кнопке «Показать ответ»."
+  ];
+}
+
+function libRenderDetail() {
+  const detail = document.getElementById("lib-detail");
+  const task = libGetTask();
+  if (!task) { detail.hidden = true; return; }
+  detail.hidden = false;
+
+  document.getElementById("lib-detail-title").textContent = task.title;
+  document.getElementById("lib-detail-meta").innerHTML =
+    `Тип задачи: <code>${escapeHTML(task.taskType)}</code>. ` +
+    `Модуль: ${escapeHTML(MODULE_TITLES[task.moduleSuggested] || task.moduleSuggested)}. ` +
+    `Идентификатор: <code>${escapeHTML(task.shortId)}</code>.`;
+
+  document.getElementById("lib-detail-desc").innerHTML = `<p>${describeTask(task)}</p>`;
+  document.getElementById("lib-detail-program").innerHTML =
+    renderProgramTable(task.program, task.alphabet, task.states, task.blankSymbol);
+
+  // Сбрасываем поля ответа
+  const inp = document.getElementById("lib-answer-input"); inp.value = "";
+  const fb = document.getElementById("lib-answer-feedback"); fb.className = "feedback"; fb.textContent = "";
+  const sol = document.getElementById("lib-answer-solution"); sol.hidden = true; sol.innerHTML = "";
+
+  // Симулятор: примеры из exampleInputForTask
+  const examples = exampleInputForTask(task);
+  if (!libSimInput) libSimInput = examples[0] || "1011";
+  document.getElementById("lib-sim-input").value = libSimInput;
+  const exHost = document.getElementById("lib-sim-examples");
+  exHost.innerHTML = examples.map(ex => `<button class="chip small" data-lib-ex="${escapeHTML(ex)}">${escapeHTML(ex)}</button>`).join(" ");
+  exHost.querySelectorAll("[data-lib-ex]").forEach(b => {
+    b.addEventListener("click", () => {
+      document.getElementById("lib-sim-input").value = b.getAttribute("data-lib-ex");
+      libRunSim();
+    });
+  });
+  document.getElementById("lib-sim-err").className = "feedback err";
+  document.getElementById("lib-sim-err").textContent = "";
+  document.getElementById("lib-sim-out").innerHTML = "";
+
+  // Сразу прогоняем первый пример, чтобы карточка не выглядела пустой
+  libRunSim();
+}
+
+function libCheckAnswer() {
+  const task = libGetTask(); if (!task) return;
+  const fb = document.getElementById("lib-answer-feedback");
+  const raw = document.getElementById("lib-answer-input").value.trim();
+  const p = parseStrictInt(raw);
+  if (!p.ok) {
+    fb.className = "feedback err show";
+    fb.textContent = "Введите целое число.";
+    return;
+  }
+  if (p.value === task.answer) {
+    fb.className = "feedback ok show";
+    fb.textContent = `Верно. Ответ: ${task.answer}.`;
+  } else {
+    fb.className = "feedback err show";
+    fb.textContent = `Не сходится. Подумайте ещё или посмотрите подсказку.`;
+  }
+}
+
+function libShowHint() {
+  const task = libGetTask(); if (!task) return;
+  const hints = libTieredHints(task);
+  const idx = Math.min(libHintLevel, hints.length - 1);
+  libHintLevel = Math.min(libHintLevel + 1, hints.length);
+  const fb = document.getElementById("lib-answer-feedback");
+  fb.className = "feedback show hint";
+  const tailNote = (idx + 1 === hints.length)
+    ? ` <span class="small muted">(последняя подсказка)</span>`
+    : ``;
+  fb.innerHTML = `<b>Подсказка ${idx + 1} из ${hints.length}:</b> ${formatHintHTML(hints[idx])}${tailNote}`;
+}
+
+function libRevealAnswer() {
+  const task = libGetTask(); if (!task) return;
+  const sol = document.getElementById("lib-answer-solution");
+  sol.hidden = false;
+  sol.innerHTML = `
+    <h4>Ответ</h4>
+    <p><code>${task.answer}</code></p>
+    <h4>Идея решения</h4>
+    <p>${escapeHTML(task.solutionIdea || "")}</p>
+  `;
+}
+
+function libShowSimErr(m) {
+  const el = document.getElementById("lib-sim-err");
+  if (!m) { el.className = "feedback err"; el.textContent = ""; return; }
+  el.textContent = m; el.classList.add("show");
+}
+
+function libRunSim() {
+  const task = libGetTask(); if (!task) return;
+  libShowSimErr("");
+  const raw = document.getElementById("lib-sim-input").value.trim();
+  if (!raw) { libShowSimErr("Введите непустую строку."); return; }
+  const allowed = new Set(task.alphabet.filter(s => s !== task.blankSymbol));
+  for (const ch of raw) {
+    if (!allowed.has(ch)) { libShowSimErr(`Символ «${ch}» не входит в алфавит этой программы.`); return; }
+  }
+  libSimInput = raw;
+  const r = simulateOnce(raw, task.initialTape.headStart, task.program, task.startState, task.blankSymbol);
+  const out = document.getElementById("lib-sim-out");
+  if (!r.ok) {
+    out.innerHTML = `<p class="err-text">Превышено максимальное число шагов.</p>`;
+    return;
+  }
+  let extra = "";
+  if (task.initialTape.form === "binary_number" && /^[01]+$/.test(r.finalTape)) {
+    const inDec = /^[01]+$/.test(raw) ? binToDec(raw) : null;
+    extra = `<p class="small">Если читать вход и выход как двоичные числа:
+      ${inDec != null ? `<code>${raw}</code><sub>2</sub> = <code>${inDec}</code><sub>10</sub> → ` : ""}
+      <code>${escapeHTML(r.finalTape)}</code><sub>2</sub> = <code>${binToDec(r.finalTape)}</code><sub>10</sub>.</p>`;
+  } else if (task.initialTape.form === "binary_string") {
+    const c0in = countChar(raw, "0"), c1in = countChar(raw, "1");
+    const c0out = countChar(r.finalTape, "0"), c1out = countChar(r.finalTape, "1");
+    extra = `<p class="small">До: нулей <code>${c0in}</code>, единиц <code>${c1in}</code>.
+       После: нулей <code>${c0out}</code>, единиц <code>${c1out}</code>. Шагов: <code>${r.sim.step}</code>.</p>`;
+  } else {
+    extra = `<p class="small">Шагов: <code>${r.sim.step}</code>.</p>`;
+  }
+  out.innerHTML = `
+    <p>Вход: <code class="mono">${escapeHTML(raw)}</code></p>
+    <p>Лента после: <code class="mono">${escapeHTML(r.finalTape)}</code></p>
+    ${extra}
+  `;
+}
+
+function initTabLibrary() {
+  renderTabLibrary();
+  libRenderFilter();
+  libRenderGrid();
+  document.getElementById("lib-answer-check").addEventListener("click", libCheckAnswer);
+  document.getElementById("lib-answer-hint").addEventListener("click", libShowHint);
+  document.getElementById("lib-answer-reveal").addEventListener("click", libRevealAnswer);
+  document.getElementById("lib-sim-run").addEventListener("click", libRunSim);
+}
+
+/* ============================================================
+   СЛУЖЕБНЫЙ БЛОК
+   Здесь показываем только идентификаторы задач, для которых
+   условие пока НЕ извлечено вручную. Мы не выдумываем для них
+   ни условий, ни программ, ни ответов. Это рабочий список.
+   ============================================================ */
+function renderAdminBlock() {
+  const host = document.getElementById("admin-host");
+  if (!host) return;
+  host.innerHTML = `
+    <details class="admin-details">
+      <summary>Служебный блок: задачи без полного условия (${PENDING_OPEN_BANK.length})</summary>
+      <p class="muted small">
+        Это идентификаторы задач из открытого банка, для которых условие, таблица и ответ пока
+        не перенесены в библиотеку. В обучающие модули они сознательно не выведены: чтобы не показывать
+        пользователю что-то выдуманное. Когда условие и программа извлечены вручную, задача добавляется
+        в <code>TASK_LIBRARY</code> с классификацией и ожидаемым ответом, после чего её карточка появляется
+        в библиотеке.
+      </p>
+      <div class="admin-list">
+        ${PENDING_OPEN_BANK.map(p => `
+          <div class="admin-row">
+            <code class="admin-id">${escapeHTML(p.publicId)}</code>
+            <span class="admin-status">${escapeHTML(p.status)}</span>
+            <span class="admin-note small muted">${escapeHTML(p.note)}</span>
+          </div>
+        `).join("")}
+      </div>
+    </details>
+  `;
+}
+
+/* ============================================================
+   АВТОТЕСТЫ
+   Прогоняем computeTaskAnswer для каждой задачи из TASK_LIBRARY
+   и сверяем с полем answer.
+   ============================================================ */
+function runAllAutoTests() {
+  const results = TASK_LIBRARY.map(task => {
+    let got = null, error = null;
+    try { got = computeTaskAnswer(task); } catch (e) { error = e.message; }
+    return {
+      shortId: task.shortId,
+      title: task.title,
+      expected: task.answer,
+      got,
+      ok: got === task.answer && error == null,
+      error
+    };
+  });
+  return results;
+}
+
+function renderAutoTests() {
+  const host = document.getElementById("autotest-host");
+  if (!host) return;
+  const results = runAllAutoTests();
+  const passed = results.filter(r => r.ok).length;
+  const allOk = passed === results.length;
+  host.innerHTML = `
+    <details class="admin-details"${allOk ? "" : " open"}>
+      <summary>
+        Автотесты: ${passed}/${results.length}
+        ${allOk ? "<span class='badge ok'>OK</span>" : "<span class='badge err'>есть расхождения</span>"}
+      </summary>
+      <p class="muted small">
+        Для каждой задачи из библиотеки запускается вычислитель и сравнивается с ожидаемым ответом.
+        Для бинарных задач — прямой прогон программы на десятичном входе. Для задач на хвост/префикс —
+        замкнутая формула, выведенная из поведения программы. Сходимость значит, что и программа,
+        и ожидаемый ответ согласованы между собой.
+      </p>
+      <div class="scroll-x-wrap">
+      <table class="autotest-table">
+        <thead><tr><th>shortId</th><th>задача</th><th>ожидалось</th><th>получили</th><th>статус</th></tr></thead>
+        <tbody>
+          ${results.map(r => `
+            <tr class="${r.ok ? "ok" : "err"}">
+              <td><code>${escapeHTML(r.shortId)}</code></td>
+              <td>${escapeHTML(r.title)}</td>
+              <td><code>${r.expected}</code></td>
+              <td><code>${r.got == null ? "—" : r.got}</code></td>
+              <td>${r.ok ? "PASS" : (r.error ? "ERR: " + escapeHTML(r.error) : "FAIL")}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+      </div>
+    </details>
+  `;
+}
+
+/* ============================================================
+   Инициализация: создаём панели вкладок, подключаем хендлеры,
+   запускаем автотесты.
+   ============================================================ */
+function buildPanels() {
+  const main = document.getElementById("main");
+  // Удалим всё старое содержимое #main
+  main.innerHTML = "";
+  TABS.forEach(tab => {
+    const div = document.createElement("div");
+    div.id = "panel-" + tab.id;
+    div.className = "tab-panel" + (tab.id === currentTab ? " active" : "");
+    main.appendChild(div);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderTabBar();
+  buildPanels();
+
+  initTabRightTail();
+  initTabLeftPrefix();
+  initTabBinary();
+  initTabUniversal();
+  initTabLibrary();
+
+  renderAdminBlock();
+  renderAutoTests();
+});
+
+</script>
+</body>
+</html>

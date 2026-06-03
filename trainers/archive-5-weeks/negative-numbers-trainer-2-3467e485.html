@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Числовая прямая — Тренажёр</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #0c1624;
+  --surface:  #131f35;
+  --surface2: #1a2a46;
+  --border:   #253a5c;
+  --text:     #ddeeff;
+  --muted:    #6a8fb0;
+  --accent:   #38bdf8;
+  --accent2:  #fb923c;
+  --green:    #4ade80;
+  --red:      #f87171;
+  --yellow:   #fbbf24;
+  --r:        14px;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  background-image:
+    radial-gradient(ellipse 80% 40% at 50% 0%, rgba(56,189,248,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 30% at 80% 100%, rgba(251,146,60,0.05) 0%, transparent 60%);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px 48px;
+}
+
+/* ── HEADER ─────────────────────────────────────────── */
+.app-header {
+  width: 100%;
+  max-width: 1120px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.app-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  background: linear-gradient(135deg, var(--accent) 0%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.app-title svg { flex-shrink: 0; }
+
+.controls-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.seg {
+  display: flex;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.seg button {
+  padding: 7px 15px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  white-space: nowrap;
+}
+
+.seg button.active {
+  background: var(--accent);
+  color: #0c1624;
+}
+
+.seg button:not(.active):hover { color: var(--accent); }
+
+/* ── MAIN CARD ───────────────────────────────────────── */
+.card {
+  width: 100%;
+  max-width: 1120px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 22px;
+  padding: 28px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ── EXPRESSION ─────────────────────────────────────── */
+.expr-wrapper {
+  text-align: center;
+}
+
+.expr-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+#expr-display {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: clamp(2.2rem, 7vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+#expr-display .nn { color: var(--accent2); }
+#expr-display .np { color: var(--green); }
+#expr-display .op { color: var(--muted); }
+
+/* ── INSTRUCTION ─────────────────────────────────────── */
+.instr-wrap {
+  display: flex;
+  justify-content: center;
+  min-height: 50px;
+  align-items: center;
+}
+
+#instr {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  text-align: center;
+  line-height: 1.45;
+  max-width: 640px;
+  transition: border-color 0.25s, color 0.25s;
+}
+
+#instr.t-step  { border-color: var(--accent);  color: var(--accent); }
+#instr.t-go    { border-color: var(--green);   color: var(--green); }
+#instr.t-err   { border-color: var(--red);     color: var(--red); }
+#instr.t-neu   { border-color: var(--border);  color: var(--text); }
+
+/* ── NUMBER LINE ─────────────────────────────────────── */
+.nl-outer {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 6px 0 4px;
+}
+
+#nl-svg {
+  display: block;
+  min-width: 700px;
+  width: 100%;
+  max-width: 1100px;
+  height: auto;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+/* SVG point groups — CSS handles visual state */
+.nl-pt { cursor: pointer; }
+.nl-pt .ptc {
+  transition: fill 0.18s, stroke 0.18s, filter 0.18s, r 0.18s;
+  fill: var(--surface2);
+  stroke: #2a4060;
+  stroke-width: 2;
+}
+.nl-pt:hover .ptc {
+  fill: #1e3d62;
+  stroke: var(--accent);
+}
+.nl-pt.s-start .ptc {
+  fill: var(--accent2);
+  stroke: var(--accent2);
+  filter: drop-shadow(0 0 7px var(--accent2));
+}
+.nl-pt.s-end .ptc {
+  fill: var(--green);
+  stroke: var(--green);
+  filter: drop-shadow(0 0 7px var(--green));
+}
+.nl-pt.s-wrong .ptc {
+  fill: var(--red);
+  stroke: var(--red);
+}
+.nl-pt.s-sol-from .ptc {
+  fill: var(--accent2);
+  stroke: var(--accent2);
+  filter: drop-shadow(0 0 10px var(--accent2));
+}
+.nl-pt.s-sol-to .ptc {
+  fill: var(--green);
+  stroke: var(--green);
+  filter: drop-shadow(0 0 10px var(--green));
+}
+
+/* ── HINT BOX ────────────────────────────────────────── */
+#hint-box {
+  background: rgba(251,191,36,0.1);
+  border: 1.5px solid var(--yellow);
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--yellow);
+  text-align: center;
+  display: none;
+  animation: fadeIn 0.2s ease;
+}
+
+#hint-box.show { display: block; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+/* ── ANSWER AREA ─────────────────────────────────────── */
+.answer-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.answer-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.answer-label {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+#ans-input {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.6rem;
+  font-weight: 700;
+  width: 120px;
+  padding: 10px 14px;
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: 11px;
+  color: var(--text);
+  text-align: center;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+#ans-input:focus  { border-color: var(--accent); }
+#ans-input:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.btn-row {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+
+.btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none !important; filter: none !important; }
+
+.btn-check  { background: var(--accent);   color: #0c1624; }
+.btn-check:not(:disabled):hover  { filter: brightness(1.12); transform: translateY(-1px); }
+.btn-next   { background: var(--green);    color: #0c1624; }
+.btn-next:not(:disabled):hover   { filter: brightness(1.1); transform: translateY(-1px); }
+.btn-hint   { background: var(--surface2); color: var(--text); border: 1.5px solid var(--border); }
+.btn-hint:not(:disabled):hover   { border-color: var(--yellow); color: var(--yellow); }
+.btn-sol    { background: var(--surface2); color: var(--text); border: 1.5px solid var(--border); }
+.btn-sol:not(:disabled):hover    { border-color: var(--accent); color: var(--accent); }
+.btn-reset  { background: transparent; color: var(--muted); border: 1.5px solid var(--border); font-size: 0.78rem; padding: 7px 14px; }
+.btn-reset:hover { border-color: var(--red); color: var(--red); }
+
+/* ── FEEDBACK ────────────────────────────────────────── */
+#feedback {
+  min-height: 34px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+  transition: color 0.2s;
+}
+
+#feedback.ok   { color: var(--green); }
+#feedback.fail { color: var(--red); }
+#feedback.info { color: var(--muted); }
+
+/* ── STATS ───────────────────────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 9px;
+}
+
+@media (max-width: 540px) {
+  .stats-grid { grid-template-columns: repeat(3, 1fr); }
+  .card { padding: 20px 16px 18px; }
+}
+
+.stat-card {
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  padding: 10px 8px;
+  text-align: center;
+}
+
+.stat-val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.stat-lbl {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.history-header {
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 7px;
+  margin-top: 14px;
+}
+
+.history-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hi {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 20px;
+  cursor: default;
+}
+
+.hi.ok   { background: rgba(74,222,128,0.12); color: var(--green); border: 1px solid rgba(74,222,128,0.3); }
+.hi.fail { background: rgba(248,113,113,0.12); color: var(--red);  border: 1px solid rgba(248,113,113,0.3); }
+
+.reset-row { text-align: center; margin-top: 12px; }
+
+/* ── DIVIDER ─────────────────────────────────────────── */
+.divider { height: 1px; background: var(--border); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="app-header">
+  <div class="app-title">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <rect width="28" height="28" rx="8" fill="rgba(56,189,248,0.15)"/>
+      <line x1="4" y1="14" x2="24" y2="14" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="8"  cy="14" r="3" fill="#fb923c"/>
+      <circle cx="14" cy="14" r="3" fill="#38bdf8"/>
+      <circle cx="20" cy="14" r="3" fill="#4ade80"/>
+      <polygon points="24,14 20,11.5 20,16.5" fill="#38bdf8"/>
+    </svg>
+    Числовая прямая
+  </div>
+  <div class="controls-group">
+    <div class="seg" id="seg-mode">
+      <button data-val="addition"    class="active">Сложение</button>
+      <button data-val="subtraction"         >Вычитание</button>
+      <button data-val="mixed"               >Смешанный</button>
+    </div>
+    <div class="seg" id="seg-level">
+      <button data-val="easy"   class="active">Лёгкий</button>
+      <button data-val="medium"              >Средний</button>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN CARD -->
+<div class="card">
+
+  <!-- EXPRESSION -->
+  <div class="expr-wrapper">
+    <div class="expr-label">Вычисли выражение</div>
+    <div id="expr-display">—</div>
+  </div>
+
+  <!-- INSTRUCTION -->
+  <div class="instr-wrap">
+    <div id="instr" class="t-neu">Загрузка…</div>
+  </div>
+
+  <!-- NUMBER LINE -->
+  <div class="nl-outer">
+    <svg id="nl-svg" viewBox="0 0 1100 220" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+
+  <!-- HINT -->
+  <div id="hint-box"></div>
+
+  <!-- ANSWER + BUTTONS -->
+  <div class="answer-area">
+    <div class="answer-row">
+      <span class="answer-label">Ответ =</span>
+      <input type="number" id="ans-input" placeholder="?" disabled autocomplete="off">
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-check" id="btn-check" disabled>✓ Проверить</button>
+      <button class="btn btn-hint"  id="btn-hint">💡 Подсказка</button>
+      <button class="btn btn-sol"   id="btn-sol">👁 Показать решение</button>
+      <button class="btn btn-next"  id="btn-next">→ Следующий</button>
+    </div>
+  </div>
+
+  <!-- FEEDBACK -->
+  <div id="feedback"></div>
+
+  <div class="divider"></div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-val" id="s-solved">0</div><div class="stat-lbl">Решено</div></div>
+    <div class="stat-card"><div class="stat-val" id="s-correct">0</div><div class="stat-lbl">Верно</div></div>
+    <div class="stat-card"><div class="stat-val" id="s-acc">—</div><div class="stat-lbl">Точность</div></div>
+    <div class="stat-card"><div class="stat-val" id="s-streak">0</div><div class="stat-lbl">Серия</div></div>
+    <div class="stat-card"><div class="stat-val" id="s-best">0</div><div class="stat-lbl">Рекорд</div></div>
+  </div>
+
+  <div>
+    <div class="history-header">Последние примеры</div>
+    <div class="history-list" id="history-list"></div>
+  </div>
+
+  <div class="reset-row">
+    <button class="btn btn-reset" id="btn-reset">🗑 Сбросить статистику</button>
+  </div>
+
+</div>
+
+<script>
+/* ════════════════════════════════════════════════
+   CONSTANTS
+════════════════════════════════════════════════ */
+const STORE_KEY  = 'mathExamCourseProgress.v1';
+const TOPIC_ID   = 'negativeNumbersAlternative';
+
+/* SVG number line geometry */
+const SVG_W   = 1100;
+const NL_Y    = 115;     // y of line
+const NL_L    = 65;      // x of point -10
+const NL_R    = 1035;    // x of point +10
+const NL_STEP = (NL_R - NL_L) / 20;   // 48.5
+const PT_R    = 21;      // circle radius — big enough to click!
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+/* ════════════════════════════════════════════════
+   APP STATE
+════════════════════════════════════════════════ */
+let mode      = 'addition';
+let level     = 'easy';
+let problem   = null;   // { a, b, op, result, label }
+let phase     = 'start';  // 'start' | 'end' | 'answer' | 'done'
+let hintUses  = 0;
+let ptEls     = {};    // num → <g> element
+
+/* ════════════════════════════════════════════════
+   STORAGE
+════════════════════════════════════════════════ */
+function loadStats() {
+  try {
+    const all = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+    return all[TOPIC_ID] || fresh();
+  } catch { return fresh(); }
+}
+
+function fresh() {
+  return { solved: 0, correct: 0, streak: 0, best: 0, history: [] };
+}
+
+function saveStats(s) {
+  try {
+    const all = JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+    all[TOPIC_ID] = s;
+    localStorage.setItem(STORE_KEY, JSON.stringify(all));
+  } catch {}
+}
+
+function clearStats() {
+  saveStats(fresh());
+  renderStats();
+}
+
+/* ════════════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════════════ */
+function rand(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; }
+
+function kruzhkov(n) {
+  const abs = Math.abs(n), m10 = abs % 10, m100 = abs % 100;
+  if (m100 >= 11 && m100 <= 14) return `${abs} кружков`;
+  if (m10 === 1) return `${abs} кружок`;
+  if (m10 >= 2 && m10 <= 4) return `${abs} кружка`;
+  return `${abs} кружков`;
+}
+
+function numToX(n) { return NL_L + (n + 10) * NL_STEP; }
+
+/* ════════════════════════════════════════════════
+   PROBLEM GENERATION
+════════════════════════════════════════════════ */
+function genProblem() {
+  const max = level === 'easy' ? 7 : 10;
+
+  for (let t = 0; t < 300; t++) {
+    let a, b, op, result;
+
+    const doAdd = (mode === 'addition') ||
+                  (mode === 'mixed' && Math.random() < 0.5);
+    op = doAdd ? '+' : '-';
+
+    if (op === '+') {
+      /* At least one negative number */
+      const type = rand(0, 2);
+      if      (type === 0) { a = rand(-max, -1); b = rand(-max, -1); }
+      else if (type === 1) { a = rand(-max, -1); b = rand(1, max); }
+      else                 { a = rand(1, max);   b = rand(-max, -1); }
+      result = a + b;
+    } else {
+      /* Subtraction — interesting cases with negatives */
+      const type = rand(0, 2);
+      if      (type === 0) { a = rand(1,    max); b = rand(-max, -1); } // 5-(-3)=8
+      else if (type === 1) { a = rand(-max, -1);  b = rand(1, max); }   // -3-5=-8
+      else                 { a = rand(-max, -1);  b = rand(-max, -1); } // -3-(-5)=2
+      result = a - b;
+    }
+
+    /* Validity checks */
+    if (result < -10 || result > 10) continue;
+    if (result === a)                continue;   // no movement — boring
+    if (Math.abs(a) > 10)            continue;
+
+    /* Build label */
+    const aStr = String(a);
+    let label;
+    if (op === '+') {
+      label = b < 0 ? `${aStr} + (${b})` : `${aStr} + ${b}`;
+    } else {
+      label = b < 0 ? `${aStr} - (${b})` : `${aStr} - ${b}`;
+    }
+
+    return { a, b, op, result, label };
+  }
+
+  /* Safe fallback */
+  return { a: -5, b: 3, op: '+', result: -2, label: '-5 + 3' };
+}
+
+/* step = how many units and in which direction the traveler moves */
+function getStep() {
+  return problem.op === '+' ? problem.b : -(problem.b);
+}
+
+/* ════════════════════════════════════════════════
+   NUMBER LINE — BUILD
+════════════════════════════════════════════════ */
+function buildNL() {
+  const svg = document.getElementById('nl-svg');
+  svg.innerHTML = '';
+  ptEls = {};
+
+  /* ── defs ── */
+  const defs = el(SVG_NS, 'defs');
+
+  /* arrowhead for the line itself */
+  const mkArr = (id, col) => {
+    const m = el(SVG_NS, 'marker');
+    attrs(m, { id, markerWidth:'10', markerHeight:'7', refX:'9', refY:'3.5', orient:'auto' });
+    const p = el(SVG_NS, 'polygon');
+    attrs(p, { points:'0 0, 10 3.5, 0 7', fill: col });
+    m.appendChild(p); defs.appendChild(m);
+  };
+  mkArr('arr-line', '#2a4060');
+  mkArr('arr-sol',  'rgba(56,189,248,0.9)');
+  svg.appendChild(defs);
+
+  /* ── axis line ── */
+  const axis = el(SVG_NS, 'line');
+  attrs(axis, { x1: NL_L - 12, y1: NL_Y, x2: NL_R + 12, y2: NL_Y,
+                stroke:'#1e3854', 'stroke-width':'3',
+                'marker-end':'url(#arr-line)' });
+  svg.appendChild(axis);
+
+  /* zero label "0" slightly bigger */
+  /* ── points -10..10 ── */
+  for (let n = -10; n <= 10; n++) {
+    const x = numToX(n);
+
+    /* tick */
+    const tick = el(SVG_NS, 'line');
+    const th   = n === 0 ? 12 : 8;
+    attrs(tick, { x1: x, y1: NL_Y - th, x2: x, y2: NL_Y + th,
+                  stroke: n === 0 ? '#3a5a7a' : '#1e3854',
+                  'stroke-width': n === 0 ? '3' : '2' });
+    svg.appendChild(tick);
+
+    /* label */
+    const lbl = el(SVG_NS, 'text');
+    attrs(lbl, { x, y: NL_Y + 38, 'text-anchor':'middle',
+                 'font-family':'Nunito,sans-serif',
+                 'font-size': n === 0 ? '16' : '14',
+                 'font-weight': n === 0 ? '900' : '700',
+                 fill: n === 0 ? '#7ab0d8' : '#4a6a8a' });
+    lbl.textContent = n;
+    svg.appendChild(lbl);
+
+    /* group with clickable circle */
+    const g   = el(SVG_NS, 'g');
+    g.setAttribute('class', 'nl-pt');
+    g.dataset.n = n;
+
+    /* invisible larger hit area */
+    const hit = el(SVG_NS, 'circle');
+    attrs(hit, { cx: x, cy: NL_Y, r: PT_R + 10, fill:'transparent', stroke:'none' });
+    g.appendChild(hit);
+
+    /* visible circle */
+    const circ = el(SVG_NS, 'circle');
+    circ.setAttribute('class', 'ptc');
+    attrs(circ, { cx: x, cy: NL_Y, r: PT_R });
+    g.appendChild(circ);
+
+    /* number inside circle */
+    const num = el(SVG_NS, 'text');
+    attrs(num, { x, y: NL_Y + 5, 'text-anchor':'middle',
+                 'font-family':'JetBrains Mono,monospace',
+                 'font-size': Math.abs(n) >= 10 ? '11' : '13',
+                 'font-weight':'700',
+                 fill: '#aad0ee',
+                 'pointer-events':'none' });
+    num.textContent = n;
+    g.appendChild(num);
+
+    g.addEventListener('click', () => onPointClick(n));
+    svg.appendChild(g);
+    ptEls[n] = g;
+  }
+
+  /* ── solution arc (hidden initially) ── */
+  const arc = el(SVG_NS, 'path');
+  attrs(arc, { id:'sol-arc', fill:'none',
+               stroke:'rgba(56,189,248,0.85)', 'stroke-width':'3',
+               'stroke-linecap':'round',
+               'marker-end':'url(#arr-sol)',
+               visibility:'hidden' });
+  svg.appendChild(arc);
+
+  /* ── traveler (map-pin shape) ── */
+  const trav = el(SVG_NS, 'g');
+  trav.setAttribute('id', 'traveler');
+  trav.setAttribute('visibility', 'hidden');
+
+  const pinHead = el(SVG_NS, 'circle');
+  attrs(pinHead, { cx:'0', cy:'-38', r:'16',
+                   fill:'var(--accent2)', stroke:'#fff', 'stroke-width':'2.5' });
+  trav.appendChild(pinHead);
+
+  const pinBody = el(SVG_NS, 'polygon');
+  attrs(pinBody, { points:'-6,-24 6,-24 0,-8', fill:'var(--accent2)' });
+  trav.appendChild(pinBody);
+
+  const pinDot = el(SVG_NS, 'circle');
+  attrs(pinDot, { cx:'0', cy:'-38', r:'6',
+                  fill:'#fff', opacity:'0.85' });
+  trav.appendChild(pinDot);
+
+  svg.appendChild(trav);
+}
+
+/* SVG element factory helpers */
+function el(ns, tag) { return document.createElementNS(ns, tag); }
+function attrs(e, o) { for (const k in o) e.setAttribute(k, o[k]); }
+
+/* ════════════════════════════════════════════════
+   VISUAL HELPERS
+════════════════════════════════════════════════ */
+function clearPtStates() {
+  for (const n in ptEls)
+    ptEls[n].className.baseVal = 'nl-pt';
+}
+
+function setPtState(n, state) {
+  ptEls[n].className.baseVal = 'nl-pt ' + state;
+}
+
+function flashWrong(n) {
+  setPtState(n, 's-wrong');
+  setTimeout(() => setPtState(n, ''), 500);
+}
+
+function moveTraveler(n, show) {
+  const t = document.getElementById('traveler');
+  if (!show) { t.setAttribute('visibility','hidden'); return; }
+  t.setAttribute('transform', `translate(${numToX(n)},${NL_Y})`);
+  t.setAttribute('visibility','visible');
+}
+
+function showArc(from, to) {
+  const arc  = document.getElementById('sol-arc');
+  const x1   = numToX(from);
+  const x2   = numToX(to);
+  const midX = (x1 + x2) / 2;
+  const span = Math.abs(x2 - x1);
+  const h    = Math.max(28, span * 0.42);
+  const cy   = NL_Y - h;
+
+  /* end the path a bit before x2 so arrowhead lands on circle edge */
+  const dir  = x2 >= x1 ? 1 : -1;
+  const ex   = x2 - dir * (PT_R + 4);
+  const ey   = NL_Y - PT_R / 2;
+
+  arc.setAttribute('d', `M ${x1} ${NL_Y - PT_R + 3} Q ${midX} ${cy} ${ex} ${ey}`);
+  arc.setAttribute('visibility','visible');
+}
+
+function hideArc() {
+  document.getElementById('sol-arc').setAttribute('visibility','hidden');
+}
+
+/* ════════════════════════════════════════════════
+   EXPRESSION RENDER
+════════════════════════════════════════════════ */
+function renderExpr() {
+  const el = document.getElementById('expr-display');
+  const { a, b, op } = problem;
+
+  const cls = n => n < 0 ? 'nn' : 'np';
+  const spn = (n, c) => `<span class="${c}">${n}</span>`;
+  const opSpan = s => `<span class="op"> ${s} </span>`;
+
+  let html = spn(a, cls(a));
+
+  const opStr = op === '+' ? '+' : '−';
+  html += opSpan(opStr);
+
+  if (b < 0) {
+    html += `<span class="op">(</span>${spn(b, 'nn')}<span class="op">)</span>`;
+  } else {
+    html += spn(b, cls(b));
+  }
+
+  el.innerHTML = html;
+}
+
+/* ════════════════════════════════════════════════
+   INSTRUCTION / FEEDBACK
+════════════════════════════════════════════════ */
+function setInstr(html, type = 't-neu') {
+  const e = document.getElementById('instr');
+  e.innerHTML = html;
+  e.className = type;
+}
+
+function setFeedback(msg, cls = '') {
+  const e = document.getElementById('feedback');
+  e.textContent = msg;
+  e.className = cls;
+}
+
+/* ════════════════════════════════════════════════
+   GAME FLOW
+════════════════════════════════════════════════ */
+function newProblem() {
+  problem   = genProblem();
+  phase     = 'start';
+  hintUses  = 0;
+
+  clearPtStates();
+  hideArc();
+  moveTraveler(null, false);
+  hideHintBox();
+
+  renderExpr();
+  setInstr(`Шаг 1 — найди число <strong>${problem.a}</strong> на прямой и нажми на него`);
+  setFeedback('');
+
+  const inp = document.getElementById('ans-input');
+  inp.value    = '';
+  inp.disabled = true;
+
+  document.getElementById('btn-check').disabled = true;
+}
+
+function onPointClick(n) {
+  if (phase === 'done') return;
+
+  if (phase === 'start') {
+    if (n === problem.a) {
+      setPtState(n, 's-start');
+      moveTraveler(n, true);
+      const step = getStep();
+      const dir  = step > 0 ? 'вправо →' : '← влево';
+      setInstr(
+        `Шаг 2 — сделай ${kruzhkov(Math.abs(step))} <strong>${dir}</strong> и нажми на конечную точку`,
+        't-step'
+      );
+      phase = 'end';
+    } else {
+      flashWrong(n);
+      setInstr(`Не то! Ищи число <strong>${problem.a}</strong>`, 't-err');
+    }
+    return;
+  }
+
+  if (phase === 'end') {
+    if (n === problem.result) {
+      setPtState(n, 's-end');
+      moveTraveler(n, true);
+      setInstr('Шаг 3 — введи ответ в поле и нажми «Проверить»', 't-go');
+      phase = 'answer';
+      const inp = document.getElementById('ans-input');
+      inp.disabled = false;
+      inp.focus();
+      document.getElementById('btn-check').disabled = false;
+    } else {
+      flashWrong(n);
+      const step = getStep();
+      const dir  = step > 0 ? 'вправо' : 'влево';
+      setInstr(
+        `Промах! От <strong>${problem.a}</strong> нужно ${kruzhkov(Math.abs(step))} ${dir} — нажми нужную точку ещё раз`,
+        't-err'
+      );
+    }
+    return;
+  }
+}
+
+function checkAnswer() {
+  const inp = document.getElementById('ans-input');
+  const val = parseInt(inp.value, 10);
+
+  if (isNaN(val)) {
+    setFeedback('Введи целое число!', 'info');
+    return;
+  }
+
+  const s = loadStats();
+  s.solved++;
+
+  if (val === problem.result) {
+    s.correct++;
+    s.streak++;
+    if (s.streak > s.best) s.best = s.streak;
+    s.history.unshift({ label: problem.label, ans: problem.result, ok: true });
+    setFeedback(`✓ Верно!  ${problem.label} = ${problem.result}`, 'ok');
+    setPtState(problem.result, 's-end');
+  } else {
+    s.streak = 0;
+    s.history.unshift({ label: problem.label, ans: problem.result, ok: false, got: val });
+    setFeedback(`✗ Ответ ${val} неверный. Правильный: ${problem.result}`, 'fail');
+    showSolution();
+  }
+
+  if (s.history.length > 10) s.history.length = 10;
+  saveStats(s);
+  renderStats();
+
+  phase = 'done';
+  inp.disabled = true;
+  document.getElementById('btn-check').disabled = true;
+}
+
+function showSolution() {
+  clearPtStates();
+  setPtState(problem.a,      's-sol-from');
+  setPtState(problem.result, 's-sol-to');
+  showArc(problem.a, problem.result);
+  moveTraveler(problem.result, true);
+
+  const step = getStep();
+  const dir  = step > 0 ? 'вправо' : 'влево';
+  setInstr(
+    `Решение: начало <strong>${problem.a}</strong>, шаг ${kruzhkov(Math.abs(step))} ${dir} → конец <strong>${problem.result}</strong>`,
+    't-go'
+  );
+
+  if (phase !== 'done') {
+    const s = loadStats();
+    s.solved++;
+    s.streak = 0;
+    s.history.unshift({ label: problem.label, ans: problem.result, ok: false, shown: true });
+    if (s.history.length > 10) s.history.length = 10;
+    saveStats(s);
+    renderStats();
+    phase = 'done';
+    document.getElementById('ans-input').disabled = true;
+    document.getElementById('btn-check').disabled = true;
+  }
+
+  document.getElementById('ans-input').value = problem.result;
+  setFeedback(`${problem.label} = ${problem.result}`, 'info');
+}
+
+/* ════════════════════════════════════════════════
+   HINT
+════════════════════════════════════════════════ */
+function showHintBox(text) {
+  const b = document.getElementById('hint-box');
+  b.textContent = text;
+  b.classList.add('show');
+  clearTimeout(b._timer);
+  b._timer = setTimeout(() => b.classList.remove('show'), 4500);
+}
+
+function hideHintBox() {
+  const b = document.getElementById('hint-box');
+  b.classList.remove('show');
+}
+
+function giveHint() {
+  hintUses++;
+
+  if (phase === 'start') {
+    showHintBox(`💡 Найди ${problem.a} на числовой прямой — это стартовая точка.`);
+    return;
+  }
+
+  if (phase === 'end') {
+    const step = getStep();
+    const dir  = step > 0 ? 'вправо →' : '← влево';
+    let txt = `💡 Начинаешь с ${problem.a}. Двигаешься на ${kruzhkov(Math.abs(step))} ${dir}.`;
+    if (hintUses >= 2) txt += ` Конечная точка — ${problem.result}.`;
+    showHintBox(txt);
+    return;
+  }
+
+  if (phase === 'answer') {
+    const step = getStep();
+    const dir  = step > 0 ? 'вправо' : 'влево';
+    showHintBox(`💡 Ты прошёл ${kruzhkov(Math.abs(step))} ${dir} от ${problem.a} и попал на ${problem.result}. Введи это число.`);
+    return;
+  }
+
+  showHintBox('Нажми «Следующий» для нового примера.');
+}
+
+/* ════════════════════════════════════════════════
+   STATS RENDER
+════════════════════════════════════════════════ */
+function renderStats() {
+  const s = loadStats();
+  document.getElementById('s-solved').textContent  = s.solved;
+  document.getElementById('s-correct').textContent = s.correct;
+  document.getElementById('s-acc').textContent     = s.solved > 0
+    ? Math.round(s.correct / s.solved * 100) + '%' : '—';
+  document.getElementById('s-streak').textContent  = s.streak;
+  document.getElementById('s-best').textContent    = s.best;
+
+  const hl = document.getElementById('history-list');
+  hl.innerHTML = '';
+  (s.history || []).slice(0, 8).forEach(h => {
+    const span = document.createElement('span');
+    span.className = 'hi ' + (h.ok ? 'ok' : 'fail');
+    span.textContent = h.label + ' = ' + h.ans;
+    span.title = h.ok ? '✓ Верно' : (h.shown ? '👁 Показано' : `Введено: ${h.got}`);
+    hl.appendChild(span);
+  });
+}
+
+/* ════════════════════════════════════════════════
+   EVENT LISTENERS
+════════════════════════════════════════════════ */
+function initUI() {
+  /* mode/level toggles */
+  document.getElementById('seg-mode').addEventListener('click', e => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    document.querySelectorAll('#seg-mode button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    mode = btn.dataset.val;
+    newProblem();
+  });
+
+  document.getElementById('seg-level').addEventListener('click', e => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    document.querySelectorAll('#seg-level button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    level = btn.dataset.val;
+    newProblem();
+  });
+
+  document.getElementById('btn-check').addEventListener('click', checkAnswer);
+  document.getElementById('btn-hint').addEventListener('click', giveHint);
+  document.getElementById('btn-sol').addEventListener('click', showSolution);
+  document.getElementById('btn-next').addEventListener('click', newProblem);
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    if (confirm('Сбросить всю статистику по этой теме?')) clearStats();
+  });
+
+  document.getElementById('ans-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !document.getElementById('btn-check').disabled) checkAnswer();
+  });
+}
+
+/* ════════════════════════════════════════════════
+   INIT
+════════════════════════════════════════════════ */
+(function init() {
+  buildNL();
+  initUI();
+  renderStats();
+  newProblem();
+})();
+</script>
+</body>
+</html>

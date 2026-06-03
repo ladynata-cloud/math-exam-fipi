@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренажёр: скобки и знаки подряд</title>
+<style>
+/* ═══ СЕРИЙНЫЕ ТОКЕНЫ ═══ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #eef2f5;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  padding: 30px 20px 44px; color: #1a2c3e;
+}
+.trainer {
+  max-width: 1100px; margin: 0 auto;
+  background: #fff; border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.09); overflow: hidden;
+}
+
+/* ═══ ШАПКА ═══ */
+.header { background: #2c3e4e; padding: 20px 30px; color: #fff; }
+.header h1 { font-size: 1.8rem; font-weight: 500; letter-spacing: -.3px; }
+.header .sub { font-size: .93rem; opacity: .85; margin-top: 5px; line-height: 1.5; }
+.header .tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 9px; font-size: .78rem; opacity: .62;
+  background: rgba(255,255,255,.1); border-radius: 20px; padding: 4px 12px;
+}
+
+/* ═══ РЕЖИМЫ ═══ */
+.mode-bar {
+  display: flex; background: #f0f3f7;
+  padding: 12px 30px; gap: 14px;
+  border-bottom: 1px solid #dce4ec;
+}
+.mode-btn {
+  background: transparent; border: none; font-size: .98rem; font-weight: 600;
+  padding: 8px 22px; border-radius: 40px; cursor: pointer;
+  color: #2c3e4e; transition: .18s; font-family: inherit;
+}
+.mode-btn.active { background: #2c3e4e; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.1); }
+
+/* ═══ СЕТКА ═══ */
+.main-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 28px; padding: 28px;
+}
+@media (max-width: 780px) { .main-grid { grid-template-columns: 1fr; gap: 20px; } }
+
+/* ══════════════════════════════════
+   ЛЕВАЯ ПАНЕЛЬ
+══════════════════════════════════ */
+.visual-panel {
+  background: #fafcfd; border-radius: 22px; padding: 20px;
+  border: 1px solid #e2edf2; box-shadow: 0 2px 8px rgba(0,0,0,.03);
+  display: flex; flex-direction: column; gap: 14px;
+}
+
+/* Большое выражение */
+.big-expression {
+  background: #f4f9fe; text-align: center; padding: 18px 10px;
+  border-radius: 18px; font-size: 3rem; font-weight: 700;
+  font-family: 'Courier New', monospace; letter-spacing: 4px;
+  border: 1px solid #d4e2ec; line-height: 1;
+}
+.pos-c  { color: #1d6fa4; }
+.neg-c  { color: #b91c1c; }
+.op-c   { color: #64748b; }
+.op-c.highlighted { color: #92400e; }
+
+/* ── Карточка анатомии ── */
+.anatomy-card {
+  background: #f2f5f8; border-radius: 16px; padding: 14px 16px;
+  border: 1px solid #e0eaf0;
+}
+.an-title {
+  font-size: .72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: #7a9db5; margin-bottom: 12px; text-align: center;
+}
+.anatomy-row {
+  display: flex; align-items: flex-end; justify-content: center; gap: 10px;
+}
+.an-part { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.an-val {
+  font-size: 1.6rem; font-weight: 900; font-family: 'Courier New', monospace;
+  padding: 8px 13px; border-radius: 10px; text-align: center;
+  line-height: 1; min-width: 50px; position: relative;
+  transition: all .3s;
+}
+.an-lbl {
+  font-size: .67rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .6px; color: #5f7f9c; text-align: center; max-width: 90px;
+}
+/* Color per part */
+.av-first  { color: #1a2c3e;  background: #f1f5f9; }
+.av-op     { color: #92400e;  background: #fef3c7; }  /* amber: action sign */
+.av-brack  { color: #5b21b6;  background: #f5f3ff; }  /* purple: number in bracket */
+.av-op.confirmed  { background: #dcfce7; color: #14532d; }
+.av-brack.confirmed { background: #dcfce7; color: #14532d; }
+
+.an-note {
+  font-size: .76rem; color: #2c5a6e; margin-top: 10px; text-align: center;
+  padding: 7px 10px; background: #e7f3fb; border-radius: 9px;
+}
+/* Sub-label inside bracket val */
+.b-sign-pos { color: #1d4ed8; }
+.b-sign-neg { color: #b91c1c; }
+
+/* ── Карточка правила ── */
+.rule-card {
+  background: #eef6fb; border-radius: 14px; padding: 13px 14px;
+  border-left: 3px solid #2c7da0; font-size: .86rem; line-height: 1.65;
+  color: #1a3e54; animation: fadeIn .4s ease;
+}
+.rule-card strong { color: #1a2c3e; }
+.rule-formula {
+  font-family: 'Courier New', monospace; font-size: 1.05rem; font-weight: 700;
+  margin: 7px 0 2px; color: #1a2c3e; letter-spacing: 1px;
+}
+.rule-card .t3-link {
+  display: inline-block; margin-top: 6px; font-size: .79rem;
+  background: #e0e7ff; color: #3730a3; border-radius: 6px; padding: 2px 8px;
+  font-weight: 600;
+}
+
+/* ── Новое выражение ── */
+.new-expr-card {
+  background: #edfaf3; border-radius: 14px; padding: 13px 16px;
+  border: 1px solid #b8e8d3; animation: fadeIn .4s ease;
+}
+.new-expr-lbl {
+  font-size: .72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: #3aaa6e; margin-bottom: 7px; text-align: center;
+}
+.new-expr-big {
+  font-size: 2.2rem; font-weight: 800;
+  font-family: 'Courier New', monospace; text-align: center;
+  letter-spacing: 3px; line-height: 1;
+}
+
+/* ══════════════════════════════════
+   ПРАВАЯ ПАНЕЛЬ
+══════════════════════════════════ */
+.interactive-panel {
+  background: #fff; border-radius: 22px; padding: 20px;
+  border: 1px solid #e2edf2;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.progress-dots { display: flex; gap: 6px; justify-content: flex-end; padding-bottom: 2px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #cdd8e3; transition: all .3s; }
+.dot.done   { background: #3aaa6e; }
+.dot.active { background: #2c7da0; transform: scale(1.4); }
+
+.step-box { background: #f7fafc; border-radius: 18px; padding: 20px; flex: 1; }
+.step-title {
+  font-weight: 700; font-size: 1.1rem; color: #1f4e6e;
+  border-left: 4px solid #2c7da0; padding-left: 11px; margin-bottom: 13px; line-height: 1.3;
+}
+.step-q { font-size: .97rem; line-height: 1.6; color: #2c3e4e; margin-bottom: 12px; }
+.step-q strong { color: #1a2c3e; }
+
+.series-link {
+  background: #eef6fb; border-left: 3px solid #5b9abb;
+  border-radius: 0 10px 10px 0; padding: 8px 12px;
+  font-size: .81rem; color: #1e4060; margin-bottom: 12px; line-height: 1.55;
+}
+.series-link strong { color: #1a2c3e; }
+.step-context {
+  background: #f0f6fb; border-radius: 11px; padding: 9px 13px;
+  font-size: .83rem; color: #1e4060; line-height: 1.55; margin-bottom: 10px;
+}
+
+/* Выбор */
+.choice-group { display: flex; flex-wrap: wrap; gap: 9px; margin: 11px 0; }
+.ch-btn {
+  padding: 10px 18px; border: 2px solid #bac8d9; border-radius: 40px;
+  font-size: .93rem; font-weight: 600; cursor: pointer;
+  background: #fff; color: #2c3e4e; transition: all .17s; font-family: inherit;
+}
+.ch-btn:hover:not(:disabled) { border-color: #2c7da0; color: #2c7da0; }
+.ch-btn.ok  { background: #2c7da0; color: #fff; border-color: #2c7da0; pointer-events: none; }
+.ch-btn.bad { background: #fee2e2; border-color: #c0392b; color: #991b1b;
+              pointer-events: none; animation: shake .38s; }
+.ch-btn:disabled { pointer-events: none; }
+
+/* Ввод */
+.inp-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 11px 0; }
+.inp-lbl {
+  font-size: 1rem; font-weight: 700; font-family: 'Courier New', monospace;
+  color: #1a2c3e; white-space: nowrap;
+}
+.m-inp {
+  padding: 7px 13px; font-size: 1.05rem; border: 1.5px solid #bac8d9;
+  border-radius: 40px; width: 106px; text-align: center; font-family: inherit;
+  font-weight: 600; outline: none; transition: border-color .2s;
+  appearance: textfield; -moz-appearance: textfield;
+}
+.m-inp::-webkit-inner-spin-button,
+.m-inp::-webkit-outer-spin-button { -webkit-appearance: none; }
+.m-inp:focus { border-color: #2c7da0; }
+.m-inp.wide  { width: 130px; }
+.go-btn {
+  background: #2c7da0; border: none; color: #fff; padding: 9px 20px;
+  border-radius: 40px; font-weight: 600; cursor: pointer;
+  font-size: .93rem; transition: .15s; font-family: inherit;
+}
+.go-btn:hover { background: #1f5e7a; }
+
+/* Обратная связь */
+.feedback {
+  border-radius: 14px; padding: 11px 15px; font-size: .88rem;
+  line-height: 1.6; animation: fadeIn .3s ease;
+}
+.fb-info { background: #f0f6fb; border-left: 4px solid #5b9abb; color: #1a3e54; }
+.fb-ok   { background: #edfaf3; border-left: 4px solid #3aaa6e; color: #174d2f; }
+.fb-err  { background: #fff1f1; border-left: 4px solid #e34d3a; color: #7a1a1a; }
+.fb-hint { background: #fef6e0; border-left: 4px solid #e8a030; color: #5c3c0a; }
+
+/* Карточка завершения */
+.done-card {
+  background: linear-gradient(140deg, #1e3a4e 0%, #2c5c72 100%);
+  border-radius: 18px; padding: 26px 22px; color: #fff;
+  text-align: center; animation: fadeIn .45s ease;
+}
+.done-result { font-size: 3.4rem; font-weight: 800; font-family: 'Courier New', monospace; letter-spacing: 2px; margin: 8px 0; }
+.done-result.pos-r { color: #7dd3fc; }
+.done-result.neg-r { color: #fca5a5; }
+.done-steps {
+  background: rgba(255,255,255,.1); border-radius: 12px; padding: 13px 16px;
+  font-size: .87rem; line-height: 1.8; text-align: left; margin: 13px 0 15px;
+}
+.done-rule { font-size: .82rem; opacity: .8; font-style: italic; margin-bottom: 16px; line-height: 1.5; }
+.new-btn-w {
+  background: rgba(255,255,255,.18); border: 1.5px solid rgba(255,255,255,.4);
+  color: #fff; padding: 9px 22px; border-radius: 40px;
+  font-weight: 600; cursor: pointer; font-size: .92rem; font-family: inherit; transition: .2s;
+}
+.new-btn-w:hover { background: rgba(255,255,255,.28); }
+
+/* ── Тренировка ── */
+.train-inp-row {
+  display: flex; justify-content: center; align-items: center;
+  gap: 10px; margin: 14px 0;
+  font-family: 'Courier New', monospace; font-size: 1.45rem; font-weight: 700;
+}
+.t-ans {
+  font-size: 1.45rem; width: 130px; text-align: center;
+  border: 2px solid #bac8d9; border-radius: 50px; padding: 7px;
+  font-weight: 700; font-family: inherit; outline: none; transition: border-color .2s;
+  appearance: textfield; -moz-appearance: textfield;
+}
+.t-ans::-webkit-inner-spin-button,
+.t-ans::-webkit-outer-spin-button { -webkit-appearance: none; }
+.t-ans:focus { border-color: #2c7da0; }
+.score-row { display: flex; justify-content: center; gap: 14px; margin-top: 14px; }
+.sc { text-align: center; padding: 8px 16px; background: #f4f8fb; border-radius: 12px; }
+.sc-n { font-size: 1.8rem; font-weight: 800; line-height: 1; }
+.sc-n.g { color: #3aaa6e; }
+.sc-n.r { color: #e34d3a; }
+.sc-l { font-size: .66rem; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: #7a9db5; margin-top: 2px; }
+.solution-box {
+  background: #eef6fb; border-radius: 12px; padding: 12px 14px;
+  font-size: .85rem; line-height: 1.75; color: #1a3e54;
+  margin-top: 10px; border-left: 3px solid #2c7da0; animation: fadeIn .3s ease;
+}
+
+/* ── Кнопки ── */
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.act-btn {
+  background: #eef2f5; border: none; padding: 9px 18px; border-radius: 40px;
+  font-weight: 500; cursor: pointer; font-size: .86rem;
+  transition: .15s; font-family: inherit; color: #2c3e4e;
+}
+.act-btn:hover { background: #dde4ea; }
+
+/* ── Подвал ── */
+.footer {
+  background: #eef3f7; padding: 13px 30px; text-align: center;
+  font-size: .84rem; border-top: 1px solid #d0dfe8; color: #2c5a6e; font-weight: 500;
+}
+
+.hidden { display: none; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+@keyframes shake  { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-5px)} 40%{transform:translateX(5px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)} }
+</style>
+</head>
+<body>
+
+<div class="trainer">
+
+  <div class="header">
+    <h1>Скобки и знаки подряд</h1>
+    <p class="sub">Знак <em>перед</em> скобкой — это действие. Знак <em>внутри</em> скобки — это знак числа. Это разные вещи.</p>
+    <span class="tag">📚 Тренажёр 4 · Серия «Действия с рациональными числами»</span>
+  </div>
+
+  <div class="mode-bar">
+    <button id="btnLearn"    class="mode-btn active" onclick="setMode('learning')">📘 Обучение (по шагам)</button>
+    <button id="btnPractice" class="mode-btn"        onclick="setMode('practice')">⚡ Тренировка</button>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- ЛЕВАЯ: визуальная модель -->
+    <div class="visual-panel" id="visualPanel"></div>
+
+    <!-- ПРАВАЯ: интерактив -->
+    <div class="interactive-panel">
+
+      <!-- Обучение -->
+      <div id="learnPanel">
+        <div class="progress-dots" id="progDots"></div>
+        <div class="step-box" id="stepBox"></div>
+        <div class="feedback fb-info" id="learnFb">
+          🔍 Смотри на левую панель: разберём каждую часть выражения.
+        </div>
+      </div>
+
+      <!-- Тренировка -->
+      <div id="practicePanel" class="hidden">
+        <div class="step-box">
+          <div class="step-title">Тренировка</div>
+          <p style="text-align:center; font-size:1.05rem; font-weight:500; margin-bottom:8px">
+            Упрости и вычисли:
+          </p>
+          <div class="train-inp-row">
+            <span id="prExpr"></span>
+            <span>=</span>
+            <input type="number" id="tAns" class="t-ans" placeholder="?">
+          </div>
+          <div style="display:flex; justify-content:center">
+            <button class="go-btn" onclick="checkPractice()">✓ Проверить</button>
+          </div>
+          <div class="feedback fb-info" id="prFb" style="margin-top:12px">Введи ответ и нажми «Проверить».</div>
+          <div id="prSol" class="solution-box hidden"></div>
+        </div>
+        <div class="score-row">
+          <div class="sc"><div class="sc-n g" id="scOk">0</div><div class="sc-l">Верно</div></div>
+          <div class="sc"><div class="sc-n"   id="scAll">0</div><div class="sc-l">Всего</div></div>
+          <div class="sc"><div class="sc-n"   id="scPct">—</div><div class="sc-l">Точность</div></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="act-btn" onclick="showHint()">💡 Подсказка</button>
+        <button class="act-btn" onclick="refreshExample()">🔄 Новый пример</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    + перед скобкой → число сохраняется &nbsp;·&nbsp;
+    − перед скобкой → число меняется на противоположное (Тренажёр 3: a − b = a + (−b)) &nbsp;·&nbsp;
+    «два минуса» — не фокус, а следствие этого правила
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   ГЕНЕРАЦИЯ
+   Тип 0: a + (+b)  → addend = +b
+   Тип 1: a + (-b)  → addend = -b
+   Тип 2: a - (+b)  → addend = -b
+   Тип 3: a - (-b)  → addend = +b  ← самый «трудный»
+═══════════════════════════════════════════════════ */
+let E = null;
+let mode = 'learning';
+let step = 1;
+let done = {};
+
+function rand(lo, hi) { return lo + Math.floor(Math.random() * (hi - lo + 1)); }
+
+function genEx() {
+  const t = Math.floor(Math.random() * 4);
+  const op    = t < 2 ? '+' : '-';            // action sign before bracket
+  const bSign = t % 2 === 0 ? '+' : '-';      // sign of number inside bracket
+  const bMag  = rand(2, 9);
+  let a;
+  do { a = rand(-10, 10); } while (a === 0);
+
+  const b      = bSign === '+' ? bMag : -bMag; // the number inside bracket
+  const addend = op === '+' ? b : -b;           // what the bracket becomes
+  return { a, op, bSign, bMag, b, addend, result: a + addend, type: t };
+}
+
+/* ═══════════════════════════════════════════════════
+   ФОРМАТИРОВАНИЕ
+═══════════════════════════════════════════════════ */
+function ps(n)  { return n < 0 ? `−${Math.abs(n)}` : `${n}`; }
+function pss(n) { return n < 0 ? `−${Math.abs(n)}` : `+${n}`; } // always explicit sign
+
+function origHTML(e, hiliteOp, hiliteBrack) {
+  const aStr = e.a < 0
+    ? `<span class="neg-c">−${Math.abs(e.a)}</span>`
+    : `<span class="pos-c">${e.a}</span>`;
+  const opStr = `<span class="op-c${hiliteOp ? ' highlighted' : ''}">${e.op === '+' ? '+' : '−'}</span>`;
+  const bSignStr = e.bSign === '-'
+    ? `<span class="b-sign-neg">−</span>`
+    : `<span class="b-sign-pos">+</span>`;
+  const bmag = e.bMag;
+  const bracketHl = hiliteBrack ? ' style="opacity:1"' : '';
+  return `${aStr} ${opStr} <span${bracketHl}>(${bSignStr}${bmag})</span>`;
+}
+
+function addendHTML(addend) {
+  if (addend < 0) return `<span class="neg-c">(−${Math.abs(addend)})</span>`;
+  return `<span class="pos-c">${addend}</span>`;
+}
+
+function newExprHTML(e) {
+  const aStr = e.a < 0
+    ? `<span class="neg-c">−${Math.abs(e.a)}</span>`
+    : `<span class="pos-c">${e.a}</span>`;
+  return `${aStr} <span class="op-c">+</span> ${addendHTML(e.addend)}`;
+}
+
+/* ═══════════════════════════════════════════════════
+   ЛЕВАЯ ПАНЕЛЬ
+═══════════════════════════════════════════════════ */
+function renderVisual() {
+  document.getElementById('visualPanel').innerHTML = [
+    buildBigExpr(),
+    buildAnatomyCard(),
+    done[2] ? buildRuleCard()   : '',
+    done[4] ? buildNewExprCard(): '',
+  ].join('');
+}
+
+function buildBigExpr() {
+  return `<div class="big-expression">${origHTML(E, false, false)}</div>`;
+}
+
+function buildAnatomyCard() {
+  const aDisp  = E.a < 0 ? `−${Math.abs(E.a)}` : `${E.a}`;
+  const opChar = E.op === '+' ? '+' : '−';
+  const bInner = E.bSign === '-'
+    ? `<span class="b-sign-neg">−</span>${E.bMag}`
+    : `<span class="b-sign-pos">+</span>${E.bMag}`;
+  const opConf    = done[1] ? 'confirmed' : '';
+  const bConf     = done[2] ? 'confirmed' : '';
+  const opTick    = done[1] ? ' ✓' : '';
+  const brackTick = done[2] ? ' ✓' : '';
+
+  return `
+  <div class="anatomy-card">
+    <div class="an-title">Анатомия выражения</div>
+    <div class="anatomy-row">
+
+      <div class="an-part">
+        <div class="an-val av-first">${aDisp}</div>
+        <div class="an-lbl">первое<br>число</div>
+      </div>
+
+      <div class="an-part">
+        <div class="an-val av-op ${opConf}">${opChar}${opTick}</div>
+        <div class="an-lbl">знак<br>действия</div>
+      </div>
+
+      <div class="an-part">
+        <div class="an-val av-brack ${bConf}">(${bInner})${brackTick}</div>
+        <div class="an-lbl">число<br>в скобке</div>
+      </div>
+
+    </div>
+    <div class="an-note">
+      ⚠ «Знак действия» и «знак числа» — это две разные вещи
+    </div>
+  </div>`;
+}
+
+function buildRuleCard() {
+  const bDisp    = E.bSign === '-' ? `(−${E.bMag})` : `(+${E.bMag})`;
+  const addDisp  = E.addend < 0 ? `(−${Math.abs(E.addend)})` : `+${E.addend}`;
+  const aDisp    = ps(E.a);
+  if (E.op === '+') {
+    return `
+    <div class="rule-card">
+      <strong>Правило: «+» перед скобкой</strong><br>
+      Плюс означает «прибавить» — просто убираем скобки.
+      Знак числа внутри <strong>сохраняется</strong>.
+      <div class="rule-formula">${aDisp} + ${bDisp} = ${aDisp} + ${addDisp}</div>
+    </div>`;
+  } else {
+    return `
+    <div class="rule-card">
+      <strong>Правило: «−» перед скобкой</strong><br>
+      Минус означает «вычесть» = «прибавить противоположное».
+      Число меняется на <strong>противоположное</strong>.
+      <div class="rule-formula">${aDisp} − ${bDisp} = ${aDisp} + ${addDisp}</div>
+      <span class="t3-link">← Тренажёр 3: a − b = a + (−b)</span>
+    </div>`;
+  }
+}
+
+function buildNewExprCard() {
+  return `
+  <div class="new-expr-card">
+    <div class="new-expr-lbl">Без скобок</div>
+    <div class="new-expr-big">${newExprHTML(E)}</div>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════
+   ПРОГРЕСС
+═══════════════════════════════════════════════════ */
+function renderDots() {
+  document.getElementById('progDots').innerHTML =
+    [1,2,3,4,5].map(i => {
+      const c = done[i] ? 'done' : (i === step ? 'active' : '');
+      return `<div class="dot ${c}" title="Шаг ${i}"></div>`;
+    }).join('');
+}
+
+/* ═══════════════════════════════════════════════════
+   ШАГИ
+═══════════════════════════════════════════════════ */
+function setFb(html, cls) {
+  const el = document.getElementById('learnFb');
+  el.innerHTML = html; el.className = `feedback ${cls}`;
+}
+
+function goStep(n) {
+  setTimeout(() => { step = n; renderStep(); renderVisual(); }, 530);
+}
+
+function renderStep() {
+  renderDots();
+  const box = document.getElementById('stepBox');
+  if (!box) return;
+  if (step === 1) box.innerHTML = buildS1();
+  if (step === 2) box.innerHTML = buildS2();
+  if (step === 3) box.innerHTML = buildS3();
+  if (step === 4) box.innerHTML = buildS4();
+  if (step === 5) box.innerHTML = buildS5();
+  box.querySelectorAll('.m-inp').forEach(inp => {
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') box.querySelector('[data-check]')?.click();
+    });
+  });
+}
+
+/* ── ШАГ 1: знак действия ── */
+function buildS1() {
+  const exDisp = E.op === '+' ? '+' : '−';
+  return `
+  <div class="step-title">Шаг 1. Знак действия</div>
+  <p class="step-q">
+    В выражении <strong>${origDisplay()}</strong> между первым числом и скобкой стоит знак.<br>
+    Это знак <em>действия</em> — он говорит, что мы делаем со скобкой: прибавляем или вычитаем.
+  </p>
+  <p class="step-q">Какой знак стоит <strong>перед скобкой</strong>?</p>
+  <div class="choice-group">
+    <button class="ch-btn" id="s1p" onclick="checkS1('+')">+ (плюс)</button>
+    <button class="ch-btn" id="s1m" onclick="checkS1('-')">− (минус)</button>
+  </div>`;
+}
+function checkS1(v) {
+  if (v === E.op) {
+    setFb(`✅ Верно! Знак действия — «${E.op === '+' ? '+' : '−'}». Это значит: мы ${E.op === '+' ? 'прибавляем' : 'вычитаем'} то, что стоит в скобке.`, 'fb-ok');
+    document.getElementById(v === '+' ? 's1p' : 's1m')?.classList.add('ok');
+    done[1] = true; goStep(2);
+  } else {
+    document.getElementById(v === '+' ? 's1p' : 's1m')?.classList.add('bad');
+    setFb(`❌ Знак перед скобкой — это «${E.op === '+' ? '+' : '−'}». Смотри между первым числом и открывающей скобкой (левая панель, янтарный блок).`, 'fb-err');
+  }
+}
+
+/* ── ШАГ 2: знак числа ── */
+function buildS2() {
+  return `
+  <div class="step-title">Шаг 2. Знак числа в скобке</div>
+  <p class="step-q">
+    Теперь смотрим <em>внутрь</em> скобки.<br>
+    Там стоит число со своим знаком. Это знак <strong>числа</strong> — он показывает,
+    на какой стороне от нуля находится это число.
+  </p>
+  <p class="step-q">Число внутри скобки — <strong>положительное</strong> или <strong>отрицательное</strong>?</p>
+  <div class="choice-group">
+    <button class="ch-btn" id="s2p" onclick="checkS2('+')">+ положительное</button>
+    <button class="ch-btn" id="s2m" onclick="checkS2('-')">− отрицательное</button>
+  </div>`;
+}
+function checkS2(v) {
+  if (v === E.bSign) {
+    const word = E.bSign === '+' ? 'положительное' : 'отрицательное';
+    setFb(`✅ Верно! Число внутри скобки — ${word} (${pss(E.b)}). Теперь решим, что с ним делать.`, 'fb-ok');
+    document.getElementById(v === '+' ? 's2p' : 's2m')?.classList.add('ok');
+    done[2] = true; goStep(3);
+  } else {
+    document.getElementById(v === '+' ? 's2p' : 's2m')?.classList.add('bad');
+    const inside = E.bSign === '+' ? `+${E.bMag}` : `−${E.bMag}`;
+    setFb(`❌ Смотри внутрь скобки (фиолетовый блок слева). Там написано «${inside}» — это ${E.bSign === '+' ? 'положительное' : 'отрицательное'} число.`, 'fb-err');
+  }
+}
+
+/* ── ШАГ 3: сохраняется или меняется ── */
+function buildS3() {
+  const opWord  = E.op === '+' ? 'плюс' : 'минус';
+  const bDisp   = E.bSign === '-' ? `(−${E.bMag})` : `(+${E.bMag})`;
+  const ruleHint = E.op === '+'
+    ? 'Знак «+» перед скобкой — мы просто прибавляем то, что внутри. Ничего не меняется.'
+    : 'Знак «−» перед скобкой — мы вычитаем, то есть прибавляем <em>противоположное</em> (Тренажёр 3).';
+  return `
+  <div class="step-title">Шаг 3. Что происходит с числом?</div>
+  <p class="step-q">
+    Перед скобкой стоит <strong>«${opWord}»</strong>.<br>
+    ${ruleHint}
+  </p>
+  <p class="step-q">Число ${bDisp} при раскрытии скобки:</p>
+  <div class="choice-group">
+    <button class="ch-btn" id="s3same" onclick="checkS3('same')">Сохраняется (остаётся ${bDisp})</button>
+    <button class="ch-btn" id="s3opp"  onclick="checkS3('opp')">Меняется на противоположное</button>
+  </div>`;
+}
+function checkS3(v) {
+  const isPlus   = E.op === '+';
+  const correct  = isPlus ? 'same' : 'opp';
+  const bDisp    = E.bSign === '-' ? `(−${E.bMag})` : `(+${E.bMag})`;
+  const addDisp  = E.addend < 0 ? `(−${Math.abs(E.addend)})` : `+${E.addend}`;
+
+  if (v === correct) {
+    const msg = isPlus
+      ? `✅ Верно! Плюс перед скобкой — число сохраняется. ${bDisp} → ${addDisp}.`
+      : `✅ Верно! Минус перед скобкой — берём противоположное. Противоположное к ${bDisp} — это ${addDisp}.`;
+    setFb(msg, 'fb-ok');
+    document.getElementById(v === 'same' ? 's3same' : 's3opp')?.classList.add('ok');
+    done[3] = true; goStep(4);
+  } else {
+    document.getElementById(v === 'same' ? 's3same' : 's3opp')?.classList.add('bad');
+    const errMsg = isPlus
+      ? `❌ Перед скобкой «+» — мы просто прибавляем содержимое, не меняя знак. ${bDisp} сохраняется.`
+      : `❌ Перед скобкой «−» — мы вычитаем, то есть прибавляем <em>противоположное</em>. ${bDisp} меняется на ${addDisp}.`;
+    setFb(errMsg, 'fb-err');
+  }
+}
+
+/* ── ШАГ 4: перепиши без скобок ── */
+function buildS4() {
+  const aDisp   = ps(E.a);
+  const addHint = E.addend < 0 ? 'отрицательное' : 'положительное';
+  return `
+  <div class="step-title">Шаг 4. Перепиши без скобок</div>
+  <p class="step-q">
+    После раскрытия скобки у нас сложение: ${aDisp} + ___<br>
+    Что стоит в пустом месте? (Это ${addHint} число.)
+  </p>
+  <div class="inp-row">
+    <span class="inp-lbl">${aDisp} + [</span>
+    <input id="i4" type="number" class="m-inp" placeholder="?">
+    <span class="inp-lbl">]</span>
+    <button class="go-btn" data-check onclick="checkS4()">Проверить</button>
+  </div>`;
+}
+function checkS4() {
+  const v = parseInt(document.getElementById('i4')?.value);
+  if (isNaN(v)) return;
+  const bDisp   = E.bSign === '-' ? `(−${E.bMag})` : `(+${E.bMag})`;
+  const addDisp = E.addend < 0 ? `(−${Math.abs(E.addend)})` : `${E.addend}`;
+
+  if (v === E.addend) {
+    setFb(`✅ Верно! Выражение без скобок: <strong>${ps(E.a)} + ${addDisp}</strong>. Посмотри на левую панель — теперь там показано это упрощённое выражение.`, 'fb-ok');
+    done[4] = true; goStep(5);
+  } else if (v === E.result) {
+    setFb(`❌ Ты уже вычислил итоговый ответ (${v}), но на этом шаге нужно только <em>переписать</em> выражение без скобок — не считать. В пустом месте должно стоять ${addDisp}.`, 'fb-err');
+    markInpErr('i4');
+  } else if (v === E.b) {
+    // Didn't transform (kept b unchanged)
+    const reason = E.op === '-'
+      ? `❌ Ты написал число из скобки без изменения (${ps(E.b)}). Но перед скобкой стоит «−»: нужно взять <em>противоположное</em> к ${bDisp}. Противоположное: ${addDisp}.`
+      : `❌ Проверь — ты уверен? При «+» перед скобкой ${bDisp} действительно сохраняется. Проверь правила шага 3.`;
+    setFb(reason, 'fb-err');
+    markInpErr('i4');
+  } else if (Math.abs(v) === Math.abs(E.addend)) {
+    setFb(`❌ Число правильное (${Math.abs(E.addend)}), но знак неверный. Вспомни шаг 3: результат должен быть ${E.addend < 0 ? 'отрицательным' : 'положительным'}.`, 'fb-err');
+    markInpErr('i4');
+  } else {
+    setFb(`❌ Неверно. После раскрытия скобки получаем: ${ps(E.a)} + ${addDisp}. В пустом месте стоит ${addDisp}.`, 'fb-err');
+    markInpErr('i4');
+  }
+}
+
+/* ── ШАГ 5: вычислить ── */
+function buildS5() {
+  const aDisp   = ps(E.a);
+  const addDisp = E.addend < 0 ? `(−${Math.abs(E.addend)})` : `${E.addend}`;
+  const ctx     = getAddCtx();
+  return `
+  <div class="step-title">Шаг 5. Вычисли результат</div>
+  <p class="step-q">
+    Выражение упрощено до: <strong>${aDisp} + ${addDisp}</strong><br>
+    Это обычная задача на сложение — применяй правила из предыдущих тренажёров.
+  </p>
+  <div class="step-context">${ctx}</div>
+  <div class="inp-row">
+    <span class="inp-lbl">${aDisp} + ${addDisp} =</span>
+    <input id="i5" type="number" class="m-inp wide" placeholder="?">
+    <button class="go-btn" data-check onclick="checkS5()">Проверить</button>
+  </div>`;
+}
+function getAddCtx() {
+  const a = E.a, add = E.addend;
+  if (a > 0 && add > 0)
+    return `<strong>Оба числа положительные</strong> → просто складывай.`;
+  if (a < 0 && add < 0)
+    return `<strong>Два отрицательных</strong> (← Тренажёр 1): сложи модули, поставь «−».<br>
+      ${Math.abs(a)} + ${Math.abs(add)} = ${Math.abs(a)+Math.abs(add)} → ответ −${Math.abs(a)+Math.abs(add)}.`;
+  const big = Math.max(Math.abs(a), Math.abs(add));
+  const sml = Math.min(Math.abs(a), Math.abs(add));
+  const ws = Math.abs(a) > Math.abs(add) ? (a<0?'−':'+') : (add<0?'−':'+');
+  return `<strong>Разные знаки</strong> (← Тренажёр 2): вычти меньший модуль из большего, знак от победителя.<br>
+    ${big} − ${sml} = ${big-sml} → знак «${ws}» → ответ ${ws}${big-sml}.`;
+}
+function checkS5() {
+  const v = parseInt(document.getElementById('i5')?.value);
+  if (isNaN(v)) return;
+  if (v === E.result) {
+    setFb(`🎉 Отлично! Ответ: <strong>${ps(E.result)}</strong>. Все шаги пройдены верно.`, 'fb-ok');
+    done[5] = true;
+    setTimeout(renderDone, 650);
+  } else {
+    setFb(getDiagS5(v), 'fb-err');
+    markInpErr('i5');
+  }
+}
+function getDiagS5(v) {
+  const a = E.a, add = E.addend, correct = E.result;
+  if (Math.sign(v) !== Math.sign(correct) && Math.abs(v) === Math.abs(correct))
+    return `❌ Число верное (${Math.abs(correct)}), но знак неверный. ${getSignHint(a, add)}`;
+  if (a < 0 && add < 0) {
+    if (v === -(Math.abs(a) - Math.abs(add)) || v === Math.abs(a) - Math.abs(add))
+      return `❌ Ты вычел модули. При двух отрицательных — складываем: ${Math.abs(a)} + ${Math.abs(add)} = ${Math.abs(a)+Math.abs(add)}, знак «−» (Тренажёр 1).`;
+    if (v > 0) return `❌ Два отрицательных числа дают отрицательную сумму.`;
+  }
+  if ((a < 0) !== (add < 0)) {
+    if (Math.abs(v) === Math.abs(a) + Math.abs(add))
+      return `❌ Ты сложил модули вместо вычитания. При разных знаках — вычитай меньший из большего (Тренажёр 2).`;
+  }
+  return `❌ Неверно. Правило: ${getAddCtx().replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim()}`;
+}
+function getSignHint(a, add) {
+  if (a < 0 && add < 0) return 'Два отрицательных → знак «−».';
+  const bigIsNeg = Math.abs(a) > Math.abs(add) ? (a<0) : (add<0);
+  return `Знак от числа с бо́льшим модулем — оно ${bigIsNeg ? 'отрицательное (знак «−»)' : 'положительное (знак «+»)'}.`;
+}
+
+/* ── Карточка завершения ── */
+function renderDone() {
+  const aS   = ps(E.a);
+  const bDisp = E.bSign === '-' ? `(−${E.bMag})` : `(+${E.bMag})`;
+  const addDisp = E.addend < 0 ? `(−${Math.abs(E.addend)})` : `${E.addend}`;
+  const neg  = E.result < 0;
+
+  document.getElementById('stepBox').innerHTML = `
+  <div class="done-card">
+    <div style="font-size:1rem; opacity:.75">Ответ</div>
+    <div class="done-result ${neg?'neg-r':'pos-r'}">${ps(E.result)}</div>
+    <div class="done-steps">
+      <strong>Как решали:</strong><br>
+      1. Знак действия: «${E.op}» перед скобкой<br>
+      2. Знак числа внутри: «${E.bSign}» → ${pss(E.b)}<br>
+      3. ${E.op==='+'?'Плюс → число сохраняется':'Минус → берём противоположное'}: ${bDisp} → ${addDisp}<br>
+      4. Без скобок: ${aS} + ${addDisp}<br>
+      5. Результат: <strong>${ps(E.result)}</strong>
+    </div>
+    <div class="done-rule">
+      + перед скобкой → число сохраняется &nbsp;·&nbsp;
+      − перед скобкой → берём противоположное
+    </div>
+    <button class="new-btn-w" onclick="refreshExample()">🔄 Новый пример</button>
+  </div>`;
+  document.getElementById('progDots').innerHTML = '';
+  document.getElementById('learnFb').innerHTML  = '';
+}
+
+/* ═══════════════════════════════════════════════════
+   ТРЕНИРОВКА
+═══════════════════════════════════════════════════ */
+let prAttempts = 0;
+let score = { ok: 0, all: 0 };
+
+function checkPractice() {
+  const raw = document.getElementById('tAns')?.value.trim();
+  const fb  = document.getElementById('prFb');
+  const sol = document.getElementById('prSol');
+  if (!raw) { fb.innerHTML='Введи ответ.'; fb.className='feedback fb-info'; return; }
+  const v = parseInt(raw);
+  if (isNaN(v)) { fb.innerHTML='Введи целое число.'; fb.className='feedback fb-info'; return; }
+
+  score.all++;
+  prAttempts++;
+
+  const bDisp   = E.bSign === '-' ? `(−${E.bMag})` : `(+${E.bMag})`;
+  const addDisp = E.addend < 0 ? `(−${Math.abs(E.addend)})` : `${E.addend}`;
+
+  if (v === E.result) {
+    score.ok++;
+    fb.innerHTML = `✅ Верно! ${ps(E.a)} ${E.op} ${bDisp} = ${ps(E.a)} + ${addDisp} = <strong>${ps(E.result)}</strong>.`;
+    fb.className = 'feedback fb-ok';
+    sol.classList.add('hidden');
+    prAttempts = 0;
+  } else {
+    fb.className = 'feedback fb-err';
+    if (prAttempts === 1) {
+      // Targeted hint based on likely mistake
+      if (v === E.a + E.b) { // didn't transform at all (applied a + b)
+        const why = E.op === '-'
+          ? `Ты прибавил само число из скобки (${pss(E.b)}), а не его противоположное. Минус перед скобкой → берём противоположное.`
+          : `Ты не применил знак внутри скобки. Проверь: ${bDisp} → это ${pss(E.b)}.`;
+        fb.innerHTML = `🔍 ${why}`;
+      } else if (Math.sign(v) !== Math.sign(E.result) && Math.abs(v) === Math.abs(E.result)) {
+        fb.innerHTML = `🔍 Число верное (${Math.abs(E.result)}), но знак неверный. ${getSignHint(E.a, E.addend)} Не путай знак действия и знак числа.`;
+      } else {
+        fb.innerHTML = `🔍 Проверь шаг замены: ${ps(E.a)} ${E.op} ${bDisp} = ${ps(E.a)} + ${addDisp}. Потом посчитай эту сумму.`;
+      }
+    } else if (prAttempts === 2) {
+      fb.innerHTML = `🔍 ${E.op==='+'?'Плюс':'Минус'} перед скобкой: число ${E.op==='+'?'сохраняется':'меняется на противоположное'}. Итог: ${ps(E.a)} + ${addDisp} = <strong>${ps(E.result)}</strong>.`;
+    } else {
+      fb.innerHTML = `❌ Правильный ответ: <strong>${ps(E.result)}</strong>.`;
+      sol.innerHTML = `
+        <strong>Решение:</strong><br>
+        1. Знак действия: «${E.op}»<br>
+        2. Число в скобке: ${pss(E.b)}<br>
+        3. ${E.op==='+'?'«+» → сохраняется':'«−» → противоположное'}: ${bDisp} → ${addDisp}<br>
+        4. ${ps(E.a)} + ${addDisp} = <strong>${ps(E.result)}</strong>`;
+      sol.classList.remove('hidden');
+      prAttempts = 0;
+    }
+  }
+  updateScore();
+}
+
+function updateScore() {
+  document.getElementById('scOk').textContent  = score.ok;
+  document.getElementById('scAll').textContent = score.all;
+  const pct = score.all > 0 ? Math.round(score.ok/score.all*100) : null;
+  const el = document.getElementById('scPct');
+  el.textContent = pct !== null ? pct + '%' : '—';
+  el.className = 'sc-n ' + (pct === null ? '' : pct >= 70 ? 'g' : 'r');
+}
+
+/* ═══════════════════════════════════════════════════
+   ПОДСКАЗКА
+═══════════════════════════════════════════════════ */
+function showHint() {
+  const bDisp   = E.bSign === '-' ? `(−${E.bMag})` : `(+${E.bMag})`;
+  const addDisp = E.addend < 0 ? `(−${Math.abs(E.addend)})` : `${E.addend}`;
+  const rule = E.op === '+'
+    ? '«+» перед скобкой → число сохраняется'
+    : '«−» перед скобкой → берём противоположное';
+  const txt = `💡 <strong>Подсказка:</strong><br>
+    ${rule}.<br>
+    ${ps(E.a)} ${E.op} ${bDisp} = ${ps(E.a)} + ${addDisp} = <strong>${ps(E.result)}</strong>.`;
+  if (mode === 'learning') {
+    setFb(txt, 'fb-hint');
+  } else {
+    const fb = document.getElementById('prFb');
+    fb.innerHTML = txt; fb.className = 'feedback fb-hint';
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   РЕЖИМ / СБРОС
+═══════════════════════════════════════════════════ */
+function origDisplay() {
+  const aStr = ps(E.a);
+  const opCh = E.op === '+' ? '+' : '−';
+  const bStr = E.bSign === '-' ? `(−${E.bMag})` : `(+${E.bMag})`;
+  return `${aStr} ${opCh} ${bStr}`;
+}
+
+function setMode(m) {
+  mode = m;
+  document.getElementById('btnLearn').classList.toggle('active', m === 'learning');
+  document.getElementById('btnPractice').classList.toggle('active', m === 'practice');
+  document.getElementById('learnPanel').classList.toggle('hidden', m !== 'learning');
+  document.getElementById('practicePanel').classList.toggle('hidden', m !== 'practice');
+  if (m === 'learning') {
+    resetLearning();
+  } else {
+    const el = document.getElementById('tAns'); if (el) el.value = '';
+    document.getElementById('prFb').innerHTML = 'Введи ответ и нажми «Проверить».';
+    document.getElementById('prFb').className = 'feedback fb-info';
+    document.getElementById('prSol').classList.add('hidden');
+    prAttempts = 0;
+    renderVisual();
+    renderPrExpr();
+  }
+}
+
+function renderPrExpr() {
+  const el = document.getElementById('prExpr');
+  if (el) el.innerHTML = origHTML(E, false, false);
+}
+
+function resetLearning() {
+  step = 1; done = {};
+  renderVisual(); renderStep();
+  setFb('🔍 Смотри на левую панель: разберём каждую часть выражения.', 'fb-info');
+}
+
+function refreshExample() {
+  E = genEx();
+  prAttempts = 0;
+  document.getElementById('prSol')?.classList.add('hidden');
+  if (mode === 'learning') {
+    resetLearning();
+  } else {
+    const el = document.getElementById('tAns'); if (el) el.value = '';
+    document.getElementById('prFb').innerHTML = 'Новый пример. Введи ответ.';
+    document.getElementById('prFb').className = 'feedback fb-info';
+    renderVisual(); renderPrExpr();
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   УТИЛИТЫ
+═══════════════════════════════════════════════════ */
+function markInpErr(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.borderColor = '#c0392b';
+  el.animate && el.animate(
+    [{transform:'translateX(0)'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(-3px)'},{transform:'translateX(0)'}],
+    {duration: 380}
+  );
+  setTimeout(() => { el.style.borderColor = ''; }, 700);
+}
+
+/* ═══════════════════════════════════════════════════
+   ИНИЦИАЛИЗАЦИЯ
+═══════════════════════════════════════════════════ */
+(function init() {
+  E = genEx();
+  setMode('learning');
+  document.getElementById('tAns')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPractice();
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Логарифмический радар</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root{
+    --bg:#0f172a;
+    --panel:#1e293b;
+    --panel-2:#273449;
+    --text:#e2e8f0;
+    --muted:#94a3b8;
+    --accent:#38bdf8;
+    --accent-2:#60a5fa;
+    --good:#22c55e;
+    --bad:#ef4444;
+    --warn:#f59e0b;
+    --line:#334155;
+    --chip:#334155;
+    --chip-hover:#3f5170;
+    --chip-sel:#1d4ed8;
+  }
+  html,body{ margin:0; padding:0; background:var(--bg); color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height:100vh;
+  }
+  .wrap{ max-width:1240px; margin:0 auto; padding:18px; }
+  header{ display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:14px;}
+  h1{ font-size:22px; margin:0; letter-spacing:.2px;}
+  h1 span{ color:var(--accent); }
+  .top-actions{ display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+  .back-link{ color:var(--accent); text-decoration:none; font-size:14px; padding:6px 10px; border:1px solid var(--line); border-radius:8px;}
+  .back-link:hover{ background:var(--panel);}
+  .mode-switch{ display:flex; background:var(--panel); border-radius:10px; padding:4px; border:1px solid var(--line);}
+  .mode-switch button{ background:transparent; border:0; color:var(--muted); padding:7px 14px; border-radius:7px; cursor:pointer; font-size:14px; font-weight:600;}
+  .mode-switch button.active{ background:var(--accent); color:#0b1220;}
+  .grid{ display:grid; grid-template-columns: 1.05fr .95fr; gap:16px;}
+  @media (max-width: 920px){ .grid{ grid-template-columns: 1fr; } }
+  .panel{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:18px;}
+  .formula-box{
+    background:linear-gradient(135deg, #1e293b 0%, #273449 100%);
+    border:1px solid var(--line); border-radius:12px;
+    padding:22px 18px; text-align:center; margin-bottom:14px;
+  }
+  .task-label{ font-size:13px; color:var(--muted); letter-spacing:.5px; text-transform:uppercase; margin-bottom:6px;}
+  .formula{
+    font-size:34px; font-weight:600;
+    font-family: "Cambria Math","Latin Modern Math", "Times New Roman", serif;
+    letter-spacing:.5px;
+  }
+  .formula .sub{ font-size:.62em; vertical-align:sub; }
+  .odz-box{
+    background:#0b1220; border:1px dashed var(--accent-2); border-radius:10px;
+    padding:10px 12px; margin-bottom:14px; font-size:15px; color:#cbd5e1;
+  }
+  .odz-box b{ color:var(--accent);}
+  .numberline-wrap{
+    background:#0b1220; border:1px solid var(--line); border-radius:10px;
+    padding:18px 10px 6px 10px;
+  }
+  .numberline-wrap .nl-title{ font-size:13px; color:var(--muted); margin: 0 0 4px 8px;}
+  svg.numberline{ display:block; width:100%; height:120px;}
+  .legend{ display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--muted); padding: 4px 8px 8px 8px;}
+  .legend span{ display:inline-flex; align-items:center; gap:6px;}
+  .dot-green{ width:10px; height:10px; background:var(--good); border-radius:50%;}
+  .dot-red{ width:10px; height:10px; border:2px solid var(--bad); border-radius:50%; background:#0b1220;}
+  .line-green{ width:18px; height:4px; background:var(--good); border-radius:2px;}
+  .step{ background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:10px; transition: all .25s;}
+  .step.locked{ opacity:.55;}
+  .step.done{ border-color:var(--good); }
+  .step.active{ border-color:var(--accent);}
+  .step h3{ font-size:14px; margin:0 0 8px 0; color:var(--text); display:flex; align-items:center; gap:8px;}
+  .step h3 .num{
+    display:inline-flex; align-items:center; justify-content:center;
+    width:22px; height:22px; border-radius:50%;
+    background:var(--accent); color:#0b1220; font-size:12px; font-weight:700;
+  }
+  .step.done h3 .num{ background:var(--good); color:#062611;}
+  .options{ display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+  @media (max-width: 480px){ .options{ grid-template-columns:1fr; } }
+  .opt{
+    background:var(--chip); border:1px solid var(--line); color:var(--text);
+    padding:10px 12px; border-radius:8px; cursor:pointer; text-align:left;
+    font-size:15px; font-family: "Cambria Math","Latin Modern Math","Times New Roman", serif;
+    transition: background .15s, border-color .15s, transform .05s;
+  }
+  .opt:hover{ background:var(--chip-hover);}
+  .opt:active{ transform: scale(0.99);}
+  .opt.sel{ background:var(--chip-sel); border-color:var(--accent);}
+  .opt.correct{ background:#14532d; border-color:var(--good);}
+  .opt.wrong{ background:#7f1d1d; border-color:var(--bad);}
+  .opt:disabled{ cursor:default;}
+  .hint{ font-size:13px; color:var(--warn); margin-top:8px; line-height:1.45;}
+  .hint.good{ color:#86efac;}
+  .hint.bad{ color:#fca5a5;}
+  .actions{ display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;}
+  .btn{
+    background:var(--accent); color:#0b1220; border:0; border-radius:9px;
+    padding:9px 14px; cursor:pointer; font-weight:700; font-size:14px;
+  }
+  .btn.ghost{ background:transparent; color:var(--text); border:1px solid var(--line); font-weight:500;}
+  .btn.ghost:hover{ background:var(--panel-2);}
+  .btn:disabled{ opacity:.5; cursor:not-allowed;}
+  .stats{
+    display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; margin-top:14px;
+  }
+  .stat{ background:var(--panel-2); border:1px solid var(--line); border-radius:10px; padding:10px; text-align:center;}
+  .stat .v{ font-size:20px; font-weight:700; color:var(--accent);}
+  .stat .k{ font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-top:2px;}
+  .history{ display:flex; gap:4px; margin-top:8px; flex-wrap:wrap;}
+  .h-dot{ width:14px; height:14px; border-radius:4px; background:var(--line);}
+  .h-dot.ok{ background:var(--good);}
+  .h-dot.no{ background:var(--bad);}
+  .solution-box{
+    background:#0b1220; border:1px solid var(--accent-2); border-radius:10px;
+    padding:12px 14px; margin-top:12px; font-size:14px; line-height:1.6;
+    display:none;
+  }
+  .solution-box.shown{ display:block;}
+  .solution-box ol{ margin:6px 0 0 18px; padding:0;}
+  .solution-box li{ margin-bottom:4px;}
+  .solution-box .formula-small{
+    font-family:"Cambria Math","Times New Roman",serif; font-size:17px;
+  }
+  .tasks-nav{ display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;}
+  .tasks-nav button{
+    width:30px; height:30px; border-radius:7px; border:1px solid var(--line);
+    background:var(--panel-2); color:var(--muted); cursor:pointer; font-weight:700; font-size:13px;
+  }
+  .tasks-nav button.current{ background:var(--accent); color:#0b1220; border-color:var(--accent);}
+  .tasks-nav button.solved{ border-color:var(--good); color:var(--good);}
+  .tasks-nav button.solved.current{ color:#062611;}
+  .footer-note{ font-size:12px; color:var(--muted); margin-top:8px; text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div>
+    <h1>Логарифмический <span>радар</span></h1>
+    <div style="font-size:13px;color:var(--muted);margin-top:3px;">Логарифмические неравенства с модулем</div>
+  </div>
+  <div class="top-actions">
+    <div class="mode-switch" role="tablist">
+      <button id="modeLearn" class="active">Обучение</button>
+      <button id="modeTrain">Тренировка</button>
+    </div>
+    <a class="back-link" href="../index.html">← Назад</a>
+  </div>
+</header>
+
+<div class="grid">
+
+  <!-- LEFT -->
+  <div class="panel">
+    <div class="formula-box">
+      <div class="task-label">Задача <span id="taskIdx">1</span> из <span id="taskTotal">4</span></div>
+      <div class="formula" id="formula"></div>
+    </div>
+
+    <div class="odz-box" id="odzBox">
+      <b>ОДЗ:</b> выражение под логарифмом должно быть строго больше 0.
+    </div>
+
+    <div class="numberline-wrap">
+      <div class="nl-title">Числовая прямая · итоговый ответ</div>
+      <svg class="numberline" id="numberline" viewBox="0 0 600 120" preserveAspectRatio="none"></svg>
+      <div class="legend">
+        <span><i class="line-green"></i> допустимые промежутки</span>
+        <span><i class="dot-green"></i> включённая точка</span>
+        <span><i class="dot-red"></i> выколотая точка</span>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="v" id="sSolved">0</div><div class="k">Решено</div></div>
+      <div class="stat"><div class="v" id="sCorrect">0</div><div class="k">Верно</div></div>
+      <div class="stat"><div class="v" id="sStreak">0</div><div class="k">Серия</div></div>
+      <div class="stat"><div class="v" id="sBest">0</div><div class="k">Рекорд</div></div>
+    </div>
+    <div class="history" id="history"></div>
+    <div class="footer-note">Прогресс сохраняется локально (ключ <code>mathExamCourseProgress.v1</code>).</div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="panel">
+    <!-- Step 1 -->
+    <div class="step active" id="step1">
+      <h3><span class="num">1</span> Найди ОДЗ.</h3>
+      <div class="options" id="opts1"></div>
+      <div class="hint" id="hint1"></div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step locked" id="step2">
+      <h3><span class="num">2</span> Что происходит со знаком?</h3>
+      <div class="options" id="opts2"></div>
+      <div class="hint" id="hint2"></div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step locked" id="step3">
+      <h3><span class="num">3</span> Во что превращается неравенство?</h3>
+      <div class="options" id="opts3"></div>
+      <div class="hint" id="hint3"></div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step locked" id="step4">
+      <h3><span class="num">4</span> Выбери итоговый ответ.</h3>
+      <div class="options" id="opts4"></div>
+      <div class="hint" id="hint4"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="btnHint">Подсказка</button>
+      <button class="btn ghost" id="btnSolution">Показать решение</button>
+      <button class="btn ghost" id="btnNext">Следующий пример →</button>
+      <button class="btn ghost" id="btnReset">Сбросить статистику</button>
+    </div>
+
+    <div class="solution-box" id="solutionBox"></div>
+
+    <div style="margin-top:14px;">
+      <div style="font-size:13px;color:var(--muted);margin-bottom:6px;">Список задач:</div>
+      <div class="tasks-nav" id="tasksNav"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+"use strict";
+
+/* ===========================
+   Данные задач
+   ===========================
+   Каждая задача: log_b |E| OP C
+   Внутренне храним:
+   - formulaHTML: красивая запись
+   - base: число (например 2 или 1/2)
+   - baseHTML: для отображения подсказок
+   - exprText: модуль выражения, напр. "|x − 3|"
+   - center: значение, в котором выражение под модулем = 0 (выколотая точка)
+   - K: значение, до которого ограничен модуль (|...| <= K)
+   - innerCoeff: коэффициент при x внутри модуля (для 2x ± ... → 2)
+   - answerInterval: текст итогового ответа
+   - answerSegments: для отрисовки на числовой прямой
+       {start, end, leftClosed, rightClosed}
+   - punctured: массив выколотых точек
+   - viewWindow: [min, max] для оси
+   - options для шагов 1..4
+*/
+
+const TASKS = [
+  // 1
+  {
+    formula: 'log<sub class="sub">2</sub> |x − 3| ≤ 2',
+    base: 2, baseStr:'2',
+    op:'≤', C:2,
+    exprText:'|x − 3|',
+    center:3, K:4, innerCoeff:1,
+    answerText:'[−1; 3) ∪ (3; 7]',
+    segments:[
+      {start:-1, end:3, leftClosed:true, rightClosed:false},
+      {start:3,  end:7, leftClosed:false, rightClosed:true}
+    ],
+    punctured:[3],
+    view:[-4, 10],
+    step3correct:'|x − 3| ≤ 4',
+    step3options:['|x − 3| ≤ 4','|x − 3| ≥ 4','|x − 3| < 4','|x − 3| > 4'],
+    step4options:['[−1; 7]','[−1; 3) ∪ (3; 7]','(−∞; −1] ∪ [7; +∞)','(−1; 3) ∪ (3; 7)'],
+    step4correct:'[−1; 3) ∪ (3; 7]'
+  },
+  // 2
+  {
+    formula:'log<sub class="sub">2</sub> |x − 4| &lt; 3',
+    base:2, baseStr:'2',
+    op:'<', C:3,
+    exprText:'|x − 4|',
+    center:4, K:8, innerCoeff:1,
+    answerText:'(−4; 4) ∪ (4; 12)',
+    segments:[
+      {start:-4, end:4, leftClosed:false, rightClosed:false},
+      {start:4,  end:12, leftClosed:false, rightClosed:false}
+    ],
+    punctured:[4],
+    view:[-6, 14],
+    step3correct:'|x − 4| < 8',
+    step3options:['|x − 4| ≤ 8','|x − 4| ≥ 8','|x − 4| < 8','|x − 4| > 8'],
+    step4options:['(−4; 12)','(−4; 4) ∪ (4; 12)','(−∞; −4) ∪ (12; +∞)','[−4; 4) ∪ (4; 12]'],
+    step4correct:'(−4; 4) ∪ (4; 12)'
+  },
+  // 3
+  {
+    formula:'log<sub class="sub">3</sub> |x + 1| &gt; 1',
+    base:3, baseStr:'3',
+    op:'>', C:1,
+    exprText:'|x + 1|',
+    center:-1, K:3, innerCoeff:1,
+    answerText:'(−∞; −4) ∪ (2; +∞)',
+    segments:[
+      {start:-99, end:-4, leftClosed:false, rightClosed:false, openLeft:true},
+      {start:2,  end:99, leftClosed:false, rightClosed:false, openRight:true}
+    ],
+    punctured:[], // x=-1 уже не входит в (−∞;−4)∪(2;+∞), отдельно показывать не нужно
+    view:[-9, 7],
+    step3correct:'|x + 1| > 3',
+    step3options:['|x + 1| ≤ 3','|x + 1| ≥ 3','|x + 1| < 3','|x + 1| > 3'],
+    step4options:['(−4; 2)','(−∞; −4) ∪ (2; +∞)','(−∞; −4] ∪ [2; +∞)','[−4; −1) ∪ (−1; 2]'],
+    step4correct:'(−∞; −4) ∪ (2; +∞)'
+  },
+  // 4
+  {
+    formula:'log<sub class="sub">5</sub> |2x − 1| ≥ 0',
+    base:5, baseStr:'5',
+    op:'≥', C:0,
+    exprText:'|2x − 1|',
+    center:0.5, K:1, innerCoeff:2,
+    answerText:'(−∞; 0] ∪ [1; +∞)',
+    segments:[
+      {start:-99, end:0, leftClosed:false, rightClosed:true, openLeft:true},
+      {start:1,  end:99, leftClosed:true, rightClosed:false, openRight:true}
+    ],
+    punctured:[],
+    view:[-4, 5],
+    step3correct:'|2x − 1| ≥ 1',
+    step3options:['|2x − 1| ≤ 1','|2x − 1| ≥ 1','|2x − 1| < 1','|2x − 1| > 1'],
+    step4options:['[0; 1]','(−∞; 0] ∪ [1; +∞)','(−∞; 0) ∪ (1; +∞)','(0; 1)'],
+    step4correct:'(−∞; 0] ∪ [1; +∞)'
+  },
+  // 5
+  {
+    formula:'log<sub class="sub">1/2</sub> |x − 3| ≥ −2',
+    base:0.5, baseStr:'1/2',
+    op:'≥', C:-2,
+    exprText:'|x − 3|',
+    center:3, K:4, innerCoeff:1,
+    answerText:'[−1; 3) ∪ (3; 7]',
+    segments:[
+      {start:-1, end:3, leftClosed:true, rightClosed:false},
+      {start:3,  end:7, leftClosed:false, rightClosed:true}
+    ],
+    punctured:[3],
+    view:[-4, 10],
+    step3correct:'|x − 3| ≤ 4',
+    step3options:['|x − 3| ≤ 4','|x − 3| ≥ 4','|x − 3| < 4','|x − 3| > 4'],
+    step4options:['[−1; 7]','[−1; 3) ∪ (3; 7]','(−∞; −1] ∪ [7; +∞)','(−1; 3) ∪ (3; 7)'],
+    step4correct:'[−1; 3) ∪ (3; 7]'
+  },
+  // 6
+  {
+    formula:'log<sub class="sub">1/3</sub> |x + 2| &lt; −1',
+    base:1/3, baseStr:'1/3',
+    op:'<', C:-1,
+    exprText:'|x + 2|',
+    center:-2, K:3, innerCoeff:1,
+    // log_{1/3} |x+2| < -1  =>  |x+2| > 3  => x<-5 или x>1
+    answerText:'(−∞; −5) ∪ (1; +∞)',
+    segments:[
+      {start:-99, end:-5, leftClosed:false, rightClosed:false, openLeft:true},
+      {start:1,  end:99, leftClosed:false, rightClosed:false, openRight:true}
+    ],
+    punctured:[],
+    view:[-10, 6],
+    step3correct:'|x + 2| > 3',
+    step3options:['|x + 2| ≤ 3','|x + 2| ≥ 3','|x + 2| < 3','|x + 2| > 3'],
+    step4options:['(−5; 1)','(−∞; −5) ∪ (1; +∞)','(−∞; −5] ∪ [1; +∞)','[−5; −2) ∪ (−2; 1]'],
+    step4correct:'(−∞; −5) ∪ (1; +∞)'
+  },
+  // 7
+  {
+    formula:'log<sub class="sub">1/4</sub> |x − 1| ≤ 0',
+    base:0.25, baseStr:'1/4',
+    op:'≤', C:0,
+    exprText:'|x − 1|',
+    center:1, K:1, innerCoeff:1,
+    // log_{1/4} |x-1| <= 0  =>  |x-1| >= 1  => x<=0 или x>=2
+    answerText:'(−∞; 0] ∪ [2; +∞)',
+    segments:[
+      {start:-99, end:0, leftClosed:false, rightClosed:true, openLeft:true},
+      {start:2,  end:99, leftClosed:true, rightClosed:false, openRight:true}
+    ],
+    punctured:[],
+    view:[-5, 7],
+    step3correct:'|x − 1| ≥ 1',
+    step3options:['|x − 1| ≤ 1','|x − 1| ≥ 1','|x − 1| < 1','|x − 1| > 1'],
+    step4options:['[0; 2]','(−∞; 0] ∪ [2; +∞)','(−∞; 0) ∪ (2; +∞)','(0; 1) ∪ (1; 2)'],
+    step4correct:'(−∞; 0] ∪ [2; +∞)'
+  },
+  // 8
+  {
+    formula:'log<sub class="sub">1/5</sub> |2x + 3| &gt; −1',
+    base:0.2, baseStr:'1/5',
+    op:'>', C:-1,
+    exprText:'|2x + 3|',
+    center:-1.5, K:5, innerCoeff:2,
+    // log_{1/5} |2x+3| > -1  =>  |2x+3| < 5  => -5<2x+3<5 => -4<x<1, исключая x=-3/2
+    answerText:'(−4; −1.5) ∪ (−1.5; 1)',
+    segments:[
+      {start:-4, end:-1.5, leftClosed:false, rightClosed:false},
+      {start:-1.5, end:1, leftClosed:false, rightClosed:false}
+    ],
+    punctured:[-1.5],
+    view:[-6, 3],
+    step3correct:'|2x + 3| < 5',
+    step3options:['|2x + 3| ≤ 5','|2x + 3| ≥ 5','|2x + 3| < 5','|2x + 3| > 5'],
+    step4options:['(−4; 1)','(−4; −1.5) ∪ (−1.5; 1)','(−∞; −4) ∪ (1; +∞)','[−4; 1]'],
+    step4correct:'(−4; −1.5) ∪ (−1.5; 1)'
+  }
+];
+
+// общие варианты для шагов 1 и 2
+const STEP1_OPTIONS_BASE = ['{EXPR} > 0','{EXPR} ≥ 0','{EXPR} < 0','ОДЗ не нужно'];
+const STEP1_CORRECT_PATTERN = '{EXPR} > 0';
+const STEP2_OPTIONS = ['знак сохраняется','знак меняется'];
+
+// ===========================
+// Состояние
+// ===========================
+const STORAGE_KEY = 'mathExamCourseProgress.v1';
+const TOPIC_ID = 'logarithmRadarBasic';
+
+const state = {
+  mode:'learn',           // 'learn' | 'train'
+  taskOrder:[],           // массив индексов из TASKS
+  currentPos:0,
+  currentTaskIdx:0,       // индекс в TASKS
+  steps:[null,null,null,null], // выбранные ответы (по индексам опций) - для логики храним строку
+  stepCorrect:[false,false,false,false],
+  stepLocked:[false,false,false,false],
+  currentStep:0,          // 0..3
+  taskAnyMistake:false,   // была ли ошибка в текущей задаче
+  taskSolved:false,
+  shuffledOptions:[null,null,null,null], // массивы вариантов после возможного перемешивания
+};
+
+function getProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultProgress();
+    const obj = JSON.parse(raw);
+    if(!obj.topics) obj.topics = {};
+    if(!obj.topics[TOPIC_ID]) obj.topics[TOPIC_ID] = defaultTopicStats();
+    return obj;
+  }catch(e){ return defaultProgress(); }
+}
+function defaultProgress(){
+  return { topics: { [TOPIC_ID]: defaultTopicStats() } };
+}
+function defaultTopicStats(){
+  return { solved:0, correct:0, streak:0, bestStreak:0, history:[], solvedIds:[] };
+}
+function saveProgress(p){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); }catch(e){}
+}
+
+// ===========================
+// Утилиты
+// ===========================
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function fmtNum(n){
+  if(Number.isInteger(n)) return String(n);
+  // 0.5 -> 0.5, -1.5 -> −1.5
+  return String(n).replace('-','−');
+}
+function pretty(s){
+  // заменим минусы для красоты, оставим если уже '−'
+  return s.replaceAll('-','−');
+}
+
+// ===========================
+// Рендер
+// ===========================
+function renderTask(){
+  const t = TASKS[state.currentTaskIdx];
+  document.getElementById('formula').innerHTML = t.formula;
+  document.getElementById('taskIdx').textContent = state.currentPos+1;
+  document.getElementById('taskTotal').textContent = state.taskOrder.length;
+
+  // ОДЗ-подсказка
+  document.getElementById('odzBox').innerHTML =
+    '<b>ОДЗ:</b> выражение под логарифмом должно быть строго больше нуля: '+
+    t.exprText.replace('-','−')+' &gt; 0.';
+
+  // Сбрасываем шаги
+  state.steps = [null,null,null,null];
+  state.stepCorrect = [false,false,false,false];
+  state.stepLocked = [false,false,false,false];
+  state.currentStep = 0;
+  state.taskAnyMistake = false;
+  state.taskSolved = false;
+
+  // Опции
+  const step1Opts = STEP1_OPTIONS_BASE.map(s=>s.replace('{EXPR}', t.exprText));
+  let s1 = step1Opts, s2 = STEP2_OPTIONS.slice(), s3 = t.step3options.slice(), s4 = t.step4options.slice();
+  if(state.mode==='train'){
+    s1 = shuffle(s1); s2 = shuffle(s2); s3 = shuffle(s3); s4 = shuffle(s4);
+  }
+  state.shuffledOptions = [s1,s2,s3,s4];
+
+  renderStepOptions(0, s1);
+  renderStepOptions(1, s2);
+  renderStepOptions(2, s3);
+  renderStepOptions(3, s4);
+
+  // visuals шагов
+  for(let i=0;i<4;i++){
+    document.getElementById('hint'+(i+1)).textContent = '';
+    document.getElementById('hint'+(i+1)).className = 'hint';
+    const step = document.getElementById('step'+(i+1));
+    step.classList.remove('done','active','locked');
+    if(i===0) step.classList.add('active');
+    else step.classList.add('locked');
+  }
+
+  // Скрыть решение
+  document.getElementById('solutionBox').classList.remove('shown');
+
+  // Очистим числовую прямую (только ось)
+  drawNumberLine(t, /*showAnswer*/false);
+
+  renderStats();
+  renderTasksNav();
+}
+
+function renderStepOptions(stepIdx, opts){
+  const wrap = document.getElementById('opts'+(stepIdx+1));
+  wrap.innerHTML = '';
+  opts.forEach((label, k)=>{
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.innerHTML = label;
+    b.dataset.value = label;
+    b.addEventListener('click', ()=> handleChoice(stepIdx, label, b));
+    wrap.appendChild(b);
+  });
+}
+
+function getCorrectFor(stepIdx){
+  const t = TASKS[state.currentTaskIdx];
+  if(stepIdx===0) return STEP1_CORRECT_PATTERN.replace('{EXPR}', t.exprText);
+  if(stepIdx===1){
+    // если основание > 1 — сохраняется, иначе меняется
+    return t.base>1 ? 'знак сохраняется' : 'знак меняется';
+  }
+  if(stepIdx===2) return t.step3correct;
+  if(stepIdx===3) return t.step4correct;
+}
+
+function handleChoice(stepIdx, label, btn){
+  // нельзя выбирать заблокированные или будущие шаги
+  if(stepIdx !== state.currentStep) return;
+
+  const correct = getCorrectFor(stepIdx);
+  const isRight = (label === correct);
+
+  // Подсветим выбранный вариант
+  const wrap = document.getElementById('opts'+(stepIdx+1));
+  Array.from(wrap.children).forEach(c=>c.classList.remove('sel','correct','wrong'));
+  btn.classList.add(isRight ? 'correct' : 'wrong');
+
+  const hintEl = document.getElementById('hint'+(stepIdx+1));
+
+  if(isRight){
+    state.steps[stepIdx] = label;
+    state.stepCorrect[stepIdx] = true;
+    state.stepLocked[stepIdx] = true;
+    // отключим остальные опции этого шага
+    Array.from(wrap.children).forEach(c=>{ if(c!==btn) c.disabled = true; });
+    hintEl.className = 'hint good';
+    hintEl.textContent = positiveFeedback(stepIdx);
+
+    // Помечаем шаг как done
+    const step = document.getElementById('step'+(stepIdx+1));
+    step.classList.remove('active');
+    step.classList.add('done');
+
+    // Переход к след. шагу
+    if(stepIdx < 3){
+      state.currentStep = stepIdx+1;
+      const next = document.getElementById('step'+(stepIdx+2));
+      next.classList.remove('locked');
+      next.classList.add('active');
+    } else {
+      // Все 4 шага верно
+      finishTask();
+    }
+  } else {
+    state.taskAnyMistake = true;
+    hintEl.className = 'hint bad';
+    hintEl.textContent = diagnose(stepIdx, label);
+    // в режиме обучения после ошибки кнопку «зануляем», но даём шанс выбрать снова
+    // не блокируем кнопки полностью — пусть попробует ещё
+    setTimeout(()=>{ btn.classList.remove('wrong'); btn.disabled = true; }, 600);
+  }
+}
+
+function positiveFeedback(stepIdx){
+  const t = TASKS[state.currentTaskIdx];
+  switch(stepIdx){
+    case 0: return 'Верно. Логарифм определён только когда выражение под ним строго больше 0.';
+    case 1:
+      return t.base>1
+        ? 'Верно: основание '+t.baseStr+' > 1, функция возрастает, знак неравенства сохраняется.'
+        : 'Верно: основание '+t.baseStr+' между 0 и 1, функция убывает, знак неравенства меняется.';
+    case 2: return 'Верно. Теперь осталось пересечь с ОДЗ.';
+    case 3: return 'Отлично! Ответ найден.';
+  }
+}
+
+function diagnose(stepIdx, label){
+  const t = TASKS[state.currentTaskIdx];
+  if(stepIdx===0){
+    if(label.includes('≥ 0'))
+      return 'Подвох: при '+t.exprText.replace('-','−')+' = 0 логарифм не определён. Нужно строго больше 0.';
+    if(label.includes('< 0'))
+      return 'Модуль не бывает отрицательным, а под логарифмом значение должно быть положительным.';
+    if(label.startsWith('ОДЗ'))
+      return 'Логарифм существует только тогда, когда выражение под логарифмом строго больше 0. ОДЗ обязательно.';
+  }
+  if(stepIdx===1){
+    if(t.base>1 && label==='знак меняется')
+      return 'Основание '+t.baseStr+' больше 1, функция возрастает — знак не меняется.';
+    if(t.base<1 && label==='знак сохраняется')
+      return 'Основание '+t.baseStr+' между 0 и 1, поэтому логарифмическая функция убывает, и знак неравенства меняется.';
+  }
+  if(stepIdx===2){
+    // Подсказки по верному виду
+    return 'Не совсем. Аккуратно перепиши неравенство: '+t.exprText.replace('-','−')+
+      ' '+(t.base>1?'(знак тот же)':'(знак меняется!)')+' '+
+      (Math.pow(t.base, t.C)).toString().replace('-','−')+'. Подумай ещё раз.';
+  }
+  if(stepIdx===3){
+    if(label.replace(/\s/g,'')==='[−1;7]' || label.replace(/\s/g,'')==='[0;2]' ||
+       label.replace(/\s/g,'')==='(−4;12)' || label.replace(/\s/g,'')==='(−4;1)' ||
+       label.replace(/\s/g,'')==='[0;1]' || label.replace(/\s/g,'')==='(−5;1)' ||
+       label.replace(/\s/g,'')==='(−4;2)'){
+      return 'Почти верно, но внутри этого промежутка есть запрещённая точка x = '+
+        fmtNum(t.center)+' — её нужно выколоть.';
+    }
+    if(label.includes('(') && !label.includes('∪') && t.segments.length>1){
+      return 'Не хватает второй части ответа — пересечение с ОДЗ обычно даёт объединение промежутков.';
+    }
+    return 'Неверный ответ. Пересеки решение неравенства на модуль с ОДЗ '+t.exprText.replace('-','−')+' > 0.';
+  }
+  return 'Подумай ещё раз.';
+}
+
+function finishTask(){
+  state.taskSolved = true;
+  // Числовая прямая: показать ответ
+  drawNumberLine(TASKS[state.currentTaskIdx], true);
+
+  // Сохраним статистику
+  const p = getProgress();
+  const st = p.topics[TOPIC_ID];
+  st.solved = (st.solved||0)+1;
+  if(!state.taskAnyMistake){
+    st.correct = (st.correct||0)+1;
+    st.streak = (st.streak||0)+1;
+    st.bestStreak = Math.max(st.bestStreak||0, st.streak);
+    st.history.unshift(1);
+  } else {
+    st.streak = 0;
+    st.history.unshift(0);
+  }
+  if(st.history.length>10) st.history = st.history.slice(0,10);
+  if(!st.solvedIds) st.solvedIds = [];
+  if(!st.solvedIds.includes(state.currentTaskIdx)) st.solvedIds.push(state.currentTaskIdx);
+  saveProgress(p);
+  renderStats();
+  renderTasksNav();
+}
+
+function renderStats(){
+  const st = getProgress().topics[TOPIC_ID];
+  document.getElementById('sSolved').textContent = st.solved||0;
+  document.getElementById('sCorrect').textContent = st.correct||0;
+  document.getElementById('sStreak').textContent = st.streak||0;
+  document.getElementById('sBest').textContent = st.bestStreak||0;
+  const hist = document.getElementById('history');
+  hist.innerHTML = '';
+  const cells = [];
+  const h = (st.history||[]).slice(0,10);
+  for(let i=0;i<10;i++){
+    const d = document.createElement('div');
+    d.className = 'h-dot';
+    if(h[i]===1) d.className += ' ok';
+    else if(h[i]===0) d.className += ' no';
+    cells.push(d);
+  }
+  cells.reverse().forEach(c=>hist.appendChild(c));
+}
+
+function renderTasksNav(){
+  const wrap = document.getElementById('tasksNav');
+  wrap.innerHTML = '';
+  const st = getProgress().topics[TOPIC_ID];
+  state.taskOrder.forEach((tIdx, pos)=>{
+    const b = document.createElement('button');
+    b.textContent = (pos+1);
+    if(pos===state.currentPos) b.classList.add('current');
+    if((st.solvedIds||[]).includes(tIdx)) b.classList.add('solved');
+    b.addEventListener('click', ()=>{ state.currentPos = pos; state.currentTaskIdx = tIdx; renderTask(); });
+    wrap.appendChild(b);
+  });
+}
+
+// ===========================
+// Числовая прямая (SVG)
+// ===========================
+function drawNumberLine(task, showAnswer){
+  const svg = document.getElementById('numberline');
+  const W = 600, H = 120;
+  const [vmin, vmax] = task.view;
+  const padX = 32;
+  const usableW = W - 2*padX;
+  const axisY = 70;
+
+  function xOf(v){
+    if(v>=99) return W-4;
+    if(v<=-99) return 4;
+    return padX + (v - vmin)/(vmax - vmin)*usableW;
+  }
+
+  let html = '';
+
+  // Главная линия
+  html += `<line x1="8" y1="${axisY}" x2="${W-8}" y2="${axisY}" stroke="#475569" stroke-width="2"/>`;
+  // стрелки
+  html += `<polygon points="${W-8},${axisY} ${W-16},${axisY-5} ${W-16},${axisY+5}" fill="#475569"/>`;
+  html += `<polygon points="8,${axisY} 16,${axisY-5} 16,${axisY+5}" fill="#475569"/>`;
+
+  // Тики и подписи
+  const tickStep = chooseTick(vmax - vmin);
+  const startTick = Math.ceil(vmin/tickStep)*tickStep;
+  for(let v=startTick; v<=vmax; v+=tickStep){
+    const x = xOf(v);
+    html += `<line x1="${x}" y1="${axisY-5}" x2="${x}" y2="${axisY+5}" stroke="#64748b" stroke-width="1.5"/>`;
+    const lbl = Math.abs(v) < 1e-9 ? '0' : fmtNum(+v.toFixed(2));
+    html += `<text x="${x}" y="${axisY+22}" fill="#94a3b8" font-size="12" text-anchor="middle" font-family="system-ui,sans-serif">${lbl}</text>`;
+  }
+
+  if(showAnswer){
+    // Сегменты ответа
+    task.segments.forEach(seg=>{
+      const x1 = xOf(seg.start);
+      const x2 = xOf(seg.end);
+      // зеленая полоса
+      html += `<rect x="${Math.min(x1,x2)}" y="${axisY-7}" width="${Math.abs(x2-x1)}" height="14" fill="#22c55e" opacity="0.35" rx="3"/>`;
+      html += `<line x1="${x1}" y1="${axisY}" x2="${x2}" y2="${axisY}" stroke="#22c55e" stroke-width="4"/>`;
+
+      // Левая точка
+      if(!seg.openLeft){
+        if(seg.leftClosed){
+          html += `<circle cx="${x1}" cy="${axisY}" r="6" fill="#22c55e" stroke="#0b1220" stroke-width="2"/>`;
+        } else {
+          // не выколотая (просто открытая) — пустой кружок зеленый
+          // но если эта точка совпадает с пунктированной — отметим красным позже
+          if(!isPunctured(task, seg.start)){
+            html += `<circle cx="${x1}" cy="${axisY}" r="6" fill="#0b1220" stroke="#22c55e" stroke-width="2.5"/>`;
+          }
+        }
+      }
+      // Правая точка
+      if(!seg.openRight){
+        if(seg.rightClosed){
+          html += `<circle cx="${x2}" cy="${axisY}" r="6" fill="#22c55e" stroke="#0b1220" stroke-width="2"/>`;
+        } else {
+          if(!isPunctured(task, seg.end)){
+            html += `<circle cx="${x2}" cy="${axisY}" r="6" fill="#0b1220" stroke="#22c55e" stroke-width="2.5"/>`;
+          }
+        }
+      }
+    });
+
+    // Выколотые точки — поверх всего
+    (task.punctured||[]).forEach(p=>{
+      const x = xOf(p);
+      html += `<circle cx="${x}" cy="${axisY}" r="7" fill="#0b1220" stroke="#ef4444" stroke-width="2.8"/>`;
+      html += `<text x="${x}" y="${axisY-14}" fill="#ef4444" font-size="12" text-anchor="middle" font-weight="700" font-family="system-ui,sans-serif">x=${fmtNum(p)}</text>`;
+    });
+
+    // Ответ текстом
+    html += `<text x="${W/2}" y="${H-8}" fill="#86efac" font-size="15" text-anchor="middle" font-weight="700" font-family="system-ui,sans-serif">${pretty(task.answerText)}</text>`;
+  } else {
+    // Просто подсказка центра (выколотая точка из-за ОДЗ)
+    const cx = xOf(task.center);
+    html += `<circle cx="${cx}" cy="${axisY}" r="7" fill="#0b1220" stroke="#ef4444" stroke-width="2.5" stroke-dasharray="3 2"/>`;
+    html += `<text x="${cx}" y="${axisY-14}" fill="#fca5a5" font-size="12" text-anchor="middle" font-family="system-ui,sans-serif">x=${fmtNum(task.center)} запрещена</text>`;
+    html += `<text x="${W/2}" y="${H-8}" fill="#94a3b8" font-size="13" text-anchor="middle" font-family="system-ui,sans-serif">пройди все шаги, чтобы увидеть ответ</text>`;
+  }
+
+  svg.innerHTML = html;
+}
+function isPunctured(task, v){
+  return (task.punctured||[]).some(p => Math.abs(p - v) < 1e-9);
+}
+function chooseTick(range){
+  if(range<=6) return 1;
+  if(range<=12) return 1;
+  if(range<=20) return 2;
+  if(range<=40) return 5;
+  return 10;
+}
+
+// ===========================
+// Кнопки
+// ===========================
+document.getElementById('btnHint').addEventListener('click', ()=>{
+  const t = TASKS[state.currentTaskIdx];
+  const step = state.currentStep;
+  const hintEl = document.getElementById('hint'+(step+1));
+  hintEl.className = 'hint';
+  let msg = '';
+  if(step===0){
+    msg = 'Логарифм существует только когда выражение под ним положительно: '+
+      t.exprText.replace('-','−')+' > 0. Поэтому x ≠ '+fmtNum(t.center)+'.';
+  } else if(step===1){
+    msg = 'Сравни основание с 1. Основание здесь: '+t.baseStr+'. '+
+      (t.base>1 ? 'Оно > 1 — функция возрастает, знак сохраняется.'
+                : 'Оно между 0 и 1 — функция убывает, знак меняется.');
+  } else if(step===2){
+    const Kshown = (Math.abs(t.K - Math.round(t.K))<1e-9) ? String(Math.round(t.K)) : String(t.K);
+    msg = 'Возведи обе части в степень основания: правая часть превратится в '+Kshown+
+      '. Не забудь '+ (t.base>1?'сохранить':'поменять') +' знак неравенства.';
+  } else {
+    msg = 'Нарисуй на прямой решение неравенства с модулем и выколи точку x = '+fmtNum(t.center)+'. Получится объединение двух промежутков.';
+  }
+  hintEl.textContent = msg;
+});
+
+document.getElementById('btnSolution').addEventListener('click', ()=>{
+  const t = TASKS[state.currentTaskIdx];
+  const box = document.getElementById('solutionBox');
+  const baseRule = t.base>1
+    ? 'Основание '+t.baseStr+' > 1 — знак неравенства сохраняется.'
+    : 'Основание '+t.baseStr+' ∈ (0,1) — знак неравенства меняется.';
+  box.innerHTML = `
+    <b>Полное решение:</b>
+    <ol>
+      <li>ОДЗ: <span class="formula-small">${t.exprText.replace('-','−')} > 0</span>, то есть x ≠ ${fmtNum(t.center)}.</li>
+      <li>${baseRule}</li>
+      <li>Переходим к неравенству без логарифма: <span class="formula-small">${pretty(t.step3correct)}</span>.</li>
+      <li>Пересекаем с ОДЗ (выкалываем x = ${fmtNum(t.center)}).</li>
+      <li>Ответ: <span class="formula-small" style="color:#86efac">${pretty(t.answerText)}</span>.</li>
+    </ol>
+  `;
+  box.classList.add('shown');
+  // Также рисуем ответ на оси
+  drawNumberLine(t, true);
+});
+
+document.getElementById('btnNext').addEventListener('click', ()=>{
+  if(state.currentPos < state.taskOrder.length-1){
+    state.currentPos += 1;
+  } else {
+    state.currentPos = 0; // зацикливаем
+  }
+  state.currentTaskIdx = state.taskOrder[state.currentPos];
+  renderTask();
+});
+
+document.getElementById('btnReset').addEventListener('click', ()=>{
+  if(!confirm('Сбросить статистику этого тренажёра?')) return;
+  const p = getProgress();
+  p.topics[TOPIC_ID] = defaultTopicStats();
+  saveProgress(p);
+  renderStats();
+  renderTasksNav();
+});
+
+document.getElementById('modeLearn').addEventListener('click', ()=> setMode('learn'));
+document.getElementById('modeTrain').addEventListener('click', ()=> setMode('train'));
+
+function setMode(m){
+  state.mode = m;
+  document.getElementById('modeLearn').classList.toggle('active', m==='learn');
+  document.getElementById('modeTrain').classList.toggle('active', m==='train');
+  if(m==='learn'){
+    state.taskOrder = [0,1,2,3]; // первые 4
+  } else {
+    state.taskOrder = shuffle([0,1,2,3,4,5,6,7]); // все 8 в случайном порядке
+  }
+  state.currentPos = 0;
+  state.currentTaskIdx = state.taskOrder[0];
+  renderTask();
+}
+
+// Стартуем в режиме обучения
+setMode('learn');
+
+</script>
+</body>
+</html>

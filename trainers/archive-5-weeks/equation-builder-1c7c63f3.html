@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Собери решение уравнения — Mathexam.space</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#eef2f5; --card:#fff; --hdr:#2c3e4e;
+  --blue:#2c7da0; --blue-h:#1f5e7a; --blue-lt:#e0f2fe;
+  --ok:#16a34a;   --ok-bg:#dcfce7;  --ok-dk:#14532d;
+  --err:#dc2626;  --err-bg:#fee2e2; --err-dk:#7f1d1d;
+  --amb:#d97706;  --amb-bg:#fef3c7; --amb-dk:#78350f;
+  --muted:#94a3b8; --border:#d1dae4; --text:#1a2c3e; --tlt:#64748b;
+  --neg:#dc2626;   --pos:#1d6fa4;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);font-family:'Segoe UI',Roboto,sans-serif;color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+
+/* ── шапка ── */
+.hdr{background:var(--hdr);color:#fff;padding:13px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.hdr h1{font-size:1.2rem;font-weight:600}
+.hdr p{font-size:.74rem;opacity:.55;margin-top:2px}
+.back{color:rgba(255,255,255,.5);font-size:.82rem;text-decoration:none;font-weight:500;white-space:nowrap;transition:color .15s}
+.back:hover{color:#fff}
+
+/* статус-полоса */
+.sbar{background:#243447;padding:5px 22px;display:none;gap:16px;flex-wrap:wrap;font-size:.78rem;color:rgba(255,255,255,.65)}
+.sbar.on{display:flex}
+.sval{font-weight:700;color:#fff}
+
+/* ── основной контент ── */
+main{flex:1;display:flex;flex-direction:column;align-items:center;padding:20px 14px 50px}
+.scr{width:100%;max-width:580px;display:flex;flex-direction:column;gap:12px}
+
+/* карточки */
+.card{background:var(--card);border-radius:18px;padding:20px;box-shadow:0 4px 16px rgba(0,0,0,.07)}
+.card-sm{background:var(--card);border-radius:14px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+
+/* ── уравнение ── */
+.eq-card{text-align:center;padding:22px 12px;background:#f4f9fe;border:1px solid #d4e2ec}
+.eq-big{font-family:'Courier New',monospace;font-size:2.7rem;font-weight:800;letter-spacing:3px;line-height:1.2;word-break:break-all}
+@media(max-width:400px){.eq-big{font-size:2rem}}
+.e-x{color:#1a2c3e} .e-op{color:#64748b}
+.e-neg{color:var(--neg)} .e-pos{color:var(--pos)}
+
+/* ── строим решение ── */
+.builder{background:#1e3a4e;border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;min-height:64px}
+.b-row{display:flex;align-items:center;gap:10px;animation:slideIn .3s ease}
+.b-num{width:22px;height:22px;border-radius:50%;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.b-num.done{background:var(--ok);color:#fff}
+.b-num.wait{background:rgba(255,255,255,.15);color:rgba(255,255,255,.5)}
+.b-text{font-family:'Courier New',monospace;font-size:1.1rem;font-weight:700;color:rgba(255,255,255,.6)}
+.b-text.done{color:#fff}
+.b-placeholder{font-size:.84rem;color:rgba(255,255,255,.35);font-style:italic}
+
+/* ── шаг ── */
+.step-card{border:2px solid var(--border);border-radius:16px;padding:16px 18px}
+.sbadge{font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sbnum{width:20px;height:20px;border-radius:50%;background:var(--blue);color:#fff;font-size:.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-q{font-size:.97rem;font-weight:500;color:var(--text);margin-bottom:12px;line-height:1.5}
+
+/* ── кнопки операций ── */
+.op-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.op-btn{padding:13px 10px;border:2.5px solid var(--border);border-radius:13px;font-size:.95rem;font-weight:700;cursor:pointer;background:#fff;color:var(--text);transition:all .17s;font-family:inherit;text-align:center}
+.op-btn:hover:not(:disabled){border-color:var(--blue);color:var(--blue);background:var(--blue-lt)}
+.op-btn.ok{border-color:var(--ok);background:var(--ok-bg);color:var(--ok-dk);pointer-events:none}
+.op-btn.err{border-color:var(--err);background:var(--err-bg);color:var(--err-dk);pointer-events:none;animation:shake .38s}
+.op-btn.dim{opacity:.25;pointer-events:none}
+
+/* ── кнопки выражений (шаг 2) ── */
+.expr-grid{display:flex;flex-direction:column;gap:8px}
+.expr-btn{padding:12px 16px;border:2.5px solid var(--border);border-radius:13px;font-size:1rem;font-weight:700;font-family:'Courier New',monospace;cursor:pointer;background:#fff;color:var(--text);transition:all .17s;text-align:left}
+.expr-btn:hover:not(:disabled){border-color:var(--blue);color:var(--blue);background:var(--blue-lt)}
+.expr-btn.ok{border-color:var(--ok);background:var(--ok-bg);color:var(--ok-dk);pointer-events:none}
+.expr-btn.err{border-color:var(--err);background:var(--err-bg);color:var(--err-dk);pointer-events:none;animation:shake .38s}
+.expr-btn.dim{opacity:.25;pointer-events:none}
+
+/* ── ввод ответа (шаг 3) ── */
+.ans-wrap{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ans-lbl{font-size:1rem;font-weight:700;font-family:'Courier New',monospace}
+.ans-inp{font-size:1.35rem;width:108px;text-align:center;border:2.5px solid var(--border);border-radius:40px;padding:8px;font-weight:800;font-family:'Courier New',monospace;outline:none;transition:border-color .2s;appearance:textfield;-moz-appearance:textfield}
+.ans-inp::-webkit-inner-spin-button,.ans-inp::-webkit-outer-spin-button{-webkit-appearance:none}
+.ans-inp:focus{border-color:var(--blue)}
+.ans-inp.ok{border-color:var(--ok);background:var(--ok-bg)}
+.ans-inp.err{border-color:var(--err);background:var(--err-bg)}
+.go-btn{background:var(--blue);border:none;color:#fff;padding:11px 22px;border-radius:40px;font-size:.93rem;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit}
+.go-btn:hover{background:var(--blue-h)}
+
+/* ── обратная связь ── */
+.fb{border-radius:11px;padding:10px 14px;font-size:.87rem;line-height:1.65;margin-top:8px;display:none;animation:fadeIn .3s ease}
+.fb.vis{display:block}
+.fb-ok  {background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--ok-dk)}
+.fb-err {background:var(--err-bg);border-left:4px solid var(--err);color:var(--err-dk)}
+.fb-hint{background:var(--amb-bg);border-left:4px solid var(--amb);color:var(--amb-dk)}
+
+/* ── карточка "готово" ── */
+.done-card{background:linear-gradient(140deg,#1e3a4e,#2c5c72);border-radius:18px;padding:24px 20px;color:#fff;text-align:center}
+.done-res{font-size:3rem;font-weight:900;font-family:'Courier New',monospace;margin:8px 0}
+.done-res.neg{color:#fca5a5} .done-res.pos{color:#7dd3fc} .done-res.zer{color:#86efac}
+.done-chain{background:rgba(255,255,255,.1);border-radius:10px;padding:11px 14px;font-size:.88rem;line-height:1.9;text-align:left;margin:12px 0;font-family:'Courier New',monospace}
+.nxt-btn{background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.35);color:#fff;padding:10px 24px;border-radius:40px;font-size:.92rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.18s}
+.nxt-btn:hover{background:rgba(255,255,255,.28)}
+
+/* ── прогресс ── */
+.prog-hdr{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px}
+.prog-w{height:7px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:14px}
+.prog-f{height:100%;background:var(--blue);border-radius:4px;transition:width .4s}
+
+/* ── меню ── */
+.m-ico{font-size:2.4rem;text-align:center;margin-bottom:8px}
+.m-ttl{font-size:1.4rem;font-weight:700;text-align:center;margin-bottom:8px}
+.m-sub{font-size:.92rem;color:var(--tlt);line-height:1.6;text-align:center;margin-bottom:18px}
+.m-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:14px}
+.m-btn{border:2px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;transition:all .18s;text-align:center;background:#fff}
+.m-btn:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 5px 14px rgba(44,125,160,.14)}
+.mi{font-size:1.5rem;margin-bottom:6px} .mn{font-size:.97rem;font-weight:700;color:var(--text);margin-bottom:4px} .md{font-size:.76rem;color:var(--tlt);line-height:1.4}
+
+/* ── итоги ── */
+.r-big{font-size:3.5rem;font-weight:900;font-family:'Courier New',monospace;text-align:center}
+.r-big.ex{color:var(--ok)} .r-big.go{color:var(--blue)} .r-big.fa{color:var(--amb)} .r-big.po{color:var(--err)}
+.r-lbl{font-size:.97rem;font-weight:600;color:var(--tlt);text-align:center;margin-top:4px;margin-bottom:16px}
+.r-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.r-box{background:#f7fafc;border-radius:12px;padding:12px;text-align:center}
+.rn{font-size:1.8rem;font-weight:800;line-height:1} .rl{font-size:.64rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-top:3px}
+.h-row{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.h-dot{width:15px;height:15px;border-radius:50%}
+.h-dot.ok{background:var(--ok)} .h-dot.ng{background:var(--err)} .h-dot.na{background:var(--border)}
+.btn-row{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
+.bp{background:var(--blue);border:none;color:#fff;padding:10px 20px;border-radius:40px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+.bp:hover{background:var(--blue-h);transform:translateY(-1px)}
+.bg{background:transparent;border:2px solid var(--border);color:var(--tlt);padding:10px 20px;border-radius:40px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+.bg:hover{border-color:var(--tlt);color:var(--text)}
+.bw{background:#fee2e2;border:none;color:var(--err-dk);padding:8px 14px;border-radius:40px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:inherit}
+.bw:hover{background:var(--err);color:#fff}
+.div-line{height:1px;background:var(--border);margin:14px 0}
+
+@keyframes fadeIn {from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
+@keyframes shake  {0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div><h1>🧩 Собери решение уравнения</h1><p>По шагам: действие → выражение → ответ</p></div>
+  <a href="../index.html" class="back">← Назад</a>
+</header>
+<div id="sbar" class="sbar"></div>
+
+<main>
+  <div id="app" class="scr"></div>
+</main>
+
+<script>
+/* ══════════════════════════════════════════════════
+   ХРАНИЛИЩЕ
+══════════════════════════════════════════════════ */
+const SK = 'mathExamCourseProgress.v1';
+const TID = 'equationBuilderTrainer';
+
+function loadSt() {
+  try { const d=JSON.parse(localStorage.getItem(SK)||'{}'); return d[TID]||def(); } catch { return def(); }
+}
+function def(){ return {solved:0,correct:0,streak:0,bestStreak:0,history:[]}; }
+function saveSt(s) {
+  try { const d=JSON.parse(localStorage.getItem(SK)||'{}'); d[TID]=s; localStorage.setItem(SK,JSON.stringify(d)); } catch {}
+}
+function recordR(ok) {
+  const s=loadSt(); s.solved++;
+  if(ok){ s.correct++; s.streak++; if(s.streak>s.bestStreak) s.bestStreak=s.streak; }
+  else s.streak=0;
+  s.history=[ok?1:0,...(s.history||[])].slice(0,10);
+  saveSt(s);
+}
+function resetSt() {
+  const d=JSON.parse(localStorage.getItem(SK)||'{}'); d[TID]=def(); localStorage.setItem(SK,JSON.stringify(d));
+}
+
+/* ══════════════════════════════════════════════════
+   ЗАДАЧИ: обучение
+══════════════════════════════════════════════════ */
+// Хранятся как {type, a, b}; x вычисляется при необходимости
+const LEARN = [
+  {type:'add', a:5,  b:9  }, // x+5=9   → x=4
+  {type:'sub', a:3,  b:7  }, // x−3=7   → x=10
+  {type:'mul', a:4,  b:36 }, // x·4=36  → x=9
+  {type:'div', a:5,  b:-3 }, // x:5=−3  → x=−15
+  {type:'sub', a:6,  b:-2 }, // x−6=−2  → x=4
+  {type:'add', a:7,  b:12 }, // x+7=12  → x=5
+  {type:'add', a:-4, b:9  }, // x+(−4)=9 → x=13
+  {type:'sub', a:-3, b:10 }, // x−(−3)=10 → x=7
+];
+
+/* ══════════════════════════════════════════════════
+   УТИЛИТЫ
+══════════════════════════════════════════════════ */
+const rnd  = (lo,hi) => lo + Math.floor(Math.random()*(hi-lo+1));
+const rnz  = (lo,hi) => { let v; do{ v=rnd(lo,hi); }while(v===0); return v; };
+const sfl  = a => { const b=[...a]; for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];} return b; };
+
+// Решение задачи
+function solveT(t) {
+  if(t.type==='add') return t.b - t.a;
+  if(t.type==='sub') return t.b + t.a;
+  if(t.type==='mul') return t.b / t.a;
+  if(t.type==='div') return t.b * t.a;
+}
+
+// Форматирование: −5 или 5
+function fN(n) { return n<0 ? `−${Math.abs(n)}` : `${n}`; }
+// С окружающими скобками если отрицательное: (−5) или 5
+function fP(n) { return n<0 ? `(−${Math.abs(n)})` : `${n}`; }
+
+/* ══════════════════════════════════════════════════
+   ОТОБРАЖЕНИЕ УРАВНЕНИЯ (HTML с цветами)
+══════════════════════════════════════════════════ */
+function eqHTML(t) {
+  const B = t.b<0 ? `<span class="e-neg">−${Math.abs(t.b)}</span>` : `<span class="e-pos">${t.b}</span>`;
+  const x = `<span class="e-x">x</span>`;
+  const eq= `<span class="e-op"> = </span>`;
+
+  if(t.type==='add'){
+    const A = t.a<0
+      ? `<span class="e-op"> + </span><span class="e-neg">(−${Math.abs(t.a)})</span>`
+      : `<span class="e-op"> + </span><span class="e-pos">${t.a}</span>`;
+    return `${x}${A}${eq}${B}`;
+  }
+  if(t.type==='sub'){
+    const A = t.a<0
+      ? `<span class="e-op"> − </span><span class="e-neg">(−${Math.abs(t.a)})</span>`
+      : `<span class="e-op"> − </span><span class="e-pos">${t.a}</span>`;
+    return `${x}${A}${eq}${B}`;
+  }
+  if(t.type==='mul'){
+    const A = `<span class="e-op"> · </span><span class="e-pos">${t.a}</span>`;
+    return `${x}${A}${eq}${B}`;
+  }
+  if(t.type==='div'){
+    const A = `<span class="e-op"> : </span><span class="e-pos">${t.a}</span>`;
+    return `${x}${A}${eq}${B}`;
+  }
+}
+
+// Уравнение строкой (для строителя решения)
+function eqStr(t) {
+  if(t.type==='add') return `x + ${fP(t.a)} = ${fN(t.b)}`;
+  if(t.type==='sub') return `x − ${fP(t.a)} = ${fN(t.b)}`;
+  if(t.type==='mul') return `x · ${t.a} = ${fN(t.b)}`;
+  if(t.type==='div') return `x : ${t.a} = ${fN(t.b)}`;
+}
+
+/* ══════════════════════════════════════════════════
+   СТРОКА ВЫРАЖЕНИЯ (шаг 2): "x = −2 + 6"
+══════════════════════════════════════════════════ */
+function correctExpr(t) {
+  const b=fN(t.b), a=fP(t.a);
+  if(t.type==='add') return `x = ${b} − ${a}`;
+  if(t.type==='sub') return `x = ${b} + ${a}`;
+  if(t.type==='mul') return `x = ${b} : ${a}`;
+  if(t.type==='div') return `x = ${b} · ${a}`;
+}
+
+// Варианты для шага 2
+function makeOptions(t) {
+  const b=fN(t.b), a=fP(t.a), bP=fP(t.b);
+  const correct = correctExpr(t);
+  let ds = [];
+
+  if(t.type==='add')
+    ds = [`x = ${b} + ${a}`, `x = ${a} − ${bP}`, `x = ${b} · ${a}`];
+  if(t.type==='sub')
+    ds = [`x = ${b} − ${a}`, `x = ${a} + ${bP}`, `x = ${b} · ${a}`];
+  if(t.type==='mul')
+    ds = [`x = ${b} · ${a}`, `x = ${a} : ${bP}`, `x = ${b} − ${a}`];
+  if(t.type==='div')
+    ds = [`x = ${b} : ${a}`, `x = ${b} − ${a}`, `x = ${b} + ${a}`];
+
+  // убрать дубликаты с correct
+  const filtered = ds.filter(d => d !== correct).slice(0,3);
+  return sfl([correct, ...filtered]).map(s => ({label:s, ok: s===correct}));
+}
+
+/* ══════════════════════════════════════════════════
+   ГЕНЕРАТОР ТРЕНИРОВКИ
+══════════════════════════════════════════════════ */
+function genSession() {
+  const tasks = [];
+
+  // Гарантированные задачи (разные типы + отрицательные)
+  function add(negA) {
+    let x,a,b;
+    x = rnz(-8,8); a = negA ? -rnd(2,7) : rnd(3,9); b = x+a;
+    if(Math.abs(b)>14) return add(negA);
+    return {type:'add',a,b};
+  }
+  function sub(negA) {
+    let x,a,b;
+    x = rnz(-8,8); a = negA ? -rnd(2,7) : rnd(3,9); b = x-a;
+    if(Math.abs(b)>14) return sub(negA);
+    return {type:'sub',a,b};
+  }
+  function mul() {
+    const a=rnd(2,7), x=rnz(-7,7), b=a*x;
+    return {type:'mul',a,b};
+  }
+  function div() {
+    const a=rnd(2,6), b=rnz(-6,6);
+    return {type:'div',a,b};
+  }
+
+  tasks.push(add(false));   // + , a>0
+  tasks.push(sub(false));   // − , a>0
+  tasks.push(mul());        // ·
+  tasks.push(div());        // :
+  tasks.push(add(true));    // + , a<0  (скобки)
+  tasks.push(sub(true));    // − , a<0  (скобки)
+  tasks.push(add(false));   // + (может дать отрицательный b)
+  tasks.push(sub(false));   // −
+
+  // добрать до 10
+  let tries=0;
+  while(tasks.length<10 && tries<200) {
+    tries++;
+    const tp = ['add','sub','mul','div'][rnd(0,3)];
+    const t  = tp==='mul'?mul():tp==='div'?div():tp==='add'?add(false):sub(false);
+    if(!tasks.some(e=>e.type===t.type&&e.a===t.a&&e.b===t.b))
+      tasks.push(t);
+  }
+
+  return sfl(tasks).slice(0,10);
+}
+
+/* ══════════════════════════════════════════════════
+   СОСТОЯНИЕ
+══════════════════════════════════════════════════ */
+const S = {
+  mode: null,       // null | 'learn' | 'practice' | 'results'
+  step: 0,          // 0 | 1 | 2 | 3(done)
+  idx:  0,
+  tasks:[],
+  ok:  true,        // текущая задача без ошибок?
+  sOk: 0, sTotal: 0,
+  chosen:{op:null, expr:null},
+  hint: false,
+  fbs: {0:null,1:null,2:null},
+};
+function cur(){ return S.tasks[S.idx]; }
+
+/* ══════════════════════════════════════════════════
+   РЕНДЕР
+══════════════════════════════════════════════════ */
+function render() {
+  const app = document.getElementById('app');
+  if(!S.mode)               { app.innerHTML = buildMenu();    updSbar(false); return; }
+  if(S.mode==='results')    { app.innerHTML = buildResults(); updSbar(false); return; }
+  app.innerHTML = buildTask();
+  updSbar(true);
+  document.getElementById('ainp')?.addEventListener('keydown', e => { if(e.key==='Enter') checkAns(); });
+}
+
+/* ── МЕНЮ ── */
+function buildMenu() {
+  const s=loadSt(), pct=s.solved>0?Math.round(s.correct/s.solved*100):0;
+  const hh=(s.history||[]).map(v=>`<div class="h-dot ${v===1?'ok':'ng'}"></div>`).join('');
+  return `
+  <div class="card">
+    <div class="m-ico">🧩</div>
+    <p class="m-ttl">Собери решение уравнения</p>
+    <p class="m-sub">Учимся находить x по шагам:<br>определи действие → запиши выражение → вычисли ответ.</p>
+    <div class="m-grid">
+      <div class="m-btn" onclick="start('learn')"><div class="mi">📘</div><div class="mn">Обучение</div><div class="md">8 задач · подробные подсказки</div></div>
+      <div class="m-btn" onclick="start('practice')"><div class="mi">⚡</div><div class="mn">Тренировка</div><div class="md">10 задач · все типы</div></div>
+    </div>
+    ${s.solved>0?`
+    <div class="card-sm" style="background:#f7fafc;margin-top:2px">
+      <div style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px">Статистика</div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:.86rem;margin-bottom:8px">
+        <span>Решено: <strong>${s.solved}</strong></span>
+        <span>Верно: <strong>${s.correct}</strong></span>
+        <span>Точность: <strong>${pct}%</strong></span>
+        <span>Серия: <strong>${s.streak>2?'🔥':''}${s.streak}</strong></span>
+      </div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px">${hh}</div>
+      <button class="bw" onclick="if(confirm('Сбросить статистику?')){resetSt();render()}">Сбросить статистику</button>
+    </div>`:``}
+  </div>`;
+}
+
+/* ── СТАТУС-ПОЛОСА ── */
+function updSbar(on) {
+  const bar=document.getElementById('sbar');
+  if(!on){ bar.className='sbar'; return; }
+  const s=loadSt();
+  bar.className='sbar on';
+  bar.innerHTML=`
+    <span>Задача <span class="sval">${S.idx+1}/${S.tasks.length}</span></span>
+    <span>Верно <span class="sval">${S.sOk}/${S.sTotal}</span></span>
+    ${s.streak>1?`<span>Серия <span class="sval" style="color:#fbbf24">${s.streak>2?'🔥':''}${s.streak}</span></span>`:''}`;
+}
+
+/* ── ЗАДАЧА ── */
+function buildTask() {
+  const t=cur(), x=solveT(t), isLast=S.idx>=S.tasks.length-1;
+  let html='';
+
+  if(S.mode==='practice'){
+    const pct=(S.idx/S.tasks.length)*100;
+    html+=`<div class="prog-hdr"><span>Тренировка</span><span>${S.idx+1} / ${S.tasks.length}</span></div>
+           <div class="prog-w"><div class="prog-f" style="width:${pct}%"></div></div>`;
+  }
+
+  // уравнение
+  html+=`<div class="card eq-card"><div class="eq-big">${eqHTML(t)}</div></div>`;
+
+  // строитель решения
+  html+=buildBuilder(t,x);
+
+  // активный шаг
+  html+=`<div>`;
+  if(S.step===0) html+=buildStep0(t);
+  if(S.step===1) html+=buildStep1(t);
+  if(S.step===2) html+=buildStep2(t);
+  if(S.step===3) html+=buildDone(t,x,isLast);
+  html+=`</div>`;
+
+  // вспомогательные кнопки
+  if(S.step<3)
+    html+=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+      <button class="bg" style="padding:8px 14px;font-size:.8rem" onclick="toggleHint()">💡 Подсказка</button>
+      <button class="bg" style="padding:8px 14px;font-size:.8rem" onclick="showSol()">👁 Показать решение</button>
+    </div>`;
+
+  return html;
+}
+
+/* ── СТРОИТЕЛЬ ── */
+function buildBuilder(t,x){
+  const line1=eqStr(t);
+  const line2=S.chosen.expr||null;
+  const line3=S.step===3?`x = ${fN(x)}`:null;
+
+  let rows='';
+  rows+=`<div class="b-row"><div class="b-num done">1</div><div class="b-text done">${line1}</div></div>`;
+
+  if(line2)
+    rows+=`<div class="b-row"><div class="b-num done">2</div><div class="b-text done">${line2}</div></div>`;
+  else
+    rows+=`<div class="b-row"><div class="b-num wait">2</div><div class="b-text"><span class="b-placeholder">запишем выражение для x...</span></div></div>`;
+
+  if(line3)
+    rows+=`<div class="b-row"><div class="b-num done">3</div><div class="b-text done">${line3}</div></div>`;
+  else
+    rows+=`<div class="b-row"><div class="b-num wait">3</div><div class="b-text"><span class="b-placeholder">вычислим ответ...</span></div></div>`;
+
+  return `<div class="builder">${rows}</div>`;
+}
+
+/* ── ШАГ 0: выбор действия ── */
+function buildStep0(t) {
+  const ops = ['add','sub','mul','div'];
+  const lbl = {add:'прибавить',sub:'вычесть',mul:'умножить',div:'разделить'};
+  const fb=S.fbs[0]||'';
+  const hint = buildHint0(t);
+  return `
+  <div class="step-card">
+    <div class="sbadge"><div class="sbnum">1</div>Шаг 1 из 3</div>
+    <div class="step-q">Какое действие будешь делать, чтобы найти x?</div>
+    <div class="op-grid" id="opbtns">
+      ${ops.map(o=>`<button class="op-btn" onclick="pickOp('${o}')">${lbl[o]}</button>`).join('')}
+    </div>
+    <div class="fb ${fb?'fb-err vis':''}" id="fb0">${fb}</div>
+    ${hint}
+  </div>`;
+}
+
+function buildHint0(t){
+  const inv={add:'вычесть',sub:'прибавить',mul:'разделить',div:'умножить'};
+  const msg=`💡 Нужно применить обратное действие. Если с x сделали «${t.type==='add'?'прибавили':t.type==='sub'?'вычли':t.type==='mul'?'умножили':'разделили'}», то обратное — <strong>${inv[t.type]}</strong>.`;
+  return `<div class="fb fb-hint ${S.hint?'vis':''}" id="hint0">${msg}</div>`;
+}
+
+/* ── ШАГ 1: выбор выражения ── */
+function buildStep1(t) {
+  const opts=makeOptions(t);
+  const fb=S.fbs[1]||'';
+  const hint=`<div class="fb fb-hint ${S.hint?'vis':''}" id="hint1">💡 Смотри: x = правая часть уравнения, к которой применяем обратное действие с числом ${fP(t.a)}.</div>`;
+  return `
+  <div class="step-card">
+    <div class="sbadge"><div class="sbnum">2</div>Шаг 2 из 3</div>
+    <div class="step-q">Что на что? Выбери правильную строку:</div>
+    <div class="expr-grid" id="exprbtns">
+      ${opts.map(o=>`<button class="expr-btn" data-ok="${o.ok}" onclick="pickExpr('${o.label.replace(/'/g,"\\'")}',${ o.ok })">${o.label}</button>`).join('')}
+    </div>
+    <div class="fb ${fb?'fb-err vis':''}" id="fb1">${fb}</div>
+    ${hint}
+  </div>`;
+}
+
+/* ── ШАГ 2: ввод ответа ── */
+function buildStep2(t) {
+  const fb=S.fbs[2]||'';
+  const ce=S.chosen.expr||correctExpr(t);
+  return `
+  <div class="step-card">
+    <div class="sbadge"><div class="sbnum">3</div>Шаг 3 из 3</div>
+    <div class="step-q">Чему равен x? Вычисли и введи ответ:</div>
+    <div class="ans-wrap">
+      <span class="ans-lbl">${ce.replace('x = ','x = ')} =</span>
+      <input type="number" class="ans-inp" id="ainp" placeholder="?">
+      <button class="go-btn" onclick="checkAns()">Проверить</button>
+    </div>
+    <div class="fb ${fb?'fb-err vis':''}" id="fb2">${fb}</div>
+  </div>`;
+}
+
+/* ── ГОТОВО ── */
+function buildDone(t,x,isLast){
+  const rc=x<0?'neg':x>0?'pos':'zer';
+  const chain=[eqStr(t), correctExpr(t).replace('x = ','x = '), `x = ${fN(x)}`].join('\n');
+  return `
+  <div class="done-card">
+    <div style="font-size:.84rem;opacity:.7">Ответ:</div>
+    <div class="done-res ${rc}">x = ${fN(x)}</div>
+    <div class="done-chain">${chain.replace(/\n/g,'<br>')}</div>
+    <button class="nxt-btn" onclick="${isLast?'finish()':'nextT()'}">${isLast?'Завершить →':'Следующий →'}</button>
+  </div>`;
+}
+
+/* ══════════════════════════════════════════════════
+   ОБРАБОТЧИКИ
+══════════════════════════════════════════════════ */
+const CORRECT_OP = {add:'sub',sub:'add',mul:'div',div:'mul'};
+const OP_LABEL   = {add:'прибавить',sub:'вычесть',mul:'умножить',div:'разделить'};
+
+function pickOp(op){
+  const t=cur();
+  const btns=document.querySelectorAll('#opbtns .op-btn');
+  if(op===CORRECT_OP[t.type]){
+    btns.forEach(b=>b.textContent===OP_LABEL[op]?b.classList.add('ok'):b.classList.add('dim'));
+    S.chosen.op=op; S.fbs[0]=null; S.hint=false; S.step=1;
+    setTimeout(render,380);
+  } else {
+    btns.forEach(b=>{ if(b.textContent===OP_LABEL[op]) b.classList.add('err'); });
+    const msgs={
+      add:{add:'К x прибавили число. Чтобы найти x, нужно <strong>вычесть</strong> это число из правой части.'},
+      sub:{sub:'Из x вычли число. Чтобы найти x, нужно <strong>прибавить</strong> это число к правой части.'},
+      mul:{mul:'x умножили на число. Чтобы найти x, нужно <strong>разделить</strong> правую часть на это число.'},
+      div:{div:'x разделили на число. Чтобы найти x, нужно <strong>умножить</strong> правую часть на это число.'},
+    };
+    const msg=(msgs[t.type]||{})[op]||'Чтобы найти x, нужно отменить действие, которое сделали с x.';
+    S.fbs[0]=msg; S.ok=false;
+    btns.forEach(b=>b.disabled=true);
+    document.getElementById('fb0').innerHTML=msg;
+    document.getElementById('fb0').className='fb fb-err vis';
+    setTimeout(()=>{
+      btns.forEach(b=>{b.disabled=false;b.classList.remove('err','ok','dim');});
+      document.getElementById('fb0').className='fb fb-err';
+    },1200);
+    if(S.mode==='learn'){S.hint=true;render();}
+  }
+}
+
+function pickExpr(label,isOk){
+  const btns=document.querySelectorAll('#exprbtns .expr-btn');
+  if(isOk){
+    btns.forEach(b=>b.textContent.trim()===label.trim()?b.classList.add('ok'):b.classList.add('dim'));
+    S.chosen.expr=label; S.fbs[1]=null; S.hint=false; S.step=2;
+    setTimeout(render,380);
+  } else {
+    btns.forEach(b=>{ if(b.textContent.trim()===label.trim()) b.classList.add('err'); });
+    const msg='Смотри на правую часть уравнения. Действие выполняем с правой частью, чтобы получить x.';
+    S.fbs[1]=msg; S.ok=false;
+    btns.forEach(b=>b.disabled=true);
+    document.getElementById('fb1').innerHTML=msg;
+    document.getElementById('fb1').className='fb fb-err vis';
+    setTimeout(()=>{
+      btns.forEach(b=>{b.disabled=false;b.classList.remove('err','ok','dim');});
+      document.getElementById('fb1').className='fb fb-err';
+    },1200);
+  }
+}
+
+function checkAns(){
+  const inp=document.getElementById('ainp');
+  if(!inp) return;
+  const raw=inp.value.trim().replace('−','-');
+  if(!raw){ inp.style.borderColor='#dc2626'; setTimeout(()=>inp.style.borderColor='',500); return; }
+  const ua=parseInt(raw);
+  if(isNaN(ua)){ inp.style.borderColor='#dc2626'; setTimeout(()=>inp.style.borderColor='',500); return; }
+
+  const t=cur(), x=solveT(t);
+  if(ua===x){
+    recordR(S.ok); if(S.ok) S.sOk++; S.sTotal++;
+    S.step=3; render();
+  } else {
+    S.ok=false;
+    let msg;
+    if(Math.abs(ua)===Math.abs(x))
+      msg=`Число по модулю верное (${Math.abs(x)}), но <strong>знак неверный</strong>. Проверь: ответ ${x<0?'отрицательный':'положительный'}.`;
+    else
+      msg=`Неверно. Вычисли ещё раз: ${correctExpr(t).replace('x = ','')} = ${fN(x)}.`;
+    S.fbs[2]=msg;
+    document.getElementById('fb2').innerHTML=msg;
+    document.getElementById('fb2').className='fb fb-err vis';
+    inp.classList.add('err');
+    inp.animate?.([{transform:'translateX(0)'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(-3px)'},{transform:'translateX(0)'}],{duration:380});
+    setTimeout(()=>{ inp.classList.remove('err'); document.getElementById('fb2').className='fb fb-err'; },950);
+  }
+}
+
+function toggleHint(){ S.hint=!S.hint; render(); }
+
+function showSol(){
+  const t=cur(), x=solveT(t);
+  S.chosen.op=CORRECT_OP[t.type];
+  S.chosen.expr=correctExpr(t);
+  S.ok=false;
+  recordR(false); S.sTotal++;
+  S.step=3; render();
+}
+
+/* ══════════════════════════════════════════════════
+   НАВИГАЦИЯ
+══════════════════════════════════════════════════ */
+function start(m){
+  S.mode=m; S.tasks=m==='learn'?[...LEARN]:genSession();
+  S.idx=0; S.sOk=0; S.sTotal=0; resetTask(); render();
+}
+function resetTask(){
+  S.step=0; S.ok=true; S.chosen={op:null,expr:null};
+  S.fbs={0:null,1:null,2:null}; S.hint=false;
+}
+function nextT(){ S.idx++; resetTask(); render(); }
+function finish(){ S.mode='results'; render(); }
+
+/* ══════════════════════════════════════════════════
+   РЕЗУЛЬТАТЫ
+══════════════════════════════════════════════════ */
+function buildResults(){
+  const pct=S.sTotal>0?Math.round(S.sOk/S.sTotal*100):0;
+  const s=loadSt(), tot=s.solved>0?Math.round(s.correct/s.solved*100):0;
+  const sc=pct>=90?'ex':pct>=70?'go':pct>=50?'fa':'po';
+  const lbl=pct>=90?'Отлично! Уравнения решаются уверенно!':
+             pct>=70?'Хороший результат!':
+             pct>=50?'Половина верно. Ещё немного!':'Нужно потренироваться.';
+  const hh=(s.history||[]).map(v=>`<div class="h-dot ${v===1?'ok':'ng'}"></div>`).join('');
+  return `
+  <div class="card">
+    <div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;text-align:center">Результат</div>
+    <div class="r-big ${sc}">${S.sOk}/${S.sTotal}</div>
+    <div class="r-lbl">${lbl}</div>
+    <div class="r-grid">
+      <div class="r-box"><div class="rn">${s.solved}</div><div class="rl">Всего</div></div>
+      <div class="r-box"><div class="rn" style="color:${tot>=70?'var(--ok)':'var(--amb)'}">${tot}%</div><div class="rl">Точность</div></div>
+      <div class="r-box"><div class="rn" style="color:${s.streak>2?'#d97706':'inherit'}">${s.streak>2?'🔥':''}${s.streak}</div><div class="rl">Серия</div></div>
+    </div>
+    <div style="font-size:.69rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:6px;text-align:center">История</div>
+    <div class="h-row">${hh}</div>
+    <div class="div-line"></div>
+    <div class="btn-row">
+      <button class="bp" onclick="start(S.mode==='learn'?'learn':'practice')">Ещё раз</button>
+      <button class="bg" onclick="S.mode=null;render()">В меню</button>
+    </div>
+  </div>`;
+}
+
+/* ══════════════════════════════════════════════════
+   СТАРТ
+══════════════════════════════════════════════════ */
+render();
+</script>
+</body>
+</html>

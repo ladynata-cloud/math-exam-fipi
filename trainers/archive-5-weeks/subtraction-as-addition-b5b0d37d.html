@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренажёр: вычитание как сложение противоположного</title>
+<style>
+/* ── СЕРИЯ: одинаковые токены ── */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #eef2f5;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  padding: 30px 20px 44px;
+  color: #1a2c3e;
+}
+.trainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.09);
+  overflow: hidden;
+}
+
+/* ── ШАПКА ── */
+.header { background: #2c3e4e; padding: 20px 30px; color: #fff; }
+.header h1 { font-size: 1.8rem; font-weight: 500; letter-spacing: -.3px; }
+.header .sub { font-size: .93rem; opacity: .85; margin-top: 5px; line-height: 1.5; }
+.header .tag {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-top: 9px; font-size: .78rem; opacity: .62;
+  background: rgba(255,255,255,.1); border-radius: 20px; padding: 4px 12px;
+}
+
+/* ── РЕЖИМЫ ── */
+.mode-bar {
+  display: flex; background: #f0f3f7;
+  padding: 12px 30px; gap: 14px;
+  border-bottom: 1px solid #dce4ec;
+}
+.mode-btn {
+  background: transparent; border: none;
+  font-size: .98rem; font-weight: 600;
+  padding: 8px 22px; border-radius: 40px;
+  cursor: pointer; color: #2c3e4e;
+  transition: .18s; font-family: inherit;
+}
+.mode-btn.active { background: #2c3e4e; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,.1); }
+
+/* ── СЕТКА ── */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px; padding: 28px;
+}
+@media (max-width: 780px) {
+  .main-grid { grid-template-columns: 1fr; gap: 20px; }
+}
+
+/* ════════════════════════════
+   ЛЕВАЯ ПАНЕЛЬ
+════════════════════════════ */
+.visual-panel {
+  background: #fafcfd; border-radius: 22px; padding: 20px;
+  border: 1px solid #e2edf2;
+  box-shadow: 0 2px 8px rgba(0,0,0,.03);
+  display: flex; flex-direction: column; gap: 16px;
+}
+
+/* Большое выражение */
+.big-expression {
+  background: #f4f9fe; text-align: center;
+  padding: 18px 10px; border-radius: 18px;
+  font-size: 3rem; font-weight: 700;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 4px; border: 1px solid #d4e2ec;
+}
+.pos-c { color: #1d6fa4; }
+.neg-c { color: #b91c1c; }
+.op-c  { color: #64748b; }
+
+/* Карточка трансформации */
+.tx-card {
+  background: #f2f5f8; border-radius: 16px;
+  padding: 14px 16px; border: 1px solid #e0eaf0;
+}
+.tx-card-title {
+  font-size: .72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1px;
+  color: #7a9db5; margin-bottom: 12px; text-align: center;
+}
+.tx-row {
+  display: flex; align-items: center; gap: 10px; margin: 6px 0;
+}
+.tx-op-lbl {
+  font-size: .82rem; font-weight: 600; color: #5f7f9c;
+  width: 96px; flex-shrink: 0;
+}
+.tx-val {
+  font-size: 1.55rem; font-weight: 900;
+  font-family: 'Courier New', monospace;
+  padding: 4px 14px; border-radius: 9px; line-height: 1;
+}
+.tx-sub { background: #fee2e2; color: #991b1b; }
+.tx-opp { background: #dbeafe; color: #1e40af; }
+.tx-ph  { background: #f1f5f9; color: #94a3b8; /* placeholder */ }
+.tx-arrow-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 3px 0 3px 96px; font-size: .78rem; color: #8aacbe;
+}
+.tx-arr { font-size: 1rem; color: #b0c8d8; }
+.tx-divider { height: 1px; background: #d0dce8; margin: 10px 0; }
+.tx-new {
+  font-size: 1.25rem; font-weight: 800;
+  font-family: 'Courier New', monospace;
+  color: #145a2e; background: #edfaf3;
+  padding: 10px 16px; border-radius: 12px;
+  text-align: center; letter-spacing: 2px;
+  animation: fadeIn .4s ease;
+}
+.tx-new-lbl {
+  font-size: .72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: #3aaa6e; margin-bottom: 6px;
+  text-align: center;
+}
+
+/* Числовая прямая */
+.nl-area {
+  background: #f2f5f8; border-radius: 14px;
+  padding: 10px 12px 6px; border: 1px solid #e0eaf0;
+  animation: fadeIn .4s ease;
+}
+.nl-title {
+  font-size: .72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; color: #7a9db5; margin-bottom: 6px; text-align: center;
+}
+.nl-area svg { display: block; width: 100%; }
+.nl-legend {
+  display: flex; justify-content: center; gap: 14px;
+  margin-top: 5px;
+}
+.nl-leg-item {
+  display: flex; align-items: center; gap: 5px;
+  font-size: .72rem; font-weight: 600; color: #5f7f9c;
+}
+.nl-leg-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+}
+
+/* ════════════════════════════
+   ПРАВАЯ ПАНЕЛЬ
+════════════════════════════ */
+.interactive-panel {
+  background: #fff; border-radius: 22px;
+  padding: 20px; border: 1px solid #e2edf2;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.progress-dots { display: flex; gap: 6px; justify-content: flex-end; padding-bottom: 2px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #cdd8e3; transition: all .3s; }
+.dot.done   { background: #3aaa6e; }
+.dot.active { background: #2c7da0; transform: scale(1.4); }
+
+/* Блок шага */
+.step-box {
+  background: #f7fafc; border-radius: 18px;
+  padding: 20px; flex: 1;
+}
+.step-title {
+  font-weight: 700; font-size: 1.1rem; color: #1f4e6e;
+  border-left: 4px solid #2c7da0; padding-left: 11px;
+  margin-bottom: 13px; line-height: 1.3;
+}
+.step-q { font-size: .97rem; line-height: 1.6; color: #2c3e4e; margin-bottom: 13px; }
+.step-q strong { color: #1a2c3e; }
+
+/* Плашка-связь с серией */
+.series-link {
+  background: #eef6fb; border-left: 3px solid #5b9abb;
+  border-radius: 0 10px 10px 0;
+  padding: 8px 12px; font-size: .81rem;
+  color: #1e4060; margin-bottom: 12px; line-height: 1.55;
+}
+.series-link strong { color: #1a2c3e; }
+
+/* Кнопки выбора */
+.choice-group { display: flex; flex-wrap: wrap; gap: 9px; margin: 11px 0; }
+.ch-btn {
+  padding: 10px 18px; border: 2px solid #bac8d9;
+  border-radius: 40px; font-size: .93rem; font-weight: 600;
+  cursor: pointer; background: #fff; color: #2c3e4e;
+  transition: all .17s; font-family: inherit; min-width: 80px; text-align: center;
+}
+.ch-btn:hover:not(:disabled) { border-color: #2c7da0; color: #2c7da0; }
+.ch-btn.ok  { background: #2c7da0; color: #fff; border-color: #2c7da0; pointer-events: none; }
+.ch-btn.bad { background: #fee2e2; border-color: #c0392b; color: #991b1b;
+              pointer-events: none; animation: shake .38s; }
+.ch-btn:disabled { pointer-events: none; }
+
+/* Поля ввода */
+.inp-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 11px 0; }
+.inp-lbl {
+  font-size: 1rem; font-weight: 700;
+  font-family: 'Courier New', monospace; color: #1a2c3e; white-space: nowrap;
+}
+.m-inp {
+  padding: 7px 13px; font-size: 1.05rem;
+  border: 1.5px solid #bac8d9; border-radius: 40px;
+  width: 106px; text-align: center; font-family: inherit;
+  font-weight: 600; outline: none; transition: border-color .2s;
+  appearance: textfield; -moz-appearance: textfield;
+}
+.m-inp::-webkit-inner-spin-button,
+.m-inp::-webkit-outer-spin-button { -webkit-appearance: none; }
+.m-inp:focus { border-color: #2c7da0; }
+.m-inp.wide  { width: 140px; }
+.go-btn {
+  background: #2c7da0; border: none; color: #fff;
+  padding: 9px 20px; border-radius: 40px;
+  font-weight: 600; cursor: pointer; font-size: .93rem;
+  transition: .15s; font-family: inherit;
+}
+.go-btn:hover { background: #1f5e7a; }
+
+/* Подсказка-контекст внутри шага */
+.step-context {
+  background: #f0f6fb; border-radius: 11px;
+  padding: 9px 13px; font-size: .83rem;
+  color: #1e4060; line-height: 1.55; margin-bottom: 10px;
+}
+.step-context strong { color: #1a2c3e; }
+
+/* Обратная связь */
+.feedback {
+  border-radius: 14px; padding: 11px 15px;
+  font-size: .88rem; line-height: 1.6; animation: fadeIn .3s ease;
+}
+.fb-info { background: #f0f6fb; border-left: 4px solid #5b9abb; color: #1a3e54; }
+.fb-ok   { background: #edfaf3; border-left: 4px solid #3aaa6e; color: #174d2f; }
+.fb-err  { background: #fff1f1; border-left: 4px solid #e34d3a; color: #7a1a1a; }
+.fb-hint { background: #fef6e0; border-left: 4px solid #e8a030; color: #5c3c0a; }
+
+/* Карточка завершения */
+.done-card {
+  background: linear-gradient(140deg, #1e3a4e 0%, #2c5c72 100%);
+  border-radius: 18px; padding: 26px 22px; color: #fff;
+  text-align: center; animation: fadeIn .45s ease;
+}
+.done-result {
+  font-size: 3.4rem; font-weight: 800;
+  font-family: 'Courier New', monospace; letter-spacing: 2px; margin: 8px 0;
+}
+.done-result.pos-r { color: #7dd3fc; }
+.done-result.neg-r { color: #fca5a5; }
+.done-steps {
+  background: rgba(255,255,255,.1); border-radius: 12px;
+  padding: 13px 16px; font-size: .87rem; line-height: 1.8;
+  text-align: left; margin: 13px 0 15px;
+}
+.done-rule {
+  font-size: .82rem; opacity: .8; font-style: italic;
+  margin-bottom: 16px; line-height: 1.5;
+}
+.new-btn-w {
+  background: rgba(255,255,255,.18); border: 1.5px solid rgba(255,255,255,.4);
+  color: #fff; padding: 9px 22px; border-radius: 40px;
+  font-weight: 600; cursor: pointer; font-size: .92rem;
+  font-family: inherit; transition: .2s;
+}
+.new-btn-w:hover { background: rgba(255,255,255,.28); }
+
+/* ── Тренировка ── */
+.train-label { font-size: 1.1rem; font-weight: 500; margin-bottom: 10px; }
+.train-inp-row {
+  display: flex; justify-content: center; align-items: center;
+  gap: 10px; margin: 14px 0;
+  font-family: 'Courier New', monospace; font-size: 1.45rem; font-weight: 700;
+}
+.t-ans {
+  font-size: 1.45rem; width: 130px; text-align: center;
+  border: 2px solid #bac8d9; border-radius: 50px;
+  padding: 7px; font-weight: 700; font-family: inherit;
+  outline: none; transition: border-color .2s;
+  appearance: textfield; -moz-appearance: textfield;
+}
+.t-ans::-webkit-inner-spin-button,
+.t-ans::-webkit-outer-spin-button { -webkit-appearance: none; }
+.t-ans:focus { border-color: #2c7da0; }
+.score-row { display: flex; justify-content: center; gap: 14px; margin-top: 14px; }
+.sc { text-align: center; padding: 8px 16px; background: #f4f8fb; border-radius: 12px; }
+.sc-n { font-size: 1.8rem; font-weight: 800; line-height: 1; }
+.sc-n.g { color: #3aaa6e; }
+.sc-n.r { color: #e34d3a; }
+.sc-l { font-size: .66rem; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: #7a9db5; margin-top: 2px; }
+.solution-box {
+  background: #eef6fb; border-radius: 12px; padding: 12px 14px;
+  font-size: .85rem; line-height: 1.75; color: #1a3e54;
+  margin-top: 10px; border-left: 3px solid #2c7da0; animation: fadeIn .3s ease;
+}
+
+/* ── Общие кнопки ── */
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.act-btn {
+  background: #eef2f5; border: none; padding: 9px 18px;
+  border-radius: 40px; font-weight: 500; cursor: pointer;
+  font-size: .86rem; transition: .15s; font-family: inherit; color: #2c3e4e;
+}
+.act-btn:hover { background: #dde4ea; }
+
+/* ── Подвал ── */
+.footer {
+  background: #eef3f7; padding: 13px 30px; text-align: center;
+  font-size: .84rem; border-top: 1px solid #d0dfe8; color: #2c5a6e; font-weight: 500;
+}
+
+.hidden { display: none; }
+
+@keyframes fadeIn { from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:translateY(0)} }
+@keyframes shake  { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-5px)} 40%{transform:translateX(5px)} 60%{transform:translateX(-3px)} 80%{transform:translateX(3px)} }
+</style>
+</head>
+<body>
+
+<div class="trainer">
+
+  <div class="header">
+    <h1>Вычитание — это сложение противоположного</h1>
+    <p class="sub">a − b = a + (−b) &nbsp;·&nbsp; Вместо «отнять b» — «прибавить число, противоположное b»</p>
+    <span class="tag">📚 Тренажёр 3 · Серия «Действия с рациональными числами»</span>
+  </div>
+
+  <div class="mode-bar">
+    <button id="btnLearn"    class="mode-btn active" onclick="setMode('learning')">📘 Обучение (по шагам)</button>
+    <button id="btnPractice" class="mode-btn"        onclick="setMode('practice')">⚡ Тренировка</button>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- ЛЕВАЯ: визуальная модель -->
+    <div class="visual-panel" id="visualPanel"></div>
+
+    <!-- ПРАВАЯ: интерактив -->
+    <div class="interactive-panel">
+
+      <!-- Обучение -->
+      <div id="learnPanel">
+        <div class="progress-dots" id="progDots"></div>
+        <div class="step-box" id="stepBox"></div>
+        <div class="feedback fb-info" id="learnFb">
+          🔍 Разберём по шагам, как заменить вычитание сложением.
+        </div>
+      </div>
+
+      <!-- Тренировка -->
+      <div id="practicePanel" class="hidden">
+        <div class="step-box">
+          <div class="step-title">Тренировка</div>
+          <p class="train-label" style="text-align:center">Найди значение выражения:</p>
+          <div class="train-inp-row">
+            <span id="prExpr"></span>
+            <span>=</span>
+            <input type="number" id="tAns" class="t-ans" placeholder="?">
+          </div>
+          <div style="display:flex; justify-content:center">
+            <button class="go-btn" onclick="checkPractice()">✓ Проверить</button>
+          </div>
+          <div class="feedback fb-info" id="prFb" style="margin-top:12px">Введи ответ и нажми «Проверить».</div>
+          <div id="prSol" class="solution-box hidden"></div>
+        </div>
+        <div class="score-row">
+          <div class="sc"><div class="sc-n g" id="scOk">0</div><div class="sc-l">Верно</div></div>
+          <div class="sc"><div class="sc-n"   id="scAll">0</div><div class="sc-l">Всего</div></div>
+          <div class="sc"><div class="sc-n"   id="scPct">—</div><div class="sc-l">Точность</div></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="act-btn" onclick="showHint()">💡 Подсказка</button>
+        <button class="act-btn" onclick="refreshExample()">🔄 Новый пример</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    Правило: a − b = a + (−b) &nbsp;|&nbsp; Вычитание числа = сложение с его противоположным
+    &nbsp;·&nbsp; Это не «два минуса дают плюс» — это замена операции
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   ГЕНЕРАЦИЯ ПРИМЕРА
+   Тип 0: pos − neg  →  pos + pos   (напр. 5 − (−3) = 8)
+   Тип 1: neg − neg  →  neg + pos   (напр. −4 − (−9) = 5)
+   Тип 2: neg − pos  →  neg + neg   (напр. −7 − 5 = −12)
+   Тип 3: pos − pos  →  pos + neg   (напр. 8 − 12 = −4)
+═══════════════════════════════════════════════════ */
+let E = null;
+let mode = 'learning';
+let step = 1;
+let done = {};
+
+function rand(lo, hi) { return lo + Math.floor(Math.random() * (hi - lo + 1)); }
+
+function genEx() {
+  let a, b, t;
+  let attempts = 0;
+  do {
+    t = Math.floor(Math.random() * 4);
+    if      (t === 0) { a = rand(2, 11); b = -rand(2, 10); }
+    else if (t === 1) { a = -rand(2, 11); b = -rand(2, 10); }
+    else if (t === 2) { a = -rand(2, 11); b = rand(2, 10); }
+    else              { b = rand(4, 12);  a = rand(1, b - 2); }
+    attempts++;
+  } while ((a === b || a === -b) && attempts < 100); // ensure 3 distinct choices for step 1
+
+  const opp = -b;
+  return { a, b, opp, result: a - b, type: t };
+}
+
+/* ═══════════════════════════════════════════════════
+   ФОРМАТИРОВАНИЕ
+═══════════════════════════════════════════════════ */
+// Plain string (for text, error messages)
+function ps(n) { return n < 0 ? `−${Math.abs(n)}` : `${n}`; }
+function psSign(n) { return n < 0 ? `−${Math.abs(n)}` : `+${n}`; } // always show sign
+
+// HTML with color class (for expression display)
+function hn(n) { // first number
+  return n < 0
+    ? `<span class="neg-c">−${Math.abs(n)}</span>`
+    : `<span class="pos-c">${n}</span>`;
+}
+function hsub(b) { // subtrahend after minus
+  return b < 0
+    ? `<span class="neg-c">(−${Math.abs(b)})</span>`
+    : `<span class="pos-c">${b}</span>`;
+}
+function hopp(opp) { // opposite as second addend
+  return opp < 0
+    ? `<span class="neg-c">(−${Math.abs(opp)})</span>`
+    : `<span class="pos-c">${opp}</span>`;
+}
+function origHTML(e) { return `${hn(e.a)} <span class="op-c">−</span> ${hsub(e.b)}`; }
+function newHTML(e)  { return `${hn(e.a)} <span class="op-c">+</span> ${hopp(e.opp)}`; }
+
+/* ═══════════════════════════════════════════════════
+   ЛЕВАЯ ПАНЕЛЬ — визуальная модель
+═══════════════════════════════════════════════════ */
+function renderVisual() {
+  document.getElementById('visualPanel').innerHTML = [
+    buildBigExpr(),
+    buildTxCard(),
+    done[1] ? buildNumberLine() : '',
+  ].join('');
+}
+
+function buildBigExpr() {
+  return `<div class="big-expression">${origHTML(E)}</div>`;
+}
+
+function buildTxCard() {
+  const bDisp   = psSign(E.b);
+  const oppDisp = psSign(E.opp);
+  const showOpp = done[2];
+  const showNew = done[3];
+
+  return `
+  <div class="tx-card">
+    <div class="tx-card-title">Замена операции</div>
+    <div class="tx-row">
+      <div class="tx-op-lbl">Вычитаем:</div>
+      <div class="tx-val tx-sub">${bDisp}</div>
+    </div>
+    <div class="tx-arrow-row">
+      <span class="tx-arr">↕</span>
+      <span>${showOpp ? 'противоположные числа' : '?'}</span>
+    </div>
+    <div class="tx-row">
+      <div class="tx-op-lbl">Прибавим:</div>
+      <div class="tx-val ${showOpp ? 'tx-opp' : 'tx-ph'}">${showOpp ? oppDisp : '?'}</div>
+    </div>
+    ${showNew ? `
+      <div class="tx-divider"></div>
+      <div class="tx-new-lbl">Новое выражение:</div>
+      <div class="tx-new">${newHTML(E)}</div>
+    ` : ''}
+  </div>`;
+}
+
+function buildNumberLine() {
+  const W = 280, H = 72, LY = 36;
+  const MAX = 13;
+  const px = n => (n / MAX * 0.44 + 0.5) * W;
+
+  const bx  = px(E.b);
+  const ox  = px(E.opp);
+  const zx  = px(0);
+  const bLbl  = psSign(E.b);
+  const oLbl  = psSign(E.opp);
+
+  // Label vertical position: b label above, opp label below (avoid overlap)
+  const bLblY  = LY - 14;
+  const oLblY  = LY + 24;
+
+  // Dashed symmetry arc (shown after step 2)
+  const arcSVG = done[2] ? `
+    <path d="M ${bx} ${LY + 7} Q ${zx} ${LY + 28} ${ox} ${LY + 7}"
+          fill="none" stroke="#b0c8d8" stroke-width="1.2" stroke-dasharray="3,3"/>
+    <circle cx="${ox}" cy="${LY}" r="5" fill="#1d6fa4"/>
+    <text x="${ox}" y="${oLblY}" text-anchor="middle"
+          font-size="11" font-weight="700" fill="#1d6fa4">${oLbl}</text>
+  ` : '';
+
+  return `
+  <div class="nl-area">
+    <div class="nl-title">Числовая прямая</div>
+    <svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+      <line x1="14" y1="${LY}" x2="${W-14}" y2="${LY}" stroke="#c8d8e4" stroke-width="1.5"/>
+      <polygon points="${W-12},${LY} ${W-18},${LY-3} ${W-18},${LY+3}" fill="#c8d8e4"/>
+      <!-- zero -->
+      <line x1="${zx}" y1="${LY-7}" x2="${zx}" y2="${LY+7}" stroke="#94a3b8" stroke-width="1.5"/>
+      <text x="${zx}" y="${LY+19}" text-anchor="middle" font-size="10" fill="#94a3b8">0</text>
+      <!-- b point -->
+      <circle cx="${bx}" cy="${LY}" r="5" fill="#b91c1c"/>
+      <text x="${bx}" y="${bLblY}" text-anchor="middle"
+            font-size="11" font-weight="700" fill="#b91c1c">${bLbl}</text>
+      ${arcSVG}
+    </svg>
+    <div class="nl-legend">
+      <div class="nl-leg-item">
+        <div class="nl-leg-dot" style="background:#b91c1c"></div>вычитаемое b
+      </div>
+      ${done[2] ? `<div class="nl-leg-item">
+        <div class="nl-leg-dot" style="background:#1d6fa4"></div>противоположное −b
+      </div>` : ''}
+    </div>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════
+   ПРОГРЕСС
+═══════════════════════════════════════════════════ */
+function renderDots() {
+  document.getElementById('progDots').innerHTML =
+    [1,2,3,4].map(i => {
+      const c = done[i] ? 'done' : (i === step ? 'active' : '');
+      return `<div class="dot ${c}" title="Шаг ${i}"></div>`;
+    }).join('');
+}
+
+/* ═══════════════════════════════════════════════════
+   РЕНДЕР ШАГА
+═══════════════════════════════════════════════════ */
+function setFb(html, cls) {
+  const el = document.getElementById('learnFb');
+  el.innerHTML = html; el.className = `feedback ${cls}`;
+}
+
+function goStep(n) {
+  setTimeout(() => { step = n; renderStep(); renderVisual(); }, 520);
+}
+
+function renderStep() {
+  renderDots();
+  const box = document.getElementById('stepBox');
+  if (!box) return;
+  if (step === 1) box.innerHTML = buildS1();
+  if (step === 2) box.innerHTML = buildS2();
+  if (step === 3) box.innerHTML = buildS3();
+  if (step === 4) box.innerHTML = buildS4();
+
+  // Bind Enter on inputs
+  box.querySelectorAll('.m-inp').forEach(inp => {
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') box.querySelector('[data-check]')?.click();
+    });
+  });
+}
+
+/* ════════════════════
+   ШАГ 1: вычитаемое
+════════════════════ */
+function buildS1() {
+  // Three choices: b (correct), a, -b (opposite — good distractor)
+  const choices = shuffle([
+    { val: E.b,   label: ps(E.b),   correct: true },
+    { val: E.a,   label: ps(E.a),   correct: false },
+    { val: E.opp, label: ps(E.opp), correct: false },
+  ]);
+
+  return `
+  <div class="step-title">Шаг 1. Вычитаемое</div>
+  <p class="step-q">
+    В записи <strong>a − b</strong>: число <em>a</em> — уменьшаемое (от него отнимают),
+    число <em>b</em> — вычитаемое (его отнимают).<br><br>
+    Что является <strong>вычитаемым</strong> в нашем выражении?
+  </p>
+  <div class="choice-group">
+    ${choices.map(c => `
+      <button class="ch-btn" onclick="checkS1(${c.val}, ${c.correct})">${c.label}</button>
+    `).join('')}
+  </div>`;
+}
+function checkS1(val, correct) {
+  if (correct) {
+    setFb(`✅ Верно! Вычитаемое — это <strong>${ps(E.b)}</strong>. Именно его мы будем «превращать» в противоположное.`, 'fb-ok');
+    done[1] = true; goStep(2);
+  } else {
+    if (val === E.a) {
+      setFb(`❌ Это первое число — уменьшаемое (${ps(E.a)}). Вычитаемое — то, что идёт <em>после</em> знака «−». Попробуй снова.`, 'fb-err');
+    } else if (val === E.opp) {
+      setFb(`❌ Это противоположное к вычитаемому (${ps(E.opp)}). Но само вычитаемое — это ${ps(E.b)}. В выражении написано именно «−${E.b < 0 ? '('+ps(E.b)+')' : ps(E.b)}».`, 'fb-err');
+    } else {
+      setFb(`❌ Неверно. В записи a − b вычитается b — то, что стоит после знака «−».`, 'fb-err');
+    }
+    // Highlight wrong button
+    const btns = document.querySelectorAll('#stepBox .ch-btn');
+    btns.forEach(btn => { if (parseInt(btn.textContent.replace('−','-')) === val) btn.classList.add('bad'); });
+  }
+}
+
+/* ════════════════════
+   ШАГ 2: противоположное
+════════════════════ */
+function buildS2() {
+  const bDisp = E.b < 0 ? `(−${Math.abs(E.b)})` : `${E.b}`;
+  return `
+  <div class="step-title">Шаг 2. Противоположное число</div>
+  <div class="step-context">
+    <strong>Противоположные числа</strong> — это числа, симметричные относительно нуля:
+    одинаковое расстояние, но по разные стороны.<br>
+    Например: противоположное к 7 — это −7; противоположное к (−3) — это +3.
+  </div>
+  <p class="step-q">
+    Вычитаемое: <strong>${bDisp}</strong>.<br>
+    Чему равно число, <strong>противоположное</strong> числу ${bDisp}?
+  </p>
+  <div class="inp-row">
+    <span class="inp-lbl">−(${bDisp}) =</span>
+    <input id="i2" type="number" class="m-inp" placeholder="?">
+    <button class="go-btn" data-check onclick="checkS2()">Проверить</button>
+  </div>`;
+}
+function checkS2() {
+  const v = parseInt(document.getElementById('i2')?.value);
+  if (isNaN(v)) return;
+  const bDisp = E.b < 0 ? `(−${Math.abs(E.b)})` : `${E.b}`;
+  if (v === E.opp) {
+    setFb(`✅ Верно! Противоположное числу ${bDisp} — это <strong>${ps(E.opp)}</strong>. Они симметричны на числовой прямой (посмотри слева).`, 'fb-ok');
+    done[2] = true; goStep(3);
+  } else if (v === E.b) {
+    setFb(`❌ Ты написал само вычитаемое ${ps(E.b)}, а не его противоположное. Чтобы найти противоположное — поменяй знак: ${ps(E.b)} → ${ps(E.opp)}.`, 'fb-err');
+    mark_inp_err('i2');
+  } else if (Math.abs(v) === Math.abs(E.opp)) {
+    setFb(`❌ Число верное по модулю, но неверный знак. Противоположное числу ${bDisp} — это ${ps(E.opp)}, а не ${ps(v)}.`, 'fb-err');
+    mark_inp_err('i2');
+  } else {
+    setFb(`❌ Неверно. Противоположное числу ${bDisp} — то же расстояние от нуля, но другой знак: ${ps(E.opp)}.`, 'fb-err');
+    mark_inp_err('i2');
+  }
+}
+
+/* ════════════════════
+   ШАГ 3: переписать
+════════════════════ */
+function buildS3() {
+  const aDisp = ps(E.a);
+  const bDisp = E.b < 0 ? `(−${Math.abs(E.b)})` : `${E.b}`;
+  const oppHint = E.opp < 0 ? `отрицательное` : `положительное`;
+  return `
+  <div class="step-title">Шаг 3. Перепиши как сложение</div>
+  <div class="series-link">
+    ← <strong>Тренажёры 1–2</strong> — это сложение. Теперь мы <em>превращаем</em> вычитание в сложение, чтобы использовать уже изученные правила.
+  </div>
+  <p class="step-q">
+    Заменяем: «отнять ${bDisp}» = «прибавить противоположное к ${bDisp}».<br>
+    Противоположное — это <strong>${ps(E.opp)}</strong>. Заполни второй член:
+  </p>
+  <div class="inp-row">
+    <span class="inp-lbl">${aDisp} + [</span>
+    <input id="i3" type="number" class="m-inp" placeholder="?">
+    <span class="inp-lbl">]</span>
+    <button class="go-btn" data-check onclick="checkS3()">Проверить</button>
+  </div>
+  <p style="font-size:.8rem; color:#7a9db5; margin-top:4px">
+    Подсказка: второй член — это <em>${oppHint}</em> число.
+  </p>`;
+}
+function checkS3() {
+  const v = parseInt(document.getElementById('i3')?.value);
+  if (isNaN(v)) return;
+  const bDisp = E.b < 0 ? `(−${Math.abs(E.b)})` : `${E.b}`;
+  if (v === E.opp) {
+    setFb(`✅ Верно! ${ps(E.a)} − ${bDisp} = ${ps(E.a)} + (${ps(E.opp)}). Теперь это задача на сложение.`, 'fb-ok');
+    done[3] = true; goStep(4);
+  } else if (v === E.b) {
+    setFb(`❌ Здесь нужно противоположное к вычитаемому, а не само вычитаемое. Ты уже нашёл его на шаге 2: ${ps(E.opp)}.`, 'fb-err');
+    mark_inp_err('i3');
+  } else if (v === E.result) {
+    setFb(`❌ Это уже итоговый ответ. На этом шаге нужно только <em>переписать</em> выражение в виде сложения, не вычислять. Второй член: ${ps(E.opp)}.`, 'fb-err');
+    mark_inp_err('i3');
+  } else {
+    setFb(`❌ Неверно. Вспомни шаг 2: противоположное числу ${ps(E.b)} — это ${ps(E.opp)}. Именно оно идёт после «+».`, 'fb-err');
+    mark_inp_err('i3');
+  }
+}
+
+/* ════════════════════
+   ШАГ 4: вычислить
+════════════════════ */
+function buildS4() {
+  const aDisp  = ps(E.a);
+  const oppDisp = E.opp < 0 ? `(${ps(E.opp)})` : ps(E.opp);
+  const context = getAdditionContext(E);
+  return `
+  <div class="step-title">Шаг 4. Вычисли сумму</div>
+  <p class="step-q">
+    Ты получил выражение: <strong>${aDisp} + ${oppDisp}</strong>.<br>
+    Вычисли эту сумму, применив нужное правило.
+  </p>
+  <div class="step-context">${context}</div>
+  <div class="inp-row">
+    <span class="inp-lbl">${aDisp} + ${oppDisp} =</span>
+    <input id="i4" type="number" class="m-inp wide" placeholder="?">
+    <button class="go-btn" data-check onclick="checkS4()">Проверить</button>
+  </div>`;
+}
+function getAdditionContext(e) {
+  // Determine type of addition after rewrite
+  const a = e.a, opp = e.opp;
+  if (a > 0 && opp > 0) {
+    return `<strong>Оба числа положительные</strong> → просто сложи: ${a} + ${opp}.`;
+  } else if (a < 0 && opp < 0) {
+    return `<strong>Оба числа отрицательные</strong> (← Тренажёр 1): сложи модули, поставь «−».<br>
+      |${ps(a)}| + |${ps(opp)}| = ${Math.abs(a)} + ${Math.abs(opp)} = ${Math.abs(a)+Math.abs(opp)} → ответ −${Math.abs(a)+Math.abs(opp)}.`;
+  } else {
+    const bigAbs = Math.max(Math.abs(a), Math.abs(opp));
+    const smlAbs = Math.min(Math.abs(a), Math.abs(opp));
+    const winSign = Math.abs(a) > Math.abs(opp) ? (a<0?'−':'+') : (opp<0?'−':'+');
+    return `<strong>Числа с разными знаками</strong> (← Тренажёр 2): вычти меньший модуль из большего, знак от победителя.<br>
+      ${bigAbs} − ${smlAbs} = ${bigAbs-smlAbs} → знак «${winSign}» → ответ ${winSign}${bigAbs-smlAbs}.`;
+  }
+}
+function checkS4() {
+  const v = parseInt(document.getElementById('i4')?.value);
+  if (isNaN(v)) return;
+  if (v === E.result) {
+    setFb(`🎉 Отлично! Ответ: <strong>${ps(E.result)}</strong>. Вычитание успешно превращено в сложение и вычислено.`, 'fb-ok');
+    done[4] = true;
+    setTimeout(renderDone, 650);
+  } else {
+    setFb(getDiagS4(v), 'fb-err');
+    mark_inp_err('i4');
+  }
+}
+function getDiagS4(v) {
+  const a = E.a, opp = E.opp, correct = E.result;
+  const cm = Math.abs(correct), vm = Math.abs(v);
+  const cs = Math.sign(correct), vs = Math.sign(v);
+
+  if (cs !== vs && cm === vm) {
+    return `❌ Число верное (${cm}), но знак неверный. ${getSignHint(a, opp)}`;
+  }
+  // Likely added modules instead of subtracting (for different-sign case)
+  if ((a < 0) !== (opp < 0)) { // different signs
+    if (vm === Math.abs(a) + Math.abs(opp)) {
+      return `❌ Ты сложил модули (${Math.abs(a)} + ${Math.abs(opp)} = ${vm}). При <em>разных</em> знаках — вычитай меньший из большего (Тренажёр 2).`;
+    }
+  }
+  // Same sign negative: maybe subtracted instead of added
+  if (a < 0 && opp < 0) {
+    if (vm === Math.abs(Math.abs(a) - Math.abs(opp))) {
+      return `❌ Ты вычел модули. При двух отрицательных — складывай: ${Math.abs(a)} + ${Math.abs(opp)} = ${Math.abs(a)+Math.abs(opp)}, знак «−» (Тренажёр 1).`;
+    }
+    if (v > 0) return `❌ Два отрицательных числа дают отрицательную сумму — результат не может быть положительным.`;
+  }
+  return `❌ Неверно. Правильный ответ: ${ps(correct)}. Перечитай подсказку выше — там расписан алгоритм.`;
+}
+function getSignHint(a, opp) {
+  if (a < 0 && opp < 0) return 'Два отрицательных → знак «−».';
+  const biggerIsNeg = Math.abs(a) > Math.abs(opp) ? (a<0) : (opp<0);
+  return `Знак берётся от числа с бо́льшим модулем — оно ${biggerIsNeg ? 'отрицательное' : 'положительное'}.`;
+}
+
+/* ════════════════════
+   КАРТОЧКА ЗАВЕРШЕНИЯ
+════════════════════ */
+function renderDone() {
+  const aS   = ps(E.a);
+  const bS   = E.b < 0 ? `(−${Math.abs(E.b)})` : `${E.b}`;
+  const oppS = ps(E.opp);
+  const oppFull = E.opp < 0 ? `(${oppS})` : oppS;
+  const neg  = E.result < 0;
+
+  document.getElementById('stepBox').innerHTML = `
+  <div class="done-card">
+    <div style="font-size:1rem; opacity:.75">Ответ</div>
+    <div class="done-result ${neg ? 'neg-r' : 'pos-r'}">${ps(E.result)}</div>
+    <div class="done-steps">
+      <strong>Как решали:</strong><br>
+      1. Вычитаемое: <strong>${bS}</strong><br>
+      2. Противоположное к ${bS} = <strong>${oppS}</strong><br>
+      3. Замена: ${aS} − ${bS} = ${aS} + ${oppFull}<br>
+      4. Сумма ${aS} + ${oppFull} = <strong>${ps(E.result)}</strong>
+    </div>
+    <div class="done-rule">
+      a − b = a + (−b) &nbsp;·&nbsp; вычитание = сложение противоположного
+    </div>
+    <button class="new-btn-w" onclick="refreshExample()">🔄 Новый пример</button>
+  </div>`;
+  document.getElementById('progDots').innerHTML = '';
+  document.getElementById('learnFb').innerHTML = '';
+}
+
+/* ═══════════════════════════════════════════════════
+   ТРЕНИРОВКА
+═══════════════════════════════════════════════════ */
+let prAttempts = 0;
+let score = { ok: 0, all: 0 };
+
+function checkPractice() {
+  const raw = document.getElementById('tAns')?.value.trim();
+  const fb  = document.getElementById('prFb');
+  const sol = document.getElementById('prSol');
+  if (!raw) { fb.innerHTML='Введи ответ.'; fb.className='feedback fb-info'; return; }
+  const v = parseInt(raw);
+  if (isNaN(v)) { fb.innerHTML='Введи целое число (со знаком, если отрицательное).'; fb.className='feedback fb-info'; return; }
+
+  score.all++;
+  prAttempts++;
+
+  const aS   = ps(E.a);
+  const bS   = E.b < 0 ? `(−${Math.abs(E.b)})` : `${E.b}`;
+  const oppS = ps(E.opp);
+
+  if (v === E.result) {
+    score.ok++;
+    fb.innerHTML = `✅ Верно! ${aS} − ${bS} = ${aS} + ${oppS} = <strong>${ps(E.result)}</strong>.`;
+    fb.className = 'feedback fb-ok';
+    sol.classList.add('hidden');
+    prAttempts = 0;
+  } else {
+    fb.className = 'feedback fb-err';
+    const cm = Math.abs(E.result), vm = Math.abs(v);
+    const cs = Math.sign(E.result), vs = Math.sign(v);
+
+    if (prAttempts === 1) {
+      // First attempt: targeted hint
+      if (v === E.a - E.b && false) { /* trivially same */
+      } else if (v === E.a + E.b || v === -(E.a + E.b)) {
+        // Added without converting (e.g., 5 + (-3) instead of converting first)
+        fb.innerHTML = `🔍 Похоже, ты посчитал без замены операции. Сначала перепиши: ${aS} − ${bS} = ${aS} + (${oppS}). Потом считай.`;
+      } else if (cs !== vs && cm === vm) {
+        fb.innerHTML = `🔍 Число верное (${cm}), но знак неверный. ${getSignHint(E.a, E.opp)} Замена: ${aS} − ${bS} = ${aS} + (${oppS}).`;
+      } else if (vm === Math.abs(E.b) && cs === Math.sign(E.a)) {
+        // Forgot to negate
+        fb.innerHTML = `🔍 Проверь шаг замены. Вычитаем ${bS} — значит прибавляем <em>противоположное</em> к ${bS}, то есть ${oppS}. Не само ${bS}.`;
+      } else {
+        fb.innerHTML = `🔍 Проверь замену: ${aS} − ${bS} = ${aS} + (${oppS}). Потом посчитай эту сумму.`;
+      }
+    } else if (prAttempts === 2) {
+      fb.innerHTML = `🔍 Ещё раз: (1) противоположное к ${bS} = ${oppS}; (2) сумма ${aS} + (${oppS}) = <strong>${ps(E.result)}</strong>.`;
+    } else {
+      fb.innerHTML = `❌ Правильный ответ: <strong>${ps(E.result)}</strong>.`;
+      sol.innerHTML = `
+        <strong>Решение:</strong><br>
+        1. Вычитаемое: ${bS}<br>
+        2. Противоположное: ${oppS}<br>
+        3. ${aS} − ${bS} = ${aS} + (${oppS})<br>
+        4. ${getAdditionContext(E).replace(/<[^>]+>/g, ' ').trim()}<br>
+        5. Ответ: <strong>${ps(E.result)}</strong>`;
+      sol.classList.remove('hidden');
+      prAttempts = 0;
+    }
+  }
+  updateScore();
+}
+
+function updateScore() {
+  document.getElementById('scOk').textContent  = score.ok;
+  document.getElementById('scAll').textContent = score.all;
+  const pct = score.all > 0 ? Math.round(score.ok/score.all*100) : null;
+  const el = document.getElementById('scPct');
+  el.textContent = pct !== null ? pct + '%' : '—';
+  el.className = 'sc-n ' + (pct === null ? '' : pct >= 70 ? 'g' : 'r');
+}
+
+/* ═══════════════════════════════════════════════════
+   ПОДСКАЗКА
+═══════════════════════════════════════════════════ */
+function showHint() {
+  const aS = ps(E.a);
+  const bS = E.b < 0 ? `(−${Math.abs(E.b)})` : `${E.b}`;
+  const oppS = ps(E.opp);
+  const txt = `💡 <strong>Подсказка:</strong><br>
+    ${aS} − ${bS} — заменяем вычитание:<br>
+    Противоположное к ${bS} = ${oppS}<br>
+    → ${aS} + (${oppS}) = <strong>${ps(E.result)}</strong>`;
+  if (mode === 'learning') {
+    setFb(txt, 'fb-hint');
+  } else {
+    const fb = document.getElementById('prFb');
+    fb.innerHTML = txt; fb.className = 'feedback fb-hint';
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   РЕЖИМ / СБРОС
+═══════════════════════════════════════════════════ */
+function setMode(m) {
+  mode = m;
+  document.getElementById('btnLearn').classList.toggle('active', m === 'learning');
+  document.getElementById('btnPractice').classList.toggle('active', m === 'practice');
+  document.getElementById('learnPanel').classList.toggle('hidden', m !== 'learning');
+  document.getElementById('practicePanel').classList.toggle('hidden', m !== 'practice');
+  if (m === 'learning') {
+    resetLearning();
+  } else {
+    const el = document.getElementById('tAns'); if (el) el.value = '';
+    document.getElementById('prFb').innerHTML = 'Введи ответ и нажми «Проверить».';
+    document.getElementById('prFb').className = 'feedback fb-info';
+    document.getElementById('prSol').classList.add('hidden');
+    prAttempts = 0;
+    renderVisual();
+    renderPrExpr();
+  }
+}
+
+function renderPrExpr() {
+  const el = document.getElementById('prExpr');
+  if (el) el.innerHTML = origHTML(E);
+}
+
+function resetLearning() {
+  step = 1; done = {};
+  renderVisual();
+  renderStep();
+  setFb('🔍 Разберём по шагам, как заменить вычитание сложением.', 'fb-info');
+}
+
+function refreshExample() {
+  E = genEx();
+  prAttempts = 0;
+  document.getElementById('prSol')?.classList.add('hidden');
+  if (mode === 'learning') {
+    resetLearning();
+  } else {
+    const el = document.getElementById('tAns'); if (el) el.value = '';
+    document.getElementById('prFb').innerHTML = 'Новый пример. Введи ответ.';
+    document.getElementById('prFb').className = 'feedback fb-info';
+    renderVisual();
+    renderPrExpr();
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   УТИЛИТЫ
+═══════════════════════════════════════════════════ */
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+function mark_inp_err(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.borderColor = '#c0392b';
+  el.animate([{transform:'translateX(0)'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(-3px)'},{transform:'translateX(0)'}], {duration:380});
+  setTimeout(() => { el.style.borderColor = ''; }, 700);
+}
+
+/* ═══════════════════════════════════════════════════
+   ИНИЦИАЛИЗАЦИЯ
+═══════════════════════════════════════════════════ */
+(function init() {
+  E = genEx();
+  setMode('learning');
+  document.getElementById('tAns')?.addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPractice();
+  });
+})();
+</script>
+</body>
+</html>

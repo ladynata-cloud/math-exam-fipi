@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AC + CB = AB — тренажёр по геометрии</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css">
+  <script src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"></script>
+  <style>
+    *  { box-sizing: border-box; }
+    body { margin: 0; background: #e8e4db; font-family: system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+           color: #1f2937; padding: 18px; }
+
+    .app { max-width: 980px; margin: auto; background: #fff; border-radius: 18px;
+           overflow: hidden; box-shadow: 0 12px 36px #0002; }
+
+    /* ── Header ── */
+    .head { background: #1a1a2e; color: #fff; padding: 14px 20px;
+            display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .head-left .title { font-size: 19px; font-weight: 900; }
+    .head-left .sub   { font-size: 12px; opacity: .70; margin-top: 2px; }
+    .tabs { display: flex; gap: 6px; }
+    .tab  { background: rgba(255,255,255,.14); border: none; color: rgba(255,255,255,.65);
+            padding: 6px 13px; border-radius: 8px; font: 700 12px system-ui; cursor: pointer; transition: .15s; }
+    .tab:hover  { background: rgba(255,255,255,.22); color: #fff; }
+    .tab.active { background: rgba(255,255,255,.92); color: #1a1a2e; }
+
+    /* ── Body grid ── */
+    .main { display: grid; grid-template-columns: minmax(0,1fr) 296px; }
+    .boardWrap { background: #faf8f2; padding: 14px; border-right: 1px solid #e5e2d9; }
+    .jxgbox { width: 100%; height: 400px; border: 1px solid #d6d3ca;
+              border-radius: 14px; background: #fffdf7; }
+
+    /* ── Right panel ── */
+    .panel { padding: 14px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; }
+
+    .card { border: 1.5px solid #e5e7eb; border-radius: 12px; padding: 12px; background: #f9fafb; }
+    .card h2 { margin: 0 0 9px; font-size: 11px; text-transform: uppercase;
+               letter-spacing: .08em; color: #64748b; }
+    .task-text { font-size: 14px; line-height: 1.55; }
+    .task-sub  { font-size: 12px; color: #64748b; margin: 5px 0 0; line-height: 1.4; }
+
+    /* Big equality display */
+    .eq-box { display: flex; align-items: center; justify-content: center;
+              gap: 6px; padding: 6px 0 4px; }
+    .eq-val { text-align: center; min-width: 52px; }
+    .eq-val .num { font-size: 19px; font-weight: 900; font-variant-numeric: tabular-nums; }
+    .eq-val .lbl { font-size: 10px; color: #94a3b8; display: block; margin-top: 1px; }
+    .eq-val.ac .num { color: #2563eb; }
+    .eq-val.cb .num { color: #059669; }
+    .eq-val.ab .num { color: #1a1a2e; }
+    .eq-op   { font-size: 22px; font-weight: 700; color: #94a3b8; padding-bottom: 12px; }
+    .eq-check { font-size: 20px; padding-bottom: 12px; }
+
+    /* Visual segment bar */
+    .seg-bar-wrap { height: 14px; background: #e2e8f0; border-radius: 7px;
+                    overflow: hidden; display: flex; margin-top: 8px; }
+    .seg-bar-ac   { background: #3b82f6; height: 100%; transition: width .12s; }
+    .seg-bar-cb   { background: #10b981; height: 100%; flex: 1; transition: background .12s; }
+    .seg-bar-off  { background: #fca5a5; }
+    .bar-labels   { display: flex; justify-content: space-between;
+                    font-size: 11px; margin-top: 3px; }
+    .bar-lbl-ac { color: #2563eb; font-weight: 700; }
+    .bar-lbl-cb { color: #059669; font-weight: 700; }
+
+    /* Individual measurements */
+    .mrow { display: flex; justify-content: space-between; align-items: center;
+            padding: 4px 0; border-bottom: 1px dashed #e5e7eb; font-size: 14px; }
+    .mrow:last-child { border: 0; }
+    .mrow-label { display: flex; align-items: center; gap: 7px; }
+    .dot  { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .blue  { background: #2563eb; }
+    .green { background: #059669; }
+    .dark  { background: #1a1a2e; }
+    .mrow-val { font-weight: 900; font-variant-numeric: tabular-nums; }
+
+    /* Message */
+    .msg { border-radius: 12px; padding: 11px 13px; font-size: 14px;
+           font-weight: 700; line-height: 1.45; }
+    .info { background: #eff6ff; color: #1d4ed8; }
+    .ok   { background: #f0fdf4; color: #15803d; }
+    .err  { background: #fef2f2; color: #b91c1c; }
+    .warn { background: #fff7ed; color: #c2410c; }
+
+    /* Proof block */
+    .proof { display: none; background: #ecfdf5; color: #14532d;
+             border: 1.5px solid #bbf7d0; border-radius: 12px;
+             padding: 12px; font-size: 13px; line-height: 1.5; }
+
+    /* Buttons */
+    .btn-bar { display: flex; gap: 8px; flex-wrap: wrap; padding: 11px 14px;
+               background: #f9fafb; border-top: 1px solid #e5e7eb; }
+    button { border: 1.5px solid #d1d5db; border-radius: 9px; background: #fff;
+             color: #374151; padding: 8px 13px; font: 800 13px system-ui; cursor: pointer; }
+    button:hover { background: #f3f4f6; }
+    .primary { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
+    .primary:hover { background: #2d2d4a; }
+    .hint-on { background: #dcfce7; color: #166534; border-color: #86efac; }
+
+    @media (max-width: 820px) {
+      body { padding: 8px; }
+      .main { grid-template-columns: 1fr; }
+      .boardWrap { border-right: 0; border-bottom: 1px solid #e5e2d9; }
+      .jxgbox { height: 300px; }
+      .head { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .panel { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Header -->
+  <div class="head">
+    <div class="head-left">
+      <div class="title">📏 AC + CB = AB</div>
+      <div class="sub">Точка C делит отрезок на две части · потяните точку C</div>
+    </div>
+    <div class="tabs">
+      <button class="tab active" id="tabObserve" onclick="setMode('observe')">Наблюдение</button>
+      <button class="tab"        id="tabTask"    onclick="setMode('task')">Задание</button>
+    </div>
+  </div>
+
+  <!-- Board + Panel -->
+  <div class="main">
+    <div class="boardWrap">
+      <div id="jxgboard" class="jxgbox"></div>
+    </div>
+    <aside class="panel">
+
+      <!-- Task card -->
+      <div class="card">
+        <h2>Задание</h2>
+        <div id="taskText" class="task-text"></div>
+        <p  id="taskSub"  class="task-sub"></p>
+      </div>
+
+      <!-- Big equality -->
+      <div class="card">
+        <h2>Равенство отрезков</h2>
+        <div class="eq-box">
+          <div class="eq-val ac"><span class="num" id="eqAC">—</span><span class="lbl">AC</span></div>
+          <span class="eq-op">+</span>
+          <div class="eq-val cb"><span class="num" id="eqCB">—</span><span class="lbl">CB</span></div>
+          <span class="eq-op">=</span>
+          <div class="eq-val ab"><span class="num" id="eqAB">—</span><span class="lbl">AB</span></div>
+          <span class="eq-check" id="eqCheck"></span>
+        </div>
+        <!-- Visual bar -->
+        <div class="seg-bar-wrap">
+          <div class="seg-bar-ac" id="segBarAC" style="width:50%"></div>
+          <div class="seg-bar-cb" id="segBarCB"></div>
+        </div>
+        <div class="bar-labels">
+          <span class="bar-lbl-ac">← AC</span>
+          <span class="bar-lbl-cb">CB →</span>
+        </div>
+      </div>
+
+      <!-- Individual measurements -->
+      <div class="card">
+        <h2>Значения</h2>
+        <div class="mrow">
+          <span class="mrow-label"><span class="dot blue"></span>AC</span>
+          <span class="mrow-val" id="valAC">—</span>
+        </div>
+        <div class="mrow">
+          <span class="mrow-label"><span class="dot green"></span>CB</span>
+          <span class="mrow-val" id="valCB">—</span>
+        </div>
+        <div class="mrow">
+          <span class="mrow-label"><span class="dot dark"></span>AB</span>
+          <span class="mrow-val" id="valAB">—</span>
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div id="msg" class="msg info">Потяните точку C вдоль отрезка и наблюдайте за суммой.</div>
+
+      <!-- Proof / success explanation -->
+      <div id="proof" class="proof">
+        <b>Верно!</b> Точка C лежит между A и B, и отрезок AB состоит ровно из двух частей — AC и CB.
+        Поэтому длина целого равна сумме частей: <b>AC + CB = AB</b>. Это справедливо при
+        <em>любом</em> положении точки C между A и B.
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- Buttons -->
+  <div class="btn-bar">
+    <button class="primary" onclick="checkNow()">Проверить</button>
+    <button id="hintBtn"    onclick="toggleHint()">Подсказка</button>
+    <button onclick="newTask()">Новое задание</button>
+    <button onclick="resetC()">Сбросить C</button>
+  </div>
+
+</div><!-- .app -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════════
+//  State
+// ═══════════════════════════════════════════════════════════════════════════════
+let board      = null;
+let ptA, ptB, ptC, hiddenLine, segAC, segCB, hintPt;
+let tickTimer  = null;          // interval for continuous panel refresh
+let hintVisible = false;
+let mode        = 'observe';    // 'observe' | 'task'
+let taskABLen   = 7;            // current AB length (cm = board units)
+let taskACLen   = 3;            // correct AC value for task mode
+let taskTarget  = 4;            // correct CB value (= AB - AC)
+const TOL       = 0.18;         // tolerance for "correct" check (board units ≈ cm)
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Geometry helpers
+// ═══════════════════════════════════════════════════════════════════════════════
+function dist(P, Q) {
+  return Math.hypot(P.X() - Q.X(), P.Y() - Q.Y());
+}
+
+// Parametric position of C on line AB (0 = at A, 1 = at B, outside = <0 or >1)
+function tParam() {
+  const ab2 = Math.pow(dist(ptA, ptB), 2);
+  if (ab2 < 1e-6) return 0.5;
+  const wx = ptC.X() - ptA.X(), wy = ptC.Y() - ptA.Y();
+  const dx = ptB.X() - ptA.X(), dy = ptB.Y() - ptA.Y();
+  return (wx * dx + wy * dy) / ab2;
+}
+
+function onSeg() {
+  const t = tParam();
+  return t >= -0.015 && t <= 1.015;
+}
+
+function fmt(x) {
+  return x.toFixed(2).replace('.', ',');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Board construction
+// ═══════════════════════════════════════════════════════════════════════════════
+function makeBoard(abLen, cStartFrac) {
+  // Clear previous board and interval
+  if (tickTimer) { clearInterval(tickTimer); tickTimer = null; }
+  if (board)     { JXG.JSXGraph.freeBoard(board); board = null; }
+
+  const AX = 1.0, AY = 0;
+  const BX = AX + abLen;
+  // cStartFrac: 0..1 range on segment (default off-centre)
+  const CX = AX + abLen * (cStartFrac !== undefined ? cStartFrac : 0.35);
+
+  board = JXG.JSXGraph.initBoard('jxgboard', {
+    boundingbox : [AX - 0.7, 2.0, BX + 0.9, -1.6],
+    axis        : false,
+    grid        : true,
+    showCopyright  : false,
+    showNavigation : false,
+    pan  : { enabled: false },
+    zoom : { enabled: false }
+  });
+
+  // ── Fixed endpoints ──────────────────────────────────────────────────
+  ptA = board.create('point', [AX, AY], {
+    name: 'A', fixed: true, size: 6,
+    strokeColor: '#1a1a2e', fillColor: '#1a1a2e',
+    label: { fontSize: 14, fontWeight: 'bold', color: '#1a1a2e', offset: [0, 6] }
+  });
+  ptB = board.create('point', [BX, AY], {
+    name: 'B', fixed: true, size: 6,
+    strokeColor: '#1a1a2e', fillColor: '#1a1a2e',
+    label: { fontSize: 14, fontWeight: 'bold', color: '#1a1a2e', offset: [0, 6] }
+  });
+
+  // Invisible line — C is constrained to this line (can go outside segment)
+  hiddenLine = board.create('line', [ptA, ptB], { visible: false });
+
+  // ── Background segment (light gray, draws first) ─────────────────────
+  board.create('segment', [ptA, ptB], {
+    strokeColor: '#cbd5e1', strokeWidth: 8,
+    highlight: false, layer: 1
+  });
+
+  // ── Moving point C (glider on the full line) ─────────────────────────
+  ptC = board.create('glider', [CX, AY, hiddenLine], {
+    name: 'C', size: 8,
+    strokeColor: '#dc2626', fillColor: '#ef4444',
+    label: { fontSize: 14, fontWeight: 'bold', color: '#b91c1c', offset: [0, -22] },
+    layer: 5
+  });
+
+  // ── Coloured segments (drawn over background) ─────────────────────────
+  segAC = board.create('segment', [ptA, ptC], {
+    strokeColor: '#3b82f6', strokeWidth: 5,
+    highlight: false, layer: 3
+  });
+  segCB = board.create('segment', [ptC, ptB], {
+    strokeColor: '#10b981', strokeWidth: 5,
+    highlight: false, layer: 3
+  });
+
+  // ── Dynamic length labels (above segments) ────────────────────────────
+  board.create('text', [
+    () => (ptA.X() + ptC.X()) / 2,
+    () => 0.60,
+    () => fmt(dist(ptA, ptC)) + ' см'
+  ], {
+    fontSize: 12, color: '#2563eb', fontWeight: 'bold',
+    anchorX: 'middle', highlight: false, layer: 6
+  });
+
+  board.create('text', [
+    () => (ptC.X() + ptB.X()) / 2,
+    () => 0.60,
+    () => fmt(dist(ptC, ptB)) + ' см'
+  ], {
+    fontSize: 12, color: '#059669', fontWeight: 'bold',
+    anchorX: 'middle', highlight: false, layer: 6
+  });
+
+  // AB total label (below segment)
+  board.create('text', [
+    () => (ptA.X() + ptB.X()) / 2,
+    () => -0.80,
+    () => 'AB = ' + fmt(dist(ptA, ptB)) + ' см'
+  ], {
+    fontSize: 11, color: '#64748b',
+    anchorX: 'middle', highlight: false, layer: 6
+  });
+
+  // ── Hint point (purple ★, hidden until asked) ─────────────────────────
+  hintPt = board.create('point', [AX + abLen / 2, AY], {
+    name: '★', fixed: true, visible: false, size: 9,
+    strokeColor: '#7c3aed', fillColor: '#a78bfa',
+    label: { fontSize: 12, color: '#7c3aed', offset: [0, 18] }
+  });
+
+  // ── Events ────────────────────────────────────────────────────────────
+  board.on('update', updatePanel);
+  tickTimer = setInterval(updatePanel, 150);
+  updatePanel();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Panel update — runs on every board event and tick
+// ═══════════════════════════════════════════════════════════════════════════════
+function updatePanel() {
+  if (!ptA || !ptB || !ptC) return;
+
+  const ac  = dist(ptA, ptC);
+  const cb  = dist(ptC, ptB);
+  const ab  = dist(ptA, ptB);
+  const t   = tParam();
+  const on  = onSeg();
+  const sum = ac + cb;
+
+  // ── Equality display ──
+  document.getElementById('eqAC').textContent = fmt(ac);
+  document.getElementById('eqCB').textContent = fmt(cb);
+  document.getElementById('eqAB').textContent = fmt(ab);
+
+  const ck = document.getElementById('eqCheck');
+  if (on && Math.abs(sum - ab) < 0.06) {
+    ck.textContent = '✓';
+    ck.style.color = '#16a34a';
+  } else if (!on) {
+    ck.textContent = '≠';
+    ck.style.color = '#dc2626';
+  } else {
+    ck.textContent = '';
+  }
+
+  // ── Visual bar ──
+  const pct = Math.min(Math.max(ac / ab, 0), 1) * 100;
+  const barAC = document.getElementById('segBarAC');
+  const barCB = document.getElementById('segBarCB');
+  barAC.style.width = pct + '%';
+  if (!on) {
+    barAC.style.background = '#fca5a5';
+    barCB.className = 'seg-bar-cb seg-bar-off';
+  } else {
+    barAC.style.background = '#3b82f6';
+    barCB.className = 'seg-bar-cb';
+  }
+
+  // ── Individual values ──
+  document.getElementById('valAC').textContent = fmt(ac) + ' см';
+  document.getElementById('valCB').textContent = fmt(cb) + ' см';
+  document.getElementById('valAB').textContent = fmt(ab) + ' см';
+
+  // ── Message + proof ──
+  const proof = document.getElementById('proof');
+
+  if (mode === 'observe') {
+    if (!on) {
+      if (t < 0) {
+        setMsg('Точка C вышла за точку A влево. Формула AC + CB = AB работает, '
+             + 'только когда C лежит между A и B.', 'warn');
+      } else {
+        setMsg('Точка C вышла за точку B вправо. Верните C на отрезок — '
+             + 'между точками A и B.', 'warn');
+      }
+      proof.style.display = 'none';
+    } else {
+      setMsg('AC + CB = AB при любом положении точки C между A и B. '
+           + 'Двигайте C и наблюдайте — сумма не меняется!', 'ok');
+      proof.style.display = 'block';
+    }
+  } else {
+    // Task mode
+    proof.style.display = 'none';
+    if (!on) {
+      setMsg('Точка C должна лежать на отрезке, между A и B. '
+           + 'Верните её на отрезок.', 'warn');
+      return;
+    }
+    const err = Math.abs(cb - taskTarget);
+    if (err <= TOL) {
+      setMsg(`Верно! CB = ${fmt(cb)} см ≈ ${taskTarget} см. `
+           + `AC + CB = ${fmt(ac)} + ${fmt(cb)} = ${fmt(ab)} = AB ✓`, 'ok');
+      proof.style.display = 'block';
+    } else if (cb < taskTarget - TOL) {
+      setMsg(`CB = ${fmt(cb)} см — нужно больше (${taskTarget} см). `
+           + `Подвиньте C ближе к A.`, 'info');
+    } else {
+      setMsg(`CB = ${fmt(cb)} см — нужно меньше (${taskTarget} см). `
+           + `Подвиньте C ближе к B.`, 'info');
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Modes
+// ═══════════════════════════════════════════════════════════════════════════════
+function setMode(m) {
+  mode = m;
+  document.getElementById('tabObserve').className = 'tab' + (m === 'observe' ? ' active' : '');
+  document.getElementById('tabTask').className    = 'tab' + (m === 'task'    ? ' active' : '');
+  resetHint();
+  document.getElementById('proof').style.display = 'none';
+  if (m === 'observe') launchObserve();
+  else                 launchTask();
+}
+
+function launchObserve() {
+  taskABLen = 7;
+  makeBoard(7, 0.35);
+  document.getElementById('taskText').innerHTML =
+    'Потяните точку <b>C</b> вдоль отрезка AB и наблюдайте за суммой AC&nbsp;+&nbsp;CB.';
+  document.getElementById('taskSub').textContent =
+    'Меняется ли сумма, когда C двигается? Попробуйте разные положения.';
+  setMsg('Потяните точку C вдоль отрезка — смотрите на сумму AC + CB.', 'info');
+}
+
+function launchTask() {
+  // Random AB: 5–10, random AC: 1..(AB-1), derive CB
+  const abOpts = [5, 6, 7, 8, 9, 10];
+  taskABLen = abOpts[Math.floor(Math.random() * abOpts.length)];
+  taskACLen = 1 + Math.floor(Math.random() * (taskABLen - 2));  // 1 … AB-2
+  taskTarget = taskABLen - taskACLen;                            // = correct CB
+
+  // Start C far from correct answer
+  const correctFrac = taskACLen / taskABLen;
+  const cFrac = correctFrac > 0.5 ? 0.15 : 0.82;
+  makeBoard(taskABLen, cFrac);
+
+  // Position hint at correct X
+  hintPt.moveTo([1.0 + taskACLen, 0]);
+
+  // Randomise framing: "find CB" vs "find AC"
+  const findCB = Math.random() > 0.45;
+  if (findCB) {
+    document.getElementById('taskText').innerHTML =
+      `Отрезок AB&nbsp;=&nbsp;<b>${taskABLen}&nbsp;см</b>,
+       AC&nbsp;=&nbsp;<b>${taskACLen}&nbsp;см</b>.<br>
+       Поставьте C так, чтобы
+       <b style="color:#059669">CB&nbsp;=&nbsp;${taskTarget}&nbsp;см</b>.`;
+  } else {
+    document.getElementById('taskText').innerHTML =
+      `Отрезок AB&nbsp;=&nbsp;<b>${taskABLen}&nbsp;см</b>,
+       CB&nbsp;=&nbsp;<b>${taskTarget}&nbsp;см</b>.<br>
+       Поставьте C так, чтобы
+       <b style="color:#2563eb">AC&nbsp;=&nbsp;${taskACLen}&nbsp;см</b>.`;
+  }
+  document.getElementById('taskSub').textContent = '';
+  setMsg(`Задание: AB = ${taskABLen} см. Найдите нужное положение точки C.`, 'info');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Button handlers
+// ═══════════════════════════════════════════════════════════════════════════════
+function checkNow() {
+  updatePanel();   // force refresh first
+  const on  = onSeg();
+  const cb  = dist(ptC, ptB);
+  const ab  = dist(ptA, ptB);
+  const ac  = dist(ptA, ptC);
+
+  if (mode === 'observe') {
+    if (!on) {
+      setMsg('Точка C сейчас вне отрезка AB. '
+           + 'Верните её между A и B — и сумма снова станет равной AB.', 'err');
+    } else {
+      setMsg(`Да! AC + CB = ${fmt(ac)} + ${fmt(cb)} = ${fmt(ac + cb)} = AB ✓ `
+           + 'Это всегда так, при любом положении C между A и B.', 'ok');
+      document.getElementById('proof').style.display = 'block';
+    }
+    return;
+  }
+
+  // Task mode
+  if (!on) {
+    setMsg('Точка C вне отрезка. Она должна быть между A и B.', 'err');
+    return;
+  }
+  if (Math.abs(cb - taskTarget) <= TOL) {
+    setMsg(`Верно! CB = ${fmt(cb)} см. AC + CB = AB = ${fmt(ab)} см ✓`, 'ok');
+    document.getElementById('proof').style.display = 'block';
+  } else {
+    setMsg(`Пока нет. CB = ${fmt(cb)} см, а нужно ${taskTarget} см. `
+         + 'Подвиньте точку C точнее.', 'err');
+  }
+}
+
+function toggleHint() {
+  hintVisible = !hintVisible;
+  const btn = document.getElementById('hintBtn');
+  btn.textContent = hintVisible ? 'Скрыть подсказку' : 'Подсказка';
+  btn.className   = hintVisible ? 'hint-on' : '';
+
+  if (mode === 'task' && hintPt) {
+    hintPt.setAttribute({ visible: hintVisible });
+    if (board) board.update();
+  }
+
+  if (hintVisible) {
+    if (mode === 'observe') {
+      setMsg('Подсказка: AC + CB всегда равна AB, пока C между A и B. '
+           + 'Сумма меняется вместе с частями, но всегда складывается в AB.', 'info');
+    } else {
+      setMsg(`Подсказка: AC + CB = AB, значит CB = AB − AC = `
+           + `${taskABLen} − ${taskACLen} = ${taskTarget} см. `
+           + `Правильное место отмечено ★ на чертеже.`, 'info');
+    }
+  } else {
+    updatePanel();
+  }
+}
+
+function newTask() {
+  resetHint();
+  document.getElementById('proof').style.display = 'none';
+  if (mode === 'observe') {
+    launchObserve();
+    setMsg('Новый отрезок. Потяните точку C и посмотрите на сумму.', 'info');
+  } else {
+    launchTask();
+  }
+}
+
+function resetC() {
+  if (!ptC || !ptA) return;
+  const frac = mode === 'task' ? (tParam() > 0.5 ? 0.15 : 0.82) : 0.35;
+  ptC.moveTo([ptA.X() + taskABLen * frac, 0], 250);
+  setMsg('Точка C возвращена. Попробуйте снова.', 'info');
+  updatePanel();
+}
+
+// ── Small util ─────────────────────────────────────────────────────────
+function setMsg(text, type) {
+  const el = document.getElementById('msg');
+  el.textContent = text;
+  el.className   = 'msg ' + type;
+}
+
+function resetHint() {
+  hintVisible = false;
+  const btn = document.getElementById('hintBtn');
+  btn.textContent = 'Подсказка';
+  btn.className   = '';
+  if (hintPt) hintPt.setAttribute({ visible: false });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  Boot
+// ═══════════════════════════════════════════════════════════════════════════════
+window.addEventListener('load', () => launchObserve());
+</script>
+</body>
+</html>

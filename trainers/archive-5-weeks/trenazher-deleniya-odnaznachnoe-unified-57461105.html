@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Тренажёр деления уголком на однозначное число</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background: #f5f4f0;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem 1rem;
+    color: #1a1a18;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 780px;
+    background: #fff;
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 22px rgba(0,0,0,0.06);
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: #777;
+    font-size: 0.88rem;
+    margin-bottom: 1rem;
+  }
+
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .stat { text-align: center; }
+
+  .stat-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #777;
+    letter-spacing: 0.04em;
+  }
+
+  .stat-value {
+    font-size: 1.55rem;
+    font-weight: 600;
+  }
+
+  .stat-value.ok { color: #1a7a42; }
+  .stat-value.err { color: #c0392b; }
+
+  .division-block {
+    background: #fefefe;
+    border: 1px solid #e2e0d8;
+    border-radius: 16px;
+    padding: 1rem 1.25rem;
+    margin: 0 auto 1rem;
+    overflow-x: auto;
+    max-width: 560px;
+  }
+
+  .division-top-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 52px;
+    width: fit-content;
+    min-width: 0;
+    margin: 0 auto;
+  }
+
+  .work-left { min-width: 150px; }
+
+  .right-stack {
+    min-width: 132px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 70px;
+    padding-top: 8px;
+    padding-left: 16px;
+    position: relative;
+    border-left: 3px solid #777;
+  }
+
+  .divisor-area {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    background: #f9f8f5;
+    padding: 0 10px;
+    border-radius: 12px;
+  }
+
+  .divisor-label {
+    font-size: 0.7rem;
+    color: #777;
+  }
+
+  .divisor-value {
+    font-size: 1.8rem;
+    font-family: "Courier New", monospace;
+    font-weight: 600;
+  }
+
+  .digit-cell {
+    width: 40px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-family: "Courier New", monospace;
+    font-weight: 600;
+  }
+
+  .digit-cell.used { color: #aaa; }
+  .digit-cell.sel {
+    background: #eef4ff;
+    color: #1a6abf;
+    border-radius: 8px;
+  }
+  .digit-cell.avail { color: #222; }
+
+  .step-record {
+    display: flex;
+    align-items: baseline;
+    min-height: 44px;
+  }
+
+  .step-product { color: #1a1a18; }
+
+  .step-line {
+    height: 2px;
+    background: #555;
+    margin: 4px 0;
+  }
+
+  .step-remainder {
+    color: #c47a00;
+    font-weight: 600;
+  }
+
+  .step-carry {
+    width: 40px;
+    height: 48px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Courier New", monospace;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #1a6abf;
+  }
+
+  .step-carry::before {
+    content: "↓";
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.95rem;
+    line-height: 1;
+    color: #1a6abf;
+  }
+
+  .empty-step {
+    color: #aaa;
+    font-size: 0.82rem;
+    padding: 4px 0;
+  }
+
+  .current-task-hint {
+    display: inline-block;
+    padding: 7px 10px;
+    border-radius: 10px;
+    background: #fff3e0;
+    border-left: 4px solid #e67e22;
+    color: #9a4b00;
+    font-size: 0.95rem;
+    font-weight: 700;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+
+  .zero-hint {
+    background: #e8f0fe;
+    border-left-color: #1a6abf;
+    color: #0a3a6b;
+  }
+
+  .quotient-area {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    padding-right: 4px;
+    padding-top: 10px;
+    border-top: 3px solid #777;
+    min-width: 120px;
+  }
+
+  .quotient-digits {
+    display: flex;
+    gap: 2px;
+  }
+
+  .qdigit {
+    width: 40px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-family: "Courier New", monospace;
+    border-bottom: 2px solid #ddd;
+  }
+
+  .qdigit.filled {
+    border-bottom-color: #1a7a42;
+    color: #1a7a42;
+  }
+
+  .qdigit.current {
+    border-bottom-color: #1a6abf;
+    animation: blink 0.8s infinite;
+  }
+
+  @keyframes blink {
+    50% { border-bottom-color: transparent; }
+  }
+
+  .selection-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    align-items: center;
+    margin: 12px 0;
+  }
+
+  .ctrl-btn {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  .ctrl-btn:disabled {
+    opacity: 0.28;
+    cursor: not-allowed;
+  }
+
+  .selected-value {
+    font-family: "Courier New", monospace;
+    font-size: 1.25rem;
+    font-weight: 700;
+    min-width: 70px;
+    text-align: center;
+  }
+
+  .selected-value.valid { color: #1a7a42; }
+  .selected-value.too-big { color: #c0392b; }
+
+  .answer-panel {
+    background: #f9f8f5;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 12px 0;
+  }
+
+  .answer-panel label {
+    flex: 1;
+    font-size: 0.95rem;
+  }
+
+  .answer-input {
+    width: 82px;
+    height: 58px;
+    font-size: 2rem;
+    text-align: center;
+    font-family: "Courier New", monospace;
+    border: 2px solid #1a6abf;
+    border-radius: 12px;
+    background: #fff;
+    outline: none;
+  }
+
+  .answer-input.correct {
+    border-color: #1a7a42;
+    color: #1a7a42;
+  }
+
+  .answer-input.wrong {
+    border-color: #c0392b;
+    color: #c0392b;
+    animation: shake 0.22s;
+  }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+
+  .feedback {
+    text-align: center;
+    min-height: 2rem;
+    font-size: 0.93rem;
+    margin: 10px auto;
+    max-width: 640px;
+    line-height: 1.45;
+  }
+
+  .feedback.ok { color: #1a7a42; }
+
+  .feedback.err {
+    display: block;
+    background: #fff1e8;
+    color: #9c2f18;
+    border-left: 5px solid #e25b32;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(156,47,24,0.08);
+  }
+
+  .feedback.info {
+    display: block;
+    background: #e8f0fe;
+    color: #0a3a6b;
+    border-left: 5px solid #1a6abf;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-weight: 650;
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 12px 0;
+    flex-wrap: wrap;
+  }
+
+  button {
+    padding: 8px 20px;
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 30px;
+    font-size: 0.92rem;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  button:hover:not(:disabled) { background: #f1f0ec; }
+
+  button.primary {
+    background: #1a6abf;
+    border-color: #1a6abf;
+    color: white;
+  }
+
+  .level-select {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
+    font-size: 0.84rem;
+    flex-wrap: wrap;
+  }
+
+  select {
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    background: #fff;
+    font-family: inherit;
+  }
+
+  .mini-note {
+    margin-top: 12px;
+    text-align: center;
+    color: #888;
+    font-size: 0.78rem;
+  }
+
+  @media (max-width: 620px) {
+    .card { padding: 1rem; }
+    .division-top-row { gap: 32px; }
+    .right-stack { min-width: 112px; padding-left: 12px; }
+    .digit-cell, .qdigit, .step-carry { width: 34px; height: 42px; font-size: 1.55rem; }
+    .step-carry { width: 34px; }
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>📐 Деление уголком</h1>
+  <div class="subtitle">Тренажёр деления на однозначное число</div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Верно</div>
+      <div id="stat-correct" class="stat-value ok">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Ошибок</div>
+      <div id="stat-wrong" class="stat-value err">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Всего</div>
+      <div id="stat-total" class="stat-value">0</div>
+    </div>
+  </div>
+
+  <div class="division-block">
+    <div class="division-top-row">
+      <div class="work-left">
+        <div id="dividend-grid" style="display:flex; gap:0;"></div>
+        <div id="long-division-steps" style="margin-top:8px; min-height:60px;"></div>
+      </div>
+
+      <div class="right-stack">
+        <div class="divisor-area">
+          <span class="divisor-label">делитель</span>
+          <span id="divisor-value" class="divisor-value"></span>
+        </div>
+
+        <div class="quotient-area">
+          <span class="divisor-label">частное</span>
+          <div id="quotient-digits" class="quotient-digits"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="selection-controls" class="selection-controls">
+    <button id="btn-less" class="ctrl-btn">◄</button>
+    <span id="selected-part" class="selected-value"></span>
+    <button id="btn-more" class="ctrl-btn">►</button>
+  </div>
+
+  <div id="answer-panel" class="answer-panel" style="display:none;">
+    <label id="answer-question"></label>
+    <input id="answer-input" class="answer-input" type="number" min="0" max="9" step="1" autocomplete="off" />
+  </div>
+
+  <div id="feedback" class="feedback"></div>
+
+  <div class="action-buttons">
+    <button id="btn-select" class="primary">Выбрать →</button>
+    <button id="btn-check" style="display:none;">Проверить</button>
+    <button id="btn-next" style="display:none;">Следующий →</button>
+  </div>
+
+  <div class="level-select">
+    <label for="level-select">Уровень:</label>
+    <select id="level-select">
+      <option value="easy">Лёгкий: 1 цифра в частном</option>
+      <option value="medium" selected>Средний: 2 цифры в частном</option>
+      <option value="hard">Сложный: 3 цифры в частном</option>
+      <option value="zero">⭐ Ноль в середине частного</option>
+    </select>
+  </div>
+
+  <div class="mini-note">
+    Сейчас отрабатываем деление на однозначное число. Позже на этой базе можно расширить тренажёр на двузначный, трёхзначный и четырёхзначный делитель.
+  </div>
+</div>
+
+<script>
+  // Единая версия тренажёра:
+  // 1) деление на однозначное число;
+  // 2) частное под делителем;
+  // 3) красивый "уголок";
+  // 4) запрет слишком большого первого блока;
+  // 5) поддержка нуля в середине частного;
+  // 6) гневно-педагогические подсказки;
+  // 7) статистика и уровни.
+
+  function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function generateZeroMiddleExample() {
+    const divisor = randomInt(2, 9);
+    const a = randomInt(1, 9);
+    const b = randomInt(1, 9);
+    const quotient = 100 * a + b; // a0b, например 102, 304, 907
+    const dividend = divisor * quotient;
+    return { dividend: String(dividend), divisor, quotient: String(quotient) };
+  }
+
+  function generateRegularExample(level) {
+    let divisor = randomInt(2, 9);
+    let quotient;
+
+    if (level === "easy") {
+      quotient = randomInt(1, 9);
+    } else if (level === "medium") {
+      do {
+        quotient = randomInt(11, 99);
+      } while (String(quotient).includes("0"));
+    } else {
+      do {
+        quotient = randomInt(111, 999);
+      } while (String(quotient).includes("0"));
+    }
+
+    const dividend = divisor * quotient;
+    return { dividend: String(dividend), divisor, quotient: String(quotient) };
+  }
+
+  function generateExample(level) {
+    if (level === "zero") return generateZeroMiddleExample();
+    return generateRegularExample(level);
+  }
+
+  let currentTask = null;
+  let phase = "selecting"; // selecting | entering | done
+  let procLen = 0;         // сколько цифр делимого уже обработано
+  let selLen = 1;          // сколько цифр включено в текущий блок
+  let prevRemainder = 0;
+  let quotientBuilt = "";
+  let stepsHistory = [];
+  let mistakeMade = false;
+  let stats = { correct: 0, wrong: 0, total: 0 };
+
+  function getCurrentTakenDigits() {
+    return currentTask.dividend.slice(procLen, selLen);
+  }
+
+  function getCurrentPartial() {
+    const taken = getCurrentTakenDigits();
+    const combined = (prevRemainder === 0 ? "" : String(prevRemainder)) + taken;
+    return combined ? parseInt(combined, 10) : 0;
+  }
+
+  function currentQuotientDigit() {
+    return Math.floor(getCurrentPartial() / currentTask.divisor);
+  }
+
+  function isSelectionTooBig() {
+    return selLen > procLen && currentQuotientDigit() > 9;
+  }
+
+  function isSelectionValid() {
+    if (selLen <= procLen) return false;
+
+    const partial = getCurrentPartial();
+
+    // Ноль в середине частного: 0 делим на делитель и пишем 0.
+    if (partial === 0 && quotientBuilt.length > 0) return true;
+
+    // После начала деления, если снесли цифру и число меньше делителя,
+    // это НЕ повод сносить ещё одну цифру: нужно поставить 0 в частном.
+    if (quotientBuilt.length > 0 && partial < currentTask.divisor) return true;
+
+    return partial >= currentTask.divisor && currentQuotientDigit() <= 9;
+  }
+
+  function canExtendInitialBlock() {
+    if (phase !== "selecting") return false;
+    if (selLen >= currentTask.dividend.length) return false;
+
+    // После начала частного расширять блок нельзя:
+    // мы уже снесли ровно одну цифру, дальше либо делим, либо пишем 0.
+    if (quotientBuilt.length > 0) return false;
+
+    // В начале можно расширять только пока число меньше делителя.
+    return getCurrentPartial() < currentTask.divisor;
+  }
+
+  function computeProductStartColumn(product) {
+    return Math.max(0, selLen - String(product).length);
+  }
+
+  function computeRemainderStartColumn(productStartCol, product, remainder) {
+    const productRightEdge = productStartCol + String(product).length;
+    return Math.max(0, productRightEdge - String(remainder).length);
+  }
+
+  function setFeedback(message, type = "") {
+    const fb = document.getElementById("feedback");
+    fb.textContent = message || "";
+    fb.className = "feedback" + (type ? " " + type : "");
+  }
+
+  function showWrongInput(inputEl) {
+    inputEl.classList.remove("wrong");
+    void inputEl.offsetWidth;
+    inputEl.classList.add("wrong");
+    setTimeout(() => inputEl.classList.remove("wrong"), 300);
+  }
+
+  function render() {
+    if (!currentTask) return;
+
+    renderDividend();
+    renderSteps();
+    renderQuotient();
+    renderControls();
+    renderStats();
+  }
+
+  function renderDividend() {
+    const grid = document.getElementById("dividend-grid");
+    grid.innerHTML = "";
+
+    currentTask.dividend.split("").forEach((ch, idx) => {
+      const cell = document.createElement("div");
+      cell.className = "digit-cell";
+      cell.textContent = ch;
+
+      if (idx < procLen) cell.classList.add("used");
+      else if (idx < selLen) cell.classList.add("sel");
+      else cell.classList.add("avail");
+
+      grid.appendChild(cell);
+    });
+
+    document.getElementById("divisor-value").textContent = currentTask.divisor;
+  }
+
+  function renderSteps() {
+    const box = document.getElementById("long-division-steps");
+    box.innerHTML = "";
+
+    if (stepsHistory.length === 0 && phase !== "done") {
+      const empty = document.createElement("div");
+      empty.className = "empty-step";
+      empty.textContent = "Здесь будут появляться произведения и остатки...";
+      box.appendChild(empty);
+    }
+
+    stepsHistory.forEach(step => {
+      // Произведение
+      const prodRow = document.createElement("div");
+      prodRow.className = "step-record";
+      const prodCells = document.createElement("div");
+      prodCells.style.display = "flex";
+      prodCells.style.marginLeft = (step.productStartCol * 40) + "px";
+
+      String(step.product).split("").forEach(d => {
+        const cell = document.createElement("div");
+        cell.className = "digit-cell step-product";
+        cell.textContent = d;
+        prodCells.appendChild(cell);
+      });
+
+      prodRow.appendChild(prodCells);
+      box.appendChild(prodRow);
+
+      // Черта
+      const line = document.createElement("div");
+      line.className = "step-line";
+      line.style.marginLeft = (step.productStartCol * 40 + 8) + "px";
+      line.style.width = Math.max(String(step.product).length * 40, 40) + "px";
+      box.appendChild(line);
+
+      // Остаток и снос следующей цифры
+      const remRow = document.createElement("div");
+      remRow.className = "step-record step-remainder";
+      const remCells = document.createElement("div");
+      remCells.style.display = "flex";
+      remCells.style.marginLeft = (step.remainderStartCol * 40) + "px";
+
+      const remStr = String(step.remainder);
+      remStr.split("").forEach(d => {
+        const cell = document.createElement("div");
+        cell.className = "digit-cell";
+        cell.textContent = d;
+        remCells.appendChild(cell);
+      });
+
+      remRow.appendChild(remCells);
+
+      if (step.nextDigit !== null && step.nextDigit !== undefined) {
+        const carry = document.createElement("span");
+        carry.className = "step-carry";
+        carry.textContent = step.nextDigit;
+
+        const currentEndCol = step.remainderStartCol + remStr.length;
+        const gapCols = Math.max(0, step.nextDigitCol - currentEndCol);
+        carry.style.marginLeft = (gapCols * 40) + "px";
+
+        remRow.appendChild(carry);
+      }
+
+      box.appendChild(remRow);
+    });
+
+    if (phase === "entering") {
+      const partial = getCurrentPartial();
+      const hint = document.createElement("div");
+      hint.className = "step-record";
+
+      let text = "";
+      let cls = "current-task-hint";
+
+      if (quotientBuilt.length > 0 && partial < currentTask.divisor) {
+        cls += " zero-hint";
+        text = `❗ После снесения получилось ${partial}, а это меньше ${currentTask.divisor}. Значит, в частное пишем 0.`;
+      } else if (partial === 0 && quotientBuilt.length > 0) {
+        cls += " zero-hint";
+        text = `✨ 0 ÷ ${currentTask.divisor} = 0 → пишем 0 в частное.`;
+      } else {
+        text = `⚡ Мы делим число ${partial} на число ${currentTask.divisor}`;
+      }
+
+      hint.innerHTML = `<span class="${cls}" style="margin-left:${procLen * 40}px">${text}</span>`;
+      box.appendChild(hint);
+    }
+  }
+
+  function renderQuotient() {
+    const qBox = document.getElementById("quotient-digits");
+    qBox.innerHTML = "";
+
+    for (let i = 0; i < currentTask.quotient.length; i++) {
+      const q = document.createElement("div");
+      q.className = "qdigit";
+
+      if (i < quotientBuilt.length) {
+        q.textContent = quotientBuilt[i];
+        q.classList.add("filled");
+      } else if (i === quotientBuilt.length && phase === "entering") {
+        q.classList.add("current");
+      } else {
+        q.textContent = "?";
+      }
+
+      qBox.appendChild(q);
+    }
+  }
+
+  function renderControls() {
+    const selection = document.getElementById("selection-controls");
+    const answerPanel = document.getElementById("answer-panel");
+    const btnSelect = document.getElementById("btn-select");
+    const btnCheck = document.getElementById("btn-check");
+    const btnNext = document.getElementById("btn-next");
+
+    if (phase === "selecting") {
+      selection.style.display = "flex";
+      answerPanel.style.display = "none";
+      btnSelect.style.display = "inline-block";
+      btnCheck.style.display = "none";
+      btnNext.style.display = "none";
+
+      const selected = document.getElementById("selected-part");
+      selected.textContent = getCurrentPartial();
+      selected.classList.toggle("valid", isSelectionValid());
+      selected.classList.toggle("too-big", isSelectionTooBig());
+
+      document.getElementById("btn-less").disabled = selLen <= procLen + 1;
+      document.getElementById("btn-more").disabled = !canExtendInitialBlock();
+    }
+
+    if (phase === "entering") {
+      selection.style.display = "none";
+      answerPanel.style.display = "flex";
+      btnSelect.style.display = "none";
+      btnCheck.style.display = "inline-block";
+      btnNext.style.display = "none";
+
+      const partial = getCurrentPartial();
+      document.getElementById("answer-question").innerHTML =
+        `<strong>${partial} ÷ ${currentTask.divisor}</strong> = ? &nbsp; Введите цифру частного:`;
+
+      const input = document.getElementById("answer-input");
+      input.value = "";
+      input.classList.remove("correct", "wrong");
+      setTimeout(() => input.focus(), 30);
+    }
+
+    if (phase === "done") {
+      selection.style.display = "none";
+      answerPanel.style.display = "none";
+      btnSelect.style.display = "none";
+      btnCheck.style.display = "none";
+      btnNext.style.display = "inline-block";
+    }
+  }
+
+  function renderStats() {
+    document.getElementById("stat-correct").textContent = stats.correct;
+    document.getElementById("stat-wrong").textContent = stats.wrong;
+    document.getElementById("stat-total").textContent = stats.total;
+  }
+
+  function confirmSelection() {
+    if (isSelectionTooBig()) {
+      mistakeMade = true;
+      setFeedback(
+        `Стоп! Блок ${getCurrentPartial()} слишком большой: частное получилось бы ${currentQuotientDigit()}, а в одну клетку частного нужна одна цифра. Нажмите ◄.`,
+        "err"
+      );
+      return;
+    }
+
+    if (!isSelectionValid()) {
+      const partial = getCurrentPartial();
+
+      if (quotientBuilt.length > 0 && partial < currentTask.divisor) {
+        setFeedback(`После снесения получилось ${partial}, а это меньше ${currentTask.divisor}. В частное нужно поставить 0.`, "info");
+        phase = "entering";
+        render();
+        return;
+      }
+
+      setFeedback("Пока рано делить: выбранное число меньше делителя. Нажмите ► и снесите ещё одну цифру.", "err");
+      return;
+    }
+
+    phase = "entering";
+    setFeedback("");
+    render();
+  }
+
+  function checkStep() {
+    const input = document.getElementById("answer-input");
+    const userDigit = parseInt(input.value, 10);
+    const partial = getCurrentPartial();
+    const expectedDigit = Math.floor(partial / currentTask.divisor);
+
+    if (expectedDigit > 9) {
+      phase = "selecting";
+      setFeedback(`Стоп! Блок ${partial} слишком большой: ${partial} ÷ ${currentTask.divisor} = ${expectedDigit}. Нажмите ◄.`, "err");
+      render();
+      return;
+    }
+
+    if (Number.isNaN(userDigit) || userDigit < 0 || userDigit > 9) {
+      mistakeMade = true;
+      setFeedback("Введите одну цифру от 0 до 9.", "err");
+      showWrongInput(input);
+      return;
+    }
+
+    if (userDigit !== expectedDigit) {
+      mistakeMade = true;
+
+      const triedProduct = userDigit * currentTask.divisor;
+      let message;
+
+      if (userDigit > expectedDigit) {
+        message = `Стоп! ${userDigit} слишком много: ${userDigit} × ${currentTask.divisor} = ${triedProduct}, а это больше, чем ${partial}. Нужно взять цифру меньше.`;
+      } else {
+        message = `Маловато. ${userDigit} × ${currentTask.divisor} = ${triedProduct}. В число ${partial} можно вместить больше.`;
+      }
+
+      setFeedback(message, "err");
+      input.value = "";
+      showWrongInput(input);
+      setTimeout(() => input.focus(), 30);
+      return;
+    }
+
+    input.classList.add("correct");
+    setFeedback("✓ Верно!", "ok");
+
+    const product = userDigit * currentTask.divisor;
+    const remainder = partial - product;
+    quotientBuilt += String(userDigit);
+
+    const productStartCol = computeProductStartColumn(product);
+    const remainderStartCol = computeRemainderStartColumn(productStartCol, product, remainder);
+
+    let nextDigit = null;
+    let nextDigitCol = null;
+    const nextPos = selLen;
+
+    if (nextPos < currentTask.dividend.length) {
+      nextDigit = currentTask.dividend[nextPos];
+      nextDigitCol = nextPos;
+    }
+
+    stepsHistory.push({
+      product,
+      remainder,
+      productStartCol,
+      remainderStartCol,
+      nextDigit,
+      nextDigitCol
+    });
+
+    procLen = selLen;
+    prevRemainder = remainder;
+
+    if (procLen >= currentTask.dividend.length) {
+      phase = "done";
+      stats.total++;
+
+      if (!mistakeMade) stats.correct++;
+      else stats.wrong++;
+
+      setFeedback(`Готово! ${currentTask.dividend} ÷ ${currentTask.divisor} = ${quotientBuilt}`, "ok");
+      render();
+      return;
+    }
+
+    // После первого шага сносим ровно одну следующую цифру.
+    // Если получившееся число меньше делителя, ученик должен поставить 0.
+    selLen = procLen + 1;
+    phase = "entering";
+    setTimeout(render, 450);
+  }
+
+  function shrinkSel() {
+    if (phase !== "selecting") return;
+    if (selLen > procLen + 1) {
+      selLen--;
+      render();
+    }
+  }
+
+  function extendSel() {
+    if (phase !== "selecting") return;
+    if (canExtendInitialBlock()) {
+      selLen++;
+      render();
+    }
+  }
+
+  function nextTask(resetStats = false) {
+    if (resetStats) {
+      stats = { correct: 0, wrong: 0, total: 0 };
+    }
+
+    const level = document.getElementById("level-select").value;
+    currentTask = generateExample(level);
+
+    phase = "selecting";
+    procLen = 0;
+    selLen = 1;
+    prevRemainder = 0;
+    quotientBuilt = "";
+    stepsHistory = [];
+    mistakeMade = false;
+    setFeedback("");
+
+    render();
+  }
+
+  document.getElementById("btn-less").addEventListener("click", shrinkSel);
+  document.getElementById("btn-more").addEventListener("click", extendSel);
+  document.getElementById("btn-select").addEventListener("click", confirmSelection);
+  document.getElementById("btn-check").addEventListener("click", checkStep);
+  document.getElementById("btn-next").addEventListener("click", () => nextTask(false));
+  document.getElementById("level-select").addEventListener("change", () => nextTask(true));
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      if (phase === "selecting") confirmSelection();
+      else if (phase === "entering") checkStep();
+      else if (phase === "done") nextTask(false);
+    }
+
+    if (phase === "selecting") {
+      if (event.key === "ArrowRight") extendSel();
+      if (event.key === "ArrowLeft") shrinkSel();
+    }
+  });
+
+  nextTask(false);
+</script>
+</body>
+</html>

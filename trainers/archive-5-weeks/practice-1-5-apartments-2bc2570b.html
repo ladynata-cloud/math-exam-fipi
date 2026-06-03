@@ -1,0 +1,1098 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Двухкомнатная квартира · план · задания 1–5 · ОГЭ</title>
+<style>
+:root{
+  --bg:#faf7f2; --bg-card:#ffffff; --bg-soft:#f5f1e8;
+  --ink:#1a2332; --ink-soft:#4a5568; --ink-muted:#8a93a3;
+  --line:#e8e3d8; --line-strong:#d4cfc2;
+  --accent:#1e3a5f; --accent-soft:#dbe4f0; --accent-deep:#142a44;
+  --gold:#b8924b; --gold-soft:#f3e9d4;
+  --green:#4a7c59; --green-soft:#dcebe0;
+  --warm:#d4956a; --warm-soft:#f5e3d4;
+  --error-soft:#f7e3dc;
+  --shadow-sm:0 1px 2px rgba(20,42,68,.05),0 1px 3px rgba(20,42,68,.04);
+  --shadow:0 2px 8px rgba(20,42,68,.06),0 4px 16px rgba(20,42,68,.04);
+  --shadow-lg:0 4px 16px rgba(20,42,68,.08),0 12px 40px rgba(20,42,68,.06);
+  --r-sm:6px; --r:10px; --r-lg:14px;
+  font-feature-settings:"liga","kern";
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
+  background:
+    radial-gradient(1200px 700px at 80% -10%, rgba(216,196,148,.16), transparent 60%),
+    radial-gradient(900px 600px at -10% 100%, rgba(30,58,95,.06), transparent 55%),
+    var(--bg);
+  color:var(--ink); line-height:1.55; min-height:100vh;
+}
+.serif{font-family:Georgia,"Times New Roman",serif}
+.wrap{max-width:1280px;margin:0 auto;padding:24px 28px 64px}
+
+/* ---------- header ---------- */
+.crumbs{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-muted);margin-bottom:14px}
+.crumbs a{color:var(--ink-soft);text-decoration:none;border-bottom:1px dashed var(--line-strong)}
+.crumbs a:hover{color:var(--accent)}
+.crumbs .sep{opacity:.5}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:18px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px}
+.eyebrow::before{content:"";width:24px;height:1px;background:var(--gold)}
+h1{font-family:Georgia,serif;font-size:34px;line-height:1.1;margin:0 0 6px;font-weight:600;letter-spacing:-.01em}
+h1 em{color:var(--accent);font-style:italic;font-weight:500}
+.sub{color:var(--ink-soft);font-size:15px;max-width:720px}
+.modes{display:flex;gap:6px;background:var(--bg-card);padding:5px;border-radius:var(--r);box-shadow:var(--shadow-sm);border:1px solid var(--line)}
+.mode-btn{padding:9px 16px;border:none;background:transparent;border-radius:7px;font-size:13px;font-weight:600;color:var(--ink-soft);cursor:pointer;font-family:inherit;letter-spacing:.01em}
+.mode-btn.active{background:var(--accent);color:#fff;box-shadow:0 1px 3px rgba(20,42,68,.2)}
+.mode-btn:not(.active):hover{background:var(--bg-soft);color:var(--ink)}
+
+/* ---------- layout grid ---------- */
+.grid{display:grid;grid-template-columns:1fr 320px;gap:22px;margin-top:18px}
+@media(max-width:1080px){.grid{grid-template-columns:1fr}}
+.card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px;box-shadow:var(--shadow-sm)}
+.card-pad-tight{padding:16px 18px}
+
+/* ---------- plan SVG card ---------- */
+.plan-wrap{display:flex;justify-content:center;background:linear-gradient(180deg,#fcfaf5 0%,#f7f3eb 100%);border-radius:var(--r);padding:14px;margin-top:12px;overflow-x:auto}
+svg.plan{display:block;max-width:100%;height:auto}
+.plan-meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:13px;color:var(--ink-muted)}
+.plan-meta b{color:var(--ink-soft);font-weight:600}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-size:12.5px;color:var(--ink-soft)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.lg-swatch{width:14px;height:14px;border-radius:3px;border:1px solid var(--line-strong)}
+
+/* room fills — light pastels so grid stays visible */
+.room-1{fill:#f5f1e6}     /* коридор */
+.room-2{fill:#ecdcc1}     /* гостиная (биггест) */
+.room-3{fill:#e3eaf3}     /* кухня */
+.room-4{fill:#d7e8de}     /* лоджия 4 */
+.room-5{fill:#d7e8de}     /* лоджия 5 */
+.room-6{fill:#f3dccc}     /* санузел */
+.room-7{fill:#ede5d6}     /* кладовая */
+.room-8{fill:#eedeca}     /* спальня */
+.room-num{font-family:Georgia,serif;font-size:20px;font-weight:600;fill:var(--accent-deep);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.room-name{font-size:9.5px;fill:var(--ink-soft);text-anchor:middle;dominant-baseline:central;pointer-events:none;letter-spacing:.02em}
+.wall{stroke:#3a4a5e;stroke-width:3;fill:none;stroke-linejoin:miter}
+.iwall{stroke:#5a6878;stroke-width:1.7;fill:none}
+.door{stroke:#b8924b;stroke-width:2;fill:none}
+.window{stroke:#1e3a5f;stroke-width:2.5;fill:none}
+.window-inner{stroke:#7a98c4;stroke-width:1;fill:none}
+.grid-line{stroke:#2a261a;stroke-width:1;opacity:.42;pointer-events:none}
+.grid-line.major{stroke:#0f0c05;stroke-width:1.5;opacity:.7}
+.room-area{font-size:9.5px;fill:var(--gold);text-anchor:middle;dominant-baseline:central;font-weight:600;pointer-events:none}
+.compass{font-size:11px;fill:var(--ink-muted)}
+
+/* room highlight on hover/select */
+.room-cell{cursor:pointer;transition:filter .15s}
+.room-cell:hover{filter:brightness(.96)}
+.room-cell.sel{stroke:var(--accent);stroke-width:2.5;stroke-dasharray:none;filter:brightness(.94)}
+.room-cell.flash{animation:flash 1.2s ease-out}
+@keyframes flash{0%{filter:brightness(1)}30%{filter:brightness(.85) saturate(1.4)}100%{filter:brightness(1)}}
+
+/* ---------- stepper ---------- */
+.stepper{display:flex;gap:6px;flex-wrap:wrap;margin-top:18px}
+.step{flex:1;min-width:90px;padding:11px 8px;background:var(--bg-soft);border:1.5px solid var(--line);border-radius:var(--r);font-size:12px;color:var(--ink-soft);cursor:pointer;text-align:center;transition:all .15s;font-weight:500;font-family:inherit}
+.step:hover{border-color:var(--line-strong)}
+.step.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600;box-shadow:var(--shadow-sm)}
+.step.done{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+.step.done::after{content:" ✓"}
+.step .step-num{display:block;font-family:Georgia,serif;font-size:18px;font-weight:600;margin-bottom:2px}
+
+/* ---------- task body ---------- */
+.task{margin-top:18px;animation:fade .25s ease-out}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.task-meta{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--ink-muted);letter-spacing:.03em;text-transform:uppercase;margin-bottom:8px}
+.task-meta b{color:var(--accent);font-weight:700;letter-spacing:.06em}
+.task-q{font-size:16px;color:var(--ink);margin-bottom:12px;line-height:1.55}
+.task-q b{color:var(--accent-deep)}
+
+.aux{background:var(--bg-soft);border-left:3px solid var(--gold);border-radius:0 var(--r) var(--r) 0;padding:12px 16px;margin:12px 0;font-size:14.5px;color:var(--ink-soft)}
+.aux b{color:var(--ink)}
+
+/* match table for task 1 */
+.match-table{width:100%;border-collapse:collapse;margin:14px 0;background:var(--bg-card);border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
+.match-table th,.match-table td{padding:10px 8px;text-align:center;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:14px}
+.match-table th{background:var(--bg-soft);color:var(--ink-soft);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.05em}
+.match-table td:last-child,.match-table th:last-child{border-right:none}
+.match-table tr:last-child td{border-bottom:none}
+.match-cell{padding:0!important}
+.match-cell select{width:100%;height:42px;border:none;background:transparent;font-family:Georgia,serif;font-size:18px;font-weight:600;color:var(--accent);text-align:center;cursor:pointer;text-align-last:center}
+.match-cell select:focus{outline:2px solid var(--accent);outline-offset:-2px}
+.match-cell.ok{background:var(--green-soft)}
+.match-cell.err{background:var(--error-soft)}
+
+/* wash table */
+.wash-table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+.wash-table th,.wash-table td{padding:7px 6px;border:1px solid var(--line);text-align:center}
+.wash-table th{background:var(--bg-soft);color:var(--ink-soft);font-weight:600;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em}
+.wash-table td.model{font-family:Georgia,serif;font-weight:600;color:var(--accent);font-size:15px;background:#fcfaf5}
+.wash-table tr.match{background:var(--gold-soft)}
+.wash-table tr.match td{font-weight:600}
+
+/* numeric input */
+.answer-section{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+.answer-label{font-size:13px;color:var(--ink-soft);font-weight:600}
+.ans-input{padding:10px 14px;border:1.5px solid var(--line-strong);border-radius:var(--r);font-size:16px;width:180px;font-family:Georgia,serif;color:var(--ink);background:var(--bg-card)}
+.ans-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.ans-input.ok{border-color:var(--green);background:var(--green-soft)}
+.ans-input.err{border-color:var(--warm);background:var(--error-soft)}
+.unit{font-size:14px;color:var(--ink-muted)}
+
+/* buttons */
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.btn{padding:9px 16px;border:1.5px solid var(--line-strong);background:var(--bg-card);border-radius:var(--r);font-size:13.5px;font-weight:600;color:var(--ink-soft);cursor:pointer;font-family:inherit;transition:all .12s}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-deep);color:#fff}
+.btn-gold{background:var(--gold);border-color:var(--gold);color:#fff}
+.btn-gold:hover{background:#a07d3a;border-color:#a07d3a;color:#fff}
+
+/* feedback */
+.feedback{margin-top:14px;padding:14px 16px;border-radius:var(--r);font-size:14.5px;display:none;animation:fade .25s ease-out;line-height:1.5}
+.feedback.show{display:block}
+.feedback.ok{background:var(--green-soft);color:#2c5440;border-left:3px solid var(--green)}
+.feedback.err{background:var(--error-soft);color:#8a4a28;border-left:3px solid var(--warm)}
+.feedback b{font-weight:700}
+
+/* hint */
+.hint-box{background:#fcf6e5;border-left:3px solid var(--gold);border-radius:0 var(--r) var(--r) 0;padding:14px 16px;margin-top:14px;font-size:14px;color:#6a5028;display:none;animation:fade .25s}
+.hint-box.show{display:block}
+.hint-box b{color:#5a4220}
+.hint-box.auto{background:#f5edd8;border-color:#c89c45}
+
+/* solution */
+.solution{margin-top:14px;padding:16px 18px;background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:0 var(--r) var(--r) 0;font-size:14.5px;color:var(--accent-deep);display:none;line-height:1.65;animation:fade .25s}
+.solution.show{display:block}
+.solution h4{margin:0 0 8px;font-family:Georgia,serif;font-size:16px;color:var(--accent-deep)}
+.solution .step-num-box{display:inline-block;background:var(--accent);color:#fff;width:20px;height:20px;border-radius:50%;text-align:center;line-height:20px;font-size:11.5px;font-weight:700;margin-right:6px;font-family:inherit}
+.solution .formula{font-family:Georgia,serif;font-style:italic;color:var(--accent);background:#fff;display:inline-block;padding:2px 8px;border-radius:4px;margin:2px 0}
+
+/* teacher block */
+.teacher{margin-top:14px;padding:14px 16px;background:#fdf4e8;border:1px dashed var(--gold);border-radius:var(--r);font-size:13.5px;color:#5a4220;display:none}
+.teacher.show{display:block}
+.teacher h5{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--gold)}
+
+/* sidebar */
+.side-card{background:var(--bg-card);border:1px solid var(--line);border-radius:var(--r-lg);padding:18px 20px;margin-bottom:14px;box-shadow:var(--shadow-sm)}
+.side-card h3{font-family:Georgia,serif;font-size:16px;margin:0 0 12px;color:var(--ink);font-weight:600}
+.side-card h3 .ic{color:var(--gold);margin-right:6px}
+.stat{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-bottom:1px dashed var(--line);font-size:13.5px}
+.stat:last-child{border:none}
+.stat .l{color:var(--ink-muted)}
+.stat .v{font-family:Georgia,serif;font-size:18px;font-weight:600;color:var(--accent)}
+.stat .v.gold{color:var(--gold)}
+.stat .v.green{color:var(--green)}
+
+.formula-box{background:linear-gradient(135deg,var(--bg-soft) 0%,#ede5d4 100%);border-radius:var(--r);padding:12px 14px;margin:8px 0;font-family:Georgia,serif;font-size:14.5px;color:var(--accent-deep);text-align:center}
+.formula-box em{font-style:italic;color:var(--gold);font-weight:600}
+
+.tip{font-size:12.5px;color:var(--ink-soft);line-height:1.55}
+.tip + .tip{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+
+.story{margin-top:14px;background:var(--bg-card);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r);padding:14px 18px;font-size:14px;color:var(--ink-soft);line-height:1.65}
+.story b{color:var(--accent-deep)}
+
+footer.foot{margin-top:32px;text-align:center;color:var(--ink-muted);font-size:12px}
+footer.foot a{color:var(--accent);text-decoration:none;border-bottom:1px dashed var(--accent-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="crumbs">
+  <a href="practice-1-5-map.html">Задания 1–5 · карта</a>
+  <span class="sep">›</span>
+  <span>Двухкомнатная квартира · план</span>
+</div>
+
+<div class="head">
+  <div>
+    <div class="eyebrow">Практический модуль · сюжет квартиры</div>
+    <h1>План <em>двухкомнатной квартиры</em></h1>
+    <div class="sub">Считаем площади по клеткам, выбираем материалы для отделки, сравниваем стиральные машины по характеристикам и итоговой цене.</div>
+  </div>
+  <div class="modes" role="tablist">
+    <button class="mode-btn active" data-mode="learn">Обучение</button>
+    <button class="mode-btn" data-mode="practice">Тренировка</button>
+    <button class="mode-btn" data-mode="teacher">Учитель</button>
+  </div>
+</div>
+
+<div class="grid">
+
+<!-- ============ MAIN ============ -->
+<div>
+
+<!-- PLAN -->
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px">
+    <div>
+      <div style="font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:4px">План этажа</div>
+      <div class="serif" style="font-size:20px;font-weight:600;color:var(--ink)">Двухкомнатная · 8 помещений</div>
+    </div>
+    <div style="text-align:right;font-size:12.5px;color:var(--ink-muted);line-height:1.5">
+      <div>сторона клетки — <b style="color:var(--accent)">0,4 м</b></div>
+      <div>площадь клетки — <b style="color:var(--accent)">0,16 м²</b></div>
+    </div>
+  </div>
+
+  <div class="plan-wrap">
+    <svg class="plan" id="plan" viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" aria-label="План квартиры"></svg>
+  </div>
+
+  <div class="legend">
+    <span><span class="lg-swatch" style="background:#ead9c0"></span>спальня (8)</span>
+    <span><span class="lg-swatch" style="background:#e7d4b5"></span>гостиная (2)</span>
+    <span><span class="lg-swatch" style="background:#dbe4f0"></span>кухня (3)</span>
+    <span><span class="lg-swatch" style="background:#f0d4c2"></span>санузел (6)</span>
+    <span><span class="lg-swatch" style="background:#e8e0d0"></span>кладовая (7)</span>
+    <span><span class="lg-swatch" style="background:#f0ebde"></span>коридор (1)</span>
+    <span><span class="lg-swatch" style="background:#cfe4d5"></span>лоджии (4, 5)</span>
+  </div>
+
+  <div class="plan-meta">
+    <span>Вход — снизу, в коридор · <b>север сверху</b></span>
+    <span id="planLabel" style="color:var(--accent);font-weight:600"></span>
+  </div>
+</div>
+
+<!-- STEPPER -->
+<div class="stepper" id="stepper">
+  <button class="step active" data-task="1"><span class="step-num">1</span>помещения</button>
+  <button class="step" data-task="2"><span class="step-num">2</span>паркет</button>
+  <button class="step" data-task="3"><span class="step-num">3</span>площадь</button>
+  <button class="step" data-task="4"><span class="step-num">4</span>проценты</button>
+  <button class="step" data-task="5"><span class="step-num">5</span>стир. машина</button>
+</div>
+
+<!-- TASK -->
+<div class="task card" id="taskCard"></div>
+
+<!-- STORY -->
+<div class="story">
+  <b>О сюжете.</b> Здесь четыре пять связанных вопросов про одну и ту же квартиру: 
+  узнать <i>назначение комнат</i> по описанию, посчитать <i>число упаковок паркета</i>, 
+  найти <i>площадь</i> комнаты по клеткам, сравнить две комнаты <i>в процентах</i>, 
+  и выбрать <i>наиболее дешёвую</i> стиральную машину с учётом подключения и доставки. 
+  Каждый шаг — отдельный тип задачи 1–5 ОГЭ.
+</div>
+
+</div>
+
+<!-- ============ SIDEBAR ============ -->
+<aside>
+
+  <div class="side-card">
+    <h3><span class="ic">◆</span>Что важно</h3>
+    <div class="formula-box">
+      площадь = (число&nbsp;клеток) × <em>0,16 м²</em>
+    </div>
+    <div class="tip"><b>Стороны клеток.</b> Если две клетки имеют общую границу — между комнатами стена; если общая граница в проёме — это дверь (отмечена золотым).</div>
+    <div class="tip"><b>На сколько процентов <i>больше</i>.</b> <span style="font-family:Georgia,serif">(S<sub>большая</sub> − S<sub>меньшая</sub>) / S<sub>меньшая</sub> · 100%</span></div>
+    <div class="tip"><b>Упаковки паркета.</b> Делим площадь на площадь одной доски, округляем количество досок <i>вверх</i> до кратного числу в упаковке.</div>
+  </div>
+
+  <div class="side-card">
+    <h3><span class="ic">◆</span>Ваш прогресс</h3>
+    <div class="stat"><span class="l">Решено задач</span><span class="v green" id="statSolved">0</span></div>
+    <div class="stat"><span class="l">Серия побед</span><span class="v gold" id="statStreak">0</span></div>
+    <div class="stat"><span class="l">Попыток сегодня</span><span class="v" id="statAttempts">0</span></div>
+  </div>
+
+  <div class="side-card">
+    <h3><span class="ic">◆</span>Подсказка к подбору</h3>
+    <div class="tip">В задаче 5 сначала <b>отфильтруйте</b> модели по двум условиям: тип загрузки и вместимость. Уже после этого считайте полную цену:
+    <div class="formula-box" style="font-size:13.5px;margin-top:8px">цена + подключение + цена·процент_доставки/100</div></div>
+    <div class="tip"><b>Скидка vs наценка.</b> Если доставка «бесплатно» — добавляем 0; если «3% от стоимости» — это <i>наценка</i>, не скидка.</div>
+  </div>
+
+</aside>
+
+</div>
+
+<footer class="foot">
+  Сюжет «Квартира» · задания 1–5 · <a href="practice-1-5-map.html">вернуться к карте</a>
+</footer>
+
+</div>
+
+<script>
+"use strict";
+
+/* ============================================================
+   PLAN GEOMETRY — 22 cols × 13 rows, cell = 0.4 m (0.16 m² per cell)
+   ============================================================ */
+const CELL = 28;          // px per cell on screen
+const ORIGIN_X = 40;
+const ORIGIN_Y = 36;
+const COLS = 22;
+const ROWS = 13;
+const M_PER_CELL = 0.4;
+const M2_PER_CELL = 0.16;
+
+// rooms: number -> {x,y,w,h (in cells), name, klass}
+const ROOMS = {
+  8: { x:0,  y:0, w:9, h:5,  name:"спальня",  klass:"room-8" },
+  6: { x:9,  y:0, w:4, h:3,  name:"санузел",  klass:"room-6" },
+  7: { x:9,  y:3, w:4, h:2,  name:"кладовая", klass:"room-7" },
+  3: { x:13, y:0, w:6, h:5,  name:"кухня",    klass:"room-3" },
+  4: { x:19, y:0, w:3, h:5,  name:"лоджия (от кухни)", klass:"room-4" },
+  5: { x:0,  y:5, w:4, h:4,  name:"лоджия (от спальни)", klass:"room-5" },
+  1: { x:4,  y:5, w:9, h:4,  name:"коридор",  klass:"room-1" },
+  2: { x:0,  y:9, w:22,h:4, name:"гостиная", klass:"room-2",
+       extra:[{x:13,y:5,w:9,h:4}] } // L-shape: гостиная also occupies top-right of row 5-9
+};
+
+// recompute areas (cells) for gостиная (L-shape)
+function roomArea(n){
+  const r = ROOMS[n];
+  let cells = r.w * r.h;
+  if (r.extra) r.extra.forEach(e => cells += e.w*e.h);
+  return cells;
+}
+function roomM2(n){ return +(roomArea(n) * M2_PER_CELL).toFixed(2); }
+
+/* doors: list of {x1,y1,x2,y2} along walls (in cell coords) */
+const DOORS = [
+  {x1:4, y1:13, x2:6, y2:13, label:"вход"}, // entry to коридор
+  {x1:9, y1:5,  x2:11,y2:5  },               // коридор ↔ гостиная
+  {x1:11,y1:5,  x2:13,y2:5  },               // also wide opening коридор → гостиная
+  {x1:9, y1:3,  x2:11,y2:3, vert:false},     // санузел ↔ кладовая (door)
+  {x1:6, y1:5,  x2:8, y2:5,  inner:true},    // коридор ↔ кладовая area
+  {x1:4, y1:7,  x2:4, y2:9,  vert:true},     // коридор ↔ лоджия 5
+  {x1:13,y1:3,  x2:13,y2:5,  vert:true},     // гостиная ↔ кухня
+  {x1:19,y1:2,  x2:19,y2:4,  vert:true},     // кухня ↔ лоджия 4
+];
+
+/* windows: along outer walls */
+const WINDOWS = [
+  {x1:1, y1:0, x2:6, y2:0 },   // спальня — наружное окно
+  {x1:14,y1:0, x2:18,y2:0 },   // кухня
+  {x1:0, y1:11,x2:6, y2:11, outer:"bottom"},  // гостиная
+  {x1:13,y1:13,x2:20,y2:13, outer:"bottom"},  // гостиная
+];
+
+/* ============================================================
+   DRAW PLAN
+   ============================================================ */
+function drawPlan(){
+  const svg = document.getElementById('plan');
+  svg.innerHTML = '';
+
+  const W = COLS*CELL, H = ROWS*CELL;
+  const vbW = W + 2*ORIGIN_X, vbH = H + 2*ORIGIN_Y;
+  svg.setAttribute('viewBox', `0 0 ${vbW} ${vbH}`);
+
+  function svgEl(tag, attrs){
+    const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for (const k in attrs) el.setAttribute(k, attrs[k]);
+    return el;
+  }
+  function px(c){ return ORIGIN_X + c*CELL; }
+  function py(c){ return ORIGIN_Y + c*CELL; }
+
+  // rooms fill (incl. extras for L-shape)
+  for (const [n, r] of Object.entries(ROOMS)){
+    const parts = [{x:r.x,y:r.y,w:r.w,h:r.h}, ...(r.extra||[])];
+    parts.forEach((p,i)=>{
+      const rect = svgEl('rect',{
+        x:px(p.x), y:py(p.y), width:p.w*CELL, height:p.h*CELL,
+        class:`room-cell ${r.klass}`,
+        'data-room':n
+      });
+      svg.appendChild(rect);
+    });
+  }
+
+  // GRID LINES — drawn ON TOP of room fills so cells are visible
+  for (let i=0; i<=COLS; i++){
+    const major = (i % 5 === 0);
+    svg.appendChild(svgEl('line',{
+      x1:px(i),y1:py(0),x2:px(i),y2:py(ROWS),
+      class: major ? 'grid-line major' : 'grid-line'
+    }));
+  }
+  for (let j=0; j<=ROWS; j++){
+    const major = (j % 5 === 0);
+    svg.appendChild(svgEl('line',{
+      x1:px(0),y1:py(j),x2:px(COLS),y2:py(j),
+      class: major ? 'grid-line major' : 'grid-line'
+    }));
+  }
+
+  // room numbers and names (on top of grid)
+  for (const [n, r] of Object.entries(ROOMS)){
+    const cx = px(r.x + r.w/2);
+    const cy = py(r.y + r.h/2);
+    // background "pad" for number so it stays readable over grid
+    svg.appendChild(svgEl('circle',{
+      cx:cx, cy:cy-6, r:13,
+      fill:'rgba(255,255,255,.78)'
+    }));
+    const numT = svgEl('text',{x:cx, y:cy-7, class:'room-num'});
+    numT.textContent = n;
+    svg.appendChild(numT);
+    const nm = svgEl('text',{x:cx, y:cy+13, class:'room-name'});
+    nm.textContent = r.name.split(' (')[0];
+    svg.appendChild(nm);
+  }
+
+  // outer walls (thick)
+  const outerPts = [
+    [0,0],[COLS,0],[COLS,ROWS],[0,ROWS],[0,0]
+  ];
+  let d = '';
+  outerPts.forEach((p,i)=> d += (i===0?'M':'L') + px(p[0]) + ',' + py(p[1]) + ' ');
+  svg.appendChild(svgEl('path',{d, class:'wall'}));
+
+  // internal walls — between rooms
+  function drawSegments(){
+    // Build set of room cells: cellMap[x][y] = roomNumber
+    const map = Array.from({length:COLS},()=>Array(ROWS).fill(0));
+    for (const [n,r] of Object.entries(ROOMS)){
+      const parts = [{x:r.x,y:r.y,w:r.w,h:r.h}, ...(r.extra||[])];
+      parts.forEach(p=>{
+        for (let x=p.x; x<p.x+p.w; x++)
+          for (let y=p.y; y<p.y+p.h; y++)
+            map[x][y] = +n;
+      });
+    }
+    // vertical interior walls
+    for (let x=1; x<COLS; x++){
+      let y=0;
+      while(y<ROWS){
+        if (map[x-1][y] !== map[x][y] && map[x-1][y]!==0 && map[x][y]!==0){
+          let y2 = y;
+          while(y2<ROWS && map[x-1][y2]!==map[x][y2] && map[x-1][y2]!==0 && map[x][y2]!==0) y2++;
+          svg.appendChild(svgEl('line',{x1:px(x),y1:py(y),x2:px(x),y2:py(y2),class:'iwall'}));
+          y = y2;
+        } else y++;
+      }
+    }
+    // horizontal interior walls
+    for (let y=1; y<ROWS; y++){
+      let x=0;
+      while(x<COLS){
+        if (map[x][y-1] !== map[x][y] && map[x][y-1]!==0 && map[x][y]!==0){
+          let x2 = x;
+          while(x2<COLS && map[x2][y-1]!==map[x2][y] && map[x2][y-1]!==0 && map[x2][y]!==0) x2++;
+          svg.appendChild(svgEl('line',{x1:px(x),y1:py(y),x2:px(x2),y2:py(y),class:'iwall'}));
+          x = x2;
+        } else x++;
+      }
+    }
+  }
+  drawSegments();
+
+  // doors (cover walls with golden arcs)
+  function door(x1,y1,x2,y2){
+    const vert = x1===x2;
+    if (vert){
+      // gap on wall
+      svg.appendChild(svgEl('line',{x1:px(x1),y1:py(y1),x2:px(x2),y2:py(y2),
+        stroke:'#fcfaf5','stroke-width':5}));
+      // arc swing
+      const r = Math.abs((y2-y1)*CELL);
+      svg.appendChild(svgEl('path',{
+        d:`M ${px(x1)} ${py(y1)} A ${r} ${r} 0 0 1 ${px(x1)+r} ${py(y2)}`,
+        class:'door'
+      }));
+    } else {
+      svg.appendChild(svgEl('line',{x1:px(x1),y1:py(y1),x2:px(x2),y2:py(y2),
+        stroke:'#fcfaf5','stroke-width':5}));
+      const r = Math.abs((x2-x1)*CELL);
+      svg.appendChild(svgEl('path',{
+        d:`M ${px(x1)} ${py(y1)} A ${r} ${r} 0 0 0 ${px(x2)} ${py(y2)-r}`,
+        class:'door'
+      }));
+    }
+  }
+  // entry (mark with text "вход")
+  svg.appendChild(svgEl('line',{x1:px(4),y1:py(13),x2:px(6),y2:py(13),
+    stroke:'#fcfaf5','stroke-width':6}));
+  svg.appendChild(svgEl('line',{x1:px(4),y1:py(13),x2:px(6),y2:py(13),
+    stroke:'#b8924b','stroke-width':2,'stroke-dasharray':'4 3'}));
+  const entryT = svgEl('text',{x:px(5),y:py(13)+18,
+    'text-anchor':'middle','font-size':10,'fill':'#b8924b','font-weight':'600',
+    'font-family':'Georgia,serif','font-style':'italic'});
+  entryT.textContent = 'вход';
+  svg.appendChild(entryT);
+
+  // a few internal doors as arcs
+  door(13,3, 13,5);  // гостиная ↔ кухня
+  door(19,2, 19,4);  // кухня ↔ лоджия 4
+  door(4,7,  4,9);   // коридор ↔ лоджия 5
+  door(9,3,  10.5,3);// санузел ↔ кладовая (horizontal opening)
+  door(9,5, 11,5);   // коридор ↔ гостиная
+
+  // windows on outer walls (drawn as double lines)
+  function windowSeg(x1,y1,x2,y2){
+    svg.appendChild(svgEl('line',{x1:px(x1),y1:py(y1),x2:px(x2),y2:py(y2),
+      stroke:'#fcfaf5','stroke-width':5}));
+    svg.appendChild(svgEl('line',{x1:px(x1),y1:py(y1),x2:px(x2),y2:py(y2),class:'window'}));
+    svg.appendChild(svgEl('line',{x1:px(x1),y1:py(y1)+2,x2:px(x2),y2:py(y2)+2,class:'window-inner'}));
+  }
+  windowSeg(1.5,0, 5.5,0);    // спальня
+  windowSeg(14,0,  18,0);     // кухня
+  windowSeg(0.5,13, 4,13);    // гостиная low (vert is row 13)
+  windowSeg(14,13, 20,13);    // гостиная low right
+  windowSeg(22,1, 22,4);      // лоджия 4 - наружное (vertical)
+
+  // compass
+  const cx = px(COLS) + 24, cy = py(0) + 6;
+  svg.appendChild(svgEl('line',{x1:cx,y1:cy,x2:cx,y2:cy+20,
+    stroke:'#7a8696','stroke-width':1.5,'marker-end':'url(#arrN)'}));
+  const nT = svgEl('text',{x:cx,y:cy-3,'text-anchor':'middle',class:'compass'});
+  nT.textContent='С'; svg.appendChild(nT);
+
+  // 0.4m label
+  const sc = svgEl('g',{transform:`translate(${px(0)},${py(ROWS)+24})`});
+  sc.innerHTML = `
+    <line x1="0" y1="0" x2="${CELL}" y2="0" stroke="#7a8696" stroke-width="1.5"/>
+    <line x1="0" y1="-3" x2="0" y2="3" stroke="#7a8696" stroke-width="1.5"/>
+    <line x1="${CELL}" y1="-3" x2="${CELL}" y2="3" stroke="#7a8696" stroke-width="1.5"/>
+    <text x="${CELL/2}" y="-6" text-anchor="middle" font-size="10" fill="#7a8696" font-family="Georgia,serif" font-style="italic">0,4 м</text>
+  `;
+  svg.appendChild(sc);
+}
+
+/* ============================================================
+   TASKS
+   ============================================================ */
+
+const TASKS = [
+  {
+    id:1, title:"Помещения",
+    render: t1Render, check: t1Check, hint: t1Hint, solve: t1Solve,
+    teacher: "В задаче «помещения» можно «читать» план так: вход → коридор; слева от входа — обычно санузел/ванная; противоположный конец коридора — кладовая/прихожая; большая комната рядом с кухней — гостиная. У школьников типичны путаницы: спальня ↔ гостиная (по размеру) и кладовая ↔ санузел (обе небольшие). Ученикам стоит сначала <i>подписать</i> все 8 номеров карандашом на черновике."
+  },
+  {
+    id:2, title:"Паркет",
+    render: t2Render, check: t2Check, hint: t2Hint, solve: t2Solve,
+    teacher: "Главная ошибка — забыть округлить вверх. Если получилось 8,86 упаковок — нужно <b>9</b>, потому что 8 пачек не хватит. Если в задаче спрашивают «сколько досок», тогда округление досок вверх до целого, но при упаковках — берём первое целое сверху."
+  },
+  {
+    id:3, title:"Площадь",
+    render: t3Render, check: t3Check, hint: t3Hint, solve: t3Solve,
+    teacher: "Площадь по клеткам: число клеток × площадь одной клетки. Если клетка 0,4 м × 0,4 м, то её площадь — <b>0,16 м²</b>. Это значение полезно заранее обвести на доске, чтобы ученики не пересчитывали его каждый раз."
+  },
+  {
+    id:4, title:"Проценты",
+    render: t4Render, check: t4Check, hint: t4Hint, solve: t4Solve,
+    teacher: "Формула «на сколько процентов A больше B»: (A − B) / B · 100%. Половина класса делает <b>(A − B) / A · 100%</b> — это уже «на сколько процентов B меньше A», другой ответ. Важно проговорить: знаменатель — <i>исходное</i>, то, с которого сравниваем."
+  },
+  {
+    id:5, title:"Стиральная машина",
+    render: t5Render, check: t5Check, hint: t5Hint, solve: t5Solve,
+    teacher: "Многошаговая задача: 1) фильтр по типу загрузки, 2) фильтр по вместимости, 3) расчёт полной стоимости с подключением и доставкой, 4) выбор минимальной. Часто забывают про подключение, либо считают доставку как абсолютную сумму вместо процента. Стоит расписать таблицу прохождения фильтров явно."
+  }
+];
+
+/* ===== Task 1 — match rooms ===== */
+// targets: коридор→1, кладовая→7, спальня→8, кухня→3
+const T1_TARGET = {"коридор":1, "кладовая":7, "спальня":8, "кухня":3};
+
+function t1Render(){
+  const rows = Object.keys(T1_TARGET).map(name => `
+    <tr>
+      <td>${name}</td>
+      <td class="match-cell" data-target="${name}">
+        <select aria-label="Выберите номер для ${name}">
+          <option value="">—</option>
+          ${[1,2,3,4,5,6,7,8].map(n=>`<option value="${n}">${n}</option>`).join('')}
+        </select>
+      </td>
+    </tr>
+  `).join('');
+  return `
+    <div class="task-meta">Задание <b>1</b> · соответствие · 4 пары</div>
+    <div class="task-q">Для объектов, указанных в таблице, определите, какими цифрами они обозначены на плане квартиры. Запишите в ответ <b>четыре цифры подряд</b> — в том порядке, в котором стоят названия в таблице (коридор, кладовая, спальня, кухня).</div>
+    <table class="match-table">
+      <thead><tr><th>Помещение</th><th>Цифра на плане</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div class="answer-section">
+      <span class="answer-label">Ответ:</span>
+      <input class="ans-input" id="t1Ans" placeholder="четыре цифры" maxlength="4" inputmode="numeric" />
+    </div>
+  `;
+}
+function t1Check(){
+  // Read selects
+  const cells = document.querySelectorAll('#taskCard .match-cell');
+  let filled = 0;
+  cells.forEach(c => { if (c.querySelector('select').value) filled++; });
+  const order = ["коридор","кладовая","спальня","кухня"];
+  const expected = order.map(k=>T1_TARGET[k]).join('');
+  const ansEl = document.getElementById('t1Ans');
+  const ans = (ansEl.value||'').replace(/\s/g,'');
+
+  // colour cells
+  let allOK = true;
+  cells.forEach(c => {
+    const name = c.dataset.target;
+    const v = +c.querySelector('select').value;
+    c.classList.remove('ok','err');
+    if (!v){ allOK=false; return; }
+    if (v === T1_TARGET[name]) c.classList.add('ok'); else { c.classList.add('err'); allOK=false; }
+  });
+
+  // also accept direct typed answer
+  if (ans === expected){
+    ansEl.classList.remove('err'); ansEl.classList.add('ok');
+    return { ok:true, msg:`Верно! ${expected} — коридор, кладовая, спальня, кухня.` };
+  }
+  if (allOK){
+    ansEl.value = expected; ansEl.classList.add('ok');
+    return { ok:true, msg:`Верно! ${expected} — это коридор, кладовая, спальня, кухня.` };
+  }
+  ansEl.classList.add('err');
+  // diagnostic
+  if (ans.length && ans.length !== 4) return { ok:false, msg:`Ответ — это четыре цифры подряд, без пробелов и запятых. Сейчас вы ввели <b>${ans.length}</b>.` };
+  return { ok:false, msg:`Не совсем. Перечитайте описание: «вход — в коридоре, слева — санузел, в противоположном конце — кладовая, самое большое — гостиная». Каждое слово однозначно указывает на одну комнату.` };
+}
+function t1Hint(){
+  return `На плане сразу видно: <b>самое большое</b> помещение — это гостиная (номер 2). Из текста: «слева от входа — санузел», значит то, что слева от коридора (1) — это <b>санузел (6)</b>. Кладовая — «в противоположном конце коридора», т.е. в верхней части плана. Спальня связана с лоджией.`;
+}
+function t1Solve(){
+  return `
+    <h4>Расшифровка плана</h4>
+    <div><span class="step-num-box">1</span>Вход в квартиру — в <b>коридоре</b>. На плане — это вытянутое помещение от входа снизу до верхней части. Номер <b>1</b>.</div>
+    <div><span class="step-num-box">2</span>«В противоположном конце коридора — дверь в <b>кладовую</b>». Маленькое помещение в верхней части коридора. Номер <b>7</b>.</div>
+    <div><span class="step-num-box">3</span>«Рядом с кладовой находится <b>спальня</b>». Большое помещение слева наверху. Номер <b>8</b>.</div>
+    <div><span class="step-num-box">4</span>«Из кухни можно попасть на застеклённую лоджию». Найдём комнату с окном и выходом на лоджию 4. <b>Кухня — номер 3</b>.</div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed #aec3df">Ответ: <b>1738</b></div>
+  `;
+}
+
+/* ===== Task 2 — паркет ===== */
+// Гостиная: cells = 22*4 + 9*4 = 88 + 36 = 124 cells = 19.84 m²
+// Board: 0.20 × 0.80 = 0.16 m²  → 124 boards (точно!)
+// Pack of 14 → 124/14 = 8.857... → 9 packs
+function t2Render(){
+  return `
+    <div class="task-meta">Задание <b>2</b> · упаковки · округление</div>
+    <div class="task-q">Паркетная доска размером <b>20 см × 80 см</b> продаётся в упаковках по <b>14 штук</b>. Сколько упаковок паркетной доски понадобилось, чтобы выложить пол в <b>гостиной</b>?</div>
+    <div class="aux">
+      <b>Подумайте по шагам:</b> сначала — сколько клеток в гостиной → площадь в м². 
+      Затем — сколько досок поместится (одна доска = ? м²). 
+      В конце — округлите количество <i>упаковок</i> вверх до целого.
+    </div>
+    <div class="answer-section">
+      <span class="answer-label">Ответ:</span>
+      <input class="ans-input" id="t2Ans" type="text" inputmode="numeric" placeholder="число упаковок" />
+      <span class="unit">упаковок</span>
+    </div>
+  `;
+}
+function t2Check(){
+  const el = document.getElementById('t2Ans');
+  const ans = +(el.value.replace(',','.'));
+  el.classList.remove('ok','err');
+  if (ans === 9){ el.classList.add('ok'); return { ok:true, msg:'Верно! 9 упаковок — 8 не хватит, потому что 8·14 = 112 досок, а нужно 124.' }; }
+  el.classList.add('err');
+  if (ans === 8) return { ok:false, msg:'Близко, но 8·14 = <b>112</b> досок, а в гостиной их помещается <b>124</b>. Нужна одна дополнительная упаковка — <b>9</b>.' };
+  if (ans === 124) return { ok:false, msg:'124 — это число <i>досок</i>, а нужно число <i>упаковок</i>. Поделите 124 на 14 и округлите вверх.' };
+  if (ans === 19.84 || Math.abs(ans-19.84)<0.01) return { ok:false, msg:'19,84 — это площадь в м². Нужно дальше: одна доска — 0,16 м², т.е. помещается 19,84 / 0,16 = 124 доски.' };
+  if (Math.abs(ans-8.857)<0.1 || Math.abs(ans-8.86)<0.05) return { ok:false, msg:'124/14 ≈ 8,86 — это <i>дробное</i> число пачек. Округляем <b>вверх</b> до целого: 9 упаковок.' };
+  return { ok:false, msg:'Не совпало. Считайте по шагам: клетки гостиной, площадь, число досок (одна доска — 0,16 м²), упаковки (округление вверх до кратного 14).' };
+}
+function t2Hint(){
+  return `Площадь одной доски: 0,20 м · 0,80 м = <b>0,16 м²</b> — ровно одна клетка плана! Это значит: <b>число досок = число клеток гостиной</b>. Посчитайте клетки и поделите на 14.`;
+}
+function t2Solve(){
+  return `
+    <h4>По шагам</h4>
+    <div><span class="step-num-box">1</span>Площадь одной доски: 0,2 · 0,8 = <span class="formula">0,16 м²</span>.</div>
+    <div><span class="step-num-box">2</span>Площадь одной клетки на плане: 0,4 · 0,4 = <b>0,16 м²</b>. Удивительно — <i>одна доска занимает ровно одну клетку</i>!</div>
+    <div><span class="step-num-box">3</span>Считаем клетки в гостиной: нижняя часть 22×4 = 88, и верхний правый кусок 9×4 = 36. Всего <b>88 + 36 = 124</b> клетки.</div>
+    <div><span class="step-num-box">4</span>Значит, нужно <b>124 доски</b>.</div>
+    <div><span class="step-num-box">5</span>Упаковок: 124 / 14 ≈ 8,86 → округляем вверх → <b>9 упаковок</b>.</div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed #aec3df">Ответ: <b>9</b></div>
+  `;
+}
+
+/* ===== Task 3 — площадь санузла ===== */
+// Санузел: 4×3 = 12 cells = 1.92 m²
+function t3Render(){
+  return `
+    <div class="task-meta">Задание <b>3</b> · площадь по клеткам</div>
+    <div class="task-q">Найдите площадь <b>санузла</b>. Ответ дайте в <b>квадратных метрах</b>.</div>
+    <div class="aux">Подсчитайте число клеток и умножьте на площадь одной клетки.</div>
+    <div class="answer-section">
+      <span class="answer-label">Ответ:</span>
+      <input class="ans-input" id="t3Ans" type="text" inputmode="decimal" placeholder="м²" />
+      <span class="unit">м²</span>
+    </div>
+  `;
+}
+function t3Check(){
+  const el = document.getElementById('t3Ans');
+  const ans = +(el.value.replace(',','.'));
+  el.classList.remove('ok','err');
+  const correct = roomM2(6); // 1.92
+  if (Math.abs(ans - correct) < 0.005){ el.classList.add('ok'); return { ok:true, msg:`Верно! Санузел — 4 × 3 = 12 клеток, площадь 12 · 0,16 = ${correct.toLocaleString('ru')} м².` }; }
+  el.classList.add('err');
+  if (Math.abs(ans - 12) < 0.5) return { ok:false, msg:'12 — это число клеток. Чтобы получить м², умножьте на 0,16 м² (площадь одной клетки).' };
+  if (Math.abs(ans - 4.8) < 0.05) return { ok:false, msg:'4,8 м² — это длина одной стороны санузла, не площадь. Площадь — это произведение сторон или (клетки · 0,16 м²).' };
+  return { ok:false, msg:`Не совпало. Санузел занимает 4 × 3 = 12 клеток. Каждая клетка — 0,16 м². Площадь: 12 · 0,16 м².` };
+}
+function t3Hint(){
+  return `Санузел — компактное помещение в верхней части плана, отделено от спальни и кухни. Сторона клетки — 0,4 м, значит площадь одной клетки — <b>0,4 · 0,4 = 0,16 м²</b>.`;
+}
+function t3Solve(){
+  return `
+    <h4>Площадь санузла</h4>
+    <div><span class="step-num-box">1</span>Считаем клетки: 4 в ширину, 3 в высоту. Всего <b>4 · 3 = 12 клеток</b>.</div>
+    <div><span class="step-num-box">2</span>Площадь одной клетки: <span class="formula">0,4 · 0,4 = 0,16 м²</span>.</div>
+    <div><span class="step-num-box">3</span>Площадь санузла: <b>12 · 0,16 = 1,92 м²</b>.</div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed #aec3df">Ответ: <b>1,92</b></div>
+  `;
+}
+
+/* ===== Task 4 — проценты ===== */
+// Спальня: 9*5 = 45 cells = 7.20 m²; Кухня: 6*5 = 30 cells = 4.80 m²
+// (7.20 - 4.80) / 4.80 * 100% = 50%
+function t4Render(){
+  return `
+    <div class="task-meta">Задание <b>4</b> · процентное сравнение</div>
+    <div class="task-q">На сколько процентов площадь <b>спальни</b> больше площади <b>кухни</b>?</div>
+    <div class="aux">Формула: <b>(S<sub>больш.</sub> − S<sub>меньш.</sub>) / S<sub>меньш.</sub> · 100%</b>. Можно сравнивать в клетках — единицы сократятся.</div>
+    <div class="answer-section">
+      <span class="answer-label">Ответ:</span>
+      <input class="ans-input" id="t4Ans" type="text" inputmode="numeric" placeholder="число" />
+      <span class="unit">%</span>
+    </div>
+  `;
+}
+function t4Check(){
+  const el = document.getElementById('t4Ans');
+  const ans = +(el.value.replace(',','.'));
+  el.classList.remove('ok','err');
+  if (Math.abs(ans - 50) < 0.01){ el.classList.add('ok'); return { ok:true, msg:'Верно! Спальня 45 клеток, кухня 30 клеток, (45 − 30)/30 · 100% = 50%.' }; }
+  el.classList.add('err');
+  if (Math.abs(ans - 33.33) < 0.5 || Math.abs(ans - 33) < 0.5) return { ok:false, msg:'33,3% — это «на сколько процентов <i>кухня меньше спальни</i>» (делите на 45). А здесь надо делить на <b>30</b> — на меньшую (исходную для сравнения).' };
+  if (Math.abs(ans - 150) < 0.5) return { ok:false, msg:'150% — это <i>отношение</i> спальни к кухне (45/30 · 100%). А спрашивают «<b>на сколько процентов больше</b>» — нужно вычесть 100%: 150 − 100 = 50%.' };
+  if (Math.abs(ans - 15) < 0.5) return { ok:false, msg:'15 — это разница в клетках (45 − 30). Нужно перевести её в проценты от меньшей площади: 15/30 · 100%.' };
+  return { ok:false, msg:'Не совпало. Спальня — 9×5 = 45 клеток, кухня — 6×5 = 30. Считайте (45 − 30) / 30 · 100%.' };
+}
+function t4Hint(){
+  return `«На сколько процентов <i>больше</i>» — в знаменателе <b>меньшая</b> величина (то, с чем сравниваем). Считать можно в клетках: спальня — 9·5 = 45, кухня — 6·5 = 30.`;
+}
+function t4Solve(){
+  return `
+    <h4>Сравнение в процентах</h4>
+    <div><span class="step-num-box">1</span>Площадь спальни (в клетках): 9 · 5 = <b>45</b>. В м²: 45 · 0,16 = 7,20 м².</div>
+    <div><span class="step-num-box">2</span>Площадь кухни: 6 · 5 = <b>30</b>. В м²: 30 · 0,16 = 4,80 м².</div>
+    <div><span class="step-num-box">3</span>Разница: 45 − 30 = <b>15</b> клеток (или 2,40 м²).</div>
+    <div><span class="step-num-box">4</span>В процентах от <i>кухни</i>: <span class="formula">15 / 30 · 100% = 50%</span>.</div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed #aec3df">Ответ: <b>50</b></div>
+  `;
+}
+
+/* ===== Task 5 — стиральная машина ===== */
+// Условие: вертикальная загрузка, вместимость >= 6 кг.
+// Сравниваем стоимость + подключение + доставка(% от стоимости)
+const WASH = [
+  { mdl:"А", v:7,   ld:"верт.",  price:28000, conn:1700, dlv:0   },
+  { mdl:"Б", v:5,   ld:"фронт.", price:24000, conn:1500, dlv:3   },
+  { mdl:"В", v:6.5, ld:"фронт.", price:25000, conn:1500, dlv:2   },
+  { mdl:"Г", v:6,   ld:"верт.",  price:27000, conn:1800, dlv:4   },
+  { mdl:"Д", v:6,   ld:"верт.",  price:26500, conn:2000, dlv:5   },
+  { mdl:"Е", v:7,   ld:"верт.",  price:29000, conn:1500, dlv:3   },
+];
+function totalCost(m){
+  return m.price + m.conn + Math.round(m.price * m.dlv/100);
+}
+function t5Render(){
+  const rows = WASH.map(m => `
+    <tr data-mdl="${m.mdl}">
+      <td class="model">${m.mdl}</td>
+      <td>${m.v.toString().replace('.',',')}</td>
+      <td>${m.ld}</td>
+      <td>${m.price.toLocaleString('ru-RU')}</td>
+      <td>${m.conn.toLocaleString('ru-RU')}</td>
+      <td>${m.dlv===0 ? 'бесплатно' : m.dlv + '%'}</td>
+    </tr>
+  `).join('');
+  return `
+    <div class="task-meta">Задание <b>5</b> · выбор + многошаговый расчёт</div>
+    <div class="task-q">В квартире планируется установить стиральную машину. Характеристики моделей в таблице. Нужна стиральная машина с <b>вертикальной загрузкой</b> вместимостью <b>не менее 6 кг</b>. Сколько рублей будет стоить <b>наиболее дешёвая</b> из подходящих, с подключением и доставкой?</div>
+    <div style="overflow-x:auto">
+      <table class="wash-table" id="washTable">
+        <thead>
+          <tr>
+            <th>Модель</th><th>Вмест., кг</th><th>Тип загрузки</th>
+            <th>Цена, ₽</th><th>Подключ., ₽</th><th>Доставка</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="aux"><b>Внимание!</b> Доставка указана в <i>процентах от цены машины</i> (а не от итоговой суммы). Бесплатная доставка — 0 ₽.</div>
+    <div class="answer-section">
+      <span class="answer-label">Ответ:</span>
+      <input class="ans-input" id="t5Ans" type="text" inputmode="numeric" placeholder="рублей" />
+      <span class="unit">₽</span>
+    </div>
+  `;
+}
+function t5Check(){
+  const el = document.getElementById('t5Ans');
+  const ans = +(el.value.replace(/\s/g,'').replace(',','.'));
+  el.classList.remove('ok','err');
+  // фильтр
+  const ok_mdls = WASH.filter(m => m.ld==='верт.' && m.v>=6);
+  const costs = ok_mdls.map(m => ({mdl:m.mdl, cost: totalCost(m)}));
+  costs.sort((a,b)=>a.cost-b.cost);
+  const best = costs[0];
+
+  // подсветим в таблице
+  document.querySelectorAll('#washTable tbody tr').forEach(tr=>{
+    tr.classList.remove('match');
+    if (ok_mdls.find(m=>m.mdl===tr.dataset.mdl)) tr.classList.add('match');
+  });
+
+  if (Math.abs(ans - best.cost) < 1){
+    el.classList.add('ok');
+    return { ok:true, msg:`Верно! Самая дешёвая из подходящих — модель ${best.mdl} за <b>${best.cost.toLocaleString('ru-RU')} ₽</b>.` };
+  }
+  el.classList.add('err');
+  // diagnostics
+  // total without delivery
+  for (const m of ok_mdls){
+    if (Math.abs(ans - (m.price + m.conn)) < 1) return { ok:false, msg:`Вы забыли доставку для модели ${m.mdl}: цена + подключение = ${(m.price+m.conn).toLocaleString('ru-RU')} ₽. Нужно добавить ${m.dlv}% от цены машины.` };
+    if (Math.abs(ans - m.price) < 1) return { ok:false, msg:`${m.price.toLocaleString('ru-RU')} ₽ — только цена машины ${m.mdl}. Не забудьте подключение и доставку.` };
+  }
+  // wrong filter — фронт.
+  const wrong = WASH.filter(m => m.v>=6 && m.ld==='фронт.');
+  if (wrong.find(m => Math.abs(totalCost(m) - ans) < 1)){
+    return { ok:false, msg:'По типу загрузки нужна <b>вертикальная</b>, а вы, похоже, посчитали фронтальную. Перепроверьте фильтр.' };
+  }
+  return { ok:false, msg:`Не совпало. Сначала отфильтруйте: <i>верт.</i> + <i>≥ 6 кг</i> → останутся ${ok_mdls.map(m=>m.mdl).join(', ')}. Затем для каждой посчитайте: цена + подключение + цена · доставка%/100, и выберите минимум.` };
+}
+function t5Hint(){
+  // подсветим фильтр в таблице
+  setTimeout(()=>{
+    document.querySelectorAll('#washTable tbody tr').forEach(tr=>{
+      const m = WASH.find(x=>x.mdl===tr.dataset.mdl);
+      if (m && m.ld==='верт.' && m.v>=6) tr.classList.add('match');
+    });
+  },50);
+  return `Сначала отбираем только <b>верт.</b> загрузку. Затем из них — только те, где <b>≥ 6 кг</b>. Останется небольшой список. Подсветил их в таблице.`;
+}
+function t5Solve(){
+  const ok_mdls = WASH.filter(m => m.ld==='верт.' && m.v>=6);
+  const lines = ok_mdls.map(m=>{
+    const dlv = Math.round(m.price * m.dlv/100);
+    const total = m.price + m.conn + dlv;
+    return `
+      <div style="display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px dashed #aec3df">
+        <span><b>${m.mdl}</b> (${m.v} кг, ${m.ld})</span>
+        <span style="font-family:Georgia,serif">${m.price.toLocaleString('ru-RU')} + ${m.conn.toLocaleString('ru-RU')} + ${dlv.toLocaleString('ru-RU')} = <b>${total.toLocaleString('ru-RU')}</b></span>
+      </div>`;
+  }).join('');
+  const best = ok_mdls.map(m=>({mdl:m.mdl,c:totalCost(m)})).sort((a,b)=>a.c-b.c)[0];
+  return `
+    <h4>Подбор стиральной машины</h4>
+    <div><span class="step-num-box">1</span>Условия: тип загрузки — <b>верт.</b>, вместимость <b>≥ 6 кг</b>. Подходят: ${ok_mdls.map(m=>m.mdl).join(', ')}.</div>
+    <div><span class="step-num-box">2</span>Считаем полную стоимость <i>цена + подключение + доставка</i>:</div>
+    <div style="margin:8px 0;padding:8px 12px;background:#fff;border-radius:8px">${lines}</div>
+    <div><span class="step-num-box">3</span>Наименьшая — модель <b>${best.mdl}</b>: <b>${best.c.toLocaleString('ru-RU')} ₽</b>.</div>
+    <div style="margin-top:10px;padding-top:10px;border-top:1px dashed #aec3df">Ответ: <b>${best.c}</b></div>
+  `;
+}
+
+/* ============================================================
+   STATE / RENDERER
+   ============================================================ */
+
+const TOPIC = 'practiceApartmentsTrainer';
+const PROGRESS_KEY = 'mathExamCourseProgress.v1';
+
+let state = {
+  currentTask: 1,
+  mode: 'learn',
+  attempts: 0,
+  solved: new Set(),
+  streak: 0
+};
+
+function loadProgress(){
+  try{
+    const all = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}');
+    const t = all.topics && all.topics[TOPIC];
+    if (t){
+      state.solved = new Set(t.solvedTasks || []);
+      state.streak = t.streak || 0;
+      state.attempts = t.attempts || 0;
+    }
+  }catch(e){}
+}
+function saveProgress(){
+  try{
+    const all = JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}');
+    if (!all.topics) all.topics = {};
+    all.topics[TOPIC] = {
+      solvedTasks: [...state.solved],
+      solved: state.solved.size,
+      total: 5,
+      streak: state.streak,
+      attempts: state.attempts,
+      lastTouch: Date.now()
+    };
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(all));
+  }catch(e){}
+}
+function updateStats(){
+  document.getElementById('statSolved').textContent = state.solved.size + ' / 5';
+  document.getElementById('statStreak').textContent = state.streak;
+  document.getElementById('statAttempts').textContent = state.attempts;
+  // step done
+  document.querySelectorAll('.step').forEach(s=>{
+    const id = +s.dataset.task;
+    s.classList.toggle('done', state.solved.has(id));
+  });
+}
+
+function renderTask(){
+  const t = TASKS.find(x => x.id === state.currentTask);
+  const card = document.getElementById('taskCard');
+  card.innerHTML = t.render() + `
+    <div class="hint-box" id="hintBox"></div>
+    <div class="feedback" id="feedback"></div>
+    <div class="solution" id="solution"></div>
+    <div class="teacher" id="teacher"><h5>Учитель</h5>${t.teacher}</div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="checkBtn">Проверить</button>
+      <button class="btn" id="hintBtn">Подсказка</button>
+      <button class="btn" id="solveBtn">Показать решение</button>
+      <button class="btn" id="nextBtn">Следующая задача →</button>
+      <button class="btn" id="resetBtn" style="margin-left:auto;color:var(--ink-muted)">Сбросить</button>
+    </div>
+  `;
+  document.getElementById('checkBtn').addEventListener('click', onCheck);
+  document.getElementById('hintBtn').addEventListener('click', onHint);
+  document.getElementById('solveBtn').addEventListener('click', onSolve);
+  document.getElementById('nextBtn').addEventListener('click', onNext);
+  document.getElementById('resetBtn').addEventListener('click', onReset);
+
+  // teacher mode default visibility
+  document.getElementById('teacher').classList.toggle('show', state.mode === 'teacher');
+  if (state.mode === 'learn'){
+    // auto-show hint
+    const hb = document.getElementById('hintBox');
+    hb.classList.add('auto','show');
+    hb.innerHTML = `<b>Подсказка к шагу.</b> ${t.hint()}`;
+  }
+  document.getElementById('planLabel').textContent = 'Задача ' + t.id + ' · ' + t.title;
+  highlightForTask(t.id);
+}
+
+function highlightForTask(id){
+  document.querySelectorAll('#plan .room-cell').forEach(el=>el.classList.remove('sel'));
+  let nums = [];
+  if (id === 1) nums = [1,3,7,8];        // коридор, кухня, кладовая, спальня
+  if (id === 2) nums = [2];               // гостиная
+  if (id === 3) nums = [6];               // санузел
+  if (id === 4) nums = [8, 3];            // спальня и кухня
+  if (id === 5) nums = [];                // никаких
+  nums.forEach(n=>{
+    document.querySelectorAll(`#plan .room-cell[data-room="${n}"]`).forEach(el=>el.classList.add('sel'));
+  });
+}
+
+function onCheck(){
+  state.attempts++;
+  const t = TASKS.find(x => x.id === state.currentTask);
+  const r = t.check();
+  const fb = document.getElementById('feedback');
+  fb.classList.remove('ok','err','show');
+  void fb.offsetWidth;
+  fb.classList.add('show', r.ok ? 'ok' : 'err');
+  fb.innerHTML = r.msg;
+  if (r.ok){
+    if (!state.solved.has(t.id)){
+      state.solved.add(t.id);
+      state.streak++;
+    }
+  } else {
+    state.streak = 0;
+  }
+  saveProgress();
+  updateStats();
+}
+function onHint(){
+  const t = TASKS.find(x => x.id === state.currentTask);
+  const hb = document.getElementById('hintBox');
+  hb.classList.remove('auto');
+  hb.classList.add('show');
+  hb.innerHTML = `<b>Подсказка.</b> ${t.hint()}`;
+}
+function onSolve(){
+  const t = TASKS.find(x => x.id === state.currentTask);
+  document.getElementById('solution').classList.add('show');
+  document.getElementById('solution').innerHTML = t.solve();
+}
+function onNext(){
+  if (state.currentTask < 5) state.currentTask++; else state.currentTask = 1;
+  document.querySelectorAll('.step').forEach(s=>{
+    s.classList.toggle('active', +s.dataset.task === state.currentTask);
+  });
+  renderTask();
+}
+function onReset(){
+  state.currentTask = 1;
+  state.solved = new Set();
+  state.streak = 0;
+  state.attempts = 0;
+  saveProgress();
+  document.querySelectorAll('.step').forEach(s=>{
+    s.classList.toggle('active', +s.dataset.task === 1);
+    s.classList.remove('done');
+  });
+  renderTask();
+  updateStats();
+}
+
+document.querySelectorAll('.step').forEach(s=>{
+  s.addEventListener('click', ()=>{
+    document.querySelectorAll('.step').forEach(x=>x.classList.remove('active'));
+    s.classList.add('active');
+    state.currentTask = +s.dataset.task;
+    renderTask();
+  });
+});
+
+document.querySelectorAll('.mode-btn').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('.mode-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    state.mode = b.dataset.mode;
+    renderTask();
+  });
+});
+
+/* room click on plan — flash */
+function attachRoomClicks(){
+  document.querySelectorAll('#plan .room-cell').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      el.classList.remove('flash'); void el.offsetWidth;
+      el.classList.add('flash');
+    });
+  });
+}
+
+/* INIT */
+drawPlan();
+attachRoomClicks();
+loadProgress();
+updateStats();
+renderTask();
+
+</script>
+</body>
+</html>

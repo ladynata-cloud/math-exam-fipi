@@ -1,0 +1,797 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ОГЭ №15 — тренажёр по треугольникам · проверенная версия v10</title>
+<style>
+:root{
+  --bg:#f5f7fb; --paper:#ffffff; --ink:#172033; --muted:#667085; --line:#d7deea;
+  --accent:#3867ff; --accent2:#6c4df6; --good:#16803c; --bad:#c73535; --warn:#b56a00;
+  --soft:#eef3ff; --soft2:#fff5dd; --shadow:0 18px 45px rgba(29,43,75,.12);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#f7f9ff,#eef2f8);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.45}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.wrap{max-width:1220px;margin:0 auto;padding:22px}
+.hero{display:grid;grid-template-columns:1.4fr .8fr;gap:18px;align-items:stretch;margin-bottom:16px}
+.hero-main,.hero-side,.panel,.side-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.hero-main{padding:28px;background:radial-gradient(circle at 10% 10%,#eef3ff,transparent 38%),linear-gradient(135deg,#fff,#f7f9ff)}
+.hero-side{padding:22px;background:linear-gradient(135deg,#172033,#31405f);color:#fff}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-weight:800;color:#5268ff;font-size:12px;margin-bottom:8px}
+h1{margin:0 0 10px;font-size:clamp(28px,4vw,46px);line-height:1.05}
+.lead{font-size:18px;color:#475467;max-width:780px;margin:0 0 16px}
+.hero-side .lead{color:#dbe6ff;font-size:15px}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.badge,.tag{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800;border:1px solid var(--line);background:#fff;color:#344054}
+.badge.blue,.tag.blue{background:#edf2ff;color:#254fd4;border-color:#c9d5ff}.tag.green{background:#eaf8ee;color:#146b34;border-color:#bde4c8}.tag.red{background:#fff0f0;color:#b42318;border-color:#ffd0d0}.tag.gold{background:#fff4cf;color:#8a5b00;border-color:#ffe19a}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-weight:800;color:#344054;box-shadow:0 5px 16px rgba(20,32,60,.06)}
+.tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:transparent}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
+.panel{padding:22px;margin-bottom:18px}
+.side{position:sticky;top:12px;display:grid;gap:14px}
+.side-card{padding:18px}.side-card h3{margin:0 0 10px;font-size:16px}.muted{color:var(--muted)}
+.task-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start;margin-bottom:14px}
+.task-title{font-size:20px;font-weight:900;margin:0 0 6px}.source{font-size:13px;color:var(--muted)}
+.task-grid{display:grid;grid-template-columns:280px minmax(0,1fr);gap:20px;align-items:center}
+.diagram{min-height:235px;border:1px dashed #cfd8ea;border-radius:18px;background:linear-gradient(135deg,#fafcff,#fff);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.diagram svg{max-width:100%;height:auto}.diagram text{font-family:Georgia,serif;fill:#26324a}.diagram .lbl{font-family:system-ui,sans-serif;font-weight:800;fill:#344054}.diagram .dim{stroke:#5268ff;stroke-width:3}.diagram .thin{stroke:#667085;stroke-width:2}.diagram .main{stroke:#172033;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}.diagram .dash{stroke:#5268ff;stroke-width:3;stroke-dasharray:7 6;fill:none}.diagram .shade{fill:#edf2ff;stroke:none}
+.task-text{font-size:21px;font-weight:700;margin:0 0 18px}.answer-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.answer{min-width:210px;flex:1;border:2px solid #cfd8ea;border-radius:14px;padding:13px 14px;background:#fff;font-size:18px}.answer:focus{outline:none;border-color:#5268ff;box-shadow:0 0 0 4px #e7ecff}
+.btn{border:0;border-radius:14px;padding:12px 16px;font-weight:900;background:#e9eefb;color:#27324a}.btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}.btn.good{background:#e9f8ee;color:var(--good)}.btn.bad{background:#fff0f0;color:var(--bad)}.btn.warn{background:#fff6df;color:#8a5b00}.btn:disabled{opacity:.55;cursor:not-allowed}.btn.small{font-size:13px;padding:8px 10px;border-radius:10px}
+.result{display:none;margin-top:14px;border-radius:16px;padding:14px;border:1px solid var(--line);background:#f8fafc}.result.show{display:block}.result.good{background:#effaf3;border-color:#bce6c8;color:#0f5f2e}.result.bad{background:#fff1f1;border-color:#ffd1d1;color:#a21e1e}
+.hint,.solution,.notice{margin-top:14px;border-radius:16px;padding:15px;border:1px solid #d9e2f5;background:#f8fbff}.hint.hidden,.solution.hidden,.hidden{display:none}.solution ol{margin:8px 0 0 20px;padding:0}.solution li{margin:6px 0}.pitfalls{margin-top:10px;color:#8a5b00;font-size:14px}.kbd{display:inline-block;border:1px solid #cfd8ea;background:#fff;border-radius:8px;padding:2px 7px;font-weight:900}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{border:1px solid var(--line);border-radius:16px;padding:12px;background:#fafcff}.stat .val{font-size:26px;font-weight:950}.stat .lbl{font-size:12px;color:var(--muted);font-weight:800}.progressbar{height:10px;border-radius:999px;background:#e7ecf5;overflow:hidden;margin-top:10px}.progressbar div{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%}
+.select{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px;background:#fff;color:#344054}.topic-list{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.mini{font-size:12px;color:#667085}.errors{display:grid;gap:8px;max-height:310px;overflow:auto;padding-right:3px}.error-item{border:1px solid #ffd1d1;background:#fff8f8;border-radius:14px;padding:10px}.error-item b{display:block}.error-item .mini{margin-top:3px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden}th,td{border-bottom:1px solid var(--line);padding:10px;text-align:left;font-size:14px;vertical-align:top}th{background:#f2f5fb;font-weight:900}tr:last-child td{border-bottom:0}.teacher-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.jsonbox{width:100%;min-height:170px;border:1px solid var(--line);border-radius:14px;padding:12px;font-family:ui-monospace,Consolas,monospace;font-size:12px;background:#fbfcff}
+.diag-banner{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 14px;border-radius:16px;background:#fff7df;border:1px solid #ffe4a7;margin-bottom:14px}.diag-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.diag-card{border:1px solid var(--line);border-radius:16px;padding:13px;background:#fff}.diag-card strong{font-size:22px}
+.switch{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line);border-radius:16px;padding:12px;background:#fbfcff}.switch input{margin-top:4px;transform:scale(1.1)}.switch b{display:block}.switch span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.reference details{border:1px solid var(--line);border-radius:14px;background:#fbfcff;margin:8px 0;padding:10px}.reference summary{font-weight:900;cursor:pointer;color:#344054}.reference ul{margin:8px 0 0 18px;padding:0}.reference li{margin:5px 0;font-size:13px;color:#475467}.type-hidden{background:#fff7df;border-color:#ffe4a7;color:#8a5b00}.aid-locked{opacity:.65}.selftest-ok{color:var(--good);font-weight:900}.selftest-bad{color:var(--bad);font-weight:900}.teacher-actions{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.worksheetbox{width:100%;min-height:220px;border:1px solid var(--line);border-radius:14px;padding:12px;font-family:ui-monospace,Consolas,monospace;font-size:12px;background:#fbfcff;white-space:pre-wrap}.small-table td,.small-table th{font-size:13px}.pill-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.pill{border:1px solid var(--line);border-radius:999px;padding:4px 8px;font-size:12px;font-weight:800;background:#fff;color:#344054}
+
+.footer{margin:18px 0;color:#667085;font-size:13px;text-align:center}
+@media (max-width:930px){.hero,.layout,.task-grid,.teacher-grid{grid-template-columns:1fr}.side{position:static}.task-text{font-size:18px}.diagram{min-height:210px}.tabs{flex-wrap:nowrap;overflow:auto;padding-bottom:4px}.tab{white-space:nowrap}.wrap{padding:14px}.hero-main,.hero-side,.panel,.side-card{border-radius:18px}}
+@media print{
+  body{background:#fff}
+  .hero,.tabs,.side,.answer-row,.footer,.diag-banner,#teacherPanel,#diagnosticReport{display:none!important}
+  .layout{display:block}.panel{box-shadow:none;border:0;padding:0}.task-grid{grid-template-columns:1fr}.diagram{min-height:180px}.task-text{font-size:18px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <section class="hero-main">
+      <div class="eyebrow">ОГЭ математика · задание 15</div>
+      <h1>Тренажёр по треугольникам v10</h1>
+      <p class="lead">37 генераторов по треугольникам: углы, площади, пифагоровы тройки, равносторонний треугольник, sin/cos/tg, медианы и средние линии. В учебном режиме есть подсказки, а решение открывается только после первой попытки; в диагностике тип задачи скрыт до проверки.</p>
+      <div class="badges"><span class="badge blue">один HTML-файл</span><span class="badge">без интернета</span><span class="badge blue">37 генераторов</span><span class="badge">архивные задачи</span><span class="badge">диагностика</span><span class="badge">режим учителя</span><span class="badge blue">v2: скрытая диагностика</span></div>
+    </section>
+    <aside class="hero-side">
+      <div class="eyebrow" style="color:#a9bbff">методика</div>
+      <h2 style="margin:0 0 10px">Не угадываем — узнаём тип</h2>
+      <p class="lead">Сначала определить фигуру и вопрос: угол, площадь, сторона, тригонометрия или медиана. Потом применить короткое правило и проверить ответ по смыслу.</p>
+    </aside>
+  </header>
+
+  <nav class="tabs" aria-label="Режимы тренировки">
+    <button class="tab active" data-mode="all">Все типы</button>
+    <button class="tab" data-mode="archive">Архив</button>
+    <button class="tab" data-mode="angles">Углы</button>
+    <button class="tab" data-mode="area">Площади</button>
+    <button class="tab" data-mode="pythagoras">Пифагор</button>
+    <button class="tab" data-mode="trig">sin/cos/tg</button>
+    <button class="tab" data-mode="median">Медианы</button>
+    <button class="tab" data-mode="equilateral">Равносторонний</button>
+    <button class="tab" data-mode="diagnostic">Диагностика 10</button>
+    <button class="tab" data-mode="teacher">Учителю</button>
+  </nav>
+
+  <div class="layout">
+    <main>
+      <section class="panel" id="trainerPanel">
+        <div id="diagBanner" class="diag-banner hidden"></div>
+        <div class="task-head">
+          <div>
+            <div class="task-title" id="taskTitle">Задача</div>
+            <div class="source" id="taskSource">Источник</div>
+          </div>
+          <div id="taskTags" class="badges"></div>
+        </div>
+        <div class="task-grid">
+          <div class="diagram" id="diagram"></div>
+          <div>
+            <p class="task-text" id="taskText"></p>
+            <div class="answer-row">
+              <input id="answer" class="answer" inputmode="decimal" autocomplete="off" placeholder="Ответ: число, 0,96 или 24/25">
+              <button class="btn primary" id="checkBtn">Проверить</button>
+              <button class="btn" id="nextBtn">Новая</button>
+            </div>
+            <div id="result" class="result"></div>
+            <div class="answer-row" style="margin-top:10px">
+              <button class="btn warn" id="hintBtn">Подсказка</button>
+              <button class="btn good" id="solutionBtn">Решение</button>
+              <button class="btn small" id="copyBtn">Скопировать задачу</button>
+            </div>
+            <div id="hint" class="hint hidden"></div>
+            <div id="solution" class="solution hidden"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel hidden" id="diagnosticReport"></section>
+      <section class="panel hidden" id="teacherPanel"></section>
+    </main>
+
+    <aside class="side">
+      <section class="side-card">
+        <h3>Прогресс</h3>
+        <div class="stats">
+          <div class="stat"><div class="val" id="statSolved">0</div><div class="lbl">попыток</div></div>
+          <div class="stat"><div class="val" id="statPercent">0%</div><div class="lbl">верных</div></div>
+          <div class="stat"><div class="val" id="statStreak">0</div><div class="lbl">серия</div></div>
+          <div class="stat"><div class="val" id="statToday">0</div><div class="lbl">сегодня</div></div>
+        </div>
+        <div class="progressbar"><div id="progressFill"></div></div>
+        <div class="answer-row" style="margin-top:12px"><button class="btn small" id="resetStats">Сбросить</button><button class="btn small" id="exportErrors">Экспорт ошибок</button><button class="btn small" id="exportProgress">Отчёт</button></div>
+      </section>
+
+      <section class="side-card">
+        <h3>Фильтр внутри режима</h3>
+        <select id="subtypeFilter" class="select"></select>
+        <p class="mini">Фильтр работает для похожих задач. В режиме «Архив» показываются точные архивные формулировки.</p>
+      </section>
+
+      <section class="side-card">
+        <h3>Экзаменационный вид</h3>
+        <label class="switch"><input type="checkbox" id="examView"><span><b>Скрывать тип до ответа</b><span>Для диагностики включено автоматически. В обычных режимах помогает тренировать распознавание.</span></span></label>
+      </section>
+
+      <section class="side-card">
+        <h3>Что входит</h3>
+        <div class="topic-list" id="topicList"></div>
+      </section>
+
+      <section class="side-card reference">
+        <h3>Мини-справочник</h3>
+        <details open><summary>Углы</summary><ul><li>Сумма углов треугольника: 180°.</li><li>В прямоугольном треугольнике острые углы дают 90°.</li><li>Внешний угол равен сумме двух внутренних, не смежных с ним.</li><li>В равнобедренном треугольнике углы при основании равны.</li></ul></details>
+        <details><summary>Площади</summary><ul><li>S = a · h / 2.</li><li>Для прямоугольного: S = катет · катет / 2.</li><li>S = 1/2 · a · b · sin угла между ними.</li></ul></details>
+        <details><summary>Пифагор</summary><ul><li>a² + b² = c², где c — гипотенуза.</li><li>Гипотенуза всегда самая длинная сторона.</li><li>Часто достаточно узнать тройку: 3–4–5, 5–12–13, 7–24–25, 8–15–17.</li></ul></details>
+        <details><summary>Равносторонний</summary><ul><li>Медиана, высота и биссектриса совпадают.</li><li>h = a√3 / 2.</li><li>P = 3a.</li></ul></details>
+        <details><summary>sin/cos/tg</summary><ul><li>sin = противолежащий катет / гипотенуза.</li><li>cos = прилежащий катет / гипотенуза.</li><li>tg = противолежащий / прилежащий.</li></ul></details>
+        <details><summary>Медианы</summary><ul><li>Медиана делит сторону пополам.</li><li>Медиана к гипотенузе равна половине гипотенузы.</li><li>Средняя линия равна половине третьей стороны.</li><li>Точка пересечения медиан делит медиану 2:1 от вершины.</li></ul></details>
+      </section>
+
+      <section class="side-card">
+        <h3>Журнал ошибок</h3>
+        <div id="errors" class="errors"></div>
+      </section>
+    </aside>
+  </div>
+  <div class="footer">Автономный тренажёр v2: можно сохранить файл и открыть в браузере без интернета.</div>
+</div>
+
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const rnd = (a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+const fmt = x => {
+  if (typeof x === 'string') return x;
+  if (Number.isInteger(x)) return String(x);
+  const v = Math.round(Number(x)*1000000)/1000000;
+  return String(v).replace('.', ',');
+};
+function parseDecimalNoSpaces(s){
+  const t = String(s ?? '').replace(',', '.');
+  if(!/^[-+]?\d+(?:\.\d+)?$/.test(t)) return null;
+  const n = Number(t);
+  return Number.isFinite(n) ? n : null;
+}
+function parseNum(s){
+  let raw = String(s ?? '').trim().replace(/[−–—]/g,'-');
+  if(!raw) return null;
+  // Разрешаем только специальные неразрывные пробелы как разделители тысяч.
+  // Обычный пробел внутри числа считаем ошибкой ввода: 12 5 не превращается в 125.
+  raw = raw.replace(/[\u00A0\u202F]/g,'');
+  if(raw.includes('/')){
+    const parts = raw.split('/');
+    if(parts.length !== 2) return null;
+    const left = parts[0].trim();
+    const right = parts[1].trim();
+    if(!left || !right) return null;
+    // Пробелы вокруг / допустимы, но внутри числителя/знаменателя — нет.
+    if(/\s/.test(left) || /\s/.test(right)) return null;
+    const a = parseDecimalNoSpaces(left);
+    const b = parseDecimalNoSpaces(right);
+    if(a === null || b === null || b === 0) return null;
+    return a / b;
+  }
+  // Любой обычный пробел внутри десятичного числа — отказ: 12 ,5, 12, 5, 1 234.
+  if(/\s/.test(raw)) return null;
+  return parseDecimalNoSpaces(raw);
+}
+function sameAnswer(user, correct){
+  const u = parseNum(user);
+  const c = typeof correct === 'number' ? correct : parseNum(correct);
+  if(u === null || c === null || !isFinite(u) || !isFinite(c)) return false;
+  const tol = Number.isInteger(c) ? 1e-9 : 1e-4;
+  return Math.abs(u-c) <= tol;
+}
+function todayKey(){
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function storageGet(key){try{return (typeof localStorage!=='undefined' && localStorage) ? localStorage.getItem(key) : null;}catch(e){return null;}}
+function storageSet(key,val){try{if(typeof localStorage!=='undefined' && localStorage) localStorage.setItem(key,val);}catch(e){/* offline/private storage */}}
+
+const TOPIC_LABELS = {
+  angles:'Углы', area:'Площади', pythagoras:'Пифагор', trig:'sin/cos/tg', median:'Медианы и средние линии', equilateral:'Равносторонний'
+};
+const TOPIC_MODES = {angles:'angles', area:'area', pythagoras:'pythagoras', trig:'trig', median:'median', equilateral:'equilateral'};
+const TRAINING_MODES = Object.keys(TOPIC_LABELS);
+const SUBTYPE_LABELS = {
+  third_angle:'третий угол', external_known:'внешний угол по внутреннему', isosceles_base:'равнобедренный: угол при основании', right_other_acute:'прямоугольный: второй острый', bisector_half:'биссектриса', altitude_angle:'высота и угол 90°', external_sum:'внешний = сумма двух внутренних', isosceles_ext_to_apex:'равнобедренный: внешний → вершина', isosceles_apex_to_ext:'равнобедренный: вершина → внешний', isosceles_base_to_apex:'равнобедренный: основание → вершина', right_third_angle:'прямоугольный: третий угол', isosceles_perimeter:'равнобедренный: периметр',
+  area_base_height:'площадь: сторона и высота', area_right:'площадь прямоугольного', area_sine:'площадь через sin', iso_height_pythagoras:'высота равнобедренного',
+  pyth_leg:'катет по тройке', pyth_hyp:'гипотенуза по тройке', pyth_scaled:'тройка с масштабом',
+  eq_side:'сторона по медиане/высоте', eq_median:'медиана/высота по стороне', eq_side_perimeter:'сторона по периметру', eq_perimeter_side:'периметр по стороне',
+  sin_value:'sin угла', cos_value:'cos угла', tan_value:'tg угла', leg_from_sin:'сторона по sin', leg_from_cos:'сторона по cos', leg_from_tan:'сторона по tg',
+  median_base:'медиана к основанию', median_hyp:'медиана к гипотенузе', median_hyp_reverse:'гипотенуза по медиане', midline:'средняя линия', midline_reverse:'сторона по средней линии', centroid:'точка пересечения медиан', centroid_short:'центроид: короткий отрезок', centroid_long:'центроид: длинный отрезок'
+};
+const PITFALLS = {
+  third_angle:['Не вычитай из 90°: это обычный треугольник, сумма углов 180°.', 'Сначала сложи два данных угла.'],
+  external_known:['Внешний и внутренний при одной вершине — смежные, вместе 180°.', 'Не складывай все углы треугольника.'],
+  isosceles_base:['Равны углы при основании, а не все три угла.', 'Сначала вычти вершину из 180°, потом дели на 2.'],
+  right_other_acute:['В прямоугольном треугольнике два острых угла дают 90°, не 180°.', 'Ответ должен быть острым углом меньше 90°.'],
+  bisector_half:['Биссектриса делит угол пополам.', 'Не путай биссектрису с медианой: здесь делится угол, а не сторона.'],
+  altitude_angle:['Высота даёт прямой угол 90° с основанием.', 'Решаем маленький прямоугольный треугольник ABH.'],
+  external_sum:['Внешний угол равен сумме двух внутренних, не смежных с ним.', 'Не прибавляй внутренний угол при той же вершине.'],
+  isosceles_ext_to_apex:['Внешний угол при основании сначала превращаем во внутренний: 180° − внешний.', 'Два угла при основании равны.'],
+  isosceles_apex_to_ext:['Сначала найди угол при основании.', 'Внешний угол смежен с внутренним при основании.'],
+  isosceles_base_to_apex:['Углы при основании равны.', 'Вершинный угол: 180° − 2·угол при основании.'],
+  right_third_angle:['Прямой угол уже равен 90°.', 'Оставшиеся два угла в сумме дают 90°.'],
+  isosceles_perimeter:['В равнобедренном треугольнике две боковые стороны равны.', 'Периметр — сумма всех трёх сторон, а не произведение.'],
+  area_base_height:['Не забудь делить произведение стороны и высоты на 2.', 'Высота должна быть проведена к выбранной стороне.'],
+  area_right:['Катеты перпендикулярны, но площадь всё равно делится на 2.', 'Не считай площадь прямоугольника вместо треугольника.'],
+  area_sine:['Угол должен быть между данными сторонами.', 'После умножения на sin тоже делим на 2.'],
+  iso_height_pythagoras:['Высота в равнобедренном треугольнике делит основание пополам.', 'Гипотенуза в маленьком прямоугольном треугольнике — боковая сторона.'],
+  pyth_leg:['Гипотенуза — самое большое число в тройке.', 'Ищи третье число тройки, а не складывай данные числа.'],
+  pyth_hyp:['Гипотенуза — самая длинная сторона.', 'Если даны катеты, ответом будет третье число тройки.'],
+  pyth_scaled:['Заметь общий множитель у пифагоровой тройки.', 'Сначала узнай базовую тройку, потом умножь.'],
+  eq_side:['h = a√3/2, значит при h = k√3 сторона равна 2k.', 'Не оставляй √3 в ответе, если он сокращается.'],
+  eq_median:['В равностороннем треугольнике медиана = высота = биссектриса.', '√3·√3 = 3.'],
+  eq_side_perimeter:['У равностороннего треугольника все стороны равны.', 'Сторона равна периметру, делённому на 3.'],
+  eq_perimeter_side:['Периметр равностороннего треугольника равен 3a.', 'Не применяй формулу высоты, если спрашивают периметр.'],
+  sin_value:['Для угла B противолежащий катет — AC.', 'Не дели просто меньшее на большее: смотри на угол.'],
+  cos_value:['Для угла B прилежащий катет — BC.', 'cos B = BC/AB, а не любой катет/гипотенуза.'],
+  tan_value:['tg B = противолежащий / прилежащий = AC/BC.', 'Гипотенуза в тангенсе не участвует.'],
+  leg_from_sin:['sin B = AC/AB: числитель относится к противолежащему катету.', 'Гипотенузу делим на знаменатель дроби.'],
+  leg_from_cos:['cos B = BC/AB: числитель относится к прилежащему катету.', 'Не перепутай AC и BC.'],
+  leg_from_tan:['tg B = AC/BC.', 'При tg не нужна гипотенуза.'],
+  median_base:['Медиана делит сторону пополам.', 'Длина самой медианы может быть лишней и не нужна для половины основания.'],
+  median_hyp:['В прямоугольном треугольнике медиана к гипотенузе равна половине гипотенузы.', 'Лишний катет не должен сбивать.'],
+  median_hyp_reverse:['Если медиана к гипотенузе равна m, гипотенуза равна 2m.', 'Не применяй Пифагора: здесь свойство медианы.'],
+  midline:['Средняя линия равна половине третьей стороны.', 'Средняя линия соединяет середины двух сторон.'],
+  midline_reverse:['Если средняя линия равна m, параллельная сторона равна 2m.', 'Не путай среднюю линию с медианой.'],
+  centroid:['Точка пересечения медиан делит медиану 2:1 от вершины.', 'Короткий кусок у середины стороны — 1/3 медианы.'],
+  centroid_short:['Короткий отрезок у середины стороны равен 1/3 медианы.', 'Длинный отрезок от вершины в два раза больше короткого.'],
+  centroid_long:['Длинный отрезок от вершины равен 2/3 медианы.', 'Чтобы найти всю медиану, умножь длинный кусок на 3/2.']
+};
+
+const BASE_TRIPLES = [[3,4,5],[5,12,13],[7,24,25],[8,15,17],[9,12,15],[9,40,41],[11,60,61],[12,35,37],[13,84,85],[16,30,34],[16,63,65],[20,21,29],[27,36,45],[28,45,53],[33,56,65],[35,84,91],[36,77,85],[39,80,89],[48,55,73],[65,72,97],[6,8,10],[10,24,26],[12,16,20],[14,48,50],[18,24,30]];
+const EASY_TRIPLES = [[3,4,5],[5,12,13],[7,24,25],[8,15,17],[9,12,15],[6,8,10],[10,24,26],[12,16,20],[14,48,50],[18,24,30]];
+const SMALL_PRIMITIVE = [[3,4,5],[5,12,13],[7,24,25],[8,15,17]];
+function task(o){
+  return Object.assign({source:'Похожие задачи · генератор', exact:false, needsReview:false, answerDisplay:fmt(o.answer), pitfalls:PITFALLS[o.subtype] || [], params:{}}, o, {pitfalls: o.pitfalls || PITFALLS[o.subtype] || []});
+}
+
+const ARCHIVE_BASE = [
+  task({id:'arc13_15', exact:true, source:'Архив4 · доп. вариант 13 · №15', topic:'angles', subtype:'right_other_acute', title:'Архив: второй острый угол', text:'Один из острых углов прямоугольного треугольника равен 36°. Найдите его другой острый угол. Ответ дайте в градусах.', answer:54, hint:'В прямоугольном треугольнике два острых угла в сумме дают 90°.', solution:['Один угол прямой: 90°.', 'Два острых угла дополняют друг друга до 90°.', 'Другой острый угол: 90° − 36° = 54°.'], svgKey:'right'}),
+  task({id:'arc14_15', exact:true, source:'Архив4 · доп. вариант 14 · №15', topic:'angles', subtype:'altitude_angle', title:'Архив: высота в остроугольном треугольнике', text:'В остроугольном треугольнике ABC проведена высота BH, ∠BAC = 48°. Найдите ∠ABH. Ответ дайте в градусах.', answer:42, hint:'BH — высота, значит BH ⟂ AC. В треугольнике ABH есть прямой угол.', solution:['Так как BH — высота, ∠AHB = 90°.', 'В треугольнике ABH угол при A равен ∠BAC = 48°.', '∠ABH = 90° − 48° = 42°.'], svgKey:'altitude'}),
+  task({id:'arc16_15', exact:true, source:'Архив4 · вариант 16 · №15', topic:'area', subtype:'area_sine', title:'Архив: площадь через синус', text:'В треугольнике ABC известно, что AB = 12, BC = 10, sin ∠ABC = 8/15. Найдите площадь треугольника ABC.', answer:32, hint:'Площадь по двум сторонам и углу между ними: S = 1/2 · AB · BC · sin∠ABC.', solution:['Стороны AB и BC образуют угол ABC.', 'S = 1/2 · AB · BC · sin∠ABC.', 'S = 1/2 · 12 · 10 · 8/15 = 60 · 8/15 = 32.'], svgKey:'area'}),
+  task({id:'arc17_15', exact:true, source:'Архив4 · вариант 17 · №15', topic:'trig', subtype:'cos_value', title:'Архив: cos в прямоугольном треугольнике', text:'В треугольнике ABC угол C равен 90°, BC = 72, AB = 75. Найдите cos B.', answer:0.96, answerDisplay:'0,96', hint:'cos B = прилежащий катет к углу B / гипотенуза.', solution:['AB — гипотенуза, потому что ∠C = 90°.', 'Для угла B прилежащий катет — BC.', 'cos B = BC/AB = 72/75 = 24/25 = 0,96.'], svgKey:'right'}),
+  task({id:'arc18_15', exact:true, source:'Архив4 · вариант 18 · №15', topic:'angles', subtype:'altitude_angle', title:'Архив: высота и маленький угол', text:'В остроугольном треугольнике ABC проведена высота BH, ∠BAC = 9°. Найдите ∠ABH. Ответ дайте в градусах.', answer:81, hint:'BH ⟂ AC, поэтому в треугольнике ABH острые углы дают 90°.', solution:['BH — высота, значит ∠AHB = 90°.', 'Угол BAH равен ∠BAC = 9°.', '∠ABH = 90° − 9° = 81°.'], svgKey:'altitude'}),
+  task({id:'arc20_15', exact:true, source:'Архив4 · вариант 20 · №15', topic:'area', subtype:'area_right', title:'Архив: площадь прямоугольного треугольника', text:'Два катета прямоугольного треугольника равны 9 и 6. Найдите площадь этого треугольника.', answer:27, hint:'Катеты перпендикулярны, поэтому это основание и высота.', solution:['Площадь прямоугольного треугольника равна половине произведения катетов.', 'S = 9 · 6 : 2 = 54 : 2 = 27.'], svgKey:'right'}),
+  task({id:'arc56_15', exact:true, source:'Архив4 · доп. вариант 56 · №15', topic:'pythagoras', subtype:'pyth_leg', title:'Архив: другой катет', text:'В прямоугольном треугольнике катет и гипотенуза равны 5 и 13 соответственно. Найдите другой катет этого треугольника.', answer:12, hint:'Найди пифагорову тройку с числами 5 и 13.', solution:['В прямоугольном треугольнике даны катет 5 и гипотенуза 13.', 'Пифагорова тройка: 5, 12, 13.', 'Другой катет равен 12.'], svgKey:'right'}),
+  task({id:'arc57_15', exact:true, source:'Архив4 · доп. вариант 57 · №15', topic:'median', subtype:'median_base', title:'Архив: медиана к стороне AC', text:'В треугольнике ABC известно, что AC = 58, BM — медиана, BM = 37. Найдите AM.', answer:29, hint:'Медиана делит сторону пополам.', solution:['BM — медиана, значит точка M — середина стороны AC.', 'AM = AC : 2 = 58 : 2 = 29.', 'Длина BM здесь не нужна: это отвлекающее число.'], svgKey:'median'})
+];
+
+const GENS = [
+  {id:'g_third', topic:'angles', subtype:'third_angle', weight:8, generate(){const a=rnd(25,85), b=rnd(20,75); const c=180-a-b; if(c<=10) return this.generate(); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Третий угол треугольника', text:`В треугольнике два угла равны ${a}° и ${b}°. Найдите его третий угол.`, answer:c, hint:'Сумма углов треугольника равна 180°.', solution:[`${a}° + ${b}° = ${a+b}°.`, `Третий угол: 180° − ${a+b}° = ${c}°.`], svgKey:'plain'});}},
+  {id:'g_ext_known', topic:'angles', subtype:'external_known', weight:7, generate(){const c=rnd(50,140); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Внешний угол по внутреннему', text:`В треугольнике ABC угол C равен ${c}°. Найдите внешний угол при вершине C.`, answer:180-c, hint:'Внутренний и внешний смежные: вместе 180°.', solution:[`Внешний угол = 180° − внутренний угол.`, `180° − ${c}° = ${180-c}°.`], svgKey:'external'});}},
+  {id:'g_iso_base', topic:'angles', subtype:'isosceles_base', weight:8, generate(){const apex=2*rnd(25,70); const base=(180-apex)/2; return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Равнобедренный: угол при основании', text:`В треугольнике ABC известно, что AB = BC, угол ABC равен ${apex}°. Найдите угол BCA.`, answer:base, hint:'В равнобедренном треугольнике углы при основании равны.', solution:[`Сумма углов при основании: 180° − ${apex}° = ${180-apex}°.`, `Каждый из них: ${180-apex}° : 2 = ${base}°.`], svgKey:'isosceles'});}},
+  {id:'g_right_other', topic:'angles', subtype:'right_other_acute', weight:8, generate(){const a=rnd(15,75); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Прямоугольный: другой острый угол', text:`Один из острых углов прямоугольного треугольника равен ${a}°. Найдите его другой острый угол.`, answer:90-a, hint:'Острые углы прямоугольного треугольника в сумме дают 90°.', solution:[`Другой острый угол: 90° − ${a}° = ${90-a}°.`], svgKey:'right'});}},
+  {id:'g_bisector', topic:'angles', subtype:'bisector_half', weight:7, generate(){const a=2*rnd(18,55); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Биссектриса угла', text:`В треугольнике ABC известно, что угол BAC равен ${a}°, AD — биссектриса. Найдите угол BAD.`, answer:a/2, hint:'Биссектриса делит угол пополам.', solution:[`∠BAD = ∠BAC : 2 = ${a}° : 2 = ${a/2}°.`], svgKey:'bisector'});}},
+  {id:'g_altitude', topic:'angles', subtype:'altitude_angle', weight:9, generate(){const a=rnd(5,80); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Высота в остроугольном треугольнике', text:`В остроугольном треугольнике ABC проведена высота BH, ∠BAC = ${a}°. Найдите ∠ABH.`, answer:90-a, hint:'BH перпендикулярна AC, значит в треугольнике ABH есть прямой угол.', solution:[`∠AHB = 90°, потому что BH — высота.`, `∠BAH = ${a}°.`, `∠ABH = 90° − ${a}° = ${90-a}°.`], svgKey:'altitude'});}},
+  {id:'g_ext_sum', topic:'angles', subtype:'external_sum', weight:6, generate(){const a=rnd(5,80), b=rnd(5,80); if(a+b>=170) return this.generate(); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Внешний угол без рисунка', text:`В треугольнике ABC угол A равен ${a}°, а угол B равен ${b}°. Найдите внешний угол при вершине C.`, answer:a+b, hint:'Внешний угол треугольника равен сумме двух внутренних, не смежных с ним.', solution:[`Внешний угол при C равен ∠A + ∠B.`, `${a}° + ${b}° = ${a+b}°.`], svgKey:'external'});}},
+  {id:'g_iso_ext_apex', topic:'angles', subtype:'isosceles_ext_to_apex', weight:5, generate(){const apex=2*rnd(25,70); const ext=90+apex/2; return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Равнобедренный: внешний угол → вершина', text:`В равнобедренном треугольнике ABC с основанием AC внешний угол при вершине C равен ${ext}°. Найдите величину угла ABC.`, answer:apex, hint:'Внешний угол при C равен 180° минус угол при основании.', solution:[`Угол при основании C: 180° − ${ext}° = ${180-ext}°.`, `Углы при основании равны, значит угол A тоже ${180-ext}°.`, `Угол B: 180° − 2 · ${180-ext}° = ${apex}°.`], svgKey:'isosceles'});}},
+  {id:'g_iso_apex_ext', topic:'angles', subtype:'isosceles_apex_to_ext', weight:5, generate(){const apex=2*rnd(25,70); const ext=90+apex/2; return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Равнобедренный: вершина → внешний угол', text:`В равнобедренном треугольнике ABC с основанием AC угол ABC равен ${apex}°. Найдите внешний угол при вершине C.`, answer:ext, hint:'Сначала найди угол при основании, потом внешний смежный.', solution:[`Угол при основании: (180° − ${apex}°) : 2 = ${(180-apex)/2}°.`, `Внешний угол при C: 180° − ${(180-apex)/2}° = ${ext}°.`], svgKey:'isosceles'});}},
+  {id:'g_iso_base_to_apex', topic:'angles', subtype:'isosceles_base_to_apex', weight:6, generate(){const base=rnd(25,75); const apex=180-2*base; if(apex<=0) return this.generate(); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Равнобедренный: основание → вершина', text:`В равнобедренном треугольнике ABC с основанием AC угол BAC равен ${base}°. Найдите угол ABC.`, answer:apex, hint:'Углы при основании равны, значит второй угол при основании тоже равен данному.', solution:[`Угол BCA тоже равен ${base}°.`, `Угол ABC = 180° − ${base}° − ${base}° = ${apex}°.`], svgKey:'isosceles'});}},
+  {id:'g_right_third', topic:'angles', subtype:'right_third_angle', weight:5, generate(){const a=rnd(12,78); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Прямоугольный: третий угол', text:`В треугольнике ABC угол C равен 90°, угол A равен ${a}°. Найдите угол B.`, answer:90-a, hint:'Если один угол прямой, два остальных острых в сумме дают 90°.', solution:[`∠A + ∠B = 90°.`, `∠B = 90° − ${a}° = ${90-a}°.`], svgKey:'right'});}},
+  {id:'g_iso_perimeter', topic:'angles', subtype:'isosceles_perimeter', weight:4, generate(){const side=rnd(7,32); const base=rnd(5,Math.max(6,2*side-2)); const p=2*side+base; return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Равнобедренный: периметр', text:`В равнобедренном треугольнике ABC боковые стороны AB и BC равны ${side}, основание AC равно ${base}. Найдите периметр треугольника.`, answer:p, hint:'Периметр — сумма трёх сторон. В равнобедренном две боковые стороны равны.', solution:[`P = AB + BC + AC.`, `P = ${side} + ${side} + ${base} = ${p}.`], svgKey:'isosceles'});}},
+
+  {id:'g_area_bh', topic:'area', subtype:'area_base_height', weight:8, generate(){const a=rnd(6,30), h=rnd(5,28); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Площадь: сторона и высота', text:`Сторона треугольника равна ${a}, а высота, проведённая к этой стороне, равна ${h}. Найдите площадь треугольника.`, answer:a*h/2, hint:'Площадь треугольника: S = a · h : 2.', solution:[`Перемножаем сторону и высоту: ${a} · ${h} = ${a*h}.`, `Делим на 2: ${a*h} : 2 = ${fmt(a*h/2)}.`], svgKey:'area'});}},
+  {id:'g_area_right', topic:'area', subtype:'area_right', weight:8, generate(){const a=rnd(3,24), b=rnd(3,24); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Площадь прямоугольного треугольника', text:`Два катета прямоугольного треугольника равны ${a} и ${b}. Найдите площадь этого треугольника.`, answer:a*b/2, hint:'Катеты — это перпендикулярные основание и высота.', solution:[`S = ${a} · ${b} : 2 = ${a*b} : 2 = ${fmt(a*b/2)}.`], svgKey:'right'});}},
+  {id:'g_area_sine', topic:'area', subtype:'area_sine', weight:9, generate(){const pairs=[[8,15,8,15],[10,12,3,5],[12,15,2,3],[14,10,4,7],[16,9,5,8],[20,6,3,4]]; const [a,b,n,d]=pick(pairs); const ans=a*b*n/d/2; return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Площадь через две стороны и sin', text:`В треугольнике ABC известно, что AB = ${a}, BC = ${b}, sin ∠ABC = ${n}/${d}. Найдите площадь треугольника ABC.`, answer:ans, hint:'AB и BC — стороны, между ними угол ABC. Используй S = 1/2 · AB · BC · sin∠ABC.', solution:[`S = 1/2 · ${a} · ${b} · ${n}/${d}.`, `${a} · ${b} = ${a*b}.`, `${a*b} · ${n}/${d} = ${fmt(a*b*n/d)}.`, `Делим на 2: S = ${fmt(ans)}.`], svgKey:'area'});}},
+  {id:'g_iso_height_pythagoras', topic:'area', subtype:'iso_height_pythagoras', weight:5, generate(){const [half,h,side]=pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25],[12,35,37]]); const base=2*half; return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Высота равнобедренного треугольника', text:`В равнобедренном треугольнике ABC основание AC равно ${base}, боковая сторона AB равна ${side}. Высота BH проведена к основанию AC. Найдите BH.`, answer:h, hint:'Высота к основанию в равнобедренном треугольнике делит основание пополам.', solution:[`AH = AC : 2 = ${base} : 2 = ${half}.`, `В прямоугольном треугольнике ABH гипотенуза AB = ${side}, катет AH = ${half}.`, `По тройке ${half}–${h}–${side}: BH = ${h}.`], svgKey:'altitude'});}},
+
+  {id:'g_pyth_leg', topic:'pythagoras', subtype:'pyth_leg', weight:8, generate(){const [a,b,c]=pick(BASE_TRIPLES); const known=Math.random()<.5?a:b; const other=known===a?b:a; return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Пифагорова тройка: другой катет', text:`В прямоугольном треугольнике катет и гипотенуза равны ${known} и ${c} соответственно. Найдите другой катет этого треугольника.`, answer:other, hint:`Найди тройку с числами ${known} и ${c}.`, solution:[`Пифагорова тройка: ${a}, ${b}, ${c}.`, `Если катет ${known}, а гипотенуза ${c}, другой катет равен ${other}.`], svgKey:'right'});}},
+  {id:'g_pyth_hyp', topic:'pythagoras', subtype:'pyth_hyp', weight:7, generate(){const [a,b,c]=pick(BASE_TRIPLES); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Пифагорова тройка: гипотенуза', text:`Катеты прямоугольного треугольника равны ${a} и ${b}. Найдите гипотенузу этого треугольника.`, answer:c, hint:`Найди тройку с катетами ${a} и ${b}.`, solution:[`Пифагорова тройка: ${a}, ${b}, ${c}.`, `Гипотенуза равна ${c}.`], svgKey:'right'});}},
+  {id:'g_pyth_scaled', topic:'pythagoras', subtype:'pyth_scaled', weight:6, generate(){const [a,b,c]=pick(SMALL_PRIMITIVE); const k=rnd(2,8); const known=a*k, other=b*k, hyp=c*k; return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Пифагорова тройка с масштабом', text:`В прямоугольном треугольнике катет и гипотенуза равны ${known} и ${hyp} соответственно. Найдите другой катет.`, answer:other, hint:`Сократи числа на общий множитель ${k}: получится знакомая тройка ${a}–${b}–${c}.`, solution:[`${known}, ${other}, ${hyp} — это тройка ${a}, ${b}, ${c}, умноженная на ${k}.`, `Другой катет: ${b} · ${k} = ${other}.`], svgKey:'right'});}},
+
+  {id:'g_eq_side', topic:'equilateral', subtype:'eq_side', weight:6, generate(){const k=rnd(4,18); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Равносторонний: сторона по медиане', text:`Медиана равностороннего треугольника равна ${k}√3. Найдите сторону этого треугольника.`, answer:2*k, hint:'В равностороннем треугольнике h = a√3/2. Если h = k√3, то a = 2k.', solution:[`h = a√3/2.`, `Если h = ${k}√3, то a = 2 · ${k} = ${2*k}.`], svgKey:'equilateral'});}},
+  {id:'g_eq_median', topic:'equilateral', subtype:'eq_median', weight:6, generate(){const k=2*rnd(3,15); const side=`${k}√3`; const ans=3*k/2; return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Равносторонний: медиана по стороне', text:`Сторона равностороннего треугольника равна ${side}. Найдите медиану этого треугольника.`, answer:ans, hint:'В равностороннем треугольнике медиана, высота и биссектриса совпадают: h = a√3/2.', solution:[`a = ${k}√3.`, `h = a√3/2 = ${k}√3 · √3 : 2 = ${k} · 3 : 2 = ${fmt(ans)}.`], svgKey:'equilateral'});}},
+  {id:'g_eq_side_perimeter', topic:'equilateral', subtype:'eq_side_perimeter', weight:5, generate(){const a=rnd(6,40); const p=3*a; return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Равносторонний: сторона по периметру', text:`Периметр равностороннего треугольника равен ${p}. Найдите его сторону.`, answer:a, hint:'В равностороннем треугольнике три равные стороны, поэтому P = 3a.', solution:[`a = P : 3 = ${p} : 3 = ${a}.`], svgKey:'equilateral'});}},
+  {id:'g_eq_perimeter_side', topic:'equilateral', subtype:'eq_perimeter_side', weight:5, generate(){const a=rnd(6,40); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Равносторонний: периметр по стороне', text:`Сторона равностороннего треугольника равна ${a}. Найдите его периметр.`, answer:3*a, hint:'У равностороннего треугольника все три стороны равны.', solution:[`P = 3a = 3 · ${a} = ${3*a}.`], svgKey:'equilateral'});}},
+
+  {id:'g_sin', topic:'trig', subtype:'sin_value', weight:7, generate(){const [ac,bc,ab]=pick(EASY_TRIPLES); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'sin в прямоугольном треугольнике', text:`В треугольнике ABC угол C равен 90°, AC = ${ac}, AB = ${ab}. Найдите sin B.`, answer:ac/ab, answerDisplay:fmt(ac/ab), hint:'sin B = противолежащий катет / гипотенуза. Для угла B противолежащий катет — AC.', solution:[`AB — гипотенуза.`, `sin B = AC/AB = ${ac}/${ab} = ${fmt(ac/ab)}.`], svgKey:'right'});}},
+  {id:'g_cos', topic:'trig', subtype:'cos_value', weight:7, generate(){const [ac,bc,ab]=pick(EASY_TRIPLES); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'cos в прямоугольном треугольнике', text:`В треугольнике ABC угол C равен 90°, BC = ${bc}, AB = ${ab}. Найдите cos B.`, answer:bc/ab, answerDisplay:fmt(bc/ab), hint:'cos B = прилежащий катет / гипотенуза. Для угла B прилежащий катет — BC.', solution:[`AB — гипотенуза.`, `cos B = BC/AB = ${bc}/${ab} = ${fmt(bc/ab)}.`], svgKey:'right'});}},
+  {id:'g_tan', topic:'trig', subtype:'tan_value', weight:7, generate(){const [ac,bc]=pick([[8,5],[6,3],[12,5],[15,8],[9,4],[10,4]]); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'tg в прямоугольном треугольнике', text:`В треугольнике ABC угол C равен 90°, BC = ${bc}, AC = ${ac}. Найдите tg B.`, answer:ac/bc, answerDisplay:fmt(ac/bc), hint:'tg B = противолежащий катет / прилежащий катет = AC/BC.', solution:[`tg B = AC/BC = ${ac}/${bc} = ${fmt(ac/bc)}.`], svgKey:'right'});}},
+  {id:'g_leg_sin', topic:'trig', subtype:'leg_from_sin', weight:5, generate(){const [ac,bc,ab]=pick(EASY_TRIPLES); const m=rnd(2,6); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Сторона по sin', text:`В треугольнике ABC угол C равен 90°, sin B = ${ac}/${ab}, AB = ${ab*m}. Найдите AC.`, answer:ac*m, hint:'sin B = AC/AB. Чтобы найти AC, гипотенузу делим на знаменатель и умножаем на числитель.', solution:[`sin B = AC/AB = ${ac}/${ab}.`, `AB : ${ab} = ${ab*m} : ${ab} = ${m}.`, `AC = ${m} · ${ac} = ${ac*m}.`], svgKey:'right'});}},
+  {id:'g_leg_cos', topic:'trig', subtype:'leg_from_cos', weight:5, generate(){const [ac,bc,ab]=pick(EASY_TRIPLES); const m=rnd(2,6); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Сторона по cos', text:`В треугольнике ABC угол C равен 90°, cos B = ${bc}/${ab}, AB = ${ab*m}. Найдите BC.`, answer:bc*m, hint:'cos B = BC/AB. Гипотенузу делим на знаменатель и умножаем на числитель.', solution:[`cos B = BC/AB = ${bc}/${ab}.`, `AB : ${ab} = ${ab*m} : ${ab} = ${m}.`, `BC = ${m} · ${bc} = ${bc*m}.`], svgKey:'right'});}},
+  {id:'g_leg_tan', topic:'trig', subtype:'leg_from_tan', weight:5, generate(){const [ac,bc,ab]=pick(EASY_TRIPLES); const m=rnd(2,6); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Сторона по tg', text:`В треугольнике ABC угол C равен 90°, tg B = ${ac}/${bc}, BC = ${bc*m}. Найдите AC.`, answer:ac*m, hint:'tg B = AC/BC. BC делим на знаменатель и умножаем на числитель.', solution:[`tg B = AC/BC = ${ac}/${bc}.`, `BC : ${bc} = ${bc*m} : ${bc} = ${m}.`, `AC = ${m} · ${ac} = ${ac*m}.`], svgKey:'right'});}},
+
+  {id:'g_median_base', topic:'median', subtype:'median_base', weight:7, generate(){const ac=2*rnd(7,45); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Медиана делит сторону пополам', text:`В треугольнике ABC известно, что AC = ${ac}, BM — медиана. Найдите AM.`, answer:ac/2, hint:'Медиана идёт к середине стороны.', solution:[`BM — медиана, значит M — середина AC.`, `AM = AC : 2 = ${ac} : 2 = ${ac/2}.`], svgKey:'median'});}},
+  {id:'g_median_hyp', topic:'median', subtype:'median_hyp', weight:6, generate(){const [ac,bc,ab]=pick(EASY_TRIPLES); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Медиана к гипотенузе', text:`В треугольнике ABC угол C равен 90°, M — середина стороны AB, AB = ${ab}, BC = ${bc}. Найдите CM.`, answer:ab/2, hint:'В прямоугольном треугольнике медиана к гипотенузе равна половине гипотенузы.', solution:[`AB — гипотенуза.`, `M — середина AB, значит CM — медиана к гипотенузе.`, `CM = AB : 2 = ${ab} : 2 = ${fmt(ab/2)}.`, `Длина BC здесь не нужна, но она не противоречит треугольнику.`], svgKey:'medianHyp'});}},
+  {id:'g_median_hyp_reverse', topic:'median', subtype:'median_hyp_reverse', weight:5, generate(){const m=rnd(5,35); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Гипотенуза по медиане', text:`В прямоугольном треугольнике ABC угол C равен 90°, M — середина гипотенузы AB, CM = ${m}. Найдите AB.`, answer:2*m, hint:'Медиана к гипотенузе равна половине гипотенузы, значит гипотенуза в 2 раза больше.', solution:[`CM = AB : 2.`, `AB = 2 · CM = 2 · ${m} = ${2*m}.`], svgKey:'medianHyp'});}},
+  {id:'g_midline', topic:'median', subtype:'midline', weight:7, generate(){const ac=2*rnd(8,45); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Средняя линия треугольника', text:`Точки M и N являются серединами сторон AB и BC треугольника ABC, сторона AC равна ${ac}. Найдите MN.`, answer:ac/2, hint:'Средняя линия треугольника равна половине третьей стороны.', solution:[`MN — средняя линия, она параллельна AC.`, `MN = AC : 2 = ${ac} : 2 = ${ac/2}.`], svgKey:'midline'});}},
+  {id:'g_midline_reverse', topic:'median', subtype:'midline_reverse', weight:5, generate(){const mn=rnd(6,35); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Сторона по средней линии', text:`Точки M и N являются серединами сторон AB и BC треугольника ABC. Средняя линия MN равна ${mn}. Найдите сторону AC.`, answer:2*mn, hint:'Средняя линия равна половине параллельной стороны.', solution:[`MN = AC : 2.`, `AC = 2 · MN = 2 · ${mn} = ${2*mn}.`], svgKey:'midline'});}},
+  {id:'g_centroid', topic:'median', subtype:'centroid', weight:5, generate(){const an=3*rnd(5,22), cm=3*rnd(6,20); const q=pick(['ON','AO','OM','OC']); const ans = q==='ON'?an/3:q==='AO'?2*an/3:q==='OM'?cm/3:2*cm/3; return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Точка пересечения медиан', text:`Точки M и N — середины сторон AB и BC треугольника ABC. Отрезки AN и CM пересекаются в точке O. AN = ${an}, CM = ${cm}. Найдите ${q}.`, answer:ans, hint:'Точка пересечения медиан делит каждую медиану в отношении 2:1 от вершины.', solution:[`На медиане AN: AO = 2/3 AN, ON = 1/3 AN.`, `На медиане CM: CO = 2/3 CM, OM = 1/3 CM.`, `${q} = ${fmt(ans)}.`], svgKey:'centroid'});}},
+  {id:'g_centroid_short', topic:'median', subtype:'centroid_short', weight:5, generate(){const short=rnd(4,24); return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Центроид: короткий отрезок', text:`Медианы треугольника пересекаются в точке O. На медиане AN точка O делит её так, что ON = ${short}. Найдите AO.`, answer:2*short, hint:'Точка пересечения медиан делит медиану в отношении 2:1 от вершины. Короткий отрезок у середины стороны — ON.', solution:[`ON — короткий отрезок, это 1/3 медианы.`, `AO — длинный отрезок, он в 2 раза больше ON.`, `AO = 2 · ${short} = ${2*short}.`], svgKey:'centroid'});}},
+  {id:'g_centroid_long', topic:'median', subtype:'centroid_long', weight:5, generate(){const k=rnd(5,25); const long=2*k; return task({id:this.id, topic:this.topic, subtype:this.subtype, title:'Центроид: медиана по длинному отрезку', text:`Медианы треугольника пересекаются в точке O. На медиане AN известно, что AO = ${long}. Найдите AN.`, answer:3*k, hint:'AO — длинная часть медианы, она равна 2/3 всей медианы.', solution:[`AO = 2/3 AN.`, `Если AO = ${long}, то короткая часть ON = ${long} : 2 = ${k}.`, `AN = AO + ON = ${long} + ${k} = ${3*k}.`], svgKey:'centroid'});}}
+];
+
+const STORAGE = 'oge_task15_triangle_trainer_v2';
+let state = loadState();
+let mode = 'all';
+let current = null;
+let diagnostic = null;
+let importedArchive = state.importedArchive || [];
+let taskChecked = false;
+let lastSelfTest = null;
+
+function normalizeState(raw){
+  const base = {attempts:0,correct:0,streak:0,bestStreak:0,todayDate:todayKey(),todayAttempts:0,todayCorrect:0,bySubtype:{},errors:[],history:[],importedArchive:[],examView:false};
+  const s = Object.assign(base, raw || {});
+  s.bySubtype = s.bySubtype || {};
+  s.errors = Array.isArray(s.errors) ? s.errors : [];
+  s.history = Array.isArray(s.history) ? s.history : [];
+  s.importedArchive = Array.isArray(s.importedArchive) ? s.importedArchive : [];
+  if(s.todayDate !== todayKey()){
+    s.todayDate = todayKey();
+    s.todayAttempts = 0;
+    s.todayCorrect = 0;
+  }
+  return s;
+}
+function loadState(){
+  try{return normalizeState(JSON.parse(storageGet(STORAGE)||'{}'));}
+  catch(e){return normalizeState({});}
+}
+function saveState(){state.importedArchive = importedArchive; storageSet(STORAGE, JSON.stringify(state));}
+function archiveAll(){return ARCHIVE_BASE.concat(importedArchive.map(x=>task(Object.assign({exact:false,source:'Импорт'},x))));}
+
+function weightedPick(arr){
+  const sum = arr.reduce((s,g)=>s+(g.weight||1),0); let r=Math.random()*sum;
+  for(const g of arr){r-=g.weight||1; if(r<=0) return g;} return arr[arr.length-1];
+}
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function weightedPickUnused(arr, used){
+  const pool = arr.filter(g=>!used.has(g.id));
+  if(!pool.length) return null;
+  return weightedPick(pool);
+}
+function buildDiagnosticQueue(total=10){
+  const used = new Set();
+  const chosen = [];
+  // 1) Гарантируем покрытие всех 6 тем: по одному шаблону из каждой.
+  for(const topic of shuffle(TRAINING_MODES)){
+    if(chosen.length >= total) break;
+    const g = weightedPickUnused(GENS.filter(x=>x.topic===topic), used);
+    if(g){ used.add(g.id); chosen.push(g); }
+  }
+  // 2) Добираем оставшиеся задачи без повторов шаблонов.
+  while(chosen.length < total){
+    const g = weightedPickUnused(GENS, used);
+    if(!g) break;
+    used.add(g.id); chosen.push(g);
+  }
+  return shuffle(chosen).slice(0,total).map((g,idx)=>({index:idx+1, genId:g.id, topic:g.topic, subtype:g.subtype, task:g.generate()}));
+}
+function filteredGenerators(){
+  const f = $('subtypeFilter') ? $('subtypeFilter').value : 'all';
+  let arr = GENS.slice();
+  if(TRAINING_MODES.includes(mode)) arr = arr.filter(g=>g.topic===mode);
+  if(f && f !== 'all') arr = arr.filter(g=>g.subtype===f);
+  return arr;
+}
+function generateTask(){
+  if(mode === 'archive') return Object.assign({}, pick(archiveAll()));
+  const arr = filteredGenerators();
+  if(mode === 'all' && Math.random()<0.22 && archiveAll().length) return Object.assign({}, pick(archiveAll()));
+  if(!arr.length) return Object.assign({}, pick(archiveAll()));
+  return weightedPick(arr).generate();
+}
+function shouldHideMeta(){
+  return !!current && !taskChecked && (mode === 'diagnostic' || state.examView);
+}
+function updateTaskMeta(){
+  if(!current) return;
+  if(shouldHideMeta()){
+    $('taskTitle').textContent = mode === 'diagnostic' ? 'Диагностика: задача без подсказанного типа' : 'Задача №15';
+    $('taskSource').textContent = 'Тип и тема скрыты до первой проверки — тренируем распознавание.';
+    $('taskTags').innerHTML = `<span class="tag gold type-hidden">тип скрыт</span><span class="tag">как на экзамене</span>`;
+  }else{
+    $('taskTitle').textContent = current.title || 'Задача №15';
+    $('taskSource').textContent = current.source || '';
+    $('taskTags').innerHTML = `<span class="tag blue">${esc(TOPIC_LABELS[current.topic]||current.topic)}</span><span class="tag">${esc(SUBTYPE_LABELS[current.subtype]||current.subtype)}</span>${current.exact?'<span class="tag green">точная архивная</span>':''}`;
+  }
+}
+function updateControls(){
+  const aidLocked = shouldHideMeta();
+  const checked = !!taskChecked;
+  if($('checkBtn')) $('checkBtn').disabled = checked || mode === 'teacher';
+  if($('answer')) $('answer').disabled = checked || mode === 'teacher';
+  if($('hintBtn')) { $('hintBtn').disabled = aidLocked || !current; $('hintBtn').classList.toggle('aid-locked', aidLocked); }
+  if($('solutionBtn')) {
+    const solLocked = !checked || !current;
+    $('solutionBtn').disabled = solLocked;
+    $('solutionBtn').classList.toggle('aid-locked', solLocked || aidLocked);
+    $('solutionBtn').textContent = checked ? 'Решение' : 'Решение (после ответа)';
+  }
+  if($('nextBtn')){
+    if(mode === 'diagnostic'){
+      $('nextBtn').disabled = diagnostic && diagnostic.active && !checked;
+      $('nextBtn').textContent = diagnostic && !diagnostic.active ? 'Новая диагностика' : (checked ? 'Следующая задача' : 'Реши сначала');
+    }else{
+      $('nextBtn').disabled = false;
+      $('nextBtn').textContent = 'Новая';
+    }
+  }
+}
+function renderTask(){
+  $('diagnosticReport').classList.add('hidden');
+  $('trainerPanel').classList.remove('hidden');
+  $('teacherPanel').classList.add('hidden');
+  if(!current) current = generateTask();
+  taskChecked = false;
+  updateTaskMeta();
+  $('taskText').innerHTML = esc(current.text).replace(/\n/g,'<br>');
+  $('diagram').innerHTML = svg(current.svgKey || 'plain');
+  $('answer').value = '';
+  $('result').className = 'result'; $('result').innerHTML = '';
+  $('hint').classList.add('hidden'); $('solution').classList.add('hidden');
+  $('hint').innerHTML = `<b>Подсказка:</b> ${esc(current.hint||'Сначала определи тип задачи.')}`;
+  $('solution').innerHTML = `<b>Решение:</b><ol>${(current.solution||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ol>${current.pitfalls&&current.pitfalls.length?`<div class="pitfalls"><b>Типичные ошибки:</b> ${current.pitfalls.map(esc).join('; ')}</div>`:''}`;
+  updateControls();
+  renderStats();
+  if(mode !== 'teacher') $('answer').focus();
+}
+function nextTask(){
+  if(mode === 'diagnostic') return nextDiagnostic();
+  diagnostic = null;
+  current = generateTask();
+  renderTask();
+}
+function updateDiagnosticBanner(){
+  if(mode !== 'diagnostic' || !diagnostic){$('diagBanner').classList.add('hidden'); return;}
+  $('diagBanner').classList.remove('hidden');
+  const n = Math.min(diagnostic.results.length + (taskChecked ? 0 : 1), diagnostic.total);
+  if(!diagnostic.active){
+    $('diagBanner').innerHTML = `<b>Диагностика завершена.</b><span class="mini">Можно открыть отчёт ниже или начать заново.</span>`;
+  }else if(taskChecked){
+    $('diagBanner').innerHTML = `<b>Диагностика:</b> задача ${diagnostic.results.length} из ${diagnostic.total} проверена<span class="mini">Нажми «Следующая задача».</span>`;
+  }else{
+    $('diagBanner').innerHTML = `<b>Диагностика:</b> задача ${n} из ${diagnostic.total}<span class="mini">Тип скрыт. Подсказки и решение откроются после проверки.</span>`;
+  }
+}
+function startDiagnostic(){
+  diagnostic = {active:true,total:10,results:[],queue:buildDiagnosticQueue(10),index:0,startedAt:new Date().toISOString()};
+  current = null;
+  taskChecked = false;
+  nextDiagnostic();
+}
+function nextDiagnostic(){
+  if(!diagnostic || !diagnostic.active){startDiagnostic(); return;}
+  if(current && !taskChecked){updateDiagnosticBanner(); updateControls(); return;}
+  if(diagnostic.index >= diagnostic.queue.length){
+    diagnostic.active = false;
+    diagnostic.finishedAt = new Date().toISOString();
+    renderDiagnosticReport();
+    updateDiagnosticBanner();
+    updateControls();
+    return;
+  }
+  current = diagnostic.queue[diagnostic.index].task;
+  diagnostic.index++;
+  renderTask();
+  updateDiagnosticBanner();
+}
+function checkAnswer(){
+  if(!current || taskChecked) return;
+  const user = $('answer').value;
+  const ok = sameAnswer(user, current.answer);
+  const now = new Date().toISOString();
+  state = normalizeState(state);
+  state.attempts++; state.todayAttempts++;
+  if(ok){ state.correct++; state.todayCorrect++; state.streak = (state.streak||0)+1; state.bestStreak = Math.max(state.bestStreak||0, state.streak||0); }
+  else { state.streak = 0; }
+  const key = current.subtype || 'unknown';
+  if(!state.bySubtype[key]) state.bySubtype[key] = {attempts:0, correct:0, topic:current.topic, errors:0};
+  state.bySubtype[key].attempts++; if(ok) state.bySubtype[key].correct++; else state.bySubtype[key].errors = (state.bySubtype[key].errors||0)+1;
+  state.history.unshift({time:now, ok, title:current.title, topic:current.topic, subtype:current.subtype, user:user||'пусто', correct:current.answerDisplay||fmt(current.answer)});
+  state.history = state.history.slice(0,200);
+  if(!ok){
+    state.errors.unshift({time:now, title:current.title, topic:current.topic, subtype:current.subtype, text:current.text, user:user||'пусто', correct:current.answerDisplay||fmt(current.answer), tip:current.hint||'', pitfalls:current.pitfalls||[]});
+    state.errors = state.errors.slice(0,80);
+  }
+  if(diagnostic && diagnostic.active){diagnostic.results.push({ok, topic:current.topic, subtype:current.subtype, title:current.title, user:user||'пусто', correct:current.answerDisplay||fmt(current.answer)});}
+  taskChecked = true;
+  saveState();
+  updateTaskMeta();
+  const res = $('result');
+  res.className = 'result show ' + (ok?'good':'bad');
+  const pit = !ok && current.pitfalls && current.pitfalls.length ? `<br><span class="mini"><b>Проверь себя:</b> ${esc(current.pitfalls[0])}</span>` : '';
+  res.innerHTML = ok ? `<b>Верно!</b> Ответ: <span class="kbd">${esc(current.answerDisplay||fmt(current.answer))}</span>.` : `<b>Пока нет.</b> Правильный ответ: <span class="kbd">${esc(current.answerDisplay||fmt(current.answer))}</span>. Твой ответ: <span class="kbd">${esc(user||'пусто')}</span>. ${pit}`;
+  if(diagnostic && diagnostic.active){
+    const done = diagnostic.results.length;
+    if(done >= diagnostic.total){
+      diagnostic.active = false;
+      diagnostic.finishedAt = now;
+      res.innerHTML += ' <b>Диагностика завершена.</b> Ниже появился отчёт.';
+      renderDiagnosticReport();
+    }else{
+      res.innerHTML += ` Следующая задача: ${done+1}/${diagnostic.total}.`;
+    }
+  }
+  updateDiagnosticBanner();
+  updateControls();
+  renderStats();
+}
+function renderDiagnosticReport(){
+  const box = $('diagnosticReport');
+  box.classList.remove('hidden');
+  const by = {};
+  diagnostic.results.forEach(r=>{ if(!by[r.topic]) by[r.topic]={a:0,c:0,types:{}}; by[r.topic].a++; if(r.ok) by[r.topic].c++; by[r.topic].types[r.subtype]=(by[r.topic].types[r.subtype]||0)+(r.ok?0:1); });
+  const entries = Object.entries(by);
+  const rows = entries.map(([topic,v])=>`<tr><td>${esc(TOPIC_LABELS[topic]||topic)}</td><td>${v.c}/${v.a}</td><td>${Math.round(v.c/v.a*100)}%</td><td>${Object.entries(v.types).filter(x=>x[1]>0).map(([k,n])=>`${esc(SUBTYPE_LABELS[k]||k)}: ${n}`).join('<br>')||'—'}</td></tr>`).join('');
+  const totalOk = diagnostic.results.filter(r=>r.ok).length;
+  const weak = entries.filter(([topic,v])=>v.c<v.a).sort((a,b)=>(a[1].c/a[1].a)-(b[1].c/b[1].a) || b[1].a-a[1].a)[0];
+  let advice = totalOk === diagnostic.total ? 'Отличный прогон: 10/10. Следующий шаг — включить экзаменационный вид в смешанном режиме и решать без подсказок.' : 'Совет: включи режим с темой, где ошибок больше всего, и прорешай 10–15 похожих задач.';
+  if(weak){
+    const [topic,v] = weak; const pct = Math.round(v.c/v.a*100);
+    advice = `Слабое место — ${TOPIC_LABELS[topic]||topic}: ${v.c}/${v.a}, ${pct}%. Переключись в режим «${TOPIC_LABELS[topic]||topic}» и прорешай 10–15 задач без подсказок.`;
+  }
+  box.innerHTML = `<h2>Отчёт диагностики</h2><div class="diag-grid"><div class="diag-card"><span class="muted">Верно</span><br><strong>${totalOk}/${diagnostic.total}</strong></div><div class="diag-card"><span class="muted">Процент</span><br><strong>${Math.round(totalOk/diagnostic.total*100)}%</strong></div></div><table style="margin-top:14px"><thead><tr><th>Тема</th><th>Верно</th><th>%</th><th>Где ошибки</th></tr></thead><tbody>${rows}</tbody></table><p class="notice">${esc(advice)}</p><div class="answer-row"><button class="btn small" onclick="downloadDiagnostic()">Скачать отчёт диагностики</button></div>`;
+}
+
+function renderStats(){
+  state = normalizeState(state);
+  $('statSolved').textContent = state.attempts;
+  const pct = state.attempts ? Math.round(state.correct/state.attempts*100) : 0;
+  $('statPercent').textContent = pct + '%';
+  $('statStreak').textContent = state.streak || 0;
+  $('statToday').textContent = `${state.todayCorrect||0}/${state.todayAttempts||0}`;
+  $('progressFill').style.width = pct + '%';
+  renderErrors();
+}
+function renderErrors(){
+  const arr = state.errors || [];
+  $('errors').innerHTML = arr.length ? arr.slice(0,8).map(e=>`<div class="error-item"><b>${esc(e.title)}</b><div class="mini">${esc(TOPIC_LABELS[e.topic]||e.topic)} · ${esc(SUBTYPE_LABELS[e.subtype]||e.subtype)}</div><div class="mini">твой: ${esc(e.user)} · верный: ${esc(e.correct)}</div><div class="mini">${esc(e.tip)}</div></div>`).join('') : '<p class="muted">Пока ошибок нет. Красота.</p>';
+}
+function renderSubtypeFilter(){
+  let arr = GENS.slice();
+  const disabled = ['archive','teacher','diagnostic'].includes(mode);
+  if(TRAINING_MODES.includes(mode)) arr = arr.filter(g=>g.topic===mode);
+  const subtypes = [...new Set(arr.map(g=>g.subtype))];
+  $('subtypeFilter').disabled = disabled;
+  $('subtypeFilter').innerHTML = '<option value="all">Все подтипы</option>' + subtypes.map(s=>`<option value="${esc(s)}">${esc(SUBTYPE_LABELS[s]||s)}</option>`).join('');
+}
+function renderTopicList(){
+  const counts = {};
+  GENS.forEach(g=>counts[g.topic]=(counts[g.topic]||0)+1);
+  $('topicList').innerHTML = Object.entries(counts).map(([k,v])=>`<span class="tag">${esc(TOPIC_LABELS[k])}: ${v}</span>`).join('') + `<span class="tag green">архив: ${archiveAll().length}</span><span class="tag blue">генераторов: ${GENS.length}</span>`;
+}
+function modeRecommendationFromStats(){
+  const rows = Object.entries(state.bySubtype||{}).map(([sub,v])=>({sub, topic:v.topic, a:v.attempts||0, c:v.correct||0, e:(v.attempts||0)-(v.correct||0)})).filter(x=>x.a>0);
+  rows.sort((a,b)=>(b.e-b.c)-(a.e-a.c) || (a.c/a.a)-(b.c/b.a));
+  return rows.slice(0,8);
+}
+function selfTestSummaryHtml(result){
+  if(!result) return '<span class="muted">ещё не запускался</span>';
+  return result.ok ? `<span class="selftest-ok">ok</span> · ${result.total} проверок · ${esc(result.at)}` : `<span class="selftest-bad">ошибки: ${result.errors.length}</span>`;
+}
+function renderTeacher(){
+  const panel = $('teacherPanel'); panel.classList.remove('hidden');
+  $('trainerPanel').classList.add('hidden');
+  $('diagnosticReport').classList.add('hidden');
+  const byTopic = {};
+  GENS.forEach(g=>{ if(!byTopic[g.topic]) byTopic[g.topic]=[]; byTopic[g.topic].push(g); });
+  const cov = Object.entries(byTopic).map(([topic,gs])=>`<tr><td>${esc(TOPIC_LABELS[topic])}</td><td>${gs.length}</td><td>${gs.map(g=>esc(SUBTYPE_LABELS[g.subtype]||g.subtype)).join('<br>')}</td></tr>`).join('');
+  const arch = archiveAll().map(t=>`<tr><td>${esc(t.source)}</td><td>${esc(t.text)}</td><td>${esc(t.answerDisplay||fmt(t.answer))}</td><td>${esc(SUBTYPE_LABELS[t.subtype]||t.subtype)}</td></tr>`).join('');
+  const weak = modeRecommendationFromStats().map(r=>`<tr><td>${esc(SUBTYPE_LABELS[r.sub]||r.sub)}</td><td>${esc(TOPIC_LABELS[r.topic]||r.topic)}</td><td>${r.c}/${r.a}</td><td>${r.e}</td></tr>`).join('') || '<tr><td colspan="4">Пока нет статистики ученика.</td></tr>';
+  const testRows = (lastSelfTest?.errors||[]).slice(0,12).map(e=>`<tr><td>${esc(e.id)}</td><td>${esc(e.msg)}</td></tr>`).join('') || '<tr><td colspan="2">Ошибок самотеста нет.</td></tr>';
+  panel.innerHTML = `<h2>Режим учителя</h2><p class="muted">Покрытие типов, точные архивные задачи, импорт/экспорт JSON, отчёты и самотест генераторов.</p><div class="teacher-actions"><button class="btn small" onclick="downloadProgress()">Скачать отчёт ученика</button><button class="btn small" onclick="downloadErrorsCSV()">Ошибки CSV</button><button class="btn small" onclick="makeWorksheet()">Лист — текст</button><button class="btn small" onclick="downloadWorksheetHtml()">Лист — HTML с рисунками</button><button class="btn small" onclick="runSelfTestAndRender()">Запустить самотест</button></div><p class="mini"><b>Самотест:</b> ${selfTestSummaryHtml(lastSelfTest)}</p><div class="teacher-grid"><div><h3>Покрытие генераторов</h3><table><thead><tr><th>Тема</th><th>Кол-во</th><th>Подтипы</th></tr></thead><tbody>${cov}</tbody></table></div><div><h3>Слабые места по журналу</h3><table class="small-table"><thead><tr><th>Подтип</th><th>Тема</th><th>Верно</th><th>Ошибок</th></tr></thead><tbody>${weak}</tbody></table><h3>Ошибки самотеста</h3><table class="small-table"><thead><tr><th>ID</th><th>Комментарий</th></tr></thead><tbody>${testRows}</tbody></table></div></div><h3>Лист задач для урока</h3><textarea class="worksheetbox" id="worksheetBox" placeholder="Нажмите «Лист — текст» или скачайте HTML-лист с рисунками""></textarea><h3>Точные архивные задачи</h3><table><thead><tr><th>Источник</th><th>Текст</th><th>Ответ</th><th>Тип</th></tr></thead><tbody>${arch}</tbody></table><h3>Импорт/экспорт архивных задач JSON</h3><textarea class="jsonbox" id="jsonBox">${esc(JSON.stringify(archiveAll(), null, 2))}</textarea><div class="answer-row" style="margin-top:10px"><button class="btn small" onclick="copyJson()">Скопировать JSON</button><button class="btn small" onclick="importJson()">Импортировать в тренажёр</button></div><p class="mini">Для импорта используйте массив задач с полями text, answer, topic, subtype, title, solution.</p>`;
+}
+window.copyJson = function(){navigator.clipboard?.writeText($('jsonBox').value);};
+function validateImportedTask(t, idx){
+  const label = `задача ${idx+1}`;
+  if(!t || typeof t !== 'object') return `${label}: объект не найден`;
+  if(!t.text || String(t.text).trim().length < 5) return `${label}: text пустой или слишком короткий`;
+  const ans = typeof t.answer === 'number' ? t.answer : parseNum(t.answer);
+  if(ans === null || !Number.isFinite(ans)) return `${label}: answer не является числом`;
+  if(!t.topic || !TOPIC_LABELS[t.topic]) return `${label}: неизвестная тема "${t.topic ?? ''}"`;
+  if(!t.subtype || !SUBTYPE_LABELS[t.subtype]) return `${label}: неизвестный подтип "${t.subtype ?? ''}"`;
+  if(!t.title || String(t.title).trim().length < 3) return `${label}: нет короткого title`;
+  if(!Array.isArray(t.solution) || !t.solution.length) return `${label}: solution должен быть непустым массивом`;
+  return null;
+}
+function normalizeImportedTask(t){
+  const ans = typeof t.answer === 'number' ? t.answer : parseNum(t.answer);
+  return task(Object.assign({}, t, {
+    text:String(t.text).trim(),
+    title:String(t.title).trim(),
+    answer:ans,
+    answerDisplay:t.answerDisplay || fmt(ans),
+    topic:t.topic,
+    subtype:t.subtype,
+    hint:t.hint || 'Сначала определи тип задачи, затем выбери подходящее правило.',
+    solution:t.solution.map(String),
+    source:t.source || 'Импорт',
+    exact:!!t.exact
+  }));
+}
+window.importJson = function(){
+  try{
+    const raw=JSON.parse($('jsonBox').value);
+    const arr = Array.isArray(raw) ? raw : (Array.isArray(raw.items) ? raw.items : []);
+    const errors = arr.map(validateImportedTask).filter(Boolean);
+    if(errors.length){
+      alert('Импорт не выполнен. Исправьте ошибки:\n' + errors.slice(0,10).join('\n') + (errors.length>10 ? `\n…и ещё ${errors.length-10}` : ''));
+      return;
+    }
+    importedArchive = arr.map(normalizeImportedTask);
+    saveState(); renderTeacher(); renderTopicList(); alert('Импортировано: '+importedArchive.length);
+  }catch(e){alert('Ошибка JSON: '+e.message);}
+};
+function downloadText(filename, text, type='text/plain;charset=utf-8'){
+  const blob = new Blob([text],{type});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=filename; a.click(); URL.revokeObjectURL(a.href);
+}
+window.downloadProgress = function(){
+  const payload = {exportedAt:new Date().toISOString(), attempts:state.attempts, correct:state.correct, percent:state.attempts?Math.round(state.correct/state.attempts*100):0, streak:state.streak, bestStreak:state.bestStreak, today:{date:state.todayDate, attempts:state.todayAttempts, correct:state.todayCorrect}, bySubtype:state.bySubtype, recentErrors:state.errors, history:state.history};
+  downloadText('oge15_student_report.json', JSON.stringify(payload,null,2), 'application/json;charset=utf-8');
+};
+window.downloadErrorsCSV = function(){
+  const head = ['time','topic','subtype','title','user','correct','text'];
+  const rows = (state.errors||[]).map(e=>head.map(k=>`"${String(e[k]??'').replace(/"/g,'""')}"`).join(','));
+  downloadText('oge15_errors.csv', head.join(',')+'\n'+rows.join('\n'), 'text/csv;charset=utf-8');
+};
+window.downloadDiagnostic = function(){
+  if(!diagnostic) return;
+  downloadText('oge15_diagnostic_report.json', JSON.stringify(diagnostic,null,2), 'application/json;charset=utf-8');
+};
+function makeWorksheetTasks(total=10){
+  return buildDiagnosticQueue(total).map(x=>x.task);
+}
+window.makeWorksheet = function(){
+  const tasks = makeWorksheetTasks(10);
+  const text = 'ОГЭ №15 · Тренировочный лист\n\n' + tasks.map((t,i)=>`${i+1}. ${t.text}\nОтвет: __________`).join('\n\n') + '\n\nОтветы для учителя:\n' + tasks.map((t,i)=>`${i+1}) ${t.answerDisplay||fmt(t.answer)} — ${SUBTYPE_LABELS[t.subtype]||t.subtype}`).join('\n');
+  if($('worksheetBox')) $('worksheetBox').value = text;
+  return text;
+};
+function worksheetHtml(tasks){
+  const taskBlocks = tasks.map((t,i)=>`<section class="task"><div class="num">${i+1}</div><div class="body"><div class="diagram">${svg(t.svgKey||'plain')}</div><p>${esc(t.text)}</p><div class="answer-line">Ответ: ____________________</div></div></section>`).join('');
+  const answers = tasks.map((t,i)=>`<tr><td>${i+1}</td><td>${esc(t.answerDisplay||fmt(t.answer))}</td><td>${esc(TOPIC_LABELS[t.topic]||t.topic)}</td><td>${esc(SUBTYPE_LABELS[t.subtype]||t.subtype)}</td></tr>`).join('');
+  return `<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>ОГЭ №15 — лист задач</title><style>
+    body{font-family:Arial,system-ui,sans-serif;margin:24px;color:#172033} h1{font-size:24px;margin:0 0 14px}.hint{color:#667085;margin-bottom:18px}.task{display:grid;grid-template-columns:36px 1fr;gap:12px;border:1px solid #d7deea;border-radius:14px;padding:14px;margin:12px 0;break-inside:avoid}.num{font-weight:900;font-size:20px}.body{display:grid;grid-template-columns:190px 1fr;gap:16px;align-items:center}.diagram{border:1px dashed #cfd8ea;border-radius:12px;padding:6px;display:flex;align-items:center;justify-content:center}.diagram svg{max-width:180px;height:auto}.diagram text{font-family:Georgia,serif;fill:#26324a}.diagram .lbl{font-family:Arial,sans-serif;font-weight:800;fill:#344054}.diagram .dim{stroke:#5268ff;stroke-width:3}.diagram .thin{stroke:#667085;stroke-width:2}.diagram .main{stroke:#172033;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}.diagram .dash{stroke:#5268ff;stroke-width:3;stroke-dasharray:7 6;fill:none}.answer-line{margin-top:14px;font-weight:700}.answers{page-break-before:always;margin-top:24px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #d7deea;padding:8px;text-align:left}th{background:#f2f5fb}@media print{body{margin:12mm}.task{margin:8px 0}.body{grid-template-columns:170px 1fr}.diagram svg{max-width:160px}}
+  </style></head><body><h1>ОГЭ №15 · Тренировочный лист</h1><div class="hint">10 задач без повторов шаблонов, с покрытием основных тем.</div>${taskBlocks}<section class="answers"><h2>Ответы для учителя</h2><table><thead><tr><th>№</th><th>Ответ</th><th>Тема</th><th>Подтип</th></tr></thead><tbody>${answers}</tbody></table></section></body></html>`;
+}
+window.downloadWorksheetHtml = function(){
+  const tasks = makeWorksheetTasks(10);
+  downloadText('oge15_worksheet.html', worksheetHtml(tasks), 'text/html;charset=utf-8');
+};
+
+function validateTask(t, id){
+  if(!t || typeof t !== 'object') return 'задача не создана';
+  if(!t.text || String(t.text).length < 10) return 'пустой/короткий текст';
+  if(!t.hint) return 'нет подсказки';
+  if(!Array.isArray(t.solution) || !t.solution.length) return 'нет решения';
+  const ans = typeof t.answer === 'number' ? t.answer : parseNum(t.answer);
+  if(ans === null || !isFinite(ans)) return 'ответ не число';
+  if(ans < 0) return 'ответ отрицательный';
+  if(!t.topic || !TOPIC_LABELS[t.topic]) return 'неизвестная тема';
+  if(!t.subtype || !SUBTYPE_LABELS[t.subtype]) return 'неизвестный подтип';
+  return null;
+}
+function runSelfTest(rounds=50){
+  const errors = [];
+  let total = 0;
+  for(const g of GENS){
+    for(let i=0;i<rounds;i++){
+      total++;
+      try{ const e = validateTask(g.generate(), g.id); if(e) errors.push({id:g.id,msg:e}); }
+      catch(err){ errors.push({id:g.id,msg:err.message}); }
+    }
+  }
+  for(const a of archiveAll()){
+    total++;
+    const e = validateTask(a, a.id); if(e) errors.push({id:a.id,msg:e});
+  }
+  const cases = [['0,96',0.96],['0.96',0.96],['24/25',0.96],[' 24 / 25 ',0.96],['24 /25',0.96],['24/ 25',0.96],['−5',-5],['–5',-5],['—5',-5],['1\u00A0234',1234],['1\u202F234',1234]];
+  for(const [input,expected] of cases){total++; if(Math.abs(parseNum(input)-expected)>1e-9) errors.push({id:'parseNum',msg:`${input} → ${parseNum(input)}, ожидалось ${expected}`});}
+  const rejected = ['12 5','12 ,5','12, 5','0 ,96','1 234','24/2 5','2 4/25'];
+  for(const input of rejected){total++; const got=parseNum(input); if(got!==null) errors.push({id:'parseNum',msg:`${input} должно отклоняться, получено ${got}`});}
+  const diagIds = buildDiagnosticQueue(10).map(x=>x.genId);
+  total++; if(new Set(diagIds).size !== diagIds.length) errors.push({id:'diagnosticQueue', msg:'в очереди диагностики есть повтор шаблона'});
+  const diagTopics = new Set(buildDiagnosticQueue(10).map(x=>x.topic));
+  total++; if(diagTopics.size < TRAINING_MODES.length) errors.push({id:'diagnosticQueue', msg:'диагностика не покрыла все 6 тем'});
+  const result = {ok:errors.length===0, total, errors, at:new Date().toLocaleString('ru-RU')};
+  lastSelfTest = result;
+  if(!result.ok) console.warn('ОГЭ №15 тренажёр: самотест нашёл ошибки', result.errors);
+  else console.info('ОГЭ №15 тренажёр: самотест пройден', result.total);
+  return result;
+}
+window.runSelfTestAndRender = function(){runSelfTest(100); renderTeacher();};
+
+function svg(key){
+  const common = 'class="main"';
+  const small = (inner)=>`<svg viewBox="0 0 260 220" role="img" aria-label="схема треугольника">${inner}</svg>`;
+  if(key==='right') return small(`<path d="M45 175 L210 175 L210 45 Z" ${common}/><path d="M194 175 L194 159 L210 159" class="thin" fill="none"/><text x="35" y="192">A</text><text x="216" y="192">C</text><text x="216" y="44">B</text>`);
+  if(key==='plain') return small(`<path d="M40 175 L218 175 L128 38 Z" ${common}/><text x="32" y="192">A</text><text x="222" y="192">C</text><text x="126" y="32">B</text>`);
+  if(key==='external') return small(`<path d="M45 170 L190 170 L105 48 Z" ${common}/><line x1="190" y1="170" x2="235" y2="170" class="dash"/><path d="M205 170 A35 35 0 0 0 185 139" class="dim" fill="none"/><text x="35" y="190">A</text><text x="196" y="190">C</text><text x="98" y="42">B</text>`);
+  if(key==='isosceles') return small(`<path d="M45 175 L215 175 L130 35 Z" ${common}/><path d="M78 175 l7 -8 M85 175 l7 -8 M168 167 l7 8 M176 167 l7 8" class="thin"/><text x="36" y="194">A</text><text x="220" y="194">C</text><text x="128" y="29">B</text>`);
+  if(key==='bisector') return small(`<path d="M42 178 L215 178 L92 40 Z" ${common}/><line x1="92" y1="40" x2="130" y2="178" class="dash"/><text x="34" y="195">A</text><text x="220" y="195">C</text><text x="88" y="33">B</text><text x="136" y="195">D</text>`);
+  if(key==='altitude') return small(`<path d="M35 178 L220 178 L145 35 Z" ${common}/><line x1="145" y1="35" x2="145" y2="178" class="dash"/><path d="M145 178 l16 0 l0 -16" class="thin" fill="none"/><text x="28" y="195">A</text><text x="224" y="195">C</text><text x="142" y="30">B</text><text x="150" y="195">H</text>`);
+  if(key==='area') return small(`<path d="M42 176 L216 176 L136 45 Z" ${common}/><line x1="136" y1="45" x2="136" y2="176" class="dash"/><path d="M136 176 l16 0 l0 -16" class="thin" fill="none"/><text x="35" y="194">A</text><text x="220" y="194">C</text><text x="133" y="38">B</text><text x="143" y="155" class="lbl">h</text>`);
+  if(key==='median') return small(`<path d="M40 176 L220 176 L130 40 Z" ${common}/><line x1="130" y1="40" x2="130" y2="176" class="dash"/><path d="M83 176 l6 -7 M90 176 l6 -7 M166 169 l6 7 M173 169 l6 7" class="thin"/><text x="34" y="194">A</text><text x="224" y="194">C</text><text x="127" y="34">B</text><text x="134" y="194">M</text>`);
+  if(key==='medianHyp') return small(`<path d="M45 176 L215 176 L215 45 Z" ${common}/><line x1="215" y1="176" x2="130" y2="110" class="dash"/><path d="M199 176 L199 160 L215 160" class="thin" fill="none"/><text x="35" y="194">A</text><text x="220" y="194">C</text><text x="220" y="44">B</text><text x="120" y="105">M</text>`);
+  if(key==='midline') return small(`<path d="M40 176 L220 176 L130 38 Z" ${common}/><line x1="85" y1="107" x2="175" y2="107" class="dim"/><text x="34" y="194">A</text><text x="224" y="194">C</text><text x="127" y="32">B</text><text x="76" y="104">M</text><text x="181" y="104">N</text>`);
+  if(key==='centroid') return small(`<path d="M40 176 L220 176 L130 35 Z" ${common}/><line x1="130" y1="35" x2="130" y2="176" class="dash"/><line x1="40" y1="176" x2="175" y2="106" class="dash"/><circle cx="130" cy="106" r="5" fill="#5268ff"/><text x="34" y="194">A</text><text x="224" y="194">C</text><text x="127" y="30">B</text><text x="136" y="104">O</text>`);
+  if(key==='equilateral') return small(`<path d="M45 176 L215 176 L130 38 Z" ${common}/><line x1="130" y1="38" x2="130" y2="176" class="dash"/><path d="M130 176 l16 0 l0 -16" class="thin" fill="none"/><text x="35" y="194">A</text><text x="220" y="194">C</text><text x="127" y="32">B</text><text x="137" y="100" class="lbl">h</text>`);
+  return small(`<path d="M40 175 L218 175 L128 38 Z" ${common}/>`);
+}
+
+function setMode(m){
+  mode = m;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active', b.dataset.mode===m));
+  $('diagBanner').classList.add('hidden');
+  $('teacherPanel').classList.add('hidden');
+  $('diagnosticReport').classList.add('hidden');
+  renderSubtypeFilter();
+  if(m === 'teacher') { renderTeacher(); return; }
+  $('trainerPanel').classList.remove('hidden');
+  if(m === 'diagnostic') { startDiagnostic(); return; }
+  diagnostic = null;
+  current = null; nextTask();
+}
+window.setMode = setMode;
+
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+$('checkBtn').addEventListener('click',checkAnswer);
+$('answer').addEventListener('keydown',e=>{if(e.key==='Enter' && !$('checkBtn').disabled) checkAnswer();});
+$('nextBtn').addEventListener('click',nextTask);
+$('hintBtn').addEventListener('click',()=>{ if(!$('hintBtn').disabled) $('hint').classList.toggle('hidden'); });
+$('solutionBtn').addEventListener('click',()=>{ if(!$('solutionBtn').disabled) $('solution').classList.toggle('hidden'); });
+$('copyBtn').addEventListener('click',()=>navigator.clipboard?.writeText(current.text + '\nОтвет: ' + (current.answerDisplay||fmt(current.answer))));
+$('resetStats').addEventListener('click',()=>{if(confirm('Сбросить прогресс и ошибки?')){const keepImported=importedArchive; const keepExam=!!state.examView; state=normalizeState({importedArchive:keepImported, examView:keepExam}); saveState(); renderStats(); if(mode==='teacher') renderTeacher();}});
+$('exportErrors').addEventListener('click',()=>downloadText('oge15_errors.json', JSON.stringify(state.errors||[],null,2), 'application/json;charset=utf-8'));
+$('exportProgress').addEventListener('click',()=>window.downloadProgress());
+$('subtypeFilter').addEventListener('change',()=>{ if(mode!=='archive' && mode!=='teacher' && mode!=='diagnostic') nextTask(); });
+$('examView').checked = !!state.examView;
+$('examView').addEventListener('change',e=>{state.examView = !!e.target.checked; saveState(); if(current && mode!=='teacher') { updateTaskMeta(); updateControls(); }});
+
+renderSubtypeFilter(); renderTopicList(); renderStats(); lastSelfTest = runSelfTest(50); nextTask();
+</script>
+</body>
+</html>

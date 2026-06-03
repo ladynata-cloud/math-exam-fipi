@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренажёр 2: Линейные неравенства — пошаговое решение</title>
+<style>
+:root {
+  --bg:#F7F6F2; --surface:#FFFFFF; --border:#E2DDD6; --text:#1A1714; --muted:#7A746C;
+  --indigo:#3730A3; --indigo-lt:#EEF2FF; --indigo-md:#818CF8;
+  --green:#166534; --green-lt:#F0FDF4; --green-md:#16A34A;
+  --red:#991B1B; --red-lt:#FEF2F2; --red-md:#DC2626;
+  --amber-lt:#FFFBEB; --amber-bd:#FDE68A; --amber:#92400E;
+  --serif:'Georgia','Times New Roman',serif;
+  --sans:'Helvetica Neue','Arial',sans-serif;
+  --radius:12px; --shadow:0 2px 12px rgba(0,0,0,.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;padding:24px 16px 48px;
+  background-image:radial-gradient(circle at 1px 1px,#D6D1CA 1px,transparent 0);
+  background-size:28px 28px;}
+header{width:100%;max-width:760px;display:flex;align-items:baseline;
+  justify-content:space-between;margin-bottom:24px;}
+header h1{font-family:var(--serif);font-size:1.35rem;font-weight:normal;letter-spacing:-.02em;}
+header h1 span{color:var(--indigo);font-style:italic;}
+#score-wrap{display:flex;align-items:center;gap:8px;background:var(--indigo-lt);
+  border:1px solid var(--indigo-md);border-radius:99px;padding:4px 14px 4px 10px;
+  font-size:.82rem;color:var(--indigo);font-weight:600;user-select:none;}
+#score-num{transition:transform .25s cubic-bezier(.34,1.56,.64,1);}
+#score-num.bump{transform:scale(1.5);}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow);width:100%;max-width:760px;overflow:hidden;}
+
+/* nav */
+#prob-nav{display:flex;align-items:center;gap:10px;padding:12px 18px;
+  border-bottom:1px solid var(--border);background:#FAFAF8;}
+.nav-btn{background:var(--surface);border:1.5px solid var(--border);border-radius:8px;
+  width:32px;height:32px;font-size:1.1rem;cursor:pointer;color:var(--text);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;transition:background .15s;}
+.nav-btn:hover:not(:disabled){background:var(--indigo-lt);border-color:var(--indigo-md);color:var(--indigo);}
+.nav-btn:disabled{opacity:.3;cursor:default;}
+#prob-dots{display:flex;gap:5px;flex:1;justify-content:center;flex-wrap:wrap;}
+.dot{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border);
+  background:var(--surface);cursor:pointer;font-size:.75rem;font-weight:600;color:var(--muted);
+  display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.dot:hover{border-color:var(--indigo-md);}
+.dot.active{background:var(--indigo);border-color:var(--indigo);color:#fff;}
+.dot.done{background:var(--green-md);border-color:var(--green-md);color:#fff;}
+.dot.seen{background:#FDE68A;border-color:#F59E0B;color:#78350F;}
+
+/* problem */
+#prob-display{padding:20px 26px 18px;border-left:4px solid var(--indigo);
+  background:linear-gradient(90deg,var(--indigo-lt) 0%,transparent 65%);}
+#prob-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:6px;}
+#prob-expr{font-family:var(--serif);font-size:1.85rem;letter-spacing:.01em;}
+
+/* step history */
+#history-section{padding:14px 18px;border-bottom:1px solid var(--border);}
+#hist-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:8px;}
+#hist-rows{display:flex;flex-direction:column;gap:2px;}
+.hist-row{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;
+  background:#F8F7F3;animation:fadeDown .3s ease both;}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.hist-num{font-size:.72rem;color:var(--muted);min-width:14px;flex-shrink:0;}
+.hist-tag{font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:99px;flex-shrink:0;white-space:nowrap;}
+.tag-expand{background:#D1FAE5;color:#065F46;}
+.tag-move{background:#DBEAFE;color:#1E40AF;}
+.tag-combine{background:#EDE9FE;color:#5B21B6;}
+.tag-divide{background:var(--amber-lt);border:1px solid var(--amber-bd);color:var(--amber);}
+.hist-expr{font-family:var(--serif);font-size:1rem;flex:1;}
+.hist-ok{color:var(--green-md);font-size:.85rem;margin-left:auto;flex-shrink:0;}
+#no-steps{font-size:.85rem;color:var(--muted);font-style:italic;padding:4px 0;}
+
+/* current state bar */
+#current-bar{margin:10px 18px 0;padding:10px 14px;border-radius:8px;
+  background:#F0EDE8;display:flex;align-items:center;gap:10px;}
+#current-arrow{color:var(--muted);font-size:.8rem;flex-shrink:0;}
+#current-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);flex-shrink:0;}
+#current-expr{font-family:var(--serif);font-size:1.15rem;font-weight:bold;}
+
+/* action picker */
+#action-section{padding:14px 18px;border-top:1px solid var(--border);}
+#action-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:8px;}
+#action-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.act-btn{border:1.5px solid var(--border);border-radius:8px;padding:10px 6px;
+  font-size:.78rem;text-align:center;cursor:pointer;background:var(--surface);
+  color:var(--text);line-height:1.4;transition:background .15s,border-color .15s;}
+.act-btn:hover{background:var(--indigo-lt);border-color:var(--indigo-md);}
+.act-btn.selected{border-color:var(--indigo);background:var(--indigo-lt);color:var(--indigo);font-weight:600;}
+.act-btn:disabled{opacity:.35;cursor:default;}
+#action-hint{margin-top:8px;font-size:.8rem;color:var(--muted);min-height:1.2em;
+  padding:6px 10px;border-radius:6px;background:transparent;transition:background .2s;}
+#action-hint.show{background:var(--amber-lt);color:var(--amber);}
+
+/* input area */
+#input-section{padding:12px 18px 16px;border-top:1px solid var(--border);display:none;}
+#input-section.visible{display:block;}
+#input-prompt{font-size:.8rem;color:var(--muted);margin-bottom:8px;}
+#input-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.lin-inp{padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;
+  font-family:var(--serif);font-size:1.15rem;width:150px;outline:none;
+  color:var(--text);background:var(--surface);transition:border-color .15s;}
+.lin-inp:focus{border-color:var(--indigo-md);}
+#sign-grp{display:flex;border:1.5px solid var(--border);border-radius:8px;overflow:hidden;}
+.sign-btn{padding:9px 13px;border:none;border-right:1px solid var(--border);
+  background:var(--surface);font-size:1.1rem;cursor:pointer;color:var(--muted);
+  transition:background .15s,color .15s;line-height:1;}
+.sign-btn:last-child{border-right:none;}
+.sign-btn:hover{background:var(--indigo-lt);color:var(--indigo);}
+.sign-btn.selected{background:var(--indigo);color:#fff;}
+#btn-step{padding:10px 20px;background:var(--indigo);color:#fff;border:none;
+  border-radius:8px;font-size:.9rem;font-weight:600;cursor:pointer;transition:background .15s;}
+#btn-step:hover{background:#312E81;}
+
+/* step feedback */
+#step-feedback{margin-top:8px;border-radius:8px;padding:10px 14px;font-size:.88rem;
+  display:none;border:1.5px solid transparent;}
+#step-feedback.ok{display:flex;gap:8px;align-items:flex-start;background:var(--green-lt);
+  border-color:var(--green-md);color:var(--green);}
+#step-feedback.err{display:flex;gap:8px;align-items:flex-start;background:var(--red-lt);
+  border-color:var(--red-md);color:var(--red);}
+#step-feedback.warn{display:flex;gap:8px;align-items:flex-start;background:var(--amber-lt);
+  border-color:var(--amber-bd);color:var(--amber);}
+
+/* completion */
+#completion{padding:20px 18px;border-top:1px solid var(--border);display:none;
+  background:linear-gradient(90deg,var(--green-lt) 0%,transparent 70%);}
+#completion.visible{display:block;}
+#comp-msg{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+#comp-icon{font-size:2rem;}
+#comp-text{}
+#comp-title{font-family:var(--serif);font-size:1.15rem;font-weight:bold;color:var(--green);}
+#comp-detail{font-size:.88rem;color:var(--green);margin-top:3px;}
+#comp-interval{font-family:var(--serif);font-size:1.1rem;font-weight:bold;}
+#nl-section{margin-top:12px;}
+#nl-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:8px;}
+#nl-svg{display:block;width:100%;height:auto;}
+
+/* bottom bar */
+#bottom-bar{padding:10px 18px 16px;border-top:1px solid var(--border);
+  display:flex;gap:10px;flex-wrap:wrap;}
+.bar-btn{padding:8px 16px;border:1.5px solid var(--border);border-radius:8px;
+  background:var(--surface);font-size:.85rem;cursor:pointer;color:var(--text);transition:background .15s;}
+.bar-btn:hover{background:var(--indigo-lt);border-color:var(--indigo-md);color:var(--indigo);}
+.bar-btn.primary{background:var(--green-lt);border-color:var(--green-md);color:var(--green);font-weight:600;}
+.bar-btn.primary:hover{background:#DCFCE7;}
+
+#hint{margin-top:14px;font-size:.76rem;color:var(--muted);text-align:center;}
+
+@keyframes popIn{0%{transform:scale(.7);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.pop{animation:popIn .35s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.shake{animation:shake .28s ease both;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Тренажёр 2: <span>линейные неравенства</span></h1>
+  <div id="score-wrap">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M7 1l1.5 3.5 3.5.4-2.6 2.4.7 3.7L7 9.3l-3.1 1.7.7-3.7L2 4.9l3.5-.4L7 1z"
+            fill="#3730A3" stroke="#3730A3" stroke-width=".5" stroke-linejoin="round"/>
+    </svg>
+    Верно:&nbsp;<span id="score-num">0</span>
+  </div>
+</header>
+
+<div class="card">
+
+  <div id="prob-nav">
+    <button class="nav-btn" id="btn-prev">&#8249;</button>
+    <div id="prob-dots"></div>
+    <button class="nav-btn" id="btn-next">&#8250;</button>
+  </div>
+
+  <div id="prob-display">
+    <div id="prob-label">Задача</div>
+    <div id="prob-expr"></div>
+  </div>
+
+  <div id="history-section">
+    <div id="hist-label">Ход решения</div>
+    <div id="hist-rows"><div id="no-steps">Ещё нет шагов — выбери действие ниже</div></div>
+    <div id="current-bar">
+      <span id="current-arrow">▶</span>
+      <span id="current-label">сейчас:</span>
+      <span id="current-expr"></span>
+    </div>
+  </div>
+
+  <div id="action-section">
+    <div id="action-label">Что делаешь дальше?</div>
+    <div id="action-grid">
+      <button class="act-btn" data-act="expand" data-tag="expand" data-label="Раскрытие скобок">
+        📦<br>Раскрыть<br>скобки
+      </button>
+      <button class="act-btn" data-act="move" data-tag="move" data-label="Перенос">
+        ↔<br>Перенос<br>слагаемых
+      </button>
+      <button class="act-btn" data-act="combine" data-tag="combine" data-label="Приведение">
+        ✏<br>Привести<br>подобные
+      </button>
+      <button class="act-btn" data-act="divide" data-tag="divide" data-label="Деление">
+        ÷<br>Делить<br>обе части
+      </button>
+    </div>
+    <div id="action-hint"></div>
+  </div>
+
+  <div id="input-section">
+    <div id="input-prompt"></div>
+    <div id="input-row">
+      <input class="lin-inp" id="inp-left"  type="text" placeholder="левая часть" autocomplete="off">
+      <div id="sign-grp">
+        <button class="sign-btn" data-sign="gt">&gt;</button>
+        <button class="sign-btn" data-sign="gte">≥</button>
+        <button class="sign-btn" data-sign="lt">&lt;</button>
+        <button class="sign-btn" data-sign="lte">≤</button>
+      </div>
+      <input class="lin-inp" id="inp-right" type="text" placeholder="правая часть" autocomplete="off">
+      <button id="btn-step">Проверить шаг</button>
+    </div>
+    <div id="step-feedback"></div>
+  </div>
+
+  <div id="completion">
+    <div id="comp-msg">
+      <span id="comp-icon">🎉</span>
+      <div id="comp-text">
+        <div id="comp-title"></div>
+        <div id="comp-detail"></div>
+      </div>
+    </div>
+    <div id="nl-section">
+      <div id="nl-label">Ответ на числовой прямой</div>
+      <svg id="nl-svg" viewBox="0 0 720 100" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+  </div>
+
+  <div id="bottom-bar">
+    <button class="bar-btn" id="btn-reset">↺ Начать заново</button>
+    <button class="bar-btn primary" id="btn-next-prob" style="display:none">Следующая задача →</button>
+  </div>
+
+</div>
+
+<p id="hint">Формат ввода: <code>−5x</code>, <code>7+3</code>, <code>x</code>, <code>0</code>, <code>1,3</code> или <code>1/2</code></p>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   UNICODE + DISPLAY HELPERS
+═══════════════════════════════════════════════════════════ */
+const M   = '\u2212';   // −
+const INF = '\u221E';   // ∞
+const GEQ = '\u2265';   // ≥
+const LEQ = '\u2264';   // ≤
+const T   = '\u2009';   // thin space
+
+const SIGN_SYM  = {gt:'>',  gte:GEQ, lt:'<',  lte:LEQ};
+const SIGN_FLIP = {gt:'lt', lt:'gt', gte:'lte', lte:'gte'};
+
+function neg(n) { return n < 0 ? M + Math.abs(n) : String(n); }
+
+function numDisp(n) {
+  if (Number.isInteger(n)) return neg(n);
+  const s = Math.abs(n).toFixed(10).replace(/\.?0+$/,'').replace('.',',');
+  return n < 0 ? M + s : s;
+}
+
+/* Format linear expression  ax + b  →  display string */
+function fmtExpr(coef, cnst) {
+  const parts = [];
+  if (coef !== 0) {
+    if      (coef ===  1) parts.push('x');
+    else if (coef === -1) parts.push(M + 'x');
+    else                  parts.push(numDisp(coef) + 'x');
+  }
+  if (cnst !== 0) {
+    const abs = Math.abs(cnst);
+    const absStr = Number.isInteger(abs) ? String(abs)
+      : abs.toFixed(10).replace(/\.?0+$/,'').replace('.',',');
+    if (parts.length > 0) {
+      parts.push(cnst > 0 ? ' + ' + absStr : ' ' + M + ' ' + absStr);
+    } else {
+      parts.push(numDisp(cnst));
+    }
+  }
+  if (parts.length === 0) parts.push('0');
+  return parts.join('');
+}
+
+function fmtIneq(lC, lK, sign, rC, rK) {
+  return fmtExpr(lC, lK) + ' ' + SIGN_SYM[sign] + ' ' + fmtExpr(rC, rK);
+}
+
+function itvl(sign, val) {
+  const v = numDisp(val);
+  switch(sign) {
+    case 'gt':  return `(${T}${v}${T};${T}+${INF}${T})`;
+    case 'gte': return `[${T}${v}${T};${T}+${INF}${T})`;
+    case 'lt':  return `(${T}${M}${INF}${T};${T}${v}${T})`;
+    case 'lte': return `(${T}${M}${INF}${T};${T}${v}${T}]`;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PARSE LINEAR EXPRESSION  ax + b
+═══════════════════════════════════════════════════════════ */
+function parseLin(raw) {
+  let s = raw.trim()
+    .replace(/\u2212/g, '-')
+    .replace(/,/g, '.')
+    .replace(/\s+/g, '')
+    .replace(/\+\-/g, '-')
+    .replace(/\-\+/g, '-')
+    .replace(/\+\+/g, '+')
+    .replace(/\-\-/g, '+');
+  if (s === '' || s === '-' || s === '+') return null;
+  if (!/[+\-]/.test(s[0])) s = '+' + s;
+
+  const terms = s.match(/[+\-][^+\-]*/g);
+  if (!terms) return null;
+
+  let coef = 0, cnst = 0;
+  for (const t of terms) {
+    if (t.includes('x')) {
+      const c = t.replace('x', '').trim();
+      if (c === '+' || c === '') coef += 1;
+      else if (c === '-')        coef -= 1;
+      else { const v = parseFloat(c); if (isNaN(v)) return null; coef += v; }
+    } else {
+      const v = parseFloat(t);
+      if (isNaN(v)) return null;
+      cnst += v;
+    }
+  }
+  return { coef, cnst };
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CANONICAL FORM & EQUIVALENCE
+   Canonical: x [sign] val  (lC=1, lK=0, rC=0, rK=val)
+═══════════════════════════════════════════════════════════ */
+function canonical(lC, lK, sign, rC, rK) {
+  const netC = lC - rC;
+  const netK = rK - lK;
+  if (Math.abs(netC) < 1e-9) return null;   // degenerate (parallel lines)
+  const val = netK / netC;
+  const s = netC < 0 ? SIGN_FLIP[sign] : sign;
+  return { sign: s, val };
+}
+
+function isEquiv(lC1, lK1, s1, rC1, rK1, lC2, lK2, s2, rC2, rK2) {
+  const c1 = canonical(lC1, lK1, s1, rC1, rK1);
+  const c2 = canonical(lC2, lK2, s2, rC2, rK2);
+  if (!c1 || !c2) return false;
+  return c1.sign === c2.sign && Math.abs(c1.val - c2.val) < 1e-6;
+}
+
+function isDone(lC, lK, sign, rC, rK) {
+  return lC === 1 && Math.abs(lK) < 1e-9 && Math.abs(rC) < 1e-9;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PROBLEMS
+═══════════════════════════════════════════════════════════ */
+/* init: { lC, lK, sign, rC, rK } — coefficients of initial state
+   hasParens: true for problems 7–9 (display differs from coefficients) */
+const PROBLEMS = [
+  { n:1, display:`${M}3 ${M} x > 4x + 7`,
+    init:{lC:-1,lK:-3,sign:'gt',rC:4,rK:7}, hasParens:false },
+  { n:2, display:`6 ${M} 7x ${LEQ} 3x ${M} 7`,
+    init:{lC:-7,lK:6,sign:'lte',rC:3,rK:-7}, hasParens:false },
+  { n:3, display:`5x + 4 < x + 6`,
+    init:{lC:5,lK:4,sign:'lt',rC:1,rK:6}, hasParens:false },
+  { n:4, display:`3 ${M} x ${GEQ} 3x + 5`,
+    init:{lC:-1,lK:3,sign:'gte',rC:3,rK:5}, hasParens:false },
+  { n:5, display:`2x + 4 ${LEQ} ${M}4x + 1`,
+    init:{lC:2,lK:4,sign:'lte',rC:-4,rK:1}, hasParens:false },
+  { n:6, display:`x ${M} 2 ${LEQ} 4x + 4`,
+    init:{lC:1,lK:-2,sign:'lte',rC:4,rK:4}, hasParens:false },
+  { n:7, display:`9x ${M} 4(x ${M} 7) ${GEQ} ${M}3`,
+    init:{lC:5,lK:28,sign:'gte',rC:0,rK:-3}, hasParens:true },
+  { n:8, display:`6x ${M} 3(4x + 1) > 6`,
+    init:{lC:-6,lK:-3,sign:'gt',rC:0,rK:6}, hasParens:true },
+  { n:9, display:`8x ${M} 3(3x + 8) ${GEQ} 9`,
+    init:{lC:-1,lK:-24,sign:'gte',rC:0,rK:9}, hasParens:true },
+];
+
+/* Hints per action */
+const HINTS = {
+  expand:  `Раскрой скобки. Умножь каждое слагаемое в скобках на множитель перед ними.`,
+  move:    `Перенеси x-члены влево, числа вправо. При переносе знак слагаемого меняется на противоположный.`,
+  combine: `Сложи все x-члены вместе и все числа вместе отдельно.`,
+  divide:  `Раздели обе части на коэффициент при x. ⚠ Если делитель отрицательный — знак ${GEQ}/${LEQ} меняется на противоположный!`,
+};
+
+/* ═══════════════════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════════════════ */
+const S = {
+  idx: 0,
+  lC:0, lK:0, sign:'gt', rC:0, rK:0,  // current inequality state
+  history: [],    // [{actLabel, actTag, raw}]  raw = "−7x − 3x ≤ ..."
+  action:  null,  // selected action key
+  inputSign: 'gt',
+  done:  false,
+  score: 0,
+  results: new Array(PROBLEMS.length).fill(null),  // null|'done'|'seen'
+};
+
+/* ═══════════════════════════════════════════════════════════
+   INIT PROBLEM
+═══════════════════════════════════════════════════════════ */
+function initProblem(idx) {
+  const prob = PROBLEMS[idx];
+  S.lC   = prob.init.lC;   S.lK  = prob.init.lK;
+  S.sign = prob.init.sign; S.rC  = prob.init.rC; S.rK = prob.init.rK;
+  S.history  = [];
+  S.action   = null;
+  S.inputSign = S.sign;
+  S.done     = false;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SVG NUMBER LINE
+═══════════════════════════════════════════════════════════ */
+function se(tag, attrs, text) {
+  const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const [k,v] of Object.entries(attrs)) el.setAttribute(k,v);
+  if (text !== undefined) el.textContent = text;
+  return el;
+}
+
+function axisRange(val) {
+  const a = Math.abs(val);
+  if (a <= 8.5) return {lo:-10,hi:10,unit:1,maj:5};
+  if (a <= 18)  return {lo:Math.round(val)-10,hi:Math.round(val)+10,unit:1,maj:5};
+  const unit = 5;
+  const lo = Math.floor((val - a*.35)/unit)*unit;
+  const hi = Math.ceil ((val + a*.35)/unit)*unit;
+  return {lo,hi,unit,maj:unit};
+}
+
+function drawNL(sign, val) {
+  const svg = document.getElementById('nl-svg');
+  svg.innerHTML = '';
+  const AX_Y=52, PX_L=50, PX_R=670;
+  const {lo,hi,unit,maj} = axisRange(val);
+  const scale = (PX_R-PX_L)/(hi-lo);
+  const vp = v => PX_L+(v-lo)*scale;
+
+  const defs = se('defs',{});
+  const flt = se('filter',{id:'sh',x:'-30%',y:'-30%',width:'160%',height:'160%'});
+  flt.appendChild(se('feDropShadow',{dx:'0',dy:'2',stdDeviation:'2.5','flood-color':'#0003'}));
+  defs.appendChild(flt); svg.appendChild(defs);
+
+  svg.appendChild(se('rect',{x:PX_L-10,y:AX_Y-18,width:PX_R-PX_L+20,height:36,rx:4,fill:'#F0EDE8',opacity:'.55'}));
+
+  const bPx = vp(val);
+  const goRight = sign==='gt'||sign==='gte';
+  svg.appendChild(se('line',{
+    x1:goRight?bPx:PX_L-10,y1:AX_Y,x2:goRight?PX_R+10:bPx,y2:AX_Y,
+    stroke:'#16A34A','stroke-width':6,'stroke-linecap':'round'}));
+
+  let tv = Math.ceil(lo/unit)*unit;
+  for(;tv<=hi+unit*.01;tv=Math.round((tv+unit)*1e9)/1e9){
+    const px=vp(tv);
+    const isMaj=Math.abs(tv%maj)<unit*.1;
+    svg.appendChild(se('line',{x1:px,y1:AX_Y-(isMaj?8:4),x2:px,y2:AX_Y+(isMaj?8:4),
+      stroke:isMaj?'#A09890':'#C8C3BC','stroke-width':isMaj?1.5:1}));
+    if(isMaj) svg.appendChild(se('text',{x:px,y:AX_Y+22,'text-anchor':'middle',
+      'font-family':'Georgia,serif','font-size':'15',fill:'#5C554E'},
+      tv===0?'0':numDisp(tv)));
+  }
+  svg.appendChild(se('line',{x1:PX_L-10,y1:AX_Y,x2:PX_R+10,y2:AX_Y,stroke:'#5C554E','stroke-width':1.8}));
+  svg.appendChild(se('polygon',{points:`${PX_R+10},${AX_Y} ${PX_R+2},${AX_Y-4} ${PX_R+2},${AX_Y+4}`,fill:'#5C554E'}));
+
+  const closed = sign==='gte'||sign==='lte';
+  svg.appendChild(se('circle',{cx:bPx,cy:AX_Y,r:8,
+    fill:closed?'#16A34A':'#FFFFFF',stroke:'#16A34A','stroke-width':2.5,filter:'url(#sh)'}));
+  svg.appendChild(se('text',{x:bPx,y:AX_Y-16,'text-anchor':'middle',
+    'font-family':'Georgia,serif','font-size':'13',fill:'#166534','font-weight':'bold'},numDisp(val)));
+}
+
+/* ═══════════════════════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════════════════════ */
+function render() {
+  const prob = PROBLEMS[S.idx];
+
+  /* problem */
+  document.getElementById('prob-label').textContent = `Задача №${prob.n}`;
+  document.getElementById('prob-expr').textContent  = prob.display;
+
+  /* dots */
+  const dotsEl = document.getElementById('prob-dots');
+  dotsEl.innerHTML = '';
+  PROBLEMS.forEach((p,i) => {
+    const d = document.createElement('button');
+    d.className = 'dot';
+    if (i === S.idx)                 d.classList.add('active');
+    else if (S.results[i]==='done')  d.classList.add('done');
+    else if (S.results[i]==='seen')  d.classList.add('seen');
+    d.textContent = p.n;
+    d.addEventListener('click', () => { S.idx=i; initProblem(i); resetUI(); render(); });
+    dotsEl.appendChild(d);
+  });
+
+  document.getElementById('btn-prev').disabled = S.idx===0;
+  document.getElementById('btn-next').disabled = S.idx===PROBLEMS.length-1;
+
+  /* history */
+  const histEl = document.getElementById('hist-rows');
+  histEl.innerHTML = '';
+  if (S.history.length === 0) {
+    const noStep = document.createElement('div');
+    noStep.id = 'no-steps';
+    noStep.textContent = 'Ещё нет шагов — выбери действие ниже';
+    noStep.style.cssText = 'font-size:.85rem;color:var(--muted);font-style:italic;padding:4px 0;';
+    histEl.appendChild(noStep);
+  } else {
+    S.history.forEach((h,i) => {
+      const row = document.createElement('div');
+      row.className = 'hist-row';
+      row.style.animationDelay = `${i*.04}s`;
+      row.innerHTML = `
+        <span class="hist-num">${i+1}</span>
+        <span class="hist-tag tag-${h.actTag}">${h.actLabel}</span>
+        <span class="hist-expr">${h.raw}</span>
+        <span class="hist-ok">✓</span>`;
+      histEl.appendChild(row);
+    });
+  }
+
+  /* current bar */
+  document.getElementById('current-expr').textContent = fmtIneq(S.lC, S.lK, S.sign, S.rC, S.rK);
+
+  /* action buttons (keep selected state) */
+  document.querySelectorAll('.act-btn').forEach(b => {
+    b.classList.toggle('selected', b.dataset.act === S.action);
+    // disable expand if no parens and no steps yet – hint only
+  });
+
+  /* next button */
+  const np = document.getElementById('btn-next-prob');
+  np.style.display = (S.done && S.idx < PROBLEMS.length-1) ? '' : 'none';
+}
+
+function resetUI() {
+  S.action = null;
+  S.inputSign = S.sign;
+  document.getElementById('inp-left').value  = '';
+  document.getElementById('inp-right').value = '';
+  document.querySelectorAll('.sign-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('input-section').classList.remove('visible');
+  document.getElementById('action-hint').textContent = '';
+  document.getElementById('action-hint').classList.remove('show');
+  document.getElementById('step-feedback').className = '';
+  document.getElementById('step-feedback').style.display = 'none';
+  document.getElementById('completion').classList.remove('visible');
+  document.querySelectorAll('.act-btn').forEach(b=>b.classList.remove('selected'));
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CHECK STEP
+═══════════════════════════════════════════════════════════ */
+function checkStep() {
+  if (!S.action) return;
+
+  const leftRaw  = document.getElementById('inp-left').value;
+  const rightRaw = document.getElementById('inp-right').value;
+  const newSign  = S.inputSign;
+
+  const fb = document.getElementById('step-feedback');
+
+  /* parse */
+  const lParsed = parseLin(leftRaw);
+  const rParsed = parseLin(rightRaw);
+
+  if (!lParsed || !rParsed) {
+    showFeedback('err', '⚠ Не удалось разобрать выражение. Используй форматы: −5x, 7+3, x, 0, 1,3');
+    shake(document.getElementById('input-row'));
+    return;
+  }
+
+  const { coef:nlC, cnst:nlK } = lParsed;
+  const { coef:nrC, cnst:nrK } = rParsed;
+
+  /* check if same as current (no change) */
+  if (nlC===S.lC && Math.abs(nlK-S.lK)<1e-9 && newSign===S.sign && nrC===S.rC && Math.abs(nrK-S.rK)<1e-9) {
+    showFeedback('warn', '↺ Выражение не изменилось. Применяй выбранное действие к неравенству.');
+    return;
+  }
+
+  /* check algebraic equivalence */
+  if (!isEquiv(S.lC, S.lK, S.sign, S.rC, S.rK,  nlC, nlK, newSign, nrC, nrK)) {
+    /* give a helpful diagnostic */
+    const studCan = canonical(nlC, nlK, newSign, nrC, nrK);
+    const currCan = canonical(S.lC, S.lK, S.sign, S.rC, S.rK);
+    let msg = '✗ Неверно — неравенство не сохранилось.';
+    if (studCan && currCan && studCan.sign !== currCan.sign) {
+      msg += ` Проверь знак неравенства — возможно, нужно ${S.action==='divide'?'поменять его при делении на отрицательное':'его не менять на этом шаге'}.`;
+    } else {
+      msg += ' Проверь вычисления.';
+    }
+    showFeedback('err', msg);
+    shake(document.getElementById('input-row'));
+    return;
+  }
+
+  /* valid step! */
+  const raw = fmtExpr(nlC, nlK) + ' ' + SIGN_SYM[newSign] + ' ' + fmtExpr(nrC, nrK);
+  const actLabel = document.querySelector(`.act-btn[data-act="${S.action}"]`).dataset.label;
+  const actTag   = document.querySelector(`.act-btn[data-act="${S.action}"]`).dataset.tag;
+  S.history.push({ actLabel, actTag, raw });
+
+  /* update state */
+  S.lC=nlC; S.lK=nlK; S.sign=newSign; S.rC=nrC; S.rK=nrK;
+  S.action = null;
+
+  document.getElementById('input-section').classList.remove('visible');
+  document.getElementById('action-hint').textContent = '';
+  document.getElementById('action-hint').classList.remove('show');
+  document.querySelectorAll('.act-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('inp-left').value  = '';
+  document.getElementById('inp-right').value = '';
+  document.querySelectorAll('.sign-btn').forEach(b=>b.classList.remove('selected'));
+  document.getElementById('step-feedback').style.display = 'none';
+
+  render();
+
+  /* check done */
+  if (isDone(S.lC, S.lK, S.sign, S.rC, S.rK)) {
+    finishProblem();
+  } else {
+    showFeedback('ok', '✓ Верный шаг! Продолжай.');
+    document.getElementById('step-feedback').style.display = 'flex';
+  }
+}
+
+function finishProblem() {
+  const wasAlreadyDone = S.results[S.idx] === 'done';
+  S.results[S.idx] = 'done';
+  S.done = true;
+
+  if (!wasAlreadyDone) {
+    S.score++;
+    const sn = document.getElementById('score-num');
+    sn.textContent = S.score;
+    sn.classList.remove('bump'); void sn.offsetWidth; sn.classList.add('bump');
+    setTimeout(()=>sn.classList.remove('bump'),400);
+  }
+
+  const can = canonical(S.lC, S.lK, S.sign, S.rC, S.rK);
+  const ansStr = fmtIneq(1, 0, can.sign, 0, can.val);
+
+  const comp = document.getElementById('completion');
+  comp.classList.add('visible');
+  document.getElementById('comp-title').textContent = `Отлично! Ответ: ${ansStr}`;
+  document.getElementById('comp-detail').innerHTML = `Промежуток: <span id="comp-interval">${itvl(can.sign, can.val)}</span>`;
+  document.getElementById('comp-icon').textContent = S.history.length <= 3 ? '🏆' : '🎉';
+
+  drawNL(can.sign, can.val);
+  document.getElementById('action-section').style.opacity = '.4';
+  document.getElementById('action-section').style.pointerEvents = 'none';
+
+  render();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════════════════════ */
+function showFeedback(type, msg) {
+  const fb = document.getElementById('step-feedback');
+  fb.className = type;
+  fb.textContent = msg;
+  fb.style.display = 'flex';
+}
+
+function shake(el) {
+  el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake');
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EVENT LISTENERS
+═══════════════════════════════════════════════════════════ */
+/* action buttons */
+document.querySelectorAll('.act-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (S.done) return;
+    S.action = btn.dataset.act;
+    document.querySelectorAll('.act-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    /* hint */
+    const hintEl = document.getElementById('action-hint');
+    hintEl.textContent = HINTS[S.action];
+    hintEl.classList.add('show');
+
+    /* reveal input */
+    const inputSec = document.getElementById('input-section');
+    inputSec.classList.add('visible');
+    document.getElementById('input-prompt').textContent =
+      'Введи результат — обе части неравенства:';
+
+    /* reset sign to current, clear inputs */
+    S.inputSign = S.sign;
+    document.querySelectorAll('.sign-btn').forEach(b=>{
+      b.classList.toggle('selected', b.dataset.sign === S.inputSign);
+    });
+    document.getElementById('step-feedback').style.display = 'none';
+    document.getElementById('inp-left').focus();
+  });
+});
+
+/* sign buttons */
+document.querySelectorAll('.sign-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    S.inputSign = btn.dataset.sign;
+    document.querySelectorAll('.sign-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+  });
+});
+
+/* check step */
+document.getElementById('btn-step').addEventListener('click', checkStep);
+document.getElementById('inp-right').addEventListener('keydown', e=>{if(e.key==='Enter') checkStep();});
+document.getElementById('inp-left').addEventListener('keydown',  e=>{if(e.key==='Enter') checkStep();});
+
+/* nav */
+document.getElementById('btn-prev').addEventListener('click', ()=>{
+  if(S.idx>0){S.idx--;initProblem(S.idx);resetUI();render();}
+});
+document.getElementById('btn-next').addEventListener('click', ()=>{
+  if(S.idx<PROBLEMS.length-1){S.idx++;initProblem(S.idx);resetUI();render();}
+});
+document.getElementById('btn-next-prob').addEventListener('click', ()=>{
+  if(S.idx<PROBLEMS.length-1){S.idx++;initProblem(S.idx);resetUI();render();}
+});
+
+/* reset */
+document.getElementById('btn-reset').addEventListener('click', ()=>{
+  initProblem(S.idx);
+  document.getElementById('action-section').style.opacity='';
+  document.getElementById('action-section').style.pointerEvents='';
+  resetUI();
+  render();
+});
+
+/* ═══ INIT ═══ */
+initProblem(0);
+render();
+</script>
+</body>
+</html>

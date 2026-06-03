@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сначала перепиши, потом считай</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#eef2f5;--card:#fff;--hdr:#2c3e4e;
+  --blue:#2c7da0;--blue-h:#1f5e7a;--blue-lt:#e0f2fe;
+  --ok:#16a34a;--ok-bg:#dcfce7;--ok-dk:#14532d;
+  --err:#dc2626;--err-bg:#fee2e2;--err-dk:#7f1d1d;
+  --amber:#d97706;--amb-bg:#fef3c7;--amb-dk:#78350f;
+  --muted:#94a3b8;--border:#d1dae4;--text:#1a2c3e;--text-lt:#64748b;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);font-family:'Segoe UI',Roboto,sans-serif;color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+
+/* ШАПКА */
+.hdr{background:var(--hdr);color:#fff;padding:15px 28px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.hdr h1{font-size:1.35rem;font-weight:600;letter-spacing:-.3px}
+.hdr p{font-size:.78rem;opacity:.62;margin-top:2px}
+.back a{color:rgba(255,255,255,.5);font-size:.82rem;text-decoration:none;font-weight:500;transition:color .18s}
+.back a:hover{color:#fff}
+.mode-bar{background:#f0f3f7;border-bottom:1px solid var(--border);padding:11px 28px;display:flex;gap:12px}
+.mbtn{background:transparent;border:none;font-size:.97rem;font-weight:600;padding:7px 20px;border-radius:40px;cursor:pointer;color:var(--text);transition:.18s;font-family:inherit}
+.mbtn.active{background:var(--hdr);color:#fff}
+
+/* КОНТЕНТ */
+#app{flex:1;display:flex;flex-direction:column;align-items:center;padding:24px 16px 48px}
+.card{background:var(--card);border-radius:20px;padding:24px 22px;box-shadow:0 4px 20px rgba(0,0,0,.07);width:100%;max-width:620px}
+.card+.card{margin-top:14px}
+
+/* МАСТЕРСКАЯ ПЕРЕПИСЫВАНИЯ */
+.workshop{
+  background:#f4f9fe;border-radius:18px;padding:20px 18px;
+  border:1px solid #d4e2ec;margin-bottom:18px;
+}
+.ws-block{padding:8px 0}
+.ws-block+.ws-block{border-top:1px dashed #d4e2ec;padding-top:12px;margin-top:4px}
+.ws-tag{
+  font-size:.67rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:1.2px;color:#7a9db5;margin-bottom:8px;
+  display:flex;align-items:center;gap:6px;
+}
+.ws-expr{
+  font-family:'Courier New',monospace;font-size:2.2rem;font-weight:700;
+  letter-spacing:2px;line-height:1.3;word-break:break-all;
+}
+@media(max-width:480px){.ws-expr{font-size:1.65rem}}
+/* Цвета чисел */
+.ep{color:#1d6fa4}   /* positive */
+.en{color:#b91c1c}   /* negative */
+.ez{color:#16a34a}   /* zero */
+.oc{color:#64748b}   /* operator */
+.ac{color:#92400e;background:#fef3c7;border-radius:5px;padding:0 3px} /* action sign highlight */
+
+/* Стрелка-пояснение */
+.ws-arrow{
+  display:flex;align-items:center;gap:8px;
+  font-size:.82rem;font-weight:600;color:#94a3b8;
+  padding:6px 0;
+}
+.ws-arrow-icon{font-size:1.1rem;flex-shrink:0}
+.ws-arrow-ok{color:var(--ok)}
+
+/* ПОЛЕ ВВОДА ПЕРЕПИСЫВАНИЯ */
+.rw-inp{
+  width:100%;padding:10px 14px;font-size:1.05rem;
+  border:2.5px solid var(--border);border-radius:12px;
+  font-family:'Courier New',monospace;font-weight:600;
+  outline:none;transition:border-color .2s;margin-bottom:6px;
+  color:var(--text);
+}
+.rw-inp:focus{border-color:var(--blue)}
+.rw-inp.inp-ok{border-color:var(--ok);background:var(--ok-bg)}
+.rw-inp.inp-err{border-color:var(--err);background:var(--err-bg)}
+.rw-hint{font-size:.75rem;color:var(--muted);margin-bottom:10px}
+.rw-hint code{background:#f1f5f9;border-radius:4px;padding:1px 5px;font-family:'Courier New',monospace}
+
+/* ЧИСЛОВОЙ ВВОД */
+.inp-row{display:flex;justify-content:flex-start;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px}
+.expr-label{font-family:'Courier New',monospace;font-size:1.05rem;font-weight:700;color:var(--text)}
+.m-inp{
+  font-size:1.3rem;width:110px;text-align:center;
+  border:2.5px solid var(--border);border-radius:40px;
+  padding:8px;font-weight:800;font-family:'Courier New',monospace;
+  outline:none;transition:border-color .2s;
+  appearance:textfield;-moz-appearance:textfield;
+}
+.m-inp::-webkit-inner-spin-button,.m-inp::-webkit-outer-spin-button{-webkit-appearance:none}
+.m-inp:focus{border-color:var(--blue)}
+.m-inp.inp-ok{border-color:var(--ok);background:var(--ok-bg)}
+.m-inp.inp-err{border-color:var(--err);background:var(--err-bg)}
+.go-btn{background:var(--blue);border:none;color:#fff;padding:10px 22px;border-radius:40px;font-size:.93rem;font-weight:700;cursor:pointer;transition:.15s;font-family:inherit}
+.go-btn:hover{background:var(--blue-h)}
+.go-btn:disabled{background:var(--muted);cursor:default}
+
+/* ОБРАТНАЯ СВЯЗЬ */
+.fb{border-radius:14px;padding:12px 16px;font-size:.9rem;line-height:1.65;margin-bottom:13px;display:none;animation:fadeIn .3s ease}
+.fb.vis{display:block}
+.fb-ok  {background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--ok-dk)}
+.fb-err {background:var(--err-bg);border-left:4px solid var(--err);color:var(--err-dk)}
+.fb-hint{background:var(--amb-bg);border-left:4px solid var(--amber);color:var(--amb-dk)}
+.fb-info{background:var(--blue-lt);border-left:4px solid var(--blue);color:#0c4a6e}
+
+/* ПРОГРЕСС */
+.pdots{display:flex;gap:6px;justify-content:flex-end;margin-bottom:10px;flex-wrap:wrap}
+.pdot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:.3s;flex-shrink:0}
+.pdot.ok{background:var(--ok)}.pdot.ng{background:var(--err)}.pdot.ac{background:var(--blue);transform:scale(1.35)}.pdot.gd{background:#d4e2ec}
+.prog-wrap{width:100%;max-width:620px;margin-bottom:14px}
+.prog-top{display:flex;justify-content:space-between;font-size:.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px}
+.prog-bar-w{height:7px;background:var(--border);border-radius:4px;overflow:hidden}
+.prog-bar-f{height:100%;background:var(--blue);border-radius:4px;transition:width .4s}
+
+/* КНОПКИ */
+.btn-row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{padding:11px 22px;border:none;border-radius:40px;font-size:.93rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+.btn-p{background:var(--blue);color:#fff}.btn-p:hover{background:var(--blue-h);transform:translateY(-1px)}
+.btn-ok{background:var(--ok);color:#fff}.btn-ok:hover{background:#15803d}
+.btn-g{background:transparent;border:2px solid var(--border);color:var(--text-lt)}.btn-g:hover{border-color:var(--text-lt);color:var(--text)}
+.btn-h{background:var(--amb-bg);color:var(--amb-dk);border:2px solid var(--amber)}.btn-h:hover{background:var(--amber);color:#fff}
+
+/* ПРАВИЛО */
+.rule-card{background:linear-gradient(140deg,#1e3a4e,#2c5c72);border-radius:18px;padding:26px 22px;color:#fff;text-align:center;animation:fadeIn .4s}
+.rule-steps{background:rgba(255,255,255,.1);border-radius:12px;padding:16px 18px;font-size:.95rem;line-height:1.9;margin:12px 0 16px;text-align:left}
+.rule-steps .step{display:flex;gap:10px;align-items:flex-start}
+.rule-steps .step-num{background:rgba(255,255,255,.2);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0;margin-top:2px}
+
+/* РЕЗУЛЬТАТЫ */
+.res-score{text-align:center;padding:4px 0 16px}
+.res-big{font-size:3.8rem;font-weight:900;font-family:'Courier New',monospace}
+.res-big.ex{color:var(--ok)}.res-big.go{color:var(--blue)}.res-big.fa{color:var(--amber)}.res-big.po{color:var(--err)}
+.res-lbl{font-size:.97rem;font-weight:600;color:var(--text-lt);margin-top:4px}
+.err-stat{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.err-s-item{background:var(--err-bg);border-left:3px solid var(--err);border-radius:10px;padding:10px 14px;font-size:.87rem;color:var(--err-dk);display:flex;justify-content:space-between}
+.err-cnt{font-weight:800}
+.divider{height:1px;background:var(--border);margin:16px 0}
+
+/* СТАРТ */
+.start-ico{font-size:2.4rem;margin-bottom:10px;text-align:center}
+.start-ttl{font-size:1.45rem;font-weight:700;margin-bottom:8px;text-align:center}
+.start-sub{font-size:.93rem;color:var(--text-lt);line-height:1.65;margin-bottom:18px;text-align:center}
+.key-idea{background:var(--blue-lt);border-radius:14px;padding:14px 16px;margin-bottom:18px;font-size:.93rem;line-height:1.7;color:#0c4a6e;border-left:4px solid var(--blue)}
+.key-idea strong{color:var(--text)}
+.ex-chain{font-family:'Courier New',monospace;font-size:.95rem;display:flex;flex-direction:column;gap:3px;margin-top:8px;padding:10px 14px;background:rgba(0,0,0,.04);border-radius:10px}
+.mc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mc{border:2px solid var(--border);border-radius:14px;padding:16px;cursor:pointer;transition:all .18s;text-align:center;background:var(--card)}
+.mc:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 5px 14px rgba(44,125,160,.14)}
+.mc-ico{font-size:1.5rem;margin-bottom:6px}.mc-name{font-size:.97rem;font-weight:700;color:var(--text);margin-bottom:4px}.mc-desc{font-size:.76rem;color:var(--text-lt);line-height:1.4}
+
+.mt12{margin-top:12px}.mt16{margin-top:16px}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div>
+    <h1>✏️ Сначала перепиши, потом считай</h1>
+    <p>Боковая миссия · Тренируем привычку: переписать → вычислить</p>
+  </div>
+  <div class="back"><a href="skill-map.html">← Карта</a></div>
+</header>
+
+<div class="mode-bar">
+  <button id="btnL" class="mbtn active" onclick="setMode('learn')">📘 Обучение</button>
+  <button id="btnP" class="mbtn"        onclick="setMode('practice')">⚡ Тренировка</button>
+</div>
+
+<div id="app"></div>
+
+<script>
+/* ══════════════════════ УТИЛИТЫ ═══════════════════════════════ */
+const rand=(lo,hi)=>lo+Math.floor(Math.random()*(hi-lo+1));
+const sfl=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;};
+const ps=n=>n<0?`−${Math.abs(n)}`:`${n}`;
+const nc=n=>n<0?'en':n===0?'ez':'ep';
+
+/* Парсер алгебраической суммы из строки */
+function parseAddends(s){
+  if(!s||!s.trim()) return null;
+  s=s.trim().replace(/[−–]/g,'-').replace(/\s+/g,'').replace(/[()]/g,'');
+  const matches=s.match(/[+-]?\d+/g);
+  if(!matches||matches.some(m=>isNaN(Number(m)))) return null;
+  return matches.map(Number);
+}
+
+/* Содержит ли строка операцию вычитания (не ведущий минус) */
+function hasSubtraction(s){
+  s=s.trim().replace(/[−–]/g,'-').replace(/\s+/g,'').replace(/[()]/g,'');
+  return /\d-/.test(s);
+}
+
+function addendsEqual(a,b){
+  if(!a||!b||a.length!==b.length) return false;
+  const sa=[...a].sort((x,y)=>x-y), sb=[...b].sort((x,y)=>x-y);
+  return sa.every((v,i)=>v===sb[i]);
+}
+
+/* ══════════════════════ ПОСТРОИТЕЛЬ HTML ВЫРАЖЕНИЙ ═══════════ */
+/* Числовое слагаемое → span */
+function addendSpan(v, isFirst){
+  const cls=nc(v), lbl=v<0?`−${Math.abs(v)}`:v===0?'0':`${v}`;
+  if(isFirst) return `<span class="${cls}">${lbl}</span>`;
+  // Wrap negative in parens for non-first
+  if(v<0) return `<span class="oc"> + </span><span class="${cls}">(−${Math.abs(v)})</span>`;
+  return `<span class="oc"> + </span><span class="${cls}">${v}</span>`;
+}
+
+/* Список слагаемых → HTML алгебраической суммы */
+function addendsHTML(addends){
+  return addends.map((v,i)=>addendSpan(v,i===0)).join('');
+}
+
+/* ══════════════════════ ДАННЫЕ: ЗАДАЧИ ОБУЧЕНИЯ ══════════════ */
+/*
+  type: 'simpleSub'   — a − b (b plain positive, no brackets)
+  type: 'bracketPos'  — a − (+b)
+  type: 'bracketNeg'  — a − (−b)  ← KEY
+  type: 'multi'       — 3-term, one subtraction
+*/
+
+const LEARN=[
+  /* 1. Скобка с отрицательным (KEY) */
+  {type:'bracketNeg',
+   origHTML:`<span class="ep">7</span><span class="oc"> − </span><span class="en">(−4)</span>`,
+   origPlain:'7 − (−4)',
+   addends:[7,4], result:11,
+   changeNote:'вычитаем (−4) → прибавляем противоположное к −4, то есть +4',
+   hint:'Противоположное к −4 — это +4. Получаем: 7 + 4.',
+   commonWrong:[7,-4],
+   commonWrongMsg:'Ты написал 7 + (−4). Но мы вычитаем −4, а не прибавляем! Противоположное к −4 — это +4. Пиши: 7 + 4.'},
+
+  /* 2. Скобка с положительным */
+  {type:'bracketPos',
+   origHTML:`<span class="ep">5</span><span class="oc"> − </span>(<span class="ep">+8</span>)`,
+   origPlain:'5 − (+8)',
+   addends:[5,-8], result:-3,
+   changeNote:'вычитаем (+8) → прибавляем противоположное к +8, то есть (−8)',
+   hint:'Вычитание (+8) = прибавление (−8). Получаем: 5 + (−8).',
+   commonWrong:[5,8],
+   commonWrongMsg:'Ты написал 5 + 8. Но мы вычитаем +8, а не прибавляем! Нужно прибавить противоположное: (−8). Пиши: 5 + (−8).'},
+
+  /* 3. Простое вычитание, a отрицательное */
+  {type:'simpleSub',
+   origHTML:`<span class="en">−3</span><span class="oc"> − </span><span class="ep">6</span>`,
+   origPlain:'−3 − 6',
+   addends:[-3,-6], result:-9,
+   changeNote:'вычитаем 6 → прибавляем противоположное к 6, то есть (−6)',
+   hint:'Вычитание 6 = прибавление (−6). Получаем: −3 + (−6).',
+   commonWrong:[-3,6],
+   commonWrongMsg:'Ты написал −3 + 6. Но мы вычитаем 6 — значит прибавляем (−6), не +6. Пиши: −3 + (−6).'},
+
+  /* 4. Простое вычитание, a положительное */
+  {type:'simpleSub',
+   origHTML:`<span class="ep">8</span><span class="oc"> − </span><span class="ep">3</span>`,
+   origPlain:'8 − 3',
+   addends:[8,-3], result:5,
+   changeNote:'вычитаем 3 → прибавляем противоположное: (−3)',
+   hint:'8 − 3 = 8 + (−3). Запишем сложение.',
+   commonWrong:[8,3],
+   commonWrongMsg:'Ты написал 8 + 3 = 11. Но нужно переписать: 8 + (−3). Мы вычитаем, а не прибавляем 3.'},
+
+  /* 5. Трёхчленное: bracketNeg в середине */
+  {type:'multi',
+   origHTML:`<span class="en">−2</span><span class="oc"> − </span><span class="en">(−5)</span><span class="oc"> + </span><span class="ep">3</span>`,
+   origPlain:'−2 − (−5) + 3',
+   addends:[-2,5,3], result:6,
+   changeNote:'вычитаем (−5) → прибавляем +5; остальное не меняем',
+   hint:'Только − (−5) нужно заменить: получим + 5. Остальное не трогаем.',
+   commonWrong:[-2,-5,3],
+   commonWrongMsg:'Ты написал −2 + (−5) + 3. Но мы вычитаем −5. Противоположное к −5 — это +5. Пиши: −2 + 5 + 3.'},
+
+  /* 6. Трёхчленное: bracketPos в середине */
+  {type:'multi',
+   origHTML:`<span class="ep">4</span><span class="oc"> − </span>(<span class="ep">+8</span>)<span class="oc"> + </span><span class="en">(−3)</span>`,
+   origPlain:'4 − (+8) + (−3)',
+   addends:[4,-8,-3], result:-7,
+   changeNote:'вычитаем (+8) → прибавляем (−8); + (−3) уже сложение, не меняем',
+   hint:'Только − (+8) нужно заменить: прибавить (−8). +( −3) уже в правильной форме.',
+   commonWrong:[4,8,-3],
+   commonWrongMsg:'Ты написал 4 + 8 + (−3). Но мы вычитаем (+8), значит прибавляем противоположное: (−8). Пиши: 4 + (−8) + (−3).'},
+];
+
+/* ══════════════════════ ГЕНЕРАТОР ЗАДАЧ ══════════════════════ */
+function genTask(type){
+  let a,bMag,b;
+  switch(type){
+    case 'bracketNeg':{
+      do{a=rand(-9,9);}while(a===0);
+      bMag=rand(2,9);
+      return{type,
+        origHTML:`${aH(a)}<span class="oc"> − </span><span class="en">(−${bMag})</span>`,
+        origPlain:`${ps(a)} − (−${bMag})`,
+        addends:[a,bMag], result:a+bMag,
+        hint:`Вычитаем (−${bMag}). Противоположное к −${bMag} — это +${bMag}. Получаем: ${ps(a)} + ${bMag}.`,
+        commonWrong:[a,-bMag],
+        commonWrongMsg:`Ты оставил −${bMag}. Но противоположное к −${bMag} — это +${bMag}. Вычитание отрицательного = прибавление положительного!`};
+    }
+    case 'bracketPos':{
+      do{a=rand(-9,9);}while(a===0);
+      bMag=rand(2,9);
+      return{type,
+        origHTML:`${aH(a)}<span class="oc"> − </span>(<span class="ep">+${bMag}</span>)`,
+        origPlain:`${ps(a)} − (+${bMag})`,
+        addends:[a,-bMag], result:a-bMag,
+        hint:`Вычитаем (+${bMag}). Противоположное к +${bMag} — это −${bMag}. Получаем: ${ps(a)} + (−${bMag}).`,
+        commonWrong:[a,bMag],
+        commonWrongMsg:`Ты написал +${bMag}. Но мы вычитаем +${bMag}, а не прибавляем! Нужно прибавить противоположное: (−${bMag}).`};
+    }
+    case 'simpleSub':{
+      do{a=rand(-9,9);}while(a===0);
+      bMag=rand(2,9);
+      return{type,
+        origHTML:`${aH(a)}<span class="oc"> − </span><span class="ep">${bMag}</span>`,
+        origPlain:`${ps(a)} − ${bMag}`,
+        addends:[a,-bMag], result:a-bMag,
+        hint:`Вычитание ${bMag} = прибавление (−${bMag}). Получаем: ${ps(a)} + (−${bMag}).`,
+        commonWrong:[a,bMag],
+        commonWrongMsg:`Ты написал +${bMag}. Но мы вычитаем ${bMag}, значит прибавляем противоположное: (−${bMag}).`};
+    }
+    case 'multi':{
+      do{a=rand(-8,8);}while(a===0);
+      bMag=rand(2,8);
+      const c=rand(-8,8,0);
+      const subtype=Math.random()<0.5?'bracketNeg':'simpleSub';
+      if(subtype==='bracketNeg'){
+        return{type,
+          origHTML:`${aH(a)}<span class="oc"> − </span><span class="en">(−${bMag})</span>${cPart(c)}`,
+          origPlain:`${ps(a)} − (−${bMag}) ${c>=0?'+ '+c:'+ ('+ps(c)+')'}`,
+          addends:[a,bMag,c], result:a+bMag+c,
+          hint:`Только − (−${bMag}) нужно заменить на + ${bMag}. Остальное не трогаем.`,
+          commonWrong:[a,-bMag,c],
+          commonWrongMsg:`Ты оставил −${bMag}. Противоположное к −${bMag} — это +${bMag}. Пиши: + ${bMag}.`};
+      } else {
+        return{type,
+          origHTML:`${aH(a)}<span class="oc"> − </span><span class="ep">${bMag}</span>${cPart(c)}`,
+          origPlain:`${ps(a)} − ${bMag} ${c>=0?'+ '+c:'+ ('+ps(c)+')'}`,
+          addends:[a,-bMag,c], result:a-bMag+c,
+          hint:`Только − ${bMag} нужно заменить на + (−${bMag}). Остальное не трогаем.`,
+          commonWrong:[a,bMag,c],
+          commonWrongMsg:`Ты написал +${bMag}. Но мы вычитаем ${bMag}, нужно прибавить противоположное: (−${bMag}).`};
+      }
+    }
+  }
+}
+
+function aH(n){return n<0?`<span class="en">−${Math.abs(n)}</span>`:`<span class="ep">${n}</span>`;}
+function cPart(c){
+  return c<0?`<span class="oc"> + </span><span class="en">(−${Math.abs(c)})</span>`:`<span class="oc"> + </span><span class="ep">${c}</span>`;
+}
+
+/* ══════════════════════ ДИАГНОСТИКА ══════════════════════════ */
+function diagnoseRewrite(task, input){
+  if(!input||!input.trim()) return{code:'empty',msg:'Введи переписанное выражение.'};
+
+  const s=input.trim();
+  const addends=parseAddends(s);
+
+  /* Проверка: ввёл ответ сразу */
+  if(addends&&addends.length===1&&addends[0]===task.result)
+    return{code:'calcFirst',msg:`Ты ввёл уже готовый ответ (${task.result}). Нужно сначала переписать выражение без вычитания, например: <strong>${addendsHTML(task.addends).replace(/<[^>]+>/g,'')}</strong>`};
+
+  /* Остались вычитания в строке */
+  if(hasSubtraction(s))
+    return{code:'stillSub',msg:'Вычитание нужно заменить сложением противоположного числа. В переписанной форме должны быть только плюсы.'};
+
+  /* Не распознано */
+  if(!addends||addends.includes(NaN))
+    return{code:'parse',msg:'Не удалось прочитать выражение. Введи сумму чисел: например, <code>7 + 4</code> или <code>−3 + (−6)</code>.'};
+
+  if(addendsEqual(addends, task.addends)) return null; // CORRECT
+
+  /* Совпадает с типичной ошибкой */
+  if(task.commonWrong&&addendsEqual(addends,task.commonWrong))
+    return{code:'commonWrong',msg:task.commonWrongMsg};
+
+  /* Правильные модули, неверные знаки */
+  const sortExpAbs=[...task.addends].map(Math.abs).sort((a,b)=>a-b);
+  const sortStdAbs=addends.map(Math.abs).sort((a,b)=>a-b);
+  if(JSON.stringify(sortExpAbs)===JSON.stringify(sortStdAbs))
+    return{code:'wrongSign',msg:'Числа правильные, но один или несколько знаков неверны. Проверь: что является противоположным для вычитаемого числа?'};
+
+  return{code:'generic',msg:`Переписывание неверное. Правило: вычитание числа = прибавление противоположного числа. Для выражения <strong>${task.origPlain}</strong> переписанная форма: <strong>${addendsHTML(task.addends).replace(/<[^>]+>/g,'')}</strong>`};
+}
+
+function diagnoseCalc(task, ua){
+  const c=task.result;
+  if(ua===c) return null; // correct
+  if(Math.abs(ua)===Math.abs(c)&&Math.sign(ua)!==Math.sign(c))
+    return{code:'wrongSign',msg:`Переписывание верное, но знак у ответа неверный. ${c<0?'Оба отрицательных → ответ отрицательный.':'Больший модуль у положительного слагаемого → ответ положительный.'}`};
+  const sum=task.addends.reduce((a,b)=>a+b,0);
+  if(ua===task.addends.map(Math.abs).reduce((a,b)=>a+b,0))
+    return{code:'addedAbs',msg:'Ты сложил модули вместо применения правил сложения с разными знаками. Учти знаки слагаемых!'};
+  return{code:'calcErr',msg:`Переписывание верное! Ошибка уже при вычислении. Проверь сложение ${addendsHTML(task.addends).replace(/<[^>]+>/g,'')}.`};
+}
+
+/* ══════════════════════ СОСТОЯНИЕ ════════════════════════════ */
+const S={
+  mode:'learn', screen:'start',
+  lIdx:0, lSubStep:0, lAttempts:0, lHint:false,
+  _lErr:null, _lOkMsg:null, lDotStatus:[],
+  pTasks:[], pIdx:0, pSubStep:0, pAnswers:[],
+  _pErr:null, _pOkMsg:null, _pRwOk:false,
+};
+
+/* ══════════════════════ РЕЖИМ ════════════════════════════════ */
+function setMode(m){
+  S.mode=m; S.screen='start';
+  document.getElementById('btnL').classList.toggle('active',m==='learn');
+  document.getElementById('btnP').classList.toggle('active',m==='practice');
+  render();
+}
+
+/* ══════════════════════ РЕНДЕР ══════════════════════════════ */
+function render(){
+  const app=document.getElementById('app');
+  if(S.screen==='start')        app.innerHTML=buildStart();
+  else if(S.screen==='learn')   app.innerHTML=buildLearn();
+  else if(S.screen==='practice')app.innerHTML=buildPractice();
+  else if(S.screen==='results') app.innerHTML=buildResults();
+  bindInputs();
+}
+
+function bindInputs(){
+  const rw=document.getElementById('rwInp');
+  if(rw) rw.addEventListener('keydown',e=>{if(e.key==='Enter')checkRewrite();});
+  const cal=document.getElementById('calInp');
+  if(cal) cal.addEventListener('keydown',e=>{if(e.key==='Enter')checkCalc();});
+}
+
+/* ── СТАРТ ── */
+function buildStart(){
+  return`<div class="card" style="margin-top:8px">
+    <div class="start-ico">✏️</div>
+    <p class="start-ttl">Сначала перепиши, потом считай</p>
+    <p class="start-sub">Главная привычка: перед вычислением привести выражение к алгебраической сумме. Это защищает от ошибок со знаками.</p>
+    <div class="key-idea">
+      <strong>Алгоритм:</strong><br>
+      1️⃣ Найди все вычитания<br>
+      2️⃣ Замени каждое: <code>− b</code> → <code>+ (−b)</code>, &nbsp; <code>− (−b)</code> → <code>+ b</code><br>
+      3️⃣ Получи алгебраическую сумму<br>
+      4️⃣ Только теперь считай
+      <div class="ex-chain">
+        <span><span style="color:#64748b">Исходно:</span> 7 − (−4)</span>
+        <span><span style="color:#64748b">Перепись:</span> 7 + 4</span>
+        <span><span style="color:#64748b">Ответ:</span> = 11</span>
+      </div>
+    </div>
+    <div class="mc-grid">
+      <div class="mc" onclick="startLearn()">
+        <div class="mc-ico">📘</div>
+        <div class="mc-name">Обучение</div>
+        <div class="mc-desc">6 задач · 2 шага каждая · подробный разбор</div>
+      </div>
+      <div class="mc" onclick="startPractice()">
+        <div class="mc-ico">⚡</div>
+        <div class="mc-name">Тренировка</div>
+        <div class="mc-desc">10 задач всех типов · статистика ошибок</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ── ОБУЧЕНИЕ ── */
+function buildLearn(){
+  if(S.lIdx>=LEARN.length){return buildSummary();}
+  const task=LEARN[S.lIdx];
+  const isLast=S.lIdx===LEARN.length-1;
+
+  /* Шаг 0: переписывание */
+  if(S.lSubStep===0){
+    const fbHtml=S._lErr?`<div class="fb fb-err vis">${S._lErr}</div>`:
+                 S.lHint?`<div class="fb fb-hint vis">💡 ${task.hint}</div>`:'';
+    return`<div class="card" style="margin-top:8px">
+      <div class="pdots">${learnDots()}</div>
+      <div class="workshop">
+        <div class="ws-block">
+          <div class="ws-tag">📝 Исходное выражение</div>
+          <div class="ws-expr">${task.origHTML}</div>
+          <div style="font-size:.78rem;color:#92400e;margin-top:7px;font-weight:600">→ ${task.changeNote}</div>
+        </div>
+        <div class="ws-arrow"><span class="ws-arrow-icon">↓</span> замени вычитание</div>
+        <div class="ws-block">
+          <div class="ws-tag">✏️ Перепиши без вычитания</div>
+          ${fbHtml}
+          <input type="text" class="rw-inp" id="rwInp" placeholder="например: 7 + 4 или −3 + (−6)" autocomplete="off">
+          <div class="rw-hint">Формат: <code>7 + 4</code> или <code>5 + (−8)</code> или <code>−2 + 5 + 3</code></div>
+          <div class="btn-row">
+            <button class="go-btn" onclick="checkRewrite()">Проверить</button>
+            <button class="btn btn-h" onclick="S.lHint=true;render()">💡 Подсказка</button>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row mt12">
+        <button class="btn btn-g" onclick="S.screen='start';render()">К выбору</button>
+      </div>
+    </div>`;
+  }
+
+  /* Шаг 1: вычисление */
+  if(S.lSubStep===1){
+    const rwDisp=addendsHTML(task.addends);
+    const fbHtml=S._lErr?`<div class="fb fb-err vis">${S._lErr}</div>`:
+                 S._lOkMsg?`<div class="fb fb-ok vis">${S._lOkMsg}</div>`:'';
+    return`<div class="card" style="margin-top:8px">
+      <div class="pdots">${learnDots()}</div>
+      <div class="workshop">
+        <div class="ws-block">
+          <div class="ws-tag">📝 Исходное выражение</div>
+          <div class="ws-expr" style="opacity:.55;font-size:1.6rem">${task.origHTML}</div>
+        </div>
+        <div class="ws-arrow"><span class="ws-arrow-icon">↓</span> <span class="ws-arrow-ok">✅ переписано верно</span></div>
+        <div class="ws-block">
+          <div class="ws-tag">✅ Переписанное выражение</div>
+          <div class="ws-expr">${rwDisp}</div>
+        </div>
+        <div class="ws-arrow"><span class="ws-arrow-icon">↓</span> вычисли</div>
+        <div class="ws-block">
+          <div class="ws-tag">🔢 Результат</div>
+          ${fbHtml}
+          <div class="inp-row">
+            <span class="expr-label">${rwDisp.replace(/<[^>]+>/g,'')} =</span>
+            <input type="number" class="m-inp" id="calInp" placeholder="?">
+            <button class="go-btn" onclick="checkCalc()">Проверить</button>
+          </div>
+        </div>
+      </div>
+      <div class="btn-row mt12">
+        <button class="btn btn-g" onclick="S.screen='start';render()">К выбору</button>
+      </div>
+    </div>`;
+  }
+
+  /* Шаг 2: завершено */
+  if(S.lSubStep===2){
+    const rwDisp=addendsHTML(task.addends);
+    const nextBtn=`<button class="btn btn-ok" onclick="nextLearnTask()">${isLast?'К выводу →':'Следующий →'}</button>`;
+    return`<div class="card" style="margin-top:8px">
+      <div class="pdots">${learnDots()}</div>
+      <div class="workshop">
+        <div class="ws-block">
+          <div class="ws-tag">📝 Исходное</div>
+          <div class="ws-expr" style="font-size:1.5rem;opacity:.6">${task.origHTML}</div>
+        </div>
+        <div class="ws-arrow"><span class="ws-arrow-icon">↓</span> <span class="ws-arrow-ok">переписываем</span></div>
+        <div class="ws-block">
+          <div class="ws-tag">✏️ Алгебраическая сумма</div>
+          <div class="ws-expr">${rwDisp}</div>
+        </div>
+        <div class="ws-arrow"><span class="ws-arrow-icon">↓</span> <span class="ws-arrow-ok">вычисляем</span></div>
+        <div class="ws-block">
+          <div class="ws-tag">✅ Ответ</div>
+          <div class="ws-expr"><span class="${nc(task.result)}">${ps(task.result)}</span></div>
+        </div>
+      </div>
+      <div class="btn-row mt12">${nextBtn}<button class="btn btn-g" onclick="S.screen='start';render()">К выбору</button></div>
+    </div>`;
+  }
+  return buildStart();
+}
+
+function buildSummary(){
+  return`<div class="card" style="margin-top:8px">
+    <div class="rule-card">
+      <div style="font-size:2rem;margin-bottom:10px">✏️</div>
+      <div style="font-size:1.25rem;font-weight:700;margin-bottom:12px">Привычка переписывания</div>
+      <div class="rule-steps">
+        <div class="step"><div class="step-num">1</div><div>Найди все знаки <strong>вычитания</strong> (−) между числами</div></div>
+        <div class="step" style="margin-top:8px"><div class="step-num">2</div><div>Замени каждое: <code>−b → +(−b)</code>, <code>−(−b) → +b</code></div></div>
+        <div class="step" style="margin-top:8px"><div class="step-num">3</div><div>Теперь перед тобой <strong>алгебраическая сумма</strong></div></div>
+        <div class="step" style="margin-top:8px"><div class="step-num">4</div><div>Считай по правилам сложения (тренажёры 1–2)</div></div>
+      </div>
+      <div style="font-size:.82rem;opacity:.75;font-style:italic;margin-bottom:16px">
+        Переписывание — это не лишний шаг.<br>Это защита от ошибок со знаками.
+      </div>
+      <div class="btn-row" style="justify-content:center">
+        <button class="btn" style="background:rgba(255,255,255,.25);color:#fff;border:2px solid rgba(255,255,255,.4)" onclick="startPractice()">⚡ К тренировке</button>
+        <button class="btn btn-g" style="border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.7)" onclick="S.screen='start';render()">К выбору</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ── ТРЕНИРОВКА ── */
+function buildPractice(){
+  if(!S.pTasks.length) return buildStart();
+  const task=S.pTasks[S.pIdx];
+  const ok=S.pAnswers.filter(a=>a.rwOk&&a.calOk).length;
+  const ng=S.pAnswers.filter(a=>!(a.rwOk&&a.calOk)).length;
+  const pct=(S.pIdx/S.pTasks.length)*100;
+  const isLast=S.pIdx===S.pTasks.length-1;
+
+  const fbHtml=S._pErr?`<div class="fb fb-err vis">${S._pErr}</div>`:S._pOkMsg?`<div class="fb fb-ok vis">${S._pOkMsg}</div>`:'';
+  const nextBtn=S.pSubStep===2?`<button class="btn btn-ok" onclick="nextPracticeTask()">${isLast?'Посмотреть результаты →':'Следующий →'}</button>`:'';
+
+  let workshopContent='';
+  if(S.pSubStep===0){
+    workshopContent=`
+      <div class="ws-block">
+        <div class="ws-tag">📝 Исходное выражение</div>
+        <div class="ws-expr">${task.origHTML}</div>
+      </div>
+      <div class="ws-arrow"><span class="ws-arrow-icon">↓</span> замени вычитание</div>
+      <div class="ws-block">
+        <div class="ws-tag">✏️ Перепиши</div>
+        ${fbHtml}
+        <input type="text" class="rw-inp" id="rwInp" placeholder="7 + 4 или −3 + (−6)" autocomplete="off">
+        <div class="rw-hint">Введи алгебраическую сумму (только + и числа со знаками)</div>
+        <button class="go-btn" onclick="checkRewrite()">Проверить</button>
+      </div>`;
+  } else if(S.pSubStep===1){
+    const rwDisp=addendsHTML(task.addends);
+    workshopContent=`
+      <div class="ws-block">
+        <div class="ws-tag" style="opacity:.5">📝 Исходное</div>
+        <div class="ws-expr" style="opacity:.45;font-size:1.5rem">${task.origHTML}</div>
+      </div>
+      <div class="ws-arrow"><span class="ws-arrow-icon">↓</span><span class="ws-arrow-ok"> ✅ переписано</span></div>
+      <div class="ws-block">
+        <div class="ws-tag">✏️ Алгебраическая сумма</div>
+        <div class="ws-expr">${rwDisp}</div>
+      </div>
+      <div class="ws-arrow"><span class="ws-arrow-icon">↓</span> вычисли</div>
+      <div class="ws-block">
+        <div class="ws-tag">🔢 Результат</div>
+        ${fbHtml}
+        <div class="inp-row">
+          <input type="number" class="m-inp" id="calInp" placeholder="?">
+          <button class="go-btn" onclick="checkCalc()">Проверить</button>
+        </div>
+      </div>`;
+  } else {
+    const rwDisp=addendsHTML(task.addends);
+    workshopContent=`
+      <div class="ws-block">
+        <div class="ws-expr" style="font-size:1.3rem;opacity:.5">${task.origHTML}</div>
+      </div>
+      <div class="ws-arrow"><span class="ws-arrow-icon">↓</span></div>
+      <div class="ws-block">
+        <div class="ws-expr" style="font-size:1.3rem">${rwDisp}</div>
+      </div>
+      <div class="ws-arrow"><span class="ws-arrow-icon">↓</span></div>
+      <div class="ws-block">
+        <div class="ws-expr"><span class="${nc(task.result)}">${ps(task.result)}</span></div>
+      </div>`;
+  }
+
+  return`
+  <div class="prog-wrap">
+    <div class="prog-top">
+      <span>Тренировка</span>
+      <div style="display:flex;gap:12px">
+        <span style="color:var(--ok);font-weight:700">✓ ${ok}</span>
+        <span style="color:var(--err);font-weight:700">✗ ${ng}</span>
+        <span>${S.pIdx+1} / ${S.pTasks.length}</span>
+      </div>
+    </div>
+    <div class="prog-bar-w"><div class="prog-bar-f" style="width:${pct}%"></div></div>
+  </div>
+  <div class="card">
+    <div class="workshop">${workshopContent}</div>
+    <div class="btn-row mt12">${nextBtn}<button class="btn btn-g" onclick="S.screen='start';render()">К выбору</button></div>
+  </div>`;
+}
+
+/* ── РЕЗУЛЬТАТЫ ── */
+function buildResults(){
+  const total=S.pAnswers.length;
+  const corr=S.pAnswers.filter(a=>a.rwOk&&a.calOk).length;
+  const pct=Math.round(corr/total*100);
+  const sc=pct>=90?'ex':pct>=70?'go':pct>=50?'fa':'po';
+  const slbl=pct>=90?'Привычка переписывания сформирована!':
+             pct>=70?'Хорошо! Есть небольшие зоны роста.':
+             pct>=50?'Половина верно. Продолжай тренироваться.':
+                     'Рекомендую пройти обучение ещё раз.';
+  const EC={
+    calcFirst:'Посчитал ответ без переписывания',
+    stillSub:'Оставил вычитание без замены',
+    commonWrong:'Неверная замена при переписывании',
+    wrongSign:'Ошибка знака при переписывании',
+    calcErr:'Ошибка при вычислении (переписывание верное)',
+    addedAbs:'Сложены модули вместо применения правил',
+  };
+  const misses={};
+  S.pAnswers.forEach(a=>{
+    if(a.errCode) misses[a.errCode]=(misses[a.errCode]||0)+1;
+  });
+  const errHtml=Object.keys(misses).length===0
+    ?`<p style="color:var(--ok);font-weight:600">✓ Все шаги выполнены верно!</p>`
+    :Object.entries(misses).map(([code,cnt])=>`
+      <div class="err-s-item">${EC[code]||code}<span class="err-cnt">${cnt}×</span></div>`).join('');
+  return`<div class="card" style="margin-top:8px">
+    <div class="res-score">
+      <div class="res-big ${sc}">${corr}/${total}</div>
+      <div class="res-lbl">${slbl}</div>
+    </div>
+    <div class="divider"></div>
+    <p style="font-size:.69rem;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:10px">Типы ошибок</p>
+    <div class="err-stat">${errHtml}</div>
+    <div class="divider"></div>
+    <div class="btn-row mt12">
+      <button class="btn btn-p" onclick="startPractice()">Ещё раз</button>
+      <button class="btn btn-g" onclick="startLearn()">Обучение</button>
+      <button class="btn btn-g" onclick="S.screen='start';render()">К выбору</button>
+    </div>
+  </div>`;
+}
+
+/* ══════════════════════ ВСПОМОГАТЕЛЬНЫЕ ══════════════════════ */
+function learnDots(){
+  return LEARN.map((_,i)=>{
+    let cls=i<S.lIdx?'ok':i===S.lIdx?'ac':'gd';
+    if(i<S.lIdx) cls=S.lDotStatus[i]||'ok';
+    return`<div class="pdot ${cls}"></div>`;
+  }).join('');
+}
+
+function shake(id){
+  const el=document.getElementById(id);
+  if(el&&el.animate)el.animate([{transform:'translateX(0)'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(-3px)'},{transform:'translateX(0)'}],{duration:380});
+}
+
+/* ══════════════════════ ОБРАБОТЧИКИ ══════════════════════════ */
+function checkRewrite(){
+  const inp=document.getElementById('rwInp');
+  if(!inp)return;
+  const val=inp.value;
+  const task=S.mode==='learn'?LEARN[S.lIdx]:S.pTasks[S.pIdx];
+
+  const addends=parseAddends(val);
+  const d=diagnoseRewrite(task,val);
+
+  if(!d){ // correct
+    if(S.mode==='learn'){
+      S.lSubStep=1;S._lErr=null;S.lHint=false;S.lAttempts=0;
+    } else {
+      S.pSubStep=1;S._pErr=null;S._pRwOk=true;
+    }
+    render();
+  } else {
+    if(S.mode==='learn'){
+      S.lAttempts++;
+      S._lErr=`❌ ${d.msg}`;
+    } else {
+      S._pErr=`❌ ${d.msg}`;
+      // Record partial failure
+      if(d.code==='calcFirst'||d.code==='stillSub'){
+        // Will record on next answer
+      }
+    }
+    render();shake('rwInp');
+  }
+}
+
+function checkCalc(){
+  const inp=document.getElementById('calInp');
+  if(!inp)return;
+  const ua=parseInt(inp.value.trim().replace('−','-'));
+  if(isNaN(ua)){inp.style.borderColor='#dc2626';setTimeout(()=>inp.style.borderColor='',600);return;}
+  const task=S.mode==='learn'?LEARN[S.lIdx]:S.pTasks[S.pIdx];
+  const d=diagnoseCalc(task,ua);
+
+  if(!d){ // correct
+    if(S.mode==='learn'){
+      S.lSubStep=2;S._lErr=null;S._lOkMsg=null;
+      S.lDotStatus[S.lIdx]='ok';
+    } else {
+      S.pSubStep=2;
+      S._pOkMsg=`✅ Верно! ${task.origPlain} = ${ps(task.result)}.`;
+      S._pErr=null;
+      S.pAnswers.push({rwOk:true,calOk:true,errCode:null});
+    }
+    render();
+  } else {
+    if(S.mode==='learn'){
+      S.lAttempts++;
+      S._lErr=`❌ ${d.msg}`;
+      S._lOkMsg=null;
+    } else {
+      S._pErr=`❌ ${d.msg}`;
+      S._pOkMsg=null;
+      S.pAnswers.push({rwOk:true,calOk:false,errCode:d.code});
+      S.pSubStep=2; // show done state anyway after wrong calc
+    }
+    render();shake('calInp');
+  }
+}
+
+function nextLearnTask(){
+  if(S.lIdx>=LEARN.length-1){S.lIdx=LEARN.length;}
+  else{S.lIdx++;}
+  S.lSubStep=0;S.lAttempts=0;S._lErr=null;S._lOkMsg=null;S.lHint=false;
+  render();
+}
+
+function nextPracticeTask(){
+  if(S.pIdx>=S.pTasks.length-1){S.screen='results';render();return;}
+  S.pIdx++;S.pSubStep=0;S._pErr=null;S._pOkMsg=null;S._pRwOk=false;render();
+}
+
+/* ══════════════════════ ИНИЦИАЛИЗАЦИЯ ══════════════════════════ */
+function startLearn(){
+  S.screen='learn';S.lIdx=0;S.lSubStep=0;S.lAttempts=0;
+  S.lHint=false;S._lErr=null;S._lOkMsg=null;S.lDotStatus=new Array(LEARN.length).fill(null);
+  render();
+}
+
+function startPractice(){
+  S.screen='practice';
+  const pool=[
+    ...sfl(['bracketNeg','bracketNeg','bracketPos','bracketPos','simpleSub','simpleSub','multi','multi']),
+    'bracketNeg','simpleSub'
+  ].slice(0,10);
+  S.pTasks=pool.map(t=>genTask(t));
+  S.pIdx=0;S.pSubStep=0;S.pAnswers=[];
+  S._pErr=null;S._pOkMsg=null;S._pRwOk=false;
+  render();
+}
+
+render();
+</script>
+</body>
+</html>

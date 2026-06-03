@@ -1,0 +1,1250 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Все тренажёры для тестирования — MathExam</title>
+  <style>
+    :root{color-scheme:light;--bg:#f6f7fb;--panel:#fff;--text:#111827;--muted:#64748b;--line:#d9e0ea;--accent:#0f766e;--shadow:0 12px 30px rgba(15,23,42,.08)}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.wrap{width:min(1180px,94vw);margin:0 auto;padding:28px 0 56px}.top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:18px}.crumb{color:var(--muted);font-size:14px;text-decoration:none;font-weight:700}.crumb:hover{color:var(--accent)}h1{margin:8px 0 8px;font-size:clamp(28px,4vw,44px);line-height:1.05}.lead{margin:0;color:var(--muted);font-size:17px;max-width:780px}.count{display:grid;place-items:center;min-width:128px;padding:16px;border:1px solid var(--line);background:var(--panel);box-shadow:var(--shadow);border-radius:8px}.count strong{font-size:32px;line-height:1}.count span{font-size:13px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.04em}.tools{position:sticky;top:0;z-index:5;background:rgba(246,247,251,.94);backdrop-filter:blur(10px);padding:12px 0;margin:18px 0;border-bottom:1px solid var(--line)}input{width:100%;border:1px solid var(--line);border-radius:8px;padding:13px 14px;font:inherit;background:#fff;color:var(--text)}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 10px;font-size:13px;font-weight:800;color:#334155;cursor:pointer}.chip.active{border-color:var(--accent);color:#fff;background:var(--accent)}.section{margin:28px 0}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.section h2{margin:0;font-size:22px}.section-head span{min-width:34px;height:28px;border-radius:999px;background:#e2e8f0;color:#334155;font-weight:900;display:grid;place-items:center}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;min-height:190px}.card h3{margin:0 0 8px;font-size:18px;line-height:1.25}.card p{margin:0 0 12px;color:var(--muted);line-height:1.35}.meta{margin-top:auto;display:grid;gap:5px;color:#7c8798;font-size:12px;word-break:break-word}.card a{margin-top:14px;display:inline-flex;justify-content:center;align-items:center;border-radius:8px;background:var(--text);color:#fff;text-decoration:none;font-weight:900;padding:10px 12px}.card a:hover{background:var(--accent)}.hidden{display:none!important}.empty{display:none;margin:26px 0;padding:20px;border:1px dashed var(--line);background:#fff;border-radius:8px;color:var(--muted);font-weight:800;text-align:center}@media(max-width:700px){.top{display:block}.count{margin-top:16px;display:flex;justify-content:space-between}.grid{grid-template-columns:1fr}.wrap{padding-top:18px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <a class="crumb" href="./">← каталог тренажёров</a>
+    <div class="top">
+      <div>
+        <h1>Все тренажёры для тестирования</h1>
+        <p class="lead">Единый список страниц сайта и архив уникальных HTML-файлов за 5 недель, найденных локально с 29 апреля 2026 года. Архивные версии вынесены отдельно, чтобы не смешивать их с рабочими разделами.</p>
+      </div>
+      <div class="count"><strong id="visibleCount">187</strong><span>страниц</span></div>
+    </div>
+    <div class="tools">
+      <input id="search" type="search" placeholder="Поиск по названию, теме или адресу" autocomplete="off" />
+      <div class="chips" id="chips">
+        <button class="chip active" type="button" data-filter="">Все</button>
+        <button class="chip" type="button" data-filter="ЕГЭ информатика">ЕГЭ информатика</button>
+        <button class="chip" type="button" data-filter="ОГЭ информатика">ОГЭ информатика</button>
+        <button class="chip" type="button" data-filter="ОГЭ математика">ОГЭ математика</button>
+        <button class="chip" type="button" data-filter="Базовая математика">Базовая математика</button>
+        <button class="chip" type="button" data-filter="ЕГЭ профиль и старшие темы">ЕГЭ профиль и старшие темы</button>
+        <button class="chip" type="button" data-filter="Финансовая математика">Финансовая математика</button>
+        <button class="chip" type="button" data-filter="Python">Python</button>
+        <button class="chip" type="button" data-filter="Разное и служебное">Разное и служебное</button>
+        <button class="chip" type="button" data-filter="Архив 5 недель">Архив 5 недель</button>
+      </div>
+    </div>
+    <div class="empty" id="empty">Ничего не найдено</div>
+
+    <section class="section" data-section="ЕГЭ информатика">
+      <div class="section-head"><h2>ЕГЭ информатика</h2><span>13</span></div>
+      <div class="grid">
+        <article class="card" data-card data-title="егэ информатика 19-20-21 егэ информатика: задания 19-20-21 trainers/ege-informatics-19-21-fipi.html">
+          <h3>ЕГЭ информатика 19-20-21</h3>
+          <p>ЕГЭ информатика: задания 19-20-21</p>
+          <div class="meta"><span>trainers/ege-informatics-19-21-fipi.html</span><span>152 КБ</span></div>
+          <a href="./ege-informatics-19-21-fipi.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="задание 15: алгебра логики — большой тренажёр trainers/logic-trainer/ trainers/logic-trainer/">
+          <h3>Задание 15: алгебра логики — большой тренажёр</h3>
+          <p>trainers/logic-trainer/</p>
+          <div class="meta"><span>trainers/logic-trainer/</span><span>папка</span></div>
+          <a href="./logic-trainer/">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="задачи на машину тьюринга trainers/turing-trainer-modular-checked.html trainers/turing-trainer-modular-checked.html">
+          <h3>Задачи на машину Тьюринга</h3>
+          <p>trainers/turing-trainer-modular-checked.html</p>
+          <div class="meta"><span>trainers/turing-trainer-modular-checked.html</span><span>144 КБ</span></div>
+          <a href="./turing-trainer-modular-checked.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="задачи на машину тьюринга trainers/turing-trainer-modular-v3.html trainers/turing-trainer-modular-v3.html">
+          <h3>Задачи на машину Тьюринга</h3>
+          <p>trainers/turing-trainer-modular-v3.html</p>
+          <div class="meta"><span>trainers/turing-trainer-modular-v3.html</span><span>157 КБ</span></div>
+          <a href="./turing-trainer-modular-v3.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="задачи на машину тьюринга задачи на машину тьюринга учебная beta-версия · тренажёр развивается trainers/turing-trainer-polish.html">
+          <h3>Задачи на машину Тьюринга</h3>
+          <p>Задачи на машину Тьюринга учебная beta-версия · тренажёр развивается</p>
+          <div class="meta"><span>trainers/turing-trainer-polish.html</span><span>360 КБ</span></div>
+          <a href="./turing-trainer-polish.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="задачи на машину тьюринга trainers/turing-trainer-student.html trainers/turing-trainer-student.html">
+          <h3>Задачи на машину Тьюринга</h3>
+          <p>trainers/turing-trainer-student.html</p>
+          <div class="meta"><span>trainers/turing-trainer-student.html</span><span>65 КБ</span></div>
+          <a href="./turing-trainer-student.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="задачи на машину тьюринга задачи на машину тьюринга учебная beta-версия · тренажёр развивается trainers/turing-trainer-universal.html">
+          <h3>Задачи на машину Тьюринга</h3>
+          <p>Задачи на машину Тьюринга учебная beta-версия · тренажёр развивается</p>
+          <div class="meta"><span>trainers/turing-trainer-universal.html</span><span>339 КБ</span></div>
+          <a href="./turing-trainer-universal.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="задачи на машину тьюринга trainers/turing-trainer-upgrade.html trainers/turing-trainer-upgrade.html">
+          <h3>Задачи на машину Тьюринга</h3>
+          <p>trainers/turing-trainer-upgrade.html</p>
+          <div class="meta"><span>trainers/turing-trainer-upgrade.html</span><span>242 КБ</span></div>
+          <a href="./turing-trainer-upgrade.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="логические операции и законы — интерактивный тренажёр логические операции и законы trainers/ege-informatics-task15-logic-operations.html">
+          <h3>Логические операции и законы — интерактивный тренажёр</h3>
+          <p>Логические операции и законы</p>
+          <div class="meta"><span>trainers/ege-informatics-task15-logic-operations.html</span><span>155 КБ</span></div>
+          <a href="./ege-informatics-task15-logic-operations.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="логические операции и законы — мини-тренажёр логические операции и законы trainers/ege-informatics-task15-logic-operations-mini.html">
+          <h3>Логические операции и законы — мини-тренажёр</h3>
+          <p>Логические операции и законы</p>
+          <div class="meta"><span>trainers/ege-informatics-task15-logic-operations-mini.html</span><span>75 КБ</span></div>
+          <a href="./ege-informatics-task15-logic-operations-mini.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр · егэ информатика · задание 1 (графы) задание ${t.seq} trainers/ege-informatics-task1-graphs-trainer.html">
+          <h3>Тренажёр · ЕГЭ Информатика · Задание 1 (графы)</h3>
+          <p>Задание ${t.seq}</p>
+          <div class="meta"><span>trainers/ege-informatics-task1-graphs-trainer.html</span><span>1747 КБ</span></div>
+          <a href="./ege-informatics-task1-graphs-trainer.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="фипи егэ информатика: задание 1 фипи егэ по информатике: задание 1 trainers/fipi-ege-informatics-task1-report.html">
+          <h3>ФИПИ ЕГЭ информатика: задание 1</h3>
+          <p>ФИПИ ЕГЭ по информатике: задание 1</p>
+          <div class="meta"><span>trainers/fipi-ege-informatics-task1-report.html</span><span>361 КБ</span></div>
+          <a href="./fipi-ege-informatics-task1-report.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="яндекс егэ информатика 19-21 яндекс егэ информатика: связки 19-20-21 trainers/ege-informatics-19-21-yandex.html">
+          <h3>Яндекс ЕГЭ информатика 19-21</h3>
+          <p>Яндекс ЕГЭ информатика: связки 19-20-21</p>
+          <div class="meta"><span>trainers/ege-informatics-19-21-yandex.html</span><span>492 КБ</span></div>
+          <a href="./ege-informatics-19-21-yandex.html">Открыть</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" data-section="ОГЭ информатика">
+      <div class="section-head"><h2>ОГЭ информатика</h2><span>2</span></div>
+      <div class="grid">
+        <article class="card" data-card data-title="тренажёр огэ по информатике: задания 1–10 быстрый тренажёр заданий 1–10 trainers/oge-informatics-1-10-tutor.html">
+          <h3>Тренажёр ОГЭ по информатике: задания 1–10</h3>
+          <p>Быстрый тренажёр заданий 1–10</p>
+          <div class="meta"><span>trainers/oge-informatics-1-10-tutor.html</span><span>122 КБ</span></div>
+          <a href="./oge-informatics-1-10-tutor.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="фипи огэ информатика: сбор заданий фипи огэ по информатике: задания из открытого банка trainers/fipi-oge-informatics-report.html">
+          <h3>ФИПИ ОГЭ информатика: сбор заданий</h3>
+          <p>ФИПИ ОГЭ по информатике: задания из открытого банка</p>
+          <div class="meta"><span>trainers/fipi-oge-informatics-report.html</span><span>213 КБ</span></div>
+          <a href="./fipi-oge-informatics-report.html">Открыть</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" data-section="ОГЭ математика">
+      <div class="section-head"><h2>ОГЭ математика</h2><span>12</span></div>
+      <div class="grid">
+        <article class="card" data-card data-title="огэ №14 — прогрессии (пошаговый тренажёр) огэ №14 — прогрессии trainers/task14-progressions-trainer.html">
+          <h3>ОГЭ №14 — прогрессии (пошаговый тренажёр)</h3>
+          <p>ОГЭ №14 — прогрессии</p>
+          <div class="meta"><span>trainers/task14-progressions-trainer.html</span><span>58 КБ</span></div>
+          <a href="./task14-progressions-trainer.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №14 — прогрессии (тренажёр) огэ №14 — прогрессии (тренажёр по вашему банку) trainers/trainers/task14-progressions-trainer.html">
+          <h3>ОГЭ №14 — Прогрессии (тренажёр)</h3>
+          <p>ОГЭ №14 — Прогрессии (тренажёр по вашему банку)</p>
+          <div class="meta"><span>trainers/trainers/task14-progressions-trainer.html</span><span>17 КБ</span></div>
+          <a href="./trainers/task14-progressions-trainer.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №14 — тренажёр прогрессий trainers/task14-progressions-trainer_old.html trainers/task14-progressions-trainer_old.html">
+          <h3>ОГЭ №14 — тренажёр прогрессий</h3>
+          <p>trainers/task14-progressions-trainer_old.html</p>
+          <div class="meta"><span>trainers/task14-progressions-trainer_old.html</span><span>4 КБ</span></div>
+          <a href="./task14-progressions-trainer_old.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №14 — тренажёр прогрессий (банк) огэ №14 — прогрессии trainers/task14-progressions-trainer_old_steps.html">
+          <h3>ОГЭ №14 — тренажёр прогрессий (банк)</h3>
+          <p>ОГЭ №14 — прогрессии</p>
+          <div class="meta"><span>trainers/task14-progressions-trainer_old_steps.html</span><span>2 КБ</span></div>
+          <a href="./task14-progressions-trainer_old_steps.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №19 — тренажёр «умной зубрёжки» trainers/task19-trainer.html trainers/task19-trainer.html">
+          <h3>ОГЭ №19 — тренажёр «умной зубрёжки»</h3>
+          <p>trainers/task19-trainer.html</p>
+          <div class="meta"><span>trainers/task19-trainer.html</span><span>12 КБ</span></div>
+          <a href="./task19-trainer.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №19 — экспорт утверждений tools/task19-statements-export.html tools/task19-statements-export.html">
+          <h3>ОГЭ №19 — экспорт утверждений</h3>
+          <p>tools/task19-statements-export.html</p>
+          <div class="meta"><span>tools/task19-statements-export.html</span><span>9 КБ</span></div>
+          <a href="../tools/task19-statements-export.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №19: верные и неверные утверждения trainers/geometry_statements_trainer_improved.html trainers/geometry_statements_trainer_improved.html">
+          <h3>ОГЭ №19: верные и неверные утверждения</h3>
+          <p>trainers/geometry_statements_trainer_improved.html</p>
+          <div class="meta"><span>trainers/geometry_statements_trainer_improved.html</span><span>195 КБ</span></div>
+          <a href="./geometry_statements_trainer_improved.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ. задание 10 — теория вероятностей | math exam fipi math exam fipi oge/probability/task-10-probability.html">
+          <h3>ОГЭ. Задание 10 — Теория вероятностей | Math Exam FIPI</h3>
+          <p>Math Exam FIPI</p>
+          <div class="meta"><span>oge/probability/task-10-probability.html</span><span>6 КБ</span></div>
+          <a href="../oge/probability/task-10-probability.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ. задание 14 — последовательности | math exam fipi math exam fipi oge/algebra/task-14-sequences.html">
+          <h3>ОГЭ. Задание 14 — Последовательности | Math Exam FIPI</h3>
+          <p>Math Exam FIPI</p>
+          <div class="meta"><span>oge/algebra/task-14-sequences.html</span><span>7 КБ</span></div>
+          <a href="../oge/algebra/task-14-sequences.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ. задание 15 — внешний угол треугольника | math exam fipi math exam fipi oge/geometry/task-15-external-angle.html">
+          <h3>ОГЭ. Задание 15 — Внешний угол треугольника | Math Exam FIPI</h3>
+          <p>Math Exam FIPI</p>
+          <div class="meta"><span>oge/geometry/task-15-external-angle.html</span><span>11 КБ</span></div>
+          <a href="../oge/geometry/task-15-external-angle.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ. задание 9 — линейные уравнения | math exam fipi math exam fipi oge/algebra/task-09-linear-equations.html">
+          <h3>ОГЭ. Задание 9 — Линейные уравнения | Math Exam FIPI</h3>
+          <p>Math Exam FIPI</p>
+          <div class="meta"><span>oge/algebra/task-09-linear-equations.html</span><span>5 КБ</span></div>
+          <a href="../oge/algebra/task-09-linear-equations.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="шины · тренажёр 1–5 шины · маркировка и геометрия колеса trainers/practice-1-5-tires.html">
+          <h3>Шины · тренажёр 1–5</h3>
+          <p>Шины · маркировка и геометрия колеса</p>
+          <div class="meta"><span>trainers/practice-1-5-tires.html</span><span>142 КБ</span></div>
+          <a href="./practice-1-5-tires.html">Открыть</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" data-section="Базовая математика">
+      <div class="section-head"><h2>Базовая математика</h2><span>37</span></div>
+      <div class="grid">
+        <article class="card" data-card data-title="биссектриса угла — тренажёр trainers/bisector-trainer-v2.html trainers/bisector-trainer-v2.html">
+          <h3>Биссектриса угла — тренажёр</h3>
+          <p>trainers/bisector-trainer-v2.html</p>
+          <div class="meta"><span>trainers/bisector-trainer-v2.html</span><span>16 КБ</span></div>
+          <a href="./bisector-trainer-v2.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="деление уголком trainers/long-division-stepwise.html trainers/long-division-stepwise.html">
+          <h3>Деление уголком</h3>
+          <p>trainers/long-division-stepwise.html</p>
+          <div class="meta"><span>trainers/long-division-stepwise.html</span><span>8 КБ</span></div>
+          <a href="./long-division-stepwise.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="деление уголком — тетрадный вид (css) деление уголком — тетрадный вид trainers/trainers/long-division-notebook-css.html">
+          <h3>Деление уголком — тетрадный вид (CSS)</h3>
+          <p>Деление уголком — тетрадный вид</p>
+          <div class="meta"><span>trainers/trainers/long-division-notebook-css.html</span><span>35 КБ</span></div>
+          <a href="./trainers/long-division-notebook-css.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="деление уголком (тетрадный формат) — тренажёр деление уголком — тетрадный формат trainers/trainers/long-division.html">
+          <h3>Деление уголком (тетрадный формат) — тренажёр</h3>
+          <p>Деление уголком — тетрадный формат</p>
+          <div class="meta"><span>trainers/trainers/long-division.html</span><span>26 КБ</span></div>
+          <a href="./trainers/long-division.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="касса разрядов trainers/decimal-cash-trainer.html trainers/decimal-cash-trainer.html">
+          <h3>Касса разрядов</h3>
+          <p>trainers/decimal-cash-trainer.html</p>
+          <div class="meta"><span>trainers/decimal-cash-trainer.html</span><span>11 КБ</span></div>
+          <a href="./decimal-cash-trainer.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="квадратные неравенства — парабола и интервалы trainers/quadratic-inequalities-lab.html trainers/quadratic-inequalities-lab.html">
+          <h3>Квадратные неравенства — парабола и интервалы</h3>
+          <p>trainers/quadratic-inequalities-lab.html</p>
+          <div class="meta"><span>trainers/quadratic-inequalities-lab.html</span><span>15 КБ</span></div>
+          <a href="./quadratic-inequalities-lab.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="квадратные неравенства: парабола и промежутки trainers/quadratic-inequalities-visual.html trainers/quadratic-inequalities-visual.html">
+          <h3>Квадратные неравенства: парабола и промежутки</h3>
+          <p>trainers/quadratic-inequalities-visual.html</p>
+          <div class="meta"><span>trainers/quadratic-inequalities-visual.html</span><span>21 КБ</span></div>
+          <a href="./quadratic-inequalities-visual.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="кто сильнее по модулю? ⚔ кто сильнее по модулю? trainers/who-is-stronger.html">
+          <h3>Кто сильнее по модулю?</h3>
+          <p>⚔ Кто сильнее по модулю?</p>
+          <div class="meta"><span>trainers/who-is-stronger.html</span><span>32 КБ</span></div>
+          <a href="./who-is-stronger.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="лаборатория подобных слагаемых 🧪 лаборатория подобных слагаемых trainers/like-terms-lab.html">
+          <h3>Лаборатория подобных слагаемых</h3>
+          <p>🧪 Лаборатория подобных слагаемых</p>
+          <div class="meta"><span>trainers/like-terms-lab.html</span><span>18 КБ</span></div>
+          <a href="./like-terms-lab.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="линейная функция y = kx + b 📈 линейная функция trainers/linear-function-lab.html">
+          <h3>Линейная функция y = kx + b</h3>
+          <p>📈 Линейная функция</p>
+          <div class="meta"><span>trainers/linear-function-lab.html</span><span>15 КБ</span></div>
+          <a href="./linear-function-lab.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="линейные неравенства trainers/linear-inequalities-stepwise.html trainers/linear-inequalities-stepwise.html">
+          <h3>Линейные неравенства</h3>
+          <p>trainers/linear-inequalities-stepwise.html</p>
+          <div class="meta"><span>trainers/linear-inequalities-stepwise.html</span><span>9 КБ</span></div>
+          <a href="./linear-inequalities-stepwise.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="линейные неравенства: переносы и знак trainers/linear-inequalities-basic.html trainers/linear-inequalities-basic.html">
+          <h3>Линейные неравенства: переносы и знак</h3>
+          <p>trainers/linear-inequalities-basic.html</p>
+          <div class="meta"><span>trainers/linear-inequalities-basic.html</span><span>18 КБ</span></div>
+          <a href="./linear-inequalities-basic.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="маршрут максима — 5 класс округление и десятичные дроби trainers/maxim-5-rounding-decimals.html">
+          <h3>Маршрут Максима — 5 класс</h3>
+          <p>Округление и десятичные дроби</p>
+          <div class="meta"><span>trainers/maxim-5-rounding-decimals.html</span><span>9 КБ</span></div>
+          <a href="./maxim-5-rounding-decimals.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="маршрут максима — 5 класс округление и числа с разными знаками trainers/maxim-5-rounding-signs.html">
+          <h3>Маршрут Максима — 5 класс</h3>
+          <p>Округление и числа с разными знаками</p>
+          <div class="meta"><span>trainers/maxim-5-rounding-signs.html</span><span>11 КБ</span></div>
+          <a href="./maxim-5-rounding-signs.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="маршрут маруси на вторник — mathexam.space маруся: один понятный путь trainers/marusya-test-map.html">
+          <h3>Маршрут Маруси на вторник — Mathexam.space</h3>
+          <p>Маруся: один понятный путь</p>
+          <div class="meta"><span>trainers/marusya-test-map.html</span><span>13 КБ</span></div>
+          <a href="./marusya-test-map.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="неравенства: читаем числовую прямую trainers/inequalities-number-line-reader.html trainers/inequalities-number-line-reader.html">
+          <h3>Неравенства: читаем числовую прямую</h3>
+          <p>trainers/inequalities-number-line-reader.html</p>
+          <div class="meta"><span>trainers/inequalities-number-line-reader.html</span><span>23 КБ</span></div>
+          <a href="./inequalities-number-line-reader.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №13 — серия тренажёров по неравенствам trainers/oge13-inequalities-series.html trainers/oge13-inequalities-series.html">
+          <h3>ОГЭ №13 — серия тренажёров по неравенствам</h3>
+          <p>trainers/oge13-inequalities-series.html</p>
+          <div class="meta"><span>trainers/oge13-inequalities-series.html</span><span>23 КБ</span></div>
+          <a href="./oge13-inequalities-series.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="округление чисел — тренажёр округление чисел trainers/rounding-stepwise.html">
+          <h3>Округление чисел — тренажёр</h3>
+          <p>Округление чисел</p>
+          <div class="meta"><span>trainers/rounding-stepwise.html</span><span>14 КБ</span></div>
+          <a href="./rounding-stepwise.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="отрицательные числа — версия с маркером trainers/negative-numbers-alternative.html trainers/negative-numbers-alternative.html">
+          <h3>Отрицательные числа — версия с маркером</h3>
+          <p>trainers/negative-numbers-alternative.html</p>
+          <div class="meta"><span>trainers/negative-numbers-alternative.html</span><span>15 КБ</span></div>
+          <a href="./negative-numbers-alternative.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="отрицательные числа — числовая прямая отрицательные числа: числовая прямая trainers/negative-numbers-line.html">
+          <h3>Отрицательные числа — числовая прямая</h3>
+          <p>Отрицательные числа: числовая прямая</p>
+          <div class="meta"><span>trainers/negative-numbers-line.html</span><span>17 КБ</span></div>
+          <a href="./negative-numbers-line.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="приведение подобных слагаемых 🧩 приведение подобных trainers/like-terms-trainer.html">
+          <h3>Приведение подобных слагаемых</h3>
+          <p>🧩 Приведение подобных</p>
+          <div class="meta"><span>trainers/like-terms-trainer.html</span><span>15 КБ</span></div>
+          <a href="./like-terms-trainer.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="простые уравнения — пошаговый тренажёр простые уравнения trainers/simple-equations-stepwise.html">
+          <h3>Простые уравнения — пошаговый тренажёр</h3>
+          <p>Простые уравнения</p>
+          <div class="meta"><span>trainers/simple-equations-stepwise.html</span><span>12 КБ</span></div>
+          <a href="./simple-equations-stepwise.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="середина отрезка — jsxgraph тренажёр trainers/jsxgraph-midpoint.html trainers/jsxgraph-midpoint.html">
+          <h3>Середина отрезка — JSXGraph тренажёр</h3>
+          <p>trainers/jsxgraph-midpoint.html</p>
+          <div class="meta"><span>trainers/jsxgraph-midpoint.html</span><span>10 КБ</span></div>
+          <a href="./jsxgraph-midpoint.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="системы линейных уравнений trainers/linear-systems-trainer.html trainers/linear-systems-trainer.html">
+          <h3>Системы линейных уравнений</h3>
+          <p>trainers/linear-systems-trainer.html</p>
+          <div class="meta"><span>trainers/linear-systems-trainer.html</span><span>19 КБ</span></div>
+          <a href="./linear-systems-trainer.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="собери решение уравнения — mathexam.space 🧩 собери решение уравнения trainers/equations-builder.html">
+          <h3>Собери решение уравнения — Mathexam.space</h3>
+          <p>🧩 Собери решение уравнения</p>
+          <div class="meta"><span>trainers/equations-builder.html</span><span>17 КБ</span></div>
+          <a href="./equations-builder.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="таблица умножения — «лифт» (спринт) таблица умножения — «лифт» trainers/multiplication-table/elevator-sprint.html">
+          <h3>Таблица умножения — «Лифт» (спринт)</h3>
+          <p>Таблица умножения — «Лифт»</p>
+          <div class="meta"><span>trainers/multiplication-table/elevator-sprint.html</span><span>29 КБ</span></div>
+          <a href="./multiplication-table/elevator-sprint.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр округления — v5 тренажёр округления v5 rounding-fresh-v5.html">
+          <h3>Тренажёр округления — v5</h3>
+          <p>Тренажёр округления v5</p>
+          <div class="meta"><span>rounding-fresh-v5.html</span><span>24 КБ</span></div>
+          <a href="../rounding-fresh-v5.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр округления — v5 тренажёр округления v5 rounding-fresh.html">
+          <h3>Тренажёр округления — v5</h3>
+          <p>Тренажёр округления v5</p>
+          <div class="meta"><span>rounding-fresh.html</span><span>24 КБ</span></div>
+          <a href="../rounding-fresh.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр округления — v6 тренажёр округления v6 rounding-fresh-v6.html">
+          <h3>Тренажёр округления — v6</h3>
+          <p>Тренажёр округления v6</p>
+          <div class="meta"><span>rounding-fresh-v6.html</span><span>31 КБ</span></div>
+          <a href="../rounding-fresh-v6.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр округления — v7 тренажёр округления v7 rounding-fresh-v7.html">
+          <h3>Тренажёр округления — v7</h3>
+          <p>Тренажёр округления v7</p>
+          <div class="meta"><span>rounding-fresh-v7.html</span><span>37 КБ</span></div>
+          <a href="../rounding-fresh-v7.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр округления — v8 тренажёр округления v8 rounding-fresh-v8.html">
+          <h3>Тренажёр округления — v8</h3>
+          <p>Тренажёр округления v8</p>
+          <div class="meta"><span>rounding-fresh-v8.html</span><span>39 КБ</span></div>
+          <a href="../rounding-fresh-v8.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр округления чисел — mathexam.space 🔢 тренажёр округления чисел rounding.html">
+          <h3>Тренажёр округления чисел — mathexam.space</h3>
+          <p>🔢 Тренажёр округления чисел</p>
+          <div class="meta"><span>rounding.html</span><span>36 КБ</span></div>
+          <a href="../rounding.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр округления v2 rounding-v2.html rounding-v2.html">
+          <h3>Тренажёр округления v2</h3>
+          <p>rounding-v2.html</p>
+          <div class="meta"><span>rounding-v2.html</span><span>4 КБ</span></div>
+          <a href="../rounding-v2.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: торможение и прыжки (лесенка и деление) тренажёр огэ: торможение и прыжки — “лесенка” и “деление” trainers/braking-bounces-step.html">
+          <h3>Тренажёр: торможение и прыжки (лесенка и деление)</h3>
+          <p>Тренажёр ОГЭ: торможение и прыжки — “лесенка” и “деление”</p>
+          <div class="meta"><span>trainers/braking-bounces-step.html</span><span>39 КБ</span></div>
+          <a href="./braking-bounces-step.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="умножение столбиком — огэ тренажёр умножение столбиком — “жёсткий” огэ-режим (переносы по шагам) trainers/trainers/long-multiplication.html">
+          <h3>Умножение столбиком — ОГЭ тренажёр</h3>
+          <p>Умножение столбиком — “жёсткий” ОГЭ-режим (переносы по шагам)</p>
+          <div class="meta"><span>trainers/trainers/long-multiplication.html</span><span>21 КБ</span></div>
+          <a href="./trainers/long-multiplication.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="фабрика подобных слагаемых 🏭 фабрика подобных слагаемых trainers/like-terms-factory.html">
+          <h3>Фабрика подобных слагаемых</h3>
+          <p>🏭 Фабрика подобных слагаемых</p>
+          <div class="meta"><span>trainers/like-terms-factory.html</span><span>17 КБ</span></div>
+          <a href="./like-terms-factory.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="элементарные неравенства на числовой прямой trainers/inequalities-number-line.html trainers/inequalities-number-line.html">
+          <h3>Элементарные неравенства на числовой прямой</h3>
+          <p>trainers/inequalities-number-line.html</p>
+          <div class="meta"><span>trainers/inequalities-number-line.html</span><span>11 КБ</span></div>
+          <a href="./inequalities-number-line.html">Открыть</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" data-section="ЕГЭ профиль и старшие темы">
+      <div class="section-head"><h2>ЕГЭ профиль и старшие темы</h2><span>8</span></div>
+      <div class="grid">
+        <article class="card" data-card data-title="вероника · логарифмы и модули вероника · линейка по логарифмам trainers/veronika-logarithms.html">
+          <h3>Вероника · логарифмы и модули</h3>
+          <p>Вероника · линейка по логарифмам</p>
+          <div class="meta"><span>trainers/veronika-logarithms.html</span><span>27 КБ</span></div>
+          <a href="./veronika-logarithms.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="вероника: логарифмы и модули вероника · линейка по логарифмам trainers/veronika-log-line.html">
+          <h3>Вероника: логарифмы и модули</h3>
+          <p>Вероника · линейка по логарифмам</p>
+          <div class="meta"><span>trainers/veronika-log-line.html</span><span>15 КБ</span></div>
+          <a href="./veronika-log-line.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="логарифмический радар trainers/logarithm-radar-basic.html trainers/logarithm-radar-basic.html">
+          <h3>Логарифмический радар</h3>
+          <p>trainers/logarithm-radar-basic.html</p>
+          <div class="meta"><span>trainers/logarithm-radar-basic.html</span><span>19 КБ</span></div>
+          <a href="./logarithm-radar-basic.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: сумма синусов и косинусов → произведение trainers/trig-sum-to-product-trainer-updated.html trainers/trig-sum-to-product-trainer-updated.html">
+          <h3>Тренажёр: сумма синусов и косинусов → произведение</h3>
+          <p>trainers/trig-sum-to-product-trainer-updated.html</p>
+          <div class="meta"><span>trainers/trig-sum-to-product-trainer-updated.html</span><span>142 КБ</span></div>
+          <a href="./trig-sum-to-product-trainer-updated.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: сумма синусов и косинусов → произведение trainers/trig-sum-to-product-trainer.html trainers/trig-sum-to-product-trainer.html">
+          <h3>Тренажёр: сумма синусов и косинусов → произведение</h3>
+          <p>trainers/trig-sum-to-product-trainer.html</p>
+          <div class="meta"><span>trainers/trig-sum-to-product-trainer.html</span><span>144 КБ</span></div>
+          <a href="./trig-sum-to-product-trainer.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: сумма синусов и косинусов → произведение trainers/trig-sum-to-product-trainer.html.html trainers/trig-sum-to-product-trainer.html.html">
+          <h3>Тренажёр: сумма синусов и косинусов → произведение</h3>
+          <p>trainers/trig-sum-to-product-trainer.html.html</p>
+          <div class="meta"><span>trainers/trig-sum-to-product-trainer.html.html</span><span>144 КБ</span></div>
+          <a href="./trig-sum-to-product-trainer.html.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: сумма синусов и косинусов → произведение trig-sum-to-product-trainer(1).html trig-sum-to-product-trainer(1).html">
+          <h3>Тренажёр: сумма синусов и косинусов → произведение</h3>
+          <p>trig-sum-to-product-trainer(1).html</p>
+          <div class="meta"><span>trig-sum-to-product-trainer(1).html</span><span>82 КБ</span></div>
+          <a href="../trig-sum-to-product-trainer(1).html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: сумма синусов и косинусов → произведение trig-sum-to-product-trainer(2).html trig-sum-to-product-trainer(2).html">
+          <h3>Тренажёр: сумма синусов и косинусов → произведение</h3>
+          <p>trig-sum-to-product-trainer(2).html</p>
+          <div class="meta"><span>trig-sum-to-product-trainer(2).html</span><span>142 КБ</span></div>
+          <a href="../trig-sum-to-product-trainer(2).html">Открыть</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" data-section="Финансовая математика">
+      <div class="section-head"><h2>Финансовая математика</h2><span>4</span></div>
+      <div class="grid">
+        <article class="card" data-card data-title="дифференцированные платежи — табличный тренажёр | mathexam.space дифференцированные платежи trainers/credit-differential-payment-trainer.html">
+          <h3>Дифференцированные платежи — табличный тренажёр | Mathexam.space</h3>
+          <p>Дифференцированные платежи</p>
+          <div class="meta"><span>trainers/credit-differential-payment-trainer.html</span><span>59 КБ</span></div>
+          <a href="./credit-differential-payment-trainer.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="кредиты и платежи — тренажёр кредиты и платежи trainers/credit-payment-table-trainer.html">
+          <h3>Кредиты и платежи — тренажёр</h3>
+          <p>Кредиты и платежи</p>
+          <div class="meta"><span>trainers/credit-payment-table-trainer.html</span><span>19 КБ</span></div>
+          <a href="./credit-payment-table-trainer.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: кредиты и вклады — mathexam.space тренажёр: кредиты и вклады credit-payment-table-trainer.html">
+          <h3>Тренажёр: Кредиты и вклады — Mathexam.space</h3>
+          <p>Тренажёр: Кредиты и вклады</p>
+          <div class="meta"><span>credit-payment-table-trainer.html</span><span>104 КБ</span></div>
+          <a href="../credit-payment-table-trainer.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="финансовая математика: нестандартные схемы — mathexam.space финансовая математика: нестандартные схемы trainers/finance-nonstandard-trainer.html">
+          <h3>Финансовая математика: нестандартные схемы — Mathexam.space</h3>
+          <p>Финансовая математика: нестандартные схемы</p>
+          <div class="meta"><span>trainers/finance-nonstandard-trainer.html</span><span>124 КБ</span></div>
+          <a href="./finance-nonstandard-trainer.html">Открыть</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" data-section="Python">
+      <div class="section-head"><h2>Python</h2><span>2</span></div>
+      <div class="grid">
+        <article class="card" data-card data-title="сергей леонидович: python — if внутри for сергей леонидович: if внутри for trainers/python-if-inside-for-sergey.html">
+          <h3>Сергей Леонидович: Python — if внутри for</h3>
+          <p>Сергей Леонидович: if внутри for</p>
+          <div class="meta"><span>trainers/python-if-inside-for-sergey.html</span><span>32 КБ</span></div>
+          <a href="./python-if-inside-for-sergey.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="сергей леонидович: python — if и for сергей леонидович: if и for trainers/python-if-for-sergey.html">
+          <h3>Сергей Леонидович: Python — if и for</h3>
+          <p>Сергей Леонидович: if и for</p>
+          <div class="meta"><span>trainers/python-if-for-sergey.html</span><span>40 КБ</span></div>
+          <a href="./python-if-for-sergey.html">Открыть</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" data-section="Разное и служебное">
+      <div class="section-head"><h2>Разное и служебное</h2><span>1</span></div>
+      <div class="grid">
+        <article class="card" data-card data-title="рекурсивная лестница и дерево путей trainers/recursion_ladder_paths.html trainers/recursion_ladder_paths.html">
+          <h3>Рекурсивная лестница и дерево путей</h3>
+          <p>trainers/recursion_ladder_paths.html</p>
+          <div class="meta"><span>trainers/recursion_ladder_paths.html</span><span>48 КБ</span></div>
+          <a href="./recursion_ladder_paths.html">Открыть</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" data-section="Архив 5 недель">
+      <div class="section-head"><h2>Архив 5 недель</h2><span>108</span></div>
+      <div class="grid">
+        <article class="card" data-card data-title="⚔️ сражение чисел — тренажёр источник: downloads/battle-numbers (1).html trainers/archive-5-weeks/battle-numbers-1-34db4c39.html">
+          <h3>⚔️ Сражение чисел — тренажёр</h3>
+          <p>Источник: Downloads/battle-numbers (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/battle-numbers-1-34db4c39.html</span><span>55 КБ</span></div>
+          <a href="./archive-5-weeks/battle-numbers-1-34db4c39.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="билеты по геометрии — 7 класс (атанасян) источник: downloads/bilety_geometriya_7klass (1).html trainers/archive-5-weeks/bilety-geometriya-7klass-1-fac717fb.html">
+          <h3>Билеты по геометрии — 7 класс (Атанасян)</h3>
+          <p>Источник: Downloads/bilety_geometriya_7klass (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/bilety-geometriya-7klass-1-fac717fb.html</span><span>119 КБ</span></div>
+          <a href="./archive-5-weeks/bilety-geometriya-7klass-1-fac717fb.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="билеты по геометрии — 7 класс (атанасян) источник: downloads/bilety_geometriya_7klass (2).html trainers/archive-5-weeks/bilety-geometriya-7klass-2-f571b307.html">
+          <h3>Билеты по геометрии — 7 класс (Атанасян)</h3>
+          <p>Источник: Downloads/bilety_geometriya_7klass (2).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/bilety-geometriya-7klass-2-f571b307.html</span><span>119 КБ</span></div>
+          <a href="./archive-5-weeks/bilety-geometriya-7klass-2-f571b307.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="билеты по геометрии — 7 класс (атанасян) источник: downloads/bilety_geometriya_7klass.html trainers/archive-5-weeks/bilety-geometriya-7klass-94e1b324.html">
+          <h3>Билеты по геометрии — 7 класс (Атанасян)</h3>
+          <p>Источник: Downloads/bilety_geometriya_7klass.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/bilety-geometriya-7klass-94e1b324.html</span><span>73 КБ</span></div>
+          <a href="./archive-5-weeks/bilety-geometriya-7klass-94e1b324.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="билеты по геометрии 7 класс источник: downloads/1 билеты по геометрии 7 класс.html trainers/archive-5-weeks/1-7-407fb849.html">
+          <h3>Билеты по геометрии 7 класс</h3>
+          <p>Источник: Downloads/1 Билеты по геометрии 7 класс.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/1-7-407fb849.html</span><span>600 КБ</span></div>
+          <a href="./archive-5-weeks/1-7-407fb849.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="билеты по геометрии 7 класс источник: downloads/билеты по геометрии 7 класс.html trainers/archive-5-weeks/7-db257f21.html">
+          <h3>Билеты по геометрии 7 класс</h3>
+          <p>Источник: Downloads/Билеты по геометрии 7 класс.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/7-db257f21.html</span><span>739 КБ</span></div>
+          <a href="./archive-5-weeks/7-db257f21.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="биссектриса угла — тренажёр источник: downloads/bisector_trainer.html trainers/archive-5-weeks/bisector-trainer-7828c3c2.html">
+          <h3>Биссектриса угла — тренажёр</h3>
+          <p>Источник: Downloads/bisector_trainer.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/bisector-trainer-7828c3c2.html</span><span>15 КБ</span></div>
+          <a href="./archive-5-weeks/bisector-trainer-7828c3c2.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="вертикальные углы равны — тренажёр источник: downloads/jsxgraph-vertical-angles (1).html trainers/archive-5-weeks/jsxgraph-vertical-angles-1-cf930d18.html">
+          <h3>Вертикальные углы равны — тренажёр</h3>
+          <p>Источник: Downloads/jsxgraph-vertical-angles (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/jsxgraph-vertical-angles-1-cf930d18.html</span><span>30 КБ</span></div>
+          <a href="./archive-5-weeks/jsxgraph-vertical-angles-1-cf930d18.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="геометрия на клетчатой бумаге · тренажёр источник: downloads/geometry_grid_trainer_open.html trainers/archive-5-weeks/geometry-grid-trainer-open-0adf52dd.html">
+          <h3>Геометрия на клетчатой бумаге · тренажёр</h3>
+          <p>Источник: Downloads/geometry_grid_trainer_open.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/geometry-grid-trainer-open-0adf52dd.html</span><span>168 КБ</span></div>
+          <a href="./archive-5-weeks/geometry-grid-trainer-open-0adf52dd.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="геометрия на клетчатой бумаге · ученическая версия источник: downloads/geometry_grid_trainer_student_open (1).html trainers/archive-5-weeks/geometry-grid-trainer-student-open-1-9d36f957.html">
+          <h3>Геометрия на клетчатой бумаге · ученическая версия</h3>
+          <p>Источник: Downloads/geometry_grid_trainer_student_open (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/geometry-grid-trainer-student-open-1-9d36f957.html</span><span>145 КБ</span></div>
+          <a href="./archive-5-weeks/geometry-grid-trainer-student-open-1-9d36f957.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="двухкомнатная квартира · план · задания 1–5 · огэ источник: downloads/practice-1-5-apartments.html trainers/archive-5-weeks/practice-1-5-apartments-2bc2570b.html">
+          <h3>Двухкомнатная квартира · план · задания 1–5 · ОГЭ</h3>
+          <p>Источник: Downloads/practice-1-5-apartments.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/practice-1-5-apartments-2bc2570b.html</span><span>60 КБ</span></div>
+          <a href="./archive-5-weeks/practice-1-5-apartments-2bc2570b.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="деление уголком источник: downloads/long-division-stepwise.html trainers/archive-5-weeks/long-division-stepwise-ea96a9c6.html">
+          <h3>Деление уголком</h3>
+          <p>Источник: Downloads/long-division-stepwise.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/long-division-stepwise-ea96a9c6.html</span><span>8 КБ</span></div>
+          <a href="./archive-5-weeks/long-division-stepwise-ea96a9c6.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="деление уголком — методически источник: downloads/long-division-stepwise (2).html trainers/archive-5-weeks/long-division-stepwise-2-2b2187fa.html">
+          <h3>Деление уголком — методически</h3>
+          <p>Источник: Downloads/long-division-stepwise (2).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/long-division-stepwise-2-2b2187fa.html</span><span>49 КБ</span></div>
+          <a href="./archive-5-weeks/long-division-stepwise-2-2b2187fa.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="деление уголком — методически источник: downloads/long-division-stepwise (3).html trainers/archive-5-weeks/long-division-stepwise-3-a18ba04b.html">
+          <h3>Деление уголком — методически</h3>
+          <p>Источник: Downloads/long-division-stepwise (3).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/long-division-stepwise-3-a18ba04b.html</span><span>55 КБ</span></div>
+          <a href="./archive-5-weeks/long-division-stepwise-3-a18ba04b.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="деление уголком — методически источник: downloads/long-division-stepwise (4).html trainers/archive-5-weeks/long-division-stepwise-4-5f2730da.html">
+          <h3>Деление уголком — методически</h3>
+          <p>Источник: Downloads/long-division-stepwise (4).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/long-division-stepwise-4-5f2730da.html</span><span>58 КБ</span></div>
+          <a href="./archive-5-weeks/long-division-stepwise-4-5f2730da.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="деление уголком — методически источник: downloads/long-division-stepwise (5).html trainers/archive-5-weeks/long-division-stepwise-5-dab0dd89.html">
+          <h3>Деление уголком — методически</h3>
+          <p>Источник: Downloads/long-division-stepwise (5).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/long-division-stepwise-5-dab0dd89.html</span><span>58 КБ</span></div>
+          <a href="./archive-5-weeks/long-division-stepwise-5-dab0dd89.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="деление уголком — методически источник: downloads/long-division-stepwise-current-for-claude.html trainers/archive-5-weeks/long-division-stepwise-current-for-claude-dd4db0ae.html">
+          <h3>Деление уголком — методически</h3>
+          <p>Источник: Downloads/long-division-stepwise-current-for-claude.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/long-division-stepwise-current-for-claude-dd4db0ae.html</span><span>39 КБ</span></div>
+          <a href="./archive-5-weeks/long-division-stepwise-current-for-claude-dd4db0ae.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="деление уголком — методически источник: downloads/preview (2).html trainers/archive-5-weeks/preview-2-2c48ddc0.html">
+          <h3>Деление уголком — методически</h3>
+          <p>Источник: Downloads/preview (2).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/preview-2-2c48ddc0.html</span><span>39 КБ</span></div>
+          <a href="./archive-5-weeks/preview-2-2c48ddc0.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="дифференцированные платежи — табличный тренажёр | mathexam.space источник: downloads/credit-differential-payment-trainer.html trainers/archive-5-weeks/credit-differential-payment-trainer-c584585b.html">
+          <h3>Дифференцированные платежи — табличный тренажёр | Mathexam.space</h3>
+          <p>Источник: Downloads/credit-differential-payment-trainer.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/credit-differential-payment-trainer-c584585b.html</span><span>58 КБ</span></div>
+          <a href="./archive-5-weeks/credit-differential-payment-trainer-c584585b.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="егэ информатика. задание 15 — все задачи яндекс учебника источник: documents/codex/2026-06-01/https-education-yandex-ru-ege-inf/outputs/yandex_ege_inf_task15_all.html trainers/archive-5-weeks/yandex-ege-inf-task15-all-9feb2554.html">
+          <h3>ЕГЭ Информатика. Задание 15 — все задачи Яндекс Учебника</h3>
+          <p>Источник: Documents/Codex/2026-06-01/https-education-yandex-ru-ege-inf/outputs/yandex_ege_inf_task15_all.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/yandex-ege-inf-task15-all-9feb2554.html</span><span>146 КБ</span></div>
+          <a href="./archive-5-weeks/yandex-ege-inf-task15-all-9feb2554.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="задачи на машину тьюринга источник: downloads/index (3).html trainers/archive-5-weeks/index-3-603a418c.html">
+          <h3>Задачи на машину Тьюринга</h3>
+          <p>Источник: Downloads/index (3).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/index-3-603a418c.html</span><span>52 КБ</span></div>
+          <a href="./archive-5-weeks/index-3-603a418c.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="задачи на машину тьюринга источник: downloads/index (4).html trainers/archive-5-weeks/index-4-a7387e34.html">
+          <h3>Задачи на машину Тьюринга</h3>
+          <p>Источник: Downloads/index (4).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/index-4-a7387e34.html</span><span>73 КБ</span></div>
+          <a href="./archive-5-weeks/index-4-a7387e34.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="задачи на машину тьюринга источник: downloads/index (5).html trainers/archive-5-weeks/index-5-c2e1e6f8.html">
+          <h3>Задачи на машину Тьюринга</h3>
+          <p>Источник: Downloads/index (5).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/index-5-c2e1e6f8.html</span><span>79 КБ</span></div>
+          <a href="./archive-5-weeks/index-5-c2e1e6f8.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="задачи на машину тьюринга источник: downloads/index (6).html trainers/archive-5-weeks/index-6-d363b31c.html">
+          <h3>Задачи на машину Тьюринга</h3>
+          <p>Источник: Downloads/index (6).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/index-6-d363b31c.html</span><span>145 КБ</span></div>
+          <a href="./archive-5-weeks/index-6-d363b31c.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="задачи на машину тьюринга источник: downloads/preview (16).html trainers/archive-5-weeks/preview-16-a91af41f.html">
+          <h3>Задачи на машину Тьюринга</h3>
+          <p>Источник: Downloads/preview (16).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/preview-16-a91af41f.html</span><span>165 КБ</span></div>
+          <a href="./archive-5-weeks/preview-16-a91af41f.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="задачи на машину тьюринга источник: downloads/turing-trainer-polish.html trainers/archive-5-weeks/turing-trainer-polish-67299827.html">
+          <h3>Задачи на машину Тьюринга</h3>
+          <p>Источник: Downloads/turing-trainer-polish.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/turing-trainer-polish-67299827.html</span><span>278 КБ</span></div>
+          <a href="./archive-5-weeks/turing-trainer-polish-67299827.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="кто сильнее по модулю? источник: downloads/who-is-stronger (1).html trainers/archive-5-weeks/who-is-stronger-1-3cab7554.html">
+          <h3>Кто сильнее по модулю?</h3>
+          <p>Источник: Downloads/who-is-stronger (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/who-is-stronger-1-3cab7554.html</span><span>38 КБ</span></div>
+          <a href="./archive-5-weeks/who-is-stronger-1-3cab7554.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="кто сильнее по модулю? источник: downloads/who-is-stronger.html trainers/archive-5-weeks/who-is-stronger-11dc99e8.html">
+          <h3>Кто сильнее по модулю?</h3>
+          <p>Источник: Downloads/who-is-stronger.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/who-is-stronger-11dc99e8.html</span><span>38 КБ</span></div>
+          <a href="./archive-5-weeks/who-is-stronger-11dc99e8.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="лаборатория странных треугольников — mathexam.space источник: downloads/triangle-inequality-lab.html trainers/archive-5-weeks/triangle-inequality-lab-33921565.html">
+          <h3>Лаборатория странных треугольников — Mathexam.space</h3>
+          <p>Источник: Downloads/triangle-inequality-lab.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/triangle-inequality-lab-33921565.html</span><span>29 КБ</span></div>
+          <a href="./archive-5-weeks/triangle-inequality-lab-33921565.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="логарифмический радар источник: downloads/log_radar.html trainers/archive-5-weeks/log-radar-d2854c23.html">
+          <h3>Логарифмический радар</h3>
+          <p>Источник: Downloads/log_radar.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/log-radar-d2854c23.html</span><span>38 КБ</span></div>
+          <a href="./archive-5-weeks/log-radar-d2854c23.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="модуль как расстояние от нуля источник: downloads/module-distance (1).html trainers/archive-5-weeks/module-distance-1-743ac077.html">
+          <h3>Модуль как расстояние от нуля</h3>
+          <p>Источник: Downloads/module-distance (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/module-distance-1-743ac077.html</span><span>32 КБ</span></div>
+          <a href="./archive-5-weeks/module-distance-1-743ac077.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="назови угол правильно — тренажёр по геометрии источник: downloads/trainer-name-the-angle.html trainers/archive-5-weeks/trainer-name-the-angle-a0960ad5.html">
+          <h3>Назови угол правильно — тренажёр по геометрии</h3>
+          <p>Источник: Downloads/trainer-name-the-angle.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trainer-name-the-angle-a0960ad5.html</span><span>33 КБ</span></div>
+          <a href="./archive-5-weeks/trainer-name-the-angle-a0960ad5.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="найди ошибку ученика — боковая миссия источник: downloads/find-the-error (1).html trainers/archive-5-weeks/find-the-error-1-0a615cbc.html">
+          <h3>Найди ошибку ученика — боковая миссия</h3>
+          <p>Источник: Downloads/find-the-error (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/find-the-error-1-0a615cbc.html</span><span>35 КБ</span></div>
+          <a href="./archive-5-weeks/find-the-error-1-0a615cbc.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ математика — тренажёр задания 19 источник: downloads/preview (3).html trainers/archive-5-weeks/preview-3-08705e89.html">
+          <h3>ОГЭ математика — тренажёр задания 19</h3>
+          <p>Источник: Downloads/preview (3).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/preview-3-08705e89.html</span><span>61 КБ</span></div>
+          <a href="./archive-5-weeks/preview-3-08705e89.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №15 — тренажёр по треугольникам · проверенная версия v10 источник: downloads/preview (15).html trainers/archive-5-weeks/preview-15-c29f5683.html">
+          <h3>ОГЭ №15 — тренажёр по треугольникам · проверенная версия v10</h3>
+          <p>Источник: Downloads/preview (15).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/preview-15-c29f5683.html</span><span>94 КБ</span></div>
+          <a href="./archive-5-weeks/preview-15-c29f5683.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №15 — тренажёр по треугольникам · улучшенная версия источник: downloads/oge15_trainer_v10.html trainers/archive-5-weeks/oge15-trainer-v10-0009ae02.html">
+          <h3>ОГЭ №15 — тренажёр по треугольникам · улучшенная версия</h3>
+          <p>Источник: Downloads/oge15_trainer_v10.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/oge15-trainer-v10-0009ae02.html</span><span>95 КБ</span></div>
+          <a href="./archive-5-weeks/oge15-trainer-v10-0009ae02.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №15 — тренажёр по треугольникам · улучшенная версия источник: downloads/preview (9).html trainers/archive-5-weeks/preview-9-8f6b8b9f.html">
+          <h3>ОГЭ №15 — тренажёр по треугольникам · улучшенная версия</h3>
+          <p>Источник: Downloads/preview (9).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/preview-9-8f6b8b9f.html</span><span>86 КБ</span></div>
+          <a href="./archive-5-weeks/preview-9-8f6b8b9f.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №15 — тренажёр по треугольникам · v13 источник: downloads/oge15_trainer_v13.html trainers/archive-5-weeks/oge15-trainer-v13-850f039a.html">
+          <h3>ОГЭ №15 — тренажёр по треугольникам · v13</h3>
+          <p>Источник: Downloads/oge15_trainer_v13.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/oge15-trainer-v13-850f039a.html</span><span>96 КБ</span></div>
+          <a href="./archive-5-weeks/oge15-trainer-v13-850f039a.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №15 — тренажёр по треугольникам (улучшенная версия) источник: downloads/oge_task15_trainer_improved.html trainers/archive-5-weeks/oge-task15-trainer-improved-a69ed031.html">
+          <h3>ОГЭ №15 — тренажёр по треугольникам (улучшенная версия)</h3>
+          <p>Источник: Downloads/oge_task15_trainer_improved.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/oge-task15-trainer-improved-a69ed031.html</span><span>77 КБ</span></div>
+          <a href="./archive-5-weeks/oge-task15-trainer-improved-a69ed031.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №17 — педагогический тренажёр по геометрии источник: downloads/oge17_trainer_v8.html trainers/archive-5-weeks/oge17-trainer-v8-4b0ff8c5.html">
+          <h3>ОГЭ №17 — педагогический тренажёр по геометрии</h3>
+          <p>Источник: Downloads/oge17_trainer_v8.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/oge17-trainer-v8-4b0ff8c5.html</span><span>150 КБ</span></div>
+          <a href="./archive-5-weeks/oge17-trainer-v8-4b0ff8c5.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №17 — педагогический тренажёр по геометрии источник: downloads/preview (7).html trainers/archive-5-weeks/preview-7-a9ef2276.html">
+          <h3>ОГЭ №17 — педагогический тренажёр по геометрии</h3>
+          <p>Источник: Downloads/preview (7).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/preview-7-a9ef2276.html</span><span>139 КБ</span></div>
+          <a href="./archive-5-weeks/preview-7-a9ef2276.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №17 — педагогический тренажёр по геометрии v10 источник: downloads/oge17_trainer_v14 (2).html trainers/archive-5-weeks/oge17-trainer-v14-2-3fb84e69.html">
+          <h3>ОГЭ №17 — педагогический тренажёр по геометрии v10</h3>
+          <p>Источник: Downloads/oge17_trainer_v14 (2).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/oge17-trainer-v14-2-3fb84e69.html</span><span>171 КБ</span></div>
+          <a href="./archive-5-weeks/oge17-trainer-v14-2-3fb84e69.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №17 — педагогический тренажёр по геометрии v10 источник: downloads/preview (13).html trainers/archive-5-weeks/preview-13-338faa2d.html">
+          <h3>ОГЭ №17 — педагогический тренажёр по геометрии v10</h3>
+          <p>Источник: Downloads/preview (13).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/preview-13-338faa2d.html</span><span>168 КБ</span></div>
+          <a href="./archive-5-weeks/preview-13-338faa2d.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №17 — педагогический тренажёр по геометрии v15-polished источник: downloads/oge17_trainer_v15_polished.html trainers/archive-5-weeks/oge17-trainer-v15-polished-b5606e42.html">
+          <h3>ОГЭ №17 — педагогический тренажёр по геометрии v15-polished</h3>
+          <p>Источник: Downloads/oge17_trainer_v15_polished.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/oge17-trainer-v15-polished-b5606e42.html</span><span>172 КБ</span></div>
+          <a href="./archive-5-weeks/oge17-trainer-v15-polished-b5606e42.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №17 — педагогический тренажёр по геометрии v9 источник: downloads/preview (10).html trainers/archive-5-weeks/preview-10-82ef23ef.html">
+          <h3>ОГЭ №17 — педагогический тренажёр по геометрии v9</h3>
+          <p>Источник: Downloads/preview (10).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/preview-10-82ef23ef.html</span><span>152 КБ</span></div>
+          <a href="./archive-5-weeks/preview-10-82ef23ef.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №17 — тренажёр по геометрии (улучшенная версия) источник: downloads/oge17_trainer_improved.html trainers/archive-5-weeks/oge17-trainer-improved-800e82f2.html">
+          <h3>ОГЭ №17 — тренажёр по геометрии (улучшенная версия)</h3>
+          <p>Источник: Downloads/oge17_trainer_improved.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/oge17-trainer-improved-800e82f2.html</span><span>103 КБ</span></div>
+          <a href="./archive-5-weeks/oge17-trainer-improved-800e82f2.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №19 — тренажёр утверждений источник: downloads/oge19_source_aware_trainer.html trainers/archive-5-weeks/oge19-source-aware-trainer-a91626ba.html">
+          <h3>ОГЭ №19 — тренажёр утверждений</h3>
+          <p>Источник: Downloads/oge19_source_aware_trainer.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/oge19-source-aware-trainer-a91626ba.html</span><span>150 КБ</span></div>
+          <a href="./archive-5-weeks/oge19-source-aware-trainer-a91626ba.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №19: верные и неверные утверждения источник: downloads/geometry_statements_trainer_improved_updated.html trainers/archive-5-weeks/geometry-statements-trainer-improved-updated-22181e31.html">
+          <h3>ОГЭ №19: верные и неверные утверждения</h3>
+          <p>Источник: Downloads/geometry_statements_trainer_improved_updated.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/geometry-statements-trainer-improved-updated-22181e31.html</span><span>190 КБ</span></div>
+          <a href="./archive-5-weeks/geometry-statements-trainer-improved-updated-22181e31.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="огэ №19: верные и неверные утверждения источник: downloads/preview (5).html trainers/archive-5-weeks/preview-5-8bb7dd76.html">
+          <h3>ОГЭ №19: верные и неверные утверждения</h3>
+          <p>Источник: Downloads/preview (5).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/preview-5-8bb7dd76.html</span><span>190 КБ</span></div>
+          <a href="./archive-5-weeks/preview-5-8bb7dd76.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="озеро нуля — противоположные числа и их сумма источник: downloads/zero-lake.html trainers/archive-5-weeks/zero-lake-1d5fb3a3.html">
+          <h3>Озеро нуля — противоположные числа и их сумма</h3>
+          <p>Источник: Downloads/zero-lake.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/zero-lake-1d5fb3a3.html</span><span>41 КБ</span></div>
+          <a href="./archive-5-weeks/zero-lake-1d5fb3a3.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="перетаскивание слагаемых — mathexam.space источник: downloads/linear_equation_drag (1).html trainers/archive-5-weeks/linear-equation-drag-1-11ebccdf.html">
+          <h3>Перетаскивание слагаемых — Mathexam.space</h3>
+          <p>Источник: Downloads/linear_equation_drag (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/linear-equation-drag-1-11ebccdf.html</span><span>23 КБ</span></div>
+          <a href="./archive-5-weeks/linear-equation-drag-1-11ebccdf.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="проверка навыка — станция 6 источник: downloads/quick-skill-check.html trainers/archive-5-weeks/quick-skill-check-7668e263.html">
+          <h3>Проверка навыка — Станция 6</h3>
+          <p>Источник: Downloads/quick-skill-check.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/quick-skill-check-7668e263.html</span><span>41 КБ</span></div>
+          <a href="./archive-5-weeks/quick-skill-check-7668e263.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="противоположные числа источник: downloads/opposite-numbers.html trainers/archive-5-weeks/opposite-numbers-c45c9e7e.html">
+          <h3>Противоположные числа</h3>
+          <p>Источник: Downloads/opposite-numbers.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/opposite-numbers-c45c9e7e.html</span><span>34 КБ</span></div>
+          <a href="./archive-5-weeks/opposite-numbers-c45c9e7e.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="сергей леонидович: python — if внутри for источник: downloads/python-if-inside-for-sergey.html trainers/archive-5-weeks/python-if-inside-for-sergey-f9cceb78.html">
+          <h3>Сергей Леонидович: Python — if внутри for</h3>
+          <p>Источник: Downloads/python-if-inside-for-sergey.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/python-if-inside-for-sergey-f9cceb78.html</span><span>31 КБ</span></div>
+          <a href="./archive-5-weeks/python-if-inside-for-sergey-f9cceb78.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="сергей леонидович: python — if и for источник: downloads/python-if-for-sergey.html trainers/archive-5-weeks/python-if-for-sergey-5d0bfcc5.html">
+          <h3>Сергей Леонидович: Python — if и for</h3>
+          <p>Источник: Downloads/python-if-for-sergey.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/python-if-for-sergey-5d0bfcc5.html</span><span>39 КБ</span></div>
+          <a href="./archive-5-weeks/python-if-for-sergey-5d0bfcc5.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="смежные углы: сумма = 180° — тренажёр источник: downloads/jsxgraph-adjacent-angles.html trainers/archive-5-weeks/jsxgraph-adjacent-angles-af17f7b1.html">
+          <h3>Смежные углы: сумма = 180° — тренажёр</h3>
+          <p>Источник: Downloads/jsxgraph-adjacent-angles.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/jsxgraph-adjacent-angles-af17f7b1.html</span><span>27 КБ</span></div>
+          <a href="./archive-5-weeks/jsxgraph-adjacent-angles-af17f7b1.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="сначала перепиши, потом считай источник: downloads/rewrite-before-calc (1).html trainers/archive-5-weeks/rewrite-before-calc-1-7e6bf87d.html">
+          <h3>Сначала перепиши, потом считай</h3>
+          <p>Источник: Downloads/rewrite-before-calc (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/rewrite-before-calc-1-7e6bf87d.html</span><span>42 КБ</span></div>
+          <a href="./archive-5-weeks/rewrite-before-calc-1-7e6bf87d.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="собери решение уравнения — mathexam.space источник: downloads/equation-builder.html trainers/archive-5-weeks/equation-builder-1c7c63f3.html">
+          <h3>Собери решение уравнения — Mathexam.space</h3>
+          <p>Источник: Downloads/equation-builder.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/equation-builder-1c7c63f3.html</span><span>35 КБ</span></div>
+          <a href="./archive-5-weeks/equation-builder-1c7c63f3.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр · егэ информатика · задание 1 (графы) источник: downloads/ege_trainer (1).html trainers/archive-5-weeks/ege-trainer-1-07bef5d3.html">
+          <h3>Тренажёр · ЕГЭ Информатика · Задание 1 (графы)</h3>
+          <p>Источник: Downloads/ege_trainer (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/ege-trainer-1-07bef5d3.html</span><span>1742 КБ</span></div>
+          <a href="./archive-5-weeks/ege-trainer-1-07bef5d3.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр 2: линейные неравенства источник: downloads/neravenstva2_trainer.html trainers/archive-5-weeks/neravenstva2-trainer-459d2fc9.html">
+          <h3>Тренажёр 2: Линейные неравенства</h3>
+          <p>Источник: Downloads/neravenstva2_trainer.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/neravenstva2-trainer-459d2fc9.html</span><span>30 КБ</span></div>
+          <a href="./archive-5-weeks/neravenstva2-trainer-459d2fc9.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр 2: линейные неравенства — пошаговое решение источник: downloads/neravenstva2_stepbystep.html trainers/archive-5-weeks/neravenstva2-stepbystep-e270368b.html">
+          <h3>Тренажёр 2: Линейные неравенства — пошаговое решение</h3>
+          <p>Источник: Downloads/neravenstva2_stepbystep.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/neravenstva2-stepbystep-e270368b.html</span><span>34 КБ</span></div>
+          <a href="./archive-5-weeks/neravenstva2-stepbystep-e270368b.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр анализа геометрических высказываний источник: downloads/preview (4).html trainers/archive-5-weeks/preview-4-8bbb25d6.html">
+          <h3>Тренажёр анализа геометрических высказываний</h3>
+          <p>Источник: Downloads/preview (4).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/preview-4-8bbb25d6.html</span><span>126 КБ</span></div>
+          <a href="./archive-5-weeks/preview-4-8bbb25d6.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр геометрических высказываний источник: downloads/geometry_statements_trainer_improved.html trainers/archive-5-weeks/geometry-statements-trainer-improved-370628fb.html">
+          <h3>Тренажёр геометрических высказываний</h3>
+          <p>Источник: Downloads/geometry_statements_trainer_improved.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/geometry-statements-trainer-improved-370628fb.html</span><span>182 КБ</span></div>
+          <a href="./archive-5-weeks/geometry-statements-trainer-improved-370628fb.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр деления источник: downloads/trenazher_deleniya.html trainers/archive-5-weeks/trenazher-deleniya-0542125c.html">
+          <h3>Тренажёр деления</h3>
+          <p>Источник: Downloads/trenazher_deleniya.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trenazher-deleniya-0542125c.html</span><span>14 КБ</span></div>
+          <a href="./archive-5-weeks/trenazher-deleniya-0542125c.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр деления источник: downloads/trenazher_deleniya_v2.html trainers/archive-5-weeks/trenazher-deleniya-v2-35f17735.html">
+          <h3>Тренажёр деления</h3>
+          <p>Источник: Downloads/trenazher_deleniya_v2.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trenazher-deleniya-v2-35f17735.html</span><span>15 КБ</span></div>
+          <a href="./archive-5-weeks/trenazher-deleniya-v2-35f17735.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр деления источник: downloads/trenazher_deleniya_v3.html trainers/archive-5-weeks/trenazher-deleniya-v3-5a46dba3.html">
+          <h3>Тренажёр деления</h3>
+          <p>Источник: Downloads/trenazher_deleniya_v3.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trenazher-deleniya-v3-5a46dba3.html</span><span>17 КБ</span></div>
+          <a href="./archive-5-weeks/trenazher-deleniya-v3-5a46dba3.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр деления уголком источник: downloads/trenazher_deleniya_deepseek.html trainers/archive-5-weeks/trenazher-deleniya-deepseek-42d14478.html">
+          <h3>Тренажёр деления уголком</h3>
+          <p>Источник: Downloads/trenazher_deleniya_deepseek.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trenazher-deleniya-deepseek-42d14478.html</span><span>23 КБ</span></div>
+          <a href="./archive-5-weeks/trenazher-deleniya-deepseek-42d14478.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр деления уголком источник: downloads/trenazher_deleniya_deepseek_v2_shifted.html trainers/archive-5-weeks/trenazher-deleniya-deepseek-v2-shifted-9d2314c9.html">
+          <h3>Тренажёр деления уголком</h3>
+          <p>Источник: Downloads/trenazher_deleniya_deepseek_v2_shifted.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trenazher-deleniya-deepseek-v2-shifted-9d2314c9.html</span><span>23 КБ</span></div>
+          <a href="./archive-5-weeks/trenazher-deleniya-deepseek-v2-shifted-9d2314c9.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр деления уголком источник: downloads/trenazher_deleniya_deepseek_v3_carry_arrow.html trainers/archive-5-weeks/trenazher-deleniya-deepseek-v3-carry-arrow-1da29354.html">
+          <h3>Тренажёр деления уголком</h3>
+          <p>Источник: Downloads/trenazher_deleniya_deepseek_v3_carry_arrow.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trenazher-deleniya-deepseek-v3-carry-arrow-1da29354.html</span><span>24 КБ</span></div>
+          <a href="./archive-5-weeks/trenazher-deleniya-deepseek-v3-carry-arrow-1da29354.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр деления уголком источник: downloads/trenazher_deleniya_deepseek_v4_compact_hint.html trainers/archive-5-weeks/trenazher-deleniya-deepseek-v4-compact-hint-88ca783a.html">
+          <h3>Тренажёр деления уголком</h3>
+          <p>Источник: Downloads/trenazher_deleniya_deepseek_v4_compact_hint.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trenazher-deleniya-deepseek-v4-compact-hint-88ca783a.html</span><span>25 КБ</span></div>
+          <a href="./archive-5-weeks/trenazher-deleniya-deepseek-v4-compact-hint-88ca783a.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр деления уголком источник: downloads/trenazher_deleniya_v2 (1).html trainers/archive-5-weeks/trenazher-deleniya-v2-1-74812d35.html">
+          <h3>Тренажёр деления уголком</h3>
+          <p>Источник: Downloads/trenazher_deleniya_v2 (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trenazher-deleniya-v2-1-74812d35.html</span><span>30 КБ</span></div>
+          <a href="./archive-5-weeks/trenazher-deleniya-v2-1-74812d35.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр деления уголком источник: downloads/trenazher_deleniya_v5_chastnoe_pod_delitelem.html trainers/archive-5-weeks/trenazher-deleniya-v5-chastnoe-pod-delitelem-a56b7bb1.html">
+          <h3>Тренажёр деления уголком</h3>
+          <p>Источник: Downloads/trenazher_deleniya_v5_chastnoe_pod_delitelem.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trenazher-deleniya-v5-chastnoe-pod-delitelem-a56b7bb1.html</span><span>25 КБ</span></div>
+          <a href="./archive-5-weeks/trenazher-deleniya-v5-chastnoe-pod-delitelem-a56b7bb1.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр деления уголком источник: downloads/trenazher_deleniya_v6_ugolok_i_block_guard.html trainers/archive-5-weeks/trenazher-deleniya-v6-ugolok-i-block-guard-a8083f2f.html">
+          <h3>Тренажёр деления уголком</h3>
+          <p>Источник: Downloads/trenazher_deleniya_v6_ugolok_i_block_guard.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trenazher-deleniya-v6-ugolok-i-block-guard-a8083f2f.html</span><span>26 КБ</span></div>
+          <a href="./archive-5-weeks/trenazher-deleniya-v6-ugolok-i-block-guard-a8083f2f.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр деления уголком источник: downloads/trenazher_deleniya_v7_angry_feedback.html trainers/archive-5-weeks/trenazher-deleniya-v7-angry-feedback-b1b12dd0.html">
+          <h3>Тренажёр деления уголком</h3>
+          <p>Источник: Downloads/trenazher_deleniya_v7_angry_feedback.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trenazher-deleniya-v7-angry-feedback-b1b12dd0.html</span><span>27 КБ</span></div>
+          <a href="./archive-5-weeks/trenazher-deleniya-v7-angry-feedback-b1b12dd0.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр деления уголком — final candidate источник: downloads/preview.html trainers/archive-5-weeks/preview-414dbb07.html">
+          <h3>Тренажёр деления уголком — final candidate</h3>
+          <p>Источник: Downloads/preview.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/preview-414dbb07.html</span><span>28 КБ</span></div>
+          <a href="./archive-5-weeks/preview-414dbb07.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр деления уголком — final candidate источник: downloads/trenazher_deleniya (1).html trainers/archive-5-weeks/trenazher-deleniya-1-16a90b5c.html">
+          <h3>Тренажёр деления уголком — final candidate</h3>
+          <p>Источник: Downloads/trenazher_deleniya (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trenazher-deleniya-1-16a90b5c.html</span><span>25 КБ</span></div>
+          <a href="./archive-5-weeks/trenazher-deleniya-1-16a90b5c.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр деления уголком — final candidate источник: downloads/trenazher_deleniya_final_candidate (1).html trainers/archive-5-weeks/trenazher-deleniya-final-candidate-1-e39dd707.html">
+          <h3>Тренажёр деления уголком — final candidate</h3>
+          <p>Источник: Downloads/trenazher_deleniya_final_candidate (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trenazher-deleniya-final-candidate-1-e39dd707.html</span><span>32 КБ</span></div>
+          <a href="./archive-5-weeks/trenazher-deleniya-final-candidate-1-e39dd707.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр деления уголком — final candidate источник: downloads/trenazher_deleniya_final_candidate (2).html trainers/archive-5-weeks/trenazher-deleniya-final-candidate-2-39a2c980.html">
+          <h3>Тренажёр деления уголком — final candidate</h3>
+          <p>Источник: Downloads/trenazher_deleniya_final_candidate (2).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trenazher-deleniya-final-candidate-2-39a2c980.html</span><span>32 КБ</span></div>
+          <a href="./archive-5-weeks/trenazher-deleniya-final-candidate-2-39a2c980.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр деления уголком на однозначное число источник: downloads/trenazher_deleniya_odnaznachnoe_unified.html trainers/archive-5-weeks/trenazher-deleniya-odnaznachnoe-unified-57461105.html">
+          <h3>Тренажёр деления уголком на однозначное число</h3>
+          <p>Источник: Downloads/trenazher_deleniya_odnaznachnoe_unified.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trenazher-deleniya-odnaznachnoe-unified-57461105.html</span><span>27 КБ</span></div>
+          <a href="./archive-5-weeks/trenazher-deleniya-odnaznachnoe-unified-57461105.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажер для подготовки к егэ 2026 с яндекс учебником для успешной сдачи экзамена с нуля источник: documents/codex/2026-06-01/https-education-yandex-ru-ege-inf/outputs/yandex_ege_inf_tasks_page.html trainers/archive-5-weeks/yandex-ege-inf-tasks-page-45bc8336.html">
+          <h3>Тренажер для подготовки к ЕГЭ 2026 с Яндекс Учебником для успешной сдачи экзамена с нуля</h3>
+          <p>Источник: Documents/Codex/2026-06-01/https-education-yandex-ru-ege-inf/outputs/yandex_ege_inf_tasks_page.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/yandex-ege-inf-tasks-page-45bc8336.html</span><span>38 КБ</span></div>
+          <a href="./archive-5-weeks/yandex-ege-inf-tasks-page-45bc8336.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажер для подготовки к егэ 2026 с яндекс учебником для успешной сдачи экзамена с нуля источник: documents/codex/2026-06-02/15/work/yandex_task15_page.html trainers/archive-5-weeks/yandex-task15-page-f152f3ca.html">
+          <h3>Тренажер для подготовки к ЕГЭ 2026 с Яндекс Учебником для успешной сдачи экзамена с нуля</h3>
+          <p>Источник: Documents/Codex/2026-06-02/15/work/yandex_task15_page.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/yandex-task15-page-f152f3ca.html</span><span>38 КБ</span></div>
+          <a href="./archive-5-weeks/yandex-task15-page-f152f3ca.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр логики источник: documents/codex/2026-06-03/files-mentioned-by-the-user-files/work/source17/logic-trainer/index.html trainers/archive-5-weeks/index-c56cab9d.html">
+          <h3>Тренажёр логики</h3>
+          <p>Источник: Documents/Codex/2026-06-03/files-mentioned-by-the-user-files/work/source17/logic-trainer/index.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/index-c56cab9d.html</span><span>3 КБ</span></div>
+          <a href="./archive-5-weeks/index-c56cab9d.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр огэ №16 — окружность, углы, длины, площади источник: downloads/oge_task16_trainer (1).html trainers/archive-5-weeks/oge-task16-trainer-1-664537dd.html">
+          <h3>Тренажёр ОГЭ №16 — окружность, углы, длины, площади</h3>
+          <p>Источник: Downloads/oge_task16_trainer (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/oge-task16-trainer-1-664537dd.html</span><span>58 КБ</span></div>
+          <a href="./archive-5-weeks/oge-task16-trainer-1-664537dd.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр огэ: теорема пифагора источник: downloads/oge_pythagoras_trainer.html trainers/archive-5-weeks/oge-pythagoras-trainer-52dcc755.html">
+          <h3>Тренажёр ОГЭ: теорема Пифагора</h3>
+          <p>Источник: Downloads/oge_pythagoras_trainer.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/oge-pythagoras-trainer-52dcc755.html</span><span>51 КБ</span></div>
+          <a href="./archive-5-weeks/oge-pythagoras-trainer-52dcc755.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр №16 огэ — окружность источник: downloads/oge_task16_trainer_v11_deepseek_patch.html trainers/archive-5-weeks/oge-task16-trainer-v11-deepseek-patch-7a63cfda.html">
+          <h3>Тренажёр №16 ОГЭ — Окружность</h3>
+          <p>Источник: Downloads/oge_task16_trainer_v11_deepseek_patch.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/oge-task16-trainer-v11-deepseek-patch-7a63cfda.html</span><span>137 КБ</span></div>
+          <a href="./archive-5-weeks/oge-task16-trainer-v11-deepseek-patch-7a63cfda.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр №16 огэ — окружность источник: downloads/preview (14).html trainers/archive-5-weeks/preview-14-a32d8634.html">
+          <h3>Тренажёр №16 ОГЭ — Окружность</h3>
+          <p>Источник: Downloads/preview (14).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/preview-14-a32d8634.html</span><span>115 КБ</span></div>
+          <a href="./archive-5-weeks/preview-14-a32d8634.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр №16 огэ — окружность источник: downloads/preview (8).html trainers/archive-5-weeks/preview-8-e56a50a3.html">
+          <h3>Тренажёр №16 ОГЭ — Окружность</h3>
+          <p>Источник: Downloads/preview (8).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/preview-8-e56a50a3.html</span><span>114 КБ</span></div>
+          <a href="./archive-5-weeks/preview-8-e56a50a3.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: вычитание как сложение противоположного источник: downloads/subtraction-as-addition.html trainers/archive-5-weeks/subtraction-as-addition-b5b0d37d.html">
+          <h3>Тренажёр: вычитание как сложение противоположного</h3>
+          <p>Источник: Downloads/subtraction-as-addition.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/subtraction-as-addition-b5b0d37d.html</span><span>42 КБ</span></div>
+          <a href="./archive-5-weeks/subtraction-as-addition-b5b0d37d.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: кредиты и вклады — mathexam.space источник: downloads/credit-payment-table-trainer.html trainers/archive-5-weeks/credit-payment-table-trainer-755d104c.html">
+          <h3>Тренажёр: Кредиты и вклады — Mathexam.space</h3>
+          <p>Источник: Downloads/credit-payment-table-trainer.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/credit-payment-table-trainer-755d104c.html</span><span>101 КБ</span></div>
+          <a href="./archive-5-weeks/credit-payment-table-trainer-755d104c.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: неравенства на числовой прямой источник: downloads/neravenstva_trainer (1).html trainers/archive-5-weeks/neravenstva-trainer-1-4ab048e4.html">
+          <h3>Тренажёр: Неравенства на числовой прямой</h3>
+          <p>Источник: Downloads/neravenstva_trainer (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/neravenstva-trainer-1-4ab048e4.html</span><span>22 КБ</span></div>
+          <a href="./archive-5-weeks/neravenstva-trainer-1-4ab048e4.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: неравенства на числовой прямой источник: downloads/neravenstva_trainer.html trainers/archive-5-weeks/neravenstva-trainer-eee783f4.html">
+          <h3>Тренажёр: Неравенства на числовой прямой</h3>
+          <p>Источник: Downloads/neravenstva_trainer.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/neravenstva-trainer-eee783f4.html</span><span>22 КБ</span></div>
+          <a href="./archive-5-weeks/neravenstva-trainer-eee783f4.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: скобки и знаки подряд источник: downloads/brackets-and-signs.html trainers/archive-5-weeks/brackets-and-signs-dc000366.html">
+          <h3>Тренажёр: скобки и знаки подряд</h3>
+          <p>Источник: Downloads/brackets-and-signs.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/brackets-and-signs-dc000366.html</span><span>44 КБ</span></div>
+          <a href="./archive-5-weeks/brackets-and-signs-dc000366.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: сложение отрицательных чисел — модель долга источник: downloads/negative_plus_negative_debts_deepseek.html trainers/archive-5-weeks/negative-plus-negative-debts-deepseek-a7c7c36a.html">
+          <h3>Тренажёр: сложение отрицательных чисел — модель долга</h3>
+          <p>Источник: Downloads/negative_plus_negative_debts_deepseek.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/negative-plus-negative-debts-deepseek-a7c7c36a.html</span><span>30 КБ</span></div>
+          <a href="./archive-5-weeks/negative-plus-negative-debts-deepseek-a7c7c36a.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: сложение чисел с разными знаками источник: downloads/battle-numbers (2).html trainers/archive-5-weeks/battle-numbers-2-7a0a8446.html">
+          <h3>Тренажёр: сложение чисел с разными знаками</h3>
+          <p>Источник: Downloads/battle-numbers (2).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/battle-numbers-2-7a0a8446.html</span><span>43 КБ</span></div>
+          <a href="./archive-5-weeks/battle-numbers-2-7a0a8446.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: смешанные выражения источник: downloads/mixed-expressions.html trainers/archive-5-weeks/mixed-expressions-58f0b76f.html">
+          <h3>Тренажёр: смешанные выражения</h3>
+          <p>Источник: Downloads/mixed-expressions.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/mixed-expressions-58f0b76f.html</span><span>44 КБ</span></div>
+          <a href="./archive-5-weeks/mixed-expressions-58f0b76f.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: сумма синусов и косинусов → произведение источник: downloads/trig-sum-to-product-trainer(3).html trainers/archive-5-weeks/trig-sum-to-product-trainer-3-4bbcb5b1.html">
+          <h3>Тренажёр: сумма синусов и косинусов → произведение</h3>
+          <p>Источник: Downloads/trig-sum-to-product-trainer(3).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trig-sum-to-product-trainer-3-4bbcb5b1.html</span><span>141 КБ</span></div>
+          <a href="./archive-5-weeks/trig-sum-to-product-trainer-3-4bbcb5b1.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: сумма синусов и косинусов → произведение источник: downloads/trig-sum-to-product-trainer.html trainers/archive-5-weeks/trig-sum-to-product-trainer-8946b780.html">
+          <h3>Тренажёр: сумма синусов и косинусов → произведение</h3>
+          <p>Источник: Downloads/trig-sum-to-product-trainer.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trig-sum-to-product-trainer-8946b780.html</span><span>138 КБ</span></div>
+          <a href="./archive-5-weeks/trig-sum-to-product-trainer-8946b780.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: сумма синусов и косинусов → произведение источник: downloads/trig-sum-to-product-trainer.html.html trainers/archive-5-weeks/trig-sum-to-product-trainer-html-4b64ce8d.html">
+          <h3>Тренажёр: сумма синусов и косинусов → произведение</h3>
+          <p>Источник: Downloads/trig-sum-to-product-trainer.html.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trig-sum-to-product-trainer-html-4b64ce8d.html</span><span>141 КБ</span></div>
+          <a href="./archive-5-weeks/trig-sum-to-product-trainer-html-4b64ce8d.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="тренажёр: сумма синусов и косинусов → произведение источник: downloads/trig-sum-to-product-trainer-updated.html trainers/archive-5-weeks/trig-sum-to-product-trainer-updated-e577f007.html">
+          <h3>Тренажёр: сумма синусов и косинусов → произведение</h3>
+          <p>Источник: Downloads/trig-sum-to-product-trainer-updated.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/trig-sum-to-product-trainer-updated-e577f007.html</span><span>138 КБ</span></div>
+          <a href="./archive-5-weeks/trig-sum-to-product-trainer-updated-e577f007.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="финансовая математика: нестандартные схемы — mathexam.space источник: downloads/finance-nonstandard-trainer.html trainers/archive-5-weeks/finance-nonstandard-trainer-64bebf82.html">
+          <h3>Финансовая математика: нестандартные схемы — Mathexam.space</h3>
+          <p>Источник: Downloads/finance-nonstandard-trainer.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/finance-nonstandard-trainer-64bebf82.html</span><span>122 КБ</span></div>
+          <a href="./archive-5-weeks/finance-nonstandard-trainer-64bebf82.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="числовая прямая — тренажёр источник: downloads/negative-numbers-trainer (2).html trainers/archive-5-weeks/negative-numbers-trainer-2-3467e485.html">
+          <h3>Числовая прямая — Тренажёр</h3>
+          <p>Источник: Downloads/negative-numbers-trainer (2).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/negative-numbers-trainer-2-3467e485.html</span><span>34 КБ</span></div>
+          <a href="./archive-5-weeks/negative-numbers-trainer-2-3467e485.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="шины · табличный метод источник: downloads/preview (6).html trainers/archive-5-weeks/preview-6-e121380e.html">
+          <h3>Шины · табличный метод</h3>
+          <p>Источник: Downloads/preview (6).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/preview-6-e121380e.html</span><span>142 КБ</span></div>
+          <a href="./archive-5-weeks/preview-6-e121380e.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="шины · табличный метод источник: downloads/tires_table_method_trainer (1).html trainers/archive-5-weeks/tires-table-method-trainer-1-37c9a07f.html">
+          <h3>Шины · табличный метод</h3>
+          <p>Источник: Downloads/tires_table_method_trainer (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/tires-table-method-trainer-1-37c9a07f.html</span><span>137 КБ</span></div>
+          <a href="./archive-5-weeks/tires-table-method-trainer-1-37c9a07f.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="шины · табличный метод источник: downloads/tires_table_method_trainer.html trainers/archive-5-weeks/tires-table-method-trainer-216c2624.html">
+          <h3>Шины · табличный метод</h3>
+          <p>Источник: Downloads/tires_table_method_trainer.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/tires-table-method-trainer-216c2624.html</span><span>108 КБ</span></div>
+          <a href="./archive-5-weeks/tires-table-method-trainer-216c2624.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="шины · тренажёр 1–5 источник: downloads/02_old_claude_tires_trainer.html trainers/archive-5-weeks/02-old-claude-tires-trainer-035aa6bb.html">
+          <h3>Шины · тренажёр 1–5</h3>
+          <p>Источник: Downloads/02_old_claude_tires_trainer.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/02-old-claude-tires-trainer-035aa6bb.html</span><span>46 КБ</span></div>
+          <a href="./archive-5-weeks/02-old-claude-tires-trainer-035aa6bb.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="шины · тренажёр 1–5 источник: downloads/practice-1-5-tires (1).html trainers/archive-5-weeks/practice-1-5-tires-1-7e5b7482.html">
+          <h3>Шины · тренажёр 1–5</h3>
+          <p>Источник: Downloads/practice-1-5-tires (1).html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/practice-1-5-tires-1-7e5b7482.html</span><span>140 КБ</span></div>
+          <a href="./archive-5-weeks/practice-1-5-tires-1-7e5b7482.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="яндекс егэ информатика — задание 12 источник: documents/codex/2026-06-01/https-education-yandex-ru-ege-inf/outputs/yandex_ege_inf_tasks_page_link.html trainers/archive-5-weeks/yandex-ege-inf-tasks-page-link-f7e7a14e.html">
+          <h3>Яндекс ЕГЭ Информатика — задание 12</h3>
+          <p>Источник: Documents/Codex/2026-06-01/https-education-yandex-ru-ege-inf/outputs/yandex_ege_inf_tasks_page_link.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/yandex-ege-inf-tasks-page-link-f7e7a14e.html</span><span>1 КБ</span></div>
+          <a href="./archive-5-weeks/yandex-ege-inf-tasks-page-link-f7e7a14e.html">Открыть</a>
+        </article>
+        <article class="card" data-card data-title="ac + cb = ab — тренажёр по геометрии источник: downloads/jsxgraph-ac-cb-ab.html trainers/archive-5-weeks/jsxgraph-ac-cb-ab-ac096517.html">
+          <h3>AC + CB = AB — тренажёр по геометрии</h3>
+          <p>Источник: Downloads/jsxgraph-ac-cb-ab.html</p>
+          <div class="meta"><span>trainers/archive-5-weeks/jsxgraph-ac-cb-ab-ac096517.html</span><span>26 КБ</span></div>
+          <a href="./archive-5-weeks/jsxgraph-ac-cb-ab-ac096517.html">Открыть</a>
+        </article>
+      </div>
+    </section>
+
+  </main>
+  <script>
+    const search = document.getElementById('search');
+    const chips = [...document.querySelectorAll('.chip')];
+    const cards = [...document.querySelectorAll('[data-card]')];
+    const sections = [...document.querySelectorAll('.section')];
+    const visibleCount = document.getElementById('visibleCount');
+    const empty = document.getElementById('empty');
+    let activeFilter = '';
+    function applyFilter(){
+      const q = search.value.trim().toLowerCase();
+      let count = 0;
+      for (const card of cards){
+        const section = card.closest('.section').dataset.section;
+        const okSection = !activeFilter || section === activeFilter;
+        const okText = !q || card.dataset.title.includes(q);
+        const show = okSection && okText;
+        card.classList.toggle('hidden', !show);
+        if (show) count++;
+      }
+      for (const section of sections){
+        const any = [...section.querySelectorAll('[data-card]')].some(card => !card.classList.contains('hidden'));
+        section.classList.toggle('hidden', !any);
+      }
+      visibleCount.textContent = count;
+      empty.style.display = count ? 'none' : 'block';
+    }
+    chips.forEach(chip => chip.addEventListener('click', () => {
+      activeFilter = chip.dataset.filter;
+      chips.forEach(item => item.classList.toggle('active', item === chip));
+      applyFilter();
+    }));
+    search.addEventListener('input', applyFilter);
+  </script>
+</body>
+</html>

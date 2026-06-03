@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Тренажёр ОГЭ: теорема Пифагора</title>
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --ink:#162033;
+      --muted:#637083;
+      --accent:#335cff;
+      --accent2:#edf1ff;
+      --good:#0f7b4f;
+      --bad:#bf3030;
+      --warn:#9a6a00;
+      --line:#dde3ef;
+      --shadow:0 14px 40px rgba(21,34,66,.10);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background:radial-gradient(circle at top left,#e9efff 0,#f6f7fb 36%,#f6f7fb 100%);
+      color:var(--ink);
+      line-height:1.5;
+    }
+    header{
+      max-width:1180px;
+      margin:0 auto;
+      padding:34px 20px 18px;
+    }
+    .eyebrow{font-weight:800;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;font-size:12px;margin:0 0 8px}
+    h1{font-size:clamp(30px,5vw,58px);line-height:1.02;margin:0 0 14px;letter-spacing:-.04em}
+    .lead{font-size:18px;color:var(--muted);max-width:860px;margin:0}
+    main{max-width:1180px;margin:0 auto;padding:16px 20px 46px;display:grid;grid-template-columns:360px minmax(0,1fr);gap:18px;align-items:start}
+    .panel,.task-card,.small-card{background:rgba(255,255,255,.86);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.72);box-shadow:var(--shadow);border-radius:var(--radius)}
+    .panel{padding:18px;position:sticky;top:16px}
+    .task-card{padding:22px;min-height:560px}
+    .small-card{padding:16px;margin-top:14px}
+    h2{font-size:18px;margin:0 0 12px}
+    h3{font-size:15px;margin:18px 0 10px;color:#1e2b44}
+    label{font-size:13px;font-weight:700;color:#29364f;display:block;margin-bottom:7px}
+    select,input[type="text"]{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 13px;background:#fff;color:var(--ink);font-size:15px;outline:none}
+    select:focus,input[type="text"]:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(51,92,255,.12)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+    .controls{display:grid;gap:10px;margin-top:16px}
+    button{border:0;border-radius:15px;padding:12px 14px;font-weight:800;cursor:pointer;background:#eef2ff;color:#17306f;transition:.15s transform,.15s box-shadow,.15s background}
+    button:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(21,34,66,.12)}
+    button.primary{background:var(--accent);color:#fff}
+    button.ghost{background:#f2f5fa;color:#25354f}
+    button.good{background:#e8f7ef;color:var(--good)}
+    button.bad{background:#fff0f0;color:var(--bad)}
+    button:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 10px;font-size:13px;color:#2c3d5d;user-select:none}
+    .chip input{accent-color:var(--accent)}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+    .stat{background:#f5f7fc;border:1px solid var(--line);border-radius:16px;padding:10px;text-align:center}
+    .stat b{display:block;font-size:22px;line-height:1.1}.stat span{font-size:12px;color:var(--muted)}
+    .meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+    .badge{font-size:12px;font-weight:800;border-radius:999px;padding:6px 10px;background:var(--accent2);color:#2846b8;border:1px solid #dbe4ff}
+    .badge.gray{background:#f3f5f8;color:#546176;border-color:#e0e5ee}
+    .badge.level1{background:#eaf8f1;color:#0c7450;border-color:#cdeedc}.badge.level2{background:#fff6db;color:#8b6400;border-color:#ffe5a2}.badge.level3{background:#fff0f3;color:#a72542;border-color:#ffd3dc}
+    .problem{font-size:22px;line-height:1.45;margin:12px 0 18px;font-weight:650;letter-spacing:-.01em}
+    .diagram{margin:10px 0 18px;min-height:120px;border:1px dashed var(--line);border-radius:18px;background:#fbfcff;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:8px}
+    .diagram svg{max-width:100%;height:auto}
+    .answer-grid{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;gap:10px;align-items:center;margin-top:14px}
+    .feedback,.hint,.solution{margin-top:12px;border-radius:16px;padding:12px 14px;display:none}
+    .feedback.ok{display:block;background:#e9f7ef;color:#075436;border:1px solid #c7ebd6}.feedback.no{display:block;background:#fff0f0;color:#922828;border:1px solid #ffd2d2}.feedback.info{display:block;background:#eef3ff;color:#233d91;border:1px solid #dbe4ff}
+    .hint{background:#fff8e6;color:#704d00;border:1px solid #ffe4a5}.solution{background:#f1f5fb;color:#25354f;border:1px solid #dbe3f0}.hint.show,.solution.show{display:block}
+    .formula{font-family:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;background:#fff;border:1px solid var(--line);border-radius:10px;padding:2px 6px;white-space:nowrap}
+    .mistake-list{display:grid;gap:8px;margin-top:8px}.mistake{font-size:13px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px}.mistake b{display:block;color:#23314b;margin-bottom:3px}
+    details{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px}summary{cursor:pointer;font-weight:800;color:#2c3c5b}.map{font-size:13px;color:#526176;margin:10px 0 0;padding-left:18px}.map li{margin:6px 0}
+    .footer-note{font-size:12px;color:#6a7587;margin-top:14px}
+    .print-area{display:none}
+    @media (max-width:920px){main{grid-template-columns:1fr}.panel{position:static}.answer-grid{grid-template-columns:1fr}.answer-grid button{width:100%}}
+    @media print{
+      body{background:#fff;color:#000}.no-print,header,main{display:none!important}.print-area{display:block;padding:24px;font-family:Arial,sans-serif}.print-task{page-break-inside:avoid;border-bottom:1px solid #ddd;padding:10px 0}.print-task svg{max-width:240px}.answers{margin-top:20px;font-size:13px}.answers span{display:inline-block;margin-right:12px}
+    }
+  </style>
+</head>
+<body>
+<header class="no-print">
+  <p class="eyebrow">ОГЭ · математика · геометрия</p>
+  <h1>Тренажёр по теореме Пифагора</h1>
+  <p class="lead">Оригинальные задачи в стиле ОГЭ: без заучивания конкретных формулировок, зато с теми же приёмами — прямоугольные треугольники, клетки, окружности, четырёхугольники и практические сюжеты.</p>
+</header>
+
+<main class="no-print">
+  <aside class="panel">
+    <h2>Настройка тренировки</h2>
+    <div class="row">
+      <div>
+        <label for="level">Уровень</label>
+        <select id="level">
+          <option value="all">Все</option>
+          <option value="1">База</option>
+          <option value="2">Средний</option>
+          <option value="3">Сложнее</option>
+        </select>
+      </div>
+      <div>
+        <label for="mode">Режим</label>
+        <select id="mode">
+          <option value="mix">Микс ОГЭ</option>
+          <option value="weak">Мои ошибки</option>
+          <option value="theory">Только теория</option>
+          <option value="practical">Практика</option>
+        </select>
+      </div>
+    </div>
+
+    <h3>Типы задач</h3>
+    <div id="families" class="chips"></div>
+
+    <div class="controls">
+      <button id="newTask" class="primary">Новая задача</button>
+      <button id="test10" class="good">Мини-тест на 10 задач</button>
+      <button id="print20" class="ghost">Распечатать лист на 20 задач</button>
+      <button id="reset" class="bad">Сбросить статистику</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b id="done">0</b><span>решено</span></div>
+      <div class="stat"><b id="ok">0</b><span>верно</span></div>
+      <div class="stat"><b id="streak">0</b><span>серия</span></div>
+    </div>
+
+    <details open>
+      <summary>Карта покрытия ОГЭ</summary>
+      <ul class="map">
+        <li>1–5: практико-ориентированные задачи: расстояния, диагонали, схемы.</li>
+        <li>15: треугольники, катеты, гипотенуза, высоты.</li>
+        <li>16: хорды, касательные, радиусы.</li>
+        <li>17: прямоугольники, ромбы, трапеции.</li>
+        <li>18: задачи на клетчатой бумаге и координаты.</li>
+        <li>19: теоретические утверждения и обратная теорема.</li>
+      </ul>
+    </details>
+    <p class="footer-note">Формулировки здесь сгенерированы заново. Это тренажёр по прототипам, а не копия банка заданий.</p>
+  </aside>
+
+  <section>
+    <div class="task-card">
+      <div id="meta" class="meta"></div>
+      <div id="problem" class="problem">Нажми «Новая задача» — и погнали. Пифагор, конечно, старенький, но до сих пор устраивает ОГЭ лёгкую встряску.</div>
+      <div id="diagram" class="diagram">Здесь появится схема.</div>
+      <div class="answer-grid">
+        <input id="answer" type="text" placeholder="Введите ответ: например 13 или 7,2" autocomplete="off" />
+        <button id="check" class="primary">Проверить</button>
+        <button id="hintBtn" class="ghost">Подсказка</button>
+        <button id="solutionBtn" class="ghost">Решение</button>
+      </div>
+      <div id="feedback" class="feedback"></div>
+      <div id="hint" class="hint"></div>
+      <div id="solution" class="solution"></div>
+    </div>
+
+    <div class="small-card">
+      <h2>Последние ошибки</h2>
+      <div id="mistakes" class="mistake-list"><p class="footer-note">Пока пусто. Красота.</p></div>
+    </div>
+  </section>
+</main>
+
+<div id="printArea" class="print-area"></div>
+
+<script>
+  const families = [
+    {id:'triangles', label:'Треугольники'},
+    {id:'quadrilaterals', label:'Четырёхугольники'},
+    {id:'circles', label:'Окружность'},
+    {id:'grid', label:'Клетки / координаты'},
+    {id:'practical', label:'Практические'},
+    {id:'theory', label:'Теория'}
+  ];
+
+  const triples = [[3,4,5],[5,12,13],[6,8,10],[7,24,25],[8,15,17],[9,12,15],[10,24,26],[12,16,20],[15,20,25],[20,21,29],[12,35,37],[16,30,34],[18,24,30]];
+  const heightTriples = [[6,8,10],[9,12,15],[12,16,20],[15,20,25],[18,24,30]];
+  const falseTriples = [[4,5,6],[6,8,11],[7,10,12],[8,9,10],[9,10,17],[10,11,15],[12,13,18],[5,6,8]];
+
+  const $ = id => document.getElementById(id);
+  const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+  const rnd = (min,max) => Math.floor(Math.random()*(max-min+1))+min;
+  const sq = n => n*n;
+  const nbsp = s => String(s).replace(/-/g,'−');
+
+  function shuffleAB(t){
+    const [a,b,c] = t;
+    return Math.random() < .5 ? [a,b,c] : [b,a,c];
+  }
+
+  function fmt(n){
+    if (typeof n === 'string') return n;
+    const rounded = Math.round((n + Number.EPSILON)*100)/100;
+    if (Math.abs(rounded - Math.round(rounded)) < 1e-9) return String(Math.round(rounded));
+    return String(rounded).replace('.', ',');
+  }
+
+  function normalizeTextAnswer(s){
+    return String(s).toLowerCase().replace(/[^0-9а-яёa-z]/gi,'').replace(/да/g,'1').replace(/нет/g,'0');
+  }
+
+  function parseNumber(raw){
+    let s = String(raw).trim().replace(',', '.').replace(/\s+/g,'');
+    if (!s) return null;
+    if (/^-?\d+(\.\d+)?\/-?\d+(\.\d+)?$/.test(s)) {
+      const [a,b] = s.split('/').map(Number);
+      if (b !== 0) return a/b;
+    }
+    const n = Number(s);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function rightTriangleSVG(bottom, vertical, hyp, caption=''){
+    return `
+      <svg viewBox="0 0 380 230" role="img" aria-label="Прямоугольный треугольник">
+        <rect x="0" y="0" width="380" height="230" fill="#fbfcff"/>
+        <polygon points="60,180 300,180 60,45" fill="#edf1ff" stroke="#335cff" stroke-width="3"/>
+        <path d="M60 160 L80 160 L80 180" fill="none" stroke="#335cff" stroke-width="2"/>
+        <text x="165" y="205" font-size="18" text-anchor="middle" fill="#162033">${bottom}</text>
+        <text x="38" y="100" font-size="18" text-anchor="middle" fill="#162033" transform="rotate(-90 38 100)">${vertical}</text>
+        <text x="190" y="96" font-size="18" text-anchor="middle" fill="#162033" transform="rotate(29 190 96)">${hyp}</text>
+        <text x="58" y="198" font-size="15" fill="#637083">90°</text>
+        ${caption ? `<text x="190" y="24" font-size="15" text-anchor="middle" fill="#637083">${caption}</text>` : ''}
+      </svg>`;
+  }
+
+  function rectangleSVG(w,h,d){
+    return `
+      <svg viewBox="0 0 390 235" role="img" aria-label="Прямоугольник">
+        <rect x="0" y="0" width="390" height="235" fill="#fbfcff"/>
+        <rect x="70" y="55" width="250" height="130" fill="#edf1ff" stroke="#335cff" stroke-width="3"/>
+        <line x1="70" y1="185" x2="320" y2="55" stroke="#bf3030" stroke-width="3"/>
+        <text x="195" y="210" font-size="18" text-anchor="middle">${w}</text>
+        <text x="342" y="125" font-size="18" text-anchor="middle">${h}</text>
+        <text x="185" y="105" font-size="18" text-anchor="middle" transform="rotate(-27 185 105)">${d}</text>
+      </svg>`;
+  }
+
+  function rhombusSVG(d1,d2,side){
+    return `
+      <svg viewBox="0 0 390 245" role="img" aria-label="Ромб">
+        <rect x="0" y="0" width="390" height="245" fill="#fbfcff"/>
+        <polygon points="195,35 315,122 195,209 75,122" fill="#edf1ff" stroke="#335cff" stroke-width="3"/>
+        <line x1="75" y1="122" x2="315" y2="122" stroke="#637083" stroke-width="2" stroke-dasharray="6 5"/>
+        <line x1="195" y1="35" x2="195" y2="209" stroke="#637083" stroke-width="2" stroke-dasharray="6 5"/>
+        <text x="195" y="115" font-size="17" text-anchor="middle">${d1}</text>
+        <text x="210" y="125" font-size="17" text-anchor="start" transform="rotate(-90 210 125)">${d2}</text>
+        <text x="272" y="65" font-size="17" text-anchor="middle" transform="rotate(36 272 65)">${side}</text>
+      </svg>`;
+  }
+
+  function trapezoidSVG(a,b,l,h){
+    return `
+      <svg viewBox="0 0 410 240" role="img" aria-label="Равнобедренная трапеция">
+        <rect x="0" y="0" width="410" height="240" fill="#fbfcff"/>
+        <polygon points="80,180 330,180 280,65 130,65" fill="#edf1ff" stroke="#335cff" stroke-width="3"/>
+        <line x1="130" y1="65" x2="130" y2="180" stroke="#bf3030" stroke-width="3" stroke-dasharray="5 5"/>
+        <path d="M130 160 L150 160 L150 180" fill="none" stroke="#bf3030" stroke-width="2"/>
+        <text x="205" y="55" font-size="17" text-anchor="middle">${a}</text>
+        <text x="205" y="207" font-size="17" text-anchor="middle">${b}</text>
+        <text x="97" y="118" font-size="17" text-anchor="middle" transform="rotate(-66 97 118)">${l}</text>
+        <text x="152" y="125" font-size="17" fill="#bf3030">${h}</text>
+      </svg>`;
+  }
+
+  function gridSVG(dx,dy,d){
+    const cell = 22, pad = 40;
+    const cols = Math.max(dx,1), rows = Math.max(dy,1);
+    const w = pad*2 + cols*cell, h = pad*2 + rows*cell;
+    let lines = '';
+    for(let i=0;i<=cols;i++) lines += `<line x1="${pad+i*cell}" y1="${pad}" x2="${pad+i*cell}" y2="${pad+rows*cell}" stroke="#dde3ef"/>`;
+    for(let j=0;j<=rows;j++) lines += `<line x1="${pad}" y1="${pad+j*cell}" x2="${pad+cols*cell}" y2="${pad+j*cell}" stroke="#dde3ef"/>`;
+    return `
+      <svg viewBox="0 0 ${w} ${h}" role="img" aria-label="Клетчатая бумага">
+        <rect x="0" y="0" width="${w}" height="${h}" fill="#fbfcff"/>
+        ${lines}
+        <line x1="${pad}" y1="${pad+rows*cell}" x2="${pad+cols*cell}" y2="${pad}" stroke="#335cff" stroke-width="4"/>
+        <circle cx="${pad}" cy="${pad+rows*cell}" r="5" fill="#335cff"/><circle cx="${pad+cols*cell}" cy="${pad}" r="5" fill="#335cff"/>
+        <text x="${pad-14}" y="${pad+rows*cell+20}" font-size="15">A</text>
+        <text x="${pad+cols*cell+9}" y="${pad-8}" font-size="15">B</text>
+        <text x="${pad+cols*cell/2}" y="${pad+rows*cell+24}" font-size="15" text-anchor="middle">${dx}</text>
+        <text x="${pad+cols*cell+16}" y="${pad+rows*cell/2}" font-size="15">${dy}</text>
+        <text x="${pad+cols*cell/2}" y="${pad+rows*cell/2-6}" font-size="16" text-anchor="middle" fill="#335cff">${d}</text>
+      </svg>`;
+  }
+
+  function circleChordSVG(R,dist,chord){
+    return `
+      <svg viewBox="0 0 390 245" role="img" aria-label="Окружность с хордой">
+        <rect x="0" y="0" width="390" height="245" fill="#fbfcff"/>
+        <circle cx="195" cy="122" r="82" fill="#edf1ff" stroke="#335cff" stroke-width="3"/>
+        <circle cx="195" cy="122" r="4" fill="#162033"/>
+        <line x1="115" y1="95" x2="275" y2="95" stroke="#bf3030" stroke-width="4"/>
+        <line x1="195" y1="122" x2="195" y2="95" stroke="#637083" stroke-width="3" stroke-dasharray="5 5"/>
+        <line x1="195" y1="122" x2="275" y2="95" stroke="#335cff" stroke-width="2"/>
+        <text x="200" y="84" font-size="17" text-anchor="middle" fill="#bf3030">хорда = ${chord}</text>
+        <text x="212" y="113" font-size="16" fill="#637083">${dist}</text>
+        <text x="240" y="119" font-size="16" fill="#335cff">R=${R}</text>
+      </svg>`;
+  }
+
+  function tangentSVG(R,op,tangent){
+    return `
+      <svg viewBox="0 0 410 245" role="img" aria-label="Касательная к окружности">
+        <rect x="0" y="0" width="410" height="245" fill="#fbfcff"/>
+        <circle cx="155" cy="122" r="68" fill="#edf1ff" stroke="#335cff" stroke-width="3"/>
+        <circle cx="155" cy="122" r="4" fill="#162033"/>
+        <circle cx="325" cy="122" r="5" fill="#bf3030"/>
+        <line x1="155" y1="122" x2="325" y2="122" stroke="#637083" stroke-width="3"/>
+        <line x1="155" y1="122" x2="210" y2="82" stroke="#335cff" stroke-width="3"/>
+        <line x1="325" y1="122" x2="210" y2="82" stroke="#bf3030" stroke-width="4"/>
+        <path d="M205 91 L216 96 L211 106" fill="none" stroke="#162033" stroke-width="2"/>
+        <text x="244" y="142" font-size="17">OP=${op}</text>
+        <text x="178" y="95" font-size="17" fill="#335cff">R=${R}</text>
+        <text x="275" y="82" font-size="17" fill="#bf3030">PT=${tangent}</text>
+        <text x="145" y="145" font-size="15">O</text><text x="334" y="117" font-size="15">P</text><text x="212" y="76" font-size="15">T</text>
+      </svg>`;
+  }
+
+  function simpleSceneSVG(kind,a,b,c){
+    const title = kind === 'ladder' ? 'лестница' : kind === 'field' ? 'участок' : 'растяжка';
+    return `
+      <svg viewBox="0 0 390 235" role="img" aria-label="Практическая схема ${title}">
+        <rect x="0" y="0" width="390" height="235" fill="#fbfcff"/>
+        <line x1="60" y1="190" x2="320" y2="190" stroke="#637083" stroke-width="3"/>
+        <line x1="80" y1="190" x2="80" y2="50" stroke="#637083" stroke-width="3"/>
+        <line x1="80" y1="50" x2="300" y2="190" stroke="#335cff" stroke-width="5"/>
+        <path d="M80 170 L100 170 L100 190" fill="none" stroke="#637083" stroke-width="2"/>
+        <text x="190" y="212" font-size="17" text-anchor="middle">${a}</text>
+        <text x="56" y="120" font-size="17" text-anchor="middle" transform="rotate(-90 56 120)">${b}</text>
+        <text x="190" y="115" font-size="17" text-anchor="middle" fill="#335cff" transform="rotate(32 190 115)">${c}</text>
+      </svg>`;
+  }
+
+  const templates = [
+    {
+      id:'tri_hyp', family:'triangles', title:'Катеты → гипотенуза', level:1, oge:'15',
+      gen(){
+        const [a,b,c] = shuffleAB(pick(triples));
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge,
+          problem:`В прямоугольном треугольнике катеты равны ${a} и ${b}. Найдите гипотенузу.`,
+          answer:c,
+          hint:`Используй <span class="formula">c² = a² + b²</span>. Гипотенуза — сторона напротив прямого угла.`,
+          solution:`<span class="formula">c² = ${a}² + ${b}² = ${sq(a)} + ${sq(b)} = ${sq(c)}</span>, значит <span class="formula">c = ${c}</span>.`,
+          svg:rightTriangleSVG(a,b,'?')
+        };
+      }
+    },
+    {
+      id:'tri_leg', family:'triangles', title:'Гипотенуза и катет → катет', level:1, oge:'15',
+      gen(){
+        const [a,b,c] = shuffleAB(pick(triples));
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge,
+          problem:`Гипотенуза прямоугольного треугольника равна ${c}, один из катетов равен ${a}. Найдите другой катет.`,
+          answer:b,
+          hint:`Катет ищется вычитанием квадратов: <span class="formula">b² = c² − a²</span>.`,
+          solution:`<span class="formula">b² = ${c}² − ${a}² = ${sq(c)} − ${sq(a)} = ${sq(b)}</span>, поэтому <span class="formula">b = ${b}</span>.`,
+          svg:rightTriangleSVG(a,'?',c)
+        };
+      }
+    },
+    {
+      id:'isos_height', family:'triangles', title:'Равнобедренный треугольник', level:2, oge:'15',
+      gen(){
+        const [half,h,side] = shuffleAB(pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25],[9,12,15],[12,16,20]]));
+        const base = 2*half;
+        const askArea = Math.random() < .35;
+        const answer = askArea ? base*h/2 : h;
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge,
+          problem: askArea
+            ? `В равнобедренном треугольнике боковые стороны равны ${side}, основание равно ${base}. Найдите площадь треугольника.`
+            : `В равнобедренном треугольнике боковые стороны равны ${side}, основание равно ${base}. Найдите высоту, проведённую к основанию.`,
+          answer,
+          hint:`Высота к основанию в равнобедренном треугольнике делит основание пополам: получаем прямоугольный треугольник с гипотенузой ${side} и катетом ${half}.`,
+          solution: askArea
+            ? `Половина основания равна <span class="formula">${base}:2 = ${half}</span>. Высота: <span class="formula">h² = ${side}² − ${half}² = ${sq(side)} − ${sq(half)} = ${sq(h)}</span>, значит <span class="formula">h = ${h}</span>. Площадь: <span class="formula">S = ${base}·${h}:2 = ${answer}</span>.`
+            : `Половина основания равна <span class="formula">${base}:2 = ${half}</span>. Тогда <span class="formula">h² = ${side}² − ${half}² = ${sq(side)} − ${sq(half)} = ${sq(h)}</span>, значит <span class="formula">h = ${h}</span>.`,
+          svg:rightTriangleSVG(half,'?',side,'половина равнобедренного треугольника')
+        };
+      }
+    },
+    {
+      id:'height_to_hyp', family:'triangles', title:'Высота к гипотенузе', level:3, oge:'23 / 15',
+      gen(){
+        const [a,b,c] = shuffleAB(pick(heightTriples));
+        const h = a*b/c;
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge,
+          problem:`Катеты прямоугольного треугольника равны ${a} и ${b}. Найдите высоту, проведённую к гипотенузе.`,
+          answer:h,
+          tolerance:.011,
+          hint:`Сначала найди гипотенузу, потом приравняй две формулы площади: <span class="formula">ab/2 = ch/2</span>.`,
+          solution:`Гипотенуза: <span class="formula">c = ${c}</span>. По площади <span class="formula">${a}·${b}/2 = ${c}·h/2</span>, значит <span class="formula">h = ${a}·${b}/${c} = ${fmt(h)}</span>.`,
+          svg:rightTriangleSVG(a,b,c)
+        };
+      }
+    },
+    {
+      id:'reverse', family:'theory', title:'Обратная теорема', level:1, oge:'19',
+      gen(){
+        const yes = Math.random() < .55;
+        const t = yes ? pick(triples) : pick(falseTriples);
+        const sides = [...t].sort((x,y)=>x-y);
+        const [a,b,c] = sides;
+        const calc = sq(a)+sq(b);
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge,
+          problem:`Треугольник со сторонами ${a}, ${b} и ${c} является прямоугольным? В ответ запишите 1, если да, и 0, если нет.`,
+          answer: yes ? 1 : 0,
+          hint:`Проверь равенство для наибольшей стороны: <span class="formula">a² + b² = c²?</span>`,
+          solution:`Наибольшая сторона — ${c}. Считаем: <span class="formula">${a}² + ${b}² = ${calc}</span>, а <span class="formula">${c}² = ${sq(c)}</span>. ${yes ? 'Равенство выполняется, треугольник прямоугольный.' : 'Равенство не выполняется, треугольник не прямоугольный.'}`,
+          svg:rightTriangleSVG(a,b,c,'проверка сторон')
+        };
+      }
+    },
+    {
+      id:'rect_diag', family:'quadrilaterals', title:'Диагональ прямоугольника', level:1, oge:'17',
+      gen(){
+        const [a,b,c] = shuffleAB(pick(triples));
+        const askDiag = Math.random() < .6;
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge,
+          problem: askDiag
+            ? `Стороны прямоугольника равны ${a} и ${b}. Найдите его диагональ.`
+            : `Диагональ прямоугольника равна ${c}, одна из сторон равна ${a}. Найдите другую сторону.`,
+          answer: askDiag ? c : b,
+          hint:`Диагональ прямоугольника — гипотенуза прямоугольного треугольника, составленного из двух сторон прямоугольника.`,
+          solution: askDiag
+            ? `<span class="formula">d² = ${a}² + ${b}² = ${sq(c)}</span>, значит <span class="formula">d = ${c}</span>.`
+            : `<span class="formula">b² = ${c}² − ${a}² = ${sq(c)} − ${sq(a)} = ${sq(b)}</span>, значит <span class="formula">b = ${b}</span>.`,
+          svg:rectangleSVG(a,b, askDiag ? '?' : c)
+        };
+      }
+    },
+    {
+      id:'rhombus', family:'quadrilaterals', title:'Ромб по диагоналям', level:2, oge:'17',
+      gen(){
+        const [p,q,side] = shuffleAB(pick([[3,4,5],[5,12,13],[8,15,17],[9,12,15],[12,16,20]]));
+        const d1 = 2*p, d2 = 2*q;
+        const perimeter = Math.random() < .45;
+        const answer = perimeter ? 4*side : side;
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge,
+          problem: perimeter
+            ? `Диагонали ромба равны ${d1} и ${d2}. Найдите периметр ромба.`
+            : `Диагонали ромба равны ${d1} и ${d2}. Найдите сторону ромба.`,
+          answer,
+          hint:`Диагонали ромба пересекаются под прямым углом и делятся пополам. Сторона ромба — гипотенуза маленького прямоугольного треугольника.`,
+          solution: perimeter
+            ? `Половины диагоналей: <span class="formula">${d1}:2=${p}</span> и <span class="formula">${d2}:2=${q}</span>. Сторона: <span class="formula">a²=${p}²+${q}²=${sq(side)}</span>, <span class="formula">a=${side}</span>. Периметр: <span class="formula">4·${side}=${answer}</span>.`
+            : `Половины диагоналей: <span class="formula">${d1}:2=${p}</span> и <span class="formula">${d2}:2=${q}</span>. Тогда <span class="formula">a²=${p}²+${q}²=${sq(side)}</span>, значит <span class="formula">a=${side}</span>.`,
+          svg:rhombusSVG(d1,d2, perimeter ? '?' : side)
+        };
+      }
+    },
+    {
+      id:'trapezoid', family:'quadrilaterals', title:'Равнобедренная трапеция', level:3, oge:'17',
+      gen(){
+        const [x,h,l] = shuffleAB(pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25],[9,12,15]]));
+        const small = rnd(6,18);
+        const big = small + 2*x;
+        const askArea = Math.random() < .5;
+        const area = (small + big) * h / 2;
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge,
+          problem: askArea
+            ? `В равнобедренной трапеции основания равны ${small} и ${big}, боковая сторона равна ${l}. Найдите площадь трапеции.`
+            : `В равнобедренной трапеции основания равны ${small} и ${big}, боковая сторона равна ${l}. Найдите высоту трапеции.`,
+          answer: askArea ? area : h,
+          hint:`Опусти высоту: разность оснований делится пополам. Получается прямоугольный треугольник с гипотенузой — боковой стороной.`,
+          solution: askArea
+            ? `Разность оснований: <span class="formula">${big}−${small}=${big-small}</span>, половина разности — <span class="formula">${x}</span>. Высота: <span class="formula">h²=${l}²−${x}²=${sq(h)}</span>, значит <span class="formula">h=${h}</span>. Площадь: <span class="formula">S=(${small}+${big})·${h}:2=${fmt(area)}</span>.`
+            : `Разность оснований: <span class="formula">${big}−${small}=${big-small}</span>, половина разности — <span class="formula">${x}</span>. Тогда <span class="formula">h²=${l}²−${x}²=${sq(h)}</span>, значит <span class="formula">h=${h}</span>.`,
+          svg:trapezoidSVG(small,big,l, askArea ? '?' : h)
+        };
+      }
+    },
+    {
+      id:'grid_distance', family:'grid', title:'Длина на клетчатой бумаге', level:1, oge:'18',
+      gen(){
+        const [dx,dy,d] = shuffleAB(pick([[3,4,5],[5,12,13],[6,8,10],[8,15,17],[9,12,15],[12,16,20]]));
+        const x1 = rnd(-4,4), y1 = rnd(-4,4);
+        const sx = Math.random() < .5 ? 1 : -1;
+        const sy = Math.random() < .5 ? 1 : -1;
+        const x2 = x1 + sx*dx, y2 = y1 + sy*dy;
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge,
+          problem:`На клетчатой бумаге с размером клетки 1 отмечены точки A(${x1}; ${y1}) и B(${x2}; ${y2}). Найдите длину отрезка AB.`,
+          answer:d,
+          hint:`Найди горизонтальную и вертикальную разности координат: это катеты прямоугольного треугольника.`,
+          solution:`Разности координат по модулю: <span class="formula">${Math.abs(x2-x1)}</span> и <span class="formula">${Math.abs(y2-y1)}</span>. Тогда <span class="formula">AB²=${dx}²+${dy}²=${sq(d)}</span>, значит <span class="formula">AB=${d}</span>.`,
+          svg:gridSVG(dx,dy,d)
+        };
+      }
+    },
+    {
+      id:'coord_mid', family:'grid', title:'Расстояние по координатам', level:2, oge:'18 / 7.5',
+      gen(){
+        const [dx,dy,d] = shuffleAB(pick([[7,24,25],[10,24,26],[12,35,37],[16,30,34],[20,21,29]]));
+        const x1 = rnd(-10,10), y1 = rnd(-10,10);
+        const x2 = x1 + dx, y2 = y1 - dy;
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge,
+          problem:`В координатной плоскости даны точки P(${x1}; ${y1}) и Q(${x2}; ${y2}). Найдите расстояние PQ.`,
+          answer:d,
+          hint:`Формула расстояния — тот же Пифагор: <span class="formula">PQ² = (x₂−x₁)² + (y₂−y₁)²</span>.`,
+          solution:`<span class="formula">PQ² = (${x2}−${x1})² + (${y2}−${y1})² = ${dx}² + ${dy}² = ${sq(d)}</span>. Значит <span class="formula">PQ=${d}</span>.`,
+          svg:gridSVG(dx,dy,d)
+        };
+      }
+    },
+    {
+      id:'circle_chord', family:'circles', title:'Хорда окружности', level:2, oge:'16',
+      gen(){
+        const [half,dist,R] = shuffleAB(pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25],[9,12,15]]));
+        const chord = 2*half;
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge,
+          problem:`Радиус окружности равен ${R}. Расстояние от центра окружности до хорды равно ${dist}. Найдите длину этой хорды.`,
+          answer:chord,
+          hint:`Перпендикуляр из центра к хорде делит хорду пополам. Полухорда — катет прямоугольного треугольника.`,
+          solution:`Половина хорды: <span class="formula">x²=${R}²−${dist}²=${sq(R)}−${sq(dist)}=${sq(half)}</span>, значит <span class="formula">x=${half}</span>. Вся хорда равна <span class="formula">2·${half}=${chord}</span>.`,
+          svg:circleChordSVG(R,dist,'?')
+        };
+      }
+    },
+    {
+      id:'tangent', family:'circles', title:'Касательная из точки', level:2, oge:'16',
+      gen(){
+        const [R,tan,op] = shuffleAB(pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25],[9,12,15]]));
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge,
+          problem:`Из точки P к окружности с центром O проведена касательная PT. Радиус OT равен ${R}, OP = ${op}. Найдите PT.`,
+          answer:tan,
+          hint:`Радиус, проведённый в точку касания, перпендикулярен касательной. Значит, OPT — прямоугольный треугольник.`,
+          solution:`В треугольнике OPT гипотенуза <span class="formula">OP=${op}</span>, катет <span class="formula">OT=${R}</span>. Тогда <span class="formula">PT²=${op}²−${R}²=${sq(tan)}</span>, значит <span class="formula">PT=${tan}</span>.`,
+          svg:tangentSVG(R,op,'?')
+        };
+      }
+    },
+    {
+      id:'circle_radius_right', family:'circles', title:'Описанная окружность прямоугольного треугольника', level:3, oge:'16 / 15',
+      gen(){
+        const [a,b,c] = shuffleAB(pick([[6,8,10],[8,15,17],[10,24,26],[12,16,20],[20,21,29]]));
+        const R = c/2;
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge,
+          problem:`Катеты прямоугольного треугольника равны ${a} и ${b}. Найдите радиус окружности, описанной около этого треугольника.`,
+          answer:R,
+          tolerance:.011,
+          hint:`В прямоугольном треугольнике гипотенуза является диаметром описанной окружности.`,
+          solution:`Гипотенуза: <span class="formula">c²=${a}²+${b}²=${sq(c)}</span>, значит <span class="formula">c=${c}</span>. Радиус описанной окружности равен половине гипотенузы: <span class="formula">R=${c}:2=${fmt(R)}</span>.`,
+          svg:rightTriangleSVG(a,b,c,'гипотенуза — диаметр')
+        };
+      }
+    },
+    {
+      id:'ladder', family:'practical', title:'Лестница у стены', level:1, oge:'1–5',
+      gen(){
+        const [dist,height,len] = shuffleAB(pick([[3,4,5],[5,12,13],[6,8,10],[8,15,17],[9,12,15]]));
+        const askHeight = Math.random() < .6;
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge,
+          problem: askHeight
+            ? `Лестница длиной ${len} м приставлена к стене. Нижний конец лестницы находится на расстоянии ${dist} м от стены. На какой высоте от земли находится верхний конец лестницы?`
+            : `Лестница длиной ${len} м касается стены на высоте ${height} м. На каком расстоянии от стены стоит нижний конец лестницы?`,
+          answer: askHeight ? height : dist,
+          hint:`Стена, земля и лестница образуют прямоугольный треугольник: лестница — гипотенуза.`,
+          solution: askHeight
+            ? `<span class="formula">h²=${len}²−${dist}²=${sq(len)}−${sq(dist)}=${sq(height)}</span>, значит <span class="formula">h=${height}</span> м.`
+            : `<span class="formula">x²=${len}²−${height}²=${sq(len)}−${sq(height)}=${sq(dist)}</span>, значит <span class="formula">x=${dist}</span> м.`,
+          svg:simpleSceneSVG('ladder', askHeight ? dist : '?', askHeight ? '?' : height, len)
+        };
+      }
+    },
+    {
+      id:'field_diag', family:'practical', title:'Кратчайший путь по участку', level:1, oge:'1–5',
+      gen(){
+        const [a,b,c] = shuffleAB(pick([[3,4,5],[5,12,13],[6,8,10],[8,15,17],[12,16,20],[15,20,25]]));
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge,
+          problem:`Прямоугольный участок имеет стороны ${a} м и ${b} м. По диагонали участка проложили прямую дорожку. Найдите длину дорожки.`,
+          answer:c,
+          hint:`Диагональ прямоугольника — это гипотенуза прямоугольного треугольника со сторонами участка как катетами.`,
+          solution:`<span class="formula">d²=${a}²+${b}²=${sq(c)}</span>, значит <span class="formula">d=${c}</span> м.`,
+          svg:rectangleSVG(a,b,'?')
+        };
+      }
+    },
+    {
+      id:'wire', family:'practical', title:'Мачта и растяжка', level:2, oge:'1–5',
+      gen(){
+        const [dist,height,wire] = shuffleAB(pick([[5,12,13],[8,15,17],[9,12,15],[12,16,20],[7,24,25]]));
+        const askWire = Math.random() < .55;
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge,
+          problem: askWire
+            ? `Вертикальная мачта высотой ${height} м закреплена растяжкой. Конец растяжки на земле находится в ${dist} м от основания мачты. Найдите длину растяжки.`
+            : `Растяжка длиной ${wire} м закреплена на вершине вертикальной мачты высотой ${height} м. На каком расстоянии от основания мачты закреплён нижний конец растяжки?`,
+          answer: askWire ? wire : dist,
+          hint:`Мачта, земля и растяжка образуют прямоугольный треугольник.`,
+          solution: askWire
+            ? `<span class="formula">l²=${height}²+${dist}²=${sq(wire)}</span>, значит <span class="formula">l=${wire}</span> м.`
+            : `<span class="formula">x²=${wire}²−${height}²=${sq(wire)}−${sq(height)}=${sq(dist)}</span>, значит <span class="formula">x=${dist}</span> м.`,
+          svg:simpleSceneSVG('wire', askWire ? dist : '?', height, askWire ? '?' : wire)
+        };
+      }
+    },
+    {
+      id:'theory_statements', family:'theory', title:'Верные утверждения', level:2, oge:'19',
+      gen(){
+        const variants = [
+          {
+            ans:'13',
+            st:[
+              'В прямоугольном треугольнике квадрат гипотенузы равен сумме квадратов катетов.',
+              'Гипотенуза прямоугольного треугольника меньше любого катета.',
+              'Если квадрат одной стороны треугольника равен сумме квадратов двух других сторон, то треугольник прямоугольный.'
+            ],
+            why:'Верны 1 и 3: это теорема Пифагора и обратная теорема. Утверждение 2 неверно: гипотенуза — самая большая сторона.'
+          },
+          {
+            ans:'2',
+            st:[
+              'Диагонали любого прямоугольника перпендикулярны.',
+              'Диагональ прямоугольника является гипотенузой прямоугольного треугольника, составленного из двух его сторон.',
+              'В любом треугольнике сумма квадратов двух сторон равна квадрату третьей стороны.'
+            ],
+            why:'Верно только 2. Диагонали прямоугольника не обязаны быть перпендикулярны, а равенство Пифагора работает именно для прямоугольного треугольника.'
+          },
+          {
+            ans:'12',
+            st:[
+              'Радиус, проведённый в точку касания, перпендикулярен касательной.',
+              'Перпендикуляр из центра окружности к хорде делит эту хорду пополам.',
+              'Любая хорда окружности равна диаметру этой окружности.'
+            ],
+            why:'Верны 1 и 2. Утверждение 3 неверно: диаметром является только хорда, проходящая через центр.'
+          }
+        ];
+        const v = pick(variants);
+        return {
+          type:this.title, family:this.family, level:this.level, oge:this.oge, answerType:'text', answer:v.ans,
+          problem:`Укажите номера верных утверждений. <br>1) ${v.st[0]}<br>2) ${v.st[1]}<br>3) ${v.st[2]}`,
+          hint:`Вспомни формулировку теоремы Пифагора, обратной теоремы и свойства радиуса к точке касания. Ответ записывай подряд, например: 13.`,
+          solution:`${v.why} Ответ: <span class="formula">${v.ans}</span>.`,
+          svg:`<svg viewBox="0 0 390 120" role="img" aria-label="Теория"><rect x="0" y="0" width="390" height="120" fill="#fbfcff"/><text x="195" y="42" text-anchor="middle" font-size="20" fill="#335cff">a² + b² = c²</text><text x="195" y="78" text-anchor="middle" font-size="15" fill="#637083">но только когда угол между a и b прямой</text></svg>`
+        };
+      }
+    }
+  ];
+
+  let state = {
+    done:0, ok:0, streak:0, mistakes:[], current:null, answered:false,
+    test:null
+  };
+
+  function save(){ localStorage.setItem('ogePythagorasTrainer', JSON.stringify({done:state.done,ok:state.ok,streak:state.streak,mistakes:state.mistakes})); }
+  function load(){
+    try{
+      const raw = localStorage.getItem('ogePythagorasTrainer');
+      if(raw){ Object.assign(state, JSON.parse(raw)); }
+    }catch(e){}
+  }
+
+  function renderFamilies(){
+    $('families').innerHTML = families.map(f => `<label class="chip"><input type="checkbox" value="${f.id}" checked> ${f.label}</label>`).join('');
+  }
+
+  function selectedFamilies(){
+    return [...document.querySelectorAll('#families input:checked')].map(x=>x.value);
+  }
+
+  function availableTemplates(){
+    let fams = selectedFamilies();
+    const mode = $('mode').value;
+    const lvl = $('level').value;
+    if(mode === 'theory') fams = ['theory'];
+    if(mode === 'practical') fams = ['practical','grid'];
+    if(mode === 'weak' && state.mistakes.length){
+      const weakFamilies = [...new Set(state.mistakes.map(m=>m.family))];
+      if(weakFamilies.length) fams = weakFamilies;
+    }
+    return templates.filter(t => fams.includes(t.family) && (lvl === 'all' || String(t.level) === lvl));
+  }
+
+  function newTask(){
+    const pool = availableTemplates();
+    if(!pool.length){
+      showFeedback('info','Не нашёл задач под такие фильтры. Включи хотя бы один тип или выбери уровень «Все».');
+      return;
+    }
+    const tmpl = pick(pool);
+    state.current = tmpl.gen();
+    state.answered = false;
+    renderTask(state.current);
+  }
+
+  function levelBadge(level){
+    return level === 1 ? 'База' : level === 2 ? 'Средний' : 'Сложнее';
+  }
+
+  function renderTask(t){
+    $('meta').innerHTML = `
+      <span class="badge">Тип: ${t.type}</span>
+      <span class="badge gray">Линия ОГЭ: ${t.oge}</span>
+      <span class="badge level${t.level}">${levelBadge(t.level)}</span>
+      ${state.test ? `<span class="badge gray">Мини-тест: осталось ${state.test.left}</span>` : ''}
+    `;
+    $('problem').innerHTML = t.problem;
+    $('diagram').innerHTML = t.svg || 'Схема не требуется.';
+    $('answer').value = '';
+    $('answer').focus();
+    $('feedback').className = 'feedback'; $('feedback').style.display='none'; $('feedback').innerHTML='';
+    $('hint').className = 'hint'; $('hint').innerHTML='';
+    $('solution').className = 'solution'; $('solution').innerHTML='';
+  }
+
+  function showFeedback(kind,msg){
+    $('feedback').className = `feedback ${kind}`;
+    $('feedback').style.display='block';
+    $('feedback').innerHTML = msg;
+  }
+
+  function checkAnswer(){
+    const t = state.current;
+    if(!t){ showFeedback('info','Сначала создай задачу.'); return; }
+    if(state.answered){ showFeedback('info','Эта задача уже учтена. Нажми «Новая задача».'); return; }
+    const raw = $('answer').value;
+    let correct = false;
+    if(t.answerType === 'text'){
+      correct = normalizeTextAnswer(raw) === normalizeTextAnswer(t.answer);
+    }else{
+      const n = parseNumber(raw);
+      const tol = t.tolerance ?? .001;
+      correct = n !== null && Math.abs(n - t.answer) <= tol;
+    }
+
+    state.done++;
+    state.answered = true;
+    if(correct){
+      state.ok++; state.streak++;
+      showFeedback('ok',`Верно. Ответ: <b>${fmt(t.answer)}</b>. ${state.streak >= 3 ? 'Серия пошла — Пифагор одобрительно кивает.' : ''}`);
+    }else{
+      state.streak = 0;
+      showFeedback('no',`Пока нет. Правильный ответ: <b>${fmt(t.answer)}</b>. Разбери решение ниже — там обычно один прямой угол всё спасает.`);
+      state.mistakes.unshift({problem:t.problem.replace(/<br>/g,' '), answer:fmt(t.answer), type:t.type, family:t.family, when:new Date().toLocaleString('ru-RU')});
+      state.mistakes = state.mistakes.slice(0,12);
+      showSolution();
+    }
+
+    if(state.test){
+      if(correct) state.test.score++;
+      state.test.left--;
+      if(state.test.left <= 0){
+        showFeedback(correct ? 'ok' : 'no', `${$('feedback').innerHTML}<br><br><b>Мини-тест завершён: ${state.test.score} из ${state.test.total}.</b>`);
+        state.test = null;
+      }
+    }
+
+    save(); renderStats(); renderMistakes();
+  }
+
+  function showHint(){
+    const t = state.current;
+    if(!t){ showFeedback('info','Сначала создай задачу.'); return; }
+    $('hint').innerHTML = t.hint;
+    $('hint').classList.add('show');
+  }
+
+  function showSolution(){
+    const t = state.current;
+    if(!t){ showFeedback('info','Сначала создай задачу.'); return; }
+    $('solution').innerHTML = t.solution;
+    $('solution').classList.add('show');
+  }
+
+  function renderStats(){
+    $('done').textContent = state.done;
+    $('ok').textContent = state.ok;
+    $('streak').textContent = state.streak;
+  }
+
+  function renderMistakes(){
+    if(!state.mistakes.length){ $('mistakes').innerHTML = '<p class="footer-note">Пока пусто. Красота.</p>'; return; }
+    $('mistakes').innerHTML = state.mistakes.map(m => `<div class="mistake"><b>${m.type}</b>${m.problem}<br><span class="footer-note">Ответ: ${m.answer} · ${m.when}</span></div>`).join('');
+  }
+
+  function startTest(){
+    state.test = {left:10,total:10,score:0};
+    showFeedback('info','Мини-тест запущен: 10 задач. После проверки нажимай «Новая задача» для следующей.');
+    newTask();
+  }
+
+  function printSheet(){
+    const oldLevel = $('level').value;
+    const tasks = [];
+    for(let i=0;i<20;i++){
+      const pool = templates.filter(t => t.family !== 'theory');
+      const tmpl = pick(pool);
+      tasks.push(tmpl.gen());
+    }
+    const body = tasks.map((t,i)=>`
+      <div class="print-task">
+        <b>${i+1}. ${t.type}</b><br>
+        <div>${t.problem}</div>
+        <div>${t.svg}</div>
+      </div>`).join('');
+    const answers = tasks.map((t,i)=>`<span>${i+1}) ${fmt(t.answer)}</span>`).join('');
+    $('printArea').innerHTML = `<h1>Тренировочный лист: теорема Пифагора, ОГЭ</h1>${body}<div class="answers"><h2>Ответы</h2>${answers}</div>`;
+    window.print();
+    $('level').value = oldLevel;
+  }
+
+  function resetStats(){
+    if(!confirm('Сбросить статистику и ошибки?')) return;
+    state.done = 0; state.ok = 0; state.streak = 0; state.mistakes = []; state.test = null;
+    save(); renderStats(); renderMistakes(); showFeedback('info','Статистика сброшена. Начинаем с чистого листа.');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderFamilies(); load(); renderStats(); renderMistakes();
+    $('newTask').addEventListener('click', newTask);
+    $('check').addEventListener('click', checkAnswer);
+    $('hintBtn').addEventListener('click', showHint);
+    $('solutionBtn').addEventListener('click', showSolution);
+    $('test10').addEventListener('click', startTest);
+    $('print20').addEventListener('click', printSheet);
+    $('reset').addEventListener('click', resetStats);
+    $('answer').addEventListener('keydown', e => { if(e.key === 'Enter') checkAnswer(); });
+    $('mode').addEventListener('change', () => { if($('mode').value === 'theory') document.querySelectorAll('#families input').forEach(x => x.checked = x.value === 'theory'); });
+    newTask();
+  });
+</script>
+</body>
+</html>

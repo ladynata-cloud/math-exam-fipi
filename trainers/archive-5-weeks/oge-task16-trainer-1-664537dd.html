@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Тренажёр ОГЭ №16 — окружность, углы, длины, площади</title>
+  <style>
+    :root{
+      --bg:#f7f5ee;
+      --panel:#fffdf8;
+      --ink:#211f1a;
+      --muted:#6f6a5f;
+      --line:#ded6c7;
+      --accent:#2d6a4f;
+      --accent2:#d97706;
+      --danger:#b91c1c;
+      --good:#0f766e;
+      --shadow:0 16px 40px rgba(36,30,18,.10);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:radial-gradient(circle at 20% 0%,#fff7db 0,#f7f5ee 38%,#eef4ef 100%);color:var(--ink);font:16px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
+    .wrap{max-width:1220px;margin:0 auto;padding:22px 18px 60px}
+    header{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:stretch;margin-bottom:18px}
+    .hero,.stats,.card{background:rgba(255,253,248,.92);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .hero{padding:24px 26px;position:relative;overflow:hidden}
+    .hero:after{content:"16";position:absolute;right:20px;top:-36px;font-weight:900;font-size:170px;color:rgba(45,106,79,.08);line-height:1}
+    h1{margin:0 0 8px;font-size:clamp(28px,4vw,46px);line-height:1.05;letter-spacing:-.04em}
+    .sub{max-width:720px;color:var(--muted);font-size:17px;margin:0}
+    .badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+    .badge{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 11px;font-weight:700;font-size:13px;color:#403a30}
+    .badge.new{border-color:#f7c87a;background:#fff6df;color:#8a4c00}
+    .badge.green{border-color:#b6dfca;background:#effaf4;color:#226447}
+    .stats{padding:18px;display:grid;gap:12px;align-content:center}
+    .statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .statbox{border:1px solid var(--line);border-radius:16px;background:#fff;padding:10px;text-align:center}
+    .statbox b{font-size:24px;display:block;line-height:1.1}
+    .statbox span{font-size:12px;color:var(--muted)}
+    .bar{height:10px;border-radius:999px;background:#eadfcb;overflow:hidden}
+    .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2d6a4f,#f59e0b);transition:width .3s ease}
+    .layout{display:grid;grid-template-columns:310px 1fr;gap:18px}
+    .side{display:grid;gap:14px;align-content:start}
+    .card{padding:18px}
+    .card h2,.card h3{margin:0 0 12px;line-height:1.15;letter-spacing:-.02em}
+    .card h2{font-size:22px}.card h3{font-size:18px}
+    label{font-weight:750;display:block;margin:11px 0 6px}
+    select,input[type="number"],input[type="text"]{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 13px;background:#fff;color:var(--ink);font:inherit;outline:none}
+    select:focus,input:focus{border-color:#95bba8;box-shadow:0 0 0 4px rgba(45,106,79,.12)}
+    .checks{display:grid;gap:8px;margin-top:8px}
+    .check{display:flex;gap:9px;align-items:flex-start;color:#403a30;font-size:14px}
+    .check input{margin-top:4px}
+    button{appearance:none;border:0;border-radius:16px;padding:12px 15px;font-weight:850;font:inherit;cursor:pointer;transition:.18s ease;line-height:1.1}
+    button.primary{background:var(--accent);color:#fff;box-shadow:0 10px 22px rgba(45,106,79,.22)}
+    button.primary:hover{transform:translateY(-1px);box-shadow:0 13px 26px rgba(45,106,79,.26)}
+    button.secondary{background:#fff;border:1px solid var(--line);color:#2e2a23}
+    button.secondary:hover{border-color:#c6bba9;transform:translateY(-1px)}
+    button.warn{background:#fff6df;color:#814600;border:1px solid #f3c56d}
+    button.ghost{background:transparent;color:#3e6653;padding:8px 10px}
+    button:disabled{opacity:.45;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+    .btns{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+    .task{padding:24px;min-height:570px;position:relative;overflow:hidden}
+    .tasktop{display:flex;justify-content:space-between;gap:10px;align-items:start;margin-bottom:14px}
+    .kicker{font-weight:900;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;font-size:12px}
+    .source{color:var(--muted);font-size:13px;margin-top:2px}
+    .pillrow{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .pill{font-weight:800;font-size:12px;border-radius:999px;padding:6px 10px;border:1px solid var(--line);background:#fff;color:#50493e;white-space:nowrap}
+    .pill.new{background:#fff6df;border-color:#f2c570;color:#8a4c00}.pill.type{background:#eef8f2;border-color:#b8ddca;color:#245a42}
+    .taskgrid{display:grid;grid-template-columns:1fr 270px;gap:18px;align-items:start}
+    .statement{font-size:24px;line-height:1.35;letter-spacing:-.015em;margin:2px 0 18px}
+    .statement em{font-style:normal;background:linear-gradient(180deg,transparent 55%,#fde68a 55%);padding:0 2px;border-radius:2px}
+    .svgbox{border:1px dashed #cfc4b4;border-radius:18px;background:linear-gradient(180deg,#fff,#fbf6eb);min-height:250px;display:grid;place-items:center;padding:12px}
+    svg{max-width:100%;height:auto}
+    .answer{display:grid;grid-template-columns:minmax(160px,260px) auto auto;gap:9px;align-items:center;margin-top:16px}
+    .answer input{font-size:22px;text-align:center;font-weight:850;padding:13px 12px}
+    .msg{margin-top:12px;border-radius:16px;padding:12px 14px;display:none;font-weight:700}
+    .msg.good{display:block;background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0}
+    .msg.bad{display:block;background:#fff1f2;color:#9f1239;border:1px solid #fecdd3}
+    .hint,.solution{margin-top:14px;border:1px solid var(--line);border-radius:18px;background:#fff;padding:14px 16px;display:none}
+    .hint.on,.solution.on{display:block;animation:pop .18s ease}
+    @keyframes pop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+    .hint b,.solution b{display:block;margin-bottom:7px}.solution ol{margin:8px 0 0 22px;padding:0}.solution li{margin:5px 0}.formula{font-weight:900;color:#244f3a;background:#f1f7f2;padding:1px 5px;border-radius:6px}
+    .templateList{display:grid;gap:8px;max-height:370px;overflow:auto;padding-right:4px}
+    .mini{border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px 11px;font-size:13px;display:grid;gap:3px}.mini b{font-size:14px}.mini span{color:var(--muted)}
+    .mini.new{border-color:#f3c56d;background:#fffaf0}
+    details{border:1px solid var(--line);border-radius:16px;background:#fff;margin-top:10px;overflow:hidden}summary{cursor:pointer;font-weight:850;padding:12px 14px}details>div{padding:0 14px 14px;color:#4c453a;font-size:14px}.ref{font-size:13px;color:var(--muted);margin:8px 0 0}.small{font-size:13px;color:var(--muted)}
+    .archiveGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.archiveItem{border:1px solid var(--line);background:#fff;border-radius:16px;padding:12px}.archiveItem b{display:block}.archiveItem span{color:var(--muted);font-size:13px}
+    .footer{margin-top:18px;text-align:center;color:#7a7165;font-size:13px}
+    @media(max-width:980px){header,.layout,.taskgrid{grid-template-columns:1fr}.task{min-height:auto}.svgbox{min-height:190px}.answer{grid-template-columns:1fr}.pillrow{justify-content:flex-start}.statrow{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:520px){.wrap{padding:12px}.hero,.card,.task{padding:16px;border-radius:18px}.statement{font-size:20px}.archiveGrid{grid-template-columns:1fr}.btns button{flex:1}.statrow{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <section class="hero">
+      <h1>Тренажёр ОГЭ №16</h1>
+      <p class="sub">Окружности, вписанные четырёхугольники, трапеции, хорды, радиусы, сектора и площади. Режим «Новые из архива» подкидывает свежие формулировки чаще — чтобы они не устроили маленький геометрический саботаж на контрольной.</p>
+      <div class="badges">
+        <span class="badge new">★ фокус: новые задачи</span>
+        <span class="badge green">31 шаблон №16</span>
+        <span class="badge">подсказки по шагам</span>
+        <span class="badge">ответы: градусы / длины / площадь</span>
+      </div>
+    </section>
+    <aside class="stats">
+      <div class="statrow">
+        <div class="statbox"><b id="okStat">0</b><span>верно</span></div>
+        <div class="statbox"><b id="badStat">0</b><span>ошибки</span></div>
+        <div class="statbox"><b id="streakStat">0</b><span>серия</span></div>
+        <div class="statbox"><b id="accStat">0%</b><span>точность</span></div>
+      </div>
+      <div><div class="small">Освоение подборки</div><div class="bar"><i id="progressBar"></i></div></div>
+      <button class="secondary" id="resetStats">Сбросить статистику</button>
+    </aside>
+  </header>
+
+  <main class="layout">
+    <aside class="side">
+      <section class="card">
+        <h2>Настройки</h2>
+        <label for="mode">Режим</label>
+        <select id="mode">
+          <option value="new" selected>Новые из архива + похожие</option>
+          <option value="archive">Точные задачи из архива</option>
+          <option value="all">Все типы №16</option>
+          <option value="angles">Только углы</option>
+          <option value="lengths">Только длины</option>
+          <option value="areas">Только площади</option>
+          <option value="hard">Хорды / Пифагоровы тройки</option>
+        </select>
+        <label for="difficulty">Сложность</label>
+        <select id="difficulty">
+          <option value="mix" selected>Смешанная</option>
+          <option value="easy">Лёгкая</option>
+          <option value="medium">Средняя</option>
+          <option value="hard">Сложная</option>
+        </select>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="autoHint"> показывать первый намёк сразу</label>
+          <label class="check"><input type="checkbox" id="teacherMode"> режим учителя: ответ виден после задачи</label>
+        </div>
+        <div class="btns">
+          <button class="primary" id="newTask">Новая задача</button>
+          <button class="secondary" id="againTask">Похожая</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Быстрая памятка</h3>
+        <details open>
+          <summary>Углы в окружности</summary>
+          <div>
+            Вписанный угол равен половине дуги/центрального угла. У вписанного четырёхугольника противоположные углы дают 180°. Если центр описанной окружности лежит на стороне треугольника, эта сторона — диаметр, а угол напротив него 90°.
+          </div>
+        </details>
+        <details>
+          <summary>Правильный треугольник</summary>
+          <div>
+            Если сторона равна <span class="formula">n√3</span>, то описанный радиус <span class="formula">R=n</span>, вписанный радиус <span class="formula">r=n/2</span>, высота <span class="formula">h=3r=1.5R</span>.
+          </div>
+        </details>
+        <details>
+          <summary>Хорды и радиусы</summary>
+          <div>
+            Перпендикуляр из центра к хорде делит её пополам. Дальше почти всегда прямоугольный треугольник и Пифагор: половина хорды, расстояние до хорды, радиус.
+          </div>
+        </details>
+        <details>
+          <summary>Площади</summary>
+          <div>
+            Для треугольника с вписанной окружностью <span class="formula">S=pr</span>, где <span class="formula">p=P/2</span>. Для сектора: <span class="formula">Sсектора=Sкруга·α/360</span>.
+          </div>
+        </details>
+      </section>
+
+      <section class="card">
+        <h3>Шаблоны в тренажёре</h3>
+        <div id="templateList" class="templateList"></div>
+      </section>
+    </aside>
+
+    <section class="card task">
+      <div class="tasktop">
+        <div>
+          <div class="kicker" id="taskKicker">Готово к старту</div>
+          <div class="source" id="taskSource">Нажми «Новая задача».</div>
+        </div>
+        <div class="pillrow" id="pillrow"></div>
+      </div>
+      <div class="taskgrid">
+        <div>
+          <div class="statement" id="statement">Сейчас соберём задачу №16. В новых вариантах чаще встречаются вписанные четырёхугольники/трапеции и «центр окружности на стороне» — они вынесены в отдельный режим.</div>
+          <div class="answer">
+            <input id="answerInput" type="text" inputmode="decimal" placeholder="Ответ" autocomplete="off" />
+            <button class="primary" id="checkBtn">Проверить</button>
+            <button class="secondary" id="showBtn">Решение</button>
+          </div>
+          <div class="btns">
+            <button class="warn" id="hintBtn">Подсказка</button>
+            <button class="secondary" id="copyTask">Скопировать условие</button>
+          </div>
+          <div id="message" class="msg"></div>
+          <div id="hint" class="hint"></div>
+          <div id="solution" class="solution"></div>
+        </div>
+        <div class="svgbox" id="diagram"></div>
+      </div>
+    </section>
+  </main>
+
+  <section class="card" style="margin-top:18px">
+    <h2>Что попало в «новые»</h2>
+    <p class="small">Здесь лежит точная мини-подборка из найденного архива: её можно включить режимом «Точные задачи из архива». Похожие задачи генерируются с другими числами, но теми же ходами решения.</p>
+    <div class="archiveGrid" id="archiveGrid"></div>
+    <p class="ref">Источники для структуры: конспект №16 по окружности и справочные материалы ОГЭ-2026; свежие задачи — из архивной подборки вариантов 2026/2025.</p>
+  </section>
+  <div class="footer">Сделано как автономный HTML: можно сохранить, открыть в браузере и гонять задачи без интернета.</div>
+</div>
+<script>
+const $ = (id)=>document.getElementById(id);
+const fmt = (x)=> Number.isInteger(x) ? String(x) : String(Math.round(x*1000)/1000).replace('.', ',');
+const norm = (s)=>String(s).trim().replace(',', '.').replace(/\s+/g,'');
+function rint(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-.5); }
+function round1(x){ return Math.round(x*10)/10; }
+
+const SOURCE = {
+  base:'№16 сжат в 2 раза.pdf',
+  spr:'SPRAVOCNIE_2026(2).pdf',
+  archive:'variants_5_plus_tasks_15_19.pdf / Архив'
+};
+
+const triples = [
+  [3,4,5],[5,12,13],[6,8,10],[7,24,25],[8,15,17],[9,12,15],[9,40,41],[10,24,26],[11,60,61],[12,16,20],[12,35,37],[13,84,85],[14,48,50],[16,30,34],[16,63,65],[18,24,30],[20,21,29],[27,36,45],[28,45,53],[33,56,65],[35,84,91],[36,77,85],[39,80,89],[48,55,73],[65,72,97]
+];
+
+function svg(type){
+  const common = 'stroke="#233" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"';
+  if(type==='cyclic') return `<svg viewBox="0 0 220 220" aria-label="вписанный четырёхугольник"><circle cx="110" cy="110" r="82" ${common} opacity=".35"/><path d="M65 172 L52 72 L150 42 L172 150 Z" ${common}/><text x="48" y="188">A</text><text x="35" y="70">B</text><text x="154" y="36">C</text><text x="180" y="156">D</text></svg>`;
+  if(type==='cyclicDiag') return `<svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="82" ${common} opacity=".35"/><path d="M65 172 L52 72 L150 42 L172 150 Z" ${common}/><path d="M52 72 L172 150 M65 172 L150 42" ${common} opacity=".75"/><text x="48" y="188">A</text><text x="35" y="70">B</text><text x="154" y="36">C</text><text x="180" y="156">D</text></svg>`;
+  if(type==='trapCircle') return `<svg viewBox="0 0 220 220"><circle cx="110" cy="112" r="82" ${common} opacity=".35"/><path d="M55 155 L82 58 L138 58 L165 155 Z" ${common}/><text x="43" y="170">A</text><text x="72" y="54">B</text><text x="142" y="54">C</text><text x="168" y="170">D</text></svg>`;
+  if(type==='diameter') return `<svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="82" ${common} opacity=".35"/><path d="M28 110 H192 M58 166 L172 55" ${common}/><circle cx="110" cy="110" r="3" fill="#233"/><text x="28" y="132">A</text><text x="186" y="132">B</text><text x="52" y="184">C</text><text x="174" y="52">D</text></svg>`;
+  if(type==='tangent') return `<svg viewBox="0 0 220 220"><circle cx="124" cy="108" r="62" ${common} opacity=".35"/><path d="M46 168 L78 46 M46 168 L174 174" ${common}/><path d="M124 108 L78 46 M124 108 L174 174" ${common} opacity=".65"/><text x="35" y="185">C</text><text x="64" y="44">A</text><text x="178" y="190">B</text><text x="132" y="104">O</text></svg>`;
+  if(type==='arcTangent') return `<svg viewBox="0 0 220 220"><circle cx="105" cy="110" r="76" ${common} opacity=".35"/><path d="M105 34 L170 149" ${common}/><path d="M170 149 H210" ${common}/><text x="97" y="28">A</text><text x="166" y="168">B</text><text x="205" y="168">C</text></svg>`;
+  if(type==='triangleCircle') return `<svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="78" ${common} opacity=".35"/><path d="M52 162 L110 32 L170 162 Z" ${common}/><circle cx="110" cy="110" r="3" fill="#233"/><path d="M110 110 L52 162 M110 110 L170 162" ${common} opacity=".55"/><text x="42" y="178">A</text><text x="104" y="28">B</text><text x="174" y="178">C</text><text x="116" y="113">O</text></svg>`;
+  if(type==='equilateralIn') return `<svg viewBox="0 0 220 220"><path d="M35 176 L110 38 L185 176 Z" ${common}/><circle cx="110" cy="132" r="43" ${common} opacity=".45"/><path d="M110 38 V176" ${common} opacity=".45"/><text x="104" y="34">A</text></svg>`;
+  if(type==='equilateralOut') return `<svg viewBox="0 0 220 220"><circle cx="110" cy="116" r="78" ${common} opacity=".35"/><path d="M52 162 L110 38 L168 162 Z" ${common}/><path d="M110 38 V162" ${common} opacity=".45"/></svg>`;
+  if(type==='squareCircle') return `<svg viewBox="0 0 220 220"><rect x="48" y="48" width="124" height="124" ${common}/><circle cx="110" cy="110" r="62" ${common} opacity=".45"/><path d="M110 110 H172" ${common} opacity=".65"/><text x="134" y="103">r</text></svg>`;
+  if(type==='chord') return `<svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="82" ${common} opacity=".35"/><path d="M62 58 L178 58" ${common}/><path d="M110 110 V58" ${common} opacity=".6"/><path d="M110 110 L178 58" ${common} opacity=".6"/><circle cx="110" cy="110" r="3" fill="#233"/><text x="116" y="112">O</text></svg>`;
+  if(type==='intersect') return `<svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="82" ${common} opacity=".35"/><path d="M45 132 L178 78 M60 60 L166 164" ${common}/><circle cx="105" cy="111" r="4" fill="#233"/><text x="181" y="76">A</text><text x="168" y="178">B</text><text x="35" y="142">C</text><text x="52" y="55">D</text><text x="111" y="108">P</text></svg>`;
+  if(type==='sector') return `<svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="78" ${common} opacity=".35"/><path d="M110 110 L110 32 A78 78 0 0 1 178 149 Z" fill="rgba(45,106,79,.15)" stroke="#233" stroke-width="3"/><text x="125" y="96">α</text></svg>`;
+  if(type==='rightTri') return `<svg viewBox="0 0 220 220"><path d="M48 170 H170 V54 Z" ${common}/><path d="M148 170 v-22 h22" ${common} opacity=".5"/><text x="39" y="184">A</text><text x="174" y="53">B</text><text x="174" y="184">C</text></svg>`;
+  if(type==='quadTang') return `<svg viewBox="0 0 220 220"><path d="M45 160 L63 58 L173 42 L184 158 Z" ${common}/><circle cx="112" cy="107" r="54" ${common} opacity=".45"/><text x="35" y="176">A</text><text x="50" y="55">B</text><text x="176" y="40">C</text><text x="188" y="174">D</text></svg>`;
+  if(type==='plain') return `<svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="75" ${common} opacity=".35"/><text x="76" y="118" style="font-size:46px;font-weight:900;fill:#2d6a4f">№16</text></svg>`;
+  return `<svg viewBox="0 0 220 220"><circle cx="110" cy="110" r="75" ${common} opacity=".35"/></svg>`;
+}
+
+function makeResult({id,title,group,diff='easy',newFocus=false,source=SOURCE.base,statement,answer,unit='',hint,steps,diagram='plain'}){
+  return {id,title,group,diff,newFocus,source,statement,answer,unit,hint,steps,diagram};
+}
+
+const TEMPLATES = [
+  {id:'cyclic-opposite-new', title:'Вписанный четырёхугольник: A → C', group:'angles', diff:'easy', newFocus:true, diagram:'cyclic', make(){ const a=pick([31,37,52,64,78,112,119]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,newFocus:true,source:SOURCE.archive,diagram:this.diagram,statement:`Угол <em>A</em> четырёхугольника ABCD, вписанного в окружность, равен ${a}°. Найдите угол <em>C</em>. Ответ дайте в градусах.`,answer:180-a,unit:'°',hint:'Во вписанном четырёхугольнике противоположные углы дополняют друг друга до 180°.',steps:[`∠A + ∠C = 180°`,`∠C = 180° − ${a}° = ${180-a}°`]});}},
+  {id:'cyclic-trapezoid-new', title:'Вписанная трапеция: A → B/C', group:'angles', diff:'easy', newFocus:true, diagram:'trapCircle', make(){ const a=pick([31,45,52,68,74,86]); const need=pick(['B','C']); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,newFocus:true,source:SOURCE.archive,diagram:this.diagram,statement:`Угол A трапеции ABCD с основаниями AD и BC, вписанной в окружность, равен ${a}°. Найдите угол <em>${need}</em> этой трапеции. Ответ дайте в градусах.`,answer:180-a,unit:'°',hint:'В такой трапеции нужный верхний угол дополняет угол A до 180°.',steps:[`Так как AD ∥ BC, углы A и B при боковой стороне дают 180°`, `∠${need} = 180° − ${a}° = ${180-a}°`]});}},
+  {id:'center-on-side-new', title:'Центр на стороне: диаметр', group:'angles', diff:'easy', newFocus:true, diagram:'diameter', make(){ const a=pick([9,17,33,44,58,71]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,newFocus:true,source:SOURCE.archive,diagram:this.diagram,statement:`Центр окружности, описанной около треугольника ABC, лежит на стороне AB. Найдите угол <em>ABC</em>, если угол BAC равен ${a}°. Ответ дайте в градусах.`,answer:90-a,unit:'°',hint:'Если центр описанной окружности лежит на стороне, эта сторона — диаметр. Угол напротив диаметра равен 90°.',steps:[`∠ACB = 90°`, `∠ABC = 90° − ∠BAC`, `∠ABC = 90° − ${a}° = ${90-a}°`]});}},
+  {id:'cyclic-diff-new', title:'Вписанный четырёхугольник: разность углов', group:'angles', diff:'medium', newFocus:true, diagram:'cyclicDiag', make(){ const pairs=[[56,42],[80,34],[91,28],[73,21],[102,47],[68,19]]; const [abc,cad]=pick(pairs); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,newFocus:true,source:SOURCE.archive,diagram:this.diagram,statement:`Четырёхугольник ABCD вписан в окружность. Угол ABC равен ${abc}°, угол CAD равен ${cad}°. Найдите угол <em>ABD</em>. Ответ дайте в градусах.`,answer:abc-cad,unit:'°',hint:'Углы CAD и CBD опираются на одну дугу CD, значит они равны. Тогда ∠ABD — остаток от ∠ABC.',steps:[`∠CBD = ∠CAD = ${cad}°`, `∠ABC = ∠ABD + ∠CBD`, `∠ABD = ${abc}° − ${cad}° = ${abc-cad}°`]});}},
+  {id:'cyclic-sum', title:'Вписанный четырёхугольник: сумма углов', group:'angles', diff:'medium', diagram:'cyclicDiag', make(){ const abd=rint(25,89), cad=rint(10,55); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Четырёхугольник ABCD вписан в окружность. Угол ABD равен ${abd}°, угол CAD равен ${cad}°. Найдите угол <em>ABC</em>. Ответ дайте в градусах.`,answer:abd+cad,unit:'°',hint:'Углы CAD и CBD опираются на одну дугу CD, значит внутри угла ABC надо сложить два кусочка.',steps:[`∠CBD = ∠CAD = ${cad}°`, `∠ABC = ∠ABD + ∠CBD`, `∠ABC = ${abd}° + ${cad}° = ${abd+cad}°`]});}},
+  {id:'tangent-center', title:'Две касательные: угол AOB', group:'angles', diff:'easy', diagram:'tangent', make(){ const c=pick([35,48,62,79,88,104,121]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`В угол C величиной ${c}° вписана окружность, которая касается сторон угла в точках A и B. Точка O — центр окружности. Найдите угол <em>AOB</em>.`,answer:180-c,unit:'°',hint:'Радиусы к точкам касания перпендикулярны сторонам угла. Получается четырёхугольник с двумя прямыми углами.',steps:[`∠OAC = 90° и ∠OBC = 90°`, `∠AOB + ∠C = 180°`, `∠AOB = 180° − ${c}° = ${180-c}°`]});}},
+  {id:'tangent-angle-ab', title:'Касательные: угол ABO', group:'angles', diff:'easy', diagram:'tangent', make(){ const x=pick([48,64,72,88,96,110,124]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Касательные в точках A и B к окружности с центром O пересекаются под углом ${x}°. Найдите угол <em>ABO</em>.`,answer:x/2,unit:'°',hint:'Треугольник с двумя равными касательными симметричен, нужный угол равен половине угла между касательными.',steps:[`Угол между касательными делится пополам`, `∠ABO = ${x}° : 2 = ${fmt(x/2)}°`]});}},
+  {id:'diameters-inscribed', title:'Два диаметра: AOD → ACB', group:'angles', diff:'medium', diagram:'diameter', make(){ const a=pick([104,112,124,132,146,156,168]); const ans=(180-a)/2; return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`В окружности с центром O отрезки AC и BD — диаметры. Центральный угол AOD равен ${a}°. Найдите вписанный угол <em>ACB</em>.`,answer:ans,unit:'°',hint:'Сначала найди центральный угол, который опирается на дугу AB, потом раздели его на 2.',steps:[`∠AOB = 180° − ∠AOD = 180° − ${a}° = ${180-a}°`, `Вписанный угол в 2 раза меньше центрального`, `∠ACB = ${180-a}° : 2 = ${fmt(ans)}°`]});}},
+  {id:'diameters-central', title:'Два диаметра: ACB → AOD', group:'angles', diff:'medium', diagram:'diameter', make(){ const b=pick([18,24,31,42,56,78]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`AC и BD — диаметры окружности с центром O. Угол ACB равен ${b}°. Найдите угол <em>AOD</em>.`,answer:180-2*b,unit:'°',hint:'Вписанный угол в 2 раза меньше центрального, а потом используй развернутый угол.',steps:[`Центральный угол AOB = 2·${b}° = ${2*b}°`, `∠AOD = 180° − ${2*b}° = ${180-2*b}°`]});}},
+  {id:'diameter-nmb', title:'Точки по разные стороны диаметра', group:'angles', diff:'easy', diagram:'diameter', make(){ const a=pick([19,28,37,44,61,71,83]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`На окружности по разные стороны от диаметра AB взяты точки M и N. Известно, что угол NBA равен ${a}°. Найдите угол <em>NMB</em>.`,answer:90-a,unit:'°',hint:'Угол, опирающийся на диаметр, равен 90°. Остаётся вычесть данный острый угол.',steps:[`∠ANB или связанный угол при диаметре даёт прямой угол`, `∠NMB = 90° − ${a}° = ${90-a}°`]});}},
+  {id:'bco-minus', title:'Центр O: BCO через разность', group:'angles', diff:'medium', diagram:'triangleCircle', make(){ const beta=rint(10,32); const ans=rint(20,64); const abc=beta+ans; return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Точка O — центр окружности, на которой лежат точки A, B и C. Известно, что угол ABC равен ${abc}°, а угол OAB равен ${beta}°. Найдите угол <em>BCO</em>.`,answer:ans,unit:'°',hint:'В этой конфигурации нужный угол получается как разность угла ABC и угла OAB.',steps:[`∠BCO = ∠ABC − ∠OAB`, `∠BCO = ${abc}° − ${beta}° = ${ans}°`]});}},
+  {id:'arc-tangent', title:'Дуга и касательная', group:'angles', diff:'easy', diagram:'arcTangent', make(){ const arc=pick([72,88,104,126,152,168]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`На окружности отмечены точки A и B так, что меньшая дуга AB равна ${arc}°. Прямая BC касается окружности в точке B, угол ABC острый. Найдите угол <em>ABC</em>.`,answer:arc/2,unit:'°',hint:'Угол между касательной и хордой равен половине дуги, на которую опирается хорда.',steps:[`∠ABC = 1/2 дуги AB`, `∠ABC = ${arc}° : 2 = ${fmt(arc/2)}°`]});}},
+  {id:'central-inscribed', title:'Центральный угол → вписанный', group:'angles', diff:'easy', diagram:'triangleCircle', make(){ const a=pick([82,96,113,128,146,170]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Треугольник ABC вписан в окружность с центром O. Найдите угол <em>ACB</em>, если угол AOB равен ${a}°.`,answer:a/2,unit:'°',hint:'Вписанный угол, опирающийся на ту же дугу, в 2 раза меньше центрального.',steps:[`∠ACB = ∠AOB : 2`, `∠ACB = ${a}° : 2 = ${fmt(a/2)}°`]});}},
+  {id:'isosceles-boc', title:'Равнобедренный треугольник: BOC', group:'angles', diff:'easy', diagram:'triangleCircle', make(){ const b=pick([42,58,66,74,86,104]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Окружность с центром O описана около равнобедренного треугольника ABC, в котором AB = BC, а угол ABC равен ${b}°. Найдите угол <em>BOC</em>.`,answer:180-b,unit:'°',hint:'В равнобедренном треугольнике углы при основании равны, а центральный угол связан с дугой BC.',steps:[`Для этого шаблона используется ход: 180° − угол при вершине B`, `∠BOC = 180° − ${b}° = ${180-b}°`]});}},
+  {id:'side-through-center', title:'Сторона через центр окружности', group:'angles', diff:'easy', diagram:'diameter', make(){ const a=pick([18,27,33,41,59,76]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Сторона AC треугольника ABC проходит через центр описанной около него окружности. Найдите угол <em>C</em>, если угол A равен ${a}°.`,answer:90-a,unit:'°',hint:'AC — диаметр, значит угол B прямой. Два острых угла прямоугольного треугольника дают 90°.',steps:[`∠B = 90°`, `∠C = 90° − ∠A`, `∠C = 90° − ${a}° = ${90-a}°`]});}},
+  {id:'equilateral-R-from-side', title:'Равносторонний: сторона n√3 → R', group:'lengths', diff:'easy', diagram:'equilateralOut', make(){ const n=pick([5,7,8,12,15,18,24]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Сторона равностороннего треугольника равна ${n}√3. Найдите радиус окружности, описанной около этого треугольника.`,answer:n,unit:'',hint:'Для равностороннего треугольника, если сторона n√3, описанный радиус равен n.',steps:[`R = a√3 / 3`, `a = ${n}√3`, `R = ${n}√3·√3 / 3 = ${n}`]});}},
+  {id:'equilateral-side-from-R', title:'Равносторонний: R=n√3 → сторона', group:'lengths', diff:'easy', diagram:'equilateralOut', make(){ const n=pick([4,5,9,11,13,22]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Радиус окружности, описанной около равностороннего треугольника, равен ${n}√3. Найдите длину стороны этого треугольника.`,answer:3*n,unit:'',hint:'Число перед √3 умножаем на 3.',steps:[`a = R√3`, `R = ${n}√3`, `a = ${n}√3·√3 = ${3*n}`]});}},
+  {id:'equilateral-r-from-side-new', title:'Равносторонний: сторона n√3 → r', group:'lengths', diff:'easy', newFocus:true, diagram:'equilateralIn', make(){ const n=pick([10,12,14,18,20,26]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,newFocus:true,source:SOURCE.archive,diagram:this.diagram,statement:`Сторона равностороннего треугольника равна ${n}√3. Найдите радиус окружности, вписанной в этот треугольник.`,answer:n/2,unit:'',hint:'Для равностороннего треугольника r = a√3/6. Если a = n√3, то r = n/2.',steps:[`r = a√3 / 6`, `a = ${n}√3`, `r = ${n}√3·√3 / 6 = ${3*n}/6 = ${fmt(n/2)}`]});}},
+  {id:'large-arc', title:'Большая дуга по малой дуге', group:'lengths', diff:'medium', diagram:'arcTangent', make(){ const a=pick([60,72,90,120,144]); const k=(360-a)/a; const L=pick([12,18,24,35,48,67].filter(x=>Number.isInteger(x*k))); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`На окружности с центром O отмечены точки A и B так, что угол AOB равен ${a}°. Длина меньшей дуги AB равна ${L}. Найдите длину большей дуги.`,answer:L*k,unit:'',hint:'Длина дуги пропорциональна центральному углу. Большой дуге соответствует угол 360° − AOB.',steps:[`Угол большей дуги: 360° − ${a}° = ${360-a}°`, `Большая дуга = ${L} · ${360-a} / ${a}`, `Ответ: ${fmt(L*k)}`]});}},
+  {id:'square-R-from-side', title:'Квадрат: сторона n√2 → R', group:'lengths', diff:'easy', diagram:'squareCircle', make(){ const n=pick([4,6,8,12,17,21]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Сторона квадрата равна ${n}√2. Найдите радиус окружности, описанной около этого квадрата.`,answer:n,unit:'',hint:'Диагональ квадрата равна стороне·√2, а радиус описанной окружности — половина диагонали.',steps:[`d = ${n}√2·√2 = ${2*n}`, `R = d/2 = ${2*n}/2 = ${n}`]});}},
+  {id:'square-side-from-R', title:'Квадрат: R=n√2 → сторона', group:'lengths', diff:'easy', diagram:'squareCircle', make(){ const n=pick([7,11,14,22,25,31]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Радиус окружности, описанной около квадрата, равен ${n}√2. Найдите длину стороны этого квадрата.`,answer:2*n,unit:'',hint:'В этом шаблоне число перед √2 умножается на 2.',steps:[`a = R√2`, `a = ${n}√2·√2 = ${2*n}`]});}},
+  {id:'tangential-quad', title:'Описанный четырёхугольник: AD', group:'lengths', diff:'medium', diagram:'quadTang', make(){ const ab=rint(4,18), cd=rint(8,24), ad=rint(5,25); const bc=ab+cd-ad; if(bc<=2) return this.make(); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Четырёхугольник ABCD описан около окружности, AB = ${ab}, BC = ${bc}, CD = ${cd}. Найдите <em>AD</em>.`,answer:ad,unit:'',hint:'У описанного четырёхугольника суммы противоположных сторон равны: AB + CD = BC + AD.',steps:[`AB + CD = BC + AD`, `AD = AB + CD − BC`, `AD = ${ab} + ${cd} − ${bc} = ${ad}`]});}},
+  {id:'trap-height-inradius', title:'Трапеция с вписанной окружностью: высота', group:'lengths', diff:'easy', newFocus:true, diagram:'trapCircle', make(){ const r=pick([7,12,18,25,31,38,45]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,newFocus:r===38,source:r===38?SOURCE.archive:SOURCE.base,diagram:this.diagram,statement:`Радиус окружности, вписанной в трапецию, равен ${r}. Найдите высоту этой трапеции.`,answer:2*r,unit:'',hint:'Окружность касается обоих оснований, поэтому расстояние между основаниями равно двум радиусам.',steps:[`h = 2r`, `h = 2·${r} = ${2*r}`]});}},
+  {id:'right-triangle-circumradius', title:'Прямоугольный треугольник: R', group:'lengths', diff:'hard', diagram:'rightTri', make(){ const [a,b,c]=pick(triples.filter(t=>t[2]%2===0 || t[2]<=20)); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`В треугольнике ABC известно, что AC = ${a}, BC = ${b}, угол C равен 90°. Найдите радиус окружности, описанной около этого треугольника.`,answer:c/2,unit:'',hint:'У прямоугольного треугольника описанный радиус равен половине гипотенузы.',steps:[`По тройке/Пифагору: гипотенуза AB = ${c}`, `R = AB/2 = ${c}/2 = ${fmt(c/2)}`]});}},
+  {id:'equilateral-height-r', title:'Равносторонний: r → высота', group:'lengths', diff:'easy', diagram:'equilateralIn', make(){ const r=pick([4,7,9,12,16,25]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Радиус окружности, вписанной в равносторонний треугольник, равен ${r}. Найдите высоту этого треугольника.`,answer:3*r,unit:'',hint:'В равностороннем треугольнике высота в 3 раза больше радиуса вписанной окружности.',steps:[`h = 3r`, `h = 3·${r} = ${3*r}`]});}},
+  {id:'equilateral-height-R', title:'Равносторонний: R → высота', group:'lengths', diff:'easy', diagram:'equilateralOut', make(){ const R=pick([8,10,12,16,20,24]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Радиус окружности, описанной около равностороннего треугольника, равен ${R}. Найдите высоту этого треугольника.`,answer:1.5*R,unit:'',hint:'Высота равностороннего треугольника равна 1,5 радиуса описанной окружности.',steps:[`h = 1.5R`, `h = 1.5·${R} = ${fmt(1.5*R)}`]});}},
+  {id:'chord-length', title:'Хорда по радиусу и расстоянию', group:'lengths', diff:'hard', diagram:'chord', make(){ const [x,y,h]=pick(triples.filter(t=>t[2]<=65)); const dist=pick([x,y]); const half=dist===x?y:x; return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Найдите длину хорды окружности радиусом ${h}, если расстояние от центра окружности до хорды равно ${dist}.`,answer:2*half,unit:'',hint:'Перпендикуляр из центра делит хорду пополам. Половина хорды — второй катет прямоугольного треугольника.',steps:[`В прямоугольном треугольнике есть ${dist} и ${h}`, `Подходящая тройка: ${x}, ${y}, ${h}`, `Половина хорды = ${half}`, `Хорда = 2·${half} = ${2*half}`]});}},
+  {id:'diameter-from-chord', title:'Диаметр по хорде и расстоянию', group:'lengths', diff:'hard', diagram:'chord', make(){ const [x,y,h]=pick(triples.filter(t=>t[2]<=65)); const half=pick([x,y]); const dist=half===x?y:x; return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Длина хорды окружности равна ${2*half}, а расстояние от центра окружности до этой хорды равно ${dist}. Найдите диаметр окружности.`,answer:2*h,unit:'',hint:'Подели хорду пополам, затем найди радиус по Пифагору, потом удвой радиус.',steps:[`Половина хорды: ${2*half} : 2 = ${half}`, `Тройка: ${half}, ${dist}, ${h}`, `Радиус = ${h}`, `Диаметр = 2·${h} = ${2*h}`]});}},
+  {id:'ac-from-circumcenter', title:'Центр на AB: найти катет AC', group:'lengths', diff:'hard', diagram:'rightTri', make(){ const [a,b,c]=pick(triples.filter(t=>t[2]%2===0)); const R=c/2; const given=pick([a,b]); const need=given===a?b:a; return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Центр окружности, описанной около треугольника ABC, лежит на стороне AB. Радиус окружности равен ${fmt(R)}. Найдите AC, если BC = ${given}.`,answer:need,unit:'',hint:'AB — диаметр, значит AB = 2R. Получается прямоугольный треугольник с гипотенузой AB.',steps:[`AB = 2R = 2·${fmt(R)} = ${c}`, `Есть гипотенуза ${c} и катет ${given}`, `Подходящая тройка: ${a}, ${b}, ${c}`, `AC = ${need}`]});}},
+  {id:'intersecting-chords', title:'Пересекающиеся хорды', group:'lengths', diff:'medium', diagram:'intersect', make(){ const cp=pick([4,5,6,8,10,12]); const dp=pick([6,8,10,12,14,16]); const bp=pick([9,10,12,15,18,20,24].filter(v=>(v*dp)%cp===0)); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Хорды AC и BD окружности пересекаются в точке P. BP = ${bp}, CP = ${cp}, DP = ${dp}. Найдите <em>AP</em>.`,answer:dp*bp/cp,unit:'',hint:'Произведения отрезков пересекающихся хорд равны: AP·CP = BP·DP.',steps:[`AP·CP = BP·DP`, `AP = BP·DP / CP`, `AP = ${bp}·${dp} / ${cp} = ${fmt(dp*bp/cp)}`]});}},
+  {id:'triangle-area-inradius', title:'Площадь треугольника через P и r', group:'areas', diff:'easy', diagram:'equilateralIn', make(){ const P=pick([36,42,48,64,80,96]); const r=pick([3,4,5,7,9]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Периметр треугольника равен ${P}, а радиус вписанной в него окружности равен ${r}. Найдите площадь этого треугольника.`,answer:P/2*r,unit:'',hint:'Площадь треугольника через радиус вписанной окружности: S = p·r, где p — полупериметр.',steps:[`p = P/2 = ${P}/2 = ${P/2}`, `S = p·r = ${P/2}·${r} = ${P/2*r}`]});}},
+  {id:'square-area-around-circle', title:'Площадь квадрата вокруг окружности', group:'areas', diff:'easy', diagram:'squareCircle', make(){ const r=pick([5,7,9,12,15,18]); return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Найдите площадь квадрата, описанного вокруг окружности радиуса ${r}.`,answer:(2*r)**2,unit:'',hint:'Сторона квадрата равна диаметру окружности: a = 2r.',steps:[`a = 2r = 2·${r} = ${2*r}`, `S = a² = ${2*r}² = ${(2*r)**2}`]});}},
+  {id:'sector-area', title:'Площадь сектора', group:'areas', diff:'medium', diagram:'sector', make(){ const angle=pick([30,45,60,90,120,150]); const mult=360/angle; const sector=pick([12,18,25,36,41,64]); const S=sector*mult; return makeResult({id:this.id,title:this.title,group:this.group,diff:this.diff,source:SOURCE.base,diagram:this.diagram,statement:`Площадь круга равна ${S}. Найдите площадь сектора этого круга, центральный угол которого равен ${angle}°.`,answer:sector,unit:'',hint:'Сектор занимает такую же долю от площади круга, как его угол от 360°.',steps:[`Доля сектора: ${angle}° / 360°`, `Sсектора = ${S}·${angle}/360`, `Ответ: ${sector}`]});}}
+];
+
+const ARCHIVE_TASKS = [
+  makeResult({id:'arch-13-2026',title:'Вариант 13 (доп.) — №16',group:'angles',diff:'medium',newFocus:true,source:'13_variant_oge_2026_mat_9klass_fipi.pdf',diagram:'cyclicDiag',statement:'Четырёхугольник ABCD вписан в окружность. Угол ABC равен 56°, угол CAD равен 42°. Найдите угол ABD. Ответ дайте в градусах.',answer:14,unit:'°',hint:'Углы CAD и CBD опираются на одну дугу CD, значит равны.',steps:['∠CBD = ∠CAD = 42°','∠ABD = ∠ABC − ∠CBD = 56° − 42° = 14°']}),
+  makeResult({id:'arch-14-2026',title:'Вариант 14 (доп.) — №16',group:'angles',diff:'easy',newFocus:true,source:'14_variant_oge_2026_mat_9klass_fipi.pdf',diagram:'trapCircle',statement:'Угол A трапеции ABCD с основаниями AD и BC, вписанной в окружность, равен 31°. Найдите угол B этой трапеции. Ответ дайте в градусах.',answer:149,unit:'°',hint:'AD ∥ BC, поэтому внутренние односторонние углы A и B дают 180°.',steps:['∠A + ∠B = 180°','∠B = 180° − 31° = 149°']}),
+  makeResult({id:'arch-56-2026',title:'Вариант 56 (доп.) — №16',group:'angles',diff:'easy',newFocus:true,source:'56_variant_oge_2026_mat_9klass_fipi.pdf',diagram:'cyclic',statement:'Угол A четырёхугольника ABCD, вписанного в окружность, равен 112°. Найдите угол C этого четырёхугольника. Ответ дайте в градусах.',answer:68,unit:'°',hint:'Противоположные углы вписанного четырёхугольника дают 180°.',steps:['∠A + ∠C = 180°','∠C = 180° − 112° = 68°']}),
+  makeResult({id:'arch-57-2026',title:'Вариант 57 (доп.) — №16',group:'angles',diff:'easy',newFocus:true,source:'57_variant_oge_2026_mat_9klass_fipi.pdf',diagram:'diameter',statement:'Центр окружности, описанной около треугольника ABC, лежит на стороне AB. Найдите угол ABC, если угол BAC равен 44°. Ответ дайте в градусах.',answer:46,unit:'°',hint:'AB — диаметр, значит угол C равен 90°.',steps:['∠ACB = 90°','∠ABC = 90° − 44° = 46°']}),
+  makeResult({id:'arch-22-2025',title:'Вариант 22 — №16',group:'angles',diff:'medium',newFocus:false,source:'Работа №22 (ОГЭ 2025).pdf',diagram:'cyclicDiag',statement:'Четырёхугольник ABCD вписан в окружность. Угол ABD равен 89°, угол CAD равен 19°. Найдите угол ABC. Ответ дайте в градусах.',answer:108,unit:'°',hint:'∠CAD и ∠CBD опираются на одну дугу CD.',steps:['∠CBD = ∠CAD = 19°','∠ABC = ∠ABD + ∠CBD = 89° + 19° = 108°']}),
+  makeResult({id:'arch-09-2025',title:'Вариант 9 — №16',group:'angles',diff:'easy',newFocus:false,source:'Работа №9 (ОГЭ 2025).pdf',diagram:'cyclic',statement:'Угол A четырёхугольника ABCD, вписанного в окружность, равен 37°. Найдите угол C этого четырёхугольника. Ответ дайте в градусах.',answer:143,unit:'°',hint:'Противоположные углы вписанного четырёхугольника в сумме 180°.',steps:['∠C = 180° − 37° = 143°']}),
+  makeResult({id:'arch-15-2025',title:'Вариант 15 — №16',group:'lengths',diff:'easy',newFocus:false,source:'Работа №15 (ОГЭ 2025).pdf',diagram:'trapCircle',statement:'Радиус окружности, вписанной в равнобедренную трапецию, равен 38. Найдите высоту этой трапеции.',answer:76,unit:'',hint:'Высота равна двум радиусам вписанной окружности.',steps:['h = 2r','h = 2·38 = 76']}),
+  makeResult({id:'arch-18-2025',title:'Вариант 18 — №16',group:'lengths',diff:'easy',newFocus:false,source:'Работа №18 (ОГЭ 2025).pdf',diagram:'equilateralIn',statement:'Сторона равностороннего треугольника равна 18√3. Найдите радиус окружности, вписанной в этот треугольник.',answer:9,unit:'',hint:'Если сторона равностороннего треугольника равна n√3, то r = n/2.',steps:['r = a√3 / 6','r = 18√3·√3/6 = 54/6 = 9']})
+];
+
+let state = JSON.parse(localStorage.getItem('oge16trainer')||'{"ok":0,"bad":0,"streak":0,"done":{}}');
+let current = null;
+let lastTemplate = null;
+let archiveIndex = 0;
+
+function save(){ localStorage.setItem('oge16trainer', JSON.stringify(state)); }
+function updateStats(){
+  $('okStat').textContent=state.ok||0; $('badStat').textContent=state.bad||0; $('streakStat').textContent=state.streak||0;
+  const total=(state.ok||0)+(state.bad||0); $('accStat').textContent= total? Math.round(state.ok/total*100)+'%' : '0%';
+  const mastered = Object.keys(state.done||{}).length;
+  $('progressBar').style.width = Math.min(100, mastered/TEMPLATES.length*100)+'%';
+}
+function renderTemplates(){
+  $('templateList').innerHTML = TEMPLATES.map(t=>`<div class="mini ${t.newFocus?'new':''}"><b>${t.newFocus?'★ ':''}${t.title}</b><span>${labelGroup(t.group)} · ${labelDiff(t.diff)}</span></div>`).join('');
+  $('archiveGrid').innerHTML = ARCHIVE_TASKS.map(t=>`<div class="archiveItem"><b>${t.newFocus?'★ ':''}${t.title}</b><span>${t.statement}</span></div>`).join('');
+}
+function labelGroup(g){ return g==='angles'?'углы':g==='lengths'?'длины':g==='areas'?'площади':'тип'; }
+function labelDiff(d){ return d==='easy'?'лёгкая':d==='medium'?'средняя':'сложная'; }
+function candidates(similar=false){
+  const mode=$('mode').value, diff=$('difficulty').value;
+  if(mode==='archive') return ARCHIVE_TASKS;
+  let arr=TEMPLATES;
+  if(mode==='new') arr=arr.filter(t=>t.newFocus || ['cyclic-sum','trap-height-inradius','equilateral-r-from-side-new'].includes(t.id));
+  if(mode==='angles') arr=arr.filter(t=>t.group==='angles');
+  if(mode==='lengths') arr=arr.filter(t=>t.group==='lengths');
+  if(mode==='areas') arr=arr.filter(t=>t.group==='areas');
+  if(mode==='hard') arr=arr.filter(t=>['chord-length','diameter-from-chord','ac-from-circumcenter','right-triangle-circumradius'].includes(t.id));
+  if(diff!=='mix') arr=arr.filter(t=>t.diff===diff);
+  if(similar && lastTemplate) arr=arr.filter(t=>t.id===lastTemplate.id);
+  return arr.length?arr:TEMPLATES;
+}
+function nextTask(similar=false){
+  clearUI();
+  let task;
+  if($('mode').value==='archive'){
+    const arr=candidates(false);
+    task=arr[archiveIndex%arr.length]; archiveIndex++;
+  } else {
+    const arr=candidates(similar);
+    const chosen=pick(arr); lastTemplate=chosen; task=chosen.make();
+  }
+  current=task;
+  renderTask(task);
+}
+function renderTask(t){
+  $('taskKicker').textContent=t.title;
+  $('taskSource').textContent='Источник/шаблон: '+t.source;
+  $('statement').innerHTML=t.statement;
+  $('diagram').innerHTML=svg(t.diagram);
+  $('pillrow').innerHTML = `<span class="pill type">${labelGroup(t.group)}</span><span class="pill">${labelDiff(t.diff)}</span>${t.newFocus?'<span class="pill new">новая зона риска</span>':''}`;
+  $('answerInput').value=''; $('answerInput').focus();
+  if($('autoHint').checked) showHint();
+  if($('teacherMode').checked){ $('message').className='msg good'; $('message').textContent='Режим учителя: ответ '+fmt(t.answer)+(t.unit||''); }
+}
+function clearUI(){
+  $('message').className='msg'; $('message').textContent='';
+  $('hint').className='hint'; $('hint').innerHTML='';
+  $('solution').className='solution'; $('solution').innerHTML='';
+}
+function showHint(){
+  if(!current) return;
+  $('hint').className='hint on';
+  $('hint').innerHTML=`<b>Подсказка</b>${current.hint}`;
+}
+function showSolution(){
+  if(!current) return;
+  $('solution').className='solution on';
+  $('solution').innerHTML=`<b>Решение</b><ol>${current.steps.map(s=>`<li>${s}</li>`).join('')}</ol><p><span class="formula">Ответ: ${fmt(current.answer)}${current.unit||''}</span></p>`;
+}
+function check(){
+  if(!current) return;
+  const val=Number(norm($('answerInput').value));
+  if(Number.isNaN(val)){ $('message').className='msg bad'; $('message').textContent='Впиши число в ответ. Можно через запятую.'; return; }
+  const ok=Math.abs(val-current.answer)<1e-7;
+  if(ok){
+    state.ok=(state.ok||0)+1; state.streak=(state.streak||0)+1; state.done=state.done||{}; state.done[current.id]=true;
+    $('message').className='msg good'; $('message').textContent='Верно! Ответ: '+fmt(current.answer)+(current.unit||'')+'. Отлично, едем дальше.';
+    showSolution();
+  }else{
+    state.bad=(state.bad||0)+1; state.streak=0;
+    $('message').className='msg bad'; $('message').textContent='Пока мимо. Проверь ход: '+current.hint;
+    showHint();
+  }
+  save(); updateStats();
+}
+function copyTask(){
+  if(!current) return;
+  const text=current.statement.replace(/<[^>]*>/g,'')+'\nОтвет: '+fmt(current.answer)+(current.unit||'');
+  navigator.clipboard?.writeText(text);
+  $('message').className='msg good'; $('message').textContent='Условие скопировано вместе с ответом.';
+}
+$('newTask').addEventListener('click',()=>nextTask(false));
+$('againTask').addEventListener('click',()=>nextTask(true));
+$('hintBtn').addEventListener('click',showHint);
+$('showBtn').addEventListener('click',showSolution);
+$('checkBtn').addEventListener('click',check);
+$('answerInput').addEventListener('keydown',(e)=>{ if(e.key==='Enter') check(); });
+$('copyTask').addEventListener('click',copyTask);
+$('resetStats').addEventListener('click',()=>{ if(confirm('Сбросить статистику?')){ state={ok:0,bad:0,streak:0,done:{}}; save(); updateStats(); }});
+$('mode').addEventListener('change',()=>nextTask(false));
+$('difficulty').addEventListener('change',()=>nextTask(false));
+renderTemplates(); updateStats(); nextTask(false);
+</script>
+</body>
+</html>

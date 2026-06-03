@@ -1,0 +1,3683 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренажёр: сумма синусов и косинусов → произведение</title>
+<style>
+  :root {
+    --bg: #f7f2e8;
+    --bg-deep: #efe8d8;
+    --card: #ffffff;
+    --ink: #1c2238;
+    --ink-soft: #4f556e;
+    --ink-mute: #888fa5;
+    --line: #e4d9c1;
+    --line-soft: #f0e8d6;
+    --gold: #b08a3c;
+    --gold-deep: #8b6a25;
+    --gold-soft: #f6e9c4;
+    --gold-glow: #fff4d6;
+    --green: #4d7c52;
+    --green-deep: #355a39;
+    --green-soft: #dcebd6;
+    --warn: #a66339;
+    --warn-soft: #f3dfcd;
+    --blue: #3a5680;
+    --blue-soft: #dce5f0;
+    --shadow: 0 1px 3px rgba(28,34,56,0.04), 0 1px 2px rgba(28,34,56,0.03);
+    --shadow-md: 0 4px 12px rgba(28,34,56,0.06);
+    --serif: 'Cambria', 'Georgia', 'Palatino Linotype', 'Book Antiqua', 'Times New Roman', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, 'Helvetica Neue', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(at 10% 0%, rgba(176,138,60,0.06) 0, transparent 50%),
+      radial-gradient(at 90% 100%, rgba(58,86,128,0.04) 0, transparent 50%);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    min-height: 100vh;
+    padding: 18px 20px 40px;
+  }
+
+  .container { max-width: 1380px; margin: 0 auto; }
+
+  /* ---------- HEADER ---------- */
+  .header {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px 24px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    box-shadow: var(--shadow);
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    flex-wrap: wrap;
+  }
+  .home-link {
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 500;
+    padding: 7px 12px;
+    border-radius: 7px;
+    transition: background 0.15s;
+    white-space: nowrap;
+  }
+  .home-link:hover { background: var(--blue-soft); }
+  .title-block .title {
+    font-family: var(--serif);
+    font-size: 1.32rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+  }
+  .title-block .subtitle {
+    font-size: 0.84rem;
+    color: var(--ink-soft);
+    margin-top: 3px;
+  }
+
+  .modes {
+    display: inline-flex;
+    background: var(--bg-deep);
+    padding: 4px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+  }
+  .mode-btn {
+    border: none;
+    background: transparent;
+    padding: 8px 16px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .mode-btn.active {
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: 0 1px 2px rgba(28,34,56,0.1);
+    font-weight: 600;
+  }
+
+  /* ---------- SECTION BAR ---------- */
+  .section-bar {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 18px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    box-shadow: var(--shadow);
+  }
+  .section-label {
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  .section-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .section-btn {
+    border: 1px solid var(--line);
+    background: var(--card);
+    padding: 7px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: var(--ink);
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .section-btn:hover { background: var(--gold-soft); border-color: var(--gold); }
+  .section-btn.active {
+    background: var(--gold);
+    color: white;
+    border-color: var(--gold);
+  }
+
+  .formula-tabs {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-left: auto;
+    padding-left: 14px;
+    border-left: 1px solid var(--line);
+  }
+  .formula-tab {
+    border: 1px solid var(--line);
+    background: var(--card);
+    padding: 5px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-family: var(--serif);
+    color: var(--ink);
+    transition: all 0.15s;
+    min-width: 28px;
+    text-align: center;
+  }
+  .formula-tab:hover { border-color: var(--gold); }
+  .formula-tab.active {
+    background: var(--ink);
+    color: white;
+    border-color: var(--ink);
+  }
+  .formula-tab.completed {
+    background: var(--green-soft);
+    border-color: var(--green);
+    color: var(--green-deep);
+  }
+  .formula-tab.active.completed {
+    background: var(--green-deep);
+    color: white;
+    border-color: var(--green-deep);
+  }
+
+  /* ---------- MAIN LAYOUT ---------- */
+  .main {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 920px) {
+    .main { grid-template-columns: 1fr; }
+  }
+
+  .panel {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px 24px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    min-height: 480px;
+  }
+
+  .panel-title {
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-mute);
+    margin-bottom: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* ---------- MATH STYLES ---------- */
+  .math {
+    font-family: var(--serif);
+    line-height: 1.7;
+  }
+
+  /* Fraction — inline-block with middle alignment so it sits on the math axis */
+  .frac {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 0.85em;
+    margin: 0 2px;
+    line-height: 1.1;
+    position: relative;
+    top: -0.05em;
+  }
+  .frac .num {
+    display: block;
+    border-bottom: 1.4px solid currentColor;
+    padding: 0 5px 2px;
+  }
+  .frac .den {
+    display: block;
+    padding: 2px 5px 0;
+  }
+  /* Increase line-height in formula containers so centered fractions don't overlap surrounding lines */
+  .math, .goal, .step-line, .option-card, .sub-block, .question, .derivation {
+    line-height: 2.0;
+  }
+
+  /* Substitution block */
+  .sub-block {
+    background: linear-gradient(180deg, var(--blue-soft) 0%, #e8eef6 100%);
+    border-left: 4px solid var(--blue);
+    padding: 14px 18px 14px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  .sub-block .sb-label {
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    color: var(--blue);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .sub-block .sb-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 24px;
+    font-family: var(--serif);
+    font-size: 1.08rem;
+    color: var(--ink);
+  }
+  .sub-block .sb-line { white-space: nowrap; }
+  @media (max-width: 480px) {
+    .sub-block .sb-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Goal formula */
+  .goal {
+    background: var(--gold-glow);
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin-bottom: 18px;
+    text-align: center;
+    font-family: var(--serif);
+    font-size: 1.4rem;
+    color: var(--ink);
+    position: relative;
+  }
+  .goal .goal-tag {
+    position: absolute;
+    top: -9px;
+    left: 16px;
+    background: var(--gold);
+    color: white;
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* Derivation lines */
+  .derivation {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .derivation-empty {
+    color: var(--ink-mute);
+    font-style: italic;
+    padding: 20px;
+    text-align: center;
+    border: 1.5px dashed var(--line);
+    border-radius: 10px;
+    font-size: 0.92rem;
+  }
+  .step-line {
+    padding: 11px 14px 11px 18px;
+    background: var(--bg);
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--ink-mute);
+    font-family: var(--serif);
+    font-size: 1.12rem;
+    color: var(--ink);
+    line-height: 1.55;
+    position: relative;
+    animation: slideIn 0.3s ease;
+  }
+  .step-line.current {
+    background: linear-gradient(180deg, var(--gold-glow) 0%, var(--gold-soft) 100%);
+    border-left-color: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(176,138,60,0.1);
+  }
+  .step-line .step-num {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: block;
+  }
+  .step-line .step-comment {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: 5px;
+    display: block;
+    line-height: 1.4;
+  }
+
+  /* Cancellations */
+  .cancel {
+    position: relative;
+    background: var(--green-soft);
+    color: var(--green-deep);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  .cancel::after {
+    content: '';
+    position: absolute;
+    left: 4%;
+    right: 4%;
+    top: 50%;
+    height: 1.5px;
+    background: var(--green-deep);
+    transform: rotate(-2deg);
+  }
+  .hl {
+    background: rgba(176,138,60,0.18);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+  .hl-blue {
+    background: rgba(58,86,128,0.12);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
+  /* ---------- RIGHT PANEL ---------- */
+  .question {
+    font-size: 0.97rem;
+    color: var(--ink);
+    margin-bottom: 14px;
+    padding: 12px 16px;
+    background: var(--bg);
+    border-radius: 8px;
+    border-left: 3px solid var(--ink);
+    line-height: 1.5;
+  }
+  .question .y-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    margin-right: 8px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-bottom: 16px;
+  }
+  .option-card {
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    padding: 13px 16px;
+    cursor: pointer;
+    font-family: var(--serif);
+    font-size: 1.08rem;
+    text-align: left;
+    color: var(--ink);
+    transition: all 0.15s;
+    width: 100%;
+    line-height: 1.6;
+    position: relative;
+  }
+  .option-card:hover:not(:disabled):not(.disabled) {
+    border-color: var(--gold);
+    background: var(--gold-glow);
+    transform: translateY(-1px);
+  }
+  .option-card.selected {
+    border-color: var(--gold);
+    background: var(--gold-soft);
+    box-shadow: 0 0 0 3px rgba(176,138,60,0.12);
+  }
+  .option-card.correct {
+    border-color: var(--green);
+    background: var(--green-soft);
+    color: var(--green-deep);
+  }
+  .option-card.correct::after {
+    content: '✓';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--green-deep);
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+  .option-card.wrong {
+    border-color: var(--warn);
+    background: var(--warn-soft);
+    color: var(--warn);
+  }
+  .option-card.disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  /* Feedback */
+  .feedback {
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    display: none;
+    animation: slideIn 0.25s ease;
+  }
+  .feedback.show { display: block; }
+  .feedback.success {
+    background: var(--green-soft);
+    color: var(--green-deep);
+    border-left: 3px solid var(--green);
+  }
+  .feedback.error {
+    background: var(--warn-soft);
+    color: var(--warn);
+    border-left: 3px solid var(--warn);
+  }
+  .feedback.hint {
+    background: var(--gold-soft);
+    color: var(--ink);
+    border-left: 3px solid var(--gold);
+  }
+  .feedback strong { color: inherit; font-weight: 700; }
+
+  /* Buttons */
+  .controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+  .btn {
+    border: 1px solid var(--line);
+    background: var(--card);
+    padding: 9px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-family: inherit;
+    color: var(--ink);
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .btn:hover:not(:disabled) { background: var(--bg-deep); border-color: var(--ink-mute); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn-primary {
+    background: var(--ink);
+    color: white;
+    border-color: var(--ink);
+    font-weight: 600;
+  }
+  .btn-primary:hover:not(:disabled) { background: #2a3050; }
+  .btn-ghost { color: var(--ink-soft); }
+  .btn-warn { color: var(--warn); border-color: var(--warn-soft); }
+  .btn-warn:hover:not(:disabled) { background: var(--warn-soft); }
+
+  /* Completion screen */
+  .completion {
+    text-align: center;
+    padding: 30px 16px;
+    animation: slideIn 0.4s ease;
+  }
+  .completion .seal {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: var(--green-soft);
+    border: 2px solid var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--green-deep);
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+  .completion h3 {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  .completion x {
+    color: var(--ink-soft);
+    margin: 0 0 18px;
+    font-size: 0.92rem;
+  }
+  .completion .final-formula {
+    font-family: var(--serif);
+    font-size: 1.45rem;
+    padding: 18px 20px;
+    background: var(--green-soft);
+    border: 2px solid var(--green);
+    border-radius: 10px;
+    margin: 14px 0 22px;
+    color: var(--ink);
+  }
+
+  /* Teacher mode */
+  .teacher-derivation {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .teacher-step {
+    padding: 12px 16px;
+    background: var(--bg);
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--gold);
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--ink);
+  }
+  .teacher-step .ts-num {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    color: var(--gold-deep);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .teacher-step .ts-comment {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-top: 6px;
+    line-height: 1.45;
+  }
+
+  /* Assembly section */
+  .assembly-target {
+    text-align: center;
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    padding: 20px;
+    background: var(--bg);
+    border-radius: 10px;
+    margin-bottom: 18px;
+    border: 1px solid var(--line);
+  }
+  .assembly-build {
+    min-height: 70px;
+    background: var(--gold-glow);
+    border: 1.5px dashed var(--gold);
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 16px;
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    text-align: center;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .assembly-build .placeholder {
+    color: var(--ink-mute);
+    font-style: italic;
+    font-size: 0.92rem;
+    font-family: var(--sans);
+  }
+  .assembly-block {
+    display: inline-block;
+    padding: 6px 12px;
+    background: var(--gold);
+    color: white;
+    border-radius: 6px;
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .assembly-block:hover { transform: scale(1.05); }
+  .assembly-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .pool-block {
+    padding: 10px 14px;
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    color: var(--ink);
+    transition: all 0.15s;
+  }
+  .pool-block:hover:not(.used) {
+    border-color: var(--gold);
+    background: var(--gold-glow);
+  }
+  .pool-block.used {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  /* Progress footer */
+  .progress {
+    margin-top: 14px;
+    padding: 14px 22px;
+    background: var(--card);
+    border-radius: 14px;
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    box-shadow: var(--shadow);
+  }
+  .progress-text {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+  .progress-text strong { color: var(--ink); font-weight: 600; }
+  .progress-stats {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    font-size: 0.86rem;
+    color: var(--ink-soft);
+    flex-wrap: wrap;
+  }
+  .progress-stats .stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .progress-stats .stat .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--ink-mute);
+  }
+  .progress-stats .stat.green .dot { background: var(--green); }
+  .progress-stats .stat.gold .dot { background: var(--gold); }
+
+  /* Animation */
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(176,138,60,0.4); }
+    50% { box-shadow: 0 0 0 8px rgba(176,138,60,0); }
+  }
+  .pulse { animation: pulse 1.6s ease infinite; }
+
+  /* Small helpers */
+  .nowrap { white-space: nowrap; }
+  .pad-x { padding: 0 2px; }
+  .text-center { text-align: center; }
+  .muted { color: var(--ink-mute); }
+  .small { font-size: 0.85em; }
+
+  /* Mobile tweaks */
+  @media (max-width: 600px) {
+    body { padding: 10px 12px 30px; }
+    .panel { padding: 16px 16px; min-height: auto; }
+    .header { padding: 14px 16px; }
+    .section-bar { padding: 10px 12px; }
+    .formula-tabs { margin-left: 0; padding-left: 0; border-left: none; width: 100%; padding-top: 8px; border-top: 1px solid var(--line); }
+    .goal { font-size: 1.18rem; padding: 12px 14px; }
+    .step-line, .option-card { font-size: 1rem; }
+    .controls .btn { flex: 1 1 calc(50% - 4px); }
+  }
+
+  /* ===========================================================
+     NEW CSS — onboarding, color system, builder, traps, test,
+     mobile reorder. Added without touching the original rules.
+     =========================================================== */
+
+  /* ---------- COLOR SYSTEM for half-sum / half-diff / cancel / warn ---------- */
+  .frac.sum-frac .num,
+  .frac.sum-frac .den {
+    background: var(--gold-soft);
+  }
+  .frac.sum-frac .num { border-bottom-color: var(--gold-deep); }
+  .frac.diff-frac .num,
+  .frac.diff-frac .den {
+    background: var(--blue-soft);
+  }
+  .frac.diff-frac .num { border-bottom-color: var(--blue); }
+  /* Half-sum / half-diff inline marker for textual mentions */
+  .tag-sum {
+    background: var(--gold-soft);
+    color: var(--gold-deep);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .tag-diff {
+    background: var(--blue-soft);
+    color: var(--blue);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  /* Warn accent for the minus sign in cos α − cos β */
+  .sign-warn {
+    color: var(--warn);
+    font-weight: 700;
+    background: var(--warn-soft);
+    padding: 0 5px;
+    border-radius: 4px;
+    margin: 0 2px;
+  }
+  /* Stronger cancellation color */
+  .cancel-strong {
+    position: relative;
+    background: var(--green-soft);
+    color: var(--green-deep);
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .cancel-strong::after {
+    content: '';
+    position: absolute;
+    left: 4%; right: 4%; top: 50%;
+    height: 1.5px;
+    background: var(--green-deep);
+    transform: rotate(-2deg);
+  }
+
+  /* ---------- GRID AREAS for 3-panel layout ---------- */
+  .main {
+    grid-template-areas: "goal goal" "left right";
+  }
+  #goal-panel { grid-area: goal; min-height: auto; }
+  #left-panel { grid-area: left; }
+  #right-panel { grid-area: right; }
+  @media (max-width: 920px) {
+    .main {
+      grid-template-areas:
+        "goal"
+        "right"
+        "left";
+    }
+  }
+
+  /* Goal panel keeps the goal + sub-block compact */
+  #goal-panel {
+    padding: 18px 24px 14px;
+    min-height: 0;
+  }
+  #goal-panel .goal { margin-bottom: 12px; }
+  #goal-panel .sub-block { margin-bottom: 0; }
+
+  /* ---------- ONBOARDING OVERLAY ---------- */
+  .onboarding-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(28, 34, 56, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 16px;
+    animation: fadeIn 0.25s ease;
+  }
+  .onboarding-overlay.show { display: flex; }
+  .onboarding-card {
+    background: var(--card);
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    max-width: 580px;
+    width: 100%;
+    padding: 30px 32px 26px;
+    box-shadow: 0 20px 60px rgba(28,34,56,0.25);
+    animation: slideIn 0.3s ease;
+  }
+  .onboarding-card .ob-eyebrow {
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--gold-deep);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .onboarding-card .ob-title {
+    font-family: var(--serif);
+    font-size: 1.55rem;
+    line-height: 1.25;
+    margin-bottom: 14px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .onboarding-card .ob-lead {
+    color: var(--ink-soft);
+    font-size: 0.97rem;
+    line-height: 1.55;
+    margin-bottom: 22px;
+  }
+  .onboarding-card .ob-lead em {
+    background: var(--gold-soft);
+    color: var(--gold-deep);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 600;
+  }
+  .ob-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .ob-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: var(--card);
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    transition: all 0.15s;
+    color: var(--ink);
+  }
+  .ob-option:hover {
+    border-color: var(--gold);
+    background: var(--gold-glow);
+    transform: translateY(-1px);
+  }
+  .ob-option.primary {
+    background: linear-gradient(180deg, var(--gold-glow) 0%, var(--gold-soft) 100%);
+    border-color: var(--gold);
+  }
+  .ob-option.primary:hover { box-shadow: 0 6px 16px rgba(176,138,60,0.18); }
+  .ob-option .ob-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    background: var(--gold-soft);
+    color: var(--gold-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .ob-option .ob-text { flex: 1; }
+  .ob-option .ob-name {
+    font-size: 0.96rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+  .ob-option .ob-desc {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    line-height: 1.4;
+  }
+  .ob-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+    font-size: 0.85rem;
+    color: var(--ink-mute);
+  }
+  .ob-skip-btn {
+    background: none;
+    border: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.88rem;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.15s;
+  }
+  .ob-skip-btn:hover { background: var(--bg-deep); }
+
+  /* Header "С чего начать?" button */
+  .start-help-btn {
+    background: var(--card);
+    border: 1px solid var(--gold);
+    color: var(--gold-deep);
+    padding: 7px 12px;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 0.86rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .start-help-btn:hover { background: var(--gold-soft); }
+
+  /* ---------- X/Y MINI-INTRO ---------- */
+  .pq-intro {
+    background: linear-gradient(180deg, var(--blue-soft) 0%, #eaf0f8 100%);
+    border: 1.5px solid var(--blue);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
+  }
+  .pq-intro .pqi-eyebrow {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+    color: var(--blue);
+    margin-bottom: 6px;
+  }
+  .pq-intro .pqi-title {
+    font-family: var(--serif);
+    font-size: 1.18rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  .pq-intro .pqi-body {
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .pq-intro .pqi-setup {
+    background: var(--card);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 18px;
+  }
+  @media (max-width: 480px) {
+    .pq-intro .pqi-setup { grid-template-columns: 1fr; }
+  }
+  .pq-intro .pqi-step {
+    background: var(--card);
+    border-radius: 8px;
+    padding: 14px 16px;
+    border-left: 3px solid var(--blue);
+  }
+  .pq-intro .pqi-y {
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin-bottom: 10px;
+    font-family: var(--serif);
+  }
+  .pq-intro .pqi-final {
+    background: var(--green-soft);
+    color: var(--green-deep);
+    padding: 14px 16px;
+    border-radius: 8px;
+    border-left: 3px solid var(--green);
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+  .pq-skip {
+    text-align: right;
+    margin-top: 10px;
+  }
+  .pq-skip-btn {
+    background: none;
+    border: none;
+    color: var(--ink-mute);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.82rem;
+    text-decoration: underline;
+  }
+  .pq-skip-btn:hover { color: var(--ink-soft); }
+
+  /* ---------- ACTIVE BUILDER inside derivation step ---------- */
+  .builder-toggle {
+    display: inline-flex;
+    background: var(--bg-deep);
+    border-radius: 7px;
+    padding: 3px;
+    margin-bottom: 12px;
+    border: 1px solid var(--line);
+    font-size: 0.8rem;
+  }
+  .builder-toggle button {
+    background: transparent;
+    border: none;
+    padding: 5px 11px;
+    border-radius: 5px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.82rem;
+  }
+  .builder-toggle button.active {
+    background: var(--card);
+    color: var(--ink);
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(28,34,56,0.08);
+  }
+  .builder-canvas {
+    min-height: 64px;
+    background: var(--gold-glow);
+    border: 1.5px dashed var(--gold);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    line-height: 1.6;
+  }
+  .builder-canvas .placeholder {
+    color: var(--ink-mute);
+    font-style: italic;
+    font-size: 0.88rem;
+    font-family: var(--sans);
+  }
+  .builder-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 12px;
+  }
+  .builder-chip {
+    display: inline-block;
+    padding: 8px 12px;
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: var(--serif);
+    font-size: 0.98rem;
+    color: var(--ink);
+    transition: all 0.15s;
+  }
+  .builder-chip:hover:not(.used) {
+    border-color: var(--gold);
+    background: var(--gold-glow);
+  }
+  .builder-chip.used {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  .builder-chip.sign { font-weight: 700; min-width: 26px; text-align: center; }
+  .builder-canvas .placed-chip {
+    display: inline-block;
+    padding: 5px 10px;
+    background: var(--gold);
+    color: white;
+    border-radius: 6px;
+    font-family: var(--serif);
+    cursor: pointer;
+    transition: transform 0.1s;
+  }
+  .builder-canvas .placed-chip:hover { transform: scale(1.04); }
+
+  /* ---------- TRAPS section ---------- */
+  .trap-formula {
+    background: var(--warn-soft);
+    border: 1.5px solid var(--warn);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 18px;
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    text-align: center;
+    color: var(--ink);
+    position: relative;
+  }
+  .trap-formula .trap-tag {
+    position: absolute;
+    top: -9px;
+    left: 14px;
+    background: var(--warn);
+    color: white;
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .trap-list-header {
+    font-size: 0.78rem;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .trap-intro-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .trap-intro-card strong { color: var(--ink); }
+
+  /* ---------- FINAL MINI-TEST ---------- */
+  .final-test-banner {
+    background: linear-gradient(180deg, var(--gold-glow) 0%, var(--gold-soft) 100%);
+    border: 1.5px solid var(--gold);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    box-shadow: var(--shadow);
+  }
+  .final-test-banner .ftb-text {
+    font-size: 0.92rem;
+    color: var(--ink);
+  }
+  .final-test-banner .ftb-text strong {
+    color: var(--gold-deep);
+    font-weight: 700;
+  }
+  .test-progress-pill {
+    display: inline-block;
+    background: var(--ink);
+    color: white;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .test-final-screen {
+    text-align: center;
+    padding: 30px 16px;
+  }
+  .test-final-screen .test-score {
+    font-family: var(--serif);
+    font-size: 2.8rem;
+    color: var(--gold-deep);
+    font-weight: 700;
+    line-height: 1;
+    margin: 10px 0 8px;
+  }
+  .test-final-screen .test-score-tag {
+    font-size: 0.8rem;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 18px;
+  }
+
+  /* ---------- ANIMATIONS ---------- */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* ---------- Mobile reorder + tab text ---------- */
+  .formula-tab .tab-name {
+    display: inline-block;
+    margin-left: 4px;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .formula-tab.active .tab-name { color: rgba(255,255,255,0.85); }
+  .formula-tab.completed .tab-name { color: var(--green-deep); }
+  .formula-tab.active.completed .tab-name { color: rgba(255,255,255,0.85); }
+
+  @media (max-width: 760px) {
+    .formula-tab .tab-name { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-left">
+      <a href="https://mathexam.space" class="home-link">← На главную</a>
+      <div class="title-block">
+        <div class="title">Преобразование суммы синусов и косинусов в произведение</div>
+        <div class="subtitle">Учимся выводить четыре формулы через замену <em>x, y</em></div>
+      </div>
+    </div>
+    <div class="modes" role="tablist">
+      <button class="start-help-btn" id="start-help-btn" type="button" title="Открыть стартовый экран">С чего начать?</button>
+      <button class="mode-btn active" data-mode="learn" type="button">Обучение</button>
+      <button class="mode-btn" data-mode="practice" type="button">Тренировка</button>
+      <button class="mode-btn" data-mode="teacher" type="button">Учитель</button>
+    </div>
+  </header>
+
+  <!-- SECTION BAR -->
+  <div class="section-bar">
+    <span class="section-label">Раздел</span>
+    <div class="section-tabs" id="section-tabs">
+      <button class="section-btn active" data-section="derive" type="button">1. Вывод формул</button>
+      <button class="section-btn" data-section="assemble" type="button">2. Сборка формулы</button>
+      <button class="section-btn" data-section="product" type="button">3. Произведение</button>
+      <button class="section-btn" data-section="traps" type="button">4. Ловушки</button>
+    </div>
+    <div class="formula-tabs" id="formula-tabs"></div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="panel" id="goal-panel"></div>
+    <div class="panel" id="left-panel"></div>
+    <div class="panel" id="right-panel"></div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress">
+    <div class="progress-text">
+      Прогресс: <strong id="progress-text">—</strong>
+    </div>
+    <div class="progress-stats">
+      <span class="stat green"><span class="dot"></span>пройдено: <strong id="stat-done">0</strong></span>
+      <span class="stat gold"><span class="dot"></span>с подсказкой: <strong id="stat-hint">0</strong></span>
+      <span class="stat"><span class="dot"></span>ошибок: <strong id="stat-err">0</strong></span>
+    </div>
+    <button class="btn btn-warn" id="reset-btn" type="button">Сбросить прогресс</button>
+  </div>
+
+  <!-- FINAL TEST BANNER (appears when user has completed all 4 derivations) -->
+  <div id="final-test-banner-slot"></div>
+</div>
+
+<!-- ONBOARDING OVERLAY -->
+<div class="onboarding-overlay" id="onboarding-overlay">
+  <div class="onboarding-card">
+    <div class="ob-eyebrow">С чего начать?</div>
+    <div class="ob-title">Сумма синусов и косинусов&nbsp;→&nbsp;произведение</div>
+    <div class="ob-lead">
+      Сегодня учимся превращать <em>сумму или разность</em> синусов и косинусов в произведение.
+      Не надо зубрить сразу все четыре формулы — сначала поймём <em>одну</em>, а остальные будут даваться легко.
+    </div>
+    <div class="ob-options">
+      <button class="ob-option primary" id="ob-start-simple" type="button">
+        <div class="ob-icon">1</div>
+        <div class="ob-text">
+          <div class="ob-name">Начать с самой простой формулы: sin α + sin β</div>
+          <div class="ob-desc">Полный путь: сначала разберёмся, что такое x и y, затем выведем формулу пошагово.</div>
+        </div>
+      </button>
+      <button class="ob-option" id="ob-assemble" type="button">
+        <div class="ob-icon" style="background:var(--blue-soft);color:var(--blue);">2</div>
+        <div class="ob-text">
+          <div class="ob-name">Я уже знаю формулы — перейти к сборке</div>
+          <div class="ob-desc">Быстрый режим: соберите четыре формулы из блоков, чтобы закрепить структуру.</div>
+        </div>
+      </button>
+      <button class="ob-option" id="ob-teacher" type="button">
+        <div class="ob-icon" style="background:var(--green-soft);color:var(--green-deep);">3</div>
+        <div class="ob-text">
+          <div class="ob-name">Режим учителя</div>
+          <div class="ob-desc">Весь вывод сразу — для объяснения у доски или повторения.</div>
+        </div>
+      </button>
+    </div>
+    <div class="ob-footer">
+      <button class="ob-skip-btn" id="ob-dismiss" type="button">Закрыть и работать как обычно</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   ТРЕНАЖЁР: СУММА → ПРОИЗВЕДЕНИЕ
+   ============================================================ */
+
+// ---------- HELPERS ----------
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+const el = (tag, attrs = {}, html = '') => {
+  const e = document.createElement(tag);
+  for (const k in attrs) {
+    if (k === 'class') e.className = attrs[k];
+    else if (k === 'dataset') Object.assign(e.dataset, attrs[k]);
+    else e.setAttribute(k, attrs[k]);
+  }
+  if (html) e.innerHTML = html;
+  return e;
+};
+const F = (n, d) => `<span class="frac"><span class="num">${n}</span><span class="den">${d}</span></span>`;
+// Colored helpers — half-sum (gold) and half-diff (blue).
+// Used everywhere half-sum / half-diff appears so the student sees structure visually.
+const FS = () => `<span class="frac sum-frac"><span class="num">α + β</span><span class="den">2</span></span>`;
+const FD = () => `<span class="frac diff-frac"><span class="num">α − β</span><span class="den">2</span></span>`;
+
+// ---------- ERROR HINTS ----------
+const ERR = {
+  order_pq:       'Порядок важен. У нас β = x − y, поэтому второй sin внутри — это sin(x − y). Поменяешь местами — получится −sin(x−y).',
+  sign_flip:      'Между sin α и sin β у нас знак <strong>+</strong>. После замены он сохраняется: sin α + sin β = sin(x+y) <strong>+</strong> sin(x−y).',
+  sign_flip_min:  'Между функциями стоит <strong>минус</strong>, он сохраняется. После замены: sin α − sin β = sin(x+y) <strong>−</strong> sin(x−y).',
+  sign_flip_cosp: 'Между cos α и cos β у нас знак <strong>+</strong>. После замены он сохраняется: cos α + cos β = cos(x+y) <strong>+</strong> cos(x−y).',
+  sign_flip_cosm: 'Между функциями стоит <strong>минус</strong>, он сохраняется. После замены: cos α − cos β = cos(x+y) <strong>−</strong> cos(x−y).',
+  wrong_formula:  'Это формула для другой функции. У нас раскрывается синус, а не косинус.',
+  wrong_formula_c:'Это формула для другой функции. У нас раскрывается косинус, а не синус.',
+  sign_inside_p:  'У нас sin(x <strong>+</strong> y). Формула суммы: sin(x+y) = sin x cos y <strong>+</strong> cos x sin y — знак сохраняется.',
+  sign_inside_m:  'У нас sin(x <strong>−</strong> y). Формула разности: sin(x−y) = sin x cos y <strong>−</strong> cos x sin y — со знаком минус.',
+  sign_cos_p:     'У нас cos(x <strong>+</strong> y). Формула: cos(x+y) = cos x cos y <strong>−</strong> sin x sin y — со знаком минус!',
+  sign_cos_m:     'У нас cos(x <strong>−</strong> y). Формула: cos(x−y) = cos x cos y <strong>+</strong> sin x sin y — со знаком плюс.',
+  no_bracket:     '<strong>Перед скобкой стоит минус!</strong> Значит, знак каждого слагаемого внутри скобки меняется на противоположный. Сначала запиши со скобками, потом аккуратно раскрой.',
+  bracket_err:    '<strong>Внимание со знаками!</strong> Перед скобкой стоит минус — каждое слагаемое внутри меняет знак на противоположный.',
+  order_only:     'Слагаемые те же, но порядок другой. Сейчас важно записать <em>именно в том порядке</em>, в котором мы получили после раскрытия.',
+  too_early:      'Не торопись — сначала просто запиши сумму без преобразований, потом найдём, что сократить.',
+  cancel_same:    'Эти слагаемые одинаковые по знаку — они не сокращаются, а складываются.',
+  cancel_miss:    'Посмотри внимательно: ищем пару одинаковых выражений с противоположными знаками — <strong>+ X</strong> и <strong>− X</strong>.',
+  cancel_wrong:   'Эти слагаемые не одинаковы. Сокращаются только идентичные по виду выражения.',
+  sin_cos_swap:   'У нас именно sin <em>x</em> cos <em>y</em>: синус берётся от x, косинус — от y. Перепутать порядок легко.',
+  cos_sin_swap:   'У нас именно cos <em>x</em> sin <em>y</em>: косинус от x, синус от y.',
+  forgot_two:     'Два одинаковых слагаемых дают <strong>удвоение</strong>: X + X = 2X.',
+  forgot_minus:   'После сокращения остался <strong>минус</strong>. Не пропусти его.',
+  pq_swap_back:   'x = (α+β)/2 — это полусумма, y = (α−β)/2 — это полуразность. Проверь, что подставляешь.',
+  pq_sin_cos:     'Мы получили <strong>2 sin x cos y</strong>. Внутри sin — это <em>x</em> = (α+β)/2, внутри cos — это <em>y</em> = (α−β)/2.',
+  pq_cos_sin:     'Мы получили <strong>2 cos x sin y</strong>. Внутри cos — это <em>x</em> = (α+β)/2, внутри sin — это <em>y</em> = (α−β)/2.',
+  pq_cos_cos:     'Мы получили <strong>2 cos x cos y</strong>. Внутри обоих косинусов — разные аргументы: x и y.',
+  pq_sin_sin:     'Мы получили <strong>−2 sin x sin y</strong>. Не забудь минус! Внутри синусов — x и y.'
+};
+
+// ---------- DERIVATIONS ----------
+// Each derivation is a list of steps. Each step:
+//   prompt: question
+//   options: [{html, correct?, err?}]
+//   hint: general hint
+//   line: HTML to add to derivation panel
+//   stepName: short tag for step
+//   comment: explanation for teacher mode
+
+const DERIVATIONS = [
+  // ============= 1. sin α + sin β =============
+  {
+    id: 'sin_sum',
+    label: '1',
+    lhs: 'sin α + sin β',
+    target: '2 sin' + FS() + ' cos' + FD(),
+    steps: [
+      {
+        stepName: 'Замена',
+        prompt: 'Применяем замену <strong>α = x + y</strong>, <strong>β = x − y</strong>. Что получится?',
+        hint: 'Заменяй α и β по отдельности. Знак между ними (плюс) сохраняется.',
+        options: [
+          { html: 'sin(x + y) + sin(x − y)', correct: true },
+          { html: 'sin(x − y) + sin(x + y)', err: 'order_pq' },
+          { html: 'sin(x + y) − sin(x − y)', err: 'sign_flip' }
+        ],
+        line: 'sin α + sin β &nbsp;=&nbsp; sin(x + y) + sin(x − y)',
+        comment: 'Просто подставили α = x + y и β = x − y. Знак между функциями сохранился.'
+      },
+      {
+        stepName: 'Раскрываем sin(x + y)',
+        prompt: 'Раскрой <strong>sin(x + y)</strong> по формуле синуса суммы.',
+        hint: 'sin(x + y) = sin x · cos y + cos x · sin y',
+        options: [
+          { html: 'sin x cos y + cos x sin y', correct: true },
+          { html: 'sin x cos y − cos x sin y', err: 'sign_inside_p' },
+          { html: 'cos x cos y − sin x sin y', err: 'wrong_formula' }
+        ],
+        line: 'sin(x + y) &nbsp;=&nbsp; sin x cos y + cos x sin y',
+        comment: 'Применили формулу синуса суммы.'
+      },
+      {
+        stepName: 'Раскрываем sin(x − y)',
+        prompt: 'Раскрой <strong>sin(x − y)</strong> по формуле синуса разности.',
+        hint: 'sin(x − y) = sin x · cos y − cos x · sin y',
+        options: [
+          { html: 'sin x cos y − cos x sin y', correct: true },
+          { html: 'sin x cos y + cos x sin y', err: 'sign_inside_m' },
+          { html: 'cos x cos y + sin x sin y', err: 'wrong_formula' }
+        ],
+        line: 'sin(x − y) &nbsp;=&nbsp; sin x cos y − cos x sin y',
+        comment: 'Применили формулу синуса разности.'
+      },
+      {
+        stepName: 'Складываем',
+        prompt: 'Запиши сумму двух раскрытых выражений (без преобразований).',
+        hint: 'Просто запиши одно за другим: первое + второе.',
+        options: [
+          { html: 'sin x cos y + cos x sin y + sin x cos y − cos x sin y', correct: true },
+          { html: '2 sin x cos y + 2 cos x sin y', err: 'too_early' },
+          { html: 'sin x cos y − cos x sin y + sin x cos y + cos x sin y', err: 'order_only' }
+        ],
+        line: 'sin α + sin β &nbsp;=&nbsp; sin x cos y + cos x sin y + sin x cos y − cos x sin y',
+        comment: 'Записали сумму. Между функциями стоял плюс, скобки не нужны.'
+      },
+      {
+        stepName: 'Что сокращается?',
+        prompt: 'Найди пару слагаемых, которые сокращаются.',
+        hint: 'Ищи два одинаковых выражения с противоположными знаками.',
+        options: [
+          { html: '<span class="hl">+ cos x sin y</span> и <span class="hl">− cos x sin y</span>', correct: true },
+          { html: '<span class="hl">+ sin x cos y</span> и <span class="hl">+ sin x cos y</span>', err: 'cancel_same' },
+          { html: 'Ничего не сокращается', err: 'cancel_miss' }
+        ],
+        line: 'sin α + sin β &nbsp;=&nbsp; sin x cos y + <span class="cancel">cos x sin y</span> + sin x cos y <span class="cancel">− cos x sin y</span>',
+        comment: 'Слагаемые + cos x sin y и − cos x sin y взаимно уничтожаются.'
+      },
+      {
+        stepName: 'Результат',
+        prompt: 'Что осталось после сокращения?',
+        hint: 'Осталось: sin x cos y + sin x cos y.',
+        options: [
+          { html: '2 sin x cos y', correct: true },
+          { html: '2 cos x sin y', err: 'sin_cos_swap' },
+          { html: 'sin x cos y', err: 'forgot_two' }
+        ],
+        line: 'sin α + sin β &nbsp;=&nbsp; 2 sin x cos y',
+        comment: 'Два одинаковых слагаемых превращаются в удвоение.'
+      },
+      {
+        stepName: 'Возврат к α и β',
+        prompt: 'Вернись от x, y обратно к α, β. Что в итоге?',
+        hint: 'x = (α + β)/2, y = (α − β)/2.',
+        options: [
+          { html: '2 sin' + FS() + ' cos' + FD(), correct: true },
+          { html: '2 sin' + FD() + ' cos' + FS(), err: 'pq_sin_cos' },
+          { html: '2 cos' + FS() + ' sin' + FD(), err: 'sin_cos_swap' }
+        ],
+        line: '<strong>sin α + sin β &nbsp;=&nbsp; 2 sin' + FS() + ' cos' + FD() + '</strong>',
+        comment: 'Это и есть искомая формула: сумма синусов = 2 · sin полусуммы · cos полуразности.'
+      }
+    ]
+  },
+
+  // ============= 2. sin α − sin β =============
+  {
+    id: 'sin_diff',
+    label: '2',
+    lhs: 'sin α − sin β',
+    target: '2 sin' + FD() + ' cos' + FS(),
+    steps: [
+      {
+        stepName: 'Замена',
+        prompt: 'Применяем замену α = x + y, β = x − y. Что получится?',
+        hint: 'Знак минус между функциями сохраняется.',
+        options: [
+          { html: 'sin(x + y) − sin(x − y)', correct: true },
+          { html: 'sin(x − y) − sin(x + y)', err: 'order_pq' },
+          { html: 'sin(x + y) + sin(x − y)', err: 'sign_flip_min' }
+        ],
+        line: 'sin α − sin β &nbsp;=&nbsp; sin(x + y) − sin(x − y)',
+        comment: 'Просто подставили. Минус между функциями сохранился.'
+      },
+      {
+        stepName: 'Раскрываем sin(x + y)',
+        prompt: 'Раскрой sin(x + y).',
+        hint: 'sin(x + y) = sin x cos y + cos x sin y',
+        options: [
+          { html: 'sin x cos y + cos x sin y', correct: true },
+          { html: 'sin x cos y − cos x sin y', err: 'sign_inside_p' },
+          { html: 'cos x cos y − sin x sin y', err: 'wrong_formula' }
+        ],
+        line: 'sin(x + y) &nbsp;=&nbsp; sin x cos y + cos x sin y',
+        comment: 'Формула синуса суммы.'
+      },
+      {
+        stepName: 'Раскрываем sin(x − y)',
+        prompt: 'Раскрой sin(x − y).',
+        hint: 'sin(x − y) = sin x cos y − cos x sin y',
+        options: [
+          { html: 'sin x cos y − cos x sin y', correct: true },
+          { html: 'sin x cos y + cos x sin y', err: 'sign_inside_m' },
+          { html: 'cos x cos y + sin x sin y', err: 'wrong_formula' }
+        ],
+        line: 'sin(x − y) &nbsp;=&nbsp; sin x cos y − cos x sin y',
+        comment: 'Формула синуса разности.'
+      },
+      {
+        stepName: 'Записываем со скобками',
+        prompt: 'Между функциями стоит <strong>минус</strong>. Как правильно записать вычитание?',
+        hint: 'Когда перед второй скобкой стоит минус — обязательно заключи второе выражение в скобки!',
+        options: [
+          { html: '(sin x cos y + cos x sin y) − (sin x cos y − cos x sin y)', correct: true },
+          { html: 'sin x cos y + cos x sin y − sin x cos y − cos x sin y', err: 'no_bracket' },
+          { html: 'sin x cos y + cos x sin y − sin x cos y + cos x sin y', err: 'no_bracket' }
+        ],
+        line: 'sin α − sin β &nbsp;=&nbsp; (sin x cos y + cos x sin y) − (sin x cos y − cos x sin y)',
+        comment: 'Внимание: вычитаем целое выражение, поэтому ставим скобки.'
+      },
+      {
+        stepName: 'Раскрываем скобки',
+        prompt: 'Раскрой скобки. <strong>Внимание со знаками!</strong>',
+        hint: 'Перед второй скобкой минус: знак <em>каждого</em> слагаемого внутри меняется на противоположный.',
+        options: [
+          { html: 'sin x cos y + cos x sin y − sin x cos y + cos x sin y', correct: true },
+          { html: 'sin x cos y + cos x sin y − sin x cos y − cos x sin y', err: 'bracket_err' },
+          { html: 'sin x cos y − cos x sin y − sin x cos y + cos x sin y', err: 'bracket_err' }
+        ],
+        line: 'sin α − sin β &nbsp;=&nbsp; sin x cos y + cos x sin y − sin x cos y + cos x sin y',
+        comment: 'Минус перед скобкой поменял знаки: −sin x cos y стало … (минус минус = плюс) cos x sin y.'
+      },
+      {
+        stepName: 'Что сокращается?',
+        prompt: 'Найди сокращающуюся пару.',
+        hint: 'Ищи одинаковые выражения с противоположными знаками.',
+        options: [
+          { html: '<span class="hl">+ sin x cos y</span> и <span class="hl">− sin x cos y</span>', correct: true },
+          { html: '<span class="hl">+ cos x sin y</span> и <span class="hl">+ cos x sin y</span>', err: 'cancel_same' },
+          { html: 'Ничего не сокращается', err: 'cancel_miss' }
+        ],
+        line: 'sin α − sin β &nbsp;=&nbsp; <span class="cancel">sin x cos y</span> + cos x sin y <span class="cancel">− sin x cos y</span> + cos x sin y',
+        comment: 'sin x cos y и − sin x cos y взаимно уничтожаются.'
+      },
+      {
+        stepName: 'Результат',
+        prompt: 'Что осталось после сокращения?',
+        hint: 'Осталось: cos x sin y + cos x sin y.',
+        options: [
+          { html: '2 cos x sin y', correct: true },
+          { html: '2 sin x cos y', err: 'cos_sin_swap' },
+          { html: 'cos x sin y', err: 'forgot_two' }
+        ],
+        line: 'sin α − sin β &nbsp;=&nbsp; 2 cos x sin y',
+        comment: 'Два одинаковых слагаемых cos x sin y.'
+      },
+      {
+        stepName: 'Возврат к α и β',
+        prompt: 'Вернись от x, y к α, β.',
+        hint: 'x = (α+β)/2, y = (α−β)/2. Удобно сначала записать с sin (так традиционно ставят в формуле).',
+        options: [
+          { html: '2 sin' + FD() + ' cos' + FS(), correct: true },
+          { html: '2 sin' + FS() + ' cos' + FD(), err: 'pq_cos_sin' },
+          { html: '2 cos' + FD() + ' sin' + FS(), err: 'cos_sin_swap' }
+        ],
+        line: '<strong>sin α − sin β &nbsp;=&nbsp; 2 sin' + FD() + ' cos' + FS() + '</strong>',
+        comment: 'Можно записать и как 2 cos((α+β)/2) sin((α−β)/2) — это одно и то же.'
+      }
+    ]
+  },
+
+  // ============= 3. cos α + cos β =============
+  {
+    id: 'cos_sum',
+    label: '3',
+    lhs: 'cos α + cos β',
+    target: '2 cos' + FS() + ' cos' + FD(),
+    steps: [
+      {
+        stepName: 'Замена',
+        prompt: 'Применяем замену α = x + y, β = x − y. Что получится?',
+        hint: 'Знак плюс между функциями сохраняется.',
+        options: [
+          { html: 'cos(x + y) + cos(x − y)', correct: true },
+          { html: 'cos(x − y) + cos(x + y)', err: 'order_pq' },
+          { html: 'cos(x + y) − cos(x − y)', err: 'sign_flip_cosp' }
+        ],
+        line: 'cos α + cos β &nbsp;=&nbsp; cos(x + y) + cos(x − y)',
+        comment: 'Подставили α и β.'
+      },
+      {
+        stepName: 'Раскрываем cos(x + y)',
+        prompt: 'Раскрой cos(x + y).',
+        hint: 'cos(x + y) = cos x cos y − sin x sin y  (внимание: внутри минус!)',
+        options: [
+          { html: 'cos x cos y − sin x sin y', correct: true },
+          { html: 'cos x cos y + sin x sin y', err: 'sign_cos_p' },
+          { html: 'sin x cos y + cos x sin y', err: 'wrong_formula_c' }
+        ],
+        line: 'cos(x + y) &nbsp;=&nbsp; cos x cos y − sin x sin y',
+        comment: 'Формула косинуса суммы. Знак внутри становится противоположным.'
+      },
+      {
+        stepName: 'Раскрываем cos(x − y)',
+        prompt: 'Раскрой cos(x − y).',
+        hint: 'cos(x − y) = cos x cos y + sin x sin y  (внутри знак становится плюс)',
+        options: [
+          { html: 'cos x cos y + sin x sin y', correct: true },
+          { html: 'cos x cos y − sin x sin y', err: 'sign_cos_m' },
+          { html: 'sin x cos y − cos x sin y', err: 'wrong_formula_c' }
+        ],
+        line: 'cos(x − y) &nbsp;=&nbsp; cos x cos y + sin x sin y',
+        comment: 'Формула косинуса разности.'
+      },
+      {
+        stepName: 'Складываем',
+        prompt: 'Запиши сумму (между ними плюс — скобки не нужны).',
+        hint: 'Просто запиши: первое + второе.',
+        options: [
+          { html: 'cos x cos y − sin x sin y + cos x cos y + sin x sin y', correct: true },
+          { html: '2 cos x cos y', err: 'too_early' },
+          { html: 'cos x cos y + sin x sin y + cos x cos y − sin x sin y', err: 'order_only' }
+        ],
+        line: 'cos α + cos β &nbsp;=&nbsp; cos x cos y − sin x sin y + cos x cos y + sin x sin y',
+        comment: 'Просто записали сумму.'
+      },
+      {
+        stepName: 'Что сокращается?',
+        prompt: 'Найди сокращающуюся пару.',
+        hint: 'Ищи одинаковые слагаемые с противоположными знаками.',
+        options: [
+          { html: '<span class="hl">− sin x sin y</span> и <span class="hl">+ sin x sin y</span>', correct: true },
+          { html: '<span class="hl">+ cos x cos y</span> и <span class="hl">+ cos x cos y</span>', err: 'cancel_same' },
+          { html: 'Ничего не сокращается', err: 'cancel_miss' }
+        ],
+        line: 'cos α + cos β &nbsp;=&nbsp; cos x cos y <span class="cancel">− sin x sin y</span> + cos x cos y <span class="cancel">+ sin x sin y</span>',
+        comment: '− sin x sin y и + sin x sin y взаимно уничтожаются.'
+      },
+      {
+        stepName: 'Результат',
+        prompt: 'Что осталось?',
+        hint: 'Осталось: cos x cos y + cos x cos y.',
+        options: [
+          { html: '2 cos x cos y', correct: true },
+          { html: '2 sin x sin y', err: 'cancel_wrong' },
+          { html: 'cos x cos y', err: 'forgot_two' }
+        ],
+        line: 'cos α + cos β &nbsp;=&nbsp; 2 cos x cos y',
+        comment: 'Два одинаковых слагаемых.'
+      },
+      {
+        stepName: 'Возврат к α и β',
+        prompt: 'Подставь обратно x и y.',
+        hint: 'Оба косинуса разные: внутри одного x, внутри другого y.',
+        options: [
+          { html: '2 cos' + FS() + ' cos' + FD(), correct: true },
+          { html: '2 cos' + FD() + ' cos' + FS(), err: 'pq_cos_cos' },
+          { html: '2 sin' + FS() + ' sin' + FD(), err: 'cancel_wrong' }
+        ],
+        line: '<strong>cos α + cos β &nbsp;=&nbsp; 2 cos' + FS() + ' cos' + FD() + '</strong>',
+        comment: 'Сумма косинусов = 2 · cos полусуммы · cos полуразности.'
+      }
+    ]
+  },
+
+  // ============= 4. cos α − cos β =============
+  {
+    id: 'cos_diff',
+    label: '4',
+    lhs: 'cos α − cos β',
+    target: '−2 sin' + FS() + ' sin' + FD(),
+    steps: [
+      {
+        stepName: 'Замена',
+        prompt: 'Применяем замену α = x + y, β = x − y. Что получится?',
+        hint: 'Знак минус между функциями сохраняется.',
+        options: [
+          { html: 'cos(x + y) − cos(x − y)', correct: true },
+          { html: 'cos(x − y) − cos(x + y)', err: 'order_pq' },
+          { html: 'cos(x + y) + cos(x − y)', err: 'sign_flip_cosm' }
+        ],
+        line: 'cos α − cos β &nbsp;=&nbsp; cos(x + y) − cos(x − y)',
+        comment: 'Подставили α и β. Минус сохранился.'
+      },
+      {
+        stepName: 'Раскрываем cos(x + y)',
+        prompt: 'Раскрой cos(x + y).',
+        hint: 'cos(x + y) = cos x cos y − sin x sin y',
+        options: [
+          { html: 'cos x cos y − sin x sin y', correct: true },
+          { html: 'cos x cos y + sin x sin y', err: 'sign_cos_p' },
+          { html: 'sin x cos y + cos x sin y', err: 'wrong_formula_c' }
+        ],
+        line: 'cos(x + y) &nbsp;=&nbsp; cos x cos y − sin x sin y',
+        comment: 'Формула косинуса суммы.'
+      },
+      {
+        stepName: 'Раскрываем cos(x − y)',
+        prompt: 'Раскрой cos(x − y).',
+        hint: 'cos(x − y) = cos x cos y + sin x sin y',
+        options: [
+          { html: 'cos x cos y + sin x sin y', correct: true },
+          { html: 'cos x cos y − sin x sin y', err: 'sign_cos_m' },
+          { html: 'sin x cos y − cos x sin y', err: 'wrong_formula_c' }
+        ],
+        line: 'cos(x − y) &nbsp;=&nbsp; cos x cos y + sin x sin y',
+        comment: 'Формула косинуса разности.'
+      },
+      {
+        stepName: 'Записываем со скобками',
+        prompt: 'Между функциями стоит <strong>минус</strong>. Запиши вычитание правильно.',
+        hint: 'Вычитаем целое выражение — обязательно ставим скобки.',
+        options: [
+          { html: '(cos x cos y − sin x sin y) − (cos x cos y + sin x sin y)', correct: true },
+          { html: 'cos x cos y − sin x sin y − cos x cos y + sin x sin y', err: 'no_bracket' },
+          { html: 'cos x cos y − sin x sin y − cos x cos y − sin x sin y', err: 'no_bracket' }
+        ],
+        line: 'cos α − cos β &nbsp;=&nbsp; (cos x cos y − sin x sin y) − (cos x cos y + sin x sin y)',
+        comment: 'Очень важный момент: записываем со скобками, чтобы потом аккуратно раскрыть.'
+      },
+      {
+        stepName: 'Раскрываем скобки',
+        prompt: 'Раскрой скобки. <strong>Перед второй скобкой стоит минус — знаки меняются!</strong>',
+        hint: 'Минус перед скобкой: каждое слагаемое внутри меняет знак на противоположный. + sin x sin y → − sin x sin y.',
+        options: [
+          { html: 'cos x cos y − sin x sin y − cos x cos y − sin x sin y', correct: true },
+          { html: 'cos x cos y − sin x sin y − cos x cos y + sin x sin y', err: 'bracket_err' },
+          { html: 'cos x cos y + sin x sin y − cos x cos y − sin x sin y', err: 'bracket_err' }
+        ],
+        line: 'cos α − cos β &nbsp;=&nbsp; cos x cos y − sin x sin y − cos x cos y − sin x sin y',
+        comment: 'Внимание: + sin x sin y внутри второй скобки превратилось в − sin x sin y.'
+      },
+      {
+        stepName: 'Что сокращается?',
+        prompt: 'Найди сокращающуюся пару.',
+        hint: 'Ищи одинаковые выражения с противоположными знаками.',
+        options: [
+          { html: '<span class="hl">+ cos x cos y</span> и <span class="hl">− cos x cos y</span>', correct: true },
+          { html: '<span class="hl">− sin x sin y</span> и <span class="hl">− sin x sin y</span>', err: 'cancel_same' },
+          { html: 'Ничего не сокращается', err: 'cancel_miss' }
+        ],
+        line: 'cos α − cos β &nbsp;=&nbsp; <span class="cancel">cos x cos y</span> − sin x sin y <span class="cancel">− cos x cos y</span> − sin x sin y',
+        comment: 'cos x cos y и − cos x cos y взаимно уничтожаются.'
+      },
+      {
+        stepName: 'Результат',
+        prompt: 'Что осталось после сокращения?',
+        hint: 'Осталось: − sin x sin y − sin x sin y. Это два одинаковых слагаемых с минусами.',
+        options: [
+          { html: '−2 sin x sin y', correct: true },
+          { html: '2 sin x sin y', err: 'forgot_minus' },
+          { html: '− sin x sin y', err: 'forgot_two' }
+        ],
+        line: 'cos α − cos β &nbsp;=&nbsp; −2 sin x sin y',
+        comment: 'Два одинаковых отрицательных слагаемых дают −2 sin x sin y. Минус не забываем!'
+      },
+      {
+        stepName: 'Возврат к α и β',
+        prompt: 'Подставь обратно x и y.',
+        hint: 'x = (α+β)/2, y = (α−β)/2. Минус сохраняется.',
+        options: [
+          { html: '−2 sin' + FS() + ' sin' + FD(), correct: true },
+          { html: '2 sin' + FS() + ' sin' + FD(), err: 'forgot_minus' },
+          { html: '−2 cos' + FS() + ' cos' + FD(), err: 'cancel_wrong' }
+        ],
+        line: '<strong>cos α − cos β &nbsp;=&nbsp; −2 sin' + FS() + ' sin' + FD() + '</strong>',
+        comment: 'Можно записать эквивалентно: 2 sin((α+β)/2) sin((β−α)/2), так как sin((β−α)/2) = −sin((α−β)/2). Это формы одной формулы.'
+      }
+    ]
+  }
+];
+
+// ---------- ASSEMBLY TASKS ----------
+// Student sees LHS, picks blocks to build the RHS in correct order
+const ASSEMBLIES = [
+  {
+    id: 'asm_sin_sum',
+    label: 'A1',
+    lhs: 'sin α + sin β',
+    target: ['2', 'sin' + FS(), 'cos' + FD()],
+    pool: [
+      '2', '−2',
+      'sin' + FS(), 'sin' + FD(),
+      'cos' + FS(), 'cos' + FD()
+    ],
+    hint: 'Вспомни: сумма синусов = 2 · sin полусуммы · cos полуразности.'
+  },
+  {
+    id: 'asm_sin_diff',
+    label: 'A2',
+    lhs: 'sin α − sin β',
+    target: ['2', 'sin' + FD(), 'cos' + FS()],
+    pool: [
+      '2', '−2',
+      'sin' + FS(), 'sin' + FD(),
+      'cos' + FS(), 'cos' + FD()
+    ],
+    hint: 'Разность синусов: 2 · sin <em>полуразности</em> · cos <em>полусуммы</em>.'
+  },
+  {
+    id: 'asm_cos_sum',
+    label: 'A3',
+    lhs: 'cos α + cos β',
+    target: ['2', 'cos' + FS(), 'cos' + FD()],
+    pool: [
+      '2', '−2',
+      'sin' + FS(), 'sin' + FD(),
+      'cos' + FS(), 'cos' + FD()
+    ],
+    hint: 'Сумма косинусов: 2 · cos полусуммы · cos полуразности.'
+  },
+  {
+    id: 'asm_cos_diff',
+    label: 'A4',
+    lhs: 'cos α − cos β',
+    target: ['−2', 'sin' + FS(), 'sin' + FD()],
+    pool: [
+      '2', '−2',
+      'sin' + FS(), 'sin' + FD(),
+      'cos' + FS(), 'cos' + FD()
+    ],
+    hint: 'Разность косинусов: −2 · sin полусуммы · sin полуразности. Внимание на минус!'
+  }
+];
+
+// ---------- PRODUCT TASKS ----------
+const PRODUCTS = [
+  {
+    id: 'prod_sc',
+    label: 'P1',
+    lhs: 'sin α · cos β',
+    prompt: 'Чему равно произведение sin α · cos β?',
+    options: [
+      { html: F('1','2') + ' · (sin(α + β) + sin(α − β))', correct: true },
+      { html: F('1','2') + ' · (cos(α + β) − cos(α − β))', err: 'cancel_wrong' },
+      { html: F('1','2') + ' · (sin(α + β) − sin(α − β))', err: 'cancel_wrong' }
+    ],
+    hint: 'sin α cos β = ½ (sin(α+β) + sin(α−β)). Это «обратная» формула к разности синусов.',
+    explain: 'Складываем sin(α+β) и sin(α−β): получится 2 sin α cos β. Делим на 2 → sin α cos β.'
+  },
+  {
+    id: 'prod_cc',
+    label: 'P2',
+    lhs: 'cos α · cos β',
+    prompt: 'Чему равно произведение cos α · cos β?',
+    options: [
+      { html: F('1','2') + ' · (cos(α + β) + cos(α − β))', correct: true },
+      { html: F('1','2') + ' · (cos(α − β) − cos(α + β))', err: 'cancel_wrong' },
+      { html: F('1','2') + ' · (sin(α + β) + sin(α − β))', err: 'wrong_formula_c' }
+    ],
+    hint: 'cos α cos β = ½ (cos(α+β) + cos(α−β)). Сумма косинусов делится на 2.',
+    explain: 'Складываем cos(α+β) и cos(α−β): получится 2 cos α cos β. Делим на 2.'
+  },
+  {
+    id: 'prod_ss',
+    label: 'P3',
+    lhs: 'sin α · sin β',
+    prompt: 'Чему равно произведение sin α · sin β?',
+    options: [
+      { html: F('1','2') + ' · (cos(α − β) − cos(α + β))', correct: true },
+      { html: F('1','2') + ' · (cos(α + β) − cos(α − β))', err: 'cancel_wrong' },
+      { html: F('1','2') + ' · (cos(α + β) + cos(α − β))', err: 'cancel_wrong' }
+    ],
+    hint: 'sin α sin β = ½ (cos(α−β) − cos(α+β)). Порядок важен — сначала разность аргументов!',
+    explain: 'Из формулы cos α − cos β = −2 sin((α+β)/2) sin((α−β)/2), заменяя обозначения, получаем: cos(α−β) − cos(α+β) = 2 sin α sin β.'
+  }
+];
+
+// ---------- LESSON NAMES (point 7 — one formula per lesson) ----------
+// Used to label the formula tabs more humanly: "1. сумма синусов" etc.
+const LESSON_NAMES = {
+  derive: {
+    '1': 'сумма синусов',
+    '2': 'разность синусов',
+    '3': 'сумма косинусов',
+    '4': 'разность косинусов'
+  },
+  assemble: {
+    'A1': 'sin α + sin β',
+    'A2': 'sin α − sin β',
+    'A3': 'cos α + cos β',
+    'A4': 'cos α − cos β'
+  },
+  product: {
+    'P1': 'sin · cos',
+    'P2': 'cos · cos',
+    'P3': 'sin · sin'
+  }
+};
+
+// ---------- ACTIVE BUILDERS for derivation steps (point 3) ----------
+// Maps "formula_id::step_index" → builder config.
+// Each builder shows clickable chips. The student composes the answer by clicking.
+// Order matters: the sequence of chips must exactly match `answer`.
+const BUILDERS = {
+  // sin α + sin β
+  'sin_sum::1': { // sin(x+y) = sin x cos y + cos x sin y
+    chips: ['sin x cos y', 'cos x sin y', '+', '−', 'sin x sin y', 'cos x cos y'],
+    answer: ['sin x cos y', '+', 'cos x sin y'],
+    hint: 'sin(x + y) = sin x · cos y + cos x · sin y. Соберите три блока в нужном порядке.'
+  },
+  'sin_sum::2': { // sin(x−y) = sin x cos y − cos x sin y
+    chips: ['sin x cos y', 'cos x sin y', '+', '−', 'sin x sin y', 'cos x cos y'],
+    answer: ['sin x cos y', '−', 'cos x sin y'],
+    hint: 'sin(x − y) = sin x · cos y − cos x · sin y. Внимание — между ними минус.'
+  },
+  'sin_sum::4': { // cancellation: + cos x sin y  and  − cos x sin y
+    chips: ['+ sin x cos y', '+ cos x sin y', '− cos x sin y', '− sin x cos y', '+ cos x cos y', '− sin x sin y'],
+    answer: ['+ cos x sin y', '− cos x sin y'],
+    hint: 'Какие два слагаемых из выражения «sin x cos y + cos x sin y + sin x cos y − cos x sin y» взаимно уничтожаются?'
+  },
+  // sin α − sin β
+  'sin_diff::1': {
+    chips: ['sin x cos y', 'cos x sin y', '+', '−'],
+    answer: ['sin x cos y', '+', 'cos x sin y'],
+    hint: 'sin(x + y) = sin x cos y + cos x sin y.'
+  },
+  'sin_diff::2': {
+    chips: ['sin x cos y', 'cos x sin y', '+', '−'],
+    answer: ['sin x cos y', '−', 'cos x sin y'],
+    hint: 'sin(x − y) = sin x cos y − cos x sin y.'
+  },
+  'sin_diff::4': { // bracket expansion of (sin x cos y + cos x sin y) − (sin x cos y − cos x sin y)
+    chips: ['sin x cos y', 'cos x sin y', '+', '−'],
+    answer: ['sin x cos y', '+', 'cos x sin y', '−', 'sin x cos y', '+', 'cos x sin y'],
+    hint: 'Перед второй скобкой стоит минус. Каждое слагаемое внутри меняет знак: − sin x cos y стало «− sin x cos y», а − cos x sin y стало «+ cos x sin y».'
+  },
+  // cos α + cos β
+  'cos_sum::1': { // cos(x+y) = cos x cos y − sin x sin y
+    chips: ['cos x cos y', 'sin x sin y', 'sin x cos y', 'cos x sin y', '+', '−'],
+    answer: ['cos x cos y', '−', 'sin x sin y'],
+    hint: 'cos(x + y) = cos x · cos y − sin x · sin y. Знак внутри становится минус!'
+  },
+  'cos_sum::2': { // cos(x−y) = cos x cos y + sin x sin y
+    chips: ['cos x cos y', 'sin x sin y', 'sin x cos y', 'cos x sin y', '+', '−'],
+    answer: ['cos x cos y', '+', 'sin x sin y'],
+    hint: 'cos(x − y) = cos x · cos y + sin x · sin y. Знак внутри — плюс.'
+  },
+  'cos_sum::4': { // cancellation
+    chips: ['+ cos x cos y', '− sin x sin y', '+ sin x sin y', '− cos x cos y'],
+    answer: ['− sin x sin y', '+ sin x sin y'],
+    hint: 'Ищем два одинаковых выражения с противоположными знаками.'
+  },
+  // cos α − cos β
+  'cos_diff::1': {
+    chips: ['cos x cos y', 'sin x sin y', '+', '−'],
+    answer: ['cos x cos y', '−', 'sin x sin y'],
+    hint: 'cos(x + y) = cos x cos y − sin x sin y.'
+  },
+  'cos_diff::2': {
+    chips: ['cos x cos y', 'sin x sin y', '+', '−'],
+    answer: ['cos x cos y', '+', 'sin x sin y'],
+    hint: 'cos(x − y) = cos x cos y + sin x sin y.'
+  },
+  'cos_diff::4': { // bracket expansion
+    chips: ['cos x cos y', 'sin x sin y', '+', '−'],
+    answer: ['cos x cos y', '−', 'sin x sin y', '−', 'cos x cos y', '−', 'sin x sin y'],
+    hint: 'Перед второй скобкой минус. + sin x sin y внутри неё превращается в − sin x sin y.'
+  }
+};
+
+// ---------- X/Y MINI-INTRO data (point 2) ----------
+const PQ_INTRO = {
+  steps: [
+    {
+      y: 'Чему равно <strong>x + y</strong>?',
+      options: ['α', 'β', 'α + β', 'α − β'],
+      correct: 0,
+      hint: 'Подставь: x + y = (α + β)/2 + (α − β)/2. Дроби сокращаются — β взаимно уничтожается.'
+    },
+    {
+      y: 'Чему равно <strong>x − y</strong>?',
+      options: ['β', 'α', 'α + β', 'α − β'],
+      correct: 0,
+      hint: 'Подставь: x − y = (α + β)/2 − (α − β)/2 = (α + β − α + β)/2 = 2β/2 = β.'
+    }
+  ]
+};
+
+// ---------- TRAPS (point 6) ----------
+// Each trap shows a WRONG formula (a typical mistake) and asks: what went wrong?
+const TRAPS = [
+  {
+    id: 't1',
+    formula: 'cos α − cos β &nbsp;=&nbsp; 2 sin' + FS() + ' sin' + FD(),
+    prompt: 'Что не так в формуле?',
+    options: [
+      { html: 'Забыли минус перед двойкой', correct: true },
+      { html: 'Перепутали полусумму и полуразность', err: 'Полусумма и полуразность стоят правильно — ошибка не в них.' },
+      { html: 'Нужно было cos, а не sin', err: 'sin как раз правильно: разность косинусов даёт два синуса. Проблема в другом.' }
+    ],
+    fix: 'Правильно: cos α − cos β = <span class="sign-warn">−2</span> sin' + FS() + ' sin' + FD() + '.'
+  },
+  {
+    id: 't2',
+    formula: 'sin α + sin β &nbsp;=&nbsp; 2 sin' + FD() + ' cos' + FS(),
+    prompt: 'Что не так?',
+    options: [
+      { html: 'Перепутали полусумму и полуразность', correct: true },
+      { html: 'Забыли коэффициент 2', err: 'Двойка на месте. Проблема не в ней.' },
+      { html: 'Нужно sin · sin, а не sin · cos', err: 'sin · cos здесь правильное сочетание. Проверь аргументы.' }
+    ],
+    fix: 'Правильно: sin α + sin β = 2 sin<span class="tag-sum">(α+β)/2</span> cos<span class="tag-diff">(α−β)/2</span>. Внутри sin — <em>полусумма</em>, внутри cos — <em>полуразность</em>.'
+  },
+  {
+    id: 't3',
+    formula: 'sin α − sin β &nbsp;=&nbsp; sin' + FD() + ' cos' + FS(),
+    prompt: 'Что не так?',
+    options: [
+      { html: 'Забыли коэффициент 2', correct: true },
+      { html: 'Перепутали sin и cos', err: 'Функции на месте: sin от полуразности, cos от полусуммы — это верно.' },
+      { html: 'Забыли минус перед формулой', err: 'Минус не нужен — у разности синусов формула без минуса. Проверь коэффициент.' }
+    ],
+    fix: 'Правильно: sin α − sin β = <strong>2</strong> sin' + FD() + ' cos' + FS() + '. Два одинаковых слагаемых складываются в удвоение.'
+  },
+  {
+    id: 't4',
+    formula: 'cos α + cos β &nbsp;=&nbsp; 2 sin' + FS() + ' cos' + FD(),
+    prompt: 'Что не так?',
+    options: [
+      { html: 'Должно быть cos, а не sin', correct: true },
+      { html: 'Перепутали полусумму и полуразность', err: 'Аргументы как раз стоят правильно: полусумма и полуразность.' },
+      { html: 'Забыли минус', err: 'Минус не нужен — в сумме косинусов всё положительное.' }
+    ],
+    fix: 'Правильно: cos α + cos β = 2 <strong>cos</strong>' + FS() + ' cos' + FD() + '. Обе функции — косинусы.'
+  },
+  {
+    id: 't5',
+    formula: 'sin α − sin β &nbsp;=&nbsp; (sin x cos y + cos x sin y) − sin x cos y − cos x sin y',
+    prompt: 'Внимание: после раскрытия второй скобки. Что не так?',
+    options: [
+      { html: 'Перед второй скобкой стоит минус — все знаки внутри неё должны были измениться', correct: true },
+      { html: 'Лишняя скобка вокруг первого выражения', err: 'Первая скобка здесь не мешает.' },
+      { html: 'Перепутаны sin и cos', err: 'Функции на месте. Проблема со знаками после раскрытия.' }
+    ],
+    fix: 'Правильно: (… ) − (sin x cos y − cos x sin y) = … <strong>− sin x cos y + cos x sin y</strong>. Каждое слагаемое внутри второй скобки меняет знак.'
+  },
+  {
+    id: 't6',
+    formula: 'sin α + sin β &nbsp;=&nbsp; 2 sin x cos y (без подстановки x и y обратно)',
+    prompt: 'Решение оборвано на середине. Что осталось сделать?',
+    options: [
+      { html: 'Подставить обратно x = (α+β)/2 и y = (α−β)/2', correct: true },
+      { html: 'Применить ещё одну формулу синуса', err: 'Преобразование уже закончено — осталось вернуться к исходным переменным.' },
+      { html: 'Разделить обе части на 2', err: 'Делить ничего не нужно — коэффициент 2 принадлежит формуле.' }
+    ],
+    fix: 'Финал: 2 sin<span class="tag-sum">(α+β)/2</span> cos<span class="tag-diff">(α−β)/2</span>. Без возврата к α и β формула не выглядит как привычная.'
+  },
+  {
+    id: 't7',
+    formula: '… + cos x sin y + cos x sin y  →  собираем как  <span class="cancel-strong">+ cos x sin y</span>',
+    prompt: 'Ученик объявил эти два слагаемых сокращающимися. Что не так?',
+    options: [
+      { html: 'У них одинаковые знаки (оба плюс) — они складываются, а не сокращаются', correct: true },
+      { html: 'Они на самом деле не одинаковы', err: 'Сами выражения одинаковы — но не сокращаются по другой причине.' },
+      { html: 'Сокращение запрещено формулой', err: 'Сокращать можно — но не такие пары.' }
+    ],
+    fix: 'Сокращаются только <strong>пары с противоположными знаками</strong>: <span class="hl">+ X</span> и <span class="hl">− X</span>. Если знаки одинаковые, слагаемые складываются: + X + X = 2X.'
+  },
+  {
+    id: 't8',
+    formula: '−sin x sin y − sin x sin y &nbsp;=&nbsp; <span class="sign-warn">+</span>2 sin x sin y',
+    prompt: 'Что не так в свёртке?',
+    options: [
+      { html: 'Забыли сохранить минус: должно быть −2 sin x sin y', correct: true },
+      { html: 'Не нужно умножать на 2', err: 'На 2 как раз нужно — два одинаковых слагаемых дают удвоение.' },
+      { html: 'sin x sin y не упростилось', err: 'Упрощать ещё нечего — это просто складывание.' }
+    ],
+    fix: 'Два одинаковых отрицательных слагаемых: −X + (−X) = <span class="sign-warn">−</span>2X. Знак минус не теряется.'
+  },
+  {
+    id: 't9',
+    formula: 'cos α − cos β &nbsp;=&nbsp; −2 sin' + FD() + ' sin' + FS(),
+    prompt: 'Что перепутано?',
+    options: [
+      { html: 'Полусумма и полуразность стоят в обратном порядке', correct: true },
+      { html: 'Забыли минус', err: 'Минус как раз на месте.' },
+      { html: 'Должно быть cos · cos, а не sin · sin', err: 'sin · sin здесь правильно — у разности косинусов так и должно быть.' }
+    ],
+    fix: 'Правильно: −2 sin<span class="tag-sum">(α+β)/2</span> sin<span class="tag-diff">(α−β)/2</span>. В первом sin — полусумма, во втором — полуразность.'
+  },
+  {
+    id: 't10',
+    formula: 'cos α + cos β &nbsp;=&nbsp; 2 cos' + FS() + ' sin' + FD(),
+    prompt: 'Что не так?',
+    options: [
+      { html: 'Вторая функция должна быть cos, а не sin', correct: true },
+      { html: 'Полусумма и полуразность перепутаны', err: 'Аргументы правильно: полусумма у cos, полуразность у второй функции.' },
+      { html: 'Должен быть минус перед двойкой', err: 'Минус не нужен — это сумма косинусов.' }
+    ],
+    fix: 'Правильно: cos α + cos β = 2 cos' + FS() + ' <strong>cos</strong>' + FD() + '. Обе функции — косинусы.'
+  }
+];
+
+// ---------- FINAL TEST (point 9) ----------
+// 5 tasks: 2 assembly + 2 formula selection + 1 trap-style
+// Sequential, fixed order for predictability — but built from the same data style.
+const TEST_TASKS = [
+  {
+    kind: 'assemble',
+    lhs: 'sin α + sin β',
+    target: ['2', 'sin' + FS(), 'cos' + FD()],
+    pool: ['2', '−2', 'sin' + FS(), 'sin' + FD(), 'cos' + FS(), 'cos' + FD()]
+  },
+  {
+    kind: 'select',
+    prompt: 'Чему равно <strong>cos α − cos β</strong>?',
+    options: [
+      { html: '−2 sin' + FS() + ' sin' + FD(), correct: true },
+      { html: '2 sin' + FS() + ' sin' + FD() },
+      { html: '2 cos' + FS() + ' cos' + FD() }
+    ]
+  },
+  {
+    kind: 'assemble',
+    lhs: 'cos α − cos β',
+    target: ['−2', 'sin' + FS(), 'sin' + FD()],
+    pool: ['2', '−2', 'sin' + FS(), 'sin' + FD(), 'cos' + FS(), 'cos' + FD()]
+  },
+  {
+    kind: 'select',
+    prompt: 'Чему равно <strong>sin α − sin β</strong>?',
+    options: [
+      { html: '2 sin' + FD() + ' cos' + FS(), correct: true },
+      { html: '2 sin' + FS() + ' cos' + FD() },
+      { html: '−2 sin' + FD() + ' cos' + FS() }
+    ]
+  },
+  {
+    kind: 'trap',
+    formula: 'cos α + cos β &nbsp;=&nbsp; 2 sin' + FS() + ' cos' + FD(),
+    prompt: 'Что не так?',
+    options: [
+      { html: 'Должно быть cos, а не sin (обе функции — косинусы)', correct: true },
+      { html: 'Полусумма и полуразность перепутаны' },
+      { html: 'Забыли минус перед двойкой' }
+    ]
+  }
+];
+
+// ---------- STATE ----------
+const STORAGE_KEY = 'mathExamCourseProgress.v1';
+const TOPIC_ID = 'trigSumToProductTrainer';
+
+const STATE = {
+  mode: 'learn',           // learn | practice | teacher
+  section: 'derive',       // derive | assemble | product | traps | test
+  formulaIdx: 0,
+  stepIdx: 0,
+  selectedOpt: null,       // index of selected option
+  attemptedWrong: new Set(),// option indices already tried & wrong
+  stepRevealed: false,     // solution shown
+  hintShown: false,
+  // assembly state
+  asmBuild: [],            // list of pool indices added
+  asmFeedback: null,       // 'ok' | 'wrong' | null
+  // product state (no internal state beyond formulaIdx/selectedOpt)
+  // ---- NEW: builder mode inside derivation step ----
+  builderActive: false,    // when true, current derivation step is solved by building blocks
+  builderBuild: [],        // chip indices placed
+  // ---- NEW: x/y mini-intro ----
+  pqIntroOpen: false,      // showing mini-intro right now
+  pqIntroStep: 0,          // 0 → x+y, 1 → x−y, 2 → finale
+  pqIntroSelected: null,
+  pqIntroAttempts: 0,
+  // ---- NEW: onboarding ----
+  onboardingDismissed: false,
+  pqIntroSeen: false,      // student already passed the x/y mini-intro
+  // ---- NEW: traps ----
+  trapsIdx: 0,
+  trapSelectedOpt: null,
+  trapAttempted: new Set(),
+  trapRevealed: false,
+  // ---- NEW: final test ----
+  testIdx: 0,
+  testScore: 0,
+  testAnswered: 0,
+  testSelectedOpt: null,
+  testAsmBuild: [],
+  testRevealed: false,
+  testFinished: false,
+  // progress
+  progress: {
+    derive: {},     // {sin_sum: {done:true, withHint:bool, errors:n}}
+    assemble: {},
+    product: {},
+    traps: {}       // NEW
+  },
+  stats: { done: 0, hint: 0, err: 0 }
+};
+
+// ---------- STORAGE ----------
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const all = JSON.parse(raw);
+    const data = all && all[TOPIC_ID];
+    if (data) {
+      // Merge progress with sane defaults — old saves don't have `traps`.
+      const loaded = data.progress || {};
+      STATE.progress = {
+        derive:   Object.assign({}, STATE.progress.derive,   loaded.derive   || {}),
+        assemble: Object.assign({}, STATE.progress.assemble, loaded.assemble || {}),
+        product:  Object.assign({}, STATE.progress.product,  loaded.product  || {}),
+        traps:    Object.assign({}, STATE.progress.traps,    loaded.traps    || {})
+      };
+      STATE.stats = Object.assign({}, STATE.stats, data.stats || {});
+      // Onboarding flags
+      if (data.onboardingDismissed) STATE.onboardingDismissed = true;
+      if (data.pqIntroSeen) STATE.pqIntroSeen = true;
+    }
+  } catch (e) { console.warn('progress load failed', e); }
+}
+function saveProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const all = raw ? JSON.parse(raw) : {};
+    all[TOPIC_ID] = {
+      progress: STATE.progress,
+      stats: STATE.stats,
+      onboardingDismissed: STATE.onboardingDismissed,
+      pqIntroSeen: STATE.pqIntroSeen,
+      updatedAt: Date.now()
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+  } catch (e) { console.warn('progress save failed', e); }
+}
+
+// ---------- RENDER: HEADER ----------
+function renderModes() {
+  $$('.mode-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.mode === STATE.mode);
+  });
+}
+function renderSections() {
+  $$('.section-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.section === STATE.section);
+  });
+}
+function renderFormulaTabs() {
+  const tabs = $('#formula-tabs');
+  tabs.innerHTML = '';
+  // Traps and test don't show formula tabs.
+  if (STATE.section === 'traps' || STATE.section === 'test') {
+    return;
+  }
+  const list = currentList();
+  const namesMap = LESSON_NAMES[STATE.section] || {};
+  list.forEach((item, idx) => {
+    const name = namesMap[item.label] || '';
+    const labelHTML = name
+      ? `${item.label}<span class="tab-name">${name}</span>`
+      : item.label;
+    const tab = el('button', { class: 'formula-tab', type: 'button' }, labelHTML);
+    if (idx === STATE.formulaIdx) tab.classList.add('active');
+    const x = STATE.progress[STATE.section] && STATE.progress[STATE.section][item.id];
+    if (x && x.done) tab.classList.add('completed');
+    tab.addEventListener('click', () => {
+      STATE.formulaIdx = idx;
+      resetStepState();
+      render();
+    });
+    tabs.appendChild(tab);
+  });
+}
+
+function currentList() {
+  if (STATE.section === 'derive') return DERIVATIONS;
+  if (STATE.section === 'assemble') return ASSEMBLIES;
+  if (STATE.section === 'product') return PRODUCTS;
+  if (STATE.section === 'traps') return TRAPS;
+  return [];
+}
+
+// ---------- RENDER: LEFT PANEL ----------
+// Split into two physical panels: #goal-panel (top, formula + x/y substitution)
+// and #left-panel (the derivation lines or section-specific content).
+function renderLeft() {
+  renderGoalPanel();
+  renderHistoryPanel();
+}
+
+function renderGoalPanel() {
+  const goal = $('#goal-panel');
+  if (!goal) return;
+  goal.innerHTML = '';
+  goal.style.display = '';
+
+  if (STATE.section === 'traps') {
+    goal.innerHTML = `
+      <div class="panel-title">Раздел «Ловушки»</div>
+      <div class="trap-intro-card">
+        Здесь показаны <strong>типичные ошибки</strong>, которые ученики делают в этих формулах.
+        Твоя задача — найти, что именно сделано неправильно.<br>
+        Чем больше ловушек распознаешь, тем меньше вероятность ошибиться самому.
+      </div>
+    `;
+    return;
+  }
+  if (STATE.section === 'test') {
+    goal.innerHTML = `
+      <div class="panel-title">Финальный мини-тест</div>
+      <div class="trap-intro-card" style="background:var(--gold-glow);border-color:var(--gold);">
+        <strong>5 заданий:</strong> 2 на сборку формулы, 2 на выбор правильной формулы, 1 на поиск ошибки.
+        Подсказок здесь нет — это финальная проверка.
+      </div>
+    `;
+    return;
+  }
+
+  // For derive / assemble / product — show LHS = ? and (for derive) the x/y substitution.
+  let lhs = '';
+  let rhs = '?';
+  let tagText = 'Левая часть';
+  if (STATE.section === 'derive') {
+    const f = DERIVATIONS[STATE.formulaIdx];
+    lhs = f.lhs;
+    rhs = f.target;
+    tagText = 'Цель';
+  } else if (STATE.section === 'assemble') {
+    const a = ASSEMBLIES[STATE.formulaIdx];
+    lhs = a.lhs;
+  } else if (STATE.section === 'product') {
+    const x = PRODUCTS[STATE.formulaIdx];
+    lhs = x.lhs;
+    tagText = 'Произведение';
+  }
+
+  let html = `
+    <div class="goal">
+      <span class="goal-tag">${tagText}</span>
+      <div>${lhs} &nbsp;=&nbsp; ${rhs}</div>
+    </div>
+  `;
+  if (STATE.section === 'derive') {
+    html += `
+      <div class="sub-block">
+        <div class="sb-label">Замена переменных</div>
+        <div class="sb-grid">
+          <div class="sb-line">x &nbsp;=&nbsp; ${FS()}</div>
+          <div class="sb-line">α &nbsp;=&nbsp; x + y</div>
+          <div class="sb-line">y &nbsp;=&nbsp; ${FD()}</div>
+          <div class="sb-line">β &nbsp;=&nbsp; x − y</div>
+        </div>
+      </div>
+    `;
+  }
+  goal.innerHTML = html;
+}
+
+function renderHistoryPanel() {
+  const left = $('#left-panel');
+  left.innerHTML = '';
+
+  // --- TRAPS section ---
+  if (STATE.section === 'traps') {
+    const t = TRAPS[STATE.trapsIdx];
+    left.innerHTML = `
+      <div class="panel-title">Ошибка ученика № ${STATE.trapsIdx + 1} из ${TRAPS.length}</div>
+      <div class="trap-formula">
+        <span class="trap-tag">Так написано</span>
+        <div>${t.formula}</div>
+      </div>
+      <div class="trap-list-header">Что бывает не так</div>
+      <div class="step-line" style="font-family:var(--sans);font-size:0.9rem;color:var(--ink-soft);line-height:1.5;">
+        Типичные ошибки: пропущенный минус перед двойкой; перепутаны полусумма и полуразность;
+        вместо sin поставили cos (или наоборот); знаки после раскрытия скобки с минусом; забытое удвоение.
+      </div>
+    `;
+    return;
+  }
+
+  // --- FINAL TEST section ---
+  if (STATE.section === 'test') {
+    if (STATE.testFinished) {
+      const pct = Math.round((STATE.testScore / TEST_TASKS.length) * 100);
+      left.innerHTML = `
+        <div class="panel-title">Результат</div>
+        <div class="test-final-screen">
+          <div class="test-score">${STATE.testScore} / ${TEST_TASKS.length}</div>
+          <div class="test-score-tag">${pct}% верно</div>
+          <x style="color:var(--ink-soft);font-size:0.95rem;line-height:1.5;">
+            ${STATE.testScore >= 4
+              ? '<strong>Готово</strong>: можно переходить к применению формул в задачах.'
+              : 'Хорошее начало. Повтори раздел «Вывод формул» и пройди тест ещё раз — внимание к знакам решает.'}
+          </x>
+        </div>
+      `;
+      return;
+    }
+    left.innerHTML = `
+      <div class="panel-title">Задание ${STATE.testIdx + 1} из ${TEST_TASKS.length}</div>
+      <div class="step-line" style="font-family:var(--sans);font-size:0.9rem;color:var(--ink-soft);line-height:1.5;">
+        Текущий счёт: <strong>${STATE.testScore}</strong> из ${STATE.testAnswered}.<br>
+        Подсказок и режима «показать решение» в тесте нет.
+      </div>
+    `;
+    return;
+  }
+
+  // --- DERIVE section ---
+  if (STATE.section === 'derive') {
+    const f = DERIVATIONS[STATE.formulaIdx];
+    left.innerHTML = `
+      <div class="panel-title">Вывод</div>
+      <div class="derivation" id="derivation"></div>
+    `;
+    const der = $('#derivation');
+    if (STATE.mode === 'teacher') {
+      der.classList.add('teacher-derivation');
+      f.steps.forEach((s, i) => {
+        const line = el('div', { class: 'teacher-step' });
+        line.innerHTML = `<span class="ts-num">Шаг ${i+1} · ${s.stepName}</span><div>${s.line}</div><div class="ts-comment">${s.comment}</div>`;
+        der.appendChild(line);
+      });
+    } else {
+      const upTo = STATE.stepRevealed ? STATE.stepIdx + 1 : STATE.stepIdx;
+      if (upTo === 0) {
+        der.innerHTML = '<div class="derivation-empty">Здесь будут появляться строки вывода по мере прохождения шагов.</div>';
+      } else {
+        for (let i = 0; i < upTo; i++) {
+          const s = f.steps[i];
+          const line = el('div', { class: 'step-line' });
+          if (i === STATE.stepIdx && STATE.stepRevealed) line.classList.add('current');
+          line.innerHTML = `<span class="step-num">Шаг ${i+1} · ${s.stepName}</span>${s.line}` +
+            (STATE.mode === 'learn' && i === STATE.stepIdx ? `<span class="step-comment">${s.comment}</span>` : '');
+          der.appendChild(line);
+        }
+      }
+    }
+    return;
+  }
+
+  // --- ASSEMBLE section ---
+  if (STATE.section === 'assemble') {
+    const a = ASSEMBLIES[STATE.formulaIdx];
+    const isTeacher = STATE.mode === 'teacher';
+    left.innerHTML = `
+      <div class="sub-block">
+        <div class="sb-label">Подсказка по структуре</div>
+        <div style="font-family: var(--serif); font-size: 1.05rem;">
+          Все четыре формулы имеют вид: <strong>±2 · f₁(<span class="tag-sum">полусумма</span>) · f₂(<span class="tag-diff">полуразность</span>)</strong>,<br>
+          где f₁, f₂ — это sin или cos в нужном порядке.
+        </div>
+      </div>
+      <div class="panel-title" style="margin-top:14px">Что собрано</div>
+      <div class="assembly-build" id="asm-build"></div>
+      ${isTeacher ? `<div class="step-line current" style="margin-top:10px"><span class="step-num">Готовый ответ</span>${a.lhs} &nbsp;=&nbsp; ${a.target.join(' · ')}</div>` : ''}
+    `;
+    if (!isTeacher) renderAssemblyBuild();
+    return;
+  }
+
+  // --- PRODUCT section ---
+  if (STATE.section === 'product') {
+    const x = PRODUCTS[STATE.formulaIdx];
+    const isTeacher = STATE.mode === 'teacher';
+    left.innerHTML = `
+      <div class="sub-block">
+        <div class="sb-label">Откуда берутся формулы</div>
+        <div style="font-family: var(--serif); font-size: 1.05rem; line-height: 1.6;">
+          Это «обратные» формулы к преобразованиям суммы в произведение.<br>
+          Из них выражают произведения через суммы и разности.
+        </div>
+      </div>
+      ${isTeacher ? `
+        <div class="step-line current" style="margin-top:14px"><span class="step-num">Ответ</span>${x.lhs} &nbsp;=&nbsp; ${x.options[0].html}</div>
+        <div class="step-line" style="margin-top:10px"><span class="step-num">Объяснение</span><span style="font-family: var(--sans); font-size: 0.92rem; color: var(--ink-soft); line-height: 1.5;">${x.explain}</span></div>
+      ` : `
+        <div class="step-line" style="margin-top:14px"><span class="step-num">Совет</span><span style="font-family: var(--sans); font-size: 0.92rem; color: var(--ink-soft);">Каждая такая формула получается обратным преобразованием соответствующей формулы суммы/разности.</span></div>
+      `}
+    `;
+  }
+}
+
+// ---------- RENDER: RIGHT PANEL ----------
+function renderRight() {
+  const right = $('#right-panel');
+  right.innerHTML = '';
+
+  // Traps and test work in any mode (no separate teacher view for them).
+  if (STATE.section === 'traps') { renderTrapsRight(); return; }
+  if (STATE.section === 'test')  { renderTestRight();  return; }
+
+  if (STATE.mode === 'teacher') {
+    right.innerHTML = `
+      <div class="panel-title">Режим учителя</div>
+      <div class="step-line" style="font-family: var(--sans); font-size: 0.95rem; color: var(--ink-soft); line-height: 1.55;">
+        В этом режиме показан весь вывод сразу — с шагами, комментариями и сокращениями. Используйте при объяснении на уроке или при повторении.
+        <br><br>
+        Чтобы практиковаться самому, переключитесь в режим <strong>«Обучение»</strong> (с подсказками) или <strong>«Тренировка»</strong> (без подсказок).
+      </div>
+      <div class="controls">
+        <button class="btn" id="prev-formula-btn" type="button">← Предыдущая</button>
+        <button class="btn btn-primary" id="next-formula-btn" type="button">Следующая →</button>
+      </div>
+    `;
+    $('#prev-formula-btn').addEventListener('click', prevFormula);
+    $('#next-formula-btn').addEventListener('click', nextFormula);
+    return;
+  }
+
+  // X/Y mini-intro intercepts only the first derivation, first time.
+  if (STATE.section === 'derive' && STATE.pqIntroOpen) {
+    renderPQIntroRight();
+    return;
+  }
+
+  if (STATE.section === 'derive') renderDeriveRight();
+  else if (STATE.section === 'assemble') renderAssembleRight();
+  else if (STATE.section === 'product') renderProductRight();
+}
+
+function renderDeriveRight() {
+  const f = DERIVATIONS[STATE.formulaIdx];
+  const right = $('#right-panel');
+  const prog = STATE.progress.derive[f.id];
+  if (STATE.stepIdx >= f.steps.length) {
+    right.innerHTML = `
+      <div class="panel-title">Формула выведена</div>
+      <div class="completion">
+        <div class="seal">✓</div>
+        <h3>Отлично!</h3>
+        <x>Вы вывели формулу полностью. Перечитайте ход рассуждения слева — это и есть «авторское решение».</x>
+        <div class="final-formula">${f.lhs} &nbsp;=&nbsp; ${f.target}</div>
+        ${f.id === 'cos_diff' ? `
+          <div class="sub-block" style="text-align: left; margin-top: 14px;">
+            <div class="sb-label">Эквивалентная запись</div>
+            <div style="font-family: var(--serif); font-size: 1.05rem; line-height: 1.6;">
+              ${f.lhs} &nbsp;=&nbsp; 2 sin${FS()} sin${F('β − α','2')}<br>
+              <span style="font-family: var(--sans); font-size: 0.85rem; color: var(--ink-soft);">
+                Эквивалентно, потому что sin${F('β − α','2')} = −sin${FD()}.
+              </span>
+            </div>
+          </div>
+        ` : ''}
+      </div>
+      <div class="controls">
+        <button class="btn" id="restart-btn" type="button">Пройти заново</button>
+        <button class="btn btn-primary" id="next-formula-btn" type="button">Следующая формула →</button>
+      </div>
+    `;
+    $('#restart-btn').addEventListener('click', () => {
+      delete STATE.progress.derive[f.id];
+      resetStepState();
+      saveProgress();
+      render();
+    });
+    $('#next-formula-btn').addEventListener('click', nextFormula);
+    return;
+  }
+
+  const step = f.steps[STATE.stepIdx];
+  const builderKey = `${f.id}::${STATE.stepIdx}`;
+  const hasBuilder = !!BUILDERS[builderKey];
+
+  // Build mode toggle UI (only if builder is available for this step).
+  const toggleHTML = hasBuilder ? `
+    <div class="builder-toggle" role="tablist">
+      <button type="button" class="${!STATE.builderActive ? 'active' : ''}" data-build="off">Выбрать вариант</button>
+      <button type="button" class="${STATE.builderActive ? 'active' : ''}" data-build="on">Собрать руками</button>
+    </div>
+  ` : '';
+
+  right.innerHTML = `
+    <div class="panel-title">Шаг ${STATE.stepIdx + 1} из ${f.steps.length} · ${step.stepName}</div>
+    ${toggleHTML}
+    <div class="question"><span class="y-tag">Задание</span>${step.prompt}</div>
+    <div class="feedback" id="feedback"></div>
+    <div id="step-body"></div>
+    <div class="controls">
+      <button class="btn btn-primary" id="check-btn" type="button">Проверить шаг</button>
+      <button class="btn" id="hint-btn" type="button">Подсказка</button>
+      <button class="btn btn-ghost" id="reveal-btn" type="button">Показать решение</button>
+      <button class="btn" id="next-step-btn" type="button" disabled>Дальше →</button>
+    </div>
+  `;
+
+  if (hasBuilder) {
+    $$('.builder-toggle button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const turnOn = btn.dataset.build === 'on';
+        STATE.builderActive = turnOn;
+        STATE.builderBuild = [];
+        STATE.selectedOpt = null;
+        STATE.attemptedWrong.clear();
+        renderRight();
+      });
+    });
+  }
+
+  const body = $('#step-body');
+  if (hasBuilder && STATE.builderActive) {
+    const cfg = BUILDERS[builderKey];
+    body.innerHTML = `
+      <div class="builder-canvas" id="builder-canvas"></div>
+      <div class="trap-list-header" style="margin-top:8px">Доступные блоки</div>
+      <div class="builder-pool" id="builder-pool"></div>
+    `;
+    renderBuilderCanvas(cfg);
+    renderBuilderPool(cfg);
+    $('#check-btn').disabled = STATE.stepRevealed || STATE.builderBuild.length === 0;
+  } else {
+    body.innerHTML = `<div class="options" id="options"></div>`;
+    const opts = $('#options');
+    step.options.forEach((o, idx) => {
+      const card = el('button', { class: 'option-card', type: 'button', 'data-idx': idx }, o.html);
+      if (STATE.selectedOpt === idx) card.classList.add('selected');
+      if (STATE.attemptedWrong.has(idx)) card.classList.add('wrong', 'disabled');
+      if (STATE.stepRevealed && o.correct) card.classList.add('correct');
+      card.addEventListener('click', () => {
+        if (STATE.stepRevealed) return;
+        if (STATE.attemptedWrong.has(idx)) return;
+        STATE.selectedOpt = idx;
+        renderRight();
+      });
+      opts.appendChild(card);
+    });
+    $('#check-btn').disabled = STATE.selectedOpt === null || STATE.stepRevealed;
+  }
+
+  $('#check-btn').addEventListener('click', checkStep);
+  $('#hint-btn').addEventListener('click', showHint);
+  $('#reveal-btn').addEventListener('click', revealStep);
+  $('#next-step-btn').addEventListener('click', nextStep);
+  $('#next-step-btn').disabled = !STATE.stepRevealed;
+}
+
+function renderBuilderCanvas(cfg) {
+  const canvas = $('#builder-canvas');
+  if (!canvas) return;
+  canvas.innerHTML = '';
+  if (STATE.builderBuild.length === 0) {
+    canvas.innerHTML = '<span class="placeholder">Кликайте по блокам ниже — они появятся здесь.</span>';
+    return;
+  }
+  STATE.builderBuild.forEach((chipIdx, i) => {
+    const chip = el('span', { class: 'placed-chip' }, cfg.chips[chipIdx]);
+    chip.title = 'Кликни, чтобы убрать';
+    chip.addEventListener('click', () => {
+      STATE.builderBuild.splice(i, 1);
+      renderRight();
+    });
+    canvas.appendChild(chip);
+  });
+}
+
+function renderBuilderPool(cfg) {
+  const pool = $('#builder-pool');
+  if (!pool) return;
+  pool.innerHTML = '';
+  cfg.chips.forEach((c, idx) => {
+    // signs can be reused; other chips are limited by how many times they appear in the answer
+    const answerCount = cfg.answer.filter(x => x === c).length;
+    const placedCount = STATE.builderBuild.filter(i => cfg.chips[i] === c).length;
+    const isSign = (c === '+' || c === '−');
+    const exhausted = !isSign && placedCount >= Math.max(1, answerCount);
+    const chip = el('button', {
+      class: 'builder-chip' + (exhausted ? ' used' : '') + (isSign ? ' sign' : ''),
+      type: 'button'
+    }, c);
+    if (!exhausted) {
+      chip.addEventListener('click', () => {
+        STATE.builderBuild.push(idx);
+        renderRight();
+      });
+    } else {
+      chip.disabled = true;
+    }
+    pool.appendChild(chip);
+  });
+}
+
+function renderAssembleRight() {
+  const a = ASSEMBLIES[STATE.formulaIdx];
+  const right = $('#right-panel');
+
+  // already done?
+  const prog = STATE.progress.assemble[a.id];
+  if (STATE.asmFeedback === 'ok') {
+    right.innerHTML = `
+      <div class="panel-title">Готово</div>
+      <div class="completion">
+        <div class="seal">✓</div>
+        <h3>Формула собрана!</h3>
+        <x>Эта формула теперь у вас закреплена.</x>
+        <div class="final-formula">${a.lhs} &nbsp;=&nbsp; ${a.target.join(' · ')}</div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="restart-btn" type="button">Собрать заново</button>
+        <button class="btn btn-primary" id="next-formula-btn" type="button">Следующая →</button>
+      </div>
+    `;
+    $('#restart-btn').addEventListener('click', () => {
+      STATE.asmBuild = []; STATE.asmFeedback = null;
+      delete STATE.progress.assemble[a.id];
+      saveProgress();
+      render();
+    });
+    $('#next-formula-btn').addEventListener('click', nextFormula);
+    return;
+  }
+
+  right.innerHTML = `
+    <div class="panel-title">Соберите правую часть</div>
+    <div class="question"><span class="y-tag">Задание</span>Кликайте по блокам в нужном порядке, чтобы получить правую часть формулы. Когда соберёте — нажмите «Проверить».</div>
+    <div class="feedback" id="feedback"></div>
+    <div class="panel-title" style="margin-top:0">Доступные блоки</div>
+    <div class="assembly-pool" id="asm-pool"></div>
+    <div class="controls">
+      <button class="btn btn-primary" id="check-asm-btn" type="button">Проверить</button>
+      <button class="btn" id="hint-asm-btn" type="button">Подсказка</button>
+      <button class="btn btn-ghost" id="clear-asm-btn" type="button">Очистить</button>
+      <button class="btn" id="reveal-asm-btn" type="button">Показать решение</button>
+    </div>
+  `;
+
+  const pool = $('#asm-pool');
+  a.pool.forEach((b, idx) => {
+    const used = STATE.asmBuild.includes(idx);
+    const btn = el('button', { class: 'pool-block' + (used ? ' used' : ''), type: 'button' }, b);
+    if (!used) {
+      btn.addEventListener('click', () => {
+        STATE.asmBuild.push(idx);
+        STATE.asmFeedback = null;
+        renderLeft(); renderRight();
+      });
+    }
+    pool.appendChild(btn);
+  });
+
+  $('#check-asm-btn').addEventListener('click', checkAssembly);
+  $('#hint-asm-btn').addEventListener('click', () => {
+    markCurrentWithHint('assemble', a.id);
+    recountStats(); saveProgress(); renderProgress();
+    showFeedback($('#feedback'), 'hint', '<strong>Подсказка:</strong> ' + a.hint);
+  });
+  $('#clear-asm-btn').addEventListener('click', () => { STATE.asmBuild = []; STATE.asmFeedback = null; renderLeft(); renderRight(); });
+  $('#reveal-asm-btn').addEventListener('click', () => {
+    // Set asmBuild to the indices that match target
+    STATE.asmBuild = [];
+    a.target.forEach(t => {
+      const i = a.pool.findIndex((x, idx) => x === t && !STATE.asmBuild.includes(idx));
+      if (i !== -1) STATE.asmBuild.push(i);
+    });
+    STATE.asmFeedback = 'ok';
+    STATE.progress.assemble[a.id] = { done: true, withHint: true };
+    recountStats(); saveProgress();
+    render();
+  });
+}
+
+function renderAssemblyBuild() {
+  const build = $('#asm-build');
+  if (!build) return;
+  const a = ASSEMBLIES[STATE.formulaIdx];
+  build.innerHTML = '';
+  if (STATE.asmBuild.length === 0) {
+    build.innerHTML = '<span class="placeholder">Здесь появится правая часть — кликайте по блокам справа.</span>';
+    return;
+  }
+  STATE.asmBuild.forEach((poolIdx, i) => {
+    const block = el('span', { class: 'assembly-block' }, a.pool[poolIdx]);
+    block.title = 'Кликните, чтобы убрать';
+    block.addEventListener('click', () => {
+      STATE.asmBuild.splice(i, 1);
+      STATE.asmFeedback = null;
+      renderLeft(); renderRight();
+    });
+    build.appendChild(block);
+    if (i < STATE.asmBuild.length - 1) {
+      build.appendChild(el('span', { class: 'muted' }, '·'));
+    }
+  });
+}
+
+function renderProductRight() {
+  const x = PRODUCTS[STATE.formulaIdx];
+  const right = $('#right-panel');
+
+  if (STATE.stepRevealed) {
+    right.innerHTML = `
+      <div class="panel-title">Готово</div>
+      <div class="completion">
+        <div class="seal">✓</div>
+        <h3>Верно!</h3>
+        <div class="final-formula">${x.lhs} &nbsp;=&nbsp; ${x.options[0].html}</div>
+        <x style="text-align: left; font-size: 0.92rem;">${x.explain}</x>
+      </div>
+      <div class="controls">
+        <button class="btn" id="restart-btn" type="button">Заново</button>
+        <button class="btn btn-primary" id="next-formula-btn" type="button">Следующая →</button>
+      </div>
+    `;
+    $('#restart-btn').addEventListener('click', () => {
+      STATE.selectedOpt = null; STATE.stepRevealed = false; STATE.attemptedWrong.clear();
+      delete STATE.progress.product[x.id];
+      saveProgress();
+      render();
+    });
+    $('#next-formula-btn').addEventListener('click', nextFormula);
+    return;
+  }
+
+  right.innerHTML = `
+    <div class="panel-title">Выберите правильную формулу</div>
+    <div class="question"><span class="y-tag">Задание</span>${x.prompt}</div>
+    <div class="feedback" id="feedback"></div>
+    <div class="options" id="options"></div>
+    <div class="controls">
+      <button class="btn btn-primary" id="check-btn" type="button">Проверить</button>
+      <button class="btn" id="hint-btn" type="button">Подсказка</button>
+      <button class="btn btn-ghost" id="reveal-btn" type="button">Показать решение</button>
+    </div>
+  `;
+
+  const opts = $('#options');
+  x.options.forEach((o, idx) => {
+    const card = el('button', { class: 'option-card', type: 'button' }, o.html);
+    if (STATE.selectedOpt === idx) card.classList.add('selected');
+    if (STATE.attemptedWrong.has(idx)) card.classList.add('wrong', 'disabled');
+    card.addEventListener('click', () => {
+      if (STATE.attemptedWrong.has(idx)) return;
+      STATE.selectedOpt = idx;
+      renderRight();
+    });
+    opts.appendChild(card);
+  });
+
+  $('#check-btn').addEventListener('click', checkProduct);
+  $('#hint-btn').addEventListener('click', () => showFeedback($('#feedback'), 'hint', x.hint));
+  $('#reveal-btn').addEventListener('click', () => {
+    STATE.stepRevealed = true;
+    STATE.progress.product[x.id] = { done: true, withHint: true };
+    recountStats(); saveProgress();
+    render();
+  });
+  $('#check-btn').disabled = STATE.selectedOpt === null;
+}
+
+// ---------- ACTIONS: DERIVE ----------
+function markCurrentWithHint(section, id) {
+  const cur = STATE.progress[section][id] || {};
+  STATE.progress[section][id] = Object.assign(cur, { withHint: true });
+}
+
+function checkStep() {
+  const f = DERIVATIONS[STATE.formulaIdx];
+  const step = f.steps[STATE.stepIdx];
+  const builderKey = `${f.id}::${STATE.stepIdx}`;
+  const hasBuilder = !!BUILDERS[builderKey];
+
+  // BUILDER MODE
+  if (hasBuilder && STATE.builderActive) {
+    const cfg = BUILDERS[builderKey];
+    const built = STATE.builderBuild.map(i => cfg.chips[i]);
+    const same = built.length === cfg.answer.length && built.every((b, i) => b === cfg.answer[i]);
+    if (same) {
+      STATE.stepRevealed = true;
+      renderLeft();
+      renderRight();
+      showFeedback($('#feedback'), 'success', '<strong>Верно собрано!</strong> ' + (STATE.mode === 'learn' ? step.comment : 'Можно идти дальше.'));
+    } else {
+      STATE.stats.err += 1;
+      saveProgress();
+      let msg;
+      if (built.length !== cfg.answer.length) {
+        msg = `<strong>Нужно ${cfg.answer.length} блоков.</strong> Сейчас собрано: ${built.length}.`;
+      } else {
+        const sortedBuilt = [...built].sort();
+        const sortedAns = [...cfg.answer].sort();
+        if (sortedBuilt.join('|') === sortedAns.join('|')) {
+          msg = '<strong>Блоки правильные, но порядок другой.</strong> Попробуй ещё раз.';
+        } else {
+          msg = '<strong>Не совсем.</strong> Обрати внимание на знаки и какие именно функции стоят.';
+        }
+      }
+      showFeedback($('#feedback'), 'error', msg);
+    }
+    return;
+  }
+
+  // MCQ MODE (existing)
+  const sel = STATE.selectedOpt;
+  if (sel == null) return;
+  const opt = step.options[sel];
+
+  if (opt.correct) {
+    STATE.stepRevealed = true;
+    renderLeft();
+    renderRight();
+    showFeedback($('#feedback'), 'success', '<strong>Верно!</strong> ' + (STATE.mode === 'learn' ? step.comment : 'Можно идти дальше.'));
+  } else {
+    STATE.attemptedWrong.add(sel);
+    STATE.stats.err += 1;
+    STATE.selectedOpt = null;
+    saveProgress();
+    const msg = STATE.mode === 'learn'
+      ? (ERR[opt.err] || 'Не совсем так. Попробуй ещё раз — обрати внимание на знаки.')
+      : '<strong>Неверно.</strong> Попробуй другой вариант.';
+    renderRight();
+    showFeedback($('#feedback'), 'error', msg);
+  }
+}
+
+function showHint() {
+  if (STATE.section === 'derive') {
+    const f = DERIVATIONS[STATE.formulaIdx];
+    const step = f.steps[STATE.stepIdx];
+    const builderKey = `${f.id}::${STATE.stepIdx}`;
+    STATE.hintShown = true;
+    markCurrentWithHint('derive', f.id);
+    recountStats();
+    saveProgress();
+    renderProgress();
+    const hintText = (STATE.builderActive && BUILDERS[builderKey])
+      ? BUILDERS[builderKey].hint
+      : step.hint;
+    showFeedback($('#feedback'), 'hint', '<strong>Подсказка:</strong> ' + hintText);
+  }
+}
+
+function revealStep() {
+  const f = DERIVATIONS[STATE.formulaIdx];
+  const step = f.steps[STATE.stepIdx];
+  const builderKey = `${f.id}::${STATE.stepIdx}`;
+  STATE.stepRevealed = true;
+  STATE.hintShown = true;
+  markCurrentWithHint('derive', f.id);
+
+  if (STATE.builderActive && BUILDERS[builderKey]) {
+    const cfg = BUILDERS[builderKey];
+    // place exactly the correct chips in order
+    STATE.builderBuild = cfg.answer.map(token => cfg.chips.indexOf(token));
+  } else {
+    STATE.selectedOpt = step.options.findIndex(o => o.correct);
+  }
+  renderLeft();
+  renderRight();
+  showFeedback($('#feedback'), 'hint', '<strong>Правильный ответ показан.</strong> ' + step.comment);
+  recountStats();
+  saveProgress();
+  renderProgress();
+}
+
+function nextStep() {
+  const f = DERIVATIONS[STATE.formulaIdx];
+  STATE.stepIdx += 1;
+  STATE.selectedOpt = null;
+  STATE.attemptedWrong.clear();
+  STATE.stepRevealed = false;
+  STATE.hintShown = false;
+  STATE.builderActive = false;
+  STATE.builderBuild = [];
+  if (STATE.stepIdx >= f.steps.length) {
+    const cur = STATE.progress.derive[f.id] || {};
+    STATE.progress.derive[f.id] = { done: true, withHint: cur.withHint || false };
+    recountStats();
+  }
+  saveProgress();
+  render();
+}
+
+function nextFormula() {
+  const list = currentList();
+  if (STATE.formulaIdx < list.length - 1) {
+    STATE.formulaIdx += 1;
+  } else {
+    STATE.formulaIdx = 0;
+  }
+  resetStepState();
+  render();
+}
+function prevFormula() {
+  const list = currentList();
+  if (STATE.formulaIdx > 0) STATE.formulaIdx -= 1;
+  else STATE.formulaIdx = list.length - 1;
+  resetStepState();
+  render();
+}
+
+// ---------- ACTIONS: ASSEMBLE ----------
+function checkAssembly() {
+  const a = ASSEMBLIES[STATE.formulaIdx];
+  const built = STATE.asmBuild.map(i => a.pool[i]);
+  // Compare with target — order matters
+  const same = built.length === a.target.length && built.every((b, i) => b === a.target[i]);
+  // Allow commutative re-ordering: if blocks contain "2" or "-2" first, then two function blocks
+  // We'll be strict: target order is canonical
+  if (same) {
+    STATE.asmFeedback = 'ok';
+    const cur = STATE.progress.assemble[a.id] || {};
+    STATE.progress.assemble[a.id] = { done: true, withHint: cur.withHint || false };
+    recountStats(); saveProgress();
+    render();
+  } else {
+    STATE.stats.err += 1;
+    saveProgress();
+    // Determine error type
+    let msg = '';
+    if (built.length !== a.target.length) {
+      msg = `<strong>Нужно собрать ${a.target.length} блока(блоков).</strong> Сейчас собрано: ${built.length}.`;
+    } else {
+      // Check if the same set, just wrong order
+      const sortedBuilt = [...built].sort();
+      const sortedTarget = [...a.target].sort();
+      if (sortedBuilt.join('|') === sortedTarget.join('|')) {
+        msg = '<strong>Блоки правильные, но порядок другой.</strong> Стандартный порядок: число · sin(полусуммы/полуразности) · cos(полусуммы/полуразности).';
+      } else {
+        // Wrong block(s)
+        if (a.id === 'asm_cos_diff' && !built.includes('−2')) {
+          msg = '<strong>Не забудь минус!</strong> У разности косинусов перед двойкой стоит минус.';
+        } else if (a.id === 'asm_sin_diff') {
+          msg = '<strong>В разности синусов аргументы разные:</strong> внутри sin — полуразность, внутри cos — полусумма.';
+        } else if (a.id === 'asm_cos_sum') {
+          msg = '<strong>В сумме косинусов</strong> обе функции — косинусы, но аргументы разные: полусумма и полуразность.';
+        } else {
+          msg = 'Не совсем так. Проверь, какие функции и какие аргументы у нас в формуле.';
+        }
+      }
+    }
+    showFeedback($('#feedback'), 'error', msg);
+  }
+}
+
+// ---------- ACTIONS: PRODUCT ----------
+function checkProduct() {
+  const x = PRODUCTS[STATE.formulaIdx];
+  const sel = STATE.selectedOpt;
+  if (sel == null) return;
+  const opt = x.options[sel];
+  if (opt.correct) {
+    STATE.stepRevealed = true;
+    const cur = STATE.progress.product[x.id] || {};
+    STATE.progress.product[x.id] = { done: true, withHint: cur.withHint || false };
+    recountStats(); saveProgress();
+    render();
+  } else {
+    STATE.attemptedWrong.add(sel);
+    STATE.stats.err += 1;
+    saveProgress();
+    STATE.selectedOpt = null;
+    renderRight();
+    const msg = STATE.mode === 'learn'
+      ? (ERR[opt.err] || 'Не совсем так. Подумай ещё.')
+      : '<strong>Неверно.</strong> Попробуй другой вариант.';
+    showFeedback($('#feedback'), 'error', msg);
+  }
+}
+
+// ---------- RENDER: X/Y MINI-INTRO (point 2) ----------
+function renderPQIntroRight() {
+  const right = $('#right-panel');
+  if (STATE.pqIntroStep >= PQ_INTRO.steps.length) {
+    right.innerHTML = `
+      <div class="panel-title">Зачем нужна замена x, y?</div>
+      <div class="pq-intro">
+        <div class="pqi-eyebrow">Готово</div>
+        <div class="pqi-title">Замена работает!</div>
+        <div class="pqi-body">
+          Мы только что проверили:<br>
+          <strong>x + y = α</strong> и <strong>x − y = β</strong>.
+        </div>
+        <div class="pqi-final">
+          Вот зачем нужна замена: α превращается в <span class="hl">x + y</span>,
+          β превращается в <span class="hl-blue">x − y</span>.<br>
+          Теперь можно раскрывать <strong>sin(x + y)</strong> и <strong>sin(x − y)</strong>
+          по обычным формулам синуса суммы и разности.
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn btn-primary" id="pqi-continue" type="button">Поехали выводить формулу →</button>
+      </div>
+    `;
+    $('#pqi-continue').addEventListener('click', () => {
+      STATE.pqIntroOpen = false;
+      STATE.pqIntroSeen = true;
+      saveProgress();
+      render();
+    });
+    return;
+  }
+
+  const s = PQ_INTRO.steps[STATE.pqIntroStep];
+  right.innerHTML = `
+    <div class="panel-title">Замена переменных · шаг ${STATE.pqIntroStep + 1} из ${PQ_INTRO.steps.length}</div>
+    <div class="pq-intro">
+      <div class="pqi-eyebrow">Почему x и y?</div>
+      <div class="pqi-title">Сначала поймём саму замену</div>
+      <div class="pqi-body">Введём две новые переменные:</div>
+      <div class="pqi-setup">
+        <div><strong>x</strong> &nbsp;=&nbsp; ${FS()}</div>
+        <div><strong>y</strong> &nbsp;=&nbsp; ${FD()}</div>
+      </div>
+      <div class="pqi-step">
+        <div class="pqi-y">${s.y}</div>
+        <div class="feedback" id="feedback"></div>
+        <div class="options" id="pqi-options"></div>
+        <div class="controls" style="border-top:none;padding-top:8px;margin-top:6px;">
+          <button class="btn btn-primary" id="pqi-check" type="button">Проверить</button>
+          <button class="btn" id="pqi-hint" type="button">Подсказка</button>
+        </div>
+      </div>
+    </div>
+    <div class="pq-skip">
+      <button class="pq-skip-btn" type="button" id="pqi-skip">Я уже знаю — пропустить</button>
+    </div>
+  `;
+
+  const opts = $('#pqi-options');
+  s.options.forEach((html, idx) => {
+    const card = el('button', { class: 'option-card', type: 'button' }, html);
+    if (STATE.pqIntroSelected === idx) card.classList.add('selected');
+    card.addEventListener('click', () => {
+      STATE.pqIntroSelected = idx;
+      renderPQIntroRight();
+    });
+    opts.appendChild(card);
+  });
+
+  $('#pqi-check').disabled = STATE.pqIntroSelected === null;
+  $('#pqi-check').addEventListener('click', () => {
+    if (STATE.pqIntroSelected === s.correct) {
+      STATE.pqIntroStep += 1;
+      STATE.pqIntroSelected = null;
+      STATE.pqIntroAttempts = 0;
+      renderPQIntroRight();
+    } else {
+      STATE.stats.err += 1;
+      STATE.pqIntroAttempts += 1;
+      saveProgress();
+      showFeedback($('#feedback'), 'error',
+        '<strong>Не совсем.</strong> ' + (STATE.pqIntroAttempts >= 1 ? s.hint : 'Попробуй ещё раз — подумай, что сократится.'));
+    }
+  });
+  $('#pqi-hint').addEventListener('click', () => {
+    showFeedback($('#feedback'), 'hint', '<strong>Подсказка:</strong> ' + s.hint);
+  });
+  $('#pqi-skip').addEventListener('click', () => {
+    STATE.pqIntroOpen = false;
+    STATE.pqIntroSeen = true;
+    saveProgress();
+    render();
+  });
+}
+
+// ---------- RENDER: TRAPS (point 6) ----------
+function renderTrapsRight() {
+  const right = $('#right-panel');
+  const t = TRAPS[STATE.trapsIdx];
+
+  const allDone = TRAPS.every(tr => STATE.progress.traps[tr.id] && STATE.progress.traps[tr.id].done);
+  if (allDone && STATE.trapsIdx === TRAPS.length - 1 && STATE.trapRevealed) {
+    right.innerHTML = `
+      <div class="panel-title">Раздел пройден</div>
+      <div class="completion">
+        <div class="seal">✓</div>
+        <h3>Все ловушки пройдены</h3>
+        <x>Теперь ты узнаёшь типичные ошибки сразу. Это сильно снижает число своих ошибок.</x>
+      </div>
+      <div class="controls">
+        <button class="btn" id="trap-restart" type="button">Пройти заново</button>
+        <button class="btn btn-primary" id="trap-go-test" type="button">К финальному тесту →</button>
+      </div>
+    `;
+    $('#trap-restart').addEventListener('click', () => {
+      STATE.progress.traps = {};
+      STATE.trapsIdx = 0;
+      STATE.trapSelectedOpt = null;
+      STATE.trapAttempted = new Set();
+      STATE.trapRevealed = false;
+      saveProgress();
+      render();
+    });
+    $('#trap-go-test').addEventListener('click', () => { startFinalTest(); });
+    return;
+  }
+
+  right.innerHTML = `
+    <div class="panel-title">Найди ошибку</div>
+    <div class="question"><span class="y-tag">Задание</span>${t.prompt}</div>
+    <div class="feedback" id="feedback"></div>
+    <div class="options" id="trap-options"></div>
+    <div class="controls">
+      <button class="btn btn-primary" id="trap-check" type="button">Проверить</button>
+      <button class="btn btn-ghost" id="trap-reveal" type="button">Показать ответ</button>
+      <button class="btn" id="trap-prev" type="button">← Назад</button>
+      <button class="btn" id="trap-next" type="button" ${STATE.trapRevealed ? '' : 'disabled'}>Дальше →</button>
+    </div>
+  `;
+
+  const opts = $('#trap-options');
+  t.options.forEach((o, idx) => {
+    const card = el('button', { class: 'option-card', type: 'button' }, o.html);
+    if (STATE.trapSelectedOpt === idx) card.classList.add('selected');
+    if (STATE.trapAttempted.has(idx)) card.classList.add('wrong', 'disabled');
+    if (STATE.trapRevealed && o.correct) card.classList.add('correct');
+    card.addEventListener('click', () => {
+      if (STATE.trapRevealed) return;
+      if (STATE.trapAttempted.has(idx)) return;
+      STATE.trapSelectedOpt = idx;
+      renderTrapsRight();
+    });
+    opts.appendChild(card);
+  });
+
+  $('#trap-check').disabled = STATE.trapSelectedOpt === null || STATE.trapRevealed;
+  $('#trap-check').addEventListener('click', () => {
+    const sel = STATE.trapSelectedOpt;
+    if (sel == null) return;
+    const opt = t.options[sel];
+    if (opt.correct) {
+      STATE.trapRevealed = true;
+      STATE.progress.traps[t.id] = { done: true };
+      recountStats();
+      saveProgress();
+      renderTrapsRight();
+      showFeedback($('#feedback'), 'success', '<strong>Верно!</strong> ' + t.fix);
+    } else {
+      STATE.trapAttempted.add(sel);
+      STATE.stats.err += 1;
+      STATE.trapSelectedOpt = null;
+      saveProgress();
+      renderTrapsRight();
+      showFeedback($('#feedback'), 'error', opt.err || 'Не совсем. Попробуй другой вариант.');
+    }
+  });
+
+  $('#trap-reveal').addEventListener('click', () => {
+    STATE.trapRevealed = true;
+    STATE.progress.traps[t.id] = { done: true, withHint: true };
+    recountStats();
+    saveProgress();
+    renderTrapsRight();
+    showFeedback($('#feedback'), 'hint', '<strong>Правильный ответ:</strong> ' + t.fix);
+  });
+
+  $('#trap-prev').addEventListener('click', () => {
+    if (STATE.trapsIdx > 0) {
+      STATE.trapsIdx -= 1;
+      STATE.trapSelectedOpt = null;
+      STATE.trapAttempted = new Set();
+      const x = STATE.progress.traps[TRAPS[STATE.trapsIdx].id];
+      STATE.trapRevealed = !!(x && x.done);
+      render();
+    }
+  });
+  $('#trap-prev').disabled = STATE.trapsIdx === 0;
+
+  $('#trap-next').addEventListener('click', () => {
+    if (STATE.trapsIdx < TRAPS.length - 1) {
+      STATE.trapsIdx += 1;
+      STATE.trapSelectedOpt = null;
+      STATE.trapAttempted = new Set();
+      const x = STATE.progress.traps[TRAPS[STATE.trapsIdx].id];
+      STATE.trapRevealed = !!(x && x.done);
+      render();
+    }
+  });
+}
+
+// ---------- RENDER: FINAL MINI-TEST (point 9) ----------
+function startFinalTest() {
+  STATE.section = 'test';
+  STATE.testIdx = 0;
+  STATE.testScore = 0;
+  STATE.testAnswered = 0;
+  STATE.testFinished = false;
+  STATE.testSelectedOpt = null;
+  STATE.testAsmBuild = [];
+  STATE.testRevealed = false;
+  render();
+}
+
+function renderTestRight() {
+  const right = $('#right-panel');
+  if (STATE.testFinished) {
+    const sealOk = STATE.testScore >= 4;
+    right.innerHTML = `
+      <div class="panel-title">Тест завершён</div>
+      <div class="completion">
+        <div class="seal" style="background:${sealOk ? 'var(--green-soft)' : 'var(--gold-soft)'};border-color:${sealOk ? 'var(--green)' : 'var(--gold)'};color:${sealOk ? 'var(--green-deep)' : 'var(--gold-deep)'};">${sealOk ? '✓' : '·'}</div>
+        <h3>${sealOk ? 'Готово!' : 'Ещё чуть-чуть'}</h3>
+        <x>Результат: <strong>${STATE.testScore}</strong> из ${TEST_TASKS.length}.</x>
+      </div>
+      <div class="controls">
+        <button class="btn" id="test-restart" type="button">Пройти ещё раз</button>
+        <button class="btn btn-primary" id="test-go-derive" type="button">К выводам формул →</button>
+      </div>
+    `;
+    $('#test-restart').addEventListener('click', () => startFinalTest());
+    $('#test-go-derive').addEventListener('click', () => {
+      STATE.section = 'derive';
+      STATE.formulaIdx = 0;
+      resetStepState();
+      render();
+    });
+    return;
+  }
+
+  const task = TEST_TASKS[STATE.testIdx];
+  const isAsm = task.kind === 'assemble';
+  const isTrap = task.kind === 'trap';
+  let questionHTML = '';
+  let bodyHTML = '';
+
+  if (isAsm) {
+    questionHTML = `Соберите правую часть для: <strong>${task.lhs}</strong>`;
+    bodyHTML = `
+      <div class="assembly-build" id="test-build"></div>
+      <div class="panel-title" style="margin-top:6px">Доступные блоки</div>
+      <div class="assembly-pool" id="test-pool"></div>
+    `;
+  } else if (isTrap) {
+    questionHTML = task.prompt;
+    bodyHTML = `
+      <div class="trap-formula" style="margin-bottom:14px"><span class="trap-tag">Так написано</span><div>${task.formula}</div></div>
+      <div class="options" id="test-options"></div>
+    `;
+  } else {
+    questionHTML = task.prompt;
+    bodyHTML = `<div class="options" id="test-options"></div>`;
+  }
+
+  right.innerHTML = `
+    <div class="panel-title"><span class="test-progress-pill">Тест · ${STATE.testIdx + 1}/${TEST_TASKS.length}</span></div>
+    <div class="question"><span class="y-tag">Задание</span>${questionHTML}</div>
+    <div class="feedback" id="feedback"></div>
+    ${bodyHTML}
+    <div class="controls">
+      <button class="btn btn-primary" id="test-check" type="button">Проверить</button>
+      ${isAsm ? '<button class="btn btn-ghost" id="test-clear" type="button">Очистить</button>' : ''}
+      <button class="btn" id="test-skip" type="button">Пропустить →</button>
+    </div>
+  `;
+
+  if (isAsm) {
+    const build = $('#test-build');
+    if (STATE.testAsmBuild.length === 0) {
+      build.innerHTML = '<span class="placeholder">Здесь появится правая часть — кликайте по блокам ниже.</span>';
+    } else {
+      STATE.testAsmBuild.forEach((poolIdx, i) => {
+        const block = el('span', { class: 'assembly-block' }, task.pool[poolIdx]);
+        block.title = 'Убрать';
+        block.addEventListener('click', () => {
+          STATE.testAsmBuild.splice(i, 1);
+          renderTestRight();
+        });
+        build.appendChild(block);
+        if (i < STATE.testAsmBuild.length - 1) build.appendChild(el('span', { class: 'muted' }, '·'));
+      });
+    }
+    const pool = $('#test-pool');
+    task.pool.forEach((b, idx) => {
+      const used = STATE.testAsmBuild.includes(idx);
+      const btn = el('button', { class: 'pool-block' + (used ? ' used' : ''), type: 'button' }, b);
+      if (!used) btn.addEventListener('click', () => {
+        STATE.testAsmBuild.push(idx);
+        renderTestRight();
+      });
+      pool.appendChild(btn);
+    });
+    $('#test-clear').addEventListener('click', () => { STATE.testAsmBuild = []; renderTestRight(); });
+    $('#test-check').disabled = STATE.testAsmBuild.length === 0;
+  } else {
+    const opts = $('#test-options');
+    task.options.forEach((o, idx) => {
+      const card = el('button', { class: 'option-card', type: 'button' }, o.html);
+      if (STATE.testSelectedOpt === idx) card.classList.add('selected');
+      card.addEventListener('click', () => {
+        STATE.testSelectedOpt = idx;
+        renderTestRight();
+      });
+      opts.appendChild(card);
+    });
+    $('#test-check').disabled = STATE.testSelectedOpt === null;
+  }
+
+  $('#test-check').addEventListener('click', () => {
+    let correct = false;
+    if (isAsm) {
+      const built = STATE.testAsmBuild.map(i => task.pool[i]);
+      correct = built.length === task.target.length && built.every((b, i) => b === task.target[i]);
+    } else {
+      correct = task.options[STATE.testSelectedOpt] && task.options[STATE.testSelectedOpt].correct === true;
+    }
+    if (correct) STATE.testScore += 1;
+    STATE.testAnswered += 1;
+    advanceTest();
+  });
+  $('#test-skip').addEventListener('click', () => {
+    STATE.testAnswered += 1;
+    advanceTest();
+  });
+}
+
+function advanceTest() {
+  STATE.testIdx += 1;
+  STATE.testSelectedOpt = null;
+  STATE.testAsmBuild = [];
+  if (STATE.testIdx >= TEST_TASKS.length) {
+    STATE.testFinished = true;
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const all = raw ? JSON.parse(raw) : {};
+      all[TOPIC_ID] = all[TOPIC_ID] || {};
+      all[TOPIC_ID].lastTestScore = STATE.testScore;
+      all[TOPIC_ID].lastTestAt = Date.now();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+    } catch (e) {}
+  }
+  render();
+}
+
+// ---------- HELPERS ----------
+function showFeedback(node, type, html) {
+  if (!node) return;
+  node.className = 'feedback show ' + type;
+  node.innerHTML = html;
+}
+
+function resetStepState() {
+  STATE.stepIdx = 0;
+  STATE.selectedOpt = null;
+  STATE.attemptedWrong = new Set();
+  STATE.stepRevealed = false;
+  STATE.hintShown = false;
+  STATE.asmBuild = [];
+  STATE.asmFeedback = null;
+  STATE.builderActive = false;
+  STATE.builderBuild = [];
+  STATE.trapSelectedOpt = null;
+  STATE.trapAttempted = new Set();
+  STATE.trapRevealed = false;
+  STATE.testSelectedOpt = null;
+  STATE.testAsmBuild = [];
+}
+
+function recountStats() {
+  let done = 0, hint = 0;
+  ['derive', 'assemble', 'product', 'traps'].forEach(sect => {
+    Object.values(STATE.progress[sect] || {}).forEach(x => {
+      if (x.done) done += 1;
+      if (x.withHint) hint += 1;
+    });
+  });
+  STATE.stats.done = done;
+  STATE.stats.hint = hint;
+}
+
+function renderProgress() {
+  const total = DERIVATIONS.length + ASSEMBLIES.length + PRODUCTS.length + TRAPS.length;
+  $('#progress-text').textContent = `${STATE.stats.done} / ${total}`;
+  $('#stat-done').textContent = STATE.stats.done;
+  $('#stat-hint').textContent = STATE.stats.hint;
+  $('#stat-err').textContent = STATE.stats.err;
+
+  // Final test banner: show once all 4 derivations are completed.
+  const slot = $('#final-test-banner-slot');
+  if (!slot) return;
+  const allDerivesDone = DERIVATIONS.every(d => STATE.progress.derive[d.id] && STATE.progress.derive[d.id].done);
+  if (allDerivesDone && STATE.section !== 'test') {
+    slot.innerHTML = `
+      <div class="final-test-banner">
+        <div class="ftb-text">
+          <strong>Все 4 формулы выведены.</strong> Готовы пройти <strong>финальный мини-тест</strong> из 5 задач?
+        </div>
+        <button class="btn btn-primary" id="open-final-test-btn" type="button">Начать тест →</button>
+      </div>
+    `;
+    $('#open-final-test-btn').addEventListener('click', () => startFinalTest());
+  } else {
+    slot.innerHTML = '';
+  }
+}
+
+// ---------- MAIN RENDER ----------
+function render() {
+  renderModes();
+  renderSections();
+  renderFormulaTabs();
+  renderLeft();
+  renderRight();
+  renderProgress();
+}
+
+// ---------- ONBOARDING ----------
+function openOnboarding() {
+  const ov = $('#onboarding-overlay');
+  if (ov) ov.classList.add('show');
+}
+function closeOnboarding() {
+  const ov = $('#onboarding-overlay');
+  if (ov) ov.classList.remove('show');
+  STATE.onboardingDismissed = true;
+  saveProgress();
+}
+
+// ---------- INIT ----------
+function init() {
+  loadProgress();
+
+  // mode buttons
+  $$('.mode-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      STATE.mode = b.dataset.mode;
+      render();
+    });
+  });
+
+  // section buttons (now includes "traps")
+  $$('.section-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      STATE.section = b.dataset.section;
+      STATE.formulaIdx = 0;
+      STATE.trapsIdx = 0;
+      // Initialise trapRevealed if returning to a completed trap.
+      if (STATE.section === 'traps') {
+        const x = STATE.progress.traps[TRAPS[STATE.trapsIdx].id];
+        STATE.trapRevealed = !!(x && x.done);
+      }
+      resetStepState();
+      render();
+    });
+  });
+
+  // reset button
+  $('#reset-btn').addEventListener('click', () => {
+    if (!confirm('Сбросить весь прогресс по этой теме?')) return;
+    STATE.progress = { derive: {}, assemble: {}, product: {}, traps: {} };
+    STATE.stats = { done: 0, hint: 0, err: 0 };
+    STATE.onboardingDismissed = false;
+    STATE.pqIntroSeen = false;
+    resetStepState();
+    saveProgress();
+    render();
+    openOnboarding();
+  });
+
+  // ---- Onboarding ----
+  $('#start-help-btn').addEventListener('click', openOnboarding);
+  $('#ob-dismiss').addEventListener('click', closeOnboarding);
+
+  $('#ob-start-simple').addEventListener('click', () => {
+    STATE.mode = 'learn';
+    STATE.section = 'derive';
+    STATE.formulaIdx = 0;
+    resetStepState();
+    // Trigger the x/y mini-intro for new students.
+    if (!STATE.pqIntroSeen) {
+      STATE.pqIntroOpen = true;
+      STATE.pqIntroStep = 0;
+      STATE.pqIntroSelected = null;
+      STATE.pqIntroAttempts = 0;
+    }
+    closeOnboarding();
+    render();
+  });
+
+  $('#ob-assemble').addEventListener('click', () => {
+    STATE.mode = 'practice';
+    STATE.section = 'assemble';
+    STATE.formulaIdx = 0;
+    resetStepState();
+    closeOnboarding();
+    render();
+  });
+
+  $('#ob-teacher').addEventListener('click', () => {
+    STATE.mode = 'teacher';
+    STATE.section = 'derive';
+    STATE.formulaIdx = 0;
+    resetStepState();
+    closeOnboarding();
+    render();
+  });
+
+  // Close on backdrop click (but not when clicking the card itself)
+  $('#onboarding-overlay').addEventListener('click', (e) => {
+    if (e.target.id === 'onboarding-overlay') closeOnboarding();
+  });
+
+  // First-time visit → show onboarding overlay
+  if (!STATE.onboardingDismissed) {
+    openOnboarding();
+  }
+  // If returning to traps section, restore trapRevealed state
+  if (STATE.section === 'traps' && TRAPS[STATE.trapsIdx]) {
+    const x = STATE.progress.traps[TRAPS[STATE.trapsIdx].id];
+    STATE.trapRevealed = !!(x && x.done);
+  }
+
+  recountStats();
+  render();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

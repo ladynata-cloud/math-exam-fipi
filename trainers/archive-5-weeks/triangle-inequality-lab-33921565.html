@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Лаборатория странных треугольников — Mathexam.space</title>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#eef2f5; --hdr:#2c3e4e; --card:#fff;
+  --blue:#2d70b3; --blt:#e8f2fb; --bdark:#1a5ea8;
+  --ok:#1b8a5a;   --ok-bg:#d4edde;  --ok-dk:#0f5132;
+  --err:#c94040;  --err-bg:#fde8e8; --err-dk:#7a2020;
+  --deg:#d97706;  --deg-bg:#fef3c7; --deg-dk:#78350f;
+  --mu:#8899aa;   --bd:#cdd8e3;     --tx:#1e2a36;   --ts:#5a7085;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);font-family:'Segoe UI',Roboto,sans-serif;color:var(--tx);min-height:100vh;display:flex;flex-direction:column}
+
+/* ── ШАПКА ── */
+.hdr{background:var(--hdr);color:#fff;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.hdr h1{font-size:1.15rem;font-weight:600}
+.hdr p{font-size:.72rem;opacity:.52;margin-top:2px}
+.back{color:rgba(255,255,255,.45);font-size:.8rem;text-decoration:none;font-weight:600;white-space:nowrap;transition:color .15s}
+.back:hover{color:#fff}
+
+/* ── СТАТУС ── */
+.sbar{background:#243447;padding:5px 22px;gap:14px;flex-wrap:wrap;font-size:.77rem;color:rgba(255,255,255,.6);display:none}
+.sbar.on{display:flex}
+.sv{font-weight:700;color:#fff}
+
+/* ── КОНТЕНТ ── */
+main{flex:1;display:flex;flex-direction:column;align-items:center;padding:18px 14px 50px}
+.scr{width:100%;max-width:600px;display:flex;flex-direction:column;gap:12px}
+.card{background:var(--card);border-radius:18px;padding:20px;box-shadow:0 4px 16px rgba(0,0,0,.07)}
+
+/* ── ПРОГРЕСС ── */
+.prog-hdr{display:flex;justify-content:space-between;font-size:.78rem;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px}
+.pw{height:6px;background:var(--bd);border-radius:3px;overflow:hidden;margin-bottom:14px}
+.pf{height:100%;background:var(--blue);border-radius:3px;transition:width .4s}
+
+/* ── СТОРОНЫ: три большие числа с барами ── */
+.sides-card{background:var(--card);border-radius:18px;padding:18px 16px 16px;box-shadow:0 4px 16px rgba(0,0,0,.07)}
+.sides-label{font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--mu);text-align:center;margin-bottom:14px}
+.sides-trio{display:flex;justify-content:center;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.si{display:flex;flex-direction:column;align-items:center;gap:7px;flex:1;min-width:72px;max-width:130px}
+.si-num{font-family:'Courier New',monospace;font-size:3.2rem;font-weight:900;color:var(--blue);line-height:1;text-align:center;transition:color .3s}
+.si-num.big{color:var(--err)}
+.si-track{width:100%;height:9px;background:#e0eaf4;border-radius:5px;overflow:hidden}
+.si-fill{height:100%;border-radius:5px;background:var(--blue);transition:width .5s ease,background .3s}
+.si-fill.big{background:var(--err)}
+.sides-note{font-size:.76rem;color:var(--mu);text-align:center}
+
+/* ── КНОПКИ ОТВЕТА ── */
+.ans-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:2px}
+.ab{padding:17px 10px;border:2.5px solid var(--bd);border-radius:14px;font-size:.97rem;font-weight:700;cursor:pointer;background:#fff;color:var(--tx);transition:all .17s;font-family:inherit;text-align:center;line-height:1.3}
+.ab:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 5px 16px rgba(0,0,0,.1)}
+.ab.yes:hover:not(:disabled){border-color:var(--ok);color:var(--ok);background:var(--ok-bg)}
+.ab.no:hover:not(:disabled){border-color:var(--err);color:var(--err);background:var(--err-bg)}
+.ab.correct{border-color:var(--ok);background:var(--ok-bg);color:var(--ok-dk);pointer-events:none}
+.ab.wrong{border-color:var(--err);background:var(--err-bg);color:var(--err-dk);pointer-events:none;animation:shake .4s}
+.ab.dim{opacity:.22;pointer-events:none}
+
+/* ── GeoGebra КАНВАС ── */
+.ggb{border:2px solid #aabbc8;border-radius:7px;overflow:hidden;background:#fff;line-height:0;margin-top:2px}
+.ggb svg{display:block;width:100%;height:auto}
+
+/* ── ПРОВЕРКА ── */
+.vcard{border-radius:14px;padding:15px 17px;animation:fi .35s ease;display:none}
+.vcard.vis{display:block}
+.vok {background:var(--ok-bg); border-left:4px solid var(--ok)}
+.verr{background:var(--err-bg);border-left:4px solid var(--err)}
+.vdeg{background:var(--deg-bg);border-left:4px solid var(--deg)}
+.vrow{font-family:'Courier New',monospace;font-size:.92rem;line-height:2;color:var(--tx)}
+.vbig{font-size:1rem;font-weight:700;margin-top:7px;font-family:'Segoe UI',sans-serif}
+.vok  .vbig{color:var(--ok-dk)} .verr .vbig{color:var(--err-dk)} .vdeg .vbig{color:var(--deg-dk)}
+
+/* ── ДИАГНОСТИКА И ПОДСКАЗКА ── */
+.diag{border-radius:12px;padding:11px 14px;font-size:.86rem;line-height:1.65;margin-top:4px;display:none;animation:fi .3s ease}
+.diag.vis{display:block}
+.diag-warn{background:var(--deg-bg);border-left:4px solid var(--deg);color:var(--deg-dk)}
+.diag-ok{background:var(--ok-bg);border-left:4px solid var(--ok);color:var(--ok-dk)}
+.hint{background:var(--blt);border-left:4px solid var(--blue);border-radius:12px;padding:11px 14px;font-size:.85rem;line-height:1.65;margin-top:4px;display:none;animation:fi .3s ease;color:#1a3a6e}
+.hint.vis{display:block}
+
+/* ── КНОПКИ УПРАВЛЕНИЯ ── */
+.ctrl{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.bp{background:var(--blue);border:none;color:#fff;padding:10px 20px;border-radius:40px;font-size:.9rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+.bp:hover{background:var(--bdark);transform:translateY(-1px)}
+.bg{background:transparent;border:2px solid var(--bd);color:var(--ts);padding:9px 16px;border-radius:40px;font-size:.87rem;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s}
+.bg:hover{border-color:var(--ts);color:var(--tx)}
+
+/* ── МЕНЮ ── */
+.mico{font-size:2.4rem;text-align:center;margin-bottom:8px}
+.mttl{font-size:1.38rem;font-weight:700;text-align:center;margin-bottom:7px}
+.msub{font-size:.91rem;color:var(--ts);line-height:1.6;text-align:center;margin-bottom:18px}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:13px}
+.mb{border:2px solid var(--bd);border-radius:14px;padding:16px;cursor:pointer;transition:all .18s;text-align:center;background:#fff}
+.mb:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 5px 14px rgba(45,112,179,.14)}
+.mbi{font-size:1.5rem;margin-bottom:5px}
+.mbn{font-size:.97rem;font-weight:700;color:var(--tx);margin-bottom:3px}
+.mbd{font-size:.75rem;color:var(--ts);line-height:1.35}
+
+/* ── ИТОГИ ── */
+.rbig{font-size:3.4rem;font-weight:900;font-family:'Courier New',monospace;text-align:center}
+.rbig.ex{color:var(--ok)}.rbig.go{color:var(--blue)}.rbig.fa{color:var(--deg)}.rbig.po{color:var(--err)}
+.rlbl{font-size:.96rem;font-weight:600;color:var(--ts);text-align:center;margin-top:4px;margin-bottom:15px}
+.rgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:13px}
+.rbox{background:#f7fafc;border-radius:12px;padding:11px;text-align:center}
+.rn{font-size:1.75rem;font-weight:800;line-height:1}
+.rl{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--mu);margin-top:3px}
+.hrow{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-bottom:13px}
+.hd{width:14px;height:14px;border-radius:50%}
+.hd.ok{background:var(--ok)}.hd.ng{background:var(--err)}.hd.na{background:var(--bd)}
+.brow{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.bw{background:#fee2e2;border:none;color:var(--err-dk);padding:7px 13px;border-radius:40px;font-size:.79rem;font-weight:600;cursor:pointer;font-family:inherit}
+.bw:hover{background:var(--err);color:#fff}
+.dl{height:1px;background:var(--bd);margin:13px 0}
+
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div><h1>🔺 Лаборатория странных треугольников</h1><p>Неравенство треугольника · Mathexam.space</p></div>
+  <a href="../index.html" class="back">← Назад</a>
+</header>
+<div id="sbar" class="sbar"></div>
+<main><div id="app" class="scr"></div></main>
+
+<script>
+/* ─────────────── ХРАНИЛИЩЕ ─────────────────────── */
+const SK='mathExamCourseProgress.v1', TID='triangleInequalityLab';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||dS();}catch{return dS();}}
+function dS(){return{solved:0,correct:0,streak:0,bestStreak:0,history:[]};}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d));}catch{}}
+function rec(ok){const s=lS();s.solved++;if(ok){s.correct++;s.streak++;if(s.streak>s.bestStreak)s.bestStreak=s.streak;}else s.streak=0;s.history=[ok?1:0,...(s.history||[])].slice(0,10);sS(s);}
+function clrS(){const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=dS();localStorage.setItem(SK,JSON.stringify(d));}
+
+/* ─────────────── МАТЕМАТИКА ────────────────────── */
+function tri(sides){
+  const[a,b,c]=[...sides].sort((x,y)=>x-y);
+  const t=a+b===c?'deg':a+b>c?'ok':'big';
+  return{ok:t==='ok', t, s:a, m:b, L:c};
+}
+
+/* ─────────────── ОБУЧЕНИЕ: задачи ─────────────── */
+const LEARN=[
+  {s:[7,7,7]},  // 1 ok — равносторонний, очевидный
+  {s:[5,7,10]}, // 2 ok
+  {s:[6,8,9]},  // 3 ok
+  {s:[4,4,6]},  // 4 ok — равнобедренный
+  {s:[4,6,10]}, // 5 deg — равенство
+  {s:[5,5,10]}, // 6 deg — равенство
+  {s:[3,8,11]}, // 7 deg — равенство
+  {s:[3,5,12]}, // 8 big
+  {s:[2,7,10]}, // 9 big
+];
+
+/* ─────────────── GeoGebra-стиль SVG ───────────── */
+const SW=400, SH=230, SP=46;
+
+function grid(){
+  let g='';
+  for(let x=0;x<=SW;x+=20)for(let y=0;y<=SH;y+=20)
+    g+=`<circle cx="${x}" cy="${y}" r=".9" fill="#c8d8e8"/>`;
+  return g;
+}
+
+function sideLbl(x1,y1,x2,y2,val,col){
+  const mx=(x1+x2)/2, my=(y1+y2)/2;
+  const dx=x2-x1,dy=y2-y1,ln=Math.hypot(dx,dy)||1;
+  const nx=-dy/ln*15, ny=dx/ln*15;
+  return`<text x="${mx+nx}" y="${my+ny+4.5}" text-anchor="middle"
+    fill="${col}" font-size="13" font-weight="700" font-family="'Courier New',monospace">${val}</text>`;
+}
+
+function svgValid(r){
+  const{s,m,L}=r;
+  const avW=SW-2*SP, avH=SH-SP-30;
+  const xc=(L*L+s*s-m*m)/(2*L), yc=Math.sqrt(Math.max(0,s*s-xc*xc));
+  const sc=Math.min(avW/L, yc>0?avH/yc:99);
+  const ox=SP+(avW-L*sc)/2, oy=SH-SP+10;
+  const Ax=ox, Ay=oy, Bx=ox+L*sc, By=oy;
+  const Cx=ox+xc*sc, Cy=oy-yc*sc;
+  let o=grid();
+  o+=`<polygon points="${Ax},${Ay} ${Bx},${By} ${Cx},${Cy}"
+       fill="rgba(45,112,179,.09)" stroke="none"/>`;
+  // Sides — largest highlighted
+  o+=`<line x1="${Ax}" y1="${Ay}" x2="${Bx}" y2="${By}"
+       stroke="${'#1a5ea8'}" stroke-width="3.5" stroke-linecap="round"/>`;
+  o+=`<line x1="${Ax}" y1="${Ay}" x2="${Cx}" y2="${Cy}"
+       stroke="#2d70b3" stroke-width="2.5" stroke-linecap="round"/>`;
+  o+=`<line x1="${Bx}" y1="${By}" x2="${Cx}" y2="${Cy}"
+       stroke="#2d70b3" stroke-width="2.5" stroke-linecap="round"/>`;
+  // Vertices
+  [[Ax,Ay],[Bx,By],[Cx,Cy]].forEach(([x,y])=>
+    o+=`<circle cx="${x}" cy="${y}" r="5" fill="#2d70b3" stroke="#fff" stroke-width="2"/>`);
+  // Labels
+  o+=sideLbl(Ax,Ay,Bx,By,L,'#1a5ea8');
+  o+=sideLbl(Ax,Ay,Cx,Cy,s,'#2d70b3');
+  o+=sideLbl(Bx,By,Cx,Cy,m,'#2d70b3');
+  // Banner
+  o+=banner(SW,`${L} < ${s}+${m} = ${s+m}  ✓  Треугольник существует`,'rgba(27,138,90,.15)','#0f5132');
+  return o;
+}
+
+function svgDeg(r){
+  const{s,m,L}=r;
+  const sc=(SW-2*SP)/L;
+  const ox=SP, cy=SH*0.5;
+  const Ax=ox, Mx=ox+s*sc, Bx=ox+L*sc;
+  let o=grid();
+  // Segments on line
+  o+=`<line x1="${Ax-.5}" y1="${cy}" x2="${Bx+.5}" y2="${cy}" stroke="#dde6ee" stroke-width="1"/>`;
+  o+=`<line x1="${Ax}" y1="${cy}" x2="${Mx}" y2="${cy}" stroke="#d97706" stroke-width="4" stroke-linecap="round"/>`;
+  o+=`<line x1="${Mx}" y1="${cy}" x2="${Bx}" y2="${cy}" stroke="#2d70b3" stroke-width="4" stroke-linecap="round"/>`;
+  // Labels above segments
+  o+=`<text x="${(Ax+Mx)/2}" y="${cy-20}" text-anchor="middle"
+    fill="#d97706" font-size="13.5" font-weight="700" font-family="'Courier New',monospace">${s}</text>`;
+  o+=`<text x="${(Mx+Bx)/2}" y="${cy-20}" text-anchor="middle"
+    fill="#2d70b3" font-size="13.5" font-weight="700" font-family="'Courier New',monospace">${m}</text>`;
+  // Double-headed arrow below showing L
+  const ay=cy+28;
+  o+=`<line x1="${Ax}" y1="${ay}" x2="${Bx}" y2="${ay}" stroke="#c94040" stroke-width="2" stroke-dasharray="4,3"/>`;
+  o+=`<text x="${(Ax+Bx)/2}" y="${ay+17}" text-anchor="middle"
+    fill="#c94040" font-size="13" font-weight="700" font-family="'Courier New',monospace">${L} = ${s}+${m}</text>`;
+  // Points
+  [[Ax,cy,'#78350f'],[Mx,cy,'#78350f'],[Bx,cy,'#78350f']].forEach(([x,y,c])=>
+    o+=`<circle cx="${x}" cy="${y}" r="5.5" fill="${c}" stroke="#fff" stroke-width="2"/>`);
+  o+=banner(SW,`${L} = ${s}+${m}  ─  отрезки лягут в одну прямую`,'rgba(217,119,6,.15)','#78350f');
+  return o;
+}
+
+function svgBig(r){
+  const{s,m,L}=r;
+  const avW=SW-2*SP, avH=SH-SP-30;
+  const θ=Math.PI*55/180;
+  const scW=avW/L, scH=(avH*.75)/(Math.max(s,m)*Math.sin(θ));
+  const sc=Math.min(scW,scH);
+  const ox=SP+(avW-L*sc)/2, by=SH-SP+10;
+  const Ax=ox, Bx=ox+L*sc;
+  const Lx=Ax+s*sc*Math.cos(θ), Ly=by-s*sc*Math.sin(θ);
+  const Rx=Bx-m*sc*Math.cos(θ), Ry=by-m*sc*Math.sin(θ);
+  let o=grid();
+  // Base (too long) — red
+  o+=`<line x1="${Ax}" y1="${by}" x2="${Bx}" y2="${by}"
+       stroke="#c94040" stroke-width="4" stroke-linecap="round"/>`;
+  // Arms — blue
+  o+=`<line x1="${Ax}" y1="${by}" x2="${Lx}" y2="${Ly}"
+       stroke="#2d70b3" stroke-width="3" stroke-linecap="round"/>`;
+  o+=`<line x1="${Bx}" y1="${by}" x2="${Rx}" y2="${Ry}"
+       stroke="#2d70b3" stroke-width="3" stroke-linecap="round"/>`;
+  // Gap
+  o+=`<line x1="${Lx}" y1="${Ly}" x2="${Rx}" y2="${Ry}"
+       stroke="#aabbc8" stroke-width="1.8" stroke-dasharray="5,4"/>`;
+  // Gap label
+  const gx=(Lx+Rx)/2, gy=Math.min(Ly,Ry)-14;
+  o+=`<text x="${gx}" y="${gy}" text-anchor="middle"
+    fill="#8899aa" font-size="11" font-weight="600" font-family="'Segoe UI',sans-serif">разрыв</text>`;
+  // Points
+  o+=`<circle cx="${Ax}" cy="${by}" r="5" fill="#c94040" stroke="#fff" stroke-width="2"/>`;
+  o+=`<circle cx="${Bx}" cy="${by}" r="5" fill="#c94040" stroke="#fff" stroke-width="2"/>`;
+  o+=`<circle cx="${Lx}" cy="${Ly}" r="5" fill="#2d70b3" stroke="#fff" stroke-width="2"/>`;
+  o+=`<circle cx="${Rx}" cy="${Ry}" r="5" fill="#2d70b3" stroke="#fff" stroke-width="2"/>`;
+  // Labels
+  o+=`<text x="${(Ax+Bx)/2}" y="${by+22}" text-anchor="middle"
+    fill="#c94040" font-size="13.5" font-weight="700" font-family="'Courier New',monospace">${L}</text>`;
+  o+=sideLbl(Ax,by,Lx,Ly,s,'#2d70b3');
+  o+=sideLbl(Bx,by,Rx,Ry,m,'#2d70b3');
+  o+=banner(SW,`${L} > ${s}+${m} = ${s+m}  ─  концы не сходятся`,'rgba(201,64,64,.15)','#7a2020');
+  return o;
+}
+
+function banner(W,txt,bg,col){
+  return`<rect x="7" y="7" width="${W-14}" height="23" rx="4" fill="${bg}"/>
+    <text x="${W/2}" y="23" text-anchor="middle"
+      fill="${col}" font-size="12.5" font-weight="700" font-family="'Segoe UI',sans-serif">${txt}</text>`;
+}
+
+function makeSVG(r){
+  const inner=r.t==='ok'?svgValid(r):r.t==='deg'?svgDeg(r):svgBig(r);
+  return`<svg viewBox="0 0 ${SW} ${SH}" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`;
+}
+
+/* ─────────────── ГЕНЕРАТОР ТРЕНИРОВКИ ─────────── */
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const sfl=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;};
+
+function genP(){
+  const tasks=[];
+  function ok(){const a=rnd(3,9),b=rnd(3,9),c=rnd(Math.abs(a-b)+1,a+b-1);if(c<2||c>14)return ok();return sfl([a,b,c]);}
+  function dg(){const a=rnd(3,7),b=rnd(3,7),c=a+b;if(c>14)return dg();return sfl([a,b,c]);}
+  function bg(){const a=rnd(2,5),b=rnd(2,5),c=a+b+rnd(1,5);if(c>14)return bg();return sfl([a,b,c]);}
+  // гарантированные типы
+  tasks.push({s:ok()});tasks.push({s:ok()});tasks.push({s:ok()});tasks.push({s:ok()});
+  tasks.push({s:dg()});tasks.push({s:dg()});
+  tasks.push({s:bg()});tasks.push({s:bg()});tasks.push({s:bg()});
+  // 10-я случайная
+  tasks.push({s:Math.random()<.4?dg():Math.random()<.5?ok():bg()});
+  return sfl(tasks).slice(0,10);
+}
+
+/* ─────────────── СОСТОЯНИЕ ────────────────────── */
+const S={mode:null,step:'q',idx:0,tasks:[],sesOk:0,sesTot:0,taskOk:true,hint:false};
+function cur(){return S.tasks[S.idx];}
+
+/* ─────────────── РЕНДЕР ────────────────────────── */
+function render(){
+  const app=document.getElementById('app');
+  if(!S.mode){app.innerHTML=menu();updSbar(false);return;}
+  if(S.mode==='results'){app.innerHTML=results();updSbar(false);return;}
+  app.innerHTML=task();
+  updSbar(true);
+}
+
+/* МЕНЮ */
+function menu(){
+  const s=lS(),pct=s.solved>0?Math.round(s.correct/s.solved*100):0;
+  const hh=(s.history||[]).map(v=>`<div class="hd ${v===1?'ok':'ng'}"></div>`).join('');
+  return`<div class="card">
+    <div class="mico">🔺</div>
+    <p class="mttl">Лаборатория странных треугольников</p>
+    <p class="msub">Три палочки пытаются стать треугольником.<br>Иногда получается — иногда нет. Разберёмся почему.</p>
+    <div class="mgrid">
+      <div class="mb" onclick="go('learn')"><div class="mbi">📘</div><div class="mbn">Обучение</div><div class="mbd">9 задач · от очевидных к странным · с объяснениями</div></div>
+      <div class="mb" onclick="go('practice')"><div class="mbi">⚡</div><div class="mbn">Тренировка</div><div class="mbd">10 задач · все типы · статистика</div></div>
+    </div>
+    ${s.solved>0?`<div style="background:#f7fafc;border-radius:12px;padding:13px 15px;border:1px solid var(--bd)">
+      <div style="font-size:.67rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--mu);margin-bottom:8px">Статистика</div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:.85rem;margin-bottom:8px">
+        <span>Решено: <strong>${s.solved}</strong></span><span>Верно: <strong>${s.correct}</strong></span>
+        <span>Точность: <strong>${pct}%</strong></span><span>Серия: <strong>${s.streak>2?'🔥':''}${s.streak}</strong></span>
+      </div>
+      <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:9px">${hh}</div>
+      <button class="bw" onclick="if(confirm('Сбросить статистику?')){clrS();render()}">Сбросить статистику</button>
+    </div>`:''}
+  </div>`;
+}
+
+/* СТАТУС-ПОЛОСА */
+function updSbar(on){
+  const b=document.getElementById('sbar');
+  if(!on){b.className='sbar';return;}
+  const s=lS();b.className='sbar on';
+  b.innerHTML=`<span>Задача <span class="sv">${S.idx+1}/${S.tasks.length}</span></span>
+    <span>Верно <span class="sv">${S.sesOk}/${S.sesTot}</span></span>
+    ${s.streak>1?`<span>Серия <span class="sv" style="color:#fbbf24">${s.streak>2?'🔥':''}${s.streak}</span></span>`:''}`;
+}
+
+/* ЗАДАЧА */
+function task(){
+  const t=cur(), r=tri(t.s);
+  const disp=t.s; // уже перемешаны при создании
+  const mx=Math.max(...disp), mxP=mx;
+  const answered=S.step==='a';
+  const isLast=S.idx>=S.tasks.length-1;
+  let html='';
+
+  // Прогресс (только тренировка)
+  if(S.mode==='practice'){
+    const pct=(S.idx/S.tasks.length)*100;
+    html+=`<div class="prog-hdr"><span>Тренировка</span><span>${S.idx+1} / ${S.tasks.length}</span></div>
+           <div class="pw"><div class="pf" style="width:${pct}%"></div></div>`;
+  } else {
+    html+=`<div style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--mu);margin-bottom:10px">
+      Обучение · задача ${S.idx+1} из ${S.tasks.length}</div>`;
+  }
+
+  // Три стороны
+  html+=`<div class="sides-card">
+    <div class="sides-label">Можно ли построить треугольник из этих трёх отрезков?</div>
+    <div class="sides-trio">`;
+  disp.forEach(v=>{
+    const isBig=answered&&v===r.L;
+    const w=Math.round(v/mxP*100);
+    html+=`<div class="si">
+      <div class="si-num${isBig?' big':''}">${v}</div>
+      <div class="si-track"><div class="si-fill${isBig?' big':''}" style="width:${w}%"></div></div>
+    </div>`;
+  });
+  html+=`</div>`;
+  if(!answered)html+=`<div class="sides-note">Подсказка: найди наибольшую сторону и сравни её с суммой двух остальных.</div>`;
+  html+=`</div>`;
+
+  // Вопрос — до ответа
+  if(!answered){
+    html+=`<div class="ans-row">
+      <button class="ab yes" onclick="ans(true)">✅ Получится</button>
+      <button class="ab no"  onclick="ans(false)">❌ Не получится</button>
+    </div>`;
+    html+=`<div class="hint${S.hint?' vis':''}" id="hintEl">
+      💡 Правило: если наибольшая сторона <strong>строго меньше</strong> суммы двух других — треугольник можно построить.<br>
+      Равенство тоже НЕ подходит: точки лягут в одну прямую.
+    </div>`;
+    html+=`<div class="ctrl">
+      <button class="bg" onclick="toggleHint()">💡 Подсказка</button>
+      <button class="bg" onclick="showSol()">👁 Показать решение</button>
+    </div>`;
+  }
+
+  // Разбор — после ответа
+  if(answered){
+    const cls=r.t==='ok'?'vok':r.t==='deg'?'vdeg':'verr';
+    const sym=r.t==='ok'?'<':r.t==='deg'?'=':'>';
+    const verdict=r.t==='ok'
+      ?'✅ Да, треугольник получится'
+      :r.t==='deg'
+      ?'⚠️ Нет — вырожденный случай, точки в одну прямую'
+      :'❌ Нет, треугольник не получится';
+    const descr=r.t==='ok'
+      ?'Наибольшая сторона меньше суммы двух других — стороны замкнутся.'
+      :r.t==='deg'
+      ?'Наибольшая сторона равна сумме двух других — отрезки лягут в одну прямую.'
+      :'Наибольшая сторона больше суммы двух других — короткие стороны не дотянутся.';
+
+    html+=`<div class="vcard ${cls} vis">
+      <div class="vrow">
+        Наибольшая сторона: <strong>${r.L}</strong><br>
+        Две другие: ${r.s} + ${r.m} = <strong>${r.s+r.m}</strong><br>
+        Сравниваем: <strong>${r.L} ${sym} ${r.s+r.m}</strong>
+      </div>
+      <div class="vbig">${verdict}</div>
+      <div style="font-size:.83rem;margin-top:5px;opacity:.85">${descr}</div>
+    </div>`;
+
+    // SVG
+    html+=`<div class="ggb">${makeSVG(r)}</div>`;
+
+    // Для обучения — дополнительное объяснение
+    if(S.mode==='learn'){
+      html+=buildLearnNote(r);
+    }
+
+    html+=`<div class="ctrl">
+      <button class="bp" onclick="${isLast?'finish()':'nextT()'}">${isLast?'Завершить →':'Следующий →'}</button>
+    </div>`;
+  }
+
+  return html;
+}
+
+function buildLearnNote(r){
+  if(r.t==='ok')
+    return`<div class="diag diag-ok vis">📐 <strong>Правило (случай ОК):</strong> ${r.L} &lt; ${r.s} + ${r.m} = ${r.s+r.m}.
+      Самая длинная сторона меньше суммы двух других — треугольник замкнётся.
+      Нарисовать такой треугольник всегда можно.</div>`;
+  if(r.t==='deg')
+    return`<div class="diag diag-warn vis">📏 <strong>Вырожденный случай:</strong> ${r.L} = ${r.s} + ${r.m}.
+      Если большая сторона в точности равна сумме двух других, всё треугольник «схлопнется» в отрезок.
+      Три точки окажутся на одной прямой — никакого угла нет. Это НЕ треугольник.</div>`;
+  return`<div class="diag diag-warn vis">📏 <strong>Правило (случай нет):</strong> ${r.L} &gt; ${r.s} + ${r.m} = ${r.s+r.m}.
+    Длинная сторона слишком длинная. Даже если соединить оба конца двух коротких — они не дотянутся до конца длинной.
+    Разрыв = ${r.L} - (${r.s}+${r.m}) = ${r.L-r.s-r.m}.</div>`;
+}
+
+/* ─────────────── ОБРАБОТЧИКИ ───────────────────── */
+function ans(guess){
+  const t=cur(), r=tri(t.s);
+  const correct=(guess===r.ok);
+  // Диагностика при неверном ответе
+  if(!correct){
+    const msg=diagMsg(guess,r);
+    const el=document.createElement('div');
+    el.className='diag diag-warn vis';el.innerHTML=msg;
+    const row=document.querySelector('.ans-row');
+    if(row){
+      // Подсветить нажатую кнопку
+      const btn=row.querySelectorAll('.ab')[guess?0:1];
+      if(btn) btn.classList.add('wrong');
+      row.insertAdjacentElement('afterend',el);
+    }
+    setTimeout(()=>{S.step='a';rec(false);S.sesTot++;render();},1000);
+  } else {
+    rec(true);S.sesOk++;S.sesTot++;S.step='a';render();
+  }
+}
+
+function diagMsg(guess,r){
+  if(guess===true&&r.t==='deg')
+    return'⚠️ Почти, но нет. Когда наибольшая сторона <strong>равна</strong> сумме двух других, отрезки лягут в одну прямую — треугольник не замкнётся.';
+  if(guess===true&&r.t==='big')
+    return`❌ Длинная сторона (${r.L}) слишком длинная. Две короткие вместе (${r.s}+${r.m}=${r.s+r.m}) не дотягиваются до её конца.`;
+  if(guess===false&&r.t==='ok')
+    return`✅ Проверь: ${r.L} &lt; ${r.s}+${r.m} = ${r.s+r.m}. Наибольшая сторона <em>меньше</em> суммы двух других — треугольник можно построить!`;
+  return'Сначала найди наибольшую сторону, именно её сравниваем с суммой двух остальных.';
+}
+
+function toggleHint(){
+  S.hint=!S.hint;
+  const el=document.getElementById('hintEl');
+  if(el) el.className='hint'+(S.hint?' vis':'');
+}
+
+function showSol(){
+  rec(false);S.sesTot++;S.step='a';render();
+}
+
+function nextT(){S.idx++;S.step='q';S.hint=false;render();}
+function finish(){S.mode='results';render();}
+
+/* ─────────────── ИТОГИ ─────────────────────────── */
+function results(){
+  const pct=S.sesTot>0?Math.round(S.sesOk/S.sesTot*100):0;
+  const s=lS(),tot=s.solved>0?Math.round(s.correct/s.solved*100):0;
+  const sc=pct>=90?'ex':pct>=70?'go':pct>=50?'fa':'po';
+  const lbl=pct>=90?'Отлично! Неравенство треугольника освоено!':pct>=70?'Хороший результат!':pct>=50?'Половина верно, ещё разок!':'Нужна ещё практика.';
+  const hh=(s.history||[]).map(v=>`<div class="hd ${v===1?'ok':'ng'}"></div>`).join('');
+  return`<div class="card">
+    <div style="font-size:.69rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--mu);margin-bottom:8px;text-align:center">Результат</div>
+    <div class="rbig ${sc}">${S.sesOk}/${S.sesTot}</div>
+    <div class="rlbl">${lbl}</div>
+    <div class="rgrid">
+      <div class="rbox"><div class="rn">${s.solved}</div><div class="rl">Всего</div></div>
+      <div class="rbox"><div class="rn" style="color:${tot>=70?'var(--ok)':'var(--deg)'}">${tot}%</div><div class="rl">Точность</div></div>
+      <div class="rbox"><div class="rn" style="color:${s.streak>2?'#d97706':'inherit'}">${s.streak>2?'🔥':''}${s.streak}</div><div class="rl">Серия</div></div>
+    </div>
+    <div style="font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--mu);margin-bottom:5px;text-align:center">История</div>
+    <div class="hrow">${hh}</div>
+    <div class="dl"></div>
+    <div class="brow">
+      <button class="bp" onclick="go(S.mode==='learn'?'learn':'practice')">Ещё раз</button>
+      <button class="bg" onclick="S.mode=null;render()">В меню</button>
+    </div>
+  </div>`;
+}
+
+/* ─────────────── СТАРТ ─────────────────────────── */
+function go(m){
+  S.mode=m;S.idx=0;S.step='q';S.hint=false;S.sesOk=0;S.sesTot=0;
+  if(m==='learn') S.tasks=LEARN.map(t=>({s:sfl([...t.s])}));
+  else S.tasks=genP();
+  render();
+}
+
+render();
+</script>
+</body>
+</html>

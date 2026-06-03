@@ -1,0 +1,2005 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ОГЭ №17 — педагогический тренажёр по геометрии v10</title>
+  <style>
+    :root{
+      --bg:#f6f7fb; --card:#ffffff; --ink:#172033; --muted:#667085; --line:#dfe3ee;
+      --accent:#5b6ee1; --accent2:#00a884; --warn:#f59e0b; --bad:#e5484d; --good:#16a34a;
+      --soft:#eef1ff; --soft2:#eaf8f3; --shadow:0 16px 38px rgba(21, 30, 56, .10);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;}
+    body{min-height:100vh;}
+    .wrap{max-width:1180px;margin:0 auto;padding:22px 18px 42px;}
+    header{display:flex;gap:16px;justify-content:space-between;align-items:flex-start;margin-bottom:18px;}
+    h1{margin:0;font-size:clamp(26px,4vw,42px);letter-spacing:-.04em;line-height:1.02;}
+    .lead{margin:10px 0 0;max-width:760px;color:var(--muted);font-size:16px;line-height:1.45;}
+    .badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;font-weight:700;font-size:13px;white-space:nowrap;box-shadow:0 6px 16px rgba(21,30,56,.06)}
+    .badge .dot{width:9px;height:9px;border-radius:50%;background:var(--accent2);box-shadow:0 0 0 4px rgba(0,168,132,.12)}
+    .grid{display:grid;grid-template-columns:minmax(0, 1.15fr) minmax(320px, .85fr);gap:18px;align-items:start;}
+    @media (max-width:900px){header{display:block}.badge{margin-top:14px}.grid{grid-template-columns:1fr}.controls{grid-template-columns:1fr!important}}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+    .panel{padding:18px;}
+    .controls{display:grid;grid-template-columns:1.1fr .9fr auto;gap:10px;align-items:end;margin-bottom:14px;}
+    label{display:block;font-size:12px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin:0 0 6px;}
+    select,input[type="text"]{width:100%;border:1px solid var(--line);background:#fff;border-radius:14px;padding:13px 14px;font:inherit;color:var(--ink);outline:none;transition:.15s ease;}
+    input[type="text"]:focus, select:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(91,110,225,.13)}
+    button{border:0;border-radius:14px;padding:13px 15px;font-weight:850;font:inherit;cursor:pointer;transition:.15s ease;white-space:nowrap;}
+    button:hover{transform:translateY(-1px)}
+    button:active{transform:translateY(0)}
+    button:disabled{opacity:.55;cursor:not-allowed;transform:none;box-shadow:none}
+    .primary{background:var(--accent);color:#fff;box-shadow:0 10px 22px rgba(91,110,225,.24)}
+    .secondary{background:var(--soft);color:#2a3a9f}
+    .ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
+    .danger{background:#fff1f1;color:var(--bad)}
+    .taskTop{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px;}
+    .pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:850;background:#f2f4f7;color:#344054;}
+    .pill.new{background:#fff7e6;color:#985b00}.pill.base{background:#edf3ff;color:#274690}.pill.topic{background:#eaf8f3;color:#006b55}.pill.hard{background:#fff1f1;color:#9b1c1c}
+    .question{font-size:clamp(20px,2.4vw,28px);line-height:1.28;font-weight:850;letter-spacing:-.015em;margin:8px 0 14px;}
+    .diagram{border:1px dashed var(--line);background:linear-gradient(180deg,#fbfcff,#f8f9fc);border-radius:18px;padding:8px;margin:10px 0 16px;min-height:180px;display:flex;align-items:center;justify-content:center;}
+    .diagram svg{width:100%;max-height:230px;display:block}.diagram text{font-family:inherit}.smallnote{font-size:12px;color:var(--muted);margin-top:-6px;margin-bottom:14px}
+    .answerRow{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;}
+    @media (max-width:620px){.answerRow{grid-template-columns:1fr}.buttonRow{grid-template-columns:1fr 1fr}.question{font-size:21px}}
+    .buttonRow{display:grid;grid-template-columns:repeat(4, auto);gap:10px;margin-top:12px;justify-content:start;}
+    @media (max-width:620px){.buttonRow{display:grid;grid-template-columns:1fr 1fr}.buttonRow button{white-space:normal}}
+    .feedback{margin-top:14px;border-radius:16px;padding:14px 15px;display:none;font-weight:800;line-height:1.45}.feedback.good{display:block;background:#ecfdf3;color:#087443}.feedback.bad{display:block;background:#fff1f1;color:#a31922}.feedback.info{display:block;background:#f1f4ff;color:#2d3b9f}
+    .solution{display:none;margin-top:14px;border:1px solid var(--line);background:#fbfcff;border-radius:18px;padding:15px;line-height:1.55;color:#253044;}.solution.show{display:block}.solution h3{margin:0 0 8px;font-size:16px}.solution ol{margin:8px 0 0;padding-left:22px}.solution li{margin:5px 0}.hint{border-left:4px solid var(--accent);padding-left:10px;color:#334155}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}.stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:13px}.stat b{display:block;font-size:24px;letter-spacing:-.04em}.stat span{display:block;color:var(--muted);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.05em}
+    @media(max-width:620px){.stats{grid-template-columns:1fr 1fr}}
+    .sideTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px}.sideTitle h2{font-size:19px;margin:0;letter-spacing:-.02em}.sideTitle button{padding:9px 10px;font-size:13px}
+    .formulaList{display:grid;gap:9px}.formula{border:1px solid var(--line);background:#fff;border-radius:16px;padding:12px}.formula b{display:block;margin-bottom:5px}.formula code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f5f6fb;border:1px solid #e6e8f2;border-radius:8px;padding:2px 6px;color:#1f2a44}.formula small{display:block;color:var(--muted);line-height:1.4;margin-top:5px}
+    .mistakes{margin-top:14px}.mistakeItem{border:1px solid var(--line);border-radius:16px;background:#fff;padding:12px;margin-top:8px}.mistakeItem p{margin:0 0 7px;font-size:13px;line-height:1.35;color:#344054}.mistakeItem .mini{font-size:12px;color:var(--muted);font-weight:750}.mistakeItem button{padding:8px 10px;font-size:13px;margin-top:8px}
+    .footer{font-size:12px;color:var(--muted);line-height:1.45;margin-top:16px}.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;border:1px solid var(--line);border-bottom-width:2px;border-radius:6px;padding:1px 5px;background:#fff;color:#344054}.progressBar{height:10px;background:#edf0f6;border-radius:999px;overflow:hidden;margin:8px 0 2px}.progressBar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px;transition:.2s ease}.src{color:var(--muted);font-weight:700}.shake{animation:shake .25s linear 1}@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+    /* enhancements */
+    .pill.NEW{background:linear-gradient(135deg,#fff7e6,#ffe9b8);color:#7a4a00;border:1px solid #f0c47a;box-shadow:0 4px 12px rgba(245,158,11,.18);position:relative}
+    .pill.NEW::before{content:"NEW";font-size:11px;font-weight:900;letter-spacing:.08em}
+    .pill.NEW .title{display:none}
+    .onlyNewRow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 14px;padding:10px 14px;background:linear-gradient(90deg,#fff7e6,#fffdf3);border:1px solid #f1d8a3;border-radius:14px}
+    .onlyNewRow b{color:#7a4a00}
+    .onlyNewRow .toggle{margin-left:auto;display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:#5a3a00;cursor:pointer;user-select:none}
+    .onlyNewRow .toggle input{transform:scale(1.2);accent-color:#f59e0b;cursor:pointer}
+    .recommend{margin-top:10px;padding:11px 13px;background:#f1f4ff;border:1px dashed #c9d2ff;border-radius:14px;font-size:13.5px;line-height:1.45;color:#2d3b9f}
+    .recommend b{display:inline-block;margin-right:4px}
+    .topicProgress{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+    @media (max-width:620px){.topicProgress{grid-template-columns:1fr}}
+    .tpItem{background:#fff;border:1px solid var(--line);border-radius:14px;padding:9px 11px;display:flex;flex-direction:column;gap:4px}
+    .tpItem .row1{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:800;color:#344054}
+    .tpItem .row1 small{color:var(--muted);font-weight:700;font-size:12px}
+    .tpItem .bar{height:6px;background:#edf0f6;border-radius:999px;overflow:hidden}
+    .tpItem .bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px;transition:.2s ease}
+    .mini-test-msg{display:none;margin:8px 0 0;font-size:12px;color:#9b1c1c}
+    .mini-test-msg.show{display:block}
+    .formula b.formulaTitle{color:var(--accent)}
+    details.theoryGroup{border:1px solid var(--line);background:#fff;border-radius:16px;padding:0;overflow:hidden}
+    details.theoryGroup>summary{cursor:pointer;padding:11px 14px;font-weight:850;list-style:none;background:#fbfcff;display:flex;justify-content:space-between;align-items:center}
+    details.theoryGroup>summary::after{content:"+";font-weight:900;color:var(--muted)}
+    details.theoryGroup[open]>summary::after{content:"−"}
+    details.theoryGroup .inside{padding:6px 14px 14px}
+    details.theoryGroup .inside .formula{border:0;padding:8px 0;background:transparent}
+    details.theoryGroup .inside .formula+.formula{border-top:1px solid var(--line)}
+
+    /* pedagogical upgrade */
+    .stats{grid-template-columns:repeat(auto-fit,minmax(118px,1fr))}
+    .scenarioBar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:14px 0}
+    @media (max-width:900px){.scenarioBar{grid-template-columns:1fr 1fr}.scenarioBar .wide{grid-column:1/-1}}
+    @media (max-width:560px){.scenarioBar{grid-template-columns:1fr}}
+    .scenario{background:#fff;border:1px solid var(--line);color:#172033;text-align:left;white-space:normal;min-height:70px;padding:12px 13px;box-shadow:0 6px 16px rgba(21,30,56,.05)}
+    .scenario b{display:block;font-size:15px;line-height:1.1;margin-bottom:5px}.scenario span{display:block;font-size:12px;color:var(--muted);font-weight:750;line-height:1.25}
+    .scenario.active{border-color:var(--accent);background:var(--soft);box-shadow:0 8px 20px rgba(91,110,225,.16)}
+    .scenario.control{background:#fff7e6;border-color:#f1d8a3}.scenario.diagnostic{background:#eaf8f3;border-color:#bce7d8}.scenario.export{background:#fbfcff}.scenario:disabled{opacity:.6;cursor:not-allowed;transform:none}
+    .sessionBox{display:none;margin:8px 0 14px;padding:12px 14px;border:1px solid var(--line);background:#fbfcff;border-radius:16px;line-height:1.45;color:#344054;font-size:14px}.sessionBox.show{display:block}.sessionBox b{color:#172033}.sessionBox .meter{height:8px;background:#edf0f6;border-radius:999px;overflow:hidden;margin-top:8px}.sessionBox .meter i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px;width:0%}
+    .assistLine{margin-top:9px;display:flex;flex-wrap:wrap;gap:8px}.assistLine .pill{background:#fff}.assistLine .pill.self{color:#087443;background:#ecfdf3}.assistLine .pill.hintUsed{color:#7a4a00;background:#fff7e6}.assistLine .pill.solutionUsed{color:#a31922;background:#fff1f1}
+    .controlLock{display:none;margin-top:10px;padding:10px 12px;background:#fff7e6;border:1px solid #f1d8a3;border-radius:14px;color:#7a4a00;font-size:13px;font-weight:800}.is-control .controlLock{display:block}.is-control #hintBtn,.is-control #solutionBtn{opacity:.45;cursor:not-allowed}.is-control #theoryBox{display:none}.is-control #collapseTheoryBtn{display:none}
+    .skillProgress{display:grid;gap:8px}.skillItem{border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px}.skillItem .top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;font-size:13px;font-weight:850;color:#344054}.skillItem small{color:var(--muted);font-weight:750}.skillItem .bar{height:7px;background:#edf0f6;border-radius:999px;overflow:hidden;margin-top:7px}.skillItem .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px}.skillItem.weak .bar i{background:linear-gradient(90deg,var(--bad),var(--warn))}.skillItem.weak{border-color:#ffd0d2;background:#fffafa}
+    .teacherNote{border:1px dashed #c9d2ff;background:#f1f4ff;border-radius:16px;padding:12px 13px;line-height:1.45;color:#2d3b9f}.teacherNote b{display:block;margin-bottom:4px;color:#1f2a8a}.teacherNote button{margin-top:8px;padding:8px 10px;font-size:13px}
+    .mistakeItem code,.feedback code,.sessionBox code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#fff;border:1px solid var(--line);border-radius:7px;padding:1px 5px;color:#1f2a44}
+    .taskMetaExtra{font-size:12px;color:var(--muted);font-weight:750}.teacherTools{display:flex;gap:8px;flex-wrap:wrap}.teacherTools button{font-size:13px;padding:9px 10px}
+
+
+    /* v10: student-simple view, autosave note, extra visual support */
+    .viewModeRow{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:10px 0 14px;padding:10px 14px;background:#fff;border:1px solid var(--line);border-radius:16px}
+    .viewModeRow .toggle{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:850;color:#344054;cursor:pointer;user-select:none;text-transform:none;letter-spacing:0;margin:0}
+    .viewModeRow .toggle input{transform:scale(1.16);accent-color:var(--accent);cursor:pointer}
+    .viewModeRow small{color:var(--muted);font-weight:700;line-height:1.35}
+    .autosaveBadge{display:inline-flex;align-items:center;gap:6px;background:#ecfdf3;border:1px solid #bce7d8;color:#006b55;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:850}
+    .student-view .stats,.student-view .progressBar,.student-view .onlyNewRow,.student-view .controls,.student-view #exportCsvBtn{display:none!important}
+    .student-view aside section:nth-of-type(2),.student-view aside section:nth-of-type(3){display:none!important}
+    .student-view .grid{grid-template-columns:minmax(0,1.2fr) minmax(270px,.55fr)}
+    .student-view .scenarioBar{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .student-view .question{font-size:clamp(22px,3vw,30px)}
+    .student-view .diagram{min-height:220px}
+    .student-view .lead{max-width:860px}
+    .student-view .taskMetaExtra{display:none}
+    .student-view .footer{display:none}
+    @media (max-width:900px){.student-view .grid{grid-template-columns:1fr}.student-view .scenarioBar{grid-template-columns:1fr 1fr}}
+    @media (max-width:560px){.student-view .scenarioBar{grid-template-columns:1fr}.viewModeRow{align-items:flex-start}.viewModeRow .toggle{width:100%}}
+
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>ОГЭ №17: тренажёр для ученика и учителя</h1>
+      <p class="lead">Параллелограммы, ромбы, трапеции, прямоугольники, квадраты, треугольники и составные фигуры — теперь не просто набор задач, а маленький учебный маршрут: «Учусь», «Тренируюсь», «Контроль на 10», диагностика на 14 задач, честный учёт подсказок и отчёт для учителя.</p>
+    </div>
+    <div class="badge"><span class="dot"></span> офлайн-тренажёр, всё в одном файле</div>
+  </header>
+
+  <div class="grid">
+    <main class="card">
+      <div class="panel">
+        <div class="stats">
+          <div class="stat"><b id="solvedStat">0</b><span>попыток</span></div>
+          <div class="stat"><b id="accuracyStat">0%</b><span>точность</span></div>
+          <div class="stat"><b id="independentStat">0</b><span>самостоятельно</span></div>
+          <div class="stat"><b id="helpedStat">0</b><span>с помощью</span></div>
+          <div class="stat"><b id="newStat">0</b><span>новых за сегодня</span></div>
+        </div>
+        <div class="progressBar" title="Прогресс по новым задачам"><i id="newProgress"></i></div>
+        <div class="smallnote">Цель на сегодня: 20 новых задач — без героизма. Счётчик обнуляется каждые сутки.</div>
+        <div class="viewModeRow">
+          <label class="toggle"><input type="checkbox" id="studentViewToggle" checked/> простой вид ученика</label>
+          <label class="toggle"><input type="checkbox" id="includeCircleToggle"/> доп. блок «Окружность»</label>
+          <span class="autosaveBadge">автосохранение контроля</span>
+          <small>Простой вид прячет учительские панели. Учителю достаточно снять галочку — отчёт, навыки и фильтры снова появятся.</small>
+        </div>
+
+        <div class="scenarioBar" id="scenarioBar">
+          <button class="scenario active" data-practice="learn"><b>Учусь</b><span>формулы, подсказки и объяснение рядом</span></button>
+          <button class="scenario" data-practice="train"><b>Тренируюсь</b><span>помощь доступна, но считается отдельно</span></button>
+          <button class="scenario control" id="startControlBtn"><b>Проверь себя</b><span>10 задач, без подсказок и второй попытки</span></button>
+          <button class="scenario diagnostic" id="startDiagnosticBtn"><b>Где у меня дыры?</b><span>14 задач, по 2 на каждую тему</span></button>
+          <button class="scenario export wide" id="exportCsvBtn"><b>Отчёт CSV</b><span>для учителя: ответы, подсказки, ошибки</span></button>
+        </div>
+        <div id="sessionBox" class="sessionBox"></div>
+
+        <div class="onlyNewRow">
+          <b>Новые прототипы</b>
+          <span style="color:#7a4a00;font-size:13px">— основной приоритет тренировки. Бейдж <span class="pill NEW" style="padding:2px 8px;font-size:11px"></span> отмечает такие задачи.</span>
+          <label class="toggle"><input type="checkbox" id="onlyNewToggle"/> только новые</label>
+        </div>
+
+        <div class="controls">
+          <div>
+            <label for="modeSelect">подбор задач</label>
+            <select id="modeSelect">
+              <option value="new-focus" selected>Акцент на новые (новые ×3 к базе)</option>
+              <option value="new-only">Только новые прототипы</option>
+              <option value="base-only">Только задачи из шпоры</option>
+              <option value="all">Все вперемешку</option>
+              <option value="mistakes">Работа над ошибками</option>
+            </select>
+          </div>
+          <div>
+            <label for="topicSelect">тема</label>
+            <select id="topicSelect">
+              <option value="all" selected>Все темы</option>
+              <option value="parallelogram">Параллелограмм</option>
+              <option value="rectangle">Прямоугольник</option>
+              <option value="rhombus">Ромб</option>
+              <option value="trapezoid">Трапеция</option>
+              <option value="square">Квадрат</option>
+              <option value="triangle">Треугольник</option>
+              <option value="composite">Составные фигуры</option>
+              <option value="circle">Окружность (доп.)</option>
+            </select>
+          </div>
+          <div>
+            <label for="skillSelect">навык</label>
+            <select id="skillSelect"><option value="all" selected>Все навыки</option></select>
+          </div>
+          <button class="secondary" id="newTaskBtn">Новая задача</button>
+        </div>
+
+        <section id="taskBox">
+          <div class="taskTop" id="taskMeta"></div>
+          <div class="question" id="questionText">Загрузка...</div>
+          <div class="diagram" id="diagramBox"></div>
+          <div class="smallnote">Ответ вводи числом. Дроби можно писать так: <span class="kbd">12,5</span>, <span class="kbd">12.5</span> или <span class="kbd">25/2</span>.</div>
+          <div class="answerRow">
+            <input type="text" id="answerInput" placeholder="Твой ответ" autocomplete="off" inputmode="decimal" />
+            <button class="primary" id="checkBtn">Проверить</button>
+            <button class="ghost" id="similarBtn">Похожая</button>
+          </div>
+          <div class="buttonRow">
+            <button class="secondary" id="hintBtn">Подсказка</button>
+            <button class="secondary" id="solutionBtn">Решение</button>
+            <button class="ghost" id="skipBtn">Пропустить</button>
+            <button class="danger" id="resetBtn">Сбросить</button>
+          </div>
+          <div id="feedback" class="feedback"></div>
+          <div id="solution" class="solution"></div>
+          <div id="controlLock" class="controlLock">В контрольном и диагностическом режиме подсказки и решения закрыты до завершения задания. Это честная проверка, а не пытка.</div>
+        </section>
+      </div>
+    </main>
+
+    <aside>
+      <section class="card">
+        <div class="panel">
+          <div class="sideTitle"><h2>Мини-справочник №17</h2><button class="ghost" id="collapseTheoryBtn">свернуть</button></div>
+          <div id="theoryBox" class="formulaList">
+            <details class="theoryGroup" open><summary>Четырёхугольники: площади</summary><div class="inside">
+              <div class="formula"><b>Параллелограмм</b><code>S = a · h = a · b · sin α</code><small>h — высота, опущенная на сторону a. α — угол между сторонами a и b.</small></div>
+              <div class="formula"><b>Прямоугольник</b><code>S = a · b ; P = 2(a + b)</code><small>Диагональ: d² = a² + b². Диагонали равны и делятся пополам.</small></div>
+              <div class="formula"><b>Квадрат</b><code>S = a² ; P = 4a ; d = a√2</code><small>Если в условии сторона k√2, диагональ удобно посчитать как 2k.</small></div>
+              <div class="formula"><b>Ромб</b><code>S = (d₁ · d₂)/2 = a · h = a² · sin α</code><small>Диагонали перпендикулярны и делятся пополам.</small></div>
+              <div class="formula"><b>Трапеция</b><code>S = ((a + b)/2) · h = m · h</code><small>m — средняя линия, m = (a + b)/2. Диагональ делит m на отрезки a/2 и b/2.</small></div>
+            </div></details>
+            <details class="theoryGroup"><summary>Треугольник</summary><div class="inside">
+              <div class="formula"><b>Площадь</b><code>S = (1/2)·a·h ; S = (1/2)·a·b·sin γ</code><small>Через сторону и высоту или через две стороны и синус угла между ними.</small></div>
+              <div class="formula"><b>Средняя линия</b><code>MN = AC/2</code><small>Параллельна третьей стороне и равна её половине. Маленький треугольник, образованный средними линиями, имеет в 4 раза меньшую площадь.</small></div>
+              <div class="formula"><b>Через вписанную окружность</b><code>S = r · p</code><small>p — полупериметр, r — радиус вписанной окружности.</small></div>
+            </div></details>
+            <details class="theoryGroup"><summary>Окружность и круг — дополнительно</summary><div class="inside">
+              <div class="formula"><b>Длина окружности</b><code>C = 2πr</code><small>Если C = 18π, то r = 9. В ответ вводится число без π.</small></div>
+              <div class="formula"><b>Площадь круга</b><code>S = πr²</code><small>Если S = 49π, то r = 7.</small></div>
+              <div class="formula"><b>Правильный треугольник</b><code>R = a√3/3 ; r = a√3/6 ; S = a²√3/4</code><small>Это дополнительный блок: он не попадает в диагностику 14 задач, пока вы не включите его отдельно.</small></div>
+            </div></details>
+            <details class="theoryGroup"><summary>Прямоугольный треугольник</summary><div class="inside">
+              <div class="formula"><b>Пифагор</b><code>a² + b² = c²</code><small>c — гипотенуза. Тройки: 3-4-5, 5-12-13, 6-8-10, 7-24-25, 8-15-17, 9-12-15.</small></div>
+              <div class="formula"><b>Тригонометрия</b><code>sin α = противол/гип ; cos α = прилеж/гип ; tg α = противол/прилеж</code><small>Для углов 30°/45°/60° значения помнить наизусть.</small></div>
+              <div class="formula"><b>Полезные значения</b><code>sin 30°=1/2, sin 45°=√2/2, sin 60°=√3/2, sin 90°=1</code><small>cos 60°=1/2, cos 30°=√3/2. sin 150°=1/2, sin 120°=√3/2.</small></div>
+            </div></details>
+            <details class="theoryGroup"><summary>Опорные приёмы №17</summary><div class="inside">
+              <div class="formula"><b>Биссектриса в параллелограмме</b><code>отсекает равнобедренный треугольник</code><small>Если биссектриса угла A образует со стороной BC угол x°, то острый угол параллелограмма равен 2x°.</small></div>
+              <div class="formula"><b>Перпендикулярные диагонали</b><code>S = d₁·d₂/2</code><small>Работает для ромба, дельтоида и трапеции с перпендикулярными диагоналями.</small></div>
+              <div class="formula"><b>Угол 45° в равнобедренной трапеции</b><code>h = (b − a)/2</code><small>При угле 60° катет лежит как высота, а половина разности оснований — как h/tg60.</small></div>
+              <div class="formula"><b>Прямоугольная трапеция</b><code>боковая² = (b − a)² + h²</code><small>Образуется прямоугольный треугольник с катетами (b − a) и h.</small></div>
+            </div></details>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="panel">
+          <div class="sideTitle"><h2>Прогресс по темам</h2></div>
+          <div id="topicProgress" class="topicProgress"></div>
+        </div>
+      </section>
+
+      <section class="card mistakes">
+        <div class="panel">
+          <div class="sideTitle"><h2>Навыки и рекомендации</h2><div class="teacherTools"><button class="ghost" id="focusWeakBtn">тренировать слабое</button></div></div>
+          <div id="recommendationBox" class="teacherNote"></div>
+          <div id="skillProgress" class="skillProgress" style="margin-top:10px"></div>
+        </div>
+      </section>
+
+      <section class="card mistakes">
+        <div class="panel">
+          <div class="sideTitle"><h2>Ошибки</h2><button class="ghost" id="clearMistakesBtn">очистить</button></div>
+          <div id="mistakesList" class="formulaList"></div>
+        </div>
+      </section>
+
+      <p class="footer">База сделана по приложенной шпоре «№17» из архива: параллелограмм, прямоугольник, ромб, трапеция, квадрат. Блок «новые прототипы» — генеративные варианты по актуальным формам задания 17 и формулам из справочных материалов ОГЭ-2026. Задачи не копируются дословно: числа каждый раз пересобираются.</p>
+    </aside>
+  </div>
+</div>
+<script>
+'use strict';
+
+const $ = (id) => document.getElementById(id);
+const rnd = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+const choice = (arr) => arr[Math.floor(Math.random()*arr.length)];
+const clamp = (x,a,b)=>Math.max(a,Math.min(b,x));
+function fmt(n){
+  if (typeof n === 'string') return n;
+  const r = Math.round((n + Number.EPSILON) * 1000000) / 1000000;
+  if (Math.abs(r - Math.round(r)) < 1e-9) return String(Math.round(r));
+  return String(r).replace('.', ',');
+}
+function parseNumeric(raw){
+  if (!raw) return NaN;
+  // только внешний trim — внутренние пробелы означают, что ученик ввёл что-то странное вроде "12 5"
+  let s = raw.trim().toLowerCase().replace(/°/g,'').replace(/[−–—]/g,'-');
+  if (/\s/.test(s)) return NaN;          // пробел внутри числа — отказ
+  s = s.replace(/,/g,'.');
+  if (/^[+-]?\d+(\.\d+)?\/[+-]?\d+(\.\d+)?$/.test(s)){
+    const [a,b] = s.split('/').map(Number);
+    return b === 0 ? NaN : a/b;
+  }
+  if (/^[+-]?(\d+(\.\d+)?|\.\d+)$/.test(s)) return Number(s);
+  return NaN;
+}
+function isClose(a,b){ return Number.isFinite(a) && Math.abs(a-b) <= Math.max(1e-6, Math.abs(b)*1e-6); }
+function esc(s){ return String(s).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch])); }
+function pythTriples(){ return [[3,4,5],[5,12,13],[6,8,10],[8,15,17],[7,24,25],[9,12,15],[10,24,26],[12,16,20],[20,21,29]]; }
+function sinOptions(){ return [{p:1,q:2,label:'1/2'}, {p:3,q:5,label:'3/5'}, {p:4,q:5,label:'4/5'}, {p:5,q:13,label:'5/13'}, {p:12,q:13,label:'12/13'}, {p:8,q:17,label:'8/17'}, {p:15,q:17,label:'15/17'}, {p:5,q:19,label:'5/19'}]; }
+function cosOptions(){ return [{adj:3,h:4,c:5,label:'3/5'}, {adj:4,h:3,c:5,label:'4/5'}, {adj:5,h:12,c:13,label:'5/13'}, {adj:12,h:5,c:13,label:'12/13'}, {adj:8,h:15,c:17,label:'8/17'}, {adj:15,h:8,c:17,label:'15/17'}]; }
+function evenBetween(a,b){ let x=rnd(a,b); return x%2===0?x:x+1; }
+function sumEvenPair(aMin,aMax,bMin,bMax){
+  let a=rnd(aMin,aMax), b=rnd(bMin,bMax), guard=0;
+  while((a+b)%2!==0 && guard++<20){ b=rnd(bMin,bMax); }
+  if((a+b)%2!==0) b++;
+  return [a,b];
+}
+
+const topicName = {
+  parallelogram:'Параллелограмм', rectangle:'Прямоугольник', rhombus:'Ромб', trapezoid:'Трапеция', square:'Квадрат', triangle:'Треугольник', composite:'Составные фигуры', circle:'Окружность'
+};
+
+function task(q, answer, solution, hint, diagram, extra={}){
+  return {
+    question: q,
+    condition: q,            // алиас для соответствия спецификации
+    answer,
+    solution: Array.isArray(solution) ? solution : [solution],
+    hint,
+    diagram,
+    formula: extra.formula || null,
+    tags: extra.tags || null,
+    ...extra
+  };
+}
+
+const TEMPLATES = [
+  {
+    id:'para_bisector_acute', topic:'parallelogram', source:'base', title:'Острый угол через биссектрису', difficulty:'база',
+    generate(){ const x=rnd(18,44), ans=2*x; return task(
+      `Найдите острый угол параллелограмма ABCD, если биссектриса угла A образует со стороной BC угол ${x}°.` , ans,
+      [`В этой типовой конфигурации острый угол параллелограмма в 2 раза больше данного угла.`, `${x} · 2 = ${ans}.`],
+      'Если видишь биссектрису и «воздушный змей» — удваивай данный угол.', {type:'parallelogram', notes:[`дано: ${x}°`, `ищем острый угол`]} ); }
+  },
+  {
+    id:'para_other_angle', topic:'parallelogram', source:'base', title:'Соседние углы параллелограмма', difficulty:'база',
+    generate(){ const given=choice([rnd(25,82), rnd(100,150)]); const other=180-given; const target = given<90?'больший':'меньший'; return task(
+      `Один из углов параллелограмма равен ${given}°. Найдите ${target} угол этого параллелограмма.`, other,
+      [`Соседние углы параллелограмма в сумме дают 180°.`, `180 − ${given} = ${other}.`],
+      'В параллелограмме соседние углы — дополнительные.', {type:'parallelogram', notes:[`${given}°`, `соседний: ?`]} ); }
+  },
+  {
+    id:'para_diag_angles', topic:'parallelogram', source:'base', title:'Угол через диагональ', difficulty:'база',
+    generate(){ let a,b,s; do{ a=rnd(28,72); b=rnd(18,70); s=a+b; }while(s<95 || s>155); const small=180-s, big=s; const target=choice(['меньший','больший']); const ans=target==='меньший'?small:big; return task(
+      `Диагональ BD параллелограмма ABCD образует с его сторонами углы ${a}° и ${b}°. Найдите ${target} угол параллелограмма.`, ans,
+      [`Складываем углы, которые диагональ образует со сторонами: ${a} + ${b} = ${s}.`, `Один угол параллелограмма равен ${s}°, соседний равен 180 − ${s} = ${small}°.`, `${target[0].toUpperCase()+target.slice(1)} угол: ${ans}.`],
+      'Сначала сложи два данных угла, потом вспомни про 180°.', {type:'parallelogram', notes:[`${a}° + ${b}°`, `углы: ${big}° и ${small}°`]} ); }
+  },
+  {
+    id:'para_half_diagonal', topic:'parallelogram', source:'base', title:'Половина диагонали', difficulty:'база',
+    generate(){ const ac=evenBetween(12,60), bd=evenBetween(14,70), ab=rnd(5,25); const pick=choice([{seg:'AO',d:'AC',v:ac},{seg:'CO',d:'AC',v:ac},{seg:'BO',d:'BD',v:bd},{seg:'DO',d:'BD',v:bd}]); return task(
+      `Диагонали AC и BD параллелограмма ABCD пересекаются в точке O. AC = ${ac}, BD = ${bd}, AB = ${ab}. Найдите ${pick.seg}.`, pick.v/2,
+      [`Диагонали параллелограмма делятся точкой пересечения пополам.`, `${pick.seg} — половина диагонали ${pick.d}.`, `${pick.v} : 2 = ${fmt(pick.v/2)}.`],
+      'Точка O — середина каждой диагонали.', {type:'parallelogram', notes:[`AC=${ac}`, `BD=${bd}`, `${pick.seg}=?`]} ); }
+  },
+  {
+    id:'para_area_picture', topic:'parallelogram', source:'base', title:'Площадь по основанию и высоте', difficulty:'база',
+    generate(){ const x=rnd(2,12), y=rnd(3,14), h=rnd(2,12), base=x+y, ans=base*h; return task(
+      `Основание параллелограмма составлено из отрезков ${x} и ${y}, высота равна ${h}. Найдите площадь параллелограмма.`, ans,
+      [`Сначала находим всё основание: ${x} + ${y} = ${base}.`, `Площадь параллелограмма: S = основание · высота = ${base} · ${h} = ${ans}.`],
+      'Не забудь сложить кусочки основания перед умножением на высоту.', {type:'parallelogram', notes:[`основание: ${x}+${y}`, `h=${h}`]} ); }
+  },
+  {
+    id:'para_larger_height', topic:'parallelogram', source:'base', title:'Большая высота', difficulty:'база',
+    generate(){ const small=rnd(4,18), big=small+rnd(3,18), h=rnd(2,16), S=small*h; return task(
+      `Площадь параллелограмма равна ${S}, а две его стороны равны ${small} и ${big}. Найдите его высоты. В ответе укажите большую высоту.`, h,
+      [`Высота больше к меньшей стороне, потому что S = a · h.`, `Большая высота = ${S} : ${small} = ${h}.`],
+      'Большая высота относится к меньшей стороне.', {type:'parallelogram', notes:[`S=${S}`, `стороны ${small} и ${big}`]} ); }
+  },
+  {
+    id:'para_triangle_cbe', topic:'parallelogram', source:'base', title:'Треугольник с серединой стороны', difficulty:'база',
+    generate(){ const S=4*rnd(8,80), ans=S/4; return task(
+      `Площадь параллелограмма ABCD равна ${S}. Точка E — середина стороны AB. Найдите площадь треугольника CBE.`, ans,
+      [`По типовой схеме треугольник CBE занимает четверть площади параллелограмма.`, `${S} : 4 = ${ans}.`],
+      'Середина стороны в этой задаче даёт четверть площади.', {type:'parallelogram', notes:[`S пар.=${S}`, `E — середина AB`]} ); }
+  },
+  {
+    id:'para_trap_daec', topic:'parallelogram', source:'base', title:'Трапеция внутри параллелограмма', difficulty:'база',
+    generate(){ const S=4*rnd(10,90), quarter=S/4, ans=3*quarter; return task(
+      `Площадь параллелограмма ABCD равна ${S}. Точка E — середина стороны AB. Найдите площадь трапеции DAEC.`, ans,
+      [`Маленький треугольник занимает четверть площади: ${S} : 4 = ${quarter}.`, `Трапеция — оставшиеся три четверти: ${quarter} · 3 = ${ans}.`],
+      'Трапеция здесь равна 3/4 площади параллелограмма.', {type:'parallelogram', notes:[`S=${S}`, `трапеция = 3/4`]} ); }
+  },
+  {
+    id:'rect_angle_diags', topic:'rectangle', source:'base', title:'Острый угол между диагоналями', difficulty:'база',
+    generate(){ const x=rnd(20,75), ans=Math.min(2*x, 180-2*x); return task(
+      `Диагональ прямоугольника образует угол ${x}° с одной из его сторон. Найдите острый угол между диагоналями этого прямоугольника.`, ans,
+      [`Угол между диагоналями получается из двух одинаковых углов при стороне: 2 · ${x} = ${2*x}.`, `Берём острый угол: если получилось больше 90°, вычитаем из 180°.`, `Ответ: ${ans}.`],
+      'Считай 2·угол, а потом выбирай острый вариант.', {type:'rectangle', notes:[`угол с стороной ${x}°`, `между диагоналями ?`]} ); }
+  },
+  {
+    id:'rect_diagonal_center', topic:'rectangle', source:'base', title:'Диагональ через точку пересечения', difficulty:'база',
+    generate(){ const bo=rnd(4,35), ab=rnd(3,25), ans=2*bo; return task(
+      `Диагонали AC и BD прямоугольника ABCD пересекаются в точке O. BO = ${bo}, AB = ${ab}. Найдите AC.`, ans,
+      [`В прямоугольнике диагонали равны и делятся пополам.`, `BD = 2 · BO = 2 · ${bo} = ${ans}.`, `AC = BD = ${ans}.`],
+      'BO — половина диагонали, а диагонали прямоугольника равны.', {type:'rectangle', notes:[`BO=${bo}`, `AC=?`]} ); }
+  },
+  {
+    id:'rhombus_area_inradius', topic:'rhombus', source:'base', title:'Ромб: сторона и расстояние до стороны', difficulty:'база',
+    generate(){ const a=rnd(6,35), d=rnd(2,12), ans=2*a*d; return task(
+      `Сторона ромба равна ${a}, а расстояние от точки пересечения диагоналей ромба до стороны равно ${d}. Найдите площадь ромба.`, ans,
+      [`Расстояние от центра до стороны — половина высоты ромба.`, `Высота: ${d} · 2 = ${2*d}.`, `S = сторона · высота = ${a} · ${2*d} = ${ans}.`],
+      'Удваиваем расстояние до стороны — получаем высоту.', {type:'rhombus', notes:[`a=${a}`, `до стороны ${d}`]} ); }
+  },
+  {
+    id:'rhombus_angle_acd', topic:'rhombus', source:'base', title:'Угол ACD в ромбе', difficulty:'база',
+    generate(){ const abc=evenBetween(50,140), ans=(180-abc)/2; return task(
+      `В ромбе ABCD угол ABC равен ${abc}°. Найдите угол ACD.`, ans,
+      [`Соседний угол ромба: 180 − ${abc} = ${180-abc}.`, `Диагональ ромба делит угол пополам.`, `∠ACD = ${180-abc} : 2 = ${fmt(ans)}.`],
+      'В ромбе диагональ делит угол пополам.', {type:'rhombus', notes:[`∠ABC=${abc}°`, `∠ACD=?`]} ); }
+  },
+  {
+    id:'rhombus_height_150', topic:'rhombus', source:'base', title:'Высота ромба при 150°', difficulty:'база',
+    generate(){ const a=evenBetween(10,70), angle=choice([30,150]), ans=a/2; return task(
+      `Сторона ромба равна ${a}, а один из углов этого ромба равен ${angle}°. Найдите высоту этого ромба.`, ans,
+      [`sin 30° = sin 150° = 1/2.`, `Высота ромба равна a · sin α = ${a} · 1/2 = ${fmt(ans)}.`],
+      'При углах 30° или 150° высота — половина стороны.', {type:'rhombus', notes:[`a=${a}`, `угол ${angle}°`]} ); }
+  },
+  {
+    id:'rhombus_area_diags', topic:'rhombus', source:'base', title:'Площадь ромба через диагонали', difficulty:'база',
+    generate(){ let d1=rnd(5,30), d2=rnd(4,28); if((d1*d2)%2) d2++; const ans=d1*d2/2; return task(
+      `Найдите площадь ромба, если его диагонали равны ${d1} и ${d2}.`, ans,
+      [`Площадь ромба через диагонали: S = d₁ · d₂ : 2.`, `${d1} · ${d2} : 2 = ${fmt(ans)}.`],
+      'Перемножить диагонали и разделить на 2.', {type:'rhombus', notes:[`d₁=${d1}`, `d₂=${d2}`]} ); }
+  },
+  {
+    id:'rhombus_area_perim30', topic:'rhombus', source:'base', title:'Площадь ромба через периметр и 30°', difficulty:'база',
+    generate(){ const side=evenBetween(4,30), P=4*side, ans=side*side/2; return task(
+      `Периметр ромба равен ${P}, а один из углов равен 30°. Найдите площадь ромба.`, ans,
+      [`Сторона ромба: ${P} : 4 = ${side}.`, `S = a² · sin 30° = ${side}² · 1/2 = ${fmt(ans)}.`],
+      'Сначала найди сторону по периметру, потом умножь a² на 1/2.', {type:'rhombus', notes:[`P=${P}`, `угол 30°`]} ); }
+  },
+  {
+    id:'trap_midline_segment', topic:'trapezoid', source:'base', title:'Диагональ делит среднюю линию', difficulty:'база',
+    generate(){ const small=evenBetween(2,20), big=small+evenBetween(4,30), ans=big/2; return task(
+      `Основания трапеции равны ${small} и ${big}. Найдите больший из отрезков, на которые делит среднюю линию этой трапеции одна из её диагоналей.`, ans,
+      [`Диагональ делит среднюю линию трапеции на отрезки, равные половинам оснований.`, `Больший отрезок = половина большего основания: ${big} : 2 = ${fmt(ans)}.`],
+      'Большее основание дели на 2.', {type:'trapezoid', notes:[`основания ${small} и ${big}`, `больший отрезок ?`]} ); }
+  },
+  {
+    id:'trap_midline', topic:'trapezoid', source:'base', title:'Средняя линия трапеции', difficulty:'база',
+    generate(){ const [a,b]=sumEvenPair(3,20,8,35); const ans=(a+b)/2; return task(
+      `Основания трапеции равны ${a} и ${b}. Найдите среднюю линию этой трапеции.`, ans,
+      [`Средняя линия трапеции равна полусумме оснований.`, `(${a} + ${b}) : 2 = ${fmt(ans)}.`],
+      'Сложи основания и раздели на 2.', {type:'trapezoid', notes:[`a=${a}`, `b=${b}`, `m=?`]} ); }
+  },
+  {
+    id:'trap_iso_angle_sum', topic:'trapezoid', source:'base', title:'Углы равнобедренной трапеции', difficulty:'база',
+    generate(){ const sum=evenBetween(36,126), small=sum/2, big=180-small; const target=choice(['меньший','больший']); const ans=target==='меньший'?small:big; return task(
+      `Сумма двух углов равнобедренной трапеции равна ${sum}°. Найдите ${target} угол трапеции.`, ans,
+      [`В равнобедренной трапеции углы при одном основании равны.`, `Меньший угол: ${sum} : 2 = ${fmt(small)}.`, `Больший угол: 180 − ${fmt(small)} = ${fmt(big)}.`, `Ответ: ${fmt(ans)}.`],
+      'Подели сумму пополам, потом при необходимости вычти из 180°.', {type:'trapezoid', notes:[`сумма ${sum}°`, `${target} угол ?`]} ); }
+  },
+  {
+    id:'trap_diag_angles', topic:'trapezoid', source:'base', title:'Угол трапеции через диагональ', difficulty:'база',
+    generate(){ let x,y,ans; do{ x=rnd(35,75); y=rnd(5,35); ans=180-x-y; }while(ans<90 || ans>150); return task(
+      `Найдите больший угол равнобедренной трапеции ABCD, если диагональ AC образует с основанием AD и боковой стороной AB углы, равные ${x}° и ${y}°.`, ans,
+      [`Складываем два угла при диагонали: ${x} + ${y} = ${x+y}.`, `Больший угол трапеции: 180 − ${x+y} = ${ans}.`],
+      'Сложи два данных угла и вычти из 180°.', {type:'trapezoid', notes:[`${x}° и ${y}°`, `больший угол ?`]} ); }
+  },
+  {
+    id:'trap_angle_abd', topic:'trapezoid', source:'base', title:'Угол ABD', difficulty:'база',
+    generate(){ let x,y,ans; do{ x=rnd(20,55); y=rnd(20,60); ans=180-2*x-y; }while(ans<=15 || ans>=120); return task(
+      `В трапеции ABCD известно, что AB = CD, ∠BDA = ${x}°, ∠BDC = ${y}°. Найдите угол ABD.`, ans,
+      [`В равнобедренной трапеции получаются два равных угла по ${x}°.`, `∠ABD = 180 − 2·${x} − ${y} = ${ans}.`],
+      'Вычитай из 180° два угла BDA и угол BDC.', {type:'trapezoid', notes:[`BDA=${x}°`, `BDC=${y}°`, `ABD=?`]} ); }
+  },
+  {
+    id:'trap_smaller_base45', topic:'trapezoid', source:'base', title:'Меньшее основание при 45°', difficulty:'база',
+    generate(){ const h=rnd(2,14), small=rnd(4,30), big=small+2*h; return task(
+      `В равнобедренной трапеции известны высота ${h}, большее основание ${big} и угол при основании 45°. Найдите меньшее основание.`, small,
+      [`При угле 45° с каждой стороны от большего основания «съедается» по одной высоте.`, `Меньшее основание = ${big} − 2·${h} = ${small}.`],
+      'Из большего основания вычти две высоты.', {type:'trapezoid', notes:[`h=${h}`, `большее=${big}`, `45°`]} ); }
+  },
+  {
+    id:'trap_larger_base45', topic:'trapezoid', source:'base', title:'Большее основание при 45°', difficulty:'база',
+    generate(){ const h=rnd(2,14), small=rnd(4,30), big=small+2*h; return task(
+      `В равнобедренной трапеции известны высота ${h}, меньшее основание ${small} и угол при основании 45°. Найдите большее основание.`, big,
+      [`При угле 45° с каждой стороны добавляется по одной высоте.`, `Большее основание = ${small} + 2·${h} = ${big}.`],
+      'К меньшему основанию прибавь две высоты.', {type:'trapezoid', notes:[`h=${h}`, `меньшее=${small}`, `45°`]} ); }
+  },
+  {
+    id:'trap_bc_split', topic:'trapezoid', source:'base', title:'Основание BC через отрезки AD', difficulty:'база',
+    generate(){ const p=rnd(3,20), diff=rnd(2,15), q=p+diff; return task(
+      `Высота равнобедренной трапеции, проведённая из вершины C, делит основание AD на отрезки длиной ${p} и ${q}. Найдите длину основания BC.`, diff,
+      [`В этой типовой схеме основание BC равно разности данных отрезков.`, `${q} − ${p} = ${diff}.`],
+      'Из большего отрезка вычти меньший.', {type:'trapezoid', notes:[`${p} и ${q}`, `BC=?`]} ); }
+  },
+  {
+    id:'trap_area_iso45', topic:'trapezoid', source:'base', title:'Площадь равнобедренной трапеции при 45°', difficulty:'база',
+    generate(){ const small=evenBetween(4,24), diff=choice([4,8,12,16,20]), big=small+diff, ans=(small+big)*diff/4; return task(
+      `В равнобедренной трапеции основания равны ${small} и ${big}, а один из углов между боковой стороной и основанием равен 45°. Найдите площадь трапеции.`, ans,
+      [`Разность оснований: ${big} − ${small} = ${diff}.`, `При 45° высота равна половине разности оснований: ${diff} : 2 = ${diff/2}.`, `S = (${small}+${big}) : 2 · ${diff/2} = ${fmt(ans)}.`],
+      'При 45° высота — половина разности оснований.', {type:'trapezoid', notes:[`основания ${small}, ${big}`, `45°`]} ); }
+  },
+  {
+    id:'square_diag_root2', topic:'square', source:'base', title:'Диагональ квадрата при стороне k√2', difficulty:'база',
+    generate(){ const k=rnd(2,25), ans=2*k; return task(
+      `Сторона квадрата равна ${k}√2. Найдите диагональ этого квадрата.`, ans,
+      [`Диагональ квадрата равна стороне, умноженной на √2.`, `${k}√2 · √2 = ${k} · 2 = ${ans}.`],
+      'Если сторона k√2, диагональ равна 2k.', {type:'square', notes:[`a=${k}√2`, `d=?`]} ); }
+  },
+  {
+    id:'square_area_perimeter', topic:'square', source:'base', title:'Площадь квадрата по периметру', difficulty:'база',
+    generate(){ const side=rnd(3,35), P=4*side, ans=side*side; return task(
+      `Периметр квадрата равен ${P}. Найдите площадь квадрата.`, ans,
+      [`Сторона квадрата: ${P} : 4 = ${side}.`, `Площадь: ${side}² = ${ans}.`],
+      'Периметр делим на 4, потом сторону возводим в квадрат.', {type:'square', notes:[`P=${P}`, `S=?`]} ); }
+  },
+
+  // Новые / усиленные прототипы
+  {
+    id:'new_square_area_root', topic:'square', source:'new', title:'Квадрат со стороной k√n', difficulty:'новое',
+    generate(){ const k=rnd(2,16), n=choice([2,3,5,6,7]), ans=k*k*n; return task(
+      `Сторона квадрата равна ${k}√${n}. Найдите площадь этого квадрата.`, ans,
+      [`Площадь квадрата: S = a².`, `(${k}√${n})² = ${k}² · ${n} = ${ans}.`],
+      'Корень исчезает при возведении в квадрат: (√n)² = n.', {type:'square', notes:[`a=${k}√${n}`, `S=?`]} ); }
+  },
+  {
+    id:'new_triangle_two_sides_sin', topic:'triangle', source:'new', title:'Площадь треугольника через sin', difficulty:'новое',
+    generate(){ const so=choice(sinOptions().filter(x=>x.p!==1)); const k=rnd(1,3), side1=so.q*k, side2=evenBetween(6,30), ans=side1*side2*so.p/so.q/2; return task(
+      `В треугольнике ABC известно, что AB = ${side1}, AC = ${side2}, sin∠BAC = ${so.label}. Найдите площадь треугольника ABC.`, ans,
+      [`Формула площади: S = 1/2 · AB · AC · sin∠A.`, `S = 1/2 · ${side1} · ${side2} · ${so.label} = ${fmt(ans)}.`],
+      'Здесь не нужна высота: используй S = 1/2·a·b·sin угла между ними.', {type:'triangle', notes:[`AB=${side1}`, `AC=${side2}`, `sin=${so.label}`]} ); }
+  },
+  {
+    id:'new_triangle_basic_height', topic:'triangle', source:'new', subtype:'area_a_h', title:'Площадь треугольника по стороне и высоте', difficulty:'новое',
+    generate(){ let a=rnd(6,40), h=rnd(3,25); if((a*h)%2) h = h%2===0 ? h : h+1; const ans=a*h/2; return task(
+      `В треугольнике одна из сторон равна ${a}, а опущенная на неё высота равна ${h}. Найдите площадь этого треугольника.`, ans,
+      [`Площадь треугольника: S = (1/2) · a · h.`, `S = (1/2) · ${a} · ${h} = ${fmt(ans)}.`],
+      'Площадь треугольника — половина произведения основания на высоту.', {type:'triangle', notes:[`a=${a}`, `h=${h}`]},
+      {formula:'S = (1/2) · a · h', tags:['треугольник','площадь','новые']} ); }
+  },
+  {
+    id:'new_triangle_inradius_perimeter', topic:'triangle', source:'new', subtype:'inradius_perimeter', title:'Площадь через радиус вписанной окружности', difficulty:'новое',
+    generate(){
+      const baseTriples=[[3,4,5],[5,12,13],[8,15,17],[7,24,25],[20,21,29]];
+      const tr=choice(baseTriples), k=rnd(1,4);
+      const a=tr[0]*k, b=tr[1]*k, c=tr[2]*k, P=a+b+c, r=(a+b-c)/2, side=choice([a,b,c]), ans=P*r/2;
+      return task(
+      `Периметр треугольника равен ${P}, одна из его сторон равна ${side}, а радиус вписанной в него окружности равен ${r}. Найдите площадь этого треугольника.`, ans,
+      [`Площадь треугольника через радиус вписанной окружности: S = r · p, где p — полупериметр.`, `p = ${P} : 2 = ${P/2}.`, `S = ${r} · ${P/2} = ${fmt(ans)}.`],
+      'Данная сторона тут отвлекает. Нужны радиус и полупериметр.', {type:'triangle', notes:[`P=${P}`, `r=${r}`, `S=?`]},
+      {formula:'S = r · p', tags:['треугольник','вписанная окружность','площадь','новые']} ); }
+  },
+  {
+    id:'new_isosceles_triangle_area', topic:'triangle', source:'new', title:'Равнобедренный треугольник: площадь', difficulty:'новое',
+    generate(){ const tr=choice(pythTriples().filter(t=>t[0] <= 12)); const half=tr[0], h=tr[1], side=tr[2], base=2*half, P=base+2*side; const byP=Math.random()<0.5; const ans=half*h; return task(
+      byP ? `Периметр равнобедренного треугольника равен ${P}, а основание равно ${base}. Найдите площадь этого треугольника.` : `Боковая сторона равнобедренного треугольника равна ${side}, а основание равно ${base}. Найдите площадь этого треугольника.`, ans,
+      byP ? [`Боковая сторона: (${P} − ${base}) : 2 = ${side}.`, `Высота делит основание пополам: ${base} : 2 = ${half}.`, `По Пифагору высота равна ${h}.`, `S = 1/2 · ${base} · ${h} = ${ans}.`] : [`Высота делит основание пополам: ${base} : 2 = ${half}.`, `По Пифагору высота: √(${side}² − ${half}²) = ${h}.`, `S = 1/2 · ${base} · ${h} = ${ans}.`],
+      'Опусти высоту: она делит основание пополам, дальше Пифагор.', {type:'triangle', notes:[`основание ${base}`, `боковая ${side}`]} ); }
+  },
+  {
+    id:'new_triangle_midpoints_quad', topic:'triangle', source:'new', title:'Средние линии и площадь четырёхугольника', difficulty:'новое',
+    generate(){ const small=rnd(5,40), ans=3*small; const variant=Math.random()<0.5; return task(
+      variant ? `В треугольнике ABC отмечены середины P и K сторон BC и AC соответственно. Площадь треугольника CPK равна ${small}. Найдите площадь четырёхугольника ABPK.` : `В треугольнике ABC отмечены середины E и F сторон AB и AC соответственно. Площадь треугольника AEF равна ${small}. Найдите площадь четырёхугольника BEFC.`, ans,
+      [`Маленький треугольник со сторонами по половине исходных имеет площадь в 4 раза меньше площади всего треугольника.`, `Площадь всего треугольника: ${small} · 4 = ${small*4}.`, `Оставшийся четырёхугольник: ${small*4} − ${small} = ${ans}.`],
+      'Маленький треугольник при средних линиях — 1/4 всей площади.', {type:'triangle', notes:[`малый S=${small}`, `четырёхугольник ?`]} ); }
+  },
+  {
+    id:'new_trap_side_sin_area', topic:'trapezoid', source:'new', title:'Трапеция: боковая сторона и sin', difficulty:'новое',
+    generate(){ const so=choice(sinOptions().filter(x=>x.p!==1)); const k=rnd(1,3), side=so.q*k, h=so.p*k; let [a,b]=sumEvenPair(5,24,12,42); const ans=(a+b)*h/2; return task(
+      `Основания трапеции равны ${a} и ${b}, одна из боковых сторон равна ${side}, а синус угла между ней и одним из оснований равен ${so.label}. Найдите площадь трапеции.`, ans,
+      [`Высота трапеции равна боковой стороне, умноженной на sin угла: h = ${side} · ${so.label} = ${h}.`, `S = (a + b) : 2 · h = (${a}+${b}) : 2 · ${h} = ${fmt(ans)}.`],
+      'Сначала найди высоту через sin, потом площадь трапеции.', {type:'trapezoid', notes:[`основания ${a}, ${b}`, `боковая ${side}`, `sin=${so.label}`]} ); }
+  },
+  {
+    id:'new_trap_side_cos_area', topic:'trapezoid', source:'new', title:'Трапеция: боковая сторона и cos', difficulty:'новое',
+    generate(){ const co=choice(cosOptions()); const k=rnd(1,2), side=co.c*k, h=co.h*k; let [a,b]=sumEvenPair(6,26,14,48); const ans=(a+b)*h/2; return task(
+      `Основания трапеции равны ${a} и ${b}, одна из боковых сторон равна ${side}, а косинус угла между ней и одним из оснований равен ${co.label}. Найдите площадь трапеции.`, ans,
+      [`Косинус даёт прилежащий катет, а высота — второй катет в прямоугольном треугольнике.`, `Для тройки ${co.adj}-${co.h}-${co.c} при масштабе ${k} высота равна ${h}.`, `S = (${a}+${b}) : 2 · ${h} = ${fmt(ans)}.`],
+      'Из cos восстанови высоту через прямоугольный треугольник.', {type:'trapezoid', notes:[`боковая ${side}`, `cos=${co.label}`, `h=?`]} ); }
+  },
+  {
+    id:'new_trap_isosceles_legs', topic:'trapezoid', source:'new', title:'Равнобедренная трапеция по основаниям и боковой', difficulty:'новое',
+    generate(){ const tr=choice(pythTriples().filter(t=>t[2] <= 25)); const halfDiff=tr[0], h=tr[1], leg=tr[2]; const small=rnd(4,24), big=small+2*halfDiff, ans=(small+big)*h/2; return task(
+      `Основания равнобедренной трапеции равны ${small} и ${big}, а её боковые стороны равны ${leg}. Найдите площадь трапеции.`, ans,
+      [`Половина разности оснований: (${big} − ${small}) : 2 = ${halfDiff}.`, `Высота из прямоугольного треугольника: √(${leg}² − ${halfDiff}²) = ${h}.`, `S = (${small}+${big}) : 2 · ${h} = ${fmt(ans)}.`],
+      'Половина разности оснований + высота + боковая сторона образуют прямоугольный треугольник.', {type:'trapezoid', notes:[`основания ${small}, ${big}`, `боковая ${leg}`]} ); }
+  },
+  {
+    id:'new_trap_midline_height_area', topic:'trapezoid', source:'new', title:'Площадь трапеции через среднюю линию', difficulty:'новое',
+    generate(){ const m=rnd(5,32), h=rnd(3,25), ans=m*h; return task(
+      `В трапеции высота равна ${h}, средняя линия равна ${m}. Найдите площадь трапеции.`, ans,
+      [`Площадь трапеции равна средней линии, умноженной на высоту.`, `S = ${m} · ${h} = ${ans}.`],
+      'Средняя линия уже равна полусумме оснований, поэтому просто m·h.', {type:'trapezoid', notes:[`m=${m}`, `h=${h}`]} ); }
+  },
+  {
+    id:'new_trap_find_base', topic:'trapezoid', source:'new', title:'Найти основание трапеции по площади', difficulty:'новое',
+    generate(){ const so=choice(sinOptions().filter(x=>x.p!==1)); const side=so.q, h=so.p, small=rnd(4,24), big=small+rnd(4,30); const S=(small+big)*h/2; return task(
+      `Площадь трапеции равна ${fmt(S)}, меньшее основание равно ${small}, одна из боковых сторон равна ${side}, а синус угла между ней и основанием равен ${so.label}. Найдите большее основание.`, big,
+      [`Высота: h = ${side} · ${so.label} = ${h}.`, `Из формулы S = (a+b) : 2 · h получаем сумму оснований: a+b = 2S : h = ${fmt(2*S)} : ${h} = ${small+big}.`, `Большее основание: ${small+big} − ${small} = ${big}.`],
+      'Сначала высота, потом сумма оснований из формулы площади.', {type:'trapezoid', notes:[`S=${fmt(S)}`, `малое=${small}`, `sin=${so.label}`]} ); }
+  },
+  {
+    id:'new_right_trap_area45', topic:'trapezoid', source:'new', title:'Прямоугольная трапеция при 45°', difficulty:'новое',
+    generate(){ const small=rnd(3,18), h=evenBetween(2,16), big=small+h, ans=(small+big)*h/2; return task(
+      `В прямоугольной трапеции основания равны ${small} и ${big}. Острый угол при большем основании равен 45°. Найдите площадь трапеции.`, ans,
+      [`В прямоугольной трапеции при угле 45° высота равна разности оснований.`, `h = ${big} − ${small} = ${h}.`, `S = (${small}+${big}) : 2 · ${h} = ${fmt(ans)}.`],
+      'При 45° высота равна разности оснований.', {type:'trapezoid', notes:[`основания ${small}, ${big}`, `45°`]} ); }
+  },
+  {
+    id:'new_right_trap_angle', topic:'trapezoid', source:'new', title:'Прямоугольная трапеция: найти угол', difficulty:'новое',
+    generate(){ const diff=rnd(2,14), small=rnd(3,20), big=small+diff, h=diff, S=(small+big)*h/2; return task(
+      `В прямоугольной трапеции основания равны ${small} и ${big}. Площадь трапеции равна ${fmt(S)}. Найдите острый угол при большем основании в градусах.`, 45,
+      [`Высота из площади: h = 2S : (a+b) = ${fmt(2*S)} : ${small+big} = ${h}.`, `Разность оснований: ${big} − ${small} = ${diff}.`, `Получили прямоугольный треугольник с равными катетами, значит острый угол равен 45°.`],
+      'Если высота равна разности оснований, то угол 45°.', {type:'trapezoid', notes:[`S=${fmt(S)}`, `основания ${small}, ${big}`]} ); }
+  },
+  {
+    id:'new_para_height_diagonal', topic:'parallelogram', source:'new', title:'Параллелограмм: высота делит сторону', difficulty:'новое',
+    generate(){ const tr=choice(pythTriples().filter(t=>t[2]<=29)); const HD=tr[0], h=tr[1], diag=tr[2], AH=rnd(2,15), base=AH+HD, ans=base*h; return task(
+      `Высота BH параллелограмма ABCD делит сторону AD на отрезки AH = ${AH} и HD = ${HD}. Диагональ BD равна ${diag}. Найдите площадь параллелограмма.`, ans,
+      [`В прямоугольном треугольнике BHD: BH = √(${diag}² − ${HD}²) = ${h}.`, `Основание AD = ${AH} + ${HD} = ${base}.`, `S = AD · BH = ${base} · ${h} = ${ans}.`],
+      'Сначала Пифагор в треугольнике BHD, потом площадь параллелограмма.', {type:'parallelogram', notes:[`AH=${AH}`, `HD=${HD}`, `BD=${diag}`]} ); }
+  },
+  {
+    id:'new_rectangle_area_diag_side', topic:'rectangle', source:'new', title:'Прямоугольник по стороне и диагонали', difficulty:'новое',
+    generate(){ const tr=choice(pythTriples()); const a=tr[0], b=tr[1], d=tr[2], ans=a*b; const known=choice([{side:a,other:b},{side:b,other:a}]); return task(
+      `В прямоугольнике ABCD сторона AB = ${known.side}, диагональ AC = ${d}. Найдите площадь прямоугольника ABCD.`, ans,
+      [`Вторая сторона находится по теореме Пифагора: √(${d}² − ${known.side}²) = ${known.other}.`, `S = ${known.side} · ${known.other} = ${ans}.`],
+      'Диагональ прямоугольника — гипотенуза прямоугольного треугольника.', {type:'rectangle', notes:[`сторона ${known.side}`, `d=${d}`]} ); }
+  },
+  {
+    id:'new_rectangle_area_diag_angle', topic:'rectangle', source:'new', title:'Площадь прямоугольника через диагонали', difficulty:'новое',
+    generate(){ const d=evenBetween(6,30), angle=choice([30,90]), sin=angle===30?0.5:1, ans=d*d*sin/2; return task(
+      `Найдите площадь прямоугольника, если его диагональ равна ${d}, а угол между диагоналями ${angle}°.`, ans,
+      [`Для прямоугольника S = 1/2 · d² · sin угла между диагоналями.`, `S = 1/2 · ${d}² · sin ${angle}° = ${fmt(ans)}.`],
+      'Диагонали у прямоугольника равны, поэтому работает формула 1/2·d²·sinφ.', {type:'rectangle', notes:[`d=${d}`, `угол ${angle}°`]} ); }
+  },
+  {
+    id:'new_right_triangle_leg_hyp', topic:'triangle', source:'new', title:'Прямоугольный треугольник: катет и гипотенуза', difficulty:'новое',
+    generate(){ const tr=choice(pythTriples()); const leg=tr[0], other=tr[1], hyp=tr[2], ans=leg*other/2; return task(
+      `Найдите площадь прямоугольного треугольника, если его катет и гипотенуза равны соответственно ${leg} и ${hyp}.`, ans,
+      [`Второй катет по Пифагору: √(${hyp}² − ${leg}²) = ${other}.`, `Площадь прямоугольного треугольника: ${leg} · ${other} : 2 = ${fmt(ans)}.`],
+      'Найди второй катет, потом перемножь катеты и раздели на 2.', {type:'rightTriangle', notes:[`катет ${leg}`, `гипотенуза ${hyp}`]} ); }
+  },
+  {
+    id:'new_rhombus_height_split', topic:'rhombus', source:'new', title:'Ромб: высота делит сторону', difficulty:'новое',
+    generate(){ const tr=choice([[6,8,10],[5,12,13],[8,15,17],[9,12,15],[7,24,25]]); const AH=tr[0], h=tr[1], side=tr[2], HD=side-AH, ans=side*h; return task(
+      `Высота BH ромба ABCD делит сторону AD на отрезки AH = ${AH} и HD = ${HD}. Найдите площадь ромба.`, ans,
+      [`Сторона ромба AD = ${AH} + ${HD} = ${side}.`, `В прямоугольном треугольнике ABH высота BH = √(${side}² − ${AH}²) = ${h}.`, `S = сторона · высота = ${side} · ${h} = ${ans}.`],
+      'Сторона ромба — сумма отрезков, высота — по Пифагору.', {type:'rhombus', notes:[`AH=${AH}`, `HD=${HD}`]} ); }
+  },
+  {
+    id:'new_rhombus_side_diag', topic:'rhombus', source:'new', title:'Ромб: сторона и диагональ', difficulty:'новое',
+    generate(){ const tr=choice(pythTriples().filter(t=>t[2]<=29)); const halfD=tr[0], halfOther=tr[1], side=tr[2], d=2*halfD, ans=d*halfOther; return task(
+      `Найдите площадь ромба, если его сторона равна ${side}, а одна из диагоналей равна ${d}.`, ans,
+      [`Диагонали ромба перпендикулярны и делятся пополам.`, `Половина данной диагонали: ${d} : 2 = ${halfD}.`, `Половина второй диагонали по Пифагору: √(${side}² − ${halfD}²) = ${halfOther}.`, `Вторая диагональ = ${2*halfOther}. Площадь = ${d} · ${2*halfOther} : 2 = ${ans}.`],
+      'Половины диагоналей и сторона ромба образуют прямоугольный треугольник.', {type:'rhombus', notes:[`a=${side}`, `d₁=${d}`]} ); }
+  },
+  {
+    id:'new_rhombus_side_sin', topic:'rhombus', source:'new', title:'Ромб: сторона и sin угла', difficulty:'новое',
+    generate(){ const so=choice(sinOptions().filter(x=>x.p!==1)); const k=rnd(1,3), side=so.q*k, ans=side*side*so.p/so.q; return task(
+      `Найдите площадь ромба, если сторона ромба равна ${side}, а синус острого угла равен ${so.label}.`, ans,
+      [`Площадь ромба: S = a² · sin α.`, `S = ${side}² · ${so.label} = ${fmt(ans)}.`],
+      'Для ромба с известной стороной и sin угла: a²·sinα.', {type:'rhombus', notes:[`a=${side}`, `sin=${so.label}`]} ); }
+  },
+  {
+    id:'new_rhombus_height_area', topic:'rhombus', source:'new', title:'Ромб: высота, площадь, периметр', difficulty:'новое',
+    generate(){ const side=rnd(5,25), h=rnd(3,20), S=side*h, P=4*side; const askHeight=Math.random()<0.5; return task(
+      askHeight ? `Найдите высоту ромба, если его площадь равна ${S}, а периметр равен ${P}.` : `Найдите площадь ромба, если его периметр равен ${P}, а высота равна ${h}.`, askHeight ? h : S,
+      askHeight ? [`Сторона ромба: ${P} : 4 = ${side}.`, `S = a · h, значит h = ${S} : ${side} = ${h}.`] : [`Сторона ромба: ${P} : 4 = ${side}.`, `S = a · h = ${side} · ${h} = ${S}.`],
+      'Сначала сторона по периметру, потом S = a·h.', {type:'rhombus', notes:[`P=${P}`, askHeight?`S=${S}`:`h=${h}`]} ); }
+  },
+  {
+    id:'new_kite_area_diags', topic:'composite', source:'new', title:'Дельтоид через диагонали', difficulty:'новое',
+    generate(){ let d1=rnd(6,30), d2=rnd(5,25); if((d1*d2)%2) d2++; const ans=d1*d2/2; return task(
+      `Найдите площадь четырёхугольника вида «воздушный змей» (AB = BC и AD = DC), если его диагонали равны ${d1} и ${d2}.`, ans,
+      [`Для дельтоида с перпендикулярными диагоналями площадь равна половине произведения диагоналей.`, `S = ${d1} · ${d2} : 2 = ${fmt(ans)}.`],
+      'Как у ромба: диагонали перемножить и разделить на 2.', {type:'kite', notes:[`d₁=${d1}`, `d₂=${d2}`]} ); }
+  },
+  {
+    id:'new_trap_perp_diags', topic:'trapezoid', source:'new', title:'Трапеция с перпендикулярными диагоналями', difficulty:'новое',
+    generate(){ let d1=rnd(8,32), d2=rnd(6,28); if((d1*d2)%2) d2++; const ans=d1*d2/2; return task(
+      `Диагонали трапеции взаимно перпендикулярны и равны ${d1} и ${d2}. Найдите площадь этой трапеции.`, ans,
+      [`Площадь четырёхугольника с перпендикулярными диагоналями: S = d₁ · d₂ : 2.`, `S = ${d1} · ${d2} : 2 = ${fmt(ans)}.`],
+      'Перпендикулярные диагонали — половина произведения диагоналей.', {type:'trapezoid', notes:[`d₁=${d1}`, `d₂=${d2}`, `90°`]} ); }
+  },
+  {
+    id:'new_square_diag_by_area', topic:'square', source:'new', title:'Диагональ квадрата по площади', difficulty:'новое',
+    generate(){ const k=rnd(2,18), S=2*k*k, ans=2*k; return task(
+      `Найдите диагональ квадрата, если его площадь равна ${S}.`, ans,
+      [`Сторона квадрата: a = √${S} = ${k}√2.`, `Диагональ: d = a√2 = ${k}√2·√2 = ${ans}.`],
+      'Если S = 2k², то сторона k√2, диагональ 2k.', {type:'square', notes:[`S=${S}`, `d=?`]} ); }
+  },
+  {
+    id:'new_square_perim_by_area', topic:'square', source:'new', title:'Периметр квадрата по площади', difficulty:'новое',
+    generate(){ const side=rnd(3,30), S=side*side, ans=4*side; return task(
+      `Найдите периметр квадрата, если его площадь равна ${S}.`, ans,
+      [`Сторона квадрата: √${S} = ${side}.`, `Периметр: 4 · ${side} = ${ans}.`],
+      'Корень из площади — это сторона квадрата.', {type:'square', notes:[`S=${S}`, `P=?`]} ); }
+  },
+  {
+    id:'new_rectangle_perim_area_length', topic:'rectangle', source:'new', title:'Периметр прямоугольника', difficulty:'новое',
+    generate(){ const a=rnd(5,35), b=rnd(3,20), S=a*b, ans=2*(a+b); return task(
+      `Найдите периметр прямоугольника, если его длина равна ${a}, а площадь равна ${S}.`, ans,
+      [`Ширина: ${S} : ${a} = ${b}.`, `Периметр: 2·(${a}+${b}) = ${ans}.`],
+      'Из площади найди вторую сторону, затем периметр.', {type:'rectangle', notes:[`a=${a}`, `S=${S}`]} ); }
+  },
+  {
+    id:'new_cut_square_rectangle', topic:'composite', source:'new', subtype:'cut_square', title:'Квадрат минус прямоугольник', difficulty:'новое',
+    generate(){ const side=rnd(6,18), a=rnd(2,side-2), b=rnd(2,side-2), ans=side*side-a*b; return task(
+      `Из квадрата со стороной ${side} вырезали прямоугольник со сторонами ${a} и ${b}. Найдите площадь получившейся фигуры.`, ans,
+      [`Площадь квадрата: ${side}² = ${side*side}.`, `Площадь вырезанного прямоугольника: ${a} · ${b} = ${a*b}.`, `Осталось: ${side*side} − ${a*b} = ${ans}.`],
+      'Площадь большой фигуры минус площадь вырезанного прямоугольника.', {type:'composite', notes:[`квадрат ${side}×${side}`, `вырез ${a}×${b}`]},
+      {formula:'S = S₁ − S₂', tags:['составные','площадь','разность']} ); }
+  },
+
+  /* ====== Базовые блоки, которых не хватало ====== */
+  {
+    id:'rect_basic_area', topic:'rectangle', source:'base', subtype:'basic_area', title:'Прямоугольник: площадь по сторонам', difficulty:'база',
+    generate(){ const a=rnd(3,28), b=rnd(3,22), ans=a*b; return task(
+      `Стороны прямоугольника равны ${a} и ${b}. Найдите площадь прямоугольника.`, ans,
+      [`Площадь прямоугольника: S = a · b.`, `S = ${a} · ${b} = ${ans}.`],
+      'Просто умножь длину на ширину.', {type:'rectangle', notes:[`a=${a}`, `b=${b}`]},
+      {formula:'S = a · b', tags:['прямоугольник','площадь','база']} ); }
+  },
+  {
+    id:'rect_basic_perimeter', topic:'rectangle', source:'base', subtype:'basic_perimeter', title:'Прямоугольник: периметр по сторонам', difficulty:'база',
+    generate(){ const a=rnd(3,32), b=rnd(2,24), ans=2*(a+b); return task(
+      `Стороны прямоугольника равны ${a} и ${b}. Найдите его периметр.`, ans,
+      [`Периметр прямоугольника: P = 2 · (a + b).`, `P = 2 · (${a} + ${b}) = ${ans}.`],
+      'Сумма соседних сторон, умноженная на 2.', {type:'rectangle', notes:[`a=${a}`, `b=${b}`]},
+      {formula:'P = 2(a + b)', tags:['прямоугольник','периметр','база']} ); }
+  },
+  {
+    id:'rect_side_by_area', topic:'rectangle', source:'base', subtype:'side_from_area', title:'Прямоугольник: сторона по площади', difficulty:'база',
+    generate(){ const a=rnd(3,28), b=rnd(3,22), S=a*b; return task(
+      `Площадь прямоугольника равна ${S}, одна из его сторон равна ${a}. Найдите вторую сторону.`, b,
+      [`Площадь прямоугольника: S = a · b.`, `Вторая сторона: ${S} : ${a} = ${b}.`],
+      'Площадь делим на известную сторону.', {type:'rectangle', notes:[`S=${S}`, `a=${a}`]},
+      {formula:'S = a · b', tags:['прямоугольник','площадь','база']} ); }
+  },
+  {
+    id:'rect_diagonal_pyth', topic:'rectangle', source:'base', subtype:'diag_pyth', title:'Диагональ прямоугольника по Пифагору', difficulty:'база',
+    generate(){ const tr=choice(pythTriples().filter(t=>t[2]<=29)); const a=tr[0], b=tr[1], d=tr[2]; return task(
+      `Стороны прямоугольника равны ${a} и ${b}. Найдите длину его диагонали.`, d,
+      [`Диагональ прямоугольника — гипотенуза прямоугольного треугольника.`, `d² = ${a}² + ${b}² = ${a*a+b*b}.`, `d = √${a*a+b*b} = ${d}.`],
+      'Применяй теорему Пифагора: d² = a² + b².', {type:'rectangle', notes:[`a=${a}, b=${b}`, `d=?`]},
+      {formula:'d² = a² + b²', tags:['прямоугольник','диагональ','Пифагор']} ); }
+  },
+  {
+    id:'rect_side_by_diag', topic:'rectangle', source:'base', subtype:'side_from_diag', title:'Сторона прямоугольника через диагональ', difficulty:'база',
+    generate(){ const tr=choice(pythTriples().filter(t=>t[2]<=29)); const a=tr[0], b=tr[1], d=tr[2]; return task(
+      `В прямоугольнике одна из сторон равна ${a}, а диагональ равна ${d}. Найдите вторую сторону.`, b,
+      [`По Пифагору: вторая² = d² − a² = ${d}² − ${a}² = ${d*d-a*a}.`, `Вторая сторона = √${d*d-a*a} = ${b}.`],
+      'Достаточно знать сторону и гипотенузу.', {type:'rectangle', notes:[`a=${a}`, `d=${d}`]},
+      {formula:'b² = d² − a²', tags:['прямоугольник','Пифагор']} ); }
+  },
+  {
+    id:'square_basic_area', topic:'square', source:'base', subtype:'basic_area', title:'Площадь квадрата по стороне', difficulty:'база',
+    generate(){ const a=rnd(3,35); return task(
+      `Сторона квадрата равна ${a}. Найдите площадь квадрата.`, a*a,
+      [`Площадь квадрата: S = a².`, `S = ${a}² = ${a*a}.`],
+      'Сторона в квадрате.', {type:'square', notes:[`a=${a}`]},
+      {formula:'S = a²', tags:['квадрат','площадь','база']} ); }
+  },
+  {
+    id:'square_basic_perim', topic:'square', source:'base', subtype:'basic_perim', title:'Периметр квадрата по стороне', difficulty:'база',
+    generate(){ const a=rnd(3,40); return task(
+      `Сторона квадрата равна ${a}. Найдите периметр этого квадрата.`, 4*a,
+      [`Периметр квадрата: P = 4a.`, `P = 4 · ${a} = ${4*a}.`],
+      'Все стороны равны, поэтому 4 · сторона.', {type:'square', notes:[`a=${a}`]},
+      {formula:'P = 4a', tags:['квадрат','периметр','база']} ); }
+  },
+  {
+    id:'square_side_from_area', topic:'square', source:'base', subtype:'side_from_area', title:'Сторона квадрата по площади', difficulty:'база',
+    generate(){ const a=rnd(3,40), S=a*a; return task(
+      `Площадь квадрата равна ${S}. Найдите сторону квадрата.`, a,
+      [`Сторона квадрата равна √S.`, `a = √${S} = ${a}.`],
+      'Извлекай корень из площади.', {type:'square', notes:[`S=${S}`]},
+      {formula:'a = √S', tags:['квадрат','база']} ); }
+  },
+  {
+    id:'square_side_from_perim', topic:'square', source:'base', subtype:'side_from_perim', title:'Сторона квадрата по периметру', difficulty:'база',
+    generate(){ const a=rnd(3,40), P=4*a; return task(
+      `Периметр квадрата равен ${P}. Найдите его сторону.`, a,
+      [`Сторона квадрата: a = P / 4.`, `a = ${P} : 4 = ${a}.`],
+      'Периметр делим на 4.', {type:'square', notes:[`P=${P}`]},
+      {formula:'a = P/4', tags:['квадрат','база']} ); }
+  },
+
+  /* ====== Параллелограмм: площадь по двум сторонам и sin ====== */
+  {
+    id:'new_para_ab_sin', topic:'parallelogram', source:'new', subtype:'area_ab_sin', title:'Параллелограмм: S = ab·sin α', difficulty:'новое',
+    generate(){ const so=choice(sinOptions().filter(x=>x.p!==1)); const k=rnd(1,2), a=so.q*k, b=evenBetween(4,28); const ans=a*b*so.p/so.q; return task(
+      `Стороны параллелограмма равны ${a} и ${b}, а синус угла между ними равен ${so.label}. Найдите площадь параллелограмма.`, ans,
+      [`Площадь параллелограмма: S = a · b · sin α.`, `S = ${a} · ${b} · ${so.label} = ${fmt(ans)}.`],
+      'Площадь параллелограмма по двум сторонам и синусу угла между ними.', {type:'parallelogram', notes:[`a=${a}`, `b=${b}`, `sin=${so.label}`]},
+      {formula:'S = a · b · sin α', tags:['параллелограмм','площадь','sin','новые']} ); }
+  },
+  {
+    id:'new_para_side_from_area', topic:'parallelogram', source:'new', subtype:'side_from_area', title:'Параллелограмм: сторона через площадь и высоту', difficulty:'новое',
+    generate(){ const a=rnd(4,28), h=rnd(2,18), S=a*h; return task(
+      `Площадь параллелограмма равна ${S}, а высота, опущенная на одну из сторон, равна ${h}. Найдите эту сторону.`, a,
+      [`Площадь параллелограмма: S = a · h.`, `a = S / h = ${S} / ${h} = ${a}.`],
+      'Делим площадь на высоту, получаем основание.', {type:'parallelogram', notes:[`S=${S}`, `h=${h}`]},
+      {formula:'S = a · h', tags:['параллелограмм','площадь','новые']} ); }
+  },
+  {
+    id:'new_para_height_from_area', topic:'parallelogram', source:'new', subtype:'height_from_area', title:'Параллелограмм: высота через площадь', difficulty:'новое',
+    generate(){ const a=rnd(4,28), h=rnd(2,18), S=a*h; return task(
+      `Площадь параллелограмма равна ${S}, одна из его сторон равна ${a}. Найдите высоту, опущенную на эту сторону.`, h,
+      [`Площадь параллелограмма: S = a · h.`, `h = S / a = ${S} / ${a} = ${h}.`],
+      'Делим площадь на основание, получаем соответствующую высоту.', {type:'parallelogram', notes:[`S=${S}`, `a=${a}`]},
+      {formula:'S = a · h', tags:['параллелограмм','высота','новые']} ); }
+  },
+
+  /* ====== Трапеция: основание по средней линии; высота по площади; равнобедренная боковая ====== */
+  {
+    id:'trap_find_base_midline', topic:'trapezoid', source:'base', subtype:'find_base_midline', title:'Найти основание через среднюю линию', difficulty:'база',
+    generate(){ const m=rnd(7,30), one=rnd(3, 2*m-3); const ans=2*m-one; return task(
+      `Средняя линия трапеции равна ${m}, а одно из её оснований равно ${one}. Найдите второе основание.`, ans,
+      [`Средняя линия: m = (a + b) / 2 ⇒ a + b = 2m = ${2*m}.`, `Второе основание: ${2*m} − ${one} = ${ans}.`],
+      'Сумма оснований равна удвоенной средней линии.', {type:'trapezoid', notes:[`m=${m}`, `одно из оснований ${one}`]},
+      {formula:'m = (a + b)/2', tags:['трапеция','средняя линия','база']} ); }
+  },
+  {
+    id:'trap_height_from_area', topic:'trapezoid', source:'new', subtype:'height_from_area', title:'Высота трапеции через площадь', difficulty:'новое',
+    generate(){ const [a,b]=sumEvenPair(3,14,8,25); const h=rnd(2,14), small=Math.min(a,b), big=Math.max(a,b); const S=(a+b)*h/2; return task(
+      `Основания трапеции равны ${small} и ${big}, площадь равна ${S}. Найдите высоту трапеции.`, h,
+      [`Средняя линия: m = (${small} + ${big}) / 2 = ${(small+big)/2}.`, `Площадь S = m · h, значит h = S / m = ${S} / ${(small+big)/2} = ${h}.`],
+      'Сначала средняя линия, потом h = S / m.', {type:'trapezoid', notes:[`a=${small}, b=${big}`, `S=${S}`]},
+      {formula:'S = ((a + b)/2) · h', tags:['трапеция','высота','площадь','новые']} ); }
+  },
+  {
+    id:'new_trap_iso_lateral', topic:'trapezoid', source:'new', subtype:'iso_lateral_pyth', title:'Боковая равнобедренной трапеции по Пифагору', difficulty:'новое',
+    generate(){ const tr=choice(pythTriples().filter(t=>t[2]<=25 && t[0]<=12)); const halfDiff=tr[0], h=tr[1], lateral=tr[2]; const small=rnd(4,20), big=small+2*halfDiff; return task(
+      `В равнобедренной трапеции основания равны ${small} и ${big}, высота равна ${h}. Найдите боковую сторону трапеции.`, lateral,
+      [`Половина разности оснований: (${big} − ${small}) / 2 = ${halfDiff}.`, `Опустив высоту, получаем прямоугольный треугольник с катетами ${halfDiff} и ${h}.`, `Боковая сторона: √(${halfDiff}² + ${h}²) = √${halfDiff*halfDiff+h*h} = ${lateral}.`],
+      'Опусти высоты из меньшего основания: половина разности оснований и высота — два катета.', {type:'trapezoid', notes:[`a=${small}, b=${big}`, `h=${h}`]},
+      {formula:'c² = ((b−a)/2)² + h²', tags:['трапеция','равнобедренная','Пифагор','новые']} ); }
+  },
+  {
+    id:'new_trap_right_lateral_pyth', topic:'trapezoid', source:'new', subtype:'right_pyth_lateral', title:'Прямоугольная трапеция: наклонная боковая', difficulty:'новое',
+    generate(){ const tr=choice(pythTriples().filter(t=>t[2]<=25 && t[0]<=15)); const diff=tr[0], h=tr[1], lateral=tr[2]; const small=rnd(3,18), big=small+diff; return task(
+      `В прямоугольной трапеции основания равны ${small} и ${big}, а высота равна ${h}. Найдите длину наклонной боковой стороны.`, lateral,
+      [`Разность оснований: ${big} − ${small} = ${diff}.`, `В прямоугольнике, образованном высотой, получаем катеты ${diff} и ${h}.`, `Наклонная боковая: √(${diff}² + ${h}²) = √${diff*diff+h*h} = ${lateral}.`],
+      'Разность оснований и высота — катеты, наклонная боковая — гипотенуза.', {type:'trapezoid', notes:[`основания ${small}, ${big}`, `h=${h}`]},
+      {formula:'c² = (b−a)² + h²', tags:['трапеция','прямоугольная','Пифагор','новые']} ); }
+  },
+  {
+    id:'new_trap_iso_height_from_lateral', topic:'trapezoid', source:'new', subtype:'iso_height_from_lateral', title:'Высота равнобедренной трапеции через боковую', difficulty:'новое',
+    generate(){ const tr=choice(pythTriples().filter(t=>t[2]<=25 && t[0]<=12)); const halfDiff=tr[0], h=tr[1], lateral=tr[2]; const small=rnd(3,20), big=small+2*halfDiff; return task(
+      `В равнобедренной трапеции основания равны ${small} и ${big}, а боковая сторона равна ${lateral}. Найдите высоту трапеции.`, h,
+      [`Половина разности оснований: (${big} − ${small}) / 2 = ${halfDiff}.`, `Высота из прямоугольного треугольника: √(${lateral}² − ${halfDiff}²) = √${lateral*lateral-halfDiff*halfDiff} = ${h}.`],
+      'Тот же прямоугольный треугольник, но ищем второй катет.', {type:'trapezoid', notes:[`a=${small}, b=${big}`, `боковая ${lateral}`]},
+      {formula:'h² = c² − ((b−a)/2)²', tags:['трапеция','равнобедренная','Пифагор','новые']} ); }
+  },
+
+  /* ====== Ромб: диагональ по площади ====== */
+  {
+    id:'new_rhombus_diag_from_area', topic:'rhombus', source:'new', subtype:'diag_from_area', title:'Диагональ ромба через площадь', difficulty:'новое',
+    generate(){ const d1=evenBetween(6,28), d2=evenBetween(4,22), S=d1*d2/2; return task(
+      `Площадь ромба равна ${S}, одна из его диагоналей равна ${d1}. Найдите вторую диагональ.`, d2,
+      [`Площадь ромба: S = d₁ · d₂ / 2.`, `d₂ = 2S / d₁ = 2 · ${S} / ${d1} = ${d2}.`],
+      'Выражай вторую диагональ из формулы площади.', {type:'rhombus', notes:[`S=${S}`, `d₁=${d1}`]},
+      {formula:'S = d₁ · d₂ / 2', tags:['ромб','диагональ','новые']} ); }
+  },
+  {
+    id:'new_rhombus_side_from_area', topic:'rhombus', source:'new', subtype:'side_from_area_h', title:'Сторона ромба через площадь и высоту', difficulty:'новое',
+    generate(){ const a=rnd(5,28), h=rnd(2,16), S=a*h; return task(
+      `Площадь ромба равна ${S}, а его высота равна ${h}. Найдите сторону ромба.`, a,
+      [`Площадь ромба: S = a · h.`, `a = S / h = ${S} / ${h} = ${a}.`],
+      'Делим площадь на высоту.', {type:'rhombus', notes:[`S=${S}`, `h=${h}`]},
+      {formula:'S = a · h', tags:['ромб','сторона','новые']} ); }
+  },
+
+  /* ====== Треугольник: средняя линия (база) ====== */
+  {
+    id:'tri_midline_basic', topic:'triangle', source:'base', subtype:'midline_basic', title:'Средняя линия треугольника', difficulty:'база',
+    generate(){ const ac=evenBetween(6,42); return task(
+      `В треугольнике ABC отмечены середины M и N сторон AB и BC. Сторона AC равна ${ac}. Найдите длину отрезка MN.`, ac/2,
+      [`Средняя линия треугольника равна половине параллельной ей стороны.`, `MN = AC / 2 = ${ac} / 2 = ${ac/2}.`],
+      'Средняя линия — половина третьей стороны.', {type:'triangle', notes:[`AC=${ac}`, `MN=?`]},
+      {formula:'MN = AC / 2', tags:['треугольник','средняя линия','база']} ); }
+  },
+  {
+    id:'tri_midline_inverse', topic:'triangle', source:'base', subtype:'midline_inverse', title:'Сторона по средней линии', difficulty:'база',
+    generate(){ const mn=rnd(3,22); return task(
+      `В треугольнике ABC отмечены середины M и N сторон AB и BC, причём MN = ${mn}. Найдите длину стороны AC.`, 2*mn,
+      [`Средняя линия равна половине параллельной стороны: MN = AC / 2.`, `Отсюда AC = 2 · MN = 2 · ${mn} = ${2*mn}.`],
+      'Сторона в 2 раза длиннее средней линии.', {type:'triangle', notes:[`MN=${mn}`]},
+      {formula:'AC = 2 · MN', tags:['треугольник','средняя линия','база']} ); }
+  },
+
+  /* ====== Составные ====== */
+  {
+    id:'new_quad_diag_split', topic:'composite', source:'new', subtype:'quad_diag_split', title:'Четырёхугольник по двум треугольникам', difficulty:'новое',
+    generate(){ const s1=rnd(8,40), s2=rnd(6,35); return task(
+      `Диагональ четырёхугольника ABCD разбивает его на два треугольника с площадями ${s1} и ${s2}. Найдите площадь четырёхугольника ABCD.`, s1+s2,
+      [`Диагональ делит четырёхугольник на два треугольника без перекрытий.`, `S(ABCD) = ${s1} + ${s2} = ${s1+s2}.`],
+      'Площадь равна сумме площадей двух частей.', {type:'composite', notes:[`S₁=${s1}`, `S₂=${s2}`]},
+      {formula:'S = S₁ + S₂', tags:['составные','разбиение','новые']} ); }
+  },
+  {
+    id:'new_composite_two_rects', topic:'composite', source:'new', subtype:'two_rects', title:'L-фигура из двух прямоугольников', difficulty:'новое',
+    generate(){ const a=rnd(4,16), b=rnd(3,14), c=rnd(2,a-1), d=rnd(2,b+5); const ans=a*b+c*d; return task(
+      `Фигура составлена из двух прямоугольников: один со сторонами ${a} и ${b}, другой со сторонами ${c} и ${d}, они приставлены друг к другу без перекрытия. Найдите общую площадь.`, ans,
+      [`Площадь первого: ${a} · ${b} = ${a*b}.`, `Площадь второго: ${c} · ${d} = ${c*d}.`, `Общая: ${a*b} + ${c*d} = ${ans}.`],
+      'Складываем площади прямоугольников, из которых составлена фигура.', {type:'composite', notes:[`${a}×${b}`, `+ ${c}×${d}`]},
+      {formula:'S = S₁ + S₂', tags:['составные','сумма','новые']} ); }
+  }
+,
+  /* ====== Дополнительный блок: окружность и круг ====== */
+  {
+    id:'circle_radius_from_length', topic:'circle', source:'new', subtype:'circle_radius_from_length', title:'Окружность: радиус по длине', difficulty:'доп.',
+    generate(){ const r=rnd(3,24), c=2*r; return task(
+      `Длина окружности равна ${c}π. Найдите радиус этой окружности.`, r,
+      [`Длина окружности: C = 2πr.`, `Значит 2r = ${c}.`, `r = ${c} : 2 = ${r}.`],
+      'Коэффициент перед π равен 2r.', {type:'circle', notes:[`C=${c}π`, `r=?`]},
+      {formula:'C = 2πr', tags:['окружность','радиус','дополнительно']} ); }
+  },
+  {
+    id:'circle_radius_from_area', topic:'circle', source:'new', subtype:'circle_radius_from_area', title:'Круг: радиус по площади', difficulty:'доп.',
+    generate(){ const r=rnd(3,20), s=r*r; return task(
+      `Площадь круга равна ${s}π. Найдите радиус этого круга.`, r,
+      [`Площадь круга: S = πr².`, `Значит r² = ${s}.`, `r = √${s} = ${r}.`],
+      'Убери π и извлеки корень.', {type:'circle_area', notes:[`S=${s}π`, `r=?`]},
+      {formula:'S = πr²', tags:['круг','радиус','дополнительно']} ); }
+  },
+  {
+    id:'circle_length_from_radius', topic:'circle', source:'new', subtype:'circle_length_from_radius', title:'Окружность: коэффициент перед π', difficulty:'доп.',
+    generate(){ const r=rnd(2,25), ans=2*r; return task(
+      `Радиус окружности равен ${r}. Длина окружности равна kπ. Найдите k.`, ans,
+      [`Длина окружности: C = 2πr.`, `C = 2π · ${r} = ${ans}π.`, `Значит k = ${ans}.`],
+      'В ответе нужен только коэффициент перед π.', {type:'circle', notes:[`r=${r}`, `C=kπ`]},
+      {formula:'C = 2πr', tags:['окружность','длина','дополнительно']} ); }
+  },
+  {
+    id:'regular_triangle_radius', topic:'circle', source:'new', subtype:'regular_triangle_radius', title:'Правильный треугольник: r и R', difficulty:'доп.',
+    generate(){ const k=rnd(2,12), a=6*k, r= k*Math.sqrt(3), ans=2*k; return task(
+      `Сторона правильного треугольника равна ${a}. Радиус описанной окружности равен R, радиус вписанной окружности равен r. Найдите отношение R/r.`, 2,
+      [`Для правильного треугольника R = a√3/3, r = a√3/6.`, `Отношение R/r = (a√3/3) : (a√3/6) = 2.`],
+      'У правильного треугольника описанный радиус в 2 раза больше вписанного.', {type:'regular_triangle_circle', notes:[`a=${a}`, `R/r=?`]},
+      {formula:'R = a√3/3; r = a√3/6', tags:['окружность','правильный треугольник','дополнительно']} ); }
+  }
+
+];
+
+
+let currentTemplateId = null;
+let currentTask = null;
+let currentChecked = false;
+let currentAssistance = 'self'; // self | hint | solution
+let currentAttemptNo = 0;
+let practiceMode = 'learn'; // learn | train | control | diagnostic
+let session = {active:false, type:null, queue:[], index:0, total:0, answered:0, correct:0, results:[], lastSummary:''};
+let stats = loadStats();
+let mistakes = loadMistakes();
+let attemptLog = loadAttemptLog();
+// для отката селектов при отмене прерывания сессии и для запоминания режима «только новые»
+let prevModeSelect = 'new-focus';
+let prevTopicSelect = 'all';
+let prevSkillSelect = 'all';
+let savedModeBeforeOnlyNew = 'new-focus';
+
+function todayStr(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function defaultStats(){
+  return {solved:0, correct:0, streak:0, best:0, newSolved:0, todayDate: todayStr(), todayNewSolved:0, independentCorrect:0, hintedCorrect:0, solutionCorrect:0, byTopic:{}, bySkill:{}};
+}
+function normalizeStats(raw){
+  const base=defaultStats();
+  const s={...base, ...(raw && typeof raw==='object' ? raw : {})};
+  s.byTopic = s.byTopic && typeof s.byTopic==='object' ? s.byTopic : {};
+  s.bySkill = s.bySkill && typeof s.bySkill==='object' ? s.bySkill : {};
+  for(const k of ['solved','correct','streak','best','newSolved','todayNewSolved','independentCorrect','hintedCorrect','solutionCorrect']) s[k]=Number(s[k]||0);
+  // дневной сброс: если день поменялся — обнуляем дневной счётчик
+  if(s.todayDate !== todayStr()){ s.todayDate=todayStr(); s.todayNewSolved=0; }
+  return s;
+}
+function rollDateIfNeeded(){
+  if(stats.todayDate !== todayStr()){ stats.todayDate=todayStr(); stats.todayNewSolved=0; }
+}
+function loadStats(){
+  try { return normalizeStats(JSON.parse(localStorage.getItem('oge17_stats') || 'null')); }
+  catch(e){ return defaultStats(); }
+}
+function saveStats(){ try { localStorage.setItem('oge17_stats', JSON.stringify(stats)); } catch(e){} }
+function loadMistakes(){
+  try { return JSON.parse(localStorage.getItem('oge17_mistakes') || '') || []; }
+  catch(e){ return []; }
+}
+function saveMistakes(){ try { localStorage.setItem('oge17_mistakes', JSON.stringify(mistakes.slice(0,80))); } catch(e){} }
+function loadAttemptLog(){
+  try { return JSON.parse(localStorage.getItem('oge17_attempts') || '') || []; }
+  catch(e){ return []; }
+}
+function saveAttemptLog(){ try { localStorage.setItem('oge17_attempts', JSON.stringify(attemptLog.slice(-1000))); } catch(e){} }
+
+const ACTIVE_SESSION_KEY='oge17_active_session_v10';
+const UI_OPTIONS_KEY='oge17_ui_options_v10';
+function templateById(id){ return TEMPLATES.find(t=>t.id===id) || null; }
+function sessionToPlain(){
+  return {
+    ...session,
+    queue:(session.queue||[]).map(t=>typeof t==='string'?t:(t && t.id)).filter(Boolean)
+  };
+}
+function saveActiveSession(){
+  try{
+    if(!session || !session.active){ localStorage.removeItem(ACTIVE_SESSION_KEY); return; }
+    const data={
+      version:10, savedAt:new Date().toISOString(), session:sessionToPlain(),
+      practiceMode, currentTemplateId, currentTask, currentChecked, currentAttemptNo, currentAssistance,
+      controls:{mode:$('modeSelect')?.value, topic:$('topicSelect')?.value, skill:$('skillSelect')?.value, onlyNew:!!$('onlyNewToggle')?.checked, includeCircle:!!$('includeCircleToggle')?.checked}
+    };
+    localStorage.setItem(ACTIVE_SESSION_KEY, JSON.stringify(data));
+  } catch(e){ console.warn('[oge17 autosave] не удалось сохранить сессию', e); }
+}
+function clearActiveSession(){ try{ localStorage.removeItem(ACTIVE_SESSION_KEY); }catch(e){} }
+function saveUIOptions(){
+  try{
+    localStorage.setItem(UI_OPTIONS_KEY, JSON.stringify({studentView:!!$('studentViewToggle')?.checked, includeCircle:!!$('includeCircleToggle')?.checked}));
+  }catch(e){}
+}
+function loadUIOptions(){
+  try { return JSON.parse(localStorage.getItem(UI_OPTIONS_KEY) || '') || {studentView:true, includeCircle:false}; }
+  catch(e){ return {studentView:true, includeCircle:false}; }
+}
+function applyStudentView(){
+  const on=!!$('studentViewToggle')?.checked;
+  document.body.classList.toggle('student-view', on);
+  saveUIOptions();
+}
+function renderTaskObject(t){
+  const tpl=templateById(t.templateId || t.id) || {id:t.id||t.templateId, topic:t.topic, source:t.source, title:t.title||'задача', difficulty:t.difficulty||''};
+  currentTask={...t, fromMistake:!!t.fromMistake};
+  currentTemplateId=currentTask.templateId || currentTask.id;
+  $('taskMeta').innerHTML=metaPills(tpl, currentTask);
+  $('questionText').textContent=currentTask.question || currentTask.condition;
+  $('diagramBox').innerHTML=renderDiagram(currentTask.diagram || {type:currentTask.topic, subtype:currentTask.subtype, formula:currentTask.formula, title:currentTask.title});
+  $('answerInput').value='';
+  $('feedback').className='feedback'; $('feedback').style.display='none'; $('solution').className='solution'; $('solution').innerHTML='';
+}
+function restoreActiveSession(){
+  try{
+    const raw=localStorage.getItem(ACTIVE_SESSION_KEY);
+    if(!raw) return false;
+    const data=JSON.parse(raw);
+    if(!data || data.version!==10 || !data.session || !data.session.active || !data.currentTask) { clearActiveSession(); return false; }
+    const queue=(data.session.queue||[]).map(templateById).filter(Boolean);
+    if(!queue.length){ clearActiveSession(); return false; }
+    if(data.controls){
+      if($('modeSelect') && data.controls.mode) $('modeSelect').value=data.controls.mode;
+      if($('topicSelect') && data.controls.topic) $('topicSelect').value=data.controls.topic;
+      if($('onlyNewToggle')) $('onlyNewToggle').checked=!!data.controls.onlyNew;
+      if($('includeCircleToggle')) $('includeCircleToggle').checked=!!data.controls.includeCircle;
+      renderSkillOptions();
+      if($('skillSelect') && data.controls.skill) $('skillSelect').value=data.controls.skill;
+    }
+    session={...data.session, queue};
+    practiceMode=data.practiceMode || data.session.type || 'train';
+    currentTemplateId=data.currentTemplateId || data.currentTask.templateId || data.currentTask.id;
+    currentChecked=!!data.currentChecked;
+    currentAttemptNo=Number(data.currentAttemptNo||0);
+    currentAssistance=data.currentAssistance || 'self';
+    renderTaskObject(data.currentTask);
+    applyPracticeMode(); renderSessionBox(); renderStats(); renderMistakes();
+    showInfo(`Сессия восстановлена: ${session.answered}/${session.total}. ${currentChecked ? 'Нажми «Следующая», чтобы продолжить.' : 'Можно продолжать с этого задания.'}`);
+    return true;
+  } catch(e){ console.warn('[oge17 autosave] не удалось восстановить сессию', e); clearActiveSession(); return false; }
+}
+
+function skillKey(topic, subtype){ return `${topic || 'topic'}|${subtype || 'task'}`; }
+function templateSkillKey(tpl){ return skillKey(tpl.topic, tpl.subtype || subtypeFromId(tpl.id)); }
+function taskSkillKey(t){ return skillKey(t.topic, t.subtype || subtypeFromId(t.id || t.templateId)); }
+// Человекочитаемые названия навыков по subtype-имени (после срезания new_/base_).
+// Перекрывает все 76 шаблонов: ученик не видит идентификаторов вроде para_trap_daec.
+const SKILL_LABELS = {
+  // параллелограмм
+  para_bisector_acute: 'биссектриса угла',
+  para_other_angle: 'соседние углы (180°)',
+  para_diag_angles: 'углы через диагональ',
+  para_half_diagonal: 'диагонали пополам',
+  para_area_picture: 'площадь по основанию и высоте',
+  para_larger_height: 'большая высота',
+  para_triangle_cbe: 'треугольник внутри (S/4)',
+  para_trap_daec: 'трапеция внутри (3·S/4)',
+  para_height_diagonal: 'высота делит сторону',
+  area_ab_sin: 'площадь S = ab · sin α',
+  side_from_area: 'сторона через площадь',
+  height_from_area: 'высота через площадь',
+  // прямоугольник
+  rect_angle_diags: 'углы между диагоналями',
+  rect_diagonal_center: 'диагональ через центр',
+  rectangle_area_diag_side: 'площадь по стороне и диагонали',
+  rectangle_area_diag_angle: 'площадь через угол диагоналей',
+  rectangle_perim_area_length: 'периметр через площадь',
+  basic_area: 'площадь по сторонам',
+  basic_perimeter: 'периметр по сторонам',
+  diag_pyth: 'диагональ по Пифагору',
+  side_from_diag: 'сторона через диагональ',
+  // ромб
+  rhombus_area_inradius: 'площадь через расстояние до стороны',
+  rhombus_angle_acd: 'углы ромба',
+  rhombus_height_150: 'высота при 30°/150°',
+  rhombus_area_diags: 'площадь через диагонали',
+  rhombus_area_perim30: 'площадь через периметр и 30°',
+  rhombus_height_split: 'высота делит сторону',
+  rhombus_side_diag: 'сторона и диагональ',
+  rhombus_side_sin: 'сторона и sin угла',
+  rhombus_height_area: 'высота, площадь, периметр',
+  diag_from_area: 'диагональ через площадь',
+  side_from_area_h: 'сторона через площадь и высоту',
+  // трапеция
+  trap_midline_segment: 'диагональ и средняя линия',
+  trap_midline: 'средняя линия',
+  trap_iso_angle_sum: 'углы равнобедренной',
+  trap_diag_angles: 'углы через диагональ',
+  trap_angle_abd: 'углы (∠ABD)',
+  trap_smaller_base45: '45° → меньшее основание',
+  trap_larger_base45: '45° → большее основание',
+  trap_bc_split: 'основание по отрезкам',
+  trap_area_iso45: '45° → площадь равнобедренной',
+  trap_side_sin_area: 'боковая и sin',
+  trap_side_cos_area: 'боковая и cos',
+  trap_isosceles_legs: 'равнобедренная по боковой',
+  trap_midline_height_area: 'средняя линия и высота',
+  trap_find_base: 'найти основание по площади',
+  right_trap_area45: 'прямоугольная трапеция при 45°',
+  right_trap_angle: 'угол прямоугольной трапеции',
+  trap_perp_diags: 'перпендикулярные диагонали',
+  find_base_midline: 'основание через среднюю линию',
+  iso_lateral_pyth: 'равнобедренная: боковая по Пифагору',
+  right_pyth_lateral: 'прямоугольная: наклонная боковая',
+  iso_height_from_lateral: 'высота через боковую',
+  // квадрат
+  square_diag_root2: 'диагональ при стороне k√2',
+  square_area_perimeter: 'площадь по периметру',
+  square_area_root: 'площадь при стороне k√n',
+  square_diag_by_area: 'диагональ по площади',
+  square_perim_by_area: 'периметр по площади',
+  side_from_perim: 'сторона по периметру',
+  basic_perim: 'периметр по стороне',
+  // треугольник
+  triangle_two_sides_sin: 'площадь через sin',
+  isosceles_triangle_area: 'равнобедренный треугольник',
+  triangle_midpoints_quad: 'средние линии и четырёхугольник',
+  right_triangle_leg_hyp: 'катет и гипотенуза',
+  inradius_perimeter: 'площадь через радиус вписанной',
+  area_a_h: 'площадь по стороне и высоте',
+  midline_basic: 'средняя линия',
+  midline_inverse: 'сторона по средней линии',
+  // составные
+  kite_area_diags: 'дельтоид через диагонали',
+  cut_square: 'квадрат минус прямоугольник',
+  quad_diag_split: 'четырёхугольник по двум частям',
+  two_rects: 'фигура из двух прямоугольников',
+  circle_radius_from_length: 'радиус по длине окружности',
+  circle_radius_from_area: 'радиус по площади круга',
+  circle_length_from_radius: 'длина окружности через радиус',
+  regular_triangle_radius: 'правильный треугольник и окружности'
+};
+function skillLabel(topic, subtype){
+  const t = topicName[topic] || topic || 'Геометрия';
+  const raw = String(subtype || '').replace(/^(new_|base_)/, '');
+  const topicSpecific = {
+    'square|basic_area':'площадь по стороне',
+    'square|side_from_area':'сторона по площади',
+    'square|basic_perim':'периметр по стороне',
+    'rectangle|basic_area':'площадь по сторонам',
+    'rectangle|side_from_area':'сторона через площадь',
+    'parallelogram|side_from_area':'сторона через площадь и высоту'
+  };
+  if(topicSpecific[`${topic}|${raw}`]) return `${t} · ${topicSpecific[`${topic}|${raw}`]}`;
+  if(SKILL_LABELS[raw]) return `${t} · ${SKILL_LABELS[raw]}`;
+  const s = raw.toLowerCase();
+  if(s.includes('midline')) return `${t} · средняя линия`;
+  if(s.includes('ab_sin') || s.includes('sine')) return `${t} · площадь через sin`;
+  if(s.includes('sin')) return `${t} · sin`;
+  if(s.includes('cos')) return `${t} · cos и высота`;
+  if(s.includes('pyth') || s.includes('diagonal') || s.includes('diag')) return `${t} · Пифагор/диагонали`;
+  if(s.includes('height')) return `${t} · высота`;
+  if(s.includes('perim')) return `${t} · периметр`;
+  if(s.includes('angle')) return `${t} · углы`;
+  if(s.includes('base')) return `${t} · основания/стороны`;
+  if(s.includes('cut') || s.includes('composite') || s.includes('split') || s.includes('rects')) return `${t} · сумма/разность площадей`;
+  if(s.includes('area')) return `${t} · площадь`;
+  return `${t} · ${raw || 'типовой приём'}`;
+}
+function renderStats(){
+  $('solvedStat').textContent = stats.solved;
+  $('accuracyStat').textContent = stats.solved ? `${Math.round(stats.correct / stats.solved * 100)}%` : '0%';
+  $('independentStat').textContent = stats.independentCorrect || 0;
+  $('helpedStat').textContent = (stats.hintedCorrect || 0) + (stats.solutionCorrect || 0);
+  $('newStat').textContent = stats.todayNewSolved || 0;
+  $('newProgress').style.width = `${clamp((stats.todayNewSolved||0)/20*100,0,100)}%`;
+  renderTopicProgress();
+  renderSkillProgress();
+  renderRecommendation();
+}
+function renderTopicProgress(){
+  const box=$('topicProgress'); if(!box) return;
+  if(!stats.byTopic) stats.byTopic={};
+  const topics=['parallelogram','trapezoid','rhombus','rectangle','square','triangle','composite','circle'];
+  box.innerHTML = topics.map(t=>{
+    const s=stats.byTopic[t]||{solved:0,correct:0};
+    const acc = s.solved ? Math.round(s.correct/s.solved*100) : 0;
+    return `<div class="tpItem">
+      <div class="row1"><span>${esc(topicName[t])}</span><small>${s.correct}/${s.solved}</small></div>
+      <div class="bar"><i style="width:${acc}%"></i></div>
+    </div>`;
+  }).join('');
+}
+function renderSkillOptions(){
+  const sel=$('skillSelect'); if(!sel) return;
+  const current=sel.value || 'all';
+  const topic=$('topicSelect') ? $('topicSelect').value : 'all';
+  const pairs=[];
+  for(const tpl of TEMPLATES){
+    if(topic!=='all' && tpl.topic!==topic) continue;
+    const key=templateSkillKey(tpl);
+    const label=skillLabel(tpl.topic, tpl.subtype || subtypeFromId(tpl.id));
+    if(!pairs.some(p=>p.key===key)) pairs.push({key,label});
+  }
+  pairs.sort((a,b)=>a.label.localeCompare(b.label,'ru'));
+  sel.innerHTML = `<option value="all">Все навыки</option>` + pairs.map(p=>`<option value="${esc(p.key)}">${esc(p.label)}</option>`).join('');
+  sel.value = pairs.some(p=>p.key===current) ? current : 'all';
+}
+function renderSkillProgress(){
+  const box=$('skillProgress'); if(!box) return;
+  const bySkill=stats.bySkill || {};
+  const allKeys = [...new Set(TEMPLATES.map(templateSkillKey))];
+  const rows=allKeys.map(k=>{
+    const [topic,subtype]=k.split('|'); const s=bySkill[k]||{solved:0,correct:0};
+    const acc=s.solved?Math.round(s.correct/s.solved*100):null;
+    return {key:k, topic, subtype, label:skillLabel(topic,subtype), solved:s.solved||0, correct:s.correct||0, acc};
+  }).filter(r=>r.solved>0).sort((a,b)=>{
+    const aw=a.acc ?? 101, bw=b.acc ?? 101;
+    if(aw!==bw) return aw-bw;
+    return b.solved-a.solved;
+  }).slice(0,8);
+  if(!rows.length){ box.innerHTML='<div class="skillItem"><div class="top"><span>Пока нет данных по навыкам</span><small>начни с диагностики</small></div><div class="bar"><i style="width:0%"></i></div></div>'; return; }
+  box.innerHTML=rows.map(r=>{
+    const weak=r.acc<70;
+    return `<div class="skillItem ${weak?'weak':''}">
+      <div class="top"><span>${esc(r.label)}</span><small>${r.correct}/${r.solved}${r.acc===null?'':` · ${r.acc}%`}</small></div>
+      <div class="bar"><i style="width:${r.acc||0}%"></i></div>
+    </div>`;
+  }).join('');
+}
+function weakestTopic(){
+  const rows=Object.entries(stats.byTopic||{}).map(([topic,s])=>({topic, solved:s.solved||0, correct:s.correct||0, acc:s.solved?s.correct/s.solved:1})).filter(r=>r.solved>0);
+  if(!rows.length) return null;
+  rows.sort((a,b)=>a.acc-b.acc || b.solved-a.solved);
+  return rows[0];
+}
+function weakestSkill(){
+  const rows=Object.entries(stats.bySkill||{}).map(([key,s])=>({key, solved:s.solved||0, correct:s.correct||0, acc:s.solved?s.correct/s.solved:1})).filter(r=>r.solved>0);
+  if(!rows.length) return null;
+  rows.sort((a,b)=>a.acc-b.acc || b.solved-a.solved);
+  return rows[0];
+}
+function renderRecommendation(){
+  const box=$('recommendationBox'); if(!box) return;
+  if(stats.solved < 7){
+    box.innerHTML='<b>Маршрут для старта</b>Сначала нажми «Где у меня дыры?»: тренажёр проверит все темы по 2 задачи и сам подскажет, с чего начать.';
+    return;
+  }
+  const wt=weakestTopic(); const ws=weakestSkill();
+  const parts=[];
+  if(wt) parts.push(`тема <b>${esc(topicName[wt.topic]||wt.topic)}</b>: ${wt.correct}/${wt.solved}`);
+  if(ws){ const [topic,sub]=ws.key.split('|'); parts.push(`навык <b>${esc(skillLabel(topic,sub))}</b>: ${ws.correct}/${ws.solved}`); }
+  const help=(stats.hintedCorrect||0)+(stats.solutionCorrect||0);
+  const self=stats.independentCorrect||0;
+  const helpLine = help ? ` Самостоятельно верных: <b>${self}</b>, с помощью: <b>${help}</b>.` : ` Самостоятельно верных: <b>${self}</b>.`;
+  box.innerHTML=`<b>Что подтянуть дальше</b>${parts.length?`Слабое место сейчас — ${parts.join('; ')}.`:'Пока явных провалов нет — можно включать «Только новые».'}${helpLine}`;
+}
+
+function subtypeFromId(id){
+  return String(id || 'task').replace(/^new_/, '').replace(/^base_/, '');
+}
+function defaultFormula(tpl, t={}){
+  const id = tpl.id || '';
+  const text = `${tpl.title || ''} ${id}`.toLowerCase();
+  if(t.formula) return t.formula;
+  if(text.includes('средн') && tpl.topic==='trapezoid') return 'm = (a + b) / 2; S = m · h';
+  if(text.includes('средн') && tpl.topic==='triangle') return 'MN = AC / 2';
+  if(text.includes('пиф') || text.includes('диагональ') || id.includes('diag') || id.includes('pyth')){
+    if(tpl.topic==='rectangle') return 'd² = a² + b²';
+    if(tpl.topic==='rhombus') return 'S = d₁ · d₂ / 2; a² = (d₁/2)² + (d₂/2)²';
+    if(tpl.topic==='trapezoid') return 'c² = h² + x²';
+    if(tpl.topic==='triangle') return 'a² + b² = c²';
+  }
+  if(text.includes('sin') || text.includes('синус')){
+    if(tpl.topic==='parallelogram') return 'S = a · b · sin α';
+    if(tpl.topic==='rhombus') return 'S = a² · sin α';
+    if(tpl.topic==='triangle') return 'S = (1/2) · a · b · sin γ';
+    if(tpl.topic==='trapezoid') return 'h = c · sin α; S = ((a + b)/2) · h';
+  }
+  if(text.includes('cos') || text.includes('косинус')) return 'cos α = прилежащий катет / гипотенуза; S = ((a + b)/2) · h';
+  if(tpl.topic==='parallelogram') return 'S = a · h; соседние углы дают 180°; диагонали делятся пополам';
+  if(tpl.topic==='rectangle') return 'S = a · b; P = 2(a + b); d² = a² + b²';
+  if(tpl.topic==='rhombus') return 'S = a · h = d₁ · d₂ / 2 = a² · sin α';
+  if(tpl.topic==='trapezoid') return 'm = (a + b) / 2; S = m · h';
+  if(tpl.topic==='square') return 'S = a²; P = 4a; d = a√2';
+  if(tpl.topic==='triangle') return 'S = (1/2) · a · h';
+  if(tpl.topic==='composite') return 'S = S₁ + S₂ или S = S₁ − S₂';
+  if(tpl.topic==='circle') return 'C = 2πr; S = πr²';
+  return 'Используй свойства фигуры и базовые формулы №17';
+}
+function defaultTags(tpl, t={}){
+  if(Array.isArray(t.tags) && t.tags.length) return t.tags;
+  const tags = new Set();
+  tags.add((topicName[tpl.topic] || tpl.topic || 'геометрия').toLowerCase());
+  tags.add(tpl.source === 'new' ? 'новые' : 'шпора');
+  String(tpl.subtype || subtypeFromId(tpl.id)).split('_').filter(Boolean).forEach(x=>tags.add(x));
+  if((tpl.title || '').toLowerCase().includes('площад')) tags.add('площадь');
+  if((tpl.title || '').toLowerCase().includes('периметр')) tags.add('периметр');
+  if((tpl.title || '').toLowerCase().includes('диагон')) tags.add('диагональ');
+  return [...tags];
+}
+function normalizeTask(tpl, generated){
+  const q = generated.question || generated.condition || '';
+  const solution = Array.isArray(generated.solution) ? generated.solution : [String(generated.solution || '')].filter(Boolean);
+  const subtype = tpl.subtype || generated.subtype || subtypeFromId(tpl.id);
+  const formula = generated.formula || defaultFormula(tpl, generated);
+  const tags = defaultTags(tpl, generated);
+  const diagram = {...(generated.diagram || {})};
+  diagram.type = diagram.type || tpl.topic;
+  diagram.topic = tpl.topic;
+  diagram.subtype = subtype;
+  diagram.formula = formula;
+  diagram.title = tpl.title;
+  return {
+    ...generated,
+    id: tpl.id,
+    templateId: tpl.id,
+    title: tpl.title,
+    topic: tpl.topic,
+    subtype,
+    skillKey: skillKey(tpl.topic, subtype),
+    source: tpl.source,
+    isNew: tpl.source === 'new',
+    difficulty: tpl.difficulty,
+    question: q,
+    condition: generated.condition || q,
+    answer: Number(generated.answer),
+    hint: generated.hint || 'Вспомни ключевую формулу для этой фигуры.',
+    solution,
+    formula,
+    tags,
+    diagram
+  };
+}
+
+function sourceLabel(src){ return src==='new' ? 'новый прототип' : 'из шпоры'; }
+function metaPills(tpl, generated){
+  // Главная строка: NEW (если есть) + тема + название задачи. Не больше — это для ученика.
+  const newBadge = tpl.source === 'new' ? '<span class="pill NEW" title="новый прототип"></span>' : '';
+  const subtype = generated.subtype || tpl.subtype || subtypeFromId(tpl.id);
+  const assist = currentAssistance === 'self' ? 'самостоятельно' : (currentAssistance === 'hint' ? 'с подсказкой' : 'после решения');
+  const assistClass = currentAssistance === 'self' ? 'self' : (currentAssistance === 'hint' ? 'hintUsed' : 'solutionUsed');
+  // Вторая строка — служебная, для учителя при разборе: навык, уровень помощи.
+  return `${newBadge}<span class="pill topic">${esc(topicName[tpl.topic] || tpl.topic)}</span><span class="pill">${esc(tpl.title)}</span><span class="pill ${assistClass}" id="assistPill" title="как засчитается результат">${esc(assist)}</span>` +
+    `<div class="taskMetaExtra" style="flex-basis:100%;margin-top:4px">${esc(skillLabel(tpl.topic, subtype))} · ${esc(sourceLabel(tpl.source))} · ${esc(tpl.difficulty)}</div>`;
+}
+
+function weightedChoice(items){
+  const mode=$('modeSelect').value;
+  const weighted=[];
+  for(const tpl of items){
+    const w = mode==='new-focus' ? (tpl.source==='new'?3:1) : 1;
+    for(let i=0;i<w;i++) weighted.push(tpl);
+  }
+  return choice(weighted.length?weighted:items);
+}
+function availableTemplates(){
+  const mode=$('modeSelect').value, topic=$('topicSelect').value;
+  const onlyNew = $('onlyNewToggle') && $('onlyNewToggle').checked;
+  const skill = $('skillSelect') ? $('skillSelect').value : 'all';
+  let arr=TEMPLATES.slice();
+  const includeCircle = $('includeCircleToggle') && $('includeCircleToggle').checked;
+  if(!includeCircle && topic!=='circle') arr=arr.filter(t=>t.topic!=='circle');
+  if(onlyNew) arr=arr.filter(t=>t.source==='new');
+  else if(mode==='new-only') arr=arr.filter(t=>t.source==='new');
+  else if(mode==='base-only') arr=arr.filter(t=>t.source==='base');
+  if(topic!=='all') arr=arr.filter(t=>t.topic===topic || (topic==='triangle' && t.diagramType==='rightTriangle'));
+  if(skill && skill!=='all') arr=arr.filter(t=>templateSkillKey(t)===skill);
+  return arr.length?arr:TEMPLATES.slice();
+}
+function isHelpLocked(){ return session.active && (session.type==='control' || session.type==='diagnostic'); }
+function setPracticeMode(mode, opts={}){
+  practiceMode=mode;
+  if(!opts.keepSession) session={active:false, type:null, queue:[], index:0, total:0, answered:0, correct:0, results:[], lastSummary:session.lastSummary||''};
+  if(!session.active) clearActiveSession();
+  applyPracticeMode(); renderSessionBox();
+  if(!opts.noNext) nextTask({force:true});
+}
+function applyPracticeMode(){
+  try{
+    document.body.classList.toggle('is-control', isHelpLocked());
+    document.querySelectorAll('[data-practice]').forEach(btn=>btn.classList.toggle('active', btn.dataset.practice===practiceMode && !session.active));
+    const sc=$('startControlBtn'); if(sc) sc.classList.toggle('active', session.active && session.type==='control');
+    const sd=$('startDiagnosticBtn'); if(sd) sd.classList.toggle('active', session.active && session.type==='diagnostic');
+    if($('newTaskBtn')) $('newTaskBtn').textContent = session.active ? (currentChecked ? 'Следующая' : 'Ответь сначала') : 'Новая задача';
+    if($('similarBtn')) $('similarBtn').disabled = !!session.active;
+    if($('skipBtn')){
+      $('skipBtn').disabled = !!session.active && !currentChecked;
+      $('skipBtn').textContent = session.active ? (currentChecked ? 'Следующая' : 'Пропустить нельзя') : 'Пропустить';
+    }
+  }catch(e){}
+}
+function makeControlQueue(total){
+  const arr=[];
+  // не даём двум подряд одинаковым шаблонам выпасть
+  let lastId=null;
+  for(let i=0;i<total;i++){
+    let pick=weightedChoice(availableTemplates()), guard=0;
+    while(pick && pick.id===lastId && guard++<8) pick=weightedChoice(availableTemplates());
+    arr.push(pick); lastId=pick && pick.id;
+  }
+  return arr;
+}
+function makeDiagnosticQueue(){
+  // По 2 задачи на каждую тему = 14 — это уже достаточно для оценки слабых мест.
+  const topics=['parallelogram','rectangle','rhombus','trapezoid','square','triangle','composite'];
+  const queue=[];
+  for(const topic of topics){
+    const pool=TEMPLATES.filter(t=>t.topic===topic);
+    if(!pool.length){ queue.push(weightedChoice(TEMPLATES), weightedChoice(TEMPLATES)); continue; }
+    const a=choice(pool);
+    let b=choice(pool), guard=0;
+    while(pool.length>1 && b.id===a.id && guard++<6) b=choice(pool);
+    queue.push(a, b);
+  }
+  // лёгкая перетасовка, чтобы темы шли вперемешку
+  for(let i=queue.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [queue[i],queue[j]]=[queue[j],queue[i]]; }
+  return queue;
+}
+function startControl(){
+  if(!confirm('Проверь себя — 10 задач.\\n• Подсказки и решения временно отключены.\\n• Перейти к следующей после первой попытки.\\n• Прерывание сбросит мини-тест.\\n\\nНачинаем?')) return;
+  session={active:true,type:'control',queue:makeControlQueue(10),index:0,total:10,answered:0,correct:0,results:[],lastSummary:''};
+  practiceMode='control'; currentTask=null; currentChecked=true; currentAttemptNo=0; currentAssistance='self';
+  applyPracticeMode(); renderSessionBox(); nextTask({force:true});
+}
+function startDiagnostic(){
+  if(!confirm('Где у меня дыры — 14 задач (по 2 на каждую тему).\\n• Помощь временно закрыта, чтобы оценка была честной.\\n• По итогам тренажёр покажет слабые темы и навыки.\\n\\nНачинаем?')) return;
+  $('topicSelect').value='all'; renderSkillOptions(); $('skillSelect').value='all';
+  session={active:true,type:'diagnostic',queue:makeDiagnosticQueue(),index:0,total:14,answered:0,correct:0,results:[],lastSummary:''};
+  practiceMode='diagnostic'; currentTask=null; currentChecked=true; currentAttemptNo=0; currentAssistance='self';
+  applyPracticeMode(); renderSessionBox(); nextTask({force:true});
+}
+function tryAbortSession(reason){
+  if(!session.active) return true;
+  const label=session.type==='diagnostic'?'диагностику':'контроль';
+  if(confirm(`Прервать ${label}? Сейчас ${session.answered}/${session.total}. Результат не сохранится.`)){
+    session={active:false,type:null,queue:[],index:0,total:0,answered:0,correct:0,results:[],lastSummary:session.lastSummary||''};
+    clearActiveSession();
+    practiceMode='train'; applyPracticeMode(); renderSessionBox(); renderStats();
+    return true;
+  }
+  return false;
+}
+function renderSessionBox(){
+  const box=$('sessionBox'); if(!box) return;
+  if(session.active){
+    const label=session.type==='diagnostic'?'Где у меня дыры':'Проверь себя';
+    const pct=session.total?Math.round(session.answered/session.total*100):0;
+    box.className='sessionBox show';
+    box.innerHTML=`<b>${label}:</b> ${session.answered}/${session.total} проверено, верно ${session.correct}. Подсказки и решения временно закрыты. Ход сохраняется автоматически.<div class="meter"><i style="width:${pct}%"></i></div>`;
+  } else if(session.lastSummary){
+    box.className='sessionBox show'; box.innerHTML=session.lastSummary;
+  } else {
+    const label=practiceMode==='learn'?'Учусь: можно смотреть подсказку и решение.':practiceMode==='train'?'Тренируюсь: помощь доступна, но отмечается в статистике.':'Обычный режим.';
+    box.className='sessionBox show'; box.innerHTML=`<b>Сценарий:</b> ${label}<div class="assistLine"><span class="pill self">самостоятельно</span><span class="pill hintUsed">с подсказкой</span><span class="pill solutionUsed">после решения</span></div>`;
+  }
+}
+function registerSessionResult(ok, got, errorNote){
+  if(!session.active) return false;
+  session.answered += 1;
+  if(ok) session.correct += 1;
+  session.results.push({ok, topic:currentTask.topic, subtype:currentTask.subtype, skillKey:taskSkillKey(currentTask), answer:currentTask.answer, got, errorNote});
+  const finished = session.answered >= session.total;
+  return finished;
+}
+function finishSession(){
+  if(!session.active) return;
+  const type=session.type, total=session.total, correct=session.correct, results=session.results.slice();
+  const wrong=results.filter(r=>!r.ok);
+  let advice='';
+  if(wrong.length){
+    const counts={}; wrong.forEach(r=>{counts[r.topic]=(counts[r.topic]||0)+1;});
+    const weakTopic=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0]?.[0];
+    const weakSkill=wrong[0]?.skillKey;
+    const [st,ss]=(weakSkill||'|').split('|');
+    advice=`Главное слабое место: <b>${esc(topicName[weakTopic]||weakTopic)}</b>. Начать лучше с навыка <b>${esc(skillLabel(st,ss))}</b>.`;
+  } else {
+    advice='Ошибок нет. Можно включать «Только новые» или делать контроль на скорость.';
+  }
+  session={active:false,type:null,queue:[],index:0,total:0,answered:0,correct:0,results:[],lastSummary:`<b>${type==='diagnostic'?'Где у меня дыры — итог':'Проверь себя — итог'}:</b> ${correct}/${total}. ${advice}`};
+  practiceMode='train';
+  clearActiveSession();
+  applyPracticeMode(); renderSessionBox(); renderStats();
+}
+function nextTask(opts={}){
+  if(session.active && currentTask && !currentChecked && !opts.force){
+    showInfo('Сначала введи ответ. В контроле и диагностике нельзя пропустить задачу или заменить её похожей до первой попытки.');
+    return;
+  }
+  $('feedback').className='feedback'; $('feedback').style.display='none'; $('solution').className='solution'; $('solution').innerHTML='';
+  $('answerInput').value=''; $('answerInput').focus(); currentChecked=false; currentAttemptNo=0; currentAssistance='self';
+  const mode=$('modeSelect').value;
+  if(!session.active && mode==='mistakes'){
+    const filtered = mistakes.filter(m => $('topicSelect').value==='all' || m.topic===$('topicSelect').value);
+    if(filtered.length){
+      const m=choice(filtered);
+      currentTask={...m, fromMistake:true};
+      currentTemplateId=m.templateId;
+      renderTaskFromSnapshot(currentTask);
+      applyPracticeMode();
+      return;
+    }
+    showInfo('Ошибок по этому фильтру нет. Подкидываю обычную задачу — надо же чем-то кормить мозг.');
+  }
+  let tpl;
+  if(session.active){
+    if(session.index >= session.queue.length){ finishSession(); return; }
+    tpl=session.queue[session.index++];
+  } else if(opts.same && currentTemplateId){
+    tpl=TEMPLATES.find(t=>t.id===currentTemplateId) || weightedChoice(availableTemplates());
+  } else { tpl=weightedChoice(availableTemplates()); }
+  const generated=normalizeTask(tpl, tpl.generate());
+  currentTemplateId=tpl.id;
+  currentTask={...generated, fromMistake:false};
+  $('taskMeta').innerHTML=metaPills(tpl, generated);
+  $('questionText').textContent=generated.question;
+  $('diagramBox').innerHTML=renderDiagram(generated.diagram || {type:tpl.topic});
+  applyPracticeMode(); renderSessionBox();
+  saveActiveSession();
+}
+function renderTaskFromSnapshot(m){
+  const newBadge = (m.isNew || m.source==='new') ? '<span class="pill NEW" title="новый прототип"></span>' : '';
+  $('taskMeta').innerHTML=`<span class="pill hard">работа над ошибкой</span>${newBadge}<span class="pill topic">${esc(topicName[m.topic]||m.topic)}</span><span class="pill">${esc(m.title||'повтор')}</span><span class="pill">${esc(skillLabel(m.topic,m.subtype))}</span>`;
+  $('questionText').textContent=m.question || m.condition;
+  $('diagramBox').innerHTML=renderDiagram(m.diagram || {type:m.topic, subtype:m.subtype});
+}
+
+function showInfo(msg){ const f=$('feedback'); f.className='feedback info'; f.textContent=msg; }
+function assistanceRank(x){ return x==='solution'?2:(x==='hint'?1:0); }
+function setAssistance(next){ if(assistanceRank(next)>assistanceRank(currentAssistance)) currentAssistance=next; try{ const p=$('assistPill'); if(p) p.textContent=currentAssistance==='self'?'самостоятельно':currentAssistance==='hint'?'с подсказкой':'после решения'; }catch(e){} saveActiveSession(); }
+function diagnoseTypicalError(t, got){
+  const correct=Number(t.answer), formula=String(t.formula||''), topic=t.topic, subtype=String(t.subtype||''), title=String(t.title||'').toLowerCase();
+  if(!Number.isFinite(got) || !Number.isFinite(correct)) return '';
+  const hasHalf = formula.includes('/ 2') || formula.includes(': 2') || formula.includes('1/2') || formula.includes('(1/2)') || formula.includes('d₁ · d₂') || formula.includes('S₁ − S₂');
+  if(isClose(got, correct*2) && (hasHalf || topic==='triangle' || subtype.includes('diag'))) return 'Похоже, ты забыл разделить на 2. Это частая ловушка в площадях треугольника, ромба и формулах с полусуммой оснований.';
+  if(isClose(got, correct/2) && hasHalf) return 'Похоже, ты разделил на 2 лишний раз. Проверь, не была ли средняя линия или половина диагонали уже найдена.';
+  if(topic==='trapezoid' && (formula.includes('(a + b)') || formula.includes('m =')) && isClose(got, correct*2)) return 'Похоже, вместо средней линии использована сумма оснований. В трапеции сначала берём полусумму оснований.';
+  if(topic==='square' && title.includes('площад') && got>0 && isClose(got*got, correct)) return 'Похоже, ты нашёл сторону квадрата, а спрашивали площадь.';
+  if(topic==='square' && title.includes('периметр') && got>0 && isClose(got*4, correct)) return 'Похоже, ты написал сторону квадрата, а спрашивали периметр.';
+  if((topic==='rectangle' || topic==='trapezoid' || topic==='rhombus') && (subtype.includes('pyth') || formula.includes('²'))){
+    return 'Проверь прямоугольный треугольник на чертеже: что является гипотенузой, а что катетом. В №17 ошибка часто именно в выборе стороны для Пифагора.';
+  }
+  if(formula) return `Проверь подстановку в формулу ${formula}: возможно, найден не тот элемент, который спрашивают.`;
+  return 'Сверь вопрос с последним шагом решения: часто ошибка не в вычислении, а в том, что нашли соседнюю величину.';
+}
+function logAttempt({ok, got, raw, counted, errorNote}){
+  const now=new Date();
+  const row={
+    time: now.toISOString(), mode: session.active ? session.type : practiceMode, counted, attemptNo: currentAttemptNo,
+    taskId: currentTask.id || currentTask.templateId, title: currentTask.title, topic: currentTask.topic, topicName: topicName[currentTask.topic]||currentTask.topic,
+    subtype: currentTask.subtype, skill: skillLabel(currentTask.topic,currentTask.subtype), isNew: !!(currentTask.isNew || currentTask.source==='new'),
+    assistance: currentAssistance, ok, userAnswer: raw, parsedAnswer: Number.isFinite(got)?got:'', correctAnswer: Number(currentTask.answer),
+    formula: currentTask.formula || '', tags: (currentTask.tags||[]).join('|'), condition: currentTask.condition || currentTask.question,
+    errorNote: errorNote || ''
+  };
+  attemptLog.push(row); attemptLog=attemptLog.slice(-1000); saveAttemptLog();
+}
+function successPhrase(){
+  const solved=stats.solved||0;
+  const streak=stats.streak||0;
+  if(streak>=10) return 'Серия 10+ — геометрия уже начинает бояться тебя.';
+  if(streak>=5) return 'Серия 5 — хороший темп, держим ритм.';
+  if(solved && solved%10===0) return 'Ещё десять задач закрыты. Это уже не случайность, это навык.';
+  return choice(['Отлично, едем дальше.','Есть! Формула сработала.','Чисто. Теперь закрепим похожей.','Верно — маленький плюс к спокойствию на экзамене.']);
+}
+
+function checkAnswer(){
+  if(!currentTask) return;
+  if(session.active && currentChecked){
+    showInfo('Эта задача уже засчитана. Нажми «Следующая», чтобы продолжить мини-тест.');
+    return;
+  }
+  rollDateIfNeeded();
+  const raw=$('answerInput').value;
+  const got=parseNumeric(raw);
+  const correct=Number(currentTask.answer);
+  const ok=isClose(got, correct);
+  const f=$('feedback');
+  if(!Number.isFinite(got)){
+    f.className='feedback bad'; f.textContent='Нужно ввести число. Например: 18, 18.5 или 37/2.'; $('answerInput').classList.add('shake'); setTimeout(()=>$('answerInput').classList.remove('shake'),260); return;
+  }
+  currentAttemptNo += 1;
+  const errorNote = ok ? '' : diagnoseTypicalError(currentTask, got);
+  const wasFirst=!currentChecked;
+  let finishedSession=false;
+  if(wasFirst){
+    stats.solved += 1;
+    if(!stats.byTopic) stats.byTopic={}; if(!stats.bySkill) stats.bySkill={};
+    const tp = currentTask.topic; const sk=taskSkillKey(currentTask);
+    if(tp){ stats.byTopic[tp] = stats.byTopic[tp] || {solved:0,correct:0}; stats.byTopic[tp].solved += 1; }
+    stats.bySkill[sk] = stats.bySkill[sk] || {solved:0,correct:0}; stats.bySkill[sk].solved += 1;
+    if(ok){
+      stats.correct += 1; stats.streak += 1; stats.best=Math.max(stats.best, stats.streak);
+      if(currentTask.isNew || currentTask.source==='new'){ stats.newSolved += 1; stats.todayNewSolved = (stats.todayNewSolved||0) + 1; }
+      if(tp) stats.byTopic[tp].correct += 1;
+      stats.bySkill[sk].correct += 1;
+      if(currentAssistance==='self') stats.independentCorrect += 1;
+      else if(currentAssistance==='hint') stats.hintedCorrect += 1;
+      else stats.solutionCorrect += 1;
+    } else {
+      stats.streak = 0; addMistake(currentTask, got, errorNote);
+    }
+    finishedSession=registerSessionResult(ok, got, errorNote);
+    saveStats(); renderStats(); currentChecked=true;
+  } else if(!ok) {
+    addMistake(currentTask, got, errorNote);
+  }
+  logAttempt({ok, got, raw, counted:wasFirst, errorNote});
+  if(ok){
+    const assistText=currentAssistance==='self'?'Засчитано как самостоятельно.':currentAssistance==='hint'?'Засчитано как верно с подсказкой.':'Верно, но в отчёте отмечено: после решения.';
+    f.className='feedback good'; f.innerHTML=`Верно! Ответ: <b>${fmt(correct)}</b>. ${currentTask.fromMistake ? 'Убираю эту задачу из ошибок.' : assistText} <span style="font-weight:800">${esc(successPhrase())}</span>`;
+    if(currentTask.fromMistake){ removeMistake(currentTask); }
+  } else {
+    let recHtml = '';
+    if(currentTask.formula){ recHtml += `<div class="recommend"><b>Что повторить:</b> формулу <code>${esc(currentTask.formula)}</code>. Загляни в мини-справочник справа или открой решение — там разобрана подстановка.</div>`; }
+    if(errorNote){ recHtml += `<div class="recommend"><b>Типичная ошибка:</b> ${esc(errorNote)}</div>`; }
+    const lockText=isHelpLocked()?' В этом режиме помощь закрыта: переходи к следующей задаче после первой попытки.':' Попробуй ещё раз или открой решение.';
+    f.className='feedback bad'; f.innerHTML=`Пока нет. Твой ответ: <b>${esc(raw)}</b>.${lockText}${recHtml}`;
+  }
+  renderMistakes();
+  if(finishedSession) finishSession(); else { renderSessionBox(); applyPracticeMode(); saveActiveSession(); }
+}
+function addMistake(t, got=null, errorNote=''){
+  const snapshot={
+    id: Date.now()+Math.random(), templateId:t.templateId, taskId:t.id, topic:t.topic, subtype:t.subtype,
+    source:t.source, isNew:t.isNew, title:t.title, difficulty:t.difficulty,
+    question:t.question, condition:t.condition, answer:t.answer, solution:t.solution, hint:t.hint,
+    formula:t.formula, tags:t.tags, diagram:t.diagram, lastUserAnswer:got, errorNote, assistance:currentAssistance,
+    createdAt:new Date().toISOString()
+  };
+  if(!mistakes.some(m=>m.question===snapshot.question)) mistakes.unshift(snapshot);
+  mistakes=mistakes.slice(0,80); saveMistakes();
+}
+function removeMistake(t){
+  mistakes = mistakes.filter(m => !(m.question===t.question && Number(m.answer)===Number(t.answer)));
+  saveMistakes();
+}
+function renderMistakes(){
+  const box=$('mistakesList');
+  if(!mistakes.length){ box.innerHTML='<div class="formula"><b>Пусто</b><small>Ошибок пока нет. Подозрительно хорошо.</small></div>'; return; }
+  box.innerHTML=mistakes.slice(0,10).map((m,idx)=>`
+    <div class="mistakeItem">
+      <div class="mini">${esc(topicName[m.topic]||m.topic)} · ${esc(skillLabel(m.topic,m.subtype))} · ответ ${fmt(Number(m.answer))}</div>
+      <p>${esc(m.question)}</p>
+      ${m.errorNote?`<p><b>Типичная ошибка:</b> ${esc(m.errorNote)}</p>`:''}
+      ${m.formula?`<div class="mini">формула: <code>${esc(m.formula)}</code></div>`:''}
+      <button class="secondary" data-mistake="${idx}">повторить</button>
+    </div>`).join('');
+  box.querySelectorAll('[data-mistake]').forEach(btn=>btn.addEventListener('click',()=>{
+    const m=mistakes[Number(btn.dataset.mistake)];
+    if(!m) return;
+    $('modeSelect').value='mistakes';
+    session={active:false,type:null,queue:[],index:0,total:0,answered:0,correct:0,results:[],lastSummary:session.lastSummary||''};
+    currentTask={...m, fromMistake:true}; currentChecked=false; currentAttemptNo=0; currentAssistance='self'; currentTemplateId=m.templateId;
+    $('feedback').className='feedback'; $('feedback').style.display='none'; $('solution').className='solution'; $('solution').innerHTML=''; $('answerInput').value='';
+    renderTaskFromSnapshot(m); applyPracticeMode(); renderSessionBox(); window.scrollTo({top:0,behavior:'smooth'}); $('answerInput').focus();
+  }));
+}
+function showHint(){
+  if(!currentTask) return;
+  if(isHelpLocked()){ showInfo('В контроле и диагностике подсказки закрыты. После мини-теста можно разобрать ошибки.'); return; }
+  setAssistance('hint');
+  const box=$('solution'); box.className='solution show';
+  box.innerHTML=`<h3>Подсказка</h3><div class="hint">${esc(currentTask.hint || 'Смотри на формулу площади и на прямоугольный треугольник внутри фигуры.')}</div>`;
+}
+function showSolution(){
+  if(!currentTask) return;
+  if(isHelpLocked()){ showInfo('Решение пока закрыто: это мини-контроль. Ошибки можно разобрать после завершения.'); return; }
+  setAssistance('solution');
+  const steps=(currentTask.solution||[]).map(s=>`<li>${esc(s)}</li>`).join('');
+  const box=$('solution'); box.className='solution show';
+  const formula = currentTask.formula ? `<p><b>Формула:</b> <code>${esc(currentTask.formula)}</code></p>` : '';
+  box.innerHTML=`<h3>Решение</h3>${formula}<ol>${steps}</ol><p><b>Ответ: ${fmt(Number(currentTask.answer))}</b></p>`;
+}
+function resetAll(){
+  if(!confirm('Сбросить статистику? Ошибки и журнал отчёта останутся.')) return;
+  stats=defaultStats(); saveStats(); renderStats();
+}
+function focusWeak(){
+  const ws=weakestSkill(); const wt=weakestTopic();
+  if(!ws && !wt){ startDiagnostic(); return; }
+  if(ws){ const [topic,sub]=ws.key.split('|'); $('topicSelect').value=topic; renderSkillOptions(); $('skillSelect').value=ws.key; }
+  else if(wt){ $('topicSelect').value=wt.topic; renderSkillOptions(); $('skillSelect').value='all'; }
+  setPracticeMode('train', {noNext:true});
+  $('modeSelect').value='new-focus';
+  nextTask({force:true});
+}
+function csvEscape(v){ const s=String(v ?? ''); return /[";\n\r]/.test(s) ? `"${s.replace(/"/g,'""')}"` : s; }
+function exportCsv(){
+  if(!attemptLog.length){ showInfo('Отчёт пока пустой: реши хотя бы одну задачу.'); return; }
+  const headers=['time','mode','counted','attemptNo','taskId','topicName','subtype','skill','isNew','assistance','ok','userAnswer','parsedAnswer','correctAnswer','formula','tags','errorNote','condition'];
+  const csv='\ufeff'+headers.join(';')+'\n'+attemptLog.map(r=>headers.map(h=>csvEscape(r[h])).join(';')).join('\n');
+  const blob=new Blob([csv], {type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const stamp=new Date().toISOString().slice(0,19).replace(/[:T]/g,'-');
+  a.href=url; a.download=`oge17_report_${stamp}.csv`; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function diagramKind(d){
+  const blob=`${d.type||''} ${d.topic||''} ${d.subtype||''} ${d.formula||''} ${d.title||''}`.toLowerCase();
+  const type=d.type || d.topic || '';
+  if(type==='circle' || type==='circle_area' || type==='regular_triangle_circle') return type;
+  if(type==='parallelogram'){
+    if(blob.includes('bisector') || blob.includes('биссект')) return 'para_bisector';
+    if(blob.includes('diag') || blob.includes('диагон') || blob.includes('пополам')) return 'para_diag';
+    if(blob.includes('height') || blob.includes('высот') || blob.includes('площад') || blob.includes('s = a')) return 'para_height';
+  }
+  if(type==='trapezoid'){
+    if(blob.includes('midline') || blob.includes('средн')) return 'trap_midline';
+    if(blob.includes('diag') || blob.includes('диагон')) return 'trap_diag';
+    if(blob.includes('right') || blob.includes('pyth') || blob.includes('lateral') || blob.includes('height') || blob.includes('высот') || blob.includes('боков') || blob.includes('45') || blob.includes('cos')) return 'trap_height';
+  }
+  if(type==='rhombus'){
+    if(blob.includes('diag') || blob.includes('диагон') || blob.includes('d₁')) return 'rhombus_diag';
+    if(blob.includes('height') || blob.includes('высот')) return 'rhombus_height';
+  }
+  if(type==='rectangle' && (blob.includes('diag') || blob.includes('пифагор') || blob.includes('d²'))) return 'rectangle_diag';
+  if(type==='square' && (blob.includes('diag') || blob.includes('√'))) return 'square_diag';
+  if(type==='triangle' && (blob.includes('midline') || blob.includes('средн'))) return 'triangle_midline';
+  if(type==='triangle' && (blob.includes('right') || blob.includes('прямоуголь'))) return 'rightTriangle';
+  if(type==='composite' && (blob.includes('split') || blob.includes('разби') || blob.includes('quad_diag'))) return 'composite_split';
+  if(type==='composite' && (blob.includes('two_rects') || blob.includes('l-фиг') || blob.includes('l фиг'))) return 'composite_two_rects';
+  if(type==='composite' && (blob.includes('cut') || blob.includes('вырез') || blob.includes('минус'))) return 'composite_cut';
+  return type;
+}
+function renderDiagram(d){
+  const type=d.type || 'parallelogram';
+  const kind=diagramKind(d);
+  const notes=(d.notes||[]).map(esc);
+  const noteText=notes.map((n,i)=>`<text x="330" y="${60+i*28}" font-size="17" fill="#344054" font-weight="800">${n}</text>`).join('');
+  const common=`<text x="18" y="216" font-size="12" fill="#667085">схема не в масштабе</text>${noteText}`;
+  const soft='fill="#eef1ff" stroke="#5b6ee1" stroke-width="3"';
+  const dash='stroke="#98a2b3" stroke-width="2" stroke-dasharray="5 5"';
+  const aux='stroke="#00a884" stroke-width="3"';
+  const labels = (arr)=>arr.map(x=>`<text x="${x[1]}" y="${x[2]}" font-size="16" fill="#172033" font-weight="900">${x[0]}</text>`).join('');
+  const rightAngle = (x,y)=>`<path d="M${x} ${y-18} L${x+18} ${y-18} L${x+18} ${y}" fill="none" stroke="#253044" stroke-width="3"/>`;
+  let shape='';
+  if(kind==='para_height'){
+    shape=`<polygon points="54,170 238,170 292,66 108,66" ${soft}/>
+      <line x1="108" y1="66" x2="108" y2="170" ${aux}/>${rightAngle(108,170)}
+      <line x1="54" y1="170" x2="238" y2="170" stroke="#f59e0b" stroke-width="3"/>
+      <text x="114" y="125" font-size="17" fill="#006b55" font-weight="900">h</text><text x="140" y="192" font-size="16" fill="#985b00" font-weight="900">a</text>
+      ${labels([['A',44,188],['B',98,58],['C',294,58],['D',242,188]])}`;
+  } else if(kind==='para_bisector'){
+    shape=`<polygon points="54,170 238,170 292,66 108,66" ${soft}/>
+      <line x1="54" y1="170" x2="210" y2="66" ${aux}/>
+      <path d="M76 160 A34 34 0 0 1 92 134" fill="none" stroke="#f59e0b" stroke-width="3"/>
+      <path d="M92 134 A34 34 0 0 1 114 121" fill="none" stroke="#f59e0b" stroke-width="3"/>
+      <text x="116" y="126" font-size="15" fill="#006b55" font-weight="900">биссектриса</text>
+      ${labels([['A',44,188],['B',98,58],['C',294,58],['D',242,188]])}`;
+  } else if(kind==='para_diag'){
+    shape=`<polygon points="54,170 238,170 292,66 108,66" ${soft}/>
+      <line x1="54" y1="170" x2="292" y2="66" ${aux}/><line x1="108" y1="66" x2="238" y2="170" stroke="#98a2b3" stroke-width="2"/>
+      <circle cx="173" cy="118" r="5" fill="#253044"/><text x="181" y="112" font-size="16" fill="#172033" font-weight="900">O</text>
+      ${labels([['A',44,188],['B',98,58],['C',294,58],['D',242,188]])}`;
+  } else if(kind==='circle'){
+    shape=`<circle cx="164" cy="124" r="76" ${soft}/><line x1="164" y1="124" x2="240" y2="124" ${aux}/><circle cx="164" cy="124" r="4" fill="#253044"/>
+      <text x="194" y="116" font-size="18" fill="#006b55" font-weight="900">r</text><path d="M90 80 A76 76 0 0 1 236 82" fill="none" stroke="#f59e0b" stroke-width="4"/>
+      <text x="126" y="50" font-size="16" fill="#985b00" font-weight="900">C=2πr</text>`;
+  } else if(kind==='circle_area'){
+    shape=`<circle cx="164" cy="124" r="76" fill="#eef1ff" stroke="#5b6ee1" stroke-width="3"/><path d="M164 124 L240 124 A76 76 0 0 1 164 200 Z" fill="#d9f4ec" stroke="#00a884" stroke-width="2"/>
+      <line x1="164" y1="124" x2="240" y2="124" ${aux}/><circle cx="164" cy="124" r="4" fill="#253044"/><text x="190" y="116" font-size="18" fill="#006b55" font-weight="900">r</text><text x="116" y="50" font-size="16" fill="#172033" font-weight="900">S=πr²</text>`;
+  } else if(kind==='regular_triangle_circle'){
+    shape=`<circle cx="164" cy="126" r="82" fill="#fff" stroke="#98a2b3" stroke-width="2"/>
+      <polygon points="164,44 235,167 93,167" fill="#eef1ff" stroke="#5b6ee1" stroke-width="3"/>
+      <circle cx="164" cy="126" r="41" fill="none" stroke="#00a884" stroke-width="3"/>
+      <line x1="164" y1="126" x2="164" y2="44" stroke="#f59e0b" stroke-width="3"/><line x1="164" y1="126" x2="205" y2="126" ${aux}/>
+      <text x="169" y="77" font-size="16" fill="#985b00" font-weight="900">R</text><text x="184" y="121" font-size="16" fill="#006b55" font-weight="900">r</text>`;
+  } else if(kind==='trap_height'){
+    shape=`<polygon points="52,174 306,174 238,68 118,68" ${soft}/>
+      <line x1="238" y1="68" x2="238" y2="174" ${aux}/>${rightAngle(238,174)}
+      <line x1="118" y1="68" x2="118" y2="174" ${dash}/>${rightAngle(118,174)}
+      <line x1="238" y1="174" x2="306" y2="174" stroke="#f59e0b" stroke-width="3"/>
+      <text x="244" y="123" font-size="17" fill="#006b55" font-weight="900">h</text><text x="263" y="194" font-size="16" fill="#985b00" font-weight="900">x</text>
+      ${labels([['A',42,191],['D',308,191],['B',110,60],['C',240,60]])}`;
+  } else if(kind==='trap_midline'){
+    shape=`<polygon points="50,174 304,174 238,68 112,68" ${soft}/>
+      <line x1="82" y1="121" x2="270" y2="121" ${aux} stroke-dasharray="7 5"/>
+      <line x1="112" y1="68" x2="50" y2="174" ${dash}/><line x1="238" y1="68" x2="304" y2="174" ${dash}/>
+      ${labels([['A',40,191],['D',306,191],['B',106,60],['C',240,60],['m',178,115],['a',171,193],['b',170,62]])}`;
+  } else if(kind==='trap_diag'){
+    shape=`<polygon points="50,174 304,174 238,68 112,68" ${soft}/>
+      <line x1="112" y1="68" x2="304" y2="174" stroke="#98a2b3" stroke-width="2"/>
+      <line x1="50" y1="174" x2="238" y2="68" stroke="#98a2b3" stroke-width="2"/>
+      <circle cx="176" cy="121" r="4" fill="#253044"/>${labels([['A',40,191],['D',306,191],['B',106,60],['C',240,60],['d₁',195,98],['d₂',135,102]])}`;
+  } else if(kind==='rhombus_diag'){
+    shape=`<polygon points="170,42 288,125 170,208 52,125" ${soft}/>
+      <line x1="170" y1="42" x2="170" y2="208" ${aux}/><line x1="52" y1="125" x2="288" y2="125" ${aux}/>${rightAngle(170,125)}
+      ${labels([['A',166,35],['B',294,130],['C',166,224],['D',36,130],['d₁',174,89],['d₂',230,119]])}`;
+  } else if(kind==='rhombus_height'){
+    shape=`<polygon points="68,174 238,174 302,68 132,68" ${soft}/>
+      <line x1="132" y1="68" x2="132" y2="174" ${aux}/>${rightAngle(132,174)}
+      <line x1="132" y1="174" x2="238" y2="174" stroke="#f59e0b" stroke-width="3"/>
+      ${labels([['A',58,191],['D',240,191],['B',126,60],['C',304,60],['h',139,121],['a',178,194]])}`;
+  } else if(kind==='rectangle_diag'){
+    shape=`<rect x="64" y="62" width="230" height="132" rx="8" ${soft}/>
+      <line x1="64" y1="62" x2="294" y2="194" ${aux}/>${rightAngle(64,194)}
+      <text x="175" y="130" font-size="17" fill="#006b55" font-weight="900">d</text><text x="154" y="214" font-size="16" fill="#172033" font-weight="900">a</text><text x="44" y="130" font-size="16" fill="#172033" font-weight="900">b</text>
+      ${labels([['A',48,58],['B',300,58],['C',300,210],['D',48,210]])}`;
+  } else if(kind==='square_diag'){
+    shape=`<rect x="82" y="52" width="170" height="170" rx="8" ${soft}/>
+      <line x1="82" y1="52" x2="252" y2="222" ${aux}/>${rightAngle(82,222)}
+      ${labels([['A',68,48],['B',258,48],['C',258,236],['D',68,236],['d=a√2',134,146]])}`;
+  } else if(kind==='triangle_midline'){
+    shape=`<polygon points="54,182 296,182 128,52" ${soft}/>
+      <circle cx="91" cy="117" r="4" fill="#00a884"/><circle cx="212" cy="117" r="4" fill="#00a884"/>
+      <line x1="91" y1="117" x2="212" y2="117" ${aux}/>
+      ${labels([['A',42,198],['C',300,198],['B',122,44],['M',76,113],['N',216,113],['MN=AC/2',125,108]])}`;
+  } else if(kind==='rightTriangle'){
+    shape=`<polygon points="62,184 292,184 62,54" ${soft}/>${rightAngle(62,184)}
+      <line x1="62" y1="54" x2="292" y2="184" ${aux}/>
+      ${labels([['A',48,200],['B',292,200],['C',46,50],['c',174,119],['a',50,125],['b',158,202]])}`;
+  } else if(kind==='composite_split'){
+    shape=`<polygon points="58,176 136,58 296,84 244,190" ${soft}/>
+      <line x1="58" y1="176" x2="296" y2="84" ${aux}/>
+      ${labels([['A',44,190],['B',128,52],['C',300,84],['D',248,206],['S₁',128,137],['S₂',225,126]])}`;
+  } else if(kind==='composite_two_rects'){
+    // L-фигура из двух прямоугольников: показываем оба, разделяя пунктиром
+    shape=`<polygon points="60,60 220,60 220,140 290,140 290,210 60,210" ${soft}/>
+      <line x1="220" y1="140" x2="220" y2="210" stroke="#5b6ee1" stroke-width="2" stroke-dasharray="6 4"/>
+      <line x1="60" y1="140" x2="220" y2="140" stroke="#5b6ee1" stroke-width="2" stroke-dasharray="6 4"/>
+      ${labels([['S₁',125,108],['S₂',249,184]])}`;
+  } else if(kind==='composite_cut'){
+    // прямоугольник со «вырезом» — для new_cut_square_rectangle
+    shape=`<rect x="70" y="50" width="180" height="180" ${soft}/>
+      <rect x="150" y="130" width="80" height="60" fill="#fff" stroke="#e5484d" stroke-width="3" stroke-dasharray="6 4"/>
+      ${labels([['квадрат',96,42],['вырез',158,124]])}`;
+  } else if(kind==='parallelogram'){
+    shape=`<polygon points="54,166 238,166 292,64 108,64" ${soft}/><line x1="108" y1="64" x2="238" y2="166" stroke="#98a2b3" stroke-width="2" stroke-dasharray="5 5"/>${labels([['A',44,184],['B',98,55],['C',294,55],['D',242,184],['O',174,121]])}`;
+  } else if(kind==='rectangle'){
+    shape=`<rect x="64" y="62" width="230" height="132" rx="8" ${soft}/><line x1="64" y1="62" x2="294" y2="194" stroke="#98a2b3" stroke-width="2"/><line x1="294" y1="62" x2="64" y2="194" stroke="#98a2b3" stroke-width="2"/>${labels([['A',48,58],['B',300,58],['C',300,210],['D',48,210],['O',174,133]])}`;
+  } else if(kind==='rhombus'){
+    shape=`<polygon points="170,42 288,125 170,208 52,125" ${soft}/><line x1="170" y1="42" x2="170" y2="208" stroke="#98a2b3" stroke-width="2"/><line x1="52" y1="125" x2="288" y2="125" stroke="#98a2b3" stroke-width="2"/>${labels([['A',166,35],['B',294,130],['C',166,224],['D',36,130],['O',176,119]])}`;
+  } else if(kind==='trapezoid'){
+    shape=`<polygon points="50,174 304,174 238,68 112,68" ${soft}/><line x1="82" y1="121" x2="270" y2="121" stroke="#00a884" stroke-width="3" stroke-dasharray="7 5"/>${labels([['A',40,191],['D',306,191],['B',106,60],['C',240,60],['m',178,115]])}`;
+  } else if(kind==='triangle'){
+    shape=`<polygon points="54,182 296,182 128,52" ${soft}/><line x1="128" y1="52" x2="128" y2="182" stroke="#98a2b3" stroke-width="2" stroke-dasharray="5 5"/>${labels([['A',42,198],['C',300,198],['B',122,44],['h',135,125]])}`;
+  } else if(kind==='square'){
+    shape=`<rect x="82" y="52" width="170" height="170" rx="8" ${soft}/><line x1="82" y1="52" x2="252" y2="222" stroke="#98a2b3" stroke-width="2"/>${labels([['A',68,48],['B',258,48],['C',258,236],['D',68,236],['d',158,146]])}`;
+  } else if(kind==='kite'){
+    shape=`<polygon points="170,38 286,126 170,214 82,126" ${soft}/><line x1="170" y1="38" x2="170" y2="214" stroke="#98a2b3" stroke-width="2"/><line x1="82" y1="126" x2="286" y2="126" stroke="#98a2b3" stroke-width="2"/>${labels([['B',166,31],['C',292,132],['D',166,231],['A',66,132]])}`;
+  } else if(kind==='composite' || kind==='composite_area'){
+    shape=`<rect x="70" y="50" width="180" height="180" ${soft}/><rect x="150" y="130" width="80" height="60" fill="#fff" stroke="#e5484d" stroke-width="3" stroke-dasharray="6 4"/>${labels([['квадрат',96,42],['вырез',158,124]])}`;
+  } else {
+    shape=`<polygon points="54,166 238,166 292,64 108,64" ${soft}/>`;
+  }
+  return `<svg viewBox="0 0 520 240" role="img" aria-label="схема задачи">${shape}${common}</svg>`;
+}
+
+$('newTaskBtn').addEventListener('click',()=>nextTask());
+$('skipBtn').addEventListener('click',()=>nextTask());
+$('similarBtn').addEventListener('click',()=>nextTask({same:true}));
+$('checkBtn').addEventListener('click',checkAnswer);
+$('hintBtn').addEventListener('click',showHint);
+$('solutionBtn').addEventListener('click',showSolution);
+$('resetBtn').addEventListener('click',resetAll);
+$('answerInput').addEventListener('keydown',(e)=>{ if(e.key==='Enter') checkAnswer(); });
+$('modeSelect').addEventListener('change',(e)=>{
+  if(session.active){
+    if(!tryAbortSession()){ e.target.value = prevModeSelect; return; }
+  }
+  prevModeSelect = e.target.value;
+  nextTask({force:true});
+});
+$('topicSelect').addEventListener('change',(e)=>{
+  if(session.active){
+    if(!tryAbortSession()){ e.target.value = prevTopicSelect; return; }
+  }
+  prevTopicSelect = e.target.value;
+  renderSkillOptions();
+  nextTask({force:true});
+});
+if($('skillSelect')) $('skillSelect').addEventListener('change',(e)=>{
+  if(session.active){
+    if(!tryAbortSession()){ e.target.value = prevSkillSelect; return; }
+  }
+  prevSkillSelect = e.target.value;
+  nextTask({force:true});
+});
+if($('startControlBtn')) $('startControlBtn').addEventListener('click',startControl);
+if($('startDiagnosticBtn')) $('startDiagnosticBtn').addEventListener('click',startDiagnostic);
+if($('exportCsvBtn')) $('exportCsvBtn').addEventListener('click',exportCsv);
+if($('focusWeakBtn')) $('focusWeakBtn').addEventListener('click',focusWeak);
+if($('studentViewToggle')) $('studentViewToggle').addEventListener('change',()=>{ applyStudentView(); });
+if($('includeCircleToggle')) $('includeCircleToggle').addEventListener('change',()=>{
+  if(session.active){
+    if(!tryAbortSession()){ $('includeCircleToggle').checked = !$('includeCircleToggle').checked; return; }
+  }
+  saveUIOptions(); renderSkillOptions(); renderStats(); nextTask({force:true});
+});
+if(document.querySelectorAll){
+  document.querySelectorAll('[data-practice]').forEach(btn=>btn.addEventListener('click',()=>{
+    if(session.active && !tryAbortSession()) return;
+    setPracticeMode(btn.dataset.practice, {noNext:false});
+  }));
+}
+$('onlyNewToggle').addEventListener('change',()=>{
+  if(session.active){
+    if(!tryAbortSession()){ $('onlyNewToggle').checked = !$('onlyNewToggle').checked; return; }
+  }
+  // запоминаем предыдущий выбор, чтобы при снятии чекбокса вернуть его
+  if($('onlyNewToggle').checked){
+    if($('modeSelect').value !== 'new-only') savedModeBeforeOnlyNew = $('modeSelect').value;
+    $('modeSelect').value='new-only';
+  } else {
+    $('modeSelect').value = savedModeBeforeOnlyNew || 'new-focus';
+  }
+  prevModeSelect = $('modeSelect').value;
+  nextTask({force:true});
+});
+$('clearMistakesBtn').addEventListener('click',()=>{ if(confirm('Очистить список ошибок?')){ mistakes=[]; saveMistakes(); renderMistakes(); }});
+$('collapseTheoryBtn').addEventListener('click',()=>{
+  const b=$('theoryBox'); const hidden=b.style.display==='none'; b.style.display=hidden?'grid':'none'; $('collapseTheoryBtn').textContent=hidden?'свернуть':'развернуть';
+});
+try{ window.addEventListener('beforeunload', saveActiveSession); }catch(e){}
+
+/* ====== Авто-проверка генераторов при старте ======
+   100 прогонов на каждый шаблон: ответ конечный, condition/hint/solution не пустые. */
+function runSelfTest(){
+  const failures=[];
+  const required=['id','title','topic','subtype','isNew','difficulty','condition','answer','hint','solution','formula','tags'];
+  for(const tpl of TEMPLATES){
+    for(let i=0;i<100;i++){
+      try {
+        const t = normalizeTask(tpl, tpl.generate());
+        for(const key of required){
+          const v=t[key];
+          if(v === null || v === undefined || v === '' || (Array.isArray(v) && !v.length)) { failures.push(`${tpl.id}: нет ${key}`); break; }
+        }
+        if(!Array.isArray(t.solution) || !t.solution.length) { failures.push(`${tpl.id}: нет solution`); break; }
+        const a = Number(t.answer);
+        if(!Number.isFinite(a)) { failures.push(`${tpl.id}: answer не число (${t.answer})`); break; }
+        if(a < 0) { failures.push(`${tpl.id}: отрицательный ответ ${a}`); break; }
+      } catch(e){ failures.push(`${tpl.id}: исключение ${e.message}`); break; }
+    }
+  }
+  if(failures.length){
+    console.warn('[oge17 self-test] провалилось:', failures);
+    try {
+      const div=document.createElement('div'); div.className='mini-test-msg show';
+      div.textContent=`Внутренний тест нашёл проблемы в ${failures.length} генераторах (см. консоль).`;
+      document.querySelector('.smallnote')?.after(div);
+    } catch(_){}
+  } else {
+    console.info(`[oge17 self-test] ОК: ${TEMPLATES.length} шаблонов × 100 прогонов`);
+  }
+}
+
+function updateModeLabels(){
+  // подменяем подпись акцент-режима реальной долей новых, исходя из весов 3:1
+  try {
+    const newN = TEMPLATES.filter(t=>t.source==='new').length;
+    const baseN = TEMPLATES.filter(t=>t.source==='base').length;
+    const w = 3*newN, total = w + baseN;
+    const pct = total ? Math.round(w*100/total) : 0;
+    const sel = $('modeSelect');
+    if(sel){
+      for(const opt of sel.options){
+        if(opt.value === 'new-focus') opt.textContent = `Акцент на новые (~${pct}% новые)`;
+      }
+    }
+  } catch(_){}
+}
+
+updateModeLabels();
+const uiOptions=loadUIOptions();
+if($('studentViewToggle')) $('studentViewToggle').checked = uiOptions.studentView !== false;
+if($('includeCircleToggle')) $('includeCircleToggle').checked = !!uiOptions.includeCircle;
+applyStudentView();
+renderSkillOptions(); renderStats(); renderMistakes(); applyPracticeMode(); renderSessionBox();
+const restoredSession = restoreActiveSession();
+if(!restoredSession) nextTask();
+runSelfTest();
+</script>
+</body>
+</html>
