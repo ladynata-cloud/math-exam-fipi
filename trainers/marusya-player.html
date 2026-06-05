@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Тренажёр Маруси — Mathexam.space</title>
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#eef2f5;color:#0f172a}
+    body{display:flex;flex-direction:column;min-height:100vh}
+    .bar{height:58px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;background:#fff;border-bottom:1px solid #dbe4ee;box-shadow:0 8px 24px rgba(15,23,42,.08);position:relative;z-index:2}
+    .left,.right{display:flex;align-items:center;gap:10px;min-width:0}.title{font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#0f172a}.hint{font-size:12px;color:#64748b;font-weight:700;white-space:nowrap}
+    a.btn{display:inline-flex;align-items:center;justify-content:center;min-height:36px;border-radius:999px;padding:8px 12px;text-decoration:none;font-weight:900;border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8;white-space:nowrap}
+    a.btn.secondary{border-color:#dbe4ee;background:#f8fafc;color:#475569}
+    .frameWrap{flex:1;min-height:0;position:relative}.frame{display:block;width:100%;height:100%;border:0;background:#fff}.empty{padding:28px;text-align:center;color:#475569}.empty h1{margin:0 0 8px;color:#0f172a}
+    @media(max-width:720px){.bar{height:auto;min-height:58px;align-items:flex-start;flex-direction:column}.left,.right{width:100%;justify-content:space-between}.hint{display:none}.title{max-width:65vw}.frameWrap{height:calc(100vh - 96px);flex:auto}}
+  </style>
+</head>
+<body>
+  <header class="bar">
+    <div class="left">
+      <a class="btn" href="marusya-test-map.html">← К линейке Маруси</a>
+      <div><div class="title" id="pageTitle">Тренажёр</div><div class="hint">После отработки вернитесь сюда и выберите следующий шаг</div></div>
+    </div>
+    <div class="right"><a class="btn secondary" id="openDirect" href="#">Открыть отдельно</a></div>
+  </header>
+  <main class="frameWrap" id="frameWrap">
+    <iframe class="frame" id="trainerFrame" title="Тренажёр"></iframe>
+  </main>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const src = params.get('src') || '';
+    const title = params.get('title') || 'Тренажёр';
+    const safe = src && !src.startsWith('/') && !src.includes('://') && !src.includes('..') && /\.html(?:$|[?#])/.test(src);
+    const titleEl = document.getElementById('pageTitle');
+    const frame = document.getElementById('trainerFrame');
+    const openDirect = document.getElementById('openDirect');
+    titleEl.textContent = title;
+    document.title = title + ' — линейка Маруси';
+    if (safe) {
+      frame.src = src;
+      frame.title = title;
+      openDirect.href = src;
+    } else {
+      document.getElementById('frameWrap').innerHTML = '<div class="empty"><h1>Тренажёр не выбран</h1><p>Вернитесь к линейке Маруси и откройте нужный шаг.</p></div>';
+      openDirect.style.display = 'none';
+    }
+  </script>
+</body>
+</html>
