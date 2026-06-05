@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Сергей Леонидович — Python if и for — embed 05.06</title>
+  <style>
+    :root{--bg:#f4f7fb;--ink:#0f172a;--muted:#526173;--line:#dbe4f0;--blue:#2563eb;--green:#15803d;--red:#b91c1c;--card:#fff}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}.wrap{max-width:900px;margin:0 auto;padding:16px}.top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px}.eyebrow{margin:0 0 5px;color:var(--blue);font-size:13px;font-weight:900;letter-spacing:.04em;text-transform:uppercase}h1{font-size:clamp(22px,4vw,34px);line-height:1.08;margin:0}.date{display:inline-flex;align-items:center;justify-content:center;min-width:64px;padding:9px 12px;border-radius:12px;background:#dbeafe;color:#1d4ed8;font-weight:900}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 30px rgba(15,23,42,.08);padding:16px}.meta{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0}.pill{border-radius:999px;background:#eef2ff;color:#3730a3;padding:5px 9px;font-size:12px;font-weight:800}.task{font-size:18px;font-weight:850;margin:0 0 12px}.code{white-space:pre-wrap;background:#111827;color:#e5e7eb;border-radius:12px;padding:14px;margin:12px 0;font:16px/1.45 Consolas,Monaco,monospace}.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:12px 0}button,.choice{appearance:none;border:0;border-radius:10px;padding:12px 14px;font-weight:900;cursor:pointer}.choice{background:#e0f2fe;color:#0f172a;text-align:left}.choice:hover{background:#bae6fd}.choice.good{background:#dcfce7;color:#14532d}.choice.bad{background:#fee2e2;color:#991b1b}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}button.primary{background:var(--blue);color:white}button.secondary{background:#e5e7eb;color:#111827}.feedback{min-height:28px;margin-top:12px;font-weight:850}.feedback.ok{color:var(--green)}.feedback.no{color:var(--red)}.progress{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin:12px 0}.bar{height:100%;width:0;background:linear-gradient(90deg,#2563eb,#16a34a);transition:.2s}.small{color:var(--muted);font-size:13px;line-height:1.45}.footer{margin-top:12px;color:var(--muted);font-size:12px;text-align:center}@media(max-width:560px){.top{display:block}.date{margin-top:10px}.wrap{padding:10px}.card{padding:13px}.code{font-size:14px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="top">
+      <div>
+        <p class="eyebrow">Отдельный тренажёр для Сергея Леонидовича</p>
+        <h1>Python: if и for</h1>
+        <div class="meta"><span class="pill">05.06</span><span class="pill">embed-версия</span><span class="pill">без связи со старыми тренажёрами</span></div>
+      </div>
+      <div class="date">05.06</div>
+    </div>
+    <section class="card" aria-live="polite">
+      <div class="small" id="counter">Задание 1 из 8</div>
+      <div class="progress"><div class="bar" id="bar"></div></div>
+      <p class="task" id="prompt"></p>
+      <div class="code" id="code"></div>
+      <div class="choices" id="choices"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="actions">
+        <button class="primary" id="next">Следующее задание</button>
+        <button class="secondary" id="again">Начать заново</button>
+      </div>
+    </section>
+    <p class="footer">Тренажёр от 05.06. Для короткого окна, вставки на страницу или быстрой самостоятельной проверки.</p>
+  </main>
+<script>
+const tasks=[
+  {q:'Что напечатает программа?',code:'for i in range(3):\n    print(i)',a:'0 1 2',choices:['1 2 3','0 1 2','0 1 2 3'],why:'range(3) даёт числа 0, 1, 2.'},
+  {q:'Сколько раз выполнится тело цикла?',code:'for k in range(2, 7):\n    print(k)',a:'5 раз',choices:['4 раза','5 раз','6 раз'],why:'Числа 2, 3, 4, 5, 6 — всего пять.'},
+  {q:'Какой ответ получится?',code:'s = 0\nfor x in range(1, 5):\n    s = s + x\nprint(s)',a:'10',choices:['4','10','15'],why:'Сумма 1 + 2 + 3 + 4 = 10.'},
+  {q:'Какая ветка if сработает?',code:'n = 12\nif n % 2 == 0:\n    print("even")\nelse:\n    print("odd")',a:'even',choices:['even','odd','ничего'],why:'12 делится на 2 без остатка.'},
+  {q:'Что надо поставить вместо пропуска?',code:'for i in range(1, 6):\n    if i __ 3:\n        print(i)',a:'>',choices:['=','>','<'],why:'Чтобы напечатать 4 и 5, нужно условие i > 3.'},
+  {q:'Что напечатает программа?',code:'for n in range(1, 5):\n    if n % 2 == 1:\n        print(n)',a:'1 3',choices:['1 3','2 4','1 2 3 4'],why:'У нечётных чисел остаток от деления на 2 равен 1.'},
+  {q:'Чему равна переменная c после цикла?',code:'c = 0\nfor n in range(1, 8):\n    if n > 4:\n        c = c + 1\nprint(c)',a:'3',choices:['2','3','4'],why:'Больше 4 здесь только 5, 6, 7.'},
+  {q:'Какая строка правильно проверяет число на кратность 5?',code:'n = 25\n# выберите условие',a:'if n % 5 == 0:',choices:['if n / 5 == 0:','if n % 5 == 0:','if n % 0 == 5:'],why:'Остаток от деления на 5 должен быть равен нулю.'}
+];
+let i=0, ok=0, locked=false;const $=id=>document.getElementById(id);
+function render(){locked=false;const t=tasks[i];$('counter').textContent=`Задание ${i+1} из ${tasks.length} · верно ${ok}`;$('bar').style.width=`${i/tasks.length*100}%`;$('prompt').textContent=t.q;$('code').textContent=t.code;$('feedback').className='feedback';$('feedback').textContent='';$('choices').innerHTML='';t.choices.forEach(ch=>{const b=document.createElement('button');b.className='choice';b.textContent=ch;b.onclick=()=>answer(b,ch,t);$('choices').appendChild(b)});}
+function answer(btn,ch,t){if(locked)return;locked=true;document.querySelectorAll('.choice').forEach(b=>{if(b.textContent===t.a)b.classList.add('good')});if(ch===t.a){ok++;btn.classList.add('good');$('feedback').className='feedback ok';$('feedback').textContent='Верно. '+t.why}else{btn.classList.add('bad');$('feedback').className='feedback no';$('feedback').textContent='Почти. '+t.why}$('bar').style.width=`${(i+1)/tasks.length*100}%`;localStorage.setItem('sergeyPythonIfFor0506Embed',JSON.stringify({done:i+1,ok,date:'05.06'}));}
+$('next').onclick=()=>{i=(i+1)%tasks.length;render()};$('again').onclick=()=>{i=0;ok=0;render()};render();
+</script>
+</body>
+</html>
