@@ -1,0 +1,78 @@
+{
+  "project": "azbuka-postroeniy",
+  "title": "Азбука построений",
+  "version": "1.1.0-reviewed",
+  "type": "static-site-module",
+  "progress_storage": "localStorage",
+  "progress_key": "azbuka-postroeniy-progress-v2",
+  "completion_detection": "iframe same-origin polling of #success visible state; manual fallback button",
+  "trainers": [
+    {
+      "id": "segment",
+      "order": 1,
+      "title": "Отрезок, равный данному",
+      "short": "Отрезок",
+      "file": "trainers/segment-trainer-v6.html",
+      "icon": "📏",
+      "level": "База",
+      "goal": "Отложить на луче отрезок, равный данному.",
+      "tools": "циркуль + линейка"
+    },
+    {
+      "id": "angle-copy",
+      "order": 2,
+      "title": "Угол, равный данному",
+      "short": "Равный угол",
+      "file": "trainers/angle-trainer-v2.html",
+      "icon": "📐",
+      "level": "База",
+      "goal": "Построить угол, равный заданному.",
+      "tools": "циркуль + линейка"
+    },
+    {
+      "id": "bisector",
+      "order": 3,
+      "title": "Биссектриса угла",
+      "short": "Биссектриса",
+      "file": "trainers/bisector-trainer-v4.html",
+      "icon": "∠",
+      "level": "Угол",
+      "goal": "Разделить угол на две равные части.",
+      "tools": "циркуль + линейка"
+    },
+    {
+      "id": "midpoint",
+      "order": 4,
+      "title": "Середина отрезка",
+      "short": "Середина",
+      "file": "trainers/midpoint-trainer-v2.html",
+      "icon": "⊹",
+      "level": "Отрезок",
+      "goal": "Найти середину отрезка и серединный перпендикуляр.",
+      "tools": "циркуль + линейка"
+    },
+    {
+      "id": "perpendicular-on-line",
+      "order": 5,
+      "title": "Перпендикулярные прямые",
+      "short": "Перпендикуляр через точку",
+      "file": "trainers/perpendicular-trainer-v2.html",
+      "icon": "⊥",
+      "level": "Прямая",
+      "goal": "Провести через точку прямую, перпендикулярную данной.",
+      "tools": "циркуль + линейка"
+    },
+    {
+      "id": "perpendicular-external",
+      "order": 6,
+      "title": "Перпендикуляр из точки вне прямой",
+      "short": "Внешний перпендикуляр",
+      "file": "trainers/perpendicular-external-trainer-v2.html",
+      "icon": "⊥",
+      "level": "Прямая+",
+      "goal": "Опустить перпендикуляр из внешней точки на прямую.",
+      "tools": "циркуль + линейка"
+    }
+  ],
+  "review_status": "UX pass completed; ideal-path browser smoke test completed; not a full mathematical proof audit."
+}
