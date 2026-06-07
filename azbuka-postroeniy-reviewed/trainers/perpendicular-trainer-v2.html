@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Перпендикулярные прямые — тренажёр</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:18px;background:#e8e4db;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#1f2937}.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}.head{display:flex;justify-content:space-between;gap:12px;align-items:center;background:#1a1a2e;color:white;padding:16px 20px}.title{font-weight:900;font-size:20px}.sub{font-size:12px;opacity:.72;margin-top:2px}.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-weight:800;font-size:12px;white-space:nowrap}.success{display:none;background:#ecfdf5;color:#15803d;border-bottom:1px solid #bbf7d0;padding:11px 18px;font-weight:800;font-size:13px}.main{display:flex}.work{flex:1;background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}canvas{display:block;width:100%;max-width:690px;background:#faf8f2;border:1px solid #e5e2d9;border-radius:12px;touch-action:none;cursor:cell}.side{width:285px;padding:14px;display:flex;flex-direction:column;gap:8px}.sideTitle{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:900;color:#94a3b8}.step{border:1.5px solid #e5e7eb;background:#f9fafb;border-radius:10px;padding:10px 11px;opacity:.38}.step.active{opacity:1;border-color:#3b82f6;background:#eff6ff}.step.done{opacity:1;border-color:#22c55e;background:#f0fdf4}.n{font-size:10px;text-transform:uppercase;letter-spacing:.55px;font-weight:900;color:#94a3b8;margin-bottom:4px}.active .n{color:#2563eb}.done .n{color:#16a34a}.t{font-size:12px;line-height:1.42}.h{margin-top:3px;font-size:11px;line-height:1.35;color:#64748b;font-style:italic}.done .h{color:#16a34a;font-weight:800;font-style:normal}.proof{display:none;border:1.5px solid #bbf7d0;background:#f0fdf4;color:#14532d;border-radius:11px;padding:11px;font-size:12px;line-height:1.5}.proof b{color:#166534}.proof .lbl{display:inline-block;font-weight:900;color:#166534}.proof ol{margin:5px 0 0;padding-left:20px}.proof li{margin:3px 0}.proof hr{border:0;border-top:1px solid #bbf7d0;margin:8px 0}.proof .qed{text-align:right;font-weight:900;margin-top:6px}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 14px;background:#f9fafb;border-top:1px solid #e5e7eb}button{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:7px 12px;font:700 12px system-ui;cursor:pointer}button:hover:not(:disabled){background:#f3f4f6}button.on{background:#1a1a2e;border-color:#1a1a2e;color:white}button:disabled{opacity:.45;cursor:default}.msg{flex:1;min-width:250px;border-radius:9px;padding:8px 11px;font-size:12px;font-weight:700;line-height:1.35}.info{background:#eff6ff;color:#1d4ed8}.ok{background:#f0fdf4;color:#15803d}.err{background:#fef2f2;color:#b91c1c}@media(max-width:780px){.main{flex-direction:column}.work{border-right:0}.side{width:100%;border-top:1px solid #e5e7eb}canvas{max-width:none}}@media(max-width:540px){body{padding:8px}.head{align-items:flex-start;flex-direction:column}.msg{order:-1;min-width:100%}.bar{position:sticky;bottom:0;z-index:5;box-shadow:0 -4px 14px #0000001a}}</style>
+</head>
+<body>
+<div class="app">
+  <div class="head"><div><div class="title">⊥ Перпендикулярные прямые</div><div class="sub">Прямая через точку, перпендикулярная данной · циркуль и линейка</div></div><div class="badge" id="badge">Прямая a · точка M</div></div>
+  <div class="success" id="success">✓ Готово! Прямая PQ проходит через M и перпендикулярна прямой a.</div>
+  <div class="main">
+    <div class="work"><canvas id="cv" width="640" height="460" aria-label="Поле построения перпендикуляра"></canvas></div>
+    <div class="side">
+      <div class="sideTitle">Шаги построения</div>
+      <div class="step active" id="st1"><div class="n">Шаг 1 · Равные отрезки</div><div class="t">Циркуль в <b>M</b>, затем щёлкните по прямой <b>a</b>: появится засечка <b>A</b>, а симметрично ей — <b>B</b> (так MA = MB).</div><div class="h" id="h1">→ Нажмите M, затем точку на прямой a</div></div>
+      <div class="step" id="st2"><div class="n">Шаг 2 · Окружность из A</div><div class="t">Раствором, равным <b>AB</b>, проведите окружность с центром в <b>A</b>.</div><div class="h" id="h2">→ Нажмите A, затем повторите раствор</div></div>
+      <div class="step" id="st3"><div class="n">Шаг 3 · Окружность из B</div><div class="t">Тем же раствором проведите окружность с центром в <b>B</b>. Окружности пересекутся в <b>P</b> и <b>Q</b>.</div><div class="h" id="h3">→ Нажмите B, затем повторите раствор</div></div>
+      <div class="step" id="st4"><div class="n">Шаг 4 · Линейка</div><div class="t">Проведите прямую через <b>P</b> и <b>Q</b> (она пройдёт через M) — это искомый перпендикуляр.</div><div class="h" id="h4">→ Нажмите P и Q в любом порядке</div></div>
+      <div class="proof" id="proof"><b>Почему PQ ⊥ a?</b><hr>
+        <span class="lbl">Дано:</span> прямая a, точка M на ней; MA = MB на прямой; окружности равного радиуса AB с центрами A и B пересекаются в P и Q.<br>
+        <span class="lbl">Доказать:</span> прямая PQ перпендикулярна прямой a.<br>
+        <span class="lbl">Доказательство:</span>
+        <ol>
+          <li>PA = PB (радиусы равных окружностей), значит △PAB равнобедренный.</li>
+          <li>В нём M — середина основания AB (так как MA = MB по построению), поэтому PM — медиана.</li>
+          <li>В равнобедренном треугольнике медиана, проведённая к основанию, является и высотой.</li>
+          <li>Значит, PM ⊥ AB, то есть PM ⊥ a.</li>
+          <li>Точка Q также равноудалена от A и B (QA = QB), поэтому Q лежит на той же прямой PM.</li>
+        </ol>
+        Следовательно, прямая PQ проходит через M и перпендикулярна прямой a.
+        <div class="qed">▮ ч.т.д.</div>
+      </div>
+    </div>
+  </div>
+  <div class="bar"><button class="on" id="compassBtn" onclick="setTool('compass')">○ Циркуль</button><button id="rulerBtn" onclick="setTool('ruler')">— Линейка</button><button id="undoBtn" onclick="undo()" disabled>↶ Назад</button><button onclick="newTask()">✦ Новое задание</button><button onclick="resetTask()">↺ Сначала</button><div class="msg info" id="msg">Шаг 1: нажмите на точку M, затем щёлкните по прямой a — A появится в месте клика, B симметрично ей</div></div>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+const W=640,H=460,COL={bg:'#faf8f2',grid:'#cdc9be',dark:'#1a1a2e',blue:'#2563eb',m:'#be123c',ab:'#0f6e56',pq:'#6d28d9',r:'#c2410c',g:'#16a34a'};
+let tool='compass',kind='mouse',hist=[],S;
+const rad=d=>d*Math.PI/180,dist=(p,q)=>Math.hypot(p.x-q.x,p.y-q.y),fmt=x=>Math.round(x);
+function circleX(c1,r1,c2,r2){let d=dist(c1,c2);if(d>r1+r2||d<Math.abs(r1-r2)||d<1e-6)return null;let a=(r1*r1-r2*r2+d*d)/(2*d),h2=r1*r1-a*a;if(h2<0)return null;let h=Math.sqrt(h2),mx=c1.x+a*(c2.x-c1.x)/d,my=c1.y+a*(c2.y-c1.y)/d,px=h*(c2.y-c1.y)/d,py=h*(c2.x-c1.x)/d;return[{x:mx+px,y:my-py},{x:mx-px,y:my+py}]}
+function task(){
+  // прямая a через точку M, лёгкий наклон
+  let M={x:300,y:230}, ang=rad(-6+Math.random()*12);
+  let dir={x:Math.cos(ang),y:Math.sin(ang)};
+  return {M,ang,dir};
+}
+function init(t=task()){S={task:t,step:1,phase:0,fp:null,A:null,B:null,rAB:null,P:null,Q:null,gotA:false,gotB:false,measured:false,cA:false,cB:false,line:false,done:false,mx:null,my:null,msg:'Шаг 1: поставьте циркуль в точку M, затем щёлкните по прямой a — там появится засечка A, а симметрично ей — B',type:'info'};hist=[];tool='compass';renderAll()}
+function snapR(){return kind==='touch'?30:21}function tol(){return kind==='touch'?24:14}
+function points(){let t=S.task,a=[{...t.M,lbl:'M',col:COL.m}];
+  if(S.gotA)a.push({...S.A,lbl:'A',col:COL.ab});
+  if(S.gotB)a.push({...S.B,lbl:'B',col:COL.ab});
+  if(S.cB){a.push({...S.P,lbl:'P',col:COL.pq});a.push({...S.Q,lbl:'Q',col:COL.pq})}
+  return a}
+// цели для наведения: A и B доступны на шаге 1 ещё до отметки
+function snapTargets(){return points();}
+function snap(x,y,allow){let best=null,bd=1e9;for(const p of snapTargets()){if(allow&&!allow.includes(p.lbl))continue;let d=dist({x,y},p);if(d<snapR()&&d<bd){best=p;bd=d}}return best}
+function save(){hist.push(JSON.stringify({...S,phase:0,fp:null,mx:null,my:null}));if(hist.length>24)hist.shift();document.getElementById('undoBtn').disabled=false}
+function message(text,type='info'){S.msg=text;S.type=type;let m=document.getElementById('msg');m.textContent=text;m.className='msg '+type}
+function setTool(t){tool=t;S.phase=0;S.fp=null;document.getElementById('compassBtn').className=t==='compass'?'on':'';document.getElementById('rulerBtn').className=t==='ruler'?'on':'';cv.style.cursor=t==='compass'?'cell':'crosshair';if(t==='ruler'&&S.step<4)message('Линейка понадобится в конце — после построения двух окружностей.','info');draw()}
+function seg(p,q,color,w,dash){ctx.save();if(dash)ctx.setLineDash(dash);ctx.strokeStyle=color;ctx.lineWidth=w;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.restore()}
+function fullLine(pt,dir,color,w,dash){let L=900,a={x:pt.x-L*dir.x,y:pt.y-L*dir.y},b={x:pt.x+L*dir.x,y:pt.y+L*dir.y};seg(a,b,color,w,dash)}
+function footOnLine(P,p0,dir){let k=(P.x-p0.x)*dir.x+(P.y-p0.y)*dir.y;return{x:p0.x+k*dir.x,y:p0.y+k*dir.y}}
+function labelPos(p){const t=S.task;
+  if(p.lbl==='M')return{x:-4,y:-16};
+  if(p.lbl==='A')return{x:-2,y:18};
+  if(p.lbl==='B')return{x:-2,y:18};
+  if(p.lbl==='P')return{x:0,y:-16};
+  if(p.lbl==='Q')return{x:0,y:18};
+  return{x:10,y:-10}}
+function draw(){
+  ctx.clearRect(0,0,W,H);ctx.fillStyle=COL.bg;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle=COL.grid;for(let x=25;x<W;x+=25)for(let y=25;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill()}
+  let t=S.task;
+  // прямая a
+  fullLine(t.M,t.dir,COL.dark,2.6);
+  ctx.fillStyle=COL.dark;ctx.font='italic 13px system-ui';
+  let aLbl={x:t.M.x+150*t.dir.x,y:t.M.y+150*t.dir.y};ctx.fillText('a',aLbl.x+6,aLbl.y-8);
+  // окружности
+  if(S.cA){ctx.save();ctx.setLineDash([]);ctx.strokeStyle=COL.blue;ctx.lineWidth=2;ctx.beginPath();ctx.arc(S.A.x,S.A.y,S.rAB,0,7);ctx.stroke();ctx.restore()}
+  if(S.cB){ctx.save();ctx.setLineDash([]);ctx.strokeStyle=COL.blue;ctx.lineWidth=2;ctx.beginPath();ctx.arc(S.B.x,S.B.y,S.rAB,0,7);ctx.stroke();ctx.restore()}
+  // итоговая прямая PQ
+  if(S.line){let d2={x:S.Q.x-S.P.x,y:S.Q.y-S.P.y},l=Math.hypot(d2.x,d2.y);d2={x:d2.x/l,y:d2.y/l};
+    fullLine(t.M,d2,COL.r,3);
+    // прямой угол у M
+    let n=d2, e=t.dir, s=14;
+    ctx.save();ctx.strokeStyle=COL.r;ctx.lineWidth=2;
+    let c1={x:t.M.x+e.x*s,y:t.M.y+e.y*s},c2={x:c1.x+n.x*s,y:c1.y+n.y*s},c3={x:t.M.x+n.x*s,y:t.M.y+n.y*s};
+    ctx.beginPath();ctx.moveTo(c1.x,c1.y);ctx.lineTo(c2.x,c2.y);ctx.lineTo(c3.x,c3.y);ctx.stroke();ctx.restore();
+    ctx.fillStyle=COL.r;ctx.font='bold 13px system-ui';ctx.fillText('PQ ⊥ a',t.M.x+24,t.M.y-40)}
+  // точки
+  for(const p of points()){
+    ctx.beginPath();ctx.arc(p.x,p.y,9,0,7);ctx.strokeStyle=p.col+'55';ctx.lineWidth=6;ctx.stroke();
+    ctx.beginPath();ctx.arc(p.x,p.y,3.6,0,7);ctx.fillStyle=p.col;ctx.fill();
+    let off=labelPos(p);ctx.font='bold 15px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.lineWidth=4;ctx.strokeStyle='rgba(250,248,242,.95)';ctx.strokeText(p.lbl,p.x+off.x,p.y+off.y);
+    ctx.fillStyle=p.col;ctx.fillText(p.lbl,p.x+off.x,p.y+off.y);ctx.textAlign='start';ctx.textBaseline='alphabetic'}
+  // засечки равенства MA=MB
+  if(S.gotA&&S.gotB){tickMid(t.M,S.A,COL.ab);tickMid(t.M,S.B,COL.ab)}
+  preview();
+}
+function tickMid(a,b,color){let mx=(a.x+b.x)/2,my=(a.y+b.y)/2,dx=b.x-a.x,dy=b.y-a.y,l=Math.hypot(dx,dy)||1,nx=-dy/l,ny=dx/l;ctx.save();ctx.strokeStyle=color;ctx.lineWidth=2.4;ctx.beginPath();ctx.moveTo(mx+nx*6,my+ny*6);ctx.lineTo(mx-nx*6,my-ny*6);ctx.stroke();ctx.restore()}
+function preview(){
+  if(S.mx==null)return;let t=S.task;ctx.save();ctx.globalAlpha=.6;ctx.setLineDash([5,4]);
+  if(tool==='compass'){
+    if(S.step===1){
+      if(S.phase===0){let sp=snap(S.mx,S.my,['M']);if(sp){ctx.strokeStyle=COL.m;ctx.lineWidth=2;ctx.beginPath();ctx.arc(sp.x,sp.y,13,0,7);ctx.stroke()}}
+      else if(S.fp){
+        // фантом: проекция курсора на прямую = будущая A, и симметричная B
+        let A=footOnLine({x:S.mx,y:S.my},t.M,t.dir),B={x:2*t.M.x-A.x,y:2*t.M.y-A.y};
+        ctx.setLineDash([4,4]);ctx.strokeStyle=COL.ab;ctx.lineWidth=1.6;ctx.globalAlpha=.7;
+        ctx.beginPath();ctx.arc(A.x,A.y,8,0,7);ctx.stroke();ctx.beginPath();ctx.arc(B.x,B.y,8,0,7);ctx.stroke();
+        // подписи-призраки
+        ctx.font='bold 13px system-ui';ctx.fillStyle=COL.ab;ctx.globalAlpha=.8;ctx.fillText('A',A.x-4,A.y+20);ctx.fillText('B',B.x-4,B.y+20);
+        ctx.globalAlpha=.6;
+      }
+    } else if(S.step===2){
+      if(S.phase===0){let sp=snap(S.mx,S.my,['A']);if(sp){ctx.strokeStyle=COL.blue;ctx.lineWidth=2;ctx.beginPath();ctx.arc(sp.x,sp.y,13,0,7);ctx.stroke()}}
+      else if(S.fp){ctx.strokeStyle=COL.blue;ctx.lineWidth=1.8;ctx.beginPath();ctx.arc(S.A.x,S.A.y,S.rAB,0,7);ctx.stroke()}
+    } else if(S.step===3){
+      if(S.phase===0){let sp=snap(S.mx,S.my,['B']);if(sp){ctx.strokeStyle=COL.blue;ctx.lineWidth=2;ctx.beginPath();ctx.arc(sp.x,sp.y,13,0,7);ctx.stroke()}}
+      else if(S.fp){ctx.strokeStyle=COL.blue;ctx.lineWidth=1.8;ctx.beginPath();ctx.arc(S.B.x,S.B.y,S.rAB,0,7);ctx.stroke()}
+    }
+  }
+  if(tool==='ruler'&&S.phase===1&&S.fp){let sp=snap(S.mx,S.my,['P','Q']);let end=sp?sp:{x:S.mx,y:S.my};
+    ctx.setLineDash([9,7]);ctx.lineCap='round';ctx.globalAlpha=.7;ctx.strokeStyle=COL.r;ctx.lineWidth=5;
+    ctx.beginPath();ctx.moveTo(S.fp.x,S.fp.y);ctx.lineTo(end.x,end.y);ctx.stroke()}
+  ctx.restore();
+}
+function pos(e){let r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+cv.addEventListener('pointermove',e=>{kind=e.pointerType==='touch'?'touch':'mouse';let p=pos(e);S.mx=p.x;S.my=p.y;draw()});
+cv.addEventListener('pointerleave',()=>{S.mx=null;S.my=null;draw()});
+cv.addEventListener('pointerdown',e=>{e.preventDefault();kind=e.pointerType==='touch'?'touch':'mouse';let p=pos(e);S.mx=p.x;S.my=p.y;click(p.x,p.y)});
+function click(x,y){if(S.done)return;if(tool==='compass')compassClick(x,y);else rulerClick(x,y);ui();draw()}
+function compassClick(x,y){
+  let t=S.task;
+  if(S.step===1){
+    if(S.phase===0){let sp=snap(x,y,['M']);if(!sp){message('Поставьте циркуль в вершину — точку M.','err');return}S.fp={...sp};S.phase=1;message('Теперь щёлкните по прямой a по любую сторону от M — там появится засечка A, а симметрично — B.','info');return}
+    // клик задаёт A на прямой a: проецируем клик на прямую
+    let A=footOnLine({x,y},t.M,t.dir);
+    let halfLen=dist(A,t.M);
+    if(halfLen<45){message('Слишком близко к M — отойдите подальше, чтобы засечки были различимы.','err');return}
+    if(halfLen>250){message('Слишком далеко — возьмите засечку ближе к M, чтобы всё поместилось.','err');return}
+    // B — симметрично относительно M
+    let B={x:2*t.M.x-A.x,y:2*t.M.y-A.y};
+    save();S.A=A;S.B=B;S.rAB=dist(A,B);S.gotA=true;S.gotB=true;
+    // P,Q — пересечения окружностей радиуса AB
+    let xs=circleX(A,S.rAB,B,S.rAB);S.P=xs[0].y<xs[1].y?xs[0]:xs[1];S.Q=xs[0].y<xs[1].y?xs[1]:xs[0];
+    S.measured=true;S.step=2;S.phase=0;S.fp=null;
+    message('Отложены равные отрезки MA = MB. Теперь раствором AB постройте окружность из A.','ok');return}
+  if(S.step===2){
+    if(S.phase===0){let sp=snap(x,y,['A']);if(!sp){message('Поставьте циркуль в точку A.','err');return}S.fp={...sp};S.phase=1;message('Задайте раствор AB (щёлкните у точки B) — окружность построится сразу.','info');return}
+    let r=dist({x,y},S.A);if(Math.abs(r-S.rAB)>tol()+24){message('Возьмите раствор, равный AB (до точки B). Сейчас отличается примерно на '+Math.round(Math.abs(r-S.rAB))+'.','err');return}
+    save();S.cA=true;S.step=3;S.phase=0;S.fp=null;message('Окружность с центром A построена. Теперь тем же раствором из B.','ok');return}
+  if(S.step===3){
+    if(S.phase===0){let sp=snap(x,y,['B']);if(!sp){message('Поставьте циркуль в точку B.','err');return}S.fp={...sp};S.phase=1;message('Тем же раствором AB — окружность построится сразу.','info');return}
+    let r=dist({x,y},S.B);if(Math.abs(r-S.rAB)>tol()+24){message('Нужен тот же раствор AB. Отличие примерно '+Math.round(Math.abs(r-S.rAB))+'.','err');return}
+    save();S.cB=true;S.step=4;S.phase=0;S.fp=null;setTool('ruler');message('Окружности пересеклись в точках P и Q. Проведите прямую PQ.','ok');return}
+  if(S.step>=4){message('Построения циркулем закончены. Переключитесь на линейку.','err')}
+}
+function rulerClick(x,y){
+  if(S.step<4){message('Сначала постройте две окружности.','err');return}
+  let sp=snap(x,y,['P','Q']);
+  if(S.phase===0){if(!sp){message('Нажмите на P или на Q.','err');return}S.fp={...sp};S.phase=1;message(sp.lbl==='P'?'Теперь нажмите Q.':'Теперь нажмите P.','info');return}
+  if(!sp||sp.lbl===S.fp.lbl||!((S.fp.lbl==='P'&&sp.lbl==='Q')||(S.fp.lbl==='Q'&&sp.lbl==='P'))){message('Прямую нужно провести через две точки: P и Q.','err');return}
+  save();S.line=true;S.done=true;S.step=5;S.phase=0;S.fp=null;
+  document.getElementById('success').style.display='block';document.getElementById('proof').style.display='block';
+  message('Готово: PQ ⊥ a. 🎉','ok');
+}
+function ui(){
+  let labels=['→ Нажмите M, затем точку на прямой a','→ Нажмите A, затем раствор AB','→ Нажмите B, затем раствор AB','→ Нажмите P и Q в любом порядке'];
+  for(let i=1;i<=4;i++){let e=document.getElementById('st'+i),h=document.getElementById('h'+i);
+    e.className='step '+(i<S.step||S.done?'done':i===S.step?'active':'');
+    h.textContent=(i<S.step||S.done)?'✓ Выполнено':labels[i-1]}
+  document.getElementById('undoBtn').disabled=hist.length===0&&S.phase===0;
+  document.getElementById('compassBtn').className=tool==='compass'?'on':'';
+  document.getElementById('rulerBtn').className=tool==='ruler'?'on':'';
+}
+function renderAll(){document.getElementById('success').style.display=S&&S.done?'block':'none';document.getElementById('proof').style.display=S&&S.done?'block':'none';message(S.msg,S.type);ui();draw()}
+function undo(){if(S.phase!==0){S.phase=0;S.fp=null;message('Незавершённое действие отменено.','info');ui();draw();return}let old=hist.pop();if(!old)return;let mx=S.mx,my=S.my;S=JSON.parse(old);S.mx=mx;S.my=my;tool=S.step>=4?'ruler':'compass';message('Вернулись на предыдущий шаг.','info');renderAll()}
+function resetTask(){let t=S.task;init(t)}
+function newTask(){init(task())}
+init();
+</script>
+</body>
+</html>

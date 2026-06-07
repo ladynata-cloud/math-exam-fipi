@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Отрезок, равный данному — тренажёр</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:18px;background:#e8e4db;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#1f2937}.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}.head{display:flex;justify-content:space-between;gap:12px;align-items:center;background:#1a1a2e;color:white;padding:16px 20px}.title{font-weight:900;font-size:20px}.sub{font-size:12px;opacity:.72;margin-top:2px}.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-weight:800;font-size:12px;white-space:nowrap}.success{display:none;background:#ecfdf5;color:#15803d;border-bottom:1px solid #bbf7d0;padding:11px 18px;font-weight:800;font-size:13px}.main{display:flex}.work{flex:1;background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}canvas{display:block;width:100%;max-width:690px;background:#faf8f2;border:1px solid #e5e2d9;border-radius:12px;touch-action:none;cursor:cell}.side{width:285px;padding:14px;display:flex;flex-direction:column;gap:8px}.sideTitle{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:900;color:#94a3b8}.step{border:1.5px solid #e5e7eb;background:#f9fafb;border-radius:10px;padding:10px 11px;opacity:.38}.step.active{opacity:1;border-color:#3b82f6;background:#eff6ff}.step.done{opacity:1;border-color:#22c55e;background:#f0fdf4}.n{font-size:10px;text-transform:uppercase;letter-spacing:.55px;font-weight:900;color:#94a3b8;margin-bottom:4px}.active .n{color:#2563eb}.done .n{color:#16a34a}.t{font-size:12px;line-height:1.42}.h{margin-top:3px;font-size:11px;line-height:1.35;color:#64748b;font-style:italic}.done .h{color:#16a34a;font-weight:800;font-style:normal}.proof{display:none;border:1.5px solid #bbf7d0;background:#f0fdf4;color:#14532d;border-radius:11px;padding:11px;font-size:12px;line-height:1.5}.proof b{color:#166534}.proof .lbl{display:inline-block;font-weight:900;color:#166534}.proof ol{margin:5px 0 0;padding-left:20px}.proof li{margin:3px 0}.proof hr{border:0;border-top:1px solid #bbf7d0;margin:8px 0}.proof .qed{text-align:right;font-weight:900;margin-top:6px}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 14px;background:#f9fafb;border-top:1px solid #e5e7eb}button{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:7px 12px;font:700 12px system-ui;cursor:pointer}button:hover:not(:disabled){background:#f3f4f6}button.on{background:#1a1a2e;border-color:#1a1a2e;color:white}button:disabled{opacity:.45;cursor:default}.msg{flex:1;min-width:250px;border-radius:9px;padding:8px 11px;font-size:12px;font-weight:700;line-height:1.35}.info{background:#eff6ff;color:#1d4ed8}.ok{background:#f0fdf4;color:#15803d}.err{background:#fef2f2;color:#b91c1c}@media(max-width:780px){.main{flex-direction:column}.work{border-right:0}.side{width:100%;border-top:1px solid #e5e7eb}canvas{max-width:none}}@media(max-width:540px){body{padding:8px}.head{align-items:flex-start;flex-direction:column}.msg{order:-1;min-width:100%}.bar{position:sticky;bottom:0;z-index:5;box-shadow:0 -4px 14px #0000001a}}</style>
+</head>
+<body>
+<div class="app">
+  <div class="head"><div><div class="title">📏 Отрезок, равный данному</div><div class="sub">Построение циркулем и линейкой</div></div><div class="badge" id="badge">AB: —</div></div>
+  <div class="success" id="success">✓ Готово! На луче отложен отрезок OD = AB.</div>
+  <div class="main">
+    <div class="work"><canvas id="cv" width="640" height="420" aria-label="Поле построения отрезка"></canvas></div>
+    <div class="side">
+      <div class="sideTitle">Шаги построения</div>
+      <div class="step active" id="st1"><div class="n">Шаг 1 · Циркуль</div><div class="t">Измерьте отрезок <b>AB</b>: поставьте циркуль в <b>A</b>, затем в <b>B</b>, чтобы взять раствор, равный AB.</div><div class="h" id="h1">→ Нажмите A, затем B</div></div>
+      <div class="step" id="st2"><div class="n">Шаг 2 · Циркуль</div><div class="t">Не меняя раствора, поставьте циркуль в начало луча <b>O</b> — окружность построится сразу.</div><div class="h" id="h2">→ Нажмите O</div></div>
+      <div class="step" id="st3"><div class="n">Шаг 3 · Точка D</div><div class="t">Окружность пересекает луч в точке <b>D</b>. Отметьте эту точку.</div><div class="h" id="h3">→ Нажмите на точку пересечения D</div></div>
+      <div class="step" id="st4"><div class="n">Шаг 4 · Линейка</div><div class="t">Проведите отрезок <b>OD</b> по лучу — это искомый отрезок.</div><div class="h" id="h4">→ Нажмите O и D в любом порядке</div></div>
+      <div class="proof" id="proof"><b>Почему OD = AB?</b><hr>
+        <span class="lbl">Дано:</span> отрезок AB, луч с началом O; точка D — пересечение луча с окружностью с центром O радиуса AB.<br>
+        <span class="lbl">Доказать:</span> OD = AB.<br>
+        <span class="lbl">Доказательство:</span>
+        <ol>
+          <li>Раствор циркуля равен AB (его взяли, поставив ножки в A и B).</li>
+          <li>Тем же раствором построена окружность с центром O, значит её радиус равен AB.</li>
+          <li>Точка D лежит на окружности, поэтому OD — радиус этой окружности.</li>
+          <li>Все радиусы одной окружности равны, значит OD = AB.</li>
+        </ol>
+        Следовательно, отрезок OD, отложенный на луче от его начала, равен данному отрезку AB.
+        <div class="qed">▮ ч.т.д.</div>
+      </div>
+    </div>
+  </div>
+  <div class="bar"><button class="on" id="compassBtn" onclick="setTool('compass')">○ Циркуль</button><button id="rulerBtn" onclick="setTool('ruler')">— Линейка</button><button id="undoBtn" onclick="undo()" disabled>↶ Назад</button><button onclick="newTask()">✦ Новое задание</button><button onclick="resetTask()">↺ Сначала</button><div class="msg info" id="msg">Шаг 1: нажмите на точку A, затем на B, чтобы взять раствор циркуля</div></div>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+const W=640,H=420,COL={bg:'#faf8f2',grid:'#cdc9be',dark:'#1a1a2e',blue:'#2563eb',ab:'#be123c',o:'#1a1a2e',d:'#6d28d9',r:'#c2410c',g:'#16a34a'};
+let tool='compass',kind='mouse',hist=[],S;
+const dist=(p,q)=>Math.hypot(p.x-q.x,p.y-q.y);
+const fmt=x=>Math.round(x);
+function task(){
+  // данный отрезок AB сверху слева
+  let len=Math.round(95+Math.random()*95);
+  let ax=70+Math.round(Math.random()*30), ay=70+Math.round(Math.random()*20);
+  let A={x:ax,y:ay}, B={x:ax+len,y:ay};
+  // луч OC снизу, под небольшим углом, начало O слева
+  let oy=300+Math.round(Math.random()*40), ox=90+Math.round(Math.random()*20);
+  let ang=(-12-Math.random()*16)*Math.PI/180; // вверх-вправо
+  let dir={x:Math.cos(ang),y:Math.sin(ang)};
+  let O={x:ox,y:oy};
+  let C={x:O.x+520*dir.x, y:O.y+520*dir.y};
+  return {len,A,B,O,C,dir,
+    D:{x:O.x+len*dir.x, y:O.y+len*dir.y}};
+}
+function init(t=task()){S={task:t,step:1,phase:0,fp:null,measured:false,circle:false,D:null,line:false,done:false,mx:null,my:null,msg:'Шаг 1: нажмите на точку A, затем на B, чтобы взять раствор циркуля',type:'info'};hist=[];tool='compass';renderAll()}
+function snapR(){return kind==='touch'?32:24}
+function points(){let t=S.task,a=[{...t.A,lbl:'A',col:COL.ab},{...t.B,lbl:'B',col:COL.ab},{...t.O,lbl:'O',col:COL.o}];if(S.step>=3||S.D)a.push({...t.D,lbl:'D',col:COL.d});return a}
+function snap(x,y,allow){let best=null,bd=1e9;for(const p of points()){if(allow&&!allow.includes(p.lbl))continue;let d=dist({x,y},p);if(d<snapR()&&d<bd){best=p;bd=d}}return best}
+function save(){hist.push(JSON.stringify({...S,phase:0,fp:null,mx:null,my:null}));if(hist.length>20)hist.shift();document.getElementById('undoBtn').disabled=false}
+function message(text,type='info'){S.msg=text;S.type=type;let m=document.getElementById('msg');m.textContent=text;m.className='msg '+type}
+function setTool(t){tool=t;S.phase=0;S.fp=null;document.getElementById('compassBtn').className=t==='compass'?'on':'';document.getElementById('rulerBtn').className=t==='ruler'?'on':'';cv.style.cursor=t==='compass'?'cell':'crosshair';if(t==='ruler'&&S.step<4)message('Линейка понадобится в конце — после того как найдёте точку D.','info');draw()}
+function labelOffset(p){const D=20,t=S.task;if(p.lbl==='A'||p.lbl==='B')return{x:0,y:-20};if(p.lbl==='O'){return{x:-18,y:14}}// D — наружу от луча, вверх
+  let nx=-t.dir.y, ny=t.dir.x; if(ny>0){nx=-nx;ny=-ny;} return{x:nx*16,y:ny*16-4}}
+function drawSeg(p,q,color,w){ctx.strokeStyle=color;ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke()}
+function tick(p,color){ctx.save();ctx.strokeStyle=color;ctx.lineWidth=2.4;ctx.beginPath();ctx.moveTo(p.x,p.y-6);ctx.lineTo(p.x,p.y+6);ctx.stroke();ctx.restore()}
+function draw(){
+  ctx.clearRect(0,0,W,H);ctx.fillStyle=COL.bg;ctx.fillRect(0,0,W,H);
+  ctx.fillStyle=COL.grid;for(let x=25;x<W;x+=25)for(let y=25;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill()}
+  let t=S.task;
+  // окружность-измеритель с центром A (остаётся после взятия раствора AB)
+  if(S.measured){ctx.save();ctx.setLineDash([5,4]);ctx.globalAlpha=.5;ctx.strokeStyle=COL.ab;ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(t.A.x,t.A.y,t.len,0,7);ctx.stroke();ctx.restore()}
+  // окружность с центром O (если построена)
+  if(S.circle){ctx.save();ctx.setLineDash([]);ctx.strokeStyle=COL.blue;ctx.lineWidth=2;ctx.beginPath();ctx.arc(t.O.x,t.O.y,t.len,0,7);ctx.stroke();ctx.restore()}
+  // данный отрезок AB
+  drawSeg(t.A,t.B,COL.ab,4);
+  // подпись «дано»
+  ctx.fillStyle=COL.ab;ctx.font='italic 12px system-ui';ctx.fillText('дано',(t.A.x+t.B.x)/2-14,t.A.y-26);
+  // луч OC
+  ctx.save();ctx.strokeStyle=COL.dark;ctx.lineWidth=2.8;ctx.beginPath();ctx.moveTo(t.O.x,t.O.y);ctx.lineTo(t.C.x,t.C.y);ctx.stroke();ctx.restore();
+  ctx.fillStyle=COL.dark;ctx.font='italic 12px system-ui';ctx.fillText('C',t.C.x+4,t.C.y-6);
+  // искомый отрезок OD
+  if(S.line&&S.D){drawSeg(t.O,t.D,COL.r,5);
+    // засечки равенства: одна на AB, одна на OD
+    tickMid(t.A,t.B,COL.ab);tickMid(t.O,t.D,COL.r);
+    ctx.fillStyle=COL.r;ctx.font='bold 13px system-ui';
+    let mx=(t.O.x+t.D.x)/2,my=(t.O.y+t.D.y)/2,nx=-t.dir.y,ny=t.dir.x;if(ny>0){nx=-nx;ny=-ny;}
+    ctx.textAlign='center';ctx.fillText('OD = AB',mx+nx*26,my+ny*26);ctx.textAlign='start'}
+  // точки
+  for(const p of points()){
+    ctx.beginPath();ctx.arc(p.x,p.y,9,0,7);ctx.strokeStyle=p.col+'55';ctx.lineWidth=6;ctx.stroke();
+    ctx.beginPath();ctx.arc(p.x,p.y,3.6,0,7);ctx.fillStyle=p.col;ctx.fill();
+    let off=labelOffset(p);ctx.font='bold 15px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.lineWidth=4;ctx.strokeStyle='rgba(250,248,242,.95)';ctx.strokeText(p.lbl,p.x+off.x,p.y+off.y);
+    ctx.fillStyle=p.col;ctx.fillText(p.lbl,p.x+off.x,p.y+off.y);ctx.textAlign='start';ctx.textBaseline='alphabetic'}
+  preview();
+}
+function midPerp(a,b){return{x:(a.x+b.x)/2,y:(a.y+b.y)/2}}
+function tickMid(a,b,color){let mx=(a.x+b.x)/2,my=(a.y+b.y)/2,dx=b.x-a.x,dy=b.y-a.y,l=Math.hypot(dx,dy)||1,nx=-dy/l,ny=dx/l;ctx.save();ctx.strokeStyle=color;ctx.lineWidth=2.6;ctx.beginPath();ctx.moveTo(mx+nx*6,my+ny*6);ctx.lineTo(mx-nx*6,my-ny*6);ctx.stroke();ctx.restore()}
+function preview(){
+  if(S.mx==null)return;let t=S.task;ctx.save();ctx.globalAlpha=.6;ctx.setLineDash([5,4]);
+  if(tool==='compass'&&S.step===1){
+    // подсветить ожидаемую точку
+    let allow=S.phase===0?['A']:['B'];let sp=snap(S.mx,S.my,allow);
+    if(S.phase===1&&S.fp){
+      // предпросмотр взятого раствора: окружность радиуса AB с центром в A
+      ctx.setLineDash([5,4]);ctx.strokeStyle=COL.ab;ctx.lineWidth=1.6;ctx.globalAlpha=.45;
+      ctx.beginPath();ctx.arc(S.fp.x,S.fp.y,t.len,0,7);ctx.stroke();ctx.globalAlpha=.6;
+    }
+    if(sp){ctx.setLineDash([4,3]);ctx.strokeStyle=COL.ab;ctx.lineWidth=2;ctx.beginPath();ctx.arc(sp.x,sp.y,13,0,7);ctx.stroke()}
+  }
+  if(tool==='compass'&&S.step===2){
+    let sp=snap(S.mx,S.my,['O']);
+    if(sp){ctx.strokeStyle=COL.blue;ctx.lineWidth=1.8;ctx.setLineDash([5,4]);ctx.beginPath();ctx.arc(t.O.x,t.O.y,t.len,0,7);ctx.stroke();
+      ctx.setLineDash([]);ctx.lineWidth=2;ctx.beginPath();ctx.arc(sp.x,sp.y,13,0,7);ctx.stroke();}
+  }
+  if(tool==='compass'&&S.step===3){let sp=snap(S.mx,S.my,['D']);if(sp){ctx.strokeStyle=COL.d;ctx.lineWidth=2;ctx.beginPath();ctx.arc(sp.x,sp.y,13,0,7);ctx.stroke()}}
+  if(tool==='ruler'&&S.phase===1&&S.fp){let sp=snap(S.mx,S.my,['O','D']);let end=sp?sp:{x:S.mx,y:S.my};
+    ctx.save();ctx.setLineDash([9,7]);ctx.lineCap='round';ctx.globalAlpha=.7;ctx.strokeStyle=COL.r;ctx.lineWidth=5;
+    ctx.beginPath();ctx.moveTo(S.fp.x,S.fp.y);ctx.lineTo(end.x,end.y);ctx.stroke();ctx.restore()}
+  ctx.restore();
+}
+function pos(e){let r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+cv.addEventListener('pointermove',e=>{kind=e.pointerType==='touch'?'touch':'mouse';let p=pos(e);S.mx=p.x;S.my=p.y;draw()});
+cv.addEventListener('pointerleave',()=>{S.mx=null;S.my=null;draw()});
+cv.addEventListener('pointerdown',e=>{e.preventDefault();kind=e.pointerType==='touch'?'touch':'mouse';let p=pos(e);S.mx=p.x;S.my=p.y;click(p.x,p.y)});
+function click(x,y){if(S.done)return;if(tool==='compass')compassClick(x,y);else rulerClick(x,y);ui();draw()}
+function compassClick(x,y){
+  let t=S.task;
+  if(S.step===1){
+    if(S.phase===0){let sp=snap(x,y,['A']);if(!sp){message('Поставьте первую ножку циркуля в точку A.','err');return}S.fp={...sp};S.phase=1;message('Теперь поставьте вторую ножку в точку B.','info');return}
+    // фаза 1 — ждём B, но повторный клик по A просто переустанавливает первую ножку (без залипания)
+    let onA=snap(x,y,['A']),onB=snap(x,y,['B']);
+    if(onB){save();S.measured=true;S.step=2;S.phase=0;S.fp=null;message('Раствор циркуля равен AB. Теперь поставьте циркуль в начало луча O.','ok');return}
+    if(onA){S.fp={...onA};message('Первая ножка — в точке A. Теперь поставьте вторую ножку в точку B.','info');return}
+    message('Вторую ножку поставьте в точку B (или ещё раз нажмите A, чтобы начать заново).','err');return}
+  if(S.step===2){
+    if(!S.measured){message('Сначала измерьте отрезок AB (шаг 1).','err');return}
+    let sp=snap(x,y,['O']);if(!sp){message('Поставьте циркуль в начало луча — точку O.','err');return}
+    save();S.circle=true;S.step=3;S.phase=0;S.fp=null;message('Окружность с центром O построена тем же раствором. Она пересекла луч — отметьте точку D.','ok');return}
+  if(S.step===3){
+    let sp=snap(x,y,['D']);if(!sp){message('Нажмите на точку пересечения окружности и луча — это точка D.','err');return}
+    save();S.D={...t.D};S.step=4;S.phase=0;S.fp=null;setTool('ruler');message('Точка D найдена. Возьмите линейку и проведите отрезок OD.','ok');return}
+  if(S.step>=4){message('Построения циркулем закончены. Переключитесь на линейку.','err')}
+}
+function rulerClick(x,y){
+  if(S.step<4){message('Сначала выполните построения циркулем.','err');return}
+  let sp=snap(x,y,['O','D']);
+  if(S.phase===0){if(!sp){message('Нажмите на O или на D.','err');return}S.fp={...sp};S.phase=1;message(sp.lbl==='O'?'Теперь нажмите D.':'Теперь нажмите O.','info');return}
+  if(!sp||sp.lbl===S.fp.lbl||!((S.fp.lbl==='O'&&sp.lbl==='D')||(S.fp.lbl==='D'&&sp.lbl==='O'))){message('Отрезок нужно провести через две точки: O и D.','err');return}
+  save();S.line=true;S.done=true;S.step=5;S.phase=0;S.fp=null;
+  document.getElementById('success').style.display='block';document.getElementById('proof').style.display='block';
+  message('Готово: OD = AB. 🎉','ok');
+}
+function ui(){
+  for(let i=1;i<=4;i++){let e=document.getElementById('st'+i),h=document.getElementById('h'+i);
+    e.className='step '+(i<S.step||S.done?'done':i===S.step?'active':'');
+    h.textContent=(i<S.step||S.done)?'✓ Выполнено':['→ Нажмите A, затем B','→ Нажмите O','→ Нажмите на точку пересечения D','→ Нажмите O и D в любом порядке'][i-1]}
+  document.getElementById('badge').textContent='Дан отрезок AB';
+  document.getElementById('undoBtn').disabled=hist.length===0&&S.phase===0;
+  document.getElementById('compassBtn').className=tool==='compass'?'on':'';
+  document.getElementById('rulerBtn').className=tool==='ruler'?'on':'';
+}
+function renderAll(){document.getElementById('success').style.display=S&&S.done?'block':'none';document.getElementById('proof').style.display=S&&S.done?'block':'none';message(S.msg,S.type);ui();draw()}
+function undo(){if(S.phase!==0){S.phase=0;S.fp=null;message('Незавершённое действие отменено.','info');ui();draw();return}let old=hist.pop();if(!old)return;let mx=S.mx,my=S.my;S=JSON.parse(old);S.mx=mx;S.my=my;tool=S.step>=4?'ruler':'compass';message('Вернулись на предыдущий шаг.','info');renderAll()}
+function resetTask(){let t=S.task;init(t)}
+function newTask(){init(task())}
+init();
+</script>
+</body>
+</html>

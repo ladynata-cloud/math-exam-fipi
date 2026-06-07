@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Азбука построений — линейка тренажёров</title>
+<style>
+:root{
+  --ink:#172033;--muted:#667085;--soft:#f6f3eb;--paper:#fffaf0;--card:#fff;--line:#e7e2d8;
+  --brand:#1a1a2e;--blue:#2563eb;--ok:#16a34a;--ok-bg:#ecfdf5;--bad:#b91c1c;--warn:#b45309;
+  --shadow:0 18px 48px rgba(17,24,39,.13);--radius:22px;
+}
+*{box-sizing:border-box}html,body{min-height:100%}body{margin:0;background:linear-gradient(135deg,#e8e4db 0%,#f8f4ea 45%,#e9edf8 100%);font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--ink)}
+button,input,textarea,select{font:inherit}button{border:1px solid #d7dce5;background:#fff;border-radius:12px;padding:9px 12px;font-weight:850;color:#334155;cursor:pointer;transition:.16s ease}button:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 18px #0001;background:#f8fafc}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:var(--brand);border-color:var(--brand);color:white}.danger{color:var(--bad);border-color:#fecaca;background:#fff7f7}.mini{font-size:12px;padding:7px 9px;border-radius:10px}.shell{width:min(1240px,calc(100% - 28px));margin:18px auto 28px}.hero{background:radial-gradient(circle at top left,#33385f 0,#1a1a2e 44%,#111827 100%);color:white;border-radius:28px;padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:after{content:"";position:absolute;right:-72px;top:-92px;width:265px;height:265px;border-radius:999px;background:rgba(255,255,255,.08)}.heroTop{position:relative;z-index:1;display:flex;align-items:flex-start;justify-content:space-between;gap:18px}.kicker{font-size:12px;text-transform:uppercase;letter-spacing:1.4px;font-weight:950;opacity:.72}.hero h1{margin:5px 0 7px;font-size:clamp(28px,4vw,46px);line-height:1.02}.hero p{margin:0;max-width:820px;color:#dbeafe;line-height:1.55}.heroActions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.hero .heroActions button{border-color:rgba(255,255,255,.22);background:rgba(255,255,255,.12);color:white}.hero .heroActions button:hover:not(:disabled){background:rgba(255,255,255,.2)}.stats{position:relative;z-index:1;display:grid;grid-template-columns:1.2fr repeat(3,minmax(120px,.4fr));gap:12px;margin-top:18px}.stat{background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.15);border-radius:18px;padding:13px}.stat .label{font-size:11px;text-transform:uppercase;letter-spacing:.9px;font-weight:950;opacity:.7}.stat .value{font-size:23px;font-weight:950;margin-top:4px}.meter{height:11px;border-radius:999px;background:rgba(255,255,255,.18);overflow:hidden;margin-top:10px}.meter span{display:block;height:100%;width:0;background:#86efac;border-radius:999px;transition:.25s ease}.layout{display:grid;grid-template-columns:365px 1fr;gap:16px;margin-top:16px}.sidebar,.runner{background:rgba(255,255,255,.86);border:1px solid rgba(231,226,216,.9);box-shadow:0 14px 40px rgba(17,24,39,.08);backdrop-filter:blur(8px);border-radius:var(--radius);overflow:hidden}.sidebar{padding:14px;align-self:start}.sideHeader{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:2px 2px 12px}.sideHeader h2{font-size:18px;margin:0}.mode{font-size:11px;border:1px solid #d7dce5;border-radius:999px;padding:5px 8px;background:#f8fafc;color:#475569;font-weight:950;white-space:nowrap}.timeline{display:flex;flex-direction:column;gap:9px}.card{position:relative;display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;border:1.5px solid #e5e7eb;background:#fff;border-radius:16px;padding:10px 10px 10px 9px;cursor:pointer;transition:.16s ease;text-align:left;width:100%}.card:hover{transform:translateY(-1px);box-shadow:0 10px 20px #0001}.card.active{border-color:var(--blue);background:#eff6ff}.card.done{border-color:#bbf7d0;background:#f0fdf4}.card.locked{opacity:.48;filter:saturate(.65);cursor:not-allowed}.card.assignment:not(.done){border-style:dashed}.num{height:34px;width:34px;border-radius:999px;background:#f1f5f9;color:#334155;display:grid;place-items:center;font-weight:950}.card.active .num{background:var(--blue);color:white}.card.done .num{background:var(--ok);color:white}.ctitle{font-weight:950;font-size:14px;margin-bottom:2px}.cgoal{font-size:12px;color:#64748b;line-height:1.3}.pill{font-size:11px;font-weight:950;color:#475569;background:#f8fafc;border:1px solid #e2e8f0;border-radius:999px;padding:5px 7px;white-space:nowrap}.card.done .pill{color:#166534;background:#dcfce7;border-color:#bbf7d0}.panel{border:1px solid #e5e7eb;border-radius:16px;background:#fff;margin-top:12px;overflow:hidden}.panel summary{cursor:pointer;list-style:none;padding:12px 13px;font-weight:950}.panel summary::-webkit-details-marker{display:none}.panelBody{border-top:1px solid #eef2f7;padding:12px}.field{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}.field label{font-size:12px;text-transform:uppercase;letter-spacing:.75px;font-weight:950;color:#64748b}.field input,.field select,.field textarea{width:100%;border:1px solid #d7dce5;border-radius:12px;background:#fff;padding:10px 11px;color:#172033}.checks{display:grid;gap:7px;margin:8px 0 10px}.checks label{display:flex;align-items:flex-start;gap:8px;font-size:13px;line-height:1.25;color:#334155}.checks input{margin-top:2px}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.reportBox{min-height:92px;resize:vertical;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;line-height:1.45}.hint{font-size:12px;line-height:1.45;color:#64748b;margin:8px 0 0}.runner{min-height:760px;display:flex;flex-direction:column}.runnerTop{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;padding:16px 16px 12px;border-bottom:1px solid #e7e2d8;background:#fff}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:950;color:#64748b}.runner h2{margin:3px 0 4px;font-size:22px}.runnerSub{margin:0;color:#64748b;font-size:13px;line-height:1.45}.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.assignmentNotice{display:none;margin:12px 16px 0;border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8;border-radius:14px;padding:11px 12px;font-size:13px;font-weight:760;line-height:1.45}.assignmentNotice.show{display:block}.frameWrap{padding:12px 12px 16px;flex:1;background:#faf8f2}.frameToolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}.frameToolbar .left,.frameToolbar .right{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.statusLine{font-size:13px;color:#64748b}.statusLine b{color:#172033}.trainerFrame{display:block;width:100%;height:720px;border:1px solid #d7dce5;border-radius:18px;background:#e8e4db}.toast{position:fixed;right:18px;bottom:18px;max-width:min(420px,calc(100% - 36px));background:#111827;color:white;border-radius:16px;padding:12px 14px;box-shadow:0 18px 48px rgba(0,0,0,.24);font-weight:850;font-size:13px;opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s ease;z-index:20}.toast.show{opacity:1;transform:translateY(0)}.tag{display:inline-flex;gap:6px;align-items:center;background:#f8fafc;border:1px solid #e5e7eb;color:#475569;border-radius:999px;padding:5px 8px;font-size:12px;font-weight:950}.assignmentSummary{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.smallMuted{font-size:12px;color:#64748b}.switch{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#475569;font-weight:850}.switch input{width:auto}.hidden{display:none!important}@media(max-width:980px){.stats{grid-template-columns:1fr 1fr}.layout{grid-template-columns:1fr}.runner{min-height:unset}.trainerFrame{height:760px}.sidebar{position:static}.heroTop{flex-direction:column}.heroActions{justify-content:flex-start}}@media(max-width:620px){.shell{width:calc(100% - 14px);margin-top:7px}.hero{padding:16px;border-radius:22px}.stats{grid-template-columns:1fr}.layout{gap:9px;margin-top:9px}.sidebar,.runner{border-radius:18px}.runnerTop{flex-direction:column}.actions{justify-content:flex-start}.card{grid-template-columns:38px 1fr}.pill{grid-column:2}.trainerFrame{height:720px}.frameWrap{padding:8px}.heroActions button,.actions button,.frameToolbar button{width:100%}.frameToolbar .left,.frameToolbar .right{width:100%}.frameToolbar .left button,.frameToolbar .right button{flex:1}.row button{flex:1}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="hero">
+    <div class="heroTop">
+      <div>
+        <div class="kicker">Азбука построений</div>
+        <h1>Единая линейка тренажёров</h1>
+        <p>Маршрут из HTML‑тренажёров: запуск заданий, локальный прогресс, ссылки‑назначения и выгрузка отчёта. Тренажёры обновлены после проверки глазами ученика: добавлены явные подсказки, фантомные точки, мобильная нижняя панель и более свободный выбор радиуса там, где это важно.</p>
+      </div>
+      <div class="heroActions">
+        <button id="continueBtn" class="primary">Продолжить</button>
+        <button id="nextTodoBtn">Следующее незавершённое</button>
+        <button id="resetBtn" class="danger">Сбросить прогресс</button>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="label">Прогресс линейки</div><div class="value" id="progressValue">0 из 6</div><div class="meter"><span id="progressBar"></span></div></div>
+      <div class="stat"><div class="label">Попытки</div><div class="value" id="attemptsValue">0</div></div>
+      <div class="stat"><div class="label">Текущее задание</div><div class="value" id="assignmentValue">—</div></div>
+      <div class="stat"><div class="label">Режим</div><div class="value" id="modeValue">свободный</div></div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sideHeader"><h2>Маршрут</h2><span class="mode" id="routeMode">6 шагов</span></div>
+      <div class="timeline" id="timeline"></div>
+
+      <details class="panel" open>
+        <summary>Настройки прохождения</summary>
+        <div class="panelBody">
+          <label class="switch"><input type="checkbox" id="strictMode"> Открывать строго по порядку</label>
+          <p class="hint">Прогресс хранится в браузере ученика. Для проверки учителю нужен JSON‑отчёт или серверная интеграция.</p>
+        </div>
+      </details>
+
+      <details class="panel">
+        <summary>Выдать задание</summary>
+        <div class="panelBody">
+          <div class="field"><label for="assignTitle">Название</label><input id="assignTitle" value="Домашнее задание: Азбука построений"></div>
+          <div class="row">
+            <div class="field" style="flex:1;min-width:130px"><label for="assignRepeats">Повторов</label><select id="assignRepeats"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></div>
+            <div class="field" style="flex:1;min-width:130px"><label for="assignDue">Срок</label><input id="assignDue" type="date"></div>
+          </div>
+          <div class="checks" id="assignChecks"></div>
+          <div class="row"><button class="mini" id="selectAllAssign">Выбрать всё</button><button class="mini" id="clearAssignChecks">Очистить</button><button class="mini primary" id="makeAssign">Сделать ссылку</button></div>
+          <div class="field" style="margin-top:10px"><label for="assignLink">Ссылка ученику</label><textarea id="assignLink" class="reportBox" readonly placeholder="Здесь появится ссылка"></textarea></div>
+          <div class="row"><button class="mini" id="copyAssignLink">Скопировать ссылку</button><button class="mini danger" id="clearAssign">Убрать текущее задание</button></div>
+        </div>
+      </details>
+
+      <details class="panel">
+        <summary>Отчёт / импорт</summary>
+        <div class="panelBody">
+          <div class="row"><button class="mini" id="exportBtn">Сформировать JSON</button><button class="mini" id="copyReportBtn">Скопировать</button><button class="mini" id="importBtn">Импортировать из поля</button></div>
+          <div class="field" style="margin-top:10px"><label for="reportBox">JSON‑отчёт</label><textarea id="reportBox" class="reportBox" placeholder="Нажмите «Сформировать JSON» или вставьте сюда отчёт"></textarea></div>
+          <p class="hint">В отчёте есть список упражнений, количество зачётов и дата последнего выполнения.</p>
+        </div>
+      </details>
+    </aside>
+
+    <main class="runner">
+      <div class="runnerTop">
+        <div>
+          <div class="eyebrow" id="runnerEyebrow">Шаг 1</div>
+          <h2 id="runnerTitle">—</h2>
+          <p class="runnerSub" id="runnerSub">—</p>
+          <div class="assignmentSummary" id="assignmentSummary"></div>
+        </div>
+        <div class="actions">
+          <button id="prevBtn">← Предыдущее</button>
+          <button id="nextBtn">Следующее →</button>
+          <button id="manualDone" class="primary">Зачесть вручную</button>
+        </div>
+      </div>
+      <div class="assignmentNotice" id="assignmentNotice"></div>
+      <div class="frameWrap">
+        <div class="frameToolbar">
+          <div class="left"><span class="statusLine" id="statusLine">Статус: —</span></div>
+          <div class="right"><button class="mini" id="reloadTrainer">Новое/перезапустить</button><button class="mini" id="openSeparate">Открыть отдельно</button></div>
+        </div>
+        <iframe class="trainerFrame" id="trainerFrame" title="Тренажёр Азбуки построений"></iframe>
+      </div>
+    </main>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const TRAINERS = [
+  {id:'segment',order:1,title:'Отрезок, равный данному',short:'Отрезок',file:'trainers/segment-trainer-v6.html',icon:'📏',level:'База',goal:'Отложить на луче отрезок, равный данному.',tools:'циркуль + линейка'},
+  {id:'angle-copy',order:2,title:'Угол, равный данному',short:'Равный угол',file:'trainers/angle-trainer-v2.html',icon:'📐',level:'База',goal:'Построить угол, равный заданному.',tools:'циркуль + линейка'},
+  {id:'bisector',order:3,title:'Биссектриса угла',short:'Биссектриса',file:'trainers/bisector-trainer-v4.html',icon:'∠',level:'Угол',goal:'Разделить угол на две равные части.',tools:'циркуль + линейка'},
+  {id:'midpoint',order:4,title:'Середина отрезка',short:'Середина',file:'trainers/midpoint-trainer-v2.html',icon:'⊹',level:'Отрезок',goal:'Найти середину отрезка и серединный перпендикуляр.',tools:'циркуль + линейка'},
+  {id:'perpendicular-on-line',order:5,title:'Перпендикулярные прямые',short:'Перпендикуляр через точку',file:'trainers/perpendicular-trainer-v2.html',icon:'⊥',level:'Прямая',goal:'Провести через точку прямую, перпендикулярную данной.',tools:'циркуль + линейка'},
+  {id:'perpendicular-external',order:6,title:'Перпендикуляр из точки вне прямой',short:'Внешний перпендикуляр',file:'trainers/perpendicular-external-trainer-v2.html',icon:'⊥',level:'Прямая+',goal:'Опустить перпендикуляр из внешней точки на прямую.',tools:'циркуль + линейка'}
+];
+const STORAGE_KEY = 'azbuka-postroeniy-progress-v2';
+let state = loadState();
+let activeId = state.activeId || TRAINERS[0].id;
+let lastSuccessVisible = false;
+
+const $ = id => document.getElementById(id);
+function trainerById(id){return TRAINERS.find(t => t.id === id) || TRAINERS[0];}
+function indexById(id){return TRAINERS.findIndex(t => t.id === id);}
+function loadState(){
+  const base = {progress:{},activeId:null,strict:false,assignment:null};
+  try{const raw = localStorage.getItem(STORAGE_KEY); if(raw) Object.assign(base, JSON.parse(raw));}catch(e){console.warn('Не удалось прочитать прогресс', e);}
+  return base;
+}
+function saveState(){localStorage.setItem(STORAGE_KEY, JSON.stringify(state));}
+function ensureProgress(){TRAINERS.forEach(t=>{if(!state.progress[t.id]) state.progress[t.id] = {attempts:0,completed:false,lastAt:null};});}
+function targetFor(id){const a = state.assignment; return a && Array.isArray(a.ids) && a.ids.includes(id) ? Math.max(1, Number(a.repeats || 1)) : 1;}
+function inAssignment(id){const a = state.assignment; return !!(a && Array.isArray(a.ids) && a.ids.includes(id));}
+function isDoneTrack(id){return (state.progress[id]?.attempts || 0) >= 1;}
+function isDoneAssignment(id){return (state.progress[id]?.attempts || 0) >= targetFor(id);}
+function isLocked(id){if(!state.strict) return false; const i = indexById(id); return i > 0 && !isDoneTrack(TRAINERS[i-1].id);}
+function formatDate(iso){if(!iso) return '—'; try{return new Date(iso).toLocaleString('ru-RU',{dateStyle:'short',timeStyle:'short'});}catch(e){return iso;}}
+function toast(text){const el=$('toast'); el.textContent=text; el.classList.add('show'); clearTimeout(toast.timer); toast.timer=setTimeout(()=>el.classList.remove('show'),2600);}
+function copyText(text, ok='Скопировано'){
+  if(navigator.clipboard && window.isSecureContext){navigator.clipboard.writeText(text).then(()=>toast(ok)).catch(()=>fallbackCopy(text,ok));}
+  else fallbackCopy(text, ok);
+}
+function fallbackCopy(text, ok){const a=document.createElement('textarea'); a.value=text; a.style.position='fixed'; a.style.left='-9999px'; document.body.appendChild(a); a.focus(); a.select(); try{document.execCommand('copy'); toast(ok);}catch(e){toast('Скопируйте вручную');} a.remove();}
+function encodePayload(obj){const bytes = new TextEncoder().encode(JSON.stringify(obj)); let bin=''; bytes.forEach(b=>bin+=String.fromCharCode(b)); return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+function decodePayload(str){let s=String(str).replace(/-/g,'+').replace(/_/g,'/'); while(s.length%4) s+='='; const bin=atob(s); const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0)); return JSON.parse(new TextDecoder('utf-8').decode(bytes));}
+function stats(){const completed=TRAINERS.filter(t=>isDoneTrack(t.id)).length; const attempts=TRAINERS.reduce((s,t)=>s+(state.progress[t.id]?.attempts||0),0); const a=state.assignment; const assignmentDone=a?.ids?.length ? a.ids.filter(id=>isDoneAssignment(id)).length : 0; return {completed,total:TRAINERS.length,attempts,assignmentDone};}
+function renderStats(){
+  const s = stats();
+  $('progressValue').textContent = `${s.completed} из ${s.total}`;
+  $('progressBar').style.width = `${Math.round(s.completed / s.total * 100)}%`;
+  $('attemptsValue').textContent = String(s.attempts);
+  $('assignmentValue').textContent = state.assignment ? `${s.assignmentDone}/${state.assignment.ids.length}` : '—';
+  $('modeValue').textContent = state.strict ? 'строгий' : 'свободный';
+  $('routeMode').textContent = state.assignment ? 'задание' : `${TRAINERS.length} шагов`;
+  $('strictMode').checked = !!state.strict;
+}
+function renderCards(){
+  const box = $('timeline'); box.innerHTML = '';
+  TRAINERS.forEach((t,i)=>{
+    const p=state.progress[t.id]||{};
+    const btn=document.createElement('button');
+    btn.className = ['card',t.id===activeId?'active':'',isDoneTrack(t.id)?'done':'',isLocked(t.id)?'locked':'',inAssignment(t.id)?'assignment':''].filter(Boolean).join(' ');
+    const target = targetFor(t.id);
+    const text = target>1 ? `${p.attempts||0}/${target}` : ((p.attempts||0)>0 ? 'готово' : t.level);
+    btn.innerHTML = `<div class="num">${isDoneTrack(t.id)?'✓':i+1}</div><div><div class="ctitle">${t.icon} ${t.short}</div><div class="cgoal">${t.goal}</div></div><div class="pill">${text}</div>`;
+    btn.addEventListener('click',()=>loadTrainer(t.id));
+    box.appendChild(btn);
+  });
+}
+function renderRunner(){
+  const t=trainerById(activeId), p=state.progress[t.id]||{};
+  $('runnerEyebrow').textContent = `Шаг ${t.order} · ${t.level}`;
+  $('runnerTitle').textContent = `${t.icon} ${t.title}`;
+  $('runnerSub').textContent = `${t.goal} Инструменты: ${t.tools}.`;
+  const target=targetFor(t.id);
+  $('statusLine').innerHTML = `Статус: <b>${p.attempts||0}/${target}</b>, последний зачёт: <b>${formatDate(p.lastAt)}</b>`;
+  const tags = [`<span class="tag">${t.level}</span>`, `<span class="tag">${t.tools}</span>`];
+  if(inAssignment(t.id)) tags.push(`<span class="tag">в задании</span>`);
+  $('assignmentSummary').innerHTML = tags.join('');
+  const idx=indexById(t.id);
+  $('prevBtn').disabled = idx<=0;
+  $('nextBtn').disabled = idx>=TRAINERS.length-1 || isLocked(TRAINERS[Math.min(TRAINERS.length-1,idx+1)].id);
+  if(state.assignment){
+    const s=stats();
+    $('assignmentNotice').classList.add('show');
+    $('assignmentNotice').textContent = `${state.assignment.title}: выполнено ${s.assignmentDone} из ${state.assignment.ids.length}; нужно по ${state.assignment.repeats || 1} зачёта. ${state.assignment.due ? 'Срок: '+state.assignment.due+'.' : ''}`;
+  }else{
+    $('assignmentNotice').classList.remove('show');
+    $('assignmentNotice').textContent = '';
+  }
+}
+function renderAll(){renderCards(); renderStats(); renderRunner(); saveState();}
+function loadTrainer(id, force=false){
+  const t=trainerById(id);
+  if(!force && isLocked(t.id)){toast('Этот шаг пока закрыт строгим режимом'); return;}
+  activeId=t.id; state.activeId=t.id; lastSuccessVisible=false;
+  const src = force ? `${t.file}?r=${Date.now()}` : t.file;
+  $('trainerFrame').src = src;
+  renderAll();
+}
+function markComplete(source='auto'){
+  ensureProgress();
+  const p=state.progress[activeId];
+  p.attempts=(p.attempts||0)+1; p.completed=true; p.lastAt=new Date().toISOString();
+  saveState(); renderAll();
+  toast(source==='auto' ? 'Зачтено автоматически 🎉' : 'Зачтено вручную');
+}
+function pollSuccess(){
+  const frame=$('trainerFrame'); let visible=false;
+  try{
+    const doc=frame.contentDocument;
+    if(doc){
+      const success=doc.getElementById('success');
+      if(success){const cs=frame.contentWindow.getComputedStyle(success); visible=cs.display!=='none' && cs.visibility!=='hidden' && cs.opacity!=='0';}
+    }
+  }catch(e){return;}
+  if(visible && !lastSuccessVisible){lastSuccessVisible=true; markComplete('auto');}
+  if(!visible) lastSuccessVisible=false;
+}
+function nextFromCurrent(delta){const idx=indexById(activeId); return TRAINERS[Math.max(0,Math.min(TRAINERS.length-1,idx+delta))].id;}
+function firstTodo(){const ids=state.assignment?.ids?.length ? state.assignment.ids : TRAINERS.map(t=>t.id); return ids.find(id=>(state.progress[id]?.attempts||0)<targetFor(id)) || ids[0] || TRAINERS[0].id;}
+function buildReport(){return {project:'azbuka-postroeniy',createdAt:new Date().toISOString(),assignment:state.assignment,progress:Object.fromEntries(TRAINERS.map(t=>[t.id,{title:t.title,...state.progress[t.id]}]))};}
+function renderAssignmentChecks(){
+  const box=$('assignChecks'); box.innerHTML='';
+  TRAINERS.forEach(t=>{
+    const label=document.createElement('label');
+    label.innerHTML=`<input class="assignCheck" type="checkbox" value="${t.id}" checked> <span>${t.order}. ${t.title}</span>`;
+    box.appendChild(label);
+  });
+}
+function generateAssignmentLink(){
+  const ids=[...document.querySelectorAll('.assignCheck:checked')].map(el=>el.value);
+  if(!ids.length){toast('Выберите хотя бы один тренажёр'); return;}
+  const payload={title:$('assignTitle').value.trim() || 'Задание по Азбуке построений',ids,repeats:Number($('assignRepeats').value||1),due:$('assignDue').value,createdAt:new Date().toISOString()};
+  state.assignment=payload; saveState(); renderAll();
+  const base=location.href.split('?')[0].split('#')[0];
+  $('assignLink').value=`${base}?a=${encodePayload(payload)}`;
+  toast('Ссылка-задание создана');
+}
+function applyAssignmentFromUrl(){
+  const encoded=new URLSearchParams(location.search).get('a');
+  if(!encoded) return;
+  try{
+    const a=decodePayload(encoded);
+    const ids=(a.ids||[]).filter(id=>TRAINERS.some(t=>t.id===id));
+    if(!ids.length) throw new Error('Нет подходящих тренажёров');
+    state.assignment={title:a.title||'Задание по Азбуке построений',ids,repeats:Math.max(1,Number(a.repeats||1)),due:a.due||'',createdAt:a.createdAt||new Date().toISOString()};
+    activeId=ids[0]; state.activeId=activeId; saveState(); toast('Задание подключено');
+  }catch(e){toast('Не удалось прочитать ссылку-задание');}
+}
+function openSeparateTrainer(){window.open(trainerById(activeId).file, '_blank', 'noopener');}
+
+$('continueBtn').addEventListener('click',()=>loadTrainer(activeId));
+$('nextTodoBtn').addEventListener('click',()=>loadTrainer(firstTodo()));
+$('resetBtn').addEventListener('click',()=>{if(confirm('Сбросить весь локальный прогресс?')){state.progress={}; ensureProgress(); saveState(); renderAll(); loadTrainer(TRAINERS[0].id,true); toast('Прогресс сброшен');}});
+$('strictMode').addEventListener('change',e=>{state.strict=e.target.checked; saveState(); renderAll();});
+$('prevBtn').addEventListener('click',()=>loadTrainer(nextFromCurrent(-1)));
+$('nextBtn').addEventListener('click',()=>loadTrainer(nextFromCurrent(1)));
+$('manualDone').addEventListener('click',()=>markComplete('manual'));
+$('reloadTrainer').addEventListener('click',()=>loadTrainer(activeId,true));
+$('openSeparate').addEventListener('click',openSeparateTrainer);
+$('selectAllAssign').addEventListener('click',()=>document.querySelectorAll('.assignCheck').forEach(el=>el.checked=true));
+$('clearAssignChecks').addEventListener('click',()=>document.querySelectorAll('.assignCheck').forEach(el=>el.checked=false));
+$('makeAssign').addEventListener('click',generateAssignmentLink);
+$('copyAssignLink').addEventListener('click',()=>copyText($('assignLink').value,'Ссылка скопирована'));
+$('clearAssign').addEventListener('click',()=>{state.assignment=null; saveState(); renderAll(); toast('Текущее задание убрано');});
+$('exportBtn').addEventListener('click',()=>{$('reportBox').value=JSON.stringify(buildReport(),null,2); toast('Отчёт сформирован');});
+$('copyReportBtn').addEventListener('click',()=>{const txt=$('reportBox').value || JSON.stringify(buildReport(),null,2); $('reportBox').value=txt; copyText(txt,'Отчёт скопирован');});
+$('importBtn').addEventListener('click',()=>{
+  try{
+    const data=JSON.parse($('reportBox').value);
+    if(!data.progress) throw new Error('Нет progress');
+    TRAINERS.forEach(t=>{const src=data.progress[t.id]; if(src) state.progress[t.id]={attempts:Number(src.attempts||0),completed:!!src.completed||Number(src.attempts||0)>0,lastAt:src.lastAt||null};});
+    if(data.assignment) state.assignment=data.assignment;
+    saveState(); renderAll(); toast('Прогресс импортирован');
+  }catch(e){toast('Не удалось импортировать JSON');}
+});
+
+ensureProgress();
+renderAssignmentChecks();
+applyAssignmentFromUrl();
+renderAll();
+loadTrainer(activeId,true);
+setInterval(pollSuccess, 800);
+</script>
+</body>
+</html>
