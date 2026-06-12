@@ -19,12 +19,13 @@
 <p class="foot">MathExam · уровень 1 · базовая отработка</p>
 </main>
 <script>
+const $=id=>document.getElementById(id);
+const norm=s=>String(s).trim().replace(/[−–—]/g,'-').replace(',','.').replace(/\s+/g,'');
+function canonical(s){s=norm(s);if(!/^-?\d+(\.\d+)?$/.test(s))return null;if(s.includes('.'))s=s.replace(/0+$/,'').replace(/\.$/,'');return s==='-0'?'0':s}
+function make(n,type,text,ans){return{n,type,text,ans,target:canonical(ans)}}
 const BASE=[['addition','7,6 + 4,8','12,4'],['addition','9,2 + 6,5','15,7'],['addition','12,4 + 3,28','15,68'],['subtraction','4,7 − 8,2','−3,5'],['subtraction','2,8 − 3,4','−0,6'],['subtraction','6,5 − 8,23','−1,73'],['multiplication','4,2 · 5,1','21,42'],['multiplication','0,25 · 4,8','1,2'],['division','7,8 : 2,6','3'],['division','9,6 : 1,2','8'],['brackets','(7,8 − 1,4) : 3,2','2'],['brackets','(5,3 + 2,7) : 0,4','20']];
 const HINTS={addition:'Сложение десятичных дробей:\n1. Запиши числа так, чтобы запятая была под запятой.\n2. При необходимости допиши нули справа.\n3. Сложи как обычные числа и снеси запятую вниз.',subtraction:'Вычитание десятичных дробей:\n1. Сравни числа. Если из меньшего вычитаешь большее, ответ будет отрицательным.\n2. Запиши запятую под запятой, допиши нули.\n3. Вычитай как обычные числа.',multiplication:'Умножение десятичных дробей:\n1. Умножь числа без запятых.\n2. Посчитай, сколько всего цифр справа от запятых в множителях.\n3. Отдели столько же цифр справа в ответе.',division:'Деление десятичных дробей:\n1. Убери запятую в делителе, умножив оба числа на 10, 100 и т.д.\n2. Раздели получившиеся числа.\n3. Проверь, что ответ подходит.',brackets:'Выражение со скобками:\n1. Сначала выполни действие в скобках.\n2. Затем раздели результат.\n3. Следи за запятыми и знаком минус.'};
 let round=BASE.map((x,i)=>make(i+1,...x)),i=0,tries=0,ok=0,log=[];
-const $=id=>document.getElementById(id), norm=s=>String(s).trim().replace(/[−–—]/g,'-').replace(',','.').replace(/\s+/g,'');
-function canonical(s){s=norm(s);if(!/^-?\d+(\.\d+)?$/.test(s))return null;if(s.includes('.'))s=s.replace(/0+$/,'').replace(/\.$/,'');return s==='-0'?'0':s}
-function make(n,type,text,ans){return{n,type,text,ans,target:canonical(ans)}}
 function fmtTenths(n){let neg=n<0;n=Math.abs(n);let s=n%10?Math.floor(n/10)+','+(n%10):String(n/10);return(neg?'−':'')+s}
 function fmtHund(n){let neg=n<0;n=Math.abs(n);let i=Math.floor(n/100),f=n%100,s=f===0?String(i):(f%10===0?i+','+(f/10):i+','+String(f).padStart(2,'0'));return(neg?'−':'')+s}
 function r(a,b){return a+Math.floor(Math.random()*(b-a+1))}
