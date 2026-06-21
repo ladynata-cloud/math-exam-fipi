@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Прямая и обратная теорема</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:manipulation}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.given{font-size:13px;line-height:1.5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:10px}
+.given b{color:#3730a3}
+.steps{font-size:12.5px;line-height:1.5;color:#334155}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:750 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt:disabled{cursor:default}
+.opt.ok-pick{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.bad-pick{background:#fee2e2;border-color:#dc2626;color:#991b1b}
+.opt.correct-reveal{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.pcard{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:10px 12px;font:650 13.5px system-ui;cursor:pointer;text-align:left;line-height:1.45}
+.pcard:hover{background:#f3f4f6}
+.pcard.shake{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.chitem{background:#f0fdf4;border-left:3px solid #16a34a;border-radius:0 8px 8px 0;padding:7px 10px;font-size:12.5px;line-height:1.4;color:#14532d;margin-bottom:5px}
+.chitem .n{font-weight:900;color:#16a34a;margin-right:4px}
+.chempty{font-size:12.5px;color:#94a3b8;font-style:italic;padding:6px}
+.phtitle{font-size:12px;font-weight:800;color:#6d28d9;text-transform:uppercase;letter-spacing:.05em;margin:2px 0 4px}
+.st{padding:6px 8px;border-left:3px solid #16a34a;margin:5px 0;background:#f0fdf4;border-radius:0 8px 8px 0}
+.st b{color:#166534}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:24px 22px;text-align:center}
+.fin .big{font-size:40px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:14px;height:14px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:660px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:13.5px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law p{margin:8px 0}
+.bridge{margin-top:10px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">⇄ Прямая и обратная теорема</div>
+      <div class="sub">Глава III · §2 · тренажёр 4 из 4 — условие/заключение, обратная теорема</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Прямая ↔ обратная</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="420"></canvas></div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card">
+        <div class="given" id="givenBox"></div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div id="opts" class="opts"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div class="card">
+        <h2>Ход рассуждения</h2>
+        <div class="steps" id="steps"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Прямая и обратная теорема.</b>
+      <p>В теореме различают <b>условие</b> (то, что в «если…», — дано) и <b>заключение</b> (то, что в «то…», — доказываем).</p>
+      <p><b>Обратная</b> теорема — это когда условие и заключение <b>меняют местами</b>. (Это не «если не…, то не…» — то <i>противоположная</i> теорема.)</p>
+      <p>Из доказанной теоремы обратная <b>не следует сама</b> и <b>не всегда верна</b>: её доказывают отдельно или опровергают контрпримером.</p>
+      <p><b>Признаки</b> параллельных (§1) и их <b>свойства</b> (§2) — наша <b>первая</b> пара прямой и обратной теоремы, и здесь <b>обе верны</b>. Дальше в курсе таких пар будет ещё много. А «вертикальные ⟹ равны» верно, тогда как обратное — нет.</p>
+      <div class="bridge">§2 собран: аксиома → свойства → язык прямой и обратной теоремы.</div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="nextTask()">Следующий шаг →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС/ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch3-p2-t6-direct-converse';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),step:si+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640, HT=420;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=HT*dpr;cv.style.aspectRatio=W+'/'+HT;ctx.scale(dpr,dpr);
+
+/* ───────── ГЕОМЕТРИЯ ───────── */
+const aY=150, bY=300, M={x:255,y:150}, N={x:405,y:300};
+const SEC=Math.atan2(N.y-M.y,N.x-M.x);   // 45°, секущая
+const PI=Math.PI, rad=d=>d*PI/180;
+const PULSE=()=>1+0.13*Math.sin(Date.now()/240);   // единый «пульс» (канон «хор»)
+
+// реестр объектов: цвет = личность объекта, не равенство
+const OBJ={
+  ang1:{col:'#d97706', r:22, lbl:'1'},   // накрест-угол у M
+  ang2:{col:'#db2777', r:22, lbl:'2'}    // накрест-угол у N
+};
+
+/* ───────── ШАГИ ───────── */
+const STEPS=[
+ {kind:'choose', phase:'split', badge:'Условие и заключение',
+  task:'Во всякой теореме две части: <b>условие</b> (что дано) и <b>заключение</b> (что доказываем). Возьмём <b>свойство 1</b>: «Если две параллельные прямые пересечены секущей, то накрест лежащие углы равны». Что здесь — <b>заключение</b>?',
+  prompt:'Выберите заключение теоремы.',
+  litResolved:['ang1','ang2'],
+  stepNote:'Теорема = условие (дано) + заключение (доказать).',
+  q:[
+    {t:'накрест лежащие углы равны', ok:true, after:'Заключение (что доказываем) — что углы равны. А условие (что дано) — что прямые параллельны.'},
+    {t:'прямые параллельны (и пересечены секущей)', lit:['lines'], why:'Это <b>условие</b> (дано), а не заключение. Заключение — то, что доказываем: накрест лежащие равны.'},
+    {t:'секущая перпендикулярна прямым', why:'Такого в теореме нет. Заключение — «накрест лежащие равны».'},
+    {t:'углы можно измерить транспортиром', why:'Это про измерение, а не часть теоремы. Заключение — «накрест лежащие равны».'}
+  ]},
+
+ {kind:'assemble', phase:'swap', badge:'Постройте обратную',
+  task:'<b>Обратная теорема</b> — это когда условие и заключение <b>меняются местами</b>. Построим обратную к свойству 1. Среди карточек есть ловушки.',
+  phaseTitle:'Обратная теорема: меняем местами',
+  stepNote:'Обратная: условие ↔ заключение поменялись местами (вышел признак 1).',
+  reveal:'Узнаёшь? «Если накрест лежащие равны, то прямые ∥» — это <b>признак 1 из §1</b>! Признак и свойство мы доказывали порознь, а они — <b>прямая и обратная</b> друг к другу: в §1 шли по углам → к параллельности (узнавали), в §2 — от параллельности → к углам (выводили). Это наша <b>первая</b> пара прямой и обратной теоремы — дальше в курсе их встретим ещё. ∎',
+  cards:[
+    {id:'take-concl', txt:'Берём <b>заключение</b> прямой теоремы («накрест лежащие равны») и делаем его <b>условием</b> обратной (теперь это дано).', need:[], lit:['ang1','ang2'], ok:'Условие обратной: накрест лежащие равны.'},
+    {id:'take-cond', txt:'Берём <b>условие</b> прямой теоремы («прямые параллельны») и делаем его <b>заключением</b> обратной (теперь это доказываем).', need:[], lit:['lines'], ok:'Заключение обратной: прямые параллельны.'},
+    {id:'form', txt:'Складываем обратную: «<b>Если накрест лежащие углы равны, то прямые параллельны</b>».', need:['take-concl','take-cond'], lit:['ang1','ang2','lines'], ok:'Обратная собрана.'},
+    {id:'trapNeg', txt:'Обратная — это «если прямые <b>не</b> параллельны, то углы <b>не</b> равны».', trap:'Это <b>отрицание</b> обеих частей, а не перестановка. Обратная меняет условие и заключение <b>местами</b>, ничего не отрицая. (✦ «если не…, то не…» — это <i>противоположная</i> теорема, другое.)'},
+    {id:'trapSame', txt:'Обратная совпадает с прямой: «если ∥, то накрест равны».', trap:'Нет, это сама прямая теорема. В обратной части <b>меняются местами</b>: условие ↔ заключение.'}
+  ]},
+
+ {kind:'choose', phase:'counter', badge:'Обратное — не всегда',
+  task:'Обратная к свойству 1 оказалась верной — это признак 1. <b>Всегда ли обратное верно?</b> Возьмём другую известную теорему: <b>вертикальные углы равны</b>. (Это не «само собой»: углы вертикальны, лишь когда их стороны образуют прямые, и равенство мы доказали раньше — через смежные.) Обратная к ней: «если углы равны, то они вертикальные». Верна ли обратная?',
+  prompt:'Верна ли обратная теорема?',
+  stepNote:'Обратное не следует само и не всегда верно (контрпример — вертикальные).',
+  q:[
+    {t:'Неверна: равные углы бывают и не вертикальными.', ok:true, after:'Вот два равных угла (по 55°) — но не вертикальные. Значит «равны ⟹ вертикальные» — ложь. <b>Обратное доказанной теоремы не обязано быть верным.</b>'},
+    {t:'Верна — раз углы равны, то они вертикальные.', why:'Контрпример справа: два угла по 55° равны, но это не вертикальные углы.'},
+    {t:'Верна, только если углы по 90°.', why:'Дело не в величине: любые равные углы не обязаны быть вертикальными — те же два по 55°.'},
+    {t:'Это одно и то же утверждение.', why:'Нет: «вертикальные ⟹ равны» и «равны ⟹ вертикальные» — разные (поменяли местами). Первое верно, второе — нет.'}
+  ]},
+
+ {kind:'done', phase:'done', badge:'Готово',
+  task:'Теория §2 собрана. Признак и свойство параллельных — это прямая и обратная теоремы, и обе верны. Но так бывает не всегда: обратное надо доказывать отдельно (или опровергать контрпримером), как с вертикальными углами.',
+  stepNote:'∎ Признаки и свойства — прямая и обратная теоремы; обратное не всегда верно.'}
+];
+const NS=STEPS.length;
+let si=0, results=[], mistakes=0, hintsUsed=0, stepResolved=false;
+let litOverride=null, litOverrideUntil=0, counterRevealed=false;
+const S=()=>STEPS[si];
+
+/* ───────── ПРИМИТИВЫ ───────── */
+function bg(){
+  ctx.clearRect(0,0,W,HT);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,HT);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<HT;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill()}
+}
+function line2(p,ang,col,wid,dash){
+  const big=2200,dx=Math.cos(ang),dy=Math.sin(ang);
+  ctx.strokeStyle=col;ctx.lineWidth=wid||2.8;if(dash)ctx.setLineDash(dash);
+  ctx.beginPath();ctx.moveTo(p.x-dx*big,p.y-dy*big);ctx.lineTo(p.x+dx*big,p.y+dy*big);ctx.stroke();ctx.setLineDash([]);
+}
+function lab(x,y,t,col,s){ctx.font='900 '+(s||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(t,x,y);ctx.fillStyle=col;ctx.fillText(t,x,y);
+  ctx.textBaseline='alphabetic';ctx.textAlign='start'}
+function dot(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function yOnSec(X){return M.y+Math.tan(SEC)*(X-M.x)}
+function noteLine(t,col){let fs=12.5;ctx.font='900 '+fs+'px system-ui';while(ctx.measureText(t).width>W-40&&fs>8.5){fs-=0.5;ctx.font='900 '+fs+'px system-ui';}lab(W/2,HT-18,t,col,fs);}
+function seg(V,ang,len,col,w){const dx=Math.cos(ang),dy=Math.sin(ang);ctx.strokeStyle=col;ctx.lineWidth=w;ctx.beginPath();ctx.moveTo(V.x-dx*len,V.y-dy*len);ctx.lineTo(V.x+dx*len,V.y+dy*len);ctx.stroke();}
+function eqTick(V,mid,r,col){const tx=V.x+Math.cos(mid)*r,ty=V.y+Math.sin(mid)*r,tg=mid+PI/2;
+  ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.beginPath();ctx.moveTo(tx-Math.cos(tg)*4.5,ty-Math.sin(tg)*4.5);ctx.lineTo(tx+Math.cos(tg)*4.5,ty+Math.sin(tg)*4.5);ctx.stroke();}
+
+/* ───────── ХОР: что подсветить сейчас ───────── */
+function litActive(){return litOverride && Date.now()<litOverrideUntil;}
+function litNow(){
+  const s=S();
+  if(litActive()) return litOverride;
+  if(s.kind==='assemble'){const id=asmDone[asmDone.length-1];const c=(s.cards||[]).find(x=>x.id===id);return (c&&c.lit)||[];}
+  if(s.kind==='choose') return stepResolved ? (s.litResolved||[]) : [];
+  return [];
+}
+
+/* ───────── СЦЕНА «ПАРАЛЛЕЛИ» (шаги 1–2) ───────── */
+function drawTwoLines(active){
+  if(active){ctx.save();ctx.globalAlpha=0.22+0.16*Math.sin(Date.now()/240);ctx.strokeStyle='#0d9488';ctx.lineWidth=10;
+    ctx.beginPath();ctx.moveTo(0,aY);ctx.lineTo(W,aY);ctx.moveTo(0,bY);ctx.lineTo(W,bY);ctx.stroke();ctx.restore();}
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=active?3.4:2.8;
+  ctx.beginPath();ctx.moveTo(0,aY);ctx.lineTo(W,aY);ctx.moveTo(0,bY);ctx.lineTo(W,bY);ctx.stroke();
+  lab(W-20,aY-13,'a','#1a1a2e',16); lab(W-20,bY+15,'b','#1a1a2e',16);
+  lab(96,225,'a ∥ b', active?'#0f766e':'#0d9488', 13);
+}
+function drawAng(id,V,a1,a2,active,dim){
+  const o=OBJ[id]; let r=o.r,w=active?3.8:2.6; if(active)r=o.r*PULSE()+2;
+  ctx.save(); if(dim)ctx.globalAlpha=0.34;
+  ctx.beginPath();ctx.arc(V.x,V.y,r,a1,a2);ctx.strokeStyle=o.col;ctx.lineWidth=w;ctx.stroke();
+  ctx.restore();
+  const bis=(a1+a2)/2, lr=o.r+15;
+  lab(V.x+Math.cos(bis)*lr, V.y+Math.sin(bis)*lr, o.lbl, o.col, 13.5);
+}
+function drawParallels(lit){
+  const linesOn=lit.includes('lines');
+  drawTwoLines(linesOn);
+  line2(M,SEC,'#2d70b3',2.4); lab(175,yOnSec(175)-13,'секущая','#2d70b3',11);
+  const any=lit.length>0, a1on=lit.includes('ang1'), a2on=lit.includes('ang2');
+  drawAng('ang1',M,0,PI/4,      a1on, any&&!a1on);
+  drawAng('ang2',N,PI,5*PI/4,   a2on, any&&!a2on);
+  dot(M.x,M.y,4.4,'#fffdf7','#1a1a2e'); lab(M.x-14,M.y-14,'M','#1a1a2e',14);
+  dot(N.x,N.y,4.4,'#fffdf7','#1a1a2e'); lab(N.x-16,N.y+17,'N','#1a1a2e',14);
+}
+
+/* ───────── СЦЕНА «КОНТРПРИМЕР» (шаг 3) ───────── */
+function arcEq(V,a1,a2,r,col,pulse){
+  let rr=r,w=2.6; if(pulse){rr=r*PULSE()+2;w=3.4;}
+  ctx.beginPath();ctx.arc(V.x,V.y,rr,a1,a2);ctx.strokeStyle=col;ctx.lineWidth=w;ctx.stroke();
+  eqTick(V,(a1+a2)/2,rr,col);
+}
+function rayAngle(V,a1,a2,col,labtxt,pulse){
+  const L=60; ctx.strokeStyle=col;ctx.lineWidth=2.8;
+  [a1,a2].forEach(an=>{ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.lineTo(V.x+Math.cos(an)*L,V.y+Math.sin(an)*L);ctx.stroke();});
+  arcEq(V,a1,a2,24,col,pulse);
+  dot(V.x,V.y,3.6,'#fffdf7',col);
+  const mid=(a1+a2)/2; lab(V.x+Math.cos(mid)*40, V.y+Math.sin(mid)*40, labtxt, col, 12);
+}
+function drawCounter(){
+  ctx.strokeStyle='#e5e2d9';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(330,42);ctx.lineTo(330,360);ctx.stroke();
+  ctx.textAlign='center';
+  ctx.fillStyle='#15803d';ctx.font='800 13px system-ui';ctx.fillText('ПРЯМАЯ — верна',165,34);
+  if(counterRevealed){ctx.fillStyle='#b91c1c';ctx.font='800 13px system-ui';ctx.fillText('ОБРАТНАЯ — неверна',488,34);}
+  ctx.textAlign='start';
+  // вертикальная пара (равны)
+  const V={x:165,y:188};
+  seg(V,rad(20),80,'#1a1a2e',2.8); seg(V,rad(112),80,'#1a1a2e',2.8);
+  arcEq(V,rad(20),rad(112),28,'#7c3aed',false);
+  arcEq(V,rad(200),rad(292),28,'#7c3aed',false);
+  dot(V.x,V.y,4,'#fffdf7','#1a1a2e');
+  ctx.textAlign='center';
+  ctx.fillStyle='#6d28d9';ctx.font='800 12px system-ui';ctx.fillText('вертикальные углы равны',165,298);
+  ctx.fillStyle='#94a3b8';ctx.font='700 10.5px system-ui';ctx.fillText('доказанная теорема (через смежные)',165,316);
+  ctx.textAlign='start';
+  // контрпример (после ответа)
+  if(counterRevealed){
+    rayAngle({x:430,y:150},rad(200),rad(255),'#db2777','55°',true);
+    rayAngle({x:472,y:282},rad(12),rad(67),'#db2777','55°',true);
+    ctx.textAlign='center';ctx.fillStyle='#b91c1c';ctx.font='800 12px system-ui';ctx.fillText('равны, но НЕ вертикальные ✗',488,332);ctx.textAlign='start';
+  } else {
+    ctx.textAlign='center';ctx.fillStyle='#94a3b8';ctx.font='700 12.5px system-ui';ctx.fillText('обратное проверим ответом →',488,196);ctx.textAlign='start';
+  }
+}
+
+/* ───────── ИТОГ (схема) ───────── */
+function drawDone(){
+  ctx.textAlign='center';ctx.textBaseline='alphabetic';
+  ctx.font='900 16px system-ui';ctx.fillStyle='#1a1a2e';ctx.fillText('Прямая и обратная теорема',W/2,36);
+  const box=(cx,cy,w,h,top,bot)=>{roundRect(cx-w/2,cy-h/2,w,h,9);ctx.fillStyle='#f3f4f6';ctx.fill();ctx.lineWidth=2;ctx.strokeStyle='#1a1a2e';ctx.stroke();
+    ctx.fillStyle='#1a1a2e';ctx.font='800 13px system-ui';ctx.fillText(top,cx,cy-4);ctx.font='800 14px system-ui';ctx.fillText(bot,cx,cy+15);};
+  box(158,108,206,58,'ПРЯМАЯ','если A, то B');
+  box(482,108,206,58,'ОБРАТНАЯ','если B, то A');
+  ctx.strokeStyle='#2d70b3';ctx.lineWidth=2.4;
+  ctx.beginPath();ctx.moveTo(270,101);ctx.lineTo(366,101);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(366,119);ctx.lineTo(270,119);ctx.stroke();
+  ctx.fillStyle='#2d70b3';
+  ctx.beginPath();ctx.moveTo(366,101);ctx.lineTo(357,97);ctx.lineTo(357,105);ctx.closePath();ctx.fill();
+  ctx.beginPath();ctx.moveTo(270,119);ctx.lineTo(279,115);ctx.lineTo(279,123);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#1d4ed8';ctx.font='800 10.5px system-ui';ctx.fillText('поменять местами',318,96);
+  ctx.fillStyle='#b91c1c';ctx.font='800 12.5px system-ui';ctx.fillText('обратное не следует само и не всегда верно',W/2,182);
+  const pill=(cy,txt,a,b,c)=>{const w=440;roundRect(W/2-w/2,cy-19,w,38,9);ctx.fillStyle=b;ctx.fill();ctx.lineWidth=1.5;ctx.strokeStyle=a;ctx.stroke();ctx.fillStyle=c;ctx.font='800 12px system-ui';ctx.fillText(txt,W/2,cy+4);};
+  pill(224,'признаки ↔ свойства параллельных — обе верны ✓','#16a34a','#f0fdf4','#15803d');
+  pill(274,'вертикальные ⟹ равны: прямая ✓, обратная ✗','#dc2626','#fef2f2','#b91c1c');
+  ctx.textAlign='start';
+}
+
+/* ───────── РЕНДЕР + ПОДПИСЬ-ХОР ───────── */
+function draw(){
+  bg();
+  const s=S();
+  if(s.phase==='done'){drawDone();return;}
+  const lit=litNow();
+  if(s.phase==='split'||s.phase==='swap') drawParallels(lit);
+  else drawCounter();
+  noteScene(s,lit);
+}
+function noteScene(s,lit){
+  let t='',col='#475569';
+  if(s.phase==='split'){
+    if(litActive() && lit.includes('lines')) t='«Прямые параллельны» — это условие (дано), не заключение.';
+    else if(stepResolved){t='Заключение — накрест лежащие равны (углы). Условие — что прямые ∥.';col='#15803d';}
+    else t='Теорема: «если …, то …». Где здесь заключение?';
+  } else if(s.phase==='swap'){
+    const id=asmDone[asmDone.length-1];
+    if(id==='take-concl')t='Заключение прямой («накрест равны») → условие обратной.';
+    else if(id==='take-cond')t='Условие прямой («прямые ∥») → заключение обратной.';
+    else if(id==='form'){t='признак: углы равны ⟹ a ∥ b   ·   свойство: a ∥ b ⟹ углы равны';col='#15803d';}
+    else t='Обратная: меняем условие и заключение местами.';
+  } else {
+    if(counterRevealed){t='Два угла по 55° равны, но НЕ вертикальны → обратное ложно.';col='#b91c1c';}
+    else t='Прямая: вертикальные ⟹ равны (доказано раньше). А обратная?';
+  }
+  noteLine(t,col);
+}
+
+/* ───────── ПАНЕЛИ/СООБЩЕНИЯ ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+
+/* ───────── ВЫБОР (choose) ───────── */
+function renderOpts(list){
+  const box=document.getElementById('opts');box.innerHTML='';
+  list.forEach((o,i)=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML=o.t;b.dataset.i=i;
+    b.addEventListener('click',()=>o.fn(b));box.appendChild(b)});
+}
+function answerChoice(opt,btn,arr){
+  if(stepResolved)return;
+  if(S().phase==='counter')counterRevealed=true;
+  if(opt.ok){
+    litOverride=null;
+    btn.classList.add('ok-pick');
+    [...document.getElementById('opts').children].forEach(b=>b.disabled=true);
+    results.push(mistakes===0&&hintsUsed===0?'g':(mistakes<=1?'y':'r'));
+    mistakes=0;hintsUsed=0;
+    log('choice_ok');
+    setMsg('Верно. '+(opt.after||''),'ok');
+    advanceReady();
+  }else{
+    mistakes++;log('distractor',{pick:opt.t});
+    if(opt.lit){litOverride=opt.lit;litOverrideUntil=Date.now()+2400;}
+    btn.classList.add('bad-pick');
+    const idx=arr.findIndex(o=>o.ok);
+    const bs=document.getElementById('opts').children;
+    if(bs[idx])bs[idx].classList.add('correct-reveal');
+    setMsg('Не так. '+(opt.why||'')+' Верный ответ подсвечен.','err');
+  }
+}
+
+/* ───────── СБОРКА (assemble) ───────── */
+let asmDone=[], asmDead=[];
+function asmCards(){return S().cards||[]}
+function renderPool(){
+  const box=document.getElementById('opts');box.innerHTML='';
+  asmCards().forEach(c=>{
+    if(asmDone.includes(c.id))return;
+    const b=document.createElement('button');b.type='button';b.className='pcard';b.innerHTML=c.txt;
+    b.addEventListener('click',()=>pickCard(c.id,b));box.appendChild(b);
+  });
+}
+function renderChain(){
+  const box=document.getElementById('steps');box.innerHTML='';
+  for(let i=0;i<si;i++){ if(!STEPS[i].stepNote)continue;
+    const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">·</span>'+STEPS[i].stepNote;box.appendChild(d); }
+  if(S().phaseTitle){const p=document.createElement('div');p.className='phtitle';p.textContent=S().phaseTitle;box.appendChild(p)}
+  if(!asmDone.length){const e=document.createElement('div');e.className='chempty';e.textContent='Цепочка пуста — выберите первое утверждение.';box.appendChild(e);return}
+  asmDone.forEach((id,i)=>{
+    const c=asmCards().find(x=>x.id===id);
+    const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">'+(i+1)+'.</span>'+c.txt;box.appendChild(d);
+  });
+}
+function pickCard(id,btn){
+  if(stepResolved)return;
+  const c=asmCards().find(x=>x.id===id);
+  if(c.trap){
+    mistakes++;if(!asmDead.includes(id))asmDead.push(id);log('distractor',{id});
+    btn.classList.add('shake');setMsg(c.trap,'err');
+    setTimeout(()=>btn.classList.remove('shake'),450);
+    return;
+  }
+  if(c.need && !c.need.every(n=>asmDone.includes(n))){
+    mistakes++;log('early',{id});
+    btn.classList.add('shake');setMsg('Рано: сначала переложите обе части — условие и заключение.','info');
+    setTimeout(()=>btn.classList.remove('shake'),450);
+    return;
+  }
+  asmDone.push(id);log('step',{id});
+  setMsg('Верно. '+(c.ok||''),'ok');
+  const concl=asmCards().filter(x=>!x.trap).every(x=>asmDone.includes(x.id));
+  renderPool();renderChain();
+  if(concl){
+    results.push(mistakes===0?'g':(mistakes<=1?'y':'r'));
+    mistakes=0;
+    setMsg(S().reveal||'Готово. ∎','ok');
+    advanceReady();
+  }
+}
+
+/* ───────── ХОД (для не-assemble) ───────── */
+function renderSteps(){
+  const box=document.getElementById('steps');box.innerHTML='';
+  for(let i=0;i<=si;i++){
+    if(!STEPS[i].stepNote)continue;
+    if(i===si && !stepResolved)continue;
+    const d=document.createElement('div');d.className='st';d.innerHTML=STEPS[i].stepNote;box.appendChild(d);
+  }
+}
+function advanceReady(){
+  stepResolved=true;
+  if(S().kind!=='assemble')renderSteps();
+  const nb=document.getElementById('nextBtn');
+  nb.style.display='inline-block';
+  nb.textContent = si<NS-1 ? 'Следующий шаг →' : 'Итоги →';
+}
+
+/* ───────── НАВИГАЦИЯ ───────── */
+function givenFor(s){
+  if(s.phase==='split') return '<b>Прямая теорема (свойство 1):</b> «Если прямые ∥ и пересечены секущей, то накрест лежащие равны».<br>условие — «если…» (дано); заключение — «то…» (доказываем).';
+  if(s.phase==='swap') return '<b>Прямая:</b> условие — прямые ∥; заключение — накрест равны.<br><b>Постройте обратную</b> — поменяйте местами.';
+  if(s.phase==='counter') return '<b>Прямая:</b> вертикальные углы равны — <b>доказанная</b> теорема (через смежные; стороны образуют прямые).<br><b>Обратная:</b> «если углы равны, то вертикальные» — ?';
+  return '<b>Итог §2:</b> аксиома → свойства → язык прямой и обратной теоремы.';
+}
+function showStep(){
+  const s=S();
+  document.getElementById('pf').style.width=(si/NS*100)+'%';
+  document.getElementById('pnum').textContent='Шаг '+(si+1)+' из '+NS;
+  document.getElementById('taskText').innerHTML=s.task;
+  document.getElementById('badge').textContent=s.badge;
+  document.getElementById('givenBox').innerHTML=givenFor(s);
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  clearOpts();
+  stepResolved=false; litOverride=null; counterRevealed=false;
+  if(s.q){
+    const arr=s.q.slice();
+    renderOpts(arr.map(o=>({t:o.t,fn:(b)=>answerChoice(o,b,arr)})));
+    setMsg(s.prompt||'Выберите ответ.','info');
+    renderSteps();
+  }else if(s.kind==='assemble'){
+    asmDone=[];asmDead=[];
+    renderPool();renderChain();
+    setMsg('Нажимайте утверждения по порядку. Ловушки объяснят, почему так нельзя.','info');
+  }else{
+    setMsg('Язык прямой и обратной теоремы собран.','info');
+    renderSteps();
+    advanceReady();
+  }
+  log('step_start',{kind:s.kind,phase:s.phase});
+}
+function nextTask(){ if(si<NS-1){si++;showStep()} else finish() }
+function resetTask(){ log('reset'); si=0;results=[];mistakes=0;hintsUsed=0;asmDone=[];asmDead=[];litOverride=null;counterRevealed=false;showStep() }
+
+function showHint(){
+  if(stepResolved && S().kind!=='assemble')return;
+  hintsUsed++;log('hint');
+  const hb=document.getElementById('hintbox');const s=S();let h='';
+  if(s.phase==='split')h='Условие — то, что в «если…» (дано). Заключение — то, что в «то…» (доказываем). Здесь доказываем равенство углов.';
+  else if(s.phase==='swap')h='Поменяйте местами: бывшее заключение («накрест равны») станет условием, бывшее условие («∥») — заключением. Выйдет признак 1.';
+  else if(s.phase==='counter')h='Поменяли местами: «вертикальные ⟹ равны» → «равны ⟹ вертикальные». Хватит одного контрпримера — два равных, но не вертикальных угла.';
+  else h='Прямая и обратная — это перестановка условия и заключения; обратное доказывают отдельно.';
+  hb.innerHTML='💡 '+h;hb.style.display='block';
+}
+
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{good:g,total:results.length});
+  const st=lS();st.runs=(st.runs||0)+1;st.passed=true;if(g>(st.best||0))st.best=g;sS(st);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent='✓';
+  document.getElementById('finLbl').textContent =
+    g>=3?'Разобрался с прямой и обратной без единой ошибки!':
+    g>=2?'Хорошо. Загляни в шаг, где сбился.':
+    'Стоит пройти ещё раз — особенно «поменять местами ≠ отрицать» и «обратное не всегда верно».';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){si=0;results=[];mistakes=0;hintsUsed=0;asmDone=[];asmDead=[];litOverride=null;counterRevealed=false;document.getElementById('fin').style.display='none';document.getElementById('mainArea').style.display='grid';document.getElementById('bar').style.display='flex';showStep()}
+
+/* ───────── СТАРТ ───────── */
+showStep();
+(function loop(){ draw();requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

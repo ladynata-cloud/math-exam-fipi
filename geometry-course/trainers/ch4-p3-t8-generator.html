@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Расчёты в прямоугольном треугольнике — генератор §3</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:21px;font-weight:900}
+.sub{font-size:13px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:13px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:15px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:16px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:13px;color:#64748b;font-weight:800;margin-top:6px}
+.gauge{display:flex;flex-direction:column;gap:6px;font-size:15px}
+.gauge .row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed #e5e7eb}
+.gauge .row:last-child{border-bottom:0}
+.gauge .v{font-weight:900;font-variant-numeric:tabular-nums}
+.answer{display:flex;gap:8px;align-items:center;margin-top:2px}
+.answer input{flex:1;min-width:0;font:800 19px system-ui;padding:10px 12px;border:1.5px solid #d1d5db;border-radius:10px;text-align:center;background:#fff}
+.answer input:focus{outline:none;border-color:#2d70b3;box-shadow:0 0 0 3px #2d70b333}
+.answer .go{border:0;border-radius:10px;background:#2d70b3;color:#fff;font:800 15px system-ui;padding:11px 16px;cursor:pointer;white-space:nowrap}
+.answer .go:hover{background:#245d96}
+.unit{font-size:13px;color:#64748b;margin-top:4px}
+.msg{border-radius:12px;padding:12px;font-size:15px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.proof{display:none;background:#ecfdf5;color:#14532d;border:1.5px solid #bbf7d0;border-radius:12px;padding:12px;font-size:14px;line-height:1.5}
+.proof b{color:#166534}
+.proof ol{margin:6px 0 0;padding-left:20px}
+.proof li{margin:3px 0}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:14px;line-height:1.5;color:#1a3a6e}
+.card.why{background:#fffbeb;border-color:#fcd34d}
+.card.why h2{color:#b45309}
+.card.why p{margin:0;font-size:13px;color:#374151;line-height:1.5}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 14px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.sol-btn{display:none;border-color:#c2410c;color:#c2410c}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:46px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:16px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:15px;height:15px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:640px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:15px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law .nb{margin-top:8px;font-size:14px;color:#334155}
+.bridge{margin-top:12px;font-size:14px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">🧮 Расчёты в прямоугольном треугольнике</div>
+      <div class="sub">Глава IV · §3 · тренажёр 8 из 9 — генератор</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Считаем без транспортира</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="460"></canvas>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задача</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="answer">
+        <input id="ans" type="number" inputmode="numeric" placeholder="ответ" autocomplete="off">
+        <button class="go" id="goBtn" onclick="doCheck()">Проверить</button>
+      </div>
+      <div class="unit" id="unitHint"></div>
+      <div id="msg" class="msg info"></div>
+      <div id="proof" class="proof"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div class="card" id="statusCard">
+        <h2>Счёт</h2>
+        <div class="gauge" id="gauge"></div>
+      </div>
+      <div class="card why">
+        <h2>Приём §3</h2>
+        <p>В прямоугольном треугольнике прямой угол «бесплатный». Сначала пойми, что ищешь — <b>угол</b> или <b>длину</b>: углы дополняют друг друга до 90°, а особые длины (катет против 30°, медиана к гипотенузе) связаны с гипотенузой через «половину» или «удвоение».</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Инструменты §3 — прямоугольный треугольник.</b>
+      <div class="nb">• Два острых угла дополняют друг друга до <b>90°</b> (третий — прямой).</div>
+      <div class="nb">• Катет против угла <b>30°</b> равен <b>половине гипотенузы</b> — и обратно: если катет вдвое меньше гипотенузы, против него лежит 30°.</div>
+      <div class="nb">• <b>Медиана</b> из вершины прямого угла к гипотенузе равна её <b>половине</b> — и обратно.</div>
+      <div class="bridge">Готов к проверке? <a href="ch4-p3-t9-quiz.html">К зачёту по §3 →</a></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="tool" onclick="restart()" style="background:#1a1a2e;color:#fff;border-color:#1a1a2e">Новый набор</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="restart()">↺ Заново</button>
+    <button class="tool sol-btn" id="solBtn" onclick="showSolution()">Показать решение</button>
+    <button class="tool next" id="nextBtn" onclick="nextProblem()">Дальше →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС / ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch4-p3-t8-generator';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),e:ev,idx,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const rand=a=>a[Math.floor(Math.random()*a.length)];
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640,H=460,PI=Math.PI;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+const PULSE=()=>1+0.13*Math.sin(Date.now()/240);
+
+/* ───────── ПАЛИТРА / ПРИМИТИВЫ ───────── */
+const COL={A:'#d97706',B:'#db2777',C:'#0d9488',G:'#16a34a',DARK:'#1a1a2e',GREY:'#94a3b8',HYP:'#2d70b3',MED:'#7c3aed'};
+function sub(p,q){return{x:p.x-q.x,y:p.y-q.y}}
+function nrm(v){const m=Math.hypot(v.x,v.y)||1;return{x:v.x/m,y:v.y/m}}
+function hexA(h,a){const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+function bg(){
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill()}
+}
+function lab(x,y,txt,col,size){
+  ctx.font='900 '+(size||16)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);ctx.textBaseline='alphabetic';
+}
+function dot(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function seg(p,q,col,w){ctx.strokeStyle=col;ctx.lineWidth=w||2.8;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
+function drawAngle(V,P,Q,col,active,dim,r0){
+  const a1=Math.atan2(P.y-V.y,P.x-V.x), a2=Math.atan2(Q.y-V.y,Q.x-V.x);
+  let d=a2-a1; while(d<=-PI)d+=2*PI; while(d>PI)d-=2*PI;
+  const acw=d<0, r=active? r0*PULSE() : r0;
+  ctx.save(); if(dim)ctx.globalAlpha=0.32;
+  ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.arc(V.x,V.y,r,a1,a1+d,acw);ctx.closePath();
+  ctx.fillStyle=hexA(col,0.16);ctx.fill();
+  ctx.beginPath();ctx.arc(V.x,V.y,r,a1,a1+d,acw);
+  ctx.lineWidth=active?3.4:2.6;ctx.strokeStyle=col;ctx.lineCap='round';ctx.stroke();
+  ctx.restore();
+}
+function rightMark(V,P,Q,col){
+  const u=nrm(sub(P,V)),v=nrm(sub(Q,V)),s=15;
+  const p1={x:V.x+u.x*s,y:V.y+u.y*s},p3={x:V.x+v.x*s,y:V.y+v.y*s},p2={x:p1.x+v.x*s,y:p1.y+v.y*s};
+  ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.lineTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.closePath();
+  ctx.fillStyle=hexA(col,0.18);ctx.fill();
+  ctx.strokeStyle=col;ctx.lineWidth=2.6;ctx.lineJoin='round';
+  ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.stroke();
+}
+function tickMark(p,q,n,col){
+  const mx=(p.x+q.x)/2,my=(p.y+q.y)/2; let dx=q.x-p.x,dy=q.y-p.y;const L=Math.hypot(dx,dy)||1;dx/=L;dy/=L;
+  const nx=-dy,ny=dx;
+  for(let i=0;i<n;i++){const off=(i-(n-1)/2)*5,cx=mx+dx*off,cy=my+dy*off;
+    ctx.beginPath();ctx.moveTo(cx-nx*5,cy-ny*5);ctx.lineTo(cx+nx*5,cy+ny*5);ctx.strokeStyle=col||COL.DARK;ctx.lineWidth=2;ctx.stroke();}
+}
+function sideLabel(P,Q,away,txt,col,size){
+  const mx=(P.x+Q.x)/2,my=(P.y+Q.y)/2; let nx=-(Q.y-P.y),ny=(Q.x-P.x);
+  const m=Math.hypot(nx,ny)||1; nx/=m;ny/=m;
+  if((mx+nx-away.x)**2+(my+ny-away.y)**2 < (mx-nx-away.x)**2+(my-ny-away.y)**2){nx=-nx;ny=-ny;}
+  lab(mx+nx*20,my+ny*20,txt,col,size||14);
+}
+function bisAt(V,P,Q){const a1=Math.atan2(P.y-V.y,P.x-V.x),a2=Math.atan2(Q.y-V.y,Q.x-V.x);let d=a2-a1;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;return a1+d/2;}
+function vlabel(P,txt,col,dx,dy){ dot(P.x,P.y,4.4,col); lab(P.x+dx,P.y+dy,txt,col,16); }
+function angLabel(V,P,Q,txt,col,r){ const b=bisAt(V,P,Q); lab(V.x+Math.cos(b)*r, V.y+Math.sin(b)*r, txt, col, 13); }
+
+/* ───────── ГЕНЕРАТОР ───────── */
+const TOTAL=7;
+let problems=[], idx=0, results=[], mistakesThis=0, hintsThis=0, attempts=0, solvedThis=false, solutionShown=false, streak=0;
+
+// правильный треугольник: основание = гипотенуза AB (горизонтально), вершина прямого угла C сверху
+function buildRT(angAdeg){
+  const aA=angAdeg*PI/180, aB=(90-angAdeg)*PI/180;
+  const baseLen=300, ax=175, by=326;
+  const A={x:ax,y:by}, B={x:ax+baseLen,y:by};
+  const tA=Math.tan(aA), tB=Math.tan(aB);
+  const h=baseLen*tA*tB/(tA+tB), footFromA=h/tA;
+  const C={x:ax+footFromA, y:by-h};
+  const M={x:(A.x+B.x)/2, y:(A.y+B.y)/2};
+  return {A,B,C,M};
+}
+
+function gAngle2(){
+  const angA=rand([20,25,35,40,50,55,65,70]), ans=90-angA;
+  return {kind:'angle2', angA, answer:ans, unit:'°',
+    prompt:'В прямоугольном треугольнике один острый угол равен <b>'+angA+'°</b>. Найди второй острый угол.',
+    diag:v=>{ if(v===180-angA) return 'Это дополнение до 180°. Но один угол прямой (90°), значит на два острых остаётся только 90°. Вычитай из 90°.';
+              if(v===angA) return 'Это данный угол. Нужен ДРУГОЙ острый — он дополняет данный до 90°.';
+              if(v===90) return '90° — это прямой угол при C. Два острых в сумме тоже дают 90°, поэтому второй = 90° − данный.'; return null; },
+    sol:['Сумма углов треугольника — 180°.','Один угол прямой (90°), значит на два острых остаётся 180° − 90° = 90°.','Второй острый = 90° − '+angA+'° = '+ans+'°.'],
+    hint:'Третий угол прямой (90°), поэтому два острых в сумме дают 90°.' };
+}
+function gRatio(){
+  if(Math.random()<0.5){
+    const d=rand([10,20,30,40]), small=(90-d)/2;
+    return {kind:'ratio', angA:small, answer:small, unit:'°',
+      prompt:'Острые углы прямоугольного треугольника отличаются на <b>'+d+'°</b>. Найди <b>меньший</b> из них.',
+      diag:v=>{ if(v===(180-d)/2) return 'Похоже, ты собрал сумму на 180°. Но два острых угла дают 90°: x + (x + '+d+'°) = 90°.';
+                if(v===small+d) return 'Это БОЛЬШИЙ угол (x + '+d+'°). Спрашивают меньший — это x.'; return null; },
+      sol:['Пусть меньший угол = x, тогда больший = x + '+d+'°.','Два острых угла дают 90°: x + (x + '+d+'°) = 90°.','2x = '+(90-d)+'°,  x = '+small+'°.'],
+      hint:'Обозначь меньший угол x, больший — x + '+d+'°, и помни: острые в сумме дают 90°.' };
+  } else {
+    const pr=rand([[2,3],[1,2],[4,5],[1,4]]), m=pr[0], n=pr[1], k=90/(m+n), small=m*k;
+    return {kind:'ratio', angA:small, answer:small, unit:'°',
+      prompt:'Острые углы прямоугольного треугольника относятся как <b>'+m+' : '+n+'</b>. Найди <b>меньший</b> из них.',
+      diag:v=>{ if(v===Math.round(180*m/(m+n))) return 'Похоже, ты делил 180°. Но на два острых угла приходится 90°: '+m+' частей + '+n+' частей = 90°.';
+                if(v===n*k) return 'Это БОЛЬШИЙ угол ('+n+' частей). Спрашивают меньший — '+m+' частей.'; return null; },
+      sol:['Острые углы дают 90°. Всего '+(m+n)+' частей: '+m+'·k + '+n+'·k = 90°.','k = 90° : '+(m+n)+' = '+k+'°.','Меньший = '+m+'·'+k+'° = '+small+'°.'],
+      hint:'Сумма острых углов = 90°. Раздели её на '+(m+n)+' частей и возьми '+m+'.' };
+  }
+}
+function gLeg30(){
+  const hyp=rand([12,16,20,24,28,32]), ans=hyp/2;
+  return {kind:'leg30', angA:30, answer:ans, unit:'',
+    prompt:'Гипотенуза прямоугольного треугольника равна <b>'+hyp+'</b>, один острый угол — <b>30°</b>. Найди катет, лежащий против угла 30°.',
+    diag:v=>{ if(v===hyp*2) return 'Ты умножил на 2. Катет против 30° — это ПОЛОВИНА гипотенузы, значит делим на 2.';
+              if(v===hyp) return 'Это сама гипотенуза. Катет против 30° вдвое меньше — её половина.'; return null; },
+    sol:['Катет, лежащий против угла 30°, равен половине гипотенузы.','Катет = '+hyp+' : 2 = '+ans+'.'],
+    hint:'Против угла 30° лежит катет, равный половине гипотенузы.' };
+}
+function gHyp30(){
+  const leg=rand([7,8,9,11,13,15]), ans=leg*2;
+  return {kind:'hyp30', angA:30, answer:ans, unit:'',
+    prompt:'Катет прямоугольного треугольника, лежащий против угла <b>30°</b>, равен <b>'+leg+'</b>. Найди гипотенузу.',
+    diag:v=>{ if(v===leg/2) return 'Ты разделил. Здесь наоборот: катет против 30° — половина гипотенузы, значит гипотенуза вдвое больше — умножай на 2.';
+              if(v===leg) return 'Это сам катет. Гипотенуза вдвое больше катета, лежащего против 30°.'; return null; },
+    sol:['Катет против 30° — половина гипотенузы, значит гипотенуза вдвое больше этого катета.','Гипотенуза = '+leg+' · 2 = '+ans+'.'],
+    hint:'Катет против 30° — половина гипотенузы. Значит гипотенуза = 2 · этот катет.' };
+}
+function gAngleHalf(){
+  const hyp=rand([12,16,20,24,28]), leg=hyp/2;
+  return {kind:'angleHalf', angA:30, leg, hyp, answer:30, unit:'°',
+    prompt:'Гипотенуза прямоугольного треугольника равна <b>'+hyp+'</b>, а один из катетов — <b>'+leg+'</b> (ровно половина гипотенузы). Какой угол лежит против этого катета?',
+    diag:v=>{ if(v===60) return 'Против 60° лежит БОльший катет. Против катета, равного половине гипотенузы, лежит угол поменьше — 30°.';
+              if(v===45) return 'Это другой случай (45° — у равнобедренного прямоугольного). Катет = половина гипотенузы ⟹ против него 30°.';
+              if(v===90) return '90° (прямой угол) лежит против гипотенузы, а не против катета.'; return null; },
+    sol:['Обратная теорема: если катет равен половине гипотенузы, то против него лежит угол 30°.','Ответ: 30°.'],
+    hint:'Обратная теорема: катет = половина гипотенузы ⟹ против него угол 30°.' };
+}
+function gMedian(){
+  const hyp=rand([14,16,18,20,24,26]), ans=hyp/2, angA=rand([35,40,55,60]);
+  return {kind:'median', angA, answer:ans, unit:'',
+    prompt:'Гипотенуза прямоугольного треугольника равна <b>'+hyp+'</b>. Из вершины прямого угла проведена медиана к гипотенузе. Найди её длину.',
+    diag:v=>{ if(v===hyp*2) return 'Медиана к гипотенузе РАВНА её половине, а не удвоенной. Дели на 2.';
+              if(v===hyp) return 'Это сама гипотенуза. Медиана из прямого угла равна её половине.'; return null; },
+    sol:['Медиана, проведённая из вершины прямого угла к гипотенузе, равна её половине.','Медиана = '+hyp+' : 2 = '+ans+'.'],
+    hint:'Медиана из прямого угла к гипотенузе равна половине гипотенузы.' };
+}
+function gMedianRev(){
+  const med=rand([6,7,8,9,11,13]), ans=med*2, angA=rand([35,40,55,60]);
+  return {kind:'medianRev', angA, answer:ans, unit:'',
+    prompt:'Медиана прямоугольного треугольника, проведённая из вершины прямого угла к гипотенузе, равна <b>'+med+'</b>. Найди гипотенузу.',
+    diag:v=>{ if(v===med/2) return 'Наоборот: медиана — это половина гипотенузы, значит гипотенуза вдвое больше медианы. Умножай на 2.';
+              if(v===med) return 'Это сама медиана. Гипотенуза вдвое больше.'; return null; },
+    sol:['Медиана к гипотенузе равна её половине, значит гипотенуза вдвое больше медианы.','Гипотенуза = '+med+' · 2 = '+ans+'.'],
+    hint:'Медиана к гипотенузе = половина гипотенузы ⟹ гипотенуза = 2 · медиана.' };
+}
+const SEQ=[gAngle2,gRatio,gLeg30,gHyp30,gAngleHalf,gMedian,gMedianRev];
+function buildProblems(){ return SEQ.map(g=>{const p=g(); p.geo=buildRT(p.angA); p.solved=false; return p;}); }
+
+/* ───────── ОТРИСОВКА ───────── */
+function drawProblem(){
+  const P=problems[idx], g=P.geo, A=g.A, B=g.B, C=g.C, M=g.M, k=P.kind;
+  const aL = P.solved ? (P.answer + (P.unit||'')) : '?';
+  const aCol = P.solved ? COL.G : COL.C;
+  seg(C,A,COL.DARK,2.8); seg(C,B,COL.DARK,2.8); seg(A,B,COL.HYP,3.0);
+  rightMark(C,A,B,COL.C);
+  vlabel(A,'A',COL.A,-16,16); vlabel(B,'B',COL.B,16,16); vlabel(C,'C',COL.C,(C.x<M.x?-18:18),-10);
+
+  if(k==='angle2'){
+    drawAngle(A,B,C,COL.A,true,false,30); angLabel(A,B,C,P.angA+'°',COL.A,48);
+    drawAngle(B,A,C,aCol,!P.solved,false,28); angLabel(B,A,C,aL,aCol,46);
+  } else if(k==='ratio'){
+    drawAngle(A,B,C,aCol,!P.solved,false,30); angLabel(A,B,C,aL,aCol,48);
+    const lg = P.solved ? (90-P.answer)+'°' : '?';
+    drawAngle(B,A,C,P.solved?COL.G:COL.B,!P.solved,false,28); angLabel(B,A,C,lg,P.solved?COL.G:COL.B,46);
+  } else if(k==='leg30'){
+    drawAngle(A,B,C,COL.A,false,false,30); angLabel(A,B,C,'30°',COL.A,48);
+    sideLabel(A,B,C,String(P.answer*2),COL.HYP,15);
+    sideLabel(C,B,A,aL,aCol,15);
+  } else if(k==='hyp30'){
+    drawAngle(A,B,C,COL.A,false,false,30); angLabel(A,B,C,'30°',COL.A,48);
+    sideLabel(C,B,A,String(P.answer/2),COL.MED,15);
+    sideLabel(A,B,C,aL,aCol,15);
+  } else if(k==='angleHalf'){
+    sideLabel(A,B,C,String(P.hyp),COL.HYP,15);
+    sideLabel(C,B,A,String(P.leg),COL.MED,15);
+    drawAngle(A,B,C,aCol,!P.solved,false,30); angLabel(A,B,C,aL,aCol,48);
+  } else if(k==='median'){
+    seg(C,M,COL.MED,2.6); dot(M.x,M.y,4.2,COL.MED);
+    tickMark(A,M,1,COL.GREY); tickMark(M,B,1,COL.GREY);
+    vlabel(M,'M',COL.B,0,18);
+    sideLabel(A,B,C,String(P.answer*2),COL.HYP,15);
+    sideLabel(C,M,B,aL,aCol,15);
+  } else if(k==='medianRev'){
+    seg(C,M,COL.MED,2.6); dot(M.x,M.y,4.2,COL.MED);
+    tickMark(A,M,1,COL.GREY); tickMark(M,B,1,COL.GREY);
+    vlabel(M,'M',COL.B,0,18);
+    sideLabel(C,M,B,String(P.answer/2),COL.MED,15);
+    sideLabel(A,B,C,aL,aCol,15);
+  }
+}
+function draw(){ bg(); if(problems.length) drawProblem(); }
+
+/* ───────── ХОД ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function statusUpdate(){
+  const best=lS().best||0;
+  document.getElementById('gauge').innerHTML =
+    '<div class="row"><span>решено верно подряд</span><span class="v">'+streak+'</span></div>'+
+    '<div class="row"><span>лучший результат</span><span class="v">'+best+' / '+TOTAL+'</span></div>';
+}
+function showProblem(){
+  const P=problems[idx];
+  solvedThis=false; solutionShown=false; mistakesThis=0; hintsThis=0; attempts=0;
+  document.getElementById('pf').style.width=(idx/TOTAL*100)+'%';
+  document.getElementById('pnum').textContent='Задача '+(idx+1)+' из '+TOTAL;
+  document.getElementById('taskText').innerHTML=P.prompt;
+  document.getElementById('unitHint').textContent = P.unit==='°' ? 'ответ — в градусах' : 'ответ — длина (число)';
+  const inp=document.getElementById('ans'); inp.value=''; inp.disabled=false; if(inp.focus)inp.focus();
+  document.getElementById('goBtn').disabled=false;
+  document.getElementById('proof').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('solBtn').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  setMsg('Введи ответ и нажми «Проверить».','info');
+  statusUpdate();
+  log('task_start',{kind:P.kind});
+}
+function doCheck(){ const v=parseFloat(String(document.getElementById('ans').value).replace(',','.')); checkAnswer(v); }
+function checkAnswer(val){
+  const P=problems[idx];
+  if(solvedThis) return;
+  if(val===null||val===undefined||Number.isNaN(val)){ setMsg('Введи число.','info'); return; }
+  if(Math.abs(val-P.answer)<1e-9){
+    solvedThis=true; P.solved=true;
+    const res = (mistakesThis===0&&hintsThis===0&&!solutionShown)?'g':((mistakesThis<=1&&hintsThis<=1&&!solutionShown)?'y':'r');
+    results.push(res); if(res==='g') streak++; else streak=0;
+    log('solved',{kind:P.kind,mistakes:mistakesThis,hints:hintsThis,res});
+    document.getElementById('ans').disabled=true; document.getElementById('goBtn').disabled=true;
+    document.getElementById('solBtn').style.display='none';
+    setMsg('Верно! '+(P.answer+(P.unit||''))+' — правильно.','ok');
+    const nb=document.getElementById('nextBtn'); nb.textContent=(idx<TOTAL-1)?'Дальше →':'Итог →'; nb.style.display='inline-block';
+    statusUpdate();
+  } else {
+    mistakesThis++; attempts++; streak=0; log('distractor',{kind:P.kind,val});
+    const d=P.diag(val);
+    setMsg(d || 'Не сходится. Перечитай: какой именно элемент ищешь и как он связан с данным?','err');
+    if(attempts>=2 && !solutionShown) document.getElementById('solBtn').style.display='inline-block';
+    statusUpdate();
+  }
+}
+function showSolution(){
+  const P=problems[idx];
+  if(!solvedThis){ results.push('r'); streak=0; solvedThis=true; P.solved=true; log('solution',{kind:P.kind}); }
+  solutionShown=true;
+  document.getElementById('ans').disabled=true; document.getElementById('goBtn').disabled=true;
+  document.getElementById('solBtn').style.display='none';
+  const pr=document.getElementById('proof');
+  pr.innerHTML='<b>Решение.</b><ol>'+P.sol.map(s=>'<li>'+s+'</li>').join('')+'</ol>';
+  pr.style.display='block';
+  setMsg('Разбор ниже. Ответ: '+(P.answer+(P.unit||''))+'.','info');
+  const nb=document.getElementById('nextBtn'); nb.textContent=(idx<TOTAL-1)?'Дальше →':'Итог →'; nb.style.display='inline-block';
+  statusUpdate();
+}
+function showHint(){
+  if(solvedThis) return;
+  hintsThis++; log('hint');
+  const hb=document.getElementById('hintbox'); hb.innerHTML='💡 '+problems[idx].hint; hb.style.display='block';
+}
+function nextProblem(){ if(idx<TOTAL-1){ idx++; showProblem(); } else finish(); }
+
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{score:g});
+  const s=lS(); s.runs=(s.runs||0)+1; if(g>(s.best||0))s.best=g; s.passed=true; sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent=g+' / '+TOTAL;
+  document.getElementById('finLbl').textContent = g===TOTAL?'Чисто! Весь набор §3 — без единой ошибки.':(g>=5?'Хорошо — инструменты §3 работают.':'Ещё набор закрепит.');
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){
+  problems=buildProblems(); idx=0; results=[]; streak=0;
+  document.getElementById('fin').style.display='none';
+  document.getElementById('mainArea').style.display='grid';
+  document.getElementById('bar').style.display='flex';
+  showProblem();
+}
+
+/* ───────── ВВОД С КЛАВИАТУРЫ ───────── */
+document.getElementById('ans').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); doCheck(); }});
+
+/* ───────── СТАРТ ───────── */
+problems=buildProblems(); showProblem();
+(function loop(){draw();requestAnimationFrame(loop)})();
+</script>
+</body>
+</html>

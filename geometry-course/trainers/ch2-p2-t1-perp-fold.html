@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Перпендикуляр складыванием · из точки к прямой</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.card.why{background:#fffbeb;border-color:#fcd34d}
+.card.why h2{color:#b45309}
+.task{font-size:14.5px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{text-align:left;border:1.5px solid #d1d5db;border-radius:11px;background:#fff;padding:11px 13px;font:600 13.5px/1.45 system-ui;color:#1f2937;cursor:pointer}
+.opt:hover{border-color:#2d70b3;background:#f0f7ff}
+.opt.dead{opacity:.5;text-decoration:line-through;pointer-events:none;background:#fef2f2;border-color:#fecaca}
+.opt.ok{border-color:#16a34a;background:#f0fdf4;pointer-events:none;font-weight:800}
+.opt.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.warn{background:#fff7ed;color:#c2410c}
+.star{color:#b45309;font-weight:800}
+.proof{display:none;background:#ecfdf5;color:#14532d;border:1.5px solid #bbf7d0;border-radius:12px;padding:12px;font-size:13px;line-height:1.55}
+.proof b{color:#166534}
+.small{font-size:13.5px;color:#374151;line-height:1.55}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button:hover{background:#f3f4f6}
+button:disabled{opacity:.45;cursor:default}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.fold{background:#2d70b3;color:#fff;border-color:#2d70b3}
+.fold:hover{background:#235a92}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a;margin-left:auto}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:15px;height:15px;border-radius:50%;background:#d1d5db}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:600px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14.5px;line-height:1.6;color:#14532d}
+.law b{color:#166534}
+.law .bridge{margin-top:12px;padding-top:11px;border-top:1px dashed #bbf7d0;font-style:italic}
+.law .star{color:#b45309;font-weight:800}
+@media(max-width:820px){
+  body{padding:8px}
+  .main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}
+  .side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">📄 Перпендикуляр складыванием</div>
+      <div class="sub">Глава II · §2 · тренажёр 1 — из точки к прямой</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Сложили → отпечатали → развернули</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="440"></canvas>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="opts" id="opts"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div id="proofBox" class="proof"></div>
+      <div class="card why">
+        <h2>Зачем это</h2>
+        <p class="small">«Опусти перпендикуляр» — звучит как приказ, но откуда он берётся? Здесь вы строите его руками: точка <b>A</b> падает на свой отпечаток <b>A₁</b> по другую сторону прямой, и след <b>AA₁</b> протыкает прямую ровно под прямым углом. Складывание — тот же приём, которым дальше раскроем тайну равнобедренного треугольника.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law" id="lawBox"></div>
+    <button class="primary" style="max-width:240px;margin:0 auto;display:block" onclick="restart()">Пройти ещё раз</button>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="fold" id="foldBtn" onclick="doFold()" style="display:none">↩ Сложить лист</button>
+    <button onclick="showHint()" id="hintBtn">💡 Подсказка</button>
+    <button onclick="resetTask()">↺ Сначала</button>
+    <button id="nextBtn" class="next" onclick="nextTask()">Дальше →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС И ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch2-p2-t1-perp-fold';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),task:ti+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+let W=640,H=440;
+(function dpr(){
+  const r=Math.min(window.devicePixelRatio||1,2);
+  cv.width=W*r;cv.height=H*r;ctx.scale(r,r);
+  cv.style.width='100%';
+})();
+
+/* ───────── ГЕОМЕТРИЯ ─────────
+   Прямая a — горизонталь на уровне LY. Точка A над ней.
+   Отпечаток A1 — отражение относительно прямой: A1.y = 2*LY - A.y. */
+const LY=235;                       // уровень прямой a
+const Apt={x:300, y:110};           // точка A
+function A1(){return {x:Apt.x, y:2*LY-Apt.y};}   // отпечаток
+function footH(){return {x:Apt.x, y:LY};}        // основание перпендикуляра H (на прямой)
+
+/* ───────── СОСТОЯНИЕ ───────── */
+let ti=0;
+let solvedThis=false, mistakes=0, hintUsedThis=false;
+const results=[];
+let kind='mouse';
+let wrongFx=null, okFx=null;
+let foldP=0, animLock=false;        // фолд: 0 плоско → 1 сложено
+const kF=()=>Math.cos(foldP*Math.PI);
+let imprintShown=false;             // отпечаток A1 поставлен учеником
+let foldDone=false;                 // лист сложили и развернули (акт1 шаг1)
+let perpDrawn=false;                // след AA1 показан (после фолда)
+/* акт 3 */
+let H2x=null;                       // второе основание, которое пробует ученик
+let twoPerpTried=false;
+
+/* ───────── ЗАДАЧИ ─────────
+   imprint : ученик ставит A1, потом «Сложить»
+   right   : выбор-карточка «под каким углом AA1 пересекает a»
+   whyright: выбор-карточка «почему именно прямой» (смежные равные)
+   only    : ✦ можно ли два перпендикуляра — ставит H2, видит две прямые ⊥ a, пересёкшиеся в A
+*/
+const TASKS=[
+ {kind:'imprint',
+  text:'Сложим лист по прямой <b>a</b>. Нажмите место, куда ляжет <b>отпечаток</b> точки A. Клетки помогут отмерить расстояние.'},
+ {kind:'right',
+  text:'Лист развернули — остался след <b>AA₁</b>, он пересёк прямую в точке <b>H</b>. Под каким углом?',
+  opts:[
+   {t:'Под прямым углом (90°)', ok:true},
+   {t:'Под острым углом', ok:false, why:'отпечаток A₁ стоит на том же расстоянии от прямой, что и A, ровно под ней — след AA₁ идёт строго поперёк прямой.'},
+   {t:'Под каким получится — зависит от A', ok:false, why:'нет: где бы ни стояла A, её отпечаток A₁ симметричен относительно прямой, поэтому AA₁ всегда поперёк, под прямым углом.'}]},
+ {kind:'whyright',
+  text:'Перегиб наложил угол <b>1</b> (между HA и a) на угол <b>2</b> (между HA₁ и a). Почему оба прямые?',
+  opts:[
+   {t:'∠1=∠2 (совместились при перегибе), а вместе они смежные — значит каждый по 90°.', ok:true},
+   {t:'Потому что так нарисовано.', ok:false, why:'чертёж лишь показывает; работает рассуждение: равные смежные углы — это два прямых.'},
+   {t:'Мы измерили транспортиром.', ok:false, why:'в доказательстве ничего не измеряют. ∠1 и ∠2 равны (наложились) и смежные — отсюда по 90°.'}]},
+ {kind:'only',
+  text:'✦ А можно из A провести <b>второй</b>, другой перпендикуляр к прямой a? Поставьте второе основание H₂ в стороне от H и посмотрите, что выйдет.'}
+];
+
+/* ───────── РИСОВАНИЕ ───────── */
+function bg(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill();}
+}
+function lab(x,y,txt,col,size){
+  ctx.font='900 '+(size||15)+'px system-ui';ctx.textAlign='center';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(250,248,242,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);
+}
+function dot(x,y,col,r){ctx.beginPath();ctx.arc(x,y,r||4.4,0,7);ctx.fillStyle=col;ctx.fill();}
+function ringMarker(x,y,col){
+  const pulse=1+0.14*Math.sin(Date.now()/280);
+  ctx.beginPath();ctx.arc(x,y,9*pulse,0,7);
+  ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle=col;ctx.lineWidth=2.6;ctx.stroke();
+  ctx.beginPath();ctx.arc(x,y,2.4,0,7);ctx.fillStyle=col;ctx.fill();
+}
+function glowRing(x,y,r){
+  const g=0.5+0.5*Math.sin(Date.now()/300);
+  ctx.save();ctx.globalAlpha=0.35+0.5*g;
+  ctx.beginPath();ctx.arc(x,y,r||11,0,7);ctx.strokeStyle='#16a34a';ctx.lineWidth=3.2;ctx.stroke();ctx.restore();
+}
+function axisLine(){
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2.6;
+  ctx.beginPath();ctx.moveTo(35,LY);ctx.lineTo(W-35,LY);ctx.stroke();
+  lab(W-48,LY-12,'a','#1a1a2e',16);
+}
+function rightAngleMark(cx,cy,sx,sy,col){
+  // прямой угол в (cx,cy): sx,sy — знаки направлений вдоль прямой и вверх
+  const s=12;
+  ctx.beginPath();
+  ctx.moveTo(cx+sx*s,cy);ctx.lineTo(cx+sx*s,cy+sy*s);ctx.lineTo(cx,cy+sy*s);
+  ctx.strokeStyle=col;ctx.lineWidth=2;ctx.stroke();
+}
+/* складывающийся слой: верхняя половина листа поворачивается вокруг прямой a */
+function foldLayer(drawTop){
+  const k=kF();
+  ctx.save();
+  ctx.translate(0,LY);ctx.scale(1,Math.abs(k)<0.02?0.02*(k>=0?1:-1):k);ctx.translate(0,-LY);
+  ctx.beginPath();ctx.rect(0,-400,W,LY+400);ctx.clip();
+  if(foldP>0.01&&foldP<0.99)ctx.globalAlpha=0.85;
+  drawTop();
+  ctx.restore();
+}
+
+function draw(){
+  bg();
+  const T=TASKS[ti];
+  const A=Apt, Aim=A1(), Hf=footH();
+
+  axisLine();
+
+  // ── СЛЕД ПЕРПЕНДИКУЛЯРА AA1 (после фолда / в актах 2–3) ──
+  if(perpDrawn || ti>=1){
+    ctx.strokeStyle='#2d70b3';ctx.lineWidth=2.6;
+    ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(Aim.x,Aim.y);ctx.stroke();
+    dot(Hf.x,Hf.y,'#2d70b3',4.6);
+    // прямой угол в H (с обеих сторон в актах ≥2)
+    if(ti>=1){
+      rightAngleMark(Hf.x,Hf.y,1,-1,'#c2410c');
+      if(ti>=2) rightAngleMark(Hf.x,Hf.y,-1,1,'#c2410c');
+    }
+    lab(Hf.x,Hf.y+20,'H','#2d70b3',15);
+  }
+
+  // ── НИЖНЯЯ (статичная) часть: отпечаток A1 ──
+  const showImprint = imprintShown || ti>=1;
+  if(showImprint){
+    // в момент фолда верхняя точка A «садится» — рисуем A1 всегда внизу
+    dot(Aim.x,Aim.y,'#16a34a',5);
+    lab(Aim.x,Aim.y+20,'A₁','#16a34a',15);
+  }
+
+  // ── ВЕРХНЯЯ (складывающаяся) часть: точка A ──
+  foldLayer(()=>{
+    // отрезок от H к A (верхняя половинка следа), чтобы было видно как складывается
+    if(perpDrawn||ti>=1){
+      ctx.strokeStyle='#2d70b3';ctx.lineWidth=2.6;
+      ctx.beginPath();ctx.moveTo(Hf.x,Hf.y);ctx.lineTo(A.x,A.y);ctx.stroke();
+    }
+    dot(A.x,A.y,'#1a1a2e',5);
+    lab(A.x,A.y-16,'A','#1a1a2e',16);
+  });
+
+  // ── направляющая-«линейка» (акт 1, до постановки): отмерить расстояние по клеткам ──
+  if(T.kind==='imprint' && !imprintShown && !animLock){
+    const d=LY-A.y;                 // расстояние от A до прямой
+    ctx.save();
+    // вертикаль от A вниз сквозь прямую — до зеркальной зоны
+    ctx.setLineDash([3,5]);ctx.strokeStyle='rgba(45,112,179,.55)';ctx.lineWidth=1.6;
+    ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(A.x,LY+d+20);ctx.stroke();
+    ctx.setLineDash([]);
+    // засечки-деления по 25px (клетки) от прямой вверх и вниз
+    ctx.strokeStyle='rgba(45,112,179,.5)';ctx.lineWidth=1.4;
+    for(let yy=LY; yy>=A.y-1; yy-=25){ctx.beginPath();ctx.moveTo(A.x-6,yy);ctx.lineTo(A.x+6,yy);ctx.stroke();}
+    for(let yy=LY; yy<=LY+d+1; yy+=25){ctx.beginPath();ctx.moveTo(A.x-6,yy);ctx.lineTo(A.x+6,yy);ctx.stroke();}
+    ctx.restore();
+    // пульсирующее кольцо-цель у зеркальной позиции — показываем, КУДА примерно ставить
+    glowRing(Aim.x,Aim.y,13);
+  }
+  // поставленный учеником отпечаток до фолда — кольцо
+  if(T.kind==='imprint' && imprintShown && !foldDone){
+    glowRing(Aim.x,Aim.y,11);
+  }
+
+  // ── АКТ 3: второй «перпендикуляр» AH₂ — обе прямые ⊥ a, но пересекаются в A ──
+  if(T.kind==='only' && H2x!==null){
+    const H2={x:H2x,y:LY};
+    // вторая прямая через A и H2, продлённая в обе стороны (как «прямая», а не отрезок)
+    const dx=H2.x-A.x, dy=H2.y-A.y, L=Math.hypot(dx,dy), ux=dx/L, uy=dy/L;
+    ctx.strokeStyle='#b91c1c';ctx.lineWidth=2.4;
+    if(twoPerpTried)ctx.setLineDash([]);else ctx.setLineDash([5,4]);
+    ctx.beginPath();
+    ctx.moveTo(A.x-ux*70, A.y-uy*70);
+    ctx.lineTo(H2.x+ux*70, H2.y+uy*70);
+    ctx.stroke();ctx.setLineDash([]);
+    dot(H2.x,H2.y,'#b91c1c',4.6);
+    lab(H2.x,H2.y+20,'H₂','#b91c1c',14);
+    if(twoPerpTried){
+      // обе прямые помечаем прямым углом к a (как будто обе перпендикуляры)
+      rightAngleMark(Hf.x,Hf.y,1,-1,'#2d70b3');
+      rightAngleMark(H2.x,H2.y,(H2x>Hf.x?-1:1),-1,'#b91c1c');
+      // подсветить точку пересечения A — «обе прошли через A»
+      const g=0.4+0.5*Math.sin(Date.now()/260);
+      ctx.save();ctx.globalAlpha=g;ctx.beginPath();ctx.arc(A.x,A.y,14,0,7);
+      ctx.strokeStyle='#b91c1c';ctx.lineWidth=3;ctx.stroke();ctx.restore();
+      lab(A.x+4,A.y-22,'пересеклись?!','#b91c1c',12);
+    }
+  }
+
+  // вспышки кликов
+  if(wrongFx){const e=(Date.now()-wrongFx.t)/420;if(e<1){ctx.beginPath();ctx.arc(wrongFx.x,wrongFx.y,8+e*16,0,7);ctx.strokeStyle='rgba(220,38,38,'+(1-e)+')';ctx.lineWidth=3;ctx.stroke();}else wrongFx=null;}
+  if(okFx){const e=(Date.now()-okFx.t)/520;if(e<1){ctx.beginPath();ctx.arc(okFx.x,okFx.y,6+e*20,0,7);ctx.strokeStyle='rgba(22,163,74,'+(1-e)+')';ctx.lineWidth=3.5;ctx.stroke();}else okFx=null;}
+}
+
+/* ───────── КООРДИНАТЫ ───────── */
+function scrK(){const r=cv.getBoundingClientRect();return Math.max(1,W/(r.width||W));}
+function pt(e){const r=cv.getBoundingClientRect(),k=W/(r.width||W);return {x:(e.clientX-r.left)*k,y:(e.clientY-r.top)*k};}
+
+/* ───────── ЛОГИКА ───────── */
+function el(id){return document.getElementById(id);}
+function setMsg(html,cls){const m=el('msg');m.className='msg '+(cls||'info');m.innerHTML=html;}
+
+/* акт 1 — постановка отпечатка */
+function tapImprint(p){
+  if(imprintShown||animLock)return;
+  const Aim=A1();
+  const tol=(kind==='touch'?32:26)*scrK();
+  if(Math.hypot(p.x-Aim.x,p.y-Aim.y)<tol){
+    imprintShown=true;
+    okFx={x:Aim.x,y:Aim.y,t:Date.now()};
+    log('found',{r:1});
+    setMsg('Точно! Отпечаток A₁ — по другую сторону прямой, на том же расстоянии. Теперь нажмите «<b>Сложить лист</b>» и проверьте.','ok');
+    el('foldBtn').style.display='inline-block';
+    return;
+  }
+  // диагностика
+  mistakes++;wrongFx={x:p.x,y:p.y,t:Date.now()};
+  if(p.y<LY){ setMsg('Не туда: отпечаток ложится <b>по другую</b> сторону прямой — <b>ниже</b> a, ведь лист сложили на ту сторону.','err'); log('tap_wrong',{code:'sameside'}); }
+  else if(Math.abs((p.y-LY)-(LY-Apt.y))>tol){ setMsg('Сторона верная, но расстояние не то: A₁ должна стоять <b>на таком же</b> удалении от прямой, как A. Отмерьте по клеткам.','err'); log('tap_wrong',{code:'dist'}); }
+  else if(Math.abs(p.x-Aim.x)>tol){ setMsg('Чуть вбок: при складывании точка опускается <b>прямо вниз</b>, не съезжая в сторону. A₁ ровно под A.','err'); log('tap_wrong',{code:'sideways'}); }
+  else { setMsg('Почти — цельтесь точнее в зеркальную точку под A.','err'); log('tap_wrong',{code:'near'}); }
+}
+
+function doFold(){
+  if(animLock||!imprintShown)return;
+  el('foldBtn').style.display='none';
+  el('hintBtn').disabled=true;
+  animLock=true;log('fold');
+  const ease=t=>t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  const t0=performance.now();
+  (function up(now){
+    foldP=ease(Math.min(1,(now-t0)/750));
+    if((now-t0)<750)requestAnimationFrame(up);
+    else setTimeout(()=>{
+      const t1=performance.now();
+      (function dn(now2){
+        foldP=1-ease(Math.min(1,(now2-t1)/600));
+        if((now2-t1)<600)requestAnimationFrame(dn);
+        else{foldP=0;animLock=false;foldDone=true;perpDrawn=true;el('hintBtn').disabled=false;
+          setMsg('Видели? Точка A села <b>ровно</b> на свой отпечаток A₁. След AA₁ проткнул прямую в точке H. Идём дальше — под каким это углом?','ok');
+          finishTask();}
+      })(performance.now());
+    },650);
+  })(performance.now());
+}
+
+/* акты 2–3 — карточки выбора */
+function renderOpts(){
+  const T=TASKS[ti];const box=el('opts');box.innerHTML='';
+  if(!T.opts)return;
+  const shuffled=T.opts.map(o=>o); // порядок фиксированный (верный первым в данных, но перемешаем)
+  for(let i=shuffled.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]];}
+  shuffled.forEach(o=>{
+    const b=document.createElement('button');b.className='opt';b.innerHTML=o.t;
+    b.onclick=()=>pickOpt(o,b);box.appendChild(b);
+  });
+}
+function pickOpt(o,btn){
+  if(solvedThis)return;
+  if(o.ok){
+    btn.classList.add('ok');
+    [...el('opts').children].forEach(b=>{if(b!==btn)b.classList.add('dead');});
+    log('opt_ok',{});
+    setMsg('Верно!','ok');
+    finishTask();
+  }else{
+    mistakes++;btn.classList.add('shake','dead');setTimeout(()=>btn.classList.remove('shake'),450);
+    log('opt_wrong',{});
+    setMsg('Не так: '+o.why+' Попробуйте ещё раз.','err');
+  }
+}
+
+/* акт 3 — второй перпендикуляр */
+function tapOnly(p){
+  if(solvedThis||animLock)return;
+  // ставим H2 на прямую, в стороне от H
+  if(Math.abs(p.y-LY)<(kind==='touch'?34:26)*scrK()){
+    const Hf=footH();
+    if(Math.abs(p.x-Hf.x)<40){ setMsg('Поставьте H₂ <b>в стороне</b> от H — иначе это тот же перпендикуляр.','warn'); return; }
+    H2x=Math.max(60,Math.min(W-60,p.x));
+    twoPerpTried=true;log('two_perp_tried',{});
+    setMsg('Смотрите: если AH₂ — тоже перпендикуляр к a, то прямые AH и AH₂ <b>обе перпендикулярны</b> прямой a. Но две прямые, перпендикулярные третьей, <b>не пересекаются</b> (мы это доказывали). А наши обе проходят через A — то есть пересекаются! Так быть не может. Значит перпендикуляр из A <b>только один</b>.','warn');
+    finishTask();
+  }else{
+    setMsg('Нажмите на саму прямую <b>a</b>, чтобы поставить второе основание H₂.','info');
+  }
+}
+
+/* ───────── ОБРАБОТЧИК ХОЛСТА ───────── */
+cv.addEventListener('pointerdown',e=>{
+  kind=e.pointerType==='touch'?'touch':'mouse';
+  const T=TASKS[ti];
+  const p=pt(e);
+  if(T.kind==='imprint')tapImprint(p);
+  else if(T.kind==='only')tapOnly(p);
+});
+
+/* ───────── ПОДСКАЗКА ───────── */
+function showHint(){
+  const T=TASKS[ti];
+  hintUsedThis=true;log('hint',{});
+  if(T.kind==='imprint')setMsg('💡 Сколько клеток от A вверх до прямой a? Столько же отмерьте <b>вниз</b> от прямой — прямо под A.','warn');
+  else if(T.kind==='right')setMsg('💡 Отпечаток зеркальный: A и A₁ на одной вертикали, прямая — посередине. Чем такая вертикаль к горизонтали?','warn');
+  else if(T.kind==='whyright')setMsg('💡 Два угла при H вместе дают прямую линию (развёрнутый угол), и они равны. Поделите 180° поровну.','warn');
+  else setMsg('💡 Нажмите на прямую a где-нибудь сбоку от H — поставьте там H₂ — и посмотрите на углы.','warn');
+}
+
+/* ───────── ПЕРЕХОДЫ ───────── */
+function finishTask(){
+  if(solvedThis)return;
+  solvedThis=true;
+  results[ti]= hintUsedThis ? 'y' : (mistakes===0?'g':(mistakes===1?'y':'r'));
+  log('solved',{via:TASKS[ti].kind,mistakes,hint:hintUsedThis});
+  el('nextBtn').style.display='inline-block';
+  el('nextBtn').textContent = ti===TASKS.length-1?'Итоги →':'Дальше →';
+  el('hintBtn').disabled=true;
+  el('foldBtn').style.display='none';
+  // вывод-плашка для актов 2–3
+  const T=TASKS[ti];
+  if(T.kind==='whyright'){
+    el('proofBox').style.display='block';
+    el('proofBox').innerHTML='<b>Вывод.</b> Равные смежные углы — это всегда два прямых. Поэтому AH ⊥ a: отрезок AH и есть перпендикуляр из точки A к прямой a, а H — его основание.';
+  }
+}
+function layout(){
+  const T=TASKS[ti];
+  el('taskText').innerHTML=T.text;
+  el('pf').style.width=Math.round(ti/TASKS.length*100)+'%';
+  el('pnum').textContent='Шаг '+(ti+1)+' из '+TASKS.length;
+  el('nextBtn').style.display='none';
+  el('hintBtn').disabled=false;
+  el('proofBox').style.display='none';
+  el('foldBtn').style.display=(T.kind==='imprint'&&imprintShown&&!foldDone)?'inline-block':'none';
+  renderOpts();
+  if(T.kind==='imprint')setMsg('Нажмите место отпечатка точки A — по другую сторону прямой.','info');
+  else if(T.kind==='right')setMsg('Выберите верный ответ.','info');
+  else if(T.kind==='whyright')setMsg('Почему оба угла прямые?','info');
+  else setMsg('Поставьте второе основание H₂ на прямой и посмотрите, что будет.','info');
+  log('task_start',{kind:T.kind});
+}
+function resetTask(){
+  const T=TASKS[ti];
+  if(T.kind==='imprint'){imprintShown=false;foldDone=false;perpDrawn=false;foldP=0;}
+  if(T.kind==='only'){H2x=null;twoPerpTried=false;}
+  solvedThis=false;mistakes=0;hintUsedThis=false;
+  layout();
+}
+function nextTask(){
+  if(ti<TASKS.length-1){
+    ti++;solvedThis=false;mistakes=0;hintUsedThis=false;
+    layout();
+  }else finish();
+}
+
+/* ───────── ФИНАЛ ───────── */
+function finish(){
+  el('mainArea').style.display='none';
+  el('bar').style.display='none';
+  el('fin').style.display='block';
+  const g=results.filter(r=>r==='g').length;
+  el('finScore').textContent=g+' / '+TASKS.length;
+  el('finLbl').textContent='шагов пройдено без ошибок и подсказок';
+  const fd=el('finDots');fd.innerHTML='';
+  results.forEach(r=>{const e=document.createElement('div');e.className='dot '+(r||'r');fd.appendChild(e);});
+  el('lawBox').innerHTML=
+    '<b>Перпендикуляр к прямой.</b> Отрезок AH, который перпендикулярен прямой a, называется <b>перпендикуляром</b>, проведённым из точки A к прямой a. Точка H — <b>основание</b> перпендикуляра.'+
+    '<div style="margin-top:9px"><b>Теорема.</b> Из точки, не лежащей на прямой, можно провести перпендикуляр к этой прямой — и <b>притом только один</b>.</div>'+
+    '<div style="margin-top:6px;font-size:13px">Почему один: будь их два, мы получили бы две прямые, перпендикулярные одной прямой a и при этом пересекающиеся (в точке A). А перпендикуляры к одной прямой не пересекаются — противоречие.</div>'+
+    '<div class="bridge">Построили его не на глазок, а складыванием: точка села на свой отпечаток, след проткнул прямую под прямым углом. Тем же приёмом — <span class="star">сложили → отпечатали → развернули</span> — в следующем тренажёре раскроем тайну равнобедренного треугольника.</div>';
+  const s=lS();s.runs=(s.runs||0)+1;s.passed=true;s.best=Math.max(s.best||0,g);sS(s);
+  log('finish',{score:g});
+}
+function restart(){
+  ti=0;results.length=0;
+  imprintShown=false;foldDone=false;perpDrawn=false;foldP=0;H2x=null;twoPerpTried=false;
+  solvedThis=false;mistakes=0;hintUsedThis=false;
+  el('fin').style.display='none';
+  el('mainArea').style.display='grid';
+  el('bar').style.display='flex';
+  layout();
+}
+
+/* ───────── ЦИКЛ ───────── */
+function loop(){draw();requestAnimationFrame(loop);}
+log('start');
+restart();
+loop();
+</script>
+</body>
+</html>

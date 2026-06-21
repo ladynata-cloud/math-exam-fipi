@@ -1,0 +1,568 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Через точку — одна параллель</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.45}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.row{display:flex;justify-content:space-between;gap:10px;font-size:14px;line-height:1.5;border-bottom:1px dashed #e5e7eb;padding:4px 0}
+.row:last-child{border-bottom:0}
+.value{font-weight:900}
+.v-ok{color:#16a34a}
+.v-no{color:#b91c1c}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:750 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt:disabled{opacity:.5;cursor:default}
+.opt.ok-pick{border-color:#16a34a;background:#f0fdf4;color:#15803d}
+.opt.bad-pick{border-color:#dc2626;background:#fef2f2;color:#b91c1c}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.warn{background:#fff7ed;color:#c2410c}
+.proof{display:none;background:#ecfdf5;color:#14532d;border:1.5px solid #bbf7d0;border-radius:12px;padding:12px;font-size:13px;line-height:1.5}
+.proof b{color:#166534}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.small{font-size:12px;color:#64748b;line-height:1.45}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+button.tool:disabled{opacity:.35;cursor:default}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:15px;height:15px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:620px;margin:0 auto 14px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14.5px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.star{color:#b45309;font-weight:800}
+.starcard{max-width:620px;margin:0 auto 18px;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:14px;padding:16px;text-align:left;font-size:13.5px;line-height:1.55;color:#7c2d12}
+.starcard b{color:#92400e}
+.bridge{margin-top:10px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}
+  .main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}
+  .side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">∥ Через точку — одна параллель</div>
+      <div class="sub">Глава III · §2 · тренажёр 1 из 4 — аксиома параллельных прямых</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">—</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="400"></canvas></div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card" id="infoCard">
+        <h2 id="infoTtl">—</h2>
+        <div id="infoBody"></div>
+      </div>
+      <div id="opts" class="opts"></div>
+      <div id="msg" class="msg info"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div id="proof" class="proof"></div>
+      <div class="card">
+        <h2>Зачем это</h2>
+        <p class="small">Мы доказали уже гору теорем. Но на чём стоят самые первые? На утверждениях, которые принимают <b>без доказательства</b>, — на <b>аксиомах</b>. Ты ими уже пользовался, не зная имени. Здесь — самая знаменитая из них, и у неё удивительная история длиной в две тысячи лет.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Аксиома параллельных прямых.</b> Через точку, не лежащую на данной прямой, проходит <b>только одна</b> прямая, параллельная данной.<br>
+      Эту аксиому мы <b>принимаем без доказательства</b> — и то, что параллельная есть, и то, что она единственная. (Провести такую прямую через M и правда можно — перпендикуляр к перпендикуляру, рис. 115.)<br><br>
+      <b>Аксиома не одна.</b> В этой же главе названы ещё три — их мы тоже принимаем без доказательства:<br>
+      • через две точки проходит одна прямая — <i>пользуемся постоянно</i>;<br>
+      • от начала луча можно отложить равный отрезок, и притом один — <i>так мы сравнивали отрезки</i>;<br>
+      • <span class="star">★</span> от луча можно отложить равный угол, и притом один — <i>на ней скоро будет держаться доказательство свойства параллельных</i>.
+      <div class="bridge">Утверждения, которые выводятся прямо из аксиомы, называют <b>следствиями</b>. Из этой аксиомы вытекают два важных факта — о них следующий тренажёр: <a href="ch3-p2-t4-property-alt-angles.html">Следствия из аксиомы →</a></div>
+    </div>
+    <div class="starcard">
+      <span class="star">✦ За страницами учебника.</span> Самое удивительное в этой аксиоме — слова «<b>только одна</b>». Веками математикам казалось, что единственность можно <b>доказать</b>, и они пытались — со времён Евклида (это его пятый постулат). Не вышло ни у кого. Огромную роль здесь сыграл <b>Н. И. Лобачевский</b> (1792–1856): он построил геометрию, где через точку проходит <b>много</b> прямых, параллельных данной, — и она оказалась столь же непротиворечивой, как привычная (такая геометрия описывает, например, искривлённое пространство). Значит «только одна» — это <b>выбор</b> для плоскости, а не логическая неизбежность. Оттого и аксиома.
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="nextTask()">Следующая →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС И ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch3-p2-t1-parallel-axiom';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),task:ti+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640,H=400;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+
+/* ───────── ГЕОМЕТРИЯ СЦЕНЫ ─────────
+   прямая a — горизонталь на y=AY (нижняя часть холста);
+   точка M — над ней; через M строим/крутим прямые. */
+const AY=300;
+const M={x:300,y:130};
+// для задачи-аксиомы (две точки): A и B, прямую вращаем вокруг A
+const PA={x:175,y:160}, PB={x:455,y:255};
+
+const EPS_PAR=0.004;    // строгий порог: прямая через M практически горизонтальна → параллельна a, точки нет
+const SNAP_PAR=0.06;    // магнит к параллели (рукой довести ровно тяжело)
+const PERP_SNAP=0.15;   // магнит к прямому углу (как в t4, чуть щедрее)
+const angAB=Math.atan2(PB.y-PA.y,PB.x-PA.x);
+
+/* ───────── ТИПЫ ЗАДАЧ ─────────
+   'axiom'   — через две точки проходит ровно одна прямая (что такое аксиома)
+   'build'   — построить параллельную через M (существование: c⊥a, b⊥c)  → ДОКАЗАНО
+   'sweep'   — крутить прямую через M, точка пересечения улетает: параллель ровно одна (единственность)
+   'uniqueq' — сколько параллелей через M? (формулировка аксиомы + ловушки) */
+const TASKS=[{kind:'axiom'},{kind:'build'},{kind:'sweep'},{kind:'uniqueq'}];
+const NT=TASKS.length;
+const T=()=>TASKS[ti];
+
+let ti=0, results=[], mistakes=0, hintsUsed=0, solvedThis=false, ptype='mouse', mode=null;
+// axiom
+let axAng=0, axSnapped=false;
+// build
+let buildStep='c', angC=0, angB=0, built={c:false,b:false};
+// sweep
+let swAng=0, swSnapped=false;
+// uniqueq
+let uPicked=false, uTrap=false;
+
+/* ───────── ГЕОМЕТРИЯ-ПОМОЩНИКИ ───────── */
+function normDiff(a,b){let d=a-b;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;return d}
+// пересечение прямой (через pivot под углом ang) с горизонталью y=AY
+function footOnA(pivot,ang){
+  const s=Math.sin(ang);
+  if(Math.abs(s)<EPS_PAR)return null;
+  const t=(AY-pivot.y)/s;
+  return {x:pivot.x+Math.cos(ang)*t, y:AY, t};
+}
+function distToLine(P,pivot,ang){
+  const dx=Math.cos(ang),dy=Math.sin(ang);
+  return Math.abs((P.x-pivot.x)*dy-(P.y-pivot.y)*dx);
+}
+
+/* ───────── ОТРИСОВКА: ПРИМИТИВЫ ───────── */
+function bg(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill()}
+}
+function line2(p,ang,col,wid,dash){
+  const big=2000,dx=Math.cos(ang),dy=Math.sin(ang);
+  ctx.strokeStyle=col;ctx.lineWidth=wid||2.8;if(dash)ctx.setLineDash(dash);
+  ctx.beginPath();ctx.moveTo(p.x-dx*big,p.y-dy*big);ctx.lineTo(p.x+dx*big,p.y+dy*big);ctx.stroke();ctx.setLineDash([]);
+}
+function seg(p,q,col,wid,dash){ctx.strokeStyle=col;ctx.lineWidth=wid||2.4;if(dash)ctx.setLineDash(dash);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.setLineDash([])}
+function lab(x,y,t,col,s){ctx.font='900 '+(s||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(t,x,y);ctx.fillStyle=col;ctx.fillText(t,x,y);ctx.textBaseline='alphabetic'}
+function dot(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function pulseRing(x,y,col,stat){const pr=stat?1:1+0.2*Math.sin(Date.now()/260);ctx.beginPath();ctx.arc(x,y,9*pr,0,7);ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.stroke();dot(x,y,2.4,col)}
+function rightMark(C,d1,d2,col){
+  const r=11,u1={x:Math.cos(d1),y:Math.sin(d1)},u2={x:Math.cos(d2),y:Math.sin(d2)};
+  const p1={x:C.x+u1.x*r,y:C.y+u1.y*r},p2={x:C.x+u2.x*r,y:C.y+u2.y*r},pc={x:C.x+(u1.x+u2.x)*r,y:C.y+(u1.y+u2.y)*r};
+  ctx.strokeStyle=col||'#dc2626';ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(pc.x,pc.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();
+}
+// красная точка P (на экране) либо деликатный указатель «уехала за край»
+function drawP(P){
+  if(!P)return;
+  if(P.x>=-30&&P.x<=W+30){
+    const pulse=1+0.18*Math.sin(Date.now()/260);
+    dot(P.x,P.y,6.2*pulse,'#dc2626','#fffdf7');lab(P.x,P.y+22,'P','#dc2626');
+  }else{
+    const right=P.x>W, ay=AY-22, ex=right?W-58:58, dir=right?1:-1;
+    ctx.strokeStyle='#dc2626';ctx.lineWidth=2.4;
+    ctx.beginPath();ctx.moveTo(ex,ay);ctx.lineTo(ex+28*dir,ay);ctx.stroke();
+    ctx.fillStyle='#dc2626';
+    ctx.beginPath();ctx.moveTo(ex+28*dir,ay-5);ctx.lineTo(ex+38*dir,ay);ctx.lineTo(ex+28*dir,ay+5);ctx.closePath();ctx.fill();
+    lab(ex+(right?-44:44),ay+4,'P уехала туда','#dc2626',12);
+  }
+}
+
+/* ───────── ОТРИСОВКА: СЦЕНЫ ───────── */
+function drawAxiom(){
+  // целевая прямая через A и B — бледный пунктир (та самая «магнитная» цель)
+  line2(PA,angAB,solvedThis?'#86efac':'#cbd5e1',2,[7,6]);
+  // насколько вращаемая прямая близка к B (зона магнита)
+  const dB=distToLine(PB,PA,axAng), near=!axSnapped&&dB<46;
+  // вращаемая прямая через A
+  line2(PA,axAng,axSnapped?'#16a34a':'#2d70b3',2.8);
+  dot(PA.x,PA.y,4.4,'#fffdf7','#1a1a2e');lab(PA.x-14,PA.y-10,'A','#1a1a2e');
+  // точка B: желтеет и пульсирует, когда прямая рядом — вот-вот примагнитится
+  const bp=near?1+0.28*Math.sin(Date.now()/200):1;
+  dot(PB.x,PB.y,4.6*bp,axSnapped?'#16a34a':(near?'#fbbf24':'#fffdf7'),'#1a1a2e');
+  lab(PB.x+14,PB.y-10,'B','#1a1a2e');
+  if(axSnapped)lab(W/2,H-22,'через A и B — ровно одна прямая','#15803d',14);
+  else if(near)lab(W/2,H-22,'рядом — ещё чуть к B, и прямая примагнитится','#b45309',13);
+  // ручка вращения (видна и после решения — зелёная, не пульсирует)
+  const h={x:PA.x+Math.cos(axAng)*135,y:PA.y+Math.sin(axAng)*135};
+  ctx.setLineDash([3,4]);ctx.strokeStyle=solvedThis?'#86efac':'#c4b5fd';ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(PA.x,PA.y);ctx.lineTo(h.x,h.y);ctx.stroke();ctx.setLineDash([]);
+  pulseRing(h.x,h.y,solvedThis?'#16a34a':'#7c3aed',solvedThis);
+  if(!solvedThis)lab(h.x+(h.x<PA.x?-20:20),h.y-2,'тяни','#7c3aed',12);
+}
+
+function drawBuild(){
+  // прямая a + точка M; строим c⊥a, затем b⊥c
+  line2({x:0,y:AY},0,'#1a1a2e',2.8);lab(W-26,AY-12,'a','#1a1a2e');
+  const buildingC=(buildStep==='c'), buildingB=(buildStep==='b');
+
+  // ── шаг c: цель — вертикаль (c ⊥ a). Пунктир подсказывает, куда вести
+  if(buildingC && !built.c){
+    const dV=Math.min(Math.abs(normDiff(angC,Math.PI/2)),Math.abs(normDiff(angC,-Math.PI/2)));
+    const nearV=dV<0.42;
+    line2(M,Math.PI/2,nearV?'#fbbf24':'#cbd5e1',2,[7,6]);
+    if(nearV){const f=footOnA(M,Math.PI/2);if(f){rightMark(f,0,-Math.PI/2,'#f59e0b');rightMark(f,Math.PI,-Math.PI/2,'#f59e0b')}
+      lab(W/2,H-22,'почти — доведи c до пунктира, поймаешь прямой угол','#b45309',13);}
+  }
+  // прямая c (строится/построена)
+  if(built.c||buildingC){
+    const cCol=built.c?'#7c3aed':'#2d70b3';
+    line2(M,angC,cCol,2.6);
+    const f=footOnA(M,angC);
+    if(f){dot(f.x,f.y,3.8,cCol,'#fffdf7'); if(built.c){lab(f.x,f.y+20,'H','#7c3aed',14);}}
+    lab(M.x+ (built.c? -16:0), built.c? (M.y+AY)/2 : M.y-40,'c',cCol,14);
+    if(built.c&&f){rightMark(f,0,-Math.PI/2,'#dc2626');rightMark(f,Math.PI,-Math.PI/2,'#dc2626');}
+  }
+
+  // ── шаг b: цель — горизонталь (b ⊥ c, то есть b ∥ a)
+  if(buildingB && !built.b){
+    const dH=Math.min(Math.abs(normDiff(angB,0)),Math.abs(normDiff(angB,Math.PI)));
+    const nearH=dH<0.42;
+    line2(M,0,nearH?'#fbbf24':'#cbd5e1',2,[7,6]);
+    if(nearH){rightMark(M,0,Math.PI/2,'#f59e0b');
+      lab(W/2,H-22,'почти — доведи b до пунктира, поймаешь прямой угол','#b45309',13);}
+  }
+  // прямая b (строится только после c)
+  if(built.b||buildingB){
+    const bCol=built.b?'#16a34a':'#2d70b3';
+    line2(M,angB,bCol,2.8);
+    lab(M.x+150*(built.b?1:Math.cos(angB))+(built.b?14:0), M.y+150*(built.b?0:Math.sin(angB))-12,'b',bCol,14);
+    if(built.b){rightMark(M,0,Math.PI/2,'#dc2626');}
+  }
+  dot(M.x,M.y,4.4,'#fffdf7','#1a1a2e');lab(M.x-14,M.y-12,'M','#1a1a2e');
+  if(built.b)lab(W/2,H-22,'b ∥ a — параллельная через M','#15803d',14);
+  // ручка текущего шага (видна и после решения — зелёная, не пульсирует)
+  {
+    const ang=buildingC?angC:angB, r=100;
+    const h={x:M.x+Math.cos(ang)*r,y:M.y+Math.sin(ang)*r};
+    ctx.setLineDash([3,4]);ctx.strokeStyle=solvedThis?'#86efac':'#c4b5fd';ctx.lineWidth=1.4;
+    ctx.beginPath();ctx.moveTo(M.x,M.y);ctx.lineTo(h.x,h.y);ctx.stroke();ctx.setLineDash([]);
+    pulseRing(h.x,h.y,solvedThis?'#16a34a':'#7c3aed',solvedThis);
+    if(!solvedThis)lab(h.x+(h.x<M.x?-18:18),h.y-2,'тяни','#7c3aed',12);
+  }
+}
+
+function drawSweep(){
+  line2({x:0,y:AY},0,'#1a1a2e',2.8);lab(W-26,AY-12,'a','#1a1a2e');
+  // построенная параллель b — бледным пунктиром (ориентир)
+  line2(M,0,'#86efac',2,[6,6]);lab(60,M.y-12,'b','#16a34a',13);
+  // тестовая прямая через M
+  const col=swSnapped?'#16a34a':'#2d70b3';
+  line2(M,swAng,col,2.8);
+  // точка P
+  if(!swSnapped){drawP(footOnA(M,swAng));}
+  else{lab(W/2,M.y-40,'✦ точки пересечения больше нет','#16a34a',14);}
+  dot(M.x,M.y,4.4,'#fffdf7','#1a1a2e');lab(M.x-14,M.y-12,'M','#1a1a2e');
+  // ручка (видна и после решения — зелёная, не пульсирует)
+  {
+    const h={x:M.x+Math.cos(swAng)*120,y:M.y+Math.sin(swAng)*120};
+    ctx.setLineDash([3,4]);ctx.strokeStyle=solvedThis?'#86efac':'#c4b5fd';ctx.lineWidth=1.4;
+    ctx.beginPath();ctx.moveTo(M.x,M.y);ctx.lineTo(h.x,h.y);ctx.stroke();ctx.setLineDash([]);
+    pulseRing(h.x,h.y,solvedThis?'#16a34a':'#7c3aed',solvedThis);
+    if(!solvedThis)lab(h.x+18,h.y-2,'крути','#7c3aed',12);
+  }
+}
+
+function drawUnique(){
+  line2({x:0,y:AY},0,'#1a1a2e',2.8);lab(W-26,AY-12,'a','#1a1a2e');
+  // единственная параллель b — зелёная
+  line2(M,0,'#16a34a',2.8);lab(60,M.y-12,'b','#16a34a',14);
+  // если выбрали ловушку «чуть наклонить» — показываем наклонную и её далёкую P
+  if(uTrap){
+    const ta=0.085;
+    line2(M,ta,'#9ca3af',2,[7,5]);
+    drawP(footOnA(M,ta));
+    lab(W/2,H-22,'«чуть наклонил» — а точка пересечения всё равно есть','#b91c1c',13);
+  }
+  dot(M.x,M.y,4.4,'#fffdf7','#1a1a2e');lab(M.x-14,M.y-12,'M','#1a1a2e');
+}
+
+function draw(){
+  bg();
+  const k=T().kind;
+  if(k==='axiom')drawAxiom();
+  else if(k==='build')drawBuild();
+  else if(k==='sweep')drawSweep();
+  else if(k==='uniqueq')drawUnique();
+}
+
+/* ───────── ПАНЕЛИ / СООБЩЕНИЯ ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function setInfo(ttl,body){document.getElementById('infoTtl').innerHTML=ttl;document.getElementById('infoBody').innerHTML=body}
+function renderOpts(list){
+  const box=document.getElementById('opts');box.innerHTML='';
+  list.forEach(o=>{const b=document.createElement('button');b.className='opt';b.innerHTML=o.t;b.dataset.key=o.key||'';b.onclick=()=>o.fn(b);box.appendChild(b)});
+}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+function setSwInfo(){
+  const el=document.getElementById('swP');if(!el)return;
+  if(swSnapped){el.innerHTML='<b style="color:#16a34a">точки пересечения нет</b>';return}
+  const P=footOnA(M,swAng);
+  if(!P)el.innerHTML='<b style="color:#16a34a">точки пересечения нет</b>';
+  else if(P.x>W||P.x<0)el.innerHTML='<b style="color:#dc2626">далеко за краем листа</b>';
+  else el.innerHTML='на экране, в точке P';
+}
+
+/* ───────── УСПЕХ ───────── */
+function succeed(extra){
+  if(solvedThis)return;
+  solvedThis=true;
+  results.push(mistakes===0&&hintsUsed===0?'g':(mistakes<=1&&hintsUsed<=1?'y':'r'));
+  log('solved',{kind:T().kind,mistakes,hints:hintsUsed});
+  const sb=document.getElementById('successBar');sb.textContent='✓ Готово!';sb.style.display='block';
+  document.getElementById('hintbox').style.display='none';
+  if(extra){const pr=document.getElementById('proof');pr.innerHTML='<b>Вывод.</b> '+extra;pr.style.display='block'}
+  const nb=document.getElementById('nextBtn');nb.style.display='inline-block';nb.textContent=ti<NT-1?'Следующая →':'Итоги →';
+}
+
+/* ───────── ПОДСКАЗКА ───────── */
+function showHint(){
+  if(solvedThis)return;
+  hintsUsed++;log('hint');
+  const hb=document.getElementById('hintbox');let h='';const k=T().kind;
+  if(k==='axiom')h='Поверните прямую за фиолетовую ручку к точке B. Подойдёте близко — прямая сама примагнитится к ней (целитесь по бледному пунктиру). Такое положение всего одно.';
+  else if(k==='build')h=buildStep==='c'?'Ведите прямую c к бледной пунктирной вертикали через M. Совпадёте — она встанет перпендикулярно к a, появится квадратик прямого угла.':'Ведите прямую b к бледной пунктирной горизонтали через M — она встанет перпендикулярно к c, то есть «вдоль» прямой a.';
+  else if(k==='sweep')h='Крутите прямую так, чтобы красная точка P уезжала всё дальше вдоль a. Когда прямая ляжет горизонтально (вдоль a), точка исчезнет — это и есть параллель.';
+  else h='Вспомните задачу с поворотом: любую прямую, кроме одной-единственной горизонтальной, можно «поймать» пересечением с a. Сколько же параллелей через M?';
+  hb.innerHTML='💡 '+h;hb.style.display='block';
+}
+
+/* ───────── ЛОГИКА ЗАДАЧ ───────── */
+function checkAxiom(){
+  if(solvedThis)return;
+  if(distToLine(PB,PA,axAng)<20){
+    axAng=angAB;axSnapped=true;log('snap_dir');
+    const el=document.getElementById('axB');if(el){el.textContent='✓ да';el.className='value v-ok'}
+    succeed('Через две точки можно провести прямую — и притом <b>только одну</b>. Это мы принимаем без доказательства — это <b>аксиома</b>. В этой главе аксиом несколько: этой и «отложить равный отрезок» мы пользуемся вовсю, «отложить равный угол» скоро понадобится для доказательства, — а главная здесь про <b>параллельные</b>. К ней и идём.');
+    setMsg('Поймали — прямая прошла через обе точки.','ok');
+  }
+}
+function buildAdvance(which){
+  if(which==='c'){
+    built.c=true;buildStep='b';log('built',{what:'perp_c'});
+    const el=document.getElementById('bldC');if(el){el.textContent='✓ да';el.className='value v-ok'}
+    setMsg('c ⊥ a. Теперь доведите прямую b до пунктирной горизонтали — она встанет перпендикулярно к c (и параллельно a).','info');
+  }else{
+    built.b=true;log('built',{what:'perp_b'});
+    const el=document.getElementById('bldB');if(el){el.textContent='✓ да';el.className='value v-ok'}
+    succeed('Через M провели прямую b: c ⊥ a, b ⊥ c, а две прямые, перпендикулярные одной и той же, не пересекаются (глава I). Значит b ∥ a — вот она, параллельная через M. Но <b>одна</b> ли такая прямая через M? Это и решает аксиома.');
+    setMsg('Готово: b ∥ a. Параллельная через M проведена.','ok');
+  }
+}
+function checkSweep(){
+  if(solvedThis)return;
+  if(Math.abs(Math.sin(swAng))<SNAP_PAR){
+    swAng=0;swSnapped=true;log('snap_dir');setSwInfo();
+    succeed('Среди всех прямых через M ровно <b>одна</b> не встречает a — та, что легла параллельно (совпала с построенной b). Любую другую чуть поверни — и точка пересечения вернётся, пусть и далеко за краем. Параллель через M <b>одна</b>.');
+    setMsg('Поймали! Прямая легла параллельно a — общей точки не осталось.','ok');
+  }
+}
+function answerUnique(key,btn){
+  if(solvedThis)return;
+  if(key==='one'){
+    btn.classList.add('ok-pick');
+    succeed('Параллель через M <b>одна</b>. Кажется очевидным, правда? Так казалось всем <b>две тысячи лет</b>. Евклид принял это своим пятым постулатом, и математики веками пытались его <b>доказать</b> — вывести из остальных аксиом. Не вышло ни у кого. Лишь в XIX веке поняли: доказать нельзя — это <b>самостоятельная аксиома</b>.');
+    setMsg('Верно — и за этим «верно» стоит большая история.','ok');
+  }else if(key==='tilt'){
+    mistakes++;uTrap=true;log('distractor',{pick:'tilt'});
+    setMsg('Смотрите: я чуть наклонил прямую — и точка пересечения с a появилась, просто <b>далеко</b>, у самого края (а то и за ним). «Почти параллельна» — это ещё не «параллельна». Параллель ровно одна.','err');
+  }else{
+    mistakes++;log('distractor',{pick:'many'});
+    setMsg('Нет: любая другая прямая через M рано или поздно встретит a. Не встречает только одна. Попробуйте ещё раз.','err');
+  }
+}
+
+/* ───────── ВЁРСТКА ЗАДАЧИ ───────── */
+function layout(){
+  const k=T().kind;
+  document.getElementById('pf').style.width=(ti/NT*100)+'%';
+  document.getElementById('pnum').textContent='Задача '+(ti+1)+' из '+NT;
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('proof').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  clearOpts();
+  if(k==='axiom'){
+    document.getElementById('badge').textContent='Сколько прямых через две точки?';
+    document.getElementById('taskText').innerHTML='Даны две точки — <b>A</b> и <b>B</b>. Возьмите фиолетовую ручку и поверните прямую так, чтобы она прошла <b>через обе</b>. Сколько таких прямых получится?';
+    setInfo('Прямая через две точки','<div class="row"><span>Прошла через A</span><span class="value v-ok">✓ всегда</span></div><div class="row"><span>Прошла через B</span><span class="value v-no" id="axB">нет</span></div>');
+    setMsg('Поверните прямую к точке B — поймайте положение, где она пройдёт через обе.','info');
+  }else if(k==='build'){
+    document.getElementById('badge').textContent='Построй параллельную через M';
+    document.getElementById('taskText').innerHTML='Прямая <b>a</b> и точка <b>M</b> вне её. Постройте через M прямую, параллельную a, как на рис. 115: сначала <b>c ⊥ a</b>, потом <b>b ⊥ c</b>.';
+    setInfo('Построение','<div class="row"><span>c ⊥ a</span><span class="value v-no" id="bldC">нет</span></div><div class="row"><span>b ⊥ c</span><span class="value v-no" id="bldB">нет</span></div>');
+    setMsg('Шаг 1: доведите прямую c до бледной пунктирной вертикали — она встанет перпендикулярно к a.','info');
+  }else if(k==='sweep'){
+    document.getElementById('badge').textContent='Найди параллель через M';
+    document.getElementById('taskText').innerHTML='А можно ли провести через M <b>другую</b> прямую, тоже параллельную a? Покрутите прямую через M и следите за точкой пересечения <b>P</b>. Поймайте положение, где её не станет.';
+    setInfo('Где сейчас точка P','<div id="swP">—</div>');
+    setMsg('Крутите прямую к горизонтали — P уедет за край и пропадёт.','info');
+  }else if(k==='uniqueq'){
+    document.getElementById('badge').textContent='Сколько параллелей через M?';
+    document.getElementById('taskText').innerHTML='Ты нащупал это руками. Теперь ответь точно: <b>сколько</b> прямых можно провести через точку M параллельно прямой a?';
+    setInfo('Подсказка','<p class="small">Любую прямую через M, кроме одной, можно «поймать» пересечением с a — пусть и далеко за краем листа.</p>');
+    setMsg('Выберите ответ.','info');
+    renderOpts(shuffle([
+      {t:'Через M проходит <b>только одна</b> параллельная',key:'one',fn:(b)=>answerUnique('one',b)},
+      {t:'Можно провести <b>ещё одну</b>, чуть наклонив',key:'tilt',fn:(b)=>answerUnique('tilt',b)},
+      {t:'Параллельных через M <b>сколько угодно</b>',key:'many',fn:(b)=>answerUnique('many',b)}
+    ]));
+  }
+  log('task_start',{kind:k});
+}
+
+function initTask(keepStats){
+  const k=T().kind;
+  if(!keepStats){mistakes=0;hintsUsed=0}
+  solvedThis=false;mode=null;
+  axAng=angAB-0.6;axSnapped=false;
+  buildStep='c';angC=Math.PI/2-0.55;angB=0.5;built={c:false,b:false};
+  swAng=0.7;swSnapped=false;
+  uPicked=false;uTrap=false;
+  layout();
+}
+function nextTask(){if(ti<NT-1){ti++;initTask()}else finish()}
+function resetTask(){log('reset');initTask(true)}
+
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{score:g});
+  const s=lS();s.runs=(s.runs||0)+1;s.passed=true;if(g>(s.best||0))s.best=g;sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent=g+' / '+NT;
+  document.getElementById('finLbl').textContent=
+    g===NT?'Аксиома в руках — и существование, и единственность.':g>=3?'Отлично! Главное — почему это аксиома — разобрано.':'Стоит пройти ещё раз: обратите внимание на «почему параллель одна».';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){
+  ti=0;results=[];
+  document.getElementById('fin').style.display='none';
+  document.getElementById('mainArea').style.display='grid';
+  document.getElementById('bar').style.display='flex';
+  initTask();
+}
+
+/* ───────── УКАЗАТЕЛЬ ───────── */
+function pos(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+function curHandle(){
+  const k=T().kind;
+  if(k==='axiom')return{x:PA.x+Math.cos(axAng)*135,y:PA.y+Math.sin(axAng)*135,pivot:PA};
+  if(k==='build'){const ang=buildStep==='c'?angC:angB;return{x:M.x+Math.cos(ang)*100,y:M.y+Math.sin(ang)*100,pivot:M}}
+  if(k==='sweep')return{x:M.x+Math.cos(swAng)*120,y:M.y+Math.sin(swAng)*120,pivot:M};
+  return null;
+}
+cv.addEventListener('pointerdown',e=>{
+  if(solvedThis)return;
+  const k=T().kind;
+  if(k!=='axiom'&&k!=='build'&&k!=='sweep')return;
+  ptype=e.pointerType==='touch'?'touch':'mouse';
+  const p=pos(e),h=curHandle();
+  const scrK=Math.max(1,W/cv.getBoundingClientRect().width);
+  const grabR=(ptype==='touch'?30:20)*scrK;
+  if(h&&Math.hypot(p.x-h.x,p.y-h.y)<grabR){mode='rot';try{cv.setPointerCapture(e.pointerId)}catch(_){}}
+});
+cv.addEventListener('pointermove',e=>{ if(mode==='rot')applyRot(pos(e)); });
+function applyRot(p){
+  if(solvedThis)return;   // после решения прямая замирает — иначе уедет за курсором (зелёная линия отдельно, точка отдельно)
+  const k=T().kind;
+  if(k==='axiom'){
+    axAng=Math.atan2(p.y-PA.y,p.x-PA.x);
+    checkAxiom();
+  }else if(k==='build'){
+    let na=Math.atan2(p.y-M.y,p.x-M.x);
+    if(buildStep==='c'){            // цель — вертикаль (c ⊥ a); ловим с любой стороны, без мёртвых зон
+      angC=na;
+      if(Math.min(Math.abs(normDiff(na,Math.PI/2)),Math.abs(normDiff(na,-Math.PI/2)))<PERP_SNAP){angC=Math.PI/2;buildAdvance('c')}
+    }else{                          // цель — горизонталь (b ⊥ c, то есть b ∥ a)
+      angB=na;
+      if(Math.min(Math.abs(normDiff(na,0)),Math.abs(normDiff(na,Math.PI)))<PERP_SNAP){angB=0;buildAdvance('b')}
+    }
+  }else if(k==='sweep'){
+    let na=Math.atan2(p.y-M.y,p.x-M.x);
+    if(na>1.25)na=1.25; if(na<-1.25)na=-1.25;
+    swAng=na;setSwInfo();checkSweep();
+  }
+}
+['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,e=>{mode=null;try{cv.releasePointerCapture(e.pointerId)}catch(_){}}));
+
+/* ───────── СТАРТ ───────── */
+initTask();
+(function loop(){draw();requestAnimationFrame(loop)})();
+</script>
+</body>
+</html>

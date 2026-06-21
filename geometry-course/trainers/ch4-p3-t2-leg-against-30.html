@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Катет против угла в 30°</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.slider-wrap{display:none;margin-top:12px;background:#f1ede3;border:1px solid #d6d3ca;border-radius:12px;padding:12px 14px}
+.slider-wrap .row{display:flex;justify-content:space-between;align-items:center;font:800 13px system-ui;color:#475569;margin-bottom:9px}
+.slider-wrap .val{font:900 14px 'Courier New',monospace;color:#0d9488}
+.slider-wrap input[type=range]{width:100%;height:30px;accent-color:#0d9488;cursor:pointer}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.gauge{display:flex;flex-direction:column;gap:6px;font-size:14px}
+.gauge .row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed #e5e7eb}
+.gauge .row:last-child{border-bottom:0}
+.gauge .v{font-weight:900;font-variant-numeric:tabular-nums}
+.v-ok{color:#16a34a}
+.given{font-size:13px;line-height:1.5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:10px}
+.given b{color:#3730a3}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:750 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt.ok-pick{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.bad-pick{background:#fee2e2;border-color:#dc2626;color:#991b1b}
+.opt.correct-reveal{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.shake{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.proof{display:none;background:#ecfdf5;color:#14532d;border:1.5px solid #bbf7d0;border-radius:12px;padding:12px;font-size:13px;line-height:1.5}
+.proof b{color:#166534}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.small{font-size:12px;color:#64748b;line-height:1.45}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.tool.fold{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.tool.fold:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:15px;height:15px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:660px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law .nb{margin-top:10px;font-size:13px;color:#475569}
+.law .star{margin-top:10px;background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:10px 12px;font-size:13px;color:#92400e}
+.bridge{margin-top:10px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">△ Катет против 30°</div>
+      <div class="sub">Глава IV · §3 · тренажёр 2 из 9 — катет против угла в 30°</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Ровно половина?</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="460"></canvas>
+      <div class="slider-wrap" id="sliderWrap">
+        <div class="row"><span>Меняй острый угол A — форма треугольника меняется</span><span class="val" id="angVal">45°</span></div>
+        <input type="range" id="angSlider" min="18" max="50" value="45" step="1">
+      </div>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card" id="gaugeCard">
+        <h2 id="gaugeTtl">Углы и стороны</h2>
+        <div class="gauge" id="gauge"></div>
+      </div>
+      <div class="card" id="givenCard" style="display:none"><div class="given" id="givenBox"></div></div>
+      <div id="opts" class="opts"></div>
+      <div id="msg" class="msg info"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div id="proof" class="proof"></div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Катет прямоугольного треугольника, лежащий против угла в 30°, равен половине гипотенузы.</b>
+      <div class="nb">Почему: на продолжении катета отложим равный отрезок (CD = CB) — получатся два равных прямоугольных треугольника (по первому признаку), которые вместе образуют <b>равносторонний</b> треугольник. Его сторона — это гипотенуза, а наш короткий катет — ровно её половина.</div>
+      <div class="star">✦ <b>за страницами учебника:</b> тот же закон — в руках у чертёжника. У чертёжного угольника с углами 30-60-90 короткая сторона ровно вдвое короче самой длинной — гипотенузы.</div>
+      <div class="bridge">А наоборот: если катет вдруг оказался ровно половиной гипотенузы — обязательно ли угол против него равен 30°? Это обратное утверждение. <a href="ch4-p3-t3-half-means-30.html">Половина — значит 30° →</a></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="tool" onclick="restart()" style="background:#1a1a2e;color:#fff;border-color:#1a1a2e">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool fold" id="foldBtn" style="display:none" onclick="startFold()">↧ Достроить: отложить CD = CB</button>
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="advance()">Следующая →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС / ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch4-p3-t2-leg-against-30';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),phase:ph,kind:NM[ph],e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640,H=460,PI=Math.PI;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+const PULSE=()=>1+0.13*Math.sin(Date.now()/240);
+
+/* ───────── ПАЛИТРА / ПРИМИТИВЫ ───────── */
+const COL={A:'#d97706',B:'#db2777',C:'#0d9488',G:'#16a34a',DARK:'#1a1a2e',GREY:'#94a3b8',HYP:'#2d70b3',SHORT:'#db2777'};
+function sub(p,q){return{x:p.x-q.x,y:p.y-q.y}}
+function nrm(v){const m=Math.hypot(v.x,v.y)||1;return{x:v.x/m,y:v.y/m}}
+function angAt(V,P,Q){const a=Math.atan2(P.y-V.y,P.x-V.x),b=Math.atan2(Q.y-V.y,Q.x-V.x);let d=Math.abs(a-b);if(d>PI)d=2*PI-d;return d;}
+function hexA(h,a){const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+function bg(){
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill()}
+}
+function lab(x,y,txt,col,size){
+  ctx.font='900 '+(size||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);ctx.textBaseline='alphabetic';
+}
+function dot(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function seg(p,q,col,w){ctx.strokeStyle=col;ctx.lineWidth=w||2.8;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
+function drawAngle(V,P,Q,col,active,dim,r0){
+  const a1=Math.atan2(P.y-V.y,P.x-V.x), a2=Math.atan2(Q.y-V.y,Q.x-V.x);
+  let d=a2-a1; while(d<=-PI)d+=2*PI; while(d>PI)d-=2*PI;
+  const acw=d<0, r=active? r0*PULSE() : r0;
+  ctx.save(); if(dim)ctx.globalAlpha=0.32;
+  ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.arc(V.x,V.y,r,a1,a1+d,acw);ctx.closePath();
+  ctx.fillStyle=hexA(col,0.16);ctx.fill();
+  ctx.beginPath();ctx.arc(V.x,V.y,r,a1,a1+d,acw);
+  ctx.lineWidth=active?3.8:2.6;ctx.strokeStyle=col;ctx.lineCap='round';ctx.stroke();
+  ctx.restore();
+}
+function rightMark(V,P,Q,col){
+  const u=nrm(sub(P,V)),v=nrm(sub(Q,V)),s=15;
+  const p1={x:V.x+u.x*s,y:V.y+u.y*s},p3={x:V.x+v.x*s,y:V.y+v.y*s},p2={x:p1.x+v.x*s,y:p1.y+v.y*s};
+  ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.lineTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.closePath();
+  ctx.fillStyle=hexA(col,0.18);ctx.fill();
+  ctx.strokeStyle=col;ctx.lineWidth=2.6;ctx.lineJoin='round';
+  ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.stroke();
+}
+function tickMark(p,q,n,col){
+  const mx=(p.x+q.x)/2,my=(p.y+q.y)/2; let dx=q.x-p.x,dy=q.y-p.y;const L=Math.hypot(dx,dy)||1;dx/=L;dy/=L;
+  const nx=-dy,ny=dx;
+  for(let i=0;i<n;i++){const off=(i-(n-1)/2)*5,cx=mx+dx*off,cy=my+dy*off;
+    ctx.beginPath();ctx.moveTo(cx-nx*5,cy-ny*5);ctx.lineTo(cx+nx*5,cy+ny*5);ctx.strokeStyle=col||COL.DARK;ctx.lineWidth=2;ctx.stroke();}
+}
+function sideLabel(P,Q,away,txt,col,size){
+  const mx=(P.x+Q.x)/2,my=(P.y+Q.y)/2; let nx=-(Q.y-P.y),ny=(Q.x-P.x);
+  const m=Math.hypot(nx,ny)||1; nx/=m;ny/=m;
+  if((mx+nx-away.x)**2+(my+ny-away.y)**2 < (mx-nx-away.x)**2+(my-ny-away.y)**2){nx=-nx;ny=-ny;}
+  lab(mx+nx*18,my+ny*18,txt,col,size||12.5);
+}
+function lerp(a,b,t){return a+(b-a)*t;}
+
+/* ───────── ФАЗЫ ───────── */
+const NM=['catch','fold','proof','apply'];
+const TOTAL=NM.length;
+let ph=0, results=[], mistakes=0, hints=0, phaseSolved=false, mode=null;
+let horText='', horCol=COL.DARK;
+
+/* геометрия 30-60-90: прямой угол при C, угол angA при A; катет CA горизонтальный; D — на продолжении катета BC (CD = CB) */
+const C={x:250,y:250}, A={x:440,y:250}, CA=190;     // A и C неподвижны, AC = ось
+let angA=45;                                          // острый угол при A (ползунок)
+function tri(){
+  const cb=CA*Math.tan(angA*PI/180);
+  const B={x:C.x, y:C.y-cb};                          // вершина над C
+  const D={x:C.x, y:C.y+cb};                          // зеркальный образ B через AC
+  const M={x:(A.x+B.x)/2, y:(A.y+B.y)/2};             // середина гипотенузы AB
+  return {B,D,M,cb};
+}
+let caught=false, lastA=45;
+
+/* fold */
+let foldActive=false, foldP=0, foldDone=false;
+
+/* proof */
+let proofStep=0;
+
+/* apply */
+const APPLY=[
+  {q:'Гипотенуза 12 см, острый угол 30°. Чему равен катет, лежащий против угла 30°?', given:'гип. = 12', ans:'6 см',
+   opts:['6 см','24 см','≈ 10,4 см (это длинный катет)']},
+  {q:'Катет, лежащий против угла 30°, равен 7 см. Чему равна гипотенуза?', given:'катет = 7', ans:'14 см',
+   opts:['14 см','3,5 см','7 см']}
+];
+let applyIdx=0, applyResolved=false;
+
+/* ───────── ОТРИСОВКА ───────── */
+function drawCatch(){
+  const t=tri();
+  // гипотенуза с меткой середины
+  seg(A,t.B,COL.HYP,3); 
+  tickMark(A,t.M,1,COL.HYP); tickMark(t.M,t.B,1,COL.HYP);     // две равные половины гипотенузы
+  dot(t.M.x,t.M.y,3.4,COL.HYP);
+  // катеты
+  seg(C,A,COL.DARK,2.8);
+  seg(C,t.B,COL.SHORT,3.4);                                   // короткий катет — цветом
+  rightMark(C,A,t.B,COL.C);
+  drawAngle(A,C,t.B,COL.A,!caught,false,26);
+  drawAngle(t.B,C,A,COL.B,false,false,22);
+  dot(A.x,A.y,4.2,COL.DARK); dot(C.x,C.y,4.2,COL.DARK); dot(t.B.x,t.B.y,4.2,COL.SHORT);
+  lab(A.x+16,A.y+18,'A',COL.A,16);
+  lab(C.x-15,C.y+18,'C',COL.C,16);
+  lab(t.B.x-15,Math.max(16,t.B.y-6),'B',COL.SHORT,16);
+  sideLabel(C,t.B,A,'против 30°',COL.SHORT,12);
+}
+function eqTri(){ // вершины равностороннего ABD при текущем угле
+  const t=tri(); return {A:A,B:t.B,D:t.D,Cmid:C};
+}
+function drawEquilateral(showTicks){
+  const e=eqTri();
+  ctx.save();ctx.globalAlpha=0.08;ctx.fillStyle=COL.C;
+  ctx.beginPath();ctx.moveTo(e.A.x,e.A.y);ctx.lineTo(e.B.x,e.B.y);ctx.lineTo(e.D.x,e.D.y);ctx.closePath();ctx.fill();ctx.restore();
+  seg(e.A,e.B,COL.HYP,3); seg(e.A,e.D,COL.DARK,3); seg(e.B,e.D,COL.DARK,3);
+  seg(e.A,e.Cmid,COL.DARK,2.2);                                                          // катет AC: общее ребро двух половинок, высота к BD
+  if(showTicks){
+    tickMark(e.A,e.B,2,COL.DARK); tickMark(e.A,e.D,2,COL.DARK); tickMark(e.B,e.D,2,COL.DARK);  // три равные стороны
+    tickMark(e.B,e.Cmid,1,COL.SHORT); tickMark(e.Cmid,e.D,1,COL.SHORT);                         // две равные половины BD
+  }
+  rightMark(e.Cmid,e.A,e.B,COL.C); rightMark(e.Cmid,e.A,e.D,COL.C);   // оба прямых угла при C: CA ⊥ BD
+  dot(e.A.x,e.A.y,4.2,COL.DARK); dot(e.B.x,e.B.y,4.2,COL.SHORT); dot(e.D.x,e.D.y,4.2,COL.DARK); dot(e.Cmid.x,e.Cmid.y,3.6,COL.C);
+  lab(e.A.x+16,e.A.y+4,'A',COL.A,16);
+  lab(e.B.x-15,Math.max(16,e.B.y-8),'B',COL.SHORT,16);
+  lab(e.D.x-15,Math.min(H-10,e.D.y+16),'D',COL.DARK,16);
+  lab(e.Cmid.x-16,e.Cmid.y+4,'C',COL.C,14);
+}
+function drawFold(){
+  const t=tri();
+  if(!foldActive && !foldDone){
+    drawCatch();
+    lab(W/2,H-40,'нажми «Достроить» внизу',COL.DARK,14);
+    return;
+  }
+  if(foldActive){
+    // верхний треугольник BCA остаётся
+    seg(A,t.B,COL.HYP,3); seg(C,A,COL.DARK,2.6); seg(C,t.B,COL.SHORT,3.4);
+    rightMark(C,A,t.B,COL.C);
+    dot(A.x,A.y,4.2,COL.DARK); dot(t.B.x,t.B.y,4.2,COL.SHORT);
+    lab(A.x+16,A.y+4,'A',COL.A,16); lab(t.B.x-15,Math.max(16,t.B.y-8),'B',COL.SHORT,16);
+    // на продолжении катета BC за точку C откладываем CD = CB: D растёт вниз от C
+    ctx.save();ctx.setLineDash([5,4]);ctx.globalAlpha=0.5;seg(C,{x:C.x,y:t.D.y},COL.GREY,2);ctx.restore();
+    const Dm={x:C.x, y:lerp(C.y,t.D.y,foldP)};
+    seg(C,Dm,COL.SHORT,3.4);                                   // отложенный отрезок CD (= CB)
+    ctx.save();ctx.globalAlpha=0.4+0.5*foldP; seg(A,Dm,COL.HYP,3); ctx.restore();
+    if(foldP>0.25){ tickMark(C,t.B,1,COL.SHORT); tickMark(C,Dm,1,COL.SHORT); }   // CD = CB
+    dot(Dm.x,Dm.y,4.2,hexA(COL.SHORT,0.9));
+    lab(C.x-15,C.y+4,'C',COL.C,14);
+    return;
+  }
+  // foldDone
+  drawEquilateral(true);
+  lab(W/2,H-40,'BC = ½ · BD = ½ · AB',COL.G,15);
+}
+function drawProof(){
+  drawEquilateral(true);
+  const e=eqTri();
+  if(proofStep===0){
+    // данные первого признака: CB = CD, общая CA, прямые углы при C
+    seg(e.B,e.Cmid,COL.SHORT,4.6); seg(e.Cmid,e.D,COL.SHORT,4.6); seg(e.A,e.Cmid,COL.A,4.6);
+    rightMark(e.Cmid,e.A,e.B,COL.C); rightMark(e.Cmid,e.A,e.D,COL.C);
+  } else if(proofStep===1){
+    // соответственные элементы: AB = AD и углы по 30°
+    drawAngle(e.A,e.B,e.Cmid,COL.G,true,false,40); drawAngle(e.A,e.Cmid,e.D,COL.G,true,false,30);
+    seg(e.A,e.B,COL.G,4); seg(e.A,e.D,COL.G,4);
+  } else if(proofStep===2){
+    // равносторонний: три равные стороны + угол 60° при A
+    seg(e.A,e.B,COL.G,4); seg(e.A,e.D,COL.G,4); seg(e.B,e.D,COL.G,4);
+    drawAngle(e.A,e.B,e.D,COL.G,true,false,42);
+    lab(e.A.x-30,e.A.y,'60°',COL.G,13);
+  } else {
+    // BD = AB, и BC, CD — две половины BD
+    seg(e.B,e.D,COL.HYP,4.4); seg(e.A,e.B,COL.HYP,4.4);
+    seg(e.B,e.Cmid,COL.SHORT,4.6); seg(e.Cmid,e.D,COL.SHORT,4.6);
+  }
+}
+/* отдельная иллюстрация 30-60-90 для применения: прямой угол при C (катеты сходятся в C), 30° при A, гипотенуза — наклонная AB */
+const C2={x:240,y:350}, A2={x:480,y:350}, B2={x:240, y:350-240*Math.tan(30*PI/180)};
+function drawApply(){
+  seg(A2,B2,COL.HYP,3.2);          // гипотенуза (против прямого угла C)
+  seg(C2,A2,COL.DARK,2.8);         // длинный катет
+  seg(C2,B2,COL.SHORT,3.4);        // короткий катет — против угла 30°
+  rightMark(C2,A2,B2,COL.C);       // прямой угол при C
+  drawAngle(A2,C2,B2,COL.A,true,false,26);
+  lab(A2.x+Math.cos(bisA2())*46, A2.y+Math.sin(bisA2())*46, '30°', COL.A,13);
+  dot(A2.x,A2.y,4.2,COL.A);dot(C2.x,C2.y,4.2,COL.C);dot(B2.x,B2.y,4.2,COL.SHORT);
+  lab(A2.x+16,A2.y+18,'A',COL.A,16);lab(C2.x-15,C2.y+18,'C',COL.C,16);lab(B2.x-15,Math.max(16,B2.y-8),'B',COL.SHORT,16);
+  if(applyIdx===0){ sideLabel(A2,B2,C2,'12 см',COL.HYP,13); sideLabel(C2,B2,A2,'? катет (против 30°)',COL.SHORT,12.5); }
+  else { sideLabel(C2,B2,A2,'7 см',COL.SHORT,13); sideLabel(A2,B2,C2,'? гипотенуза',COL.HYP,12.5); }
+}
+function bisA2(){const a1=Math.atan2(C2.y-A2.y,C2.x-A2.x),a2=Math.atan2(B2.y-A2.y,B2.x-A2.x);let d=a2-a1;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;return a1+d/2;}
+function drawHor(){ if(horText) lab(W/2,H-15,horText,horCol,14); }
+function draw(){
+  bg();
+  const k=NM[ph];
+  if(k==='catch') drawCatch();
+  else if(k==='fold') drawFold();
+  else if(k==='proof') drawProof();
+  else if(k==='apply') drawApply();
+  drawHor();
+}
+
+/* ───────── ГЕЙДЖ ───────── */
+function ratioStr(){const s=Math.sin(angA*PI/180);return s.toFixed(2).replace('.',',');}
+function gaugeUpdate(){
+  if(NM[ph]!=='catch')return;
+  const at30=Math.abs(angA-30)<0.5;
+  const row=(x,col,deg)=>'<div class="row"><span style="color:'+col+';font-weight:800">∠'+x+'</span><span class="v">'+Math.round(deg)+'°</span></div>';
+  document.getElementById('gauge').innerHTML =
+    row('A',COL.A,angA)+row('B',COL.B,90-angA)+
+    '<div class="row"><span style="color:'+COL.C+';font-weight:800">∠C</span><span class="v">90°</span></div>'+
+    '<div class="row"><span><b>катет BC : AB</b></span><span class="v '+(at30?'v-ok':'')+'">'+(at30?'1 : 2 (½)':ratioStr())+'</span></div>';
+}
+
+/* ───────── ОБЩИЕ ───────── */
+function renderOpts(list){
+  const box=document.getElementById('opts');box.innerHTML='';
+  list.forEach(o=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML=o.t;b.addEventListener('click',()=>o.fn(b));box.appendChild(b);});
+}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+function markPick(btn,ok){if(btn&&btn.classList)btn.classList.add(ok?'ok-pick':'bad-pick')}
+function shakeBtn(btn){if(btn&&btn.classList){btn.classList.add('shake');setTimeout(()=>btn.classList.remove('shake'),450);}}
+function revealCorrect(label){[...document.getElementById('opts').children].forEach(b=>{if(b.textContent.trim()===label)b.classList.add('correct-reveal')})}
+function lockOpts(){[...document.getElementById('opts').children].forEach(b=>b.disabled=true)}
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function pushResult(){results.push(mistakes===0&&hints===0?'g':(mistakes<=1&&hints<=1?'y':'r'))}
+function succeedPhase(proofTxt){
+  if(phaseSolved)return; phaseSolved=true; pushResult();
+  log('solved',{mistakes,hints});
+  const sb=document.getElementById('successBar');sb.textContent='✓ Готово!';sb.style.display='block';
+  document.getElementById('hintbox').style.display='none';
+  if(proofTxt){const pr=document.getElementById('proof');pr.innerHTML='<b>Вывод.</b> '+proofTxt;pr.style.display='block';}
+  const nb=document.getElementById('nextBtn');nb.textContent=(ph<TOTAL-1)?'Следующая →':'Завершить →';nb.style.display='inline-block';
+}
+
+/* ───────── ФАЗА catch ───────── */
+function onAngChange(){
+  recompute();
+  if(phaseSolved)return;
+  if(Math.abs(angA-lastA)>=3){ lastA=angA; log('step',{what:'slide',angA}); }
+  if(Math.abs(angA-30)<0.5){
+    caught=true; log('snap',{target:30}); log('found',{what:'half'});
+    horText='угол 30° → короткий катет = ½ гипотенузы'; horCol=COL.G;
+    setMsg('Вот оно: при 30° короткий катет дотянулся ровно до середины гипотенузы — это её половина.','ok');
+    succeedPhase('При угле 30° отношение «катет : гипотенуза» стало ровно 1 : 2. Короткий катет (против 30°) — половина гипотенузы. Но один чертёж — это пример; почему так выходит всегда, докажем на следующем шаге, достроив треугольник.');
+  }
+}
+function recompute(){ /* геометрия пересчитывается в tri() на лету */ }
+
+/* ───────── ФАЗА fold ───────── */
+function startFold(){
+  if(NM[ph]!=='fold'||foldActive||foldDone)return;
+  foldActive=true; foldP=0;
+  document.getElementById('foldBtn').style.display='none';
+  horText='откладываем на продолжении катета отрезок CD = CB…'; horCol=COL.DARK;
+  log('built',{what:'fold_start'});
+}
+function stepAnim(){ if(foldActive){ foldP=Math.min(1,foldP+0.018); if(foldP>=1){foldP=1;onFoldDone();} } }
+function onFoldDone(){
+  foldActive=false; foldDone=true;
+  log('built',{what:'fold'});
+  horText='получились два треугольника с общей стороной CA — докажем дальше'; horCol=COL.G;
+  succeedPhase('Отложили на продолжении катета BC отрезок CD = CB. Получились два прямоугольных треугольника — <b>BCA</b> и <b>DCA</b> — с общей стороной CA, вместе они складываются в треугольник ABD. На вид он равносторонний, а короткий катет BC — половина стороны BD. <b>Почему</b> это так, строго докажем на следующем шаге.');
+}
+
+/* ───────── ФАЗА proof (4 шага конструктора) ───────── */
+const PROOF=[
+  { task:'Шаг 1. По какому признаку равны треугольники <b>BCA</b> и <b>DCA</b>?',
+    info:'Что у них заведомо равно — и чего ровно хватает для признака?',
+    hor:'шаг 1: △BCA = △DCA — по какому признаку?',
+    ok:'По первому: CB = CD, углы при C по 90°, сторона CA — общая',
+    okMsg:'Верно. Две стороны и угол между ними — это первый признак.',
+    opts:['По первому: CB = CD, углы при C по 90°, сторона CA — общая',
+          'По второму: по стороне и двум прилежащим углам',
+          'По третьему: по трём сторонам'],
+    diag:{'По второму: по стороне и двум прилежащим углам':'Здесь две стороны (CB = CD и общая CA) и угол между ними (90°) — это первый признак, а не сторона с двумя углами.',
+          'По третьему: по трём сторонам':'Третьи стороны AB и AD мы как раз и доказываем равными — заранее их нет. Зато есть две стороны и угол между ними: первый признак.'} },
+  { task:'Шаг 2. Равные треугольники → равны и соответственные элементы. Что отсюда верно?',
+    info:'Сопоставь, какие стороны и углы лежат против равных элементов.',
+    hor:'шаг 2: что следует из равенства треугольников?',
+    ok:'AB = AD и ∠BAC = ∠DAC = 30°',
+    okMsg:'Верно. Это соответственные стороны и углы равных треугольников.',
+    opts:['AB = AD и ∠BAC = ∠DAC = 30°',
+          'AB = BC и AB = CA',
+          'Углы равны, а про стороны сказать нельзя'],
+    diag:{'AB = BC и AB = CA':'Нет: AB — гипотенуза, BC и CA — катеты, они короче. Равны соответственные элементы: AB = AD (гипотенузы) и ∠BAC = ∠DAC.',
+          'Углы равны, а про стороны сказать нельзя':'У равных треугольников равны и стороны: гипотенуза AB соответствует гипотенузе AD, значит AB = AD.'} },
+  { task:'Шаг 3. Углы при A складываются: ∠BAD = ∠BAC + ∠DAC = 30° + 30° = 60°, а стороны AB = AD. Какой это треугольник ABD?',
+    info:'Равнобедренный, у которого угол при вершине 60° — это…',
+    hor:'шаг 3: какой треугольник ABD?',
+    ok:'Равносторонний: равнобедренный с углом 60° при вершине',
+    okMsg:'Верно — ABD равносторонний.',
+    opts:['Равносторонний: равнобедренный с углом 60° при вершине',
+          'Просто равнобедренный',
+          'Прямоугольный'],
+    diag:{'Просто равнобедренный':'Он равнобедренный, но угол при вершине ровно 60° — тогда и два других по 60°, и все стороны равны. Это равносторонний.',
+          'Прямоугольный':'Прямой угол был у половинок (при C). У целого ABD все углы по 60° — он равносторонний.'} },
+  { task:'Шаг 4. Почему короткий катет <b>BC</b> — половина гипотенузы <b>AB</b>?',
+    info:'Свяжи сторону равностороннего BD с гипотенузой и с катетом BC.',
+    hor:'шаг 4: почему BC = ½·AB?',
+    ok:'BD = AB (сторона равностороннего), а BD = CB + CD = 2·BC → BC = ½·AB',
+    okMsg:'Верно.',
+    opts:['BD = AB (сторона равностороннего), а BD = CB + CD = 2·BC → BC = ½·AB',
+          'Потому что BC — половина катета CA',
+          'Потому что угол против BC равен 30°'],
+    diag:{'Потому что BC — половина катета CA':'Сравниваем BC не с катетом CA, а с гипотенузой. BD = AB (равносторонний) и BD = 2·BC, поэтому BC = ½·AB.',
+          'Потому что угол против BC равен 30°':'Это то, что мы доказываем, а не довод. Строго: BD = AB и BD = 2·BC, значит BC = ½·AB.'} }
+];
+function setupProof(){
+  document.getElementById('givenCard').style.display='block';
+  document.getElementById('givenBox').innerHTML='<b>Построение:</b> отложили CD = CB на продолжении катета. Вышли два прямоугольных треугольника — <b>BCA</b> и <b>DCA</b> — с общей стороной CA. Докажем строго по шагам.';
+  proofStep=0; renderProofStep();
+}
+function renderProofStep(){
+  const s=PROOF[proofStep];
+  document.getElementById('taskText').innerHTML=s.task;
+  renderOpts(shuffle(s.opts.map(o=>({t:o, fn:b=>proofPick(o,b)}))));
+  setMsg(s.info,'info');
+  horText=s.hor; horCol=COL.DARK;
+}
+function proofPick(label,btn){
+  if(phaseSolved)return;
+  const s=PROOF[proofStep];
+  if(label===s.ok){
+    markPick(btn,true); lockOpts(); log('step',{q:'proof',step:proofStep});
+    if(proofStep<PROOF.length-1){ setMsg(s.okMsg||'Верно.','ok'); proofStep++; renderProofStep(); }
+    else {
+      horText='BC = ½·BD = ½·AB ∎'; horCol=COL.G; setMsg('Верно.','ok');
+      succeedPhase('Цепочка целиком: △BCA = △DCA по первому признаку → AB = AD и ∠BAC = ∠DAC = 30° → ∠BAD = 60° → треугольник ABD <b>равносторонний</b> → BD = AB. А BD = CB + CD = 2·BC, поэтому <b>BC = ½·AB</b>. Катет против 30° — половина гипотенузы.');
+    }
+  } else {
+    mistakes++; log('distractor',{q:'proof',step:proofStep,pick:label}); markPick(btn,false); revealCorrect(s.ok);
+    setMsg((s.diag[label]||'Не так.')+' Нажми верный ответ.','err');
+  }
+}
+
+/* ───────── ФАЗА apply ───────── */
+function setupApply(){
+  document.getElementById('givenCard').style.display='block';
+  applyIdx=0; showApplyRound();
+}
+function showApplyRound(){
+  applyResolved=false;
+  const r=APPLY[applyIdx];
+  document.getElementById('givenBox').innerHTML='<b>Задача '+(applyIdx+1)+' из '+APPLY.length+'.</b> '+r.given;
+  document.getElementById('taskText').innerHTML=r.q;
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('proof').style.display='none';
+  renderOpts(shuffle(r.opts.map(o=>({t:o, fn:b=>applyPick(o,b)}))));
+  setMsg('Угол 30° напротив короткого катета — он вдвое короче гипотенузы.','info');
+  horText='угол 30° · катет против него = половина гипотенузы'; horCol=COL.DARK;
+}
+function applyPick(value,btn){
+  if(applyResolved)return;
+  const r=APPLY[applyIdx];
+  const correct=(value===r.ans);
+  if(!correct){ mistakes++; log('distractor',{q:'apply',round:applyIdx,pick:value}); shakeBtn(btn); markPick(btn,false); revealCorrect(r.ans);
+    setMsg(diagApply(value), 'err'); return; }
+  applyResolved=true; markPick(btn,true); lockOpts(); log('step',{q:'apply',round:applyIdx});
+  setMsg('Верно — '+r.ans+'.','ok');
+  const last=applyIdx>=APPLY.length-1;
+  if(last){ succeedPhase('Угол 30° — дели гипотенузу пополам, чтобы найти катет против него; и наоборот, удваивай этот катет, чтобы получить гипотенузу.'); }
+  else { const nb=document.getElementById('nextBtn'); nb.textContent='Следующая задача →'; nb.style.display='inline-block'; horText='верно — дальше'; horCol=COL.G; }
+}
+function diagApply(value){
+  if(applyIdx===0){ if(value==='24 см')return 'Здесь нужно поделить пополам, а не удвоить: катет против 30° меньше гипотенузы. 12 : 2 = 6. Нажми верный ответ.';
+    return 'Это длинный катет — он лежит против угла 60°. А половина гипотенузы — это короткий катет, против 30°: 12 : 2 = 6. Нажми верный ответ.'; }
+  if(value==='3,5 см') return 'Наоборот: катет — это половина, значит гипотенуза вдвое больше. 7 · 2 = 14. Нажми верный ответ.';
+  return 'Гипотенуза не равна катету — она вдвое длиннее катета против 30°. 7 · 2 = 14. Нажми верный ответ.';
+}
+
+/* ───────── ЖИЗНЕННЫЙ ЦИКЛ ───────── */
+function initPhase(i){
+  ph=i; phaseSolved=false; mode=null; mistakes=0; hints=0;
+  document.getElementById('pf').style.width=(i/TOTAL*100)+'%';
+  document.getElementById('pnum').textContent='Шаг '+(i+1)+' из '+TOTAL;
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('proof').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('gaugeCard').style.display=(NM[i]==='catch')?'block':'none';
+  document.getElementById('givenCard').style.display='none';
+  document.getElementById('sliderWrap').style.display='none';
+  document.getElementById('foldBtn').style.display='none';
+  clearOpts();
+  const bd=document.getElementById('badge');
+  const k=NM[i];
+  if(k==='catch'){
+    bd.textContent='Ровно половина?'; caught=false; angA=45; lastA=45;
+    const sl=document.getElementById('angSlider'); if(sl)sl.value=45;
+    const v=document.getElementById('angVal'); if(v)v.textContent='45°';
+    document.getElementById('sliderWrap').style.display='block';
+    document.getElementById('taskText').innerHTML='Прямоугольный треугольник: прямой угол при <b>C</b>. Короткий катет <b>BC</b> лежит против угла A. Веди ползунок к <b>30°</b> и следи за строкой «катет BC : AB». Что станет с отношением?';
+    horText='катет против угла A — следи за отношением'; horCol=COL.DARK;
+    setMsg('Меняй угол A. У 45° катет больше половины. А ровно при 30°?','info'); gaugeUpdate();
+  } else if(k==='fold'){
+    bd.textContent='Дострой до равностороннего'; angA=30; caught=true;
+    foldActive=false; foldP=0; foldDone=false;
+    document.getElementById('foldBtn').style.display='inline-block';
+    document.getElementById('taskText').innerHTML='Зафиксировали угол 30°. Теперь достроим: на продолжении катета <b>BC</b> за точку C отложим отрезок <b>CD = CB</b>. Нажми «<b>Достроить</b>» и посмотри, что получится.';
+    horText='нажми «Достроить» внизу'; horCol=COL.DARK;
+    setMsg('Откладываем CD = CB вниз — жмём «Достроить».','info');
+  } else if(k==='proof'){
+    bd.textContent='Почему половина?'; angA=30; setupProof();
+  } else if(k==='apply'){
+    bd.textContent='Найди половину'; setupApply();
+  }
+  log('task_start',{});
+}
+function advance(){
+  if(NM[ph]==='apply' && applyResolved && applyIdx<APPLY.length-1){ applyIdx++; showApplyRound(); return; }
+  if(ph<TOTAL-1) initPhase(ph+1); else finish();
+}
+function resetTask(){ log('reset'); initPhase(ph); }
+
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{score:g});
+  const s=lS();s.runs=(s.runs||0)+1;if(g>(s.best||0))s.best=g;s.passed=true;sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent=g+' / '+TOTAL;
+  document.getElementById('finLbl').textContent = g===TOTAL?'Чисто! Половина гипотенузы теперь у тебя в руках.':(g>=2?'Хорошо — главное ты увидел сам.':'Стоит пройти ещё раз.');
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){
+  ph=0; results=[]; angA=45; lastA=45; caught=false; foldActive=false; foldP=0; foldDone=false; proofStep=0; applyIdx=0; applyResolved=false;
+  document.getElementById('fin').style.display='none';
+  document.getElementById('mainArea').style.display='grid';
+  document.getElementById('bar').style.display='flex';
+  initPhase(0);
+}
+
+function showHint(){
+  if(phaseSolved && NM[ph]!=='apply')return;
+  hints++; log('hint');
+  const hb=document.getElementById('hintbox');const k=NM[ph];let h='';
+  if(k==='catch') h='Веди ползунок ровно к 30°. Короткий катет BC дотянется точно до метки середины гипотенузы — значит он равен её половине. Отношение в панели станет 1 : 2.';
+  else if(k==='fold') h='Просто нажми «Достроить» — на продолжении катета BC отложится отрезок CD = CB, и появится второй такой же треугольник DCA с общей стороной CA.';
+  else if(k==='proof'){ const hh=['Сравни △BCA и △DCA: CB = CD (так отложили), угол при C у обоих 90°, сторона CA общая. Две стороны и угол между ними — первый признак.','У равных треугольников равны соответственные элементы: гипотенузы AB = AD и углы ∠BAC = ∠DAC = 30°.','Углы при A вместе дают 60°, а стороны AB = AD. Равнобедренный с углом 60° при вершине — равносторонний.','BD — сторона равностороннего, значит BD = AB. А BD = CB + CD = 2·BC. Отсюда BC = ½·AB.']; h=hh[proofStep]||hh[0]; }
+  else h='Угол 30° лежит против короткого катета. Короткий катет — половина гипотенузы. Значит: знаешь гипотенузу — дели на 2; знаешь катет — умножай на 2.';
+  hb.innerHTML='💡 '+h;hb.style.display='block';
+}
+
+/* ───────── ПОЛЗУНОК ───────── */
+(function(){const sl=document.getElementById('angSlider');if(sl)sl.addEventListener('input',()=>{
+  angA=+sl.value; const v=document.getElementById('angVal'); if(v)v.textContent=angA+'°';
+  gaugeUpdate(); onAngChange();
+});})();
+
+/* ───────── СТАРТ ───────── */
+initPhase(0);
+(function loop(){stepAnim();draw();requestAnimationFrame(loop)})();
+</script>
+</body>
+</html>

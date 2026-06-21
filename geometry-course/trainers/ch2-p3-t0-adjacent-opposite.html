@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Прилежащие и противолежащие · опорный словарь</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none;cursor:pointer}
+.actTtl{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:800;margin:13px 2px 7px}
+.pool{display:flex;flex-direction:column;gap:8px}
+.pcard{text-align:left;border:1.5px solid #d1d5db;border-radius:11px;background:#fff;padding:11px 13px;font:600 13.5px/1.5 system-ui;color:#1f2937;cursor:pointer;width:100%}
+.pcard:hover{border-color:#2d70b3;background:#f0f7ff}
+.pcard.dead{opacity:.5;text-decoration:line-through;pointer-events:none;background:#fef2f2;border-color:#fecaca}
+.pcard.ok{border-color:#16a34a;background:#f0fdf4;pointer-events:none}
+.pcard.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.side{padding:16px;display:flex;flex-direction:column;gap:13px}
+.card{border:1px solid #e5e2d9;border-radius:13px;padding:13px 14px;background:#fdfcf8}
+.card h2{margin:0 0 7px;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:#64748b}
+.task{font-size:15px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:7px;background:#ece8df;border-radius:5px;overflow:hidden;margin-top:11px}
+.pf{height:100%;background:#2d70b3;transition:width .3s}
+.pnum{font-size:11px;color:#94a3b8;margin-top:5px;font-weight:700}
+.msg{border-radius:11px;padding:11px 13px;font-size:13.5px;line-height:1.5;display:none}
+.msg.show{display:block}
+.msg.info{background:#eef4fb;color:#1e3a5f}
+.msg.ok{background:#ecfdf5;color:#14532d}
+.msg.err{background:#fef2f2;color:#991b1b}
+.msg.warn{background:#fff7ed;color:#9a3412}
+.small{font-size:12.5px;line-height:1.55;color:#475569;margin:0}
+.small b{color:#334155}
+.bar{display:flex;gap:9px;padding:13px 16px;background:#f3f0e8;border-top:1px solid #e5e2d9;flex-wrap:wrap;align-items:center}
+.bar button{border:0;border-radius:10px;padding:10px 15px;font-size:13.5px;font-weight:800;cursor:pointer;background:#e2e8f0;color:#334155}
+.bar button:hover{background:#cbd5e1}
+.bar .next{margin-left:auto;background:#2d70b3;color:#fff;display:none}
+.bar .next:hover{background:#235a92}
+.fin{display:none;padding:30px 22px;text-align:center}
+.big{font-size:42px;font-weight:900;color:#1a1a2e}
+.lbl{font-size:14px;color:#64748b;margin-top:4px}
+.dots{display:flex;gap:7px;justify-content:center;margin:16px 0}
+.dot{width:13px;height:13px;border-radius:50%;background:#d1d5db}
+.dot.g{background:#16a34a}.dot.y{background:#eab308}.dot.r{background:#dc2626}
+.law{max-width:600px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14.5px;line-height:1.6;color:#14532d}
+.law b{color:#166534}
+@media(max-width:820px){
+  body{padding:8px}
+  .main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}
+  .side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">🔺 Прилежащие и противолежащие</div>
+      <div class="sub">Глава II · §3 · опорный словарь — язык признаков равенства</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Читаем чертёж</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="440"></canvas>
+      <div class="actTtl" id="poolTtl" style="display:none"></div>
+      <div class="pool" id="pool"></div>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div class="card">
+        <h2>Словарь</h2>
+        <p class="small"><b>Прилежащие</b> к стороне углы — те, чьи вершины служат <b>концами</b> этой стороны. <b>Противолежащий</b> — единственный угол, вершина которого на стороне не лежит. Для угла — симметрично: две стороны выходят из его вершины (прилежащие), одна замыкает напротив (противолежащая).</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Закон.</b> В треугольнике у каждой стороны два <b>прилежащих</b> угла (их вершины — концы стороны) и один <b>противолежащий</b>. Признаки равенства разговаривают на этом языке:<br><br>
+      • в <b>первом</b> признаке угол лежит <b>между</b> сторонами — то есть он прилежащий к обеим сразу;<br>
+      • во <b>втором</b> два угла <b>прилежат</b> к одной стороне.<br><br>
+      А угол, <b>противолежащий</b> стороне, треугольник не закрепляет — он оставляет вершине свободу качаться. Вот почему в первом признаке слово «между» нельзя заменить на «против».
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="next" style="display:inline-block" onclick="restart()">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button onclick="showHint()">💡 Подсказка</button>
+    <button onclick="resetTask()">↺ Сначала</button>
+    <button id="nextBtn" class="next" onclick="nextTask()">Дальше →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС И ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch2-p3-t0-adjacent-opposite';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),task:ti+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+let W=640,H=440;
+(function dpr(){
+  const r=Math.min(window.devicePixelRatio||1,2);
+  cv.width=W*r;cv.height=H*r;ctx.scale(r,r);
+  cv.style.width='100%';
+})();
+
+/* ───────── ГЕОМЕТРИЯ ТРЕУГОЛЬНИКА ─────────
+   Базовый ABC. Вершины именованы, стороны — по парам вершин. */
+const TRI={
+  A:{x:225,y:95},
+  B:{x:120,y:355},
+  C:{x:560,y:325}
+};
+// стороны: имя ↔ пара вершин ↔ противолежащая вершина (угол)
+const SIDES={
+  AB:{a:'A',b:'B',opp:'C'},
+  BC:{a:'B',b:'C',opp:'A'},
+  CA:{a:'C',b:'A',opp:'B'}
+};
+// углы: вершина ↔ две прилежащие стороны ↔ противолежащая сторона
+const ANGLES={
+  A:{adj:['AB','CA'],opp:'BC',p:'B',q:'C'},
+  B:{adj:['AB','BC'],opp:'CA',p:'A',q:'C'},
+  C:{adj:['BC','CA'],opp:'AB',p:'A',q:'B'}
+};
+
+/* ───────── СОСТОЯНИЕ ───────── */
+let ti=0;                 // индекс задачи
+let phase=1;              // фаза внутри задачи (для акта 3)
+let solvedThis=false;
+let mistakes=0, hintsUsed=false, hintUsedThis=false;
+const results=[];         // 'g'|'y'|'r' по задачам
+let kind='mouse';
+
+/* фокус-подсветка (named-object hum) */
+let focusSide=null, focusAngle=null;
+/* анимация неверного клика */
+let wrongFx=null;         // {x,y,t}
+/* акт 3 — SSA-ползунок */
+let ssaT=0;               // 0..1 позиция второй вершины вдоль дуги (две позиции)
+let ssaDrag=false;        // тащим ли вершину C пальцем по холсту
+let ssaSeen={c1:false,c2:false};
+let ssaFinal=false;       // финал акта 3: показаны оба треугольника ABC1 и ABC2
+
+/* ───────── ЗАДАЧИ ─────────
+   Тип 'angle-for-side'  : дана сторона, ищем угол (прилежащий/противолежащий)
+   Тип 'side-for-angle'  : дан угол, ищем сторону (прилежащую/противолежащую)
+   Тип 'between'         : даны две стороны, ищем угол между ними (мост к SAS)
+   Тип 'ssa'             : демонстрация неоднозначности (акт 3)
+*/
+const TASKS=[
+ // ── АКТ 1: читаем чертёж ──
+ {kind:'angle-for-side', side:'BC', want:'opp',
+  text:'Нажмите на угол, <b>противолежащий</b> стороне BC (его вершина не лежит на этой стороне).'},
+ {kind:'angle-for-side', side:'BC', want:'adj',
+  text:'Теперь нажмите на оба угла, <b>прилежащие</b> к стороне BC (их вершины — концы стороны).', multi:true},
+ {kind:'side-for-angle', ang:'A', want:'opp',
+  text:'Нажмите на сторону, <b>противолежащую</b> углу A (она замыкает треугольник напротив вершины A).'},
+ {kind:'side-for-angle', ang:'A', want:'adj',
+  text:'Нажмите на обе стороны, <b>прилежащие</b> к углу A (они выходят из его вершины).', multi:true},
+ // ── АКТ 2: переворачиваем вопрос — мост к SAS ──
+ {kind:'between', sides:['AB','CA'], ang:'A',
+  text:'Отмечены две стороны: AB и CA. Нажмите на угол, который лежит <b>между</b> ними.'},
+ {kind:'opt', text:'Вы нашли: ∠A лежит <b>между</b> сторонами AB и CA. А какой стороне этот же ∠A <b>противолежит</b>?',
+  opts:[
+   {t:'Стороне BC — она напротив, ∠A её не касается', ok:true},
+   {t:'Стороне AB', ok:false,
+    why:'∠A стоит вершиной на конце стороны AB, значит он к ней прилежит, а не противолежит. Противолежащая — та, что напротив вершины A: это BC'},
+   {t:'Никакой — он же «между»', ok:false,
+    why:'одно другому не мешает. ∠A прилежит к AB и CA (между ними и лежит), а противолежит третьей стороне — BC. У каждого угла есть и прилежащие стороны, и одна противолежащая'}
+  ]},
+ // ── АКТ 3: почему "между" нельзя заменить на "против" ──
+ {kind:'ssa',
+  text:'Кульминация. Даны сторона AB, длина BC и угол A — но угол A лежит <b>против</b> стороны BC, а не между сторонами. Потяните вершину C: куда она встанет?'}
+];
+
+/* ───────── РИСОВАНИЕ ───────── */
+function bg(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill();}
+}
+function lab(p,txt,col,dx,dy){
+  ctx.font='900 16px system-ui';ctx.textAlign='center';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(250,248,242,.95)';ctx.strokeText(txt,p.x+dx,p.y+dy);
+  ctx.fillStyle=col;ctx.fillText(txt,p.x+dx,p.y+dy);
+}
+function angleArc(v,p,q,col,r,lw){
+  let a1=Math.atan2(p.y-v.y,p.x-v.x), a2=Math.atan2(q.y-v.y,q.x-v.x);
+  let d=a2-a1;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;
+  ctx.beginPath();ctx.arc(v.x,v.y,r||26,a1,a1+d,d<0);
+  ctx.strokeStyle=col;ctx.lineWidth=lw||2.4;ctx.stroke();
+}
+function sideMid(s){const A=TRI[SIDES[s].a],B=TRI[SIDES[s].b];return{x:(A.x+B.x)/2,y:(A.y+B.y)/2};}
+
+function drawBase(opt){
+  opt=opt||{};
+  // стороны
+  for(const s in SIDES){
+    const A=TRI[SIDES[s].a], B=TRI[SIDES[s].b];
+    let col='#1a1a2e', lw=2.6;
+    if(opt.litSides&&opt.litSides.includes(s)){col='#16a34a';lw=5;}
+    else if(focusSide===s&&!solvedThis){const g=0.45+0.45*Math.sin(Date.now()/260);col='rgba(45,112,179,'+g+')';lw=6;}
+    else if(opt.dataSides&&opt.dataSides.includes(s)){col='#d97706';lw=4;}
+    ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);
+    ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.lineCap='round';ctx.stroke();
+  }
+  // углы-дужки
+  for(const v in ANGLES){
+    const V=TRI[v], P=TRI[ANGLES[v].p], Q=TRI[ANGLES[v].q];
+    let col=null, lw=2.4, r=26;
+    if(opt.litAngles&&opt.litAngles.includes(v)){col='#16a34a';lw=3.4;}
+    else if(focusAngle===v&&!solvedThis){const g=0.45+0.45*Math.sin(Date.now()/260);col='rgba(45,112,179,'+g+')';lw=4;r=30;}
+    else if(opt.dataAngles&&opt.dataAngles.includes(v)){col='#d97706';}
+    if(col){angleArc(V,P,Q,col,r,lw);if(opt.litAngles&&opt.litAngles.includes(v))angleArc(V,P,Q,col,r-5,lw);}
+  }
+  // вершины и подписи
+  const cx=(TRI.A.x+TRI.B.x+TRI.C.x)/3, cy=(TRI.A.y+TRI.B.y+TRI.C.y)/3;
+  for(const v in TRI){
+    const P=TRI[v];
+    ctx.beginPath();ctx.arc(P.x,P.y,4.2,0,7);ctx.fillStyle='#1a1a2e';ctx.fill();
+    const ux=P.x-cx,uy=P.y-cy,L=Math.hypot(ux,uy)||1;
+    lab(P,v,'#1a1a2e',ux/L*20,uy/L*20+5);
+  }
+}
+
+/* акт 3 — общая геометрия SSA (одна точка истины для отрисовки и проверки) */
+function ssaGeom(){
+  const A={x:150,y:340}, B={x:505,y:340};
+  const angA=38*Math.PI/180, lenBC=225;
+  const dir={x:Math.cos(-angA),y:Math.sin(-angA)};
+  const ax=A.x-B.x, ay=A.y-B.y;
+  const bq=2*(ax*dir.x+ay*dir.y), cq=ax*ax+ay*ay-lenBC*lenBC;
+  const disc=bq*bq-4*cq;
+  if(disc<0)return null;
+  const t1=(-bq+Math.sqrt(disc))/2, t2=(-bq-Math.sqrt(disc))/2;
+  const C1={x:A.x+t1*dir.x,y:A.y+t1*dir.y};
+  const C2={x:A.x+t2*dir.x,y:A.y+t2*dir.y};
+  const pad=42, tLo=Math.max(20,t2-pad), tHi=t1+pad;
+  const tCur=tLo+(tHi-tLo)*ssaT;
+  const C={x:A.x+tCur*dir.x,y:A.y+tCur*dir.y};
+  return {A,B,dir,lenBC,C1,C2,t1,t2,tLo,tHi,C};
+}
+function markSSASeen(){
+  const g=ssaGeom(); if(!g)return;
+  if(Math.hypot(g.C.x-g.C1.x,g.C.y-g.C1.y)<10) ssaSeen.c1=true;
+  if(Math.hypot(g.C.x-g.C2.x,g.C.y-g.C2.y)<10) ssaSeen.c2=true;
+}
+function checkSSA(){
+  if(ssaSeen.c1&&ssaSeen.c2&&!ssaFinal){
+    ssaFinal=true; solvedThis=true; ssaDrag=false;
+    setMsg('Вот оно. На чертеже теперь <b>два разных</b> треугольника: ABC₁ и ABC₂. У них общая сторона AB, общий угол A и равные по длине BC₁ = BC₂ — то есть равно <b>всё отмеченное</b>. А треугольники <b>не равны</b>! Угол A лежит <b>против</b> стороны BC, не зажимая её между сторонами, поэтому вершина смогла встать двумя способами. В первом признаке слово <b>между</b> как раз убирает эту свободу.','ok');
+    log('ssa_discovered',{});
+    results[ti]='g';
+    const sl=document.getElementById('ssaSlider'); if(sl)sl.disabled=true;
+    const ttl=document.getElementById('poolTtl'); if(ttl)ttl.textContent='Два треугольника по одним данным';
+    document.getElementById('nextBtn').textContent='Завершить →';
+    document.getElementById('nextBtn').style.display='inline-block';
+  }
+}
+/* засечка — n чёрточек поперёк отрезка в его середине */
+function tickMark(P,Q,n,col){
+  const mx=(P.x+Q.x)/2, my=(P.y+Q.y)/2;
+  const dx=Q.x-P.x, dy=Q.y-P.y, L=Math.hypot(dx,dy)||1;
+  const ux=dx/L, uy=dy/L;           // вдоль
+  const nx=-uy, ny=ux;              // поперёк
+  ctx.strokeStyle=col;ctx.lineWidth=2.4;
+  for(let i=0;i<n;i++){
+    const off=(i-(n-1)/2)*6;        // шаг между чёрточками
+    const cx=mx+ux*off, cy=my+uy*off;
+    ctx.beginPath();
+    ctx.moveTo(cx+nx*6,cy+ny*6);ctx.lineTo(cx-nx*6,cy-ny*6);
+    ctx.stroke();
+  }
+}
+
+/* акт 3 — ФИНАЛ: два разных треугольника ABC₁ и ABC₂ по одним данным */
+function ssaFinalScene(){
+  const g=ssaGeom();
+  if(!g){ bg(); return; }
+  const {A,B,C1,C2,dir}=g;
+  bg();
+  // сторона AB — синяя, общая
+  ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);
+  ctx.strokeStyle='#2d70b3';ctx.lineWidth=3.4;ctx.lineCap='round';ctx.stroke();
+  // треугольник ABC1 — зелёный
+  ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(C1.x,C1.y);ctx.lineTo(B.x,B.y);
+  ctx.strokeStyle='#0f6e56';ctx.lineWidth=2.6;ctx.lineJoin='round';ctx.stroke();
+  // треугольник ABC2 — фиолетовый
+  ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(C2.x,C2.y);ctx.lineTo(B.x,B.y);
+  ctx.strokeStyle='#7c3aed';ctx.lineWidth=2.6;ctx.lineJoin='round';ctx.stroke();
+  // засечки равенства: AB — одна (синяя); BC1 и BC2 — одна каждая (равны по длине)
+  tickMark(A,B,1,'#2d70b3');
+  tickMark(B,C1,1,'#0f6e56');
+  tickMark(B,C2,1,'#7c3aed');
+  // дужка равного угла A (общая для обоих)
+  angleArc(A,B,{x:A.x+dir.x*44,y:A.y+dir.y*44},'#d97706',32,2.6);
+  // вершины и подписи
+  [['A',A,'#042c53'],['B',B,'#042c53'],['C₁',C1,'#15803d'],['C₂',C2,'#5b21b6']].forEach(([n,P,col])=>{
+    ctx.beginPath();ctx.arc(P.x,P.y,5.2,0,7);ctx.fillStyle=col;ctx.fill();
+    let dx=0,dy=-15;
+    if(n==='A'){dx=-16;dy=20;} if(n==='B'){dx=16;dy=20;}
+    if(n==='C₁'){dx=16;dy=-8;} if(n==='C₂'){dx=-16;dy=-8;}
+    lab(P,n,col,dx,dy);
+  });
+  // подпись-вывод на холсте
+  ctx.font='800 13px system-ui';ctx.textAlign='center';ctx.fillStyle='#0f6e56';
+  ctx.fillText('AB общая · ∠A общий · BC₁ = BC₂ — а треугольники разные', W/2, 420);
+}
+
+/* акт 3 — СЦЕНА: ОДНА живая вершина C скользит по лучу из A.
+   C₁ и C₂ — «гнёзда» на дуге, загораются, когда C проходит через них. */
+function ssaScene(){
+  if(ssaFinal){ ssaFinalScene(); return; }
+  const g=ssaGeom();
+  if(!g){ bg(); return; }
+  const {A,B,dir,lenBC,C1,C2,C,tHi}=g;
+  markSSASeen();
+  const curBC=Math.hypot(C.x-B.x,C.y-B.y);
+  const onTarget=Math.abs(curBC-lenBC)<7;
+
+  bg();
+  // луч из A — слабая направляющая
+  ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(A.x+dir.x*(tHi+30),A.y+dir.y*(tHi+30));
+  ctx.strokeStyle='#d9d3c6';ctx.lineWidth=1;ctx.stroke();
+  // сторона AB
+  ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);
+  ctx.strokeStyle='#2d70b3';ctx.lineWidth=3.4;ctx.lineCap='round';ctx.stroke();
+  // гнёзда C₁/C₂: пока не найдены — серые пустые кольца; найдены — зелёная заливка
+  [['C₁',C1,ssaSeen.c1],['C₂',C2,ssaSeen.c2]].forEach(([n,P,seen])=>{
+    ctx.beginPath();ctx.arc(P.x,P.y,8,0,7);
+    if(seen){ctx.fillStyle='rgba(22,163,74,.18)';ctx.fill();ctx.strokeStyle='#16a34a';ctx.lineWidth=2;ctx.stroke();}
+    else{ctx.strokeStyle='#b9b3a6';ctx.lineWidth=1.4;ctx.setLineDash([3,3]);ctx.stroke();ctx.setLineDash([]);}
+    if(seen)lab(P,n,'#15803d', P===C1?14:-14, -10);
+  });
+  // отрезок BC до живой вершины — зелёный, если длина совпала (попали в гнездо), иначе оранжевый «тянется»
+  ctx.beginPath();ctx.moveTo(B.x,B.y);ctx.lineTo(C.x,C.y);
+  ctx.strokeStyle=onTarget?'#0f6e56':'#c2410c';ctx.lineWidth=2.8;ctx.lineCap='round';
+  if(!onTarget)ctx.setLineDash([6,5]);
+  ctx.stroke();ctx.setLineDash([]);
+  // сторона AC до живой вершины
+  ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(C.x,C.y);
+  ctx.strokeStyle='#0f6e56';ctx.lineWidth=2.8;ctx.lineCap='round';ctx.stroke();
+  // угол A (дужка)
+  angleArc(A,B,{x:A.x+dir.x*44,y:A.y+dir.y*44},'#d97706',30,2.6);
+  // вершины A, B
+  [['A',A],['B',B]].forEach(([n,P])=>{
+    ctx.beginPath();ctx.arc(P.x,P.y,4.8,0,7);ctx.fillStyle='#042c53';ctx.fill();
+    lab(P,n,'#042c53', n==='A'?-16:16, 20);
+  });
+  // ЖИВАЯ вершина C — синяя, подписана просто «C», крупная и с приглашающим кольцом
+  if(!onTarget){
+    const pr=10+2*Math.sin(Date.now()/300);
+    ctx.beginPath();ctx.arc(C.x,C.y,pr,0,7);
+    ctx.strokeStyle='rgba(45,112,179,.45)';ctx.lineWidth=1.8;ctx.stroke();
+  }
+  ctx.beginPath();ctx.arc(C.x,C.y,8,0,7);
+  ctx.fillStyle=onTarget?'#16a34a':'#2d70b3';ctx.fill();
+  ctx.strokeStyle='#fff';ctx.lineWidth=2.4;ctx.stroke();
+  lab(C,'C', onTarget?'#15803d':'#235a92', 0, -16);
+  // длина BC — напоминание, что она задана и постоянна
+  ctx.font='800 13px system-ui';ctx.textAlign='left';
+  ctx.fillStyle=onTarget?'#0f6e56':'#c2410c';
+  ctx.fillText(onTarget?'BC = заданной длине — вершина C попала в гнездо'
+                       :'тяните точку C (или ползунок снизу): где BC станет нужной длины?', 130, 420);
+}
+
+function draw(){
+  const T=TASKS[ti];
+  if(T.kind==='ssa'){ ssaScene(); return; }
+  bg();
+  let opt={};
+  if(T.kind==='angle-for-side'){
+    focusSide=T.side; focusAngle=null;
+    opt.litAngles=found.filter(f=>true); // подсветим найденные
+  } else if(T.kind==='side-for-angle'){
+    focusAngle=T.ang; focusSide=null;
+    opt.litSides=foundS.slice();
+  } else if(T.kind==='between'){
+    focusSide=null; focusAngle=null;
+    opt.dataSides=T.sides;
+    opt.litAngles=found.slice();
+  } else { focusSide=null; focusAngle=null; }
+  // отрисовать найденное зелёным
+  if(T.kind==='angle-for-side'||T.kind==='between') opt.litAngles=found.slice();
+  if(T.kind==='side-for-angle') opt.litSides=foundS.slice();
+  drawBase(opt);
+  // анимация неверного клика
+  if(wrongFx){
+    const a=Math.max(0,1-(Date.now()-wrongFx.t)/900);
+    if(a>0){
+      ctx.save();ctx.globalAlpha=a;ctx.strokeStyle='#dc2626';ctx.lineWidth=2.6;
+      ctx.beginPath();
+      ctx.moveTo(wrongFx.x-7,wrongFx.y-7);ctx.lineTo(wrongFx.x+7,wrongFx.y+7);
+      ctx.moveTo(wrongFx.x+7,wrongFx.y-7);ctx.lineTo(wrongFx.x-7,wrongFx.y+7);
+      ctx.stroke();ctx.restore();
+    }
+  }
+}
+
+/* ───────── ХИТ-ТЕСТ ───────── */
+function scrK(){const r=cv.getBoundingClientRect();return Math.max(1,W/(r.width||W));}
+function pt(e){
+  const r=cv.getBoundingClientRect(), k=W/(r.width||W);
+  return {x:(e.clientX-r.left)*k, y:(e.clientY-r.top)*k};
+}
+function inWedge(p,v,p1,p2,rMax){
+  const r=Math.hypot(p.x-v.x,p.y-v.y);
+  if(r<5||r>(rMax||44))return false;
+  let a1=Math.atan2(p1.y-v.y,p1.x-v.x),a2=Math.atan2(p2.y-v.y,p2.x-v.x);
+  let d=a2-a1;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;
+  let t=Math.atan2(p.y-v.y,p.x-v.x)-a1;while(t>Math.PI)t-=2*Math.PI;while(t<-Math.PI)t+=2*Math.PI;
+  return d>=0?(t>=-0.08&&t<=d+0.08):(t<=0.08&&t>=d-0.08);
+}
+function distSeg(p,a,b){
+  const dx=b.x-a.x,dy=b.y-a.y,L2=dx*dx+dy*dy;
+  let t=((p.x-a.x)*dx+(p.y-a.y)*dy)/L2;t=Math.max(0,Math.min(1,t));
+  return Math.hypot(p.x-(a.x+t*dx),p.y-(a.y+t*dy));
+}
+function hitAngle(p){
+  const k=scrK(), rMax=(kind==='touch'?52:44);
+  for(const v in ANGLES){
+    if(inWedge(p,TRI[v],TRI[ANGLES[v].p],TRI[ANGLES[v].q],rMax))return v;
+  }
+  return null;
+}
+function hitSide(p){
+  const tol=(kind==='touch'?16:12)*scrK();
+  let best=null,bd=1e9;
+  for(const s in SIDES){
+    const d=distSeg(p,TRI[SIDES[s].a],TRI[SIDES[s].b]);
+    if(d<tol&&d<bd){bd=d;best=s;}
+  }
+  return best;
+}
+
+/* ───────── ФАЗОВАЯ ЛОГИКА ───────── */
+let found=[];    // найденные углы (вершины) в текущей задаче
+let foundS=[];   // найденные стороны
+
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg show '+cls;}
+function clearMsg(){const el=document.getElementById('msg');el.className='msg';}
+
+function targetAngles(T){ // какие углы — правильный ответ
+  if(T.kind==='angle-for-side'){const S=SIDES[T.side];return T.want==='opp'?[S.opp]:[S.a,S.b];}
+  if(T.kind==='between'){return [T.ang];}
+  return [];
+}
+function targetSides(T){
+  if(T.kind==='side-for-angle'){const Aa=ANGLES[T.ang];return T.want==='opp'?[Aa.opp]:Aa.adj;}
+  return [];
+}
+
+function tapAngle(v){
+  const T=TASKS[ti];
+  const tgt=targetAngles(T);
+  if(tgt.includes(v)){
+    if(found.includes(v))return;
+    found.push(v);
+    log('found',{obj:'angle '+v});
+    const need=tgt.length;
+    if(found.length>=need){ solveOk(); }
+    else setMsg('Верно — ещё один такой угол.','ok');
+  }else{
+    registerWrong();
+    // диагностика
+    const T2=TASKS[ti];
+    if(T2.kind==='angle-for-side'){
+      const S=SIDES[T2.side];
+      if(T2.want==='opp' && (v===S.a||v===S.b))
+        setMsg('Этот угол сидит <b>на конце</b> стороны '+T2.side+' — его вершина '+v+' и есть конец стороны. Значит он <b>прилежащий</b>. Противолежащий смотрит на сторону издалека.','err');
+      else if(T2.want==='adj' && v===S.opp)
+        setMsg('Это <b>противолежащий</b> угол: его вершина '+v+' не лежит на стороне '+T2.side+'. Прилежащие — те два, что стоят на концах стороны.','err');
+      else setMsg('Не тот угол — приглядитесь, где его вершина относительно стороны '+T2.side+'.','err');
+    }else if(T2.kind==='between'){
+      setMsg('Между сторонами '+T2.sides[0]+' и '+T2.sides[1]+' лежит угол, из вершины которого они <b>обе</b> выходят. Проверьте: какая вершина общая для обеих?','err');
+    }
+  }
+}
+function tapSide(s){
+  const T=TASKS[ti];
+  const tgt=targetSides(T);
+  if(tgt.includes(s)){
+    if(foundS.includes(s))return;
+    foundS.push(s);
+    log('found',{obj:'side '+s});
+    if(foundS.length>=tgt.length){ solveOk(); }
+    else setMsg('Верно — и ещё одна такая сторона.','ok');
+  }else{
+    registerWrong();
+    const Aa=ANGLES[T.ang];
+    if(T.want==='opp' && Aa.adj.includes(s))
+      setMsg('Эта сторона <b>выходит</b> из вершины '+T.ang+' — она прилежащая. Противолежащая замыкает треугольник напротив, не касаясь вершины '+T.ang+'.','err');
+    else if(T.want==='adj' && s===Aa.opp)
+      setMsg('Это <b>противолежащая</b> сторона: она не касается вершины '+T.ang+'. Прилежащие — две, что из этой вершины выходят.','err');
+    else setMsg('Не та сторона — проверьте, выходит ли она из вершины '+T.ang+'.','err');
+  }
+}
+function registerWrong(){
+  mistakes++; hintUsedThis=hintUsedThis;
+  log('tap_wrong',{});
+}
+
+function solveOk(){
+  solvedThis=true;
+  setMsg('Верно. '+okExplain(),'ok');
+  log('solved',{mistakes,hints:hintUsedThis?1:0});
+  results[ti]=mistakes===0&&!hintUsedThis?'g':(mistakes<=1&&!hintUsedThis?'y':'r');
+  document.getElementById('nextBtn').style.display='inline-block';
+}
+function okExplain(){
+  const T=TASKS[ti];
+  if(T.kind==='angle-for-side'&&T.want==='opp')return 'Противолежащий стороне '+T.side+' — это угол, вершина которого на ней не лежит.';
+  if(T.kind==='angle-for-side'&&T.want==='adj')return 'Оба прилежащих угла стоят вершинами на концах стороны '+T.side+'.';
+  if(T.kind==='side-for-angle'&&T.want==='opp')return 'Противолежащая углу '+T.ang+' сторона замыкает треугольник напротив.';
+  if(T.kind==='side-for-angle'&&T.want==='adj')return 'Обе прилежащие стороны выходят из вершины '+T.ang+'.';
+  if(T.kind==='between')return 'Между сторонами '+T.sides[0]+' и '+T.sides[1]+' лежит ∠'+T.ang+': обе они для него прилежащие.';
+  return '';
+}
+
+/* выборочные карточки (kind:'opt') */
+function buildPool(){
+  const T=TASKS[ti], pool=document.getElementById('pool'), ttl=document.getElementById('poolTtl');
+  pool.innerHTML='';
+  if(T.kind==='opt'){
+    ttl.style.display='block'; ttl.textContent='Выберите ответ';
+    T.opts.forEach((o,i)=>{
+      const b=document.createElement('button');
+      b.className='pcard';b.innerHTML=o.t;
+      b.onclick=()=>{
+        if(o.ok){
+          b.classList.add('ok');
+          setMsg('Верно. Один и тот же ∠A <b>прилежит</b> к сторонам AB и CA (лежит между ними) и <b>противолежит</b> третьей стороне — BC. «Между» и «против» — это всегда про разные стороны, путать их нельзя.','ok');
+          log('opt_ok',{}); solvedThis=true;
+          results[ti]=mistakes===0&&!hintUsedThis?'g':(mistakes<=1?'y':'r');
+          document.getElementById('nextBtn').style.display='inline-block';
+          [...pool.children].forEach(c=>c.classList.add('dead'));
+          b.classList.remove('dead');
+        }else{
+          b.classList.add('dead');mistakes++;
+          setMsg('Не совсем: '+o.why+'.','err');
+          log('opt_wrong',{});
+        }
+      };
+      pool.appendChild(b);
+    });
+  }else if(T.kind==='ssa'){
+    ttl.style.display='block'; ttl.textContent='Двигайте вершину C';
+    const wrap=document.createElement('div');
+    wrap.innerHTML='<input type="range" id="ssaSlider" min="0" max="100" value="0" style="width:100%">';
+    pool.appendChild(wrap);
+    const sl=document.getElementById('ssaSlider');
+    sl.oninput=()=>{
+      ssaT=sl.value/100;
+      markSSASeen();
+      checkSSA();
+    };
+  }else{
+    ttl.style.display='none';
+  }
+}
+
+/* ───────── КЛИКИ ПО ХОЛСТУ ───────── */
+cv.addEventListener('pointerdown',e=>{
+  const T=TASKS[ti];
+  if(solvedThis)return;
+  kind=e.pointerType==='touch'?'touch':'mouse';
+  const p=pt(e);
+  if(T.kind==='ssa'){
+    if(ssaFinal)return;
+    const g=ssaGeom(); if(!g)return;
+    const rGrab=(kind==='touch'?34:22)*scrK();
+    if(Math.hypot(p.x-g.C.x,p.y-g.C.y)<rGrab){
+      ssaDrag=true;
+      try{cv.setPointerCapture(e.pointerId);}catch(_){}
+    }
+    return;
+  }
+  if(T.kind==='opt')return;
+  if(T.kind==='angle-for-side'||T.kind==='between'){
+    const v=hitAngle(p);
+    if(v){tapAngle(v);return;}
+    wrongFx={x:p.x,y:p.y,t:Date.now()};
+  }else if(T.kind==='side-for-angle'){
+    const s=hitSide(p);
+    if(s){tapSide(s);return;}
+    wrongFx={x:p.x,y:p.y,t:Date.now()};
+  }
+});
+cv.addEventListener('pointermove',e=>{
+  if(!ssaDrag)return;
+  const g=ssaGeom(); if(!g){ssaDrag=false;return;}
+  const p=pt(e);
+  // проекция пальца на луч из A по направлению dir → параметр t вдоль луча
+  const t=(p.x-g.A.x)*g.dir.x+(p.y-g.A.y)*g.dir.y;
+  const tc=Math.max(g.tLo,Math.min(g.tHi,t));
+  ssaT=(tc-g.tLo)/(g.tHi-g.tLo);
+  const sl=document.getElementById('ssaSlider'); if(sl)sl.value=Math.round(ssaT*100);
+  markSSASeen();
+  checkSSA();
+});
+function endSSADrag(e){
+  if(!ssaDrag)return;
+  ssaDrag=false;
+  try{cv.releasePointerCapture(e.pointerId);}catch(_){}
+}
+cv.addEventListener('pointerup',endSSADrag);
+cv.addEventListener('pointercancel',endSSADrag);
+
+/* ───────── ПОДСКАЗКА ───────── */
+function showHint(){
+  const T=TASKS[ti];
+  hintUsedThis=true; hintsUsed=true; log('hint',{});
+  if(T.kind==='angle-for-side')
+    setMsg('Посмотрите на концы стороны '+T.side+': какие вершины их образуют? '+(T.want==='opp'?'Нужен угол при <b>третьей</b> вершине.':'Нужны углы при <b>этих</b> вершинах.'),'warn');
+  else if(T.kind==='side-for-angle')
+    setMsg('Из вершины '+T.ang+' выходят две стороны — они прилежащие. '+(T.want==='opp'?'Нужна <b>третья</b>, что не касается '+T.ang+'.':'Нужны <b>эти две</b>.'),'warn');
+  else if(T.kind==='between')
+    setMsg('У сторон '+T.sides[0]+' и '+T.sides[1]+' есть общая вершина. Угол при ней и есть «между».','warn');
+  else if(T.kind==='opt')
+    setMsg('Вспомните: «между» — это угол, для которого обе стороны прилежащие.','warn');
+  else
+    setMsg('Двиньте ползунок в оба крайних положения и сравните, где оказалась C.','warn');
+}
+
+/* ───────── НАВИГАЦИЯ ───────── */
+function initTask(){
+  solvedThis=false; mistakes=0; hintUsedThis=false;
+  found=[]; foundS=[]; wrongFx=null; ssaT=0; ssaSeen={c1:false,c2:false}; ssaFinal=false;
+  const T=TASKS[ti];
+  document.getElementById('taskText').innerHTML=T.text;
+  document.getElementById('pf').style.width=Math.round(ti/TASKS.length*100)+'%';
+  document.getElementById('pnum').textContent='Шаг '+(ti+1)+' из '+TASKS.length;
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('nextBtn').textContent= ti===TASKS.length-1?'Завершить →':'Дальше →';
+  const badges=['Читаем чертёж','Читаем чертёж','Читаем чертёж','Читаем чертёж','Мост к 1-му признаку','Мост к 1-му признаку','Почему «между»'];
+  document.getElementById('badge').textContent=badges[ti]||'Словарь';
+  clearMsg();
+  buildPool();
+  if(T.kind==='angle-for-side'||T.kind==='side-for-angle'||T.kind==='between')
+    setMsg(T.multi?'Нажимайте прямо на чертеже. Нужно найти оба.':'Нажмите прямо на чертеже.','info');
+  else if(T.kind==='ssa')
+    setMsg('Тяните точку C прямо по чертежу (или ползунком снизу) — медленно, поймайте обе позиции, где BC станет нужной длины.','info');
+  log('task_start',{kind:T.kind});
+}
+function nextTask(){
+  if(ti>=TASKS.length-1){ finish(); return; }
+  ti++; initTask();
+}
+function resetTask(){ initTask(); }
+
+function finish(){
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  const greens=results.filter(r=>r==='g').length;
+  document.getElementById('finScore').textContent=greens+' / '+TASKS.length;
+  document.getElementById('finLbl').textContent='шагов пройдено без ошибок';
+  const dots=document.getElementById('finDots');dots.innerHTML='';
+  results.forEach(r=>{const d=document.createElement('div');d.className='dot '+(r||'r');dots.appendChild(d);});
+  const st=lS();st.runs=(st.runs||0)+1;st.passed=true;st.best=Math.max(st.best||0,greens);sS(st);
+  log('finish',{score:greens});
+}
+function restart(){
+  ti=0; results.length=0;
+  document.getElementById('fin').style.display='none';
+  document.getElementById('mainArea').style.display='grid';
+  document.getElementById('bar').style.display='flex';
+  initTask();
+}
+
+/* старт */
+log('start',{});
+initTask();
+(function loop(){draw();requestAnimationFrame(loop);})();
+
+</script>
+</body>
+</html>

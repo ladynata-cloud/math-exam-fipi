@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Свойства 2 и 3: соответственные и односторонние</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:manipulation}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.given{font-size:13px;line-height:1.5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:10px}
+.given b{color:#3730a3}
+.steps{font-size:12.5px;line-height:1.5;color:#334155}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:750 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt:disabled{cursor:default}
+.opt.ok-pick{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.bad-pick{background:#fee2e2;border-color:#dc2626;color:#991b1b}
+.opt.correct-reveal{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.pcard{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:10px 12px;font:650 13.5px system-ui;cursor:pointer;text-align:left;line-height:1.45}
+.pcard:hover{background:#f3f4f6}
+.pcard.shake{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.chitem{background:#f0fdf4;border-left:3px solid #16a34a;border-radius:0 8px 8px 0;padding:7px 10px;font-size:12.5px;line-height:1.4;color:#14532d;margin-bottom:5px}
+.chitem .n{font-weight:900;color:#16a34a;margin-right:4px}
+.chempty{font-size:12.5px;color:#94a3b8;font-style:italic;padding:6px}
+.phtitle{font-size:12px;font-weight:800;color:#6d28d9;text-transform:uppercase;letter-spacing:.05em;margin:2px 0 4px}
+.st{padding:6px 8px;border-left:3px solid #16a34a;margin:5px 0;background:#f0fdf4;border-radius:0 8px 8px 0}
+.st b{color:#166534}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:24px 22px;text-align:center}
+.fin .big{font-size:40px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:14px;height:14px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:640px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:13.5px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law ol{margin:8px 0;padding-left:20px}.law li{margin:4px 0}
+.bridge{margin-top:10px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">∠ Свойства 2 и 3: соответственные и односторонние</div>
+      <div class="sub">Глава III · §2 · тренажёр 3 из 4 — из свойства 1 без «от противного»</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Лесенка от свойства 1</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="420"></canvas></div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card">
+        <div class="given" id="givenBox"></div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div id="opts" class="opts"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div class="card">
+        <h2>Ход доказательства</h2>
+        <div class="steps" id="steps"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Свойства параллельных прямых.</b> Если две параллельные прямые пересечены секущей, то:
+      <ol>
+        <li>накрест лежащие углы <b>равны</b>;</li>
+        <li>соответственные углы <b>равны</b>;</li>
+        <li>сумма односторонних углов равна <b>180°</b>.</li>
+      </ol>
+      Все три — следствия первого. Свойство 1 в одиночку выстояло против аксиомы параллельных (t4); дальше — лесенка: к нему добавили <b>вертикальные</b> → получили соответственные; к ним добавили <b>смежные</b> → получили односторонние.
+      <div class="bridge">В §1 по этим же углам мы параллельность <b>узнавали</b> (признаки). Здесь — наоборот, <b>из</b> параллельности выводили про углы (свойства). Признак и свойство смотрят в разные стороны — это <b>прямая и обратная теоремы</b>. <a href="ch3-p2-t6-direct-converse.html">Прямая и обратная →</a></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="nextTask()">Следующий шаг →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС/ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch3-p2-t5-properties-2-3';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),step:si+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640, HT=420;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=HT*dpr;cv.style.aspectRatio=W+'/'+HT;ctx.scale(dpr,dpr);
+
+/* ───────── ГЕОМЕТРИЯ СЦЕНЫ (рис. 120) ─────────
+   a — верхняя горизонталь (yA), b — нижняя (yB), a ∥ b.
+   Секущая идёт вниз-вправо под 45°: через M на a и N на b.
+   Наша нумерация углов (ярлыки, не из учебника — издания расходятся):
+     ∠1 у M, вниз-вправо (в полосе);
+     ∠2 у N, вниз-вправо   — соответственный ∠1 (F);
+     ∠3 у N, вверх-влево    — накрест с ∠1 (Z), вертикальный к ∠2;
+     ∠4 у N, вверх-вправо   — смежный с ∠2, односторонний с ∠1 (П).
+   Всё просчитано так, чтобы пять связей читались одновременно.            */
+const aY=150, bY=300, M={x:255,y:150}, N={x:405,y:300};
+const SEC=Math.atan2(N.y-M.y,N.x-M.x);   // 45°, вниз-вправо
+const PI=Math.PI;
+
+/* ───────── ШАГИ ───────── */
+const STEPS=[
+ {kind:'choose', phase:'intro', badge:'Дальше легче',
+  task:'Первое <b>свойство параллельных прямых</b> — что накрест лежащие углы равны — далось трудом: мы шли <b>«от противного»</b> и упирались в аксиому параллельных (t4). Свойства 2 и 3 — про <b>соответственные</b> и <b>односторонние</b> углы. Как доказать их проще всего?',
+  prompt:'Выберите, как доказывать свойства 2 и 3.',
+  stepNote:'Свойства 2 и 3 выводим из свойства 1 — без «от противного».',
+  q:[
+    {t:'Вывести из первого свойства параллельных прямых и того, что давно знаем про углы — вертикальные и смежные. Без «от противного».', ok:true, after:'Первое свойство в одиночку выстояло против аксиомы — на нём и стоим. Добавим вертикальные → получим соответственные; добавим смежные → получим односторонние. Лесенка 1 → 2 → 3.'},
+    {t:'Снова «от противного»: предположить обратное и упереться в аксиому.', why:'Так можно — но незачем повторять трудный путь там, где есть лёгкий. Тяжёлую работу против аксиомы свойство 1 уже сделало.'},
+    {t:'Измерить транспортиром на чертеже и убедиться.', why:'Чертёж — один случай, да ещё неточный. Нужна причина, верная всегда; её даёт свойство 1, а не измерение.'},
+    {t:'Это новые аксиомы — их принимают без доказательства.', why:'Нет. Аксиома параллельных одна, мы её уже взяли. Свойства 2 и 3 — теоремы, их доказывают.'}
+  ]},
+
+ {kind:'assemble', phase:'prop2', badge:'Соберите свойство 2',
+  task:'Соберите доказательство по порядку. Здесь работает уже доказанное <b>свойство 1</b> и знакомые <b>вертикальные</b> углы. Среди карточек есть ловушки.',
+  phaseTitle:'Свойство 2: соответственные равны',
+  stepNote:'Свойство 2: при a ∥ b соответственные ∠1 = ∠2.',
+  cards:[
+    {id:'eq13', txt:'a ∥ b, значит накрест лежащие <b>∠1 и ∠3 равны</b> — это свойство 1. ⟹ ∠1 = ∠3.', need:[], ok:'∠1 = ∠3 (накрест лежащие, свойство 1).'},
+    {id:'eq23', txt:'<b>∠2 и ∠3 — вертикальные</b> (у точки N), а вертикальные углы равны. ⟹ ∠2 = ∠3.', need:[], ok:'∠2 = ∠3 (вертикальные).'},
+    {id:'concl2', txt:'Из ∠1 = ∠3 и ∠2 = ∠3 следует <b>∠1 = ∠2</b>. Что и требовалось.', need:['eq13','eq23'], ok:'∠1 = ∠2 — соответственные равны. ∎'},
+    {id:'trapAlt', txt:'∠1 = ∠2, потому что они <b>накрест лежащие</b>.', trap:'Накрест лежащие — это ∠1 и ∠3, по разные стороны секущей. ∠1 и ∠2 — соответственные (в одинаковом углу у двух точек). Напрямую их равенство не вывести — нужен мостик через ∠3.'},
+    {id:'trapVert', txt:'∠1 = ∠2, потому что они <b>вертикальные</b>.', trap:'Вертикальные — это ∠2 и ∠3, у одной точки N. ∠1 и ∠2 — у разных точек, вертикальными быть не могут.'},
+    {id:'trapMeasure', txt:'∠1 = ∠2 видно по чертежу — измерим транспортиром.', trap:'Чертёж один и неточен. Нужна причина на все случаи: ∠1 = ∠3 (свойство 1) и ∠2 = ∠3 (вертикальные).'}
+  ]},
+
+ {kind:'assemble', phase:'prop3', badge:'Соберите свойство 3',
+  task:'Третья ступень лесенки. Теперь под рукой <b>свойство 2</b> (соответственные) и знакомые <b>смежные</b> углы. Снова есть ловушки.',
+  phaseTitle:'Свойство 3: сумма односторонних = 180°',
+  stepNote:'Свойство 3: при a ∥ b сумма односторонних ∠1 + ∠4 = 180°.',
+  cards:[
+    {id:'eq12', txt:'a ∥ b, значит соответственные <b>∠1 и ∠2 равны</b> — это свойство 2, только что доказали. ⟹ ∠1 = ∠2.', need:[], ok:'∠1 = ∠2 (соответственные, свойство 2).'},
+    {id:'sum24', txt:'<b>∠2 и ∠4 — смежные</b> (у точки N, на одной прямой), а смежные дают 180°. ⟹ ∠2 + ∠4 = 180°.', need:[], ok:'∠2 + ∠4 = 180° (смежные).'},
+    {id:'concl3', txt:'Из ∠1 = ∠2 и ∠2 + ∠4 = 180° следует <b>∠1 + ∠4 = 180°</b>. Что и требовалось.', need:['eq12','sum24'], ok:'∠1 + ∠4 = 180° — сумма односторонних. ∎'},
+    {id:'trapAdj', txt:'∠1 + ∠4 = 180°, потому что они <b>смежные</b>.', trap:'Смежные — это ∠2 и ∠4, у одной точки N на одной прямой. ∠1 и ∠4 — у разных точек; они односторонние, и 180° получается через ∠2, а не напрямую.'},
+    {id:'trapAltSum', txt:'∠1 + ∠4 = 180°, потому что они <b>накрест лежащие</b>.', trap:'Накрест лежащие углы равны, а не дают в сумме 180°. Да и пара тут другая.'},
+    {id:'trapVert2', txt:'∠1 + ∠4 = 180°, потому что <b>вертикальные</b>.', trap:'Вертикальные углы равны и стоят у одной точки. Здесь ∠1 и ∠4 — у разных точек и дают не равенство, а 180°.'}
+  ]},
+
+ {kind:'done', phase:'done', badge:'Готово',
+  task:'Свойства 2 и 3 собраны. Заметь: новых трудностей не было — обе теоремы стоят на свойстве 1 (через вертикальные и смежные). Это и есть лесенка 1 → 2 → 3.',
+  stepNote:'∎ Свойства 1, 2, 3 доказаны.'}
+];
+const NS=STEPS.length;
+let si=0, results=[], mistakes=0, hintsUsed=0, stepResolved=false;
+const S=()=>STEPS[si];
+
+/* ───────── ОТРИСОВКА: ПРИМИТИВЫ ───────── */
+function bg(){
+  ctx.clearRect(0,0,W,HT);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,HT);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<HT;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill()}
+}
+function line2(p,ang,col,wid,dash){
+  const big=2200,dx=Math.cos(ang),dy=Math.sin(ang);
+  ctx.strokeStyle=col;ctx.lineWidth=wid||2.8;if(dash)ctx.setLineDash(dash);
+  ctx.beginPath();ctx.moveTo(p.x-dx*big,p.y-dy*big);ctx.lineTo(p.x+dx*big,p.y+dy*big);ctx.stroke();ctx.setLineDash([]);
+}
+function lab(x,y,t,col,s){ctx.font='900 '+(s||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(t,x,y);ctx.fillStyle=col;ctx.fillText(t,x,y);
+  ctx.textBaseline='alphabetic';ctx.textAlign='start'}
+function dot(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function yOnSec(X){return M.y+Math.tan(SEC)*(X-M.x)}
+// нижняя строка-подпись: подгоняем кегль, чтобы не вылезла за холст
+function noteLine(t,col){let fs=12.5;ctx.font='900 '+fs+'px system-ui';while(ctx.measureText(t).width>W-40&&fs>8.5){fs-=0.5;ctx.font='900 '+fs+'px system-ui';}lab(W/2,HT-18,t,col,fs);}
+// дуга угла + подпись по биссектрисе; пульсирует, если активна
+// у каждого угла свой цвет (ярлык-личность) и свой радиус (концентрические
+// дуги), чтобы соседние ∠3–∠4 и ∠2–∠4 не сливались в один сектор
+const ANG={
+  1:{col:'#d97706', r:20},   // янтарный
+  2:{col:'#db2777', r:18},   // розовый  (малое кольцо)
+  3:{col:'#7c3aed', r:30},   // фиолетовый (среднее)
+  4:{col:'#0d9488', r:44}    // бирюзовый (самый широкий — внешнее кольцо)
+};
+function angArc(v,a1,a2,num,active,dim){
+  const A=ANG[num]; let r=A.r, w=active?3.8:2.6;
+  if(active){const k=1+0.13*Math.sin(Date.now()/240); r=A.r*k+2;}
+  ctx.save(); if(dim)ctx.globalAlpha=0.34;
+  ctx.beginPath();ctx.arc(v.x,v.y,r,a1,a2);ctx.strokeStyle=A.col;ctx.lineWidth=w;ctx.stroke();
+  ctx.restore();
+  const bis=(a1+a2)/2, lr=A.r+15;                 // подпись на своём радиусе
+  lab(v.x+Math.cos(bis)*lr, v.y+Math.sin(bis)*lr, String(num), A.col, 13.5);
+}
+// бледная подсказка-форма (Z / F / П) внизу слева — мнемоника типа пары
+function mnemo(letter,word){
+  const x=14,y=HT-96,w=156,h=42,r=10;
+  ctx.save();
+  roundRect(x,y,w,h,r);ctx.fillStyle='rgba(248,250,252,.92)';ctx.fill();
+  roundRect(x,y,w,h,r);ctx.lineWidth=1.4;ctx.strokeStyle='#cbd5e1';ctx.stroke();
+  ctx.textAlign='left';
+  ctx.fillStyle='#94a3b8';ctx.font='900 24px Georgia,serif';ctx.fillText(letter,x+13,y+30);
+  ctx.fillStyle='#94a3b8';ctx.font='700 10px system-ui';ctx.fillText('форма-подсказка',x+44,y+17);
+  ctx.fillStyle='#475569';ctx.font='800 12.5px system-ui';ctx.fillText(word,x+44,y+33);
+  ctx.restore();ctx.textAlign='start';
+}
+
+/* ───────── СЦЕНА И ПОДПИСИ ───────── */
+function drawFig(vis,pulse){
+  // прямые a и b
+  line2({x:0,y:aY},0,'#1a1a2e',2.8); lab(W-20,aY-13,'a','#1a1a2e',16);
+  line2({x:0,y:bY},0,'#1a1a2e',2.8); lab(W-20,bY+15,'b','#1a1a2e',16);
+  // секущая
+  line2(M,SEC,'#2d70b3',2.4);
+  lab(175, yOnSec(175)-13, 'секущая', '#2d70b3', 11);
+  const on=n=>pulse&&pulse.includes(n);          // активна (пульсирует)
+  const dim=n=>pulse&&!pulse.includes(n);         // приглушить, если пара выбрана
+  if(vis[1]) angArc(M,0,PI/4,      1,on(1),dim(1));
+  if(vis[2]) angArc(N,0,PI/4,      2,on(2),dim(2));
+  if(vis[3]) angArc(N,PI,5*PI/4,   3,on(3),dim(3));
+  if(vis[4]) angArc(N,5*PI/4,2*PI, 4,on(4),dim(4));
+  dot(M.x,M.y,4.4,'#fffdf7','#1a1a2e'); lab(M.x-14,M.y-14,'M','#1a1a2e',14);
+  dot(N.x,N.y,4.4,'#fffdf7','#1a1a2e'); lab(N.x-16,N.y+17,'N','#1a1a2e',14);
+}
+function noteScene(s,cur){
+  let t,col='#475569';
+  if(s.phase==='intro'){t='a ∥ b, секущая. Углы пронумерованы для этого чертежа — следи за подсветкой.';}
+  else if(s.phase==='prop2'){
+    if(cur==='eq13'){t='Накрест лежащие ∠1 и ∠3 равны — это свойство 1.';}
+    else if(cur==='eq23'){t='∠2 и ∠3 — вертикальные (у точки N), значит равны.';}
+    else if(cur==='concl2'){t='∠1 = ∠2: соответственные углы равны. ✓';col='#15803d';}
+    else{t='Докажем: соответственные ∠1 = ∠2.';}
+  } else if(s.phase==='prop3'){
+    if(cur==='eq12'){t='Соответственные ∠1 и ∠2 равны — это свойство 2.';}
+    else if(cur==='sum24'){t='∠2 и ∠4 — смежные (у точки N): вместе 180°.';}
+    else if(cur==='concl3'){t='∠1 + ∠4 = 180°: сумма односторонних. ✓';col='#15803d';}
+    else{t='Докажем: ∠1 + ∠4 = 180° (односторонние).';}
+  }
+  noteLine(t,col);
+}
+
+function drawDone(){
+  ctx.textAlign='center';ctx.textBaseline='alphabetic';
+  const box=(cx,cy,w,h,top,bot,cols)=>{
+    roundRect(cx-w/2,cy-h/2,w,h,9);ctx.fillStyle=cols[2];ctx.fill();
+    ctx.lineWidth=2;ctx.strokeStyle=cols[0];ctx.stroke();ctx.fillStyle=cols[1];
+    ctx.font='800 12px system-ui';ctx.fillText(top,cx,cy-3);
+    ctx.font='700 11px system-ui';ctx.fillText(bot,cx,cy+13);
+  };
+  const labArrow=(x1,x2,y,txt)=>{
+    ctx.strokeStyle='#94a3b8';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2-7,y);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.beginPath();ctx.moveTo(x2,y);ctx.lineTo(x2-8,y-5);ctx.lineTo(x2-8,y+5);ctx.closePath();ctx.fill();
+    ctx.fillStyle='#c2410c';ctx.font='800 11px system-ui';ctx.fillText(txt,(x1+x2)/2,y-9);
+  };
+  const GREEN=['#16a34a','#15803d','#f0fdf4'], DARK=['#1a1a2e','#1a1a2e','#f3f4f6'];
+  ctx.font='900 16px system-ui';ctx.fillStyle='#1a1a2e';ctx.fillText('Лесенка свойств: 1 → 2 → 3', W/2, 36);
+  box(150,108,202,52,'Свойство 1','∠1 = ∠3 · накрест',DARK);
+  labArrow(254,424,108,'+ вертикальные');
+  box(526,108,202,52,'Свойство 2','∠1 = ∠2 · соответ.',GREEN);
+  box(150,198,202,52,'Свойство 2','∠1 = ∠2',GREEN);
+  labArrow(254,424,198,'+ смежные');
+  box(526,198,202,52,'Свойство 3','∠1 + ∠4 = 180°',GREEN);
+  const px=120,py=262,pw=400,ph=46;
+  roundRect(px,py,pw,ph,9);ctx.fillStyle='#1a1a2e';ctx.fill();
+  ctx.fillStyle='#fff';ctx.font='800 12px system-ui';ctx.fillText('ВСЁ ДЕРЖИТСЯ НА СВОЙСТВЕ 1',W/2,py+19);
+  ctx.fillStyle='#94a3b8';ctx.font='700 10.5px system-ui';ctx.fillText('единственном, что спорило с аксиомой параллельных',W/2,py+35);
+  ctx.textAlign='start';
+}
+
+function draw(){
+  bg();
+  const s=S();
+  if(s.phase==='done'){drawDone();return;}
+  let vis,pulse=null;
+  const cur=asmDone[asmDone.length-1]||null;
+  if(s.phase==='intro'){vis={1:1,2:1,3:1,4:1};}
+  else if(s.phase==='prop2'){
+    vis={1:1,2:1,3:1};
+    if(cur==='eq13')pulse=[1,3];
+    else if(cur==='eq23')pulse=[2,3];
+    else if(cur==='concl2')pulse=[1,2];
+  } else {
+    vis={1:1,2:1,4:1};
+    if(cur==='eq12')pulse=[1,2];
+    else if(cur==='sum24')pulse=[2,4];
+    else if(cur==='concl3')pulse=[1,4];
+  }
+  drawFig(vis,pulse);
+  if(pulse){
+    const key=pulse.slice().sort((a,b)=>a-b).join('');
+    if(key==='12')mnemo('F','соответ.');
+    else if(key==='14')mnemo('П','односторон.');
+  }
+  noteScene(s,cur);
+}
+
+/* ───────── ПАНЕЛИ/СООБЩЕНИЯ ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+
+/* ───────── ВЫБОР (choose) ───────── */
+function renderOpts(list){
+  const box=document.getElementById('opts');box.innerHTML='';
+  list.forEach((o,i)=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML=o.t;b.dataset.i=i;
+    b.addEventListener('click',()=>o.fn(b));box.appendChild(b)});
+}
+function answerChoice(opt,btn,arr){
+  if(stepResolved)return;
+  if(opt.ok){
+    btn.classList.add('ok-pick');
+    [...document.getElementById('opts').children].forEach(b=>b.disabled=true);
+    results.push(mistakes===0&&hintsUsed===0?'g':(mistakes<=1?'y':'r'));
+    mistakes=0;hintsUsed=0;
+    log('choice_ok');
+    setMsg('Верно. '+(opt.after||''),'ok');
+    advanceReady();
+  }else{
+    mistakes++;log('distractor',{pick:opt.t});
+    btn.classList.add('bad-pick');
+    const idx=arr.findIndex(o=>o.ok);
+    const bs=document.getElementById('opts').children;
+    if(bs[idx])bs[idx].classList.add('correct-reveal');
+    setMsg('Не так. '+(opt.why||'')+' Верный ответ подсвечен.','err');
+  }
+}
+
+/* ───────── СБОРКА (assemble) ───────── */
+let asmDone=[], asmDead=[];
+function asmCards(){return S().cards||[]}
+function renderPool(){
+  const box=document.getElementById('opts');box.innerHTML='';
+  asmCards().forEach(c=>{
+    if(asmDone.includes(c.id))return;
+    const b=document.createElement('button');b.type='button';b.className='pcard';b.innerHTML=c.txt;
+    b.addEventListener('click',()=>pickCard(c.id,b));box.appendChild(b);
+  });
+}
+function renderChain(){
+  const box=document.getElementById('steps');box.innerHTML='';
+  for(let i=0;i<si;i++){ if(!STEPS[i].stepNote)continue;
+    const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">·</span>'+STEPS[i].stepNote;box.appendChild(d); }
+  if(S().phaseTitle){const p=document.createElement('div');p.className='phtitle';p.textContent=S().phaseTitle;box.appendChild(p)}
+  if(!asmDone.length){const e=document.createElement('div');e.className='chempty';e.textContent='Цепочка пуста — выберите первое утверждение.';box.appendChild(e);return}
+  asmDone.forEach((id,i)=>{
+    const c=asmCards().find(x=>x.id===id);
+    const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">'+(i+1)+'.</span>'+c.txt;box.appendChild(d);
+  });
+}
+function pickCard(id,btn){
+  if(stepResolved)return;
+  const c=asmCards().find(x=>x.id===id);
+  if(c.trap){
+    mistakes++;if(!asmDead.includes(id))asmDead.push(id);log('distractor',{id});
+    btn.classList.add('shake');setMsg(c.trap,'err');
+    setTimeout(()=>btn.classList.remove('shake'),450);
+    return;
+  }
+  if(c.need && !c.need.every(n=>asmDone.includes(n))){
+    mistakes++;log('early',{id});
+    btn.classList.add('shake');setMsg('Рано: этот шаг опирается на то, что ещё не сказано. Сначала обоснуйте предыдущее.','info');
+    setTimeout(()=>btn.classList.remove('shake'),450);
+    return;
+  }
+  asmDone.push(id);log('step',{id});
+  setMsg('Верно. '+(c.ok||''),'ok');
+  const concl=asmCards().filter(x=>!x.trap).every(x=>asmDone.includes(x.id));
+  renderPool();renderChain();
+  if(concl){
+    results.push(mistakes===0?'g':(mistakes<=1?'y':'r'));
+    mistakes=0;
+    setMsg(S().phase==='prop2'?'Свойство 2 доказано: ∠1 = ∠2. ∎':'Свойство 3 доказано: ∠1 + ∠4 = 180°. ∎','ok');
+    advanceReady();
+  }
+}
+
+/* ───────── ХОД (для не-assemble) ───────── */
+function renderSteps(){
+  const box=document.getElementById('steps');box.innerHTML='';
+  for(let i=0;i<=si;i++){
+    if(!STEPS[i].stepNote)continue;
+    if(i===si && !stepResolved)continue;
+    const d=document.createElement('div');d.className='st';d.innerHTML=STEPS[i].stepNote;box.appendChild(d);
+  }
+}
+function advanceReady(){
+  stepResolved=true;
+  if(S().kind!=='assemble')renderSteps();
+  const nb=document.getElementById('nextBtn');
+  nb.style.display='inline-block';
+  nb.textContent = si<NS-1 ? 'Следующий шаг →' : 'Итоги →';
+}
+
+/* ───────── НАВИГАЦИЯ ───────── */
+function givenFor(s){
+  if(s.phase==='intro') return '<b>Дано:</b> a ∥ b, секущая.<br>Свойство 1 уже доказано: накрест лежащие равны.';
+  if(s.phase==='prop2') return '<b>Дано:</b> a ∥ b, секущая.<br><b>Доказать: ∠1 = ∠2</b> (соответственные).';
+  if(s.phase==='prop3') return '<b>Дано:</b> a ∥ b, секущая.<br><b>Доказать: ∠1 + ∠4 = 180°</b> (односторонние).';
+  return '<b>Итог:</b> три свойства параллельных доказаны — все на фундаменте свойства 1.';
+}
+function showStep(){
+  const s=S();
+  document.getElementById('pf').style.width=(si/NS*100)+'%';
+  document.getElementById('pnum').textContent='Шаг '+(si+1)+' из '+NS;
+  document.getElementById('taskText').innerHTML=s.task;
+  document.getElementById('badge').textContent=s.badge;
+  document.getElementById('givenBox').innerHTML=givenFor(s);
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  clearOpts();
+  stepResolved=false;
+  if(s.q){
+    const arr=s.q.slice();
+    renderOpts(arr.map(o=>({t:o.t,fn:(b)=>answerChoice(o,b,arr)})));
+    setMsg(s.prompt||'Выберите ответ.','info');
+    renderSteps();
+  }else if(s.kind==='assemble'){
+    asmDone=[];asmDead=[];
+    renderPool();renderChain();
+    setMsg('Нажимайте утверждения по порядку. Ловушки объяснят, почему так нельзя.','info');
+  }else{
+    setMsg('Лесенка свойств собрана целиком.','info');
+    renderSteps();
+    advanceReady();
+  }
+  log('step_start',{kind:s.kind,phase:s.phase});
+}
+function nextTask(){ if(si<NS-1){si++;showStep()} else finish() }
+function resetTask(){ log('reset'); si=0;results=[];mistakes=0;hintsUsed=0;asmDone=[];asmDead=[];showStep() }
+
+function showHint(){
+  if(stepResolved && S().kind!=='assemble')return;
+  hintsUsed++;log('hint');
+  const hb=document.getElementById('hintbox');const s=S();let h='';
+  if(s.phase==='intro')h='Свойство 1 уже доказано — на нём и стоим, а не доказываем заново и не измеряем.';
+  else if(s.phase==='prop2')h='∠1 = ∠3 (накрест, свойство 1) и ∠2 = ∠3 (вертикальные) → отсюда ∠1 = ∠2.';
+  else if(s.phase==='prop3')h='∠1 = ∠2 (соответственные, свойство 2) и ∠2 + ∠4 = 180° (смежные) → отсюда ∠1 + ∠4 = 180°.';
+  else h='Лесенка готова — посмотрите схему: 1 → (вертикальные) → 2 → (смежные) → 3.';
+  hb.innerHTML='💡 '+h;hb.style.display='block';
+}
+
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{good:g,total:results.length});
+  const st=lS();st.runs=(st.runs||0)+1;st.passed=true;if(g>(st.best||0))st.best=g;sS(st);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent='✓';
+  document.getElementById('finLbl').textContent =
+    g>=3?'Свойства 2 и 3 собраны без единой ошибки!':
+    g>=2?'Собрано. Загляни в шаг, где сбился с пары.':
+    'Стоит пройти ещё раз — особенно где путались вертикальные / смежные / соответственные.';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){si=0;results=[];mistakes=0;hintsUsed=0;asmDone=[];asmDead=[];document.getElementById('fin').style.display='none';document.getElementById('mainArea').style.display='grid';document.getElementById('bar').style.display='flex';showStep()}
+
+/* ───────── СТАРТ ───────── */
+showStep();
+(function loop(){ draw();requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Построение треугольника по трём сторонам</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 322px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none;cursor:crosshair}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.5}
+.task b{color:#1a1a2e}
+.steps{font-size:13px;color:#64748b;font-weight:800;margin-top:8px}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:700 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt:disabled{cursor:default}
+.opt.good{border-color:#16a34a;background:#f0fdf4;color:#15803d}
+.opt.bad{border-color:#dc2626;background:#fef2f2;color:#b91c1c}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.why{display:none;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;padding:12px;font-size:14px;line-height:1.5;color:#374151}
+.why b{color:#b45309}
+.law{display:none;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:12px;padding:14px;font-size:14px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law .nb{margin-top:8px;color:#334155;font-size:13px}
+.law .bridge{margin-top:10px;color:#475569;font-size:13px}
+.law .bridge a{color:#b45309;font-weight:800;text-decoration:none}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+button.tool.active{border-color:#2d70b3;background:#eaf2fb;color:#1d4ed8}
+button.tool.hidden{display:none}
+.spacer{flex:1}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a;margin-top:4px}
+.next:hover{background:#15803d}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">📐 Треугольник по трём сторонам</div>
+      <div class="sub">Глава IV · §4 · построение циркулем и линейкой</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Анализ</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="460"></canvas></div>
+    <aside class="side">
+      <div class="card" id="taskCard">
+        <h2 id="taskTtl">Анализ</h2>
+        <div class="task" id="taskText"></div>
+        <div class="steps" id="stepText"></div>
+      </div>
+      <div id="opts" class="opts"></div>
+      <div id="msg" class="msg info"></div>
+      <div id="why" class="why"></div>
+      <button class="tool next" id="proofBtn" onclick="proofNext()">Дальше →</button>
+      <div id="law" class="law"></div>
+    </aside>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" id="btnTransfer" onclick="selectTool('transfer')">⊙ Перенести раствор</button>
+    <button class="tool" id="btnLine" onclick="selectTool('line')">／ Линейка</button>
+    <span class="spacer"></span>
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" id="btnUndo" onclick="undo()">↶ Отмена</button>
+    <button class="tool" id="btnReset" onclick="reset()">↺ Сброс</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС / ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch4-p4-t3-construct-sss';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,events:[]}}catch{return{runs:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function logE(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),e:ev,phase,step,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640,H=460,PI=Math.PI;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+const PULSE=()=>1+0.16*Math.sin(Date.now()/240);
+
+/* ───────── ПАЛИТРА / ПРИМИТИВЫ ───────── */
+const COL={DARK:'#1a1a2e',GREY:'#94a3b8',ARC:'#0d9488',LINE:'#2d70b3',G:'#16a34a',PUL:'#7c3aed',A:'#d97706',B:'#db2777',C:'#7c3aed'};
+function sub(p,q){return{x:p.x-q.x,y:p.y-q.y}}
+function nrm(v){const m=Math.hypot(v.x,v.y)||1;return{x:v.x/m,y:v.y/m}}
+function hexA(h,a){const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
+function bg(){
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill()}
+}
+function lab(x,y,txt,col,size){
+  ctx.font='900 '+(size||16)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);ctx.textBaseline='alphabetic';ctx.textAlign='start';
+}
+function dotF(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function dotHollow(x,y,r,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle='#fffdf7';ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=2.4;ctx.stroke();}
+function seg(p,q,col,w,dash){ctx.save();ctx.setLineDash(dash||[]);ctx.strokeStyle=col;ctx.lineWidth=w||2.8;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.restore();}
+function arcDraw(cx,cy,r,faceAng,col,w,alpha,half){
+  ctx.save();ctx.globalAlpha=alpha==null?0.75:alpha;ctx.strokeStyle=col;ctx.lineWidth=w||1.8;ctx.lineCap='round';
+  const hh=(half||120)*PI/180;
+  ctx.beginPath();ctx.arc(cx,cy,r,faceAng-hh,faceAng+hh);ctx.stroke();ctx.restore();
+}
+function ring(x,y,r,col){ctx.save();ctx.strokeStyle=col;ctx.lineWidth=2.6;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.stroke();ctx.restore();}
+function tickMark(p,q,n,col){
+  const mx=(p.x+q.x)/2,my=(p.y+q.y)/2; let dx=q.x-p.x,dy=q.y-p.y;const L=Math.hypot(dx,dy)||1;dx/=L;dy/=L;
+  const nx=-dy,ny=dx;
+  for(let i=0;i<n;i++){const off=(i-(n-1)/2)*5,cx=mx+dx*off,cy=my+dy*off;
+    ctx.beginPath();ctx.moveTo(cx-nx*5,cy-ny*5);ctx.lineTo(cx+nx*5,cy+ny*5);ctx.strokeStyle=col||COL.DARK;ctx.lineWidth=2.2;ctx.stroke();}
+}
+
+/* ───────── ГЕОМЕТРИЯ (чистая) ───────── */
+const EPS=1e-7;
+function interLL(a,b,c,d){
+  const den=(a.x-b.x)*(c.y-d.y)-(a.y-b.y)*(c.x-d.x);
+  if(Math.abs(den)<EPS) return null;
+  const t=((a.x-c.x)*(c.y-d.y)-(a.y-c.y)*(c.x-d.x))/den;
+  return {x:a.x+t*(b.x-a.x), y:a.y+t*(b.y-a.y)};
+}
+function interLC(a,b,O,r){
+  const dx=b.x-a.x,dy=b.y-a.y,fx=a.x-O.x,fy=a.y-O.y;
+  const AA=dx*dx+dy*dy,BB=2*(fx*dx+fy*dy),Cc=fx*fx+fy*fy-r*r;
+  let dsc=BB*BB-4*AA*Cc; if(dsc<-EPS) return []; dsc=Math.max(dsc,0);
+  const s=Math.sqrt(dsc),out=[];
+  [(-BB-s)/(2*AA),(-BB+s)/(2*AA)].forEach((t,i)=>{ if(i===0||s>EPS) out.push({x:a.x+t*dx,y:a.y+t*dy}); });
+  return out;
+}
+function interCC(O1,r1,O2,r2){
+  const d=dist(O1,O2);
+  if(d<EPS || d>r1+r2+EPS || d<Math.abs(r1-r2)-EPS) return [];
+  const aa=(r1*r1-r2*r2+d*d)/(2*d);
+  let h2=r1*r1-aa*aa; if(h2<0) h2=0; const h=Math.sqrt(h2);
+  const xm=O1.x+aa*(O2.x-O1.x)/d, ym=O1.y+aa*(O2.y-O1.y)/d;
+  const rx=-(O2.y-O1.y)*(h/d), ry=(O2.x-O1.x)*(h/d);
+  return h<EPS ? [{x:xm,y:ym}] : [{x:xm+rx,y:ym+ry},{x:xm-rx,y:ym-ry}];
+}
+
+/* ───────── ДАНО: база AB + три отрезка-образца ───────── */
+const A0={x:185,y:345}, B0={x:385,y:345};            // сторона AB (= P1Q1)
+const L1=dist(A0,B0);                                  // AB
+const P1a={x:60,y:34}, Q1a={x:260,y:34};               // образец P1Q1 = AB (200)
+const P2a={x:60,y:64}, Q2a={x:210,y:64};               // образец P2Q2 = BC (150)
+const P3a={x:60,y:92}, Q3a={x:230,y:92};               // образец P3Q3 = CA (170)
+const L2=dist(P2a,Q2a);                                // BC
+const L3=dist(P3a,Q3a);                                // CA
+let Ctarget=null;                                      // верхняя точка пересечения окружностей
+
+/* ───────── МОДЕЛЬ ───────── */
+let P=[], L=[], C=[]; let pid=0;
+function ptByName(n){return P.find(p=>p.name===n);}
+function addPtXY(x,y,kind,name){P.push({id:'p'+(pid++),x,y,kind,name});return ptByName(name);}
+function addArc(centerName,r,name){
+  const c=ptByName(centerName); const fa=Math.atan2(Ctarget.y-c.y, Ctarget.x-c.x);
+  C.push({center:centerName,r,faceAng:fa,name});
+}
+function addLine(n1,n2,name,kind){L.push({a:n1,b:n2,name,kind:kind||'segment'});}
+
+/* ───────── СОСТОЯНИЕ ───────── */
+let phase='analyze', step=0, proofStep=0, tool='transfer';
+let armed=null, span=null, mistakes=0, hints=0, lastReject=null;
+let undoStack=[], initSnap=null;
+
+function takeSnap(){ return JSON.stringify({P,L,C,step,pid}); }
+function loadSnap(s){ const o=JSON.parse(s); P.length=0;o.P.forEach(p=>P.push(p)); L.length=0;o.L.forEach(l=>L.push(l)); C.length=0;o.C.forEach(c=>C.push(c)); step=o.step; pid=o.pid; armed=null; span=null; lastReject=null; }
+function pushUndo(){ undoStack.push(takeSnap()); }
+
+/* ───────── ПРИВЯЗКА ───────── */
+function worldPos(e){ const r=cv.getBoundingClientRect(); const k=Math.max(1,W/r.width); return {x:(e.clientX-r.left)*k, y:(e.clientY-r.top)*k}; }
+function pick(w){ const r=cv.getBoundingClientRect(); const k=Math.max(1,W/r.width); const R=28*k; let best=null,bd=R;
+  for(const p of P){ const dd=Math.hypot(p.x-w.x,p.y-w.y); if(dd<bd){bd=dd;best=p;} } return best; }
+
+/* ───────── ДЕЙСТВИЯ (общие для мыши и харнесса) ───────── */
+function reject(t){ lastReject=t; mistakes++; setMsg(t,'err'); logE('step_reject',{reason:t}); }
+function tryArc(centerPt, sp){
+  if(phase!=='build') return;
+  if(step===0){
+    if(!centerPt || centerPt.name!=='A'){ reject('Первую окружность строим из вершины A (её радиус — сторона CA). Поставь ножку в A.'); return; }
+    if(Math.abs(sp-L3)>4){ reject('Раствор не равен стороне CA. Возьми отрезок P₃Q₃ — это сторона CA.'); return; }
+    pushUndo(); addArc('A',L3,'cA'); step=1; lastReject=null;
+    setMsg('Окружность из A радиусом CA готова. Теперь окружность из B радиусом CB — возьми образец P₂Q₂.','ok'); logE('draw_arc',{c:'A'}); updateUI();
+  } else if(step===1){
+    if(!centerPt || centerPt.name!=='B'){ reject('Вторую окружность строим из вершины B (её радиус — сторона CB). Поставь ножку в B.'); return; }
+    if(Math.abs(sp-L2)>4){ reject('Раствор не равен стороне CB. Возьми отрезок P₂Q₂ — это сторона CB.'); return; }
+    pushUndo(); addArc('B',L2,'cB');
+    const hits=interCC(ptByName('A'),L3,ptByName('B'),L2); hits.sort((u,v)=>u.y-v.y);
+    addPtXY(hits[0].x,hits[0].y,'inter','C'); if(hits[1]) addPtXY(hits[1].x,hits[1].y,'inter','C2');
+    step=2; tool='line'; lastReject=null;
+    setMsg('Окружности пересеклись — вершина C найдена. Возьми линейку и проведи сторону AC.','ok'); logE('draw_arc',{c:'B'}); updateUI();
+  } else { reject('Окружности уже построены. Теперь линейкой соедини A–C и B–C.'); }
+}
+function tryLine(n1,n2){
+  if(phase!=='build') return;
+  if(step<2){ reject('Сначала циркулем построй две окружности.'); return; }
+  const s=new Set([n1,n2]);
+  if(step===2){
+    if(s.has('A')&&s.has('C')){ pushUndo(); addLine('A','C','sideAC','segment'); step=3; lastReject=null; setMsg('Сторона AC проведена. Осталась сторона B–C.','ok'); logE('draw_line',{a:'A',b:'C'}); updateUI(); }
+    else if(s.has('A')&&s.has('C2')){ reject('Обе точки пересечения дают треугольник; для определённости соедини с верхней точкой C.'); }
+    else { reject('Соедини вершину A с точкой пересечения окружностей — C.'); }
+  } else if(step===3){
+    if(s.has('B')&&s.has('C')){ pushUndo(); addLine('B','C','sideBC','segment'); phase='proof'; proofStep=0; tool=null; lastReject=null; setMsg('Треугольник ABC построен! Разберёмся, почему он искомый.','info'); logE('draw_line',{a:'B',b:'C'}); updateUI(); }
+    else if(s.has('B')&&s.has('C2')){ reject('Сторону BC веди к той же вершине C (верхней).'); }
+    else { reject('Соедини вершину B с точкой пересечения C.'); }
+  }
+}
+function triangleOK(){
+  const Aa=ptByName('A'),Bb=ptByName('B'),Cc=ptByName('C'); if(!Cc) return false;
+  const okAB=Math.abs(dist(Aa,Bb)-L1)<2, okCA=Math.abs(dist(Cc,Aa)-L3)<2, okCB=Math.abs(dist(Cc,Bb)-L2)<2;
+  const hasAC=L.some(l=>{const s=new Set([l.a,l.b]);return s.has('A')&&s.has('C');});
+  const hasBC=L.some(l=>{const s=new Set([l.a,l.b]);return s.has('B')&&s.has('C');});
+  return okAB&&okCA&&okCB&&hasAC&&hasBC;
+}
+
+/* ───────── ФАЗЫ-ВОПРОСЫ ───────── */
+const ANALYZE={ q:'Пусть треугольник ABC уже построен и сторона AB есть. На каких линиях лежит вершина C?',
+  opts:[
+    {t:'На окружности радиуса CA вокруг A и радиуса CB вокруг B', ok:true, d:''},
+    {t:'На серединном перпендикуляре к стороне AB', ok:false, d:'Серединный перпендикуляр — это точки, равноудалённые от A и B. Но CA и CB разные. C удалена от A на CA, от B на CB — значит на пересечении двух окружностей.'},
+    {t:'Где-то между A и B, ставим на глаз', ok:false, d:'В построении «на глаз» точки не ставят. C удалена от A на CA и от B на CB — её даёт пересечение двух окружностей.'}
+  ]};
+const INVEST={ q:'Всегда ли по трём отрезкам можно построить треугольник?',
+  opts:[
+    {t:'Нет — только если каждая сторона меньше суммы двух других', ok:true, d:''},
+    {t:'Да, по любым трём отрезкам', ok:false, d:'Если один отрезок длиннее суммы двух других, окружности не дотянутся друг до друга — пересечения, а значит и вершины C, не будет.'},
+    {t:'Только если все три отрезка равны', ok:false, d:'Равносторонний — лишь частный случай. Достаточно, чтобы каждая сторона была меньше суммы двух других (неравенство треугольника).'}
+  ]};
+
+function clearOpts(){ document.getElementById('opts').innerHTML=''; }
+function revealChoice(box,arr){ const i=arr.findIndex(o=>o.ok); if(box.children[i])box.children[i].classList.add('good'); }
+function showChoice(obj,onOk){
+  document.getElementById('taskText').innerHTML=obj.q;
+  document.getElementById('stepText').innerHTML='';
+  const box=document.getElementById('opts'); box.innerHTML='';
+  const arr=shuffle(obj.opts.slice());
+  arr.forEach(o=>{ const b=document.createElement('button'); b.type='button'; b.className='opt'; b.textContent=o.t;
+    b.addEventListener('click',()=>{ if(b.disabled)return;
+      if(o.ok){ [...box.children].forEach(x=>x.disabled=true); b.classList.add('good'); setMsg('Верно.','ok'); onOk(); }
+      else { mistakes++; b.classList.add('bad'); setMsg(o.d,'err'); revealChoice(box,arr); } });
+    box.appendChild(b); });
+}
+function analyzeOk(){ phase='build'; step=0; tool='transfer'; armed=null; span=null; clearOpts(); setMsg('Дано: сторона AB и образцы сторон. Возьми «Перенести раствор» и сними длину CA с отрезка P₃Q₃.','info'); logE('phase',{to:'build'}); updateUI(); }
+function investOk(){ phase='done'; clearOpts(); const s=lS(); s.runs=(s.runs||0)+1; s.passed=true; sS(s); logE('finish',{mistakes,hints}); updateUI(); }
+
+/* ───────── ДОКАЗАТЕЛЬСТВО / ФИНАЛ ───────── */
+function proofNext(){
+  if(phase==='proof'){ phase='invest'; showChoice(INVEST, investOk); updateUI(); logE('phase',{to:'invest'}); }
+}
+
+/* ───────── UNDO / RESET / HINT ───────── */
+function undo(){ if(phase!=='build') return; const s=undoStack.pop(); if(s)loadSnap(s); else loadSnap(initSnap); setMsg('Шаг отменён.','info'); updateUI(); }
+function reset(){ if(phase!=='build') return; undoStack=[]; loadSnap(initSnap); setMsg('Холст очищен. Дано: сторона AB и образцы сторон.','info'); updateUI(); }
+function showHint(){
+  if(phase==='build'){ hints++; logE('hint');
+    const h=['Возьми «Перенести раствор», коснись концов отрезка P₃Q₃ (это CA), затем поставь ножку в вершину A.',
+             'Тем же инструментом сними длину с P₂Q₂ (это CB) и поставь ножку в вершину B — окружности пересекутся.',
+             'Возьми линейку и соедини A с точкой пересечения окружностей C.',
+             'Линейкой соедини B с той же точкой C — получится сторона BC.'][step];
+    setMsg('💡 '+h,'info');
+  }
+}
+
+/* ───────── ИНСТРУМЕНТЫ / УКАЗАТЕЛЬ ───────── */
+function selectTool(t){ if(phase!=='build') return; tool=t; armed=null; span=null; setMsg(t==='transfer'?'Перенос раствора: коснись двух концов отрезка-образца, потом — вершины.':'Линейка: коснись двух построенных точек.','info'); updateUI(); }
+cv.addEventListener('pointerdown',e=>{
+  if(phase!=='build') return;
+  const w=worldPos(e), p=pick(w);
+  if(tool==='transfer'){
+    if(span===null){
+      if(!p){ reject('Снимай раствор по двум построенным точкам, не на глаз.'); return; }
+      if(!armed){ armed=p; setMsg('Один конец отрезка взят. Коснись второго конца того же отрезка.','info'); }
+      else if(p.id!==armed.id){ span=dist(armed,p); armed=null; setMsg('Раствор взят. Теперь поставь ножку циркуля в нужную вершину.','ok'); logE('span_take',{}); }
+    } else {
+      if(!p){ reject('Поставь ножку циркуля в точку, не на глаз.'); return; }
+      const sp=span; span=null; tryArc(p,sp);
+    }
+  } else if(tool==='line'){
+    if(!p){ reject('Веди прямую через построенные точки, не на глаз.'); return; }
+    if(!armed){ armed=p; setMsg('Точка '+(p.name||'')+' выбрана. Теперь вторая.','info'); }
+    else { if(p.id!==armed.id) tryLine(armed.name,p.name); armed=null; }
+  }
+});
+
+/* ───────── ОТРИСОВКА ───────── */
+function drawSample(P1,Q1,txt,col){
+  seg(P1,Q1,COL.DARK,3); dotF(P1.x,P1.y,3.6,col); dotF(Q1.x,Q1.y,3.6,col);
+  lab(Q1.x+50,Q1.y,txt,col,12);
+}
+function drawConstruction(){
+  const Aa=ptByName('A'),Bb=ptByName('B'),Cc=ptByName('C'),C2=ptByName('C2');
+  // образцы
+  drawSample(P1a,Q1a,'P₁Q₁ = AB',COL.A);
+  drawSample(P2a,Q2a,'P₂Q₂ = BC',COL.B);
+  drawSample(P3a,Q3a,'P₃Q₃ = CA',COL.C);
+  // дано: сторона AB
+  seg(Aa,Bb,COL.DARK,3);
+  // окружности (дуги, обращённые к C)
+  const arcAlpha=(phase==='build')?0.8:0.4;
+  C.forEach(c=>{ const o=ptByName(c.center); arcDraw(o.x,o.y,c.r,c.faceAng,COL.ARC,1.9,arcAlpha,130); });
+  // стороны треугольника
+  const built=(phase==='proof'||phase==='done');
+  L.forEach(l=>{ if(l.name==='sideAC'||l.name==='sideBC'){ const u=ptByName(l.a),v=ptByName(l.b); seg(u,v,built?COL.G:COL.LINE,built?3.4:2.8); } });
+  // доказательство: стороны равны образцам (засечки)
+  if(phase==='proof'&&Cc){
+    tickMark(Aa,Bb,1,COL.A); tickMark(P1a,Q1a,1,COL.A);
+    tickMark(Bb,Cc,2,COL.B); tickMark(P2a,Q2a,2,COL.B);
+    tickMark(Cc,Aa,3,COL.C); tickMark(P3a,Q3a,3,COL.C);
+  }
+  // точки пересечения
+  if(C2){ dotHollow(C2.x,C2.y,4.4,COL.ARC); lab(C2.x+13,C2.y+12,'C′',COL.GREY,13); }
+  if(Cc){ const pul=(step===2&&phase==='build'); dotHollow(Cc.x,Cc.y,pul?5*PULSE():5,COL.ARC); if(pul) ring(Cc.x,Cc.y,12*PULSE(),COL.PUL); lab(Cc.x,Cc.y-15,'C',built?COL.G:COL.C,16); }
+  // концы AB
+  dotF(Aa.x,Aa.y,4.8,COL.A); lab(Aa.x-15,Aa.y+16,'A',COL.A,16);
+  dotF(Bb.x,Bb.y,4.8,COL.B); lab(Bb.x+15,Bb.y+16,'B',COL.B,16);
+  // подсветка взятого раствора / выбранной точки
+  if(armed){ ring(armed.x,armed.y,12,COL.PUL); }
+  if(phase==='build'&&span!==null){ ring(Aa.x,Aa.y,13*PULSE(),COL.PUL); }
+}
+function drawInvestFail(){
+  // показ случая, когда окружности не пересекаются (одна сторона больше суммы двух других)
+  const Aa={x:200,y:300}, Bb={x:440,y:300};
+  seg(Aa,Bb,COL.DARK,3);
+  arcDraw(Aa.x,Aa.y,70,0,COL.ARC,2,0.85,150);
+  arcDraw(Bb.x,Bb.y,55,PI,COL.ARC,2,0.85,150);
+  dotF(Aa.x,Aa.y,4.8,COL.A); lab(Aa.x-15,Aa.y+16,'A',COL.A,16);
+  dotF(Bb.x,Bb.y,4.8,COL.B); lab(Bb.x+15,Bb.y+16,'B',COL.B,16);
+  lab(W/2,150,'Сторона AB больше суммы двух других —',COL.DARK,14);
+  lab(W/2,176,'окружности не встретились, вершины C нет.',COL.DARK,14);
+  lab((Aa.x+Bb.x)/2,250,'?',COL.GREY,22);
+}
+function draw(){
+  bg();
+  if(phase==='invest') drawInvestFail(); else drawConstruction();
+}
+
+/* ───────── UI ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls;}
+const STEP_INSTR=[
+  '<b>Перенести раствор:</b> сними длину CA с образца <b>P₃Q₃</b> (коснись концов), затем поставь ножку в вершину <b>A</b>.',
+  'Тем же инструментом сними длину CB с образца <b>P₂Q₂</b> и поставь ножку в вершину <b>B</b>.',
+  '<b>Линейка:</b> проведи сторону через <b>A</b> и точку пересечения <b>C</b>.',
+  '<b>Линейка:</b> проведи сторону через <b>B</b> и ту же точку <b>C</b>.'
+];
+function updateTool(){
+  document.getElementById('btnTransfer').classList.toggle('active',tool==='transfer');
+  document.getElementById('btnLine').classList.toggle('active',tool==='line');
+  const build=(phase==='build');
+  ['btnTransfer','btnLine','btnUndo','btnReset'].forEach(id=>document.getElementById(id).classList.toggle('hidden',!build));
+}
+function updateUI(){
+  updateTool();
+  const why=document.getElementById('why'), law=document.getElementById('law'), pb=document.getElementById('proofBtn'),
+        sc=document.getElementById('taskCard'), succ=document.getElementById('successBar'), bd=document.getElementById('badge'),
+        opts=document.getElementById('opts');
+  why.style.display='none'; law.style.display='none'; pb.style.display='none'; succ.style.display='none'; sc.style.display='';
+  if(phase==='analyze'){
+    bd.textContent='Анализ'; opts.style.display='';
+    document.getElementById('taskTtl').textContent='Анализ';
+  } else if(phase==='build'){
+    bd.textContent='Построение'; opts.style.display='none';
+    document.getElementById('taskTtl').textContent='Построение';
+    document.getElementById('taskText').innerHTML='Построй треугольник ABC по трём сторонам — <b>циркулем и линейкой</b>. Сторона AB дана; радиусы бери с образцов P₂Q₂ (это BC) и P₃Q₃ (это CA).';
+    document.getElementById('stepText').innerHTML='Шаг '+(step+1)+' из 4 · '+STEP_INSTR[step];
+  } else if(phase==='proof'){
+    bd.textContent='Доказательство'; opts.style.display='none'; sc.style.display='none'; why.style.display='block'; pb.style.display='inline-block';
+    why.innerHTML='<b>Почему ABC — искомый?</b><br>По построению: AB равна образцу P₁Q₁; CA равна радиусу первой окружности — образцу P₃Q₃; CB равна радиусу второй — образцу P₂Q₂. Все три стороны равны данным отрезкам (засечки на чертеже).';
+    pb.textContent='Дальше → исследование';
+  } else if(phase==='invest'){
+    bd.textContent='Исследование'; opts.style.display='';
+    document.getElementById('taskTtl').textContent='Исследование';
+  } else { // done
+    bd.textContent='Готово'; opts.style.display='none'; sc.style.display='none'; law.style.display='block'; succ.style.display='block';
+    succ.textContent='Готово — треугольник по трём сторонам построен.';
+    law.innerHTML='<b>Закон.</b> Чтобы построить треугольник по трём сторонам: отложи одну сторону, из её концов проведи <b>две окружности</b>, радиусы которых — две другие стороны; их пересечение — третья вершина. Соедини.'+
+      '<div class="nb">Построение возможно ⟺ каждая сторона <b>меньше суммы</b> двух других (неравенство треугольника, §2). Иначе окружности не пересекутся.</div>'+
+      '<div class="bridge">Дальше — <a href="ch4-p4-t4-construct-two-sides-angle.html">построение по двум сторонам и углу между ними →</a></div>';
+  }
+}
+
+/* ───────── СТАРТ ───────── */
+addPtXY(A0.x,A0.y,'given','A'); addPtXY(B0.x,B0.y,'given','B');
+addPtXY(P1a.x,P1a.y,'given','P1'); addPtXY(Q1a.x,Q1a.y,'given','Q1');
+addPtXY(P2a.x,P2a.y,'given','P2'); addPtXY(Q2a.x,Q2a.y,'given','Q2');
+addPtXY(P3a.x,P3a.y,'given','P3'); addPtXY(Q3a.x,Q3a.y,'given','Q3');
+(function(){ const h=interCC(A0,L3,B0,L2); h.sort((u,v)=>u.y-v.y); Ctarget=h[0]; })();
+initSnap=takeSnap();
+showChoice(ANALYZE, analyzeOk);
+setMsg('Сначала анализ: подумай, где должна оказаться вершина C.','info');
+updateUI();
+(function loop(){draw();requestAnimationFrame(loop)})();
+</script>
+</body>
+</html>

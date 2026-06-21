@@ -1,0 +1,971 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Зачёт по параграфу · первый признак равенства треугольников</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.chain{display:none;flex-direction:column;gap:6px;margin-top:12px}
+.chitem{background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:8px 10px;font:600 12.5px/1.45 system-ui;color:#14532d}
+.chitem .n{color:#16a34a;font-weight:900}
+.chgap{background:#fffbeb;border:1.5px dashed #f59e0b;border-radius:10px;padding:8px 10px;font:800 12.5px/1.45 system-ui;color:#92400e}
+.poolTtl{display:none;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:800;margin:13px 2px 7px}
+.pool{display:flex;flex-direction:column;gap:8px}
+.pcard{text-align:left;border:1.5px solid #d1d5db;border-radius:11px;background:#fff;padding:11px 13px;font:600 13.5px/1.5 system-ui;color:#1f2937;cursor:pointer;width:100%}
+.pcard:hover{border-color:#2d70b3;background:#f0f7ff}
+.pcard.dead{opacity:.5;text-decoration:line-through;pointer-events:none;background:#fef2f2;border-color:#fecaca}
+.pcard.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:14.5px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.row{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;line-height:1.5;border-bottom:1px dashed #e5e7eb;padding:4px 0}
+.row:last-child{border-bottom:0}
+.value{font-weight:900}
+.v-ok{color:#16a34a}
+.qdots{display:flex;gap:5px;flex-wrap:wrap}
+.qdot{width:14px;height:14px;border-radius:50%;background:#e5e7eb}
+.qdot.g{background:#16a34a}.qdot.y{background:#f59e0b}.qdot.r{background:#dc2626}
+.qdot.cur{background:#fff;border:2.5px solid #2d70b3}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.warn{background:#fff7ed;color:#c2410c}
+.small{font-size:13.5px;color:#374151;line-height:1.55}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button:hover{background:#f3f4f6}
+button:disabled{opacity:.35;cursor:default}
+button:disabled:hover{background:#fff}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.neq{color:#b91c1c;border-color:#fecaca}
+.neq:hover{background:#fef2f2}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:16px}
+.dot{width:15px;height:15px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.verdict{max-width:580px;margin:0 auto 16px;border-radius:14px;padding:13px 16px;font-weight:900;font-size:17px}
+.verdict.okv{background:#dcfce7;color:#14532d;border:1.5px solid #bbf7d0}
+.verdict.badv{background:#fff7ed;color:#9a3412;border:1.5px solid #fed7aa}
+.skills{max-width:580px;margin:0 auto 16px;text-align:left;border:1.5px solid #e5e7eb;border-radius:14px;background:#f9fafb;padding:10px 16px}
+.skillrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dashed #e5e7eb;font-size:14px}
+.skills>div:last-child{border-bottom:0}
+.sn{flex:1;font-weight:800;color:#1f2937}
+.sdots{display:flex;gap:4px}
+.sd{width:11px;height:11px;border-radius:50%}
+.sd.g{background:#16a34a}.sd.y{background:#f59e0b}.sd.r{background:#dc2626}
+.srec{font-size:12.5px;color:#b45309;padding:0 0 8px;border-bottom:1px dashed #e5e7eb}
+.srec a{color:#b45309;font-weight:800}
+.proto{max-width:580px;margin:0 auto 16px;text-align:left;border:1.5px solid #fecaca;background:#fff7f7;border-radius:14px;padding:12px 16px;font-size:13px;line-height:1.55;color:#7f1d1d}
+.proto.clean{border-color:#bbf7d0;background:#f0fdf4;color:#14532d}
+.proto b{display:block;margin-bottom:6px}
+.proto div{padding:3px 0}
+.law{max-width:580px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14.5px;line-height:1.6;color:#14532d}
+.law b{color:#166534}
+@media(max-width:820px){
+  body{padding:8px}
+  .main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}
+  .side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">🎓 Зачёт по параграфу</div>
+      <div class="sub">Глава II · §1 · тренажёр 5 из 5 — мини-зачёт: первый признак</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Подсказка = минус балл</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="400"></canvas>
+      <div class="chain" id="chainBox"></div>
+      <div class="poolTtl" id="poolTtl"></div>
+      <div class="pool" id="pool"></div>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card" id="statusCard">
+        <h2 id="statusTtl">Состояние</h2>
+        <div id="statusBody"></div>
+      </div>
+      <div class="card">
+        <h2>Ход зачёта</h2>
+        <div class="qdots" id="qdots"></div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div class="card">
+        <h2>Правила зачёта</h2>
+        <p class="small">Это проверка, а не урок: наводящих подсказок нет. Кнопка «💡 Подсказка» — спасательный круг, но она сразу лишает задачу зелёной точки. Все ошибки фиксируются и разбираются в <b>протоколе</b> после финала.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="verdict" id="verdict"></div>
+    <div class="skills" id="skillsBox"></div>
+    <div class="proto" id="protoBox"></div>
+    <div class="law">
+      <b>Теорема (первый признак равенства треугольников).</b><br>
+      Если две стороны и угол <b>между ними</b> одного треугольника соответственно равны двум сторонам и углу между ними другого треугольника, то такие треугольники равны.<br><br>
+      Параграф пройден: вы совмещали фигуры руками, видели обе ловушки со словом «между», собирали доказательство и решали задачи трёх классических чертежей. Дальше этот признак будет работать на вас.
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Пройти зачёт ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button id="flipBtn" onclick="doFlip()">⇄ Перевернуть</button>
+    <button id="neqBtn" class="neq" onclick="sayNotEqual()">✕ Не равны</button>
+    <button id="hintBtn" onclick="showHint()">💡 Подсказка (−балл)</button>
+    <button onclick="resetTask()">↺ Сначала</button>
+    <button id="nextBtn" class="next" onclick="nextTask()">Следующая →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС И ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch2-p1-t5-quiz';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,passed:false,events:[]}}catch{return{runs:0,best:0,passed:false,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),task:ti+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── УТИЛИТЫ ───────── */
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const rf=(a,b)=>a+Math.random()*(b-a);
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+const dir=a=>({x:Math.cos(a),y:Math.sin(a)});
+const add=(p,d,r)=>({x:p.x+d.x*r,y:p.y+d.y*r});
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+
+/* ───────── ФИГУРЫ ───────── */
+// жанр t1: фигуры вокруг центра
+const QUAD=[{x:-82,y:28},{x:-26,y:-66},{x:74,y:-38},{x:58,y:56}];
+const scaleSh=(sh,k)=>sh.map(p=>({x:p.x*k,y:p.y*k}));
+// жанр t2: вершина A в начале координат
+const TRI_A=[{x:0,y:0},{x:150,y:0},{x:58,y:-98}];
+const TRI_B=[{x:0,y:0},{x:150,y:0},{x:95,y:-63}];
+const TRI_S1=[{x:0,y:0},{x:-140,y:0},{x:-91.3,y:-40.9}];
+const TRI_S2=[{x:0,y:0},{x:-140,y:0},{x:-24.4,y:-97.0}];
+
+/* ───────── ГЕНЕРАТОРЫ ЗАДАЧ ПО ЧЕРТЕЖУ (жанр t4) ───────── */
+function genA(){ // «бабочка»: вертикальные углы
+  const O={x:rf(300,340),y:rf(195,225)};
+  const u=rf(-0.38,-0.12), v=u+rf(1.0,1.45);
+  const rA=rf(120,148), rB=rf(92,116);
+  const A=add(O,dir(u),rA), C=add(O,dir(u+Math.PI),rA);
+  const B=add(O,dir(v),rB), D=add(O,dir(v+Math.PI),rB);
+  const P={A,B,C,D,O};
+  const useAngle=Math.random()<.5, val=useAngle?ri(25,68):ri(5,12);
+  return{
+    P, segs:[['A','C',0],['B','D',0],['A','B',0],['C','D',0]],
+    tris:[['A','O','B'],['C','O','D']],
+    ticks:[['O','A',1],['O','C',1],['O','B',2],['O','D',2]],
+    arcs:[],
+    els:[
+      {id:'OA',type:'side',a:'O',b:'A',st:'given'},{id:'OC',type:'side',a:'O',b:'C',st:'given'},
+      {id:'OB',type:'side',a:'O',b:'B',st:'given'},{id:'OD',type:'side',a:'O',b:'D',st:'given'},
+      {id:'AB',type:'side',a:'A',b:'B',st:'derived'},{id:'CD',type:'side',a:'C',b:'D',st:'derived'},
+      {id:'wAOB',type:'angle',v:'O',p:'A',q:'B',st:'hidden'},
+      {id:'wCOD',type:'angle',v:'O',p:'C',q:'D',st:'hidden'},
+      {id:'wBOC',type:'angle',v:'O',p:'B',q:'C',st:'wrong'},
+      {id:'wAOD',type:'angle',v:'O',p:'A',q:'D',st:'wrong'}
+    ],
+    hidden:['wAOB','wCOD'],
+    hiddenName:'∠AOB = ∠COD — вертикальные',
+    given:'Отрезки AC и BD пересекаются в точке O, <b>AO = OC</b>, <b>BO = OD</b>.',
+    foundMsg:'Да: ∠AOB и ∠COD — вертикальные, они равны и лежат между данными сторонами.',
+    eq:{stem:'△AOB = ?',opts:shuffle([
+      {t:'△COD',ok:true},
+      {t:'△DOC',ok:false,why:'в записи равенства нарушено соответствие вершин: A↔C, O↔O, B↔D, поэтому после A должна идти C'},
+      {t:'△CDO',ok:false,why:'в записи равенства вершина O должна стоять на том же месте, что и в △AOB — втором'}])},
+    num:useAngle
+      ?{q:'∠OAB = '+val+'°. Чему равен ∠OCD?',opts:shuffle([
+         {t:val+'°',ok:true},
+         {t:(180-val)+'°',ok:false,why:'вместо соответственного угла взят смежный: ∠OCD соответствует ∠OAB (A↔C) и просто равен ему'},
+         {t:'Определить нельзя',ok:false,why:'выбрано «определить нельзя», хотя соответственные элементы равных треугольников равны'}])}
+      :{q:'AB = '+val+' см. Чему равна CD?',opts:shuffle([
+         {t:val+' см',ok:true},
+         {t:(val+ri(1,3))+' см',ok:false,why:'AB и CD — соответственные стороны равных треугольников, они обязаны быть равны'},
+         {t:'Определить нельзя',ok:false,why:'выбрано «определить нельзя», хотя из △AOB = △COD следует AB = CD'}])}
+  };
+}
+function genB(){ // общая сторона + равные углы при A
+  const A={x:rf(140,165),y:rf(195,215)};
+  const d=rf(-0.06,0.06), f=rf(0.46,0.62);
+  const r=rf(112,138), L=rf(285,330);
+  const B=add(A,dir(d-f),r), D=add(A,dir(d+f),r), C=add(A,dir(d),L);
+  const P={A,B,C,D};
+  const useAngle=Math.random()<.5, val=useAngle?ri(25,68):ri(5,12);
+  return{
+    P, segs:[['A','B',0],['A','D',0],['A','C',0],['B','C',0],['D','C',0]],
+    tris:[['A','B','C'],['A','D','C']],
+    ticks:[['A','B',1],['A','D',1]],
+    arcs:[['A','B','C'],['A','C','D']],
+    els:[
+      {id:'AB',type:'side',a:'A',b:'B',st:'given'},{id:'AD',type:'side',a:'A',b:'D',st:'given'},
+      {id:'BC',type:'side',a:'B',b:'C',st:'derived'},{id:'DC',type:'side',a:'D',b:'C',st:'derived'},
+      {id:'AC',type:'side',a:'A',b:'C',st:'hidden'},
+      {id:'wBAC',type:'angle',v:'A',p:'B',q:'C',st:'givenA'},
+      {id:'wCAD',type:'angle',v:'A',p:'C',q:'D',st:'givenA'}
+    ],
+    hidden:['AC'],
+    hiddenName:'AC — общая сторона',
+    given:'<b>AB = AD</b>, <b>∠BAC = ∠DAC</b>.',
+    foundMsg:'Точно: AC — общая сторона, она равна самой себе. Третья пара есть.',
+    eq:{stem:'△ABC = ?',opts:shuffle([
+      {t:'△ADC',ok:true},
+      {t:'△ACD',ok:false,why:'нарушено соответствие вершин A↔A, B↔D, C↔C: после A должна идти D'},
+      {t:'△DCA',ok:false,why:'вершина A соответствует сама себе и должна стоять первой, как в записи △ABC'}])},
+    num:useAngle
+      ?{q:'∠ABC = '+val+'°. Чему равен ∠ADC?',opts:shuffle([
+         {t:val+'°',ok:true},
+         {t:(180-val)+'°',ok:false,why:'вместо равного соответственного угла (B↔D) взят смежный'},
+         {t:'Определить нельзя',ok:false,why:'выбрано «определить нельзя», хотя соответственные углы равных треугольников равны'}])}
+      :{q:'BC = '+val+' см. Чему равна DC?',opts:shuffle([
+         {t:val+' см',ok:true},
+         {t:(val+ri(1,3))+' см',ok:false,why:'BC и DC — соответственные стороны (B↔D, C↔C), они равны'},
+         {t:'Определить нельзя',ok:false,why:'выбрано «определить нельзя», хотя из △ABC = △ADC следует BC = DC'}])}
+  };
+}
+function genC(){ // общая диагональ
+  const A={x:rf(155,185),y:rf(120,145)}, C={x:rf(440,470),y:rf(290,315)};
+  const M={x:(A.x+C.x)/2,y:(A.y+C.y)/2};
+  const aAC=Math.atan2(C.y-A.y,C.x-A.x);
+  const B=add(A,dir(aAC-rf(0.5,0.72)),rf(150,185));
+  const D={x:2*M.x-B.x,y:2*M.y-B.y};
+  const P={A,B,C,D};
+  const useAngle=Math.random()<.5, val=useAngle?ri(25,68):ri(5,12);
+  return{
+    P, segs:[['A','B',0],['B','C',0],['C','D',0],['D','A',0],['A','C',0]],
+    tris:[['A','B','C'],['C','D','A']],
+    ticks:[['A','B',1],['C','D',1]],
+    arcs:[['A','B','C'],['C','D','A']],
+    els:[
+      {id:'AB',type:'side',a:'A',b:'B',st:'given'},{id:'CD',type:'side',a:'C',b:'D',st:'given'},
+      {id:'BC',type:'side',a:'B',b:'C',st:'derived'},{id:'DA',type:'side',a:'D',b:'A',st:'derived'},
+      {id:'AC',type:'side',a:'A',b:'C',st:'hidden'},
+      {id:'wBAC',type:'angle',v:'A',p:'B',q:'C',st:'givenA'},
+      {id:'wDCA',type:'angle',v:'C',p:'D',q:'A',st:'givenA'}
+    ],
+    hidden:['AC'],
+    hiddenName:'AC — общая сторона',
+    given:'<b>AB = CD</b>, <b>∠BAC = ∠DCA</b>.',
+    foundMsg:'Верно: диагональ AC — общая сторона обоих треугольников.',
+    eq:{stem:'△ABC = ?',opts:shuffle([
+      {t:'△CDA',ok:true},
+      {t:'△ACD',ok:false,why:'из ∠BAC = ∠DCA следует A↔C, поэтому запись должна начинаться с C'},
+      {t:'△CAD',ok:false,why:'из AB = CD следует B↔D, поэтому после C должна идти D'}])},
+    num:useAngle
+      ?{q:'∠ABC = '+val+'°. Чему равен ∠CDA?',opts:shuffle([
+         {t:val+'°',ok:true},
+         {t:(180-val)+'°',ok:false,why:'вместо равного соответственного угла (B↔D) взят смежный'},
+         {t:'Определить нельзя',ok:false,why:'выбрано «определить нельзя», хотя соответственные углы равных треугольников равны'}])}
+      :{q:'BC = '+val+' см. Чему равна DA?',opts:shuffle([
+         {t:val+' см',ok:true},
+         {t:(val+ri(1,3))+' см',ok:false,why:'BC и DA — соответственные стороны (B↔D, C↔A), они равны'},
+         {t:'Определить нельзя',ok:false,why:'выбрано «определить нельзя», хотя из △ABC = △CDA следует BC = DA'}])}
+  };
+}
+
+/* ───────── ТЕКСТЫ ДОКАЗАТЕЛЬСТВА (жанр t3) ───────── */
+const PR_ORDER=['overlay','B','C','BC','fin'];
+const PR_TXT={
+ overlay:'Так как ∠A = ∠A₁, наложим △ABC на △A₁B₁C₁ так, чтобы вершина A совместилась с A₁, а стороны AB и AC пошли по лучам A₁B₁ и A₁C₁.',
+ B:'AB = A₁B₁, поэтому при наложении точка B совместится с точкой B₁.',
+ C:'AC = A₁C₁, поэтому точка C совместится с точкой C₁.',
+ BC:'Точки B и C совпали с B₁ и C₁ — значит, совместятся и стороны BC и B₁C₁.',
+ fin:'Треугольники полностью совместились, следовательно △ABC = △A₁B₁C₁.'
+};
+
+/* ───────── ПЛАН ЗАЧЁТА ───────── */
+const OV_TEXT='Совместите голубую фигуру с контуром наложением — или нажмите «✕ Не равны», если это невозможно.';
+const OV2_TEXT='На чертеже отмечены равные элементы (засечки и дужки). Совместите треугольники по <b>соответственным</b> вершинам — или нажмите «✕ Не равны».';
+function buildPlan(){
+  const ov1=pick([
+    {m:QUAD,t:QUAD,T:{x:450,y:210,a:1.9,k:-1},start:{x:165,y:222,a:-0.2},equal:true,text:OV_TEXT},
+    {m:scaleSh(QUAD,0.74),t:QUAD,T:{x:450,y:210,a:0.3,k:1},start:{x:165,y:222,a:0.3},equal:false,text:OV_TEXT}
+  ]);
+  const ov2=pick([
+    {m:TRI_A,t:TRI_A,T:{x:440,y:255,a:0.4,k:-1},start:{x:150,y:248,a:0.1},equal:true,arcAt:'A',text:OV2_TEXT},
+    {m:TRI_A,t:TRI_B,T:{x:430,y:258,a:-0.3,k:1},start:{x:150,y:248,a:0.2},equal:false,arcAt:'A',text:OV2_TEXT},
+    {m:TRI_S1,t:TRI_S2,T:{x:455,y:280,a:0,k:1},start:{x:430,y:140,a:0},equal:false,arcAt:'B',
+     text:OV2_TEXT+'<br><span style="color:#b45309;font-weight:800">✦ за страницами учебника</span>'}
+  ]);
+  return [
+    {type:'ov1',...ov1},
+    {type:'ov2',...ov2},
+    {type:'theory',text:'Выберите <b>точную</b> формулировку первого признака равенства треугольников.'},
+    {type:'proof',gap:pick(['overlay','BC']),text:'В доказательстве первого признака пропущен один шаг. Найдите его среди карточек под чертежом.'},
+    ...shuffle([{type:'chart',gen:genA},{type:'chart',gen:genB},{type:'chart',gen:genC}])
+  ];
+}
+
+/* ───────── СОСТОЯНИЕ ───────── */
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+const W=640,H=400;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+
+let plan=[],ti=0,results=[],protocol=[];
+let mistakes=0,hintsUsed=0,solved=false,kind='mouse';
+// наложение
+let mov={x:0,y:0,a:0,k:1},kTarget=1,mode=null,grab={},flipAnim=null;
+// задачи по чертежу
+let CT=null,phase=1,found=[],focusTri=null;
+// доказательство
+let prFilled=false,prOvP=0,prSolved=false;
+const TRI3=[{x:0,y:0},{x:128,y:0},{x:49,y:-83}];
+const START3={x:95,y:270,a:-0.12},TGT3={x:400,y:280,a:0};
+// теория: статичная сцена
+const TH_M={x:160,y:300,a:-0.12,k:1},TH_T={x:450,y:305,a:0.2,k:1};
+
+const cur=()=>plan[ti];
+
+/* ───────── ГЕОМЕТРИЯ ───────── */
+function pts(shape,st){
+  const c=Math.cos(st.a),s=Math.sin(st.a);
+  return shape.map(v=>{const x=v.x*st.k,y=v.y;
+    return{x:st.x+x*c-y*s,y:st.y+x*s+y*c}});
+}
+function pip(p,poly){let inside=false;
+  for(let i=0,j=poly.length-1;i<poly.length;j=i++){
+    const a=poly[i],b=poly[j];
+    if((a.y>p.y)!==(b.y>p.y)&&p.x<(b.x-a.x)*(p.y-a.y)/(b.y-a.y)+a.x)inside=!inside;}
+  return inside;}
+function matchGreedy(m,t){ // жанр t1: вершины без имён
+  const tol=kind==='touch'?18:15;
+  const used=new Array(m.length).fill(false);
+  let cnt=0,flags=new Array(t.length).fill(false);
+  t.forEach((tp,i)=>{
+    let bi=-1,bd=1e9;
+    m.forEach((mp,j)=>{if(!used[j]){const d=Math.hypot(mp.x-tp.x,mp.y-tp.y);if(d<bd){bd=d;bi=j}}});
+    if(bd<tol){used[bi]=true;cnt++;flags[i]=true}
+  });
+  return{cnt,flags,full:cnt===t.length&&m.length===t.length};
+}
+function vMatch(){ // жанр t2: соответственные вершины
+  const tol=kind==='touch'?18:15;
+  const t=cur(),m=pts(t.m,mov),g=pts(t.t,t.T);
+  return m.map((p,i)=>Math.hypot(p.x-g[i].x,p.y-g[i].y)<tol);
+}
+function handlePos(){
+  const t=cur();
+  if(t.type==='ov1'){
+    const R=Math.max(...t.m.map(v=>Math.hypot(v.x,v.y)))+34;
+    const c=Math.cos(mov.a),s=Math.sin(mov.a),x=R*mov.k;
+    return{x:mov.x+x*c,y:mov.y+x*s};
+  }
+  const B=t.m[1],L=Math.hypot(B.x,B.y),ux=B.x/L,uy=B.y/L;
+  const h={x:B.x+ux*32,y:B.y+uy*32};
+  const c=Math.cos(mov.a),s=Math.sin(mov.a),x=h.x*mov.k,y=h.y;
+  return{x:mov.x+x*c-y*s,y:mov.y+x*s+y*c};
+}
+
+/* ───────── ОБЩАЯ ОТРИСОВКА ───────── */
+function bgGrid(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill()}
+}
+function tickM(p1,p2,n,col){
+  const mx=(p1.x+p2.x)/2,my=(p1.y+p2.y)/2,dx=p2.x-p1.x,dy=p2.y-p1.y,L=Math.hypot(dx,dy);
+  const ux=dx/L,uy=dy/L,nx=-uy,ny=ux;
+  ctx.strokeStyle=col;ctx.lineWidth=2.3;
+  for(let i=0;i<n;i++){const off=(i-(n-1)/2)*6;
+    ctx.beginPath();ctx.moveTo(mx+ux*off-nx*6,my+uy*off-ny*6);ctx.lineTo(mx+ux*off+nx*6,my+uy*off+ny*6);ctx.stroke()}
+}
+function arcM(v,p1,p2,col,r){
+  let a1=Math.atan2(p1.y-v.y,p1.x-v.x),a2=Math.atan2(p2.y-v.y,p2.x-v.x);
+  let d=a2-a1;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;
+  ctx.strokeStyle=col;ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.arc(v.x,v.y,r||20,a1,a1+d,d<0);ctx.stroke();
+}
+function lab(p,txt,cx,cy,col){
+  const ux=p.x-cx,uy=p.y-cy,L=Math.hypot(ux,uy)||1;
+  const x=p.x+ux/L*17,y=p.y+uy/L*17+5;
+  ctx.font='900 15px system-ui';ctx.textAlign='center';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(250,248,242,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);
+}
+function drawHandle(){
+  const h=handlePos(),pulse=1+0.14*Math.sin(Date.now()/280);
+  ctx.setLineDash([3,4]);ctx.strokeStyle='#a78bfa';ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(mov.x,mov.y);ctx.lineTo(h.x,h.y);ctx.stroke();ctx.setLineDash([]);
+  ctx.beginPath();ctx.arc(h.x,h.y,9*pulse,0,7);
+  ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#7c3aed';ctx.lineWidth=2.6;ctx.stroke();
+  ctx.beginPath();ctx.arc(h.x,h.y,2.4,0,7);ctx.fillStyle='#7c3aed';ctx.fill();
+}
+function setVal(id,txt,ok){
+  const el=document.getElementById(id);
+  if(el){el.textContent=txt;el.className='value'+(ok?' v-ok':'')}
+}
+
+/* ───────── ОТРИСОВКА ПО ТИПАМ ───────── */
+function drawOv1(){
+  const t=cur(),m=pts(t.m,mov),g=pts(t.t,t.T),mi=matchGreedy(m,g);
+  ctx.beginPath();g.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();
+  ctx.fillStyle='rgba(26,26,46,.05)';ctx.fill();
+  ctx.setLineDash([7,5]);ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2.5;ctx.stroke();ctx.setLineDash([]);
+  g.forEach((p,i)=>{ctx.beginPath();ctx.arc(p.x,p.y,4.4,0,7);
+    ctx.fillStyle=mi.flags[i]?'#16a34a':'#fffdf7';ctx.fill();
+    ctx.strokeStyle=mi.flags[i]?'#16a34a':'#1a1a2e';ctx.lineWidth=2;ctx.stroke();});
+  ctx.beginPath();m.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();
+  ctx.fillStyle=solved?'rgba(22,163,74,.30)':'rgba(45,112,179,.30)';ctx.fill();
+  ctx.strokeStyle=solved?'#16a34a':'#2d70b3';ctx.lineWidth=2.6;ctx.stroke();
+  m.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,4,0,7);ctx.fillStyle=solved?'#16a34a':'#2d70b3';ctx.fill();});
+  if(!solved)drawHandle();
+  setVal('sCnt',mi.cnt+' / '+g.length,mi.full);
+  setVal('sFlip',kTarget<0?'да':'нет',false);
+}
+function triLabeled(p,opt){
+  const cx=(p[0].x+p[1].x+p[2].x)/3,cy=(p[0].y+p[1].y+p[2].y)/3;
+  ctx.beginPath();p.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.closePath();
+  ctx.fillStyle=opt.fill;ctx.fill();
+  if(opt.dash)ctx.setLineDash([7,5]);
+  ctx.strokeStyle=opt.stroke;ctx.lineWidth=2.6;ctx.stroke();ctx.setLineDash([]);
+  tickM(p[0],p[1],1,opt.stroke);
+  tickM(p[0],p[2],2,opt.stroke);
+  if(opt.arcAt==='B')arcM(p[1],p[0],p[2],'#d97706',21);
+  else arcM(p[0],p[1],p[2],'#d97706',21);
+  p.forEach((q,i)=>{
+    const ok=opt.vflags&&opt.vflags[i];
+    ctx.beginPath();ctx.arc(q.x,q.y,4.2,0,7);
+    ctx.fillStyle=ok?'#16a34a':opt.ptFill;ctx.fill();
+    ctx.strokeStyle=ok?'#16a34a':opt.stroke;ctx.lineWidth=2;ctx.stroke();
+    lab(q,opt.labels[i],cx,cy,ok?'#16a34a':opt.labelCol);
+  });
+}
+function drawOv2(){
+  const t=cur(),vf=vMatch();
+  triLabeled(pts(t.t,t.T),{fill:'rgba(26,26,46,.05)',stroke:'#1a1a2e',dash:true,
+    labels:['A₁','B₁','C₁'],labelCol:'#1a1a2e',ptFill:'#fffdf7',arcAt:t.arcAt,vflags:vf});
+  triLabeled(pts(t.m,mov),{fill:solved?'rgba(22,163,74,.30)':'rgba(45,112,179,.30)',
+    stroke:solved?'#16a34a':'#2d70b3',dash:false,
+    labels:['A','B','C'],labelCol:solved?'#16a34a':'#2d70b3',ptFill:'#2d70b3',arcAt:t.arcAt,vflags:vf});
+  if(!solved)drawHandle();
+  const names=['sA','sB','sC'];
+  vf.forEach((ok,i)=>setVal(names[i],ok?'✓ да':'нет',ok));
+}
+function drawTheory(){
+  triLabeled(pts(TRI_A,TH_M),{fill:'rgba(45,112,179,.30)',stroke:'#2d70b3',dash:false,
+    labels:['A','B','C'],labelCol:'#2d70b3',ptFill:'#2d70b3',arcAt:'A'});
+  triLabeled(pts(TRI_A,TH_T),{fill:'rgba(26,26,46,.05)',stroke:'#1a1a2e',dash:true,
+    labels:['A₁','B₁','C₁'],labelCol:'#1a1a2e',ptFill:'#fffdf7',arcAt:'A'});
+}
+function lerpSt3(p){const e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+  return{x:START3.x+(TGT3.x-START3.x)*e,y:START3.y+(TGT3.y-START3.y)*e,a:START3.a+(TGT3.a-START3.a)*e,k:1}}
+function drawProof(){
+  const tp=pts(TRI3,{...TGT3,k:1}),st=lerpSt3(prOvP),mp=pts(TRI3,st);
+  const merged=prOvP>=1;
+  const tcx=(tp[0].x+tp[1].x+tp[2].x)/3,tcy=(tp[0].y+tp[1].y+tp[2].y)/3;
+  const mcx=(mp[0].x+mp[1].x+mp[2].x)/3,mcy=(mp[0].y+mp[1].y+mp[2].y)/3;
+  ctx.beginPath();tp.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.closePath();
+  ctx.fillStyle='rgba(26,26,46,.05)';ctx.fill();
+  ctx.setLineDash([7,5]);ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2.4;ctx.stroke();ctx.setLineDash([]);
+  tickM(tp[0],tp[1],1,'#1a1a2e');tickM(tp[0],tp[2],2,'#1a1a2e');arcM(tp[0],tp[1],tp[2],'#d97706',19);
+  ctx.beginPath();mp.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.closePath();
+  ctx.fillStyle=prSolved?'rgba(22,163,74,.32)':'rgba(45,112,179,.28)';ctx.fill();
+  ctx.strokeStyle=prSolved?'#16a34a':'#2d70b3';ctx.lineWidth=2.6;ctx.stroke();
+  tickM(mp[0],mp[1],1,prSolved?'#16a34a':'#2d70b3');tickM(mp[0],mp[2],2,prSolved?'#16a34a':'#2d70b3');
+  arcM(mp[0],mp[1],mp[2],'#d97706',19);
+  mp.forEach(q=>{ctx.beginPath();ctx.arc(q.x,q.y,4,0,7);
+    ctx.fillStyle=prSolved?'#16a34a':'#2d70b3';ctx.fill();});
+  if(!merged){
+    ['A','B','C'].forEach((t2,i)=>lab(mp[i],t2,mcx,mcy,'#2d70b3'));
+    ['A₁','B₁','C₁'].forEach((t2,i)=>lab(tp[i],t2,tcx,tcy,'#1a1a2e'));
+  }else{
+    const col=prSolved?'#16a34a':'#1a1a2e';
+    lab(tp[0],'A = A₁',tcx,tcy,col);lab(tp[1],'B = B₁',tcx,tcy,col);lab(tp[2],'C = C₁',tcx,tcy,col);
+  }
+  if(prSolved){
+    ctx.font='900 16px system-ui';ctx.textAlign='center';ctx.fillStyle='#15803d';
+    ctx.fillText('△ABC = △A₁B₁C₁   ▮ ч.т.д.',W/2,34);
+  }
+}
+function drawChart(){
+  if(!CT)return;
+  const P=CT.P;
+  CT.tris.forEach((tr,i)=>{
+    ctx.beginPath();tr.forEach((n,j)=>{const q=P[n];j?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.closePath();
+    ctx.fillStyle=solved?'rgba(22,163,74,.16)':(i===0?'rgba(45,112,179,.17)':'rgba(217,119,6,.10)');
+    ctx.fill();
+  });
+  if(focusTri&&!solved){
+    const g=0.45+0.45*Math.sin(Date.now()/260);
+    ctx.beginPath();focusTri.forEach((n,j)=>{const q=P[n];j?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.closePath();
+    ctx.strokeStyle='rgba(45,112,179,'+g+')';ctx.lineWidth=6;ctx.lineJoin='round';ctx.stroke();
+  }
+  CT.segs.forEach(([a,b])=>{
+    ctx.beginPath();ctx.moveTo(P[a].x,P[a].y);ctx.lineTo(P[b].x,P[b].y);
+    ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2.4;ctx.stroke();
+  });
+  CT.els.filter(e=>e.st==='hidden'&&e.type==='side'&&found.includes(e.id)).forEach(e=>{
+    const g=0.6+0.4*Math.sin(Date.now()/300);
+    ctx.beginPath();ctx.moveTo(P[e.a].x,P[e.a].y);ctx.lineTo(P[e.b].x,P[e.b].y);
+    ctx.strokeStyle='rgba(22,163,74,'+g+')';ctx.lineWidth=5;ctx.stroke();
+  });
+  CT.ticks.forEach(([a,b,n])=>tickM(P[a],P[b],n,'#1a1a2e'));
+  CT.arcs.forEach(([v,p,q])=>arcM(P[v],P[p],P[q],'#d97706',20));
+  CT.els.filter(e=>e.st==='hidden'&&e.type==='angle'&&found.includes(e.id)).forEach(e=>{
+    arcM(P[e.v],P[e.p],P[e.q],'#16a34a',17);
+    arcM(P[e.v],P[e.p],P[e.q],'#16a34a',22);
+  });
+  const ns=Object.keys(P);
+  const cx=ns.reduce((s,n)=>s+P[n].x,0)/ns.length,cy=ns.reduce((s,n)=>s+P[n].y,0)/ns.length;
+  ns.forEach(n=>{
+    ctx.beginPath();ctx.arc(P[n].x,P[n].y,3.8,0,7);
+    ctx.fillStyle='#1a1a2e';ctx.fill();
+    lab(P[n],n,cx,cy,'#1a1a2e');
+  });
+}
+(function loop(){
+  bgGrid();
+  const t=cur();
+  if(t){
+    if(t.type==='ov1')drawOv1();
+    else if(t.type==='ov2')drawOv2();
+    else if(t.type==='theory')drawTheory();
+    else if(t.type==='proof')drawProof();
+    else drawChart();
+  }
+  requestAnimationFrame(loop);
+})();
+
+/* ───────── СООБЩЕНИЯ И ПАНЕЛИ ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function renderQuizDots(){
+  document.getElementById('qdots').innerHTML=plan.map((_,i)=>{
+    if(i<results.length)return'<div class="qdot '+results[i]+'"></div>';
+    if(i===ti)return'<div class="qdot cur"></div>';
+    return'<div class="qdot"></div>';
+  }).join('');
+}
+function buildStatus(){
+  const t=cur(),card=document.getElementById('statusCard'),body=document.getElementById('statusBody');
+  if(t.type==='ov1'){
+    card.style.display='block';document.getElementById('statusTtl').textContent='Наложение';
+    body.innerHTML='<div class="row"><span>Совпало вершин</span><span class="value" id="sCnt">0</span></div>'
+      +'<div class="row"><span>Фигура перевёрнута</span><span class="value" id="sFlip">нет</span></div>';
+  }else if(t.type==='ov2'){
+    card.style.display='block';document.getElementById('statusTtl').textContent='Совмещение вершин';
+    body.innerHTML='<div class="row"><span>A → A₁</span><span class="value" id="sA">нет</span></div>'
+      +'<div class="row"><span>B → B₁</span><span class="value" id="sB">нет</span></div>'
+      +'<div class="row"><span>C → C₁</span><span class="value" id="sC">нет</span></div>';
+  }else if(t.type==='chart'){
+    card.style.display='block';document.getElementById('statusTtl').textContent='Ход решения';
+    body.innerHTML='<div class="row"><span>1. Третья пара</span><span class="value" id="sp1">—</span></div>'
+      +'<div class="row"><span>2. Запись равенства</span><span class="value" id="sp2">—</span></div>'
+      +'<div class="row"><span>3. Вычисление</span><span class="value" id="sp3">—</span></div>';
+  }else card.style.display='none';
+}
+function clearPool(){
+  document.getElementById('pool').innerHTML='';
+  document.getElementById('poolTtl').style.display='none';
+  const cb=document.getElementById('chainBox');cb.style.display='none';cb.innerHTML='';
+}
+function renderOpts(title,opts,shortWrong,onOk){
+  const pt=document.getElementById('poolTtl');pt.style.display='block';pt.textContent=title;
+  const pool=document.getElementById('pool');pool.innerHTML='';
+  opts.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='pcard';b.textContent=o.t;
+    b.onclick=()=>{
+      if(solved)return;
+      if(o.ok)onOk();
+      else{
+        mistakes++;log('opt_wrong');
+        b.classList.add('shake');b.classList.add('dead');
+        if(o.why)protocol.push('Задание '+(ti+1)+': '+o.why+'.');
+        setMsg(shortWrong,'err');
+      }
+    };
+    pool.appendChild(b);
+  });
+}
+
+/* ───────── УСПЕХ / ОЦЕНКА ───────── */
+function succeedTask(barText,msgText){
+  if(solved)return;
+  solved=true;focusTri=null;
+  const res=mistakes===0&&hintsUsed===0?'g':(mistakes<=1&&hintsUsed<=1?'y':'r');
+  results.push(res);
+  log('solved',{mistakes,hints:hintsUsed});
+  renderQuizDots();
+  const sb=document.getElementById('successBar');
+  sb.textContent=barText;sb.style.display='block';
+  setMsg(msgText,'ok');
+  const nb=document.getElementById('nextBtn');
+  nb.style.display='inline-block';
+  nb.textContent=ti<plan.length-1?'Следующая →':'К результатам →';
+}
+
+/* ───────── НАЛОЖЕНИЕ: ДЕЙСТВИЯ ───────── */
+function isOverlay(){const t=cur();return t&&(t.type==='ov1'||t.type==='ov2')}
+function doFlip(){
+  if(!isOverlay()||solved||flipAnim)return;
+  kTarget=-kTarget;log('flip');
+  const from=mov.k,to=kTarget,t0=performance.now();
+  flipAnim=function step(now){
+    const p=Math.min(1,(now-t0)/240),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+    mov.k=from+(to-from)*e;
+    if(p<1)requestAnimationFrame(step);else{mov.k=to;flipAnim=null;tryFinish()}
+  };
+  requestAnimationFrame(flipAnim);
+}
+function sayNotEqual(){
+  if(!isOverlay()||solved)return;
+  const t=cur();
+  if(!t.equal){
+    succeedTask('✓ Верно: эти фигуры совместить нельзя — они не равны.',
+      'Именно так. Наложение это и показывает.');
+  }else{
+    mistakes++;log('neq_wrong');
+    protocol.push('Задание '+(ti+1)+': фигуры названы неравными, хотя их можно совместить наложением.');
+    setMsg('Не спешите: эти фигуры совместить <b>можно</b>.','err');
+  }
+}
+function tryFinish(){
+  if(!isOverlay()||solved||flipAnim)return;
+  const t=cur();
+  if(t.type==='ov1'){
+    if(!matchGreedy(pts(t.m,mov),pts(t.t,t.T)).full||!t.equal)return;
+  }else{
+    if(!vMatch().every(v=>v)||!t.equal)return;
+  }
+  mov={x:t.T.x,y:t.T.y,a:t.T.a,k:t.T.k};kTarget=t.T.k;
+  succeedTask('✓ Совмещено наложением целиком — фигуры равны.',
+    'Все вершины совпали. Наложение состоялось.');
+}
+
+/* ───────── ЗАДАЧИ ПО ЧЕРТЕЖУ: ХИТ-ТЕСТ И ФАЗЫ ───────── */
+function distSeg(p,a,b){
+  const dx=b.x-a.x,dy=b.y-a.y,L2=dx*dx+dy*dy;
+  let t=((p.x-a.x)*dx+(p.y-a.y)*dy)/L2;t=Math.max(0,Math.min(1,t));
+  return Math.hypot(p.x-(a.x+t*dx),p.y-(a.y+t*dy));
+}
+function inWedge(p,v,p1,p2){
+  const r=Math.hypot(p.x-v.x,p.y-v.y);
+  if(r<5||r>38)return false;
+  let a1=Math.atan2(p1.y-v.y,p1.x-v.x),a2=Math.atan2(p2.y-v.y,p2.x-v.x);
+  let d=a2-a1;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;
+  let t=Math.atan2(p.y-v.y,p.x-v.x)-a1;while(t>Math.PI)t-=2*Math.PI;while(t<-Math.PI)t+=2*Math.PI;
+  return d>=0?(t>=-0.05&&t<=d+0.05):(t<=0.05&&t>=d-0.05);
+}
+function hitElement(p){
+  const P=CT.P,tolS=kind==='touch'?13:10;
+  for(const e of CT.els)if(e.type==='angle'&&inWedge(p,P[e.v],P[e.p],P[e.q]))return e;
+  let best=null,bd=1e9;
+  for(const e of CT.els)if(e.type==='side'){
+    const d=distSeg(p,P[e.a],P[e.b]);
+    if(d<tolS&&d<bd){bd=d;best=e}
+  }
+  return best;
+}
+function chartTap(p){
+  const el=hitElement(p);
+  if(!el){setMsg('Нажимайте прямо на элемент: на сторону или внутрь угла у вершины.','info');return}
+  if(el.st==='hidden'){
+    if(found.includes(el.id))return;
+    found.push(el.id);log('found',{id:el.id});
+    if(found.length<CT.hidden.length){
+      setMsg('Один из пары есть. Где равный ему угол?','info');
+    }else{
+      setMsg(CT.foundMsg,'ok');
+      setVal('sp1','✓ '+CT.hiddenName,true);
+      setTimeout(toPhase2,800);
+    }
+  }else if(el.st==='given'||el.st==='givenA'){
+    mistakes++;log('tap_given',{id:el.id});
+    protocol.push('Задание '+(ti+1)+': выбрана пара, которая уже отмечена на чертеже как данная, вместо скрытой третьей.');
+    setMsg('Эта пара уже дана. Нужна <b>третья</b>.','warn');
+  }else if(el.st==='derived'){
+    mistakes++;log('tap_derived',{id:el.id});
+    protocol.push('Задание '+(ti+1)+': в основание решения положено равенство, которое само следует из равенства треугольников — круг в рассуждении.');
+    setMsg('Это равенство — <b>итог</b> решения, не основание.','err');
+  }else{
+    mistakes++;log('tap_wrong',{id:el.id});
+    protocol.push('Задание '+(ti+1)+': выбран угол, не принадлежащий ни одному из рассматриваемых треугольников.');
+    setMsg('Этот угол не лежит в наших треугольниках.','err');
+  }
+}
+function toPhase2(){
+  if(solved)return;
+  phase=2;focusTri=CT.tris[0];
+  setMsg('Теперь запишите равенство для треугольника, подсвеченного <b>синим</b>. Порядок букв важен.','info');
+  renderOpts('Шаг 2. Выберите верную запись: '+CT.eq.stem,CT.eq.opts,
+    'Порядок букв нарушает соответствие вершин — карточка выбыла.',()=>{
+    const okOpt=CT.eq.opts.find(o=>o.ok);
+    setVal('sp2','✓ '+CT.eq.stem.replace(' = ?','')+' = '+okOpt.t,true);
+    log('eq_ok');
+    setMsg('Запись верна.','ok');
+    setTimeout(toPhase3,600);
+  });
+}
+function toPhase3(){
+  if(solved)return;
+  phase=3;focusTri=null;
+  renderOpts('Шаг 3. '+CT.num.q,CT.num.opts,'Это не соответственный элемент — карточка выбыла.',()=>{
+    setVal('sp3','✓ '+CT.num.opts.find(o=>o.ok).t,true);
+    log('num_ok');
+    clearPool();
+    succeedTask('✓ Задача решена: пара найдена, равенство записано, элемент вычислен.',
+      'Полный цикл задачи по чертежу пройден.');
+  });
+}
+
+/* ───────── ТЕОРИЯ И ДОКАЗАТЕЛЬСТВО ───────── */
+function initTheory(){
+  const opts=shuffle([
+    {t:'Если две стороны и угол между ними одного треугольника соответственно равны двум сторонам и углу между ними другого треугольника, то такие треугольники равны.',ok:true},
+    {t:'Если две стороны и какой-нибудь угол одного треугольника соответственно равны двум сторонам и углу другого треугольника, то такие треугольники равны.',ok:false,
+     why:'выбрана формулировка без слова «между» — но если равный угол лежит не между равными сторонами, треугольники могут оказаться разными'},
+    {t:'Если две стороны одного треугольника соответственно равны двум сторонам другого треугольника, то такие треугольники равны.',ok:false,
+     why:'выбрана формулировка «по двум сторонам» — двух сторон недостаточно: при другом угле между ними треугольник другой'}
+  ]);
+  renderOpts('Какая формулировка точна?',opts,'В этой формулировке есть изъян — карточка выбыла.',()=>{
+    log('quiz_ok');clearPool();
+    succeedTask('✓ Формулировка выбрана точно.',
+      'Именно: две стороны и угол <b>между</b> ними.');
+  });
+  setMsg('Одна формулировка точна, две — с изъяном. Читайте внимательно.','info');
+}
+function initProof(){
+  const t=cur();
+  prFilled=false;prSolved=false;prOvP=0;
+  renderProofChain();
+  const opts=shuffle([
+    {t:PR_TXT[t.gap],ok:true},
+    {t:'AB = A₁B₁ и AC = A₁C₁ — значит, треугольники равны по двум сторонам.',ok:false,
+     why:'в доказательство предложен шаг «равны по двум сторонам» — такого признака нет: при другом угле между сторонами треугольник другой'},
+    {t:'Измерим стороны BC и B₁C₁ линейкой и убедимся, что они равны.',ok:false,
+     why:'в доказательство предложено измерение линейкой — измерение проверяет один чертёж, а теорема должна быть верна для всех треугольников'}
+  ]);
+  renderProofOpts(opts);
+  const t0=performance.now();
+  (function step(now){
+    if(cur()!==t)return;
+    prOvP=Math.min(1,(now-t0)/1300);
+    if(prOvP<1)requestAnimationFrame(step);
+  })(performance.now());
+  setMsg('Наложение на чертеже уже выполнено. Прочитайте цепочку: какой шаг выпал?','info');
+}
+function renderProofChain(){
+  const t=cur(),cb=document.getElementById('chainBox');
+  cb.style.display='flex';
+  cb.innerHTML=PR_ORDER.map((id,i)=>{
+    if(id===t.gap&&!prFilled)
+      return'<div class="chgap">❓ '+(i+1)+'. Здесь пропущен шаг — найдите его среди карточек ниже</div>';
+    return'<div class="chitem"><span class="n">'+(i+1)+'.</span> '+PR_TXT[id]+'</div>';
+  }).join('');
+}
+function renderProofOpts(opts){
+  renderOpts('Какой шаг пропущен?',opts,'Этот шаг доказательству не принадлежит — карточка выбыла.',()=>{
+    prFilled=true;prSolved=true;
+    renderProofChain();
+    document.getElementById('pool').innerHTML='';
+    document.getElementById('poolTtl').style.display='none';
+    log('step',{id:cur().gap});
+    succeedTask('✓ Цепочка доказательства восстановлена.',
+      'Шаг встал на место — доказательство снова цельное.');
+  });
+}
+
+/* ───────── ПОДСКАЗКА ───────── */
+function showHint(){
+  if(solved||!cur())return;
+  hintsUsed++;log('hint');
+  const t=cur();let h='';
+  if(t.type==='ov1')h='В вашем распоряжении перенос, поворот за фиолетовый маркер и «⇄ Перевернуть». Если никакая комбинация не совмещает фигуры — они не равны.';
+  else if(t.type==='ov2')h='Совмещайте <b>соответственные</b> вершины: A с A₁. И сравните отмеченные элементы: все ли они действительно совпадают при наложении?';
+  else if(t.type==='theory')h='Вспомните ловушку из тренажёра 2: какое короткое слово в признаке оказалось решающим?';
+  else if(t.type==='proof')h='Посмотрите на шаг сразу после пропуска: что уже должно быть установлено, чтобы он стал законным?';
+  else h=phase===1?'Третью пару чертёж прячет: это либо общая сторона, либо вертикальные углы.'
+        :phase===2?'Сопоставьте вершины по данным равенствам — порядок букв и есть соответствие.'
+        :'Найдите в записи равенства букву, соответственную данной, и перенесите число.';
+  setMsg('💡 '+h+' <span style="opacity:.65">(подсказка учтена — зелёной точки уже не будет)</span>','info');
+}
+
+/* ───────── ЖИЗНЕННЫЙ ЦИКЛ ЗАДАНИЙ ───────── */
+function initTask(keepStats){
+  const t=cur();
+  if(!keepStats){mistakes=0;hintsUsed=0}
+  solved=false;flipAnim=null;mode=null;
+  clearPool();
+  const ov=t.type==='ov1'||t.type==='ov2';
+  document.getElementById('flipBtn').style.display=ov?'inline-block':'none';
+  document.getElementById('neqBtn').style.display=ov?'inline-block':'none';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('pf').style.width=(ti/plan.length*100)+'%';
+  document.getElementById('pnum').textContent='Задание '+(ti+1)+' из '+plan.length;
+  buildStatus();
+  renderQuizDots();
+  if(ov){
+    mov={x:t.start.x,y:t.start.y,a:t.start.a,k:1};kTarget=1;
+    document.getElementById('taskText').innerHTML=t.text;
+    setMsg(t.type==='ov1'
+      ?'Действуют перенос, поворот (фиолетовый маркер) и переворот.'
+      :'Начните с совмещения соответственных вершин.','info');
+  }else if(t.type==='theory'){
+    document.getElementById('taskText').innerHTML=t.text;
+    initTheory();
+  }else if(t.type==='proof'){
+    document.getElementById('taskText').innerHTML=t.text;
+    initProof();
+  }else{
+    CT=t.gen();phase=1;found=[];focusTri=null;
+    document.getElementById('taskText').innerHTML='<b>Дано:</b> '+CT.given+'<br>Найдите скрытую третью пару, запишите равенство треугольников и вычислите элемент.';
+    setMsg('Нажмите на чертеже элемент, образующий <b>третью</b> пару равных.','info');
+  }
+  log('task_start',{type:t.type});
+}
+function nextTask(){
+  if(ti<plan.length-1){ti++;initTask(false)}
+  else finish();
+}
+function resetTask(){log('reset');initTask(true)}
+
+/* ───────── ФИНАЛ ───────── */
+const SKILLS=[
+ {name:'Наложение',idx:[0,1],link:'ch2-p1-t2-overlay-sas.html',lbl:'тренажёр 2 «Наложи треугольник»'},
+ {name:'Теория',idx:[2],link:'ch2-p1-t3-proof-sas.html',lbl:'тренажёр 3 «Почему хватает трёх элементов»'},
+ {name:'Доказательство',idx:[3],link:'ch2-p1-t3-proof-sas.html',lbl:'тренажёр 3 «Почему хватает трёх элементов»'},
+ {name:'Задачи по чертежу',idx:[4,5,6],link:'ch2-p1-t4-find-equal.html',lbl:'тренажёр 4 «Найди равные треугольники»'}
+];
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  const okCnt=results.filter(r=>r!=='r').length;
+  const passed=okCnt>=5&&results[2]!=='r';
+  log('finish',{score:g,passed});
+  const s=lS();s.runs=(s.runs||0)+1;if(g>(s.best||0))s.best=g;s.passed=s.passed||passed;sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent=g+' / '+plan.length;
+  document.getElementById('finLbl').textContent='зелёных задач — без единой ошибки и подсказки';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+  const v=document.getElementById('verdict');
+  v.className='verdict '+(passed?'okv':'badv');
+  v.textContent=passed
+    ?(g===plan.length?'✓ Зачёт сдан безупречно — параграф закрыт!':'✓ Зачёт сдан!')
+    :'Пока не зачёт — посмотрите, что стоит повторить.';
+  const sk=document.getElementById('skillsBox');
+  sk.innerHTML=SKILLS.map(S=>{
+    const rs=S.idx.map(i=>results[i]);
+    const ok=rs.filter(r=>r!=='r').length;
+    const needRep=rs.some(r=>r!=='g');
+    let html='<div class="skillrow"><span class="sn">'+S.name+'</span>'
+      +'<span class="sdots">'+rs.map(r=>'<span class="sd '+r+'"></span>').join('')+'</span>'
+      +'<span class="value'+(ok===rs.length?' v-ok':'')+'">'+ok+' / '+rs.length+'</span></div>';
+    if(needRep)html+='<div class="srec">↻ стоит повторить: <a href="'+S.link+'">'+S.lbl+'</a></div>';
+    return html;
+  }).join('');
+  const pb=document.getElementById('protoBox');
+  if(protocol.length){
+    pb.className='proto';
+    pb.innerHTML='<b>Протокол ошибок — разберите каждую:</b>'+protocol.map(p=>'<div>• '+p+'</div>').join('');
+  }else{
+    pb.className='proto clean';
+    pb.innerHTML='<b>Протокол чист:</b> ни одной ошибки за весь зачёт. Блестяще.';
+  }
+}
+function restart(){
+  plan=buildPlan();ti=0;results=[];protocol=[];
+  document.getElementById('fin').style.display='none';
+  document.getElementById('mainArea').style.display='grid';
+  document.getElementById('bar').style.display='flex';
+  initTask(false);
+}
+
+/* ───────── УКАЗАТЕЛЬ ───────── */
+function pos(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+cv.addEventListener('pointerdown',e=>{
+  const t=cur();
+  if(!t||solved)return;
+  kind=e.pointerType==='touch'?'touch':'mouse';
+  const p=pos(e);
+  if(t.type==='chart'){if(phase===1)chartTap(p);return}
+  if(!isOverlay())return;
+  const grabR=kind==='touch'?22:14;
+  const h=handlePos();
+  if(Math.hypot(p.x-h.x,p.y-h.y)<grabR+4){
+    mode='rot';grab.off=mov.a-Math.atan2(p.y-mov.y,p.x-mov.x);
+    cv.setPointerCapture(e.pointerId);return;
+  }
+  const m=pts(t.m,mov);
+  if(pip(p,m)||m.some(v=>Math.hypot(v.x-p.x,v.y-p.y)<grabR)){
+    mode='drag';grab.dx=mov.x-p.x;grab.dy=mov.y-p.y;
+    cv.setPointerCapture(e.pointerId);
+  }
+});
+cv.addEventListener('pointermove',e=>{
+  if(!mode)return;
+  const p=pos(e);
+  if(mode==='drag'){
+    mov.x=Math.max(35,Math.min(W-35,p.x+grab.dx));
+    mov.y=Math.max(35,Math.min(H-35,p.y+grab.dy));
+  }else if(mode==='rot'){
+    mov.a=Math.atan2(p.y-mov.y,p.x-mov.x)+grab.off;
+  }
+});
+['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,()=>{
+  if(!mode)return;
+  const wasDrag=mode==='drag';mode=null;
+  const t=cur();
+  if(wasDrag&&t&&t.type==='ov2'&&!solved){ // магнит A→A₁
+    const magR=kind==='touch'?24:20;
+    if(Math.hypot(mov.x-t.T.x,mov.y-t.T.y)<magR){mov.x=t.T.x;mov.y=t.T.y}
+  }
+  tryFinish();
+}));
+
+restart();
+</script>
+</body>
+</html>

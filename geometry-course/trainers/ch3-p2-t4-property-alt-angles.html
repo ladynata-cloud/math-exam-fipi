@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Свойство 1: накрест лежащие углы</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:manipulation}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.given{font-size:13px;line-height:1.5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:10px}
+.given b{color:#3730a3}
+.given .assume{display:block;margin-top:8px;padding-top:7px;border-top:1px dashed #fecaca;color:#dc2626;font-weight:800}
+.steps{font-size:12.5px;line-height:1.5;color:#334155}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:750 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt:disabled{cursor:default}
+.opt.ok-pick{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.bad-pick{background:#fee2e2;border-color:#dc2626;color:#991b1b}
+.opt.correct-reveal{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.pool{display:flex;flex-direction:column;gap:7px;margin-top:4px}
+.pcard{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:10px 12px;font:650 13.5px system-ui;cursor:pointer;text-align:left;line-height:1.45}
+.pcard:hover{background:#f3f4f6}
+.pcard.shake{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.chain{display:flex;flex-direction:column;gap:5px;margin-top:4px}
+.chitem{background:#f0fdf4;border-left:3px solid #16a34a;border-radius:0 8px 8px 0;padding:7px 10px;font-size:12.5px;line-height:1.4;color:#14532d}
+.chitem .n{font-weight:900;color:#16a34a;margin-right:4px}
+.chempty{font-size:12.5px;color:#94a3b8;font-style:italic;padding:6px}
+.phtitle{font-size:12px;font-weight:800;color:#6d28d9;text-transform:uppercase;letter-spacing:.05em;margin:2px 0 4px}
+.st{padding:6px 8px;border-left:3px solid #16a34a;margin:5px 0;background:#f0fdf4;border-radius:0 8px 8px 0}
+.st b{color:#166534}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:24px 22px;text-align:center}
+.fin .big{font-size:40px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:14px;height:14px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:640px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:13.5px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law ol{margin:8px 0;padding-left:20px}.law li{margin:4px 0}
+.bridge{margin-top:10px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">∠ Свойство 1: накрест лежащие</div>
+      <div class="sub">Глава III · §2 · тренажёр 2 из 4 — свойство 1, доказательство «от противного»</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">От противного</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="420"></canvas></div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card">
+        <div class="given" id="givenBox"></div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div id="opts" class="opts"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div class="card">
+        <h2>Ход доказательства</h2>
+        <div class="steps" id="steps"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Свойство 1 параллельных прямых.</b>
+      <ol>
+        <li>Если две параллельные прямые пересечены секущей, то <b>накрест лежащие углы равны</b>.</li>
+        <li><b>Следствие.</b> Если прямая перпендикулярна одной из двух параллельных прямых, то она перпендикулярна и к другой.</li>
+      </ol>
+      Доказали <b>от противного</b>: предположили ∠1 ≠ ∠2, отложили ∠PMN = ∠2 (это разрешает <b>угловая аксиома</b>) — получили вторую прямую MP ∥ b через M. Но через точку параллельная <b>одна</b> (аксиома параллельных) — противоречие. Значит, ∠1 = ∠2. В доказательстве сработали <b>две</b> аксиомы §2: угловая как инструмент и параллельных как стена.
+      <div class="bridge">Дальше — свойства 2 и 3 (<b>соответственные</b> и <b>односторонние</b> углы): они быстро вытекают из свойства 1. <a href="ch3-p2-t5-properties-2-3.html">Свойства 2 и 3 →</a></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="nextTask()">Следующий шаг →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС/ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch3-p2-t4-property-alt-angles';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),step:si+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640, HT=420;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=HT*dpr;cv.style.aspectRatio=W+'/'+HT;ctx.scale(dpr,dpr);
+
+/* ───────── ГЕОМЕТРИЯ СЦЕН (рассчитана) ─────────
+   Сцена P (свойство 1, рис. 118): a ∥ b — две горизонтали; секущая MN через
+   M на a (вниз-вправо) и N на b. Накрест лежащие ∠1 (у M) и ∠2 (у N). На шаге
+   построения добавляется луч MP через M (∠PMN = ∠2) — он ∥ b, и рисуется чуть
+   отклонённым от a: две параллели через M (нарочно невозможно — это и есть стена).
+   Сцена perp (следствие, рис. 119): a ∥ b — горизонтали; c вертикальна (c ⊥ a);
+   ∠1 = 90° у a, доказываем ∠2 = 90° у b.                                        */
+const aY=150, bY=285, M={x:250,y:150}, N={x:370,y:285};
+const SEC=Math.atan2(N.y-M.y,N.x-M.x);   // направление секущей (вниз-вправо)
+const MP_FAN=0.07;                        // отклонение луча MP от a (рисуем «невозможное»)
+const cX=320;                             // x вертикали c (сцена perp)
+
+let _t=0; // для лёгкой анимации (мигание стены и т.п.)
+
+/* ───────── ШАГИ ───────── */
+const STEPS=[
+ {kind:'choose', phase:'P', badge:'Предположите противное',
+  task:'В §1 мы по углам <b>узнавали</b> параллельность (это были признаки). Теперь наоборот: прямые уже параллельны — выведем, что́ из этого <b>следует</b> про углы. Это <b>свойство</b>.<br><br><b>Свойство 1.</b> Если две параллельные прямые a и b пересечены секущей, то <b>накрест лежащие углы равны</b> (∠1 = ∠2, рис. 118).<br><br>Доказываем <b>«от противного»</b> — как следствия из аксиомы. Итак, доказываем, что «<b>∠1 = ∠2</b>».',
+  stepNote:'Свойство 1: при a ∥ b накрест лежащие ∠1 = ∠2. (от противного)',
+  q:[
+    {t:'∠1 ≠ ∠2 (углы не равны)', ok:true, after:'Верно. По методу <b>«от противного»</b> предполагаем <b>обратное</b> доказываемому: что ∠1 ≠ ∠2. В это мы не верим — но <b>вынуждены</b> так предположить, чтобы показать, что так не бывает.'},
+    {t:'∠1 = ∠2 (углы равны)', why:'Но ∠1 = ∠2 — это как раз то, что мы <b>доказываем</b>. От противного предполагают <b>обратное</b>: что углы НЕ равны.'},
+    {t:'a не параллельна b', why:'a ∥ b у нас <b>дано</b> — это не предположение. Отрицать нужно вывод: предположить, что ∠1 ≠ ∠2.'},
+    {t:'секущая перпендикулярна к a', why:'Про секущую такого не дано и не нужно. Отрицаем именно вывод «∠1 = ∠2» — то есть предполагаем ∠1 ≠ ∠2.'}
+  ]},
+
+ {kind:'assemble', phase:'P', badge:'Соберите доказательство',
+  task:'Соберите доказательство <b>от противного</b> по порядку. Здесь впервые работает <b>угловая аксиома</b> (отложить угол, равный данному), а упрёмся снова в аксиому параллельных. Среди карточек есть ловушки.',
+  phaseTitle:'Свойство 1 — от противного',
+  stepNote:'Свойство 1 доказано: при a ∥ b ∠1 = ∠2.',
+  cards:[
+    {id:'assume', txt:'Предположим обратное доказываемому: пусть ∠1 ≠ ∠2.', need:[], ok:'Допустили обратное цели: ∠1 ≠ ∠2.'},
+    {id:'build', txt:'Отложим от луча MN угол ∠PMN, равный ∠2, против часовой стрелки — так, чтобы ∠PMN и ∠2 были накрест лежащими при прямых MP и b. Такой луч MP провести можно: это разрешает <b>аксиома</b> — от луча в заданную сторону откладывается угол, равный данному (гл. III, §2, с. 58).', need:['assume'], ok:'Построили луч MP: ∠PMN = ∠2 (по угловой аксиоме). ✦ Ради этого шага угловая аксиома и нужна в §2 — соседние две («через две точки — одна прямая», «отложить равный отрезок») были знакомы и раньше.'},
+    {id:'priznak', txt:'У прямых MP и b секущая MN образует равные накрест лежащие углы (∠PMN = ∠2). Значит, по <b>признаку</b> параллельности MP ∥ b.', need:['build'], ok:'По признаку из §1: MP ∥ b.'},
+    {id:'two', txt:'Но и a ∥ b (дано). Получается, через точку M проходят две прямые — a и MP, — обе параллельны b.', need:['priznak'], ok:'Так выходит по предположению: через M — две прямые, параллельные b (a и MP). Сейчас в это и упрёмся.'},
+    {id:'contra', txt:'А по аксиоме параллельных через точку проходит только одна прямая, параллельная данной. Двух быть не может — противоречие.', need:['two'], ok:'Противоречие с аксиомой параллельных.'},
+    {id:'concl', txt:'Значит, предположение неверно: ∠1 = ∠2. Что и требовалось доказать.', need:['contra'], ok:'∠1 = ∠2. ∎'},
+    {id:'trapPic', txt:'Доказывать нечего: по чертежу видно, что углы равны.', trap:'Чертёж — один случай и может быть неточным. Нужна причина, верная <b>всегда</b>; её дают аксиомы, а не картинка.'},
+    {id:'trapAngle', txt:'Отложим от луча MN угол, равный ∠1.', trap:'Нужен угол, равный <b>∠2</b>: тогда ∠PMN и ∠2 — накрест лежащие при MP и b, и по признаку MP ∥ b. С углом, равным ∠1, к прямой b не привязаться.'},
+    {id:'trapGoal', txt:'Предположим, что ∠1 = ∠2, и будем рассуждать дальше.', trap:'Но ∠1 = ∠2 — это и есть вывод, его-то и доказываем. «От противного» предполагают <b>обратное</b>: ∠1 ≠ ∠2.'}
+  ]},
+
+ {kind:'assemble', phase:'perp', badge:'Следствие · коротко',
+  task:'Маленькое, но полезное следствие из свойства 1 (рис. 119): <b>перпендикуляр к одной из двух параллельных перпендикулярен и к другой</b>. Дано: a ∥ b и c ⊥ a (то есть ∠1 = 90°). Соберите вывод «c ⊥ b».',
+  phaseTitle:'Следствие: c ⊥ a, a ∥ b ⟹ c ⊥ b',
+  stepNote:'Следствие: перпендикуляр к одной из параллельных перпендикулярен и к другой.',
+  cards:[
+    {id:'cross', txt:'c пересекает a (ведь c ⊥ a). А по следствию 1° из аксиомы: раз c пересекает одну из параллельных, она пересекает и b.', need:[], ok:'c пересекает и b (следствие 1° из t2).'},
+    {id:'eq', txt:'Параллельные a и b пересечены секущей c — по только что доказанному свойству 1 накрест лежащие углы равны: ∠1 = ∠2.', need:['cross'], ok:'∠1 = ∠2 (свойство 1).'},
+    {id:'concl', txt:'Но ∠1 = 90° (дано c ⊥ a). Значит и ∠2 = 90°, то есть c ⊥ b. Что и требовалось.', need:['eq'], ok:'∠2 = 90°, c ⊥ b. ∎'},
+    {id:'trapBlind', txt:'c ⊥ b видно по чертежу — прямые «лежат одинаково».', trap:'«Лежат одинаково» — не доказательство. Нужна цепочка: c пересекает b → ∠1 = ∠2 (свойство 1) → раз ∠1 = 90°, то и ∠2 = 90°.'}
+  ]},
+
+ {kind:'done', phase:'done', badge:'Готово',
+  task:'Свойство 1 доказано — и сразу пригодилось. Заметь: сработали <b>две</b> аксиомы §2 — <b>угловая</b> (ею построили луч MP) как инструмент и <b>аксиома параллельных</b> как стена. Дальше из свойства 1 быстро вытекут остальные свойства.',
+  stepNote:'∎ Свойство 1 и следствие про перпендикуляр доказаны.'}
+];
+const NS=STEPS.length;
+let si=0, results=[], mistakes=0, hintsUsed=0, stepResolved=false;
+const S=()=>STEPS[si];
+
+/* ───────── ОТРИСОВКА: ПРИМИТИВЫ ───────── */
+function bg(){
+  ctx.clearRect(0,0,W,HT);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,HT);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<HT;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill()}
+}
+function line2(p,ang,col,wid,dash){
+  const big=2200,dx=Math.cos(ang),dy=Math.sin(ang);
+  ctx.strokeStyle=col;ctx.lineWidth=wid||2.8;if(dash)ctx.setLineDash(dash);
+  ctx.beginPath();ctx.moveTo(p.x-dx*big,p.y-dy*big);ctx.lineTo(p.x+dx*big,p.y+dy*big);ctx.stroke();ctx.setLineDash([]);
+}
+function lab(x,y,t,col,s){ctx.font='900 '+(s||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(t,x,y);ctx.fillStyle=col;ctx.fillText(t,x,y);
+  ctx.textBaseline='alphabetic';ctx.textAlign='start'}
+function dot(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+const lerp=(a,b,t)=>a+(b-a)*t;
+function yAt(piv,ang,X){return piv.y+Math.tan(ang)*(X-piv.x)}
+function footY(piv,ang,Y){const s=Math.sin(ang);if(Math.abs(s)<0.012)return null;const t=(Y-piv.y)/s;return{x:piv.x+Math.cos(ang)*t,y:Y,t}}
+function ptAlong(p,ang,d){return{x:p.x+Math.cos(ang)*d,y:p.y+Math.sin(ang)*d}}
+
+// красная точка P (на холсте) либо деликатный указатель «уехала за край»
+function drawP(P,levelY,col,txt){
+  if(!P)return;
+  col=col||'#dc2626';
+  if(P.x>=-30&&P.x<=W+30){
+    const pl=1+0.18*Math.sin(Date.now()/260);
+    dot(P.x,P.y,6*pl,col,'#fffdf7');lab(P.x,P.y+22,'P',col,14);
+  }else{
+    const right=P.x>W, ay=levelY-22, ex=right?W-58:58, dir=right?1:-1;
+    ctx.strokeStyle=col;ctx.lineWidth=2.4;
+    ctx.beginPath();ctx.moveTo(ex,ay);ctx.lineTo(ex+28*dir,ay);ctx.stroke();
+    ctx.fillStyle=col;
+    ctx.beginPath();ctx.moveTo(ex+28*dir,ay-5);ctx.lineTo(ex+38*dir,ay);ctx.lineTo(ex+28*dir,ay+5);ctx.closePath();ctx.fill();
+    lab(ex+(right?-52:52),ay+4,txt||'P уехала',col,12);
+  }
+}
+
+// карточка-аксиома, «стена», в которую упираются оба доказательства
+function axiomCard(hot){
+  const x=14,y=14,w=270,h=56,r=10;
+  ctx.save();
+  if(hot){ctx.shadowColor='#dc2626';ctx.shadowBlur=16}
+  roundRect(x,y,w,h,r);ctx.fillStyle='#1a1a2e';ctx.fill();
+  ctx.shadowBlur=0;
+  roundRect(x,y,w,h,r);ctx.lineWidth=hot?3:1.5;ctx.strokeStyle=hot?'#dc2626':'#3a3a55';ctx.stroke();
+  ctx.textAlign='left';
+  ctx.fillStyle=hot?'#fca5a5':'#94a3b8';ctx.font='800 10px system-ui';
+  ctx.fillText('АКСИОМА ПАРАЛЛЕЛЬНЫХ',x+12,y+16);
+  ctx.fillStyle='#fff';ctx.font='800 12px system-ui';
+  ctx.fillText('через точку проходит только',x+12,y+33);
+  ctx.fillText('одна параллельная прямая',x+12,y+48);
+  ctx.restore();
+  ctx.textAlign='start';
+  if(hot){lab(x+w+44,y+28,'⚡ противоречие','#dc2626',13)}
+}
+
+/* ───────── ОТРИСОВКА: СЦЕНЫ ───────── */
+function arcAt(v,a1,a2,r,col,wid){ctx.beginPath();ctx.arc(v.x,v.y,r,a1,a2);ctx.strokeStyle=col;ctx.lineWidth=wid||2.2;ctx.stroke()}
+function arrowHead(x,y,ang,col,s){s=s||7;ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-s*Math.cos(ang-0.45),y-s*Math.sin(ang-0.45));ctx.lineTo(x-s*Math.cos(ang+0.45),y-s*Math.sin(ang+0.45));ctx.closePath();ctx.fill();}
+// нижняя строка-подпись: подгоняем кегль, чтобы не вылезла за холст
+function noteLine(t,col){let fs=12.5;ctx.font='900 '+fs+'px system-ui';while(ctx.measureText(t).width>W-40&&fs>8.5){fs-=0.5;ctx.font='900 '+fs+'px system-ui';}lab(W/2,HT-18,t,col,fs);}
+
+// карточка-цитата угловой аксиомы — «инструмент» (право отложить равный угол), с указанием места в учебнике
+function angleAxiomCard(){
+  const w=304,h=82,x=14,y=296,r=10;
+  ctx.save();
+  roundRect(x,y,w,h,r);ctx.fillStyle='#1a1a2e';ctx.fill();
+  roundRect(x,y,w,h,r);ctx.lineWidth=1.5;ctx.strokeStyle='#2d70b3';ctx.stroke();
+  ctx.textAlign='left';
+  ctx.fillStyle='#7fb3e8';ctx.font='800 9.5px system-ui';
+  ctx.fillText('УГЛОВАЯ АКСИОМА · Атанасян, гл. III, §2, с. 58',x+12,y+17);
+  ctx.fillStyle='#e8e4db';ctx.font='600 10.5px system-ui';
+  ctx.fillText('«от любого луча в заданную сторону можно',x+12,y+35);
+  ctx.fillText('отложить угол, равный данному неразвёр-',x+12,y+50);
+  ctx.fillText('нутому углу, и притом только один»',x+12,y+65);
+  ctx.restore();ctx.textAlign='start';
+}
+
+// Сцена P — свойство 1 (рис. 118)
+function drawProp1(cur){
+  const showMP=(cur==='build'||cur==='priznak'||cur==='two'||cur==='contra');
+  const hot=(cur==='contra');
+  const par2=(cur==='two'||cur==='contra');
+  const aCol = hot?'#dc2626' : par2?'#2d70b3' : '#1a1a2e';
+  // a, b — данные параллельные
+  line2({x:0,y:aY},0,aCol,2.8); lab(W-22,aY-13,'a',aCol,16);
+  line2({x:0,y:bY},0,'#1a1a2e',2.8); lab(W-22,bY-13,'b','#1a1a2e',16);
+  // секущая MN
+  line2(M,SEC,'#2d70b3',2.4);
+  lab((M.x+N.x)/2+42,(M.y+N.y)/2-8,'секущая','#2d70b3',11);
+  // ∠2 у N — один из доказываемых, показываем всегда
+  const angCol = cur==='concl'?'#16a34a':'#7c3aed';
+  arcAt(N,Math.PI,Math.PI+SEC,16,angCol,2.4); lab(N.x-26,N.y-12,'2',angCol,13);
+  if(!showMP){
+    // ∠1 у M — на предположении и в выводе (не одновременно с ∠PMN, чтобы дуги не накладывались)
+    arcAt(M,0,SEC,16,angCol,2.4); lab(M.x+26,M.y+11,'1',angCol,13);
+    if(cur==='concl') lab(M.x+8,M.y+42,'∠1 = ∠2 ✓','#15803d',12);
+  } else {
+    // луч MP (построенный, ∥ b), чуть отклонён от a — вторая прямая через M
+    const mpCol = hot?'#dc2626':'#2d70b3';
+    line2(M,MP_FAN,mpCol,2.2,[9,7]);
+    const px=560; lab(px+12, aY+MP_FAN*(px-M.x),'P',mpCol,14);
+    // ∠PMN — ОСТРЫЙ, равен острому ∠2: между лучом MP (вправо) и секущей MN (к N)
+    arcAt(M,MP_FAN,SEC,27,'#7c3aed',2.6);
+    // стрелка: ∠2 откладываем ОТ секущей MN ПРОТИВ часовой стрелки — получаем MP
+    const ahx=M.x+27*Math.cos(MP_FAN), ahy=M.y+27*Math.sin(MP_FAN);
+    arrowHead(ahx,ahy, MP_FAN-Math.PI/2, '#7c3aed',7);
+    lab(M.x+50,M.y+22,'∠PMN','#7c3aed',12);
+    lab(M.x+60,M.y+41,'= ∠2', hot?'#b91c1c':'#7c3aed',12);
+    lab(M.x+16,M.y-13,'↺','#7c3aed',16);
+  }
+  dot(M.x,M.y,4.4,'#fffdf7','#1a1a2e'); lab(M.x-15,M.y-13,'M','#1a1a2e',14);
+  dot(N.x,N.y,4.4,'#fffdf7','#1a1a2e'); lab(N.x+15,N.y+15,'N','#1a1a2e',14);
+  noteP(cur);
+}
+function noteP(cur){
+  let t,col='#475569';
+  if(cur==='assume'){t='Предположили обратное: ∠1 ≠ ∠2. Посмотрим, к чему это приведёт.';}
+  else if(cur==='build'){t='Отложили ∠PMN = ∠2 от луча MN против часовой стрелки → получили луч MP.';}
+  else if(cur==='priznak'){t='Накрест лежащие при MP и b равны ⟹ MP ∥ b (по признаку).';}
+  else if(cur==='two'){t='Через M — две прямые, параллельные b: данная a и построенная MP.';}
+  else if(cur==='contra'){t='Параллельная через точку — одна! Две (a и MP) — невозможно.';col='#b91c1c';}
+  else if(cur==='concl'){t='Значит, предположение неверно: ∠1 = ∠2. ✓';col='#15803d';}
+  else{t='a ∥ b, секущая MN. Накрест лежащие ∠1 и ∠2 — докажем, что они равны.';}
+  noteLine(t,col);
+}
+
+// Сцена perp — следствие про перпендикуляр (рис. 119)
+function rightAngle(cx,cy,dx,dy,s,col){
+  ctx.strokeStyle=col;ctx.lineWidth=2.2;
+  ctx.beginPath();ctx.moveTo(cx+dx*s,cy);ctx.lineTo(cx+dx*s,cy+dy*s);ctx.lineTo(cx,cy+dy*s);ctx.stroke();
+}
+function drawPerp(cur){
+  const A={x:cX,y:aY}, B={x:cX,y:bY}, cDone=(cur==='concl');
+  line2({x:0,y:aY},0,'#1a1a2e',2.8); lab(W-22,aY-13,'a','#1a1a2e',16);
+  line2({x:0,y:bY},0,'#1a1a2e',2.8); lab(W-22,bY-13,'b','#1a1a2e',16);
+  line2({x:cX,y:200},Math.PI/2, cDone?'#16a34a':'#2d70b3',2.6); lab(cX+16,42,'c',cDone?'#16a34a':'#2d70b3',15);
+  // у A: ∠1 = 90° (дано c ⊥ a)
+  rightAngle(A.x,A.y,-1,1,12,'#7c3aed'); lab(A.x-46,A.y+22,'∠1 = 90°','#7c3aed',11.5);
+  // у B: ∠2
+  if(cDone){ rightAngle(B.x,B.y,-1,-1,12,'#16a34a'); lab(B.x-46,B.y-22,'∠2 = 90°','#16a34a',11.5); }
+  else { lab(B.x-40,B.y-20,'∠2 = ?', cur==='eq'?'#16a34a':'#7c3aed',11.5); }
+  dot(A.x,A.y,4.2,'#fffdf7','#1a1a2e'); lab(A.x+16,A.y-12,'A','#1a1a2e',13);
+  dot(B.x,B.y,4.2,'#fffdf7','#1a1a2e'); lab(B.x+16,B.y+15,'B','#1a1a2e',13);
+  notePerp(cur);
+}
+function notePerp(cur){
+  let t,col='#475569';
+  if(cur==='cross'){t='c ⊥ a — значит c пересекает a, а по следствию 1° — и b.';}
+  else if(cur==='eq'){t='a ∥ b, секущая c ⟹ накрест лежащие равны: ∠1 = ∠2 (свойство 1).';col='#15803d';}
+  else if(cur==='concl'){t='∠1 = 90°, значит и ∠2 = 90°: c ⊥ b. ✓';col='#15803d';}
+  else{t='Дано: a ∥ b и c ⊥ a (∠1 = 90°). Докажем, что c ⊥ b.';}
+  noteLine(t,col);
+}
+
+function drawDone(){
+  ctx.textAlign='center';ctx.textBaseline='alphabetic';
+  const box=(cx,cy,lines,cols)=>{
+    const w=124,h=40;
+    roundRect(cx-w/2,cy-h/2,w,h,8);ctx.fillStyle=cols[2];ctx.fill();
+    ctx.lineWidth=2;ctx.strokeStyle=cols[0];ctx.stroke();ctx.fillStyle=cols[1];
+    if(lines.length===1){ctx.font='800 12px system-ui';ctx.fillText(lines[0],cx,cy+4)}
+    else{ctx.font='800 10px system-ui';ctx.fillText(lines[0],cx,cy-2);ctx.fillText(lines[1],cx,cy+12)}
+  };
+  const arrow=(x1,x2,y)=>{
+    ctx.strokeStyle='#94a3b8';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(x1,y);ctx.lineTo(x2-6,y);ctx.stroke();
+    ctx.fillStyle='#94a3b8';ctx.beginPath();ctx.moveTo(x2,y);ctx.lineTo(x2-7,y-4);ctx.lineTo(x2-7,y+4);ctx.closePath();ctx.fill();
+  };
+  const RED=['#dc2626','#b91c1c','#fef2f2'], GREY=['#cbd5e1','#334155','#fffdf7'], GREEN=['#16a34a','#15803d','#f0fdf4'];
+  const cx=[92,247,400,556];
+  const lane=(y,b,cols)=>{
+    for(let i=0;i<4;i++) box(cx[i],y,b[i],cols[i]);
+    arrow(cx[0]+62,cx[1]-62,y);arrow(cx[1]+62,cx[2]-62,y);arrow(cx[2]+62,cx[3]-62,y);
+  };
+  ctx.font='800 13px system-ui';ctx.fillStyle='#15803d';
+  ctx.fillText('Свойство 1:  a ∥ b  ⟹  накрест лежащие ∠1 = ∠2',W/2,28);
+  lane(74,[['пусть','∠1 ≠ ∠2'],['отложили ∠PMN=∠2','⟹ MP ∥ b'],['две ∥ к b','через M ✗'],['значит','∠1 = ∠2']],[RED,GREY,RED,GREEN]);
+  ctx.font='800 13px system-ui';ctx.fillStyle='#15803d';
+  ctx.fillText('Следствие:  c ⊥ a,  a ∥ b  ⟹  c ⊥ b',W/2,150);
+  lane(196,[['c ⊥ a, a ∥ b','(дано)'],['c пересекает','и b'],['∠1 = ∠2','(свойство 1)'],['∠1=90° ⟹','c ⊥ b']],[GREY,GREY,GREY,GREEN]);
+  ctx.font='800 11.5px system-ui';ctx.fillStyle='#334155';
+  ctx.fillText('сработали две аксиомы §2: угловая (построили MP) и параллельных (стена)',W/2,260);
+  const a1={x:118,y:282,w:202,h:44}, a2={x:330,y:282,w:202,h:44};
+  roundRect(a1.x,a1.y,a1.w,a1.h,9);ctx.fillStyle='#1a1a2e';ctx.fill();
+  roundRect(a2.x,a2.y,a2.w,a2.h,9);ctx.fillStyle='#1a1a2e';ctx.fill();
+  ctx.fillStyle='#fff';ctx.font='800 11px system-ui';
+  ctx.fillText('УГЛОВАЯ АКСИОМА',a1.x+a1.w/2,a1.y+18);
+  ctx.fillText('АКСИОМА ПАРАЛЛЕЛЬНЫХ',a2.x+a2.w/2,a2.y+18);
+  ctx.fillStyle='#94a3b8';ctx.font='700 10px system-ui';
+  ctx.fillText('отложить равный угол — инструмент',a1.x+a1.w/2,a1.y+33);
+  ctx.fillText('через точку одна параллель — стена',a2.x+a2.w/2,a2.y+33);
+  ctx.textAlign='start';
+}
+
+function draw(){
+  bg();
+  const s=S();
+  const cur=(s.kind==='assemble')?(asmDone[asmDone.length-1]||null):null;
+  if(s.phase==='P'){
+    const showMP=(cur==='build'||cur==='priznak'||cur==='two'||cur==='contra');
+    drawProp1(cur);
+    if(showMP) angleAxiomCard();
+    axiomCard(cur==='contra');
+  }
+  else if(s.phase==='perp'){ drawPerp(cur); }
+  else drawDone();
+}
+
+/* ───────── ПАНЕЛИ/СООБЩЕНИЯ ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+
+/* ───────── ВЫБОР (choose) ───────── */
+function renderOpts(list){
+  const box=document.getElementById('opts');box.innerHTML='';
+  list.forEach((o,i)=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML=o.t;b.dataset.i=i;
+    b.addEventListener('click',()=>o.fn(b));box.appendChild(b)});
+}
+function answerChoice(opt,btn,arr){
+  if(stepResolved)return;
+  if(opt.ok){
+    btn.classList.add('ok-pick');
+    [...document.getElementById('opts').children].forEach(b=>b.disabled=true);
+    results.push(mistakes===0&&hintsUsed===0?'g':(mistakes<=1?'y':'r'));
+    mistakes=0;hintsUsed=0;
+    log('choice_ok',{step:si});
+    setMsg('Верно. '+(opt.after||''),'ok');
+    advanceReady();
+  }else{
+    mistakes++;log('distractor',{step:si,pick:opt.t});
+    btn.classList.add('bad-pick');
+    const idx=arr.findIndex(o=>o.ok);
+    const bs=document.getElementById('opts').children;
+    if(bs[idx])bs[idx].classList.add('correct-reveal');
+    setMsg('Не так. '+(opt.why||'')+' Верный ответ подсвечен.','err');
+  }
+}
+
+/* ───────── СБОРКА (assemble) ───────── */
+let asmDone=[], asmDead=[];
+function asmCards(){return S().cards||[]}
+function renderPool(){
+  const box=document.getElementById('opts');box.innerHTML='';
+  asmCards().forEach(c=>{
+    if(asmDone.includes(c.id))return;
+    const b=document.createElement('button');b.type='button';b.className='pcard';b.innerHTML=c.txt;
+    b.addEventListener('click',()=>pickCard(c.id,b));box.appendChild(b);
+  });
+}
+function renderChain(){
+  const box=document.getElementById('steps');box.innerHTML='';
+  for(let i=0;i<si;i++){ if(!STEPS[i].stepNote)continue;
+    const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">·</span>'+STEPS[i].stepNote;box.appendChild(d); }
+  if(S().phaseTitle){const p=document.createElement('div');p.className='phtitle';p.textContent=S().phaseTitle;box.appendChild(p)}
+  if(!asmDone.length){const e=document.createElement('div');e.className='chempty';e.textContent='Цепочка пуста — выберите первое утверждение.';box.appendChild(e);return}
+  asmDone.forEach((id,i)=>{
+    const c=asmCards().find(x=>x.id===id);
+    const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">'+(i+1)+'.</span>'+c.txt;box.appendChild(d);
+  });
+}
+function pickCard(id,btn){
+  if(stepResolved)return;
+  const c=asmCards().find(x=>x.id===id);
+  if(c.trap){
+    mistakes++;if(!asmDead.includes(id))asmDead.push(id);log('distractor',{id});
+    btn.classList.add('shake');setMsg(c.trap,'err');
+    setTimeout(()=>btn.classList.remove('shake'),450);
+    return;
+  }
+  if(c.need && !c.need.every(n=>asmDone.includes(n))){
+    mistakes++;log('early',{id});
+    btn.classList.add('shake');setMsg('Рано: этот шаг опирается на то, что ещё не сказано. Сначала обоснуйте предыдущее.','info');
+    setTimeout(()=>btn.classList.remove('shake'),450);
+    return;
+  }
+  asmDone.push(id);log('step',{id});
+  setMsg('Верно. '+(c.ok||''),'ok');
+  const concl=asmCards().filter(x=>!x.trap).every(x=>asmDone.includes(x.id));
+  renderPool();renderChain();
+  if(concl){
+    results.push(mistakes===0?'g':(mistakes<=1?'y':'r'));
+    mistakes=0;
+    setMsg(S().phase==='P'?'Свойство 1 доказано: ∠1 = ∠2. ∎':'Следствие доказано: c ⊥ b. ∎','ok');
+    advanceReady();
+  }
+}
+
+/* ───────── ХОД (для не-assemble) ───────── */
+function renderSteps(){
+  const box=document.getElementById('steps');box.innerHTML='';
+  for(let i=0;i<=si;i++){
+    if(!STEPS[i].stepNote)continue;
+    if(i===si && !stepResolved)continue;
+    const d=document.createElement('div');d.className='st';d.innerHTML=STEPS[i].stepNote;box.appendChild(d);
+  }
+}
+function advanceReady(){
+  stepResolved=true;
+  if(S().kind!=='assemble')renderSteps();
+  const nb=document.getElementById('nextBtn');
+  nb.style.display='inline-block';
+  nb.textContent = si<NS-1 ? 'Следующий шаг →' : 'Итоги →';
+}
+
+/* ───────── НАВИГАЦИЯ ───────── */
+function givenFor(s){
+  if(s.phase==='P'){
+    let g='<b>Дано:</b> a ∥ b; секущая MN.<br><b>Доказать: ∠1 = ∠2</b> (накрест лежащие).';
+    if(s.kind==='assemble') g+='<span class="assume">Предположим противное: ∠1 ≠ ∠2.</span>';
+    return g;
+  }
+  if(s.phase==='perp'){
+    return '<b>Дано:</b> a ∥ b; c ⊥ a (∠1 = 90°).<br><b>Доказать: c ⊥ b.</b>';
+  }
+  return '<b>Итог:</b> свойство 1 доказано (от противного), и из него — следствие про перпендикуляр.';
+}
+function showStep(){
+  const s=S();
+  document.getElementById('pf').style.width=(si/NS*100)+'%';
+  document.getElementById('pnum').textContent='Шаг '+(si+1)+' из '+NS;
+  document.getElementById('taskText').innerHTML=s.task;
+  document.getElementById('badge').textContent=s.badge;
+  document.getElementById('givenBox').innerHTML=givenFor(s);
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  clearOpts();
+  stepResolved=false;
+  if(s.q){
+    const arr=s.q.slice();
+    renderOpts(arr.map(o=>({t:o.t,fn:(b)=>answerChoice(o,b,arr)})));
+    setMsg('Выберите утверждение, противоположное «∠1 = ∠2».','info');
+    renderSteps();
+  }else if(s.kind==='assemble'){
+    asmDone=[];asmDead=[];
+    renderPool();renderChain();
+    setMsg('Нажимайте утверждения по порядку. Ловушки объяснят, почему так нельзя.','info');
+  }else{
+    setMsg('Доказательство собрано целиком.','info');
+    renderSteps();
+    advanceReady();
+  }
+  log('step_start',{kind:s.kind,phase:s.phase});
+}
+function nextTask(){ if(si<NS-1){si++;showStep()} else finish() }
+function resetTask(){ log('reset'); si=0;results=[];mistakes=0;hintsUsed=0;showStep() }
+
+function showHint(){
+  if(stepResolved && S().kind!=='assemble')return;
+  hintsUsed++;log('hint');
+  const hb=document.getElementById('hintbox');const s=S();let h='';
+  if(s.kind==='choose')h='Метод велит предположить ОБРАТНОЕ доказываемому. Доказываем «∠1 = ∠2» — значит, предполагаем, что углы НЕ равны: ∠1 ≠ ∠2.';
+  else if(s.kind==='assemble' && s.phase==='P')h='Сначала предположите ∠1 ≠ ∠2. Затем отложите ∠PMN = ∠2 (угловая аксиома) — получится MP ∥ b (признак). Тогда через M две параллели b — упритесь в аксиому. Вывод последним.';
+  else if(s.kind==='assemble' && s.phase==='perp')h='Сначала: c пересекает и b (следствие 1°). Потом: при ∥ накрест лежащие равны (свойство 1) — ∠1 = ∠2. И раз ∠1 = 90°, то и ∠2 = 90°.';
+  else h='Загляните в карточку-аксиому слева — в неё упирается доказательство свойства 1.';
+  hb.innerHTML='💡 '+h;hb.style.display='block';
+}
+
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{good:g,total:results.length});
+  const st=lS();st.runs=(st.runs||0)+1;st.passed=true;if(g>(st.best||0))st.best=g;sS(st);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent='✓';
+  document.getElementById('finLbl').textContent =
+    g>=results.length?'Свойство 1 и следствие доказаны без единой ошибки!':
+    g>=2?'Свойство 1 доказано. Загляните в шаги, где сбились.':
+    'Стоит пройти ещё раз — особенно само предположение «от противного».';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){si=0;results=[];mistakes=0;hintsUsed=0;document.getElementById('fin').style.display='none';document.getElementById('mainArea').style.display='grid';document.getElementById('bar').style.display='flex';showStep()}
+
+/* ───────── СТАРТ ───────── */
+showStep();
+(function loop(){ draw();requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Зачёт §2</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:manipulation}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#7c3aed;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.given{font-size:13px;line-height:1.5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:10px}
+.given b{color:#3730a3}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:750 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt:disabled{cursor:default}
+.opt.ok-pick{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.bad-pick{background:#fee2e2;border-color:#dc2626;color:#991b1b}
+.opt.correct-reveal{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.inputrow{display:flex;gap:8px;align-items:center}
+.inputrow input{flex:1;min-width:0;border:1.5px solid #d1d5db;border-radius:10px;padding:11px 13px;font:800 16px system-ui;color:#1a1a2e}
+.inputrow input:focus{outline:none;border-color:#7c3aed}
+.unit{font-weight:800;color:#475569;font-size:15px}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.solbox{display:none;background:#f1f5f9;border:1.5px solid #cbd5e1;border-radius:12px;padding:11px 13px;font-size:13.5px;line-height:1.5;color:#334155}
+.solbox b{color:#1e293b}
+.solbox ol{margin:6px 0 0;padding-left:20px}
+.solbox li{margin:4px 0}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+button.act{border:none;border-radius:10px;padding:11px 16px;font:800 14px system-ui;cursor:pointer}
+.check{background:#7c3aed;color:#fff}.check:hover{background:#6d28d9}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.fin{display:none;padding:24px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#7c3aed}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px;flex-wrap:wrap}
+.dot{width:14px;height:14px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.r{background:#dc2626}
+.review{max-width:560px;margin:0 auto 16px;text-align:left;background:#fffbeb;border:1.5px solid #fde68a;border-radius:12px;padding:14px;font-size:13.5px;line-height:1.6;color:#78350f;display:none}
+.review b{color:#92400e}
+.review ul{margin:8px 0 0;padding-left:18px}
+.law{max-width:600px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:13.5px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.bridge{margin-top:10px;font-size:13px;color:#475569}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">✓ Зачёт по §2</div>
+      <div class="sub">Глава IV · §2 · тренажёр 8 из 8 — итоговая проверка</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Зачёт</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="440"></canvas></div>
+    <aside class="side">
+      <div class="card">
+        <h2>Вопрос</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card"><div class="given" id="givenBox"></div></div>
+      <div id="msg" class="msg info"></div>
+      <div id="opts" class="opts"></div>
+      <div id="solbox" class="solbox"></div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="review" id="review"></div>
+    <div class="law">
+      <b>Итог §2.</b> Против большей стороны лежит больший угол — и наоборот; против равных углов лежат равные стороны (признак равнобедренного). В прямоугольном треугольнике самая длинная сторона — гипотенуза (она против прямого, наибольшего, угла). Неравенство треугольника: каждая сторона меньше суммы и больше разности двух других, поэтому третья сторона лежит строго между разностью и суммой двух данных.
+      <div class="bridge">§2 пройден. Эти соотношения дальше работают и в прямоугольном треугольнике (§3), и в задачах на расстояние (§4).</div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Пройти зачёт заново</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" onclick="restart()">↺ Заново</button>
+    <button class="tool next" id="nextBtn" onclick="nextTask()">Дальше →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС / ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch4-p2-t8-quiz';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),q:probIdx+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640, HT=440, PI=Math.PI;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=HT*dpr;cv.style.aspectRatio=W+'/'+HT;ctx.scale(dpr,dpr);
+const rnd=(lo,hi)=>lo+Math.floor(Math.random()*(hi-lo+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const COL={A:'#d97706', B:'#db2777', C:'#0d9488', q:'#7c3aed'};
+
+/* ───────── ПРИМИТИВЫ ───────── */
+function hexA(h,a){const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+function bg(){ctx.clearRect(0,0,W,HT);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,HT);ctx.fillStyle='#e7e1d2';for(let x=20;x<W;x+=25)for(let y=20;y<HT;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill()}}
+function lab(x,y,t,col,s){ctx.font='900 '+(s||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(t,x,y);ctx.fillStyle=col;ctx.fillText(t,x,y);ctx.textBaseline='alphabetic';ctx.textAlign='start'}
+function dot(x,y,r,fill){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();}
+function seg(p,q,col,w){ctx.strokeStyle=col;ctx.lineWidth=w||2.8;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.lineCap='butt';}
+function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function angAt(V,P,Q){const a1=Math.atan2(P.y-V.y,P.x-V.x),a2=Math.atan2(Q.y-V.y,Q.x-V.x);let d=a2-a1;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;return {a1,d};}
+function bisOf(V,P,Q){const {a1,d}=angAt(V,P,Q);return a1+d/2;}
+function nrm(v){const m=Math.hypot(v.x,v.y)||1;return{x:v.x/m,y:v.y/m}}
+function drawArc(V,P,Q,col){
+  const {a1,d}=angAt(V,P,Q), deg=Math.abs(d)*180/PI;
+  if(deg>=87.5&&deg<=92.5){
+    const u1={x:Math.cos(a1),y:Math.sin(a1)},u2={x:Math.cos(a1+d),y:Math.sin(a1+d)},sz=15;
+    const p1={x:V.x+u1.x*sz,y:V.y+u1.y*sz},p2={x:V.x+u2.x*sz,y:V.y+u2.y*sz},p3={x:p1.x+u2.x*sz,y:p1.y+u2.y*sz};
+    ctx.strokeStyle='#0d9488';ctx.lineWidth=2.4;ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p3.x,p3.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();
+  } else { ctx.beginPath();ctx.arc(V.x,V.y,22,a1,a1+d,d<0);ctx.lineWidth=2.6;ctx.strokeStyle=col;ctx.lineCap='round';ctx.stroke();ctx.lineCap='butt'; }
+}
+function drawDoubleArc(V,P,Q,col){const {a1,d}=angAt(V,P,Q);[20,26].forEach(r=>{ctx.beginPath();ctx.arc(V.x,V.y,r,a1,a1+d,d<0);ctx.lineWidth=2.4;ctx.strokeStyle=col;ctx.lineCap='round';ctx.stroke();});ctx.lineCap='butt';}
+function rightMark(V,P,Q,col){
+  const u=nrm({x:P.x-V.x,y:P.y-V.y}),w=nrm({x:Q.x-V.x,y:Q.y-V.y}),s=14;
+  const p1={x:V.x+u.x*s,y:V.y+u.y*s},p3={x:V.x+w.x*s,y:V.y+w.y*s},p2={x:p1.x+w.x*s,y:p1.y+w.y*s};
+  ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.stroke();
+}
+function sideLab(P,Q,away,txt){
+  const mx=(P.x+Q.x)/2,my=(P.y+Q.y)/2; let nx=-(Q.y-P.y),ny=(Q.x-P.x); const m=Math.hypot(nx,ny)||1; nx/=m;ny/=m;
+  if((mx+nx-away.x)**2+(my+ny-away.y)**2 < (mx-nx-away.x)**2+(my-ny-away.y)**2){nx=-nx;ny=-ny;}
+  lab(mx+nx*20,my+ny*20,txt,'#1f2937',14);
+}
+function nb(v,A,B,C){ return v==='A'?[B,C]:v==='B'?[A,C]:[A,B]; }
+
+/* ───────── ПОСТРОЕНИЕ ФИГУР ───────── */
+function fitBox(A0,B0,C0){
+  const xs=[A0.x,B0.x,C0.x], ys=[A0.y,B0.y,C0.y];
+  const minx=Math.min(...xs),maxx=Math.max(...xs),miny=Math.min(...ys),maxy=Math.max(...ys);
+  const bw=(maxx-minx)||1,bh=(maxy-miny)||1;
+  const TX=92,TY=140,TW=456,TH=205, sc=Math.min(TW/bw,TH/bh)*0.9;
+  const ox=TX+(TW-bw*sc)/2-minx*sc, oy=TY+(TH-bh*sc)/2-miny*sc;
+  const map=p=>({x:ox+p.x*sc,y:oy+p.y*sc});
+  return {A:map(A0),B:map(B0),C:map(C0)};
+}
+function fitTriangle(angA, angB){
+  const a=angA*PI/180, b=angB*PI/180, s=Math.sin(b)/Math.sin(a+b);
+  return fitBox({x:0,y:0},{x:1,y:0},{x:s*Math.cos(a), y:-s*Math.sin(a)});
+}
+/* стороны: a = BC (против A), b = CA (против B), c = AB (против C) */
+function triFromSides(a,b,c){
+  const cx=(b*b - a*a + c*c)/(2*c);
+  const cy=-Math.sqrt(Math.max(0.01, b*b - cx*cx));
+  return fitBox({x:0,y:0},{x:c,y:0},{x:cx,y:cy});
+}
+
+/* ───────── ВОПРОСЫ (генераторы) ───────── */
+const RV={ sa:'лаборатория и доказательство «сторона ↔ угол»', iso:'признак равнобедренного',
+  hyp:'следствие «гипотенуза — самая длинная»', ineq:'лаборатория и доказательство неравенства треугольника',
+  bnd:'границы третьей стороны (генератор)' };
+
+function genLargestAngle(){
+  let a,b,c;
+  do{ a=rnd(5,14); b=rnd(5,14); c=rnd(5,14); }
+  while(!(a+b>c&&b+c>a&&a+c>b) || new Set([a,b,c]).size<3);
+  const mx=Math.max(a,b,c);
+  const ansV = mx===a?'A': mx===b?'B':'C';
+  const maxSide = mx===a?'BC':mx===b?'CA':'AB';
+  const t=triFromSides(a,b,c);
+  return {kind:'choose', topic:'Сторона ↔ угол', review:RV.sa,
+    prompt:'Какой угол треугольника наибольший?',
+    given:'<b>Стороны:</b> BC = '+a+', CA = '+b+', AB = '+c+'.',
+    fig:{type:'tri',A:t.A,B:t.B,C:t.C,sideLabels:{BC:a,CA:b,AB:c}},
+    opts:[{t:'∠A',ok:ansV==='A'},{t:'∠B',ok:ansV==='B'},{t:'∠C',ok:ansV==='C'}],
+    sol:'Против большей стороны лежит больший угол. Наибольшая сторона — '+maxSide+' = '+mx+', а против неё лежит угол <b>∠'+ansV+'</b>.'};
+}
+function genSmallestSide(){
+  let A,B,C;
+  do{ A=rnd(30,88); B=rnd(30,88); C=180-A-B; }
+  while(C<26 || C>112 || new Set([A,B,C]).size<3);
+  const mn=Math.min(A,B,C);
+  const ansSide = mn===A?'BC': mn===B?'CA':'AB';
+  const minV = mn===A?'A':mn===B?'B':'C';
+  const t=fitTriangle(A,B);
+  return {kind:'choose', topic:'Сторона ↔ угол', review:RV.sa,
+    prompt:'Какая сторона наименьшая?',
+    given:'<b>Углы:</b> ∠A = '+A+'°, ∠B = '+B+'°, ∠C = '+C+'°.',
+    fig:{type:'tri',A:t.A,B:t.B,C:t.C,angLabels:{A:A+'°',B:B+'°',C:C+'°'}},
+    opts:[{t:'BC',ok:ansSide==='BC'},{t:'CA',ok:ansSide==='CA'},{t:'AB',ok:ansSide==='AB'}],
+    sol:'Против меньшего угла лежит меньшая сторона. Наименьший угол — ∠'+minV+' = '+mn+'°, против него лежит сторона <b>'+ansSide+'</b>.'};
+}
+function genIsoCriterion(){
+  const base=rnd(40,72), apex=180-2*base;
+  const t=fitTriangle(apex,base);
+  return {kind:'choose', topic:'Признак равнобедренного', review:RV.iso,
+    prompt:'Что следует про стороны?',
+    given:'В треугольнике ABC <b>∠B = ∠C</b> (отмечены).',
+    fig:{type:'tri',A:t.A,B:t.B,C:t.C,iso:['B','C']},
+    opts:[{t:'AB = AC',ok:true},{t:'BC = AC',ok:false},{t:'AB = BC',ok:false}],
+    sol:'Если два угла треугольника равны, то равны и стороны, лежащие против них. Против ∠B лежит сторона AC, против ∠C — сторона AB. Значит <b>AB = AC</b> (треугольник равнобедренный).'};
+}
+function genHypLongest(){
+  const A=rnd(28,62), B=90-A;
+  const t=fitTriangle(A,B);
+  return {kind:'choose', topic:'Гипотенуза — наибольшая', review:RV.hyp,
+    prompt:'Какая сторона самая длинная?',
+    given:'<b>Прямоугольный</b> треугольник, прямой угол при вершине C.',
+    fig:{type:'tri',A:t.A,B:t.B,C:t.C,right:'C'},
+    opts:[{t:'AB (гипотенуза)',ok:true},{t:'CA (катет)',ok:false},{t:'CB (катет)',ok:false}],
+    sol:'Самая длинная сторона лежит против наибольшего угла. Наибольший угол — прямой (90°) при C, против него — гипотенуза <b>AB</b>. Катеты CA и CB лежат против острых углов, поэтому короче.'};
+}
+function genForms(){
+  const valid=Math.random()<0.5; let x,y,z;
+  if(valid){ do{ x=rnd(4,12); y=rnd(4,12); z=rnd(4,12); }while(!(x+y>z&&y+z>x&&x+z>y)); }
+  else { const p=rnd(3,7), q=rnd(3,7); x=p; y=q; z=p+q+rnd(0,3); }
+  const lens=[x,y,z], srt=[...lens].sort((m,n)=>m-n), ok=valid;
+  return {kind:'choose', topic:'Неравенство треугольника', review:RV.ineq,
+    prompt:'Можно ли построить треугольник из этих отрезков?',
+    given:'<b>Отрезки:</b> '+x+', '+y+', '+z+'.',
+    fig:{type:'sticks',lens:lens},
+    opts:[{t:'Да, сложится',ok:ok},{t:'Нет, не сложится',ok:!ok}],
+    sol: ok
+      ? 'Сумма двух меньших сторон ('+srt[0]+' + '+srt[1]+' = '+(srt[0]+srt[1])+') больше наибольшей ('+srt[2]+'). Неравенство треугольника выполнено — треугольник <b>сложится</b>.'
+      : 'Сумма двух меньших сторон ('+srt[0]+' + '+srt[1]+' = '+(srt[0]+srt[1])+') не больше наибольшей ('+srt[2]+'). Неравенство треугольника нарушено — треугольник <b>не сложится</b>.'};
+}
+function genThirdBounds(){
+  let a=rnd(4,12), b=rnd(4,12); if(a===b)b++;
+  const lo=Math.abs(a-b), hi=a+b;
+  return {kind:'choose', topic:'Границы третьей стороны', review:RV.bnd,
+    prompt:'В каких границах третья сторона?',
+    given:'<b>Две стороны:</b> '+a+' и '+b+'.',
+    fig:{type:'twoSticks',a:a,b:b},
+    opts:[{t:'Больше '+lo+' и меньше '+hi,ok:true},
+          {t:'Меньше '+hi+' (нижней границы нет)',ok:false},
+          {t:'Больше '+Math.min(a,b)+' и меньше '+Math.max(a,b),ok:false}],
+    sol:'Третья сторона больше разности и меньше суммы двух данных: больше '+lo+' (это |'+a+' − '+b+'|) и меньше '+hi+' (это '+a+' + '+b+'). Значит <b>больше '+lo+' и меньше '+hi+'</b>.'};
+}
+function genThirdMaxInt(){
+  let a=rnd(6,12), b=rnd(3,a-1);
+  const hi=a+b, ans=hi-1;
+  return {kind:'num', topic:'Границы третьей стороны', review:RV.bnd, unit:'',
+    prompt:'Наибольшее ЦЕЛОЕ значение третьей стороны?',
+    given:'<b>Две стороны:</b> '+a+' и '+b+'. Третья сторона — целое число.',
+    fig:{type:'twoSticks',a:a,b:b}, answer:ans,
+    sol:'<ol><li>Третья сторона меньше суммы двух данных: меньше '+a+' + '+b+' = '+hi+'.</li><li>И больше их разности: больше '+a+' − '+b+' = '+(a-b)+'.</li><li>Наибольшее целое, строго меньшее '+hi+', — это <b>'+ans+'</b>.</li></ol>'};
+}
+const ITEMS=[genLargestAngle, genSmallestSide, genIsoCriterion, genHypLongest, genForms, genThirdBounds, genThirdMaxInt, genForms];
+const NQ=ITEMS.length;
+
+let probIdx=0, cur=null, results=[], weak=[], stepResolved=false, finished=false;
+
+/* ───────── СЦЕНА ───────── */
+function drawBanner(txt,col){
+  ctx.font='800 15px system-ui'; const tw=ctx.measureText(txt).width;
+  const w=tw+28,h=32,x=(W-w)/2,y=12;
+  roundRect(x,y,w,h,9);ctx.fillStyle='#f3f4f6';ctx.fill();
+  roundRect(x,y,w,h,9);ctx.lineWidth=1.4;ctx.strokeStyle=col||'#cbd5e1';ctx.stroke();
+  lab(W/2,y+h/2,txt,col||'#1a1a2e',15);
+}
+function drawTriFig(f){
+  const M={A:f.A,B:f.B,C:f.C}, A=f.A,B=f.B,C=f.C;
+  seg(A,B,'#1a1a2e',2.8); seg(B,C,'#1a1a2e',2.8); seg(C,A,'#1a1a2e',2.8);
+  if(f.right){ const V=M[f.right], pq=nb(f.right,A,B,C); rightMark(V,pq[0],pq[1],'#0d9488'); }
+  (f.iso||[]).forEach(v=>{ const V=M[v], pq=nb(v,A,B,C); drawDoubleArc(V,pq[0],pq[1],'#d97706'); });
+  if(f.angLabels){ ['A','B','C'].forEach(k=>{ if(f.angLabels[k]==null)return; const V=M[k], pq=nb(k,A,B,C); drawArc(V,pq[0],pq[1],COL[k]); const bb=bisOf(V,pq[0],pq[1]); lab(V.x+Math.cos(bb)*42,V.y+Math.sin(bb)*42,f.angLabels[k],'#1f2937',15); }); }
+  if(f.sideLabels){ const s=f.sideLabels;
+    if(s.AB!=null)sideLab(A,B,C,String(s.AB));
+    if(s.BC!=null)sideLab(B,C,A,String(s.BC));
+    if(s.CA!=null)sideLab(C,A,B,String(s.CA)); }
+  [['A',A],['B',B],['C',C]].forEach(p=>{ const nm=p[0],V=p[1]; dot(V.x,V.y,4.2,'#1a1a2e'); const pq=nb(nm,A,B,C); const bb=bisOf(V,pq[0],pq[1]); lab(V.x-Math.cos(bb)*20,V.y-Math.sin(bb)*20,nm,COL[nm],16); });
+}
+function drawSticks(lens){
+  const cols=[COL.A,COL.B,COL.C], maxL=Math.max(...lens)||1, sc=380/maxL, x0=92;
+  lens.forEach((L,i)=>{ const y=160+i*70; seg({x:x0,y},{x:x0+L*sc,y},cols[i],8); dot(x0,y,5,cols[i]); dot(x0+L*sc,y,5,cols[i]); lab(x0+L*sc/2,y-18,'отрезок '+L,cols[i],13); });
+}
+function drawTwoSticks(a,b){
+  const maxL=Math.max(a,b)||1, sc=360/maxL, x0=120;
+  [[a,COL.A,175],[b,COL.B,250]].forEach(p=>{ const L=p[0],c=p[1],y=p[2]; seg({x:x0,y},{x:x0+L*sc,y},c,8); dot(x0,y,5,c); dot(x0+L*sc,y,5,c); lab(x0+L*sc/2,y-18,'сторона '+L,c,13); });
+  lab(W/2,330,'третья сторона — ?', '#7c3aed', 15);
+}
+function draw(){
+  bg();
+  if(finished||!cur){ drawBanner('Зачёт §2', '#7c3aed'); return; }
+  drawBanner('Зачёт §2 · вопрос '+(probIdx+1)+' из '+NQ, '#7c3aed');
+  const f=cur.fig; if(!f) return;
+  if(f.type==='tri') drawTriFig(f);
+  else if(f.type==='sticks') drawSticks(f.lens);
+  else if(f.type==='twoSticks') drawTwoSticks(f.a,f.b);
+}
+
+/* ───────── ПАНЕЛИ / ВВОД ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function advanceReady(){ stepResolved=true; const nb=document.getElementById('nextBtn'); nb.style.display='inline-block'; nb.textContent = probIdx<NQ-1?'Дальше →':'Итоги →'; }
+function renderNumInput(){
+  const box=document.getElementById('opts');box.innerHTML='';
+  const row=document.createElement('div');row.className='inputrow';
+  const inp=document.createElement('input');inp.type='number';inp.id='numIn';inp.placeholder='число';inp.inputMode='numeric';
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')checkNum();});
+  const btn=document.createElement('button');btn.className='act check';btn.textContent='Ответить';btn.addEventListener('click',()=>checkNum());
+  row.appendChild(inp);row.appendChild(btn);box.appendChild(row);
+}
+function renderChoose(){
+  const box=document.getElementById('opts');box.innerHTML='';
+  const arr=shuffle(cur.opts.slice());
+  arr.forEach(o=>{const b=document.createElement('button');b.type='button';b.className='opt';b.textContent=o.t;b.addEventListener('click',()=>chooseCommit(o,b,arr));box.appendChild(b);});
+}
+function record(correct){ results.push(correct?'g':'r'); if(!correct) weak.push({topic:cur.topic, review:cur.review}); }
+function showSol(){ const sb=document.getElementById('solbox'); sb.innerHTML='<b>Решение.</b> '+cur.sol; sb.style.display='block'; }
+function checkNum(val){
+  if(stepResolved||!cur)return;
+  const inp=document.getElementById('numIn');
+  let v=(typeof val==='number')?val:(inp&&inp.value!==''?parseInt(inp.value,10):NaN);
+  if(isNaN(v)){ setMsg('Введи число.','info'); return; }
+  const correct=(v===cur.answer);
+  record(correct); log('answer',{n:probIdx+1,topic:cur.topic,value:v,correct});
+  setMsg(correct?'Верно!':('Неверно. Правильный ответ: '+cur.answer+'.'), correct?'ok':'err');
+  showSol(); if(inp)inp.disabled=true; advanceReady();
+}
+function chooseCommit(opt,btn,arr){
+  if(stepResolved||!cur)return;
+  const correct=!!opt.ok;
+  record(correct); log('answer',{n:probIdx+1,topic:cur.topic,pick:opt.t,correct});
+  [...document.getElementById('opts').children].forEach(b=>b.disabled=true);
+  btn.classList.add(correct?'ok-pick':'bad-pick');
+  if(!correct){ const idx=arr.findIndex(o=>o.ok); const bs=document.getElementById('opts').children; if(bs[idx])bs[idx].classList.add('correct-reveal'); }
+  setMsg(correct?'Верно!':'Неверно. Верный ответ подсвечен.', correct?'ok':'err');
+  showSol(); advanceReady();
+}
+
+/* ───────── НАВИГАЦИЯ ───────── */
+function newItem(){
+  cur=ITEMS[probIdx](); stepResolved=false;
+  document.getElementById('pf').style.width=(probIdx/NQ*100)+'%';
+  document.getElementById('pnum').textContent='Вопрос '+(probIdx+1)+' из '+NQ;
+  document.getElementById('taskText').innerHTML=cur.prompt;
+  document.getElementById('givenBox').innerHTML=cur.given;
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('solbox').style.display='none';
+  if(cur.kind==='num') renderNumInput(); else renderChoose();
+  setMsg(cur.kind==='num'?'Введи ответ и нажми «Ответить».':'Выбери ответ.','info');
+  log('item',{n:probIdx+1,topic:cur.topic,kind:cur.kind});
+}
+function nextTask(){ if(probIdx<NQ-1){ probIdx++; newItem(); } else finish(); }
+function finish(){
+  finished=true;
+  const g=results.filter(r=>r==='g').length;
+  const seen={}, weakList=[];
+  weak.forEach(w=>{ if(!seen[w.topic]){ seen[w.topic]=1; weakList.push(w); } });
+  log('finish',{score:g,total:NQ,weak:weakList.map(w=>w.topic)});
+  const st=lS();st.runs=(st.runs||0)+1;st.passed=true;if(g>(st.best||0))st.best=g;sS(st);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent=g+'/'+NQ;
+  document.getElementById('finLbl').textContent =
+    g===NQ?'Чисто! Весь §2 освоен.':
+    g>=6?'Зачёт пройден. Загляни в разбор тем ниже.':
+    g>=4?'Зачёт со скрипом — повтори отмеченные темы и пройди снова.':
+    'Стоит вернуться к §2: повтори темы из списка и попробуй зачёт ещё раз.';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+  const rev=document.getElementById('review');
+  if(weakList.length){
+    rev.style.display='block';
+    rev.innerHTML='<b>Что повторить:</b><ul>'+weakList.map(w=>'<li><b>'+w.topic+'</b> — вернись к: '+w.review+'</li>').join('')+'</ul>';
+  } else { rev.style.display='none'; rev.innerHTML=''; }
+}
+function restart(){ probIdx=0;results=[];weak=[];finished=false;document.getElementById('fin').style.display='none';document.getElementById('mainArea').style.display='grid';document.getElementById('bar').style.display='flex';newItem(); }
+
+/* ───────── ЦИКЛ ───────── */
+newItem();
+(function loop(){ draw(); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

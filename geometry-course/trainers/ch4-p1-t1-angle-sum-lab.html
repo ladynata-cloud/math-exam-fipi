@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Сумма углов треугольника</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.45}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.gauge{display:flex;flex-direction:column;gap:6px;font-size:14px}
+.gauge .row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed #e5e7eb}
+.gauge .row:last-child{border-bottom:0}
+.gauge .v{font-weight:900;font-variant-numeric:tabular-nums}
+.v-ok{color:#16a34a}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:750 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt.ok-pick{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.bad-pick{background:#fee2e2;border-color:#dc2626;color:#991b1b}
+.opt.correct-reveal{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.proof{display:none;background:#ecfdf5;color:#14532d;border:1.5px solid #bbf7d0;border-radius:12px;padding:12px;font-size:13px;line-height:1.5}
+.proof b{color:#166534}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.small{font-size:12px;color:#64748b;line-height:1.45}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.tool.fold{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.tool.fold:hover{background:#2b2b4a}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:15px;height:15px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:640px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law .nb{margin-top:10px;font-size:13px;color:#475569}
+.law .star{margin-top:10px;background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:10px 12px;font-size:13px;color:#92400e}
+.bridge{margin-top:10px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">△ Сумма углов треугольника</div>
+      <div class="sub">Глава IV · §1 · тренажёр 1 из 6 — сумма углов</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Попробуй сломать 180°</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="440"></canvas></div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card" id="gaugeCard">
+        <h2 id="gaugeTtl">Углы</h2>
+        <div class="gauge" id="gauge"></div>
+      </div>
+      <div id="opts" class="opts"></div>
+      <div id="msg" class="msg info"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div id="proof" class="proof"></div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Сумма углов треугольника равна 180°.</b>
+      <div class="nb">Не «примерно» и не «обычно», а всегда и точно — для любого треугольника на плоскости. Какой бы он ни был — острый, тупой, узкий, — три угла дают ровно развёрнутый угол.</div>
+      <div class="star">✦ <b>за страницами 7 класса:</b> а у четырёхугольника? Разбей его диагональю на два треугольника — выйдет 360°.</div>
+      <div class="bridge">Мы это <b>увидели</b>: оторвали три угла и сложили в прямую. Но почему так выходит <b>всегда</b>, а не только здесь? Тот же фокус строго делает прямая, проведённая через вершину параллельно основанию. Соберём доказательство → <a href="ch4-p1-t2-proof-angle-sum.html">Почему ровно 180° →</a></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool fold" id="foldBtn" style="display:none" onclick="startTear()">✂ Сложить три угла</button>
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="advance()">Следующая →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС / ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch4-p1-t1-angle-sum-lab';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),phase:ph,kind:NM[ph],e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640,H=440,PI=Math.PI;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+const PULSE=()=>1+0.13*Math.sin(Date.now()/240);
+
+/* ───────── ГЕОМЕТРИЯ ───────── */
+const COL={A:'#d97706',B:'#db2777',C:'#0d9488'};
+const A={x:120,y:360}, B={x:520,y:360};            // неподвижное основание
+const C0={x:265,y:135};                            // разносторонний остроугольный старт
+let C={x:C0.x,y:C0.y};                             // живая вершина
+const Cobt={x:335,y:248};                          // тупоугольный фон для карточки про тупые углы (∠C≈121°)
+const Mc={x:(A.x+B.x)/2,y:(A.y+B.y)/2}, Rc=Math.hypot(B.x-A.x,B.y-A.y)/2; // окружность Фалеса для ∠C=90
+let aDeg=0,bDeg=0,cDeg=0;
+function sub(p,q){return{x:p.x-q.x,y:p.y-q.y}}
+function nrm(v){const m=Math.hypot(v.x,v.y)||1;return{x:v.x/m,y:v.y/m}}
+function angAt(V,P,Q){const a=Math.atan2(P.y-V.y,P.x-V.x),b=Math.atan2(Q.y-V.y,Q.x-V.x);let d=Math.abs(a-b);if(d>PI)d=2*PI-d;return d;}
+function recompute(){
+  aDeg=angAt(A,B,C)*180/PI;
+  bDeg=angAt(B,A,C)*180/PI;
+  cDeg=angAt(C,A,B)*180/PI;
+}
+recompute();
+
+/* ───────── ФАЗЫ ───────── */
+const NM=['explore','catch90','obtuse','degenerate','tearoff'];
+const TOTAL=NM.length;
+let ph=0, results=[], mistakes=0, hints=0, phaseSolved=false, mode=null;
+let shapesTried=0, lastCounted={x:C0.x,y:C0.y}, breakRevealed=false, catchDone=false;
+let tearing=false, tearP=0, tearDone=false;
+let horText='', horCol='#1a1a2e';
+
+/* ───────── ОТРИСОВКА: примитивы ───────── */
+function hexA(h,a){const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+function bg(){
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill()}
+}
+function lab(x,y,txt,col,size){
+  ctx.font='900 '+(size||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);ctx.textBaseline='alphabetic';
+}
+function dot(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function seg(p,q,col,w){ctx.strokeStyle=col;ctx.lineWidth=w||2.8;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
+// дуга угла по РЕАЛЬНЫМ границам сектора (от стороны до стороны)
+function drawAngle(V,P,Q,col,active,dim,r0){
+  const a1=Math.atan2(P.y-V.y,P.x-V.x), a2=Math.atan2(Q.y-V.y,Q.x-V.x);
+  let d=a2-a1; while(d<=-PI)d+=2*PI; while(d>PI)d-=2*PI;     // знаковый внутренний раствор (|d|<π)
+  const acw=d<0;
+  const r=active? r0*PULSE() : r0;
+  ctx.save(); if(dim)ctx.globalAlpha=0.32;
+  ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.arc(V.x,V.y,r,a1,a1+d,acw);ctx.closePath();
+  ctx.fillStyle=hexA(col,0.16);ctx.fill();
+  ctx.beginPath();ctx.arc(V.x,V.y,r,a1,a1+d,acw);
+  ctx.lineWidth=active?3.8:2.6;ctx.strokeStyle=col;ctx.lineCap='round';ctx.stroke();
+  ctx.restore();
+}
+function rightMark(){               // прямой угол — маленький КВАДРАТ в вершине C
+  const u=nrm(sub(A,C)),v=nrm(sub(B,C)),s=16;
+  const p1={x:C.x+u.x*s,y:C.y+u.y*s},p3={x:C.x+v.x*s,y:C.y+v.y*s},p2={x:p1.x+v.x*s,y:p1.y+v.y*s};
+  ctx.beginPath();ctx.moveTo(C.x,C.y);ctx.lineTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.closePath();
+  ctx.fillStyle=hexA(COL.C,0.18);ctx.fill();
+  ctx.strokeStyle=COL.C;ctx.lineWidth=2.8;ctx.lineJoin='round';
+  ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.stroke();
+}
+function draggableNow(){return (NM[ph]==='explore'||NM[ph]==='catch90'||NM[ph]==='degenerate');}
+
+/* ───────── ОТРИСОВКА: сцена ───────── */
+function triangleState(){
+  const kind=NM[ph];
+  let s={A:{},B:{},C:{}};
+  if(kind==='explore'){ /* обзор — всё в полную силу */ }
+  else if(kind==='catch90'){
+    if(catchDone){ s.A.active=true; s.B.active=true; }
+    else { s.C.active=true; s.A.dim=true; s.B.dim=true; }
+  }
+  else if(kind==='obtuse'){ s.C.active=true; s.A.dim=true; s.B.dim=true; }
+  else if(kind==='degenerate'){
+    const big = aDeg>=bDeg ? 'A':'B';
+    s.A.dim=true;s.B.dim=true;s.C.dim=true; s[big].dim=false; s[big].active=true;
+  }
+  return s;
+}
+function drawTriangle(st){
+  const cRight=(NM[ph]==='catch90'&&catchDone);
+  seg(A,B,'#1a1a2e',2.8); seg(A,C,'#1a1a2e',2.8); seg(B,C,'#1a1a2e',2.8);
+  drawAngle(A,B,C,COL.A,!!st.A.active,!!st.A.dim,26);
+  drawAngle(B,A,C,COL.B,!!st.B.active,!!st.B.dim,26);
+  if(!cRight) drawAngle(C,A,B,COL.C,!!st.C.active,!!st.C.dim,24);   // на прямом угле — квадрат вместо дуги
+  dot(A.x,A.y,4.2,'#1a1a2e'); dot(B.x,B.y,4.2,'#1a1a2e');
+  lab(A.x-16,A.y+20,'A',COL.A,16);
+  lab(B.x+16,B.y+20,'B',COL.B,16);
+  lab(C.x,Math.max(16,C.y-22),'C',COL.C,16);
+  // подсказка-цель «прямой угол» в catch90 (видимая цель — не угадывать вслепую)
+  if(NM[ph]==='catch90' && !catchDone){
+    const near=clamp(1-Math.abs(cDeg-90)/30,0,1);
+    const u=nrm(sub(A,C)),v=nrm(sub(B,C)),s=16;
+    const p1={x:C.x+u.x*s,y:C.y+u.y*s},p3={x:C.x+v.x*s,y:C.y+v.y*s},p2={x:p1.x+v.x*s,y:p1.y+v.y*s};
+    ctx.save();ctx.globalAlpha=0.25+0.6*near;
+    ctx.strokeStyle = near>0.8?'#16a34a':'#94a3b8';ctx.lineWidth=2.2;ctx.setLineDash([4,3]);ctx.lineJoin='round';
+    ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.stroke();
+    ctx.setLineDash([]);ctx.restore();
+  }
+  // подсказка-цель в degenerate: продолжение основания за A и за B + метки «C», куда вести вершину
+  if(NM[ph]==='degenerate' && !phaseSolved){
+    const yb=A.y, big=Math.max(aDeg,bDeg,cDeg), col=big>=160?'#16a34a':'#0d9488';
+    const pls=1+0.18*Math.sin(Date.now()/300);
+    const tgts=[{x:30,y:yb-16},{x:W-30,y:yb-16}];
+    ctx.save();
+    ctx.setLineDash([7,5]);ctx.lineWidth=2.2;ctx.globalAlpha=0.7;ctx.strokeStyle=col;
+    ctx.beginPath();ctx.moveTo(A.x,yb);ctx.lineTo(tgts[0].x,yb);ctx.stroke();   // продолжение влево за A
+    ctx.beginPath();ctx.moveTo(B.x,yb);ctx.lineTo(tgts[1].x,yb);ctx.stroke();   // продолжение вправо за B
+    ctx.setLineDash([]);
+    for(const g of tgts){                                   // метки-цели у обоих концов
+      ctx.globalAlpha=0.95;ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.setLineDash([4,3]);
+      ctx.beginPath();ctx.arc(g.x,g.y,12*pls,0,7);ctx.stroke();ctx.setLineDash([]);
+      ctx.globalAlpha=0.9;lab(g.x,g.y,'C',COL.C,12);
+    }
+    ctx.restore();
+  }
+  // живая ручка на C
+  if(draggableNow()){
+    if(cRight){ dot(C.x,C.y,4.8,'#16a34a'); }                       // решено — зелёная точка; метка угла = квадрат
+    else{
+      dot(C.x,C.y,4.2,COL.C);
+      const solved=phaseSolved, col=solved?'#16a34a':'#7c3aed', pls=solved?1:PULSE();
+      ctx.beginPath();ctx.arc(C.x,C.y,11*pls,0,7);ctx.fillStyle='rgba(255,255,255,.55)';ctx.fill();
+      ctx.strokeStyle=col;ctx.lineWidth=2.8;ctx.stroke();dot(C.x,C.y,2.6,col);
+      if(!solved) lab(C.x,Math.max(16,C.y-22)-16,'тяни','#7c3aed',12);
+    }
+  } else { dot(C.x,C.y,4.2,COL.C); }
+  if(cRight) rightMark();                                           // квадрат — верхним слоем
+}
+// кульминация: три угла ОТРЫВАЮТСЯ от своих вершин и складываются в развёрнутый
+const Pa={x:320,y:300}, Rt=90, Rsrc=26;
+function lerp(a,b,t){return a+(b-a)*t;}
+function lerpAng(a,b,t){let d=b-a;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;return a+d*t;}
+function bisFor(V,P,Q){const a1=Math.atan2(P.y-V.y,P.x-V.x),a2=Math.atan2(Q.y-V.y,Q.x-V.x);let d=a2-a1;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;return a1+d/2;}
+function drawWedge(apex,bis,half,r,col){
+  ctx.beginPath();ctx.moveTo(apex.x,apex.y);ctx.arc(apex.x,apex.y,r,bis-half,bis+half);ctx.closePath();
+  ctx.fillStyle=hexA(col,0.20);ctx.fill();
+  ctx.beginPath();ctx.arc(apex.x,apex.y,r,bis-half,bis+half);ctx.strokeStyle=col;ctx.lineWidth=3.2;ctx.lineCap='round';ctx.stroke();
+}
+function drawTriangleSidesFaint(){            // бледный треугольник-источник с подписанными вершинами
+  ctx.save();ctx.globalAlpha=0.16;
+  seg(A,B,'#1a1a2e',2.4);seg(A,C,'#1a1a2e',2.4);seg(B,C,'#1a1a2e',2.4);ctx.restore();
+  ctx.save();ctx.globalAlpha=0.55;
+  dot(A.x,A.y,4,'#1a1a2e');dot(B.x,B.y,4,'#1a1a2e');dot(C.x,C.y,4,COL.C);ctx.restore();
+  lab(A.x-16,A.y+20,'A',COL.A,15);lab(B.x+16,B.y+20,'B',COL.B,15);lab(C.x,Math.max(16,C.y-22),'C',COL.C,15);
+}
+function drawTear(p){
+  const angA=aDeg*PI/180, angB=bDeg*PI/180, angC=cDeg*PI/180;   // сумма = π
+  const src=[
+    {V:A,bis:bisFor(A,B,C),half:angA/2,col:COL.A,deg:Math.round(aDeg),lt:'A',tgt:PI+angA/2,            win:[0.00,0.30]},
+    {V:B,bis:bisFor(B,A,C),half:angB/2,col:COL.B,deg:Math.round(bDeg),lt:'B',tgt:PI+angA+angB/2,        win:[0.33,0.63]},
+    {V:C,bis:bisFor(C,A,B),half:angC/2,col:COL.C,deg:Math.round(cDeg),lt:'C',tgt:PI+angA+angB+angC/2,   win:[0.66,0.96]}
+  ];
+  // следы: видно, от какой вершины какой угол едет
+  ctx.save();ctx.setLineDash([3,4]);ctx.globalAlpha=0.35*clamp(p/0.1,0,1);
+  for(const s of src){ctx.strokeStyle=s.col;ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(s.V.x,s.V.y);ctx.lineTo(Pa.x,Pa.y);ctx.stroke();}
+  ctx.setLineDash([]);ctx.restore();
+  // прямая, на которую ложатся углы
+  ctx.save();ctx.globalAlpha=clamp(p/0.12,0,1);
+  seg({x:Pa.x-Rt-14,y:Pa.y},{x:Pa.x+Rt+14,y:Pa.y},'#1a1a2e',2.6);ctx.restore();
+  // каждый угол: на своей вершине → в полёте → лёг на прямую (цвет и подпись сохраняются)
+  for(const s of src){
+    let apex,bis,r;
+    if(p<=s.win[0]){apex=s.V;bis=s.bis;r=Rsrc;}
+    else if(p>=s.win[1]){apex=Pa;bis=s.tgt;r=Rt;}
+    else{const t=(p-s.win[0])/(s.win[1]-s.win[0]);apex={x:lerp(s.V.x,Pa.x,t),y:lerp(s.V.y,Pa.y,t)};bis=lerpAng(s.bis,s.tgt,t);r=lerp(Rsrc,Rt,t);}
+    drawWedge(apex,bis,s.half,r,s.col);
+    lab(apex.x+Math.cos(bis)*(r*0.62),apex.y+Math.sin(bis)*(r*0.62),'∠'+s.lt+' '+s.deg+'°',s.col,13);
+  }
+  dot(Pa.x,Pa.y,4,'#1a1a2e');
+  if(p>0.97) lab(Pa.x,Pa.y+30,'∠A + ∠B + ∠C = 180°','#1a1a2e',15);
+}
+function drawHor(){ if(horText) lab(W/2,H-16,horText,horCol,14); }
+function draw(){
+  bg();
+  if(NM[ph]==='tearoff' && (tearing||tearDone)){
+    drawTriangleSidesFaint();
+    drawTear(tearP);
+  } else {
+    drawTriangle(triangleState());
+  }
+  drawHor();
+}
+
+/* ───────── ГЕЙДЖ ───────── */
+function gaugeVisible(){return (NM[ph]==='explore'||NM[ph]==='catch90'||NM[ph]==='degenerate');}
+function gaugeUpdate(){
+  if(!gaugeVisible())return;
+  const row=(x,col,deg)=>'<div class="row"><span style="color:'+col+';font-weight:800">∠'+x+'</span><span class="v">'+Math.round(deg)+'°</span></div>';
+  document.getElementById('gauge').innerHTML =
+    row('A',COL.A,aDeg)+row('B',COL.B,bDeg)+row('C',COL.C,cDeg)+
+    '<div class="row"><span><b>Сумма</b></span><span class="v v-ok">180° ✓</span></div>';
+}
+
+/* ───────── ОБЩИЕ (как в эталоне) ───────── */
+function renderOpts(list){
+  const box=document.getElementById('opts');box.innerHTML='';
+  list.forEach(o=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML=o.t;b.addEventListener('click',()=>o.fn(b));box.appendChild(b);});
+}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+function markPick(btn,ok){if(btn)btn.classList.add(ok?'ok-pick':'bad-pick')}
+function revealCorrect(label){[...document.getElementById('opts').children].forEach(b=>{if(b.textContent.trim()===label)b.classList.add('correct-reveal')})}
+function lockOpts(){[...document.getElementById('opts').children].forEach(b=>b.disabled=true)}
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function pushResult(){results.push(mistakes===0&&hints===0?'g':(mistakes<=1&&hints<=1?'y':'r'))}
+function succeedPhase(proofTxt){
+  if(phaseSolved)return; phaseSolved=true; pushResult();
+  log('solved',{mistakes,hints});
+  const sb=document.getElementById('successBar');sb.textContent='✓ Готово!';sb.style.display='block';
+  document.getElementById('hintbox').style.display='none';
+  if(proofTxt){const pr=document.getElementById('proof');pr.innerHTML='<b>Вывод.</b> '+proofTxt;pr.style.display='block';}
+  const nb=document.getElementById('nextBtn');nb.textContent='Следующая →';nb.style.display='inline-block';
+}
+function showHint(){
+  if(phaseSolved&&NM[ph]!=='tearoff')return; hints++; log('hint');
+  const hb=document.getElementById('hintbox');let h='';
+  const k=NM[ph];
+  if(k==='explore')h='Тяни вершину C в разные стороны и следи за нижней строкой гейджа — она не сдвинется с 180°.';
+  else if(k==='catch90')h='Веди C вниз или вбок, пока ∠C в панели не покажет 90°. Рядом с вершиной появится значок прямого угла — он подскажет, когда поймал.';
+  else if(k==='obtuse')h='Вспомни: все три угла дают 180°. Два тупых — это уже больше 180°, на третий ничего не останется.';
+  else if(k==='degenerate')h='Тащи C к одной из меток C у краёв — на пунктирное продолжение основания за A или за B. У ближнего к ней угла мера полезет к 180°.';
+  else h='Просто нажми «Сложить три угла» — углы оторвутся и сложатся в одну прямую.';
+  hb.innerHTML='💡 '+h;hb.style.display='block';
+}
+
+/* ───────── ПЕРЕТАСКИВАНИЕ C ───────── */
+function pos(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+cv.addEventListener('pointerdown',e=>{
+  if(!draggableNow()||phaseSolved)return;
+  const p=pos(e);
+  const scrK=Math.max(1,W/cv.getBoundingClientRect().width);
+  const grabR=(e.pointerType==='touch'?30:20)*scrK;
+  if(Math.hypot(p.x-C.x,p.y-C.y)<grabR){mode='dragC';try{cv.setPointerCapture(e.pointerId)}catch(_){}}
+});
+cv.addEventListener('pointermove',e=>{if(mode==='dragC')applyDrag(pos(e))});
+['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,e=>{mode=null;try{cv.releasePointerCapture(e.pointerId)}catch(_){}}));
+function applyDrag(p){
+  if(phaseSolved||!draggableNow())return;                 // стоп интерактива в НАЧАЛЕ
+  C.x=clamp(p.x,18,622); C.y=clamp(p.y,26,345);
+  recompute(); gaugeUpdate(); checkPhase();
+}
+
+/* ───────── ПРОВЕРКА ФАЗ ───────── */
+function checkPhase(){
+  if(phaseSolved)return;
+  const k=NM[ph];
+  if(k==='explore'){
+    if(Math.hypot(C.x-lastCounted.x,C.y-lastCounted.y)>40){
+      shapesTried++; lastCounted={x:C.x,y:C.y}; log('step',{what:'drag',shapesTried});
+      if(!breakRevealed){
+        setMsg('Форм испытано: '+shapesTried+'. Углы скачут поодиночке — а сумма?','info');
+        if(shapesTried>=4) revealBreak();
+      }
+    }
+  } else if(k==='catch90'){
+    if(Math.abs(cDeg-90)<5){
+      const dir=nrm(sub(C,Mc));                            // защёлк РОВНО на 90° (точка на окружности Фалеса)
+      C.x=Mc.x+dir.x*Rc; C.y=Mc.y+dir.y*Rc; if(C.y>Mc.y){C.y=Mc.y-(C.y-Mc.y);}  // держим верхнюю полуокружность
+      C.y=clamp(C.y,26,345); recompute(); catchDone=true; gaugeUpdate();
+      log('snap',{target:'right',cDeg:Math.round(cDeg)});
+      horText='∠C = 90° → ∠A + ∠B = 90°'; horCol='#16a34a';
+      setMsg('Поймал! ∠C = 90°.','ok');
+      succeedPhase('∠C = 90°, а значит ∠A + ∠B = 90°. В прямоугольном треугольнике два острых угла всегда дают ровно 90° — этим мы будем пользоваться в §3, у прямоугольных треугольников.');
+    }
+  } else if(k==='degenerate'){
+    const arr=[aDeg,bDeg,cDeg].sort((x,y)=>x-y);   // [мин, средн, макс]
+    const big=arr[2];
+    if(big>=165){
+      const lo=Math.round(arr[0]), mid=Math.round(arr[1]);
+      log('snap',{target:'degenerate',big:Math.round(big)});
+      horText='один угол '+Math.round(big)+'° — а сумма всё равно 180°'; horCol='#16a34a';
+      setMsg('Видишь? Один угол стал огромным — '+Math.round(big)+'°, два других крошечные ('+lo+'° и '+mid+'°). А сумма?','ok');
+      succeedPhase('Один угол вырос до '+Math.round(big)+'° — почти развёрнутый, а два других сжались до '+lo+'° и '+mid+'°. И всё-таки сумма ровно 180°. Чем ближе C к основанию, тем ближе треугольник к развёрнутому углу — вот подсказка к доказательству.');
+    } else {
+      horText='тяни C к самому краю — один угол растёт ('+Math.round(big)+'°), сумма 180°'; horCol='#1a1a2e';
+    }
+  }
+}
+function revealBreak(){
+  breakRevealed=true;
+  document.getElementById('taskText').innerHTML='А теперь вопрос: можешь подвинуть <b>C</b> так, чтобы сумма стала <b>не</b> 180°? Выбери ответ:';
+  renderOpts(shuffle([
+    {t:'Нет — у любого треугольника всегда 180°',fn:b=>answerBreak(false,b)},
+    {t:'Да, при каком-то положении',fn:b=>answerBreak(true,b)}
+  ]));
+  setMsg('Ты уже испытал много разных форм — реши, что из этого следует.','info');
+}
+function answerBreak(canBreak,btn){
+  if(phaseSolved)return;
+  if(!canBreak){
+    markPick(btn,true);lockOpts();
+    horText='∠A + ∠B + ∠C = 180°'; horCol='#16a34a';
+    setMsg('Верно — сумму не сдвинуть.','ok');
+    succeedPhase('Именно. Это свойство <b>любого</b> треугольника: три угла всегда складываются в 180°. Один чертёж — это пример; почему так выходит всегда, мы докажем дальше.');
+  } else {
+    mistakes++; log('distractor',{q:'break',pick:'yes'});
+    markPick(btn,false);
+    revealCorrect('Нет — у любого треугольника всегда 180°');
+    setMsg('Попробуй! Тяни C ещё — сумма не двинется с 180°. Потом нажми верный ответ.','err');
+  }
+}
+
+/* ───────── ФАЗА obtuse (карточка) ───────── */
+function setupObtuse(){
+  document.getElementById('taskText').innerHTML='Прямой угол ты поймал. А <b>тупых</b> углов (больше 90°) — сколько может быть в треугольнике?';
+  renderOpts(shuffle([
+    {t:'Не больше одного',fn:b=>answerObtuse('ok',b)},
+    {t:'Ровно один — в любом треугольнике',fn:b=>answerObtuse('always',b)},
+    {t:'Может быть два',fn:b=>answerObtuse('two',b)}
+  ]));
+  setMsg('Выбери ответ. Помни: все три угла дают 180°.','info');
+}
+function answerObtuse(kind,btn){   // kind: 'ok' | 'always' | 'two'
+  if(phaseSolved)return;
+  if(kind==='ok'){
+    markPick(btn,true);lockOpts();
+    setMsg('Верно.','ok');
+    succeedPhase('Не больше одного. Тупой угол либо один (тогда треугольник тупоугольный), либо его нет вовсе — в остроугольном все три угла острые. А двух тупых не бывает: вместе они дали бы больше 180°, и на третий ничего не осталось бы. Так в §1 дальше и различают виды треугольников.');
+  } else {
+    mistakes++; log('distractor',{q:'obtuse',pick:kind});
+    markPick(btn,false);
+    revealCorrect('Не больше одного');
+    if(kind==='always') setMsg('Не совсем. В остроугольном треугольнике тупых углов нет вовсе — все три острые. Тупой угол может быть, а может и не быть, но больше одного — никогда. Нажми верный ответ.','err');
+    else setMsg('Нет: два угла больше 90° дали бы вместе больше 180°, на третий ничего не останется. Нажми верный ответ.','err');
+  }
+}
+
+/* ───────── КУЛЬМИНАЦИЯ ───────── */
+function startTear(){
+  if(NM[ph]!=='tearoff'||tearing||tearDone)return;
+  tearing=true; tearP=0;
+  document.getElementById('foldBtn').style.display='none';
+  horText='отрываем углы и складываем вместе…'; horCol='#1a1a2e';
+  log('built',{what:'tearoff_start'});
+}
+function onTearDone(){
+  tearing=false; tearDone=true;
+  horText='∠A + ∠B + ∠C — развёрнутый угол: 180°'; horCol='#16a34a';
+  log('built',{what:'tearoff'});
+  results.push('g');
+  const sb=document.getElementById('successBar');sb.textContent='✓ Готово!';sb.style.display='block';
+  const pr=document.getElementById('proof');pr.innerHTML='<b>Вывод.</b> Три угла легли встык в одну прямую — это развёрнутый угол, 180°. Вот что значит «сумма углов треугольника равна 180°».';pr.style.display='block';
+  const nb=document.getElementById('nextBtn');nb.textContent='Завершить →';nb.style.display='inline-block';
+}
+function stepAnim(){ if(tearing){ tearP=Math.min(1,tearP+0.02); if(tearP>=1){tearP=1;onTearDone();} } }
+
+/* ───────── ЖИЗНЕННЫЙ ЦИКЛ ───────── */
+function initPhase(i){
+  ph=i; phaseSolved=false; mode=null; mistakes=0; hints=0;
+  catchDone=false; breakRevealed=false; shapesTried=0; lastCounted={x:C0.x,y:C0.y};
+  tearing=false; tearP=0; tearDone=false;
+  // фон: разносторонний остроугольный — во всех фазах; тупоугольный — на карточке про тупые углы
+  C = (NM[i]==='obtuse') ? {x:Cobt.x,y:Cobt.y} : {x:C0.x,y:C0.y};
+  recompute();
+  document.getElementById('pf').style.width=(i/TOTAL*100)+'%';
+  document.getElementById('pnum').textContent='Шаг '+(i+1)+' из '+TOTAL;
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('proof').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('foldBtn').style.display=(NM[i]==='tearoff')?'inline-block':'none';
+  document.getElementById('gaugeCard').style.display=gaugeVisible()?'block':'none';
+  clearOpts();
+  const bd=document.getElementById('badge'), tt=document.getElementById('taskText');
+  const k=NM[i];
+  if(k==='explore'){
+    bd.textContent='Попробуй сломать 180°';
+    tt.innerHTML='Перетаскивай вершину <b>C</b> куда хочешь. Следи за нижней строкой гейджа — суммой трёх углов.';
+    horText='∠A + ∠B + ∠C = 180°'; horCol='#1a1a2e';
+    setMsg('Двигай C — углы меняются. А сумма?','info'); gaugeUpdate();
+  } else if(k==='catch90'){
+    bd.textContent='Поймай прямой угол';
+    tt.innerHTML='Веди <b>C</b> так, чтобы угол при вершине <b>C</b> стал ровно <b>90°</b>. Смотри на ∠C в панели.';
+    horText='веди C — нужен ∠C = 90°'; horCol='#1a1a2e';
+    setMsg('Тяни C вниз или вбок. Рядом с C появится значок прямого угла.','info'); gaugeUpdate();
+  } else if(k==='obtuse'){
+    bd.textContent='Сколько тупых?';
+    horText='сколько тупых углов?'; horCol='#1a1a2e';
+    setupObtuse();
+  } else if(k==='degenerate'){
+    bd.textContent='На самой грани';
+    tt.innerHTML='Веди <b>C</b> к метке <b>C</b> — слева за A или справа за B, на продолжение основания (пунктир). Что станет с углами и с суммой?';
+    horText='веди C к метке C у края — следи за суммой'; horCol='#1a1a2e';
+    setMsg('Тащи C к метке C на конце пунктира — слева или справа.','info'); gaugeUpdate();
+  } else if(k==='tearoff'){
+    bd.textContent='Сложи три угла';
+    tt.innerHTML='Последний шаг. Нажми «<b>Сложить три угла</b>» — оторвём углы треугольника и сложим их вместе.';
+    horText='оторвём углы и сложим вместе'; horCol='#1a1a2e';
+    setMsg('Нажми «Сложить три угла» внизу.','info');
+  }
+  log('task_start',{});
+}
+function advance(){ if(ph<TOTAL-1) initPhase(ph+1); else finish(); }
+function resetTask(){ log('reset'); initPhase(ph); }
+
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{score:g});
+  const s=lS();s.runs=(s.runs||0)+1;if(g>(s.best||0))s.best=g;s.passed=true;sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent=g+' / '+TOTAL;
+  document.getElementById('finLbl').textContent = g===TOTAL?'Чисто! Сумма углов теперь у тебя в руках.':(g>=3?'Хорошо — главное ты увидел сам.':'Стоит пройти лабораторию ещё раз.');
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){ ph=0;results=[];C={x:C0.x,y:C0.y};recompute();document.getElementById('fin').style.display='none';document.getElementById('mainArea').style.display='grid';document.getElementById('bar').style.display='flex';initPhase(0); }
+
+/* ───────── СТАРТ ───────── */
+initPhase(0);
+(function loop(){stepAnim();draw();requestAnimationFrame(loop)})();
+</script>
+</body>
+</html>

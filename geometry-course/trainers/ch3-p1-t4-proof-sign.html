@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Почему признак работает</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:manipulation}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.45}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.given{font-size:13px;line-height:1.5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:10px}
+.given b{color:#3730a3}
+.steps{font-size:12.5px;line-height:1.5;color:#334155}
+.steps .st{padding:6px 8px;border-left:3px solid #cbd5e1;margin:5px 0;background:#fff;border-radius:0 8px 8px 0}
+.steps .st.done{border-left-color:#16a34a;background:#f0fdf4}
+.steps .st b{color:#166534}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:750 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt:disabled{cursor:default}
+.opt.ok-pick{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.bad-pick{background:#fee2e2;border-color:#dc2626;color:#991b1b}
+.opt.correct-reveal{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.pool{display:flex;flex-direction:column;gap:7px;margin-top:4px}
+.pcard{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:10px 12px;font:650 13.5px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.pcard:hover{background:#f3f4f6}
+.pcard.hl{border-color:#7c3aed;box-shadow:0 0 0 2px #ede9fe}
+.pcard.shake{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.chain{display:flex;flex-direction:column;gap:5px;margin-top:4px}
+.chitem{background:#f0fdf4;border-left:3px solid #16a34a;border-radius:0 8px 8px 0;padding:7px 10px;font-size:12.5px;line-height:1.4;color:#14532d}
+.chitem .n{font-weight:900;color:#16a34a;margin-right:4px}
+.chempty{font-size:12.5px;color:#94a3b8;font-style:italic;padding:6px}
+.phtitle{font-size:12px;font-weight:800;color:#6d28d9;text-transform:uppercase;letter-spacing:.05em;margin:2px 0 4px}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:24px 22px;text-align:center}
+.fin .big{font-size:40px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:14px;height:14px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:640px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:13.5px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law ol{margin:8px 0;padding-left:20px}.law li{margin:3px 0}
+.bridge{margin-top:10px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">⊢ Почему признак работает</div>
+      <div class="sub">Глава III · §1 · тренажёр 4 из 6 — доказательство признака</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Соберём доказательство</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="460"></canvas></div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card">
+        <div class="given">
+          <b>Дано:</b> прямые a и b, секущая; накрест лежащие <b>∠1 = ∠2</b>.<br>
+          <b>Доказать:</b> a ∥ b.
+        </div>
+      </div>
+      <div id="opts" class="opts"></div>
+      <div id="msg" class="msg info"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div class="card">
+        <h2>Ход доказательства</h2>
+        <div class="steps" id="steps"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Признак доказан.</b> Если накрест лежащие углы равны, то прямые параллельны. Доказательство собрано из того, что уже знаем:
+      <ol>
+        <li>O — середина AB; провели OH ⊥ a и отложили BN = AH;</li>
+        <li>△OHA = △ONB — <b>по первому признаку</b> равенства треугольников (AO = BO, ∠1 = ∠2, AH = BN);</li>
+        <li>значит ∠ONB = ∠OHA = 90°, то есть b ⊥ HN;</li>
+        <li>а ещё a ⊥ HN — обе прямые перпендикулярны HN;</li>
+        <li>две прямые, перпендикулярные третьей, <b>не пересекаются</b> (доказано в главе I) ⟹ a ∥ b. ∎</li>
+      </ol>
+      Это рассуждение годится для <b>любых</b> прямых — не только для нашего чертежа. Соответственные и односторонние признаки выводятся отсюда через вертикальные и смежные углы.
+      <div class="bridge">Дальше — как чертёжник проводит параллель на практике: <a href="ch3-p1-t6-practical.html">Угольник и линейка →</a></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="nextTask()">Следующий шаг →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС/ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch3-p1-t4-proof-sign';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),step:si+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640,HT=460;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=HT*dpr;cv.style.aspectRatio=W+'/'+HT;ctx.scale(dpr,dpr);
+
+/* ───────── ГЕОМЕТРИЯ (рассчитана) ───────── */
+const lineAng=0.13, secAng=1.15;
+const aP={x:70,y:130}, bP={x:70,y:330}, secP={x:230,y:40};
+function inter(p1,a1,p2,a2){
+  const d1={x:Math.cos(a1),y:Math.sin(a1)}, d2={x:Math.cos(a2),y:Math.sin(a2)};
+  const den=d1.x*d2.y-d1.y*d2.x; const t=((p2.x-p1.x)*d2.y-(p2.y-p1.y)*d2.x)/den;
+  return {x:p1.x+d1.x*t, y:p1.y+d1.y*t};
+}
+const A=inter(aP,lineAng,secP,secAng);
+const B=inter(bP,lineAng,secP,secAng);
+const O={x:(A.x+B.x)/2,y:(A.y+B.y)/2};
+const ad={x:Math.cos(lineAng),y:Math.sin(lineAng)};
+const AO_=((O.x-aP.x)*ad.x+(O.y-aP.y)*ad.y);
+const Hp={x:aP.x+ad.x*AO_, y:aP.y+ad.y*AO_};
+const H1={x:2*O.x-Hp.x, y:2*O.y-Hp.y};
+
+/* ───────── ШАГИ ДОКАЗАТЕЛЬСТВА ───────── */
+// reveal — что показано на чертеже к этому шагу (накопительно)
+const STEPS=[
+ {kind:'given', reveal:['lines','sec','A','B','ang12'],
+  task:'Вот чертёж к признаку. Прямые a и b пересечены секущей в точках A и B; накрест лежащие углы ∠1 и ∠2 <b>равны</b> — это наше «дано». Надо доказать, что a ∥ b. Нажмите «Следующий шаг».',
+  stepNote:'Дано: ∠1 = ∠2 (накрест лежащие).'},
+
+ {kind:'build', interact:'mid', reveal:['lines','sec','A','B','ang12'],
+  task:'<b>Шаг 1 построения.</b> Отметьте <b>середину O</b> отрезка AB: тяните точку вдоль секущей, пока AO и OB не станут равны. Магнит поможет поймать середину.',
+  stepNote:'O — середина AB: AO = BO.'},
+
+ {kind:'build', interact:'perp', reveal:['lines','sec','A','B','ang12','O','segAO'],
+  task:'<b>Шаг 2 построения.</b> Проведите из O <b>перпендикуляр</b> к прямой a: тяните конец линии к прямой a, пока угол не станет прямым. Основание перпендикуляра — точка H.',
+  stepNote:'OH ⊥ a (∠OHA = 90°).'},
+
+ {kind:'build', interact:'lay', reveal:['lines','sec','A','B','ang12','O','segAO','H','OH','segAH','rightH'],
+  task:'<b>Шаг 3 построения.</b> Отложим на прямой b отрезок <b>BN = AH</b> циркулем. Сначала <b>снимите раствор</b> = AH (проведите от A к H), затем <b>отложите</b> этот раствор от точки B вдоль прямой b — туда, куда достанет циркуль, встанет N.',
+  stepNote:'Отложили BN = AH циркулем.'},
+
+ {kind:'build', interact:'join', reveal:['lines','sec','A','B','ang12','O','segAO','H','OH','segAH','rightH','H1','segBH1'],
+  task:'<b>Шаг 4 построения.</b> Соедините отрезком точки <b>N и O</b>: проведите линию от N к O. Так получится сторона ON треугольника ONB.',
+  stepNote:'Провели отрезок ON.'},
+
+ {kind:'assemble', phase:'A', reveal:['lines','sec','A','B','ang12','O','segAO','H','OH','segAH','rightH','H1','OH1','segBH1','tri'],
+  task:'<b>Часть 1. Докажем, что △OHA = △ONB.</b> Соберите доказательство: нажимайте верные утверждения по порядку. Среди карточек есть ловушки — нажмёте, объясню, почему так нельзя.',
+  phaseTitle:'Равенство треугольников',
+  stepNote:'△OHA = △ONB — по первому признаку.',
+  cards:[
+    {id:'ao', txt:'AO = BO, потому что O — середина отрезка AB.', need:[], ok:'Первая сторона: AO = BO.'},
+    {id:'ang', txt:'∠1 = ∠2 — это дано (накрест лежащие углы равны).', need:[], ok:'Угол между сторонами: ∠1 = ∠2.'},
+    {id:'ah', txt:'AH = BN, потому что мы отложили BN циркулем равным AH.', need:[], ok:'Вторая сторона: AH = BN.'},
+    {id:'eq', txt:'Значит △OHA = △ONB — по первому признаку (две стороны и угол между ними).', need:['ao','ang','ah'], ok:'Треугольники равны: две стороны и угол между ними.'},
+    {id:'trap2', txt:'△OHA = △ONB по двум сторонам AO=BO и AH=BN.', trap:'Двух сторон мало — это не признак равенства. Нужен ещё угол между ними; он у нас есть (∠1=∠2), его нельзя пропускать.'},
+    {id:'trapM', txt:'Измерим стороны треугольников линейкой — если равны, треугольники равны.', trap:'Измерение — не доказательство: оно проверит один чертёж, а теорема должна работать для любого. Опираемся на признак, а не на линейку.'}
+  ]},
+
+ {kind:'assemble', phase:'B1', reveal:['lines','sec','A','B','ang12','O','segAO','H','OH','segAH','rightH','H1','OH1','segBH1'],
+  task:'<b>Часть 2, шаг 1. Докажем, что HN — прямая.</b> Почему лучи OH и ON — продолжение друг друга, а не ломаная с углом в точке O? Разберём углы при O по одному. Каждый угол отмечается на чертеже.',
+  phaseTitle:'HN — прямая',
+  stepNote:'H, O, N на одной прямой (∠HON = 180°).',
+  cards:[
+    {id:'smezh', txt:'<b>1.</b> ∠AOH и ∠HOB — <b>смежные</b> (луч OH делит развёрнутый угол AOB, ведь O лежит на секущей AB). Значит ∠AOH + ∠HOB = 180°.', need:[], ok:'∠AOH + ∠HOB = 180° (смежные углы при O).'},
+    {id:'ravn', txt:'<b>2.</b> ∠AOH = ∠BON — это соответствующие углы равных треугольников △OHA и △ONB.', need:['smezh'], ok:'∠AOH = ∠BON (равные углы, одинаковая дуга).'},
+    {id:'subst', txt:'<b>3.</b> Заменим в равенстве ∠AOH на равный ему ∠BON. Тогда ∠BON + ∠HOB = 180°.', need:['ravn'], ok:'∠BON + ∠HOB = 180° (подставили равный угол).'},
+    {id:'ishon', txt:'<b>4.</b> Но ∠BON и ∠HOB вместе составляют угол ∠HON (лучи OB лежит между OH и ON). Значит ∠HON = ∠BON + ∠HOB = 180°.', need:['subst'], ok:'∠HON = 180° — это сумма ∠BON и ∠HOB.'},
+    {id:'razv', txt:'<b>5.</b> Угол ∠HON = 180° — развёрнутый, значит лучи OH и ON противоположны. Поэтому H, O, N лежат на одной прямой — это прямая HN.', need:['ishon'], ok:'∠HON развёрнутый ⟹ H, O, N на одной прямой HN.'},
+    {id:'trapColl', txt:'H, O, N на одной прямой — это видно по чертежу.', trap:'По чертежу «видно» — не доказательство: лучи OH и ON могли бы давать угол в O. Нужен расчёт: ∠HON = 180° через смежные углы и их равенство.'}
+  ]},
+
+ {kind:'assemble', phase:'B2', reveal:['lines','sec','A','B','ang12','O','segAO','H','OH','segAH','rightH','H1','OH1','segBH1','rightH1','HH1line'],
+  task:'<b>Часть 2, шаг 2. Теперь — параллельность.</b> HN уже доказана прямой. Соберите вывод: обе прямые перпендикулярны HN, значит параллельны.',
+  phaseTitle:'a ∥ b',
+  stepNote:'a ∥ b — две прямые, перпендикулярные третьей.',
+  cards:[
+    {id:'h90', txt:'∠OHA = 90° — мы строили OH ⊥ a.', need:[], ok:'∠OHA — прямой по построению.'},
+    {id:'n90', txt:'Из равенства треугольников ∠ONB = ∠OHA = 90°, то есть b ⊥ HN.', need:['h90'], ok:'b ⊥ HN.'},
+    {id:'par', txt:'И a ⊥ HN (OH ⊥ a, а HN содержит OH). Две прямые, перпендикулярные HN, не пересекаются (глава I) — значит a ∥ b. Что и требовалось.', need:['n90'], ok:'a ∥ b — признак доказан.'},
+    {id:'trapCirc', txt:'∠1 = ∠2, значит a ∥ b — это же признак.', trap:'Это круг: «a ∥ b при равных накрест лежащих» — как раз то, что доказываем. Тезисом нельзя доказывать тезис.'}
+  ]},
+
+ {kind:'done', reveal:['lines','sec','A','B','ang12','O','H','H1','HH1line','rightH','rightH1','parallel'],
+  task:'Готово. Из ∠1 = ∠2 мы строго вывели a ∥ b — и рассуждение годится для любого чертежа. Это и есть доказательство признака.',
+  stepNote:'∎ Признак доказан.'}
+];
+const NS=STEPS.length;
+let si=0, results=[], mistakes=0, hintsUsed=0, stepResolved=false;
+let built={mid:false,perp:false,lay:false,join:false};   // что ученик уже построил
+let drag=null;          // {kind, x, y} текущая перетаскиваемая точка
+let dragActive=false;
+let layPhase='measure'; // фаза шага откладывания: 'measure' (снять раствор AH) → 'place' (отложить от B)
+let measProg=0;         // прогресс снятия раствора 0..1 (доля AH)
+let placeStarted=false; // начат ли отдельный жест откладывания (после снятия раствора)
+const S=()=>STEPS[si];
+
+/* ───────── ОТРИСОВКА ───────── */
+function bg(){
+  ctx.clearRect(0,0,W,HT);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,HT);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<HT;y+=25){ctx.beginPath();ctx.arc(x,y,1.05,0,7);ctx.fill()}
+}
+function line2(p,ang,col,wid,dash){
+  const big=2000,dx=Math.cos(ang),dy=Math.sin(ang);
+  ctx.strokeStyle=col;ctx.lineWidth=wid||2.6;if(dash)ctx.setLineDash(dash);
+  ctx.beginPath();ctx.moveTo(p.x-dx*big,p.y-dy*big);ctx.lineTo(p.x+dx*big,p.y+dy*big);ctx.stroke();ctx.setLineDash([]);
+}
+function seg(p,q,col,wid,dash){ctx.strokeStyle=col;ctx.lineWidth=wid||2.4;if(dash)ctx.setLineDash(dash);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.setLineDash([])}
+function lab(x,y,t,col,s){ctx.font='900 '+(s||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(t,x,y);ctx.fillStyle=col;ctx.fillText(t,x,y);ctx.textBaseline='alphabetic'}
+function dot(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function tick(p,q,n){ // засечки на отрезке (n штук) в середине
+  const mx=(p.x+q.x)/2,my=(p.y+q.y)/2,ang=Math.atan2(q.y-p.y,q.x-p.x),perp=ang+Math.PI/2,gap=5;
+  for(let i=0;i<n;i++){const off=(i-(n-1)/2)*gap;const cx=mx+Math.cos(ang)*off,cy=my+Math.sin(ang)*off;
+    ctx.strokeStyle='#b45309';ctx.lineWidth=2;ctx.beginPath();
+    ctx.moveTo(cx+Math.cos(perp)*5,cy+Math.sin(perp)*5);ctx.lineTo(cx-Math.cos(perp)*5,cy-Math.sin(perp)*5);ctx.stroke()}
+}
+function rightMark(C,d1,d2,col){ // прямой угол: квадратик
+  const r=11;const u1={x:Math.cos(d1),y:Math.sin(d1)},u2={x:Math.cos(d2),y:Math.sin(d2)};
+  const p1={x:C.x+u1.x*r,y:C.y+u1.y*r},p2={x:C.x+u2.x*r,y:C.y+u2.y*r},pc={x:C.x+(u1.x+u2.x)*r,y:C.y+(u1.y+u2.y)*r};
+  ctx.strokeStyle=col||'#dc2626';ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(pc.x,pc.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();
+}
+function angArc(C,d1,d2,col,r){ // дужка угла между направлениями d1..d2
+  let a1=d1,a2=d2,df=a2-a1;while(df>Math.PI)df-=2*Math.PI;while(df<-Math.PI)df+=2*Math.PI;
+  ctx.strokeStyle=col;ctx.lineWidth=2.6;ctx.beginPath();ctx.arc(C.x,C.y,r||20,Math.min(a1,a1+df),Math.max(a1,a1+df));ctx.stroke();
+}
+
+function has(key){return S().reveal.includes(key)}
+const AH=()=>Math.hypot(Hp.x-A.x,Hp.y-A.y);
+// рисуем текущую перетаскиваемую заготовку и магнитную цель
+function drawInteract(){
+  const it=S().interact;
+  if(it==='mid'){
+    // призрак точки на секущей; подсказка о равенстве AO/OB
+    const p=drag||{x:(A.x*0.7+B.x*0.3),y:(A.y*0.7+B.y*0.3)};
+    const ao=Math.hypot(p.x-A.x,p.y-A.y), ob=Math.hypot(p.x-B.x,p.y-B.y);
+    seg(A,p,'#1a1a2e',2); seg(B,p,'#1a1a2e',2);
+    const near=Math.abs(ao-ob)<6;
+    dot(p.x,p.y, near?6:5, near?'#16a34a':'#7c3aed','#fffdf7');
+    if(!dragActive)pulseRing(p.x,p.y,'#7c3aed');
+    lab(p.x, p.y+20, near?'середина!':'тяни', near?'#16a34a':'#7c3aed',12);
+  }else if(it==='perp'){
+    // тянем конец линии из O к прямой a; цель — перпендикуляр (основание Hp)
+    const p=drag||{x:O.x+40,y:O.y-40};
+    // проекция p на прямую a — куда «хочет» основание
+    seg(O,p,'#7c3aed',2.2);
+    // угол между Op и прямой a
+    const ang=Math.atan2(p.y-O.y,p.x-O.x);
+    const perpAng=Math.atan2(Hp.y-O.y,Hp.x-O.x);
+    let d=Math.abs(ang-perpAng); while(d>Math.PI)d=Math.abs(d-2*Math.PI);
+    const near=d<0.09;
+    dot(p.x,p.y, near?6:5, near?'#16a34a':'#7c3aed','#fffdf7');
+    if(!dragActive)pulseRing(p.x,p.y,'#7c3aed');
+    lab(p.x+(p.x<O.x?-16:16), p.y, near?'прямой угол!':'тяни к a', near?'#16a34a':'#7c3aed',12);
+  }else if(it==='lay'){
+    const R=AH();
+    // дуга у A в направлении H — «снятый раствор» (видна и при снятии, и при откладывании)
+    function arcAtA(strong){
+      const dirAH=Math.atan2(Hp.y-A.y,Hp.x-A.x);
+      ctx.strokeStyle='#b45309';ctx.lineWidth=strong?2.4:1.8;ctx.setLineDash([5,4]);
+      ctx.beginPath();ctx.arc(A.x,A.y,R,dirAH-0.5,dirAH+0.5);ctx.stroke();ctx.setLineDash([]);
+    }
+    if(layPhase==='measure'){
+      const f=measProg;
+      const ex=A.x+(Hp.x-A.x)*f, ey=A.y+(Hp.y-A.y)*f;
+      ctx.strokeStyle='#b45309';ctx.lineWidth=2.2;ctx.setLineDash([4,3]);
+      ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(ex,ey);ctx.stroke();ctx.setLineDash([]);
+      dot(A.x,A.y,3.5,'#7c3aed');                 // ножка циркуля в A
+      const near=f>0.9;
+      if(near)arcAtA(true);                        // дошли — рисуем дугу снятого раствора у A
+      dot(ex,ey, 6, near?'#16a34a':'#7c3aed','#fffdf7');
+      if(!dragActive)pulseRing(ex,ey,'#7c3aed');
+      lab(ex+(ex>A.x?16:-16), ey-6, near?'дошли до H':'тяни к H','#7c3aed',12);
+      lab(W/2, HT-38, near?'раствор AH снят':'снимаем раствор циркулём: тяни точку от A к H','#b45309',13);
+    }else{
+      arcAtA(false);                               // дуга снятого раствора у A остаётся видна
+      const p=drag||{x:B.x-ad.x*30,y:B.y-ad.y*30};
+      const dirToN=Math.atan2(-ad.y,-ad.x);
+      ctx.strokeStyle='#b45309';ctx.lineWidth=2;ctx.setLineDash([5,4]);
+      ctx.beginPath();ctx.arc(B.x,B.y,R,dirToN-0.8,dirToN+0.5);ctx.stroke();ctx.setLineDash([]);
+      dot(B.x,B.y,3.5,'#7c3aed');                 // ножка циркуля в B
+      const t=((p.x-bP.x)*ad.x+(p.y-bP.y)*ad.y);
+      const onB={x:bP.x+ad.x*t,y:bP.y+ad.y*t};
+      const bn=Math.hypot(onB.x-B.x,onB.y-B.y);
+      const near=Math.abs(bn-R)<8;
+      dot(onB.x,onB.y, 6, near?'#16a34a':'#7c3aed','#fffdf7');
+      if(!dragActive)pulseRing(onB.x,onB.y,'#7c3aed');
+      lab(W/2, HT-38, near?'BN = AH — циркуль достал ровно сюда ✓':'ножка в B: отложи раствор вдоль прямой b','#b45309',13);
+    }
+  }else if(it==='join'){
+    // тянем линию от N к O
+    const p=drag||{x:H1.x+20,y:H1.y-20};
+    seg(H1,p,'#7c3aed',2.2);
+    dot(H1.x,H1.y,4,'#7c3aed','#fffdf7');                 // точка N (откуда тянем)
+    const near=Math.hypot(p.x-O.x,p.y-O.y)<14;
+    dot(p.x,p.y, 6, near?'#16a34a':'#7c3aed','#fffdf7');
+    if(!dragActive)pulseRing(H1.x,H1.y,'#7c3aed');
+    lab(W/2, HT-38, near?'дотянули до O ✓':'проведи отрезок от N к точке O','#7c3aed',13);
+  }
+}
+function pulseRing(x,y,col){const pr=1+0.2*Math.sin(Date.now()/260);ctx.beginPath();ctx.arc(x,y,9*pr,0,7);ctx.strokeStyle=col;ctx.lineWidth=2;ctx.stroke();}
+function draw(){
+  bg();
+  const par=has('parallel');
+  const lineCol=par?'#16a34a':'#1a1a2e';
+  if(has('lines')){
+    line2(aP,lineAng,lineCol,2.8); line2(bP,lineAng,lineCol,2.8);
+    lab(W-24, aP.y+Math.tan(lineAng)*(W-24-aP.x)-12,'a',lineCol,16);
+    lab(W-24, bP.y+Math.tan(lineAng)*(W-24-bP.x)-12,'b',lineCol,16);
+  }
+  if(has('sec')){
+    line2(secP,secAng,'#2d70b3',2.6);
+    // подпись у нижнего конца секущей, ближе к краю, сбоку от линии
+    const t=(HT-60-secP.y)/Math.sin(secAng);
+    const ex=secP.x+Math.cos(secAng)*t, ey=secP.y+Math.sin(secAng)*t;
+    lab(ex-40, ey, 'секущая', '#2d70b3', 13);
+  }
+  // прямая HN: показываем готовой (has) ИЛИ когда коллинеарность доказана (карточка coll в фазе B1)
+  const collShown = has('HH1line') || (S().phase==='B1' && asmDone.includes('razv'));
+  if(collShown){
+    const d=Math.atan2(H1.y-Hp.y,H1.x-Hp.x);
+    line2(Hp,d,'#7c3aed',2.4,[6,5]);
+  }else{
+    if(has('OH'))seg(O,Hp,'#7c3aed',2.4);              // перпендикуляр OH (отдельный)
+    if(has('OH1'))seg(O,H1,'#7c3aed',2.4);             // отрезок ON (отдельный, пока не доказано)
+  }
+  // отрезки AO, BO (на секущей) с засечками
+  if(has('segAO')){
+    seg(A,O,'#1a1a2e',2.2); seg(B,O,'#1a1a2e',2.2);
+    tick(A,O,1); tick(B,O,1);        // AO=BO — одна засечка
+  }
+  // отрезок AH (на прямой a) с засечками
+  if(has('segAH')){ seg(A,Hp,'#1a1a2e',2.2); tick(A,Hp,2); }   // две засечки
+  // отрезок BH1 (на прямой b) с засечками — после анимации циркуля
+  if(has('segBH1')){ seg(B,H1,'#1a1a2e',2.2); tick(B,H1,2); }
+  // треугольники (контур подсветкой)
+  if(has('tri')){
+    ctx.fillStyle='rgba(124,58,237,.10)';
+    ctx.beginPath();ctx.moveTo(O.x,O.y);ctx.lineTo(Hp.x,Hp.y);ctx.lineTo(A.x,A.y);ctx.closePath();ctx.fill();
+    ctx.beginPath();ctx.moveTo(O.x,O.y);ctx.lineTo(H1.x,H1.y);ctx.lineTo(B.x,B.y);ctx.closePath();ctx.fill();
+  }
+  // острые накрест лежащие: ∠1 у A (справа-снизу: секущая-вниз..a-вправо), ∠2 у B (слева-сверху: секущая-вверх..b-влево)
+  if(has('ang12')){
+    const sDn=secAng, sUp=secAng+Math.PI;
+    angArc(A, sDn, lineAng, '#6d28d9', 17);            // ∠1: между секущей-вниз и a-вправо (острый)
+    angArc(B, sUp, lineAng+Math.PI, '#6d28d9', 17);    // ∠2: между секущей-вверх и b-влево (острый)
+    const m1=(sDn+lineAng)/2, m2=(sUp+lineAng+Math.PI)/2;
+    lab(A.x+Math.cos(m1)*30, A.y+Math.sin(m1)*30,'1','#6d28d9',14);
+    lab(B.x+Math.cos(m2)*30, B.y+Math.sin(m2)*30,'2','#6d28d9',14);
+  }
+  // прямой угол при H (появляется с перпендикуляром OH)
+  if(has('rightH')){
+    const dHO=Math.atan2(O.y-Hp.y,O.x-Hp.x), dHa=lineAng;
+    rightMark(Hp,dHO,dHa,'#dc2626'); rightMark(Hp,dHO,dHa+Math.PI,'#dc2626');
+  }
+  // прямой угол при H1 (появляется на шаге «перпендикуляр перетёк»)
+  if(has('rightH1')){
+    const dH1O=Math.atan2(O.y-H1.y,O.x-H1.x), dH1b=lineAng;
+    rightMark(H1,dH1O,dH1b,'#dc2626'); rightMark(H1,dH1O,dH1b+Math.PI,'#dc2626');
+  }
+  // углы при O в фазе B1 — показываем по ТЕКУЩЕМУ фокусу (последний шаг), не накапливая
+  if(S().phase==='B1'){
+    const dOA=Math.atan2(A.y-O.y,A.x-O.x), dOH=Math.atan2(Hp.y-O.y,Hp.x-O.x);
+    const dOB=Math.atan2(B.y-O.y,B.x-O.x), dON=Math.atan2(H1.y-O.y,H1.x-O.x);
+    const lblAt=(ang,r,t,c)=>{lab(O.x+Math.cos(ang)*r,O.y+Math.sin(ang)*r,t,c,11)};
+    const cur=asmDone[asmDone.length-1];   // последний поставленный шаг — на нём фокус
+    const tick2=(d1,d2,col)=>{const m=(d1+d2)/2;ctx.strokeStyle=col;ctx.lineWidth=2;
+      ctx.beginPath();ctx.moveTo(O.x+Math.cos(m)*17,O.y+Math.sin(m)*17);ctx.lineTo(O.x+Math.cos(m)*23,O.y+Math.sin(m)*23);ctx.stroke();};
+    if(cur==='smezh'){
+      // смежные ∠AOH и ∠HOB вместе = развёрнутый AOB
+      angArc(O, dOA, dOH, '#7c3aed', 20); lblAt((dOA+dOH)/2,34,'∠AOH','#7c3aed');
+      angArc(O, dOH, dOB, '#2563eb', 26); lblAt((dOH+dOB)/2,44,'∠HOB','#2563eb');
+    }else if(cur==='ravn'){
+      // равные ∠AOH = ∠BON (одинаковые оранжевые дуги)
+      angArc(O, dOA, dOH, '#d97706', 20); tick2(dOA,dOH,'#d97706'); lblAt((dOA+dOH)/2,34,'∠AOH','#d97706');
+      angArc(O, dOB, dON, '#d97706', 20); tick2(dOB,dON,'#d97706'); lblAt((dOB+dON)/2,34,'∠BON','#d97706');
+    }else if(cur==='subst'){
+      // слагаемые подстановки: ∠BON (оранж) + ∠HOB (син)
+      angArc(O, dOB, dON, '#d97706', 20); lblAt((dOB+dON)/2,34,'∠BON','#d97706');
+      angArc(O, dOH, dOB, '#2563eb', 26); lblAt((dOH+dOB)/2,44,'∠HOB','#2563eb');
+    }else if(cur==='ishon' || cur==='razv'){
+      // только большая дуга ∠HON через B — мелкие углы убраны, чтобы не заслоняли
+      ctx.strokeStyle='#dc2626';ctx.lineWidth=3;
+      ctx.beginPath();ctx.arc(O.x,O.y,30,dOH,dON);ctx.stroke();
+      // подпись уводим ВЛЕВО от O (в свободное место, не на дугу и не на прямую HN)
+      lab(O.x-58, O.y, '∠HON = 180°', '#dc2626', 12);
+    }
+  }
+  // точки и подписи (подписи уведены от прямых в свободное место)
+  if(has('A')){dot(A.x,A.y,4,'#1a1a2e','#fffdf7');lab(A.x-26,A.y-24,'A','#1a1a2e',15)}
+  if(has('B')){dot(B.x,B.y,4,'#1a1a2e','#fffdf7');lab(B.x+22,B.y+18,'B','#1a1a2e',15)}
+  if(has('O')){dot(O.x,O.y,4.2,'#dc2626','#fffdf7');lab(O.x+15,O.y,'O','#dc2626',14)}
+  if(has('H')){dot(Hp.x,Hp.y,4,'#7c3aed','#fffdf7');lab(Hp.x+12,Hp.y-12,'H','#7c3aed',14)}
+  if(has('H1')){dot(H1.x,H1.y,4,'#7c3aed','#fffdf7');lab(H1.x-14,H1.y+12,'N','#7c3aed',14)}
+  // результат интерактивного построения (показываем сразу после защёлкивания)
+  if(S().interact && stepResolved){
+    if(built.mid){ seg(A,O,'#1a1a2e',2.2);seg(B,O,'#1a1a2e',2.2);tick(A,O,1);tick(B,O,1);
+      dot(O.x,O.y,4.2,'#dc2626','#fffdf7');lab(O.x+15,O.y,'O','#dc2626',14); }
+    if(built.perp){ seg(O,Hp,'#7c3aed',2.4);seg(A,Hp,'#1a1a2e',2.2);tick(A,Hp,2);
+      const dHO=Math.atan2(O.y-Hp.y,O.x-Hp.x);rightMark(Hp,dHO,lineAng,'#dc2626');rightMark(Hp,dHO,lineAng+Math.PI,'#dc2626');
+      dot(Hp.x,Hp.y,4,'#7c3aed','#fffdf7');lab(Hp.x+12,Hp.y-12,'H','#7c3aed',14); }
+    if(built.lay){ seg(B,H1,'#1a1a2e',2.2);tick(B,H1,2);
+      dot(H1.x,H1.y,4,'#7c3aed','#fffdf7');lab(H1.x-14,H1.y+12,'N','#7c3aed',14); }
+    if(built.join){ seg(O,H1,'#7c3aed',2.4);
+      dot(H1.x,H1.y,4,'#7c3aed','#fffdf7');lab(H1.x-14,H1.y+12,'N','#7c3aed',14); }
+  }
+  // интерактивное построение текущего шага (ученик тянет)
+  if(S().interact && !stepResolved)drawInteract();
+  // финальная плашка
+  if(par)lab(W/2, HT-22,'✦ a ∥ b — доказано','#16a34a',14);
+}
+
+/* ───────── ШАГИ ───────── */
+function renderOpts(list){
+  const box=document.getElementById('opts');box.innerHTML='';
+  list.forEach(o=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML=o.t;
+    b.addEventListener('click',()=>o.fn(b));box.appendChild(b)});
+}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+function markPick(btn,ok){if(btn)btn.classList.add(ok?'ok-pick':'bad-pick')}
+function revealCorrect(label){[...document.getElementById('opts').children].forEach(b=>{if(b.textContent.trim()===label)b.classList.add('correct-reveal')})}
+function lockOpts(){[...document.getElementById('opts').children].forEach(b=>b.disabled=true)}
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+
+/* ───────── СБОРКА ДОКАЗАТЕЛЬСТВА (assemble) ───────── */
+let asmDone=[], asmDead=[];
+function asmCards(){return S().cards||[]}
+function renderPool(){
+  const box=document.getElementById('opts');box.innerHTML='';
+  const cards=asmCards();
+  // показываем доступные карточки: не выставленные, не «мёртвые» ловушки уже нажатые
+  cards.forEach(c=>{
+    if(asmDone.includes(c.id))return;            // уже в цепочке
+    const b=document.createElement('button');
+    b.type='button';b.className='pcard';b.innerHTML=c.txt;
+    b.addEventListener('click',()=>pickCard(c.id,b));
+    box.appendChild(b);
+  });
+}
+function renderChain(){
+  const box=document.getElementById('steps');box.innerHTML='';
+  // ранее завершённые фазы — их stepNote
+  for(let i=0;i<si;i++){ if(!STEPS[i].stepNote)continue;
+    const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">·</span>'+STEPS[i].stepNote;box.appendChild(d); }
+  // текущая собираемая цепочка
+  if(!asmDone.length){const e=document.createElement('div');e.className='chempty';e.textContent='Цепочка пуста — выберите первое утверждение.';box.appendChild(e);return}
+  asmDone.forEach((id,i)=>{
+    const c=asmCards().find(x=>x.id===id);
+    const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">'+(i+1)+'.</span>'+c.txt;box.appendChild(d);
+  });
+}
+function pickCard(id,btn){
+  if(stepResolved)return;
+  const c=asmCards().find(x=>x.id===id);
+  if(c.trap){
+    mistakes++;asmDead.push(id);log('distractor',{id});
+    btn.classList.add('shake');setMsg(c.trap,'err');
+    setTimeout(()=>{btn.classList.remove('shake')},450);
+    return;
+  }
+  if(c.need && !c.need.every(n=>asmDone.includes(n))){
+    mistakes++;log('early',{id});
+    btn.classList.add('shake');setMsg('Рано: это утверждение опирается на то, что ещё не доказано. Сначала обоснуйте предыдущие шаги.','info');
+    setTimeout(()=>btn.classList.remove('shake'),450);
+    return;
+  }
+  asmDone.push(id);log('step',{id});
+  setMsg('Верно. '+(c.ok||''),'ok');
+  // финальная карточка фазы (заключение) — это та, у которой есть need и она последняя по логике
+  const concl = asmCards().filter(x=>!x.trap).every(x=>asmDone.includes(x.id));
+  renderPool();renderChain();
+  if(concl){
+    results.push(mistakes===0?'g':(mistakes<=1?'y':'r'));
+    mistakes=0;
+    setMsg('Часть доказательства собрана.','ok');
+    advanceReady();
+  }
+}
+
+function renderSteps(){
+  const box=document.getElementById('steps');box.innerHTML='';
+  for(let i=0;i<=si;i++){
+    if(!STEPS[i].stepNote)continue;
+    const d=document.createElement('div');
+    d.className='st'+((i<si||stepResolved)?' done':'');
+    d.innerHTML=STEPS[i].stepNote;
+    box.appendChild(d);
+  }
+}
+
+function advanceReady(){
+  // шаг пройден — показать кнопку «следующий»
+  stepResolved=true;
+  if(S().kind!=='assemble')renderSteps();
+  const nb=document.getElementById('nextBtn');
+  nb.style.display='inline-block';
+  nb.textContent = si<NS-1 ? 'Следующий шаг →' : 'Итоги →';
+}
+
+function answerChoice(opt,btn,arr){
+  if(stepResolved)return;
+  if(opt.ok){
+    markPick(btn,true);lockOpts();
+    results.push(mistakes===0&&hintsUsed===0?'g':(mistakes<=1?'y':'r'));
+    // сбросить счётчики для следующего выбора
+    mistakes=0;hintsUsed=0;
+    log('choice_ok',{step:si});
+    setMsg('Верно. '+(S().stepNote||''),'ok');
+    advanceReady();
+  }else{
+    mistakes++;log('choice_bad',{step:si,pick:opt.t});
+    markPick(btn,false);
+    const correct=arr.find(o=>o.ok);
+    revealCorrect(correct.t);
+    setMsg('Не так. '+(opt.why||'')+' Правильный ответ подсвечен.','err');
+  }
+}
+
+function showStep(){
+  const s=S();
+  document.getElementById('pf').style.width=(si/NS*100)+'%';
+  document.getElementById('pnum').textContent='Шаг '+(si+1)+' из '+NS;
+  document.getElementById('taskText').innerHTML=s.task;
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  clearOpts();
+  stepResolved=false;
+  drag=null;dragActive=false;
+  layPhase='measure';measProg=0;placeStarted=false;
+  document.getElementById('badge').textContent =
+    s.interact?'Постройте сами' : s.kind==='assemble'?'Соберите доказательство' : (s.kind.startsWith('choose')?'Выберите верное':'Соберём доказательство');
+  if(s.q){
+    const arr=shuffle(s.q.slice());
+    renderOpts(arr.map(o=>({t:o.t,fn:(b)=>answerChoice(o,b,arr)})));
+    setMsg('Выберите ответ.','info');
+  }else if(s.kind==='assemble'){
+    asmDone=[];asmDead=[];
+    renderPool();renderChain();
+    setMsg('Нажимайте утверждения по порядку. Ловушки объяснят, почему так нельзя.','info');
+  }else if(s.interact){
+    // ждём, пока ученик построит — следующий шаг появится после засчитывания
+    setMsg(s.interact==='mid'?'Тяните точку по секущей — поймайте середину.':
+           s.interact==='perp'?'Тяните конец линии к прямой a — поймайте прямой угол.':
+           s.interact==='join'?'Проведите отрезок от точки N к точке O.':
+           'Снимите раствор циркулем (от A к H), затем отложите его от B.','info');
+  }else{
+    setMsg(s.kind==='done'?'Доказательство собрано целиком.':'Разберите шаг и нажмите «Следующий шаг».','info');
+    advanceReady();
+  }
+  if(s.kind!=='assemble')renderSteps();
+  log('step_start',{kind:s.kind,interact:s.interact||null});
+}
+
+function nextTask(){ if(si<NS-1){si++;showStep()} else finish() }
+function resetTask(){ log('reset'); si=0;results=[];mistakes=0;hintsUsed=0;built={mid:false,perp:false,lay:false}; showStep() }
+
+/* ───────── ИНТЕРАКТИВНОЕ ПОСТРОЕНИЕ ───────── */
+function pos(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*HT/r.height}}
+cv.addEventListener('pointerdown',e=>{
+  if(!S().interact||stepResolved)return;
+  const p=pos(e);
+  // на шаге откладывания: в фазе place новый жест должен начаться у точки B (ножка циркуля)
+  if(S().interact==='lay' && layPhase==='place'){
+    if(Math.hypot(p.x-B.x,p.y-B.y)<60) placeStarted=true; else placeStarted=false;
+  }
+  dragActive=true;try{cv.setPointerCapture(e.pointerId)}catch(_){}
+  drag=p;
+});
+cv.addEventListener('pointermove',e=>{ if(dragActive)applyConstruct(pos(e)); });
+['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,e=>{
+  dragActive=false;try{cv.releasePointerCapture(e.pointerId)}catch(_){}
+}));
+function applyConstruct(p){
+  const it=S().interact;
+  if(it==='mid'){
+    // точку держим на секущей (проекция на отрезок направления секущей)
+    const sd={x:Math.cos(secAng),y:Math.sin(secAng)};
+    const t=((p.x-A.x)*sd.x+(p.y-A.y)*sd.y);
+    drag={x:A.x+sd.x*t, y:A.y+sd.y*t};
+    const ao=Math.hypot(drag.x-A.x,drag.y-A.y), ob=Math.hypot(drag.x-B.x,drag.y-B.y);
+    if(Math.abs(ao-ob)<8){ drag={x:O.x,y:O.y}; built.mid=true; constructDone('mid'); }
+  }else if(it==='perp'){
+    drag={x:p.x,y:p.y};
+    const ang=Math.atan2(p.y-O.y,p.x-O.x);
+    const perpAng=Math.atan2(Hp.y-O.y,Hp.x-O.x);
+    let d=Math.abs(ang-perpAng); while(d>Math.PI)d=Math.abs(d-2*Math.PI);
+    if(d<0.12){ drag={x:Hp.x,y:Hp.y}; built.perp=true; constructDone('perp'); }
+  }else if(it==='lay'){
+    if(layPhase==='measure'){
+      const ah={x:Hp.x-A.x,y:Hp.y-A.y}, L2=ah.x*ah.x+ah.y*ah.y;
+      let f=((p.x-A.x)*ah.x+(p.y-A.y)*ah.y)/L2;
+      f=Math.max(0,Math.min(1,f));
+      // снимаем раствор только если жест начат у A (около ножки циркуля), иначе игнор
+      measProg=f;
+      if(f>0.9){ measProg=1; layPhase='place'; drag=null; dragActive=false; log('built',{what:'measure_AH'}); }
+    }else{
+      // откладываем только в НОВОМ жесте, начатом после снятия раствора
+      if(!placeStarted)return;
+      const t=((p.x-bP.x)*ad.x+(p.y-bP.y)*ad.y);
+      const onB={x:bP.x+ad.x*t, y:bP.y+ad.y*t};
+      drag=onB;
+      const bn=Math.hypot(onB.x-B.x,onB.y-B.y);
+      const tB=((B.x-bP.x)*ad.x+(B.y-bP.y)*ad.y);
+      if(Math.abs(bn-AH())<8 && t<tB){ drag={x:H1.x,y:H1.y}; built.lay=true; constructDone('lay'); }
+    }
+  }else if(it==='join'){
+    drag={x:p.x,y:p.y};
+    if(Math.hypot(p.x-O.x,p.y-O.y)<14){ drag={x:O.x,y:O.y}; built.join=true; constructDone('join'); }
+  }
+}
+function constructDone(kind){
+  if(stepResolved)return;
+  dragActive=false;
+  log('built',{what:kind});
+  results.push('g');
+  const note = kind==='mid'?'Середина O отмечена: AO = OB.'
+    : kind==='perp'?'Перпендикуляр OH построен: ∠OHA = 90°.'
+    : kind==='lay'?'Отложили BN = AH.'
+    : 'Отрезок ON проведён.';
+  setMsg('Готово! '+note,'ok');
+  advanceReady();
+}
+
+function showHint(){
+  if(stepResolved && !S().q)return;
+  hintsUsed++;log('hint');
+  const hb=document.getElementById('hintbox');let h='';const s=S();
+  if(s.kind==='choose-sign')h='Отмечены две стороны (AO=BO и AH=BN) и угол между ними (∠1=∠2). Вспомните: какой признак — это «две стороны и угол между ними»?';
+  else if(s.kind==='choose-final')h='В главе I вы доказали: две прямые, перпендикулярные одной и той же прямой, не пересекаются. А не пересекаются — значит…?';
+  else h='Прочитайте шаг и проследите его на чертеже — каждый объект подсвечен. Затем нажмите «Следующий шаг».';
+  hb.innerHTML='💡 '+h;hb.style.display='block';
+}
+
+function finish(){
+  const g=results.filter(r=>r==='g').length, tot=results.length||1;
+  log('finish',{good:g,total:results.length});
+  const s=lS();s.runs=(s.runs||0)+1;s.passed=true;if(g>(s.best||0))s.best=g;sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  // оценка по выборам (их 2)
+  document.getElementById('finScore').textContent='✓';
+  document.getElementById('finLbl').textContent = g>=results.length?'Доказательство собрано без ошибок!':'Доказательство собрано. Стоит повторить ключевые шаги.';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){si=0;results=[];mistakes=0;hintsUsed=0;document.getElementById('fin').style.display='none';document.getElementById('mainArea').style.display='grid';document.getElementById('bar').style.display='flex';showStep()}
+
+/* ───────── СТАРТ ───────── */
+showStep();
+(function loop(){ draw();requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Мини-зачёт · второй признак</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:760px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.body{padding:20px}
+.topic{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:#64748b;font-weight:800;margin-bottom:6px}
+.q{font-size:17px;line-height:1.45;font-weight:700;color:#1a1a2e;margin-bottom:16px}
+.q b{color:#0c447c}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{text-align:left;border:1.5px solid #d1d5db;border-radius:12px;background:#fff;padding:13px 15px;font:600 14.5px/1.45 system-ui;color:#1f2937;cursor:pointer}
+.opt:hover{border-color:#2d70b3;background:#f0f7ff}
+.opt.dead{opacity:.5;text-decoration:line-through;pointer-events:none;background:#fef2f2;border-color:#fecaca}
+.opt.ok{border-color:#16a34a;background:#f0fdf4;pointer-events:none;font-weight:800}
+.opt.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.msg{margin-top:14px;border-radius:11px;padding:11px 13px;font-size:13.5px;line-height:1.5;display:none}
+.msg.show{display:block}
+.msg.ok{background:#ecfdf5;color:#14532d}
+.msg.err{background:#fef2f2;color:#991b1b}
+.pw{height:7px;background:#ece8df;border-radius:5px;overflow:hidden;margin:18px 0 8px}
+.pf{height:100%;background:#2d70b3;transition:width .3s}
+.dots{display:flex;gap:6px;flex-wrap:wrap}
+.qd{width:13px;height:13px;border-radius:50%;background:#d1d5db}
+.qd.g{background:#16a34a}.qd.y{background:#eab308}.qd.r{background:#dc2626}
+.bar{display:flex;gap:9px;padding:14px 20px;background:#f3f0e8;border-top:1px solid #e5e2d9;align-items:center}
+.bar button{border:0;border-radius:10px;padding:11px 17px;font-size:14px;font-weight:800;cursor:pointer;background:#e2e8f0;color:#334155}
+.next{margin-left:auto;background:#2d70b3;color:#fff;display:none}
+.next:hover{background:#235a92}
+.fin{display:none;padding:32px 24px;text-align:center}
+.big{font-size:46px;font-weight:900;color:#1a1a2e}
+.lbl{font-size:14px;color:#64748b;margin-top:4px}
+.findots{display:flex;gap:7px;justify-content:center;margin:18px 0}
+.fd{width:14px;height:14px;border-radius:50%;background:#d1d5db}
+.fd.g{background:#16a34a}.fd.y{background:#eab308}.fd.r{background:#dc2626}
+.skills{max-width:520px;margin:0 auto 16px;display:flex;flex-direction:column;gap:6px;text-align:left}
+.skill{font-size:13.5px;background:#f6f5ef;border-radius:9px;padding:9px 13px;color:#334155}
+.skill b{color:#1a1a2e}
+.verdict{max-width:520px;margin:0 auto 18px;border-radius:14px;padding:15px;font-size:15px;font-weight:700;line-height:1.5}
+.verdict.good{background:#ecfdf5;border:1.5px solid #bbf7d0;color:#14532d}
+.verdict.mid{background:#fffbeb;border:1.5px solid #fde68a;color:#854f0b}
+@media(max-width:620px){body{padding:8px}.head{flex-direction:column;align-items:flex-start}.body{padding:14px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">📝 Мини-зачёт: второй признак</div>
+      <div class="sub">Глава II · §3 · тренажёр 5 из 5 — проверка по всему параграфу</div>
+    </div>
+    <a class="back" href="../index.html">← к списку</a>
+  </div>
+
+  <div class="body" id="bodyArea">
+    <div class="topic" id="topic"></div>
+    <div class="q" id="qtext"></div>
+    <div class="opts" id="opts"></div>
+    <div class="msg" id="msg"></div>
+    <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+    <div class="dots" id="dots"></div>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl">вопросов с первой попытки</div>
+    <div class="findots" id="finDots"></div>
+    <div class="verdict" id="verdict"></div>
+    <div class="skills" id="skills"></div>
+    <button class="opt" style="max-width:240px;margin:0 auto;text-align:center" onclick="restart()">Пройти зачёт ещё раз</button>
+  </div>
+
+  <div class="bar" id="bar">
+    <button onclick="restart()">↺ Сначала</button>
+    <button class="next" id="nextBtn" onclick="nextQ()">Дальше →</button>
+  </div>
+</div>
+
+<script>
+const SK='mathExamCourseProgress.v1', TID='ch2-p3-t5-quiz';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),q:qi+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+const QS=[
+ {topic:'Формулировка', q:'Выберите <b>точную</b> формулировку второго признака равенства треугольников.',
+  opts:[
+   {t:'Если сторона и два прилежащих к ней угла одного треугольника соответственно равны стороне и двум прилежащим углам другого — треугольники равны.',ok:true},
+   {t:'Если сторона и какие-нибудь два угла одного треугольника равны стороне и двум углам другого — треугольники равны.',ok:false,why:'углы должны быть именно <b>прилежащими</b> к стороне, а не любыми.'},
+   {t:'Если два угла одного треугольника равны двум углам другого — треугольники равны.',ok:false,why:'без равной стороны это лишь подобие, а не равенство.'}]},
+ {topic:'Словарь', q:'Дана сторона AB треугольника ABC. Какие углы к ней <b>прилежат</b>?',
+  opts:[
+   {t:'∠A и ∠B',ok:true},
+   {t:'∠A и ∠C',ok:false,why:'∠C не прилежит к AB: его вершина C не является концом стороны AB.'},
+   {t:'только ∠C',ok:false,why:'∠C как раз противолежит AB. Прилежат те углы, чьи вершины — концы стороны.'}]},
+ {topic:'Доказательство', q:'В доказательстве второго признака — почему вершина C определяется <b>однозначно</b>?',
+  opts:[
+   {t:'Два луча — из A и из B — пересекаются ровно в одной точке.',ok:true},
+   {t:'Потому что сторона AC равна A₁C₁.',ok:false,why:'равенство AC не дано — это рассуждение от первого признака.'},
+   {t:'Потому что измерили третий угол.',ok:false,why:'в признаке ничего не измеряют; C ловится пересечением лучей.'}]},
+ {topic:'Контрпример', q:'Достаточно ли двух сторон и угла, лежащего <b>против</b> одной из них, для равенства треугольников?',
+  opts:[
+   {t:'Нет: вершина может встать двумя разными способами.',ok:true},
+   {t:'Да, это и есть второй признак.',ok:false,why:'второй признак — про сторону и два угла ПРИ ней, а не сторона-сторона-угол против.'},
+   {t:'Да, всегда.',ok:false,why:'существуют два разных треугольника с такими данными (это видели в словаре §3).'}]},
+ {topic:'Соответствие', q:'△ABC = △NMK по второму признаку. Какая сторона равна <b>NK</b>?',
+  opts:[
+   {t:'AC',ok:true},
+   {t:'AB',ok:false,why:'AB соответствует NM (A↔N, B↔M).'},
+   {t:'BC',ok:false,why:'BC соответствует MK (B↔M, C↔K). А NK ↔ AC.'}]},
+ {topic:'Различение', q:'На чертеже отмечены <b>две стороны и угол между ними</b>. Каким признаком пользуемся?',
+  opts:[
+   {t:'Первым признаком',ok:true},
+   {t:'Вторым признаком',ok:false,why:'второй — это сторона и два угла при ней, а здесь две стороны и угол между.'},
+   {t:'Данных не хватает',ok:false,why:'данных достаточно: две стороны и угол между ними — это первый признак.'}]},
+ {topic:'Различение', q:'На чертеже отмечены <b>сторона и два прилежащих к ней угла</b>. Каким признаком пользуемся?',
+  opts:[
+   {t:'Вторым признаком',ok:true},
+   {t:'Первым признаком',ok:false,why:'первый — это две стороны и угол между ними, а здесь сторона и два угла.'},
+   {t:'Данных не хватает',ok:false,why:'данных достаточно: сторона и два прилежащих угла — это второй признак.'}]},
+ {topic:'Применение', q:'У △ABD и △CBD общая сторона BD; при ней ∠ABD=∠CBD и ∠ADB=∠CDB. Чем равны треугольники?',
+  opts:[
+   {t:'Равны по второму признаку.',ok:true},
+   {t:'Равны по первому признаку.',ok:false,why:'отмечены сторона BD и два угла при ней — это второй признак, не первый.'},
+   {t:'Доказать нельзя.',ok:false,why:'общая сторона BD плюс два прилежащих к ней угла — этого достаточно для второго признака.'}]}
+];
+
+let order=[], qi=0, answered=false, tries=0;
+const results=[];
+
+function el(id){return document.getElementById(id);}
+function curQ(){return QS[order[qi]];}
+
+function render(){
+  answered=false;tries=0;
+  const q=curQ();
+  el('topic').textContent=q.topic;
+  el('qtext').innerHTML=q.q;
+  el('msg').className='msg';el('msg').innerHTML='';
+  el('nextBtn').style.display='none';
+  el('pf').style.width=Math.round(qi/QS.length*100)+'%';
+  const opts=el('opts');opts.innerHTML='';
+  shuffle(q.opts).forEach(o=>{
+    const b=document.createElement('button');
+    b.className='opt';b.innerHTML=o.t;
+    b.onclick=()=>pick(o,b);
+    opts.appendChild(b);
+  });
+  renderDots();
+  log('q_start',{topic:q.topic});
+}
+function renderDots(){
+  const d=el('dots');d.innerHTML='';
+  for(let i=0;i<QS.length;i++){const e=document.createElement('div');e.className='qd'+(results[i]?' '+results[i]:'');d.appendChild(e);}
+}
+function pick(o,btn){
+  if(answered)return;
+  if(o.ok){
+    answered=true;
+    btn.classList.add('ok');
+    [...el('opts').children].forEach(b=>{if(b!==btn)b.classList.add('dead');});
+    results[order[qi]]=tries===0?'g':(tries===1?'y':'r');
+    log('answer_ok',{tries});
+    el('msg').className='msg show ok';
+    el('msg').innerHTML='Верно!';
+    el('nextBtn').style.display='inline-block';
+    el('nextBtn').textContent= qi===QS.length-1?'Итоги →':'Дальше →';
+    renderDots();
+  }else{
+    tries++;
+    btn.classList.add('shake','dead');setTimeout(()=>btn.classList.remove('shake'),450);
+    log('answer_wrong',{tries});
+    el('msg').className='msg show err';
+    el('msg').innerHTML='Не так: '+o.why+' Попробуйте ещё раз.';
+  }
+}
+function nextQ(){ if(qi<QS.length-1){qi++;render();} else finish(); }
+
+function finish(){
+  el('bodyArea').style.display='none';
+  el('bar').style.display='none';
+  el('fin').style.display='block';
+  const g=results.filter(r=>r==='g').length;
+  el('finScore').textContent=g+' / '+QS.length;
+  const fd=el('finDots');fd.innerHTML='';
+  results.forEach(r=>{const e=document.createElement('div');e.className='fd '+(r||'r');fd.appendChild(e);});
+  const v=el('verdict');
+  if(g===QS.length){v.className='verdict good';v.textContent='Отличный результат — весь параграф усвоен на отлично!';}
+  else if(g>=QS.length-2){v.className='verdict good';v.textContent='Хороший результат. Пара мест требует повторения — смотрите ниже.';}
+  else{v.className='verdict mid';v.textContent='Зачёт пройден, но есть пробелы. Стоит вернуться к темам ниже и пройти зачёт ещё раз.';}
+  // разбивка по темам
+  const byTopic={};
+  order.forEach((qidx,pos)=>{const t=QS[qidx].topic;if(!byTopic[t])byTopic[t]=[0,0];byTopic[t][1]++;if(results[qidx]==='g')byTopic[t][0]++;});
+  const hints={Формулировка:'тренажёр 2 (доказательство)',Словарь:'тренажёр 0 (прилежащие и противолежащие)',Доказательство:'тренажёр 2',Контрпример:'тренажёр 0, акт 3',Соответствие:'тренажёр 4',Различение:'тренажёр 3',Применение:'тренажёр 4'};
+  const sb=el('skills');sb.innerHTML='';
+  Object.keys(byTopic).forEach(t=>{const [o,tot]=byTopic[t];
+    const e=document.createElement('div');e.className='skill';
+    e.innerHTML='<b>'+t+'</b>: '+o+' из '+tot+(o<tot?' — повторите '+hints[t]:' ✓');
+    sb.appendChild(e);});
+  const s=lS();s.runs=(s.runs||0)+1;s.passed=true;s.best=Math.max(s.best||0,g);sS(s);
+  log('finish',{score:g});
+}
+function restart(){
+  order=shuffle(QS.map((_,i)=>i));qi=0;results.length=0;
+  el('fin').style.display='none';
+  el('bodyArea').style.display='block';
+  el('bar').style.display='flex';
+  render();
+}
+log('start');
+restart();
+</script>
+</body>
+</html>

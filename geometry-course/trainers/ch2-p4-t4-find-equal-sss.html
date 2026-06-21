@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Найди равные по трём сторонам · задачи по чертежу</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none;cursor:pointer}
+.poolTtl{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:800;margin:13px 2px 7px}
+.pool{display:flex;flex-direction:column;gap:8px}
+.pcard{text-align:left;border:1.5px solid #d1d5db;border-radius:11px;background:#fff;padding:11px 13px;font:600 13.5px/1.5 system-ui;color:#1f2937;cursor:pointer;width:100%}
+.pcard:hover{border-color:#2d70b3;background:#f0f7ff}
+.pcard.dead{opacity:.5;text-decoration:line-through;pointer-events:none;background:#fef2f2;border-color:#fecaca}
+.pcard.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.given{font-size:14px;line-height:1.6}
+.given b{color:#1a1a2e}
+.row{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;line-height:1.5;border-bottom:1px dashed #e5e7eb;padding:4px 0}
+.row:last-child{border-bottom:0}
+.value{font-weight:900}
+.v-ok{color:#16a34a}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.warn{background:#fff7ed;color:#c2410c}
+.proof{display:none;background:#ecfdf5;color:#14532d;border:1.5px solid #bbf7d0;border-radius:12px;padding:12px;font-size:13px;line-height:1.6}
+.proof b{color:#166534}
+.small{font-size:12px;color:#64748b;line-height:1.45}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button:hover{background:#f3f4f6}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:15px;height:15px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:600px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14.5px;line-height:1.6;color:#14532d}
+.law b{color:#166534}
+@media(max-width:820px){
+  body{padding:8px}
+  .main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}
+  .side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">🔍 Найди равные по трём сторонам</div>
+      <div class="sub">Глава II · §4 · тренажёр 5 из 6 — третий признак на чертеже</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Найдите скрытую третью сторону</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="400"></canvas>
+      <div class="poolTtl" id="poolTtl" style="display:none"></div>
+      <div class="pool" id="pool"></div>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h2>Дано</h2>
+        <div class="given" id="givenText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card">
+        <h2>Ход решения</h2>
+        <div class="row"><span>1. Третья пара сторон</span><span class="value" id="ph1">—</span></div>
+        <div class="row"><span>2. Запись равенства</span><span class="value" id="ph2">—</span></div>
+        <div class="row"><span>3. Вычисление</span><span class="value" id="ph3">—</span></div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div id="proof" class="proof"></div>
+      <div class="card">
+        <h2>Секрет жанра</h2>
+        <p class="small">На чертеже отмечены <b>две пары равных сторон</b>. Третью пару чертёж прячет: чаще всего это <b>общая сторона</b> двух треугольников — она равна сама себе. Найдите её — и сработает третий признак.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Вы освоили классические чертежи на третий признак.</b> Две пары сторон отмечены, а третья прячется — это общая сторона или общая диагональ.<br><br>
+      Алгоритм один: <b>1)</b> найти скрытую третью сторону (общую для обоих треугольников), <b>2)</b> записать равенство треугольников с правильным порядком вершин по третьему признаку, <b>3)</b> прочитать из записи равенство любых соответственных элементов — например, углов.
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Новая серия задач</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button onclick="showHint()">💡 Подсказка</button>
+    <button onclick="resetTask()">↺ Сначала</button>
+    <button id="nextBtn" class="next" onclick="nextTask()">Следующая →</button>
+  </div>
+</div>
+
+<script>
+const SK='mathExamCourseProgress.v1', TID='ch2-p4-t4-find-equal-sss';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),task:ti+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── УТИЛИТЫ ───────── */
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const rf=(a,b)=>a+Math.random()*(b-a);
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+
+/* ───────── ГЕНЕРАТОРЫ КОНФИГУРАЦИЙ ТРЕТЬЕГО ПРИЗНАКА ─────────
+   Идея: даны ДВЕ пары равных сторон, а третья пара — ОБЩАЯ сторона (скрытая). Признак — третий. */
+
+function genCommon(){ // △ABD и △CBD на общей стороне BD; даны AB=CB, AD=CD
+  const B={x:rf(305,335),y:rf(80,100)}, D={x:0,y:rf(305,325)}; D.x=B.x+rf(-12,12);
+  const dy=rf(95,115);
+  const A={x:B.x-rf(120,140),y:(B.y+D.y)/2+rf(-15,15)};
+  const C={x:B.x+rf(120,140),y:(B.y+D.y)/2+rf(-15,15)};
+  // подгоним C так, чтобы CB=AB и CD=AD (зеркалим A через прямую BD ≈ вертикаль)
+  const mx=(B.x+D.x)/2;
+  C.x=2*mx-A.x; C.y=A.y;
+  const P={A,B,C,D};
+  return{
+    P, segs:[['B','D'],['A','B'],['A','D'],['C','B'],['C','D']],
+    tris:[['A','B','D'],['C','B','D']],
+    ticks:[['A','B',1],['C','B',1],['A','D',2],['C','D',2]],
+    els:[
+      {id:'AB',type:'side',a:'A',b:'B',st:'given'},{id:'CB',type:'side',a:'C',b:'B',st:'given'},
+      {id:'AD',type:'side',a:'A',b:'D',st:'given'},{id:'CD',type:'side',a:'C',b:'D',st:'given'},
+      {id:'BD',type:'side',a:'B',b:'D',st:'hidden'}
+    ],
+    hidden:'BD', hiddenName:'BD — общая сторона',
+    given:'<b>AB = CB</b> и <b>AD = CD</b> (отмечены засечками).',
+    foundMsg:'Точно! Сторона BD — <b>общая</b> для треугольников ABD и CBD: один и тот же отрезок, равный сам себе. Это третья пара.',
+    eq:{stem:'△ABD = ?',opts:shuffle([
+      {t:'△CBD',ok:true},
+      {t:'△CDB',ok:false,why:'Соответствие вершин: A↔C, B↔B, D↔D. После C идёт B: △CBD.'},
+      {t:'△BCD',ok:false,why:'Первой стоит вершина, соответственная A, — это C. Запись с C: △CBD.'}])},
+    num:(function(){
+      const b=ri(28,55);
+      return {q:'∠ABD = '+b+'°. Чему равен ∠CBD?',
+        opts:shuffle([
+         {t:b+'°',ok:true},
+         {t:(2*b)+'°',ok:false,why:'∠ABD и ∠CBD — соответственные углы равных треугольников, они равны: '+b+'°. Удваивать не нужно.'},
+         {t:'Определить нельзя',ok:false,why:'Можно: △ABD = △CBD, значит ∠CBD = ∠ABD = '+b+'° как соответственные углы.'}])};
+    })(),
+    sol:'<b>Решение.</b> 1) AB = CB и AD = CD — дано. 2) BD — общая сторона. 3) △ABD = △CBD по <b>третьему</b> признаку. 4) Значит ∠CBD = ∠ABD как соответственные углы равных треугольников.'
+  };
+}
+
+function genBis(){ // на биссектрисе (№128/133): AB=AC, BD=CD, AD общая. ГОРИЗОНТАЛЬНЫЙ ракурс.
+  const yLine=rf(195,210);
+  const A={x:rf(80,100),y:yLine}, D={x:0,y:yLine}; D.x=A.x+rf(380,420);  // AD строго горизонтальна
+  const mx=(A.x+D.x)/2;
+  const B={x:mx+rf(-15,15),y:yLine-rf(95,115)};
+  const C={x:B.x,y:2*yLine-B.y};   // зеркало B через горизонталь AD → AB=AC, BD=CD точно
+  const P={A,B,C,D};
+  return{
+    P, segs:[['A','D'],['A','B'],['B','D'],['A','C'],['C','D']],
+    tris:[['A','B','D'],['A','C','D']],
+    ticks:[['A','B',1],['A','C',1],['B','D',2],['C','D',2]],
+    els:[
+      {id:'AB',type:'side',a:'A',b:'B',st:'given'},{id:'AC',type:'side',a:'A',b:'C',st:'given'},
+      {id:'BD',type:'side',a:'B',b:'D',st:'given'},{id:'CD',type:'side',a:'C',b:'D',st:'given'},
+      {id:'AD',type:'side',a:'A',b:'D',st:'hidden'}
+    ],
+    hidden:'AD', hiddenName:'AD — общая сторона',
+    revealAngles:[['A','B','D',24],['A','D','C',24]],
+    given:'<b>AB = AC</b> и <b>BD = CD</b> (точка A и точка D одинаково удалены от B и C).',
+    foundMsg:'Да! AD — <b>общая сторона</b> треугольников ABD и ACD: один отрезок для обоих. Третья пара найдена.',
+    eq:{stem:'△ABD = ?',opts:shuffle([
+      {t:'△ACD',ok:true},
+      {t:'△ADC',ok:false,why:'A↔A, B↔C, D↔D. После A идёт вершина, соответственная B, — это C: △ACD.'},
+      {t:'△CAD',ok:false,why:'Первой стоит вершина, соответственная A, — это снова A. Запись начинается с A: △ACD.'}])},
+    num:(function(){
+      return {q:'Что следует про луч AD для угла BAC?',
+        opts:shuffle([
+         {t:'AD — биссектриса ∠BAC (он делит его пополам)',ok:true},
+         {t:'AD — высота, но не биссектриса',ok:false,why:'из △ABD = △ACD следует ∠BAD = ∠CAD (они теперь подсвечены на чертеже) — значит AD делит ∠BAC пополам, это биссектриса.'},
+         {t:'Про AD ничего определённого сказать нельзя',ok:false,why:'можно: △ABD = △ACD, поэтому ∠BAD = ∠CAD. Равные углы по обе стороны от AD означают, что AD — биссектриса ∠BAC.'}])};
+    })(),
+    sol:'<b>Решение.</b> 1) AB = AC и BD = CD — дано. 2) AD — общая сторона. 3) △ABD = △ACD по <b>третьему</b> признаку. 4) Значит ∠BAD = ∠CAD (соответственные углы) — то есть AD ещё и биссектриса угла BAC.'
+  };
+}
+
+function genKite(){ // дельтоид: AB=AD, CB=CD, AC общая диагональ
+  const A={x:rf(305,335),y:rf(60,78)}, C={x:0,y:rf(330,348)}; C.x=A.x+rf(-12,12);
+  const B={x:A.x-rf(105,125),y:(A.y+C.y)/2+rf(-12,12)};
+  const mx=(A.x+C.x)/2;
+  const D={x:2*mx-B.x,y:B.y};
+  const P={A,B,C,D};
+  return{
+    P, segs:[['A','C'],['A','B'],['B','C'],['A','D'],['D','C']],
+    tris:[['A','B','C'],['A','D','C']],
+    ticks:[['A','B',1],['A','D',1],['B','C',2],['D','C',2]],
+    els:[
+      {id:'AB',type:'side',a:'A',b:'B',st:'given'},{id:'AD',type:'side',a:'A',b:'D',st:'given'},
+      {id:'CB',type:'side',a:'C',b:'B',st:'given'},{id:'CD',type:'side',a:'C',b:'D',st:'given'},
+      {id:'AC',type:'side',a:'A',b:'C',st:'hidden'}
+    ],
+    hidden:'AC', hiddenName:'AC — общая диагональ',
+    given:'<b>AB = AD</b> и <b>CB = CD</b> (фигура-«воздушный змей»).',
+    foundMsg:'Верно! AC — <b>общая</b> сторона (диагональ) обоих треугольников ABC и ADC. Это третья пара.',
+    eq:{stem:'△ABC = ?',opts:shuffle([
+      {t:'△ADC',ok:true},
+      {t:'△ACD',ok:false,why:'A↔A, B↔D, C↔C. После A идёт вершина, соответственная B, — это D: △ADC.'},
+      {t:'△DAC',ok:false,why:'Первой стоит вершина, соответственная A, — это A. Запись с A: △ADC.'}])},
+    num:(function(){
+      const b=ri(40,70);
+      return {q:'∠ABC = '+b+'°. Чему равен ∠ADC?',
+        opts:shuffle([
+         {t:b+'°',ok:true},
+         {t:(180-b)+'°',ok:false,why:'∠ABC и ∠ADC — соответственные углы равных треугольников, они просто равны: '+b+'°. Это не смежные углы.'},
+         {t:'Определить нельзя',ok:false,why:'Можно: △ABC = △ADC, значит ∠ADC = ∠ABC = '+b+'°.'}])};
+    })(),
+    sol:'<b>Решение.</b> 1) AB = AD и CB = CD — дано. 2) AC — общая сторона. 3) △ABC = △ADC по <b>третьему</b> признаку. 4) Значит ∠ABC = ∠ADC как соответственные углы.'
+  };
+}
+
+function genMid(){ // №126/134: O — середина BD; AB=AD. △ABO=△ADO, скрыта общая AO
+  const A={x:rf(305,335),y:rf(72,90)}, O={x:0,y:rf(198,214)}; O.x=A.x+rf(-8,8);
+  const half=rf(105,122);
+  const B={x:O.x-half,y:O.y}, D={x:O.x+half,y:O.y};
+  // A над серединой → AB=AD автоматически (симметрия по вертикали через O почти)
+  const mx=O.x; const A2={x:mx,y:A.y}; // выправим A строго над O, чтобы AB=AD точно
+  const P={A:A2,B,O,D};
+  return{
+    P, segs:[['B','D'],['A','B'],['A','O'],['A','D']],
+    tris:[['A','B','O'],['A','D','O']],
+    ticks:[['A','B',1],['A','D',1],['B','O',2],['O','D',2]],
+    els:[
+      {id:'AB',type:'side',a:'A',b:'B',st:'given'},{id:'AD',type:'side',a:'A',b:'D',st:'given'},
+      {id:'BO',type:'side',a:'B',b:'O',st:'given'},{id:'OD',type:'side',a:'O',b:'D',st:'given'},
+      {id:'AO',type:'side',a:'A',b:'O',st:'hidden'}
+    ],
+    hidden:'AO', hiddenName:'AO — общая сторона',
+    given:'<b>AB = AD</b>, а точка <b>O — середина BD</b> (значит BO = OD).',
+    foundMsg:'Да! AO — <b>общая</b> сторона треугольников ABO и ADO. AB = AD дано, BO = OD — потому что O середина, а AO у них одна. Три пары!',
+    eq:{stem:'△ABO = ?',opts:shuffle([
+      {t:'△ADO',ok:true},
+      {t:'△AOD',ok:false,why:'A↔A, B↔D, O↔O. После A идёт вершина, соответственная B, — это D: △ADO.'},
+      {t:'△DAO',ok:false,why:'Первой стоит вершина, соответственная A, — это снова A: △ADO.'}])},
+    num:(function(){
+      return {q:'Что можно сказать про отрезок AO в треугольнике ABD?',
+        opts:shuffle([
+         {t:'AO — медиана, высота и биссектриса угла A сразу',ok:true},
+         {t:'AO — только медиана, про высоту и биссектрису сказать нельзя',ok:false,why:'можно сказать больше. △ABD равнобедренный (AB = AD), а в нём отрезок из вершины к основанию — это сразу медиана, высота и биссектриса (теорема из §2).'},
+         {t:'AO — биссектриса угла B',ok:false,why:'AO выходит из вершины A и делит пополам угол A, а не B. И заодно она медиана и высота — потому что △ABD равнобедренный.'}])};
+    })(),
+    sol:'<b>Решение.</b> 1) AB = AD дано; BO = OD, так как O — середина BD. 2) AO — общая сторона. 3) △ABO = △ADO по <b>третьему</b> признаку. 4) Значит ∠BAO = ∠DAO (биссектриса), ∠AOB = ∠AOD — смежные и равные, то есть прямые (высота), а O — середина (медиана). △ABD равнобедренный, и AO в нём — сразу медиана, высота и биссектриса.'
+  };
+}
+
+function genEqui(){ // №140: равносторонние, все три пары ВИДНЫ сразу — скрытой нет, фаза 1 пропускается
+  const B={x:rf(245,265),y:rf(195,210)}, D={x:0,y:0}; D.x=B.x+rf(130,150); D.y=B.y+rf(-6,6);
+  const s=dist(B,D), h=s*Math.sqrt(3)/2, mid={x:(B.x+D.x)/2,y:(B.y+D.y)/2};
+  const A={x:mid.x,y:mid.y-h}, C={x:mid.x,y:mid.y+h};
+  const P={A,B,C,D};
+  return{
+    noHidden:true,
+    P, segs:[['B','D'],['A','B'],['A','D'],['C','B'],['C','D']],
+    tris:[['A','B','D'],['C','B','D']],
+    ticks:[['A','B',1],['A','D',1],['B','D',1],['C','B',1],['C','D',1]],   // ВСЕ стороны равны — все с засечкой
+    els:[],
+    hidden:null, hiddenName:'',
+    given:'Оба треугольника <b>равносторонние</b> на общем основании BD: все пять отрезков равны. Прятать нечего — три пары равных сторон видны сразу. (А заодно тут будет сюрприз с записью равенства.)',
+    foundMsg:'',
+    eq:{stem:'△ABD = ?', allOk:true, opts:[
+      {t:'△CBD'},{t:'△CDB'},{t:'△DCB'}]},
+    num:(function(){
+      return {q:'Раз все стороны равны, что верно про углы каждого треугольника?',
+        opts:shuffle([
+         {t:'Все углы по 60° (равносторонний — значит и равноугольный)',ok:true},
+         {t:'Углы разные, определить нельзя',ok:false,why:'В равностороннем треугольнике все углы равны, а их сумма 180°, поэтому каждый по 60°.'},
+         {t:'Два угла по 60°, третий 90°',ok:false,why:'Все три стороны равны, значит и все три угла равны: по 180°/3 = 60°.'}])};
+    })(),
+    sol:'<b>Решение.</b> Треугольники равносторонние, значит △ABD = △CBD (а также = △CDB, △DCB — любой порядок вершин годится, ведь они равноправны). У равностороннего все углы по 60°. Это <b>третий</b> признак в самом наглядном виде: три равные стороны — и больше ничего не нужно.'
+  };
+}
+
+function genTrap(){ // ЛОВУШКА: даны две стороны и угол — третьей стороны нет, для SSS не хватает
+  const B={x:rf(160,185),y:rf(110,135)}, D={x:rf(455,485),y:rf(255,285)};
+  const aBD=Math.atan2(D.y-B.y,D.x-B.x);
+  const bB=rf(0.42,0.54), bD=rf(0.46,0.6);
+  const A={x:B.x+Math.cos(aBD-bB)*150,y:B.y+Math.sin(aBD-bB)*150};
+  const C={x:B.x+Math.cos(aBD+bB)*150,y:B.y+Math.sin(aBD+bB)*150};
+  // упростим: A слева сверху, C слева снизу — но даём только AB=CB и угол. Третья сторона не дана.
+  const P={A,B,C,D};
+  return{
+    trap:true,
+    P, segs:[['B','D'],['A','B'],['A','D'],['C','B'],['C','D']],
+    tris:[['A','B','D'],['C','B','D']],
+    ticks:[['A','B',1],['C','B',1]],   // только ОДНА пара сторон
+    arcs:[['B','A','D','1','30'],['B','D','C','1','30']],  // и угол при B
+    els:[
+      {id:'AB',type:'side',a:'A',b:'B',st:'given'},{id:'CB',type:'side',a:'C',b:'B',st:'given'},
+      {id:'AD',type:'side',a:'A',b:'D',st:'wrong'},{id:'CD',type:'side',a:'C',b:'D',st:'wrong'},
+      {id:'BD',type:'side',a:'B',b:'D',st:'wrong'}
+    ],
+    hidden:null,
+    given:'Отмечены <b>AB = CB</b> и <b>∠ABD = ∠CBD</b> (одна пара сторон и угол). BD — общая.',
+    trapMsg:'Верно — для <b>третьего</b> признака данных не хватает: он требует три пары равных сторон, а здесь дана лишь одна (AB = CB) плюс общая BD — всего две стороны, про AD и CD ничего не известно. <b>Но равенство тут доказуемо</b> — по <b>первому</b> признаку: две стороны (AB = CB, BD общая) и угол между ними (∠ABD = ∠CBD). Просто признак другой.',
+    trapWrong:'Приглядитесь: сколько пар <b>сторон</b> отмечено? Только AB = CB. Плюс общая BD — итого две стороны. Для третьего признака нужна и третья пара (AD = CD), а она не дана.',
+    sol:'<b>Разбор.</b> Третий признак — это три пары равных сторон. Здесь отмечены AB = CB и общая BD (две стороны), а равенство AD = CD не дано. Для третьего признака данных не хватает. (По первому признаку — две стороны и угол между ними — равенство доказать можно, но вопрос был про третий.)'
+  };
+}
+
+/* ───────── СОСТОЯНИЕ ───────── */
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+const W=640,H=400;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+
+let plan=[],ti=0,T=null;
+let phase=1,found=[],mistakes=0,hintsUsed=0,results=[],solved=false,kind='mouse';
+let focusTri=null;
+
+/* ───────── ОТРИСОВКА ───────── */
+function tickM(p1,p2,n,col){
+  const mx=(p1.x+p2.x)/2,my=(p1.y+p2.y)/2,dx=p2.x-p1.x,dy=p2.y-p1.y,L=Math.hypot(dx,dy);
+  const ux=dx/L,uy=dy/L,nx=-uy,ny=ux;
+  ctx.strokeStyle=col;ctx.lineWidth=2.3;
+  for(let i=0;i<n;i++){const off=(i-(n-1)/2)*6;
+    ctx.beginPath();ctx.moveTo(mx+ux*off-nx*6,my+uy*off-ny*6);ctx.lineTo(mx+ux*off+nx*6,my+uy*off+ny*6);ctx.stroke()}
+}
+function arcM(v,p1,p2,col,r){
+  let a1=Math.atan2(p1.y-v.y,p1.x-v.x),a2=Math.atan2(p2.y-v.y,p2.x-v.x);
+  let d=a2-a1;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;
+  ctx.strokeStyle=col;ctx.lineWidth=2.5;
+  ctx.beginPath();ctx.arc(v.x,v.y,r||20,a1,a1+d,d<0);ctx.stroke();
+}
+function lab(p,txt,cx,cy,col){
+  const ux=p.x-cx,uy=p.y-cy,L=Math.hypot(ux,uy)||1;
+  const x=p.x+ux/L*17,y=p.y+uy/L*17+5;
+  ctx.font='900 15px system-ui';ctx.textAlign='center';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(250,248,242,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);
+}
+function isFound(id){return found.includes(id)}
+function draw(){
+  if(!T)return;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill()}
+  const P=T.P;
+  T.tris.forEach((tr,i)=>{
+    ctx.beginPath();tr.forEach((n,j)=>{const q=P[n];j?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.closePath();
+    ctx.fillStyle=solved?'rgba(22,163,74,.16)':(i===0?'rgba(45,112,179,.17)':'rgba(217,119,6,.10)');
+    ctx.fill();
+  });
+  if(focusTri&&!solved){
+    const g=0.45+0.45*Math.sin(Date.now()/260);
+    ctx.beginPath();focusTri.forEach((n,j)=>{const q=P[n];j?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.closePath();
+    ctx.strokeStyle='rgba(45,112,179,'+g+')';ctx.lineWidth=6;ctx.lineJoin='round';ctx.stroke();
+  }
+  T.segs.forEach(([a,b])=>{
+    ctx.beginPath();ctx.moveTo(P[a].x,P[a].y);ctx.lineTo(P[b].x,P[b].y);
+    ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2.4;ctx.stroke();
+  });
+  // скрытая общая сторона — зелёная, когда найдена
+  if(T.hidden && isFound(T.hidden)){
+    const e=T.els.find(x=>x.id===T.hidden);
+    const g=0.6+0.4*Math.sin(Date.now()/300);
+    ctx.beginPath();ctx.moveTo(P[e.a].x,P[e.a].y);ctx.lineTo(P[e.b].x,P[e.b].y);
+    ctx.strokeStyle='rgba(22,163,74,'+g+')';ctx.lineWidth=5;ctx.stroke();
+  }
+  T.ticks.forEach(([a,b,n])=>tickM(P[a],P[b],n,'#1a1a2e'));
+  (T.arcs||[]).forEach(a=>{const v=a[0],p=a[1],q=a[2],n=+(a[3]||1),r0=+(a[4]||22);
+    for(let i=0;i<n;i++)arcM(P[v],P[p],P[q],'#d97706',r0+i*6);});
+  // при решении — вспыхивают равные углы, о которых речь в ответе (хор текста и чертежа)
+  if(solved && T.revealAngles){
+    const g=0.55+0.45*Math.sin(Date.now()/300);
+    T.revealAngles.forEach(a=>{
+      arcM(P[a[0]],P[a[1]],P[a[2]],'rgba(22,163,74,'+g+')',a[3]||24);
+      arcM(P[a[0]],P[a[1]],P[a[2]],'rgba(22,163,74,'+g+')',(a[3]||24)+5);
+    });
+  }
+  const ns=Object.keys(P);
+  const cx=ns.reduce((s,n)=>s+P[n].x,0)/ns.length, cy=ns.reduce((s,n)=>s+P[n].y,0)/ns.length;
+  ns.forEach(n=>{
+    ctx.beginPath();ctx.arc(P[n].x,P[n].y,3.8,0,7);
+    ctx.fillStyle='#1a1a2e';ctx.fill();
+    lab(P[n],n,cx,cy,'#1a1a2e');
+  });
+}
+(function loop(){draw();requestAnimationFrame(loop)})();
+
+/* ───────── ХИТ-ТЕСТ ───────── */
+function distSeg(p,a,b){
+  const dx=b.x-a.x,dy=b.y-a.y,L2=dx*dx+dy*dy;
+  let t=((p.x-a.x)*dx+(p.y-a.y)*dy)/L2;t=Math.max(0,Math.min(1,t));
+  return Math.hypot(p.x-(a.x+t*dx),p.y-(a.y+t*dy));
+}
+function hitSide(p){
+  const P=T.P, tol=kind==='touch'?13:10;
+  let best=null,bd=1e9;
+  for(const e of T.els)if(e.type==='side'){
+    const d=distSeg(p,P[e.a],P[e.b]);
+    if(d<tol&&d<bd){bd=d;best=e}
+  }
+  return best;
+}
+
+/* ───────── ЛОГИКА ФАЗ ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function setPh(n,txt,ok){const el=document.getElementById('ph'+n);el.textContent=txt;el.className='value'+(ok?' v-ok':'')}
+
+cv.addEventListener('pointerdown',e=>{
+  if(phase!==1||solved)return;
+  if(T.trap){setMsg(T.trapWrong,'warn');return;}
+  kind=e.pointerType==='touch'?'touch':'mouse';
+  const r=cv.getBoundingClientRect();
+  const p={x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height};
+  const el=hitSide(p);
+  if(!el){setMsg('Нажимайте прямо на сторону чертежа — на отрезок между двумя вершинами.','info');return}
+  if(el.st==='hidden'){
+    if(isFound(el.id))return;
+    found.push(el.id);log('found',{id:el.id});
+    setMsg(T.foundMsg,'ok');
+    setPh(1,'✓ '+T.hiddenName,true);
+    setTimeout(toPhase2,900);
+  }else if(el.st==='given'){
+    mistakes++;log('tap_given',{id:el.id});
+    setMsg('Эта сторона уже отмечена засечками — она дана. Ищите сторону, о равенстве которой чертёж «молчит».','warn');
+  }else if(el.st==='wrong'){
+    mistakes++;log('tap_wrong',{id:el.id});
+    setMsg('Эта сторона не образует третью пару. Здесь третьей пары сторон вообще нет — посмотрите на кнопку ниже.','err');
+  }
+});
+
+function renderOpts(title,opts,onOk){
+  document.getElementById('poolTtl').style.display='block';
+  document.getElementById('poolTtl').textContent=title;
+  const pool=document.getElementById('pool');pool.innerHTML='';
+  opts.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='pcard';b.textContent=o.t;
+    b.onclick=()=>{
+      if(o.ok){onOk()}
+      else{mistakes++;log('opt_wrong');b.classList.add('shake');b.classList.add('dead');setMsg(o.why,'err')}
+    };
+    pool.appendChild(b);
+  });
+}
+function clearOpts(){document.getElementById('poolTtl').style.display='none';document.getElementById('pool').innerHTML=''}
+
+function toPhase2(){
+  phase=2;focusTri=T.tris[0];
+  if(T.eq.allOk){
+    // равносторонний: ВСЕ записи верны — это и есть урок
+    setMsg('Запишите равенство. Только приглядитесь: у этого треугольника все стороны одинаковы…','info');
+    document.getElementById('poolTtl').style.display='block';
+    document.getElementById('poolTtl').textContent='Шаг 2. Выберите запись: '+T.eq.stem;
+    const pool=document.getElementById('pool');pool.innerHTML='';
+    T.eq.opts.forEach(o=>{
+      const b=document.createElement('button');b.className='pcard';b.textContent=o.t;
+      b.onclick=()=>{
+        setPh(2,'✓ верны все три',true);
+        log('eq_ok',{allOk:true,picked:o.t});
+        setMsg('А вот это сюрприз: <b>все три записи верны!</b> Раз треугольники равносторонние, все их вершины равноправны — какую с какой ни сопоставь, равенство сохранится. Единственного «правильного порядка» здесь нет.','ok');
+        [...pool.children].forEach(c=>c.classList.add('ok'));
+        setTimeout(toPhase3,1100);
+      };
+      pool.appendChild(b);
+    });
+    return;
+  }
+  setMsg('Три пары сторон собраны. Запишите равенство для треугольника, который <b>подсвечен синим</b>. Порядок букв важен!','info');
+  renderOpts('Шаг 2. Выберите верную запись: '+T.eq.stem,T.eq.opts,()=>{
+    const okOpt=T.eq.opts.find(o=>o.ok);
+    setPh(2,'✓ '+T.eq.stem.replace(' = ?','')+' = '+okOpt.t,true);
+    log('eq_ok');
+    setMsg('Запись верна: по ней теперь читаем равенство любых соответственных элементов.','ok');
+    setTimeout(toPhase3,700);
+  });
+}
+function toPhase3(){
+  phase=3;focusTri=null;
+  renderOpts('Шаг 3. '+T.num.q,T.num.opts,()=>{
+    setPh(3,'✓ '+T.num.opts.find(o=>o.ok).t,true);
+    log('num_ok');
+    finishTask();
+  });
+}
+function finishTask(){
+  solved=true;clearOpts();
+  results.push(mistakes===0&&hintsUsed===0?'g':(mistakes<=1&&hintsUsed<=1?'y':'r'));
+  log('solved',{mistakes,hints:hintsUsed});
+  const pr=document.getElementById('proof');pr.innerHTML=T.sol;pr.style.display='block';
+  document.getElementById('successBar').textContent='✓ Задача решена: треугольники равны по третьему признаку, элемент найден.';
+  document.getElementById('successBar').style.display='block';
+  setMsg('Полное решение — справа. Так оно и записывается в тетради.','ok');
+  const nb=document.getElementById('nextBtn');
+  nb.style.display='inline-block';
+  nb.textContent=ti<plan.length-1?'Следующая →':'Итоги →';
+}
+function trapSolved(){
+  solved=true;clearOpts();
+  results.push(mistakes===0&&hintsUsed===0?'g':(mistakes<=1&&hintsUsed<=1?'y':'r'));
+  log('solved',{trap:true,mistakes,hints:hintsUsed});
+  const pr=document.getElementById('proof');pr.innerHTML=T.sol;pr.style.display='block';
+  document.getElementById('successBar').textContent='✓ Верно: вы распознали, что для третьего признака данных не хватает.';
+  document.getElementById('successBar').style.display='block';
+  const nb=document.getElementById('nextBtn');
+  nb.style.display='inline-block';
+  nb.textContent=ti<plan.length-1?'Следующая →':'Итоги →';
+}
+function showHint(){
+  if(solved)return;
+  hintsUsed++;log('hint');
+  if(phase===1){
+    if(T.trap){setMsg('💡 Посчитайте отмеченные засечками <b>стороны</b>. Для третьего признака нужны три пары равных сторон. Сколько их здесь?','info');return;}
+    setMsg('💡 Есть сторона, которая принадлежит <b>обоим</b> треугольникам сразу — общая. Она равна самой себе. Нажмите прямо на неё.','info');
+  }else if(phase===2){
+    setMsg('💡 Сопоставьте вершины по равным сторонам: концы равных сторон — соответственные вершины. Запишите их в том же порядке, что и у первого треугольника.','info');
+  }else{
+    setMsg('💡 В равных треугольниках соответственные элементы равны. Найдите в записи букву, соответственную данному элементу, и перенесите значение.','info');
+  }
+}
+function nextTask(){
+  if(ti<plan.length-1){ti++;initTask()}
+  else finish();
+}
+function resetTask(){log('reset');T=plan[ti].gen();startTask(true)}
+function initTask(){T=plan[ti].gen();startTask(false)}
+function startTask(keep){
+  phase=1;found=[];solved=false;focusTri=null;
+  if(!keep){mistakes=0;hintsUsed=0}
+  clearOpts();
+  document.getElementById('givenText').innerHTML=T.given;
+  document.getElementById('pf').style.width=(ti/plan.length*100)+'%';
+  document.getElementById('pnum').textContent='Задача '+(ti+1)+' из '+plan.length;
+  setPh(1,'—',false);setPh(2,'—',false);setPh(3,'—',false);
+  document.getElementById('proof').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('nextBtn').style.display='none';
+  setMsg('Две пары равных сторон отмечены засечками. Найдите и нажмите <b>третью</b> — ту, что чертёж прячет.','info');
+  if(T.noHidden){
+    // все три пары видны сразу — фазу поиска пропускаем
+    setPh(1,'✓ все стороны видны',true);
+    setMsg('Здесь прятать нечего: все три пары равных сторон отмечены. Сразу запишем равенство.','info');
+    setTimeout(toPhase2,400);
+    log('task_start',{cfg:plan[ti].name});
+    return;
+  }
+  if(T.trap){
+    setMsg('Внимательно: хватит ли здесь данных для <b>третьего</b> признака? Если третьей пары сторон нет — нажмите кнопку ниже.','info');
+    renderOpts('Что делаем?',[
+      {t:'✕ По третьему признаку доказать нельзя — данных не хватает',ok:true},
+      {t:'Достаточно: треугольники равны по третьему признаку',ok:false,why:T.trapWrong}
+    ],()=>{
+      log('trap_ok');setPh(1,'✓ данных не хватает',true);
+      setMsg(T.trapMsg,'ok');trapSolved();
+    });
+  }
+  log('task_start',{cfg:plan[ti].name});
+}
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{score:g});
+  const s=lS();s.runs=(s.runs||0)+1;s.passed=true;if(g>(s.best||0))s.best=g;sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent=g+' / '+plan.length;
+  document.getElementById('finLbl').textContent=
+    g===plan.length?'Чисто! Жанр «задачи по чертежу» взят.':g>=4?'Отличный результат!':'Неплохо — но прогоните серию ещё раз.';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){
+  // пять РАЗНЫХ по ходу конфигураций + ловушка:
+  //  common — общая сторона; bis — общая сторона + вопрос про биссектрису;
+  //  kite — общая диагональ; mid — середина (общая AO, вопрос про медиану/высоту);
+  //  equi — всё видно сразу (фаза 1 пропускается); trap — данных не хватает.
+  const core=shuffle([
+    {name:'common',gen:genCommon},{name:'bis',gen:genBis},
+    {name:'kite',gen:genKite},{name:'mid',gen:genMid},{name:'equi',gen:genEqui}
+  ]);
+  // вставим ловушку в середину, остальное вперемешку
+  plan=[core[0],core[1],{name:'trap',gen:genTrap},core[2],core[3],core[4]];
+  ti=0;results=[];
+  document.getElementById('fin').style.display='none';
+  document.getElementById('mainArea').style.display='grid';
+  document.getElementById('bar').style.display='flex';
+  initTask();
+}
+restart();
+</script>
+</body>
+</html>

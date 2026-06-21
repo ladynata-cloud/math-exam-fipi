@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Против большей стороны — больший угол</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.given{font-size:13px;line-height:1.5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:10px}
+.given b{color:#3730a3}
+.steps{font-size:12.5px;line-height:1.5;color:#334155}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.pcard{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:10px 12px;font:650 13.5px system-ui;cursor:pointer;text-align:left;line-height:1.45}
+.pcard:hover{background:#f3f4f6}
+.pcard.shake{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.chitem{background:#f0fdf4;border-left:3px solid #16a34a;border-radius:0 8px 8px 0;padding:7px 10px;font-size:12.5px;line-height:1.4;color:#14532d;margin-bottom:5px}
+.chitem .n{font-weight:900;color:#16a34a;margin-right:4px}
+.chempty{font-size:12.5px;color:#94a3b8;font-style:italic;padding:6px}
+.phtitle{font-size:12px;font-weight:800;color:#6d28d9;text-transform:uppercase;letter-spacing:.05em;margin:2px 0 4px}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:24px 22px;text-align:center}
+.fin .big{font-size:40px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:14px;height:14px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:640px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:13.5px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law .nb{margin-top:10px;font-size:13px;color:#475569}
+.bridge{margin-top:10px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">△ Против большей стороны — больший угол</div>
+      <div class="sub">Глава IV · §2 · тренажёр 2 — доказательство (прямая теорема)</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Построение</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="470"></canvas></div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card">
+        <div class="given" id="givenBox"></div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div id="opts" class="opts"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div class="card">
+        <h2>Ход доказательства</h2>
+        <div class="steps" id="steps"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>В треугольнике против большей стороны лежит больший угол.</b>
+      <div class="nb">Доказали так: отложили AD = AC — получился равнобедренный △ADC. Дальше три звена: ∠C больше своей части ∠1; ∠1 = ∠2 (углы при основании △ADC); ∠2 > ∠B (∠2 — внешний угол △BDC). Цепочка <b>∠C &gt; ∠1 = ∠2 &gt; ∠B</b> даёт ∠C &gt; ∠B.</div>
+      <div class="nb"><b>Пуант:</b> одна теорема собрала сразу три инструмента — равнобедренный (глава II), внешний угол (§1 этой главы) и «целое больше части».</div>
+      <div class="bridge">Дальше — <b>обратная</b> теорема: против большего угла лежит большая сторона. Метод там другой — от противного. <a href="ch4-p2-t3-converse-iso.html">Обратная теорема →</a></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="nextTask()">Дальше →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС / ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch4-p2-t2-proof-side-angle';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),step:si+1,phase:S().phase,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640, HT=470, PI=Math.PI;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=HT*dpr;cv.style.aspectRatio=W+'/'+HT;ctx.scale(dpr,dpr);
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const dist=(p,q)=>Math.hypot(p.x-q.x,p.y-q.y);
+
+/* ───────── ГЕОМЕТРИЯ (рис. 133) ─────────
+   Основание AB слева (A сверху, B снизу) — самая длинная из данных сторон: AB > AC.
+   C — справа. На AB откладываем AD = AC (D между A и B, ведь AD = AC < AB), проводим CD.
+   Возникают: ∠1 = ∠ACD (часть угла C), ∠2 = ∠ADC. △ADC равнобедренный (AD=AC).
+   ∠2 — внешний угол △BDC. Нумерация местная, как на рис. 133.                       */
+const A={x:215,y:160}, B={x:195,y:422}, C={x:356,y:211};
+const dAC=Math.hypot(C.x-A.x,C.y-A.y), dAB=Math.hypot(B.x-A.x,B.y-A.y);
+const uAB={x:(B.x-A.x)/dAB, y:(B.y-A.y)/dAB};
+const D={x:A.x+uAB.x*dAC, y:A.y+uAB.y*dAC};
+const COL={C:'#0d9488', B:'#db2777', pair:'#d97706'};   // ∠C бирюза, ∠B розовый, ∠1=∠2 янтарь
+function bisHalf(V,P,Q){const a1=Math.atan2(P.y-V.y,P.x-V.x),a2=Math.atan2(Q.y-V.y,Q.x-V.x);let d=a2-a1;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;return{bis:a1+d/2,half:Math.abs(d)/2};}
+const src2=bisHalf(D,A,C), tgt1=bisHalf(C,A,D);          // ∠2 (при D) → летит на ∠1 (при C)
+const lerp=(a,b,t)=>a+(b-a)*t;
+function lerpAng(a,b,t){let d=b-a;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;return a+d*t;}
+
+/* ───────── ШАГИ ───────── */
+const STEPS=[
+ {kind:'construct', phase:'construct', badge:'Построение: окружность из A',
+  task:'Сначала построим. <b>Поставь циркуль в точку A и тяни до C</b> — построится окружность радиуса AC. Где она пересекает сторону AB, отметь <b>точку D</b>.',
+  stepNote:'Построили окружность из A: AD = AC (оба радиусы) → △ADC равнобедренный, D на AB; провели CD.'},
+
+ {kind:'assemble', phase:'whole', badge:'∠C и его часть',
+  task:'Точка D отмечена, △ADC равнобедренный, проведён CD. Первое звено: покажи, что <b>∠C больше своей части ∠1</b>. Среди карточек есть ловушки — нажмёшь, разберём.',
+  phaseTitle:'Звено 1: ∠C > ∠1',
+  doneMsg:'∠C > ∠1 готово. Дальше — равнобедренный треугольник.',
+  stepNote:'Луч CD внутри угла C ⟹ ∠C > ∠1 (целое больше части).',
+  cards:[
+    {id:'inside', txt:'Точка D лежит на отрезке AB, <b>между</b> A и B. Значит луч CD проходит <b>внутри</b> угла ACB и делит его на ∠ACD и ∠DCB.', need:[], lit:['C'],
+     ok:'Луч CD проходит внутри угла C.'},
+    {id:'part', txt:'Тогда ∠C = ∠ACD + ∠DCB = <b>∠1 + ∠DCB</b>. Кусок ∠DCB больше нуля, поэтому <b>∠C &gt; ∠1</b>.', need:['inside'], lit:['C','a1'],
+     ok:'∠C > ∠1 — целое больше своей части.'},
+    {id:'trapAlong', txt:'Луч CD идёт по стороне CB, поэтому ∠1 = ∠C.',
+     trap:'CD упирается в точку D на стороне AB, а не в B. Луч CD проходит внутри угла C, между CA и CB, и отрезает лишь часть ∠1.'},
+    {id:'trapPart', txt:'∠1 — это весь угол C.',
+     trap:'∠1 = ∠ACD — только часть угла C. Вторая часть — ∠DCB (между CD и CB). Поэтому ∠C больше ∠1, а не равен ему.'}
+  ]},
+
+ {kind:'assemble', phase:'equal', badge:'∠1 = ∠2',
+  task:'Второе звено: <b>∠1 = ∠2</b>. Здесь работает наш равнобедренный △ADC.',
+  phaseTitle:'Звено 2: ∠1 = ∠2',
+  doneMsg:'∠1 = ∠2 готово. Дальше — внешний угол.',
+  stepNote:'△ADC равнобедренный ⟹ ∠1 = ∠2 (углы при основании DC).',
+  cards:[
+    {id:'iso', txt:'△ADC мы построили равнобедренным (AD = AC — радиусы окружности). В равнобедренном треугольнике <b>углы при основании равны</b>; основание здесь DC, значит <b>∠1 = ∠2</b>.', need:[], built:'iso', lit:['a1','a2'],
+     ok:'∠1 = ∠2 — углы при основании равнобедренного △ADC.'},
+    {id:'trapEq', txt:'∠1 = ∠2, потому что AC = BC.',
+     trap:'Равны AD и AC (оба радиусы окружности), а не AC и BC. Равнобедренный — это △ADC, его боковые стороны AD и AC; ∠1 и ∠2 — углы при основании DC.'}
+  ]},
+
+ {kind:'assemble', phase:'exterior', badge:'∠2 > ∠B',
+  task:'Третье звено: <b>∠2 &gt; ∠B</b>. Переводим взгляд на △BDC и его внешний угол.',
+  phaseTitle:'Звено 3: ∠2 > ∠B',
+  doneMsg:'∠2 > ∠B готово. Осталось собрать вывод.',
+  stepNote:'∠2 — внешний угол △BDC ⟹ ∠2 > ∠B.',
+  cards:[
+    {id:'extdef', txt:'Возьмём △BDC. Угол ∠2 = ∠ADC <b>смежный</b> с его внутренним углом ∠BDC (точки A, D, B на одной прямой AB) — значит ∠2 это <b>внешний угол</b> △BDC при вершине D.', need:[], lit:['a2'],
+     ok:'∠2 — внешний угол △BDC при вершине D.'},
+    {id:'ext', txt:'Внешний угол треугольника <b>больше</b> любого внутреннего, не смежного с ним (§1). В △BDC угол ∠B не смежен с ∠2 — значит <b>∠2 &gt; ∠B</b>.', need:['extdef'], lit:['a2','B'],
+     ok:'∠2 > ∠B — внешний угол больше несмежного внутреннего.'},
+    {id:'trapSmezh', txt:'∠2 > ∠B, потому что ∠2 и ∠B смежные.',
+     trap:'∠2 и ∠B даже не при одной вершине — они не смежные. ∠2 — внешний угол △BDC при вершине D; ∠B — внутренний угол этого треугольника, не смежный с ∠2.'},
+    {id:'trapExtEq', txt:'∠2 = ∠B (внешний угол равен внутреннему).',
+     trap:'Внешний угол равен СУММЕ двух несмежных внутренних: ∠2 = ∠B + ∠DCB. Раз ∠DCB больше нуля, отсюда ∠2 > ∠B, а не равенство.'}
+  ]},
+
+ {kind:'assemble', phase:'conclude', badge:'Вывод',
+  task:'Все три звена есть. Поставь их в ряд и сделай вывод. Ловушки остались.',
+  phaseTitle:'Вывод',
+  doneMsg:'Доказано: ∠C > ∠B. ∎',
+  stepNote:'∠C > ∠1 = ∠2 > ∠B ⟹ ∠C > ∠B. ∎',
+  cards:[
+    {id:'concl', txt:'Соберём цепочку: <b>∠C &gt; ∠1</b> (целое больше части), <b>∠1 = ∠2</b> (равнобедренный), <b>∠2 &gt; ∠B</b> (внешний угол). Значит <b>∠C &gt; ∠1 = ∠2 &gt; ∠B</b>, то есть <b>∠C &gt; ∠B</b>.', need:[], built:'freeze', lit:['C','a1','a2','B'],
+     ok:'∠C > ∠B. ∎'},
+    {id:'trapCirc', txt:'∠C > ∠B видно сразу: против большей стороны больший угол.',
+     trap:'Это и есть то, что мы доказываем. Взять как данность нельзя — выйдет круг. К выводу ведёт цепочка ∠C > ∠1 = ∠2 > ∠B.'},
+    {id:'trapMeas', txt:'Измерим ∠C и ∠B транспортиром.',
+     trap:'Измерение — проверка на одном чертеже (это мы прожили в лаборатории), а не доказательство. Теорема должна работать для любого треугольника с AB > AC.'}
+  ]},
+
+ {kind:'done', phase:'done', badge:'Доказано',
+  task:'Против большей стороны лежит больший угол — доказано. Откладывание AD = AC сделало рядом равнобедренный треугольник, а дальше сработали внешний угол и «целое больше части».',
+  stepNote:'∎ Против большей стороны лежит больший угол.'}
+];
+const NS=STEPS.length;
+const S=()=>STEPS[si];
+let si=0, results=[], mistakes=0, hintsUsed=0, stepResolved=false;
+let asmDone=[], asmDead=[], proved={};
+let built={D:false};
+let comp={radius:0,radiusSet:false,placed:false,dragRad:false,dragLay:false,curR:0,ptr:{x:0,y:0},lay:{x:0,y:0},nearC:false,nearD:false};
+let anim={on:false,t:0,kind:null};
+
+/* ───────── ПРИМИТИВЫ ───────── */
+function hexA(h,a){const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+function bg(){ctx.clearRect(0,0,W,HT);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,HT);ctx.fillStyle='#e7e1d2';for(let x=20;x<W;x+=25)for(let y=20;y<HT;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill()}}
+function lab(x,y,t,col,s){ctx.font='900 '+(s||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(t,x,y);ctx.fillStyle=col;ctx.fillText(t,x,y);ctx.textBaseline='alphabetic';ctx.textAlign='start'}
+function dot(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function seg(p,q,col,w){ctx.strokeStyle=col;ctx.lineWidth=w||2.8;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
+function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function noteLine(t,col){let fs=12.5;ctx.font='900 '+fs+'px system-ui';while(ctx.measureText(t).width>W-40&&fs>8.5){fs-=0.5;ctx.font='900 '+fs+'px system-ui';}lab(W/2,HT-18,t,col,fs);}
+function tick(p1,p2,n,col){const mx=(p1.x+p2.x)/2,my=(p1.y+p2.y)/2;const dx=p2.x-p1.x,dy=p2.y-p1.y,L=Math.hypot(dx,dy)||1;const ux=dx/L,uy=dy/L,nx=-uy,ny=ux;ctx.strokeStyle=col;ctx.lineWidth=2.2;for(let i=0;i<n;i++){const off=(i-(n-1)/2)*5;ctx.beginPath();ctx.moveTo(mx+ux*off-nx*6,my+uy*off-ny*6);ctx.lineTo(mx+ux*off+nx*6,my+uy*off+ny*6);ctx.stroke();}}
+function trail(P,Q,col){ctx.save();ctx.setLineDash([4,5]);ctx.globalAlpha=0.4;ctx.strokeStyle=col;ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(P.x,P.y);ctx.lineTo(Q.x,Q.y);ctx.stroke();ctx.setLineDash([]);ctx.restore();}
+// угол по реальным границам сектора (рисуем сектор между лучами V→P и V→Q)
+function drawAngle(V,P,Q,col,active,dim,r0){
+  const a1=Math.atan2(P.y-V.y,P.x-V.x),a2=Math.atan2(Q.y-V.y,Q.x-V.x);
+  let d=a2-a1;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;
+  const acw=d<0,k=active?(1+0.13*Math.sin(Date.now()/240)):1,r=active?r0*k+2:r0;
+  ctx.save(); if(dim)ctx.globalAlpha=0.34;
+  ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.arc(V.x,V.y,r,a1,a1+d,acw);ctx.closePath();ctx.fillStyle=hexA(col,0.14);ctx.fill();
+  ctx.beginPath();ctx.arc(V.x,V.y,r,a1,a1+d,acw);ctx.lineWidth=active?3.8:2.6;ctx.strokeStyle=col;ctx.lineCap='round';ctx.stroke();
+  ctx.restore();
+}
+function drawWedge(apex,bis,half,r,col){
+  ctx.beginPath();ctx.moveTo(apex.x,apex.y);ctx.arc(apex.x,apex.y,r,bis-half,bis+half);ctx.closePath();ctx.fillStyle=hexA(col,0.20);ctx.fill();
+  ctx.beginPath();ctx.arc(apex.x,apex.y,r,bis-half,bis+half);ctx.strokeStyle=col;ctx.lineWidth=3.4;ctx.lineCap='round';ctx.stroke();
+}
+function labAng(V,P,Q,txt,col,r){const b=bisHalf(V,P,Q).bis;lab(V.x+Math.cos(b)*r,V.y+Math.sin(b)*r,txt,col,13.5);}
+
+/* ───────── СЦЕНА ───────── */
+function drawGoal(){
+  const done=proved.concl;
+  const txt=done?'Доказано:  ∠C > ∠B   ▮ ч.т.д.':'Доказать:  ∠C > ∠B   (дано AB > AC)';
+  ctx.font='800 14px system-ui'; const tw=ctx.measureText(txt).width;
+  const w=tw+28,h=30,x=(W-w)/2,y=12;
+  roundRect(x,y,w,h,8);ctx.fillStyle=done?'#ecfdf5':'#f3f4f6';ctx.fill();
+  roundRect(x,y,w,h,8);ctx.lineWidth=1.4;ctx.strokeStyle=done?'#16a34a':'#cbd5e1';ctx.stroke();
+  lab(W/2,y+h/2,txt,done?'#15803d':'#1a1a2e',14);
+}
+function drawChainString(){
+  const toks=[['∠C',COL.C],['  >  ','#475569'],['∠1',COL.pair],['  =  ','#475569'],['∠2',COL.pair],['  >  ','#475569'],['∠B',COL.B]];
+  ctx.font='900 18px system-ui'; let total=0; toks.forEach(t=>total+=ctx.measureText(t[0]).width);
+  const w=total+30,h=36,bx=(W-w)/2,by=48;
+  roundRect(bx,by,w,h,9);ctx.fillStyle='#ecfdf5';ctx.fill();roundRect(bx,by,w,h,9);ctx.lineWidth=1.4;ctx.strokeStyle='#86efac';ctx.stroke();
+  let x=(W-total)/2, y=by+h/2; ctx.textAlign='left';ctx.textBaseline='middle';
+  toks.forEach(t=>{ctx.lineWidth=4;ctx.strokeStyle='rgba(236,253,245,.95)';ctx.strokeText(t[0],x,y);ctx.fillStyle=t[1];ctx.fillText(t[0],x,y);x+=ctx.measureText(t[0]).width;});
+  ctx.textAlign='start';ctx.textBaseline='alphabetic';
+}
+function drawCircle(){
+  if(comp.dragRad){
+    ctx.save();ctx.setLineDash([6,6]);ctx.strokeStyle=hexA('#7c3aed',0.6);ctx.lineWidth=1.7;ctx.beginPath();ctx.arc(A.x,A.y,comp.curR,0,7);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+    seg(A,comp.ptr,hexA('#7c3aed',0.5),1.6);
+  } else if(comp.radiusSet){
+    ctx.save();ctx.strokeStyle=hexA('#7c3aed',0.7);ctx.lineWidth=1.8;ctx.beginPath();ctx.arc(A.x,A.y,comp.radius,0,7);ctx.stroke();ctx.restore();
+  }
+}
+function drawCompassFg(){
+  if(!comp.radiusSet){
+    const pr=14*(1+0.18*Math.sin(Date.now()/300));
+    ctx.save();ctx.setLineDash([4,4]);ctx.strokeStyle=comp.nearC?'#16a34a':'#7c3aed';ctx.lineWidth=2;ctx.beginPath();ctx.arc(C.x,C.y,pr,0,7);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+    const hp=6*(1+0.16*Math.sin(Date.now()/260));
+    dot(A.x,A.y,hp,'#7c3aed','#fff'); lab(A.x+4,A.y-30,comp.dragRad?'тяни до C':'поставь циркуль в A','#6d28d9',12);
+  } else if(!comp.placed){
+    const pr=12*(1+0.2*Math.sin(Date.now()/300));
+    ctx.save();ctx.setLineDash([4,4]);ctx.strokeStyle=comp.nearD?'#16a34a':'#7c3aed';ctx.lineWidth=2.2;ctx.beginPath();ctx.arc(D.x,D.y,pr,0,7);ctx.stroke();ctx.setLineDash([]);ctx.restore();
+    if(comp.dragLay){ dot(comp.lay.x,comp.lay.y,5.5,'#7c3aed','#fff'); }
+    lab(D.x-26,D.y+18,'отметь D','#6d28d9',12);
+  }
+}
+function noteFor(cur){
+  const s=S(); let t='',col='#475569';
+  if(s.phase==='done'){t='∎ Против большей стороны лежит больший угол.';col='#15803d';}
+  else if(s.phase==='construct'){ t = !comp.radiusSet?'Поставь циркуль в A, тяни до C — строится окружность радиуса AC.':(!comp.placed?'Отметь, где окружность пересекает AB, — точку D.':'AD = AC (оба радиусы) → △ADC равнобедренный. Появились ∠1 и ∠2.'); if(comp.placed)col='#15803d'; }
+  else if(proved.concl){t='∠C > ∠1 = ∠2 > ∠B ⟹ ∠C > ∠B.';col='#15803d';}
+  else if(cur==='inside'){t='Луч CD проходит внутри угла C и делит его.';}
+  else if(cur==='part'){t='∠C = ∠1 + ∠DCB > ∠1 — целое больше части.';}
+  else if(cur==='iso'){t='∠1 = ∠2 — углы при основании равнобедренного △ADC.';}
+  else if(cur==='extdef'){t='∠2 — внешний угол △BDC при вершине D.';}
+  else if(cur==='ext'){t='Внешний угол больше несмежного: ∠2 > ∠B.';}
+  else{ const m={whole:'Покажи: луч CD внутри угла C, значит ∠C больше части ∠1.',equal:'Равнобедренный △ADC даёт ∠1 = ∠2.',exterior:'∠2 — внешний угол △BDC: он больше ∠B.',conclude:'Поставь три факта в ряд и сделай вывод.'}; t=m[s.phase]||''; }
+  noteLine(t,col);
+}
+function draw(){
+  const s=S();
+  bg();
+  if(s.phase==='construct') drawCircle();
+  if(s.phase==='construct'&&built.D){ ctx.save();ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(D.x,D.y);ctx.lineTo(C.x,C.y);ctx.closePath();ctx.fillStyle=hexA(COL.pair,0.13);ctx.fill();ctx.restore(); }
+  const cur=asmDone[asmDone.length-1]||null;
+  const card=(s.cards||[]).find(c=>c.id===cur);
+  const pulse=(card&&card.lit)||[];
+  const on=id=>pulse.includes(id), dim=id=>pulse.length>0&&!pulse.includes(id);
+  drawGoal();
+  if(proved.concl) drawChainString();
+  // стороны треугольника
+  seg(A,B,'#1a1a2e',2.8); seg(A,C,'#1a1a2e',2.8); seg(B,C,'#1a1a2e',2.8);
+  // CD и засечки AD=AC — после построения
+  if(built.D){
+    seg(C,D,'#1a1a2e',2.4);
+    tick(A,D,1,COL.pair); tick(A,C,1,COL.pair);
+  }
+  // углы
+  if(built.D){
+    drawAngle(C,A,B,COL.C,on('C'),dim('C'),52);   // ∠C
+    drawAngle(C,A,D,COL.pair,on('a1'),dim('a1'),34); // ∠1 (внутри ∠C)
+    drawAngle(D,A,C,COL.pair,on('a2'),dim('a2'),30); // ∠2 при D
+    drawAngle(B,A,C,COL.B,on('B'),dim('B'),30);   // ∠B при B
+    // летящая копия ∠2 → ∠1 (равнобедренный)
+    if(anim.on&&anim.kind==='copyIso'){ const t=anim.t; trail(D,C,COL.pair); drawWedge({x:lerp(D.x,C.x,t),y:lerp(D.y,C.y,t)},lerpAng(src2.bis,tgt1.bis,t),lerp(src2.half,tgt1.half,t),lerp(30,34,t),COL.pair); }
+  } else {
+    // до построения — лёгкая ориентировка
+    drawAngle(C,A,B,'#cbd5e1',false,false,46);
+    drawAngle(B,A,C,'#cbd5e1',false,false,28);
+  }
+  // вершины и подписи
+  dot(A.x,A.y,4.4,'#1a1a2e'); dot(B.x,B.y,4.4,'#1a1a2e'); dot(C.x,C.y,4.4,'#1a1a2e');
+  lab(A.x+2,A.y-20,'A','#1a1a2e',16); lab(B.x-6,B.y+22,'B','#1a1a2e',16); lab(C.x+20,C.y-2,'C','#1a1a2e',16);
+  if(built.D){ dot(D.x,D.y,4.2,'#1a1a2e'); lab(D.x-18,D.y+4,'D','#1a1a2e',15); labAng(C,A,D,'1',COL.pair,22); labAng(D,A,C,'2',COL.pair,20); }
+  if(s.phase==='construct') drawCompassFg();
+  noteFor(cur);
+}
+
+/* ───────── ПОСТРОЕНИЕ ЦИРКУЛЕМ (фаза construct) ───────── */
+function evToXY(e){const r=cv.getBoundingClientRect();const cx=(e.touches?e.touches[0].clientX:e.clientX),cy=(e.touches?e.touches[0].clientY:e.clientY);return {x:(cx-r.left)/(r.width||W)*W, y:(cy-r.top)/(r.height||HT)*HT};}
+function scrK(){const r=cv.getBoundingClientRect();return Math.max(1,W/(r.width||W));}
+function projAB(p){const dx=B.x-A.x,dy=B.y-A.y;let t=((p.x-A.x)*dx+(p.y-A.y)*dy)/(dx*dx+dy*dy);t=clamp(t,0,1);return {x:A.x+dx*t,y:A.y+dy*t,t};}
+function onDown(e){
+  if(S().phase!=='construct'||comp.placed) return;
+  const p=evToXY(e), k=scrK();
+  if(!comp.radiusSet){
+    if(dist(p,A)<24*k){ comp.dragRad=true; comp.curR=0; comp.ptr=p; if(e.preventDefault)e.preventDefault(); }
+  } else {
+    comp.dragLay=true; comp.lay=p; comp.nearD=dist(p,D)<20*k; if(e.preventDefault)e.preventDefault();
+  }
+}
+function onMove(e){
+  if(S().phase!=='construct'||comp.placed) return;
+  const p=evToXY(e), k=scrK();
+  if(comp.dragRad){ comp.ptr=p; comp.curR=dist(p,A); comp.nearC=dist(p,C)<18*k; if(e.preventDefault)e.preventDefault(); }
+  else if(comp.dragLay){ comp.lay=p; comp.nearD=dist(p,D)<20*k; if(e.preventDefault)e.preventDefault(); }
+}
+function onUp(){
+  if(S().phase!=='construct'){ comp.dragRad=false; comp.dragLay=false; return; }
+  if(comp.dragRad){ comp.dragRad=false;
+    if(comp.nearC){ comp.radius=dAC; comp.radiusSet=true; log('built',{what:'circle'}); setMsg('Окружность радиуса AC построена. Теперь отметь, где она пересекает сторону AB, — это точка D.','ok'); }
+    else { setMsg('Доведи циркуль ровно до точки C — окружность должна пройти через C.','info'); }
+  } else if(comp.dragLay){ comp.dragLay=false;
+    if(comp.nearD){ placeD(); }
+    else { setMsg('Отметь точку, где окружность пересекает сторону AB, — пульсирующую точку D.','info'); }
+  }
+}
+function placeD(){
+  comp.placed=true; built.D=true; log('built',{what:'D'});
+  setMsg('Отметили D — там, где окружность пересекает AB. AD и AC — радиусы одной окружности, поэтому <b>AD = AC</b>, и △ADC получился <b>равнобедренным</b> (ради него и строили). D лежит между A и B, ведь AD = AC &lt; AB. Появились отрезок CD и углы ∠1, ∠2 — теперь доказательство.','ok');
+  document.getElementById('successBar').style.display='block';
+  document.getElementById('successBar').textContent='✓ D отмечена: AD = AC';
+  advanceReady();
+}
+cv.addEventListener('mousedown',onDown); cv.addEventListener('mousemove',onMove); window.addEventListener('mouseup',onUp);
+cv.addEventListener('touchstart',onDown,{passive:false}); cv.addEventListener('touchmove',onMove,{passive:false}); window.addEventListener('touchend',onUp);
+
+/* ───────── СБОРКА (конструктор) ───────── */
+function asmCards(){return S().cards||[]}
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+function renderPool(){
+  const box=document.getElementById('opts');box.innerHTML='';
+  asmCards().forEach(c=>{ if(asmDone.includes(c.id))return;
+    const b=document.createElement('button');b.type='button';b.className='pcard';b.innerHTML=c.txt;
+    b.addEventListener('click',()=>pickCard(c.id,b));box.appendChild(b); });
+}
+function renderChain(){
+  const box=document.getElementById('steps');box.innerHTML='';
+  for(let i=0;i<si;i++){ if(!STEPS[i].stepNote)continue; const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">·</span>'+STEPS[i].stepNote;box.appendChild(d); }
+  if(S().phaseTitle){const p=document.createElement('div');p.className='phtitle';p.textContent=S().phaseTitle;box.appendChild(p);}
+  if(!asmDone.length){ if(S().kind==='assemble'){const e=document.createElement('div');e.className='chempty';e.textContent='Цепочка пуста — выбери первое утверждение.';box.appendChild(e);} return; }
+  asmDone.forEach((id,i)=>{ const c=asmCards().find(x=>x.id===id); if(!c)return; const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">'+(i+1)+'.</span>'+c.txt;box.appendChild(d); });
+}
+function triggerAnim(kind){ if(kind==='iso'){ anim={on:true,t:0,kind:'copyIso'}; } }
+function pickCard(id,btn){
+  if(stepResolved)return;
+  const c=asmCards().find(x=>x.id===id); if(!c)return;
+  if(c.trap){ mistakes++; if(!asmDead.includes(id))asmDead.push(id); log('distractor',{id}); if(btn&&btn.classList){btn.classList.add('shake');setTimeout(()=>btn.classList.remove('shake'),450);} setMsg(c.trap,'err'); return; }
+  if(c.need && !c.need.every(n=>asmDone.includes(n))){ mistakes++; log('early',{id}); if(btn&&btn.classList){btn.classList.add('shake');setTimeout(()=>btn.classList.remove('shake'),450);} setMsg('Рано: этот шаг опирается на то, что ещё не сказано.','info'); return; }
+  asmDone.push(id); proved[id]=true; if(c.built)log('built',{what:c.built}); triggerAnim(c.built); log('step',{id});
+  setMsg('Верно. '+(c.ok||''),'ok');
+  renderPool(); renderChain();
+  const done=asmCards().filter(x=>!x.trap).every(x=>asmDone.includes(x.id));
+  if(done){ setMsg(S().doneMsg||'Звено доказательства собрано.','ok'); advanceReady(); }
+}
+function advanceReady(){ stepResolved=true; const nb=document.getElementById('nextBtn'); nb.style.display='inline-block'; nb.textContent = si<NS-1?'Дальше →':'Итоги →'; }
+
+/* ───────── НАВИГАЦИЯ ───────── */
+function givenFor(s){
+  if(s.phase==='construct') return '<b>Дано:</b> △ABC, <b>AB &gt; AC</b>.<br><b>Доказать:</b> ∠C &gt; ∠B.<br>Строим: окружность с центром A радиуса AC; D — её пересечение с AB.';
+  const base='<b>Дано:</b> AB &gt; AC; AD = AC (△ADC равнобедренный); провели CD.<br><b>Доказать:</b> ∠C &gt; ∠B.';
+  if(s.phase==='whole') return base+'<br>Опора: внешний угол (§1), равнобедренный (глава II).';
+  if(s.phase==='equal') return base+'<br><b>Уже:</b> ∠C &gt; ∠1.';
+  if(s.phase==='exterior') return base+'<br><b>Уже:</b> ∠C &gt; ∠1; &nbsp;∠1 = ∠2.';
+  if(s.phase==='conclude') return '<b>Уже доказано:</b> ∠C &gt; ∠1; &nbsp;∠1 = ∠2; &nbsp;∠2 &gt; ∠B.<br><b>Осталось:</b> соединить в ∠C &gt; ∠B.';
+  return '<b>Доказано:</b> против большей стороны лежит больший угол. ∎';
+}
+function showStep(){
+  const s=S();
+  document.getElementById('pf').style.width=(si/NS*100)+'%';
+  document.getElementById('pnum').textContent='Шаг '+(si+1)+' из '+NS;
+  document.getElementById('taskText').innerHTML=s.task;
+  document.getElementById('badge').textContent=s.badge;
+  document.getElementById('givenBox').innerHTML=givenFor(s);
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  clearOpts(); stepResolved=false;
+  if(s.phase==='construct'){
+    built={D:false};
+    comp={radius:0,radiusSet:false,placed:false,dragRad:false,dragLay:false,curR:0,ptr:{x:0,y:0},lay:{x:0,y:0},nearC:false,nearD:false};
+    renderChain();
+    setMsg('Поставь циркуль в точку A и тяни до C — построится окружность радиуса AC.','info');
+  } else if(s.kind==='assemble'){
+    asmDone=[];asmDead=[]; renderPool(); renderChain();
+    setMsg('Выкладывай утверждения по порядку. Ловушки объяснят, почему так нельзя.','info');
+  } else {
+    asmDone=[]; renderChain(); setMsg('Доказательство собрано.','info'); advanceReady();
+  }
+  log('step_start',{kind:s.kind});
+}
+function nextTask(){ if(si<NS-1){si++;showStep()} else finish() }
+function resetTask(){ log('reset'); si=0;results=[];mistakes=0;hintsUsed=0;asmDone=[];asmDead=[];proved={};built={D:false};comp={radius:0,radiusSet:false,placed:false,dragRad:false,dragLay:false,curR:0,ptr:{x:0,y:0},lay:{x:0,y:0},nearC:false,nearD:false};anim={on:false,t:0,kind:null};showStep() }
+
+function showHint(){
+  if(stepResolved && S().kind!=='assemble' && S().phase!=='construct')return;
+  if(S().phase==='construct' && comp.placed)return;
+  hintsUsed++;log('hint');
+  const hb=document.getElementById('hintbox');const s=S();let h='';
+  if(s.phase==='construct') h = !comp.radiusSet ? 'Поставь циркуль в точку A (фиолетовая ножка) и тяни до C. Отпусти на C — построится окружность радиуса AC.' : 'Окружность построена. Отметь точку, где она пересекает сторону AB, — это D (пульсирующая точка).';
+  else if(s.phase==='whole'){ const next=['inside','part'].find(id=>!asmDone.includes(id)); const map={inside:'D на отрезке AB между A и B, поэтому луч CD идёт внутри угла ACB и делит его на ∠1 и ∠DCB.',part:'Внутри угла: ∠C = ∠1 + ∠DCB. Кусок ∠DCB не нулевой, значит ∠C > ∠1.'}; h=map[next]||'∠C > ∠1 готово.'; }
+  else if(s.phase==='equal') h='△ADC равнобедренный (AD = AC — радиусы) — углы при основании DC равны: ∠1 = ∠2.';
+  else if(s.phase==='exterior'){ const next=['extdef','ext'].find(id=>!asmDone.includes(id)); const map={extdef:'∠2 = ∠ADC смежен с ∠BDC (A, D, B на одной прямой) — это внешний угол △BDC при вершине D.',ext:'Внешний угол больше внутреннего, не смежного с ним (§1). ∠B — как раз такой, значит ∠2 > ∠B.'}; h=map[next]||'∠2 > ∠B готово.'; }
+  else if(s.phase==='conclude') h='Три факта в ряд: ∠C > ∠1, затем ∠1 = ∠2, затем ∠2 > ∠B. Получается ∠C > ∠1 = ∠2 > ∠B, то есть ∠C > ∠B.';
+  else h='Доказательство собрано.';
+  hb.innerHTML='💡 '+h;hb.style.display='block';
+}
+
+function finish(){
+  results.push(mistakes===0?'g':(mistakes<=2?'y':'r'));
+  log('finish',{mistakes,score:results[0]});
+  const st=lS();st.runs=(st.runs||0)+1;st.passed=true;if(results[0]==='g')st.best=Math.max(st.best||0,1);sS(st);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent='∎';
+  document.getElementById('finLbl').textContent =
+    mistakes===0?'Доказано без единой осечки!':
+    mistakes<=2?'Доказано — пара заминок по дороге.':
+    'Доказано, но стоит пройти ещё раз — особенно про внешний угол и круг.';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){ si=0;results=[];mistakes=0;hintsUsed=0;asmDone=[];asmDead=[];proved={};built={D:false};comp={radius:0,radiusSet:false,placed:false,dragRad:false,dragLay:false,curR:0,ptr:{x:0,y:0},lay:{x:0,y:0},nearC:false,nearD:false};anim={on:false,t:0,kind:null};document.getElementById('fin').style.display='none';document.getElementById('mainArea').style.display='grid';document.getElementById('bar').style.display='flex';showStep() }
+
+/* ───────── ЦИКЛ ───────── */
+function stepAnim(){ if(anim.on){ anim.t+=0.045; if(anim.t>=1){anim.t=1;anim.on=false;} } }
+log('start');
+showStep();
+(function loop(){ stepAnim(); draw(); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Внешний угол треугольника</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:manipulation}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.given{font-size:13px;line-height:1.5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:10px}
+.given b{color:#3730a3}
+.steps{font-size:12.5px;line-height:1.5;color:#334155}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:750 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt:disabled{cursor:default}
+.opt.ok-pick{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.bad-pick{background:#fee2e2;border-color:#dc2626;color:#991b1b}
+.opt.correct-reveal{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.pcard{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:10px 12px;font:650 13.5px system-ui;cursor:pointer;text-align:left;line-height:1.45}
+.pcard:hover{background:#f3f4f6}
+.pcard.shake{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.chitem{background:#f0fdf4;border-left:3px solid #16a34a;border-radius:0 8px 8px 0;padding:7px 10px;font-size:12.5px;line-height:1.4;color:#14532d;margin-bottom:5px}
+.chitem .n{font-weight:900;color:#16a34a;margin-right:4px}
+.chempty{font-size:12.5px;color:#94a3b8;font-style:italic;padding:6px}
+.phtitle{font-size:12px;font-weight:800;color:#6d28d9;text-transform:uppercase;letter-spacing:.05em;margin:2px 0 4px}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.fin{display:none;padding:24px 22px;text-align:center}
+.fin .big{font-size:40px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:14px;height:14px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:640px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:13.5px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law .nb{margin-top:10px;font-size:13px;color:#475569}
+.bridge{margin-top:10px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">△ Внешний угол треугольника</div>
+      <div class="sub">Глава IV · §1 · тренажёр 3 из 6 — внешний угол</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Внешний угол</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="440"></canvas></div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card">
+        <div class="given" id="givenBox"></div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div id="opts" class="opts"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div class="card">
+        <h2>Ход</h2>
+        <div class="steps" id="steps"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Внешний угол треугольника</b> равен сумме двух внутренних углов, не смежных с ним, — и потому <b>больше каждого</b> из них: целое больше части.
+      <div class="nb">Это прямое следствие суммы 180°: смежный внутренний ушёл в дополнение (внешний + смежный = 180°), остались два несмежных. Следствие «внешний больше несмежного» — рабочий инструмент §2: им докажем, что против бо́льшей стороны лежит бо́льший угол.</div>
+      <div class="bridge">Дальше в §1 — какими бывают треугольники по углам и сторонам. <a href="ch4-p1-t4-triangle-types.html">Виды треугольников →</a></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="nextTask()">Дальше →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС / ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch4-p1-t3-exterior-angle';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),step:si+1,phase:S().phase,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640, HT=440, PI=Math.PI;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=HT*dpr;cv.style.aspectRatio=W+'/'+HT;ctx.scale(dpr,dpr);
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const lerp=(a,b,t)=>a+(b-a)*t;
+function lerpAng(a,b,t){let d=b-a;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;return a+d*t;}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+/* ───────── ГЕОМЕТРИЯ (та же фигура, что в t1–t2) ─────────
+   Основание AB продолжено за B до D. Внешний угол при B — между стороной BC и
+   лучом BD. Он смежный с ∠B, и равен ∠A + ∠C (двум несмежным внутренним).      */
+const A={x:120,y:360}, B={x:520,y:360}, C={x:265,y:135}, D={x:610,y:360};
+const COL={A:'#d97706', B:'#db2777', C:'#0d9488', ext:'#7c3aed'};
+function angOf(V,P,Q){const a1=Math.atan2(P.y-V.y,P.x-V.x),a2=Math.atan2(Q.y-V.y,Q.x-V.x);let d=a2-a1;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;return Math.abs(d);}
+function bisHalf(V,P,Q){const a1=Math.atan2(P.y-V.y,P.x-V.x),a2=Math.atan2(Q.y-V.y,Q.x-V.x);let d=a2-a1;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;return{bis:a1+d/2,half:Math.abs(d)/2};}
+const angA=angOf(A,B,C), angB=angOf(B,A,C), angC=angOf(C,A,B);
+const degB=Math.round(angB*180/PI), degExt=180-degB;
+function nrm2(a){while(a<0)a+=2*PI;while(a>=2*PI)a-=2*PI;return a;}
+const dBC=nrm2(Math.atan2(C.y-B.y,C.x-B.x));     // направление B→C в [0,2π)
+const extC={a1:dBC,        a2:dBC+angC};          // копия ∠C — у стороны BC
+const extA={a1:dBC+angC,   a2:2*PI};              // копия ∠A — у луча BD
+const srcA=bisHalf(A,B,C), srcC=bisHalf(C,A,B);   // ∠A при A, ∠C при C — откуда летят
+const tgtC={bis:(extC.a1+extC.a2)/2, half:angC/2};
+const tgtA={bis:(extA.a1+extA.a2)/2, half:angA/2};
+const bisExt=(dBC+2*PI)/2;
+
+/* ───────── ШАГИ (словарь → теорема → следствие → итог) ───────── */
+const STEPS=[
+ {kind:'choose', phase:'vocab', badge:'Что такое внешний угол',
+  task:'Продолжим основание за B до точки D. Между стороной BC и продолжением BD появился угол — снаружи треугольника. Какой угол при вершине B называют <b>внешним</b>?',
+  prompt:'Выбери внешний угол при B.', lit:['ext'],
+  stepNote:'Внешний угол при B — между стороной BC и продолжением основания BD; он смежный с ∠B (вместе 180°).',
+  q:[
+   {t:'Угол между BC и BD.', ok:true,
+    after:'Верно. Он смежный с внутренним ∠B: лежат на одной прямой AD, вместе 180°. (Продолжив вторую сторону, получим второй внешний угол — вертикальный этому, значит равный.)'},
+   {t:'Сам угол ∠B треугольника (между BA и BC).',
+    why:'Это внутренний угол. Внешний — смежный ему, снаружи, по другую сторону от BC.'},
+   {t:'Угол при вершине A.',
+    why:'∠A — внутренний угол при другой вершине. Внешний строят у той же вершины B, продолжив её сторону.'}
+  ]},
+
+ {kind:'assemble', phase:'theorem', badge:'Внешний = сумма двух несмежных',
+  task:'Докажем: внешний угол при B равен сумме двух внутренних, не смежных с ним, — то есть <b>∠A + ∠C</b>. Опора — сумма углов и смежные углы. Среди карточек ловушки.',
+  phaseTitle:'Теорема о внешнем угле',
+  stepNote:'Внешний угол при B = ∠A + ∠C (вычли ∠B из суммы 180°).',
+  cards:[
+    {id:'sum', txt:'∠A + ∠B + ∠C = 180° — теорема о сумме углов.', need:[], lit:['A','B','C'],
+     ok:'∠A + ∠B + ∠C = 180° (сумма углов треугольника).'},
+    {id:'adj', txt:'Внешний угол при B + ∠B = 180° — они <b>смежные</b> (лежат на прямой AD).', need:[], lit:['ext','B'],
+     ok:'внешний + ∠B = 180° (смежные).'},
+    {id:'equate', txt:'Оба равенства дают 180°, значит <b>∠A + ∠B + ∠C = внешний угол при B + ∠B</b>.', need:['sum','adj'], lit:['A','B','C','ext'],
+     ok:'Приравняли: ∠A + ∠B + ∠C = внешний + ∠B (оба равны 180°).'},
+    {id:'concl', txt:'Сократим <b>∠B</b> в обеих частях: <b>внешний угол при B = ∠A + ∠C</b>.', need:['equate'], built:'fill', lit:['A','C','ext'],
+     ok:'внешний = ∠A + ∠C. ∎'},
+    {id:'trapAll', txt:'внешний угол = ∠A + ∠B + ∠C.',
+     trap:'Нет: ∠B как раз смежный внешнему, его мы и вычитаем. Остаются два не смежных — ∠A и ∠C.'},
+    {id:'trapVert', txt:'внешний угол = ∠B.',
+     trap:'Это путаница с вертикальным. Вертикальный к ∠B равен ∠B, но он внутренний. Внешний угол — смежный ∠B, а не равный ему.'},
+    {id:'trapCirc', txt:'внешний = ∠A + ∠C — это же и есть утверждение, возьмём как есть.',
+     trap:'Это вывод теоремы, его и доказываем. Нужно дойти до него — через сумму 180° и смежность.'}
+  ]},
+
+ {kind:'choose', phase:'corollary', badge:'Следствие',
+  task:'Внешний угол при B = ∠A + ∠C. Что отсюда следует про внешний угол и <b>каждый</b> из этих двух?',
+  prompt:'Выбери верное следствие.', lit:['ext','A','C'],
+  stepNote:'Следствие: внешний угол больше каждого несмежного внутреннего (внешний > ∠A и > ∠C).',
+  q:[
+   {t:'Внешний угол больше каждого из них: внешний > ∠A и внешний > ∠C.', ok:true,
+    after:'Целое больше своей части — углы положительны, поэтому внешний больше каждого.'},
+   {t:'Внешний угол больше суммы ∠A + ∠C.',
+    why:'Нет, он равен этой сумме. Больше он — каждого слагаемого по отдельности.'},
+   {t:'Внешний угол может быть меньше ∠A.',
+    why:'Нет: внешний = ∠A + ∠C, а ∠C > 0, значит внешний всегда больше ∠A.'}
+  ]},
+
+ {kind:'done', phase:'done', badge:'Готово',
+  task:'Внешний угол треугольника равен сумме двух не смежных с ним внутренних — и потому больше каждого из них. Всё это выросло из суммы углов 180°.',
+  stepNote:'∎ Внешний угол = сумма двух несмежных; и больше каждого из них.'}
+];
+const NS=STEPS.length;
+const S=()=>STEPS[si];
+let si=0, results=[], mistakes=0, hintsUsed=0, stepResolved=false;
+let asmDone=[], asmDead=[], proved={};
+let anim={on:false,t:0,kind:null};
+
+/* ───────── ПРИМИТИВЫ ───────── */
+function hexA(h,a){const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+function bg(){ctx.clearRect(0,0,W,HT);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,HT);ctx.fillStyle='#e7e1d2';for(let x=20;x<W;x+=25)for(let y=20;y<HT;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill()}}
+function lab(x,y,t,col,s){ctx.font='900 '+(s||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(t,x,y);ctx.fillStyle=col;ctx.fillText(t,x,y);ctx.textBaseline='alphabetic';ctx.textAlign='start'}
+function dot(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function seg(p,q,col,w){ctx.strokeStyle=col;ctx.lineWidth=w||2.8;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
+function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function noteLine(t,col){let fs=12.5;ctx.font='900 '+fs+'px system-ui';while(ctx.measureText(t).width>W-40&&fs>8.5){fs-=0.5;ctx.font='900 '+fs+'px system-ui';}lab(W/2,HT-18,t,col,fs);}
+function trail(P,Q,col){ctx.save();ctx.setLineDash([4,5]);ctx.globalAlpha=0.4;ctx.strokeStyle=col;ctx.lineWidth=1.6;ctx.beginPath();ctx.moveTo(P.x,P.y);ctx.lineTo(Q.x,Q.y);ctx.stroke();ctx.setLineDash([]);ctx.restore();}
+function arcSeg(V,a1,a2,col,active,dim,fill,r0){
+  const rb=r0||34, k=active?(1+0.13*Math.sin(Date.now()/240)):1, r=active?rb*k+2:rb;
+  ctx.save(); if(dim)ctx.globalAlpha=0.34;
+  if(fill){ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.arc(V.x,V.y,r,a1,a2);ctx.closePath();ctx.fillStyle=hexA(col,0.16);ctx.fill();}
+  ctx.beginPath();ctx.arc(V.x,V.y,r,a1,a2);ctx.lineWidth=active?3.6:2.6;ctx.strokeStyle=col;ctx.lineCap='round';ctx.stroke();
+  ctx.restore();
+}
+function drawAngle(V,P,Q,col,active,dim,r0){
+  const a1=Math.atan2(P.y-V.y,P.x-V.x),a2=Math.atan2(Q.y-V.y,Q.x-V.x);
+  let d=a2-a1;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;
+  const acw=d<0,k=active?(1+0.13*Math.sin(Date.now()/240)):1,r=active?r0*k+2:r0;
+  ctx.save(); if(dim)ctx.globalAlpha=0.34;
+  ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.arc(V.x,V.y,r,a1,a1+d,acw);ctx.closePath();ctx.fillStyle=hexA(col,0.14);ctx.fill();
+  ctx.beginPath();ctx.arc(V.x,V.y,r,a1,a1+d,acw);ctx.lineWidth=active?3.8:2.6;ctx.strokeStyle=col;ctx.lineCap='round';ctx.stroke();
+  ctx.restore();
+}
+function drawWedge(apex,bis,half,r,col){
+  ctx.beginPath();ctx.moveTo(apex.x,apex.y);ctx.arc(apex.x,apex.y,r,bis-half,bis+half);ctx.closePath();ctx.fillStyle=hexA(col,0.20);ctx.fill();
+  ctx.beginPath();ctx.arc(apex.x,apex.y,r,bis-half,bis+half);ctx.strokeStyle=col;ctx.lineWidth=3.4;ctx.lineCap='round';ctx.stroke();
+}
+function extOutline(alpha,active){
+  ctx.save();ctx.globalAlpha=alpha;
+  const k=active?(1+0.1*Math.sin(Date.now()/240)):1, r=38*k;
+  ctx.beginPath();ctx.arc(B.x,B.y,r,dBC,2*PI);ctx.strokeStyle=COL.ext;ctx.lineWidth=active?3.4:2.8;ctx.lineCap='round';ctx.stroke();
+  ctx.restore();
+}
+function drawEq(segs,y,size){
+  let fs=size||16;
+  const measure=()=>{ctx.font='800 '+fs+'px system-ui';return segs.reduce((s,sg)=>s+ctx.measureText(sg.txt).width,0);};
+  while(measure()>W-30 && fs>9){fs-=0.5;}
+  let x=(W-measure())/2;
+  ctx.textAlign='left';ctx.textBaseline='middle';
+  segs.forEach(sg=>{
+    const w=ctx.measureText(sg.txt).width;
+    ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(sg.txt,x,y);
+    ctx.fillStyle=sg.col;ctx.fillText(sg.txt,x,y);
+    if(sg.strike){ ctx.strokeStyle='#111';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+w,y);ctx.stroke(); }
+    x+=w;
+  });
+  ctx.textAlign='start';ctx.textBaseline='alphabetic';
+}
+
+/* ───────── СЦЕНА ───────── */
+function goalText(){
+  const ph=S().phase;
+  if(ph==='vocab') return {t:'Внешний угол при вершине B',done:false};
+  if(ph==='theorem') return {t:proved.concl?'Доказано: внешний угол при B = ∠A + ∠C':'Доказать: внешний угол при B = ∠A + ∠C',done:proved.concl};
+  if(ph==='corollary') return {t:'Следствие: внешний угол > ∠A и > ∠C',done:false};
+  return {t:'Внешний угол = ∠A + ∠C   ▮ ч.т.д.',done:true};
+}
+function drawBanner(txt,done){
+  ctx.font='800 14px system-ui'; const tw=ctx.measureText(txt).width;
+  const w=tw+28,h=30,x=(W-w)/2,y=12;
+  roundRect(x,y,w,h,8);ctx.fillStyle=done?'#ecfdf5':'#f3f4f6';ctx.fill();
+  roundRect(x,y,w,h,8);ctx.lineWidth=1.4;ctx.strokeStyle=done?'#16a34a':'#cbd5e1';ctx.stroke();
+  lab(W/2,y+h/2,txt,done?'#15803d':'#1a1a2e',14);
+}
+function segsFor(cur){
+  const D='#475569';
+  if(cur==='sum')    return [{txt:'∠A',col:COL.A},{txt:' + ',col:D},{txt:'∠B',col:COL.B},{txt:' + ',col:D},{txt:'∠C',col:COL.C},{txt:' = 180°',col:D}];
+  if(cur==='adj')    return [{txt:'внешний',col:COL.ext},{txt:' + ',col:D},{txt:'∠B',col:COL.B},{txt:' = 180°',col:D}];
+  if(cur==='equate') return [{txt:'∠A',col:COL.A},{txt:' + ',col:D},{txt:'∠B',col:COL.B},{txt:' + ',col:D},{txt:'∠C',col:COL.C},{txt:'  =  ',col:D},{txt:'внешний',col:COL.ext},{txt:' + ',col:D},{txt:'∠B',col:COL.B}];
+  if(cur==='concl')  return [{txt:'внешний',col:COL.ext},{txt:'  =  ',col:D},{txt:'∠A',col:COL.A},{txt:' + ',col:D},{txt:'∠C',col:COL.C}];
+  return null;
+}
+function eqLines(cur){
+  const D='#475569';
+  const Ai=()=>({txt:'∠A',col:COL.A}), Ci=()=>({txt:'∠C',col:COL.C}), Ex=()=>({txt:'внешний',col:COL.ext}), pl=()=>({txt:' + ',col:D}), eq=()=>({txt:'  =  ',col:D});
+  const Bi=s=>({txt:'∠B',col:COL.B,strike:!!s});
+  if(cur==='concl') return [
+    [Ai(),pl(),Bi(false),pl(),Ci(),eq(),Ex(),pl(),Bi(false)],   // приравняли
+    [Ai(),pl(),Bi(true), pl(),Ci(),eq(),Ex(),pl(),Bi(true)],    // сокращаем ∠B с обеих сторон
+    [Ai(),pl(),Ci(),eq(),Ex()]                                  // остаётся: стороны на месте
+  ];
+  return null;
+}
+function noteFor(cur){
+  const s=S(); let t='',col='#475569';
+  if(s.phase==='done'){t='∎ Внешний угол = сумме двух несмежных; и больше каждого из них.';col='#15803d';}
+  else if(s.phase==='vocab'){t='Внешний угол смежен с ∠B: '+degB+'° + '+degExt+'° = 180°.';}
+  else if(cur==='sum'){t='∠A + ∠B + ∠C = 180° — сумма углов треугольника.';}
+  else if(cur==='adj'){t='Внешний угол и ∠B — смежные: вместе 180°.';}
+  else if(cur==='equate'){t='Оба равны 180° → приравняли: ∠A+∠B+∠C = внешний+∠B.';}
+  else if(cur==='concl'){t='Из 180° убрали ∠B — остаётся ∠A + ∠C = внешний угол. ✓';col='#15803d';}
+  else if(s.phase==='theorem'){t='Внешний = сумма двух несмежных. Опора — сумма 180° и смежность.';}
+  else if(s.phase==='corollary'){t='Внешний = ∠A + ∠C, значит больше каждого: целое больше части.';}
+  if(t)noteLine(t,col);
+}
+function draw(){
+  bg();
+  const s=S();
+  const cur=asmDone[asmDone.length-1]||null;
+  let pulse=[];
+  if(s.kind==='assemble'){ const card=(s.cards||[]).find(c=>c.id===cur); pulse=(card&&card.lit)||[]; }
+  else pulse=s.lit||[];
+  const on=id=>pulse.includes(id), dim=id=>pulse.length>0&&!pulse.includes(id);
+  const cmp = (proved.concl && (s.phase==='corollary'||s.phase==='done')) ? ((Math.floor(Date.now()/1500)%2===0)?'A':'C') : null;
+  const g=goalText(); drawBanner(g.t,g.done);
+  // стороны + продолжение основания
+  seg(A,B,'#1a1a2e',2.8); seg(A,C,'#1a1a2e',2.8); seg(B,C,'#1a1a2e',2.8); seg(B,D,'#1a1a2e',2.6);
+  // внутренние углы
+  drawAngle(A,B,C,COL.A,on('A'),dim('A'),26);
+  drawAngle(B,A,C,COL.B,on('B'),dim('B'),38);
+  drawAngle(C,A,B,COL.C,on('C'),dim('C'),26);
+  // внешний угол при B
+  if(anim.on&&anim.kind==='fill'){
+    const t=anim.t;
+    const tc=clamp(t/0.55,0,1);
+    if(tc>0){ trail(C,B,COL.C); drawWedge({x:lerp(C.x,B.x,tc),y:lerp(C.y,B.y,tc)},lerpAng(srcC.bis,tgtC.bis,tc),lerp(srcC.half,tgtC.half,tc),lerp(26,38,tc),COL.C); }
+    const ta=clamp((t-0.45)/0.55,0,1);
+    if(ta>0){ trail(A,B,COL.A); drawWedge({x:lerp(A.x,B.x,ta),y:lerp(A.y,B.y,ta)},lerpAng(srcA.bis,tgtA.bis,ta),lerp(srcA.half,tgtA.half,ta),lerp(26,38,ta),COL.A); }
+    extOutline(0.45,false);
+  } else if(proved.concl){
+    if(cmp){
+      arcSeg(B,extC.a1,extC.a2,COL.C,cmp==='C',cmp!=='C',true,38);
+      arcSeg(B,extA.a1,extA.a2,COL.A,cmp==='A',cmp!=='A',true,38);
+      extOutline(1,true);
+    } else {
+      arcSeg(B,extC.a1,extC.a2,COL.C,on('C')||on('ext'),false,true,38);
+      arcSeg(B,extA.a1,extA.a2,COL.A,on('A')||on('ext'),false,true,38);
+      extOutline(1,on('ext'));
+    }
+    // луч из B, делящий внешний угол на ∠C (у BC) и ∠A (у BD) — пунктирный
+    const bnd=dBC+angC;
+    ctx.save();ctx.strokeStyle='#334155';ctx.lineWidth=1.6;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(B.x,B.y);ctx.lineTo(B.x+Math.cos(bnd)*42,B.y+Math.sin(bnd)*42);ctx.stroke();ctx.restore();
+  } else {
+    extOutline(1,on('ext'));
+  }
+  // вершины и подписи
+  dot(A.x,A.y,4.2,'#1a1a2e'); dot(B.x,B.y,4.2,'#1a1a2e'); dot(C.x,C.y,4.2,'#1a1a2e'); dot(D.x,D.y,3.6,'#94a3b8');
+  lab(A.x-16,A.y+20,'A',COL.A,16); lab(B.x-2,B.y+22,'B',COL.B,16); lab(C.x,C.y-22,'C',COL.C,16); lab(D.x+12,D.y+16,'D','#94a3b8',14);
+  if(proved.concl){
+    lab(B.x+Math.cos((extC.a1+extC.a2)/2)*52,B.y+Math.sin((extC.a1+extC.a2)/2)*52,'∠C',COL.C,12);
+    lab(B.x+Math.cos((extA.a1+extA.a2)/2)*52,B.y+Math.sin((extA.a1+extA.a2)/2)*52,'∠A',COL.A,12);
+  } else {
+    lab(B.x+Math.cos(bisExt)*54,B.y+Math.sin(bisExt)*54,'внеш.',COL.ext,12);
+  }
+  if(s.phase==='theorem'){
+    const lines=eqLines(cur);
+    if(lines){ const y0=HT-54; lines.forEach((ln,i)=>drawEq(ln,y0+i*18,14)); }
+    else { const eq=segsFor(cur); if(eq) drawEq(eq,HT-20,16); else noteLine('Собери равенство по карточкам.','#475569'); }
+  }
+  else if(cmp){
+    noteLine('Целое больше части: внешний > ∠'+cmp+'   (внешний = ∠A + ∠C).', cmp==='A'?'#b45309':'#0f766e');
+  }
+  else noteFor(cur);
+}
+
+/* ───────── ПАНЕЛИ ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+
+/* ───────── ВЫБОР ───────── */
+function renderOpts(list){
+  const box=document.getElementById('opts');box.innerHTML='';
+  list.forEach((o,i)=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML=o.t;b.dataset.i=i;
+    b.addEventListener('click',()=>o.fn(b));box.appendChild(b)});
+}
+function answerChoice(opt,btn,arr){
+  if(stepResolved)return;
+  if(opt.ok){
+    btn.classList.add('ok-pick');
+    [...document.getElementById('opts').children].forEach(b=>b.disabled=true);
+    results.push(mistakes===0&&hintsUsed===0?'g':(mistakes<=1?'y':'r'));
+    mistakes=0;hintsUsed=0; log('choice_ok');
+    setMsg('Верно. '+(opt.after||''),'ok'); advanceReady();
+  }else{
+    mistakes++;log('distractor',{pick:opt.t});
+    btn.classList.add('bad-pick');
+    const idx=arr.findIndex(o=>o.ok); const bs=document.getElementById('opts').children;
+    if(bs[idx])bs[idx].classList.add('correct-reveal');
+    setMsg('Не так. '+(opt.why||'')+' Верный ответ подсвечен.','err');
+  }
+}
+
+/* ───────── СБОРКА ───────── */
+function asmCards(){return S().cards||[]}
+function renderPool(){
+  const box=document.getElementById('opts');box.innerHTML='';
+  asmCards().forEach(c=>{ if(asmDone.includes(c.id))return;
+    const b=document.createElement('button');b.type='button';b.className='pcard';b.innerHTML=c.txt;
+    b.addEventListener('click',()=>pickCard(c.id,b));box.appendChild(b); });
+}
+function renderChain(){
+  const box=document.getElementById('steps');box.innerHTML='';
+  for(let i=0;i<si;i++){ if(!STEPS[i].stepNote)continue; const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">·</span>'+STEPS[i].stepNote;box.appendChild(d); }
+  if(S().kind==='assemble' && S().phaseTitle){const p=document.createElement('div');p.className='phtitle';p.textContent=S().phaseTitle;box.appendChild(p);}
+  if(S().kind==='assemble' && !asmDone.length){const e=document.createElement('div');e.className='chempty';e.textContent='Цепочка пуста — выбери первое утверждение.';box.appendChild(e);}
+  asmDone.forEach((id,i)=>{ const c=asmCards().find(x=>x.id===id); const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">'+(i+1)+'.</span>'+c.txt;box.appendChild(d); });
+}
+function triggerAnim(kind){ if(kind==='fill'){ anim={on:true,t:0,kind}; } }
+function pickCard(id,btn){
+  if(stepResolved)return;
+  const c=asmCards().find(x=>x.id===id);
+  if(c.trap){ mistakes++; if(!asmDead.includes(id))asmDead.push(id); log('distractor',{id}); btn.classList.add('shake'); setMsg(c.trap,'err'); setTimeout(()=>btn.classList.remove('shake'),450); return; }
+  if(c.need && !c.need.every(n=>asmDone.includes(n))){ mistakes++; log('early',{id}); btn.classList.add('shake'); setMsg('Рано: этот шаг опирается на то, что ещё не сказано.','info'); setTimeout(()=>btn.classList.remove('shake'),450); return; }
+  asmDone.push(id); proved[id]=true; if(c.built){log('built',{what:c.built}); triggerAnim(c.built);} log('step',{id});
+  setMsg('Верно. '+(c.ok||''),'ok');
+  renderPool(); renderChain();
+  const concl=asmCards().filter(x=>!x.trap).every(x=>asmDone.includes(x.id));
+  if(concl){ results.push(mistakes===0?'g':(mistakes<=1?'y':'r')); mistakes=0; setMsg('Теорема доказана: внешний угол = ∠A + ∠C. ∎','ok'); advanceReady(); }
+}
+function advanceReady(){ stepResolved=true; const nb=document.getElementById('nextBtn'); nb.style.display='inline-block'; nb.textContent = si<NS-1?'Дальше →':'Итоги →'; }
+
+/* ───────── НАВИГАЦИЯ ───────── */
+function givenFor(s){
+  if(s.phase==='vocab') return '<b>Дано:</b> треугольник ABC; основание продолжено за B до D.';
+  if(s.phase==='theorem') return '<b>Дано:</b> треугольник ABC; внешний угол при B (основание продолжено до D).<br>Известно: ∠A + ∠B + ∠C = 180°.<br><b>Доказать:</b> внешний угол при B = ∠A + ∠C.';
+  if(s.phase==='corollary') return '<b>Дано:</b> внешний угол при B = ∠A + ∠C (доказано).<br><b>Следствие?</b>';
+  return '<b>Итог:</b> внешний угол = ∠A + ∠C; и больше каждого из них.';
+}
+function showStep(){
+  const s=S();
+  document.getElementById('pf').style.width=(si/NS*100)+'%';
+  document.getElementById('pnum').textContent='Шаг '+(si+1)+' из '+NS;
+  document.getElementById('taskText').innerHTML=s.task;
+  document.getElementById('badge').textContent=s.badge;
+  document.getElementById('givenBox').innerHTML=givenFor(s);
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  clearOpts(); stepResolved=false; asmDone=[]; asmDead=[];
+  if(s.q){ const sh=shuffle(s.q.slice()); renderOpts(sh.map(o=>({t:o.t,fn:b=>answerChoice(o,b,sh)}))); setMsg(s.prompt||'Выбери ответ.','info'); renderChain(); }
+  else if(s.kind==='assemble'){ renderPool(); renderChain(); setMsg('Выкладывай утверждения по порядку. Ловушки объяснят, почему так нельзя.','info'); }
+  else { renderChain(); setMsg('Внешний угол разобран.','info'); advanceReady(); }
+  log('step_start',{kind:s.kind});
+}
+function nextTask(){ if(si<NS-1){si++;showStep()} else finish() }
+function resetTask(){ log('reset'); si=0;results=[];mistakes=0;hintsUsed=0;asmDone=[];asmDead=[];proved={};anim={on:false,t:0,kind:null};showStep() }
+
+function showHint(){
+  if(stepResolved && S().kind!=='assemble')return;
+  hintsUsed++;log('hint');
+  const hb=document.getElementById('hintbox');const s=S();let h='';
+  if(s.phase==='vocab')h='Внешний угол — снаружи треугольника, между стороной BC и продолжением основания BD. Он смежный с ∠B.';
+  else if(s.phase==='theorem')h='∠A+∠B+∠C=180° и внешний+∠B=180°. Справа в обоих — 180°: приравняй и сократи ∠B.';
+  else if(s.phase==='corollary')h='внешний = ∠A + ∠C. Каждое слагаемое положительно, значит сумма больше любого из них.';
+  else h='Внешний угол разобран.';
+  hb.innerHTML='💡 '+h;hb.style.display='block';
+}
+
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{good:g,total:results.length});
+  const st=lS();st.runs=(st.runs||0)+1;st.passed=true;if(g>(st.best||0))st.best=g;sS(st);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent='✓';
+  document.getElementById('finLbl').textContent =
+    g>=3?'Внешний угол разобран без единой осечки!':
+    g>=2?'Разобрано. Загляни в шаг, где сбился.':
+    'Стоит пройти ещё раз — особенно теорему и путаницу с вертикальным.';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){ si=0;results=[];mistakes=0;hintsUsed=0;asmDone=[];asmDead=[];proved={};anim={on:false,t:0,kind:null};document.getElementById('fin').style.display='none';document.getElementById('mainArea').style.display='grid';document.getElementById('bar').style.display='flex';showStep() }
+
+/* ───────── ЦИКЛ ───────── */
+function stepAnim(){ if(anim.on){ anim.t+=0.03; if(anim.t>=1){anim.t=1;anim.on=false;} } }
+showStep();
+(function loop(){ stepAnim(); draw(); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

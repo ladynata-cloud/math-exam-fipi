@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Когда прямые параллельны</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.45}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.gauge{display:flex;flex-direction:column;gap:6px;font-size:14px}
+.gauge .row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed #e5e7eb}
+.gauge .row:last-child{border-bottom:0}
+.gauge .v{font-weight:900;font-variant-numeric:tabular-nums}
+.v-ok{color:#16a34a}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:750 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt.ok-pick{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.bad-pick{background:#fee2e2;border-color:#dc2626;color:#991b1b}
+.opt.correct-reveal{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.proof{display:none;background:#ecfdf5;color:#14532d;border:1.5px solid #bbf7d0;border-radius:12px;padding:12px;font-size:13px;line-height:1.5}
+.proof b{color:#166534}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.small{font-size:12px;color:#64748b;line-height:1.45}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.tool.act{background:#ede9fe;border-color:#a78bfa;color:#5b21b6}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:15px;height:15px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:620px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law ol{margin:8px 0;padding-left:22px}
+.law li{margin:4px 0}
+.bridge{margin-top:10px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">∥ Когда прямые параллельны</div>
+      <div class="sub">Глава III · §1 · тренажёр 3 из 6 — признаки параллельности</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Поймайте равенство углов</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="440"></canvas></div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card" id="gaugeCard">
+        <h2 id="gaugeTtl">Углы</h2>
+        <div class="gauge" id="gauge"></div>
+      </div>
+      <div id="opts" class="opts"></div>
+      <div id="msg" class="msg info"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div id="proof" class="proof"></div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Признаки параллельности двух прямых.</b> Если при пересечении двух прямых секущей:
+      <ol>
+        <li>накрест лежащие углы <b>равны</b>, или</li>
+        <li>соответственные углы <b>равны</b>, или</li>
+        <li>сумма односторонних углов равна <b>180°</b>,</li>
+      </ol>
+      то прямые <b>параллельны</b>. Все три — про один и тот же момент: вы видели, как при выполнении любого из условий точка пересечения улетала в бесконечность.
+      <div class="bridge">Мы это <b>увидели</b> на чертеже. Но откуда уверенность, что так будет всегда, а не только здесь? Это нужно <b>доказать</b> — соберём доказательство в следующем тренажёре: <a href="ch3-p1-t4-proof-sign.html">Почему признак работает →</a></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool act" id="pBtn" onclick="togglePoint()">● Точка пересечения: вкл</button>
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="nextTask()">Следующая →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС/ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch3-p1-t3-sign-lab';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),task:ti+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640,H=440;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+
+/* ───────── ГЕОМЕТРИЯ (как t2, проверена) ───────── */
+let aAng=0.10, bAng=-0.10, cAng=1.05;
+const aP={x:90,y:140};
+let bP={x:90,y:330};
+let cP={x:230,y:60};
+let U={x:0,y:0}, L={x:0,y:0};
+const AR=34;
+function inter(p1,a1,p2,a2){
+  const d1={x:Math.cos(a1),y:Math.sin(a1)}, d2={x:Math.cos(a2),y:Math.sin(a2)};
+  const den=d1.x*d2.y-d1.y*d2.x; if(Math.abs(den)<1e-9)return null;
+  const t=((p2.x-p1.x)*d2.y-(p2.y-p1.y)*d2.x)/den;
+  return {x:p1.x+d1.x*t, y:p1.y+d1.y*t};
+}
+function midDir(d1,d2){return Math.atan2(Math.sin(d1)+Math.sin(d2),Math.cos(d1)+Math.cos(d2));}
+let angBounds={}, angMid={}, angPos={};
+function recompute(){
+  U=inter(aP,aAng,cP,cAng); L=inter(bP,bAng,cP,cAng);
+  const dU={aP:aAng,aM:aAng+Math.PI,cP:cAng,cM:cAng+Math.PI};
+  const dL={aP:bAng,aM:bAng+Math.PI,cP:cAng,cM:cAng+Math.PI};
+  const bnd={
+    1:[dU.cM,dU.aP],2:[dU.aM,dU.cM],3:[dU.aM,dU.cP],4:[dU.cP,dU.aP],
+    5:[dL.cM,dL.aP],6:[dL.aM,dL.cM],7:[dL.aM,dL.cP],8:[dL.cP,dL.aP]
+  };
+  angBounds={};
+  for(const k in bnd){let a1=bnd[k][0],a2=bnd[k][1],d=a2-a1;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;angBounds[k]={a1,a2:a1+d};}
+  angMid={
+    1:midDir(dU.cM,dU.aP),2:midDir(dU.aM,dU.cM),3:midDir(dU.aM,dU.cP),4:midDir(dU.cP,dU.aP),
+    5:midDir(dL.cM,dL.aP),6:midDir(dL.aM,dL.cM),7:midDir(dL.aM,dL.cP),8:midDir(dL.cP,dL.aP)
+  };
+  angPos={};
+  for(let k=1;k<=4;k++)angPos[k]={x:U.x+Math.cos(angMid[k])*AR,y:U.y+Math.sin(angMid[k])*AR};
+  for(let k=5;k<=8;k++)angPos[k]={x:L.x+Math.cos(angMid[k])*AR,y:L.y+Math.sin(angMid[k])*AR};
+}
+recompute();
+function angleMeasure(k){
+  let d=Math.abs(((k<=4?aAng:bAng)-cAng))%Math.PI; let deg=d*180/Math.PI;
+  if(k===2||k===4||k===6||k===8)deg=180-deg;
+  return Math.abs(deg);
+}
+// пересечение прямых a и b (точка P снизу), null если параллельны
+function abIntersection(){
+  if(Math.abs(aAng-bAng)<0.004)return null;
+  return inter(aP,aAng,bP,bAng);
+}
+
+/* ───────── ЗАДАЧИ ───────── */
+const TASKS=[
+ {kind:'lab', pair:[3,5], rule:'eq',  name:'накрест лежащие'},
+ {kind:'lab', pair:[2,6], rule:'eq',  name:'соответственные'},
+ {kind:'lab', pair:[4,5], rule:'sum', name:'односторонние'},
+ {kind:'reverse'},
+ {kind:'why', pair:[3,5], rule:'eq', name:'накрест лежащие'}
+];
+const NT=TASKS.length;
+const T=()=>TASKS[ti];
+
+let ti=0, results=[], mistakes=0, hintsUsed=0, solvedThis=false;
+let mode=null, showP=true, highlight=[];
+let revCfg=null;  // конфигурация обратной задачи
+
+/* ───────── ОТРИСОВКА ───────── */
+function bg(){
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill()}
+}
+function lineThrough(p,ang,col,wid){
+  const big=2000,dx=Math.cos(ang),dy=Math.sin(ang);
+  ctx.strokeStyle=col;ctx.lineWidth=wid||2.8;
+  ctx.beginPath();ctx.moveTo(p.x-dx*big,p.y-dy*big);ctx.lineTo(p.x+dx*big,p.y+dy*big);ctx.stroke();
+}
+function lab(x,y,txt,col,size){
+  ctx.font='900 '+(size||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);ctx.textBaseline='alphabetic';
+}
+function dot(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function angleArc(k,col,wid){
+  const C=(k<=4)?U:L,b=angBounds[k],r=22;
+  ctx.beginPath();ctx.arc(C.x,C.y,r,Math.min(b.a1,b.a2),Math.max(b.a1,b.a2));
+  ctx.strokeStyle=col;ctx.lineWidth=wid||2.6;ctx.stroke();
+}
+function angleFill(k,col){
+  const C=(k<=4)?U:L,b=angBounds[k],r=26;
+  ctx.beginPath();ctx.moveTo(C.x,C.y);ctx.arc(C.x,C.y,r,Math.min(b.a1,b.a2),Math.max(b.a1,b.a2));
+  ctx.closePath();ctx.fillStyle=col;ctx.fill();
+}
+function bHandlePos(){const r=120;return {x:L.x+Math.cos(bAng)*r,y:L.y+Math.sin(bAng)*r}}
+
+function drawLab(){
+  const t=T();
+  const par=Math.abs(aAng-bAng)<0.004;
+  const lineCol=par?'#16a34a':'#1a1a2e';
+  lineThrough(aP,aAng,lineCol,2.8);
+  lineThrough(bP,bAng,lineCol,2.8);
+  lineThrough(cP,cAng,'#2d70b3',2.6);
+  lab(W-22,aP.y+Math.tan(aAng)*(W-22-aP.x)-12,'a',lineCol,16);
+  lab(W-22,bP.y+Math.tan(bAng)*(W-22-bP.x)-12,'b',lineCol,16);
+  lab(L.x+Math.cos(cAng)*95+16,L.y+Math.sin(cAng)*95,'c','#2d70b3',16);
+  // выделенная пара: заливка + дужка
+  for(const k of t.pair){ angleFill(k,'rgba(124,58,237,.20)'); angleArc(k,'#6d28d9',2.8); }
+  // меры пары у дужек
+  for(const k of t.pair){
+    const C=(k<=4)?U:L, m=angleMeasure(k);
+    const lx=C.x+Math.cos(angMid[k])*52, ly=C.y+Math.sin(angMid[k])*52;
+    lab(lx,ly,Math.round(m)+'°','#6d28d9',14);
+  }
+  dot(U.x,U.y,3.4,'#1a1a2e');dot(L.x,L.y,3.4,'#1a1a2e');
+  // точка P пересечения a и b (если включена и есть)
+  if(showP){
+    const P=abIntersection();
+    if(P && P.x>=-30&&P.x<=W+30 && P.y>=-30&&P.y<=H+30){
+      const pulse=1+0.18*Math.sin(Date.now()/260);
+      dot(P.x,P.y,6*pulse,'#dc2626','#fffdf7');lab(P.x,P.y+22,'P','#dc2626',13);
+    }else if(P){
+      // за краем — спокойный указатель с понятным текстом
+      const side=P.x>W?1:-1;
+      const ax=side>0?W-22:22, ay=Math.max(28,Math.min(H-28,P.y));
+      ctx.strokeStyle='#dc2626';ctx.lineWidth=2.2;
+      ctx.beginPath();ctx.moveTo(ax-side*30,ay);ctx.lineTo(ax-side*6,ay);ctx.stroke();
+      ctx.fillStyle='#dc2626';
+      ctx.beginPath();ctx.moveTo(ax-side*6,ay-5);ctx.lineTo(ax,ay);ctx.lineTo(ax-side*6,ay+5);ctx.closePath();ctx.fill();
+      lab(ax-side*92,ay-13,'точка P за краем','#dc2626',11);
+    }else{
+      lab(W/2,H-22,'✦ прямые параллельны — точки пересечения нет','#16a34a',13);
+    }
+  }
+  // ручка на b (только в лаборатории)
+  if(!solvedThis && T().kind==='lab'){
+    const h=bHandlePos(),pulse=1+0.16*Math.sin(Date.now()/280);
+    ctx.beginPath();ctx.arc(h.x,h.y,10*pulse,0,7);ctx.fillStyle='#fff';ctx.fill();
+    ctx.strokeStyle='#7c3aed';ctx.lineWidth=2.8;ctx.stroke();dot(h.x,h.y,2.6,'#7c3aed');
+    lab(h.x,h.y-18,'тяни','#7c3aed',12);
+  }
+}
+
+// обратная задача: статичный чертёж с числами
+function drawReverse(){
+  const c=revCfg;
+  lineThrough(aP,0.10,'#1a1a2e',2.8);
+  lineThrough(bP,c.bAng,'#1a1a2e',2.8);
+  lineThrough(cP,cAng,'#2d70b3',2.6);
+  lab(W-22,aP.y+Math.tan(0.10)*(W-22-aP.x)-12,'a','#1a1a2e',16);
+  lab(W-22,bP.y+Math.tan(c.bAng)*(W-22-bP.x)-12,'b','#1a1a2e',16);
+  // показываем числа на ОБОИХ углах пары (прижимаем метку внутрь холста)
+  for(const k of c.pair){
+    angleArc(k,'#6d28d9',2.6);
+    const C=(k<=4)?U:L;
+    let lx=C.x+Math.cos(angMid[k])*50, ly=C.y+Math.sin(angMid[k])*50;
+    lx=Math.max(40,Math.min(W-40,lx)); ly=Math.max(28,Math.min(H-28,ly));
+    // подложка под число
+    const txt=c.vals[k]+'°';
+    ctx.font='900 15px system-ui';const tw=ctx.measureText(txt).width;
+    ctx.fillStyle='rgba(237,233,254,.95)';
+    ctx.beginPath();ctx.roundRect(lx-tw/2-6,ly-12,tw+12,24,6);ctx.fill();
+    lab(lx,ly,txt,'#6d28d9',15);
+  }
+  dot(U.x,U.y,3.4,'#1a1a2e');dot(L.x,L.y,3.4,'#1a1a2e');
+}
+
+function draw(){
+  bg();
+  const k=T().kind;
+  if(k==='lab')drawLab();
+  else if(k==='reverse')drawReverse();
+  else if(k==='why')drawLab();
+}
+
+/* ───────── LAB ───────── */
+function gaugeUpdate(){
+  const t=T();if(t.kind!=='lab'&&t.kind!=='why')return;
+  const [x,y]=t.pair, mx=angleMeasure(x), my=angleMeasure(y);
+  const el=document.getElementById('gauge');
+  if(t.rule==='eq'){
+    const eq=Math.abs(mx-my)<1.0;
+    el.innerHTML='<div class="row"><span>∠'+x+'</span><span class="v">'+Math.round(mx)+'°</span></div>'+
+      '<div class="row"><span>∠'+y+'</span><span class="v">'+Math.round(my)+'°</span></div>'+
+      '<div class="row"><span>равны?</span><span class="v '+(eq?'v-ok':'')+'">'+(eq?'да ✓':'нет')+'</span></div>';
+  }else{
+    const s=mx+my, eq=Math.abs(s-180)<1.5;
+    el.innerHTML='<div class="row"><span>∠'+x+'</span><span class="v">'+Math.round(mx)+'°</span></div>'+
+      '<div class="row"><span>∠'+y+'</span><span class="v">'+Math.round(my)+'°</span></div>'+
+      '<div class="row"><span>сумма</span><span class="v '+(eq?'v-ok':'')+'">'+Math.round(s)+'°'+(eq?' ✓':'')+'</span></div>';
+  }
+}
+function checkLab(){
+  const t=T();if(solvedThis)return;
+  const [x,y]=t.pair, mx=angleMeasure(x), my=angleMeasure(y);
+  const cond = t.rule==='eq' ? Math.abs(mx-my)<0.6 : Math.abs(mx+my-180)<1.0;
+  if(cond){
+    // защёлкнуть в параллель и ОБНОВИТЬ панель (иначе покажет старые меры)
+    bAng=aAng;recompute();gaugeUpdate();log('snap',{pair:t.pair,rule:t.rule});
+    const ruleTxt = t.rule==='eq'
+      ? t.name+' углы стали равны'
+      : 'сумма односторонних углов стала 180°';
+    succeed('Как только '+ruleTxt+', прямые a и b стали <b>параллельны</b> — точка пересечения улетела в бесконечность. Это и есть признак: '+
+      (t.rule==='eq'?'равные '+t.name+' углы':'односторонние углы в сумме 180°')+' ⟹ прямые параллельны.');
+    setMsg('Поймали! '+ruleTxt[0].toUpperCase()+ruleTxt.slice(1)+' — прямые параллельны.','ok');
+  }
+}
+
+/* ───────── REVERSE ───────── */
+const REV_CONFIGS=[
+  // bAng так, чтобы пара была равна/не равна; vals — показанные числа
+  {makeParallel:true,  pair:[3,5], rule:'eq'},
+  {makeParallel:false, pair:[3,5], rule:'eq'},
+  {makeParallel:true,  pair:[4,5], rule:'sum'}
+];
+let revQueue=[], revIdx=0;
+function buildReverse(){return shuffle(REV_CONFIGS.map(c=>({...c})));}
+function setupReverse(){
+  const c=revQueue[revIdx];
+  // компактная геометрия: оба перекрёстка гарантированно в кадре с местом под числа
+  aP.x=80;aP.y=150; cP={x:250,y:150}; cAng=1.02;
+  c.bAng = c.makeParallel ? 0.10 : (-0.12 + (Math.random()<.5?0:0.05));
+  bP={x:80,y:330}; bAng=c.bAng; recompute();
+  c.vals={};
+  for(const k of c.pair)c.vals[k]=Math.round(angleMeasure(k));
+  revCfg=c;
+  document.getElementById('taskText').innerHTML='По числам на чертеже определите: прямые a и b <b>параллельны</b>? Проверьте '+
+    (c.rule==='eq'?'равны ли '+(c.pair[0]===4?'':'')+'накрест лежащие углы '+c.pair[0]+' и '+c.pair[1]:'сумму односторонних '+c.pair[0]+' и '+c.pair[1]+' (должна быть 180°)')+'.';
+  renderOpts(shuffle([
+    {t:'Параллельны',fn:(b)=>answerReverse(true,b)},
+    {t:'Не параллельны',fn:(b)=>answerReverse(false,b)}
+  ]));
+  document.getElementById('gaugeCard').style.display='none';
+  document.getElementById('proof').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  const hintTxt = c.rule==='eq'
+    ? 'Сравните два числа на чертеже: равны ли углы '+c.pair[0]+' и '+c.pair[1]+'?'
+    : 'Сложите два числа на чертеже (углы '+c.pair[0]+' и '+c.pair[1]+'): получается ли 180°?';
+  setMsg('Пара '+(revIdx+1)+' из '+revQueue.length+'. '+hintTxt,'info');
+}
+function answerReverse(saysParallel,btn){
+  if(solvedThis)return;
+  const c=revQueue[revIdx];
+  const truth=c.makeParallel;
+  if(saysParallel===truth){
+    markPick(btn,true);lockOpts();
+    revIdx++;
+    if(revIdx>=revQueue.length){
+      succeed('Вы научились читать признак в обе стороны: по углам — узнавать параллельность, и наоборот.');
+    }else{ setMsg('Верно! Дальше…','ok'); setTimeout(setupReverse,650); }
+  }else{
+    mistakes++;log('distractor',{cfg:revIdx,said:saysParallel,truth});
+    markPick(btn,false);
+    revealCorrect(truth?'Параллельны':'Не параллельны');
+    let why = c.rule==='eq'
+      ? (truth?'Углы '+c.pair[0]+' и '+c.pair[1]+' равны — значит параллельны.':'Углы '+c.pair[0]+' и '+c.pair[1]+' НЕ равны — значит прямые НЕ параллельны.')
+      : (truth?'Сумма = 180° — параллельны.':'Сумма ≠ 180° — не параллельны.');
+    setMsg('Не так. '+why+' Правильный ответ подсвечен зелёным.','err');
+    lockOpts();
+    setTimeout(()=>{ if(!solvedThis)setupReverse(); },1500);  // та же пара заново
+  }
+}
+
+/* ───────── WHY (крючок к t4) ───────── */
+function setupWhy(){
+  // прямые параллельны, пара накрест лежащих равна
+  bAng=aAng;recompute();
+  document.getElementById('gaugeCard').style.display='none';
+  document.getElementById('taskText').innerHTML='✦ Вы <b>увидели</b>: равные накрест лежащие углы делают прямые параллельными. Но это пока наблюдение на одном чертеже. Откуда уверенность, что так <b>всегда</b>?';
+  renderOpts([
+    {t:'Достаточно: мы же видели на чертеже',fn:(b)=>answerWhy(false,b)},
+    {t:'Нужно доказать — для любого чертежа',fn:(b)=>answerWhy(true,b)}
+  ]);
+  highlight=[3,5];
+  setMsg('Как вы думаете?','info');
+}
+function answerWhy(correct,btn){
+  if(solvedThis)return;
+  if(correct){
+    markPick(btn,true);lockOpts();
+    succeed('Именно. Один чертёж — это пример, а не доказательство. В математике признак нужно доказать так, чтобы он работал для ЛЮБЫХ прямых и секущей. Это и сделаем в следующем тренажёре — соберём доказательство из того, что уже знаем.');
+  }else{
+    mistakes++;log('distractor',{q:'why',said:'enough'});
+    markPick(btn,false);
+    revealCorrect('Нужно доказать — для любого чертежа');
+    setMsg('Один чертёж убеждает глаз, но не доказывает. А вдруг при других числах что-то сломается? Математике нужна уверенность для ЛЮБОГО случая. Правильный ответ подсвечен.','err');
+  }
+}
+
+/* ───────── ОБЩЕЕ ───────── */
+function renderOpts(list){
+  const box=document.getElementById('opts');box.innerHTML='';
+  list.forEach(o=>{
+    const b=document.createElement('button');
+    b.type='button';b.className='opt';b.innerHTML=o.t;
+    b.addEventListener('click',()=>o.fn(b));
+    box.appendChild(b);
+  });
+}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+function markPick(btn,ok){ if(btn)btn.classList.add(ok?'ok-pick':'bad-pick'); }
+function revealCorrect(label){
+  // подсветить зелёным кнопку с данным текстом (показать верный ответ после ошибки)
+  const box=document.getElementById('opts');
+  [...box.children].forEach(b=>{ if(b.textContent.trim()===label)b.classList.add('correct-reveal'); });
+}
+function lockOpts(){ [...document.getElementById('opts').children].forEach(b=>b.disabled=true); }
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+
+function succeed(extra){
+  if(solvedThis)return;solvedThis=true;
+  results.push(mistakes===0&&hintsUsed===0?'g':(mistakes<=1&&hintsUsed<=1?'y':'r'));
+  log('solved',{kind:T().kind,mistakes,hints:hintsUsed});
+  document.getElementById('successBar').textContent='✓ Готово!';
+  document.getElementById('successBar').style.display='block';
+  document.getElementById('hintbox').style.display='none';
+  if(extra){const pr=document.getElementById('proof');pr.innerHTML='<b>Вывод.</b> '+extra;pr.style.display='block'}
+  const nb=document.getElementById('nextBtn');nb.style.display='inline-block';
+  nb.textContent=ti<NT-1?'Следующая →':'Итоги →';
+}
+function showHint(){
+  if(solvedThis)return;hintsUsed++;log('hint');
+  const hb=document.getElementById('hintbox');let h='';const t=T();
+  if(t.kind==='lab')h = t.rule==='eq'
+    ? 'Тяните фиолетовую ручку на прямой b, пока меры углов '+t.pair[0]+' и '+t.pair[1]+' не станут равны. Следите за панелью справа.'
+    : 'Тяните ручку, пока сумма углов '+t.pair[0]+' и '+t.pair[1]+' не станет 180°. Это и есть признак для односторонних — НЕ равенство, а сумма.';
+  else if(t.kind==='reverse')h='Сравните показанные числа по правилу нужной пары. Равны (или сумма 180°) — параллельны.';
+  else h='Подумайте: чертёж показывает один случай. Доказательство нужно, чтобы быть уверенным для всех случаев сразу.';
+  hb.innerHTML='💡 '+h;hb.style.display='block';
+}
+function togglePoint(){
+  showP=!showP;
+  document.getElementById('pBtn').textContent='● Точка пересечения: '+(showP?'вкл':'выкл');
+  document.getElementById('pBtn').className='tool'+(showP?' act':'');
+  log('step',{what:'toggleP',on:showP});
+}
+
+/* ───────── ПЕРЕТАСКИВАНИЕ b ───────── */
+cv.addEventListener('pointerdown',e=>{
+  if((T().kind!=='lab')||solvedThis)return;
+  const p=pos(e),h=bHandlePos();
+  const scrK=Math.max(1,W/cv.getBoundingClientRect().width);
+  const grabR=(e.pointerType==='touch'?30:20)*scrK;
+  if(Math.hypot(p.x-h.x,p.y-h.y)<grabR){mode='dragB';try{cv.setPointerCapture(e.pointerId)}catch(_){}}
+});
+cv.addEventListener('pointermove',e=>{if(mode==='dragB')applyDragB(pos(e))});
+['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,e=>{mode=null;try{cv.releasePointerCapture(e.pointerId)}catch(_){}}));
+function applyDragB(p){
+  bAng=Math.atan2(p.y-L.y,p.x-L.x);
+  if(bAng>Math.PI/2)bAng-=Math.PI; if(bAng<-Math.PI/2)bAng+=Math.PI;
+  if(bAng>0.42)bAng=0.42; if(bAng<-0.42)bAng=-0.42;
+  // магнит к параллели: вблизи aAng дотягиваем, чтобы поймать равенство было реально
+  if(Math.abs(bAng-aAng)<0.05)bAng=aAng;
+  bP={x:L.x-Math.cos(bAng)*200, y:L.y-Math.sin(bAng)*200};
+  recompute();gaugeUpdate();checkLab();
+}
+function pos(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+
+/* ───────── ЦИКЛ ───────── */
+function layout(){
+  const t=T();
+  document.getElementById('pf').style.width=(ti/NT*100)+'%';
+  document.getElementById('pnum').textContent='Задача '+(ti+1)+' из '+NT;
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('proof').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('pBtn').style.display=(t.kind==='lab')?'inline-block':'none';
+  document.getElementById('gaugeCard').style.display=(t.kind==='lab')?'block':'none';
+  clearOpts();highlight=[];
+  if(t.kind==='lab'){
+    document.getElementById('badge').textContent=t.rule==='eq'?'Поймайте равенство углов':'Поймайте сумму 180°';
+    document.getElementById('gaugeTtl').textContent=t.name[0].toUpperCase()+t.name.slice(1)+' углы';
+    const goal = t.rule==='eq'
+      ? 'Тяните ручку на прямой <b>b</b>, пока <b>'+t.name+'</b> углы '+t.pair[0]+' и '+t.pair[1]+' не станут <b>равны</b>. Что произойдёт с прямыми?'
+      : 'Тяните ручку на прямой <b>b</b>, пока сумма <b>'+t.name+'</b> углов '+t.pair[0]+' и '+t.pair[1]+' не станет <b>180°</b>. Что произойдёт с прямыми?';
+    document.getElementById('taskText').innerHTML=goal;
+    gaugeUpdate();
+    setMsg(t.rule==='eq'?'Сравните меры углов в панели справа.':'Следите за суммой в панели справа.','info');
+  }else if(t.kind==='reverse'){
+    document.getElementById('badge').textContent='Параллельны или нет?';
+    revQueue=buildReverse();revIdx=0;setupReverse();
+  }else if(t.kind==='why'){
+    document.getElementById('badge').textContent='Достаточно ли увидеть?';
+    setupWhy();
+  }
+  log('task_start',{kind:t.kind,pair:t.pair,rule:t.rule});
+}
+function initTask(keepStats){
+  if(!keepStats){mistakes=0;hintsUsed=0}
+  solvedThis=false;mode=null;
+  aP.x=90;aP.y=140;
+  aAng=0.10;cAng=1.05;cP={x:230,y:60};
+  bAng=(T().kind==='lab')?-0.10:0.10; bP={x:90,y:330};
+  recompute();layout();
+}
+function nextTask(){if(ti<NT-1){ti++;initTask()}else finish()}
+function resetTask(){log('reset');initTask(true)}
+
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{score:g});
+  const s=lS();s.runs=(s.runs||0)+1;s.passed=true;if(g>(s.best||0))s.best=g;sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent=g+' / '+NT;
+  document.getElementById('finLbl').textContent=g===NT?'Отлично — все три признака в руках!':g>=3?'Хорошо! Признак узнаёте.':'Стоит повторить лабораторию.';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){ti=0;results=[];document.getElementById('fin').style.display='none';document.getElementById('mainArea').style.display='grid';document.getElementById('bar').style.display='flex';initTask()}
+
+/* ───────── СТАРТ ───────── */
+initTask();
+(function loop(){draw();requestAnimationFrame(loop)})();
+</script>
+</body>
+</html>

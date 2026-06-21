@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Треугольник по двум сторонам и углу</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 322px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none;cursor:crosshair}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.5}
+.task b{color:#1a1a2e}
+.steps{font-size:13px;color:#64748b;font-weight:800;margin-top:8px}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:700 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt:disabled{cursor:default}
+.opt.good{border-color:#16a34a;background:#f0fdf4;color:#15803d}
+.opt.bad{border-color:#dc2626;background:#fef2f2;color:#b91c1c}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.why{display:none;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;padding:12px;font-size:14px;line-height:1.5;color:#374151}
+.why b{color:#b45309}
+.law{display:none;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:12px;padding:14px;font-size:14px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law .nb{margin-top:8px;color:#334155;font-size:13px}
+.law .bridge{margin-top:10px;color:#475569;font-size:13px}
+.law .bridge a{color:#b45309;font-weight:800;text-decoration:none}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 13px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+button.tool.active{border-color:#2d70b3;background:#eaf2fb;color:#1d4ed8}
+button.tool.hidden{display:none}
+.spacer{flex:1}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a;margin-top:4px}
+.next:hover{background:#15803d}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">📐 Треугольник по двум сторонам и углу</div>
+      <div class="sub">Глава IV · §4 · построение циркулем и линейкой</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Анализ</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="460"></canvas></div>
+    <aside class="side">
+      <div class="card" id="taskCard">
+        <h2 id="taskTtl">Анализ</h2>
+        <div class="task" id="taskText"></div>
+        <div class="steps" id="stepText"></div>
+      </div>
+      <div id="opts" class="opts"></div>
+      <div id="msg" class="msg info"></div>
+      <div id="why" class="why"></div>
+      <button class="tool next" id="proofBtn" onclick="proofNext()">Дальше →</button>
+      <div id="law" class="law"></div>
+    </aside>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" id="btnCompass" onclick="selectTool('compass')">⊙ Циркуль</button>
+    <button class="tool" id="btnSpan" onclick="selectTool('transfer')">⇲ Перенести раствор</button>
+    <button class="tool" id="btnLine" onclick="selectTool('line')">／ Линейка</button>
+    <span class="spacer"></span>
+    <button class="tool" onclick="showHint()">💡</button>
+    <button class="tool" id="btnUndo" onclick="undo()">↶</button>
+    <button class="tool" id="btnReset" onclick="reset()">↺</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС / ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch4-p4-t4-construct-two-sides-angle';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,events:[]}}catch{return{runs:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function logE(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),e:ev,phase,step,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640,H=460,PI=Math.PI;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+const PULSE=()=>1+0.16*Math.sin(Date.now()/240);
+
+/* ───────── ПАЛИТРА / ПРИМИТИВЫ ───────── */
+const COL={DARK:'#1a1a2e',GREY:'#94a3b8',ARC:'#0d9488',LINE:'#2d70b3',G:'#16a34a',PUL:'#7c3aed',A:'#d97706',B:'#db2777',C:'#7c3aed'};
+function sub(p,q){return{x:p.x-q.x,y:p.y-q.y}}
+function nrm(v){const m=Math.hypot(v.x,v.y)||1;return{x:v.x/m,y:v.y/m}}
+function hexA(h,a){const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
+function bg(){ ctx.clearRect(0,0,W,H);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill()} }
+function lab(x,y,txt,col,size){ ctx.font='900 '+(size||16)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(txt,x,y); ctx.fillStyle=col;ctx.fillText(txt,x,y);ctx.textBaseline='alphabetic';ctx.textAlign='start'; }
+function dotF(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function dotHollow(x,y,r,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle='#fffdf7';ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=2.4;ctx.stroke();}
+function seg(p,q,col,w){ctx.strokeStyle=col;ctx.lineWidth=w||2.8;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
+function segD(p,q,col,w,dash){ctx.save();ctx.setLineDash(dash||[6,5]);ctx.strokeStyle=col;ctx.lineWidth=w||2;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.restore();}
+function arcDraw(cx,cy,r,a0,a1,col,w,alpha){ ctx.save();ctx.globalAlpha=alpha==null?0.8:alpha;ctx.strokeStyle=col;ctx.lineWidth=w||1.9;ctx.lineCap='round';
+  ctx.beginPath();ctx.arc(cx,cy,r,a0,a1);ctx.stroke();ctx.restore(); }
+function ring(x,y,r,col){ctx.save();ctx.strokeStyle=col;ctx.lineWidth=2.6;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.stroke();ctx.restore();}
+function drawAngleMark(V,P,Q,col,r0){ const a1=Math.atan2(P.y-V.y,P.x-V.x), a2=Math.atan2(Q.y-V.y,Q.x-V.x);
+  let d=a2-a1; while(d<=-PI)d+=2*PI; while(d>PI)d-=2*PI; const acw=d<0;
+  ctx.beginPath();ctx.arc(V.x,V.y,r0,a1,a1+d,acw); ctx.lineWidth=3;ctx.strokeStyle=col;ctx.lineCap='round';ctx.stroke(); }
+function tickMark(p,q,n,col){ const mx=(p.x+q.x)/2,my=(p.y+q.y)/2; let dx=q.x-p.x,dy=q.y-p.y;const L=Math.hypot(dx,dy)||1;dx/=L;dy/=L; const nx=-dy,ny=dx;
+  for(let i=0;i<n;i++){const off=(i-(n-1)/2)*5,cx=mx+dx*off,cy=my+dy*off; ctx.beginPath();ctx.moveTo(cx-nx*5,cy-ny*5);ctx.lineTo(cx+nx*5,cy+ny*5);ctx.strokeStyle=col||COL.DARK;ctx.lineWidth=2;ctx.stroke();} }
+
+/* ───────── ГЕОМЕТРИЯ (чистая) ───────── */
+const EPS=1e-7;
+function interLL(a,b,c,d){ const den=(a.x-b.x)*(c.y-d.y)-(a.y-b.y)*(c.x-d.x); if(Math.abs(den)<EPS) return null;
+  const t=((a.x-c.x)*(c.y-d.y)-(a.y-c.y)*(c.x-d.x))/den; return {x:a.x+t*(b.x-a.x), y:a.y+t*(b.y-a.y)}; }
+function interLC(a,b,O,r){ const dx=b.x-a.x,dy=b.y-a.y,fx=a.x-O.x,fy=a.y-O.y; const AA=dx*dx+dy*dy,BB=2*(fx*dx+fy*dy),Cc=fx*fx+fy*fy-r*r;
+  let dsc=BB*BB-4*AA*Cc; if(dsc<-EPS) return []; dsc=Math.max(dsc,0); const s=Math.sqrt(dsc),out=[];
+  [(-BB-s)/(2*AA),(-BB+s)/(2*AA)].forEach((t,i)=>{ if(i===0||s>EPS) out.push({x:a.x+t*dx,y:a.y+t*dy}); }); return out; }
+function interCC(O1,r1,O2,r2){ const d=dist(O1,O2); if(d<EPS || d>r1+r2+EPS || d<Math.abs(r1-r2)-EPS) return [];
+  const aa=(r1*r1-r2*r2+d*d)/(2*d); let h2=r1*r1-aa*aa; if(h2<0) h2=0; const h=Math.sqrt(h2);
+  const xm=O1.x+aa*(O2.x-O1.x)/d, ym=O1.y+aa*(O2.y-O1.y)/d; const rx=-(O2.y-O1.y)*(h/d), ry=(O2.x-O1.x)*(h/d);
+  return h<EPS ? [{x:xm,y:ym}] : [{x:xm+rx,y:ym+ry},{x:xm-rx,y:ym-ry}]; }
+
+/* ───────── ДАНО: угол hk при O, прямая a с точкой A, образцы сторон ───────── */
+const O_0={x:95,y:120};
+const ANG_H=22*PI/180, ANG_K=67*PI/180;                // ∠hk = 45°
+const DIR_H={x:Math.cos(ANG_H),y:Math.sin(ANG_H)}, DIR_K={x:Math.cos(ANG_K),y:Math.sin(ANG_K)};
+const SIDELEN=128;
+const H_END={x:O_0.x+DIR_H.x*SIDELEN,y:O_0.y+DIR_H.y*SIDELEN}, K_END={x:O_0.x+DIR_K.x*SIDELEN,y:O_0.y+DIR_K.y*SIDELEN};
+const YA=358, A0={x:165,y:YA}, DIRa={x:1,y:0}, A_END={x:600,y:YA};
+const P1a={x:360,y:42}, Q1a={x:560,y:42};              // образец AB = 200
+const P2a={x:360,y:74}, Q2a={x:520,y:74};              // образец AC = 160
+const L1=dist(P1a,Q1a);                                 // AB
+const L2=dist(P2a,Q2a);                                 // AC
+
+/* ───────── МОДЕЛЬ ───────── */
+let P=[], L=[], C=[]; let pid=0;
+function ptByName(n){return P.find(p=>p.name===n);}
+function arcByName(n){return C.find(c=>c.name===n);}
+function addPtXY(x,y,kind,name){P.push({id:'p'+(pid++),x,y,kind,name});return ptByName(name);}
+function addArc(centerName,r,fa,half,name){C.push({center:centerName,r,fa,half,name});}
+function addLine(n1,n2,name,kind){L.push({a:n1,b:n2,name,kind:kind||'segment'});}
+
+/* ───────── СОСТОЯНИЕ ───────── */
+let phase='analyze', step=0, proofStep=0, opening=null, tool='transfer';
+let comp=null, armed=null, spanBuf=null, mistakes=0, hints=0, lastReject=null, undoStack=[], initSnap=null;
+function takeSnap(){ return JSON.stringify({P,L,C,opening,step,pid}); }
+function loadSnap(s){ const o=JSON.parse(s); P.length=0;o.P.forEach(p=>P.push(p)); L.length=0;o.L.forEach(l=>L.push(l)); C.length=0;o.C.forEach(c=>C.push(c));
+  opening=o.opening; step=o.step; pid=o.pid; armed=null; comp=null; spanBuf=null; lastReject=null; }
+function pushUndo(){ undoStack.push(takeSnap()); }
+
+/* ───────── ПРИВЯЗКА ───────── */
+function worldPos(e){ const r=cv.getBoundingClientRect(); const k=Math.max(1,W/r.width); return {x:(e.clientX-r.left)*k, y:(e.clientY-r.top)*k}; }
+function pick(w){ const r=cv.getBoundingClientRect(); const k=Math.max(1,W/r.width); const R=28*k; let best=null,bd=R;
+  for(const p of P){ const dd=Math.hypot(p.x-w.x,p.y-w.y); if(dd<bd){bd=dd;best=p;} } return best; }
+
+/* ───────── ДЕЙСТВИЯ ───────── */
+function reject(t){ lastReject=t; mistakes++; setMsg(t,'err'); logE('step_reject',{reason:t}); }
+function tryArc(centerPt, rGiven, isDrag){
+  if(phase!=='build') return;
+  let r; if(isDrag){ r=rGiven; } else { if(opening==null){ reject('Сначала возьми раствор — с образца или дугой.'); return; } r=opening; }
+  if(step===1){                                          // отложить AB: дуга из A радиусом |P1Q1| → B
+    if(!centerPt||centerPt.name!=='A'){ reject('Сторону AB откладываем от вершины A — поставь ножку в A.'); return; }
+    if(Math.abs(r-L1)>4){ reject('Раствор не равен стороне AB. Сними длину с образца P₁Q₁.'); return; }
+    const Bp={x:A0.x+DIRa.x*L1,y:A0.y+DIRa.y*L1}; pushUndo(); addArc('A',L1,0,0.34,'arcAB'); addPtXY(Bp.x,Bp.y,'inter','B');
+    step=2; tool='compass'; opening=null; lastReject=null; setMsg('Сторона AB отложена до точки B. Теперь дугой произвольного раствора из вершины O засеки стороны угла (нажми на O и тяни).','ok'); logE('draw_arc',{c:'A',k:'AB'}); updateUI();
+  } else if(step===2){                                   // дуга из O (свободный раствор) → D,E
+    if(!isDrag){ reject('Дугу из O проведи свободным раствором: нажми на O и потяни.'); return; }
+    if(!centerPt||centerPt.name!=='O'){ reject('Поставь ножку циркуля в вершину O угла.'); return; }
+    if(r<48||r>SIDELEN-12){ reject('Возьми радиус так, чтобы дуга пересекла обе стороны угла.'); return; }
+    const D={x:O_0.x+DIR_H.x*r,y:O_0.y+DIR_H.y*r}, E={x:O_0.x+DIR_K.x*r,y:O_0.y+DIR_K.y*r};
+    pushUndo(); opening=r; addArc('O',r,(ANG_H+ANG_K)/2,(ANG_K-ANG_H)/2+0.32,'arcO'); addPtXY(D.x,D.y,'inter','D'); addPtXY(E.x,E.y,'inter','E');
+    step=3; tool='compass'; lastReject=null; setMsg('Дуга засекла стороны в точках D и E. Тем же раствором коснись вершины A.','ok'); logE('draw_arc',{c:'O'}); updateUI();
+  } else if(step===3){                                   // дуга из A тем же раствором → F
+    if(!centerPt||centerPt.name!=='A'){ reject('Тем же раствором проведи дугу из вершины A — поставь ножку в A.'); return; }
+    if(Math.abs(r-arcByName('arcO').r)>3){ reject('Дугу из A проводим тем же раствором, что из O (просто коснись A).'); return; }
+    const rO=arcByName('arcO').r, F={x:A0.x+DIRa.x*rO,y:A0.y+DIRa.y*rO};
+    pushUndo(); addArc('A',rO,-0.45,0.95,'arcAF'); addPtXY(F.x,F.y,'inter','F');
+    step=4; tool='transfer'; opening=null; lastReject=null; setMsg('Дуга пересекла прямую a в точке F. Теперь перенеси хорду DE: «Перенести раствор», коснись D и E.','ok'); logE('draw_arc',{c:'A',k:'F'}); updateUI();
+  } else if(step===5){                                   // дуга из F радиусом |DE| → G
+    if(!centerPt||centerPt.name!=='F'){ reject('Дугу проводим из точки F — поставь ножку в F.'); return; }
+    const chord=dist(ptByName('D'),ptByName('E'));
+    if(Math.abs(r-chord)>3){ reject('Раствор должен равняться хорде DE — просто коснись F.'); return; }
+    const rO=arcByName('arcO').r, Fp=ptByName('F'), Ap=ptByName('A');
+    const hits=interCC(Ap,rO,Fp,chord); if(hits.length<2){ reject('Дуги не пересеклись.'); return; }
+    hits.sort((u,v)=>u.y-v.y); const G=hits[0];           // верхняя (над прямой a)
+    pushUndo(); const fFG=Math.atan2(G.y-Fp.y,G.x-Fp.x); addArc('F',chord,fFG,0.7,'arcF'); addPtXY(G.x,G.y,'inter','G');
+    step=6; tool='line'; opening=null; lastReject=null; setMsg('Дуги пересеклись в точке G. Линейкой проведи луч из вершины A через точку G.','ok'); logE('draw_arc',{c:'F',k:'G'}); updateUI();
+  } else if(step===8){                                   // отложить AC: дуга из A радиусом |P2Q2| → C на луче AG
+    if(!centerPt||centerPt.name!=='A'){ reject('Сторону AC откладываем от вершины A — поставь ножку в A.'); return; }
+    if(Math.abs(r-L2)>4){ reject('Раствор не равен стороне AC. Сними длину с образца P₂Q₂.'); return; }
+    const Gp=ptByName('G'), Ap=ptByName('A'), dir=nrm(sub(Gp,Ap)); const Cp={x:Ap.x+dir.x*L2,y:Ap.y+dir.y*L2};
+    pushUndo(); addArc('A',L2,Math.atan2(Cp.y-Ap.y,Cp.x-Ap.x),0.34,'arcAC'); addPtXY(Cp.x,Cp.y,'inter','C');
+    step=9; tool='line'; opening=null; lastReject=null; setMsg('Сторона AC отложена до точки C. Линейкой соедини B и C — последняя сторона.','ok'); logE('draw_arc',{c:'A',k:'AC'}); updateUI();
+  } else { reject('Сейчас дуга не нужна — смотри подсказку к шагу.'); }
+}
+function takeSpan(n1,n2){
+  if(phase!=='build') return; const s=new Set([n1,n2]);
+  if(step===0){
+    if(!(s.has('P1')&&s.has('Q1'))){ reject('Сними длину стороны AB с образца — коснись P₁ и Q₁.'); return; }
+    pushUndo(); opening=dist(ptByName('P1'),ptByName('Q1')); step=1; tool='compass'; lastReject=null; setMsg('Раствор = AB взят. Поставь ножку циркуля в вершину A.','ok'); logE('span_take',{k:'AB'}); updateUI();
+  } else if(step===4){
+    if(!(s.has('D')&&s.has('E'))){ reject('Перенеси хорду DE — коснись D и E.'); return; }
+    pushUndo(); opening=dist(ptByName('D'),ptByName('E')); step=5; tool='compass'; lastReject=null; setMsg('Хорда DE взята. Поставь ножку циркуля в точку F.','ok'); logE('span_take',{k:'DE'}); updateUI();
+  } else if(step===7){
+    if(!(s.has('P2')&&s.has('Q2'))){ reject('Сними длину стороны AC с образца — коснись P₂ и Q₂.'); return; }
+    pushUndo(); opening=dist(ptByName('P2'),ptByName('Q2')); step=8; tool='compass'; lastReject=null; setMsg('Раствор = AC взят. Поставь ножку циркуля в вершину A.','ok'); logE('span_take',{k:'AC'}); updateUI();
+  } else { reject('Сейчас брать раствор не нужно — смотри подсказку.'); }
+}
+function tryLine(n1,n2){
+  if(phase!=='build') return; const s=new Set([n1,n2]);
+  if(step===6){
+    if(!(s.has('A')&&s.has('G'))){ reject(s.has('F')?'Луч веди из вершины A через точку G, не через F.':'Проведи луч из вершины A через точку G.'); return; }
+    pushUndo(); addLine('A','G','rayAG','ray'); step=7; tool='transfer'; lastReject=null; setMsg('Второй луч угла построен. Теперь отложи на нём сторону AC — сними длину с образца P₂Q₂.','ok'); logE('draw_line',{a:'A',b:'G'}); updateUI();
+  } else if(step===9){
+    if(!(s.has('B')&&s.has('C'))){ reject('Соедини вершины B и C.'); return; }
+    pushUndo(); addLine('B','C','sideBC','segment'); phase='proof'; proofStep=0; tool=null; lastReject=null; setMsg('Треугольник ABC построен! Разберёмся, почему он искомый.','info'); logE('draw_line',{a:'B',b:'C'}); updateUI();
+  } else { reject('Сейчас линейка не нужна — смотри подсказку.'); }
+}
+function triangleOK(){
+  const Aa=ptByName('A'),Bb=ptByName('B'),Cc=ptByName('C'); if(!Bb||!Cc) return false;
+  const okAB=Math.abs(dist(Aa,Bb)-L1)<2, okAC=Math.abs(dist(Aa,Cc)-L2)<2;
+  const ang=(V,X,Y)=>{const u=nrm(sub(X,V)),w=nrm(sub(Y,V));return Math.acos(Math.max(-1,Math.min(1,u.x*w.x+u.y*w.y)));};
+  const okAng=Math.abs(ang(Aa,Bb,Cc)-(ANG_K-ANG_H))<0.02;
+  const hasBC=L.some(l=>{const s=new Set([l.a,l.b]);return s.has('B')&&s.has('C');});
+  return okAB&&okAC&&okAng&&hasBC;
+}
+
+/* ───────── ФАЗЫ-ВОПРОСЫ ───────── */
+const ANALYZE={ q:'Пусть треугольник ABC построен: ∠A равен данному углу hk, а стороны AB и AC — данным отрезкам. Что нужно сделать с углом hk?',
+  opts:[
+    {t:'Построить такой же угол при вершине A (скопировать его)', ok:true, d:''},
+    {t:'Измерить транспортиром и отложить его величину', ok:false, d:'Транспортир в построениях циркулем и линейкой не используют. Угол строят циркулем — копируют равный данному.'},
+    {t:'Приложить данный угол к A на глаз', ok:false, d:'«На глаз» в построении нельзя. Равный угол строят точно — циркулем, как угол, равный данному.'}
+  ]};
+const INVEST={ q:'Сколько разных треугольников можно так построить?',
+  opts:[
+    {t:'Один — решение всегда есть и единственно', ok:true, d:''},
+    {t:'Не всегда: иногда построить нельзя', ok:false, d:'Отложить отрезок, скопировать неразвёрнутый угол и отложить второй отрезок можно при любых данных — решение есть всегда.'},
+    {t:'Бесконечно много разных', ok:false, d:'Все такие треугольники равны по первому признаку (две стороны и угол между ними) — он, по сути, один.'}
+  ]};
+
+function clearOpts(){ document.getElementById('opts').innerHTML=''; }
+function revealChoice(box,arr){ const i=arr.findIndex(o=>o.ok); if(box.children[i])box.children[i].classList.add('good'); }
+function showChoice(obj,onOk){
+  document.getElementById('taskText').innerHTML=obj.q;
+  document.getElementById('stepText').innerHTML='';
+  const box=document.getElementById('opts'); box.innerHTML='';
+  const arr=shuffle(obj.opts.slice());
+  arr.forEach(o=>{ const b=document.createElement('button'); b.type='button'; b.className='opt'; b.textContent=o.t;
+    b.addEventListener('click',()=>{ if(b.disabled)return;
+      if(o.ok){ [...box.children].forEach(x=>x.disabled=true); b.classList.add('good'); setMsg('Верно.','ok'); onOk(); }
+      else { mistakes++; b.classList.add('bad'); setMsg(o.d,'err'); revealChoice(box,arr); } });
+    box.appendChild(b); });
+}
+function analyzeOk(){ phase='build'; step=0; tool='transfer'; armed=null; spanBuf=null; opening=null; clearOpts(); setMsg('Дано: угол hk, прямая a с точкой A и образцы сторон. Начни с откладывания AB — сними длину с образца P₁Q₁.','info'); logE('phase',{to:'build'}); updateUI(); }
+function investOk(){ phase='done'; clearOpts(); const s=lS(); s.runs=(s.runs||0)+1; s.passed=true; sS(s); logE('finish',{mistakes,hints}); updateUI(); }
+function proofNext(){ if(phase==='proof'){ phase='invest'; showChoice(INVEST, investOk); updateUI(); logE('phase',{to:'invest'}); } }
+
+/* ───────── UNDO / RESET / HINT ───────── */
+function undo(){ if(phase!=='build') return; const s=undoStack.pop(); if(s)loadSnap(s); else loadSnap(initSnap); setMsg('Шаг отменён.','info'); updateUI(); }
+function reset(){ if(phase!=='build') return; undoStack=[]; loadSnap(initSnap); setMsg('Холст очищен. Дано: угол hk, прямая a с точкой A и образцы сторон.','info'); updateUI(); }
+const STEP_INSTR=[
+  '<b>Перенести раствор:</b> сними длину стороны AB с образца <b>P₁Q₁</b> — коснись P₁, затем Q₁.',
+  'Этим раствором поставь ножку в вершину <b>A</b> — отложится сторона AB до точки B.',
+  '<b>Циркуль:</b> дугой произвольного радиуса из вершины <b>O</b> засеки обе стороны угла (нажми на O и тяни) — точки D и E.',
+  'Тем же раствором коснись вершины <b>A</b> — дуга пересечёт прямую a в точке F.',
+  '<b>Перенести раствор:</b> перенеси хорду <b>DE</b> — коснись D, затем E.',
+  'Этим раствором коснись точки <b>F</b> — дуга пересечёт дугу при A в точке G.',
+  '<b>Линейка:</b> проведи луч из вершины <b>A</b> через точку G — это второй луч угла.',
+  '<b>Перенести раствор:</b> сними длину стороны AC с образца <b>P₂Q₂</b> — коснись P₂, затем Q₂.',
+  'Этим раствором коснись вершины <b>A</b> — отложится сторона AC до точки C на луче AG.',
+  '<b>Линейка:</b> соедини вершины <b>B</b> и <b>C</b> — последняя сторона.'
+];
+const LOGMAP=[1,1,2,3,4,4,5,6,6,7];
+function showHint(){ if(phase!=='build') return; hints++; logE('hint'); setMsg('💡 '+STEP_INSTR[step].replace(/<\/?b>/g,''),'info'); }
+
+/* ───────── ИНСТРУМЕНТЫ / УКАЗАТЕЛЬ ───────── */
+function selectTool(t){ if(phase!=='build') return; tool=t; armed=null; spanBuf=null; comp=null;
+  setMsg(t==='compass'?'Циркуль: нажми на точку и потяни (свободный раствор) или коснись точки взятым раствором.':t==='transfer'?'Перенос раствора: коснись двух концов отрезка.':'Линейка: коснись двух построенных точек.','info'); updateUI(); }
+cv.addEventListener('pointerdown',e=>{
+  if(phase!=='build') return; const w=worldPos(e), p=pick(w);
+  if(tool==='compass'){ if(!p){ reject('Ставь ножку циркуля в точку, не на глаз.'); return; } comp={center:p,r:0,active:true}; try{cv.setPointerCapture(e.pointerId)}catch(_){} }
+  else if(tool==='line'){ if(!p){ reject('Веди линию через построенные точки, не на глаз.'); return; }
+    if(!armed){ armed=p; setMsg('Точка '+(p.name||'')+' выбрана. Теперь вторая.','info'); } else { if(p.id!==armed.id) tryLine(armed.name,p.name); armed=null; } }
+  else if(tool==='transfer'){ if(!p){ reject('Коснись построенной точки, не на глаз.'); return; }
+    if(!spanBuf){ spanBuf=p; setMsg('Точка '+(p.name||'')+' взята. Теперь второй конец.','info'); } else { if(p.id!==spanBuf.id) takeSpan(spanBuf.name,p.name); spanBuf=null; } }
+});
+cv.addEventListener('pointermove',e=>{ if(comp&&comp.active){ const w=worldPos(e); comp.r=Math.hypot(w.x-comp.center.x,w.y-comp.center.y); } });
+cv.addEventListener('pointerup',e=>{ if(comp&&comp.active){ const c=comp.center, isDrag=comp.r>8, r=comp.r; comp=null; try{cv.releasePointerCapture(e.pointerId)}catch(_){} tryArc(c,r,isDrag); } });
+
+/* ───────── ОТРИСОВКА ───────── */
+function ext2(p,q,e){ const d=nrm(sub(q,p)); return {x:q.x+d.x*e,y:q.y+d.y*e}; }
+function draw(){
+  bg();
+  const Aa=A0, Bb=ptByName('B'),Cc=ptByName('C'),D=ptByName('D'),E=ptByName('E'),F=ptByName('F'),G=ptByName('G');
+  const built=(phase==='proof'||phase==='done'||phase==='invest');
+  const arcAlpha=(phase==='build')?0.8:0.32;
+  // образцы сторон
+  seg(P1a,Q1a,COL.DARK,3); dotF(P1a.x,P1a.y,3.4,COL.B); dotF(Q1a.x,Q1a.y,3.4,COL.B); lab(Q1a.x+46,Q1a.y,'P₁Q₁ = AB',COL.B,12);
+  seg(P2a,Q2a,COL.DARK,3); dotF(P2a.x,P2a.y,3.4,COL.C); dotF(Q2a.x,Q2a.y,3.4,COL.C); lab(Q2a.x+46,Q2a.y,'P₂Q₂ = AC',COL.C,12);
+  // данный угол hk
+  seg(O_0,H_END,COL.DARK,3); seg(O_0,K_END,COL.DARK,3); drawAngleMark(O_0,H_END,K_END,COL.A,22); lab((H_END.x+K_END.x)/2+6,(H_END.y+K_END.y)/2+6,'hk',COL.A,13);
+  dotF(O_0.x,O_0.y,5,COL.DARK); lab(O_0.x-14,O_0.y-2,'O',COL.DARK,15);
+  // прямая a
+  seg({x:80,y:YA},{x:600,y:YA},COL.GREY,1.6); lab(610,YA,'a',COL.GREY,14);
+  // дуги
+  C.forEach(c=>{ const o=ptByName(c.center); arcDraw(o.x,o.y,c.r,c.fa-c.half,c.fa+c.half,COL.ARC,1.9,arcAlpha); });
+  // предпросмотр циркуля
+  if(comp&&comp.active){ const rr=comp.r; if(step===2) arcDraw(O_0.x,O_0.y,rr,(ANG_H+ANG_K)/2-0.9,(ANG_H+ANG_K)/2+0.9,COL.ARC,1.5,0.45);
+    else arcDraw(comp.center.x,comp.center.y,rr,-PI,PI,COL.ARC,1.3,0.4); seg(comp.center,{x:comp.center.x+rr,y:comp.center.y},COL.ARC,1); }
+  // луч AG
+  if(G){ const gext=ext2(Aa,G,70); seg(Aa,gext,built?COL.G:COL.LINE,built?2.4:2); }
+  // стороны треугольника
+  if(Bb){ seg(Aa,Bb,built?COL.G:COL.DARK,built?3.4:3); }                        // AB
+  if(Cc){ seg(Aa,Cc,built?COL.G:COL.DARK,built?3.4:3); }                        // AC
+  L.forEach(l=>{ if(l.name==='sideBC'){ const u=ptByName(l.a),v=ptByName(l.b); seg(u,v,built?COL.G:COL.LINE,built?3.4:2.8); } });
+  // доказательство: равенства
+  if(phase==='proof'&&Bb&&Cc){
+    tickMark(Aa,Bb,1,COL.B); tickMark(P1a,Q1a,1,COL.B);
+    tickMark(Aa,Cc,2,COL.C); tickMark(P2a,Q2a,2,COL.C);
+    drawAngleMark(Aa,Bb,Cc,COL.A,24); drawAngleMark(O_0,H_END,K_END,COL.A,26);
+  }
+  // построенные точки
+  [['D',D],['E',E],['F',F]].forEach(it=>{ const nm=it[0],pp=it[1]; if(pp){ dotHollow(pp.x,pp.y,4.2,COL.ARC); lab(pp.x+11,pp.y-7,nm,COL.ARC,12.5); } });
+  if(G){ const pul=(step===6&&phase==='build'); dotHollow(G.x,G.y,pul?5*PULSE():4.6,COL.ARC); if(pul) ring(G.x,G.y,11*PULSE(),COL.PUL); lab(G.x+12,G.y-7,'G',COL.ARC,13); }
+  if(Bb){ dotHollow(Bb.x,Bb.y,4.6,COL.B); lab(Bb.x+2,Bb.y+17,'B',COL.B,15); }
+  if(Cc){ const pul=(step===9&&phase==='build'); dotHollow(Cc.x,Cc.y,pul?5.2*PULSE():4.8,COL.C); if(pul) ring(Cc.x,Cc.y,11*PULSE(),COL.PUL); lab(Cc.x+4,Cc.y-15,'C',built?COL.G:COL.C,15); }
+  // вершина A
+  dotF(Aa.x,Aa.y,5,COL.A); lab(Aa.x-15,Aa.y+16,'A',COL.A,16);
+  // подсветка
+  if(armed){ ring(armed.x,armed.y,12,COL.PUL); }
+  if(spanBuf){ ring(spanBuf.x,spanBuf.y,12,COL.PUL); }
+  if(phase==='build'){
+    if(step===1||step===3||step===8){ ring(Aa.x,Aa.y,13*PULSE(),COL.PUL); }
+    else if(step===2){ ring(O_0.x,O_0.y,14*PULSE(),COL.PUL); }
+    else if(step===5&&F){ ring(F.x,F.y,12*PULSE(),COL.PUL); }
+  }
+}
+
+/* ───────── UI ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls;}
+function updateTool(){ ['compass','transfer','line'].forEach(t=>{ const id={compass:'btnCompass',transfer:'btnSpan',line:'btnLine'}[t]; document.getElementById(id).classList.toggle('active',tool===t); });
+  const build=(phase==='build'); ['btnCompass','btnSpan','btnLine','btnUndo','btnReset'].forEach(id=>document.getElementById(id).classList.toggle('hidden',!build)); }
+function updateUI(){
+  updateTool();
+  const why=document.getElementById('why'), law=document.getElementById('law'), pb=document.getElementById('proofBtn'),
+        sc=document.getElementById('taskCard'), succ=document.getElementById('successBar'), bd=document.getElementById('badge'), opts=document.getElementById('opts');
+  why.style.display='none'; law.style.display='none'; pb.style.display='none'; succ.style.display='none'; sc.style.display='';
+  if(phase==='analyze'){ bd.textContent='Анализ'; opts.style.display=''; document.getElementById('taskTtl').textContent='Анализ'; }
+  else if(phase==='build'){
+    bd.textContent='Построение'; opts.style.display='none'; document.getElementById('taskTtl').textContent='Построение';
+    document.getElementById('taskText').innerHTML='Построй треугольник ABC по двум сторонам и углу между ними — <b>циркулем и линейкой</b>. Угол при A равен данному hk; стороны AB и AC — образцам P₁Q₁ и P₂Q₂.';
+    document.getElementById('stepText').innerHTML='Шаг '+LOGMAP[step]+' из 7 · '+STEP_INSTR[step];
+  } else if(phase==='proof'){
+    bd.textContent='Доказательство'; opts.style.display='none'; sc.style.display='none'; why.style.display='block'; pb.style.display='inline-block';
+    why.innerHTML='<b>Почему ABC — искомый?</b><br>По построению AB = P₁Q₁ и AC = P₂Q₂ (отложены с образцов). А угол при A построен равным hk: дуги одного раствора дали OD = OE = AF = AG, а хорда перенесена DE = FG, поэтому △ODE = △AFG по трём сторонам и ∠FAG = ∠hOk. Все три данных элемента совпали.';
+    pb.textContent='Дальше → исследование';
+  } else if(phase==='invest'){ bd.textContent='Исследование'; opts.style.display=''; document.getElementById('taskTtl').textContent='Исследование'; }
+  else { bd.textContent='Готово'; opts.style.display='none'; sc.style.display='none'; law.style.display='block'; succ.style.display='block';
+    succ.textContent='Готово — треугольник по двум сторонам и углу построен.';
+    law.innerHTML='<b>Закон.</b> Чтобы построить треугольник по двум сторонам и углу между ними: отложи одну сторону; при её конце построй угол, равный данному (скопируй его дугами); на втором луче отложи вторую сторону; соедини концы.'+
+      '<div class="nb">Решение всегда есть и единственно: любые два таких треугольника равны по <b>первому признаку</b> (две стороны и угол между ними).</div>'+
+      '<div class="bridge">Этим §4 и Глава IV закрыты. Задачу «по стороне и двум прилежащим углам» учебник оставляет на самостоятельную — попробуй её тем же набором инструментов.</div>';
+  }
+}
+
+/* ───────── СТАРТ ───────── */
+addPtXY(A0.x,A0.y,'given','A'); addPtXY(O_0.x,O_0.y,'given','O');
+addPtXY(P1a.x,P1a.y,'given','P1'); addPtXY(Q1a.x,Q1a.y,'given','Q1');
+addPtXY(P2a.x,P2a.y,'given','P2'); addPtXY(Q2a.x,Q2a.y,'given','Q2');
+initSnap=takeSnap();
+showChoice(ANALYZE, analyzeOk);
+setMsg('Сначала анализ: подумай, что сделать с данным углом hk.','info');
+updateUI();
+(function loop(){draw();requestAnimationFrame(loop)})();
+</script>
+</body>
+</html>

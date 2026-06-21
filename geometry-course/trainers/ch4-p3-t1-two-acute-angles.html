@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Два острых угла прямоугольного треугольника</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.slider-wrap{display:none;margin-top:12px;background:#f1ede3;border:1px solid #d6d3ca;border-radius:12px;padding:12px 14px}
+.slider-wrap .row{display:flex;justify-content:space-between;align-items:center;font:800 13px system-ui;color:#475569;margin-bottom:9px}
+.slider-wrap .val{font:900 14px 'Courier New',monospace;color:#0d9488}
+.slider-wrap input[type=range]{width:100%;height:30px;accent-color:#0d9488;cursor:pointer}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.gauge{display:flex;flex-direction:column;gap:6px;font-size:14px}
+.gauge .row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed #e5e7eb}
+.gauge .row:last-child{border-bottom:0}
+.gauge .v{font-weight:900;font-variant-numeric:tabular-nums}
+.v-ok{color:#16a34a}
+.given{font-size:13px;line-height:1.5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:10px}
+.given b{color:#3730a3}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:750 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt.ok-pick{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.bad-pick{background:#fee2e2;border-color:#dc2626;color:#991b1b}
+.opt.correct-reveal{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.shake{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.proof{display:none;background:#ecfdf5;color:#14532d;border:1.5px solid #bbf7d0;border-radius:12px;padding:12px;font-size:13px;line-height:1.5}
+.proof b{color:#166534}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.small{font-size:12px;color:#64748b;line-height:1.45}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:15px;height:15px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:660px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law .two{display:flex;flex-direction:column;gap:10px}
+.law .lp{background:#f0fdf4;border-left:4px solid #16a34a;border-radius:0 10px 10px 0;padding:9px 12px}
+.law .lp .k{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#15803d;font-weight:900}
+.law .nb{margin-top:12px;font-size:13px;color:#475569}
+.law .star{margin-top:10px;background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:10px 12px;font-size:13px;color:#92400e}
+.bridge{margin-top:10px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">△ Два острых угла</div>
+      <div class="sub">Глава IV · §3 · тренажёр 1 из 9 — прямоугольный треугольник</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Поймай 45° и 45°</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="460"></canvas>
+      <div class="slider-wrap" id="sliderWrap">
+        <div class="row"><span>Меняй угол, под которым луч входит в уголок</span><span class="val" id="angVal">42°</span></div>
+        <input type="range" id="angSlider" min="30" max="50" value="42" step="1">
+      </div>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card" id="gaugeCard">
+        <h2 id="gaugeTtl">Углы</h2>
+        <div class="gauge" id="gauge"></div>
+      </div>
+      <div class="card" id="givenCard" style="display:none"><div class="given" id="givenBox"></div></div>
+      <div id="opts" class="opts"></div>
+      <div id="msg" class="msg info"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div id="proof" class="proof"></div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <div class="two">
+        <div class="lp"><div class="k">Свойство</div>В прямоугольном треугольнике сумма двух острых углов равна <b>90°</b>.</div>
+        <div class="lp"><div class="k">Признак</div>Если в треугольнике сумма двух углов равна <b>90°</b>, то этот треугольник прямоугольный.</div>
+      </div>
+      <div class="nb">Это одна и та же мысль, прочитанная в обе стороны: прямой угол забирает 90° из общих 180°, и на два острых остаётся ровно 90°. А если где-то два угла уже сложились в 90° — третьему достаётся 90°, и угол этот прямой. Частный случай ты подержал в руках: равные катеты дают <b>45° и 45°</b> — равнобедренный прямоугольный треугольник.</div>
+      <div class="star">✦ <b>за страницами учебника:</b> на этом работает уголковый отражатель — катафот на велосипеде, отражатель на спутнике. Свет отражается симметрично (угол падения = угол отражения), а у двух зеркал под прямым углом углы встречи луча — это острые углы прямоугольного треугольника: их сумма 90°. Поэтому луч всегда уходит обратно к источнику.</div>
+      <div class="bridge">Дальше — фокус потоньше: прямоугольный треугольник, у которого один острый угол ровно <b>30°</b>. Его катет окажется ровно вдвое короче гипотенузы. <a href="ch4-p3-t2-leg-against-30.html">Катет против 30° →</a></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="tool" onclick="restart()" style="background:#1a1a2e;color:#fff;border-color:#1a1a2e">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="advance()">Следующая →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС / ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch4-p3-t1-two-acute-angles';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),phase:ph,kind:NM[ph],e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640,H=460,PI=Math.PI;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+const PULSE=()=>1+0.13*Math.sin(Date.now()/240);
+
+/* ───────── ПАЛИТРА / ПРИМИТИВЫ ───────── */
+const COL={A:'#d97706',B:'#db2777',C:'#0d9488',G:'#16a34a',DARK:'#1a1a2e',GREY:'#94a3b8'};
+function sub(p,q){return{x:p.x-q.x,y:p.y-q.y}}
+function nrm(v){const m=Math.hypot(v.x,v.y)||1;return{x:v.x/m,y:v.y/m}}
+function angAt(V,P,Q){const a=Math.atan2(P.y-V.y,P.x-V.x),b=Math.atan2(Q.y-V.y,Q.x-V.x);let d=Math.abs(a-b);if(d>PI)d=2*PI-d;return d;}
+function hexA(h,a){const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+function bg(){
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill()}
+}
+function lab(x,y,txt,col,size){
+  ctx.font='900 '+(size||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);ctx.textBaseline='alphabetic';
+}
+function dot(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function seg(p,q,col,w){ctx.strokeStyle=col;ctx.lineWidth=w||2.8;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
+// дуга угла по РЕАЛЬНЫМ границам сектора (от стороны до стороны)
+function drawAngle(V,P,Q,col,active,dim,r0){
+  const a1=Math.atan2(P.y-V.y,P.x-V.x), a2=Math.atan2(Q.y-V.y,Q.x-V.x);
+  let d=a2-a1; while(d<=-PI)d+=2*PI; while(d>PI)d-=2*PI;
+  const acw=d<0, r=active? r0*PULSE() : r0;
+  ctx.save(); if(dim)ctx.globalAlpha=0.32;
+  ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.arc(V.x,V.y,r,a1,a1+d,acw);ctx.closePath();
+  ctx.fillStyle=hexA(col,0.16);ctx.fill();
+  ctx.beginPath();ctx.arc(V.x,V.y,r,a1,a1+d,acw);
+  ctx.lineWidth=active?3.8:2.6;ctx.strokeStyle=col;ctx.lineCap='round';ctx.stroke();
+  ctx.restore();
+}
+// прямой угол — маленький квадрат в вершине V (P,Q — соседние вершины)
+function rightMark(V,P,Q,col){
+  const u=nrm(sub(P,V)),v=nrm(sub(Q,V)),s=15;
+  const p1={x:V.x+u.x*s,y:V.y+u.y*s},p3={x:V.x+v.x*s,y:V.y+v.y*s},p2={x:p1.x+v.x*s,y:p1.y+v.y*s};
+  ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.lineTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.closePath();
+  ctx.fillStyle=hexA(col,0.18);ctx.fill();
+  ctx.strokeStyle=col;ctx.lineWidth=2.6;ctx.lineJoin='round';
+  ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.stroke();
+}
+function sideLabel(P,Q,away,txt,col,size){
+  const mx=(P.x+Q.x)/2,my=(P.y+Q.y)/2; let nx=-(Q.y-P.y),ny=(Q.x-P.x);
+  const m=Math.hypot(nx,ny)||1; nx/=m;ny/=m;
+  if((mx+nx-away.x)**2+(my+ny-away.y)**2 < (mx-nx-away.x)**2+(my-ny-away.y)**2){nx=-nx;ny=-ny;}
+  lab(mx+nx*16,my+ny*16,txt,col,size||13);
+}
+// треугольник по двум углам при основании P(слева)→Q(справа); вершина выше основания
+function triFromAngles(P,Q,angP,angQ){
+  const ux=Q.x-P.x,uy=Q.y-P.y,base=Math.hypot(ux,uy)||1,bx=ux/base,by=uy/base;
+  const aP=-angP*PI/180, dPx=bx*Math.cos(aP)-by*Math.sin(aP), dPy=bx*Math.sin(aP)+by*Math.cos(aP);
+  const cx=-bx,cy=-by, aQ=angQ*PI/180, dQx=cx*Math.cos(aQ)-cy*Math.sin(aQ), dQy=cx*Math.sin(aQ)+cy*Math.cos(aQ);
+  const denom=(-dQy)*dPx-(-dQx)*dPy;                               // решаем P+s·dP = Q+r·dQ
+  const s=((Q.x-P.x)*(-dQy)-(-dQx)*(Q.y-P.y))/(denom||1e-6);
+  return {x:P.x+s*dPx, y:P.y+s*dPy};
+}
+
+/* ───────── ФАЗЫ ───────── */
+const NM=['lab','converse','classify','reflector'];
+const TOTAL=NM.length;
+let ph=0, results=[], mistakes=0, hints=0, phaseSolved=false, mode=null;
+let horText='', horCol=COL.DARK;
+
+/* lab */
+const Lc={x:180,y:360}, La={x:390,y:360};       // прямой угол при Lc, катет LcLa горизонтальный
+let By=235;                                       // y вершины B (катет LcB вертикальный)
+const By45=150;                                   // равные катеты → 45°/45°
+let labCaught=false, shapesTried=0, lastBy=235;
+function Lb(){return {x:Lc.x,y:By}}
+let aL=0,bL=0;
+function recomputeLab(){ const B=Lb(); aL=angAt(La,Lc,B)*180/PI; bL=angAt(B,Lc,La)*180/PI; }
+recomputeLab();
+
+/* converse — треугольник 35/55, прямой угол в вершине (скрыт до ответа) */
+const Pc={x:175,y:332}, Qc={x:455,y:332};
+const Rc=triFromAngles(Pc,Qc,35,55);
+let convResolved=false;
+
+/* classify — 3 раунда: пара углов при основании, третий вычисляется */
+const Pk={x:185,y:332}, Qk={x:445,y:332};
+const ROUNDS=[
+  {a:50,b:60}, {a:40,b:40}, {a:30,b:60}
+].map(r=>{const third=180-r.a-r.b; return {...r, third, isRight:third===90,
+  type: third===90?'прямоугольный':(third>90? 'тупоугольный':(r.a<90&&r.b<90&&third<90?'остроугольный':'тупоугольный')),
+  apex:triFromAngles(Pk,Qk,r.a,r.b)};});
+let cIdx=0, cMist=0, roundResolved=false;
+
+/* reflector */
+let refT=42, refResolved=false;
+const RO={x:170,y:360}, Rfloor={x:470,y:360}, Rwall={x:170,y:180}, RH1={x:310,y:360};
+function reflPath(){
+  const t=refT*PI/180, ct=Math.cos(t), st=Math.sin(t), L=150;
+  const H2={x:170, y:360-140*Math.tan(t)};
+  const inStart={x:RH1.x+ct*L, y:RH1.y-st*L};       // входит сверху-справа, идёт вниз-влево (-ct,+st)
+  const outEnd ={x:H2.x+ct*L,  y:H2.y-st*L};         // уходит вверх-вправо (+ct,-st) — антипараллельно
+  return {H2,inStart,outEnd,t};
+}
+
+/* ───────── ОТРИСОВКА ───────── */
+function drawLab(){
+  const B=Lb();
+  // цель 45/45 — бледный кружок на месте равных катетов
+  if(!labCaught){
+    const near=clamp(1-Math.abs(By-By45)/70,0,1);
+    ctx.save();ctx.globalAlpha=0.3+0.55*near;ctx.setLineDash([4,3]);
+    ctx.strokeStyle=near>0.8?COL.G:COL.GREY;ctx.lineWidth=2.2;
+    ctx.beginPath();ctx.arc(Lc.x,By45,12*(1+0.12*Math.sin(Date.now()/300)),0,7);ctx.stroke();
+    ctx.setLineDash([]);ctx.restore();
+  }
+  seg(La,Lc,COL.DARK,2.8); seg(Lc,B,COL.DARK,2.8); seg(B,La,COL.DARK,2.8);
+  sideLabel(La,Lc,B,'катет',COL.GREY,12.5);
+  sideLabel(Lc,B,La,'катет',COL.GREY,12.5);
+  sideLabel(B,La,Lc,'гипотенуза',COL.GREY,12.5);
+  drawAngle(La,Lc,B,COL.A,!phaseSolved,false,24);
+  drawAngle(B,Lc,La,COL.B,!phaseSolved,false,24);
+  rightMark(Lc,La,B,COL.C);
+  dot(La.x,La.y,4.2,COL.DARK); dot(Lc.x,Lc.y,4.2,COL.DARK);
+  lab(La.x+16,La.y+20,'A',COL.A,16);
+  lab(Lc.x-16,Lc.y+20,'C',COL.C,16);
+  lab(B.x,Math.max(16,B.y-22),'B',COL.B,16);
+  // живая ручка B
+  if(labCaught){ dot(B.x,B.y,5,COL.G); }
+  else{
+    dot(B.x,B.y,4.2,COL.B);
+    ctx.beginPath();ctx.arc(B.x,B.y,11*PULSE(),0,7);ctx.fillStyle='rgba(255,255,255,.55)';ctx.fill();
+    ctx.strokeStyle='#7c3aed';ctx.lineWidth=2.8;ctx.stroke();dot(B.x,B.y,2.6,'#7c3aed');
+    lab(B.x,Math.max(16,B.y-22)-16,'тяни','#7c3aed',12);
+  }
+}
+function drawGenericTri(P,Q,R,angP,angQ,reveal,thirdDeg,thirdRight,litThird){
+  seg(P,Q,COL.DARK,2.8); seg(Q,R,COL.DARK,2.8); seg(R,P,COL.DARK,2.8);
+  drawAngle(P,Q,R,COL.A,true,false,24);
+  drawAngle(Q,R,P,COL.B,true,false,24);
+  // вершина-апекс: третий угол скрыт до ответа
+  if(reveal){
+    if(thirdRight) rightMark(R,P,Q,COL.C);
+    else drawAngle(R,P,Q,COL.C,!!litThird,false,22);
+  }
+  dot(P.x,P.y,4.2,COL.DARK); dot(Q.x,Q.y,4.2,COL.DARK); dot(R.x,R.y,4.2,COL.DARK);
+  // подписи градусов у основания
+  const bp=bisAt(P,Q,R), bq=bisAt(Q,R,P);
+  lab(P.x+Math.cos(bp)*40,P.y+Math.sin(bp)*40,angP+'°',COL.A,13);
+  lab(Q.x+Math.cos(bq)*40,Q.y+Math.sin(bq)*40,angQ+'°',COL.B,13);
+  if(reveal){ const br=bisAt(R,P,Q); lab(R.x+Math.cos(br)*38,R.y+Math.sin(br)*38,thirdDeg+'°',COL.C,13); }
+}
+function bisAt(V,P,Q){const a1=Math.atan2(P.y-V.y,P.x-V.x),a2=Math.atan2(Q.y-V.y,Q.x-V.x);let d=a2-a1;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;return a1+d/2;}
+function drawConverse(){
+  drawGenericTri(Pc,Qc,Rc,35,55,convResolved,90,true,true);
+  lab(Rc.x,Math.max(16,Rc.y-26),'R',COL.C,16);
+  lab(Pc.x-15,Pc.y+19,'P',COL.A,16); lab(Qc.x+15,Qc.y+19,'Q',COL.B,16);
+}
+function drawClassify(){
+  const r=ROUNDS[cIdx];
+  drawGenericTri(Pk,Qk,r.apex,r.a,r.b,roundResolved,r.third,r.isRight,true);
+  lab(r.apex.x,Math.max(16,r.apex.y-26),'?',roundResolved?COL.C:COL.GREY,16);
+  lab(Pk.x-15,Pk.y+19,'',COL.A,16);
+}
+// дуга между двумя направлениями + чёрточки равенства (нотация равных углов)
+function arcBetween(V,da,db,r,col,ticks){
+  const a1=Math.atan2(da.y,da.x), a2=Math.atan2(db.y,db.x);
+  let d=a2-a1; while(d<=-PI)d+=2*PI; while(d>PI)d-=2*PI;
+  ctx.beginPath();ctx.arc(V.x,V.y,r,a1,a1+d,d<0);
+  ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.lineCap='round';ctx.stroke();
+  const mid=a1+d/2;
+  for(let i=0;i<ticks;i++){const off=(i-(ticks-1)/2)*0.20, ta=mid+off;
+    ctx.beginPath();ctx.moveTo(V.x+Math.cos(ta)*(r-4),V.y+Math.sin(ta)*(r-4));
+    ctx.lineTo(V.x+Math.cos(ta)*(r+4),V.y+Math.sin(ta)*(r+4));
+    ctx.strokeStyle=col;ctx.lineWidth=2;ctx.stroke();}
+}
+function drawReflector(){
+  const p=reflPath(), ct=Math.cos(refT*PI/180), st=Math.sin(refT*PI/180);
+  // уголковый треугольник O–H1–H2 (бледно) — после ответа
+  if(refResolved){
+    ctx.save();ctx.globalAlpha=0.10;ctx.fillStyle=COL.C;
+    ctx.beginPath();ctx.moveTo(RO.x,RO.y);ctx.lineTo(RH1.x,RH1.y);ctx.lineTo(p.H2.x,p.H2.y);ctx.closePath();ctx.fill();ctx.restore();
+    seg(RH1,p.H2,'#94a3b8',1.6);
+  }
+  // зеркала
+  ctx.save();ctx.strokeStyle='#64748b';ctx.lineWidth=5;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(RO.x,RO.y);ctx.lineTo(Rfloor.x,Rfloor.y);ctx.stroke();   // пол
+  ctx.beginPath();ctx.moveTo(RO.x,RO.y);ctx.lineTo(Rwall.x,Rwall.y);ctx.stroke();     // стена
+  ctx.restore();
+  rightMark(RO,Rfloor,Rwall,COL.C);                                                   // прямой угол между зеркалами
+  // ход луча
+  seg(p.inStart,RH1,'#2d70b3',3.2);
+  seg(RH1,p.H2,'#2d70b3',3.2);
+  seg(p.H2,p.outEnd,'#2d70b3',3.2);
+  arrow(p.inStart,RH1,'#2d70b3'); arrow(p.H2,p.outEnd,'#2d70b3');
+  // ЗАКОН ОТРАЖЕНИЯ: угол с зеркалом до = угол после (равные чёрточки) — видно всегда
+  arcBetween(RH1,{x:1,y:0},{x:ct,y:-st},20,COL.A,1);     // у пола: входящий ↔ пол
+  arcBetween(RH1,{x:-1,y:0},{x:-ct,y:-st},20,COL.A,1);   // у пола: отражённый ↔ пол  (= тому же)
+  arcBetween(p.H2,{x:0,y:1},{x:ct,y:st},20,COL.B,2);     // у стены: пришедший ↔ стена
+  arcBetween(p.H2,{x:0,y:-1},{x:ct,y:-st},20,COL.B,2);   // у стены: ушедший ↔ стена  (= тому же)
+  dot(RH1.x,RH1.y,4,'#1d4ed8'); dot(p.H2.x,p.H2.y,4,'#1d4ed8');
+  if(refResolved){
+    lab(RH1.x+2,RH1.y-26,refT+'°',COL.A,12);
+    lab(p.H2.x+34,p.H2.y+2,(90-refT)+'°',COL.B,12);
+    // параллель: копия направления входа, приложенная к выходу
+    const dx=p.outEnd.x-p.H2.x, dy=p.outEnd.y-p.H2.y;
+    ctx.save();ctx.setLineDash([5,5]);ctx.globalAlpha=0.5;ctx.strokeStyle=COL.G;ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(p.inStart.x,p.inStart.y);ctx.lineTo(p.inStart.x+dx,p.inStart.y+dy);ctx.stroke();
+    ctx.setLineDash([]);ctx.restore();
+    lab(p.inStart.x+dx/2+12,p.inStart.y+dy/2,'∥',COL.G,18);
+  }
+  lab(RO.x-14,RO.y+16,'O',COL.C,14);
+}
+function arrow(from,to,col){
+  const a=Math.atan2(to.y-from.y,to.x-from.x), s=8, x=to.x-Math.cos(a)*16, y=to.y-Math.sin(a)*16;
+  ctx.save();ctx.fillStyle=col;ctx.beginPath();
+  ctx.moveTo(x+Math.cos(a)*s,y+Math.sin(a)*s);
+  ctx.lineTo(x+Math.cos(a+2.5)*s,y+Math.sin(a+2.5)*s);
+  ctx.lineTo(x+Math.cos(a-2.5)*s,y+Math.sin(a-2.5)*s);
+  ctx.closePath();ctx.fill();ctx.restore();
+}
+function drawHor(){ if(horText) lab(W/2,H-15,horText,horCol,14); }
+function draw(){
+  bg();
+  const k=NM[ph];
+  if(k==='lab') drawLab();
+  else if(k==='converse') drawConverse();
+  else if(k==='classify') drawClassify();
+  else if(k==='reflector') drawReflector();
+  drawHor();
+}
+
+/* ───────── ГЕЙДЖ ───────── */
+function gaugeUpdate(){
+  if(NM[ph]!=='lab')return;
+  const row=(x,col,deg)=>'<div class="row"><span style="color:'+col+';font-weight:800">∠'+x+'</span><span class="v">'+Math.round(deg)+'°</span></div>';
+  document.getElementById('gauge').innerHTML =
+    row('A',COL.A,aL)+row('B',COL.B,bL)+
+    '<div class="row"><span style="color:'+COL.C+';font-weight:800">∠C</span><span class="v">90°</span></div>'+
+    '<div class="row"><span><b>∠A + ∠B</b></span><span class="v v-ok">90° ✓</span></div>';
+}
+
+/* ───────── ОБЩИЕ ───────── */
+function renderOpts(list){
+  const box=document.getElementById('opts');box.innerHTML='';
+  list.forEach(o=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML=o.t;b.addEventListener('click',()=>o.fn(b));box.appendChild(b);});
+}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+function markPick(btn,ok){if(btn&&btn.classList)btn.classList.add(ok?'ok-pick':'bad-pick')}
+function shakeBtn(btn){if(btn&&btn.classList){btn.classList.add('shake');setTimeout(()=>btn.classList.remove('shake'),450);}}
+function revealCorrect(label){[...document.getElementById('opts').children].forEach(b=>{if(b.textContent.trim()===label)b.classList.add('correct-reveal')})}
+function lockOpts(){[...document.getElementById('opts').children].forEach(b=>b.disabled=true)}
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function pushResult(){results.push(mistakes===0&&hints===0?'g':(mistakes<=1&&hints<=1?'y':'r'))}
+function succeedPhase(proofTxt){
+  if(phaseSolved)return; phaseSolved=true; pushResult();
+  log('solved',{mistakes,hints});
+  const sb=document.getElementById('successBar');sb.textContent='✓ Готово!';sb.style.display='block';
+  document.getElementById('hintbox').style.display='none';
+  if(proofTxt){const pr=document.getElementById('proof');pr.innerHTML='<b>Вывод.</b> '+proofTxt;pr.style.display='block';}
+  const nb=document.getElementById('nextBtn');nb.textContent=(ph<TOTAL-1)?'Следующая →':'Завершить →';nb.style.display='inline-block';
+}
+
+/* ───────── ФАЗА lab ───────── */
+function labCheck(){
+  if(phaseSolved)return;
+  if(Math.hypot(0,By-lastBy)>22){ shapesTried++; lastBy=By; log('step',{what:'drag',shapesTried});
+    if(shapesTried===2) setMsg('Форма меняется, ∠A и ∠B скачут — а нижняя строка панели держит <b>90°</b>. Теперь поймай равные катеты.','info'); }
+  if(Math.abs(By-By45)<14){
+    By=By45; labCaught=true; recomputeLab(); gaugeUpdate();
+    log('snap',{target:'45-45'}); log('found',{what:'45-45'});
+    horText='∠A + ∠B = 90° · здесь по 45°'; horCol=COL.G;
+    setMsg('Поймал! Катеты равны — оба острых угла по 45°.','ok');
+    succeedPhase('Куда ни тяни B, прямой угол при C забирает 90° из общих 180° — значит на ∠A и ∠B всегда остаётся ровно 90° на двоих. Когда катеты равны, эти 90° делятся поровну: 45° и 45°. Это равнобедренный прямоугольный треугольник.');
+  }
+}
+
+/* ───────── ФАЗА converse (признак 1°) ───────── */
+function setupConverse(){
+  document.getElementById('givenCard').style.display='block';
+  document.getElementById('givenBox').innerHTML='<b>Дано:</b> в треугольнике PQR угол при P равен 35°, угол при Q равен 55°. Про угол R ничего не сказано.';
+  document.getElementById('taskText').innerHTML='Два угла — <b>35°</b> и <b>55°</b> — уже складываются в 90°. Что можно сказать про <b>весь треугольник</b>?';
+  renderOpts(shuffle([
+    {t:'Он прямоугольный',fn:b=>answerConverse('right',b)},
+    {t:'Он остроугольный',fn:b=>answerConverse('acute',b)},
+    {t:'По двум углам сказать нельзя',fn:b=>answerConverse('cant',b)}
+  ]));
+  setMsg('Подумай, какой угол достаётся вершине R.','info');
+}
+function answerConverse(kind,btn){
+  if(convResolved)return;
+  if(kind==='right'){
+    convResolved=true; markPick(btn,true); lockOpts();
+    horText='∠R = 180° − 90° = 90° → прямоугольный'; horCol=COL.G;
+    setMsg('Верно — угол R оказался прямым.','ok');
+    succeedPhase('Три угла дают 180°. Два из них уже заняли 90°, значит третьему, при R, достаётся ровно 90° — он прямой. А треугольник с прямым углом и есть прямоугольный. Так свойство читается наоборот: <b>сложились два угла в 90° — треугольник прямоугольный</b>.');
+  } else {
+    mistakes++; log('distractor',{q:'converse',pick:kind});
+    markPick(btn,false); revealCorrect('Он прямоугольный');
+    if(kind==='cant') setMsg('Двух углов как раз хватает: третий — это 180° минус сумма первых двух. Здесь 180° − 90° = 90°. Нажми верный ответ.','err');
+    else setMsg('Посчитай третий угол: 180° − 35° − 55° = 90°. Раз есть прямой угол — треугольник не остроугольный, а прямоугольный. Нажми верный ответ.','err');
+  }
+}
+
+/* ───────── ФАЗА classify ───────── */
+function setupClassify(){
+  document.getElementById('givenCard').style.display='block';
+  cIdx=0; cMist=0; showClassifyRound();
+}
+function showClassifyRound(){
+  roundResolved=false;
+  const r=ROUNDS[cIdx];
+  document.getElementById('givenBox').innerHTML='<b>Раунд '+(cIdx+1)+' из '+ROUNDS.length+'.</b> Два угла треугольника: <b>'+r.a+'°</b> и <b>'+r.b+'°</b>.';
+  document.getElementById('taskText').innerHTML='Будет ли этот треугольник <b>прямоугольным</b>?';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('proof').style.display='none';
+  renderOpts([
+    {t:'Да, прямоугольный',fn:b=>classifyPick(true,b)},
+    {t:'Нет',fn:b=>classifyPick(false,b)}
+  ]);
+  setMsg('Прикинь третий угол: 180° минус два данных.','info');
+  horText='два угла: '+r.a+'° и '+r.b+'° — сумма '+(r.a+r.b)+'°'; horCol=COL.DARK;
+}
+function classifyPick(saysRight,btn){
+  if(roundResolved)return;
+  roundResolved=true;
+  const r=ROUNDS[cIdx];
+  const correct=(saysRight===r.isRight);
+  markPick(btn, correct);
+  lockOpts();
+  horText='третий угол = 180° − '+r.a+'° − '+r.b+'° = '+r.third+'° → '+r.type; horCol=correct?COL.G:'#b91c1c';
+  if(!correct){ mistakes++; cMist++; shakeBtn(btn); }
+  log(correct?'step':'distractor',{q:'classify',round:cIdx,saysRight,isRight:r.isRight});
+  const verdict = r.isRight
+    ? 'Да: 180° − '+r.a+'° − '+r.b+'° = 90°. Третий угол прямой — треугольник прямоугольный.'
+    : 'Нет: третий угол = 180° − '+r.a+'° − '+r.b+'° = '+r.third+'°. Прямого угла нет — треугольник '+r.type+'.';
+  setMsg((correct?'Верно. ':'Не так. ')+verdict, correct?'ok':'err');
+  const last=cIdx>=ROUNDS.length-1;
+  const nb=document.getElementById('nextBtn');
+  nb.textContent=last?'Итог раундов →':'Следующий угол →';
+  nb.style.display='inline-block';
+}
+function classifyDone(){
+  hints += 0;
+  succeedPhase(cMist===0
+    ? 'Главное правило: треугольник прямоугольный ровно тогда, когда два его угла дают 90° (тогда третий — прямой). Дают меньше — третий тупой, дают больше каждый по отдельности... короче, без 90° на двоих прямого угла не будет.'
+    : 'Запомни ориентир: складываются два угла ровно в 90° — третий прямой, треугольник прямоугольный. Не складываются — прямого угла нет.');
+}
+
+/* ───────── ФАЗА reflector (✦) ───────── */
+function setupReflector(){
+  document.getElementById('givenCard').style.display='block';
+  document.getElementById('sliderWrap').style.display='block';
+  document.getElementById('givenBox').innerHTML='<b>✦ за страницами учебника.</b> Свет отражается от зеркала по закону: <b>угол падения равен углу отражения</b> — луч отскакивает симметрично. Здесь два зеркала сложены под прямым углом. Покрути ползунок: куда уходит луч после двух таких отражений?';
+  document.getElementById('taskText').innerHTML='Меняй угол входа. У каждого зеркала угол до отражения равен углу после — это <b>равные чёрточки</b> на чертеже. Куда луч <b>уходит</b> после двух отражений?';
+  renderOpts(shuffle([
+    {t:'Назад — параллельно тому, как вошёл',fn:b=>answerReflector('par',b)},
+    {t:'Вбок под прямым углом ко входу',fn:b=>answerReflector('perp',b)},
+    {t:'Куда придётся — зависит от угла входа',fn:b=>answerReflector('rnd',b)}
+  ]));
+  setMsg('Сначала подвигай ползунок, посмотри на ход луча, потом выбери.','info');
+  horText='угол падения = угол отражения · покрути ползунок'; horCol=COL.DARK;
+}
+function answerReflector(kind,btn){
+  if(refResolved)return;
+  if(kind==='par'){
+    refResolved=true; markPick(btn,true); lockOpts();
+    log('eye_guess',{ok:true}); log('case_seen',{what:'reflector'});
+    horText=refT+'° + '+(90-refT)+'° = 90° → луч уходит назад'; horCol=COL.G;
+    setMsg('Верно — и так при любом угле входа.','ok');
+    succeedPhase('Каждое отражение симметрично: угол падения равен углу отражения (равные чёрточки у каждого зеркала). У пола луч встречает зеркало под углом '+refT+'°, у стены — под углом '+(90-refT)+'°. Но это два острых угла одного прямоугольного треугольника — прямой угол как раз между зеркалами, — а их сумма всегда 90°. Поэтому два отражения доворачивают луч ровно на 180°, и он уходит точно назад, параллельно входящему. Так и работают катафот на велосипеде и отражатель на спутнике: они шлют свет обратно к источнику.');
+  } else {
+    mistakes++; log('eye_guess',{ok:false,pick:kind});
+    markPick(btn,false); revealCorrect('Назад — параллельно тому, как вошёл');
+    setMsg('Покрути ползунок ещё: зелёная пунктирная линия покажет — выходящий луч идёт ровно параллельно входящему, только в обратную сторону. Нажми верный ответ.','err');
+  }
+}
+
+/* ───────── ЖИЗНЕННЫЙ ЦИКЛ ───────── */
+function initPhase(i){
+  ph=i; phaseSolved=false; mode=null; mistakes=0; hints=0;
+  document.getElementById('pf').style.width=(i/TOTAL*100)+'%';
+  document.getElementById('pnum').textContent='Шаг '+(i+1)+' из '+TOTAL;
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('proof').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('gaugeCard').style.display=(NM[i]==='lab')?'block':'none';
+  document.getElementById('givenCard').style.display='none';
+  document.getElementById('sliderWrap').style.display='none';
+  clearOpts();
+  const bd=document.getElementById('badge');
+  const k=NM[i];
+  if(k==='lab'){
+    bd.textContent='Поймай 45° и 45°';
+    By=235; labCaught=false; shapesTried=0; lastBy=235; recomputeLab();
+    document.getElementById('taskText').innerHTML='Перед тобой прямоугольный треугольник: прямой угол при <b>C</b>. Тяни вершину <b>B</b> — следи за нижней строкой панели. Поймай момент, когда оба острых угла станут по <b>45°</b> (катеты сравняются).';
+    horText='∠A + ∠B = 90° — всегда'; horCol=COL.DARK;
+    setMsg('Двигай B вверх-вниз. ∠A и ∠B меняются — а их сумма?','info'); gaugeUpdate();
+  } else if(k==='converse'){
+    bd.textContent='А наоборот?'; convResolved=false; setupConverse();
+  } else if(k==='classify'){
+    bd.textContent='Какой треугольник?'; setupClassify();
+  } else if(k==='reflector'){
+    bd.textContent='✦ Уголковый отражатель'; refT=42; refResolved=false;
+    const sl=document.getElementById('angSlider'); if(sl)sl.value=42;
+    const v=document.getElementById('angVal'); if(v)v.textContent='42°';
+    setupReflector();
+  }
+  log('task_start',{});
+}
+function advance(){
+  if(NM[ph]==='classify' && roundResolved && cIdx<ROUNDS.length-1){ cIdx++; showClassifyRound(); return; }
+  if(NM[ph]==='classify' && roundResolved && cIdx>=ROUNDS.length-1 && !phaseSolved){ classifyDone(); return; }
+  if(ph<TOTAL-1) initPhase(ph+1); else finish();
+}
+function resetTask(){ log('reset'); initPhase(ph); }
+
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{score:g});
+  const s=lS();s.runs=(s.runs||0)+1;if(g>(s.best||0))s.best=g;s.passed=true;sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent=g+' / '+TOTAL;
+  document.getElementById('finLbl').textContent = g===TOTAL?'Чисто! Два острых угла теперь у тебя в руках.':(g>=2?'Хорошо — главное ты увидел сам.':'Стоит пройти ещё раз.');
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){
+  ph=0; results=[]; cIdx=0; By=235; labCaught=false; convResolved=false; refResolved=false; recomputeLab();
+  document.getElementById('fin').style.display='none';
+  document.getElementById('mainArea').style.display='grid';
+  document.getElementById('bar').style.display='flex';
+  initPhase(0);
+}
+
+function showHint(){
+  if(phaseSolved && NM[ph]!=='classify')return;
+  hints++; log('hint');
+  const hb=document.getElementById('hintbox');const k=NM[ph];let h='';
+  if(k==='lab') h='Тяни B к бледному кружку на середине левого катета — там катеты сравняются и оба угла станут по 45°. А сумма ∠A + ∠B не двинется с 90° нигде по дороге.';
+  else if(k==='converse') h='Третий угол всегда равен 180° минус сумма двух других. Здесь 180° − 35° − 55° = 90°. Угол прямой — значит треугольник прямоугольный.';
+  else if(k==='classify') h='Сложи два данных угла. Ровно 90° — третий тоже 90°, прямоугольный. Не 90° — прямого угла в треугольнике нет.';
+  else h='Зелёная пунктирная линия повторяет направление входящего луча. Выходящий ложится ровно на неё — значит уходит параллельно входу, только назад.';
+  hb.innerHTML='💡 '+h;hb.style.display='block';
+}
+
+/* ───────── ПЕРЕТАСКИВАНИЕ B (lab) ───────── */
+function pos(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+cv.addEventListener('pointerdown',e=>{
+  if(NM[ph]!=='lab'||phaseSolved)return;
+  const p=pos(e), B=Lb();
+  const scrK=Math.max(1,W/cv.getBoundingClientRect().width);
+  const grabR=(e.pointerType==='touch'?30:20)*scrK;
+  if(Math.hypot(p.x-B.x,p.y-B.y)<grabR){mode='dragB';try{cv.setPointerCapture(e.pointerId)}catch(_){}}
+});
+cv.addEventListener('pointermove',e=>{if(mode==='dragB')applyDrag(pos(e))});
+['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,e=>{mode=null;try{cv.releasePointerCapture(e.pointerId)}catch(_){}}));
+function applyDrag(p){
+  if(phaseSolved||NM[ph]!=='lab')return;
+  By=clamp(p.y,110,320);
+  recomputeLab(); gaugeUpdate(); labCheck();
+}
+
+/* ───────── ПОЛЗУНОК (reflector) ───────── */
+(function(){const sl=document.getElementById('angSlider');if(sl)sl.addEventListener('input',()=>{
+  refT=+sl.value; const v=document.getElementById('angVal'); if(v)v.textContent=refT+'°';
+  if(refResolved){ horText=refT+'° + '+(90-refT)+'° = 90° → луч уходит назад'; horCol=COL.G; }
+});})();
+
+/* ───────── СТАРТ ───────── */
+initPhase(0);
+(function loop(){draw();requestAnimationFrame(loop)})();
+</script>
+</body>
+</html>

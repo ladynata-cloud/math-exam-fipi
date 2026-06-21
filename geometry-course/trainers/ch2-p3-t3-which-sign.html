@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Первый или второй? · различение признаков</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px}
+.choice{text-align:left;border:1.5px solid #d1d5db;border-radius:11px;background:#fff;padding:11px 13px;font:800 13.5px/1.35 system-ui;color:#1f2937;cursor:pointer;width:100%}
+.choice:hover{border-color:#2d70b3;background:#f0f7ff}
+.choice .h{font-size:11.5px;font-weight:700;color:#64748b;display:block;margin-top:2px}
+.choice.dead{opacity:.5;pointer-events:none;background:#fef2f2;border-color:#fecaca}
+.choice.ok{border-color:#16a34a;background:#f0fdf4;pointer-events:none}
+.choice.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.side{padding:16px;display:flex;flex-direction:column;gap:13px}
+.card{border:1px solid #e5e2d9;border-radius:13px;padding:13px 14px;background:#fdfcf8}
+.card h2{margin:0 0 7px;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:#64748b}
+.task{font-size:14.5px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:7px;background:#ece8df;border-radius:5px;overflow:hidden;margin-top:11px}
+.pf{height:100%;background:#2d70b3;transition:width .3s}
+.pnum{font-size:11px;color:#94a3b8;margin-top:5px;font-weight:700}
+.qdots{display:flex;gap:6px;flex-wrap:wrap}
+.qd{width:12px;height:12px;border-radius:50%;background:#d1d5db}
+.qd.g{background:#16a34a}.qd.y{background:#eab308}.qd.r{background:#dc2626}
+.msg{border-radius:11px;padding:11px 13px;font-size:13.5px;line-height:1.5;display:none}
+.msg.show{display:block}
+.msg.info{background:#eef4fb;color:#1e3a5f}
+.msg.ok{background:#ecfdf5;color:#14532d}
+.msg.err{background:#fef2f2;color:#991b1b}
+.small{font-size:12.5px;line-height:1.55;color:#475569;margin:0}
+.small b{color:#334155}
+.bar{display:flex;gap:9px;padding:13px 16px;background:#f3f0e8;border-top:1px solid #e5e2d9;flex-wrap:wrap;align-items:center}
+.bar button{border:0;border-radius:10px;padding:10px 15px;font-size:13.5px;font-weight:800;cursor:pointer;background:#e2e8f0;color:#334155}
+.bar button:hover{background:#cbd5e1}
+.bar .next{margin-left:auto;background:#2d70b3;color:#fff;display:none}
+.bar .next:hover{background:#235a92}
+.fin{display:none;padding:30px 22px;text-align:center}
+.big{font-size:42px;font-weight:900;color:#1a1a2e}
+.lbl{font-size:14px;color:#64748b;margin-top:4px}
+.dots{display:flex;gap:7px;justify-content:center;margin:16px 0}
+.dot{width:13px;height:13px;border-radius:50%;background:#d1d5db}
+.dot.g{background:#16a34a}.dot.y{background:#eab308}.dot.r{background:#dc2626}
+.skills{max-width:560px;margin:0 auto 14px;display:flex;flex-direction:column;gap:6px;text-align:left}
+.skill{font-size:13px;background:#f6f5ef;border-radius:9px;padding:8px 12px;color:#334155}
+.law{max-width:600px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+@media(max-width:820px){
+  body{padding:8px}
+  .main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}
+  .side{padding:12px}
+  .choices{grid-template-columns:1fr}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">🔎 Первый или второй?</div>
+      <div class="sub">Глава II · §3 · тренажёр 3 из 5 — различение признаков</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Выберите ответ</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="410"></canvas>
+      <div class="choices" id="choices"></div>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card">
+        <h2>Ход</h2>
+        <div class="qdots" id="qdots"></div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div class="card">
+        <h2>Как отличить</h2>
+        <p class="small"><b>2 стороны + угол между ними</b> &rarr; первый признак. <b>1 сторона + 2 угла при ней</b> &rarr; второй признак. <b>2 стороны + угол против одной</b> &rarr; не определяет. <b>Сторон/углов не хватает</b> &rarr; данных мало.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="skills" id="skillsBox"></div>
+    <div class="law">
+      <b>Признак выбирают по конфигурации отмеченного, а не по виду фигуры.</b><br>
+      &bull; Две стороны и угол <b>между</b> ними &rarr; первый признак.<br>
+      &bull; Сторона и два угла <b>при</b> ней &rarr; второй признак.<br>
+      &bull; Две стороны и угол <b>против</b> одной из них &rarr; не определяет.<br>
+      &bull; Меньше трёх нужных элементов &rarr; данных не хватает.
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="next" style="display:inline-block" onclick="restart()">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button onclick="showHint()">&#128161; Подсказка</button>
+    <button onclick="restart()">&#8635; Сначала</button>
+    <button id="nextBtn" class="next" onclick="nextTask()">Следующая &rarr;</button>
+  </div>
+</div>
+
+<script>
+const SK='mathExamCourseProgress.v1', TID='ch2-p3-t3-which-sign';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),task:ti+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+function triASA(AB,aA,aB){const tA=Math.tan(aA*Math.PI/180),tB=Math.tan(aB*Math.PI/180);const x=AB*tB/(tA+tB),y=-x*tA;return [{x:0,y:0},{x:AB,y:0},{x:+x.toFixed(1),y:+y.toFixed(1)}];}
+function centered(t){const cx=(t[0].x+t[1].x+t[2].x)/3,cy=(t[0].y+t[1].y+t[2].y)/3;return t.map(p=>({x:p.x-cx,y:p.y-cy}));}
+function applyTo(t,st){const ca=Math.cos(st.a),sa=Math.sin(st.a);return t.map(p=>{const x=p.x,y=p.y*st.k;return {x:x*ca-y*sa+st.x,y:x*sa+y*ca+st.y};});}
+const FORMS=[[120,52,64],[115,46,72],[125,60,52],[118,57,58]];
+
+const TYPES=[
+ {answer:'sas', sides:[0,2], angles:[0], desc:'две стороны (AB, CA) и угол A между ними'},
+ {answer:'asa', sides:[0], angles:[0,1], desc:'сторона AB и два угла A, B при ней'},
+ {answer:'ssa', sides:[0,1], angles:[0], desc:'две стороны (AB, BC) и угол A, лежащий против BC, а не между сторонами'},
+ {answer:'few', sides:[], angles:[0,1], desc:'только два угла, без стороны (это лишь подобие)'},
+ {answer:'few', sides:[0,1], angles:[], desc:'только две стороны, без угла между ними'}
+];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function rnd(a,b){return a+Math.random()*(b-a);}
+function buildPlan(){
+  const pick=[TYPES[0],TYPES[0],TYPES[1],TYPES[1],TYPES[2],TYPES[2],TYPES[3],TYPES[4]];
+  return shuffle(pick).map(ty=>{
+    const f=FORMS[Math.floor(Math.random()*FORMS.length)];
+    const shape=centered(triASA(f[0],f[1],f[2]));
+    return Object.assign({},ty,{shape:shape,
+      aL:rnd(-0.35,0.35), kL:1,
+      aR:rnd(-0.4,0.4)+(Math.random()<0.5?Math.PI*rnd(0.9,1.1):0),
+      kR:Math.random()<0.5?-1:1});
+  });
+}
+let PLAN=buildPlan();
+
+let ti=0, answered=false, mistakes=0, hintUsed=false;
+const results=[];
+let flashFx=0;
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+let W=640,H=410;
+(function dpr(){const r=Math.min(window.devicePixelRatio||1,2);cv.width=W*r;cv.height=H*r;ctx.scale(r,r);cv.style.width='100%';})();
+function T(){return PLAN[ti];}
+function ptsL(){return applyTo(T().shape,{x:175,y:200,a:T().aL,k:T().kL});}
+function ptsR(){return applyTo(T().shape,{x:465,y:200,a:T().aR,k:T().kR});}
+
+function tick(p1,p2,n,col,lw){
+  const mx=(p1.x+p2.x)/2,my=(p1.y+p2.y)/2,dx=p2.x-p1.x,dy=p2.y-p1.y,L=Math.hypot(dx,dy)||1;
+  const ux=dx/L,uy=dy/L,nx=-uy,ny=ux;ctx.strokeStyle=col;ctx.lineWidth=lw||2.4;
+  for(let i=0;i<n;i++){const o=(i-(n-1)/2)*5;ctx.beginPath();ctx.moveTo(mx+ux*o-nx*6,my+uy*o-ny*6);ctx.lineTo(mx+ux*o+nx*6,my+uy*o+ny*6);ctx.stroke();}
+}
+function arcN(v,p1,p2,col,n,lw){
+  for(let i=0;i<n;i++){let a1=Math.atan2(p1.y-v.y,p1.x-v.x),a2=Math.atan2(p2.y-v.y,p2.x-v.x);
+    let d=a2-a1;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;
+    ctx.strokeStyle=col;ctx.lineWidth=lw||2.4;ctx.beginPath();ctx.arc(v.x,v.y,15+i*5,a1,a1+d,d<0);ctx.stroke();}
+}
+function lab(p,txt,cx,cy,col){
+  const ux=p.x-cx,uy=p.y-cy,L=Math.hypot(ux,uy)||1,x=p.x+ux/L*16,y=p.y+uy/L*16+5;
+  ctx.font='900 14px system-ui';ctx.textAlign='center';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(250,248,242,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);
+}
+function bg(){ctx.clearRect(0,0,W,H);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill();}}
+function flash(t){return t?Math.max(0,1-(Date.now()-t)/700):0;}
+const EDGES=[[0,1],[1,2],[2,0]];
+const ANG=[[0,1,2],[1,0,2],[2,0,1]];
+function drawTri(p,labels){
+  const cx=(p[0].x+p[1].x+p[2].x)/3,cy=(p[0].y+p[1].y+p[2].y)/3;
+  ctx.beginPath();p.forEach(function(q,i){i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y);});ctx.closePath();
+  ctx.fillStyle='rgba(45,112,179,.12)';ctx.fill();
+  ctx.strokeStyle='#2d70b3';ctx.lineWidth=2.4;ctx.lineJoin='round';ctx.stroke();
+  const t=T(), fl=flash(flashFx);
+  t.sides.forEach(function(e,idx){const a=EDGES[e][0],b=EDGES[e][1];
+    const col=answered?'#16a34a':'#1a1a2e';
+    if(answered){ctx.strokeStyle='rgba(22,163,74,'+(0.45+0.45*fl)+')';ctx.lineWidth=4;
+      ctx.beginPath();ctx.moveTo(p[a].x,p[a].y);ctx.lineTo(p[b].x,p[b].y);ctx.stroke();}
+    tick(p[a],p[b],idx+1,col,2.4);});
+  t.angles.forEach(function(g,idx){const v=ANG[g][0],s1=ANG[g][1],s2=ANG[g][2];
+    arcN(p[v],p[s1],p[s2],'#d97706',idx+1,answered?3+fl*2:2.4);});
+  labels.forEach(function(nm,i){ctx.beginPath();ctx.arc(p[i].x,p[i].y,4,0,7);ctx.fillStyle='#1a1a2e';ctx.fill();lab(p[i],nm,cx,cy,'#1a1a2e');});
+}
+function draw(){
+  bg();
+  drawTri(ptsL(),['A','B','C']);
+  drawTri(ptsR(),['N','M','K']);
+}
+(function loop(){draw();requestAnimationFrame(loop);})();
+
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg show '+cls;}
+const LABELS={
+  sas:{title:'Первый признак',h:'две стороны и угол между ними'},
+  asa:{title:'Второй признак',h:'сторона и два угла при ней'},
+  ssa:{title:'Не определяет',h:'две стороны и угол против одной'},
+  few:{title:'Данных не хватает',h:'меньше трёх нужных элементов'}
+};
+function buildChoices(){
+  const ch=document.getElementById('choices');ch.innerHTML='';
+  ['sas','asa','ssa','few'].forEach(function(key){
+    const b=document.createElement('button');
+    b.className='choice';b.dataset.key=key;
+    b.innerHTML=LABELS[key].title+'<span class="h">'+LABELS[key].h+'</span>';
+    b.onclick=function(){answer(key,b);};
+    ch.appendChild(b);
+  });
+}
+function answer(choice,btn){
+  if(answered)return;
+  const t=T();
+  if(choice===t.answer){
+    answered=true;flashFx=Date.now();
+    results[ti]=mistakes===0&&!hintUsed?'g':(mistakes<=1&&!hintUsed?'y':'r');
+    log('answer_ok',{type:t.answer,mistakes:mistakes});
+    setMsg(okText(t.answer),'ok');
+    btn.classList.add('ok');
+    document.querySelectorAll('.choice').forEach(function(b){if(b!==btn)b.classList.add('dead');});
+    document.getElementById('nextBtn').style.display='inline-block';
+    document.getElementById('nextBtn').textContent= ti===PLAN.length-1?'Завершить →':'Следующая →';
+  }else{
+    mistakes++;log('answer_wrong',{picked:choice,correct:t.answer});
+    btn.classList.add('shake','dead');setTimeout(function(){btn.classList.remove('shake');},450);
+    setMsg(whyWrong(choice,t.answer),'err');
+  }
+}
+function okText(a){
+  if(a==='sas')return 'Верно — первый признак. Отмечены <b>две стороны</b> и угол <b>между</b> ними.';
+  if(a==='asa')return 'Верно — второй признак. Отмечены <b>сторона</b> и два угла, <b>прилежащих</b> к ней.';
+  if(a==='ssa')return 'Верно: две стороны и угол <b>против</b> одной из них. Такие данные <b>не определяют</b> треугольник однозначно (помните два треугольника из словаря §3).';
+  return 'Верно — данных не хватает: '+T().desc+'.';
+}
+function whyWrong(picked,correct){
+  const t=T();
+  if(correct==='sas')return 'Нет: здесь две стороны и угол <b>между</b> ними — это первый признак.';
+  if(correct==='asa')return 'Нет: здесь сторона и два угла <b>при</b> ней — это второй признак.';
+  if(correct==='ssa')return 'Приглядитесь: две стороны и угол <b>против</b> одной из них (не между). Такой набор треугольник не определяет однозначно.';
+  return 'Посчитайте отмеченное: здесь '+t.desc+'. Трёх нужных элементов в правильном расположении нет.';
+}
+function showHint(){
+  hintUsed=true;log('hint');
+  setMsg('Сопоставьте вершины двух треугольников и посчитайте отмеченное: сколько <b>сторон</b> (засечки) и сколько <b>углов</b> (дужки), и где угол — между сторонами или против стороны.','info');
+}
+
+function initTask(){
+  answered=false;mistakes=0;hintUsed=false;flashFx=0;
+  document.getElementById('taskText').innerHTML='Два треугольника <b>ABC</b> и <b>NMK</b>. Засечки отмечают равные стороны, дужки — равные углы (соответствие A↔N, B↔M, C↔K). Можно ли доказать равенство, и каким признаком?';
+  document.getElementById('pf').style.width=Math.round(ti/PLAN.length*100)+'%';
+  document.getElementById('pnum').textContent='Задача '+(ti+1)+' из '+PLAN.length;
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('badge').textContent='Выберите ответ';
+  buildChoices();
+  renderDots();
+  setMsg('Сопоставьте вершины и выберите ответ.','info');
+  log('task_start',{type:T().answer});
+}
+function renderDots(){
+  const d=document.getElementById('qdots');d.innerHTML='';
+  for(let i=0;i<PLAN.length;i++){const e=document.createElement('div');e.className='qd'+(results[i]?' '+results[i]:'');d.appendChild(e);}
+}
+function nextTask(){ if(ti<PLAN.length-1){ti++;initTask();} else finish(); }
+
+function finish(){
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  const greens=results.filter(function(r){return r==='g';}).length;
+  document.getElementById('finScore').textContent=greens+' / '+PLAN.length;
+  document.getElementById('finLbl').textContent='задач решено без ошибок и подсказок';
+  const dots=document.getElementById('finDots');dots.innerHTML='';
+  results.forEach(function(r){const e=document.createElement('div');e.className='dot '+(r||'r');dots.appendChild(e);});
+  const cat={sas:[0,0],asa:[0,0],ssa:[0,0],few:[0,0]};
+  PLAN.forEach(function(p,i){cat[p.answer][1]++;if(results[i]==='g')cat[p.answer][0]++;});
+  const names={sas:'Первый признак',asa:'Второй признак',ssa:'Распознать «не определяет»',few:'«Данных не хватает»'};
+  const sb=document.getElementById('skillsBox');sb.innerHTML='';
+  Object.keys(cat).forEach(function(k){if(cat[k][1]===0)return;const o=cat[k][0],t=cat[k][1];
+    const e=document.createElement('div');e.className='skill';
+    e.innerHTML='<b>'+names[k]+'</b>: '+o+' из '+t+(o<t?' — стоит повторить':' ✓');sb.appendChild(e);});
+  const s=lS();s.runs=(s.runs||0)+1;s.passed=true;s.best=Math.max(s.best||0,greens);sS(s);
+  log('finish',{score:greens});
+}
+function restart(){
+  PLAN=buildPlan();ti=0;results.length=0;
+  document.getElementById('fin').style.display='none';
+  document.getElementById('mainArea').style.display='grid';
+  document.getElementById('bar').style.display='flex';
+  initTask();
+}
+log('start');
+initTask();
+</script>
+</body>
+</html>

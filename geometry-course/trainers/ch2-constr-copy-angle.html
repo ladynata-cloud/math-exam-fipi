@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Угол, равный данному — циркуль и линейка</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:21px;font-weight:900}
+.sub{font-size:13px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:13px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:15px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none;cursor:crosshair}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:16px;line-height:1.5}
+.task b{color:#1a1a2e}
+.steps{font-size:13px;color:#64748b;font-weight:800;margin-top:8px}
+.msg{border-radius:12px;padding:12px;font-size:15px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.why{display:none;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;padding:12px;font-size:14px;line-height:1.5;color:#374151}
+.why b{color:#b45309}
+.law{display:none;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:12px;padding:14px;font-size:14.5px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law .nb{margin-top:8px;color:#334155}
+.law .bridge{margin-top:10px;color:#475569}
+.law .bridge a{color:#b45309;font-weight:800;text-decoration:none}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 13px;font:800 14px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+button.tool.active{border-color:#2d70b3;background:#eaf2fb;color:#1d4ed8}
+.spacer{flex:1}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a;margin-top:4px}
+.next:hover{background:#15803d}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">📐 Угол, равный данному</div>
+      <div class="sub">Глава II · построения · циркуль и линейка</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Циркуль и линейка</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="460"></canvas></div>
+    <aside class="side">
+      <div class="card" id="taskCard">
+        <h2 id="taskTtl">Задача</h2>
+        <div class="task" id="taskText"></div>
+        <div class="steps" id="stepText"></div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div id="why" class="why"></div>
+      <button class="tool next" id="proofBtn" onclick="proofNext()">Дальше →</button>
+      <div id="law" class="law"></div>
+    </aside>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" id="btnCompass" onclick="selectTool('compass')">⊙ Циркуль</button>
+    <button class="tool" id="btnSpan" onclick="selectTool('transfer')">⟷ Взять раствор</button>
+    <button class="tool" id="btnLine" onclick="selectTool('line')">／ Линейка</button>
+    <span class="spacer"></span>
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="undo()">↶ Отмена</button>
+    <button class="tool" onclick="reset()">↺ Сброс</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС / ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch2-constr-copy-angle';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,events:[]}}catch{return{runs:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function logE(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),e:ev,step,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640,H=460,PI=Math.PI;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+const PULSE=()=>1+0.16*Math.sin(Date.now()/240);
+
+/* ───────── ПАЛИТРА / ПРИМИТИВЫ ───────── */
+const COL={DARK:'#1a1a2e',GREY:'#94a3b8',ARC:'#0d9488',LINE:'#2d70b3',G:'#16a34a',PUL:'#7c3aed',A:'#d97706',B:'#db2777'};
+function sub(p,q){return{x:p.x-q.x,y:p.y-q.y}}
+function nrm(v){const m=Math.hypot(v.x,v.y)||1;return{x:v.x/m,y:v.y/m}}
+function hexA(h,a){const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+function bg(){ ctx.clearRect(0,0,W,H);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill()} }
+function lab(x,y,txt,col,size){ ctx.font='900 '+(size||16)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(txt,x,y); ctx.fillStyle=col;ctx.fillText(txt,x,y);ctx.textBaseline='alphabetic'; }
+function dotF(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function dotHollow(x,y,r,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle='#fffdf7';ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=2.4;ctx.stroke();}
+function seg(p,q,col,w){ctx.strokeStyle=col;ctx.lineWidth=w||2.8;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
+function segD(p,q,col,w,dash){ctx.save();ctx.setLineDash(dash||[6,5]);ctx.strokeStyle=col;ctx.lineWidth=w||2;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();ctx.restore();}
+function arcDraw(cx,cy,r,a0,a1,col,w,alpha){ ctx.save();ctx.globalAlpha=alpha==null?0.8:alpha;ctx.strokeStyle=col;ctx.lineWidth=w||1.9;ctx.lineCap='round';
+  ctx.beginPath();ctx.arc(cx,cy,r,a0,a1);ctx.stroke();ctx.restore(); }
+function ring(x,y,r,col){ctx.save();ctx.strokeStyle=col;ctx.lineWidth=2.6;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.stroke();ctx.restore();}
+function drawAngle(V,P,Q,col,r0){ const a1=Math.atan2(P.y-V.y,P.x-V.x), a2=Math.atan2(Q.y-V.y,Q.x-V.x);
+  let d=a2-a1; while(d<=-PI)d+=2*PI; while(d>PI)d-=2*PI; const acw=d<0;
+  ctx.beginPath();ctx.arc(V.x,V.y,r0,a1,a1+d,acw); ctx.lineWidth=3;ctx.strokeStyle=col;ctx.lineCap='round';ctx.stroke(); }
+function tickMark(p,q,n,col){ const mx=(p.x+q.x)/2,my=(p.y+q.y)/2; let dx=q.x-p.x,dy=q.y-p.y;const L=Math.hypot(dx,dy)||1;dx/=L;dy/=L; const nx=-dy,ny=dx;
+  for(let i=0;i<n;i++){const off=(i-(n-1)/2)*5,cx=mx+dx*off,cy=my+dy*off; ctx.beginPath();ctx.moveTo(cx-nx*5,cy-ny*5);ctx.lineTo(cx+nx*5,cy+ny*5);ctx.strokeStyle=col||COL.DARK;ctx.lineWidth=2;ctx.stroke();} }
+
+/* ───────── ГЕОМЕТРИЯ (чистая) ───────── */
+const EPS=1e-7;
+function dist(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
+function interLL(a,b,c,d){ const den=(a.x-b.x)*(c.y-d.y)-(a.y-b.y)*(c.x-d.x); if(Math.abs(den)<EPS) return null;
+  const t=((a.x-c.x)*(c.y-d.y)-(a.y-c.y)*(c.x-d.x))/den; return {x:a.x+t*(b.x-a.x), y:a.y+t*(b.y-a.y)}; }
+function interLC(a,b,O,r){ const dx=b.x-a.x,dy=b.y-a.y,fx=a.x-O.x,fy=a.y-O.y; const A=dx*dx+dy*dy,B=2*(fx*dx+fy*dy),Cc=fx*fx+fy*fy-r*r;
+  let dsc=B*B-4*A*Cc; if(dsc<-EPS) return []; dsc=Math.max(dsc,0); const s=Math.sqrt(dsc),out=[];
+  [(-B-s)/(2*A),(-B+s)/(2*A)].forEach((t,i)=>{ if(i===0||s>EPS) out.push({x:a.x+t*dx,y:a.y+t*dy}); }); return out; }
+function interCC(O1,r1,O2,r2){ const d=dist(O1,O2); if(d<EPS || d>r1+r2+EPS || d<Math.abs(r1-r2)-EPS) return [];
+  const aa=(r1*r1-r2*r2+d*d)/(2*d); let h2=r1*r1-aa*aa; if(h2<0) h2=0; const h=Math.sqrt(h2);
+  const xm=O1.x+aa*(O2.x-O1.x)/d, ym=O1.y+aa*(O2.y-O1.y)/d; const rx=-(O2.y-O1.y)*(h/d), ry=(O2.x-O1.x)*(h/d);
+  return h<EPS ? [{x:xm,y:ym}] : [{x:xm+rx,y:ym+ry},{x:xm-rx,y:ym-ry}]; }
+
+/* ───────── ДАНО: угол при O и луч при O′ ───────── */
+const O_0={x:120,y:330}, ANG_LO=-15*PI/180, ANG_HI=-65*PI/180, SIDELEN=240;
+const DIR_LO={x:Math.cos(ANG_LO),y:Math.sin(ANG_LO)}, DIR_HI={x:Math.cos(ANG_HI),y:Math.sin(ANG_HI)};
+const SLO_END={x:O_0.x+DIR_LO.x*SIDELEN,y:O_0.y+DIR_LO.y*SIDELEN}, SHI_END={x:O_0.x+DIR_HI.x*SIDELEN,y:O_0.y+DIR_HI.y*SIDELEN};
+const O2_0={x:370,y:330}, DIR_BASE={x:1,y:0}, BASELEN=250;
+const BASE_END={x:O2_0.x+DIR_BASE.x*BASELEN,y:O2_0.y+DIR_BASE.y*BASELEN};
+
+/* ───────── МОДЕЛЬ ───────── */
+let P=[], L=[], C=[]; let pid=0;
+function ptByName(n){return P.find(p=>p.name===n);}
+function arcByName(n){return C.find(c=>c.name===n);}
+function addPtXY(x,y,kind,name){P.push({id:'p'+(pid++),x,y,kind,name});return ptByName(name);}
+function addArcSpan(centerName,r,a0,a1,name){C.push({center:centerName,r,a0,a1,name});}
+function addLine(n1,n2,name,kind){L.push({a:n1,b:n2,name,kind:kind||'line'});}
+function rayHit(O,dir,r){ const far={x:O.x+dir.x*1000,y:O.y+dir.y*1000}; const hits=interLC(O,far,O,r);
+  return hits.find(p=>((p.x-O.x)*dir.x+(p.y-O.y)*dir.y)>0) || hits[0]; }
+
+/* ───────── СОСТОЯНИЕ ───────── */
+let step=0, phase='build', proofStep=0, opening=null, tool='compass';
+let comp=null, armed=null, spanBuf=null, lastReject=null, mistakes=0, hints=0, undoStack=[], initSnap=null;
+function takeSnap(){ return JSON.stringify({P,L,C,opening,step,phase,proofStep,pid}); }
+function loadSnap(s){ const o=JSON.parse(s); P.length=0;o.P.forEach(p=>P.push(p)); L.length=0;o.L.forEach(l=>L.push(l)); C.length=0;o.C.forEach(c=>C.push(c));
+  opening=o.opening; step=o.step; phase=o.phase; proofStep=o.proofStep; pid=o.pid; armed=null; comp=null; spanBuf=null; lastReject=null; }
+function pushUndo(){ undoStack.push(takeSnap()); }
+
+/* ───────── ПРИВЯЗКА ───────── */
+function worldPos(e){ const r=cv.getBoundingClientRect(); const k=Math.max(1,W/r.width); return {x:(e.clientX-r.left)*k, y:(e.clientY-r.top)*k}; }
+function pick(w){ const r=cv.getBoundingClientRect(); const k=Math.max(1,W/r.width); const R=28*k; let best=null,bd=R;
+  for(const p of P){ const dd=Math.hypot(p.x-w.x,p.y-w.y); if(dd<bd){bd=dd;best=p;} } return best; }
+
+/* ───────── ДЕЙСТВИЯ ───────── */
+function reject(t){ lastReject=t; mistakes++; setMsg(t,'err'); logE('step_reject',{reason:t}); }
+function tryArc(centerPt, rGiven, isDrag){
+  if(phase!=='build') return;
+  let r; if(isDrag){ r=rGiven; } else { if(opening==null){ reject('Сначала раскрой циркуль: нажми на точку и потяни.'); return; } r=opening; }
+  if(step===0){
+    if(!centerPt || centerPt.name!=='O'){ reject('Поставь ножку циркуля в вершину O.'); return; }
+    if(r<50){ reject('Дуга слишком мала — увеличь радиус, чтобы пересечь обе стороны.'); return; }
+    if(r>SIDELEN-15){ reject('Дуга вышла за концы сторон — возьми радиус поменьше.'); return; }
+    pushUndo(); opening=r; addArcSpan('O',r,ANG_HI,ANG_LO,'arcO');
+    const A=rayHit(O_0,DIR_LO,r), B=rayHit(O_0,DIR_HI,r);
+    addPtXY(A.x,A.y,'inter','A'); addPtXY(B.x,B.y,'inter','B');
+    step=1; tool='compass'; lastReject=null;
+    setMsg('Дуга засекла стороны в точках A и B. Тем же раствором — дугу из вершины O′ (коснись O′).','ok');
+    logE('draw_arc',{c:'O',r:Math.round(r)}); updateUI();
+  } else if(step===1){
+    if(!centerPt || centerPt.name!=='O2'){ reject('Вторую дугу проводим из вершины O′ — поставь ножку в O′.'); return; }
+    const rO=arcByName('arcO').r;
+    if(Math.abs(r-rO)>3){ reject('Дугу из O′ проводим тем же раствором, что из O (просто коснись O′).'); return; }
+    pushUndo(); opening=rO; addArcSpan('O2',rO,-1.05,0.18,'arcO2');
+    const Cc=rayHit(O2_0,DIR_BASE,rO); addPtXY(Cc.x,Cc.y,'inter','C');
+    step=2; tool='transfer'; lastReject=null;
+    setMsg('Дуга пересекла луч в точке C. Теперь возьми раствором циркуля отрезок AB: коснись A, потом B.','ok');
+    logE('draw_arc',{c:'O2'}); updateUI();
+  } else if(step===2){
+    reject('Сейчас нужно взять раствор AB: возьми инструмент «Взять раствор» и коснись A, затем B.');
+  } else if(step===3){
+    if(!centerPt || centerPt.name!=='C'){ reject('Дугу проводим из точки C — поставь ножку в C.'); return; }
+    const rAB=opening;
+    if(Math.abs(r-rAB)>3){ reject('Ты сбил раствор AB — просто коснись C, не меняя раствора.'); return; }
+    const rO=arcByName('arcO').r, Cc=ptByName('C'), O2p=ptByName('O2');
+    const hits=interCC(O2p,rO,Cc,rAB);
+    if(hits.length<2){ reject('Дуги не пересеклись.'); return; }
+    hits.sort((u,v)=>u.y-v.y); const D=hits[0];
+    pushUndo(); const fCD=Math.atan2(D.y-Cc.y,D.x-Cc.x); addArcSpan('C',rAB,fCD-1.3,fCD+1.3,'arcC');
+    addPtXY(D.x,D.y,'inter','D'); step=4; tool='line'; lastReject=null;
+    setMsg('Дуги пересеклись в точке D. Линейкой проведи луч из O′ через D.','ok');
+    logE('draw_arc',{c:'C'}); updateUI();
+  } else { reject('Сейчас нужна линейка: луч из O′ через D.'); }
+}
+function takeSpan(n1,n2){
+  if(phase!=='build') return;
+  if(step!==2){ reject('Сейчас не нужно брать раствор.'); return; }
+  const s=new Set([n1,n2]);
+  if(!(s.has('A')&&s.has('B'))){ reject('Измерь именно отрезок AB — коснись A, потом B.'); return; }
+  pushUndo(); opening=dist(ptByName('A'),ptByName('B')); step=3; tool='compass'; lastReject=null;
+  setMsg('Раствор = AB взят. Этим раствором проведи дугу из точки C.','ok'); logE('take_span',{p:'AB'}); updateUI();
+}
+function tryLine(n1,n2){
+  if(phase!=='build') return;
+  if(step!==4){ reject('Сначала циркулем построй точку D.'); return; }
+  const s=new Set([n1,n2]);
+  if(!(s.has('O2')&&s.has('D'))){ reject(s.has('C')?'Луч проводим из вершины O′ через точку D, не через C.':'Проведи луч из вершины O′ через точку D.'); return; }
+  pushUndo(); addLine('O2','D','result','ray');
+  phase='proof'; proofStep=0; tool=null; lastReject=null;
+  setMsg('Луч построен. Разберёмся, почему угол равен данному.','info'); logE('draw_line',{a:'O2',b:'D'}); updateUI();
+}
+function copyAngleOK(){
+  const O=ptByName('O'),A=ptByName('A'),B=ptByName('B'),O2=ptByName('O2'),Cc=ptByName('C'),D=ptByName('D');
+  if(!A||!B||!Cc||!D) return false;
+  const ang=(V,X,Y)=>{const u=nrm(sub(X,V)),w=nrm(sub(Y,V));return Math.acos(Math.max(-1,Math.min(1,u.x*w.x+u.y*w.y)));};
+  return Math.abs(ang(O,A,B)-ang(O2,Cc,D))<0.01;
+}
+function proofNext(){
+  if(phase==='proof'&&proofStep===0){ proofStep=1; updateUI(); logE('proof',{s:1}); }
+  else if(phase==='proof'&&proofStep===1){ finishNow(); }
+}
+function finishNow(){ phase='done'; const s=lS(); s.runs=(s.runs||0)+1; s.passed=true; sS(s); logE('finish',{mistakes,hints}); updateUI(); }
+function undo(){ if(phase!=='build') return; const s=undoStack.pop(); loadSnap(s||initSnap); setMsg('Шаг отменён.','info'); updateUI(); }
+function reset(){ loadSnap(initSnap); undoStack=[]; mistakes=0; hints=0; setMsg('Холст очищен. Дано: угол при O и луч при O′.','info'); updateUI(); }
+function showHint(){ if(phase!=='build') return; hints++; logE('hint');
+  const h=['Поставь ножку циркуля в вершину O, нажми и тяни — дуга должна пересечь обе стороны.',
+           'Не меняя раствора, просто коснись вершины O′ — дуга пересечёт луч в точке C.',
+           'Возьми инструмент «Взять раствор» и коснись A, потом B — это перенесёт длину AB.',
+           'Этим раствором коснись точки C — дуга пересечёт дугу при O′ в точке D.',
+           'Возьми линейку и проведи луч из вершины O′ через точку D.'][step];
+  setMsg('💡 '+h,'info'); }
+
+/* ───────── УКАЗАТЕЛЬ ───────── */
+cv.addEventListener('pointerdown',e=>{
+  if(phase!=='build') return; const w=worldPos(e), p=pick(w);
+  if(tool==='compass'){ if(!p){ reject('Ставь ножку циркуля в точку, не на глаз.'); return; } comp={center:p,r:0,active:true}; try{cv.setPointerCapture(e.pointerId)}catch{} }
+  else if(tool==='line'){ if(!p){ reject('Веди линию через построенные точки, не на глаз.'); return; }
+    if(!armed){ armed=p; setMsg('Точка '+(p.name||'')+' выбрана. Теперь вторая.','info'); }
+    else { if(p.id!==armed.id) tryLine(armed.name,p.name); armed=null; } }
+  else if(tool==='transfer'){ if(!p){ reject('Коснись построенной точки, не на глаз.'); return; }
+    if(!spanBuf){ spanBuf=p; setMsg('Точка '+(p.name||'')+' взята. Теперь второй конец отрезка.','info'); }
+    else { if(p.id!==spanBuf.id) takeSpan(spanBuf.name,p.name); spanBuf=null; } }
+});
+cv.addEventListener('pointermove',e=>{ if(comp&&comp.active){ const w=worldPos(e); comp.r=Math.hypot(w.x-comp.center.x,w.y-comp.center.y); } });
+cv.addEventListener('pointerup',e=>{ if(comp&&comp.active){ const c=comp.center, isDrag=comp.r>8, r=comp.r; comp=null; try{cv.releasePointerCapture(e.pointerId)}catch{} tryArc(c,r,isDrag); } });
+
+/* ───────── ОТРИСОВКА ───────── */
+function lineExt(p,q,eA,eB){ const d=nrm(sub(q,p)); return [{x:p.x-d.x*eA,y:p.y-d.y*eA},{x:q.x+d.x*eB,y:q.y+d.y*eB}]; }
+function draw(){
+  bg();
+  const O=O_0,O2=O2_0, Aa=ptByName('A'),Bb=ptByName('B'),Cc=ptByName('C'),D=ptByName('D');
+  const arcAlpha=phase==='build'?0.8:0.3;
+  // дано: угол при O и луч при O′
+  seg(O,SLO_END,COL.DARK,3); seg(O,SHI_END,COL.DARK,3);
+  seg(O2,BASE_END,COL.DARK,3);
+  // дуги
+  C.forEach(c=>{ arcDraw(ptByName(c.center).x,ptByName(c.center).y,c.r,c.a0,c.a1,COL.ARC,1.9,arcAlpha); });
+  // предпросмотр
+  if(comp&&comp.active){ const rr=comp.r; if(step===0) arcDraw(O.x,O.y,rr,ANG_HI,ANG_LO,COL.ARC,1.6,0.5);
+    else arcDraw(comp.center.x,comp.center.y,rr,-PI,PI,COL.ARC,1.4,0.4);
+    seg(comp.center,{x:comp.center.x+rr,y:comp.center.y},COL.ARC,1); }
+  const greenLine=(phase==='proof'&&proofStep===1)||phase==='done', done=phase==='done';
+  // перенесённый отрезок AB (взятый раствор) — пунктиром
+  if(Aa&&Bb && (step>=3 || phase!=='build')){ segD(Aa,Bb,COL.ARC,1.8,[6,5]); }
+  // результат-луч O′D
+  if(D && (phase==='proof'||phase==='done')){ const ext=lineExt(O2,D,0,60); seg(O2,ext[1],greenLine?COL.G:COL.LINE,greenLine?3.4:2.8); }
+  // доказательство шаг 0: равные радиусы и равные хорды
+  if(phase==='proof'&&proofStep===0&&Aa&&Bb&&Cc&&D){
+    [[O,Aa],[O,Bb],[O2,Cc],[O2,D]].forEach(s=>{ seg(s[0],s[1],COL.ARC,1.7); tickMark(s[0],s[1],1,COL.ARC); });
+    seg(Aa,Bb,COL.B,1.8); tickMark(Aa,Bb,2,COL.B); seg(Cc,D,COL.B,1.8); tickMark(Cc,D,2,COL.B);
+  }
+  // доказательство шаг 1 / готово: равные углы
+  if(greenLine&&Aa&&Bb&&Cc&&D){ drawAngle(O,Aa,Bb,COL.A,24); drawAngle(O2,Cc,D,COL.A,24); }
+  // точки
+  if(Aa){ dotHollow(Aa.x,Aa.y,4.6,COL.ARC); lab(Aa.x+13,Aa.y+10,'A',COL.A,15); }
+  if(Bb){ dotHollow(Bb.x,Bb.y,4.6,COL.ARC); lab(Bb.x-12,Bb.y-8,'B',COL.B,15); }
+  if(Cc){ dotHollow(Cc.x,Cc.y,4.6,COL.ARC); lab(Cc.x+12,Cc.y+16,'C',COL.ARC,15); }
+  if(D){ const pul=(step===4&&phase==='build'); dotHollow(D.x,D.y,pul?5*PULSE():4.8,greenLine?COL.G:COL.ARC); if(pul) ring(D.x,D.y,11*PULSE(),COL.PUL); lab(D.x-12,D.y-8,'D',greenLine?COL.G:COL.ARC,15); }
+  // вершины
+  dotF(O.x,O.y,5,COL.DARK); lab(O.x-15,O.y+8,'O',COL.DARK,16);
+  dotF(O2.x,O2.y,5,COL.DARK); lab(O2.x-16,O2.y+8,'O′',COL.DARK,16);
+  if(armed){ ring(armed.x,armed.y,12,COL.PUL); }
+  if(spanBuf){ ring(spanBuf.x,spanBuf.y,12,COL.PUL); }
+  // пульс цели
+  if(phase==='build'){
+    if(step===0) ring(O.x,O.y,14*PULSE(),COL.PUL);
+    else if(step===1) ring(O2.x,O2.y,14*PULSE(),COL.PUL);
+    else if(step===2&&Aa&&Bb&&!spanBuf){ ring(Aa.x,Aa.y,12*PULSE(),COL.PUL); ring(Bb.x,Bb.y,12*PULSE(),COL.PUL); }
+    else if(step===3&&Cc) ring(Cc.x,Cc.y,13*PULSE(),COL.PUL);
+  }
+}
+
+/* ───────── UI ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.textContent=t;el.className='msg '+cls;}
+const STEP_INSTR=[
+  'Дугой <b>произвольного радиуса</b> из вершины <b>O</b> засеки обе стороны (нажми на O и тяни) — точки A и B.',
+  'Тем же раствором проведи дугу из вершины <b>O′</b> — просто коснись O′. Она пересечёт луч в точке <b>C</b>.',
+  'Возьми раствором циркуля отрезок <b>AB</b>: инструментом «Взять раствор» коснись A, затем B.',
+  'Этим раствором проведи дугу из точки <b>C</b> — она пересечёт дугу при O′ в точке <b>D</b>.',
+  'Возьми <b>линейку</b> и проведи луч из вершины <b>O′</b> через точку <b>D</b>.'
+];
+function selectTool(t){
+  if(phase!=='build') return;
+  tool=t;
+  updateTool();
+}
+function updateTool(){ ['compass','transfer','line'].forEach(t=>{ const id={compass:'btnCompass',transfer:'btnSpan',line:'btnLine'}[t]; document.getElementById(id).classList.toggle('active',tool===t); }); }
+function updateUI(){
+  updateTool();
+  const why=document.getElementById('why'), law=document.getElementById('law'), pb=document.getElementById('proofBtn'),
+        sc=document.getElementById('taskCard'), succ=document.getElementById('successBar');
+  if(phase==='build'){
+    sc.style.display=''; why.style.display='none'; law.style.display='none'; pb.style.display='none'; succ.style.display='none';
+    document.getElementById('taskTtl').textContent='Задача';
+    document.getElementById('taskText').innerHTML='Построй угол, <b>равный данному</b> ∠AOB, с вершиной в точке <b>O′</b> — одной стороной по данному лучу. Без транспортира.';
+    document.getElementById('stepText').innerHTML='Шаг '+(step+1)+' из 5 · '+STEP_INSTR[step];
+  } else if(phase==='proof'){
+    sc.style.display='none'; why.style.display='block'; pb.style.display='inline-block'; law.style.display='none'; succ.style.display='none';
+    if(proofStep===0){ why.innerHTML='<b>Почему ∠DO′C = ∠AOB?</b><br>OA = OB = O′C = O′D — радиусы дуг одного раствора. AB = CD — это перенесённый раствор циркуля.'; pb.textContent='Дальше →'; }
+    else { why.innerHTML='Значит <b>△OAB = △O′CD</b> по трём сторонам ⟹ <b>∠AOB = ∠DO′C</b>. Угол перенесён точно — равные стороны дают равный угол.'; pb.textContent='Завершить →'; }
+  } else {
+    sc.style.display='none'; why.style.display='none'; pb.style.display='none'; law.style.display='block'; succ.style.display='block';
+    succ.textContent='Готово — угол перенесён точно.';
+    law.innerHTML='<b>Закон.</b> Чтобы отложить угол, равный данному: дугой из вершины засечь обе стороны (A, B); <b>тем же раствором</b> — дугу из новой вершины O′ (точка C на луче); <b>перенести</b> раствором циркуля отрезок AB и засечь дугу из C (точка D); провести луч O′D. Равные стороны треугольника дают равный угол.'+
+      '<div class="nb">По выбранную сторону от луча копия единственна (по другую сторону получится зеркальная — тоже равная).</div>'+
+      '<div class="bridge">Теперь собран весь инструмент — дальше <a href="ch4-p4-t3-construct-sss.html">построение треугольника по трём элементам</a>.</div>';
+  }
+}
+
+/* ───────── СТАРТ ───────── */
+addPtXY(O_0.x,O_0.y,'given','O'); addPtXY(O2_0.x,O2_0.y,'given','O2');
+initSnap=takeSnap();
+setMsg('Дано: угол при вершине O и луч при вершине O′. Возьми циркуль и начни с дуги из O.','info');
+updateUI();
+(function loop(){draw();requestAnimationFrame(loop)})();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Геометрия 7 класс — тренажёры</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:1000px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:22px 24px;position:relative}
+.head h1{margin:0;font-size:25px;font-weight:900}
+.head .sub{font-size:13.5px;opacity:.75;margin-top:5px;max-width:600px}
+.tmode{position:absolute;top:18px;right:20px;background:#ffffff1a;border:1.5px solid #ffffff33;color:#fff;border-radius:99px;padding:7px 14px;font:800 12.5px system-ui;cursor:pointer}
+.tmode:hover{background:#ffffff2e} .tmode.on{background:#7c3aed;border-color:#7c3aed}
+.prow{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-top:16px}
+.prog{background:#ffffff1a;border:1px solid #ffffff22;border-radius:12px;padding:12px 14px;min-width:280px;flex:1;max-width:560px}
+.prog .pl{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:8px}
+.prog .pl b{color:#4ade80}
+.track{height:9px;background:#ffffff22;border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;background:linear-gradient(90deg,#16a34a,#4ade80);border-radius:99px;transition:width .5s}
+.submitbtn{background:#16a34a;color:#fff;border:0;border-radius:11px;padding:11px 16px;font:800 13.5px system-ui;cursor:pointer;white-space:nowrap}
+.submitbtn:hover{background:#15803d}
+.controls{position:sticky;top:0;z-index:6;background:#fbf9f4;border-bottom:1px solid #e5e2d9;padding:9px 16px;display:flex;flex-direction:column;gap:7px}
+.crow{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.crow .lab{font-size:11px;color:#94a3b8;font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-right:2px}
+.fbtn,.crow a.jump{text-decoration:none;color:#475569;font-weight:800;font-size:12.5px;border:1.5px solid #e2e8f0;border-radius:99px;padding:5px 12px;background:#fff;cursor:pointer}
+.fbtn:hover,.crow a.jump:hover{border-color:#94a3b8;color:#1a1a2e} .fbtn.on{background:#1a1a2e;border-color:#1a1a2e;color:#fff}
+.legend{display:flex;gap:16px;flex-wrap:wrap;padding:11px 20px 2px;font-size:12.5px;color:#64748b}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.lg{width:12px;height:12px;border-radius:99px;border:2px solid #cbd5e1;background:#fff}
+.lg.s{border-color:#f59e0b;background:#fde68a} .lg.p{border-color:#16a34a;background:#16a34a}
+.tnote{display:none;margin:6px 20px 0;background:#f5f3ff;border:1.5px solid #ddd6fe;color:#5b21b6;border-radius:10px;padding:10px 13px;font-size:12.5px;line-height:1.5}
+body.teacher .tnote{display:block} .tnote a{color:#6d28d9;font-weight:800}
+.body{padding:8px 20px 24px}
+.chap{margin-top:20px} .chap.hide{display:none}
+.chap-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:0 0 4px;font-size:18px;font-weight:900;color:#1a1a2e;border-bottom:2px solid #ece7db;padding-bottom:7px}
+.chap-n{font-size:13px;font-weight:800;color:#94a3b8;white-space:nowrap}
+.para{margin-top:14px} .para.hide{display:none}
+.para-h{margin:0 0 9px;font-size:13px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:.05em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:9px}
+.tcard{display:flex;align-items:center;gap:10px;text-decoration:none;color:#1f2937;background:#f9fafb;border:1.5px solid #e9ecf1;border-radius:11px;padding:11px 13px;min-height:54px;transition:.12s}
+.tcard.hide{display:none}
+.tcard:hover{border-color:#2d70b3;background:#f3f8ff;transform:translateY(-1px);box-shadow:0 4px 12px #0000000d}
+.tcard.sel{border-color:#7c3aed;background:#f5f3ff;box-shadow:0 0 0 1.5px #7c3aed}
+.chk{display:none;flex:none;width:19px;height:19px;border-radius:5px;border:2px solid #c4b5fd;background:#fff;position:relative}
+body.teacher .chk{display:inline-block}
+.tcard.sel .chk{background:#7c3aed;border-color:#7c3aed}
+.tcard.sel .chk::after{content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.dot{flex:none;width:15px;height:15px;border-radius:99px;border:2px solid #cbd5e1;background:#fff}
+.tcard.st-started .dot{border-color:#f59e0b;background:#fde68a}
+.tcard.st-passed .dot{border-color:#16a34a;background:#16a34a;box-shadow:inset 0 0 0 2px #fff}
+.tt{flex:1;font-size:13.5px;font-weight:650;line-height:1.3} .tcard.st-passed .tt{color:#15803d}
+.code{display:none;font:600 10.5px ui-monospace,Menlo,Consolas,monospace;color:#94a3b8;white-space:nowrap}
+body.teacher .code{display:inline}
+.kind{flex:none;font-size:10px;font-weight:800;padding:2px 7px;border-radius:99px;white-space:nowrap;text-transform:uppercase;letter-spacing:.02em}
+.k-lesson{background:#ccfbf1;color:#0f766e} .k-practice{background:#fef3c7;color:#b45309}
+.k-quiz{background:#fce7f3;color:#be185d} .k-constr{background:#ede9fe;color:#6d28d9}
+.tbar{display:none;position:sticky;bottom:0;z-index:7;background:#1a1a2e;color:#fff;padding:12px 18px;align-items:center;gap:12px;flex-wrap:wrap;border-top:2px solid #7c3aed}
+.tbar .cnt{font-weight:800;font-size:13.5px} .tbar .cnt b{color:#a78bfa} .tbar .sp{flex:1}
+.tbtn{border:0;border-radius:9px;padding:9px 15px;font:800 13px system-ui;cursor:pointer}
+.tbtn.go{background:#7c3aed;color:#fff} .tbtn.go:hover{background:#6d28d9}
+.tbtn.gh{background:#ffffff1f;color:#fff;border:1.5px solid #ffffff33} .tbtn.gh:hover{background:#ffffff33}
+.foot{padding:18px 20px;border-top:1px solid #ece7db;color:#94a3b8;font-size:12px;line-height:1.5}
+.modal{display:none;position:fixed;inset:0;background:#0008;z-index:20;align-items:center;justify-content:center;padding:16px}
+.modal.show{display:flex}
+.mbox{background:#fff;border-radius:16px;max-width:440px;width:100%;padding:22px;box-shadow:0 20px 60px #0005}
+.mbox h3{margin:0 0 6px;font-size:18px;color:#1a1a2e}
+.mbox p{margin:0 0 12px;font-size:13px;color:#64748b;line-height:1.5}
+.mbox input{width:100%;padding:11px 13px;border:1.5px solid #d1d5db;border-radius:10px;font-size:15px;margin-bottom:10px}
+.mbox textarea{width:100%;min-height:64px;padding:11px;border:1.5px solid #d1d5db;border-radius:10px;font:600 13px ui-monospace,Menlo,monospace;resize:vertical;background:#f9fafb;word-break:break-all}
+.mrow{display:flex;gap:8px;align-items:center;margin:10px 0;flex-wrap:wrap}
+.gbtn{border:0;border-radius:9px;padding:10px 15px;font:800 13px system-ui;cursor:pointer}
+.gbtn.p{background:#16a34a;color:#fff} .gbtn.p:hover{background:#15803d}
+.gbtn.s{background:#eef0f3;color:#374151} .gbtn.s:hover{background:#e2e6ea}
+.gbtn.sh{background:#2d70b3;color:#fff} .gbtn.sh:hover{background:#225a91}
+.sent{font-size:12.5px;font-weight:700;color:#15803d}
+@media(max-width:560px){ body{padding:8px} .grid{grid-template-columns:1fr} .head{padding:18px} .head h1{font-size:20px;padding-right:120px} .tmode{top:16px;right:14px} }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <button class="tmode" id="tmode">👩‍🏫 Режим учителя</button>
+    <h1>📐 Геометрия · 7 класс</h1>
+    <div class="sub">Интерактивные тренажёры по учебнику Атанасяна · 70 тренажёров, Главы I–IV</div>
+    <div class="prow">
+      <div class="prog"><div class="pl"><span>Прогресс</span><span><b id="done">0</b> из <span id="total">70</span> пройдено</span></div>
+        <div class="track"><div class="fill" id="fill"></div></div></div>
+      <button class="submitbtn" id="openSubmit">📤 Сдать прогресс учителю</button>
+    </div>
+  </div>
+  <div class="controls">
+    <div class="crow"><span class="lab">Показать</span>
+      <button class="fbtn on" data-f="all">Все (70)</button>
+      <button class="fbtn" data-f="lesson">Уроки (48)</button>
+      <button class="fbtn" data-f="practice">Практика (9)</button>
+      <button class="fbtn" data-f="quiz">Зачёты (7)</button>
+      <button class="fbtn" data-f="constr">Построения (6)</button>
+    </div>
+    <div class="crow"><span class="lab">Главы</span><a class="jump" href="#chap1">I</a><a class="jump" href="#chap2">II</a><a class="jump" href="#chap3">III</a><a class="jump" href="#chap4">IV</a></div>
+  </div>
+  <div class="legend"><span><i class="lg"></i> не начато</span><span><i class="lg s"></i> начато</span><span><i class="lg p"></i> пройдено</span></div>
+  <div class="tnote"><b>Режим учителя.</b> Метки типов и фильтр сверху; отметь тренажёры галочкой и собери набор на урок (кнопка внизу). Сбор прогресса класса — на странице <a href="teacher.html">teacher.html</a>: ученики жмут «Сдать прогресс», присылают код, ты вставляешь коды в панель.</div>
+  <div class="body">
+<section class="chap" id="chap1" data-chap="1">
+  <h2 class="chap-h"><span>Глава I · Начальные геометрические сведения</span><span class="chap-n" data-chap-n="1"></span></h2>
+  <div class="para"><h3 class="para-h">Сравнение отрезков и углов</h3>
+    <div class="grid">
+      <a class="tcard" data-base="ch1-p3-t2-fold-imprint" data-tid="ch1-p3-t2-fold-imprint" data-chap="1" data-kind="lesson" href="trainers/ch1-p3-t2-fold-imprint.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Перегибание и отпечаток · лаборатория приёма</span><span class="code">ch1-p3-t2-fold-imprint</span><span class="kind k-lesson">Урок</span></a>
+    </div></div>
+  <div class="para"><h3 class="para-h">Перпендикулярные прямые</h3>
+    <div class="grid">
+      <a class="tcard" data-base="ch1-p6-t1-adjacent-vertical" data-tid="ch1-p6-t1-adjacent-vertical" data-chap="1" data-kind="lesson" href="trainers/ch1-p6-t1-adjacent-vertical.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Смежные и вертикальные углы · лаборатория и доказательство</span><span class="code">ch1-p6-t1-adjacent-vertical</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch1-p6-t2-angle-problems" data-tid="ch1-p6-t2-angle-problems" data-chap="1" data-kind="practice" href="trainers/ch1-p6-t2-angle-problems.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Задачи на смежные и вертикальные углы · генератор</span><span class="code">ch1-p6-t2-angle-problems</span><span class="kind k-practice">Практика</span></a>
+      <a class="tcard" data-base="ch1-p6-t3-two-perpendiculars" data-tid="ch1-p6-t3-two-perpendiculars" data-chap="1" data-kind="lesson" href="trainers/ch1-p6-t3-two-perpendiculars.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Два перпендикуляра к одной прямой · перегибание и доказательство от противного</span><span class="code">ch1-p6-t3-two-perpendiculars</span><span class="kind k-lesson">Урок</span></a>
+    </div></div>
+</section>
+<section class="chap" id="chap2" data-chap="2">
+  <h2 class="chap-h"><span>Глава II · Признаки равенства треугольников</span><span class="chap-n" data-chap-n="2"></span></h2>
+  <div class="para"><h3 class="para-h">Первый признак равенства — по двум сторонам и углу</h3>
+    <div class="grid">
+      <a class="tcard" data-base="ch2-p1-t1-overlay-equality" data-tid="ch2-p1-t1-overlay-equality" data-chap="2" data-kind="lesson" href="trainers/ch2-p1-t1-overlay-equality.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Что значит — равные фигуры? · Наложение</span><span class="code">ch2-p1-t1-overlay-equality</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch2-p1-t2-overlay-sas" data-tid="ch2-p1-t2-overlay-sas" data-chap="2" data-kind="lesson" href="trainers/ch2-p1-t2-overlay-sas.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Наложи треугольник · путь к первому признаку</span><span class="code">ch2-p1-t2-overlay-sas</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch2-p1-t3-proof-sas" data-tid="ch2-p1-t3-proof-sas" data-chap="2" data-kind="lesson" href="trainers/ch2-p1-t3-proof-sas.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Почему хватает трёх элементов · доказательство первого признака</span><span class="code">ch2-p1-t3-proof-sas</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch2-p1-t4-find-equal" data-tid="ch2-p1-t4-find-equal" data-chap="2" data-kind="practice" href="trainers/ch2-p1-t4-find-equal.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Найди равные треугольники · задачи по чертежу</span><span class="code">ch2-p1-t4-find-equal</span><span class="kind k-practice">Практика</span></a>
+      <a class="tcard" data-base="ch2-p1-t5-quiz" data-tid="ch2-p1-t5-quiz" data-chap="2" data-kind="quiz" href="trainers/ch2-p1-t5-quiz.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Зачёт по параграфу · первый признак равенства треугольников</span><span class="code">ch2-p1-t5-quiz</span><span class="kind k-quiz">Зачёт</span></a>
+    </div></div>
+  <div class="para"><h3 class="para-h">Равнобедренный треугольник. Медианы, биссектрисы, высоты</h3>
+    <div class="grid">
+      <a class="tcard" data-base="ch2-p2-t0-three-cevians" data-tid="ch2-p2-t0-three-cevians" data-chap="2" data-kind="lesson" href="trainers/ch2-p2-t0-three-cevians.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Медиана, биссектриса, высота · три разные линии</span><span class="code">ch2-p2-t0-three-cevians</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch2-p2-t1-perp-fold" data-tid="ch2-p2-t1-perp-fold" data-chap="2" data-kind="lesson" href="trainers/ch2-p2-t1-perp-fold.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Перпендикуляр складыванием · из точки к прямой</span><span class="code">ch2-p2-t1-perp-fold</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch2-p2-t2-isosceles-intro" data-tid="ch2-p2-t2-isosceles-intro" data-chap="2" data-kind="lesson" href="trainers/ch2-p2-t2-isosceles-intro.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Равнобедренный треугольник · устройство фигуры</span><span class="code">ch2-p2-t2-isosceles-intro</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch2-p2-t3-proof-base-angles" data-tid="ch2-p2-t3-proof-base-angles" data-chap="2" data-kind="lesson" href="trainers/ch2-p2-t3-proof-base-angles.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Углы при основании равны · доказательство</span><span class="code">ch2-p2-t3-proof-base-angles</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch2-p2-t4-three-in-one" data-tid="ch2-p2-t4-three-in-one" data-chap="2" data-kind="lesson" href="trainers/ch2-p2-t4-three-in-one.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Биссектриса = медиана = высота · равнобедренный</span><span class="code">ch2-p2-t4-three-in-one</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch2-p2-t5-find-equal-iso" data-tid="ch2-p2-t5-find-equal-iso" data-chap="2" data-kind="practice" href="trainers/ch2-p2-t5-find-equal-iso.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Равнобедренный в задачах · найди равные</span><span class="code">ch2-p2-t5-find-equal-iso</span><span class="kind k-practice">Практика</span></a>
+      <a class="tcard" data-base="ch2-p2-t6-quiz" data-tid="ch2-p2-t6-quiz" data-chap="2" data-kind="quiz" href="trainers/ch2-p2-t6-quiz.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Мини-зачёт · медианы, биссектрисы, высоты</span><span class="code">ch2-p2-t6-quiz</span><span class="kind k-quiz">Зачёт</span></a>
+    </div></div>
+  <div class="para"><h3 class="para-h">Второй признак равенства — по стороне и двум углам</h3>
+    <div class="grid">
+      <a class="tcard" data-base="ch2-p3-t0-adjacent-opposite" data-tid="ch2-p3-t0-adjacent-opposite" data-chap="2" data-kind="lesson" href="trainers/ch2-p3-t0-adjacent-opposite.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Прилежащие и противолежащие · опорный словарь</span><span class="code">ch2-p3-t0-adjacent-opposite</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch2-p3-t1-overlay-asa" data-tid="ch2-p3-t1-overlay-asa" data-chap="2" data-kind="lesson" href="trainers/ch2-p3-t1-overlay-asa.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Наложи по стороне и двум углам · второй признак</span><span class="code">ch2-p3-t1-overlay-asa</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch2-p3-t2-proof-asa" data-tid="ch2-p3-t2-proof-asa" data-chap="2" data-kind="lesson" href="trainers/ch2-p3-t2-proof-asa.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Почему точка C не может быть другой · второй признак</span><span class="code">ch2-p3-t2-proof-asa</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch2-p3-t3-which-sign" data-tid="ch2-p3-t3-which-sign" data-chap="2" data-kind="lesson" href="trainers/ch2-p3-t3-which-sign.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Первый или второй? · различение признаков</span><span class="code">ch2-p3-t3-which-sign</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch2-p3-t4-find-equal-asa" data-tid="ch2-p3-t4-find-equal-asa" data-chap="2" data-kind="practice" href="trainers/ch2-p3-t4-find-equal-asa.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Найди равные треугольники · задачи по чертежу</span><span class="code">ch2-p3-t4-find-equal-asa</span><span class="kind k-practice">Практика</span></a>
+      <a class="tcard" data-base="ch2-p3-t5-quiz" data-tid="ch2-p3-t5-quiz" data-chap="2" data-kind="quiz" href="trainers/ch2-p3-t5-quiz.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Мини-зачёт · второй признак</span><span class="code">ch2-p3-t5-quiz</span><span class="kind k-quiz">Зачёт</span></a>
+    </div></div>
+  <div class="para"><h3 class="para-h">Третий признак равенства — по трём сторонам</h3>
+    <div class="grid">
+      <a class="tcard" data-base="ch2-p4-t0-rigidity" data-tid="ch2-p4-t0-rigidity" data-chap="2" data-kind="lesson" href="trainers/ch2-p4-t0-rigidity.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Почему хватает трёх сторон · жёсткость треугольника</span><span class="code">ch2-p4-t0-rigidity</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch2-p4-t1-overlay-sss" data-tid="ch2-p4-t1-overlay-sss" data-chap="2" data-kind="lesson" href="trainers/ch2-p4-t1-overlay-sss.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Наложи по трём сторонам · третий признак</span><span class="code">ch2-p4-t1-overlay-sss</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch2-p4-t2-proof-sss" data-tid="ch2-p4-t2-proof-sss" data-chap="2" data-kind="lesson" href="trainers/ch2-p4-t2-proof-sss.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Доказательство третьего признака · конструктор</span><span class="code">ch2-p4-t2-proof-sss</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch2-p4-t3-which-sign" data-tid="ch2-p4-t3-which-sign" data-chap="2" data-kind="lesson" href="trainers/ch2-p4-t3-which-sign.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Какой признак? · различение трёх признаков</span><span class="code">ch2-p4-t3-which-sign</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch2-p4-t4-find-equal-sss" data-tid="ch2-p4-t4-find-equal-sss" data-chap="2" data-kind="practice" href="trainers/ch2-p4-t4-find-equal-sss.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Найди равные по трём сторонам · задачи по чертежу</span><span class="code">ch2-p4-t4-find-equal-sss</span><span class="kind k-practice">Практика</span></a>
+      <a class="tcard" data-base="ch2-p4-t5-quiz" data-tid="ch2-p4-t5-quiz" data-chap="2" data-kind="quiz" href="trainers/ch2-p4-t5-quiz.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Мини-зачёт · третий признак</span><span class="code">ch2-p4-t5-quiz</span><span class="kind k-quiz">Зачёт</span></a>
+    </div></div>
+  <div class="para"><h3 class="para-h">Задачи на построение · циркуль и линейка</h3>
+    <div class="grid">
+      <a class="tcard" data-base="ch2-constr-perp-bisector" data-tid="ch2-constr-perp-bisector" data-chap="2" data-kind="constr" href="trainers/ch2-constr-perp-bisector.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Серединный перпендикуляр — циркуль и линейка</span><span class="code">ch2-constr-perp-bisector</span><span class="kind k-constr">Построение</span></a>
+      <a class="tcard" data-base="ch2-constr-angle-bisector" data-tid="ch2-constr-angle-bisector" data-chap="2" data-kind="constr" href="trainers/ch2-constr-angle-bisector.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Биссектриса угла — циркуль и линейка</span><span class="code">ch2-constr-angle-bisector</span><span class="kind k-constr">Построение</span></a>
+      <a class="tcard" data-base="ch2-constr-perpendicular-point" data-tid="ch2-constr-perpendicular-point" data-chap="2" data-kind="constr" href="trainers/ch2-constr-perpendicular-point.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Перпендикуляр к прямой через точку — циркуль и линейка</span><span class="code">ch2-constr-perpendicular-point</span><span class="kind k-constr">Построение</span></a>
+      <a class="tcard" data-base="ch2-constr-copy-angle" data-tid="ch2-constr-copy-angle" data-chap="2" data-kind="constr" href="trainers/ch2-constr-copy-angle.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Угол, равный данному — циркуль и линейка</span><span class="code">ch2-constr-copy-angle</span><span class="kind k-constr">Построение</span></a>
+    </div></div>
+</section>
+<section class="chap" id="chap3" data-chap="3">
+  <h2 class="chap-h"><span>Глава III · Параллельные прямые</span><span class="chap-n" data-chap-n="3"></span></h2>
+  <div class="para"><h3 class="para-h">Признаки параллельности прямых</h3>
+    <div class="grid">
+      <a class="tcard" data-base="ch3-p1-t1-crossing-parallel" data-tid="ch3-p1-t1-crossing-parallel" data-chap="3" data-kind="lesson" href="trainers/ch3-p1-t1-crossing-parallel.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Пересекающиеся и параллельные прямые</span><span class="code">ch3-p1-t1-crossing-parallel</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch3-p1-t2-eight-angles" data-tid="ch3-p1-t2-eight-angles" data-chap="3" data-kind="lesson" href="trainers/ch3-p1-t2-eight-angles.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Восемь углов при секущей</span><span class="code">ch3-p1-t2-eight-angles</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch3-p1-t3-sign-lab" data-tid="ch3-p1-t3-sign-lab" data-chap="3" data-kind="lesson" href="trainers/ch3-p1-t3-sign-lab.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Когда прямые параллельны</span><span class="code">ch3-p1-t3-sign-lab</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch3-p1-t4-proof-sign" data-tid="ch3-p1-t4-proof-sign" data-chap="3" data-kind="lesson" href="trainers/ch3-p1-t4-proof-sign.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Почему признак работает</span><span class="code">ch3-p1-t4-proof-sign</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch3-p1-t5-two-more-signs" data-tid="ch3-p1-t5-two-more-signs" data-chap="3" data-kind="lesson" href="trainers/ch3-p1-t5-two-more-signs.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Ещё два признака</span><span class="code">ch3-p1-t5-two-more-signs</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch3-p1-t6-practical" data-tid="ch3-p1-t6-practical" data-chap="3" data-kind="lesson" href="trainers/ch3-p1-t6-practical.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Угольник и линейка</span><span class="code">ch3-p1-t6-practical</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch3-p1-t7-find-equal" data-tid="ch3-p1-t7-find-equal" data-chap="3" data-kind="practice" href="trainers/ch3-p1-t7-find-equal.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Докажи, что a ∥ b</span><span class="code">ch3-p1-t7-find-equal</span><span class="kind k-practice">Практика</span></a>
+    </div></div>
+  <div class="para"><h3 class="para-h">Аксиома параллельных и её следствия</h3>
+    <div class="grid">
+      <a class="tcard" data-base="ch3-p2-t1-parallel-axiom" data-tid="ch3-p2-t1-parallel-axiom" data-chap="3" data-kind="lesson" href="trainers/ch3-p2-t1-parallel-axiom.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Через точку — одна параллель</span><span class="code">ch3-p2-t1-parallel-axiom</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch3-p2-t4-property-alt-angles" data-tid="ch3-p2-t4-property-alt-angles" data-chap="3" data-kind="lesson" href="trainers/ch3-p2-t4-property-alt-angles.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Свойство 1: накрест лежащие углы</span><span class="code">ch3-p2-t4-property-alt-angles</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch3-p2-t5-properties-2-3" data-tid="ch3-p2-t5-properties-2-3" data-chap="3" data-kind="lesson" href="trainers/ch3-p2-t5-properties-2-3.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Свойства 2 и 3: соответственные и односторонние</span><span class="code">ch3-p2-t5-properties-2-3</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch3-p2-t6-direct-converse" data-tid="ch3-p2-t6-direct-converse" data-chap="3" data-kind="lesson" href="trainers/ch3-p2-t6-direct-converse.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Прямая и обратная теорема</span><span class="code">ch3-p2-t6-direct-converse</span><span class="kind k-lesson">Урок</span></a>
+    </div></div>
+</section>
+<section class="chap" id="chap4" data-chap="4">
+  <h2 class="chap-h"><span>Глава IV · Соотношения между сторонами и углами треугольника</span><span class="chap-n" data-chap-n="4"></span></h2>
+  <div class="para"><h3 class="para-h">Сумма углов треугольника</h3>
+    <div class="grid">
+      <a class="tcard" data-base="ch4-p1-t1-angle-sum-lab" data-tid="ch4-p1-t1-angle-sum-lab" data-chap="4" data-kind="lesson" href="trainers/ch4-p1-t1-angle-sum-lab.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Сумма углов треугольника</span><span class="code">ch4-p1-t1-angle-sum-lab</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p1-t2-proof-angle-sum" data-tid="ch4-p1-t2-proof-angle-sum" data-chap="4" data-kind="lesson" href="trainers/ch4-p1-t2-proof-angle-sum.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Почему сумма углов равна 180°</span><span class="code">ch4-p1-t2-proof-angle-sum</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p1-t3-exterior-angle" data-tid="ch4-p1-t3-exterior-angle" data-chap="4" data-kind="lesson" href="trainers/ch4-p1-t3-exterior-angle.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Внешний угол треугольника</span><span class="code">ch4-p1-t3-exterior-angle</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p1-t4-triangle-types" data-tid="ch4-p1-t4-triangle-types" data-chap="4" data-kind="lesson" href="trainers/ch4-p1-t4-triangle-types.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Виды треугольников</span><span class="code">ch4-p1-t4-triangle-types</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p1-t5-find-angles" data-tid="ch4-p1-t5-find-angles" data-chap="4" data-kind="practice" href="trainers/ch4-p1-t5-find-angles.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Найди углы</span><span class="code">ch4-p1-t5-find-angles</span><span class="kind k-practice">Практика</span></a>
+      <a class="tcard" data-base="ch4-p1-t6-quiz" data-tid="ch4-p1-t6-quiz" data-chap="4" data-kind="quiz" href="trainers/ch4-p1-t6-quiz.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Зачёт §1</span><span class="code">ch4-p1-t6-quiz</span><span class="kind k-quiz">Зачёт</span></a>
+    </div></div>
+  <div class="para"><h3 class="para-h">Соотношения между сторонами и углами</h3>
+    <div class="grid">
+      <a class="tcard" data-base="ch4-p2-t1-side-angle-lab" data-tid="ch4-p2-t1-side-angle-lab" data-chap="4" data-kind="lesson" href="trainers/ch4-p2-t1-side-angle-lab.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Сторона ↔ угол</span><span class="code">ch4-p2-t1-side-angle-lab</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p2-t2-proof-side-angle" data-tid="ch4-p2-t2-proof-side-angle" data-chap="4" data-kind="lesson" href="trainers/ch4-p2-t2-proof-side-angle.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Против большей стороны — больший угол</span><span class="code">ch4-p2-t2-proof-side-angle</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p2-t3-converse-iso" data-tid="ch4-p2-t3-converse-iso" data-chap="4" data-kind="lesson" href="trainers/ch4-p2-t3-converse-iso.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Против большего угла — большая сторона</span><span class="code">ch4-p2-t3-converse-iso</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p2-t4-hypotenuse-leg" data-tid="ch4-p2-t4-hypotenuse-leg" data-chap="4" data-kind="lesson" href="trainers/ch4-p2-t4-hypotenuse-leg.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Гипотенуза больше катета</span><span class="code">ch4-p2-t4-hypotenuse-leg</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p2-t5-triangle-inequality" data-tid="ch4-p2-t5-triangle-inequality" data-chap="4" data-kind="lesson" href="trainers/ch4-p2-t5-triangle-inequality.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Неравенство треугольника</span><span class="code">ch4-p2-t5-triangle-inequality</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p2-t6-prove-inequality" data-tid="ch4-p2-t6-prove-inequality" data-chap="4" data-kind="lesson" href="trainers/ch4-p2-t6-prove-inequality.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Неравенство треугольника — доказательство</span><span class="code">ch4-p2-t6-prove-inequality</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p2-t7-triangle-generator" data-tid="ch4-p2-t7-triangle-generator" data-chap="4" data-kind="practice" href="trainers/ch4-p2-t7-triangle-generator.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Неравенство треугольника — генератор</span><span class="code">ch4-p2-t7-triangle-generator</span><span class="kind k-practice">Практика</span></a>
+      <a class="tcard" data-base="ch4-p2-t8-quiz" data-tid="ch4-p2-t8-quiz" data-chap="4" data-kind="quiz" href="trainers/ch4-p2-t8-quiz.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Зачёт §2</span><span class="code">ch4-p2-t8-quiz</span><span class="kind k-quiz">Зачёт</span></a>
+    </div></div>
+  <div class="para"><h3 class="para-h">Прямоугольные треугольники</h3>
+    <div class="grid">
+      <a class="tcard" data-base="ch4-p3-t1-two-acute-angles" data-tid="ch4-p3-t1-two-acute-angles" data-chap="4" data-kind="lesson" href="trainers/ch4-p3-t1-two-acute-angles.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Два острых угла прямоугольного треугольника</span><span class="code">ch4-p3-t1-two-acute-angles</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p3-t2-leg-against-30" data-tid="ch4-p3-t2-leg-against-30" data-chap="4" data-kind="lesson" href="trainers/ch4-p3-t2-leg-against-30.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Катет против угла в 30°</span><span class="code">ch4-p3-t2-leg-against-30</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p3-t3-half-means-30" data-tid="ch4-p3-t3-half-means-30" data-chap="4" data-kind="lesson" href="trainers/ch4-p3-t3-half-means-30.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Половина гипотенузы — значит 30°</span><span class="code">ch4-p3-t3-half-means-30</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p3-t4-median-to-hypotenuse" data-tid="ch4-p3-t4-median-to-hypotenuse" data-chap="4" data-kind="lesson" href="trainers/ch4-p3-t4-median-to-hypotenuse.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Медиана к гипотенузе</span><span class="code">ch4-p3-t4-median-to-hypotenuse</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p3-t5-median-converse" data-tid="ch4-p3-t5-median-converse" data-chap="4" data-kind="lesson" href="trainers/ch4-p3-t5-median-converse.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Медиана-половина — значит прямоугольный</span><span class="code">ch4-p3-t5-median-converse</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p3-t6-which-sign" data-tid="ch4-p3-t6-which-sign" data-chap="4" data-kind="lesson" href="trainers/ch4-p3-t6-which-sign.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Признаки равенства прямоугольных треугольников</span><span class="code">ch4-p3-t6-which-sign</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p3-t7-hyp-leg-congruence" data-tid="ch4-p3-t7-hyp-leg-congruence" data-chap="4" data-kind="lesson" href="trainers/ch4-p3-t7-hyp-leg-congruence.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Признак по гипотенузе и катету (HL)</span><span class="code">ch4-p3-t7-hyp-leg-congruence</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p3-t8-generator" data-tid="ch4-p3-t8-generator" data-chap="4" data-kind="practice" href="trainers/ch4-p3-t8-generator.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Расчёты в прямоугольном треугольнике — генератор §3</span><span class="code">ch4-p3-t8-generator</span><span class="kind k-practice">Практика</span></a>
+      <a class="tcard" data-base="ch4-p3-t9-quiz" data-tid="ch4-p3-t9-quiz" data-chap="4" data-kind="quiz" href="trainers/ch4-p3-t9-quiz.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Зачёт по §3 — прямоугольный треугольник</span><span class="code">ch4-p3-t9-quiz</span><span class="kind k-quiz">Зачёт</span></a>
+    </div></div>
+  <div class="para"><h3 class="para-h">Расстояния. Построение треугольника</h3>
+    <div class="grid">
+      <a class="tcard" data-base="ch4-p4-t1-distance-point-line" data-tid="ch4-p4-t1-distance-point-line" data-chap="4" data-kind="lesson" href="trainers/ch4-p4-t1-distance-point-line.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Расстояние от точки до прямой</span><span class="code">ch4-p4-t1-distance-point-line</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p4-t2-distance-parallels" data-tid="ch4-p4-t2-distance-parallels" data-chap="4" data-kind="lesson" href="trainers/ch4-p4-t2-distance-parallels.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Расстояние между параллельными</span><span class="code">ch4-p4-t2-distance-parallels</span><span class="kind k-lesson">Урок</span></a>
+      <a class="tcard" data-base="ch4-p4-t3-construct-sss" data-tid="ch4-p4-t3-construct-sss" data-chap="4" data-kind="constr" href="trainers/ch4-p4-t3-construct-sss.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Построение треугольника по трём сторонам</span><span class="code">ch4-p4-t3-construct-sss</span><span class="kind k-constr">Построение</span></a>
+      <a class="tcard" data-base="ch4-p4-t4-construct-two-sides-angle" data-tid="ch4-p4-t4-construct-two-sides-angle" data-chap="4" data-kind="constr" href="trainers/ch4-p4-t4-construct-two-sides-angle.html"><span class="chk" role="checkbox" aria-label="выбрать"></span><span class="dot"></span><span class="tt">Треугольник по двум сторонам и углу</span><span class="code">ch4-p4-t4-construct-two-sides-angle</span><span class="kind k-constr">Построение</span></a>
+    </div></div>
+</section>
+  </div>
+  <div class="foot">Зелёная галочка — тренажёр пройден до карточки-закона. Прогресс хранится в этом браузере (localStorage), виден только на этом устройстве. «Сдать прогресс» соберёт его в короткий код для учителя.</div>
+</div>
+<div class="tbar" id="tbar"><span class="cnt">Выбрано: <b id="seln">0</b></span><span class="sp"></span><button class="tbtn gh" id="clearsel">Очистить</button><button class="tbtn go" id="copyset">📋 Скопировать ссылки</button></div>
+<div class="modal" id="submitModal"><div class="mbox">
+  <h3>📤 Сдать прогресс учителю</h3>
+  <p>Введи имя и фамилию — получишь код. Дальше «Поделиться» (или Telegram / Письмо) отправит его учителю в один тап; можно и просто скопировать.</p>
+  <input id="sname" placeholder="Имя Фамилия" autocomplete="name">
+  <div class="mrow"><button class="gbtn p" id="genCode">Получить код</button><button class="gbtn s" id="closeM">Закрыть</button></div>
+  <div id="result" style="display:none">
+    <textarea id="codeOut" readonly placeholder="код появится здесь"></textarea>
+    <div class="mrow"><button class="gbtn sh" id="shareNative" style="display:none">📲 Поделиться</button><button class="gbtn sh" id="shareTg">✈️ Telegram</button><button class="gbtn sh" id="shareMail">✉️ Письмо</button><button class="gbtn p" id="copyCode">📋 Скопировать код</button></div>
+    <div class="mrow"><span class="sent" id="sentMsg"></span></div>
+  </div>
+</div></div>
+<script>
+var GEOVER='GEO1';
+function _utf8(s){return new TextEncoder().encode(s);}
+function _deutf8(a){return new TextDecoder().decode(a);}
+function _b64e(by){var s='';for(var i=0;i<by.length;i++)s+=String.fromCharCode(by[i]);return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+function _b64d(b){b=b.replace(/-/g,'+').replace(/_/g,'/');while(b.length%4)b+='=';var s=atob(b);var a=new Uint8Array(s.length);for(var i=0;i<s.length;i++)a[i]=s.charCodeAt(i);return a;}
+function _pack(v){var n=v.length,by=new Uint8Array(Math.ceil(n/4));for(var i=0;i<n;i++){by[i>>2]|=(v[i]&3)<<((i&3)*2);}return by;}
+function _unpack(by,n){var v=[];for(var i=0;i<n;i++){v.push((by[i>>2]>>((i&3)*2))&3);}return v;}
+function makeCode(name,vals){return GEOVER+'.'+vals.length+'.'+_b64e(_utf8(name))+'.'+_b64e(_pack(vals));}
+function readCode(code){var p=(code||'').trim().split('.');if(p.length<4||p[0]!==GEOVER)return null;var n=parseInt(p[1],10);if(!(n>0))return null;var name,bits;try{name=_deutf8(_b64d(p[2]));bits=_b64d(p[3]);}catch(e){return null;}return {name:name,n:n,vals:_unpack(bits,n)};}
+
+(function(){
+  var SK='mathExamCourseProgress.v1', TK='courseTeacherMode', TOTAL=70;
+  var TRAINERS=[{"t": "ch1-p3-t2-fold-imprint", "n": "Перегибание и отпечаток · лаборатория приёма", "c": 1}, {"t": "ch1-p6-t1-adjacent-vertical", "n": "Смежные и вертикальные углы · лаборатория и доказательство", "c": 1}, {"t": "ch1-p6-t2-angle-problems", "n": "Задачи на смежные и вертикальные углы · генератор", "c": 1}, {"t": "ch1-p6-t3-two-perpendiculars", "n": "Два перпендикуляра к одной прямой · перегибание и доказательство от противного", "c": 1}, {"t": "ch2-p1-t1-overlay-equality", "n": "Что значит — равные фигуры? · Наложение", "c": 2}, {"t": "ch2-p1-t2-overlay-sas", "n": "Наложи треугольник · путь к первому признаку", "c": 2}, {"t": "ch2-p1-t3-proof-sas", "n": "Почему хватает трёх элементов · доказательство первого признака", "c": 2}, {"t": "ch2-p1-t4-find-equal", "n": "Найди равные треугольники · задачи по чертежу", "c": 2}, {"t": "ch2-p1-t5-quiz", "n": "Зачёт по параграфу · первый признак равенства треугольников", "c": 2}, {"t": "ch2-p2-t0-three-cevians", "n": "Медиана, биссектриса, высота · три разные линии", "c": 2}, {"t": "ch2-p2-t1-perp-fold", "n": "Перпендикуляр складыванием · из точки к прямой", "c": 2}, {"t": "ch2-p2-t2-isosceles-intro", "n": "Равнобедренный треугольник · устройство фигуры", "c": 2}, {"t": "ch2-p2-t3-proof-base-angles", "n": "Углы при основании равны · доказательство", "c": 2}, {"t": "ch2-p2-t4-three-in-one", "n": "Биссектриса = медиана = высота · равнобедренный", "c": 2}, {"t": "ch2-p2-t5-find-equal-iso", "n": "Равнобедренный в задачах · найди равные", "c": 2}, {"t": "ch2-p2-t6-quiz", "n": "Мини-зачёт · медианы, биссектрисы, высоты", "c": 2}, {"t": "ch2-p3-t0-adjacent-opposite", "n": "Прилежащие и противолежащие · опорный словарь", "c": 2}, {"t": "ch2-p3-t1-overlay-asa", "n": "Наложи по стороне и двум углам · второй признак", "c": 2}, {"t": "ch2-p3-t2-proof-asa", "n": "Почему точка C не может быть другой · второй признак", "c": 2}, {"t": "ch2-p3-t3-which-sign", "n": "Первый или второй? · различение признаков", "c": 2}, {"t": "ch2-p3-t4-find-equal-asa", "n": "Найди равные треугольники · задачи по чертежу", "c": 2}, {"t": "ch2-p3-t5-quiz", "n": "Мини-зачёт · второй признак", "c": 2}, {"t": "ch2-p4-t0-rigidity", "n": "Почему хватает трёх сторон · жёсткость треугольника", "c": 2}, {"t": "ch2-p4-t1-overlay-sss", "n": "Наложи по трём сторонам · третий признак", "c": 2}, {"t": "ch2-p4-t2-proof-sss", "n": "Доказательство третьего признака · конструктор", "c": 2}, {"t": "ch2-p4-t3-which-sign", "n": "Какой признак? · различение трёх признаков", "c": 2}, {"t": "ch2-p4-t4-find-equal-sss", "n": "Найди равные по трём сторонам · задачи по чертежу", "c": 2}, {"t": "ch2-p4-t5-quiz", "n": "Мини-зачёт · третий признак", "c": 2}, {"t": "ch2-constr-perp-bisector", "n": "Серединный перпендикуляр — циркуль и линейка", "c": 2}, {"t": "ch2-constr-angle-bisector", "n": "Биссектриса угла — циркуль и линейка", "c": 2}, {"t": "ch2-constr-perpendicular-point", "n": "Перпендикуляр к прямой через точку — циркуль и линейка", "c": 2}, {"t": "ch2-constr-copy-angle", "n": "Угол, равный данному — циркуль и линейка", "c": 2}, {"t": "ch3-p1-t1-crossing-parallel", "n": "Пересекающиеся и параллельные прямые", "c": 3}, {"t": "ch3-p1-t2-eight-angles", "n": "Восемь углов при секущей", "c": 3}, {"t": "ch3-p1-t3-sign-lab", "n": "Когда прямые параллельны", "c": 3}, {"t": "ch3-p1-t4-proof-sign", "n": "Почему признак работает", "c": 3}, {"t": "ch3-p1-t5-two-more-signs", "n": "Ещё два признака", "c": 3}, {"t": "ch3-p1-t6-practical", "n": "Угольник и линейка", "c": 3}, {"t": "ch3-p1-t7-find-equal", "n": "Докажи, что a ∥ b", "c": 3}, {"t": "ch3-p2-t1-parallel-axiom", "n": "Через точку — одна параллель", "c": 3}, {"t": "ch3-p2-t4-property-alt-angles", "n": "Свойство 1: накрест лежащие углы", "c": 3}, {"t": "ch3-p2-t5-properties-2-3", "n": "Свойства 2 и 3: соответственные и односторонние", "c": 3}, {"t": "ch3-p2-t6-direct-converse", "n": "Прямая и обратная теорема", "c": 3}, {"t": "ch4-p1-t1-angle-sum-lab", "n": "Сумма углов треугольника", "c": 4}, {"t": "ch4-p1-t2-proof-angle-sum", "n": "Почему сумма углов равна 180°", "c": 4}, {"t": "ch4-p1-t3-exterior-angle", "n": "Внешний угол треугольника", "c": 4}, {"t": "ch4-p1-t4-triangle-types", "n": "Виды треугольников", "c": 4}, {"t": "ch4-p1-t5-find-angles", "n": "Найди углы", "c": 4}, {"t": "ch4-p1-t6-quiz", "n": "Зачёт §1", "c": 4}, {"t": "ch4-p2-t1-side-angle-lab", "n": "Сторона ↔ угол", "c": 4}, {"t": "ch4-p2-t2-proof-side-angle", "n": "Против большей стороны — больший угол", "c": 4}, {"t": "ch4-p2-t3-converse-iso", "n": "Против большего угла — большая сторона", "c": 4}, {"t": "ch4-p2-t4-hypotenuse-leg", "n": "Гипотенуза больше катета", "c": 4}, {"t": "ch4-p2-t5-triangle-inequality", "n": "Неравенство треугольника", "c": 4}, {"t": "ch4-p2-t6-prove-inequality", "n": "Неравенство треугольника — доказательство", "c": 4}, {"t": "ch4-p2-t7-triangle-generator", "n": "Неравенство треугольника — генератор", "c": 4}, {"t": "ch4-p2-t8-quiz", "n": "Зачёт §2", "c": 4}, {"t": "ch4-p3-t1-two-acute-angles", "n": "Два острых угла прямоугольного треугольника", "c": 4}, {"t": "ch4-p3-t2-leg-against-30", "n": "Катет против угла в 30°", "c": 4}, {"t": "ch4-p3-t3-half-means-30", "n": "Половина гипотенузы — значит 30°", "c": 4}, {"t": "ch4-p3-t4-median-to-hypotenuse", "n": "Медиана к гипотенузе", "c": 4}, {"t": "ch4-p3-t5-median-converse", "n": "Медиана-половина — значит прямоугольный", "c": 4}, {"t": "ch4-p3-t6-which-sign", "n": "Признаки равенства прямоугольных треугольников", "c": 4}, {"t": "ch4-p3-t7-hyp-leg-congruence", "n": "Признак по гипотенузе и катету (HL)", "c": 4}, {"t": "ch4-p3-t8-generator", "n": "Расчёты в прямоугольном треугольнике — генератор §3", "c": 4}, {"t": "ch4-p3-t9-quiz", "n": "Зачёт по §3 — прямоугольный треугольник", "c": 4}, {"t": "ch4-p4-t1-distance-point-line", "n": "Расстояние от точки до прямой", "c": 4}, {"t": "ch4-p4-t2-distance-parallels", "n": "Расстояние между параллельными", "c": 4}, {"t": "ch4-p4-t3-construct-sss", "n": "Построение треугольника по трём сторонам", "c": 4}, {"t": "ch4-p4-t4-construct-two-sides-angle", "n": "Треугольник по двум сторонам и углу", "c": 4}];
+  var ENDPOINT="";
+  var TEACHER_EMAIL="";
+  var data={}; try{ data=JSON.parse(localStorage.getItem(SK)||'{}'); }catch(e){ data={}; }
+  function valOf(tid){ var r=data[tid]; if(!r) return 0; if(r.passed) return 2; if((r.runs&&r.runs>0)||(r.events&&r.events.length)) return 1; return 0; }
+  var passed=0, perCh={};
+  document.querySelectorAll('.tcard').forEach(function(card){
+    var ch=card.getAttribute('data-chap'); perCh[ch]=perCh[ch]||{p:0,n:0}; perCh[ch].n++;
+    var v=valOf(card.getAttribute('data-tid')); if(v===2){card.classList.add('st-passed');passed++;perCh[ch].p++;} else if(v===1){card.classList.add('st-started');}
+  });
+  document.getElementById('done').textContent=passed;
+  document.getElementById('fill').style.width=(passed?Math.round(passed/TOTAL*100):0)+'%';
+  document.querySelectorAll('[data-chap-n]').forEach(function(el){ var c=perCh[el.getAttribute('data-chap-n')]||{p:0,n:0}; el.textContent=c.p+' / '+c.n+' пройдено'; });
+
+  var teacher=localStorage.getItem(TK)==='1';
+  function applyTeacher(){ document.body.classList.toggle('teacher',teacher); var b=document.getElementById('tmode'); b.classList.toggle('on',teacher); b.textContent=teacher?'👩‍🏫 Учитель: вкл':'👩‍🏫 Режим учителя'; updateBar(); }
+  document.getElementById('tmode').addEventListener('click',function(){ teacher=!teacher; localStorage.setItem(TK,teacher?'1':'0'); applyTeacher(); });
+
+  document.querySelectorAll('.chk').forEach(function(c){ c.addEventListener('click',function(e){ e.preventDefault(); e.stopPropagation(); c.closest('.tcard').classList.toggle('sel'); updateBar(); }); });
+  function updateBar(){ var n=document.querySelectorAll('.tcard.sel').length; document.getElementById('seln').textContent=n; document.getElementById('tbar').style.display=(teacher&&n>0)?'flex':'none'; }
+  document.getElementById('clearsel').addEventListener('click',function(){ document.querySelectorAll('.tcard.sel').forEach(function(c){c.classList.remove('sel');}); updateBar(); });
+  function copyText(txt,btn){ var done=function(){var o=btn.textContent;btn.textContent='Скопировано ✓';setTimeout(function(){btn.textContent=o;},1500);}; if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fb);}else fb(); function fb(){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(e){}document.body.removeChild(ta);} }
+  document.getElementById('copyset').addEventListener('click',function(){ var lines=['Тренажёры к уроку:'],i=1; document.querySelectorAll('.tcard.sel').forEach(function(card){ var u=new URL(card.getAttribute('href'),location.href).href; lines.push(i+'. '+card.querySelector('.tt').textContent+' — '+u); i++; }); copyText(lines.join('\n'),this); });
+
+  var filt='all';
+  document.querySelectorAll('.fbtn').forEach(function(b){ b.addEventListener('click',function(){ filt=b.getAttribute('data-f'); document.querySelectorAll('.fbtn').forEach(function(x){x.classList.toggle('on',x===b);}); applyFilter(); }); });
+  function applyFilter(){ document.querySelectorAll('.tcard').forEach(function(c){ c.classList.toggle('hide', !(filt==='all'||c.getAttribute('data-kind')===filt)); }); document.querySelectorAll('.para').forEach(function(p){ p.classList.toggle('hide', p.querySelectorAll('.tcard:not(.hide)').length===0); }); document.querySelectorAll('.chap').forEach(function(s){ s.classList.toggle('hide', s.querySelectorAll('.tcard:not(.hide)').length===0); }); }
+
+  var modal=document.getElementById('submitModal');
+  document.getElementById('openSubmit').addEventListener('click',function(){ modal.classList.add('show'); document.getElementById('sname').focus(); });
+  document.getElementById('closeM').addEventListener('click',function(){ modal.classList.remove('show'); });
+  modal.addEventListener('click',function(e){ if(e.target===modal) modal.classList.remove('show'); });
+  var lastCode='', lastName='';
+  function shareMsg(){ return 'Геометрия 7 — мой прогресс. '+lastName+':\n'+lastCode; }
+  document.getElementById('genCode').addEventListener('click',function(){
+    var name=(document.getElementById('sname').value||'').trim(); if(!name){ document.getElementById('sname').focus(); return; }
+    lastName=name; var vals=TRAINERS.map(function(tr){ return valOf(tr.t); }); lastCode=makeCode(name,vals);
+    document.getElementById('codeOut').value=lastCode;
+    document.getElementById('result').style.display='block';
+    document.getElementById('shareNative').style.display=(navigator.share?'inline-block':'none');
+    var sent=document.getElementById('sentMsg'); sent.textContent='';
+    if(ENDPOINT){ try{ fetch(ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:lastCode}); sent.textContent='Отправлено учителю автоматически ✓'; }catch(e){} }
+  });
+  document.getElementById('copyCode').addEventListener('click',function(){ if(lastCode) copyText(lastCode,this); });
+  document.getElementById('shareNative').addEventListener('click',function(){ if(navigator.share){ navigator.share({title:'Геометрия 7 — мой прогресс', text:shareMsg()}).catch(function(){}); } });
+  document.getElementById('shareMail').addEventListener('click',function(){ var su=encodeURIComponent('Геометрия 7 — прогресс: '+lastName); var b=encodeURIComponent(shareMsg()); window.location.href='mailto:'+TEACHER_EMAIL+'?subject='+su+'&body='+b; });
+  document.getElementById('shareTg').addEventListener('click',function(){ var u=encodeURIComponent(location.href.split('#')[0]); var t=encodeURIComponent(shareMsg()); window.open('https://t.me/share/url?url='+u+'&text='+t,'_blank'); });
+
+  applyTeacher();
+})();
+</script>
+</body>
+</html>

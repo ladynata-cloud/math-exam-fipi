@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Медиана, биссектриса, высота · три разные линии</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:9px;font-size:12px;font-weight:700;color:#475569}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.lg{width:16px;height:4px;border-radius:2px;display:inline-block}
+.slCard{display:none;margin-top:11px;background:#f0f7ff;border:1.5px solid #bcd9f5;border-radius:11px;padding:10px 12px}
+.slCard label{font-size:12px;font-weight:800;color:#235a92;display:block;margin-bottom:6px}
+.slCard input{width:100%}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.card.why{background:#fffbeb;border-color:#fcd34d}
+.card.why h2{color:#b45309}
+.task{font-size:14.5px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.steps{display:flex;flex-direction:column;gap:7px}
+.st{display:flex;align-items:center;gap:9px;font-size:13.5px;font-weight:700;color:#94a3b8}
+.st .dotn{width:22px;height:22px;border-radius:50%;background:#e2e8f0;color:#64748b;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;flex-shrink:0}
+.st.active{color:#1a1a2e}
+.st.active .dotn{background:#2d70b3;color:#fff}
+.st.done{color:#16a34a}
+.st.done .dotn{background:#16a34a;color:#fff}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.warn{background:#fff7ed;color:#c2410c}
+.star{color:#b45309;font-weight:800}
+.proof{display:none;background:#ecfdf5;color:#14532d;border:1.5px solid #bbf7d0;border-radius:12px;padding:12px;font-size:13px;line-height:1.55}
+.proof b{color:#166534}
+.small{font-size:13.5px;color:#374151;line-height:1.55}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button:hover{background:#f3f4f6}
+button:disabled{opacity:.45;cursor:default}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a;margin-left:auto}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:15px;height:15px;border-radius:50%;background:#d1d5db}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:600px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14.5px;line-height:1.6;color:#14532d}
+.law b{color:#166534}
+.law .ln{display:flex;gap:10px;align-items:flex-start;margin:7px 0}
+.law .sw{width:20px;height:5px;border-radius:3px;margin-top:7px;flex-shrink:0}
+.law .bridge{margin-top:12px;padding-top:11px;border-top:1px dashed #bbf7d0;font-style:italic}
+@media(max-width:820px){
+  body{padding:8px}
+  .main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}
+  .side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">📐 Медиана, биссектриса, высота</div>
+      <div class="sub">Глава II · §2 · опорный словарь — три линии из одной вершины</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Строим руками</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="440"></canvas>
+      <div class="legend" id="legend">
+        <span><i class="lg" style="background:#2d70b3"></i>медиана</span>
+        <span><i class="lg" style="background:#0e9f6e"></i>биссектриса</span>
+        <span><i class="lg" style="background:#c2410c"></i>высота</span>
+      </div>
+      <div class="slCard" id="slCard">
+        <label for="aSlider">Двигайте вершину A — пальцем по холсту или этим ползунком</label>
+        <input type="range" id="aSlider" min="0" max="100" value="50">
+      </div>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card" id="stepCard">
+        <h2>Что уже построено</h2>
+        <div class="steps" id="steps">
+          <div class="st" id="stM"><span class="dotn">1</span><span>Медиана AM — в середину BC</span></div>
+          <div class="st" id="stD"><span class="dotn">2</span><span>Биссектриса — делит угол A пополам</span></div>
+          <div class="st" id="stH"><span class="dotn">3</span><span>Высота AH — перпендикуляр к BC</span></div>
+        </div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div id="proofBox" class="proof"></div>
+      <div class="card why">
+        <h2>Зачем это</h2>
+        <p class="small">Три слова — <b>медиана</b>, <b>биссектриса</b>, <b>высота</b> — учебник вводит списком. Здесь вы строите их сами из одной вершины и видите: это три <b>разные</b> линии, попадающие в три разные точки. Запомнив их врозь, вы оцените чудо равнобедренного треугольника, где они вдруг сливаются.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law" id="lawBox"></div>
+    <button class="primary" style="max-width:240px;margin:0 auto;display:block" onclick="restart()">Пройти ещё раз</button>
+  </div>
+
+  <div class="bar" id="bar">
+    <button onclick="showHint()" id="hintBtn">💡 Подсказка</button>
+    <button onclick="resetTask()">↺ Сначала</button>
+    <button id="nextBtn" class="next" onclick="nextTask()">Дальше →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС И ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch2-p2-t0-three-cevians';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),task:ti+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+let W=640,H=440;
+(function dpr(){
+  const r=Math.min(window.devicePixelRatio||1,2);
+  cv.width=W*r;cv.height=H*r;ctx.scale(r,r);
+  cv.style.width='100%';
+})();
+
+/* ───────── ГЕОМЕТРИЯ ─────────
+   Основание BC внизу зафиксировано. Вершина A подвижна (акты 2–3).
+   Все три чевианы идут из A на прямую BC. */
+const B={x:130,y:360}, C={x:510,y:360};
+let A={x:240,y:170};                 // острый базовый случай
+const COL={med:'#2d70b3', bis:'#0e9f6e', alt:'#c2410c'};
+
+function midBC(){return {x:(B.x+C.x)/2, y:(B.y+C.y)/2};}
+function footAlt(){                 // нога высоты = проекция A на прямую BC
+  const dx=C.x-B.x, dy=C.y-B.y, L2=dx*dx+dy*dy;
+  const t=((A.x-B.x)*dx+(A.y-B.y)*dy)/L2;
+  return {x:B.x+t*dx, y:B.y+t*dy, t};
+}
+function footBis(){                 // основание биссектрисы: делит BC в отношении AB:AC
+  const dx=C.x-B.x, dy=C.y-B.y;
+  const ab=Math.hypot(A.x-B.x,A.y-B.y), ac=Math.hypot(A.x-C.x,A.y-C.y);
+  const r=ab/(ab+ac);
+  return {x:B.x+r*dx, y:B.y+r*dy, r};
+}
+function isObtuseAtBase(){          // тупой угол при B или C ⇒ нога высоты вне отрезка
+  const t=footAlt().t; return t<0||t>1;
+}
+
+/* ───────── СОСТОЯНИЕ ───────── */
+let ti=0;
+let solvedThis=false, mistakes=0, hintUsedThis=false, hintsUsed=false;
+const results=[];
+let kind='mouse';
+let wrongFx=null;                   // {x,y,t} вспышка неверного клика
+let okFx=null;                      // {x,y,t} вспышка верного попадания
+let built={med:false, bis:false, alt:false};  // что уже построено (акт 1)
+let dragA=false, grabOff={x:0,y:0};
+let obtuseSeen=false;               // акт 3: высота вышла наружу
+
+/* ───────── ЗАДАЧИ ─────────
+   build : нажми на BC в нужную точку (med\bis) или построй высоту (alt)
+   drag  : свободно двигай A, смотри как расходятся ноги
+   obtuse: доведи A до тупого угла, поймай высоту снаружи (✦)
+*/
+const TASKS=[
+ {kind:'build', want:'med',
+  text:'Постройте <b>медиану</b> из вершины A — нажмите на BC в той точке, куда она придёт. Пунктир и кольцо подсказывают направление.'},
+ {kind:'build', want:'bis',
+  text:'Теперь <b>биссектрису</b> угла A. <i>Она делит пополам угол, а не сторону</i> — нажмите на BC там, куда смотрит пунктир.'},
+ {kind:'build', want:'alt',
+  text:'И <b>высоту</b> из A — нажмите на BC там, где пунктир встречает основание под прямым углом.'},
+ {kind:'drag',
+  text:'Три ноги встали рядом, но в <b>разные</b> точки. Потяните вершину A и посмотрите, как три линии расходятся веером.'},
+ {kind:'obtuse',
+  text:'✦ Тяните A в сторону, пока угол при B или C не станет <b>тупым</b>. Следите за высотой: куда уйдёт её основание?'}
+];
+
+/* ───────── РИСОВАНИЕ ───────── */
+function bg(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill();}
+}
+function lab(p,txt,col,dx,dy){
+  ctx.font='900 16px system-ui';ctx.textAlign='center';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(250,248,242,.95)';ctx.strokeText(txt,p.x+dx,p.y+dy);
+  ctx.fillStyle=col;ctx.fillText(txt,p.x+dx,p.y+dy);
+}
+function angleArc(v,p,q,col,r,lw){
+  let a1=Math.atan2(p.y-v.y,p.x-v.x), a2=Math.atan2(q.y-v.y,q.x-v.x);
+  let d=a2-a1;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;
+  ctx.beginPath();ctx.arc(v.x,v.y,r||26,a1,a1+d,d<0);
+  ctx.strokeStyle=col;ctx.lineWidth=lw||2.4;ctx.stroke();
+}
+function fillWedge(v,p,q,fill,r){
+  // полупрозрачная заливка сектора от v между направлениями на p и q
+  let a1=Math.atan2(p.y-v.y,p.x-v.x), a2=Math.atan2(q.y-v.y,q.x-v.x);
+  let d=a2-a1;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;
+  ctx.beginPath();ctx.moveTo(v.x,v.y);ctx.arc(v.x,v.y,r||30,a1,a1+d,d<0);ctx.closePath();
+  ctx.fillStyle=fill;ctx.fill();
+}
+function rightAngleMark(foot,from,along,col){
+  // прямой угол в точке foot между направлением на A (from) и вдоль BC (along)
+  const s=12;
+  const u={x:along.x,y:along.y}, v={x:from.x,y:from.y};
+  const p1={x:foot.x+u.x*s, y:foot.y+u.y*s};
+  const p2={x:foot.x+v.x*s, y:foot.y+v.y*s};
+  const p3={x:p1.x+v.x*s, y:p1.y+v.y*s};
+  ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p3.x,p3.y);ctx.lineTo(p2.x,p2.y);
+  ctx.strokeStyle=col;ctx.lineWidth=2;ctx.stroke();
+}
+function tick(mid,dir,col,n){
+  // n засечек поперёк отрезка в точке mid, dir — единичное направление вдоль отрезка
+  const nx=-dir.y, ny=dir.x;
+  for(let i=0;i<n;i++){
+    const off=(i-(n-1)/2)*6;
+    const cx=mid.x+dir.x*off, cy=mid.y+dir.y*off;
+    ctx.beginPath();
+    ctx.moveTo(cx-nx*7, cy-ny*7);ctx.lineTo(cx+nx*7, cy+ny*7);
+    ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.stroke();
+  }
+}
+
+function draw(){
+  bg();
+  const T=TASKS[ti];
+  const dx=C.x-B.x, dy=C.y-B.y, L=Math.hypot(dx,dy);
+  const dir={x:dx/L, y:dy/L};         // вдоль BC
+  const M=midBC(), Hf=footAlt(), Df=footBis();
+  const obtuse=isObtuseAtBase();
+
+  // прямая, содержащая BC (продолжения пунктиром) — нужна для высоты в тупом случае
+  ctx.save();
+  ctx.setLineDash([7,5]);ctx.strokeStyle='#b8b2a4';ctx.lineWidth=1.6;
+  ctx.beginPath();
+  ctx.moveTo(B.x-dir.x*120, B.y-dir.y*120);
+  ctx.lineTo(C.x+dir.x*120, C.y+dir.y*120);
+  ctx.stroke();
+  ctx.restore();
+
+  // стороны треугольника
+  ctx.lineJoin='round';
+  ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.lineTo(C.x,C.y);ctx.closePath();
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2.8;ctx.stroke();
+
+  // ── чевианы (по мере построения / во всех актах после акта 1) ──
+  const showMed = built.med || ti>=3;
+  const showBis = built.bis || ti>=3;
+  const showAlt = built.alt || ti>=3;
+
+  if(showMed){
+    ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(M.x,M.y);
+    ctx.strokeStyle=COL.med;ctx.lineWidth=3;ctx.stroke();
+    // равные засечки на BM и MC
+    const bm={x:(B.x+M.x)/2,y:(B.y+M.y)/2}, mc={x:(M.x+C.x)/2,y:(M.y+C.y)/2};
+    tick(bm,dir,COL.med,1);tick(mc,dir,COL.med,1);
+  }
+  if(showBis){
+    // у каждой половины свой радиус: заливка упирается РОВНО в свою дугу → дуги разные, заливка не вылезает
+    const rIn=24, rOut=42;
+    fillWedge(A,B,Df,'rgba(14,159,110,.22)',rIn);
+    fillWedge(A,Df,C,'rgba(14,159,110,.22)',rOut);
+    // линия биссектрисы
+    ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(Df.x,Df.y);
+    ctx.strokeStyle=COL.bis;ctx.lineWidth=3;ctx.stroke();
+    // дуги тех же радиусов — край заливки совпадает с дугой
+    angleArc(A,B,Df,COL.bis,rIn,2.6);
+    angleArc(A,Df,C,COL.bis,rOut,2.6);
+  }
+  if(showAlt){
+    ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(Hf.x,Hf.y);
+    ctx.strokeStyle=COL.alt;ctx.lineWidth=3;
+    if(obtuse){ctx.setLineDash([2,3]);} // вне треугольника — тоньше пунктиром на участке вне
+    ctx.stroke();ctx.setLineDash([]);
+    // прямой угол в ноге
+    const toA={x:(A.x-Hf.x), y:(A.y-Hf.y)};const la=Math.hypot(toA.x,toA.y);
+    rightAngleMark(Hf,{x:toA.x/la,y:toA.y/la}, (Hf.t>1?{x:-dir.x,y:-dir.y}:{x:dir.x,y:dir.y}), COL.alt);
+  }
+
+  // подсветка цели текущего шага build (пульс на BC)
+  if(T.kind==='build' && !solvedThis){
+    const g=0.4+0.45*Math.sin(Date.now()/260);
+    ctx.save();ctx.strokeStyle='rgba(45,112,179,'+g+')';ctx.lineWidth=6;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(B.x,B.y);ctx.lineTo(C.x,C.y);ctx.stroke();ctx.restore();
+    // «прицел»: бледный пунктир от A в направлении нужной точки (куда придёт линия)
+    const goal = T.want==='med'?M : (T.want==='bis'?Df : Hf);
+    const aimCol = T.want==='med'?COL.med : (T.want==='bis'?COL.bis : COL.alt);
+    ctx.save();
+    ctx.setLineDash([4,7]);ctx.lineWidth=2;
+    ctx.strokeStyle=aimCol;
+    ctx.globalAlpha=0.32+0.18*Math.sin(Date.now()/260);
+    ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(goal.x,goal.y);ctx.stroke();
+    ctx.restore();
+    // мягкое пульсирующее «гнездо» в целевой точке
+    const gg=0.35+0.3*Math.sin(Date.now()/260);
+    ctx.save();ctx.beginPath();ctx.arc(goal.x,goal.y,11,0,7);
+    ctx.strokeStyle=aimCol;ctx.globalAlpha=gg;ctx.lineWidth=2.5;ctx.stroke();ctx.restore();
+  }
+
+  // вершины
+  dot(B,'#1a1a2e');dot(C,'#1a1a2e');
+  // A — подвижна в актах drag/obtuse: рисуем «ручку»
+  if(T.kind==='drag'||T.kind==='obtuse'){
+    const g=0.45+0.4*Math.sin(Date.now()/300);
+    ctx.beginPath();ctx.arc(A.x,A.y,16,0,7);ctx.fillStyle='rgba(45,112,179,'+ (0.12+0.12*Math.sin(Date.now()/300)) +')';ctx.fill();
+    ctx.beginPath();ctx.arc(A.x,A.y,16,0,7);ctx.strokeStyle='rgba(45,112,179,'+g+')';ctx.lineWidth=2;ctx.stroke();
+  }
+  dot(A,'#1a1a2e');
+  lab(A,'A','#1a1a2e',0,-16);lab(B,'B','#1a1a2e',-14,8);lab(C,'C','#1a1a2e',14,8);
+
+  // ── маркеры ног чевиан — ВЕРХНИМ слоем, поверх контура и подсветки ──
+  // подписи разводим: M снизу, основание высоты H снизу со сдвигом, нога биссектрисы — над точкой
+  if(showMed){ footDot(M,COL.med); lab(M,'M',COL.med,0,24); }
+  if(showBis){ footDot(Df,COL.bis); lab(Df,'L',COL.bis,0,-13); }
+  if(showAlt){ footDot(Hf,COL.alt); lab(Hf,'H',COL.alt,(Hf.x<M.x?-14:14),24); }
+
+  // вспышки кликов
+  if(wrongFx){const e=(Date.now()-wrongFx.t)/420;if(e<1){ctx.beginPath();ctx.arc(wrongFx.x,wrongFx.y,8+e*16,0,7);ctx.strokeStyle='rgba(220,38,38,'+(1-e)+')';ctx.lineWidth=3;ctx.stroke();}else wrongFx=null;}
+  if(okFx){const e=(Date.now()-okFx.t)/520;if(e<1){ctx.beginPath();ctx.arc(okFx.x,okFx.y,6+e*20,0,7);ctx.strokeStyle='rgba(22,163,74,'+(1-e)+')';ctx.lineWidth=3.5;ctx.stroke();}else okFx=null;}
+
+  // подпись «высота вне треугольника» в финале акта 3
+  if(T.kind==='obtuse' && obtuseSeen){
+    ctx.font='800 13px system-ui';ctx.textAlign='center';ctx.fillStyle='#c2410c';
+    ctx.fillText('высота — вне треугольника!', (Hf.x+A.x)/2, 30);
+  }
+}
+function dot(p,col){ctx.beginPath();ctx.arc(p.x,p.y,4.2,0,7);ctx.fillStyle=col;ctx.fill();}
+function footDot(p,col){
+  // белый ободок + цветная сердцевина — виден поверх чёрной линии BC
+  ctx.beginPath();ctx.arc(p.x,p.y,6.5,0,7);ctx.fillStyle='#fffdf7';ctx.fill();
+  ctx.lineWidth=2.5;ctx.strokeStyle=col;ctx.stroke();
+  ctx.beginPath();ctx.arc(p.x,p.y,3,0,7);ctx.fillStyle=col;ctx.fill();
+}
+
+/* ───────── КООРДИНАТЫ УКАЗАТЕЛЯ ───────── */
+function scrK(){const r=cv.getBoundingClientRect();return Math.max(1,W/(r.width||W));}
+function pt(e){const r=cv.getBoundingClientRect(),k=W/(r.width||W);return {x:(e.clientX-r.left)*k,y:(e.clientY-r.top)*k};}
+function distSeg(p,a,b){const dx=b.x-a.x,dy=b.y-a.y,L2=dx*dx+dy*dy;let t=((p.x-a.x)*dx+(p.y-a.y)*dy)/L2;t=Math.max(0,Math.min(1,t));return Math.hypot(p.x-(a.x+t*dx),p.y-(a.y+t*dy));}
+
+/* ───────── ЛОГИКА ШАГОВ ───────── */
+function el(id){return document.getElementById(id);}
+function setMsg(html,cls){const m=el('msg');m.className='msg '+(cls||'info');m.innerHTML=html;}
+function targetPoint(want){return want==='med'?midBC():want==='bis'?footBis():footAlt();}
+
+function tapBC(p){
+  const T=TASKS[ti];
+  const want=T.want;
+  const tol=(kind==='touch'?22:16)*scrK();
+  // ближе всего ли к стороне BC вообще?
+  const dToBC=distSeg(p,B,C);
+  // проекция параметра
+  const dx=C.x-B.x, dy=C.y-B.y, L2=dx*dx+dy*dy;
+  const tp=((p.x-B.x)*dx+(p.y-B.y)*dy)/L2;
+
+  const M=midBC(), Df=footBis(), Hf=footAlt();
+  const goal=targetPoint(want);
+  const dGoal=Math.hypot(p.x-goal.x, p.y-goal.y);
+
+  // верное попадание
+  if(dGoal<tol && dToBC<tol*1.4){
+    built[want]=true;
+    okFx={x:goal.x,y:goal.y,t:Date.now()};
+    solveStep();
+    return;
+  }
+
+  // ── диагностика промахов ──
+  // 1) кликнул в вершину B или C
+  if(Math.hypot(p.x-B.x,p.y-B.y)<24||Math.hypot(p.x-C.x,p.y-C.y)<24){
+    miss(want, 'vertex'); return;
+  }
+  // 2) попал в чужую характерную точку
+  const near=(q)=>Math.hypot(p.x-q.x,p.y-q.y)<tol*1.3 && dToBC<tol*1.4;
+  if(want==='bis' && near(M)){ miss('bis','isMid'); return; }
+  if(want==='med' && near(Df)){ miss('med','isBis'); return; }
+  if(want==='alt' && near(M)){ miss('alt','isMid'); return; }
+  if(want==='alt' && (distSeg(p,A,B)<tol||distSeg(p,A,C)<tol)){ miss('alt','isSide'); return; }
+  // 3) промах по стороне, но не туда
+  if(dToBC<tol*1.4){ miss(want,'offspot'); return; }
+  // 4) совсем мимо
+  wrongFx={x:p.x,y:p.y,t:Date.now()};
+  miss(want,'away');
+}
+
+const WHY={
+  med:{
+    vertex:'Медиана идёт в <b>середину</b> противоположной стороны, а не в вершину. Цельтесь в точку посреди BC.',
+    isBis:'Это туда придёт <b>биссектриса</b>. Медиана делит саму сторону BC ровно пополам — её точка строго посередине.',
+    offspot:'Почти! Медиана попадает точно в <b>середину</b> BC — отрезки BM и MC должны выйти равными. Возьмите точку ровно по центру.',
+    away:'Медиана соединяет вершину A с точкой на противоположной стороне BC. Нажмите на саму сторону BC, в её середину.'
+  },
+  bis:{
+    vertex:'Биссектриса приходит на сторону BC, а не в вершину. Цельтесь в точку на BC.',
+    isMid:'Это <b>середина</b> BC — туда шла медиана. Биссектриса делит пополам <b>угол</b> при вершине A. Её след попадёт в середину BC только в особом треугольнике (это вы увидите дальше). Сейчас угол не такой — точка чуть смещена.',
+    offspot:'Биссектриса делит <b>угол A</b> на две равные части. Её точка на BC лежит там, куда смотрит «ось» угла, — присмотритесь к развороту угла.',
+    away:'Биссектриса выходит из вершины A и делит её угол пополам, доходя до стороны BC. Нажмите на BC в нужной точке.'
+  },
+  alt:{
+    vertex:'Высота приходит на сторону (её прямую), а не в вершину. Цельтесь на основание.',
+    isMid:'Это середина BC — там медиана. Высота встречает BC под <b>прямым</b> углом; её основание лежит там, где перпендикуляр из A падает на прямую BC.',
+    isSide:'Это <b>сторона</b> треугольника (AB или AC), а не высота. Высота — отдельный отрезок: перпендикуляр из A к прямой BC.',
+    offspot:'Высота должна встретить BC под <b>прямым</b> углом. Её основание — точка, ближайшая к A на прямой BC (перпендикуляр).',
+    away:'Высота — перпендикуляр из вершины A к прямой, содержащей BC. Нажмите на основание этого перпендикуляра.'
+  }
+};
+function miss(want, code){
+  mistakes++; log('tap_wrong',{which:want, code});
+  setMsg('Не туда: '+WHY[want][code], 'err');
+}
+
+function solveStep(){
+  const T=TASKS[ti];
+  log('step',{which:T.want});
+  // отметить шаг выполненным в панели
+  const map={med:'stM',bis:'stD',alt:'stH'};
+  el(map[T.want]).className='st done';
+  const names={med:'Медиана AM',bis:'Биссектриса',alt:'Высота AH'};
+  const tails={
+    med:'её основание M — <b>середина</b> BC, отрезки BM и MC равны (засечки).',
+    bis:'она поделила <b>угол A</b> на две равные части (две дужки).',
+    alt:'она встретила BC под <b>прямым углом</b> (значок прямого угла в основании).'
+  };
+  setMsg('✓ '+names[T.want]+' построена: '+tails[T.want], 'ok');
+  finishTask();
+}
+
+/* ───────── АКТ 2 (drag) и АКТ 3 (obtuse) ───────── */
+function checkDrag(){
+  // акт 2 засчитывается, когда A заметно сдвинута от старта и ноги различимы
+  if(solvedThis)return;
+  const moved=Math.hypot(A.x-dragStart.x, A.y-dragStart.y);
+  if(moved>70){ log('cevian_dragged',{}); setMsg('Видите? Три ноги ползут по BC врозь. В обычном треугольнике медиана, биссектриса и высота — три разные линии.','ok'); finishTask(); }
+}
+function checkObtuse(){
+  if(solvedThis)return;
+  if(isObtuseAtBase()){
+    if(!obtuseSeen){ obtuseSeen=true; log('obtuse_discovered',{}); }
+    setMsg('<span class="star">✦</span> Угол при основании стал тупым — и высота из A вышла <b>за</b> треугольник: её основание H легло на <b>продолжение</b> стороны. Высота не обязана проходить внутри.','warn');
+    finishTask();
+  }
+}
+
+let dragStart={x:0,y:0};
+cv.addEventListener('pointerdown',e=>{
+  if(solvedThis && TASKS[ti].kind!=='drag' && TASKS[ti].kind!=='obtuse')return;
+  kind=e.pointerType==='touch'?'touch':'mouse';
+  const p=pt(e);
+  const T=TASKS[ti];
+  if(T.kind==='build'){
+    if(solvedThis)return;
+    tapBC(p); return;
+  }
+  if(T.kind==='drag'||T.kind==='obtuse'){
+    const rGrab=(kind==='touch'?32:22)*scrK();
+    if(Math.hypot(p.x-A.x,p.y-A.y)<rGrab){
+      dragA=true; grabOff={x:A.x-p.x, y:A.y-p.y};
+      dragStart={x:A.x,y:A.y};
+      try{cv.setPointerCapture(e.pointerId);}catch(_){}
+    }
+  }
+});
+cv.addEventListener('pointermove',e=>{
+  if(!dragA)return;
+  const p=pt(e);
+  let nx=p.x+grabOff.x, ny=p.y+grabOff.y;
+  // ограничения: A держим над прямой BC и в кадре
+  nx=Math.max(30,Math.min(W-30,nx));
+  ny=Math.max(40,Math.min(B.y-40,ny));
+  A.x=nx;A.y=ny;
+  syncSlider();
+  const T=TASKS[ti];
+  if(T.kind==='drag')checkDrag();
+  else if(T.kind==='obtuse')checkObtuse();
+});
+function endDrag(e){if(!dragA)return;dragA=false;try{cv.releasePointerCapture(e.pointerId);}catch(_){}}
+cv.addEventListener('pointerup',endDrag);
+cv.addEventListener('pointercancel',endDrag);
+
+/* ползунок-дубль для A (горизонтальная позиция) */
+const aSlider=el('aSlider');
+aSlider.addEventListener('input',()=>{
+  const T=TASKS[ti];
+  if(T.kind!=='drag'&&T.kind!=='obtuse')return;
+  A.x=60 + (W-120)*(+aSlider.value/100);
+  if(dragStart.x===0)dragStart={x:A.x,y:A.y};
+  if(T.kind==='drag')checkDrag();
+  else if(T.kind==='obtuse')checkObtuse();
+});
+function syncSlider(){ aSlider.value=Math.round((A.x-60)/(W-120)*100); }
+
+/* ───────── ПОДСКАЗКА ───────── */
+function showHint(){
+  const T=TASKS[ti];
+  hintUsedThis=true;hintsUsed=true;log('hint',{});
+  if(T.kind==='build'){
+    const h={med:'Середина BC — ровно посередине между B и C.',
+             bis:'Мысленно сложите угол A пополам — куда смотрит линия сгиба, там и точка на BC.',
+             alt:'Опустите из A перпендикуляр на прямую BC: основание — ближайшая к A точка прямой.'};
+    setMsg('💡 '+h[T.want],'warn');
+  }else if(T.kind==='drag'){
+    setMsg('💡 Возьмитесь за светящийся кружок вокруг A и потяните вбок.','warn');
+  }else{
+    setMsg('💡 Тяните A сильно в сторону (за B или за C по горизонтали) — тогда угол у основания станет тупым.','warn');
+  }
+}
+
+/* ───────── ПЕРЕХОДЫ ЗАДАЧ ───────── */
+function finishTask(){
+  if(solvedThis)return;
+  solvedThis=true;
+  results[ti]= hintUsedThis ? 'y' : (mistakes===0?'g':(mistakes===1?'y':'r'));
+  log('solved',{via:TASKS[ti].kind, mistakes, hint:hintUsedThis});
+  el('nextBtn').style.display='inline-block';
+  el('hintBtn').disabled=true;
+}
+function layout(){
+  const T=TASKS[ti];
+  el('taskText').innerHTML=T.text;
+  el('pf').style.width=Math.round(ti/TASKS.length*100)+'%';
+  el('pnum').textContent='Шаг '+(ti+1)+' из '+TASKS.length;
+  el('nextBtn').style.display='none';
+  el('nextBtn').textContent = ti===TASKS.length-1?'Итоги →':'Дальше →';
+  el('hintBtn').disabled=false;
+  el('slCard').style.display=(T.kind==='drag'||T.kind==='obtuse')?'block':'none';
+  // шаги-чеклист видим только в акте 1
+  el('stepCard').style.display = T.kind==='build' ? 'block' : 'none';
+  // активный шаг
+  ['stM','stD','stH'].forEach(id=>{const e=el(id);if(!e.className.includes('done'))e.className='st';});
+  if(T.kind==='build'){const map={med:'stM',bis:'stD',alt:'stH'};const cur=el(map[T.want]);if(!cur.className.includes('done'))cur.className='st active';}
+  if(T.kind==='build')setMsg(T.want==='med'?'Найдите на BC точку, куда придёт медиана.':T.want==='bis'?'Внимание: биссектриса — про угол, не про сторону.':'Высота встречает BC под прямым углом.','info');
+  else if(T.kind==='drag')setMsg('Потяните вершину A.','info');
+  else setMsg('Доведите угол при основании до тупого.','info');
+  log('task_start',{kind:T.kind, want:T.want||null});
+}
+function resetTask(){
+  const T=TASKS[ti];
+  if(T.kind==='build'){built[T.want]=false;}
+  if(T.kind==='drag'||T.kind==='obtuse'){A={x:240,y:170};obtuseSeen=false;dragStart={x:0,y:0};syncSlider();}
+  solvedThis=false;mistakes=0;hintUsedThis=false;
+  layout();
+}
+function nextTask(){
+  if(ti<TASKS.length-1){
+    ti++;
+    solvedThis=false;mistakes=0;hintUsedThis=false;
+    // при входе в акт 2 фиксируем точку старта для измерения сдвига
+    if(TASKS[ti].kind==='drag'||TASKS[ti].kind==='obtuse'){A={x:240,y:170};dragStart={x:0,y:0};obtuseSeen=false;syncSlider();}
+    layout();
+  }else finish();
+}
+
+/* ───────── ФИНАЛ ───────── */
+function finish(){
+  el('mainArea').style.display='none';
+  el('bar').style.display='none';
+  el('fin').style.display='block';
+  const g=results.filter(r=>r==='g').length;
+  el('finScore').textContent=g+' / '+TASKS.length;
+  el('finLbl').textContent='шагов пройдено без ошибок и подсказок';
+  const fd=el('finDots');fd.innerHTML='';
+  results.forEach(r=>{const e=document.createElement('div');e.className='dot '+(r||'r');fd.appendChild(e);});
+  el('lawBox').innerHTML=
+    '<b>Три линии из вершины — три определения.</b>'+
+    '<div class="ln"><span class="sw" style="background:'+COL.med+'"></span><div><b>Медиана</b> соединяет вершину с <b>серединой</b> противоположной стороны (делит сторону пополам).</div></div>'+
+    '<div class="ln"><span class="sw" style="background:'+COL.bis+'"></span><div><b>Биссектриса</b> делит <b>угол</b> при вершине на две равные части.</div></div>'+
+    '<div class="ln"><span class="sw" style="background:'+COL.alt+'"></span><div><b>Высота</b> — перпендикуляр из вершины к <b>прямой</b>, содержащей противоположную сторону. Потому и «к прямой»: в тупоугольном треугольнике основание высоты ложится на <b>продолжение</b> стороны, вне треугольника. <span class="star">✦</span></div></div>'+
+    '<div class="bridge">В обычном треугольнике это три <b>разные</b> линии. Но есть треугольник, где биссектриса, медиана и высота сливаются в одну, — равнобедренный. Это вы увидите руками в следующем тренажёре.</div>';
+  const s=lS();s.runs=(s.runs||0)+1;s.passed=true;s.best=Math.max(s.best||0,g);sS(s);
+  log('finish',{score:g});
+}
+function restart(){
+  ti=0;results.length=0;built={med:false,bis:false,alt:false};
+  A={x:240,y:170};obtuseSeen=false;dragStart={x:0,y:0};
+  solvedThis=false;mistakes=0;hintUsedThis=false;hintsUsed=false;
+  ['stM','stD','stH'].forEach(id=>el(id).className='st');
+  el('fin').style.display='none';
+  el('mainArea').style.display='grid';
+  el('bar').style.display='flex';
+  syncSlider();
+  layout();
+}
+
+/* ───────── ЦИКЛ ───────── */
+function loop(){draw();requestAnimationFrame(loop);}
+log('start');
+restart();
+loop();
+</script>
+</body>
+</html>

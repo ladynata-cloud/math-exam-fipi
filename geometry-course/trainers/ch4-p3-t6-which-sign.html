@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Признаки равенства прямоугольных треугольников</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.given{font-size:13px;line-height:1.5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:10px}
+.given b{color:#3730a3}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:750 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt.ok-pick{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.bad-pick{background:#fee2e2;border-color:#dc2626;color:#991b1b}
+.opt.correct-reveal{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.shake{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.proof{display:none;background:#ecfdf5;color:#14532d;border:1.5px solid #bbf7d0;border-radius:12px;padding:12px;font-size:13px;line-height:1.5}
+.proof b{color:#166534}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:15px;height:15px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:660px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law .nb{margin-top:10px;font-size:13px;color:#334155;line-height:1.7}
+.bridge{margin-top:12px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">△ Признаки равенства прямоугольных</div>
+      <div class="sub">Глава IV · §3 · тренажёр 6 из 9 — хватает двух элементов</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Сколько нужно?</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="460"></canvas>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card" id="gaugeCard" style="display:none"><h2>Панель</h2><div id="gauge"></div></div>
+      <div class="card" id="givenCard" style="display:none"><div class="given" id="givenBox"></div></div>
+      <div id="opts" class="opts"></div>
+      <div id="msg" class="msg info"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div id="proof" class="proof"></div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>В прямоугольном треугольнике прямой угол есть всегда и у всех одинаков, поэтому для равенства хватает не трёх элементов, а двух. Отсюда три признака:</b>
+      <div class="nb">• по двум катетам — это первый признак (две стороны и угол между ними; угол — прямой, лежит между катетами);<br>• по катету и острому углу — второй признак (катет и два прилежащих угла: острый и прямой);<br>• по гипотенузе и острому углу — второй признак (второй острый угол равен 90° − данного по свойству 1°).</div>
+      <div class="bridge">Остался четвёртый признак — по гипотенузе и катету. Он не сводится к первому или второму так же просто и доказывается наложением: это «узкое место». <a href="ch4-p3-t7-hyp-leg-congruence.html">Гипотенуза и катет →</a></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="tool" onclick="restart()" style="background:#1a1a2e;color:#fff;border-color:#1a1a2e">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="advance()">Следующая →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС / ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch4-p3-t6-which-sign';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),phase:ph,kind:NM[ph],e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640,H=460,PI=Math.PI;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+const PULSE=()=>1+0.13*Math.sin(Date.now()/240);
+
+/* ───────── ПАЛИТРА / ПРИМИТИВЫ ───────── */
+const COL={A:'#d97706',B:'#db2777',C:'#0d9488',G:'#16a34a',DARK:'#1a1a2e',GREY:'#94a3b8',HYP:'#2d70b3',MED:'#7c3aed'};
+function sub(p,q){return{x:p.x-q.x,y:p.y-q.y}}
+function nrm(v){const m=Math.hypot(v.x,v.y)||1;return{x:v.x/m,y:v.y/m}}
+function hexA(h,a){const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+function bg(){
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill()}
+}
+function lab(x,y,txt,col,size){
+  ctx.font='900 '+(size||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);ctx.textBaseline='alphabetic';
+}
+function dot(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function seg(p,q,col,w){ctx.strokeStyle=col;ctx.lineWidth=w||2.8;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
+function drawAngle(V,P,Q,col,active,dim,r0){
+  const a1=Math.atan2(P.y-V.y,P.x-V.x), a2=Math.atan2(Q.y-V.y,Q.x-V.x);
+  let d=a2-a1; while(d<=-PI)d+=2*PI; while(d>PI)d-=2*PI;
+  const acw=d<0, r=active? r0*PULSE() : r0;
+  ctx.save(); if(dim)ctx.globalAlpha=0.32;
+  ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.arc(V.x,V.y,r,a1,a1+d,acw);ctx.closePath();
+  ctx.fillStyle=hexA(col,0.16);ctx.fill();
+  ctx.beginPath();ctx.arc(V.x,V.y,r,a1,a1+d,acw);
+  ctx.lineWidth=active?3.6:2.6;ctx.strokeStyle=col;ctx.lineCap='round';ctx.stroke();
+  ctx.restore();
+}
+function rightMark(V,P,Q,col){
+  const u=nrm(sub(P,V)),v=nrm(sub(Q,V)),s=15;
+  const p1={x:V.x+u.x*s,y:V.y+u.y*s},p3={x:V.x+v.x*s,y:V.y+v.y*s},p2={x:p1.x+v.x*s,y:p1.y+v.y*s};
+  ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.lineTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.closePath();
+  ctx.fillStyle=hexA(col,0.18);ctx.fill();
+  ctx.strokeStyle=col;ctx.lineWidth=2.6;ctx.lineJoin='round';
+  ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.stroke();
+}
+function tickMark(p,q,n,col){
+  const mx=(p.x+q.x)/2,my=(p.y+q.y)/2; let dx=q.x-p.x,dy=q.y-p.y;const L=Math.hypot(dx,dy)||1;dx/=L;dy/=L;
+  const nx=-dy,ny=dx;
+  for(let i=0;i<n;i++){const off=(i-(n-1)/2)*5,cx=mx+dx*off,cy=my+dy*off;
+    ctx.beginPath();ctx.moveTo(cx-nx*5,cy-ny*5);ctx.lineTo(cx+nx*5,cy+ny*5);ctx.strokeStyle=col||COL.DARK;ctx.lineWidth=2;ctx.stroke();}
+}
+function sideLabel(P,Q,away,txt,col,size){
+  const mx=(P.x+Q.x)/2,my=(P.y+Q.y)/2; let nx=-(Q.y-P.y),ny=(Q.x-P.x);
+  const m=Math.hypot(nx,ny)||1; nx/=m;ny/=m;
+  if((mx+nx-away.x)**2+(my+ny-away.y)**2 < (mx-nx-away.x)**2+(my-ny-away.y)**2){nx=-nx;ny=-ny;}
+  lab(mx+nx*20,my+ny*20,txt,col,size||12.5);
+}
+function bisCC(V,P,Q){const a1=Math.atan2(P.y-V.y,P.x-V.x),a2=Math.atan2(Q.y-V.y,Q.x-V.x);let d=a2-a1;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;return a1+d/2;}
+function angLab(V,P,Q,txt,col,rr,size){const b=bisCC(V,P,Q);lab(V.x+Math.cos(b)*rr,V.y+Math.sin(b)*rr,txt,col,size||12);}
+
+/* прямоугольный треугольник: прямой угол в C (cx,cy), горизонтальный катет CB длиной lh вправо,
+   вертикальный катет CA длиной lv вверх, гипотенуза AB */
+function rtTri(cx,cy,lh,lv){return {C:{x:cx,y:cy},B:{x:cx+lh,y:cy},A:{x:cx,y:cy-lv}};}
+function paintTri(t,o){
+  o=o||{};
+  const lc=o.legCol||COL.DARK, hc=o.hypCol||COL.HYP, lw=o.lw||2.8;
+  seg(t.C,t.B,lc,lw); seg(t.C,t.A,lc,lw); seg(t.A,t.B,hc,3);
+  if(o.right!==false) rightMark(t.C,t.B,t.A,COL.C);
+  if(o.tH) tickMark(t.C,t.B,o.tH,COL.DARK);
+  if(o.tV) tickMark(t.C,t.A,o.tV,COL.DARK);
+  if(o.tHyp) tickMark(t.A,t.B,o.tHyp,COL.HYP);
+  if(o.angB){ drawAngle(t.B,t.A,t.C,COL.B,true,false,20); }
+  if(o.angA){ drawAngle(t.A,t.C,t.B,COL.A,true,false,20); }
+  if(o.labels){
+    dot(t.A.x,t.A.y,4,COL.A);dot(t.B.x,t.B.y,4,COL.B);dot(t.C.x,t.C.y,4,COL.C);
+    lab(t.A.x-13,t.A.y-4,o.labels.A,COL.A,15);
+    lab(t.B.x+14,t.B.y+14,o.labels.B,COL.B,15);
+    lab(t.C.x-13,t.C.y+15,o.labels.C,COL.C,15);
+  }
+}
+function sign(a,b,c){return (a.x-c.x)*(b.y-c.y)-(b.x-c.x)*(a.y-c.y);}
+function ptInTri(p,a,b,c){const d1=sign(p,a,b),d2=sign(p,b,c),d3=sign(p,c,a);const hn=(d1<0)||(d2<0)||(d3<0),hp=(d1>0)||(d2>0)||(d3>0);return !(hn&&hp);}
+
+/* ───────── ФАЗЫ ───────── */
+const NM=['intro','overlay','recog','apply'];
+const TOTAL=NM.length;
+let ph=0, results=[], mistakes=0, hints=0, phaseSolved=false, mode=null;
+let horText='', horCol=COL.DARK;
+
+/* intro — один вопрос «сколько элементов» */
+const INTRO=[{
+  task:'Слева и справа — прямоугольные треугольники. У обоих один угол <b>прямой</b> (90°), а любые два прямых угла равны — значит этот элемент у них уже совпал, его задавать не нужно. <b>Сколько ещё элементов</b> надо задать, чтобы прямоугольные треугольники были равны?',
+  info:'Вспомни: обычному треугольнику для равенства нужно три элемента (три признака главы II).',
+  hor:'прямой угол уже совпал — сколько осталось?',
+  ok:'Два элемента',
+  opts:['Два элемента','Три элемента','Один элемент'],
+  diag:{'Три элемента':'Три нужно обычному треугольнику. Но прямой угол здесь уже есть и всегда равен 90° — он и работает третьим элементом. Остаётся задать два.',
+        'Один элемент':'Одного мало: например, по одной гипотенузе найдётся сколько угодно разных прямоугольных треугольников. Нужно ещё два элемента.'}
+}];
+
+/* recog — узнаём признак (3 шага) */
+let recogStep=0;
+const RECOG=[
+  { fig:'leg',
+    task:'Дано: <b>катет</b> и прилежащий к нему <b>острый угол</b> (подсвечены). По какому признаку равны такие прямоугольные треугольники?',
+    info:'Катет — это сторона. Посмотри, какие углы лежат на её концах.',
+    hor:'катет, а при нём — острый и прямой угол',
+    ok:'По второму признаку (сторона и два прилежащих угла)',
+    okMsg:'Верно — это второй признак.',
+    opts:['По второму признаку (сторона и два прилежащих угла)','По первому признаку (две стороны и угол между ними)','По третьему признаку (три стороны)','Данных не хватает'],
+    diag:{'По первому признаку (две стороны и угол между ними)':'Дана одна сторона (катет), второй нет. Зато на концах катета два угла — данный острый и прямой. Сторона и два прилежащих угла — это второй признак.',
+          'По третьему признаку (три стороны)':'Третий признак — по трём сторонам. Здесь сторона всего одна. А вот два угла при ней есть — это второй признак.',
+          'Данных не хватает':'Хватает: сторона (катет) и два прилежащих к ней угла — острый и прямой. Это второй признак.'} },
+  { fig:'hypFind',
+    task:'Дано: <b>гипотенуза</b> и один <b>острый угол</b>. Чтобы свести к признаку, нужны оба угла при гипотенузе. <b>Где взять второй</b> — при другом её конце?',
+    info:'Сумма острых углов прямоугольного треугольника равна 90° (свойство 1°).',
+    hor:'второй острый угол = 90° − данный',
+    ok:'Он равен 90° − данному острому (свойство 1°)',
+    okMsg:'Верно — по свойству 1°.',
+    opts:['Он равен 90° − данному острому (свойство 1°)','Он тоже равен данному острому','Его узнать нельзя'],
+    diag:{'Он тоже равен данному острому':'Острые углы равны только в равнобедренном прямоугольном (по 45°). В общем случае их сумма 90°, поэтому второй = 90° − данного.',
+          'Его узнать нельзя':'Можно: острые углы в сумме дают 90° (свойство 1°), значит второй = 90° − данного.'} },
+  { fig:'hypBoth',
+    task:'Теперь при гипотенузе известны <b>оба</b> угла: данный острый и (90° − он). По какому признаку равны треугольники?',
+    info:'Гипотенуза — сторона; при ней теперь два известных угла.',
+    hor:'гипотенуза и два угла при ней → второй признак',
+    ok:'По второму признаку (сторона и два прилежащих угла)',
+    okMsg:'Верно — снова второй признак.',
+    opts:['По второму признаку (сторона и два прилежащих угла)','По первому признаку (две стороны и угол между ними)','Данных не хватает'],
+    diag:{'По первому признаку (две стороны и угол между ними)':'Сторона дана одна — гипотенуза. Но при ней известны два угла, значит работает второй признак, а не первый.',
+          'Данных не хватает':'Хватает: сторона (гипотенуза) и два прилежащих к ней угла. Это второй признак.'} }
+];
+
+/* apply — хватит ли данных (5 пар, честные фигуры) */
+const APPLY=[
+  {given:'равны оба <b>катета</b> (попарно).',
+   q:'Равны ли треугольники? Если да — по какому признаку?',
+   ans:'Равны — по двум катетам (первый признак)',
+   opts:['Равны — по двум катетам (первый признак)','Равны — по гипотенузе и катету','Данных не хватает'],
+   diag:{'Равны — по гипотенузе и катету':'Здесь даны два катета, а не гипотенуза с катетом. Два катета и прямой угол между ними — это первый признак.',
+         'Данных не хватает':'Хватает: два катета и прямой угол между ними — первый признак.'}},
+  {given:'равны один <b>катет</b> и прилежащий к нему <b>острый угол</b>.',
+   q:'Равны ли треугольники? Если да — по какому признаку?',
+   ans:'Равны — по катету и острому углу (второй признак)',
+   opts:['Равны — по катету и острому углу (второй признак)','Равны — по двум катетам','Данных не хватает'],
+   diag:{'Равны — по двум катетам':'Дан только один катет. Зато при нём острый и прямой углы — это второй признак (по катету и острому углу).',
+         'Данных не хватает':'Хватает: катет и два прилежащих угла (острый + прямой) — второй признак.'}},
+  {given:'равны <b>гипотенуза</b> и один <b>острый угол</b>.',
+   q:'Равны ли треугольники? Если да — по какому признаку?',
+   ans:'Равны — по гипотенузе и острому углу (второй признак)',
+   opts:['Равны — по гипотенузе и острому углу (второй признак)','Данных не хватает: одна гипотенуза формы не задаёт','Равны — по двум катетам'],
+   diag:{'Данных не хватает: одна гипотенуза формы не задаёт':'Одной гипотенузы и правда мало, но здесь дан ещё острый угол, а второй острый = 90° − он. Сторона и два угла при ней → второй признак.',
+         'Равны — по двум катетам':'Катеты не отмечены. Дана гипотенуза и острый угол → второй признак.'}},
+  {given:'равны <b>два острых угла</b> — и больше ничего, ни одной стороны.',
+   q:'Равны ли эти треугольники?',
+   ans:'Нет: по двум углам форма та же, а размер любой',
+   opts:['Нет: по двум углам форма та же, а размер любой','Да — по двум острым углам','Да — по второму признаку'],
+   diag:{'Да — по двум острым углам':'По двум углам треугольники только подобны: можно растянуть — углы не изменятся. Для равенства нужна хотя бы одна сторона.',
+         'Да — по второму признаку':'Второй признак требует сторону и два угла при ней. Стороны тут нет ни одной — только углы, размер не закреплён.'}},
+  {given:'равны только <b>гипотенузы</b> (катеты и углы не отмечены).',
+   q:'Равны ли эти треугольники?',
+   ans:'Нет: одной стороны мало, форма не закреплена',
+   opts:['Нет: одной стороны мало, форма не закреплена','Да — по равным гипотенузам','Да — по гипотенузе и катету'],
+   diag:{'Да — по равным гипотенузам':'Одна сторона форму не задаёт: при той же гипотенузе прямой угол можно поставить в разных местах — получатся разные треугольники.',
+         'Да — по гипотенузе и катету':'Катет не отмечен, дана только гипотенуза. Гипотенузы с катетом тут нет — этот случай разберём дальше.'}}
+];
+let applyIdx=0, applyResolved=false;
+
+/* геометрия пар для apply (чистая — используется и отрисовкой, и проверкой) */
+function applyTris(i){
+  if(i===0)return{t1:rtTri(80,300,150,150), t2:rtTri(370,300,150,150), o1:{tH:1,tV:2}, o2:{tH:1,tV:2}};
+  if(i===1)return{t1:rtTri(80,300,165,120), t2:rtTri(370,300,165,120), o1:{tH:1,angB:1}, o2:{tH:1,angB:1}};
+  if(i===2)return{t1:rtTri(80,300,150,128), t2:rtTri(370,300,150,128), o1:{tHyp:1,angB:1}, o2:{tHyp:1,angB:1}};
+  if(i===3)return{t1:rtTri(95,300,104,116), t2:rtTri(360,300,150,168), o1:{angA:1,angB:1}, o2:{angA:1,angB:1}};
+  const lv2=Math.sqrt(40000-70*70); // гипотенуза 200 у обоих, но катеты разные → не равны
+  return{t1:rtTri(95,300,120,160), t2:rtTri(360,300,70,lv2), o1:{tHyp:1}, o2:{tHyp:1}};
+}
+
+/* ───────── НАЛОЖЕНИЕ (overlay) ───────── */
+const OVT=rtTri(120,300,150,150);
+let ov={dx:300,dy:36,snapped:false}, grab={};
+function movTri(){return {A:{x:OVT.A.x+ov.dx,y:OVT.A.y+ov.dy},B:{x:OVT.B.x+ov.dx,y:OVT.B.y+ov.dy},C:{x:OVT.C.x+ov.dx,y:OVT.C.y+ov.dy}};}
+function overlayCheck(){ if(!ov.snapped && Math.hypot(ov.dx,ov.dy)<18) overlaySnap(); }
+function overlaySnap(){
+  ov.dx=0; ov.dy=0; ov.snapped=true; log('found',{what:'overlay'});
+  horText='совпали: две стороны и угол между ними'; horCol=COL.G;
+  setMsg('Совпали целиком. Равные катеты и прямой угол между ними не дали треугольникам разойтись.','ok');
+  succeedPhase('Совместились наложением: у треугольников равны <b>два катета</b> и <b>угол между ними</b>, а угол между катетами прямой. Это наш <b>первый признак</b> (две стороны и угол между ними). Значит: равные катеты ⟹ равные прямоугольные треугольники.');
+}
+
+/* ───────── ОТРИСОВКА ───────── */
+function drawIntro(){
+  const t1=rtTri(95,300,150,158), t2=rtTri(395,300,150,158);
+  paintTri(t1,{labels:{A:'A',B:'B',C:'C'}});
+  paintTri(t2,{labels:{A:'A₁',B:'B₁',C:'C₁'}});
+  const sc=1+0.10*Math.sin(Date.now()/300);
+  angLab(t1.C,t1.B,t1.A,'90°',COL.C,30,13*sc);
+  angLab(t2.C,t2.B,t2.A,'90°',COL.C,30,13*sc);
+  lab(W/2,66,'90° = 90°',COL.C,18);
+  lab(W/2,92,'прямой угол у обоих уже совпал — его задавать не нужно',COL.GREY,11.5);
+}
+function drawOverlay(){
+  const T=OVT;
+  if(ov.snapped){
+    seg(T.C,T.B,COL.DARK,4.4); seg(T.C,T.A,COL.DARK,4.4); seg(T.A,T.B,COL.HYP,3.2);
+    rightMark(T.C,T.B,T.A,COL.C);
+    drawAngle(T.C,T.B,T.A,COL.C,true,false,24);
+    tickMark(T.C,T.B,1,COL.DARK); tickMark(T.C,T.A,2,COL.DARK);
+    dot(T.A.x,T.A.y,4,COL.A);dot(T.B.x,T.B.y,4,COL.B);dot(T.C.x,T.C.y,4,COL.C);
+    lab(T.A.x-13,T.A.y-4,'A',COL.A,15);lab(T.B.x+14,T.B.y+14,'B',COL.B,15);lab(T.C.x-13,T.C.y+15,'C',COL.C,15);
+    lab((T.C.x+T.B.x)/2,T.C.y+19,'катет',COL.DARK,12);
+    lab(T.C.x-28,(T.C.y+T.A.y)/2,'катет',COL.DARK,12);
+    lab(T.C.x+58,T.C.y-40,'угол между ними',COL.C,11.5);
+  } else {
+    paintTri(T,{labels:{A:'A',B:'B',C:'C'}, tH:1, tV:2});
+    const m=movTri();
+    ctx.beginPath();ctx.moveTo(m.A.x,m.A.y);ctx.lineTo(m.B.x,m.B.y);ctx.lineTo(m.C.x,m.C.y);ctx.closePath();
+    ctx.fillStyle=hexA(COL.MED,0.10);ctx.fill();
+    seg(m.C,m.B,COL.MED,2.8); seg(m.C,m.A,COL.MED,2.8); seg(m.A,m.B,COL.MED,3);
+    rightMark(m.C,m.B,m.A,COL.C);
+    tickMark(m.C,m.B,1,COL.DARK); tickMark(m.C,m.A,2,COL.DARK);
+    dot(m.A.x,m.A.y,4,COL.A);dot(m.B.x,m.B.y,4,COL.B);dot(m.C.x,m.C.y,4,COL.C);
+    lab(m.A.x-14,m.A.y-4,'A₁',COL.A,15);lab(m.B.x+16,m.B.y+14,'B₁',COL.B,15);lab(m.C.x-15,m.C.y+15,'C₁',COL.C,15);
+    lab((m.A.x+m.B.x+m.C.x)/3,(m.A.y+m.B.y+m.C.y)/3,'тяни',COL.MED,13);
+  }
+}
+function drawRecog(){
+  const T=rtTri(245,310,210,200);
+  seg(T.C,T.B,COL.DARK,2.8); seg(T.C,T.A,COL.DARK,2.8); seg(T.A,T.B,COL.HYP,3);
+  rightMark(T.C,T.B,T.A,COL.C);
+  dot(T.A.x,T.A.y,4,COL.A);dot(T.B.x,T.B.y,4,COL.B);dot(T.C.x,T.C.y,4,COL.C);
+  lab(T.A.x-14,T.A.y-4,'A',COL.A,15);lab(T.B.x+15,T.B.y+15,'B',COL.B,15);lab(T.C.x-15,T.C.y+16,'C',COL.C,15);
+  const fig=RECOG[recogStep].fig;
+  if(fig==='leg'){
+    seg(T.C,T.B,COL.MED,5);
+    sideLabel(T.C,T.B,T.A,'катет',COL.MED,13);
+    drawAngle(T.B,T.A,T.C,COL.B,true,false,28); angLab(T.B,T.A,T.C,'острый',COL.B,52,11);
+    angLab(T.C,T.B,T.A,'90°',COL.C,30,11);
+  } else if(fig==='hypFind'){
+    seg(T.A,T.B,COL.HYP,4.6);
+    sideLabel(T.A,T.B,T.C,'гипотенуза',COL.HYP,13);
+    drawAngle(T.B,T.A,T.C,COL.B,true,false,28); angLab(T.B,T.A,T.C,'дано',COL.B,50,11);
+    drawAngle(T.A,T.C,T.B,COL.A,false,true,26); angLab(T.A,T.C,T.B,'?',COL.A,40,15);
+  } else {
+    seg(T.A,T.B,COL.HYP,4.6);
+    sideLabel(T.A,T.B,T.C,'гипотенуза',COL.HYP,13);
+    drawAngle(T.B,T.A,T.C,COL.B,true,false,28); angLab(T.B,T.A,T.C,'∠',COL.B,46,12);
+    drawAngle(T.A,T.C,T.B,COL.A,true,false,26); angLab(T.A,T.C,T.B,'90°−∠',COL.A,46,11);
+  }
+}
+function drawApplyFig(){
+  const g=applyTris(applyIdx);
+  paintTri(g.t1,{...g.o1, labels:{A:'A',B:'B',C:'C'}});
+  paintTri(g.t2,{...g.o2, labels:{A:'A₁',B:'B₁',C:'C₁'}});
+}
+function drawHor(){ if(horText) lab(W/2,H-15,horText,horCol,14); }
+function draw(){
+  bg();
+  const k=NM[ph];
+  if(k==='intro')drawIntro();
+  else if(k==='overlay')drawOverlay();
+  else if(k==='recog')drawRecog();
+  else if(k==='apply')drawApplyFig();
+  drawHor();
+}
+
+/* ───────── ОБЩИЕ ───────── */
+function renderOpts(list){
+  const box=document.getElementById('opts');box.innerHTML='';
+  list.forEach(o=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML=o.t;b.addEventListener('click',()=>o.fn(b));box.appendChild(b);});
+}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+function markPick(btn,ok){if(btn&&btn.classList)btn.classList.add(ok?'ok-pick':'bad-pick')}
+function shakeBtn(btn){if(btn&&btn.classList){btn.classList.add('shake');setTimeout(()=>btn.classList.remove('shake'),450);}}
+function revealCorrect(label){[...document.getElementById('opts').children].forEach(b=>{if(b.textContent.trim()===label)b.classList.add('correct-reveal')})}
+function lockOpts(){[...document.getElementById('opts').children].forEach(b=>b.disabled=true)}
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function pushResult(){results.push(mistakes===0&&hints===0?'g':(mistakes<=1&&hints<=1?'y':'r'))}
+function succeedPhase(proofTxt){
+  if(phaseSolved)return; phaseSolved=true; pushResult();
+  log('solved',{mistakes,hints});
+  const sb=document.getElementById('successBar');sb.textContent='✓ Готово!';sb.style.display='block';
+  document.getElementById('hintbox').style.display='none';
+  if(proofTxt){const pr=document.getElementById('proof');pr.innerHTML='<b>Вывод.</b> '+proofTxt;pr.style.display='block';}
+  const nb=document.getElementById('nextBtn');nb.textContent=(ph<TOTAL-1)?'Следующая →':'Завершить →';nb.style.display='inline-block';
+}
+function renderStep(arr,idx,picker){
+  const s=arr[idx];
+  document.getElementById('taskText').innerHTML=s.task;
+  renderOpts(shuffle(s.opts.map(o=>({t:o, fn:b=>picker(o,b)}))));
+  setMsg(s.info,'info');
+  horText=s.hor; horCol=COL.DARK;
+}
+
+/* ───────── ФАЗА intro ───────── */
+function setupIntro(){ renderStep(INTRO,0,introPick); }
+function introPick(label,btn){
+  if(phaseSolved)return;
+  const s=INTRO[0];
+  if(label===s.ok){ markPick(btn,true); lockOpts(); log('step',{q:'intro'});
+    horText='прямой угол есть даром → хватает двух'; horCol=COL.G; setMsg('Верно.','ok');
+    succeedPhase('Прямой угол есть у обоих и всегда равен 90° — это «бесплатный» третий элемент. Поэтому прямоугольному треугольнику для равенства хватает не трёх элементов, а <b>двух</b>. Дальше — какие пары из двух работают.'); }
+  else { mistakes++; log('distractor',{q:'intro',pick:label}); shakeBtn(btn); markPick(btn,false); revealCorrect(s.ok);
+    setMsg((s.diag[label]||'Не так.')+' Нажми верный ответ.','err'); }
+}
+
+/* ───────── ФАЗА overlay ───────── */
+function setupOverlay(){
+  ov={dx:300,dy:36,snapped:false};
+  document.getElementById('taskText').innerHTML='Два прямоугольных треугольника, у которых <b>катеты попарно равны</b> (засечки). Возьми второй треугольник и <b>надвинь</b> его на первый — проверь, совпадут ли они целиком.';
+  setMsg('Тяни второй треугольник на первый. Прямой угол лежит между катетами.','info');
+  horText='надвинь второй треугольник на первый'; horCol=COL.DARK;
+}
+
+/* ───────── ФАЗА recog ───────── */
+function setupRecog(){ recogStep=0; renderStep(RECOG,recogStep,recogPick); }
+function recogPick(label,btn){
+  if(phaseSolved)return;
+  const s=RECOG[recogStep];
+  if(label===s.ok){
+    markPick(btn,true); lockOpts(); log('step',{q:'recog',step:recogStep});
+    if(recogStep<RECOG.length-1){ setMsg(s.okMsg||'Верно.','ok'); recogStep++; renderStep(RECOG,recogStep,recogPick); }
+    else { horText='катет+угол и гипотенуза+угол → второй признак'; horCol=COL.G; setMsg('Верно.','ok');
+      succeedPhase('Оба «угловых» случая свелись ко <b>второму признаку</b> (сторона и два прилежащих к ней угла). Катет: при нём острый и прямой углы. Гипотенуза: один острый дан, второй берём как 90° − ∠ по свойству 1° — и снова два угла при стороне.'); }
+  } else { mistakes++; log('distractor',{q:'recog',step:recogStep,pick:label}); markPick(btn,false); revealCorrect(s.ok);
+    setMsg((s.diag[label]||'Не так.')+' Нажми верный ответ.','err'); }
+}
+
+/* ───────── ФАЗА apply ───────── */
+function setupApply(){ document.getElementById('givenCard').style.display='block'; applyIdx=0; showApplyRound(); }
+function showApplyRound(){
+  applyResolved=false;
+  const r=APPLY[applyIdx];
+  document.getElementById('givenBox').innerHTML='<b>Пара '+(applyIdx+1)+' из '+APPLY.length+'.</b> Дано: '+r.given;
+  document.getElementById('taskText').innerHTML=r.q;
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('proof').style.display='none';
+  renderOpts(shuffle(r.opts.map(o=>({t:o, fn:b=>applyPick(o,b)}))));
+  setMsg('Прямой угол есть всегда — посчитай, хватает ли остальных данных.','info');
+  horText='хватает ли данных для равенства?'; horCol=COL.DARK;
+}
+function applyPick(value,btn){
+  if(applyResolved)return;
+  const r=APPLY[applyIdx];
+  if(value!==r.ans){ mistakes++; log('distractor',{q:'apply',round:applyIdx,pick:value}); shakeBtn(btn); markPick(btn,false); revealCorrect(r.ans);
+    setMsg((r.diag[value]||'Не так.')+' Нажми верный ответ.','err'); return; }
+  applyResolved=true; markPick(btn,true); lockOpts(); log('step',{q:'apply',round:applyIdx});
+  setMsg('Верно.','ok');
+  if(applyIdx>=APPLY.length-1){ succeedPhase('Итог: два катета — первый признак; катет и острый угол, гипотенуза и острый угол — второй признак. Двух острых углов или одной гипотенузы не хватает — нужна сторона, задающая размер. Остался четвёртый случай — <b>гипотенуза и катет</b>: он тоже даёт равенство, но к первому/второму так просто не сводится и доказывается наложением. Им займёмся в следующем тренажёре.'); }
+  else { const nb=document.getElementById('nextBtn'); nb.textContent='Следующая пара →'; nb.style.display='inline-block'; horText='верно — дальше'; horCol=COL.G; }
+}
+
+/* ───────── ЖИЗНЕННЫЙ ЦИКЛ ───────── */
+function initPhase(i){
+  ph=i; phaseSolved=false; mode=null; mistakes=0; hints=0;
+  document.getElementById('pf').style.width=(i/TOTAL*100)+'%';
+  document.getElementById('pnum').textContent='Шаг '+(i+1)+' из '+TOTAL;
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('proof').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('gaugeCard').style.display='none';
+  document.getElementById('givenCard').style.display='none';
+  clearOpts();
+  const bd=document.getElementById('badge');
+  const k=NM[i];
+  if(k==='intro'){ bd.textContent='Сколько нужно?'; setupIntro(); }
+  else if(k==='overlay'){ bd.textContent='Надвинь до совмещения'; setupOverlay(); }
+  else if(k==='recog'){ bd.textContent='Какой признак?'; setupRecog(); }
+  else if(k==='apply'){ bd.textContent='Хватит ли данных?'; setupApply(); }
+  log('task_start',{});
+}
+function advance(){
+  if(NM[ph]==='apply' && applyResolved && applyIdx<APPLY.length-1){ applyIdx++; showApplyRound(); return; }
+  if(ph<TOTAL-1) initPhase(ph+1); else finish();
+}
+function resetTask(){ log('reset'); initPhase(ph); }
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{score:g});
+  const s=lS();s.runs=(s.runs||0)+1;if(g>(s.best||0))s.best=g;s.passed=true;sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent=g+' / '+TOTAL;
+  document.getElementById('finLbl').textContent = g===TOTAL?'Чисто! Три признака и идея «прямой угол даром» — в руках.':(g>=2?'Хорошо — главное ты собрал сам.':'Стоит пройти ещё раз.');
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){
+  ph=0; results=[]; recogStep=0; applyIdx=0; applyResolved=false; ov={dx:300,dy:36,snapped:false};
+  document.getElementById('fin').style.display='none';
+  document.getElementById('mainArea').style.display='grid';
+  document.getElementById('bar').style.display='flex';
+  initPhase(0);
+}
+function showHint(){
+  if(phaseSolved && NM[ph]!=='apply')return;
+  hints++; log('hint');
+  const hb=document.getElementById('hintbox');const k=NM[ph];let h='';
+  if(k==='intro') h='Прямой угол у обоих треугольников уже одинаков (90° = 90°), задавать его не нужно. Сколько элементов остаётся от трёх? Два.';
+  else if(k==='overlay') h='Тяни второй треугольник за корпус прямо на первый, пока прямые углы и катеты не лягут друг на друга. Равные катеты и прямой угол между ними не дадут им разойтись.';
+  else if(k==='recog'){ const hh=['Катет — это сторона. На её концах два угла: данный острый и прямой (он всегда тут). Сторона и два прилежащих угла — второй признак.','Острые углы прямоугольного треугольника в сумме дают 90° (свойство 1°). Значит второй острый = 90° − данного.','У гипотенузы теперь известны оба угла. Сторона и два угла при ней — это второй признак.']; h=hh[recogStep]||hh[0]; }
+  else h='Прямой угол есть всегда. Проверь: дана ли хотя бы одна сторона? Без стороны (только углы) размер не закреплён; одной гипотенузы тоже мало — нужен ещё элемент.';
+  hb.innerHTML='💡 '+h;hb.style.display='block';
+}
+
+/* ───────── ПЕРЕТАСКИВАНИЕ (overlay) ───────── */
+function pos(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+cv.addEventListener('pointerdown',e=>{
+  if(NM[ph]!=='overlay'||phaseSolved||ov.snapped)return;
+  const p=pos(e), m=movTri();
+  if(ptInTri(p,m.A,m.B,m.C)){ mode='dragOv'; grab.gx=p.x; grab.gy=p.y; grab.ox=ov.dx; grab.oy=ov.dy; try{cv.setPointerCapture(e.pointerId)}catch(_){}}
+});
+cv.addEventListener('pointermove',e=>{if(mode==='dragOv')dragOverlay(pos(e))});
+['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,e=>{mode=null;try{cv.releasePointerCapture(e.pointerId)}catch(_){}}));
+function dragOverlay(p){
+  if(phaseSolved||ov.snapped)return;
+  ov.dx=clamp(grab.ox+(p.x-grab.gx),-40,360);
+  ov.dy=clamp(grab.oy+(p.y-grab.gy),-110,120);
+  overlayCheck();
+}
+
+/* ───────── СТАРТ ───────── */
+initPhase(0);
+(function loop(){draw();requestAnimationFrame(loop)})();
+</script>
+</body>
+</html>

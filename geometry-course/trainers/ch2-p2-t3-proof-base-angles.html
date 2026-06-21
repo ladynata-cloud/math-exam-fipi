@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Углы при основании равны · доказательство</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1px solid #e5e2d9;border-radius:13px;padding:13px 14px;background:#fdfcf8}
+.card h2{margin:0 0 9px;font-size:12.5px;text-transform:uppercase;letter-spacing:.07em;color:#64748b;font-weight:800}
+.given{background:#eef6ff;border-color:#bcd9f5}
+.given h2{color:#235a92}
+.given .row{font-size:13px;line-height:1.5;color:#1f2937}
+.given b{color:#0c447c}
+.pool{display:flex;flex-direction:column;gap:8px}
+.pcard{text-align:left;border:1.5px solid #d1d5db;border-radius:11px;background:#fff;padding:11px 13px;font:600 13px/1.5 system-ui;color:#1f2937;cursor:pointer;width:100%}
+.pcard:hover{border-color:#2d70b3;background:#f0f7ff}
+.pcard.dead{opacity:.5;text-decoration:line-through;pointer-events:none;background:#fef2f2;border-color:#fecaca}
+.pcard.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.chain{display:flex;flex-direction:column;gap:6px}
+.chitem{font-size:12.5px;line-height:1.45;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:9px;padding:8px 10px;color:#14532d}
+.chitem b{color:#166534}
+.chnum{display:inline-block;min-width:18px;font-weight:900;color:#16a34a}
+.msg{border-radius:11px;padding:11px 13px;font-size:13.5px;line-height:1.5;display:none}
+.msg.show{display:block}
+.msg.info{background:#eff6ff;color:#1d4ed8}
+.msg.ok{background:#f0fdf4;color:#15803d}
+.msg.err{background:#fef2f2;color:#b91c1c}
+.msg.warn{background:#fff7ed;color:#9a3412}
+.bar{display:flex;gap:9px;padding:13px 16px;background:#f3f0e8;border-top:1px solid #e5e2d9;flex-wrap:wrap;align-items:center}
+.bar button{border:0;border-radius:10px;padding:10px 15px;font-size:13.5px;font-weight:800;cursor:pointer;background:#e2e8f0;color:#334155}
+.bar button:hover{background:#cbd5e1}
+.bar .next{margin-left:auto;background:#16a34a;color:#fff;display:none}
+.bar .next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.law{max-width:600px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14.5px;line-height:1.6;color:#14532d}
+.law b{color:#166534}
+.law .bridge{margin-top:12px;padding-top:11px;border-top:1px dashed #bbf7d0;font-style:italic}
+@media(max-width:820px){
+  body{padding:8px}
+  .main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}
+  .side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">📐 Углы при основании равны</div>
+      <div class="sub">Глава II · §2 · тренажёр 3 — соберите доказательство</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge">Первый признак</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="430"></canvas>
+    </div>
+    <aside class="side">
+      <div class="card given">
+        <h2>Дано / Доказать</h2>
+        <div class="row"><b>Дано:</b> △ABC, AB = AC (равнобедренный, основание BC).<br><b>Доказать:</b> ∠B = ∠C.<br><b>Построение:</b> AD — биссектриса угла A.</div>
+      </div>
+      <div class="card">
+        <h2 id="poolTtl">Какой шаг следующий? Нажмите карточку</h2>
+        <div class="pool" id="pool"></div>
+      </div>
+      <div class="card" id="chainCard" style="display:none">
+        <h2>Доказательство</h2>
+        <div class="chain" id="chain"></div>
+      </div>
+      <div id="msg" class="msg"></div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl">шаг за шагом, без ошибок</div>
+    <div class="law" id="lawBox"></div>
+    <button class="next" style="background:#1a1a2e;color:#fff;display:block;margin:0 auto;border:0;border-radius:10px;padding:11px 18px;font-weight:800;cursor:pointer" onclick="restart()">Собрать ещё раз</button>
+  </div>
+
+  <div class="bar" id="bar">
+    <button onclick="showHint()">💡 Подсказка</button>
+    <button onclick="restart()">↺ Сначала</button>
+    <button class="next" id="nextBtn" onclick="finish()">Итоги →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС И ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch2-p2-t3-proof-base-angles';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── КАРТОЧКИ ДОКАЗАТЕЛЬСТВА ─────────
+   need — зависимости (какие шаги должны быть до). distract — ловушка. */
+const CARDS=[
+ {id:'build', need:[],
+  txt:'Проведём биссектрису AD угла A (D — точка на основании BC).',
+  early:'',
+  ok:'Биссектриса AD проведена — она разбила △ABC на два треугольника: ABD и ACD.',
+  short:'Проводим биссектрису AD'},
+ {id:'sides', need:['build'],
+  txt:'AB = AC — по условию (треугольник равнобедренный).',
+  early:'Сначала проведём биссектрису AD — иначе не из чего составить треугольники ABD и ACD.',
+  ok:'AB = AC дано — это первая пара равных сторон для первого признака.',
+  short:'AB = AC (по условию)'},
+ {id:'common', need:['build'],
+  txt:'AD — общая сторона треугольников ABD и ACD.',
+  early:'Сначала проведём биссектрису AD — тогда появится общая сторона.',
+  ok:'AD общая — вторая пара равных сторон (сторона сама себе равна).',
+  short:'AD — общая сторона'},
+ {id:'bisangle', need:['build'],
+  txt:'∠BAD = ∠CAD, так как AD — биссектриса угла A.',
+  early:'Сначала проведём биссектрису AD — это её свойство.',
+  ok:'∠BAD = ∠CAD — угол между равными сторонами AB,AD и AC,AD. Это угол МЕЖДУ.',
+  short:'∠BAD = ∠CAD (AD — биссектриса)'},
+ {id:'sas', need:['sides','common','bisangle'],
+  txt:'△ABD = △ACD по первому признаку (две стороны и угол между ними).',
+  early:'Для первого признака нужны обе пары сторон (AB=AC, AD общая) и угол между ними (∠BAD=∠CAD). Соберите сначала их.',
+  ok:'Две стороны и угол между ними совпали — треугольники равны по первому признаку.',
+  short:'△ABD = △ACD (первый признак)'},
+ {id:'fin', need:['sas'],
+  txt:'∠B = ∠C — это соответствующие углы равных треугольников ABD и ACD.',
+  early:'Сначала докажите равенство треугольников — равные углы появятся как его следствие.',
+  ok:'В равных треугольниках против равных сторон лежат равные углы: ∠B = ∠C. Что и требовалось.',
+  short:'∠B = ∠C (соответствующие углы)'},
+ // ── ловушки ──
+ {id:'dMeasure', distract:'Не доказательство: в геометрии равенство не проверяют транспортиром. Нужно вывести ∠B = ∠C рассуждением, а не измерением.',
+  txt:'Измерим транспортиром: ∠B = ∠C.'},
+ {id:'dTwoAng', distract:'Так нельзя: равенства углов B и C у нас ещё нет — это как раз то, что доказываем. Рассуждать «по двум углам» здесь — ходить по кругу.',
+  txt:'∠B = ∠C, значит треугольники равны по стороне и двум углам.'},
+ {id:'dMid', distract:'Рано и не дано: что D — середина BC (BD = DC), мы НЕ знаем заранее. Это следствие, которое докажем потом (в теореме о биссектрисе-медиане), а не посылка.',
+  txt:'BD = DC, поэтому треугольники ABD и ACD равны.'}
+];
+const PROOF=['build','sides','common','bisangle','sas','fin'];   // верный порядок зависимостей
+
+/* ───────── ГЕОМЕТРИЯ ───────── */
+const A={x:320,y:120}, B={x:170,y:330}, C={x:470,y:330};
+const D={x:(B.x+C.x)/2, y:330};      // основание биссектрисы (= середина, к основанию)
+
+/* ───────── СОСТОЯНИЕ ───────── */
+let order=[], done=[], dead=[], mistakes=0, hintUsed=false;
+let lastStep=null;
+let fx={};                            // времена вспышек элементов: sides, bisangle, sas, fin
+let overlayP=0, overlayAnim=null;     // анимация наложения △ACD на △ABD
+
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+let W=640,H=430;
+(function dpr(){const r=Math.min(window.devicePixelRatio||1,2);cv.width=W*r;cv.height=H*r;ctx.scale(r,r);cv.style.width='100%';})();
+
+function has(id){return done.includes(id);}
+function flash(t){return t?Math.max(0,1-(Date.now()-t)/650):0;}
+function breathe(){return 0.5+0.5*Math.sin(Date.now()/520);}
+
+/* ───────── ОТРИСОВКА ───────── */
+function bg(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill();}
+}
+function lab(p,txt,col,dx,dy,size){
+  ctx.font='900 '+(size||16)+'px system-ui';ctx.textAlign='center';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(250,248,242,.95)';ctx.strokeText(txt,p.x+dx,p.y+dy);
+  ctx.fillStyle=col;ctx.fillText(txt,p.x+dx,p.y+dy);
+}
+function dot(p,col,r){ctx.beginPath();ctx.arc(p.x,p.y,r||4.6,0,7);ctx.fillStyle=col;ctx.fill();}
+function seg(p,q,col,lw){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=col;ctx.lineWidth=lw||2.8;ctx.stroke();}
+function tick(p,q,n,col){
+  const mx=(p.x+q.x)/2,my=(p.y+q.y)/2;let dx=q.x-p.x,dy=q.y-p.y,L=Math.hypot(dx,dy);dx/=L;dy/=L;
+  const nx=-dy,ny=dx;
+  for(let i=0;i<n;i++){const o=(i-(n-1)/2)*6;const cx=mx+dx*o,cy=my+dy*o;
+    ctx.beginPath();ctx.moveTo(cx-nx*7,cy-ny*7);ctx.lineTo(cx+nx*7,cy+ny*7);ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.stroke();}
+}
+function arcN(v,p1,p2,col,n,r0){
+  for(let i=0;i<n;i++){let a1=Math.atan2(p1.y-v.y,p1.x-v.x),a2=Math.atan2(p2.y-v.y,p2.x-v.x);
+    let d=a2-a1;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;
+    ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.beginPath();ctx.arc(v.x,v.y,(r0||20)+i*5,a1,a1+d,d<0);ctx.stroke();}
+}
+
+function draw(){
+  bg();
+  const showD = has('build');
+
+  // основной треугольник ABC
+  seg(A,B,'#1a1a2e',2.8);seg(A,C,'#1a1a2e',2.8);seg(B,C,'#1a1a2e',2.8);
+
+  // равные боковые AB, AC (вспышка/подсветка после шага sides)
+  if(has('sides')){
+    const f=flash(fx.sides), g=f>0.02?0.6+0.4*f:(lastStep==='sides'?0.4+0.3*breathe():0.5);
+    tick(A,B,1,'#0c447c');tick(A,C,1,'#0c447c');
+    if(f>0.02){seg(A,B,'rgba(45,112,179,'+g+')',5);seg(A,C,'rgba(45,112,179,'+g+')',5);}
+  }
+
+  // биссектриса AD (после построения — общая сторона / биссектриса)
+  if(showD){
+    seg(A,D,'#7c3aed',2.6);
+    dot(D,'#7c3aed',4.4);lab(D,'D','#7c3aed',0,22,15);
+    // общая сторона AD — две засечки (отличны от боковых)
+    if(has('common')){tick(A,D,2,'#7c3aed');}
+    // равные половины угла A
+    if(has('bisangle')){
+      const f=flash(fx.bisangle);
+      arcN(A,B,D,'#d97706',1,18);arcN(A,D,C,'#d97706',1,24);
+      if(f>0.02){arcN(A,B,D,'rgba(217,119,6,'+(0.6+0.4*f)+')',1,18);arcN(A,D,C,'rgba(217,119,6,'+(0.6+0.4*f)+')',1,24);}
+    }
+  }
+
+  // наложение △ACD на △ABD (анимация при шаге sas)
+  if(has('sas') && overlayP>0){
+    // отражаем правый треугольник ACD на левый ABD относительно линии AD (вертикаль x=D.x)
+    const e=overlayP;
+    const mir=p=>({x:D.x-(p.x-D.x)*e + (p.x)*(1-e)*0, y:p.y});
+    // простая интерполяция C→B и (C side) к левому
+    const Cm={x:C.x+(B.x-C.x)*e, y:C.y+(B.y-C.y)*e};
+    ctx.save();ctx.globalAlpha=0.5;
+    seg(A,Cm,'#16a34a',3);seg(D,Cm,'#16a34a',3);
+    ctx.restore();
+    dot(Cm,'#16a34a',4);
+  }
+
+  // равенство ∠B=∠C (финал)
+  if(has('fin')){
+    const f=flash(fx.fin), g=f>0.02?0.7+0.3*f:0.55;
+    arcN(B,A,C,'#16a34a',2,16);arcN(C,A,B,'#16a34a',2,16);
+    if(f>0.02){
+      ctx.save();ctx.globalAlpha=g;arcN(B,A,C,'#16a34a',2,16);arcN(C,A,B,'#16a34a',2,16);ctx.restore();
+    }
+    lab({x:(B.x+C.x)/2,y:80},'∠B = ∠C','#16a34a',0,0,17);
+  }
+
+  // вершины и подписи
+  dot(A,'#1a1a2e');dot(B,'#1a1a2e');dot(C,'#1a1a2e');
+  lab(A,'A','#1a1a2e',0,-16);lab(B,'B','#1a1a2e',-15,10);lab(C,'C','#1a1a2e',15,10);
+}
+
+/* ───────── ВЗАИМОДЕЙСТВИЕ С КАРТОЧКАМИ ───────── */
+function el(id){return document.getElementById(id);}
+function setMsg(html,cls){const m=el('msg');m.className='msg show '+(cls||'info');m.innerHTML=html;}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+function renderPool(){
+  const pool=el('pool');pool.innerHTML='';
+  order.forEach(id=>{
+    if(done.includes(id))return;
+    const c=CARDS.find(x=>x.id===id);
+    const b=document.createElement('button');
+    b.className='pcard'+(dead.includes(id)?' dead':'');
+    b.innerHTML=c.txt;
+    b.onclick=()=>pick(id,b);
+    pool.appendChild(b);
+  });
+  if(order.every(id=>done.includes(id)||dead.includes(id)) && done.length<PROOF.length){
+    // остались только мёртвые — ничего
+  }
+}
+function renderChain(){
+  const ch=el('chain');
+  ch.innerHTML=done.map((id,i)=>{const c=CARDS.find(x=>x.id===id);
+    return '<div class="chitem"><span class="chnum">'+(i+1)+'.</span> '+c.short+'</div>';}).join('');
+  el('chainCard').style.display=done.length?'block':'none';
+}
+
+function pick(id,btn){
+  const c=CARDS.find(x=>x.id===id);
+  // ловушка
+  if(c.distract){
+    mistakes++;dead.push(id);log('distractor',{id});
+    btn.classList.add('shake','dead');
+    setMsg('✗ '+c.distract,'err');
+    setTimeout(renderPool,430);
+    return;
+  }
+  // проверка зависимостей
+  const ready=c.need.every(n=>done.includes(n));
+  if(!ready){
+    mistakes++;log('early',{id});
+    btn.classList.add('shake');setTimeout(()=>btn.classList.remove('shake'),430);
+    setMsg('⏳ Рано: '+c.early,'warn');
+    return;
+  }
+  // принять шаг
+  done.push(id);lastStep=id;log('step',{id});
+  fx[id]=Date.now();
+  setMsg('✓ '+c.ok,'ok');
+  // анимация наложения на шаге sas
+  if(id==='sas'){playOverlay();}
+  renderPool();renderChain();
+  if(done.length>=PROOF.length){
+    el('nextBtn').style.display='inline-block';
+    el('poolTtl').textContent='Доказательство собрано!';
+    setMsg('✓ '+c.ok+' Доказательство готово — жмите «Итоги».','ok');
+  }
+}
+
+function playOverlay(){
+  if(overlayAnim)cancelAnimationFrame(overlayAnim);
+  const t0=performance.now();
+  const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  (function step(now){
+    const p=Math.min(1,(now-t0)/900);overlayP=ease(p);
+    if(p<1)overlayAnim=requestAnimationFrame(step);
+    else setTimeout(()=>{overlayP=0;overlayAnim=null;},500);
+  })(performance.now());
+}
+
+/* ───────── ПОДСКАЗКА ───────── */
+function showHint(){
+  hintUsed=true;log('hint',{});
+  // подсказать следующий нужный шаг
+  const next=PROOF.find(id=>!done.includes(id));
+  const map={
+    sides:'Начните с того, что ДАНО: какие две стороны равны по условию?',
+    common:'У треугольников ABD и ACD есть сторона, общая для обоих. Какая?',
+    bisangle:'AD — биссектриса. Что она делает с углом A?',
+    sas:'Собрались две пары сторон и угол между ними — какой признак это даёт?',
+    fin:'Треугольники равны. Что тогда можно сказать про их соответствующие углы B и C?'
+  };
+  setMsg('💡 '+(map[next]||'Соберите шаги по порядку зависимостей.'),'warn');
+}
+
+/* ───────── ФИНАЛ ───────── */
+function finish(){
+  el('mainArea').style.display='none';
+  el('bar').style.display='none';
+  el('fin').style.display='block';
+  const score=Math.max(0,PROOF.length-mistakes);
+  el('finScore').textContent=(mistakes===0&&!hintUsed?'✓':score+'/'+PROOF.length);
+  el('lawBox').innerHTML=
+    '<b>Теорема.</b> В равнобедренном треугольнике <b>углы при основании равны</b>.'+
+    '<div style="margin-top:8px">Доказали первым признаком: биссектриса AD делит △ABC на два треугольника ABD и ACD, у которых AB = AC (дано), AD общая, ∠BAD = ∠CAD (биссектриса). Они равны по двум сторонам и углу между ними, поэтому ∠B = ∠C как соответствующие углы.</div>'+
+    '<div class="bridge">Заметьте: мы провели биссектрису — и получили два равных треугольника. А раз они равны, у них совпадают и другие элементы: BD = DC, и углы при D. Куда это ведёт — раскроем в следующем тренажёре: биссектриса к основанию окажется ещё и медианой, и высотой.</div>';
+  const s=lS();s.runs=(s.runs||0)+1;s.passed=true;const best=(mistakes===0&&!hintUsed)?PROOF.length:score;s.best=Math.max(s.best||0,best);sS(s);
+  log('finish',{mistakes,hint:hintUsed});
+}
+function restart(){
+  order=shuffle(CARDS.map(c=>c.id));
+  done=[];dead=[];mistakes=0;hintUsed=false;lastStep=null;fx={};overlayP=0;
+  el('fin').style.display='none';
+  el('mainArea').style.display='grid';
+  el('bar').style.display='flex';
+  el('nextBtn').style.display='none';
+  el('poolTtl').textContent='Какой шаг следующий? Нажмите карточку';
+  el('msg').className='msg';
+  renderPool();renderChain();
+  log('start');
+}
+
+/* ───────── ЦИКЛ ───────── */
+function loop(){draw();requestAnimationFrame(loop);}
+restart();
+loop();
+</script>
+</body>
+</html>

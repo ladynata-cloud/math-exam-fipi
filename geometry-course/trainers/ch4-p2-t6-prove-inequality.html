@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Неравенство треугольника — доказательство</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.given{font-size:13px;line-height:1.5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:10px}
+.given b{color:#3730a3}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:750 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt.ok-pick{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.bad-pick{background:#fee2e2;border-color:#dc2626;color:#991b1b}
+.opt.correct-reveal{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.shake{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.proof{display:none;background:#ecfdf5;color:#14532d;border:1.5px solid #bbf7d0;border-radius:12px;padding:12px;font-size:13px;line-height:1.5}
+.proof b{color:#166534}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:15px;height:15px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:660px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law .nb{margin-top:10px;font-size:13px;color:#334155;line-height:1.6}
+.bridge{margin-top:12px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">△ Неравенство треугольника</div>
+      <div class="sub">Глава IV · §2 · тренажёр 6 из 8 — почему сторона меньше суммы</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Догадка</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="460"></canvas>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card" id="givenCard" style="display:none"><div class="given" id="givenBox"></div></div>
+      <div id="opts" class="opts"></div>
+      <div id="msg" class="msg info"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div id="proof" class="proof"></div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Каждая сторона треугольника меньше суммы двух других сторон (и больше их разности).</b>
+      <div class="nb">Доказали строго: достроили BD = BC за точкой B → треугольник BCD равнобедренный → ∠ACD больше ∠BDC → против большего угла лежит большая сторона, AD больше AC → а AD = AB + BC, значит AC меньше AB + BC. «Прямой путь короче обхода» — теперь это теорема, а не картинка.</div>
+      <div class="bridge">Дальше — потренируемся быстро решать, сложится ли треугольник из трёх отрезков. <a href="ch4-p2-t7-triangle-generator.html">Генератор «сложится ли» →</a></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="tool" onclick="restart()" style="background:#1a1a2e;color:#fff;border-color:#1a1a2e">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="advance()">Следующая →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС / ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch4-p2-t6-prove-inequality';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),phase:ph,kind:NM[ph],e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640,H=460,PI=Math.PI;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+const PULSE=()=>1+0.13*Math.sin(Date.now()/240);
+
+/* ───────── ПАЛИТРА / ПРИМИТИВЫ ───────── */
+const COL={A:'#d97706',B:'#db2777',C:'#0d9488',G:'#16a34a',DARK:'#1a1a2e',GREY:'#94a3b8',HYP:'#2d70b3',MED:'#7c3aed'};
+function sub(p,q){return{x:p.x-q.x,y:p.y-q.y}}
+function nrm(v){const m=Math.hypot(v.x,v.y)||1;return{x:v.x/m,y:v.y/m}}
+function hexA(h,a){const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+function bg(){
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill()}
+}
+function lab(x,y,txt,col,size){
+  ctx.font='900 '+(size||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);ctx.textBaseline='alphabetic';
+}
+function dot(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function seg(p,q,col,w){ctx.strokeStyle=col;ctx.lineWidth=w||2.8;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
+function drawAngle(V,P,Q,col,active,dim,r0){
+  const a1=Math.atan2(P.y-V.y,P.x-V.x), a2=Math.atan2(Q.y-V.y,Q.x-V.x);
+  let d=a2-a1; while(d<=-PI)d+=2*PI; while(d>PI)d-=2*PI;
+  const acw=d<0, r=active? r0*PULSE() : r0;
+  ctx.save(); if(dim)ctx.globalAlpha=0.32;
+  ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.arc(V.x,V.y,r,a1,a1+d,acw);ctx.closePath();
+  ctx.fillStyle=hexA(col,0.16);ctx.fill();
+  ctx.beginPath();ctx.arc(V.x,V.y,r,a1,a1+d,acw);
+  ctx.lineWidth=active?3.6:2.6;ctx.strokeStyle=col;ctx.lineCap='round';ctx.stroke();
+  ctx.restore();
+}
+function tickMark(p,q,n,col){
+  const mx=(p.x+q.x)/2,my=(p.y+q.y)/2; let dx=q.x-p.x,dy=q.y-p.y;const L=Math.hypot(dx,dy)||1;dx/=L;dy/=L;
+  const nx=-dy,ny=dx;
+  for(let i=0;i<n;i++){const off=(i-(n-1)/2)*5,cx=mx+dx*off,cy=my+dy*off;
+    ctx.beginPath();ctx.moveTo(cx-nx*5,cy-ny*5);ctx.lineTo(cx+nx*5,cy+ny*5);ctx.strokeStyle=col||COL.DARK;ctx.lineWidth=2;ctx.stroke();}
+}
+function sideLabel(P,Q,away,txt,col,size){
+  const mx=(P.x+Q.x)/2,my=(P.y+Q.y)/2; let nx=-(Q.y-P.y),ny=(Q.x-P.x);
+  const m=Math.hypot(nx,ny)||1; nx/=m;ny/=m;
+  if((mx+nx-away.x)**2+(my+ny-away.y)**2 < (mx-nx-away.x)**2+(my-ny-away.y)**2){nx=-nx;ny=-ny;}
+  lab(mx+nx*20,my+ny*20,txt,col,size||12.5);
+}
+function bisCC(V,P,Q){const a1=Math.atan2(P.y-V.y,P.x-V.x),a2=Math.atan2(Q.y-V.y,Q.x-V.x);let d=a2-a1;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;return a1+d/2;}
+function angLab(V,P,Q,txt,col,rr,size){const b=bisCC(V,P,Q);lab(V.x+Math.cos(b)*rr,V.y+Math.sin(b)*rr,txt,col,size||12);}
+
+/* ───────── ФАЗЫ ───────── */
+const NM=['hook','proof','apply'];
+const TOTAL=NM.length;
+let ph=0, results=[], mistakes=0, hints=0, phaseSolved=false, mode=null;
+let horText='', horCol=COL.DARK;
+
+/* фигура (общая для hook и proof): треугольник ABC, луч AB продолжен за B до D с BD = BC */
+const IA={x:120,y:300}, IB={x:360,y:300}, IC={x:250,y:150};
+const BC=Math.hypot(IB.x-IC.x,IB.y-IC.y);
+const ID={x:IB.x+BC, y:IB.y};
+
+/* hook — какую неравенство доказываем (1 вопрос) */
+const HOOK=[{
+  task:'Из A в C можно пройти двумя путями: <b>прямо</b> по отрезку AC или <b>в обход</b> через B (по сторонам AB и BC). Какое неравенство хотим доказать про сторону AC?',
+  info:'Кратчайший путь между двумя точками — прямой отрезок.',
+  hor:'прямой путь короче обхода',
+  ok:'AC меньше, чем AB + BC',
+  opts:['AC меньше, чем AB + BC','AC больше, чем AB + BC','AC равно AB + BC'],
+  diag:{'AC больше, чем AB + BC':'Наоборот: крюк через B не короче прямого пути. Сторона меньше суммы двух других, а не больше.',
+        'AC равно AB + BC':'Равенство было бы у вырожденного случая, когда B лежит на самом отрезке AC. Тогда треугольника нет; у настоящего строго меньше.'}
+}];
+
+/* proof — строгое доказательство (5 шагов) */
+let proofStep=0;
+const PROOF=[
+  { task:'Чтобы доказать <b>AC &lt; AB + BC</b>, достроим: на луче AB <b>за точкой B</b> отложим отрезок <b>BD = BC</b>. Какой треугольник BCD?',
+    info:'BC = BD по построению.',
+    hor:'отложили BD = BC за точкой B',
+    ok:'Равнобедренный (BC = BD)',
+    okMsg:'Верно — равнобедренный.',
+    opts:['Равнобедренный (BC = BD)','Равносторонний','Прямоугольный'],
+    diag:{'Равносторонний':'Равны только две стороны (BC = BD), не три. Значит равнобедренный.',
+          'Прямоугольный':'Прямого угла тут нет. Две равные стороны BC = BD делают треугольник равнобедренным.'} },
+  { task:'В равнобедренном треугольнике BCD углы при основании CD равны. Какие именно углы равны?',
+    info:'Основание — CD; при нём углы при вершинах C и D.',
+    hor:'∠BCD = ∠BDC (углы при основании)',
+    ok:'∠BCD = ∠BDC',
+    okMsg:'Верно: ∠BCD = ∠BDC.',
+    opts:['∠BCD = ∠BDC','∠CBD = ∠BDC','∠BCD прямой'],
+    diag:{'∠CBD = ∠BDC':'∠CBD — угол при вершине B (между равными сторонами), а не при основании. Равны углы при основании: ∠BCD = ∠BDC.',
+          '∠BCD прямой':'Прямого угла нет. Углы при основании просто равны между собой: ∠BCD = ∠BDC.'} },
+  { task:'Сравни углы ∠ACD и ∠BCD при вершине C (луч CB лежит внутри угла ACD). Что верно?',
+    info:'∠ACD = ∠ACB + ∠BCD — это ∠BCD и ещё кусок.',
+    hor:'∠ACD больше, чем ∠BCD = ∠BDC',
+    ok:'∠ACD больше ∠BCD',
+    okMsg:'Верно: ∠ACD больше.',
+    opts:['∠ACD больше ∠BCD','∠ACD равен ∠BCD','∠ACD меньше ∠BCD'],
+    diag:{'∠ACD равен ∠BCD':'∠ACD содержит ещё ∠ACB сверх ∠BCD (∠ACD = ∠ACB + ∠BCD), значит он больше.',
+          '∠ACD меньше ∠BCD':'Наоборот: ∠ACD = ∠ACB + ∠BCD — это ∠BCD плюс ещё кусок, поэтому больше.'} },
+  { task:'В треугольнике ACD угол при C (∠ACD) больше угла при D (∠ADC = ∠BDC). Что тогда про стороны AD и AC?',
+    info:'Против большего угла лежит большая сторона (теорема из предыдущих тренажёров).',
+    hor:'против ∠ACD — большая сторона AD',
+    ok:'AD больше AC',
+    okMsg:'Верно: AD больше AC.',
+    opts:['AD больше AC','AD меньше AC','AD равно AC'],
+    diag:{'AD меньше AC':'Против большего угла лежит большая сторона, а не меньшая. ∠ACD больше ∠ADC, значит AD больше AC.',
+          'AD равно AC':'Стороны были бы равны при равных углах. Но ∠ACD больше ∠ADC, поэтому AD больше AC.'} },
+  { task:'Осталось заметить, чему равно AD, и подставить. Что получаем?',
+    info:'AD = AB + BD, а BD = BC.',
+    hor:'AD = AB + BC ⟹ AC < AB + BC ∎',
+    ok:'AD = AB + BC, поэтому AC меньше AB + BC',
+    okMsg:'Верно. ∎',
+    opts:['AD = AB + BC, поэтому AC меньше AB + BC','AD = AB − BC, поэтому AC меньше AB − BC','AB = AC + BC'],
+    diag:{'AD = AB − BC, поэтому AC меньше AB − BC':'D лежит за точкой B, поэтому AD = AB + BD = AB + BC (сумма, не разность).',
+          'AB = AC + BC':'Это другое равенство. Мы получили AD = AB + BC и AD больше AC, отсюда AC меньше AB + BC.'} }
+];
+
+/* apply — границы третьей стороны (3 задачи) */
+const APPLY=[
+  {a:7,b:3, ans:'Больше 4 и меньше 10',
+   opts:['Больше 4 и меньше 10','Меньше 10 (нижней границы нет)','Между 3 и 7'],
+   diag:{'Меньше 10 (нижней границы нет)':'Нижняя граница есть: больше 7 − 3 = 4. Иначе три отрезка не сомкнутся в треугольник.',
+         'Между 3 и 7':'3 и 7 — это сами стороны. Границы третьей — их разность и сумма: больше 4 и меньше 10.'}},
+  {a:5,b:5, ans:'Больше 0 и меньше 10',
+   opts:['Больше 0 и меньше 10','Ровно 5','Меньше 10'],
+   diag:{'Ровно 5':'Третья сторона не обязана равняться другим: она любая между разностью 0 и суммой 10.',
+         'Меньше 10':'Верхняя граница 10 верна, но нижняя — больше 5 − 5 = 0 (длина положительна). Значит больше 0 и меньше 10.'}},
+  {a:8,b:2, ans:'Больше 6 и меньше 10',
+   opts:['Больше 6 и меньше 10','Больше 2 и меньше 8','Меньше 10 (нижней границы нет)'],
+   diag:{'Больше 2 и меньше 8':'2 и 8 — это стороны. Границы третьей — разность 6 и сумма 10: больше 6 и меньше 10.',
+         'Меньше 10 (нижней границы нет)':'Нижняя граница есть: больше 8 − 2 = 6. При меньшей третья «не достанет» — треугольник не сложится.'}}
+];
+let applyIdx=0, applyResolved=false;
+
+/* ───────── ОТРИСОВКА ───────── */
+function drawHook(){
+  seg(IA,IB,COL.MED,5); seg(IB,IC,COL.MED,5);   // обход A→B→C
+  seg(IA,IC,COL.HYP,5);                           // прямой A→C
+  dot(IA.x,IA.y,4,COL.A);dot(IB.x,IB.y,4,COL.DARK);dot(IC.x,IC.y,4,COL.C);
+  lab(IA.x-14,IA.y+16,'A',COL.A,15); lab(IB.x+10,IB.y+16,'B',COL.DARK,14); lab(IC.x-6,IC.y-16,'C',COL.C,15);
+  sideLabel(IA,IC,IB,'прямой путь AC',COL.HYP,12);
+  lab((IA.x+IB.x)/2, IA.y+24, 'обход A→B→C', COL.MED, 12);
+}
+function drawProof(){
+  const s=proofStep;
+  seg(IA,ID,COL.DARK,2.4); seg(IA,IC,COL.DARK,2.8); seg(IB,IC,COL.DARK,2.8); seg(IC,ID,COL.MED,2.8);
+  tickMark(IB,IC,1,COL.G); tickMark(IB,ID,1,COL.G);
+  dot(IA.x,IA.y,4,COL.A);dot(IB.x,IB.y,4,COL.DARK);dot(IC.x,IC.y,4,COL.C);dot(ID.x,ID.y,4,COL.MED);
+  lab(IA.x-14,IA.y+16,'A',COL.A,15); lab(IB.x,IB.y+18,'B',COL.DARK,14); lab(IC.x-6,IC.y-16,'C',COL.C,15); lab(ID.x+14,ID.y+16,'D',COL.MED,15);
+  if(s===0){
+    seg(IB,IC,COL.G,4.2); seg(IB,ID,COL.G,4.2);
+    lab((IB.x+ID.x)/2,IB.y+34,'BD = BC',COL.G,12);
+  } else if(s===1){
+    drawAngle(IC,IB,ID,COL.A,true,false,26); angLab(IC,IB,ID,'•',COL.A,40,16);
+    drawAngle(ID,IB,IC,COL.A,true,false,26); angLab(ID,IB,IC,'•',COL.A,40,16);
+  } else if(s===2){
+    drawAngle(IC,IA,ID,COL.B,true,false,38); angLab(IC,IA,ID,'∠ACD',COL.B,58,11);
+    drawAngle(IC,IB,ID,COL.A,false,false,22); angLab(IC,IB,ID,'∠BCD',COL.A,32,9.5);
+  } else if(s===3){
+    seg(IA,ID,COL.B,4.4); seg(IA,IC,COL.C,4.4);
+    drawAngle(IC,IA,ID,COL.B,true,false,30); angLab(IC,IA,ID,'∠ACD',COL.B,54,10.5);
+    drawAngle(ID,IA,IC,COL.C,true,false,26); angLab(ID,IA,IC,'∠ADC',COL.C,44,10.5);
+    lab(W/2,72,'против ∠ACD — бо́льшая сторона AD,  против ∠ADC — меньшая AC',COL.DARK,11.5);
+  } else {
+    seg(IA,IB,COL.HYP,3.6); seg(IB,ID,COL.G,3.6);
+    lab((IA.x+IB.x)/2,IB.y+34,'AB',COL.HYP,12); lab((IB.x+ID.x)/2,IB.y+34,'BD = BC',COL.G,11);
+    lab(W/2,72,'AD = AB + BC,  а  AD > AC  ⟹  AC < AB + BC',COL.DARK,12.5);
+  }
+}
+function drawBounds(){
+  const r=APPLY[applyIdx], a=r.a, b=r.b, lo=Math.abs(a-b), hi=a+b, mx=hi*1.28;
+  const x0=72, x1=566, yA=348; const X=v=>x0+(x1-x0)*clamp(v,0,mx)/mx;
+  seg({x:x0,y:158},{x:X(a),y:158},COL.A,7); lab((x0+X(a))/2,140,'сторона '+a,COL.A,12);
+  seg({x:x0,y:196},{x:X(b),y:196},COL.B,7); lab((x0+X(b))/2,178,'сторона '+b,COL.B,12);
+  seg({x:x0,y:yA},{x:x1,y:yA},COL.DARK,2);
+  lab(x1-4,yA+24,'длина',COL.GREY,11);
+  ctx.fillStyle=hexA(COL.G,0.20); ctx.fillRect(X(lo),yA-16,X(hi)-X(lo),32);
+  [['разность '+lo,lo],['сумма '+hi,hi]].forEach(m=>{
+    seg({x:X(m[1]),y:yA-17},{x:X(m[1]),y:yA+17},COL.DARK,1.6);
+    ctx.beginPath();ctx.arc(X(m[1]),yA,6,0,7);ctx.fillStyle='#fffdf7';ctx.fill();ctx.strokeStyle=COL.DARK;ctx.lineWidth=2.4;ctx.stroke();
+    lab(X(m[1]),yA+30,m[0],COL.DARK,11.5);
+  });
+  lab((X(lo)+X(hi))/2,yA-30,'третья сторона — здесь',COL.G,12.5);
+}
+function drawHor(){ if(horText) lab(W/2,H-15,horText,horCol,14); }
+function draw(){
+  bg();
+  const k=NM[ph];
+  if(k==='hook')drawHook();
+  else if(k==='proof')drawProof();
+  else if(k==='apply')drawBounds();
+  drawHor();
+}
+
+/* ───────── ОБЩИЕ ───────── */
+function renderOpts(list){
+  const box=document.getElementById('opts');box.innerHTML='';
+  list.forEach(o=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML=o.t;b.addEventListener('click',()=>o.fn(b));box.appendChild(b);});
+}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+function markPick(btn,ok){if(btn&&btn.classList)btn.classList.add(ok?'ok-pick':'bad-pick')}
+function shakeBtn(btn){if(btn&&btn.classList){btn.classList.add('shake');setTimeout(()=>btn.classList.remove('shake'),450);}}
+function revealCorrect(label){[...document.getElementById('opts').children].forEach(b=>{if(b.textContent.trim()===label)b.classList.add('correct-reveal')})}
+function lockOpts(){[...document.getElementById('opts').children].forEach(b=>b.disabled=true)}
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function pushResult(){results.push(mistakes===0&&hints===0?'g':(mistakes<=1&&hints<=1?'y':'r'))}
+function succeedPhase(proofTxt){
+  if(phaseSolved)return; phaseSolved=true; pushResult();
+  log('solved',{mistakes,hints});
+  const sb=document.getElementById('successBar');sb.textContent='✓ Готово!';sb.style.display='block';
+  document.getElementById('hintbox').style.display='none';
+  if(proofTxt){const pr=document.getElementById('proof');pr.innerHTML='<b>Вывод.</b> '+proofTxt;pr.style.display='block';}
+  const nb=document.getElementById('nextBtn');nb.textContent=(ph<TOTAL-1)?'Следующая →':'Завершить →';nb.style.display='inline-block';
+}
+function renderStep(arr,idx,picker){
+  const s=arr[idx];
+  document.getElementById('taskText').innerHTML=s.task;
+  renderOpts(shuffle(s.opts.map(o=>({t:o, fn:b=>picker(o,b)}))));
+  setMsg(s.info,'info');
+  horText=s.hor; horCol=COL.DARK;
+}
+
+/* ───────── ФАЗА hook ───────── */
+function setupHook(){ renderStep(HOOK,0,hookPick); }
+function hookPick(label,btn){
+  if(phaseSolved)return;
+  const s=HOOK[0];
+  if(label===s.ok){ markPick(btn,true); lockOpts(); log('step',{q:'hook'});
+    horText='догадка ясна — теперь докажем'; horCol=COL.G; setMsg('Верно.','ok');
+    succeedPhase('Прямой путь короче обхода: AC меньше AB + BC. Но «видно» — это ещё не доказательство. Дальше докажем строго, через уже известное: против большей стороны лежит больший угол.'); }
+  else { mistakes++; log('distractor',{q:'hook',pick:label}); shakeBtn(btn); markPick(btn,false); revealCorrect(s.ok);
+    setMsg((s.diag[label]||'Не так.')+' Нажми верный ответ.','err'); }
+}
+
+/* ───────── ФАЗА proof ───────── */
+function setupProof(){ proofStep=0; renderStep(PROOF,proofStep,proofPick); }
+function proofPick(label,btn){
+  if(phaseSolved)return;
+  const s=PROOF[proofStep];
+  if(label===s.ok){
+    markPick(btn,true); lockOpts(); log('step',{q:'proof',step:proofStep});
+    if(proofStep<PROOF.length-1){ setMsg(s.okMsg||'Верно.','ok'); proofStep++; renderStep(PROOF,proofStep,proofPick); }
+    else { horText='сторона меньше суммы двух других ∎'; horCol=COL.G; setMsg('Верно.','ok');
+      succeedPhase('Цепочка целиком: отложили BD = BC за B → треугольник BCD равнобедренный, ∠BCD = ∠BDC → ∠ACD = ∠ACB + ∠BCD больше ∠BCD = ∠BDC = ∠ADC → в треугольнике ACD против большего угла большая сторона: AD больше AC → AD = AB + BC. Значит <b>AC меньше AB + BC</b>. Так же — для каждой стороны.'); }
+  } else { mistakes++; log('distractor',{q:'proof',step:proofStep,pick:label}); markPick(btn,false); revealCorrect(s.ok);
+    setMsg((s.diag[label]||'Не так.')+' Нажми верный ответ.','err'); }
+}
+
+/* ───────── ФАЗА apply ───────── */
+function setupApply(){ document.getElementById('givenCard').style.display='block'; applyIdx=0; showApplyRound(); }
+function showApplyRound(){
+  applyResolved=false;
+  const r=APPLY[applyIdx];
+  document.getElementById('givenBox').innerHTML='<b>Задача '+(applyIdx+1)+' из '+APPLY.length+'.</b> Две стороны треугольника: <b>'+r.a+'</b> и <b>'+r.b+'</b>.';
+  document.getElementById('taskText').innerHTML='В каких границах может быть третья сторона?';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('proof').style.display='none';
+  renderOpts(shuffle(r.opts.map(o=>({t:o, fn:b=>applyPick(o,b)}))));
+  setMsg('Третья сторона больше разности и меньше суммы двух данных.','info');
+  horText='разность < третья < сумма'; horCol=COL.DARK;
+}
+function applyPick(value,btn){
+  if(applyResolved)return;
+  const r=APPLY[applyIdx];
+  if(value!==r.ans){ mistakes++; log('distractor',{q:'apply',round:applyIdx,pick:value}); shakeBtn(btn); markPick(btn,false); revealCorrect(r.ans);
+    setMsg((r.diag[value]||'Не так.')+' Нажми верный ответ.','err'); return; }
+  applyResolved=true; markPick(btn,true); lockOpts(); log('step',{q:'apply',round:applyIdx});
+  setMsg('Верно.','ok');
+  if(applyIdx>=APPLY.length-1){ succeedPhase('Третья сторона всегда между разностью и суммой двух данных: больше |a − b| и меньше a + b. Это прямое следствие неравенства треугольника — его и гоняет генератор дальше.'); }
+  else { const nb=document.getElementById('nextBtn'); nb.textContent='Следующая задача →'; nb.style.display='inline-block'; horText='верно — дальше'; horCol=COL.G; }
+}
+
+/* ───────── ЖИЗНЕННЫЙ ЦИКЛ ───────── */
+function initPhase(i){
+  ph=i; phaseSolved=false; mode=null; mistakes=0; hints=0;
+  document.getElementById('pf').style.width=(i/TOTAL*100)+'%';
+  document.getElementById('pnum').textContent='Шаг '+(i+1)+' из '+TOTAL;
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('proof').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('givenCard').style.display='none';
+  clearOpts();
+  const bd=document.getElementById('badge');
+  const k=NM[i];
+  if(k==='hook'){ bd.textContent='Догадка'; setupHook(); }
+  else if(k==='proof'){ bd.textContent='Доказываем'; setupProof(); }
+  else if(k==='apply'){ bd.textContent='Границы третьей'; setupApply(); }
+  log('task_start',{});
+}
+function advance(){
+  if(NM[ph]==='apply' && applyResolved && applyIdx<APPLY.length-1){ applyIdx++; showApplyRound(); return; }
+  if(ph<TOTAL-1) initPhase(ph+1); else finish();
+}
+function resetTask(){ log('reset'); initPhase(ph); }
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{score:g});
+  const s=lS();s.runs=(s.runs||0)+1;if(g>(s.best||0))s.best=g;s.passed=true;sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent=g+' / '+TOTAL;
+  document.getElementById('finLbl').textContent = g===TOTAL?'Чисто! Неравенство треугольника доказано и понято.':(g>=2?'Хорошо — доказательство собрано.':'Стоит пройти ещё раз.');
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){
+  ph=0; results=[]; proofStep=0; applyIdx=0; applyResolved=false;
+  document.getElementById('fin').style.display='none';
+  document.getElementById('mainArea').style.display='grid';
+  document.getElementById('bar').style.display='flex';
+  initPhase(0);
+}
+function showHint(){
+  if(phaseSolved && NM[ph]!=='apply')return;
+  hints++; log('hint');
+  const hb=document.getElementById('hintbox');const k=NM[ph];let h='';
+  if(k==='hook') h='Кратчайший путь из A в C — прямой отрезок AC. Обход через B (по AB и BC) длиннее. Значит AC меньше AB + BC.';
+  else if(k==='proof'){ const hh=['BC = BD по построению — две равные стороны делают треугольник BCD равнобедренным.','В равнобедренном треугольнике равны углы при основании: основание здесь CD, значит ∠BCD = ∠BDC.','Луч CB лежит внутри угла ACD: ∠ACD = ∠ACB + ∠BCD, то есть ∠ACD больше ∠BCD.','В треугольнике ACD против большего угла (∠ACD) лежит большая сторона: AD больше AC.','D лежит за B, поэтому AD = AB + BD = AB + BC. Подставляя в AD больше AC, получаем AC меньше AB + BC.']; h=hh[proofStep]||hh[0]; }
+  else h='Третья сторона меньше суммы двух данных и больше их разности. Посчитай сумму и разность — между ними и лежит ответ.';
+  hb.innerHTML='💡 '+h;hb.style.display='block';
+}
+
+/* ───────── СТАРТ ───────── */
+initPhase(0);
+(function loop(){draw();requestAnimationFrame(loop)})();
+</script>
+</body>
+</html>

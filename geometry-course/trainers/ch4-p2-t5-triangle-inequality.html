@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Неравенство треугольника</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.slider-wrap{display:none;margin-top:12px;background:#f1ede3;border:1px solid #d6d3ca;border-radius:12px;padding:12px 14px}
+.slider-wrap .srow{display:flex;justify-content:space-between;align-items:center;font:800 13px system-ui;margin-bottom:7px}
+.slider-wrap .val{font:900 14px 'Courier New',monospace}
+.slider-wrap input[type=range]{width:100%;height:28px;cursor:pointer}
+#aSlider{accent-color:#2563eb}#bSlider{accent-color:#c2410c}
+.slider-wrap .baseline{margin-top:11px;font:700 12px system-ui;color:#475569;text-align:center}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.given{font-size:13px;line-height:1.5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:10px}
+.given b{color:#3730a3}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.pcard{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:10px 12px;font:650 13.5px system-ui;cursor:pointer;text-align:left;line-height:1.45}
+.pcard:hover{background:#f3f4f6}
+.pcard.shake{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.chitem{background:#f0fdf4;border-left:3px solid #16a34a;border-radius:0 8px 8px 0;padding:7px 10px;font-size:12.5px;line-height:1.4;color:#14532d;margin-bottom:5px}
+.chitem .n{font-weight:900;color:#16a34a;margin-right:4px}
+.chempty{font-size:12.5px;color:#94a3b8;font-style:italic;padding:6px}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:24px 22px;text-align:center}
+.fin .big{font-size:40px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:14px;height:14px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:640px;margin:0 auto 16px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:13.5px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law .nb{margin-top:10px;font-size:13px;color:#475569}
+.bridge{margin-top:10px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">△ Неравенство треугольника</div>
+      <div class="sub">Глава IV · §2 · тренажёр 5 — когда из трёх палочек выйдет треугольник</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Дотянутся?</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="470"></canvas>
+      <div class="slider-wrap" id="sliderWrap">
+        <div class="srow"><span style="color:#2563eb">палочка a</span><span class="val" id="aVal" style="color:#2563eb">160</span></div>
+        <input type="range" id="aSlider" min="40" max="210" value="160" step="1">
+        <div class="srow" style="margin-top:12px"><span style="color:#c2410c">палочка b</span><span class="val" id="bVal" style="color:#c2410c">150</span></div>
+        <input type="range" id="bSlider" min="40" max="210" value="150" step="1">
+        <div class="baseline">Основание (самая длинная палочка) закреплено: c = 220</div>
+      </div>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card"><div class="given" id="givenBox"></div></div>
+      <div id="msg" class="msg info"></div>
+      <div id="opts" class="opts"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div class="card">
+        <h2>Что мы выяснили</h2>
+        <div class="steps" id="steps"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Неравенство треугольника.</b> Каждая сторона треугольника меньше суммы двух других:
+      a &lt; b + c,&nbsp;&nbsp; b &lt; a + c,&nbsp;&nbsp; c &lt; a + b.
+      <div class="nb">Проще всего проверять <b>самую длинную</b> сторону: если она короче суммы двух других — треугольник складывается; если равна или длиннее — нет (две короткие палочки не дотянутся друг до друга). Равенство даёт вырожденный случай — отрезок, а не треугольник.</div>
+      <div class="bridge">Дальше — строгое <b>доказательство</b> этого неравенства. <a href="ch4-p2-t6-prove-inequality.html">Докажем неравенство →</a></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="tool" onclick="restart()" style="background:#1a1a2e;color:#fff;border-color:#1a1a2e">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="nextTask()">Дальше →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС / ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch4-p2-t5-triangle-inequality';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),step:si+1,phase:S().phase,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640, HT=470, PI=Math.PI;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=HT*dpr;cv.style.aspectRatio=W+'/'+HT;ctx.scale(dpr,dpr);
+
+const A_COL='#2563eb', B_COL='#c2410c', GREYD='#334155', GREY='#475569';
+const BASE_C=220;            // основание (самая длинная), фиксировано
+let sideA=160, sideB=150;
+
+/* ───────── ШАГИ ───────── */
+const STEPS=[
+ {kind:'lab', phase:'lab', badge:'Дотянутся?',
+  task:'Двигай ползунки <b>a</b> и <b>b</b> — две палочки откидываются от концов основания и тянутся встретиться. Основание (самая длинная палочка) закреплено. <b>Когда складывается треугольник?</b>',
+  doneMsg:'Треугольник есть, когда самая длинная короче суммы двух других. Проверим на числах.',
+  stepNote:'Треугольник складывается, когда самая длинная сторона короче суммы двух других.',
+  cards:[
+    {id:'rule', txt:'Когда самая длинная палочка короче суммы двух других.', ok:'Верно: две палочки вместе должны перекрыть основание — тогда они встречаются вверху.'},
+    {id:'trAny', txt:'Из любых трёх палочек.', trap:'Поэкспериментируй: укороти a и b — в какой-то момент они не дотягиваются, остаётся щель. Не из любых.'},
+    {id:'trEqual', txt:'Только если все три палочки равны.', trap:'Нет: и разные складываются — лишь бы самая длинная была короче суммы двух других. Попробуй неравные длины.'},
+    {id:'trBigger', txt:'Когда самая длинная длиннее суммы двух других.', trap:'Наоборот: если самая длинная ДЛИННЕЕ суммы двух других — они не дотянутся, останется щель. Нужна короче.'}
+  ]},
+
+ {kind:'sets', phase:'findno', badge:'Найди лишний', mode:'no',
+  sets:[[2,3,5],[4,5,6],[3,4,5]],
+  task:'Из какого набора палочек <b>НЕ получится</b> треугольник?',
+  doneMsg:'Верно — 5 = 2 + 3, выходит отрезок, не треугольник.',
+  stepNote:'2, 3, 5 — не треугольник: 5 = 2 + 3 (вырожденный, отрезок).',
+  cards:[
+    {id:'no235', txt:'2, 3, 5', ok:'Верно: 5 = 2 + 3. Две короткие палочки в ряд дотянутся ровно до конца длинной — выйдет отрезок, не треугольник. Нужно строго меньше.'},
+    {id:'tr456', txt:'4, 5, 6', trap:'4, 5, 6 — треугольник есть: 4 + 5 = 9, это больше 6. Две короткие перекрывают длинную.'},
+    {id:'tr345', txt:'3, 4, 5', trap:'3, 4, 5 — треугольник есть (даже прямоугольный): 3 + 4 = 7, больше 5.'}
+  ]},
+
+ {kind:'sets', phase:'findyes', badge:'Найди годный', mode:'yes',
+  sets:[[1,1,3],[2,2,5],[3,4,6]],
+  task:'Из какого набора треугольник <b>ВСЁ-ТАКИ получится</b>?',
+  doneMsg:'Верно — 3 + 4 = 7 больше 6.',
+  stepNote:'3, 4, 6 — треугольник: 3 + 4 = 7 > 6.',
+  cards:[
+    {id:'yes346', txt:'3, 4, 6', ok:'Верно: 3 + 4 = 7, это больше 6 — две короткие перекрывают длинную, треугольник складывается.'},
+    {id:'tr113', txt:'1, 1, 3', trap:'1, 1, 3 — не выйдет: 1 + 1 = 2, до 3 не дотянуться.'},
+    {id:'tr225', txt:'2, 2, 5', trap:'2, 2, 5 — не выйдет: 2 + 2 = 4, до 5 не дотянуться.'}
+  ]}
+];
+const NS=STEPS.length;
+const S=()=>STEPS[si];
+let si=0, results=[], mistakes=0, hintsUsed=0, stepResolved=false;
+let asmDone=[], asmDead=[], proved={};
+
+/* ───────── ПРИМИТИВЫ ───────── */
+function hexA(h,a){const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+function bg(){ctx.clearRect(0,0,W,HT);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,HT);ctx.fillStyle='#e7e1d2';for(let x=20;x<W;x+=25)for(let y=20;y<HT;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill()}}
+function lab(x,y,t,col,s){ctx.font='900 '+(s||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(t,x,y);ctx.fillStyle=col;ctx.fillText(t,x,y);ctx.textBaseline='alphabetic';ctx.textAlign='start'}
+function dot(x,y,r,fill){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();}
+function seg(p,q,col,w){ctx.strokeStyle=col;ctx.lineWidth=w||2.8;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
+function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function noteLine(t,col){let fs=12.5;ctx.font='900 '+fs+'px system-ui';while(ctx.measureText(t).width>W-40&&fs>8.5){fs-=0.5;ctx.font='900 '+fs+'px system-ui';}lab(W/2,HT-18,t,col,fs);}
+function wrap(t,maxw,font){ctx.font=font||'13px system-ui';const words=t.split(' ');const lines=[];let cur='';words.forEach(w=>{const tl=cur?cur+' '+w:w;if(ctx.measureText(tl).width>maxw&&cur){lines.push(cur);cur=w;}else cur=tl;});if(cur)lines.push(cur);return lines;}
+function tokensWidth(toks,font){ctx.font=font;let w=0;toks.forEach(t=>w+=ctx.measureText(t[0]).width);return w;}
+function drawTokens(toks,x,y,font){ctx.font=font;ctx.textBaseline='middle';ctx.textAlign='left';let cx=x;toks.forEach(t=>{ctx.fillStyle=t[1];ctx.fillText(t[0],cx,y);cx+=ctx.measureText(t[0]).width;});ctx.textBaseline='alphabetic';ctx.textAlign='start';return cx;}
+function plate(x,y,w,h,fill,stroke,lw){roundRect(x,y,w,h,11);ctx.fillStyle=fill;ctx.fill();roundRect(x,y,w,h,11);ctx.lineWidth=lw||1.4;ctx.strokeStyle=stroke;ctx.stroke();}
+
+/* ───────── ЛАБОРАТОРИЯ ───────── */
+function labGeom(){
+  const c=BASE_C, a=sideA, b=sideB, cx=320, y0=358;
+  const L={x:cx-c/2,y:y0}, R={x:cx+c/2,y:y0}, sum=a+b;
+  if(sum>c){
+    const x=(c*c+a*a-b*b)/(2*c), h=Math.sqrt(Math.max(0,a*a-x*x));
+    return {state:'tri', L,R, P:{x:L.x+x, y:y0-h}, a,b,c,sum};
+  }
+  return {state: sum===c?'deg':'gap', L,R, a,b,c,sum};
+}
+function drawReadout(g){
+  const sign=g.state==='tri'?'>':(g.state==='deg'?'=':'<');
+  const col=g.state==='tri'?'#16a34a':(g.state==='deg'?'#c2410c':'#dc2626');
+  const X=160, RW=320; plate(X,22,RW,54,'#fff','#e2e8f0',1.4);
+  const toks=[['a',A_COL],[' + ',GREY],['b',B_COL],[' = '+g.sum+'     ','#1a1a2e'],[sign,col],['     c = '+g.c,GREYD]];
+  const f='900 17px system-ui'; drawTokens(toks, X+Math.max(12,(RW-tokensWidth(toks,f))/2), 41, f);
+  const vtxt=g.state==='tri'?'складывается ✓':(g.state==='deg'?'вырожденный — отрезок':'не дотягиваются ✗');
+  ctx.font='800 12px system-ui';ctx.fillStyle=col;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(vtxt, X+RW/2, 64);ctx.textAlign='start';ctx.textBaseline='alphabetic';
+}
+function drawLab(){
+  const g=labGeom(); drawReadout(g);
+  seg(g.L,g.R, GREYD, 5);
+  lab((g.L.x+g.R.x)/2, g.L.y+20, 'c = '+g.c+' (основание, самая длинная)', GREYD, 11.5);
+  dot(g.L.x,g.L.y,4.5,'#1a1a2e');dot(g.R.x,g.R.y,4.5,'#1a1a2e');
+  if(g.state==='tri'){
+    ctx.beginPath();ctx.moveTo(g.L.x,g.L.y);ctx.lineTo(g.R.x,g.R.y);ctx.lineTo(g.P.x,g.P.y);ctx.closePath();ctx.fillStyle='rgba(22,163,74,.10)';ctx.fill();
+    seg(g.L,g.P,A_COL,4); seg(g.R,g.P,B_COL,4); dot(g.P.x,g.P.y,4.5,'#1a1a2e');
+    lab((g.L.x+g.P.x)/2-12,(g.L.y+g.P.y)/2,'a='+g.a,A_COL,12.5);
+    lab((g.R.x+g.P.x)/2+12,(g.R.y+g.P.y)/2,'b='+g.b,B_COL,12.5);
+  } else if(g.state==='deg'){
+    const tip={x:g.L.x+g.a,y:g.L.y};
+    seg(g.L,tip,A_COL,5); seg(tip,g.R,B_COL,5); dot(tip.x,tip.y,4.5,'#c2410c');
+    lab((g.L.x+g.R.x)/2, g.L.y-22, 'a и b легли в одну линию — вырожденный', '#c2410c', 12);
+  } else {
+    const tipA={x:g.L.x+g.a,y:g.L.y}, tipB={x:g.R.x-g.b,y:g.R.y};
+    seg(g.L,tipA,A_COL,5); seg(g.R,tipB,B_COL,5); dot(tipA.x,tipA.y,4.5,A_COL);dot(tipB.x,tipB.y,4.5,B_COL);
+    ctx.setLineDash([5,4]);ctx.strokeStyle='#dc2626';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(tipA.x,tipA.y);ctx.lineTo(tipB.x,tipB.y);ctx.stroke();ctx.setLineDash([]);
+    lab((tipA.x+tipB.x)/2, g.L.y-22, 'щель — не дотягиваются', '#dc2626', 12.5);
+    lab((g.L.x+tipA.x)/2,g.L.y-15,'a',A_COL,11.5); lab((g.R.x+tipB.x)/2,g.R.y-15,'b',B_COL,11.5);
+  }
+}
+
+/* ───────── ПРАКТИКА: НАБОРЫ ───────── */
+function drawSetRow(triple, y, reveal){
+  const s=[...triple].sort((p,q)=>p-q), mx=s[2], sa=s[0], sb=s[1], so=sa+sb;
+  const scale=29, x0=232, bh=15, gap=8;
+  const v = so>mx?'tri':(so===mx?'deg':'gap');
+  const vcol = v==='tri'?'#16a34a':(v==='deg'?'#c2410c':'#dc2626');
+  // подпись набора
+  ctx.font='900 19px system-ui';ctx.fillStyle=reveal?vcol:'#1a1a2e';ctx.textAlign='left';ctx.textBaseline='middle';
+  ctx.fillText(triple.join(',  '), 34, y+bh+gap/2);
+  // длинная (серая)
+  roundRect(x0,y,mx*scale,bh,5);ctx.fillStyle=GREYD;ctx.fill();
+  ctx.font='700 10px system-ui';ctx.fillStyle='#fff';ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText('длинная '+mx,x0+6,y+bh/2);
+  // две короткие (синяя + оранжевая)
+  const y2=y+bh+gap;
+  roundRect(x0,y2,sa*scale,bh,5);ctx.fillStyle=A_COL;ctx.fill();
+  roundRect(x0+sa*scale,y2,sb*scale,bh,5);ctx.fillStyle=B_COL;ctx.fill();
+  ctx.fillStyle='#fff';ctx.fillText(''+sa,x0+4,y2+bh/2);ctx.fillText('+ '+sb,x0+sa*scale+4,y2+bh/2);
+  // маркер конца длинной
+  const mxEnd=x0+mx*scale;
+  ctx.setLineDash([4,3]);ctx.strokeStyle='#94a3b8';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(mxEnd,y-4);ctx.lineTo(mxEnd,y2+bh+4);ctx.stroke();ctx.setLineDash([]);
+  // вердикт после ответа
+  if(reveal){
+    const tag=v==='tri'?'✓ треугольник':(v==='deg'?'= отрезок':'✗ не дотянуться');
+    ctx.font='800 12px system-ui';ctx.fillStyle=vcol;ctx.textAlign='left';ctx.fillText(tag, x0+Math.max(mx,so)*scale+14, y+bh+gap/2-1);
+  }
+  ctx.textAlign='start';ctx.textBaseline='alphabetic';
+}
+function drawSets(sets, mode, reveal){
+  ctx.font='800 15px system-ui';ctx.fillStyle='#1a1a2e';ctx.textAlign='center';ctx.textBaseline='alphabetic';
+  ctx.fillText(mode==='no'?'Какой набор НЕ сложится в треугольник?':'Из какого набора треугольник ВСЁ-ТАКИ сложится?', W/2, 42);
+  ctx.textAlign='start';
+  let y=86; sets.forEach(s=>{ drawSetRow(s,y,reveal); y+=98; });
+  ctx.font='700 12px system-ui';ctx.fillStyle='#64748b';ctx.textAlign='center';
+  ctx.fillText('Нижняя полоска — две короткие палочки в ряд. Перекрывают верхнюю (длинную)?', W/2, 428);
+  ctx.textAlign='start';
+}
+
+/* ───────── СЦЕНА ───────── */
+function draw(){
+  const s=S(); bg();
+  if(s.phase==='lab') drawLab();
+  else drawSets(s.sets, s.mode, stepResolved);
+  noteFor();
+}
+function noteFor(){
+  const s=S(); let t='',col='#475569';
+  if(s.phase==='lab'){
+    if(proved.rule){ t='Треугольник есть, когда самая длинная короче суммы двух других.';col='#15803d'; }
+    else { const g=labGeom(); t = g.state==='tri'?'Сейчас складывается: a + b больше основания c.':(g.state==='deg'?'Ровно равно — вышел отрезок, не треугольник.':'Не дотягиваются: a + b меньше основания c.'); }
+  }
+  else if(s.phase==='findno'){ t = proved.no235?'Из 2, 3, 5 треугольник не выйдет: 5 = 2 + 3.':'Где две короткие НЕ дотягиваются до длинной?'; if(proved.no235)col='#15803d'; }
+  else { t = proved.yes346?'Из 3, 4, 6 выйдет: 3 + 4 = 7 больше 6.':'Где две короткие перекрывают длинную?'; if(proved.yes346)col='#15803d'; }
+  noteLine(t,col);
+}
+
+/* ───────── ВЫБОР ───────── */
+function asmCards(){return S().cards||[]}
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+function renderPool(){
+  const box=document.getElementById('opts');box.innerHTML='';
+  asmCards().forEach(c=>{ if(asmDone.includes(c.id))return;
+    const b=document.createElement('button');b.type='button';b.className='pcard';b.innerHTML=c.txt;
+    b.addEventListener('click',()=>pickCard(c.id,b));box.appendChild(b); });
+}
+function renderChain(){
+  const box=document.getElementById('steps');box.innerHTML='';
+  for(let i=0;i<si;i++){ if(!STEPS[i].stepNote)continue; const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">✓</span>'+STEPS[i].stepNote;box.appendChild(d); }
+  if(si>=NS)return;
+  const real=asmDone.filter(id=>{const c=asmCards().find(x=>x.id===id);return c&&!c.trap;});
+  if(!real.length){ const e=document.createElement('div');e.className='chempty';e.textContent=si===0?'Ответь на вопрос справа.':'Выбери верный набор.';box.appendChild(e); return; }
+  real.forEach(id=>{ const c=asmCards().find(x=>x.id===id); const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">✓</span>'+(c.ok||c.txt);box.appendChild(d); });
+}
+function pickCard(id,btn){
+  if(stepResolved)return;
+  const c=asmCards().find(x=>x.id===id); if(!c)return;
+  if(c.trap){ mistakes++; if(!asmDead.includes(id))asmDead.push(id); log('distractor',{id}); if(btn&&btn.classList){btn.classList.add('shake');setTimeout(()=>btn.classList.remove('shake'),450);} setMsg(c.trap,'err'); return; }
+  asmDone.push(id); proved[id]=true; log('step',{id});
+  renderPool(); renderChain();
+  setMsg(c.ok||'Верно.','ok'); advanceReady();
+}
+function advanceReady(){ stepResolved=true; const nb=document.getElementById('nextBtn'); nb.style.display='inline-block'; nb.textContent = si<NS-1?'Дальше →':'Итоги →'; }
+
+/* ───────── НАВИГАЦИЯ ───────── */
+function givenFor(s){
+  if(s.phase==='lab') return '<b>Три палочки.</b> Основание c закреплено и оно самое длинное. Палочки a и b откидываются от его концов.';
+  return '<b>Правило:</b> треугольник есть, если самая длинная сторона короче суммы двух других.';
+}
+function showStep(){
+  const s=S();
+  document.getElementById('pf').style.width=(si/NS*100)+'%';
+  document.getElementById('pnum').textContent='Шаг '+(si+1)+' из '+NS;
+  document.getElementById('taskText').innerHTML=s.task;
+  document.getElementById('badge').textContent=s.badge;
+  document.getElementById('givenBox').innerHTML=givenFor(s);
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('sliderWrap').style.display = s.phase==='lab'?'block':'none';
+  clearOpts(); stepResolved=false;
+  if(s.phase==='lab'){ sideA=160;sideB=150; const a=document.getElementById('aVal'),b=document.getElementById('bVal'); if(a)a.textContent='160'; if(b)b.textContent='150'; const as=document.getElementById('aSlider'),bs=document.getElementById('bSlider'); if(as)as.value=160; if(bs)bs.value=150; }
+  asmDone=[]; asmDead=[]; renderPool(); renderChain();
+  setMsg(s.phase==='lab'?'Двигай ползунки и следи за табло. Потом ответь: когда складывается треугольник?':'Сравни наборы и выбери верный. Ошибёшься — объясню.','info');
+  log('step_start',{phase:s.phase});
+}
+function nextTask(){ if(si<NS-1){si++;showStep()} else finish() }
+function resetTask(){ log('reset'); si=0;results=[];mistakes=0;hintsUsed=0;asmDone=[];asmDead=[];proved={};sideA=160;sideB=150;showStep() }
+
+function showHint(){
+  if(stepResolved)return;
+  hintsUsed++;log('hint');
+  const hb=document.getElementById('hintbox');const s=S();let h='';
+  if(s.phase==='lab') h='Положи две палочки в ряд: если вместе они длиннее основания — дотянутся и встретятся (треугольник). Если короче — щель. Ровно равны — лягут в линию (отрезок).';
+  else if(s.phase==='findno') h='Сложи две меньшие в каждом наборе. Где их сумма НЕ больше самой длинной — там треугольника нет. Загляни на 2, 3, 5.';
+  else h='Сложи две меньшие. Где сумма больше самой длинной — там треугольник есть. Загляни на 3, 4, 6.';
+  hb.innerHTML='💡 '+h;hb.style.display='block';
+}
+
+function finish(){
+  results.push(mistakes===0?'g':(mistakes<=2?'y':'r'));
+  log('finish',{mistakes,score:results[0]});
+  const st=lS();st.runs=(st.runs||0)+1;st.passed=true;if(results[0]==='g')st.best=Math.max(st.best||0,1);sS(st);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent='∎';
+  document.getElementById('finLbl').textContent =
+    mistakes===0?'Чисто! Неравенство треугольника поймано.':
+    mistakes<=2?'Готово — пара заминок по дороге.':
+    'Готово, но стоит пройти ещё раз — особенно про вырожденный случай (строгое «меньше»).';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){ si=0;results=[];mistakes=0;hintsUsed=0;asmDone=[];asmDead=[];proved={};sideA=160;sideB=150;document.getElementById('fin').style.display='none';document.getElementById('mainArea').style.display='grid';document.getElementById('bar').style.display='flex';showStep() }
+
+/* ползунки */
+(function(){
+  const as=document.getElementById('aSlider'), bs=document.getElementById('bSlider');
+  if(as)as.addEventListener('input',()=>{sideA=+as.value;const v=document.getElementById('aVal');if(v)v.textContent=sideA;});
+  if(bs)bs.addEventListener('input',()=>{sideB=+bs.value;const v=document.getElementById('bVal');if(v)v.textContent=sideB;});
+})();
+
+/* старт */
+log('start');
+showStep();
+(function loop(){ draw(); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

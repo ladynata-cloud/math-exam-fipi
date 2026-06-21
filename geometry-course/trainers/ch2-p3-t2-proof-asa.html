@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Почему точка C не может быть другой · второй признак</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.poolTtl{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:800;margin:13px 2px 7px}
+.pool{display:flex;flex-direction:column;gap:8px}
+.pcard{text-align:left;border:1.5px solid #d1d5db;border-radius:11px;background:#fff;padding:11px 13px;font:600 13px/1.5 system-ui;color:#1f2937;cursor:pointer;width:100%}
+.pcard:hover{border-color:#2d70b3;background:#f0f7ff}
+.pcard.dead{opacity:.5;text-decoration:line-through;pointer-events:none;background:#fef2f2;border-color:#fecaca}
+.pcard.pulse{border-color:#2d70b3;box-shadow:0 0 0 3px #2d70b333;animation:pl 1s infinite}
+@keyframes pl{0%,100%{box-shadow:0 0 0 3px #2d70b333}50%{box-shadow:0 0 0 6px #2d70b31a}}
+.pcard.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.side{padding:16px;display:flex;flex-direction:column;gap:13px}
+.card{border:1px solid #e5e2d9;border-radius:13px;padding:13px 14px;background:#fdfcf8}
+.card h2{margin:0 0 7px;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:#64748b}
+.chain{display:flex;flex-direction:column;gap:6px}
+.chitem{font-size:12.5px;line-height:1.45;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:9px;padding:8px 10px;color:#14532d}
+.chitem .n{font-weight:900;color:#16a34a;margin-right:4px}
+.chempty{font-size:12.5px;color:#94a3b8;font-style:italic}
+.msg{border-radius:11px;padding:11px 13px;font-size:13.5px;line-height:1.5;display:none}
+.msg.show{display:block}
+.msg.info{background:#eef4fb;color:#1e3a5f}
+.msg.ok{background:#ecfdf5;color:#14532d}
+.msg.err{background:#fef2f2;color:#991b1b}
+.msg.warn{background:#fff7ed;color:#9a3412}
+.small{font-size:12.5px;line-height:1.55;color:#475569;margin:0}
+.small b{color:#334155}
+.expBtn{display:none;width:100%;border:1.5px dashed #c2410c;border-radius:11px;background:#fff7ed;color:#9a3412;padding:10px;font-weight:800;font-size:13px;cursor:pointer}
+.expBtn:hover{background:#ffedd5}
+.bar{display:flex;gap:9px;padding:13px 16px;background:#f3f0e8;border-top:1px solid #e5e2d9;flex-wrap:wrap;align-items:center}
+.bar button{border:0;border-radius:10px;padding:10px 15px;font-size:13.5px;font-weight:800;cursor:pointer;background:#e2e8f0;color:#334155}
+.bar button:hover{background:#cbd5e1}
+.bar .next{margin-left:auto;background:#2d70b3;color:#fff;display:none}
+.bar .next:hover{background:#235a92}
+.fin{display:none;padding:30px 22px;text-align:center}
+.big{font-size:38px;font-weight:900;color:#1a1a2e}
+.lbl{font-size:14px;color:#64748b;margin-top:6px}
+.law{max-width:600px;margin:18px auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14.5px;line-height:1.6;color:#14532d}
+.law b{color:#166534}
+@media(max-width:820px){
+  body{padding:8px}
+  .main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}
+  .side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">🔺 Почему точка C не может быть другой</div>
+      <div class="sub">Глава II · §3 · тренажёр 2 из 5 — доказательство второго признака</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Соберите доказательство</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="430"></canvas></div>
+    <aside class="side">
+      <div class="card">
+        <h2 id="poolTtl">Какой шаг следующий? Нажмите карточку</h2>
+        <div class="pool" id="pool"></div>
+        <button class="expBtn" id="expBtn" onclick="toggleExp()">🔧 А вдруг C съедет по лучу? Проверить</button>
+      </div>
+      <div class="card">
+        <h2>Доказательство</h2>
+        <div class="chain" id="chain"><div class="chempty">Шагов пока нет — выберите первый.</div></div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div class="card">
+        <h2>Правила игры</h2>
+        <p class="small">Среди карточек есть <b>две лишних</b> — они звучат убедительно, но доказательству не принадлежат. Порядок важен: каждый шаг опирается на предыдущие.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big">▮ Теорема доказана</div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="law">
+      <b>Теорема (второй признак равенства треугольников).</b><br>
+      Если сторона и два прилежащих к ней угла одного треугольника соответственно равны стороне и двум прилежащим к ней углам другого треугольника, то такие треугольники равны.<br><br>
+      Доказательство — наложение. Сторона AB ложится на равную A₁B₁; равные углы A и B поворачивают лучи AC и BC точно на лучи A₁C₁ и B₁C₁. А две пересекающиеся прямые имеют <b>ровно одну</b> общую точку — поэтому вершина C обязана совпасть с C₁. Стороны AC и BC мы не задавали и не измеряли: их «привели на место» сами углы.
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="next" style="display:inline-block" onclick="restart()">Собрать ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button onclick="showHint()">💡 Подсказка</button>
+    <button onclick="restart()">↺ Сначала</button>
+    <button id="nextBtn" class="next" onclick="toQuiz()">Дальше →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС И ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch2-p3-t2-proof-asa';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:99,events:[]}}catch{return{runs:0,best:99,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── КАРТОЧКИ ДОКАЗАТЕЛЬСТВА ───────── */
+const CARDS=[
+ {id:'overlay',need:[],
+  txt:'Наложим △ABC на △A₁B₁C₁ так, чтобы A совместилась с A₁, сторона AB легла на равную ей A₁B₁, а вершины C и C₁ оказались по одну сторону от прямой AB.',
+  early:'',
+  ok:'Сторона AB легла на A₁B₁ — это опора наложения. AB = A₁B₁, поэтому B совпала с B₁.'},
+ {id:'rayA',need:['overlay'],
+  txt:'Так как ∠A = ∠A₁, луч AC ложится на луч A₁C₁.',
+  early:'Сначала наложите сторону AB — пока не с чего откладывать угол A.',
+  ok:'Равный угол A повернул луч AC точно на луч A₁C₁.'},
+ {id:'rayB',need:['overlay'],
+  txt:'Так как ∠B = ∠B₁, луч BC ложится на луч B₁C₁.',
+  early:'Сначала наложите сторону AB — пока не с чего откладывать угол B.',
+  ok:'Равный угол B повернул луч BC точно на луч B₁C₁.'},
+ {id:'cross',need:['rayA','rayB'],
+  txt:'Вершина C лежит сразу на обоих лучах. Две пересекающиеся прямые имеют только одну общую точку — значит, C совпадает с C₁.',
+  early:'Чтобы поймать C пересечением, нужны оба луча — и из A, и из B. Отложите сначала оба равных угла.',
+  ok:'Вот оно, сердце доказательства: два луча дают единственную точку — C обязана лечь на C₁.'},
+ {id:'fin',need:['cross'],
+  txt:'Все три вершины совместились, следовательно △ABC = △A₁B₁C₁.',
+  early:'Вывод — в самом конце, когда совместились все вершины.',
+  ok:'Доказательство собрано: треугольники равны по определению равенства.'},
+ {id:'dMeasure',distract:'Лишний шаг и не доказательство: в признаке ничего не измеряют. А ∠C совпадёт сам — как следствие того, что совпали все вершины.',
+  txt:'Измерим третий угол: ∠C = ∠C₁ — значит, и он равен.'},
+ {id:'dSide',distract:'Рассуждение задом наперёд: равенство сторон AC = A₁C₁ нам НЕ дано — это как раз то, что мы доказываем. Во втором признаке даны сторона AB и два угла, а не стороны AC и BC.',
+  txt:'AC = A₁C₁, поэтому точка C совместится с точкой C₁.'}
+];
+
+/* ───────── ГЕОМЕТРИЯ ───────── */
+function triASA(AB,aA,aB){const tA=Math.tan(aA*Math.PI/180),tB=Math.tan(aB*Math.PI/180);const x=AB*tB/(tA+tB),y=-x*tA;return [{x:0,y:0},{x:AB,y:0},{x:+x.toFixed(2),y:+y.toFixed(2)}];}
+const SHAPE=triASA(180,48,67);                     // разносторонний (углы 48,67,65)
+const TGT_ST={x:330,y:300,a:-0.12,k:1};            // целевой △A₁B₁C₁ (контур)
+const SRC_ST={x:120,y:250,a:0.25,k:1};             // старт подвижного △ABC (для анимации)
+function applyTo(tri,st){const ca=Math.cos(st.a),sa=Math.sin(st.a);return tri.map(p=>{const x=p.x,y=p.y*st.k;return {x:x*ca-y*sa+st.x,y:x*sa+y*ca+st.y};});}
+function lerpSt(p){   // интерполяция старт→цель для анимации наложения
+  const e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+  return {x:SRC_ST.x+(TGT_ST.x-SRC_ST.x)*e, y:SRC_ST.y+(TGT_ST.y-SRC_ST.y)*e,
+          a:SRC_ST.a+(TGT_ST.a-SRC_ST.a)*e, k:1};
+}
+
+/* ───────── СОСТОЯНИЕ ───────── */
+let order=[], done=[], dead=[], mistakes=0, hintId=null, quizDone=false;
+let ovP=0, ovAnim=null;
+let fxRayA=0, fxRayB=0, fxCross=0, fxFin=0;
+let lastStep=null;        // id последнего сделанного шага — он остаётся «тихо светиться»
+let expOn=false, expT=0.5;   // мини-эксперимент: положение C вдоль луча (0.5 = в гнезде)
+
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+let W=640,H=430;
+(function dpr(){const r=Math.min(window.devicePixelRatio||1,2);cv.width=W*r;cv.height=H*r;ctx.scale(r,r);cv.style.width='100%';})();
+
+function has(id){return done.includes(id);}
+function pulse(t){return t?Math.max(0,1-(Date.now()-t)/900):0;}
+function flash(t){return t?Math.max(0,1-(Date.now()-t)/520):0;}   // резкая вспышка ~0.5с
+function breathe(){return 0.5+0.5*Math.sin(Date.now()/520);}      // тихое дыхание
+/* яркость элемента: на вспышке — ярко; если это последний шаг — тихо дышит; иначе спокойно */
+function glow(stepId,fxTime){
+  const f=flash(fxTime);
+  if(f>0.02) return 0.62+0.38*f;                  // момент шага — вспышка
+  if(lastStep===stepId) return 0.45+0.22*breathe(); // последний шаг — дыхание
+  return 0.42;                                     // пройденный, не последний — спокойно
+}
+
+/* ───────── ОТРИСОВКА ───────── */
+function tickM(p1,p2,n,col){
+  const mx=(p1.x+p2.x)/2,my=(p1.y+p2.y)/2,dx=p2.x-p1.x,dy=p2.y-p1.y,L=Math.hypot(dx,dy)||1;
+  const ux=dx/L,uy=dy/L,nx=-uy,ny=ux;ctx.strokeStyle=col;ctx.lineWidth=2.2;
+  for(let i=0;i<n;i++){const o=(i-(n-1)/2)*5;ctx.beginPath();ctx.moveTo(mx+ux*o-nx*6,my+uy*o-ny*6);ctx.lineTo(mx+ux*o+nx*6,my+uy*o+ny*6);ctx.stroke();}
+}
+function arcN(v,p1,p2,col,n){
+  for(let i=0;i<n;i++){let a1=Math.atan2(p1.y-v.y,p1.x-v.x),a2=Math.atan2(p2.y-v.y,p2.x-v.x);
+    let d=a2-a1;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;
+    ctx.strokeStyle=col;ctx.lineWidth=2.2;ctx.beginPath();ctx.arc(v.x,v.y,17+i*5,a1,a1+d,d<0);ctx.stroke();}
+}
+function lab(p,txt,cx,cy,col){
+  const ux=p.x-cx,uy=p.y-cy,L=Math.hypot(ux,uy)||1,x=p.x+ux/L*18,y=p.y+uy/L*18+5;
+  ctx.font='900 15px system-ui';ctx.textAlign='center';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(250,248,242,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);
+}
+function bg(){
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill();}
+}
+function expGeom(){
+  const tp=applyTo(SHAPE,TGT_ST);
+  const A=tp[0], B=tp[1], C0=tp[2];
+  const dAC={x:C0.x-A.x,y:C0.y-A.y}, Lac=Math.hypot(dAC.x,dAC.y);
+  const uAC={x:dAC.x/Lac,y:dAC.y/Lac};
+  const tlen=Lac*(0.55+(1.5-0.55)*expT);
+  const C={x:A.x+uAC.x*tlen, y:A.y+uAC.y*tlen};
+  const correct=Math.abs(tlen-Lac)<6;
+  return {A,B,C0,Lac,uAC,tlen,C,correct};
+}
+function drawExperiment(){
+  // мини-эксперимент: сторона AB зафиксирована, два луча-«рельсы» (из A под ∠A и из B под ∠B₁)
+  // видны всё время. Вершина C ездит по лучу из A; угол B сходится только в точке пересечения рельс.
+  bg();
+  const {A,B,C0,Lac,uAC,C,correct}=expGeom();
+  // направление правильного луча из B (к C0)
+  const dBC={x:C0.x-B.x,y:C0.y-B.y}, Lbc=Math.hypot(dBC.x,dBC.y), uBC={x:dBC.x/Lbc,y:dBC.y/Lbc};
+  // ЛУЧ-РЕЛЬСА из A (фиолетовый, продлён за C0)
+  const Ea={x:A.x+uAC.x*(Lac+50), y:A.y+uAC.y*(Lac+50)};
+  ctx.strokeStyle='rgba(124,58,237,.5)';ctx.lineWidth=2;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(Ea.x,Ea.y);ctx.stroke();
+  // ЛУЧ-РЕЛЬСА из B (оранжевый, продлён за C0) — куда C ДОЛЖНА попасть
+  const Eb={x:B.x+uBC.x*(Lbc+50), y:B.y+uBC.y*(Lbc+50)};
+  ctx.strokeStyle='rgba(217,119,6,.5)';ctx.lineWidth=2;
+  ctx.beginPath();ctx.moveTo(B.x,B.y);ctx.lineTo(Eb.x,Eb.y);ctx.stroke();
+  ctx.lineCap='butt';
+  // точка пересечения рельс (правильное гнездо) — тихий маркер
+  ctx.beginPath();ctx.arc(C0.x,C0.y,5,0,7);ctx.strokeStyle='rgba(22,163,74,.55)';ctx.lineWidth=1.6;ctx.setLineDash([3,3]);ctx.stroke();ctx.setLineDash([]);
+  // сторона AB
+  ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.strokeStyle='#2d70b3';ctx.lineWidth=3.2;ctx.lineCap='round';ctx.stroke();ctx.lineCap='butt';
+  // AC (живая) — поверх рельсы A
+  ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(C.x,C.y);ctx.strokeStyle='#0f6e56';ctx.lineWidth=2.8;ctx.stroke();
+  // BC (живая) — её угол при B меняется; красная, пока C не на рельсе B
+  ctx.beginPath();ctx.moveTo(B.x,B.y);ctx.lineTo(C.x,C.y);ctx.strokeStyle=correct?'#0f6e56':'#dc2626';ctx.lineWidth=2.8;ctx.stroke();
+  arcN(A,B,C,'#d97706',1);
+  arcN(B,A,C,correct?'#16a34a':'#dc2626',2);
+  [['A',A],['B',B]].forEach(([n,P])=>{ctx.beginPath();ctx.arc(P.x,P.y,4.5,0,7);ctx.fillStyle='#1a1a2e';ctx.fill();});
+  // приглашающее кольцо вокруг C, пока не в гнезде
+  if(!correct){const pr=11+2*Math.sin(Date.now()/300);
+    ctx.beginPath();ctx.arc(C.x,C.y,pr,0,7);ctx.strokeStyle='rgba(45,112,179,.5)';ctx.lineWidth=1.8;ctx.stroke();}
+  ctx.beginPath();ctx.arc(C.x,C.y,8,0,7);ctx.fillStyle=correct?'#16a34a':'#2d70b3';ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=2.4;ctx.stroke();
+  const cx=(A.x+B.x+C.x)/3,cy=(A.y+B.y+C.y)/3;
+  lab(A,'A',cx,cy,'#1a1a2e');lab(B,'B',cx,cy,'#1a1a2e');lab(C,'C',cx,cy,correct?'#15803d':'#235a92');
+  // подпись
+  ctx.font='800 13px system-ui';ctx.textAlign='center';
+  ctx.fillStyle=correct?'#0f6e56':'#b91c1c';
+  ctx.fillText(correct?'C попала на пересечение лучей: ∠B = ∠B₁ ✓ — только здесь треугольник сходится'
+                      :'C на луче из A, но не на луче из B — ∠B сломан: ∠B ≠ ∠B₁', W/2, 408);
+}
+function draw(){
+  if(expOn){ drawExperiment(); return; }
+  bg();
+  const tp=applyTo(SHAPE,TGT_ST), st=lerpSt(ovP), mp=applyTo(SHAPE,st);
+  const merged=ovP>=1;
+  const tcx=(tp[0].x+tp[1].x+tp[2].x)/3,tcy=(tp[0].y+tp[1].y+tp[2].y)/3;
+  const mcx=(mp[0].x+mp[1].x+mp[2].x)/3,mcy=(mp[0].y+mp[1].y+mp[2].y)/3;
+  // целевой контур
+  ctx.beginPath();tp.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.closePath();
+  ctx.fillStyle='rgba(26,26,46,.05)';ctx.fill();
+  ctx.setLineDash([7,5]);ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2.4;ctx.stroke();ctx.setLineDash([]);
+  tickM(tp[0],tp[1],1,'#1a1a2e');arcN(tp[0],tp[1],tp[2],'#d97706',1);arcN(tp[1],tp[0],tp[2],'#d97706',2);
+  // лучи: появляются на своём шаге со вспышкой, остаются видны.
+  // ВАЖНО: луч ложится на сторону контура — чтобы он не сливался с пунктиром,
+  // рисуем его ярко, толще пунктира и ПРОДЛЕВАЕМ за вершину C₁ (это луч, а не отрезок).
+  if(merged){
+    const ext=(P0,P1)=>{const dx=P1.x-P0.x,dy=P1.y-P0.y,L=Math.hypot(dx,dy)||1;return {x:P1.x+dx/L*46,y:P1.y+dy/L*46};};
+    if(has('rayA')){
+      const fa=flash(fxRayA), g=Math.min(1,0.7+0.3*fa);
+      const E=ext(tp[0],tp[2]);
+      ctx.strokeStyle='rgba(124,58,237,'+g+')';ctx.lineWidth=fa>0.02?4.4:3.4;ctx.lineCap='round';
+      ctx.beginPath();ctx.moveTo(tp[0].x,tp[0].y);ctx.lineTo(E.x,E.y);ctx.stroke();}
+    if(has('rayB')){
+      const fb=flash(fxRayB), g=Math.min(1,0.7+0.3*fb);
+      const E=ext(tp[1],tp[2]);
+      ctx.strokeStyle='rgba(217,119,6,'+g+')';ctx.lineWidth=fb>0.02?4.4:3.4;ctx.lineCap='round';
+      ctx.beginPath();ctx.moveTo(tp[1].x,tp[1].y);ctx.lineTo(E.x,E.y);ctx.stroke();}
+    ctx.lineCap='butt';
+  }
+  // подвижный треугольник
+  const finGlow=has('fin');
+  ctx.beginPath();mp.forEach((q,i)=>i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y));ctx.closePath();
+  ctx.fillStyle=finGlow?'rgba(22,163,74,.32)':'rgba(45,112,179,.26)';ctx.fill();
+  ctx.strokeStyle=finGlow?'#16a34a':'#2d70b3';ctx.lineWidth=2.6;ctx.stroke();
+  tickM(mp[0],mp[1],1,finGlow?'#16a34a':'#2d70b3');
+  arcN(mp[0],mp[1],mp[2],'#d97706',1);arcN(mp[1],mp[0],mp[2],'#d97706',2);
+  // вспышка C при cross
+  // подсветка стороны AB, когда overlay — последний шаг
+  if(merged && lastStep==='overlay'){
+    const g=glow('overlay',0);
+    ctx.strokeStyle='rgba(45,112,179,'+(0.5+0.4*breathe())+')';ctx.lineWidth=4;
+    ctx.beginPath();ctx.moveTo(tp[0].x,tp[0].y);ctx.lineTo(tp[1].x,tp[1].y);ctx.stroke();
+  }
+  // точки
+  mp.forEach((q,i)=>{
+    const hitC=(i===2&&has('cross'))||finGlow;
+    let extra=0;
+    if(i===2&&has('cross')){
+      const f=flash(fxCross);
+      if(f>0.02) extra=f*6;                          // вспышка схлопывания
+      else if(lastStep==='cross') extra=2+1.5*breathe(); // дыхание последнего шага
+    }
+    ctx.beginPath();ctx.arc(q.x,q.y,4+extra,0,7);
+    ctx.fillStyle=hitC?'#16a34a':'#2d70b3';ctx.fill();
+    if(i===2&&has('cross')&&lastStep==='cross'){      // тихое кольцо вокруг последней C
+      ctx.beginPath();ctx.arc(q.x,q.y,9+2*breathe(),0,7);
+      ctx.strokeStyle='rgba(22,163,74,'+(0.3+0.25*breathe())+')';ctx.lineWidth=1.6;ctx.stroke();
+    }
+  });
+  if(!merged){
+    ['A','B','C'].forEach((t,i)=>lab(mp[i],t,mcx,mcy,'#2d70b3'));
+    ['A₁','B₁','C₁'].forEach((t,i)=>lab(tp[i],t,tcx,tcy,'#1a1a2e'));
+  }else{
+    lab(tp[0],'A = A₁',tcx,tcy,'#1a1a2e');
+    lab(tp[1],'B = B₁',tcx,tcy,'#1a1a2e');
+    lab(tp[2],has('cross')?'C = C₁':'C₁',tcx,tcy,has('cross')?'#16a34a':'#1a1a2e');
+  }
+  if(finGlow){ctx.font='900 16px system-ui';ctx.textAlign='center';ctx.fillStyle='#15803d';
+    ctx.fillText('△ABC = △A₁B₁C₁   ▮ ч.т.д.',W/2,32);}
+}
+(function loop(){draw();requestAnimationFrame(loop);})();
+
+/* ───────── ПЕРЕТАСКИВАНИЕ C В ЭКСПЕРИМЕНТЕ ───────── */
+let expDrag=false;
+function evPt(e){const r=cv.getBoundingClientRect(),k=W/(r.width||W);return {x:(e.clientX-r.left)*k,y:(e.clientY-r.top)*k};}
+function expSetFromPoint(p){
+  const g=expGeom();
+  // проекция пальца на луч из A по направлению uAC → длина вдоль луча
+  let t=(p.x-g.A.x)*g.uAC.x+(p.y-g.A.y)*g.uAC.y;
+  const lo=g.Lac*0.55, hi=g.Lac*1.5;
+  t=Math.max(lo,Math.min(hi,t));
+  expT=(t-lo)/(hi-lo);
+  const sl=document.getElementById('expSlider'); if(sl)sl.value=Math.round(expT*100);
+}
+cv.addEventListener('pointerdown',e=>{
+  if(!expOn)return;
+  const p=evPt(e), g=expGeom();
+  const k=W/(cv.getBoundingClientRect().width||W);
+  if(Math.hypot(p.x-g.C.x,p.y-g.C.y)<(e.pointerType==='touch'?34:24)*Math.max(1,k)){
+    expDrag=true;try{cv.setPointerCapture(e.pointerId);}catch(_){}
+  }
+});
+cv.addEventListener('pointermove',e=>{ if(expDrag&&expOn) expSetFromPoint(evPt(e)); });
+function endExpDrag(e){expDrag=false;try{cv.releasePointerCapture(e.pointerId);}catch(_){}}
+cv.addEventListener('pointerup',endExpDrag);
+cv.addEventListener('pointercancel',endExpDrag);
+
+/* ───────── ПУЛ И ЦЕПОЧКА ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg show '+cls;}
+function renderPool(){
+  const pool=document.getElementById('pool');pool.innerHTML='';
+  order.forEach(id=>{
+    if(done.includes(id))return;
+    const c=CARDS.find(x=>x.id===id);
+    const b=document.createElement('button');
+    b.className='pcard'+(dead.includes(id)?' dead':'')+(hintId===id?' pulse':'');
+    b.textContent=c.txt;b.onclick=()=>pick(id,b);
+    pool.appendChild(b);
+  });
+  document.getElementById('poolTtl').style.display=done.includes('fin')?'none':'block';
+  // кнопка эксперимента доступна, когда оба луча выбраны, но cross ещё нет
+  document.getElementById('expBtn').style.display=(has('rayA')&&has('rayB')&&!has('cross'))?'block':'none';
+}
+function renderChain(){
+  const ch=document.getElementById('chain');
+  if(!done.length){ch.innerHTML='<div class="chempty">Шагов пока нет — выберите первый.</div>';return;}
+  ch.innerHTML=done.map((id,i)=>{const c=CARDS.find(x=>x.id===id);
+    return'<div class="chitem"><span class="n">'+(i+1)+'.</span> '+c.txt+'</div>';}).join('');
+}
+function pick(id,btn){
+  const c=CARDS.find(x=>x.id===id);hintId=null;
+  if(c.distract){mistakes++;dead.push(id);log('distractor',{id});btn.classList.add('shake');setMsg(c.distract,'err');setTimeout(renderPool,420);return;}
+  if(!c.need.every(n=>done.includes(n))){mistakes++;log('early',{id});btn.classList.add('shake');setMsg(c.early,'warn');setTimeout(()=>btn.classList.remove('shake'),450);return;}
+  done.push(id);log('step',{id});setMsg(c.ok,'ok');lastStep=id;
+  if(id==='overlay'){const t0=performance.now();
+    ovAnim=function step(now){const p=Math.min(1,(now-t0)/1100);ovP=p;if(p<1)requestAnimationFrame(step);else ovAnim=null;};
+    requestAnimationFrame(ovAnim);}
+  if(id==='rayA')fxRayA=Date.now();
+  if(id==='rayB')fxRayB=Date.now();
+  if(id==='cross'){fxCross=Date.now();expOn=false;showExpSlider(false);}
+  if(id==='fin'){fxFin=Date.now();
+    document.getElementById('successBar').textContent='✓ Доказательство собрано! Все '+done.length+' шагов на месте.';
+    document.getElementById('successBar').style.display='block';
+    document.getElementById('nextBtn').style.display='inline-block';
+    setMsg('Готово. Стороны AC и BC мы <b>не задавали</b> — их привели на место сами углы. Нажмите «Дальше».','ok');
+    log('proof_done',{mistakes});}
+  renderPool();renderChain();
+}
+function showHint(){
+  const cand=order.find(id=>{const c=CARDS.find(x=>x.id===id);
+    return!done.includes(id)&&!dead.includes(id)&&!c.distract&&c.need.every(n=>done.includes(n));});
+  if(!cand)return;hintId=cand;log('hint');setMsg('Подсвечен шаг, который можно сделать сейчас.','info');renderPool();
+}
+
+/* ───────── МИНИ-ЭКСПЕРИМЕНТ ───────── */
+function toggleExp(){
+  expOn=!expOn;
+  if(expOn){expT=0.78;log('exp_open');
+    setMsg('Тяните точку C прямо по чертежу (или ползунком внизу карточки). Сторона AB и угол A держат луч — но как только C сходит с нужной точки, ломается угол B.','warn');
+    showExpSlider(true);
+  }else{showExpSlider(false);setMsg('Вернулись к сборке. Теперь ясно, почему C поймана пересечением — выберите карточку.','info');}
+}
+function showExpSlider(on){
+  let box=document.getElementById('expSliderBox');
+  if(on){
+    if(!box){box=document.createElement('div');box.id='expSliderBox';box.style.marginTop='8px';
+      box.innerHTML='<input type="range" id="expSlider" min="0" max="100" value="78" style="width:100%">';
+      document.getElementById('expBtn').after(box);
+      document.getElementById('expSlider').oninput=e=>{expT=e.target.value/100;};}
+    box.style.display='block';
+  }else if(box){box.style.display='none';}
+}
+
+/* ───────── КОНТРОЛЬНЫЙ ВОПРОС И ФИНАЛ ───────── */
+function toQuiz(){
+  if(quizDone){showFin();return;}
+  const w=document.getElementById('pool');
+  document.getElementById('expBtn').style.display='none';
+  showExpSlider(false);
+  document.getElementById('poolTtl').style.display='block';
+  document.getElementById('poolTtl').textContent='Контрольный вопрос: почему достаточно, что C лежит на двух лучах?';
+  document.getElementById('nextBtn').style.display='none';
+  const opts=shuffle([
+   {t:'Две пересекающиеся прямые имеют ровно одну общую точку — поэтому C однозначно определена пересечением лучей.',ok:true},
+   {t:'Потому что мы дополнительно измерили стороны AC и BC и они совпали.',ok:false,
+    why:'Стороны AC и BC во втором признаке не даны и не измеряются — C ловится именно пересечением двух лучей, а не равенством сторон.'},
+   {t:'Потому что у равных треугольников всё равно совпадает всё, это можно не доказывать.',ok:false,
+    why:'Это и есть то, что доказываем. Аргумент — единственность точки пересечения двух прямых, а не «равны, потому что равны».'}
+  ]);
+  w.innerHTML='';
+  opts.forEach(o=>{const b=document.createElement('button');b.className='pcard';b.textContent=o.t;
+    b.onclick=()=>{if(o.ok){quizDone=true;log('quiz_ok');setMsg('Точно. Единственность точки пересечения — вот что «прибивает» C.','ok');showFin();}
+      else{mistakes++;log('quiz_wrong');b.classList.add('shake','dead');setMsg(o.why,'err');}};
+    w.appendChild(b);});
+  setMsg('Выберите верное объяснение.','info');
+}
+function showFin(){
+  log('finish',{mistakes});
+  const s=lS();s.runs=(s.runs||0)+1;s.passed=true;if(mistakes<(s.best??99))s.best=mistakes;sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finLbl').textContent=
+    mistakes===0?'Собрано с первого раза, без единой ошибки!':
+    mistakes<=2?'Доказательство собрано. Ошибок по пути: '+mistakes+'.':
+    'Собрано, но с '+mistakes+' ошибками — стоит пересобрать ещё раз.';
+}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function restart(){
+  order=shuffle(CARDS.map(c=>c.id));
+  done=[];dead=[];mistakes=0;hintId=null;quizDone=false;ovP=0;expOn=false;
+  fxRayA=fxRayB=fxCross=fxFin=0;lastStep=null;
+  showExpSlider(false);
+  document.getElementById('fin').style.display='none';
+  document.getElementById('mainArea').style.display='grid';
+  document.getElementById('bar').style.display='flex';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('poolTtl').textContent='Какой шаг следующий? Нажмите карточку';
+  document.getElementById('badge').textContent='Соберите доказательство';
+  setMsg('Доказываем тем же наложением, что в тренажёре 1. С чего оно начинается?','info');
+  renderPool();renderChain();log('start');
+}
+restart();
+</script>
+</body>
+</html>

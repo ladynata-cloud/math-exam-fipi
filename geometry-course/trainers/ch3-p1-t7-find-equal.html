@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Докажи, что a ∥ b</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:manipulation}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.45}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.given{font-size:13px;line-height:1.5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:10px}
+.given b{color:#3730a3}
+.steps{font-size:12.5px;line-height:1.5;color:#334155}
+.steps .st{padding:6px 8px;border-left:3px solid #cbd5e1;margin:5px 0;background:#fff;border-radius:0 8px 8px 0}
+.steps .st.done{border-left-color:#16a34a;background:#f0fdf4}
+.steps .st b{color:#166534}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:750 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt:disabled{cursor:default}
+.opt.ok-pick{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.opt.bad-pick{background:#fee2e2;border-color:#dc2626;color:#991b1b}
+.opt.correct-reveal{background:#dcfce7;border-color:#16a34a;color:#14532d}
+.pool{display:flex;flex-direction:column;gap:7px;margin-top:4px}
+.pcard{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:10px 12px;font:650 13.5px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.pcard:hover{background:#f3f4f6}
+.pcard.hl{border-color:#7c3aed;box-shadow:0 0 0 2px #ede9fe}
+.pcard.shake{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.chain{display:flex;flex-direction:column;gap:5px;margin-top:4px}
+.chitem{background:#f0fdf4;border-left:3px solid #16a34a;border-radius:0 8px 8px 0;padding:7px 10px;font-size:12.5px;line-height:1.4;color:#14532d}
+.chitem .n{font-weight:900;color:#16a34a;margin-right:4px}
+.chempty{font-size:12.5px;color:#94a3b8;font-style:italic;padding:6px}
+.phtitle{font-size:12px;font-weight:800;color:#6d28d9;text-transform:uppercase;letter-spacing:.05em;margin:2px 0 4px}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:24px 22px;text-align:center}
+.fin .big{font-size:40px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:14px;height:14px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:640px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:13.5px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law ol{margin:8px 0;padding-left:20px}.law li{margin:3px 0}
+.bridge{margin-top:10px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">🔎 Докажи, что a ∥ b</div>
+      <div class="sub">Глава III · §1 · тренажёр 7 из 7 — копилка задач</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Найдём цель</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="420"></canvas></div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card">
+        <div class="given" id="givenBox"></div>
+      </div>
+      <div id="opts" class="opts"></div>
+      <div id="msg" class="msg info"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div class="card">
+        <h2>Ход доказательства</h2>
+        <div class="steps" id="steps"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Чтобы доказать a ∥ b, ищут при секущей одну из трёх ситуаций:</b>
+      <ol>
+        <li>накрест лежащие углы <b>равны</b>;</li>
+        <li>соответственные углы <b>равны</b>;</li>
+        <li>односторонние углы <b>в сумме дают 180°</b>.</li>
+      </ol>
+      Любого одного достаточно. А вот равенство <b>вертикальных</b> и сумма 180° у <b>смежных</b> выполняются всегда, при любых прямых, — сами по себе они параллельности не доказывают. Поэтому первый шаг любой такой задачи — понять, какая пара при секущей перед тобой.
+      <div class="bridge">§1 пройден полностью. Дальше — §2: аксиома параллельных и свойства. <a href="../index.html">К списку курса →</a></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="nextTask()">Следующий шаг →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС/ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch3-p1-t7-find-equal';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),step:si+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640,HT=420;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=HT*dpr;cv.style.aspectRatio=W+'/'+HT;ctx.scale(dpr,dpr);
+
+/* ───────── ГЕОМЕТРИЯ рис.108 (рассчитана) ─────────
+   b — верхняя прямая, a — нижняя, c — секущая (наклон вниз-влево).
+   Углы: ∠1 при a (внутр.-справа), ∠2 над b (справа), ∠3 под b (слева), ∠4 под b (справа).
+   Связи: ∠2 и ∠3 — вертикальные; ∠3 и ∠4 — смежные; ∠1 и ∠3 — накрест лежащие;
+          ∠1 и ∠2 — соответственные; ∠1 и ∠4 — односторонние.            */
+const aY=320, bY=130;
+const aP={x:60,y:aY}, bP={x:60,y:bY};
+const secAng=1.95;                       // луч секущей «вниз»
+const Pb={x:372,y:bY};                   // пересечение секущей с b
+const sdx=Math.cos(secAng), sdy=Math.sin(secAng);
+const Pa={x:Pb.x+sdx*((aY-bY)/sdy), y:aY}; // пересечение с a
+const secUp=secAng-Math.PI, secDown=secAng;
+const ANG={
+  1:{C:Pa, d1:0,        d2:secUp,  r:32},   // при a, внутр.-справа (как ∠2)
+  2:{C:Pb, d1:0,        d2:secUp,  r:32},   // над b, справа
+  3:{C:Pb, d1:Math.PI,  d2:secDown,r:32},   // под b, слева
+  4:{C:Pb, d1:secDown,  d2:0,      r:42}    // под b, справа (тупой)
+};
+
+/* ───────── ГЕНЕРАТОР РАУНДОВ ─────────
+   Каждый раунд: на чертеже даны ДВА угла с числами. Вопрос — следует ли a ∥ b
+   и по какому признаку. Все связи углов — те же, что доказаны в t5:
+   ∠1,∠3 — накрест лежащие; ∠1,∠2 — соответственные; ∠1,∠4 — односторонние;
+   ∠2,∠3 — вертикальные (равны всегда); ∠3,∠4 — смежные (180° всегда).        */
+const ORD={1:'первому',2:'второму',3:'третьему'};
+const SIGN_NAME={1:'накрест лежащие',2:'соответственные',3:'односторонние'};
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+function pickVal(){let v;do{v=rnd(48,132)}while(Math.abs(v-90)<6);return v}
+
+const TYPES=[
+ {key:'alt',  ids:[1,3], rel:'eq',  valid:true,  sign:1},
+ {key:'corr', ids:[1,2], rel:'eq',  valid:true,  sign:2},
+ {key:'coint',ids:[1,4], rel:'sum', valid:true,  sign:3},
+ {key:'vert', ids:[2,3], rel:'eq',  valid:false, trap:'vert'},
+ {key:'adj',  ids:[3,4], rel:'sum', valid:false, trap:'adj'}
+];
+
+function buildRound(t){
+  const v=pickVal(), v0=v, v1=(t.rel==='sum')?180-v:v;
+  const marks=[{id:t.ids[0],val:v0},{id:t.ids[1],val:v1}];
+  const given = t.rel==='eq'
+    ? 'Дано: ∠'+t.ids[0]+' = '+v0+'°, ∠'+t.ids[1]+' = '+v1+'°.'
+    : 'Дано: ∠'+t.ids[0]+' = '+v0+'° и ∠'+t.ids[1]+' = '+v1+'°.';
+  const correctSign = t.valid ? t.sign : 0;
+  const base=[
+    {sign:1, t:'Да, по 1-му признаку: накрест лежащие равны'},
+    {sign:2, t:'Да, по 2-му признаку: соответственные равны'},
+    {sign:3, t:'Да, по 3-му признаку: односторонние в сумме 180°'},
+    {sign:0, t:'Нет — по этому условию о параллельности судить нельзя'}
+  ];
+  const q=base.map(o=>{
+    const ok=o.sign===correctSign; let why='';
+    if(!ok){
+      if(t.valid){
+        if(o.sign===0) why='Наоборот: '+SIGN_NAME[t.sign]+(t.rel==='eq'?' равны':' в сумме дают 180°')+' ⟹ a ∥ b. Это '+ORD[t.sign]+' признак.';
+        else why='Здесь даны ∠'+t.ids[0]+' и ∠'+t.ids[1]+' — это '+SIGN_NAME[t.sign]+', а не '+SIGN_NAME[o.sign]+'. Параллельность следует, но по '+ORD[t.sign]+' признаку.';
+      }else{
+        why = t.trap==='vert'
+          ? '∠'+t.ids[0]+' и ∠'+t.ids[1]+' — вертикальные: они равны ВСЕГДА, при любых прямых. О параллельности это ничего не говорит.'
+          : '∠'+t.ids[0]+' и ∠'+t.ids[1]+' — смежные: их сумма 180° ВСЕГДА. Сама по себе она параллельности не доказывает.';
+      }
+    }
+    return {t:o.t, ok, why};
+  });
+  let okMsg, stepNote;
+  if(t.valid){
+    okMsg='Верно: '+SIGN_NAME[t.sign]+(t.rel==='eq'?' равны':' в сумме 180°')+' ⟹ a ∥ b по '+ORD[t.sign]+' признаку.';
+    stepNote=SIGN_NAME[t.sign]+(t.rel==='eq'?' равны':' в сумме 180°')+' ⟹ a ∥ b.';
+  }else if(t.trap==='vert'){
+    okMsg='Верно: ∠'+t.ids[0]+' и ∠'+t.ids[1]+' — вертикальные, равны всегда. Параллельность отсюда не следует.';
+    stepNote='∠'+t.ids[0]+', ∠'+t.ids[1]+' — вертикальные: равны всегда, о ∥ не говорят.';
+  }else{
+    okMsg='Верно: ∠'+t.ids[0]+' и ∠'+t.ids[1]+' — смежные, сумма 180° всегда. Параллельность отсюда не следует.';
+    stepNote='∠'+t.ids[0]+', ∠'+t.ids[1]+' — смежные: сумма 180° всегда, о ∥ не говорят.';
+  }
+  return {kind:'round', valid:t.valid, rel:t.rel, marks,
+    task:given+' <b>Следует ли отсюда, что a ∥ b?</b> Если да — по какому признаку?',
+    stepNote, q, okMsg};
+}
+function genRounds(){
+  const pool=[...TYPES];
+  pool.push(TYPES[rnd(0,2)]);           // +1 «годный» раунд для практики
+  let order=shuffle(pool);
+  for(let tries=0;tries<300;tries++){   // не допускаем двух одинаковых типов подряд
+    let bad=false;
+    for(let i=1;i<order.length;i++) if(order[i].key===order[i-1].key){bad=true;break;}
+    if(!bad)break;
+    order=shuffle(pool);
+  }
+  STEPS=order.map(buildRound);
+  STEPS.push({kind:'done', task:'Готово. Ты разобрал(а) все типы: три признака параллельности и две «всегда верные» ловушки — вертикальные и смежные.', stepNote:'∎ Признаки и ловушки разобраны.'});
+  NS=STEPS.length;
+}
+
+/* ───────── СОСТОЯНИЕ ───────── */
+let STEPS=[], NS=0;
+let si=0, results=[], mistakes=0, hintsUsed=0, stepResolved=false;
+const S=()=>STEPS[si];
+genRounds();
+
+/* ───────── ОТРИСОВКА ───────── */
+function bg(){
+  ctx.clearRect(0,0,W,HT);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,HT);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<HT;y+=25){ctx.beginPath();ctx.arc(x,y,1.05,0,7);ctx.fill()}
+}
+function line2(p,ang,col,wid){
+  const big=2000,dx=Math.cos(ang),dy=Math.sin(ang);
+  ctx.strokeStyle=col;ctx.lineWidth=wid||2.6;
+  ctx.beginPath();ctx.moveTo(p.x-dx*big,p.y-dy*big);ctx.lineTo(p.x+dx*big,p.y+dy*big);ctx.stroke();
+}
+function lab(x,y,t,col,s){ctx.font='900 '+(s||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(t,x,y);ctx.fillStyle=col;ctx.fillText(t,x,y);ctx.textBaseline='alphabetic';ctx.textAlign='start'}
+function dot(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function angArc(C,d1,d2,col,r,wid){
+  let df=d2-d1;while(df>Math.PI)df-=2*Math.PI;while(df<-Math.PI)df+=2*Math.PI;
+  ctx.strokeStyle=col;ctx.lineWidth=wid||3.4;ctx.lineCap='round';ctx.beginPath();
+  ctx.arc(C.x,C.y,r||20,Math.min(d1,d1+df),Math.max(d1,d1+df));ctx.stroke();ctx.lineCap='butt';
+}
+function bisOf(a){let df=a.d2-a.d1;while(df>Math.PI)df-=2*Math.PI;while(df<-Math.PI)df+=2*Math.PI;return a.d1+df/2}
+function drawAng(id,col,tick){
+  const a=ANG[id];angArc(a.C,a.d1,a.d2,col,a.r,3.6);
+  if(tick){const m=bisOf(a);ctx.strokeStyle=col;ctx.lineWidth=3;ctx.lineCap='round';ctx.beginPath();
+    ctx.moveTo(a.C.x+Math.cos(m)*(a.r-4),a.C.y+Math.sin(m)*(a.r-4));
+    ctx.lineTo(a.C.x+Math.cos(m)*(a.r+4),a.C.y+Math.sin(m)*(a.r+4));ctx.stroke();ctx.lineCap='butt'}
+}
+function angNum(id){const a=ANG[id];const m=bisOf(a);
+  lab(a.C.x+Math.cos(m)*(a.r+15), a.C.y+Math.sin(m)*(a.r+15), String(id), '#475569', 13)}
+
+function draw(){
+  bg();
+  const s=S();
+  const done = s.kind==='done';
+  const valid = !!s.valid;
+  const resolved = stepResolved;
+  const parallel = done || (resolved && valid);
+  const lineCol = parallel?'#16a34a':'#1a1a2e';
+  // прямые a, b и секущая c
+  line2(aP,0,lineCol,2.8); line2(bP,0,lineCol,2.8);
+  lab(W-22, aY-13,'a',lineCol,16); lab(W-22, bY-13,'b',lineCol,16);
+  line2(Pb,secAng,'#2d70b3',2.6);
+  const up={x:Math.cos(secUp),y:Math.sin(secUp)};
+  const cx=Pb.x+up.x*((50-Pb.y)/up.y);
+  lab(cx-16, 52,'c','#2d70b3',16);
+  dot(Pa.x,Pa.y,4,'#1a1a2e','#fffdf7'); dot(Pb.x,Pb.y,4,'#1a1a2e','#fffdf7');
+  // бледные дуги при всех углах
+  [1,2,3,4].forEach(id=>{const a=ANG[id];angArc(a.C,a.d1,a.d2,'#b8b1a1',a.r,2.4)});
+  if(done){ [1,2,3,4].forEach(angNum); lab(W/2,26,'a ∥ b ✓','#16a34a',14); return; }
+  // данные углы — с числами; равные пары получают засечку, суммовые — нет
+  const marks=s.marks||[];
+  const eqCol = resolved ? (valid?'#16a34a':'#d97706') : '#4f46e5';
+  const tick = (s.rel==='eq');
+  marks.forEach(m=>drawAng(m.id, eqCol, tick));
+  [1,2,3,4].forEach(id=>{
+    const m=marks.find(x=>x.id===id);
+    const a=ANG[id], mid=bisOf(a);
+    if(m) lab(a.C.x+Math.cos(mid)*(a.r+22), a.C.y+Math.sin(mid)*(a.r+22), '∠'+id+'='+m.val+'°', eqCol, 14);
+    else angNum(id);
+  });
+  if(resolved){
+    lab(W/2, HT-20, valid?'a ∥ b ✓':'параллельность не следует', valid?'#16a34a':'#b45309', 13);
+    if(parallel) lab(W/2, 26, 'a ∥ b ✓', '#16a34a', 14);
+  }
+}
+
+/* ───────── ВЫБОР (choose) ───────── */
+function renderOpts(list){
+  const box=document.getElementById('opts');box.innerHTML='';
+  list.forEach(o=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML=o.t;
+    b.addEventListener('click',()=>o.fn(b));box.appendChild(b)});
+}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+function markPick(btn,ok){if(btn)btn.classList.add(ok?'ok-pick':'bad-pick')}
+function revealCorrect(label){[...document.getElementById('opts').children].forEach(b=>{if(b.textContent.trim()===label)b.classList.add('correct-reveal')})}
+function lockOpts(){[...document.getElementById('opts').children].forEach(b=>b.disabled=true)}
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+
+function answerChoice(opt,btn,arr){
+  if(stepResolved)return;
+  if(opt.ok){
+    markPick(btn,true);lockOpts();
+    results.push(mistakes===0&&hintsUsed===0?'g':(mistakes<=1?'y':'r'));
+    mistakes=0;hintsUsed=0;
+    log('choice_ok',{step:si});
+    setMsg(S().okMsg,'ok');
+    advanceReady();
+  }else{
+    mistakes++;log('choice_bad',{step:si,pick:opt.t});
+    markPick(btn,false);
+    const correct=arr.find(o=>o.ok);
+    revealCorrect(correct.t);
+    setMsg('Не так. '+(opt.why||'')+' Верный ответ подсвечен.','err');
+  }
+}
+
+/* ───────── СБОРКА (assemble) ───────── */
+let asmDone=[], asmDead=[];
+function asmCards(){return S().cards||[]}
+function renderPool(){
+  const box=document.getElementById('opts');box.innerHTML='';
+  asmCards().forEach(c=>{
+    if(asmDone.includes(c.id))return;
+    const b=document.createElement('button');b.type='button';b.className='pcard';b.innerHTML=c.txt;
+    b.addEventListener('click',()=>pickCard(c.id,b));box.appendChild(b);
+  });
+}
+function renderChain(){
+  const box=document.getElementById('steps');box.innerHTML='';
+  for(let i=0;i<si;i++){ if(!STEPS[i].stepNote)continue;
+    const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">·</span>'+STEPS[i].stepNote;box.appendChild(d); }
+  if(S().phaseTitle){const p=document.createElement('div');p.className='phtitle';p.textContent=S().phaseTitle;box.appendChild(p)}
+  if(!asmDone.length){const e=document.createElement('div');e.className='chempty';e.textContent='Цепочка пуста — выберите первое утверждение.';box.appendChild(e);return}
+  asmDone.forEach((id,i)=>{
+    const c=asmCards().find(x=>x.id===id);
+    const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">'+(i+1)+'.</span>'+c.txt;box.appendChild(d);
+  });
+}
+function pickCard(id,btn){
+  if(stepResolved)return;
+  const c=asmCards().find(x=>x.id===id);
+  if(c.trap){
+    mistakes++;asmDead.push(id);log('distractor',{id});
+    btn.classList.add('shake');setMsg(c.trap,'err');
+    setTimeout(()=>btn.classList.remove('shake'),450);
+    return;
+  }
+  if(c.need && !c.need.every(n=>asmDone.includes(n))){
+    mistakes++;log('early',{id});
+    btn.classList.add('shake');setMsg('Рано: это утверждение опирается на то, что ещё не доказано. Сначала обоснуйте предыдущие шаги.','info');
+    setTimeout(()=>btn.classList.remove('shake'),450);
+    return;
+  }
+  asmDone.push(id);log('step',{id});
+  setMsg('Верно. '+(c.ok||''),'ok');
+  const concl=asmCards().filter(x=>!x.trap).every(x=>asmDone.includes(x.id));
+  renderPool();renderChain();
+  if(concl){
+    results.push(mistakes===0?'g':(mistakes<=1?'y':'r'));
+    mistakes=0;
+    setMsg('Признак выведен. ∠1 = ∠3 ⟹ a ∥ b.','ok');
+    advanceReady();
+  }
+}
+
+/* ───────── ХОД (renderSteps для не-assemble) ───────── */
+function renderSteps(){
+  const box=document.getElementById('steps');box.innerHTML='';
+  for(let i=0;i<=si;i++){
+    if(!STEPS[i].stepNote)continue;
+    if(i===si && !stepResolved)continue;   // вывод текущего шага не показываем заранее
+    const d=document.createElement('div');
+    d.className='st'+((i<si||stepResolved)?' done':'');
+    d.innerHTML=STEPS[i].stepNote;
+    box.appendChild(d);
+  }
+}
+
+function advanceReady(){
+  stepResolved=true;
+  if(S().kind!=='assemble')renderSteps();
+  const nb=document.getElementById('nextBtn');
+  nb.style.display='inline-block';
+  nb.textContent = si<NS-1 ? 'Следующий шаг →' : 'Итоги →';
+}
+
+/* ───────── НАВИГАЦИЯ ───────── */
+function showStep(){
+  const s=S();
+  document.getElementById('pf').style.width=(si/NS*100)+'%';
+  document.getElementById('pnum').textContent='Шаг '+(si+1)+' из '+NS;
+  document.getElementById('taskText').innerHTML=s.task;
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  clearOpts();
+  stepResolved=false;
+  document.getElementById('badge').textContent =
+    s.kind==='done' ? 'Готово' : 'Какой признак?';
+  document.getElementById('givenBox').innerHTML =
+    s.kind==='done'
+      ? '<b>Итог:</b> разобраны три признака и две ловушки (вертикальные, смежные).'
+      : '<b>Признаки a ∥ b:</b> накрест лежащие равны · соответственные равны · односторонние в сумме 180°.<br>Равенство <b>вертикальных</b> и сумма 180° у <b>смежных</b> верны всегда — это не признак. <span style="color:#94a3b8">Чертёж не обязан быть в масштабе — суди по числам.</span>';
+  if(s.q){
+    const arr=shuffle(s.q.slice());
+    renderOpts(arr.map(o=>({t:o.t,fn:(b)=>answerChoice(o,b,arr)})));
+    setMsg('Прочти, какие углы даны, и выбери ответ.','info');
+    renderSteps();
+  }else{
+    setMsg('Все типы задач разобраны.','info');
+    renderSteps();
+    advanceReady();
+  }
+  log('step_start',{kind:s.kind});
+}
+
+function nextTask(){ if(si<NS-1){si++;showStep()} else finish() }
+function resetTask(){ log('reset'); genRounds(); si=0;results=[];mistakes=0;hintsUsed=0;showStep() }
+
+function showHint(){
+  if(stepResolved)return;
+  hintsUsed++;log('hint');
+  const hb=document.getElementById('hintbox');
+  hb.innerHTML='💡 Сначала определи, КАКАЯ пара углов дана — по их месту относительно прямых и секущей. Накрест лежащие — между a и b и по разные стороны секущей; соответственные — в одинаковых местах при a и при b; односторонние — между прямыми, по одну сторону. А вертикальные и смежные стоят при ОДНОЙ точке: их равенство (вертикальные) или сумма 180° (смежные) верны всегда и про параллельность ничего не говорят.';
+  hb.style.display='block';
+}
+
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{good:g,total:results.length});
+  const st=lS();st.runs=(st.runs||0)+1;st.passed=true;if(g>(st.best||0))st.best=g;sS(st);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent='✓';
+  document.getElementById('finLbl').textContent = g>=results.length?'Все задачи разобраны без ошибок!':'Задачи разобраны. Стоит повторить, где какая пара углов.';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){genRounds();si=0;results=[];mistakes=0;hintsUsed=0;document.getElementById('fin').style.display='none';document.getElementById('mainArea').style.display='grid';document.getElementById('bar').style.display='flex';showStep()}
+
+/* ───────── СТАРТ ───────── */
+showStep();
+(function loop(){ draw();requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

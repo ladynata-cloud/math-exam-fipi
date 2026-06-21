@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Зачёт по §3 — прямоугольный треугольник</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:21px;font-weight:900}
+.sub{font-size:13px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:13px}
+.back:hover{color:#fff}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:16px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:13px;color:#64748b;font-weight:800;margin-top:6px}
+.answer{display:flex;gap:8px;align-items:center;margin-top:2px}
+.answer input{flex:1;min-width:0;font:800 19px system-ui;padding:10px 12px;border:1.5px solid #d1d5db;border-radius:10px;text-align:center;background:#fff}
+.answer input:focus{outline:none;border-color:#2d70b3;box-shadow:0 0 0 3px #2d70b333}
+.answer .go{border:0;border-radius:10px;background:#2d70b3;color:#fff;font:800 15px system-ui;padding:11px 16px;cursor:pointer;white-space:nowrap}
+.answer .go:hover{background:#245d96}
+.answer .go:disabled{background:#9db7cf;cursor:default}
+.unit{font-size:13px;color:#64748b;margin-top:4px}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:2px}
+.opt{border:1.5px solid #d1d5db;border-radius:11px;background:#fff;padding:12px 14px;font:700 15px system-ui;color:#1f2937;text-align:left;cursor:pointer;transition:border-color .15s,background .15s}
+.opt:hover:not(:disabled){border-color:#2d70b3;background:#f5f9ff}
+.opt:disabled{cursor:default;opacity:.96}
+.opt.correct{border-color:#16a34a;background:#f0fdf4;color:#14532d}
+.opt.wrong{border-color:#dc2626;background:#fef2f2;color:#b91c1c}
+.msg{display:none;border-radius:12px;padding:12px;font-size:15px;font-weight:750;line-height:1.42}
+.msg.show{display:block}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.solve{display:none;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:12px;padding:12px;font-size:14px;line-height:1.5;color:#334155}
+.solve b{color:#1a1a2e}
+.solve ol{margin:6px 0 0;padding-left:20px}.solve li{margin:3px 0}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 14px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:46px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:16px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+.dot{width:15px;height:15px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.r{background:#dc2626}
+.review{max-width:640px;margin:0 auto 14px;font-size:15px;color:#334155;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;padding:12px}
+.review b{color:#b45309}
+.done{max-width:640px;margin:0 auto 18px;font-size:15px;line-height:1.55;color:#14532d;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:12px;padding:14px}
+.done b{color:#166534}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">✅ Зачёт по §3</div>
+      <div class="sub">Глава IV · §3 · тренажёр 9 из 9 — зачёт</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Одна попытка · без подсказок</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="460"></canvas>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h2>Вопрос</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="answer" id="answerRow">
+        <input id="ans" type="number" inputmode="numeric" placeholder="ответ" autocomplete="off">
+        <button class="go" id="goBtn" onclick="doAnswer()">Ответить</button>
+      </div>
+      <div class="unit" id="unitHint"></div>
+      <div class="opts" id="opts"></div>
+      <div id="msg" class="msg info"></div>
+      <div id="solve" class="solve"></div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="review" id="finReview"></div>
+    <div class="done">
+      <b>§3 пройден.</b> Прямоугольный треугольник теперь считается без транспортира: два острых угла дополняют друг друга до 90°, катет против 30° и медиана к гипотенузе — это её половина (и обратные теоремы тоже), а равенство проверяется четырьмя признаками, включая «по гипотенузе и катету». Впереди §4 — расстояние от точки до прямой и построения.
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="tool" onclick="restart()" style="background:#1a1a2e;color:#fff;border-color:#1a1a2e">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" onclick="restart()">↺ Заново</button>
+    <button class="tool next" id="nextBtn" onclick="nextQ()">Следующий →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС / ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch4-p3-t9-quiz';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),e:ev,idx,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+const rand=a=>a[Math.floor(Math.random()*a.length)];
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640,H=460,PI=Math.PI;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+const PULSE=()=>1+0.13*Math.sin(Date.now()/240);
+
+/* ───────── ПАЛИТРА / ПРИМИТИВЫ ───────── */
+const COL={A:'#d97706',B:'#db2777',C:'#0d9488',G:'#16a34a',DARK:'#1a1a2e',GREY:'#94a3b8',HYP:'#2d70b3',MED:'#7c3aed'};
+function sub(p,q){return{x:p.x-q.x,y:p.y-q.y}}
+function nrm(v){const m=Math.hypot(v.x,v.y)||1;return{x:v.x/m,y:v.y/m}}
+function hexA(h,a){const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+function bg(){
+  ctx.clearRect(0,0,W,H);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill()}
+}
+function lab(x,y,txt,col,size){
+  ctx.font='900 '+(size||16)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);ctx.textBaseline='alphabetic';
+}
+function dot(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}}
+function seg(p,q,col,w){ctx.strokeStyle=col;ctx.lineWidth=w||2.8;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
+function drawAngle(V,P,Q,col,active,dim,r0){
+  const a1=Math.atan2(P.y-V.y,P.x-V.x), a2=Math.atan2(Q.y-V.y,Q.x-V.x);
+  let d=a2-a1; while(d<=-PI)d+=2*PI; while(d>PI)d-=2*PI;
+  const acw=d<0, r=active? r0*PULSE() : r0;
+  ctx.save(); if(dim)ctx.globalAlpha=0.32;
+  ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.arc(V.x,V.y,r,a1,a1+d,acw);ctx.closePath();
+  ctx.fillStyle=hexA(col,0.16);ctx.fill();
+  ctx.beginPath();ctx.arc(V.x,V.y,r,a1,a1+d,acw);
+  ctx.lineWidth=active?3.4:2.6;ctx.strokeStyle=col;ctx.lineCap='round';ctx.stroke();
+  ctx.restore();
+}
+function rightMark(V,P,Q,col){
+  const u=nrm(sub(P,V)),v=nrm(sub(Q,V)),s=15;
+  const p1={x:V.x+u.x*s,y:V.y+u.y*s},p3={x:V.x+v.x*s,y:V.y+v.y*s},p2={x:p1.x+v.x*s,y:p1.y+v.y*s};
+  ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.lineTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.closePath();
+  ctx.fillStyle=hexA(col,0.18);ctx.fill();
+  ctx.strokeStyle=col;ctx.lineWidth=2.6;ctx.lineJoin='round';
+  ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.lineTo(p3.x,p3.y);ctx.stroke();
+}
+function tickMark(p,q,n,col){
+  const mx=(p.x+q.x)/2,my=(p.y+q.y)/2; let dx=q.x-p.x,dy=q.y-p.y;const L=Math.hypot(dx,dy)||1;dx/=L;dy/=L;
+  const nx=-dy,ny=dx;
+  for(let i=0;i<n;i++){const off=(i-(n-1)/2)*5,cx=mx+dx*off,cy=my+dy*off;
+    ctx.beginPath();ctx.moveTo(cx-nx*5,cy-ny*5);ctx.lineTo(cx+nx*5,cy+ny*5);ctx.strokeStyle=col||COL.DARK;ctx.lineWidth=2;ctx.stroke();}
+}
+function sideLabel(P,Q,away,txt,col,size){
+  const mx=(P.x+Q.x)/2,my=(P.y+Q.y)/2; let nx=-(Q.y-P.y),ny=(Q.x-P.x);
+  const m=Math.hypot(nx,ny)||1; nx/=m;ny/=m;
+  if((mx+nx-away.x)**2+(my+ny-away.y)**2 < (mx-nx-away.x)**2+(my-ny-away.y)**2){nx=-nx;ny=-ny;}
+  lab(mx+nx*20,my+ny*20,txt,col,size||14);
+}
+function bisAt(V,P,Q){const a1=Math.atan2(P.y-V.y,P.x-V.x),a2=Math.atan2(Q.y-V.y,Q.x-V.x);let d=a2-a1;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;return a1+d/2;}
+function vlabel(P,txt,col,dx,dy){ dot(P.x,P.y,4.4,col); lab(P.x+dx,P.y+dy,txt,col,16); }
+function angLabel(V,P,Q,txt,col,r){ const b=bisAt(V,P,Q); lab(V.x+Math.cos(b)*r, V.y+Math.sin(b)*r, txt, col, 13); }
+
+// правильный треугольник: основание = гипотенуза AB (горизонтально), вершина прямого угла C сверху
+function buildRT(angAdeg){
+  const aA=angAdeg*PI/180, aB=(90-angAdeg)*PI/180;
+  const baseLen=300, ax=175, by=326;
+  const A={x:ax,y:by}, B={x:ax+baseLen,y:by};
+  const tA=Math.tan(aA), tB=Math.tan(aB);
+  const h=baseLen*tA*tB/(tA+tB), footFromA=h/tA;
+  const C={x:ax+footFromA, y:by-h};
+  const M={x:(A.x+B.x)/2, y:(A.y+B.y)/2};
+  return {A,B,C,M};
+}
+
+/* ───────── ВОПРОСЫ ───────── */
+const TOTAL=9;
+const T_ANG='Два острых угла прямоугольного', T_30='Катет против 30°', T_MED='Медиана к гипотенузе', T_SIGN='Признаки равенства прямоугольных';
+const CRIT=['по двум катетам','по катету и острому углу','по гипотенузе и острому углу','по гипотенузе и катету','равенство не следует'];
+let quiz=[], idx=0, results=[];
+
+function qAngles2(){
+  const a=rand([20,25,35,40,50,55,65,70]);
+  return {type:'num',topic:T_ANG,kind:'angles2',angA:a,unit:'°',answer:90-a,
+    prompt:'Один острый угол прямоугольного треугольника равен <b>'+a+'°</b>. Чему равен второй острый угол?',
+    diag:v=> v===180-a?'вычел из 180°, а в прямоугольном два острых дают 90°':(v===a?'назвал данный угол вместо второго':(v===90?'назвал прямой угол; второй острый = 90° − данный':null)),
+    sol:['Один угол прямой (90°), на два острых остаётся 90°.','Второй острый = 90° − '+a+'° = '+(90-a)+'°.']};
+}
+function qRatio(){
+  if(Math.random()<0.5){
+    const d=rand([10,20,30,40]), s=(90-d)/2;
+    return {type:'num',topic:T_ANG,kind:'ratio',angA:s,unit:'°',answer:s,
+      prompt:'Острые углы прямоугольного треугольника отличаются на <b>'+d+'°</b>. Чему равен меньший из них?',
+      diag:v=> v===(180-d)/2?'собрал сумму на 180° вместо 90°':(v===s+d?'нашёл больший угол вместо меньшего':null),
+      sol:['Меньший = x, больший = x + '+d+'°.','x + (x + '+d+'°) = 90° ⟹ 2x = '+(90-d)+'° ⟹ x = '+s+'°.']};
+  } else {
+    const pr=rand([[2,3],[1,2],[4,5],[1,4]]),m=pr[0],n=pr[1],k=90/(m+n),s=m*k;
+    return {type:'num',topic:T_ANG,kind:'ratio',angA:s,unit:'°',answer:s,
+      prompt:'Острые углы прямоугольного треугольника относятся как <b>'+m+' : '+n+'</b>. Чему равен меньший из них?',
+      diag:v=> v===Math.round(180*m/(m+n))?'разделил 180° вместо 90°':(v===n*k?'нашёл больший угол вместо меньшего':null),
+      sol:['Острые дают 90°: '+m+'·k + '+n+'·k = 90° ⟹ k = 90° : '+(m+n)+' = '+k+'°.','Меньший = '+m+'·'+k+'° = '+s+'°.']};
+  }
+}
+function qLeg30(){
+  const hyp=rand([12,16,20,24,28,32]);
+  return {type:'num',topic:T_30,kind:'leg30',angA:30,unit:'',answer:hyp/2,
+    prompt:'Гипотенуза прямоугольного треугольника равна <b>'+hyp+'</b>, один острый угол — <b>30°</b>. Чему равен катет, лежащий против угла 30°?',
+    diag:v=> v===hyp*2?'умножил на 2; катет против 30° — половина гипотенузы':(v===hyp?'назвал гипотенузу; катет вдвое меньше':null),
+    sol:['Катет против 30° равен половине гипотенузы.','Катет = '+hyp+' : 2 = '+(hyp/2)+'.']};
+}
+function qHalf30(){
+  const hyp=rand([12,16,20,24,28]), leg=hyp/2;
+  return {type:'pick',topic:T_30,kind:'half30',angA:30,hyp,leg,answer:'30°',
+    prompt:'В прямоугольном треугольнике гипотенуза равна <b>'+hyp+'</b>, а один из катетов — <b>'+leg+'</b> (ровно половина гипотенузы). Какой угол лежит против этого катета?',
+    opts:['30°','45°','60°','90° (прямой)'], correct:'30°',
+    diagPick:l=> l==='60°'?'против 60° лежит больший катет; против половины гипотенузы — 30°':(l==='90° (прямой)'?'прямой угол лежит против гипотенузы, а не против катета':(l==='45°'?'45° — это равнобедренный прямоугольный; здесь катет = половина гипотенузы ⟹ 30°':null)),
+    sol:['Обратная теорема: если катет равен половине гипотенузы, то против него лежит угол 30°.']};
+}
+function qMedianDir(){
+  const a=rand([35,40,55,60]);
+  if(Math.random()<0.5){
+    const hyp=rand([14,16,18,20,24,26]);
+    return {type:'num',topic:T_MED,kind:'medianDir',angA:a,unit:'',answer:hyp/2,dir:'h2m',
+      prompt:'Гипотенуза прямоугольного треугольника равна <b>'+hyp+'</b>. Из вершины прямого угла проведена медиана к гипотенузе. Чему она равна?',
+      diag:v=> v===hyp*2?'удвоил вместо деления':(v===hyp?'назвал гипотенузу; медиана — её половина':null),
+      sol:['Медиана из прямого угла к гипотенузе равна её половине.','Медиана = '+hyp+' : 2 = '+(hyp/2)+'.']};
+  } else {
+    const med=rand([6,7,8,9,11,13]);
+    return {type:'num',topic:T_MED,kind:'medianDir',angA:a,unit:'',answer:med*2,dir:'m2h',
+      prompt:'Медиана прямоугольного треугольника, проведённая из вершины прямого угла к гипотенузе, равна <b>'+med+'</b>. Чему равна гипотенуза?',
+      diag:v=> v===med/2?'разделил; гипотенуза вдвое больше медианы':(v===med?'назвал медиану; гипотенуза вдвое больше':null),
+      sol:['Медиана к гипотенузе равна её половине, значит гипотенуза вдвое больше медианы.','Гипотенуза = '+med+' · 2 = '+(med*2)+'.']};
+  }
+}
+function qMedianConv(){
+  const a=rand([34,38,42,52,58]);
+  return {type:'pick',topic:T_MED,kind:'medianConv',angA:a,answer:'90° (прямой)',
+    prompt:'В треугольнике медиана, проведённая к стороне, равна <b>половине этой стороны</b> (на чертеже MA = MB = MC). Какой угол лежит против этой стороны?',
+    opts:['30°','45°','90° (прямой)','определить нельзя'], correct:'90° (прямой)',
+    diagPick:l=> l==='определить нельзя'?'определить можно: медиана = половина стороны — это и есть признак прямого угла против неё':((l==='30°'||l==='45°')?'из условия следует именно прямой угол':null),
+    sol:['Обратная теорема: если медиана к стороне равна половине этой стороны, то против стороны лежит прямой угол.','M равноудалена от A, B, C ⟹ точка C лежит на окружности с диаметром AB ⟹ ∠C = 90°.']};
+}
+function qWhichSign(){
+  const v=rand(['legs','legAcute','hypAcute']);
+  const map={ legs:{marks:{legA:1,legB:2,right:true}, correct:'по двум катетам', what:'катеты обоих треугольников'},
+              legAcute:{marks:{legA:1,acuteA:true,right:true}, correct:'по катету и острому углу', what:'катет и прилежащий к нему острый угол'},
+              hypAcute:{marks:{hyp:1,acuteA:true,right:true}, correct:'по гипотенузе и острому углу', what:'гипотенуза и острый угол'} };
+  const m=map[v];
+  return {type:'pick',topic:T_SIGN,kind:'whichSign',marks:m.marks,pairScale:1,answer:m.correct,
+    prompt:'Одинаковыми метками показаны равные элементы двух прямоугольных треугольников. Равны ли треугольники, и если да — по какому признаку?',
+    opts:CRIT.slice(), correct:m.correct,
+    diagPick:l=> l==='равенство не следует'?'показанных равных элементов достаточно — треугольники равны':(l!==m.correct?'посмотри, какие именно элементы помечены одинаково':null),
+    sol:['Помечены равными '+m.what+'.','Этого достаточно для равенства прямоугольных треугольников: признак «'+m.correct+'».']};
+}
+function qHypLeg(){
+  return {type:'pick',topic:T_SIGN,kind:'hypLeg',marks:{hyp:1,legB:2,right:true},pairScale:1,answer:'по гипотенузе и катету',
+    prompt:'У двух прямоугольных треугольников равны гипотенузы и по одному катету (показано метками). Равны ли треугольники, и по какому признаку?',
+    opts:CRIT.slice(), correct:'по гипотенузе и катету',
+    diagPick:l=> l==='равенство не следует'?'для прямоугольных равенства гипотенузы и катета достаточно — это особый, надёжный случай':(l!=='по гипотенузе и катету'?'помечены именно гипотенуза и катет':null),
+    sol:['Помечены равными гипотенуза и катет.','Признак «по гипотенузе и катету»: прямой угол лежит против гипотенузы (самой длинной стороны), поэтому второго треугольника не возникает — равенство однозначно.']};
+}
+function qSufficiency(){
+  return {type:'pick',topic:T_SIGN,kind:'sufficiency',marks:{acuteA:true,acuteB:true,right:true},pairScale:0.66,answer:'равенство не следует',
+    prompt:'У двух прямоугольных треугольников равны соответственные острые углы (показано дужками), но ни одна сторона не помечена. Равны ли треугольники?',
+    opts:['по двум катетам','по гипотенузе и острому углу','по двум острым углам','равенство не следует'], correct:'равенство не следует',
+    diagPick:l=> l==='по двум острым углам'?'равные углы задают только форму (подобие), но не размер':(l!=='равенство не следует'?'ни одна сторона не помечена равной':null),
+    sol:['Равные углы задают форму, но не размер — треугольники лишь подобны.','Для равенства нужна хотя бы одна равная сторона. Поэтому по одним углам равенство не следует.']};
+}
+const SEQ=[qAngles2,qRatio,qLeg30,qHalf30,qMedianDir,qMedianConv,qWhichSign,qHypLeg,qSufficiency];
+const PAIR=new Set(['whichSign','hypLeg','sufficiency']);
+function buildQuiz(){ return SEQ.map(g=>{ const q=g(); if(q.angA!=null && !PAIR.has(q.kind)) q.geo=buildRT(q.angA); q.reveal=false; q.right=false; return q; }); }
+
+/* ───────── ОТРИСОВКА ───────── */
+function drawOneRT(ox,oy,sc,marks){
+  const La=150*sc, Lb=120*sc;
+  const C={x:ox,y:oy}, A={x:ox+La,y:oy}, B={x:ox,y:oy-Lb};
+  seg(C,A,COL.DARK,2.6); seg(C,B,COL.DARK,2.6); seg(A,B,COL.HYP,2.8);
+  if(marks.right) rightMark(C,A,B,COL.C);
+  if(marks.legA) tickMark(C,A,1,COL.DARK);
+  if(marks.legB) tickMark(C,B,2,COL.DARK);
+  if(marks.hyp) tickMark(A,B,1,COL.HYP);
+  if(marks.acuteA) drawAngle(A,C,B,COL.A,false,false,18*sc+8);
+  if(marks.acuteB) drawAngle(B,A,C,COL.B,false,false,18*sc+8);
+}
+function drawCriteriaPair(scaleR,marks){
+  drawOneRT(95,300,1,marks);
+  drawOneRT(400,300,scaleR||1,marks);
+  lab(170,332,'I',COL.GREY,15); lab((scaleR&&scaleR<1)?455:475,332,'II',COL.GREY,15);
+}
+function drawQuestion(){
+  const Q=quiz[idx], k=Q.kind;
+  if(PAIR.has(k)){ drawCriteriaPair(Q.pairScale,Q.marks); return; }
+  const g=Q.geo, A=g.A,B=g.B,C=g.C,M=g.M;
+  const aL = Q.reveal ? (Q.answer + (Q.unit||'')) : '?';
+  const aCol = Q.reveal ? COL.G : COL.C;
+  seg(C,A,COL.DARK,2.8); seg(C,B,COL.DARK,2.8); seg(A,B,COL.HYP,3.0);
+  vlabel(A,'A',COL.A,-16,16); vlabel(B,'B',COL.B,16,16); vlabel(C,'C',COL.C,(C.x<M.x?-18:18),-10);
+
+  if(k==='medianConv'){
+    seg(C,M,COL.MED,2.6); dot(M.x,M.y,4.2,COL.MED); vlabel(M,'M',COL.B,0,18);
+    tickMark(M,A,1,COL.GREY); tickMark(M,B,1,COL.GREY); tickMark(M,C,1,COL.GREY);
+    if(Q.reveal){ rightMark(C,A,B,COL.G); angLabel(C,A,B,'90°',COL.G,30); }
+    else { drawAngle(C,A,B,COL.C,true,false,24); angLabel(C,A,B,'?',COL.C,30); }
+    return;
+  }
+  rightMark(C,A,B,COL.C);
+  if(k==='angles2'){
+    drawAngle(A,B,C,COL.A,true,false,30); angLabel(A,B,C,Q.angA+'°',COL.A,48);
+    drawAngle(B,A,C,aCol,!Q.reveal,false,28); angLabel(B,A,C,aL,aCol,46);
+  } else if(k==='ratio'){
+    drawAngle(A,B,C,aCol,!Q.reveal,false,30); angLabel(A,B,C,aL,aCol,48);
+    const lg=Q.reveal?(90-Q.answer)+'°':'?';
+    drawAngle(B,A,C,Q.reveal?COL.G:COL.B,!Q.reveal,false,28); angLabel(B,A,C,lg,Q.reveal?COL.G:COL.B,46);
+  } else if(k==='leg30'){
+    drawAngle(A,B,C,COL.A,false,false,30); angLabel(A,B,C,'30°',COL.A,48);
+    sideLabel(A,B,C,String(Q.answer*2),COL.HYP,15); sideLabel(C,B,A,aL,aCol,15);
+  } else if(k==='half30'){
+    sideLabel(A,B,C,String(Q.hyp),COL.HYP,15); sideLabel(C,B,A,String(Q.leg),COL.MED,15);
+    drawAngle(A,B,C,aCol,!Q.reveal,false,30); angLabel(A,B,C,aL,aCol,48);
+  } else if(k==='medianDir'){
+    seg(C,M,COL.MED,2.6); dot(M.x,M.y,4.2,COL.MED); vlabel(M,'M',COL.B,0,18);
+    tickMark(A,M,1,COL.GREY); tickMark(M,B,1,COL.GREY);
+    if(Q.dir==='h2m'){ sideLabel(A,B,C,String(Q.answer*2),COL.HYP,15); sideLabel(C,M,B,aL,aCol,15); }
+    else { sideLabel(C,M,B,String(Q.answer/2),COL.MED,15); sideLabel(A,B,C,aL,aCol,15); }
+  }
+}
+function draw(){ bg(); if(quiz.length) drawQuestion(); }
+
+/* ───────── ХОД ───────── */
+function setVerdict(t,cls){ const el=document.getElementById('msg'); el.innerHTML=t; el.className='msg show '+cls; }
+function showSolve(Q){ const el=document.getElementById('solve'); el.innerHTML='<b>Решение.</b><ol>'+Q.sol.map(s=>'<li>'+s+'</li>').join('')+'</ol>'; el.style.display='block'; }
+function showNext(){ const nb=document.getElementById('nextBtn'); nb.textContent=(idx<TOTAL-1)?'Следующий →':'Итог →'; nb.style.display='inline-block'; }
+function renderOpts(list){
+  const o=document.getElementById('opts'); o.innerHTML=''; o.style.display='flex';
+  list.forEach(t=>{ const b=document.createElement('button'); b.className='opt'; b.textContent=t; b.onclick=()=>gradePick(t); o.appendChild(b); });
+}
+function rightCount(){ return results.filter(r=>r==='g').length; }
+function showQuestion(){
+  const Q=quiz[idx]; Q.reveal=false;
+  document.getElementById('pf').style.width=(idx/TOTAL*100)+'%';
+  document.getElementById('pnum').textContent='Вопрос '+(idx+1)+' из '+TOTAL+(results.length?(' · верно: '+rightCount()):'');
+  document.getElementById('taskText').innerHTML=Q.prompt;
+  document.getElementById('msg').className='msg'; document.getElementById('msg').innerHTML='';
+  document.getElementById('solve').style.display='none';
+  document.getElementById('nextBtn').style.display='none';
+  if(Q.type==='num'){
+    document.getElementById('answerRow').style.display='flex';
+    document.getElementById('opts').style.display='none';
+    document.getElementById('unitHint').textContent = Q.unit==='°' ? 'ответ — в градусах' : 'ответ — длина (число)';
+    const inp=document.getElementById('ans'); inp.value=''; inp.disabled=false; if(inp.focus)inp.focus();
+    document.getElementById('goBtn').disabled=false;
+  } else {
+    document.getElementById('answerRow').style.display='none';
+    document.getElementById('unitHint').textContent='выбери один вариант';
+    renderOpts(Q.opts);
+  }
+  log('q_start',{kind:Q.kind});
+}
+function doAnswer(){ const v=parseFloat(String(document.getElementById('ans').value).replace(',','.')); if(Number.isNaN(v)){ setVerdict('Введи число.','info'); return; } gradeNum(v); }
+function gradeNum(v){
+  const Q=quiz[idx]; if(Q.reveal) return; Q.reveal=true; Q.userVal=v;
+  const right=Math.abs(v-Q.answer)<1e-9; Q.right=right; results.push(right?'g':'r'); log('answer',{kind:Q.kind,right,v});
+  document.getElementById('ans').disabled=true; document.getElementById('goBtn').disabled=true;
+  if(right) setVerdict('Верно! '+(Q.answer+(Q.unit||''))+'.','ok');
+  else { const note=Q.diag?Q.diag(v):null; setVerdict('Неверно. Правильный ответ: '+(Q.answer+(Q.unit||''))+'.'+(note?' Ты, похоже, '+note+'.':''),'err'); }
+  showSolve(Q); showNext();
+  document.getElementById('pnum').textContent='Вопрос '+(idx+1)+' из '+TOTAL+' · верно: '+rightCount();
+}
+function gradePick(label){
+  const Q=quiz[idx]; if(Q.reveal) return; Q.reveal=true; Q.userPick=label;
+  const right=label===Q.correct; Q.right=right; results.push(right?'g':'r'); log('answer',{kind:Q.kind,right,label});
+  [...document.getElementById('opts').children].forEach(b=>{ b.disabled=true; if(b.textContent===Q.correct) b.classList.add('correct'); else if(b.textContent===label) b.classList.add('wrong'); });
+  if(right) setVerdict('Верно!','ok');
+  else { const note=Q.diagPick?Q.diagPick(label):null; setVerdict('Неверно. Правильный ответ отмечен зелёным.'+(note?' Ты, похоже, '+note+'.':''),'err'); }
+  showSolve(Q); showNext();
+  document.getElementById('pnum').textContent='Вопрос '+(idx+1)+' из '+TOTAL+' · верно: '+rightCount();
+}
+function nextQ(){ if(idx<TOTAL-1){ idx++; showQuestion(); } else finish(); }
+
+function finish(){
+  const g=rightCount(); log('finish',{score:g});
+  const s=lS(); s.runs=(s.runs||0)+1; if(g>(s.best||0))s.best=g; s.passed=true; sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent=g+' / '+TOTAL;
+  document.getElementById('finLbl').textContent = g===TOTAL?'Отлично — весь §3 без ошибок!':(g>=6?'Хороший результат.':'Есть что повторить — посмотри маршрут ниже.');
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+  const failed=[...new Set(quiz.filter(q=>!q.right).map(q=>q.topic))];
+  document.getElementById('finReview').innerHTML = failed.length
+    ? ('Стоит повторить: <b>'+failed.join('</b>, <b>')+'</b>.')
+    : 'Чисто — все темы §3 закрыты без ошибок.';
+}
+function restart(){
+  quiz=buildQuiz(); idx=0; results=[];
+  document.getElementById('fin').style.display='none';
+  document.getElementById('mainArea').style.display='grid';
+  document.getElementById('bar').style.display='flex';
+  showQuestion();
+}
+
+/* ───────── ВВОД С КЛАВИАТУРЫ ───────── */
+document.getElementById('ans').addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); doAnswer(); }});
+
+/* ───────── СТАРТ ───────── */
+quiz=buildQuiz(); showQuestion();
+(function loop(){draw();requestAnimationFrame(loop)})();
+</script>
+</body>
+</html>

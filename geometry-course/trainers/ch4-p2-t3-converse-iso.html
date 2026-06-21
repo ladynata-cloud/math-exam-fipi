@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Против большего угла — большая сторона</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.given{font-size:13px;line-height:1.5;background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:10px}
+.given b{color:#3730a3}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.pcard{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:10px 12px;font:650 13.5px system-ui;cursor:pointer;text-align:left;line-height:1.45}
+.pcard:hover{background:#f3f4f6}
+.pcard.shake{animation:shk .42s}
+@keyframes shk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.chitem{background:#f0fdf4;border-left:3px solid #16a34a;border-radius:0 8px 8px 0;padding:7px 10px;font-size:12.5px;line-height:1.4;color:#14532d;margin-bottom:5px}
+.chitem .n{font-weight:900;color:#16a34a;margin-right:4px}
+.chempty{font-size:12.5px;color:#94a3b8;font-style:italic;padding:6px}
+.phtitle{font-size:12px;font-weight:800;color:#6d28d9;text-transform:uppercase;letter-spacing:.05em;margin:2px 0 4px}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:24px 22px;text-align:center}
+.fin .big{font-size:40px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:14px;height:14px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:640px;margin:0 auto 16px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:13.5px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law .nb{margin-top:10px;font-size:13px;color:#475569}
+.law .fav{margin-top:10px;font-size:13px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:9px;padding:9px 11px}
+.bridge{margin-top:10px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}.main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}.side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">△ Против большего угла — большая сторона</div>
+      <div class="sub">Глава IV · §2 · тренажёр 3 — обратная теорема и приём «от противного»</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Прямая и обратная</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="470"></canvas></div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card"><div class="given" id="givenBox"></div></div>
+      <div id="msg" class="msg info"></div>
+      <div id="opts" class="opts"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div class="card">
+        <h2>Ход доказательства</h2>
+        <div class="steps" id="steps"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Обратная теорема.</b> В треугольнике против большего угла лежит большая сторона.<br>
+      <b>Признак равнобедренного.</b> Если два угла треугольника равны, то он равнобедренный (стороны против этих углов равны).
+      <div class="nb">Оба доказаны <b>от противного</b>: мы предположили обратное к нужному и в каждом случае пришли к противоречию с данным. Опора — прямая теорема из прошлого тренажёра (бо́льшая сторона ↔ бо́льший угол).</div>
+      <div class="fav">✦ За страницами учебника: у теоремы есть <b>обратная</b> — с переставленными «дано» и «надо». Обратное не обязано быть верным само собой («n делится на 6 ⇒ n чётно» верно, а наоборот — нет), поэтому обратную теорему доказывают отдельно.</div>
+      <div class="bridge">Дальше — частный, но очень полезный случай: в прямоугольном треугольнике <b>гипотенуза больше катета</b>. <a href="ch4-p2-t4-hypotenuse-leg.html">Гипотенуза и катет →</a></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="tool" onclick="restart()" style="background:#1a1a2e;color:#fff;border-color:#1a1a2e">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="nextTask()">Дальше →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС / ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch4-p2-t3-converse-iso';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),step:si+1,phase:S().phase,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640, HT=470, PI=Math.PI;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=HT*dpr;cv.style.aspectRatio=W+'/'+HT;ctx.scale(dpr,dpr);
+
+/* ───────── ЦВЕТА ───────── */
+const COL={C:'#0d9488', B:'#db2777'};   // ∠C бирюза, ∠B розовый (как в t2)
+const ANG='#0d9488', SIDE='#2563eb', GREY='#475569';
+
+/* опорные треугольники: для «трёх дверей» — ∠C>∠B; для следствия — равнобедренный (∠B=∠C) */
+const TRI={A:{x:110,y:95}, B:{x:92,y:290}, C:{x:222,y:140}};
+const TRI_ISO={A:{x:150,y:95}, B:{x:95,y:290}, C:{x:205,y:290}};
+
+/* ───────── ШАГИ ───────── */
+const STEPS=[
+ {kind:'swap', phase:'converse', badge:'Прямая и обратная',
+  task:'У теоремы из прошлого тренажёра есть пара — <b>обратная</b>. Чтобы получить её, надо поменять местами <b>условие</b> и <b>заключение</b>. Нажми кнопку <b>⇄</b> на чертеже.',
+  phaseTitle:'Шаг 1: обратная теорема',
+  stepNote:'Обратная теорема: если ∠C > ∠B, то AB > AC (её надо доказать).'},
+
+ {kind:'assemble', phase:'negate', badge:'От противного',
+  task:'Сторону «на глаз» не сравнить. Приём <b>«от противного»</b>: предположим, что доказываемое неверно, и придём к противоречию. Что значит «AB <b>не больше</b> AC»?',
+  phaseTitle:'Шаг 2: предположим противное',
+  doneMsg:'Будем считать, что AB ⩽ AC, и в каждом случае придём к противоречию.',
+  stepNote:'Предположили противное: AB ⩽ AC, то есть AB = AC или AB < AC.',
+  cards:[
+    {id:'neg', lit:[], txt:'AB = AC или AB &lt; AC (то есть AB ⩽ AC).', ok:'Верно: «не больше» — это «равно или меньше». Два случая.'},
+    {id:'negT1', txt:'AB &lt; AC.',
+     trap:'Это только один случай. «Не больше» включает и равенство AB = AC — без него доказательство будет неполным.'},
+    {id:'negT2', txt:'AB &gt; AC.',
+     trap:'Это само доказываемое, а не противоположное к нему. Противоположное к «AB > AC» — это «AB ⩽ AC».'}
+  ]},
+
+ {kind:'doors', phase:'doors', badge:'Три двери',
+  task:'Сравниваем стороны AB и AC (против них лежат углы ∠C и ∠B). <b>Открой все три двери</b> — посмотри, что станет с этими углами. Два случая поспорят с данным ∠C &gt; ∠B, один совпадёт.',
+  phaseTitle:'Шаг 3: три двери',
+  doneMsg:'Две двери захлопнулись — остаётся AB > AC. Обратная теорема доказана. ∎',
+  stepNote:'AB = AC ⇒ ∠C = ∠B (✗); AB < AC ⇒ ∠C < ∠B (✗) ⟹ AB > AC. ∎',
+  doors:[
+    {id:'gt', a:'>', c:'>', verdict:'ok',     why:'Против бо́льшей стороны AB лежит бо́льший угол — это ∠C (он напротив AB). Значит ∠C > ∠B. Это СОВПАДАЕТ с данным ∠C > ∠B — противоречия нет.'},
+    {id:'lt', a:'<', c:'<', verdict:'contra', why:'Против меньшей стороны AB лежит меньший угол ∠C: ∠C < ∠B. Но дано ∠C > ∠B — ПРОТИВОРЕЧИЕ.'},
+    {id:'eq', a:'=', c:'=', verdict:'contra', why:'Равные стороны — равные противолежащие углы: ∠C = ∠B. Но дано ∠C > ∠B — ПРОТИВОРЕЧИЕ.'}
+  ],
+  cards:[
+    {id:'conclY', lit:['C','B'], txt:'Случаи AB = AC и AB &lt; AC дали противоречие — остаётся <b>AB &gt; AC</b>. ∎', ok:'AB > AC. ∎'},
+    {id:'trapForgot', txt:'Хватило бы проверить только случай AB &lt; AC.',
+     trap:'Тогда случай AB = AC остался бы неисключённым — а пока он не отброшен, AB > AC утверждать нельзя. Нужны все три.'},
+    {id:'trapAuto', txt:'Обратная теорема верна сама собой — можно было не разбирать.',
+     trap:'Обратное не следует автоматически (видели на «n чётно» ⇏ «делится на 6»). Поэтому и пришлось разобрать все случаи.'}
+  ]},
+
+ {kind:'doors', phase:'iso', badge:'Признак равнобедренного',
+  task:'Тем же ключом — <b>признак равнобедренного</b>. Дано ∠B = ∠C. Сравним стороны AB и AC (против них — углы ∠C и ∠B): открой три двери и найди, какой случай совпадает с данным.',
+  phaseTitle:'Шаг 4: следствие',
+  doneMsg:'Две двери захлопнулись — остаётся AB = AC, треугольник равнобедренный. ∎',
+  stepNote:'∠B = ∠C: AB > AC и AB < AC дают неравные углы (✗) ⟹ AB = AC.',
+  doors:[
+    {id:'gt', a:'>', c:'>', verdict:'contra', why:'Против бо́льшей стороны AB лежит бо́льший угол ∠C: ∠C > ∠B. Но дано ∠B = ∠C — ПРОТИВОРЕЧИЕ.'},
+    {id:'lt', a:'<', c:'<', verdict:'contra', why:'Против меньшей стороны AB лежит меньший угол ∠C: ∠C < ∠B. Но дано ∠B = ∠C — ПРОТИВОРЕЧИЕ.'},
+    {id:'eq', a:'=', c:'=', verdict:'ok',     why:'Равные стороны — равные противолежащие углы: ∠C = ∠B. Это СОВПАДАЕТ с данным ∠B = ∠C — противоречия нет.'}
+  ],
+  cards:[
+    {id:'isoConclY', lit:['C','B'], txt:'Случаи AB &gt; AC и AB &lt; AC дали противоречие — остаётся <b>AB = AC</b>, треугольник равнобедренный. ∎', ok:'AB = AC — равнобедренный. ∎'},
+    {id:'isoTrap1', txt:'∠B = ∠C — значит треугольник равносторонний.',
+     trap:'Из равенства двух углов следует равенство двух сторон (равнобедренный), но не всех трёх. Равносторонний — частный случай, здесь не обязателен.'},
+    {id:'isoTrap2', txt:'Это та же теорема о равнобедренном из главы II.',
+     trap:'В главе II было прямое: равные стороны ⇒ равные углы. Здесь обратное: равные углы ⇒ равные стороны. Потому и доказываем заново.'}
+  ]},
+
+ {kind:'done', phase:'done', badge:'Доказано',
+  task:'Готово: обратная теорема и признак равнобедренного доказаны — оба «от противного». Один приём закрыл сразу два утверждения.',
+  stepNote:'∎ Обратная теорема и признак равнобедренного.'}
+];
+const NS=STEPS.length;
+const S=()=>STEPS[si];
+let si=0, results=[], mistakes=0, hintsUsed=0, stepResolved=false;
+let asmDone=[], asmDead=[], proved={};
+let sw={swapped:false};
+let opened={}; let doorRects=[];
+const SWAP_BTN={x:W/2-92,y:250,w:184,h:42};
+function inRect(p,r){return p.x>=r.x&&p.x<=r.x+r.w&&p.y>=r.y&&p.y<=r.y+r.h;}
+function evToXY(e){const r=cv.getBoundingClientRect();const cx=(e.touches?e.touches[0].clientX:e.clientX),cy=(e.touches?e.touches[0].clientY:e.clientY);return {x:(cx-r.left)/(r.width||W)*W,y:(cy-r.top)/(r.height||HT)*HT};}
+function onTap(e){
+  const ph=S().phase, p=evToXY(e);
+  if(ph==='converse'){
+    if(proved.conv) return;
+    if(inRect(p,SWAP_BTN)){
+      if(e.preventDefault)e.preventDefault();
+      sw.swapped=!sw.swapped;
+      if(sw.swapped){ proved.conv=true; log('step',{id:'conv'});
+        document.getElementById('successBar').style.display='block';
+        document.getElementById('successBar').textContent='✓ Обратная теорема получена';
+        setMsg('Верно — это <b>обратная</b> теорема: условие и заключение поменялись местами. ✦ И помни: обратное не верно само собой («n чётно» ⇏ «делится на 6»), поэтому докажем его отдельно.','ok');
+        advanceReady();
+      } else { setMsg('Пока это прямая теорема. Нажми ⇄ ещё раз, чтобы поменять местами условие и заключение.','info'); }
+    }
+    return;
+  }
+  if(ph==='doors'||ph==='iso'){
+    for(const r of doorRects){ if(!opened[r.id] && inRect(p,r)){ if(e.preventDefault)e.preventDefault(); openDoor(r.id); return; } }
+  }
+}
+function openDoor(id){
+  if(opened[id]) return;
+  opened[id]=true;
+  const d=(S().doors||[]).find(x=>x.id===id); if(!d)return;
+  log('step',{door:id});
+  setMsg(d.why, d.verdict==='ok'?'ok':'err');
+  if((S().doors||[]).every(x=>opened[x.id])){
+    renderPool();
+    document.getElementById('successBar').style.display='block';
+    document.getElementById('successBar').textContent='Все три случая разобраны — сделай вывод';
+  }
+}
+cv.addEventListener('mousedown',onTap); cv.addEventListener('touchstart',onTap,{passive:false});
+
+/* ───────── ПРИМИТИВЫ ───────── */
+function hexA(h,a){const n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')';}
+function bg(){ctx.clearRect(0,0,W,HT);ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,HT);ctx.fillStyle='#e7e1d2';for(let x=20;x<W;x+=25)for(let y=20;y<HT;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill()}}
+function lab(x,y,t,col,s){ctx.font='900 '+(s||15)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineWidth=4;ctx.strokeStyle='rgba(255,253,247,.95)';ctx.strokeText(t,x,y);ctx.fillStyle=col;ctx.fillText(t,x,y);ctx.textBaseline='alphabetic';ctx.textAlign='start'}
+function dot(x,y,r,fill){ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();}
+function seg(p,q,col,w){ctx.strokeStyle=col;ctx.lineWidth=w||2.8;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
+function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function noteLine(t,col){let fs=12.5;ctx.font='900 '+fs+'px system-ui';while(ctx.measureText(t).width>W-40&&fs>8.5){fs-=0.5;ctx.font='900 '+fs+'px system-ui';}lab(W/2,HT-18,t,col,fs);}
+function drawAngle(V,P,Q,col,active,dim,r0){
+  const a1=Math.atan2(P.y-V.y,P.x-V.x),a2=Math.atan2(Q.y-V.y,Q.x-V.x);
+  let d=a2-a1;while(d<=-PI)d+=2*PI;while(d>PI)d-=2*PI;
+  const acw=d<0,k=active?(1+0.13*Math.sin(Date.now()/240)):1,r=active?r0*k+2:r0;
+  ctx.save(); if(dim)ctx.globalAlpha=0.34;
+  ctx.beginPath();ctx.moveTo(V.x,V.y);ctx.arc(V.x,V.y,r,a1,a1+d,acw);ctx.closePath();ctx.fillStyle=hexA(col,0.14);ctx.fill();
+  ctx.beginPath();ctx.arc(V.x,V.y,r,a1,a1+d,acw);ctx.lineWidth=active?3.6:2.4;ctx.strokeStyle=col;ctx.lineCap='round';ctx.stroke();
+  ctx.restore();
+}
+function wrap(t,maxw,font){ctx.font=font||'13px system-ui';const words=t.split(' ');const lines=[];let cur='';words.forEach(w=>{const tl=cur?cur+' '+w:w;if(ctx.measureText(tl).width>maxw&&cur){lines.push(cur);cur=w;}else cur=tl;});if(cur)lines.push(cur);return lines;}
+function tokensWidth(toks,font){ctx.font=font;let w=0;toks.forEach(t=>w+=ctx.measureText(t[0]).width);return w;}
+function drawTokens(toks,x,y,font){ctx.font=font;ctx.textBaseline='middle';ctx.textAlign='left';let cx=x;toks.forEach(t=>{ctx.fillStyle=t[1];ctx.fillText(t[0],cx,y);cx+=ctx.measureText(t[0]).width;});ctx.textBaseline='alphabetic';ctx.textAlign='start';return cx;}
+
+/* ───────── ПЛАШКИ ───────── */
+function plate(x,y,w,h,fill,stroke,lw){roundRect(x,y,w,h,11);ctx.fillStyle=fill;ctx.fill();roundRect(x,y,w,h,11);ctx.lineWidth=lw||1.4;ctx.strokeStyle=stroke;ctx.stroke();}
+function plateTitle(x,y,t,col){ctx.font='800 11px system-ui';ctx.fillStyle=col||'#64748b';ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText(t.toUpperCase(),x,y);ctx.textBaseline='alphabetic';ctx.textAlign='start';}
+function ifThenPlate(x,y,w,title,ifT,ifCol,thenT,thenCol,fill,stroke){
+  const h=64; plate(x,y,w,h,fill,stroke); plateTitle(x+14,y+9,title);
+  const toks=[['ЕСЛИ ','#1a1a2e'],[ifT,ifCol],['   →   ',GREY],['ТО ','#1a1a2e'],[thenT,thenCol]];
+  const f='900 17px system-ui'; const tw=tokensWidth(toks,f); drawTokens(toks, x+Math.max(14,(w-tw)/2), y+41, f);
+}
+function notePlate(x,y,w,title,body){
+  const f='13px system-ui'; const lines=wrap(body,w-28,f); const h=30+lines.length*17;
+  plate(x,y,w,h,'#fffbeb','#fde68a'); plateTitle(x+14,y+8,title,'#92400e');
+  ctx.font=f;ctx.fillStyle='#78350f';ctx.textAlign='left';ctx.textBaseline='alphabetic';
+  lines.forEach((ln,i)=>ctx.fillText(ln,x+14,y+30+i*17));
+  ctx.textAlign='start'; return h;
+}
+function tokenPlate(x,y,w,title,toks,fill,stroke){
+  const h=44; plate(x,y,w,h,fill,stroke); plateTitle(x+14,y+7,title);
+  drawTokens(toks,x+14,y+27,'900 16px system-ui');
+}
+function drawChip(x,cy,txt,col){
+  const f='900 16px system-ui'; ctx.font=f; const w=ctx.measureText(txt).width+22;
+  roundRect(x,cy-15,w,30,8);ctx.fillStyle=hexA(col,0.12);ctx.fill();roundRect(x,cy-15,w,30,8);ctx.lineWidth=1.4;ctx.strokeStyle=col;ctx.stroke();
+  ctx.fillStyle=col;ctx.font=f;ctx.textBaseline='middle';ctx.textAlign='left';ctx.fillText(txt,x+11,cy);
+  ctx.textBaseline='alphabetic';ctx.textAlign='start';
+  return x+w;
+}
+function swapIcon(cx,cy,col){
+  ctx.save();ctx.strokeStyle=col;ctx.lineWidth=2;ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.beginPath();ctx.moveTo(cx-9,cy-5);ctx.lineTo(cx+8,cy-5);ctx.lineTo(cx+4,cy-9);ctx.moveTo(cx+8,cy-5);ctx.lineTo(cx+4,cy-1);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(cx+9,cy+5);ctx.lineTo(cx-8,cy+5);ctx.lineTo(cx-4,cy+1);ctx.moveTo(cx-8,cy+5);ctx.lineTo(cx-4,cy+9);ctx.stroke();
+  ctx.restore();
+}
+
+/* ───────── ОПОРНЫЙ ТРЕУГОЛЬНИК ───────── */
+function sideLabel(p,q,opp,txt,col){
+  const mx=(p.x+q.x)/2,my=(p.y+q.y)/2; let nx=-(q.y-p.y),ny=(q.x-p.x); const L=Math.hypot(nx,ny)||1; nx/=L;ny/=L;
+  if((mx+nx-opp.x)**2+(my+ny-opp.y)**2 < (mx-nx-opp.x)**2+(my-ny-opp.y)**2){nx=-nx;ny=-ny;}
+  lab(mx+nx*16,my+ny*16,txt,col,12.5);
+}
+function drawRefTriangle(tri,lit){
+  const {A,B,C}=tri; const on=id=>lit.includes(id), dim=id=>lit.length>0&&!lit.includes(id);
+  // стороны окрашены в цвет ПРОТИВОЛЕЖАЩЕГО угла: AB↔∠C, AC↔∠B, BC↔∠A(тёмная)
+  seg(B,C,'#1a1a2e',2.4);
+  ctx.save(); if(dim('C'))ctx.globalAlpha=0.4; seg(A,B,COL.C,on('C')?4:3.2); ctx.restore();
+  ctx.save(); if(dim('B'))ctx.globalAlpha=0.4; seg(A,C,COL.B,on('B')?4:3.2); ctx.restore();
+  drawAngle(C,A,B,COL.C,on('C'),dim('C'),26);
+  drawAngle(B,A,C,COL.B,on('B'),dim('B'),22);
+  dot(A.x,A.y,4,'#1a1a2e');dot(B.x,B.y,4,'#1a1a2e');dot(C.x,C.y,4,'#1a1a2e');
+  lab(A.x,A.y-14,'A','#1a1a2e',14);lab(B.x-13,B.y+13,'B','#1a1a2e',14);lab(C.x+15,C.y,'C','#1a1a2e',14);
+  sideLabel(A,B,C,'AB',COL.C); sideLabel(A,C,B,'AC',COL.B);
+}
+function drawTriCaption(tri,kind){
+  const cx=150;
+  const given = kind==='iso'?[['Дано:  ',GREY],['∠B',COL.B],[' = ',GREY],['∠C',COL.C]]
+                            :[['Дано:  ',GREY],['∠C',COL.C],[' > ',GREY],['∠B',COL.B]];
+  const f1='800 13px system-ui'; drawTokens(given, cx-tokensWidth(given,f1)/2, 314, f1);
+  const f2='800 11px system-ui';
+  const l1=[['против ∠C лежит AB',COL.C]], l2=[['против ∠B лежит AC',COL.B]];
+  drawTokens(l1, cx-tokensWidth(l1,f2)/2, 334, f2);
+  drawTokens(l2, cx-tokensWidth(l2,f2)/2, 350, f2);
+}
+
+/* ───────── ДВЕРИ ───────── */
+function doorRow(x,y,w,h,assumeToks,conseq,reveal,kind){
+  const ok=kind==='ok';
+  plate(x,y,w,h, reveal?(ok?'#f0fdf4':'#fef2f2'):'#fff', reveal?(ok?'#16a34a':'#dc2626'):'#cbd5e1', reveal?2:1.4);
+  drawTokens(assumeToks, x+12, y+h/2, '800 13.5px system-ui');
+  const bx=x+w-22, by=y+h/2;
+  if(reveal){
+    let cx=x+128; ctx.font='900 14px system-ui';ctx.textBaseline='middle';ctx.textAlign='left';
+    ctx.fillStyle=GREY;ctx.fillText('⇒',cx,y+h/2);cx+=22;
+    drawTokens(conseq,cx,y+h/2,'900 15px system-ui');
+    ctx.beginPath();ctx.arc(bx,by,11,0,7);ctx.fillStyle=ok?'#16a34a':'#dc2626';ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='900 13px system-ui';ctx.textAlign='center';ctx.fillText(ok?'✓':'✗',bx,by+0.5);
+  } else {
+    ctx.beginPath();ctx.arc(bx,by,11,0,7);ctx.fillStyle='#94a3b8';ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='900 14px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('?',bx,by+0.5);
+  }
+  ctx.textAlign='start';ctx.textBaseline='alphabetic';
+}
+function aTok(op){ return [['Если ','#1a1a2e'],['AB',COL.C],[' '+op+' ',GREY],['AC',COL.B]]; }
+function cTok(op){ return [['∠C',COL.C],[' '+op+' ',GREY],['∠B',COL.B]]; }
+function drawScene(kind){
+  doorRects=[];
+  const cur=currentCard(); const lit=(cur&&cur.lit)||[];
+  const tri=kind==='doors'?TRI:TRI_ISO;
+  drawRefTriangle(tri, lit); drawTriCaption(tri, kind);
+  const X=280, RW=W-280-18;
+  const q='Сравним стороны AB и AC — что станет с их противолежащими углами ∠C и ∠B?';
+  const ql=wrap(q,RW,'800 13px system-ui'); ctx.font='800 13px system-ui';ctx.textAlign='left';ctx.textBaseline='alphabetic';
+  ql.forEach((ln,i)=>{ctx.fillStyle='#1a1a2e';ctx.fillText(ln,X,90+i*18);});
+  let y=90+ql.length*18+10;
+  (S().doors||[]).forEach(d=>{
+    doorRow(X,y,RW,52, aTok(d.a), cTok(d.c), !!opened[d.id], d.verdict==='ok'?'ok':'contra');
+    doorRects.push({id:d.id,x:X,y,w:RW,h:52}); y+=62;
+  });
+  const correctId = kind==='doors'?'conclY':'isoConclY';
+  if(proved[correctId]){
+    const txt = kind==='doors'?'Остаётся:  AB > AC  ∎':'Остаётся:  AB = AC  ∎';
+    ctx.font='900 18px system-ui'; const tw=ctx.measureText(txt).width; const w=tw+30,x=(W-w)/2,yy=404,h=40;
+    plate(x,yy,w,h,'#dcfce7','#16a34a',1.8); lab(W/2,yy+h/2,txt,'#15803d',18);
+  }
+}
+
+/* ───────── СЦЕНА ПО ФАЗАМ ───────── */
+function drawConverse(){
+  ifThenPlate(70,62,500,'Прямая теорема — доказана','AB > AC',SIDE,'∠C > ∠B',ANG,'#eef2ff','#c7d2fe');
+  ctx.font='800 12px system-ui';ctx.fillStyle='#64748b';ctx.textAlign='left';ctx.fillText('ПОСТРОЙ ОБРАТНУЮ — ПОМЕНЯЙ УСЛОВИЕ И ЗАКЛЮЧЕНИЕ:',70,148);ctx.textAlign='start';
+  const condTxt=sw.swapped?'∠C > ∠B':'AB > AC', condCol=sw.swapped?ANG:SIDE;
+  const conclTxt=sw.swapped?'AB > AC':'∠C > ∠B', conclCol=sw.swapped?SIDE:ANG;
+  const py=166, ph=56;
+  plate(70,py,500,ph, proved.conv?'#ecfdf5':'#f8fafc', proved.conv?'#16a34a':'#cbd5e1', proved.conv?2:1.4);
+  const f='900 16px system-ui'; ctx.font=f; ctx.textBaseline='middle';
+  const wIf=ctx.measureText('ЕСЛИ ').width, wTo=ctx.measureText('   ТО   ').width;
+  const cw=t=>ctx.measureText(t).width+22;
+  const total=wIf+cw(condTxt)+wTo+cw(conclTxt);
+  let x=70+(500-total)/2; const cy=py+24;
+  ctx.fillStyle='#1a1a2e';ctx.textAlign='left';ctx.fillText('ЕСЛИ ',x,cy);x+=wIf;
+  const condX=x; x=drawChip(x,cy,condTxt,condCol);
+  ctx.font=f;ctx.fillStyle='#1a1a2e';ctx.textBaseline='middle';ctx.textAlign='left';ctx.fillText('   ТО   ',x,cy);x+=wTo;
+  const conclX=x; drawChip(x,cy,conclTxt,conclCol);
+  ctx.font='800 10px system-ui';ctx.fillStyle='#94a3b8';ctx.textAlign='center';ctx.textBaseline='alphabetic';
+  ctx.fillText('условие', condX+cw(condTxt)/2, py+ph-7);
+  ctx.fillText('заключение', conclX+cw(conclTxt)/2, py+ph-7);
+  ctx.textAlign='start';
+  if(!proved.conv){
+    plate(SWAP_BTN.x,SWAP_BTN.y,SWAP_BTN.w,SWAP_BTN.h,'#1a1a2e','#1a1a2e',1.4);
+    const bcx=SWAP_BTN.x+SWAP_BTN.w/2, bcy=SWAP_BTN.y+SWAP_BTN.h/2;
+    ctx.font='800 14px system-ui'; const label='поменять местами'; const tw=ctx.measureText(label).width;
+    const iconW=24, gap=9, tot=iconW+gap+tw, lx=bcx-tot/2;
+    swapIcon(lx+12,bcy,'#fff');
+    ctx.fillStyle='#fff';ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(label,lx+iconW+gap,bcy);
+    ctx.textAlign='start';ctx.textBaseline='alphabetic';
+  } else {
+    lab(W/2,238,'✓ это обратная теорема','#15803d',14);
+    notePlate(70,258,500,'✦ за страницами учебника','Обратное не верно само собой. «n делится на 6 ⇒ n чётно» — верно, а обратное «n чётно ⇒ n делится на 6» ложно: 4 чётно, но на 6 не делится. Поэтому обратную теорему доказывают отдельно.');
+  }
+}
+function drawNegate(){
+  drawRefTriangle(TRI, []);
+  drawTriCaption(TRI,'neg');
+  const X=280, RW=W-280-18;
+  tokenPlate(X,88,RW,'Доказать',[['AB > AC',SIDE]],'#eef2ff','#c7d2fe');
+  notePlate(X,150,RW,'приём «от противного»','Предположим, что доказываемое неверно, и придём к противоречию — значит, оно верно.');
+  if(proved.neg){
+    tokenPlate(X,238,RW,'Предположим противное',[['AB',COL.C],[' = ',GREY],['AC',COL.B],['  или  ',GREY],['AB',COL.C],[' < ',GREY],['AC',COL.B]],'#fef2f2','#fecaca');
+  }
+}
+function drawDone(){
+  tokenPlate(70,96,500,'Обратная теорема',[['∠C > ∠B',ANG],['   ⟹   ',GREY],['AB > AC',SIDE]],'#ecfdf5','#86efac');
+  tokenPlate(70,170,500,'Признак равнобедренного',[['∠B = ∠C',ANG],['   ⟹   ',GREY],['AB = AC',SIDE]],'#ecfdf5','#86efac');
+  notePlate(70,244,500,'один приём','И то, и другое доказано «от противного»: предположили обратное к нужному и пришли к противоречию с данным.');
+}
+function currentCard(){ return asmCards().find(c=>c.id===asmDone[asmDone.length-1]); }
+function draw(){
+  const s=S(); bg();
+  if(s.phase==='converse') drawConverse();
+  else if(s.phase==='negate') drawNegate();
+  else if(s.phase==='doors') drawScene('doors');
+  else if(s.phase==='iso') drawScene('iso');
+  else drawDone();
+  noteFor(currentCard());
+}
+function noteFor(c){
+  const s=S(); let t='',col='#475569';
+  if(s.phase==='converse'){ if(proved.conv){t='✦ Обратное не верно само собой — его доказывают отдельно.';col='#92400e';} else t='Нажми кнопку — поменяй местами условие и заключение.'; }
+  else if(s.phase==='negate'){ t = proved.neg?'Противное к «AB > AC» — это AB = AC или AB < AC.':'Что значит «AB не больше AC»?'; }
+  else if(s.phase==='doors'){ if(proved.conclY){t='Две двери захлопнулись ⇒ AB > AC.';col='#15803d';} else if((S().doors||[]).every(d=>opened[d.id])){t='Все случаи разобраны — выбери вывод.';} else t='Открой все три двери: нажми на каждый случай.'; }
+  else if(s.phase==='iso'){ if(proved.isoConclY){t='Две двери захлопнулись ⇒ AB = AC.';col='#15803d';} else if((S().doors||[]).every(d=>opened[d.id])){t='Все случаи разобраны — выбери вывод.';} else t='Открой три двери: какой случай совпадёт с ∠B = ∠C?'; }
+  else { t='∎ Обратная теорема и признак равнобедренного доказаны.';col='#15803d'; }
+  noteLine(t,col);
+}
+
+/* ───────── СБОРКА ───────── */
+function asmCards(){return S().cards||[]}
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+function renderPool(){
+  const box=document.getElementById('opts');box.innerHTML='';
+  asmCards().forEach(c=>{ if(asmDone.includes(c.id))return;
+    const b=document.createElement('button');b.type='button';b.className='pcard';b.innerHTML=c.txt;
+    b.addEventListener('click',()=>pickCard(c.id,b));box.appendChild(b); });
+}
+function renderChain(){
+  const box=document.getElementById('steps');box.innerHTML='';
+  for(let i=0;i<si;i++){ if(!STEPS[i].stepNote)continue; const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">·</span>'+STEPS[i].stepNote;box.appendChild(d); }
+  if(S().phaseTitle){const p=document.createElement('div');p.className='phtitle';p.textContent=S().phaseTitle;box.appendChild(p);}
+  const real=asmDone.filter(id=>{const c=asmCards().find(x=>x.id===id);return c&&!c.trap;});
+  if(!real.length){ if(S().kind==='assemble'){const e=document.createElement('div');e.className='chempty';e.textContent='Выбери верное утверждение.';box.appendChild(e);} return; }
+  real.forEach((id,i)=>{ const c=asmCards().find(x=>x.id===id); const d=document.createElement('div');d.className='chitem';d.innerHTML='<span class="n">'+(i+1)+'.</span>'+c.txt;box.appendChild(d); });
+}
+function pickCard(id,btn){
+  if(stepResolved)return;
+  const c=asmCards().find(x=>x.id===id); if(!c)return;
+  if(c.trap){ mistakes++; if(!asmDead.includes(id))asmDead.push(id); log('distractor',{id}); if(btn&&btn.classList){btn.classList.add('shake');setTimeout(()=>btn.classList.remove('shake'),450);} setMsg(c.trap,'err'); return; }
+  if(c.need && !c.need.every(n=>asmDone.includes(n))){ mistakes++; log('early',{id}); if(btn&&btn.classList){btn.classList.add('shake');setTimeout(()=>btn.classList.remove('shake'),450);} setMsg('Рано: этот шаг опирается на то, что ещё не сказано.','info'); return; }
+  asmDone.push(id); proved[id]=true; if(c.built)log('built',{what:c.built}); log('step',{id});
+  setMsg(c.ok||'Верно.','ok');
+  renderPool(); renderChain();
+  const done=asmCards().filter(x=>!x.trap).every(x=>asmDone.includes(x.id));
+  if(done){ setMsg(S().doneMsg||'Шаг собран.','ok'); advanceReady(); }
+}
+function advanceReady(){ stepResolved=true; const nb=document.getElementById('nextBtn'); nb.style.display='inline-block'; nb.textContent = si<NS-1?'Дальше →':'Итоги →'; }
+
+/* ───────── НАВИГАЦИЯ ───────── */
+function givenFor(s){
+  if(s.phase==='converse') return '<b>Прямая теорема (доказана):</b> AB &gt; AC ⇒ ∠C &gt; ∠B.<br>Обратная меняет местами условие и заключение.';
+  if(s.phase==='negate')   return '<b>Дано:</b> ∠C &gt; ∠B. <b>Доказать:</b> AB &gt; AC.<br>Способ — от противного.';
+  if(s.phase==='doors')    return '<b>Дано:</b> ∠C &gt; ∠B. <b>Доказать:</b> AB &gt; AC.<br>Предположили противное: AB ⩽ AC (случаи = и &lt;).';
+  if(s.phase==='iso')      return '<b>Дано:</b> ∠B = ∠C. <b>Доказать:</b> AB = AC (равнобедренный).<br>Снова от противного.';
+  return '<b>Доказано:</b> обратная теорема и признак равнобедренного. ∎';
+}
+function showStep(){
+  const s=S();
+  document.getElementById('pf').style.width=(si/NS*100)+'%';
+  document.getElementById('pnum').textContent='Шаг '+(si+1)+' из '+NS;
+  document.getElementById('taskText').innerHTML=s.task;
+  document.getElementById('badge').textContent=s.badge;
+  document.getElementById('givenBox').innerHTML=givenFor(s);
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  clearOpts(); stepResolved=false;
+  if(s.kind==='swap'){
+    sw={swapped:false}; renderChain();
+    setMsg('Чтобы получить обратную теорему, поменяй местами условие и заключение — нажми ⇄ на чертеже.','info');
+  } else if(s.kind==='doors'){
+    opened={}; asmDone=[];asmDead=[]; clearOpts(); renderChain();
+    setMsg('Открой все три двери — нажми на каждый случай и посмотри, что станет с углами ∠C и ∠B.','info');
+  } else if(s.kind==='assemble'){
+    asmDone=[];asmDead=[]; renderPool(); renderChain();
+    setMsg(s.phase==='negate'?'Выбери верный вариант. Ошибёшься — объясню.':'Выкладывай утверждения по порядку. Ловушки объяснят, почему так нельзя.','info');
+  } else { asmDone=[]; renderChain(); setMsg('Доказательство собрано.','info'); advanceReady(); }
+  log('step_start',{kind:s.kind});
+}
+function nextTask(){ if(si<NS-1){si++;showStep()} else finish() }
+function resetTask(){ log('reset'); si=0;results=[];mistakes=0;hintsUsed=0;asmDone=[];asmDead=[];proved={};sw={swapped:false};opened={};showStep() }
+
+function showHint(){
+  if(stepResolved)return;
+  hintsUsed++;log('hint');
+  const hb=document.getElementById('hintbox');const s=S();let h='';
+  if(s.phase==='converse') h='Прямая: «AB > AC ⇒ ∠C > ∠B». Чтобы получить обратную, поменяй местами условие и заключение — нажми ⇄: условие станет ∠C > ∠B, заключение AB > AC.';
+  else if(s.phase==='negate') h='«Не больше» = «равно или меньше». Значит AB = AC или AB < AC — два случая, оба надо разобрать.';
+  else if(s.phase==='doors'){ h=(S().doors||[]).every(d=>opened[d.id]) ? 'Случаи AB = AC и AB < AC дали противоречие с ∠C > ∠B. Остаётся AB > AC.' : 'Нажми на каждый случай. Помни: против бо́льшей стороны лежит бо́льший угол, против меньшей — меньший.'; }
+  else if(s.phase==='iso'){ h=(S().doors||[]).every(d=>opened[d.id]) ? 'AB > AC и AB < AC дали неравные углы — против данного ∠B = ∠C. Остаётся AB = AC.' : 'Нажми на каждый случай: только AB = AC даёт ∠C = ∠B, как в данном.'; }
+  else h='Доказательство собрано.';
+  hb.innerHTML='💡 '+h;hb.style.display='block';
+}
+
+function finish(){
+  results.push(mistakes===0?'g':(mistakes<=2?'y':'r'));
+  log('finish',{mistakes,score:results[0]});
+  const st=lS();st.runs=(st.runs||0)+1;st.passed=true;if(results[0]==='g')st.best=Math.max(st.best||0,1);sS(st);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent='∎';
+  document.getElementById('finLbl').textContent =
+    mistakes===0?'Доказано без единой осечки!':
+    mistakes<=2?'Доказано — пара заминок по дороге.':
+    'Доказано, но стоит пройти ещё раз — особенно про «обратное не само собой» и противолежащий угол.';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){ si=0;results=[];mistakes=0;hintsUsed=0;asmDone=[];asmDead=[];proved={};sw={swapped:false};opened={};document.getElementById('fin').style.display='none';document.getElementById('mainArea').style.display='grid';document.getElementById('bar').style.display='flex';showStep() }
+
+/* старт */
+log('start');
+showStep();
+(function loop(){ draw(); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

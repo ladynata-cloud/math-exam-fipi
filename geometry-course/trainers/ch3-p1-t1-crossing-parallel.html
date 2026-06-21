@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Пересекающиеся и параллельные прямые</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:15px;line-height:1.45}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.row{display:flex;justify-content:space-between;gap:10px;font-size:14px;line-height:1.5;border-bottom:1px dashed #e5e7eb;padding:4px 0}
+.row:last-child{border-bottom:0}
+.value{font-weight:900}
+.v-ok{color:#16a34a}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{border:1.5px solid #d1d5db;border-radius:10px;background:#fff;color:#374151;padding:11px 13px;font:750 14px system-ui;cursor:pointer;text-align:left;line-height:1.4}
+.opt:hover{background:#f3f4f6}
+.opt:disabled{opacity:.5;cursor:default}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.warn{background:#fff7ed;color:#c2410c}
+.proof{display:none;background:#ecfdf5;color:#14532d;border:1.5px solid #bbf7d0;border-radius:12px;padding:12px;font-size:13px;line-height:1.5}
+.proof b{color:#166534}
+.hintbox{display:none;background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:12px;padding:11px 13px;font-size:13px;line-height:1.5;color:#1a3a6e}
+.small{font-size:12px;color:#64748b;line-height:1.45}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button.tool{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button.tool:hover{background:#f3f4f6}
+button.tool:disabled{opacity:.35;cursor:default}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:15px;height:15px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:600px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14.5px;line-height:1.55;color:#14532d}
+.law b{color:#166534}
+.law .star{color:#b45309;font-weight:800}
+.bridge{margin-top:10px;font-size:13px;color:#475569}
+.bridge a{color:#b45309;font-weight:800;text-decoration:none}
+@media(max-width:820px){
+  body{padding:8px}
+  .main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}
+  .side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">∥ Пересекающиеся и параллельные прямые</div>
+      <div class="sub">Глава III · §1 · тренажёр 1 из 6 — от пересечения к параллельности</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Отправьте точку пересечения в бесконечность</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work"><canvas id="cv" width="640" height="400"></canvas></div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card" id="infoCard">
+        <h2 id="infoTtl">Точка пересечения</h2>
+        <div id="infoBody"></div>
+      </div>
+      <div id="opts" class="opts"></div>
+      <div id="msg" class="msg info"></div>
+      <div id="hintbox" class="hintbox"></div>
+      <div id="proof" class="proof"></div>
+      <div class="card">
+        <h2>Зачем это</h2>
+        <p class="small">Слово «параллельные» кажется простым — «две черты рядом». Но математически это «прямые, у которых <b>исчезла</b> точка встречи». Здесь вы отправите эту точку в бесконечность своими руками — и больше никогда не спутаете «не пересеклись на рисунке» с «параллельны».</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Определение.</b> Две прямые на плоскости называются <b>параллельными</b>, если они <b>не пересекаются</b>.<br>
+      Параллельность прямых a и b записывают так: <b>a ∥ b</b>.<br><br>
+      <b>Про отрезки и лучи.</b> Два отрезка (луча) называются параллельными, если они лежат на параллельных прямых. Поэтому отрезок может «не доставать» до другого на рисунке — и всё равно не быть ему параллельным: важно, пересекаются ли <b>прямые</b>, на которых они лежат.
+      <div class="bridge">Но не продлевать же прямые в бесконечность каждый раз, чтобы проверить! Есть способ надёжнее — посмотреть на <b>углы при секущей</b>. Об этом следующий тренажёр: <a href="ch3-p1-t2-eight-angles.html">Восемь углов при секущей →</a></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button class="tool" id="extendBtn" onclick="toggleExtend()">⟶ Продлить прямые</button>
+    <button class="tool" onclick="showHint()">💡 Подсказка</button>
+    <button class="tool" onclick="resetTask()">↺ Сначала</button>
+    <button class="tool next" id="nextBtn" onclick="nextTask()">Следующая →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС И ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch3-p1-t1-crossing-parallel';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),task:ti+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=640,H=400;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+
+/* ───────── ТИПЫ ЗАДАЧ ─────────
+   kind:
+   'wheel'   — освоить руль (повернуть в обе стороны)
+   'infinity'— поймать параллельное положение (точка улетает)
+   'edge'    — выбор «параллельны/пересекаются» на статичной паре (ловушка края)
+   'segs'    — отрезки на прямых (рис. 105), выбор пары
+   'life'    — бытовое распознавание (лёгкое, ✦)
+*/
+const TASKS=[
+ {kind:'wheel'},
+ {kind:'infinity'},
+ // ловушка края: малый угол, пересечение далеко за холстом
+ {kind:'edge', truth:'cross', ang:0.17,
+  text:'На листе эти отрезки не встретились. Параллельны ли прямые, на которых они лежат? Если сомневаетесь — нажмите «⟶ Продлить прямые».'},
+ {kind:'edge', truth:'parallel', ang:0,
+  text:'А эти? Решите — и при необходимости продлите прямые, чтобы проверить.'},
+ {kind:'segs'},
+ {kind:'life'}
+];
+const NT=TASKS.length;
+
+let ti=0, results=[], mistakes=0, hintsUsed=0, solvedThis=false, kind='mouse';
+let mode=null, grab={}, extend=false;
+// состояние «руля»: угол прямой a и якорь S
+let angA=0;            // текущий угол прямой a (радианы), 0 = параллельно b
+let wheelDirs={pos:false,neg:false};  // крутили в обе стороны?
+let snappedParallel=false;
+let lifeSel=[];        // выбранные пары в бытовой задаче
+
+const T=()=>TASKS[ti];
+
+/* геометрия главного жеста:
+   прямая b — горизонтальна на y=BY.
+   прямая a — проходит через якорь S и наклонена на angA.
+   точка пересечения P = пересечение a с b. */
+const BY=250, SX=120, SY=250;   // S лежит на b (в параллельном положении прямые сливались бы) —
+// чтобы a и b были РАЗНЫМИ прямыми, поднимем якорь S над b:
+const ANCHOR={x:120,y:150};     // S — точка, вокруг которой вращается a (над прямой b)
+
+const EPS_PAR=0.004;   // строгий порог параллельности: меньше — считаем прямые параллельными
+const SNAP_PAR=0.05;   // зона захвата магнитом к параллели (рукой довести ровно тяжело)
+function intersectionP(){
+  // a: точка ANCHOR, направление (cos angA, sin angA); b: y = BY
+  const dy=Math.sin(angA);
+  if(Math.abs(dy)<EPS_PAR) return null;   // a практически горизонтальна → параллельна b, точки нет
+  const t=(BY-ANCHOR.y)/dy;
+  const x=ANCHOR.x+Math.cos(angA)*t;
+  return {x, y:BY, t};
+}
+// маркер-руль на прямой a (за который вращаем)
+function handlePos(){
+  const r=150;
+  return {x:ANCHOR.x+Math.cos(angA)*r, y:ANCHOR.y+Math.sin(angA)*r};
+}
+
+/* ───────── ОТРИСОВКА ───────── */
+function bg(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill()}
+}
+function lineThrough(px,py,dx,dy,col,dash){
+  // рисуем прямую как отрезок через весь холст
+  const big=2000;
+  ctx.strokeStyle=col;ctx.lineWidth=2.8;
+  if(dash)ctx.setLineDash([7,5]);
+  ctx.beginPath();
+  ctx.moveTo(px-dx*big,py-dy*big);
+  ctx.lineTo(px+dx*big,py+dy*big);
+  ctx.stroke();ctx.setLineDash([]);
+}
+function lab(x,y,txt,col,size){
+  ctx.font='900 '+(size||15)+'px system-ui';ctx.textAlign='center';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(250,248,242,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);
+}
+function dot(x,y,r,fill,stroke){
+  ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fillStyle=fill;ctx.fill();
+  if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke()}
+}
+
+function drawWheelScene(){
+  const par=Math.abs(Math.sin(angA))<EPS_PAR;
+  const col=(par||snappedParallel)?'#16a34a':'#2d70b3';
+  // прямая b (фиксированная, тёмная)
+  lineThrough(ANCHOR.x, BY, 1,0, '#1a1a2e', false);
+  lab(W-30, BY-12, 'b', '#1a1a2e');
+  // прямая a (подвижная)
+  lineThrough(ANCHOR.x, ANCHOR.y, Math.cos(angA), Math.sin(angA), col, false);
+  // подпись a у маркера
+  const h=handlePos();
+  lab(h.x, h.y-16, 'a', col);
+  // якорь S
+  dot(ANCHOR.x,ANCHOR.y,4.4,'#fffdf7','#1a1a2e');
+  // точка пересечения P
+  const P=intersectionP();
+  if(P && P.x>=-40 && P.x<=W+40 && P.t>0){
+    const pulse=1+0.18*Math.sin(Date.now()/260);
+    dot(P.x,P.y,6.2*pulse,'#dc2626','#fffdf7');
+    lab(P.x, P.y+24, 'P', '#dc2626');
+  } else if(P && P.t>0 && P.x>W){
+    // точка ушла за правый край — деликатный указатель НАД прямой, без чисел
+    const ay=BY-22;
+    ctx.strokeStyle='#dc2626';ctx.lineWidth=2.4;
+    ctx.beginPath();ctx.moveTo(W-60,ay);ctx.lineTo(W-30,ay);ctx.stroke();
+    ctx.fillStyle='#dc2626';
+    ctx.beginPath();ctx.moveTo(W-30,ay-5);ctx.lineTo(W-20,ay);ctx.lineTo(W-30,ay+5);ctx.closePath();ctx.fill();
+    lab(W-95, ay+4, 'P уехала туда', '#dc2626', 12);
+  } else if(par||snappedParallel){
+    // параллельно: точки нет
+    lab(W/2, BY-40, '✦ точки пересечения больше нет', '#16a34a', 14);
+  }
+  // маркер-руль — виден всегда (после решения не пульсирует), чтобы было понятно, чем вращали
+  {
+    const pulse=solvedThis?1:(1+0.14*Math.sin(Date.now()/280));
+    ctx.setLineDash([3,4]);ctx.strokeStyle='#a78bfa';ctx.lineWidth=1.4;
+    ctx.beginPath();ctx.moveTo(ANCHOR.x,ANCHOR.y);ctx.lineTo(h.x,h.y);ctx.stroke();ctx.setLineDash([]);
+    ctx.beginPath();ctx.arc(h.x,h.y,9*pulse,0,7);
+    ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#7c3aed';ctx.lineWidth=2.6;ctx.stroke();
+    dot(h.x,h.y,2.4,'#7c3aed');
+  }
+}
+
+// статичная пара прямых для ловушки края
+function drawEdgeScene(){
+  const t=T();
+  const bx=70, by=210;            // b: горизонталь (ниже)
+  const ax=70, ay=120;            // a: старт слева, ВЫШЕ b — падает к ней вправо-вниз
+  const dxA=Math.cos(t.ang), dyA=Math.sin(t.ang);
+  let P=null;
+  if(Math.abs(dyA)>1e-6){ const s=(by-ay)/dyA; P={x:ax+dxA*s, y:by, s}; }
+
+  if(!extend){
+    const segLen=470;
+    ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2.8;
+    ctx.beginPath();ctx.moveTo(bx,by);ctx.lineTo(bx+segLen,by);ctx.stroke();
+    lab(bx+segLen+12, by, 'b', '#1a1a2e');
+    ctx.strokeStyle='#2d70b3';ctx.lineWidth=2.8;
+    ctx.beginPath();ctx.moveTo(ax,ay);ctx.lineTo(ax+dxA*segLen,ay+dyA*segLen);ctx.stroke();
+    lab(ax+dxA*segLen+14, ay+dyA*segLen, 'a', '#2d70b3');
+    lab(W/2, H-24, 'отрезки на листе не встретились — а прямые?', '#64748b', 13);
+  }else{
+    lineThrough(bx,by,1,0,'#1a1a2e',false);   lab(W-26,by-10,'b','#1a1a2e');
+    lineThrough(ax,ay,dxA,dyA,'#2d70b3',false);lab(W-26,ay+dyA*(W-26-ax)-10,'a','#2d70b3');
+    if(t.truth==='cross' && P){
+      if(P.x>=0&&P.x<=W){
+        const pulse=1+0.18*Math.sin(Date.now()/260);
+        dot(P.x,P.y,6.2*pulse,'#dc2626','#fffdf7');lab(P.x,P.y-16,'P','#dc2626');
+        lab(W/2,H-24,'продлили — и вот она, точка пересечения P','#b91c1c',13);
+      }else{
+        lab(W/2,H-24,'прямые сходятся ещё дальше за краем — но сходятся','#b91c1c',13);
+      }
+    }else{
+      lab(W/2,H-24,'сколько ни продлевай — прямые не сходятся','#15803d',13);
+    }
+  }
+}
+
+function draw(){
+  bg();
+  const k=T().kind;
+  if(k==='wheel'||k==='infinity')drawWheelScene();
+  else if(k==='edge')drawEdgeScene();
+  else if(k==='segs')drawSegsScene();
+  else if(k==='life')drawLifeScene();
+}
+
+/* ───────── ЗАДАЧА: ОТРЕЗКИ НА ПРЯМЫХ (рис. 105) ───────── */
+// сегменты: AB и CD на параллельных прямых; MN на прямой, пересекающей CD
+const SEGS={
+  AB:{x1:120,y1:90,x2:280,y2:130},
+  CD:{x1:360,y1:250,x2:540,y2:300},
+  MN:{x1:150,y1:300,x2:250,y2:210}
+};
+let segsExtendOn=false;
+function drawSegsScene(){
+  // прямые-продолжения (если включено)
+  if(extend){
+    for(const k of ['AB','CD','MN']){
+      const s=SEGS[k];const dx=s.x2-s.x1,dy=s.y2-s.y1,L=Math.hypot(dx,dy);
+      lineThrough(s.x1,s.y1,dx/L,dy/L,'#cbd5e1',true);
+    }
+  }
+  const seg=(s,col,n1,n2)=>{
+    ctx.strokeStyle=col;ctx.lineWidth=3.4;
+    ctx.beginPath();ctx.moveTo(s.x1,s.y1);ctx.lineTo(s.x2,s.y2);ctx.stroke();
+    dot(s.x1,s.y1,4,col,'#fffdf7');dot(s.x2,s.y2,4,col,'#fffdf7');
+    lab(s.x1-2,s.y1-10,n1,col);lab(s.x2+2,s.y2-10,n2,col);
+  };
+  seg(SEGS.AB,'#2d70b3','A','B');
+  seg(SEGS.CD,'#2d70b3','C','D');
+  seg(SEGS.MN,'#b45309','M','N');
+}
+
+/* ───────── ЗАДАЧА: БЫТОВАЯ (✦) ───────── */
+// три схемы; каждая — пара отрезков, параллельных или нет; ученик отмечает параллельные
+function drawLifeScene(){
+  // рисуем три «иконки»: стол (∥), троллейбус-штанги (∥), угол книги (не ∥)
+  // простыми линиями; выбор кликом по подписи-кнопке (в .opts), здесь только картинки
+  const box=(x,y,w,h,fill)=>{ctx.fillStyle=fill;ctx.fillRect(x,y,w,h);};
+  // стол
+  box(40,60,170,120,'#f3eee3');
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(55,90);ctx.lineTo(195,90);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(55,150);ctx.lineTo(195,150);ctx.stroke();
+  lab(125,200,'края стола','#475569',13);
+  // штанги троллейбуса
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(250,170);ctx.lineTo(330,70);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(275,180);ctx.lineTo(355,80);ctx.stroke();
+  lab(305,205,'штанги','#475569',13);
+  // раскрытая книга (две страницы под углом — НЕ параллельны)
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(420,160);ctx.lineTo(480,80);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(480,80);ctx.lineTo(560,150);ctx.stroke();
+  lab(490,205,'страницы книги','#475569',13);
+}
+
+/* ───────── СООБЩЕНИЯ ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function setInfo(ttl,body){document.getElementById('infoTtl').innerHTML=ttl;document.getElementById('infoBody').innerHTML=body}
+
+/* ───────── ОПЦИИ (для edge/segs/life) ───────── */
+function renderOpts(list){
+  const box=document.getElementById('opts');box.innerHTML='';
+  list.forEach(o=>{
+    const b=document.createElement('button');b.className='opt';b.innerHTML=o.t;
+    b.onclick=()=>o.fn(b);box.appendChild(b);
+  });
+}
+function clearOpts(){document.getElementById('opts').innerHTML=''}
+
+/* ───────── УСПЕХ ───────── */
+function succeed(extra){
+  if(solvedThis)return;
+  solvedThis=true;
+  results.push(mistakes===0&&hintsUsed===0?'g':(mistakes<=1&&hintsUsed<=1?'y':'r'));
+  log('solved',{kind:T().kind,mistakes,hints:hintsUsed});
+  const sb=document.getElementById('successBar');
+  sb.textContent='✓ Готово!';sb.style.display='block';
+  document.getElementById('hintbox').style.display='none';
+  if(extra){const pr=document.getElementById('proof');pr.innerHTML='<b>Вывод.</b> '+extra;pr.style.display='block';}
+  const nb=document.getElementById('nextBtn');
+  nb.style.display='inline-block';
+  nb.textContent=ti<NT-1?'Следующая →':'Итоги →';
+}
+
+/* ───────── ПОДСКАЗКА ───────── */
+function showHint(){
+  if(solvedThis)return;
+  hintsUsed++;log('hint');
+  const hb=document.getElementById('hintbox');let h='';
+  const k=T().kind;
+  if(k==='wheel')h='Возьмите фиолетовый маркер на прямой a и поверните его — сначала в одну сторону, потом в другую. Следите за красной точкой P.';
+  else if(k==='infinity')h='Поворачивайте a так, чтобы красная точка P уезжала вправо всё дальше. Когда прямая a станет горизонтальной (ляжет «вдоль» b), точка исчезнет.';
+  else if(k==='edge')h='Прямая бесконечна. Нажмите «⟶ Продлить прямые» и посмотрите, встретятся ли они за краем листа.';
+  else if(k==='segs')h='Нажмите «⟶ Продлить прямые». Параллельны те отрезки, чьи прямые НЕ пересекаются.';
+  else h='Параллельны те пары, что не сойдутся, сколько их ни продлевай. А страницы раскрытой книги расходятся из одной точки — значит, пересекаются.';
+  hb.innerHTML='💡 '+h;hb.style.display='block';
+}
+
+/* ───────── ИНСТРУМЕНТ «ПРОДЛИТЬ» ───────── */
+function toggleExtend(){
+  extend=!extend;log(extend?'step':'step',{what:'extend',on:extend});
+}
+
+/* ───────── ПОВЕДЕНИЕ ЗАДАЧ ───────── */
+function checkWheel(){
+  if(wheelDirs.pos&&wheelDirs.neg&&!solvedThis){
+    succeed('Точка пересечения <b>скользит</b> по прямой b, когда мы крутим a: круче наклон — P ближе, положе — P убегает вправо. Но у двух пересекающихся прямых всегда есть ровно <b>одна</b> общая точка.');
+    setMsg('Вы увидели: точка P бегает по прямой b — то близко, то далеко.','ok');
+  }
+}
+function checkInfinity(){
+  if(Math.abs(Math.sin(angA))<SNAP_PAR&&!solvedThis){
+    angA=0;snappedParallel=true;log('snap_dir');   // защёлкнули РОВНО в параллель
+    succeed('Прямые a и b больше <b>не встречаются нигде</b> — точка пересечения «улетела в бесконечность». Такие прямые и называют <b>параллельными</b>: a ∥ b.');
+    setMsg('Поймали! Прямая a легла параллельно b — общей точки не осталось.','ok');
+  }
+}
+
+/* edge: выбор */
+function answerEdge(choice){
+  if(solvedThis)return;
+  const truth=T().truth;
+  if(choice===truth){
+    if(truth==='parallel')
+      succeed('Эти прямые и правда параллельны: сколько их ни продлевай, они не встретятся.');
+    else
+      succeed('Верно: на листе пусто, но за краем прямые пересекаются. «Не сошлись на рисунке» — ещё не «параллельны».');
+    setMsg('Верный выбор.','ok');
+  }else{
+    mistakes++;log('distractor',{pick:choice});
+    if(truth==='cross'){
+      extend=true;
+      setMsg('Смотрите: я продлил прямые. Видите, они сходятся за краем листа? Значит, они <b>пересекаются</b>, а не параллельны. Прямая бесконечна — то, что они не встретились в пределах рисунка, ещё ничего не значит.','err');
+    }else{
+      setMsg('Проверьте, продлив прямые: они нигде не сходятся. Это и есть параллельность.','err');
+    }
+  }
+}
+
+/* segs: выбор пары */
+function answerSegs(pick){
+  if(solvedThis)return;
+  if(pick==='AB-CD'){
+    succeed('Отрезки AB и CD лежат на <b>параллельных</b> прямых (продлите — прямые не встретятся), поэтому AB ∥ CD. А отрезок MN лежит на прямой, которая пересекает прямую CD, — значит, MN и CD <b>не</b> параллельны, хотя сами отрезки на рисунке и не касаются друг друга.');
+    setMsg('Точно — параллельны именно AB и CD.','ok');
+  }else if(pick==='MN-CD'){
+    mistakes++;log('distractor',{pick});extend=true;
+    setMsg('Это и есть главная ловушка. MN и CD на рисунке не пересекаются — но посмотрите на прямые (я их продлил): прямая под MN <b>встречает</b> прямую под CD. Параллельность отрезков — это про <b>прямые</b>, на которых они лежат.','err');
+  }else{
+    mistakes++;log('distractor',{pick});
+    setMsg('Не совсем. Продлите прямые и сравните, какие из них не пересекаются.','err');
+  }
+}
+
+/* life: выбор нескольких */
+function toggleLife(key,btn){
+  if(solvedThis)return;
+  const i=lifeSel.indexOf(key);
+  if(i>=0){lifeSel.splice(i,1);btn.style.background='#fff';}
+  else{lifeSel.push(key);btn.style.background='#dbeafe';}
+}
+function checkLife(){
+  if(solvedThis)return;
+  const correct=['table','poles'];
+  const ok=correct.every(k=>lifeSel.includes(k))&&lifeSel.length===correct.length;
+  if(ok){
+    succeed('Края стола и штанги троллейбуса идут «вдоль друг друга» и не сойдутся — это параллельные. А страницы раскрытой книги расходятся из корешка, как из одной точки: их прямые пересекаются.');
+    setMsg('Верно подмечено.','ok');
+  }else{
+    mistakes++;log('distractor',{pick:lifeSel.slice()});
+    setMsg('Подумайте, какие пары разойдутся, если их продлить, а какие сходятся в одной точке. Страницы книги выходят из одной точки — корешка.','err');
+  }
+}
+
+/* ───────── ЖИЗНЕННЫЙ ЦИКЛ ───────── */
+function layout(){
+  const t=T();
+  document.getElementById('pf').style.width=(ti/NT*100)+'%';
+  document.getElementById('pnum').textContent='Задача '+(ti+1)+' из '+NT;
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('proof').style.display='none';
+  document.getElementById('hintbox').style.display='none';
+  document.getElementById('extendBtn').style.display=(t.kind==='edge'||t.kind==='segs')?'inline-block':'none';
+  clearOpts();
+  if(t.kind==='wheel'){
+    document.getElementById('badge').textContent='Подвигайте маркер: то круче, то положе';
+    document.getElementById('taskText').innerHTML='Прямые a и b <b>пересекаются</b> в точке P. Возьмите фиолетовый маркер на прямой a и <b>подвигайте</b> её: сделайте наклон круче — потом положе. Следите, куда побежит точка P.';
+    setInfo('Точка пересечения','<div class="row"><span>P побывала близко</span><span class="value" id="wp">нет</span></div><div class="row"><span>P убежала за край</span><span class="value" id="wn">нет</span></div>');
+    setMsg('Тяните фиолетовый маркер: круче — P близко, положе — P убегает вправо.','info');
+  }else if(t.kind==='infinity'){
+    document.getElementById('badge').textContent='Отправьте точку P в бесконечность';
+    document.getElementById('taskText').innerHTML='Теперь <b>поймайте</b> положение, где точки пересечения не станет вовсе. Поворачивайте a так, чтобы P уезжала всё дальше — пока не исчезнет.';
+    setInfo('Где сейчас точка P','<div id="pinfo">—</div>');
+    setMsg('Крутите a к горизонтали — P уедет за край и пропадёт.','info');
+  }else if(t.kind==='edge'){
+    document.getElementById('badge').textContent='Пересекаются или параллельны?';
+    document.getElementById('taskText').innerHTML=t.text;
+    setInfo('Инструмент','<p class="small">Кнопка «⟶ Продлить прямые» дотянет прямые за края листа.</p>');
+    setMsg('Выберите ответ. Сомневаетесь — продлите прямые.','info');
+    renderOpts(shuffle([
+      {t:'Прямые <b>параллельны</b>',fn:()=>answerEdge('parallel')},
+      {t:'Прямые <b>пересекаются</b>',fn:()=>answerEdge('cross')}
+    ]));
+  }else if(t.kind==='segs'){
+    document.getElementById('badge').textContent='Какие отрезки параллельны?';
+    document.getElementById('taskText').innerHTML='На рисунке три отрезка: AB, CD (синие) и MN (оранжевый). <b>Какая пара параллельна?</b> Продлите прямые, если нужно.';
+    setInfo('Подсказка','<p class="small">Отрезки параллельны, если параллельны <b>прямые</b>, на которых они лежат.</p>');
+    setMsg('Выберите параллельную пару.','info');
+    renderOpts(shuffle([
+      {t:'AB ∥ CD',fn:()=>answerSegs('AB-CD')},
+      {t:'MN ∥ CD',fn:()=>answerSegs('MN-CD')},
+      {t:'AB ∥ MN',fn:()=>answerSegs('AB-MN')}
+    ]));
+  }else if(t.kind==='life'){
+    document.getElementById('badge').textContent='Отметьте параллельные пары';
+    document.getElementById('taskText').innerHTML='✦ Вокруг нас много параллельных линий. <b>Отметьте</b> те пары, что параллельны, и нажмите «Проверить».';
+    setInfo('Подсказка','<p class="small">Параллельные не сойдутся, сколько их ни продлевай.</p>');
+    setMsg('Отметьте пары и проверьте.','info');
+    renderOpts([
+      {t:'Края стола',fn:b=>toggleLife('table',b)},
+      {t:'Штанги троллейбуса',fn:b=>toggleLife('poles',b)},
+      {t:'Страницы раскрытой книги',fn:b=>toggleLife('book',b)},
+      {t:'✓ Проверить',fn:()=>checkLife()}
+    ]);
+  }
+  log('task_start',{kind:t.kind});
+}
+
+function initTask(keepStats){
+  const t=T();
+  if(!keepStats){mistakes=0;hintsUsed=0}
+  solvedThis=false;mode=null;extend=false;
+  angA=(t.kind==='wheel'||t.kind==='infinity')?0.5:0;  // старт под углом (есть пересечение)
+  wheelDirs={pos:false,neg:false};snappedParallel=false;lifeSel=[];
+  layout();
+}
+function nextTask(){if(ti<NT-1){ti++;initTask()}else finish()}
+function resetTask(){log('reset');initTask(true)}
+
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{score:g});
+  const s=lS();s.runs=(s.runs||0)+1;s.passed=true;if(g>(s.best||0))s.best=g;sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent=g+' / '+NT;
+  document.getElementById('finLbl').textContent=
+    g===NT?'Идеально — определение в руках!':g>=4?'Отлично! Главные ловушки разобраны.':'Стоит пройти ещё раз — особенно задачи с продлением прямых.';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){
+  ti=0;results=[];
+  document.getElementById('fin').style.display='none';
+  document.getElementById('mainArea').style.display='grid';
+  document.getElementById('bar').style.display='flex';
+  initTask();
+}
+
+/* ───────── УКАЗАТЕЛЬ (только для руля) ───────── */
+function pos(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+cv.addEventListener('pointerdown',e=>{
+  if(solvedThis)return;
+  const k=T().kind;
+  if(k!=='wheel'&&k!=='infinity')return;
+  kind=e.pointerType==='touch'?'touch':'mouse';
+  const p=pos(e),h=handlePos();
+  const scrK=Math.max(1,W/cv.getBoundingClientRect().width);
+  const grabR=(kind==='touch'?26:16)*scrK;
+  if(Math.hypot(p.x-h.x,p.y-h.y)<grabR){
+    mode='rot';
+    try{cv.setPointerCapture(e.pointerId)}catch(_){}
+  }
+});
+cv.addEventListener('pointermove',e=>{
+  if(mode!=='rot')return;
+  const p=pos(e);
+  let na=Math.atan2(p.y-ANCHOR.y,p.x-ANCHOR.x);
+  // только положительный сектор: a падает вправо-вниз, P всегда справа и уезжает вправо.
+  const lowLimit=(T().kind==='wheel')?0.06:0.0;  // в «руле» не даём P исчезнуть; в «бесконечности» пускаем к параллели (ловит магнит)
+  if(na>0.95)na=0.95; if(na<lowLimit)na=lowLimit;
+  angA=na;
+  if(T().kind==='wheel'){
+    const P=intersectionP();
+    if(P){ if(P.x<=W-40)wheelDirs.pos=true; if(P.x>W)wheelDirs.neg=true; }
+    const wp=document.getElementById('wp'),wn=document.getElementById('wn');
+    if(wp){wp.textContent=wheelDirs.pos?'✓ да':'нет';wp.className='value'+(wheelDirs.pos?' v-ok':'')}
+    if(wn){wn.textContent=wheelDirs.neg?'✓ да':'нет';wn.className='value'+(wheelDirs.neg?' v-ok':'')}
+    checkWheel();
+  }
+  if(T().kind==='infinity'){
+    const P=intersectionP();const pinfo=document.getElementById('pinfo');
+    if(pinfo){
+      if(!P)pinfo.innerHTML='<b style="color:#16a34a">точки пересечения нет</b>';
+      else if(P.x>W)pinfo.innerHTML='<b style="color:#dc2626">далеко за краем листа</b>';
+      else pinfo.innerHTML='на экране, в точке P';
+    }
+    checkInfinity();
+  }
+});
+['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,()=>{mode=null}));
+
+/* ───────── СТАРТ ───────── */
+initTask();
+(function loop(){draw();requestAnimationFrame(loop)})();
+</script>
+</body>
+</html>

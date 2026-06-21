@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Смежные и вертикальные углы · лаборатория и доказательство</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.chain{display:none;flex-direction:column;gap:6px;margin-top:12px}
+.chitem{background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:8px 10px;font:600 12.5px/1.45 system-ui;color:#14532d;animation:fi .3s ease}
+.chitem .n{color:#16a34a;font-weight:900}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.poolTtl{display:none;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:800;margin:13px 2px 7px}
+.pool{display:flex;flex-direction:column;gap:8px}
+.pcard{text-align:left;border:1.5px solid #d1d5db;border-radius:11px;background:#fff;padding:11px 13px;font:600 13.5px/1.5 system-ui;color:#1f2937;cursor:pointer;width:100%}
+.pcard:hover{border-color:#2d70b3;background:#f0f7ff}
+.pcard.pulse{border-color:#7c3aed;box-shadow:0 0 0 3px #ddd6fe}
+.pcard.dead{opacity:.5;text-decoration:line-through;pointer-events:none;background:#fef2f2;border-color:#fecaca}
+.pcard.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:14.5px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.row{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;line-height:1.5;border-bottom:1px dashed #e5e7eb;padding:4px 0}
+.row:last-child{border-bottom:0}
+.value{font-weight:900}
+.v-ok{color:#16a34a}
+.v-sum{color:#b45309}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.warn{background:#fff7ed;color:#c2410c}
+.proof{display:none;background:#ecfdf5;color:#14532d;border:1.5px solid #bbf7d0;border-radius:12px;padding:12px;font-size:13px;line-height:1.55}
+.proof b{color:#166534}
+.small{font-size:13.5px;color:#374151;line-height:1.55}
+.card.why{background:#fffbeb;border-color:#fcd34d}
+.card.why h2{color:#b45309}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button:hover{background:#f3f4f6}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:15px;height:15px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:580px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14.5px;line-height:1.6;color:#14532d}
+.law b{color:#166534}
+@media(max-width:820px){
+  body{padding:8px}
+  .main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}
+  .side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">✂️ Смежные и вертикальные углы</div>
+      <div class="sub">Глава I · §6 · тренажёр 1 из 3 — лаборатория и доказательство</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Вращайте — закон проявится сам</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="340"></canvas>
+      <div class="chain" id="chainBox"></div>
+      <div class="poolTtl" id="poolTtl"></div>
+      <div class="pool" id="pool"></div>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card" id="statusCard">
+        <h2 id="statusTtl">Живые измерения</h2>
+        <div id="statusBody"></div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div id="proofBox" class="proof"></div>
+      <div class="card why">
+        <h2>Зачем это</h2>
+        <p class="small">На равенстве <b>вертикальных</b> углов держится классическая «бабочка» из задач о треугольниках, а <b>смежные</b> — главный способ доставать недостающие углы. Здесь оба факта вы добудете руками, а один — докажете.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Теорема.</b> Сумма смежных углов равна 180°.<br>
+      <b>Теорема.</b> Вертикальные углы равны.<br><br>
+      Первая видна прямо из развёрнутого угла. Вторую вы доказали сами — без единого измерения, только через пару смежных. На этих двух фактах держится весь §6 и половина задач о пересекающихся прямых — включая «бабочку», которая ждёт вас в главе II.
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button onclick="showHint()">💡 Подсказка</button>
+    <button onclick="resetTask()">↺ Сначала</button>
+    <button id="nextBtn" class="next" onclick="nextTask()">Следующая →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС И ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch1-p6-t1-adjacent-vertical';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),task:ti+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── УТИЛИТЫ ───────── */
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+const D2R=Math.PI/180;
+const dirP=d=>({x:Math.cos(d*D2R),y:-Math.sin(d*D2R)}); // экранные координаты: y вниз, угол — против часовой
+
+/* ───────── СОСТОЯНИЕ ───────── */
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+const W=640,H=340;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+const O={x:320,y:182};
+
+let ti=0,results=[],mistakes=0,hintsUsed=0,solved=false,kind='mouse',mode=null;
+let tC=64;                     // лаборатория 1: угол луча OC
+let u=58;                      // лаборатория 2 / доказательство: угол прямой CD
+let expMin=999,expMax=-999,quizShown=false;
+let calcVal=0,applyVal=0,applyPhase=1;
+let prDone=[],prDead=[],prHint=null;
+let flashes={};                // вспышки областей углов: {номер: timestamp}
+
+const TYPES=['lab1','calc1','lab2','proof','apply'];
+const NT=TYPES.length;
+const curT=()=>TYPES[ti];
+
+/* ───────── КАРТОЧКИ ДОКАЗАТЕЛЬСТВА ───────── */
+const PR_CARDS=[
+ {id:'s1',need:[],
+  txt:'∠1 и ∠2 — смежные: сторона у них общая, а две другие — продолжения друг друга. Поэтому ∠1 + ∠2 = 180°.',
+  early:'',ok:'Первая пара смежных в деле.',fx:[1,2]},
+ {id:'s2',need:[],
+  txt:'∠3 и ∠2 — тоже смежные, поэтому ∠3 + ∠2 = 180°.',
+  early:'',ok:'И вторая пара смежных. Заметьте: угол 2 участвует в обеих.',fx:[3,2]},
+ {id:'s3',need:['s1','s2'],
+  txt:'Из обоих равенств: ∠1 = 180° − ∠2 и ∠3 = 180° − ∠2. Правые части одинаковы — значит, ∠1 = ∠3.',
+  early:'Рано: чтобы сравнить ∠1 и ∠3 через угол 2, оба равенства со смежными уже должны стоять в цепочке.',
+  ok:'Сердце доказательства: оба угла выражены через один и тот же ∠2.',fx:[1,3]},
+ {id:'fin',need:['s3'],
+  txt:'Угол 2 был произвольным — рассуждение годится для любых пересекающихся прямых. Вертикальные углы равны.',
+  early:'Вывод делают в самом конце — сначала равенство ∠1 = ∠3.',
+  ok:'Доказательство собрано.',fx:[]},
+ {id:'d1',distract:'Измерение — не доказательство: транспортир проверит один конкретный чертёж, а теорема должна быть верна для всех пересекающихся прямых сразу.',
+  txt:'Измерим ∠1 и ∠3 транспортиром и убедимся, что они равны.'},
+ {id:'d2',distract:'Это круг в рассуждении: равенство вертикальных углов — то самое, что мы доказываем. Опираться можно только на уже известное — на смежные углы.',
+  txt:'∠1 = ∠3, потому что вертикальные углы равны.'}
+];
+let prOrder=[];
+
+/* ───────── ОТРИСОВКА: ПОМОЩНИКИ ───────── */
+function bg(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill()}
+}
+function ray(deg,len,col,w){
+  const d=dirP(deg);
+  ctx.beginPath();ctx.moveTo(O.x,O.y);ctx.lineTo(O.x+d.x*len,O.y+d.y*len);
+  ctx.strokeStyle=col;ctx.lineWidth=w||2.6;ctx.stroke();
+}
+function arcDeg(r,a,b,col,w){ // дуга против часовой от a к b (в градусах, мат. направление)
+  ctx.strokeStyle=col;ctx.lineWidth=w||2.5;
+  ctx.beginPath();ctx.arc(O.x,O.y,r,-a*D2R,-b*D2R,true);ctx.stroke();
+}
+function labAt(deg,r,txt,col,size){
+  const d=dirP(deg);
+  ctx.font='900 '+(size||14)+'px system-ui';ctx.textAlign='center';
+  const x=O.x+d.x*r,y=O.y+d.y*r+5;
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(250,248,242,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);
+}
+function marker(deg,r){
+  const d=dirP(deg),hx=O.x+d.x*r,hy=O.y+d.y*r;
+  const pulse=1+0.14*Math.sin(Date.now()/280);
+  ctx.setLineDash([3,4]);ctx.strokeStyle='#a78bfa';ctx.lineWidth=1.4;
+  ctx.beginPath();ctx.moveTo(O.x,O.y);ctx.lineTo(hx,hy);ctx.stroke();ctx.setLineDash([]);
+  ctx.beginPath();ctx.arc(hx,hy,9*pulse,0,7);
+  ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#7c3aed';ctx.lineWidth=2.6;ctx.stroke();
+  ctx.beginPath();ctx.arc(hx,hy,2.4,0,7);ctx.fillStyle='#7c3aed';ctx.fill();
+}
+function dotO(){
+  ctx.beginPath();ctx.arc(O.x,O.y,4,0,7);ctx.fillStyle='#1a1a2e';ctx.fill();
+  labAt(258,16,'O','#1a1a2e');
+}
+function pulseA(ts){return ts?Math.max(0,1-(Date.now()-ts)/1400):0}
+// области четырёх углов при прямых AB (0/180) и CD (u/u+180):
+// 1: [0,u] · 2: [u,180] · 3: [180,180+u] · 4: [180+u,360]
+function regionArc(n,r,col,w){
+  const seg=n===1?[0,u]:n===2?[u,180]:n===3?[180,180+u]:[180+u,360];
+  arcDeg(r,seg[0],seg[1],col,w);
+}
+function regionMid(n){
+  return n===1?u/2:n===2?(u+180)/2:n===3?180+u/2:270+u/2;
+}
+
+/* ───────── ОТРИСОВКА ПО ЗАДАЧАМ ───────── */
+function drawLab1(){
+  ray(180,265,'#1a1a2e');ray(0,265,'#1a1a2e');           // прямая AB
+  arcDeg(34,tC,180,'#2d70b3');                            // ∠AOC
+  arcDeg(26,0,tC,'#d97706');                              // ∠COB
+  ray(tC,150,solved?'#16a34a':'#2d70b3',3);               // луч OC
+  labAt(180,278,'A','#1a1a2e');labAt(0,278,'B','#1a1a2e');
+  labAt(tC,164,'C',solved?'#16a34a':'#2d70b3');
+  labAt((tC+180)/2,56,Math.round(180-tC)+'°','#2d70b3');
+  labAt(tC/2,48,Math.round(tC)+'°','#d97706');
+  if(!solved)marker(tC,150);
+  dotO();
+  setVal('vAOC',Math.round(180-tC)+'°');
+  setVal('vCOB',Math.round(tC)+'°');
+  setVal('vSum','180°','sum');
+}
+function drawCalc1(){
+  ray(180,265,'#1a1a2e');ray(0,265,'#1a1a2e');
+  const g=0.45+0.45*Math.sin(Date.now()/260);
+  ctx.save();ctx.globalAlpha=0.35+0.3*g;                  // названный угол пульсирует
+  ctx.beginPath();ctx.moveTo(O.x,O.y);
+  ctx.arc(O.x,O.y,52,-tC*D2R,-180*D2R,true);ctx.closePath();
+  ctx.fillStyle='#2d70b3';ctx.fill();ctx.restore();
+  arcDeg(34,tC,180,'#2d70b3',3);
+  arcDeg(26,0,tC,'#d97706');
+  ray(tC,150,'#1a1a2e',3);
+  labAt(180,278,'A','#1a1a2e');labAt(0,278,'B','#1a1a2e');labAt(tC,164,'C','#1a1a2e');
+  labAt((tC+180)/2,62,calcVal+'°','#1d4ed8');
+  labAt(tC/2,48,'?','#b45309',17);
+  dotO();
+}
+function drawCross(numCol,withDeg){
+  ray(180,265,'#1a1a2e');ray(0,265,'#1a1a2e');            // прямая AB
+  ray(u,150,'#1a1a2e',2.6);ray(u+180,150,'#1a1a2e',2.6);  // прямая CD
+  regionArc(1,26,'#d97706');regionArc(3,26,'#d97706');
+  regionArc(1,31,'#d97706');regionArc(3,31,'#d97706');    // пара 1–3: двойная дужка
+  regionArc(2,34,'#2d70b3');regionArc(4,34,'#2d70b3');
+  labAt(180,278,'A','#1a1a2e');labAt(0,278,'B','#1a1a2e');
+  labAt(u,164,'C','#1a1a2e');labAt(u+180,164,'D','#1a1a2e');
+  for(let n=1;n<=4;n++){
+    const val=(n===1||n===3)?u:180-u;
+    labAt(regionMid(n),52,withDeg?(''+n+' · '+Math.round(val)+'°'):(''+n),numCol||'#1f2937',13.5);
+  }
+  // вспышки шагов доказательства
+  for(const n in flashes){
+    const p=pulseA(flashes[n]);
+    if(p>0){ctx.save();ctx.globalAlpha=0.35+0.6*p;regionArc(+n,40,'#16a34a',4.5);ctx.restore()}
+  }
+  dotO();
+}
+function drawLab2(){
+  drawCross('#1f2937',true);
+  if(!solved)marker(u,150);
+  setVal('v1',Math.round(u)+'°');setVal('v2',Math.round(180-u)+'°');
+  setVal('v3',Math.round(u)+'°');setVal('v4',Math.round(180-u)+'°');
+}
+function drawProof(){
+  drawCross('#1f2937',false);
+  if(prDone.includes('fin')){
+    ctx.font='900 16px system-ui';ctx.textAlign='center';ctx.fillStyle='#15803d';
+    ctx.fillText('∠1 = ∠3   ▮ ч.т.д.',W/2,30);
+  }
+}
+function drawApply(){
+  drawCross('#1f2937',false);
+  labAt(regionMid(2),64,'∠2 = '+applyVal+'°','#1d4ed8',13.5);
+  const ask=applyPhase===1?4:1;                            // о каком угле спрашиваем
+  const g=0.45+0.45*Math.sin(Date.now()/260);
+  if(!solved){
+    ctx.save();ctx.globalAlpha=0.4+0.5*g;
+    regionArc(ask,42,'#2d70b3',5);ctx.restore();
+    labAt(regionMid(ask),66,'?','#b45309',18);
+  }
+  if(applyPhase>1||solved)labAt(regionMid(4),66,applyVal+'°','#16a34a',13.5);
+  if(solved)labAt(regionMid(1),66,(180-applyVal)+'°','#16a34a',13.5);
+}
+(function loop(){
+  bg();
+  const t=curT();
+  if(t==='lab1')drawLab1();
+  else if(t==='calc1')drawCalc1();
+  else if(t==='lab2')drawLab2();
+  else if(t==='proof')drawProof();
+  else drawApply();
+  requestAnimationFrame(loop);
+})();
+
+/* ───────── ПАНЕЛИ ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function setVal(id,txt,mod){
+  const el=document.getElementById(id);
+  if(el){el.textContent=txt;el.className='value'+(mod==='sum'?' v-sum':mod==='ok'?' v-ok':'')}
+}
+function buildStatus(){
+  const t=curT(),card=document.getElementById('statusCard'),body=document.getElementById('statusBody');
+  if(t==='lab1'){
+    card.style.display='block';document.getElementById('statusTtl').textContent='Живые измерения';
+    body.innerHTML='<div class="row"><span>∠AOC</span><span class="value" id="vAOC">—</span></div>'
+      +'<div class="row"><span>∠COB</span><span class="value" id="vCOB">—</span></div>'
+      +'<div class="row"><span><b>Сумма</b></span><span class="value v-sum" id="vSum">—</span></div>';
+  }else if(t==='lab2'){
+    card.style.display='block';document.getElementById('statusTtl').textContent='Живые измерения';
+    body.innerHTML='<div class="row"><span>∠1</span><span class="value" id="v1">—</span></div>'
+      +'<div class="row"><span>∠2</span><span class="value" id="v2">—</span></div>'
+      +'<div class="row"><span>∠3</span><span class="value" id="v3">—</span></div>'
+      +'<div class="row"><span>∠4</span><span class="value" id="v4">—</span></div>';
+  }else if(t==='apply'){
+    card.style.display='block';document.getElementById('statusTtl').textContent='Ход решения';
+    body.innerHTML='<div class="row"><span>1. ∠4</span><span class="value" id="a1">—</span></div>'
+      +'<div class="row"><span>2. ∠1</span><span class="value" id="a2">—</span></div>';
+  }else card.style.display='none';
+}
+function clearPool(){
+  document.getElementById('pool').innerHTML='';
+  document.getElementById('poolTtl').style.display='none';
+  const cb=document.getElementById('chainBox');cb.style.display='none';cb.innerHTML='';
+}
+function renderOpts(title,opts,onOk,evWrong){
+  const pt=document.getElementById('poolTtl');pt.style.display='block';pt.textContent=title;
+  const pool=document.getElementById('pool');pool.innerHTML='';
+  opts.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='pcard';b.textContent=o.t;
+    b.onclick=()=>{
+      if(solved)return;
+      if(o.ok)onOk();
+      else{
+        mistakes++;log(evWrong||'opt_wrong');
+        b.classList.add('shake');b.classList.add('dead');
+        setMsg(o.why,'err');
+      }
+    };
+    pool.appendChild(b);
+  });
+}
+
+/* ───────── УСПЕХ ───────── */
+function succeed(barText,msgText,proofText){
+  if(solved)return;
+  solved=true;
+  results.push(mistakes===0&&hintsUsed===0?'g':(mistakes<=1&&hintsUsed<=1?'y':'r'));
+  log('solved',{mistakes,hints:hintsUsed});
+  const sb=document.getElementById('successBar');
+  sb.textContent=barText;sb.style.display='block';
+  setMsg(msgText,'ok');
+  const pb=document.getElementById('proofBox');
+  pb.innerHTML='<b>Вывод.</b> '+proofText;pb.style.display='block';
+  const nb=document.getElementById('nextBtn');
+  nb.style.display='inline-block';
+  nb.textContent=ti<NT-1?'Следующая →':'Итоги →';
+}
+
+/* ───────── ЛАБОРАТОРИЯ 1: КВИЗ ───────── */
+function checkExplore1(){
+  if(quizShown||solved)return;
+  if(expMax-expMin>=50){
+    quizShown=true;
+    setMsg('Достаточно наблюдений. Сформулируйте закон сами — выберите вывод внизу.','info');
+    renderOpts('Что вы заметили? Выберите вывод',shuffle([
+      {t:'Как ни поворачивай луч OC, сумма углов AOC и COB всегда равна 180°.',ok:true},
+      {t:'Углы AOC и COB всегда равны друг другу.',ok:false,
+       why:'Равны они только в одном-единственном положении — когда OC перпендикулярен AB и оба угла по 90°. Покрутите ещё и поймайте этот момент.'},
+      {t:'Сумма углов AOC и COB зависит от наклона луча OC.',ok:false,
+       why:'Посмотрите на строку «Сумма» в панели: она не шелохнулась ни разу. Лучи OA и OB образуют развёрнутый угол — а он всегда 180°.'}
+    ]),()=>{
+      log('quiz_ok');clearPool();
+      succeed('✓ Закон найден: сумма смежных углов равна 180°.',
+        'Именно. Вы только что сами открыли теорему.',
+        'Углы AOC и COB называются <b>смежными</b>: сторона OC у них общая, а OA и OB — продолжения друг друга. Вместе они составляют развёрнутый угол, поэтому <b>сумма смежных углов равна 180°</b>.');
+    },'quiz_wrong');
+  }
+}
+
+/* ───────── ЗАДАЧА 2: ВЫЧИСЛЕНИЕ ───────── */
+function initCalc1(){
+  calcVal=Math.random()<.5?ri(25,78):ri(102,155);
+  tC=180-calcVal;
+  const trap=calcVal<90?(90-calcVal):(calcVal-90);
+  renderOpts('∠AOC = '+calcVal+'°. Чему равен ∠COB?',shuffle([
+    {t:(180-calcVal)+'°',ok:true},
+    {t:calcVal+'°',ok:false,
+     why:'Равными бывают вертикальные углы — а ∠COB для ∠AOC <b>смежный</b>: вместе они составляют развёрнутый угол, 180°.'},
+    {t:trap+'°',ok:false,
+     why:'Прямой угол 90° здесь ни при чём: лучи OA и OB образуют <b>развёрнутый</b> угол, а это 180°.'}
+  ]),()=>{
+    log('quiz_ok');clearPool();
+    succeed('✓ Верно: ∠COB = 180° − '+calcVal+'° = '+(180-calcVal)+'°.',
+      'Смежный угол всегда ищется вычитанием из 180°.',
+      'Зная один из смежных углов, второй получаем мгновенно: ∠COB = 180° − ∠AOC = 180° − '+calcVal+'° = <b>'+(180-calcVal)+'°</b>. Это рабочая лошадка всех задач параграфа.');
+  });
+  setMsg('Отмеченный угол подсвечен синим на чертеже. Выберите ответ внизу.','info');
+}
+
+/* ───────── ЛАБОРАТОРИЯ 2: КВИЗ ───────── */
+function checkExplore2(){
+  if(quizShown||solved)return;
+  if(expMax-expMin>=50){
+    quizShown=true;
+    setMsg('Наблюдений достаточно. Что происходит с углами 1 и 3?','info');
+    renderOpts('Выберите вывод про углы 1 и 3',shuffle([
+      {t:'Углы 1 и 3 равны при любом повороте прямой CD — как и углы 2 и 4.',ok:true},
+      {t:'Углы 1 и 3 в сумме дают 180°.',ok:false,
+       why:'180° в сумме дают <b>смежные</b> — соседние углы, например 1 и 2. А углы 1 и 3 лежат напротив, и панель показывает: они просто равны.'},
+      {t:'Все четыре угла всегда равны между собой.',ok:false,
+       why:'Все четыре равны лишь в одном положении — когда прямые перпендикулярны и каждый угол 90°. Попробуйте поймать его маркером!'}
+    ]),()=>{
+      log('quiz_ok');clearPool();
+      succeed('✓ Подмечено: вертикальные углы равны.',
+        'Опыт показал равенство. Но опыт — ещё не доказательство…',
+        'Углы 1 и 3 называются <b>вертикальными</b>: стороны одного — продолжения сторон другого. Панель показывала их равенство при любом повороте. Но мы проверили лишь конечное число положений — а теорема должна быть верна <b>для всех</b>. Докажем её в следующей задаче.');
+    },'quiz_wrong');
+  }
+}
+
+/* ───────── ЗАДАЧА 4: КОНСТРУКТОР ДОКАЗАТЕЛЬСТВА ───────── */
+function renderChain(){
+  const cb=document.getElementById('chainBox');
+  cb.style.display='flex';
+  cb.innerHTML=prDone.length
+    ?prDone.map((id,i)=>{
+       const c=PR_CARDS.find(x=>x.id===id);
+       return'<div class="chitem"><span class="n">'+(i+1)+'.</span> '+c.txt+'</div>';
+     }).join('')
+    :'<div class="chitem" style="background:#f9fafb;border-color:#e5e7eb;color:#94a3b8;font-style:italic">Шагов пока нет — выберите первый.</div>';
+}
+function renderPrPool(){
+  const pt=document.getElementById('poolTtl');pt.style.display='block';
+  pt.textContent='Какой шаг следующий? Нажмите на карточку (две из них — лишние)';
+  const pool=document.getElementById('pool');pool.innerHTML='';
+  prOrder.forEach(id=>{
+    if(prDone.includes(id))return;
+    const c=PR_CARDS.find(x=>x.id===id);
+    const b=document.createElement('button');
+    b.className='pcard'+(prDead.includes(id)?' dead':'')+(prHint===id?' pulse':'');
+    b.textContent=c.txt;
+    b.onclick=()=>prPick(id,b);
+    pool.appendChild(b);
+  });
+}
+function prPick(id,btn){
+  if(solved)return;
+  const c=PR_CARDS.find(x=>x.id===id);
+  prHint=null;
+  if(c.distract){
+    mistakes++;prDead.push(id);log('distractor',{id});
+    btn.classList.add('shake');
+    setMsg(c.distract,'err');
+    setTimeout(renderPrPool,420);
+    return;
+  }
+  if(!c.need.every(n=>prDone.includes(n))){
+    mistakes++;log('early',{id});
+    btn.classList.add('shake');
+    setMsg(c.early,'warn');
+    setTimeout(()=>btn.classList.remove('shake'),450);
+    return;
+  }
+  prDone.push(id);log('step',{id});
+  c.fx.forEach(n=>flashes[n]=Date.now());
+  setMsg(c.ok,'ok');
+  renderPrPool();renderChain();
+  if(id==='fin'){
+    document.getElementById('poolTtl').style.display='none';
+    document.getElementById('pool').innerHTML='';
+    succeed('✓ Теорема о вертикальных углах доказана.',
+      'Собрано. Заметьте: ни одного измерения.',
+      'Всё доказательство держится на двух парах <b>смежных</b> углов с общим углом 2. Так геометрия и работает: новый факт выводится из уже установленных — а не подсматривается на чертеже.');
+  }
+}
+
+/* ───────── ЗАДАЧА 5: ПРИМЕНЕНИЕ ───────── */
+function initApply(){
+  applyVal=ri(95,152);
+  u=180-applyVal;
+  applyPhase=1;
+  applyAsk();
+  setMsg('Угол со знаком вопроса подсвечен на чертеже.','info');
+}
+function applyAsk(){
+  if(applyPhase===1){
+    renderOpts('∠2 = '+applyVal+'°. Чему равен ∠4?',shuffle([
+      {t:applyVal+'°',ok:true},
+      {t:(180-applyVal)+'°',ok:false,
+       why:'180° в сумме дают смежные углы. А ∠4 лежит <b>напротив</b> ∠2 — это вертикальные углы, и они равны.'},
+      {t:'Определить нельзя',ok:false,
+       why:'Можно: ∠2 и ∠4 — вертикальные, а равенство вертикальных углов вы только что доказали сами.'}
+    ]),()=>{
+      log('quiz_ok');setVal('a1','✓ '+applyVal+'°','ok');
+      applyPhase=2;
+      setMsg('Вертикальный взят. Теперь сосед.','ok');
+      setTimeout(applyAsk,500);
+    });
+  }else{
+    renderOpts('А чему равен ∠1?',shuffle([
+      {t:(180-applyVal)+'°',ok:true},
+      {t:applyVal+'°',ok:false,
+       why:'∠1 для ∠2 — <b>смежный</b>, а не вертикальный: у них общая сторона. Смежные дополняют друг друга до 180°.'},
+      {t:'Определить нельзя',ok:false,
+       why:'Можно: ∠1 и ∠2 — смежные, их сумма 180°, значит ∠1 = 180° − '+applyVal+'°.'}
+    ]),()=>{
+      log('quiz_ok');setVal('a2','✓ '+(180-applyVal)+'°','ok');
+      clearPool();
+      succeed('✓ Все углы найдены: один данный угол раскрыл все четыре.',
+        'Напротив — вертикальный, рядом — смежный.',
+        'Запомните это движение глаз: <b>напротив — вертикальный</b> (равен), <b>рядом — смежный</b> (дополняет до 180°). Один известный угол при пересечении прямых мгновенно даёт остальные три — так решаются задачи 62–70 учебника.');
+    });
+  }
+}
+
+/* ───────── ПОДСКАЗКА ───────── */
+function showHint(){
+  if(solved)return;
+  hintsUsed++;log('hint');
+  const t=curT();
+  if(t==='lab1')setMsg('💡 Следите за строкой <b>«Сумма»</b> в панели справа, пока вращаете луч. Меняется ли она хоть когда-нибудь?','info');
+  else if(t==='calc1')setMsg('💡 Лучи OA и OB образуют развёрнутый угол. Сколько в нём градусов — и сколько из них уже «съел» угол AOC?','info');
+  else if(t==='lab2')setMsg('💡 Сравните в панели значения <b>∠1 и ∠3</b> в нескольких разных положениях прямой CD.','info');
+  else if(t==='proof'){
+    const cand=prOrder.find(id=>{
+      const c=PR_CARDS.find(x=>x.id===id);
+      return!prDone.includes(id)&&!prDead.includes(id)&&!c.distract&&c.need.every(n=>prDone.includes(n));
+    });
+    if(cand){prHint=cand;renderPrPool();setMsg('💡 Подсвечен шаг, который можно сделать прямо сейчас.','info')}
+  }
+  else setMsg(applyPhase===1
+    ?'💡 ∠4 лежит <b>напротив</b> ∠2, крест-накрест. Как называются такие углы и что вы о них доказали?'
+    :'💡 У ∠1 и ∠2 общая сторона, а две другие — продолжения друг друга. Какие это углы и какова их сумма?','info');
+}
+
+/* ───────── ЖИЗНЕННЫЙ ЦИКЛ ───────── */
+const TEXTS={
+ lab1:'Луч OC выходит из точки O прямой AB. <b>Повращайте его</b> за фиолетовый маркер и проследите за углами AOC и COB в панели справа. Когда заметите закон — выберите вывод.',
+ calc1:'Проверка закона в деле: найдите смежный угол.',
+ lab2:'Теперь <b>две прямые</b>. Вращайте прямую CD за маркер и следите за четырьмя углами. Что происходит с углами 1 и 3?',
+ proof:'Опыт показал: вертикальные углы равны. Теперь <b>докажите</b> это — соберите цепочку из карточек. Среди них две лишних.',
+ apply:'Прямые пересеклись, известен один угол. Найдите остальные — сначала ∠4, затем ∠1.'
+};
+const BADGES={lab1:'Вращайте — закон проявится сам',calc1:'Примените закон',lab2:'Вращайте — закон проявится сам',proof:'Соберите доказательство',apply:'Один угол раскрывает все четыре'};
+function initTask(keepStats){
+  const t=curT();
+  if(!keepStats){mistakes=0;hintsUsed=0}
+  solved=false;mode=null;quizShown=false;expMin=999;expMax=-999;flashes={};
+  clearPool();
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('proofBox').style.display='none';
+  document.getElementById('pf').style.width=(ti/NT*100)+'%';
+  document.getElementById('pnum').textContent='Задача '+(ti+1)+' из '+NT;
+  document.getElementById('taskText').innerHTML=TEXTS[t];
+  document.getElementById('badge').textContent=BADGES[t];
+  buildStatus();
+  if(t==='lab1'){tC=64;setMsg('Возьмите фиолетовый маркер и повращайте луч OC.','info')}
+  else if(t==='calc1')initCalc1();
+  else if(t==='lab2'){u=58;setMsg('Возьмите маркер и повращайте прямую CD.','info')}
+  else if(t==='proof'){
+    u=58;prDone=[];prDead=[];prHint=null;
+    prOrder=shuffle(PR_CARDS.map(c=>c.id));
+    renderChain();renderPrPool();
+    setMsg('Доказывать будем через <b>смежные</b> углы — их сумму вы уже открыли. С чего начать?','info');
+  }
+  else initApply();
+  log('task_start',{type:t});
+}
+function nextTask(){
+  if(ti<NT-1){ti++;initTask(false)}
+  else finish();
+}
+function resetTask(){log('reset');initTask(true)}
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{score:g});
+  const s=lS();s.runs=(s.runs||0)+1;s.passed=true;if(g>(s.best||0))s.best=g;sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent=g+' / '+NT;
+  document.getElementById('finLbl').textContent=
+    g===NT?'Идеально: оба закона открыты, теорема доказана!':
+    g>=3?'Отлично! Смежные и вертикальные — ваши.':
+    'Стоит пройти ещё раз — особенно доказательство.';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){
+  ti=0;results=[];
+  document.getElementById('fin').style.display='none';
+  document.getElementById('mainArea').style.display='grid';
+  document.getElementById('bar').style.display='flex';
+  initTask(false);
+}
+
+/* ───────── УКАЗАТЕЛЬ ───────── */
+function pos(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+function pointerDeg(p){
+  let d=Math.atan2(-(p.y-O.y),p.x-O.x)/D2R;
+  if(d<0)d+=360;
+  return d;
+}
+cv.addEventListener('pointerdown',e=>{
+  const t=curT();
+  if(solved||(t!=='lab1'&&t!=='lab2'))return;
+  kind=e.pointerType==='touch'?'touch':'mouse';
+  const p=pos(e),grabR=kind==='touch'?26:18;
+  const hDeg=t==='lab1'?tC:u;
+  const d=dirP(hDeg),hx=O.x+d.x*150,hy=O.y+d.y*150;
+  if(Math.hypot(p.x-hx,p.y-hy)<grabR){
+    mode='rot';cv.setPointerCapture(e.pointerId);
+  }
+});
+cv.addEventListener('pointermove',e=>{
+  if(!mode)return;
+  const p=pos(e),t=curT();
+  let d=pointerDeg(p);
+  if(t==='lab1'){
+    if(d>180)d=d>270?10:170;             // не пускаем под прямую
+    tC=Math.max(10,Math.min(170,d));
+    expMin=Math.min(expMin,tC);expMax=Math.max(expMax,tC);
+    checkExplore1();
+  }else if(t==='lab2'){
+    d=d%180;                              // прямая: достаточно верхней полуплоскости
+    u=Math.max(20,Math.min(160,d));
+    expMin=Math.min(expMin,u);expMax=Math.max(expMax,u);
+    checkExplore2();
+  }
+});
+['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,()=>{mode=null}));
+
+initTask(false);
+</script>
+</body>
+</html>

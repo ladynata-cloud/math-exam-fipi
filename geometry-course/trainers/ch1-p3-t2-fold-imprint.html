@@ -1,0 +1,690 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Перегибание и отпечаток · лаборатория приёма</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.poolTtl{display:none;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:800;margin:13px 2px 7px}
+.pool{display:flex;flex-direction:column;gap:8px}
+.pcard{text-align:left;border:1.5px solid #d1d5db;border-radius:11px;background:#fff;padding:11px 13px;font:600 13.5px/1.5 system-ui;color:#1f2937;cursor:pointer;width:100%}
+.pcard:hover{border-color:#2d70b3;background:#f0f7ff}
+.pcard.dead{opacity:.5;text-decoration:line-through;pointer-events:none;background:#fef2f2;border-color:#fecaca}
+.pcard.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.card.why{background:#fffbeb;border-color:#fcd34d}
+.card.why h2{color:#b45309}
+.task{font-size:14.5px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.row{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;line-height:1.5;border-bottom:1px dashed #e5e7eb;padding:4px 0}
+.row:last-child{border-bottom:0}
+.value{font-weight:900}
+.v-ok{color:#16a34a}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.warn{background:#fff7ed;color:#c2410c}
+.proof{display:none;background:#ecfdf5;color:#14532d;border:1.5px solid #bbf7d0;border-radius:12px;padding:12px;font-size:13px;line-height:1.55}
+.proof b{color:#166534}
+.small{font-size:13.5px;color:#374151;line-height:1.55}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button:hover{background:#f3f4f6}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:15px;height:15px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:580px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14.5px;line-height:1.6;color:#14532d}
+.law b{color:#166534}
+.law .star{color:#b45309;font-weight:800}
+@media(max-width:820px){
+  body{padding:8px}
+  .main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}
+  .side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">📄 Перегибание и отпечаток</div>
+      <div class="sub">Глава I · §3 · тренажёр 2 — лаборатория приёма</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Сложили → отпечатали → развернули</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="340"></canvas>
+      <div class="poolTtl" id="poolTtl"></div>
+      <div class="pool" id="pool"></div>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card" id="statusCard">
+        <h2 id="statusTtl">Ход</h2>
+        <div id="statusBody"></div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div id="proofBox" class="proof"></div>
+      <div class="card why">
+        <h2>Зачем это</h2>
+        <p class="small">Перегибание — рабочая лошадка всей главы: им вы скоро найдёте середину отрезка, биссектрису угла и докажете первые теоремы. Здесь приём осваивается руками: лист складывается, верх <b>отпечатывается</b> на низу, лист разворачивается целым — а отпечаток остаётся как знание.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Закон перегиба.</b> Точки оси стоят на месте. Отпечаток любой другой точки — по другую сторону оси, на том же перпендикуляре, на том же расстоянии. Расстояния и углы сохраняются: отпечаток — зеркальный двойник, а не сдвиг и не поворот.<br><br>
+      Фигура, отпечатавшаяся <b>сама на себя</b>, называется симметричной относительно оси: таковы перпендикуляр к оси и окружность с центром на ней.<br><br>
+      <span class="star">✦ за страницами учебника:</span> в 6 классе этот приём звался <b>осевой симметрией</b>. Теперь у него есть и руки: <b>сложили → отпечатали → развернули</b> — лист всегда цел.
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button onclick="showHint()">💡 Подсказка</button>
+    <button onclick="resetTask()">↺ Сначала</button>
+    <button id="nextBtn" class="next" onclick="nextTask()">Следующая →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС И ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch1-p3-t2-fold-imprint';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),task:ti+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+const ease=p=>p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+
+/* ───────── СОСТОЯНИЕ ───────── */
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+const W=640,H=340;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+
+const LY=210;                                   // ось перегиба
+const TASKS=['point','figure','self','axis','bridge'];
+const NT=TASKS.length;
+let ti=0,results=[],mistakes=0,hintsUsed=0,solved=false,kind='mouse',mode=null;
+let foldP=0,animLock=false;
+const kF=()=>Math.cos(foldP*Math.PI);
+const ty=y=>LY+(y-LY)*kF();
+const curT=()=>TASKS[ti];
+
+// задача 1: точки
+const PTS=[{x:240,y:110},{x:425,y:160},{x:330,y:LY}];
+let ptRound=0,ptMark=null,awaitManual=false,wrongTap=null;
+// задача 2: призраки
+let gDone=false;
+// задача 3: сам на себя
+const SF=[
+ {id:'perp',ans:true,label:'отрезок ⊥ оси',
+  why:'Обе половинки отрезка стоят на одном перпендикуляре к оси: верхняя при перегибе ляжет ровно на нижнюю. Он отпечатывается сам на себя.'},
+ {id:'slant',ans:false,label:'наклонный отрезок',
+  why:'Перегните мысленно: верхний конец уйдёт вниз не по своему следу — наклон сменится на зеркальный. Сам на себя ложится только перпендикуляр.'},
+ {id:'circOn',ans:true,label:'окружность с центром на оси',
+  why:'Центр стоит на оси и никуда не девается, а каждая точка окружности отпечатывается в точку той же окружности — круг ложится сам в себя.'},
+ {id:'circOff',ans:false,label:'окружность над осью',
+  why:'Эта окружность целиком выше оси, значит её отпечаток — целиком ниже. Совпасть им просто негде.'}
+];
+let sfRound=0;
+// задача 4: ось
+const AX=[{y:180},{y:210,ok:true},{y:240}];
+let axFound=false;
+
+/* ───────── БАЗОВАЯ ОТРИСОВКА ───────── */
+function bg(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill()}
+}
+function lab(x,y,txt,col,size){
+  ctx.font='900 '+(size||14)+'px system-ui';ctx.textAlign='center';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(250,248,242,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);
+}
+function axisLine(){
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2.6;
+  ctx.beginPath();ctx.moveTo(35,LY);ctx.lineTo(W-35,LY);ctx.stroke();
+  lab(W-50,LY-12,'a','#1a1a2e',15);
+}
+// слои: drawFn рисует сцену в развёрнутых координатах; нижняя часть статична, верхняя складывается
+function layers(drawFn){
+  ctx.save();ctx.beginPath();ctx.rect(0,LY,W,H-LY+200);ctx.clip();drawFn();ctx.restore();
+  const k=kF();
+  ctx.save();
+  ctx.translate(0,LY);ctx.scale(1,Math.abs(k)<0.02?0.02*(k>=0?1:-1):k);ctx.translate(0,-LY);
+  ctx.beginPath();ctx.rect(0,-400,W,LY+400);ctx.clip();
+  if(foldP>0.01&&foldP<0.99)ctx.globalAlpha=0.85;
+  drawFn();ctx.restore();
+}
+function marker(x,y){
+  const pulse=1+0.14*Math.sin(Date.now()/280);
+  ctx.beginPath();ctx.arc(x,y,9*pulse,0,7);
+  ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#7c3aed';ctx.lineWidth=2.6;ctx.stroke();
+  ctx.beginPath();ctx.arc(x,y,2.4,0,7);ctx.fillStyle='#7c3aed';ctx.fill();
+}
+function glowRing(x,y,r){
+  const g=0.5+0.5*Math.sin(Date.now()/300);
+  ctx.save();ctx.globalAlpha=0.35+0.55*g;
+  ctx.beginPath();ctx.arc(x,y,r||12,0,7);
+  ctx.strokeStyle='#16a34a';ctx.lineWidth=3.2;ctx.stroke();ctx.restore();
+}
+
+/* ───────── СЦЕНЫ ЗАДАЧ ───────── */
+function drawPoint(){
+  axisLine();
+  // пройденные раунды — зелёные пары
+  for(let i=0;i<ptRound;i++){
+    const q=PTS[i];
+    ctx.fillStyle='#16a34a';
+    ctx.beginPath();ctx.arc(q.x,q.y,4,0,7);ctx.fill();
+    if(q.y!==LY){ctx.beginPath();ctx.arc(q.x,2*LY-q.y,4,0,7);ctx.fill()}
+  }
+  if(ptRound>=PTS.length)return;
+  const P=PTS[ptRound];
+  if(P.y===LY){ // точка на оси — не складывается
+    ctx.fillStyle=solved?'#16a34a':'#2d70b3';
+    ctx.beginPath();ctx.arc(P.x,P.y,5.5,0,7);ctx.fill();
+    lab(P.x+16,P.y-12,'P','#2d70b3');
+  }else{
+    layers(()=>{
+      ctx.fillStyle='#2d70b3';
+      ctx.beginPath();ctx.arc(P.x,P.y,5.5,0,7);ctx.fill();
+    });
+    if(Math.abs(kF())>0.25)lab(P.x+16,ty(P.y)+5,'P','#2d70b3');
+  }
+  if(ptMark){ // верная догадка отмечена
+    glowRing(ptMark.x,ptMark.y,11);
+    ctx.fillStyle='#16a34a';
+    ctx.beginPath();ctx.arc(ptMark.x,ptMark.y,3,0,7);ctx.fill();
+  }
+  if(awaitManual&&!animLock)marker(P.x,ty(P.y));
+  if(wrongTap){
+    const a=Math.max(0,1-(Date.now()-wrongTap.t)/1000);
+    if(a>0){
+      ctx.save();ctx.globalAlpha=a;ctx.strokeStyle='#dc2626';ctx.lineWidth=2.6;
+      ctx.beginPath();ctx.moveTo(wrongTap.x-7,wrongTap.y-7);ctx.lineTo(wrongTap.x+7,wrongTap.y+7);
+      ctx.moveTo(wrongTap.x+7,wrongTap.y-7);ctx.lineTo(wrongTap.x-7,wrongTap.y+7);ctx.stroke();ctx.restore();
+    }
+  }
+}
+function flagPath(poleX,topY,botY,triY,triDir,triSide){
+  // шест + флажок-треугольник; triY — y вершины крепления, triDir: 1 вниз / -1 вверх по листу не нужен,
+  // рисуем явно: флажок занимает 28px по y от triY в сторону triSign
+  ctx.beginPath();ctx.moveTo(poleX,topY);ctx.lineTo(poleX,botY);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(poleX,triY);
+  ctx.lineTo(poleX+45*triSide,triY+14*triDir);
+  ctx.lineTo(poleX,triY+28*triDir);
+  ctx.closePath();ctx.fill();ctx.stroke();
+}
+function drawFigure(){
+  axisLine();
+  // призраки (статичные кандидаты)
+  const gh=[
+    {id:'shift',x:150},{id:'mir',x:320},{id:'rot',x:490}
+  ];
+  gh.forEach(g=>{
+    const dead=g.dead;
+    ctx.strokeStyle=g.id==='mir'&&gDone?'#16a34a':'#94a3b8';
+    ctx.fillStyle=g.id==='mir'&&gDone?'rgba(22,163,74,.25)':'rgba(148,163,184,.18)';
+    ctx.lineWidth=2.2;
+    if(g.id==='mir')flagPath(g.x,255,325,325,-1,1);      // флажок внизу, вправо — зеркало
+    if(g.id==='shift')flagPath(g.x,255,325,255,1,1);     // флажок вверху, вправо — сдвиг
+    if(g.id==='rot')flagPath(g.x,255,325,325,-1,-1);     // флажок внизу, влево — поворот
+    if(!gDone)lab(g.x,249,g.id==='shift'?'призрак 1':g.id==='mir'?'призрак 2':'призрак 3','#64748b',11.5);
+  });
+  // оригинал — складывается
+  layers(()=>{
+    ctx.strokeStyle='#2d70b3';ctx.fillStyle='rgba(45,112,179,.3)';ctx.lineWidth=2.8;
+    flagPath(320,95,165,95,1,1);                          // флажок вверху шеста, вправо
+  });
+  if(gDone&&foldP<0.01)lab(320,243,'отпечаток','#16a34a',11.5);
+}
+function selfShapes(){
+  const col=id=>{
+    const f=SF.find(s=>s.id===id);
+    return solved?(f.ans?'#16a34a':'#1a1a2e'):'#1a1a2e';
+  };
+  ctx.lineWidth=3;
+  ctx.strokeStyle=col('perp');
+  ctx.beginPath();ctx.moveTo(130,150);ctx.lineTo(130,270);ctx.stroke();
+  ctx.strokeStyle=col('slant');
+  ctx.beginPath();ctx.moveTo(235,160);ctx.lineTo(295,260);ctx.stroke();
+  ctx.strokeStyle=col('circOn');
+  ctx.beginPath();ctx.arc(400,210,42,0,7);ctx.stroke();
+  ctx.strokeStyle=col('circOff');
+  ctx.beginPath();ctx.arc(545,135,34,0,7);ctx.stroke();
+}
+const SF_POS={perp:[130,210],slant:[265,210],circOn:[400,210],circOff:[545,135]};
+function drawSelf(){
+  axisLine();
+  layers(selfShapes);
+  if(solved&&foldP<0.01){
+    ctx.save();ctx.setLineDash([6,5]);ctx.strokeStyle='#16a34a';ctx.lineWidth=2.4;
+    ctx.beginPath();ctx.moveTo(235,260);ctx.lineTo(295,160);ctx.stroke();   // отпечаток наклонного
+    ctx.beginPath();ctx.arc(545,285,34,0,7);ctx.stroke();                    // отпечаток окружности 4
+    ctx.setLineDash([]);ctx.restore();
+    lab(332,157,'отпечаток №2','#16a34a',11);
+    lab(545,333,'отпечаток №4','#16a34a',11);
+  }
+  if(foldP<0.01){
+    lab(130,300,'1','#64748b',13);lab(296,288,'2','#64748b',13);
+    lab(400,278,'3','#64748b',13);lab(545,92,'4','#64748b',13);
+    if(!solved&&sfRound<SF.length){
+      const id=SF[sfRound].id,[gx,gy]=SF_POS[id];
+      const g=0.4+0.4*Math.sin(Date.now()/260);
+      ctx.save();ctx.globalAlpha=g;
+      ctx.strokeStyle='#2d70b3';ctx.lineWidth=8;ctx.lineCap='round';
+      if(id==='perp'){ctx.beginPath();ctx.moveTo(130,150);ctx.lineTo(130,270);ctx.stroke()}
+      else if(id==='slant'){ctx.beginPath();ctx.moveTo(235,160);ctx.lineTo(295,260);ctx.stroke()}
+      else if(id==='circOn'){ctx.beginPath();ctx.arc(400,210,42,0,7);ctx.stroke()}
+      else{ctx.beginPath();ctx.arc(545,135,34,0,7);ctx.stroke()}
+      ctx.restore();
+    }
+  }
+}
+function smallFlag(up){
+  ctx.lineWidth=2.6;
+  if(up){ctx.strokeStyle='#2d70b3';ctx.fillStyle='rgba(45,112,179,.3)';flagPath(320,100,150,100,1,1)}
+  else{ctx.strokeStyle='#1a1a2e';ctx.fillStyle='rgba(26,26,46,.15)';flagPath(320,270,320,320,-1,1)}
+}
+function drawAxis(){
+  // кандидаты
+  AX.forEach((a,i)=>{
+    if(a.ok&&axFound){
+      ctx.setLineDash([]);ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2.6;
+    }else{
+      ctx.setLineDash([6,6]);ctx.strokeStyle=a.deadF?'#fca5a5':'#94a3b8';ctx.lineWidth=1.8;
+    }
+    ctx.beginPath();ctx.moveTo(35,a.y);ctx.lineTo(W-35,a.y);ctx.stroke();ctx.setLineDash([]);
+    lab(50,a.y-8,axFound&&a.ok?'a':'№'+(i+1),axFound&&a.ok?'#1a1a2e':'#94a3b8',12.5);
+  });
+  layers(()=>{smallFlag(true)});
+  smallFlag(false);
+  if(axFound&&foldP<0.01)glowRing(320,LY,9);
+}
+function drawBridge(){
+  axisLine();
+  layers(()=>{smallFlag(true)});
+  smallFlag(false);
+  if(solved)lab(W-78,LY+22,'ось симметрии','#16a34a',12.5);
+}
+(function loop(){
+  bg();
+  const t=curT();
+  if(t==='point')drawPoint();
+  else if(t==='figure')drawFigure();
+  else if(t==='self')drawSelf();
+  else if(t==='axis')drawAxis();
+  else drawBridge();
+  requestAnimationFrame(loop);
+})();
+
+/* ───────── ПАНЕЛИ ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function setVal(id,txt,ok){
+  const el=document.getElementById(id);
+  if(el){el.textContent=txt;el.className='value'+(ok?' v-ok':'')}
+}
+function buildStatus(rows){
+  const card=document.getElementById('statusCard'),body=document.getElementById('statusBody');
+  if(!rows){card.style.display='none';return}
+  card.style.display='block';
+  body.innerHTML=rows.map((r,i)=>'<div class="row"><span>'+r+'</span><span class="value" id="st'+(i+1)+'">—</span></div>').join('');
+}
+function clearPool(){
+  document.getElementById('pool').innerHTML='';
+  document.getElementById('poolTtl').style.display='none';
+}
+function renderOpts(title,opts,onOk,opt2){
+  const cfg=opt2||{};
+  const pt=document.getElementById('poolTtl');pt.style.display='block';pt.textContent=title;
+  const pool=document.getElementById('pool');pool.innerHTML='';
+  opts.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='pcard';b.innerHTML=o.t;
+    b.onclick=()=>{
+      if(solved||animLock)return;
+      if(o.ok)onOk(o);
+      else{
+        mistakes++;log('quiz_wrong');
+        b.classList.add('shake');
+        if(cfg.deadOnWrong!==false)b.classList.add('dead');
+        else setTimeout(()=>b.classList.remove('shake'),450);
+        setMsg(o.why,'err');
+      }
+    };
+    pool.appendChild(b);
+  });
+}
+function succeed(barText,msgText,proofText){
+  if(solved)return;
+  solved=true;awaitManual=false;
+  results.push(mistakes===0&&hintsUsed===0?'g':(mistakes<=1&&hintsUsed<=1?'y':'r'));
+  log('solved',{mistakes,hints:hintsUsed});
+  clearPool();
+  const sb=document.getElementById('successBar');
+  sb.textContent=barText;sb.style.display='block';
+  setMsg(msgText,'ok');
+  const pb=document.getElementById('proofBox');
+  pb.innerHTML='<b>Вывод.</b> '+proofText;pb.style.display='block';
+  const nb=document.getElementById('nextBtn');
+  nb.style.display='inline-block';
+  nb.textContent=ti<NT-1?'Следующая →':'Итоги →';
+}
+function playFold(onDone){
+  animLock=true;log('fold');
+  const t0=performance.now();
+  (function up(now){
+    const p=Math.min(1,(now-t0)/700);foldP=ease(p);
+    if(p<1)requestAnimationFrame(up);
+    else setTimeout(()=>{
+      const t1=performance.now();
+      (function dn(now2){
+        const q=Math.min(1,(now2-t1)/600);foldP=1-ease(q);
+        if(q<1)requestAnimationFrame(dn);
+        else{foldP=0;animLock=false;onDone&&onDone()}
+      })(performance.now());
+    },680);
+  })(performance.now());
+}
+
+/* ───────── ЗАДАЧА 1: ТОЧКА ───────── */
+function ptPrompt(){
+  const names=['Точка 1','Точка 2','Точка на оси'];
+  if(ptRound===0)setMsg('Коснитесь места, куда отпечатается точка P. Клетки листа помогут отмерить расстояние.','info');
+  else if(ptRound===1)setMsg('Ещё одна — теперь совсем близко к оси. Куда ляжет её отпечаток?','info');
+  else setMsg('А эта точка стоит <b>на самой оси</b>. Куда отпечатается она?','info');
+}
+function ptGuess(p){
+  const P=PTS[ptRound];
+  const tol=kind==='touch'?26:20;
+  const target=P.y===LY?P:{x:P.x,y:2*LY-P.y};
+  if(Math.hypot(p.x-target.x,p.y-target.y)<tol){
+    ptMark={...target};log('found',{r:ptRound+1});wrongTap=null;
+    if(ptRound===0){
+      awaitManual=true;
+      setMsg('Точно! Теперь проверьте сами: <b>тяните маркер у точки P вниз</b>, сквозь ось.','ok');
+    }else if(ptRound===1){
+      setMsg('Верно — лист проверяет…','ok');
+      playFold(()=>{setVal('st2','✓',true);ptRound++;ptMark=null;ptPrompt()});
+    }else{
+      setMsg('Именно: точки оси при перегибе <b>стоят на месте</b> — отпечаток P это она сама.','ok');
+      playFold(()=>{
+        setVal('st3','✓',true);ptRound++;
+        succeed('✓ Три закона отпечатка найдены пальцем.',
+          'Точка освоена — переходим к фигурам.',
+          'Отпечаток точки лежит <b>по другую сторону</b> оси, на <b>том же перпендикуляре</b> и на <b>том же расстоянии</b>. А точки самой оси никуда не деваются. Эти три закона — весь приём.');
+      });
+    }
+  }else{
+    mistakes++;log('tap_wrong',{r:ptRound+1});
+    wrongTap={x:p.x,y:p.y,t:Date.now()};
+    const cells=Math.round((LY-P.y)/25);
+    if(P.y===LY){
+      setMsg('P лежит на самой оси — а точки оси при перегибе никуда не деваются. Её отпечаток — <b>она сама</b>.','err');
+    }else if(p.y<LY-8){
+      setMsg('Отпечаток ложится <b>по другую сторону</b> оси: лист складывается вниз, за прямую a.','err');
+    }else if(Math.abs(p.x-P.x)>tol){
+      setMsg('Перегиб не сдвигает вбок: отпечаток лежит на перпендикуляре из точки к оси — <b>строго под P</b>.','err');
+    }else{
+      setMsg('Почти — но расстояние должно сохраниться: P стоит в '+cells+' клетках над осью, значит отпечаток — ровно в '+cells+' клетках под ней.','err');
+    }
+  }
+}
+function completeManualFold(){
+  awaitManual=false;animLock=true;mode=null;
+  setMsg('P отпечаталась точно в отмеченное место. Разворачиваем — лист цел, отпечаток остался.','ok');
+  setTimeout(()=>{
+    const t1=performance.now();
+    (function dn(now2){
+      const q=Math.min(1,(now2-t1)/600);foldP=1-ease(q);
+      if(q<1)requestAnimationFrame(dn);
+      else{
+        foldP=0;animLock=false;
+        setVal('st1','✓',true);ptRound++;ptMark=null;ptPrompt();
+      }
+    })(performance.now());
+  },750);
+}
+
+/* ───────── ЗАДАЧА 2: ПРИЗРАКИ ───────── */
+function ghostTap(p){
+  if(gDone)return;
+  const gh=[{id:'shift',x:150},{id:'mir',x:320},{id:'rot',x:490}];
+  const hit=gh.find(g=>Math.abs(p.x-g.x)<62&&p.y>243&&p.y<338);
+  if(!hit){setMsg('Нажимайте прямо на один из трёх призраков под осью.','info');return}
+  if(hit.id==='mir'){
+    gDone=true;log('quiz_ok');
+    setVal('st1','✓ призрак 2',true);
+    setMsg('Верно — проверяем перегибом…','ok');
+    playFold(()=>{
+      succeed('✓ Отпечаток опознан: зеркальный двойник.',
+        'Флажок лёг точно в призрака 2.',
+        'Отпечаток — <b>зеркальный двойник</b>: расстояния до оси те же, право и лево на месте, а верх и низ поменялись. Сдвиг (призрак 1) и разворот (призрак 3) — самозванцы.');
+    });
+  }else if(hit.id==='shift'){
+    mistakes++;log('opt_wrong',{id:'shift'});
+    setMsg('Это <b>сдвиг</b> вниз без отражения — главное заблуждение перегиба! Лист не съезжает, а переворачивается: вершина флажка была дальше всего от оси — и её отпечаток окажется дальше всего от оси, у нижнего конца шеста.','err');
+  }else{
+    mistakes++;log('opt_wrong',{id:'rot'});
+    setMsg('Почти: расстояния у этого призрака верные, но флажок смотрит <b>влево</b>. Перегиб через горизонтальную ось не меняет право и лево — только верх и низ. Это поворот, а не отпечаток.','err');
+  }
+}
+
+/* ───────── ЗАДАЧА 3: САМ НА СЕБЯ ───────── */
+function sfAsk(){
+  const f=SF[sfRound];
+  renderOpts('Фигура '+(sfRound+1)+' из 4: '+f.label+' (подсвечена на листе)',[
+    {t:'✓ Отпечатается сама на себя',ok:f.ans,why:f.why},
+    {t:'✕ Отпечаток — другая фигура',ok:!f.ans,why:f.why}
+  ],()=>{
+    log('quiz_ok',{id:f.id});
+    setVal('st'+(sfRound+1),f.ans?'✓ сама':'✓ другая',true);
+    sfRound++;
+    if(sfRound<SF.length){setMsg('Дальше.','ok');sfAsk()}
+    else{
+      clearPool();
+      setMsg('Все ответы даны — лист проверяет каждую фигуру…','info');
+      playFold(()=>{
+        succeed('✓ Симметричные фигуры найдены: перпендикуляр и окружность с центром на оси.',
+          'Зелёные совпали со своими отпечатками. У остальных отпечатки легли в стороне — они остались на листе пунктиром.',
+          'Фигура, отпечатавшаяся <b>сама на себя</b>, — это фигура, <b>симметричная</b> относительно оси. Симметричность не назначается на глаз — она проверяется перегибом. Перпендикуляр к оси прошёл проверку: запомните его, он ещё сыграет.');
+      });
+    }
+  },{deadOnWrong:false});
+}
+
+/* ───────── ЗАДАЧА 4: НАЙТИ ОСЬ ───────── */
+function axTap(p){
+  if(axFound)return;
+  const hit=AX.find(a=>Math.abs(p.y-a.y)<13&&p.x>35&&p.x<W-35);
+  if(!hit){setMsg('Нажимайте прямо на одну из трёх пунктирных прямых.','info');return}
+  if(hit.ok){
+    axFound=true;log('quiz_ok');
+    setVal('st1','✓ прямая №2',true);
+    setMsg('Она! Проверяем перегибом…','ok');
+    playFold(()=>{
+      succeed('✓ Ось восстановлена.',
+        'Фигура легла точно в свой отпечаток.',
+        'Ось перегиба — единственная прямая, до которой от каждой точки и от её отпечатка <b>одинаково</b>. Прямая №1 была прижата к фигуре, №3 — к отпечатку; перегиб так не умеет.');
+    });
+  }else{
+    mistakes++;log('tap_wrong',{y:hit.y});hit.deadF=true;
+    setMsg(hit.y<LY
+      ?'Эта прямая прижата к фигуре: от фигуры до неё ближе, чем от отпечатка. Перегиб хранит расстояния — ось всегда <b>ровно посередине</b> между точкой и её отпечатком.'
+      :'Эта прямая прижата к отпечатку: расстояния по обе стороны не совпадают. Ось — ровно посередине между фигурой и отпечатком.','err');
+  }
+}
+
+/* ───────── ЗАДАЧА 5: МОСТ ───────── */
+function bridgeAsk(){
+  renderOpts('Как этот приём назывался у вас в 6 классе?',shuffle([
+    {t:'Осевая симметрия',ok:true},
+    {t:'Параллельный перенос',ok:false,
+     why:'Перенос сдвигает фигуру без переворота — это был наш призрак №1 из задачи 2, главный самозванец.'},
+    {t:'Центральная симметрия',ok:false,
+     why:'Центральная симметрия — отражение через точку: флажок развернулся бы ещё и влево, как призрак №3. Здесь же отражение через <b>прямую</b>.'}
+  ]),()=>{
+    log('quiz_ok');setVal('st1','✓',true);
+    succeed('✓ Опознано: осевая симметрия.',
+      'Имя из шестого класса, руки — из этого тренажёра.',
+      'Перегибание — это <b>осевая симметрия</b> в действии: ось — линия перегиба, отпечаток точки — симметричная ей точка. Скоро этим приёмом вы найдёте середину отрезка, биссектрису угла и докажете первые теоремы о перпендикулярах.');
+  });
+}
+
+/* ───────── ПОДСКАЗКА ───────── */
+function showHint(){
+  if(solved||animLock)return;
+  hintsUsed++;log('hint');
+  const t=curT();let h='';
+  if(t==='point'){
+    if(awaitManual)h='Возьмите фиолетовый маркер у точки P и тяните вниз, сквозь ось.';
+    else if(ptRound===2)h='Где стоит сама точка P? Вспомните: точки оси при перегибе…';
+    else h='Отпечаток — по другую сторону оси, строго на перпендикуляре из точки, на том же расстоянии. Отсчитайте клетки.';
+  }
+  else if(t==='figure')h='Сложите мысленно: что было <b>дальше</b> от оси, останется дальше от оси; право и лево не меняются.';
+  else if(t==='self')h='Мысленно сложите лист: ляжет ли верхняя часть фигуры точно на её же нижнюю часть?';
+  else if(t==='axis')h='От точки до оси и от её отпечатка до оси — одинаково. Сравните расстояния до каждой из трёх прямых по вершине флажка.';
+  else h='Вспомните клетчатую тетрадь шестого класса и фигуры, которые вы достраивали по другую сторону прямой.';
+  setMsg('💡 '+h,'info');
+}
+
+/* ───────── ЖИЗНЕННЫЙ ЦИКЛ ───────── */
+const TEXTS={
+ point:'Перед вами ось перегиба — прямая a — и точка P над ней. <b>Куда отпечатается P?</b> Коснитесь этого места на листе, а потом проверим перегибом — в первый раз вы сложите лист сами.',
+ figure:'Теперь фигура — флажок над осью. Под осью три призрака, но только один из них — настоящий отпечаток. <b>Нажмите на него.</b>',
+ self:'Четыре фигуры на одном листе. Про каждую решите: отпечатается она <b>сама на себя</b> — или её отпечаток окажется другой фигурой? В конце лист проверит все ответы разом.',
+ axis:'Фигура и её отпечаток уже на листе, а ось перегиба стёрлась. Среди трёх пунктирных прямых <b>найдите её</b> — нажмите на верную.',
+ bridge:'Последний вопрос — про имя приёма. Вы с ним знакомы дольше, чем кажется.'
+};
+const BADGES={point:'Куда ляжет отпечаток?',figure:'Один призрак настоящий',self:'Кто симметричен?',axis:'Найдите ось',bridge:'Старый знакомый'};
+function initTask(keepStats){
+  const t=curT();
+  if(!keepStats){mistakes=0;hintsUsed=0}
+  solved=false;mode=null;foldP=0;animLock=false;
+  ptRound=0;ptMark=null;awaitManual=false;wrongTap=null;
+  gDone=false;sfRound=0;axFound=false;AX.forEach(a=>a.deadF=false);
+  clearPool();
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('proofBox').style.display='none';
+  document.getElementById('pf').style.width=(ti/NT*100)+'%';
+  document.getElementById('pnum').textContent='Задача '+(ti+1)+' из '+NT;
+  document.getElementById('taskText').innerHTML=TEXTS[t];
+  document.getElementById('badge').textContent=BADGES[t];
+  if(t==='point'){buildStatus(['Точка 1','Точка 2','Точка на оси']);ptPrompt()}
+  else if(t==='figure'){buildStatus(['Выбор призрака']);setMsg('Сравните призраков: куда смотрит флажок и далеко ли он от оси?','info')}
+  else if(t==='self'){buildStatus(SF.map(f=>f.label));sfAsk();setMsg('Отвечайте про подсвеченную фигуру.','info')}
+  else if(t==='axis'){buildStatus(['Ось']);setMsg('Перегиб хранит расстояния — это и есть ключ.','info')}
+  else{buildStatus(['Имя приёма']);bridgeAsk();setMsg('Подумайте о клетчатой тетради…','info')}
+  log('task_start',{type:t});
+}
+function nextTask(){
+  if(ti<NT-1){ti++;initTask(false)}
+  else finish();
+}
+function resetTask(){log('reset');initTask(true)}
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{score:g});
+  const s=lS();s.runs=(s.runs||0)+1;s.passed=true;if(g>(s.best||0))s.best=g;sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent=g+' / '+NT;
+  document.getElementById('finLbl').textContent=
+    g===NT?'Безупречно: приём в руках!':
+    g>=3?'Отлично! Перегиб освоен.':
+    'Пройдите ещё раз — особенно призраков.';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){
+  ti=0;results=[];
+  document.getElementById('fin').style.display='none';
+  document.getElementById('mainArea').style.display='grid';
+  document.getElementById('bar').style.display='flex';
+  initTask(false);
+}
+
+/* ───────── УКАЗАТЕЛЬ ───────── */
+function pos(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+cv.addEventListener('pointerdown',e=>{
+  if(solved||animLock)return;
+  kind=e.pointerType==='touch'?'touch':'mouse';
+  const p=pos(e),t=curT();
+  if(t==='point'){
+    if(awaitManual){
+      const P=PTS[ptRound],grabR=kind==='touch'?28:20;
+      if(Math.hypot(p.x-P.x,p.y-ty(P.y))<grabR){mode='fold';cv.setPointerCapture(e.pointerId)}
+    }else ptGuess(p);
+  }
+  else if(t==='figure')ghostTap(p);
+  else if(t==='axis')axTap(p);
+});
+cv.addEventListener('pointermove',e=>{
+  if(mode!=='fold')return;
+  const P=PTS[ptRound],p=pos(e);
+  foldP=Math.max(0,Math.min(1,(p.y-P.y)/(2*(LY-P.y))));
+  if(foldP>0.93){foldP=1;completeManualFold()}
+});
+['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,()=>{
+  if(mode==='fold'&&foldP<0.5)foldP=0;
+  mode=null;
+}));
+
+initTask(false);
+</script>
+</body>
+</html>

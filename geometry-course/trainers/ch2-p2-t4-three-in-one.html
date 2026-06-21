@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Биссектриса = медиана = высота · равнобедренный</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:9px;font-size:12px;font-weight:700;color:#475569}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.lg{width:16px;height:4px;border-radius:2px;display:inline-block}
+.slCard{display:none;margin-top:11px;background:#f0f7ff;border:1.5px solid #bcd9f5;border-radius:11px;padding:10px 12px}
+.slCard label{font-size:12px;font-weight:800;color:#235a92;display:block;margin-bottom:6px}
+.slCard input{width:100%}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.card.given{background:#eef6ff;border-color:#bcd9f5}
+.card.given h2{color:#235a92}
+.card.given .row{font-size:13px;line-height:1.5}
+.card.given b{color:#0c447c}
+.card.why{background:#fffbeb;border-color:#fcd34d}
+.card.why h2{color:#b45309}
+.task{font-size:14.5px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.pool{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.pcard{text-align:left;border:1.5px solid #d1d5db;border-radius:11px;background:#fff;padding:11px 13px;font:600 13px/1.5 system-ui;color:#1f2937;cursor:pointer;width:100%}
+.pcard:hover{border-color:#2d70b3;background:#f0f7ff}
+.pcard.dead{opacity:.5;text-decoration:line-through;pointer-events:none;background:#fef2f2;border-color:#fecaca}
+.pcard.done{opacity:.6;pointer-events:none;background:#f0fdf4;border-color:#bbf7d0}
+.pcard.shake{animation:shake .4s}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.opt{text-align:left;border:1.5px solid #d1d5db;border-radius:11px;background:#fff;padding:11px 13px;font:600 13.5px/1.45 system-ui;color:#1f2937;cursor:pointer}
+.opt:hover{border-color:#2d70b3;background:#f0f7ff}
+.opt.dead{opacity:.5;text-decoration:line-through;pointer-events:none;background:#fef2f2;border-color:#fecaca}
+.opt.ok{border-color:#16a34a;background:#f0fdf4;pointer-events:none;font-weight:800}
+.opt.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.warn{background:#fff7ed;color:#9a3412}
+.star{color:#b45309;font-weight:800}
+.small{font-size:13.5px;color:#374151;line-height:1.55}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button:hover{background:#f3f4f6}
+button:disabled{opacity:.45;cursor:default}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a;margin-left:auto}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:15px;height:15px;border-radius:50%;background:#d1d5db}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:600px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14.5px;line-height:1.6;color:#14532d}
+.law b{color:#166534}
+.law .bridge{margin-top:12px;padding-top:11px;border-top:1px dashed #bbf7d0;font-style:italic}
+.law .star{color:#b45309;font-weight:800}
+@media(max-width:820px){
+  body{padding:8px}
+  .main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}
+  .side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">📐 Биссектриса = медиана = высота</div>
+      <div class="sub">Глава II · §2 · тренажёр 4 — три линии в одной</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Равнобедренный</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="430"></canvas>
+      <div class="legend" id="legend" style="display:none">
+        <span><i class="lg" style="background:#2d70b3"></i>медиана</span>
+        <span><i class="lg" style="background:#0e9f6e"></i>биссектриса</span>
+        <span><i class="lg" style="background:#c2410c"></i>высота</span>
+      </div>
+      <div class="slCard" id="slCard">
+        <label for="aSlider">Двигайте вершину A вбок — нарушьте симметрию и посмотрите на три линии.</label>
+        <input type="range" id="aSlider" min="0" max="100" value="50">
+      </div>
+    </div>
+    <aside class="side">
+      <div class="card given" id="givenCard" style="display:none">
+        <h2>Опора (из тренажёра 3)</h2>
+        <div class="row">Уже доказано: биссектриса AD делит равнобедренный △ABC на равные треугольники — <b>△ABD = △ACD</b>.</div>
+      </div>
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pool" id="pool"></div>
+        <div class="opts" id="opts"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div class="card why">
+        <h2>Зачем это</h2>
+        <p class="small">В тренажёре про чевианы вы видели: обычно медиана, биссектриса и высота — три разные линии. Здесь раскрывается обещанное чудо: в <b>равнобедренном</b> треугольнике линии, проведённые <b>к основанию</b>, сливаются в одну. И это не совпадение на глаз — это доказуемо.</p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law" id="lawBox"></div>
+    <button style="background:#1a1a2e;color:#fff;max-width:240px;margin:0 auto;display:block;border:0;border-radius:10px;padding:11px 18px;font-weight:800;cursor:pointer" onclick="restart()">Пройти ещё раз</button>
+  </div>
+
+  <div class="bar" id="bar">
+    <button onclick="showHint()" id="hintBtn">💡 Подсказка</button>
+    <button onclick="resetTask()">↺ Сначала</button>
+    <button id="nextBtn" class="next" onclick="nextTask()">Дальше →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС И ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch2-p2-t4-three-in-one';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),task:ti+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+/* ───────── ХОЛСТ ───────── */
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+let W=640,H=430;
+(function dpr(){const r=Math.min(window.devicePixelRatio||1,2);cv.width=W*r;cv.height=H*r;ctx.scale(r,r);cv.style.width='100%';})();
+
+/* ───────── ГЕОМЕТРИЯ ───────── */
+const B={x:170,y:330}, C={x:470,y:330};
+const MIDX=(B.x+C.x)/2;
+let A={x:MIDX, y:120};               // равнобедренный по умолчанию (A над серединой)
+const COL={med:'#2d70b3', bis:'#0e9f6e', alt:'#c2410c'};
+
+function midBC(){return {x:MIDX,y:330};}
+function footAlt(){const dx=C.x-B.x,dy=C.y-B.y,L2=dx*dx+dy*dy;const t=((A.x-B.x)*dx+(A.y-B.y)*dy)/L2;return {x:B.x+t*dx,y:B.y+t*dy};}
+function footBis(){const dx=C.x-B.x,dy=C.y-B.y;const ab=Math.hypot(A.x-B.x,A.y-B.y),ac=Math.hypot(A.x-C.x,A.y-C.y);const r=ab/(ab+ac);return {x:B.x+r*dx,y:B.y+r*dy};}
+function isIso(){return Math.abs(A.x-MIDX)<3;}
+
+/* ───────── СОСТОЯНИЕ ───────── */
+let ti=0;
+let solvedThis=false, mistakes=0, hintUsedThis=false;
+const results=[];
+let kind='mouse';
+let dragA=false, grabOff=0;
+let scaleneSeen=false;               // в акте 1 нарушили симметрию
+let derived={med:false, alt:false};  // выводы акта 2
+let convOrder=[], convDone=[];        // converse-конструктор (акт 3)
+let fx={};
+
+/* ───────── ЗАДАЧИ ─────────
+   explore : живой равнобедренный → нарушь симметрию (связь с t0)
+   derive  : мини-конструктор — два вывода (медиана, высота) из △ABD=△ACD
+   converse: ✦ обратная №115 (карточка)
+*/
+const TASKS=[
+ {kind:'explore',
+  text:'Это <b>равнобедренный</b> △ABC. Из вершины A проведены медиана, биссектриса и высота к основанию. Сколько линий вы видите? Потяните A <b>вбок</b> — что станет с ними?'},
+ {kind:'derive',
+  text:'Опираемся на доказанное: <b>△ABD = △ACD</b>. Соберите два вывода — кем ещё оказалась биссектриса AD. Одна карточка лишняя — рассуждение в ней неверное.',
+  cards:[
+   {id:'median', txt:'Раз △ABD = △ACD, то BD = DC. Значит D — середина BC, и AD — <b>медиана</b>.',
+    ok:'BD = DC → D середина → AD медиана. ✓', short:'AD — медиана (BD = DC)'},
+   {id:'altitude', txt:'Раз △ABD = △ACD, то ∠ADB = ∠ADC. Они смежные и равны → каждый 90° → AD — <b>высота</b>.',
+    ok:'Равные смежные углы — это два прямых. AD ⊥ BC → AD высота. ✓', short:'AD — высота (AD ⊥ BC)'},
+   {id:'dWrong', distract:'Нет: «вертикальность» тут ни при чём. Высота — это перпендикуляр, а ⊥ мы получаем из равенства смежных углов ∠ADB = ∠ADC, а не из того, что линия идёт сверху вниз.',
+    txt:'AD — высота, потому что идёт сверху вниз.'}]},
+ {kind:'converse',
+  text:'✦ Обратное (задача 115): в △ABC провели медиану AM, и она оказалась <b>высотой</b> (AM ⊥ BC). Докажите, что треугольник равнобедренный. Собирайте шаги по порядку — но осторожно: одно утверждение среди карточек <b>неверное</b>, его брать не нужно.',
+  cards:[
+   {id:'cBM', need:[], txt:'BM = MC — потому что AM медиана (делит BC пополам).',
+    ok:'BM = MC — первая пара равных сторон.', short:'BM = MC (AM — медиана)'},
+   {id:'cPerp', need:[], txt:'∠AMB = ∠AMC = 90° — потому что AM высота (AM ⊥ BC).',
+    ok:'Два прямых угла при M — это и есть угол МЕЖДУ сторонами.', short:'∠AMB = ∠AMC = 90° (AM ⊥ BC)'},
+   {id:'cAM', need:[], txt:'AM — общая сторона треугольников ABM и ACM.',
+    ok:'AM общая — вторая пара равных сторон.', short:'AM — общая сторона'},
+   {id:'cSAS', need:['cBM','cPerp','cAM'], txt:'△ABM = △ACM по первому признаку (две стороны BM=MC, AM общая и угол 90° между ними).',
+    early:'Для первого признака соберите сначала обе пары сторон (BM=MC, AM общая) и прямой угол между ними.',
+    ok:'Две стороны и угол между ними совпали — треугольники равны по первому признаку.', short:'△ABM = △ACM (первый признак)'},
+   {id:'cAB', need:['cSAS'], txt:'Значит AB = AC — соответствующие стороны равных треугольников. Треугольник равнобедренный.',
+    early:'Сначала докажите равенство треугольников — равенство сторон выйдет следствием.',
+    ok:'AB = AC как соответствующие стороны → △ABC равнобедренный. Что и требовалось.', short:'AB = AC → равнобедренный'},
+   {id:'cd2sides', distract:'Не хватает угла: только «по двум сторонам» признака нет. Нужен ещё угол между ними — а он у нас есть, прямой (AM⊥BC). Это первый признак, а не «две стороны».',
+    txt:'BM=MC и AM общая — значит △ABM = △ACM по двум сторонам.'}]}
+];
+const CONVERSE_PROOF=['cBM','cPerp','cAM','cSAS','cAB'];
+
+/* ───────── РИСОВАНИЕ ───────── */
+function bg(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill();}
+}
+function lab(p,txt,col,dx,dy,size){
+  ctx.font='900 '+(size||16)+'px system-ui';ctx.textAlign='center';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(250,248,242,.95)';ctx.strokeText(txt,p.x+dx,p.y+dy);
+  ctx.fillStyle=col;ctx.fillText(txt,p.x+dx,p.y+dy);
+}
+function dot(p,col,r){ctx.beginPath();ctx.arc(p.x,p.y,r||4.6,0,7);ctx.fillStyle=col;ctx.fill();}
+function footDot(p,col){
+  ctx.beginPath();ctx.arc(p.x,p.y,6.5,0,7);ctx.fillStyle='#fffdf7';ctx.fill();
+  ctx.lineWidth=2.5;ctx.strokeStyle=col;ctx.stroke();
+  ctx.beginPath();ctx.arc(p.x,p.y,3,0,7);ctx.fillStyle=col;ctx.fill();
+}
+function seg(p,q,col,lw){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.strokeStyle=col;ctx.lineWidth=lw||2.8;ctx.stroke();}
+function tick(p,q,n,col){
+  const mx=(p.x+q.x)/2,my=(p.y+q.y)/2;let dx=q.x-p.x,dy=q.y-p.y,L=Math.hypot(dx,dy);dx/=L;dy/=L;
+  const nx=-dy,ny=dx;
+  for(let i=0;i<n;i++){const o=(i-(n-1)/2)*6;const cx=mx+dx*o,cy=my+dy*o;
+    ctx.beginPath();ctx.moveTo(cx-nx*7,cy-ny*7);ctx.lineTo(cx+nx*7,cy+ny*7);ctx.strokeStyle=col;ctx.lineWidth=2.4;ctx.stroke();}
+}
+function rightAngle(D,toA,along,col){
+  const s=12;
+  const p1={x:D.x+along.x*s,y:D.y+along.y*s},p2={x:D.x+toA.x*s,y:D.y+toA.y*s},p3={x:p1.x+toA.x*s,y:p1.y+toA.y*s};
+  ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p3.x,p3.y);ctx.lineTo(p2.x,p2.y);
+  ctx.strokeStyle=col;ctx.lineWidth=2;ctx.stroke();
+}
+function flash(t){return t?Math.max(0,1-(Date.now()-t)/650):0;}
+
+function draw(){
+  bg();
+  const T=TASKS[ti];
+  const M=midBC(), Hf=footAlt(), Df=footBis();
+  const iso=isIso();
+
+  // стороны
+  seg(A,B,'#1a1a2e',2.8);seg(A,C,'#1a1a2e',2.8);seg(B,C,'#1a1a2e',2.8);
+  // засечки равных боковых (равнобедренный)
+  if(iso){tick(A,B,1,'#1a1a2e');tick(A,C,1,'#1a1a2e');}
+
+  if(T.kind==='explore'){
+    // три чевианы — в равнобедренном сливаются, при сдвиге расходятся
+    seg(A,M,COL.med,3);
+    seg(A,Df,COL.bis,3);
+    seg(A,Hf,COL.alt,3);
+    footDot(M,COL.med);footDot(Df,COL.bis);footDot(Hf,COL.alt);
+    if(!iso){lab(M,'M',COL.med,0,22,13);lab(Df,'L',COL.bis,0,-12,13);lab(Hf,'H',COL.alt,(Hf.x<M.x?-14:14),22,13);}
+    else{footDot(M,COL.bis);lab(M,'D',COL.bis,0,22,14);}
+  } else {
+    // акт 2 (derive): одна линия AD (биссектриса=медиана=высота)
+    const D=midBC();
+    if(T.kind==='derive'){
+      seg(A,D,COL.bis,3);
+      footDot(D,COL.bis);lab(D,'D',COL.bis,0,22,15);
+      if(derived.med){
+        tick(B,D,1,COL.med);tick(D,C,1,COL.med);
+        const f=flash(fx.median);if(f>0.02){seg(B,D,'rgba(45,112,179,'+(0.5+0.4*f)+')',5);seg(D,C,'rgba(45,112,179,'+(0.5+0.4*f)+')',5);}
+      }
+      if(derived.alt){
+        rightAngle(D,{x:0,y:-1},{x:1,y:0},COL.alt);
+        const f=flash(fx.altitude);if(f>0.02){ctx.save();ctx.globalAlpha=0.5+0.4*f;rightAngle(D,{x:0,y:-1},{x:1,y:0},COL.alt);ctx.restore();}
+      }
+    }
+    // акт 3 (converse): AM — медиана-высота; элементы появляются по мере сборки
+    if(T.kind==='converse'){
+      const M=D;
+      seg(A,M,'#2d70b3',3);
+      footDot(M,'#2d70b3');lab(M,'M','#2d70b3',0,22,15);
+      // BM=MC — после шага cBM
+      if(convDone.includes('cBM')){
+        tick(B,M,1,COL.med);tick(M,C,1,COL.med);
+        const f=flash(fx.median);
+      }
+      // прямой угол — после cPerp
+      if(convDone.includes('cPerp')){
+        rightAngle(M,{x:0,y:-1},{x:1,y:0},COL.alt);
+      }
+      // AB=AC — после финального cAB
+      if(convDone.includes('cAB')){
+        tick(A,B,1,'#16a34a');tick(A,C,1,'#16a34a');
+        const f=flash(fx.cab),g=f>0.02?0.7+0.3*f:0.55;
+        ctx.save();ctx.globalAlpha=g;seg(A,B,'#16a34a',4);seg(A,C,'#16a34a',4);ctx.restore();
+        lab({x:MIDX,y:90},'AB = AC','#16a34a',0,0,16);
+      }
+    }
+  }
+
+  // вершины
+  dot(B,'#1a1a2e');dot(C,'#1a1a2e');
+  if(T.kind==='explore'){
+    const g=0.45+0.4*Math.sin(Date.now()/300);
+    ctx.beginPath();ctx.arc(A.x,A.y,16,0,7);ctx.fillStyle='rgba(45,112,179,'+(0.12+0.1*Math.sin(Date.now()/300))+')';ctx.fill();
+    ctx.beginPath();ctx.arc(A.x,A.y,16,0,7);ctx.strokeStyle='rgba(45,112,179,'+g+')';ctx.lineWidth=2;ctx.stroke();
+  }
+  dot(A,'#1a1a2e');
+  lab(A,'A','#1a1a2e',0,-16);lab(B,'B','#1a1a2e',-15,10);lab(C,'C','#1a1a2e',15,10);
+
+  if(T.kind==='explore'){
+    ctx.font='800 13px system-ui';ctx.textAlign='center';
+    if(iso){ctx.fillStyle='#15803d';ctx.fillText('три линии слились в одну', MIDX, 40);}
+    else{ctx.fillStyle='#c2410c';ctx.fillText('симметрия нарушена — линии разошлись', MIDX, 40);}
+  }
+}
+
+/* ───────── КООРДИНАТЫ ───────── */
+function scrK(){const r=cv.getBoundingClientRect();return Math.max(1,W/(r.width||W));}
+function pt(e){const r=cv.getBoundingClientRect(),k=W/(r.width||W);return {x:(e.clientX-r.left)*k,y:(e.clientY-r.top)*k};}
+
+/* ───────── ЛОГИКА ───────── */
+function el(id){return document.getElementById(id);}
+function setMsg(html,cls){const m=el('msg');m.className='msg '+(cls||'info');m.innerHTML=html;}
+
+/* акт 1 — исследование */
+function checkExplore(){
+  if(solvedThis)return;
+  if(!isIso()){
+    if(!scaleneSeen){scaleneSeen=true;log('scalene_seen',{});}
+    setMsg('Видите: чуть нарушили симметрию — и три линии <b>разъехались</b>, как в обычном треугольнике. Значит их слияние — свойство именно <b>равнобедренного</b>. Вернём симметрию и докажем, почему.','ok');
+    finishTask();
+  }
+}
+
+/* акт 2 — мини-конструктор выводов; акт 3 — конструктор обратной */
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function renderPool(){
+  const T=TASKS[ti];const pool=el('pool');pool.innerHTML='';
+  if(T.kind==='derive'){
+    T.cards.forEach(c=>{
+      const b=document.createElement('button');
+      b.className='pcard'+((c.id==='median'&&derived.med)||(c.id==='altitude'&&derived.alt)?' done':'');
+      b.innerHTML=c.txt;b.onclick=()=>pickCard(c,b);
+      pool.appendChild(b);
+    });
+  } else if(T.kind==='converse'){
+    convOrder.forEach(id=>{
+      const c=T.cards.find(x=>x.id===id);
+      if(convDone.includes(id))return;            // собранные уходят в цепочку
+      const b=document.createElement('button');
+      b.className='pcard';
+      b.innerHTML=c.txt;b.onclick=()=>pickCard(c,b);
+      pool.appendChild(b);
+    });
+    renderConvChain();
+  }
+}
+function renderConvChain(){
+  // показать собранную цепочку под пулом
+  let box=el('convChain');
+  if(!box){box=document.createElement('div');box.id='convChain';box.style.cssText='display:flex;flex-direction:column;gap:6px;margin-top:8px';el('pool').after(box);}
+  const T=TASKS[ti];
+  box.innerHTML=convDone.map((id,i)=>{const c=T.cards.find(x=>x.id===id);
+    return '<div style="font-size:12px;line-height:1.4;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:7px 9px;color:#14532d"><b style="color:#16a34a">'+(i+1)+'.</b> '+c.short+'</div>';}).join('');
+}
+function pickCard(c,btn){
+  if(solvedThis)return;
+  const T=TASKS[ti];
+  // ловушка
+  if(c.distract){mistakes++;btn.classList.add('shake','dead');log('distractor',{id:c.id});setMsg('✗ '+c.distract,'err');if(T.kind==='converse')setTimeout(renderPool,430);return;}
+  // ── акт 2 (derive) ──
+  if(T.kind==='derive'){
+    if(c.id==='median'){derived.med=true;fx.median=Date.now();}
+    if(c.id==='altitude'){derived.alt=true;fx.altitude=Date.now();}
+    log('step',{id:c.id});setMsg(c.ok,'ok');renderPool();
+    if(derived.med&&derived.alt){
+      log('three_in_one_seen',{});
+      setMsg('Готово! AD — сразу <b>биссектриса</b>, <b>медиана</b> и <b>высота</b>. Три линии — одна.','ok');
+      finishTask();
+    }
+    return;
+  }
+  // ── акт 3 (converse) — проверка зависимостей ──
+  if(T.kind==='converse'){
+    const ready=(c.need||[]).every(n=>convDone.includes(n));
+    if(!ready){mistakes++;log('early',{id:c.id});btn.classList.add('shake');setTimeout(()=>btn.classList.remove('shake'),430);setMsg('⏳ Рано: '+c.early,'warn');return;}
+    convDone.push(c.id);log('step',{id:c.id});setMsg(c.ok,'ok');
+    if(c.id==='cSAS')fx.csas=Date.now();
+    if(c.id==='cAB')fx.cab=Date.now();
+    renderPool();
+    if(convDone.length>=CONVERSE_PROOF.length){
+      log('converse_proved',{});
+      setMsg('Доказано: медиана-высота ⇒ AB = AC ⇒ треугольник равнобедренный.','ok');
+      finishTask();
+    }
+  }
+}
+
+/* ───────── ПЕРЕТАСКИВАНИЕ (акт 1) ───────── */
+cv.addEventListener('pointerdown',e=>{
+  kind=e.pointerType==='touch'?'touch':'mouse';
+  if(TASKS[ti].kind!=='explore'||solvedThis)return;
+  const p=pt(e);const rGrab=(kind==='touch'?32:22)*scrK();
+  if(Math.hypot(p.x-A.x,p.y-A.y)<rGrab){dragA=true;grabOff=A.x-p.x;try{cv.setPointerCapture(e.pointerId);}catch(_){}}
+});
+cv.addEventListener('pointermove',e=>{
+  if(!dragA)return;
+  const p=pt(e);A.x=Math.max(120,Math.min(W-120,p.x+grabOff));
+  syncSlider();checkExplore();
+});
+function endDrag(e){if(!dragA)return;dragA=false;try{cv.releasePointerCapture(e.pointerId);}catch(_){}}
+cv.addEventListener('pointerup',endDrag);
+cv.addEventListener('pointercancel',endDrag);
+
+const aSlider=el('aSlider');
+aSlider.addEventListener('input',()=>{
+  if(TASKS[ti].kind!=='explore')return;
+  A.x=120+(W-240)*(+aSlider.value/100);checkExplore();
+});
+function syncSlider(){aSlider.value=Math.round((A.x-120)/(W-240)*100);}
+
+/* ───────── ПОДСКАЗКА ───────── */
+function showHint(){
+  const T=TASKS[ti];hintUsedThis=true;log('hint',{});
+  if(T.kind==='explore')setMsg('💡 Сейчас три линии лежат одна на другой — видна одна. Потяните A вбок за светящийся кружок, и они разъедутся.','warn');
+  else if(T.kind==='derive')setMsg('💡 Оба вывода идут из равенства △ABD = △ACD: одна про равные отрезки BD и DC, другая — про равные углы при D.','warn');
+  else setMsg('💡 Постройте равенство △ABM = △ACM: что у них равно? BM=MC, прямые углы при M, общая AM — и какой это признак?','warn');
+}
+
+/* ───────── ПЕРЕХОДЫ ───────── */
+function finishTask(){
+  if(solvedThis)return;
+  solvedThis=true;
+  results[ti]= hintUsedThis ? 'y' : (mistakes===0?'g':(mistakes===1?'y':'r'));
+  log('solved',{via:TASKS[ti].kind,mistakes,hint:hintUsedThis});
+  el('nextBtn').style.display='inline-block';
+  el('nextBtn').textContent=ti===TASKS.length-1?'Итоги →':'Дальше →';
+  el('hintBtn').disabled=true;
+}
+function layout(){
+  const T=TASKS[ti];
+  el('taskText').innerHTML=T.text;
+  el('pf').style.width=Math.round(ti/TASKS.length*100)+'%';
+  el('pnum').textContent='Шаг '+(ti+1)+' из '+TASKS.length;
+  el('nextBtn').style.display='none';
+  el('hintBtn').disabled=false;
+  el('slCard').style.display=(T.kind==='explore')?'block':'none';
+  el('legend').style.display=(T.kind==='explore')?'flex':'none';
+  el('givenCard').style.display=(T.kind==='derive'||T.kind==='converse')?'block':'none';
+  if(T.kind!=='explore'){A.x=MIDX;A.y=120;}   // вне исследования — равнобедренный, A на вертикали
+  if(T.kind==='converse'&&convOrder.length===0)convOrder=shuffle(T.cards.map(c=>c.id));
+  const cc=el('convChain');if(cc&&T.kind!=='converse')cc.remove();
+  renderPool();
+  if(T.kind==='explore')setMsg('Потяните вершину A вбок.','info');
+  else if(T.kind==='derive')setMsg('Соберите оба вывода из равенства треугольников.','info');
+  else setMsg('Соберите доказательство по шагам.','info');
+  log('task_start',{kind:T.kind});
+}
+function resetTask(){
+  const T=TASKS[ti];
+  if(T.kind==='explore'){A.x=MIDX;A.y=120;scaleneSeen=false;syncSlider();}
+  if(T.kind==='derive'){derived={med:false,alt:false};}
+  if(T.kind==='converse'){convOrder=[];convDone=[];const cc=el('convChain');if(cc)cc.remove();}
+  solvedThis=false;mistakes=0;hintUsedThis=false;
+  layout();
+}
+function nextTask(){
+  if(ti<TASKS.length-1){
+    ti++;solvedThis=false;mistakes=0;hintUsedThis=false;
+    if(TASKS[ti].kind==='explore'){A.x=MIDX;A.y=120;scaleneSeen=false;syncSlider();}
+    if(TASKS[ti].kind==='derive'){derived={med:false,alt:false};}
+    if(TASKS[ti].kind==='converse'){convOrder=[];convDone=[];const cc=el('convChain');if(cc)cc.remove();}
+    layout();
+  }else finish();
+}
+
+/* ───────── ФИНАЛ ───────── */
+function finish(){
+  el('mainArea').style.display='none';
+  el('bar').style.display='none';
+  el('fin').style.display='block';
+  const g=results.filter(r=>r==='g').length;
+  el('finScore').textContent=g+' / '+TASKS.length;
+  el('finLbl').textContent='шагов пройдено без ошибок и подсказок';
+  const fd=el('finDots');fd.innerHTML='';
+  results.forEach(r=>{const e=document.createElement('div');e.className='dot '+(r||'r');fd.appendChild(e);});
+  el('lawBox').innerHTML=
+    '<b>Теорема.</b> В равнобедренном треугольнике <b>биссектриса</b>, проведённая к основанию, является <b>медианой</b> и <b>высотой</b>.'+
+    '<div style="margin-top:7px">Следствия (те же три линии, с любого конца): высота к основанию — это медиана и биссектриса; медиана к основанию — это высота и биссектриса.</div>'+
+    '<div style="margin-top:7px"><b>Обратное (задача 115).</b> Если медиана треугольника является его высотой, то треугольник равнобедренный.</div>'+
+    '<div class="bridge">Вот и разгадка из тренажёра про чевианы: в обычном треугольнике три линии расходятся, а в равнобедренном — <span class="star">к основанию они сливаются в одну</span>. Дальше потренируемся применять это в задачах.</div>';
+  const s=lS();s.runs=(s.runs||0)+1;s.passed=true;s.best=Math.max(s.best||0,g);sS(s);
+  log('finish',{score:g});
+}
+function restart(){
+  ti=0;results.length=0;A.x=MIDX;A.y=120;scaleneSeen=false;derived={med:false,alt:false};convOrder=[];convDone=[];fx={};
+  const cc=el('convChain');if(cc)cc.remove();
+  solvedThis=false;mistakes=0;hintUsedThis=false;
+  el('fin').style.display='none';
+  el('mainArea').style.display='grid';
+  el('bar').style.display='flex';
+  syncSlider();
+  layout();
+}
+
+/* ───────── ЦИКЛ ───────── */
+function loop(){draw();requestAnimationFrame(loop);}
+log('start');
+restart();
+loop();
+</script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Геометрия 7 класс — панель учителя</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:1080px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:22px 24px}
+.head h1{margin:0;font-size:23px;font-weight:900}
+.head .sub{font-size:13px;opacity:.75;margin-top:5px}
+.head a{color:#cbd5e1;font-weight:800;text-decoration:none;font-size:12.5px} .head a:hover{color:#fff}
+.body{padding:18px 22px 26px}
+.panel{border:1.5px solid #e5e7eb;border-radius:13px;padding:15px;margin-bottom:16px;background:#fafbfc}
+.panel h2{margin:0 0 10px;font-size:15px;color:#1a1a2e}
+textarea#codes{width:100%;min-height:90px;padding:11px;border:1.5px solid #d1d5db;border-radius:10px;font:600 12.5px ui-monospace,Menlo,monospace;resize:vertical}
+.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.btn{border:0;border-radius:9px;padding:9px 15px;font:800 13px system-ui;cursor:pointer}
+.btn.p{background:#16a34a;color:#fff} .btn.p:hover{background:#15803d}
+.btn.s{background:#eef0f3;color:#374151} .btn.s:hover{background:#e2e6ea}
+.btn.d{background:#fee2e2;color:#b91c1c} .btn.d:hover{background:#fecaca}
+.msg{font-size:12.5px;font-weight:700;margin-left:4px} .msg.ok{color:#15803d} .msg.err{color:#b91c1c}
+.stat{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.scard{flex:1;min-width:130px;background:#1a1a2e;color:#fff;border-radius:12px;padding:13px 15px}
+.scard .v{font-size:24px;font-weight:900;color:#4ade80} .scard .l{font-size:12px;opacity:.8;margin-top:2px}
+.tablewrap{overflow:auto;border:1.5px solid #e5e7eb;border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:560px}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid #eef0f3;white-space:nowrap}
+th{background:#f3f4f6;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:#64748b;position:sticky;top:0}
+td.name{font-weight:700;color:#1a1a2e}
+td.num{text-align:center;font-variant-numeric:tabular-nums}
+.bar{height:7px;background:#eef0f3;border-radius:99px;overflow:hidden;min-width:90px;display:inline-block;vertical-align:middle}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#16a34a,#4ade80)}
+.hard li{display:flex;justify-content:space-between;gap:12px;padding:7px 2px;border-bottom:1px solid #f1f3f5;font-size:13px}
+.hard li .c{color:#94a3b8;font-variant-numeric:tabular-nums;white-space:nowrap}
+.hard li.zero{color:#b91c1c} .hard li.zero .c{color:#b91c1c}
+.muted{color:#94a3b8;font-size:12.5px;line-height:1.5}
+details{margin-top:6px} summary{cursor:pointer;font-weight:800;color:#6d28d9;font-size:13px}
+pre{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:13px;overflow:auto;font-size:12px;line-height:1.5}
+ol.steps{font-size:13px;line-height:1.6;color:#374151;padding-left:20px}
+code{background:#f1f5f9;padding:1px 5px;border-radius:5px;font-size:12px}
+@media(max-width:560px){ body{padding:8px} .head{padding:16px} }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <h1>👩‍🏫 Панель класса · Геометрия 7</h1>
+    <div class="sub">Вставляй коды учеников — таблица прогресса собирается здесь. <a href="index.html">← к тренажёрам</a></div>
+  </div>
+  <div class="body">
+    <div class="panel"><h2>1. Коды учеников</h2>
+      <p class="muted">Ученик на главной жмёт «Сдать прогресс», вводит имя и присылает код. Вставляй коды сюда — по одному в строке, можно сразу несколько. Повторный код от того же ученика обновляет строку.</p>
+      <textarea id="codes" placeholder="GEO1.70.xxxx.yyyy&#10;GEO1.70.zzzz.wwww"></textarea>
+      <div class="row"><button class="btn p" id="add">Добавить в класс</button><button class="btn s" id="csv">📋 Экспорт CSV</button><button class="btn d" id="clear">Очистить класс</button><span class="msg" id="msg"></span></div>
+    </div>
+    <div class="stat">
+      <div class="scard"><div class="v" id="nStud">0</div><div class="l">учеников в классе</div></div>
+      <div class="scard"><div class="v" id="avg">—</div><div class="l">в среднем пройдено</div></div>
+    </div>
+    <div class="panel"><h2>2. Прогресс класса</h2>
+      <div class="tablewrap"><table><tbody id="tbl"></tbody></table></div>
+      <p class="muted" style="margin-top:9px">Числа в колонках глав — сколько тренажёров главы пройдено. «Сдано» — дата последнего кода.</p>
+    </div>
+    <div class="panel"><h2>3. Где класс буксует</h2>
+      <p class="muted">Тренажёры с наименьшим числом прошедших — кандидаты на разбор у доски. Красным — те, кого не прошёл никто.</p>
+      <ul class="hard" id="hard" style="list-style:none;padding:0;margin:8px 0 0"></ul>
+    </div>
+    <div class="panel"><h2>Необязательно: автосбор в Google-таблицу</h2>
+      <p class="muted">Чтобы коды прилетали сами, без пересылки:</p>
+      <ol class="steps"><li>Создай Google-таблицу → меню <b>Расширения → Apps Script</b>.</li><li>Вставь код ниже, сохрани.</li><li><b>Развернуть → Новое развёртывание → Веб-приложение</b>; «Выполнять от имени: я», «Доступ: все». Скопируй URL.</li><li>В <code>index.html</code> найди строку <code>var ENDPOINT="";</code> и впиши URL в кавычки, перевыложи.</li><li>Теперь «Сдать прогресс» отправляет код строкой в таблицу. Коды из таблицы вставляй сюда же.</li></ol>
+      <details><summary>Показать код Apps Script</summary><pre>function doPost(e){
+  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+  sh.appendRow([new Date(), e.postData.contents]);
+  return ContentService.createTextOutput(&#x27;ok&#x27;);
+}</pre></details>
+    </div>
+  </div>
+</div>
+<script>
+var GEOVER='GEO1';
+function _utf8(s){return new TextEncoder().encode(s);}
+function _deutf8(a){return new TextDecoder().decode(a);}
+function _b64e(by){var s='';for(var i=0;i<by.length;i++)s+=String.fromCharCode(by[i]);return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+function _b64d(b){b=b.replace(/-/g,'+').replace(/_/g,'/');while(b.length%4)b+='=';var s=atob(b);var a=new Uint8Array(s.length);for(var i=0;i<s.length;i++)a[i]=s.charCodeAt(i);return a;}
+function _pack(v){var n=v.length,by=new Uint8Array(Math.ceil(n/4));for(var i=0;i<n;i++){by[i>>2]|=(v[i]&3)<<((i&3)*2);}return by;}
+function _unpack(by,n){var v=[];for(var i=0;i<n;i++){v.push((by[i>>2]>>((i&3)*2))&3);}return v;}
+function makeCode(name,vals){return GEOVER+'.'+vals.length+'.'+_b64e(_utf8(name))+'.'+_b64e(_pack(vals));}
+function readCode(code){var p=(code||'').trim().split('.');if(p.length<4||p[0]!==GEOVER)return null;var n=parseInt(p[1],10);if(!(n>0))return null;var name,bits;try{name=_deutf8(_b64d(p[2]));bits=_b64d(p[3]);}catch(e){return null;}return {name:name,n:n,vals:_unpack(bits,n)};}
+
+(function(){
+  var RK='geoClassRoster', TRAINERS=[{"t": "ch1-p3-t2-fold-imprint", "n": "Перегибание и отпечаток · лаборатория приёма", "c": 1}, {"t": "ch1-p6-t1-adjacent-vertical", "n": "Смежные и вертикальные углы · лаборатория и доказательство", "c": 1}, {"t": "ch1-p6-t2-angle-problems", "n": "Задачи на смежные и вертикальные углы · генератор", "c": 1}, {"t": "ch1-p6-t3-two-perpendiculars", "n": "Два перпендикуляра к одной прямой · перегибание и доказательство от противного", "c": 1}, {"t": "ch2-p1-t1-overlay-equality", "n": "Что значит — равные фигуры? · Наложение", "c": 2}, {"t": "ch2-p1-t2-overlay-sas", "n": "Наложи треугольник · путь к первому признаку", "c": 2}, {"t": "ch2-p1-t3-proof-sas", "n": "Почему хватает трёх элементов · доказательство первого признака", "c": 2}, {"t": "ch2-p1-t4-find-equal", "n": "Найди равные треугольники · задачи по чертежу", "c": 2}, {"t": "ch2-p1-t5-quiz", "n": "Зачёт по параграфу · первый признак равенства треугольников", "c": 2}, {"t": "ch2-p2-t0-three-cevians", "n": "Медиана, биссектриса, высота · три разные линии", "c": 2}, {"t": "ch2-p2-t1-perp-fold", "n": "Перпендикуляр складыванием · из точки к прямой", "c": 2}, {"t": "ch2-p2-t2-isosceles-intro", "n": "Равнобедренный треугольник · устройство фигуры", "c": 2}, {"t": "ch2-p2-t3-proof-base-angles", "n": "Углы при основании равны · доказательство", "c": 2}, {"t": "ch2-p2-t4-three-in-one", "n": "Биссектриса = медиана = высота · равнобедренный", "c": 2}, {"t": "ch2-p2-t5-find-equal-iso", "n": "Равнобедренный в задачах · найди равные", "c": 2}, {"t": "ch2-p2-t6-quiz", "n": "Мини-зачёт · медианы, биссектрисы, высоты", "c": 2}, {"t": "ch2-p3-t0-adjacent-opposite", "n": "Прилежащие и противолежащие · опорный словарь", "c": 2}, {"t": "ch2-p3-t1-overlay-asa", "n": "Наложи по стороне и двум углам · второй признак", "c": 2}, {"t": "ch2-p3-t2-proof-asa", "n": "Почему точка C не может быть другой · второй признак", "c": 2}, {"t": "ch2-p3-t3-which-sign", "n": "Первый или второй? · различение признаков", "c": 2}, {"t": "ch2-p3-t4-find-equal-asa", "n": "Найди равные треугольники · задачи по чертежу", "c": 2}, {"t": "ch2-p3-t5-quiz", "n": "Мини-зачёт · второй признак", "c": 2}, {"t": "ch2-p4-t0-rigidity", "n": "Почему хватает трёх сторон · жёсткость треугольника", "c": 2}, {"t": "ch2-p4-t1-overlay-sss", "n": "Наложи по трём сторонам · третий признак", "c": 2}, {"t": "ch2-p4-t2-proof-sss", "n": "Доказательство третьего признака · конструктор", "c": 2}, {"t": "ch2-p4-t3-which-sign", "n": "Какой признак? · различение трёх признаков", "c": 2}, {"t": "ch2-p4-t4-find-equal-sss", "n": "Найди равные по трём сторонам · задачи по чертежу", "c": 2}, {"t": "ch2-p4-t5-quiz", "n": "Мини-зачёт · третий признак", "c": 2}, {"t": "ch2-constr-perp-bisector", "n": "Серединный перпендикуляр — циркуль и линейка", "c": 2}, {"t": "ch2-constr-angle-bisector", "n": "Биссектриса угла — циркуль и линейка", "c": 2}, {"t": "ch2-constr-perpendicular-point", "n": "Перпендикуляр к прямой через точку — циркуль и линейка", "c": 2}, {"t": "ch2-constr-copy-angle", "n": "Угол, равный данному — циркуль и линейка", "c": 2}, {"t": "ch3-p1-t1-crossing-parallel", "n": "Пересекающиеся и параллельные прямые", "c": 3}, {"t": "ch3-p1-t2-eight-angles", "n": "Восемь углов при секущей", "c": 3}, {"t": "ch3-p1-t3-sign-lab", "n": "Когда прямые параллельны", "c": 3}, {"t": "ch3-p1-t4-proof-sign", "n": "Почему признак работает", "c": 3}, {"t": "ch3-p1-t5-two-more-signs", "n": "Ещё два признака", "c": 3}, {"t": "ch3-p1-t6-practical", "n": "Угольник и линейка", "c": 3}, {"t": "ch3-p1-t7-find-equal", "n": "Докажи, что a ∥ b", "c": 3}, {"t": "ch3-p2-t1-parallel-axiom", "n": "Через точку — одна параллель", "c": 3}, {"t": "ch3-p2-t4-property-alt-angles", "n": "Свойство 1: накрест лежащие углы", "c": 3}, {"t": "ch3-p2-t5-properties-2-3", "n": "Свойства 2 и 3: соответственные и односторонние", "c": 3}, {"t": "ch3-p2-t6-direct-converse", "n": "Прямая и обратная теорема", "c": 3}, {"t": "ch4-p1-t1-angle-sum-lab", "n": "Сумма углов треугольника", "c": 4}, {"t": "ch4-p1-t2-proof-angle-sum", "n": "Почему сумма углов равна 180°", "c": 4}, {"t": "ch4-p1-t3-exterior-angle", "n": "Внешний угол треугольника", "c": 4}, {"t": "ch4-p1-t4-triangle-types", "n": "Виды треугольников", "c": 4}, {"t": "ch4-p1-t5-find-angles", "n": "Найди углы", "c": 4}, {"t": "ch4-p1-t6-quiz", "n": "Зачёт §1", "c": 4}, {"t": "ch4-p2-t1-side-angle-lab", "n": "Сторона ↔ угол", "c": 4}, {"t": "ch4-p2-t2-proof-side-angle", "n": "Против большей стороны — больший угол", "c": 4}, {"t": "ch4-p2-t3-converse-iso", "n": "Против большего угла — большая сторона", "c": 4}, {"t": "ch4-p2-t4-hypotenuse-leg", "n": "Гипотенуза больше катета", "c": 4}, {"t": "ch4-p2-t5-triangle-inequality", "n": "Неравенство треугольника", "c": 4}, {"t": "ch4-p2-t6-prove-inequality", "n": "Неравенство треугольника — доказательство", "c": 4}, {"t": "ch4-p2-t7-triangle-generator", "n": "Неравенство треугольника — генератор", "c": 4}, {"t": "ch4-p2-t8-quiz", "n": "Зачёт §2", "c": 4}, {"t": "ch4-p3-t1-two-acute-angles", "n": "Два острых угла прямоугольного треугольника", "c": 4}, {"t": "ch4-p3-t2-leg-against-30", "n": "Катет против угла в 30°", "c": 4}, {"t": "ch4-p3-t3-half-means-30", "n": "Половина гипотенузы — значит 30°", "c": 4}, {"t": "ch4-p3-t4-median-to-hypotenuse", "n": "Медиана к гипотенузе", "c": 4}, {"t": "ch4-p3-t5-median-converse", "n": "Медиана-половина — значит прямоугольный", "c": 4}, {"t": "ch4-p3-t6-which-sign", "n": "Признаки равенства прямоугольных треугольников", "c": 4}, {"t": "ch4-p3-t7-hyp-leg-congruence", "n": "Признак по гипотенузе и катету (HL)", "c": 4}, {"t": "ch4-p3-t8-generator", "n": "Расчёты в прямоугольном треугольнике — генератор §3", "c": 4}, {"t": "ch4-p3-t9-quiz", "n": "Зачёт по §3 — прямоугольный треугольник", "c": 4}, {"t": "ch4-p4-t1-distance-point-line", "n": "Расстояние от точки до прямой", "c": 4}, {"t": "ch4-p4-t2-distance-parallels", "n": "Расстояние между параллельными", "c": 4}, {"t": "ch4-p4-t3-construct-sss", "n": "Построение треугольника по трём сторонам", "c": 4}, {"t": "ch4-p4-t4-construct-two-sides-angle", "n": "Треугольник по двум сторонам и углу", "c": 4}], CH_LIST=[1, 2, 3, 4], CH_SHORT={"1": "Гл. I", "2": "Гл. II", "3": "Гл. III", "4": "Гл. IV"}, TOTAL=TRAINERS.length;
+  var roster={}; try{ roster=JSON.parse(localStorage.getItem(RK)||'{}'); }catch(e){ roster={}; }
+  function save(){ localStorage.setItem(RK, JSON.stringify(roster)); }
+  var msg=document.getElementById('msg');
+  function setMsg(t,ok){ msg.textContent=t; msg.className='msg '+(ok?'ok':'err'); }
+  function copyText(txt,btn){ var done=function(){var o=btn.textContent;btn.textContent='Скопировано ✓';setTimeout(function(){btn.textContent=o;},1500);}; if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fb);}else fb(); function fb(){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done();}catch(e){}document.body.removeChild(ta);} }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function csv(s){ return /[",\n]/.test(s)? '"'+String(s).replace(/"/g,'""')+'"' : s; }
+  function chCount(vals){ var ch={}; CH_LIST.forEach(function(c){ch[c]=0;}); var p=0; for(var i=0;i<TRAINERS.length;i++){ if(vals[i]===2){p++; ch[TRAINERS[i].c]++;} } return {p:p,ch:ch}; }
+
+  document.getElementById('add').addEventListener('click',function(){
+    var raw=document.getElementById('codes').value.split(/[\r\n]+/), added=0, bad=0;
+    raw.forEach(function(line){ line=line.trim(); var m=line.match(/GEO1[.][A-Za-z0-9._-]+/); if(!m) return; var r=readCode(m[0]); if(!r){ bad++; return; } roster[r.name]={vals:r.vals,n:r.n,ts:Date.now()}; added++; });
+    save(); render();
+    setMsg((added?('добавлено/обновлено: '+added):'новых кодов нет')+(bad?(' · не распознано: '+bad):''), bad===0);
+    if(added) document.getElementById('codes').value='';
+  });
+  document.getElementById('clear').addEventListener('click',function(){ if(confirm('Очистить весь класс?')){ roster={}; save(); render(); setMsg('класс очищен',true); } });
+  document.getElementById('csv').addEventListener('click',function(){
+    var names=Object.keys(roster).sort(function(a,b){return a.localeCompare(b,'ru');});
+    var head=['Ученик','Пройдено всего'].concat(CH_LIST.map(function(c){return CH_SHORT[c];}));
+    var lines=[head.join(',')];
+    names.forEach(function(nm){ var cc=chCount(roster[nm].vals); lines.push([csv(nm),cc.p+'/'+TOTAL].concat(CH_LIST.map(function(c){return cc.ch[c]||0;})).join(',')); });
+    copyText(lines.join('\n'), this);
+  });
+
+  function render(){
+    var names=Object.keys(roster).sort(function(a,b){return a.localeCompare(b,'ru');});
+    var sumP=0; names.forEach(function(nm){ sumP+=chCount(roster[nm].vals).p; });
+    document.getElementById('nStud').textContent=names.length;
+    document.getElementById('avg').textContent=names.length? (Math.round(sumP/names.length)+' / '+TOTAL) : '—';
+    var th='<tr><th>Ученик</th><th>Пройдено</th>'+CH_LIST.map(function(c){return '<th class="num">'+CH_SHORT[c]+'</th>';}).join('')+'<th class="num">Сдано</th></tr>';
+    var body=names.map(function(nm){ var r=roster[nm], cc=chCount(r.vals), pct=Math.round(cc.p/TOTAL*100); var d=new Date(r.ts), ds=(d.getMonth()+1)+'/'+d.getDate();
+      return '<tr><td class="name">'+esc(nm)+'</td><td><span class="num" style="display:inline-block;min-width:46px">'+cc.p+'/'+TOTAL+'</span> <span class="bar"><i style="width:'+pct+'%"></i></span></td>'+
+        CH_LIST.map(function(c){return '<td class="num">'+(cc.ch[c]||0)+'</td>';}).join('')+'<td class="num" style="color:#94a3b8">'+ds+'</td></tr>'; }).join('');
+    document.getElementById('tbl').innerHTML = names.length? (th+body) : '<tr><td style="padding:16px;color:#94a3b8">Пока никого. Вставь коды учеников выше.</td></tr>';
+    var cnt=TRAINERS.map(function(){return 0;});
+    names.forEach(function(nm){ var v=roster[nm].vals; for(var i=0;i<TRAINERS.length;i++){ if(v[i]===2) cnt[i]++; } });
+    var arr=TRAINERS.map(function(tr,i){return {n:tr.n,c:cnt[i]};}); arr.sort(function(a,b){return a.c-b.c;});
+    var hard=document.getElementById('hard');
+    hard.innerHTML = names.length? arr.slice(0,12).map(function(x){ return '<li class="'+(x.c===0?'zero':'')+'"><span>'+esc(x.n)+'</span><span class="c">'+x.c+' / '+names.length+' прошли</span></li>'; }).join('')
+                                 : '<li class="muted" style="border:0">Появится, когда добавишь учеников.</li>';
+  }
+  render();
+})();
+</script>
+</body>
+</html>

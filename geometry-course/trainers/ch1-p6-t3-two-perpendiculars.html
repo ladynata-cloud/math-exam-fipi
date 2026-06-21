@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Два перпендикуляра к одной прямой · перегибание и доказательство от противного</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
+.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}
+.head{background:#1a1a2e;color:#fff;padding:16px 20px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.title{font-size:20px;font-weight:900}
+.sub{font-size:12px;opacity:.72;margin-top:2px}
+.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-size:12px;font-weight:800;white-space:nowrap}
+.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:12px}
+.back:hover{color:#fff}
+.success{display:none;background:#dcfce7;color:#14532d;font-weight:800;padding:10px 20px;font-size:14px;border-bottom:1px solid #bbf7d0}
+.main{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:0}
+.work{background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}
+canvas{width:100%;height:auto;display:block;border:1px solid #d6d3ca;border-radius:14px;background:#fffdf7;touch-action:none}
+.chain{display:none;flex-direction:column;gap:6px;margin-top:12px}
+.chitem{background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:8px 10px;font:600 12.5px/1.45 system-ui;color:#14532d;animation:fi .3s ease}
+.chitem .n{color:#16a34a;font-weight:900}
+.chgoal{background:#1a1a2e;color:#fff;border-radius:10px;padding:10px 13px;font:800 14.5px/1.45 system-ui}
+@keyframes fi{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.poolTtl{display:none;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:800;margin:13px 2px 7px}
+.pool{display:flex;flex-direction:column;gap:8px}
+.pcard{text-align:left;border:1.5px solid #d1d5db;border-radius:11px;background:#fff;padding:11px 13px;font:600 13.5px/1.5 system-ui;color:#1f2937;cursor:pointer;width:100%}
+.pcard:hover{border-color:#2d70b3;background:#f0f7ff}
+.pcard.pulse{border-color:#7c3aed;box-shadow:0 0 0 3px #ddd6fe}
+.pcard.dead{opacity:.5;text-decoration:line-through;pointer-events:none;background:#fef2f2;border-color:#fecaca}
+.pcard.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.side{padding:14px;display:flex;flex-direction:column;gap:10px}
+.card{border:1.5px solid #e5e7eb;border-radius:12px;padding:12px;background:#f9fafb}
+.card h2{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:#64748b}
+.task{font-size:14.5px;line-height:1.5}
+.task b{color:#1a1a2e}
+.pw{height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;margin-top:10px}
+.pf{height:100%;background:#2d70b3;border-radius:3px;transition:width .4s}
+.pnum{font-size:12px;color:#64748b;font-weight:800;margin-top:6px}
+.row{display:flex;justify-content:space-between;gap:10px;font-size:13.5px;line-height:1.5;border-bottom:1px dashed #e5e7eb;padding:4px 0}
+.row:last-child{border-bottom:0}
+.value{font-weight:900}
+.v-ok{color:#16a34a}
+.msg{border-radius:12px;padding:12px;font-size:14px;font-weight:750;line-height:1.42}
+.info{background:#eff6ff;color:#1d4ed8}
+.ok{background:#f0fdf4;color:#15803d}
+.err{background:#fef2f2;color:#b91c1c}
+.warn{background:#fff7ed;color:#c2410c}
+.proof{display:none;background:#ecfdf5;color:#14532d;border:1.5px solid #bbf7d0;border-radius:12px;padding:12px;font-size:13px;line-height:1.55}
+.proof b{color:#166534}
+.small{font-size:13.5px;color:#374151;line-height:1.55}
+.card.why{background:#fffbeb;border-color:#fcd34d}
+.card.why h2{color:#b45309}
+.bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 14px;background:#f9fafb;border-top:1px solid #e5e7eb;align-items:center}
+button{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:9px 14px;font:800 13px system-ui;cursor:pointer}
+button:hover{background:#f3f4f6}
+.primary{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+.primary:hover{background:#2b2b4a}
+.next{display:none;background:#16a34a;color:#fff;border-color:#16a34a}
+.next:hover{background:#15803d}
+.fin{display:none;padding:26px 22px;text-align:center}
+.fin .big{font-size:44px;font-weight:900;font-family:'Courier New',monospace;color:#16a34a}
+.fin .lbl{font-size:15px;color:#475569;margin:6px 0 16px}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:18px}
+.dot{width:15px;height:15px;border-radius:50%}
+.dot.g{background:#16a34a}.dot.y{background:#f59e0b}.dot.r{background:#dc2626}
+.law{max-width:580px;margin:0 auto 18px;background:#ecfdf5;border:1.5px solid #bbf7d0;border-radius:14px;padding:16px;text-align:left;font-size:14.5px;line-height:1.6;color:#14532d}
+.law b{color:#166534}
+.law .star{color:#b45309;font-weight:800}
+@media(max-width:820px){
+  body{padding:8px}
+  .main{grid-template-columns:1fr}
+  .work{border-right:0;border-bottom:1px solid #e5e2d9}
+  .head{flex-direction:column;align-items:flex-start}
+  .side{padding:12px}
+  .bar{position:sticky;bottom:0}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <div class="title">🪞 Два перпендикуляра к одной прямой</div>
+      <div class="sub">Глава I · §6 · тренажёр 3 из 3 — перегибание и доказательство от противного</div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="badge" id="badge">Перегните — и докажите</div>
+      <a class="back" href="../index.html">← к списку</a>
+    </div>
+  </div>
+  <div class="success" id="successBar"></div>
+
+  <div class="main" id="mainArea">
+    <div class="work">
+      <canvas id="cv" width="640" height="340"></canvas>
+      <div class="chain" id="chainBox"></div>
+      <div class="poolTtl" id="poolTtl"></div>
+      <div class="pool" id="pool"></div>
+    </div>
+    <aside class="side">
+      <div class="card">
+        <h2>Задание</h2>
+        <div class="task" id="taskText"></div>
+        <div class="pw"><div class="pf" id="pf" style="width:0%"></div></div>
+        <div class="pnum" id="pnum"></div>
+      </div>
+      <div class="card" id="statusCard">
+        <h2 id="statusTtl">Ход</h2>
+        <div id="statusBody"></div>
+      </div>
+      <div id="msg" class="msg info"></div>
+      <div id="proofBox" class="proof"></div>
+      <div class="card why">
+        <h2>Зачем это</h2>
+        <p class="small">Здесь два сокровища сразу: жест <b>перегибания</b> (это то же наложение, только через прямую) и метод <b>«от противного»</b> — главный трюк всей будущей геометрии. Это самое хитрое рассуждение главы: если голова поскрипывает — она работает правильно. Идите маленькими шагами, тренажёр никуда не торопится. Перегибаете впервые? <a href="ch1-p3-t2-fold-imprint.html" style="color:#b45309;font-weight:800">Разомнитесь в лаборатории перегибания →</a></p>
+      </div>
+    </aside>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="big" id="finScore"></div>
+    <div class="lbl" id="finLbl"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <b>Теорема.</b> Две прямые, перпендикулярные к третьей, не пересекаются.<br><br>
+      Доказана <b>от противного</b>: предположили точку пересечения M — перегиб подарил вторую точку M₁ — и через две точки прошли бы две разные прямые. А это невозможно: ещё в §1 мы приняли, что через две точки проходит только <b>одна</b> прямая. Предположение рухнуло — теорема стоит.<br><br>
+      <span class="star">✦ за страницами параграфа:</span> непересекающиеся прямые называются <b>параллельными</b> — им посвящена целая глава впереди. Сегодня вы доказали существование первых параллельных прямых в курсе.
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="primary" onclick="restart()">Пройти ещё раз</button>
+    </div>
+  </div>
+
+  <div class="bar" id="bar">
+    <button onclick="showHint()">💡 Подсказка</button>
+    <button onclick="resetTask()">↺ Сначала</button>
+    <button id="nextBtn" class="next" onclick="nextTask()">Следующая →</button>
+  </div>
+</div>
+
+<script>
+/* ───────── ПРОГРЕСС И ЖУРНАЛ ───────── */
+const SK='mathExamCourseProgress.v1', TID='ch1-p6-t3-two-perpendiculars';
+function lS(){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');return d[TID]||{runs:0,best:0,events:[]}}catch{return{runs:0,best:0,events:[]}}}
+function sS(s){try{const d=JSON.parse(localStorage.getItem(SK)||'{}');d[TID]=s;localStorage.setItem(SK,JSON.stringify(d))}catch{}}
+function log(ev,extra){try{const s=lS();s.events=(s.events||[]);s.events.push({t:Date.now(),task:ti+1,e:ev,...(extra||{})});if(s.events.length>300)s.events=s.events.slice(-300);sS(s)}catch{}}
+
+const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
+
+/* ───────── СОСТОЯНИЕ ───────── */
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+const W=640,H=340;
+const dpr=Math.min(window.devicePixelRatio||1,2);
+cv.width=W*dpr;cv.height=H*dpr;cv.style.aspectRatio=W+'/'+H;ctx.scale(dpr,dpr);
+
+const LY=210;                                  // прямая PQ — ось перегиба
+const PX=230,QX=410;                           // точки P и Q
+const TOPY=90,BOTY=330;                        // концы перпендикуляров
+const M={x:320,y:100},M1={x:320,y:320};        // «точка пересечения» и её отражение
+
+const TASKS=['fold1','fold2','proof','reflect'];
+const NT=TASKS.length;
+let ti=0,results=[],mistakes=0,hintsUsed=0,solved=false,kind='mouse',mode=null,phase=1;
+let foldP=0,folded=false;                      // степень перегиба и факт завершения
+let prDone=[],prDead=[],prHint=null,prOrder=[];
+let flashes={};
+const curT=()=>TASKS[ti];
+const kF=()=>Math.cos(foldP*Math.PI);          // 1 → −1
+const ty=y=>LY+(y-LY)*kF();                    // образ верхней точки при перегибе
+
+/* ───────── КАРТОЧКИ ДОКАЗАТЕЛЬСТВА ───────── */
+const PR_CARDS=[
+ {id:'s1',need:[],
+  txt:'Предположим, что прямые AA₁ и BB₁ пересекаются в некоторой точке M.',
+  early:'',ok:'Метод начинается с предположения — нарочно подозрительного.',fx:'M'},
+ {id:'s2',need:['s1'],
+  txt:'Перегнём чертёж по прямой PQ. Углы 1 и 2 прямые, поэтому луч PA наложится на луч PA₁, а луч QB — на QB₁.',
+  early:'В доказательстве от противного первым идёт предположение — иначе непонятно, что именно мы собираемся опровергнуть.',
+  ok:'Перегиб законен: прямые углы равны, лучи совместились.',fx:'ang'},
+ {id:'s3',need:['s2'],
+  txt:'Тогда точка M наложится на некоторую точку M₁ по другую сторону от прямой PQ. M₁ лежит на обеих прямых: ведь каждая из них отпечатывается сама на себя.',
+  early:'Куда попадёт точка M, можно сказать лишь после перегиба — сначала совместите лучи.',
+  ok:'Вот и вторая точка на обеих прямых.',fx:'MM'},
+ {id:'s4',need:['s3'],
+  txt:'Точки M и M₁ различны — они по разные стороны от PQ. Выходит, через две точки проходят две различные прямые. Но через две точки проходит только одна прямая!',
+  early:'Противоречие нельзя предъявить, пока на сцене нет обеих точек — и M, и M₁.',
+  ok:'Удар: предположение врезалось в аксиому из §1.',fx:'lines'},
+ {id:'fin',need:['s4'],
+  txt:'Значит, предположение неверно: прямые AA₁ и BB₁ не пересекаются. Теорема доказана.',
+  early:'Вывод делают последним — сначала покажите само противоречие.',
+  ok:'Собрано.',fx:''},
+ {id:'d1',distract:'Измерение проверяет один-единственный чертёж, а теорема обязана работать для всех перпендикуляров на свете. Доказывает только рассуждение.',
+  txt:'Измерим расстояние между прямыми в нескольких местах и убедимся, что оно всюду одинаково.'},
+ {id:'d2',distract:'«Видно по чертежу» — не довод: чертёж может быть неточным, да и нарисовали мы лишь один случай из бесконечности. Нужна причина, а не картинка.',
+  txt:'Прямые AA₁ и BB₁ не пересекаются, потому что на чертеже обе идут вертикально.'}
+];
+
+/* ───────── ОТРИСОВКА ───────── */
+function bg(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle='#fffdf7';ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=20;x<W;x+=25)for(let y=20;y<H;y+=25){ctx.beginPath();ctx.arc(x,y,1.1,0,7);ctx.fill()}
+}
+function lab(x,y,txt,col,size){
+  ctx.font='900 '+(size||14)+'px system-ui';ctx.textAlign='center';
+  ctx.lineWidth=4;ctx.strokeStyle='rgba(250,248,242,.95)';ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col;ctx.fillText(txt,x,y);
+}
+// контуры сцены в «развёрнутых» координатах; рисуются дважды через клипы.
+// цвет принадлежит прямой: AA₁ (через P) — colA, BB₁ (через Q) — colB
+function sceneShapes(lens,colA,colB){
+  ctx.strokeStyle=colA;
+  if(!lens){
+    ctx.beginPath();ctx.moveTo(PX,TOPY);ctx.lineTo(PX,BOTY);ctx.stroke();
+  }else{
+    ctx.beginPath();ctx.moveTo(345,87);ctx.lineTo(M.x,M.y);
+    ctx.quadraticCurveTo(PX,148,PX,LY);
+    ctx.quadraticCurveTo(PX,272,M1.x,M1.y);ctx.lineTo(345,333);ctx.stroke();
+  }
+  // прямые углы при P (цифры 1 и 2 — они работают в доказательстве)
+  ctx.beginPath();ctx.moveTo(PX+13,LY);ctx.lineTo(PX+13,LY-13);ctx.lineTo(PX,LY-13);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(PX+13,LY);ctx.lineTo(PX+13,LY+13);ctx.lineTo(PX,LY+13);ctx.stroke();
+  ctx.strokeStyle=colB;
+  if(!lens){
+    ctx.beginPath();ctx.moveTo(QX,TOPY);ctx.lineTo(QX,BOTY);ctx.stroke();
+  }else{
+    ctx.beginPath();ctx.moveTo(295,87);ctx.lineTo(M.x,M.y);
+    ctx.quadraticCurveTo(QX,148,QX,LY);
+    ctx.quadraticCurveTo(QX,272,M1.x,M1.y);ctx.lineTo(295,333);ctx.stroke();
+  }
+  // прямые углы при Q
+  ctx.beginPath();ctx.moveTo(QX-13,LY);ctx.lineTo(QX-13,LY-13);ctx.lineTo(QX,LY-13);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(QX-13,LY);ctx.lineTo(QX-13,LY+13);ctx.lineTo(QX,LY+13);ctx.stroke();
+}
+function drawScene(lens){
+  // ось перегиба — прямая PQ
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2.6;
+  ctx.beginPath();ctx.moveTo(40,LY);ctx.lineTo(W-40,LY);ctx.stroke();
+  // нижняя полуплоскость (неподвижная)
+  ctx.save();ctx.beginPath();ctx.rect(0,LY,W,H-LY+200);ctx.clip();
+  ctx.lineWidth=2.6;sceneShapes(lens,'#2d70b3','#d97706');
+  ctx.restore();
+  // верхняя полуплоскость (перегибаемая): локальный y<LY, затем сжатие/переворот
+  const k=kF();
+  ctx.save();
+  ctx.translate(0,LY);ctx.scale(1,Math.abs(k)<0.02?0.02*Math.sign(k||1):k);ctx.translate(0,-LY);
+  ctx.beginPath();ctx.rect(0,-400,W,LY+400);ctx.clip();
+  if(foldP>0.01&&foldP<0.99)ctx.globalAlpha=0.85;   // флап в полёте слегка прозрачен
+  ctx.lineWidth=3;sceneShapes(lens,'#2d70b3','#d97706');
+  ctx.restore();
+  // подписи
+  lab(PX-16,LY+22,'P','#1a1a2e');lab(QX+18,LY+22,'Q','#1a1a2e');
+  lab(PX+27,LY+29,'2','#1a1a2e',13);
+  ctx.fillStyle='#1a1a2e';
+  ctx.beginPath();ctx.arc(PX,LY,4,0,7);ctx.fill();
+  ctx.beginPath();ctx.arc(QX,LY,4,0,7);ctx.fill();
+  if(!lens){
+    lab(PX-16,BOTY+2,'A₁','#2d70b3');lab(QX+18,BOTY+2,'B₁','#d97706');
+    ctx.fillStyle='#2d70b3';ctx.beginPath();ctx.arc(PX,BOTY,3.5,0,7);ctx.fill();
+    ctx.fillStyle='#d97706';ctx.beginPath();ctx.arc(QX,BOTY,3.5,0,7);ctx.fill();
+  }else{
+    lab(367,337,'A₁','#2d70b3');lab(273,337,'B₁','#d97706');
+    lab(M1.x,M1.y-16,'M₁','#1a1a2e',13.5);
+    ctx.fillStyle=folded?'#16a34a':'#1a1a2e';
+    ctx.beginPath();ctx.arc(M1.x,M1.y,4.5,0,7);ctx.fill();
+  }
+  if(Math.abs(kF())>0.25&&!(folded&&foldP>0.99)){
+    lab(PX+27,ty(LY-21),'1','#1a1a2e',13);
+    if(!lens){
+      lab(PX-16,ty(TOPY)-4,'A','#2d70b3');lab(QX+18,ty(TOPY)-4,'B','#d97706');
+      ctx.fillStyle='#2d70b3';ctx.beginPath();ctx.arc(PX,ty(TOPY),3.5,0,7);ctx.fill();
+      ctx.fillStyle='#d97706';ctx.beginPath();ctx.arc(QX,ty(TOPY),3.5,0,7);ctx.fill();
+    }else{
+      lab(362,ty(84)+4,'A','#2d70b3');lab(278,ty(84)+4,'B','#d97706');
+      lab(M.x+26,ty(M.y)+4,'M','#1a1a2e');
+      ctx.fillStyle='#1a1a2e';
+      ctx.beginPath();ctx.arc(M.x,ty(M.y),4.5,0,7);ctx.fill();
+    }
+  }
+  // маркер перегиба
+  if((curT()==='fold1'||curT()==='fold2')&&!folded){
+    const hx=curT()==='fold1'?PX:M.x, hy0=curT()==='fold1'?TOPY:M.y;
+    const hy=ty(hy0),pulse=1+0.14*Math.sin(Date.now()/280);
+    ctx.beginPath();ctx.arc(hx,hy,9*pulse,0,7);
+    ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#7c3aed';ctx.lineWidth=2.6;ctx.stroke();
+    ctx.beginPath();ctx.arc(hx,hy,2.4,0,7);ctx.fillStyle='#7c3aed';ctx.fill();
+    if(foldP<0.05){
+      ctx.font='800 12px system-ui';ctx.textAlign='center';ctx.fillStyle='#7c3aed';
+      ctx.fillText('тяните вниз ↓',hx,hy-26);
+    }
+  }
+  // совмещение после перегиба
+  if(folded){
+    const g=0.5+0.5*Math.sin(Date.now()/300);
+    if(curT()==='fold2'||curT()==='proof'){
+      ctx.save();ctx.globalAlpha=0.35+0.55*g;
+      ctx.beginPath();ctx.arc(M1.x,M1.y,13,0,7);
+      ctx.strokeStyle='#16a34a';ctx.lineWidth=3.5;ctx.stroke();ctx.restore();
+      if(curT()==='fold2'){
+        if(foldP>0.99)lab(M1.x+62,M1.y+4,'M → M₁','#16a34a',13);
+        else if(foldP<0.01){
+          // лист развёрнут: обе точки на месте, перегиб связал их пунктиром
+          ctx.save();ctx.setLineDash([4,5]);ctx.strokeStyle='#16a34a';ctx.lineWidth=1.6;
+          ctx.beginPath();ctx.moveTo(M.x,M.y+15);ctx.lineTo(M.x,138);
+          ctx.moveTo(M.x,164);ctx.lineTo(M.x,M1.y-34);ctx.stroke();ctx.restore();
+          lab(M.x,152,'отпечаток: M ↦ M₁','#16a34a',12);
+          ctx.save();ctx.globalAlpha=0.35+0.55*g;
+          ctx.beginPath();ctx.arc(M.x,M.y,13,0,7);
+          ctx.strokeStyle='#16a34a';ctx.lineWidth=3.5;ctx.stroke();ctx.restore();
+        }
+      }
+    }else if(curT()==='fold1'){
+      if(foldP>0.99){
+        lab(PX-30,BOTY-44,'A → A₁','#2d70b3',13);
+        lab(QX+34,BOTY-44,'B → B₁','#d97706',13);
+      }else if(foldP<0.01){
+        lab(320,150,'отпечаток: A ↦ A₁, B ↦ B₁','#16a34a',12);
+        ctx.save();ctx.globalAlpha=0.35+0.55*g;
+        ctx.strokeStyle='#16a34a';ctx.lineWidth=3;
+        [[PX,TOPY],[PX,BOTY],[QX,TOPY],[QX,BOTY]].forEach(([x,y])=>{
+          ctx.beginPath();ctx.arc(x,y,11,0,7);ctx.stroke();
+        });
+        ctx.restore();
+      }
+    }
+  }
+  // вспышки шагов доказательства
+  const pa=id=>flashes[id]?Math.max(0,1-(Date.now()-flashes[id])/1400):0;
+  let p=pa('M');
+  if(p>0){ctx.save();ctx.globalAlpha=0.3+0.6*p;
+    ctx.beginPath();ctx.arc(M.x,M.y,14,0,7);ctx.strokeStyle='#16a34a';ctx.lineWidth=4;ctx.stroke();ctx.restore()}
+  p=pa('MM');
+  if(p>0){ctx.save();ctx.globalAlpha=0.3+0.6*p;
+    [M,M1].forEach(q=>{ctx.beginPath();ctx.arc(q.x,q.y,14,0,7);ctx.strokeStyle='#16a34a';ctx.lineWidth=4;ctx.stroke()});
+    ctx.restore()}
+  p=pa('ang');
+  if(p>0){ctx.save();ctx.globalAlpha=0.3+0.6*p;ctx.strokeStyle='#16a34a';ctx.lineWidth=4;
+    ctx.beginPath();ctx.moveTo(PX+13,LY);ctx.lineTo(PX+13,LY-13);ctx.lineTo(PX,LY-13);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(PX+13,LY);ctx.lineTo(PX+13,LY+13);ctx.lineTo(PX,LY+13);ctx.stroke();
+    ctx.restore()}
+  p=pa('lines');
+  if(p>0){ctx.save();ctx.globalAlpha=0.25+0.5*p;ctx.lineWidth=4;
+    sceneShapes(true,'#dc2626','#dc2626');ctx.restore()}
+  if(curT()==='proof'){
+    ctx.font='900 17px system-ui';ctx.textAlign='center';
+    if(prDone.includes('fin')){
+      ctx.fillStyle='#15803d';
+      ctx.fillText('Доказано: AA₁ и BB₁ не пересекаются   ▮ ч.т.д.',W/2,30);
+    }else{
+      ctx.fillStyle='#1a1a2e';
+      ctx.fillText('Доказываем: прямые AA₁ и BB₁ не пересекаются',W/2,30);
+    }
+  }
+}
+(function loop(){
+  bg();
+  drawScene(curT()!=='fold1'&&curT()!=='reflect');
+  requestAnimationFrame(loop);
+})();
+
+/* ───────── ПАНЕЛИ ───────── */
+function setMsg(t,cls){const el=document.getElementById('msg');el.innerHTML=t;el.className='msg '+cls}
+function setVal(id,txt,ok){
+  const el=document.getElementById(id);
+  if(el){el.textContent=txt;el.className='value'+(ok?' v-ok':'')}
+}
+function buildStatus(rows){
+  const card=document.getElementById('statusCard'),body=document.getElementById('statusBody');
+  if(!rows){card.style.display='none';return}
+  card.style.display='block';
+  body.innerHTML=rows.map((r,i)=>'<div class="row"><span>'+r+'</span><span class="value" id="st'+(i+1)+'">—</span></div>').join('');
+}
+function clearPool(){
+  document.getElementById('pool').innerHTML='';
+  document.getElementById('poolTtl').style.display='none';
+  const cb=document.getElementById('chainBox');cb.style.display='none';cb.innerHTML='';
+}
+function renderOpts(title,opts,onOk){
+  const pt=document.getElementById('poolTtl');pt.style.display='block';pt.textContent=title;
+  const pool=document.getElementById('pool');pool.innerHTML='';
+  opts.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='pcard';b.innerHTML=o.t;
+    b.onclick=()=>{
+      if(solved)return;
+      if(o.ok)onOk();
+      else{
+        mistakes++;log('quiz_wrong',{ph:phase});
+        b.classList.add('shake');b.classList.add('dead');
+        setMsg(o.why,'err');
+      }
+    };
+    pool.appendChild(b);
+  });
+}
+function succeed(barText,msgText,proofText){
+  if(solved)return;
+  solved=true;
+  results.push(mistakes===0&&hintsUsed===0?'g':(mistakes<=1&&hintsUsed<=1?'y':'r'));
+  log('solved',{mistakes,hints:hintsUsed});
+  clearPool();
+  const sb=document.getElementById('successBar');
+  sb.textContent=barText;sb.style.display='block';
+  setMsg(msgText,'ok');
+  const pb=document.getElementById('proofBox');
+  pb.innerHTML='<b>Вывод.</b> '+proofText;pb.style.display='block';
+  const nb=document.getElementById('nextBtn');
+  nb.style.display='inline-block';
+  nb.textContent=ti<NT-1?'Следующая →':'Итоги →';
+}
+
+/* ───────── ЗАДАЧА 1: ПЕРВЫЙ ПЕРЕГИБ ───────── */
+function onFold1(){
+  setVal('st1','✓',true);
+  setMsg('Сложено. Лучи отпечатались: PA на PA₁, QB на QB₁. Разворачиваем лист…','info');
+  setTimeout(()=>{
+    const t0=performance.now();
+    (function step(now){
+      if(curT()!=='fold1')return;
+      const p=Math.min(1,(now-t0)/900),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+      foldP=1-e;
+      if(p<1)requestAnimationFrame(step);
+      else{foldP=0;showFold1Quiz();}
+    })(performance.now());
+  },1200);
+}
+function showFold1Quiz(){
+  phase=1;
+  setMsg('Лист развёрнут и цел, а отпечаток остался: PA ↦ PA₁, QB ↦ QB₁. Осталось понять, <b>почему</b> лучи отпечатались так точно.','ok');
+  renderOpts('Почему луч PA лёг точно на луч PA₁?',shuffle([
+    {t:'Углы 1 и 2 — прямые, а все прямые углы равны: при перегибе стороне угла 1 некуда деться, кроме стороны угла 2.',ok:true},
+    {t:'Потому что отрезки PA и PA₁ равны по длине.',ok:false,
+     why:'Длина ни при чём: лучи бесконечны. Совпадут они или нет, решает только <b>угол</b> при точке P.'},
+    {t:'Так складывается бумага — это свойство самого перегибания.',ok:false,
+     why:'Перегибание — лишь наглядный образ наложения. Причина в геометрии: ∠1 = ∠2 = 90°, поэтому стороны углов обязаны совместиться.'}
+  ]),()=>{
+    log('quiz_ok');setVal('st2','✓',true);phase=2;
+    setMsg('Верно: прямым углам деваться некуда. Теперь главный вопрос — про прямую целиком.','ok');
+    renderOpts('Куда же отпечаталась вся прямая AA₁?',shuffle([
+      {t:'Сама на себя: её верхняя половина легла на её же нижнюю половину. Отпечаток прямой AA₁ — это снова прямая AA₁.',ok:true},
+      {t:'На соседнюю прямую BB₁.',ok:false,
+       why:'BB₁ стоит в стороне и занята собой: её верх лёг на её же низ. А луч PA отпечатался на PA₁ — это нижняя половина <b>той же</b> прямой AA₁.'},
+      {t:'Куда-то в нижнюю полуплоскость — точное место не определить.',ok:false,
+       why:'Очень даже определить: ∠1 = ∠2 = 90° не оставляют выбора. Верх прямой лёг ровно на её низ — прямая отпечаталась сама на себя.'}
+    ]),()=>{
+      log('quiz_ok');setVal('st3','✓',true);
+      succeed('✓ Главный факт добыт: перпендикуляр к оси перегиба отпечатывается сам на себя.',
+        'Жест освоен, факт в кармане. Применим его в настоящем деле.',
+        'Перегиб — это <b>наложение</b>: раз ∠1 = ∠2 = 90°, луч PA ложится на PA₁ — и вся прямая AA₁ отпечатывается <b>сама на себя</b> (и BB₁ точно так же). Значит, отпечаток любой точки прямой AA₁ снова лежит на AA₁. Именно этот факт выстрелит в доказательстве. И запомните жест: <b>сложили → отпечатали → развернули</b>.<br><span style="color:#b45309;font-weight:800">✦</span> Кстати, узнали? Это ваша знакомая из 6 класса — <b>осевая симметрия</b>: прямая PQ — ось, а отпечаток точки — симметричная ей точка по другую сторону оси.');
+    });
+  });
+}
+
+/* ───────── ЗАДАЧА 2: ПРЕДПОЛОЖЕНИЕ ───────── */
+function onFold2(){
+  setVal('st1','✓',true);
+  setMsg('Точка M <b>отпечаталась</b> на нижней полуплоскости. Отпечаток назовём M₁. Разворачиваем лист…','info');
+  setTimeout(()=>{
+    const t0=performance.now();
+    (function step(now){
+      if(curT()!=='fold2')return;
+      const p=Math.min(1,(now-t0)/900),e=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+      foldP=1-e;
+      if(p<1)requestAnimationFrame(step);
+      else{foldP=0;showFold2Quiz();}
+    })(performance.now());
+  },1200);
+}
+function showFold2Quiz(){
+  setMsg('Лист развёрнут: M на месте, а под прямой — её <b>отпечаток</b> M₁. Обе прямые отпечатались сами на себя (кривизна — лишь в карандаше), поэтому M₁ лежит на обеих. Что это значит?','ok');
+  renderOpts('Что показал перегиб?',shuffle([
+    {t:'Через две разные точки — M (над PQ) и M₁ (под PQ) — проходят сразу две различные прямые: AA₁ и BB₁.',ok:true},
+    {t:'M совпала с M₁ — значит, это одна и та же точка, а через одну точку можно провести сколько угодно прямых.',ok:false,
+     why:'Совпали они лишь <b>на время перегиба</b> — как два угла листа, пока он сложен. Лист развёрнут: M осталась над прямой PQ, M₁ — под ней. Это две <b>разные</b> точки, и обе лежат на обеих прямых.'},
+    {t:'Ничего: линии-то кривые — правило «прямая отпечатывается сама на себя» для них не работает.',ok:false,
+     why:'Кривизна — только в карандаше: иначе невозможное предположение не нарисовать. По условию AA₁ и BB₁ — настоящие прямые, перпендикулярные PQ, и факт из задачи 1 для них в полной силе: каждая отпечаталась сама на себя, поэтому отпечаток точки M обязан остаться на обеих.'}
+  ]),()=>{
+    log('quiz_ok');setVal('st2','✓',true);
+    succeed('✓ Запахло противоречием: две прямые через две разные точки!',
+      'А в §1 мы приняли: через две точки — только <b>одна</b> прямая…',
+      'Сработал факт из задачи 1: AA₁ и BB₁ по условию — перпендикуляры к PQ, как их ни рисуй, и каждая отпечаталась сама на себя. Поэтому отпечаток M — точка M₁ — лежит на обеих прямых, причём <b>по другую сторону</b> от PQ: M₁ ≠ M. Две разные точки, две прямые через обе — лобовое столкновение с аксиомой §1. Осталось оформить это в доказательство.');
+  });
+}
+
+/* ───────── ЗАДАЧА 3: КОНСТРУКТОР ───────── */
+function renderChain(){
+  const cb=document.getElementById('chainBox');
+  cb.style.display='flex';
+  const goal='<div class="chgoal">Доказываем: прямые AA₁ и BB₁ не пересекаются</div>';
+  cb.innerHTML=goal+(prDone.length
+    ?prDone.map((id,i)=>{
+       const c=PR_CARDS.find(x=>x.id===id);
+       return'<div class="chitem"><span class="n">'+(i+1)+'.</span> '+c.txt+'</div>';
+     }).join('')
+    :'<div class="chitem" style="background:#f9fafb;border-color:#e5e7eb;color:#94a3b8;font-style:italic">Шагов пока нет — выберите первый.</div>');
+}
+function renderPrPool(){
+  const pt=document.getElementById('poolTtl');pt.style.display='block';
+  pt.textContent='Какой шаг следующий? Две карточки — лишние';
+  const pool=document.getElementById('pool');pool.innerHTML='';
+  prOrder.forEach(id=>{
+    if(prDone.includes(id))return;
+    const c=PR_CARDS.find(x=>x.id===id);
+    const b=document.createElement('button');
+    b.className='pcard'+(prDead.includes(id)?' dead':'')+(prHint===id?' pulse':'');
+    b.textContent=c.txt;
+    b.onclick=()=>prPick(id,b);
+    pool.appendChild(b);
+  });
+}
+function prPick(id,btn){
+  if(solved)return;
+  const c=PR_CARDS.find(x=>x.id===id);
+  prHint=null;
+  if(c.distract){
+    mistakes++;prDead.push(id);log('distractor',{id});
+    btn.classList.add('shake');
+    setMsg(c.distract,'err');
+    setTimeout(renderPrPool,420);
+    return;
+  }
+  if(!c.need.every(n=>prDone.includes(n))){
+    mistakes++;log('early',{id});
+    btn.classList.add('shake');
+    setMsg(c.early,'warn');
+    setTimeout(()=>btn.classList.remove('shake'),450);
+    return;
+  }
+  prDone.push(id);log('step',{id});
+  if(c.fx)flashes[c.fx]=Date.now();
+  setMsg(c.ok,'ok');
+  renderPrPool();renderChain();
+  if(id==='fin'){
+    document.getElementById('poolTtl').style.display='none';
+    document.getElementById('pool').innerHTML='';
+    succeed('✓ Доказательство от противного собрано.',
+      'Предположение → перегиб → противоречие → вывод.',
+      'Скелет метода: <b>предположили обратное</b> тому, что хотим доказать → честными шагами дошли до <b>невозможного</b> → значит, предположение неверно, а теорема верна. Этот скелет вы будете узнавать в доказательствах ещё много лет.');
+  }
+}
+
+/* ───────── ЗАДАЧА 4: РЕФЛЕКСИЯ ───────── */
+function reflectAsk(){
+  if(phase===1){
+    renderOpts('На какой давний факт опирается решающий шаг доказательства?',shuffle([
+      {t:'Через любые две точки проходит прямая, и притом только одна (§1).',ok:true},
+      {t:'Сумма смежных углов равна 180°.',ok:false,
+       why:'Смежные в этом доказательстве не работали. Противоречие дала именно <b>единственность</b> прямой через две точки.'},
+      {t:'Вертикальные углы равны.',ok:false,
+       why:'Вертикальные остались в прошлых тренажёрах. Решающим оказался самый первый закон курса — о прямой через две точки.'}
+    ]),()=>{
+      log('quiz_ok');setVal('st1','✓ аксиома §1',true);phase=2;
+      setMsg('Да — самый первый закон курса вдруг выстрелил в конце главы. Теперь — имя метода.','ok');
+      setTimeout(reflectAsk,600);
+    });
+  }else{
+    renderOpts('Как называется такой способ рассуждения?',shuffle([
+      {t:'Доказательство от противного: предположили обратное — и пришли к невозможному.',ok:true},
+      {t:'Доказательство перегибанием.',ok:false,
+       why:'Перегибание лишь помогало увидеть наложение. Скелет рассуждения другой: <b>предположение → противоречие → вывод</b>.'},
+      {t:'Проверка по чертежу.',ok:false,
+       why:'Чертёж иллюстрировал, но не доказывал — тем более что «пересечение» на нём было нарисовано нарочно искривлённо. Доказала цепочка рассуждений.'}
+    ]),()=>{
+      log('quiz_ok');setVal('st2','✓ от противного',true);
+      succeed('✓ Метод опознан: доказательство от противного.',
+        'Параграф закрыт — и какая концовка!',
+        'Сегодняшняя теорема — первая в курсе, доказанная <b>от противного</b>, и первая, где выстрелила аксиома §1. Так геометрия и устроена: каждый новый этаж стоит на самых первых кирпичах.');
+    });
+  }
+}
+
+/* ───────── ПОДСКАЗКА ───────── */
+function showHint(){
+  if(solved)return;
+  hintsUsed++;log('hint');
+  const t=curT();let h='';
+  if(t==='fold1')h=!folded
+    ?'Возьмите фиолетовый маркер у точки A и тяните <b>вниз, сквозь прямую PQ</b> — чертёж сложится, как лист бумаги.'
+    :(phase===1
+      ?'Сравните углы 1 и 2 у точки P: что у них общего и почему это заставляет лучи совпасть?'
+      :'Луч PA отпечатался на луч PA₁. А частью какой прямой является PA₁?');
+  else if(t==='fold2')h=folded
+    ?'Посчитайте: сколько прямых проходит теперь через пару точек M и M₁? А сколько разрешает закон из §1?'
+    :'Перегните чертёж за маркер у точки M и проследите, куда она приземлится.';
+  else if(t==='proof'){
+    const cand=prOrder.find(id=>{
+      const c=PR_CARDS.find(x=>x.id===id);
+      return!prDone.includes(id)&&!prDead.includes(id)&&!c.distract&&c.need.every(n=>prDone.includes(n));
+    });
+    if(cand){prHint=cand;renderPrPool();h='Подсвечен шаг, который можно сделать прямо сейчас.'}
+  }
+  else h=phase===1
+    ?'Вспомните §1 — самый первый закон курса о точках и прямых.'
+    :'Мы предположили обратное — и упёрлись в невозможное. Как зовут такой ход?';
+  if(h)setMsg('💡 '+h,'info');
+}
+
+/* ───────── ЖИЗНЕННЫЙ ЦИКЛ ───────── */
+const TEXTS={
+ fold1:'Прямые AA₁ и BB₁ перпендикулярны прямой PQ. «Перегнуть» по Атанасяну — значит <b>сложить</b> лист по прямой, дать верхней половине <b>отпечататься</b> на нижней и <b>развернуть</b> обратно. Точки самой прямой PQ при этом стоят на месте, а лист остаётся цел: отпечаток — наше новое знание. Попробуйте: потяните фиолетовый маркер у точки A вниз.',
+ fold2:'Предположим — вопреки очевидному, — что прямые AA₁ и BB₁ всё-таки <b>пересеклись в точке M</b>. Рисовать такое пришлось искривлённо: по-честному не выходит, мы ведь рисуем невозможное. Но по условию это всё те же <b>прямые</b>, перпендикулярные PQ, — и факт из задачи 1 для них в силе: каждая отпечатывается сама на себя. Перегните чертёж: куда попадёт точка M?',
+ proof:'<b>Теорема: две прямые, перпендикулярные к третьей, не пересекаются.</b><br>Все факты на руках — соберите её <b>доказательство от противного</b>: цепочку из пяти шагов. Среди карточек две лишних.',
+ reflect:'Доказательство готово. Два вопроса напоследок — про его устройство.'
+};
+const BADGES={fold1:'Перегните — и докажите',fold2:'Предположим обратное…',proof:'Соберите цепочку',reflect:'Узнайте метод в лицо'};
+function initTask(keepStats){
+  const t=curT();
+  if(!keepStats){mistakes=0;hintsUsed=0}
+  solved=false;mode=null;phase=1;foldP=0;folded=false;flashes={};
+  clearPool();
+  document.getElementById('nextBtn').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('proofBox').style.display='none';
+  document.getElementById('pf').style.width=(ti/NT*100)+'%';
+  document.getElementById('pnum').textContent='Задача '+(ti+1)+' из '+NT;
+  document.getElementById('taskText').innerHTML=TEXTS[t];
+  document.getElementById('badge').textContent=BADGES[t];
+  if(t==='fold1'){
+    buildStatus(['Перегиб','Почему легли','Прямая ↦ себя']);
+    setMsg('Тяните маркер у точки A вниз, сквозь прямую PQ.','info');
+  }else if(t==='fold2'){
+    buildStatus(['Перегиб','Вывод']);
+    setMsg('Перегните чертёж за маркер у точки M.','info');
+  }else if(t==='proof'){
+    buildStatus(null);
+    foldP=0;folded=false;
+    prDone=[];prDead=[];prHint=null;
+    prOrder=shuffle(PR_CARDS.map(c=>c.id));
+    renderChain();renderPrPool();
+    setMsg('С чего начинается доказательство от противного?','info');
+  }else{
+    buildStatus(['1. Опора','2. Метод']);
+    reflectAsk();
+    setMsg('Доказательство сильно не только выводом, но и устройством.','info');
+  }
+  log('task_start',{type:t});
+}
+function nextTask(){
+  if(ti<NT-1){ti++;initTask(false)}
+  else finish();
+}
+function resetTask(){log('reset');initTask(true)}
+function finish(){
+  const g=results.filter(r=>r==='g').length;
+  log('finish',{score:g});
+  const s=lS();s.runs=(s.runs||0)+1;s.passed=true;if(g>(s.best||0))s.best=g;sS(s);
+  document.getElementById('mainArea').style.display='none';
+  document.getElementById('bar').style.display='none';
+  document.getElementById('successBar').style.display='none';
+  document.getElementById('fin').style.display='block';
+  document.getElementById('finScore').textContent=g+' / '+NT;
+  document.getElementById('finLbl').textContent=
+    g===NT?'Идеально: жест освоен, метод — ваш!':
+    g>=2?'Отлично! Первое «от противного» собрано.':
+    'Пройдите ещё раз — особенно цепочку доказательства.';
+  document.getElementById('finDots').innerHTML=results.map(r=>'<div class="dot '+r+'"></div>').join('');
+}
+function restart(){
+  ti=0;results=[];
+  document.getElementById('fin').style.display='none';
+  document.getElementById('mainArea').style.display='grid';
+  document.getElementById('bar').style.display='flex';
+  initTask(false);
+}
+
+/* ───────── УКАЗАТЕЛЬ: ЖЕСТ ПЕРЕГИБА ───────── */
+function pos(e){const r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height}}
+cv.addEventListener('pointerdown',e=>{
+  const t=curT();
+  if(solved||folded||(t!=='fold1'&&t!=='fold2'))return;
+  kind=e.pointerType==='touch'?'touch':'mouse';
+  const p=pos(e),grabR=kind==='touch'?28:20;
+  const hx=t==='fold1'?PX:M.x, hy0=t==='fold1'?TOPY:M.y;
+  if(Math.hypot(p.x-hx,p.y-ty(hy0))<grabR){
+    mode='fold';cv.setPointerCapture(e.pointerId);
+  }
+});
+cv.addEventListener('pointermove',e=>{
+  if(mode!=='fold')return;
+  const t=curT(),p=pos(e);
+  const y0=t==='fold1'?TOPY:M.y;
+  foldP=Math.max(0,Math.min(1,(p.y-y0)/(2*(LY-y0))));
+  if(foldP>0.93&&!folded){
+    foldP=1;folded=true;mode=null;
+    log('fold');setVal('st1','✓',true);
+    if(t==='fold1')onFold1();else onFold2();
+  }
+});
+['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,()=>{
+  if(mode==='fold'&&!folded&&foldP<0.5)foldP=0;   // недотянули — лист распрямляется
+  mode=null;
+}));
+
+initTask(false);
+</script>
+</body>
+</html>
