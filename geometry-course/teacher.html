@@ -68,6 +68,14 @@ code{background:#f1f5f9;padding:1px 5px;border-radius:5px;font-size:12px}
       <p class="muted">Тренажёры с наименьшим числом прошедших — кандидаты на разбор у доски. Красным — те, кого не прошёл никто.</p>
       <ul class="hard" id="hard" style="list-style:none;padding:0;margin:8px 0 0"></ul>
     </div>
+    <div class="panel"><h2>4. Подробности по ученику</h2>
+      <p class="muted">Загрузи подробный отчёт (файл .json, который ученик отправляет кнопкой «Подробный отчёт»), или вставь его текстом. Покажу, на каких тренажёрах он спотыкался и что именно выбирал не так.</p>
+      <div class="row"><input type="file" id="repFile" accept=".json,application/json"><button class="btn s" id="repPaste">Вставить текстом</button><span class="msg" id="repMsg"></span></div>
+      <textarea id="repText" placeholder='{"geoReport":1,...}' style="display:none;width:100%;min-height:80px;margin-top:8px;padding:10px;border:1.5px solid #d1d5db;border-radius:10px;font:600 12px ui-monospace,Menlo,monospace"></textarea>
+      <div class="row" id="repPasteRow" style="display:none"><button class="btn p" id="repLoad">Загрузить</button></div>
+      <div class="row" style="margin-top:10px"><select id="repSel" style="padding:8px;border:1.5px solid #d1d5db;border-radius:9px;font:700 13px system-ui"><option value="">— выбери ученика —</option></select></div>
+      <div id="repView" style="margin-top:10px"></div>
+    </div>
     <div class="panel"><h2>Необязательно: автосбор в Google-таблицу</h2>
       <p class="muted">Чтобы коды прилетали сами, без пересылки:</p>
       <ol class="steps"><li>Создай Google-таблицу → меню <b>Расширения → Apps Script</b>.</li><li>Вставь код ниже, сохрани.</li><li><b>Развернуть → Новое развёртывание → Веб-приложение</b>; «Выполнять от имени: я», «Доступ: все». Скопируй URL.</li><li>В <code>index.html</code> найди строку <code>var ENDPOINT="";</code> и впиши URL в кавычки, перевыложи.</li><li>Теперь «Сдать прогресс» отправляет код строкой в таблицу. Коды из таблицы вставляй сюда же.</li></ol>
@@ -135,6 +143,37 @@ function readCode(code){var p=(code||'').trim().split('.');if(p.length<4||p[0]!=
                                  : '<li class="muted" style="border:0">Появится, когда добавишь учеников.</li>';
   }
   render();
+  (function(){
+    var DK='geoDetailRoster', det={}; try{ det=JSON.parse(localStorage.getItem(DK)||'{}'); }catch(e){}
+    var EVL={tap_wrong:'неверный тап',opt_wrong:'неверный вариант',neq_wrong:'перепутал равно/неравно',answer_wrong:'неверный ответ',quiz_wrong:'неверный ответ (зачёт)',step_reject:'отклонён шаг построения',step_wrong:'неверный шаг'};
+    var TT={}; TRAINERS.forEach(function(tr){ TT[tr.t]=tr.n; });
+    function saveD(){ try{ localStorage.setItem(DK,JSON.stringify(det)); }catch(e){} }
+    function ev(e){ return EVL[e]||e; }
+    function ctx(x){ if(x.q) return 'вопрос '+x.q; if(x.step) return 'шаг '+x.step; if(x.task) return 'задача '+x.task; return ''; }
+    function extra(x){ var o=[]; for(var k in x){ if(['t','e','q','step','task'].indexOf(k)<0) o.push(k+':'+x[k]); } return o.join(', '); }
+    function esc(s){ return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c];}); }
+    function setM(t,ok){ var m=document.getElementById('repMsg'); m.textContent=t; m.className='msg '+(ok?'ok':'err'); }
+    function fillSel(){ var s=document.getElementById('repSel'),cur=s.value; s.innerHTML='<option value="">— выбери ученика —</option>'+Object.keys(det).sort(function(a,b){return a.localeCompare(b,'ru');}).map(function(n){return '<option>'+esc(n)+'</option>';}).join(''); s.value=cur; }
+    function loadReport(o){ if(!o||!o.name||!o.journal){ setM('это не похоже на отчёт',false); return; } det[o.name]=o.journal; saveD(); fillSel(); document.getElementById('repSel').value=o.name; renderRep(o.name); setM('загружен отчёт: '+o.name,true); }
+    function renderRep(name){ var v=document.getElementById('repView'); if(!name||!det[name]){ v.innerHTML=''; return; }
+      var j=det[name],rows=[],passed=0,strug=0;
+      Object.keys(j).forEach(function(tid){ var rec=j[tid]||{},evs=rec.events||[],miss=evs.filter(function(x){return /wrong|reject/.test(x.e);});
+        if(rec.passed) passed++;
+        if(!miss.length && !rec.passed) return;
+        if(miss.length) strug++;
+        var head='<div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><b style="font-size:13.5px">'+esc(TT[tid]||tid)+'</b><span style="font-size:12px;color:'+(miss.length?'#b91c1c':'#15803d')+';white-space:nowrap">'+(rec.passed?'пройден':'не пройден')+(miss.length?' · ошибок: '+miss.length:'')+'</span></div>';
+        var list=''; if(miss.length){ var agg={}; miss.forEach(function(m){ var k=ev(m.e)+(extra(m)?' ('+extra(m)+')':''),c=ctx(m),f=k+(c?' — '+c:''); agg[f]=(agg[f]||0)+1; });
+          list='<ul style="margin:6px 0 0;padding-left:18px;font-size:12.5px;color:#475569">'+Object.keys(agg).map(function(k){return '<li>'+esc(k)+(agg[k]>1?' ×'+agg[k]:'')+'</li>';}).join('')+'</ul>'; }
+        rows.push('<div style="border:1.5px solid #eef0f3;border-radius:10px;padding:10px 12px;margin-bottom:8px;background:#fff">'+head+list+'</div>');
+      });
+      v.innerHTML='<div style="font-size:13px;color:#64748b;margin-bottom:10px">'+esc(name)+': пройдено '+passed+', со спотыканиями '+strug+'</div>'+(rows.length?rows.join(''):'<div class="muted">Ошибок в журнале нет — либо всё чисто, либо тренажёры открывали без действий.</div>');
+    }
+    document.getElementById('repFile').addEventListener('change',function(e){ var f=e.target.files[0]; if(!f) return; var r=new FileReader(); r.onload=function(){ try{ loadReport(JSON.parse(r.result)); }catch(x){ setM('файл не читается как отчёт',false); } }; r.readAsText(f); });
+    document.getElementById('repPaste').addEventListener('click',function(){ var t=document.getElementById('repText'),row=document.getElementById('repPasteRow'),show=t.style.display==='none'; t.style.display=show?'block':'none'; row.style.display=show?'flex':'none'; });
+    document.getElementById('repLoad').addEventListener('click',function(){ try{ loadReport(JSON.parse(document.getElementById('repText').value)); document.getElementById('repText').value=''; }catch(x){ setM('текст не читается как отчёт',false); } });
+    document.getElementById('repSel').addEventListener('change',function(){ renderRep(this.value); });
+    fillSel();
+  })();
 })();
 </script>
 </body>

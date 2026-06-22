@@ -232,7 +232,7 @@ body.teacher .code{display:inline}
   <h3>📤 Сдать прогресс учителю</h3>
   <p>Введи имя и фамилию — получишь код. Дальше «Поделиться» (или Telegram / Письмо) отправит его учителю в один тап; можно и просто скопировать.</p>
   <input id="sname" placeholder="Имя Фамилия" autocomplete="name">
-  <div class="mrow"><button class="gbtn p" id="genCode">Получить код</button><button class="gbtn s" id="closeM">Закрыть</button></div>
+  <div class="mrow"><button class="gbtn p" id="genCode">Получить код</button><button class="gbtn sh" id="detailBtn">📄 Подробный отчёт</button><button class="gbtn s" id="closeM">Закрыть</button></div>
   <div id="result" style="display:none">
     <textarea id="codeOut" readonly placeholder="код появится здесь"></textarea>
     <div class="mrow"><button class="gbtn sh" id="shareNative" style="display:none">📲 Поделиться</button><button class="gbtn sh" id="shareTg">✈️ Telegram</button><button class="gbtn sh" id="shareMail">✉️ Письмо</button><button class="gbtn p" id="copyCode">📋 Скопировать код</button></div>
@@ -301,6 +301,19 @@ function readCode(code){var p=(code||'').trim().split('.');if(p.length<4||p[0]!=
   document.getElementById('shareTg').addEventListener('click',function(){ var u=encodeURIComponent(location.href.split('#')[0]); var t=encodeURIComponent(shareMsg()); window.open('https://t.me/share/url?url='+u+'&text='+t,'_blank'); });
 
   applyTeacher();
+  (function(){ var dBtn=document.getElementById('detailBtn'); if(!dBtn) return;
+    dBtn.addEventListener('click',function(){
+      var name=(document.getElementById('sname').value||'').trim(); if(!name){ document.getElementById('sname').focus(); return; }
+      var journal={}; try{ journal=JSON.parse(localStorage.getItem(SK)||'{}'); }catch(e){}
+      var report=JSON.stringify({geoReport:1,name:name,ts:Date.now(),journal:journal});
+      var fname='otchet-'+name.replace(/[^0-9A-Za-zA-Яa-яЁё]+/g,'_')+'.json';
+      var blob=new Blob([report],{type:'application/json'});
+      try{ var file=new File([blob],fname,{type:'application/json'});
+        if(navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file],title:'Геометрия 7 — подробный отчёт',text:'Подробный отчёт: '+name}).catch(function(){}); return; }
+      }catch(e){}
+      var url=URL.createObjectURL(blob),a=document.createElement('a'); a.href=url; a.download=fname; document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(function(){URL.revokeObjectURL(url);},3000);
+    });
+  })();
 })();
 </script>
 </body>
