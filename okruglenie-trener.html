@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Округление чисел — тренажёр</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f6fb;color:#172033;font-family:Verdana,Arial,sans-serif}.page{max-width:1060px;margin:0 auto;padding:22px}.hero,.card{background:#fff;border-radius:24px;padding:22px;box-shadow:0 14px 34px #1420331f;margin-bottom:18px}.back{color:#2563eb;font-weight:800;text-decoration:none}h1{margin:6px 0 8px;font-size:38px}.sub{color:#667085;line-height:1.45}.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}@media(max-width:860px){.grid{grid-template-columns:1fr}.digit{width:54px!important;height:68px!important;font-size:32px!important}}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}button{border:0;border-radius:14px;padding:11px 15px;font-weight:900;cursor:pointer;background:#e7ebf3}button.active,button.primary{background:#2563eb;color:#fff}.good{background:#15803d;color:#fff}.warn{background:#f59e0b}.danger{background:#fee4e2;color:#7a271a}.prompt{text-align:center;font-size:34px;font-weight:950;margin:14px 0}.digits{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:18px 0}.digit{width:66px;height:80px;border:2px solid #cbd5e1;border-radius:18px;background:#fff;font-size:40px;font-weight:950;cursor:pointer;position:relative}.digit small{position:absolute;bottom:4px;left:0;right:0;font-size:10px;color:#64748b}.comma{width:26px!important;border:0!important;background:transparent!important;cursor:default!important;color:#334155}.target{background:#dbeafe!important;border-color:#2563eb!important}.look{background:#ffedd5!important;border-color:#f59e0b!important}.instruction{background:#eef4ff;border-left:6px solid #2563eb;border-radius:16px;padding:14px;font-size:18px}.decision{text-align:center;margin:16px 0}.answer{display:flex;justify-content:center;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px;font-weight:900}input{width:170px;border:2px solid #cbd5e1;border-radius:14px;padding:12px;font-size:22px;text-align:center}.fb{margin-top:14px;border-radius:16px;padding:14px;background:#f8fafc;border:1px solid #e5e7eb;font-size:18px}.ok{background:#dcfce7;color:#14532d}.err{background:#fee4e2;color:#7a271a}.tip{background:#fffbeb;color:#713f12}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}.stat{background:#f8fafc;border:1px solid #e5e7eb;border-radius:16px;padding:12px;text-align:center}.stat b{display:block;font-size:28px}.stat span{font-size:12px;color:#667085;font-weight:900}.box{border-radius:20px;padding:16px;margin-bottom:14px}.course{background:#eef4ff;border:1px solid #bfdbfe}.rules{background:#fff7ed;border:1px solid #fed7aa}.badge{display:inline-block;background:#fff;border:1px solid #bfdbfe;border-radius:999px;padding:6px 10px;font-weight:900}.hist{background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:9px;margin-bottom:8px;font-size:14px}.mini{font-size:13px;color:#667085;line-height:1.45}
+</style>
+</head>
+<body>
+<main class="page">
+<section class="hero"><a class="back" href="../index.html">← На главную</a><h1>Округление чисел</h1><p class="sub">Алгоритм по шагам: выбери разряд → посмотри на цифру справа → увеличь или оставь → запиши ответ. Теперь округляем и в целой части (до десятков, сотен, тысяч, десятков тысяч), и в дробной (до десятых, сотых, тысячных, десятитысячных). На уровне «Сложный» добавлены переходы через 9, нули в конце дробной части и числа-ловушки.</p></section>
+<section class="grid">
+<div class="card">
+<div class="row"><b>Уровень:</b><button id="easy" class="active">Лёгкий</button><button id="med">Средний</button><button id="hard">Сложный</button><button id="hint" class="warn">Подсказка</button></div>
+<div class="prompt" id="prompt"></div>
+<div class="digits" id="digits"></div>
+<div class="instruction" id="instruction"></div>
+<div id="decision" class="decision" hidden><button id="keep">Оставить цифру</button> <button id="up">Увеличить на 1</button></div>
+<div class="answer"><label for="ans">Ответ:</label><input id="ans" type="text"><button id="check" class="primary">Проверить</button><button id="solution">Решение</button><button id="next" class="good">Следующий пример</button></div>
+<div id="fb" class="fb">Выбери разряд, до которого округляем.</div>
+</div>
+<aside class="card">
+<div class="stats"><div class="stat"><b id="total">0</b><span>решено</span></div><div class="stat"><b id="right">0</b><span>верно</span></div><div class="stat"><b id="streak">0</b><span>серия</span></div></div>
+<div class="stats"><div class="stat"><b id="acc">0%</b><span>точность</span></div><div class="stat"><b id="best">0</b><span>лучшая</span></div><div class="stat"><b id="date">—</b><span>дата</span></div></div>
+<div class="box course"><h2>Прогресс темы</h2><p><span id="status" class="badge">тема начата</span></p><p id="advice">Реши первые 10 примеров.</p><button id="reset" class="danger">Сбросить статистику</button></div>
+<div class="box rules"><h2>Алгоритм</h2><p>1. Найди нужный разряд (его «вес» подписан под цифрой).</p><p>2. Посмотри на цифру сразу справа.</p><p>3. 0–4 — оставляем разряд, 5–9 — увеличиваем на 1.</p><p>4. В целой части справа ставим нули; в дробной — оставляем ровно столько знаков, до какого разряда округляли (нули в конце НЕ убираем).</p><p class="mini">Сложные случаи: 1995 → 2000 (цепочка девяток), 7,096 → 7,10 (нуль сохраняем), 0,4999 → 0 (важна только соседняя цифра).</p></div>
+<h2>История</h2><div id="history"></div>
+</aside>
+</section>
+</main>
+<script>
+var KEY='mathExamCourseProgress.v1',TOPIC='roundingStepwise';
+var level='easy',task=null,step='target',solved=false;
+var stats={total:0,right:0,streak:0,best:0,date:null,history:[]};
+var names={4:'десятков тысяч',3:'тысяч',2:'сотен',1:'десятков',0:'единиц','-1':'десятых','-2':'сотых','-3':'тысячных','-4':'десятитысячных'};
+var labels={4:'десятки тысяч',3:'тысячи',2:'сотни',1:'десятки',0:'единицы','-1':'десятые','-2':'сотые','-3':'тысячные','-4':'десятитысячные'};
+function el(id){return document.getElementById(id)}
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function p10(p){return Math.pow(10,p)}
+function load(){try{var d=JSON.parse(localStorage.getItem(KEY));var s=d&&d.topics&&d.topics[TOPIC];if(s){stats=s;if(!stats.history)stats.history=[]}}catch(e){}}
+function save(){var d;try{d=JSON.parse(localStorage.getItem(KEY))||{topics:{}}}catch(e){d={topics:{}}}d.topics=d.topics||{};d.topics[TOPIC]=stats;localStorage.setItem(KEY,JSON.stringify(d))}
+
+/* --- поразрядное округление по строке: точно считает цепочки девяток и хвостовые нули, без ошибок float --- */
+function digitMap(display){var s=display.replace(/\s/g,'');var c=s.indexOf(',');var iStr=c<0?s:s.slice(0,c);var fStr=c<0?'':s.slice(c+1);var m={};for(var i=0;i<iStr.length;i++){m[iStr.length-1-i]=Number(iStr.charAt(i))}for(var j=0;j<fStr.length;j++){m[-(j+1)]=Number(fStr.charAt(j))}return m}
+function maxPlaceOf(m){var mx=0;for(var k in m){var n=Number(k);if(n>mx)mx=n}return mx}
+function roundNumber(display,p){var m=digitMap(display);var up=(m[p-1]||0)>=5;var mx=maxPlaceOf(m);var res={};for(var pl=p;pl<=mx;pl++){res[pl]=m[pl]||0}if(up){var q=p;while(true){res[q]=(res[q]||0)+1;if(res[q]<10)break;res[q]=0;q++;if(q>mx){res[q]=0;mx=q}}}var top=Math.max(mx,p,0);var iStr='';for(var a=top;a>=0;a--){iStr+=(a>=p)?String(res[a]!=null?res[a]:0):'0'}iStr=iStr.replace(/^0+(?=\d)/,'');if(p>=0)return iStr;var fStr='';for(var b=-1;b>=p;b--){fStr+=String(res[b]!=null?res[b]:0)}return iStr+','+fStr}
+
+function buildMap(s){var comma=s.indexOf(',');if(comma<0)comma=s.length;var a=[];for(var i=0;i<s.length;i++){var ch=s.charAt(i);if(ch===','){a.push({ch:ch,place:null});continue}var place=i<comma?comma-i-1:-(i-comma);a.push({ch:ch,place:place})}return a}
+
+/* --- генераторы чисел --- */
+function genInt(p,lvl,hard){var mode=hard?pick(['cascade','trick']):'plain';var extra=lvl==='easy'?rnd(0,1):lvl==='med'?rnd(0,2):rnd(1,2);var top=p+extra;var dig={};for(var pl=top;pl>=0;pl--){dig[pl]=(pl===top)?rnd(1,9):rnd(0,9)}
+ if(mode==='cascade'){var maxRun=top-p+1;var runLen=Math.min(rnd(1,3),maxRun);for(var r=0;r<runLen;r++){dig[p+r]=9}if(p+runLen<=top){var sp=p+runLen;dig[sp]=(sp===top)?rnd(1,8):rnd(0,8)}dig[p-1]=rnd(5,9)}
+ else if(mode==='trick'){dig[p-1]=4;for(var t=p-2;t>=0;t--){dig[t]=rnd(5,9)}}
+ var s='';for(var k=top;k>=0;k--){s+=String(dig[k])}return s}
+function genDec(p,lvl,hard){var mode=hard?pick(['cascade','trick']):'plain';var minFrac=-p+1;var extra=lvl==='hard'?(mode==='trick'?rnd(1,2):rnd(0,2)):0;var fracLen=minFrac+extra;var intLen=rnd(1,3);var topInt=intLen-1,botFrac=-fracLen;var dig={};
+ for(var pl=topInt;pl>=0;pl--){dig[pl]=(pl===topInt&&intLen>1)?rnd(1,9):rnd(0,9)}if(intLen===1)dig[0]=rnd(0,9);
+ for(var f=-1;f>=botFrac;f--){dig[f]=rnd(0,9)}
+ if(mode==='cascade'){var maxRun=Math.max(1,topInt-p+1);var runLen=Math.min(rnd(1,3),maxRun);for(var r=0;r<runLen;r++){dig[p+r]=9}if(p+runLen<=topInt){var sp=p+runLen;dig[sp]=(sp===topInt&&intLen>1)?rnd(1,8):rnd(0,8)}dig[p-1]=rnd(5,9)}
+ else if(mode==='trick'){dig[p-1]=4;for(var t=p-2;t>=botFrac;t--){dig[t]=rnd(5,9)}}
+ var iStr='';for(var a=topInt;a>=0;a--){iStr+=String(dig[a])}var fStr='';for(var b=-1;b>=botFrac;b--){fStr+=String(dig[b])}return iStr+','+fStr}
+
+function makeTask(){var places=level==='easy'?[2,1,0,-1,-2]:level==='med'?[3,2,1,0,-1,-2,-3]:[4,3,2,1,0,-1,-2,-3,-4];var p=pick(places);var hard=level==='hard'?(Math.random()<0.7):level==='med'?(Math.random()<0.25):false;var display=p>=1?genInt(p,level,hard):genDec(p,level,hard);var ans=roundNumber(display,p);var ansNum=Number(ans.replace(',','.'));var map=buildMap(display);var ti=-1,li=-1;for(var i=0;i<map.length;i++){if(map[i].place===p)ti=i;if(map[i].place===p-1)li=i}var ld=li>=0?Number(map[li].ch):0;return{display:display,p:p,map:map,ti:ti,li:li,ld:ld,ans:ans,ansNum:ansNum,decision:ld>=5?'up':'keep'}}
+
+function placeLabel(p){if(p>=0)return String(p10(p));return '0,'+(new Array(-p).join('0'))+'1'}
+function render(){el('prompt').textContent='Округли число '+task.display+' до '+names[task.p];el('digits').innerHTML='';for(var i=0;i<task.map.length;i++){var it=task.map[i];if(it.ch===','){var c=document.createElement('div');c.className='digit comma';c.textContent=',';el('digits').appendChild(c);continue}var b=document.createElement('button');b.className='digit';b.dataset.i=i;b.innerHTML=it.ch+'<small>'+placeLabel(it.place)+'</small>';b.onclick=function(){clickDigit(Number(this.dataset.i))};el('digits').appendChild(b)}el('decision').hidden=true;el('ans').value='';setInstr();msg('Выбери разряд, до которого округляем.','')}
+function setInstr(){if(step==='target')el('instruction').textContent='1) Нажми на разряд: '+labels[task.p]+'.';if(step==='look')el('instruction').textContent='2) Нажми на соседнюю цифру справа.';if(step==='decision')el('instruction').textContent='3) Реши: оставить или увеличить?';if(step==='answer')el('instruction').textContent='4) Введи округлённое число.'}
+function msg(t,c){el('fb').textContent=t;el('fb').className='fb '+c}
+function mark(){document.querySelectorAll('.digit[data-i]').forEach(function(d){d.className='digit'});var t=document.querySelector('.digit[data-i="'+task.ti+'"]'),l=document.querySelector('.digit[data-i="'+task.li+'"]');if(t)t.classList.add('target');if(step!=='target'&&step!=='look'&&l)l.classList.add('look')}
+function clickDigit(i){if(solved)return;if(step==='target'){if(i===task.ti){step='look';mark();setInstr();msg('Верно. Теперь выбери цифру справа.','ok')}else msg('Это не тот разряд. Нужны '+labels[task.p]+'.','err');return}if(step==='look'){if(i===task.li){step='decision';mark();setInstr();el('decision').hidden=false;msg('Цифра справа — '+task.ld+'. Теперь выбери действие.','ok')}else msg('Нужна соседняя цифра справа от выбранного разряда.','err')}}
+function decide(d){if(step!=='decision'){msg('Сначала выбери разряд и цифру справа.','tip');return}if(d===task.decision){step='answer';el('decision').hidden=true;setInstr();msg(d==='up'?'Верно: справа 5–9, увеличиваем.':'Верно: справа 0–4, оставляем.','ok');el('ans').focus()}else msg(task.decision==='up'?'Справа 5 или больше: нужно увеличить.':'Справа меньше 5: нужно оставить.','err')}
+function normNum(v){return Number(String(v).replace(/\s/g,'').replace(',','.'))}
+function normStr(v){return String(v).trim().replace(/\s/g,'').replace('.',',')}
+function explain(){var d=task.ld;var m=digitMap(task.display);if(d<5){var t=task.p>=1?'цифры справа в целой части заменяем нулями':task.p===0?'дробную часть отбрасываем':'оставляем '+(-task.p)+' цифр(ы) после запятой, лишние справа убираем';return 'Справа цифра '+d+' — это меньше 5, поэтому выбранный разряд оставляем без изменения; '+t+'.'}var carry=(m[task.p]||0)===9;var base='Справа цифра '+d+' — это 5 или больше, поэтому выбранный разряд увеличиваем на 1';if(carry)base+='. В этом разряде стоит 9: 9+1=10, поэтому на месте остаётся 0, а 1 переходит в следующий разряд — и так по цепочке, пока подряд идут девятки';var t=task.p>=1?'. В целой части справа ставим нули':task.p===0?'. Дробную часть отбрасываем — получается целое число':'. Оставляем ровно '+(-task.p)+' цифр(ы) после запятой (нули в конце не убираем)';return base+t+'.'}
+function check(){if(solved){msg('Этот пример уже учтён. Нажми «Следующий пример».','tip');return}if(el('ans').value.trim()===''){msg('Введите ответ.','err');return}var ok=Math.abs(normNum(el('ans').value)-task.ansNum)<1e-9;var exact=normStr(el('ans').value)===task.ans;solved=true;stats.total++;stats.date=new Date().toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'});if(ok){stats.right++;stats.streak++;stats.best=Math.max(stats.best||0,stats.streak);if(!exact&&task.ans.indexOf(',')>=0&&/0$/.test(task.ans))msg('Верно! Но при округлении до '+names[task.p]+' нули в конце сохраняются — запись лучше дать так: '+task.ans+'.','ok');else msg('Верно! Статистика сохранена.','ok')}else{stats.streak=0;msg('Пока ошибка. Правильный ответ: '+task.ans+'. '+explain(),'err')}stats.history=stats.history||[];stats.history.unshift({text:task.display+' до '+names[task.p]+' → '+task.ans+'. Ваш ответ: '+el('ans').value+'. '+(ok?'Верно.':'Ошибка.')});stats.history=stats.history.slice(0,12);save();renderStats()}
+function renderStats(){var a=stats.total?Math.round(stats.right*100/stats.total):0;el('total').textContent=stats.total;el('right').textContent=stats.right;el('streak').textContent=stats.streak;el('acc').textContent=a+'%';el('best').textContent=stats.best||0;el('date').textContent=stats.date||'—';var st=stats.total<10?'тема начата':a>=80?'почти освоено':a<70?'нужно тренироваться':'тренируется';el('status').textContent=st;el('advice').textContent=stats.total<10?'Реши первые 10 примеров.':'Следи за разрядом, цифрой справа и переходами через 9.';el('history').innerHTML='';if(!stats.history||!stats.history.length){el('history').innerHTML='<div class="hist">Пока история пуста.</div>';return}stats.history.forEach(function(x){var d=document.createElement('div');d.className='hist';d.textContent=x.text;el('history').appendChild(d)})}
+function hint(){if(step==='target')msg('Найди разряд «'+labels[task.p]+'» в числе '+task.display+'. Под каждой цифрой подписан её разряд.','tip');else if(step==='look')msg('Нужна цифра сразу справа от синей (выделенной).','tip');else if(step==='decision')msg('Цифра справа '+task.ld+': '+(task.ld>=5?'увеличиваем.':'оставляем.'),'tip');else msg('Ответ: '+task.ans+'. '+explain(),'tip')}
+function solution(){step='answer';el('decision').hidden=true;mark();setInstr();el('ans').value=task.ans;msg(task.display+' ≈ '+task.ans+'. '+explain(),'tip')}
+function next(){task=makeTask();step='target';solved=false;render();renderStats()}
+function reset(){stats={total:0,right:0,streak:0,best:0,date:null,history:[]};save();renderStats();msg('Статистика сброшена.','tip')}
+function setLevel(l){level=l;['easy','med','hard'].forEach(function(x){el(x).classList.toggle('active',x===l)});next()}
+el('easy').onclick=function(){setLevel('easy')};el('med').onclick=function(){setLevel('med')};el('hard').onclick=function(){setLevel('hard')};el('keep').onclick=function(){decide('keep')};el('up').onclick=function(){decide('up')};el('check').onclick=check;el('next').onclick=next;el('hint').onclick=hint;el('solution').onclick=solution;el('reset').onclick=reset;el('ans').onkeydown=function(e){if(e.key==='Enter')check()};load();next();renderStats();
+</script>
+</body>
+</html>
