@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Python: for и вложенный if — тренажёр</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eef2f7;color:#111827;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5}.wrap{width:min(1100px,94vw);margin:0 auto;padding:22px 0 44px}.top{display:flex;align-items:center;gap:14px;justify-content:space-between;margin-bottom:16px}.back{color:#2563eb;text-decoration:none;font-weight:800}.hero{background:#101827;color:white;border-radius:14px;padding:20px 22px;margin-bottom:16px}h1{margin:0 0 6px;font-size:clamp(26px,4vw,42px);line-height:1.05}.hero p{margin:0;color:#cbd5e1}.grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px}.panel{background:white;border:1px solid #d9e2ef;border-radius:12px;padding:18px;box-shadow:0 12px 30px rgba(15,23,42,.07)}.side{display:grid;gap:12px;align-content:start}.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat div{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px;text-align:center}.stat b{display:block;font-size:24px}.mut{color:#64748b}.taskTitle{font-size:22px;font-weight:900;margin:0 0 8px}.pills{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.pill{background:#e0f2fe;color:#075985;border:1px solid #bae6fd;border-radius:999px;padding:5px 10px;font-weight:800;font-size:13px}.setup{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:10px;white-space:pre-wrap;color:#7c2d12}.code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:#111827;color:#f8fafc;border-radius:12px;padding:14px;white-space:pre-wrap;min-height:126px;overflow:auto}.steps{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}.dot{width:12px;height:12px;border-radius:999px;background:#cbd5e1}.dot.on{background:#2563eb}.dot.done{background:#16a34a}.choices{display:grid;gap:8px;margin-top:12px}.choice{font:inherit;text-align:left;border:1px solid #cbd5e1;background:white;border-radius:10px;padding:11px 12px;cursor:pointer}.choice:hover{border-color:#2563eb;background:#eff6ff}.choice.good{border-color:#16a34a;background:#dcfce7}.choice.bad{border-color:#dc2626;background:#fee2e2}.choice:disabled{cursor:default}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.btn{border:0;border-radius:10px;padding:10px 13px;font-weight:900;cursor:pointer;background:#e2e8f0;color:#111827}.btn.primary{background:#2563eb;color:#fff}.btn.good{background:#16a34a;color:white}.btn.warn{background:#f59e0b;color:#111827}.btn.danger{background:#fee2e2;color:#991b1b}.btn:disabled{opacity:.45;cursor:default}input,textarea{width:100%;border:1.5px solid #cbd5e1;border-radius:10px;padding:11px 12px;font:inherit}textarea{min-height:210px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical}.msg{margin-top:10px;border-radius:10px;padding:10px 12px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a}.msg.ok{background:#dcfce7;border-color:#bbf7d0;color:#14532d}.msg.err{background:#fee2e2;border-color:#fecaca;color:#991b1b}.tasks{display:grid;gap:8px}.taskBtn{text-align:left}.taskBtn.solved{background:#dcfce7;color:#14532d}.small{font-size:13px}.hide{display:none!important}@media(max-width:860px){.grid{grid-template-columns:1fr}.top{display:block}.back{display:inline-block;margin-bottom:10px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="top"><a class="back" href="../index.html">← На главную</a><span class="mut small">mathexam.space · Python</span></div>
+  <section class="hero"><h1>Python: for и вложенный if</h1><p>Тренажёр для ученика: собираем код по шагам, проверяем вывод и затем пишем программу самостоятельно.</p></section>
+  <section class="grid">
+    <div class="panel">
+      <div class="row" style="justify-content:space-between;margin-bottom:12px"><button class="btn" id="prev">← задача</button><button class="btn" id="next">задача →</button></div>
+      <h2 class="taskTitle" id="taskTitle"></h2>
+      <div class="mut" id="taskText"></div>
+      <div class="pills" id="pills"></div>
+      <div class="setup" id="setup"></div>
+      <div class="steps" id="dots"></div>
+      <div id="stepBox"></div>
+      <div class="msg" id="msg">Выбери первую строку кода.</div>
+    </div>
+    <aside class="side">
+      <div class="panel">
+        <div class="stat"><div><b id="solved">0</b><span>решено</span></div><div><b id="tries">0</b><span>попыток</span></div><div><b id="acc">0%</b><span>точность</span></div></div>
+        <div class="row" style="margin-top:12px"><button class="btn danger" id="reset">Сбросить</button><button class="btn" id="showSolution">Решение</button></div>
+      </div>
+      <div class="panel"><b>Задачи</b><div class="tasks" id="taskList" style="margin-top:10px"></div></div>
+      <div class="panel small"><b>Памятка</b><p><code>for item in список:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;if условие_1:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if условие_2:</code></p><p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(item)</code></p><p class="mut">Второй <code>if</code> стоит внутри первого. <code>print</code> стоит внутри второго.</p></div>
+    </aside>
+  </section>
+</main>
+<script>
+const KEY='mathExamCourseProgress.v1',TOPIC='pythonForNestedIfTrainer';
+const tasks=[
+{id:'even_gt10',title:'Чётные больше 10',setup:'numbers = [3, 12, 7, 18, 4, 21, 10, 16]',col:'numbers',item:'number',req:['чётное','больше 10'],conds:['number % 2 == 0','number > 10'],ans:[12,18,16]},
+{id:'pos_div3',title:'Положительные и делятся на 3',setup:'numbers = [-3, 0, 6, 10, 15, -9, 22, 30]',col:'numbers',item:'number',req:['больше 0','делится на 3'],conds:['number > 0','number % 3 == 0'],ans:[6,15,30]},
+{id:'range_even_gt10',title:'range(1, 21): чётные больше 10',setup:'',col:'range(1, 21)',item:'i',req:['чётное','больше 10'],conds:['i % 2 == 0','i > 10'],ans:[12,14,16,18,20]},
+{id:'odd_lt15',title:'Нечётные меньше 15',setup:'numbers = [2, 5, 8, 11, 14, 17, 19, 3]',col:'numbers',item:'number',req:['нечётное','меньше 15'],conds:['number % 2 != 0','number < 15'],ans:[5,11,3]},
+{id:'div2_div5',title:'Делятся на 2 и на 5',setup:'numbers = [10, 15, 20, 22, 25, 30, 40, 43]',col:'numbers',item:'number',req:['делится на 2','делится на 5'],conds:['number % 2 == 0','number % 5 == 0'],ans:[10,20,30,40]},
+{id:'marks_five',title:'Оценки: только пятёрки',setup:'marks = [2, 3, 4, 5, 5, 2, 4, 3]',col:'marks',item:'mark',req:['больше 3','равна 5'],conds:['mark > 3','mark == 5'],ans:[5,5]},
+{id:'prices_between',title:'Цены больше 100 и меньше 500',setup:'prices = [50, 120, 300, 80, 500, 1000, 250]',col:'prices',item:'price',req:['больше 100','меньше 500'],conds:['price > 100','price < 500'],ans:[120,300,250]},
+{id:'ages_adult',title:'Возраст от 18 до 60',setup:'ages = [12, 17, 18, 25, 60, 65, 70, 15]',col:'ages',item:'age',req:['не меньше 18','не больше 60'],conds:['age >= 18','age <= 60'],ans:[18,25,60]},
+{id:'temps_warm',title:'Температуры выше 0 и ниже 30',setup:'temperatures = [-5, 0, 10, 25, 35, 40]',col:'temperatures',item:'temperature',req:['больше 0','меньше 30'],conds:['temperature > 0','temperature < 30'],ans:[10,25]},
+{id:'div4_gt20',title:'Делятся на 4 и больше 20',setup:'numbers = [4, 8, 16, 20, 24, 28, 31, 36]',col:'numbers',item:'number',req:['делится на 4','больше 20'],conds:['number % 4 == 0','number > 20'],ans:[24,28,36]}
+];
+let state={i:0,step:0,built:[],tries:0,right:0,solved:{}};
+function $(id){return document.getElementById(id)}function esc(s){return String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))}
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY));const t=d&&d.topics&&d.topics[TOPIC];if(t)state={...state,...t,built:[],step:0}}catch(e){}}
+function save(){let d;try{d=JSON.parse(localStorage.getItem(KEY))||{topics:{}}}catch(e){d={topics:{}}}d.topics=d.topics||{};const solved=Object.keys(state.solved).length;d.topics[TOPIC]={...state,total:state.tries,right:state.right,solved,homeworkSolved:solved,homeworkTotal:tasks.length,lastAt:new Date().toISOString()};localStorage.setItem(KEY,JSON.stringify(d))}
+function sol(t){return (t.setup?t.setup+'\n\n':'')+'for '+t.item+' in '+t.col+':\n    if '+t.conds[0]+':\n        if '+t.conds[1]+':\n            print('+t.item+')'}
+function lines(t){const a=[];if(t.setup)a.push(t.setup);a.push('for '+t.item+' in '+t.col+':');a.push('    if '+t.conds[0]+':');a.push('        if '+t.conds[1]+':');a.push('            print('+t.item+')');return a}
+function stepChoices(t){const good=lines(t)[state.step];const bad=[
+'for '+t.col+' in '+t.item+':','if '+t.item+' in '+t.col+':','    if '+t.conds[1]+':','if '+t.conds[0]+':','        if '+t.conds[0]+':','    print('+t.item+')','            print('+t.col+')'
+].filter(x=>x!==good);return [good,...bad.slice(0,3)].sort(()=>Math.random()-.5)}
+function render(){const t=tasks[state.i];$('taskTitle').textContent=t.title;$('taskText').textContent='Собери программу, которая выводит только элементы, проходящие обе проверки.';$('pills').innerHTML=t.req.map(r=>'<span class="pill">'+esc(r)+'</span>').join('');$('setup').textContent=t.setup||'for '+t.item+' in '+t.col+':';$('prev').disabled=state.i===0;$('next').disabled=state.i===tasks.length-1;renderStats();renderTaskList();renderStep()}
+function renderStats(){const solved=Object.keys(state.solved).length;$('solved').textContent=solved;$('tries').textContent=state.tries;$('acc').textContent=state.tries?Math.round(state.right/state.tries*100)+'%':'0%'}
+function renderTaskList(){$('taskList').innerHTML=tasks.map((t,i)=>'<button class="btn taskBtn '+(state.solved[t.id]?'solved':'')+'" data-task="'+i+'">'+(i+1)+'. '+esc(t.title)+'</button>').join('')}
+function renderStep(){const t=tasks[state.i];$('dots').innerHTML=[0,1,2,3,4].map(i=>'<span class="dot '+(i<state.step?'done':i===state.step?'on':'')+'"></span>').join('');if(state.step<lines(t).length){$('stepBox').innerHTML='<div class="code">'+esc(state.built.join('\n')||'# здесь пока пусто')+'</div><h3>Шаг '+(state.step+1)+' из '+lines(t).length+': выбери следующую строку</h3><div class="choices">'+stepChoices(t).map(x=>'<button class="choice" data-choice="'+esc(x)+'"><code>'+esc(x)+'</code></button>').join('')+'</div>';return} $('stepBox').innerHTML='<h3>Код собран</h3><div class="code">'+esc(sol(t))+'</div><label><b>Какой будет вывод?</b><input id="out" placeholder="например: 12, 18, 16"></label><div class="row" style="margin-top:10px"><button class="btn primary" id="checkOut">Проверить вывод</button><button class="btn" id="writeMode">Написать код самому</button></div><div id="writeBox" class="hide" style="margin-top:12px"><textarea id="codeTry" spellcheck="false">'+esc(t.setup+(t.setup?'\n\n':'')+'for '+t.item+' in '+t.col+':\n    if __________________:\n        if __________________:\n            print('+t.item+')')+'</textarea><button class="btn primary" id="checkCode" style="margin-top:8px">Проверить код</button></div>'}
+function pick(value,btn){const t=tasks[state.i],good=lines(t)[state.step];document.querySelectorAll('.choice').forEach(b=>{b.disabled=true;if(b.dataset.choice===good)b.classList.add('good');if(b===btn&&value!==good)b.classList.add('bad')});state.tries++;if(value===good){state.right++;state.built.push(good);state.step++;msg('Верно. Идём дальше.','ok');setTimeout(()=>{save();renderStep();renderStats()},450)}else{msg('Пока нет. Зелёным показана правильная строка, я добавлю её в код.','err');state.built.push(good);state.step++;setTimeout(()=>{save();renderStep();renderStats()},900)}save();renderStats()}
+function norm(s){return s.replace(/\s+/g,'')}function checkCode(){const t=tasks[state.i],raw=$('codeTry').value,miss=[];if(t.setup&&!raw.includes(t.setup.split('=')[0].trim()))miss.push('добавь исходный список');if(!norm(raw).includes(norm('for '+t.item+' in '+t.col+':')))miss.push('строка for написана неверно');if(!norm(raw).includes(norm(t.conds[0])))miss.push('не найден первый if: '+t.conds[0]);if(!norm(raw).includes(norm(t.conds[1])))miss.push('не найден второй if: '+t.conds[1]);if(!norm(raw).includes(norm('print('+t.item+')')))miss.push('нужен print('+t.item+')');state.tries++;if(miss.length){msg('Нужно поправить: '+miss.join('; ')+'.','err')}else{state.right++;state.solved[t.id]=true;msg('Отлично. Задача отмечена решённой.','ok')}save();renderStats();renderTaskList()}
+function checkOut(){const t=tasks[state.i],v=$('out').value.split(/[ ,;]+/).filter(Boolean).map(Number),ok=JSON.stringify(v)===JSON.stringify(t.ans);state.tries++;if(ok){state.right++;state.solved[t.id]=true;msg('Верно: '+t.ans.join(', ')+'. Задача отмечена решённой.','ok')}else msg('Проверь ещё раз. Правильный вывод: '+t.ans.join(', ')+'.','err');save();renderStats();renderTaskList()}
+function msg(text,kind=''){$('msg').className='msg '+kind;$('msg').textContent=text}
+function openTask(i){state.i=i;state.step=0;state.built=[];save();render();msg('Выбери первую строку кода.')}
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.choice)pick(b.dataset.choice,b);if(b.dataset.task!==undefined)openTask(Number(b.dataset.task));if(b.id==='prev')openTask(state.i-1);if(b.id==='next')openTask(state.i+1);if(b.id==='checkOut')checkOut();if(b.id==='writeMode')$('writeBox').classList.toggle('hide');if(b.id==='checkCode')checkCode();if(b.id==='showSolution'){const t=tasks[state.i];$('stepBox').innerHTML='<h3>Готовое решение</h3><div class="code">'+esc(sol(t))+'</div><p><b>Вывод:</b> '+t.ans.join(', ')+'</p>';msg('Разбери решение и попробуй следующую задачу.')}if(b.id==='reset'&&confirm('Сбросить прогресс?')){localStorage.removeItem(KEY);state={i:0,step:0,built:[],tries:0,right:0,solved:{}};render();msg('Прогресс сброшен.')}});
+load();render();
+</script>
+</body>
+</html>
