@@ -36,6 +36,7 @@
       <div class="links">
         <a class="courseLink" href="trainers/python-if-for-sergey.html"><span class="courseTitle">Python: if и for</span><span id="pythonIfProgress" class="progress empty">if: прогресс пока не начат</span><span id="pythonForProgress" class="progress empty">for: прогресс пока не начат</span></a>
         <a class="courseLink" href="trainers/python-if-inside-for-sergey.html"><span class="courseTitle">Python: if внутри for <span class="new">следующий уровень</span></span><span id="pythonIfInsideForProgress" class="progress empty">Прогресс пока не начат</span></a>
+        <a class="courseLink" href="trainers/python-for-nested-if-trainer.html"><span class="courseTitle">Python: for и вложенный if <span class="new">тренировка</span></span><span id="pythonNestedIfProgress" class="progress empty">Прогресс пока не начат</span></a>
       </div>
     </section>
 
@@ -106,7 +107,7 @@ const STORAGE_KEY='mathExamCourseProgress.v1';
 function getStatus(total,correct,mastered=40,almost=20){const acc=total?Math.round(correct/total*100):0;if(total<10)return 'тема начата';if(total>=mastered&&acc>=90)return 'тема освоена';if(total>=almost&&acc>=80)return 'почти освоено';if(acc<70)return 'нужно тренироваться';return 'тренируется'}
 function normalizeTopic(t){if(!t)return null;if(t.total!==undefined)return t;if(t.solved!==undefined)return {total:t.solved,right:t.correct||0};return t}
 function fillProgress(id,topic,mastered=40,almost=20){const el=document.getElementById(id);try{const data=JSON.parse(localStorage.getItem(STORAGE_KEY));let t=data&&(data.topics&&data.topics[topic]||data[topic]);t=normalizeTopic(t);if(!el||!t||!t.total)return;const correct=t.right||0;const total=t.total||0;const acc=Math.round(correct/total*100);el.classList.remove('empty');el.innerHTML=`Решено: <strong>${total}</strong> · Верно: <strong>${correct}</strong> · Точность: <strong>${acc}%</strong> · ${getStatus(total,correct,mastered,almost)}`}catch(e){}}
-fillProgress('pythonIfProgress','pythonIfSergeyLeonidovich',30,20);fillProgress('pythonForProgress','pythonForSergeyLeonidovich',30,20);fillProgress('pythonIfInsideForProgress','pythonIfInsideForSergey',25,16);
+fillProgress('pythonIfProgress','pythonIfSergeyLeonidovich',30,20);fillProgress('pythonForProgress','pythonForSergeyLeonidovich',30,20);fillProgress('pythonIfInsideForProgress','pythonIfInsideForSergey',25,16);fillProgress('pythonNestedIfProgress','pythonForNestedIfTrainer',17,10);
 fillProgress('negativeProgress','negativeNumbersLine');fillProgress('negativeAltProgress','negativeNumbersAlternative');fillProgress('signedAdditionProgress','signedAdditionTrainer');fillProgress('roundingProgress','roundingStepwise');fillProgress('decimalCashProgress','decimalCashTrainer');fillProgress('equationsProgress','simpleEquationsStepwise');fillProgress('builderProgress','equationsBuilder');fillProgress('systemsProgress','linearSystemsTrainer');fillProgress('divisionProgress','longDivisionStepwise');fillProgress('ineqProgress','linearInequalitiesStepwise');
 </script>
 </body>
