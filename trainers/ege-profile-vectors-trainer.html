@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ЕГЭ профиль: задание 2 — векторы</title>
+  <style>
+    :root{
+      color-scheme:light;
+      --bg:#f3f6fb;--panel:#ffffff;--ink:#142033;--text:#28344a;--muted:#66758c;
+      --line:#dce4ef;--blue:#2754c7;--blue2:#e8eefc;--green:#0b875b;--green2:#e2f4ec;
+      --red:#c73535;--red2:#fce9e9;--amber:#b56a00;--amber2:#fff1d6;--teal:#117a7a;
+      --shadow:0 12px 28px rgba(20,32,51,.09),0 1px 3px rgba(20,32,51,.08);
+      --r:14px;--font:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    }
+    *{box-sizing:border-box} html,body{margin:0} body{font-family:var(--font);background:linear-gradient(180deg,#fbfcff 0,#eef3fa 280px,var(--bg));color:var(--text);line-height:1.5}
+    .wrap{max-width:1120px;margin:auto;padding:24px 18px 46px}.top{display:flex;gap:18px;align-items:flex-end;justify-content:space-between;margin-bottom:16px}.kicker{margin:0 0 6px;color:var(--blue);font-size:12px;text-transform:uppercase;letter-spacing:.12em;font-weight:800}h1{margin:0;color:var(--ink);font-size:clamp(24px,4vw,36px);line-height:1.1}.sub{margin:8px 0 0;color:var(--muted);max-width:760px}.home{color:var(--blue);font-weight:800;text-decoration:none;background:var(--blue2);border:1px solid #cdd9fa;border-radius:10px;padding:9px 12px;white-space:nowrap}
+    .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}.tab{border:1px solid var(--line);background:#fff;color:var(--text);font-weight:800;border-radius:999px;padding:9px 13px;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.04)}.tab[aria-selected="true"]{background:var(--blue);border-color:var(--blue);color:#fff}.layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px}.card,.sidebox{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}.card{padding:18px}.qbar{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}.chip{display:inline-flex;align-items:center;gap:7px;background:#f7f9fd;border:1px solid var(--line);border-radius:999px;padding:6px 10px;color:var(--muted);font-weight:800;font-size:13px}.dot{width:9px;height:9px;border-radius:50%;background:var(--teal)}.qno{font-family:var(--mono);color:var(--muted);font-weight:800}.prompt{font-size:20px;color:var(--ink);font-weight:750;margin:12px 0 16px}.formula{font-family:Georgia,serif}.vec{font-weight:900;color:var(--blue)}.op{color:var(--amber);font-weight:900}.canvasbox{margin:8px 0 14px;border:1px solid var(--line);border-radius:12px;background:#fbfdff;overflow:hidden}.canvasbox canvas{display:block;width:100%;height:300px}.answer{display:flex;flex-wrap:wrap;gap:10px;align-items:end}.field label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:900;margin:0 0 5px}.ans{width:180px;border:1px solid #cbd6e6;border-radius:11px;padding:11px 12px;font-size:18px;font-family:var(--mono);font-weight:800;color:var(--ink)}.btn{border:1px solid var(--line);border-radius:11px;padding:11px 14px;font-weight:900;cursor:pointer;background:#fff;color:var(--text)}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn:hover{filter:brightness(.98)}.feedback{margin-top:12px;border-radius:12px;padding:11px 12px;display:none;font-weight:800}.feedback.ok{display:block;background:var(--green2);border:1px solid #bfe4d0;color:#075f40}.feedback.no{display:block;background:var(--red2);border:1px solid #efc9c9;color:#9b2525}.feedback.warn{display:block;background:var(--amber2);border:1px solid #f3d391;color:#7a4700}.solution{display:none;margin-top:12px;background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:12px}.solution.show{display:block}.solution h3{margin:0 0 8px;color:var(--ink);font-size:16px}.solution p{margin:7px 0}.side{display:grid;gap:14px}.sidebox{padding:14px}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{border:1px solid var(--line);border-radius:12px;background:#fbfdff;padding:12px;text-align:center}.stat b{display:block;font-size:26px;color:var(--ink)}.stat span{font-size:12px;color:var(--muted);font-weight:800}.cheat h2,.fipi h2{font-size:16px;color:var(--ink);margin:0 0 10px}.cheat p{margin:8px 0;color:var(--muted)}.mono{font-family:var(--mono);font-weight:800;color:var(--ink)}.fipi-list{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.fipi-list a{display:block;text-align:center;text-decoration:none;color:var(--blue);background:var(--blue2);border:1px solid #ccd8f6;border-radius:8px;padding:6px;font-family:var(--mono);font-weight:900;font-size:12px}.all{display:block;text-align:center;margin-top:10px;background:var(--green2);border:1px solid #bfe4d0;border-radius:10px;padding:9px;text-decoration:none;color:var(--green);font-weight:900}.note{font-size:12px;color:var(--muted);margin:10px 0 0}.foot{margin-top:18px;color:var(--muted);font-size:12px;text-align:center}@media(max-width:860px){.top{display:block}.home{display:inline-block;margin-top:12px}.layout{grid-template-columns:1fr}.canvasbox canvas{height:240px}.prompt{font-size:18px}.ans{width:100%}.field{flex:1 1 180px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <div><p class="kicker">ЕГЭ · профильная математика · задание 2</p><h1>Тренажёр по векторам</h1><p class="sub">Отработка задач на длину вектора, скалярное произведение, перпендикулярность и коллинеарность. Задачи генерируются заново, ответ проверяется сразу, решение раскрывается по шагам.</p></div>
+      <a class="home" href="../">← На главную</a>
+    </header>
+
+    <nav class="tabs" aria-label="Тип задания">
+      <button class="tab" data-mode="length" aria-selected="true">Длина вектора</button>
+      <button class="tab" data-mode="scalar" aria-selected="false">Скалярное произведение</button>
+      <button class="tab" data-mode="param" aria-selected="false">Параметр</button>
+      <button class="tab" data-mode="mix" aria-selected="false">Микс</button>
+    </nav>
+
+    <main class="layout">
+      <section class="card">
+        <div class="qbar"><span class="chip"><span class="dot"></span><span id="kind">—</span></span><span class="qno" id="qno">№ 1</span></div>
+        <div id="figure"></div>
+        <div class="prompt" id="prompt"></div>
+        <div class="answer">
+          <div class="field"><label for="answer">Ваш ответ</label><input id="answer" class="ans" type="text" inputmode="decimal" autocomplete="off" placeholder="число"></div>
+          <button id="check" class="btn primary">Проверить</button>
+          <button id="next" class="btn">Следующая</button>
+          <button id="show" class="btn">Показать решение</button>
+        </div>
+        <div id="feedback" class="feedback"></div>
+        <div id="solution" class="solution"></div>
+      </section>
+
+      <aside class="side">
+        <section class="sidebox stats" aria-label="Статистика">
+          <div class="stat"><b id="stSolved">0</b><span>решено</span></div><div class="stat"><b id="stRight">0</b><span>верно</span></div><div class="stat"><b id="stAcc">—</b><span>точность</span></div><div class="stat"><b id="stStreak">0</b><span>серия</span></div>
+        </section>
+        <section class="sidebox cheat"><h2>Шпаргалка</h2><p><span class="mono">|a| = √(x² + y²)</span>, если <span class="mono">a = {x; y}</span>.</p><p><span class="mono">a·b = x₁x₂ + y₁y₂</span>.</p><p><span class="mono">a ⟂ b ⇔ a·b = 0</span>.</p><p><span class="mono">a ∥ b ⇔ x₁y₂ − y₁x₂ = 0</span>.</p></section>
+        <section class="sidebox fipi"><h2>Карточки ФИПИ</h2><div id="fipiList" class="fipi-list"></div><a id="fipiAll" class="all" target="_blank" rel="noopener">Открыть всю выдачу ФИПИ</a><p class="note">Ссылки ведут на официальный банк. Формулировки ФИПИ здесь не перепечатаны.</p></section>
+      </aside>
+    </main>
+    <footer class="foot">Enter — проверить, после проверки Enter — следующая задача.</footer>
+  </div>
+
+<script>
+'use strict';
+const PROJ='AC437B34557F88EA4115D2F374B0A07B';
+const FIPI=['40B442','0A394E','D891F7','44700A','166200','FC0F78','579B74','C9EE7C','E68A17','FFBFD7','1c7454','A288A1','ee1AA2','D331CB','58e4c5','3F02c4','E5399A','0432E9','71AC6C','238861','8e0D68','4A073e','028837'];
+const FIPI_MAIN=`https://ege.fipi.ru/bank/questions.php?search=1&pagesize=100&proj=${PROJ}&theme=7.5&qkind=ILI_STD_SHORT`;
+const $=id=>document.getElementById(id), rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a, pick=a=>a[Math.floor(Math.random()*a.length)], nz=(a,b)=>{let x=0;while(!x)x=rnd(a,b);return x};
+const v=s=>`<span class="vec">${s}</span>`, br=(x,y)=>`{${x}; ${y}}`, sgn=n=>n<0?`(${n})`:String(n), sq=n=>n*n;
+let mode='length', cur=null, n=0, solved=0, right=0, streak=0, opened=false;
+function niceVector(max=8){return [nz(-max,max), nz(-max,max)]}
+function withNiceLen(){const pairs=[[3,4],[4,3],[5,12],[12,5],[6,8],[8,6],[8,15],[15,8],[7,24],[24,7]];let [x,y]=pick(pairs);x*=pick([-1,1]);y*=pick([-1,1]);return [x,y]}
+function lenTask(){let a,b,k,vec,ans,prompt,sol;if(Math.random()<.55){a=withNiceLen();prompt=`Дан вектор ${v('a')} = ${br(a[0],a[1])}. Найдите длину вектора ${v('a')}.`;ans=Math.hypot(a[0],a[1]);sol=[`|a| = √(${a[0]}² + ${a[1]}²)`, `|a| = √(${sq(a[0])} + ${sq(a[1])}) = ${ans}.`];return {kind:'длина · координаты',prompt,ans,sol,fig:null}}
+  a=niceVector(8);b=niceVector(8);k=rnd(2,5);vec=[a[0]+k*b[0],a[1]+k*b[1]];let L=Math.hypot(vec[0],vec[1]);let guard=0;while(Math.abs(L-Math.round(L))>.0001&&guard++<40){a=niceVector(8);b=niceVector(8);k=rnd(2,5);vec=[a[0]+k*b[0],a[1]+k*b[1]];L=Math.hypot(vec[0],vec[1])}ans=Math.round(L);prompt=`Даны векторы ${v('a')} = ${br(a[0],a[1])} и ${v('b')} = ${br(b[0],b[1])}. Найдите длину вектора ${v('a')} + ${k}${v('b')}.`;sol=[`${v('a')} + ${k}${v('b')} = ${br(a[0]+' + '+k+'·'+sgn(b[0]), a[1]+' + '+k+'·'+sgn(b[1]))} = ${br(vec[0],vec[1])}.`, `Длина: √(${vec[0]}² + ${vec[1]}²) = √${sq(vec[0])+sq(vec[1])} = ${ans}.`];return {kind:'длина · линейная комбинация',prompt,ans,sol,fig:null}}
+function scalarTask(){let a=niceVector(12),b=niceVector(12),dot=a[0]*b[0]+a[1]*b[1];if(Math.random()<.45){const c=rnd(2,6),d=rnd(1,5),u=[a[0]+b[0],a[1]+b[1]],w=[c*a[0]-d*b[0],c*a[1]-d*b[1]];dot=u[0]*w[0]+u[1]*w[1];return {kind:'скалярное · комбинации',prompt:`Даны векторы ${v('a')} = ${br(a[0],a[1])} и ${v('b')} = ${br(b[0],b[1])}. Найдите скалярное произведение векторов ${v('a')}+${v('b')} и ${c}${v('a')}−${d}${v('b')}.`,ans:dot,sol:[`${v('a')}+${v('b')} = ${br(u[0],u[1])}.`, `${c}${v('a')}−${d}${v('b')} = ${br(w[0],w[1])}.`, `Скалярное произведение: ${u[0]}·${sgn(w[0])} + ${u[1]}·${sgn(w[1])} = ${dot}.`],fig:null}}
+  return {kind:'скалярное · координаты',prompt:`Даны векторы ${v('a')} = ${br(a[0],a[1])} и ${v('b')} = ${br(b[0],b[1])}. Найдите скалярное произведение ${v('a')}·${v('b')}.`,ans:dot,sol:[`${v('a')}·${v('b')} = x₁x₂ + y₁y₂.`, `${a[0]}·${sgn(b[0])} + ${a[1]}·${sgn(b[1])} = ${dot}.`],fig:{a,b}}}
+function paramTask(){if(Math.random()<.5){let a=niceVector(9),p=nz(-7,7),q=nz(-7,7),x;while(q===0)q=nz(-7,7);x=-(a[0]*p+a[1]*q)/a[0];let tries=0;while((!Number.isInteger(x)||a[0]===0)&&tries++<50){a=niceVector(9);p=nz(-7,7);q=nz(-7,7);x=-(a[0]*p+a[1]*q)/a[0]}return {kind:'параметр · перпендикулярность',prompt:`При каком значении x векторы ${v('a')} = ${br(a[0],a[1])} и ${v('b')} = ${br('x + '+p,q)} перпендикулярны?`,ans:x,sol:[`Для перпендикулярных векторов ${v('a')}·${v('b')} = 0.`, `${a[0]}(x + ${p}) + ${a[1]}·${sgn(q)} = 0.`, `${a[0]}x + ${a[0]*p+a[1]*q} = 0, значит x = ${x}.`],fig:null}}
+  let a=niceVector(8),k=rnd(2,5),b=[k*a[0],k*a[1]],ans=b[1];return {kind:'параметр · коллинеарность',prompt:`При каком y векторы ${v('a')} = ${br(a[0],a[1])} и ${v('b')} = ${br(b[0],'y')} коллинеарны?`,ans,sol:[`Для коллинеарных векторов x₁y₂ − y₁x₂ = 0.`, `${a[0]}·y − ${a[1]}·${sgn(b[0])} = 0.`, `y = ${ans}.`],fig:null}}
+function draw(fig){$('figure').innerHTML='';if(!fig)return;const box=document.createElement('div');box.className='canvasbox';const c=document.createElement('canvas');c.width=760;c.height=300;box.appendChild(c);$('figure').appendChild(box);const ctx=c.getContext('2d'),W=c.width,H=c.height,ox=W/2,oy=H/2,scale=15;ctx.clearRect(0,0,W,H);ctx.strokeStyle='#d7e3f3';ctx.lineWidth=1;for(let x=ox%scale;x<W;x+=scale){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}for(let y=oy%scale;y<H;y+=scale){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}ctx.strokeStyle='#91acd1';ctx.beginPath();ctx.moveTo(0,oy);ctx.lineTo(W,oy);ctx.moveTo(ox,0);ctx.lineTo(ox,H);ctx.stroke();function arrow(vec,color,label){const x=ox+vec[0]*scale,y=oy-vec[1]*scale;ctx.strokeStyle=color;ctx.fillStyle=color;ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(x,y);ctx.stroke();const ang=Math.atan2(y-oy,x-ox);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-12*Math.cos(ang-.45),y-12*Math.sin(ang-.45));ctx.lineTo(x-12*Math.cos(ang+.45),y-12*Math.sin(ang+.45));ctx.closePath();ctx.fill();ctx.font='bold 20px system-ui';ctx.fillText(label,x+8,y-8)}arrow(fig.a,'#2754c7','a');arrow(fig.b,'#df7a0a','b')}
+function newTask(){opened=false;n++;const gens=mode==='mix'?[lenTask,scalarTask,paramTask]:mode==='length'?[lenTask]:mode==='scalar'?[scalarTask]:[paramTask];cur=pick(gens)();$('kind').textContent=cur.kind;$('qno').textContent='№ '+n;$('prompt').innerHTML=cur.prompt;draw(cur.fig);$('answer').value='';$('feedback').className='feedback';$('feedback').textContent='';$('solution').className='solution';$('solution').innerHTML='';$('answer').focus()}
+function parse(x){return Number(String(x).trim().replace(',','.'))}
+function check(){if(!cur)return;const val=parse($('answer').value);if(!Number.isFinite(val)){$('feedback').className='feedback warn';$('feedback').textContent='Введите число.';return}solved++;const ok=Math.abs(val-cur.ans)<1e-7;right+=ok?1:0;streak=ok?streak+1:0;$('feedback').className='feedback '+(ok?'ok':'no');$('feedback').innerHTML=ok?`Верно! Ответ: ${cur.ans}.`:`Неверно. Правильный ответ: ${cur.ans}.`;showSol();updateStats()}
+function showSol(){if(!cur)return;opened=true;$('solution').className='solution show';$('solution').innerHTML='<h3>Решение</h3>'+cur.sol.map(x=>`<p>${x}</p>`).join('')}
+function updateStats(){$('stSolved').textContent=solved;$('stRight').textContent=right;$('stStreak').textContent=streak;$('stAcc').textContent=solved?Math.round(right/solved*100)+'%':'—'}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected','false'));b.setAttribute('aria-selected','true');mode=b.dataset.mode;newTask()});$('check').onclick=check;$('next').onclick=newTask;$('show').onclick=showSol;document.addEventListener('keydown',e=>{if(e.key==='Enter'){if(document.activeElement===$('answer'))check();else newTask()}});
+$('fipiAll').href=FIPI_MAIN;FIPI.forEach(id=>{const a=document.createElement('a');a.href=`https://ege.fipi.ru/bank/questions.php?search=1&pagesize=10&proj=${PROJ}&qid=${id}`;a.target='_blank';a.rel='noopener';a.textContent=id;$('fipiList').appendChild(a)});newTask();
+</script>
+</body>
+</html>
