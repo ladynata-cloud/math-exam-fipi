@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренажёр: формулы сокращённого умножения</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600;1,9..144,700&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#19233c; --muted:#5d6b86;
+    --paper:#fbfcff; --card:#ffffff;
+    --line:#e8eef8; --line2:#dde6f4; --ring:#ccd8ea;
+    --a:#2b5fe3;  --a-bg:#e4ebfe;  --a-bd:#b9ccfb;
+    --b:#ef683f;  --b-bg:#fde4da;  --b-bd:#f6c0ac;
+    --mix:#8a53cf; --mix-bg:#ece0fb; --mix-bd:#d6bdf2;
+    --ok:#15a05a;  --ok-bg:#e2f5ea;  --ok-bd:#9fd9b8;
+    --no:#e23b46;  --no-bg:#fde2e4;  --no-bd:#f3b4b9;
+    --warn:#e08a16;
+    --shadow:0 1px 2px rgba(25,35,60,.05), 0 8px 24px -12px rgba(25,35,60,.18);
+    --r:16px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Nunito",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    color:var(--ink); background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:27px 27px;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:22px 18px 64px}
+
+  /* ---------- math ---------- */
+  .math{font-family:"Fraunces",Georgia,"Times New Roman",serif;font-weight:600;letter-spacing:.2px}
+  .math i{font-style:italic;padding:0 .02em}
+  .math sup{font-size:.62em;vertical-align:.55em;font-weight:600}
+  .ta{color:var(--a)} .tb{color:var(--b)} .tm{color:var(--mix)}
+
+  /* ---------- header ---------- */
+  .top{display:flex;flex-wrap:wrap;align-items:flex-end;gap:14px;justify-content:space-between;margin-bottom:18px}
+  .brand h1{font-family:"Fraunces",Georgia,serif;font-weight:700;font-size:30px;line-height:1.05;margin:0;letter-spacing:.2px}
+  .brand h1 em{font-style:italic;color:var(--a)}
+  .brand p{margin:5px 0 0;color:var(--muted);font-size:14.5px;font-weight:600}
+  .tabs{display:flex;gap:6px;background:var(--card);border:1px solid var(--ring);border-radius:999px;padding:5px;box-shadow:var(--shadow)}
+  .tab{appearance:none;border:0;background:transparent;font-family:inherit;font-weight:800;font-size:14.5px;color:var(--muted);
+       padding:9px 18px;border-radius:999px;cursor:pointer;transition:.18s;display:flex;align-items:center;gap:7px}
+  .tab svg{width:16px;height:16px}
+  .tab[aria-selected="true"]{background:var(--ink);color:#fff}
+  .tab:not([aria-selected="true"]):hover{color:var(--ink);background:#f1f5fc}
+
+  .view{display:none}
+  .view.on{display:block;animation:fade .35s ease both}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* ---------- formula picker ---------- */
+  .pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .pill{appearance:none;border:1px solid var(--ring);background:var(--card);border-radius:12px;cursor:pointer;
+        padding:9px 13px;font-family:inherit;font-weight:700;font-size:13.5px;color:var(--ink);transition:.16s;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:3px;align-items:flex-start;text-align:left}
+  .pill .nm{color:var(--muted);font-size:11px;font-weight:800;letter-spacing:.3px;text-transform:uppercase}
+  .pill .fm{font-family:"Fraunces",serif;font-size:16px}
+  .pill:hover{border-color:var(--a-bd);transform:translateY(-1px)}
+  .pill[aria-pressed="true"]{border-color:var(--a);background:var(--a-bg);box-shadow:0 0 0 3px var(--a-bg)}
+
+  /* ---------- card ---------- */
+  .card{background:var(--card);border:1px solid var(--ring);border-radius:var(--r);box-shadow:var(--shadow);padding:22px}
+  .detail-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 14px;margin-bottom:4px}
+  .detail-head .kicker{font-size:11.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}
+  .bigformula{font-family:"Fraunces",serif;font-weight:700;font-size:clamp(22px,5.4vw,30px);margin:6px 0 14px;line-height:1.25}
+  .rule{background:#f7f9fd;border-left:3px solid var(--a);border-radius:0 10px 10px 0;padding:11px 14px;color:#36425e;font-size:14.5px;font-weight:600;margin-bottom:18px}
+  .rule b{color:var(--ink)}
+
+  .viz{margin-top:6px}
+  .viz svg{display:block;width:100%;height:auto;max-width:420px;margin:0 auto}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:center;margin-top:12px;font-size:13px;font-weight:700;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .legend i{width:14px;height:14px;border-radius:4px;display:inline-block;border:1px solid rgba(0,0,0,.08)}
+  .viz-formula{font-family:"Fraunces",serif;font-weight:700;font-size:clamp(19px,4.6vw,25px);text-align:center;margin:0 0 14px}
+  .viz-formula .seg{padding:2px 4px;border-radius:7px;cursor:default;transition:.14s}
+  .viz-formula .seg.hl{background:var(--ink);color:#fff !important}
+  .viz-formula .seg.hl .ta,.viz-formula .seg.hl .tb,.viz-formula .seg.hl .tm{color:#fff !important}
+  .cap{color:var(--muted);font-size:13.5px;font-weight:600;text-align:center;margin-top:12px;max-width:430px;margin-left:auto;margin-right:auto}
+  .hint-hover{text-align:center;color:var(--muted);font-size:12.5px;font-weight:700;margin-bottom:10px;opacity:.85}
+
+  rect.region{transition:opacity .15s, filter .15s; cursor:default}
+  .region.hl{filter:brightness(.93) saturate(1.15)}
+  .region-dim{opacity:.28}
+  text.rlbl{font-family:"Fraunces",serif;font-weight:700;font-size:19px;pointer-events:none}
+  text.dim{font-family:"Nunito";font-weight:800;font-size:14px;fill:var(--muted)}
+
+  .btn{appearance:none;border:0;border-radius:12px;cursor:pointer;font-family:inherit;font-weight:800;font-size:15px;padding:12px 20px;transition:.15s;display:inline-flex;align-items:center;gap:8px}
+  .btn-primary{background:var(--a);color:#fff;box-shadow:0 6px 16px -6px var(--a)}
+  .btn-primary:hover{filter:brightness(1.06);transform:translateY(-1px)}
+  .btn-ghost{background:#eef3fb;color:var(--ink)}
+  .btn-ghost:hover{background:#e2eafa}
+  .btn:disabled{opacity:.5;cursor:default;transform:none}
+  .viz-controls{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+
+  /* steps derivation */
+  .steps{max-width:460px;margin:4px auto 0}
+  .step{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(16px,4vw,21px);padding:9px 4px;border-bottom:1px dashed var(--line2);opacity:.18;transform:translateX(-6px);transition:.4s}
+  .step:last-child{border-bottom:0}
+  .step.show{opacity:1;transform:none}
+  .step .eq{color:var(--muted);margin-right:8px;font-style:italic;font-size:.85em}
+  .step small{display:block;font-family:"Nunito";font-weight:700;font-size:12.5px;color:var(--muted);margin-top:2px}
+  .cancel{position:relative}
+  .cancel::after{content:"";position:absolute;left:-2px;right:-2px;top:52%;height:2px;background:var(--no);transform:scaleX(0);transform-origin:left;transition:transform .5s .2s}
+  .step.show .cancel::after{transform:scaleX(1)}
+
+  /* ---------- practice setup ---------- */
+  .setup h2{font-family:"Fraunces",serif;font-weight:700;font-size:21px;margin:0 0 4px}
+  .setup .sub{color:var(--muted);font-size:14px;font-weight:600;margin:0 0 18px}
+  .group-label{font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin:18px 0 9px}
+  .topicgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+  .topic{appearance:none;border:1px solid var(--ring);background:var(--card);border-radius:12px;cursor:pointer;padding:11px 12px;font-family:inherit;text-align:left;transition:.15s;display:flex;align-items:center;gap:10px}
+  .topic .check{width:20px;height:20px;border-radius:6px;border:2px solid var(--ring);flex:0 0 auto;display:flex;align-items:center;justify-content:center;transition:.15s}
+  .topic .check svg{width:12px;height:12px;opacity:0;color:#fff}
+  .topic .t-nm{font-weight:700;font-size:13px;line-height:1.2}
+  .topic .t-fm{font-family:"Fraunces",serif;font-size:14px;color:var(--muted);margin-top:2px}
+  .topic:hover{border-color:var(--a-bd)}
+  .topic[aria-pressed="true"]{border-color:var(--a);background:var(--a-bg)}
+  .topic[aria-pressed="true"] .check{background:var(--a);border-color:var(--a)}
+  .topic[aria-pressed="true"] .check svg{opacity:1}
+  .topic[aria-pressed="true"] .t-fm{color:var(--a)}
+  .topic.all{grid-column:1/-1;background:#f7f9fd}
+  .topic.all[aria-pressed="true"]{background:var(--a-bg)}
+
+  .seg-control{display:inline-flex;background:#eef3fb;border-radius:12px;padding:5px;gap:4px}
+  .seg-control button{appearance:none;border:0;background:transparent;font-family:inherit;font-weight:800;font-size:14px;color:var(--muted);padding:9px 18px;border-radius:9px;cursor:pointer;transition:.15s}
+  .seg-control button[aria-pressed="true"]{background:#fff;color:var(--ink);box-shadow:var(--shadow)}
+  .start-row{margin-top:24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+
+  /* ---------- practice play ---------- */
+  .statbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+  .chip-stat{background:var(--card);border:1px solid var(--ring);border-radius:12px;padding:8px 14px;display:flex;align-items:center;gap:9px;box-shadow:var(--shadow)}
+  .chip-stat .lab{font-size:11px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)}
+  .chip-stat .val{font-family:"Fraunces",serif;font-weight:700;font-size:20px;line-height:1}
+  .flame{width:22px;height:24px;transition:.2s}
+  .flame .f1{fill:#ffcf3f} .flame .f2{fill:#ff8a3c} .flame .f3{fill:#ff5a36}
+  .streakwrap{position:relative}
+  .streakwrap .val{color:var(--b)}
+  .lvlbar{flex:1;min-width:140px;height:12px;background:#eef3fb;border-radius:99px;overflow:hidden;border:1px solid var(--line2);position:relative}
+  .lvlbar > i{position:absolute;inset:0;width:0;background:linear-gradient(90deg,var(--a),var(--mix));border-radius:99px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+  .lvl-badge{font-size:12px;font-weight:800;color:var(--muted)}
+  .exit{margin-left:auto}
+  .exit button{appearance:none;border:1px solid var(--ring);background:var(--card);border-radius:10px;padding:8px 12px;font-family:inherit;font-weight:800;font-size:12.5px;color:var(--muted);cursor:pointer}
+  .exit button:hover{color:var(--ink)}
+
+  .qverb{font-size:13px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--a);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+  .qtag{font-size:10.5px;color:var(--muted);background:#f1f5fc;border-radius:99px;padding:2px 9px;letter-spacing:.3px}
+  .question{font-family:"Fraunces",serif;font-weight:700;font-size:clamp(26px,7vw,40px);margin:0 0 22px;line-height:1.2}
+  .question .blank{display:inline-block;min-width:1.4em;text-align:center;border-bottom:3px solid var(--a);color:var(--a);border-radius:3px;padding:0 .15em}
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  @media(max-width:560px){.opts{grid-template-columns:1fr}}
+  .opt{appearance:none;border:1.5px solid var(--ring);background:var(--card);border-radius:13px;cursor:pointer;
+       padding:16px 16px;font-size:20px;text-align:left;transition:.14s;display:flex;align-items:center;gap:13px;box-shadow:var(--shadow);position:relative}
+  .opt .key{flex:0 0 auto;width:26px;height:26px;border-radius:8px;background:#eef3fb;color:var(--muted);font-family:"Nunito";font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;transition:.14s}
+  .opt:not(:disabled):hover{border-color:var(--a);transform:translateY(-1px)}
+  .opt:not(:disabled):hover .key{background:var(--a);color:#fff}
+  .opt.correct{border-color:var(--ok);background:var(--ok-bg)}
+  .opt.correct .key{background:var(--ok);color:#fff}
+  .opt.wrong{border-color:var(--no);background:var(--no-bg)}
+  .opt.wrong .key{background:var(--no);color:#fff}
+  .opt .mark{margin-left:auto;width:22px;height:22px;opacity:0;flex:0 0 auto}
+  .opt.correct .mark,.opt.wrong .mark{opacity:1}
+  .opt.correct .mark{color:var(--ok)} .opt.wrong .mark{color:var(--no)}
+  .shake{animation:shake .4s}
+  @keyframes shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-4px)}40%,60%{transform:translateX(4px)}}
+  .pop{animation:pop .4s}
+  @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.035)}100%{transform:scale(1)}}
+
+  .feedback{margin-top:18px;border-radius:14px;padding:16px 18px;display:none;animation:fade .3s both}
+  .feedback.show{display:block}
+  .feedback.good{background:var(--ok-bg);border:1px solid var(--ok-bd)}
+  .feedback.bad{background:var(--no-bg);border:1px solid var(--no-bd)}
+  .fb-title{font-family:"Fraunces",serif;font-weight:700;font-size:19px;display:flex;align-items:center;gap:9px;margin-bottom:6px}
+  .feedback.good .fb-title{color:var(--ok)} .feedback.bad .fb-title{color:var(--no)}
+  .fb-why{color:#3b4660;font-size:14.5px;font-weight:600;margin-bottom:10px}
+  .fb-rule{background:rgba(255,255,255,.65);border-radius:10px;padding:11px 13px;font-size:13.5px;color:#3b4660;font-weight:600}
+  .fb-rule .lbl{font-size:11px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:5px}
+  .fb-formula{font-family:"Fraunces",serif;font-weight:700;font-size:18px;margin:2px 0 8px}
+  .fb-eq{font-family:"Fraunces",serif;font-weight:600;font-size:16px;color:var(--ink)}
+  .next-row{margin-top:16px;display:flex;justify-content:flex-end}
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-weight:800;font-size:14px;padding:12px 20px;border-radius:99px;opacity:0;pointer-events:none;transition:.35s;z-index:50;box-shadow:0 10px 30px -8px rgba(0,0,0,.4);display:flex;align-items:center;gap:9px}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast svg{width:18px;height:18px}
+
+  .footnote{text-align:center;color:var(--muted);font-size:12px;font-weight:600;margin-top:22px}
+  @media (prefers-reduced-motion: reduce){*{animation-duration:.001s !important;transition-duration:.05s !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <h1>Формулы <em>сокращённого</em> умножения</h1>
+      <p>Разбери геометрию формул — и закрепи на тренажёре</p>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab" id="tab-theory" role="tab" aria-selected="true" onclick="switchView('theory')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Формулы
+      </button>
+      <button class="tab" id="tab-practice" role="tab" aria-selected="false" onclick="switchView('practice')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+        Тренажёр
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ THEORY ============ -->
+  <section class="view on" id="view-theory">
+    <div class="pills" id="pills"></div>
+    <div class="card" id="detail"></div>
+  </section>
+
+  <!-- ============ PRACTICE ============ -->
+  <section class="view" id="view-practice">
+    <div id="practice-setup"></div>
+    <div id="practice-play" style="display:none"></div>
+  </section>
+
+  <div class="footnote">Обозначения и формулировки — по учебнику алгебры (Макарычев и др.). Знак · опущен: <span class="math"><i>ab</i></span> значит <span class="math"><i>a</i>·<i>b</i></span>.</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   Часть 1. Генератор задач (проверен числовой проверкой тождеств)
+   ============================================================ */
+function mono(c,v){return {c:c,v:Object.assign({},v||{})};}
+function monoMul(a,b){var v=Object.assign({},a.v);for(var k in b.v)v[k]=(v[k]||0)+b.v[k];return {c:a.c*b.c,v:v};}
+function monoPow(a,n){var v={};for(var k in a.v)v[k]=a.v[k]*n;return {c:Math.pow(a.c,n),v:v};}
+function monoScale(k,a){return {c:a.c*k,v:Object.assign({},a.v)};}
+function monoNeg(a){return monoScale(-1,a);}
+
+var VAR_ORDER=['x','y','a','b','c','m','n','p','q','t','k'];
+function supHTML(p){return (p===1||p===undefined)?'':'<sup>'+p+'</sup>';}
+function fmtVarPart(v){var keys=Object.keys(v).filter(function(k){return v[k]!==0;});
+  keys.sort(function(a,b){return VAR_ORDER.indexOf(a)-VAR_ORDER.indexOf(b);});
+  return keys.map(function(k){return '<i>'+k+'</i>'+supHTML(v[k]);}).join('');}
+function fmtMonoAbs(m){var c=Math.abs(m.c);var vp=fmtVarPart(m.v);if(vp==='')return String(c);if(c===1)return vp;return String(c)+vp;}
+function fmtPoly(terms){var t=terms.filter(function(m){return m.c!==0;});if(t.length===0)return '0';var html='';
+  t.forEach(function(m,i){var neg=m.c<0;if(i===0)html+=(neg?'\u2212':'')+fmtMonoAbs(m);else html+=(neg?' \u2212 ':' + ')+fmtMonoAbs(m);});return html;}
+function ansPoly(terms){return {kind:'poly',terms:terms};}
+function ansFact(factors){return {kind:'fact',factors:factors};}
+function F(poly,pow){return {poly:poly,pow:pow||1};}
+function fmtAnswer(ans){if(ans.kind==='poly')return fmtPoly(ans.terms);
+  return ans.factors.map(function(f){return '('+fmtPoly(f.poly)+')'+supHTML(f.pow||1);}).join('');}
+
+function rnd(arr){return arr[Math.floor(Math.random()*arr.length)];}
+var CUBE_FAMILY={cube_sum:1,cube_diff:1,sum_cubes:1,diff_cubes:1};
+function pickTerms(id,diff){
+  var isCube=!!CUBE_FAMILY[id];
+  var LA=rnd(['x','a','m','y','t','p']);var kA;
+  if(diff==='easy')kA=1;else if(diff==='med')kA=isCube?rnd([1,1,2]):rnd([1,2,3]);else kA=isCube?rnd([1,2,2,3]):rnd([1,2,3,4]);
+  var A=mono(kA,(function(){var o={};o[LA]=1;return o;})());
+  var B;var useVar=(diff==='hard'&&Math.random()<0.45)||(diff==='med'&&Math.random()<0.22);
+  if(useVar){var LB=rnd(['b','c','n','y','k'].filter(function(l){return l!==LA;}));
+    var kB=isCube?rnd([1,2]):(diff==='hard'?rnd([1,2,3]):rnd([1,2]));
+    B=mono(kB,(function(){var o={};o[LB]=1;return o;})());
+  }else{var n;
+    if(diff==='easy')n=isCube?rnd([2,3]):rnd([2,3,4,5]);
+    else if(diff==='med')n=isCube?rnd([2,3]):rnd([2,3,4,5,6,7,8,9]);
+    else n=isCube?rnd([2,3,4,5]):rnd([3,4,5,6,7,8,9,10,11,12]);
+    B=mono(n,{});}
+  return {A:A,B:B};
+}
+var TA='<span class="ta">a</span>',TB='<span class="tb">b</span>';
+var GENERAL={
+  sq_sum:'('+TA+' + '+TB+')<sup>2</sup> = '+TA+'<sup>2</sup> + 2'+TA+TB+' + '+TB+'<sup>2</sup>',
+  sq_diff:'('+TA+' \u2212 '+TB+')<sup>2</sup> = '+TA+'<sup>2</sup> \u2212 2'+TA+TB+' + '+TB+'<sup>2</sup>',
+  diff_sq:TA+'<sup>2</sup> \u2212 '+TB+'<sup>2</sup> = ('+TA+' \u2212 '+TB+')('+TA+' + '+TB+')',
+  cube_sum:'('+TA+' + '+TB+')<sup>3</sup> = '+TA+'<sup>3</sup> + 3'+TA+'<sup>2</sup>'+TB+' + 3'+TA+TB+'<sup>2</sup> + '+TB+'<sup>3</sup>',
+  cube_diff:'('+TA+' \u2212 '+TB+')<sup>3</sup> = '+TA+'<sup>3</sup> \u2212 3'+TA+'<sup>2</sup>'+TB+' + 3'+TA+TB+'<sup>2</sup> \u2212 '+TB+'<sup>3</sup>',
+  sum_cubes:TA+'<sup>3</sup> + '+TB+'<sup>3</sup> = ('+TA+' + '+TB+')('+TA+'<sup>2</sup> \u2212 '+TA+TB+' + '+TB+'<sup>2</sup>)',
+  diff_cubes:TA+'<sup>3</sup> \u2212 '+TB+'<sup>3</sup> = ('+TA+' \u2212 '+TB+')('+TA+'<sup>2</sup> + '+TA+TB+' + '+TB+'<sup>2</sup>)'
+};
+var TIP={
+  sq_sum:'Квадрат суммы: квадрат первого, плюс удвоенное произведение, плюс квадрат второго. Слагаемое 2ab забывать нельзя.',
+  sq_diff:'Квадрат разности: средний член со знаком «минус», но последний (b\u00B2) всегда «плюс».',
+  diff_sq:'Разность квадратов = (разность)\u00B7(сумма). Множители отличаются только знаком.',
+  cube_sum:'Куб суммы: коэффициенты 1\u20133\u20133\u20131, все знаки «плюс».',
+  cube_diff:'Куб разности: коэффициенты 1\u20133\u20133\u20131, знаки чередуются: \u2212 + \u2212.',
+  sum_cubes:'Сумма кубов = (сумма)\u00B7(неполный квадрат разности). В трёхчлене средний знак «минус».',
+  diff_cubes:'Разность кубов = (разность)\u00B7(неполный квадрат суммы). В трёхчлене средний знак «плюс».'
+};
+var MODES={
+  sq_sum:['expand','fill_cross','factor'], sq_diff:['expand','fill_lastsign','factor'],
+  diff_sq:['expand','factor','fill_bracket'], cube_sum:['expand','fill_t2'],
+  cube_diff:['expand','fill_t3'], sum_cubes:['factor','fill_tri'], diff_cubes:['factor','fill_tri']
+};
+function genItem(id,diff,forceMode){
+  var t=pickTerms(id,diff);var A=t.A,B=t.B;
+  var A2=monoPow(A,2),A3=monoPow(A,3),B2=monoPow(B,2),B3=monoPow(B,3);
+  var AB=monoMul(A,B),A2B=monoMul(A2,B),AB2=monoMul(A,B2);
+  var mode=forceMode||rnd(MODES[id]);
+  var out={id:id,diff:diff,mode:mode,explanation:{generalHTML:GENERAL[id],specificHTML:'',tip:TIP[id]}};
+  var opts=[];
+  function blank(){return '<span class="blank">?</span>';}
+  var sqSumExp=ansPoly([A2,monoScale(2,AB),B2]);
+  var sqDiffExp=ansPoly([A2,monoScale(-2,AB),B2]);
+  var diffSqExp=ansPoly([A2,monoNeg(B2)]);
+  var cubeSumExp=ansPoly([A3,monoScale(3,A2B),monoScale(3,AB2),B3]);
+  var cubeDiffExp=ansPoly([A3,monoScale(-3,A2B),monoScale(3,AB2),monoNeg(B3)]);
+  var sqSumFac=ansFact([F([A,B],2)]),sqDiffFac=ansFact([F([A,monoNeg(B)],2)]);
+  var diffSqFac=ansFact([F([A,monoNeg(B)]),F([A,B])]);
+  var sumCubesFac=ansFact([F([A,B]),F([A2,monoNeg(AB),B2])]);
+  var diffCubesFac=ansFact([F([A,monoNeg(B)]),F([A2,AB,B2])]);
+
+  if(id==='sq_sum'){
+    if(mode==='expand'){out.promptVerb='Раскрой скобки';out.promptHTML='('+fmtPoly([A,B])+')<sup>2</sup>';out.source=sqSumFac;
+      opts.push({ans:sqSumExp,correct:true});
+      opts.push({ans:ansPoly([A2,B2]),correct:false,why:'Потеряно удвоенное произведение 2ab. Квадрат суммы \u2014 это не сумма квадратов!'});
+      opts.push({ans:ansPoly([A2,AB,B2]),correct:false,why:'Среднее слагаемое нужно удвоить: 2ab, а не ab.'});
+      opts.push({ans:sqDiffExp,correct:false,why:'Это раскрытие квадрата разности \u2014 знаки перепутаны.'});
+    }else if(mode==='fill_cross'){out.promptVerb='Вставь пропущенное';out.promptHTML='('+fmtPoly([A,B])+')<sup>2</sup> = '+fmtPoly([A2])+' + '+blank()+' + '+fmtPoly([B2]);out.identityCheck={lhs:sqSumFac,rhs:sqSumExp};
+      opts.push({ans:ansPoly([monoScale(2,AB)]),correct:true});
+      opts.push({ans:ansPoly([AB]),correct:false,why:'Произведение нужно удвоить.'});
+      opts.push({ans:ansPoly([monoScale(2,monoPow(AB,2))]),correct:false,why:'Произведение не возводят в квадрат, его удваивают.'});
+      opts.push({ans:ansPoly([monoScale(2,A2B)]),correct:false,why:'Лишний множитель: нужно просто 2ab.'});
+    }else{out.promptVerb='Разложи на множители';out.promptHTML=fmtAnswer(sqSumExp);out.source=sqSumExp;
+      opts.push({ans:sqSumFac,correct:true});
+      opts.push({ans:sqDiffFac,correct:false,why:'Все знаки в трёхчлене «плюс» \u2014 значит, это квадрат суммы.'});
+      opts.push({ans:diffSqFac,correct:false,why:'Так раскладывают разность квадратов, а здесь полный квадрат.'});}
+  }
+  else if(id==='sq_diff'){
+    if(mode==='expand'){out.promptVerb='Раскрой скобки';out.promptHTML='('+fmtPoly([A,monoNeg(B)])+')<sup>2</sup>';out.source=sqDiffFac;
+      opts.push({ans:sqDiffExp,correct:true});
+      opts.push({ans:diffSqExp,correct:false,why:'Это разность квадратов. Квадрат разности \u2014 трёхчлен с членом 2ab.'});
+      opts.push({ans:sqSumExp,correct:false,why:'Знак среднего члена должен быть «минус».'});
+      opts.push({ans:ansPoly([A2,B2]),correct:false,why:'Потеряно слагаемое \u22122ab.'});
+    }else if(mode==='fill_lastsign'){out.promptVerb='Вставь пропущенное';out.promptHTML='('+fmtPoly([A,monoNeg(B)])+')<sup>2</sup> = '+fmtPoly([A2,monoScale(-2,AB)])+' '+blank();out.identityCheck={lhs:sqDiffFac,rhs:sqDiffExp};
+      opts.push({ans:ansPoly([B2]),correct:true});
+      opts.push({ans:ansPoly([monoNeg(B2)]),correct:false,why:'Последний член \u2014 квадрат, он всегда «плюс», даже у квадрата разности.'});
+      opts.push({ans:ansPoly([monoScale(2,B2)]),correct:false,why:'Удваивается только средний член, а b\u00B2 \u2014 нет.'});
+      opts.push({ans:ansPoly([B]),correct:false,why:'Нужен квадрат второго слагаемого.'});
+    }else{out.promptVerb='Разложи на множители';out.promptHTML=fmtAnswer(sqDiffExp);out.source=sqDiffExp;
+      opts.push({ans:sqDiffFac,correct:true});
+      opts.push({ans:sqSumFac,correct:false,why:'Средний член со знаком «минус» \u2192 это квадрат разности.'});
+      opts.push({ans:diffSqFac,correct:false,why:'Здесь полный квадрат, а не разность квадратов.'});}
+  }
+  else if(id==='diff_sq'){
+    if(mode==='expand'){out.promptVerb='Раскрой скобки';out.promptHTML='('+fmtPoly([A,monoNeg(B)])+')('+fmtPoly([A,B])+')';out.source=diffSqFac;
+      opts.push({ans:diffSqExp,correct:true});
+      opts.push({ans:ansPoly([A2,B2]),correct:false,why:'Должна получиться разность: a\u00B2 \u2212 b\u00B2.'});
+      opts.push({ans:sqDiffExp,correct:false,why:'Это произведение разности на сумму \u2014 средних членов не остаётся.'});
+      opts.push({ans:ansPoly([monoNeg(A2),B2]),correct:false,why:'Порядок: уменьшаемое \u2014 квадрат первого, a\u00B2 \u2212 b\u00B2.'});
+    }else if(mode==='factor'){out.promptVerb='Разложи на множители';out.promptHTML=fmtAnswer(diffSqExp);out.source=diffSqExp;
+      opts.push({ans:diffSqFac,correct:true});
+      opts.push({ans:sqDiffFac,correct:false,why:'Это разность квадратов: множители (a\u2212b) и (a+b), а не квадрат.'});
+      opts.push({ans:sqSumFac,correct:false,why:'Нужны разные знаки в скобках.'});
+      opts.push({ans:diffCubesFac,correct:false,why:'Так раскладывают разность кубов, а здесь квадраты.'});
+    }else{out.promptVerb='Вставь пропущенное';out.promptHTML=fmtPoly([A2,monoNeg(B2)])+' = ('+fmtPoly([A,monoNeg(B)])+')'+blank();out.identityCheck={lhs:diffSqExp,rhs:diffSqFac};
+      opts.push({ans:ansFact([F([A,B])]),correct:true});
+      opts.push({ans:ansFact([F([A,monoNeg(B)])]),correct:false,why:'Множители отличаются знаком: один с «\u2212», другой с «+».'});
+      opts.push({ans:ansFact([F([A2,B2])]),correct:false,why:'Второй множитель \u2014 сумма (a+b), без квадратов.'});
+      opts.push({ans:ansFact([F([B,monoNeg(A)])]),correct:false,why:'Нужна именно сумма a+b.'});}
+  }
+  else if(id==='cube_sum'){
+    if(mode==='expand'){out.promptVerb='Раскрой скобки';out.promptHTML='('+fmtPoly([A,B])+')<sup>3</sup>';out.source=ansFact([F([A,B],3)]);
+      opts.push({ans:cubeSumExp,correct:true});
+      opts.push({ans:ansPoly([A3,B3]),correct:false,why:'Куб суммы \u2014 не сумма кубов: есть ещё два средних члена.'});
+      opts.push({ans:cubeDiffExp,correct:false,why:'Это куб разности (чередующиеся знаки).'});
+      opts.push({ans:ansPoly([A3,A2B,AB2,B3]),correct:false,why:'Забыты коэффициенты 3 у средних членов.'});
+    }else{out.promptVerb='Вставь пропущенное';out.promptHTML='('+fmtPoly([A,B])+')<sup>3</sup> = '+fmtPoly([A3])+' + '+blank()+' + '+fmtPoly([monoScale(3,AB2),B3]);out.identityCheck={lhs:ansFact([F([A,B],3)]),rhs:cubeSumExp};
+      opts.push({ans:ansPoly([monoScale(3,A2B)]),correct:true});
+      opts.push({ans:ansPoly([A2B]),correct:false,why:'Нужен коэффициент 3: утроенное произведение.'});
+      opts.push({ans:ansPoly([monoScale(3,AB)]),correct:false,why:'Здесь квадрат первого: 3a\u00B2b.'});
+      opts.push({ans:ansPoly([monoScale(3,monoMul(A2,B2))]),correct:false,why:'Второе слагаемое в первой степени: 3a\u00B2b.'});}
+  }
+  else if(id==='cube_diff'){
+    if(mode==='expand'){out.promptVerb='Раскрой скобки';out.promptHTML='('+fmtPoly([A,monoNeg(B)])+')<sup>3</sup>';out.source=ansFact([F([A,monoNeg(B)],3)]);
+      opts.push({ans:cubeDiffExp,correct:true});
+      opts.push({ans:ansPoly([A3,monoNeg(B3)]),correct:false,why:'Куб разности \u2014 не разность кубов: есть средние члены.'});
+      opts.push({ans:cubeSumExp,correct:false,why:'У куба разности знаки чередуются: \u2212 + \u2212.'});
+      opts.push({ans:ansPoly([A3,monoScale(-3,A2B),monoScale(-3,AB2),monoNeg(B3)]),correct:false,why:'Знаки должны чередоваться, а не все «минус».'});
+    }else{out.promptVerb='Вставь пропущенное';out.promptHTML='('+fmtPoly([A,monoNeg(B)])+')<sup>3</sup> = '+fmtPoly([A3,monoScale(-3,A2B)])+' + '+blank()+' '+fmtPoly([monoNeg(B3)]);out.identityCheck={lhs:ansFact([F([A,monoNeg(B)],3)]),rhs:cubeDiffExp};
+      opts.push({ans:ansPoly([monoScale(3,AB2)]),correct:true});
+      opts.push({ans:ansPoly([monoScale(-3,AB2)]),correct:false,why:'Третий член (с b\u00B2) имеет знак «плюс».'});
+      opts.push({ans:ansPoly([AB2]),correct:false,why:'Нужен коэффициент 3.'});
+      opts.push({ans:ansPoly([monoScale(3,A2B)]),correct:false,why:'Здесь квадрат второго: 3ab\u00B2.'});}
+  }
+  else if(id==='sum_cubes'){
+    if(mode==='factor'){out.promptVerb='Разложи на множители';out.promptHTML=fmtPoly([A3,B3]);out.source=ansPoly([A3,B3]);
+      opts.push({ans:sumCubesFac,correct:true});
+      opts.push({ans:ansFact([F([A,B]),F([A2,AB,B2])]),correct:false,why:'В неполном квадрате средний знак «минус»: a\u00B2 \u2212 ab + b\u00B2.'});
+      opts.push({ans:diffCubesFac,correct:false,why:'Сумма кубов \u2192 первая скобка (a + b).'});
+      opts.push({ans:ansFact([F([A,B]),F([A2,B2])]),correct:false,why:'В трёхчлене должно быть три члена с \u2212ab посередине.'});
+    }else{out.promptVerb='Вставь пропущенное';out.promptHTML=fmtPoly([A3,B3])+' = ('+fmtPoly([A,B])+')'+blank();out.identityCheck={lhs:ansPoly([A3,B3]),rhs:sumCubesFac};
+      opts.push({ans:ansFact([F([A2,monoNeg(AB),B2])]),correct:true});
+      opts.push({ans:ansFact([F([A2,AB,B2])]),correct:false,why:'Это неполный квадрат суммы (для разности кубов). Здесь нужен «минус».'});
+      opts.push({ans:ansFact([F([A2,B2])]),correct:false,why:'Нужен трёхчлен a\u00B2 \u2212 ab + b\u00B2.'});
+      opts.push({ans:ansFact([F([A2,monoScale(-2,AB),B2])]),correct:false,why:'Это полный квадрат. Неполный \u2014 без коэффициента 2.'});}
+  }
+  else if(id==='diff_cubes'){
+    if(mode==='factor'){out.promptVerb='Разложи на множители';out.promptHTML=fmtPoly([A3,monoNeg(B3)]);out.source=ansPoly([A3,monoNeg(B3)]);
+      opts.push({ans:diffCubesFac,correct:true});
+      opts.push({ans:ansFact([F([A,monoNeg(B)]),F([A2,monoNeg(AB),B2])]),correct:false,why:'В неполном квадрате средний знак «плюс»: a\u00B2 + ab + b\u00B2.'});
+      opts.push({ans:sumCubesFac,correct:false,why:'Разность кубов \u2192 первая скобка (a \u2212 b).'});
+      opts.push({ans:ansFact([F([A,monoNeg(B)]),F([A2,B2])]),correct:false,why:'В трёхчлене должно быть три члена с +ab посередине.'});
+    }else{out.promptVerb='Вставь пропущенное';out.promptHTML=fmtPoly([A3,monoNeg(B3)])+' = ('+fmtPoly([A,monoNeg(B)])+')'+blank();out.identityCheck={lhs:ansPoly([A3,monoNeg(B3)]),rhs:diffCubesFac};
+      opts.push({ans:ansFact([F([A2,AB,B2])]),correct:true});
+      opts.push({ans:ansFact([F([A2,monoNeg(AB),B2])]),correct:false,why:'Это неполный квадрат разности (для суммы кубов). Здесь нужен «плюс».'});
+      opts.push({ans:ansFact([F([A2,B2])]),correct:false,why:'Нужен трёхчлен a\u00B2 + ab + b\u00B2.'});
+      opts.push({ans:ansFact([F([A2,monoScale(2,AB),B2])]),correct:false,why:'Это полный квадрат. Неполный \u2014 без коэффициента 2.'});}
+  }
+  var correct=opts.find(function(o){return o.correct;});
+  if(out.source)out.explanation.specificHTML=out.promptHTML+' = '+fmtAnswer(correct.ans);
+  else if(out.identityCheck)out.explanation.specificHTML=fmtAnswer(out.identityCheck.lhs)+' = '+fmtAnswer(out.identityCheck.rhs);
+  out.options=opts;return out;
+}
+
+/* ============================================================
+   Часть 2. Раздел «Формулы» (теория + геометрия)
+   ============================================================ */
+var FORMULAS=[
+  {id:'sq_sum',  short:'Квадрат суммы',     fm:'(a+b)\u00B2',  viz:'sqSum'},
+  {id:'sq_diff', short:'Квадрат разности',  fm:'(a\u2212b)\u00B2', viz:'sqDiff'},
+  {id:'diff_sq', short:'Разность квадратов', fm:'a\u00B2\u2212b\u00B2', viz:'diffSq'},
+  {id:'cube_sum',short:'Куб суммы',         fm:'(a+b)\u00B3',  viz:'steps'},
+  {id:'cube_diff',short:'Куб разности',     fm:'(a\u2212b)\u00B3', viz:'steps'},
+  {id:'sum_cubes',short:'Сумма кубов',      fm:'a\u00B3+b\u00B3', viz:'steps'},
+  {id:'diff_cubes',short:'Разность кубов',  fm:'a\u00B3\u2212b\u00B3', viz:'steps'}
+];
+var RULES={
+  sq_sum:'<b>Квадрат суммы</b> равен квадрату первого выражения <b>плюс</b> удвоенное произведение первого и второго <b>плюс</b> квадрат второго.',
+  sq_diff:'<b>Квадрат разности</b> равен квадрату первого <b>минус</b> удвоенное произведение первого и второго <b>плюс</b> квадрат второго.',
+  diff_sq:'<b>Разность квадратов</b> равна произведению разности этих выражений и их суммы.',
+  cube_sum:'<b>Куб суммы</b>: куб первого, плюс утроенное произведение квадрата первого на второе, плюс утроенное произведение первого на квадрат второго, плюс куб второго.',
+  cube_diff:'<b>Куб разности</b> — то же, но знаки чередуются: <b>\u2212 + \u2212</b>.',
+  sum_cubes:'<b>Сумма кубов</b> равна произведению суммы выражений и неполного квадрата их разности (a\u00B2 \u2212 ab + b\u00B2).',
+  diff_cubes:'<b>Разность кубов</b> равна произведению разности выражений и неполного квадрата их суммы (a\u00B2 + ab + b\u00B2).'
+};
+/* пошаговые выводы для кубов */
+function stepsFor(id){
+  var a='<span class="ta"><i>a</i></span>', b='<span class="tb"><i>b</i></span>';
+  function p(n){return '<sup>'+n+'</sup>';}
+  if(id==='cube_sum') return {
+    intro:'Куб — это квадрат, умноженный ещё раз. Разложим по шагам:',
+    steps:[
+      {eq:'',html:'('+a+' + '+b+')'+p(3)+' = ('+a+' + '+b+')('+a+' + '+b+')'+p(2)},
+      {eq:'=',html:'('+a+' + '+b+')('+a+p(2)+' + 2'+a+b+' + '+b+p(2)+')'},
+      {eq:'=',html:a+'('+a+p(2)+'+2'+a+b+'+'+b+p(2)+') + '+b+'('+a+p(2)+'+2'+a+b+'+'+b+p(2)+')'},
+      {eq:'=',html:a+p(3)+' + 2'+a+p(2)+b+' + '+a+b+p(2)+' + '+a+p(2)+b+' + 2'+a+b+p(2)+' + '+b+p(3),small:'раскрыли скобки'},
+      {eq:'=',html:a+p(3)+' + 3'+a+p(2)+b+' + 3'+a+b+p(2)+' + '+b+p(3),small:'привели подобные: 2+1=3 и 1+2=3'}
+    ]};
+  if(id==='cube_diff') return {
+    intro:'Аналогично кубу суммы, только со знаком «минус»:',
+    steps:[
+      {eq:'',html:'('+a+' \u2212 '+b+')'+p(3)+' = ('+a+' \u2212 '+b+')('+a+' \u2212 '+b+')'+p(2)},
+      {eq:'=',html:'('+a+' \u2212 '+b+')('+a+p(2)+' \u2212 2'+a+b+' + '+b+p(2)+')'},
+      {eq:'=',html:a+p(3)+' \u2212 2'+a+p(2)+b+' + '+a+b+p(2)+' \u2212 '+a+p(2)+b+' + 2'+a+b+p(2)+' \u2212 '+b+p(3),small:'раскрыли скобки'},
+      {eq:'=',html:a+p(3)+' \u2212 3'+a+p(2)+b+' + 3'+a+b+p(2)+' \u2212 '+b+p(3),small:'знаки чередуются: \u2212 + \u2212'}
+    ]};
+  if(id==='sum_cubes') return {
+    intro:'Проверим формулу, перемножив скобки. Средние члены сократятся:',
+    steps:[
+      {eq:'',html:'('+a+' + '+b+')('+a+p(2)+' \u2212 '+a+b+' + '+b+p(2)+')'},
+      {eq:'=',html:a+p(2+1-2)+'... ',hide:true},
+      {eq:'=',html:a+'('+a+p(2)+'\u2212'+a+b+'+'+b+p(2)+') + '+b+'('+a+p(2)+'\u2212'+a+b+'+'+b+p(2)+')'},
+      {eq:'=',html:a+p(3)+' <span class="cancel">\u2212 '+a+p(2)+b+'</span> + '+a+b+p(2)+' <span class="cancel">+ '+a+p(2)+b+'</span> <span class="cancel">\u2212 '+a+b+p(2)+'</span> + '+b+p(3),small:'противоположные члены сокращаются'},
+      {eq:'=',html:a+p(3)+' + '+b+p(3),small:'остаётся сумма кубов'}
+    ].filter(function(s){return !s.hide;})};
+  if(id==='diff_cubes') return {
+    intro:'Проверим формулу. Средние члены снова сократятся:',
+    steps:[
+      {eq:'',html:'('+a+' \u2212 '+b+')('+a+p(2)+' + '+a+b+' + '+b+p(2)+')'},
+      {eq:'=',html:a+'('+a+p(2)+'+'+a+b+'+'+b+p(2)+') \u2212 '+b+'('+a+p(2)+'+'+a+b+'+'+b+p(2)+')'},
+      {eq:'=',html:a+p(3)+' <span class="cancel">+ '+a+p(2)+b+'</span> + '+a+b+p(2)+' <span class="cancel">\u2212 '+a+p(2)+b+'</span> <span class="cancel">\u2212 '+a+b+p(2)+'</span> \u2212 '+b+p(3),small:'противоположные члены сокращаются'},
+      {eq:'=',html:a+p(3)+' \u2212 '+b+p(3),small:'остаётся разность кубов'}
+    ]};
+}
+
+var selectedFormula='sq_sum';
+function renderPills(){
+  var html=FORMULAS.map(function(f){
+    return '<button class="pill" aria-pressed="'+(f.id===selectedFormula)+'" onclick="selectFormula(\''+f.id+'\')">'+
+      '<span class="nm">'+f.short+'</span><span class="fm math">'+fmtSmall(f.fm)+'</span></button>';
+  }).join('');
+  document.getElementById('pills').innerHTML=html;
+}
+function fmtSmall(s){ // turn a²,b² text into sup
+  return s.replace(/\u00B2/g,'<sup>2</sup>').replace(/\u00B3/g,'<sup>3</sup>').replace(/a/g,'<i>a</i>').replace(/b/g,'<i>b</i>');
+}
+function selectFormula(id){selectedFormula=id;renderPills();renderDetail();}
+
+function renderDetail(){
+  var f=FORMULAS.find(function(x){return x.id===selectedFormula;});
+  var box=document.getElementById('detail');
+  var head='<div class="detail-head"><span class="kicker">'+f.short+'</span></div>'+
+           '<div class="bigformula math">'+GENERAL[f.id]+'</div>'+
+           '<div class="rule">'+RULES[f.id]+'</div>';
+  box.innerHTML=head+'<div class="viz" id="viz"></div>';
+  var viz=document.getElementById('viz');
+  if(f.viz==='sqSum')vizSquareSum(viz);
+  else if(f.viz==='sqDiff')vizSquareDiff(viz);
+  else if(f.viz==='diffSq')vizDiffSquares(viz);
+  else vizSteps(viz,f.id);
+}
+
+/* ---- интерактивный квадрат суммы ---- */
+function hoverLink(scope){
+  var nodes=scope.querySelectorAll('[data-h]');
+  function set(key,on){
+    scope.querySelectorAll('[data-h]').forEach(function(n){
+      if(n.getAttribute('data-h')===key){
+        if(n.tagName.toLowerCase()==='rect') n.classList.toggle('hl',on);
+        else n.classList.toggle('hl',on);
+      }
+    });
+  }
+  nodes.forEach(function(n){
+    var key=n.getAttribute('data-h');
+    n.addEventListener('pointerenter',function(){set(key,true);});
+    n.addEventListener('pointerleave',function(){set(key,false);});
+  });
+}
+function vizSquareSum(host){
+  var ox=70,oy=22,aL=176,bL=96; // a:b lengths
+  var s=
+  '<div class="hint-hover">Наведи на часть формулы или на квадрат — увидишь, что чему равно</div>'+
+  '<div class="viz-formula math">'+
+    '<span class="seg" data-h="res">('+TA+'+'+TB+')<sup>2</sup></span> = '+
+    '<span class="seg" data-h="a2">'+TA+'<sup>2</sup></span> + '+
+    '<span class="seg" data-h="ab">2'+TA+TB+'</span> + '+
+    '<span class="seg" data-h="b2">'+TB+'<sup>2</sup></span></div>'+
+  '<svg viewBox="0 0 '+(ox+aL+bL+24)+' '+(oy+aL+bL+30)+'">'+
+    rect(ox,oy,aL,aL,'var(--a-bg)','var(--a-bd)','a2')+
+    rect(ox+aL,oy,bL,aL,'var(--mix-bg)','var(--mix-bd)','ab')+
+    rect(ox,oy+aL,aL,bL,'var(--mix-bg)','var(--mix-bd)','ab')+
+    rect(ox+aL,oy+aL,bL,bL,'var(--b-bg)','var(--b-bd)','b2')+
+    rectOutline(ox,oy,aL+bL,aL+bL,'res')+
+    rlbl(ox+aL/2,oy+aL/2,'<tspan>a</tspan>',TA_C,2,'a2')+
+    rlbl(ox+aL+bL/2,oy+aL/2,'ab',MIX_C,0,'ab')+
+    rlbl(ox+aL/2,oy+aL+bL/2,'ab',MIX_C,0,'ab')+
+    rlbl(ox+aL+bL/2,oy+aL+bL/2,'b',B_C,2,'b2')+
+    edge(ox,oy-7,aL,'a',TA_C)+edge(ox+aL,oy-7,bL,'b',B_C)+
+    edgeV(ox-9,oy,aL,'a',TA_C)+edgeV(ox-9,oy+aL,bL,'b',B_C)+
+  '</svg>'+
+  '<div class="legend"><span><i style="background:var(--a-bg);border-color:var(--a-bd)"></i> a\u00B2</span>'+
+    '<span><i style="background:var(--mix-bg);border-color:var(--mix-bd)"></i> ab (два прямоугольника = 2ab)</span>'+
+    '<span><i style="background:var(--b-bg);border-color:var(--b-bd)"></i> b\u00B2</span></div>'+
+  '<div class="cap">Площадь большого квадрата со стороной (a+b) складывается из четырёх частей. Два одинаковых прямоугольника дают <b>2ab</b> — поэтому этот член нельзя терять.</div>';
+  host.innerHTML=s;hoverLink(host);
+}
+/* ---- интерактивный квадрат разности ---- */
+function vizSquareDiff(host){
+  var ox=70,oy=22,aL=200,bL=72,cL=aL-bL;
+  var s=
+  '<div class="hint-hover">Наведи на часть формулы или на рисунок</div>'+
+  '<div class="viz-formula math">'+
+    '<span class="seg" data-h="res">('+TA+'\u2212'+TB+')<sup>2</sup></span> = '+
+    '<span class="seg" data-h="a2">'+TA+'<sup>2</sup></span> \u2212 '+
+    '<span class="seg" data-h="ab">2'+TA+TB+'</span> + '+
+    '<span class="seg" data-h="b2">'+TB+'<sup>2</sup></span></div>'+
+  '<svg viewBox="0 0 '+(ox+aL+24)+' '+(oy+aL+30)+'">'+
+    rect(ox,oy,aL,bL,'var(--b-bg)','var(--b-bd)','ab')+            /* верхняя полоса ab */
+    rect(ox+cL,oy,bL,aL,'var(--b-bg)','var(--b-bd)','ab')+         /* правая полоса ab */
+    rect(ox+cL,oy,bL,bL,'var(--mix-bg)','var(--mix-bd)','b2')+     /* уголок b² (двойной) */
+    rect(ox,oy+bL,cL,cL,'var(--a-bg)','var(--a-bd)','res')+        /* остаток (a−b)² */
+    rectOutline(ox,oy,aL,aL,'a2')+
+    rlbl(ox+cL/2,oy+bL+cL/2,'(a\u2212b)',A_C,2,'res',13)+
+    rlbl(ox+cL/2,oy+bL/2,'ab',B_C,0,'ab',16)+
+    rlbl(ox+cL+bL/2,oy+bL+ (aL-bL)/2,'ab',B_C,0,'ab',16)+
+    rlbl(ox+cL+bL/2,oy+bL/2,'b',MIX_C,2,'b2',16)+
+    edgeV(ox-9,oy,aL,'a',TA_C)+edge(ox,oy-7,aL,'a',TA_C)+
+  '</svg>'+
+  '<div class="legend"><span><i style="background:var(--a-bg);border-color:var(--a-bd)"></i> (a\u2212b)\u00B2</span>'+
+    '<span><i style="background:var(--b-bg);border-color:var(--b-bd)"></i> полоса ab (их две = 2ab)</span>'+
+    '<span><i style="background:var(--mix-bg);border-color:var(--mix-bd)"></i> уголок b\u00B2</span></div>'+
+  '<div class="cap">Из квадрата <b>a\u00B2</b> убираем две полосы <b>ab</b>. Уголок <b>b\u00B2</b> попал в обе полосы, то есть вычтен дважды, — поэтому его прибавляют обратно: a\u00B2 \u2212 2ab <b>+ b\u00B2</b>.</div>';
+  host.innerHTML=s;hoverLink(host);
+}
+/* ---- анимация разности квадратов ---- */
+var diffSqAnim=null;
+function vizDiffSquares(host){
+  var ox=64,oy=26,aL=190,bL=70,cL=aL-bL;
+  var vbW=ox+aL+bL+30, vbH=oy+aL+34;
+  var s=
+  '<svg viewBox="0 0 '+vbW+' '+vbH+'" id="dsvg">'+
+    /* нижняя деталь a×(a−b) — не двигается */
+    '<g id="dsLow"><rect class="region" x="'+ox+'" y="'+(oy+bL)+'" width="'+aL+'" height="'+cL+'" fill="var(--a-bg)" stroke="var(--a-bd)" stroke-width="2" rx="2"/></g>'+
+    /* верхняя деталь (a−b)×b — поворачивается */
+    '<g id="dsTop"><rect x="'+ox+'" y="'+oy+'" width="'+cL+'" height="'+bL+'" fill="var(--b-bg)" stroke="var(--b-bd)" stroke-width="2" rx="2"/></g>'+
+    /* начальное оформление: вырезанный уголок b² и размеры «a» */
+    '<g id="dsInit" style="transition:opacity .45s">'+
+      '<rect x="'+(ox+cL)+'" y="'+oy+'" width="'+bL+'" height="'+bL+'" fill="none" stroke="var(--no)" stroke-width="2" stroke-dasharray="5 4" rx="2"/>'+
+      '<text class="dim" x="'+(ox+cL+bL/2)+'" y="'+(oy+bL/2+5)+'" text-anchor="middle" fill="var(--no)" font-style="italic">b\u00B2</text>'+
+      edge(ox,oy-7,aL,'a',A_C)+edgeV(ox-9,oy,aL,'a',A_C)+
+    '</g>'+
+    '<g id="dsLabels"></g>'+
+  '</svg>'+
+  '<div class="viz-controls">'+
+    '<button class="btn btn-primary" id="dsPlay">Показать превращение</button>'+
+    '<button class="btn btn-ghost" id="dsReset" disabled>Заново</button>'+
+  '</div>'+
+  '<div class="cap" id="dsCap">Из квадрата со стороной <b>a</b> вырезали квадрат <b>b\u00B2</b>. Получилась фигура площадью <b>a\u00B2 \u2212 b\u00B2</b>. Нажми кнопку — и две её части сложатся в прямоугольник.</div>';
+  host.innerHTML=s;
+
+  var top=document.getElementById('dsTop');
+  var labels=document.getElementById('dsLabels');
+  var init=document.getElementById('dsInit');
+  var cap=document.getElementById('dsCap');
+  var playBtn=document.getElementById('dsPlay'), resetBtn=document.getElementById('dsReset');
+  var Csx=ox+cL/2, Csy=oy+bL/2;                          // центр верхней детали (в её координатах)
+  var cx1=ox+aL+bL/2, cy1=oy+bL+cL/2;                    // центр детали в финале
+  function setT(t){
+    var cx=Csx+(cx1-Csx)*t, cy=Csy+(cy1-Csy)*t, ang=90*t;
+    top.setAttribute('transform','translate('+cx+','+cy+') rotate('+ang+') translate('+(-Csx)+','+(-Csy)+')');
+  }
+  setT(0);
+  function play(){
+    playBtn.disabled=true; if(diffSqAnim)cancelAnimationFrame(diffSqAnim);
+    var dur=1100, t0=performance.now();
+    init.style.opacity='0';
+    (function frame(now){
+      var t=Math.min(1,(now-t0)/dur);
+      var e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+      setT(e);
+      if(t<1){diffSqAnim=requestAnimationFrame(frame);}
+      else{
+        resetBtn.disabled=false;
+        labels.innerHTML=
+          edge(ox,oy+bL-12,aL+bL,'a + b',A_C)+
+          edgeV(ox-10,oy+bL,cL,'a \u2212 b',B_C)+
+          '<text class="rlbl" x="'+(ox+(aL+bL)/2)+'" y="'+(oy+bL+cL/2+7)+'" text-anchor="middle" fill="var(--ink)" font-size="17">(a+b)(a\u2212b)</text>';
+        cap.innerHTML='Те же две части сложились в прямоугольник со сторонами <b>(a+b)</b> и <b>(a\u2212b)</b>. Значит, <span class="math"><span class="ta"><i>a</i></span><sup>2</sup> \u2212 <span class="tb"><i>b</i></span><sup>2</sup> = (<span class="ta"><i>a</i></span>+<span class="tb"><i>b</i></span>)(<span class="ta"><i>a</i></span>\u2212<span class="tb"><i>b</i></span>)</span>.';
+      }
+    })(t0);
+  }
+  function reset(){
+    if(diffSqAnim)cancelAnimationFrame(diffSqAnim);
+    setT(0); labels.innerHTML=''; init.style.opacity='1';
+    resetBtn.disabled=true; playBtn.disabled=false;
+    cap.innerHTML='Из квадрата со стороной <b>a</b> вырезали квадрат <b>b\u00B2</b>. Получилась фигура площадью <b>a\u00B2 \u2212 b\u00B2</b>. Нажми кнопку — и две её части сложатся в прямоугольник.';
+  }
+  playBtn.onclick=play; resetBtn.onclick=reset;
+}
+/* ---- пошаговый вывод (кубы) ---- */
+function vizSteps(host,id){
+  var d=stepsFor(id);
+  var stepsHTML=d.steps.map(function(s,i){
+    return '<div class="step math" data-i="'+i+'"><span class="eq">'+(s.eq||'&nbsp;')+'</span>'+s.html+(s.small?'<small>'+s.small+'</small>':'')+'</div>';
+  }).join('');
+  host.innerHTML=
+    '<div class="cap" style="margin-top:0;margin-bottom:6px">'+d.intro+'</div>'+
+    '<div class="steps">'+stepsHTML+'</div>'+
+    '<div class="viz-controls">'+
+      '<button class="btn btn-ghost" id="stPrev" disabled>\u2190 Шаг назад</button>'+
+      '<button class="btn btn-primary" id="stNext">Следующий шаг \u2192</button>'+
+      '<button class="btn btn-ghost" id="stAll">Показать всё</button>'+
+    '</div>';
+  var shown=1, total=d.steps.length;
+  var prev=document.getElementById('stPrev'),next=document.getElementById('stNext'),all=document.getElementById('stAll');
+  function paint(){
+    host.querySelectorAll('.step').forEach(function(st,i){st.classList.toggle('show',i<shown);});
+    prev.disabled=shown<=1; next.disabled=shown>=total;
+    if(shown>=total){next.textContent='Готово ✓';} else {next.textContent='Следующий шаг \u2192';}
+  }
+  next.onclick=function(){if(shown<total){shown++;paint();}};
+  prev.onclick=function(){if(shown>1){shown--;paint();}};
+  all.onclick=function(){shown=total;paint();};
+  paint();
+}
+
+/* SVG-помощники */
+var TA_C='var(--a)',B_C='var(--b)',MIX_C='var(--mix)',A_C='var(--a)';
+function rect(x,y,w,h,fill,stroke,key){return '<rect class="region" data-h="'+key+'" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="2" rx="2"/>';}
+function rectOutline(x,y,w,h,key){return '<rect class="region outline" data-h="'+key+'" x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="none" stroke="var(--ink)" stroke-width="0" rx="2" style="pointer-events:none"/>';}
+function rlbl(x,y,letter,color,pow,key,size){var sz=size||19;var sup=pow?'<tspan font-size="'+(sz*0.62)+'" dy="-'+(sz*0.4)+'">'+pow+'</tspan>':'';
+  return '<text class="rlbl" data-h="'+key+'" x="'+x+'" y="'+(y+sz*0.34)+'" text-anchor="middle" fill="'+color+'" font-size="'+sz+'" font-style="italic">'+letter+sup+'</text>';}
+function edge(x,y,w,label,color){return '<text class="dim" x="'+(x+w/2)+'" y="'+y+'" text-anchor="middle" fill="'+color+'">'+label+'</text>';}
+function edgeV(x,y,h,label,color){return '<text class="dim" x="'+x+'" y="'+(y+h/2)+'" text-anchor="middle" fill="'+color+'" transform="rotate(-90 '+x+' '+(y+h/2)+')">'+label+'</text>';}
+
+/* hl для rect через CSS-класс — добавим стиль */
+(function(){var st=document.createElement('style');
+  st.textContent='.region.hl{filter:brightness(.9) saturate(1.2)} text.rlbl.hl{font-weight:800} .region.outline.hl{stroke-width:3}';
+  document.head.appendChild(st);})();
+
+/* ============================================================
+   Часть 3. Тренажёр (игровой режим)
+   ============================================================ */
+var ALL_TOPICS=FORMULAS.map(function(f){return f.id;});
+var pSel={topics:ALL_TOPICS.slice(),diff:'med'};
+var pState=null;
+var GOOD=['Верно!','Точно!','В яблочко!','Так держать!','Отлично!','Чисто!'];
+var BAD=['Почти!','Не совсем','Мимо','Чуть-чуть не то'];
+
+function renderSetup(){
+  var topics=FORMULAS.map(function(f){
+    var on=pSel.topics.indexOf(f.id)>=0;
+    return '<button class="topic" aria-pressed="'+on+'" onclick="toggleTopic(\''+f.id+'\')">'+
+      '<span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>'+
+      '<span><span class="t-nm">'+f.short+'</span><span class="t-fm math">'+fmtSmall(f.fm)+'</span></span></button>';
+  }).join('');
+  var allOn=pSel.topics.length===ALL_TOPICS.length;
+  var allBtn='<button class="topic all" aria-pressed="'+allOn+'" onclick="toggleAll()">'+
+      '<span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>'+
+      '<span><span class="t-nm">Все формулы</span><span class="t-fm" style="font-family:Nunito;font-weight:700">смешанный режим</span></span></button>';
+  document.getElementById('practice-setup').innerHTML=
+    '<div class="card setup">'+
+      '<h2>Настрой тренировку</h2>'+
+      '<p class="sub">Выбери формулы и уровень — тренажёр сам подберёт задания и подскажет, если ошибёшься.</p>'+
+      '<div class="group-label">Что тренируем</div>'+
+      allBtn+
+      '<div class="topicgrid" style="margin-top:8px">'+topics+'</div>'+
+      '<div class="group-label">Уровень</div>'+
+      '<div class="seg-control" role="group">'+
+        seg('easy','Лёгкий')+seg('med','Средний')+seg('hard','Сложный')+
+      '</div>'+
+      '<div class="start-row">'+
+        '<button class="btn btn-primary" onclick="startPractice()" '+(pSel.topics.length?'':'disabled')+'>Начать тренировку</button>'+
+        '<span class="lvl-badge" id="diffHint">'+diffHint(pSel.diff)+'</span>'+
+      '</div>'+
+    '</div>';
+}
+function seg(v,label){return '<button aria-pressed="'+(pSel.diff===v)+'" onclick="setDiff(\''+v+'\')">'+label+'</button>';}
+function diffHint(d){return d==='easy'?'Простые числа, базовые формулы':d==='med'?'Коэффициенты и разные знаки':'Буквенные слагаемые, кубы, разложение';}
+function toggleTopic(id){var i=pSel.topics.indexOf(id);if(i>=0)pSel.topics.splice(i,1);else pSel.topics.push(id);renderSetup();}
+function toggleAll(){pSel.topics=pSel.topics.length===ALL_TOPICS.length?[]:ALL_TOPICS.slice();renderSetup();}
+function setDiff(d){pSel.diff=d;renderSetup();}
+
+function startPractice(){
+  if(!pSel.topics.length)return;
+  pState={solved:0,correct:0,streak:0,best:0,answered:false,item:null,topics:pSel.topics.slice(),diff:pSel.diff};
+  document.getElementById('practice-setup').style.display='none';
+  var play=document.getElementById('practice-play');play.style.display='block';
+  play.innerHTML=
+    '<div class="statbar">'+
+      '<div class="chip-stat"><span><span class="lab">Очки</span><div class="val" id="stScore">0</div></span></div>'+
+      '<div class="chip-stat streakwrap">'+flameSVG()+'<span><span class="lab">Серия</span><div class="val" id="stStreak">0</div></span></div>'+
+      '<span class="lvl-badge" id="stLvl">Уровень 1</span>'+
+      '<div class="lvlbar"><i id="stBar"></i></div>'+
+      '<div class="exit"><button onclick="exitPractice()">Настройки</button></div>'+
+    '</div>'+
+    '<div class="card" id="qcard"></div>';
+  nextQuestion();
+}
+function exitPractice(){
+  document.getElementById('practice-play').style.display='none';
+  document.getElementById('practice-setup').style.display='block';
+  renderSetup();
+}
+function flameSVG(){return '<svg class="flame" id="flame" viewBox="0 0 24 26"><path class="f3" d="M12 0c1 4 4 5 4 9a4 4 0 0 1-8 0c0-1 .3-2 1-3-2 1-4 4-4 8a7 7 0 0 0 14 0c0-7-6-9-7-14z"/><path class="f2" d="M12 7c.6 2 2.5 3 2.5 5.5A2.5 2.5 0 0 1 9.5 13c0-2 1.5-3 2.5-6z" opacity=".0"/></svg>';}
+
+function nextQuestion(){
+  pState.answered=false;
+  var id=pState.topics[Math.floor(Math.random()*pState.topics.length)];
+  var item=genItem(id,pState.diff);
+  pState.item=item;
+  // перемешать варианты
+  var opts=item.options.slice();
+  for(var i=opts.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=opts[i];opts[i]=opts[j];opts[j]=tmp;}
+  pState.shuffled=opts;
+  var keys=['A','B','C','D'];
+  var fdef=FORMULAS.find(function(f){return f.id===id;});
+  var optsHTML=opts.map(function(o,i){
+    return '<button class="opt" data-i="'+i+'" onclick="choose('+i+')">'+
+      '<span class="key">'+keys[i]+'</span><span class="math">'+fmtAnswer(o.ans)+'</span>'+
+      '<svg class="mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></svg></button>';
+  }).join('');
+  document.getElementById('qcard').innerHTML=
+    '<div class="qverb">'+item.promptVerb+'<span class="qtag">'+fdef.short+'</span></div>'+
+    '<div class="question math">'+item.promptHTML+'</div>'+
+    '<div class="opts">'+optsHTML+'</div>'+
+    '<div class="feedback" id="feedback"></div>'+
+    '<div class="next-row" id="nextRow" style="display:none"><button class="btn btn-primary" onclick="nextQuestion()">Дальше \u2192</button></div>';
+}
+function choose(i){
+  if(pState.answered)return;
+  pState.answered=true;
+  var opts=pState.shuffled;
+  var picked=opts[i];
+  var correctIdx=opts.findIndex(function(o){return o.correct;});
+  var btns=document.querySelectorAll('.opt');
+  btns.forEach(function(b){b.disabled=true;});
+  // отметки
+  var checkSvg='<polyline points="20 6 9 17 4 12"/>',xSvg='<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>';
+  btns[correctIdx].classList.add('correct');btns[correctIdx].querySelector('.mark').innerHTML=checkSvg;
+  pState.solved++;
+  var fb=document.getElementById('feedback');
+  if(picked.correct){
+    btns[i].classList.add('pop');
+    pState.correct++;pState.streak++;if(pState.streak>pState.best)pState.best=pState.streak;
+    fb.className='feedback good show';
+    fb.innerHTML='<div class="fb-title">'+iconOk()+rnd(GOOD)+'</div>'+ruleBlock();
+    if(pState.streak>=3) showToast(flameMini()+'Серия '+pState.streak+'!');
+  }else{
+    btns[i].classList.add('wrong','shake');btns[i].querySelector('.mark').innerHTML=xSvg;
+    pState.streak=0;
+    fb.className='feedback bad show';
+    fb.innerHTML='<div class="fb-title">'+iconNo()+rnd(BAD)+'</div>'+
+      (picked.why?'<div class="fb-why">'+picked.why+'</div>':'')+ruleBlock();
+  }
+  document.getElementById('nextRow').style.display='flex';
+  updateStats();
+}
+function ruleBlock(){
+  var it=pState.item;
+  return '<div class="fb-rule"><span class="lbl">Правило</span>'+
+    '<div class="fb-formula math">'+it.explanation.generalHTML+'</div>'+
+    '<div style="margin:6px 0 8px">'+it.explanation.tip+'</div>'+
+    '<span class="lbl">В этой задаче</span>'+
+    '<div class="fb-eq math">'+it.explanation.specificHTML+'</div></div>';
+}
+function updateStats(){
+  document.getElementById('stScore').textContent=pState.correct*10;
+  document.getElementById('stStreak').textContent=pState.streak;
+  var lvl=Math.floor(pState.correct/5)+1;
+  document.getElementById('stLvl').textContent='Уровень '+lvl;
+  document.getElementById('stBar').style.width=((pState.correct%5)/5*100)+'%';
+  var flame=document.getElementById('flame');
+  if(flame){var sc=1+Math.min(pState.streak,8)*0.05;flame.style.transform='scale('+sc+')';flame.style.filter=pState.streak>=3?'drop-shadow(0 0 6px rgba(255,120,50,.6))':'none';}
+}
+function iconOk(){return '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';}
+function iconNo(){return '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';}
+function flameMini(){return '<svg viewBox="0 0 24 26" width="16" height="17"><path fill="#ff8a3c" d="M12 0c1 4 4 5 4 9a4 4 0 0 1-8 0c0-1 .3-2 1-3-2 1-4 4-4 8a7 7 0 0 0 14 0c0-7-6-9-7-14z"/></svg>';}
+var toastT=null;
+function showToast(html){var t=document.getElementById('toast');t.innerHTML=html;t.classList.add('show');
+  if(toastT)clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},1600);}
+
+/* клавиатура: 1-4 выбор, Enter — дальше */
+document.addEventListener('keydown',function(e){
+  var play=document.getElementById('practice-play');
+  if(document.getElementById('view-practice').classList.contains('on') && pState && play && play.style.display!=='none'){
+    if(!pState.answered && ['1','2','3','4'].indexOf(e.key)>=0){
+      var idx=parseInt(e.key)-1;var btns=document.querySelectorAll('.opt');if(btns[idx])choose(idx);
+    }else if(pState.answered && (e.key==='Enter'||e.key===' ')){
+      var nr=document.getElementById('nextRow');if(nr&&nr.style.display!=='none'){e.preventDefault();nextQuestion();}
+    }
+  }
+});
+
+/* ============================================================
+   Часть 4. Навигация и старт
+   ============================================================ */
+function switchView(v){
+  document.getElementById('tab-theory').setAttribute('aria-selected',v==='theory');
+  document.getElementById('tab-practice').setAttribute('aria-selected',v==='practice');
+  document.getElementById('view-theory').classList.toggle('on',v==='theory');
+  document.getElementById('view-practice').classList.toggle('on',v==='practice');
+}
+renderPills();renderDetail();renderSetup();
+</script>
+</body>
+</html>
