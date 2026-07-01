@@ -4,244 +4,60 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Тренажёры — MathExam</title>
-
-  <!-- ВАЖНО: style.css лежит в корне сайта, поэтому тут ../ -->
-  <link rel="stylesheet" href="../style.css" />
+  <meta name="description" content="Каталог основных тренажёров MathExam по темам." />
+  <style>
+    :root{color-scheme:light;--bg:#f6f7fb;--panel:#fff;--ink:#172033;--muted:#647086;--line:#dfe5ef;--blue:#2563eb;--teal:#0f766e;--rose:#be123c;--amber:#b45309;--violet:#6d28d9;--green:#15803d;--shadow:0 10px 24px rgba(23,32,51,.08)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5}.wrap{width:min(1180px,94vw);margin:0 auto}.topbar{border-bottom:1px solid var(--line);background:rgba(255,255,255,.92);backdrop-filter:blur(12px);position:sticky;top:0;z-index:20}.topbar-inner{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 0}.brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-weight:900}.brand-mark{width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--teal));display:grid;place-items:center;color:#fff;font-weight:900}.brand-sub{font-size:12px;color:var(--muted);font-weight:800}.nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.nav a{color:#334155;text-decoration:none;font-weight:800;font-size:14px;padding:8px 10px;border-radius:8px}.nav a:hover,.nav a.active{background:#eef4ff;color:var(--blue)}.hero{padding:44px 0 26px}.hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:22px;align-items:stretch}.hero-copy h1{font-size:clamp(34px,5vw,60px);line-height:1.02;margin:0 0 14px;letter-spacing:0}.hero-copy p{font-size:18px;color:var(--muted);max-width:720px;margin:0}.quick{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:18px}.quick h2{font-size:18px;margin:0 0 12px}.quick-list{display:grid;gap:10px}.quick-list a{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);text-decoration:none;font-weight:900}.quick-list a:hover{border-color:#b8c7df;background:#f8fbff}.arrow{font-size:20px;color:var(--blue)}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:18px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px}.stat b{display:block;font-size:24px;line-height:1}.stat span{display:block;margin-top:4px;color:var(--muted);font-size:13px;font-weight:800}.section{padding:22px 0}.section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:14px}.section h2{margin:0;font-size:26px;line-height:1.1}.section-note{color:var(--muted);font-weight:700}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);padding:16px;min-height:184px;display:flex;flex-direction:column}.card h3{margin:0 0 8px;font-size:18px;line-height:1.22}.card p{margin:0;color:var(--muted)}.meta{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 0}.tag{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:12px;font-weight:900;background:#eef2ff;color:#3730a3}.tag.teal{background:#ccfbf1;color:#115e59}.tag.amber{background:#fef3c7;color:#92400e}.tag.rose{background:#ffe4e6;color:#9f1239}.tag.green{background:#dcfce7;color:#166534}.tag.violet{background:#ede9fe;color:#5b21b6}.actions{margin-top:auto;padding-top:14px;display:flex;gap:8px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:10px 12px;border-radius:8px;background:var(--ink);color:#fff;text-decoration:none;font-weight:900;border:1px solid var(--ink)}.btn:hover{background:#0f172a}.btn.secondary{background:#fff;color:var(--ink);border-color:var(--line)}.btn.secondary:hover{border-color:#b8c7df;background:#f8fbff}.tools{position:sticky;top:63px;z-index:10;background:rgba(246,247,251,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 0}.search{width:100%;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font:inherit;font-weight:700;padding:12px 14px}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.chip{border:1px solid var(--line);border-radius:999px;background:#fff;color:#334155;font-weight:900;padding:8px 10px;cursor:pointer}.chip.active{background:var(--teal);border-color:var(--teal);color:#fff}.hidden{display:none!important}.empty{display:none;margin:22px 0;padding:18px;border:1px dashed var(--line);border-radius:8px;background:#fff;color:var(--muted);font-weight:900;text-align:center}.footer{border-top:1px solid var(--line);margin-top:28px;padding:24px 0 42px;color:var(--muted);font-weight:800}.path{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;color:#778399;word-break:break-word;margin-top:8px}@media(max-width:820px){.hero-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.topbar-inner{align-items:flex-start;flex-direction:column}.tools{top:0}.section-head{display:block}.section-note{margin-top:6px}.card{min-height:auto}}@media(max-width:520px){.stats{grid-template-columns:1fr}.nav{justify-content:flex-start}.hero{padding-top:28px}}
+  </style>
 </head>
-
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <div class="brand">
-        <div class="brand-title">MathExam</div>
-        <div class="brand-sub">Тренажёры письменных вычислений</div>
-      </div>
-
-      <nav class="nav">
-        <a class="nav-link" href="../">Главная</a>
-        <a class="nav-link" href="../oge/">ОГЭ</a>
-        <a class="nav-link" href="./">Тренажёры</a>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="../index.html"><span class="brand-mark">M</span><span><span>MathExam</span><span class="brand-sub">тренажёры и маршруты</span></span></a>
+      <nav class="nav" aria-label="Основная навигация">
+        <a href="../index.html">Главная</a>
+        <a href="../trainers/">Тренажёры</a>
+        <a href="../oge/">ОГЭ</a>
+        <a href="../geometry-course/">Геометрия</a>
+        <a href="../trainers/testing-hub.html">Все страницы</a>
       </nav>
     </div>
   </header>
-
-  <main class="container" style="padding-top:16px">
-    <section class="section">
-      <h2>Тестирование</h2>
-
-      <div class="grid">
-        <article class="card">
-          <h3>Все тренажёры для тестирования</h3>
-          <p class="muted">Единый список рабочих страниц сайта и архив уникальных HTML-файлов за последние 5 недель.</p>
-          <a class="btn btn-small" href="./testing-hub.html">Открыть</a>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>ОГЭ</h2>
-
-      <div class="grid">
-        <article class="card">
-          <h3>ОГЭ по информатике: задания 1-10</h3>
-          <p class="muted">Тьютор-тренажер по первым десяти заданиям ОГЭ.</p>
-          <a class="btn btn-small" href="./oge-informatics-1-10-tutor.html">Открыть</a>
-        </article>
-
-        <article class="card">
-          <h3>Тренажёр ОГЭ №19</h3>
-          <p class="muted">Умная зубрёжка утверждений и проверка гипотез.</p>
-          <a class="btn btn-small" href="./task19-trainer.html">Открыть</a>
-        </article>
-
-        <article class="card">
-          <h3>Тренажёр ОГЭ №14 (прогрессии)</h3>
-          <p class="muted">Арифметические и геометрические прогрессии.</p>
-          <a class="btn btn-small" href="./task14-progressions-trainer.html?hub=1">Открыть</a>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2 id="ege-informatics">ЕГЭ информатика</h2>
-
-      <div class="grid">
-        <article class="card">
-          <h3>Задание 1: графы</h3>
-          <p class="muted">Тренажёр ЕГЭ по информатике.</p>
-          <a class="btn btn-small" href="./ege-informatics-task1-graphs-trainer.html">Открыть</a>
-        </article>
-
-        <article class="card">
-          <h3>Задание 15: алгебра логики</h3>
-          <p class="muted">Отрезки, множества, делимость, биты, координаты и смешанные задачи.</p>
-          <a class="btn btn-small" href="./logic-trainer/">Открыть</a>
-        </article>
-
-        <article class="card">
-          <h3>Задание 15: операции и законы логики</h3>
-          <p class="muted">Интерактивная отработка логических операций, законов и преобразований.</p>
-          <a class="btn btn-small" href="./ege-informatics-task15-logic-operations.html">Открыть</a>
-        </article>
-
-        <article class="card">
-          <h3>Задание 15: операции логики — мини</h3>
-          <p class="muted">Короткая версия тренажёра по операциям и законам логики.</p>
-          <a class="btn btn-small" href="./ege-informatics-task15-logic-operations-mini.html">Открыть</a>
-        </article>
-
-        <article class="card">
-          <h3>Машина Тьюринга: текущая версия</h3>
-          <p class="muted">Учебный тренажёр с разбором и проверкой задач.</p>
-          <a class="btn btn-small" href="./turing-trainer-polish.html">Открыть</a>
-        </article>
-
-        <article class="card">
-          <h3>Машина Тьюринга: универсальная</h3>
-          <p class="muted">Версия для тестирования разных форматов задач.</p>
-          <a class="btn btn-small" href="./turing-trainer-universal.html">Открыть</a>
-        </article>
-
-        <article class="card">
-          <h3>Машина Тьюринга: улучшенная</h3>
-          <p class="muted">Ранняя улучшенная версия тренажёра.</p>
-          <a class="btn btn-small" href="./turing-trainer-upgrade.html">Открыть</a>
-        </article>
-
-        <article class="card">
-          <h3>Машина Тьюринга: модульная v3</h3>
-          <p class="muted">Модульная версия для сравнения поведения и интерфейса.</p>
-          <a class="btn btn-small" href="./turing-trainer-modular-v3.html">Открыть</a>
-        </article>
-
-        <article class="card">
-          <h3>Машина Тьюринга: проверенная модульная</h3>
-          <p class="muted">Проверенная модульная версия тренажёра.</p>
-          <a class="btn btn-small" href="./turing-trainer-modular-checked.html">Открыть</a>
-        </article>
-
-        <article class="card">
-          <h3>Машина Тьюринга: ученическая</h3>
-          <p class="muted">Компактная ученическая версия.</p>
-          <a class="btn btn-small" href="./turing-trainer-student.html">Открыть</a>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Алгебра</h2>
-
-      <div class="grid">
-        <article class="card">
-          <h3>Линейка тренажёров МЦКО</h3>
-          <p class="muted">Математика 6 класс: дневная цель, прогресс ученика и отправка отчёта учителю.</p>
-          <a class="btn btn-small" href="./trenazher-mcko-linejka-progress.html">Открыть</a>
-        </article>
-        <article class="card">
-          <h3>Театр формул — ежедневные задания</h3>
-          <p class="muted">Квадрат суммы и разности с дневной целью и отправкой прогресса учителю.</p>
-          <a class="btn btn-small" href="./teatr-formul-daily.html">Открыть</a>
-        </article>
-        <article class="card">
-          <h3>Линейка тренажёров: формулы сокращённого умножения</h3>
-          <p class="muted">Отработка квадратов суммы и разности, разности квадратов и смешанных случаев.</p>
-          <a class="btn btn-small" href="./formuly-sokrashchennogo-umnozheniya.html">Открыть</a>
-        </article>
-
-        <article class="card">
-          <h3>Тренажёр: формулы сокращённого умножения</h3>
-          <p class="muted">Короткий тренажёр по формулам сокращённого умножения.</p>
-          <a class="btn btn-small" href="./formuly-sokrashchennogo-umnozheniya-trainer.html">Открыть</a>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Python</h2>
-
-      <div class="grid">
-        <article class="card">
-          <h3>Питоша — тренажёр по Python</h3>
-          <p class="muted">Игровой тренажёр по условиям, циклам и чтению Python-кода.</p>
-          <a class="btn btn-small" href="./pitosha-python-trainer.html">Открыть</a>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>5 класс</h2>
-
-      <div class="grid">
-        <article class="card">
-          <h3>Дроби: часть и целое</h3>
-          <p class="muted">Тренажёр с персональной ссылкой для ученика и отчетом о прогрессе.</p>
-          <a class="btn btn-small" href="./fractions-part-whole-assignment.html">Открыть</a>
-        </article>
-
-        <article class="card">
-          <h3>Часть, целое и доля</h3>
-          <p class="muted">Тренажёр с режимами «часть», «целое», «доля», «остальное» и отчетом о прогрессе.</p>
-          <a class="btn btn-small" href="./part-whole-share-assignment.html">Открыть</a>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Письменные алгоритмы</h2>
-
-      <div class="grid">
-        <article class="card">
-          <h3>Деление уголком (тетрадный формат)</h3>
-          <p class="muted">
-            Пошаговый тренажёр с уровнями: только q → q+умножение+вычитание → полный шаг.
-          </p>
-          <div class="row">
-            <a class="btn btn-small" href="./trainers/long-division.html">Открыть (новый)</a>
-            <a class="btn btn-small btn-ghost" href="./long-division.html">Короткая ссылка</a>
-          </div>
-        </article>
-
-        <article class="card">
-          <h3>Умножение столбиком</h3>
-          <p class="muted">Нужно для деления уголком: делитель × q.</p>
-          <a class="btn btn-small" href="./trainers/long-multiplication.html">Открыть</a>
-        </article>
-
-        <article class="card">
-          <h3>Спринт (скорость)</h3>
-          <p class="muted">Быстрая тренировка примеров.</p>
-          <a class="btn btn-small" href="./speed-test.html">Открыть</a>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Таблица умножения</h2>
-
-      <div class="grid">
-        <article class="card">
-          <h3>Раздел “Таблица умножения”</h3>
-          <p class="muted">Пифагор, игры, отдельные приёмы (например, умножение на 9).</p>
-          <a class="btn btn-small" href="./multiplication-table/">Открыть</a>
-        </article>
-
-        <article class="card">
-          <h3>Пифагор (10×10)</h3>
-          <p class="muted">Чтобы увидеть закономерности и симметрию.</p>
-          <a class="btn btn-small" href="./multiplication-table/pythagoras.html">Открыть</a>
-        </article>
-
-        <article class="card">
-          <h3>Умножение на 9</h3>
-          <p class="muted">Отдельный тренажёр “на 9”.</p>
-          <a class="btn btn-small" href="./multiplication-table/times-9.html">Открыть</a>
-        </article>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="muted">© 2025 MathExam</div>
-    </footer>
-  </main>
+<main class="wrap">
+  <section class="hero"><div class="hero-grid"><div class="hero-copy"><h1>Каталог тренажёров</h1><p>Основные рабочие страницы собраны по темам. Полный архив и экспериментальные версии оставлены в отдельном списке для тестирования.</p><div class="stats"><div class="stat"><b>31</b><span>основных входов</span></div><div class="stat"><b>192</b><span>страницы в полном каталоге</span></div><div class="stat"><b>8</b><span>учебных разделов</span></div><div class="stat"><b>1</b><span>архив тестирования</span></div></div></div><aside class="quick"><h2>Чаще всего</h2><div class="quick-list"><a href="./trenazher-mcko-linejka-progress.html"><span>МЦКО 6 класс</span><span class="arrow">›</span></a><a href="./teatr-formul-daily.html"><span>Театр формул</span><span class="arrow">›</span></a><a href="../oge/"><span>ОГЭ</span><span class="arrow">›</span></a><a href="./testing-hub.html"><span>Все страницы</span><span class="arrow">›</span></a></div></aside></div></section>
+</main><div class="tools"><div class="wrap"><input id="search" class="search" type="search" placeholder="Поиск по названию, теме или адресу" autocomplete="off"><div class="chips"><button class="chip active" type="button" data-filter="">Все</button><button class="chip" type="button" data-filter="Ежедневные задания">Ежедневные задания</button><button class="chip" type="button" data-filter="Алгебра">Алгебра</button><button class="chip" type="button" data-filter="5 класс">5 класс</button><button class="chip" type="button" data-filter="Базовая математика">Базовая математика</button><button class="chip" type="button" data-filter="Письменные алгоритмы">Письменные алгоритмы</button><button class="chip" type="button" data-filter="Таблица умножения">Таблица умножения</button><button class="chip" type="button" data-filter="ОГЭ">ОГЭ</button><button class="chip" type="button" data-filter="ЕГЭ информатика">ЕГЭ информатика</button><button class="chip" type="button" data-filter="Python">Python</button><button class="chip" type="button" data-filter="Геометрия">Геометрия</button><button class="chip" type="button" data-filter="Служебное">Служебное</button></div></div></div><main class="wrap"><div class="empty" id="empty">Ничего не найдено</div><section class="section" data-section="Ежедневные задания"><div class="section-head"><h2>Ежедневные задания</h2><div class="section-note">2 страниц</div></div><div class="grid"><article class="card" data-card data-title="линейка тренажёров мцко математика 6 класс: дневная цель, прогресс ученика и отправка отчёта учителю. ./trenazher-mcko-linejka-progress.html ежедневные задания 6 класс отчёт"><h3>Линейка тренажёров МЦКО</h3><p>Математика 6 класс: дневная цель, прогресс ученика и отправка отчёта учителю.</p><div class="meta"><span class="tag ">Ежедневные задания</span><span class="tag ">6 класс</span><span class="tag green">отчёт</span></div><div class="actions"><a class="btn" href="./trenazher-mcko-linejka-progress.html">Открыть</a></div></article>
+<article class="card" data-card data-title="театр формул — ежедневные задания квадрат суммы и разности с дневной целью и отправкой прогресса учителю. ./teatr-formul-daily.html ежедневные задания алгебра отчёт"><h3>Театр формул — ежедневные задания</h3><p>Квадрат суммы и разности с дневной целью и отправкой прогресса учителю.</p><div class="meta"><span class="tag ">Ежедневные задания</span><span class="tag violet">алгебра</span><span class="tag green">отчёт</span></div><div class="actions"><a class="btn" href="./teatr-formul-daily.html">Открыть</a></div></article></div></section>
+<section class="section" data-section="Алгебра"><div class="section-head"><h2>Алгебра</h2><div class="section-note">2 страниц</div></div><div class="grid"><article class="card" data-card data-title="формулы сокращённого умножения — линейка отработка квадратов суммы и разности, разности квадратов и смешанных случаев. ./formuly-sokrashchennogo-umnozheniya.html алгебра алгебра"><h3>Формулы сокращённого умножения — линейка</h3><p>Отработка квадратов суммы и разности, разности квадратов и смешанных случаев.</p><div class="meta"><span class="tag ">Алгебра</span><span class="tag violet">алгебра</span></div><div class="actions"><a class="btn" href="./formuly-sokrashchennogo-umnozheniya.html">Открыть</a></div></article>
+<article class="card" data-card data-title="формулы сокращённого умножения — короткий тренажёр компактная версия для быстрой отработки формул. ./formuly-sokrashchennogo-umnozheniya-trainer.html алгебра алгебра"><h3>Формулы сокращённого умножения — короткий тренажёр</h3><p>Компактная версия для быстрой отработки формул.</p><div class="meta"><span class="tag ">Алгебра</span><span class="tag violet">алгебра</span></div><div class="actions"><a class="btn" href="./formuly-sokrashchennogo-umnozheniya-trainer.html">Открыть</a></div></article></div></section>
+<section class="section" data-section="5 класс"><div class="section-head"><h2>5 класс</h2><div class="section-note">3 страниц</div></div><div class="grid"><article class="card" data-card data-title="дроби: часть и целое персональная ссылка для ученика и отчёт о прогрессе. ./fractions-part-whole-assignment.html 5 класс 5 класс отчёт"><h3>Дроби: часть и целое</h3><p>Персональная ссылка для ученика и отчёт о прогрессе.</p><div class="meta"><span class="tag teal">5 класс</span><span class="tag teal">5 класс</span><span class="tag green">отчёт</span></div><div class="actions"><a class="btn" href="./fractions-part-whole-assignment.html">Открыть</a></div></article>
+<article class="card" data-card data-title="часть, целое и доля режимы «часть», «целое», «доля», «остальное» и отчёт о прогрессе. ./part-whole-share-assignment.html 5 класс 5 класс отчёт"><h3>Часть, целое и доля</h3><p>Режимы «часть», «целое», «доля», «остальное» и отчёт о прогрессе.</p><div class="meta"><span class="tag teal">5 класс</span><span class="tag teal">5 класс</span><span class="tag green">отчёт</span></div><div class="actions"><a class="btn" href="./part-whole-share-assignment.html">Открыть</a></div></article>
+<article class="card" data-card data-title="маршрут максима: округление и десятичные дроби связанный маршрут по округлению, сложению и вычитанию десятичных дробей. ./maxim-5-rounding-decimals.html 5 класс 5 класс"><h3>Маршрут Максима: округление и десятичные дроби</h3><p>Связанный маршрут по округлению, сложению и вычитанию десятичных дробей.</p><div class="meta"><span class="tag teal">5 класс</span><span class="tag teal">5 класс</span></div><div class="actions"><a class="btn" href="./maxim-5-rounding-decimals.html">Открыть</a></div></article></div></section>
+<section class="section" data-section="Базовая математика"><div class="section-head"><h2>Базовая математика</h2><div class="section-note">5 страниц</div></div><div class="grid"><article class="card" data-card data-title="отрицательные числа: числовая прямая тренировка понимания отрицательных чисел на прямой. ./negative-numbers-line.html базовая математика база"><h3>Отрицательные числа: числовая прямая</h3><p>Тренировка понимания отрицательных чисел на прямой.</p><div class="meta"><span class="tag ">Базовая математика</span><span class="tag teal">база</span></div><div class="actions"><a class="btn" href="./negative-numbers-line.html">Открыть</a></div></article>
+<article class="card" data-card data-title="округление чисел пошаговый тренажёр по округлению. ./rounding-stepwise.html базовая математика база"><h3>Округление чисел</h3><p>Пошаговый тренажёр по округлению.</p><div class="meta"><span class="tag ">Базовая математика</span><span class="tag teal">база</span></div><div class="actions"><a class="btn" href="./rounding-stepwise.html">Открыть</a></div></article>
+<article class="card" data-card data-title="касса разрядов: десятичные дроби отработка разрядов и десятичных дробей. ./decimal-cash-trainer.html базовая математика база"><h3>Касса разрядов: десятичные дроби</h3><p>Отработка разрядов и десятичных дробей.</p><div class="meta"><span class="tag ">Базовая математика</span><span class="tag teal">база</span></div><div class="actions"><a class="btn" href="./decimal-cash-trainer.html">Открыть</a></div></article>
+<article class="card" data-card data-title="простые уравнения пошаговое решение через обратное действие. ./simple-equations-stepwise.html базовая математика уравнения"><h3>Простые уравнения</h3><p>Пошаговое решение через обратное действие.</p><div class="meta"><span class="tag ">Базовая математика</span><span class="tag ">уравнения</span></div><div class="actions"><a class="btn" href="./simple-equations-stepwise.html">Открыть</a></div></article>
+<article class="card" data-card data-title="системы линейных уравнений графический метод, подстановка и сложение. ./linear-systems-trainer.html базовая математика уравнения"><h3>Системы линейных уравнений</h3><p>Графический метод, подстановка и сложение.</p><div class="meta"><span class="tag ">Базовая математика</span><span class="tag ">уравнения</span></div><div class="actions"><a class="btn" href="./linear-systems-trainer.html">Открыть</a></div></article></div></section>
+<section class="section" data-section="Письменные алгоритмы"><div class="section-head"><h2>Письменные алгоритмы</h2><div class="section-note">3 страниц</div></div><div class="grid"><article class="card" data-card data-title="деление уголком пошаговый тренажёр деления уголком. ./long-division-stepwise.html письменные алгоритмы алгоритмы"><h3>Деление уголком</h3><p>Пошаговый тренажёр деления уголком.</p><div class="meta"><span class="tag amber">Письменные алгоритмы</span><span class="tag amber">алгоритмы</span></div><div class="actions"><a class="btn" href="./long-division-stepwise.html">Открыть</a></div></article>
+<article class="card" data-card data-title="деление уголком в тетрадном формате новый тетрадный интерфейс с полным шагом. ./trainers/long-division.html письменные алгоритмы алгоритмы"><h3>Деление уголком в тетрадном формате</h3><p>Новый тетрадный интерфейс с полным шагом.</p><div class="meta"><span class="tag amber">Письменные алгоритмы</span><span class="tag amber">алгоритмы</span></div><div class="actions"><a class="btn" href="./trainers/long-division.html">Открыть</a></div></article>
+<article class="card" data-card data-title="умножение столбиком тренажёр умножения столбиком для подготовки к делению. ./trainers/long-multiplication.html письменные алгоритмы алгоритмы"><h3>Умножение столбиком</h3><p>Тренажёр умножения столбиком для подготовки к делению.</p><div class="meta"><span class="tag amber">Письменные алгоритмы</span><span class="tag amber">алгоритмы</span></div><div class="actions"><a class="btn" href="./trainers/long-multiplication.html">Открыть</a></div></article></div></section>
+<section class="section" data-section="Таблица умножения"><div class="section-head"><h2>Таблица умножения</h2><div class="section-note">3 страниц</div></div><div class="grid"><article class="card" data-card data-title="раздел «таблица умножения» пифагор, игры и отдельные приёмы. ./multiplication-table/ таблица умножения таблица"><h3>Раздел «Таблица умножения»</h3><p>Пифагор, игры и отдельные приёмы.</p><div class="meta"><span class="tag ">Таблица умножения</span><span class="tag amber">таблица</span></div><div class="actions"><a class="btn" href="./multiplication-table/">Открыть</a></div></article>
+<article class="card" data-card data-title="пифагор 10 на 10 таблица для закономерностей и симметрии. ./multiplication-table/pythagoras.html таблица умножения таблица"><h3>Пифагор 10 на 10</h3><p>Таблица для закономерностей и симметрии.</p><div class="meta"><span class="tag ">Таблица умножения</span><span class="tag amber">таблица</span></div><div class="actions"><a class="btn" href="./multiplication-table/pythagoras.html">Открыть</a></div></article>
+<article class="card" data-card data-title="умножение на 9 отдельный тренажёр на 9. ./multiplication-table/times-9.html таблица умножения таблица"><h3>Умножение на 9</h3><p>Отдельный тренажёр на 9.</p><div class="meta"><span class="tag ">Таблица умножения</span><span class="tag amber">таблица</span></div><div class="actions"><a class="btn" href="./multiplication-table/times-9.html">Открыть</a></div></article></div></section>
+<section class="section" data-section="ОГЭ"><div class="section-head"><h2>ОГЭ</h2><div class="section-note">3 страниц</div></div><div class="grid"><article class="card" data-card data-title="огэ по информатике: задания 1-10 тьютор-тренажёр по первой части огэ. ./oge-informatics-1-10-tutor.html огэ огэ информатика"><h3>ОГЭ по информатике: задания 1-10</h3><p>Тьютор-тренажёр по первой части ОГЭ.</p><div class="meta"><span class="tag rose">ОГЭ</span><span class="tag rose">ОГЭ</span><span class="tag ">информатика</span></div><div class="actions"><a class="btn" href="./oge-informatics-1-10-tutor.html">Открыть</a></div></article>
+<article class="card" data-card data-title="огэ №19 умная зубрёжка утверждений и проверка гипотез. ./task19-trainer.html огэ огэ математика"><h3>ОГЭ №19</h3><p>Умная зубрёжка утверждений и проверка гипотез.</p><div class="meta"><span class="tag rose">ОГЭ</span><span class="tag rose">ОГЭ</span><span class="tag ">математика</span></div><div class="actions"><a class="btn" href="./task19-trainer.html">Открыть</a></div></article>
+<article class="card" data-card data-title="огэ №14: прогрессии арифметические и геометрические прогрессии. ./task14-progressions-trainer.html?hub=1 огэ огэ математика"><h3>ОГЭ №14: прогрессии</h3><p>Арифметические и геометрические прогрессии.</p><div class="meta"><span class="tag rose">ОГЭ</span><span class="tag rose">ОГЭ</span><span class="tag ">математика</span></div><div class="actions"><a class="btn" href="./task14-progressions-trainer.html?hub=1">Открыть</a></div></article></div></section>
+<section class="section" data-section="ЕГЭ информатика"><div class="section-head"><h2>ЕГЭ информатика</h2><div class="section-note">4 страниц</div></div><div class="grid"><article class="card" data-card data-title="задание 1: графы тренажёр егэ по информатике. ./ege-informatics-task1-graphs-trainer.html егэ информатика егэ информатика"><h3>Задание 1: графы</h3><p>Тренажёр ЕГЭ по информатике.</p><div class="meta"><span class="tag rose">ЕГЭ информатика</span><span class="tag rose">ЕГЭ</span><span class="tag ">информатика</span></div><div class="actions"><a class="btn" href="./ege-informatics-task1-graphs-trainer.html">Открыть</a></div></article>
+<article class="card" data-card data-title="задание 15: алгебра логики отрезки, множества, делимость, биты, координаты и смешанные задачи. ./logic-trainer/ егэ информатика егэ логика"><h3>Задание 15: алгебра логики</h3><p>Отрезки, множества, делимость, биты, координаты и смешанные задачи.</p><div class="meta"><span class="tag rose">ЕГЭ информатика</span><span class="tag rose">ЕГЭ</span><span class="tag violet">логика</span></div><div class="actions"><a class="btn" href="./logic-trainer/">Открыть</a></div></article>
+<article class="card" data-card data-title="операции и законы логики интерактивная отработка логических операций, законов и преобразований. ./ege-informatics-task15-logic-operations.html егэ информатика егэ логика"><h3>Операции и законы логики</h3><p>Интерактивная отработка логических операций, законов и преобразований.</p><div class="meta"><span class="tag rose">ЕГЭ информатика</span><span class="tag rose">ЕГЭ</span><span class="tag violet">логика</span></div><div class="actions"><a class="btn" href="./ege-informatics-task15-logic-operations.html">Открыть</a></div></article>
+<article class="card" data-card data-title="машина тьюринга: текущая версия учебный тренажёр с разбором и проверкой задач. ./turing-trainer-polish.html егэ информатика егэ информатика"><h3>Машина Тьюринга: текущая версия</h3><p>Учебный тренажёр с разбором и проверкой задач.</p><div class="meta"><span class="tag rose">ЕГЭ информатика</span><span class="tag rose">ЕГЭ</span><span class="tag ">информатика</span></div><div class="actions"><a class="btn" href="./turing-trainer-polish.html">Открыть</a></div></article></div></section>
+<section class="section" data-section="Python"><div class="section-head"><h2>Python</h2><div class="section-note">2 страниц</div></div><div class="grid"><article class="card" data-card data-title="питоша — тренажёр по python игровой тренажёр по условиям, циклам и чтению python-кода. ./pitosha-python-trainer.html python python"><h3>Питоша — тренажёр по Python</h3><p>Игровой тренажёр по условиям, циклам и чтению Python-кода.</p><div class="meta"><span class="tag teal">Python</span><span class="tag teal">Python</span></div><div class="actions"><a class="btn" href="./pitosha-python-trainer.html">Открыть</a></div></article>
+<article class="card" data-card data-title="python: if и for персональная линейка для отработки условий и циклов. ./python-if-for-sergey.html python python"><h3>Python: if и for</h3><p>Персональная линейка для отработки условий и циклов.</p><div class="meta"><span class="tag teal">Python</span><span class="tag teal">Python</span></div><div class="actions"><a class="btn" href="./python-if-for-sergey.html">Открыть</a></div></article></div></section>
+<section class="section" data-section="Геометрия"><div class="section-head"><h2>Геометрия</h2><div class="section-note">3 страниц</div></div><div class="grid"><article class="card" data-card data-title="геометрия 7 класс большой интерактивный курс: 70+ страниц. ../geometry-course/ геометрия геометрия курс"><h3>Геометрия 7 класс</h3><p>Большой интерактивный курс: 70+ страниц.</p><div class="meta"><span class="tag ">Геометрия</span><span class="tag violet">геометрия</span><span class="tag green">курс</span></div><div class="actions"><a class="btn" href="../geometry-course/">Открыть</a></div></article>
+<article class="card" data-card data-title="азбука построений линейка построений циркулем и линейкой. ../azbuka-postroeniy-reviewed/ геометрия геометрия"><h3>Азбука построений</h3><p>Линейка построений циркулем и линейкой.</p><div class="meta"><span class="tag ">Геометрия</span><span class="tag violet">геометрия</span></div><div class="actions"><a class="btn" href="../azbuka-postroeniy-reviewed/">Открыть</a></div></article>
+<article class="card" data-card data-title="биссектриса угла экспериментальный тренажёр на построение биссектрисы. ./bisector-trainer-v2.html геометрия геометрия"><h3>Биссектриса угла</h3><p>Экспериментальный тренажёр на построение биссектрисы.</p><div class="meta"><span class="tag ">Геометрия</span><span class="tag violet">геометрия</span></div><div class="actions"><a class="btn" href="./bisector-trainer-v2.html">Открыть</a></div></article></div></section>
+<section class="section" data-section="Служебное"><div class="section-head"><h2>Служебное</h2><div class="section-note">1 страниц</div></div><div class="grid"><article class="card" data-card data-title="все тренажёры для тестирования единый список рабочих страниц и архивных версий. ./testing-hub.html служебное каталог архив"><h3>Все тренажёры для тестирования</h3><p>Единый список рабочих страниц и архивных версий.</p><div class="meta"><span class="tag ">Служебное</span><span class="tag ">каталог</span><span class="tag amber">архив</span></div><div class="actions"><a class="btn" href="./testing-hub.html">Открыть</a></div></article></div></section><footer class="footer">Полный список рабочих и архивных страниц: <a href="./testing-hub.html">testing-hub</a>.</footer></main>
+<script>
+const search=document.getElementById('search');const chips=[...document.querySelectorAll('.chip')];const cards=[...document.querySelectorAll('[data-card]')];const sections=[...document.querySelectorAll('[data-section]')];const empty=document.getElementById('empty');let filter='';function apply(){const q=(search?.value||'').trim().toLowerCase();let visible=0;cards.forEach(c=>{const hay=c.dataset.title||'';const sec=c.closest('[data-section]')?.dataset.section||'';const ok=(!filter||sec===filter)&&(!q||hay.includes(q));c.classList.toggle('hidden',!ok);if(ok)visible++;});sections.forEach(s=>{const any=[...s.querySelectorAll('[data-card]')].some(c=>!c.classList.contains('hidden'));s.classList.toggle('hidden',!any);});if(empty)empty.style.display=visible?'none':'block';}chips.forEach(ch=>ch.addEventListener('click',()=>{filter=ch.dataset.filter||'';chips.forEach(x=>x.classList.toggle('active',x===ch));apply();}));search?.addEventListener('input',apply);apply();
+</script>
 </body>
 </html>
