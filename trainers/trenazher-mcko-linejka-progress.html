@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Линейка тренажёров МЦКО · Математика 6 класс</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;500;600;700;800&family=Roboto+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FCFCFA; --grid:#E6EDF8;
+    --ink:#232A3D; --ink-soft:#63708A; --ink-faint:#97A1B5; --line:#E7EAF1;
+    --violet:#6C4DF0; --violet-d:#4B2FD6; --violet-soft:#EDE9FE;
+    --coral:#F2463A; --coral-soft:#FDE4E1;
+    --green:#12A87A; --green-soft:#DBF4EC;
+    --amber:#EE8A12; --amber-soft:#FCEBD0;
+    --sky:#1C9BDD; --sky-soft:#DBF0FB;
+    --card:#FFFFFF;
+    --shadow-sm:0 1px 2px rgba(35,42,61,.06),0 2px 6px rgba(35,42,61,.05);
+    --shadow-md:0 6px 16px rgba(35,42,61,.08),0 14px 34px rgba(35,42,61,.07);
+    --r:18px;
+    --fb:'Nunito',system-ui,-apple-system,sans-serif;
+    --fd:'Baloo 2','Nunito',system-ui,sans-serif;
+    --fm:'Roboto Mono',ui-monospace,Menlo,monospace;
+  }
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{ font-family:var(--fb); color:var(--ink); background-color:var(--paper);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:27px 27px; -webkit-font-smoothing:antialiased; line-height:1.5; min-height:100vh; }
+  .wrap{ max-width:860px; margin:0 auto; padding:22px 16px 100px; }
+  button{ font-family:inherit; cursor:pointer; border:none; background:none; }
+  a{ color:inherit; text-decoration:none; }
+
+  .hero{ display:flex; align-items:center; gap:15px; margin-bottom:18px; }
+  .hero-badge{ width:58px; height:58px; border-radius:16px; flex:none; display:grid; place-items:center;
+    font-family:var(--fd); font-weight:800; font-size:24px; color:#fff;
+    background:linear-gradient(135deg,#7d5bff,#4b2fd6); box-shadow:0 8px 22px rgba(76,47,214,.34); transform:rotate(-4deg); }
+  .hero h1{ font-family:var(--fd); font-weight:800; font-size:clamp(22px,5vw,30px); margin:0; letter-spacing:-.01em; }
+  .hero p{ margin:2px 0 0; color:var(--ink-soft); font-weight:600; font-size:14px; }
+
+  .hud{ display:grid; grid-template-columns:auto 1fr; gap:15px 16px; align-items:center;
+    background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:15px 17px; box-shadow:var(--shadow-sm); margin-bottom:20px; }
+  .ring{ position:relative; width:76px; height:76px; flex:none; border-radius:50%; }
+  .ring .disc{ position:absolute; inset:8px; border-radius:50%; background:var(--card); display:grid; place-items:center; box-shadow:inset 0 0 0 1px var(--line); }
+  .ring .lvn{ font-family:var(--fd); font-weight:800; font-size:25px; line-height:1; color:var(--violet-d); }
+  .ring .lvc{ font-size:8.5px; font-weight:800; letter-spacing:.13em; color:var(--ink-faint); text-transform:uppercase; }
+  .hud-stats{ display:flex; gap:9px; }
+  .stat{ background:#FAFAFE; border:1px solid var(--line); border-radius:13px; padding:8px 12px; flex:1; }
+  .stat .k{ font-size:10.5px; font-weight:800; letter-spacing:.03em; color:var(--ink-faint); text-transform:uppercase; }
+  .stat .v{ font-family:var(--fd); font-weight:800; font-size:20px; line-height:1.15; display:flex; align-items:center; gap:5px; }
+  .xp{ grid-column:1/-1; margin-top:-2px; }
+  .xp-track{ height:9px; border-radius:99px; background:#EDEEF5; overflow:hidden; }
+  .xp-fill{ height:100%; border-radius:99px; background:linear-gradient(90deg,#7d5bff,#a78bff); transition:width .55s cubic-bezier(.3,1,.4,1); }
+  .xp-lbl{ font-size:11.5px; font-weight:700; color:var(--ink-faint); margin-top:5px; }
+
+  .cta-variant{ width:100%; display:flex; align-items:center; gap:14px; text-align:left; cursor:pointer;
+    background:linear-gradient(135deg,#7d5bff,#4b2fd6); color:#fff; border:none; border-radius:var(--r);
+    padding:16px 18px; margin-bottom:22px; box-shadow:0 10px 26px rgba(76,47,214,.32); transition:transform .12s, box-shadow .12s; }
+  .cta-variant:hover{ transform:translateY(-2px); box-shadow:0 14px 32px rgba(76,47,214,.4); }
+  .cta-variant:active{ transform:translateY(0); }
+  .cta-ic{ font-size:26px; flex:none; width:52px; height:52px; border-radius:14px; background:rgba(255,255,255,.16); display:grid; place-items:center; }
+  .cta-txt{ display:flex; flex-direction:column; gap:2px; flex:1; min-width:0; }
+  .cta-txt b{ font-family:var(--fd); font-weight:800; font-size:19px; letter-spacing:-.01em; }
+  .cta-txt span{ font-size:12.5px; font-weight:600; opacity:.92; }
+  .cta-arrow{ font-size:24px; font-weight:800; opacity:.85; }
+
+  .var-head{ display:flex; align-items:center; gap:14px; margin-bottom:16px; }
+  .var-progress{ flex:1; display:flex; align-items:center; gap:10px; }
+  .var-ptrack{ flex:1; height:10px; border-radius:99px; background:#EDEEF5; overflow:hidden; }
+  .var-pfill{ height:100%; border-radius:99px; background:linear-gradient(90deg,#7d5bff,#a78bff); transition:width .4s ease; }
+  .var-pnum{ font-family:var(--fd); font-weight:800; font-size:13px; color:var(--ink-soft); white-space:nowrap; }
+  .var-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:18px; box-shadow:var(--shadow-sm); }
+  .var-tag{ font-family:var(--fd); font-weight:800; font-size:13px; color:var(--violet-d); background:var(--violet-soft); display:inline-block; padding:5px 12px; border-radius:99px; margin-bottom:12px; }
+  .var-foot{ text-align:center; margin-top:18px; color:var(--ink-faint); font-size:12px; font-weight:600; }
+
+  .vr-hero{ text-align:center; background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:22px; box-shadow:var(--shadow-sm); margin-bottom:16px; }
+  .vr-score{ display:flex; align-items:baseline; justify-content:center; gap:6px; }
+  .vr-big{ font-family:var(--fd); font-weight:800; font-size:56px; line-height:1; color:var(--violet-d); }
+  .vr-tot{ font-family:var(--fd); font-weight:800; font-size:26px; color:var(--ink-faint); }
+  .vr-grade{ font-family:var(--fd); font-weight:800; font-size:18px; margin-top:6px; color:var(--ink); }
+  .vr-bar{ height:12px; border-radius:99px; background:#EDEEF5; overflow:hidden; margin:14px auto 8px; max-width:360px; }
+  .vr-barfill{ height:100%; border-radius:99px; background:linear-gradient(90deg,#18c08a,#12a87a); transition:width .6s ease; }
+  .vr-xp{ font-family:var(--fd); font-weight:800; font-size:13px; color:#B7660A; }
+  .vr-list{ display:flex; flex-direction:column; gap:9px; }
+  .vr-row{ display:flex; align-items:flex-start; gap:12px; background:var(--card); border:1px solid var(--line); border-left-width:4px; border-radius:12px; padding:12px 14px; }
+  .vr-row.ok{ border-left-color:var(--green); }
+  .vr-row.no{ border-left-color:var(--coral); }
+  .vr-ic{ width:26px; height:26px; flex:none; border-radius:50%; display:grid; place-items:center; font-weight:800; color:#fff; font-size:15px; margin-top:1px; }
+  .vr-row.ok .vr-ic{ background:var(--green); }
+  .vr-row.no .vr-ic{ background:var(--coral); }
+  .vr-main{ flex:1; min-width:0; }
+  .vr-lab{ font-family:var(--fd); font-weight:800; font-size:14px; color:var(--ink); }
+  .vr-ans{ font-size:13px; font-weight:600; color:var(--ink-soft); margin-top:3px; }
+  .vr-ans b{ color:var(--ink); } .vr-ans b.math{ color:var(--violet-d); }
+  .vr-sol{ margin-top:10px; }
+  .vr-toggle{ flex:none; align-self:center; font-family:var(--fd); font-weight:700; font-size:12px; color:var(--violet-d); background:var(--violet-soft); border:none; border-radius:9px; padding:6px 11px; cursor:pointer; }
+  .vr-toggle:hover{ filter:brightness(.97); }
+
+  .sec-title{ font-family:var(--fd); font-weight:700; font-size:16px; color:var(--ink-soft); margin:0 0 12px 2px; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:13px; }
+  .card{ position:relative; background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:16px 16px 14px; text-align:left;
+    box-shadow:var(--shadow-sm); transition:transform .18s, box-shadow .18s, border-color .18s; overflow:hidden; width:100%; }
+  .card:hover{ transform:translateY(-3px); box-shadow:var(--shadow-md); border-color:transparent; }
+  .card:focus-visible{ outline:3px solid var(--violet); outline-offset:2px; }
+  .card.soon{ opacity:.7; cursor:default; }
+  .card.soon:hover{ transform:none; box-shadow:var(--shadow-sm); }
+  .ribbon{ position:absolute; top:13px; right:-32px; transform:rotate(38deg); background:var(--ink-faint); color:#fff; font-size:10px; font-weight:800; letter-spacing:.12em; padding:3px 36px; text-transform:uppercase; }
+  .card .tag{ display:inline-block; font-size:11px; font-weight:800; letter-spacing:.03em; text-transform:uppercase; padding:3px 9px; border-radius:99px; margin-bottom:11px; }
+  .card .row{ display:flex; align-items:center; gap:12px; }
+  .card .ic{ width:48px; height:48px; border-radius:14px; flex:none; display:grid; place-items:center; font-family:var(--fd); font-weight:700; font-size:20px; color:#fff; }
+  .card h3{ font-family:var(--fd); font-weight:700; font-size:18px; margin:0; letter-spacing:-.01em; }
+  .card .desc{ color:var(--ink-soft); font-size:12.5px; font-weight:600; margin:9px 0 12px; min-height:34px; }
+  .mtrack{ height:7px; border-radius:99px; background:#EEEFF5; overflow:hidden; }
+  .mfill{ height:100%; border-radius:99px; transition:width .5s; }
+  .mrow{ display:flex; justify-content:space-between; align-items:center; margin-top:7px; font-size:11.5px; font-weight:800; color:var(--ink-faint); }
+  .star{ color:var(--amber); }
+
+  .tv-head{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+  .back{ display:inline-flex; align-items:center; gap:7px; height:42px; padding:0 14px; border-radius:12px; flex:none; background:var(--card); border:1px solid var(--line); box-shadow:var(--shadow-sm); font-weight:800; font-size:13px; color:var(--ink-soft); transition:.15s; }
+  .back:hover{ background:#F6F7FB; color:var(--ink); transform:translateX(-2px); }
+  .tv-title{ flex:1; min-width:0; }
+  .tv-title .tag{ font-size:10.5px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-faint); }
+  .tv-title h2{ font-family:var(--fd); font-weight:800; font-size:clamp(19px,4.5vw,24px); margin:0; line-height:1.15; }
+  .tv-mini{ display:flex; gap:8px; flex:none; }
+  .chip{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:6px 11px; box-shadow:var(--shadow-sm); text-align:center; }
+  .chip .k{ font-size:9px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint); }
+  .chip .v{ font-family:var(--fd); font-weight:800; font-size:17px; line-height:1.1; display:flex; align-items:center; justify-content:center; gap:3px; }
+
+  .segtabs{ display:flex; gap:6px; background:#F1F1F8; border:1px solid var(--line); padding:5px; border-radius:14px; margin-bottom:16px; }
+  .segtab{ flex:1; text-align:center; padding:10px 8px; border-radius:10px; font-family:var(--fd); font-weight:700; font-size:14px; color:var(--ink-soft); transition:.15s; }
+  .segtab.on{ background:var(--card); color:var(--violet-d); box-shadow:var(--shadow-sm); }
+  .segtab:not(.on):hover{ color:var(--ink); }
+
+  .ctrls{ display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin-bottom:16px; }
+  .ctrl-group{ display:flex; align-items:center; gap:9px; }
+  .ctrl-lbl{ font-size:11.5px; font-weight:800; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.04em; }
+  .pills{ display:flex; gap:5px; background:#F1F1F8; border:1px solid var(--line); border-radius:12px; padding:4px; }
+  .pill{ padding:7px 13px; border-radius:9px; font-weight:800; font-size:13px; color:var(--ink-soft); transition:.15s; }
+  .pill.on{ background:var(--card); color:var(--violet-d); box-shadow:var(--shadow-sm); }
+  .pill:not(.on):hover{ color:var(--ink); }
+
+  .prob{ position:relative; background:var(--card); border:1px solid var(--line); border-radius:var(--r); padding:26px 26px 24px 40px; box-shadow:var(--shadow-md); margin-bottom:16px;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px); background-size:27px 27px; background-position:-1px -1px; overflow:hidden; }
+  .prob::before{ content:""; position:absolute; left:22px; top:0; bottom:0; width:2px; background:#F2A8A0; opacity:.7; }
+  .qnum{ position:absolute; top:16px; right:18px; font-family:var(--fd); font-weight:800; font-size:12px; color:var(--ink-faint); background:#F5F6FA; border-radius:9px; padding:3px 10px; }
+  .qcap{ font-size:12.5px; font-weight:800; letter-spacing:.03em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:7px; }
+  .expr-big{ font-family:var(--fm); font-weight:700; font-size:clamp(25px,6.5vw,33px); color:var(--violet-d); letter-spacing:.01em; line-height:1.25; }
+  .math{ font-family:var(--fm); font-weight:700; }
+
+  /* fractions */
+  .frac{ display:inline-flex; flex-direction:column; vertical-align:middle; text-align:center; margin:0 .12em; line-height:1.02; }
+  .frac .fn{ border-bottom:2px solid currentColor; padding:0 .32em; }
+  .frac .fd{ padding:0 .32em; }
+  .mixed{ display:inline-flex; align-items:center; gap:.14em; }
+  .fsign{ margin-right:.05em; }
+  .expr-big .frac{ font-size:.72em; }
+  .stage-active .sp .frac, .step .frac, .stage-done .frac, .th .frac{ font-size:.9em; }
+
+  .stage-done{ display:flex; align-items:center; gap:10px; background:var(--green-soft); border:1px solid #BEE9D8; border-radius:12px; padding:11px 14px; margin-bottom:10px; font-weight:600; font-size:14.5px; color:#0b6b4c; }
+  .stage-done .tick{ width:22px; height:22px; border-radius:50%; background:var(--green); color:#fff; display:grid; place-items:center; font-weight:800; font-size:13px; flex:none; }
+  .stage-active{ background:var(--violet-soft); border:1px solid #DDD5FB; border-radius:15px; padding:15px 17px; margin-bottom:14px; }
+  .stage-active .sh{ font-family:var(--fd); font-weight:800; font-size:12px; color:var(--violet-d); text-transform:uppercase; letter-spacing:.05em; margin-bottom:7px; }
+  .stage-active .sp{ font-size:16px; font-weight:600; color:var(--ink); }
+  .stage-active .sp .math{ color:var(--violet-d); font-size:18px; }
+
+  .ans-zone{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin:14px 0; }
+  .ans-lbl{ font-weight:800; font-size:15px; color:var(--ink-soft); }
+  .inp{ font-family:var(--fm); font-weight:700; font-size:22px; color:var(--ink); background:var(--card); border:2.5px solid var(--line); border-radius:13px; padding:12px 16px; width:180px; transition:.15s; text-align:center; }
+  .inp:focus{ outline:none; border-color:var(--violet); box-shadow:0 0 0 4px var(--violet-soft); }
+  .inp::placeholder{ color:var(--ink-faint); font-weight:500; }
+  .hint-note{ font-size:12px; font-weight:600; color:var(--ink-faint); width:100%; }
+  .frac-inp{ display:inline-flex; flex-direction:column; align-items:center; gap:5px; }
+  .frac-inp .bar{ width:118px; height:3px; background:var(--ink); border-radius:2px; }
+  .frac-inp .inp{ width:118px; font-size:19px; padding:9px 8px; }
+
+  .mc{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:18px 0 6px; }
+  .mc-opt{ padding:20px 14px; border-radius:14px; background:var(--card); border:2px solid var(--line); font-family:var(--fd); font-weight:700; font-size:16px; color:var(--ink); box-shadow:var(--shadow-sm); transition:.15s; }
+  .mc-opt:hover:not(:disabled){ border-color:var(--violet); background:#FAFAFF; }
+  .mc-opt.correct{ border-color:var(--green); background:var(--green-soft); color:#0b6b4c; }
+  .mc-opt.wrong{ border-color:var(--coral); background:var(--coral-soft); color:#b3271c; }
+  .mc-opt:disabled{ cursor:default; }
+
+  .btns{ display:flex; gap:10px; flex-wrap:wrap; margin-top:4px; }
+  .btn{ font-family:var(--fd); font-weight:700; font-size:15px; border-radius:13px; padding:12px 22px; transition:transform .12s, box-shadow .15s, background .15s; letter-spacing:.01em; }
+  .btn:active{ transform:translateY(1px); }
+  .btn:focus-visible{ outline:3px solid var(--violet); outline-offset:2px; }
+  .btn-primary{ background:linear-gradient(135deg,#7d5bff,#5a37e0); color:#fff; box-shadow:0 6px 16px rgba(90,55,224,.32); }
+  .btn-primary:hover{ box-shadow:0 8px 22px rgba(90,55,224,.42); }
+  .btn-go{ background:linear-gradient(135deg,#18c08a,#0e9a6e); color:#fff; box-shadow:0 6px 16px rgba(14,154,110,.3); }
+  .btn-go:hover{ box-shadow:0 8px 22px rgba(14,154,110,.4); }
+  .btn-ghost{ background:var(--card); color:var(--ink-soft); border:1.5px solid var(--line); box-shadow:var(--shadow-sm); }
+  .btn-ghost:hover{ background:#F6F7FB; color:var(--ink); }
+
+  .fb{ border-radius:14px; padding:14px 16px; font-weight:700; font-size:15px; display:flex; align-items:flex-start; gap:11px; margin-top:12px; }
+  .fb .ic{ flex:none; width:26px; height:26px; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:16px; color:#fff; margin-top:-1px; }
+  .fb.ok{ background:var(--green-soft); color:#0b6b4c; }
+  .fb.ok .ic{ background:var(--green); }
+  .fb.no{ background:var(--coral-soft); color:#b3271c; }
+  .fb.no .ic{ background:var(--coral); }
+  .fb .sub{ font-weight:600; font-size:13.5px; opacity:.92; margin-top:3px; }
+  .fb .sub .frac, .fb .frac{ font-size:.92em; }
+
+  .sol{ background:#F8FAFC; border:1px solid var(--line); border-radius:15px; padding:16px 18px; margin-top:14px; }
+  .sol h4{ font-family:var(--fd); font-weight:800; margin:0 0 10px; font-size:13px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; }
+  .step{ display:flex; gap:11px; padding:8px 0; border-bottom:1px dashed var(--line); font-size:14.5px; font-weight:600; color:#374056; line-height:1.6; }
+  .step:last-child{ border-bottom:none; }
+  .step .n{ flex:none; width:24px; height:24px; border-radius:8px; background:var(--violet-soft); color:var(--violet-d); font-weight:800; font-size:13px; display:grid; place-items:center; }
+  .step .math{ color:var(--violet-d); font-size:15px; }
+
+  /* THEORY */
+  .th p{ font-size:15px; font-weight:500; color:#37405a; line-height:1.65; margin:0 0 12px; }
+  .th h3{ font-family:var(--fd); font-weight:800; font-size:17px; margin:22px 0 10px; color:var(--ink); }
+  .th h3:first-child{ margin-top:0; }
+  .th .lead{ font-family:var(--fd); font-weight:700; font-size:13px; color:var(--violet-d); text-transform:uppercase; letter-spacing:.05em; margin:18px 0 8px; }
+  .th b{ color:var(--ink); }
+  .signgrid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:8px 0 4px; }
+  .signrule{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; font-family:var(--fm); font-weight:700; font-size:18px; box-shadow:var(--shadow-sm); }
+  .plus{ color:var(--green); } .minus{ color:var(--coral); }
+  .callout{ background:linear-gradient(135deg,#FFF6E8,#FFE9CC); border:1px solid #F5D19A; border-radius:14px; padding:14px 16px; font-weight:700; color:#8a5a10; margin:16px 0; font-size:15px; display:flex; gap:11px; align-items:flex-start; }
+  .callout .ci{ font-size:20px; line-height:1; }
+  .callout.blue{ background:linear-gradient(135deg,#E9F5FD,#D5ECFA); border-color:#A9D6F1; color:#0e5f86; }
+  .callout.rose{ background:linear-gradient(135deg,#FDEBF2,#FAD7E5); border-color:#F0A9C6; color:#9c2f5e; }
+  .wex{ background:#F8FAFC; border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin:12px 0; }
+  .wex .ttl{ font-family:var(--fd); font-weight:800; font-size:13px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.05em; margin-bottom:10px; }
+  .wex .exline{ display:flex; gap:11px; padding:7px 0; font-size:15px; font-weight:600; color:#37405a; align-items:baseline; }
+  .wex .exline .n{ flex:none; width:24px; height:24px; border-radius:8px; background:var(--violet-soft); color:var(--violet-d); font-weight:800; font-size:13px; display:grid; place-items:center; }
+  .wex .math{ color:var(--violet-d); }
+  .mistakes{ list-style:none; padding:0; margin:6px 0 0; }
+  .mistakes li{ position:relative; padding:8px 8px 8px 30px; font-size:14px; font-weight:600; color:#37405a; }
+  .mistakes li::before{ content:'✕'; position:absolute; left:6px; top:8px; color:var(--coral); font-weight:800; }
+  .th-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:22px; }
+
+
+  .teacher-panel{ margin:18px 0 24px; background:linear-gradient(135deg,#ffffff 0%,#f7fbff 54%,#fff8f1 100%); border:1px solid #DDE8F6; border-radius:18px; padding:18px; box-shadow:var(--shadow-sm); }
+  .teacher-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:14px; }
+  .teacher-kicker{ font-family:var(--fd); font-size:13px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--sky); }
+  .teacher-title{ margin:3px 0 0; font-family:var(--fd); font-size:24px; line-height:1.05; font-weight:800; color:var(--ink); }
+  .teacher-mail{ display:inline-flex; align-items:center; gap:8px; border:1px solid #DDE8F6; background:#fff; border-radius:999px; padding:8px 12px; color:var(--ink-soft); font-weight:800; font-size:13px; }
+  .teacher-grid{ display:grid; grid-template-columns:1.1fr .7fr .7fr; gap:10px; margin:12px 0; }
+  .teacher-field{ display:grid; gap:6px; }
+  .teacher-field span{ font-size:12px; font-weight:900; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-soft); }
+  .daily-input{ width:100%; border:1px solid #DDE4F0; background:#fff; color:var(--ink); border-radius:12px; padding:11px 12px; font:700 15px var(--fb); outline:none; }
+  .daily-input:focus{ border-color:var(--sky); box-shadow:0 0 0 3px rgba(28,155,221,.15); }
+  .teacher-stats{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin:14px 0; }
+  .teacher-stat{ background:#fff; border:1px solid #E6EAF2; border-radius:14px; padding:12px; min-width:0; }
+  .teacher-stat .k{ color:var(--ink-soft); font-size:12px; font-weight:900; text-transform:uppercase; letter-spacing:.04em; }
+  .teacher-stat .v{ margin-top:4px; color:var(--ink); font-family:var(--fd); font-weight:800; font-size:23px; line-height:1; }
+  .teacher-progress{ height:12px; border-radius:999px; background:#E9EEF7; overflow:hidden; margin-top:6px; }
+  .teacher-progress-fill{ height:100%; border-radius:999px; background:linear-gradient(90deg,var(--green),var(--sky)); transition:width .3s; }
+  .teacher-actions{ display:flex; align-items:center; flex-wrap:wrap; gap:10px; margin-top:14px; }
+  .daily-status{ color:var(--ink-soft); font-weight:800; font-size:13px; min-height:18px; }
+  .teacher-history{ margin-top:12px; padding-top:12px; border-top:1px dashed #DDE4F0; color:var(--ink-soft); font-size:13px; line-height:1.35; }
+  .teacher-history b{ color:var(--ink); }
+  @media(max-width:780px){ .teacher-grid,.teacher-stats{ grid-template-columns:1fr; } .teacher-title{ font-size:22px; } }
+
+  #confetti-root{ position:fixed; inset:0; pointer-events:none; z-index:9000; overflow:hidden; }
+  .confetto{ position:absolute; will-change:transform,opacity; }
+  #toast{ position:fixed; left:50%; bottom:30px; transform:translateX(-50%) translateY(20px); z-index:70;
+    background:#1c2333; color:#fff; font-family:var(--fd); font-weight:700; font-size:16px; padding:14px 22px; border-radius:15px;
+    box-shadow:0 14px 40px rgba(0,0,0,.3); display:flex; align-items:center; gap:10px; opacity:0; pointer-events:none; transition:opacity .3s, transform .3s; z-index:9999; }
+  #toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+  #toast .xp-badge{ background:linear-gradient(135deg,#7d5bff,#a78bff); border-radius:9px; padding:3px 9px; font-size:14px; }
+  #toast.level{ background:linear-gradient(135deg,#7d5bff,#4b2fd6); font-size:18px; }
+
+  .shake{ animation:shake .4s; }
+  @keyframes shake{ 0%,100%{transform:translateX(0);} 20%{transform:translateX(-8px);} 40%{transform:translateX(7px);} 60%{transform:translateX(-5px);} 80%{transform:translateX(4px);} }
+  .pop{ animation:pop .35s cubic-bezier(.3,1.5,.5,1); }
+  @keyframes pop{ 0%{transform:scale(.85);} 100%{transform:scale(1);} }
+  @keyframes fall{ 0%{transform:translateY(-10vh) rotate(0); opacity:1;} 100%{transform:translateY(105vh) rotate(720deg); opacity:.9;} }
+  @keyframes fxburst{ 0%{transform:translate(0,0) scale(1);opacity:1;} 100%{transform:translate(var(--dx,0),var(--dy,0)) scale(.4);opacity:0;} }
+  @keyframes fxbloom{ 0%{transform:scale(0) rotate(-25deg);opacity:0;} 55%{transform:scale(1.25) rotate(6deg);opacity:1;} 78%{transform:scale(1) rotate(0);opacity:1;} 100%{transform:scale(1) rotate(0);opacity:0;} }
+  @keyframes fxrise{ 0%{transform:translateY(0) scale(.8);opacity:0;} 12%{opacity:1;} 100%{transform:translateY(-92vh) scale(1.15);opacity:0;} }
+  @keyframes fxdrop{ 0%{transform:translateY(-46vh) scale(.4) rotate(-14deg);opacity:0;} 52%{transform:translateY(0) scale(1.18) rotate(4deg);opacity:1;} 68%{transform:translateY(-5vh) scale(1.02) rotate(0);} 82%{transform:translateY(0) scale(1);opacity:1;} 100%{transform:translateY(-4vh) scale(1);opacity:0;} }
+  @keyframes fxpop{ 0%{transform:scale(0) rotate(-12deg);opacity:0;} 45%{transform:scale(1.25) rotate(6deg);opacity:1;} 62%{transform:scale(1) rotate(0);} 82%{opacity:1;} 100%{transform:scale(1.06);opacity:0;} }
+  @keyframes fxflash{ 0%{transform:scale(.2);opacity:0;} 22%{opacity:.6;} 100%{transform:scale(1.6);opacity:0;} }
+
+  .expr-big .cond{ display:block; font-family:var(--fb); font-size:15px; font-weight:700; color:var(--ink-soft); margin-top:10px; letter-spacing:0; }
+  .expr-big .cond b{ color:var(--violet-d); font-family:var(--fm); }
+  .eqstep{ margin-top:12px; }
+  .eqarrow{ font-family:var(--fd); font-weight:700; font-size:13px; letter-spacing:.04em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 4px 1px; }
+  .prob-prose{ font-family:var(--fb); font-size:16.5px; font-weight:600; color:var(--ink); line-height:1.55; }
+  .prob-prose b{ color:var(--violet-d); }
+  .scene{ margin-top:16px; }
+  .scene-motion{ position:relative; height:132px; border-radius:14px; overflow:hidden; border:1px solid var(--line); }
+  .scene-motion .bank{ position:absolute; left:0; right:0; height:30px; background:linear-gradient(180deg,#cfeeb4,#a9db86); z-index:1; }
+  .scene-motion .bank.top{ top:0; } .scene-motion .bank.bot{ bottom:0; }
+  .riverband{ position:absolute; left:0; right:0; top:30px; bottom:30px; background:linear-gradient(180deg,#7cc6ef,#3f9fd8); overflow:hidden; }
+  .curflow{ position:absolute; inset:0; background-image:repeating-linear-gradient(115deg, rgba(255,255,255,.38) 0 10px, rgba(255,255,255,0) 10px 46px); animation:flow 1.4s linear infinite; }
+  .curflow.nomo{ animation:none; }
+  @keyframes flow{ from{background-position:0 0;} to{background-position:46px 0;} }
+  .boat{ position:absolute; top:6px; font-size:34px; z-index:2; filter:drop-shadow(0 3px 4px rgba(0,0,0,.2)); animation:sail var(--sail,4.5s) ease-in-out infinite alternate; }
+  .boat.nomo{ animation:none; left:44%; }
+  @keyframes sail{ from{left:4%;} to{left:80%;} }
+  .mdist{ position:absolute; top:4px; left:50%; transform:translateX(-50%); z-index:3; font-family:var(--fd); font-weight:800; font-size:12px; color:#0b4a66; background:rgba(255,255,255,.9); border-radius:8px; padding:2px 9px; }
+  .mcur{ position:absolute; bottom:4px; left:50%; transform:translateX(-50%); z-index:3; font-family:var(--fd); font-weight:700; font-size:11px; color:#0b4a66; background:rgba(255,255,255,.85); border-radius:8px; padding:2px 8px; }
+  .mchips{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .mchip{ font-family:var(--fd); font-weight:700; font-size:12.5px; padding:5px 10px; border-radius:9px; }
+  .mchip.c1{ background:var(--sky-soft); color:#0f6e9e; } .mchip.c2{ background:var(--violet-soft); color:var(--violet-d); } .mchip.c3{ background:var(--green-soft); color:#0b6b4c; }
+  .wbar{ position:relative; height:36px; border-radius:10px; background:#EEF1F6; border:1px solid var(--line); overflow:hidden; }
+  .wfill{ position:absolute; left:0; top:0; bottom:0; display:flex; }
+  .wfull{ width:100%; animation:wgrow 1.6s ease-out both; }
+  .wfull.nomo{ animation:none; }
+  @keyframes wgrow{ from{width:0;} to{width:100%;} }
+  .wa{ background:linear-gradient(180deg,#8f7bff,#6c4df0); height:100%; }
+  .wb{ background:linear-gradient(180deg,#37c98f,#12a87a); height:100%; }
+  .wgrid{ position:absolute; inset:0; pointer-events:none; background-image:repeating-linear-gradient(90deg, rgba(0,0,0,.05) 0 1px, transparent 1px 28px); }
+  .wworkers{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+  .ww{ font-family:var(--fd); font-weight:700; font-size:13px; padding:5px 10px; border-radius:9px; }
+  .ww.a{ background:var(--violet-soft); color:var(--violet-d); } .ww.b{ background:var(--green-soft); color:#0b6b4c; }
+  .wcap{ margin-top:10px; font-weight:700; font-size:14px; color:var(--ink); } .wcap b{ color:var(--violet-d); }
+  .scene-div .dv-total{ font-family:var(--fd); font-weight:800; font-size:16px; color:var(--ink); display:flex; align-items:center; gap:8px; }
+  .scene-div .dv-total b{ color:var(--violet-d); }
+  .dv-emoji{ font-size:22px; }
+  .dv-range{ margin-top:16px; }
+  .dv-bar{ position:relative; height:12px; border-radius:99px; background:linear-gradient(90deg,#e7eefc,#d5e6fb); border:1px solid var(--line); }
+  .dv-pin{ position:absolute; top:50%; transform:translate(-50%,-50%); animation:dvpin .55s cubic-bezier(.2,1.5,.5,1) both; }
+  .dv-pin.nomo{ animation:none; }
+  @keyframes dvpin{ from{transform:translate(-50%,-190%) scale(.5); opacity:0;} 70%{opacity:1;} to{transform:translate(-50%,-50%) scale(1); opacity:1;} }
+  .dv-pk{ display:inline-block; background:var(--green); color:#fff; font-family:var(--fd); font-weight:800; font-size:12px; padding:2px 9px; border-radius:8px; box-shadow:0 4px 10px rgba(18,168,122,.45); white-space:nowrap; }
+  .dv-ends{ display:flex; justify-content:space-between; font-family:var(--fm); font-weight:700; font-size:11px; color:var(--ink-faint); margin-top:9px; }
+  .dv-note{ font-size:12.5px; font-weight:600; color:var(--ink-soft); margin-top:7px; }
+  .dv-note b{ color:#0b6b4c; }
+  .dv-groups{ display:flex; flex-wrap:wrap; gap:9px; margin-top:16px; }
+  .dv-grp{ position:relative; font-size:30px; line-height:1; animation:dvpop .42s cubic-bezier(.3,1.5,.5,1) both; filter:drop-shadow(0 3px 4px rgba(0,0,0,.14)); }
+  .dv-grp .dv-badge{ position:absolute; right:-6px; bottom:-3px; background:var(--violet); color:#fff; font-family:var(--fd); font-weight:800; font-size:10px; padding:1px 5px; border-radius:7px; box-shadow:0 2px 5px rgba(108,77,240,.4); }
+  @keyframes dvpop{ from{transform:scale(0) translateY(8px); opacity:0;} to{transform:scale(1) translateY(0); opacity:1;} }
+  .dv-grp.nomo{ animation:none; }
+  .dv-more{ align-self:center; font-family:var(--fd); font-weight:800; color:var(--ink-faint); font-size:15px; }
+  .dv-cap{ margin-top:14px; font-weight:700; font-size:14.5px; color:var(--ink); } .dv-cap b{ color:var(--violet-d); }
+  .scene-three{ display:flex; gap:16px; align-items:flex-end; justify-content:center; height:184px; padding:8px 0 0; }
+  .tcol{ flex:1; max-width:110px; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; }
+  .tval{ font-family:var(--fd); font-weight:800; font-size:16px; color:var(--ink); margin-bottom:5px; }
+  .tbar{ width:64%; border-radius:9px 9px 5px 5px; transform-origin:center bottom; animation:tgrow .7s cubic-bezier(.2,.9,.3,1) both; box-shadow:inset 0 2px 4px rgba(255,255,255,.35); }
+  .tbar.nomo{ animation:none; }
+  .tbar.a{ background:linear-gradient(180deg,#8f7bff,#6c4df0); }
+  .tbar.b{ background:linear-gradient(180deg,#5cc4ef,#1c9bdd); }
+  .tbar.c{ background:linear-gradient(180deg,#37c98f,#12a87a); }
+  .tbar.q{ background:repeating-linear-gradient(45deg,#eceef4 0 7px,#f6f7fb 7px 14px); border:1px dashed #cfd4e0; }
+  @keyframes tgrow{ from{ transform:scaleY(0); } to{ transform:scaleY(1); } }
+  .tname{ font-family:var(--fd); font-weight:700; font-size:11px; color:var(--ink-soft); text-align:center; margin-top:8px; line-height:1.25; min-height:28px; }
+  .tcap{ margin-top:12px; text-align:center; font-weight:700; font-size:15px; color:var(--ink); } .tcap b{ color:var(--violet-d); }
+  .scene-num{ text-align:center; }
+  .nn-row{ display:flex; gap:12px; justify-content:center; }
+  .nn-tile{ width:62px; height:78px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-family:var(--fb); font-weight:800; font-size:42px; color:#fff; background:linear-gradient(180deg,#c9cfdd,#aab2c6); box-shadow:0 6px 14px rgba(0,0,0,.14); }
+  .nn-tile.tens.on{ background:linear-gradient(180deg,#8f7bff,#6c4df0); }
+  .nn-tile.units.on{ background:linear-gradient(180deg,#5cc4ef,#1c9bdd); }
+  .nn-tile.on{ animation:nnpop .45s cubic-bezier(.3,1.5,.5,1) both; }
+  .nn-tile.on.nomo{ animation:none; }
+  @keyframes nnpop{ from{transform:scale(.4) rotate(-8deg); opacity:0;} to{transform:scale(1) rotate(0); opacity:1;} }
+  .nn-labels{ display:flex; gap:12px; justify-content:center; margin-top:6px; }
+  .nn-labels span{ width:62px; font-family:var(--fd); font-weight:700; font-size:11px; color:var(--ink-faint); }
+  .nn-diff{ margin-top:14px; font-weight:700; font-size:14px; color:var(--ink); } .nn-diff b{ color:#0b6b4c; }
+  .nn-swap{ margin-top:16px; display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; }
+  .nn-num{ font-family:var(--fb); font-weight:800; font-size:30px; color:var(--violet-d); background:var(--violet-soft); padding:4px 14px; border-radius:12px; }
+  .nn-num.alt{ color:#0f6e9e; background:var(--sky-soft); }
+  .nn-arrow{ font-size:26px; color:var(--ink-soft); animation:nnswap 1.3s ease-in-out infinite; }
+  .nn-arrow.nomo{ animation:none; }
+  @keyframes nnswap{ 0%,100%{transform:translateX(-2px);} 50%{transform:translateX(2px);} }
+  .nn-badge{ font-family:var(--fd); font-weight:800; font-size:14px; padding:4px 12px; border-radius:99px; color:#fff; }
+  .nn-badge.up{ background:var(--green); } .nn-badge.down{ background:var(--coral); }
+
+  .foot{ text-align:center; margin-top:26px; color:var(--ink-faint); font-size:12px; font-weight:600; }
+
+  @media (max-width:560px){
+    .hud{ grid-template-columns:1fr; } .ring{ margin:0 auto; }
+    .tv-mini{ display:none; }
+    .prob{ padding:22px 18px 20px 34px; }
+    .ctrls{ gap:12px; } .ctrl-group{ width:100%; justify-content:space-between; }
+    .ans-zone > .inp{ width:100%; } .ans-zone{ gap:10px; }
+    .btn{ flex:1; text-align:center; padding:12px 12px; }
+    .mc-opt{ font-size:15px; padding:18px 10px; }
+  }
+  @media (prefers-reduced-motion:reduce){ *{ animation:none !important; transition:none !important; } }
+</style>
+</head>
+<body>
+  <div class="wrap" id="app"></div>
+  <div id="confetti-root"></div>
+  <div id="toast"></div>
+
+<script>
+"use strict";
+/* ================= ХЕЛПЕРЫ ================= */
+const R = (a,b)=> Math.floor(Math.random()*(b-a+1))+a;
+const pick = arr => arr[Math.floor(Math.random()*arr.length)];
+const N = x => (x<0?'−':'')+Math.abs(x);
+const el = id => document.getElementById(id);
+const cssv = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ [a,b]=[b,a%b]; } return a||1; }
+function reduce(n,d){ if(d<0){ n=-n; d=-d; } const k=gcd(n,d)||1; return [n/k,d/k]; }
+const fAdd=(A,B)=>reduce(A[0]*B[1]+B[0]*A[1],A[1]*B[1]);
+const fSub=(A,B)=>reduce(A[0]*B[1]-B[0]*A[1],A[1]*B[1]);
+const fMul=(A,B)=>reduce(A[0]*B[0],A[1]*B[1]);
+const fDiv=(A,B)=>reduce(A[0]*B[1],A[1]*B[0]);
+function fmt(x){ let neg=x<0; x=Math.abs(x); let s=(Math.round(x*1000)/1000).toString().replace('.',','); return (neg?'−':'')+s; }
+function frac(n,d){ if(d===1) return '<span>'+N(n)+'</span>'; const s=n<0?'<span class="fsign">−</span>':''; return s+'<span class="frac"><span class="fn">'+Math.abs(n)+'</span><span class="fd">'+d+'</span></span>'; }
+function mixed(w,n,d){ return '<span class="mixed"><span>'+w+'</span><span class="frac"><span class="fn">'+n+'</span><span class="fd">'+d+'</span></span></span>'; }
+function impToMixed(res){ let n=res[0],d=res[1]; const s=n<0?'−':''; const a=Math.abs(n); if(d===1) return s+a; const w=Math.floor(a/d),r=a%d; if(r===0) return s+w; if(w===0) return s+frac(r,d); return s+mixed(w,r,d); }
+
+/* ================= ДВИЖОК ОТВЕТОВ ================= */
+function renderAnsInputs(spec, prefix, placeholder){
+  if(spec.t==='frac'){
+    return '<div class="frac-inp">'
+      +'<input class="inp" id="'+prefix+'N" inputmode="numeric" placeholder="числ." autocomplete="off">'
+      +'<div class="bar"></div>'
+      +'<input class="inp" id="'+prefix+'D" inputmode="numeric" placeholder="знам." autocomplete="off"></div>';
+  }
+  const mode = spec.t==='num' ? 'decimal':'numeric';
+  return '<input class="inp" id="'+prefix+'" inputmode="'+mode+'" placeholder="'+(placeholder||'ответ')+'" autocomplete="off">';
+}
+function ansHint(spec){
+  if(spec.t==='frac') return spec.strict ? 'Впиши несократимую дробь: числитель и знаменатель.' : 'Впиши числитель и знаменатель. Целое — оставь знаменатель пустым. Дробь можно не сокращать.';
+  if(spec.t==='num') return 'Десятичную дробь пиши через запятую или точку. Минус — знаком «−».';
+  return 'Целое число, можно со знаком «−».';
+}
+function readAns(spec, prefix){
+  if(spec.t==='frac'){
+    let rn=(el(prefix+'N').value||'').replace(/−/g,'-').replace(/\s/g,'');
+    let rd=(el(prefix+'D').value||'').replace(/−/g,'-').replace(/\s/g,'');
+    if(rn==='') return {empty:true};
+    if(rd==='') rd='1';
+    if(!/^-?\d+$/.test(rn)||!/^-?\d+$/.test(rd)) return {empty:true};
+    let un=parseInt(rn,10), ud=parseInt(rd,10);
+    if(ud===0) return {empty:true};
+    if(ud<0){ ud=-ud; un=-un; }
+    let ok = un*spec.d === spec.n*ud;
+    if(ok && spec.strict) ok = (gcd(Math.abs(un),ud)===1);
+    return {ok};
+  }
+  let raw=(el(prefix).value||'').replace(/−/g,'-').replace(',','.').replace(/\s/g,'');
+  if(raw==='') return {empty:true};
+  if(spec.t==='int'){ if(!/^-?\d+$/.test(raw)) return {empty:true}; return {ok: parseInt(raw,10)===spec.v}; }
+  let v=parseFloat(raw); if(isNaN(v)) return {empty:true};
+  return {ok: Math.abs(v-spec.v) < (spec.tol||0.0015)};
+}
+function specDisplay(spec){
+  if(spec.t==='frac'){ if(spec.d===1) return N(spec.n); return frac(spec.n,spec.d); }
+  if(spec.t==='num') return fmt(spec.v);
+  return N(spec.v);
+}
+function focusAns(spec, prefix){ const e = spec.t==='frac'? el(prefix+'N') : el(prefix); if(e) e.focus(); }
+function shakeAns(spec, prefix){ (spec.t==='frac'?[prefix+'N',prefix+'D']:[prefix]).forEach(id=>shake(id)); }
+function disableAns(spec, prefix){ (spec.t==='frac'?[prefix+'N',prefix+'D']:[prefix]).forEach(id=>{ const e=el(id); if(e){ e.disabled=true; e.style.borderColor=cssv('--green'); e.style.background=cssv('--green-soft'); } }); }
+function bindEnter(spec, prefix, onCheck, onNext, isDone){
+  (spec.t==='frac'?[prefix+'N',prefix+'D']:[prefix]).forEach(id=>{ const e=el(id); if(e) e.addEventListener('keydown',ev=>{ if(ev.key==='Enter'){ ev.preventDefault(); if(!isDone()) onCheck(); else onNext(); } }); });
+}
+
+/* ================= ЗАДАНИЕ 1 ================= */
+const MOD1 = {
+  meta:{ id:1, tag:'Задание 1', title:'Числа со знаком', subtitle:'Умножение отрицательного числа на скобку',
+         icon:'−×', tint:'--violet', tsoft:'--violet-soft', td:'#4B2FD6' },
+  theory(){
+    return '<div class="th">'
+    +'<h3>О чём это задание</h3>'
+    +'<p>Нужно вычислить выражение вида <span class="math">−a · (b ± c)</span> — например <span class="math">−16 · (12 − 5)</span>. '
+    +'Главное — не спешить: сначала считаем то, что <b>в скобках</b>, и только потом умножаем. И внимательно следим за <b>знаком</b>.</p>'
+    +'<h3>Порядок действий</h3>'
+    +'<p>1) Считаем скобку.&nbsp;&nbsp;2) Определяем знак результата.&nbsp;&nbsp;3) Перемножаем числа и ставим знак.</p>'
+    +'<h3>Знаки при умножении</h3>'
+    +'<div class="signgrid">'
+    +'<div class="signrule"><span class="minus">(−)</span> · <span class="minus">(−)</span> = <span class="plus">+</span></div>'
+    +'<div class="signrule"><span class="minus">(−)</span> · <span class="plus">(+)</span> = <span class="minus">−</span></div>'
+    +'<div class="signrule"><span class="plus">(+)</span> · <span class="minus">(−)</span> = <span class="minus">−</span></div>'
+    +'<div class="signrule"><span class="plus">(+)</span> · <span class="plus">(+)</span> = <span class="plus">+</span></div>'
+    +'</div>'
+    +'<div class="callout"><span class="ci">💡</span><div>Одинаковые знаки дают <b>плюс</b>, разные — <b>минус</b>. Здесь перед скобкой минус, а скобка положительная, поэтому ответ всегда <b>отрицательный</b>.</div></div>'
+    +'<h3>Разбор примера</h3>'
+    +'<div class="wex"><div class="ttl">Вычислим −8 · (17 − 5)</div>'
+    +'<div class="exline"><span class="n">1</span><div>Скобка: <span class="math">17 − 5 = 12</span>.</div></div>'
+    +'<div class="exline"><span class="n">2</span><div>Знак: минус · плюс = <b>минус</b>.</div></div>'
+    +'<div class="exline"><span class="n">3</span><div>Умножаем: <span class="math">8 · 12 = 96</span>, ставим минус → <span class="math">−96</span>.</div></div>'
+    +'</div>'
+    +'<h3>Частые ошибки</h3>'
+    +'<ul class="mistakes">'
+    +'<li>Потерять минус и записать положительный ответ.</li>'
+    +'<li>Сначала умножить, а потом «доделать» скобку — так порядок действий нарушается.</li>'
+    +'<li>Перепутать правило: минус · минус = <b>плюс</b>.</li>'
+    +'</ul>'
+    +'<div class="th-actions"><button class="btn btn-primary" onclick="gotoTab(\'warmup\')">Начать разминку →</button>'
+    +'<button class="btn btn-ghost" onclick="gotoTab(\'practice\')">Сразу к тренировке</button></div></div>';
+  },
+  warmup(){
+    const kind = pick(['sign','sign','bracket']);
+    if(kind==='sign'){
+      const s1=pick(['−','+']), s2=pick(['−','+']); const res=(s1===s2)?'+':'−';
+      return { type:'mc', prompt:'Какой знак будет у результата умножения?', expr:'( '+s1+' )  ·  ( '+s2+' )',
+        options:[{t:'минус (−)',v:'−'},{t:'плюс (+)',v:'+'}], answer:res,
+        explain:(s1===s2)?'Одинаковые знаки → плюс.':'Разные знаки → минус.' };
+    } else {
+      const op=pick(['+','−']); let b,c;
+      if(op==='−'){ b=R(11,40); c=R(1,b-1); } else { b=R(6,30); c=R(6,30); }
+      const val = op==='+'? b+c : b-c;
+      return { type:'input', prompt:'Вычисли значение скобки:', expr:b+' '+op+' '+c, ans:{t:'int',v:val},
+        explain:'Это просто действие в скобках, без умножения.' };
+    }
+  },
+  practice(diff){
+    const op=pick(['+','−']); let a,b,c;
+    if(diff==='easy'){ a=R(2,9); if(op==='−'){ b=R(6,15); c=R(1,b-1); } else { b=R(2,9); c=R(2,9); } }
+    else if(diff==='medium'){ a=R(3,16); if(op==='−'){ b=R(12,45); c=R(2,b-1); } else { b=R(6,29); c=R(6,29); } }
+    else { a=R(6,29); if(op==='−'){ b=R(30,99); c=R(2,b-1); } else { b=R(11,80); c=R(11,80); } }
+    const inner = op==='+'? b+c : b-c, ans = -a*inner;
+    return {
+      cap:'Вычислите', display:'−'+a+' · ('+b+' '+op+' '+c+')', answer:{t:'int',v:ans},
+      stages:[
+        { label:'Шаг 1 · скобка', prompt:'Вычисли значение в скобках: <span class="math">'+b+' '+op+' '+c+'</span>',
+          answer:{t:'int',v:inner}, placeholder:'скобка', hint:'Просто выполни действие '+b+' '+op+' '+c+'.',
+          doneText:'Скобка: <span class="math">'+b+' '+op+' '+c+' = '+inner+'</span>' },
+        { label:'Шаг 2 · умножение', prompt:'Теперь умножь: <span class="math">−'+a+' · '+inner+'</span>',
+          answer:{t:'int',v:ans}, placeholder:'ответ', hint:'Минус × плюс = минус. Посчитай '+a+' · '+inner+' и поставь знак «−».',
+          doneText:'Умножение: <span class="math">−'+a+' · '+inner+' = '+N(ans)+'</span>' }
+      ],
+      steps:[
+        'Сначала действие в скобках: <span class="math">'+b+' '+op+' '+c+' = '+inner+'</span>.',
+        'Определяем знак: минус · плюс = <b>минус</b>.',
+        'Умножаем и ставим знак: <span class="math">−'+a+' · '+inner+' = '+N(ans)+'</span>.'
+      ],
+      hint:'Сначала скобка ('+b+' '+op+' '+c+'), потом умножь на '+a+' со знаком минус.'
+    };
+  }
+};
+
+/* ================= ЗАДАНИЕ 2 ================= */
+function fracProblem(diff){
+  const dens = diff==='easy'?[2,3,4,5] : diff==='medium'?[2,3,4,5,6,7,8] : [2,3,4,5,6,7,8,9,10,12,14,16];
+  const mk=()=>{ const d=pick(dens); return reduce(R(1,d*2-1), d); };
+  let A,B,C,inter,res,op,g=0;
+  do{
+    A=mk(); B=mk(); op=pick(['+','−']); C=mk();
+    if(op==='−' && A[0]/A[1] < B[0]/B[1]){ const t=A; A=B; B=t; }
+    inter = op==='+'? fAdd(A,B) : fSub(A,B);
+    res = fMul(inter,C); g++;
+  } while((inter[0]===0 || res[1] > (diff==='hard'?72:30)) && g<800);
+  const doWord = op==='+'?'сложи':'вычти';
+  const tail = (res[1]!==1 && Math.abs(res[0])>res[1]) ? ' = <span class="math">'+impToMixed(res)+'</span>' : '';
+  return {
+    cap:'Вычислите',
+    display:'( '+frac(A[0],A[1])+' '+op+' '+frac(B[0],B[1])+' ) · '+frac(C[0],C[1]),
+    answer:{t:'frac',n:res[0],d:res[1]},
+    stages:[
+      { label:'Шаг 1 · скобка', prompt:'Приведи к общему знаменателю и '+doWord+': <span class="math">'+frac(A[0],A[1])+' '+op+' '+frac(B[0],B[1])+'</span>',
+        answer:{t:'frac',n:inter[0],d:inter[1]}, placeholder:'дробь',
+        hint:'Общий знаменатель для '+A[1]+' и '+B[1]+', приведи дроби и '+doWord+' числители.',
+        doneText:'Скобка: <span class="math">'+frac(A[0],A[1])+' '+op+' '+frac(B[0],B[1])+' = '+frac(inter[0],inter[1])+'</span>' },
+      { label:'Шаг 2 · умножение', prompt:'Умножь на дробь и сократи: <span class="math">'+frac(inter[0],inter[1])+' · '+frac(C[0],C[1])+'</span>',
+        answer:{t:'frac',n:res[0],d:res[1]}, placeholder:'дробь',
+        hint:'Числитель × числитель, знаменатель × знаменатель, потом сократи.',
+        doneText:'Ответ: <span class="math">'+frac(res[0],res[1])+'</span>' }
+    ],
+    steps:[
+      'Приводим дроби в скобке к общему знаменателю и '+(op==='+'?'складываем':'вычитаем')+': <span class="math">'+frac(A[0],A[1])+' '+op+' '+frac(B[0],B[1])+' = '+frac(inter[0],inter[1])+'</span>.',
+      'Умножаем на дробь (числитель × числитель, знаменатель × знаменатель): <span class="math">'+frac(inter[0],inter[1])+' · '+frac(C[0],C[1])+' = '+frac(res[0],res[1])+'</span>'+tail+'.',
+      (res[1]===1?'Дробь сократилась до целого числа: <span class="math">'+res[0]+'</span>.':'Обязательно сократи дробь, если это возможно.')
+    ],
+    hint:'Сначала общий знаменатель в скобке и действие, затем умножь на дробь и сократи.'
+  };
+}
+function decProblem(diff){
+  const sets={ easy:['A','E'], medium:['A','B','C','E'], hard:['A','B','C','E','F','G'] };
+  const t=pick(sets[diff]||sets.medium);
+  let display, s1e, mid, s2e, final, divFirst=false;
+  if(t==='A'){ const ci=pick([11,12,13,14,16,21,23]), qi=R(12,45); const c=ci/10,q=qi/10,b=(qi*ci)/100,at=qi+R(6,45),a=at/10; final=(at-qi)/10; mid=q; divFirst=true;
+    display=fmt(a)+' − '+fmt(b)+' : '+fmt(c); s1e=fmt(b)+' : '+fmt(c); s2e=fmt(a)+' − '+fmt(mid);
+  } else if(t==='B'){ const ci=pick([12,14,16,24,23,13]), qi=R(12,42); const c=ci/10,q=qi/10,b=(qi*ci)/100,at=R(10,88),a=at/10; final=(qi-at)/10; mid=q; divFirst=true;
+    display='−'+fmt(a)+' + '+fmt(b)+' : '+fmt(c); s1e=fmt(b)+' : '+fmt(c); s2e='−'+fmt(a)+' + '+fmt(mid);
+  } else if(t==='C'){ const bi=pick([11,12,13,14,16,22,24]), qi=R(15,45), ci=R(10,40); const b=bi/10,q=qi/10,a=(qi*bi)/100,c=ci/10; final=(qi-ci)/10; mid=q; divFirst=true;
+    display=fmt(a)+' : '+fmt(b)+' − '+fmt(c); s1e=fmt(a)+' : '+fmt(b); s2e=fmt(mid)+' − '+fmt(c);
+  } else if(t==='E'){ const a10=R(15,58),a=a10/10,b100=R(11,a10*10-1),b=b100/100; const diff2=Math.round((a-b)*100)/100; final=Math.round(diff2*10*100)/100; mid=diff2;
+    display='('+fmt(a)+' − '+fmt(b)+') : 0,1'; s1e=fmt(a)+' − '+fmt(b); s2e=fmt(mid)+' : 0,1';
+  } else if(t==='F'){ const map={'0.4':[[-4.5,-1.8],[-5.5,-2.2],[-3.5,-1.4],[-6.5,-2.6]],'0.6':[[-4.5,-2.7],[-3.5,-2.1],[-5.5,-3.3],[-2.5,-1.5]],'0.8':[[-4.75,-3.8],[-5.5,-4.4],[-3.75,-3.0],[-2.5,-2.0]]};
+    const ck=pick(['0.4','0.6','0.8']); const pr=pick(map[ck]); final=pr[0]; const diff2=pr[1]; const c=parseFloat(ck); mid=diff2;
+    const minB=Math.round(-diff2*10)+1, b10=R(minB,minB+30),b=b10/10,a=Math.round((b+diff2)*10)/10;
+    display='('+fmt(a)+' − '+fmt(b)+') : '+fmt(c); s1e=fmt(a)+' − '+fmt(b); s2e=fmt(mid)+' : '+fmt(c);
+  } else { const b10=R(20,90),b=b10/10,a100=R(11,b10*10-1),a=a100/100; const diff2=Math.round((b-a)*100)/100; final=Math.round(diff2*0.1*1000)/1000; mid=diff2;
+    display='(−'+fmt(a)+' + '+fmt(b)+') · 0,1'; s1e='−'+fmt(a)+' + '+fmt(b); s2e=fmt(mid)+' · 0,1';
+  }
+  final=Math.round(final*1000)/1000; mid=Math.round(mid*1000)/1000;
+  return {
+    cap:'Вычислите', display, answer:{t:'num',v:final},
+    stages:[
+      { label:'Шаг 1 · '+(divFirst?'деление':'скобка'), prompt:'Выполни первое действие: <span class="math">'+s1e+'</span>',
+        answer:{t:'num',v:mid}, placeholder:'результат',
+        hint:divFirst?'Сначала деление — умножение и деление раньше сложения и вычитания.':'Сначала считаем то, что в скобках.',
+        doneText:'Первое действие: <span class="math">'+s1e+' = '+fmt(mid)+'</span>' },
+      { label:'Шаг 2 · '+(divFirst?'сложение и вычитание':'умножение и деление'), prompt:'Теперь: <span class="math">'+s2e+'</span>',
+        answer:{t:'num',v:final}, placeholder:'ответ',
+        hint:'Подставь результат первого действия и посчитай. Следи за знаком и запятой.',
+        doneText:'Ответ: <span class="math">'+fmt(final)+'</span>' }
+    ],
+    steps:[
+      'Определяем порядок: сначала '+(divFirst?'деление':'скобка')+', потом '+(divFirst?'сложение или вычитание':'умножение или деление')+'.',
+      'Первое действие: <span class="math">'+s1e+' = '+fmt(mid)+'</span>.',
+      'Второе действие: <span class="math">'+s2e+' = '+fmt(final)+'</span>.'
+    ],
+    hint:'Сначала умножение/деление (или скобку), потом сложение/вычитание. Аккуратно со знаком и запятой.'
+  };
+}
+function warmFrac(){
+  const kind=pick(['reduce','lcd','add']);
+  if(kind==='reduce'){
+    let q=pick([2,3,4,5,6,7,8,9]); let p=R(1,q-1); const rb=reduce(p,q); p=rb[0]; q=rb[1];
+    const k=pick([2,3,4]); const nn=p*k, dd=q*k;
+    return { type:'input', prompt:'Сократи дробь до несократимой:', expr:frac(nn,dd),
+      ans:{t:'frac',n:p,d:q,strict:true}, explain:'Дели числитель и знаменатель на их общий делитель ('+k+').' };
+  } else if(kind==='lcd'){
+    let a=pick([2,3,4,5,6,8]), b=pick([3,4,5,6,8,9,12]); if(a===b) b=b+1;
+    const l=a*b/gcd(a,b);
+    return { type:'input', prompt:'Найди наименьший общий знаменатель для знаменателей '+a+' и '+b+':', expr:a+'  и  '+b,
+      ans:{t:'int',v:l}, explain:'Наименьшее число, которое делится и на '+a+', и на '+b+', равно '+l+'.' };
+  } else {
+    const d=pick([3,4,5,6,8,10,12]); let n1=R(1,d-1), n2=R(1,d-1); const op=pick(['+','−']);
+    if(op==='−' && n1<n2){ const t=n1; n1=n2; n2=t; }
+    const res = op==='+'? reduce(n1+n2,d) : reduce(n1-n2,d);
+    return { type:'input', prompt:'Вычисли (знаменатели одинаковые):', expr:frac(n1,d)+' '+op+' '+frac(n2,d),
+      ans:{t:'frac',n:res[0],d:res[1]}, explain:'Знаменатель общий — просто '+(op==='+'?'сложи':'вычти')+' числители.' };
+  }
+}
+function warmDec(){
+  const kind=pick(['order','md','as']);
+  if(kind==='order'){
+    const inner=pick(['·',':']), outer=pick(['+','−']);
+    const A=(R(21,89)/10), B=(R(11,49)/10), Cc=(R(11,49)/10);
+    return { type:'mc', prompt:'Какое действие выполняем первым?', expr:fmt(A)+' '+outer+' '+fmt(B)+' '+inner+' '+fmt(Cc),
+      options:[{t:(inner==='·'?'Умножение ':'Деление ')+fmt(B)+' '+inner+' '+fmt(Cc), v:'md'},{t:(outer==='+'?'Сложение ':'Вычитание ')+fmt(A)+' '+outer+' '+fmt(B), v:'as'}],
+      answer:'md', explain:'Умножение и деление выполняются раньше сложения и вычитания.' };
+  } else if(kind==='md'){
+    const type=pick(['mul10','div01','muldec']);
+    if(type==='mul10'){ const x=R(11,199)/10; return { type:'input', prompt:'Вычисли:', expr:fmt(x)+' · 10', ans:{t:'num',v:Math.round(x*10*100)/100}, explain:'Умножение на 10 — запятая вправо на один разряд.' }; }
+    if(type==='div01'){ const x=R(11,99)/10; return { type:'input', prompt:'Вычисли:', expr:fmt(x)+' : 0,1', ans:{t:'num',v:Math.round(x*10*100)/100}, explain:'Делить на 0,1 — то же, что умножить на 10.' }; }
+    const a=R(2,9)/10,b=R(2,9)/10; return { type:'input', prompt:'Вычисли:', expr:fmt(a)+' · '+fmt(b), ans:{t:'num',v:Math.round(a*b*100)/100}, explain:'Перемножь как целые, затем поставь запятую.' };
+  } else {
+    const a=R(11,89)/10, b=R(11,49)/10; const op=pick(['+','−']); const v=op==='+'?a+b:a-b;
+    return { type:'input', prompt:'Вычисли:', expr:fmt(a)+' '+op+' '+fmt(b), ans:{t:'num',v:Math.round(v*100)/100}, explain:'Складывай/вычитай по разрядам, запятая под запятой.' };
+  }
+}
+const MOD2 = {
+  meta:{ id:2, tag:'Задание 2', title:'Дроби', subtitle:'Обыкновенные и десятичные дроби',
+         icon:'¾', tint:'--sky', tsoft:'--sky-soft', td:'#0F6E9E',
+         subs:[{key:'frac',label:'Обыкновенные'},{key:'dec',label:'Десятичные'}] },
+  theory(){
+    return '<div class="th">'
+    +'<p>Это задание бывает двух видов: с <b>обыкновенными</b> дробями вида <span class="math">( '+frac(3,4)+' − '+frac(1,6)+' ) · '+frac(2,5)+'</span> и с <b>десятичными</b> на порядок действий, например <span class="math">7,1 − 7,36 : 2,3</span>.</p>'
+
+    +'<div class="lead">Обыкновенные дроби</div>'
+    +'<h3>Сложение и вычитание</h3>'
+    +'<p>Приведи дроби к <b>общему знаменателю</b>, затем сложи или вычти числители. Знаменатель остаётся общим.</p>'
+    +'<h3>Умножение</h3>'
+    +'<p>Числитель умножаем на числитель, знаменатель — на знаменатель, потом <b>сокращаем</b>: <span class="math">'+frac(7,12)+' · '+frac(2,5)+' = '+frac(14,60)+' = '+frac(7,30)+'</span>.</p>'
+    +'<div class="callout blue"><span class="ci">🧭</span><div>Порядок действий: сначала считаем <b>скобку</b>, потом умножаем на дробь. Не забывай сокращать ответ.</div></div>'
+    +'<div class="wex"><div class="ttl">Пример: ( 3/4 − 1/6 ) · 2/5</div>'
+    +'<div class="exline"><span class="n">1</span><div>Общий знаменатель 12: <span class="math">'+frac(3,4)+' − '+frac(1,6)+' = '+frac(9,12)+' − '+frac(2,12)+' = '+frac(7,12)+'</span>.</div></div>'
+    +'<div class="exline"><span class="n">2</span><div>Умножаем: <span class="math">'+frac(7,12)+' · '+frac(2,5)+' = '+frac(14,60)+'</span>.</div></div>'
+    +'<div class="exline"><span class="n">3</span><div>Сокращаем на 2: <span class="math">'+frac(7,30)+'</span>.</div></div>'
+    +'</div>'
+
+    +'<div class="lead">Десятичные дроби</div>'
+    +'<h3>Порядок действий</h3>'
+    +'<p>Сначала <b>умножение и деление</b>, потом <b>сложение и вычитание</b>. Если есть скобки — они в самом начале.</p>'
+    +'<h3>Полезные приёмы</h3>'
+    +'<p>Делить на <b>0,1</b> — то же, что умножить на <b>10</b> (запятая вправо). Умножить на <b>0,1</b> — разделить на 10 (запятая влево).</p>'
+    +'<div class="callout"><span class="ci">💡</span><div>Следи за <b>знаком</b> и за тем, чтобы запятая стояла под запятой при сложении и вычитании.</div></div>'
+    +'<div class="wex"><div class="ttl">Пример: 7,1 − 7,36 : 2,3</div>'
+    +'<div class="exline"><span class="n">1</span><div>Сначала деление: <span class="math">7,36 : 2,3 = 3,2</span>.</div></div>'
+    +'<div class="exline"><span class="n">2</span><div>Затем вычитание: <span class="math">7,1 − 3,2 = 3,9</span>.</div></div>'
+    +'</div>'
+
+    +'<h3>Частые ошибки</h3>'
+    +'<ul class="mistakes">'
+    +'<li>Не привести дроби к общему знаменателю перед сложением.</li>'
+    +'<li>Забыть сократить обыкновенную дробь в ответе.</li>'
+    +'<li>Сложить/вычесть раньше, чем выполнить деление или умножение.</li>'
+    +'<li>Сдвинуть запятую не в ту сторону при делении на 0,1.</li>'
+    +'</ul>'
+    +'<div class="th-actions"><button class="btn btn-primary" onclick="gotoTab(\'warmup\')">Начать разминку →</button>'
+    +'<button class="btn btn-ghost" onclick="gotoTab(\'practice\')">Сразу к тренировке</button></div></div>';
+  },
+  warmup(sub){ return sub==='dec' ? warmDec() : warmFrac(); },
+  practice(diff, sub){ return sub==='dec' ? decProblem(diff) : fracProblem(diff); }
+};
+
+/* ================= ЗАДАНИЕ 3 ================= */
+function absExpr(diff){
+  const vars=['x','y','a','b','z','k','m','n','p','q','r','s','t'];
+  const v=pick(vars);
+  let struct, mm, kk, val, p, c;
+  if(diff==='easy'){ struct=pick(['vpc','pv']); mm=1; val=R(-6,6); p=R(1,9); c=R(1,9); kk=pick([1,1,2,3])*pick([1,-1]); }
+  else if(diff==='medium'){ struct=pick(['vpc','pv','mvc','pmv']); val=R(-9,9); p=R(1,12); c=R(1,9); mm=(struct==='mvc'||struct==='pmv')?2:1; kk=pick([1,2,3,4,5])*pick([1,-1]); }
+  else { struct=pick(['vpc','pv','mvc','pmv']); val=R(-12,12); p=R(1,15); c=R(1,12); mm=(struct==='mvc'||struct==='pmv')?pick([2,3,4]):1; kk=pick([1,2,3,4,5,6,7])*pick([1,-1]); }
+  const opc=pick(['+','−']);
+  let innerStr, inner, subStr;
+  if(struct==='vpc'){ innerStr=v+opc+p; inner=(opc==='+')?val+p:val-p; subStr='('+N(val)+') '+opc+' '+p; }
+  else if(struct==='pv'){ innerStr=p+'−'+v; inner=p-val; subStr=p+' − ('+N(val)+')'; }
+  else if(struct==='mvc'){ innerStr=mm+v+opc+c; inner=(opc==='+')?mm*val+c:mm*val-c; subStr=mm+'·('+N(val)+') '+opc+' '+c; }
+  else { innerStr=p+'−'+mm+v; inner=p-mm*val; subStr=p+' − '+mm+'·('+N(val)+')'; }
+  const absv=Math.abs(inner), final=kk*absv;
+  const kStr = kk===1?'' : (kk===-1?'−':N(kk));
+  const display = kStr+'|'+innerStr+'|<div class="cond">при <b>'+v+' = '+N(val)+'</b></div>';
+  const stages=[
+    { label:'Шаг 1 · подстановка', prompt:'Подставь '+v+' = '+N(val)+' и вычисли выражение под модулем: <span class="math">'+subStr+'</span>',
+      answer:{t:'int',v:inner}, placeholder:'под модулем', hint:'Подставь '+N(val)+' вместо '+v+' и посчитай, следи за знаками.',
+      doneText:'Под модулем: <span class="math">'+subStr+' = '+N(inner)+'</span>' },
+    { label:'Шаг 2 · модуль', prompt:'Раскрой модуль: <span class="math">|'+N(inner)+'|</span>',
+      answer:{t:'int',v:absv}, placeholder:'|…|', hint:'Модуль делает число неотрицательным.',
+      doneText:'Модуль: <span class="math">|'+N(inner)+'| = '+absv+'</span>' }
+  ];
+  if(Math.abs(kk)!==1){
+    stages.push({ label:'Шаг 3 · коэффициент', prompt:'Умножь на коэффициент: <span class="math">'+N(kk)+' · '+absv+'</span>',
+      answer:{t:'int',v:final}, placeholder:'ответ', hint:'Посчитай '+Math.abs(kk)+' · '+absv+' и поставь нужный знак.',
+      doneText:'Ответ: <span class="math">'+N(kk)+' · '+absv+' = '+N(final)+'</span>' });
+  } else if(kk===-1){
+    stages.push({ label:'Шаг 3 · знак', prompt:'Перед модулем стоит минус — поставь знак: <span class="math">−'+absv+'</span>',
+      answer:{t:'int',v:final}, placeholder:'ответ', hint:'Минус перед модулем меняет знак результата.',
+      doneText:'Ответ: <span class="math">−'+absv+' = '+N(final)+'</span>' });
+  } else {
+    stages[1].doneText='Ответ: <span class="math">|'+N(inner)+'| = '+absv+'</span>';
+  }
+  const steps=[
+    'Подставляем '+v+' = '+N(val)+': <span class="math">'+subStr+' = '+N(inner)+'</span>.',
+    'Раскрываем модуль: <span class="math">|'+N(inner)+'| = '+absv+'</span>.',
+    (Math.abs(kk)!==1 ? 'Умножаем на коэффициент: <span class="math">'+N(kk)+' · '+absv+' = '+N(final)+'</span>.'
+      : (kk===-1 ? 'Учитываем минус перед модулем: <span class="math">−'+absv+' = '+N(final)+'</span>.'
+      : 'Коэффициент равен 1, поэтому ответ: <span class="math">'+N(final)+'</span>.'))
+  ];
+  return { cap:'Найдите значение', display, answer:{t:'int',v:final}, stages, steps,
+    hint:'Сначала подставь число и посчитай под модулем, затем раскрой модуль, потом умножь на коэффициент.' };
+}
+function absWarm(){
+  const kind=pick(['mod','mod','modk','mc']);
+  if(kind==='mc'){
+    const x=R(-20,-1);
+    return { type:'mc', prompt:'Чему равен модуль числа?', expr:'|'+N(x)+'|',
+      options:[{t:N(x),v:'raw'},{t:String(Math.abs(x)),v:'abs'}], answer:'abs',
+      explain:'Модуль — это расстояние до нуля, он никогда не бывает отрицательным.' };
+  }
+  if(kind==='modk'){
+    const x=R(-25,25), k=pick([-1,-2,-3,2,3,4]); const kStr=k===-1?'−':String(k); const val=k*Math.abs(x);
+    return { type:'input', prompt:'Вычисли:', expr:kStr+'|'+N(x)+'|', ans:{t:'int',v:val},
+      explain:'Сначала модуль |'+N(x)+'| = '+Math.abs(x)+', затем умножь на '+k+'.' };
+  }
+  const x=R(-40,40);
+  return { type:'input', prompt:'Вычисли модуль:', expr:'|'+N(x)+'|', ans:{t:'int',v:Math.abs(x)}, explain:'Модуль убирает знак числа.' };
+}
+const MOD3 = {
+  meta:{ id:3, tag:'Задание 3', title:'Модуль числа', subtitle:'Подстановка значения в выражение с модулем',
+         icon:'|n|', tint:'--green', tsoft:'--green-soft', td:'#0B7A57' },
+  theory(){
+    return '<div class="th">'
+    +'<h3>О чём это задание</h3>'
+    +'<p>Нужно найти значение выражения вида <span class="math">k·|выражение|</span> при заданном значении буквы — например <span class="math">−2|y−1|</span> при <span class="math">y = −4</span>.</p>'
+    +'<h3>Что такое модуль</h3>'
+    +'<p>Модуль <span class="math">|a|</span> — это расстояние от числа до нуля. Он <b>никогда не отрицательный</b>:</p>'
+    +'<div class="signgrid">'
+    +'<div class="signrule">|<span class="plus">+5</span>| = 5</div>'
+    +'<div class="signrule">|<span class="minus">−5</span>| = 5</div>'
+    +'<div class="signrule">|0| = 0</div>'
+    +'<div class="signrule">|<span class="minus">−12</span>| = 12</div>'
+    +'</div>'
+    +'<div class="callout"><span class="ci">💡</span><div>Модуль убирает знак у того, что стоит <b>внутри</b>. Но знак <b>коэффициента</b> перед модулем остаётся — его применяем в самом конце.</div></div>'
+    +'<h3>Порядок действий</h3>'
+    +'<p>1) Подставить число вместо буквы.&nbsp;&nbsp;2) Посчитать выражение под модулем.&nbsp;&nbsp;3) Раскрыть модуль (сделать неотрицательным).&nbsp;&nbsp;4) Умножить на коэффициент.</p>'
+    +'<div class="wex"><div class="ttl">Пример: −2|y−1| при y = −4</div>'
+    +'<div class="exline"><span class="n">1</span><div>Подставляем: <span class="math">(−4) − 1 = −5</span>.</div></div>'
+    +'<div class="exline"><span class="n">2</span><div>Модуль: <span class="math">|−5| = 5</span>.</div></div>'
+    +'<div class="exline"><span class="n">3</span><div>Умножаем на коэффициент: <span class="math">−2 · 5 = −10</span>.</div></div>'
+    +'</div>'
+    +'<h3>Частые ошибки</h3>'
+    +'<ul class="mistakes">'
+    +'<li>Сделать положительным весь ответ — модуль убирает знак только у того, что <b>внутри</b>.</li>'
+    +'<li>Забыть про минус коэффициента перед модулем.</li>'
+    +'<li>Ошибиться со знаком при подстановке отрицательного числа.</li>'
+    +'</ul>'
+    +'<div class="th-actions"><button class="btn btn-primary" onclick="gotoTab(\'warmup\')">Начать разминку →</button>'
+    +'<button class="btn btn-ghost" onclick="gotoTab(\'practice\')">Сразу к тренировке</button></div></div>';
+  },
+  warmup(){ return absWarm(); },
+  practice(diff){ return absExpr(diff); }
+};
+
+/* ================= ЗАДАНИЕ 4 ================= */
+function genEq(diff){
+  const coefTerm=n=>(n===1?'x':n+'x');
+  let kset,xmax,dmax;
+  if(diff==='easy'){ kset=[2,3,4,5]; xmax=20; dmax=30; }
+  else if(diff==='medium'){ kset=[2,3,4,5,6,7,8,9,10]; xmax=50; dmax=60; }
+  else { kset=[2,3,4,5,6,7,8,9,10,11,12,14]; xmax=90; dmax=90; }
+  const k=pick(kset);
+  const x10=R(1,xmax), V10=k*x10, x=x10/10, V=V10/10;
+  let op1=pick(['+','−']), a, b;
+  if(op1==='+'){ a=R(1,k-1); b=k-a; }
+  else { b=R(1,5); a=k+b; if(a>15){ op1='+'; a=R(1,k-1); b=k-a; } }
+  let rop=pick(['−','−','+']), c10, d10;
+  if(rop==='+' && V10<2) rop='−';
+  if(rop==='+'){ c10=R(1,V10-1); d10=V10-c10; } else { d10=R(1,dmax); c10=V10+d10; }
+  const c=c10/10, d=d10/10;
+  const leftStr=coefTerm(a)+op1+coefTerm(b);
+  const rightStr=fmt(c)+rop+fmt(d);
+  const display=leftStr+' = '+rightStr;
+  const stages=[
+    { label:'Шаг 1 · подобные', prompt:'Приведи подобные слагаемые слева: <span class="math">'+leftStr+'</span>. Сколько получится <b>x</b>?',
+      answer:{t:'int',v:k}, placeholder:'коэффициент', hint:'Числа перед x: '+a+' '+op1+' '+b+' = '+k+'. Значит слева '+k+'x.',
+      doneText:'Подобные: <span class="math">'+leftStr+' = '+k+'x</span>' },
+    { label:'Шаг 2 · правая часть', prompt:'Вычисли правую часть: <span class="math">'+rightStr+'</span>',
+      answer:{t:'num',v:V}, placeholder:'значение', hint:'Посчитай '+fmt(c)+' '+rop+' '+fmt(d)+'.',
+      doneText:'Правая часть: <span class="math">'+rightStr+' = '+fmt(V)+'</span>' },
+    { label:'Шаг 3 · делим', prompt:'Раздели правую часть на коэффициент: <span class="math">'+fmt(V)+' : '+k+'</span>',
+      answer:{t:'num',v:x}, placeholder:'x', hint:'x = '+fmt(V)+' : '+k+'.',
+      doneText:'Ответ: <span class="math">x = '+fmt(x)+'</span>' }
+  ];
+  const steps=[
+    'Приводим подобные слагаемые слева: <span class="math">'+leftStr+' = '+k+'x</span>.',
+    'Считаем правую часть: <span class="math">'+rightStr+' = '+fmt(V)+'</span>.',
+    'Делим, чтобы найти неизвестное: <span class="math">x = '+fmt(V)+' : '+k+' = '+fmt(x)+'</span>.'
+  ];
+  return { cap:'Найдите неизвестное x', display, answer:{t:'num',v:x}, stages, steps,
+    chain:[ k+'x = '+rightStr, k+'x = '+fmt(V) ],
+    hint:'Слева приведи подобные (соедини x), справа посчитай, затем раздели правую часть на число перед x.' };
+}
+function eqWarm(){
+  const coefTerm=n=>(n===1?'x':n+'x');
+  const kind=pick(['like','like','solve','rhs']);
+  if(kind==='like'){
+    const op=pick(['+','−']); let a,b,k;
+    if(op==='+'){ a=R(1,9); b=R(1,9); k=a+b; } else { a=R(2,12); b=R(1,a-1); k=a-b; }
+    return { type:'input', prompt:'Приведи подобные — сколько получится x?', expr:coefTerm(a)+op+coefTerm(b),
+      ans:{t:'int',v:k}, explain:'Складываем или вычитаем числа перед x: '+a+' '+op+' '+b+' = '+k+'.' };
+  } else if(kind==='solve'){
+    const k=pick([2,3,4,5,6,7,8,9]), x10=R(1,30), V=k*x10/10;
+    return { type:'input', prompt:'Найди x:', expr:k+'x = '+fmt(V), ans:{t:'num',v:x10/10},
+      explain:'Раздели обе части на '+k+': x = '+fmt(V)+' : '+k+' = '+fmt(x10/10)+'.' };
+  } else {
+    const op=pick(['+','−']); let c10,d10;
+    if(op==='+'){ c10=R(2,90); d10=R(2,60); } else { c10=R(20,120); d10=R(1,c10-1); }
+    const c=c10/10, d=d10/10, v=op==='+'?(c10+d10)/10:(c10-d10)/10;
+    return { type:'input', prompt:'Вычисли:', expr:fmt(c)+op+fmt(d), ans:{t:'num',v:Math.round(v*100)/100}, explain:'Действие с десятичными: запятая под запятой.' };
+  }
+}
+const MOD4 = {
+  meta:{ id:4, tag:'Задание 4', title:'Уравнения', subtitle:'Подобные слагаемые и поиск x',
+         icon:'x=', tint:'--amber', tsoft:'--amber-soft', td:'#B7660A' },
+  theory(){
+    return '<div class="th">'
+    +'<h3>О чём это задание</h3>'
+    +'<p>Нужно найти <b>x</b> из равенства вида <span class="math">ax ± bx = c ± d</span> — например <span class="math">5x + 3x = 2,4 − 0,8</span>. Слева собираем <b>подобные слагаемые</b>, справа считаем число, затем делим.</p>'
+    +'<h3>Подобные слагаемые</h3>'
+    +'<p>Слагаемые с одной и той же буквой можно соединить, сложив или вычтя числа перед <b>x</b>: <span class="math">5x + 3x = 8x</span>, <span class="math">7x − 2x = 5x</span>, <span class="math">6x − x = 5x</span> (перед одиноким x стоит 1).</p>'
+    +'<div class="callout blue"><span class="ci">🧭</span><div>После приведения слева останется <span class="math">k·x</span>, а справа — число. Чтобы найти x, <b>раздели</b> правую часть на коэффициент k.</div></div>'
+    +'<h3>Порядок действий</h3>'
+    +'<p>1) Привести подобные слева.&nbsp;&nbsp;2) Посчитать правую часть.&nbsp;&nbsp;3) Разделить: <span class="math">x = (правая часть) : k</span>.</p>'
+    +'<div class="wex"><div class="ttl">Пример: 5x + 3x = 2,4 − 0,8</div>'
+    +'<div class="exline"><span class="n">1</span><div>Подобные: <span class="math">5x + 3x = 8x</span>.</div></div>'
+    +'<div class="exline"><span class="n">2</span><div>Правая часть: <span class="math">2,4 − 0,8 = 1,6</span>.</div></div>'
+    +'<div class="exline"><span class="n">3</span><div>Делим: <span class="math">x = 1,6 : 8 = 0,2</span>.</div></div>'
+    +'</div>'
+    +'<h3>Частые ошибки</h3>'
+    +'<ul class="mistakes">'
+    +'<li>Не сложить числа перед x (забыть привести подобные).</li>'
+    +'<li>Забыть, что перед одиноким <span class="math">x</span> стоит коэффициент 1.</li>'
+    +'<li>Не разделить правую часть на коэффициент.</li>'
+    +'<li>Ошибиться в действии с десятичными дробями.</li>'
+    +'</ul>'
+    +'<div class="th-actions"><button class="btn btn-primary" onclick="gotoTab(\'warmup\')">Начать разминку →</button>'
+    +'<button class="btn btn-ghost" onclick="gotoTab(\'practice\')">Сразу к тренировке</button></div></div>';
+  },
+  warmup(){ return eqWarm(); },
+  practice(diff){ return genEq(diff); }
+};
+
+/* ================= ЗАДАНИЕ 5 ================= */
+const lcm=(a,b)=>a*b/gcd(a,b);
+const VESSELS=[
+  {name:'Теплоход', pro:'он', verb:'прошёл', emoji:'🚢'},
+  {name:'Катер', pro:'он', verb:'прошёл', emoji:'🚤'},
+  {name:'Лодка', pro:'она', verb:'прошла', emoji:'🛶'},
+  {name:'Моторная лодка', pro:'она', verb:'прошла', emoji:'🚤'},
+  {name:'Баржа', pro:'она', verb:'прошла', emoji:'🛥️'}
+];
+const WORKS=[
+  {n1:'Первый насос', n2:'второй насос', act:'наполняет', obj:'бассейн', together:'наполнится бассейн', word:'часов', short:'ч', icon:'🚰'},
+  {n1:'Первая труба', n2:'вторая труба', act:'наполняет', obj:'бак', together:'наполнится бак', word:'часов', short:'ч', icon:'🚰'},
+  {n1:'Первый кран', n2:'второй кран', act:'наполняет', obj:'ванну', together:'наполнится ванна', word:'минут', short:'мин', icon:'🛁'},
+  {n1:'Первый рабочий', n2:'второй рабочий', act:'выполняет заказ', obj:'', together:'будет выполнен заказ', word:'часов', short:'ч', icon:'👷'},
+  {n1:'Первый принтер', n2:'второй принтер', act:'печатает тираж', obj:'', together:'будет напечатан тираж', word:'часов', short:'ч', icon:'🖨️'}
+];
+function motionScene(ctx,stg,done){
+  const dg=ctx.given==='down'?'по течению':'против течения';
+  const db=ctx.given==='down'?'против течения':'по течению';
+  let chips='';
+  if(stg>=1) chips+='<span class="mchip c1">'+dg+': '+fmt(ctx.vGiven)+' км/ч</span>';
+  if(stg>=2) chips+='<span class="mchip c2">'+db+': '+fmt(ctx.vOther)+' км/ч</span>';
+  if(stg>=3||done) chips+='<span class="mchip c3">обратный путь: '+fmt(ctx.Rt)+' ч</span>';
+  const mo=REDUCE?' nomo':''; const sail=REDUCE?'':'style="--sail:4.5s"';
+  return '<div class="scene"><div class="scene-motion">'
+    +'<div class="bank top"></div>'
+    +'<div class="riverband"><div class="curflow'+mo+'"></div>'
+    +'<div class="boat'+mo+'" '+sail+'>'+ctx.vessel.emoji+'</div></div>'
+    +'<div class="bank bot"></div>'
+    +'<div class="mdist">↔ '+ctx.D+' км</div>'
+    +'<div class="mcur">течение '+fmt(ctx.s)+' км/ч →</div>'
+    +'</div><div class="mchips">'+chips+'</div></div>';
+}
+function workScene(ctx,stg,done){
+  const a=ctx.a,b=ctx.b,L=ctx.L,r1=ctx.r1,r2=ctx.r2,comb=ctx.comb,time=ctx.time,scen=ctx.scen,sh=ctx.scen.short;
+  const stage=done?99:stg; let bar='', cap='';
+  if(stage>=1) cap='Весь объём = <b>'+L+'</b> частей (НОК '+a+' и '+b+')';
+  if(stage===2){
+    bar='<div class="wfill" style="width:'+(comb/L*100).toFixed(2)+'%"><div class="wa" style="width:'+(r1/comb*100).toFixed(2)+'%"></div><div class="wb" style="width:'+(r2/comb*100).toFixed(2)+'%"></div></div>';
+    cap='За 1 '+sh+' вместе: <b>'+r1+'</b> + <b>'+r2+'</b> = <b>'+comb+'</b> частей';
+  } else if(stage>=3){
+    bar='<div class="wfill wfull'+(REDUCE?' nomo':'')+'"><div class="wa" style="width:'+(r1/comb*100).toFixed(2)+'%"></div><div class="wb" style="width:'+(r2/comb*100).toFixed(2)+'%"></div></div>';
+    cap='Готово за <b>'+fmt(time)+'</b> '+sh+'  ('+L+' : '+comb+')';
+  }
+  const w1=(stage>=1? r1+' частей/'+sh : 'за '+a+' '+sh);
+  const w2=(stage>=1? r2+' частей/'+sh : 'за '+b+' '+sh);
+  return '<div class="scene"><div class="scene-work">'
+    +'<div class="wbar">'+bar+'<div class="wgrid"></div></div>'
+    +'<div class="wworkers"><span class="ww a">'+scen.icon+' первый · '+w1+'</span><span class="ww b">'+scen.icon+' второй · '+w2+'</span></div>'
+    +(cap?'<div class="wcap">'+cap+'</div>':'')+'</div></div>';
+}
+function motionProblem(diff){
+  const vessel=pick(VESSELS);
+  let vUp,vDown,s2,s,given,D,T,vGiven,vOther,Rt, okFound=false;
+  for(let t=0;t<500;t++){
+    s2=pick(diff==='easy'?[2,4]:diff==='medium'?[1,2,3,4]:[1,2,3,4,5,6]); s=s2/2;
+    const lo=diff==='easy'?9:11, hi=diff==='easy'?15:diff==='medium'?22:28;
+    vUp=R(lo,hi); vDown=vUp+s2;
+    given=pick(['down','up']);
+    if(given==='down'){ vGiven=vDown; vOther=vUp; } else { vGiven=vUp; vOther=vDown; }
+    T=R(3, diff==='easy'?6:8); D=vGiven*T; Rt=D/vOther;
+    if(Math.abs(Math.round(Rt*100)-Rt*100)<1e-9 && Rt>=2 && Rt<=12 && D>=24 && D<=220 && vUp>=6){ okFound=true; break; }
+  }
+  if(!okFound){ s2=2; s=1; vUp=pick([8,10,12,14]); vDown=vUp+2; given='down'; vGiven=vDown; vOther=vUp; D=lcm(vUp,vDown); T=D/vGiven; Rt=D/vOther; }
+  const dgW=given==='down'?'по течению':'против течения';
+  const dbW=given==='down'?'против течения':'по течению';
+  const pron=vessel.pro, twoS=2*s, sign=given==='down'?'−':'+';
+  const display = given==='down'
+    ? vessel.name+' '+vessel.verb+' по течению '+D+' км за '+T+' ч. За сколько часов '+pron+' пройдёт обратный путь против течения, если скорость течения '+fmt(s)+' км/ч?'
+    : vessel.name+' '+vessel.verb+' против течения '+D+' км за '+T+' ч. За сколько часов '+pron+' пройдёт этот путь по течению, если скорость течения '+fmt(s)+' км/ч?';
+  const ctx={D,T,s,given,vGiven,vOther,Rt,vessel};
+  return {
+    cap:'Задача на движение', textMode:'prose', display, answer:{t:'num',v:Rt},
+    scene:(stg,dn)=>motionScene(ctx,stg,dn),
+    stages:[
+      { label:'Шаг 1 · скорость', prompt:'Найди скорость '+dgW+': <span class="math">'+D+' : '+T+'</span>',
+        answer:{t:'num',v:vGiven}, placeholder:'км/ч', hint:'Скорость = расстояние : время.',
+        doneText:'Скорость '+dgW+': <span class="math">'+D+' : '+T+' = '+fmt(vGiven)+'</span> км/ч' },
+      { label:'Шаг 2 · обратная скорость', prompt:'Скорость '+dbW+': собственная скорость отличается на течение дважды — <span class="math">'+fmt(vGiven)+' '+sign+' 2 · '+fmt(s)+'</span>',
+        answer:{t:'num',v:vOther}, placeholder:'км/ч', hint:'От данной скорости '+(given==='down'?'вычти':'прибавь')+' удвоенное течение: '+sign+' '+fmt(twoS)+'.',
+        doneText:'Скорость '+dbW+': <span class="math">'+fmt(vGiven)+' '+sign+' '+fmt(twoS)+' = '+fmt(vOther)+'</span> км/ч' },
+      { label:'Шаг 3 · время', prompt:'Найди время обратного пути: <span class="math">'+D+' : '+fmt(vOther)+'</span>',
+        answer:{t:'num',v:Rt}, placeholder:'часов', hint:'Время = расстояние : скорость.',
+        doneText:'Ответ: <span class="math">'+fmt(Rt)+'</span> ч' }
+    ],
+    steps:[
+      'Скорость '+dgW+': <span class="math">'+D+' : '+T+' = '+fmt(vGiven)+'</span> км/ч.',
+      'В обратную сторону скорость меняется на удвоенное течение: <span class="math">'+fmt(vGiven)+' '+sign+' '+fmt(twoS)+' = '+fmt(vOther)+'</span> км/ч.',
+      'Время обратного пути: <span class="math">'+D+' : '+fmt(vOther)+' = '+fmt(Rt)+'</span> ч.'
+    ],
+    hint:'Найди скорость в данном направлении (путь : время), затем скорость в обратную сторону (изменится на удвоенное течение), потом время (путь : скорость).'
+  };
+}
+function workProblem(diff){
+  const scen=pick(WORKS);
+  let a,b,L,r1,r2,comb,time,okFound=false;
+  for(let t=0;t<500;t++){
+    const pool = diff==='easy'?[2,3,4,6,8,12] : diff==='medium'?[2,3,4,5,6,8,10,12,15,20] : [2,3,4,5,6,8,9,10,12,14,15,16,18,20,24];
+    a=pick(pool); b=pick(pool); if(a===b) continue;
+    const g=gcd(a,b); L=a*b/g; r1=L/a; r2=L/b; comb=r1+r2; time=L/comb;
+    if(Math.abs(Math.round(time*100)-time*100)>1e-9) continue;
+    if(time<1 || time>20 || L>240) continue;
+    okFound=true; break;
+  }
+  if(!okFound){ a=6; b=3; L=6; r1=1; r2=2; comb=3; time=2; }
+  const word=scen.word, sh=scen.short;
+  const objPart = scen.obj?(' '+scen.obj):'';
+  const display = scen.n1+' '+scen.act+objPart+' за '+a+' '+word+', а '+scen.n2+' — за '+b+' '+word+'. За сколько '+word+' '+scen.together+', если работают вместе?';
+  const ctx={a,b,L,r1,r2,comb,time,scen};
+  return {
+    cap:'Задача на работу', textMode:'prose', display, answer:{t:'num',v:time},
+    scene:(stg,dn)=>workScene(ctx,stg,dn),
+    stages:[
+      { label:'Шаг 1 · НОК', prompt:'Прими весь объём работы за общее число частей — найди НОК чисел '+a+' и '+b+':',
+        answer:{t:'int',v:L}, placeholder:'НОК', hint:'Наименьшее число, которое делится и на '+a+', и на '+b+'.',
+        doneText:'Весь объём = <span class="math">'+L+'</span> частей (НОК '+a+' и '+b+')' },
+      { label:'Шаг 2 · вместе за '+sh, prompt:'Пусть объём = '+L+' частей. Первый делает <span class="math">'+L+' : '+a+' = '+r1+'</span> частей/'+sh+', второй <span class="math">'+L+' : '+b+' = '+r2+'</span>. Сколько частей вместе за '+sh+'?',
+        answer:{t:'int',v:comb}, placeholder:'частей/'+sh, hint:'Сложи производительности: '+r1+' + '+r2+'.',
+        doneText:'Вместе за '+sh+': <span class="math">'+r1+' + '+r2+' = '+comb+'</span> частей' },
+      { label:'Шаг 3 · время', prompt:'Раздели весь объём на совместную скорость: <span class="math">'+L+' : '+comb+'</span>',
+        answer:{t:'num',v:time}, placeholder:sh, hint:'Время = объём : (части за '+sh+').',
+        doneText:'Ответ: <span class="math">'+fmt(time)+'</span> '+sh }
+    ],
+    steps:[
+      'Примем весь объём работы за НОК: <span class="math">'+L+'</span> частей (НОК '+a+' и '+b+').',
+      'Производительности: <span class="math">'+L+' : '+a+' = '+r1+'</span> и <span class="math">'+L+' : '+b+' = '+r2+'</span>, вместе <span class="math">'+comb+'</span> частей/'+sh+'.',
+      'Время совместной работы: <span class="math">'+L+' : '+comb+' = '+fmt(time)+'</span> '+sh+'.'
+    ],
+    hint:'Прими объём за НОК времён, найди производительности каждого, сложи их и раздели объём на сумму.'
+  };
+}
+function motionWarm(){
+  const kind=pick(['speed','time','speed']);
+  if(kind==='speed'){
+    const own=R(8,22), s=pick([1,2,3,4]), dir=pick(['по','против']); const ans=dir==='по'?own+s:own-s;
+    return { type:'input', prompt:'Скорость '+dir+' течения (собственная '+own+', течение '+s+'):', expr:own+(dir==='по'?' + ':' − ')+s,
+      ans:{t:'num',v:ans}, explain:(dir==='по'?'По течению течение помогает — прибавляем.':'Против течения течение мешает — вычитаем.') };
+  } else {
+    const v=R(6,20), t=R(2,8), D=v*t;
+    return { type:'input', prompt:'Найди время в пути:', expr:D+' : '+v, ans:{t:'num',v:t}, explain:'Время = расстояние : скорость.' };
+  }
+}
+function workWarm(){
+  const kind=pick(['lcm','rate','lcm']);
+  if(kind==='lcm'){
+    let a=pick([2,3,4,5,6,8,10,12]), b=pick([2,3,4,5,6,8,9,10,12]); if(a===b) b=b+1;
+    return { type:'input', prompt:'Найди НОК чисел '+a+' и '+b+':', expr:a+'  и  '+b, ans:{t:'int',v:lcm(a,b)}, explain:'Наименьшее общее кратное '+a+' и '+b+' равно '+lcm(a,b)+'.' };
+  } else {
+    const a=pick([2,3,4,6,8,12]), k=pick([2,3,4,5]), L=a*k;
+    return { type:'input', prompt:'Весь объём '+L+' частей, работа выполняется за '+a+' ч. Сколько частей в час?', expr:L+' : '+a, ans:{t:'int',v:L/a}, explain:'Производительность = объём : время = '+L+' : '+a+' = '+(L/a)+'.' };
+  }
+}
+const MOD5 = {
+  meta:{ id:5, tag:'Задание 5', title:'Движение и работа', subtitle:'Течение реки и совместная работа',
+         icon:'🚤', tint:'--sky', tsoft:'--sky-soft', td:'#0F6E9E',
+         subs:[{key:'motion',label:'Движение'},{key:'work',label:'Работа'}] },
+  theory(){
+    return '<div class="th">'
+    +'<p>В этом задании — <b>текстовая задача</b>: либо на движение по реке, либо на совместную работу. Разберём оба вида.</p>'
+    +'<div class="lead">Движение по реке</div>'
+    +'<h3>Скорость по и против течения</h3>'
+    +'<p>Течение помогает или мешает: <span class="math">по течению = собственная + течение</span>, <span class="math">против течения = собственная − течение</span>. Значит по течению всегда быстрее, а разница между скоростями равна <b>удвоенному течению</b> (2·s).</p>'
+    +'<div class="callout blue"><span class="ci">🚤</span><div>Формулы движения: <span class="math">v = S : t</span>, &nbsp;<span class="math">t = S : v</span>, &nbsp;<span class="math">S = v · t</span>.</div></div>'
+    +'<div class="wex"><div class="ttl">Пример: по течению 60 км за 4 ч, течение 1,5 км/ч. Время обратно?</div>'
+    +'<div class="exline"><span class="n">1</span><div>Скорость по течению: <span class="math">60 : 4 = 15</span> км/ч.</div></div>'
+    +'<div class="exline"><span class="n">2</span><div>Против течения: <span class="math">15 − 2 · 1,5 = 12</span> км/ч.</div></div>'
+    +'<div class="exline"><span class="n">3</span><div>Время обратно: <span class="math">60 : 12 = 5</span> ч.</div></div>'
+    +'</div>'
+    +'<div class="lead">Совместная работа</div>'
+    +'<h3>Приём с НОК</h3>'
+    +'<p>Чтобы не работать с дробями, примем весь объём работы за <b>НОК</b> времён. Тогда производительность каждого — целое число частей в час: <span class="math">объём : время</span>. Складываем производительности и делим объём на сумму.</p>'
+    +'<div class="callout"><span class="ci">🛠️</span><div>Вместе за час выполняется <b>сумма</b> производительностей. Время = <span class="math">объём : (части в час)</span>.</div></div>'
+    +'<div class="wex"><div class="ttl">Пример: насосы за 48 ч и за 16 ч. Вместе?</div>'
+    +'<div class="exline"><span class="n">1</span><div>Объём = НОК(48, 16) = <span class="math">48</span> частей.</div></div>'
+    +'<div class="exline"><span class="n">2</span><div>Первый: <span class="math">48 : 48 = 1</span>, второй: <span class="math">48 : 16 = 3</span>, вместе <span class="math">4</span> части/ч.</div></div>'
+    +'<div class="exline"><span class="n">3</span><div>Время: <span class="math">48 : 4 = 12</span> ч.</div></div>'
+    +'</div>'
+    +'<h3>Частые ошибки</h3>'
+    +'<ul class="mistakes">'
+    +'<li>Забыть, что между скоростями по и против течения разница <b>2·течения</b>, а не одно течение.</li>'
+    +'<li>Складывать времена работы (за 6 ч и за 3 ч ≠ за 9 ч) — складывать надо производительности.</li>'
+    +'<li>Перепутать: время = объём : скорость, а не наоборот.</li>'
+    +'</ul>'
+    +'<div class="th-actions"><button class="btn btn-primary" onclick="gotoTab(\'warmup\')">Начать разминку →</button>'
+    +'<button class="btn btn-ghost" onclick="gotoTab(\'practice\')">Сразу к тренировке</button></div></div>';
+  },
+  warmup(sub){ return sub==='work'?workWarm():motionWarm(); },
+  practice(diff,sub){ return sub==='work'?workProblem(diff):motionProblem(diff); }
+};
+
+/* ================= ЗАДАНИЕ 6 ================= */
+function pfx(ds){ const d=pick(ds); const n=R(1,d-1); if(gcd(n,d)!==1) return null; return [n,d]; }
+function genMix(diff){
+  let ds,kLo,kHi,wLo,wHi,lim;
+  if(diff==='easy'){ ds=[2,3,4,5]; kLo=2; kHi=3; wLo=1; wHi=2; lim=70; }
+  else if(diff==='medium'){ ds=[2,3,4,5,6,7,8]; kLo=2; kHi=5; wLo=1; wHi=3; lim=90; }
+  else { ds=[2,3,4,5,6,7,8,9,10,12]; kLo=2; kHi=8; wLo=1; wHi=4; lim=150; }
+  let a,b,w1,F1,F2,bracket,M1,div,K,yMixed,g,h,w2,Y,prod,op,res,done=false;
+  for(let t=0;t<900;t++){
+    b=pick(ds); a=R(1,b-1); if(gcd(a,b)!==1) continue; w1=R(wLo,wHi);
+    F1=pfx(ds); F2=pfx(ds); if(!F1||!F2) continue;
+    bracket=fSub(F1,F2); if(bracket[0]<=0) continue;
+    M1=[w1*b+a,b]; div=fDiv(M1,bracket);
+    K=R(kLo,kHi);
+    yMixed=(diff!=='easy') && (Math.random()<0.5);
+    h=pick(ds); g=R(1,h-1); if(gcd(g,h)!==1) continue; w2=yMixed?R(1,3):0;
+    Y=[w2*h+g,h]; prod=fMul([K,1],Y);
+    op=pick(diff==='easy'?['+']:['+','+','−']);
+    res=op==='+'?fAdd(div,prod):fSub(div,prod);
+    if(res[0]<=0) continue;
+    if(res[1]>lim || div[1]>lim || res[0]>420) continue;
+    done=true; break;
+  }
+  if(!done){ b=5;a=2;w1=1;F1=[3,4];F2=[2,5];bracket=fSub(F1,F2);M1=[7,5];div=fDiv(M1,bracket);K=3;yMixed=false;g=1;h=2;w2=0;Y=[1,2];prod=fMul([K,1],Y);op='+';res=fAdd(div,prod); }
+  const Ydisp = yMixed? mixed(w2,g,h) : frac(g,h);
+  const m1Disp = mixed(w1,a,b);
+  const brDisp = '( '+frac(F1[0],F1[1])+' − '+frac(F2[0],F2[1])+' )';
+  const Kterm = N(K)+' · '+Ydisp;
+  const display = m1Disp+' : '+brDisp+' '+op+' '+Kterm;
+  const resMix = (res[1]!==1 && Math.abs(res[0])>res[1]) ? ' = <span class="math">'+impToMixed(res)+'</span>' : '';
+  return {
+    cap:'Вычислите', display, answer:{t:'frac',n:res[0],d:res[1]},
+    stages:[
+      { label:'Шаг 1 · скобка', prompt:'Вычисли скобку: <span class="math">'+frac(F1[0],F1[1])+' − '+frac(F2[0],F2[1])+'</span>',
+        answer:{t:'frac',n:bracket[0],d:bracket[1]}, placeholder:'дробь', hint:'Приведи к общему знаменателю и вычти числители.',
+        doneText:'Скобка: <span class="math">'+frac(F1[0],F1[1])+' − '+frac(F2[0],F2[1])+' = '+frac(bracket[0],bracket[1])+'</span>' },
+      { label:'Шаг 2 · деление', prompt:'Раздели: <span class="math">'+m1Disp+' : '+frac(bracket[0],bracket[1])+'</span>',
+        answer:{t:'frac',n:div[0],d:div[1]}, placeholder:'дробь', hint:'Смешанное число переведи в неправильную дробь, деление — умножение на перевёрнутую дробь.',
+        doneText:'Деление: <span class="math">'+m1Disp+' : '+frac(bracket[0],bracket[1])+' = '+frac(div[0],div[1])+'</span>' },
+      { label:'Шаг 3 · итог', prompt:(op==='+'?'Прибавь':'Вычти')+' произведение: <span class="math">'+frac(div[0],div[1])+' '+op+' '+Kterm+'</span>',
+        answer:{t:'frac',n:res[0],d:res[1]}, placeholder:'дробь', hint:'Сначала '+N(K)+' · '+Ydisp+' = <span class="math">'+frac(prod[0],prod[1])+'</span>, затем '+(op==='+'?'прибавь':'вычти')+' к результату деления.',
+        doneText:'Ответ: <span class="math">'+frac(res[0],res[1])+'</span>'+resMix }
+    ],
+    steps:[
+      'Скобка: <span class="math">'+frac(F1[0],F1[1])+' − '+frac(F2[0],F2[1])+' = '+frac(bracket[0],bracket[1])+'</span>.',
+      'Деление (смешанное → неправильная, умножаем на перевёрнутую): <span class="math">'+m1Disp+' : '+frac(bracket[0],bracket[1])+' = '+frac(div[0],div[1])+'</span>.',
+      'Умножение: <span class="math">'+N(K)+' · '+Ydisp+' = '+frac(prod[0],prod[1])+'</span>.',
+      'Итог: <span class="math">'+frac(div[0],div[1])+' '+op+' '+frac(prod[0],prod[1])+' = '+frac(res[0],res[1])+'</span>'+resMix+'.'
+    ],
+    hint:'Порядок: сначала скобка, затем деление, потом умножение, в конце сложение или вычитание. Дроби сокращай.'
+  };
+}
+function mixWarm(){
+  const ds=[2,3,4,5,6,8]; const kind=pick(['mixed','sub','div','mul']);
+  if(kind==='mixed'){ const d=pick(ds); let n; do{ n=R(1,d-1); }while(gcd(n,d)!==1); const w=R(1,4); const imp=[w*d+n,d];
+    return { type:'input', prompt:'Переведи в неправильную дробь:', expr:mixed(w,n,d), ans:{t:'frac',n:imp[0],d:imp[1]}, explain:'Целое умножь на знаменатель и прибавь числитель: '+w+'·'+d+'+'+n+' = '+imp[0]+'.' }; }
+  if(kind==='sub'){ let F1,F2; do{ F1=pfx(ds); F2=pfx(ds); }while(!F1||!F2||(F1[0]/F1[1]<=F2[0]/F2[1])); const r=fSub(F1,F2);
+    return { type:'input', prompt:'Вычисли:', expr:frac(F1[0],F1[1])+' − '+frac(F2[0],F2[1]), ans:{t:'frac',n:r[0],d:r[1]}, explain:'Приведи к общему знаменателю и вычти.' }; }
+  if(kind==='div'){ let A,B; do{ A=pfx(ds); B=pfx(ds); }while(!A||!B); const r=fDiv(A,B);
+    return { type:'input', prompt:'Раздели дроби:', expr:frac(A[0],A[1])+' : '+frac(B[0],B[1]), ans:{t:'frac',n:r[0],d:r[1]}, explain:'Деление — умножение на перевёрнутую дробь.' }; }
+  const d=pick(ds); let n; do{ n=R(1,d-1); }while(gcd(n,d)!==1); const K=R(2,5); const yM=Math.random()<0.5; const w=yM?R(1,3):0; const Y=[w*d+n,d]; const r=fMul([K,1],Y);
+  return { type:'input', prompt:'Вычисли:', expr:N(K)+' · '+(yM?mixed(w,n,d):frac(n,d)), ans:{t:'frac',n:r[0],d:r[1]}, explain:'Целое умножь на числитель, знаменатель оставь.' };
+}
+const MOD6 = {
+  meta:{ id:6, tag:'Задание 6', title:'Смешанные вычисления', subtitle:'Смешанные числа, деление и умножение',
+         icon:'⅚', tint:'--violet', tsoft:'--violet-soft', td:'#4B2FD6' },
+  theory(){
+    return '<div class="th">'
+    +'<p>Здесь длинное выражение со смешанными числами вида <span class="math">'+mixed(1,2,5)+' : ( '+frac(3,4)+' − '+frac(2,5)+' ) + 3 · '+frac(1,2)+'</span>. Главное — держать <b>порядок действий</b> и аккуратно работать с дробями.</p>'
+    +'<h3>Порядок действий</h3>'
+    +'<p>1) Скобка.&nbsp;&nbsp;2) Деление и умножение.&nbsp;&nbsp;3) Сложение или вычитание. Всё слева направо внутри одного уровня.</p>'
+    +'<h3>Деление на дробь</h3>'
+    +'<p>Смешанное число переводим в <b>неправильную дробь</b>, а деление заменяем умножением на <b>перевёрнутую</b> дробь: <span class="math">'+mixed(1,2,5)+' = '+frac(7,5)+'</span>, затем <span class="math">'+frac(7,5)+' : '+frac(7,20)+' = '+frac(7,5)+' · '+frac(20,7)+' = 4</span>.</p>'
+    +'<div class="callout blue"><span class="ci">🔁</span><div>Разделить на дробь = умножить на перевёрнутую. Умножить целое на смешанное — сначала переведи смешанное в неправильную дробь.</div></div>'
+    +'<div class="wex"><div class="ttl">Пример: '+mixed(1,2,5)+' : ( '+frac(3,4)+' − '+frac(2,5)+' ) + 3 · '+frac(1,2)+'</div>'
+    +'<div class="exline"><span class="n">1</span><div>Скобка: <span class="math">'+frac(3,4)+' − '+frac(2,5)+' = '+frac(7,20)+'</span>.</div></div>'
+    +'<div class="exline"><span class="n">2</span><div>Деление: <span class="math">'+frac(7,5)+' : '+frac(7,20)+' = 4</span>.</div></div>'
+    +'<div class="exline"><span class="n">3</span><div>Умножение: <span class="math">3 · '+frac(1,2)+' = '+frac(3,2)+'</span>.</div></div>'
+    +'<div class="exline"><span class="n">4</span><div>Итог: <span class="math">4 + '+frac(3,2)+' = '+frac(11,2)+' = '+mixed(5,1,2)+'</span>.</div></div>'
+    +'</div>'
+    +'<h3>Частые ошибки</h3>'
+    +'<ul class="mistakes">'
+    +'<li>Начать с деления или сложения, забыв про скобку.</li>'
+    +'<li>Делить, не перевернув вторую дробь.</li>'
+    +'<li>Не перевести смешанное число в неправильную дробь.</li>'
+    +'<li>Забыть сократить дробь в ответе.</li>'
+    +'</ul>'
+    +'<div class="th-actions"><button class="btn btn-primary" onclick="gotoTab(\'warmup\')">Начать разминку →</button>'
+    +'<button class="btn btn-ghost" onclick="gotoTab(\'practice\')">Сразу к тренировке</button></div></div>';
+  },
+  warmup(){ return mixWarm(); },
+  practice(diff){ return genMix(diff); }
+};
+
+/* ================= ЗАДАНИЕ 7 ================= */
+const DIVS=[
+  { text:(N,L,H)=>'В доме '+N+' квартир. В каждом подъезде одинаковое число квартир, больше '+L+', но меньше '+H+'. Сколько подъездов в доме?', itemEmoji:'🏠', groupEmoji:'🚪', gw:'подъездов' },
+  { text:(N,L,H)=>'В здании '+N+' офисов. На каждом этаже одинаковое число офисов, больше '+L+', но меньше '+H+'. Сколько этажей в здании?', itemEmoji:'🏢', groupEmoji:'🏢', gw:'этажей' },
+  { text:(N,L,H)=>'В школе '+N+' учеников. В каждом классе одинаковое число учеников, больше '+L+', но меньше '+H+'. Сколько классов в школе?', itemEmoji:'🎒', groupEmoji:'🏫', gw:'классов' },
+  { text:(N,L,H)=>'В библиотеке '+N+' книг расставлены на стеллажах поровну: больше '+L+', но меньше '+H+' книг на каждом. Сколько стеллажей?', itemEmoji:'📖', groupEmoji:'📚', gw:'стеллажей' },
+  { text:(N,L,H)=>'На складе '+N+' ящиков разложены по секциям поровну: больше '+L+', но меньше '+H+' в каждой. Сколько секций?', itemEmoji:'📦', groupEmoji:'🗄️', gw:'секций' },
+  { text:(N,L,H)=>'В парке '+N+' деревьев посажены одинаковыми группами: больше '+L+', но меньше '+H+' в каждой. Сколько групп?', itemEmoji:'🌳', groupEmoji:'🌳', gw:'групп' },
+  { text:(N,L,H)=>'На ферме '+N+' цыплят рассажены в одинаковые клетки: больше '+L+', но меньше '+H+' в каждой. Сколько клеток?', itemEmoji:'🐤', groupEmoji:'🏠', gw:'клеток' },
+  { text:(N,L,H)=>'На фабрике '+N+' изделий упакованы в коробки поровну: больше '+L+', но меньше '+H+' в каждой. Сколько коробок?', itemEmoji:'🔧', groupEmoji:'📦', gw:'коробок' }
+];
+function divScene(ctx,stg,done){
+  const N=ctx.N,k=ctx.k,G=ctx.G,L=ctx.L,H=ctx.H,scen=ctx.scen; const stage=done?99:stg;
+  const total='<div class="dv-total"><span class="dv-emoji">'+scen.itemEmoji+'</span> Всего: <b>'+N+'</b></div>';
+  let range='', groups='', cap='';
+  if(stage>=1){
+    const pct=Math.max(4,Math.min(96,(k-L)/(H-L)*100)).toFixed(1);
+    range='<div class="dv-range"><div class="dv-bar"><div class="dv-pin'+(REDUCE?' nomo':'')+'" style="left:'+pct+'%"><span class="dv-pk">'+k+' ✓</span></div></div>'
+      +'<div class="dv-ends"><span>'+L+'</span><span>'+H+'</span></div>'
+      +'<div class="dv-note">'+N+' делится нацело в промежутке ('+L+'; '+H+') только на <b>'+k+'</b> — столько в каждой группе</div></div>';
+  }
+  if(stage>=2){
+    let chips=''; const showN=Math.min(G,16);
+    for(let i=0;i<showN;i++){ chips+='<span class="dv-grp'+(REDUCE?' nomo':'')+'"'+(REDUCE?'':' style="animation-delay:'+(i*0.08).toFixed(2)+'s"')+'>'+scen.groupEmoji+'<span class="dv-badge">'+k+'</span></span>'; }
+    if(G>showN) chips+='<span class="dv-more">+'+(G-showN)+'</span>';
+    groups='<div class="dv-groups">'+chips+'</div>';
+    cap='<div class="dv-cap"><b>'+G+'</b> '+scen.gw+' × <b>'+k+'</b> = '+N+'</div>';
+  }
+  return '<div class="scene"><div class="scene-div">'+total+range+groups+cap+'</div></div>';
+}
+function divPuzzle(diff){
+  const scen=pick(DIVS);
+  let G,k,N,L,H,done=false;
+  for(let t=0;t<2000;t++){
+    G=R(4, diff==='easy'?7:diff==='medium'?10:12);
+    k=R(diff==='easy'?15:diff==='medium'?22:30, diff==='easy'?45:diff==='medium'?75:99);
+    N=G*k; if(N>950) continue;
+    const lo=R(4,15), hi=R(4,15);
+    L=Math.floor((k-lo)/5)*5; H=Math.ceil((k+hi)/5)*5; if(L<10) L=10;
+    if(!(L<k && k<H)) continue;
+    let inR=[]; for(let i=L+1;i<H;i++) if(N%i===0) inR.push(i);
+    if(inR.length!==1 || inR[0]!==k) continue;
+    done=true; break;
+  }
+  if(!done){ scen; G=5; k=85; N=425; L=80; H=100; }
+  const ctx={N,k,G,L,H,scen};
+  return {
+    cap:'Задача на делимость', textMode:'prose', display:scen.text(N,L,H), answer:{t:'int',v:G},
+    scene:(stg,dn)=>divScene(ctx,stg,dn),
+    stages:[
+      { label:'Шаг 1 · сколько в группе', prompt:'В каждой группе — одинаковое число, это <b>делитель</b> числа '+N+' в промежутке от '+L+' до '+H+'. Найди его.',
+        answer:{t:'int',v:k}, placeholder:'в группе', hint:'Перебирай числа от '+(L+1)+' до '+(H-1)+' — какое делит '+N+' без остатка?',
+        doneText:'В каждой группе: <span class="math">'+k+'</span> (делитель '+N+' между '+L+' и '+H+')' },
+      { label:'Шаг 2 · сколько групп', prompt:'Найди число групп: <span class="math">'+N+' : '+k+'</span>',
+        answer:{t:'int',v:G}, placeholder:'групп', hint:'Раздели общее количество на число в каждой группе.',
+        doneText:'Ответ: <span class="math">'+N+' : '+k+' = '+G+'</span>' }
+    ],
+    steps:[
+      'Число в каждой группе — это делитель '+N+', попадающий в промежуток ('+L+'; '+H+'). Такой делитель один: <span class="math">'+k+'</span>.',
+      'Число групп: <span class="math">'+N+' : '+k+' = '+G+'</span>.'
+    ],
+    hint:'Сначала найди, сколько предметов в каждой группе (делитель общего числа в заданном промежутке), затем раздели общее количество на это число.'
+  };
+}
+function divWarm(){
+  const kind=pick(['divide','findk','divmc']);
+  if(kind==='divide'){ const k=R(6,30), G=R(4,12), N=k*G; return { type:'input', prompt:'Раздели:', expr:N+' : '+k, ans:{t:'int',v:G}, explain:N+' : '+k+' = '+G+'.' }; }
+  if(kind==='findk'){
+    for(let t=0;t<200;t++){ const G=R(4,9), k=R(12,30), N=G*k; const L=Math.floor((k-R(3,8))/5)*5, H=Math.ceil((k+R(3,8))/5)*5;
+      let u=[]; for(let i=L+1;i<H;i++) if(N%i===0) u.push(i);
+      if(u.length===1 && u[0]===k) return { type:'input', prompt:'Число '+N+' делят на равные группы. Сколько в группе (делитель от '+L+' до '+H+')?', expr:N+',  от '+L+' до '+H, ans:{t:'int',v:k}, explain:'В промежутке ('+L+'; '+H+') число '+N+' делится нацело только на '+k+'.' };
+    }
+    const k=R(6,30), G=R(4,12), N=k*G; return { type:'input', prompt:'Раздели:', expr:N+' : '+k, ans:{t:'int',v:G}, explain:N+' : '+k+' = '+G+'.' };
+  }
+  const k=R(4,12), G=R(4,9), N=k*G; let d2; let tries=0; do{ d2=k+pick([-1,1,2,-2,3,-3]); tries++; }while((d2<=1 || N%d2===0) && tries<20); if(N%d2===0) d2=k+1;
+  const first=Math.random()<0.5;
+  return { type:'mc', prompt:'Какое число делит '+N+' нацело?', expr:''+N,
+    options: first?[{t:String(k),v:'k'},{t:String(d2),v:'x'}]:[{t:String(d2),v:'x'},{t:String(k),v:'k'}], answer:'k',
+    explain:''+N+' делится на '+k+', но не делится на '+d2+'.' };
+}
+const MOD7 = {
+  meta:{ id:7, tag:'Задание 7', title:'Делимость', subtitle:'Сколько равных групп получится',
+         icon:'📦', tint:'--green', tsoft:'--green-soft', td:'#0B7A57' },
+  theory(){
+    return '<div class="th">'
+    +'<p>Дано: всего <b>N</b> предметов разложены на <b>равные</b> группы, и в каждой группе больше <b>L</b>, но меньше <b>H</b> предметов. Нужно найти, сколько групп.</p>'
+    +'<h3>Ключевая идея</h3>'
+    +'<p>Если предметы делятся на равные группы без остатка, то число в каждой группе — это <b>делитель</b> числа N. Нужно найти делитель N, который попадает в промежуток от L до H. Тогда число групп = <span class="math">N : (число в группе)</span>.</p>'
+    +'<div class="callout blue"><span class="ci">🔎</span><div>Ищем <b>делитель</b> N в заданном промежутке. Он обычно один. Не путай: сначала находим, сколько <b>в группе</b>, потом — сколько <b>групп</b>.</div></div>'
+    +'<div class="wex"><div class="ttl">Пример: 425 квартир, в подъезде больше 80, но меньше 100</div>'
+    +'<div class="exline"><span class="n">1</span><div>Делители 425: 1, 5, 17, 25, 85, 425. В промежутке (80; 100) только <span class="math">85</span>.</div></div>'
+    +'<div class="exline"><span class="n">2</span><div>Значит в каждом подъезде 85 квартир, а подъездов: <span class="math">425 : 85 = 5</span>.</div></div>'
+    +'</div>'
+    +'<h3>Как искать делитель</h3>'
+    +'<p>Перебирай числа из промежутка (L; H) по очереди и проверяй, делится ли N на них нацело. Границы — строго: «больше L» и «меньше H».</p>'
+    +'<h3>Частые ошибки</h3>'
+    +'<ul class="mistakes">'
+    +'<li>Дать в ответе число предметов в группе вместо числа групп.</li>'
+    +'<li>Взять число, на которое N <b>не делится</b> нацело.</li>'
+    +'<li>Включить саму границу (нужно строго больше L и строго меньше H).</li>'
+    +'</ul>'
+    +'<div class="th-actions"><button class="btn btn-primary" onclick="gotoTab(\'warmup\')">Начать разминку →</button>'
+    +'<button class="btn btn-ghost" onclick="gotoTab(\'practice\')">Сразу к тренировке</button></div></div>';
+  },
+  warmup(){ return divWarm(); },
+  practice(diff){ return divPuzzle(diff); }
+};
+
+/* ================= ЗАДАНИЕ 8 ================= */
+const THREES=[
+  { nom:'яблоки', gen:'яблок', c:'ящике', cpl:'ящиках', emoji:'🍎' },
+  { nom:'книги', gen:'книг', c:'шкафу', cpl:'шкафах', emoji:'📗' },
+  { nom:'конфеты', gen:'конфет', c:'коробке', cpl:'коробках', emoji:'🍬' },
+  { nom:'монеты', gen:'монет', c:'копилке', cpl:'копилках', emoji:'🪙' },
+  { nom:'карандаши', gen:'карандашей', c:'пенале', cpl:'пеналах', emoji:'✏️' },
+  { nom:'шары', gen:'шаров', c:'коробке', cpl:'коробках', emoji:'🎈' },
+  { nom:'орехи', gen:'орехов', c:'мешке', cpl:'мешках', emoji:'🌰' },
+  { nom:'марки', gen:'марок', c:'альбоме', cpl:'альбомах', emoji:'📮' }
+];
+function threeScene(ctx,stg,done){
+  const x1=ctx.x1,x2=ctx.x2,C=ctx.C,p=ctx.p,relKind=ctx.relKind,K=ctx.K,D=ctx.D,total=ctx.total; const stage=done?99:stg;
+  const maxV=Math.max(x1,x2,C); const nm=REDUCE?' nomo':'';
+  const h=v=>Math.max(10,Math.round(v/maxV*100));
+  function col(cls,val,known,name){
+    if(known) return '<div class="tcol"><div class="tval">'+val+'</div><div class="tbar '+cls+nm+'" style="height:'+h(val)+'%"></div><div class="tname">'+name+'</div></div>';
+    return '<div class="tcol"><div class="tval">?</div><div class="tbar q'+nm+'" style="height:20%"></div><div class="tname">'+name+'</div></div>';
+  }
+  const rule1 = relKind==='K' ? ('в '+K+' раза меньше двух') : ('на '+D+' меньше двух');
+  const c1=col('a', x1, stage>=2, '1-й · '+rule1);
+  const c2=col('b', x2, stage>=1, '2-й · '+p+'% от 3-го');
+  const c3=col('c', C, true, '3-й · дано');
+  const cap = (stage>=3||done) ? '<div class="tcap">Всего: <b>'+total+'</b> = '+x1+' + '+x2+' + '+C+'</div>' : '';
+  return '<div class="scene"><div class="scene-three">'+c1+c2+c3+'</div>'+cap+'</div>';
+}
+function threeProblem(diff){
+  const th=pick(THREES);
+  let C,p,x2,relKind,K,D,x1,total,done=false;
+  for(let t=0;t<2000;t++){
+    C=pick(diff==='easy'?[40,50,60,80,100]:diff==='medium'?[40,50,60,70,80,90,100,120]:[50,60,70,80,90,100,110,120,140,150,160,180,200]);
+    p=pick(diff==='easy'?[10,20,25,50,75]:[10,20,25,30,40,50,60,70,75,80,90]);
+    if((p*C)%100!==0) continue;
+    x2=p*C/100;
+    const sum=x2+C;
+    relKind=pick(['K','K','D']);
+    if(relKind==='K'){ K=pick([2,2,3,4]); if(sum%K!==0) continue; x1=sum/K; D=0; }
+    else { D=pick([5,10,15,20,25,30]); x1=sum-D; if(x1<=0) continue; K=0; }
+    if(x2<5 || x1<3 || total>1400) continue;
+    total=x1+x2+C;
+    if(total>1400) continue;
+    done=true; break;
+  }
+  if(!done){ C=80;p=70;x2=56;relKind='K';K=2;D=0;x1=68;total=204; }
+  const ctx={x1,x2,C,p,relKind,K,D,total,th};
+  const rel1txt = relKind==='K' ? ('в '+K+' раза меньше, чем в двух остальных вместе') : ('на '+D+' меньше, чем в двух остальных вместе');
+  const display = 'В трёх '+th.cpl+' лежат '+th.nom+'. В первом '+th.c+' '+th.gen+' '+rel1txt+'; во втором — '+p+' % от количества '+th.gen+' в третьем '+th.c+'; а в третьем '+th.c+' лежит '+C+' '+th.gen+'. Сколько всего '+th.gen+' в трёх '+th.cpl+'?';
+  const stage2 = relKind==='K'
+    ? { label:'Шаг 2 · первый '+th.c, prompt:'В первом — в '+K+' раза меньше, чем в двух остальных вместе: <span class="math">('+x2+' + '+C+') : '+K+'</span>', answer:{t:'int',v:x1}, placeholder:'штук', hint:'Сложи второй и третий, раздели на '+K+'.', doneText:'В первом: <span class="math">('+x2+' + '+C+') : '+K+' = '+x1+'</span>' }
+    : { label:'Шаг 2 · первый '+th.c, prompt:'В первом — на '+D+' меньше, чем в двух остальных вместе: <span class="math">'+x2+' + '+C+' − '+D+'</span>', answer:{t:'int',v:x1}, placeholder:'штук', hint:'Сложи второй и третий, вычти '+D+'.', doneText:'В первом: <span class="math">'+x2+' + '+C+' − '+D+' = '+x1+'</span>' };
+  return {
+    cap:'Задача с процентами', textMode:'prose', display, answer:{t:'int',v:total},
+    scene:(stg,dn)=>threeScene(ctx,stg,dn),
+    stages:[
+      { label:'Шаг 1 · второй '+th.c, prompt:'Во втором '+th.c+': <span class="math">'+p+'% от '+C+'</span> — сколько это?', answer:{t:'int',v:x2}, placeholder:'штук', hint:''+p+'% — это '+p+' сотых: '+C+' · '+p+' : 100.', doneText:'Во втором: <span class="math">'+p+'% от '+C+' = '+x2+'</span>' },
+      stage2,
+      { label:'Шаг 3 · всего', prompt:'Сложи все три: <span class="math">'+x1+' + '+x2+' + '+C+'</span>', answer:{t:'int',v:total}, placeholder:'всего', hint:'Сложи количества во всех трёх '+th.cpl+'.', doneText:'Ответ: <span class="math">'+x1+' + '+x2+' + '+C+' = '+total+'</span>' }
+    ],
+    steps:[
+      'Второй '+th.c+': <span class="math">'+p+'% от '+C+' = '+C+' · '+p+' : 100 = '+x2+'</span>.',
+      relKind==='K' ? 'Первый '+th.c+': в '+K+' раза меньше суммы двух остальных: <span class="math">('+x2+' + '+C+') : '+K+' = '+x1+'</span>.' : 'Первый '+th.c+': на '+D+' меньше суммы двух остальных: <span class="math">'+x2+' + '+C+' − '+D+' = '+x1+'</span>.',
+      'Всего: <span class="math">'+x1+' + '+x2+' + '+C+' = '+total+'</span>.'
+    ],
+    hint:'Начни с того, что задано (третий), найди второй как процент от третьего, потом первый через сумму двух остальных, и сложи всё.'
+  };
+}
+function percWarm(){
+  const kind=pick(['percent','percent','sum','offset']);
+  if(kind==='percent'){ const N=pick([40,50,60,80,100,120,150,200,160,240]); const p=pick([10,20,25,50,75,30,40,60,70]); if((p*N)%100!==0) return percWarm();
+    return { type:'input', prompt:'Найди процент от числа:', expr:p+'% от '+N, ans:{t:'int',v:p*N/100}, explain:''+p+'% от '+N+' = '+N+' · '+p+' : 100 = '+(p*N/100)+'.' }; }
+  if(kind==='sum'){ const K=pick([2,3,4]); const q=R(6,40); const b=R(6,40); let a=(q+b); a=a-(a%K); const s=a; const bb=R(4,a-4); const aa=s-bb; // ensure (aa+bb)%K==0
+    let x=R(10,60), y=R(10,60); let sum=x+y; sum=sum-(sum%K); if(sum<K) sum=K*R(2,10); const half=sum/K;
+    return { type:'input', prompt:'Вычисли:', expr:'('+sum+') : '+K, ans:{t:'int',v:half}, explain:''+sum+' : '+K+' = '+half+'.' }; }
+  const a=R(20,90), b=R(20,90), D=pick([5,10,15,20,25,30]); const r=a+b-D;
+  return { type:'input', prompt:'Вычисли:', expr:a+' + '+b+' − '+D, ans:{t:'int',v:r}, explain:''+a+' + '+b+' − '+D+' = '+r+'.' };
+}
+const MOD8 = {
+  meta:{ id:8, tag:'Задание 8', title:'Проценты', subtitle:'Части, проценты и сумма величин',
+         icon:'%', tint:'--amber', tsoft:'--amber-soft', td:'#B7660A' },
+  theory(){
+    return '<div class="th">'
+    +'<p>Текстовая задача с <b>процентами</b> и связями между тремя величинами. Разбираем по шагам, начиная с того, что задано.</p>'
+    +'<h3>Процент от числа</h3>'
+    +'<p>Процент — это сотая доля. Чтобы найти <b>p%</b> от числа, умножь число на p и раздели на 100: <span class="math">70% от 80 = 80 · 70 : 100 = 56</span>.</p>'
+    +'<div class="callout"><span class="ci">%</span><div>«В 2 раза меньше, чем в двух остальных вместе» означает: сложи те две величины и раздели на 2.</div></div>'
+    +'<div class="wex"><div class="ttl">Пример: третий ящик 80, второй — 70% от третьего, первый — в 2 раза меньше двух остальных вместе</div>'
+    +'<div class="exline"><span class="n">1</span><div>Второй: <span class="math">70% от 80 = 56</span>.</div></div>'
+    +'<div class="exline"><span class="n">2</span><div>Первый: <span class="math">(56 + 80) : 2 = 68</span>.</div></div>'
+    +'<div class="exline"><span class="n">3</span><div>Всего: <span class="math">68 + 56 + 80 = 204</span>.</div></div>'
+    +'</div>'
+    +'<h3>Частые ошибки</h3>'
+    +'<ul class="mistakes">'
+    +'<li>Считать процент не от той величины (процент берётся от <b>третьего</b>).</li>'
+    +'<li>Забыть, что «в 2 раза меньше двух вместе» — это сумма двух, делённая на 2.</li>'
+    +'<li>Найти отдельные ящики, но забыть сложить всё для ответа.</li>'
+    +'</ul>'
+    +'<div class="th-actions"><button class="btn btn-primary" onclick="gotoTab(\'warmup\')">Начать разминку →</button>'
+    +'<button class="btn btn-ghost" onclick="gotoTab(\'practice\')">Сразу к тренировке</button></div></div>';
+  },
+  warmup(){ return percWarm(); },
+  practice(diff){ return threeProblem(diff); }
+};
+
+/* ================= ЗАДАНИЕ 9 ================= */
+function numScene(ctx,stg,done){
+  const t=ctx.t,u=ctx.u,num=ctx.num,swapped=ctx.swapped,diff=ctx.diff,V=ctx.V,d=ctx.d; const stage=done?99:stg; const nm=REDUCE?' nomo':'';
+  const tTile = stage>=2 ? t : '?';
+  const uTile = (stage>=3||done) ? u : '?';
+  const tileRow='<div class="nn-row">'
+    +'<div class="nn-tile tens'+(stage>=2?' on'+nm:'')+'">'+tTile+'</div>'
+    +'<div class="nn-tile units'+((stage>=3||done)?' on'+nm:'')+'">'+uTile+'</div>'
+    +'</div><div class="nn-labels"><span>десятки</span><span>единицы</span></div>';
+  let mid='';
+  if(stage>=1) mid='<div class="nn-diff">Разность цифр: <b>'+d+'</b> — число меняется на 9 × '+d+' = '+V+'</div>';
+  let swap='';
+  if(stage>=3||done){
+    const sign=diff>0?'+':'−';
+    swap='<div class="nn-swap"><div class="nn-num">'+num+'</div>'
+      +'<div class="nn-arrow'+nm+'">⇄</div>'
+      +'<div class="nn-num alt">'+swapped+'</div>'
+      +'<div class="nn-badge '+(diff>0?'up':'down')+'">'+sign+V+'</div></div>';
+  }
+  return '<div class="scene"><div class="scene-num">'+tileRow+mid+swap+'</div></div>';
+}
+function numPuzzle(lvl){
+  let t,u,family,K=0,S=0,num,swapped,diff,V,d,done=false;
+  for(let it=0; it<1500; it++){
+    if(lvl==='easy') family=pick(['sum','mulSmall']);
+    else family=pick(['sum','sum','mulSmall','mulBig']);
+    if(family==='mulSmall'){ K=pick(lvl==='easy'?[2]:lvl==='medium'?[2,3]:[2,3,4]); t=R(1,4); u=K*t; if(u>9||u<1||u===t) continue; }
+    else if(family==='mulBig'){ K=pick(lvl==='medium'?[2,3]:[2,3,4]); u=R(1,4); t=K*u; if(t>9||t===u) continue; }
+    else { do{ t=R(1,8); u=R(1,9); }while(t===u); S=t+u; }
+    if(u<1||t<1) continue;
+    num=10*t+u; swapped=10*u+t; diff=swapped-num; V=Math.abs(diff); d=Math.abs(u-t);
+    let sol=[]; for(let tt=1;tt<=9;tt++) for(let uu=0;uu<=9;uu++){
+      const rel = family==='mulSmall'?(uu===K*tt) : family==='mulBig'?(tt===K*uu) : (tt+uu===S);
+      if(rel && 9*(uu-tt)===diff) sol.push(tt*10+uu);
+    }
+    if(sol.length!==1 || sol[0]!==num) continue;
+    if(lvl==='easy' && diff<0) continue;
+    done=true; break;
+  }
+  if(!done){ t=3;u=6;family='mulSmall';K=2;num=36;swapped=63;diff=27;V=27;d=3; }
+  const ctx={t,u,num,swapped,diff,V,d,family,K,S};
+  let clue1;
+  if(family==='mulSmall') clue1='цифра в разряде десятков в '+K+' раза меньше цифры в разряде единиц';
+  else if(family==='mulBig') clue1='цифра в разряде десятков в '+K+' раза больше цифры в разряде единиц';
+  else clue1='сумма цифр числа равна '+S;
+  const swapClue = diff>0 ? ('Если поменять эти цифры местами, число увеличится на '+V+'.') : ('Если поменять эти цифры местами, число уменьшится на '+V+'.');
+  const display = 'В задуманном двузначном числе '+clue1+'. '+swapClue+' Найдите задуманное число.';
+  let s2hint;
+  if(family==='mulSmall') s2hint='Единицы = '+K+' × десятки, а «единицы − десятки» = '+d+'. Значит десятки × '+(K-1)+' = '+d+', десятки = '+d+' : '+(K-1)+'.';
+  else if(family==='mulBig') s2hint='Десятки = '+K+' × единицы, а «десятки − единицы» = '+d+'. Значит единицы = '+d+' : '+(K-1)+', десятки = '+K+' × единицы.';
+  else s2hint = diff>0 ? ('Десятки + единицы = '+S+', а «единицы − десятки» = '+d+'. Меньшая цифра (десятки) = ('+S+' − '+d+') : 2.')
+                       : ('Десятки + единицы = '+S+', а «десятки − единицы» = '+d+'. Большая цифра (десятки) = ('+S+' + '+d+') : 2.');
+  return {
+    cap:'Двузначное число', textMode:'prose', display, answer:{t:'int',v:num},
+    scene:(stg,dn)=>numScene(ctx,stg,dn),
+    stages:[
+      { label:'Шаг 1 · разность цифр', prompt:'Перестановка цифр меняет число на 9 × (разность цифр). Найди разность цифр: <span class="math">'+V+' : 9</span>',
+        answer:{t:'int',v:d}, placeholder:'разность', hint:'Раздели, на сколько изменилось число, на 9.',
+        doneText:'Разность цифр: <span class="math">'+V+' : 9 = '+d+'</span>' },
+      { label:'Шаг 2 · цифра десятков', prompt:'Пользуясь связью цифр и разностью '+d+', найди цифру <b>десятков</b>.',
+        answer:{t:'int',v:t}, placeholder:'десятки', hint:s2hint,
+        doneText:'Цифра десятков: <span class="math">'+t+'</span>' },
+      { label:'Шаг 3 · число', prompt:'Найди цифру единиц и запиши число: <span class="math">10 · '+t+' + (единицы)</span>',
+        answer:{t:'int',v:num}, placeholder:'число', hint:'Единицы '+(diff>0?'больше десятков на ':'меньше десятков на ')+d+'. Число = 10 × десятки + единицы.',
+        doneText:'Задуманное число: <span class="math">'+num+'</span>' }
+    ],
+    steps:[
+      'Перестановка меняет число на 9 × (разность цифр): разность цифр = <span class="math">'+V+' : 9 = '+d+'</span>.',
+      'Из связи цифр и разности находим цифру десятков: <span class="math">'+t+'</span>'+(family==='sum'?', единиц: <span class="math">'+u+'</span>':', тогда единиц: <span class="math">'+u+'</span>')+'.',
+      'Задуманное число: <span class="math">10 · '+t+' + '+u+' = '+num+'</span>. Проверка: '+swapped+' '+(diff>0?'−':'−')+' '+num+' = '+(diff>0?'+':'')+'<span class="math">'+(swapped-num)+'</span>.'
+    ],
+    hint:'Перестановка цифр меняет число на 9 × (разность цифр) — найди разность. Затем составь два уравнения (связь цифр и разность) и найди цифры. Число = 10 × десятки + единицы.'
+  };
+}
+function numWarm(){
+  const kind=pick(['value','reverse','swap']);
+  if(kind==='value'){ const t=R(1,9), u=R(0,9); return { type:'input', prompt:'Составь число:', expr:'десятки '+t+', единицы '+u, ans:{t:'int',v:10*t+u}, explain:'Число = 10 × '+t+' + '+u+' = '+(10*t+u)+'.' }; }
+  if(kind==='reverse'){ const d=R(1,7), V=9*d; return { type:'input', prompt:'Перестановка меняет число на '+V+'. Чему равна разность цифр?', expr:V+' : 9', ans:{t:'int',v:d}, explain:'Перестановка меняет число на 9 × разность цифр, значит разность = '+V+' : 9 = '+d+'.' }; }
+  let n; do{ n=R(10,98); }while(n%10===0 || Math.floor(n/10)===n%10); const sw=(n%10)*10+Math.floor(n/10);
+  return { type:'input', prompt:'Переставь цифры местами:', expr:''+n, ans:{t:'int',v:sw}, explain:'Меняем десятки и единицы: '+n+' → '+sw+'.' };
+}
+const MOD9 = {
+  meta:{ id:9, tag:'Задание 9', title:'Двузначные числа', subtitle:'Загадки про цифры десятков и единиц',
+         icon:'63', tint:'--rose', tsoft:'--rose-soft', td:'#B03A6E' },
+  theory(){
+    return '<div class="th">'
+    +'<p>Загадка про <b>двузначное число</b>. Обозначим цифру десятков и цифру единиц. Само число равно <span class="math">10 · десятки + единицы</span>.</p>'
+    +'<h3>Главный секрет перестановки</h3>'
+    +'<p>Если поменять цифры местами, число изменится ровно на <b>9 × (разность цифр)</b>: <span class="math">(10·е + д) − (10·д + е) = 9·(е − д)</span>. Поэтому по величине изменения сразу находим разность цифр.</p>'
+    +'<div class="callout rose"><span class="ci">⇄</span><div>Изменение при перестановке всегда делится на 9. Разность цифр = (изменение) : 9.</div></div>'
+    +'<div class="wex"><div class="ttl">Пример: десятки в 2 раза меньше единиц; при перестановке число растёт на 27</div>'
+    +'<div class="exline"><span class="n">1</span><div>Разность цифр: <span class="math">27 : 9 = 3</span> (единицы больше десятков на 3).</div></div>'
+    +'<div class="exline"><span class="n">2</span><div>Единицы = 2 × десятки, и единицы − десятки = 3 → десятки = <span class="math">3 : 1 = 3</span>, единицы = 6.</div></div>'
+    +'<div class="exline"><span class="n">3</span><div>Число: <span class="math">10 · 3 + 6 = 36</span>. Проверка: 63 − 36 = 27. ✓</div></div>'
+    +'</div>'
+    +'<h3>Частые ошибки</h3>'
+    +'<ul class="mistakes">'
+    +'<li>Забыть, что перестановка меняет число на 9 × разность цифр (а не на саму разность).</li>'
+    +'<li>Перепутать, какая цифра больше: при увеличении числа больше цифра единиц.</li>'
+    +'<li>Записать цифры, но не собрать число: 10 × десятки + единицы.</li>'
+    +'</ul>'
+    +'<div class="th-actions"><button class="btn btn-primary" onclick="gotoTab(\'warmup\')">Начать разминку →</button>'
+    +'<button class="btn btn-ghost" onclick="gotoTab(\'practice\')">Сразу к тренировке</button></div></div>';
+  },
+  warmup(){ return numWarm(); },
+  practice(diff){ return numPuzzle(diff); }
+};
+
+/* ================= РЕЕСТР (линейка) ================= */
+const CATALOG = [
+  { ...MOD1.meta, ready:true, desc:MOD1.meta.subtitle, mod:MOD1 },
+  { ...MOD2.meta, ready:true, desc:MOD2.meta.subtitle, mod:MOD2 },
+  { ...MOD3.meta, ready:true, desc:MOD3.meta.subtitle, mod:MOD3 },
+  { ...MOD4.meta, ready:true, desc:MOD4.meta.subtitle, mod:MOD4 },
+  { ...MOD5.meta, ready:true, desc:MOD5.meta.subtitle, mod:MOD5 },
+  { ...MOD6.meta, ready:true, desc:MOD6.meta.subtitle, mod:MOD6 },
+  { ...MOD7.meta, ready:true, desc:MOD7.meta.subtitle, mod:MOD7 },
+  { ...MOD8.meta, ready:true, desc:MOD8.meta.subtitle, mod:MOD8 },
+  { ...MOD9.meta, ready:true, desc:MOD9.meta.subtitle, mod:MOD9 }
+];
+const catById = id => CATALOG.find(c=>c.id===id);
+
+/* ================= СОСТОЯНИЕ ================= */
+const S = {
+  screen:'hub', taskId:null, tab:'practice',
+  diff:'medium', mode:'guided', sub:null,
+  cur:null, stageIdx:0, stageVals:[], attempts:0, revealed:false, done:false, fb:null,
+  warm:null, warmDone:false, warmAttempts:0, warmCount:0,
+  xp:0, streak:0, best:0, solved:0, pCount:0, pFirst:0, mastery:{}, variant:null
+};
+const MASTER_GOAL = 12;
+
+const TEACHER_EMAIL = 'nata4os@bk.ru';
+const DAILY_KEY = 'mcko-linejka-daily-v1';
+const DEFAULT_DAILY_GOAL = 9;
+function todayISO(){ const d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); }
+function clampGoal(v){ const n=parseInt(v,10); return Number.isFinite(n) ? Math.max(1,Math.min(99,n)) : DEFAULT_DAILY_GOAL; }
+function dailyParams(){ const q=new URLSearchParams(location.search); return { student:(q.get('student')||'').trim(), date:(q.get('date')||'').trim(), goal:q.has('goal')?clampGoal(q.get('goal')):null, has:q.has('student')||q.has('date')||q.has('goal') }; }
+function dailyFresh(){ return { student:'', date:todayISO(), goal:DEFAULT_DAILY_GOAL, solved:0, correct:0, mistakes:0, hints:0, variants:0, lastTask:'', history:[], updatedAt:'' }; }
+function dailyLoad(){
+  const fresh=dailyFresh(), p=dailyParams(); let saved=null;
+  try{ saved=JSON.parse(localStorage.getItem(DAILY_KEY)||'null'); }catch(e){ saved=null; }
+  let d = saved && typeof saved==='object' ? Object.assign(fresh,saved) : fresh;
+  if(!p.has && d.date!==todayISO()) d=dailyFresh();
+  if(p.date && p.date!==d.date) d=Object.assign(dailyFresh(),{ date:p.date });
+  if(p.goal) d.goal=p.goal;
+  if(p.student) d.student=p.student;
+  d.goal=clampGoal(d.goal); d.history=Array.isArray(d.history)?d.history:[];
+  return d;
+}
+let Daily = dailyLoad();
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, m=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m])); }
+function plain(s){ return String(s==null?'':s).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/&minus;/g,'−').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&amp;/g,'&').trim(); }
+function dailyAccuracy(){ return Daily.solved ? Math.round(Daily.correct/Daily.solved*100) : 0; }
+function dailyDonePct(){ return Math.min(100,Math.round(Daily.solved/Math.max(1,Daily.goal)*100)); }
+function dailyStore(){ try{ localStorage.setItem(DAILY_KEY,JSON.stringify(Daily)); }catch(e){} }
+function dailySave(render){ Daily.updatedAt=new Date().toISOString(); dailyStore(); if(render!==false) renderDailyPanel(); }
+function dailySetStudent(v){ Daily.student=v.trim(); dailySave(false); }
+function dailySetGoal(v){ Daily.goal=clampGoal(v); dailySave(true); }
+function dailySetDate(v){ const next=(v||todayISO()).trim(); if(next && next!==Daily.date){ Daily=Object.assign(dailyFresh(),{ student:Daily.student, date:next, goal:Daily.goal }); dailySave(true); } }
+function dailyStatus(msg){ const e=el('daily-status'); if(e) e.textContent=msg||''; if(msg) setTimeout(()=>{ const n=el('daily-status'); if(n && n.textContent===msg) n.textContent=''; },3600); }
+function renderTeacherPanel(place){
+  const pct=dailyDonePct(), acc=dailyAccuracy();
+  const latest=Daily.history.length ? Daily.history[0] : null;
+  const last = latest ? '<div class="teacher-history"><b>Последнее:</b> '+esc(latest.title)+' · '+(latest.correct?'верно':'есть ошибка')+'</div>' : '';
+  return '<section class="teacher-panel" id="daily-panel" data-place="'+esc(place||'')+'">'
+    +'<div class="teacher-top"><div><div class="teacher-kicker">Задание на день</div><div class="teacher-title">Прогресс ученика</div></div>'
+    +'<div class="teacher-mail">Учителю: '+TEACHER_EMAIL+'</div></div>'
+    +'<div class="teacher-grid"><label class="teacher-field"><span>Ученик</span><input class="daily-input" value="'+esc(Daily.student)+'" placeholder="Имя ученика" oninput="dailySetStudent(this.value)"></label>'
+    +'<label class="teacher-field"><span>Дата</span><input class="daily-input" type="date" value="'+esc(Daily.date)+'" onchange="dailySetDate(this.value)"></label>'
+    +'<label class="teacher-field"><span>Цель</span><input class="daily-input" type="number" min="1" max="99" value="'+Daily.goal+'" onchange="dailySetGoal(this.value)"></label></div>'
+    +'<div class="teacher-progress"><div class="teacher-progress-fill" style="width:'+pct+'%"></div></div>'
+    +'<div class="teacher-stats"><div class="teacher-stat"><div class="k">выполнено</div><div class="v">'+Daily.solved+' / '+Daily.goal+'</div></div>'
+    +'<div class="teacher-stat"><div class="k">верно</div><div class="v">'+Daily.correct+'</div></div>'
+    +'<div class="teacher-stat"><div class="k">точность</div><div class="v">'+acc+'%</div></div>'
+    +'<div class="teacher-stat"><div class="k">ошибки</div><div class="v">'+Daily.mistakes+'</div></div></div>'
+    +'<div class="teacher-actions"><button class="btn btn-primary" onclick="sendDailyReport()">Отправить прогресс учителю</button>'
+    +'<button class="btn btn-ghost" onclick="copyDailyAssignment()">Скопировать ссылку задания</button>'
+    +'<button class="btn btn-ghost" onclick="copyDailyReport()">Скопировать отчёт</button>'
+    +'<button class="btn btn-ghost" onclick="resetDailyProgress()">Сбросить день</button><span class="daily-status" id="daily-status"></span></div>'+last+'</section>';
+}
+function renderDailyPanel(){ const e=el('daily-panel'); if(e) e.outerHTML=renderTeacherPanel(e.dataset.place||''); }
+function dailyPush(item){ Daily.history.unshift(item); if(Daily.history.length>30) Daily.history.length=30; }
+function dailyRecordPractice(detail){
+  const title=plain(detail.task||'Тренировка');
+  Daily.solved+=1; Daily.correct+=detail.correct?1:0; Daily.mistakes+=Math.max(0,detail.mistakes||0); if(detail.revealed) Daily.hints+=1;
+  Daily.lastTask=title; dailyPush({ at:new Date().toLocaleString('ru-RU'), kind:'Тренировка', title, correct:!!detail.correct, mistakes:Math.max(0,detail.mistakes||0), note:detail.firstTry?'с первого раза':(detail.revealed?'с разбором':'после попыток') });
+  dailySave(true);
+  if(Daily.solved>=Daily.goal) toast('Дневная цель выполнена ✓');
+}
+function dailyRecordVariant(V){
+  if(!V || !Array.isArray(V.recorded)) return;
+  const total=V.recorded.length, correct=V.correct||0;
+  Daily.solved+=total; Daily.correct+=correct; Daily.mistakes+=Math.max(0,total-correct); Daily.variants+=1;
+  Daily.lastTask='Диагностический вариант';
+  dailyPush({ at:new Date().toLocaleString('ru-RU'), kind:'Вариант', title:'Диагностический вариант: '+correct+' из '+total, correct:correct===total, mistakes:Math.max(0,total-correct), note:'вариант' });
+  V.recorded.slice().reverse().forEach(r=>dailyPush({ at:new Date().toLocaleString('ru-RU'), kind:'Задание варианта', title:plain(r.label+' · '+r.title), correct:!!r.correct, mistakes:r.correct?0:1, note:r.correct?'верно':'ответ: '+plain(r.userAns) }));
+  dailySave(true);
+}
+function assignmentUrl(){ const u=new URL(location.href); u.search=''; u.hash=''; u.searchParams.set('date',Daily.date); u.searchParams.set('goal',Daily.goal); if(Daily.student) u.searchParams.set('student',Daily.student); return u.toString(); }
+async function copyText(text, ok){ try{ await navigator.clipboard.writeText(text); dailyStatus(ok); }catch(e){ prompt(ok,text); } }
+function copyDailyAssignment(){ copyText(assignmentUrl(),'Ссылка задания скопирована'); }
+function dailyReportText(){
+  const name=Daily.student||'не указано'; const lines=Daily.history.slice(0,18).map((h,i)=>(i+1)+'. '+h.at+' — '+h.kind+': '+h.title+' — '+(h.correct?'верно':'ошибка')+(h.mistakes?'; ошибок: '+h.mistakes:'')+(h.note?'; '+h.note:''));
+  return 'Отчёт по тренажёру «Линейка тренажёров МЦКО»\n'
+    +'Ученик: '+name+'\nДата задания: '+Daily.date+'\nЦель: '+Daily.goal+' задач\n'
+    +'Выполнено: '+Daily.solved+'\nВерно: '+Daily.correct+'\nОшибки: '+Daily.mistakes+'\nТочность: '+dailyAccuracy()+'%\n'
+    +'Просмотров решения: '+Daily.hints+'\nВариантов: '+Daily.variants+'\nСсылка задания: '+assignmentUrl()+'\n\nПоследние действия:\n'+(lines.length?lines.join('\n'):'пока нет выполненных заданий');
+}
+function copyDailyReport(){ copyText(dailyReportText(),'Отчёт скопирован'); }
+function sendDailyReport(){
+  const subject='Прогресс МЦКО: '+(Daily.student||'ученик')+' — '+Daily.date;
+  const body=dailyReportText();
+  const link='mailto:'+TEACHER_EMAIL+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+  if(link.length>1850) copyDailyReport();
+  location.href=link; dailyStatus('Открываю письмо учителю');
+}
+function resetDailyProgress(){ if(confirm('Сбросить прогресс за выбранный день?')){ Daily=Object.assign(dailyFresh(),{ student:Daily.student, date:Daily.date, goal:Daily.goal }); dailySave(true); } }
+
+
+/* ================= ХАБ ================= */
+function renderHub(){
+  const lvl=Math.floor(S.xp/100)+1, within=S.xp%100, deg=within*3.6;
+  const acc = S.pCount>0 ? Math.round(S.pFirst/S.pCount*100)+'%' : '—';
+  const cards = CATALOG.map(c=>{
+    if(!c.ready){
+      return '<div class="card soon"><div class="ribbon">скоро</div>'
+        +'<span class="tag" style="background:var('+c.tsoft+');color:'+c.td+'">'+c.tag+'</span>'
+        +'<div class="row"><div class="ic" style="background:var('+c.tint+')">'+c.icon+'</div><h3>'+c.title+'</h3></div>'
+        +'<div class="desc">'+c.desc+'</div>'
+        +'<div class="mrow"><span>Появится в линейке</span><span></span></div></div>';
+    }
+    const done=S.mastery[c.id]||0, pct=Math.min(100,done/MASTER_GOAL*100), master=done>=MASTER_GOAL;
+    return '<button class="card" onclick="openTask('+c.id+')">'
+      +'<span class="tag" style="background:var('+c.tsoft+');color:'+c.td+'">'+c.tag+'</span>'
+      +'<div class="row"><div class="ic" style="background:var('+c.tint+')">'+c.icon+'</div><h3>'+c.title+'</h3></div>'
+      +'<div class="desc">'+c.desc+'</div>'
+      +'<div class="mtrack"><div class="mfill" style="width:'+pct+'%;background:var('+c.tint+')"></div></div>'
+      +'<div class="mrow"><span>'+(master?'<span class="star">★</span> Освоено':'Верно с 1 раза: '+done+' / '+MASTER_GOAL)+'</span><span>'+(master?'★★★':'открыть →')+'</span></div>'
+      +'</button>';
+  }).join('');
+  const hud = '<div class="hud">'
+    +'<div class="ring" style="background:conic-gradient(var(--violet) '+deg+'deg, #EBE7FB '+deg+'deg)">'
+    +'<div class="disc"><div class="lvn">'+lvl+'</div><div class="lvc">уровень</div></div></div>'
+    +'<div class="hud-stats">'
+    +'<div class="stat"><div class="k">Серия</div><div class="v">🔥 '+S.streak+'</div></div>'
+    +'<div class="stat"><div class="k">Точность</div><div class="v">🎯 '+acc+'</div></div>'
+    +'<div class="stat"><div class="k">Решено</div><div class="v">✅ '+S.solved+'</div></div></div>'
+    +'<div class="xp"><div class="xp-track"><div class="xp-fill" style="width:'+within+'%"></div></div>'
+    +'<div class="xp-lbl">'+within+' / 100 XP до уровня '+(lvl+1)+'</div></div></div>';
+  el('app').innerHTML =
+    '<div class="hero"><div class="hero-badge">МЦ</div>'
+    +'<div><h1>Линейка тренажёров МЦКО</h1><p>Математика · 6 класс · подготовка к диагностике</p></div></div>'
+    +renderTeacherPanel('hub')
+    +'<button class="cta-variant" onclick="startVariant()"><span class="cta-ic">📝</span>'
+    +'<span class="cta-txt"><b>Решить вариант</b><span>9 заданий подряд, как на диагностике — с итоговой оценкой</span></span>'
+    +'<span class="cta-arrow">→</span></button>'
+    +'<p class="sec-title">Выбери задание</p>'
+    +'<div class="grid">'+cards+'</div>'
+    +'<p class="sec-title" style="margin-top:26px">Твой прогресс</p>'
+    + hud
+    +'<div class="foot">Каждое задание — отдельный тренажёр: теория, разминка и практика. Кнопка «Решить вариант» соберёт все девять заданий в одну диагностику. 🚀</div>';
+}
+
+/* ================= ЭКРАН ЗАДАНИЯ ================= */
+function currentMod(){ return catById(S.taskId).mod; }
+function renderTask(){
+  const c = catById(S.taskId);
+  const tabs = [['learn','Учить'],['warmup','Разминка'],['practice','Тренировка']]
+    .map(t=>'<button class="segtab '+(S.tab===t[0]?'on':'')+'" onclick="gotoTab(\''+t[0]+'\')">'+t[1]+'</button>').join('');
+  el('app').innerHTML =
+    '<div class="tv-head"><button class="back" onclick="goHub()">← Все задания</button>'
+    +'<div class="tv-title"><div class="tag">'+c.tag+'</div><h2>'+c.title+'</h2></div>'
+    +'<div class="tv-mini">'
+    +'<div class="chip"><div class="k">серия</div><div class="v">🔥 <span id="mini-streak">'+S.streak+'</span></div></div>'
+    +'<div class="chip"><div class="k">освоено</div><div class="v">⭐ <span id="mini-mast">'+(S.mastery[S.taskId]||0)+'</span></div></div></div></div>'
+    +'<div class="segtabs">'+tabs+'</div>'
+    +renderTeacherPanel('task')
+    +'<div id="tabbody"></div>';
+  if(S.tab==='learn') renderLearn();
+  else if(S.tab==='warmup') renderWarm();
+  else renderPractice();
+}
+function renderLearn(){ el('tabbody').innerHTML = currentMod().theory(); }
+
+/* ---------- РАЗМИНКА ---------- */
+function renderWarm(){
+  const w = S.warm; let body;
+  if(w.type==='mc'){
+    const opts = w.options.map(o=>'<button class="mc-opt" data-v="'+o.v+'" onclick="warmPick(\''+o.v+'\')">'+o.t+'</button>').join('');
+    body = '<div class="mc">'+opts+'</div>';
+  } else {
+    body = '<div class="ans-zone"><span class="ans-lbl">Ответ:</span>'+renderAnsInputs(w.ans,'winp')
+      +'<span class="hint-note">'+ansHint(w.ans)+'</span></div>'
+      +'<div class="btns"><button class="btn btn-primary" id="wcheck" onclick="warmCheck()">Проверить</button></div>';
+  }
+  el('tabbody').innerHTML =
+    '<div class="prob"><div class="qnum">разминка</div><div class="qcap">'+w.prompt+'</div><div class="expr-big">'+w.expr+'</div></div>'
+    + body + '<div id="wfb"></div>'
+    +'<div class="btns" style="margin-top:12px"><button class="btn btn-go hidden" id="wnext" onclick="nextWarm()">Следующий →</button></div>';
+  if(w.type!=='mc'){ focusAns(w.ans,'winp'); bindEnter(w.ans,'winp',warmCheck,nextWarm,()=>S.warmDone); }
+}
+function warmFinishOK(){
+  S.warmDone=true; const gain = S.warmAttempts===0 ? 3 : 1; S.xp+=gain; S.warmCount++;
+  el('wfb').className='fb ok pop'; el('wfb').innerHTML='<div class="ic">✓</div><div>Верно!<div class="sub">'+S.warm.explain+'</div></div>';
+  el('wnext').classList.remove('hidden');
+  toast('<span>Разминка</span><span class="xp-badge">+'+gain+' XP</span>'); if(!REDUCE){ confetti(20); pick([fxStars,fxFlowers,function(){emojiBurst(['✨','⭐','🎉'],10);}])(); }
+}
+function warmPick(v){
+  if(S.warmDone) return; const w=S.warm, btns=[...document.querySelectorAll('.mc-opt')];
+  if(v===w.answer){ btns.forEach(b=>{ b.disabled=true; if(b.dataset.v===w.answer) b.classList.add('correct'); }); warmFinishOK(); }
+  else { S.warmAttempts++; const bad=btns.find(b=>b.dataset.v===v); if(bad){ bad.classList.add('wrong'); bad.classList.add('shake'); setTimeout(()=>bad.classList.remove('shake'),400); }
+    el('wfb').className='fb no'; el('wfb').innerHTML='<div class="ic">✕</div><div>Не то — подумай ещё раз.</div>'; }
+}
+function warmCheck(){
+  if(S.warmDone) return; const w=S.warm, r=readAns(w.ans,'winp');
+  if(r.empty){ el('wfb').className='fb no'; el('wfb').innerHTML='<div class="ic">?</div><div>Введи ответ.</div>'; shakeAns(w.ans,'winp'); return; }
+  if(r.ok){ disableAns(w.ans,'winp'); el('wcheck').classList.add('hidden'); warmFinishOK(); }
+  else { S.warmAttempts++; el('wfb').className='fb no'; el('wfb').innerHTML='<div class="ic">✕</div><div>Не то — попробуй ещё раз.</div>'; shakeAns(w.ans,'winp'); }
+}
+function nextWarm(){ S.warm=currentMod().warmup(S.sub); S.warmDone=false; S.warmAttempts=0; renderWarm(); }
+
+/* ---------- ТРЕНИРОВКА ---------- */
+function newPractice(){ S.cur=currentMod().practice(S.diff,S.sub); S.stageIdx=0; S.stageVals=[]; S.attempts=0; S.revealed=false; S.done=false; S.fb=null; }
+function renderPractice(){
+  const mod=currentMod();
+  let subGroup='';
+  if(mod.meta.subs){
+    const sp=mod.meta.subs.map(s=>'<button class="pill '+(S.sub===s.key?'on':'')+'" onclick="setSub(\''+s.key+'\')">'+s.label+'</button>').join('');
+    subGroup='<div class="ctrl-group"><span class="ctrl-lbl">Тип</span><div class="pills">'+sp+'</div></div>';
+  }
+  const diffPills = [['easy','Лёгкий'],['medium','Средний'],['hard','Сложный']]
+    .map(d=>'<button class="pill '+(S.diff===d[0]?'on':'')+'" onclick="setDiff(\''+d[0]+'\')">'+d[1]+'</button>').join('');
+  const modePills = [['guided','Пошагово'],['direct','Сразу']]
+    .map(m=>'<button class="pill '+(S.mode===m[0]?'on':'')+'" onclick="setMode(\''+m[0]+'\')">'+m[1]+'</button>').join('');
+  el('tabbody').innerHTML =
+    '<div class="ctrls">'+subGroup
+    +'<div class="ctrl-group"><span class="ctrl-lbl">Сложность</span><div class="pills">'+diffPills+'</div></div>'
+    +'<div class="ctrl-group"><span class="ctrl-lbl">Режим</span><div class="pills">'+modePills+'</div></div>'
+    +'</div><div id="pbody"></div>';
+  renderPracticeBody();
+}
+function renderPracticeBody(){
+  const p=S.cur;
+  const bodyCls = (p.textMode==='prose') ? 'prob-prose' : 'expr-big';
+  let probHTML = '<div class="qnum">задача</div><div class="qcap">'+(p.cap||'Вычислите')+'</div><div class="'+bodyCls+'">'+p.display+'</div>';
+  if(p.chain && S.mode==='guided'){ let latest=-1; for(let j=0;j<p.chain.length;j++){ if(S.stageIdx>j) latest=j; } if(latest>=0) probHTML += '<div class="eqstep"><div class="eqarrow">⇩ равносильно</div><div class="expr-big">'+p.chain[latest]+'</div></div>'; }
+  if(typeof p.scene==='function'){ probHTML += p.scene(S.mode==='guided'?S.stageIdx:(S.done?99:0), S.done); }
+  let inner = '<div class="prob">'+probHTML+'</div>';
+  if(S.mode==='guided'){
+    for(let i=0;i<S.stageIdx;i++) inner += '<div class="stage-done"><span class="tick">✓</span><div>'+p.stages[i].doneText+'</div></div>';
+    if(!S.done){
+      const st=p.stages[S.stageIdx];
+      inner += '<div class="stage-active"><div class="sh">'+st.label+' · шаг '+(S.stageIdx+1)+' из '+p.stages.length+'</div>'
+        +'<div class="sp">'+st.prompt+'</div>'
+        +'<div class="ans-zone"><span class="ans-lbl">Ответ:</span>'+renderAnsInputs(st.answer,'pinp',st.placeholder)
+        +'<span class="hint-note">'+ansHint(st.answer)+'</span></div></div>';
+    }
+  } else {
+    if(!S.done){
+      inner += '<div class="ans-zone"><span class="ans-lbl">Ответ:</span>'+renderAnsInputs(p.answer,'pinp')
+        +'<span class="hint-note">'+ansHint(p.answer)+'</span></div>';
+    } else {
+      inner += '<div class="stage-done"><span class="tick">✓</span><div>Ответ: <span class="math">'+specDisplay(p.answer)+'</span></div></div>';
+    }
+  }
+  inner += '<div class="btns">';
+  if(!S.done){
+    inner += '<button class="btn btn-primary" onclick="checkPractice()">Проверить</button>';
+    if(!S.revealed) inner += '<button class="btn btn-ghost" onclick="revealSolution()">Показать решение</button>';
+    inner += '<button class="btn btn-ghost" onclick="skipPractice()">Пропустить</button>';
+  } else {
+    inner += '<button class="btn btn-go" onclick="nextPractice()">Следующая задача →</button>';
+    if(!S.revealed) inner += '<button class="btn btn-ghost" onclick="revealSolution()">Показать решение</button>';
+  }
+  inner += '</div><div id="pfb"></div><div id="psol"></div>';
+  el('pbody').innerHTML = inner;
+  if(S.fb){ const f=el('pfb'); f.className='fb '+S.fb.cls+(S.fb.pop?' pop':''); f.innerHTML=S.fb.html; }
+  if(S.revealed) renderSolutionInto();
+  const activeSpec = (S.mode==='guided' && !S.done)? p.stages[S.stageIdx].answer : (!S.done? p.answer : null);
+  if(activeSpec){ focusAns(activeSpec,'pinp'); bindEnter(activeSpec,'pinp',checkPractice,nextPractice,()=>S.done); }
+}
+function renderSolutionInto(){
+  const p=S.cur;
+  el('psol').innerHTML = '<div class="sol"><h4>Полное решение</h4>'
+    + p.steps.map((s,i)=>'<div class="step"><span class="n">'+(i+1)+'</span><div>'+s+'</div></div>').join('') + '</div>';
+}
+function checkPractice(){
+  if(S.done) return; const p=S.cur;
+  if(S.mode==='direct'){
+    const r=readAns(p.answer,'pinp');
+    if(r.empty){ setFb('no','<div class="ic">?</div><div>Введи ответ, чтобы проверить.</div>'); shakeAns(p.answer,'pinp'); return; }
+    if(r.ok) finishProblem(); else wrongPractice(p.hint);
+  } else {
+    const st=p.stages[S.stageIdx], r=readAns(st.answer,'pinp');
+    if(r.empty){ setFb('no','<div class="ic">?</div><div>Введи ответ для этого шага.</div>'); shakeAns(st.answer,'pinp'); return; }
+    if(r.ok){ S.stageVals.push(st.doneText); S.stageIdx++;
+      if(S.stageIdx>=p.stages.length) finishProblem();
+      else { S.fb=null; toast('Шаг зачтён ✓'); renderPracticeBody(); }
+    } else wrongPractice(st.hint);
+  }
+}
+function wrongPractice(hintText){
+  S.attempts++; S.streak=0; updateMini();
+  const msg=pick(['Почти! Проверь вычисления.','Не совсем — попробуй ещё раз.','Ещё разок, ты близко.','Пересчитай внимательно.']);
+  setFb('no','<div class="ic">✕</div><div>'+msg+'<div class="sub">Подсказка: '+hintText+'</div></div>'); shakeAns(currentSpec(),'pinp');
+}
+function currentSpec(){ const p=S.cur; return (S.mode==='guided')? p.stages[S.stageIdx].answer : p.answer; }
+function finishProblem(){
+  S.done=true;
+  const firstTry = S.attempts===0 && !S.revealed;
+  const gain = S.revealed?2:(S.attempts===0?10:4);
+  S.xp+=gain; S.solved++; S.pCount++; if(firstTry) S.pFirst++;
+  if(firstTry){ S.streak++; if(S.streak>S.best) S.best=S.streak; S.mastery[S.taskId]=(S.mastery[S.taskId]||0)+1; }
+  const praise=pick(['Верно!','Отлично!','Супер!','Так держать!','Точно в цель!','Красиво!','Молодец!','Правильно!']);
+  const sub = firstTry ? 'С первого раза — серия растёт!' : (S.revealed?'Ты разобрался с решением.':'Получилось — отлично!');
+  S.fb={ cls:'ok', pop:true, html:'<div class="ic">✓</div><div>'+praise+'<div class="sub">'+sub+'</div></div>' };
+  dailyRecordPractice({ task:(catById(S.taskId)||{}).title||'Тренировка', correct:true, firstTry:firstTry, mistakes:S.attempts, attempts:S.attempts+1, revealed:S.revealed, mode:S.mode, diff:S.diff });
+  renderPracticeBody(); updateMini(); celebrate(gain, firstTry);
+}
+function revealSolution(){ S.revealed=true; renderPracticeBody(); }
+function nextPractice(){ newPractice(); renderPracticeBody(); }
+function skipPractice(){ newPractice(); renderPracticeBody(); }
+function setFb(cls,html){ S.fb={cls,html}; const f=el('pfb'); if(f){ f.className='fb '+cls; f.innerHTML=html; } }
+
+/* ================= ОБЩЕЕ ================= */
+function shake(id){ const e=el(id); if(e){ e.classList.remove('shake'); void e.offsetWidth; e.classList.add('shake'); } }
+function updateMini(){ const s=el('mini-streak'), m=el('mini-mast'); if(s) s.textContent=S.streak; if(m) m.textContent=S.mastery[S.taskId]||0; }
+function toast(html, level){ const t=el('toast'); t.innerHTML=html; t.className=level?'level show':'show'; clearTimeout(t._t); t._t=setTimeout(()=>{ t.className=level?'level':''; },1700); }
+function celebrate(gain, firstTry){
+  const before=Math.floor((S.xp-gain)/100)+1, after=Math.floor(S.xp/100)+1;
+  const lvl = after>before, mile = firstTry && S.streak>0 && S.streak%5===0;
+  if(lvl) toast('🎉 Новый уровень '+after+'!', true);
+  else if(mile) toast('🔥 Серия '+S.streak+'! Отличная работа!');
+  else toast('<span>Верно!</span><span class="xp-badge">+'+gain+' XP</span>');
+  if(REDUCE) return;
+  confetti(lvl?64:mile?52:40);                 // заметный дождь при каждом верном ответе
+  if(lvl){ fxFireworks(); fxTrophy(); }
+  else if(mile){ fxFireworks(); pick([fxWreath,fxTrophy,fxMedal])(); }
+  else { pick([fxFireworks,fxFlowers,fxStars,fxGesture,fxBalloons,fxMedal,fxTrophy,fxWreath])(); }
+}
+const REDUCE = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+function confetti(count){
+  const root=el('confetti-root'), colors=['#7d5bff','#18c08a','#EE8A12','#F2463A','#1C9BDD','#a78bff','#ffd23f','#ff6fae'];
+  for(let i=0;i<count;i++){
+    const c=document.createElement('div'); c.className='confetto'; const size=8+Math.random()*10;
+    c.style.left=(Math.random()*100)+'vw'; c.style.top='-8vh'; c.style.width=size+'px'; c.style.height=(size*1.4)+'px';
+    c.style.background=colors[i%colors.length]; c.style.borderRadius=Math.random()<.4?'50%':'2px'; c.style.opacity='0.95';
+    const dur=1.7+Math.random()*1.3, delay=Math.random()*0.5;
+    c.style.animation='fall '+dur+'s cubic-bezier(.25,.5,.5,1) '+delay+'s forwards';
+    root.appendChild(c); setTimeout(()=>c.remove(),(dur+delay)*1000+200);
+  }
+}
+const FX_COLORS=['#7d5bff','#18c08a','#EE8A12','#F2463A','#1C9BDD','#a78bff','#ffd23f','#ff6fae'];
+function W(){ return window.innerWidth||800; } function H(){ return window.innerHeight||600; }
+function fxBurst(cx, cy, n, palette, spread){
+  const root=el('confetti-root');
+  for(let i=0;i<n;i++){
+    const a=(Math.PI*2*i/n)+Math.random()*0.35, dist=(spread*0.5)+Math.random()*spread, sz=6+Math.random()*11;
+    const p=document.createElement('div');
+    p.style.cssText='position:fixed;left:'+cx+'px;top:'+cy+'px;width:'+sz+'px;height:'+sz+'px;border-radius:'+(Math.random()<.5?'50%':'2px')+';background:'+palette[i%palette.length]+';z-index:64;pointer-events:none;box-shadow:0 0 6px '+palette[i%palette.length]+';';
+    p.style.setProperty('--dx',(Math.cos(a)*dist).toFixed(1)+'px'); p.style.setProperty('--dy',(Math.sin(a)*dist).toFixed(1)+'px');
+    p.style.animation='fxburst '+(0.9+Math.random()*0.6)+'s cubic-bezier(.15,.7,.4,1) forwards';
+    root.appendChild(p); setTimeout(()=>p.remove(),1600);
+  }
+}
+function emojiBurst(set,n,cy){
+  const root=el('confetti-root'), cx=W()/2, y=cy||H()*0.42;
+  for(let i=0;i<n;i++){ const a=Math.PI*2*i/n+Math.random()*0.4, dist=80+Math.random()*120;
+    const e=document.createElement('div'); e.textContent=pick(set);
+    e.style.cssText='position:fixed;left:'+cx+'px;top:'+y+'px;font-size:'+(20+Math.random()*16)+'px;z-index:65;pointer-events:none;';
+    e.style.setProperty('--dx',(Math.cos(a)*dist).toFixed(1)+'px'); e.style.setProperty('--dy',(Math.sin(a)*dist).toFixed(1)+'px');
+    e.style.animation='fxburst '+(0.9+Math.random()*0.5)+'s ease-out forwards'; root.appendChild(e); setTimeout(()=>e.remove(),1500); }
+}
+function fxFireworks(){ const n=3+Math.floor(Math.random()*2);
+  for(let b=0;b<n;b++){ (function(bb){ setTimeout(function(){ const cx=W()*(0.18+Math.random()*0.64), cy=H()*(0.16+Math.random()*0.42);
+    fxFlash(cx,cy,'rgba(255,240,190,.7)'); fxBurst(cx, cy, 26, FX_COLORS, 150); }, bb*260); })(b); } }
+function fxStars(){ fxBurst(W()/2,H()*0.42,22,['#ffd23f','#ffe08a','#fff2c2','#ffbf47','#ffcf5a'],140); emojiBurst(['⭐','✨','🌟'],12); }
+function fxFlowers(){ const root=el('confetti-root'), set=['🌸','🌼','🌺','🌷','🏵️','🌻'];
+  for(let i=0;i<12;i++){ const e=document.createElement('div'); e.textContent=pick(set);
+    e.style.cssText='position:fixed;left:'+(Math.random()*W())+'px;top:'+(H()*0.25+Math.random()*H()*0.6)+'px;font-size:'+(24+Math.random()*18)+'px;z-index:65;pointer-events:none;transform-origin:center bottom;';
+    e.style.animation='fxbloom '+(1.4+Math.random()*0.5)+'s ease-out '+(Math.random()*0.5)+'s both'; root.appendChild(e); setTimeout(()=>e.remove(),2400); } }
+function fxRise(set,n){ const root=el('confetti-root');
+  for(let i=0;i<n;i++){ const e=document.createElement('div'); e.textContent=pick(set);
+    e.style.cssText='position:fixed;left:'+(5+Math.random()*90)+'vw;bottom:-8vh;font-size:'+(26+Math.random()*16)+'px;z-index:65;pointer-events:none;';
+    e.style.animation='fxrise '+(1.8+Math.random()*1.0)+'s ease-in '+(Math.random()*0.4)+'s forwards'; root.appendChild(e); setTimeout(()=>e.remove(),3200); } }
+function fxFlash(cx,cy,color){ const root=el('confetti-root'); const f=document.createElement('div');
+  f.style.cssText='position:fixed;left:'+cx+'px;top:'+cy+'px;width:300px;height:300px;margin:-150px 0 0 -150px;border-radius:50%;z-index:65;pointer-events:none;background:radial-gradient(circle,'+(color||'rgba(255,220,120,.9)')+' 0%,rgba(255,255,255,0) 68%);animation:fxflash .95s ease-out forwards;';
+  root.appendChild(f); setTimeout(()=>f.remove(),1050); }
+function fxCenter(html, opts){ opts=opts||{}; const root=el('confetti-root'); const cx=W()/2, cy=H()*0.42;
+  fxFlash(cx,cy,opts.flash);
+  const wrap=document.createElement('div'); wrap.style.cssText='position:fixed;left:50%;top:42%;transform:translate(-50%,-50%);z-index:66;pointer-events:none;text-align:center;';
+  const inner=document.createElement('div'); inner.innerHTML=html;
+  inner.style.cssText='font-size:'+(opts.size||96)+'px;line-height:1;filter:drop-shadow(0 12px 24px rgba(0,0,0,.22));animation:'+(opts.anim||'fxdrop')+' '+(opts.dur||2.0)+'s cubic-bezier(.2,.9,.3,1) both;';
+  wrap.appendChild(inner); root.appendChild(wrap); setTimeout(()=>wrap.remove(), (opts.dur||2.0)*1000+300); }
+function fxTrophy(){ fxCenter('🏆',{size:104,anim:'fxdrop',dur:2.0,flash:'rgba(255,215,110,.95)'}); emojiBurst(['✨','⭐','🎉'],14); }
+function fxMedal(){ fxCenter('🥇',{size:98,anim:'fxdrop',dur:1.9,flash:'rgba(255,215,110,.9)'}); emojiBurst(['✨','⭐'],12); }
+function fxWreath(){ fxCenter('<span style="display:inline-flex;align-items:center;gap:1px"><span style="display:inline-block;transform:scaleX(-1)">🌿</span><span>🏅</span><span>🌿</span></span>',{size:88,anim:'fxpop',dur:2.0,flash:'rgba(180,240,150,.9)'}); fxBurst(W()/2,H()*0.42,16,['#ffd23f','#c9f36b','#9be15d'],110); }
+function fxGesture(){ fxCenter(pick(['👏','🙌','👍','💪','🤩','💯','🎉']),{size:98,anim:'fxpop',dur:1.7,flash:'rgba(180,160,255,.85)'}); emojiBurst(['✨','🎉'],10); }
+function fxBalloons(){ fxRise(['🎈','🎈','🎈','🎉'],10); }
+function fxRandom(firstTry){
+  const pool=['fireworks','fireworks','flowers','flowers','stars','stars','gesture','balloons','confetti','confetti','medal','trophy','wreath'];
+  const k=pick(pool);
+  if(k==='fireworks') fxFireworks();
+  else if(k==='flowers') fxFlowers();
+  else if(k==='stars') fxStars();
+  else if(k==='gesture') fxGesture();
+  else if(k==='balloons') fxBalloons();
+  else if(k==='medal') fxMedal();
+  else if(k==='trophy') fxTrophy();
+  else if(k==='wreath') fxWreath();
+  else confetti(firstTry?26:16);
+}
+function fxGrand(reason){ fxFireworks();
+  if(reason==='level'){ fxTrophy(); confetti(30); }
+  else { pick([fxWreath,fxTrophy,fxMedal])(); confetti(24); } }
+function fxLight(){ pick([function(){confetti(14);}, fxStars, fxFlowers, function(){emojiBurst(['✨','⭐','🎉'],8);}])(); }
+
+/* ================= РЕЖИМ «ВАРИАНТ» ================= */
+function buildVariant(){
+  const D='medium', items=[];
+  const add=(id,sub,label)=>{ const mod=catById(id).mod; items.push({ id, sub, label, title:catById(id).title, prob:mod.practice(D,sub) }); };
+  add(1,null,'Задание 1');
+  add(2,'frac','Задание 2.1');
+  add(2,'dec','Задание 2.2');
+  add(3,null,'Задание 3');
+  add(4,null,'Задание 4');
+  add(5,pick(['motion','work']),'Задание 5');
+  add(6,null,'Задание 6');
+  add(7,null,'Задание 7');
+  add(8,null,'Задание 8');
+  add(9,null,'Задание 9');
+  return items;
+}
+function startVariant(){
+  S.screen='variant';
+  S.variant={ items:buildVariant(), idx:0, recorded:[], correct:0, xpGain:0, done:false };
+  renderVariant(); window.scrollTo(0,0);
+}
+function renderVariant(){
+  const V=S.variant;
+  if(V.done){ renderVariantResults(); return; }
+  const it=V.items[V.idx], p=it.prob, total=V.items.length, num=V.idx+1;
+  const bodyCls=(p.textMode==='prose')?'prob-prose':'expr-big';
+  const sceneHTML=(typeof p.scene==='function')? p.scene(0,false) : '';
+  const progress=Math.round(V.idx/total*100);
+  el('app').innerHTML =
+    '<div class="var-head"><button class="back" onclick="exitVariant()">← Выйти</button>'
+    +'<div class="var-progress"><div class="var-ptrack"><div class="var-pfill" style="width:'+progress+'%"></div></div>'
+    +'<div class="var-pnum">'+num+' / '+total+'</div></div></div>'
+    +'<div class="var-card"><div class="var-tag">'+it.label+' · '+it.title+'</div>'
+    +'<div class="prob"><div class="qcap">'+(p.cap||'Вычислите')+'</div><div class="'+bodyCls+'">'+p.display+'</div>'+sceneHTML+'</div>'
+    +'<div class="ans-zone"><span class="ans-lbl">Ответ:</span>'+renderAnsInputs(p.answer,'vinp')+'<span class="hint-note">'+ansHint(p.answer)+'</span></div>'
+    +'<div id="vfb"></div>'
+    +'<div class="btns"><button class="btn btn-primary" onclick="variantAnswer()">'+(num<total?'Ответить и далее →':'Ответить и завершить')+'</button>'
+    +'<button class="btn btn-ghost" onclick="variantSkip()">Пропустить</button></div></div>'
+    +'<div class="var-foot">Отвечай на каждое задание — в конце будет результат и разбор. Пошаговых подсказок здесь нет, как на диагностике.</div>';
+  focusAns(p.answer,'vinp'); bindEnter(p.answer,'vinp',variantAnswer,variantAnswer,()=>false);
+}
+function readUserAnswer(spec,prefix){
+  if(spec.t==='frac'){ const n=(el(prefix+'N').value||'').trim(), d=(el(prefix+'D').value||'').trim(); if(n==='') return '—'; return d===''?n:(n+'/'+d); }
+  const v=(el(prefix).value||'').trim(); return v===''?'—':v.replace(/-/g,'−');
+}
+function recordVariant(correct, userAns){
+  const V=S.variant, it=V.items[V.idx], p=it.prob;
+  V.recorded.push({ label:it.label, title:it.title, correct, userAns, correctAns:specDisplay(p.answer), steps:p.steps });
+  if(correct){ V.correct++; V.xpGain+=8; }
+  V.idx++;
+  if(V.idx>=V.items.length) finishVariant(); else { renderVariant(); window.scrollTo(0,0); }
+}
+function variantAnswer(){
+  const V=S.variant, it=V.items[V.idx], p=it.prob, r=readAns(p.answer,'vinp');
+  if(r.empty){ el('vfb').className='fb no'; el('vfb').innerHTML='<div class="ic">?</div><div>Впиши ответ или нажми «Пропустить».</div>'; shakeAns(p.answer,'vinp'); return; }
+  recordVariant(!!r.ok, readUserAnswer(p.answer,'vinp'));
+}
+function variantSkip(){ recordVariant(false,'—'); }
+function finishVariant(){
+  const V=S.variant; V.done=true;
+  const tot=V.items.length, corr=V.correct;
+  S.xp+=V.xpGain; S.solved+=corr; S.pCount+=tot; S.pFirst+=corr;
+  let trail=0; for(let i=V.recorded.length-1;i>=0;i--){ if(V.recorded[i].correct) trail++; else break; }
+  S.streak=trail; if(S.streak>S.best) S.best=S.streak;
+  dailyRecordVariant(V);
+  renderVariantResults(); window.scrollTo(0,0);
+  if(!REDUCE){ const pct=corr/tot; if(pct>=0.8){ fxFireworks(); pick([fxTrophy,fxWreath,fxMedal])(); confetti(52); } else if(pct>=0.5){ confetti(30); fxStars(); } else { confetti(16); } }
+}
+function renderVariantResults(){
+  const V=S.variant, tot=V.items.length, corr=V.correct, pct=Math.round(corr/tot*100);
+  const grade = pct>=90?'Отлично!':pct>=70?'Хороший результат':pct>=50?'Неплохо — есть куда расти':'Стоит потренироваться ещё';
+  const rows=V.recorded.map((r,i)=>
+    '<div class="vr-row '+(r.correct?'ok':'no')+'"><div class="vr-ic">'+(r.correct?'✓':'✕')+'</div>'
+    +'<div class="vr-main"><div class="vr-lab">'+r.label+' · '+r.title+'</div>'
+    +'<div class="vr-ans">Твой ответ: <b>'+r.userAns+'</b>'+(r.correct?'':' · Верно: <b class="math">'+r.correctAns+'</b>')+'</div>'
+    +'<div class="vr-sol" id="vsol'+i+'" style="display:none"><div class="sol"><h4>Решение</h4>'
+    + r.steps.map((s,j)=>'<div class="step"><span class="n">'+(j+1)+'</span><div>'+s+'</div></div>').join('')
+    +'</div></div></div>'
+    +'<button class="vr-toggle" onclick="toggleVarSol('+i+')">Разбор</button></div>'
+  ).join('');
+  el('app').innerHTML =
+    '<div class="var-head"><button class="back" onclick="goHub()">← На главную</button></div>'
+    +'<div class="vr-hero"><div class="vr-score"><span class="vr-big">'+corr+'</span><span class="vr-tot">/ '+tot+'</span></div>'
+    +'<div class="vr-grade">'+grade+'</div>'
+    +'<div class="vr-bar"><div class="vr-barfill" style="width:'+pct+'%"></div></div>'
+    +'<div class="vr-xp">+'+V.xpGain+' XP за вариант</div></div>'
+    +'<div class="vr-list">'+rows+'</div>'
+    +'<div class="btns" style="justify-content:center;margin:18px 0"><button class="btn btn-primary" onclick="startVariant()">Пройти заново</button>'
+    +'<button class="btn btn-ghost" onclick="goHub()">На главную</button></div>';
+}
+function toggleVarSol(i){ const e=el('vsol'+i); if(e) e.style.display = (e.style.display==='none')?'block':'none'; }
+function exitVariant(){ S.variant=null; goHub(); }
+
+/* ================= НАВИГАЦИЯ ================= */
+function openTask(id){
+  const c=catById(id); if(!c.ready){ toast('Этот тренажёр скоро появится 🙂'); return; }
+  S.taskId=id; S.tab='practice';
+  S.sub = c.mod.meta.subs ? c.mod.meta.subs[0].key : null;
+  newPractice();
+  S.warm=currentMod().warmup(S.sub); S.warmDone=false; S.warmAttempts=0;
+  renderTask(); window.scrollTo(0,0);
+}
+function goHub(){ S.screen='hub'; renderHub(); window.scrollTo(0,0); }
+function gotoTab(name){
+  S.tab=name;
+  if(name==='practice' && !S.cur) newPractice();
+  if(name==='warmup'){ S.warm=currentMod().warmup(S.sub); S.warmDone=false; S.warmAttempts=0; }
+  renderTask(); window.scrollTo(0,0);
+}
+function setDiff(d){ if(S.diff===d) return; S.diff=d; newPractice(); renderPractice(); }
+function setMode(m){ if(S.mode===m) return; S.mode=m; newPractice(); renderPractice(); }
+function setSub(k){ if(S.sub===k) return; S.sub=k; newPractice(); renderPractice(); }
+
+window.openTask=openTask; window.goHub=goHub; window.gotoTab=gotoTab;
+window.setDiff=setDiff; window.setMode=setMode; window.setSub=setSub;
+window.startVariant=startVariant; window.variantAnswer=variantAnswer; window.variantSkip=variantSkip; window.exitVariant=exitVariant; window.toggleVarSol=toggleVarSol;
+window.checkPractice=checkPractice; window.revealSolution=revealSolution; window.nextPractice=nextPractice; window.skipPractice=skipPractice;
+window.warmPick=warmPick; window.warmCheck=warmCheck; window.nextWarm=nextWarm;
+
+/* ================= СТАРТ ================= */
+renderHub();
+</script>
+</body>
+</html>
