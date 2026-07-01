@@ -216,6 +216,9 @@
   .daily-form label{display:grid;gap:5px;font-size:12px;font-weight:900;color:var(--muted);letter-spacing:.2px}
   .daily-form input{width:100%;border:1.5px solid var(--line2);border-radius:10px;background:#fff;padding:10px 11px;font:800 14px var(--ui);color:var(--ink)}
   .daily-form input:focus{border-color:var(--gold-bd);outline:none;box-shadow:0 0 0 3px rgba(200,137,27,.14)}
+  .teacher-fixed{border:1.5px solid var(--line2);border-radius:10px;background:#fff;padding:10px 11px}
+  .teacher-fixed span{display:block;font-size:12px;font-weight:900;color:var(--muted);margin-bottom:4px}
+  .teacher-fixed b{font:900 14px var(--ui);color:var(--ink);word-break:break-word}
   .daily-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:2px}
   .daily-actions .btn{width:100%;justify-content:center}
   .report-note{font-size:12px;color:var(--muted);font-weight:700;line-height:1.35;margin:0}
@@ -319,9 +322,10 @@
           <label>Ученик
             <input id="daily-student" autocomplete="name" placeholder="Имя ученика" oninput="setStudentName(this.value)">
           </label>
-          <label>Email учителя
-            <input id="daily-teacher" type="email" autocomplete="email" placeholder="teacher@example.com" oninput="setTeacherEmail(this.value)">
-          </label>
+          <div class="teacher-fixed">
+            <span>Email учителя</span>
+            <b>nata4os@bk.ru</b>
+          </div>
           <label>Цель на день
             <input id="daily-goal" type="number" min="1" max="40" step="1" oninput="setDailyGoal(this.value)">
           </label>
@@ -493,32 +497,33 @@ function wPrev(){ if(w.step>0){w.step--;renderAct1();} }
 var t={mode:'sum', solved:0, streak:0, prob:null, step:1, tries:{}, revealed:false};
 var DAILY_STORE='formulaTheaterDaily.v1';
 var PROFILE_STORE='formulaTheaterDailyProfile.v1';
-var assignment={date:'',goal:8,student:'',teacher:''};
+var TEACHER_EMAIL='nata4os@bk.ru';
+var assignment={date:'',goal:8,student:'',teacher:TEACHER_EMAIL};
 function esc(s){return String(s||'').replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
 function todayISO(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}
 function readProfile(){try{return JSON.parse(localStorage.getItem(PROFILE_STORE)||'{}')||{};}catch(e){return {};}}
-function saveProfile(){try{localStorage.setItem(PROFILE_STORE,JSON.stringify({student:assignment.student,teacher:assignment.teacher,goal:assignment.goal}));}catch(e){}}
-function parseDailyAssignment(){var q=new URLSearchParams(location.search), profile=readProfile();assignment.date=q.get('date')||todayISO();assignment.goal=Math.max(1,Math.min(40,parseInt(q.get('goal')||profile.goal||'8',10)||8));assignment.student=q.get('student')||profile.student||'';assignment.teacher=q.get('teacher')||profile.teacher||'';var m=q.get('mode'); if(['sum','diff','mix'].indexOf(m)>=0){ t.mode=m; }}
+function saveProfile(){try{localStorage.setItem(PROFILE_STORE,JSON.stringify({student:assignment.student,goal:assignment.goal}));}catch(e){}}
+function parseDailyAssignment(){var q=new URLSearchParams(location.search), profile=readProfile();assignment.date=q.get('date')||todayISO();assignment.goal=Math.max(1,Math.min(40,parseInt(q.get('goal')||profile.goal||'8',10)||8));assignment.student=q.get('student')||profile.student||'';assignment.teacher=TEACHER_EMAIL;var m=q.get('mode'); if(['sum','diff','mix'].indexOf(m)>=0){ t.mode=m; }}
 function dailyKey(){return assignment.date+'|'+(assignment.student||'ученик');}
 function loadDailyAll(){try{return JSON.parse(localStorage.getItem(DAILY_STORE)||'{}')||{};}catch(e){return {};}}
 function saveDailyAll(all){try{localStorage.setItem(DAILY_STORE,JSON.stringify(all));}catch(e){}}
 function blankDaily(){return {solved:0,clean:0,mistakes:0,reveals:0,currentStreak:0,bestStreak:0,history:[],updatedAt:''};}
 function getDailyState(){var all=loadDailyAll(), key=dailyKey(); if(!all[key]) all[key]=blankDaily(); return all[key];}
 function saveDailyState(state){var all=loadDailyAll(); all[dailyKey()]=state; saveDailyAll(all);}
-function updateDailyInputs(){var st=$('daily-student'), te=$('daily-teacher'), go=$('daily-goal');if(st) st.value=assignment.student;if(te) te.value=assignment.teacher;if(go) go.value=assignment.goal;}
+function updateDailyInputs(){var st=$('daily-student'), go=$('daily-goal');assignment.teacher=TEACHER_EMAIL;if(st) st.value=assignment.student;if(go) go.value=assignment.goal;}
 function renderDailyPanel(){var d=getDailyState(), pct=Math.min(100,Math.round((d.solved/assignment.goal)*100));t.solved=d.solved||0; t.streak=d.currentStreak||0;if($('t-solved')) $('t-solved').textContent=t.solved;if($('t-streak')) $('t-streak').textContent=t.streak;if($('t-flame')) $('t-flame').classList.toggle('on', t.streak>=3);if($('daily-title')) $('daily-title').innerHTML=(assignment.student?esc(assignment.student)+': ':'')+'задание на '+assignment.date;if($('daily-sub')) $('daily-sub').textContent=d.solved>=assignment.goal?'Норма закрыта. Можно отправить отчёт или порешать ещё.':'Цель на день: '+assignment.goal+' задач.';if($('daily-progress-fill')) $('daily-progress-fill').style.width=pct+'%';if($('daily-solved')) $('daily-solved').textContent=d.solved;if($('daily-goal-view')) $('daily-goal-view').textContent=assignment.goal;if($('daily-clean')) $('daily-clean').textContent=d.clean||0;if($('daily-reveals')) $('daily-reveals').textContent=d.reveals||0;if($('daily-report-note')) $('daily-report-note').textContent=assignment.teacher?'Отчёт уйдёт на '+assignment.teacher+'.':'Добавьте email учителя или отчёт будет скопирован.';updateDailyInputs();}
 function setStudentName(v){assignment.student=v.trim();saveProfile();renderDailyPanel();}
-function setTeacherEmail(v){assignment.teacher=v.trim();saveProfile();renderDailyPanel();}
+function setTeacherEmail(v){assignment.teacher=TEACHER_EMAIL;saveProfile();renderDailyPanel();}
 function setDailyGoal(v){assignment.goal=Math.max(1,Math.min(40,parseInt(v,10)||8));saveProfile();renderDailyPanel();}
 function currentProblemMistakes(){var n=0;Object.keys(t.tries||{}).forEach(function(k){n+=t.tries[k]||0;});return n;}
 function recordDailyMiss(){var d=getDailyState();d.mistakes=(d.mistakes||0)+1;d.updatedAt=new Date().toISOString();saveDailyState(d);renderDailyPanel();}
 function recordDailyReveal(){var d=getDailyState();d.reveals=(d.reveals||0)+1;d.updatedAt=new Date().toISOString();saveDailyState(d);renderDailyPanel();}
 function recordDailySolved(){var p=t.prob, mistakes=currentProblemMistakes(), d=getDailyState();d.solved=(d.solved||0)+1;if(mistakes===0 && !t.revealed) d.clean=(d.clean||0)+1;d.currentStreak=(d.currentStreak||0)+1;d.bestStreak=Math.max(d.bestStreak||0,d.currentStreak||0);d.updatedAt=new Date().toISOString();d.history=[{time:new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'}),task:p.N+'²',answer:p.res,mistakes:mistakes,revealed:!!t.revealed}].concat(d.history||[]).slice(0,12);saveDailyState(d);renderDailyPanel();}
 function buildProgressReport(){var d=getDailyState(), pct=Math.min(100,Math.round((d.solved/assignment.goal)*100));var lines=[];lines.push('Отчёт по тренажёру «Театр формул»');lines.push('Дата задания: '+assignment.date);lines.push('Ученик: '+(assignment.student||'не указано'));lines.push('Прогресс: '+d.solved+' из '+assignment.goal+' ('+pct+'%)');lines.push('Решено без ошибок: '+(d.clean||0));lines.push('Ошибочных попыток: '+(d.mistakes||0));lines.push('Показано ответов/подсказок: '+(d.reveals||0));lines.push('Лучшая серия: '+(d.bestStreak||0));if((d.history||[]).length){lines.push('');lines.push('Последние задания:');d.history.slice(0,8).forEach(function(h){lines.push('- '+h.time+' · '+h.task+' = '+h.answer+' · ошибок: '+h.mistakes+(h.revealed?' · был показан ответ':''));});}lines.push('');lines.push('Ссылка: '+assignmentUrl());return lines.join('\n');}
-function assignmentUrl(){var url=new URL(location.href); url.search=''; url.hash='';url.searchParams.set('date',assignment.date);url.searchParams.set('goal',assignment.goal);url.searchParams.set('mode',t.mode||'mix');if(assignment.student) url.searchParams.set('student',assignment.student);if(assignment.teacher) url.searchParams.set('teacher',assignment.teacher);return url.toString();}
+function assignmentUrl(){var url=new URL(location.href); url.search=''; url.hash='';url.searchParams.set('date',assignment.date);url.searchParams.set('goal',assignment.goal);url.searchParams.set('mode',t.mode||'mix');if(assignment.student) url.searchParams.set('student',assignment.student);return url.toString();}
 function copyText(text){if(navigator.clipboard&&navigator.clipboard.writeText){return navigator.clipboard.writeText(text);}var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();return Promise.resolve();}
 function copyAssignmentLink(){saveProfile();copyText(assignmentUrl()).then(function(){toast('Ссылка задания скопирована');});}
-function sendProgress(){saveProfile();var report=buildProgressReport();if(assignment.teacher){var subject='Прогресс: Театр формул — '+(assignment.student||'ученик')+' — '+assignment.date;location.href='mailto:'+assignment.teacher+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(report);toast('Открываю письмо с отчётом');return;}if(navigator.share){navigator.share({title:'Прогресс: Театр формул',text:report}).catch(function(){copyText(report).then(function(){toast('Отчёт скопирован');});});return;}copyText(report).then(function(){toast('Отчёт скопирован');});}
+function sendProgress(){saveProfile();var report=buildProgressReport();assignment.teacher=TEACHER_EMAIL;if(assignment.teacher){var subject='Прогресс: Театр формул — '+(assignment.student||'ученик')+' — '+assignment.date;location.href='mailto:'+assignment.teacher+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(report);toast('Открываю письмо с отчётом');return;}if(navigator.share){navigator.share({title:'Прогресс: Театр формул',text:report}).catch(function(){copyText(report).then(function(){toast('Отчёт скопирован');});});return;}copyText(report).then(function(){toast('Отчёт скопирован');});}
 
 var BASES=[20,30,40,50,60,70,80,90,100];
 var KS=[1,2,3];
