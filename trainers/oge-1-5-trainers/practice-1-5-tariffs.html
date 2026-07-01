@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тарифы · тренажёр 1–5 · ОГЭ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f7fc; --card:#fff; --ink:#1b2140; --ink-soft:#545c7e; --ink-muted:#9298b4;
+    --line:#e7eaf4; --accent:#06B6D4; --accent-ink:#0e7490; --accent-soft:#dcf6fb;
+    --min:#2563EB; --gb:#7C3AED; --star:#F2542D;
+    --ok:#16a34a; --ok-soft:#e7f7ee; --no:#e0574a; --no-soft:#fdecea;
+    --font-display:"Fredoka","Baloo 2",ui-rounded,"Segoe UI",system-ui,sans-serif;
+    --font-body:"Nunito",ui-rounded,-apple-system,"Segoe UI",system-ui,sans-serif;
+    --shadow:0 2px 6px rgba(27,33,64,.05),0 14px 40px rgba(27,33,64,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;line-height:1.5;}
+  body{background-image:radial-gradient(circle at 10% 4%,rgba(6,182,212,.06) 0,transparent 34%),radial-gradient(circle at 92% 96%,rgba(124,58,237,.06) 0,transparent 34%);}
+  .wrap{max-width:820px;margin:0 auto;padding:34px 18px 80px;}
+
+  header.top{margin-bottom:20px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:5px 12px;border-radius:999px;margin-bottom:12px;}
+  h1{font-family:var(--font-display);font-weight:600;font-size:clamp(27px,5vw,38px);line-height:1.05;margin-bottom:6px;}
+  .sub{font-size:15.5px;color:var(--ink-soft);font-weight:600;}
+
+  .card{background:var(--card);border:1.5px solid var(--line);border-radius:18px;box-shadow:var(--shadow);}
+  .scen{padding:16px 18px 12px;margin-bottom:16px;}
+  .scen .shead{display:flex;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap;}
+  .scen .shead h2{font-family:var(--font-display);font-weight:600;font-size:17px;}
+  .scen .shead .vnum{font-size:12.5px;font-weight:800;color:var(--ink-muted);}
+  .scen .shead .newvar{margin-left:auto;font-family:var(--font-body);font-weight:800;font-size:12.5px;color:var(--accent-ink);background:var(--accent-soft);border:none;border-radius:9px;padding:7px 12px;cursor:pointer;}
+  .scen .shead .newvar:hover{background:#c7eef6;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:2px 0 4px;}
+  .legend .it{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:13px;color:var(--ink-soft);}
+  .legend .ln{width:24px;height:0;border-top:3px solid;}
+  svg.graph{width:100%;height:auto;display:block;}
+  .rules{margin-top:8px;font-size:13px;font-weight:600;color:var(--ink-soft);background:#fbfcff;border:1px solid var(--line);border-radius:12px;padding:11px 13px;line-height:1.5;}
+  .rules b{color:var(--ink);}
+
+  .progress{padding:14px 16px;margin-bottom:16px;}
+  .progress .prow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+  .progress .big{font-family:var(--font-display);font-weight:600;font-size:24px;line-height:1;}
+  .progress .big b{color:var(--accent-ink);}
+  .progress .lbl{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-muted);}
+  .progress .streak{margin-left:auto;font-weight:800;font-size:13.5px;color:var(--star);}
+  .types{display:flex;gap:7px;flex-wrap:wrap;}
+  .tchip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:var(--ink-soft);background:#f1f3fb;border:1.5px solid var(--line);border-radius:9px;padding:5px 9px;}
+  .tchip .cnt{color:var(--ink-muted);font-weight:700;}
+  .tchip.done{color:var(--ok);background:var(--ok-soft);border-color:#bfe6cd;}
+  .tchip.done .cnt{color:var(--ok);}
+
+  .task{padding:22px;}
+  .task .badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:5px 11px;border-radius:999px;margin-bottom:13px;}
+  .ttabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+  .ttab{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-body);font-weight:800;font-size:12.5px;color:var(--ink-soft);background:#f1f3fb;border:1.5px solid var(--line);border-radius:11px;padding:7px 11px;cursor:pointer;transition:border-color .15s,background .15s,color .15s;}
+  .ttab:hover{border-color:var(--accent);}
+  .ttab .tn{font-family:var(--font-display);font-weight:600;width:19px;height:19px;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;background:#fff;color:var(--ink-muted);font-size:12px;}
+  .ttab .tk{font-weight:800;}
+  .ttab.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink);}
+  .ttab.active .tn{background:var(--accent);color:#fff;}
+  .ttab.ok{border-color:#bfe6cd;} .ttab.ok .tk{color:var(--ok);}
+  .ttab.no{border-color:#f3c4bf;} .ttab.no .tk{color:var(--no);}
+  .ttab.active.ok,.ttab.active.no{background:var(--accent-soft);}
+  @media (max-width:560px){ .ttab .tl{display:none;} }
+  .task .q{font-size:17px;font-weight:700;color:var(--ink);line-height:1.55;}
+  .task .q ul{margin:8px 0 0 20px;font-weight:600;}
+  .mini{margin-top:12px;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .mini table{width:100%;border-collapse:collapse;font-size:13px;font-weight:600;}
+  .mini td{padding:7px 11px;border-bottom:1px solid var(--line);}
+  .mini tr:last-child td{border-bottom:none;}
+  .mini td:last-child{text-align:right;color:var(--ink-soft);}
+
+  .answer{margin-top:18px;}
+  .num-in{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .num-in input{font-family:var(--font-display);font-weight:600;font-size:22px;width:180px;padding:12px 16px;border:2px solid var(--line);border-radius:14px;color:var(--ink);outline:none;background:#fbfcff;}
+  .num-in input:focus{border-color:var(--accent);}
+  .num-in .unit{font-weight:800;color:var(--ink-muted);font-size:15px;}
+
+  .actions{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;}
+  .btn{font-family:var(--font-display);font-weight:600;font-size:16px;border:none;border-radius:14px;padding:12px 22px;cursor:pointer;transition:transform .15s,box-shadow .15s;}
+  .btn.primary{background:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(6,182,212,.3);}
+  .btn.primary:hover{transform:translateY(-2px);}
+  .btn.ghost{background:#f1f3fb;color:var(--ink-soft);border:1.5px solid var(--line);}
+  .btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink);}
+  .btn[disabled]{opacity:.5;cursor:default;transform:none;box-shadow:none;}
+
+  .fb{margin-top:16px;border-radius:16px;padding:15px 17px;font-weight:600;font-size:14.5px;line-height:1.55;display:none;}
+  .fb.show{display:block;}
+  .fb.good{background:var(--ok-soft);border:1.5px solid #bfe6cd;color:#15633a;}
+  .fb.bad{background:var(--no-soft);border:1.5px solid #f3c4bf;color:#8f2f26;}
+  .fb .title{font-family:var(--font-display);font-weight:600;font-size:16px;margin-bottom:5px;}
+  .fb .sol{background:rgba(255,255,255,.65);border-radius:10px;padding:10px 12px;margin-top:8px;font-weight:700;color:var(--ink);line-height:1.6;}
+
+  .foot{margin-top:26px;text-align:center;}
+  .foot button{font-family:var(--font-body);font-weight:800;font-size:13px;color:var(--ink-soft);background:#f1f3fb;border:1.5px solid var(--line);padding:9px 16px;border-radius:11px;cursor:pointer;}
+  .foot button:hover{border-color:var(--star);color:var(--star);}
+  .foot .key{margin-top:9px;font-size:12px;color:var(--ink-muted);}
+  .foot code{font-family:ui-monospace,Menlo,monospace;color:var(--accent-ink);}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}.btn.primary:hover{transform:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <span class="eyebrow">ОГЭ · задачи 1–5 · тарифы</span>
+    <h1>Тарифы</h1>
+    <p class="sub">Читай график, считай счёт по пакетам. Пять заданий на один сюжет — как на экзамене.</p>
+  </header>
+
+  <div class="card scen">
+    <div class="shead">
+      <h2>Расход абонента за 2019 год</h2>
+      <span class="vnum" id="vnum">вариант 1</span>
+      <button class="newvar" id="newvar-btn">↻ Новый вариант</button>
+    </div>
+    <div class="legend">
+      <span class="it"><span class="ln" style="border-color:var(--min)"></span>минуты <span style="color:var(--ink-muted)">(лев. ось)</span></span>
+      <span class="it"><span class="ln" style="border-color:var(--gb);border-top-style:dashed"></span>интернет, ГБ <span style="color:var(--ink-muted)">(прав. ось)</span></span>
+    </div>
+    <svg class="graph" id="graph" viewBox="0 0 680 350" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="rules">
+      Тариф <b>«Стандартный»</b> — <b>350 ₽/мес.</b> Пакеты: <b>300 мин</b>, <b>3 ГБ</b>, 120 SMS, входящие бесплатны.
+      Сверх пакета: вызовы <b>3 ₽/мин</b>, интернет <b>90 ₽ за каждые 0,5 ГБ</b> (неполные — округляем вверх), SMS 2 ₽.
+    </div>
+  </div>
+
+  <div class="card progress">
+    <div class="prow">
+      <span class="big"><b id="mastered">0</b> / 5</span>
+      <span class="lbl">типов задач освоено</span>
+      <span class="streak" id="streak"></span>
+    </div>
+    <div class="types" id="types"></div>
+  </div>
+
+  <div class="card task">
+    <div class="ttabs" id="task-tabs" role="tablist" aria-label="Задачи варианта"></div>
+    <span class="badge" id="task-badge">Задача 1</span>
+    <div class="q" id="task-q"></div>
+    <div class="answer" id="answer-area"></div>
+    <div class="actions">
+      <button class="btn primary" id="check-btn">Проверить</button>
+      <button class="btn ghost" id="next-btn" disabled>Следующая →</button>
+    </div>
+    <div class="fb" id="fb" role="status" aria-live="polite"></div>
+  </div>
+
+  <div class="foot">
+    <button id="reset-btn">Сбросить прогресс</button>
+    <div class="key">прогресс сохраняется в браузере · виден на общей карте тренажёров</div>
+  </div>
+
+</div>
+
+<script src="progress.js"></script>
+<script>
+(function(){
+/* =========================================================================
+   ДВИЖОК БИЛЛИНГА
+   ========================================================================= */
+const STD={base:350,minPack:300,gbPack:3,minRate:3,gbBlockPrice:90}; // «Стандартный»
+// счёт за месяц: абонплата + минуты сверх + интернет сверх (блоками по 0,5 ГБ, вверх)
+function bill(t,min,gb){
+  const mOver = Math.max(0, min - t.minPack) * t.minRate;
+  const gExtra = Math.max(0, gb - t.gbPack);
+  const blocks = gExtra > 0 ? Math.ceil(gExtra/0.5 - 1e-9) : 0;
+  return t.base + mOver + blocks * t.gbBlockPrice;
+}
+const yearCost = (t,MIN,GB) => MIN.reduce((s,_,m)=>s+bill(t,MIN[m],GB[m]),0);
+
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+let RAND=Math.random;
+const rnd=n=>Math.floor(RAND()*n);
+const pick=a=>a[rnd(a.length)];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+const fmt=x=>String(x).replace('.',',');           // 3.25 -> "3,25"
+const near=(a,b)=>Math.abs(a-b)<1e-6;
+
+const PREP=['январе','феврале','марте','апреле','мае','июне','июле','августе','сентябре','октябре','ноябре','декабре'];
+const INSTR=['январём','февралём','мартом','апрелем','маем','июнем','июлем','августом','сентябрём','октябрём','ноябрём','декабрём'];
+
+/* =========================================================================
+   ГЕНЕРАЦИЯ СЮЖЕТА (случайный «год»)
+   ========================================================================= */
+function genScenario(){
+  const gbPool=[]; for(let v=0.5;v<=4.0001;v+=0.25) gbPool.push(Math.round(v*100)/100);
+  const minPool=[]; for(let v=100;v<=400;v+=25) minPool.push(v);
+  const GB=shuffle(gbPool).slice(0,12);   // 12 различных значений
+  const MIN=shuffle(minPool).slice(0,12);
+  const metric1=pick(['gb','min']);
+  const NEW={base:pick([420,430,440,450,460,470,480]),minPack:400,gbPack:4,minRate:4,gbBlockPrice:pick([160,180])};
+  return {GB,MIN,metric1,NEW};
+}
+
+/* =========================================================================
+   ГЕНЕРАТОРЫ 5 ЗАДАНИЙ (ответ считается из данных сюжета)
+   ========================================================================= */
+function tMatch(sc){
+  const metric=sc.metric1, arr=metric==='gb'?sc.GB:sc.MIN;
+  const unit=metric==='gb'?'ГБ':'мин';
+  const what=metric==='gb'?'трафику мобильного интернета':'количеству исходящих вызовов';
+  const months=shuffle([...Array(12).keys()]).slice(0,4);        // 4 месяца
+  const vals=months.map(m=>arr[m]);
+  const ans=months.map(m=>String(m+1)).join('');
+  const cells=vals.map(v=>`<td>${fmt(v)} ${unit}</td>`).join('');
+  return {type:'match',kind:'digits',maxlen:8,answer:ans,
+    q:`По графику определите, какие месяцы соответствуют указанному ${what}. Запишите номера месяцев подряд, без пробелов (например, 51118):
+       <div class="mini"><table><tr><td style="font-weight:800">${metric==='gb'?'Интернет':'Минуты'}</td>${cells}</tr></table></div>`,
+    sol:`С графика: ${months.map((m,i)=>`${fmt(vals[i])} ${unit} → месяц <b>${m+1}</b>`).join('; ')}. Ответ: <b>${ans}</b>.`};
+}
+function tBill(sc){
+  const m=rnd(12), a=bill(STD,sc.MIN[m],sc.GB[m]);
+  const mo=Math.max(0,sc.MIN[m]-300), blocks=sc.GB[m]>3?Math.ceil((sc.GB[m]-3)/0.5-1e-9):0;
+  const parts=[`350`];
+  if(mo>0) parts.push(`${mo}·3 <span style="color:var(--ink-muted)">(минуты)</span>`);
+  if(blocks>0) parts.push(`${blocks}·90 <span style="color:var(--ink-muted)">(интернет)</span>`);
+  const sol=`В ${PREP[m]}: ${sc.MIN[m]} мин, ${fmt(sc.GB[m])} ГБ. `+
+    (mo>0?`Минуты сверх: ${sc.MIN[m]}−300=${mo} → ${mo}·3=${mo*3} ₽. `:`Минуты в пределах пакета. `)+
+    (blocks>0?`Интернет сверх: ${fmt(sc.GB[m])}−3=${fmt(Math.round((sc.GB[m]-3)*100)/100)} ГБ → ${blocks} бл. по 0,5 ГБ → ${blocks}·90=${blocks*90} ₽. `:`Интернет в пределах пакета. `)+
+    `Итого: ${parts.join(' + ')} = <b>${a} ₽</b>.`;
+  return {type:'bill',kind:'num',unit:'руб',answer:a,
+    q:`Сколько рублей потратил абонент на услуги связи в <b>${PREP[m]}</b>? (сними значения минут и ГБ за этот месяц с графика)`,
+    sol};
+}
+function tCount(sc){
+  const conds=[
+    {t:'превысил лимит по пакету мобильного интернета', f:(mi,g)=>g>3, ex:'ГБ > 3'},
+    {t:'превысил лимит по пакету минут', f:(mi,g)=>mi>300, ex:'минуты > 300'},
+    {t:'превысил лимит и по минутам, и по интернету', f:(mi,g)=>mi>300&&g>3, ex:'минуты > 300 И ГБ > 3'},
+    {t:'не превышал лимит ни по минутам, ни по интернету', f:(mi,g)=>mi<=300&&g<=3, ex:'минуты ≤ 300 И ГБ ≤ 3'},
+    {t:'расходы составили ровно 350 рублей', f:(mi,g)=>bill(STD,mi,g)===350, ex:'счёт = 350 (ничего сверх пакета)'},
+  ];
+  const c=pick(conds);
+  const hits=[]; for(let m=0;m<12;m++) if(c.f(sc.MIN[m],sc.GB[m])) hits.push(m+1);
+  return {type:'count',kind:'num',unit:'мес',answer:hits.length,
+    q:`Сколько месяцев в 2019 году абонент <b>${c.t}</b>?`,
+    sol:`Условие: ${c.ex}. Подходят месяцы: ${hits.length?hits.join(', '):'нет таких'}. Всего: <b>${hits.length}</b>.`};
+}
+function tPercent(sc){
+  // (а) прирост трафика месяц-к-месяцу, если есть «красивый» процент
+  const mom=[];
+  for(const metric of ['gb','min']){
+    const arr=metric==='gb'?sc.GB:sc.MIN;
+    for(let m=0;m<11;m++){ const v1=arr[m],v2=arr[m+1];
+      if(v2>v1){ const p=(v2-v1)/v1*100; if(Math.abs(p*2-Math.round(p*2))<1e-9) mom.push({metric,m,v1,v2,p:Math.round(p*100)/100}); } }
+  }
+  if(mom.length && RAND()<0.6){
+    const o=pick(mom), unit=o.metric==='gb'?'ГБ':'мин', name=o.metric==='gb'?'трафик мобильного интернета':'количество исходящих вызовов';
+    return {type:'percent',kind:'num',unit:'%',answer:o.p,
+      q:`На сколько процентов увеличился ${name} в <b>${PREP[o.m+1]}</b> по сравнению с <b>${INSTR[o.m]}</b>?`,
+      sol:`(${fmt(o.v2)} − ${fmt(o.v1)}) : ${fmt(o.v1)} · 100% = ${fmt(Math.round((o.v2-o.v1)*100)/100)} : ${fmt(o.v1)} · 100% = <b>${fmt(o.p)}%</b>.`};
+  }
+  // (б) абонплата год-к-году (чистые числа)
+  const yv=[
+    ()=>{const b=pick([200,250,280,175,140]);return{a:Math.round((350-b)/b*100),unit:'%',q:`В 2018 году абонплата тарифа «Стандартный» была ${b} ₽, а в 2019 году — 350 ₽. На сколько процентов выросла абонплата?`,sol:`(350 − ${b}) : ${b} · 100% = ${350-b} : ${b} · 100% = <b>${Math.round((350-b)/b*100)}%</b>.`};},
+    ()=>{const p=pick([25,40,75,100,150]);const b=Math.round(350/(1+p/100));return{a:b,unit:'руб',q:`В 2019 году абонплата (350 ₽) выросла на ${p}% по сравнению с 2018 годом. Сколько рублей она составляла в 2018 году?`,sol:`350 : (1 + ${p}/100) = 350 : ${fmt(1+p/100)} = <b>${b} ₽</b>.`};},
+    ()=>{const p=pick([30,50]);const b=Math.round(350/(1-p/100));return{a:b,unit:'руб',q:`В 2019 году абонплата (350 ₽) снизилась на ${p}% по сравнению с 2018 годом. Сколько рублей она составляла в 2018 году?`,sol:`350 : (1 − ${p}/100) = 350 : ${fmt(1-p/100)} = <b>${b} ₽</b>.`};},
+    ()=>{const c=pick([420,455,490,525]);return{a:Math.round((c-350)/350*100),unit:'%',q:`В 2020 году абонплата повысилась с 350 ₽ до ${c} ₽. На сколько процентов она повысилась?`,sol:`(${c} − 350) : 350 · 100% = ${c-350} : 350 · 100% = <b>${Math.round((c-350)/350*100)}%</b>.`};},
+  ];
+  const r=pick(yv)();
+  return {type:'percent',kind:'num',unit:r.unit,answer:r.a,q:r.q,sol:r.sol};
+}
+function tSwitch(sc){
+  const N=sc.NEW;
+  const actual=yearCost(STD,sc.MIN,sc.GB), nw=yearCost(N,sc.MIN,sc.GB);
+  const go=nw<actual, chosen=go?N.base:STD.base;
+  const rows=`<div class="mini"><table>
+    <tr><td>Абонентская плата</td><td>${N.base} ₽/мес</td></tr>
+    <tr><td>Пакеты</td><td>400 мин · 4 ГБ · 120 SMS</td></tr>
+    <tr><td>Вызовы сверх</td><td>4 ₽/мин</td></tr>
+    <tr><td>Интернет сверх</td><td>${N.gbBlockPrice} ₽ за 0,5 ГБ</td></tr></table></div>`;
+  return {type:'switch',kind:'num',unit:'руб',answer:chosen,
+    q:`Оператор предложил новый тариф (переход — 0 ₽): ${rows} Абонент перейдёт, если за 2019 год на новом тарифе вышло бы дешевле. Перейдёт ли он? В ответе укажите ежемесячную абонплату выбранного тарифа.`,
+    sol:`За год на «Стандартном»: <b>${actual} ₽</b>. На новом тарифе: <b>${nw} ₽</b>. `+
+      (go?`Новый дешевле — абонент переходит. Абонплата выбранного тарифа: <b>${N.base} ₽</b>.`
+         :`Новый не дешевле — абонент остаётся. Абонплата выбранного тарифа: <b>350 ₽</b>.`)};
+}
+const TASK_FNS=[tMatch,tBill,tCount,tPercent,tSwitch];
+const TASK_LABEL=['Сопоставление','Стоимость месяца','Сколько месяцев','Проценты','Смена тарифа'];
+const TYPES=['match','bill','count','percent','switch'];
+const MASTERY=3, TOTAL=5;
+
+/* =========================================================================
+   ПРОГРЕСС + КАРТА
+   ========================================================================= */
+const OWN_KEY='tariffsTrainer.v2', MAP_KEY='mathExamCourseProgress.v1', TOPIC='practiceTariffsTrainer';
+let state={perType:{},streak:0,scenario:null,tasks:[],results:[],idx:0,vcount:1};
+TYPES.forEach(t=>state.perType[t]=0);
+
+function load(){ try{const s=JSON.parse(localStorage.getItem(OWN_KEY));if(s){TYPES.forEach(t=>state.perType[t]=(s.perType&&s.perType[t])||0);state.streak=s.streak||0;state.vcount=s.vcount||1;}}catch(e){} }
+const mastered=()=>TYPES.filter(t=>state.perType[t]>=MASTERY).length;
+function save(){
+  try{localStorage.setItem(OWN_KEY,JSON.stringify({perType:state.perType,streak:state.streak,vcount:state.vcount}));}catch(e){}
+  if(window.CourseProgress){CourseProgress.write(TOPIC,mastered(),TOTAL);}else try{const d=JSON.parse(localStorage.getItem(MAP_KEY)||'{}');d[TOPIC]={...(d[TOPIC]||{}),solved:mastered(),total:TOTAL};localStorage.setItem(MAP_KEY,JSON.stringify(d));}catch(e){}
+}
+
+/* =========================================================================
+   ГРАФИК
+   ========================================================================= */
+function drawGraph(sc){
+  const NS='http://www.w3.org/2000/svg', svg=document.getElementById('graph');
+  while(svg.firstChild) svg.removeChild(svg.firstChild);
+  const add=(t,a,tx)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(tx!=null)e.textContent=tx;svg.appendChild(e);return e;};
+  const L=54,R=628,T=18,B=300;
+  const mx=i=>L+i/11*(R-L);                 // месяц i (0..11)
+  const my=v=>B-v/400*(B-T);                // минуты (0..400)
+  const gy=v=>B-v/4*(B-T);                  // ГБ (0..4)
+  // мелкая сетка
+  for(let v=25;v<400;v+=25) add('line',{x1:L,y1:my(v),x2:R,y2:my(v),stroke:'#f0f2f8','stroke-width':1});
+  // основная сетка + двойные подписи
+  for(let v=0;v<=400;v+=50){ add('line',{x1:L,y1:my(v),x2:R,y2:my(v),stroke:'var(--line)','stroke-width':1});
+    add('text',{x:L-9,y:my(v)+4,'text-anchor':'end','font-size':10.5,'font-weight':700,fill:'var(--min)'},v);
+    add('text',{x:R+9,y:gy(v/100)+4,'text-anchor':'start','font-size':10.5,'font-weight':700,fill:'var(--gb)'},fmt(v/100));
+  }
+  for(let i=0;i<12;i++){ add('line',{x1:mx(i),y1:T,x2:mx(i),y2:B,stroke:'#f0f2f8','stroke-width':1});
+    add('text',{x:mx(i),y:B+17,'text-anchor':'middle','font-size':11,'font-weight':800,fill:'var(--ink-muted)'},i+1); }
+  add('text',{x:L-9,y:T-4,'text-anchor':'end','font-size':11,'font-weight':800,fill:'var(--min)'},'мин');
+  add('text',{x:R+9,y:T-4,'text-anchor':'start','font-size':11,'font-weight':800,fill:'var(--gb)'},'ГБ');
+  // минуты (сплошная)
+  add('polyline',{points:sc.MIN.map((v,i)=>`${mx(i)},${my(v)}`).join(' '),fill:'none',stroke:'var(--min)','stroke-width':2.4,'stroke-linejoin':'round'});
+  sc.MIN.forEach((v,i)=>add('circle',{cx:mx(i),cy:my(v),r:3.2,fill:'var(--min)'}));
+  // ГБ (пунктир)
+  add('polyline',{points:sc.GB.map((v,i)=>`${mx(i)},${gy(v)}`).join(' '),fill:'none',stroke:'var(--gb)','stroke-width':2.4,'stroke-dasharray':'5 4','stroke-linejoin':'round'});
+  sc.GB.forEach((v,i)=>add('circle',{cx:mx(i),cy:gy(v),r:3.2,fill:'var(--gb)'}));
+}
+
+/* =========================================================================
+   ОТРИСОВКА ЗАДАЧ
+   ========================================================================= */
+function renderProgress(){
+  document.getElementById('mastered').textContent=mastered();
+  document.getElementById('streak').textContent = state.streak>=2?('🔥 подряд: '+state.streak):'';
+  const box=document.getElementById('types'); box.innerHTML='';
+  TYPES.forEach((t,i)=>{const c=state.perType[t],d=c>=MASTERY;const el=document.createElement('span');
+    el.className='tchip'+(d?' done':'');el.innerHTML=`${d?'✓ ':''}${TASK_LABEL[i]} <span class="cnt">${Math.min(c,MASTERY)}/${MASTERY}</span>`;box.appendChild(el);});
+}
+function newScenario(){
+  RAND=mulberry32((0x9E3779B9 ^ state.vcount)>>>0);
+  try{history.replaceState(null,'','?v='+state.vcount);}catch(e){}
+  state.scenario=genScenario();
+  state.tasks=TASK_FNS.map(f=>f(state.scenario));
+  state.results=state.tasks.map(()=>({answered:false,correct:null,input:''}));
+  state.idx=0;
+  drawGraph(state.scenario);
+  document.getElementById('vnum').textContent='вариант '+state.vcount;
+  renderTabs(); showTask();
+}
+function renderTabs(){
+  const box=document.getElementById('task-tabs'); box.innerHTML='';
+  state.tasks.forEach((t,i)=>{
+    const r=state.results[i];
+    const b=document.createElement('button');
+    b.className='ttab'+(i===state.idx?' active':'')+(r.answered?(r.correct?' ok':' no'):'');
+    b.setAttribute('role','tab');b.setAttribute('aria-selected',i===state.idx?'true':'false');
+    b.innerHTML=`<span class="tn">${i+1}</span><span class="tl">${TASK_LABEL[i]}</span>`+
+                (r.answered?`<span class="tk">${r.correct?'✓':'✗'}</span>`:'');
+    b.addEventListener('click',()=>gotoTask(i));
+    box.appendChild(b);
+  });
+}
+function stashInput(){ const inp=document.getElementById('in'); if(inp&&!state.results[state.idx].answered) state.results[state.idx].input=inp.value; }
+function gotoTask(i){ if(i===state.idx) return; stashInput(); state.idx=i; renderTabs(); showTask(); }
+function nextUnanswered(){ for(let k=1;k<=state.tasks.length;k++){const i=(state.idx+k)%state.tasks.length;if(!state.results[i].answered)return i;} return -1; }
+function updateNextBtn(){
+  const nb=document.getElementById('next-btn');
+  const all=state.results.every(r=>r.answered);
+  if(all){ nb.textContent='↻ Новый вариант'; nb.dataset.mode='new'; nb.disabled=false; }
+  else { nb.textContent='Следующая нерешённая →'; nb.dataset.mode='next'; nb.disabled=!state.results[state.idx].answered; }
+}
+function showTask(){
+  const q=state.tasks[state.idx], r=state.results[state.idx];
+  document.getElementById('task-badge').textContent=`Задача ${state.idx+1} · ${TASK_LABEL[state.idx]}`;
+  document.getElementById('task-q').innerHTML=q.q;
+  const area=document.getElementById('answer-area');
+  const ph=q.kind==='digits'?'номера месяцев':'ответ';
+  const val=(r.input||'').replace(/"/g,'&quot;');
+  area.innerHTML=`<div class="num-in"><input id="in" type="text" inputmode="numeric" autocomplete="off" ${q.maxlen?`maxlength="${q.maxlen}"`:''} placeholder="${ph}" value="${val}"><span class="unit">${q.kind==='digits'?'цифры':q.unit}</span></div>`;
+  const inp=document.getElementById('in');
+  const fb=document.getElementById('fb');
+  if(r.answered){
+    inp.disabled=true;
+    document.getElementById('check-btn').disabled=true;
+    const ansTxt=q.kind==='digits'?q.answer:(fmt(q.answer)+' '+q.unit);
+    fb.className='fb show '+(r.correct?'good':'bad');
+    fb.innerHTML=r.correct?`<div class="title">✓ Верно!</div><div class="sol">${q.sol}</div>`
+                          :`<div class="title">Не совсем</div>Правильный ответ: <b>${ansTxt}</b>.<div class="sol">${q.sol}</div>`;
+  } else {
+    inp.disabled=false;
+    document.getElementById('check-btn').disabled=false;
+    fb.className='fb'; fb.innerHTML='';
+    inp.focus();
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')doCheck();});
+  }
+  updateNextBtn();
+}
+function doCheck(){
+  const q=state.tasks[state.idx], r=state.results[state.idx];
+  if(r.answered) return;
+  const raw=(document.getElementById('in').value||'').trim();
+  if(raw===''){document.getElementById('in').focus();return;}
+  let ok;
+  if(q.kind==='digits') ok = raw.replace(/\s/g,'')===q.answer;
+  else { const v=parseFloat(raw.replace(',','.').replace(/[^\d.\-]/g,'')); ok=isFinite(v)&&near(v,q.answer); }
+  r.answered=true; r.correct=ok; r.input=raw;
+  if(ok){ state.perType[q.type]=Math.min(MASTERY,state.perType[q.type]+1); state.streak++; }
+  else state.streak=0;
+  save(); renderProgress(); renderTabs();
+  document.getElementById('in').disabled=true;
+  const ansTxt = q.kind==='digits'?q.answer:(fmt(q.answer)+' '+q.unit);
+  const fb=document.getElementById('fb');
+  fb.className='fb show '+(ok?'good':'bad');
+  fb.innerHTML=ok?`<div class="title">✓ Верно!</div><div class="sol">${q.sol}</div>`
+                 :`<div class="title">Не совсем</div>Правильный ответ: <b>${ansTxt}</b>.<div class="sol">${q.sol}</div>`;
+  document.getElementById('check-btn').disabled=true;
+  updateNextBtn();
+  const nb=document.getElementById('next-btn'); if(!nb.disabled) nb.focus();
+}
+function nextStep(){
+  const nb=document.getElementById('next-btn');
+  if(nb.dataset.mode==='new'){ state.vcount++; save(); newScenario(); }
+  else { const i=nextUnanswered(); if(i>=0) gotoTask(i); }
+}
+
+/* старт */
+document.getElementById('task-tabs').addEventListener('keydown',function(e){if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;e.preventDefault();var d=e.key==='ArrowRight'?1:-1;gotoTask((state.idx+d+state.tasks.length)%state.tasks.length);var t=document.querySelectorAll('#task-tabs .ttab')[state.idx];if(t)t.focus();});
+document.getElementById('check-btn').addEventListener('click',doCheck);
+document.getElementById('next-btn').addEventListener('click',nextStep);
+document.getElementById('newvar-btn').addEventListener('click',()=>{state.vcount++;save();newScenario();});
+document.getElementById('reset-btn').addEventListener('click',()=>{
+  if(confirm('Сбросить прогресс по тарифам?')){
+    TYPES.forEach(t=>state.perType[t]=0);state.streak=0;state.vcount=1;
+    try{localStorage.removeItem(OWN_KEY);if(window.CourseProgress)CourseProgress.clear(TOPIC);else{const d=JSON.parse(localStorage.getItem(MAP_KEY)||'{}');delete d[TOPIC];localStorage.setItem(MAP_KEY,JSON.stringify(d));}}catch(e){}
+    renderProgress();newScenario();
+  }
+});
+load(); try{var _vq=parseInt(new URLSearchParams(location.search).get('v'),10);if(_vq>0)state.vcount=_vq;}catch(e){}
+renderProgress(); save(); newScenario();
+})();
+</script>
+</body>
+</html>

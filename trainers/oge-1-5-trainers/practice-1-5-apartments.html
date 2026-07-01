@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Квартира · план · задания 1–5 ОГЭ · тренажёр</title>
+<style>
+:root{
+  --paper:#eef3f7; --card:#ffffff; --panel:#f5f8fb;
+  --ink:#13212f; --ink-2:#38495b; --muted:#5f7183;
+  --line:#d3dde7; --line-2:#bccadb;
+  --red:#d6402e; --red-2:#f3ddd8;
+  --blue:#2f6bd8; --blue-2:#dde8fb;
+  --green:#1f7a54; --green-2:#d9efe4;
+  --amber:#a9781f; --amber-2:#f6ecd6;
+  --grid:#cdd8e4;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Roboto Mono",monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:var(--sans);color:var(--ink);line-height:1.5;min-height:100vh;
+  background-color:var(--paper);
+  background-image:radial-gradient(var(--line) .9px,transparent .9px);
+  background-size:22px 22px;background-position:-1px -1px}
+.wrap{max-width:1240px;margin:0 auto;padding:20px 20px 60px}
+.mono{font-family:var(--mono)}
+.titleblock{display:grid;grid-template-columns:1fr auto auto auto;border:1.5px solid var(--ink);
+  background:var(--card);border-radius:3px;overflow:hidden;box-shadow:0 1px 0 var(--line-2)}
+.titleblock>div{padding:10px 14px;border-left:1px solid var(--line)}
+.titleblock>div:first-child{border-left:none}
+.tb-k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.tb-v{font-size:15px;font-weight:650;margin-top:2px}
+.tb-main .tb-v{font-size:20px;letter-spacing:-.01em}
+.tb-main .tb-v b{color:var(--red)}
+@media(max-width:720px){.titleblock{grid-template-columns:1fr 1fr}.titleblock .tb-main{grid-column:1/-1}}
+.cols{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,1fr);gap:18px;margin-top:16px}
+@media(max-width:960px){.cols{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line-2);border-radius:6px}
+.panel-h{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:11px 16px;border-bottom:1px solid var(--line);background:var(--panel);border-radius:6px 6px 0 0}
+.panel-h .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.panel-h .rt{font-family:var(--mono);font-size:12px;color:var(--red);font-weight:600}
+.panel-b{padding:16px}
+.planpick{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.planpick button{padding:7px 13px;border:1px solid var(--line-2);background:var(--card);border-radius:5px;
+  font-family:inherit;font-size:12.5px;color:var(--ink-2);cursor:pointer;display:flex;gap:7px;align-items:center}
+.planpick button .k{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.planpick button:hover{border-color:var(--ink)}
+.planpick button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.planpick button.on .k{color:#9fb4cc}
+.planbox{background:var(--panel);border-radius:5px;padding:10px;overflow:auto}
+svg.plan{display:block;width:100%;height:auto}
+.scale-row{display:flex;justify-content:space-between;align-items:center;margin-top:10px;flex-wrap:wrap;gap:8px}
+.key{display:flex;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--ink-2)}
+.key b{color:var(--muted);font-weight:600}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-top:16px}
+.tab{flex:1 1 auto;min-width:78px;padding:10px 6px;border:1px solid var(--line-2);background:var(--card);
+  border-radius:5px;cursor:pointer;font-family:inherit;text-align:center;transition:.13s}
+.tab .n{display:block;font-family:var(--mono);font-size:17px;font-weight:700;color:var(--ink)}
+.tab .t{font-size:11px;color:var(--muted)}
+.tab:hover{background:var(--panel)}
+.tab.on{background:var(--ink);border-color:var(--ink)}
+.tab.on .n,.tab.on .t{color:#fff}
+.tab.done{border-color:var(--green)}
+.tab.done .n::after{content:" ✓";color:var(--green);font-size:12px}
+.tab.on.done .n::after{color:#8fe3bf}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.pill{padding:6px 12px;border:1px solid var(--line-2);background:var(--card);border-radius:20px;
+  font-size:12.5px;color:var(--ink-2);cursor:pointer;font-family:inherit}
+.pill .code{font-family:var(--mono);color:var(--muted);margin-right:5px}
+.pill:hover{border-color:var(--blue)}
+.pill.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.pill.on .code{color:#cfe0fb}
+.pill.roll{margin-left:auto;border-style:dashed;border-color:var(--red);color:var(--red)}
+.pill.roll:hover{background:var(--red-2)}
+.q{font-size:15.5px;margin:2px 0 12px;line-height:1.55}
+.q b{color:var(--ink)}
+.q .code{font-family:var(--mono);color:var(--red);font-weight:600}
+.note{background:var(--panel);border-left:3px solid var(--blue);border-radius:0 4px 4px 0;
+  padding:10px 14px;margin:12px 0;font-size:13.5px;color:var(--ink-2)}
+.note b{color:var(--ink)} .note.warn{border-left-color:var(--red)}
+.mtab{width:100%;border-collapse:collapse;margin:12px 0;border:1px solid var(--line)}
+.mtab th,.mtab td{padding:9px 8px;text-align:center;border:1px solid var(--line);font-size:13.5px}
+.mtab th{background:var(--panel);font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--muted);font-weight:600}
+.mtab td.name{text-align:left;font-weight:600}
+.mtab td.pick{padding:0}
+.mtab select{width:100%;height:40px;border:none;background:transparent;font-family:var(--mono);
+  font-size:17px;font-weight:700;color:var(--blue);text-align:center;text-align-last:center;cursor:pointer}
+.mtab select:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
+.mtab td.ok{background:var(--green-2)} .mtab td.bad{background:var(--red-2)}
+.dtab-scroll{overflow-x:auto;margin:10px 0}
+.dtab{width:100%;border-collapse:collapse;font-size:12.5px;min-width:520px}
+.dtab th,.dtab td{padding:6px 8px;border:1px solid var(--line);text-align:center;white-space:nowrap}
+.dtab th{background:var(--panel);font-family:var(--mono);font-size:10.5px;letter-spacing:.03em;
+  text-transform:uppercase;color:var(--muted);font-weight:600}
+.dtab td.m{font-family:var(--mono);font-weight:700;color:var(--ink);background:#fbfdff}
+.dtab tr.pass td{background:var(--amber-2)} .dtab tr.pass td.m{background:#f2e6c9}
+.dtab .num{font-family:var(--mono)}
+.ansrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.ansrow label{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ans{padding:9px 12px;border:1.5px solid var(--line-2);border-radius:5px;font-family:var(--mono);
+  font-size:16px;width:170px;color:var(--ink);background:var(--card)}
+.ans:focus-visible{outline:none;border-color:var(--red);box-shadow:0 0 0 3px var(--red-2)}
+.ans.ok{border-color:var(--green);background:var(--green-2)}
+.ans.bad{border-color:var(--red);background:var(--red-2)}
+.unit{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.brow{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.btn{padding:9px 15px;border:1.5px solid var(--line-2);background:var(--card);border-radius:5px;
+  font-size:13px;font-weight:600;color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.12s}
+.btn:hover{border-color:var(--ink);color:var(--ink)}
+.btn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.btn.pri{background:var(--red);border-color:var(--red);color:#fff}
+.btn.pri:hover{background:#b7331f;border-color:#b7331f;color:#fff}
+.btn.ghost{border:none;color:var(--muted);margin-left:auto}
+.btn.ghost:hover{color:var(--red)}
+.fb{margin-top:14px;padding:12px 15px;border-radius:5px;font-size:14px;display:none;line-height:1.55}
+.fb.show{display:block}
+.fb.ok{background:var(--green-2);color:#0f5738;border-left:3px solid var(--green)}
+.fb.bad{background:var(--red-2);color:#8f2a1a;border-left:3px solid var(--red)}
+.fb b{font-weight:700}
+.box{margin-top:12px;border-radius:5px;padding:13px 15px;font-size:13.5px;display:none;line-height:1.6}
+.box.show{display:block}
+.box.hint{background:var(--amber-2);border-left:3px solid var(--amber);color:#6b501a}
+.box.sol{background:#eef4ff;border-left:3px solid var(--blue);color:#1b3a6b}
+.box.hint.auto{background:#f9f0d8}
+.box h4{margin:0 0 8px;font-size:14px;font-family:var(--mono);letter-spacing:.03em}
+.step{margin:5px 0;padding-left:26px;position:relative}
+.step .b{position:absolute;left:0;top:1px;width:18px;height:18px;border-radius:50%;background:var(--blue);
+  color:#fff;font-family:var(--mono);font-size:11px;font-weight:700;text-align:center;line-height:18px}
+.eq{font-family:var(--mono);background:#fff;padding:1px 7px;border-radius:3px;border:1px solid var(--line);
+  color:var(--blue);display:inline-block;margin:2px 0}
+.ans-final{margin-top:10px;padding-top:9px;border-top:1px dashed var(--line-2);font-family:var(--mono)}
+.ans-final b{color:var(--red);font-size:15px}
+.side .panel{margin-bottom:14px}
+.stat{display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.stat:last-child{border:none}
+.stat .l{color:var(--muted)} .stat .v{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--ink)}
+.stat .v.g{color:var(--green)}
+.progress{height:6px;background:var(--panel);border-radius:3px;overflow:hidden;margin:4px 0 12px;border:1px solid var(--line)}
+.progress i{display:block;height:100%;background:var(--green);width:0;transition:width .3s}
+.ref{font-size:12.5px;color:var(--ink-2);line-height:1.55;padding:8px 0;border-bottom:1px dashed var(--line)}
+.ref:last-child{border:none} .ref b{color:var(--ink)} .ref .eq{font-size:12px}
+.teach{font-size:12.5px;color:#6b501a;background:var(--amber-2);border:1px dashed var(--amber);
+  border-radius:5px;padding:11px 13px;margin-top:10px;display:none;line-height:1.55}
+.teach.show{display:block} .teach h5{margin:0 0 5px;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--amber)}
+footer{margin-top:26px;font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center;letter-spacing:.04em}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="titleblock">
+    <div class="tb-main"><div class="tb-k">Объект · план этажа</div>
+      <div class="tb-v">Двухкомнатная квартира · <b>задания 1–5</b></div></div>
+    <div><div class="tb-k">Масштаб</div><div class="tb-v mono">1 кл = 0,4 м</div></div>
+    <div><div class="tb-k">Клетка</div><div class="tb-v mono">0,16 м²</div></div>
+    <div><div class="tb-k">Режим</div><div class="tb-v mono" id="modeName">обучение</div></div>
+  </div>
+  <div class="cols">
+    <div>
+      <div class="panel">
+        <div class="panel-h"><span class="lbl">Чертёж · план квартиры</span><span class="rt mono" id="planTag">задание 1</span></div>
+        <div class="panel-b">
+          <div class="planpick" id="planpick"></div>
+          <div class="planbox"><svg class="plan" id="plan" viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg" aria-label="План квартиры"></svg></div>
+          <div class="scale-row">
+            <div class="key"><span><b>——</b> стена</span><span><b style="color:var(--amber)">◜</b> дверь</span>
+              <span><b style="color:var(--blue)">‖</b> окно</span><span><b style="color:var(--red)">┤├</b> размер (акт. задание)</span></div>
+            <div class="key"><span><b>вход</b> — в коридор</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="tabs" id="tabs">
+        <button class="tab on" data-g="1"><span class="n">1</span><span class="t">помещения</span></button>
+        <button class="tab" data-g="2"><span class="n">2</span><span class="t">материалы</span></button>
+        <button class="tab" data-g="3"><span class="n">3</span><span class="t">площадь</span></button>
+        <button class="tab" data-g="4"><span class="n">4</span><span class="t">проценты</span></button>
+        <button class="tab" data-g="5"><span class="n">5</span><span class="t">подбор</span></button>
+      </div>
+      <div class="panel" style="margin-top:14px">
+        <div class="panel-h"><span class="lbl" id="taskLbl">Задание 1</span><span class="rt mono" id="taskCode">№1</span></div>
+        <div class="panel-b" id="taskBody"></div>
+      </div>
+    </div>
+    <aside class="side">
+      <div class="panel">
+        <div class="panel-h"><span class="lbl">Прогресс</span><span class="rt mono" id="pctTag">0%</span></div>
+        <div class="panel-b">
+          <div class="progress"><i id="pbar"></i></div>
+          <div class="stat"><span class="l">Пройдено прототипов</span><span class="v g" id="sSolved">0 / 10</span></div>
+          <div class="stat"><span class="l">Серия без ошибок</span><span class="v" id="sStreak">0</span></div>
+          <div class="stat"><span class="l">Проверок</span><span class="v" id="sTries">0</span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><span class="lbl">Опорные формулы</span></div>
+        <div class="panel-b">
+          <div class="ref"><b>Площадь по клеткам.</b> <span class="eq">S = N · 0,16 м²</span>, где N — число клеток.</div>
+          <div class="ref"><b>Упаковки.</b> Делим штуки на размер упаковки и округляем <b>вверх</b> до целого.</div>
+          <div class="ref"><b>На сколько % больше.</b> <span class="eq">(S₁ − S₂) / S₂ · 100%</span> — в знаменателе <b>меньшая</b>.</div>
+          <div class="ref"><b>Подбор (зад. 5).</b> Сначала фильтр по условиям, затем <span class="eq">цена + подключение + цена·доставка%</span>, потом минимум.</div>
+          <div class="teach" id="teachBox"><h5>Заметка учителя</h5><span id="teachTxt"></span></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><span class="lbl">Отображение</span></div>
+        <div class="panel-b"><div class="pills" style="margin:0">
+          <button class="pill on" data-mode="learn"><span class="code">A</span>обучение</button>
+          <button class="pill" data-mode="practice"><span class="code">B</span>тренировка</button>
+          <button class="pill" data-mode="teacher"><span class="code">C</span>учитель</button>
+        </div></div>
+      </div>
+    </aside>
+  </div>
+  <footer>КР-1 · сюжет «квартира» · планы вычерчены из единой сетки · ответы считаются на лету и сверены с ключом</footer>
+</div>
+<script>
+"use strict";
+/* ================= РОЛИ ================= */
+const ROLE_NAME={san:"санузел",kor:"коридор",klad:"кладовая",spal:"спальня",
+                 logK:"лоджия",logB:"лоджия",gost:"гостиная",kuh:"кухня"};
+const ROLE_NOTE={logK:"у кухни",logB:"у спальни"};
+/* ================= ПЛАНЫ (клетки, y вниз) ================= */
+function mkRooms(defs){ // defs: {num:[role,[rects]]}
+  const o={}; for(const n in defs){o[n]={role:defs[n][0],r:defs[n][1],
+    name:ROLE_NAME[defs[n][0]],note:ROLE_NOTE[defs[n][0]]||null};} return o;
+}
+const PLAN1={ name:"Как в PDF", W:33,
+  rooms:mkRooms({1:['san',[[0,12,5,6]]],2:['kor',[[10,13,19,5],[5,12,5,6]]],3:['klad',[[29,13,4,5]]],
+    4:['spal',[[22,4,11,9]]],5:['logB',[[22,0,11,4]]],6:['gost',[[10,0,12,13]]],
+    7:['kuh',[[0,3,10,9]]],8:['logK',[[0,0,10,3]]]}),
+  doors:[{o:'h',y:3,x1:6,x2:9},{o:'v',x:10,y1:6,y2:9},{o:'h',y:13,x1:14,x2:17},
+    {o:'v',x:5,y1:14,y2:16},{o:'v',x:29,y1:14,y2:16},{o:'h',y:13,x1:25,x2:28},{o:'h',y:4,x1:26,x2:29}],
+  entry:{o:'h',y:18,x1:6,x2:9},
+  windows:[{o:'h',y:0,x1:13,x2:19},{o:'h',y:0,x1:2,x2:8},{o:'h',y:0,x1:24,x2:30},
+    {o:'v',x:0,y1:6,y2:10},{o:'v',x:33,y1:6,y2:10}] };
+const PLAN2={ name:"Планировка Б", W:30,
+  rooms:mkRooms({8:['logK',[[2,0,4,6]]],7:['kuh',[[6,0,8,8]]],4:['spal',[[14,0,10,8]]],
+    5:['logB',[[24,0,6,8]]],1:['san',[[2,15,4,4]]],6:['gost',[[6,8,12,11]]],
+    2:['kor',[[2,19,20,5]]],3:['klad',[[22,19,4,4]]]}),
+  doors:[{o:'h',y:24,x1:3,x2:6},{o:'h',y:19,x1:9,x2:13},{o:'h',y:19,x1:3,x2:5},
+    {o:'v',x:22,y1:20,y2:22},{o:'h',y:8,x1:8,x2:12},{o:'v',x:6,y1:1,y2:4},
+    {o:'h',y:8,x1:15,x2:17},{o:'v',x:24,y1:2,y2:5}],
+  entry:{o:'h',y:24,x1:3,x2:6},
+  windows:[{o:'v',x:2,y1:1,y2:5},{o:'v',x:30,y1:1,y2:6},{o:'h',y:0,x1:16,x2:22},
+    {o:'h',y:0,x1:8,x2:12},{o:'v',x:18,y1:12,y2:16}] };
+// ПЛАН 3 — зеркало плана 1 с перенумерацией
+function mirrorRects(rr,W){return rr.map(([x,y,w,h])=>[W-(x+w),y,w,h]);}
+function mirrorSeg(s,W){return s.o==='v'?{o:'v',x:W-s.x,y1:s.y1,y2:s.y2}:{o:'h',y:s.y,x1:W-s.x2,x2:W-s.x1};}
+function mirrorPlan(P,name,renum){
+  const rooms={};
+  for(const n in P.rooms){const rm=P.rooms[n];const nn=renum[rm.role];
+    rooms[nn]={role:rm.role,name:rm.name,note:rm.note,r:mirrorRects(rm.r,P.W)};}
+  return {name,W:P.W,rooms,doors:P.doors.map(d=>mirrorSeg(d,P.W)),
+    entry:mirrorSeg(P.entry,P.W),windows:P.windows.map(w=>mirrorSeg(w,P.W))};
+}
+const PLAN3=mirrorPlan(PLAN1,"Планировка В",
+  {san:4,kor:5,klad:6,spal:1,logB:8,gost:3,kuh:2,logK:7});
+const PLANS=[PLAN1,PLAN2,PLAN3];
+
+/* ================= АКТИВНЫЙ ПЛАН ================= */
+let PL, MAXX, MAXY, MAP, ROLE2NUM;
+function setPlan(i){
+  PL=PLANS[i];
+  MAXX=0;MAXY=0;
+  for(const n in PL.rooms) PL.rooms[n].r.forEach(([x,y,w,h])=>{MAXX=Math.max(MAXX,x+w);MAXY=Math.max(MAXY,y+h);});
+  MAP=Array.from({length:MAXX},()=>Array(MAXY).fill(0));
+  for(const n in PL.rooms) PL.rooms[n].r.forEach(([x,y,w,h])=>{for(let a=x;a<x+w;a++)for(let b=y;b<y+h;b++)MAP[a][b]=+n;});
+  ROLE2NUM={}; for(const n in PL.rooms) ROLE2NUM[PL.rooms[n].role]=+n;
+}
+const rectsOf=n=>PL.rooms[n].r;
+const cellsOf=n=>rectsOf(n).reduce((s,[,,w,h])=>s+w*h,0);
+const m2Of=n=>+(cellsOf(n)*0.16).toFixed(2);
+const roleNum=role=>ROLE2NUM[role];
+const roleCells=role=>cellsOf(roleNum(role));
+const roleM2=role=>m2Of(roleNum(role));
+const label=n=>PL.rooms[n].name+(PL.rooms[n].note?` (${PL.rooms[n].note})`:"");
+const at=(x,y)=>(x<0||y<0||x>=MAXX||y>=MAXY)?0:MAP[x][y];
+const biggerLoggia=()=>roleCells('logB')>=roleCells('logK')?'logB':'logK';
+
+/* ================= ГЕОМЕТРИЯ СТЕН ================= */
+function wallEdges(){
+  const V=new Map(),H=new Map();
+  for(let x=0;x<=MAXX;x++)for(let y=0;y<MAXY;y++){const a=at(x-1,y),b=at(x,y);if(a!==b)V.set(x+","+y,(a===0||b===0)?'ext':'int');}
+  for(let y=0;y<=MAXY;y++)for(let x=0;x<MAXX;x++){const a=at(x,y-1),b=at(x,y);if(a!==b)H.set(x+","+y,(a===0||b===0)?'ext':'int');}
+  const cut=s=>{if(s.o==='v'){for(let y=s.y1;y<s.y2;y++)V.delete(s.x+","+y);}else{for(let x=s.x1;x<s.x2;x++)H.delete(x+","+s.y);}};
+  [...PL.doors,PL.entry,...PL.windows].forEach(cut);
+  return {V,H};
+}
+function mergeRuns({V,H}){
+  const seg=[];
+  const cols={};for(const [k,t] of V){const [x,y]=k.split(",").map(Number);(cols[x]=cols[x]||[]).push([y,t]);}
+  for(const x in cols){cols[x].sort((a,b)=>a[0]-b[0]);let i=0;const a=cols[x];
+    while(i<a.length){let j=i;while(j+1<a.length&&a[j+1][0]===a[j][0]+1&&a[j+1][1]===a[i][1])j++;seg.push({o:'v',x:+x,a:a[i][0],b:a[j][0]+1,t:a[i][1]});i=j+1;}}
+  const rows={};for(const [k,t] of H){const [x,y]=k.split(",").map(Number);(rows[y]=rows[y]||[]).push([x,t]);}
+  for(const y in rows){rows[y].sort((a,b)=>a[0]-b[0]);let i=0;const a=rows[y];
+    while(i<a.length){let j=i;while(j+1<a.length&&a[j+1][0]===a[j][0]+1&&a[j+1][1]===a[i][1])j++;seg.push({o:'h',y:+y,a:a[i][0],b:a[j][0]+1,t:a[i][1]});i=j+1;}}
+  return seg;
+}
+const ROLE_FILL={san:"#eef2f6",kor:"#f4efe6",klad:"#efe7d7",spal:"#e7eef8",logK:"#dcece1",logB:"#dcece1",gost:"#f3e4d6",kuh:"#e5edf6"};
+/* ================= ОТРИСОВКА ================= */
+const CELL=24,PADX=54,PADY=32;
+const px=c=>PADX+c*CELL, py=c=>PADY+c*CELL;
+const NS="http://www.w3.org/2000/svg";
+function el(tag,a){const e=document.createElementNS(NS,tag);for(const k in a)e.setAttribute(k,a[k]);return e;}
+// текст с белым «ореолом» для читаемости поверх сетки/заливки
+function svgText(svg,x,y,str,{size=12,fill="#13212f",weight=400,anchor="middle",base="central",halo=true,font="var(--sans)"}={}){
+  const attrs={x,y,'text-anchor':anchor,'dominant-baseline':base,'font-size':size,'font-weight':weight,'font-family':font};
+  if(halo){const h=el('text',Object.assign({},attrs,{fill:'#ffffff',stroke:'#ffffff','stroke-width':3.6,'stroke-linejoin':'round'}));h.textContent=str;svg.appendChild(h);}
+  const t=el('text',Object.assign({},attrs,{fill}));t.textContent=str;svg.appendChild(t);return t;
+}
+function drawPlan(view){
+  const svg=document.getElementById('plan');svg.innerHTML='';
+  svg.setAttribute('viewBox',`0 0 ${MAXX*CELL+2*PADX} ${MAXY*CELL+2*PADY}`);
+  const hi=view&&view.rooms?new Set(view.rooms):new Set();
+  // заливка
+  for(const n in PL.rooms){const role=PL.rooms[n].role;rectsOf(+n).forEach(([x,y,w,h])=>{
+    svg.appendChild(el('rect',{x:px(x),y:py(y),width:w*CELL,height:h*CELL,fill:ROLE_FILL[role],
+      opacity:hi.size&&!hi.has(+n)?0.4:1}));});}
+  // сетка внутри комнат
+  for(const n in PL.rooms) rectsOf(+n).forEach(([x,y,w,h])=>{
+    for(let i=1;i<w;i++)svg.appendChild(el('line',{x1:px(x+i),y1:py(y),x2:px(x+i),y2:py(y+h),stroke:'var(--grid)','stroke-width':1}));
+    for(let j=1;j<h;j++)svg.appendChild(el('line',{x1:px(x),y1:py(y+j),x2:px(x+w),y2:py(y+j),stroke:'var(--grid)','stroke-width':1}));});
+  // стены
+  mergeRuns(wallEdges()).forEach(s=>{const ext=s.t==='ext';const a={stroke:'var(--ink)','stroke-width':ext?4.5:2,'stroke-linecap':'square'};
+    if(s.o==='v'){a.x1=px(s.x);a.y1=py(s.a);a.x2=px(s.x);a.y2=py(s.b);}else{a.x1=px(s.a);a.y1=py(s.y);a.x2=px(s.b);a.y2=py(s.y);}
+    svg.appendChild(el('line',a));});
+  // окна
+  PL.windows.forEach(s=>{if(s.o==='h'){
+      svg.appendChild(el('line',{x1:px(s.x1),y1:py(s.y)-1.6,x2:px(s.x2),y2:py(s.y)-1.6,stroke:'var(--blue)','stroke-width':1.8}));
+      svg.appendChild(el('line',{x1:px(s.x1),y1:py(s.y)+1.6,x2:px(s.x2),y2:py(s.y)+1.6,stroke:'var(--blue)','stroke-width':1.8}));
+    }else{svg.appendChild(el('line',{x1:px(s.x)-1.6,y1:py(s.y1),x2:px(s.x)-1.6,y2:py(s.y2),stroke:'var(--blue)','stroke-width':1.8}));
+      svg.appendChild(el('line',{x1:px(s.x)+1.6,y1:py(s.y1),x2:px(s.x)+1.6,y2:py(s.y2),stroke:'var(--blue)','stroke-width':1.8}));}});
+  // двери
+  PL.doors.forEach(s=>{if(s.o==='v'){const y1=py(s.y1),y2=py(s.y2),x=px(s.x),r=y2-y1;
+      svg.appendChild(el('path',{d:`M ${x} ${y1} A ${r} ${r} 0 0 1 ${x+r} ${y2}`,fill:'none',stroke:'var(--amber)','stroke-width':1.8}));
+      svg.appendChild(el('line',{x1:x,y1:y1,x2:x,y2:y2,stroke:'var(--amber)','stroke-width':1.8,opacity:.45}));
+    }else{const x1=px(s.x1),x2=px(s.x2),y=py(s.y),r=x2-x1;
+      svg.appendChild(el('path',{d:`M ${x1} ${y} A ${r} ${r} 0 0 0 ${x2} ${y-r}`,fill:'none',stroke:'var(--amber)','stroke-width':1.8}));
+      svg.appendChild(el('line',{x1:x1,y1:y,x2:x2,y2:y,stroke:'var(--amber)','stroke-width':1.8,opacity:.45}));}});
+  // вход
+  const E=PL.entry,ex=px((E.x1!=null?(E.x1+E.x2)/2:E.x)),ey=py(E.y!=null?E.y:(E.y1+E.y2)/2);
+  if(E.o==='h'){svg.appendChild(el('line',{x1:px(E.x1),y1:py(E.y),x2:px(E.x2),y2:py(E.y),stroke:'var(--red)','stroke-width':3.4}));
+    svg.appendChild(el('path',{d:`M ${ex-7} ${py(E.y)+15} L ${ex} ${py(E.y)+2} L ${ex+7} ${py(E.y)+15}`,fill:'none',stroke:'var(--red)','stroke-width':2}));
+    svgText(svg,ex,py(E.y)+30,'вход',{size:12,fill:'var(--red)',weight:700,font:'var(--mono)'});}
+  else{svg.appendChild(el('line',{x1:px(E.x),y1:py(E.y1),x2:px(E.x),y2:py(E.y2),stroke:'var(--red)','stroke-width':3.4}));
+    svgText(svg,px(E.x)-18,(py(E.y1)+py(E.y2))/2,'вход',{size:12,fill:'var(--red)',weight:700,font:'var(--mono)',anchor:'middle'});}
+  // номера и названия комнат (крупнее, с ореолом)
+  for(const n in PL.rooms){const [x,y,w,h]=rectsOf(+n)[0];const cx=px(x+w/2),cy=py(y+h/2);
+    const dim=hi.size&&!hi.has(+n);
+    svg.appendChild(el('circle',{cx,cy:cy-9,r:15,fill:'#fff',stroke:'var(--ink)','stroke-width':1.6,opacity:dim?0.5:1}));
+    svgText(svg,cx,cy-9,n,{size:18,weight:700,font:'var(--mono)',halo:false,fill:'var(--ink)'});
+    svgText(svg,cx,cy+14,PL.rooms[n].name,{size:12.5,weight:600,fill:'var(--ink-2)'});}
+  // размеры активного задания
+  if(view&&view.dims) view.dims.forEach(d=>dimLabel(svg,d));
+  // масштабная линейка
+  const g=el('g',{transform:`translate(${px(0)},${py(MAXY)+24})`});
+  g.innerHTML=`<line x1="0" y1="0" x2="${CELL}" y2="0" stroke="var(--muted)" stroke-width="1.5"/>
+    <line x1="0" y1="-3" x2="0" y2="3" stroke="var(--muted)" stroke-width="1.5"/>
+    <line x1="${CELL}" y1="-3" x2="${CELL}" y2="3" stroke="var(--muted)" stroke-width="1.5"/>
+    <text x="${CELL/2}" y="-6" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="var(--mono)">0,4 м</text>`;
+  svg.appendChild(g);
+}
+function dimLabel(svg,d){
+  const parts=rectsOf(d.n);
+  parts.forEach(([x,y,w,h])=>{
+    dimSeg(svg,px(x)+4,py(y)+14,px(x+w)-4,py(y)+14,'h',w+' кл');
+    dimSeg(svg,px(x)+14,py(y)+4,px(x)+14,py(y+h)-4,'v',h+' кл');
+    svg.appendChild(el('rect',{x:px(x)+1.5,y:py(y)+1.5,width:w*CELL-3,height:h*CELL-3,fill:'none',stroke:'var(--red)','stroke-width':2.2,'stroke-dasharray':'6 3'}));
+  });
+  const [x,y,w,h]=parts[0];const cx=px(x+w/2),cy=py(y+h/2);
+  const txt=`${cellsOf(d.n)} кл · ${m2Of(d.n).toString().replace('.',',')} м²`;
+  const bw=txt.length*7.3+16,bh=22;
+  svg.appendChild(el('rect',{x:cx-bw/2,y:cy+18,width:bw,height:bh,rx:4,fill:'var(--red)'}));
+  svgText(svg,cx,cy+18+bh/2,txt,{size:12,weight:700,font:'var(--mono)',halo:false,fill:'#fff'});
+}
+function dimSeg(svg,x1,y1,x2,y2,o,txt){
+  svg.appendChild(el('line',{x1,y1,x2,y2,stroke:'var(--red)','stroke-width':1.5}));
+  if(o==='h'){[x1,x2].forEach(x=>svg.appendChild(el('line',{x1:x,y1:y1-4,x2:x,y2:y1+4,stroke:'var(--red)','stroke-width':1.5})));
+    svgText(svg,(x1+x2)/2,y1-8,txt,{size:12,weight:700,font:'var(--mono)',fill:'var(--red)'});}
+  else{[y1,y2].forEach(y=>svg.appendChild(el('line',{x1:x1-4,y1:y,x2:x1+4,y2:y,stroke:'var(--red)','stroke-width':1.5})));
+    svgText(svg,x1+9,(y1+y2)/2,txt,{size:12,weight:700,font:'var(--mono)',fill:'var(--red)',anchor:'start'});}
+}
+/* ================= ХЕЛПЕРЫ ОТВЕТОВ ================= */
+const fmt=x=>x.toString().replace('.',',');
+const parseNum=s=>parseFloat(String(s).replace(/\s/g,'').replace(',','.'));
+const near=(a,b,e=0.005)=>Math.abs(a-b)<e;
+const rub=x=>x.toLocaleString('ru-RU');
+const total5=(price,conn,dlv)=>price+conn+Math.round(price*dlv/100);
+const good=m=>({ok:true,msg:m}); const bad=m=>({ok:false,msg:m});
+function setIn(inp,ok){inp.classList.remove('ok','bad');inp.classList.add(ok?'ok':'bad');}
+const byId=id=>document.getElementById(id);
+
+/* ---------- Задание 1 — соответствие ---------- */
+const OBJ_POOL=['san','kor','klad','spal','logB','gost','kuh','logK'];
+const T1_DEFAULT=['kor','klad','spal','gost'];
+let t1objs=T1_DEFAULT.slice();
+const objDisplay=role=>ROLE_NAME[role]+(ROLE_NOTE[role]?` (${ROLE_NOTE[role]})`:"");
+const objNum=role=>roleNum(role);
+function rollT1(){const p=OBJ_POOL.slice();
+  for(let i=p.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[p[i],p[j]]=[p[j],p[i]];}
+  t1objs=p.slice(0,4);}
+function buildT1(){
+  const rows=t1objs.map(r=>`<tr><td class="name">${objDisplay(r)}</td>
+    <td class="pick" data-obj="${r}"><select aria-label="номер для ${objDisplay(r)}"><option value="">—</option>
+    ${[1,2,3,4,5,6,7,8].map(n=>`<option>${n}</option>`).join('')}</select></td></tr>`).join('');
+  return `<div class="q">Определите, какими <b>цифрами</b> обозначены на плане указанные помещения, и запишите цифры <b>подряд</b> в порядке строк — без пробелов и запятых.</div>
+    <table class="mtab"><thead><tr><th>Помещение</th><th>Цифра</th></tr></thead><tbody>${rows}</tbody></table>
+    <div class="ansrow"><label>Ответ</label><input class="ans mono" id="a1" maxlength="4" inputmode="numeric" placeholder="4 цифры"></div>`;
+}
+function checkT1(){
+  const cells=[...document.querySelectorAll('#taskBody .pick')];
+  const exp=t1objs.map(objNum).join('');
+  let all=true;
+  cells.forEach(c=>{const r=c.dataset.obj,v=c.querySelector('select').value;c.classList.remove('ok','bad');
+    if(!v){all=false;return;}(+v===objNum(r)?c.classList.add('ok'):(c.classList.add('bad'),all=false));});
+  const inp=byId('a1'),typed=(inp.value||'').replace(/\D/g,'');
+  if(typed===exp){setIn(inp,true);return good(`Верно: <b>${exp}</b>.`);}
+  if(all){inp.value=exp;setIn(inp,true);return good(`Верно: <b>${exp}</b> — ${t1objs.map(objDisplay).join(', ')}.`);}
+  setIn(inp,false);
+  if(typed&&typed.length!==4)return bad(`Ответ — ровно 4 цифры подряд. Сейчас их ${typed.length}.`);
+  return bad(`Не сходится. На плане подписаны и пронумерованы все помещения — сопоставьте название с номером и запишите цифры в порядке строк.`);
+}
+const hintT1=()=>`Все помещения на плане подписаны и пронумерованы — осталось сопоставить. Опоры: вход ведёт в <b>коридор</b>; рядом со входом — <b>санузел</b>; в дальнем конце коридора — <b>кладовая</b>; самое большое помещение — <b>гостиная</b>; из <b>кухни</b> и из <b>спальни</b> — выходы на лоджии.`;
+function solveT1(){
+  const rows=t1objs.map(r=>`<div class="step"><span class="b">·</span>${objDisplay(r)} — номер <b>${objNum(r)}</b></div>`).join('');
+  return `<h4>Разбор</h4>${rows}<div class="ans-final">Ответ: <b>${t1objs.map(objNum).join('')}</b></div>`;
+}
+
+/* ---------- Задание 2.1 — паркет · гостиная ---------- */
+function buildT2a(){
+  return `<div class="q">Паркетная доска <span class="code">20 × 80 см</span> продаётся в упаковках по <b>14 штук</b>. Сколько упаковок понадобилось, чтобы выложить пол в <b>гостиной</b>?</div>
+  <div class="note">По шагам: клетки гостиной → сколько досок (одна доска = 0,16 м² = одна клетка) → упаковки, округляя <b>вверх</b>.</div>
+  <div class="ansrow"><label>Ответ</label><input class="ans mono" id="a2a" inputmode="numeric" placeholder="упаковок"><span class="unit">уп.</span></div>`;
+}
+function checkT2a(){
+  const inp=byId('a2a'),v=parseNum(inp.value),b=roleCells('gost'),ans=Math.ceil(b/14);
+  if(near(v,ans,0.5)){setIn(inp,true);return good(`Верно: <b>${ans}</b> уп. ${b} досок ÷ 14 = ${fmt((b/14).toFixed(2))} → вверх.`);}
+  setIn(inp,false);
+  if(near(v,ans-1,0.5))return bad(`${ans-1} мало: ${(ans-1)*14} досок < ${b}. Нужна ещё упаковка — <b>${ans}</b>.`);
+  if(near(v,b,0.5))return bad(`${b} — это число <b>досок</b>. Разделите на 14 и округлите вверх.`);
+  if(near(v,roleM2('gost'),0.05))return bad(`${fmt(roleM2('gost'))} — площадь в м². Дальше: досок ${b}, упаковок ${ans}.`);
+  return bad(`Не сходится. Клеток в гостиной ${b} → досок ${b} → упаковок ⌈${b}/14⌉ = ${ans}.`);
+}
+const hintT2a=()=>`Доска 0,2·0,8 = <b>0,16 м²</b> — ровно одна клетка. Число досок = числу клеток гостиной (${roleCells('gost')}). Делим на 14, округляем вверх.`;
+function solveT2a(){const b=roleCells('gost'),p=Math.ceil(b/14);
+  return `<h4>По шагам</h4>
+    <div class="step"><span class="b">1</span>Доска: <span class="eq">0,2 · 0,8 = 0,16 м²</span> = одна клетка.</div>
+    <div class="step"><span class="b">2</span>Гостиная: <b>${b}</b> клеток → <b>${b}</b> досок.</div>
+    <div class="step"><span class="b">3</span>Упаковок: <span class="eq">${b} / 14 = ${fmt((b/14).toFixed(2))}</span> → вверх → <b>${p}</b>.</div>
+    <div class="ans-final">Ответ: <b>${p}</b></div>`;}
+
+/* ---------- Задание 2.2 — плитка · лоджии ---------- */
+function buildT2b(){
+  return `<div class="q">Плитка <span class="code">40 × 40 см</span> продаётся в упаковках по <b>12 штук</b>. Сколько упаковок понадобилось, чтобы выложить пол на <b>обеих лоджиях</b>?</div>
+  <div class="note">Плитка 40×40 см = одна клетка. Сложите клетки двух лоджий → это число плиток → упаковки, округляя <b>вверх</b>.</div>
+  <div class="ansrow"><label>Ответ</label><input class="ans mono" id="a2b" inputmode="numeric" placeholder="упаковок"><span class="unit">уп.</span></div>`;
+}
+function checkT2b(){
+  const inp=byId('a2b'),v=parseNum(inp.value),lk=roleCells('logK'),lb=roleCells('logB'),t=lk+lb,ans=Math.ceil(t/12);
+  if(near(v,ans,0.5)){setIn(inp,true);return good(`Верно: <b>${ans}</b>. ${lk} + ${lb} = ${t} плиток ÷ 12 = ${fmt((t/12).toFixed(2))} → вверх.`);}
+  setIn(inp,false);
+  if(near(v,ans-1,0.5))return bad(`${ans-1} мало: ${(ans-1)*12} плиток < ${t}. Нужна ещё упаковка — <b>${ans}</b>.`);
+  if(near(v,t,0.5))return bad(`${t} — число <b>плиток</b>. Разделите на 12 и округлите вверх.`);
+  if(near(v,Math.ceil(lk/12),0.5)||near(v,Math.ceil(lb/12),0.5))return bad(`Похоже, посчитана одна лоджия. Нужны <b>обе</b>: ${lk} + ${lb} = ${t} плиток.`);
+  return bad(`Не сходится. Плиток ${t} → упаковок ⌈${t}/12⌉ = ${ans}.`);
+}
+const hintT2b=()=>`Плитка 40×40 см = 1 клетка. Лоджии: ${roleCells('logK')} и ${roleCells('logB')} клеток. Сложите, поделите на 12, округлите вверх.`;
+function solveT2b(){const lk=roleCells('logK'),lb=roleCells('logB'),t=lk+lb,p=Math.ceil(t/12);
+  return `<h4>По шагам</h4>
+    <div class="step"><span class="b">1</span>Плитка 40×40 см = 1 клетка.</div>
+    <div class="step"><span class="b">2</span>Лоджии: <span class="eq">${lk} + ${lb} = ${t}</span> клеток → ${t} плиток.</div>
+    <div class="step"><span class="b">3</span>Упаковок: <span class="eq">${t} / 12 = ${fmt((t/12).toFixed(2))}</span> → вверх → <b>${p}</b>.</div>
+    <div class="ans-final">Ответ: <b>${p}</b></div>`;}
+
+/* ---------- Площадь (общее) ---------- */
+function buildArea(id,who){
+  return `<div class="q">Найдите площадь: <b>${who}</b>. Ответ дайте в <b>квадратных метрах</b>.</div>
+  <div class="note">Сосчитайте клетки и умножьте на площадь одной клетки <span class="eq">0,16 м²</span>.</div>
+  <div class="ansrow"><label>Ответ</label><input class="ans mono" id="${id}" inputmode="decimal" placeholder="м²"><span class="unit">м²</span></div>`;
+}
+function areaCheckImpl(n,id){
+  const inp=byId(id),v=parseNum(inp.value),ans=m2Of(n),c=cellsOf(n);
+  if(near(v,ans)){setIn(inp,true);return good(`Верно: ${c} клеток · 0,16 = <b>${fmt(ans)} м²</b>.`);}
+  setIn(inp,false);
+  if(near(v,c,0.5))return bad(`${c} — это число <b>клеток</b>. Умножьте на 0,16 м².`);
+  const rr=rectsOf(n);
+  if(rr.length===1){const [,,w,h]=rr[0];
+    if(near(v,+(w*0.4).toFixed(2),0.05)||near(v,+(h*0.4).toFixed(2),0.05))
+      return bad(`Это длина <b>стороны</b> в метрах, а не площадь. Перемножьте стороны или клетки·0,16.`);}
+  return bad(`Не сходится. Клеток ${c}, площадь клетки 0,16 м² → ${c}·0,16 = ${fmt(ans)} м².`);
+}
+function areaSolve(n,who){const c=cellsOf(n);
+  const parts=rectsOf(n).map(([,,w,h])=>`${w}·${h}`).join(' + ');
+  return `<h4>Площадь: ${who}</h4>
+    <div class="step"><span class="b">1</span>Клетки: <span class="eq">${parts} = ${c}</span>.</div>
+    <div class="step"><span class="b">2</span>Клетка: <span class="eq">0,4·0,4 = 0,16 м²</span>.</div>
+    <div class="step"><span class="b">3</span>Площадь: <span class="eq">${c} · 0,16 = ${fmt(m2Of(n))} м²</span>.</div>
+    <div class="ans-final">Ответ: <b>${fmt(m2Of(n))}</b></div>`;}
+function checkT3corr(){
+  const n=roleNum('kor'),inp=byId('a3'),v=parseNum(inp.value),c=cellsOf(n),ans=m2Of(n);
+  if(near(v,ans)){setIn(inp,true);return good(`Верно: коридор ${c} клеток · 0,16 = <b>${fmt(ans)} м²</b>.`);}
+  setIn(inp,false);
+  const rr=rectsOf(n);
+  if(rr.length>1){const big=rr.map(([,,w,h])=>w*h).sort((a,b)=>b-a)[0];
+    if(near(v,+(big*0.16).toFixed(2),0.05))return bad(`Учтён только один прямоугольник (${big} кл). Коридор состоит из <b>нескольких</b> частей — сложите все.`);}
+  if(near(v,c,0.5))return bad(`${c} — число клеток. Умножьте на 0,16 м².`);
+  const parts=rr.map(([,,w,h])=>`${w}·${h}`).join(' + ');
+  return bad(`Коридор = ${parts} = ${c} клеток → ${c}·0,16 = ${fmt(ans)} м².`);
+}
+function checkT3loj(){
+  const big=roleNum(biggerLoggia()),small=roleNum(biggerLoggia()==='logB'?'logK':'logB');
+  const inp=byId('a3'),v=parseNum(inp.value),ans=m2Of(big);
+  if(near(v,ans)){setIn(inp,true);return good(`Верно: большая лоджия ${cellsOf(big)} клеток · 0,16 = <b>${fmt(ans)} м²</b>.`);}
+  setIn(inp,false);
+  if(near(v,m2Of(small),0.05))return bad(`Это площадь <b>меньшей</b> лоджии (${cellsOf(small)} кл). Большая — ${cellsOf(big)} клеток.`);
+  if(near(v,cellsOf(big),0.5))return bad(`${cellsOf(big)} — число клеток. Умножьте на 0,16 м².`);
+  return bad(`Лоджии: ${roleCells('logK')} и ${roleCells('logB')} клеток. Большая ${cellsOf(big)} · 0,16 = ${fmt(ans)} м².`);
+}
+
+/* ---------- Проценты (общее) ---------- */
+function buildPct(id,A,B){
+  return `<div class="q">На сколько <b>процентов</b> площадь помещения «<b>${label(A)}</b>» больше площади помещения «<b>${label(B)}</b>»?</div>
+  <div class="note">Формула: <span class="eq">(S₁ − S₂)/S₂ · 100%</span>. Считать удобно в клетках — единицы сократятся.</div>
+  <div class="ansrow"><label>Ответ</label><input class="ans mono" id="${id}" inputmode="numeric" placeholder="%"><span class="unit">%</span></div>`;
+}
+function pctCheckImpl(A,B,id){
+  const inp=byId(id),v=parseNum(inp.value),a=cellsOf(A),b=cellsOf(B),ans=+(((a-b)/b)*100).toFixed(4);
+  if(near(v,ans,0.05)){setIn(inp,true);return good(`Верно: (${a} − ${b})/${b}·100% = <b>${fmt(ans)}%</b>.`);}
+  setIn(inp,false);
+  const d1=+(((a-b)/a)*100).toFixed(4); if(near(v,d1,0.1))return bad(`Вы поделили на <b>большую</b>. Делить надо на <b>меньшую</b> (${b}) — тогда ${fmt(ans)}%.`);
+  const rt=+((a/b)*100).toFixed(4); if(near(v,rt,0.1))return bad(`Это отношение ${a}/${b}·100%. Для «на сколько больше» вычтите 100%: ${fmt(rt)} − 100 = ${fmt(ans)}%.`);
+  if(near(v,a-b,0.5))return bad(`${a-b} — разница в <b>клетках</b>. Переведите в %: ${a-b}/${b}·100%.`);
+  return bad(`Не сходится. Площади ${a} и ${b} клеток → (${a}−${b})/${b}·100% = ${fmt(ans)}%.`);
+}
+function pctSolve(A,B){const a=cellsOf(A),b=cellsOf(B),ans=+(((a-b)/b)*100).toFixed(4);
+  return `<h4>Сравнение в процентах</h4>
+    <div class="step"><span class="b">1</span>${label(A)}: <b>${a}</b> кл. ${label(B)}: <b>${b}</b> кл.</div>
+    <div class="step"><span class="b">2</span>Разница: <span class="eq">${a} − ${b} = ${a-b}</span> клеток.</div>
+    <div class="step"><span class="b">3</span>В % от меньшей: <span class="eq">${a-b} / ${b} · 100% = ${fmt(ans)}%</span>.</div>
+    <div class="ans-final">Ответ: <b>${fmt(ans)}</b></div>`;}
+
+/* ================= ЗАДАНИЕ 5 — таблицы ================= */
+const WASH=[
+ {m:"А",cap:7,ld:"верт.",p:28000,c:1700,d:0,dim:"85×60×45"},
+ {m:"Б",cap:5,ld:"фронт.",p:24000,c:4500,d:10,dim:"85×60×40"},
+ {m:"В",cap:5,ld:"фронт.",p:25000,c:5000,d:10,dim:"85×60×40"},
+ {m:"Г",cap:6.5,ld:"фронт.",p:24000,c:4500,d:10,dim:"85×60×44"},
+ {m:"Д",cap:6,ld:"фронт.",p:28000,c:1700,d:0,dim:"85×60×45"},
+ {m:"Е",cap:6,ld:"верт.",p:27600,c:2300,d:0,dim:"89×60×40"},
+ {m:"Ж",cap:6,ld:"верт.",p:27585,c:1900,d:10,dim:"89×60×40"},
+ {m:"З",cap:6,ld:"фронт.",p:20000,c:6300,d:15,dim:"85×60×42"},
+ {m:"И",cap:5,ld:"фронт.",p:27000,c:1800,d:0,dim:"85×60×40"},
+ {m:"К",cap:5,ld:"верт.",p:27000,c:1800,d:0,dim:"85×60×40"}];
+const STOVE=[
+ {m:"А",ov:50,t:280,p:8890,c:1700,d:0,dim:"85×50×54"},
+ {m:"Б",ov:50,t:300,p:9790,c:750,d:10,dim:"85×50×54"},
+ {m:"В",ov:50,t:250,p:11690,c:700,d:10,dim:"85×60×60"},
+ {m:"Г",ov:52,t:250,p:17490,c:800,d:10,dim:"85×60×60"},
+ {m:"Д",ov:70,t:275,p:17990,c:1400,d:0,dim:"85×60×45"},
+ {m:"Е",ov:58,t:250,p:18890,c:1500,d:0,dim:"85×50×60"},
+ {m:"Ж",ov:54,t:270,p:18900,c:750,d:15,dim:"85×50×60"},
+ {m:"З",ov:46,t:250,p:20990,c:750,d:10,dim:"87×50×60"},
+ {m:"И",ov:70,t:275,p:21690,c:1500,d:0,dim:"85×50×60"},
+ {m:"К",ov:67,t:250,p:22990,c:1500,d:0,dim:"85×50×60"}];
+const NET=[
+ {m:"«600»",plan:"650 руб. за 600 Мб",extra:"2 руб. / Мб сверх 600",fee:650,inc:600,rate:2},
+ {m:"«900»",plan:"820 руб. за 900 Мб",extra:"1,5 руб. / Мб сверх 900",fee:820,inc:900,rate:1.5},
+ {m:"«Безлимитный»",plan:"950 руб., без ограничений",extra:"—",fee:950,inc:Infinity,rate:0}];
+const netCost=(t,pl)=>pl.fee+(t>pl.inc?pl.rate*(t-pl.inc):0);
+function markPass(tblId,arr,passFn){document.querySelectorAll('#'+tblId+' tbody tr').forEach(tr=>{
+  const it=arr.find(a=>a.m===tr.dataset.m);tr.classList.toggle('pass',!!(it&&passFn(it)));});}
+
+function washTable(){return `<div class="dtab-scroll"><table class="dtab" id="w5"><thead><tr>
+  <th>Модель</th><th>Вмест., кг</th><th>Загрузка</th><th>Цена, ₽</th><th>Подкл., ₽</th><th>Доставка</th><th>В×Ш×Г, см</th></tr></thead>
+  <tbody>${WASH.map(x=>`<tr data-m="${x.m}"><td class="m">${x.m}</td><td class="num">${fmt(x.cap)}</td><td>${x.ld}</td>
+    <td class="num">${rub(x.p)}</td><td class="num">${rub(x.c)}</td><td>${x.d===0?'бесплатно':x.d+'%'}</td><td class="num">${x.dim}</td></tr>`).join('')}</tbody></table></div>`;}
+function buildT51(){return `<div class="q">Планируется стиральная машина с <b>вертикальной</b> загрузкой, <b>высотой не более 85 см</b>. Сколько рублей будет стоить <b>самый дешёвый</b> подходящий вариант с подключением и доставкой?</div>
+  ${washTable()}<div class="note warn">Доставка задана <b>в процентах от цены машины</b>. «Бесплатно» — 0 ₽. Высота — первое число габаритов.</div>
+  <div class="ansrow"><label>Ответ</label><input class="ans mono" id="a51" inputmode="numeric" placeholder="рублей"><span class="unit">₽</span></div>`;}
+const washPass=x=>x.ld==="верт."&&(+x.dim.split('×')[0])<=85;
+function checkT51(){const inp=byId('a51'),v=parseNum(inp.value);
+  const pass=WASH.filter(washPass).map(x=>({...x,tot:total5(x.p,x.c,x.d)}));const best=pass.reduce((m,x)=>x.tot<m.tot?x:m);
+  markPass('w5',WASH,washPass);
+  if(near(v,best.tot,0.5)){setIn(inp,true);return good(`Верно: модель <b>${best.m}</b> — ${rub(best.p)} + ${rub(best.c)} = <b>${rub(best.tot)} ₽</b>.`);}
+  setIn(inp,false);
+  for(const x of pass){if(near(v,x.p,0.5))return bad(`${rub(x.p)} — только цена «${x.m}». Добавьте подключение. Дешевле — ${best.m} (${rub(best.tot)} ₽).`);}
+  const wl=WASH.filter(x=>(+x.dim.split('×')[0])<=85&&x.ld==="фронт.").map(x=>total5(x.p,x.c,x.d));
+  if(wl.some(t=>near(v,t,0.5)))return bad(`Нужна <b>вертикальная</b> загрузка — фронтальные не подходят. Подходят: ${pass.map(x=>x.m).join(', ')}.`);
+  return bad(`Фильтр: <b>верт.</b> и <b>высота ≤ 85</b> → ${pass.map(x=>x.m).join(', ')}. Для каждой цена+подключение+доставка, затем минимум (${rub(best.tot)} ₽ у ${best.m}).`);}
+const hintT51=()=>{setTimeout(()=>markPass('w5',WASH,washPass),30);
+  return `Отберите строки с <b>верт.</b> загрузкой и высотой (первое число) <b>≤ 85</b> — подсветил их. Дальше минимум по «цена + подключение + доставка».`;};
+function solveT51(){const pass=WASH.filter(washPass).map(x=>({...x,tot:total5(x.p,x.c,x.d)}));const best=pass.reduce((m,x)=>x.tot<m.tot?x:m);
+  const rows=pass.map(x=>`<div class="step"><span class="b">${x.m}</span>${rub(x.p)} + ${rub(x.c)} + ${x.d===0?0:rub(Math.round(x.p*x.d/100))} = <b>${rub(x.tot)}</b> ₽</div>`).join('');
+  return `<h4>Подбор</h4><div class="step"><span class="b">1</span>Условие: верт., высота ≤ 85 → <b>${pass.map(x=>x.m).join(', ')}</b>.</div>
+    <div class="step"><span class="b">2</span>Полная стоимость:</div>${rows}
+    <div class="step"><span class="b">3</span>Минимум — <b>${best.m}</b>.</div><div class="ans-final">Ответ: <b>${best.tot}</b></div>`;}
+
+function netTable(){return `<div class="dtab-scroll"><table class="dtab"><thead><tr><th>Тариф</th><th>Абонентская плата</th><th>Плата за трафик</th></tr></thead>
+  <tbody>${NET.map(x=>`<tr><td class="m">${x.m}</td><td>${x.plan}</td><td>${x.extra}</td></tr>`).join('')}</tbody></table></div>`;}
+function buildT52(){return `<div class="q">Планируется интернет. Трафик составит <b>1000 Мб</b> в месяц. Сколько рублей нужно заплатить за месяц по <b>самому дешёвому</b> тарифу?</div>
+  ${netTable()}<div class="note">Для тарифа с лимитом: абонентская плата плюс оплата за трафик <b>сверх</b> лимита. Сравните три суммы.</div>
+  <div class="ansrow"><label>Ответ</label><input class="ans mono" id="a52" inputmode="numeric" placeholder="рублей"><span class="unit">₽</span></div>`;}
+function checkT52(){const inp=byId('a52'),v=parseNum(inp.value),T=1000;
+  const costs=NET.map(p=>({m:p.m,c:netCost(T,p)}));const best=costs.reduce((m,x)=>x.c<m.c?x:m);
+  if(near(v,best.c,0.5)){setIn(inp,true);return good(`Верно: тариф ${best.m} — <b>${rub(best.c)} ₽</b>.`);}
+  setIn(inp,false);
+  const c6=netCost(T,NET[0]),c9=netCost(T,NET[1]);
+  if(near(v,c6,0.5))return bad(`${rub(c6)} — тариф «600»: 650 + 2·400. Он дороже. Сравните с «900» (${rub(c9)}) и «Безлимитным» (950).`);
+  if(near(v,c9,0.5))return bad(`${rub(c9)} — «900»: 820 + 1,5·100. Есть дешевле — «Безлимитный» (950 ₽).`);
+  return bad(`Посчитайте все три: «600» = ${rub(c6)}; «900» = ${rub(c9)}; «Безлимитный» = 950. Минимум — ${rub(best.c)}.`);}
+const hintT52=()=>`Трафик 1000 Мб. «600»: 650 + 2·(1000−600). «900»: 820 + 1,5·(1000−900). «Безлимитный»: 950. Наименьшее.`;
+function solveT52(){const T=1000,c6=netCost(T,NET[0]),c9=netCost(T,NET[1]),cb=950,best=Math.min(c6,c9,cb);
+  return `<h4>Сравнение тарифов</h4>
+    <div class="step"><span class="b">1</span>«600»: <span class="eq">650 + 2·400 = ${rub(c6)}</span>.</div>
+    <div class="step"><span class="b">2</span>«900»: <span class="eq">820 + 1,5·100 = ${rub(c9)}</span>.</div>
+    <div class="step"><span class="b">3</span>«Безлимитный»: <span class="eq">${cb}</span>.</div>
+    <div class="ans-final">Минимум: <b>${best}</b></div>`;}
+
+function stoveTable(){return `<div class="dtab-scroll"><table class="dtab" id="s5"><thead><tr>
+  <th>Модель</th><th>Духовка, л</th><th>Tmax, °C</th><th>Цена, ₽</th><th>Подкл., ₽</th><th>Доставка</th><th>В×Ш×Г, см</th></tr></thead>
+  <tbody>${STOVE.map(x=>`<tr data-m="${x.m}"><td class="m">${x.m}</td><td class="num">${x.ov}</td><td class="num">${x.t}</td>
+    <td class="num">${rub(x.p)}</td><td class="num">${rub(x.c)}</td><td>${x.d===0?'бесплатно':x.d+'%'}</td><td class="num">${x.dim}</td></tr>`).join('')}</tbody></table></div>`;}
+function buildT53(){return `<div class="q">Планируется электроплита <b>шириной 50 см</b> с духовкой объёмом <b>не менее 52 л</b>. Сколько рублей будет стоить <b>самый дешёвый</b> подходящий вариант с подключением и доставкой?</div>
+  ${stoveTable()}<div class="note warn">Ширина — <b>второе</b> число габаритов. Доставка — процент <b>от цены плиты</b>.</div>
+  <div class="ansrow"><label>Ответ</label><input class="ans mono" id="a53" inputmode="numeric" placeholder="рублей"><span class="unit">₽</span></div>`;}
+const stovePass=x=>(+x.dim.split('×')[1])===50&&x.ov>=52;
+function checkT53(){const inp=byId('a53'),v=parseNum(inp.value);
+  const pass=STOVE.filter(stovePass).map(x=>({...x,tot:total5(x.p,x.c,x.d)}));const best=pass.reduce((m,x)=>x.tot<m.tot?x:m);
+  markPass('s5',STOVE,stovePass);
+  if(near(v,best.tot,0.5)){setIn(inp,true);return good(`Верно: модель <b>${best.m}</b> — ${rub(best.p)} + ${rub(best.c)} + доставка = <b>${rub(best.tot)} ₽</b>.`);}
+  setIn(inp,false);
+  for(const x of pass){if(near(v,x.p+x.c,0.5))return bad(`Для «${x.m}» забыта доставка ${x.d===0?'(её нет)':x.d+'% = '+rub(Math.round(x.p*x.d/100))+' ₽'}. Дешевле — ${best.m} (${rub(best.tot)} ₽).`);}
+  const wv=STOVE.filter(x=>(+x.dim.split('×')[1])===50&&x.ov<52).map(x=>total5(x.p,x.c,x.d));
+  if(wv.some(t=>near(v,t,0.5)))return bad(`Духовка должна быть <b>≥ 52 л</b> — меньшие не подходят. Останутся ${pass.map(x=>x.m).join(', ')}.`);
+  const ww=STOVE.filter(x=>(+x.dim.split('×')[1])!==50&&x.ov>=52).map(x=>total5(x.p,x.c,x.d));
+  if(ww.some(t=>near(v,t,0.5)))return bad(`Нужна ширина <b>50 см</b> — модели шириной 60 не подходят.`);
+  return bad(`Фильтр: ширина 50 и объём ≥ 52 → ${pass.map(x=>x.m).join(', ')}. Минимум по цене+подключение+доставка — ${rub(best.tot)} ₽ у ${best.m}.`);}
+const hintT53=()=>{setTimeout(()=>markPass('s5',STOVE,stovePass),30);
+  return `Отберите ширину (второе число) <b>= 50</b> и духовку <b>≥ 52 л</b> — подсветил. Дальше минимум по «цена + подключение + доставка».`;};
+function solveT53(){const pass=STOVE.filter(stovePass).map(x=>({...x,tot:total5(x.p,x.c,x.d)}));const best=pass.reduce((m,x)=>x.tot<m.tot?x:m);
+  const rows=pass.map(x=>`<div class="step"><span class="b">${x.m}</span>${rub(x.p)} + ${rub(x.c)} + ${x.d===0?0:rub(Math.round(x.p*x.d/100))} = <b>${rub(x.tot)}</b> ₽</div>`).join('');
+  return `<h4>Подбор</h4><div class="step"><span class="b">1</span>Условие: ширина 50, объём ≥ 52 → <b>${pass.map(x=>x.m).join(', ')}</b>.</div>
+    <div class="step"><span class="b">2</span>Полная стоимость:</div>${rows}
+    <div class="step"><span class="b">3</span>Минимум — <b>${best.m}</b>.</div><div class="ans-final">Ответ: <b>${best.tot}</b></div>`;}
+/* ================= РЕЕСТР ЗАДАНИЙ ================= */
+const teacherNotes={
+ 1:"На плане подписаны все помещения, но на экзамене подписей нет — тренируемся «читать» план по логике: вход → коридор; санузел у входа; кладовая в дальнем конце коридора; самое большое — гостиная; из кухни и спальни — лоджии. Типичная путаница: гостиная ↔ спальня и две лоджии между собой.",
+ 2:"Ключ — округление числа упаковок ВВЕРХ: даже 9,43 пачки → 10. И различать «сколько досок/плиток» (штуки) и «сколько упаковок». Доска 20×80 см и плитка 40×40 см = 0,16 м² = одна клетка, поэтому число штук = числу клеток.",
+ 3:"Площадь = число клеток × 0,16 м². Коридор и лоджии часто состоят из нескольких прямоугольников — сложите все части. Частая ошибка: сложить стороны вместо перемножения.",
+ 4:"«На сколько процентов A больше B»: (A−B)/B·100%. Половина класса делит на A — это уже «на сколько B меньше A». Знаменатель — меньшая величина.",
+ 5:"Многошаговая: 1) отсечь по условиям (тип/высота/ширина/объём), 2) для оставшихся посчитать цена+подключение+доставка (доставка — процент ОТ ЦЕНЫ), 3) выбрать минимум. Часто теряют подключение или считают доставку абсолютной суммой."};
+
+let state={planIdx:0,group:1,viewKey:'1',mode:'learn',solved:new Set(),streak:0,tries:0,
+           t3room:1,t4A:1,t4B:1};
+const sk=v=>state.planIdx+':'+v;
+
+const VIEWS={
+ '1':  {g:1,code:'№1',  name:'соответствие',   rooms:()=>t1objs.map(objNum), dims:()=>[],
+        build:buildT1, check:checkT1, hint:hintT1, solve:solveT1},
+ '2.1':{g:2,code:'№2.1',name:'паркет · гостиная',rooms:()=>[roleNum('gost')], dims:()=>[{n:roleNum('gost')}],
+        build:buildT2a, check:checkT2a, hint:hintT2a, solve:solveT2a},
+ '2.2':{g:2,code:'№2.2',name:'плитка · лоджии', rooms:()=>[roleNum('logK'),roleNum('logB')], dims:()=>[{n:roleNum('logK')},{n:roleNum('logB')}],
+        build:buildT2b, check:checkT2b, hint:hintT2b, solve:solveT2b},
+ '3.1':{g:3,code:'№3.1',name:'площадь коридора',rooms:()=>[roleNum('kor')], dims:()=>[{n:roleNum('kor')}],
+        build:()=>buildArea('a3','коридор'), check:checkT3corr,
+        hint:()=>{const rr=rectsOf(roleNum('kor')).map(([,,w,h])=>`${w}·${h}`).join(' + ');return `Коридор = ${rr} клеток. Сложите и умножьте на 0,16 м².`;},
+        solve:()=>areaSolve(roleNum('kor'),'коридор')},
+ '3.2':{g:3,code:'№3.2',name:'площадь лоджии', rooms:()=>[roleNum(biggerLoggia())], dims:()=>[{n:roleNum(biggerLoggia())}],
+        build:()=>buildArea('a3','бо́льшая лоджия'), check:checkT3loj,
+        hint:()=>`Сравните лоджии: ${roleCells('logK')} и ${roleCells('logB')} клеток. Возьмите большую и умножьте на 0,16 м².`,
+        solve:()=>areaSolve(roleNum(biggerLoggia()),'бо́льшая лоджия')},
+ '3.x':{g:3,code:'№3·🎲',name:'площадь помещения',rooms:()=>[state.t3room], dims:()=>[{n:state.t3room}],
+        build:()=>buildArea('a3',label(state.t3room)), check:()=>areaCheckImpl(state.t3room,'a3'),
+        hint:()=>`«${label(state.t3room)}»: сосчитайте клетки на плане и умножьте на 0,16 м².`,
+        solve:()=>areaSolve(state.t3room,label(state.t3room))},
+ '4.1':{g:4,code:'№4.1',name:'лоджия / кладовая',rooms:()=>[roleNum('logK'),roleNum('klad')], dims:()=>[{n:roleNum('logK')},{n:roleNum('klad')}],
+        build:()=>buildPct('a4',roleNum('logK'),roleNum('klad')), check:()=>pctCheckImpl(roleNum('logK'),roleNum('klad'),'a4'),
+        hint:()=>`Лоджия у кухни ${roleCells('logK')} кл, кладовая ${roleCells('klad')} кл. (${roleCells('logK')}−${roleCells('klad')})/${roleCells('klad')}·100%.`,
+        solve:()=>pctSolve(roleNum('logK'),roleNum('klad'))},
+ '4.2':{g:4,code:'№4.2',name:'кухня / санузел',  rooms:()=>[roleNum('kuh'),roleNum('san')], dims:()=>[{n:roleNum('kuh')},{n:roleNum('san')}],
+        build:()=>buildPct('a4',roleNum('kuh'),roleNum('san')), check:()=>pctCheckImpl(roleNum('kuh'),roleNum('san'),'a4'),
+        hint:()=>`Кухня ${roleCells('kuh')} кл, санузел ${roleCells('san')} кл. Делите разницу на меньшую (${roleCells('san')}).`,
+        solve:()=>pctSolve(roleNum('kuh'),roleNum('san'))},
+ '4.x':{g:4,code:'№4·🎲',name:'проценты',         rooms:()=>[state.t4A,state.t4B], dims:()=>[{n:state.t4A},{n:state.t4B}],
+        build:()=>buildPct('a4',state.t4A,state.t4B), check:()=>pctCheckImpl(state.t4A,state.t4B,'a4'),
+        hint:()=>`${label(state.t4A)} ${cellsOf(state.t4A)} кл и ${label(state.t4B)} ${cellsOf(state.t4B)} кл. В знаменателе — меньшая.`,
+        solve:()=>pctSolve(state.t4A,state.t4B)},
+ '5.1':{g:5,code:'№5.1',name:'стиральная машина',rooms:()=>roleNum('san')?[roleNum('san')]:[], dims:()=>[],
+        build:buildT51, check:checkT51, hint:hintT51, solve:solveT51},
+ '5.2':{g:5,code:'№5.2',name:'интернет',         rooms:()=>[], dims:()=>[],
+        build:buildT52, check:checkT52, hint:hintT52, solve:solveT52},
+ '5.3':{g:5,code:'№5.3',name:'электроплита',     rooms:()=>[roleNum('kuh')], dims:()=>[],
+        build:buildT53, check:checkT53, hint:hintT53, solve:solveT53}};
+const CANON=['1','2.1','2.2','3.1','3.2','4.1','4.2','5.1','5.2','5.3'];
+const GROUP_VIEWS={1:['1'],2:['2.1','2.2'],3:['3.1','3.2'],4:['4.1','4.2'],5:['5.1','5.2','5.3']};
+const GROUP_CANON=GROUP_VIEWS;
+function intPairs(){const nums=Object.keys(PL.rooms).map(Number),out=[];
+  for(const A of nums)for(const B of nums){if(A===B)continue;const a=cellsOf(A),b=cellsOf(B);
+    if(a>b&&Number.isInteger(((a-b)/b)*100))out.push([A,B]);}return out;}
+function resetRollDefaults(){state.t3room=roleNum('gost');const P=intPairs();if(P.length){[state.t4A,state.t4B]=P[0];}}
+
+/* ================= ДВИЖОК ================= */
+const $=byId;
+function buildPills(){
+  let roll='';
+  if(state.group===1)roll=`<button class="pill roll" data-roll="1">🎲 другой набор</button>`;
+  if(state.group===3)roll=`<button class="pill roll" data-roll="3">🎲 другое помещение</button>`;
+  if(state.group===4)roll=`<button class="pill roll" data-roll="4">🎲 другая пара</button>`;
+  const keys=GROUP_VIEWS[state.group].slice();
+  if(state.group===3&&state.viewKey==='3.x')keys.push('3.x');
+  if(state.group===4&&state.viewKey==='4.x')keys.push('4.x');
+  const pills=keys.map(k=>`<button class="pill ${k===state.viewKey?'on':''}" data-view="${k}"><span class="code">${VIEWS[k].code}</span>${VIEWS[k].name}</button>`).join('');
+  return `<div class="pills">${pills}${roll}</div>`;
+}
+function renderView(){
+  const v=VIEWS[state.viewKey];
+  $('taskLbl').textContent=`Задание ${v.g} · ${v.name}`;
+  $('taskCode').textContent=v.code;
+  $('planTag').textContent=v.code.replace('№','задание ');
+  const body=$('taskBody');
+  body.innerHTML=buildPills()+v.build()+`
+    <div class="box hint" id="hint"></div><div class="fb" id="fb"></div><div class="box sol" id="sol"></div>
+    <div class="brow">
+      <button class="btn pri" id="bCheck">Проверить</button>
+      <button class="btn" id="bHint">Подсказка</button>
+      <button class="btn" id="bSol">Показать решение</button>
+      <button class="btn" id="bNext">Следующее задание →</button>
+      <button class="btn ghost" id="bClear">Очистить</button></div>`;
+  body.querySelectorAll('.pill[data-view]').forEach(p=>p.onclick=()=>{state.viewKey=p.dataset.view;renderView();});
+  body.querySelectorAll('.pill[data-roll]').forEach(p=>p.onclick=()=>doRoll(+p.dataset.roll));
+  $('bCheck').onclick=onCheck;$('bHint').onclick=onHint;$('bSol').onclick=onSolve;$('bNext').onclick=onNext;$('bClear').onclick=()=>renderView();
+  body.querySelectorAll('.ans').forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')onCheck();}));
+  if(state.mode==='learn'){const h=$('hint');h.classList.add('auto','show');h.innerHTML=`<h4>Подсказка</h4>${v.hint()}`;}
+  drawPlan({rooms:v.rooms(),dims:v.dims()});
+  updateTabs();
+}
+function doRoll(g){
+  if(g===1){rollT1();state.viewKey='1';}
+  if(g===3){const nums=Object.keys(PL.rooms).map(Number);let n;do{n=nums[Math.floor(Math.random()*nums.length)];}while(n===state.t3room);state.t3room=n;state.viewKey='3.x';}
+  if(g===4){const P=intPairs();let p;do{p=P[Math.floor(Math.random()*P.length)];}while(p[0]===state.t4A&&p[1]===state.t4B&&P.length>1);[state.t4A,state.t4B]=p;state.viewKey='4.x';}
+  renderView();
+}
+function onCheck(){
+  state.tries++;const v=VIEWS[state.viewKey];const r=v.check();
+  const fb=$('fb');fb.className='fb show '+(r.ok?'ok':'bad');fb.innerHTML=r.msg;
+  if(r.ok){if(!state.solved.has(sk(state.viewKey)))state.streak++;state.solved.add(sk(state.viewKey));}
+  else state.streak=0;
+  updateStats();updateTabs();
+}
+function onHint(){const v=VIEWS[state.viewKey],h=$('hint');h.classList.remove('auto');h.classList.add('show');h.innerHTML=`<h4>Подсказка</h4>${v.hint()}`;}
+function onSolve(){const v=VIEWS[state.viewKey],s=$('sol');s.classList.add('show');s.innerHTML=v.solve();}
+function onNext(){let idx=CANON.indexOf(state.viewKey);if(idx<0)idx=CANON.indexOf(GROUP_CANON[state.group][0]);
+  const nk=CANON[(idx+1)%CANON.length];state.viewKey=nk;state.group=VIEWS[nk].g;renderView();}
+function selectGroup(g){state.group=g;if(VIEWS[state.viewKey].g!==g)state.viewKey=GROUP_VIEWS[g][0];
+  document.querySelectorAll('#tabs .tab').forEach(t=>t.classList.toggle('on',+t.dataset.g===g));
+  $('teachTxt').innerHTML=teacherNotes[g];renderView();}
+function updateStats(){const s=CANON.filter(k=>state.solved.has(sk(k))).length;
+  $('sSolved').textContent=s+' / 10';$('sStreak').textContent=state.streak;$('sTries').textContent=state.tries;
+  const pct=Math.round(s/10*100);$('pbar').style.width=pct+'%';$('pctTag').textContent=pct+'%';
+  try{var _mp=JSON.parse(localStorage.getItem('mathExamCourseProgress.v1')||'{}');_mp['practiceApartmentsTrainer']={solved:s,total:CANON.length,solvedList:[...state.solved],streak:state.streak};localStorage.setItem('mathExamCourseProgress.v1',JSON.stringify(_mp));}catch(e){}}
+function updateTabs(){document.querySelectorAll('#tabs .tab').forEach(t=>{const g=+t.dataset.g;
+  t.classList.toggle('done',GROUP_CANON[g].every(k=>state.solved.has(sk(k))));});}
+
+/* ---- переключатель планов ---- */
+function buildPlanPicker(){
+  $('planpick').innerHTML=PLANS.map((p,i)=>`<button data-plan="${i}" class="${i===state.planIdx?'on':''}"><span class="k">${i+1}</span>${p.name}</button>`).join('');
+  document.querySelectorAll('#planpick button').forEach(b=>b.onclick=()=>switchPlan(+b.dataset.plan));
+}
+function switchPlan(i){
+  if(i===state.planIdx)return;
+  state.planIdx=i;setPlan(i);resetRollDefaults();
+  if(state.viewKey.endsWith('.x'))state.viewKey=GROUP_VIEWS[state.group][0];
+  document.querySelectorAll('#planpick button').forEach(b=>b.classList.toggle('on',+b.dataset.plan===i));
+  renderView();updateStats();
+}
+
+/* ---- вкладки и режимы ---- */
+document.querySelectorAll('#tabs .tab').forEach(t=>t.onclick=()=>selectGroup(+t.dataset.g));
+document.querySelectorAll('.pill[data-mode]').forEach(p=>p.onclick=()=>{
+  document.querySelectorAll('.pill[data-mode]').forEach(x=>x.classList.remove('on'));p.classList.add('on');
+  state.mode=p.dataset.mode;$('modeName').textContent={learn:'обучение',practice:'тренировка',teacher:'учитель'}[state.mode];
+  $('teachBox').classList.toggle('show',state.mode==='teacher');renderView();});
+
+/* ================= INIT ================= */
+setPlan(0);resetRollDefaults();buildPlanPicker();
+$('teachTxt').innerHTML=teacherNotes[1];
+try{var _mr=(JSON.parse(localStorage.getItem('mathExamCourseProgress.v1')||'{}'))['practiceApartmentsTrainer'];if(_mr){state.solved=new Set(_mr.solvedList||[]);state.streak=_mr.streak||0;}}catch(e){}
+selectGroup(1);updateStats();
+</script>
+</body>
+</html>

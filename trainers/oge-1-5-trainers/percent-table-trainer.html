@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Проценты · тренажёр · ОГЭ 1–5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f7fc; --card:#fff; --ink:#1b2140; --ink-soft:#545c7e; --ink-muted:#9298b4;
+    --line:#e7eaf4; --accent:#8B5CF6; --accent-ink:#6d28d9; --accent-soft:#ede9fe;
+    --ok:#16a34a; --ok-soft:#e7f7ee; --no:#e0574a; --no-soft:#fdecea; --star:#F2542D;
+    --font-display:"Fredoka","Baloo 2",ui-rounded,"Segoe UI",system-ui,sans-serif;
+    --font-body:"Nunito",ui-rounded,-apple-system,"Segoe UI",system-ui,sans-serif;
+    --shadow:0 2px 6px rgba(27,33,64,.05),0 14px 40px rgba(27,33,64,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;line-height:1.5;}
+  body{background-image:radial-gradient(circle at 10% 4%,rgba(139,92,246,.06) 0,transparent 34%),radial-gradient(circle at 92% 96%,rgba(139,92,246,.05) 0,transparent 34%);}
+  .wrap{max-width:760px;margin:0 auto;padding:34px 18px 80px;}
+
+  header.top{margin-bottom:20px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:5px 12px;border-radius:999px;margin-bottom:12px;}
+  h1{font-family:var(--font-display);font-weight:600;font-size:clamp(27px,5vw,38px);line-height:1.05;margin-bottom:6px;}
+  .sub{font-size:15.5px;color:var(--ink-soft);font-weight:600;}
+
+  .card{background:var(--card);border:1.5px solid var(--line);border-radius:18px;box-shadow:var(--shadow);}
+
+  .picker{padding:14px 16px;margin-bottom:16px;}
+  .picker .lbl{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-muted);margin-bottom:9px;}
+  .chips{display:flex;gap:7px;flex-wrap:wrap;}
+  .chip{font-family:var(--font-body);font-weight:800;font-size:12.5px;color:var(--ink-soft);background:#f1f3fb;border:1.5px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;transition:border-color .15s,background .15s,color .15s;display:inline-flex;align-items:center;gap:6px;}
+  .chip:hover{border-color:var(--accent);}
+  .chip.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink);}
+  .chip .cnt{color:var(--ink-muted);font-weight:700;}
+  .chip.done{color:var(--ok);border-color:#bfe6cd;} .chip.done.active{background:var(--accent-soft);} .chip.done .cnt{color:var(--ok);}
+  .chip.mix{color:var(--accent-ink);border-style:dashed;}
+
+  .progress{padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .progress .big{font-family:var(--font-display);font-weight:600;font-size:23px;line-height:1;}
+  .progress .big b{color:var(--accent-ink);}
+  .progress .plbl{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-muted);}
+  .progress .streak{margin-left:auto;font-weight:800;font-size:13.5px;color:var(--star);}
+
+  .task{padding:24px;}
+  .task .badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:5px 11px;border-radius:999px;margin-bottom:14px;}
+  .task .q{font-size:19px;font-weight:700;color:var(--ink);line-height:1.55;}
+  .task .q b{font-weight:800;}
+  .mini{margin-top:12px;border:1px solid var(--line);border-radius:10px;overflow:hidden;max-width:320px;}
+  .mini table{width:100%;border-collapse:collapse;font-size:14px;font-weight:600;}
+  .mini td{padding:8px 13px;border-bottom:1px solid var(--line);}
+  .mini tr:last-child td{border-bottom:none;}
+  .mini td:last-child{text-align:right;color:var(--ink-soft);}
+
+  .answer{margin-top:20px;}
+  .num-in{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .num-in input{font-family:var(--font-display);font-weight:600;font-size:24px;width:190px;padding:12px 18px;border:2px solid var(--line);border-radius:14px;color:var(--ink);outline:none;background:#fbfcff;}
+  .num-in input:focus{border-color:var(--accent);}
+  .num-in .unit{font-weight:800;color:var(--ink-muted);font-size:16px;}
+
+  .actions{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;}
+  .btn{font-family:var(--font-display);font-weight:600;font-size:16px;border:none;border-radius:14px;padding:12px 24px;cursor:pointer;transition:transform .15s,box-shadow .15s;}
+  .btn.primary{background:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(139,92,246,.3);}
+  .btn.primary:hover{transform:translateY(-2px);}
+  .btn.ghost{background:#f1f3fb;color:var(--ink-soft);border:1.5px solid var(--line);}
+  .btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink);}
+  .btn[disabled]{opacity:.5;cursor:default;transform:none;box-shadow:none;}
+
+  .fb{margin-top:18px;border-radius:16px;padding:15px 17px;font-weight:600;font-size:14.5px;line-height:1.55;display:none;}
+  .fb.show{display:block;}
+  .fb.good{background:var(--ok-soft);border:1.5px solid #bfe6cd;color:#15633a;}
+  .fb.bad{background:var(--no-soft);border:1.5px solid #f3c4bf;color:#8f2f26;}
+  .fb .title{font-family:var(--font-display);font-weight:600;font-size:16px;margin-bottom:5px;}
+  .fb .sol{background:rgba(255,255,255,.65);border-radius:10px;padding:10px 12px;margin-top:8px;font-weight:700;color:var(--ink);}
+
+  .foot{margin-top:26px;text-align:center;}
+  .foot button{font-family:var(--font-body);font-weight:800;font-size:13px;color:var(--ink-soft);background:#f1f3fb;border:1.5px solid var(--line);padding:9px 16px;border-radius:11px;cursor:pointer;}
+  .foot button:hover{border-color:var(--star);color:var(--star);}
+  .foot .key{margin-top:9px;font-size:12px;color:var(--ink-muted);}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}.btn.primary:hover{transform:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <span class="eyebrow">📊 ОГЭ · база · проценты</span>
+    <h1>Проценты и таблицы</h1>
+    <p class="sub">Начни отсюда: этот навык нужен в каждой задаче 1–5 — в тарифах, шинах, участке. Пять типов, чистые числа.</p>
+  </header>
+
+  <div class="card picker">
+    <div class="lbl">Что тренируем</div>
+    <div class="chips" id="chips"></div>
+  </div>
+
+  <div class="card progress">
+    <span class="big"><b id="mastered">0</b> / 5</span>
+    <span class="plbl">типов освоено</span>
+    <span class="streak" id="streak"></span>
+  </div>
+
+  <div class="card task">
+    <span class="badge" id="badge">Проценты</span>
+    <div class="q" id="q"></div>
+    <div class="answer" id="answer"></div>
+    <div class="actions">
+      <button class="btn primary" id="check">Проверить</button>
+      <button class="btn ghost" id="next" disabled>Дальше →</button>
+    </div>
+    <div class="fb" id="fb" role="status" aria-live="polite"></div>
+  </div>
+
+  <div class="foot">
+    <button id="reset">Сбросить прогресс</button>
+    <div class="key">прогресс сохраняется в браузере · виден на общей карте тренажёров</div>
+  </div>
+
+</div>
+
+<script src="progress.js"></script>
+<script>
+(function(){
+const rnd=n=>Math.floor(Math.random()*n), pick=a=>a[rnd(a.length)];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+const m20=(lo,hi)=>{const a=[];for(let v=lo;v<=hi;v+=20)a.push(v);return pick(a);};
+const near=(a,b)=>Math.abs(a-b)<1e-6;
+
+/* ---------- 5 навыков (ответы всегда целые) ---------- */
+function of(){const P=pick([5,10,15,20,25,30,40,50,60,75,80]);const N=m20(120,600);const a=P*N/100;
+  return{skill:'of',unit:'',answer:a,q:`Найдите <b>${P}%</b> от числа <b>${N}</b>.`,sol:`${N} · ${P} : 100 = <b>${a}</b>.`};}
+function table(){
+  const total=pick([200,300,400,500,800,1000]);let p1,p2,p3;
+  do{p1=pick([15,20,25,30,35,40]);p2=pick([15,20,25,30,35]);p3=100-p1-p2;}while(p3<10||p3>60||p3%5);
+  const cats=shuffle(['Хлеб','Молоко','Мясо','Овощи','Фрукты','Сладкое']).slice(0,3);
+  const ps=[p1,p2,p3],parts=ps.map(p=>total*p/100),i=rnd(3);
+  const rows=cats.map((c,j)=>`<tr><td>${c}</td><td>${parts[j]} руб</td></tr>`).join('');
+  return{skill:'table',unit:'%',answer:ps[i],
+    q:`В таблице — расходы за месяц, всего <b>${total} руб</b>.<div class="mini"><table>${rows}</table></div>Какой процент от всех расходов составляет «<b>${cats[i]}</b>»?`,
+    sol:`${parts[i]} : ${total} · 100% = <b>${ps[i]}%</b>.`};}
+function change(){const N1=m20(100,500);const d=pick([10,20,25,50,75,100]);
+  const dir=d>=100?'up':(Math.random()<0.5?'up':'down');
+  const N2=dir==='up'?N1*(100+d)/100:N1*(100-d)/100;
+  return{skill:'change',unit:'%',answer:d,
+    q:`Цена изменилась с <b>${N1} руб</b> до <b>${N2} руб</b>. На сколько процентов она ${dir==='up'?'выросла':'снизилась'}?`,
+    sol:`${dir==='up'?N2+' − '+N1:N1+' − '+N2} = ${Math.abs(N2-N1)}; &nbsp; ${Math.abs(N2-N1)} : ${N1} · 100% = <b>${d}%</b>.`};}
+function apply(){const N=m20(100,600);const P=pick([5,10,15,20,25,30,40,50]);const dir=Math.random()<0.5?'up':'down';
+  const res=dir==='up'?N*(100+P)/100:N*(100-P)/100;
+  return{skill:'apply',unit:'руб',answer:res,
+    q:`Товар стоил <b>${N} руб</b> и ${dir==='up'?'подорожал':'подешевел'} на <b>${P}%</b>. Сколько он стал стоить?`,
+    sol:`${N} · (100 ${dir==='up'?'+':'−'} ${P}) : 100 = ${N} · ${dir==='up'?(100+P):(100-P)} : 100 = <b>${res} руб</b>.`};}
+function reverse(){const orig=m20(100,500);const P=pick([10,20,25,50]);const dir=Math.random()<0.5?'up':'down';
+  const M=dir==='up'?orig*(100+P)/100:orig*(100-P)/100;
+  return{skill:'reverse',unit:'руб',answer:orig,
+    q:`После ${dir==='up'?'повышения':'снижения'} на <b>${P}%</b> цена стала <b>${M} руб</b>. Какой была цена до изменения?`,
+    sol:`${M} : ${dir==='up'?(100+P):(100-P)} · 100 = <b>${orig} руб</b>.`};}
+
+const SKILLS={of,table,change,apply,reverse};
+const ORDER=['of','table','change','apply','reverse'];
+const LABEL={of:'% от числа',table:'Доля в таблице',change:'На сколько %',apply:'Изменить на %',reverse:'Найти исходное'};
+const MASTERY=3, TOTAL=5;
+
+/* ---------- прогресс + карта ---------- */
+const OWN='percentTrainer.v1', MAP='mathExamCourseProgress.v1', TOPIC='percentTableTrainer';
+let state={perType:{},streak:0,mode:'mix',cur:null,answered:false};
+ORDER.forEach(k=>state.perType[k]=0);
+function load(){try{const s=JSON.parse(localStorage.getItem(OWN));if(s){ORDER.forEach(k=>state.perType[k]=(s.perType&&s.perType[k])||0);state.streak=s.streak||0;}}catch(e){}}
+const mastered=()=>ORDER.filter(k=>state.perType[k]>=MASTERY).length;
+function save(){
+  try{localStorage.setItem(OWN,JSON.stringify({perType:state.perType,streak:state.streak}));}catch(e){}
+  if(window.CourseProgress){CourseProgress.write(TOPIC,mastered(),TOTAL);}else try{const d=JSON.parse(localStorage.getItem(MAP)||'{}');d[TOPIC]={...(d[TOPIC]||{}),solved:mastered(),total:TOTAL};localStorage.setItem(MAP,JSON.stringify(d));}catch(e){}
+}
+
+/* ---------- отрисовка ---------- */
+function renderChips(){
+  const box=document.getElementById('chips');box.innerHTML='';
+  const mix=document.createElement('button');
+  mix.className='chip mix'+(state.mode==='mix'?' active':'');mix.setAttribute('aria-pressed',state.mode==='mix'?'true':'false');mix.textContent='🎲 Вперемешку';
+  mix.addEventListener('click',()=>{state.mode='mix';newQ();});
+  box.appendChild(mix);
+  ORDER.forEach(k=>{const c=state.perType[k],d=c>=MASTERY;const b=document.createElement('button');
+    b.className='chip'+(state.mode===k?' active':'')+(d?' done':'');b.setAttribute('aria-pressed',state.mode===k?'true':'false');
+    b.innerHTML=`${d?'✓ ':''}${LABEL[k]} <span class="cnt">${Math.min(c,MASTERY)}/${MASTERY}</span>`;
+    b.addEventListener('click',()=>{state.mode=k;newQ();});box.appendChild(b);});
+}
+function renderProgress(){
+  document.getElementById('mastered').textContent=mastered();
+  document.getElementById('streak').textContent=state.streak>=2?('🔥 подряд: '+state.streak):'';
+}
+function newQ(){
+  const key=state.mode==='mix'?pick(ORDER):state.mode;
+  state.cur=SKILLS[key]();state.answered=false;
+  document.getElementById('badge').textContent=LABEL[key];
+  document.getElementById('q').innerHTML=state.cur.q;
+  document.getElementById('answer').innerHTML=`<div class="num-in"><input id="in" type="text" inputmode="numeric" autocomplete="off" placeholder="ответ"><span class="unit">${state.cur.unit||''}</span></div>`;
+  const fb=document.getElementById('fb');fb.className='fb';fb.innerHTML='';
+  document.getElementById('check').disabled=false;
+  document.getElementById('next').disabled=true;
+  renderChips();
+  const inp=document.getElementById('in');inp.focus();inp.addEventListener('keydown',e=>{if(e.key==='Enter')doCheck();});
+}
+function doCheck(){
+  if(state.answered)return;
+  const raw=(document.getElementById('in').value||'').trim();if(raw==='')return;
+  const v=parseFloat(raw.replace(',','.').replace(/[^\d.\-]/g,''));
+  const ok=isFinite(v)&&near(v,state.cur.answer);
+  state.answered=true;document.getElementById('in').disabled=true;
+  if(ok){state.perType[state.cur.skill]=Math.min(MASTERY,state.perType[state.cur.skill]+1);state.streak++;}else state.streak=0;
+  save();renderProgress();renderChips();
+  const fb=document.getElementById('fb');fb.className='fb show '+(ok?'good':'bad');
+  fb.innerHTML=ok?`<div class="title">✓ Верно!</div><div class="sol">${state.cur.sol}</div>`
+                 :`<div class="title">Не совсем</div>Правильный ответ: <b>${state.cur.answer}${state.cur.unit?' '+state.cur.unit:''}</b>.<div class="sol">${state.cur.sol}</div>`;
+  document.getElementById('check').disabled=true;
+  const nb=document.getElementById('next');nb.disabled=false;nb.focus();
+}
+document.getElementById('check').addEventListener('click',doCheck);
+document.getElementById('next').addEventListener('click',newQ);
+document.getElementById('reset').addEventListener('click',()=>{
+  if(confirm('Сбросить прогресс по процентам?')){
+    ORDER.forEach(k=>state.perType[k]=0);state.streak=0;
+    try{localStorage.removeItem(OWN);if(window.CourseProgress)CourseProgress.clear(TOPIC);else{const d=JSON.parse(localStorage.getItem(MAP)||'{}');delete d[TOPIC];localStorage.setItem(MAP,JSON.stringify(d));}}catch(e){}
+    renderProgress();newQ();
+  }
+});
+load();renderProgress();save();newQ();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Участок · тренажёр 1–5 · ОГЭ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f7fc; --card:#fff; --ink:#1b2140; --ink-soft:#545c7e; --ink-muted:#9298b4;
+    --line:#e7eaf4; --accent:#22C55E; --accent-ink:#15803d; --accent-soft:#dcfce7;
+    --ok:#16a34a; --ok-soft:#e7f7ee; --no:#e0574a; --no-soft:#fdecea; --star:#F2542D;
+    --build:#c7d2e0; --build-line:#64748b;
+    --font-display:"Fredoka","Baloo 2",ui-rounded,"Segoe UI",system-ui,sans-serif;
+    --font-body:"Nunito",ui-rounded,-apple-system,"Segoe UI",system-ui,sans-serif;
+    --shadow:0 2px 6px rgba(27,33,64,.05),0 14px 40px rgba(27,33,64,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;line-height:1.5;}
+  body{background-image:radial-gradient(circle at 10% 4%,rgba(34,197,94,.06) 0,transparent 34%),radial-gradient(circle at 92% 96%,rgba(34,197,94,.05) 0,transparent 34%);}
+  .wrap{max-width:860px;margin:0 auto;padding:34px 18px 80px;}
+
+  header.top{margin-bottom:20px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:5px 12px;border-radius:999px;margin-bottom:12px;}
+  h1{font-family:var(--font-display);font-weight:600;font-size:clamp(27px,5vw,38px);line-height:1.05;margin-bottom:6px;}
+  .sub{font-size:15.5px;color:var(--ink-soft);font-weight:600;}
+
+  .card{background:var(--card);border:1.5px solid var(--line);border-radius:18px;box-shadow:var(--shadow);}
+  .scen{padding:16px 18px 14px;margin-bottom:16px;}
+  .scen .shead{display:flex;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap;}
+  .scen .shead h2{font-family:var(--font-display);font-weight:600;font-size:16px;}
+  .scen .shead .addr{font-size:12.5px;font-weight:700;color:var(--ink-muted);}
+  .scen .shead .newvar{margin-left:auto;font-family:var(--font-body);font-weight:800;font-size:12.5px;color:var(--accent-ink);background:var(--accent-soft);border:none;border-radius:9px;padding:7px 12px;cursor:pointer;}
+  .scen .shead .newvar:hover{background:#bbf7d0;}
+  .plan-wrap{display:grid;grid-template-columns:minmax(0,1fr) 176px;gap:16px;align-items:start;margin-top:8px;}
+  @media (max-width:640px){.plan-wrap{grid-template-columns:1fr;}}
+  svg.plan{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:12px;background:#fbfefb;}
+  .legend{font-size:12.5px;font-weight:700;line-height:1.85;}
+  .legend .li{display:flex;align-items:center;gap:7px;}
+  .legend .num{font-family:var(--font-display);font-weight:600;color:#fff;background:var(--build-line);width:17px;height:17px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex:none;}
+  .scale-note{margin-top:9px;font-size:12px;color:var(--ink-muted);font-weight:600;}
+
+  .progress{padding:14px 16px;margin-bottom:16px;}
+  .progress .prow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px;}
+  .progress .big{font-family:var(--font-display);font-weight:600;font-size:24px;line-height:1;}
+  .progress .big b{color:var(--accent-ink);}
+  .progress .lbl{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-muted);}
+  .progress .streak{margin-left:auto;font-weight:800;font-size:13.5px;color:var(--star);}
+  .types{display:flex;gap:7px;flex-wrap:wrap;}
+  .tchip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:var(--ink-soft);background:#f1f3fb;border:1.5px solid var(--line);border-radius:9px;padding:5px 9px;}
+  .tchip .cnt{color:var(--ink-muted);font-weight:700;}
+  .tchip.done{color:var(--ok);background:var(--ok-soft);border-color:#bfe6cd;} .tchip.done .cnt{color:var(--ok);}
+
+  .task{padding:22px;}
+  .ttabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+  .ttab{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-body);font-weight:800;font-size:12.5px;color:var(--ink-soft);background:#f1f3fb;border:1.5px solid var(--line);border-radius:11px;padding:7px 11px;cursor:pointer;transition:border-color .15s,background .15s,color .15s;}
+  .ttab:hover{border-color:var(--accent);}
+  .ttab .tn{font-family:var(--font-display);font-weight:600;width:19px;height:19px;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;background:#fff;color:var(--ink-muted);font-size:12px;}
+  .ttab .tk{font-weight:800;}
+  .ttab.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink);}
+  .ttab.active .tn{background:var(--accent);color:#fff;}
+  .ttab.ok{border-color:#bfe6cd;} .ttab.ok .tk{color:var(--ok);}
+  .ttab.no{border-color:#f3c4bf;} .ttab.no .tk{color:var(--no);}
+  .ttab.active.ok,.ttab.active.no{background:var(--accent-soft);}
+  @media (max-width:560px){ .ttab .tl{display:none;} }
+
+  .task .badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:5px 11px;border-radius:999px;margin-bottom:13px;}
+  .task .q{font-size:17px;font-weight:700;color:var(--ink);line-height:1.55;}
+  .mini{margin-top:12px;border:1px solid var(--line);border-radius:10px;overflow:auto;}
+  .mini table{width:100%;border-collapse:collapse;font-size:12.5px;font-weight:600;min-width:340px;}
+  .mini th{background:#fbfcff;color:var(--ink-muted);font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:.02em;padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;}
+  .mini td{padding:7px 10px;border-bottom:1px solid var(--line);}
+  .mini tr:last-child td{border-bottom:none;}
+
+  .answer{margin-top:18px;}
+  .num-in{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .num-in input{font-family:var(--font-display);font-weight:600;font-size:22px;width:180px;padding:12px 16px;border:2px solid var(--line);border-radius:14px;color:var(--ink);outline:none;background:#fbfcff;}
+  .num-in input:focus{border-color:var(--accent);}
+  .num-in .unit{font-weight:800;color:var(--ink-muted);font-size:15px;}
+
+  .actions{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;}
+  .btn{font-family:var(--font-display);font-weight:600;font-size:16px;border:none;border-radius:14px;padding:12px 22px;cursor:pointer;transition:transform .15s,box-shadow .15s;}
+  .btn.primary{background:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(34,197,94,.3);}
+  .btn.primary:hover{transform:translateY(-2px);}
+  .btn.ghost{background:#f1f3fb;color:var(--ink-soft);border:1.5px solid var(--line);}
+  .btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink);}
+  .btn[disabled]{opacity:.5;cursor:default;transform:none;box-shadow:none;}
+
+  .fb{margin-top:16px;border-radius:16px;padding:15px 17px;font-weight:600;font-size:14.5px;line-height:1.55;display:none;}
+  .fb.show{display:block;}
+  .fb.good{background:var(--ok-soft);border:1.5px solid #bfe6cd;color:#15633a;}
+  .fb.bad{background:var(--no-soft);border:1.5px solid #f3c4bf;color:#8f2f26;}
+  .fb .title{font-family:var(--font-display);font-weight:600;font-size:16px;margin-bottom:5px;}
+  .fb .sol{background:rgba(255,255,255,.65);border-radius:10px;padding:10px 12px;margin-top:8px;font-weight:700;color:var(--ink);line-height:1.6;}
+
+  .foot{margin-top:26px;text-align:center;}
+  .foot button{font-family:var(--font-body);font-weight:800;font-size:13px;color:var(--ink-soft);background:#f1f3fb;border:1.5px solid var(--line);padding:9px 16px;border-radius:11px;cursor:pointer;}
+  .foot button:hover{border-color:var(--star);color:var(--star);}
+  .foot .key{margin-top:9px;font-size:12px;color:var(--ink-muted);}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}.btn.primary:hover{transform:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <span class="eyebrow">🏡 ОГЭ · задачи 1–5 · участок</span>
+    <h1>Участок</h1>
+    <p class="sub">Классический план ФИПИ. Читай по клеткам: площади, забор, проценты, стоимость.</p>
+  </header>
+
+  <div class="card scen">
+    <div class="shead">
+      <h2>Дачный участок</h2>
+      <span class="addr">п. Синицыно, ул. Красная, 34</span>
+      <span class="addr" id="vnum">вариант 1</span>
+      <button class="newvar" id="newvar-btn">↻ Новые задания</button>
+    </div>
+    <div class="plan-wrap">
+      <svg class="plan" id="plan" viewBox="0 0 452 316" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div>
+        <div class="legend" id="legend"></div>
+        <div class="scale-note">◻ сторона клетки — <b>2 м</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card progress">
+    <div class="prow">
+      <span class="big"><b id="mastered">0</b> / 5</span>
+      <span class="lbl">типов задач освоено</span>
+      <span class="streak" id="streak"></span>
+    </div>
+    <div class="types" id="types"></div>
+  </div>
+
+  <div class="card task">
+    <div class="ttabs" id="task-tabs" role="tablist" aria-label="Задачи варианта"></div>
+    <span class="badge" id="task-badge">Задача 1</span>
+    <div class="q" id="task-q"></div>
+    <div class="answer" id="answer-area"></div>
+    <div class="actions">
+      <button class="btn primary" id="check-btn">Проверить</button>
+      <button class="btn ghost" id="next-btn" disabled>Следующая нерешённая →</button>
+    </div>
+    <div class="fb" id="fb" role="status" aria-live="polite"></div>
+  </div>
+
+  <div class="foot">
+    <button id="reset-btn">Сбросить прогресс</button>
+    <div class="key">прогресс сохраняется в браузере · виден на общей карте тренажёров</div>
+  </div>
+
+</div>
+
+<script src="progress.js"></script>
+<script>
+(function(){
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+let RAND=Math.random;
+const rnd=n=>Math.floor(RAND()*n), pick=a=>a[rnd(a.length)];
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+const near=(a,b)=>Math.abs(a-b)<1e-6;
+
+/* ===================== МОДЕЛЬ УЧАСТКА · Синицыно (выверено) ===================== */
+const CELL_M=2, CA=CELL_M*CELL_M;
+const lenM=c=>c*CELL_M, areaM=c=>c*CA, packs=(need,per)=>Math.ceil(need/per - 1e-9);
+const rectCells=r=>r.w*r.h;
+function polyPerim(pts){let p=0;for(let i=0;i<pts.length;i++){const [x1,y1]=pts[i],[x2,y2]=pts[(i+1)%pts.length];p+=Math.abs(x1-x2)+Math.abs(y1-y2);}return p;}
+function rectGap(a,b){const dx=Math.max(0,a.x-(b.x+b.w),b.x-(a.x+a.w));const dy=Math.max(0,a.y-(b.y+b.h),b.y-(a.y+a.h));return Math.hypot(dx,dy);}
+
+const plot={
+  cols:15, rows:10,                                   // 150 клеток
+  labels:{дом:1,огород:2,теплица:3,баня:4,яблони:5,гараж:6,сарай:7},
+  house:[[7,1],[12,1],[12,4],[11,4],[11,5],[7,5]],    // Г-образный, периметр 18 клеток
+  rects:{
+    garden:    {x:0, y:0, w:6, h:5},                  // огород 30 клеток
+    greenhouse:{x:1, y:1, w:1, h:4},                  // теплица 4 клетки (внутри огорода)
+    sarai:     {x:12,y:0, w:3, h:2},                  // сарай 6 клеток
+    banya:     {x:1, y:6, w:3, h:3},                  // баня 9 клеток
+    garage:    {x:12,y:5, w:2, h:4},                  // гараж 8 клеток
+  },
+  platform:{w:2,h:5},                                 // площадка 10 клеток
+  pathTiles:27,                                       // плиток 1×1 на дорожках
+  finance:{ gas:{equip:24000,other:14316,rate:1.1,price:4.4}, elec:{equip:19000,other:11000,rate:4.4,price:5.3} },
+  paint:{ area:232, stores:[{rate:0.6,bankKg:5,bankPrice:2400,delivery:400},{rate:0.4,bankKg:4,bankPrice:2300,delivery:600}] },
+};
+const R=plot.rects, TOTAL_CELLS=plot.cols*plot.rows;
+
+/* ===================== ГЕНЕРАТОРЫ 5 КАТЕГОРИЙ ===================== */
+const OBJECTS=[
+  {name:'жилой дом',num:1},{name:'огород',num:2},{name:'теплица',num:3},{name:'баня',num:4},
+  {name:'яблони',num:5},{name:'гараж',num:6},{name:'сарай',num:7},
+];
+const AREA_OBJS=[
+  {name:'огород',cells:30},{name:'баня',cells:9},{name:'гараж',cells:8},{name:'сарай',cells:6},{name:'теплица',cells:4},
+];
+
+function gMatch(){
+  const chosen=shuffle(OBJECTS).slice(0,4);
+  const ans=chosen.map(o=>String(o.num)).join('');
+  const rows=`<div class="mini"><table><tr><th>Объект</th>${chosen.map(o=>`<td>${o.name}</td>`).join('')}</tr><tr><th>Цифра</th>${chosen.map(()=>`<td>?</td>`).join('')}</tr></table></div>`;
+  return {type:'match',kind:'digits',maxlen:4,answer:ans,
+    q:`Определите, какими цифрами обозначены объекты на плане. Запишите последовательность цифр без пробелов, в порядке таблицы:${rows}`,
+    sol:`${chosen.map(o=>`${o.name} → <b>${o.num}</b>`).join('; ')}. Ответ: <b>${ans}</b>.`};
+}
+function gGeom(){
+  const opts=[];
+  opts.push(()=>({unit:'м',answer:lenM(rectGap(R.garage,R.banya)),
+    q:`Найдите расстояние от гаража до бани (между двумя ближайшими точками по прямой), в метрах.`,
+    sol:`Между гаражом и баней ${rectGap(R.garage,R.banya)} клеток. ${rectGap(R.garage,R.banya)}·${CELL_M} = <b>${lenM(rectGap(R.garage,R.banya))}</b> м.`}));
+  opts.push(()=>({unit:'м',answer:lenM(polyPerim(plot.house)),
+    q:`Найдите периметр фундамента жилого дома (Г-образный), в метрах.`,
+    sol:`Сумма сторон дома 4+5+3+1+1+4 = ${polyPerim(plot.house)} клеток. ${polyPerim(plot.house)}·${CELL_M} = <b>${lenM(polyPerim(plot.house))}</b> м.`}));
+  opts.push(()=>({unit:'кв.м',answer:areaM(rectCells(R.garden)-rectCells(R.greenhouse)),
+    q:`Найдите площадь открытого грунта огорода (вне теплицы), в квадратных метрах.`,
+    sol:`Огород ${rectCells(R.garden)} клеток, теплица ${rectCells(R.greenhouse)}. Открытый грунт ${rectCells(R.garden)}−${rectCells(R.greenhouse)}=${rectCells(R.garden)-rectCells(R.greenhouse)} клеток · ${CA} = <b>${areaM(rectCells(R.garden)-rectCells(R.greenhouse))}</b> кв.м.`}));
+  opts.push(()=>{const o=pick(AREA_OBJS);return {unit:'кв.м',answer:areaM(o.cells),
+    q:`Найдите площадь зоны «<b>${o.name}</b>», в квадратных метрах.`,
+    sol:`${o.cells} клеток · ${CA} кв.м = <b>${areaM(o.cells)}</b> кв.м.`};});
+  const r=pick(opts)();
+  return {type:'geom',kind:'num',unit:r.unit,answer:r.answer,q:r.q,sol:r.sol};
+}
+function gTiles(){
+  if(RAND()<0.5){ const n=packs(plot.pathTiles,8);
+    return {type:'tiles',kind:'num',unit:'уп',answer:n,
+      q:`Все дорожки внутри участка выложены плиткой 1×1 м. Всего на дорожки ушло ${plot.pathTiles} плиток. Плитка продаётся упаковками по 8 штук. Сколько упаковок понадобилось?`,
+      sol:`${plot.pathTiles} : 8 = ${(plot.pathTiles/8).toFixed(2)} → округляем вверх → <b>${n}</b> упаковки.`};
+  }
+  const area=areaM(plot.platform.w*plot.platform.h), n=packs(area,3.5);
+  return {type:'tiles',kind:'num',unit:'уп',answer:n,
+    q:`Между гаражом и сараем — площадка ${plot.platform.w}×${plot.platform.h} = ${plot.platform.w*plot.platform.h} клеток, вымощенная плиткой. Тротуарная плитка продаётся упаковками на 3,5 кв.м. Сколько упаковок понадобилось на площадку?`,
+    sol:`Площадь площадки ${plot.platform.w*plot.platform.h}·${CA} = ${area} кв.м. ${area} : 3,5 ≈ ${(area/3.5).toFixed(2)} → вверх → <b>${n}</b> упаковок.`};
+}
+const PCT=[
+  {a:6,  q:'Сколько процентов площади всего участка занимает баня?',  sol:'Баня 9 кл, участок 150 кл. 9 : 150 · 100% = <b>6%</b>.'},
+  {a:4,  q:'Сколько процентов площади всего участка занимает сарай?', sol:'Сарай 6 кл, участок 150 кл. 6 : 150 · 100% = <b>4%</b>.'},
+  {a:20, q:'Сколько процентов площади всего участка занимает огород?',sol:'Огород 30 кл, участок 150 кл. 30 : 150 · 100% = <b>20%</b>.'},
+  {a:25, q:'На сколько процентов площадь сарая меньше площади гаража?',sol:'Гараж 8 кл, сарай 6 кл. (8−6) : 8 · 100% = <b>25%</b>.'},
+  {a:125,q:'На сколько процентов площадь бани больше площади теплицы?',sol:'Баня 9 кл, теплица 4 кл. (9−4) : 4 · 100% = <b>125%</b>.'},
+  {a:50, q:'На сколько процентов площадь бани больше площади сарая?', sol:'Баня 9 кл, сарай 6 кл. (9−6) : 6 · 100% = <b>50%</b>.'},
+  {a:400,q:'На сколько процентов площадь огорода больше площади сарая?',sol:'Огород 30 кл, сарай 6 кл. (30−6) : 6 · 100% = <b>400%</b>.'},
+];
+function gPercent(){const p=pick(PCT);return {type:'percent',kind:'num',unit:'%',answer:p.a,q:p.q,sol:p.sol};}
+function gEcon(){
+  if(RAND()<0.5){
+    const f=plot.finance, invA=f.gas.equip+f.gas.other, invB=f.elec.equip+f.elec.other;
+    const hrA=f.gas.rate*f.gas.price, hrB=f.elec.rate*f.elec.price, ans=(invA-invB)/(hrB-hrA);
+    const tbl=`<div class="mini"><table>
+      <tr><th></th><th>Котёл</th><th>Прочее + монтаж</th><th>Расход</th><th>Стоимость</th></tr>
+      <tr><td>Газ</td><td>24 000 ₽</td><td>14 316 ₽</td><td>1,1 куб.м/ч</td><td>4,4 ₽/куб.м</td></tr>
+      <tr><td>Электро</td><td>19 000 ₽</td><td>11 000 ₽</td><td>4,4 кВт</td><td>5,3 ₽/(кВт·ч)</td></tr></table></div>`;
+    return {type:'econ',kind:'num',unit:'ч',answer:ans,
+      q:`Хозяин выбрал газовое отопление вместо электрического.${tbl}Через сколько часов непрерывной работы экономия от газа компенсирует разницу в стоимости покупки и установки оборудования?`,
+      sol:`Вложения: газ ${invA} ₽, электро ${invB} ₽, разница ${invA-invB} ₽. За час: газ ${hrA} ₽, электро ${hrB} ₽, экономия ${(hrB-hrA).toFixed(2)} ₽/ч. ${invA-invB} : ${(hrB-hrA).toFixed(2)} = <b>${ans}</b> ч.`};
+  }
+  const p=plot.paint;
+  const cost=s=>Math.ceil(Math.ceil(p.area*s.rate)/s.bankKg)*s.bankPrice+s.delivery;
+  const c1=cost(p.stores[0]), c2=cost(p.stores[1]), ans=Math.min(c1,c2);
+  const tbl=`<div class="mini"><table>
+    <tr><th>№</th><th>Расход</th><th>Банка</th><th>Цена банки</th><th>Доставка</th></tr>
+    <tr><td>1</td><td>0,6 кг/кв.м</td><td>5 кг</td><td>2400 ₽</td><td>400 ₽</td></tr>
+    <tr><td>2</td><td>0,4 кг/кв.м</td><td>4 кг</td><td>2300 ₽</td><td>600 ₽</td></tr></table></div>`;
+  return {type:'econ',kind:'num',unit:'руб',answer:ans,
+    q:`Нужно покрасить забор снаружи, площадь забора ${p.area} кв.м. Краску можно купить в одном из двух магазинов.${tbl}Во сколько рублей обойдётся самый дешёвый вариант покупки с доставкой?`,
+    sol:`№1: 0,6·${p.area}=139,2→140 кг, 140:5=28 банок, 2400·28+400 = ${c1} ₽. №2: 0,4·${p.area}=92,8→93 кг, 93:4=23,25→24 банки, 2300·24+600 = ${c2} ₽. Дешевле: <b>${ans}</b> ₽.`};
+}
+const TASK_FNS=[gMatch,gGeom,gTiles,gPercent,gEcon];
+const TASK_LABEL=['Сопоставление','Геометрия','Плитка','Проценты','Экономика'];
+const TYPES=['match','geom','tiles','percent','econ'];
+const MASTERY=3, TOTAL_TYPES=5;
+
+/* ===================== ПРОГРЕСС + КАРТА ===================== */
+const OWN='landPlotsTrainer.v2', MAP='mathExamCourseProgress.v1', TOPIC='practiceLandPlotsTrainer';
+let state={perType:{},streak:0,tasks:[],results:[],idx:0,vcount:1};
+TYPES.forEach(t=>state.perType[t]=0);
+function load(){try{const s=JSON.parse(localStorage.getItem(OWN));if(s){TYPES.forEach(t=>state.perType[t]=(s.perType&&s.perType[t])||0);state.streak=s.streak||0;state.vcount=s.vcount||1;}}catch(e){}}
+const mastered=()=>TYPES.filter(t=>state.perType[t]>=MASTERY).length;
+function save(){
+  try{localStorage.setItem(OWN,JSON.stringify({perType:state.perType,streak:state.streak,vcount:state.vcount}));}catch(e){}
+  if(window.CourseProgress){CourseProgress.write(TOPIC,mastered(),TOTAL_TYPES);}else try{const d=JSON.parse(localStorage.getItem(MAP)||'{}');d[TOPIC]={...(d[TOPIC]||{}),solved:mastered(),total:TOTAL_TYPES};localStorage.setItem(MAP,JSON.stringify(d));}catch(e){}
+}
+
+/* ===================== ОТРИСОВКА ПЛАНА ===================== */
+function drawPlan(){
+  const NS='http://www.w3.org/2000/svg', svg=document.getElementById('plan');
+  while(svg.firstChild) svg.removeChild(svg.firstChild);
+  const add=(t,a,tx)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(tx!=null)e.textContent=tx;svg.appendChild(e);return e;};
+  const C=28, M=14, px=g=>M+g*C, py=g=>M+g*C;
+  const circle=(gx,gy,n)=>{add('circle',{cx:px(gx),cy:py(gy),r:11,fill:'#fff',stroke:'var(--build-line)','stroke-width':1.5});
+    add('text',{x:px(gx),y:py(gy)+5,'text-anchor':'middle','font-family':'Fredoka,sans-serif','font-size':14,'font-weight':600,fill:'#334155'},n);};
+  const tree=(gx,gy)=>{add('rect',{x:px(gx)-1.5,y:py(gy),width:3,height:8,fill:'#92400e'});add('circle',{cx:px(gx),cy:py(gy),r:7,fill:'#16a34a'});};
+  const carrot=(gx,gy)=>{const x=px(gx),y=py(gy);add('polygon',{points:`${x-4},${y-3} ${x+4},${y-3} ${x},${y+7}`,fill:'#f97316'});
+    add('line',{x1:x-3,y1:y-3,x2:x-4,y2:y-8,stroke:'#16a34a','stroke-width':1.5});add('line',{x1:x,y1:y-3,x2:x,y2:y-9,stroke:'#16a34a','stroke-width':1.5});add('line',{x1:x+3,y1:y-3,x2:x+4,y2:y-8,stroke:'#16a34a','stroke-width':1.5});};
+  const tiles=(gx,gy,w,h)=>{for(let i=0;i<w*2;i++)for(let j=0;j<h*2;j++)add('rect',{x:px(gx)+i*C/2+1,y:py(gy)+j*C/2+1,width:C/2-2,height:C/2-2,fill:'#dbe2ea',stroke:'#c2ccd8','stroke-width':.6});};
+
+  // сад-фон
+  add('rect',{x:px(0),y:py(0),width:plot.cols*C,height:plot.rows*C,fill:'#eefaf1'});
+  // сетка
+  for(let x=0;x<=plot.cols;x++) add('line',{x1:px(x),y1:py(0),x2:px(x),y2:py(plot.rows),stroke:'#d9e7dd','stroke-width':1});
+  for(let y=0;y<=plot.rows;y++) add('line',{x1:px(0),y1:py(y),x2:px(plot.cols),y2:py(y),stroke:'#d9e7dd','stroke-width':1});
+
+  // площадка (плитка) между сараем и гаражом
+  tiles(12,2,2,3);
+  // дорожки (плитка) — представление
+  tiles(6,4,3,0.5); tiles(3,5,0.5,1);
+
+  // огород (2)
+  const g=R.garden; add('rect',{x:px(g.x),y:py(g.y),width:g.w*C,height:g.h*C,fill:'#dcfce7','fill-opacity':.7,stroke:'#22c55e','stroke-width':1.5,rx:2});
+  carrot(3.4,2.6); carrot(4.2,3.2); carrot(3.6,3.6);
+  // теплица (3)
+  const gh=R.greenhouse; add('rect',{x:px(gh.x),y:py(gh.y),width:gh.w*C,height:gh.h*C,fill:'#99f6e4','fill-opacity':.8,stroke:'#14b8a6','stroke-width':1.5,rx:2});
+  // постройки
+  [['sarai',R.sarai],['banya',R.banya],['garage',R.garage]].forEach(([k,r])=>{
+    add('rect',{x:px(r.x),y:py(r.y),width:r.w*C,height:r.h*C,fill:'var(--build)','fill-opacity':.85,stroke:'var(--build-line)','stroke-width':1.5,rx:2});});
+  // дом (Г-образный)
+  add('polygon',{points:plot.house.map(([x,y])=>`${px(x)},${py(y)}`).join(' '),fill:'var(--build)','fill-opacity':.85,stroke:'var(--build-line)','stroke-width':1.5});
+  // яблони (5)
+  tree(6.5,7); tree(7.6,6.7); tree(8.4,7.3); tree(5.6,7.4);
+
+  // номера в кружках
+  circle(9.5,3, '1');           // дом
+  circle(3.5,1, '2');           // огород
+  circle(1.5,3, '3');           // теплица
+  circle(2.5,7.5,'4');          // баня
+  circle(7,8.3, '5');           // яблони
+  circle(13,7,  '6');           // гараж
+  circle(13.5,1,'7');           // сарай
+
+  // ворота (правый край)
+  add('line',{x1:px(15),y1:py(2),x2:px(15),y2:py(5),stroke:'#eefaf1','stroke-width':4});
+  add('text',{x:px(15)-6,y:py(3.5)+4,'text-anchor':'end','font-family':'Nunito,sans-serif','font-size':10.5,'font-weight':800,fill:'#3f7d5a'},'ворота');
+
+  // граница участка
+  add('rect',{x:px(0),y:py(0),width:plot.cols*C,height:plot.rows*C,fill:'none',stroke:'#2f4f38','stroke-width':2.5});
+}
+function drawLegend(){
+  const box=document.getElementById('legend'); box.innerHTML='';
+  OBJECTS.slice().sort((a,b)=>a.num-b.num).forEach(o=>{const d=document.createElement('div');d.className='li';
+    d.innerHTML=`<span class="num">${o.num}</span>${o.name}`;box.appendChild(d);});
+}
+
+/* ===================== ВКЛАДКИ (любой порядок) ===================== */
+function renderProgress(){
+  document.getElementById('mastered').textContent=mastered();
+  document.getElementById('streak').textContent=state.streak>=2?('🔥 подряд: '+state.streak):'';
+  const box=document.getElementById('types');box.innerHTML='';
+  TYPES.forEach((t,i)=>{const c=state.perType[t],d=c>=MASTERY;const el=document.createElement('span');
+    el.className='tchip'+(d?' done':'');el.innerHTML=`${d?'✓ ':''}${TASK_LABEL[i]} <span class="cnt">${Math.min(c,MASTERY)}/${MASTERY}</span>`;box.appendChild(el);});
+}
+function newVariant(){RAND=mulberry32((0x85EBCA6B ^ state.vcount)>>>0);try{history.replaceState(null,'','?v='+state.vcount);}catch(e){}var _vn=document.getElementById('vnum');if(_vn)_vn.textContent='вариант '+state.vcount;state.tasks=TASK_FNS.map(f=>f());state.results=state.tasks.map(()=>({answered:false,correct:null,input:''}));state.idx=0;renderTabs();showTask();}
+function renderTabs(){
+  const box=document.getElementById('task-tabs');box.innerHTML='';
+  state.tasks.forEach((t,i)=>{const r=state.results[i];const b=document.createElement('button');
+    b.className='ttab'+(i===state.idx?' active':'')+(r.answered?(r.correct?' ok':' no'):'');
+    b.setAttribute('role','tab');b.setAttribute('aria-selected',i===state.idx?'true':'false');
+    b.innerHTML=`<span class="tn">${i+1}</span><span class="tl">${TASK_LABEL[i]}</span>`+(r.answered?`<span class="tk">${r.correct?'✓':'✗'}</span>`:'');
+    b.addEventListener('click',()=>gotoTask(i));box.appendChild(b);});
+}
+function stashInput(){const inp=document.getElementById('in');if(inp&&!state.results[state.idx].answered)state.results[state.idx].input=inp.value;}
+function gotoTask(i){if(i===state.idx)return;stashInput();state.idx=i;renderTabs();showTask();}
+function nextUnanswered(){for(let k=1;k<=state.tasks.length;k++){const i=(state.idx+k)%state.tasks.length;if(!state.results[i].answered)return i;}return -1;}
+function updateNextBtn(){const nb=document.getElementById('next-btn');const all=state.results.every(r=>r.answered);
+  if(all){nb.textContent='↻ Новые задания';nb.dataset.mode='new';nb.disabled=false;}
+  else{nb.textContent='Следующая нерешённая →';nb.dataset.mode='next';nb.disabled=!state.results[state.idx].answered;}}
+function showTask(){
+  const q=state.tasks[state.idx], r=state.results[state.idx];
+  document.getElementById('task-badge').textContent=`Задача ${state.idx+1} · ${TASK_LABEL[state.idx]}`;
+  document.getElementById('task-q').innerHTML=q.q;
+  const ph=q.kind==='digits'?'цифры':'ответ';
+  const val=(r.input||'').replace(/"/g,'&quot;');
+  document.getElementById('answer-area').innerHTML=`<div class="num-in"><input id="in" type="text" inputmode="numeric" autocomplete="off" ${q.maxlen?`maxlength="${q.maxlen}"`:''} placeholder="${ph}" value="${val}"><span class="unit">${q.kind==='digits'?'цифры':q.unit}</span></div>`;
+  const inp=document.getElementById('in'), fb=document.getElementById('fb');
+  if(r.answered){
+    inp.disabled=true;document.getElementById('check-btn').disabled=true;
+    const ansTxt=q.kind==='digits'?q.answer:(q.answer+' '+q.unit);
+    fb.className='fb show '+(r.correct?'good':'bad');
+    fb.innerHTML=r.correct?`<div class="title">✓ Верно!</div><div class="sol">${q.sol}</div>`
+                          :`<div class="title">Не совсем</div>Правильный ответ: <b>${ansTxt}</b>.<div class="sol">${q.sol}</div>`;
+  }else{
+    inp.disabled=false;document.getElementById('check-btn').disabled=false;fb.className='fb';fb.innerHTML='';
+    inp.focus();inp.addEventListener('keydown',e=>{if(e.key==='Enter')doCheck();});
+  }
+  updateNextBtn();
+}
+function doCheck(){
+  const q=state.tasks[state.idx], r=state.results[state.idx];
+  if(r.answered)return;
+  const raw=(document.getElementById('in').value||'').trim();if(raw==='')return;
+  let ok;
+  if(q.kind==='digits') ok=raw.replace(/\s/g,'')===q.answer;
+  else{const v=parseFloat(raw.replace(',','.').replace(/[^\d.\-]/g,''));ok=isFinite(v)&&near(v,q.answer);}
+  r.answered=true;r.correct=ok;r.input=raw;
+  if(ok){state.perType[q.type]=Math.min(MASTERY,state.perType[q.type]+1);state.streak++;}else state.streak=0;
+  save();renderProgress();renderTabs();
+  document.getElementById('in').disabled=true;
+  const ansTxt=q.kind==='digits'?q.answer:(q.answer+' '+q.unit);
+  const fb=document.getElementById('fb');fb.className='fb show '+(ok?'good':'bad');
+  fb.innerHTML=ok?`<div class="title">✓ Верно!</div><div class="sol">${q.sol}</div>`
+                 :`<div class="title">Не совсем</div>Правильный ответ: <b>${ansTxt}</b>.<div class="sol">${q.sol}</div>`;
+  document.getElementById('check-btn').disabled=true;updateNextBtn();
+  const nb=document.getElementById('next-btn');if(!nb.disabled)nb.focus();
+}
+function nextStep(){const nb=document.getElementById('next-btn');if(nb.dataset.mode==='new'){state.vcount++;save();newVariant();}else{const i=nextUnanswered();if(i>=0)gotoTask(i);}}
+
+document.getElementById('task-tabs').addEventListener('keydown',function(e){if(e.key!=='ArrowRight'&&e.key!=='ArrowLeft')return;e.preventDefault();var d=e.key==='ArrowRight'?1:-1;gotoTask((state.idx+d+state.tasks.length)%state.tasks.length);var t=document.querySelectorAll('#task-tabs .ttab')[state.idx];if(t)t.focus();});
+document.getElementById('check-btn').addEventListener('click',doCheck);
+document.getElementById('next-btn').addEventListener('click',nextStep);
+document.getElementById('newvar-btn').addEventListener('click',()=>{state.vcount++;save();newVariant();});
+document.getElementById('reset-btn').addEventListener('click',()=>{
+  if(confirm('Сбросить прогресс по участку?')){
+    TYPES.forEach(t=>state.perType[t]=0);state.streak=0;
+    try{localStorage.removeItem(OWN);if(window.CourseProgress)CourseProgress.clear(TOPIC);else{const d=JSON.parse(localStorage.getItem(MAP)||'{}');delete d[TOPIC];localStorage.setItem(MAP,JSON.stringify(d));}}catch(e){}
+    renderProgress();newVariant();
+  }
+});
+drawPlan();drawLegend();load();try{var _vq=parseInt(new URLSearchParams(location.search).get('v'),10);if(_vq>0)state.vcount=_vq;}catch(e){}
+renderProgress();save();newVariant();
+})();
+</script>
+</body>
+</html>

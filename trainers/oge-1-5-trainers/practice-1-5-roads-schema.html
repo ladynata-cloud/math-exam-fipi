@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Тренажёр ОГЭ · Задания 1–5 «Дороги» (Антоновка → Богданово)</title>
+<style>
+  :root{
+    --paper:#eaeef2; --card:#ffffff; --line:#d6dde4;
+    --ink:#22303f; --ink-soft:#54637a; --ink-faint:#8b97a8;
+    --navy:#1f3a5f;
+    --amber:#c17318; --amber-lite:#e2ac63; --amber-bg:#fbf1e2;
+    --teal:#12766b; --teal-bg:#e4f1ef;
+    --wrong:#b23a3a; --wrong-bg:#f7e7e6;
+    --road:#33415c; --dirt:#8a97a9;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --serif:Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:var(--sans); color:var(--ink); background:var(--paper);
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:26px 26px; background-position:-1px -1px;
+    line-height:1.5; -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:20px 16px 64px}
+  header.top{margin:6px 2px 18px}
+  .kicker{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--amber); margin:0 0 6px}
+  h1{font-family:var(--serif); font-weight:600; font-size:clamp(22px,3.4vw,30px); line-height:1.12; margin:0; color:var(--navy)}
+  .sub{color:var(--ink-soft); font-size:14px; margin:8px 0 0; max-width:64ch}
+
+  .tabs{display:flex; flex-wrap:wrap; gap:6px; margin:16px 0 0}
+  .tab{
+    appearance:none; border:1px solid var(--line); background:var(--card); color:var(--ink-soft);
+    font-family:var(--sans); font-size:13.5px; padding:7px 13px; border-radius:999px; cursor:pointer;
+    transition:.12s;
+  }
+  .tab:hover{border-color:var(--amber-lite); color:var(--ink)}
+  .tab[aria-selected="true"]{background:var(--navy); border-color:var(--navy); color:#fff}
+  .tab:focus-visible{outline:2px solid var(--amber); outline-offset:2px}
+
+  .bar{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:14px}
+  .grouplbl{font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); margin-right:2px}
+  .vtab{
+    appearance:none; border:1px solid var(--line); background:var(--card); color:var(--ink-soft);
+    font-family:var(--mono); font-size:13px; padding:6px 11px; border-radius:8px; cursor:pointer; transition:.12s;
+  }
+  .vtab:hover{border-color:var(--amber-lite); color:var(--ink)}
+  .vtab[aria-selected="true"]{background:var(--amber); border-color:var(--amber); color:#fff}
+  .vtab:focus-visible{outline:2px solid var(--navy); outline-offset:2px}
+  .sep{width:1px; height:22px; background:var(--line); margin:0 2px}
+
+  .grid{display:grid; grid-template-columns:minmax(0,440px) minmax(0,1fr); gap:18px; margin-top:18px; align-items:start}
+  @media(max-width:840px){ .grid{grid-template-columns:1fr} }
+  .panel{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px 16px 18px}
+  .panel h2{font-family:var(--serif); font-weight:600; font-size:16px; color:var(--navy); margin:0 0 10px}
+
+  /* map */
+  .mapwrap{position:sticky; top:14px}
+  svg.map{width:100%; height:auto; display:block; background:#fcfdfe; border-radius:8px}
+  .legend{display:flex; flex-wrap:wrap; gap:12px 16px; margin-top:12px; font-size:12px; color:var(--ink-soft)}
+  .legend i{display:inline-block; width:26px; vertical-align:middle; margin-right:6px}
+  .legend .sw-road{border-top:3px solid var(--road)}
+  .legend .sw-dirt{border-top:0; height:0; border-top:2px dashed var(--dirt)}
+  .legend .sw-amber{border-top:3px solid var(--amber)}
+  .legend .sw-teal{border-top:3px solid var(--teal)}
+
+  /* reference strip */
+  details.ref{margin-top:12px; border:1px solid var(--line); border-radius:10px; background:#fbfcfd}
+  details.ref>summary{cursor:pointer; padding:9px 12px; font-size:13px; color:var(--navy); font-weight:600; list-style:none}
+  details.ref>summary::-webkit-details-marker{display:none}
+  details.ref>summary::before{content:"▸ "; color:var(--amber)}
+  details.ref[open]>summary::before{content:"▾ "}
+  .refbody{padding:2px 12px 12px}
+  .numline{font-family:var(--mono); font-size:12.5px; color:var(--ink); margin:6px 0; overflow-x:auto; white-space:nowrap}
+  .numline b{color:var(--navy)}
+  .numline .z{color:var(--amber)}
+  .refnote{font-size:12px; color:var(--ink-soft); margin:8px 0 0}
+
+  .maptools{display:flex; align-items:center; flex-wrap:wrap; gap:8px 12px; margin-top:12px}
+  .revealbtn{appearance:none; cursor:pointer; font-family:var(--sans); font-size:12.5px; font-weight:600;
+    color:var(--navy); background:#fff; border:1px solid var(--line); border-radius:8px; padding:6px 12px; transition:.12s}
+  .revealbtn:hover{border-color:var(--amber-lite)}
+  .revealbtn[aria-pressed="true"]{background:var(--amber-bg); border-color:#ecd7b4; color:var(--amber)}
+  .revealbtn:focus-visible{outline:2px solid var(--navy); outline-offset:2px}
+  .maptools .hint{font-size:11.5px; color:var(--ink-faint)}
+
+  details.desc{margin:0 0 4px; border:1px solid var(--line); border-radius:10px; background:#fbfcfd}
+  details.desc>summary{cursor:pointer; padding:9px 12px; font-size:13px; color:var(--navy); font-weight:600; list-style:none}
+  details.desc>summary::-webkit-details-marker{display:none}
+  details.desc>summary::before{content:"▸ "; color:var(--amber)}
+  details.desc[open]>summary::before{content:"▾ "}
+  .descbody{padding:0 13px 11px; font-size:13.5px; color:var(--ink)}
+  .descbody p{margin:7px 0}
+  .descbody b{color:var(--navy)}
+
+  .palette-lbl{font-family:var(--mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin:16px 0 8px}
+  .palette{display:flex; flex-wrap:wrap; gap:8px; min-height:38px; padding:8px; border:1px dashed var(--line); border-radius:10px; background:#fbfcfd}
+  .chip{appearance:none; cursor:pointer; font-family:var(--serif); font-size:14px; font-weight:600; color:var(--navy);
+    background:#fff; border:1.5px solid var(--amber-lite); border-radius:8px; padding:6px 13px; transition:.12s}
+  .chip:hover{background:var(--amber-bg)}
+  .chip.sel{background:var(--amber); border-color:var(--amber); color:#fff; box-shadow:0 2px 8px rgba(193,115,24,.28)}
+  .chip:focus-visible{outline:2px solid var(--navy); outline-offset:2px}
+  .palette .hint{font-size:12.5px; color:var(--ink-faint); align-self:center}
+
+  /* labelling drag layer */
+  .board-wrap{position:relative}
+  .board-svg svg{display:block; width:100%; height:auto}
+  .board-overlay{position:absolute; inset:0; pointer-events:none}
+  .cdz{position:absolute; width:40px; height:40px; transform:translate(-50%,-50%); border-radius:50%; pointer-events:auto}
+  .cdz.over{outline:3px solid var(--amber-lite); outline-offset:0; background:rgba(226,172,99,.20)}
+  .lbl{position:absolute; transform:translate(-50%,-50%); pointer-events:auto; white-space:nowrap;
+    font-family:var(--serif); font-weight:600; font-size:12.5px; line-height:1;
+    padding:5px 9px; border-radius:8px; border:1.5px solid var(--line); background:#fff;
+    box-shadow:0 1px 5px rgba(31,58,95,.14); user-select:none}
+  .lbl.given{background:var(--navy); border-color:var(--navy); color:#fff}
+  .lbl.empty{border-style:dashed; border-color:var(--amber); color:var(--amber); min-width:30px; text-align:center; cursor:copy}
+  .lbl.placed{border-color:var(--amber); color:var(--amber); background:var(--amber-bg); cursor:grab}
+  .lbl.ok{border-color:var(--teal); color:var(--teal); background:var(--teal-bg)}
+  .lbl.bad{border-color:var(--wrong); color:var(--wrong); background:var(--wrong-bg); cursor:grab}
+  .lbl.over{outline:3px solid var(--amber-lite); outline-offset:2px}
+  .lbl .x{margin-left:7px; font-weight:700; opacity:.55; cursor:pointer}
+  .lbl .x:hover{opacity:1}
+  .lbl:active{cursor:grabbing}
+
+  /* draggable village names inside the условие */
+  .cond{border:1px solid var(--line); border-radius:10px; background:#fbfcfd; padding:10px 13px; margin-bottom:4px; font-size:13.5px; color:var(--ink)}
+  .cond p{margin:7px 0}
+  .cond b{color:var(--navy)}
+  .dragname{border-bottom:2px dashed var(--amber); color:var(--navy); font-weight:600; cursor:grab; padding:0 1px; border-radius:3px}
+  .dragname:hover{background:var(--amber-bg)}
+  .dragname:active{cursor:grabbing}
+  .dragname.used{border-bottom-color:transparent; color:var(--ink-faint); text-decoration:line-through; opacity:.6; font-weight:400; cursor:default}
+
+  /* problem */
+  .qhead{display:flex; align-items:baseline; gap:10px; margin-bottom:4px}
+  .qnum{font-family:var(--mono); font-size:12px; color:#fff; background:var(--navy); border-radius:6px; padding:2px 8px}
+  .qtag{font-family:var(--mono); font-size:11px; color:var(--ink-faint)}
+  .qtext{font-size:15px; margin:8px 0 12px}
+  .qtext b{color:var(--navy)}
+
+  table.mini{border-collapse:collapse; margin:6px 0 4px; font-size:13.5px}
+  table.mini td,table.mini th{border:1px solid var(--line); padding:6px 12px; text-align:center}
+  table.mini th{background:#f3f6f9; font-weight:600; color:var(--navy); font-family:var(--sans)}
+  table.mini td.cell{font-family:var(--mono); color:var(--ink-faint); min-width:44px}
+
+  .answer-row{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:14px 0 2px}
+  input.ans{
+    font-family:var(--mono); font-size:16px; width:150px; padding:9px 11px;
+    border:1.5px solid var(--line); border-radius:9px; background:#fff; color:var(--ink);
+  }
+  input.ans:focus{outline:none; border-color:var(--amber)}
+  .unit{font-family:var(--mono); font-size:13px; color:var(--ink-soft)}
+  button.act{
+    appearance:none; cursor:pointer; font-family:var(--sans); font-size:14px; font-weight:600;
+    border-radius:9px; padding:9px 16px; border:1.5px solid var(--navy); background:var(--navy); color:#fff; transition:.12s;
+  }
+  button.act:hover{background:#183055}
+  button.ghost{background:#fff; color:var(--navy)}
+  button.ghost:hover{background:#eef3f8}
+  button.act:focus-visible,button.ghost:focus-visible{outline:2px solid var(--amber); outline-offset:2px}
+
+  .feedback{margin:12px 0 0; font-size:14px; padding:10px 12px; border-radius:9px; display:none}
+  .feedback.show{display:block}
+  .feedback.ok{background:var(--teal-bg); color:var(--teal); border:1px solid #bfe0da}
+  .feedback.no{background:var(--wrong-bg); color:var(--wrong); border:1px solid #eccac8}
+
+  .solution{margin-top:14px; border-top:1px dashed var(--line); padding-top:12px; font-size:14px}
+  .solution.hidden{display:none}
+  .solution h3{font-size:12px; font-family:var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--amber); margin:0 0 8px}
+  .solution p{margin:7px 0}
+  .solution .calc{font-family:var(--mono); font-size:13.5px; background:#f7f9fb; border:1px solid var(--line); border-radius:8px; padding:8px 11px; margin:8px 0; overflow-x:auto}
+  .solution b{color:var(--navy)}
+  .box{display:inline-block; font-family:var(--mono); font-weight:700; color:var(--amber); background:var(--amber-bg); border:1px solid #ecd7b4; border-radius:7px; padding:2px 9px}
+  table.legs{border-collapse:collapse; width:100%; font-size:13px; margin:8px 0}
+  table.legs th,table.legs td{border:1px solid var(--line); padding:5px 8px; text-align:left}
+  table.legs th{background:#f3f6f9; color:var(--navy); font-weight:600}
+  table.legs td.n{font-family:var(--mono); text-align:right}
+
+  .nav{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:16px}
+  .nav .mid{font-family:var(--mono); font-size:12px; color:var(--ink-faint)}
+
+  .progress{display:flex; align-items:center; gap:12px; margin-top:16px; font-size:13px; color:var(--ink-soft)}
+  .pbar{flex:1; height:7px; background:#e4e9ee; border-radius:99px; overflow:hidden; min-width:80px}
+  .pbar>i{display:block; height:100%; width:0; background:var(--teal); transition:width .3s}
+  .linkbtn{appearance:none; border:none; background:none; color:var(--ink-faint); font-size:12px; cursor:pointer; text-decoration:underline; font-family:var(--sans)}
+  .linkbtn:hover{color:var(--wrong)}
+
+  /* teacher */
+  .keytable{overflow-x:auto}
+  table.key{border-collapse:collapse; width:100%; font-size:13.5px; min-width:520px}
+  table.key th,table.key td{border:1px solid var(--line); padding:8px 10px; text-align:center}
+  table.key thead th{background:var(--navy); color:#fff; font-weight:600; font-family:var(--sans)}
+  table.key td.v{font-family:var(--mono); color:var(--navy); font-weight:700; background:#f3f6f9}
+  table.key td.a{font-family:var(--mono)}
+  table.key td.a.d{color:var(--amber); font-weight:600}
+  .keynote{font-size:12.5px; color:var(--ink-soft); margin:10px 2px 0}
+  .twocol{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+  @media(max-width:680px){ .twocol{grid-template-columns:1fr} }
+  h2.block{font-family:var(--serif); font-weight:600; color:var(--navy); font-size:17px; margin:2px 2px 10px}
+
+  @media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <p class="kicker">ОГЭ · математика · задания 1–5</p>
+    <h1>План сельской местности: Антоновка → Богданово</h1>
+    <p class="sub">Тренажёр по задаче о дорогах: определение деревень по плану, расстояния по шоссе и по прямой, время в пути и расход бензина. Вся геометрия построена из одного набора координат, поэтому ответы вычисляются, а не вписаны вручную.</p>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="Режим">
+    <button class="tab" role="tab" data-mode="label"    aria-selected="false">Разметка плана</button>
+    <button class="tab" role="tab" data-mode="learn"    aria-selected="true">Обучение</button>
+    <button class="tab" role="tab" data-mode="practice" aria-selected="false">Тренировка</button>
+    <button class="tab" role="tab" data-mode="teacher"  aria-selected="false">Учителю · ключ</button>
+  </div>
+
+  <div class="bar" id="varbar"><!-- variant tabs injected --></div>
+
+  <div id="app"><!-- content injected --></div>
+</div>
+
+<script>
+"use strict";
+// ============================================================
+//  GEOMETRY — single source of truth
+//  corner Ванютино at origin; +x toward Антоновка; +y downward.
+// ============================================================
+const SPEED = { highway:50, dirt:30 };
+const T = {
+  antonovka:{ id:1, x:20, y:0,  name:'Антоновка' },
+  egorka:   { id:2, x:12, y:0,  name:'Егорка' },
+  dolomino: { id:3, x:8,  y:0,  name:'Доломино' },
+  vanyutino:{ id:4, x:0,  y:0,  name:'Ванютино' },
+  zhilino:  { id:5, x:0,  y:9,  name:'Жилино' },
+  goryunovo:{ id:6, x:0,  y:15, name:'Горюново' },
+  bogdanovo:{ id:7, x:0,  y:21, name:'Богданово' },
+};
+const straight = (a,b) => Math.hypot(T[a].x-T[b].x, T[a].y-T[b].y);
+const arc = t => T[t].x + T[t].y;                       // km from corner along the L
+const isTop  = t => T[t].y===0;                          // on horizontal arm
+const isVert = t => T[t].x===0;                          // on vertical arm
+const sameArm = (a,b) => (isTop(a)&&isTop(b)) || (isVert(a)&&isVert(b));
+const highway = (a,b) => sameArm(a,b) ? Math.abs(arc(a)-arc(b)) : arc(a)+arc(b);
+
+const ROUTES = {
+  'napryamik':              { phrase:'напрямик (мимо реки)',                   legs:[['antonovka','bogdanovo','dirt']] },
+  'via-vanyutino':          { phrase:'через Ванютино',                          legs:[['antonovka','vanyutino','highway'],['vanyutino','bogdanovo','highway']] },
+  'via-goryunovo-pond':     { phrase:'через Горюново мимо пруда',               legs:[['antonovka','goryunovo','dirt'],['goryunovo','bogdanovo','highway']] },
+  'via-dolomino-goryunovo': { phrase:'через Доломино и Горюново мимо конюшни',  legs:[['antonovka','dolomino','highway'],['dolomino','goryunovo','dirt'],['goryunovo','bogdanovo','highway']] },
+  'via-egorka-zhilino':     { phrase:'через Егорку и Жилино мимо конюшни',      legs:[['antonovka','egorka','highway'],['egorka','zhilino','dirt'],['zhilino','bogdanovo','highway']] },
+};
+const legKm = ([a,b,type]) => type==='highway'?highway(a,b):straight(a,b);
+const routeHighwayKm = r => ROUTES[r].legs.filter(l=>l[2]==='highway').reduce((s,l)=>s+legKm(l),0);
+const routeDirtKm    = r => ROUTES[r].legs.filter(l=>l[2]==='dirt').reduce((s,l)=>s+legKm(l),0);
+const routeMinutes   = r => ROUTES[r].legs.reduce((s,l)=>s+legKm(l)/(l[2]==='highway'?SPEED.highway:SPEED.dirt)*60,0);
+const VIA_VAN = routeHighwayKm('via-vanyutino'); // 41 km, all highway
+
+// ============================================================
+//  VARIANTS (from the source problem set)
+// ============================================================
+const VARIANTS = [
+  { id:'1.1', group:'main', q1:['vanyutino','goryunovo','egorka','zhilino'], q2:['antonovka','egorka'],  q3:['egorka','zhilino'],   q4:'via-goryunovo-pond',     q5:{mode:'findPath',given:6.8,route:'via-dolomino-goryunovo'} },
+  { id:'1.2', group:'main', q1:['egorka','vanyutino','dolomino','zhilino'], q2:['dolomino','vanyutino'], q3:['dolomino','goryunovo'], q4:'via-dolomino-goryunovo', q5:{mode:'findPath',given:5.8,route:'napryamik'} },
+  { id:'1.3', group:'main', q1:['bogdanovo','goryunovo','dolomino','egorka'], q2:['goryunovo','zhilino'], q3:['antonovka','goryunovo'], q4:'via-egorka-zhilino',   q5:{mode:'findPath',given:6.5,route:'via-goryunovo-pond'} },
+  { id:'1.4', group:'main', q1:['bogdanovo','vanyutino','egorka','zhilino'], q2:['vanyutino','bogdanovo'], q3:['antonovka','bogdanovo'], q4:'napryamik',          q5:{mode:'findPath',given:5.5,route:'via-egorka-zhilino'} },
+  { id:'5.1', group:'extra', q5:{mode:'findRoad',given:9.2,route:'via-dolomino-goryunovo'} },
+  { id:'5.2', group:'extra', q5:{mode:'findRoad',given:8.2,route:'napryamik'} },
+  { id:'5.3', group:'extra', q5:{mode:'findRoad',given:9.1,route:'via-goryunovo-pond'} },
+  { id:'5.4', group:'extra', q5:{mode:'findRoad',given:7.7,route:'via-egorka-zhilino'} },
+];
+
+function answer(v, task){
+  if(task===1) return v.q1.map(k=>T[k].id).join('');
+  if(task===2) return highway(v.q2[0], v.q2[1]);
+  if(task===3) return straight(v.q3[0], v.q3[1]);
+  if(task===4) return routeMinutes(v.q4);
+  if(task===5){
+    const H=routeHighwayKm(v.q5.route), D=routeDirtKm(v.q5.route);
+    return v.q5.mode==='findPath' ? (VIA_VAN-H)*v.q5.given/D : D*v.q5.given/(VIA_VAN-H);
+  }
+}
+const UNIT = {2:'км',3:'км',4:'мин',5:'л'};
+
+// number formatting: Russian comma, tidy floats
+function ru(x){
+  const r = Math.round((x + (x>=0?1e-7:-1e-7))*1000)/1000;
+  const s = Math.abs(r-Math.round(r))<1e-9 ? String(Math.round(r)) : String(r);
+  return s.replace('.',',');
+}
+const nm = k => T[k].name;
+
+// ============================================================
+//  SCREENS (flat order for prev/next)
+// ============================================================
+const SCREENS = [];
+VARIANTS.forEach((v,vi)=>{
+  if(v.group==='main'){ for(let t=1;t<=5;t++) SCREENS.push({vi,task:t}); }
+  else SCREENS.push({vi,task:5});
+});
+const screenIndex = (vi,task) => SCREENS.findIndex(s=>s.vi===vi && s.task===task);
+
+// ============================================================
+//  MAP
+// ============================================================
+const S=14, OX=104, OY=42;
+const PX = k => ({ x: OX + T[k].x*S, y: OY + T[k].y*S });
+const COL = { amber:'var(--amber)', amberLite:'var(--amber-lite)', teal:'var(--teal)' };
+
+function accentsFor(v, task){
+  const A=[];
+  if(task===2){ A.push({a:v.q2[0],b:v.q2[1],kind:'road',c:'amber'}); }
+  else if(task===3){
+    const [p,q]=v.q3; const top=isTop(p)?p:q, vert=isTop(p)?q:p;
+    A.push({a:p,b:q,kind:'dirt',c:'amber'});
+    A.push({a:top,b:'vanyutino',kind:'leg',c:'amberLite'});
+    A.push({a:'vanyutino',b:vert,kind:'leg',c:'amberLite'});
+  }
+  else if(task===4){
+    ROUTES[v.q4].legs.forEach(l=>A.push({a:l[0],b:l[1],kind:l[2]==='highway'?'road':'dirt',c:'amber'}));
+  }
+  else if(task===5){
+    ROUTES['via-vanyutino'].legs.forEach(l=>A.push({a:l[0],b:l[1],kind:'road',c:'teal'}));
+    ROUTES[v.q5.route].legs.forEach(l=>A.push({a:l[0],b:l[1],kind:l[2]==='highway'?'road':'dirt',c:'amber'}));
+  }
+  return A;
+}
+function hotNodes(v, task){
+  if(task===1) return new Set(v.q1);
+  const s=new Set(); accentsFor(v,task).forEach(a=>{ s.add(a.a); s.add(a.b); }); return s;
+}
+
+function line(a,b,attrs){
+  const p=PX(a), q=PX(b);
+  return `<line x1="${p.x}" y1="${p.y}" x2="${q.x}" y2="${q.y}" ${attrs}/>`;
+}
+function iconLabel(x,y,txt){
+  return `<text x="${x}" y="${y}" class="mi" text-anchor="middle">${txt}</text>`;
+}
+function renderMap(v, task){
+  const acc = accentsFor(v,task);
+  const hot = hotNodes(v,task);
+  const dashed = [['antonovka','bogdanovo'],['antonovka','goryunovo'],['dolomino','goryunovo'],['egorka','zhilino']];
+  let s = `<svg class="map" viewBox="0 0 500 372" role="img" aria-label="План местности с деревнями и дорогами">`;
+  s += `<style>
+    .road{stroke:var(--road);stroke-width:4;stroke-linecap:round}
+    .dirt{stroke:var(--dirt);stroke-width:2;stroke-dasharray:2 5;stroke-linecap:round}
+    .acc-road{stroke-width:5;stroke-linecap:round}
+    .acc-dirt{stroke-width:3;stroke-dasharray:2 5;stroke-linecap:round}
+    .acc-leg{stroke-width:2.5;stroke-dasharray:6 4;opacity:.9}
+    .mi{font:italic 10px var(--sans);fill:var(--ink-faint);paint-order:stroke;stroke:#fcfdfe;stroke-width:3px}
+    .nm{font:600 12px var(--serif);fill:var(--navy)}
+    .idn{font:700 12px var(--mono);fill:var(--ink)}
+    .idn.hot{fill:#fff}
+  </style>`;
+
+  // base highways (the L)
+  s += line('vanyutino','antonovka','class="road"');
+  s += line('vanyutino','bogdanovo','class="road"');
+  // right-angle mark at corner
+  const c=PX('vanyutino');
+  s += `<path d="M ${c.x+11} ${c.y} L ${c.x+11} ${c.y+11} L ${c.x} ${c.y+11}" fill="none" stroke="var(--road)" stroke-width="1.4"/>`;
+  // base dirt roads
+  dashed.forEach(([a,b])=> s += line(a,b,'class="dirt"'));
+
+  // terrain labels
+  const mid=(a,b,dx,dy)=>{const p=PX(a),q=PX(b);return {x:(p.x+q.x)/2+(dx||0),y:(p.y+q.y)/2+(dy||0)};};
+  let m;
+  m=mid('antonovka','bogdanovo',26,4);  s+=iconLabel(m.x,m.y,'река');
+  m=mid('antonovka','goryunovo',24,-6); s+=iconLabel(m.x,m.y,'пруд');
+  m=mid('dolomino','goryunovo',-6,-4);  s+=iconLabel(m.x,m.y,'конюшня');
+  s+=iconLabel(PX('antonovka').x, PX('antonovka').y-30,'мост');
+
+  // accents
+  acc.forEach(a=>{
+    const col=COL[a.c];
+    if(a.kind==='road') s+=line(a.a,a.b,`class="acc-road" stroke="${col}"`);
+    else if(a.kind==='dirt') s+=line(a.a,a.b,`class="acc-dirt" stroke="${col}"`);
+    else s+=line(a.a,a.b,`class="acc-leg" stroke="${col}"`);
+  });
+
+  // nodes
+  Object.keys(T).forEach(k=>{
+    const p=PX(k); const on=hot.has(k);
+    const fill = on ? 'var(--amber)' : '#fff';
+    const stroke = on ? 'var(--amber)' : 'var(--road)';
+    s += `<circle cx="${p.x}" cy="${p.y}" r="11" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+    s += `<text x="${p.x}" y="${p.y+4}" text-anchor="middle" class="idn ${on?'hot':''}">${T[k].id}</text>`;
+    // village names only when revealed
+    if(showNames){
+      if(k==='dolomino'){        // crowded pair — lift higher & nudge left
+        s += `<text x="${p.x-8}" y="${p.y-31}" text-anchor="middle" class="nm">${T[k].name}</text>`;
+      } else if(k==='egorka'){    // crowded pair — sit lower & nudge right
+        s += `<text x="${p.x+8}" y="${p.y-15}" text-anchor="middle" class="nm">${T[k].name}</text>`;
+      } else if(isTop(k) && k!=='vanyutino'){
+        s += `<text x="${p.x}" y="${p.y-16}" text-anchor="middle" class="nm">${T[k].name}</text>`;
+      } else if(k==='vanyutino'){
+        s += `<text x="${p.x-15}" y="${p.y-8}" text-anchor="end" class="nm">${T[k].name}</text>`;
+      } else {
+        s += `<text x="${p.x-16}" y="${p.y+4}" text-anchor="end" class="nm">${T[k].name}</text>`;
+      }
+    }
+  });
+
+  s += `</svg>`;
+  return s;
+}
+function legendHTML(){
+  return `<div class="legend">
+    <span><i class="sw-road"></i>шоссе (50 км/ч)</span>
+    <span><i class="sw-dirt"></i>просёлок (30 км/ч)</span>
+    <span><i class="sw-amber"></i>спрашивается сейчас</span>
+    <span><i class="sw-teal"></i>путь через Ванютино</span>
+  </div>`;
+}
+function refHTML(){
+  return `<details class="ref"><summary>Как устроен план (километраж от угла Ванютино)</summary>
+    <div class="refbody">
+      <div class="numline">Верхнее шоссе:&nbsp; <span class="z">Ванютино&nbsp;0</span> — <b>Доломино&nbsp;8</b> — <b>Егорка&nbsp;12</b> — <b>Антоновка&nbsp;20</b></div>
+      <div class="numline">Правое шоссе:&nbsp;&nbsp; <span class="z">Ванютино&nbsp;0</span> — <b>Жилино&nbsp;9</b> — <b>Горюново&nbsp;15</b> — <b>Богданово&nbsp;21</b></div>
+      <p class="refnote">Прямой угол в Ванютино. Любая прямая («просёлочная») дорога — гипотенуза треугольника с катетами из этих двух шкал: √(верх² + право²). Например, Антоновка → Богданово = √(20² + 21²) = 29 км.</p>
+      <p class="refnote"><b>Ловушка варианта:</b> 12 + 4 + 12 = 28 не равно расстоянию Антоновка → Ванютино, потому что Егорка стоит между Антоновкой и Доломино. Верное расстояние — 20 км.</p>
+    </div></details>`;
+}
+// Condition of the problem (exam text). Gives distances by name, NOT the name→number map —
+// so it is the *input* to задание 1, not a spoiler. Open by default on задание 1.
+function descHTML(task){
+  const open = task===1 ? ' open' : '';
+  return `<details class="desc"${open}><summary>Описание местности (условие)</summary>
+    <div class="descbody">
+      <p>Семь деревень обозначены на плане цифрами 1–7 в некотором порядке; <b>Антоновка — цифра 1</b>. От Антоновки идёт шоссе до Ванютино и там под прямым углом поворачивает к Богданово. Между Антоновкой и Ванютино на шоссе стоят Доломино и Егорка, между Ванютино и Богданово — Жилино и Горюново.</p>
+      <p><b>По шоссе:</b> Антоновка–Доломино 12 км, Доломино–Егорка 4 км, Егорка–Ванютино 12 км; Ванютино–Жилино 9 км, Жилино–Богданово 12 км, Ванютино–Горюново 15 км.</p>
+      <p><b>Просёлочные дороги:</b> Антоновка–Богданово напрямик (мимо реки), Антоновка–Горюново (мимо пруда), Доломино–Горюново и Егорка–Жилино (мимо конюшни).</p>
+      <p class="refnote">Номера на плане и расстояния из описания вместе позволяют определить, какая цифра какой деревне соответствует (задание 1).</p>
+    </div></details>`;
+}
+
+// ============================================================
+//  LABELLING BOARD (interactive задание-1)
+//  Only Антоновка (1) is given; the student drags the other six.
+//  Drag layer is HTML (over the SVG) so drag-and-drop is reliable,
+//  and village names in the условие are drag sources too.
+// ============================================================
+const NODE_KEY = {1:'antonovka',2:'egorka',3:'dolomino',4:'vanyutino',5:'zhilino',6:'goryunovo',7:'bogdanovo'};
+const GIVEN_NODES = [1];                    // only the start is marked
+const PLACE_NODES = [2,3,4,5,6,7];          // student places the rest
+// board viewBox: 0 -60 500 438  →  left% = x/500*100 , top% = (y+60)/438*100
+const VB = {minX:0, minY:-60, w:500, h:438};
+// label-anchor centres (viewBox coords); top pair 2/3 staggered to avoid overlap
+const LC = {
+  1:{x:384,y:12}, 2:{x:286,y:6}, 3:{x:198,y:-28}, 4:{x:104,y:8},
+  5:{x:46,y:168}, 6:{x:46,y:252}, 7:{x:46,y:336}
+};
+const pctL = x => (x-VB.minX)/VB.w*100;
+const pctT = y => (y-VB.minY)/VB.h*100;
+function nodeState(node){
+  if(GIVEN_NODES.includes(node)) return 'given';
+  if(placed[node]!=null){ const r=labelResults[node]; return r==='ok'?'ok':r==='bad'?'bad':'placed'; }
+  return 'empty';
+}
+// SVG: roads, dirt, landmarks, connectors, numbered circles (tinted). No names — those live in the HTML layer.
+function renderLabelBoard(){
+  const dashed=[['antonovka','bogdanovo'],['antonovka','goryunovo'],['dolomino','goryunovo'],['egorka','zhilino']];
+  let s=`<svg class="map" viewBox="${VB.minX} ${VB.minY} ${VB.w} ${VB.h}" role="img" aria-label="План для разметки">`;
+  s+=`<style>
+    .road{stroke:var(--road);stroke-width:4;stroke-linecap:round}
+    .dirt{stroke:var(--dirt);stroke-width:2;stroke-dasharray:2 5;stroke-linecap:round}
+    .conn{stroke:var(--ink-faint);stroke-width:1;stroke-dasharray:1 3;opacity:.7}
+    .mi{font:italic 10px var(--sans);fill:var(--ink-faint);paint-order:stroke;stroke:#fcfdfe;stroke-width:3px}
+    .idn2{font:700 12px var(--mono)}
+  </style>`;
+  s+=line('vanyutino','antonovka','class="road"');
+  s+=line('vanyutino','bogdanovo','class="road"');
+  const c=PX('vanyutino');
+  s+=`<path d="M ${c.x+11} ${c.y} L ${c.x+11} ${c.y+11} L ${c.x} ${c.y+11}" fill="none" stroke="var(--road)" stroke-width="1.4"/>`;
+  dashed.forEach(([a,b])=>s+=line(a,b,'class="dirt"'));
+  const mid=(a,b,dx,dy)=>{const p=PX(a),q=PX(b);return{x:(p.x+q.x)/2+(dx||0),y:(p.y+q.y)/2+(dy||0)};};
+  let m;
+  m=mid('antonovka','bogdanovo',26,4); s+=`<text x="${m.x}" y="${m.y}" class="mi" text-anchor="middle">река</text>`;
+  m=mid('antonovka','goryunovo',24,-6);s+=`<text x="${m.x}" y="${m.y}" class="mi" text-anchor="middle">пруд</text>`;
+  m=mid('dolomino','goryunovo',-6,-4); s+=`<text x="${m.x}" y="${m.y}" class="mi" text-anchor="middle">конюшня</text>`;
+  // connector lines from each place-node circle to its label anchor
+  PLACE_NODES.forEach(node=>{ const p=PX(NODE_KEY[node]); s+=`<line x1="${p.x}" y1="${p.y}" x2="${LC[node].x}" y2="${LC[node].y}" class="conn"/>`; });
+  // numbered circles, coloured by state
+  Object.keys(NODE_KEY).forEach(nk=>{
+    const node=+nk, p=PX(NODE_KEY[node]), stt=nodeState(node);
+    const fill = stt==='given'?'var(--navy)':stt==='placed'?'var(--amber)':stt==='ok'?'var(--teal)':stt==='bad'?'var(--wrong)':'#fff';
+    const numcol = stt==='empty'?'var(--ink)':'#fff';
+    const stroke = stt==='empty'?'var(--road)':fill;
+    s+=`<circle cx="${p.x}" cy="${p.y}" r="11" fill="${fill}" stroke="${stroke}" stroke-width="2"/>`;
+    s+=`<text x="${p.x}" y="${p.y+4}" text-anchor="middle" class="idn2" style="fill:${numcol}">${node}</text>`;
+  });
+  s+=`</svg>`;
+  return s;
+}
+// HTML drag/drop layer positioned over the SVG
+function labelOverlayHTML(){
+  let h='';
+  // invisible, larger drop-zones over each place-node circle (drop onto the circle works too)
+  PLACE_NODES.forEach(node=>{
+    const p=PX(NODE_KEY[node]);
+    h+=`<div class="cdz drop" data-node="${node}" style="left:${pctL(p.x).toFixed(2)}%;top:${pctT(p.y).toFixed(2)}%"></div>`;
+  });
+  Object.keys(NODE_KEY).forEach(nk=>{
+    const node=+nk, stt=nodeState(node);
+    const style=`left:${pctL(LC[node].x).toFixed(2)}%;top:${pctT(LC[node].y).toFixed(2)}%`;
+    if(stt==='given'){
+      h+=`<div class="lbl given" style="${style}">${T[NODE_KEY[node]].name}</div>`;
+    } else if(stt==='empty'){
+      h+=`<div class="lbl empty drop" data-node="${node}" style="${style}">?</div>`;
+    } else {
+      const key=placed[node], cls = stt==='ok'?'ok':stt==='bad'?'bad':'placed';
+      const drag = stt==='ok' ? '' : `draggable="true" data-chip="${key}"`;
+      const dropcls = stt==='ok' ? '' : ' drop';
+      h+=`<div class="lbl ${cls}${dropcls}" data-node="${node}" ${drag} style="${style}">${T[key].name}${stt==='ok'?'':'<span class="x">×</span>'}</div>`;
+    }
+  });
+  return h;
+}
+// a village name that can be dragged straight out of the условие text
+function dnName(key){
+  const used = Object.values(placed).includes(key);
+  return `<span class="dragname${used?' used':''}" ${used?'':`draggable="true" data-chip="${key}"`}>${T[key].name}</span>`;
+}
+// условие for label mode, with the six place-villages as drag sources (nominative forms only)
+function descLabelHTML(){
+  const d=dnName;
+  return `<div class="cond">
+     <p>Семь деревень обозначены на плане цифрами 1–7 в некотором порядке; <b>Антоновка — цифра 1</b>. От Антоновки идёт шоссе до ${d('vanyutino')} и там под прямым углом поворачивает к ${d('bogdanovo')}. Между Антоновкой и ${d('vanyutino')} на шоссе стоят ${d('dolomino')} и ${d('egorka')}, между ${d('vanyutino')} и ${d('bogdanovo')} — ${d('zhilino')} и ${d('goryunovo')}.</p>
+     <p><b>По шоссе:</b> Антоновка–${d('dolomino')} 12 км, ${d('dolomino')}–${d('egorka')} 4 км, ${d('egorka')}–${d('vanyutino')} 12 км; ${d('vanyutino')}–${d('zhilino')} 9 км, ${d('zhilino')}–${d('bogdanovo')} 12 км, ${d('vanyutino')}–${d('goryunovo')} 15 км.</p>
+     <p><b>Просёлочные дороги:</b> Антоновка–Богданово напрямик (мимо реки), Антоновка–Горюново (мимо пруда), Доломино–Горюново и Егорка–Жилино (мимо конюшни).</p>
+     <p class="refnote">Перетащите подписи мышью — из списка ниже или прямо из подчёркнутых слов в тексте — на кружки с номерами.</p>
+   </div>`;
+}
+
+// ============================================================
+//  PROBLEM STATEMENTS
+// ============================================================
+function problem(v, task){
+  if(task===1){
+    const names = v.q1.map(nm);
+    let th = names.map(n=>`<th>${n}</th>`).join('');
+    let td = names.map(()=>`<td class="cell">?</td>`).join('');
+    return {tag:'Задание 1 · чтение плана',
+      text:`Пользуясь описанием, определите, какими цифрами на плане обозначены деревни. Запишите четыре цифры подряд, без пробелов и запятых.`,
+      extra:`<table class="mini"><tr><th>Деревни</th>${th}</tr><tr><td>Цифры</td>${td}</tr></table>`};
+  }
+  if(task===2){ const [a,b]=v.q2;
+    return {tag:'Задание 2 · расстояние по шоссе',
+      text:`Найдите расстояние от <b>${nm(a)}</b> до <b>${nm(b)}</b> по шоссе. Ответ дайте в километрах.`};
+  }
+  if(task===3){ const [a,b]=v.q3;
+    return {tag:'Задание 3 · расстояние по прямой',
+      text:`Найдите расстояние от <b>${nm(a)}</b> до <b>${nm(b)}</b> по прямой. Ответ дайте в километрах.`};
+  }
+  if(task===4){
+    return {tag:'Задание 4 · время в пути',
+      text:`Сколько минут затратят Таня с дедушкой на дорогу из <b>Антоновки</b> в <b>Богданово</b>, если поедут <b>${ROUTES[v.q4].phrase}</b>?`};
+  }
+  // task 5
+  const r=v.q5.route, ph=ROUTES[r].phrase;
+  if(v.q5.mode==='findPath'){
+    return {tag:'Задание 5 · расход бензина',
+      text:`На шоссе машина расходует <b>${ru(v.q5.given)}</b> л бензина на 100 км. На путь через Ванютино и на путь <b>${ph}</b> нужен один и тот же объём бензина. Сколько литров на 100 км машина расходует на просёлочных дорогах?`};
+  }
+  return {tag:'Дополнительное задание · расход бензина',
+    text:`На просёлочных дорогах машина расходует <b>${ru(v.q5.given)}</b> л бензина на 100 км. На путь через Ванютино и на путь <b>${ph}</b> нужен один и тот же объём бензина. Сколько литров на 100 км машина расходует на шоссе?`};
+}
+
+// ============================================================
+//  WORKED SOLUTIONS (generated from geometry)
+// ============================================================
+function solveHTML(v, task){
+  if(task===1) return solveT1(v);
+  if(task===2) return solveT2(v);
+  if(task===3) return solveT3(v);
+  if(task===4) return solveT4(v);
+  return solveT5(v);
+}
+function solveT1(v){
+  const rows = v.q1.map(k=>`<tr><td>${nm(k)}</td><td class="n"><b>${T[k].id}</b></td></tr>`).join('');
+  return `
+   <p>Антоновка обозначена цифрой <b>1</b> (дано). Шоссе из неё ведёт к повороту под прямым углом — это <b>Ванютино</b>, дальний угол плана (цифра <b>4</b>).</p>
+   <p><b>Правое шоссе</b>, сверху вниз от угла: Жилино — 9 км, Горюново — 15 км, Богданово — 21 км. Значит Жилино&nbsp;=&nbsp;5, Горюново&nbsp;=&nbsp;6, Богданово&nbsp;=&nbsp;7.</p>
+   <p><b>Верхнее шоссе.</b> Ловушка: 12 + 4 + 12 = 28 — это <i>не</i> расстояние до Ванютино. По рисунку рядом с Антоновкой стоит Егорка (2), а Доломино (3) — за ней. Проверка через «красивые» треугольники: Доломино → Горюново = 17, Егорка → Жилино = 15. Тогда Антоновка → Ванютино = 20 км.</p>
+   <table class="legs" style="max-width:260px"><tr><th>Деревня</th><th style="text-align:right">Цифра</th></tr>${rows}</table>
+   <p>Ответ: <span class="box">${answer(v,1)}</span></p>`;
+}
+function solveT2(v){
+  const [a,b]=v.q2; const ka=arc(a), kb=arc(b); const d=highway(a,b);
+  let calc;
+  if(sameArm(a,b)) calc = `от угла Ванютино: ${nm(a)} = ${ka} км,  ${nm(b)} = ${kb} км
+|${ka} − ${kb}| = ${ru(d)} км`;
+  else calc = `путь через угол Ванютино: ${ka} + ${kb} = ${ru(d)} км`;
+  return `
+   <p>Обе деревни лежат на одном шоссе, поэтому расстояние — просто разность отметок километража.</p>
+   <div class="calc">${calc}</div>
+   <p>Ответ: <span class="box">${ru(d)} км</span></p>`;
+}
+function solveT3(v){
+  const [p,q]=v.q3; const top=isTop(p)?p:q, vert=isTop(p)?q:p;
+  const L1=arc(top), L2=arc(vert), h=straight(p,q);
+  return `
+   <p>Прямая дорога <b>${nm(p)} → ${nm(q)}</b> — это гипотенуза прямоугольного треугольника с вершиной прямого угла в Ванютино.</p>
+   <p>Катеты: ${nm(top)} → Ванютино = <b>${L1}</b> км и Ванютино → ${nm(vert)} = <b>${L2}</b> км.</p>
+   <div class="calc">√(${L1}² + ${L2}²) = √(${L1*L1} + ${L2*L2}) = √${L1*L1+L2*L2} = ${ru(h)} км</div>
+   <p>Ответ: <span class="box">${ru(h)} км</span></p>`;
+}
+function solveT4(v){
+  const legs = ROUTES[v.q4].legs;
+  let rows='', parts=[], total=0;
+  legs.forEach(l=>{
+    const km=legKm(l), sp=l[2]==='highway'?SPEED.highway:SPEED.dirt, min=km/sp*60; total+=min;
+    rows += `<tr><td>${nm(l[0])} → ${nm(l[1])}</td><td>${l[2]==='highway'?'шоссе':'просёлок'}</td><td class="n">${ru(km)} км</td><td class="n">${sp} км/ч</td><td class="n">${ru(min)} мин</td></tr>`;
+    parts.push(`${ru(km)}/${sp}·60`);
+  });
+  return `
+   <p>Время каждого участка = длина ÷ скорость. Переводим часы в минуты (× 60) и складываем.</p>
+   <table class="legs"><tr><th>Участок</th><th>Дорога</th><th>Длина</th><th>Скорость</th><th>Время</th></tr>${rows}</table>
+   <div class="calc">${parts.join(' + ')} = ${ru(total)} мин</div>
+   <p>Ответ: <span class="box">${ru(total)} мин</span></p>`;
+}
+function solveT5(v){
+  const r=v.q5.route, H=routeHighwayKm(r), D=routeDirtKm(r), g=v.q5.given;
+  const hwParts = ROUTES[r].legs.filter(l=>l[2]==='highway').map(l=>ru(legKm(l)));
+  const hwStr = hwParts.length>1 ? `${hwParts.join(' + ')} = ${ru(H)}` : `${ru(H)}`;
+  let body;
+  if(v.q5.mode==='findPath'){
+    const x=(VIA_VAN-H)*g/D;
+    body = `
+     <p>Путь через Ванютино — весь по шоссе: <b>${ru(VIA_VAN)}</b> км. Путь ${ROUTES[r].phrase}: по шоссе ${hwStr} км, по просёлку <b>${ru(D)}</b> км.</p>
+     <p>Расход бензина у обоих путей равен (считаем в литрах, x — расход на просёлке):</p>
+     <div class="calc">${ru(VIA_VAN)}·${ru(g)} = ${ru(H)}·${ru(g)} + ${ru(D)}·x
+${ru(VIA_VAN*g)} = ${ru(H*g)} + ${ru(D)}·x
+x = ${ru((VIA_VAN-H)*g)} / ${ru(D)} = ${ru(x)} л</div>
+     <p>Ответ: <span class="box">${ru(x)} л</span></p>`;
+  } else {
+    const y=D*g/(VIA_VAN-H);
+    body = `
+     <p>Путь через Ванютино — весь по шоссе: <b>${ru(VIA_VAN)}</b> км. Путь ${ROUTES[r].phrase}: по шоссе ${hwStr} км, по просёлку <b>${ru(D)}</b> км.</p>
+     <p>Расход бензина равен (y — расход на шоссе):</p>
+     <div class="calc">${ru(VIA_VAN)}·y = ${ru(H)}·y + ${ru(D)}·${ru(g)}
+(${ru(VIA_VAN)} − ${ru(H)})·y = ${ru(D*g)}
+y = ${ru(D*g)} / ${ru(VIA_VAN-H)} = ${ru(y)} л</div>
+     <p>Ответ: <span class="box">${ru(y)} л</span></p>`;
+  }
+  return body;
+}
+
+// ============================================================
+//  PROGRESS (localStorage)
+// ============================================================
+const PKEY='ogeRoadsTrainer.v2';
+function loadP(){ try{ return JSON.parse(localStorage.getItem(PKEY)||'{}'); }catch(e){ return {}; } }
+function saveP(p){ try{ localStorage.setItem(PKEY, JSON.stringify(p)); }catch(e){} try{var _mp=JSON.parse(localStorage.getItem('mathExamCourseProgress.v1')||'{}');_mp['practiceRoadsSchemaTrainer']={solved:solvedCount(),total:SCREENS.length};localStorage.setItem('mathExamCourseProgress.v1',JSON.stringify(_mp));}catch(e){} }
+let prog = Object.assign({ solved:{}, streak:0 }, loadP());
+const solvedKey = (vi,task) => VARIANTS[vi].id+'#'+task;
+const solvedCount = () => Object.keys(prog.solved).length;
+
+// ============================================================
+//  STATE + RENDER
+// ============================================================
+let mode='learn';
+let cur = 0;          // index into SCREENS
+let showNames=false;  // village names hidden on the plan until the student reveals them
+let placed={};        // nodeId -> villageKey (labelling board)
+let selectedChip=null;// villageKey picked from the palette
+let labelResults={};  // nodeId -> 'ok' | 'bad' (after Проверить)
+
+const app = document.getElementById('app');
+const varbar = document.getElementById('varbar');
+
+function buildVarbar(){
+  varbar.innerHTML='';
+  const mkGroup = (label, items) => {
+    const lbl=document.createElement('span'); lbl.className='grouplbl'; lbl.textContent=label; varbar.appendChild(lbl);
+    items.forEach(vi=>{
+      const b=document.createElement('button'); b.className='vtab'; b.textContent=VARIANTS[vi].id; b.setAttribute('role','tab');
+      b.addEventListener('click',()=>{ const t = VARIANTS[vi].group==='main'?1:5; cur=screenIndex(vi,t); render(); });
+      b.dataset.vi=vi; varbar.appendChild(b);
+    });
+  };
+  const mains = VARIANTS.map((v,i)=>i).filter(i=>VARIANTS[i].group==='main');
+  const extras = VARIANTS.map((v,i)=>i).filter(i=>VARIANTS[i].group==='extra');
+  mkGroup('Варианты', mains);
+  const sep=document.createElement('span'); sep.className='sep'; varbar.appendChild(sep);
+  mkGroup('Доп. задание 5', extras);
+}
+function syncVarbar(){
+  const vi = SCREENS[cur].vi;
+  varbar.querySelectorAll('.vtab').forEach(b=> b.setAttribute('aria-selected', String(+b.dataset.vi===vi)));
+}
+
+function taskTabsHTML(vi, task){
+  if(VARIANTS[vi].group!=='main') return '';
+  let t='<div class="tabs" style="margin-top:0" role="tablist" aria-label="Задание">';
+  for(let i=1;i<=5;i++){
+    t+=`<button class="tab tasktab" role="tab" data-task="${i}" aria-selected="${i===task}">№ ${i}</button>`;
+  }
+  return t+'</div>';
+}
+
+function render(){
+  syncVarbar();
+  document.querySelectorAll('.tab[data-mode]').forEach(b=> b.setAttribute('aria-selected', String(b.dataset.mode===mode)));
+  if(mode==='label'){ varbar.style.display='none'; renderLabel(); return; }
+  if(mode==='teacher'){ varbar.style.display='none'; renderTeacher(); return; }
+  varbar.style.display='flex';
+
+  const {vi,task} = SCREENS[cur];
+  const v = VARIANTS[vi];
+  const p = problem(v,task);
+  const isMain = v.group==='main';
+
+  const mapPanel = `<div class="panel mapwrap">
+     <h2>План местности${isMain?'':' · '+v.id}</h2>
+     ${renderMap(v,task)}
+     ${legendHTML()}
+     <div class="maptools">
+       <button class="revealbtn" id="togglenames" aria-pressed="${showNames}">${showNames?'Скрыть названия':'Показать названия'}</button>
+       <span class="hint">на плане только номера — деревни определяются по описанию</span>
+     </div>
+     ${showNames?refHTML():''}
+   </div>`;
+
+  let right = `<div class="panel">
+     ${isMain?taskTabsHTML(vi,task):''}
+     ${descHTML(task)}
+     <div class="qhead" style="${isMain?'margin-top:12px':''}"><span class="qnum">${isMain?('Вариант '+v.id+' · № '+task):v.id}</span><span class="qtag">${p.tag}</span></div>
+     <p class="qtext">${p.text}</p>
+     ${p.extra||''}`;
+
+  if(mode==='learn'){
+    right += `<div class="solution"><h3>Решение</h3>${solveHTML(v,task)}</div>`;
+  } else { // practice
+    const unit = UNIT[task]||'';
+    right += `
+     <div class="answer-row">
+       <input class="ans" id="ans" inputmode="${task===1?'numeric':'decimal'}" placeholder="${task===1?'4 цифры':'число'}" autocomplete="off">
+       ${unit?`<span class="unit">${unit}</span>`:''}
+       <button class="act" id="check">Проверить</button>
+       <button class="act ghost" id="reveal">Показать решение</button>
+     </div>
+     <div class="feedback" id="fb"></div>
+     <div class="solution hidden" id="sol"><h3>Решение</h3>${solveHTML(v,task)}</div>`;
+  }
+
+  // navigation
+  right += `<div class="nav">
+     <button class="act ghost" id="prev" ${cur===0?'disabled':''}>← Назад</button>
+     <span class="mid">${cur+1} / ${SCREENS.length}</span>
+     <button class="act" id="next" ${cur===SCREENS.length-1?'disabled':''}>Дальше →</button>
+   </div>`;
+
+  if(mode==='practice'){
+    const pct = Math.round(100*solvedCount()/SCREENS.length);
+    right += `<div class="progress">
+       <span>Решено ${solvedCount()} из ${SCREENS.length}</span>
+       <span class="pbar"><i style="width:${pct}%"></i></span>
+       <span>серия: ${prog.streak}</span>
+       <button class="linkbtn" id="reset">сбросить</button>
+     </div>`;
+  }
+  right += `</div>`;
+
+  app.innerHTML = `<div class="grid">${mapPanel}${right}</div>`;
+  wire();
+}
+
+function wire(){
+  const {vi,task}=SCREENS[cur];
+  const tn=document.getElementById('togglenames');
+  if(tn) tn.addEventListener('click',()=>{ showNames=!showNames; render(); });
+  document.querySelectorAll('.tasktab').forEach(b=>b.addEventListener('click',()=>{ cur=screenIndex(vi,+b.dataset.task); render(); }));
+  const prev=document.getElementById('prev'), next=document.getElementById('next');
+  if(prev) prev.addEventListener('click',()=>{ if(cur>0){cur--; render();} });
+  if(next) next.addEventListener('click',()=>{ if(cur<SCREENS.length-1){cur++; render();} });
+
+  if(mode==='practice'){
+    const inp=document.getElementById('ans'), fb=document.getElementById('fb'),
+          sol=document.getElementById('sol'), check=document.getElementById('check'),
+          reveal=document.getElementById('reveal'), reset=document.getElementById('reset');
+    const v=VARIANTS[vi];
+    const doCheck=()=>{
+      const raw=(inp.value||'').trim();
+      if(!raw){ fb.className='feedback show no'; fb.textContent='Введите ответ.'; return; }
+      let good;
+      if(task===1){ good = raw.replace(/\s/g,'')===answer(v,1); }
+      else {
+        const num=parseFloat(raw.replace(',','.').replace(/[^0-9.\-]/g,''));
+        good = isFinite(num) && Math.abs(num-answer(v,task))<0.05;
+      }
+      if(good){
+        fb.className='feedback show ok'; fb.textContent='Верно! ✓';
+        sol.classList.remove('hidden');
+        const key=solvedKey(vi,task);
+        if(!prog.solved[key]){ prog.solved[key]=1; prog.streak=(prog.streak||0)+1; saveP(prog); }
+        render(); // refresh progress + keep solution open
+        const s2=document.getElementById('sol'); if(s2) s2.classList.remove('hidden');
+        const f2=document.getElementById('fb'); if(f2){ f2.className='feedback show ok'; f2.textContent='Верно! ✓'; }
+      } else {
+        fb.className='feedback show no'; fb.textContent='Не то. Попробуйте ещё раз или откройте решение.';
+        prog.streak=0; saveP(prog);
+        const sv=document.querySelector('.progress'); // update streak display
+        render();
+        const f2=document.getElementById('fb'); if(f2){ f2.className='feedback show no'; f2.textContent='Не то. Попробуйте ещё раз или откройте решение.'; }
+        const i2=document.getElementById('ans'); if(i2) i2.focus();
+      }
+    };
+    check.addEventListener('click',doCheck);
+    inp.addEventListener('keydown',e=>{ if(e.key==='Enter') doCheck(); });
+    inp.focus();
+    reveal.addEventListener('click',()=>{ sol.classList.toggle('hidden'); reveal.textContent = sol.classList.contains('hidden')?'Показать решение':'Скрыть решение'; });
+    if(reset) reset.addEventListener('click',()=>{ prog={solved:{},streak:0}; saveP(prog); render(); });
+  }
+}
+
+// ---------- teacher / answer key ----------
+function renderTeacher(){
+  const mains = VARIANTS.filter(v=>v.group==='main');
+  const extras = VARIANTS.filter(v=>v.group==='extra');
+  let head = `<tr><th>Вариант</th><th>№ 1</th><th>№ 2</th><th>№ 3</th><th>№ 4</th><th>№ 5</th></tr>`;
+  let rows = mains.map(v=>{
+    const c = t => {
+      const a=answer(v,t); const u=UNIT[t]?(' '+UNIT[t]):'';
+      const disp = t===1 ? a : ru(a)+u;
+      return `<td class="a${t===5?' d':''}">${disp}</td>`;
+    };
+    return `<tr><td class="v">${v.id}</td>${c(1)}${c(2)}${c(3)}${c(4)}${c(5)}</tr>`;
+  }).join('');
+
+  let ex = extras.map(v=>`<tr><td class="v">${v.id}</td><td class="a d">${ru(answer(v,5))} л</td></tr>`).join('');
+
+  app.innerHTML = `
+   <div class="grid" style="grid-template-columns:1fr">
+     <div class="panel">
+       <h2 class="block">Ключ ответов — основные варианты</h2>
+       <div class="keytable"><table class="key"><thead>${head}</thead><tbody>${rows}</tbody></table></div>
+       <p class="keynote">Задание 1 — четыре цифры для деревень варианта. Задание 4 — время в минутах. Задание 5 (выделено) — расход на просёлке в литрах на 100 км.</p>
+     </div>
+     <div class="twocol">
+       <div class="panel">
+         <h2 class="block">Дополнительные (задание 5)</h2>
+         <div class="keytable"><table class="key"><thead><tr><th>Задание</th><th>Расход на шоссе, л</th></tr></thead><tbody>${ex}</tbody></table></div>
+         <p class="keynote">Здесь дан расход на просёлке, ищется расход на шоссе — обратная к № 5 задача.</p>
+       </div>
+       <div class="panel">
+         <h2 class="block">Опорная геометрия</h2>
+         <div class="numline" style="margin-top:2px">Верх:&nbsp; <span style="color:var(--amber)">Ванютино 0</span> · Доломино 8 · Егорка 12 · Антоновка 20</div>
+         <div class="numline">Право: <span style="color:var(--amber)">Ванютино 0</span> · Жилино 9 · Горюново 15 · Богданово 21</div>
+         <p class="keynote">Прямой угол в Ванютино. Просёлочные дороги (гипотенузы): Антоновка→Богданово 29, Антоновка→Горюново 25, Доломино→Горюново 17, Егорка→Жилино 15. Путь «через Ванютино» = 20 + 21 = <b>41 км</b>, весь по шоссе.</p>
+         <p class="keynote"><b>Ключевая ловушка:</b> отметки Доломино (8) и Егорки (12) идут «не по порядку» набора расстояний 12 · 4 · 12 — поэтому Антоновка→Ванютино = 20 км, а не 28.</p>
+       </div>
+     </div>
+   </div>`;
+}
+
+// ---------- labelling board view ----------
+function renderLabel(){
+  const placedKeys = new Set(Object.values(placed));
+  const palette = PLACE_NODES.map(n=>NODE_KEY[n]).filter(k=>!placedKeys.has(k));
+  const chips = palette.map(k=>
+    `<button class="chip${selectedChip===k?' sel':''}" draggable="true" data-chip="${k}">${T[k].name}</button>`
+  ).join('') || `<span class="hint">все подписи размещены — нажмите «Проверить»</span>`;
+
+  const allFilled = PLACE_NODES.every(n=>placed[n]!=null);
+  const checked = Object.keys(labelResults).length>0;
+  const allOk = checked && PLACE_NODES.every(n=>labelResults[n]==='ok');
+
+  let fb='';
+  if(allOk) fb=`<div class="feedback show ok" style="display:block">Всё верно! Номера деревень определены — теперь можно переходить к заданиям 1–5.
+     <div style="margin-top:8px"><button class="act" id="goTasks">Перейти к заданиям →</button></div></div>`;
+  else if(checked) fb=`<div class="feedback show no" style="display:block">Красные подписи стоят не на своём месте. Снимите их (нажмите ×) и попробуйте снова.</div>`;
+
+  const board = `<div class="panel mapwrap">
+     <h2>План местности · разметка</h2>
+     <div class="board-wrap" id="board">
+       <div class="board-svg">${renderLabelBoard()}</div>
+       <div class="board-overlay">${labelOverlayHTML()}</div>
+     </div>
+     <p class="hint" style="margin-top:10px">Подписана только <b style="color:var(--navy)">Антоновка (1)</b>. Перетащите остальные подписи на кружки; чтобы снять — нажмите × на подписи.</p>
+   </div>`;
+
+  const right = `<div class="panel">
+     <div class="qhead"><span class="qnum">Шаг 0 · разметка</span><span class="qtag">кто есть кто на плане</span></div>
+     <p class="qtext">Прочитайте условие и перетащите недостающие подписи на кружки с номерами — из списка ниже или прямо из подчёркнутых слов в тексте.</p>
+     ${descLabelHTML()}
+     <div class="palette-lbl">Подписи для размещения (можно перетащить)</div>
+     <div class="palette" id="palette">${chips}</div>
+     <div class="answer-row" style="margin-top:14px">
+       <button class="act" id="checkLbl" ${allFilled?'':'disabled'}>Проверить</button>
+       <button class="act ghost" id="resetLbl">Сбросить</button>
+     </div>
+     ${fb}
+     <details class="ref" style="margin-top:14px"><summary>Подсказки к порядку деревень</summary>
+       <div class="refbody">
+         <p class="refnote"><b>Вертикальное шоссе (вниз от угла).</b> Ванютино — это сам угол (поворот под прямым углом). Дальше Ванютино→Жилино 9 км, Ванютино→Горюново 15 км: значит выше стоит Жилино (ближе к углу), ниже — Горюново, в самом низу — Богданово.</p>
+         <p class="refnote"><b>Верхнее шоссе — ловушка.</b> Дано Егорка→Ванютино 12 и Антоновка→Доломино 12 при Доломино→Егорка 4. Отсюда возможны два порядка (Антоновка→Ванютино = 20 или 28). Верный — 20: Доломино ближе к углу, Егорка ближе к Антоновке. Проверка: тогда просёлки дают целые числа — Доломино→Горюново 17, Егорка→Жилино 15.</p>
+       </div></details>
+   </div>`;
+
+  app.innerHTML = `<div class="grid">${board}${right}</div>`;
+  wireLabel();
+}
+function placeVillage(node, key){
+  if(!key || GIVEN_NODES.includes(node)) return;
+  for(const m in placed){ if(placed[m]===key) delete placed[m]; } // each village used once
+  placed[node]=key; selectedChip=null; labelResults={}; renderLabel();
+}
+function wireLabel(){
+  // --- drag sources: palette chips + names in the условие + placed labels ---
+  document.querySelectorAll('[data-chip]').forEach(el=>{
+    el.addEventListener('dragstart', e=>{
+      const k = el.dataset.chip;
+      e.dataTransfer.setData('text/plain', k);
+      e.dataTransfer.effectAllowed='move';
+      window.__drag=k;
+    });
+  });
+  // --- drop targets: slots on the board ---
+  document.querySelectorAll('.drop').forEach(g=>{
+    g.addEventListener('dragover', e=>{ e.preventDefault(); e.dataTransfer.dropEffect='move'; g.classList.add('over'); });
+    g.addEventListener('dragleave', ()=> g.classList.remove('over'));
+    g.addEventListener('drop', e=>{
+      e.preventDefault(); g.classList.remove('over');
+      const key = e.dataTransfer.getData('text/plain') || window.__drag;
+      placeVillage(+g.dataset.node, key);
+    });
+  });
+  // whole board accepts a drop too (drop near a circle counts for that node's slot only via .drop)
+  // --- click fallback (mobile / no-drag): select a chip, tap a slot ---
+  document.querySelectorAll('.chip[data-chip]').forEach(b=>b.addEventListener('click',()=>{
+    const k=b.dataset.chip; selectedChip=(selectedChip===k?null:k); labelResults={}; renderLabel();
+  }));
+  document.querySelectorAll('.lbl.drop').forEach(g=>g.addEventListener('click',e=>{
+    const node=+g.dataset.node;
+    if(placed[node]!=null){ delete placed[node]; labelResults={}; renderLabel(); return; } // remove
+    if(selectedChip){ placeVillage(node, selectedChip); }
+  }));
+  document.querySelectorAll('.cdz').forEach(g=>g.addEventListener('click',()=>{
+    if(selectedChip) placeVillage(+g.dataset.node, selectedChip);
+  }));
+  // clicking a name in the text also selects it (tap fallback)
+  document.querySelectorAll('.dragname[data-chip]').forEach(s=>s.addEventListener('click',()=>{
+    const k=s.dataset.chip; selectedChip=(selectedChip===k?null:k); labelResults={}; renderLabel();
+  }));
+
+  const chk=document.getElementById('checkLbl');
+  if(chk) chk.addEventListener('click',()=>{
+    labelResults={};
+    PLACE_NODES.forEach(n=>{ if(placed[n]!=null) labelResults[n]=(T[placed[n]].id===n)?'ok':'bad'; });
+    renderLabel();
+  });
+  const rst=document.getElementById('resetLbl');
+  if(rst) rst.addEventListener('click',()=>{ placed={}; selectedChip=null; labelResults={}; renderLabel(); });
+  const go=document.getElementById('goTasks');
+  if(go) go.addEventListener('click',()=>{ mode='learn'; showNames=false; render(); });
+}
+
+// ---------- mode tabs ----------
+document.querySelectorAll('.tab[data-mode]').forEach(b=>{
+  b.addEventListener('click',()=>{ mode=b.dataset.mode; render(); });
+});
+
+buildVarbar();
+render();
+</script>
+</body>
+</html>

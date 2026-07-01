@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дороги по клеткам · тренажёр 1–5 (ОГЭ 2026)</title>
+<style>
+  :root {
+    --bg: #faf7f2; --bg-card: #ffffff; --bg-soft: #f5f1e8;
+    --ink: #1a2332; --ink-soft: #4a5568; --ink-muted: #8a93a3;
+    --line: #e8e3d8; --line-strong: #d4cfc2;
+    --accent: #1e3a5f; --accent-soft: #dbe4f0; --accent-deep: #142a44;
+    --gold: #b8924b; --gold-soft: #f3e9d4;
+    --green: #4a7c59; --green-soft: #dcebe0;
+    --warm: #d4956a; --warm-soft: #f5e3d4;
+    --error-soft: #f7e3dc; --error-ink: #8a4d3a;
+    --shadow: 0 1px 3px rgba(26,35,50,.05), 0 4px 24px rgba(26,35,50,.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PT Sans", Roboto, sans-serif;
+    font-size: 16px; line-height: 1.55; min-height: 100vh;
+  }
+  body { background-image: radial-gradient(circle at 15% 10%, rgba(184,146,75,.04) 0, transparent 40%), radial-gradient(circle at 85% 80%, rgba(30,58,95,.04) 0, transparent 40%); }
+
+  .topnav { border-bottom: 1px solid var(--line); background: rgba(250,247,242,.85); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 50; }
+  .topnav-inner { max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .back-link { color: var(--ink-soft); text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+  .back-link:hover { color: var(--accent); }
+  .topic-id { font-family: monospace; font-size: 11px; color: var(--ink-muted); background: var(--bg-soft); padding: 4px 10px; border-radius: 6px; }
+  .mode-switch { display: flex; background: var(--bg-soft); border-radius: 10px; padding: 3px; gap: 2px; }
+  .mode-switch button { background: none; border: none; padding: 8px 14px; font-family: inherit; font-size: 13px; color: var(--ink-soft); border-radius: 7px; cursor: pointer; }
+  .mode-switch button.active { background: var(--bg-card); color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,.06); font-weight: 500; }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 28px 24px 80px; }
+  .title-block { margin-bottom: 20px; }
+  .eyebrow { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .18em; color: var(--gold); margin-bottom: 10px; }
+  h1 { font-family: Georgia, serif; font-size: clamp(28px, 4vw, 40px); font-weight: 400; line-height: 1.15; letter-spacing: -.01em; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .subtitle { color: var(--ink-soft); margin-top: 8px; max-width: 720px; }
+
+  .selector { background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin: 18px 0; }
+  .selector .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .selector .row + .row { margin-top: 12px; }
+  .selector .label { font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .1em; min-width: 92px; }
+  .chip { background: var(--bg-soft); border: 1px solid transparent; padding: 7px 13px; border-radius: 8px; font-family: inherit; font-size: 13px; color: var(--ink-soft); cursor: pointer; transition: all .15s; }
+  .chip:hover { border-color: var(--line-strong); }
+  .chip.active { background: var(--accent); color: white; border-color: var(--accent); }
+  .chip .n { font-family: Georgia, serif; font-weight: 600; margin-right: 5px; opacity: .8; }
+  .chip.gen { background: var(--gold-soft); color: var(--gold); }
+  .chip.gen:hover { border-color: var(--gold); }
+  .chip.gen.active { background: var(--gold); color: white; border-color: var(--gold); }
+  .setpick { display: flex; background: var(--bg-soft); border-radius: 9px; padding: 3px; gap: 2px; }
+  .setpick button { background: none; border: none; padding: 7px 16px; font-family: inherit; font-size: 13px; color: var(--ink-soft); border-radius: 7px; cursor: pointer; }
+  .setpick button.active { background: var(--bg-card); color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,.06); font-weight: 500; }
+  .selector .div { width: 1px; align-self: stretch; background: var(--line); margin: 0 4px; }
+
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 26px; align-items: start; }
+  @media (max-width: 1040px) { .layout { grid-template-columns: 1fr; } }
+
+  .map-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px; padding: 22px; box-shadow: var(--shadow); }
+  .map-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 12px; }
+  .map-title { font-family: Georgia, serif; font-size: 15px; color: var(--ink-soft); }
+  .scale-tag { font-size: 12px; color: var(--ink-muted); background: var(--bg-soft); padding: 4px 10px; border-radius: 6px; white-space: nowrap; }
+  .map-svg-wrap { background: linear-gradient(180deg, #fdfcf8 0%, #f5f1e8 100%); border-radius: 12px; padding: 12px; }
+  svg.map { width: 100%; height: auto; display: block; }
+
+  .legend { margin-top: 12px; padding: 11px 15px; background: var(--bg-soft); border-radius: 10px; display: flex; flex-wrap: wrap; gap: 16px; font-size: 12.5px; color: var(--ink-soft); }
+  .legend .item { display: flex; align-items: center; gap: 8px; }
+  .legend .swatch { width: 22px; height: 3px; background: var(--accent); border-radius: 2px; }
+  .legend .swatch.dashed { background: repeating-linear-gradient(90deg, var(--gold) 0 4px, transparent 4px 8px); height: 2px; }
+  .legend .swatch.pond { width: 13px; height: 8px; background: #b8d4e8; border-radius: 50%; }
+
+  .problem-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin-top: 18px; }
+  .problem-text { font-size: 15px; line-height: 1.7; color: var(--ink); }
+  .problem-text b { color: var(--accent); font-weight: 600; }
+  .problem-text em { color: var(--gold); font-style: normal; font-weight: 600; }
+
+  .task-stepper { display: flex; gap: 6px; margin: 18px 0 16px; background: var(--bg-card); padding: 8px; border: 1px solid var(--line); border-radius: 12px; }
+  .step-btn { flex: 1; background: var(--bg-soft); border: none; padding: 9px 6px; border-radius: 8px; font-family: inherit; font-size: 12px; color: var(--ink-soft); cursor: pointer; transition: all .15s; display: flex; flex-direction: column; align-items: center; gap: 2px; position: relative; }
+  .step-btn:hover { background: var(--accent-soft); color: var(--accent); }
+  .step-btn.active { background: var(--accent); color: white; }
+  .step-btn .step-num { font-family: Georgia, serif; font-size: 15px; font-weight: 600; }
+  .step-btn .step-name { font-size: 10.5px; opacity: .85; }
+  .step-btn.done::after { content: "✓"; position: absolute; top: 4px; right: 6px; color: var(--green); font-size: 11px; font-weight: 700; }
+  .step-btn.active.done::after { color: #bfe6cb; }
+
+  .task-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 24px; }
+  .task-meta { font-family: Georgia, serif; font-size: 13px; color: var(--ink-muted); font-style: italic; margin-bottom: 8px; }
+  .task-question { font-size: 16px; line-height: 1.65; color: var(--ink); margin-bottom: 18px; }
+  .task-question b { color: var(--accent); }
+
+  .id-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 12px 0; background: var(--bg-card); border-radius: 10px; overflow: hidden; border: 1px solid var(--line); }
+  .id-table th, .id-table td { padding: 11px 14px; text-align: left; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .id-table th { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .id-table tr:last-child td { border-bottom: none; }
+  .id-table select { border: 1.5px solid var(--line-strong); background: white; padding: 6px 10px; border-radius: 7px; font-family: inherit; font-size: 14px; color: var(--ink); cursor: pointer; }
+  .id-table select:focus { outline: none; border-color: var(--accent); }
+  .id-table select.correct { border-color: var(--green); background: var(--green-soft); color: var(--green); }
+  .id-table select.wrong { border-color: var(--warm); background: var(--error-soft); }
+
+  .pythagoras { margin: 14px 0; padding: 15px; background: var(--bg-soft); border-radius: 10px; border: 1px dashed var(--line-strong); font-family: Georgia, serif; font-size: 15px; text-align: center; color: var(--accent); }
+  .pythagoras .triangle { font-size: 17px; margin-bottom: 6px; }
+  .pythagoras .calc { color: var(--ink-soft); font-size: 14px; }
+
+  .shop-wrap { overflow-x: auto; margin: 12px 0; }
+  .shop-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 13.5px; min-width: 460px; }
+  .shop-table th, .shop-table td { padding: 9px 11px; text-align: center; border-bottom: 1px solid var(--line); }
+  .shop-table th { background: var(--accent-soft); color: var(--accent); font-weight: 600; font-size: 12.5px; }
+  .shop-table th:first-child, .shop-table td:first-child { text-align: left; }
+  .shop-table .qty td { background: var(--bg-soft); }
+  .shop-table .total-row td { font-weight: 600; color: var(--accent); background: var(--gold-soft); }
+  .shop-table .winner { background: var(--green-soft) !important; color: var(--green); }
+  .shop-table small { color: var(--ink-muted); }
+
+  .answer-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .answer-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .answer-input { flex: 1; min-width: 150px; padding: 12px 16px; border: 1.5px solid var(--line-strong); background: white; border-radius: 10px; font-family: Georgia, serif; font-size: 18px; color: var(--accent); }
+  .answer-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .answer-unit { color: var(--ink-muted); font-size: 14px; }
+
+  .btn { padding: 11px 18px; border-radius: 9px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .15s; border: 1.5px solid transparent; }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { background: var(--accent-deep); transform: translateY(-1px); }
+  .btn-secondary { background: var(--bg-card); color: var(--ink-soft); border-color: var(--line-strong); }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-gold { background: var(--gold-soft); color: var(--gold); }
+  .btn-gold:hover { background: var(--gold); color: white; }
+
+  .button-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+  .feedback { margin-top: 14px; padding: 12px 16px; border-radius: 10px; font-size: 14px; display: none; }
+  .feedback.correct { background: var(--green-soft); color: var(--green); border: 1px solid var(--green); }
+  .feedback.warn { background: var(--warm-soft); color: var(--error-ink); border: 1px solid var(--warm); }
+  .feedback.show { display: block; animation: fadeup .3s; }
+  .feedback b { font-weight: 600; }
+
+  .hint-box { margin-top: 14px; padding: 14px 18px; background: var(--gold-soft); border-radius: 10px; border-left: 3px solid var(--gold); font-size: 14px; color: var(--ink); display: none; }
+  .hint-box.show { display: block; animation: fadeup .25s; }
+  .hint-box .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--gold); margin-bottom: 6px; }
+  .hint-box ol { margin-left: 18px; margin-top: 4px; }
+  .hint-box li { margin-bottom: 3px; }
+  .hint-box b { color: var(--accent); }
+
+  .teacher-block { margin-top: 16px; padding: 14px 18px; background: var(--accent-soft); border-radius: 10px; border-left: 3px solid var(--accent); display: none; font-size: 14px; line-height: 1.7; }
+  .teacher-block.show { display: block; }
+  .teacher-block .label { font-size: 11px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 6px; }
+  .teacher-block .step { padding-left: 18px; position: relative; margin-bottom: 5px; }
+  .teacher-block .step::before { content: "→"; position: absolute; left: 0; color: var(--gold); }
+  .teacher-block .answer-display { display: inline-block; margin-top: 8px; padding: 5px 12px; background: white; border-radius: 7px; color: var(--accent); font-family: Georgia, serif; font-weight: 600; }
+
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .side-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+  .side-card h3 { font-family: Georgia, serif; font-size: 15px; font-weight: 400; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .side-card h3::before { content: ""; display: inline-block; width: 4px; height: 14px; background: var(--gold); border-radius: 2px; }
+
+  .speeds { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .speed-tile { background: var(--bg-soft); padding: 13px 10px; border-radius: 10px; text-align: center; }
+  .speed-tile .val { font-family: Georgia, serif; font-size: 21px; color: var(--accent); }
+  .speed-tile .lbl { font-size: 11px; color: var(--ink-muted); margin-top: 4px; }
+  .speed-tile.road { background: var(--accent-soft); }
+  .speed-tile.path { background: var(--gold-soft); }
+
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat { background: var(--bg-soft); padding: 12px; border-radius: 10px; text-align: center; }
+  .stat .val { font-family: Georgia, serif; font-size: 21px; color: var(--accent); }
+  .stat .lbl { font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .08em; margin-top: 4px; }
+  .reset-link { display: block; text-align: center; margin-top: 10px; font-size: 12px; color: var(--ink-muted); background: none; border: none; cursor: pointer; width: 100%; }
+  .reset-link:hover { color: var(--warm); }
+
+  .formula { background: var(--accent); color: white; padding: 13px 15px; border-radius: 10px; font-family: Georgia, serif; font-size: 15px; text-align: center; line-height: 1.7; }
+  .formula .frac { display: inline-flex; flex-direction: column; vertical-align: middle; margin: 0 4px; }
+  .formula .num { padding: 0 6px; }
+  .formula .den { border-top: 1.5px solid white; padding: 1px 6px 0; }
+  .formula small { display: block; opacity: .75; font-size: 11px; margin-top: 4px; }
+
+  @keyframes fadeup { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .grid-line { stroke: #d9d3c6; stroke-width: 0.7; }
+  .road-line { stroke: var(--accent); stroke-width: 3; fill: none; stroke-linecap: round; }
+  .road-line.hi { stroke: var(--green); stroke-width: 5; filter: drop-shadow(0 1px 3px rgba(74,124,89,.35)); }
+  .path-line { stroke: var(--gold); stroke-width: 2.5; stroke-dasharray: 5,4; fill: none; stroke-linecap: round; }
+  .path-line.dim { opacity: .32; }
+  .path-line.hi { stroke: var(--warm); stroke-width: 4; opacity: 1; stroke-dasharray: 7,4; filter: drop-shadow(0 1px 3px rgba(212,149,106,.35)); }
+  .town-point { fill: white; stroke: var(--accent); stroke-width: 2.2; }
+  .town-label { font-family: Georgia, serif; font-size: 15px; fill: var(--accent); font-weight: 700; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+  .town-name { font-family: Georgia, serif; font-size: 11.5px; fill: var(--ink-soft); font-style: italic; }
+  .pond { fill: #b8d4e8; opacity: .65; stroke: #8fbdd8; stroke-width: 1; }
+  .triangle-fill { fill: var(--warm); opacity: .1; }
+  .right-angle-marker { fill: none; stroke: var(--accent); stroke-width: 1.6; }
+  .dist-label-bg { fill: white; opacity: .92; }
+  .dist-label { font-family: Georgia, serif; font-size: 13px; font-weight: 600; fill: var(--green); text-anchor: middle; dominant-baseline: central; }
+  .dist-label.path { fill: var(--warm); }
+  .dist-label.plain { fill: var(--accent); }
+
+  .count-panel { margin-top: 10px; padding: 10px 14px; background: var(--bg-soft); border-radius: 10px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .count-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-muted); }
+  .count-switch { display: flex; background: var(--bg-card); border-radius: 8px; padding: 3px; gap: 2px; border: 1px solid var(--line); }
+  .count-switch button { background: none; border: none; padding: 6px 12px; font-family: inherit; font-size: 12.5px; color: var(--ink-soft); border-radius: 6px; cursor: pointer; }
+  .count-switch button.active { background: var(--accent); color: white; font-weight: 500; }
+  .count-play { background: var(--green-soft); color: var(--green); border: 1px solid var(--green); padding: 6px 13px; border-radius: 8px; font-family: inherit; font-size: 12.5px; font-weight: 500; cursor: pointer; }
+  .count-play:hover:not(:disabled) { background: var(--green); color: white; }
+  .count-play:disabled { opacity: .45; cursor: default; }
+  .count-hint { font-size: 12px; color: var(--ink-muted); flex-basis: 100%; }
+
+  .cnt-tick { stroke: var(--ink-soft); stroke-width: 1.4; }
+  .cnt-group-a { stroke: var(--accent); stroke-width: 6; stroke-linecap: round; }
+  .cnt-group-b { stroke: var(--gold); stroke-width: 6; stroke-linecap: round; }
+  .cnt-group-rem { stroke: var(--warm); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 2,3; }
+  .cnt-cap { stroke: var(--accent-deep); stroke-width: 3; stroke-linecap: round; }
+  .cnt-run { font-family: Georgia, serif; font-size: 12px; font-weight: 700; fill: var(--ink); text-anchor: middle; dominant-baseline: central; }
+  .cnt-end-bg { fill: var(--accent); }
+  .cnt-end-tx { font-family: Georgia, serif; font-size: 12.5px; font-weight: 700; fill: white; text-anchor: middle; dominant-baseline: central; }
+  .cnt-zero-bg { fill: white; stroke: var(--accent-deep); stroke-width: 1.6; }
+  .cnt-zero-tx { font-family: Georgia, serif; font-size: 12px; font-weight: 700; fill: var(--accent-deep); text-anchor: middle; dominant-baseline: central; }
+  .cnt-marker { fill: var(--green); stroke: white; stroke-width: 2.5; filter: drop-shadow(0 1px 3px rgba(74,124,89,.5)); }
+  .cnt-marker-bg { fill: var(--green); }
+  .cnt-marker-tx { font-family: Georgia, serif; font-size: 13px; font-weight: 700; fill: white; text-anchor: middle; dominant-baseline: central; }
+</style>
+</head>
+<body data-mode="learn">
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="back-link" href="practice-1-5-map.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      ко всем тренажёрам
+    </a>
+    <span class="topic-id">practiceRoadsGridTrainer</span>
+    <div class="mode-switch" id="mode-switch">
+      <button data-mode="learn" class="active">Обучение</button>
+      <button data-mode="practice">Тренировка</button>
+      <button data-mode="teacher">Учитель</button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <div class="title-block">
+    <div class="eyebrow">ОГЭ 2026 · задачи 1–5 · дороги</div>
+    <h1>Дороги <em>по клеткам</em></h1>
+    <p class="subtitle">Карта на клетчатой сетке. Лесная дорожка и тропинка с шоссе образуют прямоугольные треугольники. Нужно определить пункты, найти расстояния по шоссе и по прямой, время в пути и самый дешёвый магазин.</p>
+  </div>
+
+  <div class="selector">
+    <div class="row">
+      <span class="label">Сюжет</span>
+      <div id="scenario-chips" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+      <span class="div"></span>
+      <button class="chip gen" id="gen-chip">🎲 Случайная</button>
+    </div>
+    <div class="row">
+      <span class="label">Постановка</span>
+      <div class="setpick" id="setpick">
+        <button data-set="0" class="active">Вариант&nbsp;①</button>
+        <button data-set="1">Вариант&nbsp;②</button>
+      </div>
+      <span id="set-hint" style="font-size:12.5px;color:var(--ink-muted);"></span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <main>
+      <div class="map-card">
+        <div class="map-header">
+          <div class="map-title" id="map-narrative">План местности</div>
+          <div class="scale-tag" id="scale-tag">1 клетка = 1 км</div>
+        </div>
+        <div class="map-svg-wrap">
+          <svg id="map" class="map" viewBox="0 0 600 480" preserveAspectRatio="xMidYMid meet"></svg>
+        </div>
+        <div class="legend">
+          <div class="item"><div class="swatch"></div>шоссе</div>
+          <div class="item"><div class="swatch dashed"></div>лесная дорожка / тропинка</div>
+          <div class="item"><div class="swatch pond"></div>пруд</div>
+        </div>
+        <div class="count-panel" id="count-panel">
+          <span class="count-title">Счёт клеток</span>
+          <div class="count-switch" id="count-switch">
+            <button data-count="off" class="active">выкл</button>
+            <button data-count="pairs">парами</button>
+            <button data-count="triples">тройками</button>
+          </div>
+          <button class="count-play" id="count-play" disabled>▶ пройти по клеткам</button>
+          <span class="count-hint" id="count-hint">Помощь для подсчёта длины по клеткам. Выберите «парами» или «тройками».</span>
+        </div>
+      </div>
+
+      <div class="task-stepper" id="task-stepper">
+        <button class="step-btn active" data-task="0"><span class="step-num">№1</span><span class="step-name">пункты</span></button>
+        <button class="step-btn" data-task="1"><span class="step-num">№2</span><span class="step-name">по шоссе</span></button>
+        <button class="step-btn" data-task="2"><span class="step-num">№3</span><span class="step-name">по прямой</span></button>
+        <button class="step-btn" data-task="3"><span class="step-num">№4</span><span class="step-name">время</span></button>
+        <button class="step-btn" data-task="4"><span class="step-num">№5</span><span class="step-name">магазин</span></button>
+      </div>
+
+      <div class="task-card" id="task-card"></div>
+
+      <div class="problem-card">
+        <div class="problem-text" id="story-text"></div>
+      </div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="side-card">
+        <h3>Скорости</h3>
+        <div class="speeds">
+          <div class="speed-tile road"><div class="val" id="speed-road">25</div><div class="lbl">км/ч по шоссе</div></div>
+          <div class="speed-tile path"><div class="val" id="speed-path">15</div><div class="lbl" id="speed-path-lbl">км/ч по дорожке</div></div>
+        </div>
+      </div>
+      <div class="side-card">
+        <h3>Формула времени</h3>
+        <div class="formula">t (мин) = <span class="frac"><span class="num">S</span><span class="den">v</span></span> × 60<small>S — путь в км, v — скорость в км/ч</small></div>
+      </div>
+      <div class="side-card">
+        <h3>Теорема Пифагора</h3>
+        <div class="formula" style="background: var(--gold);">c² = a² + b²<small>c — гипотенуза (прямая дорожка/тропинка)</small></div>
+      </div>
+      <div class="side-card">
+        <h3>Прогресс</h3>
+        <div class="stats">
+          <div class="stat"><div class="val" id="stat-solved">0</div><div class="lbl">решено</div></div>
+          <div class="stat"><div class="val" id="stat-streak">0</div><div class="lbl">подряд</div></div>
+        </div>
+        <button class="reset-link" id="reset-progress">сбросить прогресс</button>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+
+const SCENARIOS = [
+ {
+  "id": "1",
+  "hero": "Никита",
+  "senior": "папа",
+  "cell": 1,
+  "road": 25,
+  "path": 15,
+  "roadWord": "шоссе",
+  "pathWord": "лесной дорожке",
+  "pathNoun": "лесная дорожка",
+  "scaleNote": "Сторона клетки = 1 км.",
+  "gridCols": 17,
+  "gridRows": 10,
+  "towns": {
+   "start": {
+    "num": 4,
+    "x": 1,
+    "y": 9,
+    "name": "д. Лягушкино",
+    "short": "Лягушкино"
+   },
+   "inter": {
+    "num": 1,
+    "x": 10,
+    "y": 9,
+    "name": "д. Куровка",
+    "short": "Куровка"
+   },
+   "corner": {
+    "num": 3,
+    "x": 16,
+    "y": 9,
+    "name": "д. Марусино",
+    "short": "Марусино"
+   },
+   "dest": {
+    "num": 2,
+    "x": 16,
+    "y": 1,
+    "name": "с. Вятское",
+    "short": "Вятское"
+   }
+  },
+  "pond": {
+   "x": 13.0,
+   "y": 5.0
+  },
+  "shopsByRole": {
+   "start": {
+    "milk": 32,
+    "bread": 26,
+    "cheese": 220,
+    "beef": 360,
+    "potato": 16
+   },
+   "dest": {
+    "milk": 38,
+    "bread": 28,
+    "cheese": 260,
+    "beef": 350,
+    "potato": 15
+   },
+   "inter": {
+    "milk": 31,
+    "bread": 35,
+    "cheese": 230,
+    "beef": 330,
+    "potato": 22
+   },
+   "corner": {
+    "milk": 44,
+    "bread": 25,
+    "cheese": 240,
+    "beef": 400,
+    "potato": 17
+   }
+  },
+  "story": "Никита летом отдыхает у папы в <b>д. Лягушкино</b>. Никита с папой собираются съездить на велосипедах в <b>с. Вятское</b>. Из Лягушкино в Вятское можно проехать по прямой (лесная дорожка). Есть более длинный путь — по <b>шоссе через Куровка до Марусино</b>, где поворот под прямым углом налево, и до Вятское. Третий маршрут — в Куровка свернуть на прямую <b>тропинку</b> в Вятское, которая идёт мимо пруда. <em>Сторона клетки = 1 км.</em>",
+  "variants": [
+   {
+    "label": "1.1",
+    "ident": [
+     "start",
+     "dest",
+     "inter"
+    ],
+    "t2from": "start",
+    "t3from": "start",
+    "t4": "highway",
+    "basket": {
+     "bread": 3,
+     "beef": 2,
+     "potato": 3
+    }
+   },
+   {
+    "label": "1.2",
+    "ident": [
+     "corner",
+     "dest",
+     "inter"
+    ],
+    "t2from": "inter",
+    "t3from": "inter",
+    "t4": "mixed",
+    "basket": {
+     "milk": 6,
+     "bread": 4,
+     "beef": 3
+    }
+   }
+  ]
+ },
+ {
+  "id": "2",
+  "hero": "Полина",
+  "senior": "дедушка",
+  "cell": 2,
+  "road": 20,
+  "path": 15,
+  "roadWord": "шоссе",
+  "pathWord": "лесной дорожке",
+  "pathNoun": "лесная дорожка",
+  "scaleNote": "Клетка плана = 2 км.",
+  "gridCols": 18,
+  "gridRows": 14,
+  "towns": {
+   "start": {
+    "num": 1,
+    "x": 1,
+    "y": 13,
+    "name": "д. Ясная",
+    "short": "Ясная"
+   },
+   "inter": {
+    "num": 2,
+    "x": 12,
+    "y": 13,
+    "name": "д. Камышёвка",
+    "short": "Камышёвка"
+   },
+   "corner": {
+    "num": 3,
+    "x": 17,
+    "y": 13,
+    "name": "д. Хомяково",
+    "short": "Хомяково"
+   },
+   "dest": {
+    "num": 4,
+    "x": 17,
+    "y": 1,
+    "name": "с. Майское",
+    "short": "Майское"
+   }
+  },
+  "pond": {
+   "x": 14.5,
+   "y": 7.0
+  },
+  "shopsByRole": {
+   "start": {
+    "milk": 42,
+    "bread": 25,
+    "cheese": 310,
+    "beef": 340,
+    "potato": 15
+   },
+   "dest": {
+    "milk": 38,
+    "bread": 21,
+    "cheese": 320,
+    "beef": 380,
+    "potato": 20
+   },
+   "inter": {
+    "milk": 41,
+    "bread": 29,
+    "cheese": 290,
+    "beef": 410,
+    "potato": 17
+   },
+   "corner": {
+    "milk": 33,
+    "bread": 30,
+    "cheese": 280,
+    "beef": 390,
+    "potato": 18
+   }
+  },
+  "story": "Полина летом отдыхает у дедушки в <b>д. Ясная</b>. Полина с дедушкой собираются съездить на велосипедах в <b>с. Майское</b>. Из Ясная в Майское можно проехать по прямой (лесная дорожка). Есть более длинный путь — по <b>шоссе через Камышёвка до Хомяково</b>, где поворот под прямым углом налево, и до Майское. Третий маршрут — в Камышёвка свернуть на прямую <b>тропинку</b> в Майское, которая идёт мимо пруда. <em>Клетка плана = 2 км.</em>",
+  "variants": [
+   {
+    "label": "2.1",
+    "ident": [
+     "inter",
+     "start",
+     "corner"
+    ],
+    "t2from": "start",
+    "t3from": "start",
+    "t4": "highway",
+    "basket": {
+     "milk": 2,
+     "beef": 3,
+     "potato": 2
+    }
+   },
+   {
+    "label": "2.2",
+    "ident": [
+     "dest",
+     "corner",
+     "start"
+    ],
+    "t2from": "inter",
+    "t3from": "inter",
+    "t4": "mixed",
+    "basket": {
+     "milk": 3,
+     "cheese": 1,
+     "potato": 3
+    }
+   }
+  ]
+ },
+ {
+  "id": "3",
+  "hero": "Дима",
+  "senior": "дедушка",
+  "cell": 3,
+  "road": 25,
+  "path": 18,
+  "roadWord": "шоссе",
+  "pathWord": "лесной дорожке",
+  "pathNoun": "лесная дорожка",
+  "scaleNote": "Клетка плана = 3 км.",
+  "gridCols": 11,
+  "gridRows": 14,
+  "towns": {
+   "start": {
+    "num": 2,
+    "x": 1,
+    "y": 1,
+    "name": "д. Васильевка",
+    "short": "Васильевка"
+   },
+   "inter": {
+    "num": 3,
+    "x": 5,
+    "y": 1,
+    "name": "д. Шарковка",
+    "short": "Шарковка"
+   },
+   "corner": {
+    "num": 4,
+    "x": 10,
+    "y": 1,
+    "name": "д. Рассвет",
+    "short": "Рассвет"
+   },
+   "dest": {
+    "num": 1,
+    "x": 10,
+    "y": 13,
+    "name": "с. Плодородное",
+    "short": "Плодородное"
+   }
+  },
+  "pond": {
+   "x": 7.5,
+   "y": 7.0
+  },
+  "shopsByRole": {
+   "start": {
+    "milk": 37,
+    "bread": 16,
+    "cheese": 240,
+    "beef": 420,
+    "potato": 30
+   },
+   "dest": {
+    "milk": 38,
+    "bread": 18,
+    "cheese": 280,
+    "beef": 430,
+    "potato": 28
+   },
+   "inter": {
+    "milk": 36,
+    "bread": 22,
+    "cheese": 250,
+    "beef": 415,
+    "potato": 35
+   },
+   "corner": {
+    "milk": 39,
+    "bread": 21,
+    "cheese": 260,
+    "beef": 410,
+    "potato": 25
+   }
+  },
+  "story": "Дима летом отдыхает у дедушки в <b>д. Васильевка</b>. Дима с дедушкой собираются съездить на велосипедах в <b>с. Плодородное</b>. Из Васильевка в Плодородное можно проехать по прямой (лесная дорожка). Есть более длинный путь — по <b>шоссе через Шарковка до Рассвет</b>, где поворот под прямым углом направо, и до Плодородное. Третий маршрут — в Шарковка свернуть на прямую <b>тропинку</b> в Плодородное, которая идёт мимо пруда. <em>Клетка плана = 3 км.</em>",
+  "variants": [
+   {
+    "label": "3.1",
+    "ident": [
+     "corner",
+     "dest",
+     "start"
+    ],
+    "t2from": "start",
+    "t3from": "start",
+    "t4": "forest",
+    "basket": {
+     "milk": 2,
+     "beef": 3,
+     "potato": 2
+    }
+   },
+   {
+    "label": "3.2",
+    "ident": [
+     "corner",
+     "dest",
+     "inter"
+    ],
+    "t2from": "inter",
+    "t3from": "inter",
+    "t4": "mixed",
+    "basket": {
+     "cheese": 4,
+     "beef": 5,
+     "potato": 6
+    }
+   }
+  ]
+ },
+ {
+  "id": "4",
+  "hero": "Саша",
+  "senior": "дедушка",
+  "cell": 1,
+  "road": 20,
+  "path": 15,
+  "roadWord": "шоссе",
+  "pathWord": "лесной дорожке",
+  "pathNoun": "лесная дорожка",
+  "scaleNote": "Сторона клетки = 1 км.",
+  "gridCols": 22,
+  "gridRows": 23,
+  "towns": {
+   "start": {
+    "num": 1,
+    "x": 1,
+    "y": 22,
+    "name": "д. Масловка",
+    "short": "Масловка"
+   },
+   "inter": {
+    "num": 2,
+    "x": 1,
+    "y": 16,
+    "name": "д. Вёсенка",
+    "short": "Вёсенка"
+   },
+   "corner": {
+    "num": 3,
+    "x": 1,
+    "y": 1,
+    "name": "д. Полянка",
+    "short": "Полянка"
+   },
+   "dest": {
+    "num": 4,
+    "x": 21,
+    "y": 1,
+    "name": "с. Захарово",
+    "short": "Захарово"
+   }
+  },
+  "pond": {
+   "x": 11.0,
+   "y": 8.5
+  },
+  "shopsByRole": {
+   "start": {
+    "milk": 45,
+    "bread": 29,
+    "cheese": 250,
+    "beef": 350,
+    "potato": 35
+   },
+   "dest": {
+    "milk": 40,
+    "bread": 28,
+    "cheese": 270,
+    "beef": 380,
+    "potato": 25
+   },
+   "inter": {
+    "milk": 42,
+    "bread": 31,
+    "cheese": 290,
+    "beef": 360,
+    "potato": 32
+   },
+   "corner": {
+    "milk": 52,
+    "bread": 22,
+    "cheese": 280,
+    "beef": 390,
+    "potato": 24
+   }
+  },
+  "story": "Саша летом отдыхает у дедушки в <b>д. Масловка</b>. Саша с дедушкой собираются съездить на велосипедах в <b>с. Захарово</b>. Из Масловка в Захарово можно проехать по прямой (лесная дорожка). Есть более длинный путь — по <b>шоссе через Вёсенка до Полянка</b>, где поворот под прямым углом направо, и до Захарово. Третий маршрут — в Вёсенка свернуть на прямую <b>тропинку</b> в Захарово, которая идёт мимо пруда. <em>Сторона клетки = 1 км.</em>",
+  "variants": [
+   {
+    "label": "4.1",
+    "ident": [
+     "start",
+     "dest",
+     "inter"
+    ],
+    "t2from": "start",
+    "t3from": "start",
+    "t4": "highway",
+    "basket": {
+     "milk": 2,
+     "beef": 2,
+     "potato": 4
+    }
+   },
+   {
+    "label": "4.2",
+    "ident": [
+     "corner",
+     "dest",
+     "inter"
+    ],
+    "t2from": "inter",
+    "t3from": "inter",
+    "t4": "mixed",
+    "basket": {
+     "bread": 3,
+     "cheese": 2,
+     "potato": 5
+    }
+   }
+  ]
+ },
+ {
+  "id": "5",
+  "hero": "Саша",
+  "senior": "дедушка",
+  "cell": 1,
+  "road": 20,
+  "path": 15,
+  "roadWord": "шоссе",
+  "pathWord": "лесной дорожке",
+  "pathNoun": "лесная дорожка",
+  "scaleNote": "Сторона клетки = 1 км.",
+  "gridCols": 14,
+  "gridRows": 18,
+  "towns": {
+   "start": {
+    "num": 4,
+    "x": 1,
+    "y": 17,
+    "name": "д. Васильково",
+    "short": "Васильково"
+   },
+   "inter": {
+    "num": 3,
+    "x": 1,
+    "y": 6,
+    "name": "д. Камышино",
+    "short": "Камышино"
+   },
+   "corner": {
+    "num": 1,
+    "x": 1,
+    "y": 1,
+    "name": "д. Журавушка",
+    "short": "Журавушка"
+   },
+   "dest": {
+    "num": 2,
+    "x": 13,
+    "y": 1,
+    "name": "с. Иваново",
+    "short": "Иваново"
+   }
+  },
+  "pond": {
+   "x": 7.0,
+   "y": 3.5
+  },
+  "shopsByRole": {
+   "start": {
+    "milk": 35,
+    "bread": 28,
+    "cheese": 270,
+    "beef": 390,
+    "potato": 16
+   },
+   "dest": {
+    "milk": 34,
+    "bread": 25,
+    "cheese": 260,
+    "beef": 420,
+    "potato": 24
+   },
+   "inter": {
+    "milk": 33,
+    "bread": 30,
+    "cheese": 310,
+    "beef": 400,
+    "potato": 20
+   },
+   "corner": {
+    "milk": 31,
+    "bread": 24,
+    "cheese": 220,
+    "beef": 380,
+    "potato": 22
+   }
+  },
+  "story": "Саша летом отдыхает у дедушки в <b>д. Васильково</b>. Саша с дедушкой собираются съездить на велосипедах в <b>с. Иваново</b>. Из Васильково в Иваново можно проехать по прямой (лесная дорожка). Есть более длинный путь — по <b>шоссе через Камышино до Журавушка</b>, где поворот под прямым углом направо, и до Иваново. Третий маршрут — в Камышино свернуть на прямую <b>тропинку</b> в Иваново, которая идёт мимо пруда. <em>Сторона клетки = 1 км.</em>",
+  "variants": [
+   {
+    "label": "5.1",
+    "ident": [
+     "start",
+     "dest",
+     "inter"
+    ],
+    "t2from": "start",
+    "t3from": "start",
+    "t4": "forest",
+    "basket": {
+     "milk": 2,
+     "beef": 3,
+     "potato": 2
+    }
+   },
+   {
+    "label": "5.2",
+    "ident": [
+     "inter",
+     "dest",
+     "corner"
+    ],
+    "t2from": "inter",
+    "t3from": "inter",
+    "t4": "mixed",
+    "basket": {
+     "bread": 3,
+     "cheese": 2,
+     "beef": 2
+    }
+   }
+  ]
+ },
+ {
+  "id": "6",
+  "hero": "Серёжа",
+  "senior": "папа",
+  "cell": 2,
+  "road": 60,
+  "path": 40,
+  "roadWord": "шоссе",
+  "pathWord": "грунтовой дороге",
+  "pathNoun": "грунтовая дорога",
+  "scaleNote": "Клетка плана = 2 км.",
+  "gridCols": 17,
+  "gridRows": 10,
+  "towns": {
+   "start": {
+    "num": 4,
+    "x": 16,
+    "y": 1,
+    "name": "д. Пирожки",
+    "short": "Пирожки"
+   },
+   "inter": {
+    "num": 1,
+    "x": 7,
+    "y": 1,
+    "name": "д. Васильево",
+    "short": "Васильево"
+   },
+   "corner": {
+    "num": 3,
+    "x": 1,
+    "y": 1,
+    "name": "д. Рябиновка",
+    "short": "Рябиновка"
+   },
+   "dest": {
+    "num": 2,
+    "x": 1,
+    "y": 9,
+    "name": "с. Княжеское",
+    "short": "Княжеское"
+   }
+  },
+  "pond": {
+   "x": 4.0,
+   "y": 5.0
+  },
+  "shopsByRole": {
+   "start": {
+    "milk": 48,
+    "bread": 34,
+    "cheese": 240,
+    "beef": 370,
+    "potato": 22
+   },
+   "dest": {
+    "milk": 45,
+    "bread": 32,
+    "cheese": 280,
+    "beef": 400,
+    "potato": 16
+   },
+   "inter": {
+    "milk": 50,
+    "bread": 33,
+    "cheese": 270,
+    "beef": 380,
+    "potato": 28
+   },
+   "corner": {
+    "milk": 52,
+    "bread": 28,
+    "cheese": 260,
+    "beef": 420,
+    "potato": 30
+   }
+  },
+  "story": "Серёжа летом отдыхает у папы в <b>д. Пирожки</b>. Серёжа с папой собираются съездить на велосипедах в <b>с. Княжеское</b>. Из Пирожки в Княжеское можно проехать по прямой (грунтовая дорога). Есть более длинный путь — по <b>шоссе через Васильево до Рябиновка</b>, где поворот под прямым углом налево, и до Княжеское. Третий маршрут — в Васильево свернуть на прямую <b>тропинку</b> в Княжеское, которая идёт мимо пруда. <em>Клетка плана = 2 км.</em>",
+  "variants": [
+   {
+    "label": "6.1",
+    "ident": [
+     "start",
+     "dest",
+     "corner"
+    ],
+    "t2from": "start",
+    "t3from": "start",
+    "t4": "forest",
+    "basket": {
+     "milk": 2,
+     "bread": 3,
+     "cheese": 1
+    }
+   },
+   {
+    "label": "6.2",
+    "ident": [
+     "inter",
+     "dest",
+     "corner"
+    ],
+    "t2from": "inter",
+    "t3from": "inter",
+    "t4": "mixed",
+    "basket": {
+     "milk": 3,
+     "beef": 1,
+     "potato": 4
+    }
+   }
+  ]
+ }
+];
+// ============================================================
+// ГЕНЕРАТОР СЛУЧАЙНЫХ ЗАДАЧ
+// Скелеты подобраны так, что ОБЕ гипотенузы (A→D и B→D) целые.
+// ============================================================
+const SKELETONS = [
+  {AC:15,BC:6,CD:8}, {AC:16,BC:5,CD:12}, {AC:9,BC:5,CD:12},
+  {AC:16,BC:9,CD:12}, {AC:21,BC:15,CD:20}, {AC:20,BC:8,CD:15}
+];
+const ORIENTS = [
+  [[-1,0],[0,-1]], [[-1,0],[0,1]], [[1,0],[0,-1]], [[1,0],[0,1]],
+  [[0,1],[1,0]], [[0,1],[-1,0]], [[0,-1],[1,0]], [[0,-1],[-1,0]]
+];
+const POOL = {
+  hero: [["Никита","папа"],["Полина","дедушка"],["Дима","дедушка"],["Саша","дедушка"],
+         ["Серёжа","папа"],["Аня","бабушка"],["Костя","дядя"],["Лена","дедушка"]],
+  village: ["Дубки","Ольхово","Берёзовка","Соснино","Гривино","Ясенево","Клёново","Рощино",
+            "Лужки","Затонье","Медведково","Заречье","Липки","Вязовка","Ручьёво","Горелово"],
+  selo: ["Спасское","Троицкое","Рождествено","Богданово","Никольское","Покровское",
+         "Воскресенское","Знаменское","Успенское","Крестово"],
+  path: [["лесной дорожке","лесная дорожка"],["грунтовой дороге","грунтовая дорога"]]
+};
+const GOODS = ["milk","bread","cheese","beef","potato"];
+const GOOD_NAMES = { milk:"Молоко (л)", bread:"Хлеб (батон)", cheese:"Сыр (кг)", beef:"Говядина (кг)", potato:"Картофель (кг)" };
+const PRICE_RANGE = { milk:[30,55], bread:[16,35], cheese:[220,330], beef:[330,430], potato:[15,35] };
+
+function rint(a,b){ return a + Math.floor(Math.random()*(b-a+1)); }
+function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+function pickN(a,n){ const c=a.slice(),r=[]; while(r.length<n&&c.length) r.push(c.splice(Math.floor(Math.random()*c.length),1)[0]); return r; }
+function relGen(sr){ return {"папа":"папы","дедушка":"дедушки","бабушка":"бабушки","дядя":"дяди"}[sr]||"родных"; }
+function kidsPhrase(h,sr){ const s={"папа":"с папой","дедушка":"с дедушкой","бабушка":"с бабушкой","дядя":"с дядей"}[sr]||"вместе"; return h+" "+s; }
+
+function makeRandomScenario(){
+  const sk=pick(SKELETONS), oi=Math.floor(Math.random()*ORIENTS.length), orient=ORIENTS[oi];
+  const cell=pick([1,1,2]);
+  let road=pick([15,20,25,60]), path=pick([10,12,15,40]);
+  if(path>=road){ path=pick([10,12,15]); road=pick([20,25,60]); }
+  const vills=pickN(POOL.village,3), selo=pick(POOL.selo), hero=pick(POOL.hero), pathPair=pick(POOL.path);
+  const names={ start:"д. "+vills[0], inter:"д. "+vills[1], corner:"д. "+vills[2], dest:"с. "+selo };
+  // координаты
+  const C=[0,0];
+  const A=[orient[0][0]*sk.AC, orient[0][1]*sk.AC];
+  const B=[orient[0][0]*sk.BC, orient[0][1]*sk.BC];
+  const D=[orient[1][0]*sk.CD, orient[1][1]*sk.CD];
+  let pts={start:A,inter:B,corner:C,dest:D};
+  const minx=Math.min(...Object.values(pts).map(p=>p[0])), miny=Math.min(...Object.values(pts).map(p=>p[1]));
+  for(const k in pts) pts[k]=[pts[k][0]-minx+1, pts[k][1]-miny+1];
+  const gx=Math.max(...Object.values(pts).map(p=>p[0]))+1, gy=Math.max(...Object.values(pts).map(p=>p[1]))+1;
+  const nums=pickN([1,2,3,4],4), roleKeys=["start","inter","corner","dest"], towns={};
+  roleKeys.forEach((r,i)=>{ towns[r]={num:nums[i],x:pts[r][0],y:pts[r][1],name:names[r],short:names[r].replace(/^д\. |^с\. /,"")}; });
+  const pond={x:(pts.inter[0]+pts.dest[0])/2, y:(pts.inter[1]+pts.dest[1])/2};
+  const shopsByRole={};
+  roleKeys.forEach(r=>{ const sh={}; GOODS.forEach(g=>{ sh[g]=rint(PRICE_RANGE[g][0],PRICE_RANGE[g][1]); }); shopsByRole[r]=sh; });
+  const chosen=pickN(GOODS, rint(2,3)), basket={};
+  chosen.forEach(g=>{ basket[g]= g==="cheese"?rint(1,4):(g==="beef"?rint(1,3):rint(2,6)); });
+  const set=pick([0,1]);
+  const ident=pickN(["start","inter","corner","dest"],3);
+  const vr = set===0
+    ? {label:"случайная ①", ident, t2from:"start", t3from:"start", t4:pick(["highway","forest"]), basket}
+    : {label:"случайная ②", ident, t2from:"inter", t3from:"inter", t4:"mixed", basket};
+  const st=towns.start.short, ds=towns.dest.short, it=towns.inter.short, cn=towns.corner.short;
+  // направление поворота вычисляем из координат (экран: y вниз ⇒ cross<0 = налево)
+  const As=pts.start, Cs=pts.corner, Ds=pts.dest;
+  const cross=(Cs[0]-As[0])*(Ds[1]-Cs[1]) - (Cs[1]-As[1])*(Ds[0]-Cs[0]);
+  const turn = cross<0 ? "налево" : "направо";
+  const scaleNote = cell!==1 ? ("Клетка плана = "+cell+" км.") : "Сторона клетки = 1 км.";
+  const story = hero[0]+" летом отдыхает у "+relGen(hero[1])+" в <b>"+towns.start.name+"</b>. "+kidsPhrase(hero[0],hero[1])+
+    " собираются съездить на велосипедах в <b>"+towns.dest.name+"</b>. Из "+st+" в "+ds+" можно проехать по прямой ("+pathPair[1]+
+    "). Есть более длинный путь — по <b>шоссе через "+it+" до "+cn+"</b>, где поворот под прямым углом "+turn+", и до "+ds+
+    ". Третий маршрут — в "+it+" свернуть на прямую <b>тропинку</b> в "+ds+", которая идёт мимо пруда. <em>"+scaleNote+"</em>";
+  return { id:"gen", hero:hero[0], senior:hero[1], cell, road, path, roadWord:"шоссе",
+    pathWord:pathPair[0], pathNoun:pathPair[1], scaleNote, gridCols:gx, gridRows:gy,
+    towns, pond, shopsByRole, story, variants:[vr,vr] };
+}
+
+// ============================================================
+// СОСТОЯНИЕ
+// ============================================================
+const STORAGE_KEY='mathExamCourseProgress.v1', TOPIC='practiceRoadsGridTrainer';
+let state={ scenIdx:0, setIdx:0, task:0, mode:'learn', gen:false, genScenario:null, count:'off', solved:0, streak:0, done:{} };
+let COUNT_ANIM=null, countTimer=null;
+
+function loadProgress(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}'); }catch(e){ return {}; } }
+function saveProgress(){ try{ const d=loadProgress(); d[TOPIC]={solved:state.solved,streak:state.streak,total:SCENARIOS.length*2*5}; localStorage.setItem(STORAGE_KEY,JSON.stringify(d)); }catch(e){} }
+function doneKey(){ return (state.gen?'gen':('s'+state.scenIdx))+'.'+state.setIdx+'.'+state.task; }
+
+function currentScenario(){ return state.gen ? state.genScenario : SCENARIOS[state.scenIdx]; }
+function currentVariant(){ const s=currentScenario(); return s.variants[state.gen?0:state.setIdx]; }
+
+// ============================================================
+// ГЕОМЕТРИЯ И ОТВЕТЫ
+// ============================================================
+function legCells(t1,t2){ return Math.hypot(t2.x-t1.x, t2.y-t1.y); }
+function km(s,t1,t2){ return legCells(t1,t2)*s.cell; }
+function fmt(n){ if(Math.abs(n-Math.round(n))<1e-9) return String(Math.round(n)); let s=n.toFixed(2).replace(/0+$/,'').replace(/[.]$/,''); return s.replace('.',','); }
+
+function computeAnswers(s, vr){
+  const T=s.towns, A=T.start,B=T.inter,C=T.corner,D=T.dest;
+  const AC=km(s,A,C), BC=km(s,B,C), CD=km(s,C,D), AB=km(s,A,B), AD=km(s,A,D), BD=km(s,B,D);
+  const p2 = vr.t2from==='start'?A:B;
+  const t2leg=km(s,p2,C), t2=t2leg+CD;
+  const t3legs = vr.t3from==='start' ? [AC,CD] : [BC,CD];
+  const t3=Math.hypot(t3legs[0],t3legs[1]);
+  let t4;
+  if(vr.t4==='highway') t4=(AC+CD)/s.road*60;
+  else if(vr.t4==='forest') t4=AD/s.path*60;
+  else t4=AB/s.road*60 + BD/s.path*60;
+  const roles=['start','dest','inter','corner'];
+  const totals=roles.map(r=> GOODS.reduce((a,g)=>a+(vr.basket[g]||0)*s.shopsByRole[r][g],0));
+  const minTotal=Math.min(...totals), minIdx=totals.indexOf(minTotal);
+  return {AC,BC,CD,AB,AD,BD,t2,t2leg,t3,t3legs,t4,totals,minTotal,minIdx,roles};
+}
+
+// ============================================================
+// РЕНДЕР КАРТЫ
+// ============================================================
+const NS='http://www.w3.org/2000/svg';
+function E(tag,attrs){ const n=document.createElementNS(NS,tag); for(const k in attrs) n.setAttribute(k,attrs[k]); return n; }
+
+function planForTask(s, vr){
+  const t=state.task, a=computeAnswers(s,vr), A='start',B='inter',C='corner',D='dest';
+  const p={ overlays:[], labels:[], tri:null, raNeighbors:null };
+  if(t===1){
+    const from = vr.t2from==='start'?A:B;
+    p.overlays.push({pair:[from,C],type:'road'},{pair:[C,D],type:'road'});
+    p.labels.push({pair:[from,C],text:fmt(a.t2leg)+' км',kind:'plain'},{pair:[C,D],text:fmt(a.CD)+' км',kind:'plain'});
+    p.raNeighbors=[from,D];
+  } else if(t===2){
+    const from = vr.t3from==='start'?A:B;
+    p.overlays.push({pair:[from,D],type:'path'}); p.tri=[from,C,D]; p.raNeighbors=[from,D];
+    const legs=vr.t3from==='start'?[a.AC,a.CD]:[a.BC,a.CD];
+    p.labels.push({pair:[from,C],text:fmt(legs[0]),kind:'plain'},{pair:[C,D],text:fmt(legs[1]),kind:'plain'},{pair:[from,D],text:'c = ?',kind:'path'});
+  } else if(t===3){
+    if(vr.t4==='highway') p.overlays.push({pair:[A,C],type:'road'},{pair:[C,D],type:'road'});
+    else if(vr.t4==='forest') p.overlays.push({pair:[A,D],type:'path'});
+    else p.overlays.push({pair:[A,B],type:'road'},{pair:[B,D],type:'path'});
+  }
+  return p;
+}
+
+function renderMap(){
+  const s=currentScenario(), vr=currentVariant(), svg=document.getElementById('map');
+  stopCount(); svg.innerHTML='';
+  const CELL=Math.max(16, Math.min(40, Math.floor(560/s.gridCols)));
+  const W=s.gridCols*CELL, H=s.gridRows*CELL, PADB=32;
+  const MG = state.count!=='off' ? 26 : 0;
+  svg.setAttribute('viewBox', (-MG)+' '+(-MG)+' '+(W+2*MG)+' '+(H+PADB+2*MG));
+  const T=s.towns;
+  const px=r=>({x:T[r].x*CELL, y:T[r].y*CELL});
+
+  // сетка
+  const g=E('g',{});
+  for(let i=0;i<=s.gridCols;i++) g.appendChild(E('line',{x1:i*CELL,y1:0,x2:i*CELL,y2:H,class:'grid-line'}));
+  for(let j=0;j<=s.gridRows;j++) g.appendChild(E('line',{x1:0,y1:j*CELL,x2:W,y2:j*CELL,class:'grid-line'}));
+  svg.appendChild(g);
+
+  // масштаб
+  const sy=H+18, sx=CELL;
+  svg.appendChild(E('line',{x1:sx,y1:sy,x2:sx+CELL,y2:sy,stroke:'#4a5568','stroke-width':1.5}));
+  svg.appendChild(E('line',{x1:sx,y1:sy-4,x2:sx,y2:sy+4,stroke:'#4a5568','stroke-width':1.5}));
+  svg.appendChild(E('line',{x1:sx+CELL,y1:sy-4,x2:sx+CELL,y2:sy+4,stroke:'#4a5568','stroke-width':1.5}));
+  const stx=E('text',{x:sx+CELL/2,y:sy-7,'font-family':'Georgia, serif','font-size':12,fill:'#4a5568','text-anchor':'middle'});
+  stx.textContent=s.cell+' км'; svg.appendChild(stx);
+
+  const plan=planForTask(s,vr);
+
+  // заливка треугольника
+  if(plan.tri){
+    const pp=plan.tri.map(px);
+    svg.appendChild(E('polygon',{points:pp.map(p=>p.x+','+p.y).join(' '),class:'triangle-fill'}));
+  }
+  // базовые дороги
+  const A=px('start'),B=px('inter'),C=px('corner'),D=px('dest');
+  svg.appendChild(E('line',{x1:A.x,y1:A.y,x2:C.x,y2:C.y,class:'road-line'}));
+  svg.appendChild(E('line',{x1:C.x,y1:C.y,x2:D.x,y2:D.y,class:'road-line'}));
+  svg.appendChild(E('line',{x1:A.x,y1:A.y,x2:D.x,y2:D.y,class:'path-line dim'}));
+  svg.appendChild(E('line',{x1:B.x,y1:B.y,x2:D.x,y2:D.y,class:'path-line dim'}));
+  // пруд
+  const pc={x:s.pond.x*CELL,y:s.pond.y*CELL};
+  svg.appendChild(E('ellipse',{cx:pc.x,cy:pc.y,rx:CELL*0.85,ry:CELL*0.45,class:'pond',transform:'rotate(-30 '+pc.x+' '+pc.y+')'}));
+
+  // подсветка маршрута
+  plan.overlays.forEach(o=>{ const a=px(o.pair[0]),b=px(o.pair[1]); svg.appendChild(E('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,class:(o.type==='road'?'road-line hi':'path-line hi')})); });
+
+  // прямой угол
+  if(plan.raNeighbors){
+    const sz=Math.max(9,CELL*0.32);
+    const n1=px(plan.raNeighbors[0]),n2=px(plan.raNeighbors[1]);
+    const u1=unit(n1.x-C.x,n1.y-C.y), u2=unit(n2.x-C.x,n2.y-C.y);
+    const p1={x:C.x+u1.x*sz,y:C.y+u1.y*sz}, p3={x:C.x+u2.x*sz,y:C.y+u2.y*sz};
+    const p2={x:p1.x+u2.x*sz,y:p1.y+u2.y*sz};
+    svg.appendChild(E('path',{d:'M '+p1.x+' '+p1.y+' L '+p2.x+' '+p2.y+' L '+p3.x+' '+p3.y,class:'right-angle-marker'}));
+  }
+
+  // подписи расстояний
+  plan.labels.forEach(l=>{ const a=px(l.pair[0]),b=px(l.pair[1]); const mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+    const horiz=Math.abs(b.x-a.x)>=Math.abs(b.y-a.y);
+    const lx=mx+(horiz?0:( (l.text.length*3.5)+10 )), ly=my+(horiz?-13:0);
+    drawLabel(svg,lx,ly,l.text,l.kind);
+  });
+
+  // счёт клеток (линейка с группировкой)
+  drawCounting(svg, s, CELL, W, H, plan, px);
+
+  // города: номера всегда; названия — НЕ в задаче 1 (определение) и не в режиме тренировки
+  const showNames = (state.task!==0) && (state.mode!=='practice');
+  ['start','inter','corner','dest'].forEach(r=>{
+    const p=px(r);
+    const grp=E('g',{});
+    grp.appendChild(E('circle',{cx:p.x,cy:p.y,r:13,class:'town-point'}));
+    const tx=E('text',{x:p.x,y:p.y,class:'town-label'}); tx.textContent=T[r].num; grp.appendChild(tx);
+    if(showNames){
+      const belowRoom = p.y < H-CELL*0.9;
+      const rightSide = T[r].x > s.gridCols*0.58;
+      const nx=E('text',{x:p.x+(rightSide?-16:16),y:p.y+(belowRoom?18:-16),class:'town-name','text-anchor':(rightSide?'end':'start')});
+      nx.textContent=T[r].short; grp.appendChild(nx);
+    }
+    svg.appendChild(grp);
+  });
+
+  updateCountUI(s);
+}
+function unit(x,y){ const l=Math.hypot(x,y)||1; return {x:x/l,y:y/l}; }
+function drawLabel(svg,x,y,text,kind){
+  const w=text.length*7+10;
+  svg.appendChild(E('rect',{x:x-w/2,y:y-9,width:w,height:18,rx:4,class:'dist-label-bg'}));
+  const t=E('text',{x:x,y:y,class:'dist-label '+(kind||'plain')}); t.textContent=text; svg.appendChild(t);
+}
+
+// ============================================================
+// СЧЁТ КЛЕТОК: линейка с группировкой по 2/3 и бегущий маркер
+// Ключевое — точное начало (узел = 0) и точный конец (узел = итог).
+// ============================================================
+function stopCount(){ if(countTimer){ clearInterval(countTimer); countTimer=null; } }
+
+function drawCounting(svg, s, CELL, W, H, plan, px){
+  COUNT_ANIM=null;
+  if(state.count==='off') return;
+  const k = state.count==='pairs' ? 2 : 3;
+  const animLegs=[];
+  plan.labels.forEach(l=>{
+    const r1=l.pair[0], r2=l.pair[1], t1=s.towns[r1], t2=s.towns[r2];
+    const axisAligned = (t1.x===t2.x) || (t1.y===t2.y);
+    if(!axisAligned) return;                       // гипотенузу по клеткам не считаем
+    const n=Math.round(Math.hypot(t2.x-t1.x, t2.y-t1.y));
+    if(n<1) return;
+    const P=px(r1), Q=px(r2);                      // P — начало (узел 0), Q — конец (узел n)
+    const dir={x:(Q.x-P.x)/n, y:(Q.y-P.y)/n};      // вектор одной клетки
+    const horiz=Math.abs(Q.x-P.x)>Math.abs(Q.y-P.y);
+    const midx=(P.x+Q.x)/2, midy=(P.y+Q.y)/2, OFF=13;
+    const nrm = horiz ? {x:0, y:(midy>=H/2? OFF : -OFF)} : {x:(midx>=W/2? OFF : -OFF), y:0};
+    const at   = c=>({x:P.x+dir.x*c,           y:P.y+dir.y*c});
+    const atO  = c=>({x:P.x+dir.x*c+nrm.x,      y:P.y+dir.y*c+nrm.y});
+    const atL  = c=>({x:P.x+dir.x*c+nrm.x*2.05, y:P.y+dir.y*c+nrm.y*2.05});
+    // границы групп в клетках: 0, k, 2k, …, n (последняя группа — остаток)
+    const bounds=[0]; let c=k; while(c<n){ bounds.push(c); c+=k; } bounds.push(n);
+    // цветные отрезки-группы вдоль линейки
+    for(let i=0;i<bounds.length-1;i++){
+      const a=atO(bounds[i]), b=atO(bounds[i+1]), span=bounds[i+1]-bounds[i];
+      const cls=(span<k && (n%k)!==0) ? 'cnt-group-rem' : (i%2===0?'cnt-group-a':'cnt-group-b');
+      svg.appendChild(E('line',{x1:a.x,y1:a.y,x2:b.x,y2:b.y,class:cls}));
+    }
+    // засечки от линии к линейке в каждой границе
+    bounds.forEach(cc=>{ const o=at(cc), t=atO(cc); svg.appendChild(E('line',{x1:o.x,y1:o.y,x2:t.x,y2:t.y,class:'cnt-tick'})); });
+    // накопительное расстояние (км) у промежуточных границ
+    for(let i=1;i<bounds.length-1;i++){ const lp=atL(bounds[i]); const tx=E('text',{x:lp.x,y:lp.y,class:'cnt-run'}); tx.textContent=fmt(bounds[i]*s.cell); svg.appendChild(tx); }
+    // НАЧАЛО: узел 0
+    const z=atO(0); svg.appendChild(E('circle',{cx:z.x,cy:z.y,r:9,class:'cnt-zero-bg'}));
+    const zt=E('text',{x:z.x,y:z.y,class:'cnt-zero-tx'}); zt.textContent='0'; svg.appendChild(zt);
+    // КОНЕЦ: узел n — итог в км
+    const e=atO(n), lab=fmt(n*s.cell)+' км', w=lab.length*7+12;
+    svg.appendChild(E('rect',{x:e.x-w/2,y:e.y-10,width:w,height:20,rx:6,class:'cnt-end-bg'}));
+    const et=E('text',{x:e.x,y:e.y,class:'cnt-end-tx'}); et.textContent=lab; svg.appendChild(et);
+    animLegs.push({ pts:bounds.map(atO), cum:bounds.map(b=>b*s.cell) });
+  });
+  COUNT_ANIM = animLegs.length ? {legs:animLegs} : null;
+}
+
+function playCount(){
+  if(!COUNT_ANIM) return;
+  stopCount();
+  const svg=document.getElementById('map');
+  svg.querySelectorAll('.cnt-anim').forEach(n=>n.remove());
+  const legs=COUNT_ANIM.legs.map(L=>{
+    const g=E('g',{class:'cnt-anim'});
+    const c=E('circle',{r:13,class:'cnt-marker'});
+    const tx=E('text',{class:'cnt-marker-tx'});
+    g.appendChild(c); g.appendChild(tx); svg.appendChild(g);
+    return {L,c,tx,idx:0};
+  });
+  const place=o=>{ const p=o.L.pts[o.idx];
+    o.c.setAttribute('cx',p.x); o.c.setAttribute('cy',p.y);
+    o.tx.setAttribute('x',p.x); o.tx.setAttribute('y',p.y); o.tx.textContent=fmt(o.L.cum[o.idx]); };
+  legs.forEach(place);
+  countTimer=setInterval(()=>{
+    let moved=false;
+    legs.forEach(o=>{ if(o.idx<o.L.pts.length-1){ o.idx++; place(o); moved=true; } });
+    if(!moved) stopCount();
+  }, 650);
+}
+
+function updateCountUI(s){
+  const applicable = (state.task===1 || state.task===2);   // «по шоссе» и «по прямой»
+  const panel=document.getElementById('count-panel');
+  if(panel) panel.style.display = applicable ? '' : 'none';
+  if(!applicable) return;                                   // вне этих задач панели нет — путаницы нет
+  document.querySelectorAll('#count-switch button').forEach(b=>b.classList.toggle('active', b.dataset.count===state.count));
+  const play=document.getElementById('count-play'); if(play) play.disabled = !COUNT_ANIM;
+  const hint=document.getElementById('count-hint');
+  if(hint){
+    if(state.count==='off')
+      hint.textContent='Считаете длину по клеткам? Включите «парами» или «тройками» — клетки вдоль дороги разобьются на группы, а километры наберутся сами.';
+    else
+      hint.textContent='Дорога размечена группами по '+(state.count==='pairs'?'2':'3')+' клетки от узла «0» до итога. Числа — километры нарастающим итогом. Кнопка ▶ проведёт маркер по клеткам.';
+  }
+}
+
+// ============================================================
+// ЗАДАЧИ
+// ============================================================
+function tName(s,r){ return s.towns[r].name; }
+function kidsOf(s){ return kidsPhrase(s.hero, s.senior); }
+function pathWordOf(s){ return s.pathWord; }
+
+function commonButtonsHTML(lastLabel){
+  return '<div class="button-row">'+
+    '<button class="btn btn-gold" id="hint-btn">Подсказка</button>'+
+    '<button class="btn btn-secondary" id="show-btn">Показать решение</button>'+
+    '<button class="btn btn-secondary" id="next-btn">'+lastLabel+'</button></div>';
+}
+
+function renderTask(){
+  const s=currentScenario(), vr=currentVariant(), a=computeAnswers(s,vr);
+  document.getElementById('story-text').innerHTML=s.story;
+  document.getElementById('speed-road').textContent=s.road;
+  document.getElementById('speed-path').textContent=s.path;
+  document.getElementById('speed-path-lbl').textContent='км/ч по '+(s.pathWord.indexOf('грунт')>=0?'дороге':'дорожке');
+  document.getElementById('scale-tag').textContent='1 клетка = '+s.cell+' км';
+  const narr = state.gen ? 'Случайная задача' : ('Сюжет '+s.id);
+  document.getElementById('map-narrative').textContent = (state.task===0)
+    ? (narr+' · определите пункты по описанию')
+    : (narr+' · '+s.towns.start.short+' → '+s.towns.dest.short);
+  const prefix=(state.gen?'gen':'s'+state.scenIdx)+'.'+state.setIdx+'.';
+  document.querySelectorAll('#task-stepper .step-btn').forEach((b,i)=>{ b.classList.toggle('active',i===state.task); b.classList.toggle('done', !!state.done[prefix+i]); });
+  [renderTask1,renderTask2,renderTask3,renderTask4,renderTask5][state.task](s,vr,a);
+  renderMap(); applyMode(); updateStats(); updateSetHint();
+}
+
+// ---- Задача 1: определение пунктов ----
+function renderTask1(s,vr){
+  const card=document.getElementById('task-card');
+  const roles=vr.ident, nums=roles.map(r=>s.towns[r].num);
+  const opts=[1,2,3,4];
+  let rows='';
+  roles.forEach((r,i)=>{ rows+='<tr><td>'+tName(s,r)+'</td><td><select data-idx="'+i+'" class="id-sel"><option value="">—</option>'+
+    opts.map(o=>'<option value="'+o+'">'+o+'</option>').join('')+'</select></td></tr>'; });
+  card.innerHTML =
+    '<div class="task-meta">Задача 1 · определение пунктов</div>'+
+    '<div class="task-question">Пользуясь описанием, определите, какими <b>цифрами</b> на плане обозначены населённые пункты:</div>'+
+    '<table class="id-table"><thead><tr><th>Населённый пункт</th><th>Цифра на плане</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+    '<div class="hint-box" id="hint-box"><div class="label">Подсказка</div><ol>'+
+      '<li>Старт и конечное село — это два конца всего пути; их напрямую соединяет лесная дорожка. Две деревни (промежуточная и с поворотом) лежат на шоссе между ними.</li>'+
+      '<li>Главная зацепка — найдите в тексте, в какую сторону, <b>налево или направо</b>, шоссе поворачивает под прямым углом. Это направление однозначно задаёт, где какой пункт.</li>'+
+      '<li>Мысленно поезжайте от старта по шоссе: первая деревня на пути — промежуточная, затем деревня-поворот (прямой угол), затем конечное село. От промежуточной деревни отходит тропинка мимо пруда.</li>'+
+    '</ol></div>'+
+    '<div class="answer-section"><div class="answer-row"><button class="btn btn-primary" id="check-btn">Проверить</button></div>'+
+      '<div class="feedback" id="feedback"></div></div>'+
+    '<div class="teacher-block" id="teacher-block"><div class="label">Решение</div>'+
+      roles.map((r,i)=>'<div class="step">'+tName(s,r)+' — цифра <b>'+nums[i]+'</b></div>').join('')+
+      '<div class="answer-display">Ответ: '+nums.join('')+'</div></div>'+
+    commonButtonsHTML('Следующая задача →');
+  document.getElementById('check-btn').addEventListener('click',()=>{
+    const sels=card.querySelectorAll('.id-sel'); let allOk=true, filled=true;
+    sels.forEach((sel,i)=>{ const v=parseInt(sel.value,10); if(!v){ filled=false; return; }
+      if(v===nums[i]){ sel.classList.remove('wrong'); sel.classList.add('correct'); }
+      else { sel.classList.remove('correct'); sel.classList.add('wrong'); allOk=false; } });
+    const fb=document.getElementById('feedback');
+    if(!filled){ fb.className='feedback warn show'; fb.innerHTML='Заполните все строки.'; return; }
+    if(allOk){ fb.className='feedback correct show'; fb.innerHTML='<b>Верно!</b> Последовательность цифр: <b>'+nums.join('')+'</b>.'; onCorrect(); }
+    else { fb.className='feedback warn show'; fb.innerHTML='Не всё верно. Сверьтесь с описанием: кто где относительно шоссе и поворота.'; onWrong(); }
+  });
+  bindCommon();
+}
+
+// ---- Задача 2: расстояние по шоссе ----
+function renderTask2(s,vr,a){
+  const card=document.getElementById('task-card');
+  const from = vr.t2from==='start'?'start':'inter';
+  const fromShort=s.towns[from].short, cn=s.towns.corner.short, ds=s.towns.dest.short;
+  card.innerHTML =
+    '<div class="task-meta">Задача 2 · расстояние по шоссе</div>'+
+    '<div class="task-question">Сколько <b>километров</b> проедут '+kidsOf(s)+' от '+tName(s,from)+' до '+tName(s,'dest')+', если поедут <b>по шоссе через '+cn+'</b>?</div>'+
+    '<div class="pythagoras"><div class="triangle">'+fromShort+' → '+cn+' → '+ds+'</div>'+
+      '<div class="calc">по шоссе = '+fmt(a.t2leg)+' + '+fmt(a.CD)+' = ?</div></div>'+
+    '<div class="hint-box" id="hint-box"><div class="label">Подсказка</div><ol>'+
+      '<li>Шоссе — сплошные синие линии. Оно состоит из двух прямых участков (катетов), пересекающихся под прямым углом в '+cn+'.</li>'+
+      '<li>Посчитайте клетки от '+fromShort+' до поворота: <b>'+fmt(a.t2leg/s.cell)+'</b> кл × '+s.cell+' км = <b>'+fmt(a.t2leg)+' км</b>.</li>'+
+      '<li>От поворота до '+ds+': <b>'+fmt(a.CD/s.cell)+'</b> кл × '+s.cell+' км = <b>'+fmt(a.CD)+' км</b>.</li>'+
+      '<li>Сложите: <b>'+fmt(a.t2leg)+' + '+fmt(a.CD)+' = '+fmt(a.t2)+' км</b>.</li></ol></div>'+
+    '<div class="answer-section"><div class="answer-row"><input type="text" class="answer-input" id="answer-input" placeholder="введите число" autocomplete="off"><span class="answer-unit">км</span><button class="btn btn-primary" id="check-btn">Проверить</button></div><div class="feedback" id="feedback"></div></div>'+
+    '<div class="teacher-block" id="teacher-block"><div class="label">Решение</div>'+
+      '<div class="step">Первый участок шоссе: '+fmt(a.t2leg/s.cell)+' кл × '+s.cell+' км = <b>'+fmt(a.t2leg)+' км</b>.</div>'+
+      '<div class="step">Второй участок шоссе: '+fmt(a.CD/s.cell)+' кл × '+s.cell+' км = <b>'+fmt(a.CD)+' км</b>.</div>'+
+      '<div class="step">Всего по шоссе: '+fmt(a.t2leg)+' + '+fmt(a.CD)+' = <b>'+fmt(a.t2)+' км</b>.</div>'+
+      '<div class="answer-display">Ответ: '+fmt(a.t2)+' км</div></div>'+
+    commonButtonsHTML('Следующая задача →');
+  bindNumeric(a.t2,'км'); bindCommon();
+}
+
+// ---- Задача 3: расстояние по прямой (Пифагор) ----
+function renderTask3(s,vr,a){
+  const card=document.getElementById('task-card');
+  const from = vr.t3from==='start'?'start':'inter';
+  const fromShort=s.towns[from].short, ds=s.towns.dest.short;
+  const legs = vr.t3from==='start'?[a.AC,a.CD]:[a.BC,a.CD];
+  const way = vr.t3from==='start' ? ('по прямой '+s.pathNoun) : 'по тропинке мимо пруда';
+  const A2=legs[0]*legs[0], B2=legs[1]*legs[1], C2=A2+B2, c=a.t3;
+  card.innerHTML =
+    '<div class="task-meta">Задача 3 · расстояние по прямой</div>'+
+    '<div class="task-question">Найдите расстояние от '+tName(s,from)+' до '+tName(s,'dest')+' <b>по прямой</b> ('+way+'). Ответ дайте в <b>километрах</b>.</div>'+
+    '<div class="pythagoras"><div class="triangle">c² = a² + b²</div>'+
+      '<div class="calc">c² = '+fmt(legs[0])+'² + '+fmt(legs[1])+'² = '+fmt(A2)+' + '+fmt(B2)+' = '+fmt(C2)+'</div>'+
+      '<div class="calc" style="margin-top:6px;">c = √'+fmt(C2)+(Number.isInteger(c)?' = <b>'+c+'</b>':'')+'</div></div>'+
+    '<div class="hint-box" id="hint-box"><div class="label">Подсказка</div><ol>'+
+      '<li>Прямая ('+way+') — это <b>гипотенуза</b> прямоугольного треугольника с вершиной прямого угла в '+s.towns.corner.short+'.</li>'+
+      '<li>Катеты — два участка шоссе: <b>'+fmt(legs[0])+' км</b> и <b>'+fmt(legs[1])+' км</b>.</li>'+
+      '<li>По теореме Пифагора: c² = '+fmt(A2)+' + '+fmt(B2)+' = '+fmt(C2)+'.</li>'+
+      '<li>c = √'+fmt(C2)+' = <b>'+fmt(c)+' км</b>.</li></ol></div>'+
+    '<div class="answer-section"><div class="answer-row"><input type="text" class="answer-input" id="answer-input" placeholder="введите число" autocomplete="off"><span class="answer-unit">км</span><button class="btn btn-primary" id="check-btn">Проверить</button></div><div class="feedback" id="feedback"></div></div>'+
+    '<div class="teacher-block" id="teacher-block"><div class="label">Решение</div>'+
+      '<div class="step">Катеты прямоугольного треугольника: <b>'+fmt(legs[0])+' км</b> и <b>'+fmt(legs[1])+' км</b>.</div>'+
+      '<div class="step">c² = '+fmt(legs[0])+'² + '+fmt(legs[1])+'² = '+fmt(C2)+'.</div>'+
+      '<div class="step">c = √'+fmt(C2)+' = <b>'+fmt(c)+' км</b>.</div>'+
+      '<div class="answer-display">Ответ: '+fmt(c)+' км</div></div>'+
+    commonButtonsHTML('Следующая задача →');
+  bindNumeric(c,'км'); bindCommon();
+}
+
+// ---- Задача 4: время в пути ----
+function renderTask4(s,vr,a){
+  const card=document.getElementById('task-card');
+  const st=s.towns.start.short, ds=s.towns.dest.short, it=s.towns.inter.short, cn=s.towns.corner.short;
+  let q, helper, hint, teacher;
+  if(vr.t4==='highway'){
+    const S=a.AC+a.CD, t=a.t4;
+    q='Сколько <b>минут</b> затратят на дорогу из '+tName(s,'start')+' в '+tName(s,'dest')+' '+kidsOf(s)+', если поедут <b>по шоссе через '+cn+'</b>?';
+    helper='<div class="calc">S = '+fmt(S)+' км · v = '+s.road+' км/ч</div><div class="calc" style="margin-top:6px;">t = '+fmt(S)+' ÷ '+s.road+' × 60 = <b>'+fmt(t)+'</b> мин</div>';
+    hint='<li>Весь путь по шоссе: '+fmt(a.AC)+' + '+fmt(a.CD)+' = <b>'+fmt(S)+' км</b>.</li><li>Скорость по шоссе: <b>'+s.road+' км/ч</b>.</li><li>t = '+fmt(S)+' ÷ '+s.road+' × 60 = <b>'+fmt(t)+' мин</b>.</li>';
+    teacher='<div class="step">Путь по шоссе: '+fmt(a.AC)+' + '+fmt(a.CD)+' = <b>'+fmt(S)+' км</b>.</div><div class="step">t = '+fmt(S)+' ÷ '+s.road+' × 60 = <b>'+fmt(t)+' мин</b>.</div>';
+  } else if(vr.t4==='forest'){
+    const S=a.AD, t=a.t4;
+    q='Сколько <b>минут</b> затратят на дорогу из '+tName(s,'start')+' в '+tName(s,'dest')+' '+kidsOf(s)+', если поедут <b>по прямой '+s.pathNoun+'</b>?';
+    helper='<div class="calc">S = '+fmt(S)+' км · v = '+s.path+' км/ч</div><div class="calc" style="margin-top:6px;">t = '+fmt(S)+' ÷ '+s.path+' × 60 = <b>'+fmt(t)+'</b> мин</div>';
+    hint='<li>Длина прямой ('+s.pathNoun+') из задачи 3: <b>'+fmt(S)+' км</b>.</li><li>Скорость по ней: <b>'+s.path+' км/ч</b>.</li><li>t = '+fmt(S)+' ÷ '+s.path+' × 60 = <b>'+fmt(t)+' мин</b>.</li>';
+    teacher='<div class="step">Длина прямой дорожки: <b>'+fmt(S)+' км</b> (гипотенуза).</div><div class="step">t = '+fmt(S)+' ÷ '+s.path+' × 60 = <b>'+fmt(t)+' мин</b>.</div>';
+  } else {
+    const tR=a.AB/s.road*60, tP=a.BD/s.path*60, t=a.t4;
+    q='Сколько <b>минут</b> затратят на дорогу из '+tName(s,'start')+' в '+tName(s,'dest')+' '+kidsOf(s)+', если поедут <b>сначала по шоссе, а затем свернут в '+it+' на прямую тропинку мимо пруда</b>?';
+    helper='<div class="calc">по шоссе '+st+'→'+it+': '+fmt(a.AB)+' ÷ '+s.road+' × 60 = '+fmt(tR)+' мин</div><div class="calc" style="margin-top:4px;">по тропинке '+it+'→'+ds+': '+fmt(a.BD)+' ÷ '+s.path+' × 60 = '+fmt(tP)+' мин</div><div class="calc" style="margin-top:4px;">итого = <b>'+fmt(t)+'</b> мин</div>';
+    hint='<li>По шоссе '+st+' → '+it+': <b>'+fmt(a.AB)+' км</b>, скорость '+s.road+' → '+fmt(a.AB)+' ÷ '+s.road+' × 60 = <b>'+fmt(tR)+' мин</b>.</li><li>По тропинке '+it+' → '+ds+': <b>'+fmt(a.BD)+' км</b> (гипотенуза), скорость '+s.path+' → '+fmt(a.BD)+' ÷ '+s.path+' × 60 = <b>'+fmt(tP)+' мин</b>.</li><li>Сложите: '+fmt(tR)+' + '+fmt(tP)+' = <b>'+fmt(t)+' мин</b>.</li>';
+    teacher='<div class="step">По шоссе '+st+'→'+it+': '+fmt(a.AB)+' ÷ '+s.road+' × 60 = <b>'+fmt(tR)+' мин</b>.</div><div class="step">По тропинке '+it+'→'+ds+': '+fmt(a.BD)+' ÷ '+s.path+' × 60 = <b>'+fmt(tP)+' мин</b>.</div><div class="step">Итого: '+fmt(tR)+' + '+fmt(tP)+' = <b>'+fmt(t)+' мин</b>.</div>';
+  }
+  card.innerHTML =
+    '<div class="task-meta">Задача 4 · время в пути</div>'+
+    '<div class="task-question">'+q+'</div>'+
+    '<div class="pythagoras"><div class="triangle">t = S / v × 60</div>'+helper+'</div>'+
+    '<div class="hint-box" id="hint-box"><div class="label">Подсказка</div><ol>'+hint+'</ol></div>'+
+    '<div class="answer-section"><div class="answer-row"><input type="text" class="answer-input" id="answer-input" placeholder="введите число" autocomplete="off"><span class="answer-unit">минут</span><button class="btn btn-primary" id="check-btn">Проверить</button></div><div class="feedback" id="feedback"></div></div>'+
+    '<div class="teacher-block" id="teacher-block"><div class="label">Решение</div>'+teacher+'<div class="answer-display">Ответ: '+fmt(a.t4)+' мин</div></div>'+
+    commonButtonsHTML('Следующая задача →');
+  bindNumeric(a.t4,'мин'); bindCommon();
+}
+
+// ---- Задача 5: выбор магазина ----
+function renderTask5(s,vr,a){
+  const card=document.getElementById('task-card');
+  const roles=['start','dest','inter','corner'];
+  const keys=GOODS.filter(g=>vr.basket[g]);
+  let head='<tr><th>Продукт</th>'+roles.map(r=>'<th>'+s.towns[r].short+'</th>').join('')+'</tr>';
+  let body='';
+  keys.forEach(g=>{ body+='<tr class="qty"><td>'+GOOD_NAMES[g]+' <small>× '+vr.basket[g]+'</small></td>'+
+    roles.map(r=>'<td>'+s.shopsByRole[r][g]+' × '+vr.basket[g]+' = <b>'+(s.shopsByRole[r][g]*vr.basket[g])+'</b></td>').join('')+'</tr>'; });
+  body+='<tr class="total-row"><td>ИТОГО, руб</td>'+roles.map((r,i)=>'<td class="'+(i===a.minIdx?'winner':'')+'">'+a.totals[i]+'</td>').join('')+'</tr>';
+  const basketText=keys.map(g=>vr.basket[g]+' '+({milk:'л молока',bread:'батон(а) хлеба',cheese:'кг сыра',beef:'кг говядины',potato:'кг картофеля'}[g])).join(', ');
+  card.innerHTML =
+    '<div class="task-meta">Задача 5 · выбор магазина</div>'+
+    '<div class="task-question">'+kidsOf(s)+' хотят купить <b>'+basketText+'</b>. В каком магазине набор дешевле всего? В ответ запишите <b>минимальную стоимость</b> в рублях.</div>'+
+    '<div class="shop-wrap"><table class="shop-table"><thead>'+head+'</thead><tbody>'+body+'</tbody></table></div>'+
+    '<div class="hint-box" id="hint-box"><div class="label">Подсказка</div><ol>'+
+      '<li>Для каждого магазина посчитайте стоимость набора: цена × количество, затем сложите.</li>'+
+      '<li>Сравните четыре суммы и выберите <b>наименьшую</b>.</li>'+
+      '<li>В ответ идёт именно сумма (в рублях), а не название магазина.</li></ol></div>'+
+    '<div class="answer-section"><div class="answer-row"><input type="text" class="answer-input" id="answer-input" placeholder="минимальная стоимость" autocomplete="off"><span class="answer-unit">руб</span><button class="btn btn-primary" id="check-btn">Проверить</button></div><div class="feedback" id="feedback"></div></div>'+
+    '<div class="teacher-block" id="teacher-block"><div class="label">Решение</div>'+
+      roles.map((r,i)=>'<div class="step">'+s.towns[r].short+': <b>'+a.totals[i]+' руб</b></div>').join('')+
+      '<div class="step" style="margin-top:6px;">Дешевле всего — <b>'+s.towns[roles[a.minIdx]].short+'</b>: <b>'+a.minTotal+' руб</b>.</div>'+
+      '<div class="answer-display">Ответ: '+a.minTotal+' руб</div></div>'+
+    commonButtonsHTML(state.gen?'Новая случайная →':'Следующий вариант →');
+  bindNumeric(a.minTotal,'руб'); bindCommon();
+}
+// ============================================================
+// ОБЩИЕ ОБРАБОТЧИКИ
+// ============================================================
+function bindNumeric(answer, unit){
+  const check=()=>{
+    const input=document.getElementById('answer-input'), fb=document.getElementById('feedback');
+    const raw=input.value.trim().replace(',', '.').replace(/\s/g,'');
+    const val=parseFloat(raw);
+    if(isNaN(val)){ fb.className='feedback warn show'; fb.innerHTML='Введите число. Например, <b>25</b> или <b>12,5</b>.'; return; }
+    const tol=Math.max(Math.abs(answer)*0.005, 0.05);
+    if(Math.abs(val-answer)<tol){ fb.className='feedback correct show'; fb.innerHTML='<b>Верно!</b> Ответ: '+fmt(answer)+' '+unit+'.'; onCorrect(); }
+    else { fb.className='feedback warn show'; fb.innerHTML='Не совсем. Проверьте расчёт или откройте «Подсказку».'; onWrong(); }
+  };
+  document.getElementById('check-btn').addEventListener('click',check);
+  document.getElementById('answer-input').addEventListener('keydown',e=>{ if(e.key==='Enter') check(); });
+}
+
+function bindCommon(){
+  document.getElementById('hint-btn').addEventListener('click',()=>document.getElementById('hint-box').classList.add('show'));
+  document.getElementById('show-btn').addEventListener('click',()=>{
+    document.getElementById('hint-box').classList.add('show');
+    document.getElementById('teacher-block').classList.add('show');
+    const input=document.getElementById('answer-input');
+    if(input){ const ans=document.querySelector('#teacher-block .answer-display'); if(ans){ const m=ans.textContent.match(/-?[\d]+(?:,[\d]+)?/); if(m) input.value=m[0]; } }
+  });
+  document.getElementById('next-btn').addEventListener('click',goNext);
+}
+
+function goNext(){
+  if(state.task<4){ state.task++; renderTask(); return; }
+  if(state.gen){ state.genScenario=makeRandomScenario(); state.task=0; renderTask(); return; }
+  if(state.setIdx===0){ state.setIdx=1; }
+  else { state.setIdx=0; state.scenIdx=(state.scenIdx+1)%SCENARIOS.length; }
+  state.task=0; syncSelectorUI(); renderTask();
+}
+
+function onCorrect(){
+  if(!state.done[doneKey()]) state.solved++;
+  state.done[doneKey()]=true; state.streak++; saveProgress(); updateStats();
+  const btn=document.querySelector('#task-stepper .step-btn[data-task="'+state.task+'"]'); if(btn) btn.classList.add('done');
+}
+function onWrong(){ state.streak=0; saveProgress(); updateStats(); }
+function updateStats(){ document.getElementById('stat-solved').textContent=state.solved; document.getElementById('stat-streak').textContent=state.streak; }
+
+function applyMode(){
+  document.body.dataset.mode=state.mode;
+  const learn=state.mode==='learn', teacher=state.mode==='teacher';
+  document.querySelectorAll('.hint-box').forEach(b=>b.classList.toggle('show', learn||teacher));
+  document.querySelectorAll('.teacher-block').forEach(b=>b.classList.toggle('show', teacher));
+}
+
+function updateSetHint(){
+  const vr=currentVariant();
+  const from = vr.t2from==='start' ? 'полный путь от старта' : 'от промежуточной деревни';
+  const t4 = vr.t4==='highway' ? 'по шоссе' : vr.t4==='forest' ? 'по прямой дорожке' : 'смешанный маршрут';
+  document.getElementById('set-hint').textContent = '· '+from+', время — '+t4;
+}
+
+function syncSelectorUI(){
+  document.querySelectorAll('#scenario-chips .chip').forEach((c,i)=>c.classList.toggle('active', !state.gen && i===state.scenIdx));
+  document.getElementById('gen-chip').classList.toggle('active', state.gen);
+  document.querySelectorAll('#setpick button').forEach((b,i)=>b.classList.toggle('active', i===state.setIdx));
+  document.getElementById('setpick').style.opacity = state.gen ? 0.5 : 1;
+}
+
+// ============================================================
+// ИНИЦИАЛИЗАЦИЯ
+// ============================================================
+(function init(){
+  const chips=document.getElementById('scenario-chips');
+  SCENARIOS.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.className='chip'+(i===0?' active':'');
+    b.innerHTML='<span class="n">'+s.id+'</span>'+s.towns.start.short;
+    b.addEventListener('click',()=>{ state.gen=false; state.scenIdx=i; state.task=0; syncSelectorUI(); renderTask(); });
+    chips.appendChild(b);
+  });
+  document.querySelectorAll('#setpick button').forEach(b=>b.addEventListener('click',()=>{
+    state.gen=false; state.setIdx=parseInt(b.dataset.set,10); state.task=0; syncSelectorUI(); renderTask();
+  }));
+  document.getElementById('gen-chip').addEventListener('click',()=>{
+    state.gen=true; state.genScenario=makeRandomScenario(); state.task=0; syncSelectorUI(); renderTask();
+  });
+  document.querySelectorAll('#mode-switch button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#mode-switch button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); state.mode=b.dataset.mode; applyMode(); renderMap();
+  }));
+  document.querySelectorAll('#task-stepper .step-btn').forEach(b=>b.addEventListener('click',()=>{
+    state.task=parseInt(b.dataset.task,10); renderTask();
+  }));
+  document.querySelectorAll('#count-switch button').forEach(b=>b.addEventListener('click',()=>{
+    state.count=b.dataset.count; renderMap();
+  }));
+  document.getElementById('count-play').addEventListener('click', playCount);
+  document.getElementById('reset-progress').addEventListener('click',()=>{
+    if(confirm('Сбросить прогресс тренажёра?')){ state.solved=0; state.streak=0; state.done={}; saveProgress(); updateStats(); renderTask(); }
+  });
+  const d=loadProgress(); if(d[TOPIC]){ state.solved=d[TOPIC].solved||0; state.streak=d[TOPIC].streak||0; }
+  syncSelectorUI(); renderTask();
+})();
+</script>
+</body>
+</html>

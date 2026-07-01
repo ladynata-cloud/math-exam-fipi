@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Печки · тренажёр 1–5</title>
+<style>
+  :root {
+    --bg: #faf7f2; --bg-card: #ffffff; --bg-soft: #f5f1e8;
+    --ink: #1a2332; --ink-soft: #4a5568; --ink-muted: #8a93a3;
+    --line: #e8e3d8; --line-strong: #d4cfc2;
+    --accent: #1e3a5f; --accent-soft: #dbe4f0; --accent-deep: #142a44;
+    --gold: #b8924b; --gold-soft: #f3e9d4;
+    --green: #4a7c59; --green-soft: #dcebe0;
+    --warm: #d4956a; --warm-soft: #f5e3d4;
+    --error-soft: #f7e3dc; --error-ink: #8a4d3a;
+    --shadow: 0 1px 3px rgba(26,35,50,.05), 0 4px 24px rgba(26,35,50,.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PT Sans", Roboto, sans-serif; font-size: 16px; line-height: 1.55; min-height: 100vh; }
+  body { background-image: radial-gradient(circle at 15% 10%, rgba(184,146,75,.04) 0, transparent 40%), radial-gradient(circle at 85% 80%, rgba(30,58,95,.04) 0, transparent 40%); }
+
+  .topnav { border-bottom: 1px solid var(--line); background: rgba(250,247,242,.85); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 50; }
+  .topnav-inner { max-width: 1200px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .back-link { color: var(--ink-soft); text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+  .back-link:hover { color: var(--accent); }
+  .topic-id { font-family: monospace; font-size: 11px; color: var(--ink-muted); background: var(--bg-soft); padding: 4px 10px; border-radius: 6px; }
+  .mode-switch { display: flex; background: var(--bg-soft); border-radius: 10px; padding: 3px; gap: 2px; }
+  .mode-switch button { background: none; border: none; padding: 8px 14px; font-family: inherit; font-size: 13px; color: var(--ink-soft); border-radius: 7px; cursor: pointer; }
+  .mode-switch button.active { background: var(--bg-card); color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,.06); font-weight: 500; }
+
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 28px 24px 80px; }
+  .title-block { margin-bottom: 24px; }
+  .eyebrow { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .18em; color: var(--gold); margin-bottom: 10px; }
+  h1 { font-family: Georgia, serif; font-size: clamp(28px, 4vw, 40px); font-weight: 400; line-height: 1.15; letter-spacing: -.01em; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .subtitle { color: var(--ink-soft); margin-top: 8px; max-width: 700px; }
+
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 28px; align-items: start; }
+  @media (max-width: 1040px) { .layout { grid-template-columns: 1fr; } }
+
+  /* STOVE CARDS */
+  .stoves-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+  @media (max-width: 800px) { .stoves-grid { grid-template-columns: 1fr; } }
+  .stove-card { background: var(--bg-card); border: 2px solid var(--line); border-radius: 14px; padding: 18px; transition: all .25s; }
+  .stove-card.selected { border-color: var(--accent); box-shadow: 0 4px 16px rgba(30,58,95,.15); }
+  .stove-card.wood-A { background: linear-gradient(180deg, #fdfcf8 0%, #f5ede0 100%); }
+  .stove-card.wood-B { background: linear-gradient(180deg, #fdfcf8 0%, #f3e9d4 100%); }
+  .stove-card.electric { background: linear-gradient(180deg, #fdfcf8 0%, #e3edf5 100%); }
+  .stove-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .stove-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .wood-A .stove-icon { background: var(--gold-soft); color: var(--gold); }
+  .wood-B .stove-icon { background: var(--gold-soft); color: var(--gold); }
+  .electric .stove-icon { background: var(--accent-soft); color: var(--accent); }
+  .stove-name { font-family: Georgia, serif; font-size: 18px; font-weight: 600; color: var(--ink); }
+  .stove-type { font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .1em; }
+  .stove-specs { font-size: 13px; line-height: 1.7; color: var(--ink-soft); }
+  .stove-specs .spec { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px dashed var(--line); }
+  .stove-specs .spec:last-child { border-bottom: none; }
+  .stove-specs .spec b { color: var(--accent); }
+  .stove-price { margin-top: 10px; padding: 10px 12px; background: white; border-radius: 8px; text-align: center; font-family: Georgia, serif; font-size: 17px; color: var(--accent); font-weight: 600; }
+  .stove-price small { display: block; font-size: 11px; color: var(--ink-muted); font-weight: 400; margin-top: 2px; }
+
+  .bath-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 22px; margin-bottom: 20px; }
+  .bath-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .bath-title { font-family: Georgia, serif; font-size: 16px; color: var(--ink-soft); }
+  .bath-svg-wrap { background: linear-gradient(180deg, #fdfcf8 0%, #f5f1e8 100%); border-radius: 12px; padding: 14px; }
+  svg.bath { width: 100%; height: auto; max-height: 320px; display: block; }
+  .bath-dims { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
+  @media (max-width: 700px) { .bath-dims { grid-template-columns: 1fr 1fr; } }
+  .dim-item { padding: 10px 12px; background: var(--bg-soft); border-radius: 8px; font-size: 13px; text-align: center; }
+  .dim-item .lbl { color: var(--ink-muted); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+  .dim-item .val { font-family: Georgia, serif; font-size: 17px; color: var(--accent); font-weight: 600; margin-top: 4px; }
+
+  .task-stepper { display: flex; gap: 6px; margin-top: 8px; background: var(--bg-card); padding: 8px; border: 1px solid var(--line); border-radius: 12px; }
+  .step-btn { flex: 1; background: var(--bg-soft); border: none; padding: 10px 6px; border-radius: 8px; font-family: inherit; font-size: 12px; color: var(--ink-soft); cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .step-btn:hover { background: var(--accent-soft); color: var(--accent); }
+  .step-btn.active { background: var(--accent); color: white; }
+  .step-btn .step-num { font-family: Georgia, serif; font-size: 16px; font-weight: 600; }
+  .step-btn .step-name { font-size: 10px; opacity: .85; }
+
+  .task-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 24px; margin-top: 16px; }
+  .task-meta { font-family: Georgia, serif; font-size: 14px; color: var(--ink-muted); font-style: italic; margin-bottom: 8px; }
+  .task-question { font-size: 16px; line-height: 1.65; color: var(--ink); margin-bottom: 18px; }
+  .task-question b { color: var(--accent); }
+
+  .id-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 12px 0; background: var(--bg-card); border-radius: 10px; overflow: hidden; border: 1px solid var(--line); }
+  .id-table th, .id-table td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .id-table th { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .id-table tr:last-child td { border-bottom: none; }
+  .id-table select { border: 1.5px solid var(--line-strong); background: white; padding: 6px 10px; border-radius: 7px; font-family: inherit; font-size: 14px; color: var(--ink); cursor: pointer; }
+  .id-table select:focus { outline: none; border-color: var(--accent); }
+  .id-table select.correct { border-color: var(--green); background: var(--green-soft); color: var(--green); }
+  .id-table select.wrong { border-color: var(--warm); background: var(--error-soft); }
+
+  .calc-box { margin: 14px 0; padding: 16px; background: var(--bg-soft); border-radius: 10px; border: 1px dashed var(--line-strong); font-family: Georgia, serif; font-size: 15px; color: var(--accent); }
+  .calc-box .formula-line { font-size: 17px; margin-bottom: 8px; font-weight: 600; text-align: center; }
+  .calc-box .step-line { color: var(--ink-soft); font-size: 14px; margin-top: 4px; }
+
+  .answer-section { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .answer-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .answer-input { flex: 1; min-width: 160px; padding: 12px 16px; border: 1.5px solid var(--line-strong); background: white; border-radius: 10px; font-family: Georgia, serif; font-size: 18px; color: var(--accent); }
+  .answer-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .answer-unit { color: var(--ink-muted); font-size: 14px; }
+
+  .btn { padding: 11px 20px; border-radius: 9px; font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: all .2s; border: 1.5px solid transparent; }
+  .btn-primary { background: var(--accent); color: white; }
+  .btn-primary:hover { background: var(--accent-deep); transform: translateY(-1px); }
+  .btn-secondary { background: var(--bg-card); color: var(--ink-soft); border-color: var(--line-strong); }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-ghost { background: none; color: var(--ink-muted); }
+  .btn-gold { background: var(--gold-soft); color: var(--gold); }
+  .btn-gold:hover { background: var(--gold); color: white; }
+  .button-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+
+  .feedback { margin-top: 14px; padding: 12px 16px; border-radius: 10px; font-size: 14px; display: none; }
+  .feedback.correct { background: var(--green-soft); color: var(--green); border: 1px solid var(--green); }
+  .feedback.warn { background: var(--warm-soft); color: var(--error-ink); border: 1px solid var(--warm); }
+  .feedback.show { display: block; animation: fadeup .35s; }
+
+  .hint-box { margin-top: 14px; padding: 14px 18px; background: var(--gold-soft); border-radius: 10px; border-left: 3px solid var(--gold); font-size: 14px; color: var(--ink); display: none; }
+  .hint-box.show { display: block; animation: fadeup .3s; }
+  .hint-box .label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--gold); margin-bottom: 6px; }
+  .hint-box ol { margin-left: 18px; margin-top: 4px; }
+  .hint-box b { color: var(--accent); }
+
+  .teacher-block { margin-top: 16px; padding: 14px 18px; background: var(--accent-soft); border-radius: 10px; border-left: 3px solid var(--accent); display: none; font-size: 14px; line-height: 1.7; }
+  .teacher-block.show { display: block; }
+  .teacher-block .label { font-size: 11px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 6px; }
+  .teacher-block .step { padding-left: 18px; position: relative; margin-bottom: 5px; }
+  .teacher-block .step::before { content: "→"; position: absolute; left: 0; color: var(--gold); }
+  .teacher-block .answer-display { display: inline-block; margin-top: 8px; padding: 5px 12px; background: white; border-radius: 7px; color: var(--accent); font-family: Georgia, serif; font-weight: 600; }
+
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+  .side-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+  .side-card h3 { font-family: Georgia, serif; font-size: 16px; font-weight: 400; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .side-card h3::before { content: ""; display: inline-block; width: 4px; height: 14px; background: var(--gold); border-radius: 2px; }
+
+  .formula { background: var(--accent); color: white; padding: 14px 16px; border-radius: 10px; font-family: Georgia, serif; font-size: 15px; text-align: center; line-height: 1.7; }
+  .formula.gold { background: var(--gold); }
+  .formula small { display: block; opacity: .75; font-size: 11px; margin-top: 4px; }
+
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat { background: var(--bg-soft); padding: 12px; border-radius: 10px; text-align: center; }
+  .stat .val { font-family: Georgia, serif; font-size: 22px; color: var(--accent); }
+  .stat .lbl { font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .08em; margin-top: 4px; }
+
+  @keyframes fadeup { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Bath SVG */
+  .bath-wall { fill: #f3e9d4; stroke: var(--gold); stroke-width: 2; }
+  .bath-floor { fill: #e8dfc8; stroke: var(--gold); stroke-width: 1.5; }
+  .bath-door { fill: #4a3623; stroke: var(--gold); stroke-width: 1.5; }
+  .bath-stove { fill: #2d3848; stroke: var(--accent-deep); stroke-width: 1.5; }
+  .arc-fill { fill: rgba(74,124,89,.15); stroke: var(--green); stroke-width: 2; stroke-dasharray: 4,3; fill-rule: evenodd; }
+  .dim-line { stroke: var(--accent); stroke-width: 1.2; fill: none; }
+  .dim-text { font-family: Georgia, serif; font-size: 12px; fill: var(--accent); font-weight: 600; }
+
+  /* ---- enriched additions ---- */
+  .group-tabs { display:flex; gap:6px; flex-wrap:wrap; background:var(--bg-card); padding:8px; border:1px solid var(--line); border-radius:12px; margin-top:8px; }
+  .group-tab { flex:1 1 140px; background:var(--bg-soft); border:none; padding:10px 8px; border-radius:8px; font-family:inherit; color:var(--ink-soft); cursor:pointer; display:flex; flex-direction:column; gap:2px; align-items:center; transition:all .18s; }
+  .group-tab .g-name { font-family:Georgia, serif; font-weight:600; font-size:14px; }
+  .group-tab .g-sub { font-size:10px; color:var(--ink-muted); }
+  .group-tab:hover { background:var(--accent-soft); color:var(--accent); }
+  .group-tab.active { background:var(--accent); color:#fff; }
+  .group-tab.active .g-sub { color:rgba(255,255,255,.72); }
+  .chip-row { display:flex; gap:7px; flex-wrap:wrap; margin-top:10px; }
+  .chip { background:var(--bg-soft); border:1px solid var(--line); padding:7px 13px; border-radius:20px; font-size:12px; color:var(--ink-soft); cursor:pointer; display:flex; align-items:center; gap:6px; transition:all .18s; }
+  .chip:hover { border-color:var(--accent); color:var(--accent); }
+  .chip.active { background:var(--accent-soft); border-color:var(--accent); color:var(--accent); font-weight:600; }
+  .chip .tick { color:var(--green); font-weight:700; display:none; }
+  .chip.done .tick { display:inline; }
+
+  .givens { display:grid; grid-template-columns:repeat(auto-fit,minmax(84px,1fr)); gap:8px; margin:12px 0; }
+  .givens .g { background:var(--bg-soft); border-radius:8px; padding:8px 10px; text-align:center; }
+  .givens .g .k { font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-muted); }
+  .givens .g .v { font-family:Georgia, serif; font-size:15px; color:var(--accent); font-weight:600; margin-top:2px; }
+  .fig { background:linear-gradient(180deg,#fdfcf8,#f5f1e8); border-radius:12px; padding:14px 14px 6px; margin:12px 0; }
+  .fig svg { width:100%; max-width:420px; display:block; margin:0 auto; height:auto; }
+  .fig-cap { text-align:center; font-size:11px; color:var(--ink-muted); margin-top:6px; font-style:italic; }
+  .note { margin:12px 0; padding:10px 14px; border-left:3px solid var(--gold); background:var(--gold-soft); border-radius:0 8px 8px 0; font-size:13px; color:var(--ink); }
+  .note b { color:var(--accent); }
+  .stove-install { margin-top:6px; font-size:11px; color:var(--warm); text-align:center; }
+
+  /* mode gating: worked calc + auto hint + full solution */
+  body[data-mode="practice"] .worked { display:none; }
+  body:not([data-mode="practice"]) .hint-box.auto { display:block; }
+  body[data-mode="teacher"] .teacher-block { display:block; }
+  .task-card.hint-open .hint-box.auto { display:block; }
+  .task-card.revealed .worked,
+  .task-card.revealed .hint-box.auto,
+  .task-card.revealed .teacher-block { display:block; }
+
+  /* arc figure styling */
+  .a-koz { fill:#f3e9d4; stroke:var(--gold); stroke-width:2; }
+  .a-inner { fill:#fdfcf8; stroke:var(--ink-muted); stroke-width:1.2; }
+  .a-arc { fill:rgba(74,124,89,.14); stroke:var(--green); stroke-width:2.5; }
+  .a-rad { stroke:var(--accent); stroke-width:1.6; }
+  .a-chord { stroke:var(--accent); stroke-width:1.4; stroke-dasharray:5,3; }
+  .a-sag { stroke:var(--warm); stroke-width:2; }
+  .a-lbl { font-family:Georgia, serif; font-size:12px; fill:var(--accent); font-weight:600; }
+  .a-lbl.warm { fill:var(--warm); }
+  .a-dot { fill:var(--accent); }
+
+  /* ===== banya interactive figure ===== */
+  .banya { margin-top: 2px; }
+  .banya .controls { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }
+  .banya .seg { display:flex; background:var(--bg-soft); border-radius:10px; padding:3px; gap:2px; }
+  .banya .seg button { background:none; border:none; padding:8px 15px; font:inherit; font-size:13px; color:var(--ink-soft); border-radius:7px; cursor:pointer; transition:.15s; }
+  .banya .seg button:hover { color:var(--accent); }
+  .banya .seg button.active { background:var(--bg-card); color:var(--accent); box-shadow:0 1px 3px rgba(0,0,0,.08); font-weight:600; }
+  .banya .seg button:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  .banya .dims-toggle { margin-left:auto; display:inline-flex; align-items:center; gap:9px; font-size:13px; color:var(--ink-soft); cursor:pointer; user-select:none; }
+  .banya .dims-toggle input { position:absolute; opacity:0; width:0; height:0; }
+  .banya .dims-toggle .sw { width:38px; height:22px; border-radius:20px; background:var(--line-strong); position:relative; transition:.2s; }
+  .banya .dims-toggle .sw::after { content:""; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:#fff; transition:.2s; box-shadow:0 1px 2px rgba(0,0,0,.2); }
+  .banya .dims-toggle input:checked + .sw { background:var(--gold); }
+  .banya .dims-toggle input:checked + .sw::after { transform:translateX(16px); }
+  .banya .dims-toggle input:focus-visible + .sw { outline:2px solid var(--accent); outline-offset:2px; }
+  .banya .stage-wrap { position:relative; background: radial-gradient(120% 120% at 30% 20%, #fefdfa 0%, #f4efe6 100%); border-radius:12px; padding:10px; }
+  .banya svg.stage { width:100%; height:auto; display:block; max-height:none; }
+  .banya .stage [data-group] { display:none; }
+  .banya .stage[data-view="room"]   [data-group="room"]   { display:block; }
+  .banya .stage[data-view="plan"]   [data-group="plan"]   { display:block; }
+  .banya .stage[data-view="unfold"] [data-group="unfold"] { display:block; }
+  .banya .stage:not(.show-dims) [data-group="room"] .dims { display:none; }
+  .banya .cap { margin-top:10px; font-size:12.5px; color:var(--ink-muted); text-align:center; font-style:italic; }
+  .banya .dline { stroke: var(--gold); stroke-width: 1.3; fill:none; }
+  .banya .dtick { stroke: var(--gold); stroke-width: 1.3; }
+  .banya .dlabel { font-family: Georgia, serif; font-size: 13px; fill: var(--gold); font-weight: 600; }
+  .banya .dim { cursor: help; }
+  .banya .dim:hover .dline, .banya .dim.hl .dline { stroke: var(--accent); stroke-width: 2.2; }
+  .banya .dim:hover .dtick, .banya .dim.hl .dtick { stroke: var(--accent); stroke-width: 2.2; }
+  .banya .dim:hover .dlabel, .banya .dim.hl .dlabel { fill: var(--accent); }
+  .banya .edge { transition: .15s; }
+  .banya .edge.hl { stroke: var(--accent); stroke-width: 4; }
+  .banya .flabel { font-family: Georgia, serif; font-size: 13px; fill: var(--ink-soft); }
+  .banya .flabel.b { fill: var(--accent); font-weight:600; }
+  .banya .tip { position:absolute; pointer-events:none; background:var(--ink); color:#fff; font-size:12px; line-height:1.35; padding:7px 11px; border-radius:9px; opacity:0; transform:translate(-50%,-118%); transition:opacity .12s; max-width:230px; z-index:6; box-shadow:0 6px 18px rgba(0,0,0,.22); }
+  .banya .tip::after { content:""; position:absolute; left:50%; top:100%; transform:translateX(-50%); border:6px solid transparent; border-top-color:var(--ink); }
+  .banya .tip.on { opacity:1; }
+  @keyframes bhSteamRise { 0%{opacity:0; transform:translateY(8px) scaleX(.9);} 25%{opacity:.18;} 100%{opacity:0; transform:translateY(-30px) scaleX(1.4);} }
+  .banya .steam { transform-box: fill-box; transform-origin: center bottom; animation: bhSteamRise 5s ease-in-out infinite; }
+  .banya .steam.s2 { animation-duration: 6.4s; animation-delay: 1.6s; }
+  .banya .steam.s3 { animation-duration: 5.7s; animation-delay: 3.1s; }
+  @keyframes bhEmberPulse { 0%,100%{opacity:.5;} 50%{opacity:.92;} }
+  .banya .ember-glow { animation: bhEmberPulse 3.2s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  @media (prefers-reduced-motion: reduce) { .banya .steam{animation:none; opacity:.1;} .banya .ember-glow{animation:none; opacity:.75;} }
+</style>
+</head>
+<body data-mode="learn">
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="back-link" href="practice-1-5-map.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      ко всем тренажёрам
+    </a>
+    <span class="topic-id">practiceStovesTrainer</span>
+    <div class="mode-switch" id="mode-switch">
+      <button data-mode="learn" class="active">Обучение</button>
+      <button data-mode="practice">Тренировка</button>
+      <button data-mode="teacher">Учитель</button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="title-block">
+    <div class="eyebrow">сюжет · «печь для бани» · ОГЭ 1–5</div>
+    <h1>Печь <em>для бани</em></h1>
+    <p class="subtitle">Хозяин строит парное отделение 3,6 × 2 × 2,2 м и выбирает одну из трёх печей — две дровяные и электрическую. Тренажёр разбирает все типы заданий этого сюжета: сопоставление характеристик, объём и площади парной, деньги со скидками и доставкой, и радиус арки кожуха двумя способами. Кнопка «Другие числа» пересобирает задачу для повторной тренировки.</p>
+  </div>
+
+  <div class="layout">
+
+    <main>
+      <!-- REFERENCE: PARNAYA -->
+      <div class="bath-card">
+        <div class="bath-header">
+          <div class="bath-title">Парное отделение · без окон</div>
+        </div>
+                <div class="banya">
+          <div class="controls">
+            <div class="seg" role="tablist" aria-label="Вид парной">
+              <button data-view="room" class="active" role="tab">Комната</button>
+              <button data-view="plan" role="tab">План пола</button>
+              <button data-view="unfold" role="tab">Развёртка стен</button>
+            </div>
+            <label class="dims-toggle">
+              <input type="checkbox" id="bhDimsChk" checked>
+              <span class="sw"></span> Размеры
+            </label>
+          </div>
+          <div class="stage-wrap">
+            <div class="tip" id="bhTip"></div>
+            <svg class="stage" id="bh-stage" data-view="room" viewBox="0 0 760 440" preserveAspectRatio="xMidYMid meet" aria-label="Схема парной">
+      <defs>
+        <linearGradient id="wBack" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#b0824a"/><stop offset="1" stop-color="#8a6435"/>
+        </linearGradient>
+        <linearGradient id="wLeft" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#d6ab6f"/><stop offset="1" stop-color="#a2773f"/>
+        </linearGradient>
+        <linearGradient id="wRight" x1="1" y1="0" x2="0" y2="0">
+          <stop offset="0" stop-color="#d6ab6f"/><stop offset="1" stop-color="#a2773f"/>
+        </linearGradient>
+        <linearGradient id="wCeil" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#6b5030"/><stop offset="1" stop-color="#886535"/>
+        </linearGradient>
+        <linearGradient id="wFloor" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#c99c5d"/><stop offset="1" stop-color="#a87c43"/>
+        </linearGradient>
+        <linearGradient id="stoveBody" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#3a3733"/><stop offset="1" stop-color="#201e1c"/>
+        </linearGradient>
+        <linearGradient id="benchTop2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ddb374"/><stop offset="1" stop-color="#c59150"/>
+        </linearGradient>
+        <radialGradient id="ember" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#ffe08a"/><stop offset="0.5" stop-color="#ff8a1e"/><stop offset="1" stop-color="#ff8a1e" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="emberPool" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#ff9a3a" stop-opacity="0.55"/><stop offset="1" stop-color="#ff9a3a" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="stone" cx="0.4" cy="0.35" r="0.7">
+          <stop offset="0" stop-color="#b6b0a6"/><stop offset="1" stop-color="#7c776e"/>
+        </radialGradient>
+        <radialGradient id="lampGlow" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stop-color="#ffe7a6" stop-opacity="0.85"/><stop offset="1" stop-color="#ffe7a6" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="ambient" cx="0.25" cy="0.75" r="0.9">
+          <stop offset="0" stop-color="#ffb25a" stop-opacity="0.20"/><stop offset="1" stop-color="#ffb25a" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="vignette" cx="0.5" cy="0.48" r="0.72">
+          <stop offset="0.62" stop-color="#2a1908" stop-opacity="0"/><stop offset="1" stop-color="#2a1908" stop-opacity="0.34"/>
+        </radialGradient>
+        <filter id="soft"><feGaussianBlur stdDeviation="2.2"/></filter>
+        <filter id="softer"><feGaussianBlur stdDeviation="6"/></filter>
+        <linearGradient id="chimney" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#4a4642"/><stop offset="0.4" stop-color="#2b2825"/><stop offset="1" stop-color="#1a1816"/>
+        </linearGradient>
+        <linearGradient id="planWood" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#d8ad6e"/><stop offset="1" stop-color="#bd8f4f"/>
+        </linearGradient>
+      </defs>
+
+      <!-- ============ ROOM VIEW ============ -->
+      <g data-group="room">
+        <!-- surfaces -->
+        <polygon points="48,34 712,34 510,120 250,120" fill="url(#wCeil)"/>
+        <polygon points="48,352 712,352 510,300 250,300" fill="url(#wFloor)"/>
+        <polygon points="48,34 250,120 250,300 48,352" fill="url(#wLeft)"/>
+        <polygon points="712,34 510,120 510,300 712,352" fill="url(#wRight)"/>
+        <polygon points="250,120 510,120 510,300 250,300" fill="url(#wBack)"/>
+
+        <!-- plank lines: back wall (vertical boards) -->
+        <g stroke="#5a3f1c" stroke-opacity="0.28" stroke-width="1">
+          <line x1="285" y1="120" x2="285" y2="300"/><line x1="320" y1="120" x2="320" y2="300"/>
+          <line x1="355" y1="120" x2="355" y2="300"/><line x1="390" y1="120" x2="390" y2="300"/>
+          <line x1="425" y1="120" x2="425" y2="300"/><line x1="460" y1="120" x2="460" y2="300"/>
+          <line x1="495" y1="120" x2="495" y2="300"/>
+        </g>
+        <!-- plank lines: left wall (perspective horizontals) -->
+        <g stroke="#4a3316" stroke-opacity="0.26" stroke-width="1">
+          <line x1="48" y1="114" x2="250" y2="165"/>
+          <line x1="48" y1="193" x2="250" y2="210"/>
+          <line x1="48" y1="273" x2="250" y2="255"/>
+        </g>
+        <!-- plank lines: right wall -->
+        <g stroke="#4a3316" stroke-opacity="0.26" stroke-width="1">
+          <line x1="712" y1="114" x2="510" y2="165"/>
+          <line x1="712" y1="193" x2="510" y2="210"/>
+          <line x1="712" y1="273" x2="510" y2="255"/>
+        </g>
+        <!-- plank lines: floor (boards toward back) -->
+        <g stroke="#6e4c22" stroke-opacity="0.24" stroke-width="1">
+          <line x1="181" y1="352" x2="302" y2="300"/>
+          <line x1="313" y1="352" x2="354" y2="300"/>
+          <line x1="446" y1="352" x2="406" y2="300"/>
+          <line x1="579" y1="352" x2="458" y2="300"/>
+        </g>
+        <!-- ceiling boards -->
+        <g stroke="#3f2f1a" stroke-opacity="0.30" stroke-width="1">
+          <line x1="181" y1="34" x2="302" y2="120"/>
+          <line x1="446" y1="34" x2="458" y2="120"/>
+        </g>
+
+        <!-- warm ambient wash -->
+        <rect x="0" y="0" width="760" height="440" fill="url(#ambient)"/>
+
+        <!-- ceiling lamp + glow -->
+        <ellipse cx="392" cy="118" rx="60" ry="34" fill="url(#lampGlow)" filter="url(#softer)"/>
+        <path d="M378,112 a14,9 0 0 1 28,0 z" fill="#caa25a" stroke="#8a6a34" stroke-width="1"/>
+        <ellipse cx="392" cy="112" rx="14" ry="3.4" fill="#3a2c17"/>
+
+        <!-- polok: two-tier bench along right wall -->
+        <!-- upper tier -->
+        <polygon points="515,246 648,246 690,262 557,262" fill="url(#benchTop2)" stroke="#8a6531" stroke-width="1"/>
+        <polygon points="557,262 690,262 690,286 557,286" fill="#ac7d41" stroke="#7d5a2c" stroke-width="1"/>
+        <g stroke="#6e4d24" stroke-opacity="0.55" stroke-width="1"><line x1="560" y1="271" x2="688" y2="271"/><line x1="560" y1="279" x2="688" y2="279"/></g>
+        <!-- lower tier -->
+        <polygon points="498,286 664,286 712,308 548,308" fill="url(#benchTop2)" stroke="#8a6531" stroke-width="1"/>
+        <polygon points="548,308 712,308 712,338 548,338" fill="#a5773d" stroke="#79572a" stroke-width="1"/>
+        <g stroke="#6e4d24" stroke-opacity="0.55" stroke-width="1"><line x1="552" y1="318" x2="708" y2="318"/><line x1="552" y1="328" x2="708" y2="328"/></g>
+        <!-- legs -->
+        <rect x="556" y="286" width="7" height="66" fill="#5f4423"/>
+        <rect x="678" y="286" width="7" height="52" fill="#6b4c27"/>
+
+        <!-- venik (birch bundle) on left wall -->
+        <g transform="translate(96,150)">
+          <path d="M0,0 C-16,-8 -20,-26 -10,-34 C-2,-40 8,-40 16,-34 C26,-26 22,-8 6,0 Z" fill="#5e7b4e" stroke="#46603b" stroke-width="1"/>
+          <g stroke="#46603b" stroke-width="0.8" stroke-opacity="0.7"><line x1="2" y1="-4" x2="-6" y2="-24"/><line x1="3" y1="-4" x2="3" y2="-30"/><line x1="4" y1="-4" x2="12" y2="-24"/></g>
+          <rect x="0" y="-2" width="5" height="26" rx="2" fill="#8a5a2c"/>
+        </g>
+
+        <!-- stove (kamenka) front-left -->
+        <!-- chimney -->
+        <rect x="142" y="120" width="18" height="118" fill="url(#chimney)"/>
+        <ellipse cx="151" cy="120" rx="12" ry="4" fill="#4a4642"/>
+        <!-- body -->
+        <polygon points="108,246 176,246 190,255 122,255" fill="#2a2724"/>
+        <polygon points="108,246 176,246 176,344 108,344" fill="url(#stoveBody)"/>
+        <polygon points="176,246 190,255 190,336 176,344" fill="#141311"/>
+        <!-- stones on top -->
+        <g stroke="#5e594f" stroke-width="0.6">
+          <ellipse cx="122" cy="245" rx="11" ry="7" fill="url(#stone)"/>
+          <ellipse cx="140" cy="243" rx="12" ry="7.5" fill="url(#stone)"/>
+          <ellipse cx="160" cy="244" rx="11" ry="7" fill="url(#stone)"/>
+          <ellipse cx="176" cy="247" rx="10" ry="6.5" fill="url(#stone)"/>
+          <ellipse cx="131" cy="238" rx="10" ry="6.5" fill="url(#stone)"/>
+          <ellipse cx="151" cy="237" rx="11" ry="7" fill="url(#stone)"/>
+          <ellipse cx="169" cy="239" rx="9" ry="6" fill="url(#stone)"/>
+          <ellipse cx="141" cy="233" rx="9" ry="6" fill="url(#stone)"/>
+          <ellipse cx="159" cy="233" rx="8.5" ry="5.5" fill="url(#stone)"/>
+        </g>
+        <!-- faint heat glow between stones -->
+        <ellipse class="ember-glow" cx="150" cy="242" rx="30" ry="12" fill="url(#ember)" opacity="0.5" filter="url(#soft)"/>
+
+        <!-- firebox -->
+        <rect x="120" y="298" width="44" height="40" rx="3" fill="#0e0d0c" stroke="#3a3733" stroke-width="1.5"/>
+        <ellipse class="ember-glow" cx="142" cy="318" rx="20" ry="15" fill="url(#ember)" filter="url(#soft)"/>
+        <g stroke="#ffb347" stroke-width="2.4" stroke-linecap="round" opacity="0.92">
+          <line x1="128" y1="311" x2="156" y2="311"/>
+          <line x1="126" y1="319" x2="158" y2="319"/>
+          <line x1="128" y1="327" x2="156" y2="327"/>
+        </g>
+        <!-- ember pool spilling on floor -->
+        <ellipse cx="150" cy="352" rx="70" ry="20" fill="url(#emberPool)" filter="url(#soft)"/>
+
+        <!-- steam rising from stones -->
+        <g fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round" filter="url(#soft)">
+          <path class="steam"    d="M140,232 C133,216 146,208 139,192 C134,178 144,170 138,156"/>
+          <path class="steam s2" d="M152,230 C160,214 148,206 156,190 C162,176 152,168 158,154"/>
+          <path class="steam s3" d="M164,233 C158,218 168,210 162,196 C158,184 166,176 162,164"/>
+        </g>
+
+        <!-- wooden bucket (ushat) on floor -->
+        <g transform="translate(206,314)">
+          <path d="M-22,2 L22,2 L17,34 L-17,34 Z" fill="#c79a58" stroke="#8a6531" stroke-width="1.2"/>
+          <ellipse cx="0" cy="2" rx="22" ry="6" fill="#dcb473" stroke="#8a6531" stroke-width="1.2"/>
+          <ellipse cx="0" cy="2" rx="16" ry="4" fill="#7d5a2c"/>
+          <g stroke="#6e4d24" stroke-opacity="0.55" stroke-width="1"><line x1="-11" y1="6" x2="-13" y2="33"/><line x1="0" y1="7" x2="0" y2="34"/><line x1="11" y1="6" x2="13" y2="33"/></g>
+          <path d="M-18,20 L-20,26 L18,26 L16,20" fill="none" stroke="#8a7a55" stroke-width="1.6"/>
+          <path d="M-20,2 A24,20 0 0 1 20,2" fill="none" stroke="#7a6a48" stroke-width="1.6"/>
+        </g>
+
+        <!-- door on back wall (solid wood, no window) -->
+        <rect x="300" y="153" width="91" height="147" fill="#5a4026" stroke="#3a2814" stroke-width="2"/>
+        <rect x="306" y="159" width="79" height="135" fill="#6a4c2c"/>
+        <g stroke="#4a3316" stroke-opacity="0.6" stroke-width="1.4"><line x1="332" y1="159" x2="332" y2="294"/><line x1="359" y1="159" x2="359" y2="294"/></g>
+        <rect x="311" y="164" width="69" height="20" fill="none" stroke="#4a3316" stroke-opacity="0.5" stroke-width="1.2"/>
+        <circle cx="376" cy="228" r="3.4" fill="#2a1c0e"/>
+
+        <!-- highlightable room edges -->
+        <line id="edgeLen" class="edge" x1="48" y1="352" x2="712" y2="352" stroke="#b8924b" stroke-opacity="0.0" stroke-width="4"/>
+        <line id="edgeWid" class="edge" x1="712" y1="34"  x2="510" y2="120" stroke="#b8924b" stroke-opacity="0.0" stroke-width="4"/>
+        <line id="edgeHei" class="edge" x1="712" y1="34"  x2="712" y2="352" stroke="#b8924b" stroke-opacity="0.0" stroke-width="4"/>
+
+        <!-- vignette on top of scene -->
+        <rect x="0" y="0" width="760" height="440" fill="url(#vignette)" pointer-events="none"/>
+
+        <!-- ===== dimensions ===== -->
+        <g class="dims">
+          <g class="dim" data-edge="edgeLen" data-tip="Длина 3,6 м — сторона пола и ребро, из которого считается объём.">
+            <line class="dline" x1="48" y1="372" x2="712" y2="372"/>
+            <line class="dtick" x1="48" y1="366" x2="48" y2="378"/>
+            <line class="dtick" x1="712" y1="366" x2="712" y2="378"/>
+            <text class="dlabel" x="380" y="390" text-anchor="middle">длина 3,6 м</text>
+          </g>
+          <g class="dim" data-edge="edgeWid" data-tip="Ширина 2 м — глубина парной (вторая сторона пола).">
+            <line class="dline" x1="712" y1="34" x2="730" y2="18"/>
+            <line class="dline" x1="510" y1="120" x2="528" y2="104"/>
+            <line class="dline" x1="730" y1="18" x2="528" y2="104"/>
+            <line class="dtick" x1="724" y1="22" x2="736" y2="14"/>
+            <line class="dtick" x1="522" y1="108" x2="534" y2="100"/>
+            <text class="dlabel" x="631" y="50" text-anchor="middle">ширина 2 м</text>
+          </g>
+          <g class="dim" data-edge="edgeHei" data-tip="Высота 2,2 м — от пола до потолка.">
+            <line class="dline" x1="732" y1="34" x2="732" y2="352"/>
+            <line class="dtick" x1="726" y1="34" x2="738" y2="34"/>
+            <line class="dtick" x1="726" y1="352" x2="738" y2="352"/>
+            <text class="dlabel" x="736" y="196" transform="rotate(90 736 196)" text-anchor="middle">высота 2,2 м</text>
+          </g>
+          <g class="dim" data-edge="" data-tip="Дверь 0,7 × 1,8 м — её площадь вычитают из площади стен.">
+            <line class="dline" x1="296" y1="153" x2="296" y2="300"/>
+            <line class="dtick" x1="291" y1="153" x2="301" y2="153"/>
+            <line class="dtick" x1="291" y1="300" x2="301" y2="300"/>
+            <text class="dlabel" x="345" y="140" text-anchor="middle" style="font-size:11.5px;">дверь 0,7 × 1,8 м</text>
+          </g>
+        </g>
+      </g>
+
+      <!-- ============ PLAN VIEW (top-down floor) ============ -->
+      <g data-group="plan">
+        <!-- floor rectangle 3.6 x 2 m at 150 px/m -->
+        <rect x="128" y="86" width="540" height="300" fill="url(#planWood)" stroke="#8a6531" stroke-width="2" rx="4"/>
+        <!-- planks -->
+        <g stroke="#6e4d24" stroke-opacity="0.25" stroke-width="1">
+          <line x1="128" y1="116" x2="668" y2="116"/><line x1="128" y1="146" x2="668" y2="146"/>
+          <line x1="128" y1="176" x2="668" y2="176"/><line x1="128" y1="206" x2="668" y2="206"/>
+          <line x1="128" y1="236" x2="668" y2="236"/><line x1="128" y1="266" x2="668" y2="266"/>
+          <line x1="128" y1="296" x2="668" y2="296"/><line x1="128" y1="326" x2="668" y2="326"/>
+          <line x1="128" y1="356" x2="668" y2="356"/>
+        </g>
+        <!-- stove footprint (corner) -->
+        <rect x="140" y="98" width="66" height="52" fill="#33302e" rx="3"/>
+        <ellipse class="ember-glow" cx="173" cy="124" rx="22" ry="16" fill="url(#ember)" filter="url(#soft)"/>
+        <text x="173" y="167" class="flabel" text-anchor="middle" style="font-size:11px;">печь</text>
+        <!-- polok footprint (right strip) -->
+        <rect x="596" y="98" width="60" height="276" fill="#c59150" fill-opacity="0.55" stroke="#8a6531" stroke-width="1" rx="3"/>
+        <text x="626" y="240" class="flabel" text-anchor="middle" transform="rotate(90 626 240)" style="font-size:11px;">полок</text>
+        <!-- door gap + swing on bottom edge -->
+        <rect x="240" y="382" width="105" height="8" fill="#faf7f2"/>
+        <line x1="240" y1="386" x2="345" y2="386" stroke="#8a6531" stroke-width="1" stroke-dasharray="4,3"/>
+        <path d="M240,386 A105,105 0 0 1 345,386" fill="none" stroke="#b8924b" stroke-width="1.2" stroke-dasharray="3,3"/>
+        <rect x="240" y="386" width="105" height="3" fill="#6a4c2c"/>
+        <text x="292" y="404" class="flabel" text-anchor="middle" style="font-size:11px;">дверь 0,7 м</text>
+
+        <!-- right-angle marks -->
+        <path d="M128,104 h10 v-10" fill="none" stroke="#8a6531" stroke-width="1.2"/>
+        <path d="M668,104 h-10 v-10" fill="none" stroke="#8a6531" stroke-width="1.2"/>
+
+        <!-- dims -->
+        <g class="dim">
+          <line class="dline" x1="128" y1="64" x2="668" y2="64"/>
+          <line class="dtick" x1="128" y1="58" x2="128" y2="70"/><line class="dtick" x1="668" y1="58" x2="668" y2="70"/>
+          <text class="dlabel" x="398" y="54" text-anchor="middle">длина 3,6 м</text>
+        </g>
+        <g class="dim">
+          <line class="dline" x1="106" y1="86" x2="106" y2="386"/>
+          <line class="dtick" x1="100" y1="86" x2="112" y2="86"/><line class="dtick" x1="100" y1="386" x2="112" y2="386"/>
+          <text class="dlabel" x="102" y="236" text-anchor="middle" transform="rotate(-90 102 236)">ширина 2 м</text>
+        </g>
+
+        <!-- area label -->
+        <g class="formula">
+          <rect x="286" y="200" width="224" height="72" rx="10" fill="#ffffff" fill-opacity="0.86" stroke="var(--line)"/>
+          <text x="398" y="226" text-anchor="middle" class="flabel" style="font-size:13px;">Площадь пола</text>
+          <text x="398" y="252" text-anchor="middle" class="flabel b" style="font-size:18px;">3,6 · 2 = 7,2 м²</text>
+        </g>
+      </g>
+
+      <!-- ============ UNFOLD VIEW (walls unrolled) ============ -->
+      <g data-group="unfold">
+        <!-- perimeter 11.2 m at 55 px/m = 616 wide; height 2.2 m = 121 tall -->
+        <!-- panels: 3.6(198) | 2(110) | 3.6(198) | 2(110) -->
+        <g stroke="#8a6531" stroke-width="1.5">
+          <rect x="72"  y="150" width="198" height="121" fill="url(#planWood)"/>
+          <rect x="270" y="150" width="110" height="121" fill="#c99a5c"/>
+          <rect x="380" y="150" width="198" height="121" fill="url(#planWood)"/>
+          <rect x="578" y="150" width="110" height="121" fill="#c99a5c"/>
+        </g>
+        <!-- plank lines -->
+        <g stroke="#6e4d24" stroke-opacity="0.22" stroke-width="1">
+          <line x1="72" y1="180" x2="688" y2="180"/><line x1="72" y1="210" x2="688" y2="210"/><line x1="72" y1="240" x2="688" y2="240"/>
+        </g>
+        <!-- outer frame -->
+        <rect x="72" y="150" width="616" height="121" fill="none" stroke="#5a4026" stroke-width="2"/>
+        <!-- panel labels -->
+        <text x="171" y="292" class="flabel" text-anchor="middle" style="font-size:12px;">стена 3,6 м</text>
+        <text x="325" y="292" class="flabel" text-anchor="middle" style="font-size:12px;">стена 2 м</text>
+        <text x="479" y="292" class="flabel" text-anchor="middle" style="font-size:12px;">стена 3,6 м</text>
+        <text x="633" y="292" class="flabel" text-anchor="middle" style="font-size:12px;">стена 2 м</text>
+
+        <!-- door cut out of first panel -->
+        <rect x="120" y="172" width="39" height="99" fill="#faf7f2" stroke="#b8924b" stroke-width="1.4" stroke-dasharray="4,3"/>
+        <line x1="120" y1="172" x2="159" y2="271" stroke="#c9a45c" stroke-width="0.8" stroke-opacity="0.6"/>
+        <line x1="159" y1="172" x2="120" y2="271" stroke="#c9a45c" stroke-width="0.8" stroke-opacity="0.6"/>
+        <text x="139" y="166" class="flabel" text-anchor="middle" style="font-size:10.5px;">дверь</text>
+
+        <!-- height bracket -->
+        <g class="dim">
+          <line class="dline" x1="50" y1="150" x2="50" y2="271"/>
+          <line class="dtick" x1="44" y1="150" x2="56" y2="150"/><line class="dtick" x1="44" y1="271" x2="56" y2="271"/>
+          <text class="dlabel" x="42" y="210" text-anchor="middle" transform="rotate(-90 42 210)">высота 2,2 м</text>
+        </g>
+        <!-- perimeter bracket -->
+        <g class="dim">
+          <line class="dline" x1="72" y1="128" x2="688" y2="128"/>
+          <line class="dtick" x1="72" y1="122" x2="72" y2="134"/><line class="dtick" x1="688" y1="122" x2="688" y2="134"/>
+          <line class="dtick" x1="270" y1="124" x2="270" y2="132" stroke-dasharray="2,2"/>
+          <line class="dtick" x1="380" y1="124" x2="380" y2="132" stroke-dasharray="2,2"/>
+          <line class="dtick" x1="578" y1="124" x2="578" y2="132" stroke-dasharray="2,2"/>
+          <text class="dlabel" x="380" y="118" text-anchor="middle">периметр 2·(3,6 + 2) = 11,2 м</text>
+        </g>
+
+        <!-- formula -->
+        <g class="formula">
+          <rect x="150" y="318" width="460" height="76" rx="10" fill="#ffffff" fill-opacity="0.9" stroke="var(--line)"/>
+          <text x="380" y="342" text-anchor="middle" class="flabel" style="font-size:12.5px;">Площадь стен без двери</text>
+          <text x="380" y="364" text-anchor="middle" class="flabel" style="font-size:14px;">11,2 · 2,2 − 0,7 · 1,8 = 24,64 − 1,26</text>
+          <text x="380" y="386" text-anchor="middle" class="flabel b" style="font-size:17px;">= 23,38 м²</text>
+        </g>
+      </g>
+    </svg>
+          </div>
+          <div class="cap" id="bhCap">Дровяная каменка топится, на камнях — пар. Наведите на размер, чтобы подсветить ребро. Схема, пропорции близки к реальным.</div>
+        </div>
+        <div class="bath-dims">
+          <div class="dim-item"><div class="lbl">длина</div><div class="val">3,6 м</div></div>
+          <div class="dim-item"><div class="lbl">ширина</div><div class="val">2 м</div></div>
+          <div class="dim-item"><div class="lbl">высота</div><div class="val">2,2 м</div></div>
+          <div class="dim-item"><div class="lbl">дверь</div><div class="val">0,7 × 1,8 м</div></div>
+        </div>
+      </div>
+
+      <!-- REFERENCE: STOVES -->
+      <div class="stoves-grid">
+        <div class="stove-card wood-A">
+          <div class="stove-header">
+            <div class="stove-icon">🔥</div>
+            <div><div class="stove-name">Печь №1</div><div class="stove-type">дровяная</div></div>
+          </div>
+          <div class="stove-specs">
+            <div class="spec"><span>объём парной</span><b>8–15,5 м³</b></div>
+            <div class="spec"><span>масса</span><b>45 кг</b></div>
+            <div class="spec"><span>топливо</span><b>дрова</b></div>
+          </div>
+          <div class="stove-price">19 500 ₽<small>установка не нужна</small></div>
+        </div>
+
+        <div class="stove-card wood-B">
+          <div class="stove-header">
+            <div class="stove-icon">🔥</div>
+            <div><div class="stove-name">Печь №2</div><div class="stove-type">дровяная</div></div>
+          </div>
+          <div class="stove-specs">
+            <div class="spec"><span>объём парной</span><b>11–19,5 м³</b></div>
+            <div class="spec"><span>масса</span><b>53 кг</b></div>
+            <div class="spec"><span>топливо</span><b>дрова</b></div>
+          </div>
+          <div class="stove-price">22 000 ₽<small>установка не нужна</small></div>
+        </div>
+
+        <div class="stove-card electric">
+          <div class="stove-header">
+            <div class="stove-icon">⚡</div>
+            <div><div class="stove-name">Печь №3</div><div class="stove-type">электрическая</div></div>
+          </div>
+          <div class="stove-specs">
+            <div class="spec"><span>объём парной</span><b>9–18 м³</b></div>
+            <div class="spec"><span>масса</span><b>20 кг</b></div>
+            <div class="spec"><span>стоимость</span><b>17 100 ₽</b></div>
+          </div>
+          <div class="stove-price">17 100 ₽<small>+ 5 400 ₽ кабель = 22 500 ₽</small></div>
+          <div class="stove-install">электрической нужен спец. кабель</div>
+        </div>
+      </div>
+
+      <!-- GROUP + TASK NAV -->
+      <div class="group-tabs" id="group-tabs"></div>
+      <div class="chip-row" id="chip-row"></div>
+
+      <div class="task-card" id="task-card"></div>
+    </main>
+
+    <aside class="sidebar">
+      <div class="side-card">
+        <h3>Объём и площади</h3>
+        <div class="formula">
+          V = a · b · h<br>S<sub>пола</sub> = a · b
+          <small>S<sub>стен</sub> = 2(a + b)·h − S<sub>двери</sub></small>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <h3>Проценты</h3>
+        <div class="formula gold">
+          скидка p%: цена · (100 − p)/100
+          <small>«прошлый год»: цена ÷ (100 − p) · 100</small>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <h3>Радиус арки — два случая</h3>
+        <div class="formula" style="background:var(--green);">
+          центр в основании:<br>R = √( (w/2)² + s² )
+          <small>катеты — полуширина w/2 и высота стенки s</small>
+        </div>
+        <div class="formula" style="background:var(--green); margin-top:10px;">
+          через стрелку h:<br>R² = (R − h)² + (w/2)²
+          <small>w — хорда, h — стрелка (высота арки)</small>
+        </div>
+      </div>
+
+      <div class="side-card">
+        <h3>Прогресс</h3>
+        <div class="stats">
+          <div class="stat"><div class="val" id="stat-solved">0</div><div class="lbl">решено из 14</div></div>
+          <div class="stat"><div class="val" id="stat-streak">0</div><div class="lbl">подряд</div></div>
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<script>
+'use strict';
+
+/* ===== canonical data (ОГЭ «Печь для бани») ===== */
+const ROOM = { a: 3.6, b: 2.0, c: 2.2, doorW: 0.7, doorH: 1.8 };
+const STOVES = [
+  { n: 1, kind: 'дровяная',      vmin: 8,  vmax: 15.5, mass: 45, price: 19500, install: 0 },
+  { n: 2, kind: 'дровяная',      vmin: 11, vmax: 19.5, mass: 53, price: 22000, install: 0 },
+  { n: 3, kind: 'электрическая', vmin: 9,  vmax: 18.0, mass: 20, price: 17100, install: 5400 },
+];
+const OPT_STOVE = [
+  { v: '1', t: 'Печь №1 (дровяная)' },
+  { v: '2', t: 'Печь №2 (дровяная)' },
+  { v: '3', t: 'Печь №3 (электрическая)' },
+];
+
+/* ===== formatting ===== */
+const A2 = n => Math.round(n * 100) / 100;
+const A1 = n => Math.round(n * 10) / 10;
+function dec(n) { const x = A2(n); const s = Number.isInteger(x) ? String(x) : x.toFixed(2).replace(/0+$/, '').replace(/\.$/, ''); return s.replace('.', ','); }
+function dec1(n) { const x = A1(n); const s = Number.isInteger(x) ? String(x) : x.toFixed(1); return s.replace('.', ','); }
+function money(n) { return Math.round(n).toLocaleString('ru-RU'); }
+function rnd(min, max, step) { const k = Math.round((max - min) / step); return A2(min + step * Math.floor(Math.random() * (k + 1))); }
+function pick(arr, fresh) { return fresh ? arr[Math.floor(Math.random() * arr.length)] : arr[0]; }
+
+/* ===== task generators (each returns a spec) ===== */
+function fitWood(V) { const s = STOVES.filter(s => s.kind === 'дровяная' && s.vmin <= V && V <= s.vmax); return s[0]; }
+
+function genMassMatch() {
+  const rows = [{ label: '45 кг', correct: '1' }, { label: '20 кг', correct: '3' }, { label: '53 кг', correct: '2' }];
+  return {
+    match: rows, options: OPT_STOVE, colHead: 'Масса',
+    meta: 'Сопоставление · масса → номер печи',
+    prompt: 'Сопоставьте <b>массу</b> с номером печи. Данные — в карточках печей выше.',
+    hint: ['Самая лёгкая — электрическая <b>Печь №3 (20 кг)</b>.', 'Из дровяных: <b>№1 — 45 кг</b>, <b>№2 — 53 кг</b>.'],
+    solution: rows.map(r => `${r.label} — <b>Печь №${r.correct}</b>`),
+    regen: false,
+  };
+}
+function genPriceMatch() {
+  const rows = [{ label: '17 100 ₽', correct: '3' }, { label: '19 500 ₽', correct: '1' }, { label: '22 000 ₽', correct: '2' }];
+  return {
+    match: rows, options: OPT_STOVE, colHead: 'Стоимость',
+    meta: 'Сопоставление · стоимость → номер печи',
+    prompt: 'Сопоставьте <b>стоимость</b> с номером печи (без установки и доставки).',
+    hint: ['Дешевле всех — электрическая <b>Печь №3 (17 100 ₽)</b>.', 'Дровяные: <b>№1 — 19 500 ₽</b>, <b>№2 — 22 000 ₽</b>.'],
+    solution: rows.map(r => `${r.label} — <b>Печь №${r.correct}</b>`),
+    regen: false,
+  };
+}
+function genMaxVol() {
+  const rows = [{ label: '19 м³', correct: '2' }, { label: '15 м³', correct: '1' }, { label: '18 м³', correct: '3' }];
+  return {
+    match: rows, options: OPT_STOVE, colHead: 'Наибольший объём',
+    meta: 'Сопоставление · наибольший объём → номер печи',
+    prompt: 'Каждая печь отапливает объём в некотором диапазоне. Сопоставьте <b>наибольший целый объём</b> (в м³), который печь может отопить, с её номером.',
+    note: 'Берём <b>верхнюю границу</b> диапазона и округляем её <b>вниз</b> до целого: №1 → 15,5 → <b>15</b>; №2 → 19,5 → <b>19</b>; №3 → 18 → <b>18</b>.',
+    hint: ['Границы диапазонов: №1 → до 15,5; №2 → до 19,5; №3 → до 18.', 'Целое число м³ — это округление верхней границы вниз.'],
+    solution: ['19 м³ — <b>Печь №2</b> (19,5 → 19)', '15 м³ — <b>Печь №1</b> (15,5 → 15)', '18 м³ — <b>Печь №3</b> (18 → 18)'],
+    regen: false,
+  };
+}
+
+function genVolume(fresh) {
+  const a = fresh ? rnd(2.6, 4.2, 0.1) : ROOM.a, b = fresh ? rnd(1.8, 2.6, 0.1) : ROOM.b, c = fresh ? rnd(2.0, 2.6, 0.1) : ROOM.c;
+  const V = A2(a * b * c);
+  return {
+    meta: 'Геометрия · объём парной', unit: 'м³', answer: V,
+    prompt: 'Найдите <b>объём</b> парного отделения. Ответ в кубических метрах.',
+    givens: [g('длина', dec(a) + ' м'), g('ширина', dec(b) + ' м'), g('высота', dec(c) + ' м')].join(''),
+    worked: [`V = a · b · h = ${dec(a)} · ${dec(b)} · ${dec(c)}`, `= ${dec(A2(a * b))} · ${dec(c)} = <b>${dec(V)}</b> м³`],
+    hint: ['Объём параллелепипеда = длина · ширина · высота.', `${dec(a)} · ${dec(b)} = ${dec(A2(a * b))}`, `${dec(A2(a * b))} · ${dec(c)} = <b>${dec(V)}</b> м³`],
+    solution: [`V = ${dec(a)} · ${dec(b)} · ${dec(c)} = <b>${dec(V)} м³</b>`],
+    answerDisplay: `Ответ: ${dec(V)} м³`, regen: true,
+  };
+}
+function genFloor(fresh) {
+  const a = fresh ? rnd(2.6, 4.2, 0.1) : ROOM.a, b = fresh ? rnd(1.8, 2.6, 0.1) : ROOM.b;
+  const S = A2(a * b);
+  return {
+    meta: 'Геометрия · площадь пола', unit: 'м²', answer: S,
+    prompt: 'Найдите <b>площадь пола</b> парного отделения. Ответ в квадратных метрах.',
+    givens: [g('длина', dec(a) + ' м'), g('ширина', dec(b) + ' м')].join(''),
+    worked: [`S = a · b = ${dec(a)} · ${dec(b)} = <b>${dec(S)}</b> м²`],
+    hint: ['Пол — прямоугольник со сторонами длина и ширина.', `${dec(a)} · ${dec(b)} = <b>${dec(S)}</b> м²`],
+    solution: [`S<sub>пола</sub> = ${dec(a)} · ${dec(b)} = <b>${dec(S)} м²</b>`],
+    answerDisplay: `Ответ: ${dec(S)} м²`, regen: true,
+  };
+}
+function genWalls(fresh) {
+  const a = fresh ? rnd(2.6, 4.2, 0.1) : ROOM.a, b = fresh ? rnd(1.8, 2.6, 0.1) : ROOM.b, c = fresh ? rnd(2.0, 2.6, 0.1) : ROOM.c;
+  const dW = fresh ? rnd(0.6, 0.9, 0.05) : ROOM.doorW, dH = fresh ? rnd(1.7, 2.0, 0.05) : ROOM.doorH;
+  const walls = A2(2 * (a + b) * c), door = A2(dW * dH), ans = A2(walls - door);
+  return {
+    meta: 'Геометрия · площадь стен без двери', unit: 'м²', answer: ans,
+    prompt: 'Найдите <b>суммарную площадь стен</b> парного отделения <b>без площади двери</b>. Ответ в квадратных метрах.',
+    givens: [g('длина', dec(a) + ' м'), g('ширина', dec(b) + ' м'), g('высота', dec(c) + ' м'), g('дверь', dec(dW) + '×' + dec(dH))].join(''),
+    note: 'Окон нет, поэтому из площади четырёх стен вычитаем только площадь <b>двери</b>.',
+    worked: [`S<sub>стен</sub> = 2·(a + b)·h = 2·(${dec(a)} + ${dec(b)})·${dec(c)} = ${dec(walls)} м²`, `S<sub>двери</sub> = ${dec(dW)} · ${dec(dH)} = ${dec(door)} м²`, `${dec(walls)} − ${dec(door)} = <b>${dec(ans)}</b> м²`],
+    hint: ['Периметр основания = 2·(длина + ширина).', 'Площадь стен = периметр · высота.', 'Из неё вычесть площадь двери = ширина · высота двери.'],
+    solution: [`S<sub>стен</sub> = 2·(${dec(a)} + ${dec(b)})·${dec(c)} = ${dec(walls)} м²`, `S<sub>двери</sub> = ${dec(dW)}·${dec(dH)} = ${dec(door)} м²`, `Ответ = ${dec(walls)} − ${dec(door)} = <b>${dec(ans)} м²</b>`],
+    answerDisplay: `Ответ: ${dec(ans)} м²`, regen: true,
+  };
+}
+
+function genCheaper() {
+  const V = A2(ROOM.a * ROOM.b * ROOM.c); // 15.84
+  const w = fitWood(V); // Печь №2
+  const el = STOVES[2];
+  const elTotal = el.price + el.install;
+  const diff = elTotal - (w.price + w.install);
+  return {
+    meta: 'Деньги · насколько дровяная дешевле электрической', unit: '₽', answer: diff,
+    prompt: 'На сколько <b>рублей</b> покупка подходящей по объёму дровяной печи <b>дешевле</b> электрической (с учётом установки кабеля)?',
+    note: `Сначала определяем, какая <b>дровяная</b> печь подходит по объёму парной (${dec(V)} м³). Диапазон №1 (8–15,5) не подходит, диапазон №2 (11–19,5) — подходит.`,
+    worked: [`Объём парной ${dec(V)} м³ → подходит дровяная <b>Печь №2</b>.`, `Дровяная №2: ${money(w.price)} ₽ (установка не нужна).`, `Электрическая №3: ${money(el.price)} + ${money(el.install)} = ${money(elTotal)} ₽.`, `${money(elTotal)} − ${money(w.price)} = <b>${money(diff)}</b> ₽`],
+    hint: ['Проверьте, в чей диапазон попадает объём парной 15,84 м³.', 'Полная цена электрической = цена + установка кабеля.', 'Вычтите цену подходящей дровяной печи.'],
+    solution: [`Подходит <b>Печь №2</b> — ${money(w.price)} ₽.`, `Электрическая с кабелем: ${money(el.price)} + ${money(el.install)} = ${money(elTotal)} ₽.`, `Экономия: ${money(elTotal)} − ${money(w.price)} = <b>${money(diff)} ₽</b>`],
+    answerDisplay: `Ответ: ${money(diff)} ₽`, regen: false,
+  };
+}
+function genWoodDelivery(fresh) {
+  const w = STOVES[1]; // Печь №2 (подходящая)
+  const del = fresh ? rnd(1000, 2500, 100) : 1700;
+  const ans = w.price + del;
+  return {
+    meta: 'Деньги · дровяная печь с доставкой', unit: '₽', answer: ans,
+    prompt: `Во сколько <b>рублей</b> обойдётся покупка подходящей по объёму дровяной печи с доставкой, если доставка до участка стоит <b>${money(del)} ₽</b>?`,
+    note: 'По объёму 15,84 м³ подходит <b>Печь №2</b> (22 000 ₽). Дровяной установка не нужна.',
+    worked: [`${money(w.price)} + ${money(del)} = <b>${money(ans)}</b> ₽`],
+    hint: ['Подходящая дровяная печь — №2, 22 000 ₽.', `Прибавьте доставку ${money(del)} ₽.`],
+    solution: [`${money(w.price)} + ${money(del)} = <b>${money(ans)} ₽</b>`],
+    answerDisplay: `Ответ: ${money(ans)} ₽`, regen: true,
+  };
+}
+function genElecFull(fresh) {
+  const el = STOVES[2];
+  const del = fresh ? rnd(500, 1500, 100) : 900;
+  const ans = el.price + el.install + del;
+  return {
+    meta: 'Деньги · электрическая печь: цена + кабель + доставка', unit: '₽', answer: ans,
+    prompt: `Во сколько <b>рублей</b> обойдётся покупка электрической печи с установкой кабеля и доставкой, если доставка стоит <b>${money(del)} ₽</b>?`,
+    worked: [`${money(el.price)} + ${money(el.install)} + ${money(del)} = <b>${money(ans)}</b> ₽`],
+    hint: ['Сложите три суммы: цену печи, установку кабеля (5 400 ₽) и доставку.', `${money(el.price)} + ${money(el.install)} + ${money(del)}.`],
+    solution: [`${money(el.price)} + ${money(el.install)} + ${money(del)} = <b>${money(ans)} ₽</b>`],
+    answerDisplay: `Ответ: ${money(ans)} ₽`, regen: true,
+  };
+}
+function genDiscount(fresh) {
+  const s = pick([STOVES[0], STOVES[1], STOVES[2]], fresh);
+  const p = pick([15, 10, 20, 25], fresh);
+  const ans = Math.round(s.price * (100 - p) / 100);
+  const cut = s.price - ans;
+  return {
+    meta: 'Деньги · скидка на печь', unit: '₽', answer: ans,
+    prompt: `На <b>Печь №${s.n}</b> (${money(s.price)} ₽) сделали скидку <b>${p}%</b>. Сколько <b>рублей</b> стала стоить печь?`,
+    worked: [`Скидка ${p}%: ${money(s.price)} · ${dec(p / 100)} = ${money(cut)} ₽`, `${money(s.price)} − ${money(cut)} = <b>${money(ans)}</b> ₽`],
+    hint: [`После скидки остаётся <b>${100 - p}%</b> цены.`, `${money(s.price)} · ${100 - p} / 100 = <b>${money(ans)}</b> ₽.`],
+    solution: [`Скидка ${p}% от ${money(s.price)}: ${money(s.price)} · ${dec(p / 100)} = ${money(cut)} ₽.`, `Новая цена: ${money(s.price)} − ${money(cut)} = <b>${money(ans)} ₽</b>`],
+    answerDisplay: `Ответ: ${money(ans)} ₽`, regen: true,
+  };
+}
+function genReverse(fresh) {
+  const presets = [
+    { n: 3, price: 17100, p: 25, ans: 22800 },
+    { n: 3, price: 17100, p: 20, ans: 21375 },
+    { n: 1, price: 19500, p: 25, ans: 26000 },
+    { n: 1, price: 19500, p: 20, ans: 24375 },
+    { n: 2, price: 22000, p: 20, ans: 27500 },
+  ];
+  const q = pick(presets, fresh);
+  return {
+    meta: 'Деньги · цена в прошлом году (обратный процент)', unit: '₽', answer: q.ans,
+    prompt: `В этом году <b>Печь №${q.n}</b> стоит <b>${money(q.price)} ₽</b> — это на <b>${q.p}%</b> меньше, чем в прошлом году. Сколько <b>рублей</b> печь стоила в прошлом году?`,
+    note: `Текущая цена — это <b>${100 - q.p}%</b> от прошлогодней (не наоборот!). Прошлогодняя = текущая ÷ ${100 - q.p} · 100.`,
+    worked: [`${money(q.price)} — это ${100 - q.p}%.`, `Прошлый год (100%): ${money(q.price)} · 100 / ${100 - q.p} = <b>${money(q.ans)}</b> ₽`],
+    hint: ['Прошлогодняя цена = 100%. Текущая меньше на p%, значит текущая = (100 − p)%.', `Составьте пропорцию: x / ${money(q.price)} = 100 / ${100 - q.p}.`, `x = ${money(q.price)} · 100 / ${100 - q.p} = <b>${money(q.ans)}</b> ₽.`],
+    solution: [`Текущая ${money(q.price)} ₽ = ${100 - q.p}% прошлогодней.`, `x = ${money(q.price)} · 100 / ${100 - q.p} = <b>${money(q.ans)} ₽</b>`],
+    answerDisplay: `Ответ: ${money(q.ans)} ₽`, regen: true,
+  };
+}
+function genTiered(fresh) {
+  const s = STOVES[1]; // Печь №2, 22000 > 20000
+  const delBase = fresh ? rnd(900, 1500, 100) : 1100;
+  const goods = Math.round(s.price * 0.9);
+  const del = Math.round(delBase * 0.7);
+  const ans = goods + del;
+  return {
+    meta: 'Деньги · скидка на товар и доставку', unit: '₽', answer: ans,
+    prompt: `Доставка любой печи стоит <b>${money(delBase)} ₽</b>. При покупке печи дороже 20 000 ₽ магазин даёт <b>10% на товар</b> и <b>30% на доставку</b>. Сколько <b>рублей</b> будет стоить покупка <b>Печи №2</b> с доставкой?`,
+    note: 'Скидки действуют: цена печи 22 000 ₽ больше 20 000 ₽.',
+    worked: [`Товар: ${money(s.price)} · 0,9 = ${money(goods)} ₽`, `Доставка: ${money(delBase)} · 0,7 = ${money(del)} ₽`, `Итого: ${money(goods)} + ${money(del)} = <b>${money(ans)}</b> ₽`],
+    hint: ['10% скидки → платим 90% цены товара.', '30% скидки → платим 70% доставки.', `${money(goods)} + ${money(del)} = <b>${money(ans)}</b> ₽.`],
+    solution: [`Товар со скидкой 10%: ${money(s.price)} · 0,9 = ${money(goods)} ₽.`, `Доставка со скидкой 30%: ${money(delBase)} · 0,7 = ${money(del)} ₽.`, `Всего: ${money(goods)} + ${money(del)} = <b>${money(ans)} ₽</b>`],
+    answerDisplay: `Ответ: ${money(ans)} ₽`, regen: true,
+  };
+}
+
+function arcRectFig(t, s) {
+  return `<div class="fig"><svg viewBox="0 0 360 240">
+    <rect class="a-koz" x="100" y="120" width="160" height="70"/>
+    <path class="a-arc" d="M100,120 Q180,72 260,120 Z"/>
+    <rect class="a-inner" x="140" y="140" width="80" height="50"/>
+    <line class="a-chord" x1="100" y1="190" x2="260" y2="190"/>
+    <line class="a-rad" x1="180" y1="190" x2="100" y2="120"/>
+    <line class="a-rad" x1="180" y1="190" x2="180" y2="120" stroke-dasharray="3,3"/>
+    <circle class="a-dot" cx="180" cy="190" r="3"/>
+    <path d="M108,190 L108,182 L100,182" fill="none" class="a-rad"/>
+    <text class="a-lbl" x="138" y="207" text-anchor="middle">w/2 = ${t}</text>
+    <text class="a-lbl" x="86" y="158" text-anchor="end">s = ${s}</text>
+    <text class="a-lbl" x="135" y="150" text-anchor="middle">R</text>
+    <text class="a-lbl" x="180" y="205" text-anchor="middle">C</text>
+  </svg><div class="fig-cap">Центр окружности C — в середине основания кожуха. Схема, не в масштабе.</div></div>`;
+}
+function genArcRect(fresh) {
+  const presets = [
+    { full: 64, s: 60, R: 68 },
+    { full: 18, s: 12, R: 15 },
+    { full: 40, s: 21, R: 29 },
+    { full: 14, s: 24, R: 25 },
+  ];
+  const q = pick(presets, fresh);
+  const t = q.full / 2;
+  return {
+    meta: 'Арка кожуха · центр в основании (теорема Пифагора)', unit: 'см', answer: q.R,
+    fig: arcRectFig(t, q.s),
+    prompt: `Верхняя часть кожуха — арка по дуге окружности с центром в <b>середине основания</b> кожуха. Ширина кожуха <b>${q.full} см</b>, высота его вертикальной стенки <b>${q.s} см</b>. Найдите <b>радиус</b> закругления арки R в сантиметрах.`,
+    worked: [`Половина ширины: ${q.full} / 2 = ${t} см.`, `Радиус — гипотенуза прямоугольного треугольника с катетами ${t} и ${q.s}:`, `R² = ${t}² + ${q.s}² = ${t * t} + ${q.s * q.s} = ${t * t + q.s * q.s}`, `R = √${t * t + q.s * q.s} = <b>${q.R}</b> см`],
+    hint: ['Радиус идёт из центра (середины основания) в верхний угол арки.', `Катеты треугольника: полуширина ${t} и высота стенки ${q.s}.`, `R = √(${t}² + ${q.s}²) = <b>${q.R}</b> см.`],
+    solution: [`R² = ${t}² + ${q.s}² = ${t * t + q.s * q.s}`, `R = <b>${q.R} см</b>`],
+    answerDisplay: `Ответ: ${q.R} см`, regen: true,
+  };
+}
+
+function arcSagFig(w, h) {
+  return `<div class="fig"><svg viewBox="0 0 360 230">
+    <path class="a-arc" d="M110,130 Q180,86 250,130 Z"/>
+    <line class="a-chord" x1="110" y1="130" x2="250" y2="130"/>
+    <line class="a-sag" x1="180" y1="130" x2="180" y2="100"/>
+    <circle class="a-dot" cx="180" cy="196" r="3"/>
+    <line class="a-rad" x1="180" y1="196" x2="110" y2="130"/>
+    <line class="a-rad" x1="180" y1="196" x2="180" y2="100" stroke-dasharray="3,3"/>
+    <path d="M172,130 L172,122 L180,122" fill="none" class="a-rad"/>
+    <text class="a-lbl" x="180" y="148" text-anchor="middle">w = ${w}</text>
+    <text class="a-lbl warm" x="190" y="118">h = ${h}</text>
+    <text class="a-lbl" x="138" y="172">R</text>
+    <text class="a-lbl" x="180" y="210" text-anchor="middle">O</text>
+  </svg><div class="fig-cap">O — центр окружности (ниже хорды). Схема, не в масштабе.</div></div>`;
+}
+function genArcSag(fresh) {
+  const presets = [
+    { w: 44, h: 6 },
+    { w: 24, h: 4 },
+    { w: 16, h: 2 },
+    { w: 40, h: 8 },
+  ];
+  const q = pick(presets, fresh);
+  const half = q.w / 2;
+  const R = ((half * half) + q.h * q.h) / (2 * q.h);
+  return {
+    meta: 'Арка кожуха · через стрелку арки', unit: 'см', answer: A1(R),
+    fig: arcSagFig(q.w, q.h),
+    prompt: `Арка кожуха построена по дуге окружности. Хорда (основание арки) <b>w = ${q.w} см</b>, стрелка (высота арки) <b>h = ${q.h} см</b>. Найдите <b>радиус</b> R в сантиметрах; при необходимости округлите до десятых.`,
+    worked: [`Половина хорды: ${q.w} / 2 = ${half} см. Центр O ниже хорды на (R − ${q.h}).`, `По теореме Пифагора: R² = (R − ${q.h})² + ${half}²`, `R² = R² − ${2 * q.h}R + ${q.h * q.h} + ${half * half}`, `${2 * q.h}R = ${q.h * q.h + half * half} → R = ${q.h * q.h + half * half} / ${2 * q.h} = <b>${dec1(R)}</b> см`],
+    hint: ['Центр окружности лежит на оси симметрии, ниже хорды на расстоянии (R − h).', `Катеты прямоугольного треугольника: половина хорды ${half} и (R − ${q.h}); гипотенуза R.`, `R² = (R − ${q.h})² + ${half}²; раскройте и найдите R.`],
+    solution: [`R² = (R − ${q.h})² + ${half}²`, `${2 * q.h}R = ${q.h * q.h + half * half}`, `R = <b>${dec1(R)} см</b>`],
+    answerDisplay: `Ответ: ${dec1(R)} см`, regen: true,
+  };
+}
+
+function g(k, v) { return `<div class="g"><div class="k">${k}</div><div class="v">${v}</div></div>`; }
+
+/* ===== groups ===== */
+const GROUPS = [
+  { id: 'match', name: 'Сопоставление', sub: 'масса · цена · объём', tasks: [
+    { short: 'масса', gen: genMassMatch }, { short: 'цена', gen: genPriceMatch }, { short: 'наиб. объём', gen: genMaxVol } ] },
+  { id: 'geom', name: 'Геометрия парной', sub: 'объём · пол · стены', tasks: [
+    { short: 'объём', gen: genVolume }, { short: 'пол', gen: genFloor }, { short: 'стены', gen: genWalls } ] },
+  { id: 'money', name: 'Деньги', sub: 'сравнение · доставка · скидки', tasks: [
+    { short: 'дешевле', gen: genCheaper }, { short: 'доставка (дров.)', gen: genWoodDelivery }, { short: 'эл. полностью', gen: genElecFull },
+    { short: 'скидка', gen: genDiscount }, { short: 'прошлый год', gen: genReverse }, { short: 'скидка + доставка', gen: genTiered } ] },
+  { id: 'arc', name: 'Арка кожуха', sub: 'радиус двумя способами', tasks: [
+    { short: 'центр в основании', gen: genArcRect }, { short: 'через стрелку', gen: genArcSag } ] },
+];
+const TOTAL = GROUPS.reduce((s, gr) => s + gr.tasks.length, 0);
+
+/* ===== state ===== */
+const STORAGE_KEY = 'mathExamCourseProgress.v1';
+const TOPIC = 'practiceStovesTrainer';
+let state = { g: 0, t: 0, mode: 'learn', solved: new Set(), streak: 0, current: null };
+
+function loadProgress() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) { return {}; } }
+function saveProgress() {
+  try { const d = loadProgress(); d[TOPIC] = { solved: state.solved.size, solvedList: [...state.solved], streak: state.streak, total: TOTAL }; localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); } catch (e) {}
+}
+function taskKey(g, t) { return GROUPS[g].id + ':' + t; }
+
+/* ===== rendering ===== */
+function renderGroups() {
+  document.getElementById('group-tabs').innerHTML = GROUPS.map((gr, i) =>
+    `<button class="group-tab ${i === state.g ? 'active' : ''}" data-g="${i}"><span class="g-name">${gr.name}</span><span class="g-sub">${gr.sub}</span></button>`).join('');
+  document.querySelectorAll('#group-tabs .group-tab').forEach(b => b.addEventListener('click', () => { state.g = +b.dataset.g; state.t = 0; renderGroups(); renderChips(); loadTask(false); }));
+}
+function renderChips() {
+  const gr = GROUPS[state.g];
+  document.getElementById('chip-row').innerHTML = gr.tasks.map((tk, i) =>
+    `<button class="chip ${i === state.t ? 'active' : ''} ${state.solved.has(taskKey(state.g, i)) ? 'done' : ''}" data-t="${i}"><span class="tick">✓</span>${tk.short}</button>`).join('');
+  document.querySelectorAll('#chip-row .chip').forEach(b => b.addEventListener('click', () => { state.t = +b.dataset.t; renderChips(); loadTask(false); }));
+}
+function loadTask(fresh) {
+  state.current = GROUPS[state.g].tasks[state.t].gen(fresh);
+  renderCard(state.current);
+}
+
+function renderCard(t) {
+  const card = document.getElementById('task-card');
+  const buttons = `<div class="button-row">
+      <button class="btn btn-gold" id="hint-btn">Подсказка</button>
+      <button class="btn btn-secondary" id="show-btn">Показать решение</button>
+      ${t.regen ? '<button class="btn btn-ghost" id="regen-btn">Другие числа ↻</button>' : ''}
+      <button class="btn btn-secondary" id="next-btn">Следующая →</button>
+    </div>`;
+  const hint = `<div class="hint-box auto" id="hint-box"><div class="label">Подсказка</div><ol>${t.hint.map(h => `<li>${h}</li>`).join('')}</ol></div>`;
+
+  if (t.match) {
+    const code = t.match.map(r => r.correct).join('');
+    card.innerHTML = `
+      <div class="task-meta">${t.meta}</div>
+      <div class="task-question">${t.prompt}</div>
+      ${t.note ? `<div class="note">${t.note}</div>` : ''}
+      <table class="id-table"><thead><tr><th>${t.colHead}</th><th>Печь</th></tr></thead><tbody>
+        ${t.match.map((r, i) => `<tr><td>${r.label}</td><td><select data-i="${i}" class="stove-select"><option value="">—</option>${t.options.map(o => `<option value="${o.v}">${o.t}</option>`).join('')}</select></td></tr>`).join('')}
+      </tbody></table>
+      ${hint}
+      <div class="answer-section"><div class="answer-row"><button class="btn btn-primary" id="check-btn">Проверить ответы</button></div><div class="feedback" id="feedback"></div></div>
+      <div class="teacher-block" id="teacher-block"><div class="label">Решение</div>${t.solution.map(s => `<div class="step">${s}</div>`).join('')}<div class="answer-display">Код ответа: ${code}</div></div>
+      ${buttons}`;
+    bindMatch(t, code);
+  } else {
+    card.innerHTML = `
+      <div class="task-meta">${t.meta}</div>
+      <div class="task-question">${t.prompt}</div>
+      ${t.fig || ''}
+      ${t.givens ? `<div class="givens">${t.givens}</div>` : ''}
+      ${t.note ? `<div class="note">${t.note}</div>` : ''}
+      <div class="calc-box worked">${t.worked.filter(Boolean).map(l => `<div class="step-line">${l}</div>`).join('')}</div>
+      ${hint}
+      <div class="answer-section"><div class="answer-row">
+        <input type="text" class="answer-input" id="answer-input" placeholder="введите число" autocomplete="off">
+        <span class="answer-unit">${t.unit}</span>
+        <button class="btn btn-primary" id="check-btn">Проверить</button>
+      </div><div class="feedback" id="feedback"></div></div>
+      <div class="teacher-block" id="teacher-block"><div class="label">Решение</div>${t.solution.map(s => `<div class="step">${s}</div>`).join('')}<div class="answer-display">${t.answerDisplay}</div></div>
+      ${buttons}`;
+    bindNumeric(t);
+  }
+  applyMode();
+  bindCommon();
+}
+
+/* ===== handlers ===== */
+function markSolved() {
+  const k = taskKey(state.g, state.t);
+  if (!state.solved.has(k)) { state.solved.add(k); }
+  state.streak++;
+  saveProgress(); updateStats(); renderChips();
+}
+function missSolved() { state.streak = 0; saveProgress(); updateStats(); }
+
+function bindNumeric(t) {
+  const run = () => {
+    const input = document.getElementById('answer-input');
+    const fb = document.getElementById('feedback');
+    const raw = input.value.trim().replace(/[\s\u00A0\u202F]/g, '').replace(',', '.');
+    const val = parseFloat(raw);
+    if (isNaN(val)) { fb.className = 'feedback warn show'; fb.innerHTML = 'Введите число.'; return; }
+    const tol = Math.max(Math.abs(t.answer) * 0.005, 0.05);
+    if (Math.abs(val - t.answer) < tol) {
+      fb.className = 'feedback correct show'; fb.innerHTML = `<b>Верно!</b> ${t.answerDisplay}.`; markSolved();
+    } else {
+      fb.className = 'feedback warn show'; fb.innerHTML = 'Не совсем — проверьте расчёт.'; missSolved();
+    }
+  };
+  document.getElementById('check-btn').addEventListener('click', run);
+  document.getElementById('answer-input').addEventListener('keydown', e => { if (e.key === 'Enter') run(); });
+}
+function bindMatch(t, code) {
+  document.getElementById('check-btn').addEventListener('click', () => {
+    const sels = document.querySelectorAll('.stove-select');
+    let ok = true, filled = true;
+    sels.forEach((s, i) => {
+      if (!s.value) { filled = false; return; }
+      if (s.value === t.match[i].correct) { s.classList.remove('wrong'); s.classList.add('correct'); }
+      else { s.classList.remove('correct'); s.classList.add('wrong'); ok = false; }
+    });
+    const fb = document.getElementById('feedback');
+    if (!filled) { fb.className = 'feedback warn show'; fb.innerHTML = 'Заполните все строки.'; return; }
+    if (ok) { fb.className = 'feedback correct show'; fb.innerHTML = `<b>Верно!</b> Код ответа: <b>${code}</b>.`; markSolved(); }
+    else { fb.className = 'feedback warn show'; fb.innerHTML = 'Не всё верно — сверьтесь с карточками печей.'; missSolved(); }
+  });
+}
+function bindCommon() {
+  const card = document.getElementById('task-card');
+  document.getElementById('hint-btn').addEventListener('click', () => card.classList.add('hint-open'));
+  document.getElementById('show-btn').addEventListener('click', () => card.classList.add('revealed'));
+  const rb = document.getElementById('regen-btn');
+  if (rb) rb.addEventListener('click', () => loadTask(true));
+  document.getElementById('next-btn').addEventListener('click', () => {
+    state.t++;
+    if (state.t >= GROUPS[state.g].tasks.length) { state.g = (state.g + 1) % GROUPS.length; state.t = 0; renderGroups(); }
+    renderChips(); loadTask(false);
+  });
+}
+function updateStats() {
+  document.getElementById('stat-solved').textContent = state.solved.size;
+  document.getElementById('stat-streak').textContent = state.streak;
+}
+function applyMode() { document.body.dataset.mode = state.mode; }
+
+document.querySelectorAll('#mode-switch button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#mode-switch button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); state.mode = btn.dataset.mode; applyMode();
+  });
+});
+
+(function init() {
+  const d = loadProgress();
+  if (d[TOPIC]) { state.solved = new Set(d[TOPIC].solvedList || []); state.streak = d[TOPIC].streak || 0; }
+  renderGroups(); renderChips(); loadTask(false); updateStats();
+})();
+
+(function () {
+  var root = document.querySelector('.banya');
+  if (!root) return;
+  var stage = document.getElementById('bh-stage');
+  var tip = document.getElementById('bhTip');
+  var cap = document.getElementById('bhCap');
+  var wrap = stage.parentElement;
+  var caps = {
+    room: 'Дровяная каменка топится, на камнях — пар. Наведите на размер, чтобы подсветить ребро. Схема, пропорции близки к реальным.',
+    plan: 'Вид сверху: пол — прямоугольник 3,6 × 2 м. Отсюда берётся площадь пола.',
+    unfold: 'Все четыре стены, «развёрнутые» в полосу. Площадь стен = периметр · высота, минус дверь.'
+  };
+  root.querySelectorAll('.seg button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      root.querySelectorAll('.seg button').forEach(function (x) { x.classList.remove('active'); });
+      b.classList.add('active');
+      var v = b.dataset.view; stage.dataset.view = v; cap.textContent = caps[v];
+    });
+  });
+  var chk = document.getElementById('bhDimsChk');
+  function applyDims() { stage.classList.toggle('show-dims', chk.checked); }
+  chk.addEventListener('change', applyDims); applyDims();
+  stage.querySelectorAll('.dim[data-tip]').forEach(function (g) {
+    var edgeId = g.getAttribute('data-edge');
+    var edge = edgeId ? document.getElementById(edgeId) : null;
+    g.addEventListener('mouseenter', function () {
+      if (edge) edge.classList.add('hl');
+      tip.textContent = g.getAttribute('data-tip'); tip.classList.add('on');
+    });
+    g.addEventListener('mousemove', function (e) {
+      var r = wrap.getBoundingClientRect();
+      tip.style.left = (e.clientX - r.left) + 'px';
+      tip.style.top = (e.clientY - r.top) + 'px';
+    });
+    g.addEventListener('mouseleave', function () {
+      if (edge) edge.classList.remove('hl'); tip.classList.remove('on');
+    });
+  });
+})();
+</script>
+</body>
+</html>
