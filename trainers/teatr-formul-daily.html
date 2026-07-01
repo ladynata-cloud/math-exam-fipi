@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Театр формул — квадрат суммы и разности</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,600;1,9..144,700&family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1a1730; --muted:#6a6386;
+    --paper:#faf8ff; --card:#ffffff;
+    --line:#ece7f6; --line2:#ddd5ee; --ring:#cfc6e6;
+    --a:#2b5fe3;  --a-bg:#e6ecfe;  --a-bd:#b7ccfb;   /* роль a */
+    --b:#ef6a3d;  --b-bg:#fde7dd;  --b-bd:#f6c2ac;   /* роль b */
+    --gold:#c8891b; --gold-bg:#fbf0d6; --gold-bd:#eed69a; /* сцена / софиты */
+    --ok:#15a05a; --ok-bg:#e2f5ea; --ok-bd:#9fd9b8;
+    --no:#e23b46; --no-bg:#fde2e4; --no-bd:#f3b4b9;
+    --shadow:0 1px 2px rgba(26,23,48,.05), 0 10px 30px -14px rgba(26,23,48,.22);
+    --shadow-lg:0 2px 6px rgba(26,23,48,.06), 0 30px 60px -28px rgba(26,23,48,.42);
+    --serif:"Fraunces",Georgia,serif; --ui:"Nunito",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:var(--ui); color:var(--ink); background:var(--paper);
+    background-image:radial-gradient(var(--line2) 1px, transparent 1.4px);
+    background-size:26px 26px;
+    line-height:1.5; -webkit-font-smoothing:antialiased; padding:0 16px 60px;
+  }
+  .wrap{max-width:860px;margin:0 auto}
+
+  /* ---------- Афиша / шапка ---------- */
+  .marquee{padding:30px 0 20px;text-align:center;position:relative}
+  .eyebrow{font-weight:800;font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);
+           display:inline-flex;align-items:center;gap:9px;margin-bottom:8px}
+  .eyebrow::before,.eyebrow::after{content:"";width:26px;height:1.5px;background:var(--gold-bd)}
+  .wordmark{font-family:var(--serif);font-weight:900;font-size:clamp(34px,8vw,58px);line-height:.98;margin:0;letter-spacing:-.5px}
+  .wordmark .amp{color:var(--gold);font-style:italic;font-weight:700}
+  .tagline{color:var(--muted);font-weight:600;font-size:15px;margin:12px auto 0;max-width:520px}
+
+  /* ---------- Акты (вкладки) ---------- */
+  .acts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:22px 0 24px}
+  .act{appearance:none;border:1.5px solid var(--ring);background:var(--card);cursor:pointer;
+       font-family:var(--ui);font-weight:800;font-size:14px;color:var(--muted);
+       padding:10px 16px;border-radius:999px;display:inline-flex;align-items:center;gap:9px;
+       box-shadow:var(--shadow);transition:.16s}
+  .act .rn{font-family:var(--serif);font-weight:700;font-style:italic;font-size:13px;
+           width:20px;height:20px;border-radius:50%;background:var(--gold-bg);color:var(--gold);
+           display:flex;align-items:center;justify-content:center;flex:0 0 auto;transition:.16s}
+  .act:hover{color:var(--ink);border-color:var(--gold-bd);transform:translateY(-1px)}
+  .act[aria-selected="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .act[aria-selected="true"] .rn{background:var(--gold);color:#fff}
+
+  .panel{display:none;animation:rise .4s cubic-bezier(.2,.7,.3,1) both}
+  .panel.on{display:block}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:24px}
+  @media(max-width:560px){.card{padding:18px}}
+
+  /* ---------- Переключатель формулы ---------- */
+  .pick{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .pick button{appearance:none;flex:1 1 200px;border:1.5px solid var(--ring);background:var(--card);cursor:pointer;
+               font-family:var(--ui);font-weight:800;color:var(--muted);padding:12px 14px;border-radius:14px;
+               display:flex;align-items:center;gap:11px;transition:.15s;text-align:left;box-shadow:var(--shadow)}
+  .pick button .mini{font-family:var(--serif);font-weight:700;font-size:18px;color:var(--ink);white-space:nowrap}
+  .pick button:hover{border-color:var(--gold-bd);color:var(--ink)}
+  .pick button[aria-pressed="true"]{border-color:var(--ink);background:#fbfaff;color:var(--ink);box-shadow:0 0 0 3px var(--gold-bg)}
+  .pick button[aria-pressed="true"] .dot{background:var(--gold)}
+  .pick .dot{width:10px;height:10px;border-radius:50%;background:var(--line2);flex:0 0 auto;transition:.15s}
+
+  /* ---------- Роли (цвета везде одинаковы) ---------- */
+  .ra{color:var(--a);font-weight:800}
+  .rb{color:var(--b);font-weight:800}
+  em.role{font-style:italic}
+
+  /* ---------- Сцена кастинга ---------- */
+  .cast{position:relative;border-radius:18px;background:linear-gradient(180deg,#fffdf8,#fbf6ea);
+        border:1px solid var(--gold-bd);padding:16px 18px 20px;overflow:hidden}
+  .cast-top{font-family:var(--ui);font-weight:800;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;
+            color:var(--gold);text-align:center;margin-bottom:14px}
+  .cast-row{display:flex;justify-content:center;align-items:flex-end;gap:clamp(20px,8vw,64px)}
+  .actor{position:relative;text-align:center;flex:0 0 auto}
+  .actor .rlabel{font-family:var(--serif);font-style:italic;font-weight:700;font-size:15px;margin-bottom:8px}
+  .actor .tile{position:relative;font-family:var(--serif);font-weight:900;font-size:clamp(30px,9vw,46px);line-height:1;
+               min-width:clamp(66px,20vw,92px);padding:14px 8px;border-radius:14px;background:var(--card);
+               border:2px solid;display:flex;align-items:center;justify-content:center}
+  .actor .tile::before{content:"";position:absolute;top:-40%;left:50%;transform:translateX(-50%);
+                       width:150%;height:130%;border-radius:50%;z-index:0;opacity:.28;filter:blur(6px)}
+  .actor .tile span{position:relative;z-index:1}
+  .actor.role-a .rlabel{color:var(--a)} .actor.role-a .tile{border-color:var(--a-bd);color:var(--a)} .actor.role-a .tile::before{background:radial-gradient(closest-side,var(--a),transparent)}
+  .actor.role-b .rlabel{color:var(--b)} .actor.role-b .tile{border-color:var(--b-bd);color:var(--b)} .actor.role-b .tile::before{background:radial-gradient(closest-side,var(--b),transparent)}
+  .cast-floor{position:absolute;left:8%;right:8%;bottom:8px;height:14px;border-radius:50%;
+              background:radial-gradient(closest-side,rgba(200,137,27,.22),transparent)}
+  @media(prefers-reduced-motion:no-preference){
+    .actor.drop{animation:drop .5s cubic-bezier(.2,.8,.3,1) both}
+    .actor.drop.role-b{animation-delay:.12s}
+  }
+  @keyframes drop{from{opacity:0;transform:translateY(-16px) scale(.9)}to{opacity:1;transform:none}}
+
+  /* ---------- Разбор: сценарий → подстановка → счёт ---------- */
+  .work{margin:20px 0 4px;text-align:center}
+  .wrow{font-family:var(--serif);font-size:clamp(20px,5.4vw,30px);font-weight:700;line-height:1.5;margin:6px 0;
+        color:var(--ink);word-spacing:1px}
+  .wrow sup{font-size:.6em;vertical-align:.55em}
+  .wtag{display:block;font-family:var(--ui);font-weight:800;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+        color:var(--muted);margin-top:12px;margin-bottom:-1px}
+  .wsep{color:var(--line2);font-family:var(--ui);font-weight:800;font-size:16px;margin:2px 0}
+  .final{color:var(--ok)}
+  .check{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-family:var(--ui);font-weight:700;
+         font-size:14px;color:var(--muted);background:#f6faf7;border:1px solid var(--ok-bd);border-radius:999px;padding:7px 15px}
+  .check b{font-family:var(--serif);color:var(--ok)}
+
+  .beat{opacity:0;max-height:0;overflow:hidden;transition:opacity .35s, max-height .45s}
+  .beat.show{opacity:1;max-height:340px}
+  .beat.live .wrow, .beat.live{}
+  .pulse .ra,.pulse .rb{animation:none}
+  @media(prefers-reduced-motion:no-preference){
+    .beat.live.pulse{animation:softpulse 1.1s ease 1}
+  }
+  @keyframes softpulse{0%{transform:scale(1)}30%{transform:scale(1.04)}100%{transform:scale(1)}}
+
+  /* ---------- Нарратор ---------- */
+  .narr{display:flex;gap:13px;align-items:flex-start;background:var(--ink);color:#fff;border-radius:16px;
+        padding:15px 18px;margin-bottom:20px;box-shadow:var(--shadow)}
+  .narr .masks{flex:0 0 auto;font-size:22px;line-height:1;margin-top:1px}
+  .narr p{margin:0;font-weight:600;font-size:15px;line-height:1.5}
+  .narr p b{color:#ffd98a}
+  .narr .ra{color:#8fb2ff}.narr .rb{color:#ffab89}
+
+  /* ---------- Кнопки навигации ---------- */
+  .nav{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:22px;flex-wrap:wrap}
+  .btn{appearance:none;border:0;cursor:pointer;font-family:var(--ui);font-weight:800;font-size:15px;
+       padding:12px 22px;border-radius:12px;transition:.15s;display:inline-flex;align-items:center;gap:8px}
+  .btn:disabled{opacity:.4;cursor:default}
+  .btn-primary{background:var(--ink);color:#fff;box-shadow:var(--shadow)}
+  .btn-primary:not(:disabled):hover{transform:translateY(-1px);box-shadow:var(--shadow-lg)}
+  .btn-ghost{background:var(--card);border:1.5px solid var(--ring);color:var(--muted)}
+  .btn-ghost:not(:disabled):hover{color:var(--ink);border-color:var(--gold-bd)}
+  .btn-gold{background:var(--gold);color:#fff;box-shadow:var(--shadow)}
+  .btn-gold:not(:disabled):hover{transform:translateY(-1px);box-shadow:var(--shadow-lg)}
+  .steps-dots{display:flex;gap:6px}
+  .steps-dots i{width:8px;height:8px;border-radius:50%;background:var(--line2);transition:.2s}
+  .steps-dots i.on{background:var(--gold);transform:scale(1.25)}
+
+  /* ---------- Тренажёр: шаги с вводом ---------- */
+  .prob-head{text-align:center;margin-bottom:6px}
+  .prob-head .lead{font-family:var(--ui);font-weight:800;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+  .prob-head .big{font-family:var(--serif);font-weight:900;font-size:clamp(40px,12vw,64px);line-height:1;margin:6px 0 2px}
+  .prob-head .big sup{font-size:.5em;vertical-align:.6em}
+  .split{text-align:center;font-family:var(--serif);font-weight:700;font-size:clamp(18px,5vw,24px);margin:4px 0 18px;color:var(--muted)}
+  .split sup{font-size:.6em;vertical-align:.55em}
+  .scenario{text-align:center;font-family:var(--serif);font-weight:700;font-size:clamp(17px,4.6vw,23px);
+            background:#faf8ff;border:1px dashed var(--line2);border-radius:12px;padding:12px;margin:0 0 20px}
+  .scenario sup{font-size:.6em;vertical-align:.55em}
+
+  .stepc{border:1.5px solid var(--line2);border-radius:14px;padding:14px 16px;margin-bottom:12px;background:var(--card);
+         opacity:0;max-height:0;overflow:hidden;transition:opacity .3s,max-height .4s,border-color .2s,background .2s}
+  .stepc.show{opacity:1;max-height:400px}
+  .stepc.active{border-color:var(--gold-bd);box-shadow:0 0 0 3px var(--gold-bg)}
+  .stepc.done{border-color:var(--ok-bd);background:var(--ok-bg)}
+  .stepc .stitle{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px;color:var(--ink);margin-bottom:10px}
+  .stepc .snum{flex:0 0 auto;width:24px;height:24px;border-radius:8px;background:var(--gold-bg);color:var(--gold);
+               font-family:var(--serif);font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+  .stepc.done .snum{background:var(--ok);color:#fff}
+  .eqline{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-family:var(--serif);font-weight:700;font-size:clamp(19px,5vw,25px)}
+  .eqline sup{font-size:.6em;vertical-align:.55em}
+  .eqline input{font-family:var(--serif);font-weight:800;font-size:clamp(19px,5vw,25px);width:112px;max-width:42vw;
+                text-align:center;border:2px solid var(--ring);border-radius:11px;padding:6px 8px;color:var(--ink);background:#fff;
+                outline:none;transition:.15s}
+  .eqline input:focus{border-color:var(--a);box-shadow:0 0 0 3px var(--a-bg)}
+  .eqline input.good{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+  .eqline input.bad{border-color:var(--no);background:var(--no-bg);color:var(--no)}
+  @media(prefers-reduced-motion:no-preference){.eqline input.bad{animation:shake .34s}}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  .stepc .go{appearance:none;border:0;cursor:pointer;font-family:var(--ui);font-weight:800;font-size:14px;
+             background:var(--ink);color:#fff;border-radius:10px;padding:9px 16px;transition:.15s}
+  .stepc .go:hover{transform:translateY(-1px)}
+  .hint{margin-top:10px;font-size:13.5px;font-weight:600;color:#7a4a12;background:#fff7e8;border-left:3px solid var(--gold);
+        border-radius:0 9px 9px 0;padding:9px 12px;display:none;line-height:1.45}
+  .hint.show{display:block;animation:rise .3s both}
+  .hint .rerun{display:inline-block;margin-top:6px}
+  .hint .rerun button{appearance:none;border:1px solid var(--gold-bd);background:#fff;color:var(--gold);
+                      font-family:var(--ui);font-weight:800;font-size:12.5px;border-radius:8px;padding:5px 11px;cursor:pointer}
+
+  .bravo{text-align:center;border:1px solid var(--ok-bd);background:var(--ok-bg);border-radius:16px;padding:18px;margin-top:6px;
+         opacity:0;max-height:0;overflow:hidden;transition:opacity .35s,max-height .5s}
+  .bravo.show{opacity:1;max-height:420px}
+  .bravo .big{font-family:var(--serif);font-weight:900;font-size:26px;color:var(--ok);margin:0 0 6px}
+  .bravo .full{font-family:var(--serif);font-weight:700;font-size:clamp(17px,4.6vw,22px);margin:6px 0 4px}
+  .bravo .full sup{font-size:.6em;vertical-align:.55em}
+
+  .scorebar{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:18px;color:var(--muted);
+            font-weight:700;font-size:13.5px;flex-wrap:wrap}
+  .scorebar .pill{display:inline-flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--line2);
+                  border-radius:999px;padding:6px 13px}
+  .scorebar .pill b{font-family:var(--serif);color:var(--ink);font-size:15px}
+  .scorebar .flame{opacity:.4;transition:.2s}
+  .scorebar .flame.on{opacity:1}
+
+
+
+  /* ---------- Ежедневное задание и отчёт ---------- */
+  .daily-card{margin-bottom:18px;background:linear-gradient(180deg,#fff,#fbf7ef);border-color:var(--gold-bd)}
+  .daily-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px;align-items:start}
+  .daily-kicker{font-size:11px;text-transform:uppercase;letter-spacing:1.4px;font-weight:900;color:var(--gold);margin-bottom:6px}
+  .daily-title{font-family:var(--serif);font-weight:800;font-size:clamp(22px,4vw,30px);margin:0 0 8px;color:var(--ink)}
+  .daily-sub{margin:0;color:var(--muted);font-weight:700;line-height:1.45}
+  .daily-progress{height:12px;background:#edf1f7;border:1px solid var(--line2);border-radius:999px;overflow:hidden;margin:14px 0 8px}
+  .daily-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),#f0b347);transition:width .25s ease}
+  .daily-stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .daily-stats .pill{background:#fff}
+  .daily-form{display:grid;gap:10px}
+  .daily-form label{display:grid;gap:5px;font-size:12px;font-weight:900;color:var(--muted);letter-spacing:.2px}
+  .daily-form input{width:100%;border:1.5px solid var(--line2);border-radius:10px;background:#fff;padding:10px 11px;font:800 14px var(--ui);color:var(--ink)}
+  .daily-form input:focus{border-color:var(--gold-bd);outline:none;box-shadow:0 0 0 3px rgba(200,137,27,.14)}
+  .daily-actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:2px}
+  .daily-actions .btn{width:100%;justify-content:center}
+  .report-note{font-size:12px;color:var(--muted);font-weight:700;line-height:1.35;margin:0}
+  @media(max-width:820px){.daily-grid{grid-template-columns:1fr}.daily-form{grid-template-columns:1fr}.daily-actions{grid-template-columns:1fr}}
+
+  /* ---------- Смени актёра ---------- */
+  .dials{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px}
+  .dial{flex:1 1 200px;border:1.5px solid var(--line2);border-radius:16px;padding:14px 16px;background:var(--card)}
+  .dial.role-a{border-color:var(--a-bd);background:linear-gradient(180deg,#fff,#f7faff)}
+  .dial.role-b{border-color:var(--b-bd);background:linear-gradient(180deg,#fff,#fff8f5)}
+  .dial .dlab{font-family:var(--serif);font-style:italic;font-weight:700;font-size:14px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .dial.role-a .dlab{color:var(--a)} .dial.role-b .dlab{color:var(--b)}
+  .dial .dctrl{display:flex;align-items:center;gap:12px;justify-content:space-between}
+  .dial .dval{font-family:var(--serif);font-weight:900;font-size:38px;line-height:1;min-width:70px;text-align:center}
+  .dial.role-a .dval{color:var(--a)} .dial.role-b .dval{color:var(--b)}
+  .stepbtn{appearance:none;border:2px solid var(--ring);background:#fff;cursor:pointer;width:44px;height:44px;border-radius:12px;
+           font-size:24px;font-weight:800;color:var(--ink);display:flex;align-items:center;justify-content:center;line-height:1;transition:.14s;flex:0 0 auto}
+  .stepbtn:hover{border-color:var(--gold-bd);background:var(--gold-bg)}
+  .stepbtn:active{transform:scale(.92)}
+  .stepbtn:disabled{opacity:.3;cursor:default}
+
+  .readout{border:1px solid var(--line2);border-radius:16px;padding:18px;text-align:center;background:#fbfaff}
+  .composed{font-family:var(--serif);font-weight:700;font-size:clamp(20px,5.4vw,28px);margin-bottom:6px}
+  .composed sup{font-size:.6em;vertical-align:.55em}
+  .pieces{display:flex;align-items:stretch;justify-content:center;gap:10px;flex-wrap:wrap;margin:14px 0 6px}
+  .piece{border:1.5px solid var(--line2);border-radius:12px;padding:10px 12px;min-width:96px;background:#fff}
+  .piece .pl{font-family:var(--ui);font-weight:800;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .piece .pv{font-family:var(--serif);font-weight:800;font-size:clamp(18px,4.8vw,23px)}
+  .piece.pa{border-color:var(--a-bd)} .piece.pa .pv{color:var(--a)}
+  .piece.pm .pv{color:var(--ink)} .piece.pb{border-color:var(--b-bd)} .piece.pb .pv{color:var(--b)}
+  .piece.pr{border-color:var(--gold-bd);background:var(--gold-bg)} .piece.pr .pl{color:var(--gold)} .piece.pr .pv{color:#9a6a12}
+  .op{align-self:center;font-family:var(--serif);font-weight:700;font-size:22px;color:var(--muted)}
+  @media(prefers-reduced-motion:no-preference){.piece.flash{animation:flashp .9s ease 1}}
+  @keyframes flashp{0%{transform:none;box-shadow:none}25%{transform:translateY(-4px);box-shadow:0 10px 20px -8px rgba(200,137,27,.5)}100%{transform:none}}
+
+  .delta{margin-top:16px;min-height:22px;font-weight:700;font-size:14px;color:var(--ink);
+         background:var(--gold-bg);border:1px solid var(--gold-bd);border-radius:12px;padding:11px 14px;
+         display:flex;gap:9px;align-items:flex-start;transition:.2s}
+  .delta.empty{background:transparent;border-color:transparent;color:var(--muted);font-weight:600}
+  .delta .m{flex:0 0 auto}
+  .delta .arw{color:var(--gold);font-weight:800}
+
+  .note{color:var(--muted);font-size:13px;font-weight:600;text-align:center;margin:16px auto 0;max-width:560px;line-height:1.5}
+  .foot{text-align:center;color:var(--muted);font-size:12px;font-weight:600;margin-top:30px}
+
+  .toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:var(--ink);color:#fff;
+         font-weight:800;font-size:14px;padding:12px 20px;border-radius:999px;box-shadow:var(--shadow-lg);
+         opacity:0;pointer-events:none;transition:.3s;z-index:50;display:flex;align-items:center;gap:9px}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  :focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="marquee">
+    <div class="eyebrow">Алгебра · 7 класс</div>
+    <h1 class="wordmark">Театр&nbsp;формул</h1>
+    <p class="tagline">Буквы <span class="ra">a</span> и <span class="rb">b</span> — это роли. Числа — актёры, которых мы на них назначаем. Меняем актёра — меняется финал.</p>
+  </header>
+
+  <nav class="acts" role="tablist" aria-label="Разделы">
+    <button class="act" id="act-1" role="tab" aria-selected="true"  onclick="showTab(1)"><span class="rn">I</span>Как это устроено</button>
+    <button class="act" id="act-2" role="tab" aria-selected="false" onclick="showTab(2)"><span class="rn">II</span>Тренажёр</button>
+    <button class="act" id="act-3" role="tab" aria-selected="false" onclick="showTab(3)"><span class="rn">III</span>Смени актёра</button>
+  </nav>
+
+  <!-- ===================== АКТ I ===================== -->
+  <section class="panel on" id="panel-1" role="tabpanel" aria-labelledby="act-1">
+    <div class="pick">
+      <button id="w-sum"  aria-pressed="true"  onclick="wSetType('sum')"><span class="dot"></span><span class="mini">(<span class="ra">a</span> + <span class="rb">b</span>)<sup>2</sup></span> квадрат суммы</button>
+      <button id="w-diff" aria-pressed="false" onclick="wSetType('diff')"><span class="dot"></span><span class="mini">(<span class="ra">a</span> − <span class="rb">b</span>)<sup>2</sup></span> квадрат разности</button>
+    </div>
+    <div class="narr"><span class="masks">🎭</span><p id="w-narr"></p></div>
+    <div class="card" id="w-stage"></div>
+    <div class="nav">
+      <button class="btn btn-ghost" id="w-prev" onclick="wPrev()">← Назад</button>
+      <div class="steps-dots" id="w-dots"></div>
+      <button class="btn btn-primary" id="w-next" onclick="wNext()">Дальше →</button>
+    </div>
+    <p class="note">Нажимай «Дальше» и следи, как одно и то же число выходит на сцену везде, где стоит его роль.</p>
+  </section>
+
+  <!-- ===================== АКТ II ===================== -->
+  <section class="panel" id="panel-2" role="tabpanel" aria-labelledby="act-2">
+    <div class="card daily-card">
+      <div class="daily-grid">
+        <div>
+          <div class="daily-kicker">Ежедневное задание</div>
+          <h2 class="daily-title" id="daily-title">Театр формул на сегодня</h2>
+          <p class="daily-sub" id="daily-sub">Реши дневную норму и отправь отчёт учителю.</p>
+          <div class="daily-progress" aria-label="Прогресс за день"><span id="daily-progress-fill"></span></div>
+          <div class="daily-stats">
+            <span class="pill">Сегодня: <b id="daily-solved">0</b>/<b id="daily-goal-view">8</b></span>
+            <span class="pill">без ошибок: <b id="daily-clean">0</b></span>
+            <span class="pill">подсказки: <b id="daily-reveals">0</b></span>
+          </div>
+        </div>
+        <div class="daily-form">
+          <label>Ученик
+            <input id="daily-student" autocomplete="name" placeholder="Имя ученика" oninput="setStudentName(this.value)">
+          </label>
+          <label>Email учителя
+            <input id="daily-teacher" type="email" autocomplete="email" placeholder="teacher@example.com" oninput="setTeacherEmail(this.value)">
+          </label>
+          <label>Цель на день
+            <input id="daily-goal" type="number" min="1" max="40" step="1" oninput="setDailyGoal(this.value)">
+          </label>
+          <div class="daily-actions">
+            <button class="btn btn-ghost" onclick="copyAssignmentLink()">Скопировать ссылку задания</button>
+            <button class="btn btn-primary" onclick="sendProgress()">Отправить прогресс учителю</button>
+          </div>
+          <p class="report-note" id="daily-report-note">Отчёт собирается за дату задания.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pick">
+      <button id="t-sum"  aria-pressed="true"  onclick="setMode('sum')"><span class="dot"></span><span class="mini">(<span class="ra">a</span> + <span class="rb">b</span>)<sup>2</sup></span> квадрат суммы</button>
+      <button id="t-diff" aria-pressed="false" onclick="setMode('diff')"><span class="dot"></span><span class="mini">(<span class="ra">a</span> − <span class="rb">b</span>)<sup>2</sup></span> квадрат разности</button>
+      <button id="t-mix"  aria-pressed="false" onclick="setMode('mix')"><span class="dot"></span><span class="mini">± </span>вперемешку</button>
+    </div>
+    <div class="card">
+      <div id="t-body"></div>
+      <div class="scorebar">
+        <span class="pill">Решено: <b id="t-solved">0</b></span>
+        <span class="pill"><span class="flame" id="t-flame">🔥</span> подряд: <b id="t-streak">0</b></span>
+      </div>
+    </div>
+    <p class="note">Заполняй по одному окошку. Ошибся — ничего страшного: появится подсказка, попробуешь ещё раз.</p>
+  </section>
+
+  <!-- ===================== АКТ III ===================== -->
+  <section class="panel" id="panel-3" role="tabpanel" aria-labelledby="act-3">
+    <div class="pick">
+      <button id="d-sum"  aria-pressed="true"  onclick="dType('sum')"><span class="dot"></span><span class="mini">(<span class="ra">a</span> + <span class="rb">b</span>)<sup>2</sup></span> сумма</button>
+      <button id="d-diff" aria-pressed="false" onclick="dType('diff')"><span class="dot"></span><span class="mini">(<span class="ra">a</span> − <span class="rb">b</span>)<sup>2</sup></span> разность</button>
+    </div>
+    <div class="card">
+      <div class="dials">
+        <div class="dial role-a">
+          <div class="dlab">В роли <em class="role">a</em> — актёр:</div>
+          <div class="dctrl">
+            <button class="stepbtn" id="da-minus" onclick="dSet('a',-10)" aria-label="Уменьшить a">−</button>
+            <div class="dval" id="da-val">50</div>
+            <button class="stepbtn" id="da-plus" onclick="dSet('a',10)" aria-label="Увеличить a">+</button>
+          </div>
+        </div>
+        <div class="dial role-b">
+          <div class="dlab">В роли <em class="role">b</em> — актёр:</div>
+          <div class="dctrl">
+            <button class="stepbtn" id="db-minus" onclick="dSet('b',-1)" aria-label="Уменьшить b">−</button>
+            <div class="dval" id="db-val">1</div>
+            <button class="stepbtn" id="db-plus" onclick="dSet('b',1)" aria-label="Увеличить b">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="readout" id="d-readout"></div>
+      <div class="delta empty" id="d-delta">Меняй актёров кнопками «+» и «−» — и смотри, какие кусочки формулы изменятся.</div>
+    </div>
+    <p class="note">Один и тот же сценарий, но с разными актёрами даёт разный результат — в этом вся суть подстановки.</p>
+  </section>
+
+  <div class="foot">Приём быстрого счёта: (a ± b)² = a² ± 2ab + b². Раскладывай число на «круглое ± маленькое».</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+function $(id){return document.getElementById(id);}
+function MINUS(){return '\u2212';}
+function fnum(n){return n<0?MINUS()+Math.abs(n):String(n);}
+function A(t){return '<span class="ra">'+t+'</span>';}
+function B(t){return '<span class="rb">'+t+'</span>';}
+
+var toastT=null;
+function toast(html){var t=$('toast');t.innerHTML=html;t.classList.add('show');
+  if(toastT)clearTimeout(toastT);toastT=setTimeout(function(){t.classList.remove('show');},1700);}
+
+/* ---------------- Вкладки ---------------- */
+function showTab(n){
+  [1,2,3].forEach(function(i){
+    $('act-'+i).setAttribute('aria-selected', i===n);
+    $('panel-'+i).classList.toggle('on', i===n);
+  });
+  if(n===1) renderAct1();
+  if(n===2){ renderDailyPanel(); if(!t.prob) newProblem(); }
+  if(n===3) renderAct3(true);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* =====================================================
+   АКТ I — как это устроено (сценарный разбор)
+   ===================================================== */
+var w={type:'sum', step:0};
+var WMAX=6;
+function wData(type){
+  return type==='sum'
+    ? {N:51, base:50, k:1, sign:1}
+    : {N:29, base:30, k:1, sign:-1};
+}
+function wSetType(t){
+  w.type=t; w.step=0;
+  $('w-sum').setAttribute('aria-pressed', t==='sum');
+  $('w-diff').setAttribute('aria-pressed', t==='diff');
+  renderAct1();
+}
+function beat(b,tag,html,live){
+  return '<div class="beat'+(w.step>=b?' show':'')+(w.step===b&&live?' live pulse':'')+'" data-b="'+b+'">'+
+    (tag?'<span class="wtag">'+tag+'</span>':'')+html+'</div>';
+}
+function renderAct1(){
+  var d=wData(w.type), base=d.base, k=d.k, N=d.N, sum=(d.sign>0);
+  var op=sum?'+':MINUS(), mop=sum?'+':MINUS();
+  var a2=base*base, mid=2*base*k, b2=k*k, res=N*N;
+  var opWord=sum?'квадрат суммы':'квадрат разности';
+
+  // нарратор
+  var narr=[
+    'Возвести <b>'+N+'</b> в квадрат в уме тяжело. Но есть приём: разложить число на «круглое плюс маленькое».',
+    'Смотри: <b>'+N+' = '+base+' '+op+' '+k+'</b>. Теперь это спектакль «'+opWord+'»: '+'(<span class="ra">a</span> '+op+' <span class="rb">b</span>)<sup>2</sup>. В нём две роли.',
+    'Назначаем актёров. Сегодня <b>в роли <span class="ra">a</span> выступает число '+base+'</b>, а <b>в роли <span class="rb">b</span> — число '+k+'</b>.',
+    'Сценарий формулы говорит, что делать: (<span class="ra">a</span> '+op+' <span class="rb">b</span>)<sup>2</sup> = <span class="ra">a</span><sup>2</sup> '+mop+' 2·<span class="ra">a</span>·<span class="rb">b</span> + <span class="rb">b</span><sup>2</sup>. Три действия.',
+    'Ставим актёров на места. Заметь: '+base+' выходит и в <span class="ra">a</span><sup>2</sup>, и в среднем действии — один актёр играет свою роль везде.',
+    'Считаем каждое действие по очереди.',
+    'Финал! Складываем '+(sum?'':'(и вычитаем средний кусок) ')+'и получаем ответ. Проверь умножением — сходится. Аплодисменты!'
+  ][w.step];
+  $('w-narr').innerHTML=narr;
+
+  // сцена
+  var castTiles=
+    '<div class="cast-row">'+
+      '<div class="actor role-a'+(w.step===2?' drop':'')+'"><div class="rlabel">роль a</div><div class="tile"><span>'+base+'</span></div></div>'+
+      '<div class="actor role-b'+(w.step===2?' drop':'')+'"><div class="rlabel">роль b</div><div class="tile"><span>'+k+'</span></div></div>'+
+    '</div><div class="cast-floor"></div>';
+
+  var html='';
+  // beat 0: число
+  html+=beat(0,'Задача','<div class="wrow">'+N+'<sup>2</sup> = ?</div>',false);
+  // beat 1: разложение
+  html+=beat(1,'Разложили','<div class="wrow">'+N+' = '+A(base)+' '+op+' '+B(k)+'</div>',true);
+  // beat 2: сцена кастинга
+  html+=beat(2,'Сегодня на сцене','<div class="cast" style="margin-top:6px">'+
+              '<div class="cast-top">кастинг спектакля «'+opWord+'»</div>'+castTiles+'</div>',true);
+  // beat 3: сценарий (шаблон)
+  html+=beat(3,'Сценарий','<div class="wrow">('+A('a')+' '+op+' '+B('b')+')<sup>2</sup> = '+A('a')+'<sup>2</sup> '+mop+' 2·'+A('a')+'·'+B('b')+' + '+B('b')+'<sup>2</sup></div>',true);
+  // beat 4: подстановка
+  html+=beat(4,'Поставили актёров','<div class="wrow">('+A(base)+' '+op+' '+B(k)+')<sup>2</sup> = '+A(base)+'<sup>2</sup> '+mop+' 2·'+A(base)+'·'+B(k)+' + '+B(k)+'<sup>2</sup></div>',true);
+  // beat 5: посчитали куски
+  html+=beat(5,'Посчитали каждый кусок','<div class="wrow">= '+A(a2)+' '+mop+' '+B(mid)+' + '+fnum(b2)+'</div>'+
+              '<div style="font-family:var(--ui);font-weight:700;font-size:13px;color:var(--muted);margin-top:8px">'+
+              A('a')+'<sup>2</sup> = '+base+'·'+base+' = '+a2+' &nbsp;·&nbsp; 2·'+A('a')+'·'+B('b')+' = 2·'+base+'·'+k+' = '+mid+' &nbsp;·&nbsp; '+B('b')+'<sup>2</sup> = '+k+'·'+k+' = '+b2+'</div>',true);
+  // beat 6: финал
+  html+=beat(6,'Финал','<div class="wrow final">= '+fnum(res)+'</div>'+
+              '<div class="check">Проверка: <b>'+N+' · '+N+' = '+res+'</b> ✓</div>'+
+              '<div style="margin-top:16px"><button class="btn btn-gold" onclick="showTab(2)">Порепетируй сам →</button></div>',true);
+
+  $('w-stage').innerHTML='<div class="work">'+html+'</div>';
+
+  // точки-прогресс
+  var dots='';for(var i=0;i<=WMAX;i++)dots+='<i class="'+(i<=w.step?'on':'')+'"></i>';
+  $('w-dots').innerHTML=dots;
+  $('w-prev').disabled=(w.step===0);
+  $('w-next').disabled=(w.step===WMAX);
+  $('w-next').textContent=(w.step===WMAX)?'Готово ✓':'Дальше →';
+}
+function wNext(){ if(w.step<WMAX){w.step++;renderAct1();} }
+function wPrev(){ if(w.step>0){w.step--;renderAct1();} }
+
+/* =====================================================
+   АКТ II — тренажёр с пошаговым вводом
+   ===================================================== */
+var t={mode:'sum', solved:0, streak:0, prob:null, step:1, tries:{}, revealed:false};
+var DAILY_STORE='formulaTheaterDaily.v1';
+var PROFILE_STORE='formulaTheaterDailyProfile.v1';
+var assignment={date:'',goal:8,student:'',teacher:''};
+function esc(s){return String(s||'').replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
+function todayISO(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}
+function readProfile(){try{return JSON.parse(localStorage.getItem(PROFILE_STORE)||'{}')||{};}catch(e){return {};}}
+function saveProfile(){try{localStorage.setItem(PROFILE_STORE,JSON.stringify({student:assignment.student,teacher:assignment.teacher,goal:assignment.goal}));}catch(e){}}
+function parseDailyAssignment(){var q=new URLSearchParams(location.search), profile=readProfile();assignment.date=q.get('date')||todayISO();assignment.goal=Math.max(1,Math.min(40,parseInt(q.get('goal')||profile.goal||'8',10)||8));assignment.student=q.get('student')||profile.student||'';assignment.teacher=q.get('teacher')||profile.teacher||'';var m=q.get('mode'); if(['sum','diff','mix'].indexOf(m)>=0){ t.mode=m; }}
+function dailyKey(){return assignment.date+'|'+(assignment.student||'ученик');}
+function loadDailyAll(){try{return JSON.parse(localStorage.getItem(DAILY_STORE)||'{}')||{};}catch(e){return {};}}
+function saveDailyAll(all){try{localStorage.setItem(DAILY_STORE,JSON.stringify(all));}catch(e){}}
+function blankDaily(){return {solved:0,clean:0,mistakes:0,reveals:0,currentStreak:0,bestStreak:0,history:[],updatedAt:''};}
+function getDailyState(){var all=loadDailyAll(), key=dailyKey(); if(!all[key]) all[key]=blankDaily(); return all[key];}
+function saveDailyState(state){var all=loadDailyAll(); all[dailyKey()]=state; saveDailyAll(all);}
+function updateDailyInputs(){var st=$('daily-student'), te=$('daily-teacher'), go=$('daily-goal');if(st) st.value=assignment.student;if(te) te.value=assignment.teacher;if(go) go.value=assignment.goal;}
+function renderDailyPanel(){var d=getDailyState(), pct=Math.min(100,Math.round((d.solved/assignment.goal)*100));t.solved=d.solved||0; t.streak=d.currentStreak||0;if($('t-solved')) $('t-solved').textContent=t.solved;if($('t-streak')) $('t-streak').textContent=t.streak;if($('t-flame')) $('t-flame').classList.toggle('on', t.streak>=3);if($('daily-title')) $('daily-title').innerHTML=(assignment.student?esc(assignment.student)+': ':'')+'задание на '+assignment.date;if($('daily-sub')) $('daily-sub').textContent=d.solved>=assignment.goal?'Норма закрыта. Можно отправить отчёт или порешать ещё.':'Цель на день: '+assignment.goal+' задач.';if($('daily-progress-fill')) $('daily-progress-fill').style.width=pct+'%';if($('daily-solved')) $('daily-solved').textContent=d.solved;if($('daily-goal-view')) $('daily-goal-view').textContent=assignment.goal;if($('daily-clean')) $('daily-clean').textContent=d.clean||0;if($('daily-reveals')) $('daily-reveals').textContent=d.reveals||0;if($('daily-report-note')) $('daily-report-note').textContent=assignment.teacher?'Отчёт уйдёт на '+assignment.teacher+'.':'Добавьте email учителя или отчёт будет скопирован.';updateDailyInputs();}
+function setStudentName(v){assignment.student=v.trim();saveProfile();renderDailyPanel();}
+function setTeacherEmail(v){assignment.teacher=v.trim();saveProfile();renderDailyPanel();}
+function setDailyGoal(v){assignment.goal=Math.max(1,Math.min(40,parseInt(v,10)||8));saveProfile();renderDailyPanel();}
+function currentProblemMistakes(){var n=0;Object.keys(t.tries||{}).forEach(function(k){n+=t.tries[k]||0;});return n;}
+function recordDailyMiss(){var d=getDailyState();d.mistakes=(d.mistakes||0)+1;d.updatedAt=new Date().toISOString();saveDailyState(d);renderDailyPanel();}
+function recordDailyReveal(){var d=getDailyState();d.reveals=(d.reveals||0)+1;d.updatedAt=new Date().toISOString();saveDailyState(d);renderDailyPanel();}
+function recordDailySolved(){var p=t.prob, mistakes=currentProblemMistakes(), d=getDailyState();d.solved=(d.solved||0)+1;if(mistakes===0 && !t.revealed) d.clean=(d.clean||0)+1;d.currentStreak=(d.currentStreak||0)+1;d.bestStreak=Math.max(d.bestStreak||0,d.currentStreak||0);d.updatedAt=new Date().toISOString();d.history=[{time:new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'}),task:p.N+'²',answer:p.res,mistakes:mistakes,revealed:!!t.revealed}].concat(d.history||[]).slice(0,12);saveDailyState(d);renderDailyPanel();}
+function buildProgressReport(){var d=getDailyState(), pct=Math.min(100,Math.round((d.solved/assignment.goal)*100));var lines=[];lines.push('Отчёт по тренажёру «Театр формул»');lines.push('Дата задания: '+assignment.date);lines.push('Ученик: '+(assignment.student||'не указано'));lines.push('Прогресс: '+d.solved+' из '+assignment.goal+' ('+pct+'%)');lines.push('Решено без ошибок: '+(d.clean||0));lines.push('Ошибочных попыток: '+(d.mistakes||0));lines.push('Показано ответов/подсказок: '+(d.reveals||0));lines.push('Лучшая серия: '+(d.bestStreak||0));if((d.history||[]).length){lines.push('');lines.push('Последние задания:');d.history.slice(0,8).forEach(function(h){lines.push('- '+h.time+' · '+h.task+' = '+h.answer+' · ошибок: '+h.mistakes+(h.revealed?' · был показан ответ':''));});}lines.push('');lines.push('Ссылка: '+assignmentUrl());return lines.join('\n');}
+function assignmentUrl(){var url=new URL(location.href); url.search=''; url.hash='';url.searchParams.set('date',assignment.date);url.searchParams.set('goal',assignment.goal);url.searchParams.set('mode',t.mode||'mix');if(assignment.student) url.searchParams.set('student',assignment.student);if(assignment.teacher) url.searchParams.set('teacher',assignment.teacher);return url.toString();}
+function copyText(text){if(navigator.clipboard&&navigator.clipboard.writeText){return navigator.clipboard.writeText(text);}var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();return Promise.resolve();}
+function copyAssignmentLink(){saveProfile();copyText(assignmentUrl()).then(function(){toast('Ссылка задания скопирована');});}
+function sendProgress(){saveProfile();var report=buildProgressReport();if(assignment.teacher){var subject='Прогресс: Театр формул — '+(assignment.student||'ученик')+' — '+assignment.date;location.href='mailto:'+assignment.teacher+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(report);toast('Открываю письмо с отчётом');return;}if(navigator.share){navigator.share({title:'Прогресс: Театр формул',text:report}).catch(function(){copyText(report).then(function(){toast('Отчёт скопирован');});});return;}copyText(report).then(function(){toast('Отчёт скопирован');});}
+
+var BASES=[20,30,40,50,60,70,80,90,100];
+var KS=[1,2,3];
+function rnd(a){return a[Math.floor(Math.random()*a.length)];}
+function genProb(){
+  var type=t.mode==='mix'?(Math.random()<0.5?'sum':'diff'):t.mode;
+  var base=rnd(BASES), k=rnd(KS);
+  if(type==='diff'&&base===100&&Math.random()<0.5)base=rnd([40,50,60,70,80,90]);
+  var sum=(type==='sum');
+  var N=sum?base+k:base-k;
+  return {type:type,sum:sum,base:base,k:k,N:N,a2:base*base,mid:2*base*k,b2:k*k,res:N*N};
+}
+function setMode(m){
+  t.mode=m;
+  $('t-sum').setAttribute('aria-pressed', m==='sum');
+  $('t-diff').setAttribute('aria-pressed', m==='diff');
+  $('t-mix').setAttribute('aria-pressed', m==='mix');
+  newProblem();
+}
+function newProblem(){ t.prob=genProb(); t.step=1; t.tries={}; t.revealed=false; renderProblem(); renderDailyPanel(); }
+
+function stepConf(p){
+  var op=p.sum?'+':MINUS();
+  return [
+    {n:1, title:'Первый актёр — в квадрат',
+     lead:A('a')+'<sup>2</sup> = '+A(p.base)+' × '+A(p.base)+' = ',
+     ans:p.a2},
+    {n:2, title:'Удвоенное произведение'+(p.sum?'':' (его будем вычитать)'),
+     lead:'2 × '+A(p.base)+' × '+B(p.k)+' = ',
+     ans:p.mid},
+    {n:3, title:'Второй актёр — в квадрат',
+     lead:B('b')+'<sup>2</sup> = '+B(p.k)+' × '+B(p.k)+' = ',
+     ans:p.b2},
+    {n:4, title:'Собираем ответ',
+     lead:A(p.a2)+' '+op+' '+B(p.mid)+' + '+fnum(p.b2)+' = ',
+     ans:p.res}
+  ];
+}
+function renderProblem(){
+  var p=t.prob, op=p.sum?'+':MINUS(), mop=p.sum?'+':MINUS();
+  var opWord=p.sum?'квадрат суммы':'квадрат разности';
+  var steps=stepConf(p);
+
+  var cast='<div class="cast" style="margin:0 0 20px"><div class="cast-top">кастинг · '+opWord+'</div>'+
+    '<div class="cast-row">'+
+      '<div class="actor role-a"><div class="rlabel">роль a</div><div class="tile"><span>'+p.base+'</span></div></div>'+
+      '<div class="actor role-b"><div class="rlabel">роль b</div><div class="tile"><span>'+p.k+'</span></div></div>'+
+    '</div><div class="cast-floor"></div></div>';
+
+  var stepsHTML=steps.map(function(s,idx){
+    var i=idx+1;
+    var state=(i<t.step?'done':(i===t.step?'active':''));
+    var showCls=(i<=t.step?' show':'');
+    var val=(i<t.step) ? ('value="'+s.ans+'" ') : '';
+    var inputAttrs=(i<t.step) ? 'disabled class="good"' : '';
+    return '<div class="stepc'+showCls+' '+state+'" id="stepc-'+i+'">'+
+      '<div class="stitle"><span class="snum">'+s.n+'</span>'+s.title+'</div>'+
+      '<div class="eqline">'+s.lead+
+        '<input id="ans-'+i+'" inputmode="numeric" autocomplete="off" '+val+inputAttrs+
+        ' onkeydown="if(event.key===\'Enter\'){event.preventDefault();checkStep('+i+');}">'+
+        (i>=t.step?'<button class="go" onclick="checkStep('+i+')">Проверить</button>':'')+
+      '</div>'+
+      '<div class="hint" id="hint-'+i+'"></div>'+
+    '</div>';
+  }).join('');
+
+  $('t-body').innerHTML=
+    '<div class="prob-head"><div class="lead">Возведём в квадрат</div>'+
+      '<div class="big">'+p.N+'<sup>2</sup></div></div>'+
+    '<div class="split">'+p.N+' = '+A(p.base)+' '+op+' '+B(p.k)+'</div>'+
+    cast+
+    '<div class="scenario">Сценарий: ('+A('a')+' '+op+' '+B('b')+')<sup>2</sup> = '+A('a')+'<sup>2</sup> '+mop+' 2·'+A('a')+'·'+B('b')+' + '+B('b')+'<sup>2</sup></div>'+
+    stepsHTML+
+    '<div class="bravo" id="bravo"></div>';
+
+  focusActive();
+}
+function focusActive(){
+  var inp=$('ans-'+t.step);
+  if(inp && !inp.disabled){ try{inp.focus();}catch(e){} }
+}
+function hintText(p,i){
+  if(i===1) return 'Это <span class="ra">a</span> × <span class="ra">a</span> = '+p.base+' × '+p.base+'. Хитрость: '+(p.base/10)+' × '+(p.base/10)+' = '+((p.base/10)*(p.base/10))+', и допиши в конце два нуля → '+p.a2+'.';
+  if(i===2) return 'Это 2 × <span class="ra">a</span> × <span class="rb">b</span> = 2 × '+p.base+' × '+p.k+'. Сначала '+p.base+' × '+p.k+' = '+(p.base*p.k)+', потом × 2 = '+p.mid+'.';
+  if(i===3) return '<span class="rb">b</span><sup>2</sup> — это второй актёр сам на себя: '+p.k+' × '+p.k+' = '+p.b2+'. Не путай с 2 × '+p.k+'!';
+  var op=p.sum?'+':MINUS();
+  return 'Сложи то, что уже нашёл: '+p.a2+' '+op+' '+p.mid+' + '+p.b2+' = '+p.res+'.';
+}
+function checkStep(i){
+  var inp=$('ans-'+i); if(!inp||inp.disabled)return;
+  var steps=stepConf(t.prob);
+  var expected=steps[i-1].ans;
+  var raw=(inp.value||'').replace(/\s/g,'').replace(MINUS(),'-');
+  var val=parseInt(raw,10);
+  var hint=$('hint-'+i);
+  if(val===expected){
+    inp.classList.remove('bad'); inp.classList.add('good'); inp.disabled=true;
+    hint.classList.remove('show');
+    var sc=$('stepc-'+i); sc.classList.remove('active'); sc.classList.add('done');
+    var btn=sc.querySelector('.go'); if(btn)btn.remove();
+    if(i<4){
+      t.step=i+1;
+      var nx=$('stepc-'+(i+1)); nx.classList.add('show','active');
+      focusActive();
+    }else{
+      finishProblem();
+    }
+  }else{
+    inp.classList.remove('good'); inp.classList.add('bad');
+    t.tries[i]=(t.tries[i]||0)+1;
+    recordDailyMiss();
+    var extra = t.tries[i]>=2 ? '<span class="rerun"><button onclick="revealStep('+i+')">Показать ответ</button></span>' : '';
+    hint.innerHTML=hintText(t.prob,i)+(extra?'<br>'+extra:'');
+    hint.classList.add('show');
+    setTimeout(function(){inp.classList.remove('bad');},360);
+  }
+}
+function revealStep(i){
+  t.revealed=true;
+  recordDailyReveal();
+  var inp=$('ans-'+i);
+  var steps=stepConf(t.prob);
+  inp.value=steps[i-1].ans;
+  inp.classList.remove('bad'); inp.classList.add('good'); inp.disabled=true;
+  var sc=$('stepc-'+i); sc.classList.remove('active'); sc.classList.add('done');
+  var btn=sc.querySelector('.go'); if(btn)btn.remove();
+  $('hint-'+i).classList.remove('show');
+  if(i<4){ t.step=i+1; $('stepc-'+(i+1)).classList.add('show','active'); focusActive(); }
+  else finishProblem();
+}
+function finishProblem(){
+  var p=t.prob, op=p.sum?'+':MINUS();
+  recordDailySolved();
+  t.solved=getDailyState().solved;
+  // серия только если ни одной подсказки-раскрытия не понадобилось? считаем просто решённые подряд
+  var noReveal=true; // серия за завершённую задачу
+  t.streak=getDailyState().currentStreak||t.streak;
+  $('t-solved').textContent=t.solved;
+  $('t-streak').textContent=t.streak;
+  $('t-flame').classList.toggle('on', t.streak>=3);
+  var cheers=['Браво!','Отлично сыграно!','Чистая работа!','Занавес — и аплодисменты!','Так держать!'];
+  var br=$('bravo');
+  br.innerHTML='<div class="big">🎭 '+rnd(cheers)+'</div>'+
+    '<div class="full">'+p.N+'<sup>2</sup> = '+p.a2+' '+op+' '+p.mid+' + '+p.b2+' = <b style="color:var(--ok)">'+p.res+'</b></div>'+
+    '<div class="check" style="margin-top:10px">Проверка: <b>'+p.N+' · '+p.N+' = '+p.res+'</b> ✓</div>'+
+    '<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="btn btn-primary" onclick="newProblem()">Следующая →</button><button class="btn btn-ghost" onclick="sendProgress()">Отправить прогресс</button></div>';
+  br.classList.add('show');
+  if(t.streak>=3) toast('🔥 '+t.streak+' подряд!');
+  br.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* =====================================================
+   АКТ III — смени актёра
+   ===================================================== */
+var d={type:'sum', a:50, b:1, prev:null};
+function dType(tp){
+  d.type=tp;
+  $('d-sum').setAttribute('aria-pressed', tp==='sum');
+  $('d-diff').setAttribute('aria-pressed', tp==='diff');
+  var lbl=(tp==='sum')?'сумма':'разность';
+  renderAct3(true, 'type'); // при смене типа сбрасываем «что изменилось» на знак
+}
+function dSet(which,delta){
+  if(which==='a'){ d.a=Math.min(100,Math.max(10,d.a+delta)); }
+  else{ d.b=Math.min(9,Math.max(1,d.b+delta)); }
+  renderAct3(false, which);
+}
+function renderAct3(fresh, changed){
+  var a=d.a, b=d.b, sum=(d.type==='sum'), op=sum?'+':MINUS(), mop=sum?'+':MINUS();
+  var N=sum?a+b:a-b;
+  var a2=a*a, mid=2*a*b, b2=b*b, res=sum?a2+mid+b2:a2-mid+b2;
+
+  $('da-val').textContent=a; $('db-val').textContent=b;
+  $('da-minus').disabled=(a<=10); $('da-plus').disabled=(a>=100);
+  $('db-minus').disabled=(b<=1);  $('db-plus').disabled=(b>=9);
+
+  // какие куски подсветить
+  var flA='',flM='',flB='',flR='';
+  if(!fresh && d.prev){
+    if(changed==='a'){flA=flM=flR=' flash';}
+    else if(changed==='b'){flM=flB=flR=' flash';}
+    else if(changed==='type'){flM=flR=' flash';}
+  }
+
+  $('d-readout').innerHTML=
+    '<div class="composed">('+A(a)+' '+op+' '+B(b)+')<sup>2</sup> = '+A(a)+'<sup>2</sup> '+mop+' 2·'+A(a)+'·'+B(b)+' + '+B(b)+'<sup>2</sup></div>'+
+    '<div class="pieces">'+
+      '<div class="piece pa'+flA+'"><div class="pl">a²</div><div class="pv">'+a2+'</div></div>'+
+      '<div class="op">'+op+'</div>'+
+      '<div class="piece pm'+flM+'"><div class="pl">2·a·b</div><div class="pv">'+mid+'</div></div>'+
+      '<div class="op">+</div>'+
+      '<div class="piece pb'+flB+'"><div class="pl">b²</div><div class="pv">'+b2+'</div></div>'+
+      '<div class="op">=</div>'+
+      '<div class="piece pr'+flR+'"><div class="pl">итог</div><div class="pv">'+res+'</div></div>'+
+    '</div>'+
+    '<div class="check">это и есть '+N+'<sup>2</sup>: &nbsp;<b>'+N+' · '+N+' = '+res+'</b> ✓</div>';
+
+  // «что изменилось»
+  var dl=$('d-delta');
+  if(!fresh && d.prev){
+    var pv=d.prev, msg='';
+    if(changed==='a'){
+      msg='<span class="m">🎭</span><span>Актёр в роли <span class="ra">a</span>: <b>'+pv.a+' → '+a+'</b>. '+
+          'Кусок <span class="ra">a</span>² изменился ('+pv.a2+' <span class="arw">→</span> '+a2+') и среднее ('+pv.mid+' <span class="arw">→</span> '+mid+'). Итог: '+pv.res+' <span class="arw">→</span> '+res+'.</span>';
+    }else if(changed==='b'){
+      msg='<span class="m">🎭</span><span>Актёр в роли <span class="rb">b</span>: <b>'+pv.b+' → '+b+'</b>. '+
+          'Изменились среднее ('+pv.mid+' <span class="arw">→</span> '+mid+') и <span class="rb">b</span>² ('+pv.b2+' <span class="arw">→</span> '+b2+'). Итог: '+pv.res+' <span class="arw">→</span> '+res+'.</span>';
+    }else if(changed==='type'){
+      msg='<span class="m">🔁</span><span>Средний кусок сменил знак — теперь его <b>'+(sum?'прибавляем':'вычитаем')+'</b>. Всё остальное осталось прежним, а итог стал '+res+'.</span>';
+    }
+    if(msg){ dl.className='delta'; dl.innerHTML=msg; }
+  }else{
+    dl.className='delta empty';
+    dl.innerHTML='Меняй актёров кнопками «+» и «−» — и смотри, какие кусочки формулы изменятся.';
+  }
+  d.prev={a:a,b:b,type:d.type,a2:a2,mid:mid,b2:b2,res:res};
+}
+
+/* ---------------- старт ---------------- */
+parseDailyAssignment();
+renderDailyPanel();
+renderAct1();
+newProblem();
+renderAct3(true);
+</script>
+</body>
+</html>
