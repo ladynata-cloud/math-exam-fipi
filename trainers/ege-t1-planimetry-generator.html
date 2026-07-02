@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ЕГЭ · Задание 1 · Планиметрия — генератор</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#e8e4db;
+       display:flex;justify-content:center;padding:14px;min-height:100vh}
+  .app{width:100%;max-width:980px;background:#faf8f3;border-radius:18px;overflow:hidden;
+       box-shadow:0 10px 34px rgba(26,26,46,.16);display:flex;flex-direction:column}
+  .head{background:#1a1a2e;color:#f5f3ee;padding:14px 20px;display:flex;align-items:center;gap:14px}
+  .head h1{font-size:18.5px;font-weight:800;letter-spacing:.2px}
+  .head .sub{font-size:12.5px;opacity:.72;margin-top:2px}
+  .head .grow{flex:1}
+  .badge{background:#2d70b3;color:#fff;font-size:11.5px;font-weight:700;padding:4px 10px;
+         border-radius:20px;white-space:nowrap}
+  .back{color:#cfcbe6;font-size:12.5px;text-decoration:none;white-space:nowrap}
+  .back:hover{color:#fff}
+  .success{display:none;background:#dcfce7;color:#14532d;font-size:14px;font-weight:700;
+            padding:10px 20px;border-bottom:1px solid #bbf7d0}
+  .success.show{display:block}
+  .main{display:flex;gap:14px;padding:14px}
+  .work{flex:1;min-width:0}
+  canvas{width:100%;aspect-ratio:640/460;background:#fffdf7;border-radius:12px;
+         border:1px solid #e2ddcf;touch-action:none;display:block}
+  .side{width:312px;flex-shrink:0;display:flex;flex-direction:column;gap:10px}
+  .card{background:#fff;border:1px solid #e6e1d3;border-radius:12px;padding:12px 14px}
+  .card h3{font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:#8a8577;
+           font-weight:800;margin-bottom:7px}
+  .card .task{font-size:14.5px;line-height:1.5;color:#1a1a2e}
+  .card.why{background:#fffbeb;border-color:#fcd34d}
+  .card.why h3{color:#b45309}
+  .small{font-size:13.5px;color:#374151;line-height:1.55}
+  .progress{display:flex;gap:5px}
+  .pcell{flex:1;height:9px;border-radius:5px;background:#e6e1d3;transition:background .25s}
+  .pcell.cur{background:#2d70b3;box-shadow:0 0 0 2px rgba(45,112,179,.25)}
+  .pcell.b{background:#7c9cc4}
+  .pcell.g{background:#16a34a}.pcell.y{background:#eab308}.pcell.r{background:#dc2626}
+  .row{display:flex;align-items:center;gap:8px;font-size:14px}
+  .row input{flex:1;min-width:0;font-size:17px;font-weight:700;padding:8px 10px;
+             border:2px solid #cfc9b8;border-radius:9px;background:#fffdf7;color:#1a1a2e}
+  .row input:focus{outline:none;border-color:#2d70b3}
+  .row input:disabled{opacity:.55}
+  button{font-family:inherit;font-size:14px;font-weight:700;border:none;border-radius:9px;
+         padding:9px 14px;cursor:pointer;transition:transform .08s, box-shadow .15s}
+  button:active{transform:scale(.97)}
+  button:disabled{opacity:.45;cursor:default}
+  .btn-check{background:#2d70b3;color:#fff}
+  .btn-ghost{background:#efece2;color:#3b3830}
+  .btn-warn{background:#fff7ed;color:#c2410c;border:1.5px solid #fdba74}
+  .btn-next{background:#16a34a;color:#fff;display:none}
+  .btn-next.show{display:inline-block}
+  .btn-sol{display:none}
+  .btn-sol.show{display:inline-block}
+  .msg{font-size:13.5px;line-height:1.5;padding:10px 12px;border-radius:10px;display:none}
+  .msg.show{display:block}
+  .msg.info{background:#eef4fb;color:#1e4e79;display:block}
+  .msg.ok{background:#dcfce7;color:#14532d}
+  .msg.err{background:#fee2e2;color:#991b1b}
+  .msg.warn{background:#fff7ed;color:#9a3412}
+  .proof{display:none;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;
+         padding:12px 14px;font-size:13.5px;color:#14532d;line-height:1.55}
+  .proof.show{display:block}
+  .proof ol{padding-left:20px;margin-top:5px}
+  .proof li{margin-bottom:4px}
+  .stat{display:flex;justify-content:space-between;font-size:13px;color:#57534e}
+  .stat b{color:#1a1a2e}
+  .bar{display:flex;gap:10px;align-items:center;padding:12px 14px;border-top:1px solid #e6e1d3;
+       background:#faf8f3;flex-wrap:wrap}
+  .bar .grow{flex:1}
+  .fin{display:none;padding:30px 24px;text-align:center}
+  .fin.show{display:block}
+  .fin .score{font-size:44px;font-weight:900;color:#1a1a2e}
+  .fin .subttl{font-size:14.5px;color:#57534e;margin:6px 0 16px}
+  .dots{display:flex;justify-content:center;gap:9px;margin-bottom:20px;flex-wrap:wrap}
+  .dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;
+       justify-content:center;font-size:11px;font-weight:800;color:#fff}
+  .dot.g{background:#16a34a}.dot.y{background:#eab308}.dot.r{background:#dc2626}
+  .law{max-width:640px;margin:0 auto 20px;background:#fffbeb;border:1.5px solid #fcd34d;
+       border-radius:14px;padding:16px 18px;text-align:left}
+  .law h3{color:#b45309;font-size:13px;text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px}
+  .law p{font-size:14.5px;line-height:1.6;color:#3b3320}
+  .hub{display:none;padding:16px}
+  .hub.show{display:block}
+  .hub .intro{font-size:13.5px;color:#374151;line-height:1.55;margin-bottom:12px}
+  .mcard{background:#1a1a2e;color:#f5f3ee;border-radius:14px;padding:14px 16px;margin-bottom:12px;
+         display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .mcard .mtitle{font-size:15.5px;font-weight:800}
+  .mcard .mdesc{font-size:12.5px;opacity:.75;margin-top:2px}
+  .mcard .grow{flex:1;min-width:160px}
+  .mcard .mbest{font-size:12.5px;font-weight:700;color:#a7f3d0;white-space:nowrap}
+  .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+  .tcard{background:#fff;border:1px solid #e6e1d3;border-radius:12px;padding:12px 14px;
+         display:flex;flex-direction:column;gap:6px}
+  .tcard h4{font-size:14.5px;color:#1a1a2e}
+  .tcard .desc{font-size:12.5px;color:#57534e;line-height:1.45;flex:1}
+  .tcard .best{font-size:12px;font-weight:800}
+  .tcard .best.g{color:#16a34a}.tcard .best.n{color:#8a8577}
+  .tcard .acts{display:flex;gap:8px}
+  .tcard .acts button{flex:1;padding:7px 8px;font-size:13px}
+  @media (max-width:820px){
+    body{padding:8px}
+    .main{flex-direction:column}
+    .side{width:100%}
+    .bar{position:sticky;bottom:0;z-index:5;box-shadow:0 -4px 14px rgba(26,26,46,.08)}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <h1>Задание 1: планиметрия без промахов</h1>
+      <div class="sub">ЕГЭ профиль · Задание 1 · серия из 8 задач со случайными числами</div>
+    </div>
+    <div class="grow"></div>
+    <div class="badge" id="modeBadge">Разбор</div>
+    <a class="back" href="./">← к каталогу</a>
+  </div>
+
+  <div class="success" id="successBar">✓ Серия пройдена! Итоги ниже.</div>
+
+  <div class="hub show" id="hub"></div>
+
+  <div class="main" id="mainArea" style="display:none">
+    <div class="work"><canvas id="cv"></canvas></div>
+    <div class="side">
+      <div class="card">
+        <h3 id="taskHead">Разбор · пример 1 из 5</h3>
+        <div class="task" id="taskText"></div>
+      </div>
+      <div class="progress" id="progress"></div>
+      <div class="row" id="inputRow">
+        <span style="font-weight:700">Ответ:</span>
+        <input id="ansInput" inputmode="decimal" autocomplete="off" placeholder="число">
+        <button class="btn-check" id="checkBtn">Проверить</button>
+      </div>
+      <div class="msg info" id="msg">Прочитай условие, посмотри на чертёж — искомое пульсирует синим, данное отмечено янтарным.</div>
+      <div class="proof" id="proof"></div>
+      <div class="card">
+        <div class="stat"><span>Серия чистых решений:</span><b id="streak">0</b></div>
+      </div>
+      <div class="card why">
+        <h3>Зачем это</h3>
+        <div class="small">Задача 1 — первая на ЕГЭ и стоит столько же баллов, сколько трудные.
+        Её выигрывают не знанием, а отсутствием ошибки на ровном месте: тренажёр ловит
+        именно типовые промахи — «взял дугу вместо угла», «забыл ½», «вычел из 90 вместо 180».</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fin" id="fin">
+    <div class="score" id="finScore">0 / 8</div>
+    <div class="subttl" id="finSub"></div>
+    <div class="subttl" id="finStats" style="font-weight:700"></div>
+    <div class="dots" id="finDots"></div>
+    <div class="law">
+      <h3 id="lawTitle">Закон задачи 1</h3>
+      <p id="lawText"></p>
+    </div>
+    <button class="btn-check" id="againBtn">Тренировать ещё</button>
+    <button class="btn-ghost" id="hubBtn">⌂ К списку типов</button>
+  </div>
+
+  <div class="bar" id="bar" style="display:none">
+    <button class="btn-ghost" id="homeBtn">⌂ Типы</button>
+    <button class="btn-ghost" id="skipBtn">К тренировке ⏭</button>
+    <button class="btn-warn" id="hintBtn">💡 Подсказка</button>
+    <button class="btn-warn btn-sol" id="solBtn">Показать решение</button>
+    <div class="grow"></div>
+    <button class="btn-ghost" id="resetBtn">↺ Сначала</button>
+    <button class="btn-next" id="nextBtn">Следующая →</button>
+  </div>
+</div>
+
+<script>
+'use strict';
+/* ===================== базовые утилиты ===================== */
+const TID='ege-t1-planimetry-generator';
+const $=id=>document.getElementById(id);
+const cv=$('cv'), ctx=cv.getContext('2d');
+const W=640, H=460;
+function fitCanvas(){
+  const dpr=Math.min(2, window.devicePixelRatio||1);
+  cv.width=W*dpr; cv.height=H*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+fitCanvas();
+window.addEventListener('resize', fitCanvas);
+
+const PULSE=()=>1+0.13*Math.sin(Date.now()/240);
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=arr=>arr[ri(0,arr.length-1)];
+const eq=(a,b)=>Math.abs(a-b)<0.01;
+const D2R=Math.PI/180;
+
+/* журнал прогресса */
+function journal(e,extra){
+  try{
+    const key='mathExamCourseProgress.v1';
+    const all=JSON.parse(localStorage.getItem(key)||'{}');
+    const st=all[TID]||(all[TID]={runs:0,best:0,events:[]});
+    st.events.push(Object.assign({t:Date.now(),e:e},extra||{}));
+    if(st.events.length>300) st.events=st.events.slice(-300);
+    if(e==='start') st.runs=(st.runs||0)+1;
+    if(e==='finish'){
+      st.best=Math.max(st.best||0, extra&&extra.score||0);
+      st.passed=true;
+    }
+    localStorage.setItem(key, JSON.stringify(all));
+  }catch(err){}
+}
+
+/* ===================== геометрия ===================== */
+function fitTriangle(angA, angB, box){
+  const tA=Math.tan(angA*D2R), tB=Math.tan(angB*D2R);
+  const cx=tB/(tA+tB), cy=tA*tB/(tA+tB);      // A(0,0), B(1,0), C(cx,cy)
+  const k=Math.min(box.w/1, box.h/cy);
+  const w=1*k, h=cy*k;
+  const ox=box.x+(box.w-w)/2, oy=box.y+(box.h-h)/2;
+  const map=(x,y)=>({x:ox+x*k, y:oy+h-y*k});
+  return {A:map(0,0), B:map(1,0), C:map(cx,cy)};
+}
+function rightTri(a, b, box){                  // катеты вдоль осей: C — прямой угол
+  const k=Math.min(box.w/a, box.h/b);
+  const w=a*k, h=b*k;
+  const ox=box.x+(box.w-w)/2, oy=box.y+(box.h-h)/2;
+  const C={x:ox, y:oy+h}, B={x:ox+w, y:oy+h}, A={x:ox, y:oy};
+  return {A:A, B:B, C:C};
+}
+const onCircle=(cx,cy,r,deg)=>({x:cx+r*Math.cos(deg*D2R), y:cy+r*Math.sin(deg*D2R)});
+
+/* ===================== отрисовка ===================== */
+function grid(){
+  ctx.fillStyle='#fffdf7'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#e7e1d2';
+  for(let x=12;x<W;x+=25)for(let y=12;y<H;y+=25){
+    ctx.beginPath();ctx.arc(x,y,1.15,0,7);ctx.fill();
+  }
+}
+function drawLabel(txt,x,y,col,size){
+  ctx.save();
+  ctx.font='900 '+(size||15)+'px "Segoe UI",system-ui,sans-serif';
+  ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.lineWidth=4.5; ctx.strokeStyle='rgba(250,248,242,.95)';
+  ctx.strokeText(txt,x,y);
+  ctx.fillStyle=col||'#1a1a2e'; ctx.fillText(txt,x,y);
+  ctx.restore();
+}
+function seg(P,Q,col,w,dash){
+  ctx.save();
+  ctx.strokeStyle=col; ctx.lineWidth=w; ctx.lineCap='round';
+  if(dash)ctx.setLineDash(dash);
+  ctx.beginPath();ctx.moveTo(P.x,P.y);ctx.lineTo(Q.x,Q.y);ctx.stroke();
+  ctx.restore();
+}
+function dot(P,col){
+  ctx.save();
+  ctx.fillStyle=col||'#1a1a2e';
+  ctx.strokeStyle='rgba(250,248,242,.95)';ctx.lineWidth=2.2;
+  ctx.beginPath();ctx.arc(P.x,P.y,4.1,0,7);ctx.fill();ctx.stroke();
+  ctx.restore();
+}
+function polyFill(pts,alpha){
+  ctx.save();
+  ctx.fillStyle='rgba(45,112,179,'+alpha+')';
+  ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);
+  for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i].x,pts[i].y);
+  ctx.closePath();ctx.fill();ctx.restore();
+}
+function ticks(P,Q,n){
+  const mx=(P.x+Q.x)/2,my=(P.y+Q.y)/2;
+  const dx=Q.x-P.x,dy=Q.y-P.y,L=Math.hypot(dx,dy);
+  const ux=dx/L,uy=dy/L, px=-uy,py=ux;
+  ctx.save();ctx.strokeStyle='#1a1a2e';ctx.lineWidth=2.4;ctx.lineCap='round';
+  for(let i=0;i<n;i++){
+    const off=(i-(n-1)/2)*6;
+    ctx.beginPath();
+    ctx.moveTo(mx+ux*off-px*6, my+uy*off-py*6);
+    ctx.lineTo(mx+ux*off+px*6, my+uy*off+py*6);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+const angOf=(v,p)=>Math.atan2(p.y-v.y,p.x-v.x);
+function angleArc(v,p1,p2,o){
+  o=o||{};
+  let a1=angOf(v,p1), a2=angOf(v,p2);
+  let d=a2-a1;
+  while(d<=-Math.PI)d+=2*Math.PI;
+  while(d>Math.PI)d-=2*Math.PI;
+  const act=!!o.pulse;
+  const r=(o.r||27)*(act?PULSE():1);
+  ctx.save();
+  ctx.strokeStyle=o.col||'#d97706';
+  ctx.lineWidth=(o.w||3.4)+(act?0.8:0); ctx.lineCap='round';
+  ctx.beginPath(); ctx.arc(v.x,v.y,r,a1,a1+d,d<0); ctx.stroke();
+  if(o.n===2){ctx.beginPath();ctx.arc(v.x,v.y,r-6,a1,a1+d,d<0);ctx.stroke();}
+  if(o.fill){
+    ctx.fillStyle=o.fill;
+    ctx.beginPath();ctx.moveTo(v.x,v.y);ctx.arc(v.x,v.y,r,a1,a1+d,d<0);ctx.closePath();ctx.fill();
+  }
+  ctx.restore();
+  if(o.label){
+    const mid=a1+d/2, lr=r+(o.lr||19);
+    drawLabel(o.label, v.x+Math.cos(mid)*lr, v.y+Math.sin(mid)*lr, o.col||'#d97706');
+  }
+}
+function rightSquare(v,p1,p2,col){
+  const s=14;
+  const a1=angOf(v,p1), a2=angOf(v,p2);
+  const u1={x:Math.cos(a1),y:Math.sin(a1)}, u2={x:Math.cos(a2),y:Math.sin(a2)};
+  ctx.save();ctx.strokeStyle=col||'#16a34a';ctx.lineWidth=2.6;ctx.lineJoin='round';
+  ctx.beginPath();
+  ctx.moveTo(v.x+u1.x*s, v.y+u1.y*s);
+  ctx.lineTo(v.x+(u1.x+u2.x)*s, v.y+(u1.y+u2.y)*s);
+  ctx.lineTo(v.x+u2.x*s, v.y+u2.y*s);
+  ctx.stroke();ctx.restore();
+}
+function circleArc(cx,cy,r,d1,d2,col,w){       // дуга окружности между градусами (по часовой на холсте)
+  ctx.save();ctx.strokeStyle=col;ctx.lineWidth=w;ctx.lineCap='round';
+  ctx.beginPath();ctx.arc(cx,cy,r,d1*D2R,d2*D2R,false);ctx.stroke();ctx.restore();
+}
+function vLabel(P,name,dx,dy){ drawLabel(name, P.x+dx, P.y+dy, '#1a1a2e', 16); }
+function sideLabel(P,Q,txt,col,off){
+  const mx=(P.x+Q.x)/2,my=(P.y+Q.y)/2;
+  const dx=Q.x-P.x,dy=Q.y-P.y,L=Math.hypot(dx,dy);
+  const px=-dy/L,py=dx/L,o=off||18;
+  drawLabel(txt,mx+px*o,my+py*o,col||'#1a1a2e');
+}
+
+/* ===================== шаблоны задач ===================== */
+const AMBER='#d97706', BLUE='#2d70b3', DARK='#1a1a2e', PINK='#db2777', TEAL='#0d9488', GREEN='#16a34a';
+const GENERIC='Не сходится. Перечитай, ЧТО именно спрашивают, и проверь опорную сумму: 180°? 90°? дуга или её половина?';
+
+const TEMPLATES=[
+
+/* 1. Равнобедренный: углы */
+function(){
+  const va=Math.random()<0.5;
+  if(va){
+    let x=ri(34,76); if(x===60)x=61;
+    const ans=180-2*x;
+    const tri=fitTriangle(x,x,{x:110,y:95,w:420,h:290});
+    return {
+      kind:'iso', tri:tri, given:'base', x:x, answer:ans,
+      prompt:'В треугольнике <b>ABC</b> известно, что <b>AC = BC</b>, угол <b>A</b> равен <b>'+x+'°</b>. Найдите угол <b>C</b>. Ответ дайте в градусах.',
+      hint:'В равнобедренном треугольнике углы при основании равны (∠A = ∠B), а сумма всех трёх углов — 180°.',
+      diag:function(v){
+        if(eq(v,x))return x+'° — это угол при основании, он уже дан. Спрашивают угол при вершине C.';
+        if(eq(v,180-x))return 'Вы вычли из 180° только ОДИН угол при основании. AC = BC, значит ∠B = ∠A — равных углов два.';
+        if(eq(v,90-x)&&90-x>0)return '90° — это сумма острых углов ПРЯМОУГОЛЬНОГО треугольника. Здесь треугольник произвольный: сумма всех углов 180°.';
+        if(eq(v,(180-x)/2))return 'Вы посчитали так, будто '+x+'° — угол при вершине. Но дан угол при основании.';
+        return null;
+      },
+      sol:'<ol><li>AC = BC ⇒ углы при основании равны: ∠B = ∠A = '+x+'°.</li><li>Сумма углов треугольника 180°: ∠C = 180° − '+x+'° − '+x+'° = <b>'+ans+'°</b>.</li></ol>'
+    };
+  }else{
+    let y=ri(16,54)*2; if(y===60)y=62;
+    const base=(180-y)/2;
+    const tri=fitTriangle(base,base,{x:110,y:95,w:420,h:290});
+    return {
+      kind:'iso', tri:tri, given:'apex', x:y, answer:base,
+      prompt:'В треугольнике <b>ABC</b> известно, что <b>AC = BC</b>, угол <b>C</b> равен <b>'+y+'°</b>. Найдите угол <b>A</b>. Ответ дайте в градусах.',
+      hint:'Углы при основании равнобедренного треугольника равны. Сумма всех углов — 180°, значит на два равных угла остаётся 180° − ∠C.',
+      diag:function(v){
+        if(eq(v,y))return y+'° — это угол при вершине C, он дан. Спрашивают угол при основании.';
+        if(eq(v,180-y))return 'Вы нашли СУММУ двух углов при основании. Они равны — разделите её пополам.';
+        if(eq(v,90-y)&&90-y>0)return 'Вы отняли от 90°, но сумма углов треугольника — 180°.';
+        if(eq(v,180-2*y)&&180-2*y>0)return 'Вы посчитали так, будто '+y+'° — угол при основании. Но это угол при вершине.';
+        return null;
+      },
+      sol:'<ol><li>Сумма углов при основании: ∠A + ∠B = 180° − '+y+'° = '+(180-y)+'°.</li><li>AC = BC ⇒ ∠A = ∠B, значит ∠A = '+(180-y)+'° : 2 = <b>'+base+'°</b>.</li></ol>'
+    };
+  }
+},
+
+/* 2. Внешний угол равнобедренного */
+function(){
+  const va=Math.random()<0.5;
+  if(va){
+    let y=ri(16,50)*2; if(y===60)y=62;
+    const base=(180-y)/2, ext=180-base;
+    const tri=fitTriangle(base,base,{x:80,y:95,w:400,h:290});
+    return {
+      kind:'isoExt', tri:tri, given:'apex', x:y, answer:ext,
+      prompt:'В треугольнике <b>ABC</b> известно, что <b>AC = BC</b>, угол <b>C</b> равен <b>'+y+'°</b>. Найдите внешний угол <b>CBD</b>. Ответ дайте в градусах.',
+      hint:'Сначала внутренний угол B (углы при основании равны), затем внешний: он смежен с внутренним, вместе — 180°.',
+      diag:function(v){
+        if(eq(v,base))return 'Это ВНУТРЕННИЙ угол ABC. Внешний угол CBD смежен с ним: 180° − ∠ABC.';
+        if(eq(v,y))return y+'° — это данный угол C, а спрашивают внешний угол при вершине B.';
+        if(eq(v,180-y))return '180° − ∠C — это сумма ДВУХ углов при основании, а не внешний угол.';
+        if(eq(v,90-y/2))return 'Похоже, вы отняли половину ∠C от 90°. Внешний угол = 180° − внутренний при B.';
+        return null;
+      },
+      sol:'<ol><li>∠ABC = (180° − '+y+'°) : 2 = '+base+'° (углы при основании равны).</li><li>Внешний угол смежен с внутренним: ∠CBD = 180° − '+base+'° = <b>'+ext+'°</b>.</li><li>Проверка: внешний = сумме двух несмежных = '+y+'° + '+base+'° = '+ext+'°. Сошлось.</li></ol>'
+    };
+  }else{
+    const e=ri(49,69)*2;              // внешний 98..138, C = 2e−180 в 16..96
+    const base=180-e, y=180-2*base;
+    const tri=fitTriangle(base,base,{x:80,y:95,w:400,h:290});
+    return {
+      kind:'isoExt', tri:tri, given:'ext', x:e, answer:y,
+      prompt:'В треугольнике <b>ABC</b> известно, что <b>AC = BC</b>. Внешний угол при вершине <b>B</b> равен <b>'+e+'°</b>. Найдите угол <b>C</b>. Ответ дайте в градусах.',
+      hint:'Внутренний угол B смежен с внешним (вместе 180°). Углы при основании равны, а сумма всех углов треугольника — 180°.',
+      diag:function(v){
+        if(eq(v,base))return 'Это внутренний угол при основании (∠A = ∠B = 180° − '+e+'°). Спрашивают угол C при вершине.';
+        if(eq(v,e))return e+'° — это данный внешний угол, а спрашивают угол C.';
+        if(eq(v,e/2))return 'Половина внешнего угла — это не ∠C. Ход такой: внутренний ∠B = 180° − '+e+'°, дальше сумма углов.';
+        if(eq(v,180-e/2))return 'Внешний угол равен СУММЕ двух несмежных внутренних: ∠C + ∠A = '+e+'°, причём ∠A — угол при основании, он не равен ∠C.';
+        return null;
+      },
+      sol:'<ol><li>∠ABC = 180° − '+e+'° = '+base+'° (смежные).</li><li>∠A = ∠ABC = '+base+'° (углы при основании).</li><li>∠C = 180° − 2·'+base+'° = <b>'+y+'°</b>.</li></ol>'
+    };
+  }
+},
+
+/* 3. Прямоугольный: острые углы */
+function(){
+  const va=Math.random()<0.5;
+  if(va){
+    const d=ri(5,20)*2;
+    const small=(90-d)/2, big=(90+d)/2;
+    const tri=fitTriangle(small,big,{x:110,y:110,w:420,h:280});
+    return {
+      kind:'rightAng', tri:tri, big:big, small:small, answer:big,
+      prompt:'Один острый угол прямоугольного треугольника на <b>'+d+'°</b> больше другого. Найдите больший острый угол. Ответ дайте в градусах.',
+      hint:'Сумма ОСТРЫХ углов прямоугольного треугольника — 90° (третий угол прямой). Составьте уравнение: x + (x + '+d+') = 90.',
+      diag:function(v){
+        if(eq(v,small))return 'Это МЕНЬШИЙ острый угол. Спрашивают больший: прибавьте '+d+'°.';
+        if(eq(v,(180+d)/2))return 'Вы исходили из суммы 180°, но это сумма ВСЕХ углов. Сумма двух острых углов прямоугольного треугольника — 90°.';
+        if(eq(v,(180-d)/2))return 'Вы исходили из суммы 180° — а сумма двух ОСТРЫХ углов равна 90°.';
+        if(eq(v,90-d))return 'Похоже, вы вычли '+d+'° из 90°. Уравнение: x + (x + '+d+') = 90, откуда меньший x = '+small+'°.';
+        return null;
+      },
+      sol:'<ol><li>Пусть меньший угол x, тогда больший x + '+d+'°.</li><li>Сумма острых углов 90°: x + x + '+d+'° = 90° ⇒ x = '+small+'°.</li><li>Больший: '+small+'° + '+d+'° = <b>'+big+'°</b>.</li></ol>'
+    };
+  }else{
+    const k=pick([2,4,5]);
+    const small=90/(k+1), big=90*k/(k+1);
+    const tri=fitTriangle(small,big,{x:110,y:110,w:420,h:280});
+    return {
+      kind:'rightAng', tri:tri, big:big, small:small, answer:big,
+      prompt:'Один острый угол прямоугольного треугольника в <b>'+k+'</b> раза больше другого. Найдите больший острый угол. Ответ дайте в градусах.',
+      hint:'Сумма острых углов прямоугольного треугольника — 90°. Меньший x, больший '+k+'x: вместе (1 + '+k+')x = 90°.',
+      diag:function(v){
+        if(eq(v,small))return 'Это МЕНЬШИЙ острый угол. Больший в '+k+' раза больше него.';
+        if(eq(v,180*k/(k+1)))return 'Вы разделили 180°, но сумма двух ОСТРЫХ углов прямоугольного треугольника — 90°.';
+        if(eq(v,90/k))return 'Похоже, вы просто разделили 90° на '+k+'. Углов два: x и '+k+'x, вместе они дают 90°.';
+        return null;
+      },
+      sol:'<ol><li>Меньший угол x, больший '+k+'x.</li><li>x + '+k+'x = 90° ⇒ x = '+small+'°.</li><li>Больший: '+k+' · '+small+'° = <b>'+big+'°</b>.</li></ol>'
+    };
+  }
+},
+
+/* 4. Площадь прямоугольного треугольника по катетам */
+function(){
+  const a=ri(4,12), b=ri(3,10)*2 ;   // b чётный — площадь целая
+  const tri=rightTri(a,b,{x:130,y:80,w:380,h:320});
+  return {
+    kind:'areaLegs', tri:tri, a:a, b:b, answer:a*b/2,
+    prompt:'Катеты прямоугольного треугольника равны <b>'+a+'</b> и <b>'+b+'</b>. Найдите площадь этого треугольника.',
+    hint:'Катеты перпендикулярны, поэтому один из них — «основание», другой — «высота»: S = ½ · a · b.',
+    diag:function(v){
+      if(eq(v,a*b))return 'Вы перемножили катеты, но забыли ½. Площадь треугольника — ПОЛОВИНА произведения основания на высоту.';
+      if(eq(v,a+b))return 'Это сумма катетов, а не площадь. S = ½ · '+a+' · '+b+'.';
+      if(eq(v,(a+b)*2))return 'Похоже на периметр (и то без гипотенузы). Площадь: S = ½ · '+a+' · '+b+'.';
+      return null;
+    },
+    sol:'<ol><li>Катеты перпендикулярны: один — основание, другой — высота.</li><li>S = ½ · '+a+' · '+b+' = <b>'+(a*b/2)+'</b>.</li></ol>'
+  };
+},
+
+/* 5. Катет и гипотенуза → площадь (Пифагор) */
+function(){
+  const tr=pick([[6,8,10],[9,12,15],[12,16,20],[5,12,13],[8,15,17]]);
+  const giveSmall=Math.random()<0.5;
+  const a=giveSmall?tr[0]:tr[1], b=giveSmall?tr[1]:tr[0], c=tr[2];
+  const tri=rightTri(a,b,{x:130,y:80,w:380,h:320});
+  return {
+    kind:'pyth', tri:tri, a:a, b:b, c:c, answer:tr[0]*tr[1]/2,
+    prompt:'Найдите площадь прямоугольного треугольника, если его катет и гипотенуза равны соответственно <b>'+a+'</b> и <b>'+c+'</b>.',
+    hint:'Сначала второй катет по теореме Пифагора: b = √('+c+'² − '+a+'²). Затем S = ½ · катет · катет.',
+    diag:function(v){
+      if(eq(v,a*c/2))return 'Вы взяли гипотенузу как второй катет. Гипотенуза не перпендикулярна катету — сначала найдите второй катет по Пифагору.';
+      if(eq(v,b))return 'Это второй катет — верный первый шаг! Теперь площадь: половина произведения катетов.';
+      if(eq(v,a*b))return 'Второй катет найден верно, но потеряна ½: S = ½ · '+a+' · '+b+'.';
+      if(eq(v,a+b+c))return 'Это периметр, а спрашивают площадь.';
+      if(eq(v,a*c))return 'Произведение катета на гипотенузу — не площадь. Найдите второй катет по Пифагору.';
+      return null;
+    },
+    sol:'<ol><li>Второй катет: √('+c+'² − '+a+'²) = √('+(c*c)+' − '+(a*a)+') = '+b+'.</li><li>S = ½ · '+a+' · '+b+' = <b>'+(a*b/2)+'</b>.</li></ol>'
+  };
+},
+
+/* 6. Вписанный и центральный угол */
+function(){
+  const w=pick(['a','b','d']);
+  if(w==='a'){
+    const x=ri(17,65);
+    return mkCins(x, 'a', 2*x,
+      'Треугольник <b>ABC</b> вписан в окружность с центром <b>O</b>. Найдите угол <b>BOC</b>, если угол <b>BAC</b> равен <b>'+x+'°</b>. Ответ дайте в градусах.',
+      'Вписанный угол BAC и центральный BOC опираются на одну дугу BC. Центральный вдвое БОЛЬШЕ вписанного.',
+      function(v){
+        if(eq(v,x/2))return 'Вы поделили пополам — в другую сторону: центральный угол вдвое БОЛЬШЕ вписанного, опирающегося на ту же дугу.';
+        if(eq(v,x))return x+'° — это данный вписанный угол. Центральный BOC вдвое больше.';
+        if(eq(v,180-x))return 'Сумма 180° здесь ни при чём: работает пара «вписанный — центральный» на одной дуге.';
+        if(eq(v,360-2*x))return 'Вы взяли БОЛЬШУЮ дугу BC (содержащую A). Угол BOC опирается на ту же дугу, что и ∠BAC, — на малую.';
+        return null;
+      },
+      '<ol><li>∠BAC и ∠BOC опираются на одну дугу BC.</li><li>Центральный вдвое больше вписанного: ∠BOC = 2 · '+x+'° = <b>'+(2*x)+'°</b>.</li></ol>');
+  }
+  if(w==='b'){
+    const y=ri(20,65)*2;
+    return mkCins(y/2, 'b', y/2,
+      'Треугольник <b>ABC</b> вписан в окружность с центром <b>O</b>. Центральный угол <b>BOC</b> равен <b>'+y+'°</b>. Найдите вписанный угол <b>BAC</b>. Ответ дайте в градусах.',
+      'Вписанный угол равен ПОЛОВИНЕ центрального, опирающегося на ту же дугу.',
+      function(v){
+        if(eq(v,2*y))return 'Вы удвоили — в другую сторону: вписанный угол равен ПОЛОВИНЕ центрального.';
+        if(eq(v,y))return y+'° — это данный центральный угол. Вписанный вдвое меньше.';
+        if(eq(v,180-y)&&180-y>0)return 'Сумма 180° здесь ни при чём: вписанный = половина центрального на той же дуге.';
+        return null;
+      },
+      '<ol><li>∠BAC и ∠BOC опираются на одну дугу BC.</li><li>∠BAC = '+y+'° : 2 = <b>'+(y/2)+'°</b>.</li></ol>');
+  }
+  const d=ri(15,45);
+  return mkCins(d, 'd', d,
+    'Центральный угол <b>BOC</b> на <b>'+d+'°</b> больше вписанного угла <b>BAC</b>, опирающегося на ту же дугу. Найдите вписанный угол <b>BAC</b>. Ответ дайте в градусах.',
+    'Обозначьте вписанный угол x: тогда центральный равен 2x и одновременно x + '+d+'°. Уравнение: 2x = x + '+d+'.',
+    function(v){
+      if(eq(v,2*d))return 'Это ЦЕНТРАЛЬНЫЙ угол ('+2*d+'°). Спрашивают вписанный — он вдвое меньше.';
+      if(eq(v,d/2))return 'Из уравнения 2x = x + '+d+'° получается x = '+d+'°, а не половина.';
+      if(eq(v,180-d))return 'Сумма 180° не нужна: центральный вдвое больше вписанного, 2x = x + '+d+'°.';
+      return null;
+    },
+    '<ol><li>Пусть ∠BAC = x, тогда ∠BOC = 2x (та же дуга).</li><li>По условию 2x = x + '+d+'° ⇒ x = <b>'+d+'°</b>.</li></ol>');
+},
+
+/* 7. Вписанный четырёхугольник */
+function(){
+  let x=ri(29,71)*2; if(x===90)x=92;
+  const ans=180-x;
+  const p2=2*x;                                  // дуга BCD
+  const q=Math.max(46, Math.round(p2*(0.35+Math.random()*0.3)));
+  const r=p2-q;
+  const rest=360-p2;
+  const p=Math.max(40, Math.round(rest*(0.35+Math.random()*0.3)));
+  const s=rest-p;
+  const th=205;                                   // A слева
+  const cx=320,cy=245,R=158;
+  const A=onCircle(cx,cy,R,th), B=onCircle(cx,cy,R,th+p),
+        C=onCircle(cx,cy,R,th+p+q), Dd=onCircle(cx,cy,R,th+p+q+r);
+  return {
+    kind:'quad', cx:cx, cy:cy, R:R, P:{A:A,B:B,C:C,D:Dd}, x:x, answer:ans,
+    prompt:'Четырёхугольник <b>ABCD</b> вписан в окружность. Угол <b>A</b> равен <b>'+x+'°</b>. Найдите угол <b>C</b> этого четырёхугольника. Ответ дайте в градусах.',
+    hint:'У вписанного четырёхугольника суммы противоположных углов равны 180°: ∠A + ∠C = 180°.',
+    diag:function(v){
+      if(eq(v,x))return 'Противоположные углы вписанного четырёхугольника НЕ равны — они в сумме дают 180°.';
+      if(eq(v,360-x))return '360° — это сумма ВСЕХ четырёх углов. Противоположные дают 180°.';
+      if(eq(v,(360-x)/3))return 'Остальные три угла не обязаны быть равными. Работает пара противоположных: ∠A + ∠C = 180°.';
+      if(eq(v,90-x)&&90-x>0)return 'Не 90°, а 180°: суммы противоположных углов вписанного четырёхугольника равны 180°.';
+      return null;
+    },
+    sol:'<ol><li>Во вписанном четырёхугольнике ∠A + ∠C = 180°.</li><li>∠C = 180° − '+x+'° = <b>'+ans+'°</b>.</li></ol>'
+  };
+},
+
+/* 8. Дуги в отношении → больший угол */
+function(){
+  const set=pick([[1,2,3],[1,3,5],[2,3,4],[3,4,5],[1,2,6],[1,4,7],[2,3,7]]);
+  const ratio=set.slice();
+  const ssum=ratio[0]+ratio[1]+ratio[2];
+  const arcs=ratio.map(k=>360*k/ssum);            // все чётные по подбору наборов
+  // случайная раскладка дуг по парам вершин: arcs[i] — дуга напротив вершины i (A,B,C)
+  const order=[0,1,2].sort(()=>Math.random()-0.5);
+  const arcBC=arcs[order[0]], arcCA=arcs[order[1]], arcAB=arcs[order[2]]; // против A, B, C
+  const maxArc=Math.max(arcs[0],arcs[1],arcs[2]);
+  const ans=maxArc/2;
+  const others=arcs.filter(a=>a!==maxArc).map(a=>a/2);
+  const cx=320,cy=245,R=158, th=250;
+  const A=onCircle(cx,cy,R,th), B=onCircle(cx,cy,R,th+arcAB), C=onCircle(cx,cy,R,th+arcAB+arcBC);
+  const big = arcBC===maxArc?'A':(arcCA===maxArc?'B':'C');
+  return {
+    kind:'arcs', cx:cx, cy:cy, R:R, P:{A:A,B:B,C:C}, th:th,
+    arcAB:arcAB, arcBC:arcBC, arcCA:arcCA, ratio:ratio, big:big,
+    maxArc:maxArc, answer:ans, others:others,
+    prompt:'Точки <b>A</b>, <b>B</b>, <b>C</b>, расположенные на окружности, делят её на три дуги, градусные величины которых относятся как <b>'+ratio[0]+' : '+ratio[1]+' : '+ratio[2]+'</b>. Найдите больший угол треугольника <b>ABC</b>. Ответ дайте в градусах.',
+    hint:'Каждый угол треугольника — вписанный: он равен ПОЛОВИНЕ дуги, на которую опирается. Дуги: 360° поделить в отношении '+ratio.join(':')+'. Больший угол — против большей дуги.',
+    diag:function(v){
+      if(eq(v,maxArc))return 'Это градусная величина большей ДУГИ ('+maxArc+'°). Вписанный угол — её ПОЛОВИНА.';
+      for(const o of others){ if(eq(v,o))return 'Это другой угол треугольника. Спрашивают больший — он лежит против БОЛЬШЕЙ дуги.'; }
+      if(eq(v,180-ans))return 'Похоже на лишнее вычитание из 180°. Больший угол — половина большей дуги: '+maxArc+'° : 2.';
+      return null;
+    },
+    sol:'<ol><li>Одна часть: 360° : '+ssum+' = '+(360/ssum)+'°. Дуги: '+arcs.join('°, ')+'°.</li><li>Каждый угол — вписанный, равен половине противолежащей дуги.</li><li>Больший угол против большей дуги: '+maxArc+'° : 2 = <b>'+ans+'°</b>.</li></ol>'
+  };
+}
+];
+
+function mkCins(x, variant, answer, prompt, hint, diag, sol){
+  const cx=320, cy=245, R=158;
+  const O={x:cx,y:cy};
+  const B=onCircle(cx,cy,R,90-x), C=onCircle(cx,cy,R,90+x); // дуга BC = 2x внизу
+  const A=onCircle(cx,cy,R,-90);
+  return {kind:'cins', variant:variant, x:x, cx:cx, cy:cy, R:R,
+          P:{A:A,B:B,C:C,O:O}, answer:answer, prompt:prompt, hint:hint, diag:diag, sol:sol};
+}
+
+/* ===================== сцены (живой чертёж) ===================== */
+function drawTriBase(tri, fillAlpha){
+  polyFill([tri.A,tri.B,tri.C], fillAlpha!=null?fillAlpha:0.10);
+  seg(tri.A,tri.B,DARK,2.6); seg(tri.B,tri.C,DARK,2.6); seg(tri.C,tri.A,DARK,2.6);
+}
+function drawScene(t){
+  grid();
+  if(t.kind==='iso'){
+    const {A,B,C}=t.tri;
+    drawTriBase(t.tri);
+    ticks(A,C,1); ticks(B,C,1);
+    if(t.given==='base'){
+      angleArc(A,B,C,{col:AMBER,label:t.x+'°'});
+      if(t.showB===false) angleArc(B,A,C,{col:'#9ca3af',w:2.4,label:'?',lr:16});
+      else angleArc(B,A,C,{col:AMBER,label:t.x+'°'});
+      if(t.reveal) angleArc(C,A,B,{col:GREEN,label:t.answer+'°',fill:'rgba(22,163,74,.12)'});
+      else angleArc(C,A,B,{col:BLUE,pulse:true,label:'?',fill:'rgba(45,112,179,.14)'});
+    }else{
+      angleArc(C,A,B,{col:AMBER,label:t.x+'°'});
+      angleArc(A,B,C,{col:BLUE,pulse:true,label:'?',fill:'rgba(45,112,179,.14)'});
+      angleArc(B,A,C,{col:'#9ca3af',w:2.4});
+    }
+    dot(A);dot(B);dot(C);
+    vLabel(A,'A',-15,10); vLabel(B,'B',15,10); vLabel(C,'C',0,-16);
+  }
+  else if(t.kind==='isoExt'){
+    const {A,B,C}=t.tri;
+    const Dd={x:B.x+72,y:B.y};
+    drawTriBase(t.tri);
+    seg(B,Dd,DARK,2.6,[7,5]);
+    ticks(A,C,1); ticks(B,C,1);
+    if(t.given==='apex'){
+      angleArc(C,A,B,{col:AMBER,label:t.x+'°'});
+      if(t.showInner) angleArc(B,A,C,{col:AMBER,label:t.innerVal+'°',r:19,lr:15});
+      if(t.reveal) angleArc(B,C,Dd,{col:GREEN,label:t.answer+'°',fill:'rgba(22,163,74,.12)',lr:23});
+      else angleArc(B,C,Dd,{col:BLUE,pulse:true,label:'?',fill:'rgba(45,112,179,.14)',lr:23});
+    }else{
+      angleArc(B,C,Dd,{col:AMBER,label:t.x+'°',lr:23});
+      angleArc(C,A,B,{col:BLUE,pulse:true,label:'?',fill:'rgba(45,112,179,.14)'});
+    }
+    dot(A);dot(B);dot(C);dot(Dd);
+    vLabel(A,'A',-15,10); vLabel(B,'B',2,20); vLabel(C,'C',0,-16); vLabel(Dd,'D',15,10);
+  }
+  else if(t.kind==='rightAng'){
+    const {A,B,C}=t.tri;   // ∠A = small, ∠B = big, ∠C = 90°
+    drawTriBase(t.tri);
+    rightSquare(C,A,B,'#16a34a');
+    if(t.reveal) angleArc(B,A,C,{col:GREEN,label:t.big+'°',fill:'rgba(22,163,74,.12)'});
+    else angleArc(B,A,C,{col:BLUE,pulse:true,label:'?',fill:'rgba(45,112,179,.14)'});
+    if(t.showSmall) angleArc(A,B,C,{col:AMBER,label:t.small+'°'});
+    else angleArc(A,B,C,{col:'#9ca3af',w:2.4});
+    dot(A);dot(B);dot(C);
+    vLabel(A,'A',-15,10); vLabel(B,'B',15,10); vLabel(C,'C',0,-16);
+  }
+  else if(t.kind==='areaLegs'||t.kind==='pyth'){
+    const {A,B,C}=t.tri;   // C — прямой угол (внизу слева), катет a по горизонтали, b по вертикали
+    const p=PULSE();
+    polyFill([A,B,C], 0.16+0.10*Math.abs(Math.sin(Date.now()/480)));
+    seg(A,B,DARK,2.6); seg(B,C,DARK,2.6); seg(C,A,DARK,2.6);
+    rightSquare(C,A,B,'#16a34a');
+    if(t.kind==='areaLegs'){
+      sideLabel(C,B,String(t.a),AMBER,20);
+      sideLabel(A,C,String(t.b),AMBER,20);
+    }else{
+      sideLabel(C,B,String(t.a),AMBER,20);
+      sideLabel(A,C,t.revealLeg?String(t.b):'?',t.revealLeg?GREEN:BLUE,20);
+      sideLabel(B,A,String(t.c),AMBER,22);
+    }
+    drawLabel(t.reveal?('S = '+t.answer):'S = ?',(A.x+B.x+C.x)/3+8,(A.y+B.y+C.y)/3,t.reveal?GREEN:BLUE,17);
+    dot(A);dot(B);dot(C);
+    vLabel(A,'A',-14,-8); vLabel(B,'B',16,10); vLabel(C,'C',-14,12);
+  }
+  else if(t.kind==='cins'){
+    const {A,B,C,O}=t.P;
+    ctx.save();ctx.strokeStyle=DARK;ctx.lineWidth=2.2;
+    ctx.beginPath();ctx.arc(t.cx,t.cy,t.R,0,7);ctx.stroke();ctx.restore();
+    circleArc(t.cx,t.cy,t.R,(90-t.x),(90+t.x),AMBER,4.2);   // «та же дуга» BC
+    seg(A,B,DARK,2.4); seg(A,C,DARK,2.4);
+    seg(O,B,'#57534e',2.2); seg(O,C,'#57534e',2.2);
+    const soughtCentral=(t.variant==='a');
+    if(soughtCentral){
+      angleArc(A,B,C,{col:AMBER,label:t.x+'°',r:30});
+      if(t.reveal) angleArc(O,B,C,{col:GREEN,label:t.answer+'°',r:26,fill:'rgba(22,163,74,.12)'});
+      else angleArc(O,B,C,{col:BLUE,pulse:true,label:'?',r:26,fill:'rgba(45,112,179,.14)'});
+    }else if(t.variant==='b'){
+      angleArc(O,B,C,{col:AMBER,label:(2*t.x)+'°',r:26});
+      angleArc(A,B,C,{col:BLUE,pulse:true,label:'?',r:30,fill:'rgba(45,112,179,.14)'});
+    }else{
+      angleArc(O,B,C,{col:AMBER,r:26,label:'? + '+t.x+'°',lr:24});
+      angleArc(A,B,C,{col:BLUE,pulse:true,label:'?',r:30,fill:'rgba(45,112,179,.14)'});
+    }
+    dot(A);dot(B);dot(C);dot(O,'#57534e');
+    vLabel(A,'A',0,-16); vLabel(B,'B',16,10); vLabel(C,'C',-16,10); vLabel(O,'O',14,-10);
+  }
+  else if(t.kind==='quad'){
+    const {A,B,C,D}=t.P;
+    ctx.save();ctx.strokeStyle=DARK;ctx.lineWidth=2.2;
+    ctx.beginPath();ctx.arc(t.cx,t.cy,t.R,0,7);ctx.stroke();ctx.restore();
+    polyFill([A,B,C,D],0.08);
+    seg(A,B,DARK,2.4);seg(B,C,DARK,2.4);seg(C,D,DARK,2.4);seg(D,A,DARK,2.4);
+    angleArc(A,D,B,{col:AMBER,label:t.x+'°'});
+    if(t.reveal) angleArc(C,B,D,{col:GREEN,label:t.answer+'°',fill:'rgba(22,163,74,.12)'});
+    else angleArc(C,B,D,{col:BLUE,pulse:true,label:'?',fill:'rgba(45,112,179,.14)'});
+    [['A',A],['B',B],['C',C],['D',D]].forEach(function(p){
+      dot(p[1]);
+      const dx=p[1].x-t.cx, dy=p[1].y-t.cy, L=Math.hypot(dx,dy);
+      vLabel(p[1],p[0],dx/L*18,dy/L*18);
+    });
+  }
+  else if(t.kind==='arcs'){
+    const cols=[PINK,TEAL,AMBER];
+    ctx.save();ctx.strokeStyle='#d6d3c8';ctx.lineWidth=2;
+    ctx.beginPath();ctx.arc(t.cx,t.cy,t.R,0,7);ctx.stroke();ctx.restore();
+    const segs=[
+      {from:t.th,             len:t.arcAB, opp:'C'},
+      {from:t.th+t.arcAB,     len:t.arcBC, opp:'A'},
+      {from:t.th+t.arcAB+t.arcBC, len:t.arcCA, opp:'B'}
+    ];
+    // подписи-«части» на дугах
+    const partOf={}; partOf[t.arcAB]=null;
+    const arcParts=[[t.arcAB],[t.arcBC],[t.arcCA]];
+    const ssum=t.ratio[0]+t.ratio[1]+t.ratio[2];
+    segs.forEach(function(s,i){
+      circleArc(t.cx,t.cy,t.R,s.from,s.from+s.len,cols[i],4.6);
+      const mid=s.from+s.len/2;
+      const lp=onCircle(t.cx,t.cy,t.R+22,mid);
+      const txt=t.showDegs ? (s.len+'°') : (String(Math.round(s.len/(360/ssum)))+' ч.');
+      drawLabel(txt, lp.x, lp.y, cols[i], 13.5);
+    });
+    const {A,B,C}=t.P;
+    seg(A,B,DARK,2.4);seg(B,C,DARK,2.4);seg(C,A,DARK,2.4);
+    const V={A:A,B:B,C:C};
+    const opposite={A:[B,C],B:[C,A],C:[A,B]};
+    ['A','B','C'].forEach(function(n){
+      const o=opposite[n];
+      if(n===t.big){
+        if(t.reveal) angleArc(V[n],o[0],o[1],{col:GREEN,label:t.answer+'°',fill:'rgba(22,163,74,.12)'});
+        else angleArc(V[n],o[0],o[1],{col:BLUE,pulse:true,label:'?',fill:'rgba(45,112,179,.14)'});
+      }
+      else angleArc(V[n],o[0],o[1],{col:'#9ca3af',w:2.2,r:20});
+    });
+    ['A','B','C'].forEach(function(n){
+      dot(V[n]);
+      const dx=V[n].x-t.cx, dy=V[n].y-t.cy, L=Math.hypot(dx,dy);
+      vLabel(V[n],n,dx/L*18,dy/L*18);
+    });
+  }
+}
+
+/* ===================== ТИПЫ И РАЗБОРЫ ===================== */
+const TYPE_META=[
+{name:'Равнобедренный: углы', desc:'AC = BC: дан угол при основании или при вершине — найти второй.',
+ law:'Углы при основании равнобедренного треугольника равны, а сумма всех трёх углов — 180°. Типовой промах — вычесть данный угол только один раз.'},
+{name:'Внешний угол равнобедренного', desc:'Дан угол при вершине или внешний угол — найти второй.',
+ law:'Внешний угол смежен с внутренним (вместе 180°) и равен сумме двух несмежных внутренних. Второе свойство — быстрая проверка первого.'},
+{name:'Острые углы прямоугольного', desc:'Один острый на d° больше или в k раз больше другого.',
+ law:'Сумма ОСТРЫХ углов прямоугольного треугольника — 90°, а не 180°: прямой угол уже забрал половину. И перечитай, какой угол спрашивают — больший или меньший.'},
+{name:'Площадь по двум катетам', desc:'Даны оба катета — найти площадь.',
+ law:'Катеты перпендикулярны: один — основание, другой — высота. S = ½ · a · b. Половину теряют чаще всего.'},
+{name:'Катет и гипотенуза → площадь', desc:'Второй катет по Пифагору, затем площадь.',
+ law:'Гипотенуза НЕ годится в «высоты» — она не перпендикулярна катету. Сначала второй катет: √(c² − a²), потом S = ½ · a · b.'},
+{name:'Вписанный и центральный угол', desc:'∠BAC и ∠BOC на одной дуге: удвоить или поделить.',
+ law:'Вписанный угол равен ПОЛОВИНЕ центрального, опирающегося на ту же дугу. Направление легко перепутать: у центра — больше.'},
+{name:'Вписанный четырёхугольник', desc:'Противоположные углы: дан ∠A — найти ∠C.',
+ law:'Суммы противоположных углов вписанного четырёхугольника равны 180°. Они НЕ равны между собой и НЕ дают 360°.'},
+{name:'Дуги в отношении', desc:'Точки делят окружность как p : q : r — найти больший угол.',
+ law:'Каждый угол треугольника — вписанный: половина дуги напротив вершины. Больший угол — против большей дуги. Ответ — угол, а не дуга!'}
+];
+
+const DEMOS=[
+{ /* 0. равнобедренный */
+  cond:'В треугольнике <b>ABC</b> известно, что <b>AC = BC</b>, угол <b>A</b> равен <b>70°</b>. Найдите угол <b>C</b>.',
+  make:function(){ return {kind:'iso', given:'base', x:70, answer:40, showB:false,
+    tri:fitTriangle(70,70,{x:110,y:95,w:420,h:290})}; },
+  steps:[
+    {text:'Фундамент всей серии. Дано AC = BC и ∠A = 70°. Про ∠B мы пока «не знаем» — на чертеже он серый со знаком «?».'},
+    {text:'AC = BC — треугольник равнобедренный, а в равнобедренном углы при основании РАВНЫ: ∠B = ∠A = 70°. Смотри, как ∠B «узнался».',
+     apply:function(t){t.showB=true;}},
+    {text:'Сумма углов треугольника — 180°. Значит ∠C = 180° − 70° − 70° = 40°. Типовой промах — вычесть 70° только ОДИН раз: углов при основании два.',
+     apply:function(t){t.reveal=true;}}
+  ]
+},
+{ /* 1. внешний угол */
+  cond:'В треугольнике <b>ABC</b> известно, что <b>AC = BC</b>, угол <b>C</b> равен <b>40°</b>. Найдите внешний угол <b>CBD</b>.',
+  make:function(){ return {kind:'isoExt', given:'apex', x:40, answer:110, innerVal:70,
+    tri:fitTriangle(70,70,{x:80,y:95,w:400,h:290})}; },
+  steps:[
+    {text:'Внешний угол CBD лежит МЕЖДУ стороной CB и продолжением основания за точку B (пунктир). Он пульсирует синим.'},
+    {text:'Сначала внутренний угол при B: углы при основании равны, ∠ABC = (180° − 40°) : 2 = 70°.',
+     apply:function(t){t.showInner=true;}},
+    {text:'Внешний смежен с внутренним: ∠CBD = 180° − 70° = 110°. Проверка вторым свойством: внешний = сумме несмежных = 40° + 70° = 110°. Сошлось.',
+     apply:function(t){t.reveal=true;}}
+  ]
+},
+{ /* 2. острые углы прямоугольного */
+  cond:'Один острый угол прямоугольного треугольника на <b>20°</b> больше другого. Найдите больший острый угол.',
+  make:function(){ return {kind:'rightAng', big:55, small:35, answer:55,
+    tri:fitTriangle(35,55,{x:110,y:110,w:420,h:280})}; },
+  steps:[
+    {text:'Главная ловушка серии. Прямой угол (зелёный квадратик) уже «съел» 90°, поэтому на два острых угла остаётся не 180°, а ровно 90°.'},
+    {text:'Меньший угол — x, больший — x + 20°. Уравнение: x + (x + 20°) = 90°, откуда x = 35°.',
+     apply:function(t){t.showSmall=true;}},
+    {text:'Больший: 35° + 20° = 55°. И последний штрих: перечитать, ЧТО спрашивают. Здесь — больший; ответить 35° обиднее всего.',
+     apply:function(t){t.reveal=true;}}
+  ]
+},
+{ /* 3. площадь по катетам */
+  cond:'Катеты прямоугольного треугольника равны <b>6</b> и <b>8</b>. Найдите площадь этого треугольника.',
+  make:function(){ return {kind:'areaLegs', a:6, b:8, answer:24,
+    tri:rightTri(6,8,{x:130,y:80,w:380,h:320})}; },
+  steps:[
+    {text:'Площадь треугольника — половина произведения основания на высоту. Где здесь высота? Катеты ПЕРПЕНДИКУЛЯРНЫ: один — основание, другой — готовая высота.'},
+    {text:'S = ½ · 6 · 8 = 24. Промах номер один в этом типе — забыть половину и сдать 48.',
+     apply:function(t){t.reveal=true;}}
+  ]
+},
+{ /* 4. катет и гипотенуза */
+  cond:'Найдите площадь прямоугольного треугольника, если его катет и гипотенуза равны соответственно <b>6</b> и <b>10</b>.',
+  make:function(){ return {kind:'pyth', a:6, b:8, c:10, answer:24,
+    tri:rightTri(6,8,{x:130,y:80,w:380,h:320})}; },
+  steps:[
+    {text:'Соблазн — перемножить 6 и 10 и поделить пополам. Нельзя: гипотенуза НЕ перпендикулярна катету, она не годится в «высоты».'},
+    {text:'Сначала второй катет по Пифагору: √(10² − 6²) = √64 = 8.',
+     apply:function(t){t.revealLeg=true;}},
+    {text:'Теперь честная площадь: S = ½ · 6 · 8 = 24. Курьёз тройки 6-8-10: периметр тоже 24 — совпадение чисел не проверка!',
+     apply:function(t){t.reveal=true;}}
+  ]
+},
+{ /* 5. вписанный/центральный */
+  cond:'Треугольник <b>ABC</b> вписан в окружность с центром <b>O</b>. Найдите угол <b>BOC</b>, если угол <b>BAC</b> равен <b>25°</b>.',
+  make:function(){ return mkCins(25,'a',50,'','',function(){return null;},''); },
+  steps:[
+    {text:'∠BAC — вписанный (вершина на окружности), ∠BOC — центральный (вершина в центре). Оба опираются на ОДНУ дугу BC — она подсвечена янтарным.'},
+    {text:'Правило одно, важно направление: центральный вдвое БОЛЬШЕ вписанного. ∠BOC = 2 · 25° = 50°. Запомнить просто: у центра — больше.',
+     apply:function(t){t.reveal=true;}}
+  ]
+},
+{ /* 6. вписанный четырёхугольник */
+  cond:'Четырёхугольник <b>ABCD</b> вписан в окружность. Угол <b>A</b> равен <b>80°</b>. Найдите угол <b>C</b>.',
+  make:function(){
+    const cx=320, cy=245, R=158, th=205;
+    const p=100, q=80, r=80;
+    return {kind:'quad', cx:cx, cy:cy, R:R, x:80, answer:100,
+      P:{A:onCircle(cx,cy,R,th), B:onCircle(cx,cy,R,th+p),
+         C:onCircle(cx,cy,R,th+p+q), D:onCircle(cx,cy,R,th+p+q+r)}};
+  },
+  steps:[
+    {text:'∠A и ∠C — ПРОТИВОПОЛОЖНЫЕ углы вписанного четырёхугольника. Первое, что хочется сказать: «они равны». Это неправда.'},
+    {text:'Правило: суммы противоположных углов равны 180°. Значит ∠C = 180° − 80° = 100°. Ловушки рядом: «равны» (80°) и «360° − 80°» — обе мимо.',
+     apply:function(t){t.reveal=true;}}
+  ]
+},
+{ /* 7. дуги в отношении */
+  cond:'Точки <b>A</b>, <b>B</b>, <b>C</b> делят окружность на три дуги, градусные величины которых относятся как <b>1 : 2 : 3</b>. Найдите больший угол треугольника <b>ABC</b>.',
+  make:function(){
+    const cx=320, cy=245, R=158, th=250;
+    const arcAB=60, arcBC=180, arcCA=120;
+    return {kind:'arcs', cx:cx, cy:cy, R:R, th:th,
+      arcAB:arcAB, arcBC:arcBC, arcCA:arcCA, ratio:[1,2,3], big:'A',
+      maxArc:180, answer:90, others:[30,60],
+      P:{A:onCircle(cx,cy,R,th), B:onCircle(cx,cy,R,th+arcAB), C:onCircle(cx,cy,R,th+arcAB+arcBC)}};
+  },
+  steps:[
+    {text:'Самый «странный» тип. Дуги относятся как 1 : 2 : 3, всего 1+2+3 = 6 частей. Одна часть: 360° : 6 = 60°.'},
+    {text:'Дуги: 60°, 120°, 180°. Каждый угол треугольника — ВПИСАННЫЙ: он равен половине дуги, на которую опирается (дуга лежит НАПРОТИВ вершины).',
+     apply:function(t){t.showDegs=true;}},
+    {text:'Больший угол — против большей дуги: 180° : 2 = 90°. Ответ — угол, а не дуга: сдать 180° вместо 90° — промах номер один в этом типе.',
+     apply:function(t){t.reveal=true;}}
+  ]
+}
+];
+
+const MARATHON_LAW='Четыре опоры: <b>сумма углов треугольника — 180°</b> (у прямоугольного острые дают 90°); <b>вписанный угол — половина дуги</b>, центральный — вся дуга; <b>противоположные углы вписанного четырёхугольника дают 180°</b>; <b>площадь — половина произведения перпендикулярных длин</b>. И пятая, главная: <b>перечитай, ЧТО спрашивают</b>, прежде чем записывать ответ.';
+
+/* ===================== состояние и логика ===================== */
+const TYPE_N=4, MARATHON_N=8;
+let TASKS=[];
+const state={view:'hub', typeIdx:-1, stepIdx:0, demoTask:null,
+             N:MARATHON_N, i:0, mistakes:0, hints:0, revealed:false,
+             done:false, finished:false, streak:0, results:[]};
+
+function genOne(idx){
+  const t=TEMPLATES[idx]();
+  const d=t.diag;
+  t.diag=function(v){ return eq(v,t.answer)?null:d(v); }; // диагностика молчит на верном ответе
+  return t;
+}
+function genAll(){ return TEMPLATES.map(function(_,i){return genOne(i);}); }
+function genType(idx,n){ const a=[]; for(let k=0;k<n;k++)a.push(genOne(idx)); return a; }
+
+function showMsg(cls, html){
+  const m=$('msg');
+  m.className='msg show '+cls;
+  m.innerHTML=html;
+}
+function readStore(){
+  try{ return JSON.parse(localStorage.getItem('mathExamCourseProgress.v1')||'{}'); }
+  catch(e){ return {}; }
+}
+function writeStore(all){
+  try{ localStorage.setItem('mathExamCourseProgress.v1', JSON.stringify(all)); }catch(e){}
+}
+
+/* ---------- хаб ---------- */
+function bestBadge(best,n){
+  if(best==null) return '<span class="best n">ещё не тренировался</span>';
+  const cls=best===n?'g':'n';
+  return '<span class="best '+cls+'">лучшее: '+best+' / '+n+'</span>';
+}
+function renderHub(){
+  const st=readStore()[TID]||{};
+  const types=st.types||{};
+  let h='<div class="intro">Задание 1 профильного ЕГЭ — планиметрия. Выбери тип: '+
+        '<b>разбор</b> проигрывает решение на чертеже по шагам, <b>тренировка</b> — '+TYPE_N+' задачи со случайными числами и диагностикой промахов. '+
+        'Марафон перемешивает все типы, как на экзамене.</div>';
+  h+='<div class="mcard"><div class="grow"><div class="mtitle">🏁 Марафон: все типы подряд</div>'+
+     '<div class="mdesc">'+MARATHON_N+' задач, по одной каждого типа, в экзаменационном темпе</div></div>'+
+     '<span class="mbest">'+(st.best!=null?('лучшее: '+st.best+' / '+MARATHON_N):'')+'</span>'+
+     '<button class="btn-check" onclick="openMarathon()">Начать</button></div>';
+  h+='<div class="tgrid">';
+  TYPE_META.forEach(function(m,i){
+    const tb=types[i]&&types[i].best;
+    h+='<div class="tcard"><h4>'+(i+1)+'. '+m.name+'</h4>'+
+       '<div class="desc">'+m.desc+'</div>'+
+       bestBadge(tb,TYPE_N)+
+       '<div class="acts">'+
+       '<button class="btn-ghost" onclick="openDemo('+i+')">📖 Разбор</button>'+
+       '<button class="btn-check" onclick="openTrain('+i+')">✏️ Тренировка</button>'+
+       '</div></div>';
+  });
+  h+='</div>';
+  $('hub').innerHTML=h;
+}
+function goHub(){
+  state.view='hub'; state.finished=true;   // finished=true останавливает отрисовку
+  renderHub();
+  $('hub').classList.add('show');
+  $('mainArea').style.display='none';
+  $('bar').style.display='none';
+  $('fin').classList.remove('show');
+  $('successBar').classList.remove('show');
+  $('modeBadge').textContent='Типы';
+}
+function leaveHub(){
+  $('hub').classList.remove('show');
+  $('mainArea').style.display='';
+  $('bar').style.display='';
+  $('fin').classList.remove('show');
+  $('successBar').classList.remove('show');
+  state.finished=false;
+}
+function setControls(view){
+  state.view=view;
+  $('modeBadge').textContent = view==='demo' ? 'Разбор' : (state.typeIdx<0 ? 'Марафон' : 'Тренировка');
+  $('inputRow').style.display = view==='demo' ? 'none' : '';
+  $('hintBtn').style.display  = view==='demo' ? 'none' : '';
+  $('skipBtn').style.display  = view==='demo' ? '' : 'none';
+}
+
+/* ---------- разбор типа ---------- */
+function applyDemoStep(){
+  const d=DEMOS[state.typeIdx], s=d.steps[state.stepIdx];
+  if(s.apply) s.apply(state.demoTask);
+  showMsg('info', s.text);
+  const last = state.stepIdx===d.steps.length-1;
+  $('nextBtn').textContent = last ? 'К тренировке →' : 'Дальше →';
+  $('nextBtn').classList.add('show');
+  renderProgress();
+}
+function openDemo(i){
+  leaveHub();
+  state.typeIdx=i;
+  setControls('demo');
+  state.demoTask=DEMOS[i].make();
+  state.stepIdx=0;
+  $('taskHead').textContent='Разбор · '+TYPE_META[i].name;
+  $('taskText').innerHTML=DEMOS[i].cond;
+  $('proof').className='proof'; $('proof').innerHTML='';
+  $('solBtn').classList.remove('show');
+  applyDemoStep();
+  journal('case_seen',{type:i});
+}
+function demoNext(){
+  const d=DEMOS[state.typeIdx];
+  if(state.stepIdx<d.steps.length-1){ state.stepIdx++; applyDemoStep(); return; }
+  openTrain(state.typeIdx);
+}
+
+/* ---------- тренировка ---------- */
+function openTrain(i){
+  leaveHub();
+  state.typeIdx=i;
+  setControls('train');
+  state.N=TYPE_N;
+  TASKS=genType(i,TYPE_N);
+  state.i=0; state.results=[]; state.streak=0;
+  $('streak').textContent='0';
+  initTask();
+  journal('start',{type:i});
+}
+function openMarathon(){
+  leaveHub();
+  state.typeIdx=-1;
+  setControls('train');
+  state.N=MARATHON_N;
+  TASKS=genAll();
+  state.i=0; state.results=[]; state.streak=0;
+  $('streak').textContent='0';
+  initTask();
+  journal('start',{type:'marathon'});
+}
+function renderProgress(){
+  const p=$('progress'); p.innerHTML='';
+  if(state.view==='demo'){
+    const n=DEMOS[state.typeIdx].steps.length;
+    for(let k=0;k<n;k++){
+      const c=document.createElement('div');
+      c.className='pcell';
+      if(k<state.stepIdx) c.classList.add('b');
+      else if(k===state.stepIdx) c.classList.add('cur');
+      p.appendChild(c);
+    }
+    return;
+  }
+  for(let k=0;k<state.N;k++){
+    const c=document.createElement('div');
+    c.className='pcell';
+    if(k<state.results.length) c.classList.add(state.results[k]);
+    else if(k===state.i && !state.finished) c.classList.add('cur');
+    p.appendChild(c);
+  }
+}
+function initTask(){
+  state.mistakes=0; state.hints=0; state.revealed=false; state.done=false;
+  const t=TASKS[state.i];
+  const scope = state.typeIdx<0 ? 'Марафон' : 'Тренировка';
+  $('taskHead').textContent=scope+' · задача '+(state.i+1)+' из '+state.N;
+  $('taskText').innerHTML=t.prompt;
+  $('ansInput').value=''; $('ansInput').disabled=false;
+  $('checkBtn').disabled=false;
+  $('proof').className='proof'; $('proof').innerHTML='';
+  $('solBtn').classList.remove('show');
+  $('nextBtn').classList.remove('show');
+  showMsg('info','Искомое пульсирует синим, данное отмечено янтарным. Ответ — числом.');
+  renderProgress();
+  journal('task_start',{task:state.i+1, kind:t.kind});
+}
+function dotClass(){
+  if(state.revealed) return 'r';
+  const load=state.mistakes+state.hints;
+  if(load===0) return 'g';
+  if(load<=1) return 'y';
+  return 'r';
+}
+function finishTask(via){
+  state.done=true;
+  $('ansInput').disabled=true; $('checkBtn').disabled=true;
+  $('solBtn').classList.remove('show');
+  const t=TASKS[state.i];
+  $('proof').className='proof show';
+  $('proof').innerHTML='<b>Решение.</b>'+t.sol;
+  state.results.push(dotClass());
+  if(dotClass()==='g'){ state.streak++; } else { state.streak=0; }
+  $('streak').textContent=String(state.streak);
+  $('nextBtn').textContent = state.i===state.N-1 ? 'К итогам →' : 'Следующая →';
+  $('nextBtn').classList.add('show');
+  renderProgress();
+  journal('solved',{task:state.i+1, via:via, mistakes:state.mistakes, hints:state.hints});
+}
+function checkAnswer(val){
+  if(state.view!=='train'||state.done||state.finished) return false;
+  const t=TASKS[state.i];
+  if(!isFinite(val)){ showMsg('warn','Введи число (например 64).'); return false; }
+  if(eq(val,t.answer)){
+    showMsg('ok','✓ Верно: <b>'+t.answer+'</b>.');
+    finishTask('answer');
+    return true;
+  }
+  state.mistakes++;
+  const d=t.diag(val);
+  showMsg('err', d||GENERIC);
+  if(state.mistakes>=2) $('solBtn').classList.add('show');
+  journal('quiz_wrong',{task:state.i+1, val:val});
+  return false;
+}
+function revealSolution(){
+  if(state.view!=='train'||state.done) return;
+  state.revealed=true;
+  const t=TASKS[state.i];
+  showMsg('warn','Разобрали решение — такая задача ещё встретится в новой серии.');
+  journal('hint',{task:state.i+1, e2:'reveal'});
+  finishTask('reveal');
+  $('proof').innerHTML='<b>Решение (показано).</b>'+t.sol+'<div style="margin-top:6px">Ответ: <b>'+t.answer+'</b></div>';
+}
+function giveHint(){
+  if(state.view!=='train'||state.done||state.finished) return;
+  const t=TASKS[state.i];
+  if(state.hints===0){ state.hints=1; journal('hint',{task:state.i+1}); }
+  showMsg('warn','💡 '+t.hint);
+}
+function nextTask(){
+  if(!state.done||state.finished) return;
+  if(state.i===state.N-1){ showFin(); return; }
+  state.i++;
+  initTask();
+}
+
+/* ---------- финал ---------- */
+function showFin(){
+  state.finished=true;
+  const good=state.results.filter(r=>r==='g').length;
+  const marathon=state.typeIdx<0;
+  $('finScore').textContent=good+' / '+state.N;
+  $('finSub').textContent= good===state.N
+    ? 'Все — чисто, без подсказок. Так и на экзамене.'
+    : 'Зелёные — решено чисто, жёлтые — с одной шероховатостью, красные — стоит повторить.';
+  const fd=$('finDots'); fd.innerHTML='';
+  state.results.forEach(function(r,k){
+    const d=document.createElement('div');
+    d.className='dot '+r; d.textContent=String(k+1);
+    fd.appendChild(d);
+  });
+  $('lawTitle').textContent = marathon ? 'Закон задачи 1' : ('Опора типа: '+TYPE_META[state.typeIdx].name);
+  $('lawText').innerHTML = marathon ? MARATHON_LAW : TYPE_META[state.typeIdx].law;
+  $('successBar').textContent = marathon
+    ? '✓ Марафон из '+MARATHON_N+' задач пройден! Итоги ниже.'
+    : '✓ Тип «'+TYPE_META[state.typeIdx].name+'» отработан! Итоги ниже.';
+  $('mainArea').style.display='none';
+  $('bar').style.display='none';
+  $('fin').classList.add('show');
+  $('successBar').classList.add('show');
+  let statLine='';
+  const all=readStore();
+  const st=all[TID]||(all[TID]={runs:0,best:0,events:[]});
+  if(marathon){
+    journal('finish',{score:good});
+    const all2=readStore(); const st2=all2[TID]||st;
+    st2.hist=(st2.hist||[]); st2.hist.push(good); st2.hist=st2.hist.slice(-8);
+    writeStore(all2);
+    statLine='Лучший результат: '+Math.max(st2.best||0,good)+' / '+MARATHON_N;
+    if(st2.hist.length>1) statLine+=' · прошлые серии: '+st2.hist.slice(0,-1).join(', ');
+  }else{
+    journal('type_finish',{score:good, type:state.typeIdx});
+    const all2=readStore(); const st2=all2[TID]||st;
+    st2.types=st2.types||{};
+    const tt=st2.types[state.typeIdx]||(st2.types[state.typeIdx]={best:0,hist:[]});
+    tt.best=Math.max(tt.best||0, good);
+    tt.hist=(tt.hist||[]); tt.hist.push(good); tt.hist=tt.hist.slice(-5);
+    writeStore(all2);
+    statLine='Лучший результат по типу: '+tt.best+' / '+TYPE_N;
+    if(tt.hist.length>1) statLine+=' · прошлые: '+tt.hist.slice(0,-1).join(', ');
+  }
+  $('finStats').textContent=statLine;
+}
+function retrain(){
+  if(state.typeIdx<0) openMarathon();
+  else openTrain(state.typeIdx);
+}
+function restart(){
+  if(state.view==='demo') openDemo(state.typeIdx);
+  else retrain();
+}
+
+/* ===================== события UI ===================== */
+$('checkBtn').addEventListener('click', function(){
+  checkAnswer(parseFloat(String($('ansInput').value).replace(',','.')));
+});
+$('ansInput').addEventListener('keydown', function(ev){
+  if(ev.key==='Enter') checkAnswer(parseFloat(String($('ansInput').value).replace(',','.')));
+});
+$('hintBtn').addEventListener('click', giveHint);
+$('solBtn').addEventListener('click', revealSolution);
+$('nextBtn').addEventListener('click', function(){
+  if(state.view==='demo') demoNext(); else nextTask();
+});
+$('skipBtn').addEventListener('click', function(){
+  journal('early',{from:'demo', type:state.typeIdx});
+  openTrain(state.typeIdx);
+});
+$('resetBtn').addEventListener('click', restart);
+$('homeBtn').addEventListener('click', goHub);
+$('hubBtn').addEventListener('click', goHub);
+$('againBtn').addEventListener('click', retrain);
+
+/* тестируемость и inline-onclick хаба */
+globalThis.checkAnswer=checkAnswer;
+globalThis.openDemo=openDemo;
+globalThis.openTrain=openTrain;
+globalThis.openMarathon=openMarathon;
+globalThis.goHub=goHub;
+globalThis.__dbg=function(){return {state:state, tasks:TASKS, genAll:genAll, genOne:genOne,
+  DEMOS:DEMOS, TYPE_META:TYPE_META,
+  fitTriangle:fitTriangle, rightTri:rightTri, nextTask:nextTask, demoNext:demoNext,
+  revealSolution:revealSolution, giveHint:giveHint, restart:restart, retrain:retrain,
+  drawScene:drawScene, renderHub:renderHub};};
+
+/* ===================== старт ===================== */
+goHub();
+function loop(){
+  if(!state.finished){
+    const t = state.view==='demo' ? state.demoTask : TASKS[state.i];
+    if(t) drawScene(t);
+  }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
