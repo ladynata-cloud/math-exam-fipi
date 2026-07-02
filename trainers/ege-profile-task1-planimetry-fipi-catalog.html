@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ЕГЭ профиль: задание 1 - планиметрия ФИПИ</title>
+  <style>
+    :root{--bg:#f7f8fb;--paper:#fff;--ink:#18202f;--muted:#667085;--line:#d9dee8;--blue:#28518a;--blue-soft:#e8f0fb;--green:#0f766e;--green-soft:#dff7f3;--amber:#8a5a00;--amber-soft:#fff2cc;--shadow:0 18px 45px rgba(24,32,47,.08);--radius:8px}
+    *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}a{color:inherit}.shell{width:min(1100px,calc(100% - 32px));margin:0 auto}.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}.topbar-inner{min-height:62px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{display:flex;align-items:baseline;gap:10px;min-width:0}.brand strong{font-size:18px}.brand span{color:var(--muted);font-size:14px;white-space:nowrap}.nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.nav a,.btn,.task-link{border-radius:var(--radius);text-decoration:none;transition:transform .12s ease,border-color .12s ease,background .12s ease}.nav a{padding:8px 12px;border:1px solid transparent;color:var(--muted);font-size:14px;font-weight:800}.nav a:hover{border-color:var(--line);color:var(--ink);background:#fff}.hero{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:22px;align-items:stretch;padding:34px 0 18px}.hero-main,.stat,.panel,.task-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.hero-main{padding:clamp(22px,4vw,36px);display:flex;flex-direction:column;justify-content:space-between;gap:24px;min-height:260px}.eyebrow{margin:0 0 10px;color:var(--green);font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:0}h1{margin:0;font-size:clamp(28px,4.3vw,52px);line-height:1.05;letter-spacing:0}.lead{margin:14px 0 0;max-width:760px;color:#3d4658;font-size:clamp(16px,2vw,19px)}.hero-actions{display:flex;flex-wrap:wrap;gap:10px}.btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 13px;font:inherit;font-weight:850;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;min-height:42px}.btn:hover{transform:translateY(-1px);border-color:#a9b4c4}.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}.btn.green{background:var(--green-soft);color:#075e56;border-color:#a8ded6}.stats{display:grid;gap:12px}.stat{padding:18px}.stat b{display:block;font-size:34px;line-height:1}.stat span{display:block;margin-top:6px;color:var(--muted);font-size:14px;font-weight:800}.stat:nth-child(1){border-top:4px solid var(--green)}.stat:nth-child(2){border-top:4px solid var(--blue)}.stat:nth-child(3){border-top:4px solid var(--amber)}.panel{padding:16px;margin:16px 0}.toolbar{display:grid;grid-template-columns:minmax(220px,1fr) auto auto;gap:10px;align-items:center}.search{width:100%;min-height:44px;border:1px solid var(--line);border-radius:var(--radius);background:#fff;padding:10px 12px;font:inherit;color:var(--ink)}.search:focus{outline:3px solid #dff7f3;border-color:var(--green)}.status-line{margin-top:12px;color:var(--muted);font-size:14px;font-weight:800}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:10px;padding-bottom:34px}.task-card{padding:12px;display:grid;gap:8px;min-height:102px}.task-serial{color:var(--muted);font-size:13px;font-weight:800}.task-link{min-height:42px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);background:#fff;color:var(--blue);font-size:16px;font-weight:950}.task-link:hover{transform:translateY(-1px);border-color:#8fb3e8;background:var(--blue-soft)}.source-note{margin:0 0 34px;padding:16px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--green);border-radius:var(--radius);color:#475467;font-size:14px}.source-note a{color:var(--blue);font-weight:850}.empty{display:none;padding:26px;border:1px dashed #bdc6d3;border-radius:var(--radius);background:#fff;color:var(--muted);font-weight:850;text-align:center}.hidden{display:none!important}@media(max-width:840px){.hero{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.toolbar{grid-template-columns:1fr}}@media(max-width:620px){.shell{width:min(100% - 20px,1100px)}.topbar-inner{align-items:flex-start;flex-direction:column;padding:12px 0}.brand{flex-direction:column;gap:0}.brand span{white-space:normal}.hero{padding-top:18px}.hero-main{min-height:auto}.stats{grid-template-columns:1fr}.btn{width:100%}.grid{grid-template-columns:repeat(auto-fill,minmax(112px,1fr))}}
+  </style>
+</head>
+<body>
+  <header class="topbar"><div class="shell topbar-inner"><div class="brand"><strong>MathExam</strong><span>ЕГЭ профильная математика</span></div><nav class="nav" aria-label="Навигация"><a href="../">Главная</a><a href="./">Тренажёры</a><a href="https://ege.fipi.ru/bank/index.php?proj=AC437B34557F88EA4115D2F374B0A07B" target="_blank" rel="noopener">ФИПИ</a></nav></div></header>
+  <main class="shell">
+    <section class="hero" aria-labelledby="page-title"><div class="hero-main"><div><p class="eyebrow">ЕГЭ профиль · задание 1 · ФИПИ</p><h1 id="page-title">Планиметрия: каталог задач</h1><p class="lead">Собран список заданий из официального банка ФИПИ по фильтру “7.1 Фигуры на плоскости” и “Краткий ответ”. Каждый номер открывает отдельную карточку задания на сайте ФИПИ.</p></div><div class="hero-actions"><button class="btn primary" id="randomTask" type="button">Случайная задача</button><a class="btn green" href="./ege-profile-task1-planimetry-fipi-catalog.pdf" download>Скачать PDF</a><button class="btn green" id="copyVisible" type="button">Скопировать список</button><a class="btn" href="https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&amp;search=1&amp;theme=7.1&amp;qkind=ILI_STD_SHORT&amp;pagesize=10" target="_blank" rel="noopener">Открыть фильтр ФИПИ</a></div></div><div class="stats"><div class="stat"><b>52</b><span>задания ФИПИ</span></div><div class="stat"><b>7.1</b><span>фигуры на плоскости</span></div><div class="stat"><b>02.07.2026</b><span>дата сверки</span></div></div></section>
+    <section class="panel"><div class="toolbar"><input class="search" id="search" type="search" autocomplete="off" placeholder="Найти по номеру ФИПИ" /><button class="btn" id="reset" type="button">Сбросить</button><a class="btn" href="https://ege.fipi.ru/bank/index.php?proj=AC437B34557F88EA4115D2F374B0A07B" target="_blank" rel="noopener">Банк ФИПИ</a></div><div class="status-line" id="statusLine"></div></section>
+    <section class="grid" id="grid" aria-live="polite"></section><div class="empty" id="empty">По этому запросу задач не найдено.</div>
+    <div class="source-note">Источник: <a href="https://ege.fipi.ru/bank/index.php?proj=AC437B34557F88EA4115D2F374B0A07B" target="_blank" rel="noopener">открытый банк тестовых заданий ФИПИ</a>, проект “ЕГЭ | Математика. Профильный уровень”. Фильтр: КЭС 7.1 Фигуры на плоскости; тип ответа: краткий ответ. На странице собраны номера и прямые ссылки; формулировки открываются на официальном сайте ФИПИ.</div>
+  </main>
+  <script>
+    const DATA = {
+  "tasks": [
+    {
+      "serial": 1,
+      "id": "A33A46",
+      "page": 1,
+      "numberOnPage": 1,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=A33A46",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 2,
+      "id": "80A34C",
+      "page": 1,
+      "numberOnPage": 2,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=80A34C",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 3,
+      "id": "7FA4FB",
+      "page": 1,
+      "numberOnPage": 3,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=7FA4FB",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 4,
+      "id": "2933FB",
+      "page": 1,
+      "numberOnPage": 4,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=2933FB",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 5,
+      "id": "84E9F2",
+      "page": 1,
+      "numberOnPage": 5,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=84E9F2",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 6,
+      "id": "FFBD0F",
+      "page": 1,
+      "numberOnPage": 6,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=FFBD0F",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 7,
+      "id": "C7D60A",
+      "page": 1,
+      "numberOnPage": 7,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=C7D60A",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 8,
+      "id": "3CF402",
+      "page": 1,
+      "numberOnPage": 8,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=3CF402",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 9,
+      "id": "847B0B",
+      "page": 1,
+      "numberOnPage": 9,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=847B0B",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 10,
+      "id": "8CB50E",
+      "page": 1,
+      "numberOnPage": 10,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=8CB50E",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 11,
+      "id": "1DD37A",
+      "page": 2,
+      "numberOnPage": 1,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=1DD37A",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 12,
+      "id": "79D7B4",
+      "page": 2,
+      "numberOnPage": 2,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=79D7B4",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 13,
+      "id": "732EBF",
+      "page": 2,
+      "numberOnPage": 3,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=732EBF",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 14,
+      "id": "BC72B9",
+      "page": 2,
+      "numberOnPage": 4,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=BC72B9",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 15,
+      "id": "9C6FBB",
+      "page": 2,
+      "numberOnPage": 5,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=9C6FBB",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 16,
+      "id": "F12D1C",
+      "page": 2,
+      "numberOnPage": 6,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=F12D1C",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 17,
+      "id": "5B3F1A",
+      "page": 2,
+      "numberOnPage": 7,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=5B3F1A",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 18,
+      "id": "CE4D1D",
+      "page": 2,
+      "numberOnPage": 8,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=CE4D1D",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 19,
+      "id": "6C9E2A",
+      "page": 2,
+      "numberOnPage": 9,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=6C9E2A",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 20,
+      "id": "282EDC",
+      "page": 2,
+      "numberOnPage": 10,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=282EDC",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 21,
+      "id": "B54D55",
+      "page": 3,
+      "numberOnPage": 1,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=B54D55",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 22,
+      "id": "1F4550",
+      "page": 3,
+      "numberOnPage": 2,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=1F4550",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 23,
+      "id": "907C53",
+      "page": 3,
+      "numberOnPage": 3,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=907C53",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 24,
+      "id": "3B5E5D",
+      "page": 3,
+      "numberOnPage": 4,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=3B5E5D",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 25,
+      "id": "78e8A7",
+      "page": 3,
+      "numberOnPage": 5,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=78e8A7",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 26,
+      "id": "CA58AE",
+      "page": 3,
+      "numberOnPage": 6,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=CA58AE",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 27,
+      "id": "FDDACE",
+      "page": 3,
+      "numberOnPage": 7,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=FDDACE",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 28,
+      "id": "A9DCC5",
+      "page": 3,
+      "numberOnPage": 8,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=A9DCC5",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 29,
+      "id": "697AC9",
+      "page": 3,
+      "numberOnPage": 9,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=697AC9",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 30,
+      "id": "F34697",
+      "page": 3,
+      "numberOnPage": 10,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=F34697",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 31,
+      "id": "FFE399",
+      "page": 4,
+      "numberOnPage": 1,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=FFE399",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 32,
+      "id": "CC7A9E",
+      "page": 4,
+      "numberOnPage": 2,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=CC7A9E",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 33,
+      "id": "0005E9",
+      "page": 4,
+      "numberOnPage": 3,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=0005E9",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 34,
+      "id": "DF24E0",
+      "page": 4,
+      "numberOnPage": 4,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=DF24E0",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 35,
+      "id": "5C56EC",
+      "page": 4,
+      "numberOnPage": 5,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=5C56EC",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 36,
+      "id": "6709ee",
+      "page": 4,
+      "numberOnPage": 6,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=6709ee",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 37,
+      "id": "30B4E7",
+      "page": 4,
+      "numberOnPage": 7,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=30B4E7",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 38,
+      "id": "01BE6F",
+      "page": 4,
+      "numberOnPage": 8,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=01BE6F",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 39,
+      "id": "B4C261",
+      "page": 4,
+      "numberOnPage": 9,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=B4C261",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 40,
+      "id": "5B6e6D",
+      "page": 4,
+      "numberOnPage": 10,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=5B6e6D",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 41,
+      "id": "AD5F64",
+      "page": 5,
+      "numberOnPage": 1,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=AD5F64",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 42,
+      "id": "997361",
+      "page": 5,
+      "numberOnPage": 2,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=997361",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 43,
+      "id": "9B7E69",
+      "page": 5,
+      "numberOnPage": 3,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=9B7E69",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 44,
+      "id": "3D4E60",
+      "page": 5,
+      "numberOnPage": 4,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=3D4E60",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 45,
+      "id": "D7423F",
+      "page": 5,
+      "numberOnPage": 5,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=D7423F",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 46,
+      "id": "82F839",
+      "page": 5,
+      "numberOnPage": 6,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=82F839",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 47,
+      "id": "B3E586",
+      "page": 5,
+      "numberOnPage": 7,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=B3E586",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 48,
+      "id": "21628C",
+      "page": 5,
+      "numberOnPage": 8,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=21628C",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 49,
+      "id": "D68789",
+      "page": 5,
+      "numberOnPage": 9,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=D68789",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 50,
+      "id": "59978F",
+      "page": 5,
+      "numberOnPage": 10,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=59978F",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 51,
+      "id": "EE7C83",
+      "page": 6,
+      "numberOnPage": 1,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=EE7C83",
+      "kes": "7.1 Фигуры на плоскости"
+    },
+    {
+      "serial": 52,
+      "id": "8D3587",
+      "page": 6,
+      "numberOnPage": 2,
+      "link": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&qid=8D3587",
+      "kes": "7.1 Фигуры на плоскости"
+    }
+  ],
+  "source": {
+    "title": "Открытый банк тестовых заданий ФИПИ",
+    "project": "ЕГЭ | Математика. Профильный уровень",
+    "projectId": "AC437B34557F88EA4115D2F374B0A07B",
+    "mainUrl": "https://ege.fipi.ru/bank/index.php?proj=AC437B34557F88EA4115D2F374B0A07B",
+    "filterUrl": "https://ege.fipi.ru/bank/questions.php?proj=AC437B34557F88EA4115D2F374B0A07B&search=1&theme=7.1&qkind=ILI_STD_SHORT&pagesize=10",
+    "filter": "КЭС 7.1 Фигуры на плоскости; тип ответа: краткий ответ"
+  }
+};
+    const tasks = DATA.tasks;
+    const grid = document.getElementById('grid');
+    const search = document.getElementById('search');
+    const reset = document.getElementById('reset');
+    const randomTask = document.getElementById('randomTask');
+    const copyVisible = document.getElementById('copyVisible');
+    const statusLine = document.getElementById('statusLine');
+    const empty = document.getElementById('empty');
+    function visibleTasks(){const q=search.value.trim().toLowerCase();return tasks.filter(t=>!q||t.id.toLowerCase().includes(q)||String(t.serial).includes(q));}
+    function render(){const rows=visibleTasks();statusLine.textContent='Показано: '+rows.length+' из '+tasks.length+' заданий';empty.style.display=rows.length?'none':'block';grid.replaceChildren(...rows.map(t=>{const card=document.createElement('article');card.className='task-card';const serial=document.createElement('div');serial.className='task-serial';serial.textContent='Задание '+t.serial;const a=document.createElement('a');a.className='task-link';a.href=t.link;a.target='_blank';a.rel='noopener';a.textContent='№ '+t.id;card.append(serial,a);return card;}));}
+    search.addEventListener('input',render);reset.addEventListener('click',()=>{search.value='';render();search.focus();});randomTask.addEventListener('click',()=>{const rows=visibleTasks();const task=rows[Math.floor(Math.random()*rows.length)]||tasks[0];window.open(task.link,'_blank','noopener');});copyVisible.addEventListener('click',async()=>{const rows=visibleTasks().map(t=>'ФИПИ № '+t.id+' - '+t.link);try{await navigator.clipboard.writeText(rows.join('
+'));copyVisible.textContent='Список скопирован';setTimeout(()=>copyVisible.textContent='Скопировать список',1800);}catch(e){copyVisible.textContent='Не удалось скопировать';setTimeout(()=>copyVisible.textContent='Скопировать список',1800);}});render();
+  </script>
+</body>
+</html>
