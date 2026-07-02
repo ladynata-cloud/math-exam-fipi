@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Стереометрия · Задание 3 ЕГЭ — тренажёр</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ панель задачи ============ -->
+  <div class="panel">
+    <div class="head">
+      <div class="title">Стереометрия · Задание 3</div>
+      <div class="score" id="score">0 / 0</div>
+    </div>
+    <div class="subtitle">ЕГЭ профиль · банк Решу ЕГЭ · тема: <b id="topicName"></b> · <a href="index.html">все тренажёры</a></div>
+
+    <button class="btn nav-toggle" id="navToggle">
+      <span id="navToggleText">Задача</span><span>▾</span>
+    </button>
+    <div class="nav-panel" id="navPanel"><div id="navBody"></div></div>
+
+    <div class="prob-card">
+      <div class="prob-meta" id="probMeta"></div>
+      <div class="prob-cond" id="probCond"></div>
+    </div>
+
+    <div class="answer-row">
+      <input id="answer" type="text" inputmode="decimal" placeholder="Ответ (число)" autocomplete="off">
+      <button class="btn primary" id="btnCheck">Проверить</button>
+    </div>
+    <div class="feedback" id="feedback" style="display:none"></div>
+
+    <div class="actions">
+      <button class="btn" id="btnConstruct" style="display:none">✦ Показать построение</button>
+      <button class="btn" id="btnHint">💡 Подсказка</button>
+      <button class="btn" id="btnSolution">Решение</button>
+    </div>
+    <div class="hint-box" id="hintBox" style="display:none"></div>
+    <div class="sol-box" id="solBox" style="display:none"></div>
+
+    <div class="measures" id="measures" style="display:none">
+      <div class="measures-title">Выделенные отрезки</div>
+      <div id="measureList"></div>
+      <div class="measure-note" id="measureNote">Длины откроются после верного ответа или просмотра решения.</div>
+    </div>
+
+    <div class="nav-btns">
+      <button class="btn" id="btnPrev">← Назад</button>
+      <button class="btn blue" id="btnNext">Следующая задача →</button>
+    </div>
+  </div>
+
+  <!-- ============ 3D-чертёж ============ -->
+  <div class="stage">
+    <div id="viewport"></div>
+    <div class="view-btns">
+      <button class="btn sq" id="btnRotate" title="Автовращение">⟳</button>
+      <button class="btn sq" id="btnHome" title="Сбросить вид">⌂</button>
+    </div>
+    <div class="legend">
+      <span><i class="sw" style="background:#3d5a8f"></i>рёбра</span>
+      <span><i class="sw" style="background:#DE8A0D"></i>построение</span>
+      <span><i class="sw" style="background:#D93A6A"></i>выделено</span>
+      <span class="legend-help">Тяните — вращение · колесо/щипок — масштаб · клик по линии — длина · две точки — отрезок</span>
+    </div>
+    <div class="pending" id="pendingHint" style="display:none"></div>
+  </div>
+
+</div>
+<script src="js/three.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/trainer.js"></script>
+<script src="js/progress-mail.js"></script>
+</body>
+</html>

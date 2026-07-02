@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Стереометрия · Задание 3 ЕГЭ — линейка тренажёров</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="hub">
+  <div class="hub-head">
+    <h1 class="hub-title">Стереометрия · Задание 3 ЕГЭ</h1>
+    <p class="hub-sub">Интерактивные 3D-тренажёры по всем темам задания 3 профильного ЕГЭ по математике.
+    Каждая задача — из банка Решу ЕГЭ, с вращающимся чертежом, кликабельными линиями,
+    анимацией построений, подсказками и решениями.</p>
+    <div class="hub-total" id="hubTotal"></div>
+  </div>
+
+  <div class="cards" id="cards"></div>
+
+  <div class="hub-note">
+    Как заниматься: выберите тему, введите ответ и нажмите «Проверить». Кнопка «✦ Построение»
+    дорисовывает нужные элементы на чертеже, «💡 Подсказка» подталкивает к идее решения.
+    Длины неизвестных отрезков скрыты до верного ответа. Прогресс сохраняется в вашем браузере.
+  </div>
+</div>
+
+<script src="js/three.min.js"></script>
+<script src="js/data.js"></script>
+<script>
+(function () {
+  var ICONS = {
+    "Куб": '<svg viewBox="0 0 48 48" fill="none" stroke="#3d5a8f" stroke-width="1.8"><path d="M10 16 24 9l14 7v16l-14 7-14-7z"/><path d="M10 16l14 7 14-7M24 23v16" /></svg>',
+    "Параллелепипед": '<svg viewBox="0 0 48 48" fill="none" stroke="#3d5a8f" stroke-width="1.8"><path d="M6 18l10-8h26v18l-10 8H6z"/><path d="M6 18h26l10-8M32 18v18"/></svg>',
+    "Составные тела": '<svg viewBox="0 0 48 48" fill="none" stroke="#3d5a8f" stroke-width="1.8"><path d="M8 38V24h12V12h12l8 6v20l-8 6H8z" /><path d="M8 24l8 6h12M20 24l8-6M28 30V12M28 30l8 6M16 30v8"/></svg>',
+    "Призма": '<svg viewBox="0 0 48 48" fill="none" stroke="#3d5a8f" stroke-width="1.8"><path d="M14 10l20 5v22l-20-5z"/><path d="M14 10l10 8 10-3M24 18v22l-10-8M24 40l10-8"/></svg>',
+    "Пирамида": '<svg viewBox="0 0 48 48" fill="none" stroke="#3d5a8f" stroke-width="1.8"><path d="M24 7L8 35l16 6 16-6z"/><path d="M24 7v34M8 35l16-4 16 4" stroke-dasharray="3 3"/></svg>',
+    "Цилиндр": '<svg viewBox="0 0 48 48" fill="none" stroke="#3d5a8f" stroke-width="1.8"><ellipse cx="24" cy="12" rx="13" ry="5"/><path d="M11 12v24c0 2.8 5.8 5 13 5s13-2.2 13-5V12"/><path d="M11 36c0 2.8 5.8 5 13 5s13-2.2 13-5" /></svg>',
+    "Конус": '<svg viewBox="0 0 48 48" fill="none" stroke="#3d5a8f" stroke-width="1.8"><path d="M24 6L10 37M24 6l14 31"/><ellipse cx="24" cy="37" rx="14" ry="5"/><path d="M24 6v31" stroke="#DE8A0D" stroke-dasharray="3 3"/></svg>',
+    "Шар": '<svg viewBox="0 0 48 48" fill="none" stroke="#3d5a8f" stroke-width="1.8"><circle cx="24" cy="24" r="16"/><ellipse cx="24" cy="24" rx="16" ry="6"/><path d="M24 24h16" stroke="#DE8A0D"/></svg>',
+    "Комбинации тел": '<svg viewBox="0 0 48 48" fill="none" stroke="#3d5a8f" stroke-width="1.8"><path d="M9 14 24 8l15 6v20l-15 6-15-6z"/><path d="M9 14l15 6 15-6M24 20v20"/><circle cx="24" cy="26" r="9" stroke="#DE8A0D"/></svg>',
+  };
+  var topicOf = function (p) { return p.topic || "Параллелепипед"; };
+  var status = {};
+  try { status = JSON.parse(localStorage.getItem("stereo3.status")) || {}; } catch (e) {}
+
+  var counts = {}, solved = {};
+  PROBLEMS.forEach(function (p) {
+    var t = topicOf(p);
+    counts[t] = (counts[t] || 0) + 1;
+    if (status[p.id] && status[p.id].st === "ok") solved[t] = (solved[t] || 0) + 1;
+  });
+  var totalSolved = Object.values(solved).reduce(function (a, b) { return a + b; }, 0);
+  document.getElementById("hubTotal").innerHTML =
+    "<b>" + PROBLEMS.length + " задач</b> · " + TOPICS.length + " тем · решено: <b>" + totalSolved + "</b>";
+
+  var cards = document.getElementById("cards");
+  function card(name, count, done, href, extraClass) {
+    var pct = count ? Math.round(100 * done / count) : 0;
+    var a = document.createElement("a");
+    a.className = "card" + (extraClass ? " " + extraClass : "");
+    a.href = href;
+    a.innerHTML =
+      '<div class="card-top">' +
+        '<div class="card-ico">' + (ICONS[name] || ICONS["Куб"]) + "</div>" +
+        '<div><div class="card-name">' + name + '</div>' +
+        '<div class="card-count">' + count + " задач</div></div>" +
+      "</div>" +
+      '<div class="bar"><i style="width:' + pct + '%"></i></div>' +
+      '<div class="card-progress">решено ' + done + " из " + count + "</div>";
+    cards.appendChild(a);
+  }
+  TOPICS.forEach(function (t) {
+    card(t, counts[t] || 0, solved[t] || 0, "trainer.html?topic=" + encodeURIComponent(t));
+  });
+  var allCard = document.createElement("a");
+  allCard.className = "card all";
+  allCard.href = "trainer.html";
+  allCard.innerHTML =
+    '<div class="card-top"><div class="card-ico">' +
+    '<svg viewBox="0 0 48 48" fill="none" stroke="#2B5FD9" stroke-width="1.8"><path d="M8 24h32M24 8v32" stroke-linecap="round"/><circle cx="24" cy="24" r="17"/></svg>' +
+    '</div><div><div class="card-name">Марафон: все темы</div>' +
+    '<div class="card-count">' + PROBLEMS.length + ' задач подряд</div></div></div>' +
+    '<div class="bar"><i style="width:' + Math.round(100 * totalSolved / PROBLEMS.length) + '%"></i></div>' +
+    '<div class="card-progress">решено ' + totalSolved + " из " + PROBLEMS.length + "</div>";
+  cards.appendChild(allCard);
+})();
+</script>
+<script src="js/progress-mail.js"></script>
+</body>
+</html>
