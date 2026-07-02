@@ -1,0 +1,914 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ЕГЭ профиль: задание 3 — стереометрия</title>
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --paper: #ffffff;
+      --ink: #18202f;
+      --muted: #667085;
+      --line: #d9dee8;
+      --green: #0f766e;
+      --green-soft: #dff7f3;
+      --blue: #28518a;
+      --blue-soft: #e8f0fb;
+      --amber: #8a5a00;
+      --amber-soft: #fff2cc;
+      --rose: #9f2945;
+      --rose-soft: #fde8ee;
+      --shadow: 0 18px 45px rgba(24, 32, 47, 0.08);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.5;
+    }
+
+    a { color: inherit; }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      background: rgba(255,255,255,0.92);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar-inner {
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .brand strong { font-size: 18px; }
+    .brand span { color: var(--muted); font-size: 14px; white-space: nowrap; }
+
+    .nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a, .btn, .chip, .task-link {
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+    }
+
+    .nav a {
+      padding: 8px 12px;
+      border: 1px solid transparent;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .nav a:hover { border-color: var(--line); color: var(--ink); background: #fff; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 22px;
+      align-items: stretch;
+      padding: 34px 0 18px;
+    }
+
+    .hero-main, .panel, .topic-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-main {
+      padding: clamp(22px, 4vw, 36px);
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4.4vw, 52px);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      margin: 14px 0 0;
+      max-width: 780px;
+      color: #3d4658;
+      font-size: clamp(16px, 2vw, 19px);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      padding: 10px 13px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+    }
+
+    .btn:hover { transform: translateY(-1px); border-color: #a9b4c4; }
+    .btn.primary { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .btn.green { background: var(--green-soft); color: #075e56; border-color: #a8ded6; }
+
+    .stats {
+      display: grid;
+      gap: 12px;
+    }
+
+    .stat {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat b { display: block; font-size: 34px; line-height: 1; }
+    .stat span { display: block; margin-top: 6px; color: var(--muted); font-size: 14px; font-weight: 700; }
+    .stat:nth-child(1) { border-top: 4px solid var(--green); }
+    .stat:nth-child(2) { border-top: 4px solid var(--blue); }
+    .stat:nth-child(3) { border-top: 4px solid var(--amber); }
+
+    .toolbar {
+      margin: 16px 0 18px;
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .search {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 10px 12px;
+      font: inherit;
+      color: var(--ink);
+    }
+
+    .search:focus { outline: 3px solid #dff7f3; border-color: var(--green); }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 2px 0 12px;
+      scrollbar-width: thin;
+    }
+
+    .chip {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #354054;
+      padding: 9px 11px;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .chip.is-active {
+      background: var(--green-soft);
+      border-color: #91d5cb;
+      color: #075e56;
+    }
+
+    .status-line {
+      margin: 2px 0 14px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .catalog {
+      display: grid;
+      gap: 14px;
+      padding-bottom: 36px;
+    }
+
+    .topic-card {
+      overflow: hidden;
+    }
+
+    .topic-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      padding: 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(90deg, #fff, #fbfcff);
+    }
+
+    .topic-head h2 {
+      margin: 0;
+      font-size: clamp(18px, 2vw, 22px);
+      letter-spacing: 0;
+    }
+
+    .topic-meta {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .badge {
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .tasks {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+      gap: 8px;
+      padding: 18px;
+    }
+
+    .task-link {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #263143;
+      font-size: 15px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .task-link:hover { transform: translateY(-1px); border-color: #8fb3e8; background: var(--blue-soft); color: #17396c; }
+    .task-link.is-hit { border-color: #e6a8b7; background: var(--rose-soft); color: var(--rose); }
+
+    .source-note {
+      margin: 8px 0 34px;
+      padding: 16px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--green);
+      border-radius: var(--radius);
+      color: #475467;
+      font-size: 14px;
+    }
+
+    .source-note a { color: var(--blue); font-weight: 800; }
+
+    .empty {
+      padding: 26px;
+      border: 1px dashed #bdc6d3;
+      border-radius: var(--radius);
+      background: #fff;
+      color: var(--muted);
+      font-weight: 800;
+      text-align: center;
+    }
+
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .toolbar { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      .shell { width: min(100% - 20px, 1180px); }
+      .topbar-inner { align-items: flex-start; flex-direction: column; padding: 12px 0; }
+      .brand { flex-direction: column; gap: 0; }
+      .brand span { white-space: normal; }
+      .hero { padding-top: 18px; }
+      .hero-main { min-height: auto; }
+      .stats { grid-template-columns: 1fr; }
+      .topic-head { grid-template-columns: 1fr; }
+      .badge { width: fit-content; }
+      .tasks { grid-template-columns: repeat(auto-fill, minmax(86px, 1fr)); }
+      .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <div class="brand"><strong>MathExam</strong><span>ЕГЭ профильная математика</span></div>
+      <nav class="nav" aria-label="Навигация">
+        <a href="../">Главная</a>
+        <a href="./">Тренажёры</a>
+        <a href="https://math-ege.sdamgia.ru/test?theme=192" target="_blank" rel="noopener">Источник</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="hero-main">
+        <div>
+          <p class="eyebrow">ЕГЭ профиль · первая часть · тип 3</p>
+          <h1 id="page-title">Стереометрия: каталог задач</h1>
+          <p class="lead">Собран полный список карточек из конструктора Решу ЕГЭ по теме “Стереометрия”. Открывайте нужный номер на исходной странице, фильтруйте по подтипу или быстро найдите задачу по номеру.</p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn primary" id="randomTask" type="button">Случайная задача</button>
+          <button class="btn green" id="copyVisible" type="button">Скопировать список</button>
+          <a class="btn" href="https://ege.fipi.ru/bank/index.php?proj=AC437B34557F88EA4115D2F374B0A07B" target="_blank" rel="noopener">Банк ФИПИ</a>
+        </div>
+      </div>
+
+      <div class="stats" aria-label="Статистика каталога">
+        <div class="stat"><b>312</b><span>задач найдено</span></div>
+        <div class="stat"><b>11</b><span>подтипов</span></div>
+        <div class="stat"><b>02.07.2026</b><span>дата сверки</span></div>
+      </div>
+    </section>
+
+    <section class="panel" style="padding:16px; margin-bottom:16px;">
+      <div class="toolbar">
+        <input class="search" id="search" type="search" inputmode="numeric" autocomplete="off" placeholder="Найти по номеру задачи" />
+        <button class="btn" id="reset" type="button">Сбросить</button>
+        <a class="btn" href="https://math-ege.sdamgia.ru/test?theme=192" target="_blank" rel="noopener">Открыть тему</a>
+      </div>
+      <div class="chips" id="chips" aria-label="Подтипы стереометрии"></div>
+      <div class="status-line" id="statusLine"></div>
+    </section>
+
+    <section class="catalog" id="catalog" aria-live="polite"></section>
+
+    <div class="source-note">
+      Источник списка: <a href="https://math-ege.sdamgia.ru/" target="_blank" rel="noopener">Решу ЕГЭ</a>, раздел “Математика профильного уровня”, задание 3 “Стереометрия”. На этой странице собраны номера и ссылки на задачи; формулировки открываются на исходном сайте. Для сверки с официальной базой рядом дана ссылка на <a href="https://ege.fipi.ru/bank/index.php?proj=AC437B34557F88EA4115D2F374B0A07B" target="_blank" rel="noopener">открытый банк ФИПИ</a>.
+    </div>
+  </main>
+
+  <script>
+    const CATALOG = [
+  {
+    "id": 192,
+    "title": "Куб",
+    "sourceUrl": "https://math-ege.sdamgia.ru/test?theme=192",
+    "count": 15,
+    "ids": [
+      "27055",
+      "27056",
+      "27061",
+      "27081",
+      "27098",
+      "27099",
+      "27102",
+      "27130",
+      "27139",
+      "27141",
+      "27168",
+      "315130",
+      "501533",
+      "639619",
+      "670262"
+    ]
+  },
+  {
+    "id": 193,
+    "title": "Прямоугольный параллелепипед",
+    "sourceUrl": "https://math-ege.sdamgia.ru/test?theme=193",
+    "count": 33,
+    "ids": [
+      "27054",
+      "27060",
+      "27076",
+      "27077",
+      "27078",
+      "27079",
+      "27080",
+      "27100",
+      "27101",
+      "27103",
+      "27128",
+      "27143",
+      "27146",
+      "27209",
+      "245335",
+      "245336",
+      "245337",
+      "245338",
+      "245339",
+      "245359",
+      "245360",
+      "245361",
+      "245363",
+      "284357",
+      "284363",
+      "315131",
+      "316552",
+      "318474",
+      "324452",
+      "639664",
+      "639741",
+      "660710",
+      "661073"
+    ]
+  },
+  {
+    "id": 180,
+    "title": "Элементы составных многогранников",
+    "sourceUrl": "https://math-ege.sdamgia.ru/test?theme=180",
+    "count": 15,
+    "ids": [
+      "245370",
+      "245371",
+      "245372",
+      "245373",
+      "245374",
+      "245375",
+      "245376",
+      "245377",
+      "245378",
+      "245379",
+      "245380",
+      "245381",
+      "245382",
+      "245383",
+      "245384"
+    ]
+  },
+  {
+    "id": 148,
+    "title": "Площадь поверхности составного многогранника",
+    "sourceUrl": "https://math-ege.sdamgia.ru/test?theme=148",
+    "count": 18,
+    "ids": [
+      "25541",
+      "25561",
+      "25581",
+      "25601",
+      "25621",
+      "25641",
+      "25661",
+      "25681",
+      "25701",
+      "25721",
+      "25881",
+      "27071",
+      "27158",
+      "77155",
+      "77156",
+      "77157",
+      "512330",
+      "642290"
+    ]
+  },
+  {
+    "id": 140,
+    "title": "Объем составного многогранника",
+    "sourceUrl": "https://math-ege.sdamgia.ru/test?theme=140",
+    "count": 17,
+    "ids": [
+      "27044",
+      "27117",
+      "27187",
+      "27188",
+      "27189",
+      "27190",
+      "27191",
+      "27192",
+      "27193",
+      "27194",
+      "27195",
+      "27210",
+      "27211",
+      "27212",
+      "27213",
+      "27216",
+      "513422"
+    ]
+  },
+  {
+    "id": 178,
+    "title": "Призма",
+    "sourceUrl": "https://math-ege.sdamgia.ru/test?theme=178",
+    "count": 51,
+    "ids": [
+      "27047",
+      "27048",
+      "27057",
+      "27062",
+      "27063",
+      "27082",
+      "27104",
+      "27106",
+      "27107",
+      "27112",
+      "27132",
+      "27148",
+      "27151",
+      "27153",
+      "27183",
+      "245340",
+      "245341",
+      "245342",
+      "245343",
+      "245344",
+      "245345",
+      "245346",
+      "245356",
+      "245365",
+      "245368",
+      "316553",
+      "316554",
+      "316558",
+      "318475",
+      "324451",
+      "324457",
+      "324459",
+      "502016",
+      "503245",
+      "509576",
+      "510068",
+      "27083",
+      "27084",
+      "245357",
+      "245364",
+      "245366",
+      "245367",
+      "245369",
+      "27150",
+      "27068",
+      "27108",
+      "522969",
+      "541817",
+      "627981",
+      "639940",
+      "654825"
+    ]
+  },
+  {
+    "id": 177,
+    "title": "Пирамида",
+    "sourceUrl": "https://math-ege.sdamgia.ru/test?theme=177",
+    "count": 68,
+    "ids": [
+      "901",
+      "902",
+      "903",
+      "904",
+      "905",
+      "911",
+      "912",
+      "913",
+      "914",
+      "915",
+      "920",
+      "921",
+      "922",
+      "923",
+      "924",
+      "27069",
+      "27070",
+      "27074",
+      "27085",
+      "27086",
+      "27087",
+      "27088",
+      "27089",
+      "27109",
+      "27110",
+      "27111",
+      "27113",
+      "27114",
+      "27115",
+      "27116",
+      "27131",
+      "27155",
+      "27157",
+      "27171",
+      "27172",
+      "27175",
+      "27176",
+      "27178",
+      "27179",
+      "27180",
+      "27181",
+      "27182",
+      "27184",
+      "77154",
+      "245353",
+      "284348",
+      "284349",
+      "284350",
+      "284351",
+      "284352",
+      "284353",
+      "284354",
+      "284355",
+      "284356",
+      "318146",
+      "324450",
+      "500249",
+      "500891",
+      "501189",
+      "501211",
+      "505099",
+      "509419",
+      "509440",
+      "509573",
+      "509620",
+      "509991",
+      "522968",
+      "656074"
+    ]
+  },
+  {
+    "id": 197,
+    "title": "Комбинации тел",
+    "sourceUrl": "https://math-ege.sdamgia.ru/test?theme=197",
+    "count": 41,
+    "ids": [
+      "5077",
+      "27041",
+      "27042",
+      "27043",
+      "27049",
+      "27050",
+      "27051",
+      "27067",
+      "27075",
+      "27096",
+      "27105",
+      "27123",
+      "27124",
+      "27126",
+      "27127",
+      "27206",
+      "27207",
+      "27214",
+      "27215",
+      "245348",
+      "245349",
+      "245350",
+      "245351",
+      "245352",
+      "245354",
+      "245355",
+      "316555",
+      "316556",
+      "316557",
+      "324449",
+      "324458",
+      "502070",
+      "505096",
+      "27064",
+      "27065",
+      "27170",
+      "27066",
+      "522972",
+      "525018",
+      "525402",
+      "676846"
+    ]
+  },
+  {
+    "id": 194,
+    "title": "Цилиндр",
+    "sourceUrl": "https://math-ege.sdamgia.ru/test?theme=194",
+    "count": 17,
+    "ids": [
+      "27045",
+      "27046",
+      "27053",
+      "27058",
+      "27091",
+      "27118",
+      "27133",
+      "27173",
+      "27196",
+      "27197",
+      "27198",
+      "27199",
+      "27200",
+      "27201",
+      "245358",
+      "284361",
+      "284362"
+    ]
+  },
+  {
+    "id": 144,
+    "title": "Конус",
+    "sourceUrl": "https://math-ege.sdamgia.ru/test?theme=144",
+    "count": 29,
+    "ids": [
+      "27052",
+      "27093",
+      "27094",
+      "27095",
+      "27120",
+      "27121",
+      "27122",
+      "27135",
+      "27136",
+      "27137",
+      "27159",
+      "27160",
+      "27161",
+      "27167",
+      "27202",
+      "27203",
+      "27204",
+      "27205",
+      "284358",
+      "284359",
+      "284360",
+      "318145",
+      "324453",
+      "324454",
+      "324455",
+      "324456",
+      "501878",
+      "525721",
+      "676923"
+    ]
+  },
+  {
+    "id": 151,
+    "title": "Шар",
+    "sourceUrl": "https://math-ege.sdamgia.ru/test?theme=151",
+    "count": 8,
+    "ids": [
+      "27059",
+      "27072",
+      "27097",
+      "27125",
+      "27162",
+      "27163",
+      "27174",
+      "525372"
+    ]
+  }
+];
+    const catalogEl = document.getElementById('catalog');
+    const chipsEl = document.getElementById('chips');
+    const searchEl = document.getElementById('search');
+    const statusLine = document.getElementById('statusLine');
+    const resetBtn = document.getElementById('reset');
+    const randomBtn = document.getElementById('randomTask');
+    const copyBtn = document.getElementById('copyVisible');
+    let activeTheme = 'all';
+
+    const allTasks = CATALOG.flatMap(theme => theme.ids.map(id => ({ id, themeId: String(theme.id), theme: theme.title, url: 'https://math-ege.sdamgia.ru/problem?id=' + id })));
+
+    function createChip(label, value, count) {
+      const btn = document.createElement('button');
+      btn.className = 'chip' + (activeTheme === value ? ' is-active' : '');
+      btn.type = 'button';
+      btn.dataset.theme = value;
+      btn.textContent = count === null ? label : label + ' · ' + count;
+      btn.addEventListener('click', () => {
+        activeTheme = value;
+        render();
+      });
+      return btn;
+    }
+
+    function renderChips() {
+      chipsEl.replaceChildren(
+        createChip('Все', 'all', allTasks.length),
+        ...CATALOG.map(theme => createChip(theme.title, String(theme.id), theme.count))
+      );
+    }
+
+    function getVisible() {
+      const q = searchEl.value.trim();
+      return CATALOG.map(theme => {
+        const ids = theme.ids.filter(id => {
+          const topicOk = activeTheme === 'all' || String(theme.id) === activeTheme;
+          const queryOk = !q || id.includes(q);
+          return topicOk && queryOk;
+        });
+        return { ...theme, ids };
+      }).filter(theme => theme.ids.length > 0);
+    }
+
+    function render() {
+      renderChips();
+      const q = searchEl.value.trim();
+      const visible = getVisible();
+      const visibleCount = visible.reduce((sum, theme) => sum + theme.ids.length, 0);
+      statusLine.textContent = 'Показано: ' + visibleCount + ' из ' + allTasks.length + ' задач';
+      if (!visible.length) {
+        catalogEl.innerHTML = '<div class="empty">По этому запросу задач не найдено.</div>';
+        return;
+      }
+      catalogEl.replaceChildren(...visible.map(theme => {
+        const article = document.createElement('article');
+        article.className = 'topic-card';
+        const head = document.createElement('div');
+        head.className = 'topic-head';
+        const titleWrap = document.createElement('div');
+        const h2 = document.createElement('h2');
+        h2.textContent = theme.title;
+        const meta = document.createElement('p');
+        meta.className = 'topic-meta';
+        meta.textContent = 'Тема ' + theme.id + ' на Решу ЕГЭ';
+        titleWrap.append(h2, meta);
+        const badge = document.createElement('div');
+        badge.className = 'badge';
+        badge.textContent = theme.ids.length + ' задач';
+        head.append(titleWrap, badge);
+        const tasks = document.createElement('div');
+        tasks.className = 'tasks';
+        for (const id of theme.ids) {
+          const link = document.createElement('a');
+          link.className = 'task-link' + (q && id.includes(q) ? ' is-hit' : '');
+          link.href = 'https://math-ege.sdamgia.ru/problem?id=' + id;
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.textContent = '№ ' + id;
+          tasks.append(link);
+        }
+        article.append(head, tasks);
+        return article;
+      }));
+    }
+
+    searchEl.addEventListener('input', render);
+    resetBtn.addEventListener('click', () => {
+      searchEl.value = '';
+      activeTheme = 'all';
+      render();
+      searchEl.focus();
+    });
+    randomBtn.addEventListener('click', () => {
+      const visibleTasks = getVisible().flatMap(theme => theme.ids.map(id => 'https://math-ege.sdamgia.ru/problem?id=' + id));
+      const pool = visibleTasks.length ? visibleTasks : allTasks.map(task => task.url);
+      const url = pool[Math.floor(Math.random() * pool.length)];
+      window.open(url, '_blank', 'noopener');
+    });
+    copyBtn.addEventListener('click', async () => {
+      const rows = getVisible().flatMap(theme => theme.ids.map(id => theme.title + ' — № ' + id + ' — https://math-ege.sdamgia.ru/problem?id=' + id));
+      try {
+        await navigator.clipboard.writeText(rows.join('
+'));
+        copyBtn.textContent = 'Список скопирован';
+        setTimeout(() => copyBtn.textContent = 'Скопировать список', 1800);
+      } catch (e) {
+        copyBtn.textContent = 'Не удалось скопировать';
+        setTimeout(() => copyBtn.textContent = 'Скопировать список', 1800);
+      }
+    });
+    render();
+  </script>
+</body>
+</html>
