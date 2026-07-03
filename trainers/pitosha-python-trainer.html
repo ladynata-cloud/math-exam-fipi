@@ -330,6 +330,231 @@ const LESSONS = [
     output:"['зачёт', 'нет', 'зачёт', 'нет']",
     wrong:["['нет', 'зачёт', 'нет', 'зачёт']","['зачёт', 'зачёт', 'зачёт', 'зачёт']","зачёт нет зачёт нет"]
   },
+  {
+    id:"l7", title:"Индекс и число больше 10", concept:"range + len + индекс",
+    blurb:"Когда нужен номер элемента, удобно идти по индексам: i — это индекс, а numbers[i] — значение на этом месте.",
+    lines:[
+      {indent:0, tokens:["numbers","=","[4, 15, 8, 23, 10, 31, 12]"]},
+      {indent:0, tokens:["for","i","in","range","(","len","(","numbers",")",")",":"]},
+      {indent:1, tokens:["number","=","numbers","[","i","]"]},
+      {indent:1, tokens:["if","i","%","2","==","0",":"]},
+      {indent:2, tokens:["if","number",">","10",":"]},
+      {indent:3, tokens:["print","(","i",",","number",")"]},
+    ],
+    assembleLines:[1,4],
+    output:"6 12",
+    wrong:["3 23\n5 31","4 10\n6 12","12"]
+  },
+  {
+    id:"l8", title:"Нечётный индекс и делимость", concept:"Индекс + %",
+    blurb:"Индекс можно проверять так же, как обычное число. Нечётный индекс даёт остаток 1 при делении на 2.",
+    lines:[
+      {indent:0, tokens:["numbers","=","[6, 9, 12, 15, 18, 21, 24]"]},
+      {indent:0, tokens:["for","i","in","range","(","len","(","numbers",")",")",":"]},
+      {indent:1, tokens:["number","=","numbers","[","i","]"]},
+      {indent:1, tokens:["if","i","%","2","==","1",":"]},
+      {indent:2, tokens:["if","number","%","3","==","0",":"]},
+      {indent:3, tokens:["print","(","i",",","number",")"]},
+    ],
+    assembleLines:[1,3],
+    output:"1 9\n3 15\n5 21",
+    wrong:["0 6\n2 12\n4 18\n6 24","9\n15\n21","1 6\n3 12\n5 18"]
+  },
+  {
+    id:"l9", title:"Отрицательные на чётных местах", concept:"Индекс + сравнение",
+    blurb:"Два условия можно вложить друг в друга: сначала проверяем место элемента, потом само значение.",
+    lines:[
+      {indent:0, tokens:["numbers","=","[-5, -3, 8, -10, 12, -7, -4]"]},
+      {indent:0, tokens:["for","i","in","range","(","len","(","numbers",")",")",":"]},
+      {indent:1, tokens:["number","=","numbers","[","i","]"]},
+      {indent:1, tokens:["if","i","%","2","==","0",":"]},
+      {indent:2, tokens:["if","number","<","0",":"]},
+      {indent:3, tokens:["print","(","i",",","number",")"]},
+    ],
+    assembleLines:[1,4],
+    output:"0 -5\n6 -4",
+    wrong:["1 -3\n3 -10\n5 -7","-5\n-4","0 5\n6 4"]
+  },
+  {
+    id:"l10", title:"После второго индекса", concept:"Индекс больше числа",
+    blurb:"Условие i > 2 означает: берём только элементы, которые стоят правее индекса 2.",
+    lines:[
+      {indent:0, tokens:["numbers","=","[11, 14, 17, 20, 23, 26, 29]"]},
+      {indent:0, tokens:["for","i","in","range","(","len","(","numbers",")",")",":"]},
+      {indent:1, tokens:["number","=","numbers","[","i","]"]},
+      {indent:1, tokens:["if","i",">","2",":"]},
+      {indent:2, tokens:["if","number","%","2","==","0",":"]},
+      {indent:3, tokens:["print","(","i",",","number",")"]},
+    ],
+    assembleLines:[3,4],
+    output:"3 20\n5 26",
+    wrong:["1 14\n3 20\n5 26","20\n26","4 23\n6 29"]
+  },
+  {
+    id:"l11", title:"До индекса 5", concept:"Индекс меньше числа",
+    blurb:"Условие i < 5 выбирает элементы с индексами 0, 1, 2, 3, 4. Индекс 5 уже не подходит.",
+    lines:[
+      {indent:0, tokens:["numbers","=","[3, 8, 15, 22, 7, 30, 11]"]},
+      {indent:0, tokens:["for","i","in","range","(","len","(","numbers",")",")",":"]},
+      {indent:1, tokens:["number","=","numbers","[","i","]"]},
+      {indent:1, tokens:["if","i","<","5",":"]},
+      {indent:2, tokens:["if","number",">","10",":"]},
+      {indent:3, tokens:["print","(","i",",","number",")"]},
+    ],
+    assembleLines:[3,4],
+    output:"2 15\n3 22",
+    wrong:["2 15\n3 22\n5 30\n6 11","15\n22","5 30"]
+  },
+  {
+    id:"l12", title:"Чётные индексы и деление на 5", concept:"Два условия",
+    blurb:"Если оба условия должны выполниться, их можно записать двумя вложенными if.",
+    lines:[
+      {indent:0, tokens:["numbers","=","[10, 25, 30, 45, 50, 65, 70]"]},
+      {indent:0, tokens:["for","i","in","range","(","len","(","numbers",")",")",":"]},
+      {indent:1, tokens:["number","=","numbers","[","i","]"]},
+      {indent:1, tokens:["if","i","%","2","==","0",":"]},
+      {indent:2, tokens:["if","number","%","5","==","0",":"]},
+      {indent:3, tokens:["print","(","i",",","number",")"]},
+    ],
+    assembleLines:[1,4],
+    output:"0 10\n2 30\n4 50\n6 70",
+    wrong:["10\n30\n50\n70","1 25\n3 45\n5 65","0 10\n1 25\n2 30\n3 45\n4 50\n5 65\n6 70"]
+  },
+  {
+    id:"l13", title:"Пятёрки на нечётных индексах", concept:"Индекс в списке оценок",
+    blurb:"Индексы есть у любых списков: у чисел, оценок, температур и цен.",
+    lines:[
+      {indent:0, tokens:["marks","=","[3, 5, 4, 2, 5, 3, 4, 5]"]},
+      {indent:0, tokens:["for","i","in","range","(","len","(","marks",")",")",":"]},
+      {indent:1, tokens:["mark","=","marks","[","i","]"]},
+      {indent:1, tokens:["if","i","%","2","==","1",":"]},
+      {indent:2, tokens:["if","mark","==","5",":"]},
+      {indent:3, tokens:["print","(","i",",","mark",")"]},
+    ],
+    assembleLines:[1,4],
+    output:"1 5\n7 5",
+    wrong:["4 5\n7 5","5\n5","1 3\n7 5"]
+  },
+  {
+    id:"l14", title:"Положительные температуры", concept:"Индекс + температура",
+    blurb:"Сначала проверяем чётность индекса, затем смотрим, что температура больше нуля.",
+    lines:[
+      {indent:0, tokens:["temperatures","=","[-5, 3, 10, -2, 15, 20, -1]"]},
+      {indent:0, tokens:["for","i","in","range","(","len","(","temperatures",")",")",":"]},
+      {indent:1, tokens:["temp","=","temperatures","[","i","]"]},
+      {indent:1, tokens:["if","i","%","2","==","0",":"]},
+      {indent:2, tokens:["if","temp",">","0",":"]},
+      {indent:3, tokens:["print","(","i",",","temp",")"]},
+    ],
+    assembleLines:[1,4],
+    output:"2 10\n4 15",
+    wrong:["1 3\n2 10\n4 15\n5 20","10\n15","0 -5\n6 -1"]
+  },
+  {
+    id:"l15", title:"Цены после индекса 1", concept:"Индекс + цена",
+    blurb:"Индекс i > 1 означает, что элементы с индексами 0 и 1 пропускаются.",
+    lines:[
+      {indent:0, tokens:["prices","=","[80, 120, 250, 90, 400, 60, 500]"]},
+      {indent:0, tokens:["for","i","in","range","(","len","(","prices",")",")",":"]},
+      {indent:1, tokens:["price","=","prices","[","i","]"]},
+      {indent:1, tokens:["if","i",">","1",":"]},
+      {indent:2, tokens:["if","price",">","100",":"]},
+      {indent:3, tokens:["print","(","i",",","price",")"]},
+    ],
+    assembleLines:[3,4],
+    output:"2 250\n4 400\n6 500",
+    wrong:["1 120\n2 250\n4 400\n6 500","250\n400\n500","3 90\n5 60"]
+  },
+  {
+    id:"l16", title:"Нечётные до индекса 6", concept:"Индекс меньше + %",
+    blurb:"Можно одновременно ограничить часть списка и выбрать только нечётные значения.",
+    lines:[
+      {indent:0, tokens:["numbers","=","[2, 5, 8, 11, 14, 17, 20, 23]"]},
+      {indent:0, tokens:["for","i","in","range","(","len","(","numbers",")",")",":"]},
+      {indent:1, tokens:["number","=","numbers","[","i","]"]},
+      {indent:1, tokens:["if","i","<","6",":"]},
+      {indent:2, tokens:["if","number","%","2","==","1",":"]},
+      {indent:3, tokens:["print","(","i",",","number",")"]},
+    ],
+    assembleLines:[3,4],
+    output:"1 5\n3 11\n5 17",
+    wrong:["1 5\n3 11\n5 17\n7 23","5\n11\n17","0 2\n2 8\n4 14"]
+  },
+  {
+    id:"l17", title:"Чётный индекс и чётное число", concept:"Совпали два условия",
+    blurb:"Здесь совпадают два признака: индекс чётный и само число чётное.",
+    lines:[
+      {indent:0, tokens:["numbers","=","[4, 7, 10, 13, 16, 19, 22]"]},
+      {indent:0, tokens:["for","i","in","range","(","len","(","numbers",")",")",":"]},
+      {indent:1, tokens:["number","=","numbers","[","i","]"]},
+      {indent:1, tokens:["if","i","%","2","==","0",":"]},
+      {indent:2, tokens:["if","number","%","2","==","0",":"]},
+      {indent:3, tokens:["print","(","i",",","number",")"]},
+    ],
+    assembleLines:[3,4],
+    output:"0 4\n2 10\n4 16\n6 22",
+    wrong:["4\n10\n16\n22","1 7\n3 13\n5 19","0 4\n1 7\n2 10\n3 13\n4 16\n5 19\n6 22"]
+  },
+  {
+    id:"l18", title:"Нечётный индекс и число на 10", concept:"Делимость на 10",
+    blurb:"Условие number % 10 == 0 проверяет, что число делится на 10 без остатка.",
+    lines:[
+      {indent:0, tokens:["numbers","=","[5, 10, 15, 20, 25, 30, 35]"]},
+      {indent:0, tokens:["for","i","in","range","(","len","(","numbers",")",")",":"]},
+      {indent:1, tokens:["number","=","numbers","[","i","]"]},
+      {indent:1, tokens:["if","i","%","2","==","1",":"]},
+      {indent:2, tokens:["if","number","%","10","==","0",":"]},
+      {indent:3, tokens:["print","(","i",",","number",")"]},
+    ],
+    assembleLines:[1,4],
+    output:"1 10\n3 20\n5 30",
+    wrong:["10\n20\n30","0 5\n2 15\n4 25\n6 35","1 10\n2 20\n3 30"]
+  },
+  {
+    id:"l19", title:"Отрицательные правее индекса 2", concept:"Индекс > 2",
+    blurb:"Можно искать элементы только в нужной части списка: например, правее индекса 2.",
+    lines:[
+      {indent:0, tokens:["numbers","=","[-10, 5, -3, 8, -7, 12, -1]"]},
+      {indent:0, tokens:["for","i","in","range","(","len","(","numbers",")",")",":"]},
+      {indent:1, tokens:["number","=","numbers","[","i","]"]},
+      {indent:1, tokens:["if","i",">","2",":"]},
+      {indent:2, tokens:["if","number","<","0",":"]},
+      {indent:3, tokens:["print","(","i",",","number",")"]},
+    ],
+    assembleLines:[3,4],
+    output:"4 -7\n6 -1",
+    wrong:["0 -10\n2 -3\n4 -7\n6 -1","-7\n-1","3 8\n5 12"]
+  },
+  {
+    id:"l20", title:"Первые пять и делимость на 9", concept:"Индекс < 5",
+    blurb:"Индекс меньше 5 — это только первые пять элементов списка.",
+    lines:[
+      {indent:0, tokens:["numbers","=","[9, 18, 27, 36, 45, 54, 63]"]},
+      {indent:0, tokens:["for","i","in","range","(","len","(","numbers",")",")",":"]},
+      {indent:1, tokens:["number","=","numbers","[","i","]"]},
+      {indent:1, tokens:["if","i","<","5",":"]},
+      {indent:2, tokens:["if","number","%","9","==","0",":"]},
+      {indent:3, tokens:["print","(","i",",","number",")"]},
+    ],
+    assembleLines:[3,4],
+    output:"0 9\n1 18\n2 27\n3 36\n4 45",
+    wrong:["9\n18\n27\n36\n45","0 9\n1 18\n2 27\n3 36\n4 45\n5 54\n6 63","5 54\n6 63"]
+  },
+  {
+    id:"l21", title:"Чётные индексы и маленькие числа", concept:"Финальная проверка",
+    blurb:"Финальная задача: берём только чётные индексы и среди них числа меньше 50.",
+    lines:[
+      {indent:0, tokens:["numbers","=","[100, 80, 60, 40, 20, 10, 5]"]},
+      {indent:0, tokens:["for","i","in","range","(","len","(","numbers",")",")",":"]},
+      {indent:1, tokens:["number","=","numbers","[","i","]"]},
+      {indent:1, tokens:["if","i","%","2","==","0",":"]},
+      {indent:2, tokens:["if","number","<","50",":"]},
+      {indent:3, tokens:["print","(","i",",","number",")"]},
+    ],
+    assembleLines:[1,4],
+    output:"4 20\n6 5",
+    wrong:["3 40\n4 20\n5 10\n6 5","20\n5","0 100\n2 60\n4 20\n6 5"]
+  },
 ];
 
 const MODE = {
@@ -434,13 +659,50 @@ function toast(msg){
 }
 
 /* ============================ STATE ============================ */
+const STORAGE_KEY="pitosha-python-trainer-v2";
 const state={
   screen:"map", xp:0, streak:0, best:0, completed:new Set(), muted:false,
   lessonId:null, hearts:5, queue:[], qi:0, ex:null, answered:false, ok:false, dead:false,
 };
 
 function lessonById(id){ return LESSONS.find(l=>l.id===id); }
-function unlocked(i){ return i===0 || state.completed.has(LESSONS[i-1].id); }
+function unlocked(i){ return true; }
+function saveProgress(){
+  try{
+    const data={
+      screen:state.screen, xp:state.xp, streak:state.streak, best:state.best,
+      completed:[...state.completed], muted:state.muted, lessonId:state.lessonId,
+      hearts:state.hearts, qi:state.qi
+    };
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+  }catch(e){}
+}
+function restoreProgress(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw) return;
+    const data=JSON.parse(raw);
+    state.xp=Number(data.xp)||0;
+    state.streak=Number(data.streak)||0;
+    state.best=Number(data.best)||0;
+    state.completed=new Set((data.completed||[]).filter(id=>lessonById(id)));
+    state.muted=!!data.muted;
+    const savedLesson=lessonById(data.lessonId);
+    if(savedLesson){
+      state.lessonId=savedLesson.id;
+      state.queue=buildQueue(savedLesson);
+      state.qi=Math.max(0,Math.min(Number(data.qi)||0,state.queue.length-1));
+      state.hearts=Math.max(1,Math.min(Number(data.hearts)||5,5));
+      state.dead=false;
+      state.screen=(data.screen==="lesson"||data.screen==="complete")?data.screen:"map";
+      if(state.screen==="lesson") loadEx();
+    } else {
+      state.screen="map";
+    }
+  }catch(e){
+    state.screen="map";
+  }
+}
 
 function buildQueue(L){
   const q=[];
@@ -567,8 +829,8 @@ function renderMap(){
     const done=state.completed.has(L.id);
     const open=unlocked(i);
     const cls="node"+(done?" done":"")+(open?"":" locked");
-    const badge=done?"✓":(open?(i+1):"🔒");
-    const sub=done?"Пройдено · можно повторить":(open?`${buildQueue(L).length} заданий · 3 режима`:"Сначала пройди предыдущий урок");
+    const badge=done?"✓":(i+1);
+    const sub=done?"Пройдено · можно повторить":`${buildQueue(L).length} заданий · можно начать сразу`;
     nodes+=`<button class="${cls}" ${open?`data-action="start" data-id="${L.id}"`:'disabled'}>
       <span class="badge">${badge}</span>
       <span class="meta"><h3>${L.title}</h3><span class="tag">${L.concept}</span><span class="sub">${sub}</span></span>
@@ -579,11 +841,11 @@ function renderMap(){
     <div class="hero">
       ${snakeMascot()}
       <div><h1>Учимся писать код<br>на Python 🐍</h1>
-      <p>Каждую программу осваиваем тремя способами: печатаем по шагам, собираем из блоков и запоминаем структуру. Списки, <code>for</code> и <code>if</code> — с нуля.</p></div>
+      <p>Теперь можно открыть любой урок сразу. Сначала повторяем списки, <code>for</code> и <code>if</code>, затем тренируем индексы: <code>range(len(...))</code> и <code>numbers[i]</code>.</p></div>
     </div>
-    <div class="section-label">Маршрут</div>
+    <div class="section-label">Маршрут: свободный выбор задания</div>
     <div class="path">${nodes}</div>
-    <p class="hint-text" style="margin-top:18px">Прогресс хранится на время сессии. XP: <b>${state.xp}</b> · лучшая серия: <b>${state.best}</b> 🔥</p>
+    <p class="hint-text" style="margin-top:18px">Прогресс сохраняется в этом браузере: можно закрыть ноутбук и продолжить позже. XP: <b>${state.xp}</b> · лучшая серия: <b>${state.best}</b> 🔥</p>
   `;
 }
 
@@ -727,7 +989,7 @@ function renderComplete(){
     <div class="footer win" style="position:static;margin-top:8px">
       <div class="row">
         <button class="btn ghost" data-action="map" style="flex:1">На карту</button>
-        ${nextL && unlocked(i+1)?`<button class="btn win" data-action="startnext" data-id="${nextL.id}" style="flex:1.3">Следующий урок →</button>`:`<button class="btn win" data-action="map" style="flex:1.3">Готово ✓</button>`}
+        ${nextL?`<button class="btn win" data-action="startnext" data-id="${nextL.id}" style="flex:1.3">Следующий урок →</button>`:`<button class="btn win" data-action="map" style="flex:1.3">Готово ✓</button>`}
       </div>
     </div>
   `;
@@ -747,6 +1009,7 @@ function runTerminal(out){
 
 /* ============================ RENDER ROOT ============================ */
 function render(){
+  saveProgress();
   renderBar();
   if(state.screen==="map") renderMap();
   else if(state.screen==="lesson") renderLesson();
@@ -811,7 +1074,7 @@ function openExitConfirm(){
   m.style.cssText="position:fixed;inset:0;background:rgba(30,30,63,.45);display:grid;place-items:center;z-index:80;padding:20px;pointer-events:auto";
   m.innerHTML=`<div style="background:var(--paper);border-radius:20px;padding:22px;max-width:340px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3)">
     <div style="font-family:'Baloo 2';font-weight:800;font-size:20px;margin-bottom:6px">Выйти из урока?</div>
-    <div style="color:var(--muted);font-weight:600;font-size:14px;margin-bottom:16px">Прогресс этого урока не сохранится.</div>
+    <div style="color:var(--muted);font-weight:600;font-size:14px;margin-bottom:16px">Пройденные уроки и место в маршруте сохранятся в этом браузере.</div>
     <button class="btn fail" id="exYes" style="margin-bottom:10px">Выйти</button>
     <button class="btn ghost" id="exNo">Остаться</button>
   </div>`;
@@ -848,6 +1111,7 @@ function snakeMascot(sz){
 }
 
 /* ============================ BOOT ============================ */
+restoreProgress();
 render();
 </script>
 </body>
