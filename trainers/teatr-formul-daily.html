@@ -112,15 +112,20 @@
   .check{display:inline-flex;align-items:center;gap:8px;margin-top:14px;font-family:var(--ui);font-weight:700;
          font-size:14px;color:var(--muted);background:#f6faf7;border:1px solid var(--ok-bd);border-radius:999px;padding:7px 15px}
   .check b{font-family:var(--serif);color:var(--ok)}
+  .wnote{font-family:var(--ui);font-weight:700;font-size:13px;color:var(--muted);margin-top:8px}
 
   .beat{opacity:0;max-height:0;overflow:hidden;transition:opacity .35s, max-height .45s}
-  .beat.show{opacity:1;max-height:340px}
-  .beat.live .wrow, .beat.live{}
+  .beat.show{opacity:1;max-height:420px}
   .pulse .ra,.pulse .rb{animation:none}
   @media(prefers-reduced-motion:no-preference){
     .beat.live.pulse{animation:softpulse 1.1s ease 1}
   }
   @keyframes softpulse{0%{transform:scale(1)}30%{transform:scale(1.04)}100%{transform:scale(1)}}
+
+  .chip{display:inline-block;font-family:var(--serif);font-weight:700;font-size:clamp(16px,4.4vw,21px);
+        border:1.5px dashed var(--line2);border-radius:12px;padding:8px 14px;margin:4px 6px;background:#fbfaff;text-align:center}
+  .chip sup{font-size:.6em;vertical-align:.55em}
+  .chip .clab{display:block;font-family:var(--ui);font-weight:800;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
 
   /* ---------- Нарратор ---------- */
   .narr{display:flex;gap:13px;align-items:flex-start;background:var(--ink);color:#fff;border-radius:16px;
@@ -150,6 +155,8 @@
   .prob-head .lead{font-family:var(--ui);font-weight:800;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
   .prob-head .big{font-family:var(--serif);font-weight:900;font-size:clamp(40px,12vw,64px);line-height:1;margin:6px 0 2px}
   .prob-head .big sup{font-size:.5em;vertical-align:.6em}
+  .prob-head .big-expr{font-family:var(--serif);font-weight:900;font-size:clamp(24px,6.6vw,40px);line-height:1.2;margin:8px 0 4px}
+  .prob-head .big-expr sup{font-size:.55em;vertical-align:.55em}
   .split{text-align:center;font-family:var(--serif);font-weight:700;font-size:clamp(18px,5vw,24px);margin:4px 0 18px;color:var(--muted)}
   .split sup{font-size:.6em;vertical-align:.55em}
   .scenario{text-align:center;font-family:var(--serif);font-weight:700;font-size:clamp(17px,4.6vw,23px);
@@ -158,7 +165,7 @@
 
   .stepc{border:1.5px solid var(--line2);border-radius:14px;padding:14px 16px;margin-bottom:12px;background:var(--card);
          opacity:0;max-height:0;overflow:hidden;transition:opacity .3s,max-height .4s,border-color .2s,background .2s}
-  .stepc.show{opacity:1;max-height:400px}
+  .stepc.show{opacity:1;max-height:460px}
   .stepc.active{border-color:var(--gold-bd);box-shadow:0 0 0 3px var(--gold-bg)}
   .stepc.done{border-color:var(--ok-bd);background:var(--ok-bg)}
   .stepc .stitle{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px;color:var(--ink);margin-bottom:10px}
@@ -170,6 +177,7 @@
   .eqline input{font-family:var(--serif);font-weight:800;font-size:clamp(19px,5vw,25px);width:112px;max-width:42vw;
                 text-align:center;border:2px solid var(--ring);border-radius:11px;padding:6px 8px;color:var(--ink);background:#fff;
                 outline:none;transition:.15s}
+  .eqline input.co{width:84px;max-width:26vw}
   .eqline input:focus{border-color:var(--a);box-shadow:0 0 0 3px var(--a-bg)}
   .eqline input.good{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
   .eqline input.bad{border-color:var(--no);background:var(--no-bg);color:var(--no)}
@@ -187,7 +195,7 @@
 
   .bravo{text-align:center;border:1px solid var(--ok-bd);background:var(--ok-bg);border-radius:16px;padding:18px;margin-top:6px;
          opacity:0;max-height:0;overflow:hidden;transition:opacity .35s,max-height .5s}
-  .bravo.show{opacity:1;max-height:420px}
+  .bravo.show{opacity:1;max-height:460px}
   .bravo .big{font-family:var(--serif);font-weight:900;font-size:26px;color:var(--ok);margin:0 0 6px}
   .bravo .full{font-family:var(--serif);font-weight:700;font-size:clamp(17px,4.6vw,22px);margin:6px 0 4px}
   .bravo .full sup{font-size:.6em;vertical-align:.55em}
@@ -283,15 +291,16 @@
 
   <nav class="acts" role="tablist" aria-label="Разделы">
     <button class="act" id="act-1" role="tab" aria-selected="true"  onclick="showTab(1)"><span class="rn">I</span>Как это устроено</button>
-    <button class="act" id="act-2" role="tab" aria-selected="false" onclick="showTab(2)"><span class="rn">II</span>Тренажёр</button>
+    <button class="act" id="act-2" role="tab" aria-selected="false" onclick="showTab(2)"><span class="rn">II</span>Устный счёт</button>
     <button class="act" id="act-3" role="tab" aria-selected="false" onclick="showTab(3)"><span class="rn">III</span>Смени актёра</button>
+    <button class="act" id="act-4" role="tab" aria-selected="false" onclick="showTab(4)"><span class="rn">IV</span>Упростить выражение</button>
   </nav>
 
   <!-- ===================== АКТ I ===================== -->
   <section class="panel on" id="panel-1" role="tabpanel" aria-labelledby="act-1">
     <div class="pick">
       <button id="w-sum"  aria-pressed="true"  onclick="wSetType('sum')"><span class="dot"></span><span class="mini">(<span class="ra">a</span> + <span class="rb">b</span>)<sup>2</sup></span> квадрат суммы</button>
-      <button id="w-diff" aria-pressed="false" onclick="wSetType('diff')"><span class="dot"></span><span class="mini">(<span class="ra">a</span> − <span class="rb">b</span>)<sup>2</sup></span> квадрат разности</button>
+      <button id="w-diff" aria-pressed="false" onclick="wSetType('diff')"><span class="dot"></span><span class="mini">(<span class="ra">a</span> &minus; <span class="rb">b</span>)<sup>2</sup></span> квадрат разности</button>
     </div>
     <div class="narr"><span class="masks">🎭</span><p id="w-narr"></p></div>
     <div class="card" id="w-stage"></div>
@@ -340,7 +349,7 @@
 
     <div class="pick">
       <button id="t-sum"  aria-pressed="true"  onclick="setMode('sum')"><span class="dot"></span><span class="mini">(<span class="ra">a</span> + <span class="rb">b</span>)<sup>2</sup></span> квадрат суммы</button>
-      <button id="t-diff" aria-pressed="false" onclick="setMode('diff')"><span class="dot"></span><span class="mini">(<span class="ra">a</span> − <span class="rb">b</span>)<sup>2</sup></span> квадрат разности</button>
+      <button id="t-diff" aria-pressed="false" onclick="setMode('diff')"><span class="dot"></span><span class="mini">(<span class="ra">a</span> &minus; <span class="rb">b</span>)<sup>2</sup></span> квадрат разности</button>
       <button id="t-mix"  aria-pressed="false" onclick="setMode('mix')"><span class="dot"></span><span class="mini">± </span>вперемешку</button>
     </div>
     <div class="card">
@@ -357,7 +366,7 @@
   <section class="panel" id="panel-3" role="tabpanel" aria-labelledby="act-3">
     <div class="pick">
       <button id="d-sum"  aria-pressed="true"  onclick="dType('sum')"><span class="dot"></span><span class="mini">(<span class="ra">a</span> + <span class="rb">b</span>)<sup>2</sup></span> сумма</button>
-      <button id="d-diff" aria-pressed="false" onclick="dType('diff')"><span class="dot"></span><span class="mini">(<span class="ra">a</span> − <span class="rb">b</span>)<sup>2</sup></span> разность</button>
+      <button id="d-diff" aria-pressed="false" onclick="dType('diff')"><span class="dot"></span><span class="mini">(<span class="ra">a</span> &minus; <span class="rb">b</span>)<sup>2</sup></span> разность</button>
     </div>
     <div class="card">
       <div class="dials">
@@ -384,7 +393,37 @@
     <p class="note">Один и тот же сценарий, но с разными актёрами даёт разный результат — в этом вся суть подстановки.</p>
   </section>
 
-  <div class="foot">Приём быстрого счёта: (a ± b)² = a² ± 2ab + b². Раскладывай число на «круглое ± маленькое».</div>
+  <!-- ===================== АКТ IV: упрощение выражений ===================== -->
+  <section class="panel" id="panel-4" role="tabpanel" aria-labelledby="act-4">
+    <div class="pick">
+      <button id="s-demo-btn"  aria-pressed="true"  onclick="sMode('demo')"><span class="dot"></span><span class="mini">(a + 6)<sup>2</sup> &minus; 2a(3 &minus; 2a)</span> разбор из контрольной</button>
+      <button id="s-train-btn" aria-pressed="false" onclick="sMode('train')"><span class="dot"></span><span class="mini">✎</span> тренажёр — сам решаю</button>
+    </div>
+
+    <div id="s-demo-wrap">
+      <div class="narr"><span class="masks">🎬</span><p id="sd-narr"></p></div>
+      <div class="card" id="sd-stage"></div>
+      <div class="nav">
+        <button class="btn btn-ghost" id="sd-prev" onclick="sdPrev()">← Назад</button>
+        <div class="steps-dots" id="sd-dots"></div>
+        <button class="btn btn-primary" id="sd-next" onclick="sdNext()">Дальше →</button>
+      </div>
+      <p class="note">Это задание №1 из итоговой контрольной. Рецепт всегда один: раскрой каждый блок отдельно, потом собери подобные.</p>
+    </div>
+
+    <div id="s-train-wrap" style="display:none">
+      <div class="card">
+        <div id="s-body"></div>
+        <div class="scorebar">
+          <span class="pill">Решено сегодня: <b id="s-solved">0</b></span>
+          <span class="pill"><span class="flame" id="s-flame">🔥</span> подряд: <b id="s-streak">0</b></span>
+        </div>
+      </div>
+      <p class="note">Коэффициенты вводи со знаком (например, −12). Решённые здесь задачи тоже идут в дневной отчёт учителю.</p>
+    </div>
+  </section>
+
+  <div class="foot">Устный счёт: (a ± b)² = a² ± 2ab + b². Упрощение: раскрой каждый блок отдельно и приведи подобные слагаемые.</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -403,13 +442,18 @@ function toast(html){var t=$('toast');t.innerHTML=html;t.classList.add('show');
 
 /* ---------------- Вкладки ---------------- */
 function showTab(n){
-  [1,2,3].forEach(function(i){
+  [1,2,3,4].forEach(function(i){
     $('act-'+i).setAttribute('aria-selected', i===n);
     $('panel-'+i).classList.toggle('on', i===n);
   });
   if(n===1) renderAct1();
   if(n===2){ renderDailyPanel(); if(!t.prob) newProblem(); }
   if(n===3) renderAct3(true);
+  if(n===4){
+    renderDailyPanel();
+    if($('s-train-wrap').style.display!=='none'){ if(!s.prob) newSimp(); }
+    else renderDemo();
+  }
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -499,11 +543,12 @@ var DAILY_STORE='formulaTheaterDaily.v1';
 var PROFILE_STORE='formulaTheaterDailyProfile.v1';
 var TEACHER_EMAIL='nata4os@bk.ru';
 var assignment={date:'',goal:8,student:'',teacher:TEACHER_EMAIL};
+var startTab=0;
 function esc(s){return String(s||'').replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});}
 function todayISO(){var d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10);}
 function readProfile(){try{return JSON.parse(localStorage.getItem(PROFILE_STORE)||'{}')||{};}catch(e){return {};}}
 function saveProfile(){try{localStorage.setItem(PROFILE_STORE,JSON.stringify({student:assignment.student,goal:assignment.goal}));}catch(e){}}
-function parseDailyAssignment(){var q=new URLSearchParams(location.search), profile=readProfile();assignment.date=q.get('date')||todayISO();assignment.goal=Math.max(1,Math.min(40,parseInt(q.get('goal')||profile.goal||'8',10)||8));assignment.student=q.get('student')||profile.student||'';assignment.teacher=TEACHER_EMAIL;var m=q.get('mode'); if(['sum','diff','mix'].indexOf(m)>=0){ t.mode=m; }}
+function parseDailyAssignment(){var q=new URLSearchParams(location.search), profile=readProfile();assignment.date=q.get('date')||todayISO();assignment.goal=Math.max(1,Math.min(40,parseInt(q.get('goal')||profile.goal||'8',10)||8));assignment.student=q.get('student')||profile.student||'';assignment.teacher=TEACHER_EMAIL;var m=q.get('mode'); if(['sum','diff','mix'].indexOf(m)>=0){ t.mode=m; } if(m==='simp'){ startTab=4; }}
 function dailyKey(){return assignment.date+'|'+(assignment.student||'ученик');}
 function loadDailyAll(){try{return JSON.parse(localStorage.getItem(DAILY_STORE)||'{}')||{};}catch(e){return {};}}
 function saveDailyAll(all){try{localStorage.setItem(DAILY_STORE,JSON.stringify(all));}catch(e){}}
@@ -511,14 +556,14 @@ function blankDaily(){return {solved:0,clean:0,mistakes:0,reveals:0,currentStrea
 function getDailyState(){var all=loadDailyAll(), key=dailyKey(); if(!all[key]) all[key]=blankDaily(); return all[key];}
 function saveDailyState(state){var all=loadDailyAll(); all[dailyKey()]=state; saveDailyAll(all);}
 function updateDailyInputs(){var st=$('daily-student'), go=$('daily-goal');assignment.teacher=TEACHER_EMAIL;if(st) st.value=assignment.student;if(go) go.value=assignment.goal;}
-function renderDailyPanel(){var d=getDailyState(), pct=Math.min(100,Math.round((d.solved/assignment.goal)*100));t.solved=d.solved||0; t.streak=d.currentStreak||0;if($('t-solved')) $('t-solved').textContent=t.solved;if($('t-streak')) $('t-streak').textContent=t.streak;if($('t-flame')) $('t-flame').classList.toggle('on', t.streak>=3);if($('daily-title')) $('daily-title').innerHTML=(assignment.student?esc(assignment.student)+': ':'')+'задание на '+assignment.date;if($('daily-sub')) $('daily-sub').textContent=d.solved>=assignment.goal?'Норма закрыта. Можно отправить отчёт или порешать ещё.':'Цель на день: '+assignment.goal+' задач.';if($('daily-progress-fill')) $('daily-progress-fill').style.width=pct+'%';if($('daily-solved')) $('daily-solved').textContent=d.solved;if($('daily-goal-view')) $('daily-goal-view').textContent=assignment.goal;if($('daily-clean')) $('daily-clean').textContent=d.clean||0;if($('daily-reveals')) $('daily-reveals').textContent=d.reveals||0;if($('daily-report-note')) $('daily-report-note').textContent=assignment.teacher?'Отчёт уйдёт на '+assignment.teacher+'.':'Добавьте email учителя или отчёт будет скопирован.';updateDailyInputs();}
+function renderDailyPanel(){var d=getDailyState(), pct=Math.min(100,Math.round((d.solved/assignment.goal)*100));t.solved=d.solved||0; t.streak=d.currentStreak||0;if($('t-solved')) $('t-solved').textContent=t.solved;if($('t-streak')) $('t-streak').textContent=t.streak;if($('t-flame')) $('t-flame').classList.toggle('on', t.streak>=3);if($('s-solved')) $('s-solved').textContent=t.solved;if($('s-streak')) $('s-streak').textContent=t.streak;if($('s-flame')) $('s-flame').classList.toggle('on', t.streak>=3);if($('daily-title')) $('daily-title').innerHTML=(assignment.student?esc(assignment.student)+': ':'')+'задание на '+assignment.date;if($('daily-sub')) $('daily-sub').textContent=d.solved>=assignment.goal?'Норма закрыта. Можно отправить отчёт или порешать ещё.':'Цель на день: '+assignment.goal+' задач. Считаются и устный счёт, и упрощение выражений.';if($('daily-progress-fill')) $('daily-progress-fill').style.width=pct+'%';if($('daily-solved')) $('daily-solved').textContent=d.solved;if($('daily-goal-view')) $('daily-goal-view').textContent=assignment.goal;if($('daily-clean')) $('daily-clean').textContent=d.clean||0;if($('daily-reveals')) $('daily-reveals').textContent=d.reveals||0;if($('daily-report-note')) $('daily-report-note').textContent=assignment.teacher?'Отчёт уйдёт на '+assignment.teacher+'.':'Добавьте email учителя или отчёт будет скопирован.';updateDailyInputs();}
 function setStudentName(v){assignment.student=v.trim();saveProfile();renderDailyPanel();}
 function setTeacherEmail(v){assignment.teacher=TEACHER_EMAIL;saveProfile();renderDailyPanel();}
 function setDailyGoal(v){assignment.goal=Math.max(1,Math.min(40,parseInt(v,10)||8));saveProfile();renderDailyPanel();}
 function currentProblemMistakes(){var n=0;Object.keys(t.tries||{}).forEach(function(k){n+=t.tries[k]||0;});return n;}
 function recordDailyMiss(){var d=getDailyState();d.mistakes=(d.mistakes||0)+1;d.updatedAt=new Date().toISOString();saveDailyState(d);renderDailyPanel();}
 function recordDailyReveal(){var d=getDailyState();d.reveals=(d.reveals||0)+1;d.updatedAt=new Date().toISOString();saveDailyState(d);renderDailyPanel();}
-function recordDailySolved(){var p=t.prob, mistakes=currentProblemMistakes(), d=getDailyState();d.solved=(d.solved||0)+1;if(mistakes===0 && !t.revealed) d.clean=(d.clean||0)+1;d.currentStreak=(d.currentStreak||0)+1;d.bestStreak=Math.max(d.bestStreak||0,d.currentStreak||0);d.updatedAt=new Date().toISOString();d.history=[{time:new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'}),task:p.N+'²',answer:p.res,mistakes:mistakes,revealed:!!t.revealed}].concat(d.history||[]).slice(0,12);saveDailyState(d);renderDailyPanel();}
+function recordDailySolvedTask(taskStr, answerStr, mistakes, revealed){var d=getDailyState();d.solved=(d.solved||0)+1;if(mistakes===0 && !revealed) d.clean=(d.clean||0)+1;d.currentStreak=(d.currentStreak||0)+1;d.bestStreak=Math.max(d.bestStreak||0,d.currentStreak||0);d.updatedAt=new Date().toISOString();d.history=[{time:new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'}),task:taskStr,answer:answerStr,mistakes:mistakes,revealed:!!revealed}].concat(d.history||[]).slice(0,12);saveDailyState(d);renderDailyPanel();}
 function buildProgressReport(){var d=getDailyState(), pct=Math.min(100,Math.round((d.solved/assignment.goal)*100));var lines=[];lines.push('Отчёт по тренажёру «Театр формул»');lines.push('Дата задания: '+assignment.date);lines.push('Ученик: '+(assignment.student||'не указано'));lines.push('Прогресс: '+d.solved+' из '+assignment.goal+' ('+pct+'%)');lines.push('Решено без ошибок: '+(d.clean||0));lines.push('Ошибочных попыток: '+(d.mistakes||0));lines.push('Показано ответов/подсказок: '+(d.reveals||0));lines.push('Лучшая серия: '+(d.bestStreak||0));if((d.history||[]).length){lines.push('');lines.push('Последние задания:');d.history.slice(0,8).forEach(function(h){lines.push('- '+h.time+' · '+h.task+' = '+h.answer+' · ошибок: '+h.mistakes+(h.revealed?' · был показан ответ':''));});}lines.push('');lines.push('Ссылка: '+assignmentUrl());return lines.join('\n');}
 function assignmentUrl(){var url=new URL(location.href); url.search=''; url.hash='';url.searchParams.set('date',assignment.date);url.searchParams.set('goal',assignment.goal);url.searchParams.set('mode',t.mode||'mix');if(assignment.student) url.searchParams.set('student',assignment.student);return url.toString();}
 function copyText(text){if(navigator.clipboard&&navigator.clipboard.writeText){return navigator.clipboard.writeText(text);}var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();return Promise.resolve();}
@@ -656,10 +701,8 @@ function revealStep(i){
 }
 function finishProblem(){
   var p=t.prob, op=p.sum?'+':MINUS();
-  recordDailySolved();
+  recordDailySolvedTask(p.N+'²', String(p.res), currentProblemMistakes(), t.revealed);
   t.solved=getDailyState().solved;
-  // серия только если ни одной подсказки-раскрытия не понадобилось? считаем просто решённые подряд
-  var noReveal=true; // серия за завершённую задачу
   t.streak=getDailyState().currentStreak||t.streak;
   $('t-solved').textContent=t.solved;
   $('t-streak').textContent=t.streak;
@@ -683,8 +726,7 @@ function dType(tp){
   d.type=tp;
   $('d-sum').setAttribute('aria-pressed', tp==='sum');
   $('d-diff').setAttribute('aria-pressed', tp==='diff');
-  var lbl=(tp==='sum')?'сумма':'разность';
-  renderAct3(true, 'type'); // при смене типа сбрасываем «что изменилось» на знак
+  renderAct3(true, 'type');
 }
 function dSet(which,delta){
   if(which==='a'){ d.a=Math.min(100,Math.max(10,d.a+delta)); }
@@ -700,7 +742,6 @@ function renderAct3(fresh, changed){
   $('da-minus').disabled=(a<=10); $('da-plus').disabled=(a>=100);
   $('db-minus').disabled=(b<=1);  $('db-plus').disabled=(b>=9);
 
-  // какие куски подсветить
   var flA='',flM='',flB='',flR='';
   if(!fresh && d.prev){
     if(changed==='a'){flA=flM=flR=' flash';}
@@ -721,7 +762,6 @@ function renderAct3(fresh, changed){
     '</div>'+
     '<div class="check">это и есть '+N+'<sup>2</sup>: &nbsp;<b>'+N+' · '+N+' = '+res+'</b> ✓</div>';
 
-  // «что изменилось»
   var dl=$('d-delta');
   if(!fresh && d.prev){
     var pv=d.prev, msg='';
@@ -742,12 +782,257 @@ function renderAct3(fresh, changed){
   d.prev={a:a,b:b,type:d.type,a2:a2,mid:mid,b2:b2,res:res};
 }
 
+/* =====================================================
+   АКТ IV·1 — разбор задания из контрольной
+   (a + 6)² − 2a(3 − 2a)
+   ===================================================== */
+var sd={step:0};
+var SDMAX=6;
+function sbeat(b,tag,html){
+  return '<div class="beat'+(sd.step>=b?' show':'')+(sd.step===b&&b>0?' live pulse':'')+'">'+
+    (tag?'<span class="wtag">'+tag+'</span>':'')+html+'</div>';
+}
+function renderDemo(){
+  var M=MINUS();
+  var narrs=[
+    'Это задание №1 из итоговой контрольной: <b>упростить выражение</b>. Тут уже не числа, а буквы — но рецепт всё равно пошаговый.',
+    'Выражение состоит из <b>двух блоков</b>. Разберёмся с каждым отдельно, а в конце сложим результаты и приведём подобные.',
+    'Блок 1 — наш знакомый спектакль «квадрат суммы». В роли <span class="ra">a</span> — буква <span class="ra">a</span>, в роли <span class="rb">b</span> — число <span class="rb">6</span>. Сценарий тот же: <span class="ra">a</span>² + 2·<span class="ra">a</span>·<span class="rb">b</span> + <span class="rb">b</span>².',
+    'Блок 2 — одночлен умножаем на скобку: <b>'+M+'2a раздаём каждому слагаемому</b>. Внимание на знаки: минус × минус = плюс!',
+    'Теперь выписываем всё подряд, ничего не теряя. Пока не считаем — просто переписали оба блока рядом.',
+    'Приводим подобные: отдельно собираем a², отдельно a, отдельно числа. Как раскладываем вещи по полочкам.',
+    'Готово! И обязательная проверка подстановкой: при a = 1 обе записи дают одно и то же число. Значит, упростили без ошибок.'
+  ];
+  $('sd-narr').innerHTML=narrs[sd.step];
+
+  var html='';
+  html+=sbeat(0,'Задача',
+    '<div class="wrow">('+A('a')+' + '+B('6')+')<sup>2</sup> '+M+' 2a(3 '+M+' 2a) = ?</div>');
+  html+=sbeat(1,'План — два блока',
+    '<div><span class="chip"><span class="clab">блок 1 · квадрат суммы</span>('+A('a')+' + '+B('6')+')<sup>2</sup></span>'+
+    '<span class="chip"><span class="clab">блок 2 · одночлен × скобка</span>'+M+'&thinsp;2a·(3 '+M+' 2a)</span></div>');
+  html+=sbeat(2,'Блок 1 — по сценарию',
+    '<div class="wrow">('+A('a')+' + '+B('6')+')<sup>2</sup> = '+A('a')+'<sup>2</sup> + 2·'+A('a')+'·'+B('6')+' + '+B('6')+'<sup>2</sup> = a<sup>2</sup> + 12a + 36</div>');
+  html+=sbeat(3,'Блок 2 — раздаём каждому',
+    '<div class="wrow">'+M+'2a·(3 '+M+' 2a) = ('+M+'2a)·3 + ('+M+'2a)·('+M+'2a) = '+M+'6a + 4a<sup>2</sup></div>'+
+    '<div class="wnote">('+M+'2a)·('+M+'2a): минус × минус = плюс, a·a = a², получаем +4a²</div>');
+  html+=sbeat(4,'Всё вместе',
+    '<div class="wrow">= a<sup>2</sup> + 12a + 36 '+M+' 6a + 4a<sup>2</sup></div>');
+  html+=sbeat(5,'Приводим подобные',
+    '<div class="wrow">= (a<sup>2</sup> + 4a<sup>2</sup>) + (12a '+M+' 6a) + 36 = 5a<sup>2</sup> + 6a + 36</div>');
+  html+=sbeat(6,'Финал',
+    '<div class="wrow final">= 5a<sup>2</sup> + 6a + 36</div>'+
+    '<div class="check">Проверка при a = 1: (1+6)<sup>2</sup> '+M+' 2·(3'+M+'2) = 49 '+M+' 2 = 47 &nbsp;и&nbsp; <b>5 + 6 + 36 = 47</b> ✓</div>'+
+    '<div style="margin-top:16px"><button class="btn btn-gold" onclick="sMode(\'train\')">Реши похожие сам →</button></div>');
+
+  $('sd-stage').innerHTML='<div class="work">'+html+'</div>';
+
+  var dots='';for(var i=0;i<=SDMAX;i++)dots+='<i class="'+(i<=sd.step?'on':'')+'"></i>';
+  $('sd-dots').innerHTML=dots;
+  $('sd-prev').disabled=(sd.step===0);
+  $('sd-next').disabled=(sd.step===SDMAX);
+  $('sd-next').textContent=(sd.step===SDMAX)?'Готово ✓':'Дальше →';
+}
+function sdNext(){ if(sd.step<SDMAX){sd.step++;renderDemo();} }
+function sdPrev(){ if(sd.step>0){sd.step--;renderDemo();} }
+function sMode(m){
+  $('s-demo-btn').setAttribute('aria-pressed', m==='demo');
+  $('s-train-btn').setAttribute('aria-pressed', m==='train');
+  $('s-demo-wrap').style.display = (m==='demo')?'':'none';
+  $('s-train-wrap').style.display = (m==='train')?'':'none';
+  if(m==='demo'){ renderDemo(); }
+  else{ if(!s.prob) newSimp(); renderDailyPanel(); window.scrollTo({top:0,behavior:'smooth'}); }
+}
+
+/* =====================================================
+   АКТ IV·2 — тренажёр «упростить выражение»
+   (v ± p)² ± m·v·(q ± n·v)
+   ===================================================== */
+var s={prob:null, step:1, tries:{}, revealed:false};
+
+function sop(x){return x>0?'+':MINUS();}
+function monoTxt(c,v){ // 2x, x, −3x — со знаком
+  var abs=Math.abs(c);
+  return (c<0?MINUS():'')+(abs===1?'':abs)+v;
+}
+function fterm(c,suf,first){
+  if(c===0)return '';
+  var sgn=c<0?(first?MINUS():' '+MINUS()+' '):(first?'':' + ');
+  var a=Math.abs(c);
+  var co=(suf&&a===1)?'':a;
+  return sgn+co+suf;
+}
+function fpoly(c2,c1,c0,v,supHtml){
+  var s2suf=supHtml ? v+'<sup>2</sup>' : v+'\u00B2';
+  var out='',first=true, tm;
+  tm=fterm(c2,s2suf,first); if(tm){out+=tm;first=false;}
+  tm=fterm(c1,v,first); if(tm){out+=tm;first=false;}
+  tm=fterm(c0,'',first); if(tm){out+=tm;first=false;}
+  return out||'0';
+}
+function genSimp(){
+  var v=rnd(['a','x','y']);
+  var s1=rnd([1,-1]), p=rnd([2,3,4,5,6,7]);
+  var s2=rnd([1,-1]), m=rnd([1,2,3]);
+  var q=rnd([1,2,3,4,5,6,7]), s3=rnd([1,-1]), n=rnd([1,2,3]);
+  var k4=s2*s3*m*n;               // коэффициент при v² из блока 2
+  if(1+k4===0) return genSimp();  // не допускаем исчезновения v²
+  var k1=2*s1*p, k2=p*p;          // блок 1: v² + k1·v + k2
+  var k3=s2*m*q;                  // блок 2: k3·v + k4·v²
+  var cx2=1+k4, cx=k1+k3, c0=k2;  // итог
+  var mono=(m===1?'':m)+v, nmono=(n===1?'':n)+v;
+  var exprHTML='('+A(v)+' '+sop(s1)+' '+B(p)+')<sup>2</sup> '+sop(s2)+' '+mono+'('+q+' '+sop(s3)+' '+nmono+')';
+  var exprTxt='('+v+' '+sop(s1)+' '+p+')\u00B2 '+sop(s2)+' '+mono+'('+q+' '+sop(s3)+' '+nmono+')';
+  return {v:v,s1:s1,p:p,s2:s2,m:m,q:q,s3:s3,n:n,
+          k1:k1,k2:k2,k3:k3,k4:k4,cx2:cx2,cx:cx,c0:c0,
+          mono:mono,nmono:nmono,exprHTML:exprHTML,exprTxt:exprTxt};
+}
+function newSimp(){ s.prob=genSimp(); s.step=1; s.tries={}; s.revealed=false; renderSimp(); renderDailyPanel(); }
+
+var S_INPUTS={1:['s1a','s1b'],2:['s2a','s2b'],3:['s3a','s3b','s3c']};
+function sExpected(P,i){
+  if(i===1)return [P.k1,P.k2];
+  if(i===2)return [P.k3,P.k4];
+  return [P.cx2,P.cx,P.c0];
+}
+function sInput(id){
+  return '<input id="'+id+'" class="co" inputmode="numeric" autocomplete="off" placeholder="±"'+
+    ' onkeydown="if(event.key===\'Enter\'){event.preventDefault();sCheckByInput(this.id);}">';
+}
+function sCheckByInput(id){
+  for(var i=1;i<=3;i++) if(S_INPUTS[i].indexOf(id)>=0){ sCheck(i); return; }
+}
+function sStepCard(P,i){
+  var v=P.v, M=MINUS();
+  var titles=['Раскрой квадрат по сценарию','Раскрой вторые скобки: одночлен × скобка','Приведи подобные — собери ответ'];
+  var line='';
+  if(i===1){
+    line='('+A(v)+' '+sop(P.s1)+' '+B(P.p)+')<sup>2</sup> = '+v+'<sup>2</sup> + '+sInput('s1a')+'·'+v+' + '+sInput('s1b');
+  }else if(i===2){
+    line=(P.s2<0?M+' ':'+ ')+P.mono+'·('+P.q+' '+sop(P.s3)+' '+P.nmono+') = '+sInput('s2a')+'·'+v+' + '+sInput('s2b')+'·'+v+'<sup>2</sup>';
+  }else{
+    line='Весь ответ: '+sInput('s3a')+'·'+v+'<sup>2</sup> + '+sInput('s3b')+'·'+v+' + '+sInput('s3c');
+  }
+  var state=(i<s.step?'done':(i===s.step?'active':''));
+  var showCls=(i<=s.step?' show':'');
+  return '<div class="stepc'+showCls+' '+state+'" id="sstepc-'+i+'">'+
+    '<div class="stitle"><span class="snum">'+i+'</span>'+titles[i-1]+'</div>'+
+    '<div class="eqline">'+line+
+      '<button class="go" onclick="sCheck('+i+')">Проверить</button>'+
+    '</div>'+
+    '<div class="hint" id="shint-'+i+'"></div>'+
+  '</div>';
+}
+function renderSimp(){
+  var P=s.prob, M=MINUS();
+  $('s-body').innerHTML=
+    '<div class="prob-head"><div class="lead">Упростите выражение</div>'+
+      '<div class="big-expr">'+P.exprHTML+'</div></div>'+
+    '<div class="scenario">Сценарий: ('+A('a')+' ± '+B('b')+')<sup>2</sup> = '+A('a')+'<sup>2</sup> ± 2·'+A('a')+'·'+B('b')+' + '+B('b')+'<sup>2</sup> &nbsp;·&nbsp; коэффициенты вводи со знаком (например, '+M+'12)</div>'+
+    sStepCard(P,1)+sStepCard(P,2)+sStepCard(P,3)+
+    '<div class="bravo" id="sbravo"></div>';
+  sFocus();
+}
+function sFocus(){
+  var ids=S_INPUTS[s.step]; if(!ids)return;
+  for(var j=0;j<ids.length;j++){ var el=$(ids[j]); if(el&&!el.disabled){ try{el.focus();}catch(e){} return; } }
+}
+function parseCoef(str){
+  var raw=String(str||'').replace(/\s/g,'').replace(new RegExp(MINUS(),'g'),'-');
+  if(raw==='')return NaN;
+  if(raw.charAt(0)==='+')raw=raw.slice(1);
+  if(!/^-?\d+$/.test(raw))return NaN;
+  return parseInt(raw,10);
+}
+function sHint(P,i){
+  var v=P.v, M=MINUS();
+  if(i===1){
+    return 'Сценарий: ('+v+' ± b)<sup>2</sup> = '+v+'<sup>2</sup> ± 2b·'+v+' + b<sup>2</sup>. Здесь b = '+P.p+
+      ', знак в скобке — '+(P.s1>0?'плюс':'минус')+'. Средний коэффициент: '+(P.s1<0?M:'')+'2·'+P.p+' = '+fnum(P.k1)+
+      ' (знак тот же, что в скобке!). Свободный член: '+P.p+'·'+P.p+' = '+P.k2+' — он всегда с плюсом.';
+  }
+  if(i===2){
+    var K=P.s2*P.m, Kstr=monoTxt(K,v), inner=(P.s3<0?M:'')+P.nmono;
+    return 'Раздай '+Kstr+' каждому слагаемому скобки: ('+Kstr+')·'+P.q+' = '+fnum(P.k3)+v+
+      '; &nbsp;('+Kstr+')·('+inner+') = '+fnum(P.k4)+v+'<sup>2</sup>. Помни: минус × минус = плюс, а '+v+'·'+v+' = '+v+'<sup>2</sup>.';
+  }
+  return 'Раскладывай по полочкам. При '+v+'<sup>2</sup>: 1 + ('+fnum(P.k4)+') = '+fnum(P.cx2)+
+    '. При '+v+': ('+fnum(P.k1)+') + ('+fnum(P.k3)+') = '+fnum(P.cx)+'. Свободный член один: '+P.c0+'.';
+}
+function sCheck(i){
+  var P=s.prob; if(i!==s.step)return;
+  var ids=S_INPUTS[i], exp=sExpected(P,i), allGood=true, anyEmpty=false;
+  for(var j=0;j<ids.length;j++){
+    var el=$(ids[j]), val=parseCoef(el.value);
+    if(isNaN(val))anyEmpty=true;
+    if(val===exp[j]){ el.classList.remove('bad'); el.classList.add('good'); }
+    else{ el.classList.remove('good'); el.classList.add('bad'); allGood=false; }
+  }
+  var hint=$('shint-'+i);
+  if(allGood){
+    for(var j2=0;j2<ids.length;j2++){ $(ids[j2]).disabled=true; }
+    hint.classList.remove('show');
+    var sc=$('sstepc-'+i); sc.classList.remove('active'); sc.classList.add('done');
+    var btn=sc.querySelector('.go'); if(btn)btn.remove();
+    if(i<3){
+      s.step=i+1;
+      $('sstepc-'+(i+1)).classList.add('show','active');
+      sFocus();
+    }else{
+      finishSimp();
+    }
+  }else{
+    s.tries[i]=(s.tries[i]||0)+1;
+    recordDailyMiss();
+    var extra = s.tries[i]>=2 ? '<span class="rerun"><button onclick="sReveal('+i+')">Показать ответ</button></span>' : '';
+    hint.innerHTML=sHint(P,i)+(extra?'<br>'+extra:'');
+    hint.classList.add('show');
+    (function(list){setTimeout(function(){for(var j3=0;j3<list.length;j3++)$(list[j3]).classList.remove('bad');},400);})(ids);
+  }
+}
+function sReveal(i){
+  var P=s.prob; if(i!==s.step)return;
+  s.revealed=true;
+  recordDailyReveal();
+  var ids=S_INPUTS[i], exp=sExpected(P,i);
+  for(var j=0;j<ids.length;j++){
+    var el=$(ids[j]); el.value=fnum(exp[j]); el.classList.remove('bad'); el.classList.add('good'); el.disabled=true;
+  }
+  var sc=$('sstepc-'+i); sc.classList.remove('active'); sc.classList.add('done');
+  var btn=sc.querySelector('.go'); if(btn)btn.remove();
+  $('shint-'+i).classList.remove('show');
+  if(i<3){ s.step=i+1; $('sstepc-'+(i+1)).classList.add('show','active'); sFocus(); }
+  else finishSimp();
+}
+function sMistakes(){var n=0;Object.keys(s.tries||{}).forEach(function(k){n+=s.tries[k]||0;});return n;}
+function finishSimp(){
+  var P=s.prob, M=MINUS();
+  var ansTxt=fpoly(P.cx2,P.cx,P.c0,P.v,false);
+  recordDailySolvedTask(P.exprTxt, ansTxt, sMistakes(), s.revealed);
+  var origVal=(1+P.s1*P.p)*(1+P.s1*P.p)+P.s2*P.m*(P.q+P.s3*P.n);
+  var simpVal=P.cx2+P.cx+P.c0;
+  var cheers=['Браво!','Как по нотам!','Чистая работа!','Занавес — и аплодисменты!','Готов к контрольной!'];
+  var br=$('sbravo');
+  br.innerHTML='<div class="big">🎬 '+rnd(cheers)+'</div>'+
+    '<div class="full">'+P.exprHTML+' = <b style="color:var(--ok)">'+fpoly(P.cx2,P.cx,P.c0,P.v,true)+'</b></div>'+
+    '<div class="check" style="margin-top:10px">Проверка при '+P.v+' = 1: исходное = <b>'+fnum(origVal)+'</b>, упрощённое = <b>'+fnum(simpVal)+'</b> ✓</div>'+
+    '<div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">'+
+      '<button class="btn btn-primary" onclick="newSimp()">Следующее →</button>'+
+      '<button class="btn btn-ghost" onclick="sendProgress()">Отправить прогресс</button></div>';
+  br.classList.add('show');
+  var streak=getDailyState().currentStreak||0;
+  if(streak>=3) toast('🔥 '+streak+' подряд!');
+  br.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
 /* ---------------- старт ---------------- */
 parseDailyAssignment();
 renderDailyPanel();
 renderAct1();
 newProblem();
 renderAct3(true);
+renderDemo();
+if(startTab===4) showTab(4);
 </script>
 </body>
 </html>
