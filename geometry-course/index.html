@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Геометрия 7 класс — тренажёры</title>
+<title>Геометрия 7 класс — интерактивный курс с тренажёрами | MathExam</title>
+<meta name="description" content="Курс геометрии 7 класса на весь учебный год: 70+ страниц теории и тренажёров, режим учителя. Для семиклассников, учителей и репетиторов.">
+<link rel="stylesheet" href="/assets/site.css">
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#e8e4db;font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color:#1f2937;padding:18px}
@@ -79,6 +81,21 @@ body.teacher .code{display:inline}
 </style>
 </head>
 <body>
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="/">
+      <span class="logo-mark">∑</span>
+      <span>MathExam</span>
+    </a>
+    <nav class="site-nav" aria-label="Основные разделы">
+      <a href="/">Главная</a>
+      <a href="/trainers/">Каталог</a>
+      <a href="/oge/">ОГЭ</a>
+      <a href="/geometry-course/" aria-current="page">Геометрия 7</a>
+      <a href="/pedagogam/">Педагогам</a>
+    </nav>
+  </div>
+</header>
 <div class="app">
   <div class="head">
     <button class="tmode" id="tmode">👩‍🏫 Режим учителя</button>
@@ -316,5 +333,35 @@ function readCode(code){var p=(code||'').trim().split('.');if(p.length<4||p[0]!=
   })();
 })();
 </script>
+<footer class="site-footer">
+  <div class="container">
+    <div>
+      <h4>MathExam</h4>
+      <p>Интерактивные тренажёры по математике.<br>
+      Помогают учителю и ученику — не заменяют их.</p>
+    </div>
+    <div>
+      <h4>Разделы</h4>
+      <ul>
+        <li><a href="/">Главная</a></li>
+        <li><a href="/trainers/">Каталог тренажёров</a></li>
+        <li><a href="/oge/">Подготовка к ОГЭ</a></li>
+        <li><a href="/geometry-course/">Геометрия 7 класс</a></li>
+        <li><a href="/pedagogam/">Педагогам</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Автор на связи</h4>
+      <ul>
+        <li><a href="https://vk.com/mathexamspace" rel="noopener">ВКонтакте</a></li>
+        <li><a href="https://dzen.ru/mathexamspace" rel="noopener">Дзен</a></li>
+        <li><a href="mailto:nata4os@bk.ru">Написать письмо</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    MathExam · mathexam.space · Наталья Михайловна
+  </div>
+</footer>
 </body>
 </html>

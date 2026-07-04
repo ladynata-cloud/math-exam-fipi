@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Азбука построений — линейка тренажёров</title>
+<title>Азбука построений — циркуль и линейка, интерактивные тренажёры | MathExam</title>
+<meta name="description" content="Пошаговая отработка геометрических построений циркулем и линейкой для 7 класса: от серединного перпендикуляра до треугольников по элементам.">
+<link rel="stylesheet" href="/assets/site.css">
 <style>
 :root{
   --ink:#172033;--muted:#667085;--soft:#f6f3eb;--paper:#fffaf0;--card:#fff;--line:#e7e2d8;
@@ -15,6 +17,21 @@ button,input,textarea,select{font:inherit}button{border:1px solid #d7dce5;backgr
 </style>
 </head>
 <body>
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="/">
+      <span class="logo-mark">∑</span>
+      <span>MathExam</span>
+    </a>
+    <nav class="site-nav" aria-label="Основные разделы">
+      <a href="/">Главная</a>
+      <a href="/trainers/" aria-current="page">Каталог</a>
+      <a href="/oge/">ОГЭ</a>
+      <a href="/geometry-course/">Геометрия 7</a>
+      <a href="/pedagogam/">Педагогам</a>
+    </nav>
+  </div>
+</header>
 <div class="shell">
   <header class="hero">
     <div class="heroTop">
@@ -280,5 +297,35 @@ renderAll();
 loadTrainer(activeId,true);
 setInterval(pollSuccess, 800);
 </script>
+<footer class="site-footer">
+  <div class="container">
+    <div>
+      <h4>MathExam</h4>
+      <p>Интерактивные тренажёры по математике.<br>
+      Помогают учителю и ученику — не заменяют их.</p>
+    </div>
+    <div>
+      <h4>Разделы</h4>
+      <ul>
+        <li><a href="/">Главная</a></li>
+        <li><a href="/trainers/">Каталог тренажёров</a></li>
+        <li><a href="/oge/">Подготовка к ОГЭ</a></li>
+        <li><a href="/geometry-course/">Геометрия 7 класс</a></li>
+        <li><a href="/pedagogam/">Педагогам</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Автор на связи</h4>
+      <ul>
+        <li><a href="https://vk.com/mathexamspace" rel="noopener">ВКонтакте</a></li>
+        <li><a href="https://dzen.ru/mathexamspace" rel="noopener">Дзен</a></li>
+        <li><a href="mailto:nata4os@bk.ru">Написать письмо</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    MathExam · mathexam.space · Наталья Михайловна
+  </div>
+</footer>
 </body>
 </html>

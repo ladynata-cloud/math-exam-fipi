@@ -1,0 +1,228 @@
+/* ============================================================
+   MathExam — единые стили сайта
+   Подключение на любой странице:
+   <link rel="stylesheet" href="/assets/site.css">
+   Идея оформления: школьная тетрадь в клетку, синие «чернила»,
+   красная линия полей. Спокойно, по-учительски.
+   ============================================================ */
+
+:root{
+  --paper:      #FCFCF9;   /* бумага */
+  --grid:       #E8EDF4;   /* клетка тетради */
+  --ink:        #22304A;   /* основной текст, тёмно-синие чернила */
+  --ink-soft:   #5A6B87;   /* второстепенный текст */
+  --pen:        #2B57C4;   /* синяя ручка: ссылки, кнопки */
+  --pen-dark:   #1E419C;
+  --margin-red: #C24A4A;   /* красная линия полей, пометки */
+  --card:       #FFFFFF;
+  --line:       #D9DFE9;
+  --ok:         #2E7D4F;
+}
+
+*{ box-sizing:border-box; }
+
+html{ scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *{ transition:none !important; animation:none !important; }
+}
+
+body{
+  margin:0;
+  color:var(--ink);
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+    var(--paper);
+  background-size:28px 28px, 28px 28px, auto;
+  font-family:"PT Sans", "Segoe UI", Arial, sans-serif;
+  font-size:17px;
+  line-height:1.55;
+}
+
+h1,h2,h3{
+  font-family:"PT Serif", Georgia, serif;
+  line-height:1.25;
+  margin:0 0 .5em;
+}
+h1{ font-size:clamp(1.7rem, 4vw, 2.5rem); }
+h2{ font-size:clamp(1.3rem, 3vw, 1.7rem); margin-top:0; }
+h3{ font-size:1.12rem; }
+
+p{ margin:.35em 0 .9em; }
+a{ color:var(--pen); text-decoration-thickness:1px; text-underline-offset:2px; }
+a:hover{ color:var(--pen-dark); }
+:focus-visible{ outline:3px solid var(--pen); outline-offset:2px; border-radius:3px; }
+
+.container{ max-width:1060px; margin:0 auto; padding:0 20px; }
+
+/* ---------- Шапка ---------- */
+.site-header{
+  background:rgba(252,252,249,.94);
+  backdrop-filter:blur(4px);
+  border-bottom:1px solid var(--line);
+  position:sticky; top:0; z-index:20;
+}
+.site-header .container{
+  display:flex; align-items:center; gap:18px;
+  min-height:58px; flex-wrap:wrap; padding-top:6px; padding-bottom:6px;
+}
+.logo{
+  display:flex; align-items:center; gap:10px;
+  font-family:"PT Serif", Georgia, serif;
+  font-weight:700; font-size:1.15rem;
+  color:var(--ink); text-decoration:none;
+}
+.logo-mark{
+  width:32px; height:32px; flex:0 0 32px;
+  border:2px solid var(--pen); border-radius:6px;
+  display:grid; place-items:center;
+  color:var(--pen); font-size:1rem;
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0/8px 8px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/8px 8px,
+    #fff;
+}
+.site-nav{ margin-left:auto; display:flex; gap:4px 18px; flex-wrap:wrap; }
+.site-nav a{
+  color:var(--ink); text-decoration:none;
+  padding:6px 2px; border-bottom:2px solid transparent;
+  font-size:.98rem;
+}
+.site-nav a:hover{ border-bottom-color:var(--pen); }
+.site-nav a[aria-current="page"]{
+  border-bottom-color:var(--margin-red); font-weight:700;
+}
+
+/* ---------- Герой с «полями тетради» ---------- */
+.hero{
+  padding:52px 0 40px;
+}
+.hero-inner{
+  border-left:3px solid var(--margin-red);
+  padding-left:26px;
+}
+.hero p.lead{
+  font-size:1.15rem; max-width:46em; color:var(--ink);
+}
+.byline{ color:var(--ink-soft); font-size:.98rem; }
+
+/* ---------- Кнопки ---------- */
+.btn{
+  display:inline-block;
+  background:var(--pen); color:#fff;
+  border:1px solid var(--pen-dark);
+  border-radius:8px;
+  padding:10px 20px;
+  font:inherit; font-weight:700; font-size:.98rem;
+  text-decoration:none; cursor:pointer;
+}
+.btn:hover{ background:var(--pen-dark); color:#fff; }
+.btn.secondary{
+  background:#fff; color:var(--pen);
+}
+.btn.secondary:hover{ background:#F0F4FC; }
+
+/* ---------- Карточки-входы ---------- */
+.entry-grid{
+  display:grid; gap:16px;
+  grid-template-columns:repeat(auto-fit, minmax(230px, 1fr));
+  margin:26px 0 8px;
+}
+.entry{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:18px 18px 16px;
+  display:flex; flex-direction:column; gap:6px;
+  box-shadow:0 1px 2px rgba(34,48,74,.05);
+}
+.entry h3{ margin:0; }
+.entry h3 a{ color:var(--ink); text-decoration:none; }
+.entry h3 a:hover{ color:var(--pen); }
+.entry p{ margin:0; color:var(--ink-soft); font-size:.95rem; flex:1; }
+.entry .go{ font-weight:700; font-size:.95rem; text-decoration:none; }
+.entry .go::after{ content:" →"; }
+
+.kicker{
+  display:inline-block;
+  font-size:.8rem; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--margin-red); font-weight:700; margin-bottom:4px;
+}
+
+/* ---------- Секции ---------- */
+.section{ padding:34px 0; }
+.section.alt{ background:rgba(255,255,255,.72); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+
+.cols-3{
+  display:grid; gap:20px;
+  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+}
+.cols-3 h3{ margin-bottom:.25em; }
+.cols-3 p{ color:var(--ink-soft); margin:0; }
+
+/* ---------- Паспорт страницы ---------- */
+.pasport{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-left:3px solid var(--margin-red);
+  border-radius:0 10px 10px 0;
+  padding:16px 20px;
+  margin:22px 0;
+  max-width:720px;
+}
+.pasport dl{
+  margin:0;
+  display:grid;
+  grid-template-columns:minmax(130px, max-content) 1fr;
+  gap:6px 16px;
+}
+.pasport dt{
+  font-weight:700; color:var(--ink);
+  font-size:.95rem;
+}
+.pasport dd{ margin:0; color:var(--ink-soft); font-size:.95rem; }
+@media (max-width:520px){
+  .pasport dl{ grid-template-columns:1fr; gap:2px; }
+  .pasport dd{ margin-bottom:8px; }
+}
+
+/* ---------- Об авторе ---------- */
+.author{
+  display:flex; gap:20px; align-items:flex-start;
+  background:var(--card);
+  border:1px solid var(--line); border-radius:10px;
+  padding:22px 24px;
+}
+.author-mark{
+  flex:0 0 56px; width:56px; height:56px;
+  border-radius:50%;
+  background:var(--pen); color:#fff;
+  display:grid; place-items:center;
+  font-family:"PT Serif", Georgia, serif; font-size:1.3rem; font-weight:700;
+}
+
+/* ---------- Футер ---------- */
+.site-footer{
+  margin-top:48px;
+  border-top:1px solid var(--line);
+  background:rgba(255,255,255,.8);
+  color:var(--ink-soft);
+  font-size:.95rem;
+}
+.site-footer .container{
+  padding-top:26px; padding-bottom:30px;
+  display:grid; gap:18px;
+  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+}
+.site-footer h4{
+  margin:0 0 8px; font-size:.95rem; color:var(--ink);
+}
+.site-footer ul{ list-style:none; margin:0; padding:0; }
+.site-footer li{ margin:4px 0; }
+.site-footer a{ color:var(--ink-soft); }
+.site-footer a:hover{ color:var(--pen); }
+.footer-bottom{
+  border-top:1px solid var(--line);
+  padding:12px 20px; text-align:center; font-size:.88rem;
+}
