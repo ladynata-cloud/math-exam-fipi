@@ -157,23 +157,31 @@ const dpr=Math.min(window.devicePixelRatio||1,2);
 cv.width=W*dpr;cv.height=HT*dpr;cv.style.aspectRatio=W+'/'+HT;ctx.scale(dpr,dpr);
 
 /* ───────── ГЕОМЕТРИЯ рис.108 (рассчитана) ─────────
-   b — верхняя прямая, a — нижняя, c — секущая (наклон вниз-влево).
+   b — верхняя прямая, a — нижняя, c — секущая (наклон меняется от раунда к раунду).
    Углы: ∠1 при a (внутр.-справа), ∠2 над b (справа), ∠3 под b (слева), ∠4 под b (справа).
    Связи: ∠2 и ∠3 — вертикальные; ∠3 и ∠4 — смежные; ∠1 и ∠3 — накрест лежащие;
           ∠1 и ∠2 — соответственные; ∠1 и ∠4 — односторонние.            */
 const aY=320, bY=130;
 const aP={x:60,y:aY}, bP={x:60,y:bY};
-const secAng=1.95;                       // луч секущей «вниз»
+let secAng=1.95;                         // луч секущей «вниз»; наклон подстраивается под значения раунда
 const Pb={x:372,y:bY};                   // пересечение секущей с b
-const sdx=Math.cos(secAng), sdy=Math.sin(secAng);
-const Pa={x:Pb.x+sdx*((aY-bY)/sdy), y:aY}; // пересечение с a
-const secUp=secAng-Math.PI, secDown=secAng;
+const Pa={x:0, y:aY};                    // пересечение с a (x задаёт updateSecant)
+let secUp=secAng-Math.PI, secDown=secAng;
 const ANG={
   1:{C:Pa, d1:0,        d2:secUp,  r:32},   // при a, внутр.-справа (как ∠2)
   2:{C:Pb, d1:0,        d2:secUp,  r:32},   // над b, справа
   3:{C:Pb, d1:Math.PI,  d2:secDown,r:32},   // под b, слева
-  4:{C:Pb, d1:secDown,  d2:0,      r:42}    // под b, справа (тупой)
+  4:{C:Pb, d1:secDown,  d2:0,      r:42}    // под b, справа
 };
+/* Текст и чертёж хором: ∠1–∠3 на рисунке равны 180° − наклон секущей, ∠4 — самому наклону.
+   Раунд даёт значение v углу из тройки 1–3 → ставим наклон 180° − v, и все четыре угла честные. */
+function updateSecant(vDeg){
+  secAng=(180-vDeg)*Math.PI/180;
+  secUp=secAng-Math.PI; secDown=secAng;
+  Pa.x=Pb.x+Math.cos(secAng)*((aY-bY)/Math.sin(secAng));
+  ANG[1].d2=secUp; ANG[2].d2=secUp; ANG[3].d2=secDown; ANG[4].d1=secDown;
+}
+updateSecant(180-secAng*180/Math.PI);
 
 /* ───────── ГЕНЕРАТОР РАУНДОВ ─────────
    Каждый раунд: на чертеже даны ДВА угла с числами. Вопрос — следует ли a ∥ b
@@ -231,7 +239,7 @@ function buildRound(t){
     okMsg='Верно: ∠'+t.ids[0]+' и ∠'+t.ids[1]+' — смежные, сумма 180° всегда. Параллельность отсюда не следует.';
     stepNote='∠'+t.ids[0]+', ∠'+t.ids[1]+' — смежные: сумма 180° всегда, о ∥ не говорят.';
   }
-  return {kind:'round', valid:t.valid, rel:t.rel, marks,
+  return {kind:'round', valid:t.valid, rel:t.rel, marks, secV:v0,
     task:given+' <b>Следует ли отсюда, что a ∥ b?</b> Если да — по какому признаку?',
     stepNote, q, okMsg};
 }
@@ -424,6 +432,7 @@ function advanceReady(){
 /* ───────── НАВИГАЦИЯ ───────── */
 function showStep(){
   const s=S();
+  if(s.secV)updateSecant(s.secV);          // чертёж подстраивается под числа раунда
   document.getElementById('pf').style.width=(si/NS*100)+'%';
   document.getElementById('pnum').textContent='Шаг '+(si+1)+' из '+NS;
   document.getElementById('taskText').innerHTML=s.task;

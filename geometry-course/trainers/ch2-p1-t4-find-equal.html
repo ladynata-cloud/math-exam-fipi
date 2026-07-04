@@ -145,6 +145,7 @@ const rf=(a,b)=>a+Math.random()*(b-a);
 const shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b};
 const dir=a=>({x:Math.cos(a),y:Math.sin(a)});
 const add=(p,d,r)=>({x:p.x+d.x*r,y:p.y+d.y*r});
+const angDeg=(V,P1,P2)=>{const a=Math.atan2(P1.y-V.y,P1.x-V.x),b=Math.atan2(P2.y-V.y,P2.x-V.x);let d=Math.abs(a-b);if(d>Math.PI)d=2*Math.PI-d;return d*180/Math.PI};
 
 /* ───────── ГЕНЕРАТОРЫ КОНФИГУРАЦИЙ ─────────
    Каждая задача: {P:{точки}, segs:[рисуемые отрезки], tris:[2 треугольника для заливки],
@@ -157,7 +158,7 @@ function genA(){ // «бабочка»: вертикальные углы
   const A=add(O,dir(u),rA), C=add(O,dir(u+Math.PI),rA);
   const B=add(O,dir(v),rB), D=add(O,dir(v+Math.PI),rB);
   const P={A,B,C,D,O};
-  const useAngle=Math.random()<.5, val=useAngle?ri(25,68):ri(5,12);
+  const useAngle=Math.random()<.5, val=useAngle?Math.round(angDeg(A,O,B)):ri(5,12); // ∠OAB — с чертежа
   return{
     P, segs:[['A','C',0],['B','D',0],['A','B',0],['C','D',0]],
     tris:[['A','O','B'],['C','O','D']],
@@ -199,7 +200,7 @@ function genB(){ // общая сторона + равные углы при A
   const r=rf(112,138), L=rf(285,330);
   const B=add(A,dir(d-f),r), D=add(A,dir(d+f),r), C=add(A,dir(d),L);
   const P={A,B,C,D};
-  const useAngle=Math.random()<.5, val=useAngle?ri(25,68):ri(5,12);
+  const useAngle=Math.random()<.5, val=useAngle?Math.round(angDeg(B,A,C)):ri(5,12); // ∠ABC — с чертежа (он тут тупой)
   return{
     P, segs:[['A','B',0],['A','D',0],['A','C',0],['B','C',0],['D','C',0]],
     tris:[['A','B','C'],['A','D','C']],
@@ -240,7 +241,7 @@ function genC(){ // общая диагональ, центрально-симм
   const B=add(A,dir(aAC-rf(0.5,0.72)),rf(150,185));
   const D={x:2*M.x-B.x,y:2*M.y-B.y};
   const P={A,B,C,D};
-  const useAngle=Math.random()<.5, val=useAngle?ri(25,68):ri(5,12);
+  const useAngle=Math.random()<.5, val=useAngle?Math.round(angDeg(B,A,C)):ri(5,12); // ∠ABC — с чертежа (он тут тупой)
   return{
     P, segs:[['A','B',0],['B','C',0],['C','D',0],['D','A',0],['A','C',0]],
     tris:[['A','B','C'],['C','D','A']],
