@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   publish:
-    if: github.event.head_commit.message == 'chore: run seo publisher'
+    if: github.event.head_commit.message == 'chore: rerun seo publisher'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,8 +20,6 @@ jobs:
       - name: Apply SEO changes
         run: |
           set -euo pipefail
-          BASE="${{ github.event.before }}"
-          git reset --hard "$BASE"
           node <<'NODE'
           const fs = require('fs');
           const zlib = require('zlib');
@@ -53,6 +51,7 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm --ignore-unmatch .github/workflows/publish-seo-once.yml
           git add robots.txt sitemap.xml index.html trainers/index.html oge/index.html geometry-course/index.html pedagogam/index.html articles/index.html articles/pedagogicheskiy-webcoding/index.html pedagogam/kak-skachat-i-adaptirovat-trenazher/index.html trainers/oge-1-5-trainers/index.html
           git commit -m "seo: add robots and sitemap"
-          git push --force-with-lease=refs/heads/main:${{ github.sha }} origin HEAD:main
+          git push origin HEAD:main
