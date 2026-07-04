@@ -1,0 +1,2026 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Тренажёр · ЕГЭ профиль, задание 2 — векторы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light;
+    --paper:#ffffff;
+    --app:#eef2f8;
+    --app-2:#e6ecf5;
+    --grid-minor:#d3e2f4;
+    --grid-axis:#9cbbe0;
+    --ink:#15233f;          /* тёмные чернила: заголовки, текст формул */
+    --text:#28324c;
+    --muted:#6c7993;
+    --muted-2:#8a96ad;
+    --line:#dde4ee;
+    --line-2:#e7ecf4;
+    --accent:#2b5bd7;       /* основная синяя */
+    --accent-ink:#1e47b5;
+    --accent-soft:#e7eefc;
+    --ok:#0f8a59;
+    --ok-soft:#e2f5ec;
+    --ok-line:#bfe6d2;
+    --no:#cf3a3a;
+    --no-soft:#fce9e9;
+    --no-line:#f1c9c9;
+    --vec-a:#2447b8;        /* вектор a — синие чернила */
+    --vec-b:#df7a0a;        /* вектор b — рыжий */
+    --shadow:0 1px 2px rgba(21,35,63,.05), 0 10px 30px rgba(21,35,63,.07);
+    --shadow-sm:0 1px 2px rgba(21,35,63,.06);
+    --radius:14px;
+    --radius-sm:10px;
+    --ui:'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    font-family:var(--ui);
+    color:var(--text);
+    background:
+      radial-gradient(1200px 600px at 80% -10%, #f6f9ff 0%, rgba(246,249,255,0) 60%),
+      var(--app);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+
+  .wrap{max-width:1080px;margin:0 auto;padding:26px 20px 56px}
+
+  /* ---------- Header ---------- */
+  header.top{margin-bottom:18px}
+  .eyebrow{
+    font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 8px;
+  }
+  h1{
+    font-size:clamp(23px,3.4vw,30px);line-height:1.12;margin:0;
+    color:var(--ink);font-weight:800;letter-spacing:-.02em;
+  }
+  .sub{margin:9px 0 0;color:var(--muted);font-size:15px;max-width:62ch}
+
+  /* ---------- Tabs ---------- */
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 18px}
+  .tab{
+    appearance:none;border:1px solid var(--line);background:var(--paper);
+    color:var(--text);font-family:var(--ui);font-size:14px;font-weight:600;
+    padding:9px 14px;border-radius:999px;cursor:pointer;
+    transition:border-color .15s, background .15s, color .15s, transform .05s;
+    box-shadow:var(--shadow-sm);
+  }
+  .tab .tk{color:var(--muted-2);font-weight:500;margin-left:7px;font-size:12.5px}
+  .tab:hover{border-color:#c4d2e8}
+  .tab:active{transform:translateY(1px)}
+  .tab[aria-selected="true"]{
+    background:var(--ink);border-color:var(--ink);color:#fff;
+  }
+  .tab[aria-selected="true"] .tk{color:#aebbd6}
+  .tab:focus-visible{outline:3px solid var(--accent-soft);outline-offset:2px}
+
+  /* ---------- Layout ---------- */
+  .grid{display:grid;grid-template-columns:1.45fr .92fr;gap:18px;align-items:start}
+  @media (max-width:880px){ .grid{grid-template-columns:1fr} }
+
+  .card{
+    background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);
+  }
+  .pad{padding:20px}
+  @media (max-width:520px){ .pad{padding:16px} }
+
+  /* ---------- Problem card ---------- */
+  .qhead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+  .chip{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12.5px;font-weight:600;color:var(--accent-ink);
+    background:var(--accent-soft);border:1px solid #d4e1fb;
+    padding:5px 11px;border-radius:999px;letter-spacing:.01em;
+  }
+  .chip .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  .qno{font-size:13px;color:var(--muted-2);font-variant-numeric:tabular-nums;font-family:var(--mono)}
+
+  .figwrap{
+    display:flex;justify-content:center;
+    background:
+      linear-gradient(0deg, #fbfdff, #fbfdff);
+    border:1px solid var(--line-2);border-radius:var(--radius-sm);
+    padding:12px;margin:4px 0 16px;overflow:auto;
+  }
+  .figwrap svg{display:block;max-width:100%;height:auto}
+
+  .prompt{
+    font-family:var(--mono);color:var(--ink);
+    font-size:clamp(16px,2.2vw,19px);line-height:1.95;font-weight:500;
+    margin:2px 0 6px;
+  }
+  .prompt .lead{font-family:var(--ui);font-weight:500;color:var(--text);font-size:15.5px;line-height:1.55}
+  .prompt .ask{font-family:var(--ui);font-weight:600;color:var(--ink);font-size:15.5px;display:block;margin-top:10px}
+
+  /* math bits */
+  .vec{position:relative;padding:0 .04em;white-space:nowrap}
+  .vec::after{
+    content:"→";position:absolute;left:50%;top:-.92em;
+    transform:translateX(-50%) scaleX(1.25);
+    font-size:.5em;font-weight:700;letter-spacing:-.05em;
+  }
+  .rad{border-top:1.6px solid currentColor;padding:0 .18em 0 .12em;margin-left:1px}
+  .rt{margin-right:-1px}
+  sup{font-size:.72em}
+  .op{padding:0 .12em;color:var(--muted)}
+  .eq{padding:0 .14em;color:var(--muted)}
+  .res{color:var(--accent-ink);font-weight:700}
+
+  /* ---------- Answer row ---------- */
+  .answer{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:8px}
+  .field{position:relative;flex:1 1 180px;min-width:150px}
+  .field label{
+    position:absolute;left:14px;top:-8px;background:var(--paper);padding:0 6px;
+    font-size:11.5px;font-weight:600;color:var(--muted);letter-spacing:.02em;
+  }
+  input.ans{
+    width:100%;font-family:var(--mono);font-size:19px;font-weight:600;color:var(--ink);
+    padding:13px 14px;border:1.6px solid var(--line);border-radius:var(--radius-sm);
+    background:#fff;transition:border-color .15s, box-shadow .15s;
+  }
+  input.ans::placeholder{color:#b8c2d4;font-weight:500}
+  input.ans:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+  input.ans.ok{border-color:var(--ok);box-shadow:0 0 0 4px var(--ok-soft)}
+  input.ans.no{border-color:var(--no);box-shadow:0 0 0 4px var(--no-soft)}
+
+  .btn{
+    appearance:none;font-family:var(--ui);font-weight:600;font-size:15px;cursor:pointer;
+    padding:13px 18px;border-radius:var(--radius-sm);border:1.6px solid transparent;
+    transition:background .15s, border-color .15s, color .15s, transform .05s, opacity .15s;
+    white-space:nowrap;
+  }
+  .btn:active{transform:translateY(1px)}
+  .btn:focus-visible{outline:3px solid var(--accent-soft);outline-offset:2px}
+  .btn.primary{background:var(--accent);color:#fff}
+  .btn.primary:hover{background:var(--accent-ink)}
+  .btn.ghost{background:#fff;border-color:var(--line);color:var(--text)}
+  .btn.ghost:hover{border-color:#c4d2e8}
+  .btn[disabled]{opacity:.45;cursor:default;transform:none}
+
+  /* ---------- Feedback ---------- */
+  .feedback{margin-top:14px;min-height:0}
+  .verdict{
+    display:flex;align-items:flex-start;gap:11px;padding:13px 15px;border-radius:var(--radius-sm);
+    font-size:15px;border:1px solid transparent;
+  }
+  .verdict .ic{flex:0 0 auto;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;
+    color:#fff;font-weight:800;font-size:13px;margin-top:1px}
+  .verdict.good{background:var(--ok-soft);border-color:var(--ok-line);color:#0c5e3e}
+  .verdict.good .ic{background:var(--ok)}
+  .verdict.bad{background:var(--no-soft);border-color:var(--no-line);color:#92282a}
+  .verdict.bad .ic{background:var(--no)}
+  .verdict.neutral{background:#f4f6fa;border-color:var(--line);color:var(--muted)}
+  .verdict.neutral .ic{background:var(--muted-2)}
+  .verdict b{font-weight:700}
+  .verdict .corr{font-family:var(--mono);font-weight:700}
+
+  /* solution */
+  .soltoggle{margin-top:12px}
+  .linkbtn{
+    background:none;border:none;color:var(--accent);font-family:var(--ui);font-weight:600;
+    font-size:14px;cursor:pointer;padding:4px 0;display:inline-flex;align-items:center;gap:6px;
+  }
+  .linkbtn:hover{color:var(--accent-ink);text-decoration:underline}
+  .linkbtn:focus-visible{outline:3px solid var(--accent-soft);outline-offset:3px;border-radius:6px}
+  .solution{
+    margin-top:10px;border:1px dashed #c9d6ea;border-radius:var(--radius-sm);
+    background:#fbfdff;padding:15px 16px;display:none;
+  }
+  .solution.show{display:block;animation:fade .25s ease}
+  .solution h4{margin:0 0 9px;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .step{font-family:var(--mono);font-size:15px;color:var(--ink);line-height:2.05;margin:3px 0}
+  .step .note{font-family:var(--ui);color:var(--muted);font-size:13.5px;font-weight:500}
+
+  @keyframes fade{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+  @keyframes pop{0%{transform:scale(.98)}60%{transform:scale(1.012)}100%{transform:scale(1)}}
+  @keyframes shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-4px)}40%,60%{transform:translateX(4px)}}
+  .anim-pop{animation:pop .28s ease}
+  .anim-shake{animation:shake .4s ease}
+
+  /* ---------- Sidebar ---------- */
+  .side{display:flex;flex-direction:column;gap:16px}
+  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-2);
+    border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--line-2)}
+  .stat{background:var(--paper);padding:13px 12px;text-align:center}
+  .stat .v{font-family:var(--mono);font-size:23px;font-weight:700;color:var(--ink);line-height:1;font-variant-numeric:tabular-nums}
+  .stat .l{font-size:11.5px;color:var(--muted);margin-top:6px;font-weight:500}
+  .stat .v.acc{color:var(--accent-ink)}
+  .stat .v.streak{color:var(--vec-b)}
+  .reportBox{
+    margin-top:12px;background:var(--paper);border:1px solid var(--line);
+    border-radius:var(--radius);padding:12px;display:grid;gap:8px
+  }
+  .reportBox .btn{width:100%}
+  .reportNote{font-size:12px;color:var(--muted);line-height:1.35;text-align:center}
+
+  .sec-title{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0}
+  details.box{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden}
+  details.box>summary{
+    list-style:none;cursor:pointer;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  }
+  details.box>summary::-webkit-details-marker{display:none}
+  details.box>summary .sec-title{color:var(--ink)}
+  details.box>summary .caret{color:var(--muted-2);transition:transform .2s;font-size:13px}
+  details.box[open]>summary .caret{transform:rotate(180deg)}
+  details.box>summary:focus-visible{outline:3px solid var(--accent-soft);outline-offset:-3px}
+  .box .body{padding:2px 18px 18px}
+
+  .cheat{font-family:var(--mono);font-size:14px;color:var(--ink);line-height:1.45}
+  .cheat .row{padding:11px 0;border-top:1px solid var(--line-2)}
+  .cheat .row:first-child{border-top:none}
+  .cheat .cap{font-family:var(--ui);font-size:12px;color:var(--muted);font-weight:600;margin-bottom:5px;letter-spacing:.01em}
+  .cheat .fm{display:block}
+
+  .note{font-size:12.5px;color:var(--muted-2);line-height:1.55;margin:12px 0 0}
+  .note a{color:var(--accent)}
+
+  footer.foot{margin-top:26px;color:var(--muted-2);font-size:12.5px;text-align:center;line-height:1.6}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important}
+  }
+
+  /* ---------- Черновик (холст) ---------- */
+  .scratch{margin-top:18px}
+  .chip.warn{color:#b5630a;background:#fdf1e3;border-color:#f4d6ad}
+  .chip.warn .dot{background:var(--vec-b)}
+  .pad-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+  .tool{
+    appearance:none;border:1.4px solid var(--line);background:#fff;border-radius:9px;
+    width:40px;height:40px;display:grid;place-items:center;cursor:pointer;color:var(--text);
+    transition:border-color .15s,background .15s,color .15s;padding:0;
+  }
+  .tool:hover{border-color:#c4d2e8}
+  .tool[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
+  .tool:focus-visible{outline:3px solid var(--accent-soft);outline-offset:2px}
+  .tool svg{width:20px;height:20px;display:block}
+  .sep{width:1px;height:26px;background:var(--line);margin:0 2px}
+  .swatches{display:flex;gap:7px}
+  .swatch{width:27px;height:27px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1.4px var(--line);cursor:pointer;padding:0;transition:box-shadow .15s}
+  .swatch:hover{box-shadow:0 0 0 1.4px #b9c7dd}
+  .swatch[aria-pressed="true"]{box-shadow:0 0 0 2px #fff, 0 0 0 4px var(--accent)}
+  .swatch:focus-visible{outline:3px solid var(--accent-soft);outline-offset:3px}
+  .sizes{display:flex;gap:6px;align-items:center}
+  .size{
+    appearance:none;border:1.4px solid var(--line);background:#fff;border-radius:8px;height:36px;min-width:36px;
+    display:grid;place-items:center;cursor:pointer;padding:0;transition:border-color .15s,background .15s;
+  }
+  .size[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+  .size:hover{border-color:#c4d2e8}
+  .size:focus-visible{outline:3px solid var(--accent-soft);outline-offset:2px}
+  .size .dot{border-radius:50%;background:var(--ink);display:block}
+  .pad-hint{margin-left:auto;font-size:12.5px;color:var(--muted-2);white-space:nowrap}
+  .canvas-wrap{
+    position:relative;border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;
+    background-color:#fff;
+    background-image:
+      repeating-linear-gradient(0deg, var(--grid-minor) 0 1px, transparent 1px 27px),
+      repeating-linear-gradient(90deg, var(--grid-minor) 0 1px, transparent 1px 27px);
+    background-position:-1px -1px;
+  }
+  .canvas-wrap{position:relative}
+  .canvas-wrap canvas{display:block;width:100%;aspect-ratio:16/9;touch-action:none;cursor:crosshair}
+  @media (max-width:520px){ .pad-hint{display:none} }
+
+  /* живые курсоры */
+  .cursors{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .cursor{position:absolute;transform:translate(-3px,-3px);transition:opacity .25s;will-change:left,top}
+  .cursor .nib{width:12px;height:12px;border-radius:50% 50% 50% 2px;border:2px solid #fff;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+  .cursor .tag{position:absolute;left:14px;top:-2px;font:600 11.5px/1 var(--ui);color:#fff;padding:3px 7px;border-radius:7px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.18)}
+
+  /* панель совместного доступа */
+  .collab{border:1px solid var(--line);border-radius:var(--radius-sm);background:#fbfdff;padding:12px;margin-bottom:14px}
+  .collab-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .collab-row + .collab-row{margin-top:9px}
+  .seg{display:inline-flex;border:1.4px solid var(--line);border-radius:9px;overflow:hidden;background:#fff}
+  .segb{appearance:none;border:0;background:#fff;font:600 13.5px var(--ui);color:var(--text);padding:8px 14px;cursor:pointer}
+  .segb + .segb{border-left:1.4px solid var(--line)}
+  .segb[aria-pressed="true"]{background:var(--accent);color:#fff}
+  .segb:focus-visible{outline:3px solid var(--accent-soft);outline-offset:-3px}
+  .cinput{font:500 14px var(--ui);color:var(--ink);background:#fff;border:1.4px solid var(--line);border-radius:9px;padding:9px 11px;min-width:120px;flex:0 1 150px}
+  .cinput.room{flex:0 1 150px}
+  .cinput.srv{flex:1 1 320px;font-family:var(--mono);font-size:13px}
+  .cinput:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .btn.sm{padding:9px 14px;font-size:14px}
+  .srv-row{align-items:center}
+  .srv-label{font:600 12.5px var(--ui);color:var(--muted);white-space:nowrap}
+  .collab-foot{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px;min-height:20px}
+  .peers{display:flex;flex-wrap:wrap;gap:6px}
+  .peer{display:inline-flex;align-items:center;gap:6px;font:600 12px var(--ui);color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:999px;padding:3px 10px 3px 7px}
+  .peer .pd{width:9px;height:9px;border-radius:50%}
+  .peer.me{border-color:#c9d6ea;background:var(--accent-soft);color:var(--accent-ink)}
+  .collab-hint{font-size:12.5px;color:var(--muted-2);margin-left:auto}
+  .collab-hint.warn{color:#b5630a}
+  .collab-hint.ok{color:var(--ok)}
+  .sd{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
+  .sd.off{background:var(--muted-2)} .sd.on{background:var(--ok)} .sd.wait{background:var(--vec-b)}
+  #netStatus{display:inline-flex;align-items:center}
+
+  /* ---- пошаговый режим ---- */
+  .modeSwitch{display:flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;margin-left:auto}
+  .modeSwitch button{border:0;background:#fff;padding:7px 12px;font:600 12.5px/1 var(--ui);color:var(--muted);cursor:pointer;transition:background .15s}
+  .modeSwitch button.on{background:var(--accent);color:#fff}
+  .modeSwitch button:not(.on):hover{background:#f2f6fd}
+  #steps{display:grid;gap:9px;margin:14px 0 2px}
+  .sphead{display:flex;align-items:center;gap:10px;font:600 12px/1 var(--ui);color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+  .sprog{display:flex;gap:5px;margin-left:auto}
+  .sprog i{width:8px;height:8px;border-radius:50%;background:#dbe4f0}
+  .sprog i.on{background:var(--accent)} .sprog i.done{background:#35a15a}
+  .stepDone{display:flex;gap:9px;align-items:baseline;font-family:var(--mono);font-size:13.5px;color:var(--muted);background:#f3f9f2;border:1px solid #d7e8d3;border-radius:10px;padding:8px 12px;flex-wrap:wrap}
+  .stepDone .okic{color:#1d7f3c;font-weight:800;font-family:var(--ui)}
+  .stepDone b{color:var(--ink)}
+  .stepDone.helped{background:#fdf7ea;border-color:#ecdfbf}
+  .stepDone.helped .okic{color:#b07a12}
+  .stepCard{border:1.5px solid var(--accent);border-radius:12px;padding:12px 14px;background:#fbfdff;box-shadow:0 2px 10px rgba(36,71,184,.06)}
+  .stepCard .sq{font:600 14.5px/1.5 var(--ui);color:var(--ink);margin-bottom:10px}
+  .stepRow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .stepRow .ans{width:150px;padding:9px 12px;font-size:15px}
+  .stepRow .btn{padding:9px 14px;font-size:13.5px}
+  .choices{display:flex;gap:8px;flex-wrap:wrap}
+  .choices button{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:9px 14px;font:600 15px/1 var(--mono);color:var(--ink);cursor:pointer;transition:all .13s}
+  .choices button:hover{border-color:var(--accent);background:#f6f9ff}
+  .choices button.wrongOpt{opacity:.4;text-decoration:line-through;pointer-events:none}
+  .choices button.rightOpt{border-color:#35a15a;background:#effaf1;color:#1d7f3c}
+  .hintBox{margin-top:10px;font:500 13.5px/1.5 var(--ui);color:#7a5b16;background:#fff8e6;border:1px solid #f0e2b6;border-radius:10px;padding:9px 12px;display:none}
+  .hintBox.show{display:block}
+  .hintBtn{border:0;background:none;color:#b07a12;font:600 13px/1 var(--ui);cursor:pointer;padding:9px 6px}
+  .hintBtn:hover{text-decoration:underline}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <p class="eyebrow">ЕГЭ · математика, профиль · задание 2</p>
+    <h1>Тренажёр по векторам</h1>
+    <p class="sub">Каждая задача создаётся заново — решайте сколько угодно, проверяйте ответ и разбирайте решение по шагам. Ответы всегда целые числа или конечные десятичные дроби, как в первой части экзамена.</p>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="Тип задания">
+    <button class="tab" role="tab" data-mode="coords"  aria-selected="true">Длина и координаты</button>
+    <button class="tab" role="tab" data-mode="dot"     aria-selected="false">Скалярное произведение</button>
+    <button class="tab" role="tab" data-mode="shapes"  aria-selected="false">Фигуры <span class="tk">прямоугольник · ромб · треугольник</span></button>
+    <button class="tab" role="tab" data-mode="angle"   aria-selected="false">Угол между векторами</button>
+    <button class="tab" role="tab" data-mode="mix"     aria-selected="false">Микс <span class="tk">как на экзамене</span></button>
+  </div>
+
+  <div class="grid">
+    <!-- ЛЕВАЯ КОЛОНКА: задача -->
+    <section class="card pad" aria-label="Задача">
+      <div class="qhead">
+        <span class="chip"><span class="dot"></span><span id="subLabel">—</span></span>
+        <div class="modeSwitch" role="group" aria-label="Режим решения">
+          <button id="modeStep" class="on" type="button">По шагам</button>
+          <button id="modeFast" type="button">Сразу ответ</button>
+        </div>
+        <span class="qno" id="qno">№&nbsp;1</span>
+      </div>
+
+      <div id="figure"></div>
+      <div class="prompt" id="prompt"></div>
+
+      <div id="steps"></div>
+
+      <div class="answer" id="fastRow">
+        <div class="field">
+          <label for="ans">Ваш ответ</label>
+          <input class="ans" id="ans" type="text" inputmode="text" autocomplete="off"
+                 spellcheck="false" placeholder="напр. 15 или −0,96" aria-label="Ваш ответ">
+        </div>
+        <button class="btn primary" id="checkBtn">Проверить</button>
+        <button class="btn ghost"   id="nextBtn">Следующая →</button>
+      </div>
+
+      <div class="feedback" id="feedback" aria-live="polite"></div>
+
+      <div class="soltoggle">
+        <button class="linkbtn" id="solBtn" aria-expanded="false">
+          <span id="solBtnText">Показать решение</span> <span aria-hidden="true">▾</span>
+        </button>
+        <div class="solution" id="solution"></div>
+      </div>
+    </section>
+
+    <!-- ПРАВАЯ КОЛОНКА -->
+    <aside class="side">
+      <div class="stat-grid" aria-label="Статистика сессии">
+        <div class="stat"><div class="v" id="stSolved">0</div><div class="l">Решено</div></div>
+        <div class="stat"><div class="v" id="stRight">0</div><div class="l">Верно</div></div>
+        <div class="stat"><div class="v acc" id="stAcc">—</div><div class="l">Точность</div></div>
+        <div class="stat"><div class="v streak" id="stStreak">0</div><div class="l">Серия</div></div>
+        <div class="stat"><div class="v" id="stBest">0</div><div class="l">Рекорд</div></div>
+        <div class="stat"><div class="v" id="stTime">—</div><div class="l">Ср. время</div></div>
+      </div>
+      <div class="reportBox">
+        <button class="btn primary" id="sendProgressBtn" type="button">Отправить прогресс учителю</button>
+        <div class="reportNote">Адрес учителя уже указан. Статистика сохраняется в этом браузере.</div>
+      </div>
+
+      <details class="box" open>
+        <summary><span class="sec-title">Шпаргалка</span><span class="caret" aria-hidden="true">▾</span></summary>
+        <div class="body">
+          <div class="cheat">
+            <div class="row">
+              <div class="cap">Длина вектора по координатам</div>
+              <span class="fm">|<span class="vec">a</span>| = <span class="rt">√</span><span class="rad">x<sup>2</sup> + y<sup>2</sup></span>, &nbsp; <span class="vec">a</span> = {x; y}</span>
+            </div>
+            <div class="row">
+              <div class="cap">Вектор по двум точкам</div>
+              <span class="fm"><span class="vec">AB</span> = {x<sub>B</sub>−x<sub>A</sub>; y<sub>B</sub>−y<sub>A</sub>}</span>
+            </div>
+            <div class="row">
+              <div class="cap">Скалярное произведение по координатам</div>
+              <span class="fm"><span class="vec">a</span>·<span class="vec">b</span> = x₁x₂ + y₁y₂</span>
+            </div>
+            <div class="row">
+              <div class="cap">Через длины и угол</div>
+              <span class="fm"><span class="vec">a</span>·<span class="vec">b</span> = |<span class="vec">a</span>|·|<span class="vec">b</span>|·cos φ</span>
+            </div>
+            <div class="row">
+              <div class="cap">Правило параллелограмма</div>
+              <span class="fm"><span class="vec">AB</span> + <span class="vec">AD</span> = <span class="vec">AC</span>;&nbsp; <span class="vec">AB</span> − <span class="vec">AD</span> = <span class="vec">DB</span></span>
+            </div>
+            <div class="row">
+              <div class="cap">Ромб</div>
+              <span class="fm">диагонали ⊥ и делятся пополам;&nbsp; сторона = <span class="rt">√</span><span class="rad">(d₁/2)<sup>2</sup> + (d₂/2)<sup>2</sup></span></span>
+            </div>
+            <div class="row">
+              <div class="cap">Косинус угла</div>
+              <span class="fm">cos φ = <span class="vec">a</span>·<span class="vec">b</span> / (|<span class="vec">a</span>|·|<span class="vec">b</span>|)</span>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      
+    </aside>
+  </div>
+
+  <!-- ОБЩИЙ ХОЛСТ -->
+  <section class="card pad scratch" aria-label="Общий холст">
+    <div class="qhead">
+      <span class="chip warn"><span class="dot"></span>Общий холст</span>
+      <span class="qno" id="netStatus"><span class="sd off"></span>не подключено</span>
+    </div>
+
+    <!-- Панель совместного доступа -->
+    <div class="collab">
+      <div class="collab-row">
+        <div class="seg" role="group" aria-label="Роль">
+          <button class="segb" id="roleTeacher" aria-pressed="true">Учитель</button>
+          <button class="segb" id="roleStudent" aria-pressed="false">Ученик</button>
+        </div>
+        <input class="cinput" id="nameInput" placeholder="Ваше имя" maxlength="24" aria-label="Ваше имя">
+        <input class="cinput room" id="roomInput" placeholder="Код комнаты" maxlength="32" aria-label="Код комнаты">
+        <button class="btn primary sm" id="connectBtn">Подключиться</button>
+        <button class="btn ghost sm" id="copyLinkBtn" title="Скопировать ссылку‑приглашение">Ссылка‑приглашение</button>
+      </div>
+      <div class="collab-row srv-row">
+        <label class="srv-label" for="serverInput">Сервер синхронизации</label>
+        <input class="cinput srv" id="serverInput" placeholder="wss://адрес-вашего-сервера  ·  пусто = демо в этом браузере (две вкладки)" aria-label="Адрес сервера синхронизации">
+      </div>
+      <div class="collab-foot">
+        <span class="peers" id="peers"></span>
+        <span class="collab-hint" id="collabHint"></span>
+      </div>
+    </div>
+
+    <div class="pad-tools" role="toolbar" aria-label="Инструменты холста">
+      <button class="tool" id="toolPen" aria-label="Перо" aria-pressed="true" title="Перо">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9a2 2 0 0 0-3-3L5 17v3z"/><path d="M14.5 6.5l3 3"/></svg>
+      </button>
+      <button class="tool" id="toolEraser" aria-label="Ластик" aria-pressed="false" title="Ластик">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 14.5 14.5 5a2 2 0 0 1 2.8 0L21 8.7a2 2 0 0 1 0 2.8L13.5 19H8z"/><path d="M5 19h15"/></svg>
+      </button>
+      <span class="sep"></span>
+      <div class="swatches" role="group" aria-label="Цвет">
+        <button class="swatch" data-color="#15233f" style="background:#15233f" aria-label="Тёмные чернила" aria-pressed="true" title="Тёмные чернила"></button>
+        <button class="swatch" data-color="#2447b8" style="background:#2447b8" aria-label="Синий" aria-pressed="false" title="Синий"></button>
+        <button class="swatch" data-color="#cf3a3a" style="background:#cf3a3a" aria-label="Красный" aria-pressed="false" title="Красный"></button>
+      </div>
+      <span class="sep"></span>
+      <div class="sizes" role="group" aria-label="Толщина">
+        <button class="size" data-size="1.6" aria-label="Тонко" aria-pressed="false" title="Тонко"><span class="dot" style="width:4px;height:4px"></span></button>
+        <button class="size" data-size="2.6" aria-label="Средне" aria-pressed="true" title="Средне"><span class="dot" style="width:7px;height:7px"></span></button>
+        <button class="size" data-size="4"   aria-label="Толсто" aria-pressed="false" title="Толсто"><span class="dot" style="width:11px;height:11px"></span></button>
+      </div>
+      <span class="sep"></span>
+      <button class="tool" id="undoBtn" aria-label="Отменить" title="Отменить последний штрих">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg>
+      </button>
+      <button class="tool" id="clearBtn" aria-label="Очистить" title="Очистить холст">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><path d="M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13"/><path d="M10 11v6M14 11v6"/></svg>
+      </button>
+      <span class="pad-hint">У пера учитывается сила нажатия</span>
+    </div>
+    <div class="canvas-wrap" id="canvasWrap">
+      <canvas id="padCanvas" role="img" aria-label="Общий холст — пишите пером, мышью или пальцем"></canvas>
+      <div class="cursors" id="cursors" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    Enter — проверить, ещё раз Enter — следующая. Статистика считается за текущую сессию.
+  </footer>
+</div>
+
+<script>
+"use strict";
+
+/* ============================================================
+   Утилиты
+   ============================================================ */
+const rint=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const sign=()=>Math.random()<.5?-1:1;
+const nz=(a,b)=>{let v=0;while(v===0)v=rint(a,b);return v;};
+const hyp=(x,y)=>Math.round(Math.sqrt(x*x+y*y));
+
+// пифагоровы наборы: [катет, катет, гипотенуза]
+const TRIPLES=[[3,4,5],[4,3,5],[6,8,10],[8,6,10],[5,12,13],[12,5,13],[8,15,17],[15,8,17],
+               [9,12,15],[12,9,15],[7,24,25],[24,7,25],[12,16,20],[16,12,20],[15,20,25],[20,15,25]];
+const TR_SMALL=[[3,4,5],[4,3,5],[6,8,10],[8,6,10]];          // компактные — для рисунков
+const TR_DEC=[[3,4,5],[4,3,5],[6,8,10],[8,6,10]];            // гипотенузы 5 и 10 → конечные косинусы
+
+/* ---- рендер формул ---- */
+const V=n=>`<span class="vec">${n}</span>`;
+const S=v=>`<span class="op">${v}</span>`;
+const RES=v=>`<span class="res">${v}</span>`;
+const sqrt=i=>`<span class="rt">√</span><span class="rad">${i}</span>`;
+const sup2="<sup>2</sup>";
+const br=(x,y)=>`{${x}; ${y}}`;
+const pt=(x,y)=>`(${x}; ${y})`;
+const sg=n=>n<0?`(${n})`:`${n}`;
+function fmt(n){
+  if(Object.is(n,-0)) n=0;
+  if(Number.isInteger(n)) return String(n);
+  return (Math.round(n*10000)/10000).toString().replace(".",",");
+}
+const N_=(q,a,hint)=>({t:"n",q,a,hint});
+const C_=(q,opts,hint,fig)=>({t:"c",q,opts,hint,fig}); // opts: [{h,ok}]
+const O_=(h,ok)=>({h:`${V(h)}`,ok:!!ok});
+const lead=t=>`<span class="lead">${t}</span>`;
+const ask=t=>`<span class="ask">${t}</span>`;
+
+/* ============================================================
+   Рисунки: клетчатая бумага и фигуры (без сетки)
+   spec: { grid:true|false, vectors:[{x1,y1,x2,y2,c}], polys:[[[x,y],...]],
+           segs:[[x1,y1,x2,y2]], labels:[{x,y,t,c,vec,dx,dy}],
+           showOrigin, ra:{x,y,tx1,ty1,tx2,ty2} }
+   ============================================================ */
+const PAL=["var(--vec-a)","var(--vec-b)","#0f8a59"];
+
+function autoBounds(spec){
+  const xs=[],ys=[];
+  (spec.vectors||[]).forEach(v=>{xs.push(v.x1,v.x2);ys.push(v.y1,v.y2);});
+  (spec.polys||[]).forEach(pl=>pl.forEach(p=>{xs.push(p[0]);ys.push(p[1]);}));
+  (spec.segs||[]).forEach(s=>{xs.push(s[0],s[2]);ys.push(s[1],s[3]);});
+  (spec.labels||[]).forEach(l=>{xs.push(l.x);ys.push(l.y);});
+  if(spec.showOrigin){xs.push(0);ys.push(0);}
+  return [Math.min(...xs),Math.max(...xs),Math.min(...ys),Math.max(...ys)];
+}
+function markerDefs(){
+  return `<defs>${PAL.map((c,i)=>
+    `<marker id="ah${i}" markerWidth="11" markerHeight="11" refX="8.5" refY="4" orient="auto">
+      <path d="M0,0 L9,4 L0,8 L2.6,4 Z" fill="${c}"/></marker>`).join("")}</defs>`;
+}
+function drawCommon(s, X, Y, spec){
+  (spec.polys||[]).forEach(pl=>{
+    s.o+=`<path d="M ${pl.map(p=>X(p[0])+" "+Y(p[1])).join(" L ")} Z" fill="none" stroke="var(--ink)" stroke-width="1.7" stroke-linejoin="round"/>`;
+  });
+  (spec.segs||[]).forEach(g=>{
+    s.o+=`<line x1="${X(g[0])}" y1="${Y(g[1])}" x2="${X(g[2])}" y2="${Y(g[3])}" stroke="#8fa1bd" stroke-width="1.3"/>`;
+  });
+  (spec.vectors||[]).forEach(v=>{
+    const c=PAL[v.c||0];
+    const dash=v.dash?' stroke-dasharray="7 5"':'';
+    s.o+=`<line x1="${X(v.x1)}" y1="${Y(v.y1)}" x2="${X(v.x2)}" y2="${Y(v.y2)}" stroke="${c}" stroke-width="2.6" stroke-linecap="round"${dash} marker-end="url(#ah${v.c||0})"/>`;
+    s.o+=`<circle cx="${X(v.x1)}" cy="${Y(v.y1)}" r="2.4" fill="${c}"/>`;
+  });
+  if(spec.ra){
+    const r=spec.ra, k=11;
+    const u1=[X(r.tx1)-X(r.x), Y(r.ty1)-Y(r.y)], u2=[X(r.tx2)-X(r.x), Y(r.ty2)-Y(r.y)];
+    const n1=Math.hypot(u1[0],u1[1])||1, n2=Math.hypot(u2[0],u2[1])||1;
+    const p1=[X(r.x)+u1[0]/n1*k, Y(r.y)+u1[1]/n1*k], p2=[X(r.x)+u2[0]/n2*k, Y(r.y)+u2[1]/n2*k];
+    const p3=[p1[0]+u2[0]/n2*k, p1[1]+u2[1]/n2*k];
+    s.o+=`<path d="M ${p1[0]} ${p1[1]} L ${p3[0]} ${p3[1]} L ${p2[0]} ${p2[1]}" fill="none" stroke="var(--ink)" stroke-width="1.3"/>`;
+  }
+  (spec.labels||[]).forEach(l=>{
+    const col=(l.c==null)?"var(--ink)":PAL[l.c];
+    const arrow=l.vec?`<tspan baseline-shift="super" font-size="9">→</tspan>`:"";
+    s.o+=`<text x="${X(l.x)+(l.dx==null?6:l.dx)}" y="${Y(l.y)+(l.dy==null?-6:l.dy)}" font-family="var(--mono)" font-weight="700" font-size="15" fill="${col}">${l.t}${arrow}</text>`;
+  });
+}
+function renderGrid(spec){
+  let [minX,maxX,minY,maxY]=autoBounds(spec);
+  const pad=1;
+  minX=Math.floor(minX)-pad; maxX=Math.ceil(maxX)+pad;
+  minY=Math.floor(minY)-pad; maxY=Math.ceil(maxY)+pad;
+  while(maxX-minX<6){maxX++; if(maxX-minX<6)minX--;}
+  while(maxY-minY<6){maxY++; if(maxY-minY<6)minY--;}
+  const cols=maxX-minX, rows=maxY-minY;
+  let cell=34; const maxPx=430;
+  if(cols*cell>maxPx) cell=Math.floor(maxPx/cols);
+  if(rows*cell>maxPx) cell=Math.min(cell,Math.floor(maxPx/rows));
+  cell=Math.max(20,cell);
+  const m=16, W=cols*cell+m*2, H=rows*cell+m*2;
+  const X=x=>m+(x-minX)*cell, Y=y=>m+(maxY-y)*cell;
+  const s={o:`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Рисунок к задаче">`};
+  s.o+=markerDefs();
+  s.o+=`<rect x="0" y="0" width="${W}" height="${H}" fill="#ffffff"/>`;
+  for(let x=minX;x<=maxX;x++) s.o+=`<line x1="${X(x)}" y1="${Y(maxY)}" x2="${X(x)}" y2="${Y(minY)}" stroke="var(--grid-minor)" stroke-width="1"/>`;
+  for(let y=minY;y<=maxY;y++) s.o+=`<line x1="${X(minX)}" y1="${Y(y)}" x2="${X(maxX)}" y2="${Y(y)}" stroke="var(--grid-minor)" stroke-width="1"/>`;
+  if(minX<=0&&maxX>=0) s.o+=`<line x1="${X(0)}" y1="${Y(maxY)}" x2="${X(0)}" y2="${Y(minY)}" stroke="var(--grid-axis)" stroke-width="1.6"/>`;
+  if(minY<=0&&maxY>=0) s.o+=`<line x1="${X(minX)}" y1="${Y(0)}" x2="${X(maxX)}" y2="${Y(0)}" stroke="var(--grid-axis)" stroke-width="1.6"/>`;
+  if(spec.showOrigin&&minX<=0&&maxX>=0&&minY<=0&&maxY>=0){
+    s.o+=`<circle cx="${X(0)}" cy="${Y(0)}" r="3" fill="var(--ink)"/>`;
+    s.o+=`<text x="${X(0)-8}" y="${Y(0)+16}" font-family="var(--mono)" font-size="13" fill="var(--muted)">O</text>`;
+  }
+  drawCommon(s,X,Y,spec);
+  return s.o+"</svg>";
+}
+function renderShape(spec){
+  const [minX,maxX,minY,maxY]=autoBounds(spec);
+  const w=Math.max(1e-6,maxX-minX), h=Math.max(1e-6,maxY-minY);
+  const sc=Math.min(320/w, 220/h);
+  const m=30, W=w*sc+2*m, H=h*sc+2*m;
+  const X=x=>m+(x-minX)*sc, Y=y=>m+(maxY-y)*sc;
+  const s={o:`<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Рисунок к задаче">`};
+  s.o+=markerDefs();
+  s.o+=`<rect x="0" y="0" width="${W}" height="${H}" fill="#ffffff"/>`;
+  drawCommon(s,X,Y,spec);
+  return s.o+"</svg>";
+}
+function renderFigure(spec){ return spec.grid===false ? renderShape(spec) : renderGrid(spec); }
+
+/* подписи концов вектора/точек: сдвиг «наружу» от направления */
+function tipOff(dx,dy){ return {dx: dx>=0?6:-16, dy: dy>0?-8:16}; }
+function tailOff(dx,dy){ return {dx: dx>=0?-16:8, dy: dy>0?16:-8}; }
+
+/* ============================================================
+   ГЕНЕРАТОРЫ · Длина и координаты
+   ============================================================ */
+function genLenCoords(){ // длина |a| по координатам
+  let x,y;
+  if(Math.random()<0.15){ const n=rint(2,9); if(Math.random()<.5){x=0;y=n*sign();} else {x=n*sign();y=0;} }
+  else { const t=pick(TRIPLES); x=t[0]*sign(); y=t[1]*sign(); }
+  const ans=hyp(x,y);
+  return {sub:"длина · по координатам", figure:null,
+    prompt: lead(`Вектор ${V("a")} = ${br(x,y)}.`)+ask(`Найдите длину вектора ${V("a")}.`),
+    answer:ans,
+    solution:[`|${V("a")}| ${S("=")} ${sqrt(`x${sup2} + y${sup2}`)} ${S("=")} ${sqrt(`${sg(x)}${sup2} + ${sg(y)}${sup2}`)} ${S("=")} ${sqrt(String(x*x+y*y))} ${S("=")} ${RES(ans)}`],
+    steps:[
+      N_(`Сумма квадратов координат: ${sg(x)}${sup2} + ${sg(y)}${sup2} = ?`, x*x+y*y, "Возведите каждую координату в квадрат (минус исчезнет) и сложите."),
+      N_(`Длина вектора: |${V("a")}| = ${sqrt(String(x*x+y*y))} = ?`, ans, `Какое число в квадрате даёт ${x*x+y*y}?`)],
+    _chk:{t:"lenCoords",x,y}};
+}
+function genPicVector(){ // по рисунку: длина / квадрат длины / сумма координат AB
+  const kind=pick(["sum","sq","sq","len"]);
+  let dx,dy;
+  if(kind==="len"){const t=pick(TR_SMALL);dx=t[0]*sign();dy=t[1]*sign();}
+  else{do{dx=rint(-5,5);dy=rint(-5,5);}while((dx===0&&dy===0)||(Math.abs(dx)<2&&Math.abs(dy)<2));}
+  const ax=rint(-2,2),ay=rint(-2,2),bx=ax+dx,by=ay+dy;
+  const map={sum:["сумму координат вектора",dx+dy,"сумма · по рисунку"],
+             sq:["квадрат длины вектора",dx*dx+dy*dy,"квадрат длины · по рисунку"],
+             len:["длину вектора",hyp(dx,dy),"длина · по рисунку"]};
+  const [what,ans,sub]=map[kind];
+  const sol=[`<span class="note">Считаем по клеткам:</span> ${V("AB")} ${S("=")} ${br(dx,dy)}`];
+  if(kind==="sum") sol.push(`${sg(dx)} ${S("+")} ${sg(dy)} ${S("=")} ${RES(ans)}`);
+  if(kind==="sq")  sol.push(`|${V("AB")}|${sup2} ${S("=")} ${sg(dx)}${sup2} + ${sg(dy)}${sup2} ${S("=")} ${dx*dx} ${S("+")} ${dy*dy} ${S("=")} ${RES(ans)}`);
+  if(kind==="len") sol.push(`|${V("AB")}| ${S("=")} ${sqrt(`${sg(dx)}${sup2} + ${sg(dy)}${sup2}`)} ${S("=")} ${sqrt(String(dx*dx+dy*dy))} ${S("=")} ${RES(ans)}`);
+  const steps=[
+    N_("Сколько клеток вектор проходит по горизонтали? (вправо — плюс, влево — минус)", dx, "Считайте клетки от точки A до точки B по оси x."),
+    N_("Сколько клеток по вертикали? (вверх — плюс, вниз — минус)", dy, "Считайте клетки от A до B по оси y.")];
+  if(kind==="sum") steps.push(N_(`Сумма координат: ${sg(dx)} + ${sg(dy)} = ?`, ans));
+  if(kind==="sq")  steps.push(N_(`Квадрат длины: ${sg(dx)}${sup2} + ${sg(dy)}${sup2} = ?`, ans, "Возведите координаты в квадрат и сложите."));
+  if(kind==="len"){steps.push(N_(`Квадрат длины: ${sg(dx)}${sup2} + ${sg(dy)}${sup2} = ?`, dx*dx+dy*dy));
+                   steps.push(N_(`Длина: ${sqrt(String(dx*dx+dy*dy))} = ?`, ans));}
+  const oA=tailOff(dx,dy), oB=tipOff(dx,dy);
+  return {sub, answer:ans, solution:sol, steps,
+    prompt: lead(`На клетчатой бумаге со стороной клетки 1 изображён вектор ${V("AB")}.`)+ask(`Найдите ${what} ${V("AB")}.`),
+    figure:{grid:true, vectors:[{x1:ax,y1:ay,x2:bx,y2:by,c:0}],
+      labels:[{x:ax,y:ay,t:"A",dx:oA.dx,dy:oA.dy},{x:bx,y:by,t:"B",dx:oB.dx,dy:oB.dy}]},
+    _chk:{t:"picVector",kind,dx,dy}};
+}
+function genPointFromVector(){ // начало/конец вектора и его координаты → точка
+  const startGiven=Math.random()<.5;
+  const u=nz(-8,8), v=nz(-8,8);
+  const x0=rint(-5,8), y0=rint(-5,8);
+  let A,B;
+  if(startGiven){ A=[x0,y0]; B=[x0+u,y0+v]; } else { B=[x0,y0]; A=[x0-u,y0-v]; }
+  const what=pick(["x","y","sum"]);
+  const P=startGiven?B:A, Pn=startGiven?"B":"A";
+  const ans= what==="x"?P[0] : what==="y"?P[1] : P[0]+P[1];
+  const askTxt= what==="x"?`Найдите абсциссу точки ${Pn}.` : what==="y"?`Найдите ординату точки ${Pn}.` : `Найдите сумму координат точки ${Pn}.`;
+  const leadTxt= startGiven
+    ? `Вектор ${V("AB")} с началом в точке A${pt(A[0],A[1])} имеет координаты ${br(u,v)}.`
+    : `Вектор ${V("AB")} с концом в точке B${pt(B[0],B[1])} имеет координаты ${br(u,v)}.`;
+  const sol= startGiven
+    ? [`B ${S("=")} A + ${V("AB")} ${S("=")} ${pt(A[0]+" + "+sg(u), A[1]+" + "+sg(v))} ${S("=")} ${pt(B[0],B[1])}`]
+    : [`A ${S("=")} B − ${V("AB")} ${S("=")} ${pt(B[0]+" − "+sg(u), B[1]+" − "+sg(v))} ${S("=")} ${pt(A[0],A[1])}`];
+  sol.push(`Ответ: ${RES(fmt(ans))}`);
+  const stX= startGiven
+    ? N_(`Bₓ = Aₓ + ABₓ = ${A[0]} + ${sg(u)} = ?`, B[0], "Абсцисса конца = абсцисса начала + x-координата вектора.")
+    : N_(`Aₓ = Bₓ − ABₓ = ${B[0]} − ${sg(u)} = ?`, A[0], "Абсцисса начала = абсцисса конца − x-координата вектора.");
+  const stY= startGiven
+    ? N_(`Bᵧ = Aᵧ + ABᵧ = ${A[1]} + ${sg(v)} = ?`, B[1], "Ордината конца = ордината начала + y-координата вектора.")
+    : N_(`Aᵧ = Bᵧ − ABᵧ = ${B[1]} − ${sg(v)} = ?`, A[1], "Ордината начала = ордината конца − y-координата вектора.");
+  const steps= what==="x"?[stX] : what==="y"?[stY] : [stX,stY,N_(`Сумма координат точки ${Pn}: ${P[0]} + ${sg(P[1])} = ?`, ans)];
+  return {sub:"точка по вектору", figure:null, prompt:lead(leadTxt)+ask(askTxt), answer:ans, solution:sol, steps,
+    _chk:{t:"pointVec",startGiven,what,A,B,u,v}};
+}
+function genComboLength(){ // |k·a|, |a + k·b|, |a − b + c|
+  const v=pick([1,2,3]);
+  if(v===1){
+    const t=pick(TRIPLES), x=t[0]*sign(), y=t[1]*sign(), k=rint(2,6), ans=k*t[2];
+    return {sub:"длина · k·a", figure:null, answer:ans,
+      prompt: lead(`Вектор ${V("a")} = ${br(x,y)}.`)+ask(`Найдите длину вектора ${k}${V("a")}.`),
+      solution:[`${k}${V("a")} ${S("=")} ${br(k*x,k*y)}`,
+        `|${k}${V("a")}| ${S("=")} ${sqrt(`${sg(k*x)}${sup2} + ${sg(k*y)}${sup2}`)} ${S("=")} ${sqrt(String(k*k*(x*x+y*y)))} ${S("=")} ${RES(ans)}`],
+      steps:[
+        N_(`x-координата ${k}${V("a")}: ${k}·${sg(x)} = ?`, k*x),
+        N_(`y-координата: ${k}·${sg(y)} = ?`, k*y),
+        N_(`Сумма квадратов: ${sg(k*x)}${sup2} + ${sg(k*y)}${sup2} = ?`, k*k*(x*x+y*y)),
+        N_(`Длина = ${sqrt(String(k*k*(x*x+y*y)))} = ?`, ans)],
+      _chk:{t:"comboLen",vec:[k*x,k*y]}};
+  }
+  if(v===2){
+    let t,k,bx,by,axx,ayy,guard=0;
+    do{ t=pick(TRIPLES); k=rint(3,12);
+        do{bx=rint(-2,2);by=rint(-2,2);}while(bx===0&&by===0);
+        axx=t[0]*sign()-k*bx; ayy=t[1]*sign()-k*by; guard++;
+    }while((Math.abs(axx)>30||Math.abs(ayy)>30)&&guard<100);
+    const rx=axx+k*bx, ry=ayy+k*by, ans=hyp(rx,ry);
+    return {sub:"длина · a + k·b", figure:null, answer:ans,
+      prompt: lead(`Даны векторы ${V("a")} = ${br(axx,ayy)} и ${V("b")} = ${br(bx,by)}.`)+ask(`Найдите длину вектора ${V("a")} + ${k}${V("b")}.`),
+      solution:[`${V("a")} + ${k}${V("b")} ${S("=")} ${br(axx+" + "+sg(k*bx), ayy+" + "+sg(k*by))} ${S("=")} ${br(rx,ry)}`,
+        `длина ${S("=")} ${sqrt(`${sg(rx)}${sup2} + ${sg(ry)}${sup2}`)} ${S("=")} ${sqrt(String(rx*rx+ry*ry))} ${S("=")} ${RES(ans)}`],
+      steps:[
+        N_(`x-координата ${V("a")} + ${k}${V("b")}: ${axx} + ${k}·${sg(bx)} = ?`, rx),
+        N_(`y-координата: ${ayy} + ${k}·${sg(by)} = ?`, ry),
+        N_(`Сумма квадратов: ${sg(rx)}${sup2} + ${sg(ry)}${sup2} = ?`, rx*rx+ry*ry),
+        N_(`Длина = ${sqrt(String(rx*rx+ry*ry))} = ?`, ans)],
+      _chk:{t:"comboLen",vec:[rx,ry]}};
+  }
+  const t=pick(TRIPLES), tx=t[0]*sign(), ty=t[1]*sign();
+  const bx=rint(-6,6),by=rint(-6,6),cx=rint(-6,6),cy=rint(-6,6);
+  const axx=tx+bx-cx, ayy=ty+by-cy, ans=t[2];
+  return {sub:"длина · a − b + c", figure:null, answer:ans,
+    prompt: lead(`Даны векторы ${V("a")} = ${br(axx,ayy)}, ${V("b")} = ${br(bx,by)} и ${V("c")} = ${br(cx,cy)}.`)+ask(`Найдите длину вектора ${V("a")} − ${V("b")} + ${V("c")}.`),
+    solution:[`${V("a")} − ${V("b")} + ${V("c")} ${S("=")} ${br(tx,ty)}`,
+      `длина ${S("=")} ${sqrt(`${sg(tx)}${sup2} + ${sg(ty)}${sup2}`)} ${S("=")} ${sqrt(String(tx*tx+ty*ty))} ${S("=")} ${RES(ans)}`],
+    steps:[
+      N_(`x-координата ${V("a")} − ${V("b")} + ${V("c")}: ${axx} − ${sg(bx)} + ${sg(cx)} = ?`, tx),
+      N_(`y-координата: ${ayy} − ${sg(by)} + ${sg(cy)} = ?`, ty),
+      N_(`Сумма квадратов: ${sg(tx)}${sup2} + ${sg(ty)}${sup2} = ?`, tx*tx+ty*ty),
+      N_(`Длина = ${sqrt(String(tx*tx+ty*ty))} = ?`, ans)],
+    _chk:{t:"comboLen",vec:[tx,ty]}};
+}
+function genSumCombo(){ // сумма координат a±b±c
+  const mk=()=>{let x,y;do{x=rint(-7,7);y=rint(-7,7);}while(x===0&&y===0);return [x,y];};
+  const a=mk(),b=mk(),c=mk();
+  const v=pick(["a+b−c","a−b+c","a+b+c","a+b"]);
+  let rx,ry,expr;
+  if(v==="a+b"){rx=a[0]+b[0];ry=a[1]+b[1];expr=`${V("a")} + ${V("b")}`;}
+  if(v==="a+b−c"){rx=a[0]+b[0]-c[0];ry=a[1]+b[1]-c[1];expr=`${V("a")} + ${V("b")} − ${V("c")}`;}
+  if(v==="a−b+c"){rx=a[0]-b[0]+c[0];ry=a[1]-b[1]+c[1];expr=`${V("a")} − ${V("b")} + ${V("c")}`;}
+  if(v==="a+b+c"){rx=a[0]+b[0]+c[0];ry=a[1]+b[1]+c[1];expr=`${V("a")} + ${V("b")} + ${V("c")}`;}
+  const three=v!=="a+b";
+  const ans=rx+ry;
+  return {sub:"сумма координат", figure:null, answer:ans,
+    prompt: lead(`Даны векторы ${V("a")} = ${br(a[0],a[1])}, ${V("b")} = ${br(b[0],b[1])}`+(three?` и ${V("c")} = ${br(c[0],c[1])}`:"")+`.`)+
+            ask(`Найдите сумму координат вектора ${expr}.`),
+    solution:[`${expr} ${S("=")} ${br(rx,ry)}`,`${sg(rx)} ${S("+")} ${sg(ry)} ${S("=")} ${RES(ans)}`],
+    steps:[
+      N_(`x-координата вектора ${expr} = ?`, rx, "Выполните действия только с x-координатами."),
+      N_(`y-координата = ?`, ry, "Теперь те же действия с y-координатами."),
+      N_(`Сумма координат: ${sg(rx)} + ${sg(ry)} = ?`, ans)],
+    _chk:{t:"sumCombo",res:[rx,ry]}};
+}
+function genRectDiagCoords(){ // диагональ прямоугольника по координатам вершин
+  const t=pick(TRIPLES.filter(q=>q[0]<=12&&q[1]<=12));
+  const x=rint(-4,4), y=rint(-4,4), p=t[0], q=t[1];
+  const verts=[[x,y],[x+p,y],[x,y+q],[x+p,y+q]].sort(()=>Math.random()-.5);
+  return {sub:"диагональ прямоугольника", figure:null, answer:t[2],
+    prompt: lead(`Вершины прямоугольника имеют координаты ${verts.map(v=>pt(v[0],v[1])).join(", ")}.`)+
+            ask(`Найдите длину диагонали этого прямоугольника.`),
+    solution:[`Стороны: ${p} и ${q} <span class="note">(разности координат по осям)</span>`,
+      `диагональ ${S("=")} ${sqrt(`${p}${sup2} + ${q}${sup2}`)} ${S("=")} ${sqrt(String(p*p+q*q))} ${S("=")} ${RES(t[2])}`],
+    steps:[
+      N_("Длина горизонтальной стороны (разность абсцисс) = ?", p, "Найдите две разные абсциссы среди вершин и вычтите."),
+      N_("Длина вертикальной стороны (разность ординат) = ?", q),
+      N_(`Квадрат диагонали: ${p}${sup2} + ${q}${sup2} = ?`, p*p+q*q, "Диагональ — гипотенуза прямоугольного треугольника со сторонами-катетами."),
+      N_(`Диагональ = ${sqrt(String(p*p+q*q))} = ?`, t[2])],
+    _chk:{t:"rectDiag",p,q}};
+}
+function genDecompose(){ // c = k·a + l·b — найти k или l
+  const base=[[1,2],[2,1],[1,3],[3,1],[2,3],[3,2],[1,1],[2,-1],[-1,2],[1,-2],[-2,1]];
+  let a,b,k,l,c,guard=0;
+  do{
+    a=pick(base); b=pick(base);
+    k=nz(-3,3); l=nz(-3,3);
+    c=[k*a[0]+l*b[0], k*a[1]+l*b[1]];
+    guard++;
+  }while((a[0]*b[1]-a[1]*b[0]===0 || Math.abs(c[0])>7 || Math.abs(c[1])>7 || (c[0]===0&&c[1]===0)) && guard<300);
+  if(a[0]*b[1]-a[1]*b[0]===0){a=[1,2];b=[2,1];k=2;l=-1;c=[0,3];}
+  const askK=Math.random()<.5, ans=askK?k:l;
+  const D=a[0]*b[1]-a[1]*b[0];
+  const oa=tipOff(a[0],a[1]), ob=tipOff(b[0],b[1]), oc=tipOff(c[0],c[1]);
+  return {sub:"разложение вектора", answer:ans,
+    prompt: lead(`На координатной плоскости изображены векторы ${V("a")}, ${V("b")} и ${V("c")}. Вектор ${V("c")} разложен по неколлинеарным векторам: ${V("c")} = k·${V("a")} + l·${V("b")}.`)+
+            ask(`Найдите ${askK?"k":"l"}.`),
+    solution:[`<span class="note">С рисунка:</span> ${V("a")} = ${br(a[0],a[1])}, ${V("b")} = ${br(b[0],b[1])}, ${V("c")} = ${br(c[0],c[1])}`,
+      `Система: k·${sg(a[0])} + l·${sg(b[0])} = ${c[0]};&nbsp; k·${sg(a[1])} + l·${sg(b[1])} = ${c[1]}`,
+      `k ${S("=")} ${k}, &nbsp; l ${S("=")} ${l} &nbsp;→&nbsp; ответ ${RES(ans)}`],
+    steps:[
+      N_(`x-координата вектора ${V("c")} (по рисунку) = ?`, c[0]),
+      N_(`y-координата ${V("c")} = ?`, c[1]),
+      N_(`${askK?"k":"l"} = ?`, ans, `Система: k·${sg(a[0])} + l·${sg(b[0])} = ${c[0]};&nbsp; k·${sg(a[1])} + l·${sg(b[1])} = ${c[1]}. Подберите целые k и l или решите систему.`)],
+    figure:{grid:true, showOrigin:true, vectors:[
+        {x1:0,y1:0,x2:a[0],y2:a[1],c:0},{x1:0,y1:0,x2:b[0],y2:b[1],c:1},{x1:0,y1:0,x2:c[0],y2:c[1],c:2}],
+      labels:[{x:a[0],y:a[1],t:"a",c:0,vec:true,dx:oa.dx,dy:oa.dy},
+              {x:b[0],y:b[1],t:"b",c:1,vec:true,dx:ob.dx,dy:ob.dy},
+              {x:c[0],y:c[1],t:"c",c:2,vec:true,dx:oc.dx,dy:oc.dy}]},
+    _chk:{t:"decomp",a,b,c,k,l,askK,det:D}};
+}
+
+/* ============================================================
+   ГЕНЕРАТОРЫ · Скалярное произведение
+   ============================================================ */
+function genDotCoords(){
+  let ax,ay,bx,by;
+  do{ax=rint(-8,8);ay=rint(-8,8);}while(ax===0&&ay===0);
+  do{bx=rint(-8,8);by=rint(-8,8);}while(bx===0&&by===0);
+  const ans=ax*bx+ay*by;
+  return {sub:"скалярное · по координатам", figure:null, answer:ans,
+    prompt: lead(`Даны векторы ${V("a")} = ${br(ax,ay)} и ${V("b")} = ${br(bx,by)}.`)+ask(`Найдите скалярное произведение ${V("a")}·${V("b")}.`),
+    solution:[`${V("a")}·${V("b")} ${S("=")} x₁x₂ + y₁y₂ ${S("=")} ${sg(ax)}·${sg(bx)} ${S("+")} ${sg(ay)}·${sg(by)} ${S("=")} ${RES(ans)}`],
+    steps:[
+      N_(`Произведение x-координат: ${sg(ax)}·${sg(bx)} = ?`, ax*bx, "Следите за знаками: минус на минус даёт плюс."),
+      N_(`Произведение y-координат: ${sg(ay)}·${sg(by)} = ?`, ay*by),
+      N_(`Сумма: ${sg(ax*bx)} + ${sg(ay*by)} = ?`, ans)],
+    _chk:{t:"dot",a:[ax,ay],b:[bx,by]}};
+}
+function genDotPicture(){ // векторы в разных местах листа
+  let d1x,d1y,d2x,d2y;
+  do{d1x=nz(-4,4);d1y=nz(-4,4);}while(false);
+  do{d2x=nz(-4,4);d2y=nz(-4,4);}while(d1x===d2x&&d1y===d2y);
+  const p1=[rint(-4,-2),rint(-2,1)], p2=[rint(1,3),rint(-2,1)];
+  const ans=d1x*d2x+d1y*d2y;
+  const oa=tipOff(d1x,d1y), ob=tipOff(d2x,d2y);
+  return {sub:"скалярное · по рисунку", answer:ans,
+    prompt: lead(`На клетчатой бумаге со стороной клетки 1 изображены векторы ${V("a")} и ${V("b")}.`)+
+            ask(`Найдите скалярное произведение ${V("a")}·${V("b")}.`),
+    solution:[`<span class="note">С рисунка:</span> ${V("a")} = ${br(d1x,d1y)}, ${V("b")} = ${br(d2x,d2y)}`,
+      `${V("a")}·${V("b")} ${S("=")} ${sg(d1x)}·${sg(d2x)} ${S("+")} ${sg(d1y)}·${sg(d2y)} ${S("=")} ${RES(ans)}`],
+    steps:[
+      N_(`x-координата ${V("a")} (по клеткам) = ?`, d1x, "От начала стрелки к её концу: вправо — плюс, влево — минус."),
+      N_(`y-координата ${V("a")} = ?`, d1y),
+      N_(`x-координата ${V("b")} = ?`, d2x),
+      N_(`y-координата ${V("b")} = ?`, d2y),
+      N_(`${V("a")}·${V("b")} = ${sg(d1x)}·${sg(d2x)} + ${sg(d1y)}·${sg(d2y)} = ?`, ans)],
+    figure:{grid:true, vectors:[
+        {x1:p1[0],y1:p1[1],x2:p1[0]+d1x,y2:p1[1]+d1y,c:0},
+        {x1:p2[0],y1:p2[1],x2:p2[0]+d2x,y2:p2[1]+d2y,c:1}],
+      labels:[{x:p1[0]+d1x,y:p1[1]+d1y,t:"a",c:0,vec:true,dx:oa.dx,dy:oa.dy},
+              {x:p2[0]+d2x,y:p2[1]+d2y,t:"b",c:1,vec:true,dx:ob.dx,dy:ob.dy}]},
+    _chk:{t:"dot",a:[d1x,d1y],b:[d2x,d2y]}};
+}
+function genDotCombo(){ // (a±b)·c и (a+b)·(m·a−b)
+  const mk=()=>[nz(-6,6),nz(-6,6)];
+  const a=mk(), b=mk(), c=mk();
+  const v=pick(["pc","mc","big"]);
+  if(v==="big"){
+    const m=rint(2,7);
+    const u=[a[0]+b[0],a[1]+b[1]], w=[m*a[0]-b[0],m*a[1]-b[1]];
+    const ans=u[0]*w[0]+u[1]*w[1];
+    return {sub:"скалярное · комбинация", figure:null, answer:ans,
+      prompt: lead(`Даны векторы ${V("a")} = ${br(a[0],a[1])} и ${V("b")} = ${br(b[0],b[1])}.`)+
+              ask(`Найдите скалярное произведение векторов ${V("a")} + ${V("b")} и ${m}${V("a")} − ${V("b")}.`),
+      solution:[`${V("a")} + ${V("b")} ${S("=")} ${br(u[0],u[1])}; &nbsp; ${m}${V("a")} − ${V("b")} ${S("=")} ${br(w[0],w[1])}`,
+        `${sg(u[0])}·${sg(w[0])} ${S("+")} ${sg(u[1])}·${sg(w[1])} ${S("=")} ${RES(ans)}`],
+      steps:[
+        N_(`x-координата ${V("a")} + ${V("b")} = ?`, u[0]),
+        N_(`y-координата ${V("a")} + ${V("b")} = ?`, u[1]),
+        N_(`x-координата ${m}${V("a")} − ${V("b")}: ${m}·${sg(a[0])} − ${sg(b[0])} = ?`, w[0]),
+        N_(`y-координата: ${m}·${sg(a[1])} − ${sg(b[1])} = ?`, w[1]),
+        N_(`Скалярное произведение: ${sg(u[0])}·${sg(w[0])} + ${sg(u[1])}·${sg(w[1])} = ?`, ans)],
+      _chk:{t:"dot",a:u,b:w}};
+  }
+  const plus=v==="pc";
+  const u=plus?[a[0]+b[0],a[1]+b[1]]:[a[0]-b[0],a[1]-b[1]];
+  const ans=u[0]*c[0]+u[1]*c[1];
+  const eTxt=plus?`(${V("a")} + ${V("b")})·${V("c")}`:`(${V("a")} − ${V("b")})·${V("c")}`;
+  return {sub:"скалярное · комбинация", figure:null, answer:ans,
+    prompt: lead(`Даны векторы ${V("a")} = ${br(a[0],a[1])}, ${V("b")} = ${br(b[0],b[1])} и ${V("c")} = ${br(c[0],c[1])}.`)+
+            ask(`Найдите значение выражения ${eTxt}.`),
+    solution:[`${plus?V("a")+" + "+V("b"):V("a")+" − "+V("b")} ${S("=")} ${br(u[0],u[1])}`,
+      `${sg(u[0])}·${sg(c[0])} ${S("+")} ${sg(u[1])}·${sg(c[1])} ${S("=")} ${RES(ans)}`],
+    steps:[
+      N_(`x-координата ${plus?V("a")+" + "+V("b"):V("a")+" − "+V("b")}: ${a[0]} ${plus?"+":"−"} ${sg(b[0])} = ?`, u[0]),
+      N_(`y-координата: ${a[1]} ${plus?"+":"−"} ${sg(b[1])} = ?`, u[1]),
+      N_(`Скалярное произведение с ${V("c")}: ${sg(u[0])}·${sg(c[0])} + ${sg(u[1])}·${sg(c[1])} = ?`, ans)],
+    _chk:{t:"dot",a:u,b:c}};
+}
+const ANG={0:1,30:Math.sqrt(3)/2,45:Math.SQRT2/2,60:.5,90:0,120:-.5,135:-Math.SQRT2/2,150:-Math.sqrt(3)/2,180:-1};
+const DOT_FAMS=[
+  {phi:60,  rad:"",   cosT:"1/2",    f:(k,m)=>k*m/2,   even:true},
+  {phi:120, rad:"",   cosT:"−1/2",   f:(k,m)=>-k*m/2,  even:true},
+  {phi:90,  rad:"",   cosT:"0",      f:()=>0},
+  {phi:30,  rad:"√3", cosT:"√3/2",   f:(k,m)=>3*k*m/2, even:true},
+  {phi:150, rad:"√3", cosT:"−√3/2",  f:(k,m)=>-3*k*m/2,even:true},
+  {phi:45,  rad:"√2", cosT:"√2/2",   f:(k,m)=>k*m},
+  {phi:135, rad:"√2", cosT:"−√2/2",  f:(k,m)=>-k*m}
+];
+function genDotLenAngle(){
+  const fam=pick(DOT_FAMS);
+  const k=fam.even?2*rint(1,3):rint(2,6), m=rint(2,9);
+  const laTxt=fam.rad?`${k}${fam.rad}`:String(k);
+  const laVal=k*(fam.rad==="√3"?Math.sqrt(3):fam.rad==="√2"?Math.SQRT2:1);
+  const ans=fam.f(k,m);
+  return {sub:"скалярное · длины и угол", figure:null, answer:ans,
+    prompt: lead(`Длины векторов ${V("a")} и ${V("b")} равны ${laTxt} и ${m}, а угол между ними равен ${fam.phi}°.`)+
+            ask(`Найдите скалярное произведение ${V("a")}·${V("b")}.`),
+    solution:[`${V("a")}·${V("b")} ${S("=")} |${V("a")}|·|${V("b")}|·cos φ ${S("=")} ${laTxt} · ${m} · ${fam.cosT} ${S("=")} ${RES(fmt(ans))}`],
+    steps: fam.rad
+      ? [N_(`|${V("a")}|${sup2} = (${laTxt})${sup2} = ?`, (fam.rad==="√3"?3:2)*k*k, `(${laTxt})² = ${k}²·${fam.rad==="√3"?"3":"2"}`),
+         N_(`${V("a")}·${V("b")} = ${laTxt} · ${m} · ${fam.cosT} = ?`, ans, `${fam.rad}·${fam.rad} = ${fam.rad==="√3"?"3":"2"} — корни перемножаются и исчезают.`)]
+      : [N_(`cos ${fam.phi}° = ? (десятичной дробью)`, ANG[fam.phi], "Табличное значение: 0,5, −0,5 или 0."),
+         N_(`|${V("a")}|·|${V("b")}| = ${k}·${m} = ?`, k*m),
+         N_(`${V("a")}·${V("b")} = ${k*m} · ${fmt(ANG[fam.phi])} = ?`, ans)],
+    _chk:{t:"lenAngle",laVal,m,phi:fam.phi}};
+}
+function genFindLen(){ // известны |a|, угол и a·b — найти |b|
+  const fam=pick(DOT_FAMS.filter(f=>f.phi!==90));
+  const k=fam.even?2*rint(1,3):rint(2,6), m=rint(2,9);
+  const laTxt=fam.rad?`${k}${fam.rad}`:String(k);
+  const laVal=k*(fam.rad==="√3"?Math.sqrt(3):fam.rad==="√2"?Math.SQRT2:1);
+  const d=fam.f(k,m);
+  const denMap={60:`${k}/2`,120:`−${k}/2`,45:String(k),135:`−${k}`,30:`3·${k}/2`,150:`−3·${k}/2`};
+  return {sub:"найти длину по a·b", figure:null, answer:m,
+    prompt: lead(`Длина вектора ${V("a")} равна ${laTxt}, угол между векторами ${V("a")} и ${V("b")} равен ${fam.phi}°, а скалярное произведение ${V("a")}·${V("b")} равно ${fmt(d)}.`)+
+            ask(`Найдите длину вектора ${V("b")}.`),
+    solution:[`${V("a")}·${V("b")} ${S("=")} |${V("a")}|·|${V("b")}|·cos φ`,
+      `|${V("b")}| ${S("=")} ${fmt(d)} / (${laTxt}·${fam.cosT}) ${S("=")} ${fmt(d)} / (${denMap[fam.phi]}) ${S("=")} ${RES(m)}`],
+    steps:[
+      N_(`|${V("a")}|·cos ${fam.phi}° = ${laTxt} · ${fam.cosT} = ?`, Math.round(laVal*ANG[fam.phi]*2)/2, `${fam.rad?fam.rad+"·"+fam.rad+" перемножаются: получится целое или половинка.":"Умножьте "+k+" на "+fam.cosT+"."}`),
+      N_(`|${V("b")}| = (${V("a")}·${V("b")}) / (это) = ${fmt(d)} / ${fmt(Math.round(laVal*ANG[fam.phi]*2)/2)} = ?`, m)],
+    _chk:{t:"findLen",laVal,phi:fam.phi,d,m}};
+}
+function genRightTriangle(){ // AB·AC = AC² в прямоугольном треугольнике (∠C = 90°)
+  const useSqrt=Math.random()<.5;
+  let acTxt,ans;
+  if(useSqrt){const n=pick([2,3,5,6,7,10,11,13,15]); acTxt=`√${n}`; ans=n;}
+  else{const mm=rint(2,9); acTxt=String(mm); ans=mm*mm;}
+  return {sub:"прямоугольный треугольник", answer:ans,
+    prompt: lead(`В прямоугольном треугольнике ABC угол C прямой, катет AC равен ${acTxt}.`)+
+            ask(`Найдите скалярное произведение ${V("AB")}·${V("AC")}.`),
+    solution:[`${V("AB")}·${V("AC")} ${S("=")} (${V("AC")} + ${V("CB")})·${V("AC")} ${S("=")} |${V("AC")}|${sup2} + ${V("CB")}·${V("AC")}`,
+      `${V("CB")} ⊥ ${V("AC")} ⇒ ${V("CB")}·${V("AC")} = 0`,
+      `${V("AB")}·${V("AC")} ${S("=")} |${V("AC")}|${sup2} ${S("=")} (${acTxt})${sup2} ${S("=")} ${RES(ans)}`],
+    steps:[
+      N_(`${V("CB")}·${V("AC")} = ? <span class="note">(какой угол между ними?)</span>`, 0, "CB ⊥ AC (угол C прямой), а cos 90° = 0."),
+      N_(`${V("AB")}·${V("AC")} = |${V("AC")}|${sup2} = (${acTxt})${sup2} = ?`, ans, "AB = AC + CB, поэтому AB·AC = |AC|² + CB·AC = |AC|².")],
+    figure:{grid:false, polys:[[[0,0],[6,0],[6,3.6]]],
+      ra:{x:6,y:0,tx1:0,ty1:0,tx2:6,ty2:3.6},
+      labels:[{x:0,y:0,t:"A",dx:-15,dy:15},{x:6,y:0,t:"C",dx:6,dy:15},{x:6,y:3.6,t:"B",dx:6,dy:-6}]},
+    _chk:{t:"rightTri",ac2:ans}};
+}
+function genGridTriangle(){ // AB·AC по клетчатому треугольнику
+  const bx=rint(3,5), by=rint(-1,1), cx=rint(0,2), cy=rint(2,4);
+  const sx=rint(-1,1), sy=rint(-1,1);
+  const A=[sx,sy],B=[bx+sx,by+sy],C=[cx+sx,cy+sy];
+  const ans=bx*cx+by*cy;
+  const g=[(A[0]+B[0]+C[0])/3,(A[1]+B[1]+C[1])/3];
+  const off=P=>({dx:P[0]>=g[0]?6:-16, dy:P[1]>=g[1]?-8:16});
+  const oA=off(A),oB=off(B),oC=off(C);
+  return {sub:"треугольник на клетках", answer:ans,
+    prompt: lead(`На клетчатой бумаге со стороной клетки 1 изображён треугольник ABC.`)+
+            ask(`Найдите скалярное произведение ${V("AB")}·${V("AC")}.`),
+    solution:[`<span class="note">С рисунка:</span> ${V("AB")} = ${br(bx,by)}, ${V("AC")} = ${br(cx,cy)}`,
+      `${V("AB")}·${V("AC")} ${S("=")} ${sg(bx)}·${sg(cx)} ${S("+")} ${sg(by)}·${sg(cy)} ${S("=")} ${RES(ans)}`],
+    steps:[
+      N_(`x-координата ${V("AB")} (из A в B, по клеткам) = ?`, bx, "ABₓ = Bₓ − Aₓ: сколько клеток вправо (плюс) или влево (минус)."),
+      N_(`y-координата ${V("AB")} = ?`, by),
+      N_(`x-координата ${V("AC")} = ?`, cx),
+      N_(`y-координата ${V("AC")} = ?`, cy),
+      N_(`${V("AB")}·${V("AC")} = ${sg(bx)}·${sg(cx)} + ${sg(by)}·${sg(cy)} = ?`, ans)],
+    figure:{grid:true, polys:[[A,B,C]],
+      labels:[{x:A[0],y:A[1],t:"A",dx:oA.dx,dy:oA.dy},{x:B[0],y:B[1],t:"B",dx:oB.dx,dy:oB.dy},{x:C[0],y:C[1],t:"C",dx:oC.dx,dy:oC.dy}]},
+    _chk:{t:"gridTri",AB:[bx,by],AC:[cx,cy]}};
+}
+
+/* ============================================================
+   ГЕНЕРАТОРЫ · Фигуры: прямоугольник, ромб, правильный треугольник
+   ============================================================ */
+function rectFigure(p,q,v){
+  const labels=[{x:0,y:0,t:"A",dx:-15,dy:15},{x:0,y:q,t:"B",dx:-15,dy:-7},
+                {x:p,y:q,t:"C",dx:5,dy:-7},{x:p,y:0,t:"D",dx:5,dy:15}];
+  const f={grid:false, polys:[[[0,0],[0,q],[p,q],[p,0]]], labels, vectors:[], segs:[]};
+  if(v==="diag") f.vectors.push({x1:0,y1:0,x2:p,y2:q,c:0});
+  if(v==="sum"||v==="diff"||v==="dot"){ f.vectors.push({x1:0,y1:0,x2:0,y2:q,c:0},{x1:0,y1:0,x2:p,y2:0,c:1}); }
+  if(v==="osum"||v==="odiff"){
+    f.segs.push([0,0,p,q],[0,q,p,0]);
+    f.labels.push({x:p/2,y:q/2,t:"O",dx:6,dy:-6});
+    f.vectors.push({x1:0,y1:0,x2:p/2,y2:q/2,c:0},{x1:p,y1:0,x2:p/2,y2:q/2,c:1});
+  }
+  return f;
+}
+function genRect(){
+  const t=pick(TRIPLES.filter(x=>x[2]<=20));
+  const p=t[0], q=t[1], h=t[2];
+  const v=pick(["diag","sum","diff","dot","osum","odiff"]);
+  const withO=v==="osum"||v==="odiff";
+  const leadTxt=`В прямоугольнике ABCD стороны AB = ${q} и AD = ${p}`+(withO?", диагонали пересекаются в точке O.":".");
+  const conf={
+    diag: {ask:`Найдите длину вектора ${V("AC")}.`, ans:h,
+      sol:[`|${V("AC")}| ${S("=")} ${sqrt(`AD${sup2} + CD${sup2}`)} ${S("=")} ${sqrt(`${p}${sup2} + ${q}${sup2}`)} ${S("=")} ${sqrt(String(p*p+q*q))} ${S("=")} ${RES(h)}`]},
+    sum: {ask:`Найдите длину суммы векторов ${V("AB")} и ${V("AD")}.`, ans:h,
+      sol:[`${V("AB")} + ${V("AD")} ${S("=")} ${V("AC")} <span class="note">(правило параллелограмма)</span>`,
+           `|${V("AC")}| ${S("=")} ${sqrt(`${p}${sup2} + ${q}${sup2}`)} ${S("=")} ${RES(h)}`]},
+    diff:{ask:`Найдите длину разности векторов ${V("AB")} и ${V("AD")}.`, ans:h,
+      sol:[`${V("AB")} − ${V("AD")} ${S("=")} ${V("DB")}`,
+           `|${V("DB")}| — диагональ ${S("=")} ${sqrt(`${p}${sup2} + ${q}${sup2}`)} ${S("=")} ${RES(h)}`]},
+    dot: {ask:`Найдите скалярное произведение векторов ${V("AB")} и ${V("AD")}.`, ans:0,
+      sol:[`${V("AB")} ⊥ ${V("AD")} ⇒ ${V("AB")}·${V("AD")} ${S("=")} |${V("AB")}|·|${V("AD")}|·cos 90° ${S("=")} ${RES(0)}`]},
+    osum:{ask:`Найдите длину суммы векторов ${V("AO")} и ${V("DO")}.`, ans:q,
+      sol:[`${V("AO")} ${S("=")} ½(${V("AB")}+${V("AD")}); &nbsp; ${V("DO")} ${S("=")} ½(${V("AB")}−${V("AD")})`,
+           `${V("AO")} + ${V("DO")} ${S("=")} ${V("AB")} ⇒ длина = AB ${S("=")} ${RES(q)}`]},
+    odiff:{ask:`Найдите длину разности векторов ${V("AO")} и ${V("DO")}.`, ans:p,
+      sol:[`${V("AO")} − ${V("DO")} ${S("=")} ${V("AD")} ⇒ длина = AD ${S("=")} ${RES(p)}`]}
+  }[v];
+  const rf2=vec=>{const f=rectFigure(p,q,v); f.vectors=[...f.vectors,Object.assign({c:2,dash:true},vec)]; return f;};
+  const stepsMap={
+    diag:[N_(`Квадрат диагонали: AB${sup2} + AD${sup2} = ${q}${sup2} + ${p}${sup2} = ?`, p*p+q*q, "Диагональ — гипотенуза прямоугольного треугольника со сторонами."),
+          N_(`|${V("AC")}| = ${sqrt(String(p*p+q*q))} = ?`, h)],
+    sum:[C_(`Какому вектору равна сумма ${V("AB")} + ${V("AD")}?`,
+          [O_("AC",true),O_("DB"),O_("CA"),O_("BD")],
+          "Правило параллелограмма: сумма векторов-сторон — диагональ из их общего начала.",
+          rf2({x1:0,y1:0,x2:p,y2:q})),
+         N_(`Квадрат длины ${V("AC")}: ${q}${sup2} + ${p}${sup2} = ?`, p*p+q*q),
+         N_(`Длина = ${sqrt(String(p*p+q*q))} = ?`, h)],
+    diff:[C_(`Какому вектору равна разность ${V("AB")} − ${V("AD")}?`,
+          [O_("DB",true),O_("AC"),O_("BD"),O_("CA")],
+          "Разность идёт из конца вычитаемого в конец уменьшаемого: из D в B.",
+          rf2({x1:p,y1:0,x2:0,y2:q})),
+         N_(`|${V("DB")}| — тоже диагональ. Её квадрат = ?`, p*p+q*q),
+         N_(`Длина = ?`, h)],
+    dot:[N_(`Угол между ${V("AB")} и ${V("AD")} (в градусах) = ?`, 90, "Это соседние стороны прямоугольника."),
+         N_(`${V("AB")}·${V("AD")} = |AB|·|AD|·cos 90° = ?`, 0, "cos 90° = 0 — произведение обнуляется.")],
+    osum:[C_(`Какому вектору равна сумма ${V("AO")} + ${V("DO")}?`,
+          [O_("AB",true),O_("AD"),O_("AC"),O_("DB")],
+          "AO = ½(AB + AD), DO = ½(AB − AD). Сложите — половинки AD сократятся.",
+          rf2({x1:0,y1:0,x2:0,y2:q})),
+         N_(`Длина = |AB| = ?`, q, "Длина AB дана в условии.")],
+    odiff:[C_(`Какому вектору равна разность ${V("AO")} − ${V("DO")}?`,
+          [O_("AD",true),O_("AB"),O_("DB"),O_("AC")],
+          "AO = ½(AB + AD), DO = ½(AB − AD). Вычтите — половинки AB сократятся.",
+          rf2({x1:0,y1:0,x2:p,y2:0})),
+         N_(`Длина = |AD| = ?`, p)]
+  };
+  return {sub:"прямоугольник", answer:conf.ans, prompt:lead(leadTxt)+ask(conf.ask),
+    solution:conf.sol, steps:stepsMap[v], figure:rectFigure(p,q,v), _chk:{t:"rect",p,q,h,v}};
+}
+
+const RHOMB=[[6,8,5],[12,16,10],[10,24,13],[18,24,15],[16,30,17]]; // [d,d,сторона]
+function rhombFigure(X,Y,v){
+  const A=[-X/2,0],B=[0,Y/2],C=[X/2,0],D=[0,-Y/2];
+  const f={grid:false, polys:[[A,B,C,D]], vectors:[], segs:[],
+    labels:[{x:A[0],y:A[1],t:"A",dx:-16,dy:5},{x:B[0],y:B[1],t:"B",dx:-4,dy:-8},
+            {x:C[0],y:C[1],t:"C",dx:7,dy:5},{x:D[0],y:D[1],t:"D",dx:-4,dy:17}]};
+  if(v==="sideAD") f.vectors.push({x1:A[0],y1:A[1],x2:D[0],y2:D[1],c:0});
+  if(v==="sum"||v==="diff") f.vectors.push({x1:A[0],y1:A[1],x2:B[0],y2:B[1],c:0},{x1:A[0],y1:A[1],x2:D[0],y2:D[1],c:1});
+  if(v==="diffAC") f.vectors.push({x1:A[0],y1:A[1],x2:B[0],y2:B[1],c:0},{x1:A[0],y1:A[1],x2:C[0],y2:C[1],c:1});
+  if(v==="osum"||v==="odiff"||v==="odot"){
+    f.segs.push([A[0],A[1],C[0],C[1]],[B[0],B[1],D[0],D[1]]);
+    f.labels.push({x:0,y:0,t:"O",dx:6,dy:-6});
+    f.vectors.push({x1:A[0],y1:A[1],x2:0,y2:0,c:0},{x1:B[0],y1:B[1],x2:0,y2:0,c:1});
+  }
+  return f;
+}
+function genRhombus(){
+  const r=pick(RHOMB), s=r[2];
+  const flip=Math.random()<.5;
+  const X=flip?r[1]:r[0], Y=flip?r[0]:r[1]; // AC = X (горизонтальная), BD = Y
+  const v=pick(["sideAD","sum","diff","diffAC","osum","odiff","odot"]);
+  const withO=v==="osum"||v==="odiff"||v==="odot";
+  const leadTxt=`Диагонали ромба ABCD равны AC = ${X} и BD = ${Y}`+(withO?" и пересекаются в точке O.":".");
+  const half=`${sqrt(`(${X}/2)${sup2} + (${Y}/2)${sup2}`)} ${S("=")} ${sqrt(`${X*X/4} + ${Y*Y/4}`)} ${S("=")} ${RES(s)}`;
+  const note=`<span class="note">Диагонали ромба перпендикулярны и точкой пересечения делятся пополам.</span>`;
+  const conf={
+    sideAD:{ask:`Найдите длину вектора ${V("AD")}.`, ans:s, sol:[note,`сторона ${S("=")} ${half}`]},
+    sum:   {ask:`Найдите длину вектора ${V("AB")} + ${V("AD")}.`, ans:X,
+      sol:[`${V("AB")} + ${V("AD")} ${S("=")} ${V("AC")} <span class="note">(правило параллелограмма)</span>`,`|${V("AC")}| ${S("=")} ${RES(X)}`]},
+    diff:  {ask:`Найдите длину вектора ${V("AB")} − ${V("AD")}.`, ans:Y,
+      sol:[`${V("AB")} − ${V("AD")} ${S("=")} ${V("DB")}`,`|${V("DB")}| = BD ${S("=")} ${RES(Y)}`]},
+    diffAC:{ask:`Найдите длину вектора ${V("AB")} − ${V("AC")}.`, ans:s,
+      sol:[`${V("AB")} − ${V("AC")} ${S("=")} ${V("CB")}`,note,`|${V("CB")}| — сторона ${S("=")} ${half}`]},
+    osum:  {ask:`Найдите длину вектора ${V("AO")} + ${V("BO")}.`, ans:s,
+      sol:[note,`|${V("AO")}| = ${X/2}, |${V("BO")}| = ${Y/2}, ${V("AO")} ⊥ ${V("BO")}`,
+           `|${V("AO")} + ${V("BO")}| ${S("=")} ${half}`]},
+    odiff: {ask:`Найдите длину вектора ${V("AO")} − ${V("BO")}.`, ans:s,
+      sol:[note,`|${V("AO")}| = ${X/2}, |${V("BO")}| = ${Y/2}, ${V("AO")} ⊥ ${V("BO")}`,
+           `|${V("AO")} − ${V("BO")}| ${S("=")} ${half}`]},
+    odot:  {ask:`Найдите скалярное произведение векторов ${V("AO")} и ${V("BO")}.`, ans:0,
+      sol:[note,`${V("AO")} ⊥ ${V("BO")} ⇒ ${V("AO")}·${V("BO")} ${S("=")} ${RES(0)}`]}
+  }[v];
+  const hf2=vec=>{const f=rhombFigure(X,Y,v); f.vectors=[...f.vectors,Object.assign({c:2,dash:true},vec)]; return f;};
+  const pyth=[N_(`Половина диагонали AC = ${X}/2 = ?`, X/2, "Диагонали ромба точкой пересечения делятся пополам."),
+              N_(`Половина диагонали BD = ?`, Y/2),
+              N_(`Квадрат стороны: ${X/2}${sup2} + ${Y/2}${sup2} = ?`, s*s, "Половинки диагоналей перпендикулярны — сторона считается по теореме Пифагора."),
+              N_(`Сторона = ${sqrt(String(s*s))} = ?`, s)];
+  const stepsMap={
+    sideAD:pyth,
+    sum:[C_(`Какому вектору равна сумма ${V("AB")} + ${V("AD")}?`,
+          [O_("AC",true),O_("DB"),O_("CB"),O_("BD")],
+          "Правило параллелограмма: диагональ из общего начала векторов.",
+          hf2({x1:-X/2,y1:0,x2:X/2,y2:0})),
+         N_(`|${V("AC")}| = ? <span class="note">(дано в условии)</span>`, X)],
+    diff:[C_(`Какому вектору равна разность ${V("AB")} − ${V("AD")}?`,
+          [O_("DB",true),O_("AC"),O_("CB"),O_("CA")],
+          "Разность идёт из конца вычитаемого в конец уменьшаемого: из D в B.",
+          hf2({x1:0,y1:-Y/2,x2:0,y2:Y/2})),
+         N_(`|${V("DB")}| = BD = ?`, Y)],
+    diffAC:[C_(`Какому вектору равна разность ${V("AB")} − ${V("AC")}?`,
+          [O_("CB",true),O_("BC"),O_("DB"),O_("CA")],
+          "Из конца вычитаемого (C) в конец уменьшаемого (B).",
+          hf2({x1:X/2,y1:0,x2:0,y2:Y/2})), ...pyth],
+    osum:[N_(`|${V("AO")}| = ${X}/2 = ?`, X/2, "Диагонали делятся пополам."),
+          N_(`|${V("BO")}| = ?`, Y/2),
+          N_("Угол между ними (в градусах) = ?", 90, "Диагонали ромба перпендикулярны."),
+          N_(`|${V("AO")} + ${V("BO")}| = ${sqrt(`${X/2}${sup2} + ${Y/2}${sup2}`)} = ?`, s)],
+    odiff:[N_(`|${V("AO")}| = ?`, X/2),
+           N_(`|${V("BO")}| = ?`, Y/2),
+           N_("Угол между ними (в градусах) = ?", 90, "Диагонали ромба перпендикулярны."),
+           N_(`|${V("AO")} − ${V("BO")}| = ${sqrt(`${X/2}${sup2} + ${Y/2}${sup2}`)} = ?`, s)],
+    odot:[N_(`Угол между ${V("AO")} и ${V("BO")} = ?`, 90, "Диагонали ромба перпендикулярны."),
+          N_(`${V("AO")}·${V("BO")} = ?`, 0, "cos 90° = 0.")]
+  };
+  return {sub:"ромб", answer:conf.ans, prompt:lead(leadTxt)+ask(conf.ask),
+    solution:conf.sol, steps:stepsMap[v], figure:rhombFigure(X,Y,v), _chk:{t:"rhomb",X,Y,s,v}};
+}
+
+function equiFigure(){
+  const a=6, A=[0,0], B=[a,0], C=[a/2,a*Math.sqrt(3)/2];
+  return {grid:false, polys:[[A,B,C]],
+    vectors:[{x1:0,y1:0,x2:B[0],y2:B[1],c:0},{x1:0,y1:0,x2:C[0],y2:C[1],c:1}],
+    labels:[{x:A[0],y:A[1],t:"A",dx:-15,dy:15},{x:B[0],y:B[1],t:"B",dx:6,dy:15},{x:C[0],y:C[1],t:"C",dx:-4,dy:-8}]};
+}
+function genEquilateral(){
+  const v=pick(["sum","diff","dot"]);
+  let conf;
+  if(v==="sum"){
+    const k=rint(2,6), aTxt=`${k}√3`, ans=3*k;
+    conf={leadTxt:`Стороны правильного треугольника ABC равны ${aTxt}.`,
+      ask:`Найдите длину вектора ${V("AB")} + ${V("AC")}.`, ans,
+      sol:[`${V("AB")} + ${V("AC")} ${S("=")} 2${V("AM")} <span class="note">(M — середина BC)</span>`,
+        `|${V("AB")} + ${V("AC")}| ${S("=")} a·√3 ${S("=")} ${aTxt}·√3 ${S("=")} ${RES(ans)}`],
+      steps:[N_("√3 · √3 = ?", 3, "Корень, умноженный сам на себя, даёт подкоренное число."),
+             N_(`|${V("AB")} + ${V("AC")}| = a·√3 = ${aTxt}·√3 = ${k}·3 = ?`, ans, "Для правильного треугольника |AB + AC| = сторона·√3.")],
+      chk:{t:"equi",v,k,ans}};
+  } else if(v==="diff"){
+    const m=rint(2,9), ans=m;
+    conf={leadTxt:`Стороны правильного треугольника ABC равны ${m}.`,
+      ask:`Найдите длину вектора ${V("AB")} − ${V("AC")}.`, ans,
+      sol:[`${V("AB")} − ${V("AC")} ${S("=")} ${V("CB")}`,`|${V("CB")}| — сторона ${S("=")} ${RES(ans)}`],
+      steps:[C_(`Какому вектору равна разность ${V("AB")} − ${V("AC")}?`,
+              [O_("CB",true),O_("BC"),O_("AB"),O_("CA")],
+              "Из конца вычитаемого (C) в конец уменьшаемого (B).",
+              (()=>{const f=equiFigure(); f.vectors=[...f.vectors,{x1:3,y1:3*Math.sqrt(3),x2:6,y2:0,c:2,dash:true}]; return f;})()),
+             N_(`|${V("CB")}| — сторона треугольника = ?`, ans)],
+      chk:{t:"equi",v,m,ans}};
+  } else {
+    const m=rint(2,9), ans=m*m/2;
+    conf={leadTxt:`Стороны правильного треугольника ABC равны ${m}.`,
+      ask:`Найдите скалярное произведение векторов ${V("AB")} и ${V("AC")}.`, ans,
+      sol:[`${V("AB")}·${V("AC")} ${S("=")} a·a·cos 60° ${S("=")} ${m}·${m}·1/2 ${S("=")} ${RES(fmt(ans))}`],
+      steps:[N_("Все углы правильного треугольника равны (в градусах) = ?", 60),
+             N_("cos 60° = ? (десятичной дробью)", 0.5),
+             N_(`${V("AB")}·${V("AC")} = ${m}·${m}·0,5 = ?`, ans)],
+      chk:{t:"equi",v,m,ans}};
+  }
+  return {sub:"правильный треугольник", answer:conf.ans, prompt:lead(conf.leadTxt)+ask(conf.ask),
+    solution:conf.sol, steps:conf.steps, figure:equiFigure(), _chk:conf.chk};
+}
+
+/* ============================================================
+   ГЕНЕРАТОРЫ · Угол между векторами и косинус
+   ============================================================ */
+function genAngle(){
+  const p=rint(1,3), q=rint(1,3);
+  const fam=pick([45,45,90,90,135,135,180]);
+  let b;
+  if(fam===45)  b=Math.random()<.5?[p-q,p+q]:[p+q,q-p];
+  if(fam===90)  b=Math.random()<.5?[-q,p]:[q,-p];
+  if(fam===135) b=Math.random()<.5?[-(p+q),p-q]:[q-p,-(p+q)];
+  if(fam===180){const mm=rint(1,2); b=[-p*mm,-q*mm];}
+  if(b[0]===0&&b[1]===0) b=[-q,p];
+  const a=[p,q];
+  const D=a[0]*b[0]+a[1]*b[1];
+  const cosTxt={45:"√2/2",90:"0",135:"−√2/2",180:"−1"}[fam];
+  const mode=pick(["pic","pic","txt"]);
+  const leadTxt= mode==="pic"
+    ? `На координатной плоскости изображены векторы ${V("a")} и ${V("b")}.`
+    : `Даны векторы ${V("a")} = ${br(a[0],a[1])} и ${V("b")} = ${br(b[0],b[1])}.`;
+  const sol=[];
+  if(mode==="pic") sol.push(`<span class="note">С рисунка:</span> ${V("a")} = ${br(a[0],a[1])}, ${V("b")} = ${br(b[0],b[1])}`);
+  sol.push(`${V("a")}·${V("b")} ${S("=")} ${sg(a[0])}·${sg(b[0])} + ${sg(a[1])}·${sg(b[1])} ${S("=")} ${D}`);
+  sol.push(`cos φ ${S("=")} ${V("a")}·${V("b")} / (|${V("a")}|·|${V("b")}|) ${S("=")} ${cosTxt} ⇒ φ ${S("=")} ${RES(fam+"°")} → ответ ${RES(fam)}`);
+  const s1=a[0]*a[0]+a[1]*a[1], s2=b[0]*b[0]+b[1]*b[1];
+  const steps=[
+    N_(`${V("a")}·${V("b")} = ?`, D, "Перемножьте x-координаты, перемножьте y-координаты, сложите."+(mode==="pic"?" Координаты снимите с рисунка.":"")),
+    N_(`|${V("a")}|${sup2} = ?`, s1),
+    N_(`|${V("b")}|${sup2} = ?`, s2),
+    N_("Угол (в градусах) = ?", fam, `cos φ = ${D}/√(${s1}·${s2}) = ${cosTxt}. Табличные значения: √2/2 → 45°, 0 → 90°, −√2/2 → 135°, −1 → 180°.`)];
+  const oa=tipOff(a[0],a[1]), ob=tipOff(b[0],b[1]);
+  return {sub:"угол между векторами", answer:fam, steps,
+    prompt: lead(leadTxt)+ask(`Найдите угол между векторами ${V("a")} и ${V("b")}. Ответ дайте в градусах.`),
+    solution:sol,
+    figure: mode==="pic" ? {grid:true, showOrigin:true,
+      vectors:[{x1:0,y1:0,x2:a[0],y2:a[1],c:0},{x1:0,y1:0,x2:b[0],y2:b[1],c:1}],
+      labels:[{x:a[0],y:a[1],t:"a",c:0,vec:true,dx:oa.dx,dy:oa.dy},
+              {x:b[0],y:b[1],t:"b",c:1,vec:true,dx:ob.dx,dy:ob.dy}]} : null,
+    _chk:{t:"angle",a,b}};
+}
+function genCos(){
+  let t1,t2,a,b,D,guard=0;
+  do{
+    t1=pick(TR_DEC); t2=pick(TR_DEC);
+    a=[t1[0]*sign(),t1[1]*sign()]; b=[t2[0]*sign(),t2[1]*sign()];
+    D=a[0]*b[0]+a[1]*b[1]; guard++;
+  }while(Math.abs(Math.abs(D)-t1[2]*t2[2])<1e-9 && guard<50); // не коллинеарные
+  const h1=t1[2],h2=t2[2],ans=D/(h1*h2);
+  const mode=pick(["pic","txt"]);
+  const oa=tipOff(a[0],a[1]), ob=tipOff(b[0],b[1]);
+  const leadTxt= mode==="pic"
+    ? `На координатной плоскости изображены векторы ${V("a")} и ${V("b")}.`
+    : `Даны векторы ${V("a")} = ${br(a[0],a[1])} и ${V("b")} = ${br(b[0],b[1])}.`;
+  const sol=[];
+  if(mode==="pic") sol.push(`<span class="note">С рисунка:</span> ${V("a")} = ${br(a[0],a[1])}, ${V("b")} = ${br(b[0],b[1])}`);
+  sol.push(`${V("a")}·${V("b")} ${S("=")} ${sg(a[0])}·${sg(b[0])} + ${sg(a[1])}·${sg(b[1])} ${S("=")} ${D}`);
+  sol.push(`|${V("a")}| ${S("=")} ${h1}, &nbsp; |${V("b")}| ${S("=")} ${h2}`);
+  sol.push(`cos φ ${S("=")} ${D} / (${h1}·${h2}) ${S("=")} ${D}/${h1*h2} ${S("=")} ${RES(fmt(ans))}`);
+  const steps=[
+    N_(`${V("a")}·${V("b")} = ?`, D, "x₁·x₂ + y₁·y₂"+(mode==="pic"?" — координаты снимите с рисунка.":"")),
+    N_(`|${V("a")}| = ?`, h1, "Это пифагорова тройка: √(x² + y²) — целое число."),
+    N_(`|${V("b")}| = ?`, h2),
+    N_(`cos φ = ${D} / (${h1}·${h2}) = ? <span class="note">(десятичной дробью)</span>`, ans, `Разделите ${D} на ${h1*h2}. Дробь конечная.`)];
+  return {sub:"косинус угла", answer:ans, steps,
+    prompt: lead(leadTxt)+ask(`Найдите косинус угла между векторами ${V("a")} и ${V("b")}.`),
+    solution:sol,
+    figure: mode==="pic" ? {grid:true, showOrigin:true,
+      vectors:[{x1:0,y1:0,x2:a[0],y2:a[1],c:0},{x1:0,y1:0,x2:b[0],y2:b[1],c:1}],
+      labels:[{x:a[0],y:a[1],t:"a",c:0,vec:true,dx:oa.dx,dy:oa.dy},
+              {x:b[0],y:b[1],t:"b",c:1,vec:true,dx:ob.dx,dy:ob.dy}]} : null,
+    _chk:{t:"cos",a,b,h1,h2}};
+}
+
+/* ============================================================
+   Пулы по вкладкам
+   ============================================================ */
+const POOLS={
+  coords:[genLenCoords, genPicVector, genPointFromVector, genComboLength, genSumCombo, genRectDiagCoords, genDecompose],
+  dot:[genDotCoords, genDotPicture, genDotCombo, genDotLenAngle, genFindLen, genRightTriangle, genGridTriangle],
+  shapes:[genRect, genRhombus, genEquilateral],
+  angle:[genAngle, genCos],
+  mix:[]
+};
+POOLS.mix=[...POOLS.coords, ...POOLS.dot, ...POOLS.shapes, ...POOLS.angle];
+
+/* ============================================================
+   Состояние и UI
+   ============================================================ */
+const el=id=>document.getElementById(id);
+let mode="coords";
+let uiMode="step"; // "step" | "fast"
+let cur=null, answered=false, solOpenedFirst=false, qIndex=0, startedAt=0;
+let sp=null; // состояние шагов: {idx, errs, help, log:[]}
+const VECTOR_PROGRESS_KEY="mathexam.vector.progress.v1";
+const MODE_TITLES={
+  coords:"Длина и координаты",
+  dot:"Скалярное произведение",
+  shapes:"Фигуры",
+  angle:"Угол между векторами",
+  mix:"Микс"
+};
+function emptyStats(){return {solved:0,right:0,streak:0,best:0,timeSum:0,timeCount:0,byMode:{},lastTask:"",updatedAt:""};}
+function loadVectorProgress(){
+  const base=emptyStats();
+  try{
+    const saved=JSON.parse(localStorage.getItem(VECTOR_PROGRESS_KEY))||{};
+    Object.assign(base,saved);
+    ["solved","right","streak","best","timeSum","timeCount"].forEach(k=>base[k]=Number(base[k])||0);
+    if(!base.byMode||typeof base.byMode!=="object")base.byMode={};
+    return base;
+  }catch(_){return base;}
+}
+const stats=loadVectorProgress();
+function saveVectorProgress(){
+  stats.updatedAt=new Date().toISOString();
+  try{localStorage.setItem(VECTOR_PROGRESS_KEY,JSON.stringify(stats));}catch(_){}
+}
+function noteVectorAttempt(ok){
+  const key=mode||"mix";
+  if(!stats.byMode)stats.byMode={};
+  if(!stats.byMode[key])stats.byMode[key]={solved:0,right:0};
+  stats.byMode[key].solved++;
+  if(ok)stats.byMode[key].right++;
+  stats.lastTask=cur&&cur.sub?cur.sub:"";
+}
+function modeTitle(key){return MODE_TITLES[key]||key;}
+function makeVectorReport(){
+  const avg=stats.timeCount?(stats.timeSum/stats.timeCount).toFixed(0)+" с":"—";
+  const acc=stats.solved?Math.round(stats.right/stats.solved*100)+"%":"—";
+  const lines=[
+    "Прогресс ученика",
+    "",
+    "Тренажёр: ЕГЭ профиль, задание 2 — векторы",
+    "Сайт: "+location.href,
+    "Дата: "+new Date().toLocaleString("ru-RU"),
+    "Имя ученика: ",
+    "",
+    "Решено: "+stats.solved,
+    "Верно: "+stats.right,
+    "Точность: "+acc,
+    "Текущая серия: "+stats.streak,
+    "Рекорд серии: "+stats.best,
+    "Среднее время: "+avg,
+    stats.lastTask?"Последний тип задачи: "+stats.lastTask:"",
+    "",
+    "По режимам:"
+  ].filter(Boolean);
+  Object.keys(MODE_TITLES).forEach(key=>{
+    const s=stats.byMode&&stats.byMode[key]?stats.byMode[key]:{solved:0,right:0};
+    lines.push("- "+modeTitle(key)+": "+s.right+" из "+s.solved+" верно");
+  });
+  lines.push("");
+  lines.push("Комментарий ученика: ");
+  return lines.join("\n");
+}
+function sendVectorReport(){
+  const subject="Прогресс: тренажёр по векторам";
+  window.location.href="mailto:nata4os@bk.ru"+
+    "?subject="+encodeURIComponent(subject)+
+    "&body="+encodeURIComponent(makeVectorReport());
+}
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+
+function newProblem(){
+  const pool=POOLS[mode];
+  let p,guard=0;
+  const last=cur?cur.sub+"|"+cur.answer:"";
+  do{p=pick(pool)();guard++;}while(guard<8&&(p.sub+"|"+p.answer)===last);
+  cur=p; answered=false; solOpenedFirst=false; qIndex++;
+  startedAt=performance.now();
+  el("subLabel").textContent=p.sub;
+  el("qno").innerHTML="№&nbsp;"+qIndex;
+  el("figure").innerHTML=p.figure?`<div class="figwrap">${renderFigure(p.figure)}</div>`:"";
+  el("prompt").innerHTML=p.prompt;
+  const inp=el("ans");
+  inp.value=""; inp.className="ans"; inp.disabled=false;
+  el("feedback").innerHTML="";
+  el("checkBtn").disabled=false;
+  el("solution").className="solution";
+  el("solution").innerHTML=`<h4>Решение</h4>`+p.solution.map(x=>`<div class="step">${x}</div>`).join("");
+  el("solBtn").setAttribute("aria-expanded","false");
+  el("solBtnText").textContent="Показать решение";
+  const card=el("prompt").closest(".card");
+  card.classList.remove("anim-pop"); void card.offsetWidth; card.classList.add("anim-pop");
+  // режим
+  const stepMode=uiMode==="step"&&cur.steps&&cur.steps.length;
+  el("fastRow").style.display=stepMode?"none":"";
+  el("steps").innerHTML="";
+  if(stepMode){ sp={idx:0,errs:0,help:false,log:[]}; renderStep(); }
+  else inp.focus();
+}
+
+/* ---------- пошаговый UI ---------- */
+function stepProgress(){
+  const n=cur.steps.length;
+  let dots="";
+  for(let i=0;i<n;i++) dots+=`<i class="${i<sp.idx?"done":i===sp.idx?"on":""}"></i>`;
+  return `<div class="sphead"><span>Шаг ${Math.min(sp.idx+1,n)} из ${n}</span><span class="sprog">${dots}</span></div>`;
+}
+function renderStep(){
+  const box=el("steps");
+  let h=stepProgress();
+  sp.log.forEach(r=>{
+    h+=`<div class="stepDone${r.helped?" helped":""}"><span class="okic">${r.helped?"👁":"✓"}</span><span>${r.q}</span><b>${r.val}</b></div>`;
+  });
+  const st=cur.steps[sp.idx];
+  if(st){
+    h+=`<div class="stepCard"><div class="sq">${st.q}</div>`;
+    if(st.t==="n"){
+      h+=`<div class="stepRow">
+        <input class="ans" id="stepIn" type="text" autocomplete="off" spellcheck="false" placeholder="число">
+        <button class="btn primary" id="stepCheck">Проверить</button>
+        <button class="hintBtn" id="stepHint" type="button">💡 Подсказка</button>
+      </div>`;
+    } else {
+      const opts=shuffle(st.opts.map((o,i)=>({...o,i})));
+      h+=`<div class="choices">${opts.map(o=>`<button type="button" data-ok="${o.ok?1:0}">${o.h}</button>`).join("")}</div>
+          <div class="stepRow" style="margin-top:8px"><button class="hintBtn" id="stepHint" type="button">💡 Подсказка</button></div>`;
+    }
+    h+=`<div class="hintBox" id="hintBox">${st.hint||"Загляните в шпаргалку справа — там нужная формула."}</div></div>`;
+  }
+  box.innerHTML=h;
+  if(!st)return;
+  el("stepHint").addEventListener("click",()=>el("hintBox").classList.add("show"));
+  if(st.t==="n"){
+    const inp=el("stepIn");
+    el("stepCheck").addEventListener("click",()=>checkStep(st,inp));
+    inp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();checkStep(st,inp);}});
+    inp.focus();
+  } else {
+    box.querySelectorAll(".choices button").forEach(b=>{
+      b.addEventListener("click",()=>{
+        if(b.dataset.ok==="1"){
+          b.classList.add("rightOpt");
+          completeStep(st, b.textContent, false);
+        } else {
+          b.classList.add("wrongOpt","anim-shake");
+          sp.errs++;
+          if(sp.errs>=1) el("hintBox").classList.add("show");
+          const left=[...box.querySelectorAll(".choices button")].filter(x=>!x.classList.contains("wrongOpt"));
+          if(left.length===1&&left[0].dataset.ok==="1"){
+            left[0].classList.add("rightOpt");
+            setTimeout(()=>completeStep(st,left[0].textContent,true),350);
+          }
+        }
+      });
+    });
+  }
+}
+function checkStep(st,inp){
+  const val=parseAns(inp.value);
+  if(Number.isNaN(val)){inp.classList.add("anim-shake");setTimeout(()=>inp.classList.remove("anim-shake"),420);inp.focus();return;}
+  if(Math.abs(val-st.a)<1e-6){
+    completeStep(st, fmt(st.a), false);
+  } else {
+    sp.errs++;
+    inp.classList.add("no","anim-shake");
+    setTimeout(()=>inp.classList.remove("anim-shake"),420);
+    setTimeout(()=>inp.classList.remove("no"),900);
+    if(sp.errs===2) el("hintBox").classList.add("show");
+    if(sp.errs>=3) completeStep(st, fmt(st.a), true);
+    else {inp.select();inp.focus();}
+  }
+}
+function completeStep(st,valTxt,helped){
+  if(helped) sp.help=true;
+  sp.log.push({q:st.q.replace(/ = \?.*$/,"").replace(/\?\s*$/,"").trim(), val:valTxt, helped});
+  if(st.fig) el("figure").innerHTML=`<div class="figwrap">${renderFigure(st.fig)}</div>`;
+  sp.idx++; sp.errs=0;
+  if(sp.idx>=cur.steps.length) finishStepTask();
+  else renderStep();
+}
+function finishStepTask(){
+  answered=true;
+  renderStep(); // прогресс + журнал без активного шага
+  const dt=(performance.now()-startedAt)/1000;
+  const fb=el("feedback");
+  if(solOpenedFirst){
+    fb.innerHTML=`<div class="verdict neutral"><span class="ic">i</span><span>Не засчитано — решение было открыто заранее. Ответ ${fmt(cur.answer)}. Enter — следующая.</span></div>`;
+    return;
+  }
+  stats.solved++; stats.timeSum+=dt; stats.timeCount++;
+  if(!sp.help){
+    stats.right++; stats.streak++; stats.best=Math.max(stats.best,stats.streak);
+    noteVectorAttempt(true);
+    fb.innerHTML=`<div class="verdict good"><span class="ic">✓</span><span><b>Верно!</b> Ответ ${fmt(cur.answer)}. Enter — следующая задача.</span></div>`;
+  } else {
+    stats.streak=0;
+    noteVectorAttempt(false);
+    fb.innerHTML=`<div class="verdict neutral"><span class="ic">i</span><span>Разобрано с открытыми шагами — ответ ${fmt(cur.answer)}. Такая задача в «верно» не идёт. Enter — следующая.</span></div>`;
+  }
+  renderStats();
+}
+function parseAns(raw){
+  if(raw==null)return NaN;
+  let t=raw.toString().trim().replace(/\u2212/g,"-").replace(",",".").replace(/\s+/g,"");
+  if(t==="")return NaN;
+  return Number(t);
+}
+function check(){
+  if(answered||!cur)return;
+  const inp=el("ans");
+  const val=parseAns(inp.value);
+  if(Number.isNaN(val)){
+    inp.classList.add("anim-shake"); inp.focus();
+    setTimeout(()=>inp.classList.remove("anim-shake"),420);
+    el("feedback").innerHTML=`<div class="verdict neutral"><span class="ic">!</span><span>Введите число — целое или десятичную дробь (можно с запятой).</span></div>`;
+    return;
+  }
+  answered=true;
+  inp.disabled=true; el("checkBtn").disabled=true;
+  const correct=Math.abs(val-cur.answer)<1e-6;
+  const fb=el("feedback");
+  const dt=(performance.now()-startedAt)/1000;
+  if(solOpenedFirst){
+    inp.classList.add(correct?"ok":"no");
+    fb.innerHTML=`<div class="verdict neutral"><span class="ic">i</span>
+      <span>Не засчитано — решение было открыто заранее. Правильный ответ: <span class="corr">${fmt(cur.answer)}</span>.</span></div>`;
+  } else {
+    stats.solved++; stats.timeSum+=dt; stats.timeCount++;
+    if(correct){
+      stats.right++; stats.streak++; stats.best=Math.max(stats.best,stats.streak);
+      noteVectorAttempt(true);
+      inp.classList.add("ok");
+      fb.innerHTML=`<div class="verdict good"><span class="ic">✓</span><span><b>Верно!</b> Ответ ${fmt(cur.answer)}.</span></div>`;
+      const card=el("prompt").closest(".card");
+      card.classList.remove("anim-pop"); void card.offsetWidth; card.classList.add("anim-pop");
+    } else {
+      stats.streak=0;
+      noteVectorAttempt(false);
+      inp.classList.add("no");
+      fb.innerHTML=`<div class="verdict bad"><span class="ic">✕</span>
+        <span><b>Неверно.</b> Правильный ответ: <span class="corr">${fmt(cur.answer)}</span>. Посмотрите решение ниже.</span></div>`;
+      inp.classList.add("anim-shake"); setTimeout(()=>inp.classList.remove("anim-shake"),420);
+      openSolution(true);
+    }
+    renderStats();
+  }
+}
+function openSolution(force){
+  const s=el("solution"), b=el("solBtn");
+  const willShow=force?true:!s.classList.contains("show");
+  if(willShow){
+    if(!answered)solOpenedFirst=true;
+    s.classList.add("show"); b.setAttribute("aria-expanded","true"); el("solBtnText").textContent="Скрыть решение";
+  } else {
+    s.classList.remove("show"); b.setAttribute("aria-expanded","false"); el("solBtnText").textContent="Показать решение";
+  }
+}
+function renderStats(){
+  el("stSolved").textContent=stats.solved;
+  el("stRight").textContent=stats.right;
+  el("stAcc").textContent=stats.solved?Math.round(stats.right/stats.solved*100)+"%":"—";
+  el("stStreak").textContent=stats.streak;
+  el("stBest").textContent=stats.best;
+  el("stTime").textContent=stats.timeCount?(stats.timeSum/stats.timeCount).toFixed(0)+" с":"—";
+  saveVectorProgress();
+}
+el("checkBtn").addEventListener("click",check);
+el("nextBtn").addEventListener("click",newProblem);
+el("solBtn").addEventListener("click",()=>openSolution(false));
+el("sendProgressBtn").addEventListener("click",sendVectorReport);
+el("ans").addEventListener("keydown",e=>{
+  if(e.key==="Enter"){e.preventDefault(); if(!answered)check(); else newProblem();}
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Enter"&&answered&&document.activeElement!==el("ans"))newProblem();
+});
+el("modeStep").addEventListener("click",()=>{
+  if(uiMode==="step")return;
+  uiMode="step";
+  el("modeStep").classList.add("on"); el("modeFast").classList.remove("on");
+  newProblem();
+});
+el("modeFast").addEventListener("click",()=>{
+  if(uiMode==="fast")return;
+  uiMode="fast";
+  el("modeFast").classList.add("on"); el("modeStep").classList.remove("on");
+  newProblem();
+});
+document.querySelectorAll(".tab").forEach(t=>{
+  t.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected","false"));
+    t.setAttribute("aria-selected","true");
+    mode=t.dataset.mode;
+    newProblem();
+  });
+  t.addEventListener("keydown",e=>{
+    if(e.key==="ArrowRight"||e.key==="ArrowLeft"){
+      const tabs=[...document.querySelectorAll(".tab")];
+      let i=tabs.indexOf(t)+(e.key==="ArrowRight"?1:-1);
+      i=(i+tabs.length)%tabs.length; tabs[i].focus(); tabs[i].click();
+    }
+  });
+});
+renderStats();
+newProblem();
+</script>
+<script>
+/* ============================================================
+   ОБЩИЙ ХОЛСТ в реальном времени
+   - рисование пером/мышью/пальцем (Pointer Events, нажим)
+   - событийная модель: штрихи как сообщения с автором
+   - нормализованные координаты -> совпадает при разных экранах
+   - присутствие + живые курсоры
+   - транспорт: WebSocket (рабочий сервер) или BroadcastChannel (демо)
+   ============================================================ */
+(function(){
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const cv = $("padCanvas"); if(!cv || !cv.getContext) return;
+  const ctx = cv.getContext("2d");
+  const wrap = $("canvasWrap");
+  const cursorsBox = $("cursors");
+
+  /* ---------- состояние холста ---------- */
+  const byId = new Map();      // id -> stroke
+  const order = [];            // порядок штрихов
+  let cur = null, drawing = false, activeId = null;
+  let W = 1, H = 1, dpr = 1;
+
+  let tool = "pen";
+  let inkColor = "#15233f";
+  let inkSize = 2.6/400;       // доля ширины холста
+  let colorChosen = false;     // пользователь сам выбрал цвет?
+
+  /* ---------- идентичность и сеть ---------- */
+  const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+  const me = { id: uid(), name: "", role: "teacher", color: "#cf3a3a" };
+  let net = null, connected = false, heartbeat = 0, lastCursorSent = 0;
+  const peers = new Map();     // id -> {id,name,role,color,last}
+  const cursorEls = new Map(); // id -> element
+  const roleColor = r => r === "teacher" ? "#cf3a3a" : "#2447b8";
+
+  function netSend(ev){ if(net) try{ net.send(ev); }catch(_){ } }
+
+  /* ---------- геометрия / DPI ---------- */
+  function fit(){
+    const r = cv.getBoundingClientRect();
+    W = Math.max(1, r.width); H = Math.max(1, r.height);
+    dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+    const bw = Math.round(W*dpr), bh = Math.round(H*dpr);
+    if(cv.width !== bw || cv.height !== bh){ cv.width = bw; cv.height = bh; }
+    redraw();
+  }
+  function point(e){
+    const r = cv.getBoundingClientRect();
+    let p = e.pressure;
+    if(e.pointerType !== "pen" || !(p > 0)) p = 0.5;
+    return {
+      x: +(((e.clientX - r.left) / r.width)).toFixed(4),
+      y: +(((e.clientY - r.top)  / r.height)).toFixed(4),
+      p: +p.toFixed(2)
+    };
+  }
+  const px = n => n.x * W, py = n => n.y * H;
+  function widthFor(s, p){
+    const base = s.size * W;
+    if(s.mode === "erase") return base*7 + 4;
+    return base * (0.4 + 1.25*(p == null ? 0.5 : p));
+  }
+
+  /* ---------- отрисовка ---------- */
+  function style(s){
+    ctx.globalCompositeOperation = (s.mode === "erase") ? "destination-out" : "source-over";
+    ctx.strokeStyle = s.color; ctx.fillStyle = s.color;
+    ctx.lineCap = "round"; ctx.lineJoin = "round";
+  }
+  function drawNew(s){
+    if(s.pts.length === 0) return;
+    style(s);
+    if(s._drawn === 0){
+      const a = s.pts[0];
+      ctx.beginPath(); ctx.arc(px(a), py(a), Math.max(0.6, widthFor(s,a.p)/2), 0, Math.PI*2); ctx.fill();
+      s._drawn = 1;
+    }
+    for(let i = Math.max(1, s._drawn); i < s.pts.length; i++){
+      const a = s.pts[i-1], b = s.pts[i];
+      ctx.lineWidth = widthFor(s, b.p);
+      ctx.beginPath(); ctx.moveTo(px(a), py(a)); ctx.lineTo(px(b), py(b)); ctx.stroke();
+    }
+    s._drawn = s.pts.length;
+    ctx.globalCompositeOperation = "source-over";
+  }
+  function redraw(){
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,W,H);
+    for(const id of order){ const s = byId.get(id); if(s){ s._drawn = 0; drawNew(s); } }
+    ctx.globalCompositeOperation = "source-over";
+  }
+
+  /* ---------- операции над моделью ---------- */
+  function addStroke(meta, first){
+    const s = { id:meta.id, author:meta.author, color:meta.color, size:meta.size,
+                mode:meta.mode, pts:[first], closed:false, _drawn:0 };
+    byId.set(s.id, s); order.push(s.id); return s;
+  }
+  function removeStroke(id){
+    if(byId.has(id)){ byId.delete(id); const i = order.indexOf(id); if(i>=0) order.splice(i,1); return true; }
+    return false;
+  }
+  function serialize(){
+    return order.map(id=>{ const s=byId.get(id); return s && {
+      id:s.id, author:s.author, color:s.color, size:s.size, mode:s.mode,
+      pts:s.pts.map(p=>[p.x,p.y,p.p]), closed:s.closed
+    }; }).filter(Boolean);
+  }
+  function applyState(arr){
+    if(!Array.isArray(arr)) return;
+    for(const s of arr){
+      if(byId.has(s.id)) continue;
+      const st = { id:s.id, author:s.author, color:s.color, size:s.size, mode:s.mode,
+                   pts:s.pts.map(p=>({x:p[0],y:p[1],p:p[2]})), closed:s.closed, _drawn:0 };
+      byId.set(st.id, st); order.push(st.id);
+    }
+    redraw();
+  }
+
+  /* ---------- приём сетевых событий ---------- */
+  function onNet(ev){
+    if(!ev || ev.from === me.id) return;     // игнор собственного эха (демо)
+    switch(ev.t){
+      case "s0": { const s = addStroke(
+          {id:ev.id,author:ev.from,color:ev.color,size:ev.size,mode:ev.mode},
+          {x:ev.x,y:ev.y,p:ev.p}); drawNew(s); break; }
+      case "sp": { const s = byId.get(ev.id); if(!s) break;
+          for(const p of ev.pts) s.pts.push({x:p[0],y:p[1],p:p[2]}); drawNew(s); break; }
+      case "s1": { const s = byId.get(ev.id); if(s) s.closed = true; break; }
+      case "undo": if(removeStroke(ev.id)) redraw(); break;
+      case "clear": order.length = 0; byId.clear(); redraw(); break;
+      case "state": if(!ev.to || ev.to === me.id) applyState(ev.strokes); break;
+      case "req": if(net && net.mode === "bc") netSend({t:"state", to:ev.from, strokes:serialize()}); break;
+      case "hello":
+      case "presence": upsertPeer(ev); break;
+      case "cursor": moveCursor(ev); break;
+      case "bye": peers.delete(ev.from); renderPeers(); dropCursor(ev.from); break;
+    }
+  }
+
+  /* ---------- ввод указателем ---------- */
+  cv.addEventListener("pointerdown", e=>{
+    if(activeId !== null) return;
+    activeId = e.pointerId; e.preventDefault();
+    try{ cv.setPointerCapture(e.pointerId); }catch(_){ }
+    const id = uid();
+    const mode = (tool === "eraser") ? "erase" : "draw";
+    cur = addStroke({id, author:me.id, color:inkColor, size:inkSize, mode}, point(e));
+    drawing = true; drawNew(cur);
+    const f = cur.pts[0];
+    netSend({t:"s0", id, from:me.id, color:inkColor, size:inkSize, mode, x:f.x, y:f.y, p:f.p});
+    sendCursor(e, true);
+  });
+  cv.addEventListener("pointermove", e=>{
+    if(drawing && e.pointerId === activeId){
+      e.preventDefault();
+      const evs = (typeof e.getCoalescedEvents === "function") ? e.getCoalescedEvents() : null;
+      const list = (evs && evs.length) ? evs : [e];
+      const add = [];
+      for(const ev of list){ const pt = point(ev); cur.pts.push(pt); add.push([pt.x,pt.y,pt.p]); }
+      drawNew(cur);
+      if(add.length) netSend({t:"sp", id:cur.id, from:me.id, pts:add});
+    }
+    sendCursor(e, drawing);
+  });
+  function endStroke(e){
+    if(e.pointerId !== activeId) return;
+    if(cur){ cur.closed = true; netSend({t:"s1", id:cur.id, from:me.id}); }
+    drawing = false; activeId = null; cur = null;
+    try{ cv.releasePointerCapture(e.pointerId); }catch(_){ }
+  }
+  cv.addEventListener("pointerup", endStroke);
+  cv.addEventListener("pointercancel", endStroke);
+  cv.addEventListener("pointerleave", e=>{ if(!drawing){ /* курсор уехал с холста */ } });
+
+  function sendCursor(e, down){
+    const now = performance.now();
+    if(now - lastCursorSent < 40) return;
+    lastCursorSent = now;
+    const r = cv.getBoundingClientRect();
+    netSend({ t:"cursor", from:me.id, name: displayName(), color: me.color, down,
+      x:+(((e.clientX-r.left)/r.width)).toFixed(4), y:+(((e.clientY-r.top)/r.height)).toFixed(4) });
+  }
+
+  /* ---------- инструменты ---------- */
+  const penBtn = $("toolPen"), erBtn = $("toolEraser");
+  function setTool(t){
+    tool = t;
+    penBtn.setAttribute("aria-pressed", t==="pen"?"true":"false");
+    erBtn .setAttribute("aria-pressed", t==="eraser"?"true":"false");
+    cv.style.cursor = t==="eraser" ? "cell" : "crosshair";
+  }
+  penBtn.addEventListener("click", ()=>setTool("pen"));
+  erBtn .addEventListener("click", ()=>setTool("eraser"));
+
+  function applyInk(color){
+    inkColor = color;
+    document.querySelectorAll(".swatch").forEach(x=>x.setAttribute("aria-pressed", x.dataset.color===color ? "true":"false"));
+  }
+  function selectSwatch(color){ applyInk(color); colorChosen = true; if(tool==="eraser") setTool("pen"); }
+  document.querySelectorAll(".swatch").forEach(b=> b.addEventListener("click", ()=>selectSwatch(b.dataset.color)));
+  document.querySelectorAll(".size").forEach(b=> b.addEventListener("click", ()=>{
+    inkSize = parseFloat(b.dataset.size)/400;
+    document.querySelectorAll(".size").forEach(x=>x.setAttribute("aria-pressed", x===b ? "true":"false"));
+  }));
+
+  const undoBtn = $("undoBtn"), clearBtn = $("clearBtn");
+  undoBtn.addEventListener("click", ()=>{
+    for(let i = order.length-1; i>=0; i--){ const s = byId.get(order[i]);
+      if(s && s.author === me.id){ removeStroke(s.id); redraw(); netSend({t:"undo", from:me.id, id:s.id}); return; } }
+  });
+  clearBtn.addEventListener("click", ()=>{
+    if(connected && !confirm("Очистить общий холст у всех участников?")) return;
+    order.length = 0; byId.clear(); redraw(); netSend({t:"clear", from:me.id});
+  });
+
+  /* ---------- присутствие / курсоры ---------- */
+  function displayName(){ return me.name || (me.role==="teacher" ? "Учитель" : "Ученик"); }
+  function upsertPeer(ev){
+    peers.set(ev.from, {id:ev.from, name:ev.name, role:ev.role, color:ev.color, last:Date.now()});
+    renderPeers();
+  }
+  function renderPeers(){
+    const box = $("peers"); box.innerHTML = "";
+    const mk = (name, color, isMe)=>{
+      const el = document.createElement("span");
+      el.className = "peer" + (isMe ? " me":"");
+      el.innerHTML = `<span class="pd" style="background:${color}"></span>${name}`;
+      box.appendChild(el);
+    };
+    if(connected) mk(displayName()+" · вы", me.color, true);
+    const now = Date.now();
+    for(const p of peers.values()){
+      if(now - p.last > 12000){ peers.delete(p.id); dropCursor(p.id); continue; }
+      mk(p.name || (p.role==="teacher"?"Учитель":"Ученик"), p.color || "#888", false);
+    }
+  }
+  function ensureCursor(id, color, name){
+    let el = cursorEls.get(id);
+    if(!el){
+      el = document.createElement("div"); el.className = "cursor";
+      el.innerHTML = `<div class="nib"></div><div class="tag"></div>`;
+      cursorsBox.appendChild(el); cursorEls.set(id, el);
+    }
+    el.querySelector(".nib").style.background = color;
+    const tag = el.querySelector(".tag"); tag.style.background = color; tag.textContent = name;
+    return el;
+  }
+  function moveCursor(ev){
+    if(ev.from === me.id) return;
+    const el = ensureCursor(ev.from, ev.color || "#888", ev.name || "—");
+    el.style.left = (ev.x * W) + "px"; el.style.top = (ev.y * H) + "px";
+    el.style.opacity = "1"; el.dataset.last = Date.now();
+  }
+  function dropCursor(id){ const el = cursorEls.get(id); if(el){ el.remove(); cursorEls.delete(id); } }
+  setInterval(()=>{
+    const now = Date.now();
+    for(const [id,el] of cursorEls){ if(now - (+el.dataset.last||0) > 2500) el.style.opacity = "0"; }
+  }, 800);
+
+  /* ---------- транспорт ---------- */
+  function makeNet({mode, url, room}){
+    let onEvent = ()=>{}, onStatus = ()=>{};
+    if(mode === "bc"){
+      if(!("BroadcastChannel" in window)) return null;
+      const ch = new BroadcastChannel("trener-board::" + room);
+      ch.onmessage = e => onEvent(e.data);
+      return {
+        mode:"bc",
+        send: ev => { try{ ch.postMessage(ev); }catch(_){ } },
+        on: cb => onEvent = cb, status: cb => onStatus = cb,
+        open: () => setTimeout(()=>onStatus("connected"), 0),
+        close: () => { try{ ch.close(); }catch(_){ } onStatus("closed"); }
+      };
+    }
+    let ws = null, manual = false, tries = 0; const q = [];
+    let _onEvent = ()=>{}, _onStatus = ()=>{};
+    const full = url + (url.includes("?") ? "&" : "?") + "room=" + encodeURIComponent(room);
+    function connect(){
+      _onStatus("connecting");
+      try{ ws = new WebSocket(full); }catch(e){ _onStatus("error"); return; }
+      ws.onopen = () => { tries = 0; _onStatus("connected"); q.splice(0).forEach(m=>ws.send(m)); };
+      ws.onmessage = e => { let d; try{ d = JSON.parse(e.data); }catch(_){ return; } _onEvent(d); };
+      ws.onclose = () => { _onStatus(manual ? "closed" : "reconnect"); if(!manual){ tries++; setTimeout(connect, Math.min(800*tries, 5000)); } };
+      ws.onerror = () => { try{ ws.close(); }catch(_){ } };
+    }
+    return {
+      mode:"ws",
+      send: ev => { const m = JSON.stringify(ev); if(ws && ws.readyState===1) ws.send(m); else q.push(m); },
+      on: cb => _onEvent = cb, status: cb => _onStatus = cb,
+      open: connect,
+      close: () => { manual = true; try{ ws && ws.close(); }catch(_){ } }
+    };
+  }
+
+  /* ---------- подключение ---------- */
+  const connectBtn = $("connectBtn"), roomInput = $("roomInput"),
+        serverInput = $("serverInput"), nameInput = $("nameInput"),
+        copyBtn = $("copyLinkBtn"), hintEl = $("collabHint"), statusEl = $("netStatus");
+
+  function setStatus(kind, text){
+    statusEl.innerHTML = `<span class="sd ${kind}"></span>${text}`;
+  }
+  function setHint(text, cls){ hintEl.textContent = text; hintEl.className = "collab-hint" + (cls ? " "+cls : ""); }
+
+  function onStatus(s){
+    if(s === "connecting"){ setStatus("wait","подключение…"); setHint("Устанавливаем соединение…"); }
+    else if(s === "reconnect"){ setStatus("wait","переподключение…"); setHint("Связь прервалась, пробуем снова…","warn"); }
+    else if(s === "connected"){
+      connected = true;
+      setStatus("on", net.mode === "bc" ? "демо · этот браузер" : "на связи");
+      if(net.mode === "bc") setHint("Демо в этом браузере: откройте эту же ссылку во второй вкладке.","ok");
+      else setHint("Подключено к серверу. Отправьте ссылку‑приглашение второму участнику.","ok");
+      if(!colorChosen) applyInk(me.color);   // развести цвета: учитель/ученик
+      netSend({t:"hello",  from:me.id, name:displayName(), role:me.role, color:me.color});
+      netSend({t:"presence", from:me.id, name:displayName(), role:me.role, color:me.color});
+      netSend({t:"req", from:me.id});
+      renderPeers();
+      clearInterval(heartbeat);
+      heartbeat = setInterval(()=>{ netSend({t:"presence", from:me.id, name:displayName(), role:me.role, color:me.color}); renderPeers(); }, 5000);
+    } else { // closed / error
+      connected = false; setStatus("off","не подключено");
+      clearInterval(heartbeat);
+    }
+  }
+
+  function genRoom(){ return Math.random().toString(36).slice(2,7); }
+
+  function connect(){
+    const room = (roomInput.value.trim() || genRoom()); roomInput.value = room;
+    const srv = serverInput.value.trim();
+    const mode = srv ? "ws" : "bc";
+    if(mode === "bc" && !("BroadcastChannel" in window)){
+      setHint("Этот браузер не поддерживает демо‑режим — укажите адрес сервера.","warn"); return;
+    }
+    netSend({t:"bye", from:me.id});       // на случай переподключения
+    if(net) net.close();
+    peers.clear(); [...cursorEls.keys()].forEach(dropCursor); renderPeers();
+    net = makeNet({mode, url:srv, room});
+    if(!net){ setHint("Не удалось создать соединение.","warn"); return; }
+    net.on(onNet); net.status(onStatus); net.open();
+    connectBtn.textContent = "Отключиться";
+  }
+  function disconnect(){
+    netSend({t:"bye", from:me.id});
+    if(net) net.close(); net = null; connected = false;
+    clearInterval(heartbeat);
+    peers.clear(); [...cursorEls.keys()].forEach(dropCursor); renderPeers();
+    setStatus("off","не подключено");
+    setHint(defaultHint());
+    connectBtn.textContent = "Подключиться";
+  }
+  connectBtn.addEventListener("click", ()=>{
+    if(connectBtn.textContent === "Отключиться") disconnect(); else connect();
+  });
+
+  /* роль */
+  function setRole(r){
+    me.role = r; me.color = roleColor(r);
+    $("roleTeacher").setAttribute("aria-pressed", r==="teacher"?"true":"false");
+    $("roleStudent").setAttribute("aria-pressed", r==="student"?"true":"false");
+    if(connected){
+      if(!colorChosen) applyInk(me.color);
+      netSend({t:"presence", from:me.id, name:displayName(), role:me.role, color:me.color});
+      renderPeers();
+    }
+  }
+  $("roleTeacher").addEventListener("click", ()=>setRole("teacher"));
+  $("roleStudent").addEventListener("click", ()=>setRole("student"));
+  nameInput.addEventListener("input", ()=>{ me.name = nameInput.value.trim();
+    if(connected){ netSend({t:"presence", from:me.id, name:displayName(), role:me.role, color:me.color}); renderPeers(); } });
+
+  /* ссылка‑приглашение */
+  copyBtn.addEventListener("click", ()=>{
+    const room = (roomInput.value.trim() || genRoom()); roomInput.value = room;
+    const srv = serverInput.value.trim();
+    const link = location.origin + location.pathname + "?room=" + encodeURIComponent(room) +
+      (srv ? "&srv=" + encodeURIComponent(srv) : "") + "&role=student";
+    const done = ()=>{ const t = copyBtn.textContent; copyBtn.textContent = "Скопировано ✓"; setTimeout(()=>copyBtn.textContent = t, 1500); };
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(link).then(done, ()=>prompt("Ссылка:", link)); }
+    else prompt("Ссылка‑приглашение:", link);
+  });
+
+  function defaultHint(){
+    return serverInput.value.trim()
+      ? "Готово к подключению к серверу. Нажмите «Подключиться»."
+      : "Демо‑режим (без сервера): одно устройство, две вкладки. Для разных компьютеров укажите адрес сервера.";
+  }
+
+  /* ---------- параметры из ссылки ---------- */
+  (function initFromURL(){
+    const q = new URLSearchParams(location.search);
+    if(q.get("room")) roomInput.value = q.get("room");
+    if(q.get("srv")) serverInput.value = q.get("srv");
+    setRole(q.get("role") === "student" ? "student" : "teacher");
+    serverInput.addEventListener("input", ()=>{ if(!connected) setHint(defaultHint()); });
+    setHint(defaultHint());
+    setStatus("off","не подключено");
+    if(q.get("room")) setTimeout(connect, 250);   // переход по приглашению -> авто‑подключение
+  })();
+
+  /* ---------- ресайз ---------- */
+  let rT; const onResize = ()=>{ clearTimeout(rT); rT = setTimeout(fit, 120); };
+  if("ResizeObserver" in window) new ResizeObserver(onResize).observe(wrap);
+  window.addEventListener("resize", onResize);
+  window.addEventListener("beforeunload", ()=>{ if(connected) netSend({t:"bye", from:me.id}); });
+  requestAnimationFrame(fit);
+})();
+</script>
+</body>
+</html>

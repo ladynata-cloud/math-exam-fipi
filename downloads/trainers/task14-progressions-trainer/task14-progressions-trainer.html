@@ -1,0 +1,1725 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ОГЭ №14 — прогрессии (пошаговый тренажёр)</title>
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#ffffff;
+      --ink:#111827;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --good:#047857;
+      --bad:#b91c1c;
+      --soft:#f8fafc;
+      --accent:#111827;
+      --accent2:#1f2937;
+      --focus:#2563eb;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#f3f4f6;color:var(--ink)}
+    header{
+      background:linear-gradient(180deg, #0b1020, #121a33);
+      color:#fff;
+      padding:22px 16px;
+    }
+    .wrap{max-width:1100px;margin:0 auto}
+    h1{margin:0;font-size:34px;letter-spacing:.2px}
+    .sub{margin-top:6px;color:#cbd5e1;font-size:14px}
+    .bar{
+      margin-top:16px;
+      display:flex;gap:10px;flex-wrap:wrap;align-items:end;
+    }
+    label{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#cbd5e1;margin:0 0 6px}
+    select, input[type="text"], input[type="number"]{
+      height:46px; padding:10px 12px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06); color:#fff; outline:none;
+      font-size:16px; min-width: 220px;
+    }
+    select:focus, input:focus{ box-shadow: 0 0 0 3px rgba(37,99,235,.35); border-color: rgba(37,99,235,.8); }
+    button{
+      height:46px; padding:0 14px; border-radius:14px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.06); color:#fff;
+      font-size:16px; cursor:pointer;
+    }
+    button.primary{ background:#fff; color:#0b1020; border-color:#fff; font-weight:800; }
+    button.ghost{ background:transparent; }
+    button:disabled{opacity:.6; cursor:not-allowed}
+    main{padding:18px 16px 28px}
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:22px;
+      padding:18px;
+      max-width:1100px;
+      margin:0 auto;
+    }
+    .chips{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .chip{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:7px 10px;border:1px solid var(--border);
+      border-radius:999px;background:#f9fafb;color:#374151;
+      font-size:13px;
+    }
+    .taskText{
+      margin-top:14px;
+      font-size:26px;
+      line-height:1.25;
+      white-space:pre-line;
+    }
+    .taskImg{
+      margin-top:14px;
+      max-width:100%;
+      border-radius:16px;
+      border:1px solid var(--border);
+      display:block;
+    }
+    .section{
+      margin-top:16px;
+      border-top:1px solid var(--border);
+      padding-top:16px;
+    }
+    .modeRow{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center
+    }
+    .modeBtn{
+      height:40px;border-radius:999px;padding:0 14px;
+      border:1px solid var(--border);background:#fff;color:#111;
+      font-weight:700;font-size:14px;
+    }
+    .modeBtn.active{
+      background:#111827;color:#fff;border-color:#111827;
+    }
+
+    .numPad{
+      margin-top:12px;
+      display:flex; gap:10px; flex-wrap:wrap;
+      padding:12px;
+      border:1px dashed var(--border);
+      border-radius:18px;
+      background:#fbfdff;
+    }
+    .numPadTitle{width:100%; font-weight:900; color:#111827}
+    .numChip{
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:999px;
+      padding:8px 12px;
+      cursor:pointer;
+      font-size:14px;
+    }
+    .numChip:active{transform:translateY(1px)}
+    .hintSmall{font-size:13px;color:var(--muted);margin-top:6px}
+    .helpCard{
+      margin-top:14px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:12px;
+      background:var(--soft);
+    }
+    .helpCard > summary{
+      list-style:none;
+    }
+    .helpCard > summary::-webkit-details-marker{
+      display:none;
+    }
+    .helpTitle{
+      font-weight:900;
+      margin:0;
+      font-size:16px;
+      cursor:pointer;
+    }
+    .helpCard[open] .helpTitle{ margin-bottom:8px; }
+    .helpJumpRow{ margin-top:10px; }
+    .helpJump{
+      border:none;
+      background:none;
+      padding:0;
+      font-size:13px;
+      color:var(--accent);
+      text-decoration:underline;
+      cursor:pointer;
+    }
+    .helpTextarea{
+      width:100%;
+      min-height:150px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      padding:10px 12px;
+      font-size:14px;
+      resize:vertical;
+      background:#fff;
+      color:#111;
+    }
+    .helpActions{
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .helpMsg{
+      margin-top:8px;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .stepper{
+      margin-top:14px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      overflow:hidden;
+    }
+    .stepHead{
+      padding:12px 14px;
+      background:#f9fafb;
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      border-bottom:1px solid var(--border);
+    }
+    .stepTitle{font-weight:900}
+    .progress{
+      margin-left:auto;
+      font-size:13px;
+      color:#374151;
+      padding:6px 10px;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:999px;
+    }
+    .stepBody{padding:14px}
+    .q{
+      margin:0 0 10px;
+      font-size:18px;
+      font-weight:900;
+    }
+    .qSub{margin:-6px 0 12px; color:var(--muted); font-size:14px}
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(240px, 1fr));
+      gap:12px;
+    }
+    .field{
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:12px;
+      background:#fff;
+    }
+    .field label{
+      color:#374151;
+      text-transform:none;
+      letter-spacing:0;
+      font-size:13px;
+      margin:0 0 8px;
+    }
+    .field input, .field select{
+      width:100%;
+      height:44px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:#fff;
+      color:#111;
+    }
+    .field input:focus, .field select:focus{
+      outline:none;
+      box-shadow:0 0 0 3px rgba(37,99,235,.22);
+      border-color: rgba(37,99,235,.7);
+    }
+    .actions{
+      margin-top:12px;
+      display:flex; gap:10px; flex-wrap:wrap;
+    }
+    .btn{
+      height:44px;border-radius:14px;padding:0 14px;
+      border:1px solid var(--border); background:#fff; cursor:pointer;
+      font-size:16px;
+    }
+    .btn.primary{background:#111827;color:#fff;border-color:#111827;font-weight:900}
+    .btn.good{background:#ecfdf5;border-color:#a7f3d0;color:#065f46;font-weight:900}
+    .btn.bad{background:#fef2f2;border-color:#fecaca;color:#991b1b;font-weight:900}
+    .msg{margin-top:10px;font-size:15px}
+    .msg.ok{color:var(--good);font-weight:900}
+    .msg.bad{color:var(--bad);font-weight:900}
+
+    .miniCheck{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+    }
+    .miniRow{
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:12px;
+      background:var(--soft);
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+    }
+    .miniRow b{min-width:220px}
+    .miniRow input{height:42px; border-radius:14px; border:1px solid var(--border); padding:8px 10px; min-width:220px}
+    .miniRow button{height:42px}
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:12px;
+      font-size:14px;
+    }
+    th,td{border-bottom:1px solid var(--border); padding:8px 6px; text-align:left}
+    th{color:#374151}
+    .right{ text-align:right }
+    .answerBox{
+      margin-top:14px;
+      padding:14px;
+      border:1px solid var(--border);
+      border-radius:18px;
+      background:#fff;
+    }
+    .answerRow{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+    }
+    .answerRow input{
+      height:46px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      padding:10px 12px;
+      font-size:16px;
+      min-width:260px;
+      flex:1;
+    }
+    .footerNote{ margin-top:10px; color:var(--muted); font-size:13px }
+    .hubTitle{ margin:0 0 14px; font-size:22px; font-weight:900; }
+    .hubGrid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(180px, 1fr));
+      gap:12px;
+    }
+    .hubBtn{
+      text-decoration:none;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:12px 10px;
+      min-height:64px;
+    }
+    .groupNav{
+      margin-bottom:12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    @media (max-width: 720px){
+      .grid{grid-template-columns: 1fr;}
+      .taskText{font-size:22px}
+      .hubGrid{grid-template-columns: repeat(2, minmax(160px, 1fr));}
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <h1>ОГЭ №14 — прогрессии</h1>
+    <div class="sub">Пошаговый тренажёр: ученик решает маленькими шагами, с полями и проверкой каждого шага.</div>
+
+    <div class="bar" id="topBar">
+      <div>
+        <label>ТЕМА</label>
+        <select id="topicSelect"></select>
+      </div>
+
+      <div>
+        <label>РЕЖИМ</label>
+        <select id="uiMode">
+          <option value="steps" selected>Пошагово (учусь)</option>
+          <option value="quick">Быстро (только ответ)</option>
+        </select>
+      </div>
+
+      <div style="flex:1"></div>
+
+      <button id="resetBtn" class="ghost">Сброс</button>
+      <button id="newBtn" class="primary">Новая задача</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="card">
+    <div id="hubUI" style="display:none;">
+      <div class="hubTitle">Тренажёр 14 — выбери тип задач</div>
+      <div class="hubGrid" id="hubGrid"></div>
+    </div>
+
+    <div id="trainerUI">
+      <div class="groupNav" id="groupNav" style="display:none;"></div>
+      <div class="chips" id="chips"></div>
+
+      <div class="taskText" id="taskText">Загружаю базу…</div>
+      <div class="msg bad" id="groupEmpty" style="display:none;"></div>
+      <img id="taskImg" class="taskImg" alt="Рисунок к задаче" style="display:none;" />
+
+      <div class="section">
+        <div class="modeRow">
+          <button class="modeBtn active" id="modeStepsBtn">Пошагово</button>
+          <button class="modeBtn" id="modeQuickBtn">Быстро</button>
+          <span class="hintSmall" id="modeHint">Пошагово: ученик отвечает на маленькие вопросы и считает по шагам.</span>
+        </div>
+
+        <!-- ПОШАГОВЫЙ РЕЖИМ -->
+        <div id="stepsUI">
+          <div class="stepper">
+            <div class="stepHead">
+              <div class="stepTitle" id="stepTitle">Шаг 1</div>
+              <div class="progress" id="progress">1/5</div>
+            </div>
+            <div class="stepBody" id="stepBody"></div>
+          </div>
+        </div>
+
+        <!-- БЫСТРЫЙ РЕЖИМ -->
+        <div id="quickUI" style="display:none;">
+          <div class="answerBox">
+            <div class="q">Введи ответ</div>
+            <div class="answerRow">
+              <input id="quickAnswer" type="text" placeholder="Ответ" />
+              <button class="btn primary" id="quickCheckBtn">Проверить</button>
+            </div>
+            <div class="msg" id="quickMsg"></div>
+            <div class="footerNote" id="quickCorrect"></div>
+          </div>
+        </div>
+
+        <div class="helpJumpRow">
+          <button class="helpJump" id="deepSeekJump" type="button">Нужна помощь? (DeepSeek)</button>
+        </div>
+      </div>
+
+      <div class="numPad" id="numPad" style="display:none;">
+        <div class="numPadTitle">Числа из условия (можно нажимать — вставится в поле)</div>
+        <div class="hintSmall">Совет: сначала щёлкните в поле, потом нажмите число.</div>
+        <div id="numPadBtns"></div>
+      </div>
+
+      <details class="helpCard ai-help" id="deepSeekCard">
+        <summary class="helpTitle">Помощь (DeepSeek)</summary>
+        <textarea id="deepSeekPrompt" class="helpTextarea" readonly></textarea>
+        <div class="helpActions">
+          <button class="btn" id="deepSeekCopyBtn" type="button">Скопировать запрос</button>
+          <button class="btn" id="deepSeekOpenBtn" type="button">Открыть DeepSeek</button>
+        </div>
+        <div class="helpMsg" id="deepSeekMsg"></div>
+      </details>
+    </div>
+  </div>
+</main>
+
+<script>
+(() => {
+  const DATA_URLS = [
+    "../data/task14-progressions-2022-2025.json",
+    "/data/task14-progressions-2022-2025.json",
+    "./data/task14-progressions-2022-2025.json"
+  ];
+  const FETCH_TIMEOUT_MS = 8000;
+
+  // На всякий случай — если в JSON нет image, покажем по id:
+  const IMAGE_BY_ID = {
+    7: "../assets/task14/snake.jpeg",
+    8: "../assets/task14/snake.jpeg",
+    9: "../assets/task14/tables.jpeg",
+    10:"../assets/task14/tables.jpeg",
+    25:"../assets/task14/logs.jpeg",
+    26:"../assets/task14/logs.jpeg",
+  };
+
+  const $ = (id) => document.getElementById(id);
+
+  const ui = {
+    topicSelect: $("topicSelect"),
+    uiMode: $("uiMode"),
+    newBtn: $("newBtn"),
+    resetBtn: $("resetBtn"),
+    topBar: $("topBar"),
+    chips: $("chips"),
+    taskText: $("taskText"),
+    groupNav: $("groupNav"),
+    groupEmpty: $("groupEmpty"),
+    taskImg: $("taskImg"),
+    numPad: $("numPad"),
+    numPadBtns: $("numPadBtns"),
+    stepsUI: $("stepsUI"),
+    quickUI: $("quickUI"),
+    modeStepsBtn: $("modeStepsBtn"),
+    modeQuickBtn: $("modeQuickBtn"),
+    modeHint: $("modeHint"),
+    stepTitle: $("stepTitle"),
+    progress: $("progress"),
+    stepBody: $("stepBody"),
+    quickAnswer: $("quickAnswer"),
+    quickCheckBtn: $("quickCheckBtn"),
+    quickMsg: $("quickMsg"),
+    quickCorrect: $("quickCorrect"),
+    deepSeekCard: $("deepSeekCard"),
+    deepSeekPrompt: $("deepSeekPrompt"),
+    deepSeekCopyBtn: $("deepSeekCopyBtn"),
+    deepSeekOpenBtn: $("deepSeekOpenBtn"),
+    deepSeekMsg: $("deepSeekMsg"),
+    deepSeekJump: $("deepSeekJump"),
+    hubUI: $("hubUI"),
+    hubGrid: $("hubGrid"),
+    trainerUI: $("trainerUI"),
+  };
+
+  const GROUPS = {
+    add_value: { op: "add", goal: "value", title: "Арифм + значение" },
+    add_sum: { op: "add", goal: "sum", title: "Арифм + сумма" },
+    add_steps: { op: "add", goal: "steps", title: "Арифм + до условия" },
+    mul_value: { op: "mul", goal: "value", title: "Геом + значение" },
+    mul_sum: { op: "mul", goal: "sum", title: "Геом + сумма" },
+    mul_steps: { op: "mul", goal: "steps", title: "Геом + до условия" },
+  };
+
+  let TASKS = [];
+  let ALL_TASKS = [];
+  let currentTask = null;
+  let activeInput = null;
+  let hasAttempt = false;
+
+  // состояние “пошагового” решения
+  const W = {
+    stepIndex: 0,
+    goal: "value",        // value | sum | steps
+    op: "add",            // add | mul
+    x0: null, y0: null,
+    dx: 1,
+    addDir: "down",       // up | down (при увеличении x)
+    dy: null,
+    mulOp: "div",         // mul | div (при увеличении x)
+    q: null,
+    x1: null,
+    n: null,
+    limitCmp: "<=",
+    limit: null,
+
+    // микро-проверки (шаг 4)
+    m1_ok:false, m2_ok:false, m3_ok:false, m4_ok:false,
+    seq: [],
+    computed: {
+      dxTotal: null,
+      steps: null,
+      sign: 1,
+      yFinal: null,
+      sum: null
+    },
+
+    groupLocked: false,
+    groupOp: null,
+    groupGoal: null,
+    groupKey: null,
+    groupTitle: null
+  };
+
+  function isTruthyParam(val){
+    if (!val) return false;
+    return val === "1" || val.toLowerCase() === "true";
+  }
+
+  const urlParams = new URL(window.location.href).searchParams;
+  const groupKey = urlParams.get("group");
+  const hubMode = isTruthyParam(urlParams.get("hub"));
+  const groupConfig = groupKey && GROUPS[groupKey] ? GROUPS[groupKey] : null;
+
+  if (groupConfig) {
+    W.groupLocked = true;
+    W.groupOp = groupConfig.op;
+    W.groupGoal = groupConfig.goal;
+    W.groupKey = groupKey;
+    W.groupTitle = groupConfig.title;
+  }
+
+  function resetWorkState() {
+    W.stepIndex = 0;
+    W.goal = W.groupLocked ? W.groupGoal : guessGoal(currentTask);
+    W.op = W.groupLocked ? W.groupOp : guessOp(currentTask);
+
+    W.x0 = null; W.y0 = null;
+    W.dx = 1;
+
+    W.addDir = "down";
+    W.dy = null;
+
+    W.mulOp = "div";
+    W.q = null;
+
+    W.x1 = null;
+    W.n = null;
+    W.limitCmp = "<=";
+    W.limit = null;
+
+    W.m1_ok = W.m2_ok = W.m3_ok = W.m4_ok = false;
+    W.seq = [];
+    W.computed = { dxTotal:null, steps:null, sign:1, yFinal:null, sum:null };
+  }
+  function updateHelpVisibility(){
+    ui.deepSeekCard.style.display = hasAttempt ? "" : "none";
+    ui.deepSeekJump.textContent = hasAttempt ? "Нужна помощь? (DeepSeek)" : "Нужна помощь?";
+  }
+
+  function registerAttempt(){
+    if (hasAttempt) return;
+    hasAttempt = true;
+    updateHelpVisibility();
+  }
+
+  function normNumStr(s){
+    return String(s ?? "").trim().replace(",", ".").replace(/\s+/g,"");
+  }
+  function toNum(s){
+    const n = Number(normNumStr(s));
+    return Number.isFinite(n) ? n : null;
+  }
+  function approxEq(a,b){
+    return a !== null && b !== null && Math.abs(a-b) < 1e-9;
+  }
+
+  function getId(t){
+    const v = t?.id ?? t?.ID ?? t?.num ?? t?.number ?? null;
+    return v === null ? null : Number(v);
+  }
+  function getText(t){
+    return String(t?.text ?? t?.problem ?? t?.question ?? t?.prompt ?? "");
+  }
+  function getTopic(t){
+    return String(t?.topic ?? "");
+  }
+  function getSubtype(t){
+    return String(t?.subtype ?? "");
+  }
+  function getCanonicalAnswer(t){
+    const a = t?.answer;
+    if (a === null || a === undefined) return null;
+    if (typeof a === "string" || typeof a === "number") return String(a);
+    if (a.canonical !== undefined && a.canonical !== null) return String(a.canonical);
+    if (a.correct !== undefined && a.correct !== null) return String(a.correct);
+    return null;
+  }
+  function getAltAnswers(t){
+    const a = t?.answer;
+    if (!a || typeof a !== "object") return [];
+    return Array.isArray(a.alternatives) ? a.alternatives.map(String) : [];
+  }
+  function getImage(t){
+    const img = t?.image ?? null;
+    if (img) {
+      // если в JSON путь относительный от корня — поднимемся на уровень выше (мы в /trainers/)
+      if (img.startsWith("http")) return img;
+      if (img.startsWith("/")) return img;
+      return "../" + img.replace(/^\.?\//,"");
+    }
+    const id = getId(t);
+    return id && IMAGE_BY_ID[id] ? IMAGE_BY_ID[id] : null;
+  }
+
+  function guessOp(task){
+    const topic = (getTopic(task) + " " + getSubtype(task)).toLowerCase();
+    if (topic.includes("геометр")) return "mul";
+    // по умолчанию — “на сколько-то больше/меньше”
+    return "add";
+  }
+
+  function guessGoal(task){
+    const s = (getText(task) + " " + getSubtype(task)).toLowerCase();
+    if (s.includes("сколько всего") || s.includes("за первые") || s.includes("сумм")) return "sum";
+    if (s.includes("через сколько") || s.includes("сколько дней") && (s.includes("пока") || s.includes("когда") || s.includes("не станет"))) return "steps";
+    return "value";
+  }
+
+  function setUIMode(mode){
+    ui.uiMode.value = mode;
+    const steps = (mode === "steps");
+    ui.stepsUI.style.display = steps ? "" : "none";
+    ui.quickUI.style.display = steps ? "none" : "";
+    ui.modeStepsBtn.classList.toggle("active", steps);
+    ui.modeQuickBtn.classList.toggle("active", !steps);
+    ui.modeHint.textContent = steps
+      ? "Пошагово: ученик отвечает на маленькие вопросы и считает по шагам."
+      : "Быстро: просто введи ответ и проверь.";
+    updateDeepSeekPrompt();
+  }
+
+  function renderChips(task){
+    const id = getId(task);
+    const topic = getTopic(task);
+    const subtype = getSubtype(task);
+    ui.chips.innerHTML = "";
+    const mk = (txt) => {
+      const s = document.createElement("span");
+      s.className = "chip";
+      s.textContent = txt;
+      return s;
+    };
+    if (id) ui.chips.appendChild(mk("№ " + id));
+    if (topic) ui.chips.appendChild(mk(topic));
+    if (subtype) ui.chips.appendChild(mk(subtype));
+  }
+
+  function renderProblem(task){
+    ui.taskText.textContent = getText(task);
+    renderChips(task);
+
+    const img = getImage(task);
+    if (img) {
+      ui.taskImg.style.display = "";
+      ui.taskImg.src = img;
+    } else {
+      ui.taskImg.style.display = "none";
+      ui.taskImg.removeAttribute("src");
+    }
+
+    // Числа из условия
+    const nums = Array.from(new Set((getText(task).match(/\d+(?:[.,]\d+)?/g) || [])));
+    if (nums.length) {
+      ui.numPad.style.display = "";
+      ui.numPadBtns.innerHTML = "";
+      for (const n of nums) {
+        const b = document.createElement("button");
+        b.className = "numChip";
+        b.type = "button";
+        b.textContent = n;
+        b.addEventListener("click", () => {
+          if (!activeInput) return;
+          const el = activeInput;
+          el.value = n;
+          el.dispatchEvent(new Event("input"));
+          el.focus();
+        });
+        ui.numPadBtns.appendChild(b);
+      }
+    } else {
+      ui.numPad.style.display = "none";
+    }
+  }
+
+  function buildDeepSeekPrompt(taskText){
+    return [
+      "Объясни решение очень простыми шагами.",
+      "Не используй формулы и названия методов.",
+      "Пиши коротко и понятно.",
+      "",
+      "Текст задачи:",
+      taskText
+    ].join("\n");
+  }
+
+  function updateDeepSeekPrompt(){
+    const taskText = currentTask ? getText(currentTask) : "";
+    ui.deepSeekPrompt.value = buildDeepSeekPrompt(taskText);
+    ui.deepSeekMsg.textContent = "";
+  }
+
+  function fallbackCopyPrompt(){
+    ui.deepSeekPrompt.focus();
+    ui.deepSeekPrompt.select();
+    ui.deepSeekMsg.textContent = "Скопируйте вручную: Ctrl+C.";
+  }
+
+  async function copyDeepSeekPrompt(){
+    const text = ui.deepSeekPrompt.value;
+    if (navigator.clipboard?.writeText) {
+      try{
+        await navigator.clipboard.writeText(text);
+        ui.deepSeekMsg.textContent = "Запрос скопирован.";
+        return;
+      }catch(e){
+        fallbackCopyPrompt();
+        return;
+      }
+    }
+    fallbackCopyPrompt();
+  }
+
+  function pickRandom(list){
+    if (!list.length) return null;
+    const i = Math.floor(Math.random() * list.length);
+    return list[i];
+  }
+
+  function filteredTasks(){
+    const v = ui.topicSelect.value;
+    const base = (v === "all") ? TASKS : TASKS.filter(t => getTopic(t) === v);
+    if (!W.groupLocked) return base;
+    return base.filter(t => guessOp(t) === W.groupOp && guessGoal(t) === W.groupGoal);
+  }
+
+  function newTask(){
+    const pool = filteredTasks();
+    const next = pickRandom(pool);
+    if (!next) return;
+    currentTask = next;
+    renderProblem(currentTask);
+    resetWorkState();
+    ui.quickMsg.textContent = "";
+    ui.quickCorrect.textContent = "";
+    ui.quickAnswer.value = "";
+    hasAttempt = false;
+    updateHelpVisibility();
+    updateDeepSeekPrompt();
+    showStep(0);
+  }
+
+  // ---------------------------
+  // ПОШАГОВЫЙ: шаги
+  // ---------------------------
+  function showStep(idx){
+    W.stepIndex = idx;
+    ui.progress.textContent = (idx+1) + "/5";
+    const titles = [
+      "Шаг 1 — Что нужно найти",
+      "Шаг 2 — Где известно значение",
+      "Шаг 3 — Как меняется каждый шаг",
+      "Шаг 4 — Посчитай по шагам",
+      "Шаг 5 — Введи ответ и проверь"
+    ];
+    ui.stepTitle.textContent = titles[idx] || ("Шаг " + (idx+1));
+    ui.stepBody.innerHTML = "";
+    if (idx === 0) renderStep1();
+    if (idx === 1) renderStep2();
+    if (idx === 2) renderStep3();
+    if (idx === 3) renderStep4();
+    if (idx === 4) renderStep5();
+  }
+
+  function navButtons(canBack, canNext, onBack, onNext){
+    const wrap = document.createElement("div");
+    wrap.className = "actions";
+
+    const b1 = document.createElement("button");
+    b1.className = "btn";
+    b1.textContent = "Назад";
+    b1.disabled = !canBack;
+    b1.addEventListener("click", onBack);
+
+    const b2 = document.createElement("button");
+    b2.className = "btn primary";
+    b2.textContent = "Дальше";
+    b2.disabled = !canNext;
+    b2.addEventListener("click", onNext);
+
+    wrap.appendChild(b1);
+    wrap.appendChild(b2);
+    return wrap;
+  }
+
+  function bindActive(el){
+    el.addEventListener("focus", () => activeInput = el);
+    el.addEventListener("click", () => activeInput = el);
+  }
+
+  function renderStep1(){
+    const h = document.createElement("div");
+    h.innerHTML = `
+      <div class="q">Выбираем, что нужно найти</div>
+      <div class="qSub">${W.groupLocked ? "Тип уже выбран — менять не нужно." : "Если ты не уверен — выбери “найти значение”, это чаще всего."}</div>
+    `;
+    ui.stepBody.appendChild(h);
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+
+    const f1 = document.createElement("div");
+    f1.className = "field";
+    f1.innerHTML = `
+      <label>Что ищем?</label>
+      <select id="goalSel">
+        <option value="value">Найти значение в другом месте (высота/ряд/день/время)</option>
+        <option value="sum">Найти сумму (сколько всего за несколько шагов)</option>
+        <option value="steps">Найти сколько шагов до условия (пока не станет…)</option>
+      </select>
+    `;
+    const goalSel = f1.querySelector("#goalSel");
+    goalSel.value = W.goal;
+    goalSel.addEventListener("change", () => W.goal = goalSel.value);
+    goalSel.disabled = W.groupLocked;
+
+    const f2 = document.createElement("div");
+    f2.className = "field";
+    f2.innerHTML = `
+      <label>Как меняется?</label>
+      <select id="opSel">
+        <option value="add">Прибавляем / убавляем (на сколько-то)</option>
+        <option value="mul">Умножаем / делим (в несколько раз)</option>
+      </select>
+      <div class="hintSmall">Обычно это уже видно по теме. Но если сомневаешься — можно переключить.</div>
+    `;
+    const opSel = f2.querySelector("#opSel");
+    opSel.value = W.op;
+    opSel.addEventListener("change", () => W.op = opSel.value);
+    opSel.disabled = W.groupLocked;
+
+    grid.appendChild(f1);
+    grid.appendChild(f2);
+    ui.stepBody.appendChild(grid);
+
+    ui.stepBody.appendChild(
+      navButtons(false, true, () => {}, () => showStep(1))
+    );
+  }
+
+  function renderStep2(){
+    const h = document.createElement("div");
+    h.innerHTML = `
+      <div class="q">Запиши известную точку</div>
+      <div class="qSub">Где (x) и какое значение (y) там известно. Можно нажимать числа из условия.</div>
+    `;
+    ui.stepBody.appendChild(h);
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+
+    const f1 = document.createElement("div");
+    f1.className = "field";
+    f1.innerHTML = `<label>Где/когда известно значение</label><input id="x0" type="text" placeholder="например: 2205 или 1" />`;
+    const x0 = f1.querySelector("#x0");
+    if (W.x0 !== null) x0.value = W.x0;
+    bindActive(x0);
+    x0.addEventListener("input", () => W.x0 = toNum(x0.value));
+
+    const f2 = document.createElement("div");
+    f2.className = "field";
+    f2.innerHTML = `<label>Какое значение там известно</label><input id="y0" type="text" placeholder="например: 550" />`;
+    const y0 = f2.querySelector("#y0");
+    if (W.y0 !== null) y0.value = W.y0;
+    bindActive(y0);
+    y0.addEventListener("input", () => W.y0 = toNum(y0.value));
+
+    grid.appendChild(f1);
+    grid.appendChild(f2);
+    ui.stepBody.appendChild(grid);
+
+    const ok = (W.x0 !== null && W.y0 !== null);
+
+    ui.stepBody.appendChild(
+      navButtons(true, ok, () => showStep(0), () => showStep(2))
+    );
+  }
+
+  function renderStep3(){
+    const h = document.createElement("div");
+    h.innerHTML = `
+      <div class="q">Запиши правило одного шага</div>
+      <div class="qSub">Смысл: “на каждые Δx значение меняется вот так”.</div>
+    `;
+    ui.stepBody.appendChild(h);
+
+    const grid = document.createElement("div");
+    grid.className = "grid";
+
+    const fDX = document.createElement("div");
+    fDX.className = "field";
+    fDX.innerHTML = `<label>Размер шага (по времени/месту)</label><input id="dx" type="text" placeholder="обычно 1 (ряд/день), или 10,5, или 7..." />`;
+    const dx = fDX.querySelector("#dx");
+    dx.value = String(W.dx ?? 1);
+    bindActive(dx);
+    dx.addEventListener("input", () => {
+      const v = toNum(dx.value);
+      W.dx = (v === null || v === 0) ? 1 : v;
+    });
+
+    const fRule = document.createElement("div");
+    fRule.className = "field";
+
+    if (W.op === "add") {
+      fRule.innerHTML = `
+        <label>Когда делаем один шаг, значение…</label>
+        <select id="addDir">
+          <option value="up">увеличивается</option>
+          <option value="down">уменьшается</option>
+        </select>
+        <div style="height:10px"></div>
+        <label>…на сколько меняется за один шаг</label>
+        <input id="dy" type="text" placeholder="например: 1 или 2,5" />
+      `;
+      const addDir = fRule.querySelector("#addDir");
+      const dy = fRule.querySelector("#dy");
+      addDir.value = W.addDir;
+      addDir.addEventListener("change", () => W.addDir = addDir.value);
+      if (W.dy !== null) dy.value = W.dy;
+      bindActive(dy);
+      dy.addEventListener("input", () => W.dy = toNum(dy.value));
+    } else {
+      fRule.innerHTML = `
+        <label>Когда делаем один шаг, значение…</label>
+        <select id="mulOp">
+          <option value="mul">умножается</option>
+          <option value="div">делится</option>
+        </select>
+        <div style="height:10px"></div>
+        <label>…во сколько раз меняется за один шаг</label>
+        <input id="q" type="text" placeholder="например: 2 или 3" />
+      `;
+      const mulOp = fRule.querySelector("#mulOp");
+      const q = fRule.querySelector("#q");
+      mulOp.value = W.mulOp;
+      mulOp.addEventListener("change", () => W.mulOp = mulOp.value);
+      if (W.q !== null) q.value = W.q;
+      bindActive(q);
+      q.addEventListener("input", () => W.q = toNum(q.value));
+    }
+
+    grid.appendChild(fDX);
+    grid.appendChild(fRule);
+    ui.stepBody.appendChild(grid);
+
+    const ok = (W.dx !== null && W.dx !== 0) && ((W.op === "add" && W.dy !== null) || (W.op === "mul" && W.q !== null && W.q !== 0));
+
+    ui.stepBody.appendChild(
+      navButtons(true, ok, () => showStep(1), () => showStep(3))
+    );
+  }
+
+  function computeStepSign(fromX, toX){
+    const dxTotal = toX - fromX;
+    const steps = dxTotal / W.dx;
+    if (!Number.isFinite(steps)) return null;
+    const sign = steps >= 0 ? 1 : -1;
+    return { dxTotal, steps, sign };
+  }
+
+  function forwardFactor(){
+    // фактор для шага вперёд (x увеличился на Δx)
+    if (W.op === "add") return null;
+    const q = W.q;
+    if (!q || q === 0) return null;
+    return (W.mulOp === "mul") ? q : (1 / q);
+  }
+
+  function forwardDeltaY(){
+    if (W.op !== "add") return null;
+    const dy = W.dy;
+    if (dy === null) return null;
+    return (W.addDir === "up") ? dy : -dy;
+  }
+
+  function buildSequenceValue(toX){
+    // строим ряд от x0,y0 до нужного x (включительно)
+    const base = computeStepSign(W.x0, toX);
+    if (!base) return null;
+
+    const stepsRaw = base.steps;
+    // В задачах обычно целое, но на всякий — округлим, если очень близко:
+    const stepsInt = Math.abs(Math.round(stepsRaw));
+    const sign = base.sign;
+
+    let x = W.x0;
+    let y = W.y0;
+
+    const seq = [{ x, y }];
+
+    if (W.op === "add") {
+      const dForward = forwardDeltaY();
+      const d = dForward * sign; // если идём назад — знак меняется
+      for (let i=0;i<stepsInt;i++){
+        x = x + sign * W.dx;
+        y = y + d;
+        seq.push({ x, y });
+      }
+    } else {
+      const fForward = forwardFactor();
+      const f = (sign === 1) ? fForward : (1 / fForward);
+      for (let i=0;i<stepsInt;i++){
+        x = x + sign * W.dx;
+        y = y * f;
+        seq.push({ x, y });
+      }
+    }
+    return { seq, stepsInt, sign, dxTotal: base.dxTotal };
+  }
+
+  function renderSeqTable(seq){
+    const t = document.createElement("table");
+    const thead = document.createElement("thead");
+    thead.innerHTML = `<tr><th>Шаг</th><th class="right">x</th><th class="right">y</th></tr>`;
+    t.appendChild(thead);
+    const tb = document.createElement("tbody");
+    seq.forEach((r, i) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${i}</td><td class="right">${r.x}</td><td class="right">${r.y}</td>`;
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb);
+    return t;
+  }
+
+  function renderStep4(){
+    const h = document.createElement("div");
+    h.innerHTML = `
+      <div class="q">Считаем по шагам</div>
+      <div class="qSub">Здесь мы делаем маленькие проверки ✅, чтобы не потеряться.</div>
+    `;
+    ui.stepBody.appendChild(h);
+
+    // Блок “что ищем”
+    const goalBlock = document.createElement("div");
+    goalBlock.className = "field";
+    goalBlock.innerHTML = `
+      <label>Что именно считаем сейчас?</label>
+      <select id="goalSel2">
+        <option value="value">Найти значение в точке x₁</option>
+        <option value="sum">Найти сумму первых n значений</option>
+        <option value="steps">Найти сколько шагов до условия</option>
+      </select>
+      <div class="hintSmall">Если система угадала не то — переключите.</div>
+    `;
+    const goalSel2 = goalBlock.querySelector("#goalSel2");
+    goalSel2.value = W.goal;
+    goalSel2.addEventListener("change", () => { W.goal = goalSel2.value; showStep(3); });
+    if (W.groupLocked) {
+      goalSel2.disabled = true;
+      const hint = goalBlock.querySelector(".hintSmall");
+      hint.textContent = "Тип задачи задан заранее.";
+    }
+    ui.stepBody.appendChild(goalBlock);
+
+    // В зависимости от цели — разные поля
+    if (W.goal === "value") renderStep4_Value();
+    if (W.goal === "sum") renderStep4_Sum();
+    if (W.goal === "steps") renderStep4_Steps();
+
+    ui.stepBody.appendChild(
+      navButtons(true, true, () => showStep(2), () => showStep(4))
+    );
+  }
+
+  function renderStep4_Value(){
+    const grid = document.createElement("div");
+    grid.className = "grid";
+
+    const fTarget = document.createElement("div");
+    fTarget.className = "field";
+    fTarget.innerHTML = `<label>Где нужно найти? (x₁)</label><input id="x1" type="text" placeholder="например: 1890 или 30" />`;
+    const x1 = fTarget.querySelector("#x1");
+    if (W.x1 !== null) x1.value = W.x1;
+    bindActive(x1);
+    x1.addEventListener("input", () => W.x1 = toNum(x1.value));
+
+    const fInfo = document.createElement("div");
+    fInfo.className = "field";
+    fInfo.innerHTML = `
+      <label>Что дальше?</label>
+      <div class="hintSmall">
+        1) Найди разницу: где нужно − где известно<br>
+        2) Сколько шагов: разница / размер шага<br>
+        3) Сделай столько шагов и получи y₁
+      </div>
+    `;
+    grid.appendChild(fTarget);
+    grid.appendChild(fInfo);
+    ui.stepBody.appendChild(grid);
+
+    const canCompute = (W.x1 !== null && W.x0 !== null && W.y0 !== null && W.dx !== null);
+
+    const mini = document.createElement("div");
+    mini.className = "miniCheck";
+
+    const mkRow = (title, idInput, checkFn) => {
+      const row = document.createElement("div");
+      row.className = "miniRow";
+      row.innerHTML = `<b>${title}</b><input id="${idInput}" type="text" placeholder="впиши число" />`;
+      const inp = row.querySelector("input");
+      bindActive(inp);
+      const btn = document.createElement("button");
+      btn.className = "btn";
+      btn.textContent = "Проверить";
+      btn.addEventListener("click", () => checkFn(inp, row));
+      row.appendChild(btn);
+      return row;
+    };
+
+    let built = null;
+    if (canCompute) {
+      built = buildSequenceValue(W.x1);
+      if (built) {
+        W.computed.dxTotal = built.dxTotal;
+        W.computed.steps = built.stepsInt;
+        W.computed.sign = built.sign;
+        W.computed.yFinal = built.seq[built.seq.length-1].y;
+        W.seq = built.seq;
+      }
+    }
+
+    mini.appendChild(mkRow("1) Разница: где нужно − где известно", "m_dx", (inp, row) => {
+      registerAttempt();
+      const v = toNum(inp.value);
+      if (!canCompute || !built) return;
+      if (approxEq(v, W.computed.dxTotal)) { row.classList.add("ok"); inp.disabled=true; W.m1_ok=true; }
+      else { row.classList.add("bad"); }
+      row.querySelector("button").className = W.m1_ok ? "btn good" : "btn bad";
+    }));
+
+    mini.appendChild(mkRow("2) Сколько шагов: разница / размер шага", "m_steps", (inp, row) => {
+      registerAttempt();
+      const v = toNum(inp.value);
+      if (!canCompute || !built) return;
+      if (approxEq(v, W.computed.steps)) { row.classList.add("ok"); inp.disabled=true; W.m2_ok=true; }
+      else { row.classList.add("bad"); }
+      row.querySelector("button").className = W.m2_ok ? "btn good" : "btn bad";
+    }));
+
+    mini.appendChild(mkRow("3) Значение в точке x₁ (y₁)", "m_y1", (inp, row) => {
+      registerAttempt();
+      const v = toNum(inp.value);
+      if (!canCompute || !built) return;
+      if (approxEq(v, W.computed.yFinal)) { row.classList.add("ok"); inp.disabled=true; W.m3_ok=true; }
+      else { row.classList.add("bad"); }
+      row.querySelector("button").className = W.m3_ok ? "btn good" : "btn bad";
+    }));
+
+    ui.stepBody.appendChild(mini);
+
+    if (built && built.seq?.length) {
+      const seqBox = document.createElement("div");
+      seqBox.className = "field";
+      seqBox.innerHTML = `<label>Ряд по шагам (можно пролистать)</label>`;
+      seqBox.appendChild(renderSeqTable(built.seq));
+      const b = document.createElement("button");
+      b.className = "btn primary";
+      b.textContent = "Подставить y₁ в ответ";
+      b.addEventListener("click", () => {
+        const ans = $("finalAnswer");
+        if (ans) ans.value = String(W.computed.yFinal ?? "");
+      });
+      seqBox.appendChild(document.createElement("div")).style.height="10px";
+      seqBox.appendChild(b);
+      ui.stepBody.appendChild(seqBox);
+    } else {
+      const warn = document.createElement("div");
+      warn.className = "msg bad";
+      warn.textContent = "Заполни x₁, чтобы посчитать шаги.";
+      ui.stepBody.appendChild(warn);
+    }
+  }
+
+  function renderStep4_Sum(){
+    const grid = document.createElement("div");
+    grid.className = "grid";
+
+    const fN = document.createElement("div");
+    fN.className = "field";
+    fN.innerHTML = `<label>Сколько значений складываем? (n)</label><input id="n" type="text" placeholder="например: 8 или 12" />`;
+    const n = fN.querySelector("#n");
+    if (W.n !== null) n.value = W.n;
+    bindActive(n);
+    n.addEventListener("input", () => W.n = toNum(n.value));
+
+    const fInfo = document.createElement("div");
+    fInfo.className = "field";
+    fInfo.innerHTML = `
+      <label>Как считать сумму (без формул)</label>
+      <div class="hintSmall">
+        1) Выпиши ряд значений.<br>
+        2) Сложи “первое + последнее”, “второе + предпоследнее”…<br>
+        3) Если n нечётное — середина добавится отдельно.
+      </div>
+    `;
+
+    grid.appendChild(fN);
+    grid.appendChild(fInfo);
+    ui.stepBody.appendChild(grid);
+
+    const can = (W.n !== null && W.n > 0 && W.x0 !== null && W.y0 !== null);
+
+    if (!can) {
+      const warn = document.createElement("div");
+      warn.className = "msg bad";
+      warn.textContent = "Нужны x₀, y₀ и n.";
+      ui.stepBody.appendChild(warn);
+      return;
+    }
+
+    // строим n значений вперёд
+    let x = W.x0;
+    let y = W.y0;
+    const seq = [{x,y}];
+    const nInt = Math.round(W.n);
+
+    for (let i=1;i<nInt;i++){
+      if (W.op === "add"){
+        y = y + forwardDeltaY();
+      } else {
+        y = y * forwardFactor();
+      }
+      x = x + W.dx;
+      seq.push({x,y});
+    }
+    W.seq = seq;
+
+    // сумма
+    const sum = seq.reduce((acc,r) => acc + r.y, 0);
+    W.computed.sum = sum;
+
+    // микро: первый+последний
+    const pairSum = seq[0].y + seq[seq.length-1].y;
+    const pairs = Math.floor(nInt/2);
+    const mid = (nInt%2===1) ? seq[Math.floor(nInt/2)].y : 0;
+
+    const mini = document.createElement("div");
+    mini.className = "miniCheck";
+
+    const row1 = document.createElement("div");
+    row1.className = "miniRow";
+    row1.innerHTML = `<b>1) Первое + последнее</b><input id="m_pair" type="text" placeholder="впиши число" />`;
+    const inp1 = row1.querySelector("input"); bindActive(inp1);
+    const b1 = document.createElement("button"); b1.className="btn"; b1.textContent="Проверить";
+    b1.addEventListener("click", () => {
+      registerAttempt();
+      const v = toNum(inp1.value);
+      if (approxEq(v, pairSum)) { b1.className="btn good"; inp1.disabled=true; }
+      else { b1.className="btn bad"; }
+    });
+    row1.appendChild(b1);
+    mini.appendChild(row1);
+
+    const row2 = document.createElement("div");
+    row2.className = "miniRow";
+    row2.innerHTML = `<b>2) Сумма (сколько всего)</b><input id="m_sum" type="text" placeholder="впиши число" />`;
+    const inp2 = row2.querySelector("input"); bindActive(inp2);
+    const b2 = document.createElement("button"); b2.className="btn"; b2.textContent="Проверить";
+    b2.addEventListener("click", () => {
+      registerAttempt();
+      const v = toNum(inp2.value);
+      if (approxEq(v, sum)) { b2.className="btn good"; inp2.disabled=true; }
+      else { b2.className="btn bad"; }
+    });
+    row2.appendChild(b2);
+    mini.appendChild(row2);
+
+    ui.stepBody.appendChild(mini);
+
+    const seqBox = document.createElement("div");
+    seqBox.className = "field";
+    seqBox.innerHTML = `<label>Ряд значений (n=${nInt})</label>`;
+    seqBox.appendChild(renderSeqTable(seq));
+
+    const info = document.createElement("div");
+    info.className="hintSmall";
+    info.innerHTML = `Пары: ${pairs} шт. • (первое+последнее) = ${pairSum}` + (nInt%2===1 ? ` • середина = ${mid}` : "");
+    seqBox.appendChild(info);
+
+    const b = document.createElement("button");
+    b.className = "btn primary";
+    b.textContent = "Подставить сумму в ответ";
+    b.addEventListener("click", () => {
+      const ans = $("finalAnswer");
+      if (ans) ans.value = String(sum);
+    });
+    seqBox.appendChild(document.createElement("div")).style.height="10px";
+    seqBox.appendChild(b);
+
+    ui.stepBody.appendChild(seqBox);
+  }
+
+  function renderStep4_Steps(){
+    const grid = document.createElement("div");
+    grid.className = "grid";
+
+    const fCmp = document.createElement("div");
+    fCmp.className="field";
+    fCmp.innerHTML = `
+      <label>Условие остановки</label>
+      <select id="cmp">
+        <option value="<=">y стало ≤ …</option>
+        <option value=">=">y стало ≥ …</option>
+      </select>
+      <div style="height:10px"></div>
+      <label>Порог (…)</label>
+      <input id="lim" type="text" placeholder="например: 2" />
+    `;
+    const cmp = fCmp.querySelector("#cmp");
+    const lim = fCmp.querySelector("#lim");
+    cmp.value = W.limitCmp;
+    cmp.addEventListener("change", () => W.limitCmp = cmp.value);
+    if (W.limit !== null) lim.value = W.limit;
+    bindActive(lim);
+    lim.addEventListener("input", () => W.limit = toNum(lim.value));
+
+    const fInfo = document.createElement("div");
+    fInfo.className="field";
+    fInfo.innerHTML = `
+      <label>Как считаем (без формул)</label>
+      <div class="hintSmall">
+        Нажимаем “Сделать шаг” и смотрим, когда условие выполнится.<br>
+        Потом ответ — сколько шагов получилось.
+      </div>
+    `;
+
+    grid.appendChild(fCmp);
+    grid.appendChild(fInfo);
+    ui.stepBody.appendChild(grid);
+
+    const can = (W.limit !== null && W.x0 !== null && W.y0 !== null);
+    if (!can) {
+      const warn = document.createElement("div");
+      warn.className="msg bad";
+      warn.textContent = "Нужны x₀, y₀ и порог.";
+      ui.stepBody.appendChild(warn);
+      return;
+    }
+
+    // интерактивный счётчик шагов
+    let steps = 0;
+    let x = W.x0;
+    let y = W.y0;
+    const seq = [{x,y}];
+
+    const box = document.createElement("div");
+    box.className="field";
+    box.innerHTML = `<label>Счётчик</label>`;
+
+    const status = document.createElement("div");
+    status.className="hintSmall";
+    status.textContent = `Сейчас: шагов 0 • x=${x} • y=${y}`;
+    box.appendChild(status);
+
+    const btnRow = document.createElement("div");
+    btnRow.className="actions";
+
+    const stepBtn = document.createElement("button");
+    stepBtn.className="btn primary";
+    stepBtn.textContent="Сделать шаг";
+
+    const step5Btn = document.createElement("button");
+    step5Btn.className="btn";
+    step5Btn.textContent="Сделать 5 шагов";
+
+    function condOK(val){
+      return (W.limitCmp === "<=") ? (val <= W.limit) : (val >= W.limit);
+    }
+
+    function doOne(){
+      steps++;
+      x = x + W.dx;
+
+      if (W.op === "add"){
+        y = y + forwardDeltaY();
+      } else {
+        y = y * forwardFactor();
+      }
+      seq.push({x,y});
+      status.textContent = `Сейчас: шагов ${steps} • x=${x} • y=${y}`;
+
+      if (condOK(y)){
+        status.innerHTML = `✅ Условие выполнено на шаге ${steps}. (x=${x}, y=${y})`;
+        stepBtn.disabled = true;
+        step5Btn.disabled = true;
+      }
+    }
+    stepBtn.addEventListener("click", doOne);
+    step5Btn.addEventListener("click", () => { for(let i=0;i<5 && !stepBtn.disabled;i++) doOne(); });
+
+    btnRow.appendChild(stepBtn);
+    btnRow.appendChild(step5Btn);
+    box.appendChild(btnRow);
+
+    const ask = document.createElement("div");
+    ask.className="miniRow";
+    ask.innerHTML = `<b>Ответ: сколько шагов получилось?</b><input id="m_steps2" type="text" placeholder="впиши число" />`;
+    const inp = ask.querySelector("input");
+    bindActive(inp);
+
+    const checkBtn = document.createElement("button");
+    checkBtn.className="btn";
+    checkBtn.textContent="Проверить";
+    checkBtn.addEventListener("click", () => {
+      registerAttempt();
+      const v = toNum(inp.value);
+      if (approxEq(v, steps) && stepBtn.disabled) {
+        checkBtn.className="btn good";
+        inp.disabled = true;
+        // Можно подставить как ответ
+        const ans = $("finalAnswer");
+        if (ans) ans.value = String(steps);
+      } else {
+        checkBtn.className="btn bad";
+      }
+    });
+    ask.appendChild(checkBtn);
+    box.appendChild(ask);
+
+    box.appendChild(renderSeqTable(seq));
+    ui.stepBody.appendChild(box);
+  }
+
+  function renderStep5(){
+    const h = document.createElement("div");
+    h.innerHTML = `
+      <div class="q">Финал: введи ответ и проверь</div>
+      <div class="qSub">Можно нажать “подставить” на шаге 4, чтобы не ошибиться в цифрах.</div>
+    `;
+    ui.stepBody.appendChild(h);
+
+    const box = document.createElement("div");
+    box.className = "answerBox";
+    box.innerHTML = `
+      <div class="answerRow">
+        <input id="finalAnswer" type="text" placeholder="Ответ" />
+        <button class="btn primary" id="finalCheck">Проверить</button>
+        <button class="btn" id="finalShow">Показать правильный (для учёбы)</button>
+      </div>
+      <div class="msg" id="finalMsg"></div>
+      <div class="footerNote" id="finalCorrect"></div>
+    `;
+    ui.stepBody.appendChild(box);
+
+    const ans = box.querySelector("#finalAnswer");
+    bindActive(ans);
+
+    const msg = box.querySelector("#finalMsg");
+    const corr = box.querySelector("#finalCorrect");
+
+    function isCorrect(userStr){
+      const canon = getCanonicalAnswer(currentTask);
+      if (canon === null) return false;
+
+      const u = toNum(userStr);
+      const c = toNum(canon);
+
+      if (u !== null && c !== null) return approxEq(u, c);
+
+      // строковое сравнение как запасной вариант
+      const us = normNumStr(userStr);
+      const cs = normNumStr(canon);
+      if (us === cs) return true;
+
+      const alts = getAltAnswers(currentTask).map(normNumStr);
+      return alts.includes(us);
+    }
+
+    box.querySelector("#finalCheck").addEventListener("click", () => {
+      registerAttempt();
+      const ok = isCorrect(ans.value);
+      if (ok){
+        msg.textContent = "✅ Верно!";
+        msg.className = "msg ok";
+        corr.textContent = "";
+      } else {
+        msg.textContent = "❌ Неверно. Вернись на шаг 4 и проверь вычисления.";
+        msg.className = "msg bad";
+      }
+    });
+
+    box.querySelector("#finalShow").addEventListener("click", () => {
+      const canon = getCanonicalAnswer(currentTask);
+      corr.textContent = canon ? ("Правильный ответ: " + canon) : "В базе нет ответа для этой задачи.";
+    });
+
+    ui.stepBody.appendChild(
+      navButtons(true, true, () => showStep(3), () => newTask())
+    );
+  }
+
+  // ---------------------------
+  // Быстрый режим
+  // ---------------------------
+  function quickCheck(){
+    registerAttempt();
+    const canon = getCanonicalAnswer(currentTask);
+    if (!canon) {
+      ui.quickMsg.textContent = "В базе нет ответа для этой задачи.";
+      ui.quickMsg.className = "msg bad";
+      return;
+    }
+    const u = toNum(ui.quickAnswer.value);
+    const c = toNum(canon);
+
+    let ok = false;
+    if (u !== null && c !== null) ok = approxEq(u, c);
+    else ok = normNumStr(ui.quickAnswer.value) === normNumStr(canon);
+
+    if (ok){
+      ui.quickMsg.textContent = "✅ Верно!";
+      ui.quickMsg.className = "msg ok";
+      ui.quickCorrect.textContent = "";
+    } else {
+      ui.quickMsg.textContent = "❌ Неверно.";
+      ui.quickMsg.className = "msg bad";
+      ui.quickCorrect.textContent = "Правильный ответ: " + canon;
+    }
+  }
+
+  // ---------------------------
+  // Загрузка банка
+  // ---------------------------
+  async function fetchTasksWithTimeout(url){
+    const controller = new AbortController();
+    const timerId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    try{
+      const res = await fetch(url, { cache: "no-store", signal: controller.signal });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const json = await res.json();
+      const tasks = Array.isArray(json) ? json : (json.tasks || []);
+      if (!Array.isArray(tasks) || tasks.length === 0) throw new Error("В JSON нет tasks или он пустой.");
+      return tasks;
+    }catch(e){
+      if (e?.name === "AbortError") {
+        throw new Error("Таймаут 8 с");
+      }
+      throw e;
+    }finally{
+      clearTimeout(timerId);
+    }
+  }
+
+  async function boot(){
+    ui.topicSelect.innerHTML = `<option value="all">Все</option>`;
+    ui.taskText.textContent = "Загружаю базу…";
+
+    try{
+      if (hubMode && !groupConfig) {
+        renderHub();
+        ui.trainerUI.style.display = "none";
+        ui.hubUI.style.display = "";
+        ui.topBar.style.display = "none";
+        return;
+      }
+
+      if (W.groupLocked) {
+        renderGroupNav();
+      }
+
+      const attempts = [];
+      let loaded = false;
+      for (const url of DATA_URLS){
+        ui.taskText.textContent = "Пробую загрузить банк: " + url;
+        try{
+          ALL_TASKS = await fetchTasksWithTimeout(url);
+          attempts.push({ url, status: "OK" });
+          loaded = true;
+          break;
+        }catch(e){
+          attempts.push({ url, status: e?.message || String(e) });
+        }
+      }
+
+      if (!loaded) {
+        const attemptsText = attempts
+          .map((item) => `- ${item.url}: ${item.status}`)
+          .join("\n");
+        throw new Error(
+          "Попытки:\n" + attemptsText +
+          "\n\nПроверьте, что файл существует по одному из путей:\n" +
+          DATA_URLS.join("\n")
+        );
+      }
+
+      TASKS = ALL_TASKS.slice();
+
+      if (W.groupLocked) {
+        TASKS = TASKS.filter(t => guessOp(t) === W.groupOp && guessGoal(t) === W.groupGoal);
+        if (TASKS.length === 0) {
+          showEmptyGroupMessage();
+          return;
+        }
+      }
+
+      // темы
+      const topics = Array.from(new Set(TASKS.map(getTopic).filter(Boolean))).sort();
+      for (const t of topics){
+        const opt = document.createElement("option");
+        opt.value = t;
+        opt.textContent = t;
+        ui.topicSelect.appendChild(opt);
+      }
+
+      // события
+      ui.topicSelect.addEventListener("change", newTask);
+      ui.newBtn.addEventListener("click", newTask);
+      ui.resetBtn.addEventListener("click", () => {
+        ui.topicSelect.value = "all";
+        setUIMode("steps");
+        newTask();
+      });
+
+      ui.uiMode.addEventListener("change", () => setUIMode(ui.uiMode.value));
+      ui.modeStepsBtn.addEventListener("click", () => setUIMode("steps"));
+      ui.modeQuickBtn.addEventListener("click", () => setUIMode("quick"));
+
+      ui.quickCheckBtn.addEventListener("click", quickCheck);
+      ui.quickAnswer.addEventListener("keydown", (e) => { if (e.key === "Enter") quickCheck(); });
+
+      ui.deepSeekCopyBtn.addEventListener("click", copyDeepSeekPrompt);
+      ui.deepSeekOpenBtn.addEventListener("click", () => {
+        window.open("https://chat.deepseek.com/", "_blank", "noopener,noreferrer");
+      });
+      ui.deepSeekJump.addEventListener("click", () => {
+        if (!hasAttempt) return;
+        ui.deepSeekCard.open = true;
+        ui.deepSeekCard.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      setUIMode("steps");
+      updateHelpVisibility();
+      newTask();
+
+    }catch(e){
+      ui.taskText.textContent = "Ошибка: база задач не загрузилась.\n" + (e?.message || e);
+      ui.numPad.style.display="none";
+    }
+  }
+
+  function renderHub(){
+    ui.hubGrid.innerHTML = "";
+    Object.entries(GROUPS).forEach(([key, cfg]) => {
+      const link = document.createElement("a");
+      link.className = "btn primary hubBtn";
+      link.textContent = cfg.title;
+      link.href = buildGroupUrl(key);
+      link.target = "_blank";
+      link.rel = "noopener";
+      ui.hubGrid.appendChild(link);
+    });
+  }
+
+  function renderGroupNav(){
+    const link = document.createElement("a");
+    link.className = "btn";
+    link.textContent = "Выбрать другой тип";
+    link.href = buildHubUrl();
+    ui.groupNav.innerHTML = "";
+    ui.groupNav.appendChild(link);
+    ui.groupNav.style.display = "";
+  }
+
+  function showEmptyGroupMessage(){
+    renderGroupNav();
+    ui.groupEmpty.style.display = "";
+    ui.groupEmpty.innerHTML = `В этой группе нет задач. <a href="${buildHubUrl()}">Вернуться в хаб</a>`;
+    ui.taskText.style.display = "none";
+    ui.taskImg.style.display = "none";
+    ui.numPad.style.display = "none";
+    ui.stepsUI.style.display = "none";
+    ui.quickUI.style.display = "none";
+    ui.newBtn.disabled = true;
+    ui.resetBtn.disabled = true;
+  }
+
+  function buildGroupUrl(key){
+    const url = new URL(window.location.href);
+    url.searchParams.set("group", key);
+    url.searchParams.delete("hub");
+    return url.toString();
+  }
+
+  function buildHubUrl(){
+    const url = new URL(window.location.href);
+    url.searchParams.set("hub", "1");
+    url.searchParams.delete("group");
+    return url.toString();
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>

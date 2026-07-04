@@ -1,0 +1,30 @@
+.solution-view {
+  margin-top: 8px;
+}
+
+.solution-view__row {
+  margin: 6px 0;
+}
+
+.solution-view__details {
+  margin-top: 6px;
+}
+
+.solution-view__details-body {
+  margin-top: 6px;
+}
+
+.solution-view__intro {
+  margin: 6px 0;
+  font-size: 12px;
+  color: #666;
+}
+
+.solution-view__details-text {
+  white-space: pre-wrap;
+  background: #0b1020;
+  color: #eef;
+  padding: 12px;
+  border-radius: 12px;
+  overflow: auto;
+}

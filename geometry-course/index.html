@@ -79,6 +79,7 @@ body.teacher .code{display:inline}
 .sent{font-size:12.5px;font-weight:700;color:#15803d}
 @media(max-width:560px){ body{padding:8px} .grid{grid-template-columns:1fr} .head{padding:18px} .head h1{font-size:20px;padding-right:120px} .tmode{top:16px;right:14px} }
 </style>
+<link rel="stylesheet" href="/assets/download-panel.css">
 </head>
 <body>
 <header class="site-header">
@@ -363,5 +364,17 @@ function readCode(code){var p=(code||'').trim().split('.');if(p.length<4||p[0]!=
     MathExam · mathexam.space · Наталья Михайловна
   </div>
 </footer>
+<!-- download-panel:start:geometry-course -->
+<section class="download-panel" id="download">
+  <h2>Скачать и адаптировать</h2>
+  <p>Этот тренажёр можно скачать как HTML-файл, открыть у себя на компьютере или использовать как основу для создания похожего тренажёра. Промпт для DeepSeek поможет адаптировать идею под другую тему, класс или тип ошибки.</p>
+  <div class="download-actions">
+    <a class="btn" href="/downloads/trainers/geometry-course/geometry-course.html" download>Скачать тренажёр HTML</a>
+    <a class="btn secondary btn-secondary" href="/downloads/trainers/geometry-course/geometry-course-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+    <a class="btn secondary btn-secondary" href="/downloads/trainers/geometry-course/geometry-course-package.zip" download>Скачать HTML + промпт архивом</a>
+  </div>
+  <p class="download-note">Если в тренажёре есть дополнительные файлы, удобнее скачать архив. <a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/">Как скачать и адаптировать тренажёр</a>.</p>
+</section>
+<!-- download-panel:end:geometry-course -->
 </body>
 </html>

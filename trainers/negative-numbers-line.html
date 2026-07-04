@@ -55,6 +55,7 @@
     .history{display:flex;flex-direction:column;gap:8px;max-height:260px;overflow:auto}.hist{background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:10px;font-size:14px}
     @media(max-width:880px){.grid{grid-template-columns:1fr}.line{min-width:760px}}
   </style>
+<link rel="stylesheet" href="/assets/download-panel.css">
 </head>
 <body>
   <main class="page">
@@ -133,5 +134,17 @@ function setMode(m){mode=m;['mAdd','mSub','mMix'].forEach(id=>document.getElemen
 function setLevel(l){level=l;['lEasy','lMed'].forEach(id=>document.getElementById(id).classList.remove('active'));document.getElementById(l==='easy'?'lEasy':'lMed').classList.add('active');nextTask()}
 document.getElementById('mAdd').onclick=()=>setMode('add');document.getElementById('mSub').onclick=()=>setMode('sub');document.getElementById('mMix').onclick=()=>setMode('mix');document.getElementById('lEasy').onclick=()=>setLevel('easy');document.getElementById('lMed').onclick=()=>setLevel('med');document.getElementById('check').onclick=check;document.getElementById('next').onclick=nextTask;document.getElementById('hintBtn').onclick=hint;document.getElementById('solution').onclick=showSol;document.getElementById('resetStats').onclick=resetStats;answer.onkeydown=e=>{if(e.key==='Enter')check()};loadStats();buildLine();nextTask();renderStats();
 </script>
+<!-- download-panel:start:negative-numbers-line -->
+<section class="download-panel" id="download">
+  <h2>Скачать и адаптировать</h2>
+  <p>Этот тренажёр можно скачать как HTML-файл, открыть у себя на компьютере или использовать как основу для создания похожего тренажёра. Промпт для DeepSeek поможет адаптировать идею под другую тему, класс или тип ошибки.</p>
+  <div class="download-actions">
+    <a class="btn" href="/downloads/trainers/negative-numbers-line/negative-numbers-line.html" download>Скачать тренажёр HTML</a>
+    <a class="btn secondary btn-secondary" href="/downloads/trainers/negative-numbers-line/negative-numbers-line-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+    <a class="btn secondary btn-secondary" href="/downloads/trainers/negative-numbers-line/negative-numbers-line-package.zip" download>Скачать HTML + промпт архивом</a>
+  </div>
+  <p class="download-note">Если в тренажёре есть дополнительные файлы, удобнее скачать архив. <a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/">Как скачать и адаптировать тренажёр</a>.</p>
+</section>
+<!-- download-panel:end:negative-numbers-line -->
 </body>
 </html>

@@ -1,0 +1,86 @@
+.download-panel{
+  box-sizing:border-box;
+  width:min(1040px, calc(100% - 32px));
+  margin:32px auto;
+  padding:22px;
+  border:1px solid #d9dfe9;
+  border-left:4px solid #2b57c4;
+  border-radius:10px;
+  background:#fff;
+  color:#22304a;
+  box-shadow:0 8px 22px rgba(34,48,74,.08);
+  font-family:"PT Sans","Segoe UI",Arial,sans-serif;
+  line-height:1.55;
+}
+.download-panel *{
+  box-sizing:border-box;
+}
+.download-panel h2{
+  margin:0 0 8px;
+  color:#22304a;
+  font-family:"PT Serif",Georgia,serif;
+  font-size:clamp(1.25rem, 3vw, 1.65rem);
+  line-height:1.25;
+}
+.download-panel p{
+  margin:.3em 0 .9em;
+  max-width:760px;
+  color:#5a6b87;
+}
+.download-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:12px;
+}
+.download-actions a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:42px;
+  padding:10px 16px;
+  border:1px solid #1e419c;
+  border-radius:8px;
+  background:#2b57c4;
+  color:#fff;
+  font-weight:700;
+  text-decoration:none;
+}
+.download-actions a:hover{
+  background:#1e419c;
+  color:#fff;
+}
+.download-actions a.secondary,
+.download-actions a.btn-secondary{
+  background:#fff;
+  color:#2b57c4;
+  border-color:#d9dfe9;
+}
+.download-actions a.secondary:hover,
+.download-actions a.btn-secondary:hover{
+  background:#f0f4fc;
+  border-color:#b8c7df;
+  color:#1e419c;
+}
+.download-note{
+  margin-top:12px;
+  font-size:.95rem;
+}
+.download-note a{
+  color:#2b57c4;
+  font-weight:700;
+}
+
+@media (max-width:640px){
+  .download-panel{
+    width:calc(100% - 20px);
+    margin:24px auto;
+    padding:18px;
+  }
+  .download-actions{
+    display:grid;
+  }
+  .download-actions a{
+    width:100%;
+  }
+}

@@ -7,6 +7,7 @@
 <style>
 *{box-sizing:border-box}body{margin:0;padding:18px;background:#e8e4db;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#1f2937}.app{max-width:980px;margin:auto;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 36px #0002}.head{display:flex;justify-content:space-between;gap:12px;align-items:center;background:#1a1a2e;color:white;padding:16px 20px}.title{font-weight:900;font-size:20px}.sub{font-size:12px;opacity:.72;margin-top:2px}.badge{background:#ffffff22;border:1px solid #ffffff33;border-radius:999px;padding:7px 11px;font-weight:800;font-size:12px;white-space:nowrap}.success{display:none;background:#ecfdf5;color:#15803d;border-bottom:1px solid #bbf7d0;padding:11px 18px;font-weight:800;font-size:13px}.main{display:flex}.work{flex:1;background:#faf8f2;padding:14px;border-right:1px solid #e5e2d9}canvas{display:block;width:100%;max-width:690px;background:#faf8f2;border:1px solid #e5e2d9;border-radius:12px;touch-action:none;cursor:cell}.side{width:285px;padding:14px;display:flex;flex-direction:column;gap:8px}.sideTitle{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:900;color:#94a3b8}.step{border:1.5px solid #e5e7eb;background:#f9fafb;border-radius:10px;padding:10px 11px;opacity:.38}.step.active{opacity:1;border-color:#3b82f6;background:#eff6ff}.step.done{opacity:1;border-color:#22c55e;background:#f0fdf4}.n{font-size:10px;text-transform:uppercase;letter-spacing:.55px;font-weight:900;color:#94a3b8;margin-bottom:4px}.active .n{color:#2563eb}.done .n{color:#16a34a}.t{font-size:12px;line-height:1.42}.h{margin-top:3px;font-size:11px;line-height:1.35;color:#64748b;font-style:italic}.done .h{color:#16a34a;font-weight:800;font-style:normal}.proof{display:none;border:1.5px solid #bbf7d0;background:#f0fdf4;color:#14532d;border-radius:11px;padding:11px;font-size:12px;line-height:1.45}.proof b{color:#166534}.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 14px;background:#f9fafb;border-top:1px solid #e5e7eb}button{border:1.5px solid #d1d5db;border-radius:9px;background:#fff;color:#374151;padding:7px 12px;font:700 12px system-ui;cursor:pointer}button:hover:not(:disabled){background:#f3f4f6}button.on{background:#1a1a2e;border-color:#1a1a2e;color:white}button:disabled{opacity:.45;cursor:default}.msg{flex:1;min-width:250px;border-radius:9px;padding:8px 11px;font-size:12px;font-weight:700;line-height:1.35}.info{background:#eff6ff;color:#1d4ed8}.ok{background:#f0fdf4;color:#15803d}.err{background:#fef2f2;color:#b91c1c}@media(max-width:780px){.main{flex-direction:column}.work{border-right:0}.side{width:100%;border-top:1px solid #e5e7eb}canvas{max-width:none}}@media(max-width:540px){body{padding:8px}.head{align-items:flex-start;flex-direction:column}.msg{order:-1;min-width:100%}}
 </style>
+<link rel="stylesheet" href="/assets/download-panel.css">
 </head>
 <body>
 <div class="app">
@@ -57,5 +58,17 @@ function undo(){if(S.phase!==0){S.phase=0;S.fp=null;message('Незавершё�
 function resetTask(){let t=S.task;init(t)}function newTask(){init(task())}
 init();
 </script>
+<!-- download-panel:start:bisector-trainer-v2 -->
+<section class="download-panel" id="download">
+  <h2>Скачать и адаптировать</h2>
+  <p>Этот тренажёр можно скачать как HTML-файл, открыть у себя на компьютере или использовать как основу для создания похожего тренажёра. Промпт для DeepSeek поможет адаптировать идею под другую тему, класс или тип ошибки.</p>
+  <div class="download-actions">
+    <a class="btn" href="/downloads/trainers/bisector-trainer-v2/bisector-trainer-v2.html" download>Скачать тренажёр HTML</a>
+    <a class="btn secondary btn-secondary" href="/downloads/trainers/bisector-trainer-v2/bisector-trainer-v2-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+    <a class="btn secondary btn-secondary" href="/downloads/trainers/bisector-trainer-v2/bisector-trainer-v2-package.zip" download>Скачать HTML + промпт архивом</a>
+  </div>
+  <p class="download-note">Если в тренажёре есть дополнительные файлы, удобнее скачать архив. <a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/">Как скачать и адаптировать тренажёр</a>.</p>
+</section>
+<!-- download-panel:end:bisector-trainer-v2 -->
 </body>
 </html>

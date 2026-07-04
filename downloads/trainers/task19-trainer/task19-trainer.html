@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>ОГЭ №19 — тренажёр «умной зубрёжки»</title>
+  <link rel="stylesheet" href="./solution-view.css">
+  <style>
+    :root { --w: 980px; }
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; background: #fafafa; color:#111; }
+    header { background:#111; color:#fff; padding: 18px 16px; }
+    header .wrap { max-width: var(--w); margin: 0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    header h1 { font-size: 18px; margin:0; font-weight: 700; }
+    header small { opacity:.85; }
+    main { padding: 16px; }
+    .wrap { max-width: var(--w); margin: 0 auto; }
+    .row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+    .card { background:#fff; border:1px solid #e5e5e5; border-radius: 14px; padding: 16px; box-shadow: 0 1px 0 rgba(0,0,0,.03); }
+    .statement { font-size: 18px; line-height: 1.35; margin: 0 0 10px; }
+    .meta { color:#555; font-size: 13px; }
+    button, select, input[type="checkbox"] { font: inherit; }
+    button { padding:10px 12px; border-radius: 12px; border:1px solid #ddd; background:#fff; cursor:pointer; }
+    button.primary { background:#111; border-color:#111; color:#fff; }
+    button.good { border-color:#2b8a3e; }
+    button.bad { border-color:#c92a2a; }
+    button:disabled { opacity:.5; cursor:not-allowed; }
+    .pill { display:inline-block; padding: 4px 10px; border-radius: 999px; border:1px solid #ddd; font-size:12px; margin-right: 6px; }
+    .grid2 { display:grid; grid-template-columns: 1fr; gap:12px; }
+    @media (min-width: 860px) { .grid2 { grid-template-columns: 2fr 1fr; } }
+    .muted { color:#666; }
+    .kbd { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 12px; border:1px solid #ddd; border-bottom-width:2px; border-radius: 8px; padding: 2px 6px; background:#fff; }
+    a { color: inherit; }
+    .small { font-size: 12px; color:#666; }
+    .hr { height:1px; background:#eee; margin: 12px 0; }
+    @media (max-width: 640px) {
+      main { padding: 12px; }
+      .wrap, .grid2, .card, .row { min-width: 0; }
+      .card { width: 100%; box-sizing: border-box; }
+      select { width: 100%; max-width: 100%; min-width: 0; }
+      header .wrap { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div>
+      <h1>ОГЭ №19 — тренажёр «умной зубрёжки»</h1>
+      <small>Карточки с утверждениями: «верно / неверно» + Leitner (простое интервальное повторение)</small>
+    </div>
+    <div class="small">
+      <span class="kbd">J</span>/<span class="kbd">N</span> — ответ
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap grid2">
+    <section class="card" id="trainer">
+      <div class="row" style="justify-content:space-between;">
+        <div>
+          <span class="pill" id="topicPill">…</span>
+          <span class="pill" id="boxPill">Box …</span>
+        </div>
+        <div class="row">
+          <button id="btnReset" title="Сбросить прогресс (localStorage)">Сброс</button>
+          <button class="primary" id="btnNext">Следующая</button>
+        </div>
+      </div>
+
+      <p class="statement" id="statement">Загрузка…</p>
+
+      <div class="row">
+        <button class="good" id="btnTrue">Верно</button>
+        <button class="bad" id="btnFalse">Неверно</button>
+      </div>
+
+      <div class="hr"></div>
+
+      <div id="answerBlock" style="display:none;">
+        <div class="meta"><b>Ваш ответ:</b> <span id="resultText"></span></div>
+        <div class="meta"><b>Правильный ответ:</b> <span id="answerText"></span></div>
+        <div class="meta"><b>Варианты на скриншотах:</b> <span id="variantsText"></span></div>
+        <div id="solutionView"></div>
+      </div>
+    </section>
+
+    <aside class="card">
+      <h2 style="margin:0 0 8px; font-size:16px;">Настройки</h2>
+
+      <div class="row">
+        <label class="muted">Тема:</label>
+        <select id="selTopic"></select>
+      </div>
+
+      <div class="hr"></div>
+
+      <h2 style="margin:0 0 8px; font-size:16px;">Статистика</h2>
+      <div class="meta">Карточек всего: <b id="statTotal">…</b></div>
+      <div class="meta">Сделано сегодня: <b id="statDone">0</b></div>
+      <div class="meta">Точность: <b id="statAcc">—</b></div>
+
+      <div class="hr"></div>
+      <div class="small muted">
+        Как работает Leitner тут (очень просто):<br/>
+        • правильный ответ → карточка поднимается на 1 коробку (до 5)<br/>
+        • ошибка → карточка падает в 1 коробку<br/>
+        • следующая карточка выбирается случайно, но чаще из низких коробок
+      </div>
+    </aside>
+  </div>
+</main>
+
+<script src="./solution-view.js"></script>
+<script>
+(function () {
+  const DATA_URL = './task19-data.json';
+  const LS_KEY = 'task19_trainer_v1';
+
+  const el = (id) => document.getElementById(id);
+
+  const state = {
+    cards: [],
+    topic: 'Все темы',
+    current: null,
+    stats: { doneToday: 0, correctToday: 0, totalToday: 0, dayKey: '' },
+    progress: {}, // id -> { box: 1..5, seen: n, correct: n }
+  };
+
+  function dayKeyNow() {
+    const d = new Date();
+    return [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
+  }
+
+  function loadProgress() {
+    try {
+      const raw = localStorage.getItem(LS_KEY);
+      if (!raw) return;
+      const obj = JSON.parse(raw);
+      if (obj && obj.progress) state.progress = obj.progress;
+      if (obj && obj.stats) state.stats = obj.stats;
+    } catch (e) {}
+    const dk = dayKeyNow();
+    if (state.stats.dayKey !== dk) {
+      state.stats = { doneToday: 0, correctToday: 0, totalToday: 0, dayKey: dk };
+    }
+  }
+
+  function saveProgress() {
+    localStorage.setItem(LS_KEY, JSON.stringify({ progress: state.progress, stats: state.stats }));
+  }
+
+  function getP(cardId) {
+    if (!state.progress[cardId]) state.progress[cardId] = { box: 1, seen: 0, correct: 0 };
+    return state.progress[cardId];
+  }
+
+  function topicsList() {
+    const set = new Set(state.cards.map(c => c.topic));
+    return ['Все темы', ...Array.from(set).sort()];
+  }
+
+  function cardsInTopic() {
+    if (state.topic === 'Все темы') return state.cards;
+    return state.cards.filter(c => c.topic === state.topic);
+  }
+
+  function weightedPick(list) {
+    // Weight more towards lower boxes
+    const weighted = [];
+    for (const c of list) {
+      const box = getP(c.id).box;
+      const w = Math.max(1, 6 - box);
+      for (let i=0; i<w; i++) weighted.push(c);
+    }
+    return weighted[Math.floor(Math.random()*weighted.length)];
+  }
+
+  function setCurrent(card) {
+    state.current = card;
+
+    const p = getP(card.id);
+    el('topicPill').textContent = card.topic;
+    el('boxPill').textContent = 'Box ' + p.box;
+
+    el('statement').textContent = card.statement;
+
+    // answer block reset (hide all result info before answer)
+    el('answerBlock').style.display = 'none';
+    el('resultText').textContent = '';
+    el('answerText').textContent = '';
+    el('variantsText').textContent = '';
+    el('solutionView').innerHTML = '';
+
+  }
+
+  function nextCard() {
+    const list = cardsInTopic();
+    const card = weightedPick(list);
+    setCurrent(card);
+  }
+
+  function reveal() {
+    el('answerBlock').style.display = 'block';
+  }
+
+  function answer(userTruth) {
+    if (!state.current) return;
+
+    const card = state.current;
+    const p = getP(card.id);
+
+    p.seen += 1;
+    state.stats.doneToday += 1;
+    state.stats.totalToday += 1;
+
+    const correct = (userTruth === card.truth);
+    if (correct) {
+      p.correct += 1;
+      state.stats.correctToday += 1;
+      p.box = Math.min(5, p.box + 1);
+    } else {
+      p.box = 1;
+    }
+
+    el('resultText').textContent = userTruth ? 'Верно' : 'Неверно';
+    el('answerText').textContent = card.truth ? 'Верно' : 'Неверно';
+    el('variantsText').textContent = (card.seen_in_variants || []).join(', ') || '—';
+
+    const explanation = card.explanation ? String(card.explanation).trim() : '';
+    const tip = card.tip ? String(card.tip).trim() : '';
+    const support = card.support ? String(card.support).trim() : '';
+    const fallbackText = explanation || tip || support || '';
+    renderSolutionView(el('solutionView'), {
+      text: fallbackText,
+      parts: {
+        answer: card.truth ? 'Верно' : 'Неверно',
+        short: tip || support || '',
+      },
+    });
+
+    saveProgress();
+    updateStatsUI();
+    reveal();
+
+  }
+
+  function updateStatsUI() {
+    el('statTotal').textContent = String(state.cards.length);
+    el('statDone').textContent = String(state.stats.doneToday);
+    if (state.stats.totalToday > 0) {
+      const acc = Math.round(100 * state.stats.correctToday / state.stats.totalToday);
+      el('statAcc').textContent = acc + '%';
+    } else {
+      el('statAcc').textContent = '—';
+    }
+  }
+
+  async function init() {
+    try {
+      const res = await fetch(DATA_URL, { cache: 'no-store' });
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      state.cards = Array.isArray(data.cards) ? data.cards : [];
+    } catch (error) {
+      console.error('Не удалось загрузить данные карточек:', error);
+      el('statement').textContent = 'Ошибка загрузки карточек. Проверь файл task19-data.json.';
+      el('btnNext').disabled = true;
+      el('btnTrue').disabled = true;
+      el('btnFalse').disabled = true;
+      el('selTopic').disabled = true;
+      return;
+    }
+
+    if (state.cards.length === 0) {
+      el('statement').textContent = 'Карточки не найдены. Проверь файл task19-data.json.';
+      el('btnNext').disabled = true;
+      el('btnTrue').disabled = true;
+      el('btnFalse').disabled = true;
+      el('selTopic').disabled = true;
+      return;
+    }
+
+    loadProgress();
+
+    // fill topics
+    const sel = el('selTopic');
+    sel.innerHTML = '';
+    for (const t of topicsList()) {
+      const opt = document.createElement('option');
+      opt.value = t;
+      opt.textContent = t;
+      sel.appendChild(opt);
+    }
+    sel.value = state.topic;
+
+    sel.addEventListener('change', () => {
+      state.topic = sel.value;
+      nextCard();
+    });
+
+    el('btnNext').addEventListener('click', nextCard);
+    el('btnTrue').addEventListener('click', () => answer(true));
+    el('btnFalse').addEventListener('click', () => answer(false));
+
+    el('btnReset').addEventListener('click', () => {
+      if (!confirm('Сбросить прогресс?')) return;
+      localStorage.removeItem(LS_KEY);
+      state.progress = {};
+      state.stats = { doneToday: 0, correctToday: 0, totalToday: 0, dayKey: dayKeyNow() };
+      saveProgress();
+      updateStatsUI();
+      nextCard();
+    });
+
+    // Hotkeys: J (true), N (false)
+    document.addEventListener('keydown', (e) => {
+      if (e.target && (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT')) return;
+      if (e.code === 'KeyJ') answer(true);
+      if (e.code === 'KeyN') answer(false);
+    });
+
+    updateStatsUI();
+    nextCard();
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>

@@ -32,7 +32,15 @@
     a { color: inherit; }
     .small { font-size: 12px; color:#666; }
     .hr { height:1px; background:#eee; margin: 12px 0; }
+    @media (max-width: 640px) {
+      main { padding: 12px; }
+      .wrap, .grid2, .card, .row { min-width: 0; }
+      .card { width: 100%; box-sizing: border-box; }
+      select { width: 100%; max-width: 100%; min-width: 0; }
+      header .wrap { align-items: flex-start; }
+    }
   </style>
+<link rel="stylesheet" href="/assets/download-panel.css">
 </head>
 <body>
 <header>
@@ -322,5 +330,17 @@
   init();
 })();
 </script>
+<!-- download-panel:start:task19-trainer -->
+<section class="download-panel" id="download">
+  <h2>Скачать и адаптировать</h2>
+  <p>Этот тренажёр можно скачать как HTML-файл, открыть у себя на компьютере или использовать как основу для создания похожего тренажёра. Промпт для DeepSeek поможет адаптировать идею под другую тему, класс или тип ошибки.</p>
+  <div class="download-actions">
+    <a class="btn" href="/downloads/trainers/task19-trainer/task19-trainer.html" download>Скачать тренажёр HTML</a>
+    <a class="btn secondary btn-secondary" href="/downloads/trainers/task19-trainer/task19-trainer-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
+    <a class="btn secondary btn-secondary" href="/downloads/trainers/task19-trainer/task19-trainer-package.zip" download>Скачать HTML + промпт архивом</a>
+  </div>
+  <p class="download-note">Если в тренажёре есть дополнительные файлы, удобнее скачать архив. <a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/">Как скачать и адаптировать тренажёр</a>.</p>
+</section>
+<!-- download-panel:end:task19-trainer -->
 </body>
 </html>
