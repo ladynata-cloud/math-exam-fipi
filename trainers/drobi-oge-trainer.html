@@ -1,0 +1,1148 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Дроби · тренажёр ОГЭ · задание 6</title>
+<style>
+:root{
+  --paper:#fbfcfe; --cell:#e2ecf5; --ink:#1e2a44; --ink-soft:#5b6b8c;
+  --pen-red:#cf3f36; --pen-green:#2e8b57; --margin:#f2b8b3;
+  --accent:#2456a6; --accent-soft:#e8effa; --amber:#c98a12; --amber-soft:#fdf3df;
+  --card:#ffffff; --line:#d9e2ee; --frac1:#4d7fd1; --frac2:#d18a4d;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  font-family:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  color:var(--ink); min-height:100vh;
+  background:
+    linear-gradient(var(--cell) 1px, transparent 1px),
+    linear-gradient(90deg, var(--cell) 1px, transparent 1px),
+    var(--paper);
+  background-size:24px 24px;
+}
+.wrap{max-width:860px;margin:0 auto;padding:20px 16px 60px}
+.kicker{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(23px,4.4vw,32px);margin:4px 0 6px;line-height:1.15}
+h2{font-family:Georgia,serif;font-size:21px;margin:0 0 8px}
+h3{font-size:16px;margin:0 0 8px}
+.sub{color:var(--ink-soft);font-size:14px;margin:0}
+a.crumb{color:var(--accent);text-decoration:none;font-size:14px;cursor:pointer}
+a.crumb:hover{text-decoration:underline}
+
+.card{
+  position:relative;background:var(--card);border:1px solid var(--line);
+  border-radius:10px;box-shadow:0 8px 24px rgba(30,42,68,.08);
+  padding:22px 24px;overflow:hidden;margin-top:14px;
+}
+.card.notebook{padding-left:56px}
+.card.notebook::before{content:"";position:absolute;top:0;bottom:0;left:38px;width:1.5px;background:var(--margin)}
+
+/* home */
+.modgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:16px}
+.mod{cursor:pointer;transition:transform .12s, box-shadow .12s}
+.mod:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(30,42,68,.13)}
+.mod .big{font-family:"Times New Roman",serif;font-size:38px;margin-bottom:6px}
+.mod p{color:var(--ink-soft);font-size:14px;line-height:1.45;margin:6px 0 10px}
+.mod .modes{font-size:12.5px;color:var(--accent);font-weight:600}
+
+/* tabs */
+.tabs{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.tab{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 18px;font-size:14.5px;cursor:pointer}
+.tab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.tab:hover:not(.on){border-color:var(--accent)}
+
+/* math */
+.mexp{font-family:"Times New Roman",Georgia,serif;font-size:28px;line-height:1.35;display:flex;align-items:center;flex-wrap:wrap}
+.mexp.small{font-size:22px}
+.mo{padding:0 2px}.br{padding:0 1px}
+sup{font-size:.62em}
+.f{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 2px;align-self:center}
+.f .fn{display:block;border-bottom:1.6px solid currentColor;padding:0 5px;line-height:1.15}
+.f .fd{display:block;padding:1px 5px 0;line-height:1.15}
+.f.big > .fn,.f.big > .fd{padding:2px 10px}
+.mx{display:inline-flex;align-items:center;gap:2px}
+.c1{color:var(--frac1)}.c2{color:var(--frac2)}
+
+/* controls */
+button{font-family:inherit;font-size:15px;border-radius:8px;padding:9px 18px;cursor:pointer;border:1px solid transparent;transition:filter .15s}
+button:hover{filter:brightness(1.06)}
+button:focus-visible,input:focus-visible,select:focus-visible,.tab:focus-visible,.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.b-primary{background:var(--accent);color:#fff}
+.b-ghost{background:#fff;border-color:var(--line);color:var(--ink)}
+.b-next{background:var(--pen-green);color:#fff}
+.b-mini{padding:4px 12px;font-size:13px}
+input.ans{font-family:"Times New Roman",serif;font-size:23px;width:170px;padding:7px 12px;border:none;border-bottom:2px solid var(--ink);background:transparent;outline:none;color:var(--ink)}
+input.ans:focus{border-bottom-color:var(--accent)}
+input.ans:disabled{color:var(--ink-soft)}
+input.mini{font-family:"Times New Roman",serif;font-size:20px;width:84px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;outline:none;text-align:center}
+input.mini:focus{border-color:var(--accent)}
+.finput{display:inline-flex;flex-direction:column;align-items:center;gap:5px;margin:0 6px;vertical-align:middle}
+.finput input.mini{width:76px}
+.finput .fbar{height:2px;background:var(--ink);width:100%;min-width:76px;border-radius:2px}
+select{font-family:inherit;font-size:14px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 8px}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 14px;font-size:14px;cursor:pointer}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip small{opacity:.75;font-size:12px;margin-left:4px}
+
+/* marks */
+.mark{font-family:"Segoe Script","Comic Sans MS",cursive;font-size:21px;margin-top:12px;min-height:28px}
+.mark.ok{color:var(--pen-green)}.mark.bad{color:var(--pen-red)}
+.mark .corr{font-family:"Times New Roman",serif;font-size:23px}
+@keyframes pop{0%{transform:scale(.7);opacity:0}100%{transform:scale(1);opacity:1}}
+.mark span.anim{display:inline-block;animation:pop .18s ease-out}
+@media(prefers-reduced-motion:reduce){.mark span.anim{animation:none}}
+
+/* drill extras */
+.meta{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.tno{font-family:Georgia,serif;font-size:15px;color:var(--ink-soft)}
+.badge{font-family:Consolas,Menlo,monospace;font-size:12px;color:var(--ink-soft);border:1px dashed var(--line);border-radius:6px;padding:2px 8px}
+.prompt{font-weight:600;margin:2px 0 12px;font-size:16px}
+.prompt.special{font-weight:500;font-size:14px;color:var(--ink-soft);max-width:560px;line-height:1.45}
+.answer-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.stats{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px;font-size:13.5px;color:var(--ink-soft);align-items:center}
+.stats b{color:var(--ink)}
+.dotline{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.dot{width:11px;height:11px;border-radius:50%;background:#e7edf5;border:1px solid var(--line);cursor:pointer}
+.dot.cur{outline:2px solid var(--accent);outline-offset:1px}
+.dot.g{background:var(--pen-green);border-color:var(--pen-green)}
+.dot.y{background:var(--amber);border-color:var(--amber)}
+.dot.r{background:var(--pen-red);border-color:var(--pen-red)}
+.summary{text-align:center;padding:26px 8px}
+.bigscore{font-family:Georgia,serif;font-size:48px;margin:6px 0}
+
+/* learn widgets */
+.bar{display:flex;gap:2px;margin:8px 0;flex-wrap:wrap}
+.bar .c{height:34px;flex:1;min-width:10px;border:1.5px solid var(--frac1);border-radius:3px;background:#fff;transition:background .2s}
+.bar .c.fill{background:var(--frac1)}
+.bar.two .c{border-color:var(--frac2)}
+.bar.two .c.fill{background:var(--frac2)}
+.stepper{display:inline-flex;align-items:center;gap:6px;margin-right:16px}
+.stepper button{padding:2px 12px;font-size:18px;line-height:1.2}
+.stepper .val{font-family:"Times New Roman",serif;font-size:22px;min-width:26px;text-align:center}
+.sol{background:var(--accent-soft);border-radius:8px;padding:14px 16px;margin-top:12px;line-height:2.1;font-size:15px}
+.sol .mexp{display:inline-flex;font-size:22px;vertical-align:middle}
+.col{font-family:Consolas,Menlo,monospace;font-size:22px;line-height:1.5;background:var(--accent-soft);border-radius:8px;padding:14px 20px;display:inline-block;margin-top:10px;white-space:pre}
+.pv{border-collapse:collapse;margin-top:10px}
+.pv th{font-size:11px;color:var(--ink-soft);font-weight:600;padding:3px 8px;border:1px solid var(--line);background:var(--accent-soft)}
+.pv td{font-family:"Times New Roman",serif;font-size:24px;text-align:center;padding:4px 10px;border:1px solid var(--line);min-width:38px}
+.pv td.comma{border:none;font-weight:700;color:var(--pen-red);font-size:28px;min-width:12px;padding:0 2px}
+.learnrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:8px 0}
+.rstep{display:inline-flex;flex-direction:column;align-items:center;margin:0 8px;color:var(--ink-soft);line-height:1.1}
+.rstep small{font-size:12px;color:var(--pen-green);font-weight:700}
+.lcase{border:1px solid var(--line);border-radius:8px;padding:12px 16px;margin:10px 0;background:#fff}
+.lcase h3{color:var(--accent);font-size:15px;margin:0 0 6px}
+.lcase p{font-size:14px;color:var(--ink);line-height:1.55;margin:4px 0}
+.lcase .ex{background:var(--accent-soft);border-radius:6px;padding:8px 12px;margin-top:8px;font-size:14.5px;line-height:1.7}
+.lchip{display:inline-flex;flex-direction:column;align-items:center;border:1.5px solid var(--line);border-radius:8px;padding:6px 12px;margin:4px 6px 4px 0;font-family:"Times New Roman",serif;font-size:20px;background:#fff}
+.lchip small{font-family:"Segoe UI",sans-serif;font-size:11px;color:var(--ink-soft);margin-top:2px}
+.lchip.bad{border-color:#e5b8b4;color:var(--pen-red)}
+.lchip.good{border-color:var(--pen-green);color:var(--pen-green);font-weight:700}
+details.ref{margin-top:14px;border:1px dashed var(--line);border-radius:8px;padding:10px 14px}
+details.ref summary{cursor:pointer;font-weight:600;color:var(--accent);font-size:14.5px}
+details.ref summary:hover{text-decoration:underline}
+.tip{background:var(--amber-soft);border-left:3px solid var(--amber);padding:10px 14px;border-radius:0 8px 8px 0;font-size:14px;margin-top:12px;line-height:1.5}
+.rule{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:8px 0;border-bottom:1px dashed var(--line)}
+.rule:last-child{border-bottom:none}
+.rule .name{min-width:130px;font-weight:600;font-size:14px}
+
+/* guided */
+.gsteps{margin-top:14px}
+.gstep{padding:10px 0;border-bottom:1px dashed var(--line)}
+.gstep.done{color:var(--ink)}
+.gstep.done .lead{color:var(--pen-green);font-weight:700}
+.gstep .lead{font-weight:700;color:var(--accent);margin-right:6px}
+.gstep .q{font-size:15px;line-height:1.6}
+.gstep .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.gstep .hintbox{display:none;background:var(--amber-soft);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:14px;line-height:1.6}
+.gdone{background:#e9f5ee;border-radius:8px;padding:14px 16px;margin-top:14px;font-size:16px}
+.gscore{font-size:13.5px;color:var(--ink-soft);margin-top:12px}
+footer{margin-top:24px;font-size:12.5px;color:var(--ink-soft);line-height:1.5}
+@media(max-width:560px){
+  .card{padding:18px 14px}
+  .card.notebook{padding-left:44px}.card.notebook::before{left:30px}
+  .mexp{font-size:24px}
+  input.ans{width:140px;font-size:20px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">ОГЭ · математика · задание 6</div>
+  <h1 id="pageTitle">Дроби: учимся и тренируемся</h1>
+  <p class="sub" id="pageSub">Выбери модуль — в каждом есть теория с интерактивом, пошаговый решатель и марафон задач.</p>
+  <p style="margin:8px 0 0"><a class="crumb" id="crumb" style="display:none">← ко всем модулям</a></p>
+</header>
+<div id="app"></div>
+<footer>
+  Ответы вводите десятичной дробью через запятую или точку (например <b>−0,3</b>) либо обыкновенной дробью — набирайте её через косую черту, например <b>23/36</b> (на экране все дроби показываются «этажными»).
+  Задачи марафона: открытый банк заданий, «Полный прогон по заданию №6», прототипы «МояМатематика.рф». Пошаговый решатель генерирует новые задачи бесконечно.
+</footer>
+</div>
+
+<script>
+"use strict";
+const TASKS = [{"cat": "bank", "code": "097E41", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">41</span></span><span class=\"fd\"><span class=\"mn\">50</span></span></span>", "n": -31, "d": 50, "term": true, "mode": "value", "ansDisp": "-0,62", "shape": "fracbin", "op": "-", "fa": 1, "fb": 5, "fc": 41, "fd": 50, "sub": "frac"}, {"cat": "bank", "code": "711640", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">21</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">3</span></span><span class=\"fd\"><span class=\"mn\">7</span></span></span>", "n": 9, "d": 5, "term": true, "mode": "value", "ansDisp": "1,8", "shape": "fracbin", "op": "*", "fa": 21, "fb": 5, "fc": 3, "fd": 7, "sub": "frac"}, {"cat": "bank", "code": "21014E", "num": null, "html": "<span class=\"mn\">6,9</span><span class=\"mo\"> + </span><span class=\"mn\">7,4</span>", "n": 143, "d": 10, "term": true, "mode": "value", "ansDisp": "14,3", "shape": "decbin", "op": "+", "av": 69, "ascale": 1, "bv": 74, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "54924B", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">53</span></span><span class=\"fd\"><span class=\"mn\">50</span></span></span>", "n": 63, "d": 50, "term": true, "mode": "value", "ansDisp": "1,26", "shape": "fracbin", "op": "+", "fa": 1, "fb": 5, "fc": 53, "fd": 50, "sub": "frac"}, {"cat": "bank", "code": "AA2745", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">14</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">7</span></span><span class=\"fd\"><span class=\"mn\">2</span></span></span>", "n": 4, "d": 5, "term": true, "mode": "value", "ansDisp": "0,8", "shape": "fracbin", "op": ":", "fa": 14, "fb": 5, "fc": 7, "fd": 2, "sub": "frac"}, {"cat": "bank", "code": "3CC449", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">4</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">51</span></span><span class=\"fd\"><span class=\"mn\">20</span></span></span>", "n": -23, "d": 10, "term": true, "mode": "value", "ansDisp": "-2,3", "shape": "fracbin", "op": "-", "fa": 1, "fb": 4, "fc": 51, "fd": 20, "sub": "frac"}, {"cat": "bank", "code": "4609FA", "num": null, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">9,6</span></span><span class=\"fd\"><span class=\"mn\">1,6</span></span></span>", "n": 6, "d": 1, "term": true, "mode": "value", "ansDisp": "6", "shape": "decbin", "op": ":", "av": 96, "ascale": 1, "bv": 16, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "D39BF5", "num": null, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">30</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">42</span></span></span></span></span>", "n": 35, "d": 2, "term": true, "mode": "value", "ansDisp": "17,5", "shape": null, "sub": "frac"}, {"cat": "bank", "code": "A830FB", "num": null, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">13,2</span></span><span class=\"fd\"><span class=\"mn\">1,2</span></span></span>", "n": 11, "d": 1, "term": true, "mode": "value", "ansDisp": "11", "shape": "decbin", "op": ":", "av": 132, "ascale": 1, "bv": 12, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "EA23F7", "num": null, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">8,1</span></span><span class=\"fd\"><span class=\"mn\">0,9</span></span></span>", "n": 9, "d": 1, "term": true, "mode": "value", "ansDisp": "9", "shape": "decbin", "op": ":", "av": 81, "ascale": 1, "bv": 9, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "ED8DF8", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">10</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">29</span></span><span class=\"fd\"><span class=\"mn\">20</span></span></span>", "n": 31, "d": 20, "term": true, "mode": "value", "ansDisp": "1,55", "shape": "fracbin", "op": "+", "fa": 1, "fb": 10, "fc": 29, "fd": 20, "sub": "frac"}, {"cat": "bank", "code": "3BAEFA", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">2</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">11</span></span><span class=\"fd\"><span class=\"mn\">10</span></span></span>", "n": 8, "d": 5, "term": true, "mode": "value", "ansDisp": "1,6", "shape": "fracbin", "op": "+", "fa": 1, "fb": 2, "fc": 11, "fd": 10, "sub": "frac"}, {"cat": "bank", "code": "33FBF3", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">4</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">37</span></span><span class=\"fd\"><span class=\"mn\">20</span></span></span>", "n": 21, "d": 10, "term": true, "mode": "value", "ansDisp": "2,1", "shape": "fracbin", "op": "+", "fa": 1, "fb": 4, "fc": 37, "fd": 20, "sub": "frac"}, {"cat": "bank", "code": "214904", "num": null, "html": "<span class=\"mn\">8,9</span><span class=\"mo\"> · </span><span class=\"mn\">4,3</span>", "n": 3827, "d": 100, "term": true, "mode": "value", "ansDisp": "38,27", "shape": "decbin", "op": "*", "av": 89, "ascale": 1, "bv": 43, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "91AB0C", "num": null, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">9,6</span></span><span class=\"fd\"><span class=\"mn\">1,2</span></span></span>", "n": 8, "d": 1, "term": true, "mode": "value", "ansDisp": "8", "shape": "decbin", "op": ":", "av": 96, "ascale": 1, "bv": 12, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "314D07", "num": null, "html": "<span class=\"mn\">9,2</span><span class=\"mo\"> − </span><span class=\"mn\">2,4</span>", "n": 34, "d": 5, "term": true, "mode": "value", "ansDisp": "6,8", "shape": "decbin", "op": "-", "av": 92, "ascale": 1, "bv": 24, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "83F40D", "num": null, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">8,2</span></span><span class=\"fd\"><span class=\"mn\">4,1</span></span></span>", "n": 2, "d": 1, "term": true, "mode": "value", "ansDisp": "2", "shape": "decbin", "op": ":", "av": 82, "ascale": 1, "bv": 41, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "408A76", "num": null, "html": "<span class=\"mn\">8,4</span><span class=\"mo\"> + </span><span class=\"mn\">3,7</span>", "n": 121, "d": 10, "term": true, "mode": "value", "ansDisp": "12,1", "shape": "decbin", "op": "+", "av": 84, "ascale": 1, "bv": 37, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "7D3079", "num": null, "html": "<span class=\"mn\">8,3</span><span class=\"mo\"> + </span><span class=\"mn\">5,4</span>", "n": 137, "d": 10, "term": true, "mode": "value", "ansDisp": "13,7", "shape": "decbin", "op": "+", "av": 83, "ascale": 1, "bv": 54, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "EA1574", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">2</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">31</span></span><span class=\"fd\"><span class=\"mn\">20</span></span></span>", "n": 41, "d": 20, "term": true, "mode": "value", "ansDisp": "2,05", "shape": "fracbin", "op": "+", "fa": 1, "fb": 2, "fc": 31, "fd": 20, "sub": "frac"}, {"cat": "bank", "code": "6AB97E", "num": null, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">8,7</span></span><span class=\"fd\"><span class=\"mn\">2,9</span></span></span>", "n": 3, "d": 1, "term": true, "mode": "value", "ansDisp": "3", "shape": "decbin", "op": ":", "av": 87, "ascale": 1, "bv": 29, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "4C4EBF", "num": null, "html": "<span class=\"mn\">5,6</span><span class=\"mo\"> + </span><span class=\"mn\">9,7</span>", "n": 153, "d": 10, "term": true, "mode": "value", "ansDisp": "15,3", "shape": "decbin", "op": "+", "av": 56, "ascale": 1, "bv": 97, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "7E16BF", "num": null, "html": "<span class=\"mn\">3,3</span><span class=\"mo\"> − </span><span class=\"mn\">1,9</span>", "n": 7, "d": 5, "term": true, "mode": "value", "ansDisp": "1,4", "shape": "decbin", "op": "-", "av": 33, "ascale": 1, "bv": 19, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "2909BF", "num": null, "html": "<span class=\"mn\">4,4</span><span class=\"mo\"> − </span><span class=\"mn\">1,7</span>", "n": 27, "d": 10, "term": true, "mode": "value", "ansDisp": "2,7", "shape": "decbin", "op": "-", "av": 44, "ascale": 1, "bv": 17, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "510AB3", "num": null, "html": "<span class=\"mn\">3,9</span><span class=\"mo\"> − </span><span class=\"mn\">7,3</span>", "n": -17, "d": 5, "term": true, "mode": "value", "ansDisp": "-3,4", "shape": "decbin", "op": "-", "av": 39, "ascale": 1, "bv": 73, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "A594B5", "num": null, "html": "<span class=\"mn\">9,8</span><span class=\"mo\"> + </span><span class=\"mn\">8,6</span>", "n": 92, "d": 5, "term": true, "mode": "value", "ansDisp": "18,4", "shape": "decbin", "op": "+", "av": 98, "ascale": 1, "bv": 86, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "95FFBA", "num": null, "html": "<span class=\"mn\">6,4</span><span class=\"mo\"> − </span><span class=\"mn\">4,8</span>", "n": 8, "d": 5, "term": true, "mode": "value", "ansDisp": "1,6", "shape": "decbin", "op": "-", "av": 64, "ascale": 1, "bv": 48, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "52251A", "num": null, "html": "<span class=\"mn\">2,1</span><span class=\"mo\"> · </span><span class=\"mn\">9,6</span>", "n": 504, "d": 25, "term": true, "mode": "value", "ansDisp": "20,16", "shape": "decbin", "op": "*", "av": 21, "ascale": 1, "bv": 96, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "C1231C", "num": null, "html": "<span class=\"mn\">9,3</span><span class=\"mo\"> + </span><span class=\"mn\">7,8</span>", "n": 171, "d": 10, "term": true, "mode": "value", "ansDisp": "17,1", "shape": "decbin", "op": "+", "av": 93, "ascale": 1, "bv": 78, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "94FE12", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">7</span></span><span class=\"fd\"><span class=\"mn\">6</span></span></span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">9</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span>", "n": 21, "d": 10, "term": true, "mode": "value", "ansDisp": "2,1", "shape": "fracbin", "op": "*", "fa": 7, "fb": 6, "fc": 9, "fd": 5, "sub": "frac"}, {"cat": "bank", "code": "EA0419", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">2</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">9</span></span><span class=\"fd\"><span class=\"mn\">10</span></span></span>", "n": -2, "d": 5, "term": true, "mode": "value", "ansDisp": "-0,4", "shape": "fracbin", "op": "-", "fa": 1, "fb": 2, "fc": 9, "fd": 10, "sub": "frac"}, {"cat": "bank", "code": "418E22", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">12</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">15</span></span><span class=\"fd\"><span class=\"mn\">2</span></span></span>", "n": 8, "d": 25, "term": true, "mode": "value", "ansDisp": "0,32", "shape": "fracbin", "op": ":", "fa": 12, "fb": 5, "fc": 15, "fd": 2, "sub": "frac"}, {"cat": "bank", "code": "06AC29", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">21</span></span><span class=\"fd\"><span class=\"mn\">2</span></span></span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">3</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span>", "n": 35, "d": 2, "term": true, "mode": "value", "ansDisp": "17,5", "shape": "fracbin", "op": ":", "fa": 21, "fb": 2, "fc": 3, "fd": 5, "sub": "frac"}, {"cat": "bank", "code": "76122A", "num": null, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">6,8</span></span><span class=\"fd\"><span class=\"mn\">1,7</span></span></span>", "n": 4, "d": 1, "term": true, "mode": "value", "ansDisp": "4", "shape": "decbin", "op": ":", "av": 68, "ascale": 1, "bv": 17, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "A81C2A", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">3</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">4</span></span><span class=\"fd\"><span class=\"mn\">35</span></span></span>", "n": 21, "d": 4, "term": true, "mode": "value", "ansDisp": "5,25", "shape": "fracbin", "op": ":", "fa": 3, "fb": 5, "fc": 4, "fd": 35, "sub": "frac"}, {"cat": "bank", "code": "98802B", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">2</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">49</span></span><span class=\"fd\"><span class=\"mn\">20</span></span></span>", "n": -39, "d": 20, "term": true, "mode": "value", "ansDisp": "-1,95", "shape": "fracbin", "op": "-", "fa": 1, "fb": 2, "fc": 49, "fd": 20, "sub": "frac"}, {"cat": "bank", "code": "FBDAD3", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">2</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">33</span></span><span class=\"fd\"><span class=\"mn\">50</span></span></span>", "n": 29, "d": 25, "term": true, "mode": "value", "ansDisp": "1,16", "shape": "fracbin", "op": "+", "fa": 1, "fb": 2, "fc": 33, "fd": 50, "sub": "frac"}, {"cat": "bank", "code": "27DDD8", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">10</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">39</span></span><span class=\"fd\"><span class=\"mn\">50</span></span></span>", "n": -17, "d": 25, "term": true, "mode": "value", "ansDisp": "-0,68", "shape": "fracbin", "op": "-", "fa": 1, "fb": 10, "fc": 39, "fd": 50, "sub": "frac"}, {"cat": "bank", "code": "DB17DA", "num": null, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">6,5</span></span><span class=\"fd\"><span class=\"mn\">1,3</span></span></span>", "n": 5, "d": 1, "term": true, "mode": "value", "ansDisp": "5", "shape": "decbin", "op": ":", "av": 65, "ascale": 1, "bv": 13, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "AFE6DF", "num": null, "html": "<span class=\"mn\">1,6</span><span class=\"mo\"> · </span><span class=\"mn\">5,1</span>", "n": 204, "d": 25, "term": true, "mode": "value", "ansDisp": "8,16", "shape": "decbin", "op": "*", "av": 16, "ascale": 1, "bv": 51, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "FD4058", "num": null, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">8,4</span></span><span class=\"fd\"><span class=\"mn\">1,2</span></span></span>", "n": 7, "d": 1, "term": true, "mode": "value", "ansDisp": "7", "shape": "decbin", "op": ":", "av": 84, "ascale": 1, "bv": 12, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "0C275B", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">15</span></span><span class=\"fd\"><span class=\"mn\">4</span></span></span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">3</span></span><span class=\"fd\"><span class=\"mn\">7</span></span></span>", "n": 35, "d": 4, "term": true, "mode": "value", "ansDisp": "8,75", "shape": "fracbin", "op": ":", "fa": 15, "fb": 4, "fc": 3, "fd": 7, "sub": "frac"}, {"cat": "bank", "code": "4413AF", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">5</span></span><span class=\"fd\"><span class=\"mn\">3</span></span></span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">9</span></span><span class=\"fd\"><span class=\"mn\">2</span></span></span>", "n": 15, "d": 2, "term": true, "mode": "value", "ansDisp": "7,5", "shape": "fracbin", "op": "*", "fa": 5, "fb": 3, "fc": 9, "fd": 2, "sub": "frac"}, {"cat": "bank", "code": "79A9AD", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">3</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">2</span></span><span class=\"fd\"><span class=\"mn\">15</span></span></span>", "n": 9, "d": 2, "term": true, "mode": "value", "ansDisp": "4,5", "shape": "fracbin", "op": ":", "fa": 3, "fb": 5, "fc": 2, "fd": 15, "sub": "frac"}, {"cat": "bank", "code": "1FC3AA", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">10</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">23</span></span><span class=\"fd\"><span class=\"mn\">20</span></span></span>", "n": -21, "d": 20, "term": true, "mode": "value", "ansDisp": "-1,05", "shape": "fracbin", "op": "-", "fa": 1, "fb": 10, "fc": 23, "fd": 20, "sub": "frac"}, {"cat": "bank", "code": "5233A3", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">17</span></span><span class=\"fd\"><span class=\"mn\">10</span></span></span>", "n": 19, "d": 10, "term": true, "mode": "value", "ansDisp": "1,9", "shape": "fracbin", "op": "+", "fa": 1, "fb": 5, "fc": 17, "fd": 10, "sub": "frac"}, {"cat": "bank", "code": "6B40A0", "num": null, "html": "<span class=\"mn\">3,6</span><span class=\"mo\"> − </span><span class=\"mn\">4,1</span>", "n": -1, "d": 2, "term": true, "mode": "value", "ansDisp": "-0,5", "shape": "decbin", "op": "-", "av": 36, "ascale": 1, "bv": 41, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "35B3A3", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">2</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">9</span></span><span class=\"fd\"><span class=\"mn\">8</span></span></span>", "n": 9, "d": 20, "term": true, "mode": "value", "ansDisp": "0,45", "shape": "fracbin", "op": "*", "fa": 2, "fb": 5, "fc": 9, "fd": 8, "sub": "frac"}, {"cat": "bank", "code": "003CC0", "num": null, "html": "<span class=\"mn\">7,7</span><span class=\"mo\"> · </span><span class=\"mn\">5,3</span>", "n": 4081, "d": 100, "term": true, "mode": "value", "ansDisp": "40,81", "shape": "decbin", "op": "*", "av": 77, "ascale": 1, "bv": 53, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "1527C7", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">7</span></span><span class=\"fd\"><span class=\"mn\">8</span></span></span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">5</span></span><span class=\"fd\"><span class=\"mn\">6</span></span></span>", "n": 21, "d": 20, "term": true, "mode": "value", "ansDisp": "1,05", "shape": "fracbin", "op": ":", "fa": 7, "fb": 8, "fc": 5, "fd": 6, "sub": "frac"}, {"cat": "bank", "code": "264CC0", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">3</span></span><span class=\"fd\"><span class=\"mn\">4</span></span></span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">6</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span>", "n": 9, "d": 10, "term": true, "mode": "value", "ansDisp": "0,9", "shape": "fracbin", "op": "*", "fa": 3, "fb": 4, "fc": 6, "fd": 5, "sub": "frac"}, {"cat": "bank", "code": "DE80C5", "num": null, "html": "<span class=\"mn\">9,9</span><span class=\"mo\"> · </span><span class=\"mn\">7,1</span>", "n": 7029, "d": 100, "term": true, "mode": "value", "ansDisp": "70,29", "shape": "decbin", "op": "*", "av": 99, "ascale": 1, "bv": 71, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "C609C4", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">15</span></span><span class=\"fd\"><span class=\"mn\">2</span></span></span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">7</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span>", "n": 21, "d": 2, "term": true, "mode": "value", "ansDisp": "10,5", "shape": "fracbin", "op": "*", "fa": 15, "fb": 2, "fc": 7, "fd": 5, "sub": "frac"}, {"cat": "bank", "code": "E023CC", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">4</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">2</span></span><span class=\"fd\"><span class=\"mn\">7</span></span></span>", "n": 14, "d": 5, "term": true, "mode": "value", "ansDisp": "2,8", "shape": "fracbin", "op": ":", "fa": 4, "fb": 5, "fc": 2, "fd": 7, "sub": "frac"}, {"cat": "bank", "code": "F8CA9A", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">6</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">4</span></span><span class=\"fd\"><span class=\"mn\">11</span></span></span>", "n": 33, "d": 10, "term": true, "mode": "value", "ansDisp": "3,3", "shape": "fracbin", "op": ":", "fa": 6, "fb": 5, "fc": 4, "fd": 11, "sub": "frac"}, {"cat": "bank", "code": "7A2A9D", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">25</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">7</span></span><span class=\"fd\"><span class=\"mn\">50</span></span></span>", "n": -1, "d": 10, "term": true, "mode": "value", "ansDisp": "-0,1", "shape": "fracbin", "op": "-", "fa": 1, "fb": 25, "fc": 7, "fd": 50, "sub": "frac"}, {"cat": "bank", "code": "2EC590", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">3</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">25</span></span><span class=\"fd\"><span class=\"mn\">4</span></span></span>", "n": 15, "d": 4, "term": true, "mode": "value", "ansDisp": "3,75", "shape": "fracbin", "op": "*", "fa": 3, "fb": 5, "fc": 25, "fd": 4, "sub": "frac"}, {"cat": "bank", "code": "A76D9D", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">25</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">43</span></span><span class=\"fd\"><span class=\"mn\">50</span></span></span>", "n": 9, "d": 10, "term": true, "mode": "value", "ansDisp": "0,9", "shape": "fracbin", "op": "+", "fa": 1, "fb": 25, "fc": 43, "fd": 50, "sub": "frac"}, {"cat": "bank", "code": "945291", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">10</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">21</span></span><span class=\"fd\"><span class=\"mn\">50</span></span></span>", "n": 13, "d": 25, "term": true, "mode": "value", "ansDisp": "0,52", "shape": "fracbin", "op": "+", "fa": 1, "fb": 10, "fc": 21, "fd": 50, "sub": "frac"}, {"cat": "bank", "code": "E70E95", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">2</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">13</span></span><span class=\"fd\"><span class=\"mn\">50</span></span></span>", "n": 6, "d": 25, "term": true, "mode": "value", "ansDisp": "0,24", "shape": "fracbin", "op": "-", "fa": 1, "fb": 2, "fc": 13, "fd": 50, "sub": "frac"}, {"cat": "bank", "code": "7545EE", "num": null, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">4,8</span></span><span class=\"fd\"><span class=\"mn\">0,4</span></span></span>", "n": 12, "d": 1, "term": true, "mode": "value", "ansDisp": "12", "shape": "decbin", "op": ":", "av": 48, "ascale": 1, "bv": 4, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "5719EA", "num": null, "html": "<span class=\"mn\">8,8</span><span class=\"mo\"> + </span><span class=\"mn\">5,9</span>", "n": 147, "d": 10, "term": true, "mode": "value", "ansDisp": "14,7", "shape": "decbin", "op": "+", "av": 88, "ascale": 1, "bv": 59, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "C702ED", "num": null, "html": "<span class=\"mn\">6,7</span><span class=\"mo\"> · </span><span class=\"mn\">5,5</span>", "n": 737, "d": 20, "term": true, "mode": "value", "ansDisp": "36,85", "shape": "decbin", "op": "*", "av": 67, "ascale": 1, "bv": 55, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "9B37E4", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">21</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">6</span></span><span class=\"fd\"><span class=\"mn\">7</span></span></span>", "n": 49, "d": 10, "term": true, "mode": "value", "ansDisp": "4,9", "shape": "fracbin", "op": ":", "fa": 21, "fb": 5, "fc": 6, "fd": 7, "sub": "frac"}, {"cat": "bank", "code": "9570E3", "num": null, "html": "<span class=\"mn\">7,9</span><span class=\"mo\"> + </span><span class=\"mn\">2,2</span>", "n": 101, "d": 10, "term": true, "mode": "value", "ansDisp": "10,1", "shape": "decbin", "op": "+", "av": 79, "ascale": 1, "bv": 22, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "3D6EE6", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">9</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">2</span></span><span class=\"fd\"><span class=\"mn\">3</span></span></span>", "n": 6, "d": 5, "term": true, "mode": "value", "ansDisp": "1,2", "shape": "fracbin", "op": "*", "fa": 9, "fb": 5, "fc": 2, "fd": 3, "sub": "frac"}, {"cat": "bank", "code": "85B5E0", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">15</span></span><span class=\"fd\"><span class=\"mn\">4</span></span></span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">6</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span>", "n": 9, "d": 2, "term": true, "mode": "value", "ansDisp": "4,5", "shape": "fracbin", "op": "*", "fa": 15, "fb": 4, "fc": 6, "fd": 5, "sub": "frac"}, {"cat": "bank", "code": "12AD6B", "num": null, "html": "<span class=\"mn\">8,1</span><span class=\"mo\"> · </span><span class=\"mn\">7,2</span>", "n": 1458, "d": 25, "term": true, "mode": "value", "ansDisp": "58,32", "shape": "decbin", "op": "*", "av": 81, "ascale": 1, "bv": 72, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "54576D", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">47</span></span><span class=\"fd\"><span class=\"mn\">10</span></span></span>", "n": -9, "d": 2, "term": true, "mode": "value", "ansDisp": "-4,5", "shape": "fracbin", "op": "-", "fa": 1, "fb": 5, "fc": 47, "fd": 10, "sub": "frac"}, {"cat": "bank", "code": "A10E69", "num": null, "html": "<span class=\"mn\">6,1</span><span class=\"mo\"> − </span><span class=\"mn\">2,5</span>", "n": 18, "d": 5, "term": true, "mode": "value", "ansDisp": "3,6", "shape": "decbin", "op": "-", "av": 61, "ascale": 1, "bv": 25, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "7B1530", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">27</span></span><span class=\"fd\"><span class=\"mn\">20</span></span></span>", "n": -23, "d": 20, "term": true, "mode": "value", "ansDisp": "-1,15", "shape": "fracbin", "op": "-", "fa": 1, "fb": 5, "fc": 27, "fd": 20, "sub": "frac"}, {"cat": "bank", "code": "76FB33", "num": null, "html": "<span class=\"mn\">4,7</span><span class=\"mo\"> − </span><span class=\"mn\">8,2</span>", "n": -7, "d": 2, "term": true, "mode": "value", "ansDisp": "-3,5", "shape": "decbin", "op": "-", "av": 47, "ascale": 1, "bv": 82, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "D09E3C", "num": null, "html": "<span class=\"mn\">2,3</span><span class=\"mo\"> · </span><span class=\"mn\">7,5</span>", "n": 69, "d": 4, "term": true, "mode": "value", "ansDisp": "17,25", "shape": "decbin", "op": "*", "av": 23, "ascale": 1, "bv": 75, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "D5ED33", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">19</span></span><span class=\"fd\"><span class=\"mn\">20</span></span></span>", "n": 23, "d": 20, "term": true, "mode": "value", "ansDisp": "1,15", "shape": "fracbin", "op": "+", "fa": 1, "fb": 5, "fc": 19, "fd": 20, "sub": "frac"}, {"cat": "bank", "code": "8F6C3D", "num": null, "html": "<span class=\"mn\">5,2</span><span class=\"mo\"> · </span><span class=\"mn\">3,1</span>", "n": 403, "d": 25, "term": true, "mode": "value", "ansDisp": "16,12", "shape": "decbin", "op": "*", "av": 52, "ascale": 1, "bv": 31, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "0F5B83", "num": null, "html": "<span class=\"mn\">5,7</span><span class=\"mo\"> − </span><span class=\"mn\">7,6</span>", "n": -19, "d": 10, "term": true, "mode": "value", "ansDisp": "-1,9", "shape": "decbin", "op": "-", "av": 57, "ascale": 1, "bv": 76, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "BDCC81", "num": null, "html": "<span class=\"mn\">4,9</span><span class=\"mo\"> − </span><span class=\"mn\">9,4</span>", "n": -9, "d": 2, "term": true, "mode": "value", "ansDisp": "-4,5", "shape": "decbin", "op": "-", "av": 49, "ascale": 1, "bv": 94, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "C3738C", "num": null, "html": "<span class=\"mn\">6,8</span><span class=\"mo\"> + </span><span class=\"mn\">2,6</span>", "n": 47, "d": 5, "term": true, "mode": "value", "ansDisp": "9,4", "shape": "decbin", "op": "+", "av": 68, "ascale": 1, "bv": 26, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "99D38E", "num": null, "html": "<span class=\"mn\">8,7</span><span class=\"mo\"> + </span><span class=\"mn\">4,6</span>", "n": 133, "d": 10, "term": true, "mode": "value", "ansDisp": "13,3", "shape": "decbin", "op": "+", "av": 87, "ascale": 1, "bv": 46, "bscale": 1, "sub": "dec"}, {"cat": "bank", "code": "683285", "num": null, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">7</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">12</span></span><span class=\"fd\"><span class=\"mn\">35</span></span></span>", "n": 12, "d": 25, "term": true, "mode": "value", "ansDisp": "0,48", "shape": "fracbin", "op": "*", "fa": 7, "fb": 5, "fc": 12, "fd": 35, "sub": "frac"}, {"cat": "bank", "code": "3A4787", "num": null, "html": "<span class=\"mn\">3,2</span><span class=\"mo\"> · </span><span class=\"mn\">6,2</span>", "n": 496, "d": 25, "term": true, "mode": "value", "ansDisp": "19,84", "shape": "decbin", "op": "*", "av": 32, "ascale": 1, "bv": 62, "bscale": 1, "sub": "dec"}, {"cat": "progon", "code": null, "num": 1, "html": "<span class=\"mn\">18</span><span class=\"mo\"> · </span><span class=\"br\">(</span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">9</span></span></span><span class=\"br\">)</span><sup>2</sup><span class=\"mo\"> − </span><span class=\"mn\">20</span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">9</span></span></span>", "n": -2, "d": 1, "term": true, "mode": "value", "ansDisp": "-2", "shape": null}, {"cat": "progon", "code": null, "num": 2, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">4</span></span><span class=\"fd\"><span class=\"mn\">25</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">15</span></span><span class=\"fd\"><span class=\"mn\">4</span></span></span>", "n": 391, "d": 100, "term": true, "mode": "value", "ansDisp": "3,91", "shape": "fracbin", "op": "+", "fa": 4, "fb": 25, "fc": 15, "fd": 4}, {"cat": "progon", "code": null, "num": 3, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">3</span></span><span class=\"fd\"><span class=\"mn\">2</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">9</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span>", "n": -3, "d": 10, "term": true, "mode": "value", "ansDisp": "-0,3", "shape": "fracbin", "op": "-", "fa": 3, "fb": 2, "fc": 9, "fd": 5}, {"cat": "progon", "code": null, "num": 4, "html": "<span class=\"br\">(</span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">19</span></span><span class=\"fd\"><span class=\"mn\">8</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">11</span></span><span class=\"fd\"><span class=\"mn\">12</span></span></span><span class=\"br\">)</span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">5</span></span><span class=\"fd\"><span class=\"mn\">48</span></span></span>", "n": 158, "d": 5, "term": true, "mode": "value", "ansDisp": "31,6", "shape": null}, {"cat": "progon", "code": null, "num": 5, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">12</span></span><span class=\"fd\"><span class=\"mn\">20</span><span class=\"mo\"> · </span><span class=\"mn\">3</span></span></span>", "n": 1, "d": 5, "term": true, "mode": "value", "ansDisp": "0,2", "shape": null}, {"cat": "progon", "code": null, "num": 6, "html": "<span class=\"br\">(</span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">14</span></span><span class=\"fd\"><span class=\"mn\">11</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">17</span></span><span class=\"fd\"><span class=\"mn\">10</span></span></span><span class=\"br\">)</span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">11</span></span><span class=\"fd\"><span class=\"mn\">15</span></span></span>", "n": 109, "d": 50, "term": true, "mode": "value", "ansDisp": "2,18", "shape": null}, {"cat": "progon", "code": null, "num": 7, "html": "<span class=\"br\">(</span><span class=\"mx\"><span class=\"mn\">2</span><span class=\"f\"><span class=\"fn\">3</span><span class=\"fd\">4</span></span></span><span class=\"mo\"> + </span><span class=\"mx\"><span class=\"mn\">2</span><span class=\"f\"><span class=\"fn\">1</span><span class=\"fd\">5</span></span></span><span class=\"br\">)</span><span class=\"mo\"> · </span><span class=\"mn\">16</span>", "n": 396, "d": 5, "term": true, "mode": "value", "ansDisp": "79,2", "shape": null}, {"cat": "progon", "code": null, "num": 8, "html": "<span class=\"mx\"><span class=\"mn\">1</span><span class=\"f\"><span class=\"fn\">8</span><span class=\"fd\">17</span></span></span><span class=\"mo\"> : </span><span class=\"br\">(</span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">12</span></span><span class=\"fd\"><span class=\"mn\">17</span></span></span><span class=\"mo\"> + </span><span class=\"mx\"><span class=\"mn\">2</span><span class=\"f\"><span class=\"fn\">7</span><span class=\"fd\">11</span></span></span><span class=\"br\">)</span>", "n": 11, "d": 25, "term": true, "mode": "value", "ansDisp": "0,44", "shape": null}, {"cat": "progon", "code": null, "num": 9, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">18</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">21</span></span></span></span></span>", "n": 126, "d": 1, "term": true, "mode": "value", "ansDisp": "126", "shape": null}, {"cat": "progon", "code": null, "num": 10, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">9</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">2</span></span><span class=\"fd\"><span class=\"mn\">3</span></span></span>", "n": 6, "d": 5, "term": true, "mode": "value", "ansDisp": "1,2", "shape": "fracbin", "op": "*", "fa": 9, "fb": 5, "fc": 2, "fd": 3}, {"cat": "progon", "code": null, "num": 11, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">6,9</span><span class=\"mo\"> − </span><span class=\"mn\">1,5</span></span><span class=\"fd\"><span class=\"mn\">2,4</span></span></span>", "n": 9, "d": 4, "term": true, "mode": "value", "ansDisp": "2,25", "shape": null}, {"cat": "progon", "code": null, "num": 12, "html": "<span class=\"mn\">0,6</span><span class=\"mo\"> · </span><span class=\"br\">(</span><span class=\"mo\">−</span><span class=\"mn\">10</span><span class=\"br\">)</span><sup>3</sup><span class=\"mo\"> + </span><span class=\"mn\">50</span>", "n": -550, "d": 1, "term": true, "mode": "value", "ansDisp": "-550", "shape": null}, {"cat": "progon", "code": null, "num": 13, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">2,4</span></span><span class=\"fd\"><span class=\"mn\">2,9</span><span class=\"mo\"> − </span><span class=\"mn\">1,4</span></span></span>", "n": 8, "d": 5, "term": true, "mode": "value", "ansDisp": "1,6", "shape": null}, {"cat": "progon", "code": null, "num": 14, "html": "<span class=\"mo\">−</span><span class=\"mn\">0,2</span><span class=\"mo\"> · </span><span class=\"br\">(</span><span class=\"mo\">−</span><span class=\"mn\">10</span><span class=\"br\">)</span><sup>2</sup><span class=\"mo\"> + </span><span class=\"mn\">55</span>", "n": 35, "d": 1, "term": true, "mode": "value", "ansDisp": "35", "shape": null}, {"cat": "progon", "code": null, "num": 15, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">9,4</span></span><span class=\"fd\"><span class=\"mn\">4,1</span><span class=\"mo\"> + </span><span class=\"mn\">5,3</span></span></span>", "n": 1, "d": 1, "term": true, "mode": "value", "ansDisp": "1", "shape": null}, {"cat": "progon", "code": null, "num": 16, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">6,9</span><span class=\"mo\"> + </span><span class=\"mn\">4,1</span></span><span class=\"fd\"><span class=\"mn\">0,2</span></span></span>", "n": 55, "d": 1, "term": true, "mode": "value", "ansDisp": "55", "shape": null}, {"cat": "progon", "code": null, "num": 17, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">4,8</span><span class=\"mo\"> · </span><span class=\"mn\">0,4</span></span><span class=\"fd\"><span class=\"mn\">0,6</span></span></span>", "n": 16, "d": 5, "term": true, "mode": "value", "ansDisp": "3,2", "shape": null}, {"cat": "progon", "code": null, "num": 18, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">21</span></span><span class=\"fd\"><span class=\"mn\">0,6</span><span class=\"mo\"> · </span><span class=\"mn\">2,8</span></span></span>", "n": 25, "d": 2, "term": true, "mode": "value", "ansDisp": "12,5", "shape": null}, {"cat": "progon", "code": null, "num": 19, "html": "<span class=\"mn\">30</span><span class=\"mo\"> − </span><span class=\"mn\">0,8</span><span class=\"mo\"> · </span><span class=\"br\">(</span><span class=\"mo\">−</span><span class=\"mn\">10</span><span class=\"br\">)</span><sup>2</sup>", "n": -50, "d": 1, "term": true, "mode": "value", "ansDisp": "-50", "shape": null}, {"cat": "progon", "code": null, "num": 20, "html": "<span class=\"mn\">5,4</span><span class=\"mo\"> · </span><span class=\"mn\">0,8</span><span class=\"mo\"> + </span><span class=\"mn\">0,08</span>", "n": 22, "d": 5, "term": true, "mode": "value", "ansDisp": "4,4", "shape": null}, {"cat": "progon", "code": null, "num": 21, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">0,9</span></span><span class=\"fd\"><span class=\"mn\">1</span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">8</span></span></span></span></span>", "n": 4, "d": 5, "term": true, "mode": "value", "ansDisp": "0,8", "shape": null}, {"cat": "progon", "code": null, "num": 22, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">4</span></span></span><span class=\"mo\"> + </span><span class=\"mn\">0,7</span>", "n": 19, "d": 20, "term": true, "mode": "value", "ansDisp": "0,95", "shape": null}, {"cat": "progon", "code": null, "num": 23, "html": "<span class=\"br\">(</span><span class=\"mn\">16</span><span class=\"mo\"> · </span><span class=\"mn\">10</span><sup>−2</sup><span class=\"br\">)</span><sup>2</sup><span class=\"mo\"> · </span><span class=\"br\">(</span><span class=\"mn\">13</span><span class=\"mo\"> · </span><span class=\"mn\">10</span><sup>4</sup><span class=\"br\">)</span>", "n": 3328, "d": 1, "term": true, "mode": "value", "ansDisp": "3328", "shape": null}, {"cat": "progon", "code": null, "num": 24, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">4</span></span><span class=\"fd\"><span class=\"mn\">45</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">8</span></span><span class=\"fd\"><span class=\"mn\">35</span></span></span>", "n": 20, "d": 63, "term": false, "mode": "numerator", "ansDisp": "20", "shape": "fracbin", "op": "+", "fa": 4, "fb": 45, "fc": 8, "fd": 35}, {"cat": "progon", "code": null, "num": 25, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">6</span></span><span class=\"fd\"><span class=\"mn\">35</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">2</span></span><span class=\"fd\"><span class=\"mn\">21</span></span></span>", "n": 4, "d": 15, "term": false, "mode": "numerator", "ansDisp": "4", "shape": "fracbin", "op": "+", "fa": 6, "fb": 35, "fc": 2, "fd": 21}, {"cat": "progon", "code": null, "num": 26, "html": "<span class=\"mx\"><span class=\"mn\">2</span><span class=\"f\"><span class=\"fn\">7</span><span class=\"fd\">18</span></span></span><span class=\"mo\"> − </span><span class=\"mx\"><span class=\"mn\">1</span><span class=\"f\"><span class=\"fn\">31</span><span class=\"fd\">38</span></span></span>", "n": 98, "d": 171, "term": false, "mode": "numerator", "ansDisp": "98", "shape": null}, {"cat": "dec", "code": null, "num": 1, "html": "<span class=\"mn\">8,8</span><span class=\"mo\"> + </span><span class=\"mn\">5,9</span>", "n": 147, "d": 10, "term": true, "mode": "value", "ansDisp": "14,7", "shape": "decbin", "op": "+", "av": 88, "ascale": 1, "bv": 59, "bscale": 1}, {"cat": "dec", "code": null, "num": 2, "html": "<span class=\"mn\">8,3</span><span class=\"mo\"> + </span><span class=\"mn\">5,4</span>", "n": 137, "d": 10, "term": true, "mode": "value", "ansDisp": "13,7", "shape": "decbin", "op": "+", "av": 83, "ascale": 1, "bv": 54, "bscale": 1}, {"cat": "dec", "code": null, "num": 3, "html": "<span class=\"mn\">10,3</span><span class=\"mo\"> + </span><span class=\"mn\">5,16</span>", "n": 773, "d": 50, "term": true, "mode": "value", "ansDisp": "15,46", "shape": "decbin", "op": "+", "av": 103, "ascale": 1, "bv": 516, "bscale": 2}, {"cat": "dec", "code": null, "num": 4, "html": "<span class=\"mn\">3,9</span><span class=\"mo\"> − </span><span class=\"mn\">7,3</span>", "n": -17, "d": 5, "term": true, "mode": "value", "ansDisp": "-3,4", "shape": "decbin", "op": "-", "av": 39, "ascale": 1, "bv": 73, "bscale": 1}, {"cat": "dec", "code": null, "num": 5, "html": "<span class=\"mn\">3,6</span><span class=\"mo\"> − </span><span class=\"mn\">4,1</span>", "n": -1, "d": 2, "term": true, "mode": "value", "ansDisp": "-0,5", "shape": "decbin", "op": "-", "av": 36, "ascale": 1, "bv": 41, "bscale": 1}, {"cat": "dec", "code": null, "num": 6, "html": "<span class=\"mn\">5,8</span><span class=\"mo\"> − </span><span class=\"mn\">7,12</span>", "n": -33, "d": 25, "term": true, "mode": "value", "ansDisp": "-1,32", "shape": "decbin", "op": "-", "av": 58, "ascale": 1, "bv": 712, "bscale": 2}, {"cat": "dec", "code": null, "num": 7, "html": "<span class=\"mn\">39,9</span><span class=\"mo\"> · </span><span class=\"mn\">7,1</span>", "n": 28329, "d": 100, "term": true, "mode": "value", "ansDisp": "283,29", "shape": "decbin", "op": "*", "av": 399, "ascale": 1, "bv": 71, "bscale": 1}, {"cat": "dec", "code": null, "num": 8, "html": "<span class=\"mn\">3,2</span><span class=\"mo\"> · </span><span class=\"mn\">6,2</span>", "n": 496, "d": 25, "term": true, "mode": "value", "ansDisp": "19,84", "shape": "decbin", "op": "*", "av": 32, "ascale": 1, "bv": 62, "bscale": 1}, {"cat": "dec", "code": null, "num": 9, "html": "<span class=\"mn\">0,15</span><span class=\"mo\"> · </span><span class=\"mn\">3,6</span>", "n": 27, "d": 50, "term": true, "mode": "value", "ansDisp": "0,54", "shape": "decbin", "op": "*", "av": 15, "ascale": 2, "bv": 36, "bscale": 1}, {"cat": "dec", "code": null, "num": 10, "html": "<span class=\"mn\">8,7</span><span class=\"mo\"> : </span><span class=\"mn\">2,9</span>", "n": 3, "d": 1, "term": true, "mode": "value", "ansDisp": "3", "shape": null}, {"cat": "dec", "code": null, "num": 11, "html": "<span class=\"mn\">6,5</span><span class=\"mo\"> : </span><span class=\"mn\">1,3</span>", "n": 5, "d": 1, "term": true, "mode": "value", "ansDisp": "5", "shape": null}, {"cat": "dec", "code": null, "num": 12, "html": "<span class=\"mn\">12,1</span><span class=\"mo\"> : </span><span class=\"mn\">0,11</span>", "n": 110, "d": 1, "term": true, "mode": "value", "ansDisp": "110", "shape": null}, {"cat": "dec", "code": null, "num": 13, "html": "<span class=\"mo\">−</span><span class=\"mn\">12</span><span class=\"mo\"> · </span><span class=\"br\">(</span><span class=\"mo\">−</span><span class=\"mn\">8,6</span><span class=\"br\">)</span><span class=\"mo\"> − </span><span class=\"mn\">9,4</span>", "n": 469, "d": 5, "term": true, "mode": "value", "ansDisp": "93,8", "shape": null}, {"cat": "dec", "code": null, "num": 14, "html": "<span class=\"mn\">6,8</span><span class=\"mo\"> − </span><span class=\"mn\">11</span><span class=\"mo\"> · </span><span class=\"br\">(</span><span class=\"mo\">−</span><span class=\"mn\">6,1</span><span class=\"br\">)</span>", "n": 739, "d": 10, "term": true, "mode": "value", "ansDisp": "73,9", "shape": null}, {"cat": "dec", "code": null, "num": 15, "html": "<span class=\"mn\">5,2</span><span class=\"mo\"> + </span><span class=\"br\">(</span><span class=\"mo\">−</span><span class=\"mn\">3,5</span><span class=\"mo\"> · </span><span class=\"mn\">0,5</span><span class=\"br\">)</span>", "n": 69, "d": 20, "term": true, "mode": "value", "ansDisp": "3,45", "shape": null}, {"cat": "dec", "code": null, "num": 16, "html": "<span class=\"mn\">0,0001</span><span class=\"mo\"> · </span><span class=\"mn\">0,1</span><span class=\"mo\"> · </span><span class=\"mn\">100000</span>", "n": 1, "d": 1, "term": true, "mode": "value", "ansDisp": "1", "shape": null}, {"cat": "dec", "code": null, "num": 17, "html": "<span class=\"mn\">0,09</span><span class=\"mo\"> · </span><span class=\"mn\">90</span><span class=\"mo\"> · </span><span class=\"mn\">90000</span>", "n": 729000, "d": 1, "term": true, "mode": "value", "ansDisp": "729000", "shape": null}, {"cat": "dec", "code": null, "num": 18, "html": "<span class=\"mn\">0,2</span><span class=\"mo\"> · </span><span class=\"mn\">0,02</span><span class=\"mo\"> · </span><span class=\"mn\">200</span>", "n": 4, "d": 5, "term": true, "mode": "value", "ansDisp": "0,8", "shape": null}, {"cat": "dec", "code": null, "num": 19, "html": "<span class=\"mn\">2,6</span><span class=\"mo\"> · </span><span class=\"mn\">6,2</span><span class=\"mo\"> − </span><span class=\"mn\">0,2</span><span class=\"mo\"> · </span><span class=\"mn\">2,6</span>", "n": 78, "d": 5, "term": true, "mode": "value", "ansDisp": "15,6", "shape": null}, {"cat": "dec", "code": null, "num": 20, "html": "<span class=\"mn\">0,3</span><span class=\"mo\"> · </span><span class=\"mn\">1,5</span><span class=\"mo\"> + </span><span class=\"mn\">0,5</span><span class=\"mo\"> · </span><span class=\"mn\">0,3</span>", "n": 3, "d": 5, "term": true, "mode": "value", "ansDisp": "0,6", "shape": null}, {"cat": "dec", "code": null, "num": 21, "html": "<span class=\"mn\">0,4</span><span class=\"mo\"> · </span><span class=\"mn\">0,85</span><span class=\"mo\"> + </span><span class=\"mn\">0,4</span><span class=\"mo\"> · </span><span class=\"mn\">0,15</span>", "n": 2, "d": 5, "term": true, "mode": "value", "ansDisp": "0,4", "shape": null}, {"cat": "frac", "code": null, "num": 1, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">53</span></span><span class=\"fd\"><span class=\"mn\">50</span></span></span>", "n": 63, "d": 50, "term": true, "mode": "value", "ansDisp": "1,26", "shape": "fracbin", "op": "+", "fa": 1, "fb": 5, "fc": 53, "fd": 50}, {"cat": "frac", "code": null, "num": 2, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">9</span></span><span class=\"fd\"><span class=\"mn\">4</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">8</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span>", "n": 77, "d": 20, "term": true, "mode": "value", "ansDisp": "3,85", "shape": "fracbin", "op": "+", "fa": 9, "fb": 4, "fc": 8, "fd": 5}, {"cat": "frac", "code": null, "num": 3, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">10</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">6</span></span><span class=\"fd\"><span class=\"mn\">15</span></span></span>", "n": 1, "d": 2, "term": true, "mode": "value", "ansDisp": "0,5", "shape": "fracbin", "op": "+", "fa": 1, "fb": 10, "fc": 6, "fd": 15}, {"cat": "frac", "code": null, "num": 4, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">47</span></span><span class=\"fd\"><span class=\"mn\">10</span></span></span>", "n": -9, "d": 2, "term": true, "mode": "value", "ansDisp": "-4,5", "shape": "fracbin", "op": "-", "fa": 1, "fb": 5, "fc": 47, "fd": 10}, {"cat": "frac", "code": null, "num": 5, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">2</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">9</span></span><span class=\"fd\"><span class=\"mn\">10</span></span></span>", "n": -2, "d": 5, "term": true, "mode": "value", "ansDisp": "-0,4", "shape": "fracbin", "op": "-", "fa": 1, "fb": 2, "fc": 9, "fd": 10}, {"cat": "frac", "code": null, "num": 6, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">11</span></span><span class=\"fd\"><span class=\"mn\">12</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">5</span></span><span class=\"fd\"><span class=\"mn\">18</span></span></span>", "n": 23, "d": 36, "term": false, "mode": "value", "ansDisp": "23/36", "shape": "fracbin", "op": "-", "fa": 11, "fb": 12, "fc": 5, "fd": 18}, {"cat": "frac", "code": null, "num": 7, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">9</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">2</span></span><span class=\"fd\"><span class=\"mn\">3</span></span></span>", "n": 6, "d": 5, "term": true, "mode": "value", "ansDisp": "1,2", "shape": "fracbin", "op": "*", "fa": 9, "fb": 5, "fc": 2, "fd": 3}, {"cat": "frac", "code": null, "num": 8, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">15</span></span><span class=\"fd\"><span class=\"mn\">4</span></span></span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">6</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span>", "n": 9, "d": 2, "term": true, "mode": "value", "ansDisp": "4,5", "shape": "fracbin", "op": "*", "fa": 15, "fb": 4, "fc": 6, "fd": 5}, {"cat": "frac", "code": null, "num": 9, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">2</span></span><span class=\"fd\"><span class=\"mn\">3</span></span></span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">9</span></span><span class=\"fd\"><span class=\"mn\">8</span></span></span>", "n": 3, "d": 4, "term": true, "mode": "value", "ansDisp": "0,75", "shape": "fracbin", "op": "*", "fa": 2, "fb": 3, "fc": 9, "fd": 8}, {"cat": "frac", "code": null, "num": 10, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">6</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">4</span></span><span class=\"fd\"><span class=\"mn\">11</span></span></span>", "n": 33, "d": 10, "term": true, "mode": "value", "ansDisp": "3,3", "shape": "fracbin", "op": ":", "fa": 6, "fb": 5, "fc": 4, "fd": 11}, {"cat": "frac", "code": null, "num": 11, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">12</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">15</span></span><span class=\"fd\"><span class=\"mn\">2</span></span></span>", "n": 8, "d": 25, "term": true, "mode": "value", "ansDisp": "0,32", "shape": "fracbin", "op": ":", "fa": 12, "fb": 5, "fc": 15, "fd": 2}, {"cat": "frac", "code": null, "num": 12, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">6</span></span><span class=\"fd\"><span class=\"mn\">11</span></span></span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">3</span></span><span class=\"fd\"><span class=\"mn\">22</span></span></span>", "n": 4, "d": 1, "term": true, "mode": "value", "ansDisp": "4", "shape": "fracbin", "op": ":", "fa": 6, "fb": 11, "fc": 3, "fd": 22}, {"cat": "frac", "code": null, "num": 13, "html": "<span class=\"br\">(</span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">13</span></span><span class=\"fd\"><span class=\"mn\">30</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">11</span></span><span class=\"fd\"><span class=\"mn\">20</span></span></span><span class=\"br\">)</span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">9</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span>", "n": -21, "d": 100, "term": true, "mode": "value", "ansDisp": "-0,21", "shape": null}, {"cat": "frac", "code": null, "num": 14, "html": "<span class=\"br\">(</span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">17</span></span><span class=\"fd\"><span class=\"mn\">15</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">12</span></span></span><span class=\"br\">)</span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">20</span></span><span class=\"fd\"><span class=\"mn\">3</span></span></span>", "n": 7, "d": 1, "term": true, "mode": "value", "ansDisp": "7", "shape": null}, {"cat": "frac", "code": null, "num": 15, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">14</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> · </span><span class=\"br\">(</span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">3</span></span><span class=\"fd\"><span class=\"mn\">14</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">5</span></span><span class=\"fd\"><span class=\"mn\">28</span></span></span><span class=\"br\">)</span>", "n": 1, "d": 10, "term": true, "mode": "value", "ansDisp": "0,1", "shape": null}, {"cat": "frac", "code": null, "num": 16, "html": "<span class=\"br\">(</span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">11</span></span><span class=\"fd\"><span class=\"mn\">18</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">2</span></span><span class=\"fd\"><span class=\"mn\">9</span></span></span><span class=\"br\">)</span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">5</span></span><span class=\"fd\"><span class=\"mn\">48</span></span></span>", "n": 8, "d": 1, "term": true, "mode": "value", "ansDisp": "8", "shape": null}, {"cat": "frac", "code": null, "num": 17, "html": "<span class=\"br\">(</span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">11</span></span><span class=\"fd\"><span class=\"mn\">10</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">4</span></span><span class=\"fd\"><span class=\"mn\">11</span></span></span><span class=\"br\">)</span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">15</span></span><span class=\"fd\"><span class=\"mn\">44</span></span></span>", "n": 54, "d": 25, "term": true, "mode": "value", "ansDisp": "2,16", "shape": null}, {"cat": "frac", "code": null, "num": 18, "html": "<span class=\"br\">(</span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">6</span></span><span class=\"fd\"><span class=\"mn\">8</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">3</span></span><span class=\"fd\"><span class=\"mn\">16</span></span></span><span class=\"br\">)</span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">3</span></span><span class=\"fd\"><span class=\"mn\">32</span></span></span>", "n": 6, "d": 1, "term": true, "mode": "value", "ansDisp": "6", "shape": null}, {"cat": "combo", "code": null, "num": 1, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">9,5</span><span class=\"mo\"> + </span><span class=\"mn\">8,9</span></span><span class=\"fd\"><span class=\"mn\">2,3</span></span></span>", "n": 8, "d": 1, "term": true, "mode": "value", "ansDisp": "8", "shape": null}, {"cat": "combo", "code": null, "num": 2, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">4,6</span><span class=\"mo\"> + </span><span class=\"mn\">2,8</span></span><span class=\"fd\"><span class=\"mn\">0,2</span></span></span>", "n": 37, "d": 1, "term": true, "mode": "value", "ansDisp": "37", "shape": null}, {"cat": "combo", "code": null, "num": 3, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">11,8</span><span class=\"mo\"> + </span><span class=\"mn\">2,7</span></span><span class=\"fd\"><span class=\"mn\">2,9</span></span></span>", "n": 5, "d": 1, "term": true, "mode": "value", "ansDisp": "5", "shape": null}, {"cat": "combo", "code": null, "num": 4, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">6,8</span><span class=\"mo\"> − </span><span class=\"mn\">4,7</span></span><span class=\"fd\"><span class=\"mn\">1,4</span></span></span>", "n": 3, "d": 2, "term": true, "mode": "value", "ansDisp": "1,5", "shape": null}, {"cat": "combo", "code": null, "num": 5, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">2,3</span><span class=\"mo\"> − </span><span class=\"mn\">6,8</span></span><span class=\"fd\"><span class=\"mn\">1,5</span></span></span>", "n": -3, "d": 1, "term": true, "mode": "value", "ansDisp": "-3", "shape": null}, {"cat": "combo", "code": null, "num": 6, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">3,9</span><span class=\"mo\"> − </span><span class=\"mn\">1,8</span></span><span class=\"fd\"><span class=\"mn\">0,3</span></span></span>", "n": 7, "d": 1, "term": true, "mode": "value", "ansDisp": "7", "shape": null}, {"cat": "combo", "code": null, "num": 7, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">1,5</span></span><span class=\"fd\"><span class=\"mn\">1</span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span></span></span>", "n": 5, "d": 4, "term": true, "mode": "value", "ansDisp": "1,25", "shape": null}, {"cat": "combo", "code": null, "num": 8, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">1,9</span></span><span class=\"fd\"><span class=\"f\"><span class=\"fn\"><span class=\"mn\">2</span></span><span class=\"fd\"><span class=\"mn\">3</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">3</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span></span></span>", "n": 3, "d": 2, "term": true, "mode": "value", "ansDisp": "1,5", "shape": null}, {"cat": "combo", "code": null, "num": 9, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">2,6</span></span><span class=\"fd\"><span class=\"f\"><span class=\"fn\"><span class=\"mn\">4</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">2</span></span></span></span></span>", "n": 2, "d": 1, "term": true, "mode": "value", "ansDisp": "2", "shape": null}, {"cat": "combo", "code": null, "num": 10, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">18</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">21</span></span></span></span></span>", "n": 126, "d": 1, "term": true, "mode": "value", "ansDisp": "126", "shape": null}, {"cat": "combo", "code": null, "num": 11, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">35</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">60</span></span></span></span></span>", "n": 84, "d": 1, "term": true, "mode": "value", "ansDisp": "84", "shape": null}, {"cat": "combo", "code": null, "num": 12, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">42</span></span></span><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">91</span></span></span></span></span>", "n": 78, "d": 1, "term": true, "mode": "value", "ansDisp": "78", "shape": null}, {"cat": "combo", "code": null, "num": 13, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">21</span></span><span class=\"fd\"><span class=\"mn\">0,6</span><span class=\"mo\"> · </span><span class=\"mn\">2,8</span></span></span>", "n": 25, "d": 2, "term": true, "mode": "value", "ansDisp": "12,5", "shape": null}, {"cat": "combo", "code": null, "num": 14, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">3,6</span><span class=\"mo\"> · </span><span class=\"mn\">4</span></span><span class=\"fd\"><span class=\"mn\">0,6</span><span class=\"mo\"> · </span><span class=\"mn\">8</span></span></span>", "n": 3, "d": 1, "term": true, "mode": "value", "ansDisp": "3", "shape": null}, {"cat": "combo", "code": null, "num": 15, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">3,6</span><span class=\"mo\"> · </span><span class=\"mn\">1,5</span></span><span class=\"fd\"><span class=\"mn\">12</span><span class=\"mo\"> · </span><span class=\"mn\">0,3</span></span></span>", "n": 3, "d": 2, "term": true, "mode": "value", "ansDisp": "1,5", "shape": null}, {"cat": "combo", "code": null, "num": 16, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">0,44</span><span class=\"mo\"> · </span><span class=\"mn\">1,7</span></span><span class=\"fd\"><span class=\"mn\">4</span><span class=\"mo\"> − </span><span class=\"mn\">4,6</span></span></span>", "n": -187, "d": 150, "term": false, "mode": "value", "ansDisp": "-187/150", "shape": null}, {"cat": "combo", "code": null, "num": 17, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">0,52</span><span class=\"mo\"> · </span><span class=\"mn\">6,6</span></span><span class=\"fd\"><span class=\"mn\">4</span><span class=\"mo\"> − </span><span class=\"mn\">45,4</span></span></span>", "n": -143, "d": 1725, "term": false, "mode": "value", "ansDisp": "-143/1725", "shape": null}, {"cat": "combo", "code": null, "num": 18, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">30,45</span></span><span class=\"fd\"><span class=\"mn\">6</span><span class=\"mo\"> + </span><span class=\"mn\">4,15</span></span></span>", "n": 3, "d": 1, "term": true, "mode": "value", "ansDisp": "3", "shape": null}, {"cat": "adv", "code": null, "num": 1, "html": "<span class=\"mo\">−</span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">11</span></span><span class=\"fd\"><span class=\"mn\">13</span></span></span><span class=\"mo\"> : </span><span class=\"br\">(</span><span class=\"mo\">−</span><span class=\"mx\"><span class=\"mn\">1</span><span class=\"f\"><span class=\"fn\">9</span><span class=\"fd\">13</span></span></span><span class=\"br\">)</span><span class=\"mo\"> + </span><span class=\"mn\">5,52</span><span class=\"mo\"> : </span><span class=\"br\">(</span><span class=\"mo\">−</span><span class=\"mn\">13,8</span><span class=\"br\">)</span><span class=\"mo\"> − </span><span class=\"mn\">0,1</span>", "n": 0, "d": 1, "term": true, "mode": "value", "ansDisp": "0", "shape": null}, {"cat": "adv", "code": null, "num": 2, "html": "<span class=\"mx\"><span class=\"mn\">7</span><span class=\"f\"><span class=\"fn\">1</span><span class=\"fd\">2</span></span></span><span class=\"mo\"> : </span><span class=\"mx\"><span class=\"mn\">2</span><span class=\"f\"><span class=\"fn\">1</span><span class=\"fd\">2</span></span></span><span class=\"mo\"> · </span><span class=\"mx\"><span class=\"mn\">3</span><span class=\"f\"><span class=\"fn\">2</span><span class=\"fd\">3</span></span></span><span class=\"mo\"> − </span><span class=\"mx\"><span class=\"mn\">5</span><span class=\"f\"><span class=\"fn\">1</span><span class=\"fd\">5</span></span></span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">5</span></span><span class=\"fd\"><span class=\"mn\">13</span></span></span><span class=\"mo\"> · </span><span class=\"br\">(</span><span class=\"mx\"><span class=\"mn\">1</span><span class=\"f\"><span class=\"fn\">1</span><span class=\"fd\">2</span></span></span><span class=\"br\">)</span><sup>3</sup>", "n": 17, "d": 4, "term": true, "mode": "value", "ansDisp": "4,25", "shape": null}, {"cat": "adv", "code": null, "num": 3, "html": "<span class=\"f\"><span class=\"fn\"><span class=\"mn\">8</span></span><span class=\"fd\"><span class=\"mn\">9</span></span></span><span class=\"mo\"> · </span><span class=\"br\">(</span><span class=\"mx\"><span class=\"mn\">2</span><span class=\"f\"><span class=\"fn\">1</span><span class=\"fd\">4</span></span></span><span class=\"br\">)</span><sup>2</sup><span class=\"mo\"> − </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">3</span></span><span class=\"fd\"><span class=\"mn\">7</span></span></span><span class=\"mo\"> : </span><span class=\"mx\"><span class=\"mn\">3</span><span class=\"f\"><span class=\"fn\">3</span><span class=\"fd\">7</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">5</span></span><span class=\"fd\"><span class=\"mn\">6</span></span></span><span class=\"mo\"> : </span><span class=\"mx\"><span class=\"mn\">3</span><span class=\"f\"><span class=\"fn\">1</span><span class=\"fd\">3</span></span></span>", "n": 37, "d": 8, "term": true, "mode": "value", "ansDisp": "4,625", "shape": null}, {"cat": "adv", "code": null, "num": 4, "html": "<span class=\"mx\"><span class=\"mn\">1</span><span class=\"f\"><span class=\"fn\">1</span><span class=\"fd\">3</span></span></span><span class=\"mo\"> · </span><span class=\"br\">(</span><span class=\"mx\"><span class=\"mn\">8</span><span class=\"f\"><span class=\"fn\">2</span><span class=\"fd\">3</span></span></span><span class=\"mo\"> : </span><span class=\"mx\"><span class=\"mn\">1</span><span class=\"f\"><span class=\"fn\">4</span><span class=\"fd\">9</span></span></span><span class=\"mo\"> − </span><span class=\"mx\"><span class=\"mn\">3</span><span class=\"f\"><span class=\"fn\">3</span><span class=\"fd\">8</span></span></span><span class=\"mo\"> + </span><span class=\"mx\"><span class=\"mn\">1</span><span class=\"f\"><span class=\"fn\">5</span><span class=\"fd\">8</span></span></span><span class=\"br\">)</span><span class=\"mo\"> − </span><span class=\"mx\"><span class=\"mn\">1</span><span class=\"f\"><span class=\"fn\">5</span><span class=\"fd\">6</span></span></span>", "n": 23, "d": 6, "term": false, "mode": "value", "ansDisp": "23/6", "shape": null}, {"cat": "adv", "code": null, "num": 5, "html": "<span class=\"br\">(</span><span class=\"mx\"><span class=\"mn\">3</span><span class=\"f\"><span class=\"fn\">1</span><span class=\"fd\">15</span></span></span><span class=\"mo\"> − </span><span class=\"mx\"><span class=\"mn\">1</span><span class=\"f\"><span class=\"fn\">1</span><span class=\"fd\">15</span></span></span><span class=\"mo\"> : </span><span class=\"mx\"><span class=\"mn\">1</span><span class=\"f\"><span class=\"fn\">3</span><span class=\"fd\">5</span></span></span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">2</span></span><span class=\"fd\"><span class=\"mn\">5</span></span></span><span class=\"br\">)</span><span class=\"mo\"> · </span><span class=\"mx\"><span class=\"mn\">2</span><span class=\"f\"><span class=\"fn\">1</span><span class=\"fd\">7</span></span></span><span class=\"mo\"> − </span><span class=\"mx\"><span class=\"mn\">1</span><span class=\"f\"><span class=\"fn\">1</span><span class=\"fd\">7</span></span></span>", "n": 34, "d": 7, "term": false, "mode": "value", "ansDisp": "34/7", "shape": null}, {"cat": "adv", "code": null, "num": 6, "html": "<span class=\"mn\">7,2</span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">7</span></span><span class=\"fd\"><span class=\"mn\">12</span></span></span><span class=\"mo\"> · </span><span class=\"mn\">2,7</span><span class=\"mo\"> · </span><span class=\"mx\"><span class=\"mn\">2</span><span class=\"f\"><span class=\"fn\">22</span><span class=\"fd\">25</span></span></span><span class=\"mo\"> : </span><span class=\"mx\"><span class=\"mn\">2</span><span class=\"f\"><span class=\"fn\">4</span><span class=\"fd\">5</span></span></span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">1</span></span><span class=\"fd\"><span class=\"mn\">125</span></span></span>", "n": 1458, "d": 1, "term": true, "mode": "value", "ansDisp": "1458", "shape": null}, {"cat": "adv", "code": null, "num": 7, "html": "<span class=\"br\">(</span><span class=\"mx\"><span class=\"mn\">6</span><span class=\"f\"><span class=\"fn\">3</span><span class=\"fd\">5</span></span></span><span class=\"mo\"> : </span><span class=\"mn\">6</span><span class=\"mo\"> − </span><span class=\"mn\">8,016</span><span class=\"mo\"> · </span><span class=\"mn\">0,125</span><span class=\"mo\"> + </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">2</span></span><span class=\"fd\"><span class=\"mn\">15</span></span></span><span class=\"mo\"> · </span><span class=\"mn\">0,03</span><span class=\"br\">)</span><span class=\"mo\"> · </span><span class=\"mx\"><span class=\"mn\">2</span><span class=\"f\"><span class=\"fn\">3</span><span class=\"fd\">4</span></span></span>", "n": 561, "d": 2000, "term": true, "mode": "value", "ansDisp": "0,2805", "shape": null}, {"cat": "adv", "code": null, "num": 8, "html": "<span class=\"br\">(</span><span class=\"mx\"><span class=\"mn\">9</span><span class=\"f\"><span class=\"fn\">3</span><span class=\"fd\">20</span></span></span><span class=\"mo\"> − </span><span class=\"mn\">1,24</span><span class=\"br\">)</span><span class=\"mo\"> : </span><span class=\"mx\"><span class=\"mn\">2</span><span class=\"f\"><span class=\"fn\">1</span><span class=\"fd\">3</span></span></span><span class=\"mo\"> + </span><span class=\"br\">(</span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">3</span></span><span class=\"fd\"><span class=\"mn\">4</span></span></span><span class=\"mo\"> + </span><span class=\"mx\"><span class=\"mn\">2</span><span class=\"f\"><span class=\"fn\">5</span><span class=\"fd\">8</span></span></span><span class=\"br\">)</span><span class=\"mo\"> : </span><span class=\"mn\">0,625</span>", "n": 879, "d": 100, "term": true, "mode": "value", "ansDisp": "8,79", "shape": null}, {"cat": "adv", "code": null, "num": 9, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">18,6</span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">3</span></span><span class=\"fd\"><span class=\"mn\">4</span></span></span><span class=\"mo\"> − </span><span class=\"mn\">14,4</span><span class=\"mo\"> · </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">5</span></span><span class=\"fd\"><span class=\"mn\">12</span></span></span></span><span class=\"fd\"><span class=\"mn\">47,52</span><span class=\"mo\"> : </span><span class=\"mn\">1,8</span><span class=\"mo\"> − </span><span class=\"mn\">17</span></span></span>", "n": 2, "d": 1, "term": true, "mode": "value", "ansDisp": "2", "shape": null}, {"cat": "adv", "code": null, "num": 10, "html": "<span class=\"f big\"><span class=\"fn\"><span class=\"mn\">24,3</span><span class=\"mo\"> : </span><span class=\"f\"><span class=\"fn\"><span class=\"mn\">9</span></span><span class=\"fd\"><span class=\"mn\">13</span></span></span><span class=\"mo\"> − </span><span class=\"mn\">4,5</span><span class=\"mo\"> · </span><span class=\"mx\"><span class=\"mn\">3</span><span class=\"f\"><span class=\"fn\">1</span><span class=\"fd\">3</span></span></span></span><span class=\"fd\"><span class=\"mn\">56,81</span><span class=\"mo\"> : </span><span class=\"mn\">2,3</span><span class=\"mo\"> − </span><span class=\"mn\">18</span></span></span>", "n": 3, "d": 1, "term": true, "mode": "value", "ansDisp": "3", "shape": null}];
+
+/* ============ helpers ============ */
+const $=s=>document.querySelector(s);
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b];}return a;}
+function lcm(a,b){return a/gcd(a,b)*b;}
+function ri(a,b){return a+Math.floor(Math.random()*(b-a+1));}
+function pick(arr){return arr[ri(0,arr.length-1)];}
+function fr(n,d){const g=gcd(n,d)||1;const s=d<0?-1:1;return [s*n/g, s*d/g];}
+function isTerm(d){while(d%2===0)d/=2;while(d%5===0)d/=5;return d===1;}
+function decStr(n,d){ // exact decimal string with comma for terminating n/d
+  let neg=n<0;n=Math.abs(n);let k=0,dd=d;
+  while(dd%2===0){dd/=2;k++;}let f=0;while(dd%5===0){dd/=5;f++;}
+  const p=Math.max(k,f);const scaled=n*Math.pow(10,p)/d;
+  let s=String(scaled);
+  if(p>0){s=s.padStart(p+1,'0');s=s.slice(0,-p)+','+s.slice(-p);s=s.replace(/,?0+$/,'');}
+  return (neg?'−':'')+s;
+}
+function valDisp(n,d){const [a,b]=fr(n,d);return b===1?String(a).replace('-','−'):(isTerm(b)?decStr(a,b):(a+'/'+b));}
+function mfrac(n,d){return '<span class="mexp small" style="display:inline-flex;vertical-align:middle">'+(n<0?'<span class="mo">−</span>':'')+'<span class="f"><span class="fn">'+Math.abs(n)+'</span><span class="fd">'+d+'</span></span></span>';}
+function lcmCase(b,d){
+  const L=lcm(b,d),mx=Math.max(b,d),mn=Math.min(b,d);
+  if(mx%mn===0)return{L,kind:'div',
+    short:'случай 1 — '+mx+' делится на '+mn+' → НОК = '+L,
+    hint:'Это случай 1. Сначала всегда проверяй: делится ли больший знаменатель на меньший? '+mx+' : '+mn+' = '+(mx/mn)+' — делится! Значит НОК — это просто больший знаменатель: '+L};
+  if(gcd(b,d)===1)return{L,kind:'coprime',
+    short:'случай 2 — у '+b+' и '+d+' нет общих делителей (взаимно простые) → НОК = '+b+' · '+d+' = '+L,
+    hint:'Это случай 2. Больший на меньший не делится, а общих делителей у '+b+' и '+d+' нет — числа взаимно простые. Тогда НОК — их произведение: '+b+' · '+d+' = '+L};
+  const steps=[];for(let k=1;k<=L/mx;k++){const m=mx*k;steps.push({m,ok:m%mn===0});}
+  return{L,kind:'enum',steps,
+    short:'случай 3 — перебор кратных числа '+mx+': '+steps.map(s=>s.m+(s.ok?' — да':' — нет')).join(', ')+' → НОК = '+L,
+    hint:'Это случай 3: больший на меньший не делится, но общий делитель есть. Метод 5 класса: выписывай кратные большего ('+steps.map(s=>s.m).join(', ')+') и проверяй каждое на деление на '+mn+'. Первое подошедшее — НОК = '+L};
+}
+function factorize(n){const f=[];let p=2;while(p*p<=n){while(n%p===0){f.push(p);n/=p;}p++;}if(n>1)f.push(n);return f;}
+function fhtml(n,d,cls){return '<span class="f '+(cls||'')+'"><span class="fn">'+n+'</span><span class="fd">'+d+'</span></span>';}
+function num(s){return '<span class="mn">'+s+'</span>';}
+function parseInput(s){
+  s=s.trim().replace(/\u2212/g,'-').replace(/\s+/g,'');
+  if(!s)return null;
+  let m=s.match(/^(-?\d+)[\/:](-?\d+)$/);
+  if(m){const d=BigInt(m[2]);if(d===0n)return null;return [BigInt(m[1]),d];}
+  m=s.match(/^-?\d+([.,]\d+)?$/);
+  if(!m)return null;
+  s=s.replace(',','.');
+  const neg=s.startsWith('-');if(neg)s=s.slice(1);
+  const [a,b='']=s.split('.');
+  let n=BigInt(a+b),d=10n**BigInt(b.length);
+  return [neg?-n:n,d];
+}
+function eqFrac(u,n,d){return u[0]*BigInt(d)===BigInt(n)*u[1];}
+/* decimals as scaled ints {v,s}: value = v / 10^s */
+function D(v,s){return {v,s};}
+function dstr(x){let v=x.v,neg=v<0;v=Math.abs(v);let s=String(v).padStart(x.s+1,'0');
+  if(x.s>0)s=s.slice(0,-x.s)+','+s.slice(-x.s);return (neg?'−':'')+s;}
+function dTrim(x){let v=x.v,s=x.s;while(s>0&&v%10===0){v/=10;s--;}return D(v,s);}
+function dAdd(a,b,sign){const s=Math.max(a.s,b.s);
+  return D(a.v*Math.pow(10,s-a.s)+sign*b.v*Math.pow(10,s-b.s),s);}
+function dFrac(x){return fr(x.v,Math.pow(10,x.s));}
+
+/* ============ router ============ */
+let R={view:'home',mod:null,tab:null};
+const MODS={
+  frac:{title:'Обыкновенные дроби',icon:fhtml('a','b'),desc:'Что такое дробь, сокращение, общий знаменатель, все четыре действия.',tabs:['learn','guided','drill']},
+  dec:{title:'Десятичные дроби',icon:'<span style="font-family:Georgia,serif">0,25</span>',desc:'Разряды, столбик, правило запятой при умножении и делении.',tabs:['learn','guided','drill']},
+  exam:{title:'Экзаменационный микс',icon:'<span style="font-family:Georgia,serif">№6</span>',desc:'Многоэтажные дроби, «полный прогон» и задачи для продвинутых — как на реальном ОГЭ.',tabs:['drill']},
+};
+const TABNAMES={learn:'📖 Учимся',guided:'🪜 Пошагово',drill:'⏱ Марафон'};
+
+function go(view,mod,tab){R={view,mod:mod||null,tab:tab||null};render();window.scrollTo({top:0});}
+function render(){
+  const app=$('#app'),crumb=$('#crumb');
+  if(R.view==='home'){
+    $('#pageTitle').textContent='Дроби: учимся и тренируемся';
+    $('#pageSub').textContent='Выбери модуль — в каждом есть теория с интерактивом, пошаговый решатель и марафон задач.';
+    crumb.style.display='none';
+    app.innerHTML='<div class="modgrid">'+Object.entries(MODS).map(([k,m])=>
+      '<div class="card mod" data-mod="'+k+'" role="button" tabindex="0">'+
+      '<div class="big">'+m.icon+'</div><h2>'+m.title+'</h2><p>'+m.desc+'</p>'+
+      '<div class="modes">'+m.tabs.map(t=>TABNAMES[t]).join(' · ')+'</div></div>').join('')+'</div>';
+    app.querySelectorAll('.mod').forEach(el=>{
+      const f=()=>go('module',el.dataset.mod,MODS[el.dataset.mod].tabs[0]);
+      el.onclick=f; el.onkeydown=e=>{if(e.key==='Enter')f();};
+    });
+    return;
+  }
+  const m=MODS[R.mod];
+  $('#pageTitle').textContent=m.title;
+  $('#pageSub').textContent=m.desc;
+  crumb.style.display='inline';crumb.onclick=()=>go('home');
+  let h='<div class="tabs">'+m.tabs.map(t=>'<button class="tab'+(t===R.tab?' on':'')+'" data-t="'+t+'">'+TABNAMES[t]+'</button>').join('')+'</div><div id="tabbody"></div>';
+  app.innerHTML=h;
+  app.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{R.tab=b.dataset.t;render();});
+  if(R.tab==='learn') renderLearn();
+  if(R.tab==='guided') renderGuided();
+  if(R.tab==='drill') renderDrill();
+}
+
+/* ============ LEARN: fractions ============ */
+function barHTML(fill,total,cls){
+  let h='<div class="bar '+(cls||'')+'" style="max-width:'+Math.min(560,total*46)+'px">';
+  for(let i=0;i<total;i++)h+='<div class="c'+(i<fill?' fill':'')+'"></div>';
+  return h+'</div>';
+}
+let LB={n:3,d:4};
+function renderLearn(){
+  if(R.mod==='frac')renderLearnFrac();else renderLearnDec();
+}
+function renderLearnFrac(){
+  $('#tabbody').innerHTML=`
+  <div class="card notebook">
+    <h2>1. Дробь — это части целого</h2>
+    <p class="sub">Знаменатель — на сколько частей разрезали, числитель — сколько частей взяли. Понажимай кнопки:</p>
+    <div class="learnrow">
+      <span class="stepper">числитель <button class="b-ghost" id="nMinus">−</button><span class="val" id="nVal"></span><button class="b-ghost" id="nPlus">+</button></span>
+      <span class="stepper">знаменатель <button class="b-ghost" id="dMinus">−</button><span class="val" id="dVal"></span><button class="b-ghost" id="dPlus">+</button></span>
+    </div>
+    <div id="lbBar"></div>
+    <div class="mexp" id="lbCap" style="margin-top:6px"></div>
+    <div class="tip">Если числитель <b>больше</b> знаменателя — дробь неправильная, она больше 1. Например 53/50 — это одна целая полоска и ещё 3 клетки.</div>
+  </div>
+  <div class="card notebook">
+    <h2>2. Сокращение дроби</h2>
+    <p class="sub">Делим числитель и знаменатель на их НОД — значение дроби не меняется. А если НОД сразу не виден — не беда: сокращай на любой общий делитель, который заметил, потом ещё раз — и так до несократимой дроби. Попробуй:</p>
+    <div class="learnrow">
+      <span class="finput"><input class="mini" id="rA" value="18"><span class="fbar"></span><input class="mini" id="rB" value="24"></span>
+      <button class="b-primary b-mini" id="rGo">Сократить</button>
+      <button class="b-ghost b-mini" id="rRnd">случайная дробь</button>
+    </div>
+    <div id="rOut"></div>
+    <div class="tip"><b>Как заметить общий делитель:</b> оба числа чётные → сокращай на 2; оба оканчиваются на 0 или 5 → на 5; у обоих сумма цифр делится на 3 → на 3. Сократил — посмотри ещё раз: часто можно продолжить.</div>
+  </div>
+  <div class="card notebook">
+    <h2>3. Как найти НОК знаменателей: три случая</h2>
+    <p class="sub">НОК — наименьшее число, которое делится на оба знаменателя. Любая пара знаменателей попадает в один из трёх случаев — проверяй их по порядку:</p>
+
+    <div class="lcase">
+      <h3>Случай 1. Один делится на другой → НОК = больший знаменатель</h3>
+      <p>Первая проверка всегда такая: делится ли больший знаменатель на меньший? Если да — искать нечего, больший и есть НОК.</p>
+      <div class="ex">5 и 50: &nbsp;50 : 5 = 10 — делится → <b>НОК = 50</b>. &nbsp;&nbsp; 4 и 20: &nbsp;20 : 4 = 5 → <b>НОК = 20</b>.</div>
+    </div>
+
+    <div class="lcase">
+      <h3>Случай 2. Взаимно простые числа → НОК = их произведение</h3>
+      <p><b>Взаимно простые</b> — это числа, у которых нет ни одного общего делителя, кроме 1. Сами числа при этом могут быть и не простыми! Например, 4 и 9 — оба составные, но взаимно простые: делители 4 — это 1, 2, 4; делители 9 — это 1, 3, 9. Общий только 1.</p>
+      <p>Для взаимно простых чисел меньше произведения ничего не найти, поэтому НОК = произведение.</p>
+      <div class="ex">3 и 7: общих делителей нет → <b>НОК = 3 · 7 = 21</b>. &nbsp;&nbsp; 4 и 9: общих делителей нет → <b>НОК = 4 · 9 = 36</b>.</div>
+    </div>
+
+    <div class="lcase">
+      <h3>Случай 3. Не взаимно простые, и один на другой не делится → перебор</h3>
+      <p>Общий делитель есть (значит, произведение будет с запасом), но больший на меньший не делится. Метод 5 класса: выписывай кратные <b>большего</b> знаменателя и проверяй каждое на деление на меньший. Первое подошедшее — НОК.</p>
+      <div class="ex" id="lcase3ex"></div>
+    </div>
+
+    <details class="ref">
+      <summary>Справка (6 класс): НОК через разложение на простые множители</summary>
+      <p class="sub" style="margin-top:8px">Раскладываем оба числа на простые множители и берём каждый множитель столько раз, сколько он встречается там, где его больше. На ОГЭ этот способ почти не нужен — перебора хватает, но знать полезно:</p>
+      <div class="learnrow">
+        <input class="mini" id="fA" value="36"> <span class="sub">и</span> <input class="mini" id="fB" value="120">
+        <button class="b-primary b-mini" id="fGo">Разложить</button>
+      </div>
+      <div id="fOut"></div>
+    </details>
+  </div>
+  <div class="card notebook">
+    <h2>4. Потренируйся: определи случай — найди НОК</h2>
+    <p class="sub">Возьми свою пару знаменателей или случайную. Сначала реши, какой это случай из пункта 3, потом введи НОК — проверю каждый шаг.</p>
+    <div class="learnrow">
+      <input class="mini" id="lA" value="8"> <span class="sub">и</span> <input class="mini" id="lB" value="12">
+      <button class="b-primary b-mini" id="lStart">Взять эту пару</button>
+      <button class="b-ghost b-mini" id="lRnd">случайная пара</button>
+    </div>
+    <div id="lQuiz"></div>
+    <div id="lOut"></div>
+  </div>
+  <div class="card notebook">
+    <h2>5. Сложение и вычитание: общий знаменатель</h2>
+    <p class="sub">Складывать можно только одинаковые «клетки». Введи две дроби — покажу решение с картинкой:</p>
+    <div class="learnrow">
+      <span class="finput"><input class="mini" id="aA" value="1" style="color:var(--frac1)"><span class="fbar" style="background:var(--frac1)"></span><input class="mini" id="aB" value="5" style="color:var(--frac1)"></span>
+      <select id="aOp" style="font-size:18px"><option value="+">+</option><option value="-">−</option></select>
+      <span class="finput"><input class="mini" id="aC" value="3" style="color:var(--frac2)"><span class="fbar" style="background:var(--frac2)"></span><input class="mini" id="aD" value="4" style="color:var(--frac2)"></span>
+      <button class="b-primary b-mini" id="aGo">Показать решение</button>
+    </div>
+    <div class="learnrow" style="gap:16px">
+      <label class="sub" style="cursor:pointer"><input type="radio" name="aMode" value="lcm" checked style="accent-color:var(--accent)"> как в 5–6 классе: ищем НОК знаменателей</label>
+      <label class="sub" style="cursor:pointer"><input type="radio" name="aMode" value="mult" style="accent-color:var(--accent)"> метод отчаянного девятиклассника: применить случай 2 ко всему — просто перемножить знаменатели</label>
+    </div>
+    <div id="aOut"></div>
+    <div class="tip"><b>Какой метод выбрать?</b> Отчаянный метод — это случай 2, распространённый на все ситуации: делаем вид, что любые знаменатели взаимно простые, и перемножаем. Работает всегда и без раздумий, но если знаменатели на самом деле не взаимно простые, получится знаменатель «с запасом» — числа крупнее, и в конце почти всегда придётся сокращать. НОК даёт маленькие числа, но его надо найти. Если один знаменатель делится на другой (5 и 50) — НОК очевиден, бери его. Если знаменатели «чужие» (3 и 7) — их произведение и есть НОК, методы совпадают.</div>
+  </div>
+  <div class="card notebook">
+    <h2>6. Умножение и деление: шпаргалка</h2>
+    <div class="rule"><span class="name">Умножение</span><span class="mexp small">${fhtml('a','b')}<span class="mo"> · </span>${fhtml('c','d')}<span class="mo"> = </span>${fhtml('a · c','b · d')}</span><span class="sub">числитель на числитель, знаменатель на знаменатель</span></div>
+    <div class="rule"><span class="name">Деление</span><span class="mexp small">${fhtml('a','b')}<span class="mo"> : </span>${fhtml('c','d')}<span class="mo"> = </span>${fhtml('a','b')}<span class="mo"> · </span>${fhtml('d','c')}</span><span class="sub">переверни вторую дробь и умножай</span></div>
+    <div class="rule"><span class="name">Смешанное число</span><span class="mexp small"><span class="mx">${num('2')}${fhtml('3','4')}</span><span class="mo"> = </span>${fhtml('2 · 4 + 3','4')}<span class="mo"> = </span>${fhtml('11','4')}</span><span class="sub">сначала переводи в неправильную дробь</span></div>
+    <div class="rule"><span class="name">Дробь → десятичная</span><span class="mexp small">${fhtml('9','5')}<span class="mo"> = </span>${fhtml('18','10')}<span class="mo"> = </span>${num('1,8')}</span><span class="sub">доведи знаменатель до 10, 100, 1000 — или просто раздели уголком</span></div>
+    <div class="tip">В ответе задания 6 всегда пиши десятичную дробь или целое число. Дробь ${mfrac(3,4)} — это 0,75; дробь ${mfrac(9,5)} — это 1,8. Перед умножением <b>сокращай крест-накрест</b> — числа станут маленькими.</div>
+  </div>`;
+  const upd=()=>{
+    $('#nVal').textContent=LB.n;$('#dVal').textContent=LB.d;
+    $('#lbBar').innerHTML=(LB.n<=LB.d)?barHTML(LB.n,LB.d):barHTML(LB.d,LB.d)+barHTML(LB.n-LB.d,LB.d);
+    const [rn,rd]=fr(LB.n,LB.d);
+    let cap=fhtml('<span class="c1">'+LB.n+'</span>','<span class="c1">'+LB.d+'</span>');
+    if(isTerm(rd))cap+='<span class="mo"> = </span>'+num(decStr(rn,rd));
+    $('#lbCap').innerHTML=cap;
+  };
+  $('#nMinus').onclick=()=>{if(LB.n>0)LB.n--;upd();};
+  $('#nPlus').onclick=()=>{if(LB.n<24)LB.n++;upd();};
+  $('#dMinus').onclick=()=>{if(LB.d>1)LB.d--;if(LB.n>2*LB.d)LB.n=2*LB.d;upd();};
+  $('#dPlus').onclick=()=>{if(LB.d<12)LB.d++;upd();};
+  upd();
+  const doReduce=()=>{
+    const a=parseInt($('#rA').value),b=parseInt($('#rB').value);
+    if(!a||!b||a<=0||b<=0){$('#rOut').innerHTML='<p class="sub">введи два натуральных числа</p>';return;}
+    const g=gcd(a,b);
+    let h='<div class="sol">НОД('+a+', '+b+') = <b>'+g+'</b><br>';
+    if(g===1)h+='Дробь '+mfrac(a,b)+' уже несократима — общих делителей нет.';
+    else{
+      h+='Одним шагом: <span class="mexp small">'+fhtml(a,b)+'<span class="mo"> = </span>'+fhtml(a+' : '+g, b+' : '+g)+'<span class="mo"> = </span>'+fhtml(a/g,b/g)+'</span>';
+      const chain=[[a,b]],labels=[];let x=a,y=b;
+      while(gcd(x,y)>1){const p=factorize(gcd(x,y))[0];x/=p;y/=p;labels.push(p);chain.push([x,y]);}
+      if(labels.length>1){
+        h+='<br>НОД сразу не увидел? Сокращай постепенно, на что видишь:<br><span class="mexp small" style="margin-top:4px">'+
+          chain.map((f,i)=>(i?'<span class="rstep"><small>÷'+labels[i-1]+'</small>→</span>':'')+fhtml(f[0],f[1])).join('')+
+          '</span><br><span class="sub">итог тот же — несократимая дробь</span>';
+      }
+    }
+    const [rn,rd]=fr(a,b);
+    if(isTerm(rd))h+='<br>Десятичной дробью: <b>'+decStr(rn,rd)+'</b>';
+    $('#rOut').innerHTML=h+'</div>';
+  };
+  $('#rGo').onclick=doReduce;
+  $('#rRnd').onclick=()=>{const g=pick([4,6,8,9,10,12,15,18]);const b=g*pick([2,3,4,5]);let a=g*ri(1,7);while(a===b)a=g*ri(1,7);$('#rA').value=a;$('#rB').value=b;doReduce();};
+  $('#lcase3ex').innerHTML=(()=>{
+    const c=lcmCase(8,12);
+    let h='8 и 12: общий делитель 4 есть, но 12 на 8 не делится. Кратные 12:<br><div style="margin-top:4px">';
+    c.steps.forEach(s=>{h+='<span class="lchip '+(s.ok?'good':'bad')+'">'+s.m+'<small>'+(s.ok?'делится на 8 — бинго!':s.m+' : 8 — не делится')+'</small></span>';});
+    return h+'</div><b>НОК = '+c.L+'</b>';
+  })();
+  const divs=n=>{const r=[];for(let i=1;i<=n;i++)if(n%i===0)r.push(i);return r;};
+  const lcmSolutionHTML=(b,d)=>{
+    const c=lcmCase(b,d),mx=Math.max(b,d),mn=Math.min(b,d);
+    let h='<div class="sol">';
+    if(c.kind==='div'){
+      h+='<b>Случай 1 — самый простой:</b> больший знаменатель делится на меньший.<br>'+
+         mx+' : '+mn+' = '+(mx/mn)+' — делится без остатка. <b>НОК = '+c.L+'</b>. Перебирать ничего не нужно.';
+    }else if(c.kind==='coprime'){
+      h+='<b>Случай 2 — взаимно простые:</b> сначала проверили — '+mx+' на '+mn+' не делится.<br>';
+      if(b<=60&&d<=60)h+='Делители '+b+': '+divs(b).join(', ')+'. Делители '+d+': '+divs(d).join(', ')+'. Общий — только 1, значит числа взаимно простые.<br>';
+      else h+='Общих делителей, кроме 1, нет — числа взаимно простые.<br>';
+      h+='Для взаимно простых НОК — это произведение: '+b+' · '+d+' = <b>'+c.L+'</b>.';
+    }else{
+      h+='<b>Случай 3 — перебор (метод 5 класса):</b> '+mx+' на '+mn+' не делится (не случай 1), и есть общий делитель '+gcd(b,d)+' (не случай 2).<br>'+
+         'Выписываем кратные большего знаменателя ('+mx+') и проверяем деление на меньший ('+mn+'):<br><div style="margin-top:6px">';
+      c.steps.forEach(s=>{
+        h+='<span class="lchip '+(s.ok?'good':'bad')+'">'+s.m+'<small>'+(s.ok?'делится на '+mn+' — бинго!':s.m+' : '+mn+' — не делится')+'</small></span>';
+      });
+      h+='</div>Первое кратное, которое делится и на '+mn+', — это <b>НОК = '+c.L+'</b>.';
+    }
+    return h+'</div>';
+  };
+  let LQ=null;
+  const lqRender=()=>{
+    const q=$('#lQuiz');
+    if(!LQ){q.innerHTML='';return;}
+    const {b,d,stage}=LQ;
+    if(stage==='case'){
+      q.innerHTML='<div class="sol"><b>Знаменатели '+b+' и '+d+'.</b> Какой это случай?'+
+        '<div class="learnrow" style="margin-top:8px">'+
+        '<button class="b-ghost b-mini" data-k="div">1 — один делится на другой</button>'+
+        '<button class="b-ghost b-mini" data-k="coprime">2 — взаимно простые</button>'+
+        '<button class="b-ghost b-mini" data-k="enum">3 — не взаимно простые, перебор</button>'+
+        '<button class="b-ghost b-mini" data-k="show">не знаю — покажи разбор</button>'+
+        '</div><div class="mark" id="lqMark"></div></div>';
+      q.querySelectorAll('button').forEach(btn=>btn.onclick=()=>{
+        if(btn.dataset.k==='show'){LQ.stage='done';$('#lOut').innerHTML=lcmSolutionHTML(b,d);lqRender();return;}
+        const c=lcmCase(b,d);
+        if(btn.dataset.k===c.kind){LQ.stage='lcm';lqRender();}
+        else{const m=q.querySelector('#lqMark');m.className='mark bad';
+          m.innerHTML='<span class="anim">проверяй по порядку: сначала — делится ли '+Math.max(b,d)+' на '+Math.min(b,d)+', потом — есть ли у них общие делители</span>';}
+      });
+    }else if(stage==='lcm'){
+      const c=lcmCase(b,d);
+      const names={div:'случай 1 — один делится на другой',coprime:'случай 2 — взаимно простые',enum:'случай 3 — перебор'};
+      q.innerHTML='<div class="sol">✓ Верно, это '+names[c.kind]+'. Теперь введи НОК('+b+', '+d+'):'+
+        '<div class="learnrow" style="margin-top:8px"><input class="mini" id="lqIn" style="width:100px" autocomplete="off">'+
+        '<button class="b-primary b-mini" id="lqCheck">Проверить</button>'+
+        '<button class="b-ghost b-mini" id="lqShow">Показать разбор</button></div>'+
+        '<div class="mark" id="lqMark"></div></div>';
+      const done=(prefix)=>{LQ.stage='done';$('#lOut').innerHTML=(prefix||'')+lcmSolutionHTML(b,d);lqRender();};
+      $('#lqCheck').onclick=()=>{
+        const v=parseInt(($('#lqIn').value||'').trim(),10),m=$('#lqMark');
+        if(v===c.L)done('<div class="mark ok" style="margin:2px 0 8px"><span class="anim">✓ НОК = '+c.L+' — верно!</span></div>');
+        else{m.className='mark bad';m.innerHTML='<span class="anim">не то — вспомни правило этого случая</span>';$('#lqIn').select();}
+      };
+      $('#lqShow').onclick=()=>done();
+      $('#lqIn').addEventListener('keydown',e=>{if(e.key==='Enter')$('#lqCheck').click();});
+      $('#lqIn').focus();
+    }else{
+      q.innerHTML='<div class="learnrow" style="margin-top:8px"><button class="b-next b-mini" id="lqNext">Ещё пара →</button></div>';
+      $('#lqNext').onclick=()=>$('#lRnd').onclick();
+    }
+  };
+  const lqStart=()=>{
+    const b=parseInt($('#lA').value),d=parseInt($('#lB').value);
+    $('#lOut').innerHTML='';
+    if(!(b>1&&d>1&&b<=1000&&d<=1000)){LQ=null;$('#lQuiz').innerHTML='<p class="sub">введи два знаменателя от 2 до 1000</p>';return;}
+    if(b===d){LQ=null;$('#lQuiz').innerHTML='';$('#lOut').innerHTML='<div class="sol">Знаменатели одинаковые — общий знаменатель уже есть: <b>'+b+'</b>. Ничего искать не надо!</div>';return;}
+    LQ={b,d,stage:'case'};lqRender();
+  };
+  $('#lStart').onclick=lqStart;
+  $('#lRnd').onclick=()=>{
+    const pairs=[[5,50],[4,20],[3,7],[4,9],[8,12],[6,8],[10,15],[12,18],[4,10],[8,20],[6,9],[25,10],[7,3],[9,12],[2,16],[5,6],[15,20],[14,21]];
+    const [x,y]=pick(pairs);$('#lA').value=x;$('#lB').value=y;lqStart();
+  };
+  lqStart();
+  $('#fGo').onclick=()=>{
+    const a=parseInt($('#fA').value),b=parseInt($('#fB').value);
+    if(!(a>1&&b>1&&a<=10000&&b<=10000)){$('#fOut').innerHTML='<p class="sub">введи два числа от 2 до 10000</p>';return;}
+    const fa=factorize(a),fb=factorize(b);
+    const cnt=arr=>{const m={};arr.forEach(p=>m[p]=(m[p]||0)+1);return m;};
+    const ca=cnt(fa),cb=cnt(fb),primes=[...new Set([...fa,...fb])].sort((x,y)=>x-y);
+    let parts=[],L=1;
+    primes.forEach(p=>{const k=Math.max(ca[p]||0,cb[p]||0);for(let i=0;i<k;i++){parts.push(p);L*=p;}});
+    $('#fOut').innerHTML='<div class="sol">'+
+      a+' = '+fa.join(' · ')+'<br>'+b+' = '+fb.join(' · ')+'<br>'+
+      'Берём каждый множитель в наибольшем количестве: НОК = '+parts.join(' · ')+' = <b>'+L+'</b><br>'+
+      '<span class="sub">Проверка перебором заняла бы '+lcmCase(a,b).kind.replace('div','0 шагов — больший делится на меньший').replace('coprime','0 шагов — они взаимно простые').replace('enum',(L/Math.max(a,b))+' шаг(ов)')+'.</span></div>';
+  };
+  $('#fGo').onclick();
+  document.querySelectorAll('input[name=aMode]').forEach(r=>r.onchange=()=>{if($('#aOut').innerHTML)$('#aGo').onclick();});
+  $('#aGo').onclick=()=>{
+    const a=parseInt($('#aA').value),b=parseInt($('#aB').value),c=parseInt($('#aC').value),d=parseInt($('#aD').value),op=$('#aOp').value;
+    if(!(a>=0&&b>0&&c>=0&&d>0)){$('#aOut').innerHTML='<p class="sub">введи числа</p>';return;}
+    const desp=document.querySelector('input[name=aMode]:checked').value==='mult';
+    const L=desp?b*d:lcm(b,d),k1=L/b,k2=L/d,n1=a*k1,n2=c*k2,res=op==='+'?n1+n2:n1-n2;
+    const [rn,rd]=fr(res,L);
+    let h='<div class="sol">';
+    h+=desp
+      ?'① Отчаянный метод — применяем случай 2 к любым знаменателям, как будто они взаимно простые: общий знаменатель = '+b+' · '+d+' = <b>'+L+'</b>'+(gcd(b,d)===1?' (они и правда взаимно простые — это точный НОК)':' (у них есть общий делитель '+gcd(b,d)+', так что знаменатель с запасом — в конце сократим)')+' &nbsp;(доп. множители — чужие знаменатели: '+k1+' и '+k2+')<br>'
+      :'① Ищем НОК как в пункте 3: '+lcmCase(b,d).short+' &nbsp;(доп. множители: '+k1+' и '+k2+')<br>';
+    h+='② <span class="mexp small"><span class="c1">'+fhtml(a,b)+'</span><span class="mo">'+(op==='+'?' + ':' − ')+'</span><span class="c2">'+fhtml(c,d)+'</span><span class="mo"> = </span><span class="c1">'+fhtml(n1,L)+'</span><span class="mo">'+(op==='+'?' + ':' − ')+'</span><span class="c2">'+fhtml(n2,L)+'</span><span class="mo"> = </span>'+fhtml(res<0?'−'+(-res):res,L)+'</span><br>';
+    h+='③ '+(gcd(Math.abs(res)||rd,L)>1?'Сокращаем: <span class="mexp small">'+fhtml(res<0?'−'+(-res):res,L)+'<span class="mo"> = </span>'+fhtml(rn<0?'−'+(-rn):rn,rd)+'</span>. ':'Сокращать нечего. ');
+    const[an,ad]=fr(res,L);h+='Ответ: '+(isTerm(ad)?'<b>'+valDisp(an,ad)+'</b>':mfrac(an,ad));
+    if(b<=12&&d<=12&&L<=24&&a<=b&&c<=d){
+      h+='<div style="margin-top:8px">'+barHTML(n1,L)+barHTML(n2,L,'two')+'<span class="sub">обе дроби в клетках по '+mfrac(1,L)+' — теперь клетки одинаковые, можно '+(op==='+'?'складывать':'вычитать')+'</span></div>';
+    }
+    $('#aOut').innerHTML=h+'</div>';
+  };
+}
+
+/* ============ LEARN: decimals ============ */
+function renderLearnDec(){
+  $('#tabbody').innerHTML=`
+  <div class="card notebook">
+    <h2>1. Разряды: что значит каждая цифра</h2>
+    <p class="sub">Введи десятичную дробь — разложу по разрядам:</p>
+    <div class="learnrow"><input class="mini" id="pvIn" value="36,508" style="width:130px"><button class="b-primary b-mini" id="pvGo">Разложить</button></div>
+    <div id="pvOut"></div>
+  </div>
+  <div class="card notebook">
+    <h2>2. Сложение и вычитание: столбиком</h2>
+    <p class="sub">Главное правило — <b>запятая под запятой</b>. Введи два числа:</p>
+    <div class="learnrow">
+      <input class="mini" id="cA" value="8,8" style="width:100px">
+      <select id="cOp"><option value="+">+</option><option value="-">−</option></select>
+      <input class="mini" id="cB" value="5,9" style="width:100px">
+      <button class="b-primary b-mini" id="cGo">В столбик</button>
+    </div>
+    <div id="cOut"></div>
+    <div class="tip">Если знаков после запятой разное количество — допиши нули: 10,3 + 5,16 → 10,30 + 5,16. При вычитании большего из меньшего сначала поменяй числа местами, а к результату поставь минус: 3,9 − 7,3 = −(7,3 − 3,9).</div>
+  </div>
+  <div class="card notebook">
+    <h2>3. Умножение: считаем без запятых, потом отсчитываем знаки</h2>
+    <div class="learnrow">
+      <input class="mini" id="mA" value="3,2" style="width:100px"><span style="font-size:20px">·</span>
+      <input class="mini" id="mB" value="6,2" style="width:100px">
+      <button class="b-primary b-mini" id="mGo">Показать приём</button>
+    </div>
+    <div id="mOut"></div>
+  </div>
+  <div class="card notebook">
+    <h2>4. Деление: сдвигаем запятую</h2>
+    <p class="sub">Двигаем запятую в <b>обоих</b> числах вправо, пока делитель не станет целым:</p>
+    <div class="learnrow">
+      <input class="mini" id="vA" value="8,7" style="width:100px"><span style="font-size:20px">:</span>
+      <input class="mini" id="vB" value="2,9" style="width:100px">
+      <button class="b-primary b-mini" id="vGo">Показать приём</button>
+    </div>
+    <div id="vOut"></div>
+    <div class="tip">Деление на 0,1 — это умножение на 10; на 0,01 — на 100. А «этажную» дробь вида ${'<span class="mexp small" style="display:inline-flex">'+fhtml('9,6','1,6')+'</span>'} читай как обычное деление 9,6 : 1,6.</div>
+  </div>`;
+  const parseDec=s=>{
+    s=(s||'').trim().replace(',','.').replace(/\u2212/,'-');
+    if(!/^-?\d+(\.\d+)?$/.test(s))return null;
+    const neg=s.startsWith('-');if(neg)s=s.slice(1);
+    const [a,b='']=s.split('.');
+    return D((neg?-1:1)*parseInt(a+b||'0'),b.length);
+  };
+  const pv=()=>{
+    const x=parseDec($('#pvIn').value);
+    if(!x||x.v<0){$('#pvOut').innerHTML='<p class="sub">введи положительное число, например 36,508</p>';return;}
+    const s=dstr(x),parts=s.split(',');
+    const ip=parts[0],fp=parts[1]||'';
+    const namesI=['единицы','десятки','сотни','тысячи','десятки тысяч'];
+    const namesF=['десятые','сотые','тысячные','десятитысячные'];
+    let th='',td='';
+    for(let i=0;i<ip.length;i++){th+='<th>'+(namesI[ip.length-1-i]||'')+'</th>';td+='<td>'+ip[i]+'</td>';}
+    if(fp){th+='<th></th>';td+='<td class="comma">,</td>';
+      for(let i=0;i<fp.length;i++){th+='<th>'+(namesF[i]||'')+'</th>';td+='<td>'+fp[i]+'</td>';}}
+    let expl=[];
+    for(let i=0;i<ip.length;i++){const dg=+ip[i];if(dg)expl.push(dg+' · '+Math.pow(10,ip.length-1-i));}
+    for(let i=0;i<fp.length;i++){const dg=+fp[i];if(dg)expl.push(mfrac(dg,Math.pow(10,i+1)));}
+    $('#pvOut').innerHTML='<table class="pv"><tr>'+th+'</tr><tr>'+td+'</tr></table>'+
+      '<div class="sol">'+s+' = '+expl.join(' + ')+'</div>';
+  };
+  $('#pvGo').onclick=pv;pv();
+  const colDemo=()=>{
+    let a=parseDec($('#cA').value),b=parseDec($('#cB').value),op=$('#cOp').value;
+    if(!a||!b){$('#cOut').innerHTML='<p class="sub">введи два числа</p>';return;}
+    let note='';
+    let sign=1,pref='';
+    let A=a,B=b;
+    if(op==='-'){
+      const s=Math.max(a.s,b.s);
+      if(a.v*Math.pow(10,s-a.s) < b.v*Math.pow(10,s-b.s)){[A,B]=[b,a];sign=1;pref='−';note='Вычитаем из большего, минус ставим в ответ: '+dstr(a)+' − '+dstr(b)+' = −('+dstr(A)+' − '+dstr(B)+').<br>';}
+    }
+    const s=Math.max(A.s,B.s);
+    const A2=D(A.v*Math.pow(10,s-A.s),s),B2=D(B.v*Math.pow(10,s-B.s),s);
+    const res=dAdd(A2,B2,op==='+'?1:-1);
+    const w=Math.max(dstr(A2).length,dstr(B2).length,dstr(res).length)+1;
+    const line=(p,x)=>p+dstr(x).padStart(w-1,' ');
+    $('#cOut').innerHTML='<div class="sol" style="line-height:1.6">'+note+
+      (A.s!==B.s?'Уравниваем знаки после запятой: '+dstr(A2)+' и '+dstr(B2)+'.<br>':'')+
+      '</div><div class="col">'+line(' ',A2)+'\n'+line(op==='+'?'+':'−',B2)+'\n'+''.padStart(w,'—')+'\n'+line(' ',res)+'</div>'+
+      '<div class="sol">Ответ: <b>'+pref+dstr(dTrim(res))+'</b></div>';
+  };
+  $('#cGo').onclick=colDemo;colDemo();
+  const mulDemo=()=>{
+    const a=parseDec($('#mA').value),b=parseDec($('#mB').value);
+    if(!a||!b){$('#mOut').innerHTML='<p class="sub">введи два числа</p>';return;}
+    const p=D(a.v*b.v,a.s+b.s);
+    $('#mOut').innerHTML='<div class="sol">'+
+      '① Убираем запятые: '+Math.abs(a.v)+' · '+Math.abs(b.v)+' = <b>'+Math.abs(a.v*b.v)+'</b><br>'+
+      '② Считаем знаки после запятой: '+a.s+' + '+b.s+' = <b>'+(a.s+b.s)+'</b><br>'+
+      '③ Отсчитываем их справа: '+dstr(a)+' · '+dstr(b)+' = <b>'+dstr(dTrim(p))+'</b></div>';
+  };
+  $('#mGo').onclick=mulDemo;mulDemo();
+  const divDemo=()=>{
+    const a=parseDec($('#vA').value),b=parseDec($('#vB').value);
+    if(!a||!b||b.v===0){$('#vOut').innerHTML='<p class="sub">введи два числа (делитель не ноль)</p>';return;}
+    const k=b.s;
+    const A=D(a.v*Math.pow(10,Math.max(0,k-a.s)),Math.max(0,a.s-k));
+    const [rn,rd]=fr(a.v*Math.pow(10,b.s),b.v*Math.pow(10,a.s));
+    $('#vOut').innerHTML='<div class="sol">'+
+      (k>0?'① Двигаем запятую на '+k+' знак'+(k>1?'а':'')+' вправо в обоих числах (умножаем на '+Math.pow(10,k)+'):<br>'+
+      dstr(a)+' : '+dstr(b)+' = '+dstr(A)+' : '+Math.abs(b.v)+'<br>':'① Делитель уже целый.<br>')+
+      '② Делим: ответ = <b>'+(isTerm(rd)?decStr(rn,rd):mfrac(rn,rd)+' (не десятичная)')+'</b></div>';
+  };
+  $('#vGo').onclick=divDemo;divDemo();
+}
+
+/* ============ GUIDED (пошагово) ============ */
+let G={task:null,step:0,hints:0,solved:0,reveals:0,type:'addsub',method:'lcm'};
+
+/* --- step builders: used by guided generator AND marathon step mode --- */
+function buildFracTask(op,A,B,C,Dn,desp){
+  if(op==='+'||op==='-'){
+    const L=desp?B*Dn:lcm(B,Dn),k1=L/B,k2=L/Dn,n1=A*k1,n2=C*k2,res=op==='+'?n1+n2:n1-n2;
+    const [rn,rd]=fr(res,L);
+    const expr='<span class="c1">'+fhtml(A,B)+'</span><span class="mo">'+(op==='+'?' + ':' − ')+'</span><span class="c2">'+fhtml(C,Dn)+'</span>';
+    const step1=desp?{
+      q:'Отчаянный метод (случай 2 — на все случаи жизни): просто перемножь знаменатели: '+B+' · '+Dn+' = ?',
+      ans:[L,1],
+      hint:'Делаем вид, что '+B+' и '+Dn+' взаимно простые, и берём произведение: '+B+' · '+Dn+' = '+L+'. '+(gcd(B,Dn)===1?'Здесь они и правда взаимно простые, так что это точный НОК.':'На самом деле у них есть общий делитель '+gcd(B,Dn)+', поэтому знаменатель выйдет с запасом — сократим в конце.'),
+      done:v=>'общий знаменатель: <b>'+v+'</b> (= '+B+' · '+Dn+')'
+    }:{
+      q:'Найди наименьший общий знаменатель — НОК чисел '+B+' и '+Dn+'.',
+      ans:[L,1],
+      hint:lcmCase(B,Dn).hint,
+      done:v=>'наименьший общий знаменатель: <b>'+v+'</b>'
+    };
+    return {expr,steps:[step1,
+      {q:'Числитель первой дроби после приведения: <span class="mexp small c1">'+fhtml(A,B)+'<span class="mo"> = </span>'+fhtml('?',L)+'</span>',ans:[n1,1],
+       hint:desp?'В отчаянном методе дополнительный множитель — ЧУЖОЙ знаменатель: '+A+' · '+Dn:'Дополнительный множитель: '+L+' : '+B+' = '+k1+'. Умножь числитель: '+A+' · '+k1,
+       done:v=>'<span class="mexp small c1" style="display:inline-flex">'+fhtml(A,B)+'<span class="mo"> = </span>'+fhtml(v,L)+'</span>'},
+      {q:'Числитель второй дроби: <span class="mexp small c2">'+fhtml(C,Dn)+'<span class="mo"> = </span>'+fhtml('?',L)+'</span>',ans:[n2,1],
+       hint:desp?'Снова чужой знаменатель: '+C+' · '+B:'Дополнительный множитель: '+L+' : '+Dn+' = '+k2+'. Умножь: '+C+' · '+k2,
+       done:v=>'<span class="mexp small c2" style="display:inline-flex">'+fhtml(C,Dn)+'<span class="mo"> = </span>'+fhtml(v,L)+'</span>'},
+      {q:'Теперь '+(op==='+'?'сложи':'вычти')+' числители: '+n1+' '+(op==='+'?'+':'−')+' '+n2+' = ?',ans:[res,1],
+       hint:(op==='-'&&res<0?'Из меньшего вычитаем большее — ответ отрицательный: −('+n2+' − '+n1+')':'Просто посчитай: знаменатель не трогаем'),
+       done:v=>'числитель результата: <b>'+String(v).replace('-','−')+'</b>, дробь: <span class="mexp small" style="display:inline-flex">'+fhtml(String(res).replace('-','−'),L)+'</span>'},
+      {q:'Запиши ответ десятичной дробью (или несократимой обыкновенной).',ans:[rn,rd],free:true,
+       hint:'Сократи '+mfrac(Math.abs(res),L)+' (НОД = '+gcd(Math.abs(res),L)+'), затем доведи знаменатель до 10 или 100. Ответ: '+valDisp(rn,rd),
+       done:v=>'ответ: <b>'+valDisp(rn,rd)+'</b>'}
+    ],final:valDisp(rn,rd)};
+  }
+  if(op==='*'){
+    const [rn,rd]=fr(A*C,B*Dn);
+    const expr='<span class="c1">'+fhtml(A,B)+'</span><span class="mo"> · </span><span class="c2">'+fhtml(C,Dn)+'</span>';
+    return {expr,steps:[
+      {q:'Перемножь числители: '+A+' · '+C+' = ?',ans:[A*C,1],hint:'Числитель на числитель. Совет: перед умножением можно сократить крест-накрест',done:v=>'числитель: <b>'+v+'</b>'},
+      {q:'Перемножь знаменатели: '+B+' · '+Dn+' = ?',ans:[B*Dn,1],hint:'Знаменатель на знаменатель',done:v=>'знаменатель: <b>'+v+'</b>, получилось <span class="mexp small" style="display:inline-flex">'+fhtml(A*C,B*Dn)+'</span>'},
+      {q:'Сократи и запиши ответ десятичной дробью (или несократимой обыкновенной).',ans:[rn,rd],free:true,
+       hint:'НОД('+A*C+', '+B*Dn+') = '+gcd(A*C,B*Dn)+'. После сокращения: '+mfrac(rn,rd)+' = '+valDisp(rn,rd),
+       done:v=>'ответ: <b>'+valDisp(rn,rd)+'</b>'}
+    ],final:valDisp(rn,rd)};
+  }
+  // division
+  const [rn,rd]=fr(A*Dn,B*C);
+  const expr='<span class="c1">'+fhtml(A,B)+'</span><span class="mo"> : </span><span class="c2">'+fhtml(C,Dn)+'</span>';
+  return {expr,steps:[
+    {q:'Замени деление умножением на перевёрнутую дробь. Каким станет числитель второй дроби?',ans:[Dn,1],
+     hint:'Переворачиваем '+mfrac(C,Dn)+' → '+mfrac(Dn,C)+'. Числитель — '+Dn,
+     done:v=>'<span class="mexp small" style="display:inline-flex">'+fhtml(A,B)+'<span class="mo"> · </span>'+fhtml(Dn,C)+'</span>'},
+    {q:'Перемножь числители: '+A+' · '+Dn+' = ?',ans:[A*Dn,1],hint:'Можно сначала сократить крест-накрест!',done:v=>'числитель: <b>'+v+'</b>'},
+    {q:'Перемножь знаменатели: '+B+' · '+C+' = ?',ans:[B*C,1],hint:'',done:v=>'знаменатель: <b>'+v+'</b>, дробь <span class="mexp small" style="display:inline-flex">'+fhtml(A*Dn,B*C)+'</span>'},
+    {q:'Сократи и запиши ответ десятичной дробью (или несократимой обыкновенной).',ans:[rn,rd],free:true,
+     hint:'НОД('+A*Dn+', '+B*C+') = '+gcd(A*Dn,B*C)+'. Ответ: '+valDisp(rn,rd),
+     done:v=>'ответ: <b>'+valDisp(rn,rd)+'</b>'}
+  ],final:valDisp(rn,rd)};
+}
+
+function genFrac(op){
+  if(op==='+'||op==='-'){
+    const desp=G.method==='mult';
+    let A,B,C,Dn;
+    if(desp){
+      let rn,rd,L,res;
+      do{
+        B=ri(2,9);Dn=ri(2,12);
+        A=ri(1,B-1)||1;C=ri(1,2*Dn);
+        if(gcd(A,B)>1||gcd(C,Dn)>1)continue;
+        L=B*Dn;res=op==='+'?A*Dn+C*B:A*Dn-C*B;
+        [rn,rd]=fr(res,L);
+      }while(!rd||!isTerm(rd)||B===Dn);
+    }else{
+      const pat=Math.random();
+      if(pat<0.5){
+        const d1=pick([2,4,5,10,20,25]);const mult=pick([2,5,10].filter(m=>d1*m<=100));
+        B=d1;Dn=d1*mult;
+      }else if(pat<0.75){
+        [B,Dn]=pick([[2,5],[4,5],[8,5],[2,25],[4,25],[8,25]]);
+      }else{
+        [B,Dn]=pick([[4,10],[8,20],[10,25],[8,10],[20,50],[4,50]]);
+      }
+      if(Math.random()<.5)[B,Dn]=[Dn,B];
+      A=ri(1,B-1)||1;while(B>2&&gcd(A,B)!==1)A=ri(1,B-1);
+      C=ri(1,2*Dn);while(gcd(C,Dn)!==1)C=ri(1,2*Dn);
+    }
+    return buildFracTask(op,A,B,C,Dn,desp);
+  }
+  if(op==='*'){
+    let a,b,c,d,rn,rd;
+    do{b=pick([2,3,4,5,6,7,8]);d=pick([2,3,4,5,6,7,8,10]);
+      a=ri(1,15);c=ri(1,12);
+      [rn,rd]=fr(a*c,b*d);
+    }while(!isTerm(rd)||rd===1&&rn>40||gcd(a,b)>1&&gcd(c,d)>1);
+    return buildFracTask('*',a,b,c,d,false);
+  }
+  let a,b,c,d,rn,rd;
+  do{b=pick([2,3,4,5,7,8,11]);d=pick([2,3,5,7,11,15,22,35]);
+    a=ri(1,21);c=ri(1,15);
+    [rn,rd]=fr(a*d,b*c);
+  }while(!isTerm(rd));
+  return buildFracTask(':',a,b,c,d,false);
+}
+
+function buildDecTask(op,A,B){
+  if(op==='+'||op==='-'){
+    const res=dAdd(A,B,op==='+'?1:-1);
+    const s=Math.max(A.s,B.s);
+    const intA=A.v*Math.pow(10,s-A.s),intB=B.v*Math.pow(10,s-B.s);
+    const intRes=op==='+'?intA+intB:intA-intB;
+    const [rn,rd]=dFrac(res);
+    const expr=num(dstr(A))+'<span class="mo">'+(op==='+'?' + ':' − ')+'</span>'+num(dstr(B));
+    const steps=[];
+    if(s>0)steps.push(
+      {q:'Сначала посчитай так, будто запятых нет'+(A.s!==B.s?' (уравняй знаки после запятой нулями: '+dstr({v:intA,s})+' и '+dstr({v:intB,s})+')':'')+': '+intA+' '+(op==='+'?'+':'−')+' '+intB+' = ?',ans:[intRes,1],
+       hint:op==='-'&&intRes<0?'Из меньшего вычитаем большее: посчитай '+intB+' − '+intA+' и поставь минус':'Посчитай в столбик, поразрядно. Запятая под запятой!',
+       done:v=>'без запятой: <b>'+String(v).replace('-','−')+'</b>'},
+      (()=>{const trim=dTrim(res);const hasZeros=trim.s!==s;
+       return {q:'Как в столбике — запятая под запятой: сколько знаков после запятой отделить в числе '+String(intRes).replace('-','−')+'?',
+       ans:[s,1],alt:hasZeros?[trim.s,1]:null,
+       hint:'Столько, сколько у числа с самой длинной дробной частью: здесь '+s+'.'+(hasZeros?' Получится '+dstr(res)+' — хвостовые нули отбросим.':''),
+       done:v=>'знаков после запятой: <b>'+v+'</b>'+(hasZeros?' → '+dstr(res)+' = <b>'+dstr(trim)+'</b> (хвостовой ноль отбрасываем)':'')};})());
+    steps.push({q:'Запиши окончательный ответ.',ans:[rn,rd],free:true,
+       hint:'Отсчитай '+s+' знак'+(s>1?'а':'')+' справа в числе '+String(intRes).replace('-','−')+'. Ответ: '+dstr(dTrim(res)),
+       done:v=>'ответ: <b>'+dstr(dTrim(res))+'</b>'});
+    return {expr,steps,final:dstr(dTrim(res))};
+  }
+  if(op==='*'){
+    const t=A.s+B.s;
+    const P=D(A.v*B.v,t);
+    const [rn,rd]=dFrac(P);
+    const expr=num(dstr(A))+'<span class="mo"> · </span>'+num(dstr(B));
+    return {expr,steps:[
+      {q:'Убери запятые и перемножь целые числа: '+A.v+' · '+B.v+' = ?',ans:[A.v*B.v,1],
+       hint:'Умножай в столбик: '+A.v+' · '+B.v,done:v=>'без запятых: <b>'+v+'</b>'},
+      {q:'Сколько всего знаков после запятой в двух множителях?',ans:[t,1],
+       hint:'Сложи: '+A.s+' + '+B.s+' = '+t,done:v=>'знаков: <b>'+v+'</b>'},
+      {q:'Отсчитай знаки справа и запиши ответ.',ans:[rn,rd],free:true,
+       hint:'В числе '+(A.v*B.v)+' отдели запятой '+t+' цифр'+(t===1?'у':'ы')+' справа: '+dstr(dTrim(P)),
+       done:v=>'ответ: <b>'+dstr(dTrim(P))+'</b>'}
+    ],final:dstr(dTrim(P))};
+  }
+  // division
+  const k=B.s;
+  const [rn,rd]=fr(A.v*Math.pow(10,B.s),B.v*Math.pow(10,A.s));
+  const shifted=D(A.v*Math.pow(10,Math.max(0,k-A.s)),Math.max(0,A.s-k));
+  const Bint=B.v;
+  const expr=fhtml(dstr(A),dstr(B),'big');
+  const steps=[];
+  if(k>0)steps.push(
+    {q:'«Этажная» дробь — это деление: '+dstr(A)+' : '+dstr(B)+'. Сдвинь запятую в обоих числах, чтобы делитель стал целым. Что станет делимым?',ans:dFrac(shifted),free:true,
+     hint:'Двигаем запятую на '+k+' знак'+(k>1?'а':'')+' вправо (умножаем оба числа на '+Math.pow(10,k)+'): делитель '+dstr(B)+' → '+Bint+', делимое '+dstr(A)+' → '+dstr(shifted),
+     done:v=>'новое деление: <b>'+dstr(shifted)+' : '+Bint+'</b>'});
+  steps.push({q:'Раздели: '+dstr(shifted)+' : '+Bint+' = ?',ans:[rn,rd],free:true,
+     hint:'Подбирай: '+Bint+' · '+valDisp(rn,rd).replace('−','-')+' = '+dstr(shifted)+'. Ответ: '+valDisp(rn,rd),
+     done:v=>'ответ: <b>'+valDisp(rn,rd)+'</b>'});
+  return {expr,steps,final:valDisp(rn,rd)};
+}
+
+function genDec(op){
+  if(op==='+'||op==='-'){
+    const twoPlace=Math.random()<.3;
+    const mk=()=>twoPlace?D(ri(101,999),2):D(ri(11,99),1);
+    return buildDecTask(op,mk(),mk());
+  }
+  if(op==='*'){
+    return buildDecTask('*',D(ri(11,99),1),D(ri(11,99),1));
+  }
+  const q=pick([2,3,4,5,6,7,8,9,15,25,35,45,12,55]);
+  const Bv=ri(11,99);const B=D(Bv,1);
+  let Q = q<10? D(q,0) : D(q,1);
+  const A=dTrim(D(Bv*Q.v, 1+Q.s));
+  return buildDecTask(':',A,B);
+}
+
+function newGuided(){
+  const t=G.type==='addsub'?pick(['+','-']):G.type==='muldiv'?pick(['*',':']):G.type;
+  G.task=(R.mod==='frac'?genFrac:genDec)(t==='÷'?':':t);
+  G.step=0;G.hints=0;
+  drawGuided();
+}
+function renderGuided(){
+  $('#tabbody').innerHTML=`
+  <div class="card notebook">
+    <div class="learnrow" style="justify-content:space-between">
+      <h2 style="margin:0">Пошаговый решатель</h2>
+      <span>
+        <select id="gType">
+          <optgroup label="Сложение и вычитание">
+            <option value="addsub">сложение и вычитание</option>
+            <option value="+">только сложение</option>
+            <option value="-">только вычитание</option>
+          </optgroup>
+          <optgroup label="Умножение и деление">
+            <option value="muldiv">умножение и деление</option>
+            <option value="*">только умножение</option>
+            <option value=":">только деление</option>
+          </optgroup>
+        </select>
+        ${R.mod==='frac'&&['addsub','+','-'].includes(G.type)?`<select id="gMethod" title="как искать общий знаменатель">
+          <option value="lcm">общий знаменатель — через НОК (5–6 класс)</option>
+          <option value="mult">отчаянный девятиклассник: перемножить</option>
+        </select>`:''}
+        <button class="b-ghost b-mini" id="gNew">Новая задача</button>
+      </span>
+    </div>
+    <p class="sub">Решай по шагам — я проверяю каждый шаг. Застрял — жми «подсказку».</p>
+    <div class="mexp" id="gExpr" style="margin-top:10px"></div>
+    <div class="gsteps" id="gSteps"></div>
+    <div class="gscore" id="gScore"></div>
+  </div>`;
+  $('#gType').value=G.type;
+  $('#gType').onchange=e=>{G.type=e.target.value;renderGuided();};
+  const gm=$('#gMethod');
+  if(gm){gm.value=G.method;gm.onchange=e=>{G.method=e.target.value;newGuided();};}
+  $('#gNew').onclick=newGuided;
+  newGuided();
+}
+function drawGuided(){
+  $('#gExpr').innerHTML=G.task.expr;
+  const box=$('#gSteps');box.innerHTML='';
+  G.task.steps.forEach((st,i)=>{
+    const div=document.createElement('div');
+    if(i<G.step){
+      div.className='gstep done';
+      div.innerHTML='<span class="lead">✓ шаг '+(i+1)+'.</span> '+st.doneHTML;
+    }else if(i===G.step){
+      div.className='gstep';
+      div.innerHTML='<span class="lead">шаг '+(i+1)+'.</span> <span class="q">'+st.q+'</span>'+
+        '<div class="row"><input class="mini" style="width:120px;font-size:19px" id="gIn" autocomplete="off">'+
+        '<button class="b-primary b-mini" id="gCheck">Проверить</button>'+
+        '<button class="b-ghost b-mini" id="gHint">Подсказка</button>'+
+        '<button class="b-ghost b-mini" id="gShow">Показать шаг</button></div>'+
+        '<div class="hintbox" id="gHintBox">'+st.hint+'</div>'+
+        '<div class="mark" id="gMark"></div>';
+    }else{
+      div.className='gstep';div.style.opacity=.35;
+      div.innerHTML='<span class="lead">шаг '+(i+1)+'.</span> <span class="sub">…</span>';
+    }
+    box.appendChild(div);
+  });
+  if(G.step>=G.task.steps.length){
+    const d=document.createElement('div');
+    d.className='gdone';
+    d.innerHTML='🎉 Задача решена! Ответ: <b>'+G.task.final+'</b> &nbsp; <button class="b-next" id="gNext">Ещё задачу</button>';
+    box.appendChild(d);
+    d.querySelector('#gNext').onclick=newGuided;
+    d.querySelector('#gNext').focus();
+  } else {
+    const st=G.task.steps[G.step];
+    const inp=$('#gIn');
+    $('#gCheck').onclick=()=>{
+      const u=parseInput(inp.value);
+      const mark=$('#gMark');
+      if(!u){mark.className='mark bad';mark.innerHTML='<span class="anim">введи число</span>';return;}
+      if(eqFrac(u,st.ans[0],st.ans[1])||(st.alt&&eqFrac(u,st.alt[0],st.alt[1]))){
+        st.doneHTML=st.done(inp.value.trim().replace('-','−'));
+        G.step++;if(G.step>=G.task.steps.length)G.solved++;
+        drawGuided();
+      }else{
+        mark.className='mark bad';mark.innerHTML='<span class="anim">не то, попробуй ещё</span>';
+        inp.select();
+      }
+    };
+    $('#gHint').onclick=()=>{G.hints++;$('#gHintBox').style.display='block';drawScore();};
+    $('#gShow').onclick=()=>{
+      G.reveals++;
+      st.doneHTML=st.done(valDisp(st.ans[0],st.ans[1]))+' <small style="color:var(--pen-red)">— шаг показан</small>';
+      G.step++;
+      drawGuided();
+    };
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')$('#gCheck').click();});
+    inp.focus();
+  }
+  drawScore();
+}
+function drawScore(){$('#gScore').textContent='решено задач: '+G.solved+' · подсказок: '+G.hints+' · показано шагов: '+G.reveals;}
+
+/* ============ DRILL (марафон) ============ */
+const DRILL_CATS={
+  frac:[['bank_frac','банк заданий'],['frac','Прототипы'],['both','Всё вместе']],
+  dec:[['bank_dec','банк заданий'],['dec','Прототипы'],['both','Всё вместе']],
+  exam:[['combo','Комбинированные'],['progon','Полный прогон'],['adv','Продвинутый уровень'],['both','Всё вместе']],
+};
+function drillPool(key){
+  if(R.mod==='frac'){
+    const bank=TASKS.map((t,i)=>[t,i]).filter(([t])=>t.cat==='bank'&&t.sub==='frac');
+    const proto=TASKS.map((t,i)=>[t,i]).filter(([t])=>t.cat==='frac');
+    if(key==='bank_frac')return bank;if(key==='frac')return proto;return bank.concat(proto);
+  }
+  if(R.mod==='dec'){
+    const bank=TASKS.map((t,i)=>[t,i]).filter(([t])=>t.cat==='bank'&&t.sub==='dec');
+    const proto=TASKS.map((t,i)=>[t,i]).filter(([t])=>t.cat==='dec');
+    if(key==='bank_dec')return bank;if(key==='dec')return proto;return bank.concat(proto);
+  }
+  const sel=key==='both'?['combo','progon','adv']:[key];
+  return TASKS.map((t,i)=>[t,i]).filter(([t])=>sel.includes(t.cat));
+}
+let DR={cat:null,order:[],pos:0,shuffle:false,status:{},attempts:0,answered:false,streak:0};
+const NUMER_PROMPT='Найдите значение выражения. Представьте результат в виде несократимой обыкновенной дроби. В ответ запишите числитель этой дроби.';
+
+function renderDrill(){
+  DR.cat=DRILL_CATS[R.mod][0][0];
+  $('#tabbody').innerHTML=`
+  <div class="chips" id="dChips"></div>
+  <div class="learnrow" style="margin:0 0 6px"><label class="sub" style="display:inline-flex;gap:7px;align-items:center;cursor:pointer"><input type="checkbox" id="dShuffle" style="accent-color:var(--accent)"> вперемешку</label><span class="sub" id="dCounter"></span></div>
+  <div class="card notebook" id="dCard"></div>
+  <div class="stats" id="dStats"></div>
+  <div class="dotline" id="dDots"></div>`;
+  $('#dShuffle').onchange=e=>{DR.shuffle=e.target.checked;startDrill();};
+  startDrill();
+}
+function drillChips(){
+  const c=$('#dChips');c.innerHTML='';
+  DRILL_CATS[R.mod].forEach(([k,label])=>{
+    const n=drillPool(k).length;
+    const b=document.createElement('button');
+    b.className='chip'+(k===DR.cat?' on':'');
+    b.innerHTML=label+' <small>'+n+'</small>';
+    b.onclick=()=>{DR.cat=k;startDrill();};
+    c.appendChild(b);
+  });
+}
+function startDrill(){
+  DR.order=drillPool(DR.cat).map(([t,i])=>i);
+  if(DR.shuffle)for(let i=DR.order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[DR.order[i],DR.order[j]]=[DR.order[j],DR.order[i]];}
+  DR.pos=0;DR.status={};DR.streak=0;
+  drillChips();drillTask();
+}
+function drillTask(){
+  const card=$('#dCard');
+  if(DR.pos>=DR.order.length){drillSummary();return;}
+  const gi=DR.order[DR.pos],t=TASKS[gi];
+  DR.attempts=0;DR.answered=false;
+  const special=t.mode==='numerator';
+  card.innerHTML=
+    '<div class="meta"><span class="tno">№ '+(DR.pos+1)+' из '+DR.order.length+'</span>'+
+    (t.code?'<span class="badge" title="код карточки в открытом банке открытый банк">открытый банк '+t.code+'</span>':'')+'</div>'+
+    '<div class="prompt'+(special?' special':'')+'">'+(special?NUMER_PROMPT:'Вычислите:')+'</div>'+
+    '<div class="mexp">'+t.html+'</div>'+
+    '<div class="answer-row">'+
+    '<input class="ans" id="dAns" autocomplete="off" aria-label="Ответ" placeholder="ответ">'+
+    '<button class="b-primary" id="dCheck">Проверить</button>'+
+    (t.shape?'<button class="b-ghost" id="dStepBtn">Решить по шагам</button>':'')+
+    '<button class="b-ghost" id="dReveal">Показать ответ</button>'+
+    '<button class="b-ghost" id="dSkip">Пропустить</button></div>'+
+    '<div class="mark" id="dMark" aria-live="polite"></div>'+
+    '<div id="dStepsArea"></div>';
+  $('#dCheck').onclick=drillCheck;
+  if(t.shape)$('#dStepBtn').onclick=()=>startDrillSteps(gi);
+  $('#dReveal').onclick=drillReveal;
+  $('#dSkip').onclick=()=>{DR.pos++;drillTask();};
+  const inp=$('#dAns');
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){DR.answered?drillNext():drillCheck();}});
+  inp.focus();
+  drillStats();drillDots();
+}
+function drillCheck(){
+  if(DR.answered){drillNext();return;}
+  const gi=DR.order[DR.pos],t=TASKS[gi];
+  const u=parseInput($('#dAns').value),mark=$('#dMark');
+  if(!u){mark.className='mark bad';mark.innerHTML='<span class="anim">введи число, например −0,3 или 23/36</span>';return;}
+  let ok=t.mode==='numerator'?(u[1]===1n&&u[0]===BigInt(t.n)):eqFrac(u,t.n,t.d);
+  if(ok){
+    DR.status[gi]=DR.attempts===0?'g':'y';DR.streak++;DR.answered=true;
+    mark.className='mark ok';mark.innerHTML='<span class="anim">✓ верно!</span>';
+    $('#dAns').disabled=true;drillSwap();
+  }else{
+    DR.attempts++;DR.streak=0;
+    mark.className='mark bad';mark.innerHTML='<span class="anim">пока нет — попробуй ещё раз</span>';
+    $('#dAns').select();
+  }
+  drillStats();drillDots();
+}
+function drillReveal(){
+  if(DR.answered)return;
+  const gi=DR.order[DR.pos],t=TASKS[gi];
+  DR.status[gi]='r';DR.streak=0;DR.answered=true;
+  const mark=$('#dMark');
+  const extra=(!t.term&&t.mode!=='numerator')?' <small style="font-family:inherit;font-size:14px">(≈ '+(t.n/t.d).toFixed(4).replace('.',',')+')</small>':'';
+  const corr=t.ansDisp.includes('/')?mfrac(parseInt(t.ansDisp.split('/')[0],10),parseInt(t.ansDisp.split('/')[1],10)):'<span class="corr">'+t.ansDisp.replace('-','−')+'</span>';
+  mark.className='mark bad';
+  mark.innerHTML='<span class="anim">ответ: '+corr+extra+'</span>';
+  $('#dAns').disabled=true;drillSwap();drillStats();drillDots();
+}
+function drillSwap(){
+  const b=$('#dCheck');b.textContent='Дальше →';b.className='b-next';b.onclick=drillNext;
+  $('#dReveal').style.display='none';$('#dSkip').style.display='none';
+  const sb=$('#dStepBtn');if(sb)sb.style.display='none';
+  b.focus();
+}
+/* --- marathon step-by-step mode --- */
+let DSS=null;
+function startDrillSteps(gi){
+  const t=TASKS[gi];
+  const task=t.shape==='fracbin'
+    ? buildFracTask(t.op,t.fa,t.fb,t.fc,t.fd,false)
+    : buildDecTask(t.op,D(t.av,t.ascale),D(t.bv,t.bscale));
+  DSS={task,step:0,revealed:false,gi};
+  document.querySelector('#dCard .answer-row').style.display='none';
+  $('#dMark').innerHTML='';
+  drawDrillSteps();
+}
+function drawDrillSteps(){
+  const box=$('#dStepsArea');box.innerHTML='';
+  const wrap=document.createElement('div');wrap.className='gsteps';
+  DSS.task.steps.forEach((st,i)=>{
+    const div=document.createElement('div');
+    if(i<DSS.step){
+      div.className='gstep done';
+      div.innerHTML='<span class="lead">✓ шаг '+(i+1)+'.</span> '+st.doneHTML;
+    }else if(i===DSS.step){
+      div.className='gstep';
+      div.innerHTML='<span class="lead">шаг '+(i+1)+'.</span> <span class="q">'+st.q+'</span>'+
+        '<div class="row"><input class="mini" style="width:120px;font-size:19px" id="dsIn" autocomplete="off">'+
+        '<button class="b-primary b-mini" id="dsCheck">Проверить</button>'+
+        '<button class="b-ghost b-mini" id="dsHint">Подсказка</button>'+
+        '<button class="b-ghost b-mini" id="dsShow">Показать шаг</button></div>'+
+        '<div class="hintbox" id="dsHintBox">'+st.hint+'</div>'+
+        '<div class="mark" id="dsMark"></div>';
+    }else{
+      div.className='gstep';div.style.opacity=.35;
+      div.innerHTML='<span class="lead">шаг '+(i+1)+'.</span> <span class="sub">…</span>';
+    }
+    wrap.appendChild(div);
+  });
+  box.appendChild(wrap);
+  if(DSS.step>=DSS.task.steps.length){
+    DR.status[DSS.gi]=DSS.revealed?'r':'y';
+    const d=document.createElement('div');d.className='gdone';
+    d.innerHTML='🎉 Разобрали по шагам! Ответ: <b>'+DSS.task.final+'</b> &nbsp; <button class="b-next" id="dsNext">Дальше →</button>';
+    box.appendChild(d);
+    d.querySelector('#dsNext').onclick=()=>{DSS=null;drillNext();};
+    d.querySelector('#dsNext').focus();
+    drillStats();drillDots();
+    return;
+  }
+  const st=DSS.task.steps[DSS.step];
+  const inp=$('#dsIn');
+  $('#dsCheck').onclick=()=>{
+    const u=parseInput(inp.value),mark=$('#dsMark');
+    if(!u){mark.className='mark bad';mark.innerHTML='<span class="anim">введи число</span>';return;}
+    if(eqFrac(u,st.ans[0],st.ans[1])||(st.alt&&eqFrac(u,st.alt[0],st.alt[1]))){
+      st.doneHTML=st.done(inp.value.trim().replace('-','−'));
+      DSS.step++;drawDrillSteps();
+    }else{
+      mark.className='mark bad';mark.innerHTML='<span class="anim">не то, попробуй ещё</span>';
+      inp.select();
+    }
+  };
+  $('#dsHint').onclick=()=>{$('#dsHintBox').style.display='block';};
+  $('#dsShow').onclick=()=>{
+    DSS.revealed=true;
+    st.doneHTML=st.done(valDisp(st.ans[0],st.ans[1]))+' <small style="color:var(--pen-red)">— шаг показан</small>';
+    DSS.step++;drawDrillSteps();
+  };
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')$('#dsCheck').click();});
+  inp.focus();
+}
+function drillNext(){DR.pos++;drillTask();}
+function drillStats(){
+  const vals=Object.values(DR.status);
+  const g=vals.filter(v=>v==='g').length,y=vals.filter(v=>v==='y').length,r=vals.filter(v=>v==='r').length;
+  $('#dStats').innerHTML=
+    '<span>с первой попытки: <b style="color:var(--pen-green)">'+g+'</b></span>'+
+    '<span>после ошибок: <b style="color:var(--amber)">'+y+'</b></span>'+
+    '<span>подсмотрено: <b style="color:var(--pen-red)">'+r+'</b></span>'+
+    '<span>серия: <b>'+DR.streak+'</b></span>'+
+    '<button class="b-ghost b-mini" onclick="startDrill()">заново</button>';
+  $('#dCounter').textContent='решено '+vals.length+' из '+DR.order.length;
+}
+function drillDots(){
+  const d=$('#dDots');d.innerHTML='';
+  DR.order.forEach((gi,i)=>{
+    const el=document.createElement('span');
+    el.className='dot '+(DR.status[gi]||'')+(i===DR.pos?' cur':'');
+    el.title='задача '+(i+1);
+    el.onclick=()=>{DR.pos=i;drillTask();};
+    d.appendChild(el);
+  });
+}
+function drillSummary(){
+  const vals=DR.order.map(gi=>DR.status[gi]);
+  const g=vals.filter(v=>v==='g').length,y=vals.filter(v=>v==='y').length,r=vals.filter(v=>v==='r').length;
+  const total=DR.order.length,pct=total?Math.round(100*(g+y)/total):0;
+  $('#dCard').innerHTML='<div class="summary"><h2>Раздел пройден!</h2>'+
+    '<div class="bigscore">'+(g+y)+' / '+total+'</div>'+
+    '<p class="sub">С первой попытки — '+g+', после ошибок — '+y+', с подсказкой — '+r+'. Решаемость: '+pct+'%.</p>'+
+    '<p style="margin-top:14px"><button class="b-primary" onclick="startDrill()">Пройти ещё раз</button></p></div>';
+  drillStats();drillDots();
+}
+
+render();
+</script>
+</body>
+</html>

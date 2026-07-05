@@ -1,0 +1,1522 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ОГЭ · Задание 25 — геометрия повышенной сложности</title>
+<style>
+  :root{
+    --bg:#e8e4db; --paper:#fffdf7; --ink:#1a1a2e; --blue:#2d70b3; --green:#16a34a;
+    --orange:#d97706; --red:#dc2626; --purple:#7c3aed; --pink:#db2777; --teal:#0d9488;
+    --amber-bg:#fffbeb; --amber-bd:#fcd34d; --amber-tx:#b45309;
+    --grid:#e7e1d2; --muted:#5b5750; --line:#d9d2c4;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  html,body{margin:0}
+  body{background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    line-height:1.5; padding:14px;}
+  .app{max-width:1020px; margin:0 auto; background:var(--paper);
+    border-radius:18px; box-shadow:0 10px 40px rgba(26,26,46,.13); overflow:hidden;}
+  .head{background:var(--ink); color:#f4f1ea; padding:16px 20px; display:flex;
+    align-items:center; gap:14px; flex-wrap:wrap;}
+  .head h1{font-size:18px; margin:0; font-weight:800; letter-spacing:.2px}
+  .head .sub{font-size:12.5px; opacity:.72; margin-top:2px}
+  .head .grow{flex:1}
+  .badge{background:rgba(255,255,255,.14); border-radius:999px; padding:5px 12px;
+    font-size:12px; font-weight:700}
+  /* tabs */
+  .tabs{display:flex; gap:2px; background:#ece7dc; padding:6px 8px 0; overflow-x:auto}
+  .tab{border:none; background:transparent; padding:10px 16px; font-size:14px; font-weight:700;
+    color:var(--muted); cursor:pointer; border-radius:10px 10px 0 0; white-space:nowrap}
+  .tab.on{background:var(--paper); color:var(--ink); box-shadow:0 -2px 6px rgba(0,0,0,.04)}
+  .wrap{padding:18px 20px 26px}
+  /* generic */
+  h2{font-size:16px; margin:0 0 10px}
+  .row{display:flex; gap:14px; flex-wrap:wrap}
+  .col{flex:1; min-width:280px}
+  button{font-family:inherit}
+  .btn{border:1.5px solid var(--ink); background:var(--ink); color:#fff; padding:9px 15px;
+    border-radius:10px; font-size:14px; font-weight:700; cursor:pointer}
+  .btn.ghost{background:transparent; color:var(--ink)}
+  .btn.blue{background:var(--blue); border-color:var(--blue)}
+  .btn.small{padding:6px 11px; font-size:13px}
+  .btn:disabled{opacity:.45; cursor:default}
+  .pill{display:inline-block; padding:3px 9px; border-radius:999px; font-size:11.5px; font-weight:700}
+  .pill.tri{background:#e7f0fb; color:#1e5a97}
+  .pill.trap{background:#e9f7ee; color:#15803d}
+  .pill.par{background:#fdf0e3; color:#b45309}
+  .pill.quad{background:#f3ecfb; color:#6d28d9}
+  .pill.circ{background:#e6f6f4; color:#0f766e}
+  /* type grid */
+  .tgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:10px}
+  .tcard{border:1.5px solid var(--line); border-radius:12px; padding:12px 13px; cursor:pointer;
+    background:#fff; transition:border-color .12s, transform .06s; position:relative}
+  .tcard:hover{border-color:var(--blue)}
+  .tcard:active{transform:translateY(1px)}
+  .tcard .no{position:absolute; top:10px; right:12px; font-size:12px; font-weight:800; color:#b8b1a3}
+  .tcard .tt{font-weight:800; font-size:13.5px; margin:2px 0 6px; padding-right:24px}
+  .tcard .dsc{font-size:12px; color:var(--muted); line-height:1.4}
+  .tcard .err-badge{display:inline-block; margin-top:8px; background:#fdecea; color:var(--red);
+    font-size:11px; font-weight:800; padding:2px 8px; border-radius:999px}
+  /* figure */
+  .fig{background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:8px;
+    display:flex; justify-content:center; align-items:center}
+  .fig svg{max-width:100%; height:auto; display:block}
+  /* task card */
+  .task{border:1.5px solid var(--line); border-radius:14px; padding:16px; background:#fff}
+  .cond{font-size:14.5px; line-height:1.6}
+  .given{background:#f7f4ec; border-radius:10px; padding:10px 13px; font-size:13.5px; margin:12px 0}
+  .steps{margin:6px 0 0; padding:0; list-style:none; counter-reset:st}
+  .steps li{position:relative; padding:11px 12px 11px 42px; border-bottom:1px solid #f0ece2; font-size:14px}
+  .steps li:last-child{border-bottom:none}
+  .steps li::before{counter-increment:st; content:counter(st); position:absolute; left:11px; top:11px;
+    width:22px; height:22px; background:var(--ink); color:#fff; border-radius:50%; font-size:12px;
+    font-weight:800; display:flex; align-items:center; justify-content:center}
+  .steps li.final{background:#f0f9f2; border-radius:0 0 10px 10px}
+  .steps li.final::before{background:var(--green)}
+  .why{margin-top:7px}
+  .why-btn{border:none; background:var(--amber-bg); color:var(--amber-tx); border:1px solid var(--amber-bd);
+    padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:800; cursor:pointer}
+  .why-body{margin-top:7px; background:var(--amber-bg); border:1px solid var(--amber-bd);
+    border-radius:9px; padding:9px 11px; font-size:12.5px; color:#7a4d0c; line-height:1.5; display:none}
+  .why-body.open{display:block}
+  .ans-final{font-size:16px; font-weight:800}
+  .ans-final b{color:var(--green)}
+  /* fraction */
+  .frac{display:inline-flex; flex-direction:column; text-align:center; vertical-align:middle;
+    margin:0 2px; line-height:1.05}
+  .frac .n{border-bottom:1.4px solid currentColor; padding:0 4px 1px}
+  .frac .d{padding:1px 4px 0}
+  .sq{font-size:.72em; vertical-align:super}
+  .rt{border-top:1.4px solid currentColor; padding:0 2px}
+  .rad{font-size:1.02em}
+  /* input / practice */
+  .ansrow{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:14px}
+  input.num{border:1.6px solid var(--line); border-radius:10px; padding:9px 12px; font-size:15px;
+    width:150px; font-family:inherit}
+  input.num:focus{outline:none; border-color:var(--blue)}
+  .fb{margin-top:12px; padding:11px 13px; border-radius:10px; font-size:13.5px; line-height:1.5; display:none}
+  .fb.show{display:block}
+  .fb.ok{background:#eaf7ee; border:1px solid #bfe6cb; color:#15803d}
+  .fb.err{background:#fdecea; border:1px solid #f3c6c0; color:#b3271b}
+  .fb.warn{background:#fff7e8; border:1px solid #f6dca0; color:#92610a}
+  .stat{font-size:12.5px; color:var(--muted); margin-top:10px}
+  .hintbox{margin-top:12px; border:1px dashed var(--blue); border-radius:10px; padding:0; overflow:hidden}
+  .hintstep{padding:10px 13px; border-bottom:1px solid #eef1f6; font-size:13.5px; background:#f6f9fd}
+  .hintstep:last-child{border-bottom:none}
+  /* тренажёрная проводка по шагам */
+  .guidebox{margin-top:12px; border:1.5px solid var(--blue); border-radius:12px; overflow:hidden; background:#f6f9fd}
+  .guidehead{background:var(--blue); color:#fff; font-weight:800; font-size:12.5px; padding:9px 13px; letter-spacing:.2px}
+  .gsteps{margin:0; padding:0; list-style:none; counter-reset:gs}
+  .gsteps li{position:relative; padding:12px 13px 13px 44px; border-bottom:1px solid #e3ebf4; font-size:13.5px; line-height:1.55}
+  .gsteps li:last-child{border-bottom:none}
+  .gsteps li::before{counter-increment:gs; content:counter(gs); position:absolute; left:11px; top:12px;
+    width:23px; height:23px; border-radius:50%; background:#c7d7ea; color:#1e3a5c; font-weight:800;
+    font-size:12px; display:flex; align-items:center; justify-content:center}
+  .gsteps li.done::before{content:'✓'; background:var(--green); color:#fff}
+  .gsteps li.rev::before{background:var(--orange); color:#fff}
+  .gsteps li.cur::before{background:var(--blue); color:#fff}
+  .gq{font-weight:600}
+  .gaskl{font-size:14px; font-weight:800}
+  .gtip{margin-top:9px; font-size:12.5px; color:#7a4d0c; background:var(--amber-bg);
+    border:1px solid var(--amber-bd); border-radius:9px; padding:8px 11px; display:none; line-height:1.5}
+  .gtip.on{display:block}
+  .gdone{margin-top:8px; font-size:13px; color:#15803d; font-weight:700}
+  .gdone.rev{color:#b45309}
+  .gcta{margin-top:9px; font-size:13.5px; font-weight:600; color:#1e3a5c; background:#eef5fc;
+    border:1px dashed var(--blue); border-radius:9px; padding:9px 11px; line-height:1.5}
+  /* quiz */
+  .qtop{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px}
+  .qprog{flex:1; height:8px; background:#ece7dc; border-radius:99px; overflow:hidden}
+  .qprog i{display:block; height:100%; background:var(--blue); width:0; transition:width .25s}
+  .dots{display:flex; gap:6px; flex-wrap:wrap; margin:8px 0}
+  .dot{width:13px; height:13px; border-radius:50%; background:#d9d2c4}
+  .dot.g{background:var(--green)} .dot.r{background:var(--red)} .dot.y{background:var(--orange)}
+  .law{background:var(--amber-bg); border:1.5px solid var(--amber-bd); border-radius:12px; padding:14px 16px;
+    margin-top:14px}
+  .law h3{margin:0 0 6px; color:var(--amber-tx); font-size:14px}
+  .review{margin-top:12px}
+  .review .rline{font-size:13.5px; padding:6px 0; border-bottom:1px solid #f0ece2}
+  /* reference */
+  .refmap{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:10px}
+  .refcard{border:1.5px solid var(--line); border-radius:12px; padding:13px; cursor:pointer; background:#fff}
+  .refcard:hover{border-color:var(--teal)}
+  .refcard .rt2{font-weight:800; font-size:13.5px; margin-bottom:5px}
+  .refcard .kf{font-size:13px; color:var(--blue); margin-top:6px}
+  .notsheet{background:#f3ecfb; border:1px solid #d9c8f2; border-radius:9px; padding:9px 11px;
+    font-size:12px; color:#6d28d9; margin-top:8px}
+  .notsheet b{display:block; margin-bottom:3px}
+  .muted{color:var(--muted); font-size:13px}
+  .backline{margin-bottom:12px}
+  .link{background:none; border:none; color:var(--blue); font-weight:700; cursor:pointer; font-size:13.5px; padding:0}
+  @media(max-width:720px){
+    .wrap{padding:14px 13px 22px}
+    .head h1{font-size:16px}
+    .col{min-width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <h1>Задание 25 · геометрия повышенной сложности</h1>
+      <div class="sub">ОГЭ по математике · 16 типов · разбор, тренировка, зачёт</div>
+    </div>
+    <div class="grow"></div>
+    <div class="badge" id="modeBadge">Разбор</div>
+  </div>
+  <div class="tabs" id="tabs">
+    <button class="tab on" data-tab="learn">Разбор</button>
+    <button class="tab" data-tab="train">Тренировка</button>
+    <button class="tab" data-tab="exam">Зачёт</button>
+    <button class="tab" data-tab="ref">Справочник</button>
+  </div>
+  <div class="wrap">
+    <div id="panel-learn"></div>
+    <div id="panel-train" style="display:none"></div>
+    <div id="panel-exam" style="display:none"></div>
+    <div id="panel-ref" style="display:none"></div>
+  </div>
+</div>
+<script>
+"use strict";
+/* ======================================================================
+   ЯДРО: хранилище, форматирование, SVG-помощники честного черчения
+   ====================================================================== */
+const TID='oge25-geometriya';
+const KEY='mathExamCourseProgress.v1';
+function loadStore(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ return {}; } }
+function saveStore(o){ try{ localStorage.setItem(KEY,JSON.stringify(o)); }catch(e){} }
+function state(){ const s=loadStore(); if(!s[TID]) s[TID]={runs:0,best:0,events:[],passed:false,errByType:{}}; return s; }
+function commit(mut){ const s=state(); mut(s[TID]); saveStore(s); }
+function logEvent(ev){ commit(t=>{ t.events=t.events||[]; t.events.push(Object.assign({t:Date.now()},ev)); if(t.events.length>300) t.events=t.events.slice(-300); }); }
+function bumpErr(typeId){ commit(t=>{ t.errByType=t.errByType||{}; t.errByType[typeId]=(t.errByType[typeId]||0)+1; }); }
+function getErrByType(){ return (state()[TID].errByType)||{}; }
+
+/* ---------- числовое сравнение и разбор ответа ученика ---------- */
+function parseNum(s){
+  if(s==null) return NaN;
+  s=(''+s).trim().replace(',', '.').replace(/\s+/g,'');
+  if(s==='') return NaN;
+  return Number(s);
+}
+function approxEq(a,b,rel=1e-3,abs=1e-6){ if(!isFinite(a)||!isFinite(b)) return false; return Math.abs(a-b)<=Math.max(abs, rel*Math.max(1,Math.abs(b))); }
+
+/* ---------- форматирование формул (HTML, стопочные дроби, радикалы) ---------- */
+function frac(n,d){ return `<span class="frac"><span class="n">${n}</span><span class="d">${d}</span></span>`; }
+function sq(x){ return `${x}<span class="sq">2</span>`; }
+function rad(x){ return `<span class="rad">√</span><span class="rt">${x}</span>`; }
+/* точный радикал k*√r (упрощённый) как строка HTML */
+function simpRad(nUnderInt){ // √nUnder -> a√b
+  let n=nUnderInt, a=1;
+  for(let f=2; f*f<=n; f++){ while(n%(f*f)===0){ n/=f*f; a*=f; } }
+  if(n===1) return `${a}`;
+  if(a===1) return rad(n);
+  return `${a}${rad(n)}`;
+}
+/* красивая дробь p/q (сокращённая), как десятичная строка если конечная, иначе p/q */
+function gcd(a,b){ a=Math.abs(a);b=Math.abs(b); while(b){[a,b]=[b,a%b];} return a||1; }
+function fmtNum(x){
+  if(Math.abs(x-Math.round(x))<1e-9) return ''+Math.round(x);
+  // до 3 знаков, без хвостовых нулей
+  let r=(Math.round(x*1000)/1000);
+  return (''+r).replace('.', ',');
+}
+
+/* ====================== SVG: подгонка и примитивы ====================== */
+/* fit: центрирует мировые точки (y вверх) в вьюпорт vw×vh с полями pad, флип Y */
+function fit(pts, vw, vh, pad){
+  let minx=1e18,miny=1e18,maxx=-1e18,maxy=-1e18;
+  pts.forEach(p=>{ if(p[0]<minx)minx=p[0]; if(p[0]>maxx)maxx=p[0]; if(p[1]<miny)miny=p[1]; if(p[1]>maxy)maxy=p[1]; });
+  const w=(maxx-minx)||1, h=(maxy-miny)||1;
+  const s=Math.min((vw-2*pad)/w,(vh-2*pad)/h);
+  const cx=(minx+maxx)/2, cy=(miny+maxy)/2;
+  const m=(x,y)=>[ +(vw/2+(x-cx)*s).toFixed(2), +(vh/2-(y-cy)*s).toFixed(2) ];
+  return {m, s, vw, vh};
+}
+const esc=t=>(''+t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+/* линия (экранные коорд) */
+function svL(a,b,o={}){ const st=o.stroke||'#1a1a2e', w=o.w||2, d=o.dash?` stroke-dasharray="${o.dash}"`:''; const lc=o.cap?` stroke-linecap="${o.cap}"`:''; return `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${st}" stroke-width="${w}"${d}${lc}/>`; }
+function svPoly(pts,o={}){ const st=o.stroke||'#1a1a2e', w=o.w||2, f=o.fill||'none', d=o.dash?` stroke-dasharray="${o.dash}"`:''; const p=pts.map(q=>q.join(',')).join(' '); return `<polyline points="${p}" fill="${f}" stroke="${st}" stroke-width="${w}"${d} stroke-linejoin="round" stroke-linecap="round"/>`; }
+function svPolygon(pts,o={}){ const st=o.stroke||'#1a1a2e', w=o.w||2, f=o.fill||'none'; const p=pts.map(q=>q.join(',')).join(' '); return `<polygon points="${p}" fill="${f}" stroke="${st}" stroke-width="${w}" stroke-linejoin="round"/>`; }
+function svCirc(c,r,o={}){ const st=o.stroke||'#1a1a2e', w=o.w||2, f=o.fill||'none', d=o.dash?` stroke-dasharray="${o.dash}"`:''; return `<circle cx="${c[0]}" cy="${c[1]}" r="${r}" fill="${f}" stroke="${st}" stroke-width="${w}"${d}/>`; }
+function svDot(c,o={}){ const r=o.r||4, f=o.fill||'#1a1a2e', st=o.stroke||'#fffdf7', w=o.w||1.6; return `<circle cx="${c[0]}" cy="${c[1]}" r="${r}" fill="${f}" stroke="${st}" stroke-width="${w}"/>`; }
+/* текст с белым ореолом */
+function svTxt(p,t,o={}){ const fs=o.fs||15, fw=o.fw||800, col=o.col||'#1a1a2e', anc=o.anchor||'middle', bl=o.baseline||'middle';
+  const dx=o.dx||0, dy=o.dy||0;
+  const common=`x="${p[0]+dx}" y="${p[1]+dy}" font-size="${fs}" font-weight="${fw}" text-anchor="${anc}" dominant-baseline="${bl}" font-family="-apple-system,Segoe UI,Roboto,Arial,sans-serif"`;
+  return `<text ${common} stroke="#fffdf7" stroke-width="3.4" stroke-linejoin="round" fill="none">${esc(t)}</text><text ${common} fill="${col}">${esc(t)}</text>`;
+}
+/* дуга угла как полилиния (экранные коорд): вершина V, к точкам P1,P2, радиус r px, n делений */
+function svArc(V,P1,P2,r,o={}){
+  let a1=Math.atan2(P1[1]-V[1],P1[0]-V[0]), a2=Math.atan2(P2[1]-V[1],P2[0]-V[0]);
+  let da=a2-a1; while(da<=-Math.PI) da+=2*Math.PI; while(da>Math.PI) da-=2*Math.PI;
+  const N=Math.max(8,Math.round(Math.abs(da)/0.12)); const pts=[];
+  for(let i=0;i<=N;i++){ const a=a1+da*i/N; pts.push([+(V[0]+r*Math.cos(a)).toFixed(2), +(V[1]+r*Math.sin(a)).toFixed(2)]); }
+  const dbl=o.double? svPoly(pts.map(q=>[V[0]+(q[0]-V[0])*1.24,V[1]+(q[1]-V[1])*1.24]),{stroke:o.stroke||'#d97706',w:o.w||2.4}):'';
+  return svPoly(pts,{stroke:o.stroke||'#d97706',w:o.w||2.4})+dbl;
+}
+/* заполненный сектор (заливка угла) */
+function svSector(V,P1,P2,r,o={}){
+  let a1=Math.atan2(P1[1]-V[1],P1[0]-V[0]), a2=Math.atan2(P2[1]-V[1],P2[0]-V[0]);
+  let da=a2-a1; while(da<=-Math.PI) da+=2*Math.PI; while(da>Math.PI) da-=2*Math.PI;
+  const N=Math.max(8,Math.round(Math.abs(da)/0.12)); const pts=[V];
+  for(let i=0;i<=N;i++){ const a=a1+da*i/N; pts.push([+(V[0]+r*Math.cos(a)).toFixed(2), +(V[1]+r*Math.sin(a)).toFixed(2)]); }
+  return svPolygon(pts,{fill:o.fill||'rgba(45,112,179,.15)',stroke:'none',w:0});
+}
+/* метка прямого угла: угол в V, стороны к P1,P2, размер d px */
+function svRight(V,P1,P2,o={}){
+  const d=o.d||13, st=o.stroke||'#16a34a', w=o.w||2;
+  const u1=norm(sub(P1,V)), u2=norm(sub(P2,V));
+  const a=[V[0]+u1[0]*d, V[1]+u1[1]*d];
+  const b=[V[0]+u2[0]*d, V[1]+u2[1]*d];
+  const c=[V[0]+(u1[0]+u2[0])*d, V[1]+(u1[1]+u2[1])*d];
+  return svPoly([a,c,b],{stroke:st,w});
+}
+/* засечки равенства на отрезке A-B (экранные), n штук */
+function svTicks(A,B,n,o={}){
+  const st=o.stroke||'#1a1a2e', w=o.w||2, len=o.len||7, gap=o.gap||5;
+  const mid=[(A[0]+B[0])/2,(A[1]+B[1])/2];
+  const u=norm(sub(B,A)); const p=[-u[1],u[0]]; // перпендикуляр
+  const out=[]; const start=-(n-1)/2;
+  for(let i=0;i<n;i++){ const off=(start+i)*gap; const cx=mid[0]+u[0]*off, cy=mid[1]+u[1]*off;
+    out.push(svL([cx-p[0]*len/2,cy-p[1]*len/2],[cx+p[0]*len/2,cy+p[1]*len/2],{stroke:st,w})); }
+  return out.join('');
+}
+/* маленькие вектор-помощники (экранные или мировые — линейные) */
+function sub(a,b){ return [a[0]-b[0],a[1]-b[1]]; }
+function add(a,b){ return [a[0]+b[0],a[1]+b[1]]; }
+function mul(a,k){ return [a[0]*k,a[1]*k]; }
+function len2(a){ return Math.hypot(a[0],a[1]); }
+function norm(a){ const l=len2(a)||1; return [a[0]/l,a[1]/l]; }
+function mid(a,b){ return [(a[0]+b[0])/2,(a[1]+b[1])/2]; }
+function lerp(a,b,t){ return [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t]; }
+/* пересечение окружностей (мировые) для построения треугольника по сторонам */
+function circInter(c1,r1,c2,r2, upper){
+  const d=len2(sub(c2,c1)); if(d>r1+r2+1e-9||d<Math.abs(r1-r2)-1e-9) return null;
+  const a=(r1*r1-r2*r2+d*d)/(2*d); const h=Math.sqrt(Math.max(0,r1*r1-a*a));
+  const p=add(c1, mul(norm(sub(c2,c1)),a));
+  const per=[ -(c2[1]-c1[1])/d, (c2[0]-c1[0])/d ];
+  const s1=[p[0]+per[0]*h, p[1]+per[1]*h]; const s2=[p[0]-per[0]*h, p[1]-per[1]*h];
+  return (upper? (s1[1]>=s2[1]?s1:s2) : (s1[1]<s2[1]?s1:s2));
+}
+/* треугольник по трём сторонам: A=(0,0), C=(b,0), B сверху; a=BC,b=AC,c=AB */
+function triFromSides(a,b,c){
+  const A=[0,0], C=[b,0];
+  const B=circInter(A,c,C,a,true);
+  return {A,B:B||[b/2,Math.max(1,c)],C};
+}
+/* обёртка svg */
+function svgWrap(inner, vw, vh){ return `<svg viewBox="0 0 ${vw} ${vh}" width="${vw}" height="${vh}" xmlns="http://www.w3.org/2000/svg">${inner}</svg>`; }
+/* ======================================================================
+   ТИПЫ ЗАДАЧ 1–16.  У каждого:
+     topic, pill, title, tag  — метаданные
+     pool: [params...]         — пул реальных задач (для тренировки/зачёта)
+     cond(p) -> html           — условие
+     build(p) -> {ans:[{v,exact}], steps:[{h,why}], geo}
+     draw(p) -> svg            — честный чертёж под числа
+     refKey, refWhy, notSheet  — для справочника
+   ====================================================================== */
+const DEG=x=>x*180/Math.PI, RAD=x=>x*Math.PI/180;
+function rayCircle(P,dir,O,r){ // точка на луче P+t·dir, лежащая на окружности (t>0, дальняя)
+  const f=sub(P,O); const a=dir[0]*dir[0]+dir[1]*dir[1];
+  const b=2*(f[0]*dir[0]+f[1]*dir[1]); const c=f[0]*f[0]+f[1]*f[1]-r*r;
+  const disc=b*b-4*a*c; if(disc<0) return null; const sd=Math.sqrt(disc);
+  const t1=(-b+sd)/(2*a), t2=(-b-sd)/(2*a); const t=Math.max(t1,t2);
+  return [P[0]+dir[0]*t, P[1]+dir[1]*t];
+}
+function lineInter(p1,p2,p3,p4){ // пересечение прямых (p1p2) и (p3p4)
+  const d=(p1[0]-p2[0])*(p3[1]-p4[1])-(p1[1]-p2[1])*(p3[0]-p4[0]); if(Math.abs(d)<1e-12) return null;
+  const a=p1[0]*p2[1]-p1[1]*p2[0], b=p3[0]*p4[1]-p3[1]*p4[0];
+  return [ (a*(p3[0]-p4[0])-(p1[0]-p2[0])*b)/d, (a*(p3[1]-p4[1])-(p1[1]-p2[1])*b)/d ];
+}
+const VW=560, VH=400, PAD=46;
+
+const TYPES=[];
+
+/* ---------- ТИП 1: биссектриса и медиана перпендикулярны и равны ---------- */
+TYPES.push({
+  id:1, topic:'Треугольник', pill:'tri', tag:'биссектриса = высота',
+  title:'Биссектриса и медиана: ⟂ и равны',
+  pool:[12,8,32,20,40,36,28,16,44,24],
+  cond:p=>`В треугольнике <b>ABC</b> биссектриса <b>BE</b> и медиана <b>AD</b> перпендикулярны и имеют одинаковую длину, равную <b>${p}</b>. Найдите стороны треугольника ABC.`,
+  build(p){
+    const L=p;
+    const AB=Math.sqrt(13)/4*L, BC=Math.sqrt(13)/2*L, AC=3*Math.sqrt(5)/4*L;
+    // точные записи: AB=(L/4)√13, BC=(L/2)√13, AC=(3L/4)√5 → приведём коэффициенты
+    const k=L/4;
+    const exAB = simpRad(13*k*k*16/16*1); // безопасно: используем прямой расчёт ниже
+    // построим точные строки исходя из L (L кратно 4 в пуле кроме нет — L∈{...}) — используем radicalScale
+    function ex(coef, under){ // coef*√under, coef может быть дробным L*a/b — соберём как (L*num)√under, упростив √
+      return radScaleStr(coef, under);
+    }
+    const ansAB={v:AB, exact:ex(L/4,13)}, ansBC={v:BC, exact:ex(L/2,13)}, ansAC={v:AC, exact:ex(3*L/4,5)};
+    const steps=[
+      {h:`Пусть биссектриса <b>BE</b> и медиана <b>AD</b> пересекаются в точке <b>P</b>. Так как <b>D</b> лежит на <b>BC</b>, луч <b>BD</b> совпадает с лучом <b>BC</b>, поэтому <b>BP</b> — биссектриса угла <b>ABD</b> в треугольнике <b>ABD</b>, и при этом <b>BP ⟂ AD</b>.`, why:`Биссектриса из B делит угол ABC; отрезок BD — часть стороны BC, значит внутри △ABD отрезок BP по-прежнему биссектриса угла при вершине B.`},
+      {h:`В треугольнике <b>ABD</b> биссектриса из <b>B</b> одновременно является высотой ⇒ треугольник <b>ABD</b> равнобедренный: <b>AB = BD</b>. Значит <b>BD = BC/2 = AB</b>, откуда <b>BC = 2·AB</b>.`, why:`Если в треугольнике биссектриса, проведённая из вершины, совпадает с высотой из этой же вершины, то треугольник равнобедренный (биссектриса = высота = медиана к основанию).`},
+      {h:`Обозначим <b>AB = c</b>, тогда <b>BC = 2c</b>, а <b>AC = b</b>. Длина медианы <b>AD</b> к стороне <b>BC</b>:<br><b>AD² = ${frac('2·AB² + 2·AC² − BC²','4')} = ${frac('2c² + 2b² − 4c²','4')} = ${frac('b² − c²','2')}</b>.`, why:`Формула длины медианы: m² = (2·(прилежащие стороны)² − (сторона к которой проведена)²)/4.`},
+      {h:`Длина биссектрисы <b>BE</b> (к стороне <b>AC</b>), где точка E делит AC в отношении AB:BC = 1:2, значит AE = ${frac('b','3')}, EC = ${frac('2b','3')}:<br><b>BE² = AB·BC − AE·EC = 2c² − ${frac('2b²','9')}</b>.`, why:`Формула биссектрисы: t² = (произведение сторон угла) − (произведение отрезков третьей стороны). Отрезки основания делятся в отношении прилежащих сторон.`},
+      {h:`Приравняем: <b>AD = BE = ${p}</b>, то есть <b>AD² = BE²</b>:<br>${frac('b² − c²','2')} = 2c² − ${frac('2b²','9')} ⇒ <b>13b² = 45c²</b> ⇒ b² = ${frac('45','13')}c².<br>Подставим в AD²: <b>${p}² = ${frac('b² − c²','2')} = ${frac('16','13')}c²</b> ⇒ c = ${frac('√13','4')}·${p}.`, why:null, ask:{label:'AB = c', v:AB, q:`Из равенства ${p}² = (16/13)·c² вырази сторону <b>c = AB</b>. Впиши число (можно округлить до сотых).`, tip:`c = (√13 / 4)·${p}, где √13 ≈ 3,606.`}},
+      {h:`Стороны треугольника:<br><b>AB = ${ansAB.exact}</b>, &nbsp; <b>BC = ${ansBC.exact}</b>, &nbsp; <b>AC = ${ansAC.exact}</b>.`, why:null}
+    ];
+    return {ans:[Object.assign({label:'AB'},ansAB),Object.assign({label:'BC'},ansBC),Object.assign({label:'AC'},ansAC)], steps, geo:{L}, gcta:`Ты нашёл <b>AB = c</b>. Теперь <b>BC = 2·AB</b>, а <b>AC = (3√5 / 4)·${L}</b> (√5 ≈ 2,236). Впиши все три стороны выше и нажми «Проверить».`};
+  },
+  draw(p){
+    const L=100; const c=Math.sqrt(13)/4*L, a=Math.sqrt(13)/2*L, b=3*Math.sqrt(5)/4*L;
+    const {A,B,C}=triFromSides(a,b,c); // a=BC,b=AC,c=AB
+    const D=mid(B,C), E=lerp(A,C,1/3), P=lineInter(A,D,B,E);
+    const M=fit([A,B,C,D,E,P,[A[0],A[1]-14]],VW,VH,PAD).m;
+    const A_=M(...A),B_=M(...B),C_=M(...C),D_=M(...D),E_=M(...E),P_=M(...P);
+    let s='';
+    s+=svPolygon([A_,B_,C_],{stroke:'#1a1a2e',w:2.4,fill:'rgba(45,112,179,0.05)'});
+    s+=svL(A_,D_,{stroke:'#2d70b3',w:2.6});           // медиана
+    s+=svL(B_,E_,{stroke:'#d97706',w:2.6});           // биссектриса
+    s+=svRight(P_, A_, B_,{d:12,stroke:'#16a34a',w:2.2});
+    // равные углы при B (две дуги)
+    s+=svArc(B_,A_,P_,17,{stroke:'#d97706',w:2.2});
+    s+=svArc(B_,P_,C_,23,{stroke:'#d97706',w:2.2});
+    // равные длины BE и AD — по одной засечке
+    s+=svTicks(A_,D_,1,{stroke:'#2d70b3'});
+    s+=svTicks(B_,E_,1,{stroke:'#d97706'});
+    // точки и подписи
+    [[A_,'A',[-14,-2]],[B_,'B',[0,-16]],[C_,'C',[15,-2]],[D_,'D',[10,14]],[E_,'E',[16,4]],[P_,'P',[-13,10]]].forEach(([q,t,dxy])=>{ s+=svDot(q,{r:4}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:15,col:'#1a1a2e'}); });
+    return svgWrap(s,VW,VH);
+  },
+  refKey:`Биссектриса из B в △ABD — ещё и высота ⇒ AB = BD, значит BC = 2·AB.`,
+  refWhy:`Ключ: биссектриса, совпавшая с высотой, делает треугольник равнобедренным. Далее — формулы длины медианы и биссектрисы, приравненные к L.`,
+  notSheet:`Формулы длины медианы и биссектрисы, а также признак «биссектриса = высота ⇒ равнобедренный» — на листе справочных материалов ОГЭ их нет, нужно помнить.`
+});
+
+/* helper: coef·√under, упрощая радикал и внося рациональный coef */
+function radScaleStr(coef, under){
+  // coef может быть дробным. Приведём к виду (p/q)·√under, затем упростим √under и внесём.
+  // упростим √under = a·√u
+  let u=under, a=1; for(let f=2; f*f<=u; f++){ while(u%(f*f)===0){ u/=f*f; a*=f; } }
+  let val=coef*a; // рациональный множитель перед √u
+  const vr=Math.round(val*1e6)/1e6;
+  if(u===1){ return fmtNum(coef*a); }
+  // если множитель целый — красиво
+  if(Math.abs(vr-Math.round(vr))<1e-9) return `${Math.round(vr)}${rad(u)}`;
+  return `${fmtNum(vr)}${rad(u)}`;
+}
+
+/* ---------- ТИП 2: параллелограмм, биссектрисы A и B ---------- */
+TYPES.push({
+  id:2, topic:'Параллелограмм', pill:'par', tag:'биссектрисы соседних углов',
+  title:'Параллелограмм: биссектрисы углов A и B',
+  pool:[[2,1],[18,1],[2,8],[19,7],[17,10],[6,6],[19,10],[11,3],[7,4],[12,9]],
+  cond:p=>`Биссектрисы углов <b>A</b> и <b>B</b> параллелограмма <b>ABCD</b> пересекаются в точке <b>K</b>. Найдите площадь параллелограмма, если <b>BC = ${p[0]}</b>, а расстояние от точки K до стороны <b>AB</b> равно <b>${p[1]}</b>.`,
+  build(p){
+    const [BC,h]=p; const S=2*BC*h;
+    const steps=[
+      {h:`Углы <b>A</b> и <b>B</b> прилежат к боковой стороне AB, поэтому <b>∠A + ∠B = 180°</b>. Тогда для их половин: <b>∠KAB + ∠KBA = 90°</b>, значит в треугольнике AKB угол <b>∠AKB = 90°</b>.`, why:`Сумма углов параллелограмма, прилежащих к одной стороне, равна 180° (односторонние углы при параллельных AD ∥ BC).`},
+      {h:`Точка K лежит на биссектрисе угла A ⇒ равноудалена от прямых <b>AB</b> и <b>AD</b>. K на биссектрисе угла B ⇒ равноудалена от <b>AB</b> и <b>BC</b>. Значит <b>dist(K, AD) = dist(K, BC) = dist(K, AB) = ${h}</b>.`, why:`Каждая точка биссектрисы угла равноудалена от его сторон.`},
+      {h:`Стороны AD и BC параллельны, K между ними ⇒ расстояние между ними равно <b>${h} + ${h} = ${2*h}</b>. Это высота параллелограмма, опущенная на основание BC.`, why:null, ask:{label:'высота', v:2*h, q:`Точка K равноудалена от AB, от AD и от BC (лежит на двух биссектрисах). Прямые AD и BC параллельны, а K лежит между ними. Чему равна высота параллелограмма — расстояние между AD и BC?`, tip:`Это сумма двух равных расстояний от K до параллельных прямых AD и BC.`}},
+      {h:`Площадь: <b>S = BC · (высота) = ${BC} · ${2*h} = ${S}</b>.`, why:`Площадь параллелограмма = основание × высота.`, ask:{label:'S', v:S, q:`Площадь параллелограмма = основание × высоту. Основание BC = ${BC}, высоту ты нашёл на прошлом шаге. Посчитай площадь S.`, tip:`S = ${BC} × (высоту, найденную на прошлом шаге).`}}
+    ];
+    return {ans:[{label:'S',v:S,exact:''+S}], steps, geo:{BC,h}};
+  },
+  draw(p){
+    const [BCv,hv]=p; const g=100, ht=g*(2*hv)/Math.max(BCv,1); // масштаб: BC↔g, высота↔2h в тех же единицах
+    const H=Math.max(60,Math.min(180,ht)); const sh=H*0.55;
+    const A=[0,0], D=[g,0], B=[sh,H], C=[sh+g,H];
+    // биссектрисы: из A между AB,AD; из B между BA,BC
+    const biA=norm(add(norm(sub(B,A)),norm(sub(D,A))));
+    const biB=norm(add(norm(sub(A,B)),norm(sub(C,B))));
+    const K=lineInter(A,add(A,biA),B,add(B,biB));
+    // основание перпендикуляра из K на AB
+    const abu=norm(sub(B,A)); const t=(K[0]-A[0])*abu[0]+(K[1]-A[1])*abu[1]; const F=[A[0]+abu[0]*t,A[1]+abu[1]*t];
+    const M=fit([A,B,C,D,K,F],VW,VH,PAD).m;
+    const A_=M(...A),B_=M(...B),C_=M(...C),D_=M(...D),K_=M(...K),F_=M(...F);
+    let s='';
+    s+=svPolygon([A_,B_,C_,D_],{stroke:'#1a1a2e',w:2.4,fill:'rgba(45,112,179,0.05)'});
+    s+=svL(A_,K_,{stroke:'#d97706',w:2.3}); s+=svL(B_,K_,{stroke:'#0d9488',w:2.3});
+    s+=svL(K_,F_,{stroke:'#7c3aed',w:2,dash:'5 4'});
+    s+=svRight(K_,A_,B_,{d:11,stroke:'#16a34a',w:2}); // прямой угол AKB
+    s+=svRight(F_,A_,K_,{d:9,stroke:'#7c3aed',w:1.8});
+    s+=svArc(A_,B_,K_,16,{stroke:'#d97706',w:2}); s+=svArc(A_,K_,D_,20,{stroke:'#d97706',w:2});
+    s+=svArc(B_,A_,K_,16,{stroke:'#0d9488',w:2}); s+=svArc(B_,K_,C_,20,{stroke:'#0d9488',w:2});
+    s+=svTxt(mid(K_,F_),`${hv}`,{dx:12,dy:0,fs:13,col:'#6d28d9'});
+    s+=svTxt(mid(B_,C_),`${BCv}`,{dx:0,dy:-13,fs:13,col:'#1a1a2e'});
+    [[A_,'A',[-14,6]],[B_,'B',[-13,-8]],[C_,'C',[14,-8]],[D_,'D',[14,8]],[K_,'K',[13,10]],[F_,'F',[-13,6]]].forEach(([q,t,dxy])=>{ s+=svDot(q,{r:4}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:15}); });
+    return svgWrap(s,VW,VH);
+  },
+  refKey:`∠AKB = 90°; dist(K,AB)=dist(K,BC)=h ⇒ высота = 2h ⇒ S = 2·BC·h.`,
+  refWhy:`K равноудалена от AB, AD, BC (лежит на двух биссектрисах). Значит высота параллелограмма вдвое больше расстояния от K до AB.`,
+  notSheet:null
+});
+
+/* ---------- ТИП 3: трапеция, биссектриса угла D через середину AB ---------- */
+TYPES.push({
+  id:3, topic:'Трапеция', pill:'trap', tag:'биссектриса через середину',
+  title:'Трапеция: биссектриса угла D через середину боковой',
+  pool:[[8,10,2],[40,41,16],[16,34,2],[28,35,7],[10,26,1],[6,10,1],[20,29,4],[24,25,9],[4,5,1],[12,13,4]],
+  cond:p=>`Боковые стороны <b>AB</b> и <b>CD</b> трапеции <b>ABCD</b> равны соответственно <b>${p[0]}</b> и <b>${p[1]}</b>, а основание <b>BC = ${p[2]}</b>. Биссектриса угла <b>ADC</b> проходит через середину стороны <b>AB</b>. Найдите площадь трапеции.`,
+  build(p){
+    const [AB,CD,BC]=p; const AD=CD-BC;
+    const den=AD-BC; const uv=den; // u+v
+    const umv=(AB*AB-CD*CD)/den; // u-v
+    const u=(uv+umv)/2, v=(uv-umv)/2; const h=Math.sqrt(Math.max(0,AB*AB-u*u));
+    const S=(BC+AD)/2*h;
+    const steps=[
+      {h:`Продлим биссектрису <b>DM</b> (M — середина AB) до пересечения с прямой <b>BC</b> в точке <b>N</b>.`, why:`Продолжение биссектрисы к параллельному основанию помогает поймать равные углы.`},
+      {h:`Так как <b>BC ∥ AD</b>, накрест лежащие углы равны: <b>∠DNC = ∠NDA</b>. Но <b>∠NDA = ∠NDC</b> (DM — биссектриса). Значит <b>∠DNC = ∠NDC</b>, треугольник <b>NDC</b> равнобедренный: <b>CN = CD</b>.`, why:`Накрест лежащие углы при секущей DN и параллельных BC, AD; биссектриса делит ∠ADC пополам.`},
+      {h:`M — середина AB, ∠MBN = ∠MAD (накрест при AB), ∠BMN = ∠AMD (вертикальные) ⇒ <b>△MBN = △MAD</b> ⇒ <b>BN = AD</b>.`, why:`Второй признак равенства (по стороне MB = MA и двум прилежащим углам).`},
+      {h:`На прямой BC: <b>CN = CB + BN = ${BC} + AD</b>, и <b>CN = CD = ${CD}</b>. Значит <b>${BC} + AD = ${CD}</b>, откуда <b>AD = ${AD}</b>.`, why:null, ask:{label:'AD', v:AD, q:`На прямой BC получилось CN = CB + BN = BC + AD, и одновременно CN = CD. Приравняй и найди большее основание AD.`, tip:`Из BC + AD = CD следует AD = CD − BC.`}},
+      {h:`Найдём высоту <b>h</b>. Опустим высоты BH₁ и CH₂ на AD; пусть AH₁ = u, H₂D = v. Тогда <b>u + v = AD − BC = ${den}</b>, а из прямоугольных треугольников <b>AB² − CD² = u² − v² = (u−v)(u+v)</b> ⇒ <b>u − v = ${fmtNum(umv)}</b>. Отсюда u = ${fmtNum(u)}, v = ${fmtNum(v)}, <b>h = √(AB² − u²) = ${fmtNum(h)}</b>.`, why:`Высоты трапеции равны; разность квадратов боковых даёт разность проекций.`, ask:{label:'высота h', v:h, q:`Опусти высоты на AD; пусть u, v — проекции боковых сторон. Тогда u + v = AD − BC, а u − v = (AB² − CD²)/(AD − BC). Найди высоту h = √(AB² − u²). Можно округлить до сотых.`, tip:`Сначала u = ((u+v) + (u−v))/2, затем h = √(AB² − u²).`}},
+      {h:`Площадь: <b>S = ${frac(`BC + AD`,'2')} · h = ${frac(`${BC} + ${AD}`,'2')} · ${fmtNum(h)} = ${fmtNum(S)}</b>.`, why:`Площадь трапеции = полусумма оснований × высота.`, ask:{label:'S', v:S, q:`Площадь трапеции = полусумма оснований × высоту. Основания BC и AD известны, высоту ты нашёл. Посчитай площадь S.`, tip:`S = ((BC + AD)/2) · h.`}}
+    ];
+    return {ans:[{label:'S',v:S,exact:fmtNum(S)}], steps, geo:{AB,CD,BC,AD,u,v,h}};
+  },
+  draw(p){
+    const [AB,CD,BC]=p; const AD=CD-BC; const den=AD-BC;
+    const umv=(AB*AB-CD*CD)/den; const u=(den+umv)/2, v=(den-umv)/2; const h=Math.sqrt(Math.max(1,AB*AB-u*u));
+    const A=[0,0], D=[AD,0], B=[u,h], C=[u+BC,h];
+    const Mm=mid(A,B); const N=lineInter(D,Mm, B,C);
+    const pts=[A,B,C,D,Mm]; if(N) pts.push(N);
+    const M=fit(pts,VW,VH,PAD).m;
+    const A_=M(...A),B_=M(...B),C_=M(...C),D_=M(...D),Mp=M(...Mm), N_=N?M(...N):null;
+    let s='';
+    if(N_) s+=svL(B_,N_,{stroke:'#bcae95',w:1.6,dash:'4 4'}); // продолжение BC до N
+    s+=svPolygon([A_,B_,C_,D_],{stroke:'#1a1a2e',w:2.4,fill:'rgba(45,112,179,0.05)'});
+    if(N_){ s+=svL(D_,N_,{stroke:'#d97706',w:2.3}); s+=svDot(N_,{r:3.5,fill:'#d97706'}); s+=svTxt(N_,'N',{dx:-8,dy:-10,fs:14,col:'#b45309'}); }
+    else s+=svL(D_,Mp,{stroke:'#d97706',w:2.3});
+    s+=svArc(D_,C_,Mp,18,{stroke:'#d97706',w:2}); s+=svArc(D_,Mp,A_,23,{stroke:'#d97706',w:2});
+    s+=svTicks(A_,Mp,2,{stroke:'#2d70b3'}); s+=svTicks(Mp,B_,2,{stroke:'#2d70b3'}); // M середина
+    if(u<0.5){ s+=svRight(A_,D_,B_,{d:10,stroke:'#16a34a',w:1.8}); }
+    // подписи длин
+    s+=svTxt(mid(A_,B_),`${AB}`,{dx:-13,dy:0,fs:12,col:'#1e5a97'});
+    s+=svTxt(mid(C_,D_),`${CD}`,{dx:14,dy:0,fs:12,col:'#1e5a97'});
+    s+=svTxt(mid(B_,C_),`${BC}`,{dx:0,dy:-12,fs:12,col:'#1a1a2e'});
+    [[A_,'A',[-13,6]],[B_,'B',[-11,-9]],[C_,'C',[11,-9]],[D_,'D',[13,6]],[Mp,'M',[-13,2]]].forEach(([q,t,dxy])=>{ s+=svDot(q,{r:4}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:14}); });
+    return svgWrap(s,VW,VH);
+  },
+  refKey:`Продлить DM до N на BC: △MBN=△MAD ⇒ BN=AD; △NDC равнобедр. ⇒ CN=CD ⇒ AD = CD − BC.`,
+  refWhy:`Середина боковой стороны + биссектриса + параллельность оснований дают равные углы и равные отрезки, откуда AD = CD − BC; высоту находим из боковых сторон.`,
+  notSheet:null
+});
+
+/* ---------- ТИП 4: углы при основании (сумма 90°), отрезки середин ---------- */
+TYPES.push({
+  id:4, topic:'Трапеция', pill:'trap', tag:'средняя линия и связка середин',
+  title:'Трапеция: отрезки, соединяющие середины сторон',
+  pool:[[47,43,16,14],[77,13,11,10],[53,37,6,2],[7,83,14,11],[39,51,19,3],[86,4,4,1],[50,40,15,13],[39,51,19,17],[80,10,20,17],[18,72,15,4]],
+  cond:p=>`Углы при одном из оснований трапеции равны <b>${p[0]}°</b> и <b>${p[1]}°</b>, а отрезки, соединяющие середины противоположных сторон трапеции, равны <b>${p[2]}</b> и <b>${p[3]}</b>. Найдите основания трапеции.`,
+  build(p){
+    const [al,be,s1,s2]=p; const pmax=Math.max(s1,s2), pmin=Math.min(s1,s2);
+    const a=pmax+pmin, b=pmax-pmin;
+    const steps=[
+      {h:`Отрезок, соединяющий середины <b>боковых сторон</b>, — это <b>средняя линия</b>, равная полусумме оснований: <b>${frac('a + b','2')}</b>.`, why:`Средняя линия трапеции равна полусумме оснований и параллельна им.`},
+      {h:`Углы при основании: <b>${al}° + ${be}° = 90°</b>. Через середину меньшего основания проведём прямые, параллельные боковым сторонам — получим треугольник с углами ${al}° и ${be}°, то есть прямоугольный. Отрезок, соединяющий середины <b>оснований</b>, равен медиане к гипотенузе этого треугольника, то есть <b>${frac('a − b','2')}</b>.`, why:`Медиана прямоугольного треугольника, проведённая к гипотенузе, равна её половине; гипотенуза равна разности оснований.`},
+      {h:`Итак, два данных отрезка — это ${frac('a+b','2')} и ${frac('a−b','2')}. Бо́льший (<b>${pmax}</b>) — средняя линия, меньший (<b>${pmin}</b>) — связка оснований:<br><b>${frac('a+b','2')} = ${pmax}</b>, &nbsp; <b>${frac('a−b','2')} = ${pmin}</b>.`, why:null, ask:{label:'большее основание a', v:a, q:`Больший из двух данных отрезков — это средняя линия (a+b)/2, меньший — связка оснований (a−b)/2. Сложи эти два равенства почленно и найди большее основание a.`, tip:`Сложи оба равенства: дробная часть с b сократится, слева останется само a.`}},
+      {h:`Складывая и вычитая: <b>a = ${pmax} + ${pmin} = ${a}</b>, &nbsp; <b>b = ${pmax} − ${pmin} = ${b}</b>.`, why:null}
+    ];
+    return {ans:[{label:'a (большее)',v:a,exact:''+a},{label:'b (меньшее)',v:b,exact:''+b}], steps, geo:{al,be,a,b}, gcta:`Большее основание a ты нашёл (это сумма двух отрезков). Меньшее основание <b>b</b> — их <b>разность</b> (вычти из большего отрезка меньший). Впиши оба основания выше и нажми «Проверить».`};
+  },
+  draw(p){
+    const [al,be,s1,s2]=p; const pmax=Math.max(s1,s2),pmin=Math.min(s1,s2); const a=pmax+pmin, b=pmax-pmin;
+    const cA=RAD(al), cB=RAD(be);
+    const hTrue=(a-b)/((1/Math.tan(cA))+(1/Math.tan(cB))); // истинная высота
+    // прямая раскладка в экранных координатах: фиксированная высота (углы растянуты по вертикали
+    // ради читаемости), но горизонтальные пропорции честные — какое основание длиннее и где апекс
+    const x0=72, xR=488, yBot=298, yTop=118;
+    const sx=(xR-x0)/a;                          // px на единицу длины по горизонтали
+    const bx=hTrue*(1/Math.tan(cA))*sx;          // горизонтальный сдвиг B от A (честный)
+    const A=[x0,yBot], D=[xR,yBot];
+    const B=[x0+bx, yTop], C=[x0+bx+b*sx, yTop];
+    const mAB=mid(A,B), mCD=mid(C,D), mAD=mid(A,D), mBC=mid(B,C);
+    const angLab=(V,P1,P2,r,txt,col)=>{ const u1=norm(sub(P1,V)),u2=norm(sub(P2,V)); const bis=norm([u1[0]+u2[0],u1[1]+u2[1]]); return svTxt([V[0]+bis[0]*(r+14),V[1]+bis[1]*(r+14)],txt,{fs:12.5,col}); };
+    let s='';
+    s+=svPolygon([A,B,C,D],{stroke:'#1a1a2e',w:2.4,fill:'rgba(45,112,179,0.05)'});
+    s+=svL(mAB,mCD,{stroke:'#2d70b3',w:2.6}); // средняя линия (боковые)
+    s+=svL(mAD,mBC,{stroke:'#d97706',w:2.6}); // связка оснований
+    s+=svArc(A,D,B,26,{stroke:'#16a34a',w:2}); s+=svArc(D,C,A,26,{stroke:'#0d9488',w:2});
+    s+=angLab(A,D,B,26,`${al}°`,'#15803d'); s+=angLab(D,C,A,26,`${be}°`,'#0f766e');
+    s+=svTxt(lerp(mAB,mCD,0.3),`${pmax}`,{dx:0,dy:-11,fs:13,col:'#1e5a97'}); // на средней линии
+    s+=svTxt(lerp(mAD,mBC,0.52),`${pmin}`,{dx:14,dy:0,fs:13,col:'#b45309'}); // на связке
+    [[A,'A',[-13,9]],[B,'B',[-9,-12]],[C,'C',[10,-12]],[D,'D',[13,9]]].forEach(([q,t,dxy])=>{ s+=svDot(q,{r:4}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:14}); });
+    [mAB,mCD,mAD,mBC].forEach(q=>{ s+=svDot(q,{r:3.2,fill:'#7c3aed'}); });
+    s+=svTxt([VW/2,384],'рисунок схематичен: величины углов даны числами',{fs:11,col:'#8a8577',fw:600});
+    return svgWrap(s,VW,VH);
+  },
+  refKey:`Средняя линия = (a+b)/2; при α+β=90° связка середин оснований = (a−b)/2 ⇒ основания = p+q и p−q.`,
+  refWhy:`Сумма углов 90° делает вспомогательный треугольник прямоугольным; медиана к гипотенузе = половина разности оснований.`,
+  notSheet:`Факт «при сумме углов 90° отрезок между серединами оснований = (a−b)/2» на листе не приведён.`
+});
+
+/* ---------- ТИП 5: середина AD равноудалена от вершин ---------- */
+TYPES.push({
+  id:5, topic:'Четырёхугольник', pill:'quad', tag:'AD — диаметр описанной',
+  title:'Четырёхугольник: середина стороны равноудалена от вершин',
+  pool:[[12,115,95],[3,94,131],[6,124,116],[10,112,113],[11,126,99],[19,95,115],[14,110,100],[9,116,94],[18,132,93],[8,129,96]],
+  cond:p=>`Середина <b>M</b> стороны <b>AD</b> выпуклого четырёхугольника <b>ABCD</b> равноудалена от всех его вершин. Найдите <b>AD</b>, если <b>BC = ${p[0]}</b>, а углы <b>B</b> и <b>C</b> четырёхугольника равны соответственно <b>${p[1]}°</b> и <b>${p[2]}°</b>.`,
+  build(p){
+    const [BC,B,C]=p; const AD=BC/Math.abs(Math.cos(RAD(B+C)));
+    const A_ang=180-C, D_ang=180-B;
+    const steps=[
+      {h:`M равноудалена от A, B, C, D ⇒ M — центр описанной около ABCD окружности. Так как M — середина AD, то <b>AD — диаметр</b>, а <b>R = AD/2</b>.`, why:`Точка, равноудалённая от всех вершин, — центр описанной окружности; если она лежит на стороне и делит её пополам, эта сторона — диаметр.`},
+      {h:`Углы, опирающиеся на диаметр AD, прямые: <b>∠ABD = ∠ACD = 90°</b>.`, why:`Вписанный угол, опирающийся на диаметр, равен 90°.`},
+      {h:`Четырёхугольник вписанный ⇒ <b>∠A = 180° − ∠C = ${A_ang}°</b>, <b>∠D = 180° − ∠B = ${D_ang}°</b>. В прямоугольном △ACD: <b>∠CAD = 90° − ∠D</b>, поэтому <b>∠BAC = ∠A − ∠CAD = ∠A + ∠D − 90°</b>.`, why:`Сумма противоположных углов вписанного четырёхугольника = 180°.`},
+      {h:`Хорда BC = 2R·sin∠BAC = 2R·sin(∠A + ∠D − 90°) = 2R·|cos(∠A + ∠D)|. Так как ∠A + ∠D = 360° − ∠B − ∠C, получаем <b>BC = AD·|cos(∠B + ∠C)|</b>.`, why:`Длина хорды = 2R·sin(вписанного угла); и sin(x − 90°) = −cos x.`},
+      {h:`Отсюда <b>AD = ${frac('BC','|cos(∠B + ∠C)|')} = ${frac(''+BC, `|cos ${B+C}°|`)} = ${fmtNum(AD)}</b>.`, why:null, ask:{label:'AD', v:AD, q:`Хорда BC = AD·|cos(∠B + ∠C)|, значит AD = BC / |cos(∠B + ∠C)|. Углы B и C даны в условии. Посчитай AD — можно округлить до сотых.`, tip:`Найди cos(∠B + ∠C) = cos ${B+C}°, возьми модуль, затем AD = ${BC} / |cos ${B+C}°|.`}}
+    ];
+    let exact=fmtNum(AD);
+    // точная запись если cos «хороший»
+    const cc=Math.abs(Math.cos(RAD(B+C)));
+    return {ans:[{label:'AD',v:AD,exact:exact}], steps, geo:{BC,B,C,AD}};
+  },
+  draw(p){
+    const [BC,B,C]=p; const AD=BC/Math.abs(Math.cos(RAD(B+C)));
+    const R=AD/2; const O=[0,0], Ap=[-R,0], Dp=[R,0];
+    const Aang=RAD(180-C), Dang=RAD(180-B);
+    const Bp=rayCircle(Ap,[Math.cos(Aang),Math.sin(Aang)],O,R);
+    const Cp=rayCircle(Dp,[Math.cos(Math.PI-Dang),Math.sin(Dang)],O,R);
+    const pts=[Ap,Dp,O]; if(Bp)pts.push(Bp); if(Cp)pts.push(Cp);
+    const M=fit(pts,VW,VH,PAD).m;
+    const A_=M(...Ap),D_=M(...Dp),O_=M(...O),B_=Bp?M(...Bp):null,C_=Cp?M(...Cp):null;
+    let s='';
+    s+=svCirc(O_, len2(sub(M(...[R,0]),O_)),{stroke:'#c9c0ae',w:1.6});
+    if(B_&&C_){ s+=svPolygon([A_,B_,C_,D_],{stroke:'#1a1a2e',w:2.3,fill:'rgba(45,112,179,0.05)'});
+      s+=svL(A_,D_,{stroke:'#2d70b3',w:2.2,dash:'6 4'});
+      s+=svL(B_,D_,{stroke:'#bcae95',w:1.4,dash:'3 3'}); s+=svL(A_,C_,{stroke:'#bcae95',w:1.4,dash:'3 3'});
+      s+=svRight(B_,A_,D_,{d:10,stroke:'#16a34a',w:1.8}); s+=svRight(C_,A_,D_,{d:10,stroke:'#16a34a',w:1.8});
+      s+=svArc(B_,A_,C_,15,{stroke:'#d97706',w:2}); s+=svArc(C_,B_,D_,15,{stroke:'#0d9488',w:2});
+      s+=svTxt(B_,`${p[1]}°`,{dx:0,dy:16,fs:11,col:'#b45309'}); s+=svTxt(C_,`${p[2]}°`,{dx:0,dy:16,fs:11,col:'#0f766e'});
+      s+=svTxt(mid(B_,C_),`${BC}`,{dx:0,dy:-11,fs:12,col:'#1a1a2e'});
+      s+=svTxt(mid(A_,O_),`R`,{dx:0,dy:13,fs:12,col:'#1e5a97'});
+      [[A_,'A',[-13,4]],[B_,'B',[-6,-14]],[C_,'C',[8,-14]],[D_,'D',[13,4]],[O_,'M',[0,15]]].forEach(([q,t,dxy])=>{ s+=svDot(q,{r:4}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:14}); });
+    }
+    return svgWrap(s,VW,VH);
+  },
+  refKey:`M — центр описанной, AD — диаметр ⇒ ∠ABD=∠ACD=90°; хорда BC=AD·|cos(∠B+∠C)| ⇒ AD = BC/|cos(∠B+∠C)|.`,
+  refWhy:`Равноудалённость от вершин задаёт описанную окружность с диаметром AD; связь хорды BC с углами B, C даёт ответ.`,
+  notSheet:`Вписанный угол на диаметр = 90° есть на листе как частный случай; связка BC = AD·|cos(B+C)| — вывод, его надо уметь получать.`
+});
+
+/* ---------- ТИП 6: равнобедренная вписанная трапеция ---------- */
+TYPES.push({
+  id:6, topic:'Трапеция', pill:'trap', tag:'вписанная окружность + диагонали',
+  title:'Равнобедренная трапеция с вписанной окружностью',
+  pool:[[200,2000],[100,500],[180,1620],[40,80],[200,1500],[120,540],[220,2420],[20,20],[80,320],[160,1280]],
+  cond:p=>`В равнобедренную трапецию, периметр которой равен <b>${p[0]}</b>, а площадь равна <b>${p[1]}</b>, можно вписать окружность. Найдите расстояние от точки пересечения диагоналей трапеции до её меньшего основания.`,
+  build(p){
+    const [P,S]=p; const c=P/4, h=4*S/P; const amb=2*Math.sqrt(Math.max(0,c*c-h*h));
+    const apb=P/2; const b=(apb-amb)/2, a=(apb+amb)/2; const d=h*b/apb;
+    const steps=[
+      {h:`В трапецию вписана окружность ⇒ суммы противоположных сторон равны: <b>AB + CD = BC + AD</b>. Трапеция равнобедренная ⇒ боковые равны <b>c</b>. Значит <b>2c = a + b</b>, а периметр <b>P = (a+b) + 2c = 2(a+b)</b>, откуда <b>a + b = ${apb}</b>, <b>c = ${c}</b>.`, why:`У описанного четырёхугольника суммы длин противоположных сторон равны.`},
+      {h:`Высота равна диаметру вписанной окружности. Из площади <b>S = ${frac('a + b','2')}·h</b> находим <b>h = ${frac('2S','(a+b)/1')} = ${frac('4S','P')} = ${fmtNum(h)}</b>.`, why:`Площадь трапеции = полусумма оснований × высота.`, ask:{label:'высота h', v:h, q:`Высота трапеции равна диаметру вписанной окружности. Из S = ((a+b)/2)·h и a+b = P/2 следует h = 4S/P. Периметр и площадь даны в условии. Посчитай высоту h.`, tip:`h = 4·S / P — подставь площадь и периметр из условия.`}},
+      {h:`Боковая сторона c, её проекция на большое основание = ${frac('a − b','2')}, высота h: <b>c² = (${frac('a−b','2')})² + h²</b> ⇒ <b>a − b = 2√(c² − h²) = ${fmtNum(amb)}</b>. С a + b = ${apb} получаем <b>a = ${fmtNum(a)}</b>, <b>b = ${fmtNum(b)}</b>.`, why:null},
+      {h:`Диагонали пересекаются в точке O. Треугольники у меньшего и большего оснований подобны с коэффициентом <b>b : a</b>, поэтому высота h делится в отношении b : a, а расстояние от O до меньшего основания равно <b>${frac('h·b','a + b')} = ${frac(`${fmtNum(h)}·${fmtNum(b)}`, ''+apb)} = ${fmtNum(d)}</b>.`, why:`Диагонали трапеции делятся точкой пересечения в отношении оснований; отсюда деление высоты.`, ask:{label:'расстояние', v:d, q:`Диагонали делят высоту в отношении оснований b : a, поэтому расстояние от точки пересечения до меньшего основания равно h·b/(a+b). Величины h, a, b уже найдены (a + b = ${apb}). Посчитай это расстояние.`, tip:`d = h·b / (a + b), где a + b = ${apb}.`}}
+    ];
+    return {ans:[{label:'d',v:d,exact:fmtNum(d)}], steps, geo:{a,b,h}};
+  },
+  draw(p){
+    const [P,S]=p; const c=P/4,h=4*S/P; const amb=2*Math.sqrt(Math.max(1,c*c-h*h)); const apb=P/2; const b=(apb-amb)/2,a=(apb+amb)/2;
+    const A=[0,0],D=[a,0],B=[(a-b)/2,h],C=[(a+b)/2,h];
+    const O=lineInter(A,C,B,D); const r=h/2; const cen=[a/2,r];
+    const foot=[O[0],h]; // проекция O на меньшее основание (y=h)
+    const M=fit([A,B,C,D],VW,VH,PAD).m;
+    const A_=M(...A),B_=M(...B),C_=M(...C),D_=M(...D),O_=M(...O),cen_=M(...cen),foot_=M(...foot);
+    const rpx=Math.abs(M(a/2, r+r)[1]-M(a/2, r)[1]);
+    let s='';
+    s+=svPolygon([A_,B_,C_,D_],{stroke:'#1a1a2e',w:2.4,fill:'rgba(45,112,179,0.05)'});
+    s+=svCirc(cen_, rpx,{stroke:'#0d9488',w:1.8,dash:'5 4'});
+    s+=svL(A_,C_,{stroke:'#2d70b3',w:2}); s+=svL(B_,D_,{stroke:'#2d70b3',w:2});
+    s+=svL(O_,foot_,{stroke:'#7c3aed',w:2,dash:'4 3'});
+    s+=svRight(foot_,O_,B_,{d:8,stroke:'#7c3aed',w:1.6});
+    s+=svTicks(A_,B_,1,{stroke:'#1a1a2e'}); s+=svTicks(C_,D_,1,{stroke:'#1a1a2e'});
+    s+=svTxt(mid(O_,foot_),'?',{dx:11,dy:0,fs:13,col:'#6d28d9'});
+    s+=svTxt(mid(B_,C_),`b`,{dx:0,dy:-12,fs:12,col:'#1a1a2e'}); s+=svTxt(mid(A_,D_),`a`,{dx:0,dy:14,fs:12,col:'#1a1a2e'});
+    [[A_,'A',[-13,6]],[B_,'B',[-11,-9]],[C_,'C',[11,-9]],[D_,'D',[13,6]],[O_,'O',[13,4]]].forEach(([q,t,dxy])=>{ s+=svDot(q,{r:4}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:14}); });
+    return svgWrap(s,VW,VH);
+  },
+  refKey:`Вписана окружность ⇒ a+b=2c=P/2; h=4S/P; a−b=2√(c²−h²). Диагонали делят высоту в отношении оснований ⇒ d = h·b/(a+b).`,
+  refWhy:`Касание задаёт равенство сумм сторон и h = 2r; подобие треугольников на диагоналях даёт деление высоты в отношении b : a.`,
+  notSheet:`Свойство описанного четырёхугольника (равенство сумм сторон) и деление диагоналей в отношении оснований на листе не приведены.`
+});
+/* ---------- ТИП 7: прямоуг. трапеция, окружность через C,D касается AB ---------- */
+TYPES.push({
+  id:7, topic:'Трапеция', pill:'trap', tag:'касательная = среднее геометрическое',
+  title:'Окружность, касающаяся боковой стороны трапеции',
+  pool:[[8,4],[6,5],[8,7],[20,10],[4,2],[12,9],[12,10],[20,15],[14,12],[14,7]],
+  cond:p=>`В трапеции <b>ABCD</b> боковая сторона <b>AB</b> перпендикулярна основанию <b>BC</b>. Окружность проходит через точки <b>C</b> и <b>D</b> и касается прямой <b>AB</b> в точке <b>E</b>. Найдите расстояние от точки E до прямой <b>CD</b>, если <b>AD = ${p[0]}</b>, <b>BC = ${p[1]}</b>.`,
+  build(p){
+    const [AD,BC]=p; const EK=Math.sqrt(AD*BC);
+    const steps=[
+      {h:`Так как <b>AB ⟂ BC</b> и <b>AB ⟂ AD</b> (AD ∥ BC), расстояния от концов хорды CD до касательной AB равны сторонам-основаниям: от C это <b>CB = BC = ${BC}</b>, от D это <b>DA = AD = ${AD}</b>.`, why:`AB перпендикулярна обоим основаниям, поэтому перпендикуляры из C и D на прямую AB — это сами отрезки CB и DA.`},
+      {h:`Опустим <b>EK ⟂ CD</b>. По свойству касательной: расстояние от точки касания до хорды равно среднему геометрическому расстояний концов хорды до касательной:<br><b>EK² = CB · DA = BC · AD</b>.`, why:`Угол между касательной EB и хордой EC равен вписанному ∠EDC (в другом сегменте); из подобия возникающих прямоугольных треугольников EK² = CB·DA.`, ask:{label:'EK² = BC·AD', v:BC*AD, q:`Расстояния концов хорды CD до касательной AB — это BC и AD (AB перпендикулярна обоим основаниям). По лемме EK² = BC·AD. Посчитай EK² — это целое число.`, tip:`Перемножь два основания: EK² = ${BC} · ${AD}.`}},
+      {h:`<b>EK = √(BC · AD) = √(${BC}·${AD}) = √${BC*AD} = ${radScaleStr(1,BC*AD)}</b>.`, why:null, ask:{label:'EK', v:EK, q:`Теперь EK = √(EK²). Извлеки корень из найденного на прошлом шаге EK² — это и есть ответ (можно округлить до сотых).`, tip:`EK = √${BC*AD}.`}}
+    ];
+    return {ans:[{label:'EK',v:EK,exact:radScaleStr(1,BC*AD)}], steps, geo:{AD,BC}};
+  },
+  draw(p){
+    const [AD,BC]=p;
+    // подберём высоту H, чтобы E попала на отрезок AB
+    function circAndE(H){
+      const B=[0,0],C=[BC,0],A=[0,H],D=[AD,H];
+      // окружность через C,D, касается прямой x=0: центр (R,cy), R радиус
+      // (BC−R)²+cy²=R² ; (AD−R)²+(H−cy)²=R²
+      // из 1: cy²=R²−(BC−R)²=2R·BC−BC² ; из 2: (H−cy)²=2R·AD−AD²
+      // разложим: подберём R численно
+      let best=null;
+      for(let R=Math.min(AD,BC)*0.5; R<Math.max(AD,BC)*4; R+=0.02){
+        const c2=2*R*BC-BC*BC; if(c2<0) continue; const cy=Math.sqrt(c2);
+        const lhs=(H-cy)*(H-cy), rhs=2*R*AD-AD*AD;
+        if(rhs<0) continue;
+        const diff=lhs-rhs;
+        if(best===null||Math.abs(diff)<Math.abs(best.diff)) best={R,cy,diff};
+      }
+      return best;
+    }
+    let H=Math.max(AD,BC)*0.85+2, sol=circAndE(H), tries=0;
+    while(sol && (sol.cy<2||sol.cy>H-2) && tries<40){ H+=Math.max(AD,BC)*0.12; sol=circAndE(H); tries++; }
+    const B=[0,0],C=[BC,0],A=[0,H],D=[AD,H];
+    const cen=[sol.R,sol.cy], E=[0,sol.cy];
+    // K — основание перпендикуляра из E на CD
+    const cd=norm(sub(D,C)); const t=(E[0]-C[0])*cd[0]+(E[1]-C[1])*cd[1]; const K=[C[0]+cd[0]*t,C[1]+cd[1]*t];
+    const M=fit([A,B,C,D,E,K,add(cen,[sol.R,0]),sub(cen,[sol.R,0]),add(cen,[0,sol.R]),sub(cen,[0,sol.R])],VW,VH,PAD).m;
+    const A_=M(...A),B_=M(...B),C_=M(...C),D_=M(...D),E_=M(...E),K_=M(...K),cen_=M(...cen);
+    const rpx=len2(sub(M(...add(cen,[sol.R,0])),cen_));
+    let s='';
+    s+=svCirc(cen_,rpx,{stroke:'#0d9488',w:1.7,dash:'5 4'});
+    s+=svPolygon([A_,B_,C_,D_],{stroke:'#1a1a2e',w:2.4,fill:'rgba(45,112,179,0.05)'});
+    s+=svL(E_,K_,{stroke:'#7c3aed',w:2.2});
+    s+=svRight(B_,C_,A_,{d:10,stroke:'#16a34a',w:1.8}); s+=svRight(K_,E_,C_,{d:8,stroke:'#7c3aed',w:1.6});
+    s+=svTxt(mid(E_,K_),'?',{dx:11,dy:-2,fs:13,col:'#6d28d9'});
+    s+=svTxt(mid(B_,C_),`${BC}`,{dx:0,dy:13,fs:12,col:'#1a1a2e'});
+    s+=svTxt(mid(A_,D_),`${AD}`,{dx:0,dy:-13,fs:12,col:'#1a1a2e'});
+    [[A_,'A',[-13,-4]],[B_,'B',[-13,8]],[C_,'C',[10,12]],[D_,'D',[13,-6]],[E_,'E',[-13,2]],[K_,'K',[10,6]]].forEach(([q,t,dxy])=>{ s+=svDot(q,{r:4}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:14}); });
+    return svgWrap(s,VW,VH);
+  },
+  refKey:`Расстояние от точки касания до хорды = √(расст. концов хорды до касательной) ⇒ EK = √(BC·AD).`,
+  refWhy:`Перпендикуляры из C и D на AB — это BC и AD (AB ⟂ основаниям). Лемма о касательной как среднем геометрическом даёт ответ.`,
+  notSheet:`Лемма «расстояние от точки касания до хорды — среднее геометрическое расстояний её концов до касательной» на листе отсутствует.`
+});
+
+/* ---------- ТИП 8: BD⟂AO, O центр описанной ---------- */
+TYPES.push({
+  id:8, topic:'Треугольник', pill:'tri', tag:'BD ∥ касательной в A',
+  title:'Перпендикуляр к радиусу описанной окружности',
+  pool:[[15,25],[40,64],[18,36],[36,54],[84,98],[60,80],[14,98],[30,100],[28,56],[12,72]],
+  cond:p=>`В треугольнике <b>ABC</b> известны длины сторон <b>AB = ${p[0]}</b>, <b>AC = ${p[1]}</b>, точка <b>O</b> — центр окружности, описанной около треугольника ABC. Прямая <b>BD</b>, перпендикулярная прямой <b>AO</b>, пересекает сторону <b>AC</b> в точке <b>D</b>. Найдите <b>CD</b>.`,
+  build(p){
+    const [AB,AC]=p; const AD=AB*AB/AC; const CD=AC-AD;
+    const steps=[
+      {h:`Касательная к описанной окружности в точке <b>A</b> перпендикулярна радиусу <b>AO</b>. По условию <b>BD ⟂ AO</b>, значит <b>BD ∥ (касательной в A)</b>.`, why:`Радиус, проведённый в точку касания, перпендикулярен касательной.`},
+      {h:`Угол между касательной в A и хордой <b>AB</b> равен вписанному <b>∠ACB</b> (угол в другом сегменте). Так как BD параллельна касательной, <b>∠ABD = ∠ACB</b>. Кроме того, угол <b>∠A</b> общий, поэтому <b>△ABD ∼ △ACB</b>.`, why:`Угол между касательной и хордой равен вписанному углу, опирающемуся на эту хорду; далее — признак подобия по двум углам.`},
+      {h:`Из подобия <b>${frac('AB','AC')} = ${frac('AD','AB')}</b> ⇒ <b>AD = ${frac('AB²','AC')} = ${frac(''+AB*AB, ''+AC)} = ${fmtNum(AD)}</b>.`, why:`Соответственные стороны подобных треугольников пропорциональны.`, ask:{label:'AD', v:AD, q:`Из подобия △ABD ∼ △ACB следует AB/AC = AD/AB, то есть AD = AB²/AC. Стороны AB и AC даны в условии. Посчитай AD (можно округлить до сотых).`, tip:`AD = AB² / AC = ${AB*AB} / ${AC}.`}},
+      {h:`<b>CD = AC − AD = ${AC} − ${fmtNum(AD)} = ${frac('AC² − AB²','AC')} = ${fmtNum(CD)}</b>.`, why:null, ask:{label:'CD', v:CD, q:`Точка D лежит на стороне AC, поэтому CD = AC − AD. Величину AD ты нашёл на прошлом шаге. Посчитай CD.`, tip:`CD = AC − AD = ${AC} − AD.`}}
+    ];
+    return {ans:[{label:'CD',v:CD,exact:fmtNum(CD)}], steps, geo:{AB,AC}};
+  },
+  draw(p){
+    const [AB,AC]=p;
+    // выберем BC для наглядного треугольника (в допустимых пределах, острый если можно)
+    let BC=Math.round((AC*0.82)); const lo=Math.abs(AC-AB)+1, hi=AC+AB-1;
+    BC=Math.max(lo, Math.min(hi, BC));
+    // если тупой у A мешает — оставим как есть, D всё равно на AC
+    const {A,B,C}=triFromSides(BC,AC,AB); // a=BC,b=AC,c=AB
+    // центр описанной
+    function circum(A,B,C){ const ax=A[0],ay=A[1],bx=B[0],by=B[1],cx=C[0],cy=C[1];
+      const d=2*(ax*(by-cy)+bx*(cy-ay)+cx*(ay-by));
+      const ux=((ax*ax+ay*ay)*(by-cy)+(bx*bx+by*by)*(cy-ay)+(cx*cx+cy*cy)*(ay-by))/d;
+      const uy=((ax*ax+ay*ay)*(cx-bx)+(bx*bx+by*by)*(ax-cx)+(cx*cx+cy*cy)*(bx-ax))/d;
+      return [ux,uy]; }
+    const O=circum(A,B,C);
+    const AD=AB*AB/AC; const D=lerp(A,C,AD/AC);
+    const M=fit([A,B,C,O,D],VW,VH,PAD).m;
+    const A_=M(...A),B_=M(...B),C_=M(...C),O_=M(...O),D_=M(...D);
+    // радиус описанной в px
+    const Rpx=len2(sub(A_,O_));
+    let s='';
+    s+=svCirc(O_,Rpx,{stroke:'#c9c0ae',w:1.5});
+    s+=svPolygon([A_,B_,C_],{stroke:'#1a1a2e',w:2.4,fill:'rgba(45,112,179,0.05)'});
+    s+=svL(A_,O_,{stroke:'#2d70b3',w:2,dash:'6 4'});
+    s+=svL(B_,D_,{stroke:'#d97706',w:2.3});
+    // прямой угол между BD и AO в точке пересечения
+    const F=lineInter(A,O,B,D); if(F){ const F_=M(...F); s+=svRight(F_,A_,B_,{d:9,stroke:'#16a34a',w:1.8}); s+=svDot(F_,{r:2.6,fill:'#16a34a'}); }
+    s+=svTxt(mid(A_,B_),`${AB}`,{dx:-12,dy:-4,fs:12,col:'#1e5a97'});
+    s+=svTxt(mid(A_,C_),`${AC}`,{dx:0,dy:14,fs:12,col:'#1a1a2e'});
+    [[A_,'A',[-14,2]],[B_,'B',[-6,-15]],[C_,'C',[14,4]],[O_,'O',[10,-10]],[D_,'D',[2,14]]].forEach(([q,t,dxy])=>{ s+=svDot(q,{r:4}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:14}); });
+    return svgWrap(s,VW,VH);
+  },
+  refKey:`BD ⟂ AO ⇒ BD ∥ касательной в A ⇒ ∠ABD=∠ACB ⇒ △ABD∼△ACB ⇒ AD=AB²/AC, CD=(AC²−AB²)/AC.`,
+  refWhy:`Перпендикуляр к радиусу параллелен касательной; угол между касательной и хордой = вписанному, что и даёт подобие.`,
+  notSheet:`Свойство «угол между касательной и хордой равен вписанному» на листе не приведено.`
+});
+
+/* ---------- ТИП 9: полуокружность на BC ∩ высота, ортоцентр ---------- */
+TYPES.push({
+  id:9, topic:'Треугольник', pill:'tri', tag:'MD²=BD·DC=DH·DA',
+  title:'Полуокружность на стороне и ортоцентр',
+  pool:[[9,6],[16,4],[90,69],[49,42],[15,12],[45,15],[9,3],[80,64],[72,18],[81,9]],
+  cond:p=>`На стороне <b>BC</b> остроугольного треугольника <b>ABC</b> как на диаметре построена полуокружность, пересекающая высоту <b>AD</b> в точке <b>M</b>, <b>AD = ${p[0]}</b>, <b>MD = ${p[1]}</b>, <b>H</b> — точка пересечения высот треугольника ABC. Найдите <b>AH</b>.`,
+  build(p){
+    const [AD,MD]=p; const DH=MD*MD/AD; const AH=AD-DH;
+    const steps=[
+      {h:`Точка M лежит на полуокружности с диаметром BC ⇒ <b>∠BMC = 90°</b>. Значит MD — высота прямоугольного треугольника BMC, опущенная на гипотенузу BC, поэтому <b>MD² = BD · DC</b>.`, why:`Вписанный угол, опирающийся на диаметр, прямой; высота из прямого угла есть среднее геометрическое проекций катетов на гипотенузу.`},
+      {h:`H — ортоцентр, лежит на высоте AD. Рассмотрим прямоугольные треугольники <b>△BDH</b> и <b>△ADC</b> (прямые углы при D). У них <b>∠HBD = ∠CAD</b> (углы со взаимно перпендикулярными сторонами) ⇒ <b>△BDH ∼ △ADC</b>, откуда <b>DH · AD = BD · DC</b>.`, why:`BH ⟂ AC и AD ⟂ BC, поэтому ∠HBD = ∠DAC; подобие даёт DH·AD = BD·DC.`},
+      {h:`Значит <b>DH · AD = MD²</b> ⇒ <b>DH = ${frac('MD²','AD')} = ${frac(''+MD*MD, ''+AD)} = ${fmtNum(DH)}</b>.`, why:null, ask:{label:'DH', v:DH, q:`Из MD² = BD·DC и DH·AD = BD·DC следует DH·AD = MD², то есть DH = MD²/AD. Величины AD и MD даны в условии. Посчитай DH (можно округлить до сотых).`, tip:`DH = MD² / AD = ${MD*MD} / ${AD}.`}},
+      {h:`<b>AH = AD − DH = ${AD} − ${fmtNum(DH)} = ${frac('AD² − MD²','AD')} = ${fmtNum(AH)}</b>.`, why:null, ask:{label:'AH', v:AH, q:`Точка H лежит на высоте AD, поэтому AH = AD − DH. Величину DH ты нашёл на прошлом шаге. Посчитай AH.`, tip:`AH = AD − DH = ${AD} − DH.`}}
+    ];
+    return {ans:[{label:'AH',v:AH,exact:fmtNum(AH)}], steps, geo:{AD,MD}};
+  },
+  draw(p){
+    const [AD,MD]=p; const DH=MD*MD/AD;
+    // BD·DC=MD², выберем BD,DC несимметрично
+    const BD=MD*1.6, DC=MD*MD/BD; // произведение = MD²
+    const D=[0,0], A=[0,AD], B=[-BD,0], C=[DC,0], Mpt=[0,MD], H=[0,DH];
+    const cen=mid(B,C); const R=len2(sub(B,C))/2;
+    const M=fit([A,B,C,Mpt,H,add(cen,[0,R]),[cen[0]-R,0],[cen[0]+R,0]],VW,VH,PAD).m;
+    const A_=M(...A),B_=M(...B),C_=M(...C),D_=M(...D),Mp=M(...Mpt),H_=M(...H),cen_=M(...cen);
+    const Rpx=len2(sub(M(...add(cen,[R,0])),cen_));
+    // полуокружность (верхняя половина) как дуга-полилиния
+    let arcpts=[]; for(let a=0;a<=Math.PI+0.001;a+=Math.PI/40){ const x=cen[0]+R*Math.cos(a), y=cen[1]+R*Math.sin(a); arcpts.push(M(x,y)); }
+    let s='';
+    s+=svPoly(arcpts,{stroke:'#0d9488',w:1.7});
+    s+=svPolygon([A_,B_,C_],{stroke:'#1a1a2e',w:2.4,fill:'rgba(45,112,179,0.05)'});
+    s+=svL(A_,D_,{stroke:'#2d70b3',w:2.2}); // высота AD
+    s+=svRight(D_,A_,C_,{d:10,stroke:'#16a34a',w:1.8});
+    // высоты из B и C через H (пунктир)
+    s+=svL(B_,M(...lerp(B,lineInter(B,H,A,C)||C,1.15)),{stroke:'#bcae95',w:1.3,dash:'3 3'});
+    s+=svL(C_,M(...lerp(C,lineInter(C,H,A,B)||A,1.15)),{stroke:'#bcae95',w:1.3,dash:'3 3'});
+    s+=svTxt(mid(A_,H_),`AH`,{dx:12,dy:0,fs:12,col:'#1e5a97'});
+    s+=svTxt(mid(Mp,D_),`${MD}`,{dx:12,dy:0,fs:12,col:'#0f766e'});
+    [[A_,'A',[0,-15]],[B_,'B',[-13,8]],[C_,'C',[13,8]],[D_,'D',[0,15]],[Mp,'M',[13,0]],[H_,'H',[13,2]]].forEach(([q,t,dxy])=>{ s+=svDot(q,{r:4}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:14}); });
+    return svgWrap(s,VW,VH);
+  },
+  refKey:`∠BMC=90° ⇒ MD²=BD·DC; △BDH∼△ADC ⇒ DH·AD=BD·DC ⇒ DH=MD²/AD, AH=(AD²−MD²)/AD.`,
+  refWhy:`Полуокружность даёт прямой угол и высоту-среднее-геометрическое; подобие с ортоцентром переносит произведение на высоту AD.`,
+  notSheet:`Соотношение DH·DA = DB·DC для ортоцентра и свойство высоты прямоугольного треугольника на листе не приведены.`
+});
+
+/* ---------- ТИП 10: две касающиеся окружности, общие касательные ---------- */
+TYPES.push({
+  id:10, topic:'Окружность', pill:'circ', tag:'внешние касательные',
+  title:'Две касающиеся окружности и общие касательные',
+  pool:[[45,90],[33,99],[45,55],[42,84],[36,45],[12,20],[4,60],[44,77],[25,100],[22,99]],
+  cond:p=>`Окружности радиусов <b>${p[0]}</b> и <b>${p[1]}</b> касаются внешним образом. Точки <b>A</b> и <b>B</b> лежат на первой окружности, точки <b>C</b> и <b>D</b> — на второй. При этом <b>AC</b> и <b>BD</b> — общие касательные окружностей. Найдите расстояние между прямыми <b>AB</b> и <b>CD</b>.`,
+  build(p){
+    const [r1,r2]=p; const d=r1+r2; const dist=4*r1*r2/d;
+    const steps=[
+      {h:`Пусть O₁, O₂ — центры (радиусы r₁ = ${r1}, r₂ = ${r2}), точка касания T, <b>d = O₁O₂ = r₁ + r₂ = ${d}</b>. Общие касательные AC и BD симметричны относительно линии центров, поэтому A, B (и C, D) симметричны, а хорды <b>AB ⟂ O₁O₂</b> и <b>CD ⟂ O₁O₂</b> ⇒ <b>AB ∥ CD</b>.`, why:`Конфигурация симметрична относительно прямой центров, значит хорды перпендикулярны ей и параллельны между собой.`, ask:{label:'d = O₁O₂', v:d, q:`Окружности касаются внешним образом, поэтому расстояние между центрами d = O₁O₂ равно сумме радиусов. Посчитай d.`, tip:`d = r₁ + r₂ = ${r1} + ${r2}.`}},
+      {h:`Проекции точек касания на линию центров дают положения хорд. Для внешней касательной перпендикуляры O₁A и O₂C параллельны; из подобия проекция даёт расстояние между хордами <b>${frac('d² − (r₁ − r₂)²','d')}</b>.`, why:`O₁A ∥ O₂C (обе ⟂ касательной); проекции точек касания на O₁O₂ отстоят на (d² − (r₁−r₂)²)/d.`},
+      {h:`Так как d = r₁ + r₂: <b>d² − (r₁ − r₂)² = (r₁+r₂)² − (r₁−r₂)² = 4r₁r₂</b>. Значит расстояние <b>= ${frac('4r₁r₂','r₁ + r₂')} = ${frac(''+4*r1*r2, ''+d)} = ${fmtNum(dist)}</b>.`, why:null, ask:{label:'расстояние', v:dist, q:`Расстояние между хордами = (d² − (r₁ − r₂)²)/d, а при d = r₁ + r₂ это упрощается до 4·r₁·r₂/(r₁ + r₂). Радиусы даны, d ты нашёл. Посчитай расстояние (можно округлить до сотых).`, tip:`расстояние = 4·r₁·r₂ / (r₁ + r₂) = ${4*r1*r2} / ${d}.`}}
+    ];
+    return {ans:[{label:'расстояние',v:dist,exact:fmtNum(dist)}], steps, geo:{r1,r2}};
+  },
+  draw(p){
+    const [r1,r2]=p; const d=r1+r2; const O1=[0,0], O2=[d,0], T=[r1,0];
+    const nx=(r1-r2)/d, ny=Math.sqrt(Math.max(0,1-nx*nx));
+    const A=[r1*nx, r1*ny], B=[r1*nx, -r1*ny];
+    const C=[d+r2*nx, r2*ny], D=[d+r2*nx, -r2*ny];
+    const M=fit([O1,O2,[0,r1],[0,-r1],[d,r2],[d,-r2],A,B,C,D],VW,VH,PAD).m;
+    const O1_=M(...O1),O2_=M(...O2),T_=M(...T),A_=M(...A),B_=M(...B),C_=M(...C),D_=M(...D);
+    const r1p=len2(sub(M(r1,0),O1_)), r2p=len2(sub(M(d+r2,0),O2_));
+    let s='';
+    s+=svCirc(O1_,r1p,{stroke:'#2d70b3',w:1.8}); s+=svCirc(O2_,r2p,{stroke:'#0d9488',w:1.8});
+    s+=svL(O1_,O2_,{stroke:'#bcae95',w:1.4,dash:'4 4'});
+    s+=svL(A_,C_,{stroke:'#1a1a2e',w:1.8}); s+=svL(B_,D_,{stroke:'#1a1a2e',w:1.8}); // касательные
+    s+=svL(A_,B_,{stroke:'#d97706',w:2.4}); s+=svL(C_,D_,{stroke:'#d97706',w:2.4}); // хорды AB, CD
+    // отметить расстояние между хордами
+    const y0=(A_[1]+B_[1])/2; s+=svL([A_[0],y0],[C_[0],y0],{stroke:'#7c3aed',w:1.6,dash:'3 3'});
+    s+=svTxt([(A_[0]+C_[0])/2,y0],'?',{dx:0,dy:-9,fs:13,col:'#6d28d9'});
+    s+=svDot(T_,{r:3.5,fill:'#dc2626'});
+    [[A_,'A',[-6,-12]],[B_,'B',[-6,13]],[C_,'C',[9,-11]],[D_,'D',[9,13]],[O1_,'O₁',[0,15]],[O2_,'O₂',[0,15]],[T_,'T',[4,-11]]].forEach(([q,t,dxy])=>{ s+=svDot(q,{r:3.5}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:13}); });
+    return svgWrap(s,VW,VH);
+  },
+  refKey:`Хорды AB, CD ⟂ линии центров; расстояние = (d²−(r₁−r₂)²)/d = 4r₁r₂/(r₁+r₂).`,
+  refWhy:`Симметрия относительно линии центров + проекции точек касания дают положения параллельных хорд.`,
+  notSheet:null
+});
+
+/* ---------- ТИП 11: вписанный четырёхугольник, угол между диагоналями ---------- */
+TYPES.push({
+  id:11, topic:'Четырёхугольник', pill:'quad', tag:'угол хорд = ½ суммы дуг',
+  title:'Вписанный четырёхугольник и угол между диагоналями',
+  pool:[[40,10],[5,17],[43,4],[25,16],[39,12],[12,30],[44,8],[11,41],[39,6],[34,22]],
+  cond:p=>`Четырёхугольник <b>ABCD</b> со сторонами <b>AB = ${p[0]}</b> и <b>CD = ${p[1]}</b> вписан в окружность. Диагонали <b>AC</b> и <b>BD</b> пересекаются в точке <b>K</b>, причём <b>∠AKB = 60°</b>. Найдите радиус окружности, описанной около этого четырёхугольника.`,
+  build(p){
+    const [AB,CD]=p; const R=Math.sqrt((AB*AB+CD*CD+AB*CD)/3);
+    const under=AB*AB+CD*CD+AB*CD;
+    const steps=[
+      {h:`Угол между хордами AC и BD равен полусумме дуг, на которые опираются: <b>∠AKB = ½(⌣AB + ⌣CD)</b>. Значит <b>⌣AB + ⌣CD = 120°</b>.`, why:`Угол между двумя пересекающимися хордами равен полусумме заключённых между ними дуг.`},
+      {h:`Пусть ⌣AB = 2α, ⌣CD = 2γ, тогда <b>α + γ = 60°</b>. Хорда равна 2R·sin(половины дуги): <b>AB = 2R·sinα</b>, <b>CD = 2R·sinγ</b>.`, why:`Длина хорды окружности радиуса R равна 2R·sin(половины стягиваемой дуги).`},
+      {h:`Из <b>cos(α + γ) = cos60° = ½</b> и <b>cosα·cosγ − sinα·sinγ = ½</b>, подставив sinα = ${frac('AB','2R')}, sinγ = ${frac('CD','2R')}, после упрощения:<br><b>AB² + CD² + AB·CD = 3R²</b>.`, why:`Возводя равенство для косинуса в квадрат и заменяя cos² = 1 − sin², радикалы сокращаются.`, ask:{label:'AB² + CD² + AB·CD', v:under, q:`После упрощения вышло AB² + CD² + AB·CD = 3R². Стороны AB и CD даны в условии. Посчитай левую часть — величину AB² + CD² + AB·CD (целое число).`, tip:`${AB}² + ${CD}² + ${AB}·${CD}.`}},
+      {h:`<b>R = √${frac('AB² + CD² + AB·CD','3')} = √${frac(''+under,'3')} = √${under/3} = ${radScaleStr(1,under/3)}</b>.`, why:null, ask:{label:'R', v:R, q:`Из 3R² = (найденная величина) вырази радиус: R = √((AB² + CD² + AB·CD)/3). Посчитай R (можно округлить до сотых).`, tip:`R = √( ${under} / 3 ) = √${under/3}.`}}
+    ];
+    return {ans:[{label:'R',v:R,exact:radScaleStr(1,under/3)}], steps, geo:{AB,CD,R}};
+  },
+  draw(p){
+    const [AB,CD]=p; const R=Math.sqrt((AB*AB+CD*CD+AB*CD)/3);
+    const al=Math.asin(Math.min(1,AB/(2*R))), ga=Math.asin(Math.min(1,CD/(2*R)));
+    const O=[0,0];
+    const angA=Math.PI/2+al, angB=Math.PI/2-al;
+    const angC=Math.PI/2-al-RAD(120), angD=angC-2*ga;
+    const P=(t)=>[R*Math.cos(t),R*Math.sin(t)];
+    const A=P(angA),B=P(angB),C=P(angC),D=P(angD);
+    const K=lineInter(A,C,B,D);
+    const M=fit([A,B,C,D,[R,0],[-R,0],[0,R],[0,-R]],VW,VH,PAD).m;
+    const A_=M(...A),B_=M(...B),C_=M(...C),D_=M(...D),O_=M(...O),K_=K?M(...K):O_;
+    const Rpx=len2(sub(M(R,0),O_));
+    let s='';
+    s+=svCirc(O_,Rpx,{stroke:'#c9c0ae',w:1.6});
+    s+=svPolygon([A_,B_,C_,D_],{stroke:'#1a1a2e',w:2.2,fill:'rgba(45,112,179,0.05)'});
+    s+=svL(A_,C_,{stroke:'#2d70b3',w:1.8}); s+=svL(B_,D_,{stroke:'#0d9488',w:1.8});
+    if(K){ s+=svArc(K_,A_,B_,16,{stroke:'#d97706',w:2.2}); s+=svTxt(K_,'60°',{dx:0,dy:-15,fs:11,col:'#b45309'}); s+=svDot(K_,{r:3,fill:'#d97706'}); }
+    s+=svTxt(mid(A_,B_),`${AB}`,{dx:-6,dy:-8,fs:12,col:'#1e5a97'});
+    s+=svTxt(mid(C_,D_),`${CD}`,{dx:8,dy:6,fs:12,col:'#0f766e'});
+    [[A_,'A',[-13,-4]],[B_,'B',[8,-12]],[C_,'C',[13,6]],[D_,'D',[-13,8]],[K_,'K',[10,10]]].forEach(([q,t,dxy])=>{ s+=svDot(q,{r:3.6}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:13}); });
+    return svgWrap(s,VW,VH);
+  },
+  refKey:`∠AKB = ½(⌣AB+⌣CD) ⇒ ⌣AB+⌣CD=120°; AB=2R·sinα, CD=2R·sinγ (α+γ=60°) ⇒ R = √((AB²+CD²+AB·CD)/3).`,
+  refWhy:`Угол между хордами связывает дуги; выражение хорд через R и тригонометрия суммы углов дают радиус.`,
+  notSheet:`Теорема об угле между хордами (полусумма дуг) на листе не приведена.`
+});
+
+/* ---------- ТИП 12: окружность через M,N на AC, касается луча AB ---------- */
+TYPES.push({
+  id:12, topic:'Окружность', pill:'circ', tag:'касательная и секущая из точки',
+  title:'Окружность через две точки стороны, касающаяся второй стороны',
+  pool:[[9,11,11,6],[4,15,15,4],[36,44,11,6],[9,32,8,3],[18,40,5,3],[9,35,35,6],[8,30,15,4],[18,22,11,6],[12,21,7,4],[16,39,39,8],[24,42,7,4],[12,45,15,4]],
+  cond(p){ const [m,n,under,den]=p; return `На стороне <b>AC</b> треугольника <b>ABC</b> отмечены точки <b>M</b> и <b>N</b> так, что <b>AM = ${m}</b>, <b>AN = ${n}</b> (точка M лежит между A и N). Окружность проходит через точки <b>M</b> и <b>N</b> и касается луча <b>AB</b>. Найдите радиус этой окружности, если <b>cos∠BAC = ${frac(simpRad(under),''+den)}</b>.`; },
+  build(p){
+    const [m,n,under,den]=p;
+    const cosA=Math.sqrt(under)/den, sinA=Math.sqrt(den*den-under)/den, sd=Math.round(Math.sqrt(den*den-under));
+    const P=(m+n)/2, AT=Math.sqrt(m*n), rt=Math.round(Math.sqrt(m*n*under));
+    const R=(P - AT*cosA)/sinA;
+    const atStr=simpRad(m*n);
+    const steps=[
+      {h:`Пусть окружность касается луча <b>AB</b> в точке <b>T</b>. Прямая AC — секущая (проходит через M и N), AB — касательная. По теореме о касательной и секущей из точки A:<br><b>AT² = AM · AN = ${m}·${n} = ${m*n}</b>, откуда <b>AT = ${atStr}</b>.`, why:`Квадрат отрезка касательной равен произведению секущей на её внешнюю часть (степень точки A относительно окружности): AT² = AM·AN.`, ask:{label:'AT² = AM·AN', v:m*n, q:`AB — касательная, AC — секущая через M и N. По теореме о касательной и секущей AT² = AM·AN. Значения AM и AN даны в условии. Посчитай AT² — целое число.`, tip:`AT² = AM · AN = ${m} · ${n}.`}},
+      {h:`Пусть <b>O</b> — центр, <b>R</b> — радиус, обозначим <b>∠OAB = β</b>. Так как AB — касательная в T, то <b>OT ⟂ AB</b>, <b>OT = R</b>, и в прямоугольном треугольнике AOT: <b>AT = AO·cos β</b>, &nbsp; <b>R = AO·sin β</b>.`, why:`Радиус в точку касания перпендикулярен касательной; отсюда AT — проекция AO на AB, а R — «высота» AO над AB.`},
+      {h:`Середина хорды <b>MN</b> — основание перпендикуляра из O на AC, поэтому её расстояние от A равно <b>${frac('AM + AN','2')} = ${fmtNum(P)}</b> и равно <b>AO·cos∠OAC</b>, где <b>∠OAC = ∠BAC − β</b>.`, why:`Перпендикуляр из центра к хорде делит её пополам; проекция AO на AC даёт середину MN.`},
+      {h:`Раскроем <b>AO·cos(∠BAC − β)</b> по формуле косинуса разности:<br><b>cos∠BAC·(AO cos β) + sin∠BAC·(AO sin β) = ${fmtNum(P)}</b><br>⇒ <b>cos∠BAC·AT + sin∠BAC·R = ${fmtNum(P)}</b>.`, why:`cos(x−β)=cos x·cos β+sin x·sin β; подставляем AT=AO cos β и R=AO sin β.`},
+      {h:`Выразим радиус из последнего равенства:<br><b>R = ${frac('(AM+AN)/2 − AT·cos∠BAC','sin∠BAC')}</b>.`, why:null},
+      {h:(()=>{ const num1=P*den-rt; const rhs = (sd===1) ? `${fmtNum(P*den)} − ${rt} = ${fmtNum(R)}` : `${frac(fmtNum(P*den)+' − '+rt,''+sd)} = ${frac(fmtNum(num1),''+sd)} = ${fmtNum(R)}`;
+        return `Подставим <b>cos∠BAC = ${frac(simpRad(under),''+den)}</b> и <b>sin∠BAC = ${frac(''+sd,''+den)}</b>. Тогда <b>AT·cos∠BAC = ${atStr}·${frac(simpRad(under),''+den)} = ${frac(''+rt,''+den)}</b>. Умножим числитель и знаменатель на ${den}:<br><b>R = ${rhs}</b>.`; })(), why:null, ask:{label:'R', v:R, q:`Подставь cos∠BAC и sin∠BAC и доведи до числа радиус R = ((AM + AN)/2 − AT·cos∠BAC) / sin∠BAC. Посчитай R (можно округлить до сотых).`, tip:`sin∠BAC = ${sd}/${den}; в числителе (AM+AN)/2 − AT·cos∠BAC, где (AM+AN)/2 = ${fmtNum(P)}.`}}
+    ];
+    return {ans:[{label:'R',v:R,exact:fmtNum(R)}], steps, geo:{m,n,under,den}};
+  },
+  draw(p){
+    const [m,n,under,den]=p;
+    const cosA=Math.sqrt(under)/den, sinA=Math.sqrt(den*den-under)/den;
+    const P=(m+n)/2, AT=Math.sqrt(m*n), k=(AT - P*cosA)/sinA, R=(P - AT*cosA)/sinA;
+    const al=Math.acos(cosA);
+    const A=[0,0], C=[n*1.32,0], Mp=[m,0], Np=[n,0], O=[P,k];
+    const T=[AT*Math.cos(al),AT*Math.sin(al)];
+    const Blen=AT*1.5, B=[Blen*Math.cos(al),Blen*Math.sin(al)];
+    const F=fit([A,B,C,Mp,Np,O,T,[O[0]+R,O[1]],[O[0]-R,O[1]],[O[0],O[1]+R],[O[0],O[1]-R]],VW,VH,PAD).m;
+    const A_=F(...A),B_=F(...B),C_=F(...C),M_=F(...Mp),N_=F(...Np),O_=F(...O),T_=F(...T);
+    const Rpx=len2(sub(F(O[0]+R,O[1]),O_));
+    let s='';
+    s+=svCirc(O_,Rpx,{stroke:'#0d9488',w:1.7,dash:'5 4'});
+    s+=svPolygon([A_,B_,C_],{stroke:'#1a1a2e',w:2.2,fill:'rgba(45,112,179,0.05)'});
+    s+=svL(O_,T_,{stroke:'#0d9488',w:1.5,dash:'4 3'});
+    s+=svRight(T_,A_,O_,{d:9,stroke:'#16a34a',w:1.7});
+    s+=svArc(A_,C_,B_,20,{stroke:'#d97706',w:1.9});
+    s+=svTxt(mid(A_,M_),`${m}`,{dx:0,dy:13,fs:11,col:'#2d70b3'});
+    s+=svTxt(mid(A_,N_),`${n}`,{dx:0,dy:-12,fs:11,col:'#7c3aed'});
+    [[A_,'A',[-12,5]],[B_,'B',[5,-12]],[C_,'C',[13,5]],[M_,'M',[-1,-13]],[N_,'N',[3,14]],[T_,'T',[11,-7]],[O_,'O',[12,4]]].forEach(([q,t,dxy])=>{ s+=svDot(q,{r:3.6}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:13}); });
+    return svgWrap(s,VW,VH);
+  },
+  refKey:`Касательная и секущая из A: AT²=AM·AN. Проекции AO на стороны (AT=AO cosβ, R=AO sinβ, середина MN=AO cos(∠A−β)) и косинус разности ⇒ R=((AM+AN)/2 − √(AM·AN)·cos∠A)/sin∠A.`,
+  refWhy:`Степень точки даёт длину касательной; проектируя центр на обе стороны угла и применяя формулу косинуса разности, выражаем радиус.`,
+  notSheet:`Теорема о касательной и секущей (AT²=AM·AN) на листе справочных материалов не приведена.`
+});
+
+/* ---------- ТИП 13: биссектриса делит высоту в отношении p:q ---------- */
+TYPES.push({
+  id:13, topic:'Треугольник', pill:'tri', tag:'cos∠A = q : p',
+  title:'Биссектриса, делящая высоту треугольника',
+  pool:[[17,15,16],[25,24,14],[5,4,12],[41,40,18],[13,12,10],[5,4,18],[5,3,16],[13,12,20],[5,4,6],[5,3,8]],
+  cond(p){ const [pp,qq,BC]=p; return `Высота <b>BH</b> треугольника <b>ABC</b> и биссектриса, проведённая из вершины <b>A</b>, пересекаются в точке <b>K</b>. Оказалось, что <b>BK : KH = ${pp} : ${qq}</b> (считая от вершины B). Найдите радиус окружности, описанной около треугольника ABC, если <b>BC = ${BC}</b>.`; },
+  build(p){
+    const [pp,qq,BC]=p;
+    const disc=pp*pp-qq*qq, sd=Math.round(Math.sqrt(disc));
+    const R=BC*pp/(2*Math.sqrt(disc));
+    const steps=[
+      {h:`Точка <b>K</b> лежит на биссектрисе угла <b>A</b>, значит она равноудалена от сторон <b>AB</b> и <b>AC</b>. Так как <b>BH ⟂ AC</b>, расстояние от K до AC — это отрезок <b>KH</b>.`, why:`Каждая точка биссектрисы угла равноудалена от его сторон.`},
+      {h:`Обозначим <b>∠A = α</b>. Разберём прямоугольный треугольник <b>ABH</b> (∠H = 90°). Приравнивая расстояние от K до AB к KH, после упрощения получаем <b>p·cos α = q</b>, то есть <b>cos α = ${frac(''+qq,''+pp)}</b>.`, why:`Проекции в прямоугольном треугольнике ABH и условие равноудалённости K от сторон дают связь cos α = KH:BK = q:p.`, ask:{label:'cos α', v:qq/pp, q:`Из равноудалённости точки K от сторон угла A и разбора прямоугольного △ABH выходит p·cos α = q, где p : q — данное отношение BK : KH. Найди cos α (десятичной дробью).`, tip:`cos α = q / p = ${qq} / ${pp}.`}},
+      {h:`Тогда <b>sin α = √(1 − cos²α) = ${frac('√(p² − q²)','p')} = ${frac(''+sd,''+pp)}</b>.`, why:`Основное тригонометрическое тождество.`},
+      {h:`По теореме синусов сторона <b>BC</b> лежит против угла <b>A</b>: <b>${frac('BC','sin α')} = 2R</b>, поэтому<br><b>R = ${frac('BC','2 sin α')} = ${frac('BC·p','2√(p² − q²)')} = ${frac(''+BC+'·'+pp,'2·'+sd)} = ${fmtNum(R)}</b>.`, why:`Теорема синусов: сторона = 2R·синус противолежащего угла.`, ask:{label:'R', v:R, q:`Сначала sin α = √(1 − cos²α). Затем по теореме синусов BC = 2R·sin α, откуда R = BC/(2 sin α). Сторона BC дана. Посчитай R (можно округлить до сотых).`, tip:`sin α = √(p² − q²)/p = ${sd}/${pp}; R = BC / (2·sin α) = (${BC}·${pp}) / (2·${sd}).`}}
+    ];
+    return {ans:[{label:'R',v:R,exact:fmtNum(R)}], steps, geo:{pp,qq,BC}};
+  },
+  draw(p){
+    const [pp,qq,BC]=p;
+    const cosA=qq/pp, al=Math.acos(cosA);
+    let AB0=1.0, AC0=1.42; const BC0=Math.sqrt(AB0*AB0+AC0*AC0-2*AB0*AC0*cosA); const sc=BC/BC0;
+    const AB=AB0*sc, AC=AC0*sc;
+    const A=[0,0], C=[AC,0], B=[AB*Math.cos(al),AB*Math.sin(al)];
+    const H=[AB*Math.cos(al),0];
+    const Kx=H[0], Ky=Kx*Math.tan(al/2), K=[Kx,Ky];
+    const dB=[Math.cos(al/2),Math.sin(al/2)];
+    const L=lineInter(A,[dB[0],dB[1]],B,C)||mid(B,C);
+    function circum(A,B,C){ const ax=A[0],ay=A[1],bx=B[0],by=B[1],cx=C[0],cy=C[1];
+      const d=2*(ax*(by-cy)+bx*(cy-ay)+cx*(ay-by));
+      const ux=((ax*ax+ay*ay)*(by-cy)+(bx*bx+by*by)*(cy-ay)+(cx*cx+cy*cy)*(ay-by))/d;
+      const uy=((ax*ax+ay*ay)*(cx-bx)+(bx*bx+by*by)*(ax-cx)+(cx*cx+cy*cy)*(bx-ax))/d;
+      return [ux,uy]; }
+    const O=circum(A,B,C), Rw=len2(sub(A,O));
+    const F=fit([A,B,C,O,[O[0]+Rw,O[1]],[O[0]-Rw,O[1]],[O[0],O[1]+Rw],[O[0],O[1]-Rw],K,L],VW,VH,PAD).m;
+    const A_=F(...A),B_=F(...B),C_=F(...C),H_=F(...H),K_=F(...K),L_=F(...L),O_=F(...O);
+    const Rpx=len2(sub(F(O[0]+Rw,O[1]),O_));
+    let s='';
+    s+=svCirc(O_,Rpx,{stroke:'#c9c0ae',w:1.5});
+    s+=svPolygon([A_,B_,C_],{stroke:'#1a1a2e',w:2.3,fill:'rgba(45,112,179,0.05)'});
+    s+=svL(B_,H_,{stroke:'#2d70b3',w:2.1,dash:'6 4'});
+    s+=svL(A_,L_,{stroke:'#d97706',w:2.3});
+    s+=svRight(H_,A_,B_,{d:9,stroke:'#16a34a',w:1.8});
+    s+=svArc(A_,C_,K_,16,{stroke:'#d97706',w:1.9}); s+=svArc(A_,K_,B_,22,{stroke:'#d97706',w:1.9});
+    s+=svDot(K_,{r:3.4,fill:'#d97706'});
+    s+=svTxt(mid(B_,K_),`${pp}`,{dx:9,dy:0,fs:11,col:'#1e5a97'});
+    s+=svTxt(mid(K_,H_),`${qq}`,{dx:9,dy:0,fs:11,col:'#1e5a97'});
+    s+=svTxt(mid(B_,C_),`${BC}`,{dx:9,dy:-2,fs:12,col:'#1a1a2e'});
+    [[A_,'A',[-13,4]],[B_,'B',[-2,-14]],[C_,'C',[13,5]],[H_,'H',[0,14]],[K_,'K',[-12,2]],[L_,'L',[12,2]],[O_,'O',[10,-9]]].forEach(([q,t,dxy])=>{ s+=svDot(q,{r:3.6}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:13}); });
+    return svgWrap(s,VW,VH);
+  },
+  refKey:`K на биссектрисе ⇒ равноудалена от AB, AC; KH — расстояние до AC. Разбор △ABH даёт cos∠A = KH:BK = q:p, значит sin∠A=√(p²−q²)/p и R = BC·p/(2√(p²−q²)).`,
+  refWhy:`Свойство биссектрисы (равноудалённость) переводит отношение отрезков высоты в cos∠A; далее теорема синусов даёт R.`,
+  notSheet:`Вывод cos∠A = q:p из деления высоты биссектрисой на листе, конечно, отсутствует — это ключевая идея задачи.`
+});
+
+/* ---------- ТИП 14: трапеция, сумма углов при AD = 90°, окружность через A,B касается CD ---------- */
+TYPES.push({
+  id:14, topic:'Трапеция', pill:'trap', tag:'продолжение ног = прямой угол',
+  title:'Окружность через вершины трапеции, касающаяся боковой стороны',
+  pool:[[18,6,10],[32,4,14],[32,24,7],[36,12,13],[34,2,24],[33,11,20],[28,4,15],[48,24,13],[49,21,20],[34,14,12]],
+  cond(p){ const [AD,BC,AB]=p; return `В трапеции <b>ABCD</b> с основаниями <b>AD = ${AD}</b> и <b>BC = ${BC}</b> сумма углов при основании AD равна <b>90°</b>. Окружность проходит через вершины <b>A</b> и <b>B</b> и касается прямой <b>CD</b>. Найдите её радиус, если боковая сторона <b>AB = ${AB}</b>.`; },
+  build(p){
+    const [AD,BC,AB]=p; const R=AB*(AD+BC)/(2*(AD-BC));
+    const steps=[
+      {h:`Так как <b>∠A + ∠D = 90°</b>, продолжим боковые стороны <b>BA</b> и <b>CD</b> до пересечения в точке <b>P</b>. В треугольнике APD сумма углов при A и D равна 90°, значит <b>∠P = 90°</b>.`, why:`Сумма углов треугольника 180°; если два угла дают 90°, третий тоже 90°.`},
+      {h:`Так как <b>BC ∥ AD</b>, треугольники <b>PBC</b> и <b>PAD</b> подобны с коэффициентом <b>k = ${frac('AD','BC')} = ${fmtNum(AD/BC)}</b>. Значит <b>PA = k·PB</b>, и <b>AB = PA − PB = (k−1)·PB</b>.`, why:`Прямая, параллельная основанию, отсекает подобный треугольник; отношение — k=AD:BC.`, ask:{label:'k = AD/BC', v:AD/BC, q:`Продолжения боковых сторон дают точку P; треугольники PBC и PAD подобны с коэффициентом k = AD/BC. Основания AD и BC даны в условии. Найди k (можно округлить до сотых).`, tip:`k = AD / BC = ${AD} / ${BC}.`}},
+      {h:`Введём оси с началом в <b>P</b> вдоль перпендикулярных лучей (ног): точки A, B — на одной оси, C, D — на другой. Окружность через A и B касается прямой CD (второй оси). Её центр лежит на серединном перпендикуляре к AB, а радиус равен расстоянию до оси CD:<br><b>R = ${frac('PA + PB','2')}</b>.`, why:`Центр равноудалён от A и B (лежит на серединном перпендикуляре AB, то есть на прямой, параллельной оси CD на расстоянии (PA+PB)/2); это расстояние и есть радиус касания.`},
+      {h:`Осталось выразить через данные: <b>PA + PB = (k+1)·PB</b>, а <b>AB = (k−1)·PB</b>, поэтому<br><b>R = ${frac('(k+1)·PB','2')} = AB·${frac('k+1','2(k−1)')} = AB·${frac('AD + BC','2(AD − BC)')}</b>.`, why:`Делим (k+1) на (k−1) и подставляем k=AD:BC.`},
+      {h:`<b>R = ${AB}·${frac(''+(AD+BC),'2·'+(AD-BC))} = ${frac(''+AB*(AD+BC),''+2*(AD-BC))} = ${fmtNum(R)}</b>.`, why:null, ask:{label:'R', v:R, q:`Итоговая формула: R = AB·(AD + BC) / (2·(AD − BC)). Все три величины AB, AD, BC даны в условии. Посчитай R (можно округлить до сотых).`, tip:`R = ${AB}·(${AD} + ${BC}) / (2·(${AD} − ${BC})).`}}
+    ];
+    return {ans:[{label:'R',v:R,exact:fmtNum(R)}], steps, geo:{AD,BC,AB}};
+  },
+  draw(p){
+    const [AD,BC,AB]=p;
+    const angA=Math.acos(Math.min(0.999,AB/(AD-BC)));
+    const A=[0,0], D=[AD,0];
+    const B=[AB*Math.cos(angA),AB*Math.sin(angA)];
+    const C=[B[0]+BC,B[1]];
+    const P=lineInter(A,B,D,C)||[B[0],B[1]+1];
+    const PA=len2(sub(P,A)), PB=len2(sub(P,B));
+    const R=(PA+PB)/2;
+    const mAB=mid(A,B), dir=norm(sub(B,A)), per=[-dir[1],dir[0]], half=len2(sub(B,A))/2;
+    const ss=Math.sqrt(Math.max(0,R*R-half*half));
+    const O1=[mAB[0]+per[0]*ss,mAB[1]+per[1]*ss], O2=[mAB[0]-per[0]*ss,mAB[1]-per[1]*ss];
+    // обе окружности касаются ПРЯМОЙ CD с одним R; берём ту, что с той же стороны от AB, что и трапеция (точка C)
+    const sideC=Math.sign((B[0]-A[0])*(C[1]-A[1])-(B[1]-A[1])*(C[0]-A[0]));
+    const s1=Math.sign((B[0]-A[0])*(O1[1]-A[1])-(B[1]-A[1])*(O1[0]-A[0]));
+    const O=(s1===sideC)?O1:O2;
+    const t=((O[0]-D[0])*(C[0]-D[0])+(O[1]-D[1])*(C[1]-D[1]))/(len2(sub(C,D))**2);
+    const Tc=[D[0]+(C[0]-D[0])*t,D[1]+(C[1]-D[1])*t];
+    const F=fit([A,B,C,D,P,O,Tc,[O[0]+R,O[1]],[O[0]-R,O[1]],[O[0],O[1]+R],[O[0],O[1]-R]],VW,VH,PAD).m;
+    const A_=F(...A),B_=F(...B),C_=F(...C),D_=F(...D),P_=F(...P),O_=F(...O),T_=F(...Tc);
+    const Rpx=len2(sub(F(O[0]+R,O[1]),O_));
+    let s='';
+    s+=svCirc(O_,Rpx,{stroke:'#0d9488',w:1.7,dash:'5 4'});
+    s+=svL(B_,P_,{stroke:'#c9c0ae',w:1.5,dash:'3 3'}); s+=svL(C_,P_,{stroke:'#c9c0ae',w:1.5,dash:'3 3'});
+    s+=svPolygon([A_,B_,C_,D_],{stroke:'#1a1a2e',w:2.3,fill:'rgba(45,112,179,0.05)'});
+    s+=svRight(P_,A_,C_,{d:11,stroke:'#16a34a',w:1.9});
+    // если точка касания вне отрезка DC — продлеваем прямую CD пунктиром до T
+    if(t<0) s+=svL(D_,T_,{stroke:'#c9c0ae',w:1.4,dash:'3 3'}); else if(t>1) s+=svL(C_,T_,{stroke:'#c9c0ae',w:1.4,dash:'3 3'});
+    s+=svL(O_,T_,{stroke:'#0d9488',w:1.5,dash:'4 3'}); s+=svRight(T_,D_,O_,{d:8,stroke:'#16a34a',w:1.6});
+    s+=svArc(A_,D_,B_,15,{stroke:'#d97706',w:1.7}); s+=svArc(D_,A_,C_,15,{stroke:'#7c3aed',w:1.7});
+    s+=svTxt(mid(A_,D_),`${AD}`,{dx:0,dy:14,fs:12,col:'#1a1a2e'});
+    s+=svTxt(mid(B_,C_),`${BC}`,{dx:0,dy:-13,fs:12,col:'#1a1a2e'});
+    s+=svTxt(mid(A_,B_),`${AB}`,{dx:-13,dy:0,fs:11,col:'#1a1a2e'});
+    [[A_,'A',[-13,7]],[B_,'B',[-12,-6]],[C_,'C',[12,-6]],[D_,'D',[12,7]],[P_,'P',[0,-14]],[O_,'O',[11,4]],[T_,'T',[10,4]]].forEach(([q,t,dxy])=>{ s+=svDot(q,{r:3.6}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:13}); });
+    return svgWrap(s,VW,VH);
+  },
+  refKey:`∠A+∠D=90° ⇒ ноги при продолжении дают прямой угол в P. Оси вдоль ног: окружность через A,B касается оси CD ⇒ R=(PA+PB)/2 = AB·(AD+BC)/(2(AD−BC)).`,
+  refWhy:`Прямой угол между продолжениями ног позволяет поставить оси; окружность через две точки одной оси, касающаяся другой, имеет радиус, равный полусумме отрезков.`,
+  notSheet:`Приём «продолжить ноги трапеции до прямого угла» и связанное подобие на листе не описаны.`
+});
+
+/* ---------- ТИП 15: параллелограмм, O — инцентр △ABC, три расстояния ---------- */
+TYPES.push({
+  id:15, topic:'Параллелограмм', pill:'par', tag:'инцентр и проекции',
+  title:'Площадь параллелограмма через инцентр треугольника',
+  pool:[[5,4,3],[25,14,7],[25,15,7],[13,7,5],[13,9,5],[25,13,7],[13,6,5],[25,19,7],[25,17,7],[13,8,5]],
+  cond(p){ const [dA,dAD,r]=p; return `В параллелограмме <b>ABCD</b> проведена диагональ <b>AC</b>. Точка <b>O</b> — центр окружности, вписанной в треугольник <b>ABC</b>. Известно, что расстояние от O до вершины <b>A</b> равно <b>${dA}</b>, расстояние от O до прямой <b>AD</b> равно <b>${dAD}</b>, а расстояние от O до прямой <b>AC</b> равно <b>${r}</b>. Найдите площадь параллелограмма.`; },
+  build(p){
+    const [dA,dAD,r]=p;
+    const a2=Math.asin(r/dA), apd=Math.asin(dAD/dA), gamma=apd-a2;
+    const alpha=2*a2, C=gamma, B=Math.PI-alpha-C;
+    const cot=x=>1/Math.tan(x);
+    const areaTri=r*r*(cot(alpha/2)+cot(B/2)+cot(C/2));
+    const S=2*areaTri;
+    const deg=x=>Math.round(x*180/Math.PI*10)/10;
+    const steps=[
+      {h:`Расстояние от O до прямой AC равно радиусу вписанной окружности: <b>r = ${r}</b>. O лежит на биссектрисе угла <b>∠BAC</b>, а расстояние от инцентра до вершины A равно <b>${frac('r','sin(∠BAC/2)')}</b>, поэтому <b>sin${frac('∠BAC','2')} = ${frac('r','OA')} = ${frac(''+r,''+dA)}</b> ⇒ <b>∠BAC ≈ ${deg(alpha)}°</b>.`, why:`Расстояние от инцентра до вершины A равно r/sin(A/2): инцентр на биссектрисе, а перпендикуляр к стороне равен r.`},
+      {h:`Прямая <b>AD</b> параллельна <b>BC</b>, поэтому <b>∠DAC = ∠ACB = ∠C</b> (накрест лежащие). Расстояние от O до AD равно <b>OA·sin(∠BAC/2 + ∠C)</b>, значит <b>sin(${frac('∠BAC','2')} + ∠C) = ${frac(''+dAD,''+dA)}</b> ⇒ <b>∠C ≈ ${deg(C)}°</b>.`, why:`AD∥BC даёт ∠DAC=∠C; угол от AD до луча AO складывается из ∠DAC и половины ∠BAC.`},
+      {h:`Тогда <b>∠BAC ≈ ${deg(alpha)}°</b>, <b>∠C ≈ ${deg(C)}°</b>, <b>∠B = 180° − ∠BAC − ∠C ≈ ${deg(B)}°</b>.`, why:`Сумма углов треугольника ABC равна 180°.`},
+      {h:`Площадь треугольника через инцентр: <b>S△ = r²·(ctg${frac('∠BAC','2')} + ctg${frac('∠B','2')} + ctg${frac('∠C','2')})</b>, а параллелограмм состоит из двух таких треугольников:<br><b>S = 2·S△ = ${fmtNum(S)}</b>.`, why:`Полупериметр s=r(ctg(A/2)+ctg(B/2)+ctg(C/2)), площадь △=r·s; диагональ делит параллелограмм на два равных треугольника.`, ask:{label:'S', v:S, q:`Площадь треугольника через инцентр: S△ = r²·(ctg(∠BAC/2) + ctg(∠B/2) + ctg(∠C/2)), а параллелограмм — это два таких треугольника, поэтому S = 2·S△. Углы найдены на прошлых шагах, r дан. Посчитай площадь S (округли до сотых).`, tip:`Сложи три котангенса половинных углов, умножь на r² и на 2.`}}
+    ];
+    return {ans:[{label:'S',v:S,exact:fmtNum(S)}], steps, geo:{dA,dAD,r}};
+  },
+  draw(p){
+    const [dA,dAD,r]=p;
+    const a2=Math.asin(r/dA), apd=Math.asin(dAD/dA), gamma=apd-a2;
+    const alpha=2*a2, Cang=gamma, Bang=Math.PI-alpha-Cang;
+    const Rc=r/(4*Math.sin(alpha/2)*Math.sin(Bang/2)*Math.sin(Cang/2));
+    const a=2*Rc*Math.sin(alpha), b=2*Rc*Math.sin(Bang), c=2*Rc*Math.sin(Cang);
+    const A=[0,0], B=[c,0], C=[b*Math.cos(alpha),b*Math.sin(alpha)];
+    const O=[(a*A[0]+b*B[0]+c*C[0])/(a+b+c),(a*A[1]+b*B[1]+c*C[1])/(a+b+c)];
+    const D=[A[0]+C[0]-B[0],A[1]+C[1]-B[1]];
+    const dirAD=norm(sub(D,A));
+    const tF=(O[0]-A[0])*dirAD[0]+(O[1]-A[1])*dirAD[1]; const Fd=[A[0]+dirAD[0]*tF,A[1]+dirAD[1]*tF];
+    const dirAC=norm(sub(C,A)); const tR=(O[0]-A[0])*dirAC[0]+(O[1]-A[1])*dirAC[1]; const Fr=[A[0]+dirAC[0]*tR,A[1]+dirAC[1]*tR];
+    const F=fit([A,B,C,D,O,Fd,[O[0]+r,O[1]],[O[0]-r,O[1]],[O[0],O[1]+r],[O[0],O[1]-r]],VW,VH,PAD).m;
+    const A_=F(...A),B_=F(...B),C_=F(...C),D_=F(...D),O_=F(...O),Fd_=F(...Fd),Fr_=F(...Fr);
+    const rpx=len2(sub(F(O[0]+r,O[1]),O_));
+    let s='';
+    s+=svPolygon([A_,B_,C_,D_],{stroke:'#1a1a2e',w:2.3,fill:'rgba(45,112,179,0.05)'});
+    s+=svL(A_,C_,{stroke:'#2d70b3',w:1.9});
+    s+=svCirc(O_,rpx,{stroke:'#16a34a',w:1.7});
+    s+=svL(O_,Fd_,{stroke:'#db2777',w:1.7,dash:'4 3'}); s+=svRight(Fd_,A_,O_,{d:8,stroke:'#db2777',w:1.5});
+    s+=svL(O_,Fr_,{stroke:'#16a34a',w:1.5,dash:'4 3'});
+    s+=svL(O_,A_,{stroke:'#d97706',w:1.5,dash:'2 3'});
+    s+=svTxt(mid(O_,A_),`${dA}`,{dx:4,dy:-8,fs:11,col:'#b45309'});
+    s+=svTxt(mid(O_,Fd_),`${dAD}`,{dx:-11,dy:0,fs:11,col:'#be185d'});
+    s+=svTxt(mid(O_,Fr_),`${r}`,{dx:8,dy:6,fs:11,col:'#15803d'});
+    [[A_,'A',[-13,6]],[B_,'B',[10,8]],[C_,'C',[10,-8]],[D_,'D',[-13,-6]],[O_,'O',[9,7]]].forEach(([q,t,dxy])=>{ s+=svDot(q,{r:3.6}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:13}); });
+    return svgWrap(s,VW,VH);
+  },
+  refKey:`r=dist(O,AC). Инцентр: sin(A/2)=r/OA. AD∥BC ⇒ ∠DAC=∠C, dist(O,AD)=OA·sin(A/2+C) даёт ∠C. Затем S=2·r²(ctg(A/2)+ctg(B/2)+ctg(C/2)).`,
+  refWhy:`Три расстояния кодируют углы △ABC через инцентр; площадь треугольника — r·s, а параллелограмм вдвое больше.`,
+  notSheet:`Формулы «расстояние от инцентра до вершины = r/sin(½угла)» и «s=r·Σctg(½угла)» на листе отсутствуют.`
+});
+
+/* ---------- ТИП 16: равнобедренный, вневписанная у апекса → инрадиус ---------- */
+TYPES.push({
+  id:16, topic:'Треугольник', pill:'tri', tag:'r·rₐ = (s−b)(s−c)',
+  title:'Вписанная и вневписанная окружности равнобедренного треугольника',
+  pool:[[12,8],[16,16],[24,16],[12,9],[24,18],[16,10],[20,25],[8,8],[18,27],[14,14]],
+  cond(p){ const [AC,rB]=p; return `В равнобедренном треугольнике <b>ABC</b> с основанием <b>AC = ${AC}</b> вневписанная окружность касается основания AC и продолжений боковых сторон; её радиус равен <b>${rB}</b>. Найдите радиус окружности, вписанной в треугольник ABC.`; },
+  build(p){
+    const [AC,rB]=p; const r=(AC/2)*(AC/2)/rB;
+    const steps=[
+      {h:`Обозначим стороны: основание <b>AC = b = ${AC}</b>, боковые <b>AB = CB</b>. Полупериметр <b>s = ${frac('AB + CB + AC','2')}</b>. Так как треугольник равнобедренный (AB = CB), то <b>s − AB = s − CB = ${frac('AC','2')} = ${fmtNum(AC/2)}</b>.`, why:`Для равнобедренного треугольника два «касательных отрезка» s−AB и s−CB равны половине основания.`, ask:{label:'s − AB', v:AC/2, q:`Для равнобедренного треугольника (AB = CB) касательные отрезки s − AB и s − CB равны половине основания. Основание AC дано. Чему равно s − AB?`, tip:`s − AB = AC / 2 = ${AC} / 2.`}},
+      {h:`Вписанная окружность имеет радиус <b>r = ${frac('S','s')}</b>, вневписанная (у вершины B, против основания) — <b>r_B = ${frac('S','s − AC')}</b>, где S — площадь. Перемножим:<br><b>r · r_B = ${frac('S²','s(s − AC)')}</b>.`, why:`r=S/s, а вневписанный радиус против стороны AC равен S/(s−AC).`},
+      {h:`По формуле Герона <b>S² = s(s−AB)(s−CB)(s−AC)</b>, поэтому<br><b>r · r_B = ${frac('s(s−AB)(s−CB)(s−AC)','s(s−AC)')} = (s−AB)(s−CB) = (${frac('AC','2')})²</b>.`, why:`Квадрат площади по Герону сокращается с s(s−AC), оставляя произведение двух равных касательных отрезков.`},
+      {h:`Отсюда <b>r = ${frac('(AC/2)²','r_B')} = ${frac(''+(AC/2*AC/2),''+rB)} = ${fmtNum(r)}</b>.`, why:null, ask:{label:'r', v:r, q:`Получено r·r_B = (AC/2)². Значит r = (AC/2)² / r_B. Основание AC и радиус вневписанной r_B даны в условии. Посчитай r (можно округлить до сотых).`, tip:`r = (AC/2)² / r_B = ${AC/2*AC/2} / ${rB}.`}}
+    ];
+    return {ans:[{label:'r',v:r,exact:fmtNum(r)}], steps, geo:{AC,rB}};
+  },
+  draw(p){
+    const [AC,rB]=p; const w=AC/2, r=(w*w)/rB;
+    const h=2*w*w*r/(w*w-r*r);
+    const A=[-w,0], C=[w,0], B=[0,h];
+    const In=[0,r], Ex=[0,-rB];
+    function footLine(O,P1,P2){ const d=norm(sub(P2,P1)); const t=(O[0]-P1[0])*d[0]+(O[1]-P1[1])*d[1]; return [P1[0]+d[0]*t,P1[1]+d[1]*t]; }
+    const TexAB=footLine(Ex,A,B), TexCB=footLine(Ex,C,B);
+    const F=fit([A,C,B,[0,r+r*0+r],In,Ex,[Ex[0]+rB,Ex[1]],[Ex[0]-rB,Ex[1]],[Ex[0],Ex[1]-rB],[Ex[0],Ex[1]+rB],TexAB,TexCB],VW,VH,PAD).m;
+    const A_=F(...A),C_=F(...C),B_=F(...B),In_=F(...In),Ex_=F(...Ex),TAB_=F(...TexAB),TCB_=F(...TexCB),base0=F(0,0);
+    const rpx=len2(sub(F(In[0]+r,In[1]),In_)), rBpx=len2(sub(F(Ex[0]+rB,Ex[1]),Ex_));
+    let s='';
+    s+=svL(A_,TAB_,{stroke:'#c9c0ae',w:1.4,dash:'3 3'}); s+=svL(C_,TCB_,{stroke:'#c9c0ae',w:1.4,dash:'3 3'});
+    s+=svCirc(Ex_,rBpx,{stroke:'#d97706',w:1.7,dash:'5 4'});
+    s+=svPolygon([A_,B_,C_],{stroke:'#1a1a2e',w:2.4,fill:'rgba(45,112,179,0.05)'});
+    s+=svCirc(In_,rpx,{stroke:'#16a34a',w:1.9});
+    s+=svTicks(A_,B_,1,{stroke:'#1a1a2e'}); s+=svTicks(C_,B_,1,{stroke:'#1a1a2e'});
+    s+=svDot(base0,{r:3,fill:'#d97706'});
+    s+=svL(Ex_,base0,{stroke:'#d97706',w:1.4,dash:'3 3'});
+    s+=svTxt(mid(Ex_,base0),`${rB}`,{dx:9,dy:0,fs:11,col:'#b45309'});
+    s+=svTxt(mid(A_,C_),`${AC}`,{dx:0,dy:-13,fs:12,col:'#1a1a2e'});
+    s+=svTxt(In_,'r',{dx:0,dy:0,fs:12,col:'#15803d'});
+    [[A_,'A',[-13,4]],[C_,'C',[13,4]],[B_,'B',[0,-14]],[Ex_,'',[0,0]]].forEach(([q,t,dxy])=>{ if(t){ s+=svDot(q,{r:3.6}); s+=svTxt(q,t,{dx:dxy[0],dy:dxy[1],fs:13}); } });
+    return svgWrap(s,VW,VH);
+  },
+  refKey:`Для равнобедренного треугольника s−AB=s−CB=AC/2. Из r=S/s и r_B=S/(s−AC) и формулы Герона: r·r_B=(s−AB)(s−CB)=(AC/2)² ⇒ r=(AC/2)²/r_B.`,
+  refWhy:`Произведение радиусов вписанной и вневписанной окружностей равно произведению «касательных отрезков», которое для равнобедренного случая равно (AC/2)².`,
+  notSheet:`Связь r·r_B=(s−a)(s−c) и вообще вневписанная окружность на листе справочных материалов не упоминаются.`
+});
+
+/* ======================================================================
+   ДВИЖОК: рендер панелей, взаимодействие, журнал событий
+   ====================================================================== */
+const $=id=>document.getElementById(id);
+const PILLNAME={tri:'Треугольник',trap:'Трапеция',par:'Параллелограмм',quad:'Четырёхугольник',circ:'Окружность'};
+const byId=id=>TYPES.find(t=>t.id===id);
+function rnd(a){ return a[Math.floor(Math.random()*a.length)]; }
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+/* пошаговый список решения (для разбора и «сдаюсь») */
+function stepsHTML(steps, revealN){
+  const N = (revealN==null)? steps.length : Math.min(revealN, steps.length);
+  let h='<ol class="steps">';
+  for(let i=0;i<N;i++){ const st=steps[i]; const fin=(i===steps.length-1);
+    h+=`<li class="${fin?'final':''}"><div>${st.h}</div>`;
+    if(st.why){ h+=`<div class="why"><button class="why-btn" data-act="why">почему это верно?</button><div class="why-body">${st.why}</div></div>`; }
+    h+='</li>';
+  }
+  h+='</ol>';
+  return h;
+}
+function topWeak(n){
+  const e=getErrByType(); const arr=Object.keys(e).map(k=>[+k,e[k]]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,n);
+  return arr.map(x=>byId(x[0])).filter(Boolean);
+}
+
+/* -------------------- вкладки -------------------- */
+let curTab='learn';
+function switchTab(t){
+  curTab=t;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on', b.dataset.tab===t));
+  ['learn','train','exam','ref'].forEach(k=>{ $('panel-'+k).style.display = (k===t)?'block':'none'; });
+  $('modeBadge').textContent = {learn:'Разбор',train:'Тренировка',exam:'Зачёт',ref:'Справочник'}[t];
+  if(t==='learn') renderLearn();
+  if(t==='train') renderTrain();
+  if(t==='exam') renderExamIntro();
+  if(t==='ref') renderRef();
+}
+
+/* -------------------- РАЗБОР -------------------- */
+let learnType=null;
+function renderLearn(){ learnType==null ? renderLearnGrid() : renderLearnDetail(learnType); }
+function renderLearnGrid(){
+  const err=getErrByType();
+  let h='<div class="muted" style="margin-bottom:12px">Выберите тип задачи, чтобы увидеть полный разбор с ключевой идеей, честным чертёжом и объяснением, <i>почему</i> работает каждый шаг. 16 типов — по одному сценарию на каждый.</div><div class="tgrid">';
+  for(const T of TYPES){
+    const e=err[T.id]||0;
+    h+=`<div class="tcard" data-act="learn-open" data-id="${T.id}">
+      <div class="no">№${T.id}</div>
+      <span class="pill ${T.pill}">${PILLNAME[T.pill]}</span>
+      <div class="tt">${T.title}</div>
+      <div class="dsc">${T.tag}</div>
+      ${e>0?`<div class="err-badge">ошибок в тренировке: ${e}</div>`:''}
+    </div>`;
+  }
+  h+='</div>';
+  $('panel-learn').innerHTML=h;
+}
+function renderLearnDetail(id){
+  const T=byId(id); const p=T.pool[0]; const b=T.build(p);
+  const ansTxt=b.ans.map(a=>`<b>${a.label} = ${a.exact}</b>`).join(', &nbsp; ');
+  let h=`<div class="backline"><button class="link" data-act="learn-back">← ко всем типам</button></div>
+    <div class="row">
+      <div class="col" style="max-width:520px"><div class="fig">${T.draw(p)}</div></div>
+      <div class="col">
+        <span class="pill ${T.pill}">${PILLNAME[T.pill]}</span>
+        <h2 style="margin-top:8px">№${T.id}. ${T.title}</h2>
+        <div class="cond">${T.cond(p)}</div>
+        <div class="law" style="margin-top:14px"><h3>Ключевая идея</h3><div style="font-size:13.5px">${T.refKey}</div></div>
+      </div>
+    </div>
+    <h2 style="margin-top:18px">Решение по шагам</h2>
+    ${stepsHTML(b.steps)}
+    <div class="ansrow"><div class="ans-final">Ответ: ${ansTxt}</div></div>
+    <div class="notsheet" style="margin-top:14px"><b>Чего на листе справочных материалов нет</b>${T.notSheet}</div>
+    <div class="ansrow"><button class="btn blue" data-act="train-this" data-id="${T.id}">Тренировать этот тип →</button></div>`;
+  $('panel-learn').innerHTML=h;
+}
+
+/* -------------------- ТРЕНИРОВКА -------------------- */
+let trS=null; // {id,p,b,hints,wrong,done,surrender}
+function renderTrain(){
+  if(!trS){ renderTrainPicker(); return; }
+  const T=byId(trS.id), b=trS.b;
+  const inputs=b.ans.map((a,i)=>`<label style="font-size:13.5px;font-weight:700">${a.label} =
+     <input class="num" data-ai="${i}" inputmode="decimal" placeholder="число" ${trS.done?'disabled':''}></label>`).join(' ');
+  let h=`<div class="backline"><button class="link" data-act="train-pick">← выбрать другой тип</button>
+      &nbsp;·&nbsp; <span class="pill ${T.pill}">${PILLNAME[T.pill]}</span> <b style="font-size:13px">№${T.id}. ${T.title}</b></div>
+    <div class="row">
+      <div class="col" style="max-width:520px"><div class="fig">${T.draw(trS.p)}</div></div>
+      <div class="col">
+        <div class="task"><div class="cond">${T.cond(trS.p)}</div>
+          <div class="ansrow">${inputs}</div>
+          ${b.ans.length>1?'<div class="muted" style="margin-top:6px">Заполните все поля. Иррациональные ответы — десятичной дробью (можно округлить до сотых).</div>':'<div class="muted" style="margin-top:6px">Иррациональный ответ вводите десятичной дробью (можно округлить до сотых).</div>'}
+          <div class="ansrow">
+            <button class="btn blue" data-act="tr-check" ${trS.done?'disabled':''}>Проверить</button>
+            ${(!trS.gmode&&!trS.done)?`<button class="btn ghost small" data-act="tr-hint">🪜 Шаг за шагом</button>`:''}
+            ${(!trS.done)?`<button class="btn ghost small" data-act="tr-give">Сдаюсь — решение</button>`:''}
+          </div>
+          <div class="fb ${trS.fb?('show '+trS.fb.k):''}" id="trFb">${trS.fb?trS.fb.msg:''}</div>
+          <div class="stat">Пройдено шагов: ${trS.gres?trS.gres.filter(Boolean).length:0} · подсказок: ${trS.hints} · неверных попыток: ${trS.wrong}</div>
+          ${trS.done?'<div class="ansrow"><button class="btn" data-act="tr-next" data-id="'+trS.id+'">Следующая задача →</button></div>':''}
+        </div>
+      </div>
+    </div>`;
+  if(trS.gmode){ h+=guidedHTML(); }
+  else if(trS.reveal>0){ h+=`<div class="hintbox">${stepsHTML(b.steps, trS.reveal)}</div>`; }
+  $('panel-train').innerHTML=h;
+}
+/* ---- тренажёрная проводка по решению ---- */
+function gClose(v, target){ return approxEq(v, target, 6e-3, 0.02); }
+function gInfo(){ const steps=trS.b.steps; const last=steps.length-1; const finalAsk=!!(steps[last]&&steps[last].ask); return {last, finalAsk, gT: finalAsk?last:Math.max(0,last-1)}; }
+function isFinalAskStep(i){ const g=gInfo(); return g.finalAsk && i===g.last; }
+function gFinalCTA(){ return `<div class="gcta">${trS.b.gcta || 'Дальше — сам: доведи решение до числа, впиши ответ в поле выше и нажми «Проверить».'}</div>`; }
+function guidedHTML(){
+  const b=trS.b, steps=b.steps; const {last,finalAsk,gT}=gInfo();
+  let h='<div class="guidebox"><div class="guidehead">🪜 ПРОВОДКА ПО РЕШЕНИЮ — на каждом шаге считаешь сам</div><ol class="gsteps">';
+  for(let i=0;i<=trS.gstep;i++){
+    const st=steps[i]; const res=trS.gres[i]||''; const cur=(i===trS.gstep);
+    const asking = st.ask && cur && !res;
+    const cls = asking?'cur' : (res==='rev'?'rev':'done');
+    h+=`<li class="${cls}">`;
+    if(asking){
+      h+=`<div class="gq">${st.ask.q}</div>
+          <div class="ansrow" style="margin-top:10px">
+            <label class="gaskl">${st.ask.label} = <input class="num" id="gAsk" inputmode="decimal" placeholder="число"></label>
+            <button class="btn blue small" data-act="g-check">Проверить шаг</button>
+            ${st.ask.tip?`<button class="btn ghost small" data-act="g-tip">подсказка</button>`:''}
+            <button class="btn ghost small" data-act="g-reveal">показать</button>
+          </div>`;
+      if(st.ask.tip) h+=`<div class="gtip${trS.gtip?' on':''}">💡 ${st.ask.tip}</div>`;
+      if(trS.gfb) h+=`<div class="fb show ${trS.gfb.k}" style="margin-top:9px">${trS.gfb.msg}</div>`;
+    } else {
+      h+=`<div class="gh">${st.h}</div>`;
+      if(st.ask && res) h+=`<div class="gdone ${res==='rev'?'rev':''}">${st.ask.label} = <b>${fmtNum(st.ask.v)}</b> — ${res==='rev'?'показано':'ты посчитал верно ✓'}</div>`;
+      if(cur){
+        if(i<gT) h+=`<div style="margin-top:9px"><button class="btn ghost small" data-act="g-next">Дальше →</button></div>`;
+        else if(!finalAsk) h+= gFinalCTA();
+      }
+    }
+    h+='</li>';
+  }
+  h+='</ol></div>';
+  return h;
+}
+function gNext(){ const g=gInfo(); if(trS.gstep<g.gT){ trS.gstep++; trS.gfb=null; trS.gtip=false; } renderTrain(); }
+function gCheck(){
+  const st=trS.b.steps[trS.gstep]; if(!st.ask) return;
+  const inp=document.getElementById('gAsk'); const v=parseNum(inp?inp.value:'');
+  if(!isFinite(v)){ trS.gfb={k:'warn',msg:'Впиши число в поле шага.'}; renderTrain(); return; }
+  if(gClose(v, st.ask.v)){
+    trS.gres[trS.gstep]='ok'; trS.gfb=null; trS.gtip=false;
+    logEvent({e:'hint', task:trS.id, step:trS.gstep, kind:'guide-ok'});
+    if(isFinalAskStep(trS.gstep)){ finishGuided('ok'); return; }
+    renderTrain();
+  } else {
+    trS.gfb={k:'err',msg:'Пока не сходится. Проверь вычисления' + (st.ask.tip?' или загляни в «подсказку».':'.')};
+    renderTrain();
+  }
+}
+function gReveal(){
+  const st=trS.b.steps[trS.gstep]; if(!st.ask) return;
+  trS.gres[trS.gstep]='rev'; trS.gfb=null; trS.gtip=false;
+  if(isFinalAskStep(trS.gstep)){ finishGuided('rev'); return; }
+  trS.hints++; logEvent({e:'hint', task:trS.id, step:trS.gstep, kind:'guide-reveal'});
+  renderTrain();
+}
+function finishGuided(mode){
+  trS.done=true; const b=trS.b; const ansTxt=b.ans.map(a=>`${a.label} = ${a.exact}`).join(', ');
+  if(mode==='ok'){
+    trS.fb={k:'ok',msg:`Верно! Шаг за шагом ты дошёл до ответа: ${ansTxt}. Засчитано как решение по шагам.`};
+    logEvent({e:'solved', task:trS.id, via:'guided', mistakes:trS.wrong, hints:trS.hints});
+  } else {
+    trS.surrender=true;
+    trS.fb={k:'warn',msg:`Ответ показан: ${ansTxt}. Эта задача засчитана как «сдалась».`};
+    bumpErr(trS.id); logEvent({e:'solved', task:trS.id, via:'surrender', mistakes:trS.wrong, hints:trS.hints});
+  }
+  renderTrain();
+}
+function renderTrainPicker(){
+  const weak=topWeak(3);
+  let h='<div class="muted" style="margin-bottom:12px">Выберите тип для тренировки. Числа в каждой задаче меняются; чертёж перестраивается под них.</div>';
+  if(weak.length){ h+='<div class="law" style="margin-bottom:14px"><h3>Стоит повторить (больше всего ошибок)</h3><div>'+weak.map(T=>`<button class="btn ghost small" data-act="train-this" data-id="${T.id}" style="margin:3px 5px 3px 0">№${T.id}. ${T.title}</button>`).join('')+'</div></div>'; }
+  h+='<div class="tgrid">';
+  for(const T of TYPES){ h+=`<div class="tcard" data-act="train-this" data-id="${T.id}"><div class="no">№${T.id}</div><span class="pill ${T.pill}">${PILLNAME[T.pill]}</span><div class="tt">${T.title}</div><div class="dsc">${T.tag}</div></div>`; }
+  h+='</div>';
+  $('panel-train').innerHTML=h;
+}
+function startTrain(id){ newTrainTask(id); switchTab('train'); }
+function newTrainTask(id){
+  const T=byId(id); const p=rnd(T.pool);
+  trS={id, p, b:T.build(p), hints:0, wrong:0, reveal:0, done:false, surrender:false, fb:null,
+       gmode:false, gstep:0, gres:[], gfb:null, gtip:false};
+  logEvent({e:'task_start', task:id, kind:'train'});
+  renderTrain();
+}
+function trCheck(){
+  const T=byId(trS.id), b=trS.b; let allOK=true, any=false;
+  document.querySelectorAll('#panel-train input[data-ai]').forEach(inp=>{
+    const i=+inp.dataset.ai; const v=parseNum(inp.value);
+    if(inp.value.trim()!=='') any=true;
+    if(!approxEq(v, b.ans[i].v, 2e-3)) allOK=false;
+  });
+  if(!any){ trS.fb={k:'warn',msg:'Введите ответ в поле.'}; renderTrain(); return; }
+  if(allOK){
+    trS.done=true;
+    const via = trS.surrender?'surrender':(trS.gmode?'guided':(trS.hints>0?'hint':'direct'));
+    const ansTxt=b.ans.map(a=>`${a.label} = ${a.exact}`).join(', ');
+    const note = trS.gmode?' (по шагам)':(trS.hints>0?' (с подсказками)':'');
+    trS.fb={k:'ok',msg:`Верно! ${ansTxt}.${note}`};
+    if(!trS.surrender) logEvent({e:'solved', task:trS.id, via, mistakes:trS.wrong, hints:trS.hints});
+  } else {
+    trS.wrong++; bumpErr(trS.id);
+    trS.fb={k:'err',msg:'Не сходится. Проверьте вычисления или откройте «🪜 Шаг за шагом».'};
+    logEvent({e:'quiz_wrong', task:trS.id, mode:'train'});
+  }
+  renderTrain();
+}
+function trHint(){
+  if(trS.done) return;
+  if(!trS.gmode){ trS.gmode=true; trS.gstep=0; trS.gres=[]; trS.gfb=null; trS.gtip=false;
+    logEvent({e:'hint', task:trS.id, step:0, kind:'guide-open'}); }
+  renderTrain();
+}
+function trGive(){
+  const b=trS.b; trS.gmode=false; trS.reveal=b.steps.length; trS.surrender=true; trS.done=true;
+  const ansTxt=b.ans.map(a=>`${a.label} = ${a.exact}`).join(', ');
+  trS.fb={k:'warn',msg:`Полное решение открыто. Ответ: ${ansTxt}. Засчитано как «сдалась».`};
+  bumpErr(trS.id);
+  logEvent({e:'solved', task:trS.id, via:'surrender', mistakes:trS.wrong, hints:trS.hints});
+  renderTrain();
+}
+
+/* -------------------- ЗАЧЁТ -------------------- */
+const EXAM_QUOTA={tri:3, trap:2, par:1, quad:1, circ:1}; // 8 вопросов, квоты по темам
+let exS=null;
+function buildExam(){
+  const byPill={}; for(const T of TYPES){ (byPill[T.pill]=byPill[T.pill]||[]).push(T); }
+  const qs=[];
+  for(const pill of Object.keys(EXAM_QUOTA)){
+    const pool=shuffle(byPill[pill]||[]); const need=EXAM_QUOTA[pill];
+    for(let i=0;i<need;i++){ const T=pool[i%pool.length]; const p=rnd(T.pool); qs.push({id:T.id, p, b:T.build(p)}); }
+  }
+  return shuffle(qs);
+}
+function renderExamIntro(){
+  if(exS){ renderExam(); return; }
+  const weak=topWeak(3);
+  const st=state()[TID];
+  let h=`<h2>Зачёт по заданию 25</h2>
+    <div class="muted" style="margin-bottom:12px">${Object.values(EXAM_QUOTA).reduce((a,b)=>a+b,0)} задач с квотами по темам (треугольник, трапеция, параллелограмм, четырёхугольник, окружность). Режим зачёта: <b>без подсказок, одна попытка на задачу</b>. Числа случайные.</div>`;
+  if(weak.length){ h+='<div class="law" style="margin-bottom:14px"><h3>Ваши слабые места (по тренировке)</h3><div class="muted" style="margin-bottom:6px">Эти типы стоит повторить в «Разборе» перед зачётом:</div><div>'+weak.map(T=>`<span class="pill ${T.pill}" style="margin:2px 4px 2px 0">№${T.id} · ${T.title}</span>`).join('')+'</div></div>'; }
+  if(st.best>0){ h+=`<div class="stat">Лучший результат: <b>${st.best}</b> · попыток зачёта: ${st.runs}</div>`; }
+  h+='<div class="ansrow"><button class="btn blue" data-act="exam-start">Начать зачёт →</button></div>';
+  $('panel-exam').innerHTML=h;
+}
+function startExam(){
+  exS={list:buildExam(), i:0, res:[]};
+  commit(t=>{ t.runs=(t.runs||0)+1; });
+  logEvent({e:'start', kind:'exam'});
+  renderExam();
+}
+function renderExam(){
+  if(exS.i>=exS.list.length){ return renderExamFin(); }
+  const q=exS.list[exS.i], T=byId(q.id), b=q.b;
+  const total=exS.list.length;
+  const inputs=b.ans.map((a,i)=>`<label style="font-size:13.5px;font-weight:700">${a.label} = <input class="num" data-ai="${i}" inputmode="decimal" placeholder="число"></label>`).join(' ');
+  let dots=''; for(let k=0;k<total;k++){ const r=exS.res[k]; dots+=`<div class="dot ${r?(r.correct?'g':'r'):''}"></div>`; }
+  let h=`<div class="qtop"><div class="qprog"><i style="width:${Math.round(exS.i/total*100)}%"></i></div><div style="font-size:13px;font-weight:700">Задача ${exS.i+1} из ${total}</div></div>
+    <div class="dots">${dots}</div>
+    <div class="row">
+      <div class="col" style="max-width:520px"><div class="fig">${T.draw(q.p)}</div></div>
+      <div class="col"><div class="task">
+        <span class="pill ${T.pill}">${PILLNAME[T.pill]}</span>
+        <div class="cond" style="margin-top:8px">${T.cond(q.p)}</div>
+        <div class="ansrow">${inputs}</div>
+        <div class="muted" style="margin-top:6px">Иррациональный ответ — десятичной дробью (округление до сотых).</div>
+        <div class="ansrow"><button class="btn blue" data-act="exam-answer">Ответить</button></div>
+        <div class="fb" id="exFb"></div>
+      </div></div>
+    </div>`;
+  $('panel-exam').innerHTML=h;
+}
+function examAnswer(){
+  const q=exS.list[exS.i], b=q.b; let allOK=true, any=false;
+  document.querySelectorAll('#panel-exam input[data-ai]').forEach(inp=>{
+    const i=+inp.dataset.ai; if(inp.value.trim()!=='') any=true;
+    if(!approxEq(parseNum(inp.value), b.ans[i].v, 2e-3)) allOK=false;
+  });
+  if(!any){ const fb=$('exFb'); fb.className='fb show warn'; fb.textContent='Введите ответ.'; return; }
+  exS.res[exS.i]={correct:allOK};
+  if(!allOK) bumpErr(q.id);
+  logEvent({e:allOK?'quiz_ok':'quiz_wrong', task:q.id, mode:'exam'});
+  const fb=$('exFb'); fb.className='fb show '+(allOK?'ok':'err');
+  const ansTxt=b.ans.map(a=>`${a.label} = ${a.exact}`).join(', ');
+  fb.innerHTML=allOK?`Верно! ${ansTxt}`:`Неверно. Правильный ответ: ${ansTxt}`;
+  // авто-переход через короткую паузу заменяем кнопкой (среда без таймеров-эффектов): показать «Далее»
+  fb.innerHTML += `<div class="ansrow"><button class="btn small" data-act="exam-next">${exS.i+1<exS.list.length?'Следующая →':'Итоги →'}</button></div>`;
+}
+function examNext(){ exS.i++; renderExam(); }
+function renderExamFin(){
+  const total=exS.list.length, score=exS.res.filter(r=>r&&r.correct).length;
+  commit(t=>{ if(score>(t.best||0)) t.best=score; t.passed=true; });
+  logEvent({e:'finish', score, total, kind:'exam'});
+  let dots=''; for(const r of exS.res){ dots+=`<div class="dot ${r&&r.correct?'g':'r'}"></div>`; }
+  // разбор неверных
+  let wrongList=exS.list.map((q,k)=>({q,k})).filter(x=>!(exS.res[x.k]&&exS.res[x.k].correct));
+  let rev='';
+  if(wrongList.length){ rev='<div class="review"><h3 style="font-size:14px;margin:14px 0 6px">Разобрать ошибки:</h3>'+
+    wrongList.map(({q})=>{ const T=byId(q.id); return `<div class="rline">№${T.id}. ${T.title} — <button class="link" data-act="train-this" data-id="${T.id}">тренировать этот тип →</button></div>`; }).join('')+'</div>'; }
+  const law = score===total
+    ? 'Отличный результат! Все ключевые теоремы вне листа справочных материалов вы применяете уверенно.'
+    : 'Задание 25 держится на теоремах, которых нет на листе справочных материалов. Повторите отмеченные типы в «Разборе» — там для каждого объяснено, <i>почему</i> работает ключевой шаг.';
+  let h=`<h2>Зачёт завершён</h2>
+    <div style="font-size:40px;font-weight:800;color:${score===total?'var(--green)':'var(--ink)'}">${score} / ${total}</div>
+    <div class="dots" style="margin:10px 0 4px">${dots}</div>
+    <div class="law"><h3>Итог</h3><div style="font-size:13.5px">${law}</div></div>
+    ${rev}
+    <div class="ansrow"><button class="btn blue" data-act="exam-again">Пройти ещё раз</button> <button class="btn ghost" data-act="go-learn">К разбору типов</button></div>`;
+  $('panel-exam').innerHTML=h;
+  exS=null;
+}
+
+/* -------------------- СПРАВОЧНИК -------------------- */
+function renderRef(){
+  let h=`<div class="notsheet" style="margin-bottom:16px"><b>Как устроен этот справочник</b>Задание 25 почти целиком опирается на факты, которых <b>нет</b> на официальном листе справочных материалов ОГЭ. Ниже — ключевые теоремы и приёмы по типам: что применяем, <i>почему</i> это работает и чего именно не найти на листе. По кнопке можно сразу перейти к тренировке типа.</div>`;
+  const groups={}; for(const T of TYPES){ (groups[T.pill]=groups[T.pill]||[]).push(T); }
+  for(const pill of ['tri','trap','par','quad','circ']){
+    const list=groups[pill]; if(!list) continue;
+    h+=`<h2 style="margin:16px 0 8px"><span class="pill ${pill}">${PILLNAME[pill]}</span></h2><div class="refmap">`;
+    for(const T of list){
+      h+=`<div class="refcard">
+        <div class="rt2">№${T.id}. ${T.title}</div>
+        <div style="font-size:12.5px;color:var(--muted)">${T.tag}</div>
+        <div class="kf">${T.refKey}</div>
+        <div style="font-size:12.5px;color:#7a4d0c;background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:8px;padding:8px 10px;margin-top:8px"><b>Почему применимо:</b> ${T.refWhy}</div>
+        <div class="notsheet">${T.notSheet}</div>
+        <div style="margin-top:10px"><button class="btn blue small" data-act="train-this" data-id="${T.id}">Тренировать →</button></div>
+      </div>`;
+    }
+    h+='</div>';
+  }
+  $('panel-ref').innerHTML=h;
+}
+
+/* -------------------- ДЕЛЕГИРОВАНИЕ СОБЫТИЙ -------------------- */
+document.addEventListener('click', function(ev){
+  const el=ev.target.closest('[data-act]'); 
+  const tabBtn=ev.target.closest('.tab');
+  if(tabBtn){ switchTab(tabBtn.dataset.tab); return; }
+  if(!el) return;
+  const act=el.dataset.act, id=el.dataset.id? +el.dataset.id : null;
+  switch(act){
+    case 'learn-open': learnType=id; renderLearn(); break;
+    case 'learn-back': learnType=null; renderLearn(); break;
+    case 'train-this': trS=null; startTrain(id); break;
+    case 'train-pick': trS=null; renderTrain(); break;
+    case 'tr-check': trCheck(); break;
+    case 'tr-hint': trHint(); break;
+    case 'tr-give': trGive(); break;
+    case 'g-check': gCheck(); break;
+    case 'g-reveal': gReveal(); break;
+    case 'g-next': gNext(); break;
+    case 'g-tip': trS.gtip=!trS.gtip; renderTrain(); break;
+    case 'tr-next': newTrainTask(id); break;
+    case 'exam-start': startExam(); break;
+    case 'exam-answer': examAnswer(); break;
+    case 'exam-next': examNext(); break;
+    case 'exam-again': exS=null; renderExamIntro(); break;
+    case 'go-learn': switchTab('learn'); break;
+    case 'why': { const bd=el.parentElement.querySelector('.why-body'); if(bd){ const op=bd.classList.toggle('open'); el.textContent=op?'скрыть объяснение':'почему это верно?'; } break; }
+  }
+});
+
+/* -------------------- СТАРТ -------------------- */
+function init(){ commit(()=>{}); switchTab('learn'); }
+init();
+</script>
+</body>
+</html>

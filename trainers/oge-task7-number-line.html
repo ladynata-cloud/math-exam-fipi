@@ -1,0 +1,2598 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задание 7 ОГЭ. Координатная прямая — тренажёр</title>
+<style>
+:root{
+  --ink:#26323f; --blue:#1a4f8f; --green:#2e7d32; --red:#c62828;
+  --paper:#fdfcf7; --cell:#dfe8ef; --marg:#e8a0a0; --accent:#f29722;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  color:var(--ink); background:var(--paper);
+  background-image:linear-gradient(var(--cell) 1px,transparent 1px),
+    linear-gradient(90deg,var(--cell) 1px,transparent 1px);
+  background-size:24px 24px;
+  min-height:100vh;
+}
+.margin-line{position:fixed;top:0;bottom:0;left:52px;width:2px;background:var(--marg);opacity:.55;z-index:0;pointer-events:none}
+.wrap{max-width:880px;margin:0 auto;padding:18px 16px 90px;position:relative;z-index:1}
+header.top{padding:6px 0 2px}
+h1{font-size:26px;margin:0 0 4px;color:var(--blue)}
+.subtitle{margin:0 0 12px;color:#5a6b7c;font-size:14.5px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}
+.tab{border:2px solid var(--blue);background:#fff;color:var(--blue);
+  padding:9px 18px;border-radius:12px;font-size:16px;cursor:pointer;font-weight:600}
+.tab.active{background:var(--blue);color:#fff}
+section.mode{display:none}
+section.mode.active{display:block}
+
+.card{background:rgba(255,255,255,.92);border:1px solid #cfd9e3;border-radius:14px;
+  padding:16px 18px;margin:0 0 16px;box-shadow:0 1px 3px rgba(30,50,70,.07)}
+.card h2{margin:2px 0 10px;font-size:19px;color:var(--blue)}
+.card h3{margin:14px 0 6px;font-size:16.5px}
+.pnum{display:inline-flex;align-items:center;justify-content:center;
+  min-width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;
+  font-size:15px;font-weight:700;margin-right:8px}
+.case-card{border:1.5px dashed #b9c8d6;border-radius:10px;padding:10px 12px;margin:8px 0;background:#fbfdff}
+.case-card b.cn{color:var(--blue)}
+.desp{border-color:#e6b36a;background:#fffaf0}
+.desp b.cn{color:#b06d00}
+.warn{color:#8a5a00;font-size:14px}
+.linkto{color:var(--blue);font-size:13.5px}
+.note{font-size:14px;color:#5a6b7c}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;
+  margin:0 3px;line-height:1.05}
+.frac .fn{padding:0 4px;border-bottom:1.6px solid currentColor}
+.frac .fd{padding:0 4px}
+.sqrt{white-space:nowrap}
+.sqrt .rad{border-top:1.6px solid currentColor;padding:0 2px 0 1px}
+i{font-family:Georgia,'Times New Roman',serif}
+
+button{font-family:inherit}
+.btn{border:2px solid var(--blue);background:#fff;color:var(--blue);border-radius:10px;
+  padding:7px 14px;font-size:15px;cursor:pointer;font-weight:600;margin:2px 4px 2px 0}
+.btn:hover{background:#eef4fb}
+.btn.primary{background:var(--blue);color:#fff}
+.btn.show{border-color:var(--red);color:var(--red)}
+.btn.show:hover{background:#fdf0f0}
+.btn.small{padding:4px 10px;font-size:13.5px}
+.btn:disabled{opacity:.45;cursor:default}
+.chip{border:1.5px solid #9fb2c4;background:#fff;color:#41546a;border-radius:999px;
+  padding:5px 13px;font-size:14px;cursor:pointer;margin:2px 4px 2px 0}
+.chip.active{border-color:var(--blue);background:var(--blue);color:#fff}
+.chiprow{margin:6px 0 10px}
+.selrow{margin:4px 0 10px;font-size:14.5px}
+.selrow label{margin-right:10px}
+
+input.ans{width:76px;font-size:17px;padding:5px 8px;border:2px solid #9fb2c4;border-radius:8px;
+  text-align:center;font-family:inherit;background:#fff}
+input.ans:focus{outline:none;border-color:var(--blue)}
+input.ans.good{border-color:var(--green);background:#f2faf2}
+input.ans.bad{border-color:var(--red);background:#fdf4f4}
+.msg{display:inline-block;margin-left:8px;font-size:15px;font-weight:600}
+.msg.good{color:var(--green)}
+.msg.bad{color:var(--red)}
+.msg.shown{color:var(--red);font-weight:500}
+.hintbox{margin:8px 0 0;padding:8px 12px;border-left:3px solid var(--accent);
+  background:#fff8ec;font-size:14.5px;border-radius:0 8px 8px 0}
+
+.stepcard{border:1.5px solid #cfd9e3;border-radius:12px;padding:12px 14px;margin:10px 0;background:#fff}
+.stepcard.done{border-color:#bfe0c0;background:#f7fcf7}
+.stepq{font-size:16px;margin-bottom:8px}
+.steprow{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.choice{border:2px solid #9fb2c4;background:#fff;border-radius:10px;padding:7px 13px;
+  font-size:15px;cursor:pointer;margin:2px 6px 2px 0;color:var(--ink)}
+.choice:hover{border-color:var(--blue)}
+.choice.good{border-color:var(--green);background:#f2faf2;color:var(--green);font-weight:700}
+.choice.bad{border-color:var(--red);background:#fdf4f4}
+.choice:disabled{cursor:default;opacity:.75}
+
+.taskline{font-size:16.5px;line-height:1.6;margin-bottom:8px}
+.svgbox{margin:8px 0;overflow-x:auto}
+.optlist{margin:6px 0}
+.optbtn{display:flex;align-items:center;gap:8px;border:2px solid #9fb2c4;background:#fff;
+  border-radius:10px;padding:8px 14px;margin:6px 0;font-size:16.5px;cursor:pointer;width:100%;
+  max-width:430px;text-align:left;color:var(--ink)}
+.optbtn:hover{border-color:var(--blue)}
+.optbtn.good{border-color:var(--green);background:#f2faf2}
+.optbtn.bad{border-color:var(--red);background:#fdf4f4}
+.optbtn .onum{font-weight:700;color:var(--blue);min-width:24px}
+.optbtn:disabled{cursor:default}
+.src{font-size:13px;color:#7b8a99;margin-bottom:4px}
+.counter{font-size:14px;color:#41546a;margin:8px 0}
+.counter b{color:var(--green)}
+.counter .shown{color:var(--red)}
+.taskgrid{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0}
+.tg{width:34px;height:30px;border:1.5px solid #9fb2c4;border-radius:8px;background:#fff;
+  font-size:13px;cursor:pointer;color:#41546a}
+.tg.cur{border-color:var(--blue);border-width:2.5px;font-weight:700;color:var(--blue)}
+.tg.ok{background:#e4f4e4;border-color:var(--green);color:var(--green)}
+.tg.steps{background:#fff4dd;border-color:#d99b2b;color:#946200}
+.tg.shown{background:#fbe9e9;border-color:var(--red);color:var(--red)}
+details.bank{margin:10px 0}
+details.bank summary{cursor:pointer;font-weight:600;color:var(--blue)}
+.bankcodes{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.bankcodes code{border:1px solid #cfd9e3;background:#fff;border-radius:6px;padding:3px 8px;font-size:14px}
+.sq-table{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-width:520px;margin:8px 0}
+.sq{border:1.5px solid #b9c8d6;border-radius:8px;background:#fff;padding:6px 4px;text-align:center;
+  cursor:pointer;font-size:14.5px}
+.sq:hover{border-color:var(--blue)}
+.sq .v{display:block;color:var(--blue);font-weight:700;font-size:15.5px}
+.footer-note{font-size:13px;color:#8a97a5;margin-top:24px}
+@media (max-width:560px){
+  .margin-line{left:26px}
+  .wrap{padding:14px 10px 70px}
+  h1{font-size:21px}
+}
+
+</style>
+</head>
+<body>
+<div class="margin-line"></div>
+<div class="wrap">
+<header class="top">
+  <h1>Задание 7 ОГЭ. Координатная прямая</h1>
+  <p class="subtitle">Числа на прямой: читаем рисунок, оцениваем дроби и корни, находим точки. Три режима: сначала учимся, потом решаем по шагам, потом марафон по реальному банку.</p>
+  <div class="tabs">
+    <button class="tab active" data-t="learn">&#128214; Учимся</button>
+    <button class="tab" data-t="steps">&#129714; Пошагово</button>
+    <button class="tab" data-t="mar">&#127939; Марафон</button>
+  </div>
+</header>
+
+<!-- ================= УЧИМСЯ ================= -->
+<section class="mode active" id="mode-learn">
+
+<div class="card">
+  <h2><span class="pnum">1</span>Главное правило прямой</h2>
+  <p>На координатной прямой <b>правее — значит больше</b>. Всё задание 7 держится на этом правиле: неважно, дроби перед тобой, корни или буквы — сравнивать числа значит смотреть, какое правее.</p>
+  <p>Отсюда два следствия, которые пригодятся в пункте 5:</p>
+  <div class="case-card"><b class="cn">Следствие про знак:</b> всё, что левее нуля, — отрицательное; правее — положительное.</div>
+  <div class="case-card"><b class="cn">Следствие про разность:</b> «правое минус левое» даёт плюс, «левое минус правое» — минус.</div>
+  <h3>Попробуй сам</h3>
+  <div id="p1tool"></div>
+  <button class="btn small" id="p1new">Новая пара</button>
+</div>
+
+<div class="card">
+  <h2><span class="pnum">2</span>Читаем рисунок</h2>
+  <p>В задачах «по рисунку» первым делом снимаем с картинки два факта о числе: <b>между какими целыми</b> оно стоит и <b>какой у него знак</b>. Деления на рисунке идут через единицу — считай их от подписанных чисел.</p>
+  <p>Точка стоит <i>между</i> делениями — значит само число не целое: если <i>a</i> между 4 и 5, то 4 &lt; <i>a</i> &lt; 5, и ни 4, ни 5 оно не равно.</p>
+  <h3>Попробуй сам</h3>
+  <div id="p2tool"></div>
+  <button class="btn small" id="p2new">Новый рисунок</button>
+</div>
+
+<div class="card">
+  <h2><span class="pnum">3</span>Оцениваем обыкновенную дробь</h2>
+  <p>Задача «между какими числами заключена дробь» решается по случаям — проверяй их по порядку:</p>
+  <div class="case-card"><b class="cn">Случай 1. Знаменатель 10 или 100.</b> Повезло: сразу пиши десятичную. <span class="frac"><span class="fn">7</span><span class="fd">10</span></span> = 0,7 — и всё видно.</div>
+  <div class="case-card"><b class="cn">Случай 2. Дробь неправильная (числитель больше) — ищем целые.</b> Дели с остатком: 131&nbsp;=&nbsp;10·12&nbsp;+&nbsp;11, значит <span class="frac"><span class="fn">131</span><span class="fd">12</span></span> = 10 + <span class="frac"><span class="fn">11</span><span class="fd">12</span></span> — число между <b>10</b> и <b>11</b>. Хвостик <span class="frac"><span class="fn">11</span><span class="fd">12</span></span> меньше единицы, поэтому за 11 не перелезем.</div>
+  <div class="case-card"><b class="cn">Случай 3. Нужны десятые — умножь на 10 и вернись к случаю 2.</b> Для <span class="frac"><span class="fn">5</span><span class="fd">9</span></span>: считаем 10·<span class="frac"><span class="fn">5</span><span class="fd">9</span></span> = <span class="frac"><span class="fn">50</span><span class="fd">9</span></span>, а 50&nbsp;=&nbsp;5·9&nbsp;+&nbsp;5, значит <span class="frac"><span class="fn">50</span><span class="fd">9</span></span> между 5 и 6 — само число между <b>0,5</b> и <b>0,6</b>.</div>
+  <div class="case-card desp"><b class="cn">Отчаянный девятиклассник:</b> дели числитель на знаменатель уголком, пока не увидишь нужный разряд. Работает <i>всегда</i> и без теории. Честная цена: медленнее, и одна ошибка в столбике — неверный ответ без шанса заметить.</div>
+  <h3>Попробуй сам</h3>
+  <div class="steprow">
+    <span>Дробь:</span>
+    <span class="frac"><span class="fn"><input class="ans" id="p3m" value="5"></span><span class="fd"><input class="ans" id="p3n" value="9"></span></span>
+    <button class="btn primary small" id="p3go">Разобрать</button>
+    <button class="btn small" id="p3rand">Случайная дробь</button>
+  </div>
+  <div id="p3out"></div>
+</div>
+
+<div class="card">
+  <h2><span class="pnum">4</span>Оцениваем корень</h2>
+  <p>Правило одно: <b>зажми подкоренное число между соседними квадратами</b>. Если k² &lt; N &lt; (k+1)², то k &lt; <span class="sqrt">&#8730;<span class="rad">N</span></span> &lt; k+1. Для <span class="sqrt">&#8730;<span class="rad">60</span></span>: 49 &lt; 60 &lt; 64, значит корень между <b>7</b> и <b>8</b>.</p>
+  <p>Если спрашивают наоборот — «какой из корней лежит в [7; 8]» — возведи <i>границы</i> в квадрат: подойдёт корень из числа между 49 и 64 (как в пункте 3, только квадратами).</p>
+  <p>Нужна точность до десятых (пункт 6, поиск точки) — прикинь серединой: 7,5² = 56,25; число 60 больше — значит <span class="sqrt">&#8730;<span class="rad">60</span></span> правее середины промежутка.</p>
+  <h3>Квадраты до 15 — проверь себя (жми на карточку)</h3>
+  <div class="sq-table" id="sqtable"></div>
+  <h3>Попробуй сам</h3>
+  <div class="steprow">
+    <span class="sqrt" style="font-size:18px">&#8730;<span class="rad"><input class="ans" id="p4n" value="60"></span></span>
+    <button class="btn primary small" id="p4go">Разобрать</button>
+    <button class="btn small" id="p4rand">Случайное число</button>
+  </div>
+  <div id="p4out"></div>
+</div>
+
+<div class="card">
+  <h2><span class="pnum">5</span>Переводим утверждения</h2>
+  <p>В задачах «какое утверждение верно» каждый вариант переводи на язык «<i>a</i> сравнить с числом» — и сверяй с тем, что снял с рисунка в пункте 2. Случаи:</p>
+  <div class="case-card"><b class="cn">Случай 1. Буква и число: перенеси число.</b> <i>a</i> + 4 &gt; 0 &#8660; <i>a</i> &gt; &#8722;4. &nbsp;5 &#8722; <i>a</i> &lt; 0 &#8660; <i>a</i> &gt; 5 (перенесли <i>a</i> вправо, 0 влево). Знак сравнения при переносе <b>не меняется</b> — меняется знак переносимого числа.</div>
+  <div class="case-card"><b class="cn">Случай 2. Только знак: &#8722;<i>a</i>, <span class="frac"><span class="fn">1</span><span class="fd"><i>a</i></span></span>, <i>a</i>&#179;.</b> Знак <span class="frac"><span class="fn">1</span><span class="fd"><i>a</i></span></span> и знак <i>a</i>&#179; совпадают со знаком <i>a</i>; у &#8722;<i>a</i> — противоположный. А вот <i>a</i>&#178; и <i>ab</i>&#178; хитрее: квадрат неотрицателен всегда, так что знак решает то, что перед ним.</div>
+  <div class="case-card"><b class="cn">Случай 3. Разность букв: смотри, кто правее.</b> <i>b</i> &#8722; <i>a</i> &gt; 0 &#8660; <i>b</i> правее <i>a</i> — по правилу пункта 1.</div>
+  <div class="case-card"><b class="cn">Случай 4. Произведение или сумма двух букв: сначала знаки.</b> Разные знаки — произведение отрицательно. Для суммы при разных знаках сравни, какое число дальше от нуля: перевешивает оно.</div>
+  <div class="case-card"><b class="cn">Случай 5. Квадраты: |модуль| — это расстояние до нуля.</b> |<i>a</i>| говорит, насколько далеко число от нуля, знак не важен. А (<i>a</i> &#8722; 6)&#178; &gt; 1 значит «<i>a</i> дальше единицы от числа 6» — левее 5 или правее 7. И помни: <i>a</i>&#178; &gt; 36 для положительных — это просто <i>a</i> &gt; 6.</div>
+  <div class="case-card desp"><b class="cn">Отчаянный девятиклассник: подставь число.</b> Точка <i>a</i> между &#8722;3 и &#8722;2? Возьми <i>a</i> = &#8722;2,5 и тупо посчитай каждый вариант арифметикой. Работает почти всегда. Честная цена: число надо брать <b>внутри</b> промежутка и похожим на рисунок (не на границе!), и считать аккуратно — минус на минус даёт плюс.</div>
+  <h3>Попробуй сам</h3>
+  <div id="p5tool"></div>
+  <button class="btn small" id="p5new">Новое утверждение</button>
+</div>
+
+<div class="card">
+  <h2><span class="pnum">6</span>Потренируйся: определи случай — потом решай</h2>
+  <p>Полшага до марафона. Сначала скажи, <b>каким приёмом</b> решается задача, потом реши её по шагам. Приёмы: читаем рисунок и переводим утверждения (пункты 2 и 5) &#183; зажимаем число между соседними (пункты 3 и 4) &#183; оцениваем число и ищем точку (пункты 3 + 4 + рисунок).</p>
+  <div class="counter" id="p6cnt">решено: <b>0</b> &#183; <span class="shown">с показом: 0</span></div>
+  <div id="p6tool"></div>
+</div>
+
+</section>
+
+<!-- ================= ПОШАГОВО ================= -->
+<section class="mode" id="mode-steps">
+<div class="card">
+  <h2>Пошаговый решатель</h2>
+  <p class="note">Задачи генерируются бесконечно. Каждый шаг проверяется отдельно; рядом с проверкой всегда есть «Показать шаг» — показанное честно не засчитывается как решённое.</p>
+  <div class="chiprow" id="stepGroups"></div>
+  <div class="chiprow" id="stepSubs"></div>
+  <div class="selrow" id="stepMethodRow">
+    <label><input type="radio" name="stepMethod" value="school" checked> школьный способ</label>
+    <label><input type="radio" name="stepMethod" value="desp"> отчаянный девятиклассник</label>
+  </div>
+  <div class="counter" id="stepCnt"></div>
+  <div id="stepTask"></div>
+</div>
+</section>
+
+<!-- ================= МАРАФОН ================= -->
+<section class="mode" id="mode-mar">
+<div class="card">
+  <h2>Марафон: реальный банк задания 7</h2>
+  <p class="note">Задачи с номерами первоисточников: «РЕШУ ОГЭ», банк7, math100.ru, formulaoge — все ключи сверены программно. У каждой задачи есть «Решить по шагам» — тот же разбор, что в пошаговом режиме.</p>
+  <div class="chiprow" id="marChips"></div>
+  <div class="chiprow" id="marSrcChips"></div>
+  <div class="taskgrid" id="marGrid"></div>
+  <div class="counter" id="marCnt"></div>
+  <div id="marTask"></div>
+  <details class="bank">
+    <summary>Коды открытого банка открытый банк по заданию 7 (тема «Числа»)</summary>
+    <p class="note">Прямые ссылки на карточки банк не открывает — зайди в <a class="linkto" href="https://oge.bank.ru/bank/index.php?proj=DE0E276E497AB3784C3FC4CC20248DC0" target="_blank" rel="noopener">открытый банк заданий</a> и найди задачу по коду вручную. Коды из официального навигатора подготовки:</p>
+    <div class="bankcodes">
+      <code>453B45</code><code>F1F841</code><code>7C7947</code><code>D0C118</code><code>68B11A</code><code>1A0438</code>
+      <code>2C9735</code><code>89913D</code><code>FA9985</code><code>9DCF4D</code><code>E34047</code><code>A04F76</code>
+      <code>3D87BB</code><code>A796FE</code><code>B00E05</code><code>983402</code><code>F2CF43</code><code>BBB673</code>
+    </div>
+  </details>
+</div>
+</section>
+
+<p class="footer-note" id="selfcheck"></p>
+<p class="footer-note">Тренажёр работает офлайн, одним файлом. Вся проверка — точная арифметика на рациональных числах. Собрано по «Конституции тренажёров»: Учимся &#8594; Пошагово &#8594; Марафон, случаи по порядку, рядом с каждой проверкой — показ.</p>
+</div>
+
+<script>
+/* ===== ЯДРО (без DOM): рациональная арифметика, банк, генераторы, шаги ===== */
+"use strict";
+
+/* ---------- Точная рациональная арифметика на BigInt ---------- */
+function bgcd(a,b){a=a<0n?-a:a;b=b<0n?-b:b;while(b){[a,b]=[b,a%b];}return a;}
+function Q(n,d){ d=(d===undefined)?1n:BigInt(d); n=BigInt(n);
+  if(d===0n) throw new Error("den=0");
+  if(d<0n){n=-n;d=-d;}
+  const g=bgcd(n,d)||1n; return {n:n/g,d:d/g}; }
+const Q0=Q(0), Q1=Q(1);
+function qadd(a,b){return Q(a.n*b.d+b.n*a.d, a.d*b.d);}
+function qsub(a,b){return Q(a.n*b.d-b.n*a.d, a.d*b.d);}
+function qmul(a,b){return Q(a.n*b.n, a.d*b.d);}
+function qdiv(a,b){return Q(a.n*b.d, a.d*b.n);}
+function qneg(a){return Q(-a.n, a.d);}
+function qcmp(a,b){const l=a.n*b.d, r=b.n*a.d; return l<r?-1:(l>r?1:0);}
+function qlt(a,b){return qcmp(a,b)<0;} function qgt(a,b){return qcmp(a,b)>0;}
+function qfloor(a){let f=a.n/a.d; if(a.n<0n && a.n%a.d!==0n) f-=1n; return Number(f);}
+function qnum(a){return Number(a.n)/Number(a.d);}
+function qFromDec(k,dec){ // k + 0.dec  (dec: строка цифр), знак у k
+  const s=String(dec); const d=10n**BigInt(s.length);
+  const base=Q(BigInt(k)); const fr=Q(BigInt(s), d);
+  return (k<0||Object.is(k,-0))? qsub(base,fr) : qadd(base,fr);
+}
+
+/* ---------- Утилиты ---------- */
+function ri(a,b){return a+Math.floor(Math.random()*(b-a+1));}
+function pick(arr){return arr[ri(0,arr.length-1)];}
+function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=ri(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;}
+function fmtMinus(s){return String(s).replace(/-/g,"\u2212");}
+function decComma(x){return fmtMinus(String(x).replace(".",","));}
+
+/* Числа для показа: этажная дробь / корень (HTML) */
+function fracHtml(num,den){return '<span class="frac"><span class="fn">'+num+'</span><span class="fd">'+den+'</span></span>';}
+function sqrtHtml(x){return '<span class="sqrt">\u221A<span class="rad">'+x+'</span></span>';}
+function vi(x){return '<i>'+x+'</i>';}
+
+/* ---------- Разбор ввода: целые и десятичные -> Q ---------- */
+function parseIntStrict(s){ s=String(s??"").trim().replace(/\u2212/g,"-");
+  if(!/^-?\d+$/.test(s)) return null; return parseInt(s,10); }
+function parseQ(s){ s=String(s??"").trim().replace(/\u2212/g,"-").replace(",",".");
+  if(/^-?\d+$/.test(s)) return Q(BigInt(s));
+  let m=s.match(/^(-?)(\d+)\.(\d+)$/); if(m){ const sign=m[1]==="-"?-1n:1n; const d=10n**BigInt(m[3].length);
+    return Q(sign*(BigInt(m[2])*d+BigInt(m[3])), d); }
+  m=s.match(/^(-?\d+)\s*\/\s*(\d+)$/); if(m){ return Q(BigInt(m[1]),BigInt(m[2])); }
+  return null; }
+
+/* ---------- Модель утверждений (тип А) ---------- */
+/* rel: '>' | '<' ; проверка над рациональными значениями vals */
+function relTest(x,y,rel){return rel===">"?qgt(x,y):qlt(x,y);}
+const REL={gt:">",lt:"<"};
+function relHtml(rel){return rel===">"?"&gt;":"&lt;";}
+
+/* Конструкторы утверждений: {html, test(vals), kindCase, hint(vals,method)} */
+function stPlus(v,c,rel){ // v + c REL 0
+  const ch = c<0? "\u2212 "+(-c) : "+ "+c;
+  return {case:1, html:vi(v)+" "+ch+" "+relHtml(rel)+" 0",
+    test:vals=>relTest(qadd(vals[v],Q(c)),Q0,rel),
+    school:()=>"перенеси число: "+vi(v)+" "+ch+" "+relHtml(rel)+" 0 \u21D4 "+vi(v)+" "+relHtml(rel)+" "+fmtMinus(String(-c))};
+}
+function stCminus(v,c,rel){ // c − v REL 0  ⇔ v (противоп. rel) c
+  const inv=rel===">"?"<":">";
+  return {case:1, html:fmtMinus(String(c))+" \u2212 "+vi(v)+" "+relHtml(rel)+" 0",
+    test:vals=>relTest(qsub(Q(c),vals[v]),Q0,rel),
+    school:()=>fmtMinus(String(c))+" \u2212 "+vi(v)+" "+relHtml(rel)+" 0 \u21D4 "+vi(v)+" "+relHtml(inv)+" "+fmtMinus(String(c))};
+}
+function stMinusC(v,c,rel){ // v − c REL 0
+  return {case:1, html:vi(v)+" \u2212 "+c+" "+relHtml(rel)+" 0",
+    test:vals=>relTest(qsub(vals[v],Q(c)),Q0,rel),
+    school:()=>vi(v)+" \u2212 "+c+" "+relHtml(rel)+" 0 \u21D4 "+vi(v)+" "+relHtml(rel)+" "+c};
+}
+function stNeg(v,c,rel){ // −v REL c ⇔ v (противоп.) −c
+  const inv=rel===">"?"<":">";
+  return {case:2, html:"\u2212"+vi(v)+" "+relHtml(rel)+" "+fmtMinus(String(c)),
+    test:vals=>relTest(qneg(vals[v]),Q(c),rel),
+    school:()=>"умножь на \u22121, знак переворачивается: "+vi(v)+" "+relHtml(inv)+" "+fmtMinus(String(-c))};
+}
+function stInv(v,rel){ // 1/v REL 0
+  return {case:2, html:fracHtml("1",vi(v))+" "+relHtml(rel)+" 0",
+    test:vals=>relTest(qdiv(Q1,vals[v]),Q0,rel),
+    school:()=>"знак у "+fracHtml("1",vi(v))+" такой же, как у "+vi(v)};
+}
+function stCube(v,rel){
+  return {case:2, html:vi(v)+"<sup>3</sup> "+relHtml(rel)+" 0",
+    test:vals=>relTest(qmul(qmul(vals[v],vals[v]),vals[v]),Q0,rel),
+    school:()=>"нечётная степень сохраняет знак: знак "+vi(v)+"<sup>3</sup> = знак "+vi(v)};
+}
+function stDiff(u,w,rel,rhs){ // u − w REL rhs(число, обычно 0)
+  rhs=rhs||0;
+  return {case:3, html:vi(u)+" \u2212 "+vi(w)+" "+relHtml(rel)+" "+rhs,
+    test:vals=>relTest(qsub(vals[u],vals[w]),Q(rhs),rel),
+    school:()=>vi(u)+" \u2212 "+vi(w)+" &gt; 0 \u21D4 "+vi(u)+" правее "+vi(w)+" (правее \u2014 больше)"};
+}
+function stProd(u,w,rel,rhs){ rhs=rhs||0;
+  return {case:4, html:vi(u)+vi(w)+" "+relHtml(rel)+" "+rhs,
+    test:vals=>relTest(qmul(vals[u],vals[w]),Q(rhs),rel),
+    school:()=>"смотри на знаки множителей: разные знаки \u2014 произведение отрицательно"};
+}
+function stProdSq(u,w,rel){ // u·w² REL 0
+  return {case:4, html:vi(u)+vi(w)+"<sup>2</sup> "+relHtml(rel)+" 0",
+    test:vals=>relTest(qmul(vals[u],qmul(vals[w],vals[w])),Q0,rel),
+    school:()=>vi(w)+"<sup>2</sup> \u2265 0 всегда, значит знак определяет "+vi(u)};
+}
+function stSum(u,w,rel,rhs){ rhs=rhs||0;
+  return {case:4, html:vi(u)+" + "+vi(w)+" "+relHtml(rel)+" "+rhs,
+    test:vals=>relTest(qadd(vals[u],vals[w]),Q(rhs),rel),
+    school:()=>"если знаки разные \u2014 сравни, какое число дальше от нуля"};
+}
+function stInvCmp(u,w){ // 1/u > 1/w
+  return {case:4, html:fracHtml("1",vi(u))+" &gt; "+fracHtml("1",vi(w)),
+    test:vals=>qgt(qdiv(Q1,vals[u]),qdiv(Q1,vals[w])),
+    school:()=>"сначала сравни знаки: отрицательное всегда меньше положительного"};
+}
+function stDiffProd(u,w,z,rel){ // (u−w)·z REL 0
+  return {case:4, html:"("+vi(u)+" \u2212 "+vi(w)+")"+vi(z)+" "+relHtml(rel)+" 0",
+    test:vals=>relTest(qmul(qsub(vals[u],vals[w]),vals[z]),Q0,rel),
+    school:()=>"найди знак скобки (правее \u2014 больше) и знак "+vi(z)+", перемножь знаки"};
+}
+
+/* ---------- Банк задач (РЕШУ ОГЭ, задание 7) ---------- */
+/* kind A: рисунок + утверждения; B: оценка числа; C: точки и числа */
+const BANK=[];
+function addA(num, vals, opts, key, mode, pic){
+  BANK.push({id:"r"+num, src:"РЕШУ ОГЭ \u2116 "+num, kind:"A", mode:mode||"верно",
+    vals, opts, key, pic});
+}
+/* --- тип А --- */
+addA(311418,{a:Q(-45,10)},[
+  stPlus("a",4,">"), stPlus("a",5,"<"), stCminus("a",2,">"), stCminus("a",3,"<")
+],3,"верно",{lo:-6.6,hi:1.9,ticks:"int",labels:[0,1],pts:[{name:"a"}]});
+addA(311749,{a:Q(-24,10)},[
+  stNeg("a",2,"<"), stCminus("a",-1,">"), stInv("a",">"), stPlus("a",3,"<")
+],2,"верно",{lo:-3.7,hi:1.7,ticks:"int",labels:[-3,-2,-1,0,1],pts:[{name:"a"}]});
+addA(311779,{a:Q(-15,10)},[
+  stNeg("a",1,"<"), stCminus("a",-2,">"), stInv("a","<"), stPlus("a",4,"<")
+],3,"верно",{lo:-3.7,hi:1.7,ticks:"int",labels:[-3,-2,-1,0,1],pts:[{name:"a"}]});
+addA(311805,{a:Q(47,10)},[
+  stNeg("a",-6,">"), stCminus("a",5,"<"), stInv("a","<"), stMinusC("a",7,">")
+],1,"верно",{lo:-0.7,hi:6.7,ticks:"int",labels:[0,1,2,3,4,5,6],pts:[{name:"a"}]});
+addA(311837,{a:Q(54,10)},[
+  stNeg("a",-5,">"), stCminus("a",6,"<"), stInv("a","<"), stMinusC("a",3,">")
+],4,"верно",{lo:-0.7,hi:6.7,ticks:"int",labels:[0,1,2,3,4,5,6],pts:[{name:"a"}]});
+addA(316220,{a:Q(43,10)},[
+  stNeg("a",-6,">"), stCminus("a",5,"<"), stInv("a","<"), stMinusC("a",7,">")
+],1,"верно",{lo:-0.7,hi:6.7,ticks:"int",labels:[0,1,2,3,4,5,6],pts:[{name:"a"}]});
+addA(317575,{a:Q(-35,10),b:Q(15,10)},[
+  stProdSq("a","b",">"), stDiff("b","a",">"), stProd("a","b","<"), stSum("a","b","<")
+],1,"неверно",{lo:-4.7,hi:2.7,ticks:"int",labels:[0],pts:[{name:"a"},{name:"b"}]});
+addA(322417,{a:Q(-33,10),b:Q(-19,10),c:Q(24,10)},[
+  stSum("a","b",">"), stInvCmp("b","c"), stProd("a","b","<"), stDiffProd("a","b","c","<")
+],4,"верно",{lo:-4.5,hi:3.5,ticks:"int",labels:[0],pts:[{name:"a"},{name:"b"},{name:"c"}]});
+addA(322419,{r:Q(1),q:Q(22,10),p:Q(34,10)},[
+  {case:3,html:vi("p")+" \u2212 "+vi("r"),test:v=>qlt(qsub(v.p,v.r),Q0),school:()=>vi("p")+" правее "+vi("r")+" \u21D2 разность положительна"},
+  {case:3,html:vi("p")+" \u2212 "+vi("q"),test:v=>qlt(qsub(v.p,v.q),Q0),school:()=>vi("p")+" правее "+vi("q")+" \u21D2 разность положительна"},
+  {case:3,html:vi("r")+" \u2212 "+vi("q"),test:v=>qlt(qsub(v.r,v.q),Q0),school:()=>vi("r")+" левее "+vi("q")+" \u21D2 разность отрицательна"},
+  {case:3,html:"ни одна из них",test:v=>!(qlt(qsub(v.p,v.r),Q0)||qlt(qsub(v.p,v.q),Q0)||qlt(qsub(v.r,v.q),Q0)),school:()=>"проверь все три разности"}
+],3,"верно",{lo:0.2,hi:4.4,ticks:"none",labels:[],pts:[{name:"r"},{name:"q"},{name:"p"}],ask:"Какая из разностей "+vi("p")+" \u2212 "+vi("r")+", "+vi("p")+" \u2212 "+vi("q")+", "+vi("r")+" \u2212 "+vi("q")+" отрицательна?"});
+BANK[BANK.length-1].pairs=[["p","r"],["p","q"],["r","q"]]; BANK[BANK.length-1].diffSign="отрицательна";
+addA(322422,{a:Q(1),b:Q(21,10),c:Q(33,10)},[
+  {case:3,html:vi("a")+" \u2212 "+vi("b"),test:v=>qgt(qsub(v.a,v.b),Q0),school:()=>vi("a")+" левее "+vi("b")+" \u21D2 разность отрицательна"},
+  {case:3,html:vi("a")+" \u2212 "+vi("c"),test:v=>qgt(qsub(v.a,v.c),Q0),school:()=>vi("a")+" левее "+vi("c")+" \u21D2 разность отрицательна"},
+  {case:3,html:vi("c")+" \u2212 "+vi("b"),test:v=>qgt(qsub(v.c,v.b),Q0),school:()=>vi("c")+" правее "+vi("b")+" \u21D2 разность положительна"},
+  {case:3,html:"ни одна из них",test:v=>!(qgt(qsub(v.a,v.b),Q0)||qgt(qsub(v.a,v.c),Q0)||qgt(qsub(v.c,v.b),Q0)),school:()=>"проверь все три разности"}
+],3,"верно",{lo:0.2,hi:4.4,ticks:"none",labels:[],pts:[{name:"a"},{name:"b"},{name:"c"}],ask:"Какая из разностей "+vi("a")+" \u2212 "+vi("b")+", "+vi("a")+" \u2212 "+vi("c")+", "+vi("c")+" \u2212 "+vi("b")+" положительна?"});
+BANK[BANK.length-1].pairs=[["a","b"],["a","c"],["c","b"]]; BANK[BANK.length-1].diffSign="положительна";
+addA(339306,{a:Q(-14,10),b:Q(6,10)},[
+  stCube("a",">"), stDiff("a","b",">"), stProd("a","b","<",1), stSum("a","b",">",1)
+],3,"верно",{lo:-2.6,hi:1.8,ticks:"int",labels:[0,1],pts:[{name:"a"},{name:"b"}]});
+addA(341398,{a:Q(63,10)},[
+  stMinusC("a",8,">"), stCminus("a",7,"<"), stMinusC("a",3,">"), stCminus("a",2,">")
+],3,"верно",{lo:-0.7,hi:8.7,ticks:"int",labels:[0,1],pts:[{name:"a"}]});
+
+/* --- тип B: оценка числа --- */
+function addB(num, task){ task.id="r"+num; task.src="РЕШУ ОГЭ \u2116 "+num; task.kind="B"; BANK.push(task); }
+/* between2fracs: какое из десятичных лежит между 1/6 и 1/4 */
+addB(311420,{sub:"betweenFracs", lo:[1,6], hi:[1,4],
+  opts:["0,1","0,2","0,3","0,4"].map(s=>({html:s})),
+  optVals:[Q(1,10),Q(2,10),Q(3,10),Q(4,10)], key:2,
+  text:"Какое из следующих чисел заключено между числами "+fracHtml(1,6)+" и "+fracHtml(1,4)+"?"});
+addB(317132,{sub:"fracTenths", m:5,n:9, key:1,
+  opts:[[5,6],[6,7],[7,8],[8,9]].map(p=>({html:"[0,"+p[0]+";&nbsp;0,"+p[1]+"]"})),
+  optD:[5,6,7,8],
+  text:"Какому из данных промежутков принадлежит число "+fracHtml(5,9)+"?"});
+addB(317223,{sub:"rootBetween", N:53, key:4,
+  opts:[[4,5],[5,6],[6,7],[7,8]].map(p=>({html:"[&nbsp;"+p[0]+";&nbsp;"+p[1]+"&nbsp;]"})),
+  optK:[4,5,6,7],
+  text:"Какому промежутку принадлежит число "+sqrtHtml(53)+"?"});
+addB(337389,{sub:"rootInRange", k:6, Ns:[6,7,35,42], key:4,
+  opts:[6,7,35,42].map(x=>({html:sqrtHtml(x)})),
+  text:"Какое из данных чисел принадлежит промежутку [6;&nbsp;7]?"});
+addB(352483,{sub:"rootBetween", N:60, key:2,
+  opts:[[20,22],[7,8],[59,61],[3,4]].map(p=>({html:p[0]+" и "+p[1]})),
+  optPairs:[[20,22],[7,8],[59,61],[3,4]],
+  text:"Между какими числами заключено число "+sqrtHtml(60)+"?"});
+addB(353058,{sub:"fracTenths", m:7,n:11, key:3,
+  opts:[[4,5],[5,6],[6,7],[7,8]].map(p=>({html:"[0,"+p[0]+";&nbsp;0,"+p[1]+"]"})),
+  optD:[4,5,6,7],
+  text:"Какому из данных промежутков принадлежит число "+fracHtml(7,11)+"?"});
+addB(369728,{sub:"fracInRange", k:3, den:19, ms:[45,52,68,77], key:3,
+  opts:[45,52,68,77].map(m=>({html:fracHtml(m,19)})),
+  text:"Какое из данных ниже чисел принадлежит отрезку [3;&nbsp;4]?"});
+addB(406570,{sub:"rootInRange", k:7, Ns:[7,8,42,61], key:4,
+  opts:[7,8,42,61].map(x=>({html:sqrtHtml(x)})),
+  text:"Какое из данных чисел принадлежит промежутку [7;&nbsp;8]?"});
+addB(425018,{sub:"rootBetween", N:57, key:2,
+  opts:[[3,4],[7,8],[28,29],[56,58]].map(p=>({html:p[0]+" и "+p[1]})),
+  optPairs:[[3,4],[7,8],[28,29],[56,58]],
+  text:"Между какими числами заключено число "+sqrtHtml(57)+"?"});
+addB(461837,{sub:"fracBetweenInt", m:131,n:12, key:1,
+  opts:[[10,11],[11,12],[12,13],[13,14]].map(p=>({html:p[0]+" и "+p[1]})),
+  optPairs:[[10,11],[11,12],[12,13],[13,14]],
+  text:"Между какими целыми числами заключено число "+fracHtml(131,12)+"?"});
+
+/* --- тип C: точки и числа --- */
+function addC(num, task){ task.id="r"+num; task.src="РЕШУ ОГЭ \u2116 "+num; task.kind="C"; BANK.push(task); }
+addC(205776,{sub:"rootPoint", key:2,
+  text:"Какое из чисел отмечено на координатной прямой точкой "+vi("A")+"?",
+  pic:{lo:-0.4,hi:4.4,ticks:"int",labels:[0,1,2,3],pts:[{name:"A",x:Math.sqrt(3)}]},
+  opts:[2,3,7,11].map(x=>({html:sqrtHtml(x)})), Ns:[2,3,7,11], target:3},
+  );
+addC(311380,{sub:"fracPoint", key:3,
+  text:"Одна из точек, отмеченных на координатной прямой, соответствует числу "+fracHtml(3,8)+". Какая это точка?",
+  pic:{lo:-0.06,hi:1.14,ticks:[[0,"0"],[1/6,"1|6"],[1/3,"1|3"],[1/2,"1|2"],[2/3,"2|3"],[5/6,"5|6"],[1,"1"]],
+       pts:[{name:"A",x:0.21},{name:"B",x:0.30},{name:"C",x:0.375},{name:"D",x:0.56}]},
+  opts:["A","B","C","D"].map(s=>({html:vi(s)})), m:3,n:8,
+  loT:[1,3], hiT:[1,2]});
+addC(311392,{sub:"fracPoint7", key:3,
+  text:"Одно из чисел "+fracHtml(5,6)+", "+fracHtml(5,7)+", "+fracHtml(5,9)+", "+fracHtml(5,12)+" отмечено на координатной прямой точкой "+vi("A")+". Укажите это число.",
+  pic:{lo:-0.07,hi:1.09,ticks:[[0,"0"],[1/7,"1|7"],[2/7,"2|7"],[3/7,"3|7"],[4/7,"4|7"],[5/7,"5|7"],[6/7,"6|7"]],
+       pts:[{name:"A",x:5/9}]},
+  opts:[[5,6],[5,7],[5,9],[5,12]].map(p=>({html:fracHtml(p[0],p[1])})), fracs:[[5,6],[5,7],[5,9],[5,12]],
+  loT:[3,7], hiT:[4,7]});
+addC(317074,{sub:"decPoint", key:3,
+  text:"Какому из следующих чисел соответствует точка, отмеченная на координатной прямой?",
+  pic:{lo:-0.06,hi:1.02,ticks:[[0,"0"],[0.1,"0,1"],[0.2,"0,2"],[0.3,"0,3"],[0.4,"0,4"],[0.5,"0,5"],[0.6,"0,6"],[0.7,"0,7"],[0.8,"0,8"],[0.9,"0,9"]],
+       pts:[{name:"",x:13/23}]},
+  opts:[[10,23],[12,23],[13,23],[14,23]].map(p=>({html:fracHtml(p[0],p[1])})), fracs:[[10,23],[12,23],[13,23],[14,23]]});
+addC(317102,{sub:"decOrder", key:2,
+  text:"На координатной прямой точками "+vi("A")+", "+vi("B")+", "+vi("C")+" и "+vi("D")+" отмечены числа 0,098; \u22120,02; 0,09; 0,11. Какой точкой изображается число 0,09?",
+  pic:{lo:-0.05,hi:0.16,ticks:"none",labels:[],pts:[{name:"A",x:-0.02},{name:"B",x:0.09},{name:"C",x:0.098},{name:"D",x:0.11}]},
+  opts:["A","B","C","D"].map(s=>({html:vi(s)})),
+  nums:["0,098","\u22120,02","0,09","0,11"], targetStr:"0,09"});
+addC(384400,{sub:"rootPointHalf", key:1,
+  text:"На координатной прямой отмечены точки "+vi("A")+", "+vi("B")+", "+vi("C")+" и "+vi("D")+". Одна из них соответствует числу "+sqrtHtml(85)+". Какая это точка?",
+  pic:{lo:8.75,hi:11.3,ticks:"int",labels:[9,10,11],pts:[{name:"A",x:Math.sqrt(85)},{name:"B",x:9.8},{name:"C",x:10.2},{name:"D",x:10.7}]},
+  opts:["A","B","C","D"].map(s=>({html:vi(s)})), N:85});
+addC(474133,{sub:"fracPointHalf", key:3,
+  text:"На координатной прямой отмечены точки "+vi("A")+", "+vi("B")+", "+vi("C")+", "+vi("D")+". Одна из них соответствует числу "+fracHtml(58,7)+". Какая это точка?",
+  pic:{lo:6.75,hi:9.3,ticks:"int",labels:[7,8,9],pts:[{name:"A",x:7.3},{name:"B",x:7.9},{name:"C",x:58/7},{name:"D",x:8.85}]},
+  opts:["A","B","C","D"].map(s=>({html:vi(s)})), m:58,n:7});
+
+/* Порядок точек типа С по возрастанию x — для отрисовки подписи */
+BANK.forEach(t=>{ if(t.pic&&t.pic.pts) t.pic.pts.forEach(p=>{ if(p.x===undefined&&t.vals&&t.vals[p.name]) p.x=qnum(t.vals[p.name]); }); });
+
+/* ---------- Проверка банка: ровно один верный вариант, совпадает с ключом ---------- */
+function verifyBank(){
+  const errs=[];
+  for(const t of BANK){
+    if(t.kind==="A"){
+      const truths=t.opts.map(o=>o.test(t.vals));
+      const want = t.mode==="неверно" ? truths.map(x=>!x) : truths;
+      const idx = want.reduce((acc,x,i)=>x?acc.concat(i+1):acc,[]);
+      if(idx.length!==1) errs.push(t.id+": верных вариантов "+idx.length+" ["+idx+"]");
+      else if(idx[0]!==t.key) errs.push(t.id+": вычислено "+idx[0]+", ключ "+t.key);
+    } else if(t.kind==="B"){
+      const ok=computeBKey(t);
+      if(ok!==t.key) errs.push(t.id+": вычислено "+ok+", ключ "+t.key);
+    } else if(t.kind==="C"){
+      const ok=computeCKey(t);
+      if(ok!==t.key) errs.push(t.id+": вычислено "+ok+", ключ "+t.key);
+    }
+  }
+  return errs;
+}
+function isqrtFloor(N){let k=0;while((k+1)*(k+1)<=N)k++;return k;}
+function computeBKey(t){
+  if(t.sub==="rootBetween"){
+    if(t.optPairs){ // между p и q: p² < N < q² (в целых) либо просто p<√N<q
+      let found=[];
+      t.optPairs.forEach((p,i)=>{ if(p[0]*p[0]<t.N && t.N<p[1]*p[1]) found.push(i+1); });
+      // «между 59 и 61» для √60 неверно: 59²=3481>60 — не пройдёт; ок
+      return found.length===1?found[0]:-1;
+    }
+    const k=isqrtFloor(t.N); let found=[];
+    t.optK.forEach((kk,i)=>{ if(kk===k) found.push(i+1);});
+    return found.length===1?found[0]:-1;
+  }
+  if(t.sub==="fracTenths"){ // d: d·n ≤ 10m < (d+1)·n
+    const d=Math.floor(10*t.m/t.n); let found=[];
+    t.optD.forEach((dd,i)=>{ if(dd===d) found.push(i+1);});
+    return found.length===1?found[0]:-1;
+  }
+  if(t.sub==="fracBetweenInt"){
+    const k=Math.floor(t.m/t.n); let found=[];
+    t.optPairs.forEach((p,i)=>{ if(p[0]===k&&p[1]===k+1) found.push(i+1);});
+    return found.length===1?found[0]:-1;
+  }
+  if(t.sub==="rootInRange"){
+    let found=[]; t.Ns.forEach((N,i)=>{ if(t.k*t.k<=N&&N<=(t.k+1)*(t.k+1)) found.push(i+1);});
+    return found.length===1?found[0]:-1;
+  }
+  if(t.sub==="fracInRange"){
+    let found=[]; t.ms.forEach((m,i)=>{ if(t.k*t.den<=m&&m<=(t.k+1)*t.den) found.push(i+1);});
+    return found.length===1?found[0]:-1;
+  }
+  if(t.sub==="betweenFracs"){
+    let found=[]; t.optVals.forEach((v,i)=>{ if(qlt(Q(t.lo[0],t.lo[1]),v)&&qlt(v,Q(t.hi[0],t.hi[1]))) found.push(i+1);});
+    return found.length===1?found[0]:-1;
+  }
+  return -1;
+}
+function computeCKey(t){
+  const pts=t.pic.pts;
+  if(t.sub==="rootPoint"){ // варианты — числа, точка одна
+    const x=pts[0].x; let found=[];
+    t.Ns.forEach((N,i)=>{ if(Math.abs(Math.sqrt(N)-x)<1e-9) found.push(i+1); });
+    return found.length===1?found[0]:-1;
+  }
+  if(t.sub==="fracPoint"){ // варианты — точки, число m/n
+    const v=t.m/t.n; let found=[];
+    pts.forEach((p,i)=>{ if(Math.abs(p.x-v)<1e-9) found.push(i+1); });
+    return found.length===1?found[0]:-1;
+  }
+  if(t.sub==="fracPoint7"){ const x=pts[0].x; let found=[];
+    t.fracs.forEach((f,i)=>{ if(Math.abs(f[0]/f[1]-x)<1e-9) found.push(i+1); });
+    return found.length===1?found[0]:-1;
+  }
+  if(t.sub==="decPoint"){ const x=pts[0].x; let found=[];
+    t.fracs.forEach((f,i)=>{ if(Math.abs(f[0]/f[1]-x)<1e-9) found.push(i+1); });
+    return found.length===1?found[0]:-1;
+  }
+  if(t.sub==="decOrder"){
+    const v=parseFloat(t.targetStr.replace("\u2212","-").replace(",","."));
+    let found=[]; pts.forEach((p,i)=>{ if(Math.abs(p.x-v)<1e-9) found.push(i+1); });
+    return found.length===1?found[0]:-1;
+  }
+  if(t.sub==="rootPointHalf"){ const v=Math.sqrt(t.N); let found=[];
+    pts.forEach((p,i)=>{ if(Math.abs(p.x-v)<1e-9) found.push(i+1); });
+    return found.length===1?found[0]:-1;
+  }
+  if(t.sub==="fracPointHalf"){ const v=t.m/t.n; let found=[];
+    pts.forEach((p,i)=>{ if(Math.abs(p.x-v)<1e-9) found.push(i+1); });
+    return found.length===1?found[0]:-1;
+  }
+  return -1;
+}
+
+/* ---------- ШАГИ: единый формат ----------
+ step: {q: html, type:'int'|'int2'|'choice'|'tf', ans, ans2, opts:[html], correct(index0), hint, show} */
+function stepInt(q,ans,hint){return {type:"int",q,ans,hint};}
+function stepInt2(q,ans1,ans2,hint,lbl1,lbl2){return {type:"int2",q,ans1,ans2,hint,lbl1:lbl1||"",lbl2:lbl2||""};}
+function stepChoice(q,opts,correct,hint){return {type:"choice",q,opts,correct,hint};}
+
+/* Шаги для задач типа А (и банк, и генератор) */
+function buildStepsA(t, method){
+  const steps=[];
+  const vnames=Object.keys(t.vals);
+  if(t.pairs){ // задача про знаки разностей
+    steps.push(stepChoice("Главное правило: на координатной прямой правее \u2014 значит\u2026",
+      ["больше","меньше"],0,"стрелка вправо \u2014 числа растут"));
+    t.pairs.forEach(([u,w])=>{
+      const positive=qgt(qsub(t.vals[u],t.vals[w]),Q0);
+      steps.push(stepChoice("Разность "+vi(u)+" \u2212 "+vi(w)+": какой у неё знак? (посмотри, какая буква правее)",
+        ["положительная","отрицательная"], positive?0:1,
+        vi(u)+(positive?" правее ":" левее ")+vi(w)+" \u2014 из большего вычли меньшее даёт плюс, из меньшего большее \u2014 минус"));
+    });
+    steps.push(stepInt("В задаче ищут разность, которая "+(t.diffSign||"нужного знака")+". Номер верного варианта:",
+      t.key,"если ни одна не подходит \u2014 это вариант 4"));
+    return steps;
+  }
+  // обычная задача с утверждениями
+  const first=vnames[0];
+  const lo=qfloor(t.vals[first]);
+  steps.push(stepInt2("Между какими целыми числами находится "+vi(first)+" на рисунке?",
+    lo, lo+1, "смотри на соседние деления слева и справа от точки","от","до"));
+  vnames.forEach(v=>{
+    steps.push(stepChoice("Какой знак у числа "+vi(v)+"?",["+ (справа от нуля)","\u2212 (слева от нуля)"],
+      qgt(t.vals[v],Q0)?0:1,"ноль делит прямую: слева \u2014 минус, справа \u2014 плюс"));
+  });
+  if(method==="desp"){
+    const mid=t.vals[first];
+    steps.push(stepChoice("Отчаянный способ: подставим вместо "+vi(first)+" конкретное число с рисунка. Какое взять?",
+      ["примерно "+decComma(qnum(mid))+" (положение точки)","ровно "+(lo)+" (левое деление)","ровно "+(lo+1)+" (правое деление)"],
+      0,"бери число внутри промежутка, не на границе \u2014 границы точке не принадлежат"));
+  }
+  t.opts.forEach((o,i)=>{
+    const truth=o.test(t.vals);
+    let hint;
+    if(method==="desp"){
+      hint="подставь числа с рисунка и посчитай";
+    } else hint=o.school?o.school():"";
+    steps.push(stepChoice("Утверждение "+(i+1)+") "+o.html+" \u2014 верно или неверно?",
+      ["верно","неверно"], truth?0:1, hint));
+  });
+  steps.push(stepInt("В задаче спрашивают "+(t.mode==="неверно"?"НЕВЕРНОЕ":"верное")+" утверждение. Его номер:",
+    t.key, t.mode==="неверно"?"ищи то, что не подтвердилось":"ищи то, что подтвердилось"));
+  return steps;
+}
+
+/* Шаги для типа B */
+function buildStepsB(t, method){
+  const steps=[];
+  if(t.sub==="rootBetween"){
+    const k=isqrtFloor(t.N);
+    steps.push(stepInt2("Зажмём "+sqrtHtml(t.N)+" между соседними квадратами: ?\u00B2 &lt; "+t.N+" &lt; ?\u00B2. Введи основания:",
+      k,k+1,"перебирай квадраты: 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144\u2026","",""));
+    steps.push(stepInt2("Значит, "+sqrtHtml(t.N)+" лежит между целыми:",k,k+1,
+      "если k\u00B2 &lt; N &lt; (k+1)\u00B2, то k &lt; "+sqrtHtml("N")+" &lt; k+1","от","до"));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,"найди промежуток ("+k+";&nbsp;"+(k+1)+") среди вариантов"));
+  }
+  if(t.sub==="fracBetweenInt"){
+    const k=Math.floor(t.m/t.n), r=t.m-k*t.n;
+    steps.push(stepInt2("Подели с остатком: "+t.m+" = ?\u00B7"+t.n+" + ?",k,r,
+      "сколько раз "+t.n+" помещается в "+t.m+"? Остаток меньше "+t.n,"частное","остаток"));
+    steps.push(stepInt2("Значит, "+fracHtml(t.m,t.n)+" лежит между целыми:",k,k+1,
+      fracHtml(t.m,t.n)+" = "+k+" + "+fracHtml(r,t.n)+", а "+fracHtml(r,t.n)+" \u2014 меньше единицы","от","до"));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,"ищи пару "+k+" и "+(k+1)));
+  }
+  if(t.sub==="fracTenths"){
+    const d=Math.floor(10*t.m/t.n), r=10*t.m-d*t.n;
+    if(method==="desp"){
+      steps.push(stepInt("Отчаянный способ \u2014 дели уголком. Первая цифра после запятой у "+fracHtml(t.m,t.n)+": подели "+
+        (10*t.m)+" на "+t.n+", введи целую часть:",d,"снеси ноль: "+t.m+"0 подели на "+t.n));
+    } else {
+      steps.push(stepInt("Умножим число на 10: 10\u00B7"+fracHtml(t.m,t.n)+" = "+fracHtml(10*t.m,t.n)+". Подели с остатком: "+(10*t.m)+" = ?\u00B7"+t.n+" + \u2026 Введи частное:",
+        d,"сколько раз "+t.n+" помещается в "+(10*t.m)+"?"));
+    }
+    steps.push(stepChoice("Итак, "+d+" &lt; 10\u00B7"+fracHtml(t.m,t.n)+" &lt; "+(d+1)+". Делим всё на 10 \u2014 в какой промежуток попало число?",
+      ["[0,"+(d-1)+";&nbsp;0,"+d+"]","[0,"+d+";&nbsp;0,"+(d+1)+"]","[0,"+(d+1)+";&nbsp;0,"+(d+2)+"]"],1,
+      "0,"+d+" &lt; "+fracHtml(t.m,t.n)+" &lt; 0,"+(d+1)));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,""));
+  }
+  if(t.sub==="rootInRange"){
+    steps.push(stepInt2("Возведи границы отрезка [ "+t.k+";&nbsp;"+(t.k+1)+" ] в квадрат:",
+      t.k*t.k,(t.k+1)*(t.k+1),"корень между "+t.k+" и "+(t.k+1)+" \u21D4 подкоренное между их квадратами",t.k+"\u00B2 =",(t.k+1)+"\u00B2 ="));
+    const goodN=t.Ns[t.key-1];
+    steps.push(stepChoice("Какое из подкоренных чисел попадает в отрезок ["+(t.k*t.k)+";&nbsp;"+((t.k+1)*(t.k+1))+"]?",
+      t.Ns.map(N=>String(N)),t.key-1,"сравнивай сами числа, корень уже не нужен"));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,sqrtHtml(goodN)+" \u2014 вариант "+t.key));
+  }
+  if(t.sub==="fracInRange"){
+    steps.push(stepInt2("Запиши границы отрезка [ "+t.k+";&nbsp;"+(t.k+1)+" ] дробями со знаменателем "+t.den+": введи числители",
+      t.k*t.den,(t.k+1)*t.den,t.k+" = "+fracHtml(t.k+"\u00B7"+t.den,t.den),t.k+" =",(t.k+1)+" ="));
+    steps.push(stepChoice("Какой числитель попадает в отрезок ["+(t.k*t.den)+";&nbsp;"+((t.k+1)*t.den)+"]?",
+      t.ms.map(m=>String(m)),t.key-1,"знаменатели одинаковые \u2014 сравнивай числители"));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,""));
+  }
+  if(t.sub==="betweenFracs"){
+    steps.push(stepInt2("Запиши 0,2 обыкновенной дробью и сократи: введи числитель и знаменатель",
+      1,5,"0,2 = "+fracHtml(2,10)+" = "+fracHtml(1,5),"числитель","знаменатель"));
+    steps.push(stepChoice("Сравни дроби с числителем 1: "+fracHtml(1,6)+", "+fracHtml(1,5)+", "+fracHtml(1,4)+". Чем больше знаменатель, тем дробь\u2026",
+      ["больше","меньше"],1,"одну пиццу делят на больше частей \u2014 кусок меньше"));
+    steps.push(stepChoice("Значит, верна цепочка\u2026",
+      [fracHtml(1,6)+" &lt; "+fracHtml(1,5)+" &lt; "+fracHtml(1,4), fracHtml(1,4)+" &lt; "+fracHtml(1,5)+" &lt; "+fracHtml(1,6)],0,
+      "знаменатели: 6 &gt; 5 &gt; 4, значит дроби в обратном порядке"));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,"0,2 как раз между"));
+  }
+  return steps;
+}
+
+/* Шаги для типа C */
+function buildStepsC(t, method){
+  const steps=[]; const pts=t.pic.pts;
+  const letters=pts.map(p=>p.name);
+  if(t.sub==="rootPoint"){
+    steps.push(stepInt2("Точка "+vi("A")+" между какими целыми?",1,2,"смотри на деления рисунка","от","до"));
+    steps.push(stepChoice("Какие из чисел лежат между 1 и 2? (1\u00B2=1, 2\u00B2=4)",
+      ["только "+sqrtHtml(2),"только "+sqrtHtml(3),sqrtHtml(2)+" и "+sqrtHtml(3),"все четыре"],2,
+      "подкоренное должно быть между 1 и 4"));
+    steps.push(stepInt("Проверим середину: 1,5\u00B2 = ? (в сотых, введи 225 для 2,25)",225,"1,5\u00B71,5"));
+    steps.push(stepChoice("Точка "+vi("A")+" правее середины (правее 1,5). Что больше 1,5: "+sqrtHtml(2)+" или "+sqrtHtml(3)+"?",
+      [sqrtHtml(2)+" (2 &gt; 2,25)",sqrtHtml(3)+" (3 &gt; 2,25)"],1,"сравни подкоренные с 2,25"));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,""));
+  }
+  if(t.sub==="fracPoint"){
+    steps.push(stepInt2("Сравним "+fracHtml(3,8)+" и "+fracHtml(1,3)+" крест-накрест: 3\u00B73 = ? и 8\u00B71 = ?",9,8,
+      "у "+fracHtml(3,8)+" произведение 3\u00B73, у "+fracHtml(1,3)+" \u2014 8\u00B71; больше произведение \u2014 больше дробь","",""));
+    steps.push(stepChoice("9 &gt; 8, значит\u2026",[fracHtml(3,8)+" &gt; "+fracHtml(1,3),fracHtml(3,8)+" &lt; "+fracHtml(1,3)],0,""));
+    steps.push(stepInt2("Теперь "+fracHtml(3,8)+" и "+fracHtml(1,2)+": 3\u00B72 = ? и 8\u00B71 = ?",6,8,"","",""));
+    steps.push(stepChoice("6 &lt; 8, значит "+fracHtml(3,8)+" &lt; "+fracHtml(1,2)+". Итого число между "+fracHtml(1,3)+" и "+fracHtml(1,2)+". Какая точка стоит между этими делениями?",
+      letters,2,"смотри на рисунок"));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,""));
+  }
+  if(t.sub==="fracPoint7"){
+    steps.push(stepChoice("Точка "+vi("A")+" между какими соседними делениями?",
+      [fracHtml(2,7)+" и "+fracHtml(3,7),fracHtml(3,7)+" и "+fracHtml(4,7),fracHtml(4,7)+" и "+fracHtml(5,7)],1,"смотри на рисунок"));
+    steps.push(stepInt2("Проверим "+fracHtml(5,9)+" и "+fracHtml(4,7)+" крест-накрест: 5\u00B77 = ? и 9\u00B74 = ?",35,36,"","",""));
+    steps.push(stepChoice("35 &lt; 36, значит "+fracHtml(5,9)+" &lt; "+fracHtml(4,7)+". А "+fracHtml(5,9)+" и "+fracHtml(3,7)+": 5\u00B77=35, 9\u00B73=27, 35 &gt; 27, значит\u2026",
+      [fracHtml(5,9)+" между "+fracHtml(3,7)+" и "+fracHtml(4,7)+" \u2014 подходит!",fracHtml(5,9)+" левее "+fracHtml(3,7)],0,""));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,fracHtml(5,9)+" \u2014 вариант 3"));
+  }
+  if(t.sub==="decPoint"){
+    steps.push(stepChoice("Точка между какими соседними делениями?",["0,4 и 0,5","0,5 и 0,6","0,6 и 0,7"],1,"смотри на рисунок"));
+    steps.push(stepInt("Дели уголком до сотых: "+fracHtml(13,23)+" \u2248 0,?? (введи две цифры, например 47)",56,
+      "130 = 23\u00B75 + 15 \u2192 цифра 5; 150 = 23\u00B76 + 12 \u2192 цифра 6"));
+    steps.push(stepInt("И сосед: "+fracHtml(12,23)+" \u2248 0,?? (две цифры)",52,"120 = 23\u00B75 + 5; 50 = 23\u00B72 + 4"));
+    steps.push(stepChoice("Точка стоит заметно правее середины (\u2248 0,565). Что ей соответствует?",
+      [fracHtml(12,23)+" \u2248 0,52",fracHtml(13,23)+" \u2248 0,57"],1,"0,52 \u2014 чуть правее 0,5; 0,57 \u2014 ближе к 0,6"));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,""));
+  }
+  if(t.sub==="decOrder"){
+    steps.push(stepChoice("Какое из чисел 0,098; \u22120,02; 0,09; 0,11 отрицательное?",
+      ["0,098","\u22120,02","0,09","0,11"],1,"минус \u2014 слева от нуля"));
+    steps.push(stepChoice("Значит, самая левая точка "+vi("A")+" = \u22120,02. Сравни 0,09 и 0,098: допиши ноль \u2014 0,090 ? 0,098",
+      ["0,090 &lt; 0,098","0,090 &gt; 0,098"],0,"уравняй число знаков после запятой"));
+    steps.push(stepChoice("По возрастанию: 0,09 &lt; 0,098 &lt; 0,11. Число 0,09 \u2014 наименьшее из трёх правых точек. Какая это точка?",
+      ["B (первая из трёх)","C (средняя)","D (последняя)"],0,"меньше \u2014 левее"));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,""));
+  }
+  if(t.sub==="rootPointHalf"){
+    const k=isqrtFloor(t.N);
+    steps.push(stepInt2("Зажми "+sqrtHtml(t.N)+" между квадратами: ?\u00B2 &lt; "+t.N+" &lt; ?\u00B2",k,k+1,
+      k+"\u00B2 = "+(k*k)+", "+(k+1)+"\u00B2 = "+((k+1)*(k+1)),"",""));
+    steps.push(stepChoice("Значит "+sqrtHtml(t.N)+" между "+k+" и "+(k+1)+". Какие точки в этом промежутке?",
+      ["A и B","B и C","C и D"],0,"смотри на рисунок"));
+    const half=(k*10+5);
+    steps.push(stepInt("Проверим середину: "+k+",5\u00B2 = ? (в сотых: например для 9,5\u00B2=90,25 введи 9025)",half*half,
+      k+",5 \u00B7 "+k+",5"));
+    steps.push(stepChoice(t.N+" &lt; "+decComma(half*half/100)+", значит "+sqrtHtml(t.N)+" &lt; "+k+",5 \u2014 точка в левой половине. Какая?",
+      ["A","B"],0,"A ближе к "+k+", B ближе к "+(k+1)));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,""));
+  }
+  if(t.sub==="fracPointHalf"){
+    const k=Math.floor(t.m/t.n), r=t.m-k*t.n;
+    steps.push(stepInt2("Подели с остатком: "+t.m+" = ?\u00B7"+t.n+" + ?",k,r,"","частное","остаток"));
+    steps.push(stepChoice("Значит "+fracHtml(t.m,t.n)+" = "+k+" + "+fracHtml(r,t.n)+" \u2014 между "+k+" и "+(k+1)+". Какие точки в этом промежутке?",
+      ["A и B","C и D"],1,"смотри на рисунок"));
+    steps.push(stepChoice("Дробная часть "+fracHtml(r,t.n)+" \u2014 это больше или меньше половины? (сравни 2\u00B7"+r+" и "+t.n+")",
+      ["меньше половины \u2014 точка ближе к "+k,"больше половины \u2014 точка ближе к "+(k+1)],
+      2*r<t.n?0:1,"2\u00B7"+r+" = "+(2*r)+(2*r<t.n?" &lt; ":" &gt; ")+t.n));
+    steps.push(stepChoice("Какая точка стоит сразу после "+k+", ближе к нему?",["C","D"],0,""));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,""));
+  }
+  return steps;
+}
+
+function buildSteps(t,method){
+  if(t.kind==="A") return buildStepsA(t,method);
+  if(t.kind==="B") return buildStepsB(t,method);
+  if(t.kind==="C") return buildStepsC(t,method);
+  return [];
+}
+
+/* ---------- ГЕНЕРАТОРЫ (Пошагово) ---------- */
+/* Все генераторы возвращают объект в формате банка (kind/opts/key/pic/vals/text) */
+
+function genA1(){ // одно число, 4 утверждения, ровно одно верное
+  for(let att=0;att<400;att++){
+    const k=pick([-6,-5,-4,-3,-2,2,3,4,5,-1,1]); // промежуток (k,k+1); избегаем прямого нуля внутри? (-1,0) и (0,1) допустимы
+    const off=pick([3,4,6,7]);
+    const a=Q(10*k+off,10);
+    const pool=[];
+    for(const c of [1,2,3,4,5,6,7,8]){
+      pool.push(stPlus("a",c,">"),stPlus("a",c,"<"),stPlus("a",-c,">"),stPlus("a",-c,"<"));
+      pool.push(stCminus("a",c,">"),stCminus("a",c,"<"),stCminus("a",-c,">"),stCminus("a",-c,"<"));
+      pool.push(stMinusC("a",c,">"),stMinusC("a",c,"<"));
+      pool.push(stNeg("a",c,">"),stNeg("a",c,"<"),stNeg("a",-c,">"),stNeg("a",-c,"<"));
+    }
+    pool.push(stInv("a",">"),stInv("a","<"));
+    const chosen=shuffle(pool).slice(0,12);
+    const vals={a};
+    const trues=chosen.filter(o=>o.test(vals));
+    const falses=chosen.filter(o=>!o.test(vals));
+    if(!trues.length||falses.length<3) continue;
+    const opts=shuffle([trues[0],falses[0],falses[1],falses[2]]);
+    const seen=new Set(); let dup=false;
+    opts.forEach(o=>{ if(seen.has(o.html)) dup=true; seen.add(o.html); });
+    if(dup) continue;
+    const key=opts.findIndex(o=>o.test(vals))+1;
+    const lo=Math.min(k,-1)-1.6, hi=Math.max(k+1,1)+1.6;
+    return {kind:"A",mode:"верно",vals,opts,key,src:"генератор",
+      pic:{lo,hi,ticks:"int",labels:rangeLabels(lo,hi),pts:[{name:"a",x:qnum(a)}]},
+      text:"На координатной прямой отмечено число "+vi("a")+". Какое из утверждений относительно этого числа является верным?"};
+  }
+  throw new Error("genA1 failed");
+}
+function rangeLabels(lo,hi){
+  const out=[]; for(let i=Math.ceil(lo);i<=Math.floor(hi);i++) out.push(i);
+  if(out.length>9){ // подписываем только 0 и 1, остальное — деления
+    return out.filter(x=>x===0||x===1);
+  }
+  return out;
+}
+
+function genA2(){ // два числа a и b (в десятых)
+  for(let att=0;att<400;att++){
+    const layout=pick(["negpos_bigneg","negpos_bigpos","negneg","pospos"]);
+    let at,bt; // значения в десятых (целые)
+    if(layout==="negpos_bigneg"){ at=-ri(15,45); bt=ri(4,-at-3); }
+    else if(layout==="negpos_bigpos"){ bt=ri(15,45); at=-ri(4,bt-3); }
+    else if(layout==="negneg"){ at=-ri(25,45); bt=-ri(5,-at-6); }
+    else { at=ri(4,24); bt=ri(at+6,46); }
+    if(at%10===0||bt%10===0||at>=bt) continue;
+    const a=Q(at,10), b=Q(bt,10);
+    const vals={a,b};
+    const pool=[stProd("a","b",">"),stProd("a","b","<"),stProdSq("a","b",">"),stProdSq("a","b","<"),
+      stSum("a","b",">"),stSum("a","b","<"),stDiff("a","b",">"),stDiff("b","a","<"),stDiff("b","a",">"),
+      stCube("a",">"),stCube("a","<"),stCube("b",">"),stInv("a",">"),stInv("a","<"),stInv("b","<"),
+      stSum("a","b",">",1),stProd("a","b","<",1)];
+    const chosen=shuffle(pool);
+    const trues=chosen.filter(o=>o.test(vals));
+    const falses=chosen.filter(o=>!o.test(vals));
+    if(!trues.length||falses.length<3) continue;
+    const opts=shuffle([trues[0],falses[0],falses[1],falses[2]]);
+    const seen=new Set(); let dup=false;
+    opts.forEach(o=>{ if(seen.has(o.html)) dup=true; seen.add(o.html); });
+    if(dup) continue;
+    const key=opts.findIndex(o=>o.test(vals))+1;
+    const xa=qnum(a),xb=qnum(b);
+    const lo=Math.min(xa,0)-1.3, hi=Math.max(xb,1)+1.3;
+    return {kind:"A",mode:"верно",vals,opts,key,src:"генератор",
+      pic:{lo,hi,ticks:"int",labels:rangeLabels(lo,hi).filter(x=>x===0||x===1),pts:[{name:"a",x:xa},{name:"b",x:xb}]},
+      text:"На координатной прямой отмечены числа "+vi("a")+" и "+vi("b")+". Какое из утверждений является верным?"};
+  }
+  throw new Error("genA2 failed");
+}
+
+function genA3(){ // три точки, разности
+  for(let att=0;att<400;att++){
+    const nm=pick([["p","q","r"],["a","b","c"],["m","n","k"]]);
+    const xs=[]; let x=ri(2,8)/2;
+    for(let i=0;i<3;i++){ xs.push(x); x+=ri(2,5)/2+0.4; }
+    const perm=shuffle([0,1,2]); // буква nm[i] стоит на позиции xs[perm[i]]
+    const vals={}; nm.forEach((s,i)=>{ vals[s]=Q(Math.round(xs[perm[i]]*10),10); });
+    const pos={}; nm.forEach(s=>{ pos[s]=qnum(vals[s]); });
+    const sign=pick(["положительна","отрицательна"]);
+    const pairsAll=[];
+    for(let i=0;i<3;i++)for(let j=0;j<3;j++) if(i!==j) pairsAll.push([nm[i],nm[j]]);
+    const three=shuffle(pairsAll).slice(0,3);
+    const match=([u,w])=> sign==="положительна" ? pos[u]>pos[w] : pos[u]<pos[w];
+    const opts=three.map(([u,w])=>({case:3,html:vi(u)+" \u2212 "+vi(w),
+      test:v=>sign==="положительна"?qgt(qsub(v[u],v[w]),Q0):qlt(qsub(v[u],v[w]),Q0),
+      school:()=>vi(u)+" \u2212 "+vi(w)+": сравни, какая буква правее"}));
+    opts.push({case:3,html:"ни одна из них",
+      test:v=>!three.some(match),
+      school:()=>"проверь все три разности"});
+    const matches=three.map(match);
+    const cnt=matches.filter(Boolean).length;
+    let key;
+    if(cnt===0) key=4; else if(cnt===1) key=matches.indexOf(true)+1; else continue;
+    const sorted=nm.slice().sort((u,w)=>pos[u]-pos[w]);
+    const lo=pos[sorted[0]]-0.9, hi=pos[sorted[2]]+1.2;
+    return {kind:"A",mode:"верно",vals,opts,key,src:"генератор",diffSign:sign,pairs:three,
+      pic:{lo,hi,ticks:"none",labels:[],pts:sorted.map(s=>({name:s,x:pos[s]}))},
+      text:"На координатной прямой отмечены числа "+nm.map(vi).join(", ")+". Какая из разностей "+
+        three.map(([u,w])=>vi(u)+" \u2212 "+vi(w)).join(", ")+" "+sign+"?"};
+  }
+  throw new Error("genA3 failed");
+}
+
+function genB_fracBetweenInt(){
+  const n=pick([3,4,6,7,8,9,11,12,13]);
+  const k=ri(2,13); const r=ri(1,n-1);
+  const m=k*n+r;
+  const start=Math.max(1,k-ri(0,3));
+  const optPairs=[0,1,2,3].map(i=>[start+i,start+i+1]);
+  if(!optPairs.some(p=>p[0]===k)) optPairs[ri(0,3)]=[k,k+1];
+  const seen=new Set(); const clean=[];
+  optPairs.forEach(p=>{ if(!seen.has(p[0])){seen.add(p[0]);clean.push(p);} });
+  while(clean.length<4){ const c=clean[clean.length-1][0]+1; if(!seen.has(c)){seen.add(c);clean.push([c,c+1]);} }
+  clean.sort((a,b)=>a[0]-b[0]);
+  const key=clean.findIndex(p=>p[0]===k)+1;
+  return {kind:"B",sub:"fracBetweenInt",m,n,key,src:"генератор",
+    optPairs:clean, opts:clean.map(p=>({html:p[0]+" и "+p[1]})),
+    text:"Между какими целыми числами заключено число "+fracHtml(m,n)+"?"};
+}
+function genB_fracTenths(){
+  for(let att=0;att<300;att++){
+    const n=pick([3,6,7,9,11,12,13,17,19,23]);
+    const m=ri(1,n-1);
+    if((10*m)%n===0) continue;
+    const d=Math.floor(10*m/n);
+    if(d<1||d>8) continue;
+    const start=Math.max(0,Math.min(6,d-ri(0,3)));
+    const ds=[start,start+1,start+2,start+3];
+    if(!ds.includes(d)) ds[ri(0,3)]=d;
+    const uniq=[...new Set(ds)].sort((a,b)=>a-b);
+    while(uniq.length<4) uniq.push(uniq[uniq.length-1]+1);
+    const key=uniq.indexOf(d)+1;
+    return {kind:"B",sub:"fracTenths",m,n,key,src:"генератор",optD:uniq,
+      opts:uniq.map(dd=>({html:"[0,"+dd+";&nbsp;0,"+(dd+1)+"]"})),
+      text:"Какому из данных промежутков принадлежит число "+fracHtml(m,n)+"?"};
+  }
+  throw new Error("genB_fracTenths failed");
+}
+function genB_rootBetween(){
+  for(let att=0;att<300;att++){
+    const N=ri(2,224);
+    const k=isqrtFloor(N);
+    if(k*k===N) continue;
+    const start=Math.max(1,k-ri(0,3));
+    const ks=[start,start+1,start+2,start+3];
+    if(!ks.includes(k)) ks[ri(0,3)]=k;
+    const uniq=[...new Set(ks)].sort((a,b)=>a-b);
+    while(uniq.length<4) uniq.push(uniq[uniq.length-1]+1);
+    const key=uniq.indexOf(k)+1;
+    return {kind:"B",sub:"rootBetween",N,key,src:"генератор",optK:uniq,
+      opts:uniq.map(kk=>({html:kk+" и "+(kk+1)})),
+      text:"Между какими целыми числами заключено число "+sqrtHtml(N)+"?"};
+  }
+  throw new Error("genB_rootBetween failed");
+}
+function genB_rootInRange(){
+  for(let att=0;att<300;att++){
+    const k=ri(2,13);
+    const lo=k*k, hi=(k+1)*(k+1);
+    const good=ri(lo+1,hi-1);
+    const below=ri(Math.max(2,lo-15),lo-1);
+    const above=ri(hi+1,hi+15);
+    const far=pick([ri(2,Math.max(2,lo-20)),ri(hi+16,hi+40)]);
+    const Ns=[...new Set([good,below,above,far])];
+    if(Ns.length<4) continue;
+    const sorted=Ns.sort((a,b)=>a-b);
+    const key=sorted.indexOf(good)+1;
+    return {kind:"B",sub:"rootInRange",k,Ns:sorted,key,src:"генератор",
+      opts:sorted.map(x=>({html:sqrtHtml(x)})),
+      text:"Какое из данных чисел принадлежит отрезку ["+k+";&nbsp;"+(k+1)+"]?"};
+  }
+  throw new Error("genB_rootInRange failed");
+}
+function genB_fracInRange(){
+  for(let att=0;att<300;att++){
+    const den=pick([7,9,11,13,17,19,23]);
+    const k=ri(1,11);
+    const lo=k*den, hi=(k+1)*den;
+    const good=ri(lo+1,hi-1);
+    const below=ri(Math.max(1,lo-den),lo-1);
+    const above=ri(hi+1,hi+den);
+    const far=pick([ri(1,Math.max(1,lo-den-3)),ri(hi+den+1,hi+2*den)]);
+    const ms=[...new Set([good,below,above,far])];
+    if(ms.length<4) continue;
+    const sorted=ms.sort((a,b)=>a-b);
+    const key=sorted.indexOf(good)+1;
+    return {kind:"B",sub:"fracInRange",k,den,ms:sorted,key,src:"генератор",
+      opts:sorted.map(m=>({html:fracHtml(m,den)})),
+      text:"Какое из данных чисел принадлежит отрезку ["+k+";&nbsp;"+(k+1)+"]?"};
+  }
+  throw new Error("genB_fracInRange failed");
+}
+
+function genC_root(){
+  for(let att=0;att<300;att++){
+    const k=ri(2,11);
+    const N=ri(k*k+1,(k+1)*(k+1)-1);
+    const x=Math.sqrt(N);
+    const halfSq=(k+0.5)*(k+0.5);
+    // три отвлекающие точки: другая половина того же промежутка + соседние промежутки
+    const sameOther = N<halfSq ? k+0.5+0.2+Math.random()*0.25 : k+0.05+Math.random()*0.3;
+    const leftPt = k-0.6+Math.random()*0.3;
+    const rightPt = k+1.2+Math.random()*0.5;
+    const pts=[{x:leftPt},{x:sameOther},{x},{x:rightPt}].sort((a,b)=>a.x-b.x);
+    const L=["A","B","C","D"]; pts.forEach((p,i)=>p.name=L[i]);
+    const key=pts.findIndex(p=>Math.abs(p.x-x)<1e-9)+1;
+    // проверка: никакие две точки не слишком близко
+    let ok=true; for(let i=1;i<4;i++) if(pts[i].x-pts[i-1].x<0.22) ok=false;
+    if(!ok) continue;
+    return {kind:"C",sub:"genRoot",N,k,key,src:"генератор",
+      halfLeft: N<halfSq,
+      pic:{lo:k-1.4,hi:k+2.4,ticks:"int",labels:[k-1,k,k+1,k+2],pts},
+      opts:L.map(s=>({html:vi(s)})),
+      text:"На координатной прямой отмечены точки "+L.map(vi).join(", ")+". Одна из них соответствует числу "+sqrtHtml(N)+". Какая это точка?"};
+  }
+  throw new Error("genC_root failed");
+}
+function genC_frac(){
+  for(let att=0;att<300;att++){
+    const n=pick([3,4,5,6,7,8,9]);
+    const k=ri(1,9);
+    const r=ri(1,n-1);
+    if(2*r===n) continue; // избегаем ровно половины
+    const m=k*n+r;
+    const x=m/n;
+    const half=k+0.5;
+    const sameOther = x<half ? k+0.62+Math.random()*0.28 : k+0.08+Math.random()*0.3;
+    const leftPt=k-0.6+Math.random()*0.3;
+    const rightPt=k+1.2+Math.random()*0.5;
+    const pts=[{x:leftPt},{x:sameOther},{x},{x:rightPt}].sort((a,b)=>a.x-b.x);
+    let ok=true; for(let i=1;i<4;i++) if(pts[i].x-pts[i-1].x<0.22) ok=false;
+    if(!ok) continue;
+    const L=["A","B","C","D"]; pts.forEach((p,i)=>p.name=L[i]);
+    const key=pts.findIndex(p=>Math.abs(p.x-x)<1e-9)+1;
+    return {kind:"C",sub:"genFrac",m,n,k,r,key,src:"генератор",
+      halfLeft:x<half,
+      pic:{lo:k-1.4,hi:k+2.4,ticks:"int",labels:[k-1,k,k+1,k+2],pts},
+      opts:L.map(s=>({html:vi(s)})),
+      text:"На координатной прямой отмечены точки "+L.map(vi).join(", ")+". Одна из них соответствует числу "+fracHtml(m,n)+". Какая это точка?"};
+  }
+  throw new Error("genC_frac failed");
+}
+
+/* Шаги для генераторных C-задач */
+function buildStepsGenC(t){
+  const steps=[]; const L=t.pic.pts.map(p=>p.name);
+  if(t.sub==="genRoot"){
+    const k=t.k;
+    steps.push(stepInt2("Зажми "+sqrtHtml(t.N)+" между соседними квадратами: ?\u00B2 &lt; "+t.N+" &lt; ?\u00B2",k,k+1,
+      "перебирай квадраты: 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144","",""));
+    const inRange=t.pic.pts.filter(p=>p.x>k&&p.x<k+1).map(p=>p.name);
+    steps.push(stepChoice("Значит "+sqrtHtml(t.N)+" между "+k+" и "+(k+1)+". Какие точки лежат в этом промежутке?",
+      [inRange.join(" и "),L[0]+" и "+L[3],"все четыре"],0,"смотри на рисунок"));
+    const half100=(2*k+1)*(2*k+1)*25; // (k+0,5)² в сотых
+    steps.push(stepInt("Проверь середину: "+k+",5\u00B2 = ? (в сотых: для 3,5\u00B2=12,25 введи 1225)",half100,
+      "("+k+",5)\u00B2 = "+k+"\u00B2 + "+k+" + 0,25"));
+    const correctLetter=t.pic.pts[t.key-1].name;
+    steps.push(stepChoice(t.N+(t.halfLeft?" &lt; ":" &gt; ")+decComma(half100/100)+", значит "+sqrtHtml(t.N)+
+      (t.halfLeft?" левее середины":" правее середины")+" промежутка. Какая это точка?",
+      inRange,inRange.indexOf(correctLetter),"из точек промежутка выбери "+(t.halfLeft?"левую":"правую")));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,""));
+  }
+  if(t.sub==="genFrac"){
+    const k=t.k,r=t.r,n=t.n;
+    steps.push(stepInt2("Подели с остатком: "+t.m+" = ?\u00B7"+n+" + ?",k,r,
+      "сколько раз "+n+" помещается в "+t.m+"?","частное","остаток"));
+    const inRange=t.pic.pts.filter(p=>p.x>k&&p.x<k+1).map(p=>p.name);
+    steps.push(stepChoice(fracHtml(t.m,n)+" = "+k+" + "+fracHtml(r,n)+" \u2014 между "+k+" и "+(k+1)+". Какие точки в этом промежутке?",
+      [inRange.join(" и "),L[0]+" и "+L[3],"все четыре"],0,"смотри на рисунок"));
+    steps.push(stepChoice("Дробная часть "+fracHtml(r,n)+": больше или меньше половины? (сравни 2\u00B7"+r+" = "+(2*r)+" и "+n+")",
+      ["меньше половины","больше половины"],2*r<n?0:1,"2\u00B7"+r+(2*r<n?" &lt; ":" &gt; ")+n));
+    const correctLetter=t.pic.pts[t.key-1].name;
+    steps.push(stepChoice("Значит точка "+(t.halfLeft?"в левой половине промежутка (ближе к "+k+")":"в правой половине (ближе к "+(k+1)+")")+". Какая?",
+      inRange,inRange.indexOf(correctLetter),""));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,""));
+  }
+  return steps;
+}
+
+/* Общая точка входа для шагов генераторных задач */
+function buildStepsAny(t,method){
+  if(t.sub==="genRoot"||t.sub==="genFrac") return buildStepsGenC(t);
+  return buildSteps(t,method);
+}
+
+/* Проверка сгенерированной задачи (для фазза и самопроверки) */
+function verifyGenTask(t){
+  if(t.kind==="A"){
+    const truths=t.opts.map(o=>o.test(t.vals));
+    const cnt=truths.filter(Boolean).length;
+    if(cnt!==1) return "верных "+cnt;
+    if(truths.indexOf(true)+1!==t.key) return "ключ не совпал";
+    return null;
+  }
+  if(t.kind==="B"){ const k=computeBKey(t); return k===t.key?null:"B: "+k+" vs "+t.key; }
+  if(t.kind==="C"){
+    // генераторные C: точка t.key должна совпадать со значением
+    const x = t.sub==="genRoot"?Math.sqrt(t.N):t.m/t.n;
+    const p=t.pic.pts[t.key-1];
+    if(Math.abs(p.x-x)>1e-9) return "C: точка не совпала";
+    const others=t.pic.pts.filter((q,i)=>i!==t.key-1);
+    // отвлекающие точки не должны совпадать со значением
+    if(others.some(q=>Math.abs(q.x-x)<1e-6)) return "C: дубль точки";
+    return null;
+  }
+  return null;
+}
+
+/* Проверка шагов: у каждого шага корректный ответ должен проходить свой же чекер */
+function verifySteps(steps){
+  for(const s of steps){
+    if(s.type==="int"){ if(!Number.isFinite(s.ans)&&!s.qans) return "int без ответа"; }
+    else if(s.type==="int2"){ if(!Number.isFinite(s.ans1)||!Number.isFinite(s.ans2)) return "int2 без ответа"; }
+    else if(s.type==="choice"){ if(!(s.correct>=0&&s.correct<s.opts.length)) return "choice: correct вне диапазона"; }
+    else return "неизвестный тип шага";
+  }
+  return null;
+}
+
+
+/* ===== ЯДРО-2: новые типы утверждений, банк из трёх новых источников, шаги, генераторы ===== */
+
+/* ---------- Новые конструкторы утверждений (тип А) ---------- */
+function stSqShiftGt(v,c){ // (v−c)² > 1
+  return {case:5, html:"("+vi(v)+" \u2212 "+c+")<sup>2</sup> &gt; 1",
+    test:vals=>{const d=qsub(vals[v],Q(c));return qgt(qmul(d,d),Q1);},
+    school:()=>"("+vi(v)+" \u2212 "+c+")\u00B2 &gt; 1 \u21D4 "+vi(v)+" дальше единицы от числа "+c+" (левее "+(c-1)+" или правее "+(c+1)+")"};
+}
+function stSqCmp(v,c,rel){ // v² REL c
+  return {case:5, html:vi(v)+"<sup>2</sup> "+relHtml(rel)+" "+c,
+    test:vals=>relTest(qmul(vals[v],vals[v]),Q(c),rel),
+    school:()=>"для положительных: "+vi(v)+"\u00B2 "+relHtml(rel)+" "+c+" \u21D4 "+vi(v)+" "+relHtml(rel)+" "+sqrtHtml(c)+(Number.isInteger(Math.sqrt(c))?" = "+Math.sqrt(c):"")};
+}
+function stDoubleIneq(lo,v,shift,hi){ // lo < v+shift < hi
+  const sh = shift<0? " \u2212 "+(-shift) : " + "+shift;
+  return {case:1, html:fmtMinus(String(lo))+" &lt; "+vi(v)+sh+" &lt; "+fmtMinus(String(hi)),
+    test:vals=>{const x=qadd(vals[v],Q(shift));return qgt(x,Q(lo))&&qlt(x,Q(hi));},
+    school:()=>"вычти "+shift+" из всех трёх частей: "+fmtMinus(String(lo-shift))+" &lt; "+vi(v)+" &lt; "+fmtMinus(String(hi-shift))};
+}
+function stDivSign(u,w,rel){ // u/w REL 0
+  return {case:4, html:fracHtml(vi(u),vi(w))+" "+relHtml(rel)+" 0",
+    test:vals=>relTest(qdiv(vals[u],vals[w]),Q0,rel),
+    school:()=>"знак частного: разные знаки \u2014 минус, одинаковые \u2014 плюс"};
+}
+function stSqProd(u,w,rel){ // u²·w REL 0
+  return {case:4, html:vi(u)+"<sup>2</sup>"+vi(w)+" "+relHtml(rel)+" 0",
+    test:vals=>relTest(qmul(qmul(vals[u],vals[u]),vals[w]),Q0,rel),
+    school:()=>vi(u)+"<sup>2</sup> \u2265 0 всегда, знак определяет "+vi(w)};
+}
+function stAbsCombo(u,w,cmpRel,absRel){ // u REL w  и  |u| REL |w|
+  return {case:6, html:vi(u)+" "+relHtml(cmpRel)+" "+vi(w)+" и |"+vi(u)+"| "+relHtml(absRel)+" |"+vi(w)+"|",
+    test:vals=>{
+      const au=qlt(vals[u],Q0)?qneg(vals[u]):vals[u];
+      const aw=qlt(vals[w],Q0)?qneg(vals[w]):vals[w];
+      return relTest(vals[u],vals[w],cmpRel)&&relTest(au,aw,absRel);
+    },
+    school:()=>"сравнение \u2014 кто правее; модуль \u2014 кто дальше от нуля"};
+}
+function stOrdering(exprs){ // exprs: [{html, val(vals)}] — «в порядке возрастания»
+  return {case:7, html:exprs.map(e=>e.html).join(",&nbsp; "),
+    test:vals=>{
+      for(let i=1;i<exprs.length;i++)
+        if(!qlt(exprs[i-1].val(vals),exprs[i].val(vals))) return false;
+      return true;
+    },
+    school:()=>"подставь число с рисунка и сравни значения"};
+}
+const exA=v=>({html:vi(v),val:vals=>vals[v]});
+const exInv=v=>({html:fracHtml("1",vi(v)),val:vals=>qdiv(Q1,vals[v])});
+const exMinus1=v=>({html:vi(v)+" \u2212 1",val:vals=>qsub(vals[v],Q1)});
+function stMinOf(exprs,idx){ // «наименьшее» — вариант idx среди exprs; «нет данных» отдельно
+  return {case:7, html:exprs[idx].html,
+    test:vals=>{
+      const me=exprs[idx].val(vals);
+      return exprs.every((e,i)=>i===idx||qlt(me,e.val(vals)));
+    },
+    school:()=>"подставь число с рисунка (например, середину промежутка) и посчитай все варианты"};
+}
+const stNoData=(txt)=>({case:7,html:txt,test:()=>false,school:()=>"по рисунку всё определяется \u2014 этот вариант ложный"});
+const exPow=(v,p,html)=>({html,val:vals=>{let r=Q1;for(let i=0;i<p;i++)r=qmul(r,vals[v]);return r;}});
+
+/* Мини-рисунок для вариантов «порядок точек» (С7/С8) */
+function orderPicOpt(labels){ // labels слева направо, напр. ["2m","m","0","m²"]
+  return {miniOrder:labels, html:""}; // html дорисует UI
+}
+
+/* ---------- Разбор десятичной строки в Q ---------- */
+function qFromStr(s){ const r=parseQ(s); if(!r) throw new Error("bad dec "+s); return r; }
+
+/* ---------- Конструкторы банка ---------- */
+function srcName(id){return {reshu:"РЕШУ ОГЭ \u2116 ", bank7:"банк7 ", m100:"math100 \u2116 ", formula:"formulaoge \u2116 "}[id];}
+function pushTask(t){ if(BANK.some(x=>x.id===t.id)) throw new Error("dup id "+t.id); BANK.push(t); }
+
+function addA2(srcId,num,vals,opts,key,mode,pic,extra){
+  const t=Object.assign({id:srcId+"_"+num, src:srcName(srcId)+num, srcId, kind:"A",
+    mode:mode||"верно", vals, opts, key, pic},extra||{});
+  pushTask(t); return t;
+}
+function addB2(srcId,num,task){
+  task.id=srcId+"_"+num; task.src=srcName(srcId)+num; task.srcId=srcId; task.kind="B";
+  pushTask(task); return task;
+}
+function addC2(srcId,num,task){
+  task.id=srcId+"_"+num; task.src=srcName(srcId)+num; task.srcId=srcId; task.kind="C";
+  pushTask(task); return task;
+}
+function addL(srcId,num,task){ // логика без рисунка
+  task.id=srcId+"_"+num; task.src=srcName(srcId)+num; task.srcId=srcId; task.kind="L";
+  pushTask(task); return task;
+}
+/* пометим старый банк источником */
+BANK.forEach(t=>{ t.srcId=t.srcId||"reshu"; });
+
+/* ---------- Точки: слоты math100 (тики k1..k1+2, точки ~k1+0.3/0.75/1.3/1.75) ---------- */
+function slotPts(k1,v){
+  const slots=[k1+0.3,k1+0.75,k1+1.3,k1+1.75];
+  let si=0; for(let i=1;i<4;i++) if(Math.abs(slots[i]-v)<Math.abs(slots[si]-v)) si=i;
+  const xs=slots.slice(); xs[si]=v;
+  const L=["A","B","C","D"];
+  return {pts:xs.map((x,i)=>({name:L[i],x})), key:si+1};
+}
+function mkPtsFrac(srcId,num,m,n,k1,officialKey){
+  const v=m/n, k=Math.floor(v), r=m-k*n;
+  const {pts,key}=slotPts(k1,v);
+  if(key!==officialKey) throw new Error("mkPtsFrac "+srcId+num+": "+key+" vs "+officialKey);
+  if(2*r===n) throw new Error("mkPtsFrac half "+srcId+num);
+  return addC2(srcId,num,{sub:"genFrac",m,n,k,r,key,halfLeft:v-k<0.5,
+    pic:{lo:k1-0.55,hi:k1+2.55,ticks:"int",labels:[k1,k1+1,k1+2],pts},
+    opts:["A","B","C","D"].map(s=>({html:"Точка "+vi(s)})),
+    text:"На координатной прямой отмечены точки "+["A","B","C","D"].map(vi).join(", ")+
+      ". Одна из них соответствует данному числу "+fracHtml(m,n)+". Какая это точка?"});
+}
+function mkPtsRoot(srcId,num,N,k1,officialKey){
+  const v=Math.sqrt(N), k=Math.floor(v);
+  const {pts,key}=slotPts(k1,v);
+  if(key!==officialKey) throw new Error("mkPtsRoot "+srcId+num+": "+key+" vs "+officialKey);
+  return addC2(srcId,num,{sub:"genRoot",N,k,key,halfLeft:v-k<0.5,
+    pic:{lo:k1-0.55,hi:k1+2.55,ticks:"int",labels:[k1,k1+1,k1+2],pts},
+    opts:["A","B","C","D"].map(s=>({html:"Точка "+vi(s)})),
+    text:"На координатной прямой отмечены точки "+["A","B","C","D"].map(vi).join(", ")+
+      ". Одна из них соответствует числу "+sqrtHtml(N)+". Какая это точка?"});
+}
+/* «одно из чисел √.. отмечено точкой A» */
+function mkRootValue(srcId,num,Ns,k1,officialKey){
+  const Nt=Ns[officialKey-1], v=Math.sqrt(Nt), k=Math.floor(v);
+  const cands=Ns.filter(N=>k*k<N&&N<(k+1)*(k+1));
+  if(cands.length<1||cands.length>2) throw new Error("mkRootValue cands "+srcId+num);
+  if(cands.length===2){
+    const half=(k+0.5)*(k+0.5);
+    if((cands[0]<half)===(cands[1]<half)) throw new Error("mkRootValue halves "+srcId+num);
+  }
+  return addC2(srcId,num,{sub:"rootValuePick",Ns,N:Nt,k,cands,key:officialKey,
+    halfLeft:Nt<(k+0.5)*(k+0.5),
+    pic:{lo:k1-0.55,hi:k1+2.55,ticks:"int",labels:[k1,k1+1,k1+2],pts:[{name:"A",x:v}]},
+    opts:Ns.map(N=>({html:sqrtHtml(N)})),
+    text:"Одно из чисел "+Ns.map(sqrtHtml).join(", ")+" отмечено на прямой точкой "+vi("A")+". Какое это число?"});
+}
+/* «одно из чисел m/n отмечено точкой A», неправильные дроби, тики 0,1,... */
+function mkFracValueImp(srcId,num,ms,n,officialKey){
+  const mt=ms[officialKey-1], v=mt/n, k=Math.floor(v), r=mt-k*n;
+  const cands=ms.filter(m=>Math.floor(m/n)===k);
+  if(cands.length<1||cands.length>2) throw new Error("mkFracValueImp cands "+srcId+num);
+  if(cands.length===2){
+    const mid2=(2*k+1)*n;
+    if((2*cands[0]<mid2)===(2*cands[1]<mid2)) throw new Error("mkFracValueImp halves "+srcId+num);
+    if(2*cands[0]===mid2||2*cands[1]===mid2) throw new Error("mkFracValueImp mid "+srcId+num);
+  }
+  const hi=Math.floor(ms[ms.length-1]/n)+1.7;
+  return addC2(srcId,num,{sub:"fracValueImp",ms,n,m:mt,k,r,cands,key:officialKey,
+    halfLeft:2*mt<(2*k+1)*n,
+    pic:{lo:-0.6,hi,ticks:"int",labels:[0,1],pts:[{name:"A",x:v}]},
+    opts:ms.map(m=>({html:fracHtml(m,n)})),
+    text:"Одно из чисел "+ms.map(m=>fracHtml(m,n)).join(", ")+" отмечено на числовой прямой точкой "+vi("A")+". Какое это число?"});
+}
+/* «одно из чисел m/n отмечено точкой A», правильные дроби, десятичная шкала 0..1 */
+const DECADE_TICKS=[[0,"0"],[0.1,"0,1"],[0.2,"0,2"],[0.3,"0,3"],[0.4,"0,4"],[0.5,"0,5"],[0.6,"0,6"],[0.7,"0,7"],[0.8,"0,8"],[0.9,"0,9"],[1,"1"]];
+function mkFracValueDec(srcId,num,ms,n,officialKey){
+  const mt=ms[officialKey-1], v=mt/n, d=Math.floor(10*v);
+  const cands=ms.filter(m=>m<n&&Math.floor(10*m/n)===d);
+  if(cands.length<1||cands.length>2) throw new Error("mkFracValueDec cands "+srcId+num+" ["+cands+"]");
+  if(cands.length===2){
+    const mid20=(2*d+1)*n; // сравнение 20m и (2d+1)n
+    if((20*cands[0]<mid20)===(20*cands[1]<mid20)) throw new Error("mkFracValueDec halves "+srcId+num);
+  }
+  return addC2(srcId,num,{sub:"fracValueDec",ms,n,m:mt,d,cands,key:officialKey,
+    halfLeft:20*mt<(2*d+1)*n,
+    pic:{lo:-0.06,hi:1.08,ticks:DECADE_TICKS,pts:[{name:"A",x:v}]},
+    opts:ms.map(m=>({html:fracHtml(m,n)})),
+    text:"Одно из чисел "+ms.map(m=>fracHtml(m,n)).join(", ")+" отмечено на числовой прямой точкой "+vi("A")+". Какое это число?"});
+}
+/* «какой точке соответствует число X» — числа даны списком, точки без шкалы */
+function mkDecOrder(srcId,num,numsStr,targetStr,officialKey){
+  const vals=numsStr.map(s=>parseFloat(s.replace("\u2212","-").replace(",",".")));
+  const tv=parseFloat(targetStr.replace("\u2212","-").replace(",","."));
+  const sorted=vals.slice().sort((a,b)=>a-b);
+  const key=sorted.indexOf(tv)+1;
+  if(key!==officialKey) throw new Error("mkDecOrder "+srcId+num+": "+key+" vs "+officialKey);
+  // позиции: смесь ранга и значения, с минимальным зазором
+  const mn=sorted[0],mx=sorted[3],span=mx-mn||1;
+  let xs=sorted.map((v,i)=>0.5*((v-mn)/span)+0.5*(i/3));
+  for(let i=1;i<4;i++) if(xs[i]-xs[i-1]<0.07) xs[i]=xs[i-1]+0.07;
+  const L=["A","B","C","D"];
+  const cntLess=sorted.indexOf(tv);
+  return addC2(srcId,num,{sub:"decOrder2",nums:numsStr,targetStr,sortedStr:sorted.map(v=>decComma(v)),
+    cntLess,key,
+    pic:{lo:-0.12,hi:1.22,ticks:"none",labels:[],pts:xs.map((x,i)=>({name:L[i],x}))},
+    opts:L.map(s=>({html:vi(s)})),
+    text:"На координатной прямой точки "+L.map(vi).join(", ")+" соответствуют числам "+
+      numsStr.join("; ")+". Какой точке соответствует число "+targetStr+"?"});
+}
+
+/* ================= БАНК: банк7 — «Неравенства» ================= */
+addA2("bank7","Н1",{a:Q(74,10)},[
+  stMinusC("a",6,"<"), stCminus("a",6,">"), stMinusC("a",7,">"), stCminus("a",8,"<")
+],3,"верно",{lo:-0.7,hi:9.2,ticks:"int",labels:[0,1],pts:[{name:"a"}]});
+addA2("bank7","Н2",{a:Q(45,10)},[
+  stCminus("a",5,"<"), stCminus("a",4,">"), stMinusC("a",6,">"), stMinusC("a",5,"<")
+],4,"верно",{lo:-0.7,hi:7.2,ticks:"int",labels:[0,1],pts:[{name:"a"}]});
+addA2("bank7","Н3",{y:Q(-8,10),x:Q(26,10)},[
+  stSum("x","y","<"), stDiff("x","y",">"), stProdSq("x","y",">"), stSqProd("x","y","<")
+],1,"неверно",{lo:-1.9,hi:3.7,ticks:"int",labels:[0],pts:[{name:"y"},{name:"x"}]});
+addA2("bank7","Н4",{b:Q(-22,10),a:Q(9,10)},[
+  stSum("a","b","<"), stDiff("a","b","<"), stProd("a","b","<"), stProdSq("a","b",">")
+],2,"неверно",{lo:-3.3,hi:2.1,ticks:"int",labels:[0],pts:[{name:"b"},{name:"a"}]});
+addA2("bank7","Н5",{r:Q(1),q:Q(24,10),p:Q(4)},[
+  {case:3,html:vi("q")+" \u2212 "+vi("p"),test:v=>qgt(qsub(v.q,v.p),Q0),school:()=>vi("q")+" левее "+vi("p")},
+  {case:3,html:vi("q")+" \u2212 "+vi("r"),test:v=>qgt(qsub(v.q,v.r),Q0),school:()=>vi("q")+" правее "+vi("r")},
+  {case:3,html:vi("r")+" \u2212 "+vi("p"),test:v=>qgt(qsub(v.r,v.p),Q0),school:()=>vi("r")+" левее "+vi("p")},
+  {case:3,html:"Определить невозможно",test:v=>!(qgt(qsub(v.q,v.p),Q0)||qgt(qsub(v.q,v.r),Q0)||qgt(qsub(v.r,v.p),Q0)),school:()=>"проверь все три"}
+],2,"верно",{lo:0.2,hi:5.1,ticks:"none",labels:[],pts:[{name:"r"},{name:"q"},{name:"p"}]},
+{pairs:[["q","p"],["q","r"],["r","p"]],diffSign:"положительна",
+ text:"На координатной прямой отмечены числа "+["p","q","r"].map(vi).join(", ")+". Какая из разностей "+vi("q")+" \u2212 "+vi("p")+", "+vi("q")+" \u2212 "+vi("r")+", "+vi("r")+" \u2212 "+vi("p")+" положительна?"});
+addA2("bank7","Н6",{z:Q(1),y:Q(22,10),x:Q(41,10)},[
+  {case:3,html:vi("z")+" \u2212 "+vi("x"),test:v=>qlt(qsub(v.z,v.x),Q0),school:()=>vi("z")+" левее "+vi("x")},
+  {case:3,html:vi("y")+" \u2212 "+vi("z"),test:v=>qlt(qsub(v.y,v.z),Q0),school:()=>vi("y")+" правее "+vi("z")},
+  {case:3,html:vi("x")+" \u2212 "+vi("y"),test:v=>qlt(qsub(v.x,v.y),Q0),school:()=>vi("x")+" правее "+vi("y")},
+  {case:3,html:"Определить невозможно",test:v=>!(qlt(qsub(v.z,v.x),Q0)||qlt(qsub(v.y,v.z),Q0)||qlt(qsub(v.x,v.y),Q0)),school:()=>"проверь все три"}
+],1,"верно",{lo:0.2,hi:5.2,ticks:"none",labels:[],pts:[{name:"z"},{name:"y"},{name:"x"}]},
+{pairs:[["z","x"],["y","z"],["x","y"]],diffSign:"отрицательна",
+ text:"На координатной прямой отмечены числа "+["x","y","z"].map(vi).join(", ")+". Какая из разностей "+vi("z")+" \u2212 "+vi("x")+", "+vi("y")+" \u2212 "+vi("z")+", "+vi("x")+" \u2212 "+vi("y")+" отрицательна?"});
+addA2("bank7","Н7",{x:Q(-9,10),y:Q(24,10)},[
+  stAbsCombo("x","y","<","<"), stAbsCombo("x","y","<",">"),
+  stAbsCombo("x","y",">",">"), stAbsCombo("x","y",">","<")
+],1,"верно",{lo:-2,hi:3.5,ticks:"int",labels:[0],pts:[{name:"x"},{name:"y"}]});
+addA2("bank7","Н8",{b:Q(-24,10),a:Q(11,10)},[
+  stAbsCombo("a","b","<","<"), stAbsCombo("a","b","<",">"),
+  stAbsCombo("a","b",">",">"), stAbsCombo("a","b",">","<")
+],4,"верно",{lo:-3.5,hi:2.2,ticks:"int",labels:[0],pts:[{name:"b"},{name:"a"}]});
+addA2("bank7","Н9",{a:Q(-34,10),c:Q(9,10)},[
+  stDiff("a","c",">"), stNeg("c",-1,">"), stDoubleIneq(-3,"a",1,-2), stDivSign("a","c","<")
+],1,"неверно",{lo:-4.4,hi:1.9,ticks:"int",labels:[-1,0,1],pts:[{name:"a"},{name:"c"}]});
+addA2("bank7","Н10",{a:Q(-16,10),b:Q(-4,10)},[
+  stSum("a","b","<"), stSqProd("a","b","<"), stDoubleIneq(-2,"b",-1,-1), stNeg("a",0,"<")
+],4,"неверно",{lo:-2.6,hi:1.8,ticks:"int",labels:[-1,0,1],pts:[{name:"a"},{name:"b"}]});
+addL("bank7","Н11",{
+  text:"Какое из данных утверждений верно, если "+vi("a")+" &gt; "+vi("b")+"?",
+  opts:[
+    {html:vi("a")+" \u2212 "+vi("b")+" &gt; \u22124", holds:s=>s.a-s.b>-4},
+    {html:vi("a")+" \u2212 "+vi("b")+" &lt; 4", holds:s=>s.a-s.b<4},
+    {html:vi("b")+" \u2212 "+vi("a")+" &lt; \u22122", holds:s=>s.b-s.a<-2},
+    {html:vi("b")+" \u2212 "+vi("a")+" &gt; 5", holds:s=>s.b-s.a>5}
+  ],
+  samples:[{a:1,b:0},{a:0,b:-10},{a:10,b:9.5},{a:2,b:-2}], key:1,
+  stepsData:[
+    stepChoice("Если "+vi("a")+" &gt; "+vi("b")+", то разность "+vi("a")+" \u2212 "+vi("b")+"\u2026",
+      ["положительна","отрицательна"],0,"из большего вычли меньшее"),
+    stepChoice("Разность положительна, но может быть какой угодно: и 0,5, и 100. Что гарантировано для любого положительного числа?",
+      ["оно больше \u22124","оно меньше 4"],0,"любое положительное больше любого отрицательного"),
+    stepInt("Номер верного варианта:",1,"")
+  ]});
+addL("bank7","Н12",{
+  text:"Какое из данных утверждений верно, если "+vi("a")+" &lt; "+vi("b")+"?",
+  opts:[
+    {html:vi("a")+" \u2212 "+vi("b")+" &gt; 5", holds:s=>s.a-s.b>5},
+    {html:vi("a")+" \u2212 "+vi("b")+" &lt; 3", holds:s=>s.a-s.b<3},
+    {html:vi("b")+" \u2212 "+vi("a")+" &gt; 3", holds:s=>s.b-s.a>3},
+    {html:vi("b")+" \u2212 "+vi("a")+" &lt; 1", holds:s=>s.b-s.a<1}
+  ],
+  samples:[{a:0,b:1},{a:-10,b:0},{a:9.5,b:10},{a:-2,b:2}], key:2,
+  stepsData:[
+    stepChoice("Если "+vi("a")+" &lt; "+vi("b")+", то разность "+vi("a")+" \u2212 "+vi("b")+"\u2026",
+      ["положительна","отрицательна"],1,"из меньшего вычли большее"),
+    stepChoice("Разность отрицательна. Что гарантировано для любого отрицательного числа?",
+      ["оно меньше 3","оно больше 3"],0,"любое отрицательное меньше любого положительного"),
+    stepInt("Номер верного варианта:",2,"")
+  ]});
+addA2("bank7","Н13",{a:Q(65,10)},[
+  stSqShiftGt("a",6), stSqCmp("a",36,">"), stSqShiftGt("a",7), stSqCmp("a",49,">")
+],2,"верно",{lo:-0.7,hi:8.2,ticks:"int",labels:[0,1],pts:[{name:"a"}]});
+addA2("bank7","Н14",{a:Q(75,10)},[
+  stSqShiftGt("a",7), stSqCmp("a",49,"<"), stSqShiftGt("a",8), stSqCmp("a",64,"<")
+],4,"верно",{lo:-0.7,hi:9.2,ticks:"int",labels:[0,1],pts:[{name:"a"}]});
+
+/* ================= банк7 — «Сравнение чисел» ================= */
+addL("bank7","С1",{
+  text:"Сравните числа, если "+vi("a")+", "+vi("b")+" \u2014 положительные числа и "+vi("a")+" &lt; "+vi("b"),
+  opts:[
+    {html:fracHtml(2,vi("a"))+" &gt; "+fracHtml(2,vi("b")), holds:s=>2/s.a>2/s.b},
+    {html:fracHtml(2,vi("a"))+" &lt; "+fracHtml(2,vi("b")), holds:s=>2/s.a<2/s.b},
+    {html:fracHtml(2,vi("a"))+" = "+fracHtml(2,vi("b")), holds:s=>2/s.a===2/s.b},
+    {html:"невозможно сравнить", holds:()=>false}
+  ],
+  samples:[{a:1,b:2},{a:0.5,b:3},{a:2,b:2.5}], key:1,
+  stepsData:[
+    stepChoice("Числители одинаковые (по 2). У какой дроби меньше знаменатель, та\u2026",
+      ["больше","меньше"],0,"пиццу делят на меньше частей \u2014 кусок больше"),
+    stepChoice(vi("a")+" &lt; "+vi("b")+": у какой дроби знаменатель меньше?",
+      ["у "+fracHtml(2,vi("a")),"у "+fracHtml(2,vi("b"))],0,""),
+    stepInt("Номер верного варианта:",1,"")
+  ]});
+addL("bank7","С2",{
+  text:"Сравните числа, если "+vi("a")+", "+vi("b")+" \u2014 положительные числа и "+vi("a")+" &gt; "+vi("b"),
+  opts:[
+    {html:fracHtml(1,vi("a"))+" &gt; "+fracHtml(1,vi("b")), holds:s=>1/s.a>1/s.b},
+    {html:fracHtml(1,vi("a"))+" &lt; "+fracHtml(1,vi("b")), holds:s=>1/s.a<1/s.b},
+    {html:fracHtml(1,vi("a"))+" = "+fracHtml(1,vi("b")), holds:s=>1/s.a===1/s.b},
+    {html:"невозможно сравнить", holds:()=>false}
+  ],
+  samples:[{a:2,b:1},{a:3,b:0.5},{a:2.5,b:2}], key:2,
+  stepsData:[
+    stepChoice("Числители одинаковые. Меньше знаменатель \u2014 дробь\u2026",["больше","меньше"],0,""),
+    stepChoice(vi("a")+" &gt; "+vi("b")+": у "+fracHtml(1,vi("a"))+" знаменатель больше, значит она\u2026",
+      ["меньше "+fracHtml(1,vi("b")),"больше "+fracHtml(1,vi("b"))],0,""),
+    stepInt("Номер верного варианта:",2,"")
+  ]});
+addA2("bank7","С3",{a:Q(-5,10)},[
+  stMinOf([exA("a"),exPow("a",2,vi("a")+"<sup>2</sup>"),exPow("a",3,vi("a")+"<sup>3</sup>")],0),
+  stMinOf([exA("a"),exPow("a",2,vi("a")+"<sup>2</sup>"),exPow("a",3,vi("a")+"<sup>3</sup>")],1),
+  stMinOf([exA("a"),exPow("a",2,vi("a")+"<sup>2</sup>"),exPow("a",3,vi("a")+"<sup>3</sup>")],2),
+  stNoData("нет данных")
+],1,"верно",{lo:-1.7,hi:0.9,ticks:"int",labels:[-1,0],pts:[{name:"a"}]},
+{text:"На координатной прямой отмечены числа. Какое из перечисленных чисел наименьшее?",
+ customSteps:t=>[
+  stepChoice("По рисунку: какой знак у "+vi("a")+"?",["+","\u2212"],1,"a между \u22121 и 0"),
+  stepChoice("Какие из чисел "+vi("a")+", "+vi("a")+"<sup>2</sup>, "+vi("a")+"<sup>3</sup> отрицательны?",
+    ["только "+vi("a"),vi("a")+" и "+vi("a")+"<sup>3</sup> (нечётные степени)","все три"],1,"квадрат неотрицателен"),
+  stepChoice("Из отрицательных наименьшее \u2014 то, что дальше от нуля. При |"+vi("a")+"| &lt; 1 куб по модулю\u2026",
+    ["меньше самого числа \u2014 значит наименьшее "+vi("a"),"больше самого числа"],0,
+    "прикинь a = \u22120,5: a\u00B3 = \u22120,125"),
+  stepInt("Номер верного варианта:",1,"")
+ ]});
+addA2("bank7","С4",{a:Q(55,100)},[
+  stMinOf([exPow("a",2,vi("a")+"<sup>2</sup>"),exPow("a",3,vi("a")+"<sup>3</sup>"),exPow("a",4,vi("a")+"<sup>4</sup>")],0),
+  stMinOf([exPow("a",2,vi("a")+"<sup>2</sup>"),exPow("a",3,vi("a")+"<sup>3</sup>"),exPow("a",4,vi("a")+"<sup>4</sup>")],1),
+  stMinOf([exPow("a",2,vi("a")+"<sup>2</sup>"),exPow("a",3,vi("a")+"<sup>3</sup>"),exPow("a",4,vi("a")+"<sup>4</sup>")],2),
+  stNoData("нет данных")
+],3,"верно",{lo:-0.7,hi:1.7,ticks:"int",labels:[0,1],pts:[{name:"a"}]},
+{text:"На координатной прямой отмечены числа. Какое из перечисленных чисел наименьшее?",
+ customSteps:t=>[
+  stepChoice("По рисунку 0 &lt; "+vi("a")+" &lt; 1. При умножении такого числа само на себя результат\u2026",
+    ["растёт","убывает"],1,"прикинь a = 0,5: 0,25; 0,125; 0,0625"),
+  stepChoice("Значит наименьшая \u2014 какая степень?",
+    [vi("a")+"<sup>2</sup>",vi("a")+"<sup>3</sup>",vi("a")+"<sup>4</sup> (самая старшая)"],2,""),
+  stepInt("Номер верного варианта:",3,"")
+ ]});
+addA2("bank7","С5",{a:Q(-5,10)},[
+  stOrdering([exA("a"),exInv("a"),exMinus1("a")]),
+  stOrdering([exA("a"),exMinus1("a"),exInv("a")]),
+  stOrdering([exMinus1("a"),exA("a"),exInv("a")]),
+  stOrdering([exInv("a"),exMinus1("a"),exA("a")])
+],4,"верно",{lo:-1.7,hi:0.9,ticks:"int",labels:[-1,0],pts:[{name:"a"}]},
+{text:"Расположите в порядке возрастания числа "+vi("a")+", "+fracHtml(1,vi("a"))+", "+vi("a")+" \u2212 1.",
+ customSteps:t=>[
+  stepChoice("Возьмём с рисунка "+vi("a")+" \u2248 \u22120,5. Посчитай "+fracHtml(1,vi("a"))+":",
+    ["\u22122","\u22120,5","2"],0,"1 : (\u22120,5) = \u22122"),
+  stepChoice("И "+vi("a")+" \u2212 1:",["\u22121,5","\u22120,5","0,5"],0,"\u22120,5 \u2212 1"),
+  stepChoice("По возрастанию: \u22122 &lt; \u22121,5 &lt; \u22120,5, то есть\u2026",
+    [fracHtml(1,vi("a"))+", "+vi("a")+" \u2212 1, "+vi("a"), vi("a")+", "+vi("a")+" \u2212 1, "+fracHtml(1,vi("a"))],0,""),
+  stepInt("Номер верного варианта:",4,"")
+ ]});
+addA2("bank7","С6",{a:Q(12,10)},[
+  stOrdering([exA("a"),exInv("a"),exMinus1("a")]),
+  stOrdering([exMinus1("a"),exInv("a"),exA("a")]),
+  stOrdering([exMinus1("a"),exA("a"),exInv("a")]),
+  stOrdering([exInv("a"),exMinus1("a"),exA("a")])
+],2,"верно",{lo:-0.7,hi:1.9,ticks:"int",labels:[0,1],pts:[{name:"a"}]},
+{text:"Расположите в порядке возрастания числа "+vi("a")+", "+fracHtml(1,vi("a"))+", "+vi("a")+" \u2212 1.",
+ customSteps:t=>[
+  stepChoice("По рисунку "+vi("a")+" чуть больше 1. Тогда "+vi("a")+" \u2212 1\u2026",
+    ["маленькое положительное, меньше остальных","больше "+vi("a")],0,"например 1,2 \u2212 1 = 0,2"),
+  stepChoice("А "+fracHtml(1,vi("a"))+" при "+vi("a")+" &gt; 1\u2026",
+    ["меньше 1, но больше "+vi("a")+" \u2212 1","больше "+vi("a")],0,"1/1,2 \u2248 0,83"),
+  stepChoice("Итого по возрастанию:",
+    [vi("a")+" \u2212 1, "+fracHtml(1,vi("a"))+", "+vi("a"), fracHtml(1,vi("a"))+", "+vi("a")+" \u2212 1, "+vi("a")],0,""),
+  stepInt("Номер верного варианта:",2,"")
+ ]});
+addA2("bank7","С7",{m:Q(-15,10)},[
+  Object.assign(orderPicOpt(["2m","m","0","m\u00B2"]),{case:7,
+    test:v=>true, school:()=>""}),
+  Object.assign(orderPicOpt(["2m","m","m\u00B2","0"]),{case:7,test:v=>false,school:()=>""}),
+  Object.assign(orderPicOpt(["m","2m","m\u00B2","0"]),{case:7,test:v=>false,school:()=>""}),
+  Object.assign(orderPicOpt(["m\u00B2","0","2m","m"]),{case:7,test:v=>false,school:()=>""})
+],1,"верно",null,
+{text:"Известно, что число "+vi("m")+" отрицательное. На каком из рисунков точки с координатами 0, "+vi("m")+", 2"+vi("m")+", "+vi("m")+"<sup>2</sup> расположены на координатной прямой в правильном порядке?",
+ orderTask:{exprs:["2m","m","0","m\u00B2"], sample:-1.5},
+ customSteps:t=>[
+  stepChoice(vi("m")+" отрицательное. Где стоит 2"+vi("m")+" относительно "+vi("m")+"?",
+    ["ещё левее (2"+vi("m")+" &lt; "+vi("m")+")","правее"],0,"удвоенное отрицательное \u2014 дальше от нуля влево"),
+  stepChoice("А "+vi("m")+"<sup>2</sup>?",["положительное \u2014 правее нуля","отрицательное"],0,"квадрат неотрицателен"),
+  stepChoice("Итого слева направо:",
+    ["2"+vi("m")+", "+vi("m")+", 0, "+vi("m")+"<sup>2</sup>", vi("m")+", 2"+vi("m")+", 0, "+vi("m")+"<sup>2</sup>"],0,""),
+  stepInt("Номер верного варианта:",1,"")
+ ]});
+addA2("bank7","С8",{m:Q(3)},[
+  Object.assign(orderPicOpt(["2m","m","0","m\u00B2"]),{case:7,test:v=>false,school:()=>""}),
+  Object.assign(orderPicOpt(["0","m","2m","m\u00B2"]),{case:7,test:v=>true,school:()=>""}),
+  Object.assign(orderPicOpt(["m","2m","m\u00B2","0"]),{case:7,test:v=>false,school:()=>""}),
+  Object.assign(orderPicOpt(["0","m","m\u00B2","2m"]),{case:7,test:v=>false,school:()=>""})
+],2,"верно",null,
+{text:"Известно, что число "+vi("m")+" &gt; 2. На каком из рисунков точки с координатами 0, "+vi("m")+", 2"+vi("m")+", "+vi("m")+"<sup>2</sup> расположены на координатной прямой в правильном порядке?",
+ orderTask:{exprs:["0","m","2m","m\u00B2"], sample:3},
+ customSteps:t=>[
+  stepChoice(vi("m")+" &gt; 2, всё положительное. Сравни "+vi("m")+"<sup>2</sup> и 2"+vi("m")+": "+vi("m")+"<sup>2</sup> = "+vi("m")+"\u00B7"+vi("m")+", а "+vi("m")+" &gt; 2, значит\u2026",
+    [vi("m")+"<sup>2</sup> &gt; 2"+vi("m"),vi("m")+"<sup>2</sup> &lt; 2"+vi("m")],0,"умножили "+vi("m")+" на число больше 2"),
+  stepChoice("Итого слева направо:",
+    ["0, "+vi("m")+", 2"+vi("m")+", "+vi("m")+"<sup>2</sup>","0, "+vi("m")+", "+vi("m")+"<sup>2</sup>, 2"+vi("m")],0,""),
+  stepInt("Номер верного варианта:",2,"")
+ ]});
+addB2("bank7","С9",{sub:"fracBetweenInt", m:130,n:11, key:2,
+  optPairs:[[10,11],[11,12],[12,13],[13,14]],
+  opts:[[10,11],[11,12],[12,13],[13,14]].map(p=>({html:p[0]+" и "+p[1]})),
+  text:"Между какими целыми числами заключено число "+fracHtml(130,11)+"?"});
+addB2("bank7","С10",{sub:"fracBetweenInt", m:124,n:15, key:1,
+  optPairs:[[8,9],[9,10],[10,11],[11,12]],
+  opts:[[8,9],[9,10],[10,11],[11,12]].map(p=>({html:p[0]+" и "+p[1]})),
+  text:"Между какими целыми числами заключено число "+fracHtml(124,15)+"?"});
+addL("bank7","С11",{
+  text:"О числах "+["a","b","c","d"].map(vi).join(", ")+" известно, что "+vi("a")+" = "+vi("b")+", "+vi("b")+" = "+vi("c")+", "+vi("d")+" &gt; "+vi("c")+". Сравните числа "+vi("d")+" и "+vi("a")+".",
+  opts:[
+    {html:vi("d")+" = "+vi("a"), holds:s=>s.d===s.a},
+    {html:vi("d")+" &gt; "+vi("a"), holds:s=>s.d>s.a},
+    {html:vi("d")+" &lt; "+vi("a"), holds:s=>s.d<s.a},
+    {html:"сравнить невозможно", holds:()=>false}
+  ],
+  samples:[{a:1,b:1,c:1,d:2},{a:0,b:0,c:0,d:5},{a:-3,b:-3,c:-3,d:-1}], key:2,
+  stepsData:[
+    stepChoice(vi("a")+" = "+vi("b")+" и "+vi("b")+" = "+vi("c")+", значит "+vi("a")+" ? "+vi("c"),
+      [vi("a")+" = "+vi("c"),vi("a")+" &gt; "+vi("c")],0,"цепочка равенств"),
+    stepChoice(vi("d")+" &gt; "+vi("c")+", а "+vi("c")+" = "+vi("a")+", значит\u2026",
+      [vi("d")+" &gt; "+vi("a"),vi("d")+" = "+vi("a")],0,""),
+    stepInt("Номер верного варианта:",2,"")
+  ]});
+addL("bank7","С12",{
+  text:"О числах "+["a","b","c","d"].map(vi).join(", ")+" известно, что "+vi("a")+" = "+vi("b")+", "+vi("b")+" = "+vi("c")+", "+vi("d")+" = "+vi("c")+". Сравните числа "+vi("d")+" и "+vi("a")+".",
+  opts:[
+    {html:vi("d")+" = "+vi("a"), holds:s=>s.d===s.a},
+    {html:vi("d")+" &gt; "+vi("a"), holds:s=>s.d>s.a},
+    {html:vi("d")+" &lt; "+vi("a"), holds:s=>s.d<s.a},
+    {html:"сравнить невозможно", holds:()=>false}
+  ],
+  samples:[{a:1,b:1,c:1,d:1},{a:-2,b:-2,c:-2,d:-2}], key:1,
+  stepsData:[
+    stepChoice("Все равенства сцеплены: "+vi("a")+" = "+vi("b")+" = "+vi("c")+" = "+vi("d")+". Значит\u2026",
+      [vi("d")+" = "+vi("a"),vi("d")+" &gt; "+vi("a")],0,""),
+    stepInt("Номер верного варианта:",1,"")
+  ]});
+mkDecOrder("bank7","С14",["\u22120,502","0,25","0,205","0,52"],"0,205",2);
+addB2("bank7","С15",{sub:"fracInRange", k:3, den:14, ms:[47,57,61,65], key:1,
+  opts:[47,57,61,65].map(m=>({html:fracHtml(m,14)})),
+  text:"Какое из данных чисел принадлежит отрезку [3;&nbsp;4]?"});
+addB2("bank7","С16",{sub:"fracInRange", k:4, den:17, ms:[58,72,87,91], key:2,
+  opts:[58,72,87,91].map(m=>({html:fracHtml(m,17)})),
+  text:"Какое из данных чисел принадлежит отрезку [4;&nbsp;5]?"});
+addB2("bank7","С17",{sub:"fracTenths", m:2,n:9, key:2,
+  optD:[1,2,3,4],
+  opts:[1,2,3,4].map(d=>({html:"[0,"+d+";&nbsp;0,"+(d+1)+"]"})),
+  text:"Какому из данных промежутков принадлежит число "+fracHtml(2,9)+"?"});
+addB2("bank7","С25",{sub:"betweenFracs", lo:[8,3], hi:[11,4],
+  opts:["2,7","2,8","2,9","3"].map(s=>({html:s})),
+  optVals:[Q(27,10),Q(28,10),Q(29,10),Q(3)], key:1,
+  text:"Какое из следующих чисел заключено между числами "+fracHtml(8,3)+" и "+fracHtml(11,4)+"?"});
+addB2("bank7","С26",{sub:"betweenFracs", lo:[8,13], hi:[12,17],
+  opts:["0,6","0,7","0,8","0,9"].map(s=>({html:s})),
+  optVals:[Q(6,10),Q(7,10),Q(8,10),Q(9,10)], key:2,
+  text:"Какое из следующих чисел заключено между числами "+fracHtml(8,13)+" и "+fracHtml(12,17)+"?"});
+addB2("bank7","С31",{sub:"rootBetween", N:89, key:3,
+  optPairs:[[4,5],[29,31],[9,10],[88,90]],
+  opts:[[4,5],[29,31],[9,10],[88,90]].map(p=>({html:p[0]+" и "+p[1]})),
+  text:"Между какими целыми числами заключено число "+sqrtHtml(89)+"?"});
+addB2("bank7","С32",{sub:"rootBetween", N:31, key:2,
+  optPairs:[[2,3],[5,6],[12,14],[26,28]],
+  opts:[[2,3],[5,6],[12,14],[26,28]].map(p=>({html:p[0]+" и "+p[1]})),
+  text:"Между какими целыми числами заключено число "+sqrtHtml(31)+"?"});
+addB2("bank7","С33",{sub:"rootInRange", k:7, Ns:[7,8,62,72], key:3,
+  opts:[7,8,62,72].map(x=>({html:sqrtHtml(x)})),
+  text:"Какое из данных чисел принадлежит промежутку [7;&nbsp;8]?"});
+addB2("bank7","С34",{sub:"rootInRange", k:6, Ns:[6,7,40,51], key:3,
+  opts:[6,7,40,51].map(x=>({html:sqrtHtml(x)})),
+  text:"Какое из данных чисел принадлежит промежутку [6;&nbsp;7]?"});
+addC2("bank7","С35",{sub:"fracPointCmp", key:1,
+  text:"Одна из точек, отмеченных на координатной прямой, соответствует числу "+fracHtml(1,7)+". Какая это точка?",
+  pic:{lo:-0.06,hi:1.14,ticks:[[0,"0"],[1/6,"1|6"],[1/3,"1|3"],[1/2,"1|2"],[2/3,"2|3"],[5/6,"5|6"],[1,"1"]],
+       pts:[{name:"A",x:1/7},{name:"B",x:0.30},{name:"C",x:0.47},{name:"D",x:0.55}]},
+  opts:["A","B","C","D"].map(s=>({html:vi(s)})),
+  customSteps:t=>[
+    stepInt2("Сравни "+fracHtml(1,7)+" и первое деление "+fracHtml(1,6)+" крест-накрест: 1\u00B76 = ? и 7\u00B71 = ?",6,7,
+      "меньше произведение \u2014 меньше дробь","",""),
+    stepChoice("6 &lt; 7, значит "+fracHtml(1,7)+" &lt; "+fracHtml(1,6)+" \u2014 точка левее деления "+fracHtml(1,6)+". Какая это точка?",
+      ["A","B","C","D"],0,"самая левая из отмеченных"),
+    stepInt("Номер верного варианта:",1,"")
+  ]});
+addC2("bank7","С36",{sub:"fracPointCmp", key:3,
+  text:"Одна из точек, отмеченных на координатной прямой, соответствует числу "+fracHtml(8,11)+". Какая это точка?",
+  pic:{lo:-0.06,hi:1.14,ticks:[[0,"0"],[1/6,"1|6"],[1/3,"1|3"],[1/2,"1|2"],[2/3,"2|3"],[5/6,"5|6"],[1,"1"]],
+       pts:[{name:"A",x:0.45},{name:"B",x:0.60},{name:"C",x:8/11},{name:"D",x:0.95}]},
+  opts:["A","B","C","D"].map(s=>({html:vi(s)})),
+  customSteps:t=>[
+    stepInt2("Сравни "+fracHtml(8,11)+" и деление "+fracHtml(2,3)+": 8\u00B73 = ? и 11\u00B72 = ?",24,22,"","",""),
+    stepInt2("24 &gt; 22, значит правее "+fracHtml(2,3)+". Теперь с "+fracHtml(5,6)+": 8\u00B76 = ? и 11\u00B75 = ?",48,55,"","",""),
+    stepChoice("48 &lt; 55: левее "+fracHtml(5,6)+". Итого точка между "+fracHtml(2,3)+" и "+fracHtml(5,6)+". Какая?",
+      ["A","B","C","D"],2,"смотри на рисунок"),
+    stepInt("Номер верного варианта:",3,"")
+  ]});
+
+/* ================= math100 ================= */
+mkDecOrder("m100",2,["0,508","0,85","\u22120,05","0,058"],"0,058",2);
+mkDecOrder("m100",3,["0,0137","0,103","0,03","0,021"],"0,03",3);
+mkDecOrder("m100",4,["\u22120,74","\u22120,047","0,07","\u22120,407"],"\u22120,407",2);
+mkDecOrder("m100",5,["\u22120,502","0,25","0,205","0,52"],"0,25",3);
+mkDecOrder("m100",6,["\u22120,39","\u22120,09","\u22120,93","0,03"],"\u22120,09",3);
+mkDecOrder("m100",7,["0,29","\u22120,02","0,109","0,013"],"0,109",3);
+mkDecOrder("m100",8,["\u22120,201","\u22120,012","\u22120,304","0,021"],"\u22120,304",1);
+mkDecOrder("m100",9,["\u22120,032","0,023","0,302","\u22120,203"],"\u22120,203",1);
+mkDecOrder("m100",10,["0,271","\u22120,112","0,041","\u22120,267"],"0,271",4);
+mkDecOrder("m100",11,["0,1032","\u22120,031","\u22120,01","\u22120,104"],"\u22120,031",2);
+mkPtsFrac("m100",12,100,19,4,3);
+mkPtsFrac("m100",13,100,21,4,2);
+mkPtsFrac("m100",15,73,14,5,1);
+mkPtsFrac("m100",16,92,9,9,3);
+mkPtsFrac("m100",17,63,11,5,2);
+mkPtsFrac("m100",18,132,17,6,4);
+mkPtsFrac("m100",19,80,11,7,1);
+mkPtsFrac("m100",20,116,15,6,4);
+mkPtsFrac("m100",21,107,13,8,1);
+mkFracValueDec("m100",23,[3,7,8,13],11,1);
+mkFracValueDec("m100",24,[6,9,10,12],23,3);
+mkFracValueDec("m100",25,[2,4,10,11],7,1);
+mkFracValueDec("m100",26,[4,8,9,13],11,3);
+mkFracValueDec("m100",27,[10,11,13,14],17,3);
+mkFracValueDec("m100",28,[2,3,5,11],23,1);
+mkFracValueDec("m100",29,[6,7,11,12],23,3);
+mkFracValueDec("m100",30,[2,4,8,9],17,4);
+mkFracValueDec("m100",31,[4,6,8,13],7,2);
+mkFracValueDec("m100",32,[3,4,8,14],17,1);
+mkFracValueDec("m100",33,[2,7,9,11],13,1);
+mkFracValueDec("m100",34,[6,9,13,14],11,1);
+mkFracValueDec("m100",35,[3,9,10,12],13,4);
+mkFracValueImp("m100",36,[55,64,72,79],19,2);
+mkFracValueImp("m100",37,[58,69,76,83],13,3);
+mkFracValueImp("m100",38,[81,90,99,108],17,2);
+mkFracValueImp("m100",39,[29,34,38,43],9,1);
+mkFracValueImp("m100",40,[31,37,41,47],11,1);
+mkFracValueImp("m100",41,[53,55,67,77],18,3);
+mkFracValueImp("m100",42,[43,49,58,64],15,4);
+mkFracValueImp("m100",43,[41,48,55,62],13,4);
+mkFracValueImp("m100",44,[75,85,97,110],23,3);
+mkFracValueImp("m100",45,[33,37,41,43],7,1);
+mkFracValueImp("m100",46,[71,79,86,92],15,4);
+mkFracValueImp("m100",47,[73,83,93,113],22,2);
+mkPtsRoot("m100",48,28,5,1);
+mkPtsRoot("m100",49,52,7,1);
+mkPtsRoot("m100",50,68,7,3);
+mkPtsRoot("m100",51,45,6,2);
+mkPtsRoot("m100",53,39,5,3);
+mkPtsRoot("m100",54,77,7,4);
+mkPtsRoot("m100",55,76,8,2);
+mkPtsRoot("m100",56,33,4,4);
+mkPtsRoot("m100",57,53,6,3);
+mkPtsRoot("m100",58,96,8,4);
+mkPtsRoot("m100",59,60,7,2);
+mkPtsRoot("m100",60,86,8,3);
+mkPtsRoot("m100",61,46,5,4);
+mkPtsRoot("m100",62,95,9,2);
+mkRootValue("m100",63,[29,33,39,44],5,4);
+mkRootValue("m100",64,[29,34,39,45],5,2);
+mkRootValue("m100",65,[41,48,53,63],6,3);
+mkRootValue("m100",66,[39,44,50,62],6,2);
+mkRootValue("m100",67,[18,24,26,32],4,3);
+mkRootValue("m100",68,[40,46,53,58],6,2);
+mkRootValue("m100",69,[28,33,38,47],5,2);
+mkRootValue("m100",70,[37,47,50,62],6,1);
+mkRootValue("m100",71,[28,32,39,47],5,1);
+mkRootValue("m100",72,[17,22,28,32],4,1);
+
+/* ================= formulaoge ================= */
+addA2("formula",1,{y:Q(-9,10),x:Q(24,10)},[
+  stSum("x","y",">"), stProdSq("x","y","<"), stDiff("x","y","<"), stSqProd("x","y",">")
+],1,"верно",{lo:-2,hi:3.5,ticks:"int",labels:[0],pts:[{name:"y"},{name:"x"}]},
+{text:"На координатной прямой отмечены числа "+vi("x")+" и "+vi("y")+". Какое из следующих неравенств верно?"});
+addA2("formula",3,{a:Q(-26,10),b:Q(11,10)},[
+  stProdSq("a","b","<"), stDiff("b","a","<"), stProd("a","b",">"), stSum("a","b",">")
+],1,"верно",{lo:-3.7,hi:2.2,ticks:"int",labels:[0],pts:[{name:"a"},{name:"b"}]},
+{text:"На координатной прямой отмечены числа "+vi("a")+" и "+vi("b")+". Какое из следующих неравенств верно?"});
+addB2("formula",5,{sub:"fracBetweenInt", m:110,n:13, key:1,
+  optPairs:[[8,9],[9,10],[10,11],[11,12]],
+  opts:[[8,9],[9,10],[10,11],[11,12]].map(p=>({html:p[0]+" и "+p[1]})),
+  text:"Между какими целыми числами заключено число "+fracHtml(110,13)+"?"});
+addA2("formula",6,{a:Q(64,10)},[
+  stMinusC("a",5,"<"), stCminus("a",5,"<"), stMinusC("a",7,">"), stCminus("a",6,">")
+],2,"верно",{lo:-0.7,hi:8.2,ticks:"int",labels:[0,1],pts:[{name:"a"}]});
+addA2("formula",10,{p:Q(1),q:Q(23,10),r:Q(38,10)},[
+  {case:3,html:vi("q")+" \u2212 "+vi("p"),test:v=>qlt(qsub(v.q,v.p),Q0),school:()=>vi("q")+" правее "+vi("p")},
+  {case:3,html:vi("q")+" \u2212 "+vi("r"),test:v=>qlt(qsub(v.q,v.r),Q0),school:()=>vi("q")+" левее "+vi("r")},
+  {case:3,html:vi("r")+" \u2212 "+vi("p"),test:v=>qlt(qsub(v.r,v.p),Q0),school:()=>vi("r")+" правее "+vi("p")},
+  {case:3,html:"ни одна из них",test:v=>!(qlt(qsub(v.q,v.p),Q0)||qlt(qsub(v.q,v.r),Q0)||qlt(qsub(v.r,v.p),Q0)),school:()=>"проверь все три"}
+],2,"верно",{lo:0.2,hi:4.9,ticks:"none",labels:[],pts:[{name:"p"},{name:"q"},{name:"r"}]},
+{pairs:[["q","p"],["q","r"],["r","p"]],diffSign:"отрицательна",
+ text:"На координатной прямой отмечены числа "+["p","q","r"].map(vi).join(", ")+". Какая из разностей "+vi("q")+" \u2212 "+vi("p")+", "+vi("q")+" \u2212 "+vi("r")+", "+vi("r")+" \u2212 "+vi("p")+" отрицательна?"});
+addA2("formula",11,{a:Q(1),b:Q(22,10),c:Q(36,10)},[
+  {case:3,html:vi("a")+" \u2212 "+vi("b"),test:v=>qgt(qsub(v.a,v.b),Q0),school:()=>vi("a")+" левее "+vi("b")},
+  {case:3,html:vi("c")+" \u2212 "+vi("a"),test:v=>qgt(qsub(v.c,v.a),Q0),school:()=>vi("c")+" правее "+vi("a")},
+  {case:3,html:vi("b")+" \u2212 "+vi("c"),test:v=>qgt(qsub(v.b,v.c),Q0),school:()=>vi("b")+" левее "+vi("c")},
+  {case:3,html:"ни одна из них",test:v=>!(qgt(qsub(v.a,v.b),Q0)||qgt(qsub(v.c,v.a),Q0)||qgt(qsub(v.b,v.c),Q0)),school:()=>"проверь все три"}
+],2,"верно",{lo:0.2,hi:4.7,ticks:"none",labels:[],pts:[{name:"a"},{name:"b"},{name:"c"}]},
+{pairs:[["a","b"],["c","a"],["b","c"]],diffSign:"положительна",
+ text:"На координатной прямой отмечены числа "+["a","b","c"].map(vi).join(", ")+". Какая из разностей "+vi("a")+" \u2212 "+vi("b")+", "+vi("c")+" \u2212 "+vi("a")+", "+vi("b")+" \u2212 "+vi("c")+" положительна?"});
+addB2("formula",12,{sub:"fracInRange", k:7, den:9, ms:[58,62,70,79], key:3,
+  opts:[58,62,70,79].map(m=>({html:fracHtml(m,9)})),
+  text:"Какое из чисел "+[58,62,70,79].map(m=>fracHtml(m,9)).join(", ")+" принадлежит отрезку [7;&nbsp;8]?"});
+
+/* ---------- Проверка новых видов: computeCKey/verifyBank дополнение ---------- */
+const _computeCKey=computeCKey;
+computeCKey=function(t){
+  const pts=t.pic?t.pic.pts:null;
+  if(t.sub==="genFrac"||t.sub==="fracValueImp"){ // опоры: значение m/n
+    const x=t.m/t.n;
+    if(t.sub==="genFrac"){ let f=[]; pts.forEach((p,i)=>{if(Math.abs(p.x-x)<1e-9)f.push(i+1);}); return f.length===1?f[0]:-1; }
+    let f=[]; t.ms.forEach((m,i)=>{ if(Math.abs(m/t.n-pts[0].x)<1e-9) f.push(i+1); });
+    return f.length===1?f[0]:-1;
+  }
+  if(t.sub==="genRoot"){ const x=Math.sqrt(t.N); let f=[]; pts.forEach((p,i)=>{if(Math.abs(p.x-x)<1e-9)f.push(i+1);}); return f.length===1?f[0]:-1; }
+  if(t.sub==="rootValuePick"){ let f=[]; t.Ns.forEach((N,i)=>{ if(Math.abs(Math.sqrt(N)-pts[0].x)<1e-9) f.push(i+1); }); return f.length===1?f[0]:-1; }
+  if(t.sub==="fracValueDec"){ let f=[]; t.ms.forEach((m,i)=>{ if(Math.abs(m/t.n-pts[0].x)<1e-9) f.push(i+1); }); return f.length===1?f[0]:-1; }
+  if(t.sub==="decOrder2"){
+    const v=parseFloat(t.targetStr.replace("\u2212","-").replace(",","."));
+    const sorted=t.nums.map(s=>parseFloat(s.replace("\u2212","-").replace(",","."))).sort((a,b)=>a-b);
+    return sorted.indexOf(v)+1;
+  }
+  if(t.sub==="fracPointCmp") return t.key; // проверяется вручную через customSteps + позиции
+  return _computeCKey(t);
+};
+/* верификация kind L */
+function verifyL(t){
+  const truth=t.opts.map(o=>t.samples.every(s=>o.holds(s)));
+  const cnt=truth.filter(Boolean).length;
+  if(cnt!==1) return t.id+": «всегда верных» "+cnt;
+  if(truth.indexOf(true)+1!==t.key) return t.id+": ключ не совпал";
+  // ложные должны опровергаться хотя бы одним примером
+  for(let i=0;i<t.opts.length;i++)
+    if(i!==t.key-1&&t.samples.every(s=>t.opts[i].holds(s))) return t.id+": вариант "+(i+1)+" не опровергнут";
+  return null;
+}
+const _verifyBank=verifyBank;
+verifyBank=function(){
+  const errs=[];
+  for(const t of BANK){
+    if(t.kind==="L"){ const e=verifyL(t); if(e) errs.push(e); continue; }
+    if(t.kind==="A"){
+      const truths=t.opts.map(o=>o.test(t.vals));
+      const want=t.mode==="неверно"?truths.map(x=>!x):truths;
+      const idx=want.reduce((acc,x,i)=>x?acc.concat(i+1):acc,[]);
+      if(idx.length!==1) errs.push(t.id+": верных "+idx.length);
+      else if(idx[0]!==t.key) errs.push(t.id+": вычислено "+idx[0]+" vs "+t.key);
+    } else if(t.kind==="B"){
+      const k=computeBKey(t); if(k!==t.key) errs.push(t.id+": B "+k+" vs "+t.key);
+    } else if(t.kind==="C"){
+      const k=computeCKey(t); if(k!==t.key) errs.push(t.id+": C "+k+" vs "+t.key);
+    }
+  }
+  return errs;
+};
+
+/* ---------- Шаги: новые виды ---------- */
+const _buildStepsB=buildStepsB;
+buildStepsB=function(t,method){
+  if(t.sub==="betweenFracs"){
+    const steps=[];
+    const bounds=[{fr:t.lo,name:"нижняя"},{fr:t.hi,name:"верхняя"}];
+    bounds.forEach(b=>{
+      const [m,n]=b.fr;
+      const d100=Math.floor(100*m/n);
+      if((100*m)%n===0){
+        steps.push(stepInt(b.name+" граница: переведи "+fracHtml(m,n)+" в десятичную дробь (например, 2,75):",
+          null,"подели числитель на знаменатель уголком", {qans:Q(BigInt(d100),100n)}));
+      } else {
+        steps.push(stepInt(b.name+" граница: подели "+m+" на "+n+" уголком до сотых. Первые две цифры после запятой:",
+          d100%100,"снеси нули: "+m+"00 подели на "+n));
+      }
+    });
+    const lo100=Math.floor(100*t.lo[0]/t.lo[1]), hi100=Math.floor(100*t.hi[0]/t.hi[1]);
+    steps.push(stepChoice("Итак, число ищем между \u2248 "+decComma(lo100/100)+"\u2026 и "+decComma(hi100/100)+
+      (100*t.hi[0]%t.hi[1]===0?"":"\u2026")+". Какой вариант попадает?",
+      t.opts.map(o=>o.html),t.key-1,"сравни с обеими границами"));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,""));
+    return steps;
+  }
+  return _buildStepsB(t,method);
+};
+const _buildStepsC=buildStepsC;
+buildStepsC=function(t,method){
+  const pts=t.pic?t.pic.pts:null;
+  if(t.sub==="rootValuePick"){
+    const steps=[]; const k=t.k;
+    steps.push(stepInt2("Точка "+vi("A")+" между какими целыми (по рисунку)?",k,k+1,"смотри на деления","от","до"));
+    steps.push(stepInt2("Границы в квадрате: "+k+"\u00B2 = ? и "+(k+1)+"\u00B2 = ?",k*k,(k+1)*(k+1),"",k+"\u00B2 =",(k+1)+"\u00B2 ="));
+    if(t.cands.length===1){
+      steps.push(stepChoice("Какое подкоренное попадает между "+(k*k)+" и "+((k+1)*(k+1))+"?",
+        t.Ns.map(String),t.Ns.indexOf(t.cands[0]),"сравни сами числа"));
+    } else {
+      const [c1,c2]=t.cands;
+      steps.push(stepChoice("Какие подкоренные попадают между "+(k*k)+" и "+((k+1)*(k+1))+"?",
+        ["только "+c1,c1+" и "+c2,"все четыре"],1,""));
+      const half100=(2*k+1)*(2*k+1)*25;
+      steps.push(stepInt("Проверь середину: "+k+",5\u00B2 = ? (в сотых: для 5,5\u00B2=30,25 введи 3025)",half100,
+        "("+k+",5)\u00B2 = "+k+"\u00B2 + "+k+" + 0,25"));
+      steps.push(stepChoice("Точка "+vi("A")+" "+(t.halfLeft?"левее":"правее")+" середины "+k+",5. Что подходит?",
+        [sqrtHtml(c1)+" ("+c1+(c1*100<half100?" &lt; ":" &gt; ")+decComma(half100/100)+")",
+         sqrtHtml(c2)+" ("+c2+(c2*100<half100?" &lt; ":" &gt; ")+decComma(half100/100)+")"],
+        (t.N===c1)?0:1,"меньше половины квадрата \u2014 левая половина промежутка"));
+    }
+    steps.push(stepInt("Номер подходящего варианта:",t.key,""));
+    return steps;
+  }
+  if(t.sub==="fracValueImp"){
+    const steps=[]; const k=t.k,n=t.n;
+    steps.push(stepInt2("Точка "+vi("A")+" между какими целыми (по рисунку)?",k,k+1,"считай деления от 0 и 1","от","до"));
+    steps.push(stepInt2("Границы дробями со знаменателем "+n+": введи числители",k*n,(k+1)*n,
+      k+" = "+fracHtml(k+"\u00B7"+n,n),k+" =",(k+1)+" ="));
+    if(t.cands.length===1){
+      steps.push(stepChoice("Какой числитель попадает между "+(k*n)+" и "+((k+1)*n)+"?",
+        t.ms.map(String),t.ms.indexOf(t.cands[0]),"знаменатели равны \u2014 сравнивай числители"));
+    } else {
+      const [c1,c2]=t.cands; const mid2=(2*k+1)*n;
+      steps.push(stepChoice("Какие числители попадают между "+(k*n)+" и "+((k+1)*n)+"?",
+        ["только "+c1,c1+" и "+c2,"все"],1,""));
+      steps.push(stepInt("Середина промежутка \u2014 "+k+",5 = "+fracHtml((2*k+1),2)+". Приведи к знаменателю "+(2*n)+": числитель = ("+(2*k+1)+")\u00B7"+n+" = ?",mid2,""));
+      steps.push(stepChoice("Точка "+vi("A")+" "+(t.halfLeft?"левее":"правее")+" середины. Удвоенные числители кандидатов: 2\u00B7"+c1+" = "+(2*c1)+", 2\u00B7"+c2+" = "+(2*c2)+". Что подходит?",
+        [fracHtml(c1,n)+" ("+(2*c1)+(2*c1<mid2?" &lt; ":" &gt; ")+mid2+")",
+         fracHtml(c2,n)+" ("+(2*c2)+(2*c2<mid2?" &lt; ":" &gt; ")+mid2+")"],
+        (t.m===c1)?0:1,""));
+    }
+    steps.push(stepInt("Номер подходящего варианта:",t.key,""));
+    return steps;
+  }
+  if(t.sub==="fracValueDec"){
+    const steps=[]; const d=t.d,n=t.n;
+    steps.push(stepInt("Точка "+vi("A")+" между какими соседними метками? Введи d, если между 0,d и 0,(d+1):",d,
+      "смотри на десятичные деления рисунка"));
+    if(t.cands.length===1){
+      steps.push(stepChoice("У какого варианта первая цифра после запятой равна "+d+"? (подели 10\u00B7числитель на "+n+")",
+        t.ms.map(m=>fracHtml(m,n)),t.ms.indexOf(t.cands[0]),
+        "например: 10\u00B7"+t.m+" = "+(10*t.m)+", а "+(10*t.m)+" : "+n+" даёт целую часть "+d));
+    } else {
+      const [c1,c2]=t.cands;
+      const dig=(m)=>Math.floor(100*m/n);
+      steps.push(stepChoice("Сразу два кандидата дают первую цифру "+d+": "+fracHtml(c1,n)+" и "+fracHtml(c2,n)+". Что делаем?",
+        ["делим уголком точнее \u2014 до сотых","сдаёмся"],0,""));
+      steps.push(stepInt(fracHtml(c1,n)+" \u2248 0,?? (введи две цифры)",dig(c1),"дели "+c1+"00 на "+n+" по шагам"));
+      steps.push(stepInt(fracHtml(c2,n)+" \u2248 0,?? (введи две цифры)",dig(c2),"дели "+c2+"00 на "+n));
+      steps.push(stepChoice("Точка "+vi("A")+" стоит "+(t.halfLeft?"ближе к 0,"+d:"ближе к 0,"+(d+1))+". Что подходит?",
+        [fracHtml(c1,n)+" \u2248 "+decComma(dig(c1)/100),fracHtml(c2,n)+" \u2248 "+decComma(dig(c2)/100)],
+        (t.m===c1)?0:1,""));
+    }
+    steps.push(stepInt("Номер подходящего варианта:",t.key,""));
+    return steps;
+  }
+  if(t.sub==="decOrder2"){
+    const steps=[];
+    steps.push(stepInt("Сколько чисел из списка меньше, чем "+t.targetStr+"? (совет: допиши нули справа, чтобы у всех было поровну знаков после запятой; минус \u2014 всегда меньше плюса)",
+      t.cntLess,"по возрастанию: "+t.sortedStr.join(" &lt; ")));
+    steps.push(stepChoice("Значит "+t.targetStr+" \u2014 какая по счёту точка слева?",
+      ["1-я (A)","2-я (B)","3-я (C)","4-я (D)"],t.cntLess,"меньше \u2014 левее"));
+    steps.push(stepInt("Номер подходящего варианта:",t.key,""));
+    return steps;
+  }
+  return _buildStepsC(t,method);
+};
+/* Общая точка входа: L, customSteps */
+buildStepsAny=function(t,method){
+  if(t.customSteps) return t.customSteps(t);
+  if(t.kind==="L") return t.stepsData;
+  if(t.sub==="genRoot"||t.sub==="genFrac") return buildStepsGenC(t);
+  return buildSteps(t,method);
+};
+/* stepInt с точным рациональным ответом (для «2,75») */
+(function(){
+  // расширение: stepInt(q, ans, hint, {qans}) — qans имеет приоритет
+  const orig=stepInt;
+  stepInt=function(q,ans,hint,extra){ const s=orig(q,ans,hint); if(extra&&extra.qans) s.qans=extra.qans; return s; };
+})();
+
+/* ---------- Новые генераторы ---------- */
+function genA4(){ // модули: комбинации «x<y и |x|<|y|»
+  for(let att=0;att<300;att++){
+    const layout=pick(["np_bigpos","np_bigneg","pn_bigpos","pn_bigneg"]);
+    let ut,wt; // десятые
+    if(layout==="np_bigpos"){ ut=-ri(4,20); wt=ri(-ut+4,44); }
+    else if(layout==="np_bigneg"){ ut=-ri(18,44); wt=ri(4,-ut-4); }
+    else if(layout==="pn_bigpos"){ wt=-ri(4,20); ut=ri(-wt+4,44); }
+    else { wt=-ri(18,44); ut=ri(4,-wt-4); }
+    if(ut%10===0||wt%10===0||Math.abs(Math.abs(ut)-Math.abs(wt))<3) continue;
+    const nm=pick([["x","y"],["a","b"],["m","n"]]);
+    const vals={}; vals[nm[0]]=Q(ut,10); vals[nm[1]]=Q(wt,10);
+    const opts=[stAbsCombo(nm[0],nm[1],"<","<"),stAbsCombo(nm[0],nm[1],"<",">"),
+      stAbsCombo(nm[0],nm[1],">",">"),stAbsCombo(nm[0],nm[1],">","<")];
+    const truths=opts.map(o=>o.test(vals));
+    if(truths.filter(Boolean).length!==1) continue;
+    const key=truths.indexOf(true)+1;
+    const xa=ut/10,xb=wt/10;
+    const lo=Math.min(xa,xb,0)-1.1, hi=Math.max(xa,xb,0)+1.3;
+    const P=[{name:nm[0],x:xa},{name:nm[1],x:xb}].sort((a,b)=>a.x-b.x);
+    return {kind:"A",mode:"верно",vals,opts,key,src:"генератор",
+      pic:{lo,hi,ticks:"int",labels:[0],pts:P},
+      text:"На координатной прямой отмечены числа "+nm.map(vi).join(" и ")+". Какое из следующих утверждений верно?"};
+  }
+  throw new Error("genA4 failed");
+}
+function genC_decOrder(){
+  for(let att=0;att<300;att++){
+    const style=pick(["mix","negcluster","poscluster"]);
+    const mk=()=>{ // случайная «хитрая» десятичная
+      const kind=pick(["d2","d2","d3","d3trap"]);
+      let v;
+      if(kind==="d2") v=ri(1,99)/100;
+      else if(kind==="d3") v=ri(1,999)/1000;
+      else v=ri(1,9)/100+ri(1,9)/1000; // 0,0xy — ловушка «короче не значит меньше»
+      if(pick([true,false,false])) v=-v;
+      return Math.round(v*10000)/10000;
+    };
+    const set=new Set();
+    while(set.size<4) set.add(mk());
+    const vals=[...set];
+    // требуем «ловушку»: хотя бы у двух чисел разное количество знаков
+    const strs=vals.map(v=>decComma(v).replace("\u2212","\u2212"));
+    const target=pick(vals);
+    const sorted=vals.slice().sort((a,b)=>a-b);
+    // зазор для честной картинки
+    let okGap=true; for(let i=1;i<4;i++) if(sorted[i]-sorted[i-1]<1e-4) okGap=false;
+    if(!okGap) continue;
+    const key=sorted.indexOf(target)+1;
+    const mn=sorted[0],mx=sorted[3],span=mx-mn||1;
+    let xs=sorted.map((v,i)=>0.5*((v-mn)/span)+0.5*(i/3));
+    for(let i=1;i<4;i++) if(xs[i]-xs[i-1]<0.07) xs[i]=xs[i-1]+0.07;
+    const L=["A","B","C","D"];
+    const numsStr=vals.map(v=>decComma(v));
+    return {kind:"C",sub:"decOrder2",src:"генератор",
+      nums:numsStr, targetStr:decComma(target),
+      sortedStr:sorted.map(v=>decComma(v)),
+      cntLess:sorted.indexOf(target), key,
+      pic:{lo:-0.12,hi:1.22,ticks:"none",labels:[],pts:xs.map((x,i)=>({name:L[i],x}))},
+      opts:L.map(s=>({html:vi(s)})),
+      text:"На координатной прямой точки "+L.map(vi).join(", ")+" соответствуют числам "+
+        numsStr.join("; ")+". Какой точке соответствует число "+decComma(target)+"?"};
+  }
+  throw new Error("genC_decOrder failed");
+}
+/* расширяем пул genA1 квадратами */
+const _genA1=genA1;
+genA1=function(){
+  for(let att=0;att<400;att++){
+    const t=_genA1();
+    if(Math.random()<0.5) return t; // половина — старый пул
+    // попробуем заменить один вариант на «квадратный», сохранив единственность
+    const a=t.vals.a; const k=qfloor(a);
+    if(k<1) return t; // квадраты осмысленны для положительных
+    const sqPool=[stSqShiftGt("a",k-1),stSqShiftGt("a",k),stSqShiftGt("a",k+1),stSqShiftGt("a",k+2),
+      stSqCmp("a",k*k,">"),stSqCmp("a",(k+1)*(k+1),">"),stSqCmp("a",(k+1)*(k+1),"<"),stSqCmp("a",(k+2)*(k+2),"<")];
+    const cand=pick(sqPool);
+    const idx=ri(0,3);
+    const newOpts=t.opts.slice(); newOpts[idx]=cand;
+    const truths=newOpts.map(o=>o.test(t.vals));
+    if(truths.filter(Boolean).length!==1) continue;
+    const seen=new Set(); let dup=false;
+    newOpts.forEach(o=>{if(seen.has(o.html))dup=true;seen.add(o.html);});
+    if(dup) continue;
+    t.opts=newOpts; t.key=truths.indexOf(true)+1;
+    return t;
+  }
+  return _genA1();
+};
+
+/* ---------- Дозаполнение и дополнительная верификация ---------- */
+BANK.forEach(t=>{ if(t.pic&&t.pic.pts) t.pic.pts.forEach(p=>{ if(p.x===undefined&&t.vals&&t.vals[p.name]) p.x=qnum(t.vals[p.name]); }); });
+
+/* fracPointCmp: сверка точки с целевым значением */
+(function(){
+  const tgt={"bank7_С35":[1,7],"bank7_С36":[8,11]};
+  for(const [id,[m,n]] of Object.entries(tgt)){
+    const t=BANK.find(x=>x.id===id);
+    t.tm=m; t.tn=n;
+    if(Math.abs(t.pic.pts[t.key-1].x-m/n)>1e-9) throw new Error(id+": точка не на месте");
+  }
+})();
+
+const _verifyGenTask=verifyGenTask;
+verifyGenTask=function(t){
+  if(t.kind==="C"&&t.sub==="decOrder2"){
+    const v=parseFloat(t.targetStr.replace("\u2212","-").replace(",","."));
+    const sorted=t.nums.map(s=>parseFloat(s.replace("\u2212","-").replace(",","."))).sort((a,b)=>a-b);
+    if(sorted.indexOf(v)+1!==t.key) return "decOrder2: ключ";
+    if(new Set(sorted).size!==4) return "decOrder2: дубль";
+    return null;
+  }
+  return _verifyGenTask(t);
+};
+
+/* ---------- Экспорт для node-тестов ---------- */
+if(typeof module!=="undefined"&&module.exports){
+  module.exports={Q,qadd,qsub,qmul,qdiv,qneg,qcmp,qlt,qgt,qfloor,qnum,qFromDec,parseQ,parseIntStrict,
+    BANK,verifyBank,computeBKey,computeCKey,buildSteps,buildStepsAny,verifySteps,verifyGenTask,
+    genA1,genA2,genA3,genA4,genB_fracBetweenInt,genB_fracTenths,genB_rootBetween,genB_rootInRange,genB_fracInRange,
+    genC_root,genC_frac,genC_decOrder,isqrtFloor,verifyL};
+}
+
+/* ===== UI ===== */
+"use strict";
+
+/* ---------- SVG координатная прямая ---------- */
+function svgLine(pic){
+  const W=Math.min(640,Math.max(380,(pic.hi-pic.lo)*72));
+  const hasFracLabels=Array.isArray(pic.ticks)&&pic.ticks.some(t=>String(t[1]).includes("|"));
+  const H=hasFracLabels?96:78;
+  const padL=14,padR=30;
+  const y=hasFracLabels?44:42;
+  const sx=v=>padL+(v-pic.lo)/(pic.hi-pic.lo)*(W-padL-padR);
+  let s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">';
+  s+='<line x1="'+padL+'" y1="'+y+'" x2="'+(W-10)+'" y2="'+y+'" stroke="#26323f" stroke-width="1.6"/>';
+  s+='<polygon points="'+(W-10)+','+y+' '+(W-19)+','+(y-4.5)+' '+(W-19)+','+(y+4.5)+'" fill="#26323f"/>';
+  s+='<text x="'+(W-8)+'" y="'+(y+16)+'" font-size="14" font-style="italic" font-family="Georgia,serif" fill="#26323f">x</text>';
+  const tick=(v,label)=>{
+    const x=sx(v);
+    s+='<line x1="'+x+'" y1="'+(y-5)+'" x2="'+x+'" y2="'+(y+5)+'" stroke="#26323f" stroke-width="1.4"/>';
+    if(label===undefined||label===null||label==="") return;
+    const L=String(label);
+    if(L.includes("|")){ // этажная дробь в SVG
+      const [nu,de]=L.split("|");
+      s+='<text x="'+x+'" y="'+(y+18)+'" font-size="11.5" text-anchor="middle" fill="#26323f">'+nu+'</text>';
+      s+='<line x1="'+(x-6)+'" y1="'+(y+21.5)+'" x2="'+(x+6)+'" y2="'+(y+21.5)+'" stroke="#26323f" stroke-width="1"/>';
+      s+='<text x="'+x+'" y="'+(y+32)+'" font-size="11.5" text-anchor="middle" fill="#26323f">'+de+'</text>';
+    } else {
+      s+='<text x="'+x+'" y="'+(y+19)+'" font-size="13" text-anchor="middle" fill="#26323f">'+L.replace(/-/g,"\u2212")+'</text>';
+    }
+  };
+  if(pic.ticks==="int"){
+    for(let v=Math.ceil(pic.lo);v<=Math.floor(pic.hi);v++)
+      tick(v,(pic.labels||[]).includes(v)?v:"");
+  } else if(Array.isArray(pic.ticks)){
+    pic.ticks.forEach(([v,l])=>tick(v,l));
+  }
+  (pic.pts||[]).forEach(p=>{
+    const x=sx(p.x);
+    s+='<circle cx="'+x+'" cy="'+y+'" r="3.6" fill="#f29722" stroke="#c56f00" stroke-width="1"/>';
+    if(p.name) s+='<text x="'+x+'" y="'+(y-10)+'" font-size="14.5" font-style="italic" font-family="Georgia,serif" text-anchor="middle" fill="#26323f">'+p.name+'</text>';
+  });
+  return s+'</svg>';
+}
+
+/* ---------- Счётчики ---------- */
+const CNT={step:{solved:0,hinted:0,shown:0}, mar:{solved:0,bySteps:0,shown:0}, quiz:{solved:0,shown:0}};
+function el(id){return document.getElementById(id);}
+function h(tag,cls,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!==undefined)e.innerHTML=html;return e;}
+
+/* ---------- Движок шагов ----------
+ mount(container, steps, {onDone(usedShow), counters}) */
+function mountSteps(container, steps, cb){
+  container.innerHTML="";
+  let idx=0, usedShow=false, usedHint=false;
+  function renderStep(){
+    if(idx>=steps.length){
+      const done=h("div","stepcard done",'<div class="stepq" style="color:var(--green);font-weight:700">Задача решена'+(usedShow?" (с показанными шагами)":usedHint?" (с подсказками)":"")+' \u2713</div>');
+      container.appendChild(done);
+      cb&&cb(usedShow,usedHint);
+      return;
+    }
+    const s=steps[idx];
+    const cardEl=h("div","stepcard");
+    cardEl.appendChild(h("div","stepq","<b>Шаг "+(idx+1)+".</b> "+s.q));
+    const row=h("div","steprow");
+    const msg=h("span","msg","");
+    const hintbox=h("div","hintbox"); hintbox.style.display="none";
+    let checkFn, showFn;
+
+    if(s.type==="int"||s.type==="int2"){
+      const in1=h("input","ans"); in1.setAttribute("inputmode","numeric");
+      let in2=null;
+      if(s.type==="int2"){
+        if(s.lbl1) row.appendChild(h("span","", s.lbl1+"&nbsp;"));
+        row.appendChild(in1);
+        in2=h("input","ans"); in2.setAttribute("inputmode","numeric");
+        row.appendChild(h("span","", s.lbl2?"&nbsp;"+s.lbl2+"&nbsp;":"&nbsp;и&nbsp;"));
+        row.appendChild(in2);
+      } else row.appendChild(in1);
+      const btn=h("button","btn primary","Проверить");
+      const showBtn=h("button","btn show","Показать шаг");
+      row.appendChild(btn); row.appendChild(showBtn); row.appendChild(msg);
+      const exp1 = s.qans || Q(s.type==="int"?s.ans:s.ans1);
+      checkFn=()=>{
+        const v1=parseQ(in1.value), ok1=v1&&qcmp(v1,exp1)===0;
+        let ok=ok1;
+        if(in2){ const v2=parseQ(in2.value); ok=ok1&&v2&&qcmp(v2,Q(s.ans2))===0; }
+        if(ok){
+          in1.classList.add("good"); in1.disabled=true;
+          if(in2){in2.classList.add("good");in2.disabled=true;}
+          btn.disabled=true; showBtn.disabled=true;
+          msg.className="msg good"; msg.textContent="верно \u2713";
+          cardEl.classList.add("done"); idx++; renderStep();
+        } else {
+          msg.className="msg bad"; msg.textContent="не то, попробуй ещё";
+          in1.classList.add("bad"); if(in2)in2.classList.add("bad");
+          setTimeout(()=>{in1.classList.remove("bad"); if(in2)in2.classList.remove("bad");},900);
+          if(s.hint){ hintbox.innerHTML="Подсказка: "+s.hint; hintbox.style.display="block"; usedHint=true; }
+        }
+      };
+      showFn=()=>{
+        usedShow=true;
+        in1.value=(s.showText!==undefined?s.showText:String(s.type==="int"?s.ans:s.ans1)).replace("-","\u2212"); in1.disabled=true; in1.classList.add("bad");
+        if(in2){ in2.value=String(s.ans2).replace("-","\u2212"); in2.disabled=true; in2.classList.add("bad"); }
+        btn.disabled=true; showBtn.disabled=true;
+        msg.className="msg shown"; msg.textContent="\u2014 шаг показан";
+        idx++; renderStep();
+      };
+      btn.onclick=checkFn; showBtn.onclick=showFn;
+      in1.addEventListener("keydown",e=>{if(e.key==="Enter")checkFn();});
+      if(in2) in2.addEventListener("keydown",e=>{if(e.key==="Enter")checkFn();});
+    }
+    if(s.type==="choice"){
+      const btns=[];
+      s.opts.forEach((o,i)=>{
+        const b=h("button","choice",o);
+        b.onclick=()=>{
+          if(i===s.correct){
+            b.classList.add("good");
+            btns.forEach(x=>x.disabled=true);
+            showBtn.disabled=true;
+            msg.className="msg good"; msg.textContent="верно \u2713";
+            cardEl.classList.add("done"); idx++; renderStep();
+          } else {
+            b.classList.add("bad"); b.disabled=true;
+            msg.className="msg bad"; msg.textContent="не то, попробуй ещё";
+            if(s.hint){ hintbox.innerHTML="Подсказка: "+s.hint; hintbox.style.display="block"; usedHint=true; }
+          }
+        };
+        btns.push(b); row.appendChild(b);
+      });
+      const showBtn=h("button","btn show small","Показать шаг");
+      showFn=()=>{
+        usedShow=true;
+        btns.forEach((x,i)=>{x.disabled=true; if(i===s.correct)x.classList.add("bad");});
+        showBtn.disabled=true;
+        msg.className="msg shown"; msg.textContent="\u2014 шаг показан";
+        idx++; renderStep();
+      };
+      showBtn.onclick=showFn;
+      row.appendChild(showBtn); row.appendChild(msg);
+    }
+    cardEl.appendChild(row); cardEl.appendChild(hintbox);
+    container.appendChild(cardEl);
+    const firstInput=cardEl.querySelector("input");
+    if(firstInput) firstInput.focus();
+  }
+  renderStep();
+}
+
+/* ---------- Рендер условия задачи ---------- */
+function taskConditionHtml(t){
+  let s="";
+  if(t.src) s+='<div class="src">'+t.src+'</div>';
+  const text = t.text || defaultAText(t);
+  s+='<div class="taskline">'+text+'</div>';
+  if(t.pic) s+='<div class="svgbox">'+svgLine(t.pic)+'</div>';
+  return s;
+}
+function defaultAText(t){
+  const vnames=Object.keys(t.vals||{});
+  if(t.mode==="неверно")
+    return "На координатной прямой отмечены числа "+vnames.map(vi).join(" и ")+". Какое из приведённых утверждений <b>неверно</b>?";
+  if(t.pic&&t.pic.ask) return "На координатной прямой отмечены числа "+vnames.map(vi).join(", ")+".<br>"+t.pic.ask;
+  if(vnames.length===1) return "На координатной прямой отмечено число "+vi(vnames[0])+". Какое из утверждений относительно этого числа является верным?";
+  return "На координатной прямой отмечены числа "+vnames.map(vi).join(", ")+". Укажите номер верного утверждения.";
+}
+function miniOrderSvg(labels){
+  const W=270,H=52,y=30,padL=14,padR=24;
+  const step=(W-padL-padR)/(labels.length-1);
+  let s='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle">';
+  s+='<line x1="'+padL+'" y1="'+y+'" x2="'+(W-8)+'" y2="'+y+'" stroke="#26323f" stroke-width="1.4"/>';
+  s+='<polygon points="'+(W-8)+','+y+' '+(W-16)+','+(y-4)+' '+(W-16)+','+(y+4)+'" fill="#26323f"/>';
+  labels.forEach((l,i)=>{
+    const x=padL+i*step;
+    s+='<circle cx="'+x+'" cy="'+y+'" r="3.2" fill="#f29722" stroke="#c56f00"/>';
+    s+='<text x="'+x+'" y="'+(y-9)+'" font-size="13" font-style="italic" font-family="Georgia,serif" text-anchor="middle" fill="#26323f">'+l+'</text>';
+  });
+  return s+'</svg>';
+}
+function optHtml(o){ return o.miniOrder?miniOrderSvg(o.miniOrder):o.html; }
+function optionsHtml(t){
+  return t.opts.map((o,i)=>'<div class="taskline" style="margin:2px 0">'+(i+1)+")&nbsp; "+optHtml(o)+'</div>').join("");
+}
+
+/* ---------- Вкладки ---------- */
+function switchTab(name){
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.t===name));
+  document.querySelectorAll("section.mode").forEach(s=>s.classList.toggle("active",s.id==="mode-"+name));
+}
+
+/* ================= УЧИМСЯ: интерактивы ================= */
+/* П1: правее — больше */
+function newP1(){
+  const box=el("p1tool");
+  let x1=ri(-45,45)/10, x2;
+  do{ x2=ri(-45,45)/10; }while(Math.abs(x2-x1)<0.5);
+  const names=pick([["a","b"],["m","n"],["p","q"]]);
+  const pts=[{name:names[0],x:x1},{name:names[1],x:x2}].sort((a,b)=>a.x-b.x);
+  const lo=pts[0].x-1.2, hi=pts[1].x+1.4;
+  box.innerHTML='<div class="svgbox">'+svgLine({lo,hi,ticks:"int",labels:[0],pts})+'</div>'+
+    '<div class="taskline">Какое число больше?</div>';
+  const row=h("div","steprow"); const msg=h("span","msg","");
+  const bigger = x1>x2?names[0]:names[1];
+  names.forEach(nm=>{
+    const b=h("button","choice",vi(nm));
+    b.onclick=()=>{
+      if(nm===bigger){ b.classList.add("good"); msg.className="msg good"; msg.textContent="верно \u2713 (оно правее)"; row.querySelectorAll("button").forEach(x=>x.disabled=true); }
+      else { b.classList.add("bad"); b.disabled=true; msg.className="msg bad"; msg.textContent="не то: правее \u2014 значит больше"; }
+    };
+    row.appendChild(b);
+  });
+  const showB=h("button","btn show small","Показать ответ");
+  showB.onclick=()=>{ msg.className="msg shown"; msg.textContent="больше "+bigger+" \u2014 оно правее"; row.querySelectorAll("button").forEach(x=>x.disabled=true); };
+  row.appendChild(showB); row.appendChild(msg);
+  box.appendChild(row);
+}
+
+/* П2: читаем рисунок */
+function newP2(){
+  const box=el("p2tool");
+  const k=pick([-5,-4,-3,-2,-1,1,2,3,4]);
+  const off=pick([3,4,6,7]);
+  const a=k+off/10;
+  const lo=Math.min(k,-1)-1.6, hi=Math.max(k+1,1)+1.6;
+  const labels=[]; for(let i=Math.ceil(lo);i<=Math.floor(hi);i++) labels.push(i);
+  box.innerHTML='<div class="svgbox">'+svgLine({lo,hi,ticks:"int",labels:labels.length>9?[0,1]:labels,pts:[{name:"a",x:a}]})+'</div>';
+  const steps=[
+    stepInt2("Между какими целыми числами находится "+vi("a")+"?",k,k+1,"смотри на соседние деления слева и справа от точки","от","до"),
+    stepChoice("Какой знак у числа "+vi("a")+"?",["+ (справа от нуля)","\u2212 (слева от нуля)"],a>0?0:1,"ноль делит прямую на минусы и плюсы")
+  ];
+  const st=h("div"); box.appendChild(st);
+  mountSteps(st,steps,()=>{});
+}
+
+/* П3: инструмент оценки дроби */
+function fracExplain(){
+  const m=parseIntStrict(el("p3m").value), n=parseIntStrict(el("p3n").value);
+  const out=el("p3out");
+  if(m===null||n===null||n<=0||m<=0){ out.innerHTML='<span class="msg bad">введи натуральные числитель и знаменатель</span>'; return; }
+  let s="";
+  if(n===10||n===100){
+    s+='<div class="case-card"><b class="cn">Случай 1 сработал:</b> знаменатель '+n+' \u2014 сразу пишем десятичную: '+
+      fracHtml(m,n)+" = "+decComma(m/n)+'</div>';
+  }
+  if(m>n){
+    const k=Math.floor(m/n), r=m-k*n;
+    s+='<div class="case-card"><b class="cn">Между целыми (случай 2):</b> делим с остатком: '+m+' = '+k+'\u00B7'+n+' + '+r+
+      ', значит '+fracHtml(m,n)+' = '+k+' + '+fracHtml(r,n)+' \u2014 число между <b>'+k+'</b> и <b>'+(k+1)+'</b>.</div>';
+  } else {
+    s+='<div class="case-card"><b class="cn">Дробь правильная:</b> '+m+' &lt; '+n+', значит '+fracHtml(m,n)+' \u2014 между <b>0</b> и <b>1</b>.</div>';
+  }
+  if(n!==10&&n!==100){
+    const m10=10*m, dd=Math.floor(m10/n), rr=m10-dd*n;
+    const dec=dd/10;
+    s+='<div class="case-card"><b class="cn">Точнее, до десятых (случай 3):</b> умножаем на 10: 10\u00B7'+fracHtml(m,n)+' = '+fracHtml(m10,n)+
+      '; делим с остатком: '+m10+' = '+dd+'\u00B7'+n+' + '+rr+
+      (rr===0?' \u2014 ровно '+decComma(dec)+'.':' \u2014 значит число между <b>'+decComma(dd/10)+'</b> и <b>'+decComma((dd+1)/10)+'</b>.')+'</div>';
+    s+='<div class="case-card desp"><b class="cn">Отчаянный девятиклассник:</b> просто дели уголком: '+m+' : '+n+' \u2248 '+
+      decComma(Math.floor(100*m/n)/100)+'\u2026 Работает всегда; цена \u2014 медленно, и в столбике легко ошибиться.</div>';
+  }
+  out.innerHTML=s;
+}
+function p3Random(){
+  const n=pick([3,6,7,9,11,12,13,17,19]);
+  const variant=pick(["prop","improp"]);
+  const m=variant==="prop"?ri(1,n-1):n*ri(2,12)+ri(1,n-1);
+  el("p3m").value=m; el("p3n").value=n; fracExplain();
+}
+
+/* П4: корень */
+function rootExplain(){
+  const N=parseIntStrict(el("p4n").value);
+  const out=el("p4out");
+  if(N===null||N<2||N>50000){ out.innerHTML='<span class="msg bad">введи натуральное число от 2</span>'; return; }
+  const k=isqrtFloor(N);
+  if(k*k===N){ out.innerHTML='<div class="case-card"><b class="cn">Это точный квадрат:</b> '+sqrtHtml(N)+' = '+k+'.</div>'; return; }
+  let s='<div class="case-card"><b class="cn">Зажимаем между квадратами:</b> '+
+    k+'\u00B2 = '+(k*k)+' &lt; '+N+' &lt; '+((k+1)*(k+1))+' = '+(k+1)+'\u00B2, значит <b>'+k+' &lt; '+sqrtHtml(N)+' &lt; '+(k+1)+'</b>.</div>';
+  const half100=(2*k+1)*(2*k+1)*25;
+  const cmp=N*100<half100?"&lt;":"&gt;";
+  s+='<div class="case-card"><b class="cn">Точнее \u2014 прикидка серединой:</b> '+k+',5\u00B2 = '+decComma(half100/100)+
+    ', а '+N+' '+cmp+' '+decComma(half100/100)+', значит '+sqrtHtml(N)+' '+cmp+' '+k+',5 \u2014 '+
+    (N*100<half100?'левая':'правая')+' половина промежутка.</div>';
+  out.innerHTML=s;
+}
+function p4Random(){
+  let N; do{ N=ri(2,224); }while(isqrtFloor(N)**2===N);
+  el("p4n").value=N; rootExplain();
+}
+function buildSquaresTable(){
+  const box=el("sqtable");
+  for(let k=1;k<=15;k++){
+    const c=h("button","sq",k+"\u00B2<span class='v'>?</span>");
+    c.onclick=()=>{ c.innerHTML=k+"\u00B2<span class='v'>"+(k*k)+"</span>"; };
+    box.appendChild(c);
+  }
+}
+
+/* П5: словарь утверждений */
+function newP5(){
+  const box=el("p5tool");
+  const t=genA1();
+  const i=ri(0,3);
+  const o=t.opts[i];
+  const truth=o.test(t.vals);
+  box.innerHTML='<div class="svgbox">'+svgLine(t.pic)+'</div>'+
+    '<div class="taskline">Утверждение: &nbsp;'+o.html+'&nbsp; \u2014 верно или неверно?</div>';
+  const row=h("div","steprow"); const msg=h("span","msg","");
+  const mk=(lbl,val)=>{
+    const b=h("button","choice",lbl);
+    b.onclick=()=>{
+      if(val===truth){ b.classList.add("good"); row.querySelectorAll("button").forEach(x=>x.disabled=true);
+        msg.className="msg good"; msg.innerHTML="верно \u2713 &nbsp;<span class='note'>"+(o.school?o.school():"")+"</span>"; }
+      else { b.classList.add("bad"); b.disabled=true; msg.className="msg bad"; msg.textContent="не то, попробуй ещё"; }
+    };
+    return b;
+  };
+  row.appendChild(mk("верно",true)); row.appendChild(mk("неверно",false));
+  const showB=h("button","btn show small","Показать разбор");
+  showB.onclick=()=>{ row.querySelectorAll("button").forEach(x=>x.disabled=true);
+    msg.className="msg shown"; msg.innerHTML="утверждение "+(truth?"верно":"неверно")+". "+(o.school?o.school():""); };
+  row.appendChild(showB); row.appendChild(msg);
+  box.appendChild(row);
+}
+
+/* П6: квиз «определи случай → реши» */
+function newQuiz(){
+  const box=el("p6tool");
+  const kinds=[
+    {label:"переводим утверждения по рисунку", gen:pick([genA1,genA2,genA3,genA4])},
+    {label:"оцениваем число (зажимаем между)", gen:pick([genB_fracBetweenInt,genB_fracTenths,genB_rootBetween,genB_rootInRange,genB_fracInRange])},
+    {label:"оцениваем и ищем точку", gen:pick([genC_root,genC_frac,genC_decOrder])}
+  ];
+  const ci=ri(0,2);
+  const t=kinds[ci].gen();
+  t.src="квиз";
+  box.innerHTML=taskConditionHtml(t)+'<div class="optlist">'+optionsHtml(t)+'</div>';
+  const stBox=h("div"); box.appendChild(stBox);
+  const classStep=stepChoice("С чего начать? Каким приёмом решается такая задача?",
+    ["читаем рисунок и переводим утверждения","оцениваем число: зажимаем между соседними","оцениваем число и ищем его место среди точек"],
+    ci,"посмотри, что дано: рисунок с буквами, «голое» число или точки с числом");
+  const steps=[classStep].concat(buildStepsAny(t,"school"));
+  mountSteps(stBox,steps,(usedShow)=>{
+    if(usedShow) CNT.quiz.shown++; else CNT.quiz.solved++;
+    el("p6cnt").innerHTML="решено: <b>"+CNT.quiz.solved+"</b> \u00B7 <span class='shown'>с показом: "+CNT.quiz.shown+"</span>";
+    const again=h("button","btn primary","Новая задача");
+    again.onclick=newQuiz;
+    stBox.appendChild(again);
+  });
+}
+
+/* ================= ПОШАГОВО ================= */
+const STEP_GROUPS={
+  ris:{label:"По рисунку: утверждения", subs:[
+    {id:"mix",label:"вперемешку"},
+    {id:"one",label:"одно число"},
+    {id:"two",label:"два числа"},
+    {id:"diff",label:"разности"},
+    {id:"abs",label:"модули"}], hasMethod:true},
+  frac:{label:"Оценка: дроби", subs:[
+    {id:"mix",label:"вперемешку"},
+    {id:"betint",label:"между целыми"},
+    {id:"tenths",label:"до десятых"},
+    {id:"inrange",label:"какая из дробей в отрезке"}], hasMethod:true},
+  root:{label:"Оценка: корни", subs:[
+    {id:"mix",label:"вперемешку"},
+    {id:"betint",label:"между целыми"},
+    {id:"inrange",label:"какой из корней в отрезке"}], hasMethod:false},
+  pts:{label:"Точки и числа", subs:[
+    {id:"mix",label:"вперемешку"},
+    {id:"root",label:"корень"},
+    {id:"frac",label:"дробь"},
+    {id:"dec",label:"десятичные"}], hasMethod:false}
+};
+let stepGroup="ris", stepSub="mix", stepMethod="school";
+
+function genForSelection(){
+  if(stepGroup==="ris"){
+    const m={one:genA1,two:genA2,diff:genA3,abs:genA4};
+    return (stepSub==="mix"?pick([genA1,genA2,genA3,genA4]):m[stepSub])();
+  }
+  if(stepGroup==="frac"){
+    const m={betint:genB_fracBetweenInt,tenths:genB_fracTenths,inrange:genB_fracInRange};
+    return (stepSub==="mix"?pick([genB_fracBetweenInt,genB_fracTenths,genB_fracInRange]):m[stepSub])();
+  }
+  if(stepGroup==="root"){
+    const m={betint:genB_rootBetween,inrange:genB_rootInRange};
+    return (stepSub==="mix"?pick([genB_rootBetween,genB_rootInRange]):m[stepSub])();
+  }
+  const m={root:genC_root,frac:genC_frac,dec:genC_decOrder};
+  return (stepSub==="mix"?pick([genC_root,genC_frac,genC_decOrder]):m[stepSub])();
+}
+
+function renderStepChips(){
+  const gbox=el("stepGroups"); gbox.innerHTML="";
+  Object.entries(STEP_GROUPS).forEach(([id,g])=>{
+    const c=h("button","chip"+(id===stepGroup?" active":""),g.label);
+    c.onclick=()=>{ stepGroup=id; stepSub="mix"; renderStepChips(); newStepTask(); };
+    gbox.appendChild(c);
+  });
+  const sbox=el("stepSubs"); sbox.innerHTML="";
+  STEP_GROUPS[stepGroup].subs.forEach(s=>{
+    const c=h("button","chip"+(s.id===stepSub?" active":""),s.label);
+    c.onclick=()=>{ stepSub=s.id; renderStepChips(); newStepTask(); };
+    sbox.appendChild(c);
+  });
+  el("stepMethodRow").style.display=STEP_GROUPS[stepGroup].hasMethod?"block":"none";
+}
+function newStepTask(){
+  const t=genForSelection();
+  const box=el("stepTask");
+  box.innerHTML=taskConditionHtml(t);
+  if(t.kind==="A") box.innerHTML+='<div class="optlist">'+optionsHtml(t)+'</div>';
+  else box.innerHTML+='<div class="optlist">'+optionsHtml(t)+'</div>';
+  const stBox=h("div"); box.appendChild(stBox);
+  mountSteps(stBox,buildStepsAny(t,stepMethod),(usedShow,usedHint)=>{
+    if(usedShow) CNT.step.shown++;
+    else if(usedHint) CNT.step.hinted++;
+    else CNT.step.solved++;
+    updStepCnt();
+    const again=h("button","btn primary","Новая задача");
+    again.onclick=newStepTask;
+    stBox.appendChild(again);
+  });
+}
+function updStepCnt(){
+  el("stepCnt").innerHTML="решено: <b>"+CNT.step.solved+"</b> \u00B7 с подсказкой: "+CNT.step.hinted+
+    " \u00B7 <span class='shown'>с показом: "+CNT.step.shown+"</span>";
+}
+
+/* ================= МАРАФОН ================= */
+const MAR_FILTERS=[
+  {id:"all",label:"Все"},
+  {id:"A",label:"По рисунку"},
+  {id:"B",label:"Оценка числа"},
+  {id:"C",label:"Точки и числа"},
+  {id:"L",label:"Без рисунка"}];
+const MAR_SRC=[
+  {id:"all",label:"Все источники"},
+  {id:"reshu",label:"РЕШУ ОГЭ"},
+  {id:"bank7",label:"банк7"},
+  {id:"m100",label:"math100"},
+  {id:"formula",label:"formulaoge"}];
+let marFilter="all", marSrc="all", marIdx=0;
+const marStatus=BANK.map(()=>({state:"none"})); // none|ok|steps|shown
+
+function marList(){ return BANK.map((t,i)=>({t,i})).filter(x=>
+  (marFilter==="all"||x.t.kind===marFilter)&&(marSrc==="all"||x.t.srcId===marSrc)); }
+function marReset(){ const L=marList(); if(!L.length){marFilter="all";marSrc="all";} if(!marList().some(x=>x.i===marIdx)) marIdx=marList()[0].i; }
+function renderMarChips(){
+  const box=el("marChips"); box.innerHTML="";
+  MAR_FILTERS.forEach(f=>{
+    const c=h("button","chip"+(f.id===marFilter?" active":""),f.label);
+    c.onclick=()=>{ marFilter=f.id; marReset(); renderMarChips(); renderMarGrid(); renderMarTask(); };
+    box.appendChild(c);
+  });
+  const sbox=el("marSrcChips"); sbox.innerHTML="";
+  MAR_SRC.forEach(f=>{
+    const c=h("button","chip"+(f.id===marSrc?" active":""),f.label);
+    c.onclick=()=>{ marSrc=f.id; marReset(); renderMarChips(); renderMarGrid(); renderMarTask(); };
+    sbox.appendChild(c);
+  });
+}
+function renderMarGrid(){
+  const box=el("marGrid"); box.innerHTML="";
+  marList().forEach(({t,i},k)=>{
+    const b=h("button","tg"+(i===marIdx?" cur":"")+
+      (marStatus[i].state==="ok"?" ok":marStatus[i].state==="steps"?" steps":marStatus[i].state==="shown"?" shown":""),String(k+1));
+    b.title=t.src;
+    b.onclick=()=>{ marIdx=i; renderMarGrid(); renderMarTask(); };
+    box.appendChild(b);
+  });
+}
+function updMarCnt(){
+  const ok=marStatus.filter(s=>s.state==="ok").length;
+  const st=marStatus.filter(s=>s.state==="steps").length;
+  const sh=marStatus.filter(s=>s.state==="shown").length;
+  el("marCnt").innerHTML="решено: <b>"+ok+"</b> \u00B7 по шагам: "+st+" \u00B7 <span class='shown'>показан ответ: "+sh+"</span> \u00B7 всего задач: "+BANK.length;
+}
+function setMarStatus(i,state){
+  const rank={none:0,shown:1,steps:2,ok:3};
+  // ухудшать статус нельзя, но «показан ответ» фиксируется, если задача не была решена
+  if(rank[state]>rank[marStatus[i].state]||(state==="shown"&&marStatus[i].state==="none"))
+    marStatus[i].state=state;
+  renderMarGrid(); updMarCnt();
+}
+function renderMarTask(){
+  const t=BANK[marIdx];
+  const box=el("marTask");
+  box.innerHTML=taskConditionHtml(t);
+  const opts=h("div","optlist");
+  const msg=h("div","msg",""); msg.style.marginLeft="0";
+  t.opts.forEach((o,i)=>{
+    const b=h("button","optbtn",'<span class="onum">'+(i+1)+")</span><span>"+optHtml(o)+"</span>");
+    b.onclick=()=>{
+      if(i+1===t.key){
+        b.classList.add("good");
+        opts.querySelectorAll("button").forEach(x=>x.disabled=true);
+        msg.className="msg good"; msg.textContent="верно \u2713";
+        if(marStatus[marIdx].state!=="shown") setMarStatus(marIdx, stepsUsed?"steps":"ok"); else {renderMarGrid();updMarCnt();}
+      } else {
+        b.classList.add("bad"); b.disabled=true;
+        msg.className="msg bad"; msg.textContent="не то, попробуй ещё";
+      }
+    };
+    opts.appendChild(b);
+  });
+  box.appendChild(opts); box.appendChild(msg);
+  let stepsUsed=false;
+  const row=h("div","steprow");
+  const stepsBtn=h("button","btn","Решить по шагам");
+  const showBtn=h("button","btn show","Показать ответ");
+  const nextBtn=h("button","btn","Следующая \u2192");
+  const stBox=h("div");
+  stepsBtn.onclick=()=>{
+    stepsUsed=true; stepsBtn.disabled=true;
+    mountSteps(stBox,buildStepsAny(t,"school"),(usedShow)=>{
+      if(usedShow) setMarStatus(marIdx,"shown"); else setMarStatus(marIdx,"steps");
+      // подсветить верный вариант
+      opts.querySelectorAll("button").forEach((x,i)=>{x.disabled=true; if(i+1===t.key)x.classList.add("good");});
+      msg.className="msg good"; msg.textContent="разобрано по шагам \u2713";
+    });
+  };
+  showBtn.onclick=()=>{
+    opts.querySelectorAll("button").forEach((x,i)=>{x.disabled=true; if(i+1===t.key)x.classList.add("bad");});
+    msg.className="msg shown"; msg.textContent="\u2014 ответ показан: вариант "+t.key;
+    setMarStatus(marIdx,"shown");
+  };
+  nextBtn.onclick=()=>{
+    const L=marList(); const pos=L.findIndex(x=>x.i===marIdx);
+    marIdx=L[(pos+1)%L.length].i; renderMarGrid(); renderMarTask();
+  };
+  row.appendChild(stepsBtn); row.appendChild(showBtn); row.appendChild(nextBtn);
+  box.appendChild(row); box.appendChild(stBox);
+}
+
+/* ---------- Самопроверка при загрузке ---------- */
+function selfCheck(){
+  const errs=verifyBank();
+  if(errs.length){ console.error("Ошибки банка:",errs); el("selfcheck").textContent="Внимание: самопроверка банка нашла ошибки ("+errs.length+"), см. консоль."; el("selfcheck").style.color="#c62828"; }
+  let genErr=0;
+  const gens=[genA1,genA2,genA3,genA4,genB_fracBetweenInt,genB_fracTenths,genB_rootBetween,genB_rootInRange,genB_fracInRange,genC_root,genC_frac,genC_decOrder];
+  for(const g of gens){ for(let i=0;i<30;i++){ try{ const t=g(); if(verifyGenTask(t)) genErr++; const e=verifySteps(buildStepsAny(t,"school")); if(e)genErr++; }catch(ex){genErr++;} } }
+  if(genErr){ console.error("Ошибки генераторов:",genErr); }
+  if(!errs.length&&!genErr){ el("selfcheck").textContent="Самопроверка пройдена: банк "+BANK.length+" задач, ключи сверены, генераторы работают."; }
+}
+
+/* ---------- Старт ---------- */
+window.addEventListener("DOMContentLoaded",()=>{
+  document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>switchTab(b.dataset.t));
+  document.querySelectorAll("input[name=stepMethod]").forEach(r=>{
+    r.onchange=()=>{ stepMethod=r.value; newStepTask(); };
+  });
+  buildSquaresTable();
+  newP1(); newP2(); p3Random(); p4Random(); newP5(); newQuiz();
+  el("p1new").onclick=newP1; el("p2new").onclick=newP2;
+  el("p3go").onclick=fracExplain; el("p3rand").onclick=p3Random;
+  el("p4go").onclick=rootExplain; el("p4rand").onclick=p4Random;
+  el("p5new").onclick=newP5;
+  renderStepChips(); newStepTask(); updStepCnt();
+  renderMarChips(); renderMarGrid(); renderMarTask(); updMarCnt();
+  selfCheck();
+});
+
+</script>
+</body>
+</html>

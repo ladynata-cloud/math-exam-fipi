@@ -1,0 +1,2997 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Задание 9 ОГЭ · Уравнения — тренажёр</title>
+<style>
+:root{
+  --paper:#fdfcf7; --ink:#2b3a55; --grid:#d8e3ef; --grid2:#e8eef5;
+  --green:#1e7d32; --red:#c62828; --pencil:#8a93a3; --accent:#2456a6;
+  --accent-soft:#eaf1fb; --shown:#b23b3b; --shown-bg:#fbeeee; --peek:#b5852f; --peek-bg:#fbf5e8;
+  --line:#cfd8e3; --chip:#f0f4fa; --chip-on:#dbe8fb;
+  --hand:'Segoe Print','Bradley Hand','Comic Sans MS',cursive;
+  --math:Georgia,'Times New Roman',serif;
+  --ui:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--ui); color:var(--ink); font-size:16px; line-height:1.5;
+  background:
+    repeating-linear-gradient(var(--grid2) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, var(--grid2) 0 1px, transparent 1px 24px),
+    var(--paper);
+  background-size:24px 24px;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:860px; margin:0 auto; padding:0 14px 80px;}
+
+/* ── шапка ── */
+header{
+  position:relative; padding:22px 0 14px 40px; margin-bottom:6px;
+}
+header::before{ /* красная линия полей */
+  content:''; position:absolute; left:26px; top:0; bottom:-6px; width:2px;
+  background:var(--red); opacity:.55;
+}
+h1{font-family:var(--math); font-size:27px; margin:0 0 2px; font-weight:700; letter-spacing:.2px;}
+.sub{color:var(--pencil); font-size:14.5px; font-family:var(--hand);}
+
+/* ── вкладки ── */
+nav.tabs{
+  display:flex; gap:4px; flex-wrap:wrap; padding-left:40px; margin-bottom:16px;
+  border-bottom:2px solid var(--line);
+}
+.tab{
+  appearance:none; border:2px solid transparent; border-bottom:none; background:none;
+  font-family:var(--ui); font-size:15px; font-weight:600; color:var(--pencil);
+  padding:9px 15px 8px; border-radius:9px 9px 0 0; cursor:pointer; margin-bottom:-2px;
+  transition:.12s;
+}
+.tab:hover{color:var(--accent); background:var(--accent-soft);}
+.tab.on{color:var(--accent); background:var(--paper); border-color:var(--line);
+  border-bottom:2px solid var(--paper);}
+.pane{display:none; animation:fade .18s ease;}
+.pane.on{display:block;}
+@keyframes fade{from{opacity:0; transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+/* ── карточки/блоки ── */
+.card{
+  background:var(--paper); border:2px solid var(--line); border-radius:12px;
+  padding:16px 18px; margin:14px 0; position:relative;
+  box-shadow:2px 3px 0 rgba(43,58,85,.05);
+}
+.card.tinted{background:linear-gradient(var(--accent-soft),var(--paper) 60%);}
+h2{font-family:var(--math); font-size:20px; margin:2px 0 10px;}
+h3{font-family:var(--math); font-size:17px; margin:16px 0 6px; color:var(--accent);}
+.eyebrow{font-family:var(--hand); color:var(--pencil); font-size:14px; margin-bottom:2px;}
+p{margin:8px 0;}
+.math{font-family:var(--math); font-size:17.5px;}
+.big-eq{font-family:var(--math); font-size:20px; text-align:center; margin:10px 0; line-height:2;}
+
+/* ── этажные дроби ── */
+.frac{display:inline-flex; flex-direction:column; vertical-align:middle;
+  text-align:center; margin:0 .12em; font-family:var(--math);}
+.frac>.tt{padding:0 .3em .05em; border-bottom:1.6px solid currentColor; line-height:1.25;}
+.frac>.bb{padding:.05em .3em 0; line-height:1.25;}
+i{font-style:italic; font-family:var(--math);}
+
+/* ── радикал √ ── */
+.rad{display:inline-flex; align-items:stretch; vertical-align:middle;}
+.rad>svg{width:.7em; height:1.35em; margin-right:-1px; overflow:visible;}
+.rad>.rad-body{border-top:1.6px solid currentColor; padding:0 .25em; line-height:1.35; font-family:var(--math);}
+.fform{font-family:var(--math); font-size:18px; white-space:nowrap;}
+
+/* ── пронумерованные пункты теории ── */
+.point{display:flex; gap:12px; margin:16px 0; align-items:flex-start;}
+.point .num{
+  flex:0 0 auto; width:30px; height:30px; border-radius:50%;
+  background:var(--accent); color:#fff; font-family:var(--math); font-weight:700;
+  display:flex; align-items:center; justify-content:center; font-size:15px; margin-top:1px;
+  box-shadow:1px 2px 0 rgba(36,86,166,.25);
+}
+.point .body{flex:1; min-width:0;}
+.point .body h3{margin-top:2px;}
+.link-note{font-family:var(--hand); color:var(--pencil); font-size:14.5px;}
+.link-note b{color:var(--accent); font-weight:600;}
+
+/* ── интерактив: чипы, кнопки ── */
+.chips{display:flex; flex-wrap:wrap; gap:7px; margin:8px 0;}
+.chip{
+  appearance:none; border:2px solid var(--line); background:var(--chip);
+  border-radius:20px; padding:6px 13px; font-family:var(--math); font-size:16px;
+  color:var(--ink); cursor:pointer; transition:.12s;
+}
+.chip:hover{border-color:var(--accent); background:var(--chip-on);}
+.chip.on{border-color:var(--accent); background:var(--chip-on); font-weight:600;}
+.chip.correct{border-color:var(--green); background:#e8f5e9; color:var(--green);}
+.chip.wrong{border-color:var(--red); background:#fdeaea;}
+
+.btn{
+  appearance:none; border:2px solid var(--accent); background:var(--accent); color:#fff;
+  font-family:var(--ui); font-size:14.5px; font-weight:600; padding:8px 16px;
+  border-radius:9px; cursor:pointer; transition:.12s;
+}
+.btn:hover{filter:brightness(1.08);}
+.btn:active{transform:translateY(1px);}
+.btn.ghost{background:none; color:var(--accent);}
+.btn.ghost:hover{background:var(--accent-soft);}
+.btn.reveal{border-color:var(--pencil); color:var(--pencil); background:none;}
+.btn.reveal:hover{background:#f2f4f7; color:var(--shown);}
+.btn.small{padding:5px 11px; font-size:13.5px;}
+.btn-row{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:10px;}
+
+/* ── поля ввода: рукописный «ответ зелёной ручкой» ── */
+.ans{
+  font-family:var(--math); font-size:18px; color:var(--green); font-weight:600;
+  border:none; border-bottom:2px solid var(--pencil); background:transparent;
+  width:90px; text-align:center; padding:2px 4px 3px; outline:none; transition:.12s;
+}
+.ans:focus{border-color:var(--accent);}
+.ans.mini{width:64px; font-size:17px;}
+.ans::placeholder{color:#c3cad4; font-weight:400; font-style:italic;}
+.ans-eqn{
+  display:block; width:100%; box-sizing:border-box; margin:6px 0 2px;
+  font-family:var(--math); font-size:18px; color:var(--green); font-weight:600;
+  line-height:1.5; border:1.5px solid var(--pencil); border-radius:8px;
+  background:rgba(255,255,255,.55); padding:8px 11px; outline:none;
+  resize:none; overflow:hidden; white-space:pre-wrap; word-break:break-word;
+  transition:border-color .12s, box-shadow .12s;
+}
+.ans-eqn:focus{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft);}
+.ans-eqn::placeholder{color:#b7bfca; font-weight:400; font-style:italic;}
+.field{display:inline-flex; align-items:center; gap:7px; margin:5px 10px 5px 0;
+  font-family:var(--math); font-size:17px; flex-wrap:wrap;}
+.field .lbl{color:var(--ink); font-weight:400;}
+
+/* предпросмотр этажной дроби при вводе a/b */
+.live-frac{font-family:var(--math); color:var(--green); font-size:17px; margin-left:2px;}
+
+/* ── реакция / статусы ── */
+.fb{margin-top:9px; font-family:var(--hand); font-size:15.5px; min-height:1px;
+  padding:2px 0; line-height:1.4;}
+.fb.good{color:var(--green);}
+.fb.bad{color:var(--red);}
+.fb.shown{color:var(--shown);}
+.reveal-box{
+  margin-top:9px; border-left:3px solid var(--peek); background:var(--peek-bg);
+  padding:8px 12px; border-radius:0 8px 8px 0; font-family:var(--math); font-size:17px;
+  color:var(--ink);
+}
+.reveal-box .tag{font-family:var(--hand); color:var(--peek); font-size:13.5px; display:block; margin-top:4px;}
+.pen-note{font-family:var(--hand); color:var(--pencil); font-size:14px;}
+
+/* ── шаги (степ-раннер) ── */
+.step{border:2px solid var(--line); border-radius:10px; padding:13px 15px; margin:11px 0;
+  background:var(--paper); transition:border-color .15s, box-shadow .15s, opacity .15s;}
+.step.active{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft);
+  animation:stepIn .35s ease;}
+@keyframes stepIn{from{box-shadow:0 0 0 8px rgba(36,86,166,0); transform:translateY(3px);}
+  to{box-shadow:0 0 0 3px var(--accent-soft); transform:none;}}
+.step.done{border-color:var(--green); background:#f4faf5; box-shadow:none;}
+.step.shown{border-color:var(--peek); background:#fdf9ef; box-shadow:none;}
+.step .q{font-family:var(--math); font-size:16.5px; margin-bottom:9px;}
+.step-head{display:flex; align-items:center; gap:9px; margin-bottom:3px;}
+.step-turn{margin-left:auto; font-family:var(--hand); font-size:13px; color:var(--accent);}
+.step-badge{flex:0 0 auto; width:24px; height:24px; border-radius:50%; background:var(--chip);
+  color:var(--pencil); font-family:var(--math); font-size:13px; font-weight:700;
+  display:flex; align-items:center; justify-content:center;}
+.step.active .step-badge{background:var(--accent); color:#fff;}
+.step.done .step-badge{background:var(--green); color:#fff;}
+.step.shown .step-badge{background:var(--peek); color:#fff;}
+
+/* ── счётчики ── */
+.counters{display:flex; gap:16px; flex-wrap:wrap; font-family:var(--hand);
+  font-size:14.5px; color:var(--pencil); margin:4px 0 2px;}
+.counters b{font-family:var(--math); color:var(--ink);}
+.tally{display:inline-flex; align-items:center; gap:5px;}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+.dot.g{background:var(--green);} .dot.h{background:var(--accent);} .dot.s{background:var(--shown);}
+
+/* ── марафон ── */
+.filter-row{display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 14px;}
+.progress-bar{height:8px; border-radius:5px; background:var(--grid); overflow:hidden; margin:8px 0;}
+.progress-bar>span{display:block; height:100%; background:var(--green); width:0; transition:width .3s;}
+.task-card{border:2px solid var(--line); border-radius:11px; padding:14px 16px; margin:12px 0;
+  background:var(--paper); position:relative;}
+.task-card.solved{border-color:var(--green);}
+.src-badge{position:absolute; top:10px; right:12px; font-family:var(--hand); font-size:12.5px;
+  color:var(--pencil); background:var(--chip); padding:2px 9px; border-radius:11px;}
+.task-q{font-family:var(--math); font-size:17px; margin:2px 40px 12px 0; line-height:1.7;}
+.task-no{font-family:var(--hand); color:var(--pencil); font-size:13.5px;}
+
+/* самопроверка баннер */
+.selfcheck{font-family:var(--hand); font-size:14px; padding:7px 13px; border-radius:9px;
+  display:inline-flex; align-items:center; gap:8px; margin:2px 0 6px;}
+.selfcheck.ok{background:#e8f5e9; color:var(--green);}
+.selfcheck.err{background:#fdeaea; color:var(--red);}
+
+/* таблица-шпаргалка */
+.ref-eq{font-family:var(--math); font-size:17px; margin:7px 0; padding:9px 13px;
+  background:var(--accent-soft); border-radius:8px; display:inline-block;}
+.cols{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+.case-row{display:flex; gap:10px; margin:9px 0; align-items:baseline;}
+.case-row .k{font-family:var(--math); font-weight:700; color:var(--accent); flex:0 0 auto;}
+.warn{border-left:3px solid var(--red); background:#fdf0f0; padding:8px 12px;
+  border-radius:0 8px 8px 0; margin:9px 0; font-size:15px;}
+.warn b{color:var(--red);}
+kbd{font-family:var(--math); background:#eef2f7; border:1px solid var(--line);
+  border-radius:5px; padding:1px 6px; font-size:15px;}
+
+.worked-cond{font-family:var(--math); font-size:19px; text-align:center; line-height:2.1;
+  background:var(--paper); border:1.5px solid var(--accent); border-radius:9px;
+  padding:12px 14px; margin:8px 0 14px; color:var(--ink);}
+.worked-cond .frac{font-size:19px;}
+.ref-jumps{display:flex; flex-wrap:wrap; gap:7px; margin:14px 0 2px; align-items:center;
+  padding-top:12px; border-top:1px dashed var(--line);}
+.ref-jumps .rj-label{font-family:var(--hand); color:var(--pencil); font-size:14px; margin-right:2px; width:100%;}
+.ref-jump{appearance:none; border:1.5px dashed var(--accent); background:var(--paper); color:var(--accent);
+  font-family:var(--ui); font-size:13.5px; font-weight:600; padding:5px 10px; border-radius:16px; cursor:pointer;
+  display:inline-flex; align-items:center; gap:6px; transition:.12s;}
+.ref-jump:hover{background:var(--accent-soft); border-style:solid;}
+.ref-jump:active{transform:translateY(1px);}
+.ref-jump .rj-n{font-family:var(--math); background:var(--accent); color:#fff; border-radius:10px;
+  padding:0 6px; font-size:12px; font-weight:700; line-height:1.5;}
+.ref-jump[data-empty="1"]{opacity:.4; pointer-events:none; border-style:dotted;}
+.mara-banner{display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:var(--accent-soft);
+  border:1.5px solid var(--accent); border-radius:10px; padding:9px 14px; margin:2px 0 12px;
+  font-family:var(--ui); font-size:14px;}
+.mara-banner b{font-family:var(--math);}
+.mara-banner .bx{margin-left:auto; border:none; background:none; color:var(--accent); cursor:pointer;
+  font-family:var(--ui); font-size:13.5px; font-weight:600; text-decoration:underline; padding:2px 4px;}
+@media (max-width:640px){
+  body{font-size:15px;}
+  .wrap{padding:0 10px 70px;}
+  header{padding-left:30px;} header::before{left:18px;}
+  nav.tabs{padding-left:0;}
+  .tab{padding:8px 11px; font-size:14px;}
+  .cols,.ref-eq{display:block;} .cols>*{margin-bottom:12px;}
+  h1{font-size:23px;}
+  .task-q{margin-right:0; margin-top:22px;}
+  .src-badge{position:static; display:inline-block; margin-bottom:6px;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="sub">ОГЭ · математика · 2026</div>
+  <h1>Задание 9. Уравнения</h1>
+  <div class="sub">линейные · квадратные · дробно-рациональные</div>
+</header>
+
+<nav class="tabs">
+  <button class="tab on" data-pane="ref">Справочник</button>
+  <button class="tab" data-pane="learn">Учимся</button>
+  <button class="tab" data-pane="step">Пошагово</button>
+  <button class="tab" data-pane="mara">Марафон</button>
+</nav>
+
+<!-- ═══════════ СПРАВОЧНИК ═══════════ -->
+<section class="pane on" id="pane-ref">
+  <div class="card tinted">
+    <div class="eyebrow">коротко о главном</div>
+    <h2>Что нужно, чтобы решить задание 9</h2>
+    <p>В ответе — <b>одно число</b>. Если корней два, а в условии сказано «запишите меньший (больший) из корней» — выбираем нужный. Дробный ответ записываем <b>десятичной дробью через запятую</b>: <span class="math">1,5</span> &nbsp;(а не <span class="math">3/2</span>).</p>
+    <div class="warn">Три главных промаха: потерять знак при переносе, потерять корень <span class="math"><i>x</i> = 0</span> и записать «меньший» корень вместо «большего» у отрицательных чисел. Дальше — как их не совершить.</div>
+  </div>
+
+  <div class="card">
+    <h2>Линейные уравнения</h2>
+    <p><b>Главное правило.</b> Слагаемое, которое «перепрыгивает» через знак <span class="math">=</span>, меняет знак: было <span class="math">+</span> — станет <span class="math">−</span>.</p>
+    <h3>План на 4 шага</h3>
+    <div class="case-row"><span class="k">1.</span><span>Раскрой скобки (множитель — на каждое слагаемое; минус перед скобкой меняет все знаки внутри).</span></div>
+    <div class="case-row"><span class="k">2.</span><span>Перенеси: всё с <span class="math"><i>x</i></span> — влево, числа — вправо (со сменой знака).</span></div>
+    <div class="case-row"><span class="k">3.</span><span>Приведи подобные: отдельно иксы, отдельно числа.</span></div>
+    <div class="case-row"><span class="k">4.</span><span>Раздели обе части на коэффициент при <span class="math"><i>x</i></span>.</span></div>
+    <p class="link-note">Если коэффициенты дробные — сначала умножь <b>всё уравнение</b> на НОК знаменателей, дроби исчезнут.</p>
+    <div class="warn"><b>Отчаянный метод</b> (если запутался): всё, что с <span class="math"><i>x</i></span>, — влево; всё без <span class="math"><i>x</i></span> — вправо. Всегда. Потом привёл подобные и разделил. Цена — иногда возишься с лишними знаками, зато не собьёшься.</div>
+    <div class="ref-jumps">
+      <span class="rj-label">Порешать в марафоне:</span>
+      <button class="ref-jump" data-cases="lin1,lin2" data-label="Линейные — основные">Основные <span class="rj-n"></span></button>
+      <button class="ref-jump" data-cases="linb" data-label="Линейные со скобками">Со скобками <span class="rj-n"></span></button>
+      <button class="ref-jump" data-cases="linf" data-label="Линейные с дробными коэффициентами">Дробные коэффициенты <span class="rj-n"></span></button>
+      <button class="ref-jump" data-cases="linsq" data-label="Равенство квадратов (x+a)²=(x+b)²">Квадраты <span class="rj-n"></span></button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Квадратные уравнения</h2>
+    <p class="math"><i>a</i><i>x</i>² + <i>b</i><i>x</i> + <i>c</i> = 0.&nbsp; Сначала смотрим на <b>вид</b> — половина задач решается без дискриминанта.</p>
+    <div class="case-row"><span class="k">c = 0</span><span>&nbsp;<span class="math"><i>a</i><i>x</i>² + <i>b</i><i>x</i> = 0</span> → вынеси <span class="math"><i>x</i></span>: <span class="math"><i>x</i>(<i>a</i><i>x</i> + <i>b</i>) = 0</span>. Корни: <span class="math"><i>x</i> = 0</span> и скобка = 0. <b>Не теряй ноль!</b></span></div>
+    <div class="case-row"><span class="k">b = 0</span><span>&nbsp;<span class="math"><i>a</i><i>x</i>² + <i>c</i> = 0</span> → вырази <span class="math"><i>x</i>²</span>, возьми <span class="math">±√</span>. Корня два: <span class="math">+</span> и <span class="math">−</span>.</span></div>
+    <div class="case-row"><span class="k">полное</span><span>&nbsp;через дискриминант.</span></div>
+    <div class="big-eq"><i>D</i> = <i>b</i>² − 4<i>a</i><i>c</i>,&nbsp;&nbsp; <i>x</i> = <span class="frac"><span class="tt">−<i>b</i> ± <span class="rad"><svg viewBox="0 0 13 24" preserveAspectRatio="none"><path d="M1 13 L4.6 22.6 L12 0" fill="none" stroke="currentColor" stroke-width="1.6" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/></svg><span class="rad-body"><i>D</i></span></span></span><span class="bb">2<i>a</i></span></span></div>
+    <p class="pen-note">Если <span class="math"><i>D</i> &gt; 0</span> — два корня; <span class="math"><i>D</i> = 0</span> — один; <span class="math"><i>D</i> &lt; 0</span> — корней нет (в задании 9 такого не будет).</p>
+    <h3>Теорема Виета — «для быстрых»</h3>
+    <p>Если <span class="math"><i>a</i> = 1</span>: &nbsp;<span class="math"><i>x</i>₁ + <i>x</i>₂ = −<i>p</i></span>, &nbsp;<span class="math"><i>x</i>₁ · <i>x</i>₂ = <i>q</i></span>. Подбираешь два числа с нужной суммой и произведением.</p>
+    <div class="warn"><b>Честная цена Виета.</b> Работает быстро, только когда <span class="math"><i>a</i> = 1</span> и корни целые. Не подобрал за полминуты — не мучайся, иди через дискриминант, он не подведёт никогда.</div>
+    <div class="warn">«Меньший / больший корень»: расставь корни на прямой. У отрицательных <b>−5 меньше, чем −2</b>. Больший — тот, что правее.</div>
+    <div class="ref-jumps">
+      <span class="rj-label">Порешать в марафоне:</span>
+      <button class="ref-jump" data-cases="qnc" data-label="Квадратные без c (вынести x)">Без c <span class="rj-n"></span></button>
+      <button class="ref-jump" data-cases="qnb" data-label="Квадратные без b (±√)">Без b <span class="rj-n"></span></button>
+      <button class="ref-jump" data-cases="qf" data-label="Полные квадратные (дискриминант)">Полные <span class="rj-n"></span></button>
+      <button class="ref-jump" data-cases="qp" data-label="Разложенные на множители">Разложенные <span class="rj-n"></span></button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Дробно-рациональные уравнения</h2>
+    <p>Есть <span class="math"><i>x</i></span> в знаменателе — обязательна проверка <b>ОДЗ</b>: знаменатель не может быть нулём. Корень, обнуляющий знаменатель, — <b>посторонний</b>, его выбрасывают.</p>
+    <div class="case-row"><span class="k">дробь = дробь</span><span>&nbsp;пропорция → умножь «крест-накрест».</span></div>
+    <div class="case-row"><span class="k">дробь = 0</span><span>&nbsp;числитель = 0, при этом знаменатель ≠ 0.</span></div>
+    <div class="case-row"><span class="k"><i>x</i> и дробь</span><span>&nbsp;<span class="math"><i>x</i> + <span class="frac"><span class="tt"><i>a</i></span><span class="bb"><i>x</i></span></span> = <i>b</i></span> → умножь всё на <span class="math"><i>x</i></span>, получишь квадратное.</span></div>
+    <div class="case-row"><span class="k">две дроби</span><span>&nbsp;приведи к общему знаменателю → квадратное → проверь ОДЗ.</span></div>
+    <p class="link-note">Если под дробью встречается замена (например одинаковые скобки) — можно ввести <b><i>t</i></b> и упростить. Но на ОГЭ почти всегда хватает общего знаменателя.</p>
+    <div class="ref-jumps">
+      <span class="rj-label">Порешать в марафоне:</span>
+      <button class="ref-jump" data-cases="prop" data-label="Пропорция (крест-накрест)">Пропорция <span class="rj-n"></span></button>
+      <button class="ref-jump" data-cases="nz" data-label="Дробь = 0">Дробь = 0 <span class="rj-n"></span></button>
+      <button class="ref-jump" data-cases="xf" data-label="x и дробь (умножить на x)">x и дробь <span class="rj-n"></span></button>
+      <button class="ref-jump" data-cases="heavy" data-label="Две дроби (общий знаменатель)">Две дроби <span class="rj-n"></span></button>
+    </div>
+  </div>
+
+  <div class="card tinted">
+    <h2>Как заполнять бланк</h2>
+    <p>Ответ — число без пробелов и лишних знаков. Минус пишем, если корень отрицательный. Дробный ответ — <b>десятичной дробью через запятую</b>: <kbd>0,5</kbd> &nbsp;<kbd>−2,5</kbd> &nbsp;<kbd>1,75</kbd>. Целый ответ — просто число: <kbd>10</kbd>.</p>
+    <p class="pen-note">Внутри тренажёра при ответе можно писать и <kbd>3/2</kbd>, и <kbd>1,5</kbd>, и <kbd>1.5</kbd> — засчитается; но в настоящем бланке нужна запятая.</p>
+  </div>
+</section>
+
+<!-- ═══════════ остальные вкладки (наполняются скриптом) ═══════════ -->
+<section class="pane" id="pane-learn"></section>
+<section class="pane" id="pane-step"></section>
+<section class="pane" id="pane-mara"></section>
+
+</div><!-- /.wrap -->
+<script>
+/* ================= ЯДРО: точная рациональная арифметика ================= */
+'use strict';
+function bgcd(a,b){a=a<0n?-a:a;b=b<0n?-b:b;while(b){[a,b]=[b,a%b];}return a;}
+function F(n,d){ // дробь n/d, BigInt, нормализованная
+  if(typeof n==='number')n=BigInt(n); if(d===undefined)d=1n;
+  if(typeof d==='number')d=BigInt(d);
+  if(d===0n)throw new Error('div0');
+  if(d<0n){n=-n;d=-d;}
+  const g=bgcd(n,d)||1n; return {n:n/g,d:d/g};
+}
+const F0=F(0), F1=F(1);
+function fadd(a,b){return F(a.n*b.d+b.n*a.d, a.d*b.d);}
+function fsub(a,b){return F(a.n*b.d-b.n*a.d, a.d*b.d);}
+function fmul(a,b){return F(a.n*b.n, a.d*b.d);}
+function fdiv(a,b){if(b.n===0n)throw new Error('div0');return F(a.n*b.d, a.d*b.n);}
+function fneg(a){return F(-a.n,a.d);}
+function fabs(a){return F(a.n<0n?-a.n:a.n,a.d);}
+function feq(a,b){return a.n===b.n&&a.d===b.d;}
+function fzero(a){return a.n===0n;}
+function fcmp(a,b){const l=a.n*b.d, r=b.n*a.d; return l<r?-1:(l>r?1:0);}
+function fisint(a){return a.d===1n;}
+function fint(a){return a.n;} // только если fisint
+function fmin(a,b){return fcmp(a,b)<=0?a:b;}
+function fmax(a,b){return fcmp(a,b)>=0?a:b;}
+// точный квадратный корень рациональной дроби (или null)
+function bsqrt(v){ if(v<0n)return null; if(v<2n)return v;
+  let x=v, y=(x+1n)/2n; while(y<x){x=y;y=(x+v/x)/2n;} return x*x===v?x:null;}
+function fsqrt(a){ if(a.n<0n)return null; const sn=bsqrt(a.n), sd=bsqrt(a.d);
+  return (sn===null||sd===null)?null:F(sn,sd);}
+// конечная ли десятичная запись (знаменатель = 2^a·5^b)
+function finiteDec(a){let d=a.d; while(d%2n===0n)d/=2n; while(d%5n===0n)d/=5n; return d===1n;}
+// строка десятичной записи с запятой (только для finiteDec)
+function decStr(a){
+  if(fisint(a))return a.n.toString();
+  let d=a.d, p2=0n, p5=0n, t=d;
+  while(t%2n===0n){t/=2n;p2++;} while(t%5n===0n){t/=5n;p5++;}
+  const k=p2>p5?p2:p5;
+  const num=(a.n<0n?-a.n:a.n) * (2n**(k-p2)) * (5n**(k-p5));
+  const base=10n**k; const ip=num/base; let fp=(num%base).toString().padStart(Number(k),'0');
+  fp=fp.replace(/0+$/,''); // хвостовые нули убираем в образцовой записи
+  return (a.n<0n?'−':'')+ip.toString()+(fp?','+fp:'');
+}
+// «как пишем в бланк»: минус, цифры, запятая
+function blankStr(a){return finiteDec(a)?decStr(a):null;}
+
+/* ---------- разбор пользовательского числа: "-1,5" / "3/2" / "2.50" ---------- */
+function parseNum(sRaw){
+  if(sRaw===null||sRaw===undefined)return null;
+  let s=String(sRaw).trim().replace(/\s+/g,'').replace(/−|–|—/g,'-').replace(/,/g,'.');
+  if(!s)return null;
+  const mFrac=s.match(/^(-?)(\d+)\/(-?)(\d+)$/);
+  if(mFrac){ const sign=(mFrac[1]==='-')!==(mFrac[3]==='-')?-1n:1n;
+    const den=BigInt(mFrac[4]); if(den===0n)return null;
+    return F(sign*BigInt(mFrac[2]),den); }
+  const m=s.match(/^(-?)(\d+)(?:\.(\d+))?$/);
+  if(!m)return null;
+  const sign=m[1]==='-'?-1n:1n; const ip=BigInt(m[2]);
+  const fp=m[3]||''; const den=10n**BigInt(fp.length);
+  return F(sign*(ip*den+BigInt(fp||'0')), den);
+}
+
+/* ---------- разбор линейно-квадратного выражения: 2x² − 3x + 1 ---------- */
+/* возвращает {A,B,C} — коэффициенты при x², x, 1 (дроби) либо null */
+function parseExprABC(sRaw){
+  if(sRaw===null||sRaw===undefined)return null;
+  let s=String(sRaw).replace(/−|–|—/g,'-').replace(/,/g,'.').replace(/[·*]/g,'')
+        .replace(/[хХXΧ]/g,'x').replace(/x\s*\^\s*2/g,'x²').replace(/xx/g,'x²')
+        .replace(/\s+/g,'');
+  if(!s)return null;
+  if(!/^[-+0-9.x²]+$/.test(s))return null;
+  // разбиваем на слагаемые
+  const terms=s.match(/[+-]?[^+-]+/g); if(!terms)return null;
+  let A=F0,B=F0,C=F0;
+  for(let t of terms){
+    let sign=1n;
+    if(t[0]==='+')t=t.slice(1); else if(t[0]==='-'){sign=-1n;t=t.slice(1);}
+    if(!t)return null;
+    let pow=0;
+    if(t.endsWith('x²')){pow=2;t=t.slice(0,-2);}
+    else if(t.endsWith('x')){pow=1;t=t.slice(0,-1);}
+    else if(t.includes('x'))return null;
+    let coef;
+    if(t===''){coef=F1;}
+    else{ if(!/^\d+(\.\d+)?$/.test(t))return null;
+      const mm=t.match(/^(\d+)(?:\.(\d+))?$/);
+      const fp=mm[2]||''; const den=10n**BigInt(fp.length);
+      coef=F(BigInt(mm[1])*den+BigInt(fp||'0'),den); }
+    coef=fmul(coef,F(sign));
+    if(pow===2)A=fadd(A,coef); else if(pow===1)B=fadd(B,coef); else C=fadd(C,coef);
+  }
+  return {A,B,C};
+}
+/* уравнение "лев = прав" → {L,R} либо null */
+/* ── надёжный разбор многочлена степени ≤2 от x: +−*·/ и скобки ── */
+function parsePoly(sRaw){
+  if(sRaw===null||sRaw===undefined)return null;
+  let s=String(sRaw).replace(/−|–|—/g,'-').replace(/,/g,'.')
+        .replace(/[хХΧ]/g,'x').replace(/·/g,'*').replace(/²/g,'^2').replace(/\s+/g,'');
+  if(!s)return null;
+  if(!/^[-+*/^().0-9x]+$/.test(s))return null;
+  // токенизация
+  const toks=[]; let i=0;
+  while(i<s.length){
+    const c=s[i];
+    if(c>='0'&&c<='9'||c==='.'){ let j=i+1; while(j<s.length&&(s[j]>='0'&&s[j]<='9'||s[j]==='.'))j++;
+      const mm=s.slice(i,j).match(/^(\d+)?(?:\.(\d+))?$/); if(!mm||(mm[1]===undefined&&mm[2]===undefined))return null;
+      const ip=mm[1]||'0', fp=mm[2]||''; const den=10n**BigInt(fp.length);
+      toks.push({t:'num',v:F(BigInt(ip)*den+BigInt(fp||'0'),den)}); i=j; }
+    else if(c==='x'){ toks.push({t:'x'}); i++; }
+    else if('+-*/^()'.includes(c)){ toks.push({t:c}); i++; }
+    else return null;
+  }
+  // рекурсивный спуск; значение = многочлен {A,B,C}
+  let p=0;
+  const CONST=(f)=>({A:F0,B:F0,C:f});
+  const peek=()=>toks[p], eat=(t)=>{ if(peek()&&peek().t===t){p++;return true;} return false; };
+  function pAdd(u,v){return {A:fadd(u.A,v.A),B:fadd(u.B,v.B),C:fadd(u.C,v.C)};}
+  function pSub(u,v){return {A:fsub(u.A,v.A),B:fsub(u.B,v.B),C:fsub(u.C,v.C)};}
+  function pNeg(u){return {A:fneg(u.A),B:fneg(u.B),C:fneg(u.C)};}
+  function pMul(u,v){
+    const d4=fmul(u.A,v.A), d3=fadd(fmul(u.A,v.B),fmul(u.B,v.A));
+    if(!fzero(d4)||!fzero(d3))return null; // степень > 2 не поддерживаем
+    return {A:fadd(fadd(fmul(u.A,v.C),fmul(u.B,v.B)),fmul(u.C,v.A)),
+            B:fadd(fmul(u.B,v.C),fmul(u.C,v.B)), C:fmul(u.C,v.C)};
+  }
+  function pDiv(u,v){ if(!fzero(v.A)||!fzero(v.B)||fzero(v.C))return null; // делим только на число
+    return {A:fdiv(u.A,v.C),B:fdiv(u.B,v.C),C:fdiv(u.C,v.C)}; }
+  function startsFactor(){ const t=peek(); return t&&(t.t==='num'||t.t==='x'||t.t==='('); }
+  let bad=false;
+  function expr(){
+    let u=term(); if(u===null){bad=true;return null;}
+    while(peek()&&(peek().t==='+'||peek().t==='-')){ const op=peek().t; p++;
+      const v=term(); if(v===null){bad=true;return null;} u=op==='+'?pAdd(u,v):pSub(u,v); }
+    return u;
+  }
+  function term(){
+    let u=factor(); if(u===null)return null;
+    while(true){
+      if(eat('*')){ const v=factor(); if(v===null)return null; const m=pMul(u,v); if(m===null)return null; u=m; }
+      else if(eat('/')){ const v=factor(); if(v===null)return null; const d=pDiv(u,v); if(d===null)return null; u=d; }
+      else if(startsFactor()){ const v=factor(); if(v===null)return null; const m=pMul(u,v); if(m===null)return null; u=m; }
+      else break;
+    }
+    return u;
+  }
+  function factor(){
+    if(eat('+'))return factor();
+    if(eat('-')){ const f=factor(); return f===null?null:pNeg(f); }
+    let base;
+    const t=peek();
+    if(!t)return null;
+    if(t.t==='num'){ p++; base=CONST(t.v); }
+    else if(t.t==='x'){ p++; base={A:F0,B:F1,C:F0}; }
+    else if(t.t==='('){ p++; base=expr(); if(base===null)return null; if(!eat(')'))return null; }
+    else return null;
+    if(eat('^')){ const e=peek(); if(!e||e.t!=='num'||!fisint(e.v))return null; p++;
+      const n=Number(e.v.n); if(n<0||n>4)return null;
+      let r=CONST(F1); for(let k=0;k<n;k++){ r=pMul(r,base); if(r===null)return null; } base=r; }
+    return base;
+  }
+  const res=expr();
+  if(bad||res===null||p!==toks.length)return null;
+  return res;
+}
+function parseEqn(sRaw){
+  if(sRaw===null||sRaw===undefined)return null;
+  const parts=String(sRaw).split('=');
+  if(parts.length!==2)return null;
+  const L=parsePoly(parts[0]), R=parsePoly(parts[1]);
+  return (L&&R)?{L,R}:null;
+}
+/* уравнение → нормализованное A x² + B x + C = 0 */
+function eqnABC(e){return {A:fsub(e.L.A,e.R.A), B:fsub(e.L.B,e.R.B), C:fsub(e.L.C,e.R.C)};}
+
+/* решение a x² + b x + c = 0 в точных дробях
+   → {kind:'lin'|'two'|'one'|'none'|'all', roots:[..по возрастанию]} */
+function solveABC(a,b,c){
+  if(fzero(a)){
+    if(fzero(b)) return fzero(c)?{kind:'all',roots:[]}:{kind:'none',roots:[]};
+    return {kind:'lin',roots:[fdiv(fneg(c),b)]};
+  }
+  const D=fsub(fmul(b,b),fmul(F(4),fmul(a,c)));
+  if(fcmp(D,F0)<0)return {kind:'none',roots:[],D};
+  const s=fsqrt(D);
+  if(s===null)return {kind:'irr',roots:[],D};
+  if(fzero(D))return {kind:'one',roots:[fdiv(fneg(b),fmul(F(2),a))],D,sqrtD:s};
+  const r1=fdiv(fadd(fneg(b),s),fmul(F(2),a));
+  const r2=fdiv(fsub(fneg(b),s),fmul(F(2),a));
+  const lo=fmin(r1,r2), hi=fmax(r1,r2);
+  return {kind:'two',roots:[lo,hi],D,sqrtD:s};
+}
+
+/* ================= ОТОБРАЖЕНИЕ ================= */
+const MINUS='−';
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+/* число → «печатная» строка: целое или десятичная с запятой, иначе этажная дробь */
+function numHTML(f,opts){opts=opts||{};
+  if(fisint(f))return (f.n<0n?MINUS:'')+(f.n<0n?-f.n:f.n).toString();
+  if(finiteDec(f)&&!opts.forceFrac)return decStr(f);
+  const s=f.n<0n?MINUS:'' ;
+  return s+'<span class="frac"><span class="tt">'+(f.n<0n?-f.n:f.n)+'</span><span class="bb">'+f.d+'</span></span>';
+}
+/* этажная дробь принудительно: fracHTML(верх, низ) — строки/HTML */
+function fracHTML(top,bot){return '<span class="frac"><span class="tt">'+top+'</span><span class="bb">'+bot+'</span></span>';}
+/* коэффициент при x: 1→'', −1→'−', иначе число */
+function coefHTML(f){
+  if(feq(f,F1))return '';
+  if(feq(f,F(-1)))return MINUS;
+  return numHTML(f);
+}
+/* линейное выражение Bx + C → html (в естественном порядке) */
+function linHTML(B,C){
+  let out='';
+  if(!fzero(B)) out+=coefHTML(B)+'<i>x</i>';
+  if(!fzero(C)){
+    if(out) out+=' '+(fcmp(C,F0)<0?MINUS:'+')+' '+numHTML(fabs(C));
+    else out+=numHTML(C);
+  }
+  if(!out)out='0';
+  return out;
+}
+/* квадратное Ax²+Bx+C → html */
+function quadHTML(A,B,C){
+  let out='';
+  if(!fzero(A)) out+=coefHTML(A)+'<i>x</i>²';
+  if(!fzero(B)) out+= out? ' '+(fcmp(B,F0)<0?MINUS:'+')+' '+coefHTML(fabs(B))+'<i>x</i>' : coefHTML(B)+'<i>x</i>';
+  if(!fzero(C)) out+= out? ' '+(fcmp(C,F0)<0?MINUS:'+')+' '+numHTML(fabs(C)) : numHTML(C);
+  if(!out)out='0';
+  return out;
+}
+/* ГПСЧ с сидом (для воспроизводимых фазз-тестов) */
+function mkRng(seed){let s=seed>>>0;return function(){s=(s*1664525+1013904223)>>>0;return s/4294967296;};}
+let RNG=Math.random;
+function ri(a,b){return a+Math.floor(RNG()*(b-a+1));}
+function pick(arr){return arr[Math.floor(RNG()*arr.length)];}
+function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(RNG()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+if(typeof module!=='undefined')module.exports={bgcd,F,F0,F1,fadd,fsub,fmul,fdiv,fneg,fabs,feq,fzero,fcmp,fisint,fint,fmin,fmax,fsqrt,finiteDec,decStr,blankStr,parseNum,parseExprABC,parsePoly,parseEqn,eqnABC,solveABC,MINUS,esc,numHTML,fracHTML,coefHTML,linHTML,quadHTML,mkRng,ri,pick,shuffle,setRng:(f)=>{RNG=f;}};
+/* ============ СЕМЕЙСТВА УРАВНЕНИЙ: модель, решатель, шаги, генераторы ============ */
+'use strict';
+if(typeof module!=='undefined'){ Object.assign(globalThis, require('./p2_core.js')); }
+
+function lcm2(a,b){a=BigInt(a);b=BigInt(b);return Number(a/bgcd(a,b)*b);}
+function lcmArr(arr){return arr.reduce((m,v)=>lcm2(m,v),1);}
+
+/* ---------- слагаемые: {c,x:0|1|2,sf?} | {fr:{top,bot,neg?}} | {br:{k,inner}} | {sq:{s}} | {mul:[t1,t2]} ---------- */
+function T(c,x,sf){return {c:(typeof c==='object')?c:F(c), x:x||0, sf:!!sf};}
+function termNegBody(t){
+  if(t.fr){ const inner=renderTerms(t.fr.top);
+    const bot=(typeof t.fr.bot==='number')?String(t.fr.bot):t.fr.bot;
+    return {neg:!!t.fr.neg, body:fracHTML(inner,bot)}; }
+  if(t.br){ const k=t.br.k, neg=fcmp(k,F0)<0;
+    return {neg, body:coefHTML(fabs(k))+'('+renderTerms(t.br.inner)+')'}; }
+  if(t.sq){ const s=t.sq.s;
+    if(t.sq.rev) return {neg:false, body:'('+numHTML(s)+' '+MINUS+' <i>x</i>)²'};
+    return {neg:false, body:'(<i>x</i> '+(fcmp(s,F0)<0?MINUS:'+')+' '+numHTML(fabs(s))+')²'}; }
+  if(t.mul){ return {neg:false, body:'('+renderTerms(t.mul[0])+')('+renderTerms(t.mul[1])+')'}; }
+  const neg=fcmp(t.c,F0)<0, a=fabs(t.c);
+  let body;
+  if(t.x===2) body=(t.sf?numHTML(a,{forceFrac:true}):coefHTML(a))+'<i>x</i>²';
+  else if(t.x===1) body=(t.sf?numHTML(a,{forceFrac:true}):coefHTML(a))+'<i>x</i>';
+  else body=numHTML(a,{forceFrac:t.sf});
+  return {neg, body};
+}
+function renderTerms(ts){
+  let out='';
+  ts.forEach((t,i)=>{ const {neg,body}=termNegBody(t);
+    if(i===0) out+=(neg?MINUS:'')+body;
+    else out+=' '+(neg?MINUS:'+')+' '+body; });
+  return out||'0';
+}
+function zeroABC(){return {A:F0,B:F0,C:F0};}
+function addABC(u,v){return {A:fadd(u.A,v.A),B:fadd(u.B,v.B),C:fadd(u.C,v.C)};}
+function scaleABC(u,k){return {A:fmul(u.A,k),B:fmul(u.B,k),C:fmul(u.C,k)};}
+function mulLinLin(u,v){ // (Bx+C)(B'x+C') — только линейные
+  return {A:fmul(u.B,v.B), B:fadd(fmul(u.B,v.C),fmul(u.C,v.B)), C:fmul(u.C,v.C)};
+}
+function evalTermsABC(ts){
+  let r=zeroABC();
+  for(const t of ts){
+    if(t.fr){ const inner=evalTermsABC(t.fr.top);
+      const k=fmul(F(t.fr.neg?-1:1), F(1,t.fr.bot));
+      r=addABC(r, scaleABC(inner,k)); }
+    else if(t.br){ r=addABC(r, scaleABC(evalTermsABC(t.br.inner), t.br.k)); }
+    else if(t.sq){ const s=t.sq.s;
+      r=addABC(r,{A:F1,B:fmul(F(t.sq.rev?-2:2),s),C:fmul(s,s)}); }
+    else if(t.mul){ r=addABC(r, mulLinLin(evalTermsABC(t.mul[0]),evalTermsABC(t.mul[1]))); }
+    else { if(t.x===2)r.A=fadd(r.A,t.c); else if(t.x===1)r.B=fadd(r.B,t.c); else r.C=fadd(r.C,t.c); }
+  }
+  return r;
+}
+/* точная подстановка x в структуру слагаемых (независимый путь проверки) */
+function evalTermsAt(ts,x){
+  let s=F0;
+  for(const t of ts){
+    if(t.fr){ const inner=evalTermsAt(t.fr.top,x);
+      s=fadd(s, fmul(fmul(F(t.fr.neg?-1:1),F(1,t.fr.bot)), inner)); }
+    else if(t.br){ s=fadd(s, fmul(t.br.k, evalTermsAt(t.br.inner,x))); }
+    else if(t.sq){ const v=t.sq.rev?fsub(t.sq.s,x):fadd(x,t.sq.s); s=fadd(s,fmul(v,v)); }
+    else if(t.mul){ s=fadd(s, fmul(evalTermsAt(t.mul[0],x),evalTermsAt(t.mul[1],x))); }
+    else { let v=t.c; if(t.x===1)v=fmul(v,x); if(t.x===2)v=fmul(v,fmul(x,x)); s=fadd(s,v); }
+  }
+  return s;
+}
+function linAt(lin,x){return fadd(fmul(lin.B,x),lin.C);} // {B,C}
+
+/* ---------- отображение задач ---------- */
+function sideFrac(numTs,denTs){
+  if(!denTs) return renderTerms(numTs);
+  if(numTs.length===1 && numTs[0].c!==undefined && !numTs[0].x && fcmp(numTs[0].c,F0)<0)
+    return MINUS+fracHTML(numHTML(fabs(numTs[0].c)),renderTerms(denTs));
+  return fracHTML(renderTerms(numTs),renderTerms(denTs));
+}
+function taskEqnHTML(t){
+  const p=t.p;
+  switch(t.fam){
+    case 'PROP': return sideFrac(p.ln,p.ld)+' = '+sideFrac(p.rn,p.rd);
+    case 'Z': return fracHTML('1',linHTML(F1,F(p.c1)))+' + '+fracHTML('1',linHTML(F1,F(p.c2)))+' = 0';
+    case 'NZ': return fracHTML(quadHTML(F(p.qa),F(p.qb),F(p.qc)),linHTML(F1,F(p.dr)))+' = 0';
+    case 'XF': return '<i>x</i> '+(p.an<0?MINUS:'+')+' '+fracHTML(String(Math.abs(p.an)),'<i>x</i>')+' = '+numHTML(F(p.b));
+    case 'S2': return fracHTML(String(p.a),linHTML(F1,F(-p.b)))+' + '+fracHTML(String(p.c),linHTML(F1,F(-p.d)))+' = '+p.k;
+    case 'SB': { const den = p.k===0?'<i>x</i>':'('+linHTML(F1,F(-p.k))+')';
+      const d1 = p.k===0?'<i>x</i>²':den+'²';
+      let s=fracHTML('1',d1);
+      s+=' '+(p.m<0?MINUS:'+')+' '+fracHTML(String(Math.abs(p.m)),den);
+      s+=' '+(p.n<0?MINUS:'+')+' '+String(Math.abs(p.n))+' = 0';
+      return s; }
+    default: return renderTerms(p.Lt)+' = '+renderTerms(p.Rt);
+  }
+}
+/* ---------- нормализация: A x² + B x + C = 0 и запрещённые значения ---------- */
+function taskNorm(t){
+  const p=t.p;
+  switch(t.fam){
+    case 'PROP': {
+      const ln=evalTermsABC(p.ln), rn=evalTermsABC(p.rn);
+      const ld=p.ld?evalTermsABC(p.ld):{A:F0,B:F0,C:F1};
+      const rd=p.rd?evalTermsABC(p.rd):{A:F0,B:F0,C:F1};
+      const L=mulLinLin(ln,rd), R=mulLinLin(rn,ld);
+      const excl=[];
+      for(const d of [ld,rd]) if(!fzero(d.B)) excl.push(fdiv(fneg(d.C),d.B));
+      return {A:fsub(L.A,R.A),B:fsub(L.B,R.B),C:fsub(L.C,R.C),excl};
+    }
+    case 'Z': return {A:F0,B:F(2),C:F(p.c1+p.c2),excl:[F(-p.c1),F(-p.c2)]};
+    case 'NZ': return {A:F(p.qa),B:F(p.qb),C:F(p.qc),excl:[F(-p.dr)]};
+    case 'XF': return {A:F1,B:F(-p.b),C:F(p.an),excl:[F0]};
+    case 'S2': { const {a,b,c,d,k}=p;
+      return {A:F(k), B:F(-k*(b+d)-(a+c)), C:F(k*b*d+a*d+c*b), excl:[F(b),F(d)]}; }
+    case 'SB': { const {k,m,n}=p;
+      return {A:F(n), B:F(m-2*n*k), C:F(1-m*k+n*k*k), excl:[F(k)]}; }
+    default: {
+      const L=evalTermsABC(p.Lt), R=evalTermsABC(p.Rt);
+      return {A:fsub(L.A,R.A),B:fsub(L.B,R.B),C:fsub(L.C,R.C),excl:[]};
+    }
+  }
+}
+function taskSolve(t){
+  const n=taskNorm(t);
+  const s=solveABC(n.A,n.B,n.C);
+  let roots=s.roots.filter(r=>!n.excl.some(e=>feq(e,r)));
+  roots.sort((a,b)=>fcmp(a,b));
+  const excluded=s.roots.filter(r=>n.excl.some(e=>feq(e,r)));
+  return {roots, excluded, norm:n, D:s.D, sqrtD:s.sqrtD};
+}
+function taskKey(t){
+  const {roots}=taskSolve(t);
+  if(roots.length===1)return roots[0];
+  if(roots.length===2)return t.ask==='max'?roots[1]:roots[0];
+  return null;
+}
+function askWord(t){return t.ask==='max'?'больший':'меньший';}
+function taskInstrHTML(t){
+  const {roots}=taskSolve(t);
+  let s='Решите уравнение &nbsp;'+taskEqnHTML(t)+'.';
+  if(roots.length===2) s+=' Если уравнение имеет более одного корня, в ответ запишите <b>'+askWord(t)+'</b> из корней.';
+  return s;
+}
+
+/* ---------- строки для честных значений и полей ввода ---------- */
+function valStr(f){
+  if(fisint(f))return f.n.toString().replace('-','-');
+  if(finiteDec(f))return decStr(f).replace(MINUS,'-');
+  return (f.n<0n?'-':'')+(f.n<0n?-f.n:f.n).toString()+'/'+f.d.toString();
+}
+function coefStr(f){ if(feq(f,F1))return ''; if(feq(f,F(-1)))return '-'; return valStr(f); }
+function exprStr(B,C){ // линейное выражение как текст для поля
+  let out='';
+  if(!fzero(B)) out+=coefStr(B)+'x';
+  if(!fzero(C)) out+= out? (fcmp(C,F0)<0?'-':'+')+valStr(fabs(C)) : valStr(C);
+  return out||'0';
+}
+function blankNote(f){
+  if(fisint(f))return '';
+  return ' <span class="pen-note">в бланк: <b>'+decStr(f)+'</b> (через запятую)</span>';
+}
+
+/* ================= ШАГИ (общие построители) ================= */
+function needMsg(){return {ok:false,msg:'Заполни поле — и проверим.'};}
+function parseAll(vals){ const out=[]; for(const v of vals){const f=parseNum(v); if(f===null)return null; out.push(f);} return out; }
+
+/* «собери x слева, числа справа»: ☐·x = ☐ */
+function stCanon(root, kc, mc){
+  if(fcmp(kc,F0)<0){kc=fneg(kc);mc=fneg(mc);}
+  return (state)=>({
+    q:'Перенеси слагаемые: всё с <i>x</i> — влево, числа — вправо (не забудь сменить знак!). Приведи подобные:',
+    ui:{type:'canon'},
+    hint:'Слагаемое, «перепрыгнувшее» через знак «=», меняет знак: было <b>+</b> — станет <b>−</b>, было <b>−</b> — станет <b>+</b>. Потом сложи отдельно иксы, отдельно числа.',
+    check(vals,st){
+      const f=parseAll(vals); if(!f)return needMsg();
+      const [k,m]=f;
+      if(fzero(k))return {ok:false,msg:'Коэффициент при x получился нулевым — так корень не найти. Пересчитай перенос.'};
+      if(feq(fdiv(m,k),root)){ st.k=k; st.m=m;
+        let note='';
+        if(fcmp(k,F0)<0) note='Можно и так: раздели обе части на отрицательное число. А если перенести иксы в другую сторону, коэффициент выйдет положительным.';
+        return {ok:true,msg:note}; }
+      if(feq(fdiv(m,k),fneg(root)))return {ok:false,msg:'Знак потерялся: при переносе через «=» слагаемое меняет знак.'};
+      if(!fzero(m)&&feq(fdiv(k,m),root))return {ok:false,msg:'Кажется, коэффициент и число поменялись местами: слева должно остаться ☐·x, справа — число.'};
+      return {ok:false,msg:'Пока не сходится. Собери иксы слева, числа справа — и аккуратно с знаками при переносе.'};
+    },
+    reveal:{vals:[valStr(kc),valStr(mc)],
+      html:coefHTML(kc)+'<i>x</i> = '+numHTML(mc)}
+  });
+}
+/* последний шаг линейного: x = ? */
+function stDivide(root){
+  return (state)=>({
+    q:'Раздели обе части на коэффициент при <i>x</i>. Чему равен <i>x</i>?',
+    ui:{type:'num',label:'<i>x</i> ='},
+    hint:'x = (число справа) ÷ (коэффициент при x). Знаки: минус на минус даёт плюс.',
+    check(vals){
+      const f=parseAll(vals); if(!f)return needMsg();
+      const v=f[0];
+      if(feq(v,root))return {ok:true,msg:fisint(root)?'':'Дробный ответ — нормально: в бланк пишем десятичной дробью, через запятую.'};
+      if(feq(v,fneg(root)))return {ok:false,msg:'Число верное, знак — нет. Проверь знаки при делении.'};
+      if(state.k&&!fzero(root)&&feq(v,fdiv(state.k,state.m)))return {ok:false,msg:'Наоборот: делим правую часть на коэффициент при x, а не коэффициент на правую часть.'};
+      return {ok:false,msg:'Не то. Раздели правую часть на коэффициент при x — можно уголком или сократив дробь.'};
+    },
+    reveal:{vals:[valStr(root)], html:'<i>x</i> = '+numHTML(root)+blankNote(root)}
+  });
+}
+/* раскрытие скобок / квадратов: свободный ввод уравнения */
+function stExpand(root, revL, revR, opts){
+  opts=opts||{};
+  return (state)=>({
+    q:opts.q||'Раскрой скобки и приведи подобные в каждой части. Запиши уравнение без скобок:',
+    ui:{type:'eqn',ph:opts.ph||'☐x + ☐ = ☐x + ☐'},
+    hint:opts.hint||'Множитель перед скобкой умножается на <b>каждое</b> слагаемое внутри. Минус перед скобкой меняет знак каждого слагаемого.',
+    check(vals){
+      const e=parseEqn(vals[0]);
+      if(!e)return {ok:false,msg:'Не разобрала запись. Пиши без скобок, знак «=» — один, например: 2x − 14 = x + 7.'};
+      const n=eqnABC(e);
+      if(!fzero(n.A))return {ok:false,msg:'В записи остался x² — здесь квадраты должны взаимно уничтожиться.'};
+      if(fzero(n.B))return {ok:false,msg:'Иксы совсем пропали — проверь раскрытие скобок.'};
+      const r=fdiv(fneg(n.C),n.B);
+      if(feq(r,root))return {ok:true};
+      if(feq(r,fneg(root)))return {ok:false,msg:'Похоже на потерянный знак: минус перед скобкой меняет знак каждого слагаемого внутри.'};
+      return {ok:false,msg:'Уравнение получилось с другим корнем. Проверь: множитель умножен на каждое слагаемое? знаки на месте?'};
+    },
+    reveal:{vals:[exprStr(revL.B,revL.C)+'='+exprStr(revR.B,revR.C)],
+      html:(opts.revealPre||'')+linHTML(revL.B,revL.C)+' = '+linHTML(revR.B,revR.C)}
+  });
+}
+/* дробные коэффициенты: выбор множителя */
+function stM(dens){
+  const M0=lcmArr(dens);
+  return (state)=>({
+    q:'Знаменатели: '+dens.join(', ')+'. На какое число умножить <b>обе части</b>, чтобы все дроби исчезли?',
+    ui:{type:'num',label:'умножаем на'},
+    hint:'Подойдёт любое общее кратное знаменателей, удобнее всего — НОК('+dens.join(', ')+').',
+    check(vals,st){
+      const f=parseAll(vals); if(!f)return needMsg();
+      const v=f[0];
+      if(!fisint(v)||fcmp(v,F0)<=0)return {ok:false,msg:'Нужно натуральное число — общее кратное всех знаменателей.'};
+      const vn=Number(v.n);
+      for(const d of dens) if(vn%d!==0)return {ok:false,msg:'На '+vn+' знаменатель '+d+' не сократится: '+vn+' не делится на '+d+' нацело.'};
+      st.M=vn;
+      return {ok:true,msg:vn===M0?'':'Подойдёт! Наименьшее такое число — НОК = '+M0+', с ним числа получаются проще.'};
+    },
+    reveal:{vals:[String(M0)],html:'НОК('+dens.join(', ')+') = <b>'+M0+'</b>'}
+  });
+}
+function stAfterM(task, root){
+  return (state)=>{
+    const M=state.M||lcmArr(task.p.dens);
+    const L=evalTermsABC(task.p.Lt), R=evalTermsABC(task.p.Rt);
+    const Lm={B:fmul(L.B,F(M)),C:fmul(L.C,F(M))}, Rm={B:fmul(R.B,F(M)),C:fmul(R.C,F(M))};
+    return {
+      q:'Умножь на '+M+' <b>каждое</b> слагаемое (и слева, и справа). Запиши уравнение без дробей:',
+      ui:{type:'eqn',ph:'☐x + ☐x = ☐  (без дробей)'},
+      hint:'Каждое слагаемое: <span class="frac"><span class="tt">x</span><span class="bb">d</span></span> · '+M+' = (' +M+' ÷ d)·x. Целые слагаемые тоже умножаются на '+M+'!',
+      check(vals){
+        const e=parseEqn(vals[0]);
+        if(!e)return {ok:false,msg:'Не разобрала запись. Пример вида: 3x + 4x = −56.'};
+        const n=eqnABC(e);
+        if(!fzero(n.A))return {ok:false,msg:'x² тут появиться не мог — проверь запись.'};
+        if(fzero(n.B))return {ok:false,msg:'Иксы пропали — так не должно быть.'};
+        const r=fdiv(fneg(n.C),n.B);
+        if(feq(r,root))return {ok:true};
+        return {ok:false,msg:'Корень не сошёлся. Частая ошибка: забыли умножить на '+M+' слагаемое <b>без</b> дроби.'};
+      },
+      reveal:{vals:[exprStr(Lm.B,Lm.C)+'='+exprStr(Rm.B,Rm.C)],
+        html:linHTML(Lm.B,Lm.C)+' = '+linHTML(Rm.B,Rm.C)}
+    };
+  };
+}
+/* коэффициенты квадратного: чтение или приведение */
+function stABC(base, mode, extra){
+  extra=extra||{};
+  return (state)=>({
+    q: mode==='read'
+      ? 'Выпиши коэффициенты (со знаками!):'
+      : (extra.q||'Перенеси всё в одну сторону и приведи к виду ☐·x² + ☐·x + ☐ = 0:'),
+    ui:{type:'coef3'},
+    hint: mode==='read'
+      ? 'a — число перед x², b — перед x, c — свободное. Знак берём прямо из записи: перед 3x стоит минус → b = −3.'
+      : (extra.hint||'Собери все слагаемые слева (перенос — со сменой знака), приведи подобные по x², по x и по числам.'),
+    check(vals,st){
+      const f=parseAll(vals); if(!f)return needMsg();
+      const [a,b,c]=f;
+      if(fzero(a))return {ok:false,msg:'a = 0 быть не может: без x² уравнение перестало быть квадратным. Проверь перенос.'};
+      const lam=fdiv(a,base.a);
+      if(feq(b,fmul(lam,base.b))&&feq(c,fmul(lam,base.c))){
+        st.q={a,b,c};
+        const note = feq(lam,F1)?'':'Так тоже верно: уравнение умножено на число целиком, корни от этого не меняются.';
+        return {ok:true,msg:note};
+      }
+      if(feq(a,base.a)&&feq(b,fneg(base.b))&&feq(c,base.c))
+        return {ok:false,msg:'Знак b смотри в самой записи: минус перед слагаемым — часть коэффициента.'};
+      return {ok:false,msg: mode==='read'
+        ?'Сверь с записью уравнения: a при x², b при x, c — число, все со своими знаками.'
+        :'Не сошлось. Перенеси все слагаемые в одну сторону со сменой знака и сложи подобные.'};
+    },
+    reveal:{vals:[valStr(base.a),valStr(base.b),valStr(base.c)],
+      html:'a = '+numHTML(base.a)+',&nbsp; b = '+numHTML(base.b)+',&nbsp; c = '+numHTML(base.c)}
+  });
+}
+function stD(){
+  return (state)=>{
+    const {a,b,c}=state.q;
+    const Dv=fsub(fmul(b,b),fmul(F(4),fmul(a,c)));
+    return {
+      q:'Вычисли дискриминант: D = b² − 4·a·c =',
+      ui:{type:'num',label:'D ='},
+      hint:'b² — это b·b (квадрат отрицательного числа положителен!). Затем вычти 4·a·c, следя за знаками.',
+      check(vals,st){
+        const f=parseAll(vals); if(!f)return needMsg();
+        const v=f[0];
+        if(feq(v,Dv)){st.D=Dv;return {ok:true};}
+        if(feq(v,fadd(fmul(b,b),fmul(F(4),fmul(a,c)))))return {ok:false,msg:'Минус перед 4ac потерялся: D = b² <b>−</b> 4ac.'};
+        if(feq(v,fsub(fneg(fmul(b,b)),fmul(F(4),fmul(a,c)))))return {ok:false,msg:'(−'+numHTML(fabs(b))+')² = '+numHTML(fmul(b,b))+': квадрат отрицательного числа положителен.'};
+        return {ok:false,msg:'Пересчитай: сначала b·b, потом 4·a·c, потом разность. Минус на минус даёт плюс.'};
+      },
+      reveal:{vals:[valStr(Dv)],html:'D = ('+numHTML(b)+')² − 4·('+numHTML(a)+')·('+numHTML(c)+') = '+numHTML(Dv)}
+    };
+  };
+}
+function stSqrtD(){
+  return (state)=>{
+    const s=fsqrt(state.D);
+    return {
+      q:'Извлеки корень: √D =',
+      ui:{type:'num',label:'√D ='},
+      hint:'Какое число, умноженное само на себя, даёт '+numHTML(state.D)+'? Прикинь по квадратам: 10²=100, 12²=144, 15²=225, 20²=400, 25²=625.',
+      check(vals){
+        const f=parseAll(vals); if(!f)return needMsg();
+        if(feq(f[0],s))return {ok:true};
+        if(feq(f[0],fneg(s)))return {ok:false,msg:'√D берём со знаком плюс — «плюс-минус» появится дальше, в формуле корней.'};
+        return {ok:false,msg:'Проверь: это число в квадрате должно дать ровно '+numHTML(state.D)+'.'};
+      },
+      reveal:{vals:[valStr(s)],html:'√D = '+numHTML(s)}
+    };
+  };
+}
+function stRoots(lo,hi){
+  return (state)=>({
+    q:'Найди оба корня: <span class="fform">x = '+fracHTML(MINUS+'b ± √D','2a')+'</span>',
+    ui:{type:'num2',labels:['x₁ =','x₂ =']},
+    hint:'Считай двумя строками: x₁ = (−b − √D) ÷ (2a) и x₂ = (−b + √D) ÷ (2a). Подставляй b со знаком!',
+    check(vals){
+      const f=parseAll(vals); if(!f)return needMsg();
+      const [u,v]=f;
+      const okSet=(feq(u,lo)&&feq(v,hi))||(feq(u,hi)&&feq(v,lo));
+      if(okSet)return {ok:true};
+      if((feq(u,fneg(lo))&&feq(v,fneg(hi)))||(feq(u,fneg(hi))&&feq(v,fneg(lo))))
+        return {ok:false,msg:'В формуле стоит <b>минус</b> b: если b отрицательное, −b станет положительным.'};
+      if(feq(u,v))return {ok:false,msg:'Корня два, и они разные: ±√D даёт два разных числа.'};
+      return {ok:false,msg:'Не сходится. Проверь по шагам: −b, затем ±√D, затем деление на 2a.'};
+    },
+    reveal:{vals:[valStr(lo),valStr(hi)],html:'x₁ = '+numHTML(lo)+',&nbsp; x₂ = '+numHTML(hi)}
+  });
+}
+function stPickRoot(task, lo, hi){
+  const key=task.ask==='max'?hi:lo, other=task.ask==='max'?lo:hi;
+  return (state)=>({
+    q:'Корня два. В ответ по условию — <b>'+askWord(task)+'</b>:',
+    ui:{type:'num',label:'Ответ:'},
+    hint:'Расставь корни на числовой прямой. Осторожно с отрицательными: −5 меньше, чем 1.',
+    check(vals){
+      const f=parseAll(vals); if(!f)return needMsg();
+      if(feq(f[0],key))return {ok:true,msg:fisint(key)?'':'В бланк: '+decStr(key)+' — десятичной дробью, через запятую.'};
+      if(feq(f[0],other))return {ok:false,msg:'Это '+(task.ask==='max'?'меньший':'больший')+' корень. Сравни аккуратно: чем левее на прямой, тем меньше.'};
+      return {ok:false,msg:'В ответ идёт один из найденных корней — '+askWord(task)+'.'};
+    },
+    reveal:{vals:[valStr(key)],html:'Ответ: <b>'+numHTML(key)+'</b>'+blankNote(key)}
+  });
+}
+/* неполное без c */
+function stMoveLeft(base){ // для формы x²=kx: приведи к ...=0
+  return (state)=>({
+    q:'Перенеси всё в левую часть (справа останется 0):',
+    ui:{type:'eqn',ph:'☐x² + ☐x = 0  (справа ноль)'},
+    hint:'kx «перепрыгивает» через «=» и меняет знак.',
+    check(vals){
+      const e=parseEqn(vals[0]);
+      if(!e)return {ok:false,msg:'Не разобрала запись. Пример: x² − 5x = 0 (x² можно набрать как x^2).'};
+      const L=e.L,R=e.R;
+      const zeroSide=(fzero(R.A)&&fzero(R.B)&&fzero(R.C))?'R':((fzero(L.A)&&fzero(L.B)&&fzero(L.C))?'L':null);
+      if(!zeroSide)return {ok:false,msg:'С одной стороны должен остаться ноль — перенеси всё в другую.'};
+      const s=zeroSide==='R'?L:R;
+      if(fzero(s.A))return {ok:false,msg:'x² потерялся по дороге.'};
+      const lam=fdiv(s.A,base.a);
+      if(feq(s.B,fmul(lam,base.b))&&fzero(s.C))return {ok:true};
+      if(feq(s.B,fmul(fneg(lam),base.b)))return {ok:false,msg:'Знак: при переносе через «=» слагаемое меняет знак.'};
+      return {ok:false,msg:'Проверь перенос — свободного числа тут нет, только x² и x.'};
+    },
+    reveal:{vals:[(feq(base.a,F1)?'':valStr(base.a))+'x^2'+(fcmp(base.b,F0)<0?'-':'+')+coefStr(fabs(base.b))+'x=0'],
+      html:quadHTML(base.a,base.b,F0)+' = 0'}
+  });
+}
+function stFactorNC(base){
+  return (state)=>({
+    q:'Вынеси общий множитель <i>x</i> за скобку:',
+    ui:{type:'fact'},
+    hint:'x² = x · x, поэтому '+quadHTML(base.a,base.b,F0)+' = x · ( … ). Внутри скобки останется по одному x меньше в каждом слагаемом.',
+    check(vals){
+      const f=parseAll(vals); if(!f)return needMsg();
+      const [a,b]=f;
+      if(fzero(a))return {ok:false,msg:'В скобке должен остаться и x с коэффициентом, и число.'};
+      const lam=fdiv(a,base.a);
+      if(feq(b,fmul(lam,base.b)))return {ok:true};
+      return {ok:false,msg:'Проверь: если раскрыть скобку обратно, должно получиться исходное '+quadHTML(base.a,base.b,F0)+'.'};
+    },
+    reveal:{vals:[valStr(base.a),valStr(base.b)],
+      html:'<i>x</i>·('+linHTML(base.a,base.b)+') = 0'}
+  });
+}
+function stNCroots(r2){
+  return (state)=>({
+    q:'Произведение равно нулю, когда хотя бы один множитель равен нулю. Корни:',
+    ui:{type:'num2',labels:['x₁ =','x₂ =']},
+    hint:'Первый множитель: x = 0 — это уже готовый корень! Второй: реши скобку = 0.',
+    check(vals){
+      const f=parseAll(vals); if(!f)return needMsg();
+      const [u,v]=f;
+      if((fzero(u)&&feq(v,r2))||(fzero(v)&&feq(u,r2)))return {ok:true};
+      if(feq(u,r2)&&feq(v,r2))return {ok:false,msg:'Не потеряй корень x = 0: множитель x тоже бывает нулём!'};
+      if((fzero(u)&&feq(v,fneg(r2)))||(fzero(v)&&feq(u,fneg(r2))))return {ok:false,msg:'Ноль на месте, а во втором корне потерялся знак.'};
+      return {ok:false,msg:'Один корень даёт множитель x, второй — скобка. Реши каждый множитель отдельно.'};
+    },
+    reveal:{vals:['0',valStr(r2)],html:'x₁ = 0,&nbsp; x₂ = '+numHTML(r2)}
+  });
+}
+/* неполное без b */
+function stNBiso(v, hintExtra){
+  return (state)=>({
+    q:'Перенеси число и найди, чему равен <i>x</i>²:',
+    ui:{type:'num',label:'<i>x</i>² ='},
+    hint:(hintExtra||'')+'Число переносим через «=» со сменой знака; затем делим на коэффициент при x².',
+    check(vals){
+      const f=parseAll(vals); if(!f)return needMsg();
+      if(feq(f[0],v))return {ok:true};
+      if(feq(f[0],fneg(v)))return {ok:false,msg:'x² не может быть отрицательным. При переносе знак меняется — проверь.'};
+      return {ok:false,msg:'Не то. Оставь x² слева один, всё остальное — вправо.'};
+    },
+    reveal:{vals:[valStr(v)],html:'<i>x</i>² = '+numHTML(v)}
+  });
+}
+function stNBroots(s){
+  return (state)=>({
+    q:'Какие числа в квадрате дают '+numHTML(fmul(s,s))+'? Запиши оба корня:',
+    ui:{type:'num2',labels:['x₁ =','x₂ =']},
+    hint:'Их два: положительное и отрицательное. (−'+numHTML(s)+')² = '+numHTML(fmul(s,s))+' тоже!',
+    check(vals){
+      const f=parseAll(vals); if(!f)return needMsg();
+      const [u,v]=f;
+      if((feq(u,s)&&feq(v,fneg(s)))||(feq(v,s)&&feq(u,fneg(s))))return {ok:true};
+      if(feq(u,v)&&feq(u,s))return {ok:false,msg:'Есть и второй корень — отрицательный: минус в квадрате исчезает.'};
+      return {ok:false,msg:'Корни — это ±√'+numHTML(fmul(s,s))+': одно число со знаком плюс, другое — с минусом.'};
+    },
+    reveal:{vals:[valStr(fneg(s)),valStr(s)],html:'x = '+numHTML(s)+' или x = '+numHTML(fneg(s))}
+  });
+}
+/* произведение множителей = 0 */
+function stZeroChoice(kind){
+  const opts = kind==='NZ'
+    ? ['числитель равен нулю, а знаменатель при этом <b>не равен</b> нулю','знаменатель равен нулю','числитель равен знаменателю']
+    : ['хотя бы один из множителей равен нулю','оба множителя равны нулю одновременно','множители равны между собой'];
+  return (state)=>({
+    q: kind==='NZ'?'Дробь равна нулю, когда…':'Произведение равно нулю, когда…',
+    ui:{type:'choice',opts},
+    hint: kind==='NZ'?'Ноль в числителе — дробь ноль. Ноль в знаменателе — на такой x делить нельзя вовсе.':'0 · (что угодно) = 0. Достаточно одного нулевого множителя.',
+    check(vals){
+      if(vals[0]===0)return {ok:true};
+      return {ok:false,msg: kind==='NZ'
+        ?'Не то: дробь 0/5 равна нулю, а вот 5/0 не существует вовсе.'
+        :'Не то: если один множитель равен 0, произведение уже 0 — второй может быть любым.'};
+    },
+    reveal:{vals:[0],html:opts[0]}
+  });
+}
+function stPairRoots(lo,hi,q,hint){
+  return (state)=>({
+    q:q||'Приравняй каждый множитель к нулю и найди корни:',
+    ui:{type:'num2',labels:['x₁ =','x₂ =']},
+    hint:hint||'Реши два маленьких уравнения — по одному на множитель.',
+    check(vals){
+      const f=parseAll(vals); if(!f)return needMsg();
+      const [u,v]=f;
+      if((feq(u,lo)&&feq(v,hi))||(feq(u,hi)&&feq(v,lo)))return {ok:true};
+      if((feq(u,fneg(lo))&&feq(v,fneg(hi)))||(feq(u,fneg(hi))&&feq(v,fneg(lo))))
+        return {ok:false,msg:'Числа верные, знаки — нет: −x + 10 = 0 даёт x = 10, а не −10.'};
+      return {ok:false,msg:'Реши каждый множитель как отдельное маленькое уравнение.'};
+    },
+    reveal:{vals:[valStr(lo),valStr(hi)],html:'x₁ = '+numHTML(lo)+',&nbsp; x₂ = '+numHTML(hi)}
+  });
+}
+/* дробно-рациональные */
+function stCross(task, root){
+  return (state)=>{
+    const p=task.p;
+    const ln=evalTermsABC(p.ln), rn=evalTermsABC(p.rn);
+    const ld=p.ld?evalTermsABC(p.ld):{B:F0,C:F1};
+    const rd=p.rd?evalTermsABC(p.rd):{B:F0,C:F1};
+    const L=mulLinLin(ln,rd), R=mulLinLin(rn,ld);
+    return {
+      q:'Пропорция! Перемножь «крест-накрест» и запиши уравнение без дробей:',
+      ui:{type:'eqn',ph:'☐x + ☐ = ☐x + ☐  (без скобок)'},
+      hint:'Числитель левой дроби · знаменатель правой = числитель правой · знаменатель левой. Скобки раскрой сразу.',
+      check(vals){
+        const e=parseEqn(vals[0]);
+        if(!e)return {ok:false,msg:'Не разобрала запись. Пиши уже без скобок, например: 30 = −5x − 30.'};
+        const n=eqnABC(e);
+        if(!fzero(n.A))return {ok:false,msg:'x² здесь появиться не должен — перемножаются число и скобка.'};
+        if(fzero(n.B))return {ok:false,msg:'Иксы пропали — проверь, что умножал крест-накрест.'};
+        if(feq(fdiv(fneg(n.C),n.B),root))return {ok:true};
+        return {ok:false,msg:'Корень не сошёлся. Проверь: каждое слагаемое скобки умножено на число? Знаки на месте?'};
+      },
+      reveal:{vals:[exprStr(L.B,L.C)+'='+exprStr(R.B,R.C)],
+        html:linHTML(L.B,L.C)+' = '+linHTML(R.B,R.C)}
+    };
+  };
+}
+function polyProportional(u,v){ // {A,B,C}: u пропорционален v и u ненулевой
+  if(fzero(u.A)&&fzero(u.B)&&fzero(u.C))return false;
+  return feq(fmul(u.A,v.B),fmul(u.B,v.A)) &&
+         feq(fmul(u.A,v.C),fmul(u.C,v.A)) &&
+         feq(fmul(u.B,v.C),fmul(u.C,v.B));
+}
+function constTimesBracket(c,B,C){
+  if(feq(c,F1))return '('+linHTML(B,C)+')';
+  if(feq(c,F(-1)))return MINUS+'('+linHTML(B,C)+')';
+  return numHTML(c)+'·('+linHTML(B,C)+')';
+}
+function crossSideHTML(numTs, denTs){
+  const nn=evalTermsABC(numTs);
+  if(!denTs){ return fzero(nn.B)?numHTML(nn.C):'('+linHTML(nn.B,nn.C)+')'; }
+  const dd=evalTermsABC(denTs), ncst=fzero(nn.B), dcst=fzero(dd.B);
+  if(ncst&&dcst)return numHTML(fmul(nn.C,dd.C));
+  if(ncst&&!dcst)return constTimesBracket(nn.C,dd.B,dd.C);
+  if(!ncst&&dcst)return constTimesBracket(dd.C,nn.B,nn.C);
+  return '('+linHTML(nn.B,nn.C)+')·('+linHTML(dd.B,dd.C)+')';
+}
+function crossPolys(p){
+  const lnP=evalTermsABC(p.ln), rnP=evalTermsABC(p.rn);
+  const ldP=p.ld?evalTermsABC(p.ld):{A:F0,B:F0,C:F1};
+  const rdP=p.rd?evalTermsABC(p.rd):{A:F0,B:F0,C:F1};
+  const L=mulLinLin(lnP,rdP), R=mulLinLin(rnP,ldP);
+  return {L,R,diff:{A:fsub(L.A,R.A),B:fsub(L.B,R.B),C:fsub(L.C,R.C)}};
+}
+/* шаг 1: перемножить крест-накрест — скобки можно оставить */
+function stCrossProduct(task){
+  const p=task.p, {L,R,diff}=crossPolys(p);
+  return (state)=>({
+    q:'Пропорция! Перемножь <b>крест-накрест</b>: числитель левой дроби × знаменатель правой = числитель правой × знаменатель левой. Скобки пока можно не раскрывать.',
+    ui:{type:'eqn', ph:'верх·низ = верх·низ  (скобки можно)'},
+    hint:'Равны произведения по диагоналям. Просто запиши их через · или *, знак «=» один. Раскрывать скобки будем на следующем шаге.',
+    check(vals){
+      const e=parseEqn(vals[0]);
+      if(!e)return {ok:false,msg:'Не разобрала запись. Пиши произведения через <b>*</b> или <b>·</b>, например: 11*(x-12)=12*(x-13). Скобки можно оставить.'};
+      const d=eqnABC(e);
+      if(!polyProportional(d,diff))return {ok:false,msg:'Пока не сходится. Перемножай именно по диагонали: верх левой × низ правой = верх правой × низ левой.'};
+      return {ok:true};
+    },
+    reveal:{vals:[exprStr(L.B,L.C)+'='+exprStr(R.B,R.C)],
+      html:crossSideHTML(p.ln,p.rd)+' = '+crossSideHTML(p.rn,p.ld)}
+  });
+}
+/* шаг 2: раскрыть скобки → линейное ax + b = cx + d */
+function stExpandProp(task){
+  const p=task.p, {L,R,diff}=crossPolys(p);
+  return (state)=>({
+    q:'Раскрой скобки: умножь число на <b>каждое</b> слагаемое внутри. Запиши уравнение без скобок:',
+    ui:{type:'eqn', ph:'☐x + ☐ = ☐x + ☐  (без скобок)'},
+    hint:'Множитель умножается на каждое слагаемое в скобке: 12·(x − 13) = 12x − 156. Знаки при этом сохраняются.',
+    check(vals){
+      if(/[()]/.test(vals[0]||''))return {ok:false,msg:'На этом шаге скобок уже быть не должно — раскрой их: число на каждое слагаемое внутри.'};
+      const e=parseEqn(vals[0]);
+      if(!e)return {ok:false,msg:'Не разобрала запись. Пример: 11x − 132 = 12x − 156.'};
+      const d=eqnABC(e);
+      if(!polyProportional(d,diff))return {ok:false,msg:'Проверь раскрытие: число умножается на каждое слагаемое, знак сохраняется.'};
+      return {ok:true};
+    },
+    reveal:{vals:[exprStr(L.B,L.C)+'='+exprStr(R.B,R.C)],
+      html:linHTML(L.B,L.C)+' = '+linHTML(R.B,R.C)}
+  });
+}
+/* строка квадратного/линейного выражения без «=» (для reveal.vals) */
+function exprStrQ(A,B,C){
+  const parts=[];
+  if(!fzero(A))parts.push([A,'x^2']);
+  if(!fzero(B))parts.push([B,'x']);
+  if(!fzero(C))parts.push([C,'']);
+  if(!parts.length)return '0';
+  let out='';
+  parts.forEach((pr,i)=>{ const v=pr[0], suf=pr[1], neg=fcmp(v,F0)<0, a=fabs(v);
+    const co = suf ? (feq(a,F1)?'':valStr(a)) : valStr(a);
+    out += (i===0?(neg?'-':''):(neg?'-':'+')) + co + suf; });
+  return out;
+}
+/* шаг: умножить на общий знаменатель, записать без дробей (скобки можно оставить) */
+function stClearDenom(cfg){
+  const diff={A:fsub(cfg.leftABC.A,cfg.rightABC.A),B:fsub(cfg.leftABC.B,cfg.rightABC.B),C:fsub(cfg.leftABC.C,cfg.rightABC.C)};
+  return (state)=>({
+    q:cfg.q,
+    ui:{type:'eqn',ph:cfg.ph||'уравнение без дробей (скобки можно оставить)'},
+    hint:cfg.hint,
+    check(vals){
+      const e=parseEqn(vals[0]);
+      if(!e)return {ok:false,msg:'Не разобрала запись. Пиши произведения через <b>*</b> или <b>·</b>, скобки можно оставить.'};
+      const d=eqnABC(e);
+      if(!polyProportional(d,diff))return {ok:false,msg:'Пока не сходится. Умножь <b>каждое</b> слагаемое на общий знаменатель — под дробями всё сократится.'};
+      return {ok:true};
+    },
+    reveal:{vals:[exprStrQ(cfg.leftABC.A,cfg.leftABC.B,cfg.leftABC.C)+'='+exprStrQ(cfg.rightABC.A,cfg.rightABC.B,cfg.rightABC.C)],
+      html:cfg.leftHTML+' = '+cfg.rightHTML}
+  });
+}
+/* шаг: раскрыть скобки → линейное выражение (☐x + ☐) */
+function stExpandLin(target, q, hint){
+  return (state)=>({
+    q, ui:{type:'lin2'}, hint,
+    check(vals){ const f=parseAll(vals); if(!f)return needMsg();
+      const B=f[0], C=f[1];
+      if(feq(B,target.B)&&feq(C,target.C))return {ok:true};
+      if(feq(B,target.B)&&feq(C,fneg(target.C)))
+        return {ok:false,msg:'Почти! У числа не тот знак — поправь и нажми «Проверить».'};
+      if(feq(B,fneg(target.B))&&feq(C,target.C))
+        return {ok:false,msg:'Почти! У коэффициента при <i>x</i> не тот знак — поправь и проверь.'};
+      if(feq(B,fneg(target.B))&&feq(C,fneg(target.C)))
+        return {ok:false,msg:'Почти! Все знаки противоположные — где-то потерялся минус. Поправь и проверь.'};
+      return {ok:false,msg:'Не совсем. Раскрой каждую скобку, потом сложи отдельно иксы и отдельно числа — и проверь снова.'};
+    },
+    reveal:{vals:[valStr(target.B),valStr(target.C)], html:linHTML(target.B,target.C)}
+  });
+}
+/* шаг: раскрыть скобки → квадратное выражение (☐x² + ☐x + ☐), без «= 0» */
+function stExpandQuad(target, q, hint){
+  return (state)=>({
+    q, ui:{type:'expr3'}, hint,
+    check(vals){ const f=parseAll(vals); if(!f)return needMsg();
+      const A=f[0], B=f[1], C=f[2];
+      if(feq(A,target.A)&&feq(B,target.B)&&feq(C,target.C))return {ok:true};
+      if(!fzero(target.A)&&fzero(A))return {ok:false,msg:'Потерялся <i>x</i>²: при перемножении скобок <i>x</i>·<i>x</i> даёт <i>x</i>². Поправь и проверь.'};
+      const okA=feq(A,target.A), okB=feq(B,target.B), okC=feq(C,target.C);
+      if(okA&&okB&&feq(C,fneg(target.C)))return {ok:false,msg:'Почти! У свободного числа не тот знак — поправь и проверь.'};
+      if(okA&&okC&&feq(B,fneg(target.B)))return {ok:false,msg:'Почти! У коэффициента при <i>x</i> не тот знак — поправь и проверь.'};
+      if(feq(A,fneg(target.A))&&feq(B,fneg(target.B))&&feq(C,fneg(target.C)))
+        return {ok:false,msg:'Почти! Все знаки противоположные — потерялся минус. Поправь и проверь.'};
+      return {ok:false,msg:'Не совсем. Сначала перемножь скобки (каждое на каждое), потом умножь на число, следи за знаками — и проверь снова.'};
+    },
+    reveal:{vals:[valStr(target.A),valStr(target.B),valStr(target.C)], html:quadHTML(target.A,target.B,target.C)}
+  });
+}
+/* шаг: одно число (одно умножение или сложение) */
+function stNum(target, q, hint, opts){
+  opts=opts||{};
+  return (state)=>({
+    q, ui:{type:'num', label:opts.label||'='}, hint,
+    check(vals){ const f=parseAll(vals); if(!f)return needMsg();
+      if(feq(f[0],target))return {ok:true};
+      if(feq(f[0],fneg(target)))return {ok:false,msg:opts.signMsg||'Почти! Не тот знак — поправь и проверь.'};
+      return {ok:false,msg:opts.wrongMsg||'Пересчитай ещё раз и проверь.'};
+    },
+    reveal:{vals:[valStr(target)], html:(opts.pre||'')+numHTML(target)}
+  });
+}
+function stODZ(dens, root, doneHtml){
+  const labels=dens.map(d=>'при x = '+numHTML(root)+': '+d.html+' =');
+  const vals=dens.map(d=>d.val);
+  return (state)=>({
+    q:'Проверка (ОДЗ): подставь найденный корень в знаменател'+(dens.length>1?'и':'ь')+'. Чему он'+(dens.length>1?'и':'')+' рав'+(dens.length>1?'ны':'ен')+'?',
+    ui: dens.length>1?{type:'num2',labels,ordered:true}:{type:'num',label:labels[0]},
+    hint:'Просто подставь число вместо x и сосчитай. Главное — не ноль: на ноль делить нельзя.',
+    check(v){
+      const f=parseAll(v); if(!f)return needMsg();
+      for(let i=0;i<vals.length;i++) if(!feq(f[i],vals[i]))
+        return {ok:false,msg:'Подстановка не сошлась — пересчитай '+dens[i].html+' при x = '+numHTML(root)+'.'};
+      return {ok:true,msg:'Не ноль — корень подходит.'};
+    },
+    reveal:{vals:vals.map(valStr),html:doneHtml||dens.map((d,i)=>d.html+' = '+numHTML(vals[i])).join(',&nbsp; ')+' — не ноль, корень подходит'}
+  });
+}
+function stZnum(c1,c2){
+  return (state)=>({
+    q:'Приведи дроби к общему знаменателю (x + '+c1+')(x + '+c2+') и сложи числители. Числитель суммы:',
+    ui:{type:'lin2'},
+    hint:'Числители после приведения: (x '+(c2<0?MINUS+' '+(-c2):'+ '+c2)+') + (x '+(c1<0?MINUS+' '+(-c1):'+ '+c1)+'). Сложи иксы с иксами, числа с числами.',
+    check(vals){
+      const f=parseAll(vals); if(!f)return needMsg();
+      const [B,C]=f; const bB=F(2),bC=F(c1+c2);
+      if(fzero(B))return {ok:false,msg:'Икс из числителя исчезнуть не может.'};
+      const lam=fdiv(B,bB);
+      if(feq(C,fmul(lam,bC)))return {ok:true};
+      return {ok:false,msg:'Сложи два числителя: иксов станет два, числа сложатся.'};
+    },
+    reveal:{vals:['2',valStr(F(c1+c2))],html:'2<i>x</i> '+(c1+c2<0?MINUS:'+')+' '+Math.abs(c1+c2)}
+  });
+}
+function stSimpleRoot(root, qHtml){
+  return (state)=>({
+    q:qHtml,
+    ui:{type:'num',label:'<i>x</i> ='},
+    hint:'Дробь равна нулю ⇔ её числитель равен нулю. Реши это маленькое уравнение.',
+    check(vals){
+      const f=parseAll(vals); if(!f)return needMsg();
+      if(feq(f[0],root))return {ok:true};
+      if(feq(f[0],fneg(root)))return {ok:false,msg:'Знак: при переносе через «=» он меняется.'};
+      return {ok:false,msg:'Приравняй числитель к нулю и реши.'};
+    },
+    reveal:{vals:[valStr(root)],html:'<i>x</i> = '+numHTML(root)}
+  });
+}
+function stNZnumRoots(lo,hi,base){
+  return (state)=>({
+    q:'Реши уравнение «числитель = 0»: &nbsp;'+quadHTML(base.a,base.b,base.c)+' = 0. Корни:',
+    ui:{type:'num2',labels:['x₁ =','x₂ =']},
+    hint:'Это обычное квадратное: через дискриминант (D = b² − 4ac) или подбором по Виете. '+(fzero(base.c)?'А тут ещё проще: вынеси x за скобку.':''),
+    check(vals){
+      const f=parseAll(vals); if(!f)return needMsg();
+      const [u,v]=f;
+      if((feq(u,lo)&&feq(v,hi))||(feq(u,hi)&&feq(v,lo)))return {ok:true};
+      return {ok:false,msg:'Пока не то. D = '+numHTML(fsub(fmul(base.b,base.b),fmul(F(4),fmul(base.a,base.c))))+' — попробуй ещё раз по формуле корней.'};
+    },
+    reveal:{vals:[valStr(lo),valStr(hi)],html:'x₁ = '+numHTML(lo)+',&nbsp; x₂ = '+numHTML(hi)}
+  });
+}
+function stNZdenAt(lo,hi,dr){
+  const v1=fadd(lo,F(dr)), v2=fadd(hi,F(dr));
+  const denH=linHTML(F1,F(dr));
+  return (state)=>({
+    q:'Теперь ОДЗ: подставь каждый корень в знаменатель '+denH+':',
+    ui:{type:'num2',labels:['при x = '+numHTML(lo)+':','при x = '+numHTML(hi)+':'],ordered:true},
+    hint:'Подставь число вместо x. Если получится 0 — этот корень посторонний: на ноль делить нельзя.',
+    check(vals){
+      const f=parseAll(vals); if(!f)return needMsg();
+      if(feq(f[0],v1)&&feq(f[1],v2)){
+        let msg='';
+        if(fzero(v1))msg='Знаменатель обнулился: корень x = '+numHTML(lo)+' — посторонний, выбрасываем.';
+        else if(fzero(v2))msg='Знаменатель обнулился: корень x = '+numHTML(hi)+' — посторонний, выбрасываем.';
+        else msg='Оба не ноль — оба корня подходят.';
+        return {ok:true,msg};
+      }
+      return {ok:false,msg:'Аккуратнее с подстановкой: замени x на число и сосчитай.'};
+    },
+    reveal:{vals:[valStr(v1),valStr(v2)],
+      html:'при x = '+numHTML(lo)+': '+numHTML(v1)+';&nbsp; при x = '+numHTML(hi)+': '+numHTML(v2)}
+  });
+}
+function stFinalAnswer(key, why){
+  return (state)=>({
+    q:'Запиши ответ:',
+    ui:{type:'num',label:'Ответ:'},
+    hint:why||'В ответ идёт корень, прошедший все проверки.',
+    check(vals){
+      const f=parseAll(vals); if(!f)return needMsg();
+      if(feq(f[0],key))return {ok:true};
+      return {ok:false,msg:why||'Ответ — корень, который прошёл проверку знаменателя.'};
+    },
+    reveal:{vals:[valStr(key)],html:'Ответ: <b>'+numHTML(key)+'</b>'+blankNote(key)}
+  });
+}
+/* Виета (для полных с a=1 после деления) */
+function stVietaPQ(base){
+  const p=fdiv(base.b,base.a), q=fdiv(base.c,base.a);
+  return (state)=>({
+    q:'Приведи к виду x² + p·x + q = 0 (если a ≠ 1 — раздели всё на a). Тогда:',
+    ui:{type:'num2',labels:['p =','q ='],ordered:true},
+    hint:'Раздели каждый коэффициент на a. p — при x, q — свободное число, оба со знаками.',
+    check(vals,st){
+      const f=parseAll(vals); if(!f)return needMsg();
+      if(feq(f[0],p)&&feq(f[1],q)){st.p=p;st.qq=q;return {ok:true};}
+      return {ok:false,msg:'p и q — коэффициенты после деления на a, со своими знаками.'};
+    },
+    reveal:{vals:[valStr(p),valStr(q)],html:'p = '+numHTML(p)+',&nbsp; q = '+numHTML(q)}
+  });
+}
+function stVietaSumProd(){
+  return (state)=>{
+    const s=fneg(state.p), pr=state.qq;
+    return {
+      q:'По теореме Виета:',
+      ui:{type:'num2',labels:['сумма корней =','произведение ='],ordered:true},
+      hint:'Сумма корней равна −p (минус p!), произведение равно q.',
+      check(vals){
+        const f=parseAll(vals); if(!f)return needMsg();
+        if(feq(f[0],s)&&feq(f[1],pr))return {ok:true};
+        if(feq(f[0],state.p)&&feq(f[1],pr))return {ok:false,msg:'Сумма равна <b>минус</b> p — знак меняется!'};
+        return {ok:false,msg:'Сумма = −p, произведение = q.'};
+      },
+      reveal:{vals:[valStr(s),valStr(pr)],html:'x₁ + x₂ = '+numHTML(s)+',&nbsp; x₁ · x₂ = '+numHTML(pr)}
+    };
+  };
+}
+function stVietaPick(lo,hi){
+  return (state)=>({
+    q:'Подбери два числа с такой суммой и произведением — это и есть корни:',
+    ui:{type:'num2',labels:['x₁ =','x₂ =']},
+    hint:'Перебирай пары делителей произведения и проверяй сумму. Знаки: произведение положительно — знаки одинаковые, отрицательно — разные.',
+    check(vals){
+      const f=parseAll(vals); if(!f)return needMsg();
+      const [u,v]=f;
+      if((feq(u,lo)&&feq(v,hi))||(feq(u,hi)&&feq(v,lo)))return {ok:true};
+      return {ok:false,msg:'Проверь сам: сумма и произведение этой пары не сходятся с нужными.'};
+    },
+    reveal:{vals:[valStr(lo),valStr(hi)],html:'x₁ = '+numHTML(lo)+',&nbsp; x₂ = '+numHTML(hi)}
+  });
+}
+
+/* ================= сборка шагов по семейству ================= */
+function collectCanon(t){ // каноническая пара для reveal: иксы влево
+  const L=evalTermsABC(t.p.Lt), R=evalTermsABC(t.p.Rt);
+  return {k:fsub(L.B,R.B), m:fsub(R.C,L.C)};
+}
+/* раскрытие линейной части по скобкам: по шагу на каждую скобку + сложение */
+function expandLinearSide(terms, sideName){
+  const distSteps=[]; const pieces=[]; const pieceHTML=[]; let anyBracket=false;
+  for(const tm of terms){
+    if(tm.br){ anyBracket=true;
+      const inner=evalTermsABC(tm.br.inner);
+      const tgt={B:fmul(tm.br.k,inner.B), C:fmul(tm.br.k,inner.C)};
+      const kk=tm.br.k;
+      const bracketHTML=(fcmp(kk,F0)<0?MINUS:'')+coefHTML(fabs(kk))+'('+renderTerms(tm.br.inner)+')';
+      distSteps.push(stExpandLin(tgt,
+        'Раскрой скобку: &nbsp;'+bracketHTML+' &nbsp;= &nbsp;☐<i>x</i> + ☐',
+        numHTML(kk)+' умножается на <b>каждое</b> слагаемое в скобке — отдельно на <i>x</i>, отдельно на число.'));
+      pieces.push(tgt); pieceHTML.push('('+linHTML(tgt.B,tgt.C)+')');
+    } else if(tm.c!==undefined){
+      const bb=tm.x===1?tm.c:F0, cc=tm.x===0?tm.c:F0;
+      pieces.push({B:bb,C:cc});
+      pieceHTML.push(tm.x===1?('('+linHTML(bb,F0)+')'):numHTML(cc));
+    }
+  }
+  let B=F0,C=F0; pieces.forEach(pc=>{B=fadd(B,pc.B); C=fadd(C,pc.C);});
+  let combineStep=null;
+  if(anyBracket && pieces.length>1){
+    combineStep=stExpandLin({B,C},
+      'Сложи в '+sideName+' части: &nbsp;'+pieceHTML.join(' + ')+' &nbsp;= &nbsp;☐<i>x</i> + ☐',
+      'Отдельно сложи иксы, отдельно числа.');
+  }
+  return {distSteps, combineStep, abc:{A:F0,B,C}, anyBracket};
+}
+function taskSteps(t, method){
+  const sol=taskSolve(t);
+  const roots=sol.roots, n=sol.norm;
+  const p=t.p;
+  switch(t.fam){
+    case 'L': {
+      const {k,m}=collectCanon(t);
+      return [stCanon(roots[0],k,m), stDivide(roots[0])];
+    }
+    case 'LB': {
+      const le=expandLinearSide(p.Lt,'левой'), re=expandLinearSide(p.Rt,'правой');
+      const steps=[...le.distSteps];
+      if(le.combineStep)steps.push(le.combineStep);
+      steps.push(...re.distSteps);
+      if(re.combineStep)steps.push(re.combineStep);
+      const {k,m}=collectCanon(t);
+      steps.push(stCanon(roots[0],k,m), stDivide(roots[0]));
+      return steps;
+    }
+    case 'LSQ': {
+      const L=evalTermsABC(p.Lt), R=evalTermsABC(p.Rt);
+      const {k,m}=collectCanon(t);
+      const opts = {q:'Раскрой оба квадрата: (x + a)² = x² + 2ax + a². Слагаемые x² слева и справа взаимно уничтожатся — запиши, что останется:',
+           ph:'☐x + ☐ = ☐x + ☐',
+           hint:'(x + a)² = x² + 2·a·x + a². Квадраты одинаковые с двух сторон — их можно сразу вычеркнуть.',
+           revealPre:'<span class="pen-note">x² взаимно уничтожились →</span> '};
+      return [stExpand(roots[0],{B:L.B,C:L.C},{B:R.B,C:R.C},opts), stCanon(roots[0],k,m), stDivide(roots[0])];
+    }
+    case 'LF': {
+      const {k,m}=collectCanon(t);
+      const M=lcmArr(p.dens);
+      const kk=fmul(k,F(M)), mm=fmul(m,F(M));
+      return [stM(p.dens), stAfterM(t,roots[0]), stCanon(roots[0],kk,mm), stDivide(roots[0])];
+    }
+    case 'QNB': {
+      const v=fdiv(fneg(n.C),n.A); const s=fsqrt(v);
+      const extra = fisint(n.A)&&feq(n.A,F1)?'':'Коэффициент при x² — дробь или не единица? Раздели на него обе части (или умножь на перевёрнутый). ';
+      const arr=[stNBiso(v,extra), stNBroots(s)];
+      if(roots.length===2)arr.push(stPickRoot(t,roots[0],roots[1]));
+      return arr;
+    }
+    case 'QNC': case 'QNCm': {
+      const base={a:n.A,b:n.B};
+      const r2=fdiv(fneg(n.B),n.A);
+      const arr=[];
+      if(t.fam==='QNCm')arr.push(stMoveLeft(base));
+      arr.push(stFactorNC(base), stNCroots(r2));
+      if(roots.length===2)arr.push(stPickRoot(t,roots[0],roots[1]));
+      return arr;
+    }
+    case 'QP': {
+      const arr=[stZeroChoice('QP'), stPairRoots(roots[0],roots[1])];
+      arr.push(stPickRoot(t,roots[0],roots[1]));
+      return arr;
+    }
+    case 'QF': case 'QR': {
+      const base={a:n.A,b:n.B,c:n.C};
+      if(method==='vieta'){
+        const arr=[stVietaPQ(base), stVietaSumProd(), stVietaPick(roots[0],roots[1])];
+        if(roots.length===2)arr.push(stPickRoot(t,roots[0],roots[1]));
+        return arr;
+      }
+      const arr=[stABC(base, t.fam==='QF'?'read':'reduce'), stD(), stSqrtD()];
+      if(roots.length===2){arr.push(stRoots(roots[0],roots[1]), stPickRoot(t,roots[0],roots[1]));}
+      else {arr.push((state)=>({
+        q:'D = 0 — корень один: x = −b ÷ (2a) =',
+        ui:{type:'num',label:'x ='},
+        hint:'При D = 0 «плюс-минус ноль» ничего не меняет: корень единственный.',
+        check(vals){const f=parseAll(vals);if(!f)return needMsg();
+          return feq(f[0],roots[0])?{ok:true}:{ok:false,msg:'x = −b, делённое на 2a.'};},
+        reveal:{vals:[valStr(roots[0])],html:'x = '+numHTML(roots[0])}
+      }));}
+      return arr;
+    }
+    case 'PROP': {
+      const dens=[];
+      if(p.ld){const d=evalTermsABC(p.ld); if(!fzero(d.B))dens.push({html:renderTerms(p.ld),val:linAt(d,roots[0])});}
+      if(p.rd){const d=evalTermsABC(p.rd); if(!fzero(d.B))dens.push({html:renderTerms(p.rd),val:linAt(d,roots[0])});}
+      const {k,m}={k:n.B,m:fneg(n.C)};
+      const cp=crossPolys(p);
+      const expandProp=[];
+      if(!fzero(cp.L.B)) expandProp.push(stExpandLin({B:cp.L.B,C:cp.L.C},
+        'Раскрой <b>левую</b> часть: &nbsp;'+crossSideHTML(p.ln,p.rd)+' &nbsp;= &nbsp;☐<i>x</i> + ☐',
+        'Умножь число на каждое слагаемое в скобке — отдельно на <i>x</i>, отдельно на число.'));
+      if(!fzero(cp.R.B)) expandProp.push(stExpandLin({B:cp.R.B,C:cp.R.C},
+        'Раскрой <b>правую</b> часть: &nbsp;'+crossSideHTML(p.rn,p.ld)+' &nbsp;= &nbsp;☐<i>x</i> + ☐',
+        'Умножь число на каждое слагаемое в скобке — отдельно на <i>x</i>, отдельно на число.'));
+      return [stCrossProduct(t), ...expandProp, stCanon(roots[0],k,m), stDivide(roots[0]), stODZ(dens,roots[0])];
+    }
+    case 'Z': {
+      const root=roots[0];
+      const dens=[{html:linHTML(F1,F(p.c1)),val:fadd(root,F(p.c1))},{html:linHTML(F1,F(p.c2)),val:fadd(root,F(p.c2))}];
+      return [stZnum(p.c1,p.c2),
+        stSimpleRoot(root,'Дробь равна нулю ⇔ числитель равен нулю: 2<i>x</i> '+(p.c1+p.c2<0?MINUS:'+')+' '+Math.abs(p.c1+p.c2)+' = 0. Найди x:'),
+        stODZ(dens,root)];
+    }
+    case 'NZ': {
+      const num=solveABC(F(p.qa),F(p.qb),F(p.qc));
+      const [lo,hi]=num.roots;
+      const arr=[stZeroChoice('NZ'), stNZnumRoots(lo,hi,{a:F(p.qa),b:F(p.qb),c:F(p.qc)}), stNZdenAt(lo,hi,p.dr)];
+      if(sol.excluded.length){
+        arr.push(stFinalAnswer(taskKey(t),'В ответ идёт корень, при котором знаменатель НЕ ноль. Второй — посторонний.'));
+      } else {
+        arr.push(stPickRoot(t,roots[0],roots[1]));
+      }
+      return arr;
+    }
+    case 'XF': {
+      const an=p.an, b=p.b;
+      const base={a:n.A,b:n.B,c:n.C};
+      const leftABC={A:F1,B:F0,C:F(an)}, rightABC={A:F0,B:F(b),C:F0};
+      const leftHTML='<i>x</i>² '+(an<0?MINUS:'+')+' '+numHTML(F(Math.abs(an)));
+      const rightHTML=coefHTML(F(b))+'<i>x</i>';
+      return [
+        stClearDenom({
+          q:'Умножь обе части на <i>x</i>. Дробь сократится, останется квадратное. Запиши уравнение без дробей:',
+          hint:'<i>x</i> · <i>x</i> = <i>x</i>², &nbsp;'+fracHTML(String(Math.abs(an)),'<i>x</i>')+' · <i>x</i> = '+Math.abs(an)+', &nbsp;справа '+numHTML(F(b))+' · <i>x</i>.',
+          leftABC, rightABC, leftHTML, rightHTML}),
+        stABC(base,'reduce',{
+          q:'Перенеси всё в левую часть и приведи к виду ☐x² + ☐x + ☐ = 0:',
+          hint:'Перенеси '+rightHTML+' влево со сменой знака, расставь по убыванию степени: сначала <i>x</i>², потом <i>x</i>, потом число.'}),
+        stD(), stSqrtD(), stRoots(roots[0],roots[1]), stPickRoot(t,roots[0],roots[1])];
+    }
+    case 'S2': {
+      const {a,b,c,d,k}=p;
+      const base={a:n.A,b:n.B,c:n.C};
+      const leftABC={A:F0,B:F(a+c),C:F(-(a*d+c*b))};
+      const rightABC={A:F(k),B:F(-k*(b+d)),C:F(k*b*d)};
+      const d1=linHTML(F1,F(-b)), d2=linHTML(F1,F(-d));
+      const d1a='(x'+(b>=0?'-'+b:'+'+(-b))+')', d2a='(x'+(d>=0?'-'+d:'+'+(-d))+')';
+      const leftHTML=numHTML(F(a))+'·('+d2+') + '+numHTML(F(c))+'·('+d1+')';
+      const rightHTML=(k===1?'':numHTML(F(k)))+'('+d1+')·('+d2+')';
+      const midS=(-(b+d))<0?MINUS:'+', constS=(b*d)<0?MINUS:'+';
+      return [
+        stClearDenom({
+          q:'Общий знаменатель здесь равен ('+d1+')·('+d2+'). Умножь на него <b>каждое</b> слагаемое (дроби сократятся) и запиши уравнение без дробей. <b>Скобки пока не раскрывай:</b>',
+          hint:'Первая дробь: '+fracHTML(String(a),d1)+' · ('+d1+')·('+d2+') = '+a+'·('+d2+'). Вторая → '+c+'·('+d1+'). Справа '+k+'·('+d1+')·('+d2+').',
+          leftABC, rightABC, leftHTML, rightHTML}),
+        stExpandLin({B:F(a),C:F(-a*d)},
+          'Раскрой <b>первую</b> скобку: &nbsp;'+numHTML(F(a))+'·('+d2+') &nbsp;= &nbsp;☐<i>x</i> + ☐',
+          numHTML(F(a))+'·<i>x</i> = '+numHTML(F(a))+'<i>x</i>; &nbsp;'+numHTML(F(a))+'·('+numHTML(F(-d))+') = '+numHTML(F(-a*d))+'.'),
+        stExpandLin({B:F(c),C:F(-c*b)},
+          'Раскрой <b>вторую</b> скобку: &nbsp;'+numHTML(F(c))+'·('+d1+') &nbsp;= &nbsp;☐<i>x</i> + ☐',
+          numHTML(F(c))+'·<i>x</i> = '+numHTML(F(c))+'<i>x</i>; &nbsp;'+numHTML(F(c))+'·('+numHTML(F(-b))+') = '+numHTML(F(-c*b))+'.'),
+        stExpandLin(leftABC,
+          'Сложи то, что получилось: &nbsp;('+linHTML(F(a),F(-a*d))+') + ('+linHTML(F(c),F(-c*b))+') &nbsp;= &nbsp;☐<i>x</i> + ☐',
+          'Отдельно иксы: '+numHTML(F(a))+' + '+numHTML(F(c))+' = '+numHTML(F(a+c))+'; &nbsp;отдельно числа: '+numHTML(F(-a*d))+' + ('+numHTML(F(-c*b))+') = '+numHTML(F(-(a*d+c*b)))+'.'),
+        stNum(F(b*d),
+          'Теперь правая часть — перемножь скобки по частям. <b>Крайние числа</b>: &nbsp;('+numHTML(F(-b))+')·('+numHTML(F(-d))+') &nbsp;=',
+          'Это свободный член будущего квадратного. Минус на минус даёт плюс: '+b+'·'+d+' = '+numHTML(F(b*d))+'.',
+          {signMsg:'Почти! Минус на минус даёт плюс — поправь и проверь.'}),
+        stNum(F(-(b+d)),
+          '<b>Средние члены</b>: &nbsp;<i>x</i>·('+numHTML(F(-d))+') = '+numHTML(F(-d))+'<i>x</i>, &nbsp;а ('+numHTML(F(-b))+')·<i>x</i> = '+numHTML(F(-b))+'<i>x</i>. Сложи их коэффициенты: &nbsp;'+numHTML(F(-d))+' + ('+numHTML(F(-b))+') &nbsp;=',
+          'Это коэффициент при <i>x</i>: '+numHTML(F(-d))+' + '+numHTML(F(-b))+' = '+numHTML(F(-(b+d)))+'.'),
+        stExpandQuad({A:F1,B:F(-(b+d)),C:F(b*d)},
+          '<b>Старший член</b>: <i>x</i>·<i>x</i> = <i>x</i>². Собери произведение скобок: &nbsp;☐<i>x</i>² + ☐<i>x</i> + ☐',
+          'Коэффициент при <i>x</i>² равен 1; при <i>x</i> — то, что вышло два шага назад; свободный — три шага назад.'),
+        stExpandQuad(rightABC,
+          'Теперь умножь на '+numHTML(F(k))+': &nbsp;'+numHTML(F(k))+'·('+quadHTML(F1,F(-(b+d)),F(b*d))+') &nbsp;= &nbsp;☐<i>x</i>² + ☐<i>x</i> + ☐',
+          'Умножь на '+numHTML(F(k))+' <b>каждый</b> из трёх коэффициентов: и при <i>x</i>², и при <i>x</i>, и свободное число.'),
+        stABC(base,'reduce',{
+          q:'Теперь всё в одну сторону: перенеси и приведи к виду ☐x² + ☐x + ☐ = 0:',
+          hint:'Слева '+linHTML(leftABC.B,leftABC.C)+', справа '+quadHTML(rightABC.A,rightABC.B,rightABC.C)+'. Перенеси всё в сторону, где <i>x</i>², со сменой знака, и сложи подобные.'}),
+        stD(), stSqrtD(), stRoots(roots[0],roots[1]),
+        (state)=>({
+          q:'ОДЗ: <i>x</i> ≠ '+b+' и <i>x</i> ≠ '+d+'. Найденные корни под запрет попадают?',
+          ui:{type:'choice',opts:['нет — оба корня подходят','да — один из корней запрещён']},
+          hint:'Сравни корни '+numHTML(roots[0])+' и '+numHTML(roots[1])+' с числами '+b+' и '+d+'.',
+          check(vals){ return vals[0]===0?{ok:true}:{ok:false,msg:'Сравни ещё раз: корни '+numHTML(roots[0])+' и '+numHTML(roots[1])+' с запретами '+b+' и '+d+'.'};},
+          reveal:{vals:[0],html:'нет — оба корня подходят'}
+        }),
+        stPickRoot(t,roots[0],roots[1])];
+    }
+    case 'SB': {
+      const {k,m,n:nn}=p;
+      const base={a:n.A,b:n.B,c:n.C};
+      const dHTML=k===0?'<i>x</i>':'('+linHTML(F1,F(-k))+')';
+      const dA=k===0?'x':'(x'+(k>=0?'-'+k:'+'+(-k))+')';
+      const mAmt=Math.abs(m), nAmt=Math.abs(nn);
+      const mBody=(mAmt===1?'':numHTML(F(mAmt)))+dHTML;
+      const nBody=(nAmt===1?'':numHTML(F(nAmt)))+dHTML+'²';
+      const leftHTML='1 '+(m<0?MINUS:'+')+' '+mBody+' '+(nn<0?MINUS:'+')+' '+nBody;
+      const sqTarget={A:F(nn),B:F(-2*nn*k),C:F(nn*k*k)};
+      const sqInner={A:F1,B:F(-2*k),C:F(k*k)}; // (x−k)²
+      const expandSteps = k===0
+        ? [ stExpandQuad(sqTarget,
+              'Умножь на '+numHTML(F(nn))+': &nbsp;'+numHTML(F(nn))+'·<i>x</i>² &nbsp;= &nbsp;☐<i>x</i>² + ☐<i>x</i> + ☐',
+              'Здесь квадрат — это просто <i>x</i>². Умножь его на '+numHTML(F(nn))+' (коэффициенты при <i>x</i> и свободный — нули).') ]
+        : [ stNum(F(k*k),
+              'Раскрой квадрат '+dHTML+'² по частям. <b>Квадрат числа</b>: &nbsp;'+numHTML(F(-k))+'·('+numHTML(F(-k))+') &nbsp;=',
+              'Это свободный член. Минус на минус даёт плюс: '+k+'·'+k+' = '+numHTML(F(k*k))+'.',
+              {signMsg:'Почти! Минус на минус даёт плюс — поправь и проверь.'}),
+            stNum(F(-2*k),
+              '<b>Удвоенное произведение</b>: 2·<i>x</i>·('+numHTML(F(-k))+') даёт коэффициент при <i>x</i>. Посчитай 2·('+numHTML(F(-k))+') &nbsp;=',
+              'Формула (a − b)² содержит средний член −2·a·b. Здесь 2·('+numHTML(F(-k))+') = '+numHTML(F(-2*k))+'.'),
+            stExpandQuad(sqInner,
+              '<b>Старший член</b>: <i>x</i>·<i>x</i> = <i>x</i>². Собери квадрат: &nbsp;'+dHTML+'² = &nbsp;☐<i>x</i>² + ☐<i>x</i> + ☐',
+              'Коэффициент при <i>x</i>² равен 1; при <i>x</i> — из прошлого шага; свободный — из позапрошлого.'),
+            stExpandQuad(sqTarget,
+              'Теперь умножь на '+numHTML(F(nn))+': &nbsp;'+numHTML(F(nn))+'·('+quadHTML(sqInner.A,sqInner.B,sqInner.C)+') &nbsp;= &nbsp;☐<i>x</i>² + ☐<i>x</i> + ☐',
+              'Умножь на '+numHTML(F(nn))+' <b>каждый</b> из трёх коэффициентов.') ];
+      return [
+        stClearDenom({
+          q:'Умножь обе части на '+dHTML+'². Знаменатели сократятся. Запиши уравнение без дробей. <b>Скобки пока не раскрывай:</b>',
+          hint:fracHTML('1',dHTML+'²')+' · '+dHTML+'² = 1; &nbsp;'+fracHTML(String(mAmt),dHTML)+' · '+dHTML+'² = '+mAmt+'·'+dHTML+'; &nbsp;число '+nAmt+' · '+dHTML+'².',
+          leftABC:{A:n.A,B:n.B,C:n.C}, rightABC:{A:F0,B:F0,C:F0}, leftHTML, rightHTML:'0'}),
+        ...expandSteps,
+        stABC(base,'reduce',{
+          q:'Соедини всё (1, слагаемое с '+dHTML+' и раскрытый квадрат) и приведи к виду ☐x² + ☐x + ☐ = 0:',
+          hint:'<i>x</i>²-часть берётся только из квадрата; <i>x</i>-часть — из '+mBody+' и из квадрата; свободное число — из 1, '+mBody+' и квадрата.'}),
+        stD(), stSqrtD(), stRoots(roots[0],roots[1]),
+        (state)=>({
+          q:'ОДЗ: <i>x</i> ≠ '+k+'. Корни под запрет не попали?',
+          ui:{type:'choice',opts:['не попали — оба подходят','попали — один запрещён']},
+          hint:'Сравни корни '+numHTML(roots[0])+' и '+numHTML(roots[1])+' с числом '+k+'.',
+          check(vals){return vals[0]===0?{ok:true}:{ok:false,msg:'Сравни корни '+numHTML(roots[0])+' и '+numHTML(roots[1])+' с числом '+k+'.'};},
+          reveal:{vals:[0],html:'не попали — оба подходят'}
+        }),
+        stPickRoot(t,roots[0],roots[1])];
+    }
+  }
+  throw new Error('нет шагов для семейства '+t.fam);
+}
+
+/* ================= классификация (для квизов) ================= */
+const FAMMETA={
+  L:{ch:'lin'}, LB:{ch:'lin'}, LSQ:{ch:'lin'}, LF:{ch:'lin'},
+  QNB:{ch:'quad'}, QNC:{ch:'quad'}, QNCm:{ch:'quad'}, QF:{ch:'quad'}, QR:{ch:'quad'}, QP:{ch:'quad'},
+  PROP:{ch:'frac'}, Z:{ch:'frac'}, NZ:{ch:'frac'}, XF:{ch:'frac'}, S2:{ch:'frac'}, SB:{ch:'frac'}
+};
+function taskCaseId(t){
+  switch(t.fam){
+    case 'L': { const R=evalTermsABC(t.p.Rt), L=evalTermsABC(t.p.Lt);
+      return (!fzero(L.B)&&!fzero(R.B))?'lin2':'lin1'; }
+    case 'LB': return 'linb';
+    case 'LSQ': return 'linsq';
+    case 'LF': return 'linf';
+    case 'QNB': return 'qnb';
+    case 'QNC': case 'QNCm': return 'qnc';
+    case 'QP': return 'qp';
+    case 'QF': case 'QR': return 'qf';
+    case 'PROP': return 'prop';
+    case 'Z': case 'NZ': return 'nz';
+    case 'XF': return 'xf';
+    case 'S2': case 'SB': return 'heavy';
+  }
+}
+const CASEOPTS={
+  lin:[
+    {id:'lin1',name:'x только с одной стороны — перенеси числа и раздели'},
+    {id:'lin2',name:'x с двух сторон — иксы влево, числа вправо'},
+    {id:'linb',name:'есть скобки — сначала раскрой'},
+    {id:'linf',name:'дробные коэффициенты — умножь всё на НОК знаменателей'},
+    {id:'linsq',name:'(x + a)² = (x + b)² — раскрой, квадраты уйдут'}
+  ],
+  quad:[
+    {id:'qnc',name:'нет свободного числа (c = 0) — вынеси x за скобку'},
+    {id:'qnb',name:'нет b·x — вырази x², корни ±√'},
+    {id:'qf',name:'полное — дискриминант (или Виета)'},
+    {id:'qp',name:'уже разложено на множители — каждый множитель = 0'}
+  ],
+  frac:[
+    {id:'prop',name:'пропорция «дробь = дробь» — крест-накрест'},
+    {id:'nz',name:'дробь = 0 — числитель 0, знаменатель ≠ 0'},
+    {id:'xf',name:'x и дробь с x — умножь всё на x'},
+    {id:'heavy',name:'две дроби с x = число — общий знаменатель, будет квадратное'}
+  ]
+};
+
+/* ================= ГЕНЕРАТОРЫ ================= */
+function X2f(c){return T(c,2,true);}
+function rnd(){return ri(0,999999)/1000000;}
+function nz(a,b){let v=0;while(v===0)v=ri(a,b);return v;}
+function mkPoly(fam,Lt,Rt,extra){return Object.assign({fam,p:Object.assign({Lt,Rt},extra||{}),src:'gen'},{});}
+function finRoot(){ // «приятный» корень: целый или .5
+  const r=ri(-14,14); return rnd()<0.3?F(2*r+1,2):F(r);
+}
+const GENS={
+  g_l1(){ // ax + b = c  или  c − ax = b
+    const a=nz(-9,9), root=finRoot();
+    const b=ri(-20,20);
+    const c=fadd(fmul(F(a),root),F(b));
+    if(!fisint(c))return GENS.g_l1();
+    if(rnd()<0.25&&a>0) return mkPoly('L',[T(c),T(-a,1)],[T(fsub(c,fmul(F(a),root)))]); // c − ax = b'
+    return mkPoly('L',[T(a,1),T(b)],[T(c)]);
+  },
+  g_l2(){ // la x + lb = rb + ra x
+    let la=nz(-9,12), ra=nz(-9,12); if(la===ra)return GENS.g_l2();
+    const root=finRoot();
+    const lb=ri(-15,15);
+    const rb=fadd(F(lb),fmul(F(la-ra),root));
+    if(!fisint(rb))return GENS.g_l2();
+    return mkPoly('L',[T(la,1),T(lb)],[T(rb),T(ra,1)]);
+  },
+  g_lb(){
+    const kind=pick(['b1','b2','b3','p1','p2']);
+    const root=F(ri(-12,12));
+    if(kind==='b1'){ const k=ri(2,4), m=nz(-9,9);
+      const n=fsub(fmul(F(k-1),root),F(k*m)); if(!fisint(n))return GENS.g_lb();
+      return mkPoly('LB',[{br:{k:F(k),inner:[T(1,1),T(-m)]}}],[T(1,1),T(n)]); }
+    if(kind==='b2'){ const k=ri(2,4), m=nz(-9,9);
+      const n=fsub(fmul(F(k-1),root),F(k*m)); if(!fisint(n))return GENS.g_lb();
+      return mkPoly('LB',[{br:{k:F(k),inner:[T(1,1),T(-m)]}},T(-1,1)],[T(fadd(n,root))]); }
+    if(kind==='b3'){ const m=nz(-8,8);
+      return mkPoly('LB',[{br:{k:F(3),inner:[T(1,1),T(m)]}},{br:{k:F(-2),inner:[T(1,1),T(-m)]}}],[T(fadd(root,F(5*m)))]); }
+    if(kind==='p1'){ const k=nz(-6,6);
+      const c=fmul(F(k),fadd(root,F(nz(-7,7))));
+      if(!fisint(c))return GENS.g_lb();
+      const m=fdiv(c,F(k)); const mm=fsub(m,root); // k(x+mm)=c
+      return mkPoly('LB',[{br:{k:F(k),inner:[T(1,1),T(mm)]}}],[T(c)]); }
+    // p2: a + k(px + q) = r
+    const k=nz(-5,5), pk=nz(1,4), q=ri(-8,8), a=ri(-9,9);
+    const r=fadd(F(a),fmul(F(k),fadd(fmul(F(pk),root),F(q))));
+    if(!fisint(r))return GENS.g_lb();
+    return mkPoly('LB',[T(a),{br:{k:F(k),inner:[T(pk,1),T(q)]}}],[T(r)]);
+  },
+  g_lsq(){
+    let a=ri(-9,9), b=ri(-9,9);
+    if(a===b||((a+b)%2!==0&&rnd()<0.5))return GENS.g_lsq();
+    return mkPoly('LSQ',[{sq:{s:F(a)}}],[{sq:{s:F(b)}}]);
+  },
+  g_lf(){
+    const kind=pick(['f1','f2','f3','f6']);
+    if(kind==='f1'){ // x + x/k = c
+      const k=pick([2,3,4,5,6,12]); const root=F(k*nz(-4,4));
+      const c=fadd(root,fdiv(root,F(k)));
+      return mkPoly('LF',[T(1,1),{fr:{top:[T(1,1)],bot:k}}],[T(c)],{dens:[k]});
+    }
+    if(kind==='f2'){ // x/a + x/b = c
+      const a=pick([2,3,4,6,8]); let b=pick([3,4,5,6,10,12]); if(b===a)b=a+2;
+      const M=lcm2(a,b); const root=F(M*nz(-3,3)/pick([1,2,3]));
+      const c=fadd(fdiv(root,F(a)),fdiv(root,F(b)));
+      if(!fisint(c))return GENS.g_lf();
+      return mkPoly('LF',[{fr:{top:[T(1,1)],bot:a}},{fr:{top:[T(1,1)],bot:b}}],[T(c)],{dens:[a,b]});
+    }
+    if(kind==='f3'){ // c − x/a = x/b
+      const a=pick([2,3,5,7]); let b=pick([2,3,4,9]); if(b===a)b=a+1;
+      const M=lcm2(a,b); const root=F(M*nz(-2,2));
+      const c=fadd(fdiv(root,F(a)),fdiv(root,F(b)));
+      if(!fisint(c))return GENS.g_lf();
+      return mkPoly('LF',[T(c),{fr:{top:[T(-1,1)],bot:a}}],[{fr:{top:[T(1,1)],bot:b}}],{dens:[a,b]});
+    }
+    // f6: (px + q)/k + c = x
+    const k=pick([2,3,6,7]), pq=nz(1,5), c=ri(1,6);
+    const root=F(k*nz(-2,2));
+    const q2=fsub(fmul(F(k),fsub(root,F(c))),fmul(F(pq),root));
+    if(!fisint(q2))return GENS.g_lf();
+    return mkPoly('LF',[{fr:{top:[T(pq,1),T(q2)],bot:k}},T(c)],[T(1,1)],{dens:[k]});
+  },
+  g_qnb(){
+    const style=pick(['plain','plain','frac']);
+    if(style==='frac'){ const d=pick([3,4,5]); const sgn=pick([1,-1]); const s=d*ri(1,3);
+      return mkPoly('QNB',[X2f(F(sgn,d)),T(-sgn*s*s/d)],[T(0)]); }
+    const s=ri(2,13), sign=pick([1,-1]);
+    return mkPoly('QNB',[T(sign,2),T(-sign*s*s)],[T(0)]);
+  },
+  g_qnc(){
+    const a=pick([1,1,2,3,4,5,7,8]); const r2=nz(-9,9);
+    const b=-a*r2;
+    if(rnd()<0.4) return mkPoly('QNCm',[T(a,2)],[T(-b,1)]); // ax² = −b x
+    return mkPoly('QNC',[T(a,2),T(b,1)],[T(0)]);
+  },
+  g_qf(opts){
+    opts=opts||{};
+    const a=opts.monic?1:pick([1,1,1,2,2,3,5]);
+    let r1=ri(-9,9), r2=ri(-9,9);
+    if(opts.monic){ if(r1===r2)return GENS.g_qf(opts); }
+    else if(rnd()<0.35){ r1=F(2*ri(-7,7)+1,2); r2=F(ri(-8,8)); if(feq(r1,r2))return GENS.g_qf(opts); }
+    r1=(typeof r1==='object')?r1:F(r1); r2=(typeof r2==='object')?r2:F(r2);
+    if(feq(r1,r2)||fzero(fadd(r1,r2))||fzero(r1)||fzero(r2))return GENS.g_qf(opts);
+    const b=fneg(fmul(F(a),fadd(r1,r2))), c=fmul(F(a),fmul(r1,r2));
+    if(!fisint(b)||!fisint(c))return GENS.g_qf(opts);
+    return Object.assign(mkPoly('QF',[T(a,2),T(b.n===0n?F0:b,1),T(c)].filter(t=>!(t.x===1&&fzero(t.c))),[T(0)]),{ask:pick(['min','max'])});
+  },
+  g_qr(){
+    const base=GENS.g_qf(); const n=taskNorm(base);
+    const a1=fadd(n.A,F(nz(1,4))), b1=fadd(n.B,F(ri(-9,9))), c1=fadd(n.C,F(ri(-15,15)));
+    const a2=fsub(a1,n.A), b2=fsub(b1,n.B), c2=fsub(c1,n.C);
+    const mk=(A,B,C)=>{const ts=[];if(!fzero(A))ts.push(T(A,2));if(!fzero(B))ts.push(T(B,1));if(!fzero(C))ts.push(T(C));return ts.length?ts:[T(0)];};
+    return Object.assign(mkPoly('QR',mk(a1,b1,c1),mk(a2,b2,c2)),{ask:base.ask});
+  },
+  g_qp(){
+    const r1=nz(-12,12); let r2=nz(-12,12); if(r2===r1)return GENS.g_qp();
+    const s1=pick([1,-1]), s2=pick([1,-1]);
+    const mkl=(s,r)=>s===1?[T(1,1),T(-r)]:[T(-1,1),T(r)];
+    return Object.assign(mkPoly('QP',[{mul:[mkl(s1,r1),mkl(s2,r2)]}],[T(0)]),{ask:pick(['min','max'])});
+  },
+  g_prop(){
+    const kind=pick(['nl','ll','xl','cl']);
+    if(kind==='nl'){ // a/(x+b) = c/d
+      const b=nz(-9,9), c=nz(-6,6), d=nz(2,6), root=F(ri(-9,9));
+      if(feq(root,F(-b)))return GENS.g_prop();
+      const a=fdiv(fmul(F(c),fadd(root,F(b))),F(d));
+      if(!fisint(a)||fzero(a))return GENS.g_prop();
+      return {fam:'PROP',p:{ln:[T(a)],ld:[T(1,1),T(b)],rn:[T(c)],rd:[T(d)]},src:'gen'};
+    }
+    if(kind==='ll'){ // a/(x−b) = c/(x−d)
+      const b=nz(-9,9); let d=nz(-9,9); if(d===b)return GENS.g_prop();
+      const root=F(ri(-9,9)); if(feq(root,F(b))||feq(root,F(d)))return GENS.g_prop();
+      const c=nz(-8,8);
+      const a=fdiv(fmul(F(c),fsub(root,F(b))),fsub(root,F(d)));
+      if(!fisint(a)||fzero(a))return GENS.g_prop();
+      return {fam:'PROP',p:{ln:[T(a)],ld:[T(1,1),T(-b)],rn:[T(c)],rd:[T(1,1),T(-d)]},src:'gen'};
+    }
+    if(kind==='xl'){ // (x−a)/(x−b) = c  или = p/q
+      const b=nz(-9,9), root=F(ri(-9,9)); if(feq(root,F(b)))return GENS.g_prop();
+      const c=nz(-6,6);
+      const a=fsub(root,fmul(F(c),fsub(root,F(b))));
+      if(!fisint(a))return GENS.g_prop();
+      return {fam:'PROP',p:{ln:[T(1,1),T(fneg(a))],ld:[T(1,1),T(-b)],rn:[T(c)],rd:null},src:'gen'};
+    }
+    // cl: a/(x−b) = c
+    const b=nz(-9,9), c=nz(-5,5), root=F(ri(-9,9));
+    if(feq(root,F(b)))return GENS.g_prop();
+    const a=fmul(F(c),fsub(root,F(b)));
+    if(!fisint(a)||fzero(a))return GENS.g_prop();
+    return {fam:'PROP',p:{ln:[T(a)],ld:[T(1,1),T(-b)],rn:[T(c)],rd:null},src:'gen'};
+  },
+  g_z(){
+    let c1=nz(-9,9), c2=nz(-9,9);
+    if(c1===c2||((c1+c2)%2!==0))return GENS.g_z();
+    const root=F(-(c1+c2),2);
+    if(feq(root,F(-c1))||feq(root,F(-c2)))return GENS.g_z();
+    return {fam:'Z',p:{c1,c2},src:'gen'};
+  },
+  g_nz(){
+    let r1=nz(-9,9), r2=nz(-9,9); if(r1===r2)return GENS.g_nz();
+    const withExcl=rnd()<0.6;
+    const dr=withExcl?-pick([r1,r2]):(()=>{let d=nz(-9,9);while(d===-r1||d===-r2)d=nz(-9,9);return d;})();
+    const noC=rnd()<0.3&&(r1===0||r2===0);
+    const qa=1,qb=-(r1+r2),qc=r1*r2;
+    const t={fam:'NZ',p:{qa,qb,qc,dr},src:'gen'};
+    const sol=taskSolve(t);
+    if(sol.roots.length===0)return GENS.g_nz();
+    if(sol.roots.length===2)t.ask=pick(['min','max']);
+    return t;
+  },
+  g_xf(){
+    let r1=nz(-9,9), r2=nz(-9,9);
+    if(r1===r2||r1*r2===0)return GENS.g_xf();
+    const b=r1+r2, an=r1*r2*1; // x² − b x + an = 0 при x + an/x = b → an = r1·r2? проверим: x+an/x=b → x²+an=bx → x²−bx+an=0, корни r1,r2 ⇒ сумма b, произведение an
+    return Object.assign({fam:'XF',p:{an,b},src:'gen'},{ask:pick(['min','max'])});
+  },
+  g_heavy(){
+    if(rnd()<0.5){ // S2 по образцу 13/(x−12)+12/(x−13)=2
+      const a=ri(5,15); const b=a-1;
+      return Object.assign({fam:'S2',p:{a,b:b,c:b,d:a,k:2},src:'gen'},{ask:pick(['min','max'])});
+    }
+    const k=ri(0,4), r=pick([[2,-3],[-3,2],[1,-2],[-1,-6],[3,-4],[-2,-8]]);
+    const t={fam:'SB',p:{k,m:r[0],n:r[1]},src:'gen'};
+    const sol=taskSolve(t);
+    if(sol.roots.length!==2)return GENS.g_heavy();
+    const fin=sol.roots.map(finiteDec);
+    if(fin[0]&&fin[1])t.ask=pick(['min','max']);
+    else if(fin[1])t.ask='max';
+    else if(fin[0])t.ask='min';
+    else return GENS.g_heavy();
+    return t;
+  }
+};
+/* пост-обработка сгенерированной задачи: назначить ask, если корней два и не назначен; отбросить некрасивые */
+function genTask(gid){
+  for(let i=0;i<200;i++){
+    let t;
+    try{ t=GENS[gid](); }catch(e){ continue; }
+    let sol;
+    try{ sol=taskSolve(t); }catch(e){ continue; }
+    if(sol.roots.length===0)continue;
+    if(sol.roots.length===2&&!t.ask)t.ask=pick(['min','max']);
+    const key=taskKey(t);
+    if(key===null||!finiteDec(key))continue;
+    if(fcmp(fabs(key),F(400))>0)continue;
+    t.gid=gid;
+    return t;
+  }
+  throw new Error('генератор не справился: '+gid);
+}
+
+if(typeof module!=='undefined')module.exports={T,renderTerms,evalTermsABC,evalTermsAt,linAt,taskEqnHTML,taskNorm,taskSolve,taskKey,taskInstrHTML,askWord,taskSteps,taskCaseId,CASEOPTS,FAMMETA,GENS,genTask,valStr,exprStr,coefStr,lcm2,lcmArr,collectCanon,blankNote,
+  stCanon,stDivide,stExpand,stM,stAfterM,stABC,stD,stSqrtD,stRoots,stPickRoot,stMoveLeft,stFactorNC,stNCroots,stNBiso,stNBroots,stZeroChoice,stPairRoots,stCross,stCrossProduct,stExpandProp,stODZ,stZnum,stSimpleRoot,stNZnumRoots,stNZdenAt,stFinalAnswer,stVietaPQ,stVietaSumProd,stVietaPick};
+/* ============ БАНК ЗАДАЧ: демоверсия-2026 (30) + прототипы открытого банка (105) ============ */
+'use strict';
+if(typeof module!=='undefined'){ Object.assign(globalThis, require('./p2_core.js'), require('./p3_families.js')); }
+
+const X=(c)=>T(c,1), N=(c)=>T(c), X2=(c,sf)=>T(c,2,sf),
+      BR=(k,inner)=>({br:{k:(typeof k==='object')?k:F(k),inner}}),
+      SQ=(s)=>({sq:{s:F(s)}}), SQR=(s)=>({sq:{s:F(s),rev:true}}),
+      FR=(top,bot,neg)=>({fr:{top,bot,neg:!!neg}}),
+      MUL=(a,b)=>({mul:[a,b]});
+
+function bk(id,fam,src,tag,p,ask,exp){return {id,fam,src,tag,p,ask:ask||null,exp:exp===undefined?null:exp};}
+
+const BANK=[];
+
+/* ---------- ДЕМОВЕРСИЯ 2026 ---------- */
+[[4,-4,16,2,'10'],[5,-5,17,3,'11'],[6,-6,18,4,'12'],[11,-11,23,9,'17'],[9,-9,21,7,'15'],[12,-12,24,10,'18']]
+.forEach((d,i)=>BANK.push(bk('d91-'+(i+1),'L','demo','Демо-2026 · 9.1.'+(i+1),
+  {Lt:[X(d[0]),N(d[1])],Rt:[N(d[2]),X(d[3])]},null,d[4])));
+
+[[7,'21'],[1,'3'],[9,'27'],[5,'15'],[8,'24'],[6,'18']]
+.forEach((d,i)=>BANK.push(bk('d92-'+(i+1),'LB','demo','Демо-2026 · 9.2.'+(i+1),
+  {Lt:[BR(2,[X(1),N(-d[0])])],Rt:[X(1),N(d[0])]},null,d[1])));
+
+[[3,'9'],[10,'30'],[5,'15'],[6,'18'],[1,'3'],[2,'6']]
+.forEach((d,i)=>BANK.push(bk('d93-'+(i+1),'LB','demo','Демо-2026 · 9.3.'+(i+1),
+  {Lt:[BR(2,[X(1),N(-d[0])]),X(-1)],Rt:[N(d[0])]},null,d[1])));
+
+[[2,'-8'],[3,'-12'],[8,'-32'],[7,'-28'],[10,'-40'],[6,'-24']]
+.forEach((d,i)=>BANK.push(bk('d94-'+(i+1),'LB','demo','Демо-2026 · 9.4.'+(i+1),
+  {Lt:[BR(3,[X(1),N(d[0])]),BR(-2,[X(1),N(-d[0])])],Rt:[N(d[0])]},null,d[1])));
+
+[[[2,-3,1],'min','0,5'],[[8,-12,4],'min','0,5'],[[-1,6,16],'min','-2'],
+ [[5,8,3],'max','-0,6'],[[8,-10,2],'min','0,25'],[[2,-5,3],'max','1,5']]
+.forEach((d,i)=>{const [a,b,c]=d[0];
+  BANK.push(bk('d95-'+(i+1),'QF','demo','Демо-2026 · 9.5.'+(i+1),
+    {Lt:[X2(a),X(b),N(c)],Rt:[N(0)]},d[1],d[2]));});
+
+/* ---------- ПРОТОТИПЫ: линейные (24) ---------- */
+const PL=[
+ ['L',{Lt:[X(6),N(18)],Rt:[N(0)]},'-3'],
+ ['L',{Lt:[X(5),N(-3)],Rt:[N(0)]},'0,6'],
+ ['L',{Lt:[N(27),X(-9)],Rt:[N(0)]},'3'],
+ ['L',{Lt:[X(-2),N(-3)],Rt:[N(1)]},'-2'],
+ ['L',{Lt:[X(-4),N(4)],Rt:[N(-6)]},'2,5'],
+ ['L',{Lt:[X(-5),N(8)],Rt:[N(-2)]},'2'],
+ ['L',{Lt:[X(8),N(-5)],Rt:[X(10)]},'-2,5'],
+ ['L',{Lt:[X(6)],Rt:[X(1),N(-2)]},'-0,4'],
+ ['L',{Lt:[X(4),N(5)],Rt:[X(-4)]},'-0,625'],
+ ['L',{Lt:[N(6),X(3)],Rt:[X(4),N(-1)]},'7'],
+ ['L',{Lt:[N(-1),X(2)],Rt:[X(10),N(3)]},'-0,5'],
+ ['L',{Lt:[X(-6),N(4)],Rt:[X(5),N(-18)]},'2'],
+ ['LB',{Lt:[BR(2,[X(1),N(-7)])],Rt:[N(3)]},'8,5'],
+ ['LB',{Lt:[N(3)],Rt:[BR(4,[X(1),N(2)])]},'-1,25'],
+ ['LB',{Lt:[BR(3,[X(1),N(-4)])],Rt:[N(6)]},'6'],
+ ['LB',{Lt:[BR(2,[N(7),X(9)])],Rt:[X(-6),N(2)]},'-0,5'],
+ ['LB',{Lt:[BR(6,[N(5),X(-3)])],Rt:[X(-8),N(-7)]},'3,7'],
+ ['LB',{Lt:[N(9),BR(2,[X(2),N(1)])],Rt:[N(1)]},'-2,5'],
+ ['LB',{Lt:[N(-7),BR(2,[X(7),N(-2)])],Rt:[N(10)]},'1,5'],
+ ['LB',{Lt:[X(-3),N(4)],Rt:[N(-10),BR(5,[N(-7),X(-1)])]},'-24,5'],
+ ['LB',{Lt:[X(6),BR(-8,[N(-7),X(9)])],Rt:[X(-2),N(-8)]},'1'],
+ ['LSQ',{Lt:[SQ(3)],Rt:[SQ(8)]},'-5,5'],
+ ['LSQ',{Lt:[SQ(-5)],Rt:[SQ(-8)]},'6,5'],
+ ['LSQ',{Lt:[SQ(1)],Rt:[SQR(2)]},'0,5']
+];
+PL.forEach((d,i)=>BANK.push(bk('pl-'+(i+1),d[0],'proto','Прототип · линейные, №'+(i+1),d[1],null,d[2])));
+
+/* ---------- ПРОТОТИПЫ: квадратные (27) ---------- */
+const PQ=[
+ ['QNB',{Lt:[X2(1),N(-25)],Rt:[N(0)]},'min','-5'],
+ ['QNB',{Lt:[X2(1),N(-64)],Rt:[N(0)]},'max','8'],
+ ['QNB',{Lt:[X2(1),N(-81)],Rt:[N(0)]},'min','-9'],
+ ['QNCm',{Lt:[X2(1)],Rt:[X(5)]},'max','5'],
+ ['QNCm',{Lt:[X2(2)],Rt:[X(8)]},'min','0'],
+ ['QNCm',{Lt:[X2(3)],Rt:[X(9)]},'max','3'],
+ ['QNC',{Lt:[X2(7),X(-14)],Rt:[N(0)]},'min','0'],
+ ['QNC',{Lt:[X2(4),X(-20)],Rt:[N(0)]},'max','5'],
+ ['QNC',{Lt:[X2(8),X(-24)],Rt:[N(0)]},'min','0'],
+ ['QNB',{Lt:[X2(F(-1,5),true),N(20)],Rt:[N(0)]},'max','10'],
+ ['QNB',{Lt:[X2(F(1,4),true),N(-36)],Rt:[N(0)]},'min','-12'],
+ ['QNB',{Lt:[X2(F(-1,3),true),N(27)],Rt:[N(0)]},'max','9'],
+ ['QF',{Lt:[X2(1),X(-10),N(24)],Rt:[N(0)]},'min','4'],
+ ['QF',{Lt:[X2(1),X(-3),N(-18)],Rt:[N(0)]},'max','6'],
+ ['QR',{Lt:[X2(1),N(-15)],Rt:[X(2)]},'min','-3'],
+ ['QR',{Lt:[X2(5),X(4)],Rt:[N(1)]},'max','0,2'],
+ ['QR',{Lt:[X2(2),X(5)],Rt:[N(7)]},'min','-3,5'],
+ ['QF',{Lt:[X2(2),X(-3),N(1)],Rt:[N(0)]},'max','1'],
+ ['QR',{Lt:[X2(3),X(-10),N(30)],Rt:[X2(7),X(2),N(3)]},'min','-4,5'],
+ ['QR',{Lt:[X2(4),X(-3),N(-12)],Rt:[X2(3),X(-6),N(-14)]},'max','-1'],
+ ['QR',{Lt:[X2(5),X(5),N(-15)],Rt:[X2(2),X(11),N(9)]},'min','-2'],
+ ['QR',{Lt:[SQ(-1)],Rt:[X2(2),X(-6),N(-31)]},'max','8'],
+ ['QR',{Lt:[SQ(-7)],Rt:[X2(2),X(11),N(23)]},'min','-26'],
+ ['QR',{Lt:[X2(-3),X(-1),N(8)],Rt:[SQ(-3)]},'max','1'],
+ ['QP',{Lt:[MUL([X(1),N(-1)],[X(-1),N(-4)])],Rt:[N(0)]},'min','-4'],
+ ['QP',{Lt:[MUL([X(-1),N(10)],[X(1),N(20)])],Rt:[N(0)]},'max','10'],
+ ['QP',{Lt:[MUL([X(1),N(5)],[X(-1),N(3)])],Rt:[N(0)]},'min','-5']
+];
+PQ.forEach((d,i)=>BANK.push(bk('pq-'+(i+1),d[0],'proto','Прототип · квадратные, №'+(i+1),d[1],d[2],d[3])));
+
+/* ---------- ПРОТОТИПЫ: дробные (54) ---------- */
+const PF=[
+ ['LF',{Lt:[X(1),FR([X(1)],3)],Rt:[N(8)],dens:[3]},null,'6'],
+ ['LF',{Lt:[X(1),FR([X(1)],5)],Rt:[FR([N(24)],5,true)],dens:[5]},null,'-4'],
+ ['LF',{Lt:[X(1),FR([X(1)],12)],Rt:[FR([N(13)],4,true)],dens:[12,4]},null,'-3'],
+ ['LF',{Lt:[FR([X(1)],8),FR([X(1)],11)],Rt:[FR([N(19)],11,true)],dens:[8,11]},null,'-8'],
+ ['LF',{Lt:[FR([X(1)],8),FR([X(1)],6)],Rt:[FR([N(7)],3,true)],dens:[8,6,3]},null,'-8'],
+ ['LF',{Lt:[FR([X(1)],6),FR([X(1)],10)],Rt:[FR([N(16)],15)],dens:[6,10,15]},null,'4'],
+ ['LF',{Lt:[N(6),FR([X(1)],2,true)],Rt:[FR([X(1)],3)],dens:[2,3]},null,'7,2'],
+ ['LF',{Lt:[N(3),FR([X(1)],5,true)],Rt:[X(1)],dens:[5]},null,'2,5'],
+ ['LF',{Lt:[N(4),FR([X(1)],7,true)],Rt:[FR([X(1)],9)],dens:[7,9]},null,'15,75'],
+ ['LF',{Lt:[FR([X(1)],6),FR([X(1)],12),X(1)],Rt:[FR([N(35)],4,true)],dens:[6,12,4]},null,'-7'],
+ ['LF',{Lt:[FR([X(1)],2),FR([X(1)],3),X(1)],Rt:[FR([N(44)],3)],dens:[2,3]},null,'8'],
+ ['LF',{Lt:[FR([X(1)],11),FR([X(1)],2),X(1)],Rt:[FR([N(35)],22)],dens:[11,2,22]},null,'1'],
+ ['LF',{Lt:[N(8),X(1)],Rt:[FR([X(1),N(2)],7)],dens:[7]},null,'-9'],
+ ['LF',{Lt:[N(9),X(1)],Rt:[FR([X(1),N(3)],4)],dens:[4]},null,'-11'],
+ ['LF',{Lt:[X(1),N(2),FR([X(1)],2,true)],Rt:[N(0)],dens:[2]},null,'-4'],
+ ['LF',{Lt:[FR([X(2),N(5)],6),N(4)],Rt:[FR([X(4)],7)],dens:[6,7]},null,'20,3'],
+ ['LF',{Lt:[FR([X(4),N(4)],8),N(5)],Rt:[FR([X(9)],7)],dens:[8,7]},null,'7'],
+ ['LF',{Lt:[FR([X(5),N(1)],7),N(5)],Rt:[X(1)],dens:[7]},null,'18'],
+ ['LF',{Lt:[FR([X(5),N(-5)],3),X(-2)],Rt:[N(2)],dens:[3]},null,'-11'],
+ ['LF',{Lt:[FR([X(6),N(-1)],2),X(-1)],Rt:[N(3)],dens:[2]},null,'1,75'],
+ ['LF',{Lt:[FR([X(4),N(-3)],2),FR([X(1)],3,true)],Rt:[N(3)],dens:[2,3]},null,'2,7'],
+ ['PROP',{ln:[N(10)],ld:[X(1),N(6)],rn:[N(-5)],rd:[N(3)]},null,'-12'],
+ ['PROP',{ln:[N(10)],ld:[X(1),N(-4)],rn:[N(5)],rd:[N(2)]},null,'8'],
+ ['PROP',{ln:[N(12)],ld:[X(1),N(5)],rn:[N(-12)],rd:[N(5)]},null,'-10'],
+ ['PROP',{ln:[N(11)],ld:[X(1),N(-5)],rn:[N(5)],rd:[X(1),N(-11)]},null,'16'],
+ ['PROP',{ln:[N(7)],ld:[X(1),N(-15)],rn:[N(15)],rd:[X(1),N(-7)]},null,'22'],
+ ['PROP',{ln:[N(8)],ld:[X(1),N(-4)],rn:[N(4)],rd:[X(1),N(-8)]},null,'12'],
+ ['Z',{c1:7,c2:-3},null,'-2'],
+ ['Z',{c1:-5,c2:3},null,'1'],
+ ['Z',{c1:6,c2:-1},null,'-2,5'],
+ ['PROP',{ln:[N(2)],ld:[X(1),N(-6)],rn:[N(-5)],rd:null},null,'5,6'],
+ ['PROP',{ln:[N(5)],ld:[X(1),N(-4)],rn:[N(2)],rd:null},null,'6,5'],
+ ['PROP',{ln:[N(11)],ld:[X(1),N(3)],rn:[N(10)],rd:null},null,'-1,9'],
+ ['S2',{a:13,b:12,c:12,d:13,k:2},'max','25'],
+ ['S2',{a:8,b:3,c:3,d:8,k:2},'min','5,5'],
+ ['S2',{a:10,b:4,c:4,d:10,k:2},'max','14'],
+ ['PROP',{ln:[X(1),N(-5)],ld:[X(1),N(-9)],rn:[N(5)],rd:null},null,'10'],
+ ['PROP',{ln:[X(1),N(-5)],ld:[X(1),N(-15)],rn:[N(-1)],rd:null},null,'10'],
+ ['PROP',{ln:[X(1),N(-6)],ld:[X(1),N(-13)],rn:[N(-6)],rd:null},null,'12'],
+ ['PROP',{ln:[X(1),N(-11)],ld:[X(1),N(-12)],rn:[N(11)],rd:[N(10)]},null,'22'],
+ ['PROP',{ln:[X(1),N(-14)],ld:[X(1),N(-12)],rn:[N(7)],rd:[N(8)]},null,'28'],
+ ['PROP',{ln:[X(1),N(-12)],ld:[X(1),N(-13)],rn:[N(12)],rd:[N(11)]},null,'24'],
+ ['XF',{an:-12,b:4},'min','-2'],
+ ['XF',{an:11,b:-12},'max','-1'],
+ ['XF',{an:-12,b:1},'min','-3'],
+ ['NZ',{qa:1,qb:-3,qc:-4,dr:1},null,'4'],
+ ['NZ',{qa:1,qb:2,qc:-3,dr:-5},'min','-3'],
+ ['NZ',{qa:1,qb:-1,qc:-2,dr:-3},'max','2'],
+ ['NZ',{qa:2,qb:-4,qc:0,dr:6},'min','0'],
+ ['NZ',{qa:-1,qb:2,qc:0,dr:10},'max','2'],
+ ['NZ',{qa:-1,qb:-6,qc:0,dr:9},'min','-6'],
+ ['SB',{k:0,m:2,n:-3},'max','1'],
+ ['SB',{k:1,m:2,n:-3},'max','2'],
+ ['SB',{k:3,m:-3,n:-4},'max','3,25']
+];
+PF.forEach((d,i)=>BANK.push(bk('pf-'+(i+1),d[0],'proto','Прототип · дробные, №'+(i+1),d[1],d[2],d[3])));
+
+if(typeof module!=='undefined')module.exports={BANK};
+/* ============ ДВИЖОК ШАГОВ (общий рендер + прогон) ============ */
+'use strict';
+
+/* --- input с живым предпросмотром этажной дроби --- */
+function mkAns(ph, cls){
+  const wrap=document.createElement('span');
+  wrap.style.display='inline-flex'; wrap.style.alignItems='center';
+  const inp=document.createElement('input');
+  inp.type='text'; inp.inputMode='text'; inp.autocomplete='off'; inp.spellcheck=false;
+  inp.className='ans'+(cls?' '+cls:''); if(ph)inp.placeholder=ph;
+  const prev=document.createElement('span'); prev.className='live-frac';
+  inp.addEventListener('input',()=>{
+    const v=inp.value.trim().replace(',', '.');
+    const m=v.match(/^(-?\d+)\s*\/\s*(-?\d+)$/);
+    if(m && m[2]!=='0'){
+      prev.innerHTML=' = <span class="frac"><span class="tt">'+
+        (m[1].replace('-',MINUS))+'</span><span class="bb">'+m[2].replace('-',MINUS)+'</span></span>';
+    } else prev.innerHTML='';
+  });
+  wrap.appendChild(inp); wrap.appendChild(prev);
+  wrap._input=inp;
+  return wrap;
+}
+function getRaw(wrap){return wrap._input.value.trim();}
+
+/* --- рендер UI по типу; возвращает {node, read, focusFirst, inputs} --- */
+function renderUI(ui, onEnter){
+  const node=document.createElement('div'); node.className='ui-block';
+  node.style.margin='6px 0 2px';
+  const inputs=[];
+  function fld(labelHTML, ph, cls){
+    const f=document.createElement('span'); f.className='field';
+    if(labelHTML){const l=document.createElement('span'); l.className='lbl'; l.innerHTML=labelHTML; f.appendChild(l);}
+    const a=mkAns(ph, cls); f.appendChild(a); inputs.push(a);
+    node.appendChild(f); return a;
+  }
+  let read;
+  switch(ui.type){
+    case 'num':
+      fld(ui.label||'', ui.ph||'?');
+      read=()=>[getRaw(inputs[0])];
+      break;
+    case 'num2':
+      (ui.labels||['','']).forEach((l,i)=>fld(l,'?'));
+      read=()=>inputs.map(getRaw);
+      break;
+    case 'expr3':{
+      const box=document.createElement('span'); box.className='field'; box.style.fontSize='18px';
+      const mk=()=>{const a=mkAns('?','mini'); inputs.push(a); return a;};
+      box.appendChild(mk()); const e1=document.createElement('span'); e1.innerHTML='<i>x</i>² +&nbsp;'; box.appendChild(e1);
+      box.appendChild(mk()); const e2=document.createElement('span'); e2.innerHTML='<i>x</i> +&nbsp;'; box.appendChild(e2);
+      box.appendChild(mk());
+      node.appendChild(box);
+      read=()=>inputs.map(getRaw);
+      break;}
+    case 'coef3':{
+      const box=document.createElement('span'); box.className='field'; box.style.fontSize='18px';
+      const mk=(cls)=>{const a=mkAns('?',cls?'mini':'mini'); inputs.push(a); return a;};
+      box.appendChild(mk()); const s1=document.createElement('span'); s1.innerHTML='<i>x</i>² +&nbsp;'; box.appendChild(s1);
+      box.appendChild(mk()); const s2=document.createElement('span'); s2.innerHTML='<i>x</i> +&nbsp;'; box.appendChild(s2);
+      box.appendChild(mk()); const s3=document.createElement('span'); s3.innerHTML='= 0'; box.appendChild(s3);
+      node.appendChild(box);
+      read=()=>inputs.map(getRaw);
+      break;}
+    case 'canon':{
+      const box=document.createElement('span'); box.className='field'; box.style.fontSize='18px';
+      const a1=mkAns('?','mini'); inputs.push(a1); box.appendChild(a1);
+      const s1=document.createElement('span'); s1.innerHTML='·&nbsp;<i>x</i>&nbsp; =&nbsp;'; box.appendChild(s1);
+      const a2=mkAns('?','mini'); inputs.push(a2); box.appendChild(a2);
+      node.appendChild(box);
+      read=()=>inputs.map(getRaw);
+      break;}
+    case 'fact':{
+      const box=document.createElement('span'); box.className='field'; box.style.fontSize='18px';
+      const s0=document.createElement('span'); s0.innerHTML='<i>x</i> · (&nbsp;'; box.appendChild(s0);
+      const a1=mkAns('?','mini'); inputs.push(a1); box.appendChild(a1);
+      const s1=document.createElement('span'); s1.innerHTML='<i>x</i> +&nbsp;'; box.appendChild(s1);
+      const a2=mkAns('?','mini'); inputs.push(a2); box.appendChild(a2);
+      const s2=document.createElement('span'); s2.innerHTML=') = 0'; box.appendChild(s2);
+      node.appendChild(box);
+      read=()=>inputs.map(getRaw);
+      break;}
+    case 'lin2':{
+      const box=document.createElement('span'); box.className='field'; box.style.fontSize='18px';
+      const a1=mkAns('?','mini'); inputs.push(a1); box.appendChild(a1);
+      const s1=document.createElement('span'); s1.innerHTML='<i>x</i> +&nbsp;'; box.appendChild(s1);
+      const a2=mkAns('?','mini'); inputs.push(a2); box.appendChild(a2);
+      node.appendChild(box);
+      read=()=>inputs.map(getRaw);
+      break;}
+    case 'eqn':{
+      const f=document.createElement('div'); f.style.width='100%';
+      const ta=document.createElement('textarea');
+      ta.className='ans-eqn'; ta.rows=1; ta.spellcheck=false; ta.autocomplete='off';
+      ta.setAttribute('autocapitalize','off'); ta.setAttribute('autocorrect','off');
+      ta.placeholder=ui.ph||'запиши уравнение';
+      const grow=()=>{ ta.style.height='auto'; ta.style.height=Math.max(ta.scrollHeight,38)+'px'; };
+      ta.addEventListener('input',grow);
+      f.appendChild(ta);
+      node.appendChild(f);
+      const wrap={_input:ta}; inputs.push(wrap);
+      read=()=>[ta.value.trim()];
+      setTimeout(grow,0);
+      break;}
+    case 'choice':{
+      const ch=document.createElement('div'); ch.className='chips'; ch.style.marginTop='4px';
+      let chosen=-1;
+      ui.opts.forEach((o,i)=>{
+        const b=document.createElement('button'); b.className='chip'; b.type='button'; b.innerHTML=o;
+        b.style.fontFamily='var(--ui)'; b.style.fontSize='14.5px'; b.style.textAlign='left';
+        b.addEventListener('click',()=>{ chosen=i;
+          ch.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+          b.classList.add('on');
+        });
+        ch.appendChild(b);
+      });
+      node.appendChild(ch);
+      node._chips=ch;
+      read=()=>[chosen];
+      break;}
+    default:
+      read=()=>[];
+  }
+  // Enter = проверить (кроме choice)
+  inputs.forEach(w=>w._input.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault(); onEnter&&onEnter();} }));
+  return {node, read, inputs, focusFirst:()=>inputs[0]&&inputs[0]._input.focus()};
+}
+
+/* --- глобальные счётчики --- */
+function Tally(){return {solved:0, hinted:0, shown:0, total:0};}
+function renderTally(t){
+  return '<span class="tally"><span class="dot g"></span>решено: <b>'+t.solved+'</b></span>'+
+         '<span class="tally"><span class="dot h"></span>подсказок: <b>'+t.hinted+'</b></span>'+
+         '<span class="tally"><span class="dot s"></span>показано: <b>'+t.shown+'</b></span>';
+}
+
+/* --- один шаг: карточка с кнопками --- */
+function makeStep(factory, state, idx, onResolve, tally, onTally){
+  const def=factory(state);
+  const card=document.createElement('div'); card.className='step active';
+  const head=document.createElement('div'); head.className='step-head';
+  const badge=document.createElement('span'); badge.className='step-badge'; badge.textContent=(idx+1);
+  head.appendChild(badge);
+  const turn=document.createElement('span'); turn.className='step-turn'; turn.textContent='твой ход';
+  head.appendChild(turn);
+  card.appendChild(head);
+  const q=document.createElement('div'); q.className='q'; q.innerHTML=def.q; card.appendChild(q);
+
+  const uir=renderUI(def.ui, tryCheck);
+  card.appendChild(uir.node);
+
+  const fb=document.createElement('div'); fb.className='fb'; card.appendChild(fb);
+  const revealBox=document.createElement('div'); revealBox.style.display='none';
+  card.appendChild(revealBox);
+
+  const row=document.createElement('div'); row.className='btn-row';
+  const bCheck=document.createElement('button'); bCheck.className='btn small'; bCheck.textContent='Проверить';
+  const bHint=document.createElement('button'); bHint.className='btn ghost small'; bHint.textContent='Подсказка';
+  const bShow=document.createElement('button'); bShow.className='btn reveal small'; bShow.textContent='Показать шаг';
+  row.appendChild(bCheck); if(def.hint)row.appendChild(bHint); row.appendChild(bShow);
+  card.appendChild(row);
+
+  let resolved=false, hintUsed=false;
+  function lock(kind){ // kind: 'done' | 'shown'
+    resolved=true;
+    uir.inputs.forEach(w=>w._input.disabled=true);
+    if(uir.node._chips)uir.node._chips.querySelectorAll('.chip').forEach(c=>c.disabled=true);
+    bCheck.disabled=true; bHint.disabled=true; bShow.disabled=true;
+    bCheck.style.opacity=bHint.style.opacity=bShow.style.opacity='.5';
+    card.classList.remove('active'); turn.remove();
+    card.classList.add(kind);
+    onResolve(kind);
+  }
+  function tryCheck(){
+    if(resolved)return;
+    let res;
+    try{ res=def.check(uir.read(), state); }
+    catch(e){ res={ok:false,msg:'Что-то в записи не так — проверь формат.'}; }
+    if(res.ok){
+      fb.className='fb good';
+      fb.innerHTML=(res.msg? res.msg+' ' : '')+'✓ верно';
+      tally.solved++; onTally();
+      lock('done');
+    } else {
+      fb.className='fb bad';
+      fb.innerHTML=res.msg||'Пока не то — попробуй ещё раз.';
+    }
+  }
+  bCheck.addEventListener('click',tryCheck);
+  bHint.addEventListener('click',()=>{
+    if(resolved)return;
+    if(!hintUsed){ hintUsed=true; tally.hinted++; onTally(); }
+    fb.className='fb'; fb.style.color='var(--accent)';
+    fb.innerHTML='💡 '+def.hint;
+  });
+  bShow.addEventListener('click',()=>{
+    if(resolved)return;
+    // прогоняем check на верных значениях, чтобы наполнить общее состояние (state.q, state.D, …)
+    try{ def.check(def.reveal.vals, state); }catch(e){}
+    revealBox.className='reveal-box'; revealBox.style.display='block';
+    revealBox.innerHTML=def.reveal.html+'<span class="tag">— подсмотрено, шаг не засчитан</span>';
+    tally.shown++; onTally();
+    lock('shown');
+  });
+
+  setTimeout(()=>uir.focusFirst&&uir.focusFirst(),30);
+  return card;
+}
+
+/* --- прогон шагов по порядку (прогрессивно) --- */
+function runSteps(container, factories, opts){
+  opts=opts||{};
+  container.innerHTML='';
+  const state={};
+  const tally=Tally(); tally.total=factories.length;
+  const counterEl=document.createElement('div'); counterEl.className='counters';
+  const stepsWrap=document.createElement('div');
+  container.appendChild(stepsWrap);
+  container.appendChild(counterEl);
+  function paintTally(){ counterEl.innerHTML=renderTally(tally); }
+  paintTally();
+
+  let i=0;
+  function next(){
+    if(i>=factories.length){
+      if(opts.onComplete)opts.onComplete(tally, state);
+      const done=document.createElement('div'); done.className='fb good';
+      done.style.marginTop='10px';
+      done.innerHTML= tally.shown===0 && tally.hinted===0
+        ? '🎉 Решено полностью самостоятельно!'
+        : (tally.shown===0 ? '👍 Готово — все шаги решены.' : 'Готово. Показанные шаги в следующий раз попробуй сам.');
+      stepsWrap.appendChild(done);
+      return;
+    }
+    const idx=i;
+    const card=makeStep(factories[idx], state, idx, ()=>{
+      i++; next();
+    }, tally, paintTally);
+    stepsWrap.appendChild(card);
+    card.scrollIntoView&&card.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+  next();
+  return {state, tally};
+}
+/* ============ УЧИМСЯ: теория пунктами + интерактивы + квизы ============ */
+'use strict';
+
+function illus(fam,p,ask){return {fam,p,ask:ask||null,src:'illus'};}
+function elt(tag,cls,html){const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e;}
+
+/* пункт теории: номер + тело */
+function point(n, titleHTML, bodyNodes){
+  const p=elt('div','point');
+  p.appendChild(elt('span','num', String(n)));
+  const b=elt('div','body');
+  if(titleHTML)b.appendChild(elt('h3',null,titleHTML));
+  (Array.isArray(bodyNodes)?bodyNodes:[bodyNodes]).forEach(nd=>{
+    b.appendChild(typeof nd==='string'?elt('p',null,nd):nd);
+  });
+  p.appendChild(b);
+  return p;
+}
+function tie(html){ // «связка» между пунктами
+  return elt('div','link-note', '↳ '+html);
+}
+function worked(task, method){
+  const box=elt('div','card'); box.style.margin='10px 0'; box.style.background='var(--accent-soft)';
+  box.appendChild(elt('div','eyebrow','разберём по шагам'));
+  const cond=elt('div','worked-cond');
+  cond.innerHTML='Решите уравнение<br>'+taskEqnHTML(task);
+  box.appendChild(cond);
+  const host=elt('div'); box.appendChild(host);
+  runSteps(host, taskSteps(task, method), {});
+  return box;
+}
+
+/* одиночная практика (нестандартный шаг) */
+function practice(defFactory){
+  const host=elt('div');
+  runSteps(host, [defFactory], {});
+  return host;
+}
+
+/* ─────────── СИГНАТУРНЫЙ ИНТЕРАКТИВ: перенос слагаемых ─────────── */
+function termFlyer(){
+  const box=elt('div','card'); box.style.background='linear-gradient(#fff,var(--accent-soft))';
+  box.appendChild(elt('div','eyebrow','потренируй перенос — кликай по слагаемым'));
+  box.appendChild(elt('p',null,'Клик по слагаемому «перебрасывает» его через знак <span class="math">=</span> — и знак меняется. Соберём <b>все иксы слева, все числа справа</b>.'));
+  const stage=elt('div'); stage.style.cssText='display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:center;font-size:19px;font-family:var(--math);margin:14px 0;min-height:44px;';
+  const live=elt('div','big-eq'); live.style.margin='6px 0';
+  const fb=elt('div','fb');
+  const row=elt('div','btn-row');
+  box.appendChild(stage); box.appendChild(live); box.appendChild(fb); box.appendChild(row);
+
+  let terms=[];
+  function loadTask(){
+    let t; try{t=genTask('g_l2');}catch(e){t=illus('L',{Lt:[T(4,1),T(-4)],Rt:[T(16),T(2,1)]});}
+    terms=[];
+    t.p.Lt.forEach(tm=>{ if(tm.c!==undefined) terms.push({c:tm.c, x:tm.x, side:'L'}); });
+    t.p.Rt.forEach(tm=>{ if(tm.c!==undefined) terms.push({c:tm.c, x:tm.x, side:'R'}); });
+    fb.textContent=''; fb.className='fb';
+    render();
+  }
+  function chipHTML(tm){
+    const neg=fcmp(tm.c,F0)<0, a=fabs(tm.c);
+    const sign=neg?MINUS:'+';
+    const body=tm.x===1?(feq(a,F1)?'<i>x</i>':coefHTML(a)+'<i>x</i>'):numHTML(a);
+    return sign+'&thinsp;'+body;
+  }
+  function sideEq(side){
+    const arr=terms.filter(t=>t.side===side);
+    if(!arr.length)return '<span style="color:var(--pencil)">0</span>';
+    return arr.map((t,i)=>{const neg=fcmp(t.c,F0)<0, a=fabs(t.c);
+      const body=t.x===1?(feq(a,F1)?'<i>x</i>':coefHTML(a)+'<i>x</i>'):numHTML(a);
+      return (i===0?(neg?MINUS:''):(neg?' '+MINUS+' ':' + '))+body;}).join('');
+  }
+  function render(){
+    stage.innerHTML='';
+    const zoneL=elt('div'); zoneL.style.cssText='display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;flex:1;';
+    const eq=elt('span',null,'='); eq.style.cssText='font-weight:700;padding:0 4px;';
+    const zoneR=elt('div'); zoneR.style.cssText='display:flex;gap:6px;flex-wrap:wrap;flex:1;';
+    function mkChip(tm){
+      const b=elt('button','chip'); b.type='button'; b.innerHTML=chipHTML(tm);
+      b.style.cssText='padding:5px 12px;';
+      b.addEventListener('click',()=>{ tm.side=tm.side==='L'?'R':'L'; tm.c=fneg(tm.c);
+        b.animate?b.animate([{transform:'scale(1.15)'},{transform:'scale(1)'}],{duration:180}):0;
+        fb.textContent=''; fb.className='fb'; render(); });
+      return b;
+    }
+    terms.filter(t=>t.side==='L').forEach(t=>zoneL.appendChild(mkChip(t)));
+    terms.filter(t=>t.side==='R').forEach(t=>zoneR.appendChild(mkChip(t)));
+    if(!zoneL.children.length)zoneL.appendChild(elt('span','pen-note','(пусто)'));
+    if(!zoneR.children.length)zoneR.appendChild(elt('span','pen-note','(пусто)'));
+    stage.appendChild(zoneL); stage.appendChild(eq); stage.appendChild(zoneR);
+    live.innerHTML=sideEq('L')+' = '+sideEq('R');
+  }
+  function check(){
+    const xRight=terms.some(t=>t.x===1 && t.side==='R');
+    const nLeft=terms.some(t=>t.x===0 && t.side==='L');
+    if(xRight||nLeft){ fb.className='fb bad';
+      fb.innerHTML= xRight&&nLeft?'Ещё не всё: и икс справа, и число слева. Перенеси их.'
+        : xRight?'Икс остался справа — перенеси его влево (знак сменится).'
+        : 'Число осталось слева — перенеси его вправо.'; return; }
+    let k=F0,m=F0; terms.forEach(t=>{ if(t.x===1)k=fadd(k,t.c); else m=fadd(m,t.c); });
+    fb.className='fb good';
+    if(fzero(k)){ fb.innerHTML='Иксы сократились полностью — особый случай (корней нет или их бесконечно много). В задании 9 так не бывает — попробуй другой пример.'; return; }
+    fb.innerHTML='✓ Расставлено верно! Приводим подобные: &nbsp;<span class="math">'+
+      (feq(k,F1)?'':feq(k,F(-1))?MINUS:numHTML(k))+'<i>x</i> = '+numHTML(m)+
+      '</span>&nbsp; → делим: <span class="math"><i>x</i> = '+numHTML(fdiv(m,k))+'</span>'+
+      (fisint(fdiv(m,k))?'':' <span class="pen-note">(в бланк '+decStr(fdiv(m,k))+')</span>');
+  }
+  const bChk=elt('button','btn small','Проверить расстановку'); bChk.addEventListener('click',check);
+  const bNew=elt('button','btn ghost small','Другой пример'); bNew.addEventListener('click',loadTask);
+  row.appendChild(bChk); row.appendChild(bNew);
+  loadTask();
+  return box;
+}
+
+/* ─────────── СИГНАТУРНЫЙ ИНТЕРАКТИВ: подборщик Виета ─────────── */
+function vietaPicker(){
+  const box=elt('div','card'); box.style.background='linear-gradient(#fff,var(--accent-soft))';
+  box.appendChild(elt('div','eyebrow','подбор по Виета — вводи корни, следи за суммой и произведением'));
+  const title=elt('div','big-eq');
+  const target=elt('p'); target.style.textAlign='center';
+  const inputs=elt('div'); inputs.style.cssText='display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:8px 0;';
+  const f1=mkAns('?','mini'), f2=mkAns('?','mini');
+  const w1=elt('span','field','<span class="lbl"><i>x</i>₁ =</span>'); w1.appendChild(f1);
+  const w2=elt('span','field','<span class="lbl"><i>x</i>₂ =</span>'); w2.appendChild(f2);
+  inputs.appendChild(w1); inputs.appendChild(w2);
+  const meter=elt('div'); meter.style.cssText='text-align:center;font-family:var(--math);font-size:16px;margin:6px 0;min-height:24px;';
+  const fb=elt('div','fb'); fb.style.textAlign='center';
+  const row=elt('div','btn-row'); row.style.justifyContent='center';
+  box.appendChild(title); box.appendChild(target); box.appendChild(inputs); box.appendChild(meter); box.appendChild(fb); box.appendChild(row);
+
+  let p,q,roots;
+  function load(){
+    let t; try{t=genTask('g_qf');}catch(e){t=illus('QF',{Lt:[T(1,2),T(2,1),T(-8)],Rt:[T(0)]});}
+    const n=taskNorm(t);
+    if(!feq(n.A,F1)){ // приведём к монику делением
+      const a=n.A; n.B=fdiv(n.B,a); n.C=fdiv(n.C,a); n.A=F1;
+    }
+    p=n.B; q=n.C; roots=solveABC(F1,p,q).roots;
+    title.innerHTML='<i>x</i>² '+(fcmp(p,F0)<0?MINUS+' '+numHTML(fabs(p)):'+ '+numHTML(p))+'<i>x</i> '+
+      (fcmp(q,F0)<0?MINUS+' '+numHTML(fabs(q)):'+ '+numHTML(q))+' = 0';
+    target.innerHTML='Нужны два числа: сумма = <b>'+numHTML(fneg(p))+'</b>&nbsp; и&nbsp; произведение = <b>'+numHTML(q)+'</b>';
+    f1._input.value=''; f2._input.value=''; meter.innerHTML=''; fb.textContent=''; fb.className='fb';
+  }
+  function update(){
+    const a=parseNum(getRaw(w1.querySelector('input')?w1:w1)); // safety
+    const x1=parseNum(f1.value!==undefined?f1.value:''); // not used
+  }
+  function refresh(){
+    const x1=parseNum(f1.value), x2=parseNum(f2.value);
+    if(x1===null||x2===null){ meter.innerHTML='<span class="pen-note">введи оба корня…</span>'; return; }
+    const s=fadd(x1,x2), pr=fmul(x1,x2);
+    const sOk=feq(s,fneg(p)), pOk=feq(pr,q);
+    meter.innerHTML='сумма: <b style="color:'+(sOk?'var(--green)':'var(--red)')+'">'+numHTML(s)+'</b>'+
+      (sOk?' ✓':'')+' &nbsp;·&nbsp; произведение: <b style="color:'+(pOk?'var(--green)':'var(--red)')+'">'+numHTML(pr)+'</b>'+(pOk?' ✓':'');
+  }
+  f1.value=''; f2.value='';
+  [f1,f2].forEach(inp=>inp.addEventListener('input',refresh));
+  function check(){
+    const x1=parseNum(f1.value), x2=parseNum(f2.value);
+    if(x1===null||x2===null){ fb.className='fb bad'; fb.textContent='Впиши оба корня.'; return; }
+    const okSet=(feq(x1,roots[0])&&feq(x2,roots[1]))||(feq(x1,roots[1])&&feq(x2,roots[0]));
+    if(okSet){ fb.className='fb good'; fb.innerHTML='✓ Верно! Это корни: <span class="math"><i>x</i>₁ = '+numHTML(roots[0])+', <i>x</i>₂ = '+numHTML(roots[1])+'</span>'; }
+    else { fb.className='fb bad'; fb.innerHTML='Сумма или произведение не совпали. Подбирай пары делителей произведения '+numHTML(q)+' и проверяй сумму.'; }
+  }
+  const bChk=elt('button','btn small','Проверить'); bChk.addEventListener('click',check);
+  const bNew=elt('button','btn ghost small','Новый пример'); bNew.addEventListener('click',load);
+  const bHint=elt('button','btn ghost small','Подсказка'); bHint.addEventListener('click',()=>{
+    fb.className='fb'; fb.style.color='var(--accent)';
+    fb.innerHTML='💡 Знак произведения '+(fcmp(q,F0)<0?'отрицательный → корни разных знаков':'положительный → корни одного знака')+'. Перебирай делители '+numHTML(fabs(q))+'.';});
+  row.appendChild(bChk); row.appendChild(bHint); row.appendChild(bNew);
+  load();
+  return box;
+}
+
+/* ─────────── ПОДСТАНОВКА (что такое корень) ─────────── */
+function substitution(){
+  const box=elt('div','card'); box.style.background='var(--accent-soft)';
+  box.appendChild(elt('div','eyebrow','что значит «корень»'));
+  box.appendChild(elt('p',null,'Корень — число, при подстановке которого <b>левая часть равна правой</b>. Проверим: подставим <span class="math"><i>x</i> = 4</span> в уравнение <span class="math">3<i>x</i> − 5 = 7</span>.'));
+  const host=elt('div');
+  runSteps(host, [(state)=>({
+    q:'Подставь <span class="math"><i>x</i> = 4</span> в левую часть <span class="math">3<i>x</i> − 5</span>. Что получилось?',
+    ui:{type:'num',label:'3·4 − 5 ='},
+    hint:'Сначала умножь: 3 · 4 = 12. Потом вычти 5.',
+    check(vals){ const f=parseNum(vals[0]); if(f===null)return {ok:false,msg:'Впиши число.'};
+      if(feq(f,F(7)))return {ok:true,msg:'Левая часть равна 7 — ровно как правая, значит 4 действительно корень.'};
+      if(feq(f,F(17)))return {ok:false,msg:'Сначала умножение: 3·4 = 12, и только потом −5.'};
+      return {ok:false,msg:'Посчитай: 3·4 = 12, затем 12 − 5.'}; },
+    reveal:{vals:['7'],html:'3·4 − 5 = 12 − 5 = 7 &nbsp;— равно правой части, корень подходит'}
+  })], {});
+  box.appendChild(host);
+  return box;
+}
+
+/* ─────────── КВИЗ: определи случай → реши ─────────── */
+function quizBlock(ch, titleHTML){
+  const box=elt('div','card tinted');
+  box.appendChild(elt('div','eyebrow','проверка себя'));
+  box.appendChild(elt('h2',null,titleHTML));
+  box.appendChild(elt('p',null,'Сначала определи <b>тип</b> уравнения, потом реши его по шагам.'));
+  const host=elt('div'); box.appendChild(host);
+  const row=elt('div','btn-row');
+  const bNew=elt('button','btn ghost small','Другая задача'); row.appendChild(bNew);
+  box.appendChild(row);
+
+  const pool=BANK.filter(t=>FAMMETA[t.fam].ch===ch);
+  function newQ(){
+    host.innerHTML='';
+    const t=pool[Math.floor(Math.random()*pool.length)];
+    const q=elt('div','task-q'); q.style.marginRight='0'; q.innerHTML=taskInstrHTML(t); host.appendChild(q);
+    host.appendChild(elt('p','pen-note','Какой это случай?'));
+    const chips=elt('div','chips');
+    const solved=elt('div');
+    const fb=elt('div','fb');
+    const correct=taskCaseId(t);
+    let done=false;
+    CASEOPTS[ch].forEach(o=>{
+      const b=elt('button','chip'); b.type='button'; b.innerHTML=o.name;
+      b.style.cssText='font-family:var(--ui);font-size:14px;text-align:left;';
+      b.addEventListener('click',()=>{
+        if(done)return;
+        if(o.id===correct){ done=true; b.classList.add('correct');
+          chips.querySelectorAll('.chip').forEach(c=>{if(c!==b)c.disabled=true;});
+          fb.className='fb good'; fb.innerHTML='✓ Верно. Теперь решаем:';
+          const sh=elt('div'); sh.style.marginTop='8px';
+          runSteps(sh, taskSteps(t), {}); solved.appendChild(sh);
+        } else { b.classList.add('wrong'); b.disabled=true;
+          fb.className='fb bad'; fb.innerHTML='Не этот случай — присмотрись к уравнению и попробуй ещё.'; }
+      });
+      chips.appendChild(b);
+    });
+    host.appendChild(chips); host.appendChild(fb); host.appendChild(solved);
+  }
+  bNew.addEventListener('click',newQ);
+  newQ();
+  return box;
+}
+
+/* ─────────── СБОРКА ВКЛАДКИ ─────────── */
+function buildLearnTab(root){
+  root.innerHTML='';
+  const intro=elt('div','card tinted');
+  intro.innerHTML='<div class="eyebrow">по порядку, с разборами</div><h2>Учимся решать уравнения</h2>'+
+    '<p>Три главы: линейные → квадратные → дробные. Каждый пункт — маленький шаг с разбором и тренировкой. В конце главы — проверка себя на живых задачах открытый банк.</p>';
+  root.appendChild(intro);
+
+  /* ГЛАВА 1 — линейные */
+  const c1=elt('div','card');
+  c1.appendChild(elt('h2',null,'Глава 1. Линейные уравнения'));
+  c1.appendChild(point(1,'Что такое корень',[
+    'Решить уравнение — значит найти все <b>корни</b>: числа, при которых левая часть равна правой.',
+    substitution()
+  ]));
+  c1.appendChild(tie('Чтобы найти корень, слагаемые «сортируют»: иксы — в одну сторону, числа — в другую. Как именно — пункт 2.'));
+  c1.appendChild(point(2,'Правило переноса',[
+    'Слагаемое, перенесённое через знак <span class="math">=</span>, <b>меняет знак</b>. Это главный приём линейных уравнений.',
+    termFlyer()
+  ]));
+  c1.appendChild(tie('Когда всё расставлено и подобные приведены, остаётся одно деление — пункт 3.'));
+  c1.appendChild(point(3,'Привести подобные и разделить',[
+    'После переноса складываем отдельно иксы, отдельно числа. Получается <span class="math">☐·<i>x</i> = ☐</span> — делим правую часть на коэффициент при <span class="math"><i>x</i></span>. Ответ бывает дробным — записываем десятичной дробью.',
+    worked(illus('L',{Lt:[T(4,1),T(-4)],Rt:[T(16),T(2,1)]}))
+  ]));
+  c1.appendChild(tie('Если в уравнении есть скобки — их раскрывают <b>первыми</b>. Тут прячется частая ошибка со знаком — пункт 4.'));
+  c1.appendChild(point(4,'Скобки и минус перед скобкой',[
+    'Множитель перед скобкой умножается на <b>каждое</b> слагаемое внутри. Минус перед скобкой меняет знак у всего, что внутри: <span class="math">−2(<i>x</i> − 3) = −2<i>x</i> + 6</span>.',
+    worked(illus('LB',{Lt:[BR(3,[T(1,1),T(5)]),BR(-2,[T(1,1),T(-1)])],Rt:[T(4)]}))
+  ]));
+  c1.appendChild(tie('Соберём всё вместе в один план — и запасной «отчаянный» способ.'));
+  c1.appendChild(point(5,'План решения (и запасной путь)',[
+    '<b>1)</b> раскрой скобки → <b>2)</b> перенеси (иксы влево, числа вправо) → <b>3)</b> приведи подобные → <b>4)</b> раздели.',
+    elt('div','warn','<b>Отчаянный метод.</b> Запутался в знаках? Правило одно: всё с <span class="math"><i>x</i></span> — влево, всё без — вправо, <b>всегда</b>. Привёл подобные, разделил. Цена — иногда лишние действия, зато не собьёшься.')
+  ]));
+  c1.appendChild(tie('А если коэффициенты — дроби? Избавимся от них одним умножением — пункт 6.'));
+  c1.appendChild(point(6,'Дробные коэффициенты → умножаем на НОК',[
+    'Умножь <b>каждое</b> слагаемое на общий знаменатель (удобнее — НОК), и дроби исчезнут. Дальше — обычное линейное.',
+    elt('p','link-note','Как искать НОК знаменателей — подробно в тренаж`ре по действиям с дробями (задание 6).'),
+    worked(illus('LF',{Lt:[T(1,1),FR([T(1,1)],3)],Rt:[T(8)],dens:[3]}))
+  ]));
+  c1.appendChild(tie('Особый вид — равенство двух квадратов. Квадраты уходят, остаётся линейное — пункт 7.'));
+  c1.appendChild(point(7,'(x + a)² = (x + b)²',[
+    'Раскрой оба квадрата: <span class="math">(<i>x</i> + a)² = <i>x</i>² + 2a<i>x</i> + a²</span>. Слагаемые <span class="math"><i>x</i>²</span> с обеих сторон одинаковы — <b>взаимно уничтожаются</b>, остаётся линейное уравнение.',
+    worked(illus('LSQ',{Lt:[SQ(3)],Rt:[SQ(8)]}))
+  ]));
+  root.appendChild(c1);
+  root.appendChild(quizBlock('lin','Квиз 1 · линейные'));
+
+  /* ГЛАВА 2 — квадратные */
+  const c2=elt('div','card');
+  c2.appendChild(elt('h2',null,'Глава 2. Квадратные уравнения'));
+  c2.appendChild(point(8,'Коэффициенты a, b, c',[
+    'В <span class="math"><i>a</i><i>x</i>² + <i>b</i><i>x</i> + <i>c</i> = 0</span>: <span class="math"><i>a</i></span> — при <span class="math"><i>x</i>²</span>, <span class="math"><i>b</i></span> — при <span class="math"><i>x</i></span>, <span class="math"><i>c</i></span> — свободное число. Знак берём прямо из записи.',
+    practice((state)=>stABC({a:F(1),b:F(-10),c:F(24)},'read')(state))
+  ]));
+  c2.appendChild(tie('Прежде чем считать дискриминант — глянь на вид уравнения. Пункт 9.'));
+  c2.appendChild(point(9,'Сначала — какой случай',[
+    'Три случая, смотрим по порядку: <span class="math"><i>c</i> = 0</span> (нет числа) → вынести <span class="math"><i>x</i></span>; <span class="math"><i>b</i> = 0</span> (нет <span class="math"><i>x</i></span>) → взять <span class="math">±√</span>; иначе — дискриминант. Первые два быстрее, поэтому проверяем их сразу.'
+  ]));
+  c2.appendChild(point(10,'Случай c = 0: вынести x',[
+    'Общий множитель <span class="math"><i>x</i></span> за скобку: <span class="math"><i>x</i>(<i>a</i><i>x</i> + <i>b</i>) = 0</span>. Произведение равно нулю, если множитель равен нулю — отсюда <span class="math"><i>x</i> = 0</span> и корень скобки. <b>Ноль не теряем!</b>',
+    worked(illus('QNC',{Lt:[T(2,2),T(-8,1)],Rt:[T(0)]}))
+  ]));
+  c2.appendChild(point(11,'Случай b = 0: корень ±√',[
+    'Выражаем <span class="math"><i>x</i>²</span> и берём квадратный корень — корней <b>два</b>, со знаками <span class="math">+</span> и <span class="math">−</span>.',
+    worked(illus('QNB',{Lt:[T(1,2),T(-49)],Rt:[T(0)]},'max'))
+  ]));
+  c2.appendChild(tie('Остальные квадратные — через дискриминант. Универсальный способ, работает всегда.'));
+  c2.appendChild(point(12,'Дискриминант',[
+    '<span class="fform"><i>D</i> = <i>b</i>² − 4<i>a</i><i>c</i></span>, затем <span class="fform"><i>x</i> = <span class="frac"><span class="tt">−<i>b</i> ± √<i>D</i></span><span class="bb">2<i>a</i></span></span></span>. Аккуратно со знаком <span class="math"><i>b</i></span> и с квадратом отрицательного числа.',
+    worked(illus('QF',{Lt:[T(1,2),T(-10,1),T(24)],Rt:[T(0)]},'min'))
+  ]));
+  c2.appendChild(tie('Для «удобных» уравнений есть скоростной способ — Виета. Но у него честная цена.'));
+  c2.appendChild(point(13,'Теорема Виета — для быстрых',[
+    'При <span class="math"><i>a</i> = 1</span>: сумма корней = <span class="math">−<i>p</i></span>, произведение = <span class="math"><i>q</i></span>. Подбираем два таких числа.',
+    vietaPicker(),
+    elt('div','warn','<b>Честная цена.</b> Виета быстра только при <span class="math"><i>a</i> = 1</span> и целых корнях. Не подобрал за полминуты — спокойно иди через дискриминант.')
+  ]));
+  c2.appendChild(point(14,'«Меньший / больший» — ловушка знаков',[
+    'Когда корня два, в ответ идёт один — по условию. У отрицательных чисел <b>больший тот, что правее</b> на прямой: <span class="math">−2 &gt; −7</span>.',
+    practice((state)=>stPickRoot(illus('QF',{Lt:[T(1,2),T(9,1),T(14)],Rt:[T(0)]},'max'), F(-7), F(-2))(state))
+  ]));
+  root.appendChild(c2);
+  root.appendChild(quizBlock('quad','Квиз 2 · квадратные'));
+
+  /* ГЛАВА 3 — дробные */
+  const c3=elt('div','card');
+  c3.appendChild(elt('h2',null,'Глава 3. Дробно-рациональные уравнения'));
+  c3.appendChild(elt('div','warn','Везде, где <span class="math"><i>x</i></span> стоит в знаменателе, в конце — проверка <b>ОДЗ</b>: знаменатель ≠ 0. Корень, обнуляющий знаменатель, — посторонний.'));
+  c3.appendChild(point(15,'Пропорция: крест-накрест',[
+    'Если <span class="math">дробь = дробь</span> — перемножаем «крест-накрест»: числитель одной на знаменатель другой. Получается уравнение попроще, а в конце проверяем ОДЗ.',
+    worked(illus('PROP',{ln:[T(10)],ld:[T(1,1),T(6)],rn:[T(-5)],rd:[T(3)]}))
+  ]));
+  c3.appendChild(point(16,'Дробь = 0: следим за знаменателем',[
+    'Дробь равна нулю, когда <b>числитель = 0</b>, а знаменатель при этом <b>не</b> ноль. Обязательно проверяем найденные корни — какой-то может оказаться посторонним.',
+    worked(illus('NZ',{qa:1,qb:-3,qc:-4,dr:1}))
+  ]));
+  c3.appendChild(tie('Заметил в примере: один корень пришлось выбросить — он обнулял знаменатель. Это и есть посторонний корень.'));
+  c3.appendChild(point(17,'x и дробь: умножаем на x',[
+    'В <span class="math"><i>x</i> + a⁄<i>x</i> = <i>b</i></span> умножаем всё на <span class="math"><i>x</i></span> — знаменатель уходит, получается квадратное. Не забываем <span class="math"><i>x</i> ≠ 0</span>.',
+    worked(illus('XF',{an:-12,b:4},'min'))
+  ]));
+  c3.appendChild(point(18,'Две дроби: общий знаменатель',[
+    'Приводим к общему знаменателю, приравниваем числители — выходит квадратное. Решаем и проверяем ОДЗ.',
+    worked(illus('S2',{a:13,b:12,c:12,d:13,k:2},'max')),
+    (function(){ const d=elt('details'); d.style.margin='8px 0';
+      const s=elt('summary'); s.style.cssText='cursor:pointer;font-family:var(--hand);color:var(--accent);'; s.textContent='Замена переменной — когда пригодится';
+      d.appendChild(s);
+      d.appendChild(elt('p','link-note','Если в уравнении несколько раз повторяется одна и та же скобка или выражение, можно обозначить его буквой <span class="math"><i>t</i></span>, решить проще, а потом вернуться к <span class="math"><i>x</i></span>. На ОГЭ почти всегда хватает общего знаменателя, но приём полезно знать.'));
+      return d; })()
+  ]));
+  root.appendChild(c3);
+  root.appendChild(quizBlock('frac','Квиз 3 · дробные'));
+
+  const outro=elt('div','card tinted');
+  outro.innerHTML='<p>Теорию прошли — теперь <b>Пошагово</b> для тренировки без конца и <b>Марафон</b> с реальными задачами открытый банк.</p>';
+  root.appendChild(outro);
+}
+/* ============ РЕЖИМЫ: Пошагово + Марафон ============ */
+'use strict';
+
+/* --- проверка финального ответа в марафоне --- */
+function checkFinal(t, raw){
+  const key=taskKey(t);
+  const v=parseNum(raw);
+  if(v===null)return {ok:false,msg:'Не разобрала ответ. Пиши число: например 1,5 или −2 или 3/2.'};
+  if(feq(v,key)){
+    let msg='';
+    if(!fisint(key)) msg='В бланк ОГЭ: <b>'+decStr(key)+'</b> — десятичной дробью через запятую.';
+    return {ok:true, msg};
+  }
+  const sol=taskSolve(t);
+  if(sol.roots.length===2){
+    const other=t.ask==='max'?sol.roots[0]:sol.roots[1];
+    if(feq(v,other))return {ok:false,msg:'Это '+(t.ask==='max'?'меньший':'больший')+' корень. В условии просят '+askWord(t)+' — сравни корни на числовой прямой.'};
+  }
+  if(sol.excluded.some(e=>feq(e,v)))return {ok:false,msg:'Этот корень посторонний: он обнуляет знаменатель. Проверь ОДЗ.'};
+  if(feq(v,fneg(key)))return {ok:false,msg:'Верное по модулю, но знак не тот. Проверь знаки.'};
+  return {ok:false,msg:'Пока не сходится. Попробуй решить по шагам — кнопка ниже.'};
+}
+
+/* --- инлайн-решение задачи по шагам (общий для обоих режимов) --- */
+function solveInline(host, task, method){
+  host.innerHTML='';
+  runSteps(host, taskSteps(task, method), {});
+}
+
+/* ============ ПОШАГОВО ============ */
+const GEN_GROUPS=[
+  {title:'Линейные', items:[
+    {gid:'g_l1', label:'простые'},
+    {gid:'g_l2', label:'x с двух сторон'},
+    {gid:'g_lb', label:'со скобками'},
+    {gid:'g_lf', label:'дробные коэффициенты'},
+    {gid:'g_lsq', label:'(x+a)² = (x+b)²'},
+  ]},
+  {title:'Квадратные', items:[
+    {gid:'g_qnc', label:'без c (вынеси x)'},
+    {gid:'g_qnb', label:'без b (±√)'},
+    {gid:'g_qf', label:'полное', method:true},
+    {gid:'g_qp', label:'разложено на множители'},
+    {gid:'g_qr', label:'сначала приведи'},
+  ]},
+  {title:'Дробные', items:[
+    {gid:'g_prop', label:'пропорция'},
+    {gid:'g_nz', label:'дробь = 0'},
+    {gid:'g_xf', label:'x и дробь'},
+    {gid:'g_heavy', label:'две дроби = число'},
+  ]},
+];
+
+function buildStepTab(root){
+  root.innerHTML='';
+  const intro=document.createElement('div'); intro.className='card tinted';
+  intro.innerHTML='<div class="eyebrow">тренируемся по шагам</div>'+
+    '<h2>Выбери тип уравнения</h2>'+
+    '<p>Задачи генерируются без конца. Каждую разбираем по шагам: у любого шага есть <b>Подсказка</b> и <b>Показать шаг</b> — но что показал, то не засчитано.</p>';
+  root.appendChild(intro);
+
+  GEN_GROUPS.forEach(g=>{
+    const card=document.createElement('div'); card.className='card';
+    const h=document.createElement('h3'); h.textContent=g.title; h.style.marginTop='2px'; card.appendChild(h);
+    const chips=document.createElement('div'); chips.className='chips';
+    g.items.forEach(it=>{
+      const b=document.createElement('button'); b.className='chip'; b.type='button'; b.textContent=it.label;
+      b.addEventListener('click',()=>{
+        chips.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+        b.classList.add('on');
+        startGen(it, workArea);
+      });
+      chips.appendChild(b);
+    });
+    card.appendChild(chips);
+    root.appendChild(card);
+  });
+
+  const workArea=document.createElement('div'); workArea.id='step-work';
+  root.appendChild(workArea);
+}
+
+function startGen(item, host){
+  host.innerHTML='';
+  const card=document.createElement('div'); card.className='card';
+  host.appendChild(card);
+  renderGenTask(item, card);
+  card.scrollIntoView&&card.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function renderGenTask(item, card){
+  card.innerHTML='';
+  let task;
+  try{ task=genTask(item.gid); }catch(e){ card.innerHTML='<p class="fb bad">Не удалось собрать задачу, попробуй другой тип.</p>'; return; }
+
+  const qEl=document.createElement('div'); qEl.className='task-q'; qEl.style.marginRight='0';
+  qEl.innerHTML=taskInstrHTML(task);
+  card.appendChild(qEl);
+
+  const stepHost=document.createElement('div');
+  let method;
+
+  if(item.method){
+    // селектор метода для полного квадратного
+    const n=taskNorm(task); const monic=feq(n.A,F1);
+    const sel=document.createElement('div'); sel.className='btn-row'; sel.style.marginBottom='4px';
+    const lbl=document.createElement('span'); lbl.className='pen-note'; lbl.textContent='способ:';
+    sel.appendChild(lbl);
+    const bD=document.createElement('button'); bD.className='btn ghost small'; bD.textContent='Дискриминант';
+    const bV=document.createElement('button'); bV.className='btn ghost small'; bV.textContent='По Виета';
+    sel.appendChild(bD); sel.appendChild(bV);
+    if(!monic){ bV.disabled=true; bV.style.opacity='.45';
+      bV.title='Виета удобна только при a = 1'; }
+    const note=document.createElement('span'); note.className='pen-note';
+    if(!monic)note.innerHTML='&nbsp;(здесь <i>a</i> ≠ 1 — Виета не подойдёт, идём через дискриминант)';
+    sel.appendChild(note);
+    card.appendChild(sel);
+    card.appendChild(stepHost);
+    function choose(m,btn){ method=m; bD.classList.remove('on'); bV.classList.remove('on'); btn.classList.add('on');
+      bD.style.background=bV.style.background=''; solveInline(stepHost, task, m); }
+    bD.addEventListener('click',()=>choose(undefined,bD));
+    bV.addEventListener('click',()=>{ if(!bV.disabled)choose('vieta',bV); });
+    // по умолчанию дискриминант
+    choose(undefined,bD);
+  } else {
+    card.appendChild(stepHost);
+    solveInline(stepHost, task);
+  }
+
+  const row=document.createElement('div'); row.className='btn-row'; row.style.marginTop='14px';
+  const bNext=document.createElement('button'); bNext.className='btn small'; bNext.textContent='Следующая задача →';
+  bNext.addEventListener('click',()=>renderGenTask(item, card));
+  row.appendChild(bNext);
+  card.appendChild(row);
+}
+
+/* ============ МАРАФОН ============ */
+const MARA_FILTERS=[
+  {id:'all', label:'Все'},
+  {id:'demo', label:'Демо-2026'},
+  {id:'lin', label:'Линейные'},
+  {id:'quad', label:'Квадратные'},
+  {id:'frac', label:'Дробные'},
+];
+function taskChapter(t){ return FAMMETA[t.fam].ch; }
+const maraState={filter:'all', caseFilter:null, solved:new Set(), clean:new Set()};
+
+function buildMaraTab(root){
+  root.innerHTML='';
+  // самопроверка ключей
+  const check=selfCheckBank();
+  const banner=document.createElement('div');
+  banner.className='selfcheck '+(check.bad? 'err':'ok');
+  banner.innerHTML=(check.bad
+    ? '⚠ Обнаружены расхождения в '+check.bad+' задачах — сообщите разработчику.'
+    : '✓ Все '+check.total+' задач проверены автоматически: ответы сходятся.');
+  root.appendChild(banner);
+
+  const intro=document.createElement('div'); intro.className='card tinted';
+  intro.innerHTML='<div class="eyebrow">банк реальных задач и демоверсии</div>'+
+    '<h2>Марафон · '+BANK.length+' задач</h2>'+
+    '<p>Реши сам и впиши ответ. Не выходит — <b>Решить по шагам</b>. Хочешь проверить себя — <b>Показать ответ</b> (тогда задача не идёт в зачёт «без подсказок»).</p>';
+  root.appendChild(intro);
+
+  const filt=document.createElement('div'); filt.className='filter-row';
+  MARA_FILTERS.forEach(f=>{
+    const b=document.createElement('button'); b.className='chip'+(f.id===maraState.filter?' on':''); b.type='button';
+    b.style.fontFamily='var(--ui)'; b.style.fontSize='14px'; b.textContent=f.label;
+    b.addEventListener('click',()=>{ maraState.filter=f.id; maraState.caseFilter=null;
+      filt.querySelectorAll('.chip').forEach(c=>c.classList.remove('on')); b.classList.add('on');
+      renderList(); });
+    filt.appendChild(b);
+  });
+  root.appendChild(filt);
+
+  const prog=document.createElement('div');
+  root.appendChild(prog);
+  const list=document.createElement('div'); list.id='mara-list';
+  root.appendChild(list);
+
+  function paintProgress(){
+    const shown=filteredTasks();
+    const solvedN=shown.filter(t=>maraState.solved.has(t.id)).length;
+    const cleanN=shown.filter(t=>maraState.clean.has(t.id)).length;
+    prog.innerHTML='<div class="counters"><span>Решено: <b>'+solvedN+'</b> из '+shown.length+'</span>'+
+      '<span>· без подсказок: <b>'+cleanN+'</b></span></div>'+
+      '<div class="progress-bar"><span style="width:'+(shown.length?Math.round(solvedN/shown.length*100):0)+'%"></span></div>';
+  }
+  function filteredTasks(){
+    if(maraState.caseFilter) return BANK.filter(t=>maraState.caseFilter.cases.indexOf(taskCaseId(t))>=0);
+    return BANK.filter(t=>{
+      if(maraState.filter==='all')return true;
+      if(maraState.filter==='demo')return t.src==='demo';
+      return taskChapter(t)===maraState.filter;
+    });
+  }
+  function renderList(){
+    list.innerHTML='';
+    if(maraState.caseFilter){
+      const cnt=filteredTasks().length;
+      const bn=document.createElement('div'); bn.className='mara-banner';
+      bn.innerHTML='<span>Из справочника: <b>'+maraState.caseFilter.label+'</b> · задач: '+cnt+'</span>';
+      const x=document.createElement('button'); x.className='bx'; x.textContent='показать все задачи';
+      x.addEventListener('click',()=>{ maraState.caseFilter=null; maraState.filter='all';
+        filt.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+        filt.querySelector('.chip').classList.add('on'); renderList(); });
+      bn.appendChild(x); list.appendChild(bn);
+    }
+    filteredTasks().forEach(t=>list.appendChild(makeMaraCard(t, paintProgress)));
+    paintProgress();
+  }
+  window._maraRepaint=paintProgress;
+  window.maraApplyCase=function(cases,label){
+    maraState.caseFilter={cases:cases, label:label};
+    filt.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
+    renderList();
+    var el=document.getElementById('mara-list');
+    if(el&&el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'start'});
+  };
+  window.maraClearCase=function(){ maraState.caseFilter=null; renderList(); };
+  renderList();
+}
+
+function makeMaraCard(t, onProgress){
+  const card=document.createElement('div'); card.className='task-card'+(maraState.solved.has(t.id)?' solved':'');
+  const badge=document.createElement('div'); badge.className='src-badge';
+  badge.textContent=(t.src==='demo'?'Демо-2026':(taskChapter(t)==='lin'?'линейное':taskChapter(t)==='quad'?'квадратное':'дробное'));
+  card.appendChild(badge);
+
+  const no=document.createElement('div'); no.className='task-no'; no.textContent=t.tag; card.appendChild(no);
+  const q=document.createElement('div'); q.className='task-q'; q.innerHTML=taskInstrHTML(t); card.appendChild(q);
+
+  const ansField=document.createElement('span'); ansField.className='field';
+  const lbl=document.createElement('span'); lbl.className='lbl'; lbl.innerHTML='Ответ:'; ansField.appendChild(lbl);
+  const a=mkAns('?'); ansField.appendChild(a); card.appendChild(ansField);
+
+  const fb=document.createElement('div'); fb.className='fb'; card.appendChild(fb);
+  const stepHost=document.createElement('div');
+
+  const row=document.createElement('div'); row.className='btn-row';
+  const bCheck=document.createElement('button'); bCheck.className='btn small'; bCheck.textContent='Проверить';
+  const bAns=document.createElement('button'); bAns.className='btn reveal small'; bAns.textContent='Показать ответ';
+  const bStep=document.createElement('button'); bStep.className='btn ghost small'; bStep.textContent='Решить по шагам';
+  row.appendChild(bCheck); row.appendChild(bStep); row.appendChild(bAns);
+  card.appendChild(row);
+  card.appendChild(stepHost);
+
+  let usedHelp=false;
+  function markSolved(clean){
+    maraState.solved.add(t.id);
+    if(clean && !usedHelp)maraState.clean.add(t.id); else maraState.clean.delete(t.id);
+    card.classList.add('solved');
+    onProgress&&onProgress();
+  }
+  function doCheck(){
+    const res=checkFinal(t, getRaw(a));
+    if(res.ok){ fb.className='fb good'; fb.innerHTML=(res.msg?res.msg+' ':'')+'✓ верно'; markSolved(true); }
+    else { fb.className='fb bad'; fb.innerHTML=res.msg; }
+  }
+  bCheck.addEventListener('click',doCheck);
+  a._input.addEventListener('keydown',e=>{ if(e.key==='Enter'){e.preventDefault(); doCheck();} });
+  bAns.addEventListener('click',()=>{
+    usedHelp=true;
+    const key=taskKey(t);
+    fb.className='fb shown';
+    fb.innerHTML='Ответ: <b>'+numHTML(key)+'</b>'+(fisint(key)?'':' <span class="pen-note">(в бланк: '+decStr(key)+')</span>');
+    maraState.clean.delete(t.id);
+  });
+  bStep.addEventListener('click',()=>{
+    usedHelp=true; maraState.clean.delete(t.id);
+    if(stepHost.dataset.open){ stepHost.innerHTML=''; delete stepHost.dataset.open; bStep.textContent='Решить по шагам'; return; }
+    stepHost.dataset.open='1'; bStep.textContent='Свернуть шаги';
+    solveInline(stepHost, t);
+  });
+  return card;
+}
+
+/* самопроверка банка при загрузке */
+function selfCheckBank(){
+  let bad=0;
+  for(const t of BANK){
+    try{
+      const key=taskKey(t);
+      if(key===null||!finiteDec(key)){bad++;continue;}
+      if(t.exp!==null){ const e=parseNum(t.exp); if(e===null||!feq(e,key))bad++; }
+    }catch(err){ bad++; }
+  }
+  return {total:BANK.length, bad};
+}
+
+/* ============ ИНИЦИАЛИЗАЦИЯ ============ */
+(function(){
+  var built={ref:true, learn:false, step:false, mara:false};
+  function build(id){
+    if(built[id])return; built[id]=true;
+    try{
+      if(id==='learn')buildLearnTab(document.getElementById('pane-learn'));
+      else if(id==='step')buildStepTab(document.getElementById('pane-step'));
+      else if(id==='mara')buildMaraTab(document.getElementById('pane-mara'));
+    }catch(e){
+      var el=document.getElementById('pane-'+id);
+      if(el)el.innerHTML='<div class="card"><p class="fb bad">Ошибка при построении раздела: '+(e&&e.message)+'</p></div>';
+    }
+  }
+  var tabs=document.querySelectorAll('.tab');
+  function activate(id, noscroll){
+    tabs.forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-pane')===id); });
+    build(id);
+    document.querySelectorAll('.pane').forEach(function(p){ p.classList.toggle('on', p.id==='pane-'+id); });
+    if(!noscroll)window.scrollTo({top:0,behavior:'smooth'});
+  }
+  tabs.forEach(function(btn){
+    btn.addEventListener('click',function(){ activate(btn.getAttribute('data-pane')); });
+  });
+  window.gotoTab=activate;
+
+  /* связь Справочника с Марафоном: кнопки «порешать» + счётчики задач */
+  (function wireRefJumps(){
+    var jumps=document.querySelectorAll('.ref-jump');
+    jumps.forEach(function(btn){
+      var cases=(btn.getAttribute('data-cases')||'').split(',').filter(Boolean);
+      var label=btn.getAttribute('data-label')||'задачи';
+      var count=0;
+      try{ count=BANK.filter(function(t){ return cases.indexOf(taskCaseId(t))>=0; }).length; }catch(e){}
+      var n=btn.querySelector('.rj-n'); if(n)n.textContent=count;
+      if(count===0)btn.setAttribute('data-empty','1');
+      btn.addEventListener('click',function(){
+        activate('mara', true);
+        if(window.maraApplyCase)window.maraApplyCase(cases, label);
+        window.scrollTo({top:0,behavior:'smooth'});
+      });
+    });
+  })();
+})();
+</script>
+</body>
+</html>

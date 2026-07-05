@@ -1,0 +1,2293 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Задание 20 ОГЭ — тренажёр</title>
+<style>
+:root{
+  --bg:#eef1f7; --grid:#e3e8f2; --paper:#ffffff;
+  --ink:#222b3d; --ink2:#5a6683; --line:#d8deec; --line2:#c6cee0;
+  --primary:#3b57d6; --primary-d:#2c43ab; --primary-l:#eaeffc;
+  --active:#3b6ef5; --active-bg:#eef4ff;
+  --ok:#2b8a3e; --ok-bg:#eafaef; --ok-line:#b7e4c2;
+  --amber:#b5730b; --amber-bg:#fff6e6; --amber-line:#f2d9a6;
+  --err:#c0392b; --err-bg:#fdeeec; --err-line:#f2c4bd;
+  --teal:#0b7285; --teal-bg:#e4f6f9;
+  --shadow:0 1px 2px rgba(30,40,70,.05),0 6px 22px rgba(30,40,70,.07);
+  --serif:Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  font-family:var(--sans); color:var(--ink); background:var(--bg);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:26px 26px; line-height:1.5; -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:920px;margin:0 auto;padding:18px 16px 80px}
+a{color:var(--primary);text-decoration:none}
+
+/* ---- header ---- */
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:6px 2px 16px}
+.brand{display:flex;flex-direction:column;gap:2px}
+.brand .kick{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);font-weight:700}
+.brand h1{font-family:var(--serif);font-weight:700;font-size:29px;margin:0;line-height:1.05;letter-spacing:-.01em}
+.brand h1 b{color:var(--primary)}
+.brand .site{font-size:12.5px;color:var(--ink2)}
+.hbadge{font-size:12px;color:var(--ink2);border:1px solid var(--line2);background:var(--paper);border-radius:999px;padding:5px 11px;white-space:nowrap}
+
+/* ---- module picker ---- */
+.picker{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:10px;margin-bottom:14px}
+.mcard{position:relative;text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:13px;padding:12px 13px 12px 14px;cursor:pointer;box-shadow:var(--shadow);transition:transform .08s,border-color .12s,box-shadow .12s;overflow:hidden}
+.mcard:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--mc,#8aa0e6)}
+.mcard:hover{transform:translateY(-1px);border-color:var(--line2)}
+.mcard.on{border-color:var(--primary);box-shadow:0 0 0 2px var(--primary-l),var(--shadow)}
+.mcard .mnum{font-family:var(--serif);font-size:12px;color:var(--ink2);font-weight:700}
+.mcard .mttl{font-weight:700;font-size:15px;margin:2px 0 3px;letter-spacing:-.01em}
+.mcard .msub{font-size:12px;color:var(--ink2);line-height:1.35}
+.mcard .mform{margin-top:7px;font-family:var(--serif);font-size:13px;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:7px;padding:4px 7px;display:inline-block}
+
+/* ---- mode tabs ---- */
+.stage{background:var(--paper);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.stagehead{padding:15px 18px 0;border-bottom:1px solid var(--line)}
+.stagehead .st-t{font-family:var(--serif);font-size:20px;font-weight:700;letter-spacing:-.01em}
+.stagehead .st-s{font-size:13px;color:var(--ink2);margin:2px 0 12px}
+.tabs{display:flex;gap:4px}
+.tab{appearance:none;border:1px solid var(--line);border-bottom:none;background:var(--bg);color:var(--ink2);font-family:var(--sans);font-size:13.5px;font-weight:600;padding:9px 15px;border-radius:10px 10px 0 0;cursor:pointer;position:relative;top:1px}
+.tab .tnum{font-family:var(--serif);opacity:.7;margin-right:6px}
+.tab.on{background:var(--paper);color:var(--ink);border-color:var(--line)}
+.tab.on:after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--paper)}
+.body{padding:18px}
+
+/* ---- teaching cards ---- */
+.tcard{border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin-bottom:12px;background:linear-gradient(180deg,#fcfdff,#fafbff)}
+.tcard .tc-h{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.tc-h .tc-n{flex:none;width:24px;height:24px;border-radius:7px;background:var(--primary);color:#fff;font-family:var(--serif);font-weight:700;font-size:13px;display:grid;place-items:center}
+.tc-h .tc-t{font-weight:700;font-size:15px}
+.tcard p{margin:6px 0}
+.muted{color:var(--ink2)}
+.xref{font-size:12.5px;color:var(--primary);cursor:pointer;border-bottom:1px dashed var(--primary);display:inline-block}
+.callout{border-left:3px solid var(--teal);background:var(--teal-bg);padding:8px 12px;border-radius:0 8px 8px 0;margin:8px 0;font-size:13.5px}
+.pill{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--primary-l);color:var(--primary-d);vertical-align:middle}
+
+/* ---- math typography ---- */
+.mathline{font-family:var(--serif);font-size:19px;line-height:1.9;color:var(--ink)}
+.mathbig{font-family:var(--serif);font-size:22px}
+.frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 .18em;position:relative;top:-.06em}
+.frac .fnum{padding:0 .4em;line-height:1.15}
+.frac .fden{padding:0 .4em;line-height:1.15;border-top:1.6px solid currentColor}
+.rad{display:inline-flex;align-items:stretch;vertical-align:middle;margin:0 .06em}
+.rad .radsvg{width:.62em;min-width:9px;align-self:stretch;height:auto;overflow:visible;margin-right:-1px}
+.rad .radsvg path{fill:none;stroke:currentColor;stroke-width:1.35}
+.rad .radb{border-top:1.6px solid currentColor;padding:.05em .28em 0 .18em}
+.sys{display:inline-flex;align-items:stretch;vertical-align:middle}
+.sys .sb{font-size:1em;display:flex;align-items:center;margin-right:.15em}
+.sys .sb svg{height:100%;width:.5em}
+.sys .sb svg path{fill:none;stroke:currentColor;stroke-width:1.3}
+.sys .slines{display:flex;flex-direction:column;gap:.28em;justify-content:center}
+sup{font-size:.72em}
+
+/* ---- inputs / widgets ---- */
+.qbox{border:1px solid var(--line);border-radius:12px;padding:14px 15px;background:var(--paper)}
+.qhead{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin-bottom:7px}
+.prompt{font-size:15px;margin:2px 0 12px}
+.numin{font-family:var(--serif);font-size:18px;width:92px;padding:7px 9px;border:1.5px solid var(--line2);border-radius:9px;text-align:center;background:#fff;color:var(--ink)}
+.numin:focus{outline:none;border-color:var(--active);box-shadow:0 0 0 3px var(--active-bg)}
+.field{display:inline-flex;align-items:center;gap:6px;vertical-align:middle}
+.fftoggle{appearance:none;border:1px solid var(--line2);background:var(--bg);color:var(--ink2);font-size:11px;font-weight:700;border-radius:7px;padding:5px 7px;cursor:pointer;line-height:1}
+.fftoggle:hover{border-color:var(--primary);color:var(--primary)}
+.fracin{display:inline-flex;flex-direction:column;align-items:stretch;width:70px}
+.fracin input{font-family:var(--serif);font-size:16px;text-align:center;border:1.5px solid var(--line2);border-radius:8px;padding:4px;background:#fff;color:var(--ink);width:100%}
+.fracin input:focus{outline:none;border-color:var(--active);box-shadow:0 0 0 3px var(--active-bg)}
+.fracin .fbar{height:0;border-top:2px solid var(--ink);margin:3px 2px}
+.rowset{display:flex;flex-direction:column;gap:9px;margin:2px 0 6px}
+.rootrow,.pointrow{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.rootrow .rlab,.pointrow .rlab{font-family:var(--serif);font-size:16px;color:var(--ink2);min-width:26px}
+.rmini{appearance:none;border:1px solid var(--line2);background:var(--bg);color:var(--ink2);width:28px;height:28px;border-radius:8px;font-size:16px;line-height:1;cursor:pointer}
+.rmini:hover{border-color:var(--err);color:var(--err)}
+.addbtn{appearance:none;border:1px dashed var(--line2);background:#fff;color:var(--primary);font-family:var(--sans);font-size:13px;font-weight:600;padding:6px 11px;border-radius:9px;cursor:pointer;align-self:flex-start}
+.addbtn:hover{border-color:var(--primary);background:var(--primary-l)}
+.ivfields{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.ivfields .num2{width:64px}
+.ivpreview{font-family:var(--serif);font-size:18px;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:6px 12px;display:inline-block;margin-top:4px}
+
+/* ---- buttons ---- */
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.btn{appearance:none;border:none;font-family:var(--sans);font-size:14px;font-weight:650;padding:9px 16px;border-radius:10px;cursor:pointer;transition:filter .1s,background .1s}
+.btn.primary{background:var(--primary);color:#fff}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.ghost{background:var(--bg);color:var(--ink);border:1px solid var(--line2)}
+.btn.ghost:hover{border-color:var(--primary);color:var(--primary)}
+.btn.amberbtn{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-line)}
+.btn.amberbtn:hover{filter:brightness(.98)}
+.btn.next{background:var(--ok);color:#fff}
+.btn.next:hover{filter:brightness(1.05)}
+.btn:disabled{opacity:.5;cursor:default;filter:none}
+.morebtn{margin-top:11px}
+
+/* ---- feedback ---- */
+.fb{margin-top:11px;border-radius:10px;padding:10px 13px;font-size:14px;display:none}
+.fb.show{display:block}
+.fb.ok{background:var(--ok-bg);border:1px solid var(--ok-line);color:var(--ok)}
+.fb.no{background:var(--err-bg);border:1px solid var(--err-line);color:var(--err)}
+.fb.peek{background:var(--amber-bg);border:1px solid var(--amber-line);color:var(--amber)}
+.fb b{font-weight:700}
+.solution{margin-top:12px;border:1px solid var(--amber-line);background:var(--amber-bg);border-radius:11px;padding:12px 15px}
+.solution .sol-h{font-weight:700;color:var(--amber);font-size:13px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.solution .step{margin:5px 0;font-size:14px}
+.ans-chip{display:inline-block;font-family:var(--serif);font-size:18px;background:#fff;border:1.5px solid var(--ok-line);color:var(--ink);border-radius:9px;padding:3px 12px;margin:2px 4px 2px 0}
+
+/* ---- stepper ---- */
+.steps{display:flex;flex-direction:column;gap:11px;margin-top:6px}
+.sstep{border:1px solid var(--line);border-radius:11px;padding:12px 14px;background:#fff;position:relative;opacity:.55;transition:opacity .15s}
+.sstep.active{opacity:1;border-color:var(--active);box-shadow:0 0 0 3px var(--active-bg)}
+.sstep.done{opacity:1;border-color:var(--ok-line);background:var(--ok-bg)}
+.sstep.peeked{opacity:1;border-color:var(--amber-line);background:var(--amber-bg)}
+.sstep .snum{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.sstep .snum .dot{width:20px;height:20px;border-radius:6px;background:var(--line);color:var(--ink2);display:grid;place-items:center;font-family:var(--serif);font-size:12px}
+.sstep.active .snum .dot{background:var(--active);color:#fff}
+.sstep.done .snum .dot{background:var(--ok);color:#fff}
+.sstep.peeked .snum .dot{background:var(--amber);color:#fff}
+.yourturn{font-size:11px;font-weight:700;color:var(--active);background:var(--active-bg);border:1px solid #cddcff;border-radius:999px;padding:1px 8px;margin-left:auto;text-transform:none;letter-spacing:0}
+.sstep .sq{font-size:14.5px;margin:3px 0 9px}
+.stepfinal{margin-top:6px;border:1px solid var(--ok-line);background:var(--ok-bg);border-radius:11px;padding:13px 15px}
+.stepfinal .sf-h{font-weight:700;color:var(--ok);text-transform:uppercase;font-size:12px;letter-spacing:.05em;margin-bottom:5px}
+
+/* ---- marathon header ---- */
+.mtop{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:12px}
+.stat{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink2);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:5px 12px}
+.stat b{font-family:var(--serif);font-size:16px;color:var(--ink)}
+.stat.streak b{color:var(--amber)}
+.stat.solved b{color:var(--ok)}
+.spacer{flex:1}
+.probno{font-family:var(--serif);font-size:13px;color:var(--ink2)}
+
+/* number line */
+.nline{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:11px;padding:6px 8px 2px}
+.nline svg{display:block;width:100%;height:auto}
+
+@media (max-width:560px){
+  .brand h1{font-size:24px}
+  .body{padding:14px}
+  .mathline{font-size:17px}
+  .numin{width:82px;font-size:17px}
+  .tab{padding:8px 11px;font-size:12.5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="kick">ОГЭ · математика</div>
+      <h1>Задание <b>20</b> — тренажёр</h1>
+      <div class="site">Алгебраические выражения, уравнения и неравенства · mathexam.space</div>
+    </div>
+    <div class="hbadge">Часть 2 · развёрнутое решение</div>
+  </header>
+
+  <div class="picker" id="picker"></div>
+
+  <section class="stage">
+    <div class="stagehead">
+      <div class="st-t" id="stageTitle"></div>
+      <div class="st-s" id="stageSub"></div>
+      <div class="tabs" id="tabs"></div>
+    </div>
+    <div class="body" id="body"></div>
+  </section>
+</div>
+
+<script id="core-math">/* ============================================================================
+   M20 — ядро математики тренажёра «Задание 20 ОГЭ».
+   Полностью независимо от DOM. Точная арифметика через BigInt (класс Fr).
+   Каждый генератор возвращает ДАННЫЕ задачи (без разметки); проверка ответов
+   тоже здесь — чтобы всё это тестировалось в Node/jsdom.
+   ============================================================================ */
+(function (root) {
+  'use strict';
+
+  /* ---------- BigInt-дробь ---------- */
+  function bgcd(a, b) { a = a < 0n ? -a : a; b = b < 0n ? -b : b; while (b) { [a, b] = [b, a % b]; } return a; }
+  function Fr(n, d) {
+    if (!(this instanceof Fr)) return new Fr(n, d);
+    if (d === undefined) d = 1n;
+    n = BigInt(n); d = BigInt(d);
+    if (d === 0n) throw new Error('деление на ноль в Fr');
+    if (d < 0n) { n = -n; d = -d; }
+    var g = bgcd(n, d) || 1n;
+    this.n = n / g; this.d = d / g;
+  }
+  Fr.prototype.add = function (o) { return new Fr(this.n * o.d + o.n * this.d, this.d * o.d); };
+  Fr.prototype.sub = function (o) { return new Fr(this.n * o.d - o.n * this.d, this.d * o.d); };
+  Fr.prototype.mul = function (o) { return new Fr(this.n * o.n, this.d * o.d); };
+  Fr.prototype.div = function (o) { return new Fr(this.n * o.d, this.d * o.n); };
+  Fr.prototype.eq = function (o) { return this.n === o.n && this.d === o.d; };
+  Fr.prototype.lt = function (o) { return this.n * o.d < o.n * this.d; };
+  Fr.prototype.isInt = function () { return this.d === 1n; };
+  Fr.prototype.neg = function () { return new Fr(-this.n, this.d); };
+  Fr.prototype.sign = function () { return this.n > 0n ? 1 : (this.n < 0n ? -1 : 0); };
+  Fr.prototype.toNumber = function () { return Number(this.n) / Number(this.d); };
+  Fr.fromInt = function (i) { return new Fr(BigInt(i), 1n); };
+
+  /* ---------- утилиты ---------- */
+  function isqrtExact(nBig) { // BigInt -> BigInt|null (точный корень)
+    if (nBig < 0n) return null;
+    if (nBig < 2n) return nBig;
+    var x = nBig, y = (x + 1n) / 2n;
+    while (y < x) { x = y; y = (x + nBig / x) / 2n; }
+    return x * x === nBig ? x : null;
+  }
+  function ri(lo, hi) { return lo + Math.floor(Math.random() * (hi - lo + 1)); }
+  function choice(a) { return a[Math.floor(Math.random() * a.length)]; }
+  function rangeExcl(lo, hi, excl) { var r = []; for (var i = lo; i <= hi; i++) if (excl.indexOf(i) < 0) r.push(i); return r; }
+
+  /* ============================ ГЕНЕРАТОРЫ ============================ */
+
+  // Тип A: значение выражения
+  // условие: (p a + q b + r)/((-q) a + (-p) b + r) = k ; цель: A a + B b + C
+  function genA() {
+    for (;;) {
+      var p = ri(1, 9), q = -ri(1, 9), r = ri(2, 9), k = ri(2, 9);
+      if (Math.abs(q) === p) continue;
+      var ans = ri(-9, 12);
+      var C = ans - r * (1 - k);            // = ans + r*(k-1)
+      var A = k * (-q) - p, B = k * (-p) - q;
+      if (A <= 0 || C <= 0) continue;
+      return { type: 'A', p: p, q: q, r: r, k: k, C: C, A: A, B: B, ans: ans };
+    }
+  }
+
+  // Тип B1: кубическое, группировка. x³+a x² + b x + c = 0, b=-m², c=a·b
+  function genB1() {
+    for (;;) {
+      var a = choice(rangeExcl(-6, 6, [0]));
+      var m = ri(1, 5);
+      var b = -m * m, c = a * b;
+      var set = {}; [-a, m, -m].forEach(function (x) { set[x] = 1; });
+      var roots = Object.keys(set).map(Number).sort(function (u, v) { return u - v; });
+      if (roots.length >= 2) return { type: 'B1', a: a, m: m, b: b, c: c, roots: roots };
+    }
+  }
+
+  // Тип B2: уравнение с корнем. x² - c x + √(K - x) = √(K - x) + n
+  function genB2() {
+    for (;;) {
+      var r1 = -ri(1, 7), r2 = ri(2, 9);
+      if (r1 * r2 >= 0) continue;
+      var c = r1 + r2, n = -(r1 * r2);
+      if (n <= 0) continue;
+      var lo = Math.max(r1, 0);
+      if (lo > r2 - 1) continue;
+      var K = ri(lo, r2 - 1);
+      // проверяем: r1<=K<r2
+      if (!(r1 <= K && K < r2)) continue;
+      return { type: 'B2', r1: r1, r2: r2, K: K, c: c, n: n, kept: [r1] };
+    }
+  }
+
+  // Тип B3: (x - a)(x² + 2m x + m²) = k(x + m)
+  function genB3() {
+    for (;;) {
+      var m = ri(1, 5);
+      var r = choice(rangeExcl(-7, 5, [0, -m]));
+      var s = choice(rangeExcl(-7, 5, [0, -m, r]));
+      var a = m + r + s, k = -(r * s + m * a);
+      if (a < 1 || a > 5 || k < 2 || k > 12) continue;
+      var set = {}; [-m, r, s].forEach(function (x) { set[x] = 1; });
+      var roots = Object.keys(set).map(Number).sort(function (u, v) { return u - v; });
+      if (roots.length === 3) return { type: 'B3', m: m, r: r, s: s, a: a, k: k, roots: roots };
+    }
+  }
+
+  // Тип B4: (x² + c1)² + (x² + b2 x + c2)² = 0 ; c1=-c², b2=-(c+q), c2=c·q ; ответ c
+  function genB4() {
+    for (;;) {
+      var c = choice(rangeExcl(-6, 6, [0]));
+      var q = choice(rangeExcl(-7, 7, [0, c, -c]));
+      var c1 = -(c * c), b2 = -(c + q), c2 = c * q;
+      if (Math.abs(c2) > 42) continue;
+      return { type: 'B4', c: c, q: q, c1: c1, b2: b2, c2: c2, ans: c };
+    }
+  }
+
+  // Тип B5: 1/x² + p/x + q = 0 (или замена (x - shift))
+  function genB5(opt) {
+    var variant = opt && opt.variant;
+    for (;;) {
+      var t1 = choice(rangeExcl(-8, 8, [0]));
+      var t2 = choice(rangeExcl(-8, 8, [0, t1]));
+      var shift = variant ? ri(1, 5) : 0;
+      var p = -(t1 + t2), q = t1 * t2;
+      if (Math.abs(p) > 12 || Math.abs(q) > 30) continue;
+      var xs = [Fr.fromInt(shift).add(new Fr(1n, BigInt(t1))), Fr.fromInt(shift).add(new Fr(1n, BigInt(t2)))];
+      xs.sort(function (u, v) { return u.lt(v) ? -1 : 1; });
+      return { type: 'B5', t1: t1, t2: t2, shift: shift, p: p, q: q, xs: xs };
+    }
+  }
+
+  // Тип BIQ: (x² + b x)² + P (x² + b x) + Q = 0 ; замена u = x² + b x
+  // Строим от двух пар корней с общей суммой -b: тогда дискриминанты (r-s)² — всегда полный квадрат.
+  function genBIQ() {
+    for (;;) {
+      var b = choice(rangeExcl(-6, 6, [0]));
+      var r1 = ri(-6, 6), s1 = -b - r1, u1 = -(r1 * s1);
+      var r2 = ri(-6, 6), s2 = -b - r2, u2 = -(r2 * s2);
+      if (u1 === u2 || u1 === 0 || u2 === 0) continue;
+      var set = {}; [r1, s1, r2, s2].forEach(function (x) { set[x] = 1; });
+      var roots = Object.keys(set).map(Number).sort(function (u, v) { return u - v; });
+      if (roots.length < 3) continue;
+      var P = -(u1 + u2), Q = u1 * u2;
+      if (Math.abs(u1) > 50 || Math.abs(u2) > 50 || Math.abs(P) > 25 || Math.abs(Q) > 200) continue;
+      var us = u1 < u2 ? [u1, u2] : [u2, u1];
+      var pairFor = function (u) {
+        var rr = [], seen = {};
+        [r1, s1, r2, s2].forEach(function (x) { if (x * x + b * x - u === 0 && !seen[x]) { seen[x] = 1; rr.push(x); } });
+        rr.sort(function (a2, c2) { return a2 - c2; });
+        return rr;
+      };
+      return { type: 'BIQ', b: b, u1: us[0], u2: us[1], P: P, Q: Q, roots: roots, pair1: pairFor(us[0]), pair2: pairFor(us[1]) };
+    }
+  }
+
+  // Тип SQ: x⁴ = (a x + b)²  <=>  (x² - a x - b)(x² + a x + b) = 0  (равенство квадратов: x² = ±(a x + b))
+  function genSQ() {
+    for (;;) {
+      var a = choice(rangeExcl(-6, 6, [0]));
+      var b = choice(rangeExcl(-8, 8, [0]));
+      var dP = a * a + 4 * b, dN = a * a - 4 * b;
+      if (dP <= 0) continue;                 // первый множитель — два действительных корня
+      var sP = isqrtExact(BigInt(dP));
+      if (sP === null) continue;
+      if (dN === 0) continue;                // без кратных корней
+      var rootsN = [];
+      if (dN > 0) {
+        var sN = isqrtExact(BigInt(dN));
+        if (sN === null) continue;           // иначе рациональный набор был бы неполным
+        rootsN = [new Fr(BigInt(-a + Number(sN)), 2n), new Fr(BigInt(-a - Number(sN)), 2n)];
+      }
+      var rootsP = [new Fr(BigInt(a + Number(sP)), 2n), new Fr(BigInt(a - Number(sP)), 2n)];
+      var all = [];
+      rootsP.concat(rootsN).forEach(function (x) { if (!all.some(function (g) { return g.eq(x); })) all.push(x); });
+      if (all.some(function (x) { return !x.isInt(); })) continue;          // только целые ответы
+      if (all.some(function (x) { return Math.abs(x.toNumber()) > 12; })) continue;
+      var toN = function (arr) { return arr.map(function (f) { return Number(f.n); }).sort(function (u, v) { return u - v; }); };
+      return { type: 'SQ', a: a, b: b, dN: dN, hasN: rootsN.length > 0, roots: toN(all), rootsP: toN(rootsP), rootsN: toN(rootsN) };
+    }
+  }
+
+  // Тип POW: сократить дробь со степенями (b^{n+p} + s·b^{n+q})/(c·b^{n+r}); n сокращается, остаётся рациональное число
+  function genPOW() {
+    for (;;) {
+      var b = choice([2, 3, 5, 6, 7, 10]);
+      var q = ri(0, 1), e = ri(1, 2), p = q + e, s = choice([1, -1]), r = ri(0, q);
+      var qr = q - r, t = Math.pow(b, e) + s;
+      var Vnum = t * Math.pow(b, qr);                 // целое: b^{p-r} + s·b^{q-r}
+      var c = choice([1, 2, 3, 4, 6]);
+      var V = new Fr(BigInt(Vnum), BigInt(c));        // сокращённая дробь-значение
+      var vn = V.toNumber();
+      if (vn <= 0 || vn > 80) continue;
+      if (V.isInt() && V.n === 1n) continue;          // тривиально (=1)
+      if (V.d > 12n) continue;
+      return { type: 'POW', b: b, p: p, q: q, r: r, s: s, c: c, e: e, qr: qr, t: t, V: V };
+    }
+  }
+
+  // Тип DR: дробное неравенство -N/(x²+bx+c) ≥ 0, знаменатель раскладывается (рациональные корни) → метод интервалов
+  function genDR() {
+    var r1 = -ri(1, 9), r2 = ri(1, 5);        // r1 < 0 < r2 (произведение корней < 0, как в задачнике)
+    var b = -(r1 + r2), c = r1 * r2, N = ri(10, 26);
+    return { type: 'DR', r1: r1, r2: r2, b: b, c: c, N: N };
+  }
+
+  // Тип QI: квадратное неравенство (x-a)(b·x+c) [<|>] d → раскрыть → квадратное → метод интервалов
+  function genQI() {
+    for (;;) {
+      var b = choice([1, 2, 3]), k = ri(-5, 5), m = ri(-9, 9);
+      if (m === b * k) continue;
+      var rk = Fr.fromInt(k), rm = new Fr(BigInt(m), BigInt(b));
+      if (rk.eq(rm)) continue;
+      var P = -(m + b * k), Q = k * m;
+      var a = ri(-5, 5), c = P + a * b, d = -a * P - a * a * b - Q;
+      if (Math.abs(c) > 15 || Math.abs(d) > 45 || c === 0) continue;
+      var op = choice(['<', '>']);
+      var r1, r2; if (rk.lt(rm)) { r1 = rk; r2 = rm; } else { r1 = rm; r2 = rk; }
+      var kind = op === '<' ? 'between' : 'outside';
+      return { type: 'QI', a: a, b: b, c: c, d: d, op: op, r1: r1, r2: r2, kind: kind };
+    }
+  }
+
+  // Тип DS: неравенство-разность квадратов (a·x-b)² [<=|>=] (c·x-d)² → (A-B)(A+B) → метод интервалов
+  function genDS() {
+    for (;;) {
+      var a = ri(1, 5), c = ri(1, 5);
+      if (a === c) continue;
+      var b = ri(1, 9), d = ri(1, 9);
+      var A = a - c, B = -(b - d), C = a + c, D = -(b + d);
+      if (A === 0 || C === 0) continue;
+      var r1v = new Fr(BigInt(-B), BigInt(A)), r2v = new Fr(BigInt(-D), BigInt(C));
+      if (r1v.eq(r2v) || r1v.d > 3n || r2v.d > 3n) continue;
+      if (Math.abs(r1v.toNumber()) > 6 || Math.abs(r2v.toNumber()) > 6) continue;
+      var op = choice(['<=', '>=']), lead = a * a - c * c;
+      var r1, r2; if (r1v.lt(r2v)) { r1 = r1v; r2 = r2v; } else { r1 = r2v; r2 = r1v; }
+      var kind;
+      if (op === '<=') kind = lead > 0 ? 'between' : 'outside';
+      else kind = lead > 0 ? 'outside' : 'between';
+      return { type: 'DS', a: a, b: b, c: c, d: d, op: op, r1: r1, r2: r2, kind: kind, lead: lead };
+    }
+  }
+
+  // Тип PROP: пропорциональная система {A x²+B y²=C, kA x²+kB y²=C x} → второе = k·(первое) → x=k, y=±y0
+  function genPROP() {
+    for (;;) {
+      var A = ri(1, 4), B = ri(1, 4), k = ri(2, 5), y0 = ri(1, 5);
+      var C = A * k * k + B * y0 * y0;
+      if (C > 150 || k * A > 24 || k * B > 24) continue;
+      return {
+        type: 'PROP', A: A, B: B, k: k, y0: y0, C: C,
+        sols: [[Fr.fromInt(k), Fr.fromInt(-y0)], [Fr.fromInt(k), Fr.fromInt(y0)]]
+      };
+    }
+  }
+
+  // Тип SYM: симметричная система {x²+y²=S, xy=P} → (x±y)²=S±2P → 4 решения
+  function genSYM() {
+    for (;;) {
+      var p = ri(1, 6), q = ri(-6, 6);
+      if (q === 0 || q === p || q === -p) continue;
+      var S = p * p + q * q, P = p * q;
+      if (S > 52) continue;
+      return {
+        type: 'SYM', p: p, q: q, S: S, P: P,
+        sols: [[Fr.fromInt(p), Fr.fromInt(q)], [Fr.fromInt(q), Fr.fromInt(p)],
+               [Fr.fromInt(-p), Fr.fromInt(-q)], [Fr.fromInt(-q), Fr.fromInt(-p)]]
+      };
+    }
+  }
+
+  // Тип C1: {a x² - h x = y, g x - d = y}  (подстановка)
+  function genC1() {
+    for (;;) {
+      var a = ri(1, 5), h = ri(1, 9), g = ri(1, 9), d = ri(1, 9);
+      var B = -(h + g), Cc = d;
+      var disc = B * B - 4 * a * Cc;
+      var rt = isqrtExact(BigInt(disc));
+      if (rt === null) continue;
+      var rN = Number(rt);
+      var xs = [new Fr(BigInt(-B + rN), BigInt(2 * a)), new Fr(BigInt(-B - rN), BigInt(2 * a))];
+      // уникальные, |x|<=12
+      var uniq = [], seen = {};
+      xs.forEach(function (x) { var key = x.n + '/' + x.d; if (!seen[key]) { seen[key] = 1; uniq.push(x); } });
+      if (uniq.some(function (x) { return Math.abs(x.toNumber()) > 12; })) continue;
+      uniq.sort(function (u, v) { return u.lt(v) ? -1 : 1; });
+      var sols = uniq.map(function (x) { return [x, Fr.fromInt(g).mul(x).sub(Fr.fromInt(d))]; });
+      return { type: 'C1', a: a, h: h, g: g, d: d, sols: sols };
+    }
+  }
+
+  // Тип C2: {a x² + y = c, b x² - y = d}  (сложение)
+  function genC2() {
+    for (;;) {
+      var a = ri(1, 9), b = ri(1, 9), m = ri(1, 4), y = ri(1, 15);
+      var x2 = m * m;
+      var c = y + a * x2;
+      var d = (a + b) * x2 - c;
+      if (d === 0) continue;
+      var xs = [Fr.fromInt(m), Fr.fromInt(-m)];
+      var sols = xs.map(function (x) { return [x, Fr.fromInt(c).sub(Fr.fromInt(a).mul(x).mul(x))]; });
+      sols.sort(function (u, v) { return u[0].lt(v[0]) ? -1 : 1; });
+      return { type: 'C2', a: a, b: b, c: c, d: d, sols: sols };
+    }
+  }
+
+  // Тип D1: (x - a)² < √K (x - a)  → (a ; a+√K)
+  function genD1() { return { type: 'D1', a: choice(rangeExcl(-8, 8, [])), K: choice([2, 3, 5, 6, 7, 10, 11]) }; }
+  // Тип D2: -N/((x - a)² - M) ≥ 0  → (a-√M ; a+√M)
+  function genD2() { return { type: 'D2', a: choice(rangeExcl(-8, 8, [])), M: choice([2, 3, 5, 6, 7, 10]), N: ri(10, 19) }; }
+
+  /* ============================ ПРОВЕРКА ОТВЕТОВ ============================ */
+
+  function parseFrac(str) {
+    if (str === null || str === undefined) return null;
+    var s = ('' + str).trim().replace(/^x\s*=\s*/i, '').replace(/^y\s*=\s*/i, '').replace(/\u2212/g, '-').replace(/\s+/g, '');
+    if (s === '') return null;
+    if (s.indexOf('/') >= 0) {
+      var parts = s.split('/');
+      if (parts.length !== 2) return null;
+      if (!/^[+-]?\d+$/.test(parts[0]) || !/^[+-]?\d+$/.test(parts[1])) return null;
+      if (parts[1] === '0' || parts[1] === '+0' || parts[1] === '-0') return null;
+      try { return new Fr(BigInt(parts[0]), BigInt(parts[1])); } catch (e) { return null; }
+    }
+    s = s.replace(',', '.');
+    if (/^[+-]?\d+$/.test(s)) { return new Fr(BigInt(s), 1n); }
+    var mm = /^([+-]?)(\d*)\.(\d+)$/.exec(s);
+    if (mm) {
+      var sign = mm[1] === '-' ? -1n : 1n;
+      var intp = mm[2] === '' ? '0' : mm[2];
+      var frac = mm[3];
+      var num = BigInt(intp + frac) * sign;
+      var den = 10n ** BigInt(frac.length);
+      return new Fr(num, den);
+    }
+    return null;
+  }
+
+  function checkInt(userStr, val) { var f = parseFrac(userStr); return !!f && f.eq(val); }
+
+  // множество значений (корни) без учёта порядка, дубликаты в ответе игнорируются
+  function checkRootset(userArr, valArr) {
+    var user = [];
+    for (var i = 0; i < userArr.length; i++) {
+      var t = ('' + userArr[i]).trim();
+      if (t === '') continue;
+      var f = parseFrac(t);
+      if (!f) return { ok: false, reason: 'parse' };
+      user.push(f);
+    }
+    // уникализируем пользовательские
+    var uu = [];
+    user.forEach(function (f) { if (!uu.some(function (g) { return g.eq(f); })) uu.push(f); });
+    var need = valArr.slice();
+    if (uu.length !== need.length) {
+      // диагностика: лишние/недостающие
+      var missing = need.filter(function (v) { return !uu.some(function (u) { return u.eq(v); }); });
+      var extra = uu.filter(function (u) { return !need.some(function (v) { return v.eq(u); }); });
+      return { ok: false, reason: missing.length && !extra.length ? 'missing' : (extra.length && !missing.length ? 'extra' : 'mismatch'), missing: missing.length, extra: extra.length };
+    }
+    var okAll = need.every(function (v) { return uu.some(function (u) { return u.eq(v); }); });
+    return okAll ? { ok: true } : { ok: false, reason: 'mismatch' };
+  }
+
+  // множество точек (x;y)
+  function checkPointset(userArr, valArr) {
+    var user = [];
+    for (var i = 0; i < userArr.length; i++) {
+      var pr = userArr[i];
+      var xs = ('' + (pr.x !== undefined ? pr.x : '')).trim(), ys = ('' + (pr.y !== undefined ? pr.y : '')).trim();
+      if (xs === '' && ys === '') continue;
+      var fx = parseFrac(xs), fy = parseFrac(ys);
+      if (!fx || !fy) return { ok: false, reason: 'parse' };
+      user.push([fx, fy]);
+    }
+    var uu = [];
+    user.forEach(function (p) { if (!uu.some(function (g) { return g[0].eq(p[0]) && g[1].eq(p[1]); })) uu.push(p); });
+    var need = valArr.slice();
+    if (uu.length !== need.length) return { ok: false, reason: 'count', have: uu.length, need: need.length };
+    var okAll = need.every(function (v) { return uu.some(function (u) { return u[0].eq(v[0]) && u[1].eq(v[1]); }); });
+    return okAll ? { ok: true } : { ok: false, reason: 'mismatch' };
+  }
+
+  // интервалы: пользователь вводит целые параметры
+  function checkIntervalD1(aStr, kStr, data) {
+    var a = parseFrac(aStr), k = parseFrac(kStr);
+    if (!a || !k || !a.isInt() || !k.isInt()) return { ok: false, reason: 'parse' };
+    return { ok: a.eq(Fr.fromInt(data.a)) && k.eq(Fr.fromInt(data.K)) };
+  }
+  function checkIntervalD2(aStr, mStr, data) {
+    var a = parseFrac(aStr), m = parseFrac(mStr);
+    if (!a || !m || !a.isInt() || !m.isInt()) return { ok: false, reason: 'parse' };
+    return { ok: a.eq(Fr.fromInt(data.a)) && m.eq(Fr.fromInt(data.M)) };
+  }
+
+  var API = {
+    Fr: Fr, isqrtExact: isqrtExact, parseFrac: parseFrac,
+    gen: { A: genA, B1: genB1, B2: genB2, B3: genB3, B4: genB4, B5: genB5, BIQ: genBIQ, SQ: genSQ, POW: genPOW, DR: genDR, QI: genQI, DS: genDS, PROP: genPROP, SYM: genSYM, C1: genC1, C2: genC2, D1: genD1, D2: genD2 },
+    checkInt: checkInt, checkRootset: checkRootset, checkPointset: checkPointset,
+    checkIntervalD1: checkIntervalD1, checkIntervalD2: checkIntervalD2
+  };
+  if (typeof module !== 'undefined' && module.exports) module.exports = API;
+  if (root) root.M20 = API;
+})(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : this));
+</script>
+<script>
+/* ==========================================================================
+   UI слой: рендер формул, виджеты ввода, компоненты (мини-задача, пошаговый
+   решатель, марафон) и 7 модулей. Математика — в M20 (тестируется отдельно).
+   ========================================================================== */
+(function(){
+'use strict';
+var M=window.M20, Fr=M.Fr;
+var $=function(s,r){return (r||document).querySelector(s);};
+var _id=0; function uid(){return 'u'+(++_id);}
+function el(html){var t=document.createElement('template');t.innerHTML=html.trim();return t.content.firstChild;}
+function clear(n){while(n.firstChild)n.removeChild(n.firstChild);}
+
+/* ---------- формулы ---------- */
+var S2='<sup>2</sup>', S3='<sup>3</sup>', S4='<sup>4</sup>';
+function fmtPoly(parts){
+  var out='';
+  for(var i=0;i<parts.length;i++){
+    var c=parts[i][0], v=parts[i][1];
+    if(c===0) continue;
+    var neg=c<0, a=Math.abs(c);
+    var cs=(a===1&&v!=='')?'':String(a);
+    if(out===''){ out+=(neg?'\u2212':'')+cs+v; }
+    else { out+=(neg?' \u2212 ':' + ')+cs+v; }
+  }
+  return out===''?'0':out;
+}
+function frac(a,b){return '<span class="frac"><span class="fnum">'+a+'</span><span class="fden">'+b+'</span></span>';}
+function rad(inner){
+  return '<span class="rad"><svg class="radsvg" viewBox="0 0 12 20" preserveAspectRatio="none">'+
+         '<path d="M0.6,12 L4,19 L8.5,1.2 L12,1.2" vector-effect="non-scaling-stroke"/></svg>'+
+         '<span class="radb">'+inner+'</span></span>';
+}
+function brace(){ // фигурная скобка системы (масштабируется по высоте)
+  return '<span class="sb"><svg viewBox="0 0 10 40" preserveAspectRatio="none">'+
+    '<path d="M8,1 C4,1 6,18 2,20 C6,22 4,39 8,39" vector-effect="non-scaling-stroke"/></svg></span>';
+}
+function sys(lines){
+  return '<span class="sys">'+brace()+'<span class="slines">'+
+    lines.map(function(l){return '<span>'+l+'</span>';}).join('')+'</span></span>';
+}
+function P(n){ // "(x - a)" из корня-константы для линейного (x + n)
+  return '('+fmtPoly([[1,'x'],[n,'']])+')';
+}
+// формат дроби Fr -> строка "n/d" или "n"
+function frToStr(f){ return f.d===1n ? f.n.toString() : (f.n.toString()+'/'+f.d.toString()); }
+function frToHTML(f){ // красивая стопка
+  if(f.d===1n) return f.n.toString();
+  var sign = f.n<0n?'\u2212':'';
+  var n=(f.n<0n?-f.n:f.n).toString();
+  return sign+frac(n, f.d.toString());
+}
+
+/* ---------- виджеты ввода ---------- */
+// одиночное значение с переключателем десятичная⇄дробь
+function fracField(host, opts){
+  opts=opts||{};
+  var mode='dec';
+  var wrap=el('<span class="field"></span>');
+  var dec=el('<input class="numin" inputmode="text" autocomplete="off" placeholder="'+(opts.ph||'')+'">');
+  if(opts.width) dec.style.width=opts.width;
+  var fr=el('<span class="fracin" style="display:none"><input class="fnumIn" inputmode="numeric" autocomplete="off"><span class="fbar"></span><input class="fdenIn" inputmode="numeric" autocomplete="off"></span>');
+  var tg=el('<button type="button" class="fftoggle" title="переключить дробь / десятичную">a\u2044b</button>');
+  wrap.appendChild(dec); wrap.appendChild(fr); if(!opts.noToggle) wrap.appendChild(tg);
+  host.appendChild(wrap);
+  tg.addEventListener('click',function(){
+    if(mode==='dec'){mode='frac';dec.style.display='none';fr.style.display='inline-flex';tg.textContent='0.5';fr.querySelector('.fnumIn').focus();}
+    else{mode='dec';fr.style.display='none';dec.style.display='inline-block';tg.textContent='a\u2044b';dec.focus();}
+  });
+  function read(){
+    if(mode==='frac'){
+      var n=fr.querySelector('.fnumIn').value.trim(), d=fr.querySelector('.fdenIn').value.trim();
+      if(n===''&&d==='') return '';
+      if(d==='') d='1';
+      return n+'/'+d;
+    }
+    return dec.value.trim();
+  }
+  return {read:read, focus:function(){(mode==='dec'?dec:fr.querySelector('.fnumIn')).focus();}};
+}
+
+// набор корней (множество), с переключателем дробей
+function rootsetWidget(host, opts){
+  opts=opts||{};
+  var box=el('<div class="rowset"></div>');
+  var add=el('<button type="button" class="addbtn">+ добавить корень</button>');
+  host.appendChild(box); host.appendChild(add);
+  var rows=[];
+  function label(){ return 'x'+(opts.sub?'<sub>'+opts.sub+'</sub>':'')+' ='; }
+  function addRow(){
+    var row=el('<div class="rootrow"><span class="rlab">'+label()+'</span></div>');
+    var slot=el('<span></span>'); row.appendChild(slot);
+    var f=fracField(slot,{width:'78px'});
+    var del=el('<button type="button" class="rmini" title="убрать">\u2212</button>');
+    row.appendChild(del); box.appendChild(row);
+    var rec={row:row,read:f.read};
+    del.addEventListener('click',function(){
+      if(rows.length<=1){f.read=function(){return '';}; slot.innerHTML='';var nf=fracField(slot,{width:'78px'});rec.read=nf.read;return;}
+      box.removeChild(row); rows=rows.filter(function(r){return r!==rec;});
+    });
+    rows.push(rec);
+    return rec;
+  }
+  var startN=opts.start||1;
+  for(var i=0;i<startN;i++) addRow();
+  add.addEventListener('click',function(){addRow().row.querySelector('input').focus();});
+  return {read:function(){return rows.map(function(r){return r.read();});}};
+}
+
+// набор точек (x;y)
+function pointsetWidget(host, opts){
+  opts=opts||{};
+  var box=el('<div class="rowset"></div>');
+  var add=el('<button type="button" class="addbtn">+ добавить решение</button>');
+  host.appendChild(box); host.appendChild(add);
+  var rows=[];
+  function addRow(){
+    var row=el('<div class="pointrow"><span class="rlab">(</span></div>');
+    var sx=el('<span></span>'); row.appendChild(sx); var fx=fracField(sx,{width:'62px'});
+    row.appendChild(el('<span class="rlab" style="min-width:auto">;</span>'));
+    var sy=el('<span></span>'); row.appendChild(sy); var fy=fracField(sy,{width:'62px'});
+    row.appendChild(el('<span class="rlab" style="min-width:auto">)</span>'));
+    var del=el('<button type="button" class="rmini" title="убрать">\u2212</button>');
+    row.appendChild(del); box.appendChild(row);
+    var rec={row:row,read:function(){return {x:fx.read(),y:fy.read()};}};
+    del.addEventListener('click',function(){ if(rows.length<=1)return; box.removeChild(row); rows=rows.filter(function(r){return r!==rec;}); });
+    rows.push(rec); return rec;
+  }
+  var startN=opts.start||1; for(var i=0;i<startN;i++) addRow();
+  add.addEventListener('click',function(){addRow().row.querySelector('input').focus();});
+  return {read:function(){return rows.map(function(r){return r.read();});}};
+}
+
+// интервалы: два целых поля + живой предпросмотр
+function intervalWidget(host, kind){
+  var isD2=(kind==='d2');
+  var wrap=el('<div></div>');
+  var f=el('<div class="ivfields"></div>');
+  var la=el('<span class="rlab" style="min-width:auto">a =</span>'); var ia=el('<input class="numin num2" inputmode="numeric" autocomplete="off">');
+  var lb=el('<span class="rlab" style="min-width:auto">'+(isD2?'M':'K')+' =</span>'); var ib=el('<input class="numin num2" inputmode="numeric" autocomplete="off">');
+  f.appendChild(la);f.appendChild(ia);f.appendChild(lb);f.appendChild(ib);
+  var prev=el('<div class="ivpreview">интервал появится здесь</div>');
+  wrap.appendChild(f); wrap.appendChild(prev); host.appendChild(wrap);
+  function upd(){
+    var a=ia.value.trim(), b=ib.value.trim();
+    if(a===''||b===''){prev.textContent='интервал появится здесь';return;}
+    var left,right;
+    if(isD2){ left=fmtPoly([[+a||0,''],[0,'']]); left=(a||'a')+' \u2212 '+rad(b||'M'); right=(a||'a')+' + '+rad(b||'M'); }
+    else{ left=(a||'a'); right=(a||'a')+' + '+rad(b||'K'); }
+    prev.innerHTML='( '+left+' ; '+right+' )';
+  }
+  ia.addEventListener('input',upd); ib.addEventListener('input',upd);
+  return {read:function(){return {a:ia.value.trim(), b:ib.value.trim()};}};
+}
+
+// открытый интервал с двумя целыми концами: ( a ; b )
+function intervalIntWidget(host){
+  var wrap=el('<div></div>');
+  var f=el('<div class="ivfields"></div>');
+  f.appendChild(el('<span class="rlab" style="min-width:auto">(</span>'));
+  var ia=el('<input class="numin num2" inputmode="numeric" autocomplete="off" placeholder="меньший">');
+  f.appendChild(ia);
+  f.appendChild(el('<span class="rlab" style="min-width:auto">;</span>'));
+  var ib=el('<input class="numin num2" inputmode="numeric" autocomplete="off" placeholder="больший">');
+  f.appendChild(ib);
+  f.appendChild(el('<span class="rlab" style="min-width:auto">)</span>'));
+  var prev=el('<div class="ivpreview">интервал появится здесь</div>');
+  wrap.appendChild(f); wrap.appendChild(prev); host.appendChild(wrap);
+  function upd(){var a=ia.value.trim(),b=ib.value.trim(); prev.innerHTML=(a===''||b==='')?'интервал появится здесь':'( '+a+' ; '+b+' )';}
+  ia.addEventListener('input',upd); ib.addEventListener('input',upd);
+  return {read:function(){return {a:ia.value.trim(), b:ib.value.trim()};}};
+}
+function checkIntInterval(a,b,r1,r2){
+  var va,vb; try{va=M.parseFrac(a);}catch(e){va=null;} try{vb=M.parseFrac(b);}catch(e){vb=null;}
+  if(!va||!vb) return {ok:false, reason:'parse'};
+  if(va.eq(Fr.fromInt(r1)) && vb.eq(Fr.fromInt(r2))) return {ok:true};
+  if(va.eq(Fr.fromInt(r2)) && vb.eq(Fr.fromInt(r1))) return {ok:false, reason:'order'};
+  return {ok:false, reason:'value'};
+}
+function drReason(res){
+  if(res.reason==='parse') return 'Впиши в оба поля целые числа — корни знаменателя.';
+  if(res.reason==='order') return 'Меньший корень пиши слева, больший справа.';
+  return 'Не совпало. Ответ — открытый интервал между корнями знаменателя.';
+}
+
+// ответ квадратного неравенства: форма (промежуток / два луча) + два корня (можно дробью)
+function qineqWidget(host){
+  var wrap=el('<div></div>');
+  var kind=null;
+  var krow=el('<div class="rowset" style="gap:7px;margin-bottom:9px"></div>');
+  var kb=[];
+  [['between','x — один промежуток (между корнями)'],['outside','x — два луча (вне корней)']].forEach(function(o){
+    var btn=el('<button type="button" class="btn ghost" style="justify-content:flex-start;text-align:left;font-family:var(--serif);font-size:15px">'+o[1]+'</button>');
+    btn.addEventListener('click',function(){kind=o[0]; kb.forEach(function(x){x.classList.remove('primary');x.classList.add('ghost');}); btn.classList.remove('ghost'); btn.classList.add('primary'); upd();});
+    krow.appendChild(btn); kb.push(btn);
+  });
+  var f=el('<div class="ivfields" style="flex-wrap:wrap;gap:6px 10px"></div>');
+  f.appendChild(el('<span class="rlab" style="min-width:auto">меньший корень:</span>'));
+  var s1=el('<span></span>'); f.appendChild(s1); var f1=fracField(s1,{width:'66px'});
+  f.appendChild(el('<span class="rlab" style="min-width:auto">больший:</span>'));
+  var s2=el('<span></span>'); f.appendChild(s2); var f2=fracField(s2,{width:'66px'});
+  var prev=el('<div class="ivpreview">выбери форму ответа и впиши корни</div>');
+  wrap.appendChild(krow); wrap.appendChild(f); wrap.appendChild(prev); host.appendChild(wrap);
+  function upd(){
+    var r1=f1.read(), r2=f2.read();
+    if(kind===null){ prev.textContent='выбери форму ответа и впиши корни'; return; }
+    var a=(r1===''?'\u00b7':r1), b=(r2===''?'\u00b7':r2);
+    prev.innerHTML = kind==='between' ? '( '+a+' ; '+b+' )' : '( \u2212\u221E ; '+a+' ) \u222A ( '+b+' ; +\u221E )';
+  }
+  wrap.addEventListener('input', upd);
+  return {read:function(){return {kind:kind, r1:f1.read(), r2:f2.read()};}};
+}
+function checkQIneq(v, d){
+  if(v.kind===null) return {ok:false, reason:'kind0'};
+  var va,vb; try{va=M.parseFrac(v.r1);}catch(e){va=null;} try{vb=M.parseFrac(v.r2);}catch(e){vb=null;}
+  if(!va||!vb) return {ok:false, reason:'parse'};
+  var setOk=(va.eq(d.r1)&&vb.eq(d.r2)) || (va.eq(d.r2)&&vb.eq(d.r1));
+  if(!setOk) return {ok:false, reason:'roots'};
+  if(v.kind!==d.kind) return {ok:false, reason:'kind'};
+  return {ok:true};
+}
+function qiReason(res){
+  if(res.reason==='kind0') return 'Сначала выбери форму ответа: один промежуток или два луча.';
+  if(res.reason==='parse') return 'Впиши оба корня — целым числом или дробью (переключатель у поля).';
+  if(res.reason==='roots') return 'Корни не совпали. Проверь дискриминант и вычисления.';
+  if(res.reason==='kind') return 'Корни верные, но форма ответа не та. Определи по знаку неравенства и ветвям параболы: между корнями или вне.';
+  return 'Не совпало.';
+}
+// числовая прямая для решения-множества (между / два луча; концы открытые/закрытые)
+function numLineSol(pts, kind, closed, subtitle, color){
+  color=color||'#0891b2';
+  var W=560,H=90,y=46,padL=48,padR=48;
+  var xs=pts.map(function(p){return p.x;});
+  var lo=Math.min.apply(null,xs),hi=Math.max.apply(null,xs);
+  var span=Math.max(hi-lo,1); var vmin=lo-span*0.7, vmax=hi+span*0.7;
+  function X(v){ return padL+(v-vmin)/(vmax-vmin)*(W-padL-padR); }
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet" role="img">';
+  svg+='<line x1="12" y1="'+y+'" x2="'+(W-12)+'" y2="'+y+'" stroke="#9aa6c4" stroke-width="1.6"/>';
+  svg+='<path d="M'+(W-18)+','+(y-4)+' L'+(W-10)+','+y+' L'+(W-18)+','+(y+4)+'" fill="none" stroke="#9aa6c4" stroke-width="1.6"/>';
+  svg+='<path d="M18,'+(y-4)+' L10,'+y+' L18,'+(y+4)+'" fill="none" stroke="#9aa6c4" stroke-width="1.6"/>';
+  svg+='<text x="'+(W-8)+'" y="'+(y+4)+'" font-family="Georgia" font-size="13" fill="#9aa6c4">x</text>';
+  var xa=X(pts[0].x), xb=X(pts[1].x);
+  function band(x1,x2){ return '<rect x="'+Math.min(x1,x2)+'" y="'+(y-9)+'" width="'+Math.abs(x2-x1)+'" height="18" fill="'+color+'22"/><line x1="'+Math.min(x1,x2)+'" y1="'+y+'" x2="'+Math.max(x1,x2)+'" y2="'+y+'" stroke="'+color+'" stroke-width="3"/>'; }
+  if(kind==='between'){ svg+=band(xa,xb); } else { svg+=band(12,xa); svg+=band(xb,W-12); }
+  pts.forEach(function(p){
+    var px=X(p.x);
+    svg+='<circle cx="'+px+'" cy="'+y+'" r="6.5" fill="'+(closed?color:'#fff')+'" stroke="'+color+'" stroke-width="2.4"/>';
+    svg+='<text x="'+px+'" y="'+(y+26)+'" text-anchor="middle" font-family="Georgia" font-size="14" fill="#222b3d">'+p.label+'</text>';
+  });
+  var cap=subtitle?'<div class="muted" style="font-size:12.5px;text-align:center;margin-top:-2px">'+subtitle+'</div>':'';
+  return '<div class="nline">'+svg+'</svg>'+cap+'</div>';
+}
+
+// пункт-квиз (выбор варианта)
+function choiceWidget(host, options){
+  var box=el('<div class="rowset"></div>'); host.appendChild(box);
+  var sel=-1, btns=[];
+  options.forEach(function(opt,idx){
+    var b=el('<button type="button" class="btn ghost" style="justify-content:flex-start;text-align:left;font-family:var(--serif);font-size:16px">'+opt+'</button>');
+    b.addEventListener('click',function(){sel=idx;btns.forEach(function(x){x.classList.remove('primary');x.classList.add('ghost');});b.classList.remove('ghost');b.classList.add('primary');});
+    box.appendChild(b); btns.push(b);
+  });
+  return {read:function(){return sel;}};
+}
+
+/* ---------- компонент: мини-задача ---------- */
+// spec: {promptHTML, mount(host)->{read}, check(read)->{ok,reason?}, reveal()->HTML, regen->spec, kind}
+function mountMini(host, spec){
+  clear(host);
+  var box=el('<div class="qbox"></div>');
+  box.appendChild(el('<div class="qhead">Мини-задача</div>'));
+  box.appendChild(el('<div class="prompt">'+spec.promptHTML+'</div>'));
+  var wslot=el('<div></div>'); box.appendChild(wslot);
+  var w=spec.mount(wslot);
+  var btns=el('<div class="btns"></div>');
+  var check=el('<button class="btn primary">Проверить</button>');
+  var show=el('<button class="btn amberbtn">Показать</button>');
+  btns.appendChild(check); btns.appendChild(show); box.appendChild(btns);
+  var fb=el('<div class="fb"></div>'); box.appendChild(fb);
+  var solved=false;
+  function moreBtn(){
+    if($('.morebtn',box)) return;
+    var m=el('<button class="btn ghost morebtn">Ещё пример этой темы \u2192</button>');
+    m.addEventListener('click',function(){mountMini(host, spec.regen());});
+    box.appendChild(m);
+  }
+  check.addEventListener('click',function(){
+    var r=spec.check(w.read);
+    if(r.ok){ fb.className='fb ok show'; fb.innerHTML='Верно. '+(spec.okNote||''); solved=true; moreBtn(); }
+    else{ fb.className='fb no show'; fb.innerHTML=spec.reasonText?spec.reasonText(r):'Пока не то. Проверь вычисления и попробуй снова.'; }
+  });
+  show.addEventListener('click',function(){
+    fb.className='fb peek show'; fb.innerHTML=spec.reveal; moreBtn();
+  });
+  host.appendChild(box);
+}
+
+/* ---------- компонент: пошаговый решатель ---------- */
+// steps: [{q:HTML, info?:bool, mount?(host)->{read}, check?(read)->{ok,..}, reveal?:HTML}]
+// cfg: {problemHTML, steps, finalHTML, onNew}
+function mountStepper(host, cfg){
+  clear(host);
+  var wrap=el('<div></div>');
+  wrap.appendChild(el('<div class="qhead">Задача</div>'));
+  wrap.appendChild(el('<div class="mathline" style="margin-bottom:6px">'+cfg.problemHTML+'</div>'));
+  var list=el('<div class="steps"></div>'); wrap.appendChild(list);
+  host.appendChild(wrap);
+  var cur=0, nodes=[];
+  function renderStep(i){
+    var st=cfg.steps[i];
+    var node=el('<div class="sstep"></div>');
+    var head=el('<div class="snum"><span class="dot">'+(i+1)+'</span> Шаг '+(i+1)+'</div>');
+    node.appendChild(head);
+    node.appendChild(el('<div class="sq">'+st.q+'</div>'));
+    var w=null, fb=null;
+    if(!st.info && st.mount){
+      var wslot=el('<div></div>'); node.appendChild(wslot); w=st.mount(wslot);
+      var bt=el('<div class="btns"></div>');
+      var ck=el('<button class="btn primary">Проверить</button>');
+      var sh=el('<button class="btn amberbtn">Показать шаг</button>');
+      bt.appendChild(ck);bt.appendChild(sh);node.appendChild(bt);
+      fb=el('<div class="fb"></div>'); node.appendChild(fb);
+      ck.addEventListener('click',function(){
+        var r=st.check(w.read);
+        if(r.ok){ node.classList.add('done'); advance(i); }
+        else { fb.className='fb no show'; fb.innerHTML=st.reasonText?st.reasonText(r):'Не сходится — попробуй ещё раз.'; }
+      });
+      sh.addEventListener('click',function(){
+        node.classList.add('peeked'); node.classList.remove('active');
+        fb.className='fb peek show'; fb.innerHTML='Правильно: '+st.reveal; advance(i,true);
+      });
+    } else {
+      var bt2=el('<div class="btns"></div>');
+      var sh2=el('<button class="btn ghost">Понятно, дальше \u2192</button>');
+      bt2.appendChild(sh2); node.appendChild(bt2);
+      var rev=el('<div class="fb peek" style="margin-top:8px"></div>');
+      if(st.reveal){ node.appendChild(rev); }
+      sh2.addEventListener('click',function(){
+        if(st.reveal){ rev.className='fb peek show'; rev.innerHTML=st.reveal; }
+        node.classList.add('done'); advance(i);
+      });
+    }
+    nodes[i]=node; list.appendChild(node);
+    setActive();
+  }
+  function setActive(){
+    nodes.forEach(function(n,idx){
+      var isActive = (idx===cur && !n.classList.contains('done') && !n.classList.contains('peeked'));
+      if(isActive){
+        n.classList.add('active');
+        if(!$('.yourturn',n)) n.querySelector('.snum').appendChild(el('<span class="yourturn">твой ход</span>'));
+      } else {
+        n.classList.remove('active');
+        var yt=$('.yourturn',n); if(yt) yt.parentNode.removeChild(yt);
+      }
+    });
+  }
+  function advance(i, peeked){
+    if(i!==cur) return;
+    cur++;
+    if(cur<cfg.steps.length){ renderStep(cur); }
+    else { finalBlock(); }
+  }
+  function finalBlock(){
+    var fin=el('<div class="stepfinal"><div class="sf-h">Ответ</div><div class="mathline" style="font-size:19px">'+cfg.finalHTML+'</div></div>');
+    wrap.appendChild(fin);
+    var m=el('<button class="btn ghost morebtn">Ещё пример этой темы \u2192</button>');
+    m.addEventListener('click',function(){ cfg.onNew(host); });
+    wrap.appendChild(m);
+  }
+  renderStep(0);
+}
+
+/* ---------- компонент: марафон ---------- */
+// engine: {gen()->data, render(data)->{problemHTML, mount(host)->{read}, check(read)->{ok,reason?}, reasonText?, solutionHTML, stepper(data)->cfg}}
+function mountMarathon(host, engine){
+  clear(host);
+  var state={streak:0, solved:0, n:0, lastSig:null};
+  var top=el('<div class="mtop"><span class="stat solved">решено <b>0</b></span><span class="stat streak">серия <b>0</b></span><span class="spacer"></span><span class="probno"></span></div>');
+  host.appendChild(top);
+  var arena=el('<div></div>'); host.appendChild(arena);
+  function refreshTop(){ top.querySelector('.solved b').textContent=state.solved; top.querySelector('.streak b').textContent=state.streak; top.querySelector('.probno').textContent='задача №'+state.n; }
+  function fresh(){
+    var data, sig, guard=0;
+    do{ data=engine.gen(); sig=JSON.stringify(data,function(k,v){return typeof v==='bigint'?v.toString():v;}); guard++; }while(sig===state.lastSig && guard<40);
+    state.lastSig=sig; state.n++; refreshTop();
+    return data;
+  }
+  function round(data){
+    clear(arena);
+    var R=engine.render(data);
+    var box=el('<div class="qbox"></div>');
+    box.appendChild(el('<div class="qhead">Реши уравнение</div>'.replace('Реши уравнение', R.head||'Задача')));
+    box.appendChild(el('<div class="mathline prompt" style="margin-bottom:14px">'+R.problemHTML+'</div>'));
+    var wslot=el('<div></div>'); box.appendChild(wslot);
+    var w=R.mount(wslot);
+    var btns=el('<div class="btns"></div>');
+    var ck=el('<button class="btn primary">Проверить</button>');
+    var steps=el('<button class="btn ghost">Решить по шагам</button>');
+    var sh=el('<button class="btn amberbtn">Показать ответ</button>');
+    btns.appendChild(ck);btns.appendChild(steps);btns.appendChild(sh);box.appendChild(btns);
+    var fb=el('<div class="fb"></div>'); box.appendChild(fb);
+    arena.appendChild(box);
+    var done=false;
+    function nextBtn(cls){
+      if($('.nextbtn',box))return;
+      var nx=el('<button class="btn next nextbtn morebtn">Дальше \u2192</button>');
+      nx.addEventListener('click',function(){ round(fresh()); });
+      box.appendChild(nx);
+    }
+    ck.addEventListener('click',function(){
+      if(done)return;
+      var r=R.check(w.read, data);
+      if(r.ok){ fb.className='fb ok show'; fb.innerHTML='<b>Верно!</b> '+(R.okNote||''); done=true; state.solved++; state.streak++; refreshTop(); ck.disabled=true; sh.disabled=true; nextBtn(); }
+      else{ fb.className='fb no show'; fb.innerHTML=(R.reasonText?R.reasonText(r):'Пока неверно — посмотри решение по шагам, если застрял.'); if(state.streak){state.streak=0;refreshTop();} }
+    });
+    sh.addEventListener('click',function(){
+      if(done)return; done=true; ck.disabled=true; sh.disabled=true;
+      var sol=el('<div class="solution"><div class="sol-h">Разбор</div>'+R.solutionHTML+'</div>');
+      arena.appendChild(sol); nextBtn();
+    });
+    steps.addEventListener('click',function(){
+      steps.disabled=true;
+      var sc=el('<div style="margin-top:14px;border-top:1px dashed var(--line);padding-top:12px"></div>');
+      arena.appendChild(sc);
+      var cfg=R.stepper(data);
+      cfg.onNew=function(){ /* внутри марафона «ещё пример» = новая задача */ round(fresh()); };
+      mountStepper(sc, cfg);
+    });
+  }
+  round(fresh());
+}
+
+/* ============================ РЕНДЕР ПО ТИПАМ ============================ */
+var R={};
+
+// ---- A: значение выражения ----
+R.A=function(d){
+  var num=fmtPoly([[d.p,'a'],[d.q,'b'],[d.r,'']]);
+  var den=fmtPoly([[-d.q,'a'],[-d.p,'b'],[d.r,'']]);
+  var cond=frac(num,den)+' = '+d.k;
+  var target=fmtPoly([[d.A,'a'],[d.B,'b'],[d.C,'']]);
+  var lin=fmtPoly([[d.A,'a'],[d.B,'b']]);
+  var linVal=d.r*(1-d.k);
+  return {
+    head:'Найдите значение выражения',
+    problemHTML:'<b>'+target+'</b>, если '+cond,
+    mount:function(h){return fracField(h,{noToggle:true,ph:''});},
+    check:function(read){return {ok:M.checkInt(read(), Fr.fromInt(d.ans))};},
+    okNote:'',
+    solutionHTML:
+      '<div class="step">1) Умножаем на знаменатель: '+num+' = '+d.k+'\u00b7('+den+').</div>'+
+      '<div class="step">2) Раскрываем и переносим всё влево — линейная часть: <b>'+lin+' = '+linVal+'</b>.</div>'+
+      '<div class="step">3) Подставляем: '+target+' = '+linVal+' + '+d.C+' = <span class="ans-chip">'+d.ans+'</span></div>',
+    stepper:function(dd){return stA(dd);}
+  };
+};
+/* ---------- атомарное решение квадратного уравнения по дискриминанту ---------- */
+/* Возвращает массив мелких шагов для a·v² + b·v + c = 0 (корни рациональные). */
+function quadSteps(a,b,c,opts){
+  opts=opts||{}; var v=opts.v||'x'; var D=b*b-4*a*c; var out=[];
+  var sgn=function(n){ return n<0?('\u2212'+(-n)):(''+n); };
+  if(!opts.noCoef){
+    out.push({info:true, q:'Это квадратное уравнение вида a'+v+S2+' + b'+v+' + c = 0. Выпиши коэффициенты со знаками.',
+      reveal:'a = '+a+',\u00a0 b = '+sgn(b)+',\u00a0 c = '+sgn(c)});
+  }
+  var Dsub='('+sgn(b)+')'+S2+' \u2212 4\u00b7'+a+'\u00b7('+sgn(c)+')';
+  out.push({q:'Найди дискриминант: D = b'+S2+' \u2212 4ac = '+Dsub+' = ?',
+    mount:function(h){return fracField(h,{noToggle:true});},
+    check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(D))};},
+    reasonText:function(){return 'Следи за знаками при подстановке: D = '+Dsub+' = '+D+'.';},
+    reveal:''+D});
+  if(D>0){
+    var sq=Math.round(Math.sqrt(D)), den=2*a;
+    out.push({q:'D &gt; 0 — значит два корня. Найди \u221AD = \u221A'+D+' = ?',
+      mount:function(h){return fracField(h,{noToggle:true});},
+      check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(sq))};},
+      reveal:''+sq});
+    var x1=new Fr(BigInt(-b+sq),BigInt(den)), x2=new Fr(BigInt(-b-sq),BigInt(den));
+    out.push({q:v+'\u2081 = '+frac('\u2212b + \u221AD','2a')+' = '+frac(sgn(-b)+' + '+sq, ''+den)+' = ?',
+      mount:function(h){return fracField(h, x1.isInt()?{noToggle:true}:{});},
+      check:(function(x){return function(r){return {ok:M.checkInt(r(),x)};};})(x1),
+      reveal:frToStr(x1)});
+    out.push({q:v+'\u2082 = '+frac('\u2212b \u2212 \u221AD','2a')+' = '+frac(sgn(-b)+' \u2212 '+sq, ''+den)+' = ?',
+      mount:function(h){return fracField(h, x2.isInt()?{noToggle:true}:{});},
+      check:(function(x){return function(r){return {ok:M.checkInt(r(),x)};};})(x2),
+      reveal:frToStr(x2)});
+  } else if(D===0){
+    var den0=2*a, x0=new Fr(BigInt(-b),BigInt(den0));
+    out.push({q:'D = 0 — ровно один корень. '+v+' = '+frac('\u2212b','2a')+' = '+frac(sgn(-b),''+den0)+' = ?',
+      mount:function(h){return fracField(h, x0.isInt()?{noToggle:true}:{});},
+      check:(function(x){return function(r){return {ok:M.checkInt(r(),x)};};})(x0),
+      reveal:frToStr(x0)});
+  }
+  return out;
+}
+/* маленький шаг «x² = k ⇒ x = ±√k» (для x²=m²-подобных) */
+function sqrtPmSteps(k, opts){
+  opts=opts||{}; var v=opts.v||'x'; var m=Math.round(Math.sqrt(k)); var out=[];
+  out.push({q:'Уравнение '+v+S2+' = '+k+'. Найди \u221A'+k+' = ?',
+    mount:function(h){return fracField(h,{noToggle:true});},
+    check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(m))};},
+    reasonText:function(){return '\u221A'+k+' = '+m+'.';},
+    reveal:''+m});
+  out.push({info:true, q:'Квадрат даёт два корня — положительный и отрицательный.', reveal:v+' = '+m+' и '+v+' = \u2212'+m});
+  return out;
+}
+
+function stA(d){
+  var num=fmtPoly([[d.p,'a'],[d.q,'b'],[d.r,'']]);
+  var den=fmtPoly([[-d.q,'a'],[-d.p,'b'],[d.r,'']]);
+  var target=fmtPoly([[d.A,'a'],[d.B,'b'],[d.C,'']]);
+  var lin=fmtPoly([[d.A,'a'],[d.B,'b']]);
+  var linVal=d.r*(1-d.k);
+  var expRHS=fmtPoly([[d.k*(-d.q),'a'],[d.k*(-d.p),'b'],[d.k*d.r,'']]);
+  return {
+    problemHTML:'Найдите '+target+', если '+frac(num,den)+' = '+d.k,
+    finalHTML:target+' = <span class="ans-chip">'+d.ans+'</span>',
+    onNew:function(h){mountStepper(h, stA(M.gen.A()));},
+    steps:[
+      {info:true, q:'Условие — дробь, равная числу '+d.k+'. Умножаем обе части на знаменатель, чтобы убрать дробь.', reveal:num+' = '+d.k+' \u00b7 ('+den+')'},
+      {info:true, q:'Раскрой скобки в правой части: умножь '+d.k+' на каждое слагаемое.', reveal:num+' = '+expRHS},
+      {q:'Перенеси все слагаемые в одну сторону и приведи подобные так, чтобы слева получилось выражение '+lin+' (оно же стоит в цели). Чему равно '+lin+'?',
+       mount:function(h){return fracField(h,{noToggle:true});},
+       check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(linVal))};},
+       reasonText:function(){return 'Собери подобные аккуратно: '+lin+' = '+linVal+'.';},
+       reveal:lin+' = '+linVal},
+      {q:'Подставь найденное в целевое выражение: '+target+' = ('+lin+') + '+d.C+' = '+linVal+' + '+d.C+' = ?',
+       mount:function(h){return fracField(h,{noToggle:true});},
+       check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(d.ans))};},
+       reveal:''+d.ans}
+    ]
+  };
+}
+
+// ---- B1: кубическое, группировка ----
+R.B1=function(d){
+  var lhs=fmtPoly([[1,'x'+S3],[d.a,'x'+S2]]);
+  var rhs=fmtPoly([[d.m*d.m,'x'],[d.a*d.m*d.m,'']]);
+  return {
+    head:'Решите уравнение',
+    problemHTML:lhs+' = '+rhs,
+    mount:function(h){return rootsetWidget(h,{start:d.roots.length});},
+    check:function(read){return M.checkRootset(read(), d.roots.map(function(x){return Fr.fromInt(x);}));},
+    reasonText:rootsetReason,
+    solutionHTML:
+      '<div class="step">1) В левую часть: '+fmtPoly([[1,'x'+S3],[d.a,'x'+S2],[d.b,'x'],[d.c,'']])+' = 0.</div>'+
+      '<div class="step">2) Группировка: x'+S2+P(d.a)+' '+(d.b<0?'\u2212':'+')+' '+Math.abs(d.b)+P(d.a)+' → общий множитель '+P(d.a)+'.</div>'+
+      '<div class="step">3) '+P(d.a)+'(x'+S2+' '+(d.b<0?'\u2212 '+(-d.b):'+ '+d.b)+') = 0.</div>'+
+      '<div class="step">4) x = '+(-d.a)+'; из x'+S2+' = '+(d.m*d.m)+' получаем x = \u00b1'+d.m+'.</div>'+
+      '<div class="step">Ответ: '+d.roots.map(function(x){return '<span class="ans-chip">'+x+'</span>';}).join('')+'</div>',
+    stepper:function(dd){return stB1(dd);}
+  };
+};
+function stB1(d){
+  var lhs=fmtPoly([[1,'x'+S3],[d.a,'x'+S2]]);
+  var rhs=fmtPoly([[d.m*d.m,'x'],[d.a*d.m*d.m,'']]);
+  var quadRoots=[d.m,-d.m];
+  return {
+    problemHTML:lhs+' = '+rhs,
+    finalHTML:d.roots.map(function(x){return '<span class="ans-chip">'+x+'</span>';}).join(''),
+    onNew:function(h){mountStepper(h, stB1(M.gen.B1()));},
+    steps:[
+      {info:true, q:'Перенеси все слагаемые в левую часть, чтобы справа остался ноль.', reveal:fmtPoly([[1,'x'+S3],[d.a,'x'+S2],[d.b,'x'],[d.c,'']])+' = 0'},
+      {q:'Сгруппируй первые два и последние два слагаемых и вынеси общий множитель. Какой он?',
+       mount:function(h){return choiceWidget(h,[P(d.a), P(-d.a), '(x'+S2+' '+(d.a<0?'\u2212 '+(-d.a):'+ '+d.a)+')']);},
+       check:function(r){return {ok:r()===0};}, reasonText:function(){return 'Не тот множитель. Общий у обеих групп — '+P(d.a)+'.';},
+       reveal:P(d.a)},
+      {info:true, q:'Вынеси '+P(d.a)+' за скобку — уравнение станет произведением двух множителей.', reveal:P(d.a)+'(x'+S2+' '+(d.b<0?'\u2212 '+(-d.b):'+ '+d.b)+') = 0'},
+      {info:true, q:'Произведение равно нулю ⇒ хотя бы один множитель равен нулю. Разбираем по очереди.', reveal:'x '+(d.a>=0?'+ '+d.a:'\u2212 '+(-d.a))+' = 0 &nbsp;или&nbsp; x'+S2+' '+(d.b<0?'\u2212 '+(-d.b):'+ '+d.b)+' = 0'},
+      {q:'Первый множитель: x '+(d.a>=0?'+ '+d.a:'\u2212 '+(-d.a))+' = 0. Тогда x = ?',
+       mount:function(h){return fracField(h,{noToggle:true});},
+       check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(-d.a))};}, reveal:''+(-d.a)}
+    ].concat([{info:true, q:'Второй множитель: x'+S2+' '+(d.b<0?'\u2212 '+(-d.b):'+ '+d.b)+' = 0 — перенеси свободный член вправо.', reveal:'x'+S2+' = '+(d.m*d.m)}]).concat(sqrtPmSteps(d.m*d.m))
+  };
+}
+
+// ---- B2: уравнение с корнем ----
+R.B2=function(d){
+  var lhs=fmtPoly([[1,'x'+S2],[-d.c,'x']])+' + '+rad(fmtPoly([[d.K,''],[-1,'x']]));
+  var rhs=rad(fmtPoly([[d.K,''],[-1,'x']]))+' + '+d.n;
+  return {
+    head:'Решите уравнение',
+    problemHTML:lhs+' = '+rhs,
+    mount:function(h){return fracField(h,{noToggle:true});},
+    check:function(read){return {ok:M.checkInt(read(), Fr.fromInt(d.kept[0]))};},
+    solutionHTML:
+      '<div class="step">1) ОДЗ: '+fmtPoly([[d.K,''],[-1,'x']])+' \u2265 0 → x \u2264 '+d.K+'.</div>'+
+      '<div class="step">2) Одинаковый '+rad('...')+' в обеих частях — вычитаем: '+fmtPoly([[1,'x'+S2],[-d.c,'x'],[-d.n,'']])+' = 0.</div>'+
+      '<div class="step">3) Корни квадратного: x = '+d.r1+' и x = '+d.r2+'.</div>'+
+      '<div class="step">4) Проверка по ОДЗ: '+d.r2+' &gt; '+d.K+' — не годится; '+d.r1+' \u2264 '+d.K+' — подходит.</div>'+
+      '<div class="step">Ответ: <span class="ans-chip">'+d.kept[0]+'</span></div>',
+    stepper:function(dd){return stB2(dd);}
+  };
+};
+function stB2(d){
+  var lhs=fmtPoly([[1,'x'+S2],[-d.c,'x']])+' + '+rad(fmtPoly([[d.K,''],[-1,'x']]));
+  var rhs=rad(fmtPoly([[d.K,''],[-1,'x']]))+' + '+d.n;
+  return {
+    problemHTML:lhs+' = '+rhs,
+    finalHTML:'<span class="ans-chip">'+d.kept[0]+'</span> <span class="muted" style="font-size:14px">('+d.r2+' отброшен по ОДЗ)</span>',
+    onNew:function(h){mountStepper(h, stB2(M.gen.B2()));},
+    steps:[
+      {q:'Сначала ОДЗ: под корнем должно быть неотрицательно. Из '+fmtPoly([[d.K,''],[-1,'x']])+' \u2265 0 получаем x \u2264 ? (введи число)',
+       mount:function(h){return fracField(h,{noToggle:true});},
+       check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(d.K))};}, reasonText:function(){return 'Реши '+fmtPoly([[d.K,''],[-1,'x']])+' \u2265 0: x \u2264 '+d.K+'.';}, reveal:'x \u2264 '+d.K},
+      {info:true, q:'В левой и правой части стоит один и тот же '+rad('...')+'. Вычитаем его из обеих частей — корень исчезает.', reveal:fmtPoly([[1,'x'+S2],[-d.c,'x'],[-d.n,'']])+' = 0'}
+    ].concat(quadSteps(1,-d.c,-d.n)).concat([
+      {info:true, q:'Нашли два корня: '+d.r1+' и '+d.r2+'. Теперь вспомни ОДЗ: x \u2264 '+d.K+'.', reveal:d.r2+' &gt; '+d.K+' — не подходит; '+d.r1+' \u2264 '+d.K+' — подходит'},
+      {q:'Какой из корней удовлетворяет ОДЗ и идёт в ответ?',
+       mount:function(h){return fracField(h,{noToggle:true});},
+       check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(d.kept[0]))};}, reasonText:function(){return 'По ОДЗ x \u2264 '+d.K+' подходит только '+d.kept[0]+'.';}, reveal:''+d.kept[0]}
+    ])
+  };
+}
+
+// ---- B3/B4: разложение на множители ----
+function renderB3(d){
+  var lhs='('+fmtPoly([[1,'x'],[-d.a,'']])+')(x'+S2+' + '+(2*d.m)+'x + '+(d.m*d.m)+')';
+  var rhs=d.k+'('+fmtPoly([[1,'x'],[d.m,'']])+')';
+  var quad=fmtPoly([[1,'x'+S2],[d.m-d.a,'x'],[-(d.a*d.m+d.k),'']]);
+  return {
+    head:'Решите уравнение',
+    problemHTML:lhs+' = '+rhs,
+    mount:function(h){return rootsetWidget(h,{start:d.roots.length});},
+    check:function(read){return M.checkRootset(read(), d.roots.map(function(x){return Fr.fromInt(x);}));},
+    reasonText:rootsetReason,
+    solutionHTML:
+      '<div class="step">1) Полный квадрат: x'+S2+' + '+(2*d.m)+'x + '+(d.m*d.m)+' = '+P(d.m)+'<sup>2</sup>. Уравнение: '+P(d.a===0?0:-d.a).replace('(','(').replace('','')+' ... </div>'.replace('...','')+
+      '<div class="step" style="margin-top:-8px">'+ '('+fmtPoly([[1,'x'],[-d.a,'']])+')'+P(d.m)+S2+' = '+d.k+P(d.m)+'.</div>'+
+      '<div class="step">2) Переносим и выносим '+P(d.m)+': '+P(d.m)+'[('+fmtPoly([[1,'x'],[d.m,'']])+')('+fmtPoly([[1,'x'],[-d.a,'']])+') \u2212 '+d.k+'] = 0.</div>'+
+      '<div class="step">3) В скобке — квадратное: '+quad+' = 0.</div>'+
+      '<div class="step">Ответ: '+d.roots.map(function(x){return '<span class="ans-chip">'+x+'</span>';}).join('')+'</div>',
+    stepper:function(){return stB3(d);}
+  };
+}
+function stB3(d){
+  var lhs='('+fmtPoly([[1,'x'],[-d.a,'']])+')(x'+S2+' + '+(2*d.m)+'x + '+(d.m*d.m)+')';
+  var rhs=d.k+'('+fmtPoly([[1,'x'],[d.m,'']])+')';
+  var quad=fmtPoly([[1,'x'+S2],[d.m-d.a,'x'],[-(d.a*d.m+d.k),'']]);
+  return {
+    problemHTML:lhs+' = '+rhs,
+    finalHTML:d.roots.map(function(x){return '<span class="ans-chip">'+x+'</span>';}).join(''),
+    onNew:function(h){mountStepper(h, makeRazlStepper());},
+    steps:[
+      {info:true, q:'Заметь полный квадрат: x'+S2+' + '+(2*d.m)+'x + '+(d.m*d.m)+' = '+P(d.m)+S2+'. Перепиши уравнение короче.', reveal:'('+fmtPoly([[1,'x'],[-d.a,'']])+')'+P(d.m)+S2+' = '+d.k+P(d.m)},
+      {info:true, q:'Перенеси всё в левую часть.', reveal:'('+fmtPoly([[1,'x'],[-d.a,'']])+')'+P(d.m)+S2+' \u2212 '+d.k+P(d.m)+' = 0'},
+      {info:true, q:'В обоих слагаемых есть общий множитель '+P(d.m)+'. Вынеси его за скобку.', reveal:P(d.m)+'[('+fmtPoly([[1,'x'],[d.m,'']])+')('+fmtPoly([[1,'x'],[-d.a,'']])+') \u2212 '+d.k+'] = 0'},
+      {info:true, q:'Произведение равно нулю ⇒ хотя бы один множитель = 0: либо '+P(d.m)+' = 0, либо квадратная скобка = 0.', reveal:P(d.m)+' = 0 &nbsp;или&nbsp; [ ... ] = 0'},
+      {q:'Первый множитель: '+P(d.m)+' = 0. Тогда x = ?',
+       mount:function(h){return fracField(h,{noToggle:true});},
+       check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(-d.m))};}, reasonText:function(){return 'Из x + '+d.m+' = 0 получаем x = '+(-d.m)+'.';}, reveal:''+(-d.m)},
+      {info:true, q:'Теперь раскрой квадратную скобку [ ... ] и приведи подобные — получится квадратное уравнение.', reveal:quad+' = 0'}
+    ].concat(quadSteps(1, d.m-d.a, -(d.a*d.m+d.k))).concat([
+      {info:true, q:'Собери все три корня в один ответ.', reveal:d.roots.join(', ')}
+    ])
+  };
+}
+function renderB4(d){
+  var q1=fmtPoly([[1,'x'+S2],[d.c1,'']]);
+  var q2=fmtPoly([[1,'x'+S2],[d.b2,'x'],[d.c2,'']]);
+  return {
+    head:'Решите уравнение',
+    problemHTML:'('+q1+')'+S2+' + ('+q2+')'+S2+' = 0',
+    mount:function(h){return fracField(h,{noToggle:true});},
+    check:function(read){return {ok:M.checkInt(read(), Fr.fromInt(d.ans))};},
+    solutionHTML:
+      '<div class="step">1) Сумма квадратов равна нулю ⇒ <b>каждое</b> слагаемое равно нулю одновременно.</div>'+
+      '<div class="step">2) '+q1+' = 0 → x = '+d.c+' и x = '+(-d.c)+'.</div>'+
+      '<div class="step">3) '+q2+' = 0 → x = '+d.c+' и x = '+d.q+'.</div>'+
+      '<div class="step">4) Общий корень обоих: <span class="ans-chip">'+d.ans+'</span></div>',
+    stepper:function(){return stB4(d);}
+  };
+}
+function stB4(d){
+  var q1=fmtPoly([[1,'x'+S2],[d.c1,'']]);
+  var q2=fmtPoly([[1,'x'+S2],[d.b2,'x'],[d.c2,'']]);
+  return {
+    problemHTML:'('+q1+')'+S2+' + ('+q2+')'+S2+' = 0',
+    finalHTML:'<span class="ans-chip">'+d.ans+'</span>',
+    onNew:function(h){mountStepper(h, makeRazlStepper());},
+    steps:[
+      {info:true, q:'Сумма квадратов = 0. Квадрат никогда не бывает отрицательным, поэтому сумма равна нулю только если КАЖДОЕ слагаемое = 0 одновременно.', reveal:q1+' = 0 &nbsp;и&nbsp; '+q2+' = 0'},
+      {info:true, q:'Разберём первое уравнение '+q1+' = 0. Перенеси свободный член вправо.', reveal:'x'+S2+' = '+(d.c*d.c)}
+    ].concat(sqrtPmSteps(d.c*d.c)).concat([
+      {info:true, q:'Теперь второе уравнение '+q2+' = 0 — решаем через дискриминант.', reveal:q2+' = 0'}
+    ]).concat(quadSteps(1, d.b2, d.c2, {noCoef:true})).concat([
+      {info:true, q:'Уравнение выполняется, только если ОБА множителя равны нулю. Значит ответ — корень, общий для обоих уравнений.', reveal:'общий корень: x = '+d.ans},
+      {q:'Какое число является корнем и первого, и второго уравнения?',
+       mount:function(h){return fracField(h,{noToggle:true});},
+       check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(d.ans))};}, reasonText:function(){return 'Общий корень обоих уравнений — '+d.ans+'.';}, reveal:''+d.ans}
+    ])
+  };
+}
+function makeRazl(){ return Math.random()<0.5 ? {kind:'B3',d:M.gen.B3()} : {kind:'B4',d:M.gen.B4()}; }
+function makeRazlStepper(){ var p=makeRazl(); return p.kind==='B3'?stB3(p.d):stB4(p.d); }
+
+// ---- B5: дробно-рациональные ----
+R.B5=function(d){
+  var base=d.shift? '('+fmtPoly([[1,'x'],[-d.shift,'']])+')' : 'x';
+  var baseSq=d.shift? '('+fmtPoly([[1,'x'],[-d.shift,'']])+')'+S2 : 'x'+S2;
+  var lhs=frac('1',baseSq)+ pterm(d.p,base) + cterm(d.q);
+  return {
+    head:'Решите уравнение',
+    problemHTML:lhs+' = 0',
+    mount:function(h){return rootsetWidget(h,{start:d.xs.length});},
+    check:function(read){return M.checkRootset(read(), d.xs);},
+    reasonText:rootsetReason,
+    solutionHTML:
+      '<div class="step">1) Замена t = '+frac('1',base)+'. Уравнение станет квадратным: '+fmtPoly([[1,'t'+S2],[d.p,'t'],[d.q,'']])+' = 0.</div>'+
+      '<div class="step">2) Корни: t = '+d.t1+' и t = '+d.t2+'.</div>'+
+      '<div class="step">3) Обратная замена '+(d.shift?('x = '+d.shift+' + '+frac('1','t')):'x = '+frac('1','t'))+': '+
+        d.xs.map(function(f){return '<span class="ans-chip">'+frToHTML(f)+'</span>';}).join('')+'</div>',
+    stepper:function(){return stB5(d);}
+  };
+};
+function pterm(p,base){ if(p===0)return ''; return (p<0?' \u2212 ':' + ')+frac(Math.abs(p),base); }
+function cterm(q){ if(q===0)return ''; return (q<0?' \u2212 ':' + ')+Math.abs(q); }
+function stB5(d){
+  var base=d.shift? '('+fmtPoly([[1,'x'],[-d.shift,'']])+')' : 'x';
+  var baseSq=d.shift? '('+fmtPoly([[1,'x'],[-d.shift,'']])+')'+S2 : 'x'+S2;
+  var lhs=frac('1',baseSq)+ pterm(d.p,base) + cterm(d.q);
+  var Dd=d.p*d.p-4*d.q, sq=Math.round(Math.sqrt(Dd));
+  var tBig=(-d.p+sq)/2, tSmall=(-d.p-sq)/2;
+  var xFor=function(t){ return Fr.fromInt(d.shift).add(new Fr(1n,BigInt(t))); };
+  var xBig=xFor(tBig), xSmall=xFor(tSmall);
+  var backLabel=function(t){ return (d.shift?d.shift+' + ':'')+frac('1',''+t); };
+  return {
+    problemHTML:lhs+' = 0',
+    finalHTML:d.xs.map(function(f){return '<span class="ans-chip">'+frToHTML(f)+'</span>';}).join(''),
+    onNew:function(h){mountStepper(h, stB5(M.gen.B5({variant:Math.random()<0.4})));},
+    steps:[
+      {info:true, q:'Введём замену t = '+frac('1',base)+'. Тогда '+frac('1',baseSq)+' = t'+S2+', и уравнение становится квадратным относительно t.', reveal:fmtPoly([[1,'t'+S2],[d.p,'t'],[d.q,'']])+' = 0'}
+    ].concat(quadSteps(1,d.p,d.q,{v:'t'})).concat([
+      {info:true, q:'Оба t найдены. Возвращаемся к x обратной заменой x = '+(d.shift?d.shift+' + ':'')+frac('1','t')+'.', reveal:'x = '+backLabel(tBig)+' &nbsp;и&nbsp; x = '+backLabel(tSmall)},
+      {q:'Подставь t\u2081 = '+tBig+': x = '+backLabel(tBig)+' = ? (переключи поле в режим дроби)',
+       mount:function(h){return fracField(h, xBig.isInt()?{noToggle:true}:{});},
+       check:(function(x){return function(r){return {ok:M.checkInt(r(),x)};};})(xBig),
+       reasonText:function(){return 'x = '+(d.shift?d.shift+' + ':'')+'1/'+tBig+' = '+frToStr(xBig)+'.';}, reveal:frToStr(xBig)},
+      {q:'Подставь t\u2082 = '+tSmall+': x = '+backLabel(tSmall)+' = ? (можно дробью)',
+       mount:function(h){return fracField(h, xSmall.isInt()?{noToggle:true}:{});},
+       check:(function(x){return function(r){return {ok:M.checkInt(r(),x)};};})(xSmall),
+       reasonText:function(){return 'x = '+(d.shift?d.shift+' + ':'')+'1/'+tSmall+' = '+frToStr(xSmall)+'.';}, reveal:frToStr(xSmall)}
+    ])
+  };
+}
+
+// ---- BIQ: замена переменной u = x²+bx ----
+function biqParts(d){
+  var inner=fmtPoly([[1,'x'+S2],[d.b,'x']]);
+  var group='('+inner+')';
+  var mid=d.P===0?'':((d.P<0?' \u2212 ':' + ')+(Math.abs(d.P)===1?'':Math.abs(d.P))+group);
+  var cst=d.Q===0?'':((d.Q<0?' \u2212 ':' + ')+Math.abs(d.Q));
+  return {inner:inner, group:group, eq:group+S2+mid+cst+' = 0',
+          uQuad:fmtPoly([[1,'u'+S2],[d.P,'u'],[d.Q,'']])};
+}
+function biqFactorEq(d,u){ return fmtPoly([[1,'x'+S2],[d.b,'x'],[-u,'']])+' = 0'; }
+function biqPairText(pair){ return pair.map(function(x){return 'x = '+x;}).join(' и '); }
+R.BIQ=function(d){
+  var pp=biqParts(d);
+  return {
+    head:'Решите уравнение',
+    problemHTML:pp.eq,
+    mount:function(h){return rootsetWidget(h,{start:d.roots.length});},
+    check:function(read){return M.checkRootset(read(), d.roots.map(function(x){return Fr.fromInt(x);}));},
+    reasonText:rootsetReason,
+    solutionHTML:
+      '<div class="step">1) Повторяется блок '+pp.group+'. Замена u = '+pp.inner+' даёт квадратное: '+pp.uQuad+' = 0.</div>'+
+      '<div class="step">2) Корни: u = '+d.u1+' и u = '+d.u2+'.</div>'+
+      '<div class="step">3) Обратная замена, u = '+d.u1+': '+biqFactorEq(d,d.u1)+' → '+biqPairText(d.pair1)+'.</div>'+
+      '<div class="step">4) Обратная замена, u = '+d.u2+': '+biqFactorEq(d,d.u2)+' → '+biqPairText(d.pair2)+'.</div>'+
+      '<div class="step">Ответ: '+d.roots.map(function(x){return '<span class="ans-chip">'+x+'</span>';}).join('')+'</div>',
+    stepper:function(){return stBIQ(d);}
+  };
+};
+function stBIQ(d){
+  var pp=biqParts(d);
+  return {
+    problemHTML:pp.eq,
+    finalHTML:d.roots.map(function(x){return '<span class="ans-chip">'+x+'</span>';}).join(''),
+    onNew:function(h){mountStepper(h, stBIQ(M.gen.BIQ()));},
+    steps:[
+      {info:true, q:'Заметь: блок '+pp.group+' встречается дважды. Введём замену u = '+pp.inner+'. Уравнение станет квадратным относительно u.', reveal:pp.uQuad+' = 0'}
+    ].concat(quadSteps(1,d.P,d.Q,{v:'u'})).concat([
+      {info:true, q:'Оба значения u найдены. Теперь обратная замена: приравниваем блок '+pp.inner+' к каждому u и решаем.', reveal:pp.inner+' = '+d.u1+' &nbsp;и&nbsp; '+pp.inner+' = '+d.u2},
+      {info:true, q:'Первое: '+pp.inner+' = '+d.u1+'. Перенеси всё влево — получишь квадратное уравнение.', reveal:biqFactorEq(d,d.u1)}
+    ]).concat(quadSteps(1,d.b,-d.u1,{noCoef:true})).concat([
+      {info:true, q:'Второе: '+pp.inner+' = '+d.u2+'. Так же перенеси влево.', reveal:biqFactorEq(d,d.u2)}
+    ]).concat(quadSteps(1,d.b,-d.u2,{noCoef:true})).concat([
+      {info:true, q:'Собери все найденные x в один ответ (без повторов).', reveal:d.roots.join(', ')}
+    ])
+  };
+}
+
+// ---- SQ: равенство квадратов, x⁴ = (ax+b)² ----
+function sqParts(d){
+  var inner=fmtPoly([[d.a,'x'],[d.b,'']]);
+  return {inner:inner, eq:'x'+S4+' = ('+inner+')'+S2,
+          pEq:fmtPoly([[1,'x'+S2],[-d.a,'x'],[-d.b,'']])+' = 0',
+          nEq:fmtPoly([[1,'x'+S2],[d.a,'x'],[d.b,'']])+' = 0'};
+}
+function sqRootsText(arr){ return arr.map(function(x){return 'x = '+x;}).join(' и '); }
+R.SQ=function(d){
+  var pp=sqParts(d);
+  var caseN = d.hasN ? (pp.nEq+' → '+sqRootsText(d.rootsN)+'.')
+                     : (pp.nEq+' → дискриминант D = '+d.dN+' &lt; 0, действительных корней нет.');
+  return {
+    head:'Решите уравнение',
+    problemHTML:pp.eq,
+    mount:function(h){return rootsetWidget(h,{start:d.roots.length});},
+    check:function(read){return M.checkRootset(read(), d.roots.map(function(x){return Fr.fromInt(x);}));},
+    reasonText:rootsetReason,
+    solutionHTML:
+      '<div class="step">1) Обе части — квадраты: (x'+S2+')'+S2+' = ('+pp.inner+')'+S2+'. Из A'+S2+' = B'+S2+' следует A = ±B, значит x'+S2+' = '+pp.inner+' или x'+S2+' = \u2212('+pp.inner+').</div>'+
+      '<div class="step">2) Первый случай: '+pp.pEq+' → '+sqRootsText(d.rootsP)+'.</div>'+
+      '<div class="step">3) Второй случай: '+caseN+'</div>'+
+      '<div class="step">Ответ: '+d.roots.map(function(x){return '<span class="ans-chip">'+x+'</span>';}).join('')+'</div>',
+    stepper:function(){return stSQ(d);}
+  };
+};
+function stSQ(d){
+  var pp=sqParts(d);
+  var steps=[
+    {info:true, q:'Слева x'+S4+' = (x'+S2+')'+S2+', справа ('+pp.inner+')'+S2+'. Равны два квадрата ⇒ основания равны или противоположны: A = ±B.', reveal:'x'+S2+' = '+pp.inner+' &nbsp;или&nbsp; x'+S2+' = \u2212('+pp.inner+')'},
+    {info:true, q:'Разберём первый случай: x'+S2+' = '+pp.inner+'. Перенеси всё влево.', reveal:pp.pEq}
+  ].concat(quadSteps(1,-d.a,-d.b)).concat([
+    {info:true, q:'Теперь второй случай: x'+S2+' = \u2212('+pp.inner+'). Перенеси всё влево.', reveal:pp.nEq}
+  ]);
+  if(d.hasN){
+    steps=steps.concat(quadSteps(1,d.a,d.b,{noCoef:true}));
+  } else {
+    var Dsub='('+(d.a<0?'\u2212'+(-d.a):''+d.a)+')'+S2+' \u2212 4\u00b71\u00b7('+(d.b<0?'\u2212'+(-d.b):''+d.b)+')';
+    steps=steps.concat([
+      {q:'Найди дискриминант этого уравнения: D = '+Dsub+' = ?',
+       mount:function(h){return fracField(h,{noToggle:true});},
+       check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(d.dN))};}, reasonText:function(){return 'D = '+Dsub+' = '+d.dN+'.';}, reveal:''+d.dN},
+      {info:true, q:'Дискриминант отрицательный — у этого уравнения нет действительных корней. Значит второй случай ничего не даёт.', reveal:'D = '+d.dN+' &lt; 0 → действительных корней нет'}
+    ]);
+  }
+  steps.push({info:true, q:'Собери все действительные корни в один ответ.', reveal:d.roots.join(', ')});
+  return {
+    problemHTML:pp.eq,
+    finalHTML:d.roots.map(function(x){return '<span class="ans-chip">'+x+'</span>';}).join(''),
+    onNew:function(h){mountStepper(h, stSQ(M.gen.SQ()));},
+    steps:steps
+  };
+}
+
+// ---- POW: сокращение дроби со степенями ----
+function powHTML(base, off){ return base+'<sup>'+(off===0?'n':'n + '+off)+'</sup>'; } // b^{n+off}
+function powParts(d){
+  var num=powHTML(d.b,d.p)+(d.s<0?' \u2212 ':' + ')+powHTML(d.b,d.q);
+  var den=(d.c===1?'':d.c+' \u00b7 ')+powHTML(d.b,d.r);
+  return {num:num, den:den, frac:frac(num,den),
+          bq:powHTML(d.b,d.q),
+          brk:d.b+'<sup>'+(d.p-d.q)+'</sup> '+(d.s<0?'\u2212 1':'+ 1'),
+          rem:d.qr===0?'1':d.b+'<sup>'+d.qr+'</sup>',
+          Vnum:d.t*(d.qr===0?1:Math.pow(d.b,d.qr))};
+}
+R.POW=function(d){
+  var pp=powParts(d);
+  var last=(d.c===1)?('<span class="ans-chip">'+frToHTML(d.V)+'</span>')
+                    :(frac(''+pp.Vnum, ''+d.c)+' = <span class="ans-chip">'+frToHTML(d.V)+'</span>');
+  return {
+    head:'Сократите дробь и найдите её значение',
+    problemHTML:pp.frac,
+    mount:function(h){return fracField(h,{});},           // значение может быть дробью — переключатель включён
+    check:function(read){return {ok:M.checkInt(read(), d.V)};},
+    reasonText:function(){return 'Пока не то. Вынеси общий множитель '+pp.bq+', сократи степени (n уходит) и посчитай число.';},
+    okNote:'',
+    solutionHTML:
+      '<div class="step">1) Наименьшая степень числителя — '+pp.bq+'. Вынеси её: '+pp.num+' = '+pp.bq+'('+pp.brk+') = '+pp.bq+' \u00b7 '+d.t+'.</div>'+
+      '<div class="step">2) Знаменатель '+pp.den+'. Сокращаем степени: '+frac(pp.bq,powHTML(d.b,d.r))+' = '+pp.rem+' — переменная n исчезает.</div>'+
+      '<div class="step">3) Значение: '+last+'</div>',
+    stepper:function(){return stPOW(d);}
+  };
+};
+function stPOW(d){
+  var pp=powParts(d);
+  var steps=[
+    {info:true, q:'У всех степеней одно основание — '+d.b+'. В числителе вынеси наименьшую степень '+pp.bq+'.', reveal:pp.num+' = '+pp.bq+'('+pp.brk+')'},
+    {q:'Вычисли множитель в скобке: '+d.b+'<sup>'+(d.p-d.q)+'</sup> '+(d.s<0?'\u2212 1':'+ 1')+' = ?',
+     mount:function(h){return fracField(h,{noToggle:true});},
+     check:function(r){return {ok:M.checkInt(r(), Fr.fromInt(d.t))};}, reasonText:function(){return d.b+'<sup>'+(d.p-d.q)+'</sup> '+(d.s<0?'\u2212 1':'+ 1')+' = '+d.t+'.';},
+     reveal:''+d.t},
+    {info:true, q:'Сократи '+pp.bq+' со степенью знаменателя '+powHTML(d.b,d.r)+'. Переменная n уходит — что остаётся от степеней?', reveal:frac(pp.bq,powHTML(d.b,d.r))+' = '+pp.rem}
+  ];
+  if(d.c>1){
+    if(d.qr>0) steps.push({info:true, q:'В числителе теперь '+d.t+' \u00b7 '+pp.rem+'. Перемножь.', reveal:''+pp.Vnum});
+    steps.push({q:'Осталось разделить на знаменатель '+d.c+': значение дроби = '+frac(''+pp.Vnum,''+d.c)+' = ? (можно дробью)',
+      mount:function(h){return fracField(h,{});},
+      check:function(r){return {ok:M.checkInt(r(), d.V)};}, reasonText:function(){return frToStr(d.V)+' — вот значение дроби.';},
+      reveal:frToStr(d.V)});
+  } else if(d.qr>0){
+    steps.push({q:'Знаменатель сократился полностью. Значение дроби = '+d.t+' \u00b7 '+pp.rem+' = ?',
+      mount:function(h){return fracField(h,{noToggle:true});},
+      check:function(r){return {ok:M.checkInt(r(), d.V)};}, reveal:frToStr(d.V)});
+  } else {
+    steps.push({info:true, q:'Переменная n сократилась полностью, знаменатель тоже. Значит дробь равна найденному числу.', reveal:frToStr(d.V)});
+  }
+  return {
+    problemHTML:pp.frac,
+    finalHTML:'<span class="ans-chip">'+frToHTML(d.V)+'</span>',
+    onNew:function(h){mountStepper(h, stPOW(M.gen.POW()));},
+    steps:steps
+  };
+}
+
+// ---- C1/C2: системы ----
+function renderC2(d){
+  var l1=fmtPoly([[d.a,'x'+S2]])+' + y = '+d.c;
+  var l2=fmtPoly([[d.b,'x'+S2]])+' \u2212 y = '+d.d;
+  return {
+    head:'Решите систему уравнений',
+    problemHTML:sys([l1,l2]),
+    mount:function(h){return pointsetWidget(h,{start:d.sols.length});},
+    check:function(read){return M.checkPointset(read(), d.sols);},
+    reasonText:pointReason,
+    solutionHTML:
+      '<div class="step">1) Сложим уравнения — y сократится: '+fmtPoly([[d.a+d.b,'x'+S2]])+' = '+(d.c+d.d)+'.</div>'+
+      '<div class="step">2) x'+S2+' = '+((d.c+d.d)/(d.a+d.b))+' → x = \u00b1'+Math.round(Math.sqrt((d.c+d.d)/(d.a+d.b)))+'.</div>'+
+      '<div class="step">3) Подставим в первое уравнение, найдём y. Решения: '+
+        d.sols.map(function(p){return '<span class="ans-chip">('+frToHTML(p[0])+'; '+frToHTML(p[1])+')</span>';}).join('')+'</div>',
+    stepper:function(){return stC2(d);}
+  };
+}
+function stC2(d){
+  var l1=fmtPoly([[d.a,'x'+S2]])+' + y = '+d.c;
+  var l2=fmtPoly([[d.b,'x'+S2]])+' \u2212 y = '+d.d;
+  var m=Math.round(Math.sqrt((d.c+d.d)/(d.a+d.b)));
+  var kk=(d.c+d.d)/(d.a+d.b);          // = m²
+  var Y=d.c-d.a*(m*m);                  // y одинаков для обоих корней (зависит от x²)
+  return {
+    problemHTML:sys([l1,l2]),
+    finalHTML:d.sols.map(function(p){return '<span class="ans-chip">('+frToHTML(p[0])+'; '+frToHTML(p[1])+')</span>';}).join(''),
+    onNew:function(h){mountStepper(h, makeSysStepper());},
+    steps:[
+      {info:true, q:'В уравнениях y стоит с разными знаками (+y и \u2212y). Сложим уравнения почленно — y исчезнет.', reveal:fmtPoly([[d.a+d.b,'x'+S2]])+' = '+(d.c+d.d)},
+      {info:true, q:'Раздели обе части на '+(d.a+d.b)+', чтобы выразить x'+S2+'.', reveal:'x'+S2+' = '+kk}
+    ].concat(sqrtPmSteps(kk)).concat([
+      {info:true, q:'Теперь найдём y. Из первого уравнения y = '+d.c+' \u2212 '+d.a+'x'+S2+'. Обрати внимание: x'+S2+' = '+kk+' одинаков для обоих корней, значит y тоже будет одинаковым.', reveal:'y = '+d.c+' \u2212 '+d.a+'\u00b7'+kk},
+      {q:'Посчитай y = '+d.c+' \u2212 '+d.a+'\u00b7'+kk+' = ?',
+       mount:function(h){return fracField(h,{noToggle:true});},
+       check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(Y))};}, reasonText:function(){return 'y = '+d.c+' \u2212 '+d.a+'\u00b7'+kk+' = '+Y+'.';}, reveal:''+Y},
+      {q:'Собери оба решения системы — пары (x; y):',
+       mount:function(h){return pointsetWidget(h,{start:2});},
+       check:function(r){return M.checkPointset(r(), d.sols);}, reasonText:pointReason,
+       reveal:d.sols.map(function(p){return '('+frToStr(p[0])+'; '+frToStr(p[1])+')';}).join(' и ')}
+    ])
+  };
+}
+function renderC1(d){
+  var l1=fmtPoly([[d.a,'x'+S2],[-d.h,'x']])+' = y';
+  var l2=fmtPoly([[d.g,'x'],[-d.d,'']])+' = y';
+  return {
+    head:'Решите систему уравнений',
+    problemHTML:sys([l1,l2]),
+    mount:function(h){return pointsetWidget(h,{start:d.sols.length});},
+    check:function(read){return M.checkPointset(read(), d.sols);},
+    reasonText:pointReason,
+    solutionHTML:
+      '<div class="step">1) Оба выражения равны y — приравняем их: '+fmtPoly([[d.a,'x'+S2],[-d.h,'x']])+' = '+fmtPoly([[d.g,'x'],[-d.d,'']])+'.</div>'+
+      '<div class="step">2) Перенесём всё влево: '+fmtPoly([[d.a,'x'+S2],[-(d.h+d.g),'x'],[d.d,'']])+' = 0.</div>'+
+      '<div class="step">3) Решим квадратное, затем найдём y = '+fmtPoly([[d.g,'x'],[-d.d,'']])+'. Решения: '+
+        d.sols.map(function(p){return '<span class="ans-chip">('+frToHTML(p[0])+'; '+frToHTML(p[1])+')</span>';}).join('')+'</div>',
+    stepper:function(){return stC1(d);}
+  };
+}
+function stC1(d){
+  var l1=fmtPoly([[d.a,'x'+S2],[-d.h,'x']])+' = y';
+  var l2=fmtPoly([[d.g,'x'],[-d.d,'']])+' = y';
+  var bb=-(d.h+d.g), cc=d.d;
+  var yStepsArr=d.sols.map(function(p){
+    return {q:'При x = '+frToStr(p[0])+': y = '+d.g+'\u00b7('+frToStr(p[0])+') \u2212 '+d.d+' = ? (можно дробью)',
+      mount:function(h){return fracField(h, p[1].isInt()?{noToggle:true}:{});},
+      check:(function(yy){return function(r){return {ok:M.checkInt(r(),yy)};};})(p[1]),
+      reasonText:(function(pp){return function(){return 'y = '+d.g+'\u00b7'+frToStr(pp[0])+' \u2212 '+d.d+' = '+frToStr(pp[1])+'.';};})(p),
+      reveal:frToStr(p[1])};
+  });
+  return {
+    problemHTML:sys([l1,l2]),
+    finalHTML:d.sols.map(function(p){return '<span class="ans-chip">('+frToHTML(p[0])+'; '+frToHTML(p[1])+')</span>';}).join(''),
+    onNew:function(h){mountStepper(h, makeSysStepper());},
+    steps:[
+      {info:true, q:'Оба выражения равны y — значит равны и друг другу. Приравняй правые части.', reveal:fmtPoly([[d.a,'x'+S2],[-d.h,'x']])+' = '+fmtPoly([[d.g,'x'],[-d.d,'']])},
+      {info:true, q:'Перенеси все слагаемые в левую часть и приведи подобные — получишь квадратное уравнение.', reveal:fmtPoly([[d.a,'x'+S2],[-(d.h+d.g),'x'],[d.d,'']])+' = 0'}
+    ].concat(quadSteps(d.a,bb,cc)).concat([
+      {info:true, q:'Значения x найдены. Для каждого x найдём y, подставив его во второе (простое) уравнение y = '+d.g+'x \u2212 '+d.d+'.', reveal:'y = '+d.g+'x \u2212 '+d.d}
+    ]).concat(yStepsArr).concat([
+      {q:'Собери '+(d.sols.length===1?'решение системы — пару':'все решения системы — пары')+' (x; y):',
+       mount:function(h){return pointsetWidget(h,{start:d.sols.length});},
+       check:function(r){return M.checkPointset(r(), d.sols);}, reasonText:pointReason,
+       reveal:d.sols.map(function(p){return '('+frToStr(p[0])+'; '+frToStr(p[1])+')';}).join(' и ')}
+    ])
+  };
+}
+// ---- PROP: пропорциональная система (второе уравнение = k · первое) ----
+function propParts(d){
+  var firstLHS=fmtPoly([[d.A,'x'+S2],[d.B,'y'+S2]]);
+  var eq1=firstLHS+' = '+d.C;
+  var eq2=fmtPoly([[d.k*d.A,'x'+S2],[d.k*d.B,'y'+S2]])+' = '+d.C+'x';
+  return {firstLHS:firstLHS, eq1:eq1, eq2:eq2, secondLHS:fmtPoly([[d.k*d.A,'x'+S2],[d.k*d.B,'y'+S2]])};
+}
+function renderPROP(d){
+  var pp=propParts(d);
+  var By2 = d.C - d.A*d.k*d.k;   // = B·y0²
+  return {
+    head:'Решите систему уравнений',
+    problemHTML:sys([pp.eq1,pp.eq2]),
+    mount:function(h){return pointsetWidget(h,{start:d.sols.length});},
+    check:function(read){return M.checkPointset(read(), d.sols);},
+    reasonText:pointReason,
+    solutionHTML:
+      '<div class="step">1) Левая часть второго уравнения — это первое, умноженное на '+d.k+': '+pp.secondLHS+' = '+d.k+'('+pp.firstLHS+').</div>'+
+      '<div class="step">2) Из первого уравнения '+pp.firstLHS+' = '+d.C+'. Подставим во второе: '+d.k+'\u00b7'+d.C+' = '+d.C+'x → x = '+d.k+'.</div>'+
+      '<div class="step">3) Подставим x = '+d.k+' в первое: '+d.A+'\u00b7'+(d.k*d.k)+' + '+d.B+'y'+S2+' = '+d.C+' → y'+S2+' = '+(By2/d.B)+' → y = \u00b1'+d.y0+'.</div>'+
+      '<div class="step">Ответ: '+d.sols.map(function(p){return '<span class="ans-chip">('+frToHTML(p[0])+'; '+frToHTML(p[1])+')</span>';}).join('')+'</div>',
+    stepper:function(){return stPROP(d);}
+  };
+}
+function stPROP(d){
+  var pp=propParts(d);
+  var By2 = d.C - d.A*d.k*d.k, y2 = By2/d.B;   // y2 = y0²
+  var firstSub = d.A+'\u00b7'+(d.k*d.k)+' + '+d.B+'y'+S2+' = '+d.C;   // после подстановки x=k
+  return {
+    problemHTML:sys([pp.eq1,pp.eq2]),
+    finalHTML:d.sols.map(function(p){return '<span class="ans-chip">('+frToHTML(p[0])+'; '+frToHTML(p[1])+')</span>';}).join(''),
+    onNew:function(h){mountStepper(h, makeSysStepper());},
+    steps:[
+      {info:true, q:'Сравни левые части. Левая часть второго уравнения — это левая часть первого, умноженная на '+d.k+'.', reveal:pp.secondLHS+' = '+d.k+'('+pp.firstLHS+')'},
+      {info:true, q:'Из первого уравнения '+pp.firstLHS+' = '+d.C+'. Подставь это во второе уравнение вместо скобки.', reveal:d.k+'\u00b7'+d.C+' = '+d.C+'x'},
+      {q:'Реши уравнение '+(d.k*d.C)+' = '+d.C+'x относительно x.',
+       mount:function(h){return fracField(h,{noToggle:true});},
+       check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(d.k))};}, reasonText:function(){return (d.k*d.C)+' = '+d.C+'x → x = '+d.k+'.';}, reveal:''+d.k},
+      {info:true, q:'Подставь x = '+d.k+' в первое уравнение.', reveal:firstSub},
+      {q:'Вырази y'+S2+': из '+firstSub+' получи y'+S2+' = ('+d.C+' \u2212 '+(d.A*d.k*d.k)+')/'+d.B+' = ?',
+       mount:function(h){return fracField(h,{noToggle:true});},
+       check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(y2))};}, reasonText:function(){return 'y'+S2+' = '+By2+'/'+d.B+' = '+y2+'.';}, reveal:''+y2},
+      {info:true, q:'Извлеки корень: y = \u00b1\u221A'+y2+'.', reveal:'y = '+d.y0+' и y = \u2212'+d.y0},
+      {q:'Собери оба решения системы — пары (x; y):',
+       mount:function(h){return pointsetWidget(h,{start:2});},
+       check:function(r){return M.checkPointset(r(), d.sols);}, reasonText:pointReason,
+       reveal:d.sols.map(function(p){return '('+frToStr(p[0])+'; '+frToStr(p[1])+')';}).join(' и ')}
+    ]
+  };
+}
+function makeSys(){ var r=Math.random(); return r<0.38 ? {kind:'C2',d:M.gen.C2()} : (r<0.68 ? {kind:'C1',d:M.gen.C1()} : {kind:'PROP',d:M.gen.PROP()}); }
+function makeSysStepper(){ var p=makeSys(); return p.kind==='C2'?stC2(p.d):(p.kind==='C1'?stC1(p.d):stPROP(p.d)); }
+
+// ---- SYM: симметричная система {x²+y²=S, xy=P} через (x±y)² ----
+function symParts(d){
+  var eq1='x'+S2+' + y'+S2+' = '+d.S;
+  var eq2='xy = '+d.P;
+  return {eq1:eq1, eq2:eq2, u2:d.S+2*d.P, v2:d.S-2*d.P, u:Math.round(Math.sqrt(d.S+2*d.P)), v:Math.round(Math.sqrt(d.S-2*d.P))};
+}
+function symPairsText(d){ return d.sols.map(function(p){return '('+frToStr(p[0])+'; '+frToStr(p[1])+')';}).join(', '); }
+R.SYM=function(d){
+  var pp=symParts(d);
+  return {
+    head:'Решите систему уравнений',
+    problemHTML:sys([pp.eq1,pp.eq2]),
+    mount:function(h){return pointsetWidget(h,{start:d.sols.length});},
+    check:function(read){return M.checkPointset(read(), d.sols);},
+    reasonText:pointReason,
+    solutionHTML:
+      '<div class="step">1) Симметричная система. Используем: (x+y)'+S2+' = x'+S2+'+2xy+y'+S2+' = '+d.S+' + 2\u00b7'+d.P+' = '+pp.u2+', значит x+y = \u00b1'+pp.u+'.</div>'+
+      '<div class="step">2) (x\u2212y)'+S2+' = x'+S2+'\u22122xy+y'+S2+' = '+d.S+' \u2212 2\u00b7'+d.P+' = '+pp.v2+', значит x\u2212y = \u00b1'+pp.v+'.</div>'+
+      '<div class="step">3) x = ((x+y)+(x\u2212y))/2, y = ((x+y)\u2212(x\u2212y))/2. Перебирая 4 сочетания знаков, получаем 4 пары.</div>'+
+      '<div class="step">Ответ: '+d.sols.map(function(p){return '<span class="ans-chip">('+frToHTML(p[0])+'; '+frToHTML(p[1])+')</span>';}).join('')+'</div>',
+    stepper:function(){return stSYM(d);}
+  };
+};
+function stSYM(d){
+  var pp=symParts(d);
+  return {
+    problemHTML:sys([pp.eq1,pp.eq2]),
+    finalHTML:d.sols.map(function(p){return '<span class="ans-chip">('+frToHTML(p[0])+'; '+frToHTML(p[1])+')</span>';}).join(''),
+    onNew:function(h){mountStepper(h, stSYM(M.gen.SYM()));},
+    steps:[
+      {info:true, q:'Система симметрична. Вспомни формулы: (x+y)'+S2+' = x'+S2+' + 2xy + y'+S2+' и (x\u2212y)'+S2+' = x'+S2+' \u2212 2xy + y'+S2+'. У нас есть x'+S2+'+y'+S2+' = '+d.S+' и xy = '+d.P+'.', reveal:'(x+y)'+S2+' = '+d.S+' + 2xy,\u00a0\u00a0(x\u2212y)'+S2+' = '+d.S+' \u2212 2xy'},
+      {q:'Вычисли (x+y)'+S2+' = '+d.S+' + 2\u00b7'+d.P+' = ?',
+       mount:function(h){return fracField(h,{noToggle:true});},
+       check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(pp.u2))};}, reasonText:function(){return '(x+y)'+S2+' = '+d.S+' + '+(2*d.P)+' = '+pp.u2+'.';}, reveal:''+pp.u2},
+      {info:true, q:'Извлеки корень: x + y = \u00b1\u221A'+pp.u2+'.', reveal:'x + y = '+pp.u+' или x + y = \u2212'+pp.u},
+      {q:'Вычисли (x\u2212y)'+S2+' = '+d.S+' \u2212 2\u00b7'+d.P+' = ?',
+       mount:function(h){return fracField(h,{noToggle:true});},
+       check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(pp.v2))};}, reasonText:function(){return '(x\u2212y)'+S2+' = '+d.S+' \u2212 '+(2*d.P)+' = '+pp.v2+'.';}, reveal:''+pp.v2},
+      {info:true, q:'Извлеки корень: x \u2212 y = \u00b1\u221A'+pp.v2+'.', reveal:'x \u2212 y = '+pp.v+' или x \u2212 y = \u2212'+pp.v},
+      {info:true, q:'Сложи и вычти: x = ((x+y)+(x\u2212y))/2, y = ((x+y)\u2212(x\u2212y))/2. Перебери 4 сочетания знаков (x+y = \u00b1'+pp.u+', x\u2212y = \u00b1'+pp.v+').', reveal:'4 пары: '+symPairsText(d)},
+      {q:'Впиши все 4 решения системы — пары (x; y):',
+       mount:function(h){return pointsetWidget(h,{start:4});},
+       check:function(r){return M.checkPointset(r(), d.sols);}, reasonText:pointReason,
+       reveal:symPairsText(d)}
+    ]
+  };
+}
+
+// ---- D1/D2: неравенства ----
+function numLine(pts, shade, subtitle){
+  var W=560,H=88, y=46, padL=44, padR=44;
+  var xs=pts.map(function(p){return p.x;});
+  var lo=Math.min.apply(null,xs), hi=Math.max.apply(null,xs);
+  var span=Math.max(hi-lo, 1); var vmin=lo-span*0.55, vmax=hi+span*0.55;
+  function X(v){ return padL + (v-vmin)/(vmax-vmin)*(W-padL-padR); }
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet" role="img">';
+  // axis
+  svg+='<line x1="12" y1="'+y+'" x2="'+(W-12)+'" y2="'+y+'" stroke="#9aa6c4" stroke-width="1.6"/>';
+  svg+='<path d="M'+(W-18)+','+(y-4)+' L'+(W-10)+','+y+' L'+(W-18)+','+(y+4)+'" fill="none" stroke="#9aa6c4" stroke-width="1.6"/>';
+  svg+='<text x="'+(W-8)+'" y="'+(y+4)+'" font-family="Georgia" font-size="13" fill="#9aa6c4">x</text>';
+  // shading
+  if(shade){ var xa=X(shade.from), xb=X(shade.to);
+    svg+='<rect x="'+Math.min(xa,xb)+'" y="'+(y-9)+'" width="'+Math.abs(xb-xa)+'" height="18" fill="rgba(59,87,214,.14)"/>';
+    svg+='<line x1="'+Math.min(xa,xb)+'" y1="'+y+'" x2="'+Math.max(xa,xb)+'" y2="'+y+'" stroke="#3b57d6" stroke-width="3"/>';
+  }
+  pts.forEach(function(p){
+    var px=X(p.x);
+    svg+='<circle cx="'+px+'" cy="'+y+'" r="6.5" fill="'+(p.open?'#fff':'#3b57d6')+'" stroke="#3b57d6" stroke-width="2.4"/>';
+    svg+='<text x="'+px+'" y="'+(y+26)+'" text-anchor="middle" font-family="Georgia" font-size="15" fill="#222b3d">'+p.label+'</text>';
+  });
+  var cap = subtitle? '<div class="muted" style="font-size:12.5px;text-align:center;margin-top:-2px">'+subtitle+'</div>' : '';
+  return '<div class="nline">'+svg+'</svg>'+cap+'</div>';
+}
+// symbolic label with radical rendered as text (√ char) for the number line
+function radTxt(inner){ return '\u221A'+inner; }
+function renderD1(d){
+  var body='('+fmtPoly([[1,'x'],[-d.a,'']])+')'+S2+' &lt; '+rad(''+d.K)+'('+fmtPoly([[1,'x'],[-d.a,'']])+')';
+  var lLbl=''+d.a, rLbl=(d.a?d.a+' + ':'')+radTxt(d.K); if(d.a===0) rLbl=radTxt(d.K);
+  var rApprox=d.a+Math.sqrt(d.K);
+  var nl=numLine([{x:d.a,label:lLbl,open:true},{x:rApprox,label:rLbl,open:true}], {from:d.a,to:rApprox}, 'решение — интервал между 0 и \u221A'+d.K+' (по u = x \u2212 '+d.a+')');
+  return {
+    head:'Решите неравенство',
+    problemHTML:body,
+    mount:function(h){return intervalWidget(h,'d1');},
+    check:function(read){var v=read();return M.checkIntervalD1(v.a,v.b,d);},
+    reasonText:function(){return 'Не совпало. Проверь: интервал имеет вид ( a ; a + \u221AK ). Впиши a и K.';},
+    solutionHTML:
+      '<div class="step">1) Замена u = x \u2212 '+d.a+': u'+S2+' &lt; '+radTxt(d.K)+'\u00b7u, то есть u'+S2+' \u2212 '+radTxt(d.K)+'u &lt; 0.</div>'+
+      '<div class="step">2) Вынесем u: u(u \u2212 '+radTxt(d.K)+') &lt; 0 → 0 &lt; u &lt; '+radTxt(d.K)+'.</div>'+
+      '<div class="step">3) Возврат к x: '+d.a+' &lt; x &lt; '+d.a+' + '+radTxt(d.K)+'.</div>'+
+      '<div class="step">Ответ: ( '+lLbl+' ; '+rLbl+' )</div>'+nl,
+    stepper:function(){return stD1(d);}
+  };
+}
+function stD1(d){
+  var body='('+fmtPoly([[1,'x'],[-d.a,'']])+')'+S2+' &lt; '+rad(''+d.K)+'('+fmtPoly([[1,'x'],[-d.a,'']])+')';
+  return {
+    problemHTML:body,
+    finalHTML:'( '+d.a+' ; '+d.a+' + '+radTxt(d.K)+' )',
+    onNew:function(h){mountStepper(h, makeIneqStepper());},
+    steps:[
+      {info:true, q:'Слева и справа стоит одинаковая скобка (x \u2212 '+d.a+'). Введём замену u = x \u2212 '+d.a+'.', reveal:'u'+S2+' &lt; '+radTxt(d.K)+'\u00b7u'},
+      {info:true, q:'Перенеси всё в левую часть (справа останется 0).', reveal:'u'+S2+' \u2212 '+radTxt(d.K)+'\u00b7u &lt; 0'},
+      {info:true, q:'Вынеси общий множитель u за скобку.', reveal:'u(u \u2212 '+radTxt(d.K)+') &lt; 0'},
+      {q:'Произведение двух множителей u\u00b7(u \u2212 '+radTxt(d.K)+') отрицательно. При каких u это выполняется?',
+       mount:function(h){return choiceWidget(h,['u вне корней 0 и '+radTxt(d.K),'u между корнями 0 и '+radTxt(d.K),'при любых u']);},
+       check:function(r){return {ok:r()===1};}, reasonText:function(){return 'Произведение отрицательно между корнями: 0 &lt; u &lt; '+radTxt(d.K)+'.';},
+       reveal:'0 &lt; u &lt; '+radTxt(d.K)},
+      {info:true, q:'Вернись к x подстановкой u = x \u2212 '+d.a+' в неравенство 0 &lt; u &lt; '+radTxt(d.K)+'.', reveal:d.a+' &lt; x &lt; '+d.a+' + '+radTxt(d.K)},
+      {q:'Впиши параметры итогового интервала ( a ; a + \u221AK ):',
+       mount:function(h){return intervalWidget(h,'d1');},
+       check:function(r){var v=r();return M.checkIntervalD1(v.a,v.b,d);},
+       reasonText:function(){return 'Интервал ( a ; a + \u221AK ). Здесь a = '+d.a+', K = '+d.K+'.';},
+       reveal:'( '+d.a+' ; '+d.a+' + '+radTxt(d.K)+' )'}
+    ]
+  };
+}
+function renderD2(d){
+  var body=frac('\u2212'+d.N, '('+fmtPoly([[1,'x'],[-d.a,'']])+')'+S2+' \u2212 '+d.M)+' \u2265 0';
+  var lApprox=d.a-Math.sqrt(d.M), rApprox=d.a+Math.sqrt(d.M);
+  var lLbl=(d.a?d.a+' \u2212 ':'\u2212')+radTxt(d.M); if(d.a===0)lLbl='\u2212'+radTxt(d.M);
+  var rLbl=(d.a?d.a+' + ':'')+radTxt(d.M); if(d.a===0)rLbl=radTxt(d.M);
+  var nl=numLine([{x:lApprox,label:lLbl,open:true},{x:rApprox,label:rLbl,open:true}], {from:lApprox,to:rApprox}, 'знаменатель < 0 между \u2212\u221AM и +\u221AM (концы выколоты)');
+  return {
+    head:'Решите неравенство',
+    problemHTML:body,
+    mount:function(h){return intervalWidget(h,'d2');},
+    check:function(read){var v=read();return M.checkIntervalD2(v.a,v.b,d);},
+    reasonText:function(){return 'Не совпало. Интервал вида ( a \u2212 \u221AM ; a + \u221AM ). Впиши a и M.';},
+    solutionHTML:
+      '<div class="step">1) Числитель \u2212'+d.N+' &lt; 0 — постоянный. Дробь \u2265 0 только если знаменатель &lt; 0 (и \u2260 0).</div>'+
+      '<div class="step">2) ('+fmtPoly([[1,'x'],[-d.a,'']])+')'+S2+' \u2212 '+d.M+' &lt; 0. Число '+d.M+' — не квадрат, поэтому представим '+d.M+' = ('+radTxt(d.M)+')'+S2+': ('+fmtPoly([[1,'x'],[-d.a,'']])+')'+S2+' \u2212 ('+radTxt(d.M)+')'+S2+' &lt; 0.</div>'+
+      '<div class="step">3) Разность квадратов: ('+fmtPoly([[1,'x'],[-d.a,'']])+' \u2212 '+radTxt(d.M)+')('+fmtPoly([[1,'x'],[-d.a,'']])+' + '+radTxt(d.M)+') &lt; 0.</div>'+
+      '<div class="step">4) Метод интервалов: корни множителей x = '+lLbl+' и x = '+rLbl+'; произведение &lt; 0 между ними → '+lLbl+' &lt; x &lt; '+rLbl+'.</div>'+
+      '<div class="step">Ответ: ( '+lLbl+' ; '+rLbl+' )</div>'+nl,
+    stepper:function(){return stD2(d);}
+  };
+}
+function stD2(d){
+  var base=fmtPoly([[1,'x'],[-d.a,'']]);
+  var sqM=radTxt(d.M);
+  var factored='('+base+' \u2212 '+sqM+')('+base+' + '+sqM+')';
+  var lLbl=(d.a?d.a+' \u2212 ':'\u2212')+sqM; if(d.a===0)lLbl='\u2212'+sqM;
+  var rLbl=(d.a?d.a+' + ':'')+sqM; if(d.a===0)rLbl=sqM;
+  var body=frac('\u2212'+d.N, '('+base+')'+S2+' \u2212 '+d.M)+' \u2265 0';
+  return {
+    problemHTML:body,
+    finalHTML:'( '+lLbl+' ; '+rLbl+' )',
+    onNew:function(h){mountStepper(h, makeIneqStepper());},
+    steps:[
+      {q:'Числитель \u2212'+d.N+' — отрицательная постоянная. Каким должен быть знаменатель, чтобы вся дробь была \u2265 0?',
+       mount:function(h){return choiceWidget(h,['знаменатель &gt; 0','знаменатель &lt; 0','знаменатель = 0']);},
+       check:function(r){return {ok:r()===1};}, reasonText:function(){return 'Минус на минус даёт плюс: при отрицательном числителе дробь \u2265 0, когда знаменатель &lt; 0.';},
+       reveal:'знаменатель &lt; 0'},
+      {info:true, q:'Значит знаменатель отрицателен: ('+base+')'+S2+' \u2212 '+d.M+' &lt; 0. Число '+d.M+' не полный квадрат, поэтому извлекать корень из обеих частей нельзя — раскладываем на множители. Представь '+d.M+' как квадрат: '+d.M+' = ('+sqM+')'+S2+'.', reveal:'('+base+')'+S2+' \u2212 ('+sqM+')'+S2+' &lt; 0'},
+      {info:true, q:'Слева — разность квадратов A'+S2+' \u2212 B'+S2+' = (A \u2212 B)(A + B), где A = '+base+', B = '+sqM+'. Разложи на множители.', reveal:factored+' &lt; 0'},
+      {info:true, q:'Найди нули каждого множителя — это критические точки для метода интервалов.', reveal:base+' \u2212 '+sqM+' = 0 → x = '+rLbl+';\u00a0\u00a0'+base+' + '+sqM+' = 0 → x = '+lLbl},
+      {q:'Произведение двух множителей отрицательно. По методу интервалов, при каких x будет ('+factored+') &lt; 0?',
+       mount:function(h){return choiceWidget(h,['x вне корней ('+lLbl+' и '+rLbl+')','x между корнями ('+lLbl+' и '+rLbl+')','при любых x']);},
+       check:function(r){return {ok:r()===1};}, reasonText:function(){return 'Произведение двух множителей отрицательно только между их корнями: '+lLbl+' &lt; x &lt; '+rLbl+'.';},
+       reveal:lLbl+' &lt; x &lt; '+rLbl},
+      {q:'Впиши параметры итогового интервала ( a \u2212 \u221AM ; a + \u221AM ):',
+       mount:function(h){return intervalWidget(h,'d2');},
+       check:function(r){var v=r();return M.checkIntervalD2(v.a,v.b,d);},
+       reasonText:function(){return 'Интервал ( a \u2212 \u221AM ; a + \u221AM ). Здесь a = '+d.a+', M = '+d.M+'.';},
+       reveal:'( '+lLbl+' ; '+rLbl+' )'}
+    ]
+  };
+}
+// ---- DR: дробное неравенство с раскладываемым знаменателем (метод интервалов, рациональные концы) ----
+function drParts(d){
+  var quad=fmtPoly([[1,'x'+S2],[d.b,'x'],[d.c,'']]);
+  var f1=fmtPoly([[1,'x'],[-d.r1,'']]), f2=fmtPoly([[1,'x'],[-d.r2,'']]);
+  return {quad:quad, factored:'('+f1+')('+f2+')', body:frac('\u2212'+d.N, quad)+' \u2265 0'};
+}
+R.DR=function(d){
+  var pp=drParts(d);
+  var nl=numLine([{x:d.r1,label:''+d.r1,open:true},{x:d.r2,label:''+d.r2,open:true}], {from:d.r1,to:d.r2}, 'знаменатель < 0 между корнями (концы выколоты)');
+  return {
+    head:'Решите неравенство',
+    problemHTML:pp.body,
+    mount:function(h){return intervalIntWidget(h);},
+    check:function(read){var v=read();return checkIntInterval(v.a,v.b,d.r1,d.r2);},
+    reasonText:drReason,
+    solutionHTML:
+      '<div class="step">1) Числитель \u2212'+d.N+' &lt; 0 — постоянный. Дробь \u2265 0 только если знаменатель &lt; 0.</div>'+
+      '<div class="step">2) Разложим знаменатель на множители: '+pp.quad+' = '+pp.factored+'. Корни: x = '+d.r1+' и x = '+d.r2+'.</div>'+
+      '<div class="step">3) Метод интервалов: произведение '+pp.factored+' &lt; 0 между корнями → '+d.r1+' &lt; x &lt; '+d.r2+'.</div>'+
+      '<div class="step">Ответ: ( '+d.r1+' ; '+d.r2+' )</div>'+nl,
+    stepper:function(){return stDR(d);}
+  };
+};
+function stDR(d){
+  var pp=drParts(d);
+  return {
+    problemHTML:pp.body,
+    finalHTML:'( '+d.r1+' ; '+d.r2+' )',
+    onNew:function(h){mountStepper(h, stDR(M.gen.DR()));},
+    steps:[
+      {q:'Числитель \u2212'+d.N+' — отрицательная постоянная. Каким должен быть знаменатель, чтобы дробь была \u2265 0?',
+       mount:function(h){return choiceWidget(h,['знаменатель &gt; 0','знаменатель &lt; 0','знаменатель = 0']);},
+       check:function(r){return {ok:r()===1};}, reasonText:function(){return 'Минус на минус даёт плюс: при отрицательном числителе дробь \u2265 0, когда знаменатель &lt; 0.';},
+       reveal:'знаменатель &lt; 0'},
+      {info:true, q:'Значит '+pp.quad+' &lt; 0. Чтобы применить метод интервалов, разложи трёхчлен на множители — найди корни уравнения '+pp.quad+' = 0.', reveal:pp.quad+' = 0'}
+    ].concat(quadSteps(1,d.b,d.c)).concat([
+      {info:true, q:'Значит '+pp.quad+' = '+pp.factored+', и неравенство принимает вид '+pp.factored+' &lt; 0.', reveal:pp.factored+' &lt; 0'},
+      {q:'Произведение двух множителей '+pp.factored+' отрицательно. По методу интервалов, при каких x?',
+       mount:function(h){return choiceWidget(h,['x вне корней ('+d.r1+' и '+d.r2+')','x между корнями ('+d.r1+' и '+d.r2+')','при любых x']);},
+       check:function(r){return {ok:r()===1};}, reasonText:function(){return 'Произведение отрицательно между корнями: '+d.r1+' &lt; x &lt; '+d.r2+'.';},
+       reveal:d.r1+' &lt; x &lt; '+d.r2},
+      {q:'Впиши границы открытого интервала (меньший корень; больший корень):',
+       mount:function(h){return intervalIntWidget(h);},
+       check:function(r){var v=r();return checkIntInterval(v.a,v.b,d.r1,d.r2);},
+       reasonText:drReason,
+       reveal:'( '+d.r1+' ; '+d.r2+' )'}
+    ])
+  };
+}
+// ---- QI/DS: квадратные неравенства (раскрыть/разность квадратов → метод интервалов) ----
+function ineqAnsHTML(d, closed){
+  var lo=closed?'[':'(', hi=closed?']':')';
+  if(d.kind==='between') return lo+' '+frToHTML(d.r1)+' ; '+frToHTML(d.r2)+' '+hi;
+  return '( \u2212\u221E ; '+frToHTML(d.r1)+' '+hi+' \u222A '+lo+' '+frToHTML(d.r2)+' ; +\u221E )';
+}
+function qiParts(d){
+  var factored='('+fmtPoly([[1,'x'],[-d.a,'']])+')('+fmtPoly([[d.b,'x'],[d.c,'']])+')';
+  var opSym=d.op==='<'?'&lt;':'&gt;';
+  var P=d.c-d.a*d.b, Q=(-d.a*d.c)-d.d;
+  var quad=fmtPoly([[d.b,'x'+S2],[P,'x'],[Q,'']]);
+  var expandedLHS=fmtPoly([[d.b,'x'+S2],[P,'x'],[-d.a*d.c,'']]);
+  return {factored:factored, opSym:opSym, quad:quad, P:P, Q:Q, expandedLHS:expandedLHS, body:factored+' '+opSym+' '+d.d};
+}
+function dsParts(d){
+  var lhs='('+fmtPoly([[d.a,'x'],[-d.b,'']])+')'+S2, rhs='('+fmtPoly([[d.c,'x'],[-d.d,'']])+')'+S2;
+  var opSym=d.op==='<='?'\u2264':'\u2265';
+  var A=d.a-d.c, B=-(d.b-d.d), C=d.a+d.c, D2=-(d.b+d.d);
+  var f1=fmtPoly([[A,'x'],[B,'']]), f2=fmtPoly([[C,'x'],[D2,'']]);
+  return {lhs:lhs, rhs:rhs, opSym:opSym, body:lhs+' '+opSym+' '+rhs, A:A,B:B,C:C,D2:D2, f1:f1, f2:f2, factored:'('+f1+')('+f2+')'};
+}
+R.QI=function(d){
+  var pp=qiParts(d);
+  var nl=numLineSol([{x:d.r1.toNumber(),label:frToStr(d.r1)},{x:d.r2.toNumber(),label:frToStr(d.r2)}], d.kind, false,
+        d.kind==='between'?'решение — между корнями (концы выколоты)':'решение — вне корней, два луча (концы выколоты)','#0891b2');
+  return {
+    head:'Решите неравенство',
+    problemHTML:pp.body,
+    mount:function(h){return qineqWidget(h);},
+    check:function(read){return checkQIneq(read(), d);},
+    reasonText:qiReason,
+    solutionHTML:
+      '<div class="step">1) Раскрой скобки: '+pp.factored+' = '+pp.expandedLHS+'.</div>'+
+      '<div class="step">2) Перенеси '+d.d+' влево: '+pp.quad+' '+pp.opSym+' 0.</div>'+
+      '<div class="step">3) Корни трёхчлена (через дискриминант): x = '+frToHTML(d.r1)+' и x = '+frToHTML(d.r2)+'.</div>'+
+      '<div class="step">4) Ветви вверх (старший коэффициент '+d.b+' &gt; 0). Метод интервалов → '+(d.kind==='between'?'между корнями':'вне корней')+'.</div>'+
+      '<div class="step">Ответ: '+ineqAnsHTML(d,false)+'</div>'+nl,
+    stepper:function(){return stQI(d);}
+  };
+};
+R.DS=function(d){
+  var pp=dsParts(d); var lead=d.a*d.a-d.c*d.c;
+  var nl=numLineSol([{x:d.r1.toNumber(),label:frToStr(d.r1)},{x:d.r2.toNumber(),label:frToStr(d.r2)}], d.kind, true,
+        d.kind==='between'?'решение — между корнями (концы включены)':'решение — вне корней, два луча (концы включены)','#0891b2');
+  return {
+    head:'Решите неравенство',
+    problemHTML:pp.body,
+    mount:function(h){return qineqWidget(h);},
+    check:function(read){return checkQIneq(read(), d);},
+    reasonText:qiReason,
+    solutionHTML:
+      '<div class="step">1) Перенеси всё влево: '+pp.lhs+' \u2212 '+pp.rhs+' '+pp.opSym+' 0.</div>'+
+      '<div class="step">2) Разность квадратов A'+S2+' \u2212 B'+S2+' = (A \u2212 B)(A + B): '+pp.factored+' '+pp.opSym+' 0.</div>'+
+      '<div class="step">3) Корни множителей: x = '+frToHTML(d.r1)+' и x = '+frToHTML(d.r2)+'.</div>'+
+      '<div class="step">4) Старший коэффициент '+d.a+'² \u2212 '+d.c+'² = '+lead+' '+(lead>0?'&gt;':'&lt;')+' 0 (ветви '+(lead>0?'вверх':'вниз')+'). Метод интервалов → '+(d.kind==='between'?'между корнями':'вне корней')+'.</div>'+
+      '<div class="step">Ответ: '+ineqAnsHTML(d,true)+'</div>'+nl,
+    stepper:function(){return stDS(d);}
+  };
+};
+function stQI(d){
+  var pp=qiParts(d);
+  return {
+    problemHTML:pp.body,
+    finalHTML:ineqAnsHTML(d,false),
+    onNew:function(h){mountStepper(h, stQIDS());},
+    steps:[
+      {info:true, q:'Раскрой скобки в левой части: '+pp.factored+'.', reveal:pp.factored+' = '+pp.expandedLHS},
+      {info:true, q:'Перенеси '+d.d+' в левую часть, чтобы справа остался 0.', reveal:pp.quad+' '+pp.opSym+' 0'}
+    ].concat(quadSteps(d.b, pp.P, pp.Q)).concat([
+      {q:'Старший коэффициент '+d.b+' &gt; 0 — ветви параболы вверх. Неравенство '+pp.quad+' '+pp.opSym+' 0. По методу интервалов, где решение?',
+       mount:function(h){return choiceWidget(h,['между корнями (один промежуток)','вне корней (два луча)']);},
+       check:function(r){return {ok:r()===(d.kind==='between'?0:1)};},
+       reasonText:function(){return 'Ветви вверх: трёхчлен '+(d.op==='<'?'отрицателен между корнями':'положителен вне корней')+' → '+(d.kind==='between'?'один промежуток':'два луча')+'.';},
+       reveal:d.kind==='between'?'между корнями':'вне корней'},
+      {q:'Запиши ответ: выбери форму и впиши оба корня (неравенство строгое — концы выколоты).',
+       mount:function(h){return qineqWidget(h);},
+       check:function(r){return checkQIneq(r(), d);}, reasonText:qiReason,
+       reveal:ineqAnsHTML(d,false)}
+    ])
+  };
+}
+function stDS(d){
+  var pp=dsParts(d);
+  var rootF1=new Fr(BigInt(-pp.B),BigInt(pp.A)), rootF2=new Fr(BigInt(-pp.D2),BigInt(pp.C));
+  var lead=d.a*d.a-d.c*d.c;
+  return {
+    problemHTML:pp.body,
+    finalHTML:ineqAnsHTML(d,true),
+    onNew:function(h){mountStepper(h, stQIDS());},
+    steps:[
+      {info:true, q:'В обеих частях — квадраты. Перенеси всё в левую часть.', reveal:pp.lhs+' \u2212 '+pp.rhs+' '+pp.opSym+' 0'},
+      {info:true, q:'Слева разность квадратов A'+S2+' \u2212 B'+S2+' = (A \u2212 B)(A + B), где A = '+fmtPoly([[d.a,'x'],[-d.b,'']])+', B = '+fmtPoly([[d.c,'x'],[-d.d,'']])+'. Разложи и упрости множители.', reveal:pp.factored+' '+pp.opSym+' 0'},
+      {q:'Первый множитель '+pp.f1+' = 0. Тогда x = ? (можно дробью)',
+       mount:function(h){return fracField(h, rootF1.isInt()?{noToggle:true}:{});},
+       check:(function(x){return function(r){return {ok:M.checkInt(r(),x)};};})(rootF1),
+       reasonText:function(){return 'Из '+pp.f1+' = 0 получаем x = '+frToStr(rootF1)+'.';}, reveal:frToStr(rootF1)},
+      {q:'Второй множитель '+pp.f2+' = 0. Тогда x = ? (можно дробью)',
+       mount:function(h){return fracField(h, rootF2.isInt()?{noToggle:true}:{});},
+       check:(function(x){return function(r){return {ok:M.checkInt(r(),x)};};})(rootF2),
+       reasonText:function(){return 'Из '+pp.f2+' = 0 получаем x = '+frToStr(rootF2)+'.';}, reveal:frToStr(rootF2)},
+      {q:'Старший коэффициент произведения '+d.a+'² \u2212 '+d.c+'² = '+lead+', значит ветви параболы '+(lead>0?'вверх':'вниз')+'. Где решение неравенства?',
+       mount:function(h){return choiceWidget(h,['между корнями (один промежуток)','вне корней (два луча)']);},
+       check:function(r){return {ok:r()===(d.kind==='between'?0:1)};},
+       reasonText:function(){return 'Ветви '+(lead>0?'вверх':'вниз')+', неравенство '+pp.opSym+' 0 → '+(d.kind==='between'?'между корнями':'вне корней')+'.';},
+       reveal:d.kind==='between'?'между корнями':'вне корней'},
+      {q:'Запиши ответ: выбери форму и впиши оба корня (неравенство нестрогое — концы включены).',
+       mount:function(h){return qineqWidget(h);},
+       check:function(r){return checkQIneq(r(), d);}, reasonText:qiReason,
+       reveal:ineqAnsHTML(d,true)}
+    ]
+  };
+}
+function makeQIDS(){ return Math.random()<0.5 ? {kind:'QI',d:M.gen.QI()} : {kind:'DS',d:M.gen.DS()}; }
+function stQIDS(){ return Math.random()<0.5 ? stQI(M.gen.QI()) : stDS(M.gen.DS()); }
+
+function makeIneq(){ return Math.random()<0.5 ? {kind:'D1',d:M.gen.D1()} : {kind:'D2',d:M.gen.D2()}; }
+function makeIneqStepper(){ var p=makeIneq(); return p.kind==='D1'?stD1(p.d):stD2(p.d); }
+
+/* ---------- тексты ошибок для наборов ---------- */
+function rootsetReason(r){
+  if(r.reason==='parse') return 'Один из корней записан непонятно. Используй целое, дробь (например 1/2) или переключатель дроби.';
+  if(r.reason==='missing') return 'Найдены не все корни — есть ещё. Добавь недостающие.';
+  if(r.reason==='extra') return 'Есть лишний корень, которого быть не должно. Проверь.';
+  return 'Набор корней не совпал. Проверь и количество, и значения.';
+}
+function pointReason(r){
+  if(r.reason==='parse') return 'Координата записана непонятно. Используй целое или дробь.';
+  if(r.reason==='count') return 'Число решений не совпадает: у тебя '+r.have+', нужно '+r.need+'.';
+  return 'Решения не совпали. Проверь пары (x; y).';
+}
+
+/* ============================ ТЕОРИЯ (мини-задачи) ============================ */
+// каждая мини-задача: короткий ключевой под-навык + «ещё пример»
+function miniA(){ var d=M.gen.A(); var num=fmtPoly([[d.p,'a'],[d.q,'b'],[d.r,'']]),den=fmtPoly([[-d.q,'a'],[-d.p,'b'],[d.r,'']]);var lin=fmtPoly([[d.A,'a'],[d.B,'b']]);
+  return {promptHTML:'Дано '+frac(num,den)+' = '+d.k+'. После умножения крест-накрест и приведения подобных получается линейное равенство. Чему равно <b>'+lin+'</b>?',
+    mount:function(h){return fracField(h,{noToggle:true});}, okNote:'Дальше это просто подставляют в целевое выражение.',
+    check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(d.r*(1-d.k)))};},
+    reveal:lin+' = '+(d.r*(1-d.k)), regen:miniA}; }
+function miniB1(){ var m=(1+Math.floor(Math.random()*4)); var b=-m*m;
+  return {promptHTML:'После группировки осталось решить x'+S2+' '+(b<0?'\u2212 '+(-b):'+ '+b)+' = 0. Выпиши все корни:',
+    mount:function(h){return rootsetWidget(h,{start:2});}, okNote:'',
+    check:function(r){return M.checkRootset(r(),[Fr.fromInt(m),Fr.fromInt(-m)]);}, reasonText:rootsetReason,
+    reveal:'x = '+m+' и x = '+(-m), regen:miniB1}; }
+function miniB2(){ var d=M.gen.B2();
+  return {promptHTML:'Найди ОДЗ уравнения с корнем '+rad(fmtPoly([[d.K,''],[-1,'x']]))+'. При каком условии подкоренное выражение неотрицательно? Введи наибольшее допустимое x:',
+    mount:function(h){return fracField(h,{noToggle:true});}, okNote:'Ответ: x \u2264 '+d.K+'.',
+    check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(d.K))};},
+    reveal:'x \u2264 '+d.K, regen:miniB2}; }
+function miniRazl(){ var p=makeRazl();
+  var q,correct,opts;
+  if(p.kind==='B3'){ var d=p.d; q='('+fmtPoly([[1,'x'],[-d.a,'']])+')(x'+S2+' + '+(2*d.m)+'x + '+(d.m*d.m)+') = '+d.k+'('+fmtPoly([[1,'x'],[d.m,'']])+')';
+    opts=['вынести общий множитель '+P(d.m),'приравнять каждое слагаемое к нулю (сумма квадратов)']; correct=0; }
+  else{ var e=p.d; q='('+fmtPoly([[1,'x'+S2],[e.c1,'']])+')'+S2+' + ('+fmtPoly([[1,'x'+S2],[e.b2,'x'],[e.c2,'']])+')'+S2+' = 0';
+    opts=['вынести общий множитель','приравнять каждое слагаемое к нулю (сумма квадратов)']; correct=1; }
+  return {promptHTML:'Какой приём подходит для уравнения '+q+'?',
+    mount:function(h){return choiceWidget(h,opts);}, okNote:'',
+    check:function(r){return {ok:r()===correct};}, reasonText:function(){return 'Посмотри на структуру: либо это произведение (выносим множитель), либо сумма квадратов (каждый = 0).';},
+    reveal:opts[correct], regen:miniRazl}; }
+function miniB5(){ var t=(1+Math.floor(Math.random()*6))*(Math.random()<0.5?1:-1); var f=new Fr(1n,BigInt(t));
+  return {promptHTML:'Обратная замена в дробном уравнении: если t = '+t+', то x = '+frac('1','t')+' = ? (переключи поле в режим дроби)',
+    mount:function(h){return rootsetWidget(h,{start:1});}, okNote:'',
+    check:function(r){return M.checkRootset(r(),[f]);}, reasonText:rootsetReason,
+    reveal:'x = '+frToStr(f), regen:miniB5}; }
+function miniBIQ(){ var d=M.gen.BIQ(); var pp=biqParts(d);
+  return {promptHTML:'Замена уже сделана: u = '+pp.inner+'. Уравнение стало '+pp.uQuad+' = 0. Выпиши оба корня u:',
+    mount:function(h){return rootsetWidget(h,{start:2});}, okNote:'Дальше каждое u вернём в блок и найдём x.',
+    check:function(r){return M.checkRootset(r(),[Fr.fromInt(d.u1),Fr.fromInt(d.u2)]);}, reasonText:rootsetReason,
+    reveal:'u = '+d.u1+' и u = '+d.u2, regen:miniBIQ}; }
+function miniSQ(){ var d=M.gen.SQ(); var pp=sqParts(d);
+  return {promptHTML:'Из уравнения '+pp.eq+' первый случай — x'+S2+' = '+pp.inner+', то есть '+pp.pEq+'. Выпиши его корни:',
+    mount:function(h){return rootsetWidget(h,{start:2});}, okNote:'Второй случай — x'+S2+' = \u2212('+pp.inner+'); его разберём в тренажёре.',
+    check:function(r){return M.checkRootset(r(), d.rootsP.map(function(x){return Fr.fromInt(x);}));}, reasonText:rootsetReason,
+    reveal:sqRootsText(d.rootsP), regen:miniSQ}; }
+function miniPOW(){ var d=M.gen.POW(); var pp=powParts(d);
+  return {promptHTML:'Сократи дробь '+pp.frac+' и найди её значение (переключи поле в режим дроби, если нужно):',
+    mount:function(h){return fracField(h,{});}, okNote:'Секрет: вынести общий множитель степени — тогда n сокращается.',
+    check:function(r){return {ok:M.checkInt(r(), d.V)};}, reasonText:function(){return 'Вынеси общий множитель '+pp.bq+', сократи степени (n уходит) и посчитай.';},
+    reveal:frToStr(d.V), regen:miniPOW}; }
+function miniSys(){ var d=M.gen.C2();
+  return {promptHTML:'Сложи уравнения системы '+sys([fmtPoly([[d.a,'x'+S2]])+' + y = '+d.c, fmtPoly([[d.b,'x'+S2]])+' \u2212 y = '+d.d])+'. Что получится в левой части (коэффициент при x'+S2+')? Введи число:',
+    mount:function(h){return fracField(h,{noToggle:true});}, okNote:'y сокращается — остаётся только x.',
+    check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(d.a+d.b))};},
+    reveal:'('+(d.a)+' + '+(d.b)+')x'+S2+' = '+(d.a+d.b)+'x'+S2, regen:miniSys}; }
+function miniIneq(){ var d=M.gen.D2(); var guard=0; while(d.a===0 && guard<20){ d=M.gen.D2(); guard++; }
+  var body=frac('\u2212'+d.N, '('+fmtPoly([[1,'x'],[-d.a,'']])+')'+S2+' \u2212 '+d.M);
+  return {promptHTML:'Решите неравенство:&nbsp; '+body+' \u2265 0.<br><span style="display:inline-block;margin-top:8px">Числитель здесь \u2212'+d.N+' — отрицательное число. Каким должен быть знаменатель, чтобы вся дробь была \u2265 0?</span>',
+    mount:function(h){return choiceWidget(h,['знаменатель &gt; 0','знаменатель &lt; 0','знаменатель = 0']);}, okNote:'Минус, делённый на минус, даёт плюс.',
+    check:function(r){return {ok:r()===1};}, reasonText:function(){return 'Чтобы дробь была \u2265 0 при отрицательном числителе, знаменатель тоже должен быть &lt; 0 (минус ÷ минус = плюс).';},
+    reveal:'знаменатель &lt; 0', regen:miniIneq}; }
+function miniDR(){ var d=M.gen.DR(); var pp=drParts(d);
+  return {promptHTML:'Решите неравенство '+pp.body.replace(' \u2265 0',' \u2265 0.')+' Впиши открытый интервал:',
+    mount:function(h){return intervalIntWidget(h);}, okNote:'Знаменатель отрицателен между своими корнями.',
+    check:function(r){var v=r();return checkIntInterval(v.a,v.b,d.r1,d.r2);}, reasonText:drReason,
+    reveal:'( '+d.r1+' ; '+d.r2+' )', regen:miniDR}; }
+function miniQIneq(){ var d=M.gen.QI(); var pp=qiParts(d);
+  return {promptHTML:'Решите неравенство '+pp.body+'. Определи форму ответа и впиши корни:',
+    mount:function(h){return qineqWidget(h);}, okNote:'Раскрой скобки, перенеси всё влево, найди корни, реши методом интервалов.',
+    check:function(r){return checkQIneq(r(), d);}, reasonText:qiReason,
+    reveal:ineqAnsHTML(d,false), regen:miniQIneq}; }
+function miniSYM(){ var d=M.gen.SYM(); var pp=symParts(d);
+  return {promptHTML:'В симметричной системе '+sys([pp.eq1,pp.eq2])+' первый шаг — найти (x+y)². Чему равно (x+y)² = '+d.S+' + 2\u00b7'+d.P+'?',
+    mount:function(h){return fracField(h,{noToggle:true});}, okNote:'(x+y)² = x²+2xy+y² = (x²+y²) + 2xy.',
+    check:function(r){return {ok:M.checkInt(r(),Fr.fromInt(pp.u2))};}, reasonText:function(){return '(x+y)² = '+d.S+' + '+(2*d.P)+' = '+pp.u2+'.';},
+    reveal:''+pp.u2, regen:miniSYM}; }
+
+/* ============================ МОДУЛИ ============================ */
+function goTo(mid){ STATE.module=mid; STATE.mode='learn'; render(); }
+function xrefHTML(mid,text){ return '<span class="xref" data-go="'+mid+'">'+text+'</span>'; }
+
+var MODULES={
+  A:{ num:'20.1', color:'#3b57d6', title:'Значение выражения', sub:'дробь-условие → линейная подстановка',
+      form:frac('a \u2212 4b + 7','4a \u2212 b + 7')+' = 8',
+      tagline:'Найти значение выражения по данному условию-дроби.',
+      theory:[
+        {t:'Приём: крест-накрест', h:'Условие — это дробь, равная числу k. Умножаем обе части на знаменатель: числитель = k · знаменатель. Дробь исчезает, остаётся линейное уравнение.'},
+        {t:'Собираем нужную комбинацию', h:'Раскрываем скобки, переносим всё в одну сторону и приводим подобные. Получается ровно та линейная часть (например, 31a \u2212 4b), что стоит в целевом выражении. Останется прибавить свободный член.'}
+      ],
+      callout:'Числитель и знаменатель — «зеркальные»: у одного (a \u2212 4b), у другого (4a \u2212 b). Это подсказка, что после приведения подобных коэффициенты сложатся в нужную комбинацию.',
+      mini:miniA, xref:'', engine:function(){return {gen:M.gen.A, render:R.A};}, stepFactory:function(){return stA(M.gen.A());} },
+
+  B1:{ num:'20.2', color:'#2f7d4f', title:'Кубическое: группировка', sub:'x³ + ax² = bx + c → (x+a)(x²−m²)',
+      form:'x'+S3+' + 5x'+S2+' = 4x + 20',
+      tagline:'Кубическое уравнение, которое раскладывается группировкой.',
+      theory:[
+        {t:'Всё в левую часть', h:'Переносим слагаемые так, чтобы справа был ноль: x³ + ax² + bx + c = 0.'},
+        {t:'Группировка по парам', h:'Из первых двух выносим x², из вторых двух — общий множитель. Получаются одинаковые скобки (x + a). Выносим их: (x + a)(x² + b) = 0.'},
+        {t:'Произведение = 0', h:'Каждый множитель приравниваем к нулю. Отсюда x = −a, а из x² = −b — ещё два корня ±√(−b), если −b > 0.'}
+      ],
+      callout:'Произведение множителей равно нулю ⇒ хотя бы один из них равен нулю. Тот же принцип — в модуле «Разложение на множители».',
+      mini:miniB1, engine:function(){return {gen:M.gen.B1, render:R.B1};}, stepFactory:function(){return stB1(M.gen.B1());} },
+
+  B2:{ num:'20.3', color:'#0b7285', title:'Уравнение с корнем', sub:'x² − cx + √(K−x) = √(K−x) + n',
+      form:'x'+S2+' \u2212 3x + '+rad('6 \u2212 x')+' = '+rad('6 \u2212 x')+' + 28',
+      tagline:'Одинаковый корень в обеих частях + обязательная проверка ОДЗ.',
+      theory:[
+        {t:'Сначала ОДЗ!', h:'Под корнем — неотрицательное: K − x ≥ 0, то есть x ≤ K. Это условие решает судьбу корней в конце. Записываем его сразу.'},
+        {t:'Вычитаем одинаковый корень', h:'В левой и правой части стоит один и тот же √(K−x). Вычитаем его из обеих частей — корень исчезает, остаётся квадратное уравнение x² − cx − n = 0.'},
+        {t:'Отбор по ОДЗ', h:'Решаем квадратное, находим два корня. Оставляем только те, что удовлетворяют x ≤ K. Обычно один корень отбрасывается.'}
+      ],
+      callout:'Главная ловушка задания — забыть про ОДЗ и записать в ответ «лишний» корень. Всегда проверяй x ≤ K.',
+      mini:miniB2, engine:function(){return {gen:M.gen.B2, render:R.B2};}, stepFactory:function(){return stB2(M.gen.B2());} },
+
+  RAZL:{ num:'20.4', color:'#7048b6', title:'Разложение на множители', sub:'произведение = 0 · сумма квадратов = 0',
+      form:'(x \u2212 1)(x+4)'+S2+' = 6(x+4)',
+      tagline:'Два родственных приёма: вынести общий множитель или «сумма квадратов = 0».',
+      theory:[
+        {t:'Два принципа', h:'Произведение = 0 ⇒ хотя бы один множитель = 0. Сумма квадратов = 0 ⇒ КАЖДЫЙ квадрат = 0 одновременно (ведь квадрат не бывает отрицательным).'},
+        {t:'Случай А — общий множитель', h:'Вида (x−a)(x+m)² = k(x+m). Свернём полный квадрат, перенесём всё влево и вынесем (x+m). Останется линейный множитель и квадратный.'},
+        {t:'Случай Б — сумма квадратов', h:'Вида (…)² + (…)² = 0. Приравниваем каждую скобку к нулю и ищем ОБЩИЙ корень двух квадратных уравнений — он и есть ответ.'}
+      ],
+      callout:'Определи случай ДО вычислений: это произведение (выносим множитель) или сумма квадратов (каждое слагаемое = 0)? Похожий разбор произведения есть в модуле '+xrefHTML('B1','«Кубическое: группировка»')+'.',
+      mini:miniRazl, engine:function(){return {gen:makeRazl, render:function(p){return p.kind==='B3'?renderB3(p.d):renderB4(p.d);}};}, stepFactory:makeRazlStepper },
+
+  B5:{ num:'20.5', color:'#c2410c', title:'Дробно-рациональные', sub:'1/x² + p/x + q = 0 → замена t = 1/x',
+      form:frac('1','x'+S2)+' + '+frac('4','x')+' \u2212 12 = 0',
+      tagline:'Замена t = 1/x сводит уравнение к квадратному; ответы — дроби.',
+      theory:[
+        {t:'Замена', h:'Пусть t = 1/x. Тогда 1/x² = t², и уравнение превращается в квадратное t² + pt + q = 0.'},
+        {t:'Решаем и возвращаемся', h:'Находим корни t₁, t₂ (обычно целые). Обратная замена: x = 1/t. Ответы получаются дробными — записывай их аккуратной дробью.'},
+        {t:'Сдвиг знаменателя', h:'Если в знаменателе (x − a), удобно взять t = 1/(x − a). Тогда x = a + 1/t.'}
+      ],
+      callout:'Дроби вводи через переключатель '+'<span class="pill">a\u2044b</span>'+' у поля ответа — числитель сверху, знаменатель снизу. Работа с дробями — как в '+xrefHTML('A','модуле 20.1')+'.',
+      mini:miniB5, engine:function(){return {gen:function(){return M.gen.B5({variant:Math.random()<0.4});}, render:R.B5};}, stepFactory:function(){return stB5(M.gen.B5({variant:Math.random()<0.4}));} },
+
+  BIQ:{ num:'20.6', color:'#047857', title:'Замена переменной', sub:'(x²+bx)² + P(x²+bx) + Q = 0 → u = x²+bx',
+      form:'(x'+S2+' \u2212 3x)'+S2+' \u2212 2(x'+S2+' \u2212 3x) \u2212 8 = 0',
+      tagline:'Повторяющийся блок заменяем на u — и уравнение становится квадратным.',
+      theory:[
+        {t:'Приём: замена переменной', h:'Если один и тот же блок (например, x² − 3x) встречается в уравнении дважды, обозначь его буквой u. Уравнение превращается в обычное квадратное: u² + Pu + Q = 0.'},
+        {t:'Решаем относительно u', h:'Находим два корня u₁ и u₂ — теорема Виета или дискриминант. Это те значения, к которым будем возвращаться.'},
+        {t:'Обратная замена', h:'Возвращаемся к x: приравниваем блок к каждому u и решаем получившиеся квадратные уравнения. Все корни собираем в ответ — обычно их до четырёх.'}
+      ],
+      callout:'Главное — увидеть повторяющийся блок. Та же идея замены, что в '+xrefHTML('B5','модуле «Дробно-рациональные» (t = 1/x)')+', только блок здесь — квадратный трёхчлен.',
+      mini:miniBIQ, engine:function(){return {gen:M.gen.BIQ, render:R.BIQ};}, stepFactory:function(){return stBIQ(M.gen.BIQ());} },
+
+  SQ:{ num:'20.7', color:'#a16207', title:'Равенство квадратов', sub:'x⁴ = (ax+b)² → x² = ±(ax+b)',
+      form:'x'+S4+' = (2x + 3)'+S2,
+      tagline:'Слева и справа — квадраты, значит основания равны или противоположны.',
+      theory:[
+        {t:'Приём: A² = B²', h:'Если равны два квадрата, их основания равны или противоположны: A² = B² ⇔ A = B или A = −B. Здесь A = x², B = ax + b.'},
+        {t:'Два квадратных уравнения', h:'Получаем x² = ax + b и x² = −(ax + b). Переносим всё влево и решаем каждое обычное квадратное уравнение.'},
+        {t:'Собираем действительные корни', h:'У одного из уравнений дискриминант может быть отрицательным — тогда действительных корней у него нет, и в ответ идут корни только второго. Все действительные корни объединяем.'}
+      ],
+      callout:'Типичная ошибка — «извлечь корень» из x⁴ как x², потеряв знак. Правильно: x² = ±(ax + b), два случая. Принцип «каждый множитель = 0» встречался в '+xrefHTML('RAZL','модуле «Разложение»')+'.',
+      mini:miniSQ, engine:function(){return {gen:M.gen.SQ, render:R.SQ};}, stepFactory:function(){return stSQ(M.gen.SQ());} },
+
+  POW:{ num:'20.8', color:'#4d7c0f', title:'Дробь со степенями', sub:'общий множитель степени → n сокращается → число',
+      form:frac(powHTML(5,2)+' \u2212 '+powHTML(5,1), '4 \u00b7 '+powHTML(5,0)),
+      tagline:'Вынести общий множитель степени — переменная n сокращается, остаётся число.',
+      theory:[
+        {t:'Одинаковое основание', h:'Все степени в дроби — с одним основанием b. Значит можно выносить общий множитель и сокращать степени по правилу bᵏ / bᵐ = bᵏ⁻ᵐ.'},
+        {t:'Выносим общий множитель', h:'В числителе выносим наименьшую степень b^{n+q}: b^{n+p} ± b^{n+q} = b^{n+q}(b^{p−q} ± 1). В знаменателе — c · b^{n+r}.'},
+        {t:'Сокращаем n', h:'Степень b^{n+q} сокращается со степенью знаменателя — переменная n исчезает полностью. Остаётся обычное число: целое или дробь.'}
+      ],
+      callout:'Ключ — одинаковое основание: оно позволяет вынести общий множитель, после чего n сокращается. Работа с общим множителем — как в '+xrefHTML('B1','группировке')+'.',
+      mini:miniPOW, engine:function(){return {gen:M.gen.POW, render:R.POW};}, stepFactory:function(){return stPOW(M.gen.POW());} },
+
+  SYS:{ num:'20.9', color:'#1864ab', title:'Системы уравнений', sub:'сложение · подстановка · пропорция → квадратное',
+      form:sys(['4x'+S2+' + y = 9','8x'+S2+' \u2212 y = 3']),
+      tagline:'Свести систему к одному уравнению — сложением, подстановкой или через пропорциональные части.',
+      theory:[
+        {t:'Случай А — сложение', h:'Если y входит с разными знаками (+y и −y), складываем уравнения — y сокращается, остаётся квадратное по x.'},
+        {t:'Случай Б — подстановка', h:'Если оба уравнения дают y (…= y и …= y), приравниваем их правые части. Получаем квадратное уравнение относительно x.'},
+        {t:'Случай В — пропорция', h:'Если левая часть второго уравнения — это левая часть первого, умноженная на число k (напр. 2x²+6y² = 2·(x²+3y²)), а справа стоит C·x, то из первого A x²+B y²=C. Подставляем: k·C = C·x → x = k. Затем находим y из первого уравнения.'},
+        {t:'Находим y', h:'Для каждого найденного x подставляем в любое исходное уравнение и находим y. Ответ — все пары (x; y).'}
+      ],
+      callout:'Сначала определи случай: разные знаки y → сложение; оба «= y» → подстановка; левые части кратны, справа C·x → пропорция. У квадратного обычно два корня, значит и пар решений часто две.',
+      mini:miniSys, engine:function(){return {gen:makeSys, render:function(p){return p.kind==='C2'?renderC2(p.d):(p.kind==='C1'?renderC1(p.d):renderPROP(p.d));}};}, stepFactory:makeSysStepper },
+
+
+  INEQ:{ num:'20.10', color:'#a61e4d', title:'Неравенства', sub:'метод множителей и знаков · числовая прямая',
+      form:frac('\u221216','(x+2)'+S2+' \u2212 5')+' \u2265 0',
+      tagline:'Квадратные и дробные неравенства через знаки и числовую прямую.',
+      theory:[
+        {t:'Случай А — (x−a)² < √k(x−a)', h:'Замена u = x − a: получаем u² < √k·u → u(u − √k) < 0. Произведение отрицательно ⇒ u между 0 и √k. Возврат: a < x < a + √k.'},
+        {t:'Случай Б — дробь ≥ 0', h:'Вида −N/((x−a)² − M) ≥ 0. Числитель −N < 0 постоянный, значит дробь ≥ 0 только когда знаменатель < 0: (x−a)² − M < 0. Число M — не квадрат, поэтому не «извлекаем корень», а представляем M = (√M)² и раскладываем по разности квадратов: (x−a−√M)(x−a+√M) < 0. Дальше метод интервалов: произведение < 0 между корнями, откуда a−√M < x < a+√M.'},
+        {t:'Числовая прямая', h:'Отмечаем критические точки (концы выколоты, т.к. знаменатель ≠ 0 и неравенство строгое внутри), заштриховываем нужный участок. Ответ — открытый интервал.'}
+      ],
+      callout:'В обоих случаях концы интервала — иррациональные (√k, √M). В тренажёре впиши параметры a и K (или M), а форму интервала ( a ; a+√K ) или ( a−√M ; a+√M ) увидишь в предпросмотре.',
+      mini:miniIneq, engine:function(){return {gen:makeIneq, render:function(p){return p.kind==='D1'?renderD1(p.d):renderD2(p.d);}};}, stepFactory:makeIneqStepper },
+
+  DR:{ num:'20.11', color:'#9333ea', title:'Дробное неравенство', sub:'знаменатель раскладывается · метод интервалов',
+      form:frac('\u221214','x'+S2+' + 2x \u2212 15')+' \u2265 0',
+      tagline:'Разложить знаменатель на множители и решить методом интервалов — концы рациональные.',
+      theory:[
+        {t:'Знак дроби', h:'Числитель −N < 0 постоянный. Дробь ≥ 0 только когда знаменатель < 0 (минус на минус даёт плюс). Значит нужно x² + bx + c < 0.'},
+        {t:'Раскладываем знаменатель', h:'Находим корни трёхчлена x² + bx + c (через дискриминант или теорему Виета) и раскладываем на множители (x − r₁)(x − r₂). Здесь корни рациональные (целые).'},
+        {t:'Метод интервалов', h:'Парабола ветвями вверх, поэтому (x − r₁)(x − r₂) < 0 между корнями. Ответ — открытый интервал (r₁; r₂); концы выколоты, ведь знаменатель ≠ 0.'}
+      ],
+      callout:'Отличие от '+xrefHTML('INEQ','модуля 20.10')+': там знаменатель (x−a)² − M с иррациональными концами (√M), а здесь трёхчлен раскладывается на рациональные множители — концы целые.',
+      mini:miniDR, engine:function(){return {gen:M.gen.DR, render:R.DR};}, stepFactory:function(){return stDR(M.gen.DR());} },
+
+  QIDS:{ num:'20.12', color:'#0891b2', title:'Квадратные неравенства', sub:'раскрыть/разложить · метод интервалов · промежуток или лучи',
+      form:'(x \u2212 3)(2x + 3) &lt; \u22127',
+      tagline:'Свести к произведению множителей и решить методом интервалов — ответ бывает промежутком или двумя лучами.',
+      theory:[
+        {t:'Раскрыть и перенести', h:'В неравенстве вида (x−a)(b·x+c) < d раскрой скобки и перенеси всё в левую часть — получишь квадратный трёхчлен [знак] 0.'},
+        {t:'Разность квадратов', h:'Если по обе стороны квадраты, (m·x−p)² ≤ (n·x−q)², перенеси всё влево и разложи по формуле A²−B² = (A−B)(A+B) на два линейных множителя.'},
+        {t:'Метод интервалов', h:'Найди корни. По знаку старшего коэффициента (ветви вверх/вниз) и знаку неравенства реши: решение — либо ОДИН промежуток между корнями, либо ДВА луча вне корней. Строгое неравенство → концы выколоты, нестрогое → включены.'}
+      ],
+      callout:'В отличие от '+xrefHTML('DR','20.11')+', здесь ответ бывает не только промежутком, но и объединением двух лучей (−∞; r₁) ∪ (r₂; +∞) — следи за знаком неравенства и ветвями параболы.',
+      mini:miniQIneq, engine:function(){return {gen:makeQIDS, render:function(p){return p.kind==='QI'?R.QI(p.d):R.DS(p.d);}};}, stepFactory:stQIDS },
+
+  SYM:{ num:'20.13', color:'#db2777', title:'Симметричные системы', sub:'(x±y)² = S ± 2xy · четыре решения',
+      form:sys(['x'+S2+' + y'+S2+' = 29','xy = 10']),
+      tagline:'Свести к сумме и разности через формулы (x±y)² — получается 4 пары решений.',
+      theory:[
+        {t:'Что даёт симметрия', h:'Система вида {x²+y²=S, xy=P} симметрична. Ключ — формулы (x+y)² = x²+2xy+y² и (x−y)² = x²−2xy+y². Через них S и P сразу дают x+y и x−y.'},
+        {t:'Сумма и разность', h:'(x+y)² = S+2P → x+y = ±√(S+2P). (x−y)² = S−2P → x−y = ±√(S−2P). Оба подкоренных выражения — точные квадраты.'},
+        {t:'Четыре пары', h:'Зная x+y и x−y: x = (сумма+разность)/2, y = (сумма−разность)/2. Перебирая 4 сочетания знаков ±, получаем 4 решения (x; y).'}
+      ],
+      callout:'Не потеряй решения: знаки у (x+y) и (x−y) независимы, поэтому пар именно четыре. Формулы (x±y)² встречались в '+xrefHTML('B4','сумме квадратов')+', но там квадрат раскрывали, а здесь — собираем.',
+      mini:miniSYM, engine:function(){return {gen:M.gen.SYM, render:R.SYM};}, stepFactory:function(){return stSYM(M.gen.SYM());} }
+};
+var ORDER=['A','B1','B2','RAZL','B5','BIQ','SQ','POW','SYS','INEQ','DR','QIDS','SYM'];
+
+/* ============================ РЕНДЕР ОБОЛОЧКИ ============================ */
+var STATE={module:'A', mode:'learn'};
+var MODES=[['learn','Учимся','1'],['step','Пошагово','2'],['drill','Марафон','3']];
+
+function renderPicker(){
+  var p=$('#picker'); clear(p);
+  ORDER.forEach(function(mid){
+    var m=MODULES[mid];
+    var c=el('<button class="mcard'+(mid===STATE.module?' on':'')+'" style="--mc:'+m.color+'">'+
+      '<div class="mnum">Задание 20 · '+m.num.split('.')[1]+'</div>'+
+      '<div class="mttl">'+m.title+'</div>'+
+      '<div class="msub">'+m.sub+'</div>'+
+      '<div class="mform">'+m.form+'</div></button>');
+    c.addEventListener('click',function(){ STATE.module=mid; STATE.mode='learn'; render(); });
+    p.appendChild(c);
+  });
+}
+function renderTabs(){
+  var t=$('#tabs'); clear(t);
+  MODES.forEach(function(md){
+    var b=el('<button class="tab'+(md[0]===STATE.mode?' on':'')+'"><span class="tnum">'+md[2]+'</span>'+md[1]+'</button>');
+    b.addEventListener('click',function(){ STATE.mode=md[0]; render(); });
+    t.appendChild(b);
+  });
+}
+function renderBody(){
+  var b=$('#body'); clear(b);
+  var m=MODULES[STATE.module];
+  if(STATE.mode==='learn'){
+    m.theory.forEach(function(card,i){
+      b.appendChild(el('<div class="tcard"><div class="tc-h"><span class="tc-n">'+(i+1)+'</span><span class="tc-t">'+card.t+'</span></div><p>'+card.h+'</p></div>'));
+    });
+    if(m.callout) b.appendChild(el('<div class="callout">'+m.callout+'</div>'));
+    var miniHost=el('<div style="margin-top:6px"></div>'); b.appendChild(miniHost);
+    mountMini(miniHost, m.mini());
+    // хинт-переход к тренировке
+    var jump=el('<div class="btns" style="margin-top:16px"><button class="btn primary">Перейти к пошаговому разбору \u2192</button><button class="btn ghost">Сразу в марафон</button></div>');
+    jump.children[0].addEventListener('click',function(){STATE.mode='step';render();});
+    jump.children[1].addEventListener('click',function(){STATE.mode='drill';render();});
+    b.appendChild(jump);
+    // активируем перекрёстные ссылки
+    Array.prototype.forEach.call(b.querySelectorAll('[data-go]'),function(x){ x.addEventListener('click',function(){goTo(x.getAttribute('data-go'));}); });
+  }
+  else if(STATE.mode==='step'){
+    b.appendChild(el('<p class="muted" style="margin:0 0 12px">Разбираем по шагам. На каждом шаге можно ответить самому или нажать «Показать шаг». Активный шаг подсвечен — <span style="color:var(--active);font-weight:600">твой ход</span>.</p>'));
+    var sh=el('<div></div>'); b.appendChild(sh);
+    mountStepper(sh, m.stepFactory());
+  }
+  else{
+    b.appendChild(el('<p class="muted" style="margin:0 0 12px">Решай задачи одну за другой. Неправильный ответ не блокирует поле — пробуй снова. Застрял — жми «Решить по шагам» или «Показать ответ».</p>'));
+    var mh=el('<div></div>'); b.appendChild(mh);
+    mountMarathon(mh, m.engine());
+  }
+}
+function render(){
+  var m=MODULES[STATE.module];
+  $('#stageTitle').innerHTML='Задание 20.'+m.num.split('.')[1]+' — '+m.title;
+  $('#stageSub').textContent=m.tagline;
+  renderPicker(); renderTabs(); renderBody();
+  try{window.scrollTo({top:0,behavior:'smooth'});}catch(e){}
+}
+window.__T20={STATE:STATE, render:render, MODULES:MODULES, ORDER:ORDER, R:R, M:M,
+  _test:{mountMini:mountMini,mountStepper:mountStepper,mountMarathon:mountMarathon,rootsetWidget:rootsetWidget,fracField:fracField,pointsetWidget:pointsetWidget,intervalWidget:intervalWidget,fmtPoly:fmtPoly}};
+render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1797 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ОГЭ · Задание 16 — окружность</title>
+<style>
+:root{
+  --page:#e8e4db; --card:#ffffff; --canvas:#fffdf7; --ink:#1a1a2e; --muted:#687080;
+  --line:#ddd6c6; --blue:#2d70b3; --good:#16a34a; --bad:#dc2626; --warn:#c2410c;
+  --amber:#d97706; --pink:#db2777; --teal:#0d9488; --violet:#7c3aed; --soft:#f6f2e7;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+.app{max-width:1020px;margin:18px auto 40px;background:var(--card);border-radius:18px;box-shadow:0 14px 40px rgba(26,26,46,.14);overflow:hidden}
+.head{background:var(--ink);color:#f5f2ea;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.head h1{margin:0;font-family:Georgia,serif;font-size:26px;font-weight:700}
+.head h1 .num{color:#f2b134}
+.head .sub{font-size:13.5px;color:#c9c4b6;margin-top:3px}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{background:rgba(255,255,255,.09);border-radius:10px;padding:6px 12px;min-width:78px;text-align:center}
+.stat .n{font-weight:800;font-size:20px}
+.stat .l{font-size:10.5px;color:#c9c4b6;text-transform:uppercase;letter-spacing:.07em}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;padding:14px 22px 0}
+.tab{border:1px solid var(--line);background:var(--card);padding:9px 15px;border-radius:10px;cursor:pointer;font:inherit;font-weight:700;color:var(--ink)}
+.tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tab .cnt{font-weight:400;color:var(--muted);font-size:13px}
+.tab.active .cnt{color:#c9c4b6}
+main{padding:18px 22px 26px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.chip{border:1px solid var(--line);background:var(--soft);border-radius:999px;padding:6px 13px;cursor:pointer;font:inherit;font-size:13.5px;font-weight:700;color:#444}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.chip.src{background:#fff}
+.grid{display:grid;grid-template-columns:360px 1fr;gap:20px;align-items:start}
+@media(max-width:840px){.grid{grid-template-columns:1fr}}
+.diagram{border:1px solid var(--line);border-radius:14px;background:var(--canvas);padding:6px;display:flex;align-items:center;justify-content:center}
+.diagram svg{max-width:100%;height:auto;display:block}
+.meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.tag{font-size:12px;border-radius:999px;padding:4px 10px;font-weight:700}
+.tag.topic{background:#e8f0f7;color:#1d4d78}
+.tag.arch{background:#f5e9e9;color:#8b2e2e}
+.tag.gen{background:#f2ecdc;color:#75591e}
+.task{font-family:Georgia,serif;font-size:19.5px;line-height:1.5}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.08;font-size:.86em;margin:0 2px}
+.frac .fn{border-bottom:1.6px solid currentColor;padding:0 4px}
+.frac .fd{padding:0 4px}
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:16px 0 4px}
+input.ans{font-size:20px;padding:9px 12px;border:2px solid var(--line);border-radius:10px;width:150px;font-family:Georgia,serif}
+input.ans:focus{outline:none;border-color:var(--blue)}
+button{font:inherit;font-weight:700;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:10px;padding:10px 16px;cursor:pointer}
+button.sec{background:#fff;color:var(--ink)}
+button.blue{background:var(--blue);border-color:var(--blue)}
+button.soft{background:var(--soft);color:var(--ink);border-color:var(--line)}
+button:disabled{opacity:.45;cursor:default}
+.fb{display:none;border-left:4px solid var(--line);padding:11px 14px;border-radius:9px;background:#f6f6f4;margin-top:12px;font-size:15px}
+.fb.show{display:block}
+.fb.ok{border-color:var(--good);background:#e9f6ee}
+.fb.bad{border-color:var(--bad);background:#fbeaea}
+.fb.diag{border-color:var(--warn);background:#fdf1e7}
+.sol{display:none;border:1px solid var(--line);border-radius:12px;background:var(--canvas);margin-top:12px;padding:14px 16px}
+.sol.show{display:block}
+.sol h4{margin:0 0 8px;font-size:14px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.sol ol{margin:0;padding-left:20px}
+.sol li{margin:6px 0}
+.law{border:1.5px solid #b7e0c4;background:#eef9f1;border-radius:12px;padding:12px 15px;margin-top:12px;font-family:Georgia,serif}
+.law b{color:#14733a}
+.refcall{margin-top:12px;border:1px dashed #b9ab7e;background:#fffbeb;border-radius:11px;padding:10px 13px;font-size:14.5px;cursor:pointer}
+.refcall:hover{background:#fef6d8}
+.refcall .t{font-weight:800;color:#8a6a12}
+.rowbtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.srcnote{font-size:12.5px;color:var(--muted);margin-top:10px}
+.progressline{font-size:13.5px;color:var(--muted);margin:2px 0 12px}
+.dots{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.dot{width:15px;height:15px;border-radius:50%;background:#d8d2c2}
+.dot.g{background:var(--good)}.dot.y{background:#eab308}.dot.r{background:var(--bad)}
+.fin{border:1px solid var(--line);border-radius:14px;background:var(--canvas);padding:20px;text-align:center}
+.fin .score{font-family:Georgia,serif;font-size:40px;font-weight:800}
+.route{margin-top:12px;text-align:left;border-top:1px dashed var(--line);padding-top:12px}
+.route li{margin:5px 0}
+/* Разбор */
+.rzgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:10px}
+.rzcard{border:1px solid var(--line);border-radius:12px;padding:11px 13px;cursor:pointer;background:var(--card)}
+.rzcard:hover{border-color:var(--blue)}
+.rzcard.done{background:#eef9f1;border-color:#b7e0c4}
+.rzcard .nm{font-weight:800;font-size:14.5px}
+.rzcard .tp{font-size:12px;color:var(--muted);margin-top:2px}
+.rzcard .ok{color:var(--good);font-size:12.5px;font-weight:700;margin-top:4px}
+.steps{margin-top:12px}
+.step{border-left:3px solid var(--blue);background:#f2f6fa;border-radius:0 9px 9px 0;padding:9px 13px;margin:8px 0;font-size:15.5px}
+.backlink{color:var(--blue);cursor:pointer;font-weight:700;font-size:14px;margin-bottom:10px;display:inline-block}
+/* Справочник */
+.refgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.refgrid{grid-template-columns:1fr}}
+.refcard{border:1px solid var(--line);border-radius:14px;background:var(--canvas);padding:15px 17px}
+.refcard.hot{border-color:var(--amber);box-shadow:0 0 0 3px rgba(217,119,6,.22)}
+.refcard h3{margin:0 0 8px;font-family:Georgia,serif;font-size:18px}
+.refcard .fx{font-family:Georgia,serif;font-size:18px;margin:7px 0;letter-spacing:.01em}
+.refcard .use{font-size:13px;color:var(--muted);margin-top:9px;border-top:1px dashed var(--line);padding-top:8px}
+.bank{margin-top:20px;border:1px solid var(--line);border-radius:14px;padding:15px 17px;background:#fff}
+.bank h3{margin:0 0 7px;font-family:Georgia,serif}
+.bank .codes{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.bank a{color:var(--blue);text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:4px 9px;font-family:Consolas,monospace;font-size:13px;font-weight:700}
+.bank a:hover{border-color:var(--blue)}
+.quizq{font-size:13.5px;color:var(--muted);margin-bottom:8px;font-weight:700}
+.smallnote{font-size:13px;color:var(--muted)}
+kbd{background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:13px}
+
+/* Лист ОГЭ: карта с пинами */
+.sheetwrap{border:1px solid var(--line);border-radius:14px;background:#fff;overflow:auto;max-height:78vh}
+.sheetinner{position:relative;width:100%;transition:width .25s ease;min-width:320px}
+.sheetinner.zoomed{width:190%}
+.sheetinner img{width:100%;display:block;-webkit-user-select:none;user-select:none}
+.pin{position:absolute;transform:translate(-50%,-88%);cursor:pointer;z-index:3;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35));border:none;background:none;padding:0}
+.pin .cap{width:25px;height:25px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#ff9d9d,#e03e3e 55%,#8f1d1d);border:1.5px solid #7a1616;position:relative;transition:transform .15s}
+.pin .cap::after{content:'';position:absolute;left:6px;top:5px;width:8px;height:5px;border-radius:50%;background:rgba(255,255,255,.75)}
+.pin .needle{width:2.4px;height:9px;background:linear-gradient(#9aa0a6,#5f6368);margin:-1px auto 0;border-radius:0 0 2px 2px}
+.pin .bdg{position:absolute;right:-8px;top:-8px;background:#1a1a2e;color:#fff;font-size:10.5px;font-weight:800;border-radius:999px;padding:1px 5px;border:1.5px solid #fff}
+.pin:hover .cap{transform:scale(1.14)}
+.pin.on .cap{background:radial-gradient(circle at 34% 30%,#b9f6cf,#16a34a 55%,#0b5c2a);border-color:#0b5c2a}
+.pin.on{animation:pinpulse 1.1s ease-in-out infinite}
+@keyframes pinpulse{0%,100%{transform:translate(-50%,-88%) scale(1)}50%{transform:translate(-50%,-88%) scale(1.16)}}
+.pinpanel{border:1.5px dashed #b9ab7e;background:#fffbeb;border-radius:12px;padding:13px 16px;margin:12px 0}
+.pinpanel h3{margin:0 0 4px;font-family:Georgia,serif;font-size:18px}
+.pinpanel .why{font-size:14px;color:#6b5410;margin-bottom:8px}
+.subrow{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:6px 0;border-bottom:1px dotted var(--line);padding-bottom:6px}
+.subrow:last-child{border-bottom:none;padding-bottom:0}
+.subrow .nm{font-weight:700;font-size:14.5px;flex:1;min-width:180px}
+.subrow .cnt{font-size:12px;color:var(--muted)}
+.minibtn{font-size:12.5px;padding:5px 10px;border-radius:8px}
+.missing{border:1px solid var(--line);border-radius:12px;background:#f2f6fa;padding:12px 15px;margin:12px 0}
+.missing b{font-family:Georgia,serif}
+.misschip{display:inline-block;margin:4px 5px 0 0;padding:4px 11px;border-radius:999px;background:#fff;border:1px solid var(--line);cursor:pointer;font-size:13px;font-weight:700}
+.misschip:hover{border-color:var(--blue);color:var(--blue)}
+.sheetbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.trsub{background:#efe9fb;border-color:#c9b7f2;color:#5a2ecc}
+.weak{color:var(--bad);font-size:12.5px;font-weight:800;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <div>
+      <h1>ОГЭ · Задание <span class="num">16</span> — окружность</h1>
+      <div class="sub">углы · описанная и вписанная окружности · касательные, хорды, секущие · чертёж честно строится под числа</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="n" id="stSolved">0</div><div class="l">решено</div></div>
+      <div class="stat"><div class="n" id="stGood">0</div><div class="l">верно</div></div>
+      <div class="stat"><div class="n" id="stStreak">0</div><div class="l">стрик</div></div>
+      <div class="stat"><div class="n" id="stBest">—</div><div class="l">зачёт</div></div>
+    </div>
+  </div>
+  <nav class="tabs">
+    <button class="tab active" data-tab="razbor">Разбор <span class="cnt" id="cntRz"></span></button>
+    <button class="tab" data-tab="train">Тренировка</button>
+    <button class="tab" data-tab="quiz">Зачёт</button>
+    <button class="tab" data-tab="refs">Справочник</button>
+  </nav>
+  <main id="main"></main>
+</div>
+<script>
+'use strict';
+/* ================= ОГЭ-16 «Окружность» — ядро ================= */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const rad=a=>a*Math.PI/180, degf=a=>a*180/Math.PI;
+const n2=x=>Math.round(x*100)/100;
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const dist=(P,Q)=>Math.hypot(P.x-Q.x,P.y-Q.y);
+function pol(c,r,a){return {x:c.x+r*Math.cos(rad(a)), y:c.y-r*Math.sin(rad(a))};}
+function angleAt(V,P,Q){ // угол между лучами V→P и V→Q, градусы 0..180
+  const ux=P.x-V.x, uy=P.y-V.y, vx=Q.x-V.x, vy=Q.y-V.y;
+  const d=(ux*vx+uy*vy)/(Math.hypot(ux,uy)*Math.hypot(vx,vy));
+  return degf(Math.acos(Math.max(-1,Math.min(1,d))));
+}
+function distToLine(P,A,B){ // расстояние от P до прямой AB
+  const dx=B.x-A.x, dy=B.y-A.y;
+  return Math.abs(dy*(P.x-A.x)-dx*(P.y-A.y))/Math.hypot(dx,dy);
+}
+function fmtNum(x){ // 6.72 → «6,72»
+  let s=String(n2(x)); return s.replace('.',',');
+}
+function frac(a,b){return `<span class="frac"><span class="fn">${a}</span><span class="fd">${b}</span></span>`;}
+const SQ3='√3', SQ2='√2';
+
+/* ---------- SVG-библиотека (Конституция: без стрелок; засечки=равенство; цвет дуги=класс равенства) ---------- */
+const COL={ink:'#1a1a2e',blue:'#2d70b3',amber:'#d97706',pink:'#db2777',teal:'#0d9488',violet:'#7c3aed',good:'#16a34a',grey:'#8a8478'};
+let _uid=0;
+function CF(W,H,title,body){
+  const id='p'+(_uid++);
+  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${title}" xmlns="http://www.w3.org/2000/svg"><title>${title}</title>`+
+  `<defs><pattern id="${id}" width="25" height="25" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.15" fill="#e7e1d2"/></pattern></defs>`+
+  `<rect x="0" y="0" width="${W}" height="${H}" fill="#fffdf7"/><rect x="0" y="0" width="${W}" height="${H}" fill="url(#${id})"/>`+body+`</svg>`;
+}
+function seg(P,Q,col=COL.ink,w=2.1,dash){
+  return `<line x1="${n2(P.x)}" y1="${n2(P.y)}" x2="${n2(Q.x)}" y2="${n2(Q.y)}" stroke="${col}" stroke-width="${w}" stroke-linecap="round"${dash?` stroke-dasharray="${dash}"`:''}/>`;
+}
+function circleEl(c,R,col=COL.ink,w=2.3,fill='none',dash){
+  return `<circle cx="${n2(c.x)}" cy="${n2(c.y)}" r="${n2(R)}" stroke="${col}" stroke-width="${w}" fill="${fill}"${dash?` stroke-dasharray="${dash}"`:''}/>`;
+}
+function dotP(P,col=COL.ink,r=4){
+  return `<circle cx="${n2(P.x)}" cy="${n2(P.y)}" r="${r+2}" fill="#fffdf7"/><circle cx="${n2(P.x)}" cy="${n2(P.y)}" r="${r}" fill="${col}"/>`;
+}
+function lab(x,y,t,size=16,anchor='middle',col=COL.ink){
+  return `<text x="${n2(x)}" y="${n2(y)}" font-family="Georgia,serif" font-size="${size}" font-weight="700" fill="${col}" text-anchor="${anchor}" paint-order="stroke" stroke="#fffdf7" stroke-width="4.5" stroke-linejoin="round">${t}</text>`;
+}
+function mathAng(V,P){return degf(Math.atan2(-(P.y-V.y),P.x-V.x));}
+function arcPolyline(V,r,a1,delta,col,w=3.2){
+  const n=Math.max(10,Math.round(Math.abs(delta)/6)); let pts=[];
+  for(let i=0;i<=n;i++){const a=a1+delta*i/n; const p=pol(V,r,a); pts.push(`${n2(p.x)},${n2(p.y)}`);}
+  return `<polyline points="${pts.join(' ')}" fill="none" stroke="${col}" stroke-width="${w}" stroke-linecap="round"/>`;
+}
+function normDelta(d){while(d>180)d-=360;while(d<=-180)d+=360;return d;}
+/* дуга угла в вершине V между лучами на P и Q; label — текст значения; n — число дужек */
+function angArc(V,P,Q,col,r=24,label=null,n=1){
+  const a1=mathAng(V,P), d=normDelta(mathAng(V,Q)-a1);
+  let s='';
+  for(let i=0;i<n;i++) s+=arcPolyline(V,r-6*i,a1,d,col);
+  if(label!=null){
+    const extreme=Math.abs(d)>=140||Math.abs(d)<=18;
+    const lp=pol(V,r+(extreme?24:14),a1+d/2);
+    s+=lab(lp.x,lp.y+5,label,15,'middle',col);
+  }
+  return s;
+}
+function rightSq(V,P,Q,s=13){
+  const a1=mathAng(V,P),a2=mathAng(V,Q);
+  const u=pol({x:0,y:0},s,a1), v=pol({x:0,y:0},s,a2);
+  const p1={x:V.x+u.x,y:V.y+u.y}, p2={x:V.x+u.x+v.x,y:V.y+u.y+v.y}, p3={x:V.x+v.x,y:V.y+v.y};
+  return `<path d="M ${n2(p1.x)} ${n2(p1.y)} L ${n2(p2.x)} ${n2(p2.y)} L ${n2(p3.x)} ${n2(p3.y)}" fill="none" stroke="${COL.good}" stroke-width="2.4"/>`+
+         `<path d="M ${n2(V.x)} ${n2(V.y)} L ${n2(p1.x)} ${n2(p1.y)} L ${n2(p2.x)} ${n2(p2.y)} L ${n2(p3.x)} ${n2(p3.y)} Z" fill="rgba(22,163,74,.10)" stroke="none"/>`;
+}
+function ticks(P,Q,n=1,col=COL.ink){
+  const mx=(P.x+Q.x)/2,my=(P.y+Q.y)/2,dx=Q.x-P.x,dy=Q.y-P.y,L=Math.hypot(dx,dy);
+  const ux=dx/L,uy=dy/L,nx=-uy,ny=ux; let s='';
+  for(let i=0;i<n;i++){const off=(i-(n-1)/2)*6, cx=mx+ux*off, cy=my+uy*off;
+    s+=`<line x1="${n2(cx-nx*6)}" y1="${n2(cy-ny*6)}" x2="${n2(cx+nx*6)}" y2="${n2(cy+ny*6)}" stroke="${col}" stroke-width="2.4" stroke-linecap="round"/>`;}
+  return s;
+}
+function midLab(P,Q,t,off=13,col=COL.ink){ // подпись у середины отрезка, смещена по нормали
+  const mx=(P.x+Q.x)/2,my=(P.y+Q.y)/2,dx=Q.x-P.x,dy=Q.y-P.y,L=Math.hypot(dx,dy)||1;
+  return lab(mx-(-dy/L)*off,my-(dx/L)*off+5,t,15,'middle',col);
+}
+function vLab(V,c,t,extra=17){ // подпись точки на окружности: наружу от центра c
+  const a=mathAng(c,V); const p=pol(c,dist(c,V)+extra,a); return lab(p.x,p.y+5,t);
+}
+/* fit: вписать точки и окружности в кадр */
+function makeFit(pts,circles,W,H,pad=30){
+  let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+  const upd=(x,y)=>{x0=Math.min(x0,x);y0=Math.min(y0,y);x1=Math.max(x1,x);y1=Math.max(y1,y);};
+  pts.forEach(p=>upd(p.x,p.y));
+  circles.forEach(c=>{upd(c.c.x-c.R,c.c.y-c.R);upd(c.c.x+c.R,c.c.y+c.R);});
+  const k=Math.min((W-2*pad)/(x1-x0),(H-2*pad)/(y1-y0));
+  const ox=(W-k*(x1-x0))/2-k*x0, oy=(H-k*(y1-y0))/2-k*y0;
+  return {T:p=>({x:p.x*k+ox,y:p.y*k+oy}), k};
+}
+
+/* ================= Построители чертежей =================
+   Каждый возвращает {svg, chk:[…]} — chk исполняет геоаудит self-test.
+   Типы chk: circ (точка на окружности), ang (угол равен), perp, ratio, tanl (касание), par (параллельность) */
+
+const CTR={x:170,y:152}, RR=112;
+function chkCirc(P,c,R){return {t:'circ',P,c,R};}
+function chkAng(V,P,Q,want){return {t:'ang',V,P,Q,want};}
+function chkPerp(V,P,Q){return {t:'ang',V,P,Q,want:90};}
+function chkRatio(a,b,want){return {t:'ratio',a,b,want};}
+function chkTanl(A,B,c,R){return {t:'tanl',A,B,c,R};}
+function chkPar(a,b){return {t:'par',a,b};}
+
+/* 1. Вписанный + центральный: ∠AOB=c, C на большой дуге */
+function figInsCentral(c,names={A:'A',B:'B',C:'C'},givenAtO=true){
+  const O=CTR,R=RR;
+  const A=pol(O,R,270-c/2),B=pol(O,R,270+c/2),C=pol(O,R,90);
+  let b=circleEl(O,R)+seg(O,A)+seg(O,B)+seg(C,A)+seg(C,B);
+  b+=angArc(O,A,B,COL.amber,26,givenAtO?c+'°':'?')+angArc(C,A,B,COL.pink,30,givenAtO?'?':c/2+'°');
+  b+=dotP(O)+lab(O.x+2,O.y-9,'O')+dotP(A)+dotP(B)+dotP(C);
+  b+=vLab(A,O,names.A)+vLab(B,O,names.B)+vLab(C,O,names.C);
+  return {svg:CF(340,300,'Окружность с центром O, центральный угол '+names.A+'O'+names.B+' и вписанный угол при вершине '+names.C,b),
+    chk:[chkCirc(A,O,R),chkCirc(B,O,R),chkCirc(C,O,R),chkAng(O,A,B,c),chkAng(C,A,B,c/2)]};
+}
+/* 2. Два диаметра AD и BC, ∠OAB = ∠OCD = x (равные — один цвет) */
+function figTwoDiam(x,given='A'){
+  const O=CTR,R=RR;
+  const A=pol(O,R,160),B=pol(O,R,2*x-20),D=pol(O,R,-20),C=pol(O,R,2*x+160);
+  let b=circleEl(O,R)+seg(A,D)+seg(B,C)+seg(A,B)+seg(C,D);
+  b+=angArc(A,O,B,COL.amber,26,given==='A'?x+'°':'?');
+  b+=angArc(C,O,D,COL.amber,26,given==='C'?x+'°':'?');
+  b+=dotP(O)+lab(O.x+3,O.y+20,'O')+dotP(A)+dotP(B)+dotP(C)+dotP(D);
+  b+=vLab(A,O,'A')+vLab(B,O,'B')+vLab(C,O,'C')+vLab(D,O,'D');
+  return {svg:CF(340,300,'Окружность с диаметрами AD и BC',b),
+    chk:[chkCirc(A,O,R),chkCirc(B,O,R),chkCirc(C,O,R),chkCirc(D,O,R),chkAng(A,O,B,x),chkAng(C,O,D,x)]};
+}
+/* 3. NP — диаметр, ∠MNP=x, ищем центральный ∠MON=180−2x */
+function figDiamMON(x){
+  const O=CTR,R=RR;
+  const N=pol(O,R,55),P=pol(O,R,235),M=pol(O,R,235+2*x);
+  let b=circleEl(O,R)+seg(N,P)+seg(N,M)+seg(O,M);
+  b+=ticks(O,M,1)+ticks(O,N,1);
+  b+=angArc(N,M,P,COL.amber,30,x+'°')+angArc(O,M,N,COL.pink,24,'?');
+  b+=dotP(O)+lab(O.x+14,O.y+16,'O')+dotP(N)+dotP(P)+dotP(M);
+  b+=vLab(N,O,'N')+vLab(P,O,'P')+vLab(M,O,'M');
+  return {svg:CF(340,300,'Окружность, диаметр NP, хорда NM, радиус OM',b),
+    chk:[chkCirc(N,O,R),chkCirc(P,O,R),chkCirc(M,O,R),chkAng(N,M,P,x),chkAng(O,M,N,180-2*x)]};
+}
+/* 4. Диаметры AC и BD: связка ∠AOD ↔ ∠ACB (даны aod; подписи по given) */
+function figDiamsPair(aod,given='O'){
+  const O=CTR,R=RR;
+  const A=pol(O,R,200),D=pol(O,R,200-aod),B=pol(O,R,20-aod),C=pol(O,R,20);
+  const acb=(180-aod)/2;
+  let b=circleEl(O,R)+seg(A,C)+seg(B,D)+seg(C,B);
+  b+=angArc(O,A,D,COL.amber,26,given==='O'?aod+'°':'?');
+  b+=angArc(C,A,B,COL.pink,32,given==='C'?acb+'°':'?');
+  b+=dotP(O)+lab(O.x-4,O.y-10,'O')+dotP(A)+dotP(B)+dotP(C)+dotP(D);
+  b+=vLab(A,O,'A')+vLab(B,O,'B')+vLab(C,O,'C')+vLab(D,O,'D');
+  return {svg:CF(340,300,'Окружность с диаметрами AC и BD',b),
+    chk:[chkCirc(A,O,R),chkCirc(B,O,R),chkCirc(C,O,R),chkCirc(D,O,R),chkAng(O,A,D,aod),chkAng(C,A,B,acb)]};
+}
+/* 5. AB — диаметр, N и M по разные стороны, ∠NBA=x; ∠NMB=∠NAB=90−x (равные — бирюза) */
+function figMnDiam(x){
+  const O=CTR,R=RR;
+  const A=pol(O,R,180),B=pol(O,R,0),N=pol(O,R,180-2*x),M=pol(O,R,250);
+  let b=circleEl(O,R)+seg(A,B)+seg(A,N)+seg(N,B)+seg(M,B)+seg(M,N);
+  b+=rightSq(N,A,B);
+  b+=angArc(B,N,A,COL.amber,30,x+'°')+angArc(A,N,B,COL.teal,28,(90-x)+'°')+angArc(M,N,B,COL.teal,26,'?');
+  b+=dotP(O)+lab(O.x+2,O.y-9,'O')+dotP(A)+dotP(B)+dotP(N)+dotP(M);
+  b+=vLab(A,O,'A')+vLab(B,O,'B')+vLab(N,O,'N')+vLab(M,O,'M');
+  return {svg:CF(340,300,'Окружность, диаметр AB, точки M и N по разные стороны от него',b),
+    chk:[chkCirc(N,O,R),chkCirc(M,O,R),chkAng(B,N,A,x),chkAng(A,N,B,90-x),chkAng(M,N,B,90-x),chkPerp(N,A,B)]};
+}
+/* 6. Сторона-диаметр: L и Rt — концы диаметра, T на окружности, ∠L=a, прямой угол при T */
+function figDiamTri(a,nm={L:'A',R:'C',T:'B'},askAt='R'){
+  const O=CTR,R=RR;
+  const L=pol(O,R,180),Rt=pol(O,R,0),T=pol(O,R,2*a);
+  let b=circleEl(O,R)+seg(L,Rt)+seg(L,T)+seg(T,Rt);
+  b+=rightSq(T,L,Rt);
+  b+=angArc(L,Rt,T,COL.amber,30,a+'°');
+  if(askAt==='R') b+=angArc(Rt,L,T,COL.pink,30,'?');
+  b+=dotP(O)+lab(O.x+2,O.y+22,'O')+dotP(L)+dotP(Rt)+dotP(T);
+  b+=vLab(L,O,nm.L)+vLab(Rt,O,nm.R)+vLab(T,O,nm.T);
+  return {svg:CF(340,300,'Треугольник, сторона которого — диаметр описанной окружности',b),
+    chk:[chkCirc(T,O,R),chkAng(L,Rt,T,a),chkPerp(T,L,Rt),chkAng(Rt,L,T,90-a)]};
+}
+/* 7. Центр на AB, гипотенуза-диаметр, катет bc известен (Пифагор) */
+function figDiamPif(Rr,bc){
+  const O=CTR,R=RR;
+  const a=degf(Math.asin(bc/(2*Rr)));
+  const A=pol(O,R,180),B=pol(O,R,0),C=pol(O,R,2*a);
+  let b=circleEl(O,R)+seg(A,B)+seg(A,C)+seg(C,B);
+  b+=rightSq(C,A,B);
+  b+=midLab(C,B,fmtNum(bc),15,COL.blue)+midLab(A,C,'?',15,COL.pink);
+  b+=dotP(O)+lab(O.x+2,O.y+22,'O')+dotP(A)+dotP(B)+dotP(C);
+  b+=vLab(A,O,'A')+vLab(B,O,'B')+vLab(C,O,'C');
+  return {svg:CF(340,300,'Треугольник ABC, центр описанной окружности лежит на стороне AB',b),
+    chk:[chkCirc(C,O,R),chkPerp(C,A,B),chkRatio([C,B],[A,B],bc/(2*Rr))]};
+}
+/* 8. Вписанный четырёхугольник, ∠A=a, ∠C=? */
+function figCyclQuad(a){
+  const O=CTR,R=RR;
+  const tA=215, span=360-2*a;
+  const A=pol(O,R,tA),B=pol(O,R,tA+span/2),C=pol(O,R,tA+180),D=pol(O,R,tA-span/2);
+  let b=circleEl(O,R);
+  b+=seg(A,B)+seg(B,C)+seg(C,D)+seg(D,A);
+  b+=angArc(A,B,D,COL.amber,26,a+'°')+angArc(C,B,D,COL.pink,26,'?');
+  b+=dotP(A)+dotP(B)+dotP(C)+dotP(D);
+  b+=vLab(A,O,'A')+vLab(B,O,'B')+vLab(C,O,'C')+vLab(D,O,'D');
+  return {svg:CF(340,300,'Четырёхугольник ABCD, вписанный в окружность',b),
+    chk:[chkCirc(A,O,R),chkCirc(B,O,R),chkCirc(C,O,R),chkCirc(D,O,R),chkAng(A,B,D,a),chkAng(C,B,D,180-a)]};
+}
+/* 9. Вписанная равнобедренная трапеция ABCD (AD, BC — основания), ∠A=a */
+function figCyclTrap(a){
+  const O=CTR,R=RR;
+  const f1=Math.max(20,Math.min(55,2*a-100)), f2=f1+2*(90-a);
+  const A=pol(O,R,180+f1),B=pol(O,R,180-f2),C=pol(O,R,f2),D=pol(O,R,-f1);
+  let b=circleEl(O,R)+seg(A,B)+seg(B,C)+seg(C,D)+seg(D,A);
+  b+=ticks(A,B,1)+ticks(C,D,1);
+  b+=angArc(A,B,D,COL.amber,26,a+'°')+angArc(C,B,D,COL.pink,26,'?');
+  b+=dotP(A)+dotP(B)+dotP(C)+dotP(D);
+  b+=vLab(A,O,'A')+vLab(B,O,'B')+vLab(C,O,'C')+vLab(D,O,'D');
+  return {svg:CF(340,300,'Трапеция ABCD с основаниями AD и BC, вписанная в окружность',b),
+    chk:[chkCirc(A,O,R),chkCirc(B,O,R),chkCirc(C,O,R),chkCirc(D,O,R),chkAng(A,B,D,a),chkAng(C,B,D,180-a),
+         chkPar([B,C],[A,D]),chkRatio([A,B],[C,D],1)]};
+}
+/* 10. Равносторонний в окружности (описанная): mode 'R' — радиус к вершине; 'dist' — перпендикуляр к стороне */
+function figEqCircum(mode,valTxt){
+  const O=CTR,R=RR;
+  const A=pol(O,R,210),B=pol(O,R,330),C=pol(O,R,90);
+  const M={x:(A.x+B.x)/2,y:(A.y+B.y)/2};
+  let b=circleEl(O,R)+seg(A,B)+seg(B,C)+seg(C,A);
+  b+=ticks(A,B,1)+ticks(B,C,1)+ticks(C,A,1);
+  if(mode==='R'){ b+=seg(O,B,COL.blue,2.6)+midLab(O,B,valTxt,15,COL.blue); }
+  else { b+=seg(O,M,COL.teal,2.6)+rightSq(M,O,B)+midLab(O,M,valTxt,-17,COL.teal); }
+  b+=midLab(A,B,'?',-16,COL.pink);
+  b+=dotP(O)+lab(O.x+13,O.y-6,'O')+dotP(A)+dotP(B)+dotP(C);
+  b+=vLab(A,O,'A')+vLab(B,O,'B')+vLab(C,O,'C');
+  const chk=[chkCirc(A,O,R),chkCirc(B,O,R),chkCirc(C,O,R),chkRatio([A,B],[B,C],1),chkRatio([B,C],[C,A],1)];
+  if(mode==='dist') chk.push(chkRatio([O,M],[O,B],0.5),chkPerp(M,O,B));
+  return {svg:CF(340,300,'Равносторонний треугольник, вписанный в окружность с центром O',b),chk};
+}
+/* 11. Равносторонний с ВПИСАННОЙ окружностью: mode 'a2r' (дана сторона, ищем r), 'r2h', 'r2a' */
+function figEqIn(mode,valTxt){
+  const O=CTR,Rc=126,r=63;
+  const A=pol(O,Rc,210),B=pol(O,Rc,330),C=pol(O,Rc,90);
+  const M={x:(A.x+B.x)/2,y:(A.y+B.y)/2};
+  let b=seg(A,B)+seg(B,C)+seg(C,A)+circleEl(O,r);
+  b+=ticks(A,B,1)+ticks(B,C,1)+ticks(C,A,1);
+  if(mode==='a2r'){ b+=seg(O,M,COL.teal,2.6)+rightSq(M,O,B)+midLab(O,M,'?',-17,COL.pink)+midLab(A,B,valTxt,-16,COL.blue); }
+  if(mode==='r2h'){ b+=seg(O,M,COL.teal,2.6)+rightSq(M,O,B)+midLab(O,M,valTxt,-17,COL.teal)+seg(C,M,COL.violet,2.2,'7 5')+midLab(C,M,'?',20,COL.pink); }
+  if(mode==='r2a'){ b+=seg(O,M,COL.teal,2.6)+rightSq(M,O,B)+midLab(O,M,valTxt,-17,COL.teal)+midLab(A,B,'?',-16,COL.pink); }
+  b+=dotP(O)+lab(O.x+13,O.y-6,'O')+dotP(A)+dotP(B)+dotP(C);
+  b+=vLab(A,O,'A')+vLab(B,O,'B')+vLab(C,O,'C');
+  const chk=[chkRatio([A,B],[B,C],1),chkTanl(A,B,O,r),chkTanl(B,C,O,r),chkTanl(C,A,O,r),chkRatio([C,M],[O,M],3)];
+  return {svg:CF(340,300,'Равносторонний треугольник с вписанной окружностью',b),chk};
+}
+/* 12. Квадрат, вписанный в окружность (описанная около квадрата) */
+function figSqCircum(valTxt){
+  const O=CTR,R=RR;
+  const P1=pol(O,R,45),P2=pol(O,R,135),P3=pol(O,R,225),P4=pol(O,R,315);
+  let b=circleEl(O,R)+seg(P1,P2)+seg(P2,P3)+seg(P3,P4)+seg(P4,P1);
+  b+=seg(O,P1,COL.blue,2.6)+midLab(O,P1,valTxt,15,COL.blue);
+  b+=midLab(P3,P4,'?',-16,COL.pink);
+  b+=dotP(O)+lab(O.x-4,O.y-9,'O');
+  return {svg:CF(340,300,'Квадрат, вписанный в окружность с центром O',b),
+    chk:[chkCirc(P1,O,R),chkCirc(P2,O,R),chkCirc(P3,O,R),chkCirc(P4,O,R),chkRatio([P1,P2],[P2,P3],1)]};
+}
+/* 13. Окружность, вписанная в квадрат: mode 'S' (площадь квадрата), 'd' (диагональ), 'r' (дана сторона, ищем r) */
+function figSqIn(mode,valTxt){
+  const c=CTR,r=104;
+  const A={x:c.x-r,y:c.y-r},B={x:c.x+r,y:c.y-r},C2={x:c.x+r,y:c.y+r},D={x:c.x-r,y:c.y+r};
+  const M={x:c.x+r,y:c.y};
+  let b=seg(A,B)+seg(B,C2)+seg(C2,D)+seg(D,A)+circleEl(c,r);
+  if(mode==='r'){ b+=seg(c,M,COL.teal,2.6)+rightSq(M,c,B)+midLab(c,M,'?',-15,COL.pink)+midLab(D,C2,valTxt,-16,COL.blue); }
+  else { b+=seg(c,M,COL.blue,2.6)+rightSq(M,c,B)+midLab(c,M,valTxt,-15,COL.blue); }
+  if(mode==='d') b+=seg(D,B,COL.violet,2.2)+midLab(D,B,'?',16,COL.pink);
+  b+=dotP(c)+lab(c.x-5,c.y+20,'O');
+  return {svg:CF(340,300,'Окружность, вписанная в квадрат',b),
+    chk:[chkTanl(A,B,c,r),chkTanl(B,C2,c,r),chkTanl(C2,D,c,r),chkTanl(D,A,c,r)]};
+}
+/* 14. Квадрат ABCD, O — середина CD, окружность через A */
+function figSqMidO(valTxt){
+  const s=100;
+  const A={x:120,y:64},B={x:220,y:64},C2={x:220,y:164},D={x:120,y:164};
+  const O={x:170,y:164}, R=Math.hypot(50,100);
+  let b=circleEl(O,R)+seg(A,B)+seg(B,C2)+seg(C2,D)+seg(D,A);
+  b+=seg(O,A,COL.blue,2.4)+midLab(O,A,valTxt,-15,COL.blue);
+  b+=dotP(O)+lab(O.x+4,O.y+20,'O')+dotP(A)+dotP(B)+dotP(C2)+dotP(D);
+  b+=lab(A.x-13,A.y+2,'A')+lab(B.x+13,B.y+2,'B')+lab(C2.x+14,C2.y+14,'C')+lab(D.x-14,D.y+14,'D');
+  return {svg:CF(340,300,'Квадрат ABCD, точка O — середина CD, окружность с центром O проходит через A',b),
+    chk:[chkCirc(A,O,R),chkRatio([A,B],[B,C2],1),chkPerp(A,B,D),chkRatio([D,O],[D,C2],0.5)]};
+}
+/* 15. Прямоугольник с диагональю и описанной окружностью; sinv=0.6|0.8 */
+function figRectDiag(sinv){
+  const O=CTR,R=110;
+  const w=2*R*Math.sqrt(1-sinv*sinv), h=2*R*sinv;
+  const A={x:O.x-w/2,y:O.y+h/2},B={x:O.x+w/2,y:O.y+h/2},C2={x:O.x+w/2,y:O.y-h/2},D={x:O.x-w/2,y:O.y-h/2};
+  let b=circleEl(O,R)+seg(A,B)+seg(B,C2)+seg(C2,D)+seg(D,A)+seg(A,C2,COL.blue,2.4);
+  b+=angArc(A,B,C2,COL.amber,34,'α');
+  b+=dotP(A)+dotP(B)+dotP(C2)+dotP(D);
+  b+=lab(A.x-13,A.y+16,'A')+lab(B.x+13,B.y+16,'B')+lab(C2.x+13,C2.y-6,'C')+lab(D.x-13,D.y-6,'D');
+  return {svg:CF(340,300,'Прямоугольник с диагональю AC, вписанный в окружность',b),
+    chk:[chkCirc(A,O,R),chkCirc(B,O,R),chkCirc(C2,O,R),chkCirc(D,O,R),
+         {t:'sin',V:A,P:B,Q:C2,want:sinv}]};
+}
+/* 16. Описанный четырёхугольник по касательным отрезкам t=[tA,tB,tC,tD] */
+function figTanQuad(tt,labels,askIdx=3){
+  let lo=0.05,hi=1000;
+  for(let i=0;i<70;i++){const m=(lo+hi)/2;
+    const f=tt.reduce((s,t)=>s+2*Math.atan(t/m),0)-2*Math.PI;
+    if(f>0)lo=m;else hi=m;}
+  const rho=(lo+hi)/2;
+  const half=tt.map(t=>degf(Math.atan(t/rho)));
+  const phi=[215]; for(let k=1;k<4;k++) phi.push(phi[k-1]+half[k-1]+half[k]);
+  const V=phi.map((p,k)=>pol({x:0,y:0},Math.hypot(rho,tt[k]),-p)); // экранное y вниз: минус
+  const fit=makeFit(V,[{c:{x:0,y:0},R:rho}],360,310,42);
+  const P=V.map(fit.T), c=fit.T({x:0,y:0}), r=rho*fit.k;
+  const nm=['A','B','C','D'];
+  let b=circleEl(c,r);
+  let chk=[];
+  for(let k=0;k<4;k++){
+    const Q=P[(k+1)%4];
+    b+=seg(P[k],Q);
+    b+=midLab(P[k],Q,(k===askIdx)?'?':fmtNum(labels[k]),-16,(k===askIdx)?COL.pink:COL.blue);
+    chk.push(chkTanl(P[k],Q,c,r));
+  }
+  for(let k=0;k<3;k++) chk.push(chkRatio([P[k],P[(k+1)%4]],[P[3],P[0]],labels[k]/labels[3]));
+  b+=dotP(c,COL.ink,3.4);
+  P.forEach((p,k)=>{b+=dotP(p)+vLab(p,c,nm[k]);});
+  return {svg:CF(360,310,'Четырёхугольник ABCD, описанный около окружности',b),chk};
+}
+/* 17. Описанная трапеция ABCD (AD, BC — основания) по трём сторонам ab,bc,cd — бисекция по ρ */
+function figTanTrapSides(ab,bc,cd){
+  const ad=ab+cd-bc;
+  let lo=0.01,hi=Math.min(ab,cd)/2-1e-6;
+  for(let i=0;i<80;i++){const m=(lo+hi)/2;
+    const g=Math.sqrt(ab*ab-4*m*m)+Math.sqrt(cd*cd-4*m*m)-(ad-bc);
+    if(g>0)lo=m;else hi=m;}
+  const rho=(lo+hi)/2,h=2*rho;
+  const dx1=Math.sqrt(ab*ab-h*h);
+  const A={x:0,y:0},D={x:ad,y:0},B={x:dx1,y:-h},C2={x:dx1+bc,y:-h};
+  const alpha=Math.atan2(h,dx1), x0=rho/Math.tan(alpha/2);
+  const O={x:x0,y:-rho};
+  return tanTrapDraw(A,B,C2,D,O,rho,{ab,bc,cd},'ad');
+}
+/* 17b. Описанная трапеция от радиуса (для «найдите высоту»): iso или скошенная */
+function figTanTrapR(r,iso){
+  const l1=iso?2.5*r:2.9*r, l2=iso?2.5*r:2.2*r;
+  const h=2*r, dx1=Math.sqrt(l1*l1-h*h), dx2=Math.sqrt(l2*l2-h*h);
+  const bc=(l1+l2-dx1-dx2)/2, ad=bc+dx1+dx2;
+  const A={x:0,y:0},D={x:ad,y:0},B={x:dx1,y:-h},C2={x:dx1+bc,y:-h};
+  const alpha=Math.atan2(h,dx1), x0=r/Math.tan(alpha/2);
+  const O={x:x0,y:-r};
+  return tanTrapDraw(A,B,C2,D,O,r,null,'h');
+}
+function tanTrapDraw(A,B,C2,D,O,rho,sideVals,ask){
+  const fit=makeFit([A,B,C2,D],[{c:O,R:rho}],380,300,40);
+  const [a,b2,c2,d2]=[A,B,C2,D].map(fit.T), o=fit.T(O), r=rho*fit.k;
+  let b=circleEl(o,r)+seg(a,b2)+seg(b2,c2)+seg(c2,d2)+seg(d2,a);
+  if(sideVals){
+    b+=midLab(a,b2,fmtNum(sideVals.ab),-16,COL.blue)+midLab(b2,c2,fmtNum(sideVals.bc),-15,COL.blue)+midLab(c2,d2,fmtNum(sideVals.cd),-16,COL.blue);
+    b+=midLab(d2,a,'?',-16,COL.pink);
+  } else {
+    const M={x:o.x,y:a.y};
+    b+=seg(o,M,COL.teal,2.6)+rightSq(M,o,{x:M.x+30,y:M.y})+midLab(o,M,'r',-14,COL.teal);
+    const Ht={x:(b2.x+c2.x)/2,y:b2.y}, Hb={x:(b2.x+c2.x)/2,y:a.y};
+    b+=seg(Ht,Hb,COL.violet,2.2,'7 5')+midLab(Ht,Hb,'?',16,COL.pink);
+  }
+  b+=dotP(o,COL.ink,3.4)+lab(o.x+13,o.y-6,'O');
+  b+=dotP(a)+dotP(b2)+dotP(c2)+dotP(d2);
+  b+=lab(a.x-13,a.y+17,'A')+lab(b2.x-12,b2.y-8,'B')+lab(c2.x+12,c2.y-8,'C')+lab(d2.x+13,d2.y+17,'D');
+  const chk=[chkTanl(a,b2,o,r),chkTanl(b2,c2,o,r),chkTanl(c2,d2,o,r),chkTanl(d2,a,o,r),chkPar([b2,c2],[a,d2])];
+  if(sideVals) chk.push(chkRatio([a,b2],[b2,c2],sideVals.ab/sideVals.bc),chkRatio([c2,d2],[b2,c2],sideVals.cd/sideVals.bc));
+  return {svg:CF(380,300,'Трапеция ABCD с основаниями AD и BC, описанная около окружности',b),chk};
+}
+/* 18. Треугольник с вписанной окружностью, честные периметр Per и радиус r; g — данная сторона (основание) */
+function figSprTri(Per,r,g){
+  const s=Per/2, S=r*s;
+  const uv=S*S/(s*(s-g)); // u=s−b, v=s−c: u+v=g, u·v=uv
+  const disc=g*g/4-uv; if(disc<=0) return null;
+  const u=g/2+Math.sqrt(disc), v=g-u;
+  const bAC=s-u, cBC=s-v;                 // AC и BC
+  const A={x:0,y:0},B={x:g,y:0};
+  const x=(g*g+bAC*bAC-cBC*cBC)/(2*g), y2=bAC*bAC-x*x;
+  if(y2<=0) return null;
+  const C2={x:x,y:-Math.sqrt(y2)};
+  const I={x:(cBC*A.x+bAC*B.x+g*C2.x)/Per, y:(cBC*A.y+bAC*B.y+g*C2.y)/Per};
+  const fit=makeFit([A,B,C2],[{c:I,R:r}],360,300,40);
+  const [a2,b2,c3]=[A,B,C2].map(fit.T), o=fit.T(I), rr=r*fit.k;
+  const M={x:o.x,y:a2.y};
+  let bd=circleEl(o,rr)+seg(a2,b2)+seg(b2,c3)+seg(c3,a2);
+  bd+=seg(o,M,COL.teal,2.6)+rightSq(M,o,{x:M.x+30,y:M.y})+midLab(o,M,'r',-14,COL.teal);
+  bd+=midLab(a2,b2,fmtNum(g),15,COL.blue);
+  bd+=dotP(o,COL.ink,3.4)+lab(o.x+13,o.y-6,'O')+dotP(a2)+dotP(b2)+dotP(c3);
+  bd+=lab(a2.x-13,a2.y+17,'A')+lab(b2.x+13,b2.y+17,'B')+lab(c3.x+2,c3.y-12,'C');
+  return {svg:CF(360,300,'Треугольник с вписанной окружностью',bd),
+    chk:[chkTanl(a2,b2,o,rr),chkTanl(b2,c3,o,rr),chkTanl(c3,a2,o,rr),
+         chkRatio([a2,b2],[b2,c3],g/cBC),
+         {t:'perim',pts:[a2,b2,c3],base:[a2,b2],want:Per/g}]};
+}
+/* 19. Ромб ABCD с вписанной окружностью; m,n — полудиагонали (m — вдоль AC) */
+function figRhomb(m,n,dTxt,tgTop,tgBot){
+  const k=Math.min(148/m,92/n), c=CTR;
+  const A={x:c.x-m*k,y:c.y},C2={x:c.x+m*k,y:c.y},B={x:c.x,y:c.y-n*k},D={x:c.x,y:c.y+n*k};
+  const r=(m*n/Math.hypot(m,n))*k;
+  let b=seg(A,B)+seg(B,C2)+seg(C2,D)+seg(D,A)+seg(A,C2,COL.blue,2.2)+circleEl(c,r);
+  b+=angArc(C2,B,A,COL.amber,42,null);
+  b+=midLab(A,C2,dTxt,14,COL.blue);
+  // радиус к точке касания на BC
+  const t=footToLine(c,B,C2);
+  b+=seg(c,t,COL.teal,2.4)+rightSq(t,c,B)+midLab(c,t,'?',-13,COL.pink);
+  b+=dotP(c,COL.ink,3.4)+dotP(A)+dotP(B)+dotP(C2)+dotP(D);
+  b+=lab(A.x-14,A.y+5,'A')+lab(B.x,B.y-9,'B')+lab(C2.x+14,C2.y+5,'C')+lab(D.x,D.y+20,'D');
+  return {svg:CF(340,300,'Ромб ABCD с вписанной окружностью и диагональю AC',b),
+    chk:[chkTanl(A,B,c,r),chkTanl(B,C2,c,r),chkTanl(C2,D,c,r),chkTanl(D,A,c,r),
+         {t:'tan',V:C2,P:B,Q:A,want:n/m},chkRatio([A,B],[B,C2],1)]};
+}
+function footToLine(P,A,B){
+  const dx=B.x-A.x,dy=B.y-A.y,L2=dx*dx+dy*dy;
+  const t=((P.x-A.x)*dx+(P.y-A.y)*dy)/L2;
+  return {x:A.x+t*dx,y:A.y+t*dy};
+}
+/* 20. Касательная из внешней точки B к окружности с центром A (C на отрезке AB) */
+function figTanExt(ac,cb){
+  const d=ac+cb, W=390,H=320;
+  const k=Math.min((W-56)/(ac+d),(H/2-22)/ac);
+  const Rp=ac*k, dp=d*k;
+  const A={x:26+Rp,y:H/2+18},B={x:A.x+dp,y:A.y},C2={x:A.x+Rp,y:A.y};
+  const th=degf(Math.acos(Rp/dp));
+  const T=pol(A,Rp,th);
+  let b=circleEl(A,Rp)+seg(A,B)+seg(B,T,COL.blue,2.4)+seg(A,T,COL.ink,2,'7 5');
+  b+=rightSq(T,A,B);
+  b+=midLab(A,C2,fmtNum(ac),14)+midLab(C2,B,fmtNum(cb),14)+midLab(B,T,'?',-15,COL.pink);
+  b+=dotP(A)+dotP(B)+dotP(C2)+dotP(T);
+  b+=lab(A.x-6,A.y+22,'A')+lab(B.x+12,B.y+6,'B')+lab(C2.x+6,C2.y+22,'C')+lab(T.x+4,T.y-12,'T');
+  return {svg:CF(W,H,'Окружность с центром A, точка C на ней, касательная из точки B',b),
+    chk:[chkCirc(T,A,Rp),chkCirc(C2,A,Rp),chkPerp(T,A,B),chkRatio([A,C2],[C2,B],ac/cb),chkRatio([B,T],[A,C2],Math.sqrt(d*d-ac*ac)/ac)]};
+}
+/* 21. Две касательные из точки C под углом u; ищем ∠ABO=u/2 */
+function figTwoTan(u){
+  const W=390,H=320, beta=u/2;
+  const O={x:132,y:H/2}, Rp=Math.min(100,(W-40-O.x)*Math.sin(rad(beta)));
+  const dp=Rp/Math.sin(rad(beta));
+  const Cp={x:O.x+dp,y:O.y};
+  const A=pol(O,Rp,90-beta),B=pol(O,Rp,beta-90);
+  let b=circleEl(O,Rp)+seg(O,A)+seg(O,B)+seg(A,B)+seg(Cp,A,COL.blue,2.3)+seg(Cp,B,COL.blue,2.3);
+  b+=ticks(O,A,1)+ticks(O,B,1);
+  b+=rightSq(A,O,Cp)+rightSq(B,O,Cp);
+  b+=angArc(Cp,A,B,COL.amber,30,u+'°')+angArc(B,A,O,COL.pink,34,'?');
+  b+=dotP(O)+lab(O.x-13,O.y+5,'O')+dotP(A)+dotP(B)+dotP(Cp)+lab(Cp.x+13,Cp.y+5,'C');
+  b+=vLab(A,O,'A')+vLab(B,O,'B');
+  return {svg:CF(W,H,'Касательные CA и CB к окружности с центром O',b),
+    chk:[chkCirc(A,O,Rp),chkCirc(B,O,Rp),chkPerp(A,O,Cp),chkPerp(B,O,Cp),chkAng(Cp,A,B,u),chkAng(B,A,O,u/2)]};
+}
+/* 22. Хорда и расстояние от центра */
+function figChordDist(Rv,dv){
+  const O=CTR,Rp=RR, k=Rp/Rv;
+  const dp=dv*k, half=Math.sqrt(Rp*Rp-dp*dp);
+  const M={x:O.x,y:O.y+dp}, P={x:O.x-half,y:M.y},Q={x:O.x+half,y:M.y};
+  const E=pol(O,Rp,155);
+  let b=circleEl(O,Rp)+seg(P,Q,COL.blue,2.5)+seg(O,M,COL.teal,2.5)+seg(O,E,COL.ink,2,'7 5');
+  b+=rightSq(M,O,Q);
+  b+=midLab(O,M,fmtNum(dv),-14,COL.teal)+midLab(O,E,'R = '+fmtNum(Rv),-16)+midLab(P,Q,'?',16,COL.pink);
+  b+=dotP(O)+lab(O.x+4,O.y-9,'O')+dotP(M,COL.teal,3.2)+dotP(P)+dotP(Q);
+  return {svg:CF(340,300,'Хорда окружности и перпендикуляр из центра к ней',b),
+    chk:[chkCirc(P,O,Rp),chkCirc(Q,O,Rp),chkPerp(M,O,Q),chkRatio([O,M],[O,E],dv/Rv),chkRatio([P,Q],[O,E],2*Math.sqrt(Rv*Rv-dv*dv)/Rv)]};
+}
+/* 23. Касательная и секущая из точки A: AB (ближняя), AC (дальняя), касание в K */
+function figSecTan(ab,ac){
+  const W=390,H=310, O={x:246,y:150}, Rp=94;
+  const m=0.45*Rp, half=Math.sqrt(Rp*Rp-m*m);
+  const s=2*half/(ac-ab);
+  const y=O.y+m;
+  const A={x:O.x-half-ab*s,y:y},B={x:O.x-half,y:y},C2={x:O.x+half,y:y};
+  const d=dist(A,O), aoa=mathAng(O,A);
+  const K=pol(O,Rp,aoa-degf(Math.acos(Rp/d))); // верхняя точка касания
+  let b=circleEl(O,Rp)+seg(A,C2)+seg(A,K,COL.blue,2.4)+seg(O,K,COL.ink,2,'7 5');
+  b+=rightSq(K,O,A);
+  b+=dotP(O,COL.ink,3.4)+lab(O.x+6,O.y+18,'O')+dotP(A)+dotP(B)+dotP(C2)+dotP(K);
+  b+=lab(A.x-12,A.y+16,'A')+lab(B.x-2,B.y+20,'B')+lab(C2.x+12,C2.y+14,'C')+lab(K.x-4,K.y-12,'K');
+  b+=midLab(A,K,'?',-15,COL.pink);
+  return {svg:CF(W,H,'Касательная AK и секущая ABC из точки A',b),
+    chk:[chkCirc(B,O,Rp),chkCirc(C2,O,Rp),chkCirc(K,O,Rp),chkPerp(K,O,A),
+         chkRatio([A,B],[A,C2],ab/ac),chkRatio([A,K],[A,B],Math.sqrt(ab*ac)/ab)]};
+}
+/* 24. Пересекающиеся хорды AC и BD в точке P */
+function figChordsX(ap,pc,bp,pd,ask='ap'){
+  const O=CTR,Rp=RR;
+  let s=Math.min(205/(ap+pc),205/(bp+pd)), Pm,cc;
+  for(let i=0;i<40;i++){
+    cc=ap*pc*s*s;
+    const p2=Rp*Rp-cc;
+    if(p2>0){Pm=Math.sqrt(p2);
+      if(Pm>Math.abs(ap-pc)*s/2+2 && Pm>Math.abs(bp-pd)*s/2+2) break;}
+    s*=0.9;
+  }
+  const psi=205, Pc=pol(O,Pm,psi);
+  const g1=degf(Math.acos((ap-pc)*s/2/Pm)), g2=degf(Math.acos((bp-pd)*s/2/Pm));
+  const u1=psi+g1, u2=psi-g2;
+  const dir=a=>({x:Math.cos(rad(a)),y:-Math.sin(rad(a))});
+  const D1=dir(u1),D2=dir(u2);
+  const A={x:Pc.x-ap*s*D1.x,y:Pc.y-ap*s*D1.y},C2={x:Pc.x+pc*s*D1.x,y:Pc.y+pc*s*D1.y};
+  const B={x:Pc.x-bp*s*D2.x,y:Pc.y-bp*s*D2.y},D={x:Pc.x+pd*s*D2.x,y:Pc.y+pd*s*D2.y};
+  const val=(nm,v)=>nm===ask?'?':fmtNum(v);
+  let b=circleEl(O,Rp)+seg(A,C2,COL.blue,2.3)+seg(B,D,COL.teal,2.3);
+  b+=midLab(Pc,A,val('ap',ap),13,ask==='ap'?COL.pink:COL.ink);
+  b+=midLab(Pc,C2,val('pc',pc),13,ask==='pc'?COL.pink:COL.ink);
+  b+=midLab(Pc,B,val('bp',bp),13,ask==='bp'?COL.pink:COL.ink);
+  b+=midLab(Pc,D,val('pd',pd),13,ask==='pd'?COL.pink:COL.ink);
+  b+=dotP(Pc,COL.ink,3.4)+lab(Pc.x+11,Pc.y-7,'P');
+  b+=dotP(A)+dotP(B)+dotP(C2)+dotP(D);
+  b+=vLab(A,O,'A')+vLab(B,O,'B')+vLab(C2,O,'C')+vLab(D,O,'D');
+  return {svg:CF(340,300,'Хорды AC и BD пересекаются в точке P',b),
+    chk:[chkCirc(A,O,Rp),chkCirc(B,O,Rp),chkCirc(C2,O,Rp),chkCirc(D,O,Rp),
+         chkRatio([Pc,A],[Pc,C2],ap/pc),chkRatio([Pc,B],[Pc,D],bp/pd),chkRatio([Pc,A],[Pc,B],ap/bp)]};
+}
+/* 25. Касательная в точке B и хорда BA; дуга AB = arc */
+function figTanChord(arc){
+  const O=CTR,Rp=106;
+  const B=pol(O,Rp,270), A=pol(O,Rp,270+arc);
+  const Cp={x:B.x+126,y:B.y}, Lft={x:B.x-118,y:B.y};
+  let b=circleEl(O,Rp)+seg(Lft,Cp,COL.ink,2.3)+seg(B,A,COL.blue,2.4);
+  b+=arcPolyline(O,Rp,270,arc,COL.violet,5);
+  const mid=pol(O,Rp+16,270+arc/2);
+  b+=lab(mid.x,mid.y+5,arc+'°',15,'middle',COL.violet);
+  b+=angArc(B,Cp,A,COL.amber,30,'?');
+  b+=dotP(O,COL.ink,3.4)+lab(O.x+4,O.y-9,'O')+dotP(A)+dotP(B)+dotP(Cp,COL.ink,3.2);
+  b+=vLab(A,O,'A')+lab(B.x-4,B.y+21,'B')+lab(Cp.x+8,Cp.y+20,'C');
+  return {svg:CF(340,310,'Касательная BC к окружности в точке B и хорда BA',b),
+    chk:[chkCirc(A,O,Rp),chkCirc(B,O,Rp),chkTanl(Lft,Cp,O,Rp),chkAng(B,Cp,A,arc/2)]};
+}
+/* 26. Прямоугольный треугольник: гипотенуза c, острый угол 45° */
+function figRtHyp45(cTxt){
+  const C2={x:104,y:236},A={x:104,y:82},B={x:258,y:236};
+  let b=seg(C2,A)+seg(C2,B)+seg(A,B,COL.blue,2.4);
+  b+=rightSq(C2,A,B)+angArc(B,A,C2,COL.amber,40,'45°');
+  b+=midLab(A,B,cTxt,17,COL.blue);
+  b+=dotP(A)+dotP(B)+dotP(C2)+lab(A.x-2,A.y-11,'A')+lab(B.x+14,B.y+6,'B')+lab(C2.x-13,C2.y+14,'C');
+  return {svg:CF(340,300,'Прямоугольный треугольник с гипотенузой AB и острым углом 45°',b),
+    chk:[chkPerp(C2,A,B),chkAng(B,A,C2,45),chkRatio([C2,A],[C2,B],1)]};
+}
+/* 27. Треугольник вписан, известен ∠C и сторона AB; ищем R */
+function figSinR(Cdeg,abTxt){
+  const O=CTR,R=RR;
+  const A=pol(O,R,270-Cdeg),B=pol(O,R,270+Cdeg),C2=pol(O,R,90);
+  let b=circleEl(O,R)+seg(A,B)+seg(B,C2)+seg(C2,A)+seg(O,B,COL.blue,2.2,'7 5');
+  b+=angArc(C2,A,B,COL.amber,30,Cdeg+'°');
+  b+=midLab(A,B,abTxt,16,COL.ink)+midLab(O,B,'R — ?',-14,COL.pink);
+  b+=dotP(O)+lab(O.x-4,O.y-9,'O')+dotP(A)+dotP(B)+dotP(C2);
+  b+=vLab(A,O,'A')+vLab(B,O,'B')+vLab(C2,O,'C');
+  return {svg:CF(340,300,'Треугольник ABC, вписанный в окружность радиуса R',b),
+    chk:[chkCirc(A,O,R),chkCirc(B,O,R),chkCirc(C2,O,R),chkAng(C2,A,B,Cdeg)]};
+}
+
+
+/* ================= Реестр подтипов ================= */
+const TOPICS={ug:'Центральные и вписанные углы',opis:'Описанная окружность',vpis:'Вписанная окружность',kas:'Касательные, хорды, секущие'};
+const rd3=k=>k===1?'√3':k+'√3', rd2=k=>k===1?'√2':k+'√2';
+
+const SUBS={
+/* ---------- УГЛЫ ---------- */
+insCen:{topic:'ug',name:'Вписанный угол по центральному',ref:'insc',
+  refWhy:'∠AOB — центральный, ∠C — вписанный, дуга AB у них общая: работает первая строка карточки.',
+  law:'Вписанный угол равен половине центрального угла, опирающегося на ту же дугу.',
+  calc:p=>p.rev?p.c:p.c/2, gen:()=>({c:2*ri(16,72),rev:Math.random()<0.4}), proto:{c:48},
+  text:p=>p.rev
+    ?`Треугольник ABC вписан в окружность с центром в точке O. Угол C треугольника ABC равен ${p.c/2}°. Найдите центральный угол AOB. Ответ дайте в градусах.`
+    :`Треугольник ABC вписан в окружность с центром в точке O. Найдите градусную меру угла C треугольника ABC, если угол AOB равен ${p.c}°. Ответ дайте в градусах.`,
+  fig:p=>figInsCentral(p.c,{A:'A',B:'B',C:'C'},!p.rev),
+  sol:p=>p.rev
+    ?[`∠C — вписанный, он опирается на дугу AB: дуга AB = 2·${p.c/2}° = ${p.c}°.`,
+      `∠AOB — центральный над той же дугой, он равен ей: ∠AOB = ${p.c}°.`]
+    :[`∠AOB — центральный, он равен своей дуге: дуга AB = ${p.c}°.`,
+      `∠C — вписанный и опирается на ту же дугу AB.`,
+      `Вписанный угол вдвое меньше центрального: ∠C = ${p.c}° : 2 = ${p.c/2}°.`],
+  diag:p=>p.rev
+    ?[{v:p.c/2,m:'Это данный вписанный угол ∠C. Центральный вдвое БОЛЬШЕ: ∠AOB = 2·∠C.'},
+      {v:p.c/4,m:'Вы поделили пополам — а центральный угол вдвое больше вписанного.'},
+      {v:180-p.c/2,m:'«180° минус вписанный» здесь ни при чём: ∠AOB = 2·∠C.'}]
+    :[{v:p.c,m:'Это величина самого центрального угла ∠AOB. Вписанный ∠C опирается на ту же дугу, но он вдвое меньше.'},
+      {v:2*p.c,m:'Вы удвоили — а вписанный угол вдвое МЕНЬШЕ центрального.'},
+      {v:180-p.c,m:'Похоже на «180° минус центральный». Здесь связь другая: вписанный равен половине центрального.'},
+      {v:(180-p.c)/2,m:'Это угол при основании равнобедренного треугольника AOB. А ∠C — вписанный угол: он равен половине ∠AOB.'}]},
+
+twoDiam:{topic:'ug',name:'Два диаметра: ∠OAB и ∠OCD',ref:'radiso',
+  refWhy:'OA, OB, OC, OD — радиусы: треугольники AOB и COD равнобедренные, а углы AOB и COD — вертикальные.',
+  law:'Треугольники на двух радиусах равнобедренные, вертикальные центральные углы равны — поэтому ∠OAB = ∠OCD.',
+  calc:p=>p.x, gen:()=>({x:ri(22,76),given:pick(['A','C'])}), proto:{x:70,given:'A'},
+  text:p=>p.given==='A'
+    ?`В окружности с центром в точке O проведены диаметры AD и BC, угол OAB равен ${p.x}°. Найдите величину угла OCD. Ответ дайте в градусах.`
+    :`В окружности с центром в точке O проведены диаметры AD и BC, угол OCD равен ${p.x}°. Найдите величину угла OAB. Ответ дайте в градусах.`,
+  fig:p=>figTwoDiam(p.x,p.given),
+  sol:p=>{const g=p.given==='A'?['A','B','C','D']:['C','D','A','B'];
+    return [`OA и OB — радиусы, поэтому треугольник ${g[0]}O${g[1]} равнобедренный: ∠O${g[1]}${g[0]} = ∠O${g[0]}${g[1]} = ${p.x}°.`,
+    `Тогда ∠${g[0]}O${g[1]} = 180° − 2·${p.x}° = ${180-2*p.x}°.`,
+    `Углы ${g[0]}O${g[1]} и ${g[2]}O${g[3]} — вертикальные: ∠${g[2]}O${g[3]} = ${180-2*p.x}°.`,
+    `Треугольник ${g[2]}O${g[3]} тоже равнобедренный (O${g[2]} = O${g[3]} = R): искомый угол = (180° − ${180-2*p.x}°) : 2 = ${p.x}°.`];},
+  diag:p=>[{v:180-2*p.x,m:'Это центральный угол (∠AOB и вертикальный ему ∠COD). А спрашивают угол при основании равнобедренного треугольника.'},
+    {v:90-p.x,m:'Вычитание из 90° здесь не работает. Цепочка: равнобедренный треугольник → вертикальные углы → снова равнобедренный. Искомый угол равен данному.'},
+    {v:2*p.x,m:'Проследите цепочку: ∠AOB = 180° − 2x, ∠COD = ∠AOB, искомый = (180° − ∠COD)/2 = x.'}]},
+
+diamMON:{topic:'ug',name:'Центральный угол в равнобедренном △MON',ref:'radiso',
+  refWhy:'OM и ON — радиусы: треугольник MON равнобедренный, и данный угол при основании сразу даёт центральный.',
+  law:'Два радиуса образуют равнобедренный треугольник: углы при основании-хорде равны.',
+  calc:p=>180-2*p.x, gen:()=>({x:ri(12,42)}), proto:{x:18},
+  text:p=>`Найдите градусную меру центрального ∠MON, если известно, NP — диаметр, а градусная мера ∠MNP равна ${p.x}°. Ответ дайте в градусах.`,
+  fig:p=>figDiamMON(p.x),
+  sol:p=>[`OM и ON — радиусы, поэтому треугольник MON равнобедренный.`,
+    `∠OMN = ∠MNO = ${p.x}° (углы при основании MN).`,
+    `∠MON = 180° − 2·${p.x}° = ${180-2*p.x}°.`],
+  diag:p=>[{v:2*p.x,m:'Так вы нашли дугу MP (удвоенный вписанный угол). А ∠MON — центральный угол над дугой MN.'},
+    {v:180-p.x,m:'В равнобедренном треугольнике MON при основании ДВА равных угла по '+p.x+'°: вычесть нужно оба.'},
+    {v:90-p.x,m:'Вычитание из 90° здесь ни при чём: сумма углов треугольника MON равна 180°.'}]},
+
+diamsPair:{topic:'ug',name:'Диаметры AC и BD: ∠AOD ↔ ∠ACB',ref:'insc',
+  refWhy:'∠ACB — вписанный над дугой AB, ∠AOB — центральный над ней же, а ∠AOD — смежный с ∠AOB.',
+  law:'Вписанный угол — половина центрального; смежные центральные углы дополняют друг друга до 180°.',
+  calc:p=>p.given==='O'?(180-p.x)/2:180-2*p.x,
+  gen:()=>{const g=pick(['O','C']); return g==='O'?{x:2*ri(35,80),given:g}:{x:ri(20,80),given:g};},
+  proto:{x:110,given:'O'},
+  text:p=>p.given==='O'
+    ?`В окружности с центром O отрезки AC и BD — диаметры. Величина центрального угла AOD равна ${p.x}°. Найдите величину вписанного угла ACB. Ответ дайте в градусах.`
+    :`В окружности с центром O отрезки AC и BD — диаметры. Угол ACB равен ${p.x}°. Найдите угол AOD. Ответ дайте в градусах.`,
+  fig:p=>figDiamsPair(p.given==='O'?p.x:180-2*p.x,p.given),
+  sol:p=>p.given==='O'
+    ?[`∠AOB и ∠AOD — смежные (B, O, D лежат на одном диаметре): ∠AOB = 180° − ${p.x}° = ${180-p.x}°.`,
+      `∠ACB — вписанный, он опирается на ту же дугу AB, что и центральный ∠AOB.`,
+      `∠ACB = ${180-p.x}° : 2 = ${(180-p.x)/2}°.`]
+    :[`∠ACB — вписанный над дугой AB, значит дуга AB = 2·${p.x}° = ${2*p.x}°, и центральный ∠AOB = ${2*p.x}°.`,
+      `∠AOD смежный с ∠AOB: ∠AOD = 180° − ${2*p.x}° = ${180-2*p.x}°.`],
+  diag:p=>p.given==='O'
+    ?[{v:p.x/2,m:'Вы поделили пополам сам ∠AOD. Но ∠ACB опирается на дугу AB — ей соответствует СМЕЖНЫЙ центральный угол ∠AOB = 180° − ∠AOD.'},
+      {v:180-p.x,m:'Это центральный угол ∠AOB. Вписанный ∠ACB вдвое меньше.'},
+      {v:90-p.x>0?90-p.x:NaN,m:'Проверьте порядок действий: сначала смежный угол (180° − ∠AOD), потом половина.'}]
+    :[{v:2*p.x,m:'Это центральный угол ∠AOB. А ∠AOD — СМЕЖНЫЙ с ним: 180° − ∠AOB.'},
+      {v:90-p.x>0?90-p.x:NaN,m:'Смежные углы дополняют друг друга до 180°, а не до 90°.'},
+      {v:p.x,m:'∠AOD не равен вписанному углу: сначала найдите центральный ∠AOB = 2·∠ACB, затем смежный.'}]},
+
+mnDiam:{topic:'ug',name:'Углы на одну дугу через диаметр',ref:'insc',
+  refWhy:'∠ANB опирается на диаметр (90°), а ∠NMB и ∠NAB опираются на одну дугу NB — значит, равны.',
+  law:'Вписанные углы, опирающиеся на одну дугу, равны; угол, опирающийся на диаметр, — прямой.',
+  calc:p=>90-p.x, gen:()=>({x:ri(18,72)}), proto:{x:38},
+  text:p=>`На окружности по разные стороны от диаметра AB взяты точки M и N. Известно, что ∠NBA = ${p.x}°. Найдите угол NMB. Ответ дайте в градусах.`,
+  fig:p=>figMnDiam(p.x),
+  sol:p=>[`∠ANB опирается на диаметр AB, поэтому ∠ANB = 90°.`,
+    `В треугольнике ANB: ∠NAB = 90° − ${p.x}° = ${90-p.x}°.`,
+    `∠NMB и ∠NAB — вписанные углы, опирающиеся на одну дугу NB, значит ∠NMB = ${90-p.x}°.`],
+  diag:p=>[{v:p.x,m:'Это данный ∠NBA. Искомый ∠NMB равен углу NAB — они опираются на одну и ту же дугу NB.'},
+    {v:180-p.x,m:'∠ANB = 90° (опирается на диаметр), поэтому ∠NAB = 90° − '+p.x+'°, а не 180° − '+p.x+'°.'},
+    {v:2*p.x,m:'Удвоение здесь не работает: ∠NMB = ∠NAB = 90° − ∠NBA.'}]},
+
+diamTri:{topic:'ug',name:'Сторона-диаметр: прямоугольный треугольник',ref:'insc',
+  refWhy:'Сторона проходит через центр — значит, это диаметр, и угол напротив неё прямой (вторая строка карточки).',
+  law:'Если сторона треугольника — диаметр описанной окружности, угол напротив неё прямой, а острые углы дополняют друг друга до 90°.',
+  calc:p=>90-p.a, gen:()=>({a:ri(16,74),side:pick(['AC','AB'])}), proto:{a:75,side:'AC'},
+  text:p=>p.side==='AC'
+    ?`Сторона AC треугольника ABC проходит через центр описанной около него окружности. Найдите ∠C, если ∠A = ${p.a}°. Ответ дайте в градусах.`
+    :`Центр окружности, описанной около треугольника ABC, лежит на стороне AB. Найдите угол ABC, если угол BAC равен ${p.a}°. Ответ дайте в градусах.`,
+  fig:p=>p.side==='AC'?figDiamTri(p.a,{L:'A',R:'C',T:'B'}):figDiamTri(p.a,{L:'A',R:'B',T:'C'}),
+  sol:p=>{const T=p.side==='AC'?'B':'C', ask=p.side==='AC'?'C':'B';
+    return [`Сторона ${p.side} проходит через центр окружности — значит, ${p.side} — диаметр.`,
+    `Вписанный угол ${T} опирается на диаметр, поэтому ∠${T} = 90°: треугольник прямоугольный.`,
+    `Острые углы прямоугольного треугольника в сумме дают 90°: ∠${ask} = 90° − ${p.a}° = ${90-p.a}°.`];},
+  diag:p=>[{v:180-p.a,m:'Вы вычли из 180° и забыли, что угол напротив диаметра прямой: два оставшихся угла в сумме дают 90°.'},
+    {v:90,m:'90° — это угол напротив диаметра. А спрашивают другой острый угол.'},
+    {v:p.a,m:'Острые углы прямоугольного треугольника не равны (кроме случая 45°) — они дополняют друг друга до 90°.'}]},
+
+diamPif:{topic:'ug',name:'Гипотенуза-диаметр и Пифагор',ref:'insc',
+  refWhy:'AB — диаметр, поэтому ∠C = 90°: катет находится по теореме Пифагора.',
+  law:'Сторона-диаметр даёт прямой угол напротив; дальше работает теорема Пифагора.',
+  calc:p=>Math.sqrt(4*p.R*p.R-p.bc*p.bc),
+  gen:()=>{const t=pick([[5,12,13],[6,8,10],[8,15,17],[9,12,15],[7,24,25],[20,21,29]]);
+    return {R:t[2]/2,bc:t[1]};},
+  proto:{R:6.5,bc:12},
+  text:p=>`Центр окружности, описанной около треугольника ABC, лежит на стороне AB. Радиус окружности равен ${fmtNum(p.R)}. Найдите AC, если BC = ${p.bc}.`,
+  fig:p=>figDiamPif(p.R,p.bc),
+  sol:p=>{const d=2*p.R,ans=Math.sqrt(d*d-p.bc*p.bc);
+    return [`Центр лежит на AB — значит, AB — диаметр: AB = 2R = ${fmtNum(d)}.`,
+    `Вписанный ∠C опирается на диаметр: ∠C = 90°.`,
+    `По теореме Пифагора: AC = √(AB² − BC²) = √(${fmtNum(d*d)} − ${p.bc*p.bc}) = ${fmtNum(ans)}.`];},
+  diag:p=>{const d=2*p.R,arr=[
+    {v:2*p.R-p.bc,m:'Гипотенуза и катет напрямую не вычитаются — работает теорема Пифагора: AC = √(AB² − BC²).'},
+    {v:d*d-p.bc*p.bc,m:'Вы нашли КВАДРАТ катета — извлеките корень.'},
+    {v:Math.sqrt(p.R*p.R-p.bc*p.bc),m:'Вы взяли радиус вместо диаметра: гипотенуза AB = 2R.'},
+    {v:Math.sqrt(d*d+p.bc*p.bc),m:'Катет меньше гипотенузы: под корнем должна стоять РАЗНОСТЬ квадратов.'}];
+    return arr;}},
+
+cyclQuad:{topic:'ug',name:'Вписанный четырёхугольник',ref:'cyclq',
+  refWhy:'ABCD вписан в окружность, ∠A и ∠C противоположны — их сумма 180°.',
+  law:'Суммы противоположных углов вписанного четырёхугольника равны 180°.',
+  calc:p=>180-p.a, gen:()=>{let a=ri(52,128); if(a===90)a=91; return {a};}, proto:{a:82},
+  text:p=>`Угол A четырёхугольника ABCD, вписанного в окружность, равен ${p.a}°. Найдите угол C этого четырёхугольника. Ответ дайте в градусах.`,
+  fig:p=>figCyclQuad(p.a),
+  sol:p=>[`∠A и ∠C — противоположные углы вписанного четырёхугольника.`,
+    `Их сумма равна 180°: ∠C = 180° − ${p.a}° = ${180-p.a}°.`],
+  diag:p=>[{v:p.a,m:'Противоположные углы вписанного четырёхугольника НЕ равны — они в сумме дают 180°.'},
+    {v:360-p.a,m:'360° — сумма всех четырёх углов. Противоположная пара даёт 180°.'},
+    {v:90-p.a>0?90-p.a:NaN,m:'Сумма противоположных углов равна 180°, а не 90°.'}]},
+
+cyclTrap:{topic:'ug',name:'Вписанная трапеция',ref:'cyclq',
+  refWhy:'Трапеция вписана в окружность — значит, для её противоположных углов A и C работает правило суммы 180°.',
+  law:'Вписанная в окружность трапеция равнобедренная; противоположные углы дают в сумме 180°.',
+  calc:p=>180-p.a, gen:()=>({a:ri(62,87)}), proto:{a:81},
+  text:p=>`Угол A трапеции ABCD с основаниями AD и BC, вписанной в окружность, равен ${p.a}°. Найдите угол C этой трапеции. Ответ дайте в градусах.`,
+  fig:p=>figCyclTrap(p.a),
+  sol:p=>[`Трапеция вписана в окружность, а ∠A и ∠C — её противоположные углы.`,
+    `Сумма противоположных углов вписанного четырёхугольника равна 180°: ∠C = 180° − ${p.a}° = ${180-p.a}°.`],
+  diag:p=>[{v:p.a,m:'∠C лежит при ДРУГОМ основании: равны углы при одном основании, а противоположные дают в сумме 180°.'},
+    {v:360-p.a,m:'360° — сумма всех углов четырёхугольника. Противоположная пара: 180°.'}]},
+
+/* ---------- ОПИСАННАЯ ОКРУЖНОСТЬ ---------- */
+eqR2a:{topic:'opis',name:'Равносторонний: сторона по радиусу описанной',ref:'reg',
+  refWhy:'Для равностороннего треугольника R = a/√3 — отсюда a = R·√3.',
+  law:'У равностороннего треугольника a = R·√3, где R — радиус описанной окружности.',
+  calc:p=>3*p.k, gen:()=>({k:ri(1,9)}), proto:{k:2},
+  text:p=>`Радиус окружности, описанной около равностороннего треугольника, равен ${rd3(p.k)}. Найдите длину стороны этого треугольника.`,
+  fig:p=>figEqCircum('R',rd3(p.k)),
+  sol:p=>[`Для равностороннего треугольника R = a/√3, значит a = R·√3.`,
+    `a = ${rd3(p.k)} · √3 = ${p.k}·3 = ${3*p.k}.`],
+  diag:p=>[{v:n2(p.k*Math.sqrt(3)),m:'Это сам радиус (≈'+fmtNum(p.k*Math.sqrt(3))+'). Сторона: a = R·√3.'},
+    {v:6*p.k,m:'Вы удвоили лишний раз: a = R·√3 = '+p.k+'√3·√3 = '+3*p.k+'.'},
+    {v:1.5*p.k,m:'Похоже на R·√3/2 — это половина стороны либо путаница с высотой. Формула: a = R·√3.'}]},
+
+eqDist2a:{topic:'opis',name:'Равносторонний: сторона по расстоянию до сторон',ref:'reg',
+  refWhy:'Расстояние от центра до стороны — это радиус вписанной окружности r, а a = 2√3·r.',
+  law:'Расстояние от центра равностороннего треугольника до стороны — радиус вписанной окружности: a = 2√3·r.',
+  calc:p=>3*p.k, gen:()=>({k:ri(1,6)}), proto:{k:1},
+  text:p=>`В окружность с центром в точке O вписан равносторонний треугольник. Расстояние от точки O до сторон треугольника равно ${frac(rd3(p.k),'2')}. Найдите сторону треугольника.`,
+  fig:p=>figEqCircum('dist',rd3(p.k)+'/2'),
+  sol:p=>[`Расстояние от центра до стороны — радиус вписанной окружности: r = ${rd3(p.k)}/2.`,
+    `Для равностороннего треугольника a = 2√3·r.`,
+    `a = 2√3 · ${rd3(p.k)}/2 = √3·${rd3(p.k)} = ${3*p.k}.`],
+  diag:p=>[{v:n2(3*p.k/2),m:'Потерялась двойка: a = 2√3·r, а не √3·r.'},
+    {v:6*p.k,m:'Лишнее удвоение: 2√3 · '+rd3(p.k)+'/2 — двойки сокращаются.'},
+    {v:n2(p.k*Math.sqrt(3)),m:'Это диаметр вписанной окружности (2r). Сторона: a = 2√3·r.'}]},
+
+sqR2a:{topic:'opis',name:'Квадрат: сторона по радиусу описанной',ref:'reg',
+  refWhy:'Диагональ квадрата — диаметр описанной окружности: d = 2R, a = d/√2.',
+  law:'Диагональ квадрата равна диаметру описанной окружности: a = 2R/√2 = R√2.',
+  calc:p=>2*p.k, gen:()=>({k:ri(2,20)}), proto:{k:16},
+  text:p=>`Радиус окружности, описанной около квадрата, равен ${rd2(p.k)}. Найдите длину стороны этого квадрата.`,
+  fig:p=>figSqCircum(rd2(p.k)),
+  sol:p=>[`Диагональ квадрата — диаметр описанной окружности: d = 2R = ${2*p.k}√2.`,
+    `Сторона: a = d/√2 = ${2*p.k}√2 / √2 = ${2*p.k}.`],
+  diag:p=>[{v:n2(2*p.k*Math.SQRT2),m:'Это длина диагонали (диаметра, ≈'+fmtNum(2*p.k*Math.SQRT2)+'). Сторона меньше в √2 раз.'},
+    {v:4*p.k,m:'Проверьте √2: a = R·√2 = '+p.k+'√2·√2 = '+2*p.k+'.'},
+    {v:p.k,m:'Это R/√2 — половина стороны. Формула: a = R·√2.'}]},
+
+sinR:{topic:'opis',name:'Радиус по стороне и противолежащему углу',ref:'sinr',
+  refWhy:'Известны сторона AB и противолежащий угол C — прямой случай формулы R = AB/(2·sin C).',
+  law:'R = a/(2·sin α), где α — угол, противолежащий стороне a (следствие теоремы синусов).',
+  calc:p=>p.k,
+  gen:()=>({C:pick([30,45,60]),k:ri(2,12)}), proto:{C:45,k:6},
+  abTxt:p=>p.C===30?String(p.k):(p.C===45?rd2(p.k):rd3(p.k)),
+  text(p){const ab=this.abTxt(p);
+    return `В треугольнике ABC угол C равен ${p.C}°, AB = ${ab}. Найдите радиус окружности, описанной около этого треугольника.`;},
+  fig(p){return figSinR(p.C,this.abTxt(p));},
+  sol(p){const ab=this.abTxt(p), s={30:'1/2',45:'√2/2',60:'√3/2'}[p.C];
+    return [`По следствию из теоремы синусов R = AB/(2·sin C).`,
+    `sin ${p.C}° = ${s}.`,
+    `R = ${ab} / (2·${s}) = ${p.k}.`];},
+  diag:p=>[{v:2*p.k,m:'Вы нашли ДИАМЕТР (AB/sin C). Радиус вдвое меньше.'},
+    {v:n2(p.k/2),m:'Двойка учтена дважды: R = AB/(2·sin C), делить на 2 нужно один раз.'}]},
+
+sqMidO:{topic:'opis',name:'Квадрат и окружность из середины стороны',ref:'chord',
+  refWhy:'OA — гипотенуза прямоугольного треугольника ADO с катетами a и a/2: работает Пифагор.',
+  law:'R² = a² + (a/2)² = 5a²/4 — площадь квадрата ищется через теорему Пифагора.',
+  calc:p=>20*p.m*p.m, gen:()=>({m:ri(1,4)}), proto:{m:1},
+  text:p=>`Точка O является серединой стороны CD квадрата ABCD. Радиус окружности с центром в точке O, проходящей через вершину A, равен ${5*p.m}. Найдите площадь квадрата ABCD.`,
+  fig:p=>figSqMidO(String(5*p.m)),
+  sol:p=>{const R=5*p.m;
+    return [`Пусть сторона квадрата равна a. В прямоугольном треугольнике ADO катеты AD = a и DO = a/2.`,
+    `По теореме Пифагора OA² = a² + (a/2)² = 5a²/4 = R² = ${R*R}.`,
+    `Отсюда a² = 4·${R*R}/5 = ${20*p.m*p.m}. Площадь квадрата равна a² = ${20*p.m*p.m}.`];},
+  diag:p=>{const R=5*p.m;return [
+    {v:R*R,m:'Это R². По Пифагору R² = a² + (a/2)² = 5a²/4, откуда площадь a² = 4R²/5.'},
+    {v:4*R*R,m:'Похоже, вы приняли R за половину диагонали. Здесь O — середина СТОРОНЫ: R² = a² + (a/2)².'},
+    {v:n2(Math.sqrt(20*p.m*p.m)),m:'Это сторона квадрата. Спрашивают площадь — её квадрат.'}];}},
+
+rectDiag:{topic:'opis',name:'Прямоугольник: площадь по синусу и диаметру',ref:'insc',
+  refWhy:'Диагональ видна из соседней вершины под прямым углом, значит она — диаметр описанной окружности.',
+  law:'Диагональ прямоугольника — диаметр описанной окружности; стороны равны d·sin α и d·cos α.',
+  calc:p=>p.D*p.D*0.48,
+  gen:()=>({sin6:pick([true,false]),D:10*ri(1,3)}), proto:{sin6:true,D:10},
+  text:p=>`Синус угла между стороной и диагональю прямоугольника равен ${p.sin6?'0,6':'0,8'}. Диаметр описанной около него окружности равен ${p.D}. Найдите площадь прямоугольника.`,
+  fig:p=>figRectDiag(p.sin6?0.6:0.8),
+  sol:p=>{const s=p.sin6?0.6:0.8, c=p.sin6?0.8:0.6;
+    return [`Диагональ прямоугольника равна диаметру описанной окружности: d = ${p.D}.`,
+    `Стороны прямоугольника: d·sin α = ${fmtNum(p.D*s)} и d·cos α = ${fmtNum(p.D*c)} (по основному тригонометрическому тождеству cos α = ${fmtNum(c)}).`,
+    `S = ${fmtNum(p.D*s)} · ${fmtNum(p.D*c)} = ${fmtNum(p.D*p.D*0.48)}.`];},
+  diag:p=>{const s=p.sin6?0.6:0.8, c=p.sin6?0.8:0.6;return [
+    {v:n2(p.D*p.D*s*s),m:'Обе стороны посчитаны через синус. Вторая сторона — через косинус: cos α = '+fmtNum(c)+'.'},
+    {v:n2(p.D*s*p.D),m:'Вы умножили диаметр на одну сторону. Площадь — произведение ДВУХ сторон: d·sin α · d·cos α.'},
+    {v:n2(p.D*p.D*0.24),m:'Похоже, поделили на 2 — но это прямоугольник, а не треугольник.'}];}},
+
+/* ---------- ВПИСАННАЯ ОКРУЖНОСТЬ ---------- */
+rtHyp45:{topic:'vpis',name:'Прямоугольный треугольник с углом 45°',ref:null,quiz:false,
+  note:'из сборника «вписанная окружность» — чистая планиметрия, окружности в задаче нет',
+  law:'Прямоугольный треугольник с острым углом 45° равнобедренный: S = c²/4.',
+  calc:p=>p.c*p.c/4, gen:()=>({c:2*ri(5,40)}), proto:{c:70},
+  text:p=>`В прямоугольном треугольнике гипотенуза равна ${p.c}, а один из острых углов равен 45°. Найдите площадь треугольника.`,
+  fig:p=>figRtHyp45(String(p.c)),
+  sol:p=>[`Второй острый угол тоже 45°, значит треугольник равнобедренный: катеты равны.`,
+    `Катет: a = c/√2 = ${p.c}/√2.`,
+    `S = a²/2 = (c²/2)/2 = c²/4 = ${p.c*p.c/4}.`],
+  diag:p=>[{v:p.c*p.c/2,m:'Вы нашли произведение катетов (c²/2), но площадь — его ПОЛОВИНА.'},
+    {v:p.c*p.c,m:'Это квадрат гипотенузы. S = c²/4.'},
+    {v:p.c*p.c/8,m:'Лишнее деление на 2: катет² = c²/2, а S = катет²/2 = c²/4.'}]},
+
+sqCircum:{topic:'vpis',name:'Площадь квадрата вокруг окружности',ref:'reg',
+  refWhy:'Сторона описанного квадрата равна диаметру вписанной окружности: a = 2r.',
+  law:'Сторона квадрата, описанного около окружности, равна её диаметру: S = (2r)² = 4r².',
+  calc:p=>4*p.r*p.r, gen:()=>({r:ri(2,90)}), proto:{r:83},
+  text:p=>`Найдите площадь квадрата, описанного вокруг окружности радиуса ${p.r}.`,
+  fig:p=>figSqIn('S',fmtNum(p.r)),
+  sol:p=>[`Окружность вписана в квадрат, поэтому сторона квадрата равна её диаметру: a = 2r = ${2*p.r}.`,
+    `S = a² = ${2*p.r}² = ${4*p.r*p.r}.`],
+  diag:p=>[{v:2*p.r,m:'Это сторона квадрата, а спрашивают площадь.'},
+    {v:p.r*p.r,m:'Вы возвели в квадрат радиус, а сторона равна ДИАМЕТРУ: a = 2r.'},
+    {v:2*p.r*p.r,m:'Проверьте возведение в квадрат: (2r)² = 4r².'}]},
+
+trapH:{topic:'vpis',name:'Высота трапеции по радиусу вписанной',ref:'spr',
+  refWhy:'Окружность касается обоих оснований, а они параллельны: расстояние между ними — диаметр.',
+  law:'Высота описанной около окружности трапеции равна диаметру: h = 2r.',
+  calc:p=>2*p.r, gen:()=>({r:ri(3,20),iso:pick([true,false])}), proto:{r:16,iso:false},
+  text:p=>`Радиус окружности, вписанной в ${p.iso?'равнобедренную ':''}трапецию, равен ${p.r}. Найдите высоту этой трапеции.`,
+  fig:p=>figTanTrapR(p.r,p.iso),
+  sol:p=>[`Вписанная окружность касается обоих оснований трапеции.`,
+    `Основания параллельны, поэтому расстояние между ними равно диаметру окружности.`,
+    `h = 2r = ${2*p.r}.`],
+  diag:p=>[{v:p.r,m:'Это радиус. Высота — расстояние между основаниями, то есть ДИАМЕТР: h = 2r.'},
+    {v:4*p.r,m:'Лишнее удвоение: h = 2r.'}]},
+
+Spr:{topic:'vpis',name:'Площадь треугольника: S = p·r',ref:'spr',
+  refWhy:'Известны периметр и радиус вписанной окружности — прямое применение S = p·r с ПОЛУпериметром.',
+  law:'S = p·r, где p — полупериметр. Данная сторона — лишнее данное (ловушка).',
+  calc:p=>p.P/2*p.r,
+  gen:()=>{for(let i=0;i<60;i++){const r=ri(2,6),hp=ri(12,35),P=2*hp,side=ri(Math.max(4,Math.floor(P/5)),Math.floor(P/2)-2);
+      if(figSprTri(P,r,side)) return {P,r,side};}
+    return {P:50,r:4,side:20};},
+  proto:{P:50,r:4,side:20},
+  text:p=>`Периметр треугольника равен ${p.P}, одна из сторон равна ${p.side}, а радиус вписанной в него окружности равен ${p.r}. Найдите площадь этого треугольника.`,
+  fig:p=>figSprTri(p.P,p.r,p.side),
+  sol:p=>[`Площадь через вписанную окружность: S = p·r, где p — ПОЛУпериметр.`,
+    `p = ${p.P} : 2 = ${p.P/2}.`,
+    `S = ${p.P/2} · ${p.r} = ${p.P/2*p.r}. Длина стороны ${p.side} для решения не нужна — это лишнее данное.`],
+  diag:p=>[{v:p.P*p.r,m:'Вы взяли полный периметр. В формуле S = p·r участвует ПОЛУпериметр.'},
+    {v:p.side*p.r,m:'Сторона здесь — лишнее данное. Формула: S = p·r, где p = P/2.'},
+    {v:p.side*p.r/2,m:'Это была бы формула через сторону и высоту. Здесь известен r: S = p·r.'}]},
+
+sqInD:{topic:'vpis',name:'Диагональ квадрата по радиусу вписанной',ref:'reg',
+  refWhy:'Сторона квадрата равна диаметру вписанной окружности, диагональ — ещё в √2 раз больше.',
+  law:'a = 2r, d = a√2 — диагональ квадрата по радиусу вписанной окружности.',
+  calc:p=>4*p.k, gen:()=>({k:ri(1,8)}), proto:{k:2},
+  text:p=>`Радиус вписанной в квадрат окружности равен ${rd2(p.k)}. Найдите диагональ этого квадрата.`,
+  fig:p=>figSqIn('d',rd2(p.k)),
+  sol:p=>[`Сторона квадрата равна диаметру вписанной окружности: a = 2r = ${2*p.k}√2.`,
+    `Диагональ: d = a·√2 = ${2*p.k}√2·√2 = ${4*p.k}.`],
+  diag:p=>[{v:n2(2*p.k*Math.SQRT2),m:'Это сторона квадрата (a = 2r ≈ '+fmtNum(2*p.k*Math.SQRT2)+'). Диагональ ещё в √2 раз больше.'},
+    {v:2*p.k,m:'Проверьте цепочку: a = 2r = '+2*p.k+'√2, d = a·√2 = '+4*p.k+'.'},
+    {v:8*p.k,m:'Лишнее удвоение: d = 2r·√2 = '+4*p.k+'.'}]},
+
+sqInR:{topic:'vpis',name:'Радиус вписанной в квадрат',ref:'reg',
+  refWhy:'Диаметр вписанной окружности равен стороне квадрата: r = a/2.',
+  law:'Радиус окружности, вписанной в квадрат: r = a/2.',
+  calc:p=>p.a/2, gen:()=>({a:2*ri(2,20)}), proto:{a:6},
+  text:p=>`Сторона квадрата равна ${p.a}. Найдите радиус окружности, вписанной в этот квадрат.`,
+  fig:p=>figSqIn('r',String(p.a)),
+  sol:p=>[`Вписанная окружность касается всех сторон: её диаметр равен стороне квадрата.`,
+    `r = a/2 = ${p.a/2}.`],
+  diag:p=>[{v:p.a,m:'Это сторона (она же диаметр вписанной окружности). Радиус вдвое меньше.'},
+    {v:n2(p.a*Math.SQRT2/2),m:'Это радиус ОПИСАННОЙ окружности (половина диагонали). Вписанная касается сторон: r = a/2.'}]},
+
+eqA2r:{topic:'vpis',name:'Равносторонний: радиус вписанной по стороне',ref:'reg',
+  refWhy:'Для равностороннего треугольника r = a/(2√3) — треть высоты.',
+  law:'r = a/(2√3) = a√3/6 — радиус вписанной окружности равностороннего треугольника.',
+  calc:p=>p.k, gen:()=>({k:ri(1,8)}), proto:{k:1},
+  text:p=>`Сторона равностороннего треугольника равна ${2*p.k}√3. Найдите радиус окружности, вписанной в этот треугольник.`,
+  fig:p=>figEqIn('a2r',2*p.k+'√3'),
+  sol:p=>[`Для равностороннего треугольника r = a/(2√3).`,
+    `r = ${2*p.k}√3 / (2√3) = ${p.k}.`],
+  diag:p=>[{v:2*p.k,m:'Это радиус ОПИСАННОЙ окружности (R = a/√3). Вписанной — вдвое меньше.'},
+    {v:3*p.k,m:'Это высота треугольника (h = a√3/2). Радиус вписанной окружности — ТРЕТЬ высоты.'}]},
+
+eqR2h:{topic:'vpis',name:'Равносторонний: высота по радиусу вписанной',ref:'reg',
+  refWhy:'Центр вписанной окружности делит высоту в отношении 2:1 — высота втрое больше r.',
+  law:'Высота равностороннего треугольника втрое больше радиуса вписанной окружности: h = 3r.',
+  calc:p=>3*p.r, gen:()=>({r:ri(2,12)}), proto:{r:5},
+  text:p=>`Радиус окружности, вписанной в равносторонний треугольник, равен ${p.r}. Найдите высоту этого треугольника.`,
+  fig:p=>figEqIn('r2h',fmtNum(p.r)),
+  sol:p=>[`Центр вписанной окружности равностороннего треугольника лежит на пересечении медиан-высот и делит их в отношении 2:1 от вершины.`,
+    `Радиус — это ближний к стороне отрезок высоты: r = h/3.`,
+    `h = 3r = ${3*p.r}.`],
+  diag:p=>[{v:2*p.r,m:'Это диаметр окружности (или отрезок высоты от вершины до центра). Вся высота h = 3r.'},
+    {v:p.r,m:'Радиус — только треть высоты: h = 3r.'},
+    {v:4*p.r,m:'Высота равна 3r, а не 4r: центр делит её в отношении 2:1.'}]},
+
+eqR2aIn:{topic:'vpis',name:'Равносторонний: сторона по радиусу вписанной',ref:'reg',
+  refWhy:'Из r = a/(2√3) сторона выражается как a = 2√3·r.',
+  law:'a = 2√3·r — сторона равностороннего треугольника по радиусу вписанной окружности.',
+  calc:p=>6*p.k, gen:()=>({k:ri(1,6)}), proto:{k:2},
+  text:p=>`Радиус окружности, вписанной в равносторонний треугольник, равен ${rd3(p.k)}. Найдите длину стороны этого треугольника.`,
+  fig:p=>figEqIn('r2a',rd3(p.k)),
+  sol:p=>[`Из формулы r = a/(2√3) выражаем сторону: a = 2√3·r.`,
+    `a = 2√3 · ${rd3(p.k)} = 2·${p.k}·(√3·√3) = ${6*p.k}.`],
+  diag:p=>[{v:3*p.k,m:'Это высота (h = 3r). Сторона: a = 2√3·r = '+6*p.k+'.'},
+    {v:2*p.k,m:'Похоже на удвоение радиуса без √3: a = 2√3·r.'},
+    {v:n2(2*Math.sqrt(3)*p.k),m:'Это 2·r (диаметр). Формула стороны: a = 2√3·r.'}]},
+
+tanQuad:{topic:'vpis',name:'Описанный четырёхугольник',ref:'tangq',
+  refWhy:'Четырёхугольник описан около окружности — суммы противоположных сторон равны.',
+  law:'В описанном четырёхугольнике AB + CD = BC + AD.',
+  calc:p=>p.t[0]+p.t[3],
+  gen:()=>({t:[ri(2,9),ri(2,9),ri(2,9),ri(2,9)]}), proto:{t:[3,4,6,8]},
+  sides:p=>[p.t[0]+p.t[1],p.t[1]+p.t[2],p.t[2]+p.t[3],p.t[3]+p.t[0]],
+  text(p){const s=this.sides(p);
+    return `Четырёхугольник ABCD описан около окружности, AB = ${s[0]}, BC = ${s[1]}, CD = ${s[2]}. Найдите AD.`;},
+  fig(p){return figTanQuad(p.t,this.sides(p),3);},
+  sol(p){const s=this.sides(p);
+    return [`В описанном четырёхугольнике суммы противоположных сторон равны: AB + CD = BC + AD.`,
+    `${s[0]} + ${s[2]} = ${s[1]} + AD.`,
+    `AD = ${s[0]} + ${s[2]} − ${s[1]} = ${s[3]}.`];},
+  diag(p){const s=this.sides(p);return [
+    {v:s[0]+s[1]-s[2],m:'Складываются ПРОТИВОПОЛОЖНЫЕ стороны: AB + CD = BC + AD.'},
+    {v:s[1]+s[2]-s[0],m:'Пары перепутаны: противоположны AB с CD и BC с AD.'},
+    {v:s[0]+s[1]+s[2],m:'Это сумма трёх сторон. Используйте равенство AB + CD = BC + AD.'}];}},
+
+tanTrap:{topic:'vpis',name:'Описанная трапеция: четвёртая сторона',ref:'tangq',
+  refWhy:'Трапеция описана около окружности — значит, для её сторон работает AB + CD = BC + AD.',
+  law:'Для описанной трапеции, как и для любого описанного четырёхугольника: AB + CD = BC + AD.',
+  calc:p=>p.ab+p.cd-p.bc,
+  gen:()=>{const fam={6:[[8,10]],8:[[6,10],[15,17]],12:[[5,13],[9,15],[16,20]]};
+    const h=pick([6,8,12]); const pr=fam[h];
+    const p1=pick(pr),p2=pick(pr);
+    const l1=p1[1],l2=p2[1],dx1=p1[0],dx2=p2[0];
+    const bc=(l1+l2-dx1-dx2)/2;
+    if(bc<1) return {ab:11,bc:6,cd:9};
+    return {ab:l1,bc,cd:l2};},
+  proto:{ab:11,bc:6,cd:9},
+  text:p=>`Трапеция ABCD с основаниями AD и BC описана около окружности, AB = ${p.ab}, BC = ${p.bc}, CD = ${p.cd}. Найдите AD.`,
+  fig:p=>figTanTrapSides(p.ab,p.bc,p.cd),
+  sol:p=>[`Трапеция описана около окружности, значит суммы противоположных сторон равны: AB + CD = BC + AD.`,
+    `${p.ab} + ${p.cd} = ${p.bc} + AD.`,
+    `AD = ${p.ab} + ${p.cd} − ${p.bc} = ${p.ab+p.cd-p.bc}.`],
+  diag:p=>[{v:p.ab+p.bc-p.cd,m:'Складываются ПРОТИВОПОЛОЖНЫЕ стороны: боковые AB и CD против оснований BC и AD.'},
+    {v:p.ab+p.bc+p.cd,m:'Это сумма трёх сторон. Работает равенство AB + CD = BC + AD.'},
+    {v:p.bc,m:'Основания описанной трапеции не обязаны быть равными: используйте AB + CD = BC + AD.'}]},
+
+rhombR:{topic:'vpis',name:'Ромб: радиус вписанной окружности',ref:'spr',
+  refWhy:'Радиус вписанной в ромб окружности — высота прямоугольного треугольника из половинок диагоналей.',
+  law:'Диагонали ромба перпендикулярны и делятся пополам; r = произведение полудиагоналей / сторона.',
+  calc:p=>{const f=p.fam==='34'?[3,4,5]:[7,24,25];return f[0]*f[1]/f[2]*p.k;},
+  gen:()=>({fam:pick(['34','724']),k:ri(1,3)}), proto:{fam:'724',k:1},
+  geo:p=>{const f=p.fam==='34'?[3,4,5]:[7,24,25];
+    return {m:f[1]*p.k, nn:f[0]*p.k, c:f[2]*p.k, d:2*f[1]*p.k, fr:[f[0],f[1]]};},
+  text(p){const g=this.geo(p);
+    return `Диагональ AC ромба ABCD равна ${g.d}, а tg∠BCA = ${frac(String(g.fr[0]),String(g.fr[1]))}. Найдите радиус окружности, вписанной в ромб.`;},
+  fig(p){const g=this.geo(p);return figRhomb(g.m,g.nn,String(g.d));},
+  sol(p){const g=this.geo(p);const ans=g.m*g.nn/g.c;
+    return [`Диагонали ромба перпендикулярны и точкой пересечения O делятся пополам: OC = ${g.d}/2 = ${g.m}.`,
+    `tg∠BCA = BO/OC, значит BO = OC · ${g.fr[0]}/${g.fr[1]} = ${g.nn}.`,
+    `Сторона ромба: BC = √(BO² + OC²) = √(${g.nn*g.nn} + ${g.m*g.m}) = ${g.c}.`,
+    `Радиус вписанной окружности — расстояние от O до стороны, то есть высота прямоугольного треугольника BOC из вершины O: r = BO·OC/BC = ${g.nn}·${g.m}/${g.c} = ${fmtNum(ans)}.`];},
+  diag(p){const g=this.geo(p);const ans=g.m*g.nn/g.c;return [
+    {v:n2(2*ans),m:'Вы нашли высоту ромба (диаметр вписанной окружности). Радиус вдвое меньше.'},
+    {v:g.nn,m:'Это половина второй диагонали (BO). Радиус — высота треугольника BOC: r = BO·OC/BC.'},
+    {v:2*g.nn,m:'Это вся вторая диагональ. Радиус — высота треугольника BOC: r = BO·OC/BC.'}];}},
+
+/* ---------- КАСАТЕЛЬНЫЕ, ХОРДЫ, СЕКУЩИЕ ---------- */
+tanExt:{topic:'kas',name:'Касательная из внешней точки',ref:'tang',
+  refWhy:'Касательная перпендикулярна радиусу в точке касания — возникает прямоугольный треугольник и Пифагор.',
+  law:'Касательная перпендикулярна радиусу, проведённому в точку касания: BT = √(AB² − R²).',
+  calc:p=>Math.sqrt((p.ac+p.cb)*(p.ac+p.cb)-p.ac*p.ac),
+  gen:()=>{const t=pick([[3,4,5],[4,3,5],[5,12,13],[12,5,13],[8,15,17],[15,8,17],[7,24,25],[24,7,25],[20,21,29],[21,20,29]]);
+    const k=ri(1,6); return {ac:t[0]*k,cb:(t[2]-t[0])*k};},
+  proto:{ac:75,cb:10},
+  text:p=>`На отрезке AB выбрана точка C так, что AC = ${p.ac} и BC = ${p.cb}. Построена окружность с центром A, проходящая через C. Найдите длину отрезка касательной, проведённой из точки B к этой окружности.`,
+  fig:p=>figTanExt(p.ac,p.cb),
+  sol:p=>{const d=p.ac+p.cb,ans=Math.sqrt(d*d-p.ac*p.ac);
+    return [`Радиус окружности равен AC = ${p.ac}; расстояние от центра до внешней точки: AB = ${p.ac} + ${p.cb} = ${d}.`,
+    `Касательная BT перпендикулярна радиусу AT: треугольник ATB прямоугольный с прямым углом при T.`,
+    `По теореме Пифагора: BT = √(AB² − AT²) = √(${d*d} − ${p.ac*p.ac}) = ${fmtNum(ans)}.`];},
+  diag:p=>{const d=p.ac+p.cb;return [
+    {v:p.cb,m:'BC — не касательная (она лежит на прямой через центр). Касательная BT ⊥ AT, работает Пифагор в треугольнике ATB.'},
+    {v:d,m:'Это вся длина AB — гипотенуза. Касательная — катет: BT = √(AB² − R²).'},
+    {v:d*d-p.ac*p.ac,m:'Вы нашли КВАДРАТ касательной — извлеките корень.'}];}},
+
+twoTan:{topic:'kas',name:'Две касательные из точки',ref:'tang',
+  refWhy:'Радиусы перпендикулярны касательным: в четырёхугольнике OACB два прямых угла, дальше — равнобедренный треугольник.',
+  law:'∠ABO между хордой касания и радиусом равен половине угла между касательными.',
+  calc:p=>p.u/2, gen:()=>({u:2*ri(16,60)}), proto:{u:72},
+  text:p=>`Касательные в точках A и B к окружности с центром O пересекаются под углом ${p.u}°. Найдите угол ABO. Ответ дайте в градусах.`,
+  fig:p=>figTwoTan(p.u),
+  sol:p=>[`Радиус перпендикулярен касательной: ∠OAC = ∠OBC = 90°.`,
+    `В четырёхугольнике OACB: ∠AOB = 360° − 90° − 90° − ${p.u}° = ${180-p.u}°.`,
+    `Треугольник AOB равнобедренный (OA = OB = R): ∠ABO = (180° − ${180-p.u}°) : 2 = ${p.u/2}°.`],
+  diag:p=>[{v:180-p.u,m:'Это центральный угол AOB. Спрашивают угол при основании равнобедренного треугольника AOB.'},
+    {v:90-p.u/2,m:'Это угол ABC между касательной и хордой. А ∠ABO = 90° − ∠ABC = '+p.u/2+'°.'},
+    {v:p.u,m:'Искомый угол ровно вдвое меньше угла между касательными.'}]},
+
+chordDist:{topic:'kas',name:'Хорда по расстоянию от центра',ref:'chord',
+  refWhy:'Перпендикуляр из центра делит хорду пополам: полухорда, расстояние и радиус связаны Пифагором.',
+  law:'(l/2)² + d² = R² — половина хорды, расстояние до центра и радиус образуют прямоугольный треугольник.',
+  calc:p=>2*Math.sqrt(p.R*p.R-p.d*p.d),
+  gen:()=>{const t=pick([[3,4,5],[4,3,5],[5,12,13],[12,5,13],[8,15,17],[15,8,17],[6,8,10],[8,6,10],[7,24,25],[20,21,29]]);
+    const k=ri(1,4); return {d:t[0]*k,R:t[2]*k};},
+  proto:{R:13,d:5},
+  text:p=>`Найдите длину хорды окружности радиусом ${p.R} см, если расстояние от центра окружности до хорды равно ${p.d} см. Ответ запишите в сантиметрах.`,
+  fig:p=>figChordDist(p.R,p.d),
+  sol:p=>{const h=Math.sqrt(p.R*p.R-p.d*p.d);
+    return [`Перпендикуляр из центра к хорде делит её пополам.`,
+    `Полухорда, расстояние d и радиус R образуют прямоугольный треугольник: (l/2)² = R² − d² = ${p.R*p.R} − ${p.d*p.d} = ${p.R*p.R-p.d*p.d}.`,
+    `l/2 = ${fmtNum(h)}, значит хорда l = ${fmtNum(2*h)}.`];},
+  diag:p=>{const h=Math.sqrt(p.R*p.R-p.d*p.d);return [
+    {v:h,m:'Это ПОЛОВИНА хорды — перпендикуляр из центра делит хорду пополам, не забудьте удвоить.'},
+    {v:2*(p.R-p.d),m:'R и d нельзя вычитать напрямую — они катет и гипотенуза: полухорда = √(R² − d²).'},
+    {v:p.R*p.R-p.d*p.d,m:'Это квадрат полухорды. Извлеките корень и удвойте.'}];}},
+
+secTan:{topic:'kas',name:'Касательная и секущая',ref:'power',
+  refWhy:'Из одной точки проведены касательная и секущая: AK² = AB·AC.',
+  law:'Квадрат касательной равен произведению секущей на её внешнюю часть: AK² = AB·AC.',
+  calc:p=>Math.sqrt(p.ab*p.ac),
+  gen:()=>{for(let i=0;i<80;i++){const t=ri(3,12);
+      const ds=[]; for(let d=2;d<t;d++) if((t*t)%d===0 && t*t/d-d>=2 && t*t/d<=9*d) ds.push(d);
+      if(ds.length){const ab=pick(ds); return {ab,ac:t*t/ab};}}
+    return {ab:2,ac:8};},
+  proto:{ab:2,ac:8},
+  text:p=>`Через точку A, лежащую вне окружности, проведены две прямые. Одна прямая касается окружности в точке K. Другая прямая пересекает окружность в точках B и C, причём AB = ${p.ab}, AC = ${p.ac}. Найдите AK.`,
+  fig:p=>figSecTan(p.ab,p.ac),
+  sol:p=>[`Для касательной и секущей из одной точки: AK² = AB · AC.`,
+    `AK² = ${p.ab} · ${p.ac} = ${p.ab*p.ac}.`,
+    `AK = √${p.ab*p.ac} = ${fmtNum(Math.sqrt(p.ab*p.ac))}.`],
+  diag:p=>[{v:p.ab*p.ac,m:'Это AK² — произведение AB·AC. Извлеките корень.'},
+    {v:(p.ab+p.ac)/2,m:'Среднее арифметическое не подходит: AK = √(AB·AC) — среднее геометрическое.'},
+    {v:p.ac-p.ab,m:'Это длина хорды BC. Касательная: AK = √(AB·AC).'}]},
+
+chordsX:{topic:'kas',name:'Пересекающиеся хорды',ref:'power',
+  refWhy:'Хорды пересекаются внутри окружности: произведения их отрезков равны, AP·PC = BP·PD.',
+  law:'Для пересекающихся хорд AP·PC = BP·PD.',
+  calc:p=>p.bp*p.dp/p.cp,
+  gen:()=>{for(let i=0;i<60;i++){const bp=ri(4,15),dp=ri(4,15),N=bp*dp;
+      const ds=[]; for(let d=2;d*d<=N;d++) if(N%d===0 && N/d!==d) ds.push(d);
+      if(ds.length){const cp=pick(ds); if(N/cp!==bp&&N/cp!==dp) return {bp,cp,dp};}}
+    return {bp:15,cp:6,dp:10};},
+  proto:{bp:15,cp:6,dp:10},
+  text:p=>`Хорды AC и BD окружности пересекаются в точке P, BP = ${p.bp}, CP = ${p.cp}, DP = ${p.dp}. Найдите AP.`,
+  fig:p=>figChordsX(p.bp*p.dp/p.cp,p.cp,p.bp,p.dp,'ap'),
+  sol:p=>[`Для пересекающихся хорд произведения отрезков равны: AP · PC = BP · PD.`,
+    `AP · ${p.cp} = ${p.bp} · ${p.dp} = ${p.bp*p.dp}.`,
+    `AP = ${p.bp*p.dp} : ${p.cp} = ${fmtNum(p.bp*p.dp/p.cp)}.`],
+  diag:p=>[{v:n2(p.bp*p.cp/p.dp),m:'Отрезки перепутаны: перемножаются отрезки ОДНОЙ хорды: AP·CP = BP·DP.'},
+    {v:p.bp+p.dp-p.cp,m:'Здесь не сложение: произведения отрезков пересекающихся хорд равны.'},
+    {v:n2(p.cp*p.dp/p.bp),m:'Проверьте, какие отрезки лежат на одной хорде: AP с CP, BP с DP.'}]},
+
+tanChord:{topic:'kas',name:'Угол между касательной и хордой',ref:'tang',
+  refWhy:'Угол между касательной и хордой равен половине дуги, заключённой между ними.',
+  law:'Угол между касательной и хордой равен половине заключённой внутри него дуги.',
+  calc:p=>p.arc/2, gen:()=>({arc:2*ri(20,75)}), proto:{arc:72},
+  text:p=>`На окружности отмечены точки A и B так, что меньшая дуга AB равна ${p.arc}°. Прямая BC касается окружности в точке B так, что угол ABC острый. Найдите угол ABC. Ответ дайте в градусах.`,
+  fig:p=>figTanChord(p.arc),
+  sol:p=>[`Угол между касательной и хордой равен половине дуги, заключённой между ними.`,
+    `∠ABC = ${p.arc}° : 2 = ${p.arc/2}°.`],
+  diag:p=>[{v:p.arc,m:'Это сама дуга. Угол между касательной и хордой — её ПОЛОВИНА.'},
+    {v:90-p.arc/2,m:'Это угол между хордой AB и радиусом OB. Между касательной и хордой: половина дуги.'},
+    {v:180-p.arc,m:'Похоже на смежный к дуге. Правило прямое: ∠ = дуга/2.'}]}
+};
+
+/* ================= Архив: сборники РешуОГЭ, тип 16 (эталоны exp пересчитаны независимо) ================= */
+const ARCHIVE=[
+{nums:['116','314850'],sub:'twoDiam',p:{x:70,given:'A'},exp:70},
+{nums:['142'],sub:'twoDiam',p:{x:30,given:'C'},exp:30},
+{nums:['311319'],sub:'diamMON',p:{x:18},exp:144},
+{nums:['311517'],sub:'diamsPair',p:{x:110,given:'O'},exp:35},
+{nums:['311956'],sub:'insCen',p:{c:48},exp:24},
+{nums:['314811'],sub:'insCen',p:{c:84},exp:42,
+ text:'Точка O — центр окружности, ∠AOB = 84° (см. рис.). Найдите величину угла ACB (в градусах).'},
+{nums:['339419'],sub:'mnDiam',p:{x:38},exp:52},
+{nums:['341673','339503'],sub:'diamTri',p:{a:75,side:'AC'},exp:15},
+{nums:['341329'],sub:'diamTri',p:{a:44,side:'AC'},exp:46},
+{nums:['348379'],sub:'diamTri',p:{a:30,side:'AB'},exp:60},
+{nums:['348961'],sub:'diamPif',p:{R:6.5,bc:12},exp:5},
+{nums:['349314'],sub:'diamsPair',p:{x:36,given:'C'},exp:108},
+{nums:['356438'],sub:'cyclQuad',p:{a:82},exp:98},
+{nums:['356448'],sub:'cyclTrap',p:{a:81},exp:99},
+{nums:['356533'],sub:'eqR2a',p:{k:2},exp:6},
+{nums:['369738'],sub:'sqR2a',p:{k:16},exp:32},
+{nums:['450514'],sub:'sinR',p:{C:45,k:6},exp:6},
+{nums:['462105'],sub:'sqMidO',p:{m:1},exp:20},
+{nums:['472375'],sub:'eqDist2a',p:{k:1},exp:3},
+{nums:['472378'],sub:'rectDiag',p:{sin6:true,D:10},exp:48},
+{nums:['323356'],sub:'rtHyp45',p:{c:70},exp:1225},
+{nums:['324364'],sub:'sqCircum',p:{r:83},exp:27556},
+{nums:['341707'],sub:'sqCircum',p:{r:7},exp:196},
+{nums:['355413'],sub:'trapH',p:{r:16,iso:false},exp:32},
+{nums:['356329'],sub:'Spr',p:{P:50,r:4,side:20},exp:100},
+{nums:['356369'],sub:'sqInD',p:{k:2},exp:8},
+{nums:['356399'],sub:'sqInR',p:{a:6},exp:3},
+{nums:['356488'],sub:'eqA2r',p:{k:1},exp:1},
+{nums:['356498'],sub:'eqR2h',p:{r:5},exp:15},
+{nums:['356518'],sub:'eqR2aIn',p:{k:2},exp:12},
+{nums:['356579'],sub:'tanQuad',p:{t:[3,4,6,8]},exp:11},
+{nums:['356603','438296'],sub:'tanTrap',p:{ab:11,bc:6,cd:9},exp:14},
+{nums:['448769'],sub:'trapH',p:{r:12,iso:true},exp:24},
+{nums:['472385'],sub:'rhombR',p:{fam:'724',k:1},exp:6.72},
+{nums:['340174'],sub:'tanExt',p:{ac:75,cb:10},exp:40},
+{nums:['340337'],sub:'twoTan',p:{u:72},exp:36},
+{nums:['340587'],sub:'chordDist',p:{R:13,d:5},exp:24},
+{nums:['356543'],sub:'secTan',p:{ab:2,ac:8},exp:4},
+{nums:['356618'],sub:'chordsX',p:{bp:15,cp:6,dp:10},exp:25},
+{nums:['369504'],sub:'tanChord',p:{arc:72},exp:36}
+];
+
+/* ================= Справочник ================= */
+const REFS=[
+{id:'insc',name:'Вписанный и центральный угол',
+ fx:'∠<sub>вписанный</sub> = '+frac('∠<sub>центральный</sub>','2')+' (на одну дугу)',
+ notes:['Угол, опирающийся на диаметр, — прямой (90°).','Вписанные углы, опирающиеся на одну дугу, равны.']},
+{id:'radiso',name:'Два радиуса — равнобедренный треугольник',
+ fx:'OA = OB = R ⟹ ∠OAB = ∠OBA',
+ notes:['Вертикальные центральные углы равны.','Смежные центральные углы дают в сумме 180°.']},
+{id:'cyclq',name:'Вписанный четырёхугольник',
+ fx:'∠A + ∠C = 180°, ∠B + ∠D = 180°',
+ notes:['Трапеция, вписанная в окружность, — равнобедренная.']},
+{id:'tangq',name:'Описанный четырёхугольник',
+ fx:'AB + CD = BC + AD',
+ notes:['Отрезки касательных из одной вершины равны — отсюда и равенство сумм противоположных сторон.']},
+{id:'tang',name:'Касательная',
+ fx:'касательная ⊥ радиусу в точке касания',
+ notes:['Отрезки касательных, проведённых из одной точки, равны.','Угол между касательной и хордой равен половине заключённой дуги.']},
+{id:'power',name:'Секущие и хорды',
+ fx:'AK² = AB·AC;&nbsp;&nbsp; AP·PC = BP·PD',
+ notes:['Первое — касательная и секущая из одной точки, второе — пересекающиеся хорды.']},
+{id:'chord',name:'Хорда и теорема Пифагора',
+ fx:'('+frac('l','2')+')² + d² = R²',
+ notes:['Перпендикуляр из центра делит хорду пополам: полухорда, расстояние и радиус — прямоугольный треугольник.']},
+{id:'reg',name:'Правильные фигуры и окружности',
+ fx:'Равносторонний: R = '+frac('a','√3')+', r = '+frac('a','2√3')+', R = 2r, h = 3r.<br>Квадрат: R = '+frac('a√2','2')+', r = '+frac('a','2'),
+ notes:['Сторона описанного квадрата равна диаметру вписанной окружности.']},
+{id:'spr',name:'Площадь и вписанная окружность',
+ fx:'S = p·r (p — полупериметр)',
+ notes:['Высота трапеции, описанной около окружности: h = 2r.','Радиус вписанной в ромб окружности — половина высоты ромба.']},
+{id:'sinr',name:'Радиус через сторону и угол',
+ fx:'R = '+frac('a','2·sin α'),
+ notes:['Следствие теоремы синусов: α — угол, противолежащий стороне a.']}
+];
+const bank={codes:['49FE9E','6D9F94','56B36C','058757','41D84A','239EF1','5608FB','5ED7FC','E566FC','847AFF','B0D10B','53AD0E','A8980C','473A79','F93971','0B92BF','297C02'],
+ base:'https://oge.bank.ru/bank/questions.php?proj=DE0E276E497AB3784C3FC4CC20248DC0&search=1&pagesize=10&qid=',
+ theme:'https://oge.bank.ru/bank/questions.php?proj=DE0E276E497AB3784C3FC4CC20248DC0&search=1&pagesize=200&theme=7.4&qkind=ILI_STD_SHORT',
+ pdf:'https://doc.bank.ru/navigator-podgotovki/navigator-oge/Ma-9_4_krug.pdf'};
+
+
+/* ================= Лист ОГЭ-2026 (стр. 5–6): карта с пинами ================= */
+const SHEET_IMG='data:image/webp;base64,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';
+const PINS=[
+{id:'eqfig',x:24.7,y:33.1,title:'Правильный треугольник: R, r, h',subs:['eqR2a','eqDist2a','eqA2r','eqR2h','eqR2aIn'],refs:['reg'],
+ why:'Четыре формулы блока — костяк всех задач про равносторонний треугольник: R = a√3/3, r = a√3/6, h = a√3/2. Из первых двух заодно видно R = 2r, а из третьей — h = 3r.'},
+{id:'sinus',x:34.1,y:58.5,title:'Теорема синусов: … = 2R',subs:['sinR'],refs:['sinr'],
+ why:'Нужен правый хвост формулы: a/sin A = 2R, откуда R = a/(2·sin A).'},
+{id:'triS',x:83,y:13.4,title:'Площадь треугольника',subs:['rtHyp45'],refs:[],
+ why:'S = ½·a·h — у прямоугольного треугольника катеты и есть основание с высотой.'},
+{id:'rombS',x:86,y:27.1,title:'Ромб: диагонали',subs:['rhombR'],refs:['spr'],
+ why:'Из чертежа блока берём главное свойство: диагонали ромба перпендикулярны и точкой пересечения делятся пополам.'},
+{id:'trig',x:64,y:45.4,title:'Прямоугольный треугольник: sin, cos, tg',subs:['rectDiag','rhombR'],refs:[],
+ why:'Стороны через угол: sin α и cos α дают стороны прямоугольника по диагонали, tg α связывает половинки диагоналей ромба.'},
+{id:'pyth',x:60,y:69.7,title:'Теорема Пифагора',subs:['diamPif','tanExt','chordDist','sqMidO'],refs:['chord','tang'],
+ why:'Прямой угол в задачах про окружность возникает сам: напротив диаметра, между радиусом и касательной, между хордой и перпендикуляром из центра. Дальше везде a² + b² = c².'},
+{id:'ident',x:74,y:73.1,title:'Основное тригонометрическое тождество',subs:['rectDiag'],refs:[],
+ why:'Дан sin α = 0,6 — тождество sin²α + cos²α = 1 даёт cos α = 0,8 для второй стороны.'},
+{id:'table',x:88,y:74.5,title:'Значения sin, cos, tg',subs:['sinR'],refs:['sinr'],
+ why:'sin 30°, sin 45°, sin 60° берутся из таблицы и подставляются в R = a/(2·sin α).'}
+];
+const SHEET_MISSING=[
+{ref:'insc',t:'Вписанный угол = ½ центрального'},
+{ref:'cyclq',t:'Вписанный четырёхугольник: ∠A + ∠C = 180°'},
+{ref:'tangq',t:'Описанный: AB + CD = BC + AD'},
+{ref:'tang',t:'Касательная ⊥ радиусу; угол с хордой = ½ дуги'},
+{ref:'power',t:'AK² = AB·AC; AP·PC = BP·PD'},
+{ref:'radiso',t:'Два радиуса — равнобедренный треугольник'},
+{ref:'spr',t:'S = p·r; высота описанной трапеции = 2r'},
+{ref:'reg',t:'Квадрат: R = a√2/2, r = a/2'}
+];
+
+/* ================= Сборка задач ================= */
+function build(k,p,meta){
+  const sub=SUBS[k];
+  const ans=sub.calc(p);
+  const fig=sub.fig.call(sub,p);
+  const text=(meta&&meta.text)||sub.text.call(sub,p);
+  const sol=sub.sol.call(sub,p);
+  const diag=(sub.diag?sub.diag.call(sub,p):[]).filter(d=>isFinite(d.v)&&Math.abs(d.v-ans)>1e-9&&d.m);
+  return Object.assign({k,sub,p,ans,fig,text,sol,diag},meta||{});
+}
+function buildGen(k){return build(k,SUBS[k].gen(),{kind:'gen'});}
+function buildArchive(e){const meta={kind:'arch',nums:e.nums}; if(e.text)meta.text=e.text; return build(e.sub,e.p,meta);}
+
+/* ================= Хранилище (Конституция, раздел 8) ================= */
+const KEY='mathExamCourseProgress.v1';
+const TID=(()=>{try{const f=(location.pathname.split('/').pop()||'').replace(/\.html?$/,'');return f||'oge16-okruzhnost';}catch(e){return 'oge16-okruzhnost';}})();
+let storeAll={};
+try{storeAll=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){storeAll={};}
+let st=storeAll[TID]||{runs:0,best:null,events:[],razbor:{},train:{solved:0,good:0,bad:0}};
+if(!st.razbor)st.razbor={}; if(!st.train)st.train={solved:0,good:0,bad:0}; if(!st.events)st.events=[];
+function save(){st.events=st.events.slice(-300);storeAll[TID]=st;try{localStorage.setItem(KEY,JSON.stringify(storeAll));}catch(e){}}
+function logEv(e,d){st.events.push(Object.assign({t:Date.now(),e},d||{}));save();}
+
+/* ================= Ответы ================= */
+function parseAns(s){
+  s=String(s==null?'':s).trim().replace(',','.').replace(/\s+/g,'');
+  if(!s)return NaN;
+  const m=s.match(/^(-?\d+(?:\.\d+)?)\/(\d+(?:\.\d+)?)$/);
+  if(m)return parseFloat(m[1])/parseFloat(m[2]);
+  return /^-?\d+(?:\.\d+)?$/.test(s)?parseFloat(s):NaN;
+}
+function eqAns(v,ans){return isFinite(v)&&Math.abs(v-ans)<=Math.max(1e-6,Math.abs(ans)*1e-6)+1e-9;}
+function matchDiag(v,diag){for(const d of diag){if(Math.abs(v-d.v)<=Math.max(0.006,Math.abs(d.v)*1e-6))return d.m;}return null;}
+
+/* ================= UI ================= */
+let TAB='razbor', streak=0;
+let rzOpen=null, rzStep=0;
+let trFilter={topic:'all',src:'mix'}, trSubOnly=null, trTask=null, trAtt=2, trDone=false, trArchSeen=new Set(), trArchNote=false;
+let qz=null;
+
+function esc(s){return s;}
+function tagTopic(t){return `<span class="tag topic">${TOPICS[t]}</span>`;}
+function weakStats(){
+  const w={};
+  for(const e of st.events){
+    if((e.e==='opt_wrong'||e.e==='quiz_wrong'||e.e==='hint')&&e.sub) w[e.sub]=(w[e.sub]||0)+1;
+  }
+  return w;
+}
+function noteTag(sub){return sub.note?`<span class="tag" style="background:#efeae0;color:#7a6a4f">${sub.note}</span>`:'';}
+function refcallHtml(sub){
+  if(!sub.ref)return '';
+  const r=REFS.find(x=>x.id===sub.ref); if(!r)return '';
+  return `<div class="refcall" data-ref="${r.id}"><span class="t">📖 Справочник: ${r.name}.</span> ${sub.refWhy||''}</div>`;
+}
+function figHtml(t){return `<div class="diagram">${t.fig?t.fig.svg:''}</div>`;}
+function solHtml(t,show){
+  return `<div class="sol${show?' show':''}" id="solBox"><h4>Решение</h4><ol>${t.sol.map(s=>`<li>${s}</li>`).join('')}</ol>
+  <div class="law"><b>Правило.</b> ${t.sub.law}</div>${refcallHtml(t.sub)}</div>`;
+}
+function updStats(){
+  $('#stSolved').textContent=st.train.solved;
+  $('#stGood').textContent=st.train.good;
+  $('#stStreak').textContent=streak;
+  $('#stBest').textContent=st.best==null?'—':st.best+'/10';
+  const done=Object.keys(st.razbor).length, tot=Object.keys(SUBS).length;
+  $('#cntRz').textContent=done?`${done}/${tot}`:'';
+}
+function bindRefcalls(root){
+  (root||document).querySelectorAll('.refcall').forEach(el=>el.addEventListener('click',()=>openRef(el.dataset.ref)));
+}
+function switchTab(tb){
+  TAB=tb; $$('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tb));
+  render();
+}
+function render(){
+  updStats();
+  if(TAB==='razbor')renderRazbor();
+  else if(TAB==='train')renderTrain();
+  else if(TAB==='quiz')renderQuiz();
+  else renderRefs();
+}
+
+/* ---------- Разбор ---------- */
+function renderRazbor(){
+  const main=$('#main');
+  if(rzOpen)return renderRazborDetail();
+  let html=`<div class="progressline">Каждый подтип задания 16 — с прототипом, пошаговым решением и карточкой-правилом. Разобранные зеленеют.</div>`;
+  for(const tk of Object.keys(TOPICS)){
+    const keys=Object.keys(SUBS).filter(k=>SUBS[k].topic===tk);
+    html+=`<h3 style="font-family:Georgia,serif;margin:18px 0 10px">${TOPICS[tk]}</h3><div class="rzgrid">`;
+    const w=weakStats();
+    html+=keys.map(k=>`<div class="rzcard${st.razbor[k]?' done':''}" data-k="${k}">
+      <div class="nm">${SUBS[k].name}</div><div class="tp">${TOPICS[tk]}</div>${st.razbor[k]?'<div class="ok">✓ разобрано</div>':''}${(w[k]||0)>=2?`<div class="weak">⚠ ошибок: ${w[k]}</div>`:''}</div>`).join('');
+    html+=`</div>`;
+  }
+  main.innerHTML=html;
+  $$('.rzcard').forEach(c=>c.addEventListener('click',()=>{rzOpen=c.dataset.k;rzStep=0;logEv('task_start',{kind:'razbor',sub:rzOpen});render();}));
+}
+function renderRazborDetail(){
+  const k=rzOpen, sub=SUBS[k], t=build(k,sub.proto,{kind:'proto'});
+  const finished=rzStep>=t.sol.length;
+  let steps=t.sol.slice(0,rzStep).map(s=>`<div class="step">${s}</div>`).join('');
+  $('#main').innerHTML=`<span class="backlink" id="rzBack">← Ко всем типам</span>
+  <div class="meta">${tagTopic(sub.topic)}<span class="tag gen">разбор типа</span>${noteTag(sub)}<b style="font-family:Georgia,serif">${sub.name}</b></div>
+  <div class="grid"><div>${figHtml(t)}</div><div>
+    <div class="task">${t.text}</div>
+    <div class="steps">${steps}</div>
+    ${finished
+      ?`<div class="fb ok show">Ответ: <b>${fmtNum(t.ans)}</b></div>
+        <div class="law"><b>Правило.</b> ${sub.law}</div>${refcallHtml(sub)}
+        <div class="rowbtns"><button class="blue" id="rzTrain">Тренировать этот тип →</button><button id="rzDone">${st.razbor[k]?'✓ Разобрано':'Отметить разобранным'}</button><button class="sec" id="rzBack2">К списку типов</button></div>`
+      :`<div class="rowbtns"><button id="rzNext">${rzStep===0?'Показать первый шаг':'Дальше'}</button></div>
+        <div class="smallnote" style="margin-top:8px">Шаг ${rzStep} из ${t.sol.length}</div>`}
+  </div></div>`;
+  bindRefcalls();
+  const bk=()=>{rzOpen=null;render();};
+  $('#rzBack').addEventListener('click',bk);
+  if(finished){
+    $('#rzBack2').addEventListener('click',bk);
+    $('#rzDone').addEventListener('click',()=>{st.razbor[k]=1;save();logEv('razbor_done',{sub:k});bk();});
+    $('#rzTrain').addEventListener('click',()=>{st.razbor[k]=1;save();logEv('razbor_done',{sub:k});rzOpen=null;startTrainSub(k);});
+  } else $('#rzNext').addEventListener('click',()=>{rzStep++;render();});
+}
+
+/* ---------- Тренировка ---------- */
+function pickTrainTask(){
+  const subOk=k=>!trSubOnly||k===trSubOnly;
+  const topicOk=e=>(trFilter.topic==='all'||SUBS[e.sub].topic===trFilter.topic)&&subOk(e.sub);
+  const wantArch=trFilter.src==='arch'||(trFilter.src==='mix'&&Math.random()<0.5);
+  if(wantArch){
+    let pool=ARCHIVE.filter(e=>topicOk(e)&&!trArchSeen.has(e.nums[0]));
+    if(!pool.length){trArchSeen.clear();trArchNote=true;pool=ARCHIVE.filter(topicOk);}
+    if(pool.length){const e=pick(pool);trArchSeen.add(e.nums[0]);return buildArchive(e);}
+  }
+  const keys=Object.keys(SUBS).filter(k=>(trFilter.topic==='all'||SUBS[k].topic===trFilter.topic)&&subOk(k));
+  return buildGen(pick(keys.length?keys:Object.keys(SUBS)));
+}
+function startTrainSub(k){trSubOnly=k;trFilter.topic='all';trTask=null;trArchSeen.clear();trArchNote=false;switchTab('train');}
+function startRazborSub(k){rzOpen=k;rzStep=0;switchTab('razbor');}
+function renderTrain(){
+  if(!trTask){trTask=pickTrainTask();trAtt=2;trDone=false;logEv('task_start',{kind:trTask.kind,sub:trTask.k});}
+  const t=trTask;
+  const chips=[['all','Все темы'],...Object.entries(TOPICS)].map(([v,n])=>
+    `<button class="chip${trFilter.topic===v?' on':''}" data-topic="${v}">${n}</button>`).join('');
+  const srcs=[['mix','Вперемешку'],['arch','Архив'],['gen','Генератор']].map(([v,n])=>
+    `<button class="chip src${trFilter.src===v?' on':''}" data-src="${v}">${n}</button>`).join('');
+  const srcTag=t.kind==='arch'
+    ?`<span class="tag arch">РешуОГЭ № ${t.nums.join(', № ')}</span>`
+    :`<span class="tag gen">генератор</span>`;
+  const archNote=trArchNote?`<div class="smallnote" style="color:var(--warn);margin-bottom:8px">Архив по этому фильтру пройден полностью — дальше пойдут повторы и задачи генератора.</div>`:'';
+  const subChip=trSubOnly?`<button class="chip on trsub" id="trSubOff">Тип: ${SUBS[trSubOnly].name} ✕</button>`:'';
+  $('#main').innerHTML=`<div class="filters">${chips}<span style="width:10px"></span>${srcs}${subChip}</div>
+  ${''/*архивная заметка*/}${archNote}
+  <div class="meta">${tagTopic(t.sub.topic)}${srcTag}${noteTag(t.sub)}<span class="smallnote">${t.sub.name}</span></div>
+  <div class="grid"><div>${figHtml(t)}</div><div>
+    <div class="task">${t.text}</div>
+    <div class="controls"><input class="ans" id="ans" inputmode="decimal" placeholder="ответ" autocomplete="off">
+      <button id="check">Проверить</button>
+      <button class="soft" id="giveup" style="display:none">Сдаюсь — решение</button>
+      <button class="blue" id="next" style="display:none">Следующая →</button></div>
+    <div class="fb" id="fb"></div>
+    ${solHtml(t,false)}
+  </div></div>`;
+  bindRefcalls();
+  $$('.chip').forEach(ch=>ch.addEventListener('click',()=>{
+    if(ch.dataset.topic){trFilter.topic=ch.dataset.topic;trSubOnly=null;}
+    else if(ch.dataset.src){trFilter.src=ch.dataset.src;}
+    trTask=null;trArchSeen.clear();trArchNote=false;render();
+  }));
+  const off=$('#trSubOff'); if(off)off.addEventListener('click',()=>{trSubOnly=null;trTask=null;render();});
+  const fb=$('#fb'), inp=$('#ans');
+  const finish=(good)=>{trDone=true;$('#next').style.display='';$('#giveup').style.display='none';
+    st.train.solved++; if(good)st.train.good++; else st.train.bad++; save(); updStats();};
+  $('#check').addEventListener('click',()=>{
+    if(trDone)return;
+    const v=parseAns(inp.value);
+    if(!isFinite(v)){fb.className='fb show';fb.innerHTML='Введите число (можно десятичную дробь через запятую или дробь вида 168/25).';return;}
+    if(eqAns(v,t.ans)){
+      fb.className='fb ok show';fb.innerHTML=`Верно! Ответ ${fmtNum(t.ans)}.`;
+      streak++; $('#solBox').classList.add('show');
+      logEv('solved',{sub:t.k,mistakes:2-trAtt}); finish(true);
+    } else {
+      streak=0; trAtt--;
+      const d=matchDiag(v,t.diag);
+      fb.className=d?'fb diag show':'fb bad show';
+      fb.innerHTML=(d||'Пока неверно. Взгляните на чертёж: что дано и на какую дугу или отрезок опирается искомое?')+(trAtt>0?` <i>(осталась ${trAtt} попытка)</i>`:'');
+      logEv('opt_wrong',{sub:t.k,pick:v});
+      if(trAtt<=0){$('#giveup').style.display='';}
+    }
+  });
+  $('#giveup').addEventListener('click',()=>{
+    fb.className='fb show';fb.innerHTML=`Правильный ответ: <b>${fmtNum(t.ans)}</b>. Разберите решение ниже.`;
+    $('#solBox').classList.add('show'); logEv('hint',{sub:t.k,via:'giveup'}); finish(false);
+  });
+  $('#next').addEventListener('click',()=>{trTask=null;render();});
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')$('#check').click();});
+  inp.focus();
+}
+
+/* ---------- Зачёт ---------- */
+const QUIZ_QUOTA={ug:3,opis:2,vpis:3,kas:2};
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function startQuiz(){
+  let keys=[];
+  for(const tk in QUIZ_QUOTA){
+    const pool=shuffle(Object.keys(SUBS).filter(k=>SUBS[k].topic===tk&&SUBS[k].quiz!==false));
+    keys=keys.concat(pool.slice(0,QUIZ_QUOTA[tk]));
+  }
+  shuffle(keys);
+  qz={items:keys.map(buildGen),i:0,results:[],answered:false};
+  logEv('start',{kind:'quiz'});
+}
+function renderQuiz(){
+  const main=$('#main');
+  if(!qz){
+    const w=weakStats(), top=Object.entries(w).filter(([k,n])=>n>=2&&SUBS[k]).sort((a,b)=>b[1]-a[1]).slice(0,3);
+    const weakHtml=top.length?`<div class="route" style="text-align:left"><b>Ваши слабые типы (по журналу ошибок):</b><ul>${
+      top.map(([k,n])=>`<li>${SUBS[k].name} — ошибок: ${n} <button class="sec minibtn" data-rz="${k}">Разбор</button> <button class="blue minibtn" data-tr="${k}">Тренировать</button></li>`).join('')
+    }</ul></div>`:'';
+    main.innerHTML=`<div class="fin"><div style="font-family:Georgia,serif;font-size:22px;margin-bottom:8px">Зачёт: 10 задач, тип скрыт, одна попытка на вопрос</div>
+    <div class="smallnote">Состав честный: 3 задачи на углы, 2 — описанная окружность, 3 — вписанная, 2 — касательные и хорды.</div>
+    <div class="rowbtns" style="justify-content:center"><button id="qStart">Начать зачёт</button></div>
+    ${st.best!=null?`<div class="smallnote" style="margin-top:8px">Лучший результат: ${st.best}/10</div>`:''}
+    ${weakHtml}</div>`;
+    $('#qStart').addEventListener('click',()=>{startQuiz();render();});
+    $$('.subrow button, .pinpanel .misschip').forEach(bt=>{
+      if(bt.dataset.rz)bt.addEventListener('click',()=>startRazborSub(bt.dataset.rz));
+      else if(bt.dataset.tr)bt.addEventListener('click',()=>startTrainSub(bt.dataset.tr));
+    });
+    return;
+  }
+  if(qz.i>=qz.items.length)return renderQuizFinal();
+  const t=qz.items[qz.i];
+  main.innerHTML=`<div class="quizq">Вопрос ${qz.i+1} из ${qz.items.length}</div>
+  <div class="grid"><div>${figHtml(t)}</div><div>
+    <div class="task">${t.text}</div>
+    <div class="controls"><input class="ans" id="qAns" inputmode="decimal" placeholder="ответ" autocomplete="off">
+      <button id="qCheck">Ответить</button>
+      <button class="blue" id="qNext" style="display:none">${qz.i===qz.items.length-1?'К результатам':'Дальше →'}</button></div>
+    <div class="fb" id="qFb"></div>
+    ${solHtml(t,false)}
+  </div></div>`;
+  bindRefcalls();
+  const fb=$('#qFb'), inp=$('#qAns');
+  $('#qCheck').addEventListener('click',()=>{
+    if(qz.answered)return;
+    const v=parseAns(inp.value);
+    if(!isFinite(v)){fb.className='fb show';fb.innerHTML='Введите число.';return;}
+    qz.answered=true;
+    const ok=eqAns(v,t.ans);
+    qz.results.push({ok,sub:t.k});
+    fb.className=ok?'fb ok show':'fb bad show';
+    fb.innerHTML=ok?`Верно!`:`Неверно. Правильный ответ: <b>${fmtNum(t.ans)}</b>.`;
+    $('#solBox').classList.add('show');
+    logEv(ok?'quiz_ok':'quiz_wrong',{sub:t.k,pick:v});
+    $('#qNext').style.display='';$('#qCheck').disabled=true;
+  });
+  $('#qNext').addEventListener('click',()=>{qz.i++;qz.answered=false;render();});
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')$('#qCheck').click();});
+  inp.focus();
+}
+function renderQuizFinal(){
+  const score=qz.results.filter(r=>r.ok).length;
+  st.runs++; if(st.best==null||score>st.best)st.best=score;
+  st.passed=true; save(); logEv('finish',{score});
+  const dots=qz.results.map(r=>`<span class="dot ${r.ok?'g':'r'}"></span>`).join('');
+  const failed=[...new Set(qz.results.filter(r=>!r.ok).map(r=>r.sub))];
+  const route=failed.length
+    ?`<div class="route"><b>Маршрут повторения:</b><ul>${failed.map(k=>`<li>${TOPICS[SUBS[k].topic]} — «${SUBS[k].name}» (вкладка «Разбор»)</li>`).join('')}</ul></div>`
+    :`<div class="route"><b>Все темы закрыты — отличный результат!</b></div>`;
+  $('#main').innerHTML=`<div class="fin"><div class="score">${score} / ${qz.items.length}</div>
+    <div class="dots" style="justify-content:center">${dots}</div>${route}
+    <div class="rowbtns" style="justify-content:center"><button id="qAgain">Пройти ещё раз</button></div></div>`;
+  qz=null; updStats();
+  $('#qAgain').addEventListener('click',()=>{startQuiz();render();});
+}
+
+/* ---------- Справочник: карта листа + карточки ---------- */
+let pinOpen=null, sheetZoom=false;
+function archCountFor(sub){return ARCHIVE.filter(e=>e.sub===sub).length;}
+function pinBadge(p){return p.subs.reduce((s,k)=>s+archCountFor(k),0)+p.subs.length;} // архив + генераторы
+function pinsHtml(hotRefs){
+  return PINS.map(p=>{
+    const on=(pinOpen===p.id)||(hotRefs&&p.refs.some(r=>hotRefs.includes(r)));
+    return `<button class="pin${on?' on':''}" data-pin="${p.id}" style="left:${p.x}%;top:${p.y}%" title="${p.title}">
+      <span class="cap"></span><span class="needle"></span><span class="bdg">${pinBadge(p)}</span></button>`;
+  }).join('');
+}
+function pinPanelHtml(){
+  if(!pinOpen)return '<div class="smallnote" style="margin:10px 2px">Нажмите на кнопку-пин, чтобы увидеть, какие задачи решаются этим блоком листа.</div>';
+  const p=PINS.find(x=>x.id===pinOpen);
+  const rows=p.subs.map(k=>{const n=archCountFor(k);
+    return `<div class="subrow"><span class="nm">${SUBS[k].name}</span>
+      <span class="cnt">${n?n+' из архива + генератор':'генератор'}</span>
+      <button class="sec minibtn" data-rz="${k}">Разбор</button>
+      <button class="blue minibtn" data-tr="${k}">Тренировать</button></div>`;}).join('');
+  const reflinks=p.refs.map(r=>{const rf=REFS.find(x=>x.id===r);return rf?`<span class="misschip" data-ref="${r}">📖 ${rf.name}</span>`:'';}).join('');
+  return `<h3>📌 ${p.title}</h3><div class="why">${p.why}</div>${rows}${reflinks?`<div style="margin-top:8px">${reflinks}</div>`:''}`;
+}
+function renderRefs(hot){
+  const hotRefs=hot?[hot]:null;
+  const cards=REFS.map(r=>{
+    const used=Object.keys(SUBS).filter(k=>SUBS[k].ref===r.id).map(k=>SUBS[k].name);
+    const onSheet=PINS.some(p=>p.refs.includes(r.id));
+    return `<div class="refcard${hot===r.id?' hot':''}" id="ref-${r.id}">
+      <h3>${r.name}</h3><div class="fx">${r.fx}</div>
+      ${(r.notes||[]).map(n=>`<div class="smallnote">• ${n}</div>`).join('')}
+      <div class="smallnote" style="margin-top:7px">${onSheet?'📌 есть на листе ОГЭ — пин на карте выше':'🧠 на листе ОГЭ этого нет — помним наизусть'}</div>
+      ${used.length?`<div class="use"><b>Где работает:</b> ${used.join(' · ')}</div>`:''}
+    </div>`;}).join('');
+  $('#main').innerHTML=`<div class="sheetbar">
+      <b style="font-family:Georgia,serif;font-size:18px">Лист ОГЭ-2026, стр. 5–6: что пригодится в задании 16</b>
+      <button class="sec" id="zoomBtn">${sheetZoom?'Мельче':'Крупнее'}</button>
+    </div>
+    <div class="sheetwrap"><div class="sheetinner${sheetZoom?' zoomed':''}" id="sheetInner">
+      <img src="${SHEET_IMG}" alt="Справочные материалы ОГЭ-2026 по геометрии, страницы 5 и 6">
+      ${pinsHtml(hotRefs)}
+    </div></div>
+    <div class="pinpanel" id="pinPanel">${pinPanelHtml()}</div>
+    <div class="missing"><b>🧠 Этого на листе НЕТ — держим в голове:</b><br>
+      ${SHEET_MISSING.map(m=>`<span class="misschip" data-ref="${m.ref}">${m.t}</span>`).join('')}
+    </div>
+    <div class="refgrid">${cards}</div>
+    <div class="bank"><h3>банк заданий · тема 7.4 «Окружность, круг и их элементы»</h3>
+      <div class="smallnote">Официальные прототипы задания 16: <a href="${bank.pdf}" target="_blank" rel="noopener">PDF-навигатор открытый банк</a> ·
+      <a href="${bank.theme}" target="_blank" rel="noopener">вся тема 7.4 в открытом банке</a>. Коды задач банка:</div>
+      <div class="codes">${bank.codes.map(cd=>`<a href="${bank.base}${cd}" target="_blank" rel="noopener">${cd}</a>`).join('')}</div>
+    </div>`;
+  bindRefsHandlers();
+  if(hot){
+    const hp=PINS.find(p=>p.refs.includes(hot));
+    const el=hp?$('#sheetInner'):document.getElementById('ref-'+hot);
+    if(el&&el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:hp?'start':'center'});
+  }
+}
+function bindRefsHandlers(){
+  $$('.pin').forEach(b=>b.addEventListener('click',()=>{
+    pinOpen=(pinOpen===b.dataset.pin)?null:b.dataset.pin;
+    logEv('pin',{id:b.dataset.pin});
+    $('#pinPanel').innerHTML=pinPanelHtml();
+    $$('.pin').forEach(x=>x.classList.toggle('on',x.dataset.pin===pinOpen));
+    bindPanelHandlers();
+  }));
+  bindPanelHandlers();
+  $('#zoomBtn').addEventListener('click',()=>{sheetZoom=!sheetZoom;renderRefs();});
+  $$('.misschip').forEach(m=>m.addEventListener('click',()=>openRef(m.dataset.ref)));
+}
+function bindPanelHandlers(){
+  const pp=$('#pinPanel'); if(!pp)return;
+  $$('.subrow button, .pinpanel .misschip').forEach(b=>{
+    if(b.dataset.rz)b.addEventListener('click',()=>startRazborSub(b.dataset.rz));
+    else if(b.dataset.tr)b.addEventListener('click',()=>startTrainSub(b.dataset.tr));
+    else if(b.dataset.ref)b.addEventListener('click',()=>openRef(b.dataset.ref));
+  });
+}
+function openRef(id){TAB='refs';$$('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab==='refs'));updStats();renderRefs(id);}
+
+/* ================= Self-test (?selftest=1): мат-аудит + геометрический аудит ================= */
+function auditFig(f,errs,tag){
+  if(!f||!f.svg){errs.push(tag+': нет фигуры');return;}
+  if(!/^<svg[\s>]/.test(f.svg)||!/<\/svg>$/.test(f.svg)){errs.push(tag+': повреждён svg');return;}
+  const op=(f.svg.match(/</g)||[]).length;
+  for(const c of f.chk||[]){
+    if(c.t==='circ'){const d=Math.abs(dist(c.P,c.c)-c.R);if(d>0.8)errs.push(tag+': точка не на окружности ('+n2(d)+'px)');}
+    else if(c.t==='ang'){const a=angleAt(c.V,c.P,c.Q);if(Math.abs(a-c.want)>1.5)errs.push(tag+': угол '+n2(a)+'° ≠ '+n2(c.want)+'°');}
+    else if(c.t==='ratio'){const r=dist(c.a[0],c.a[1])/dist(c.b[0],c.b[1]);if(Math.abs(r-c.want)>0.005*Math.max(1,c.want))errs.push(tag+': отношение длин '+n2(r)+' ≠ '+n2(c.want));}
+    else if(c.t==='tanl'){const d=Math.abs(distToLine(c.c,c.A,c.B)-c.R);if(d>0.8)errs.push(tag+': прямая не касается окружности ('+n2(d)+'px)');}
+    else if(c.t==='par'){const a1=Math.atan2(c.a[1].y-c.a[0].y,c.a[1].x-c.a[0].x),a2=Math.atan2(c.b[1].y-c.b[0].y,c.b[1].x-c.b[0].x);
+      let d=Math.abs(degf(a1-a2))%180;d=Math.min(d,180-d);if(d>0.8)errs.push(tag+': стороны не параллельны ('+n2(d)+'°)');}
+    else if(c.t==='sin'){const s=Math.sin(rad(angleAt(c.V,c.P,c.Q)));if(Math.abs(s-c.want)>0.01)errs.push(tag+': sin '+n2(s)+' ≠ '+c.want);}
+    else if(c.t==='tan'){const tn=Math.tan(rad(angleAt(c.V,c.P,c.Q)));if(Math.abs(tn-c.want)>0.012*(1+c.want))errs.push(tag+': tg '+n2(tn)+' ≠ '+n2(c.want));}
+    else if(c.t==='perim'){const P=c.pts,per=dist(P[0],P[1])+dist(P[1],P[2])+dist(P[2],P[0]);
+      const r=per/dist(c.base[0],c.base[1]);if(Math.abs(r-c.want)>0.006*c.want)errs.push(tag+': периметр/сторона '+n2(r)+' ≠ '+n2(c.want));}
+  }
+}
+function selftest(N){
+  N=N||25;
+  const errs=[],seen=new Set();
+  let figs=0;
+  for(const e of ARCHIVE){
+    e.nums.forEach(n=>{if(seen.has(n))errs.push('дубль № '+n);seen.add(n);});
+    if(!SUBS[e.sub]){errs.push('№'+e.nums[0]+': нет подтипа '+e.sub);continue;}
+    let t;
+    try{t=buildArchive(e);}catch(ex){errs.push('№'+e.nums[0]+': исключение '+ex.message);continue;}
+    if(!isFinite(t.ans))errs.push('№'+e.nums[0]+': неконечный ответ');
+    else if(Math.abs(t.ans-e.exp)>1e-6)errs.push('№'+e.nums[0]+': ответ '+t.ans+' ≠ эталон '+e.exp);
+    if(!t.text||t.text.length<25)errs.push('№'+e.nums[0]+': подозрительно короткий текст');
+    if(!t.sol||t.sol.length<2)errs.push('№'+e.nums[0]+': решение короче двух шагов');
+    auditFig(t.fig,errs,'№'+e.nums[0]);figs++;
+  }
+  for(const k in SUBS){
+    try{auditFig(build(k,SUBS[k].proto,{}).fig,errs,k+'(proto)');figs++;}
+    catch(ex){errs.push(k+'(proto): исключение '+ex.message);}
+    for(let i=0;i<N;i++){
+      let t;
+      try{t=buildGen(k);}catch(ex){errs.push(k+': исключение '+ex.message);break;}
+      if(!isFinite(t.ans)||t.ans<=0)errs.push(k+': плохой ответ '+t.ans+' при p='+JSON.stringify(t.p));
+      if(!t.diag||!t.diag.length)errs.push(k+': пустая диагностика при p='+JSON.stringify(t.p));
+      auditFig(t.fig,errs,k);figs++;
+    }
+  }
+  // карта листа
+  if(typeof SHEET_IMG!=='string'||SHEET_IMG.slice(0,11)!=='data:image/')errs.push('лист: SHEET_IMG не data-URI');
+  const pinIds=new Set();
+  for(const p of PINS){
+    if(pinIds.has(p.id))errs.push('пин-дубль '+p.id); pinIds.add(p.id);
+    if(!(p.x>2&&p.x<98&&p.y>2&&p.y<98))errs.push('пин '+p.id+': координаты вне листа');
+    if(!p.subs.length)errs.push('пин '+p.id+': нет подтипов');
+    p.subs.forEach(k=>{if(!SUBS[k])errs.push('пин '+p.id+': неизвестный подтип '+k);});
+    p.refs.forEach(r=>{if(!REFS.find(x=>x.id===r))errs.push('пин '+p.id+': неизвестная карточка '+r);});
+    if(!p.why||p.why.length<25)errs.push('пин '+p.id+': пустое «зачем»');
+  }
+  SHEET_MISSING.forEach(m=>{if(!REFS.find(x=>x.id===m.ref))errs.push('missing: неизвестная карточка '+m.ref);});
+  // зачёт: квоты и исключения
+  for(let s=0;s<12;s++){
+    let keys=[];
+    for(const tk in QUIZ_QUOTA){
+      const pool=Object.keys(SUBS).filter(k=>SUBS[k].topic===tk&&SUBS[k].quiz!==false);
+      if(pool.length<QUIZ_QUOTA[tk])errs.push('зачёт: в теме '+tk+' меньше подтипов, чем квота');
+      keys=keys.concat(pool.slice(0,QUIZ_QUOTA[tk]));
+    }
+    if(keys.length!==10)errs.push('зачёт: сумма квот '+keys.length+' ≠ 10');
+    if(keys.includes('rtHyp45'))errs.push('зачёт: rtHyp45 не должен попадать в зачёт');
+  }
+  // insCen: оба направления встречаются и считаются верно
+  let sawRev=false,sawDir=false;
+  for(let i=0;i<60;i++){const t=buildGen('insCen'); if(t.p.rev){sawRev=true;if(t.ans!==t.p.c)errs.push('insCen rev: ответ '+t.ans+' ≠ '+t.p.c);}
+    else{sawDir=true;if(t.ans!==t.p.c/2)errs.push('insCen: ответ '+t.ans+' ≠ '+t.p.c/2);}}
+  if(!sawRev||!sawDir)errs.push('insCen: одно из направлений не генерируется');
+  return {ok:errs.length===0,errs:errs.slice(0,80),figs,archive:ARCHIVE.length,subs:Object.keys(SUBS).length,pins:PINS.length};
+}
+
+/* ================= Инициализация ================= */
+window.__oge16={SUBS,ARCHIVE,REFS,build,buildGen,buildArchive,selftest,parseAns,eqAns,matchDiag,switchTab,
+  debug:()=>({trTask,qz,st,streak,TAB,rzOpen,rzStep,trSubOnly,pinOpen}),
+  figs:{figInsCentral,figTwoDiam,figDiamMON,figDiamsPair,figMnDiam,figDiamTri,figDiamPif,figCyclQuad,figCyclTrap,
+    figEqCircum,figEqIn,figSqCircum,figSqIn,figSqMidO,figRectDiag,figTanQuad,figTanTrapSides,figTanTrapR,
+    figSprTri,figRhomb,figTanExt,figTwoTan,figChordDist,figSecTan,figChordsX,figTanChord,figRtHyp45,figSinR}};
+(function init(){
+  if(typeof document==='undefined')return;
+  let selftestMode=false;
+  try{selftestMode=/(?:\?|&)selftest=1/.test(location.search);}catch(e){}
+  if(selftestMode){
+    const r=selftest(40);
+    $('#main').innerHTML=`<div class="fin"><div class="score" style="color:${r.ok?'#16a34a':'#dc2626'}">${r.ok?'SELFTEST OK':'SELFTEST FAIL'}</div>
+      <div class="smallnote">архив: ${r.archive} карточек · подтипов: ${r.subs} · проверено фигур: ${r.figs}</div>
+      ${r.errs.length?`<div class="route"><ul>${r.errs.map(e=>`<li>${e}</li>`).join('')}</ul></div>`:''}</div>`;
+    return;
+  }
+  $$('.tab').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+  logEv('start',{});
+  render();
+})();
+
+</script>
+</body>
+</html>

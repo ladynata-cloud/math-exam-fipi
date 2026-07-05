@@ -1,0 +1,1374 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Арифметика 1–5 класс — тренажёр</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f6fb;color:#172033;font-family:Verdana,Arial,sans-serif}.page{max-width:1060px;margin:0 auto;padding:22px}.hero,.card{background:#fff;border-radius:24px;padding:22px;box-shadow:0 14px 34px #1420331f;margin-bottom:18px}.back{color:#2563eb;font-weight:800;text-decoration:none}h1{margin:6px 0 8px;font-size:38px}.sub{color:#667085;line-height:1.45}.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}@media(max-width:860px){.grid{grid-template-columns:1fr}.cell,.vcell{width:34px!important;height:44px!important;font-size:24px!important}.cell.ncell{width:14px!important}.vcarry{width:34px!important}}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+button{border:0;border-radius:14px;padding:11px 15px;font-weight:900;cursor:pointer;background:#e7ebf3}button.active,button.primary{background:#2563eb;color:#fff}.good{background:#15803d;color:#fff}.warn{background:#f59e0b}.danger{background:#fee4e2;color:#7a271a}
+select{border:2px solid #cbd5e1;border-radius:14px;padding:10px 12px;font-weight:900;font-size:15px;background:#fff;max-width:100%}
+.prompt{text-align:center;font-size:30px;font-weight:950;margin:14px 0}
+/* уголок деления */
+.corner{display:flex;justify-content:center;align-items:flex-start;margin:18px 0;font-family:'Courier New',monospace}
+.cline{display:flex}
+.cell{width:44px;height:54px;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:950;border-radius:10px}
+.cell.ncell{width:18px}
+.cell.sel{background:#dbeafe;box-shadow:inset 0 0 0 2px #2563eb}
+.cell.cur{background:#dbeafe}
+.cell.uline{border-bottom:3px solid #334155;border-radius:0}
+.cell.minus{color:#64748b}
+.cell.ghost{color:#94a3b8}
+.cright{border-left:3px solid #334155;min-width:150px}
+.dbox{border-bottom:3px solid #334155;padding:6px 14px;font-size:30px;font-weight:950;text-align:center;height:54px;display:flex;align-items:center;justify-content:center}
+.qrow{display:flex;padding:6px 10px;gap:6px;flex-wrap:wrap;align-items:flex-end}
+.qcell{width:38px;height:48px;border:2px dashed #cbd5e1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:950}
+.qcell.done{border:2px solid #15803d;background:#dcfce7;color:#14532d}
+.qcomma{width:14px;height:48px;display:flex;align-items:flex-end;justify-content:center;font-size:26px;font-weight:950;color:#64748b;padding-bottom:4px}
+.qcomma.done{color:#14532d}
+/* столбик */
+.vert{display:flex;justify-content:center;margin:18px 0;font-family:'Courier New',monospace}
+.vgrid{display:flex;flex-direction:column}
+.vrow{display:flex}
+.vcell{width:44px;height:54px;position:relative;display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:950;border-radius:10px}
+.vcell.cur{background:#dbeafe}
+.vcell.ghost{color:#94a3b8}
+.vcell.res{color:#14532d}
+.vcell .cm{position:absolute;right:-8px;bottom:2px;font-size:26px;z-index:2}
+.vcarry{width:44px;height:24px;display:flex;align-items:flex-end;justify-content:center;font-size:16px;font-weight:900;color:#d97706}
+.vline{border-top:3px solid #334155}
+.instruction{background:#eef4ff;border-left:6px solid #2563eb;border-radius:16px;padding:14px;font-size:18px}
+.selctl{display:flex;justify-content:center;gap:10px;align-items:center;margin:14px 0}
+.selctl b{font-size:24px;min-width:90px;text-align:center}
+.answer{display:flex;justify-content:center;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px;font-weight:900}
+.answer label{font-size:19px}
+input{width:150px;border:2px solid #cbd5e1;border-radius:14px;padding:12px;font-size:22px;text-align:center}
+.fb{margin-top:14px;border-radius:16px;padding:14px;background:#f8fafc;border:1px solid #e5e7eb;font-size:18px}.ok{background:#dcfce7;color:#14532d}.err{background:#fee4e2;color:#7a271a}.tip{background:#fffbeb;color:#713f12}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}.stat{background:#f8fafc;border:1px solid #e5e7eb;border-radius:16px;padding:12px;text-align:center}.stat b{display:block;font-size:28px}.stat span{font-size:12px;color:#667085;font-weight:900}
+.box{border-radius:20px;padding:16px;margin-bottom:14px}.course{background:#eef4ff;border:1px solid #bfdbfe}.rules{background:#fff7ed;border:1px solid #fed7aa}
+.badge{display:inline-block;background:#fff;border:1px solid #bfdbfe;border-radius:999px;padding:6px 10px;font-weight:900}
+.hist{background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:9px;margin-bottom:8px;font-size:14px}
+.mini{font-size:13px;color:#667085;line-height:1.45}
+/* точки, лесенка, таблица Пифагора */
+.dots{display:flex;flex-direction:column;align-items:center;margin:16px 0}
+.drow{display:flex}
+.dot{width:20px;height:20px;border-radius:50%;margin:3px}
+.drow:nth-child(odd) .dot{background:#2563eb}.drow:nth-child(even) .dot{background:#60a5fa}
+.lad{display:flex;flex-direction:column;align-items:center;margin:16px 0;font-family:'Courier New',monospace}
+.lrow{font-size:24px;font-weight:950;padding:4px 14px;border-radius:10px;color:#94a3b8}
+.lrow.done{color:#14532d}.lrow.cur{background:#dbeafe;color:#172033}
+.pyth{display:flex;flex-direction:column;align-items:center;margin:16px 0}
+.prow{display:flex}
+.pcell{width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;border:1px solid #e2e8f0;font-family:'Courier New',monospace}
+.pcell.hdr{background:#eef4ff;color:#2563eb}
+.pcell.hdr.hl{background:#2563eb;color:#fff}
+.pcell.band{background:#f0f7ff}
+.pcell.fill{color:#14532d;background:#f7fdf9}
+.pcell.tgt{background:#dbeafe;border:2px solid #2563eb;color:#2563eb;font-size:18px}
+@media(max-width:860px){.pcell{width:30px;height:30px;font-size:12px}.dot{width:14px;height:14px}}
+/* дроби */
+.fracview{display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap;margin:16px 0;font-size:28px;font-weight:950;font-family:'Courier New',monospace}
+.frac{display:inline-flex;flex-direction:column;align-items:center;line-height:1.15}
+.frac .fnum{border-bottom:3px solid #172033;padding:0 9px}
+.frac .fden{padding:0 9px}
+.frac.hl .fnum,.frac.hl .fden{color:#2563eb}.frac.hl .fnum{border-color:#2563eb}
+.frac.okf .fnum,.frac.okf .fden{color:#14532d}.frac.okf .fnum{border-color:#14532d}
+.fq{color:#94a3b8}
+.fop{padding:0 2px}
+.mulchips{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:12px 0}
+.chip{border-radius:999px;padding:8px 14px;font-weight:900;background:#fee4e2;color:#7a271a}
+.chip.yes{background:#dcfce7;color:#14532d}
+.fbarwrap{display:flex;justify-content:center;margin:16px 0}
+.fbar{display:flex;border:3px solid #334155;border-radius:12px;overflow:hidden}
+.fseg{width:46px;height:58px;border-right:3px solid #334155;background:#fff}
+.fseg:last-child{border-right:0}
+.fseg.on{background:#60a5fa}
+@media(max-width:860px){.fseg{width:30px;height:44px}.fracview{font-size:22px}}
+/* НОК: разложение на простые множители */
+.factzone{display:flex;gap:34px;justify-content:center;flex-wrap:wrap;margin:16px 0;font-family:'Courier New',monospace}
+.fcolm{display:flex;flex-direction:column;align-items:stretch}
+.flabel{text-align:center;font-weight:900;color:#667085;margin-bottom:4px;font-family:Verdana,sans-serif;font-size:14px}
+.frow2{display:flex;justify-content:flex-end}
+.fnl{min-width:70px;text-align:right;padding:1px 12px;font-size:26px;font-weight:950;border-right:3px solid #334155}
+.fnr{min-width:48px;padding:1px 12px;font-size:26px;font-weight:950;color:#2563eb}
+.fnr.qm{color:#94a3b8}
+.fsum{text-align:center;font-size:20px;font-weight:950;margin-top:6px;color:#14532d}
+.fassemble{width:100%;text-align:center;font-size:24px;font-weight:950;margin-top:4px;font-family:'Courier New',monospace}
+.chip.p{background:#eef4ff;color:#2563eb}
+.chip.hdrp{background:#fff;color:#667085;border:1px dashed #cbd5e1}
+.pcell.comp{color:#b6bdc9;text-decoration:line-through}
+@media(max-width:860px){.fnl,.fnr{font-size:20px}}
+/* 1 класс: домики состава числа и переход через десяток */
+.house{display:flex;flex-direction:column;align-items:center;margin:16px 0;font-family:'Courier New',monospace}
+.roof{width:170px;height:56px;background:#2563eb;clip-path:polygon(50% 0,100% 100%,0 100%);display:flex;align-items:flex-end;justify-content:center;color:#fff;font-weight:950;font-size:28px;padding-bottom:2px}
+.floor{display:flex;width:170px;border:3px solid #334155;border-top:0;background:#fff}
+.floor.cur{background:#dbeafe}
+.win{flex:1;height:46px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:950}
+.win:first-child{border-right:3px solid #334155}
+.win.qm{color:#94a3b8}
+.win.done{color:#14532d}
+.crossbox{display:flex;flex-direction:column;align-items:center;gap:10px;margin:16px 0;font-family:'Courier New',monospace}
+.cbig{font-size:36px;font-weight:950}
+.split{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:950}
+.bub{width:54px;height:54px;border-radius:50%;border:3px solid #2563eb;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:950;color:#2563eb;background:#fff}
+.bub.qm{color:#94a3b8;border-color:#cbd5e1}
+.bub.done{border-color:#15803d;color:#14532d;background:#dcfce7}
+.chainln{font-size:22px;font-weight:950;color:#475569}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main class="page">
+<section class="hero"><a class="back" href="../index.html">← На главную</a><h1>Арифметика: 1–5 класс</h1><p class="sub">Полный курс: сложение, вычитание, умножение и деление натуральных чисел и десятичных дробей. Устный счёт, столбики с переносами и займами, деление уголком, запятые в десятичных. Генератор любит примеры с нулями в середине — там, где чаще всего ошибаются.</p></section>
+<section class="grid">
+<div class="card">
+<div class="row"><b>Уровень:</b><select id="level">
+<optgroup label="1 класс">
+<option value="n1a">Сложение до 10</option>
+<option value="n1b">Вычитание до 10</option>
+<option value="c1a">Состав числа: домики</option>
+<option value="c1b">Переход через десяток · пошагово</option>
+<option value="n1c">До 20 · проверь себя</option>
+</optgroup>
+<optgroup label="2 класс">
+<option value="n2a">Устный счёт до 100</option>
+<option value="n2b">Сложение столбиком (до 100)</option>
+<option value="n2c">Вычитание столбиком (до 100)</option>
+<option value="n2e">Табличное деление</option>
+</optgroup>
+<optgroup label="Таблица умножения">
+<option value="t2a">Наглядно: ряды точек</option>
+<option value="t2b">Лесенкой: таблица на одно число</option>
+<option value="t2c">Заполняем таблицу Пифагора</option>
+<option value="n2d">Вперемешку: проверь себя</option>
+<option value="t2e">Найди множитель (? × 7 = 42)</option>
+</optgroup>
+<optgroup label="3 класс">
+<option value="n3a">Сложение столбиком (до 1000)</option>
+<option value="n3b">Вычитание · заём через ноль (503 − 287)</option>
+<option value="n3c">Умножение столбиком на 1 цифру</option>
+<option value="n3d">Деление с остатком</option>
+<option value="n3e">Уголком · пошагово</option>
+<option value="n3f">Уголком · базовый</option>
+</optgroup>
+<optgroup label="4 класс">
+<option value="n4a">Многозначные: ± столбиком</option>
+<option value="n4b">Умножение на двузначное</option>
+<option value="n4c">Нули в частном</option>
+<option value="n4d">Двузначный делитель · с опорой</option>
+<option value="n4e">Двузначный · самостоятельно</option>
+</optgroup>
+<optgroup label="5 класс">
+<option value="n5a">Сложение десятичных</option>
+<option value="n5b">Вычитание десятичных</option>
+<option value="n5c">Умножение десятичных (счёт знаков)</option>
+<option value="n5d">Десятичная ÷ натуральное</option>
+<option value="n5e">Не делится нацело — дописываем нули</option>
+<option value="n5f">Десятичная ÷ десятичную (сдвиг запятой)</option>
+</optgroup>
+<optgroup label="Обыкновенные дроби (4 → 6 класс)">
+<option value="f4a">4 кл · Какая дробь закрашена?</option>
+<option value="f4b">4 кл · Сравнение: одинаковые знаменатели или числители</option>
+<option value="f4c">4 кл · ± с одинаковым знаменателем</option>
+<option value="f6a">6 кл · Перебор кратных: ищем общий знаменатель</option>
+<option value="f6b">6 кл · Приведение к общему знаменателю</option>
+<option value="f6c">6 кл · Сравнение с разными знаменателями</option>
+<option value="f6d">6 кл · ± с разными знаменателями</option>
+<option value="f6e">6 кл · Сокращение дробей</option>
+</optgroup>
+<optgroup label="НОК: два способа (5 → 6 класс)">
+<option value="k5a">5 кл · НОК перебором кратных</option>
+<option value="k6a">6 кл · Простое или составное? (таблица до 50)</option>
+<option value="k6b">6 кл · Разложение на простые множители</option>
+<option value="k6c">6 кл · НОК через простые множители</option>
+</optgroup>
+</select><button id="hint" class="warn">Подсказка</button></div>
+<div class="row" id="tblpick" hidden><b>Какую таблицу учим:</b></div>
+<div class="prompt" id="prompt"></div>
+<div class="dots" id="viswrap" hidden></div>
+<div class="lad" id="ladwrap" hidden></div>
+<div class="pyth" id="pythwrap" hidden></div>
+<div class="fbarwrap" id="fbarwrap" hidden><div class="fbar" id="fbar"></div></div>
+<div class="fracview" id="fracview" hidden></div>
+<div class="mulchips" id="mulwrap" hidden></div>
+<div class="row" id="btnrow" style="justify-content:center" hidden></div>
+<div class="pyth" id="primegrid" hidden></div>
+<div class="mulchips" id="primerow" hidden></div>
+<div class="factzone" id="factwrap" hidden></div>
+<div class="fassemble" id="assemble" hidden></div>
+<div class="row" id="comppick" hidden><b>Какое число строим:</b></div>
+<div class="house" id="housewrap" hidden></div>
+<div class="crossbox" id="crosswrap" hidden></div>
+<div class="corner" id="cornerwrap" hidden>
+ <div class="cleft" id="cleft"></div>
+ <div class="cright"><div class="dbox" id="dbox"></div><div class="qrow" id="qrow"></div></div>
+</div>
+<div class="vert" id="vertwrap" hidden><div class="vgrid" id="vgrid"></div></div>
+<div class="instruction" id="instruction"></div>
+<div id="selctl" class="selctl" hidden><button id="less">◄ меньше</button><b id="selval"></b><button id="more">больше ►</button><button id="selok" class="primary">Выбрать</button></div>
+<div class="answer" id="answrap"><label id="qlabel" for="ans"></label><input id="ans" type="text" inputmode="decimal"><button id="check" class="primary">Проверить</button></div>
+<div class="answer"><button id="solution">Решение</button><button id="next" class="good">Следующий пример</button></div>
+<div id="fb" class="fb"></div>
+</div>
+<aside class="card">
+<div class="stats"><div class="stat"><b id="total">0</b><span>решено</span></div><div class="stat"><b id="right">0</b><span>без ошибок</span></div><div class="stat"><b id="streak">0</b><span>серия</span></div></div>
+<div class="stats"><div class="stat"><b id="acc">0%</b><span>точность</span></div><div class="stat"><b id="best">0</b><span>лучшая</span></div><div class="stat"><b id="date">—</b><span>дата</span></div></div>
+<div class="box course"><h2>Прогресс темы</h2><p><span id="status" class="badge">тема начата</span></p><p id="advice">Реши первые 10 примеров.</p><button id="reset" class="danger">Сбросить статистику</button></div>
+<div class="box rules"><h2>Памятка</h2><p><b>Через десяток:</b> дополни до 10, разложи второе число, досчитай. Состав числа (домики) — ключ к этому приёму.</p><p><b>Таблица умножения:</b> ×5 — половина от ×10; ×9 — на 10 и отними; ×4 и ×8 — удваивай; перестановка множителей ответ не меняет.</p><p><b>Столбик:</b> считай по разрядам справа налево; десять — перенос, не хватает — займи.</p><p><b>Уголок:</b> неполное делимое → цифра → умножь → вычти → снеси.</p><p><b>± десятичных:</b> запятая под запятой, недостающие знаки — нули.</p><p><b>× десятичных:</b> умножай, не глядя на запятые, потом отсчитай столько знаков, сколько их в обоих множителях вместе.</p><p><b>Общий знаменатель:</b> перебирай кратные большего знаменателя, пока не разделится на меньший. Дополнительный множитель = НОЗ ÷ знаменатель.</p><p><b>НОК двумя способами:</b> 5 класс — перебирай кратные большего числа; 6 класс — разложи оба на простые множители и возьми каждый столько раз, сколько его в числе, где его больше.</p><p><b>÷ на дробь:</b> сдвинь запятую в обоих числах, чтобы делитель стал натуральным.</p></div>
+<h2>История</h2><div id="history"></div>
+</aside>
+</section>
+</main>
+<script>
+var KEY='mathExamCourseProgress.v1',TOPIC='arithmeticCourse';
+var LEVELS={
+ n1a:{tag:'1 кл',mode:'simple',kind:'add10'},
+ n1b:{tag:'1 кл',mode:'simple',kind:'sub10'},
+ n1c:{tag:'1 кл',mode:'simple',kind:'cross20'},
+ c1a:{tag:'1 кл',mode:'compose'},
+ c1b:{tag:'1 кл',mode:'cross'},
+ n2a:{tag:'2 кл',mode:'simple',kind:'mental100'},
+ n2b:{tag:'2 кл',mode:'cadd',len:[2,2],carry:.8},
+ n2c:{tag:'2 кл',mode:'csub',len:[2,2],borrow:.8,zero:0},
+ n2d:{tag:'Таблица',mode:'simple',kind:'multable'},
+ t2a:{tag:'Таблица',mode:'mulvis'},
+ t2b:{tag:'Таблица',mode:'mulseq'},
+ t2c:{tag:'Таблица',mode:'pyth'},
+ t2e:{tag:'Таблица',mode:'simple',kind:'mulinv'},
+ n2e:{tag:'2 кл',mode:'table'},
+ n3a:{tag:'3 кл',mode:'cadd',len:[3,3],carry:.85},
+ n3b:{tag:'3 кл',mode:'csub',len:[3,3],borrow:1,zero:.55},
+ n3c:{tag:'3 кл',mode:'cmul1',len:[2,3],zero:.4},
+ n3d:{tag:'3 кл',mode:'rem'},
+ n3e:{tag:'3 кл',mode:'corner',d2:false,askMult:true, askSub:true, trial:false,exact:true, dlen:[2,3],zero:.3},
+ n3f:{tag:'3 кл',mode:'corner',d2:false,askMult:false,askSub:true, trial:false,exact:false,dlen:[3,3],zero:.4},
+ n4a:{tag:'4 кл',mode:'caddsub',len:[4,5],carry:.85,borrow:.85,zero:.4},
+ n4b:{tag:'4 кл',mode:'cmul2',len:[2,3],zero:.4},
+ n4c:{tag:'4 кл',mode:'corner',d2:false,askMult:false,askSub:true, trial:false,exact:false,dlen:[3,4],zero:1},
+ n4d:{tag:'4 кл',mode:'corner',d2:true, askMult:true, askSub:true, trial:true, exact:true, dlen:[3,4],zero:.6},
+ n4e:{tag:'4 кл',mode:'corner',d2:true, askMult:false,askSub:false,trial:false,exact:false,dlen:[4,4],zero:.6},
+ n5a:{tag:'5 кл',mode:'decadd'},
+ n5b:{tag:'5 кл',mode:'decsub'},
+ n5c:{tag:'5 кл',mode:'decmul',zero:.5},
+ n5d:{tag:'5 кл',mode:'dec',   d2:false,askMult:false,askSub:true, trial:false,zero:.6},
+ n5e:{tag:'5 кл',mode:'ext',   d2:false,askMult:false,askSub:true, trial:false,zero:.5},
+ n5f:{tag:'5 кл',mode:'decdec',d2:false,askMult:false,askSub:true, trial:false,zero:.6},
+ f4a:{tag:'Дроби 4 кл',mode:'fshade'},
+ f4b:{tag:'Дроби 4 кл',mode:'fcmp0'},
+ f4c:{tag:'Дроби 4 кл',mode:'faddsame'},
+ f6a:{tag:'Дроби 6 кл',mode:'fnoz'},
+ f6b:{tag:'Дроби 6 кл',mode:'fbring'},
+ f6c:{tag:'Дроби 6 кл',mode:'fcmp'},
+ f6d:{tag:'Дроби 6 кл',mode:'faddsub'},
+ f6e:{tag:'Дроби 6 кл',mode:'freduce'},
+ k5a:{tag:'НОК 5 кл',mode:'lcm5'},
+ k6a:{tag:'НОК 6 кл',mode:'prime'},
+ k6b:{tag:'НОК 6 кл',mode:'factor'},
+ k6c:{tag:'НОК 6 кл',mode:'lcm6'}
+};
+var levelId='n1a',cfg=LEVELS.n1a;
+var task=null,phase='simple',stepIdx=0,prodShown=false,trialDigit=null,errors=0,selLen=1,qDone=0,finished=false,cIdx=0,seqIdx=0,pickN=0,pickC=0;
+var stats={total:0,right:0,streak:0,best:0,date:null,history:[]};
+function el(id){return document.getElementById(id)}
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function p10(n){return Math.pow(10,n)}
+function gcd(a,b){while(b){var t=a%b;a=b;b=t}return a}
+function lcm(a,b){return a/gcd(a,b)*b}
+function isPrime(n){if(n<2)return false;for(var i=2;i*i<=n;i++)if(n%i===0)return false;return true}
+function spf(n){for(var i=2;i*i<=n;i++)if(n%i===0)return i;return n}
+function factorize(n){var f=[];while(n>1){var p=spf(n);f.push(p);n/=p}return f}
+var PRIMES_REF=[2,3,5,7,11,13,17,19,23,29,31,37,41,43,47];
+function hasMidZero(s){return String(s).slice(1).indexOf('0')>=0}
+function load(){try{var d=JSON.parse(localStorage.getItem(KEY));var s=d&&d.topics&&d.topics[TOPIC];if(s){stats=s;if(!stats.history)stats.history=[]}}catch(e){}}
+function save(){var d;try{d=JSON.parse(localStorage.getItem(KEY))||{topics:{}}}catch(e){d={topics:{}}}d.topics=d.topics||{};d.topics[TOPIC]=stats;localStorage.setItem(KEY,JSON.stringify(d))}
+function norm(v){return Number(String(v).replace(/\s/g,'').replace(',','.'))}
+function insComma(digits,k){if(k<=0)return digits;while(digits.length<=k)digits='0'+digits;return digits.slice(0,digits.length-k)+','+digits.slice(digits.length-k)}
+function decStr(sig,dec){return insComma(String(sig),dec)}
+function computeSteps(Ns,d){var steps=[],cur=0,started=false;for(var i=0;i<Ns.length;i++){cur=cur*10+Number(Ns.charAt(i));if(!started){if(cur<d&&i<Ns.length-1)continue;started=true}var qd=Math.floor(cur/d);steps.push({end:i,partial:cur,qd:qd,prod:qd*d,rem:cur-qd*d});cur=cur-qd*d}return steps}
+function plural(n,one,few,many){var m10=n%10,m100=n%100;
+ if(m10===1&&m100!==11)return one;
+ if(m10>=2&&m10<=4&&(m100<12||m100>14))return few;
+ return many}
+function trickFor(a,b){var x=Math.max(a,b),y=Math.min(a,b);
+ if(x===9)return 'Приём ×9: умножь на 10 и отними число: '+y+' × 10 − '+y+' = '+(y*10-y)+'.';
+ if(x===8)return 'Приём ×8: удвой трижды: '+y+' → '+(2*y)+' → '+(4*y)+' → '+(8*y)+'.';
+ if(x===7&&y===7)return 'Запоминалка: «семью семь — сорок девять».';
+ if(x===7&&y===6)return 'Запоминалка: «шестью семь — сорок два».';
+ if(x===7)return 'Приём ×7 = ×5 + ×2: '+(5*y)+' + '+(2*y)+' = '+(7*y)+'.';
+ if(x===6)return 'Приём ×6 = ×5 и ещё раз число: '+(5*y)+' + '+y+' = '+(6*y)+'.';
+ if(x===5)return 'Приём ×5 — половина от ×10: '+y+'0 ÷ 2 = '+(5*y)+'.';
+ if(x===4)return 'Приём ×4: удвой дважды: '+y+' → '+(2*y)+' → '+(4*y)+'.';
+ if(x===3)return 'Приём ×3: удвой и прибавь ещё раз: '+(2*y)+' + '+y+' = '+(3*y)+'.';
+ return 'Приём ×2 — просто удвой: '+y+' + '+y+' = '+(2*y)+'.'}
+/* ================= ГЕНЕРАЦИЯ: устный счёт ================= */
+function makeSimple(){var k=cfg.kind,a,b,op,ans;
+ if(k==='mulinv'){a=rnd(2,9);b=rnd(2,9);var left=Math.random()<.5;
+  return{mode:'simple',kind:k,a:a,b:b,op:'×',ansv:left?a:b,title:'Найди множитель',
+   label:left?('? × '+b+' = '+(a*b)):(a+' × ? = '+(a*b)),resText:a+' × '+b+' = '+(a*b)}}
+ if(k==='add10'){a=rnd(1,9);b=rnd(1,10-a);op='+';ans=a+b}
+ else if(k==='sub10'){a=rnd(2,10);b=rnd(1,a-1);op='−';ans=a-b}
+ else if(k==='cross20'){if(Math.random()<.5){a=rnd(5,9);b=rnd(11-a,9);op='+';ans=a+b}else{a=rnd(11,18);b=rnd(a-9,9);op='−';ans=a-b}}
+ else if(k==='multable'){a=rnd(2,9);b=rnd(2,9);op='×';ans=a*b}
+ else{a=rnd(21,79);b=rnd(2,19);if(Math.random()<.5&&a+b<=100){op='+';ans=a+b}else{op='−';if(b>=a)b=rnd(2,a-1);ans=a-b}}
+ return{mode:'simple',kind:k,a:a,b:b,op:op,ansv:ans,title:k==='multable'?'Таблица умножения':'Устный счёт',label:a+' '+op+' '+b}}
+/* ================= ГЕНЕРАЦИЯ: столбики ================= */
+function digitAt(s,col){var i=s.length-1-col;return i>=0?Number(s.charAt(i)):null}
+function addHasCarry(sa,sb){var c=0,L=Math.max(sa.length,sb.length);for(var k=0;k<L;k++){var s=(digitAt(sa,k)||0)+(digitAt(sb,k)||0)+c;if(s>=10){return true}c=0}return false}
+function subHasBorrow(sa,sb){var bin=0,L=sa.length;for(var k=0;k<L;k++){var da=digitAt(sa,k),db=digitAt(sb,k)||0;if(da-bin<db)return true;bin=(da-bin<db)?1:0}return false}
+function buildAddSteps(sa,sb,resKey,dec){var steps=[],c=0,L=Math.max(sa.length,sb.length);
+ for(var k=0;k<L;k++){var da=digitAt(sa,k),db=digitAt(sb,k);
+  if(db===null&&da!==null&&c===0){steps.push({auto:true,col:k,writes:[{row:resKey,col:k,ch:String(da)}],note:''});continue}
+  if(da===null&&db!==null&&c===0){steps.push({auto:true,col:k,writes:[{row:resKey,col:k,ch:String(db)}],note:''});continue}
+  var A0=da||0,B0=db||0,s=A0+B0+c,dg=s%10,nc=s>=10?1:0,terms=[];
+  if(da!==null)terms.push(A0);if(db!==null)terms.push(B0);if(c)terms.push(c+' (перенос)');
+  var w=[{row:resKey,col:k,ch:String(dg)}];if(nc)w.push({row:'CAR',col:k+1,ch:'1'});
+  var note='Пишем '+dg+(nc?', 1 переносим.':'.');
+  if(dec&&k===dec-1)note+=' Ставим запятую — под запятыми!';
+  steps.push({col:k,q:terms.join(' + ')+' = ?',a:s,writes:w,note:note});
+  c=nc}
+ if(c)steps.push({auto:true,col:L,writes:[{row:resKey,col:L,ch:'1'}],note:'Перенос 1 записываем впереди.'});
+ return steps}
+function buildSubSteps(sa,sb,dec){var steps=[],bin=0;
+ for(var k=0;k<sa.length;k++){var da=digitAt(sa,k),db=digitAt(sb,k);
+  if(db===null&&bin===0){steps.push({auto:true,col:k,writes:[{row:'RES',col:k,ch:String(da)}],note:''});continue}
+  var B0=db===null?0:db,base=da-bin,a,q,nb,note;
+  if(base>=B0){a=base-B0;nb=0;q=(bin?da+' − 1 (заняли) = '+base+'; ':'')+base+' − '+B0+' = ?';note='Пишем '+a+'.'}
+  else{a=base+10-B0;nb=1;
+   q=base<0?('Сверху 0, и 1 уже заняли — занимаем дальше: 9 − '+B0+' = ?')
+           :((bin?da+' − 1 (заняли) = '+base+'; ':'')+base+' меньше '+B0+' — занимаем: '+(base+10)+' − '+B0+' = ?');
+   note='Пишем '+a+'. Заняли десяток у соседнего разряда.'}
+  if(dec&&k===dec-1)note+=' Ставим запятую — под запятыми!';
+  var w=[{row:'RES',col:k,ch:String(a)}];if(nb)w.push({row:'CAR',col:k+1,ch:'•'});
+  steps.push({col:k,q:q,a:a,writes:w,note:note});
+  bin=nb}
+ return steps}
+function buildMul1Steps(sa,m,rowKey,shift){var steps=[],c=0;
+ for(var j=0;j<sa.length;j++){var da=digitAt(sa,j),p=m*da+c,dg=p%10,nc=Math.floor(p/10);
+  steps.push({col:shift+j,q:m+' × '+da+(c?' + '+c+' (в уме)':'')+' = ?',a:p,
+   writes:[{row:rowKey,col:shift+j,ch:String(dg)}],note:'Пишем '+dg+(nc?', '+nc+' в уме.':'.')});
+  c=nc}
+ if(c)steps.push({auto:true,col:shift+sa.length,writes:[{row:rowKey,col:shift+sa.length,ch:String(c)}],note:'Последний перенос '+c+' записываем впереди.'});
+ return steps}
+function buildMul2Steps(sa,b1,b0){var s1=String(Number(sa)*b0),s2=String(Number(sa)*b1);
+ var steps=buildMul1Steps(sa,b0,'P1',0);
+ steps.push({auto:true,col:0,writes:[],note:'Первое неполное произведение готово. Умножаем на десятки — пишем со сдвигом влево.'});
+ steps=steps.concat(buildMul1Steps(sa,b1,'P2',1));
+ steps.push({auto:true,col:0,writes:[],note:'Складываем неполные произведения.'});
+ var c=0,L=Math.max(s1.length,s2.length+1);
+ for(var k=0;k<L;k++){var da=digitAt(s1,k),db=k>=1?digitAt(s2,k-1):null;
+  if(db===null&&da!==null&&c===0){steps.push({auto:true,col:k,writes:[{row:'RES',col:k,ch:String(da)}],note:''});continue}
+  if(da===null&&db!==null&&c===0){steps.push({auto:true,col:k,writes:[{row:'RES',col:k,ch:String(db)}],note:''});continue}
+  var A0=da||0,B0=db||0,s=A0+B0+c,dg=s%10,nc=s>=10?1:0,terms=[];
+  if(da!==null)terms.push(A0);if(db!==null)terms.push(B0);if(c)terms.push(c+' (перенос)');
+  steps.push({col:k,q:terms.join(' + ')+' = ?',a:s,writes:[{row:'RES',col:k,ch:String(dg)}],note:'Пишем '+dg+(nc?', 1 в уме.':'.')});
+  c=nc}
+ if(c)steps.push({auto:true,col:L,writes:[{row:'RES',col:L,ch:'1'}],note:'Перенос 1 — впереди.'});
+ return steps}
+function makeColTask(){var op=cfg.mode;
+ if(op==='caddsub')op=Math.random()<.5?'cadd':'csub';
+ for(var t=0;t<900;t++){
+  var la=rnd(cfg.len[0],cfg.len[1]),lb=rnd(cfg.len[0],la);
+  if(op==='cadd'){var A=rnd(p10(la-1),p10(la)-1),B=rnd(p10(lb-1),p10(lb)-1);
+   var wc=Math.random()<cfg.carry;var sa=String(A),sb=String(B);
+   if(wc!==addHasCarry(sa,sb)&&t<700)continue;
+   var R=String(A+B);
+   return{mode:'col',op:'+',layout:['CAR','A','B','HL','RES'],
+    rows:{A:{digits:sa},B:{digits:sb,sign:'+'},RES:{digits:R,plan:R}},
+    csteps:buildAddSteps(sa,sb,'RES',0),writes:{},
+    title:'Сложи столбиком: '+A+' + '+B,label:A+' + '+B,resv:''+(A+B)}}
+  if(op==='csub'){var A2=rnd(p10(la-1),p10(la)-1);var bmax=Math.min(p10(lb)-1,A2-1);if(bmax<p10(lb-1))continue;var B2=rnd(p10(lb-1),bmax);
+   var sa2=String(A2),sb2=String(B2),R2=String(A2-B2);
+   if(R2.length!==sa2.length&&t<800)continue;
+   if(R2.length!==sa2.length)continue;
+   if(cfg.zero&&Math.random()<cfg.zero&&t<600&&!hasMidZero(sa2))continue;
+   var wb=Math.random()<cfg.borrow;
+   if(wb!==subHasBorrow(sa2,sb2)&&t<700)continue;
+   return{mode:'col',op:'−',layout:['CAR','A','B','HL','RES'],
+    rows:{A:{digits:sa2},B:{digits:sb2,sign:'−'},RES:{digits:R2,plan:R2}},
+    csteps:buildSubSteps(sa2,sb2,0),writes:{},
+    title:'Вычти столбиком: '+A2+' − '+B2,label:A2+' − '+B2,resv:''+(A2-B2)}}
+  if(op==='cmul1'){var A3=rnd(p10(la-1),p10(la)-1),m=rnd(2,9);
+   if(cfg.zero&&Math.random()<cfg.zero&&t<600&&!hasMidZero(String(A3))&&!hasMidZero(String(A3*m)))continue;
+   var sa3=String(A3),R3=String(A3*m);
+   return{mode:'col',op:'×',layout:['A','B','HL','RES'],
+    rows:{A:{digits:sa3},B:{digits:String(m),sign:'×'},RES:{digits:R3,plan:R3}},
+    csteps:buildMul1Steps(sa3,m,'RES',0),writes:{},
+    title:'Умножь столбиком: '+A3+' × '+m,label:A3+' × '+m,resv:R3}}
+  if(op==='cmul2'){var A4=rnd(p10(la-1),p10(la)-1),Bv=rnd(12,99);
+   if(Bv%10===0)continue;
+   if(cfg.zero&&Math.random()<cfg.zero&&t<600&&!hasMidZero(String(A4))&&!hasMidZero(String(A4*Bv)))continue;
+   var sa4=String(A4),b0=Bv%10,b1=Math.floor(Bv/10);
+   var P1=String(A4*b0),P2=String(A4*b1),R4=String(A4*Bv);
+   return{mode:'col',op:'×',layout:['A','B','HL','P1','P2','HL','RES'],
+    rows:{A:{digits:sa4},B:{digits:String(Bv),sign:'×'},P1:{digits:P1,plan:P1},P2:{digits:P2,plan:P2,shift:1},RES:{digits:R4,plan:R4}},
+    csteps:buildMul2Steps(sa4,b1,b0),writes:{},
+    title:'Умножь столбиком: '+A4+' × '+Bv,label:A4+' × '+Bv,resv:R4}}
+ }
+ throw new Error('gen col')}
+/* десятичные ± */
+function makeDecAddSub(sub){
+ for(var t=0;t<900;t++){
+  var la=rnd(2,4),decA=rnd(1,Math.min(2,la-0)),lb=rnd(2,la),decB=rnd(1,Math.min(2,lb));
+  var aSig=rnd(p10(la-1),p10(la)-1),bSig=rnd(p10(lb-1),p10(lb)-1);
+  if(aSig%10===0||bSig%10===0)continue;
+  var D=Math.max(decA,decB);
+  var aS=aSig*p10(D-decA),bS=bSig*p10(D-decB);
+  if(sub&&aS<=bS)continue;
+  var res=sub?aS-bS:aS+bS;
+  if(res%10===0)continue;
+  var sa=String(aS),sb=String(bS),sr=String(res);
+  if(sub){if(sr.length!==sa.length&&!(sr.length===D&&sa.length-D===1))continue;
+   if(sr.length<sa.length){while(sr.length<sa.length)sr='0'+sr}}
+  if(sub&&sb.length>sa.length)continue;
+  var gA=[],gB=[];for(var i=0;i<D-decA;i++)gA.push(i);for(var j=0;j<D-decB;j++)gB.push(j);
+  var t1=decStr(aSig,decA),t2=decStr(bSig,decB),tr=insComma(String(res),D);
+  return{mode:'col',op:sub?'−':'+',dec:D,commaAuto:true,layout:['CAR','A','B','HL','RES'],
+   rows:{A:{digits:sa,dec:D,ghost:gA},B:{digits:sb,dec:D,ghost:gB,sign:sub?'−':'+'},RES:{digits:sr,plan:sr,dec:D}},
+   csteps:sub?buildSubSteps(sa,sb,D):buildAddSteps(sa,sb,'RES',D),writes:{},
+   title:(sub?'Вычти столбиком: ':'Сложи столбиком: ')+t1+(sub?' − ':' + ')+t2,label:t1+(sub?' − ':' + ')+t2,resv:tr}}
+ throw new Error('gen decaddsub')}
+/* десятичное умножение */
+function makeDecMul(){var wantZero=Math.random()<cfg.zero;
+ for(var t=0;t<900;t++){
+  var la=rnd(2,3),decA=rnd(1,Math.min(2,la));
+  var aSig=rnd(p10(la-1),p10(la)-1);if(aSig%10===0)continue;
+  var variant=rnd(0,2),bSig,decB;
+  if(variant===0){bSig=rnd(2,9);decB=0}
+  else if(variant===1){bSig=rnd(2,9);decB=1}
+  else{bSig=rnd(12,99);if(bSig%10===0)continue;decB=1}
+  var P=aSig*bSig,dc=decA+decB;
+  if(P%10===0)continue;
+  if(wantZero&&t<700&&!hasMidZero(String(aSig))&&!hasMidZero(String(P)))continue;
+  var sa=String(aSig),sp=String(P);
+  var dispA=decA>=sa.length?insComma(sa,decA).replace(',',''):sa;
+  var dispB=decB>=String(bSig).length?insComma(String(bSig),decB).replace(',',''):String(bSig);
+  var rows,layout,steps;
+  if(String(bSig).length===1){layout=['A','B','HL','RES'];
+   rows={A:{digits:dispA,dec:decA},B:{digits:dispB,dec:decB,sign:'×'},RES:{digits:sp,plan:sp}};
+   steps=buildMul1Steps(sa,bSig,'RES',0)}
+  else{var b0=bSig%10,b1=Math.floor(bSig/10),P1=String(aSig*b0),P2=String(aSig*b1);
+   layout=['A','B','HL','P1','P2','HL','RES'];
+   rows={A:{digits:dispA,dec:decA},B:{digits:dispB,dec:decB,sign:'×'},P1:{digits:P1,plan:P1},P2:{digits:P2,plan:P2,shift:1},RES:{digits:sp,plan:sp}};
+   steps=buildMul2Steps(sa,b1,b0)}
+  var tA=decStr(aSig,decA),tB=decStr(bSig,decB),tR=insComma(sp,dc);
+  return{mode:'col',op:'×',decCount:dc,commaAsk:true,layout:layout,rows:rows,csteps:steps,writes:{},
+   title:'Умножь: '+tA+' × '+tB,label:tA+' × '+tB,resv:tR}}
+ throw new Error('gen decmul')}
+/* ================= ГЕНЕРАЦИЯ: деление (уголок) ================= */
+function makeCornerTask(){var wantZero=Math.random()<cfg.zero;
+ for(var t=0;t<900;t++){
+  var d=cfg.d2?rnd(12,49):rnd(2,9);
+  var L=rnd(cfg.dlen[0],cfg.dlen[1]);var N,q,r;
+  if(cfg.exact){var qmin=Math.ceil(p10(L-1)/d),qmax=Math.floor((p10(L)-1)/d);if(qmin>qmax)continue;q=rnd(qmin,qmax);r=0;N=q*d}
+  else{N=rnd(Math.max(p10(L-1),d+1),p10(L)-1);q=Math.floor(N/d);r=N%d}
+  if(q<1)continue;
+  var qs=String(q),ns=String(N);
+  if(cfg.zero>=1){if(!hasMidZero(qs))continue}
+  else if(wantZero&&t<700){if(!hasMidZero(qs)&&!hasMidZero(ns))continue}
+  return{mode:'corner',digits:ns,disp:ns,d:d,steps:computeSteps(ns,d),q:qs,qStr:qs,commaAt:-1,rem:r,
+   title:'Раздели уголком: '+N+' ÷ '+d,label:N+' ÷ '+d}}
+ throw new Error('gen corner')}
+function makeDecDivTask(){var wantZero=Math.random()<cfg.zero;
+ for(var t=0;t<900;t++){
+  var d=rnd(2,9),ql=rnd(2,4),k=rnd(1,Math.min(2,ql-1));
+  var q=rnd(p10(ql-1),p10(ql)-1);if(q%10===0)continue;
+  var P=q*d;if(P%10===0)continue;
+  var qs=String(q),ps=String(P);
+  if(wantZero&&t<700){if(!hasMidZero(qs)&&!hasMidZero(ps))continue}
+  var disp=insComma(ps,k),qStr=insComma(qs,k);
+  return{mode:'dec',digits:ps,disp:disp,d:d,steps:computeSteps(ps,d),q:qs,qStr:qStr,commaAt:ps.length-k,rem:0,
+   title:'Раздели уголком: '+disp+' ÷ '+d,label:disp+' ÷ '+d}}
+ throw new Error('gen dec')}
+function makeExtTask(){var wantZero=Math.random()<cfg.zero;
+ for(var t=0;t<900;t++){
+  var d=[2,4,5,8][rnd(0,3)];
+  var L=rnd(2,3);var N=rnd(p10(L-1),p10(L)-1);
+  if(N%d===0)continue;
+  var z=0,M=N;while(M%d!==0&&z<4){M*=10;z++}
+  if(M%d!==0)continue;
+  var q=M/d,qs=String(q),ns=String(N);
+  if(wantZero&&t<700){if(!hasMidZero(qs)&&!hasMidZero(ns))continue}
+  var zeros=new Array(z+1).join('0');
+  var ext=ns+zeros;
+  return{mode:'dec',ext:true,ghostFrom:ns.length,digits:ext,disp:ns+','+zeros,d:d,steps:computeSteps(ext,d),q:qs,qStr:insComma(qs,z),commaAt:ns.length,rem:0,
+   title:'Раздели уголком: '+N+' ÷ '+d,label:N+' ÷ '+d}}
+ throw new Error('gen ext')}
+function makeDecDecTask(){var wantZero=Math.random()<cfg.zero;
+ for(var t=0;t<900;t++){
+  var d=rnd(2,9),m=rnd(1,2),k=Math.random()<.5?0:1;
+  var ql=rnd(2,3);var q=rnd(p10(ql-1),p10(ql)-1);
+  if(k>0&&q%10===0)continue;if(k>=ql)continue;
+  var P=q*d;if(k>0&&P%10===0)continue;
+  var qs=String(q),ps=String(P);
+  if(wantZero&&t<700){if(!hasMidZero(qs)&&!hasMidZero(ps))continue}
+  var shiftedDisp=insComma(ps,k),qStr=insComma(qs,k);
+  var origA=insComma(ps,k+m).replace(/(,\d*?)0+$/,'$1').replace(/,$/,'');
+  var origB=insComma(String(d),m);
+  var Pval=P/p10(k);
+  return{mode:'decdec',digits:ps,disp:shiftedDisp,d:d,steps:computeSteps(ps,d),q:qs,qStr:qStr,commaAt:k>0?ps.length-k:-1,rem:0,
+   m:m,origA:origA,origB:origB,Pval:Pval,
+   title:'Раздели: '+origA+' ÷ '+origB,label:origA+' ÷ '+origB}}
+ throw new Error('gen decdec')}
+function pickFrac(d){for(var i=0;i<50;i++){var a=rnd(1,d-1);if(gcd(a,d)===1)return a}return 1}
+function pickPair(maxN){for(var i=0;i<300;i++){var d1=rnd(3,12),d2=rnd(3,12);
+ if(d1===d2)continue;var N=lcm(d1,d2);if(N>maxN)continue;
+ if((d1%d2===0||d2%d1===0)&&Math.random()<.75)continue;
+ return[d1,d2,N]}return[4,6,12]}
+function makeFracTask(){var md=cfg.mode;
+ if(md==='fshade'){var n=rnd(2,10),k=rnd(1,n-1);
+  return{mode:'fshade',n:n,k:k,title:'Какая часть полоски закрашена?',label:k+'/'+n,
+   resText:'Закрашено '+k+' из '+n+' частей — это дробь '+k+'/'+n}}
+ if(md==='fcmp0'){var same=Math.random()<.5;var d,a1,a2,dd1,dd2;
+  if(same){d=rnd(3,12);a1=rnd(1,d-1);do{a2=rnd(1,d-1)}while(a2===a1);dd1=d;dd2=d}
+  else{a1=rnd(1,8);a2=a1;dd1=rnd(a1+1,12);do{dd2=rnd(a1+1,12)}while(dd2===dd1)}
+  var sym=(a1*dd2>a2*dd1)?'>':'<';
+  return{mode:'fcmp0',a1:a1,d1:dd1,a2:a2,d2:dd2,sym:sym,same:same,
+   title:'Сравни дроби',label:a1+'/'+dd1+' ? '+a2+'/'+dd2,
+   resText:a1+'/'+dd1+' '+sym+' '+a2+'/'+dd2}}
+ if(md==='faddsame'){for(var t=0;t<200;t++){var dd=rnd(4,12),plus=Math.random()<.5;
+   var x1=rnd(1,dd-2),x2=plus?rnd(1,dd-1-x1):rnd(1,x1-1);
+   if(!plus&&x1<=1)continue;if(x2<1)continue;
+   var r=plus?x1+x2:x1-x2;if(r<1)continue;
+   return{mode:'faddsame',a1:x1,a2:x2,d:dd,op:plus?'+':'−',r:r,
+    title:'Знаменатели одинаковые — работаем с числителями',label:x1+'/'+dd+' '+(plus?'+':'−')+' '+x2+'/'+dd,
+    resText:x1+'/'+dd+' '+(plus?'+':'−')+' '+x2+'/'+dd+' = '+r+'/'+dd}}
+  throw new Error('gen faddsame')}
+ if(md==='fnoz'){var pr=pickPair(60);var q1=pr[0],q2=pr[1],N1=pr[2];
+  var D=Math.max(q1,q2),dm=Math.min(q1,q2);
+  return{mode:'fnoz',d1:q1,d2:q2,D:D,dm:dm,N:N1,mIdx:1,chips:[],
+   title:'Найди общий знаменатель для '+q1+' и '+q2+' перебором',label:'НОЗ('+q1+', '+q2+')',
+   resText:'НОЗ('+q1+', '+q2+') = '+N1}}
+ if(md==='fbring'||md==='fcmp'||md==='faddsub'){
+  for(var t2=0;t2<400;t2++){var pr2=pickPair(48);var e1=pr2[0],e2=pr2[1],N2=pr2[2];
+   var b1=pickFrac(e1),b2=pickFrac(e2);
+   var m1=N2/e1,m2=N2/e2,A1=b1*m1,A2=b2*m2;
+   if(md==='fcmp'&&Math.random()<.15){/* равные дроби */var p=rnd(1,4),q=rnd(p+1,6);
+    var k1=rnd(2,3),k2=rnd(2,3);if(k1===k2)continue;
+    e1=q*k1;e2=q*k2;if(e1>12||e2>12)continue;b1=p*k1;b2=p*k2;
+    N2=lcm(e1,e2);m1=N2/e1;m2=N2/e2;A1=b1*m1;A2=b2*m2}
+   if(md==='faddsub'){var pl=Math.random()<.5;
+    if(!pl&&A1<=A2)continue;
+    var R=pl?A1+A2:A1-A2;if(R<1)continue;
+    if(gcd(R,N2)!==1)continue;
+    return{mode:'faddsub',a1:b1,d1:e1,a2:b2,d2:e2,N:N2,m1:m1,m2:m2,A1:A1,A2:A2,op:pl?'+':'−',R:R,st:{},
+     title:'Разные знаменатели — сначала приводим к общему',label:b1+'/'+e1+' '+(pl?'+':'−')+' '+b2+'/'+e2,
+     resText:b1+'/'+e1+' '+(pl?'+':'−')+' '+b2+'/'+e2+' = '+R+'/'+N2}}
+   var sym2=A1>A2?'>':(A1<A2?'<':'=');
+   if(md==='fcmp')return{mode:'fcmp',a1:b1,d1:e1,a2:b2,d2:e2,N:N2,m1:m1,m2:m2,A1:A1,A2:A2,sym:sym2,st:{},
+    title:'Сравни дроби с разными знаменателями',label:b1+'/'+e1+' ? '+b2+'/'+e2,
+    resText:b1+'/'+e1+' '+sym2+' '+b2+'/'+e2};
+   return{mode:'fbring',a1:b1,d1:e1,a2:b2,d2:e2,N:N2,m1:m1,m2:m2,A1:A1,A2:A2,st:{},
+    title:'Приведи дроби к общему знаменателю',label:b1+'/'+e1+' и '+b2+'/'+e2,
+    resText:b1+'/'+e1+' = '+A1+'/'+N2+', '+b2+'/'+e2+' = '+A2+'/'+N2}}
+  throw new Error('gen fbring')}
+ /* freduce */
+ for(var t3=0;t3<300;t3++){var q3=rnd(2,9),p3=rnd(1,q3-1);if(gcd(p3,q3)!==1)continue;
+  var g3=[2,3,4,5,6][rnd(0,4)];var aa=p3*g3,bb=q3*g3;if(bb>96)continue;
+  return{mode:'freduce',a0:aa,b0:bb,ca:aa,cb:bb,p:p3,q:q3,chain:[[aa,bb]],
+   title:'Сократи дробь',label:aa+'/'+bb,resText:aa+'/'+bb+' = '+p3+'/'+q3}}
+ throw new Error('gen freduce')}
+function makeLcm5(){for(var t=0;t<400;t++){
+  var a=rnd(4,25),b=rnd(4,25);if(a===b)continue;
+  var N=lcm(a,b);var D=Math.max(a,b);
+  if(N>120||N/D>6)continue;
+  if(gcd(a,b)===1&&Math.random()<.7)continue;
+  return{mode:'lcm5',d1:a,d2:b,D:D,dm:Math.min(a,b),N:N,mIdx:1,chips:[],word:'НОК',
+   title:'Найди НОК('+a+', '+b+') перебором кратных',label:'НОК('+a+', '+b+')',
+   resText:'НОК('+a+', '+b+') = '+N}}
+ throw new Error('gen lcm5')}
+function makePrime(){stats.prm=stats.prm||{};
+ var free=[];for(var n=2;n<=50;n++)if(!stats.prm[n])free.push(n);
+ if(!free.length){stats.prm={};save();for(n=2;n<=50;n++)free.push(n)}
+ var x=free[rnd(0,free.length-1)];
+ var pr=isPrime(x);
+ return{mode:'prime',n:x,isP:pr,title:'Простое или составное?',label:String(x),
+  resText:pr?(x+' — простое число'):(x+' — составное: '+spf(x)+' × '+(x/spf(x)))}}
+function makeFactor(){for(var t=0;t<400;t++){
+  var pool=[2,2,2,3,3,5,7],cnt=rnd(2,4),n=1,fs=[];
+  for(var i=0;i<cnt;i++){var p=pool[rnd(0,pool.length-1)];n*=p;fs.push(p)}
+  if(n<12||n>100)continue;
+  return{mode:'factor',n0:n,cur:n,rows:[],facs:[],
+   title:'Разложи '+n+' на простые множители',label:String(n),
+   resText:n+' = '+factorize(n).join(' · ')}}
+ throw new Error('gen factor')}
+function makeLcm6(){for(var t=0;t<600;t++){
+  var ps=Math.random()<.25?[2,3,7]:[2,3,5];
+  var eA=[rnd(0,3),rnd(0,2),rnd(0,1)],eB=[rnd(0,3),rnd(0,2),rnd(0,1)];
+  var A=1,B=1,i;
+  for(i=0;i<3;i++){A*=Math.pow(ps[i],eA[i]);B*=Math.pow(ps[i],eB[i])}
+  var fa=eA[0]+eA[1]+eA[2],fbn=eB[0]+eB[1]+eB[2];
+  if(fa<2||fbn<2||fa>4||fbn>4)continue;
+  if(A===B||A<6||B<6||A>60||B>60)continue;
+  var L=lcm(A,B);if(L>180)continue;
+  if(gcd(A,B)===1&&Math.random()<.85)continue;
+  if(L===A||L===B){if(Math.random()<.7)continue}
+  var un=[];for(i=0;i<3;i++)if(eA[i]||eB[i])un.push({p:ps[i],ea:eA[i],eb:eB[i],mx:Math.max(eA[i],eB[i])});
+  var pick=[];un.forEach(function(u){for(var k=0;k<u.mx;k++)pick.push(u.p)});
+  return{mode:'lcm6',A:A,B:B,stage:'A',cur:A,rowsA:[],rowsB:[],facsA:[],facsB:[],
+   un:un,ci:0,pick:pick,picked:[],L:L,
+   title:'НОК('+A+', '+B+') через простые множители',label:'НОК('+A+', '+B+')',
+   resText:'НОК('+A+', '+B+') = '+pick.join(' · ')+' = '+L}}
+ throw new Error('gen lcm6')}
+function makeTask(){
+ if(cfg.mode==='compose'){var Nc=pickC||rnd(3,10);
+  return{mode:'compose',N:Nc,title:'Построй домик числа '+Nc,label:'состав числа '+Nc,
+   resText:'Домик числа '+Nc+' построен — все пары собраны!'}}
+ if(cfg.mode==='cross'){var plus=Math.random()<.5,a,b;
+  if(plus){a=rnd(4,9);b=rnd(Math.max(2,11-a),9)}
+  else{a=rnd(11,18);b=rnd(a-9,9)}
+  var x1=plus?10-a:a-10,x2=b-x1,ansv=plus?a+b:a-b;
+  return{mode:'cross',op:plus?'+':'−',a:a,b:b,x1:x1,x2:x2,ansv:ansv,s1:false,s2:false,
+   title:(plus?'Сложение':'Вычитание')+' с переходом через десяток',label:a+' '+(plus?'+':'−')+' '+b,
+   resText:a+' '+(plus?'+':'−')+' '+b+' = '+ansv}}
+ if(cfg.mode==='lcm5')return makeLcm5();
+ if(cfg.mode==='prime')return makePrime();
+ if(cfg.mode==='factor')return makeFactor();
+ if(cfg.mode==='lcm6')return makeLcm6();
+ if(cfg.mode&&cfg.mode.charAt(0)==='f'&&cfg.mode!=='table')return makeFracTask();
+ if(cfg.mode==='simple')return makeSimple();
+ if(cfg.mode==='mulvis'){var av=rnd(2,6),bv=rnd(2,9);
+  return{mode:'mulvis',a:av,b:bv,P:av*bv,title:'Посчитай точки рядами',label:av+' × '+bv,
+   resText:av+' '+plural(av,'ряд','ряда','рядов')+' по '+bv+' '+plural(bv,'точке','точки','точек')+' — это '+av+' × '+bv+' = '+(av*bv)}}
+ if(cfg.mode==='mulseq'){var Nn=pickN||rnd(2,9);
+  return{mode:'mulseq',N:Nn,title:'Таблица на '+Nn+' — лесенкой',label:'таблица на '+Nn,
+   resText:'Таблица на '+Nn+' пройдена — все 9 ступенек!'}}
+ if(cfg.mode==='pyth'){stats.pyth=stats.pyth||{};
+  var free=[];for(var xx=2;xx<=9;xx++)for(var yy=2;yy<=9;yy++)if(!stats.pyth[xx+'-'+yy])free.push([xx,yy]);
+  if(!free.length){stats.pyth={};save();for(xx=2;xx<=9;xx++)for(yy=2;yy<=9;yy++)free.push([xx,yy])}
+  var pp=free[rnd(0,free.length-1)];
+  return{mode:'pyth',a:pp[0],b:pp[1],P:pp[0]*pp[1],title:'Заполни таблицу Пифагора',label:pp[0]+' × '+pp[1],
+   resText:pp[0]+' × '+pp[1]+' = '+(pp[0]*pp[1])}}
+ if(cfg.mode==='table'){var d=rnd(2,9),q=rnd(2,9),N=d*q;
+  return{mode:'table',d:d,qv:q,N:N,title:'Табличное деление',label:N+' ÷ '+d}}
+ if(cfg.mode==='rem'){var d2=rnd(2,9),q2=rnd(2,9),r2=rnd(1,d2-1),N2=q2*d2+r2;
+  return{mode:'rem',d:d2,qv:q2,rv:r2,N:N2,title:'Деление с остатком',label:N2+' ÷ '+d2}}
+ if(cfg.mode==='cadd'||cfg.mode==='csub'||cfg.mode==='cmul1'||cfg.mode==='cmul2'||cfg.mode==='caddsub')return makeColTask();
+ if(cfg.mode==='decadd')return makeDecAddSub(false);
+ if(cfg.mode==='decsub')return makeDecAddSub(true);
+ if(cfg.mode==='decmul')return makeDecMul();
+ if(cfg.mode==='corner')return makeCornerTask();
+ if(cfg.mode==='dec')return makeDecDivTask();
+ if(cfg.mode==='ext')return makeExtTask();
+ return makeDecDecTask()}
+function curStep(){return task.steps[stepIdx]}
+function isCorner(){return task.mode==='corner'||task.mode==='dec'||(task.mode==='decdec'&&phase!=='shiftM'&&phase!=='shiftA'&&phase!=='shiftB')}
+function isCol(){return task.mode==='col'}
+/* ================= РЕНДЕР: уголок ================= */
+function buildCols(){var cols=[{t:'pad'}],dc=[];for(var i=0;i<task.disp.length;i++){var ch=task.disp.charAt(i);if(ch===','){cols.push({t:'comma'})}else{dc.push(cols.length);cols.push({t:'digit'})}}task.cols=cols;task.digitCol=dc}
+function cellEl(ch,cls,narrow){var c=document.createElement('div');c.className='cell'+(narrow?' ncell':'')+(cls?' '+cls:'');c.textContent=ch;return c}
+function blankRow(){var a=[];for(var i=0;i<task.cols.length;i++)a.push({ch:'',cls:''});return a}
+function rowEl(row){var r=document.createElement('div');r.className='cline';for(var i=0;i<row.length;i++)r.appendChild(cellEl(row[i].ch,row[i].cls,task.cols[i].t==='comma'));return r}
+function putRightD(row,text,endDigit,cls){var start=endDigit-text.length+1;
+ for(var i=0;i<text.length;i++)row[task.digitCol[start+i]]={ch:text.charAt(i),cls:cls||''};
+ if(cls&&cls.indexOf('uline')>=0){for(var c=task.digitCol[start];c<=task.digitCol[endDigit];c++)if(task.cols[c].t==='comma')row[c]={ch:'',cls:'uline'}}
+ return start}
+function putMinus(row,startDigit){var mc=task.digitCol[startDigit]-1;if(task.cols[mc]&&task.cols[mc].t==='comma')mc=startDigit>0?task.digitCol[startDigit-1]:0;row[mc]={ch:'−',cls:'minus'}}
+function renderCorner(){var wrap=el('cornerwrap');
+ if(!isCorner()){wrap.hidden=true;return}
+ wrap.hidden=false;buildCols();var left=el('cleft');left.innerHTML='';
+ var top=blankRow();var seen=0;
+ for(var i=0;i<task.disp.length;i++){var ch=task.disp.charAt(i);
+  if(ch===',')continue;
+  var cls='';
+  if(phase==='select'&&seen<selLen)cls='sel';
+  if(phase!=='select'&&stepIdx===0&&stepIdx<task.steps.length&&seen<=task.steps[0].end)cls='cur';
+  if(task.ghostFrom!=null&&seen>=task.ghostFrom)cls=(cls?cls+' ':'')+'ghost';
+  top[task.digitCol[seen]]={ch:ch,cls:cls};seen++}
+ for(var c2=0;c2<task.cols.length;c2++){if(task.cols[c2].t==='comma')top[c2]={ch:',',cls:task.ext?'ghost':''}}
+ left.appendChild(rowEl(top));
+ var last=task.steps.length-1,upto=Math.min(stepIdx,last);
+ for(var k=0;k<=upto;k++){var s=task.steps[k];
+  var showProd=s.qd>0&&(k<stepIdx||prodShown);
+  if(showProd){var pr=blankRow();var st=putRightD(pr,String(s.prod),s.end,'uline');putMinus(pr,st);left.appendChild(rowEl(pr))}
+  if(k<stepIdx){
+   if(k<last){var nx=task.steps[k+1];var nr=blankRow();putRightD(nr,String(nx.partial),nx.end,(k+1===stepIdx&&!finished)?'cur':'');left.appendChild(rowEl(nr))}
+   else{var rr=blankRow();putRightD(rr,String(s.rem),s.end,'');left.appendChild(rowEl(rr))}}}
+ el('dbox').textContent=task.d;
+ var qr=el('qrow');qr.innerHTML='';var dcount=0;
+ for(var j=0;j<task.qStr.length;j++){var qch=task.qStr.charAt(j);
+  if(qch===','){var qc=document.createElement('div');qc.className='qcomma'+(dcount>0&&qDone>=dcount?' done':'');qc.textContent=',';qr.appendChild(qc);continue}
+  var qd=document.createElement('div');qd.className='qcell'+(dcount<qDone?' done':'');qd.textContent=dcount<qDone?qch:'';qr.appendChild(qd);dcount++}}
+/* ================= РЕНДЕР: столбик ================= */
+function vW(){var w=0;for(var k in task.rows){var r=task.rows[k];var L=(r.plan||r.digits).length+(r.shift||0);if(L>w)w=L}return w}
+function vcell(ch,cls){var c=document.createElement('div');c.className='vcell'+(cls?' '+cls:'');c.textContent=ch;return c}
+function renderVert(){var wrap=el('vertwrap');
+ if(!isCol()){wrap.hidden=true;return}
+ wrap.hidden=false;var g=el('vgrid');g.innerHTML='';
+ var W=vW();var curcol=(phase==='col'&&cIdx<task.csteps.length)?task.csteps[cIdx].col:null;
+ for(var li=0;li<task.layout.length;li++){var key=task.layout[li];
+  if(key==='HL'){var hl=document.createElement('div');hl.className='vline';g.appendChild(hl);continue}
+  if(key==='CAR'){var cr=document.createElement('div');cr.className='vrow';
+   var lead=document.createElement('div');lead.className='vcarry';cr.appendChild(lead);
+   for(var c=W;c>=0;c--){var cc=document.createElement('div');cc.className='vcarry';cc.textContent=(task.writes.CAR&&task.writes.CAR[c])||'';cr.appendChild(cc)}
+   g.appendChild(cr);continue}
+  var row=task.rows[key];var isProg=row.plan!=null;
+  var vr=document.createElement('div');vr.className='vrow';
+  for(var col=W;col>=-1;col--){
+   if(col===-1){/* нет */continue}
+   var ch='',cls='';
+   if(col===W&&row.sign){/* спец: знак в крайней левой */}
+   var sh=row.shift||0;
+   if(isProg){var wch=task.writes[key]&&task.writes[key][col];
+    if(task.resRevealAll&&key==='RES'){var jj=col;var i2=row.digits.length-1-jj;ch=i2>=0?row.digits.charAt(i2):''}
+    else ch=wch||'';
+    if(ch)cls='res'}
+   else{var i3=row.digits.length-1-(col-sh);
+    if(col>=sh&&i3>=0){ch=row.digits.charAt(i3);
+     if(row.ghost&&row.ghost.indexOf(col-sh)>=0)cls='ghost'}}
+   if(curcol!==null&&col===curcol&&!isProg)cls=(cls?cls+' ':'')+'cur';
+   var cell=vcell(ch,cls);
+   /* запятая-маркер */
+   var dd=key==='RES'?(task.resRevealAll?task.decCount:(task.commaAuto?row.dec:null)):(row.dec||null);
+   if(dd&&col===dd){var show=!isProg||task.resRevealAll||(task.writes[key]&&task.writes[key][dd-1]!=null);
+    if(show){var m=document.createElement('span');m.className='cm';m.textContent=',';m.style.color=isProg?'#14532d':(cls.indexOf('ghost')>=0?'#94a3b8':'#172033');cell.appendChild(m)}}
+   vr.appendChild(cell)}
+  /* знак слева: вставим в начало */
+  if(row.sign){var sc=vcell(row.sign,'minus');vr.insertBefore(sc,vr.children[0])}
+  else{var sp=vcell('','');vr.insertBefore(sp,vr.children[0])}
+  g.appendChild(vr)}
+}
+function renderExtras(){
+ var vw=el('viswrap'),lw=el('ladwrap'),pw=el('pythwrap');
+ vw.hidden=task.mode!=='mulvis';lw.hidden=task.mode!=='mulseq';pw.hidden=task.mode!=='pyth';
+ el('tblpick').hidden=cfg.mode!=='mulseq';
+ if(task.mode==='mulvis'){vw.innerHTML='';
+  for(var r=0;r<task.a;r++){var dr=document.createElement('div');dr.className='drow';
+   for(var c=0;c<task.b;c++){var dt=document.createElement('span');dt.className='dot';dr.appendChild(dt)}
+   vw.appendChild(dr)}}
+ if(task.mode==='mulseq'){lw.innerHTML='';
+  for(var k=1;k<=9;k++){var lr=document.createElement('div');lr.className='lrow';
+   var done=finished||k<=seqIdx;
+   if(done){lr.className='lrow done';lr.textContent=task.N+' × '+k+' = '+(task.N*k)}
+   else if(k===seqIdx+1&&!finished){lr.className='lrow cur';lr.textContent=task.N+' × '+k+' = ?'}
+   else lr.textContent=task.N+' × '+k+' = ·';
+   lw.appendChild(lr)}}
+ if(task.mode==='pyth'){pw.innerHTML='';stats.pyth=stats.pyth||{};
+  for(var i=1;i<=9;i++){var pr=document.createElement('div');pr.className='prow';
+   for(var j=1;j<=9;j++){var pc=document.createElement('div');
+    var cls='pcell',txt='';
+    if(i===1&&j===1){cls+=' hdr';txt='×'}
+    else if(i===1){cls+=' hdr'+(j===task.b?' hl':'');txt=String(j)}
+    else if(j===1){cls+=' hdr'+(i===task.a?' hl':'');txt=String(i)}
+    else{
+     if(i===task.a&&j===task.b){cls+=' tgt';txt=finished?String(task.P):'?'}
+     else if(stats.pyth[i+'-'+j]){cls+=' fill';txt=String(i*j)}
+     else if((i===task.a&&j<task.b)||(j===task.b&&i<task.a)){cls+=' band'}
+    }
+    pc.className=cls;pc.textContent=txt;pr.appendChild(pc)}
+   pw.appendChild(pr)}}}
+function fr(n,d,cls){return '<span class="frac'+(cls?' '+cls:'')+'"><span class="fnum'+(n==='?'?' fq':'')+'">'+n+'</span><span class="fden'+(d==='?'?' fq':'')+'">'+d+'</span></span>'}
+function fop(t){return '<span class="fop">'+t+'</span>'}
+function isFrac(){return task.mode&&task.mode.charAt(0)==='f'&&task.mode!=='table'}
+function renderFrac(){
+ var fv=el('fracview'),fbw=el('fbarwrap'),mw=el('mulwrap');
+ fv.hidden=true;fbw.hidden=true;if(task.mode!=='lcm5')mw.hidden=true;
+ if(!isFrac())return;
+ if(task.mode==='fshade'){fbw.hidden=false;var fb2=el('fbar');fb2.innerHTML='';
+  for(var i=0;i<task.n;i++){var sg=document.createElement('div');sg.className='fseg'+(i<task.k?' on':'');fb2.appendChild(sg)}
+  fv.hidden=false;fv.innerHTML=fop('закрашено')+fr(finished?task.k:'?',finished?task.n:'?','hl');return}
+ if(task.mode==='fcmp0'){fv.hidden=false;
+  fv.innerHTML=fr(task.a1,task.d1)+fop(finished?task.sym:'?')+fr(task.a2,task.d2);return}
+ if(task.mode==='faddsame'){fv.hidden=false;
+  fv.innerHTML=fr(task.a1,task.d)+fop(task.op)+fr(task.a2,task.d)+fop('=')+(finished?fr(task.r,task.d,'okf'):fr('?',task.d,'hl'));return}
+ if(task.mode==='fnoz'){mw.hidden=false;mw.innerHTML='';
+  for(var c=0;c<task.chips.length;c++){var ch=document.createElement('div');
+   ch.className='chip'+(task.chips[c][1]?' yes':'');ch.textContent=task.chips[c][0]+(task.chips[c][1]?' ✓':' ✗');mw.appendChild(ch)}
+  return}
+ if(task.mode==='freduce'){fv.hidden=false;var h='';
+  for(var j=0;j<task.chain.length;j++){if(j)h+=fop('→');
+   var lastc=j===task.chain.length-1;
+   h+=fr(task.chain[j][0],task.chain[j][1],lastc?(finished?'okf':'hl'):'')}
+  fv.innerHTML=h;return}
+ /* fbring / fcmp / faddsub */
+ fv.hidden=false;var st=task.st||{};
+ var mid=task.mode==='faddsub'?fop(task.op):fop(task.mode==='fcmp'?(st.sym||'?'):'и');
+ var h2=fr(task.a1,task.d1)+mid+fr(task.a2,task.d2)+fop('→');
+ h2+=fr(st.A1!=null?st.A1:'?',st.N!=null?st.N:'?',st.A1!=null?'okf':'hl');
+ h2+=task.mode==='faddsub'?fop(task.op):fop(task.mode==='fcmp'?(st.sym||'?'):'и');
+ h2+=fr(st.A2!=null?st.A2:'?',st.N!=null?st.N:'?',st.A2!=null?'okf':'hl');
+ if(task.mode==='faddsub'){h2+=fop('=')+fr(st.R!=null?st.R:'?',st.N!=null?st.N:'?',st.R!=null?'okf':'hl')}
+ fv.innerHTML=h2}
+function factColHTML(rows,curN,labelTxt,done,sumFacs){
+ var col=document.createElement('div');col.className='fcolm';
+ var lb=document.createElement('div');lb.className='flabel';lb.textContent=labelTxt;col.appendChild(lb);
+ for(var i=0;i<rows.length;i++){var r=document.createElement('div');r.className='frow2';
+  r.innerHTML='<div class="fnl">'+rows[i][0]+'</div><div class="fnr">'+rows[i][1]+'</div>';col.appendChild(r)}
+ if(!done){var r2=document.createElement('div');r2.className='frow2';
+  r2.innerHTML='<div class="fnl">'+curN+'</div><div class="fnr qm">?</div>';col.appendChild(r2)}
+ else{var r3=document.createElement('div');r3.className='frow2';
+  r3.innerHTML='<div class="fnl">1</div><div class="fnr"></div>';col.appendChild(r3);
+  var sm=document.createElement('div');sm.className='fsum';sm.textContent='= '+sumFacs.join(' · ');col.appendChild(sm)}
+ return col}
+function renderNok(){
+ var pg=el('primegrid'),pr=el('primerow'),fw=el('factwrap'),as=el('assemble');
+ pg.hidden=true;pr.hidden=true;fw.hidden=true;as.hidden=true;
+ if(task.mode==='lcm5'){var mw=el('mulwrap');mw.hidden=false;mw.innerHTML='';
+  for(var c=0;c<task.chips.length;c++){var ch=document.createElement('div');
+   ch.className='chip'+(task.chips[c][1]?' yes':'');ch.textContent=task.chips[c][0]+(task.chips[c][1]?' ✓':' ✗');mw.appendChild(ch)}
+  return}
+ if(task.mode==='prime'){pg.hidden=false;pg.innerHTML='';stats.prm=stats.prm||{};
+  for(var row=0;row<7;row++){var prw=document.createElement('div');prw.className='prow';
+   for(var col2=0;col2<7;col2++){var n=2+row*7+col2;var pc=document.createElement('div');
+    var cls='pcell',txt=String(n);
+    if(n===task.n&&!finished){cls+=' tgt';txt='?'}
+    else if(n===task.n&&finished){cls+=(task.isP?' fill':' comp')}
+    else if(stats.prm[n]===1)cls+=' fill';
+    else if(stats.prm[n]===2)cls+=' comp';
+    pc.className=cls;pc.textContent=txt;prw.appendChild(pc)}
+   pg.appendChild(prw)}
+  return}
+ if(task.mode==='factor'||task.mode==='lcm6'){
+  pr.hidden=false;pr.innerHTML='';
+  var hd=document.createElement('div');hd.className='chip hdrp';hd.textContent='Таблица простых:';pr.appendChild(hd);
+  for(var pi=0;pi<PRIMES_REF.length;pi++){var pch=document.createElement('div');pch.className='chip p';pch.textContent=PRIMES_REF[pi];pr.appendChild(pch)}
+  fw.hidden=false;fw.innerHTML='';
+  if(task.mode==='factor'){
+   fw.appendChild(factColHTML(task.rows,task.cur,'Раскладываем '+task.n0,task.cur===1,task.facs))}
+  else{
+   var doneA=task.stage!=='A';
+   fw.appendChild(factColHTML(task.rowsA,task.stage==='A'?task.cur:1,'Число '+task.A,doneA,task.facsA));
+   if(task.stage!=='A'){var doneB=task.stage!=='B';
+    fw.appendChild(factColHTML(task.rowsB,task.stage==='B'?task.cur:1,'Число '+task.B,doneB,task.facsB))}
+   if(task.stage==='cnt'||task.stage==='prod'||phase==='done'){as.hidden=false;
+    var txt='НОК = '+task.picked.join(' · ');
+    if(task.stage==='cnt')txt+=(task.picked.length?' · ':'')+'…';
+    else txt+=' = '+(phase==='done'?task.L:'?');
+    as.textContent=txt}}
+  return}}
+function renderGrade1(){
+ var hw=el('housewrap'),cw=el('crosswrap');
+ hw.hidden=true;cw.hidden=true;
+ el('comppick').hidden=cfg.mode!=='compose';
+ if(task.mode==='compose'){hw.hidden=false;hw.innerHTML='';
+  var rf=document.createElement('div');rf.className='roof';rf.textContent=task.N;hw.appendChild(rf);
+  for(var k=1;k<=task.N-1;k++){var fl=document.createElement('div');
+   var st=finished||k<=seqIdx?'done':(k===seqIdx+1?'cur':'');
+   fl.className='floor'+(st==='cur'?' cur':'');
+   var w1=document.createElement('div');w1.className='win';w1.textContent=k;
+   var w2=document.createElement('div');
+   if(st==='done'){w2.className='win done';w2.textContent=task.N-k}
+   else if(st==='cur'){w2.className='win qm';w2.textContent='?'}
+   else{w2.className='win qm';w2.textContent='·'}
+   fl.appendChild(w1);fl.appendChild(w2);hw.appendChild(fl)}
+  return}
+ if(task.mode==='cross'){cw.hidden=false;cw.innerHTML='';
+  var big=document.createElement('div');big.className='cbig';big.textContent=task.a+' '+task.op+' '+task.b;cw.appendChild(big);
+  var sp=document.createElement('div');sp.className='split';
+  var tx1=document.createElement('span');tx1.textContent=task.b+' — это ';sp.appendChild(tx1);
+  var b1=document.createElement('div');b1.className='bub'+(task.s1?' done':(phase==='c1'?'':' qm'));b1.textContent=task.s1?task.x1:'?';sp.appendChild(b1);
+  var tx2=document.createElement('span');tx2.textContent=' и ';sp.appendChild(tx2);
+  var b2=document.createElement('div');b2.className='bub'+(task.s2?' done':' qm');b2.textContent=task.s2?task.x2:'?';sp.appendChild(b2);
+  cw.appendChild(sp);
+  var ch=document.createElement('div');ch.className='chainln';
+  var p1=task.s1?task.x1:'?',p2=task.s2?task.x2:'?';
+  ch.textContent=task.a+' '+task.op+' '+task.b+' = '+task.a+' '+task.op+' '+p1+' '+task.op+' '+p2+' = 10 '+task.op+' '+p2+' = '+(finished?task.ansv:'?');
+  cw.appendChild(ch);
+  return}}
+function prAnswer(t){if(phase!=='pr')return;
+ var okAns=task.isP?'Простое':'Составное';
+ if(t===okAns){stats.prm=stats.prm||{};stats.prm[task.n]=task.isP?1:2;finish();
+  var cnt=0;for(var k in stats.prm)cnt++;
+  if(cnt>=49)el('fb').textContent+=' 🎉 Вся таблица до 50 заполнена!'}
+ else{errors++;
+  msg(task.isP?('Попробуй разделить '+task.n+' на 2, 3, 5, 7 — ничего не делит! Значит, простое.')
+             :(task.n+' = '+spf(task.n)+' × '+(task.n/spf(task.n))+' — есть делители кроме 1 и самого числа.'),'err')}}
+function setBtns(list,handler){var br=el('btnrow');br.innerHTML='';br.hidden=false;
+ for(var i=0;i<list.length;i++)(function(t){var b=document.createElement('button');b.className='primary';
+  b.style.fontSize='20px';b.textContent=t;b.onclick=function(){handler(t)};br.appendChild(b)})(list[i])}
+function ynAnswer(t){if(phase!=='yn')return;
+ var V=task.D*task.mIdx,div=V%task.dm===0;
+ var okAns=div?'Да':'Нет';
+ if(t!==okAns){errors++;
+  msg(div?('Проверь: '+V+' ÷ '+task.dm+' = '+(V/task.dm)+' — делится без остатка!')
+         :(V+' ÷ '+task.dm+' = '+Math.floor(V/task.dm)+' (ост. '+(V%task.dm)+') — не делится.'),'err');return}
+ task.chips.push([V,div]);
+ if(div){phase='noz';refresh();msg(V+' делится и на '+task.D+', и на '+task.dm+' — нашли!','ok')}
+ else{task.mIdx++;refresh();msg(V+' не делится на '+task.dm+'. Берём следующее кратное: '+task.D+' × '+task.mIdx+'.','ok')}}
+function cmpAnswer(t){if(phase!=='cmp')return;
+ var sym=task.sym;
+ if(t===sym){if(task.st)task.st.sym=sym;finish()}
+ else{errors++;
+  if(task.mode==='fcmp0')msg(task.same?'Знаменатели одинаковые — больше та дробь, у которой числитель больше.':'Числители одинаковые — больше та дробь, у которой знаменатель МЕНЬШЕ: делим на меньше частей, куски крупнее.','err');
+  else msg('Знаменатели теперь одинаковые ('+task.N+') — сравни числители: '+task.A1+' и '+task.A2+'.','err')}}
+/* ================= ИНТЕРФЕЙС ================= */
+function partialStr(){return String(curStep().partial)}
+function setInstr(){var t='';
+ if(phase==='simple')t=cfg.kind==='multable'?'Вспомни таблицу умножения.':cfg.kind==='mulinv'?'Умножение наоборот: какой множитель пропущен? Это подготовка к делению.':'Посчитай устно и введи ответ.';
+ if(phase==='vis')t='Умножение — это сложение одинаковых чисел: несколько рядов по несколько точек.';
+ if(phase==='fshadeq')t='Знаменатель (внизу) — на сколько частей разделили. Числитель (сверху) — сколько закрасили.';
+ if(phase==='cmp')t=task.mode==='fcmp0'?'Сравни дроби и нажми нужный знак.':'Знаменатели уже одинаковые — сравни числители и нажми знак.';
+ if(phase==='fsame')t='Знаменатель не трогаем! Складываем или вычитаем только числители.';
+ if(phase==='yn')t='Метод перебора: идём по кратным большего знаменателя ('+ (task&&task.D?task.D:'') +') и ищем первое, которое делится на меньший.';
+ if(phase==='noz')t='Кратное найдено — назови наименьший общий знаменатель.';
+ if(phase==='m1'||phase==='m2')t='Дополнительный множитель показывает, во сколько раз увеличиваем числитель и знаменатель.';
+ if(phase==='a1n'||phase==='a2n')t='Умножаем числитель на дополнительный множитель — знаменатель станет общим.';
+ if(phase==='rsum')t='Знаменатели одинаковые — работаем только с числителями.';
+ if(phase==='red')t='Ищи общий делитель числителя и знаменателя. Можно сокращать в несколько шагов!';
+ if(phase==='comp')t='Домик числа: два числа на этаже вместе дают число на крыше.';
+ if(phase==='c1')t=task.op==='+'?'Приём «через десяток»: шаг 1 — дополняем первое число до 10.':'Приём «через десяток»: шаг 1 — вычитаем столько, чтобы осталось ровно 10.';
+ if(phase==='c2')t='Шаг 2 — раскладываем второе число на удобные части (вот зачем нужны домики!).';
+ if(phase==='c3')t='Шаг 3 — с круглым десятком считать легко.';
+ if(phase==='pr')t='Простое число делится только на 1 и на себя. Отвечай верно — таблица до 50 заполняется и сохраняется!';
+ if(phase==='fp')t='Раскладываем столбиком: подбираем НАИМЕНЬШЕЕ простое число из таблицы, на которое делится.';
+ if(phase==='fq')t='Дели и записывай результат слева, а простой делитель — справа за чертой.';
+ if(phase==='cnt')t='Собираем НОК: каждый простой множитель берём столько раз, сколько он входит в то число, где его БОЛЬШЕ.';
+ if(phase==='prod')t='Осталось перемножить выбранные множители.';
+ if(phase==='seq')t='Таблица — это лесенка: каждая ступенька на одно и то же число больше предыдущей.';
+ if(phase==='pyth')t='Ответ живёт в клетке на пересечении строки и столбца. Отвечай верно — таблица заполняется и сохраняется!';
+ if(phase==='col')t=task.op==='×'?'Умножаем по разрядам справа налево. Переносы держим в уме.':'Считаем по разрядам справа налево.'+(task.dec?' Запятые стоят друг под другом.':'');
+ if(phase==='comma')t='Цифры готовы. Теперь отсчитай знаки после запятой.';
+ if(phase==='remq')t='1) Подбери неполное частное: сколько целых раз делитель помещается в число.';
+ if(phase==='remr')t='2) Найди остаток.';
+ if(phase==='shiftM')t='1) Делить на дробь нельзя — сначала уберём запятую из делителя. Посчитай знаки после запятой в делителе.';
+ if(phase==='shiftA')t='2) Сдвинь запятую в делимом на столько же знаков вправо. Не хватает цифр — допиши нули.';
+ if(phase==='shiftB')t='3) Сдвинь запятую в делителе — он станет натуральным числом.';
+ if(phase==='select')t='1) Выдели первое неполное делимое кнопками ◄ ► и нажми «Выбрать».';
+ if(phase==='digit')t='2) '+(cfg.trial?'Прикинь и введи пробную цифру частного — проверим её умножением.':'Подбери цифру частного.');
+ if(phase==='mult')t='3) Умножь цифру на делитель.';
+ if(phase==='sub')t='4) Вычти произведение и найди остаток.';
+ if(phase==='done')t='Пример решён. Нажми «Следующий пример».';
+ el('instruction').textContent=t}
+function setQuestion(){var w=el('answrap');w.hidden=false;
+ if(phase==='simple')el('qlabel').textContent=task.kind==='mulinv'?task.label:task.label+' = ?';
+ else if(phase==='vis'){var arr=[];for(var vi=0;vi<task.a;vi++)arr.push(task.b);el('qlabel').textContent=arr.join(' + ')+' = ?'}
+ else if(phase==='seq')el('qlabel').textContent=task.N+' × '+(seqIdx+1)+' = ?';
+ else if(phase==='pyth')el('qlabel').textContent=task.a+' × '+task.b+' = ?';
+ else if(phase==='fshadeq')el('qlabel').textContent='Какая дробь закрашена? (введи вида 3/7)';
+ else if(phase==='fsame')el('qlabel').textContent=task.label+' = ? (введи дробь: а/б)';
+ else if(phase==='yn'){var Vq=task.D*task.mIdx;el('qlabel').textContent='Кратное №'+task.mIdx+': '+task.D+' × '+task.mIdx+' = '+Vq+'. Делится ли '+Vq+' на '+task.dm+'?'}
+ else if(phase==='noz')el('qlabel').textContent='Итак, '+(task.word||'НОЗ')+'('+task.d1+', '+task.d2+') = ?';
+ else if(phase==='m1')el('qlabel').textContent='Доп. множитель первой дроби: '+task.N+' ÷ '+task.d1+' = ?';
+ else if(phase==='m2')el('qlabel').textContent='Доп. множитель второй дроби: '+task.N+' ÷ '+task.d2+' = ?';
+ else if(phase==='a1n')el('qlabel').textContent=(task.mode==='fbring'?('Новый числитель первой: '+task.a1+' × '+task.m1+' = ?'):('Первая дробь: '+task.N+' ÷ '+task.d1+' = '+task.m1+'; числитель: '+task.a1+' × '+task.m1+' = ?'));
+ else if(phase==='a2n')el('qlabel').textContent=(task.mode==='fbring'?('Новый числитель второй: '+task.a2+' × '+task.m2+' = ?'):('Вторая дробь: '+task.N+' ÷ '+task.d2+' = '+task.m2+'; числитель: '+task.a2+' × '+task.m2+' = ?'));
+ else if(phase==='rsum')el('qlabel').textContent=task.A1+' '+task.op+' '+task.A2+' = ?';
+ else if(phase==='red')el('qlabel').textContent='На какое число сократим '+task.ca+'/'+task.cb+'?';
+ else if(phase==='pr')el('qlabel').textContent='Число '+task.n+' — простое или составное?';
+ else if(phase==='comp')el('qlabel').textContent=task.N+' — это '+(seqIdx+1)+' и ?';
+ else if(phase==='c1')el('qlabel').textContent=task.op==='+'?('Сколько не хватает '+task.a+' до 10?'):('Сколько вычесть из '+task.a+', чтобы получилось 10?');
+ else if(phase==='c2')el('qlabel').textContent='Разложим '+task.b+': '+task.b+' = '+task.x1+' и ?';
+ else if(phase==='c3')el('qlabel').textContent='10 '+task.op+' '+task.x2+' = ?';
+ else if(phase==='fp')el('qlabel').textContent='Наименьшее простое, на которое делится '+task.cur+'?';
+ else if(phase==='fq')el('qlabel').textContent=task.cur+' ÷ '+task.pp+' = ?';
+ else if(phase==='cnt'){var u=task.un[task.ci];el('qlabel').textContent='Множитель '+u.p+': в '+task.A+' входит '+u.ea+' раз(а), в '+task.B+' — '+u.eb+'. Сколько раз берём в НОК?'}
+ else if(phase==='prod')el('qlabel').textContent='НОК = '+task.pick.join(' · ')+' = ?';
+ else if(phase==='col')el('qlabel').textContent=task.csteps[cIdx].q;
+ else if(phase==='comma')el('qlabel').textContent='Сколько всего цифр после запятой в обоих множителях?';
+ else if(phase==='table')el('qlabel').textContent=task.N+' ÷ '+task.d+' = ?';
+ else if(phase==='remq')el('qlabel').textContent=task.N+' ÷ '+task.d+' — неполное частное?';
+ else if(phase==='remr')el('qlabel').textContent=task.N+' − '+task.qv+' × '+task.d+' = ? (остаток)';
+ else if(phase==='shiftM')el('qlabel').textContent='Сколько знаков после запятой в делителе '+task.origB+'?';
+ else if(phase==='shiftA')el('qlabel').textContent=task.origA+' → сдвинь запятую на '+task.m+' вправо:';
+ else if(phase==='shiftB')el('qlabel').textContent=task.origB+' → сдвинь запятую на '+task.m+' вправо:';
+ else if(phase==='digit')el('qlabel').textContent=partialStr()+' ÷ '+task.d+' = ? (одна цифра)';
+ else if(phase==='mult'){var t=trialDigit!==null?trialDigit:curStep().qd;el('qlabel').textContent=(trialDigit!==null?'Проверим: ':'')+t+' × '+task.d+' = ?'}
+ else if(phase==='sub')el('qlabel').textContent=partialStr()+' − '+curStep().prod+' = ?';
+ else w.hidden=true;
+ if(phase==='pr')setBtns(['Простое','Составное'],prAnswer);
+ else if(phase==='yn')setBtns(['Да','Нет'],ynAnswer);
+ else if(phase==='cmp')setBtns(task.mode==='fcmp0'?['<','>']:['<','=','>'],cmpAnswer);
+ else el('btnrow').hidden=true;
+ if(phase==='yn'||phase==='cmp'||phase==='pr')w.hidden=true;
+ el('selctl').hidden=phase!=='select';
+ if(phase==='select')el('selval').textContent=task.digits.slice(0,selLen);
+ el('ans').value='';if(!w.hidden)el('ans').focus()}
+function msg(t,c){el('fb').textContent=t;el('fb').className='fb '+(c||'')}
+function refresh(){renderCorner();renderVert();if(task.mode==='mulvis'||task.mode==='mulseq'||task.mode==='pyth'){renderExtras()}else{el('viswrap').hidden=true;el('ladwrap').hidden=true;el('pythwrap').hidden=true;el('tblpick').hidden=cfg.mode==='mulseq'?false:true}renderFrac();if(task.mode==='lcm5'||task.mode==='prime'||task.mode==='factor'||task.mode==='lcm6'){renderNok()}else{el('primegrid').hidden=true;el('primerow').hidden=true;el('factwrap').hidden=true;el('assemble').hidden=true}if(task.mode==='compose'||task.mode==='cross'){renderGrade1()}else{el('housewrap').hidden=true;el('crosswrap').hidden=true;el('comppick').hidden=cfg.mode==='compose'?false:true}setInstr();setQuestion()}
+/* ================= ЛОГИКА: столбик ================= */
+function applyWrites(st){for(var i=0;i<st.writes.length;i++){var w=st.writes[i];task.writes[w.row]=task.writes[w.row]||{};task.writes[w.row][w.col]=w.ch}}
+function colAdvance(firstNote){var notes=firstNote?[firstNote]:[];
+ while(cIdx<task.csteps.length&&task.csteps[cIdx].auto){applyWrites(task.csteps[cIdx]);if(task.csteps[cIdx].note)notes.push(task.csteps[cIdx].note);cIdx++}
+ if(cIdx>=task.csteps.length){
+  if(task.commaAsk){phase='comma';refresh();msg((notes.join(' ')+' Цифры готовы — осталась запятая.').trim(),'ok')}
+  else{finish()}}
+ else{phase='col';refresh();if(notes.length)msg(notes.join(' '),'ok')}}
+/* ================= ЛОГИКА: деление ================= */
+function selMore(){if(phase==='select'&&selLen<task.digits.length){selLen++;refresh()}}
+function selLess(){if(phase==='select'&&selLen>1){selLen--;refresh()}}
+function selOk(){if(phase!=='select')return;var need=task.steps[0].end+1;var val=Number(task.digits.slice(0,selLen));
+ if(selLen<need){errors++;msg(val+' меньше делителя '+task.d+' — добавь ещё цифру.','err');return}
+ if(selLen>need){errors++;msg('Взято лишнее: уже '+task.digits.slice(0,need)+' ≥ '+task.d+'. Убери цифру.','err');return}
+ phase='digit';refresh();msg('Верно, первое неполное делимое — '+val+'.','ok')}
+function commaNote(){if(task.commaAt==null||task.commaAt<0||stepIdx>=task.steps.length)return'';
+ var e=task.steps[stepIdx].end;
+ if(e===task.commaAt)return task.ext?'Цифры делимого кончились, а остаток не нулевой — ставим в частном запятую и дописываем нуль! ':'Переходим через запятую — в частном ставим запятую! ';
+ if(task.ext&&e>task.commaAt)return 'Дописываем ещё один нуль. ';
+ return ''}
+function advanceStep(note){stepIdx++;prodShown=false;trialDigit=null;
+ if(stepIdx>=task.steps.length){finish()}
+ else{phase='digit';var cn=commaNote();refresh();msg((note?note+' ':'')+cn+'Сносим следующую цифру: теперь делим '+partialStr()+'.',cn?'tip':'ok')}}
+function resultText(){
+ if(task.resText)return task.resText;
+ if(task.mode==='simple')return task.label+' = '+task.ansv;
+ if(task.mode==='col')return task.label+' = '+task.resv;
+ if(task.mode==='table')return task.N+' ÷ '+task.d+' = '+task.qv;
+ if(task.mode==='rem')return task.N+' ÷ '+task.d+' = '+task.qv+' (ост. '+task.rv+')';
+ if(task.mode==='decdec')return task.origA+' ÷ '+task.origB+' = '+task.disp+' ÷ '+task.d+' = '+task.qStr;
+ return task.label+' = '+task.qStr+(task.rem?' (ост. '+task.rem+')':'')}
+function finish(){finished=true;phase='done';refresh();
+ var ok=errors===0;
+ stats.total++;stats.date=new Date().toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit'});
+ if(ok){stats.right++;stats.streak++;stats.best=Math.max(stats.best||0,stats.streak)}else{stats.streak=0}
+ stats.history=stats.history||[];
+ stats.history.unshift({text:'['+cfg.tag+'] '+resultText()+'. '+(ok?'Без ошибок.':'Ошибок: '+errors+'.')});
+ stats.history=stats.history.slice(0,12);save();renderStats();
+ msg('Готово! '+resultText()+'. '+(ok?'Без единой ошибки!':'Ошибок по ходу: '+errors+'.'),ok?'ok':'tip')}
+function afterDigitConfirmed(){qDone++;var s=curStep();
+ if(s.qd===0){refresh();advanceStep('Делитель не помещается — в частное пишем 0.');return}
+ if(cfg.askMult){phase='mult';refresh();msg('Цифра '+s.qd+' верна. Теперь умножь её на делитель.','ok')}
+ else{prodShown=true;
+  if(cfg.askSub){phase='sub';refresh();msg('Верно! '+s.qd+' × '+task.d+' = '+s.prod+'. Теперь вычти.','ok')}
+  else{advanceStep(s.qd+' × '+task.d+' = '+s.prod+', остаток '+s.rem+'.')}}}
+function check(){if(phase==='select'){selOk();return}
+ if(phase==='done'){msg('Пример уже решён. Нажми «Следующий пример».','tip');return}
+ if(phase==='yn'||phase==='cmp'||phase==='pr'){msg('Выбери ответ кнопкой.','tip');return}
+ var raw=el('ans').value.trim();if(raw===''){msg('Введи ответ.','err');return}
+ if(phase==='fshadeq'||phase==='fsame'){
+  var fm=raw.match(/^(\d+)\s*[\/:]\s*(\d+)$/);
+  if(!fm){msg('Введи дробь в виде а/б, например 3/7.','err');return}
+  var vn=Number(fm[1]),vd=Number(fm[2]);
+  if(vd===0){errors++;msg('Знаменатель не может быть нулём.','err');return}
+  var en=phase==='fshadeq'?task.k:task.r, ed=phase==='fshadeq'?task.n:task.d;
+  if(vn===en&&vd===ed){finish();return}
+  if(vn*ed===en*vd){finish();el('fb').textContent+=' (По значению верно; здесь принято записывать '+en+'/'+ed+'.)';return}
+  errors++;
+  msg(phase==='fshadeq'?('Знаменатель — сколько всего частей ('+task.n+'), числитель — сколько закрашено.')
+     :('Знаменатель остаётся '+task.d+', а с числителями: '+task.a1+' '+task.op+' '+task.a2+' = ?'),'err');
+  return}
+ var v=norm(raw);if(isNaN(v)){msg('Нужно число.','err');return}
+ if(phase==='simple'){if(v===task.ansv)finish();else{errors++;msg((task.kind==='multable'||task.kind==='mulinv')?trickFor(task.a,task.b):'Не то. Попробуй ещё раз: '+task.label+'.','err')}return}
+ if(phase==='vis'){if(v===task.P)finish();else{errors++;var st2='';for(var zz=1;zz<=Math.min(3,task.a);zz++)st2+=(zz>1?', ':'')+(task.b*zz);msg('Считай рядами, а не по одной точке: '+st2+'…','err')}return}
+ if(phase==='seq'){var kk=seqIdx+1,exp2=task.N*kk;
+  if(v===exp2){seqIdx++;
+   if(seqIdx>=9)finish();
+   else{refresh();msg('Да, '+task.N+' × '+kk+' = '+exp2+'. Следующая ступенька: прибавь ещё '+task.N+'.','ok')}}
+  else{errors++;msg(kk===1?('Любое число × 1 — само число.'):('Ступенька ниже: '+task.N+' × '+(kk-1)+' = '+(task.N*(kk-1))+'. Прибавь '+task.N+'.'),'err')}
+  return}
+ if(phase==='pyth'){
+  if(v===task.P){stats.pyth=stats.pyth||{};stats.pyth[task.a+'-'+task.b]=1;stats.pyth[task.b+'-'+task.a]=1;
+   finish();
+   var extra='';
+   if(task.a!==task.b)extra=' Заполнилась и клетка '+task.b+' × '+task.a+' — от перестановки множителей произведение не меняется!';
+   var cnt=0;for(var pk in stats.pyth)cnt++;
+   if(cnt>=64)extra+=' 🎉 Вся таблица заполнена!';
+   if(extra)el('fb').textContent+=extra}
+  else{errors++;msg(trickFor(task.a,task.b),'err')}
+  return}
+ if(phase==='col'){var st=task.csteps[cIdx];
+  if(v===st.a){applyWrites(st);cIdx++;colAdvance(st.note)}
+  else{errors++;msg('Посчитай ещё раз: '+st.q,'err')}return}
+ if(phase==='comma'){if(v===task.decCount){task.resRevealAll=true;
+   var pd=insComma(task.rows.RES.digits,task.decCount).replace(',','');
+   task.rows.RES.digits=pd;task.rows.RES.plan=pd;refresh();finish()}
+  else{errors++;msg('Посчитай знаки после запятой в обоих множителях вместе: '+task.label+'.','err')}return}
+ if(phase==='noz'){
+  if(v===task.N){
+   if(task.mode==='fnoz'||task.mode==='lcm5'){finish()}
+   else{task.st.N=task.N;phase='a1n';if(task.mode==='fbring')phase='m1';refresh();msg('Верно, общий знаменатель — '+task.N+'.','ok')}
+  }else{errors++;
+   if(v>task.N&&v%task.d1===0&&v%task.d2===0)msg(v+' — общий знаменатель, но не наименьший. Переберём кратные '+Math.max(task.d1,task.d2)+' по порядку — найдётся меньше.','err');
+   else if(v%task.d1!==0||v%task.d2!==0)msg(v+' не делится на '+(v%task.d1!==0?task.d1:task.d2)+' — не подходит. Перебирай кратные '+Math.max(task.d1,task.d2)+'.','err');
+   else msg('Перебирай кратные '+Math.max(task.d1,task.d2)+': '+Math.max(task.d1,task.d2)+', '+(2*Math.max(task.d1,task.d2))+'…','err')}
+  return}
+ if(phase==='m1'){if(v===task.m1){phase='m2';refresh();msg('Да: знаменатель увеличится в '+task.m1+' раза — и числитель тоже.','ok')}else{errors++;msg('Раздели: '+task.N+' ÷ '+task.d1+'.','err')}return}
+ if(phase==='m2'){if(v===task.m2){phase='a1n';refresh();msg('Верно.','ok')}else{errors++;msg('Раздели: '+task.N+' ÷ '+task.d2+'.','err')}return}
+ if(phase==='a1n'){if(v===task.A1){task.st.N=task.N;task.st.A1=task.A1;phase='a2n';refresh();msg('Да: '+task.a1+'/'+task.d1+' = '+task.A1+'/'+task.N+'.','ok')}
+  else{errors++;msg('Умножь числитель: '+task.a1+' × '+task.m1+'.','err')}return}
+ if(phase==='a2n'){if(v===task.A2){task.st.A2=task.A2;
+   if(task.mode==='fbring'){finish()}
+   else if(task.mode==='fcmp'){phase='cmp';refresh();msg('Дроби приведены: '+task.A1+'/'+task.N+' и '+task.A2+'/'+task.N+'. Сравни!','ok')}
+   else{phase='rsum';refresh();msg('Дроби приведены — теперь '+(task.op==='+'?'сложи':'вычти')+' числители.','ok')}}
+  else{errors++;msg('Умножь числитель: '+task.a2+' × '+task.m2+'.','err')}return}
+ if(phase==='rsum'){if(v===task.R){task.st.R=task.R;finish()}
+  else{errors++;msg('Посчитай: '+task.A1+' '+task.op+' '+task.A2+'. Знаменатель не трогаем.','err')}return}
+ if(phase==='comp'){var kf=seqIdx+1,expc=task.N-kf;
+  if(v===expc){seqIdx++;
+   if(seqIdx>=task.N-1)finish();
+   else{refresh();msg(task.N+' — это '+kf+' и '+expc+'. Следующий этаж!','ok')}}
+  else{errors++;msg('Проверь: '+kf+' + '+v+' = '+(kf+v)+', а нужно '+task.N+'. Сколько добавить к '+kf+'?','err')}
+  return}
+ if(phase==='c1'){
+  if(v===task.x1){task.s1=true;phase='c2';refresh();
+   msg(task.op==='+'?(task.a+' + '+task.x1+' = 10 — дополнили до десятка!'):(task.a+' − '+task.x1+' = 10 — дошли до десятка!'),'ok')}
+  else{errors++;msg(task.op==='+'?('Считай от '+task.a+' до 10 — сколько шагов?'):('Сколько единиц у числа '+task.a+'? Столько и вычтем.'),'err')}
+  return}
+ if(phase==='c2'){
+  if(v===task.x2){task.s2=true;phase='c3';refresh();msg(task.b+' = '+task.x1+' + '+task.x2+' — как в домике числа '+task.b+'!','ok')}
+  else{errors++;msg(task.x1+' + сколько = '+task.b+'?','err')}
+  return}
+ if(phase==='c3'){
+  if(v===task.ansv)finish();
+  else{errors++;msg('10 '+task.op+' '+task.x2+' — десяток '+(task.op==='+'?'и ещё ':'без ')+task.x2+'.','err')}
+  return}
+ if(phase==='fp'){
+  var sp=spf(task.cur);
+  if(v===sp){task.pp=sp;phase='fq';refresh();msg('Да, '+task.cur+' делится на '+sp+'. Теперь раздели.','ok');return}
+  errors++;
+  if(!isPrime(v))msg(v+' — составное число! Раскладываем только на простые: смотри таблицу.','err');
+  else if(task.cur%v!==0)msg(task.cur+' на '+v+' не делится. Иди по таблице простых по порядку: 2, 3, 5…','err');
+  else msg('Делится! Но раскладываем по порядку — есть простое поменьше, которое тоже делит '+task.cur+'.','err');
+  return}
+ if(phase==='fq'){
+  var qq=task.cur/task.pp;
+  if(v!==qq){errors++;msg('Посчитай: '+task.cur+' ÷ '+task.pp+'.','err');return}
+  if(task.mode==='factor'){task.rows.push([task.cur,task.pp]);task.facs.push(task.pp)}
+  else if(task.stage==='A'){task.rowsA.push([task.cur,task.pp]);task.facsA.push(task.pp)}
+  else{task.rowsB.push([task.cur,task.pp]);task.facsB.push(task.pp)}
+  task.cur=qq;
+  if(qq>1){phase='fp';refresh();msg('Записали. Продолжаем раскладывать '+qq+'.','ok');return}
+  /* дошли до 1 */
+  if(task.mode==='factor'){finish();return}
+  if(task.stage==='A'){task.stage='B';task.cur=task.B;phase='fp';refresh();
+   msg(task.A+' = '+task.facsA.join(' · ')+'. Теперь разложим второе число.','ok');return}
+  task.stage='cnt';phase='cnt';refresh();
+  msg(task.B+' = '+task.facsB.join(' · ')+'. Оба разложены — собираем НОК!','ok');return}
+ if(phase==='cnt'){
+  var u=task.un[task.ci];
+  if(v===u.mx){for(var pk=0;pk<u.mx;pk++)task.picked.push(u.p);task.ci++;
+   if(task.ci>=task.un.length){task.stage='prod';phase='prod';refresh();msg('Все множители собраны — перемножь их.','ok')}
+   else{refresh();msg('Верно: берём '+(u.mx===0?'ни одного':u.mx)+' — столько, сколько в числе, где их больше.','ok')}
+   return}
+  errors++;msg('Смотри, где множителя '+u.p+' БОЛЬШЕ: в '+task.A+' его '+u.ea+', в '+task.B+' — '+u.eb+'. Берём наибольшее.','err');return}
+ if(phase==='prod'){
+  if(v===task.L){finish();return}
+  errors++;msg('Перемножь по порядку: '+task.pick.join(' · ')+'.','err');return}
+ if(phase==='red'){
+  if(v<=1){errors++;msg('Нужен общий делитель больше 1.','err');return}
+  if(task.ca%v!==0||task.cb%v!==0){errors++;
+   msg(v+' не подходит: '+(task.ca%v!==0?task.ca:task.cb)+' на '+v+' не делится.','err');return}
+  task.ca/=v;task.cb/=v;task.chain.push([task.ca,task.cb]);
+  if(gcd(task.ca,task.cb)===1){finish()}
+  else{refresh();msg('Сократили на '+v+': получилось '+task.ca+'/'+task.cb+'. Можно сократить ещё!','ok')}
+  return}
+ if(phase==='table'){if(v===task.qv)finish();else{errors++;msg('Не то. Подумай: '+task.d+' × ? = '+task.N+'.','err')}return}
+ if(phase==='remq'){if(v===task.qv){phase='remr';refresh();msg('Верно: '+task.qv+' × '+task.d+' = '+(task.qv*task.d)+' — помещается, а '+(task.qv+1)+' × '+task.d+' = '+((task.qv+1)*task.d)+' — уже нет.','ok')}
+  else{errors++;msg(v*task.d>task.N?('Много: '+v+' × '+task.d+' = '+(v*task.d)+' > '+task.N+'.'):('Мало: остаток был бы не меньше делителя.'),'err')}return}
+ if(phase==='remr'){if(v===task.rv)finish();else{errors++;msg('Посчитай ещё раз: '+task.N+' − '+(task.qv*task.d)+'.','err')}return}
+ if(phase==='shiftM'){if(v===task.m){phase='shiftA';refresh();msg('Верно: в делителе '+task.origB+' — '+task.m+' зн. после запятой. Сдвигаем запятую на '+task.m+' в обоих числах.','ok')}
+  else{errors++;msg('Посчитай цифры после запятой в числе '+task.origB+'.','err')}return}
+ if(phase==='shiftA'){if(Math.abs(v-task.Pval)<1e-9){phase='shiftB';refresh();msg('Верно: '+task.origA+' → '+task.disp+'.','ok')}
+  else{errors++;msg('Сдвинь запятую в '+task.origA+' на '+task.m+' вправо. Если цифр не хватает — допиши нули.','err')}return}
+ if(phase==='shiftB'){if(v===task.d){phase='select';el('prompt').textContent=task.title+' → '+task.disp+' ÷ '+task.d;refresh();msg('Отлично: теперь делим '+task.disp+' ÷ '+task.d+' уголком.','ok')}
+  else{errors++;msg('Сдвинь запятую в '+task.origB+' на '+task.m+' вправо.','err')}return}
+ var s=curStep();
+ if(phase==='digit'){
+  if(raw.length>1){msg('Введи одну цифру.','err');return}
+  if(v===s.qd){afterDigitConfirmed();return}
+  if(cfg.trial&&v>=1&&v<=9){trialDigit=v;phase='mult';refresh();msg('Проверим цифру '+v+': умножь её на делитель.','tip');return}
+  errors++;
+  msg(v<s.qd?('Мало: тогда остаток '+(s.partial-v*task.d)+' был бы не меньше делителя '+task.d+'. Возьми цифру больше.')
+            :('Много: '+v+' × '+task.d+' = '+(v*task.d)+' — это больше, чем '+s.partial+'. Возьми цифру меньше.'),'err');return}
+ if(phase==='mult'){var t=trialDigit!==null?trialDigit:s.qd;var exp=t*task.d;
+  if(v!==exp){errors++;msg('Посчитай ещё раз: '+t+' × '+task.d+'.','err');return}
+  if(trialDigit!==null&&trialDigit!==s.qd){
+   if(exp>s.partial){msg(t+' × '+task.d+' = '+exp+' — больше, чем '+s.partial+'. Цифра велика, попробуй меньше.','tip')}
+   else{msg(t+' × '+task.d+' = '+exp+', остаток '+(s.partial-exp)+' — не меньше делителя. Цифру можно увеличить.','tip')}
+   trialDigit=null;phase='digit';refresh();return}
+  trialDigit=null;if(qDone<=stepIdx)qDone++;prodShown=true;
+  if(cfg.askSub){phase='sub';refresh();msg('Верно! Теперь вычти произведение.','ok')}
+  else{advanceStep('Остаток '+s.rem+'.')}
+  return}
+ if(phase==='sub'){
+  if(v===s.rem){advanceStep('Остаток '+s.rem+' — верно.')}
+  else{errors++;msg('Посчитай ещё раз: '+s.partial+' − '+s.prod+'.','err')}
+  return}}
+function hint(){
+ if(phase==='simple'){var k=cfg.kind;
+  if(k==='cross20'&&task.op==='+')msg('Дополни до 10: '+task.a+' + '+(10-task.a)+' = 10, потом прибавь остальное.','tip');
+  else if(k==='cross20')msg('Вычитай по частям: сначала до 10, потом остальное.','tip');
+  else if(k==='multable'||k==='mulinv')msg(trickFor(task.a,task.b),'tip');
+  else msg('Считай по разрядам: сначала десятки, потом единицы.','tip');return}
+ if(phase==='vis'){var sq='';for(var hz=1;hz<=task.a;hz++)sq+=(hz>1?', ':'')+(task.b*hz);msg('Считай рядами: '+sq+'.','tip');return}
+ if(phase==='seq'){var hk=seqIdx+1;msg(hk===1?'Любое число × 1 — само число.':('Предыдущая ступенька: '+task.N+' × '+(hk-1)+' = '+(task.N*(hk-1))+'. Прибавь '+task.N+'. '+trickFor(task.N,hk)),'tip');return}
+ if(phase==='pyth'){msg(trickFor(task.a,task.b),'tip');return}
+ if(phase==='fshadeq'){msg('Всего частей: '+task.n+' — это знаменатель. Закрашено: считай синие.','tip');return}
+ if(phase==='fsame'){msg('Знаменатель '+task.d+' переписываем, а числители: '+task.a1+' '+task.op+' '+task.a2+'.','tip');return}
+ if(phase==='cmp'){msg(task.mode==='fcmp0'?(task.same?'Знаменатели равны — смотри на числители.':'Числители равны — у какой дроби части крупнее?'):'Сравни числители: '+task.A1+' и '+task.A2+'.','tip');return}
+ if(phase==='yn'){var Vh=task.D*task.mIdx;msg('Раздели '+Vh+' на '+task.dm+' — есть ли остаток?','tip');return}
+ if(phase==='noz'){var Dh=Math.max(task.d1,task.d2);var lst='';for(var hh=1;hh<=Math.min(6,task.N/Dh);hh++)lst+=(hh>1?', ':'')+(Dh*hh);msg('Перебирай кратные '+Dh+': '+lst+'… — первое, что делится на '+Math.min(task.d1,task.d2)+'.','tip');return}
+ if(phase==='m1'){msg(task.N+' ÷ '+task.d1+' = ?','tip');return}
+ if(phase==='m2'){msg(task.N+' ÷ '+task.d2+' = ?','tip');return}
+ if(phase==='a1n'){msg('Числитель и знаменатель умножаем на одно и то же: '+task.a1+' × '+task.m1+'.','tip');return}
+ if(phase==='a2n'){msg('Числитель и знаменатель умножаем на одно и то же: '+task.a2+' × '+task.m2+'.','tip');return}
+ if(phase==='rsum'){msg('Числители: '+task.A1+' '+task.op+' '+task.A2+'. Знаменатель '+task.N+' не меняется.','tip');return}
+ if(phase==='comp'){var kf=seqIdx+1,expc=task.N-kf;
+  if(v===expc){seqIdx++;
+   if(seqIdx>=task.N-1)finish();
+   else{refresh();msg(task.N+' — это '+kf+' и '+expc+'. Следующий этаж!','ok')}}
+  else{errors++;msg('Проверь: '+kf+' + '+v+' = '+(kf+v)+', а нужно '+task.N+'. Сколько добавить к '+kf+'?','err')}
+  return}
+ if(phase==='c1'){
+  if(v===task.x1){task.s1=true;phase='c2';refresh();
+   msg(task.op==='+'?(task.a+' + '+task.x1+' = 10 — дополнили до десятка!'):(task.a+' − '+task.x1+' = 10 — дошли до десятка!'),'ok')}
+  else{errors++;msg(task.op==='+'?('Считай от '+task.a+' до 10 — сколько шагов?'):('Сколько единиц у числа '+task.a+'? Столько и вычтем.'),'err')}
+  return}
+ if(phase==='c2'){
+  if(v===task.x2){task.s2=true;phase='c3';refresh();msg(task.b+' = '+task.x1+' + '+task.x2+' — как в домике числа '+task.b+'!','ok')}
+  else{errors++;msg(task.x1+' + сколько = '+task.b+'?','err')}
+  return}
+ if(phase==='c3'){
+  if(v===task.ansv)finish();
+  else{errors++;msg('10 '+task.op+' '+task.x2+' — десяток '+(task.op==='+'?'и ещё ':'без ')+task.x2+'.','err')}
+  return}
+ if(phase==='fp'){
+  var sp=spf(task.cur);
+  if(v===sp){task.pp=sp;phase='fq';refresh();msg('Да, '+task.cur+' делится на '+sp+'. Теперь раздели.','ok');return}
+  errors++;
+  if(!isPrime(v))msg(v+' — составное число! Раскладываем только на простые: смотри таблицу.','err');
+  else if(task.cur%v!==0)msg(task.cur+' на '+v+' не делится. Иди по таблице простых по порядку: 2, 3, 5…','err');
+  else msg('Делится! Но раскладываем по порядку — есть простое поменьше, которое тоже делит '+task.cur+'.','err');
+  return}
+ if(phase==='fq'){
+  var qq=task.cur/task.pp;
+  if(v!==qq){errors++;msg('Посчитай: '+task.cur+' ÷ '+task.pp+'.','err');return}
+  if(task.mode==='factor'){task.rows.push([task.cur,task.pp]);task.facs.push(task.pp)}
+  else if(task.stage==='A'){task.rowsA.push([task.cur,task.pp]);task.facsA.push(task.pp)}
+  else{task.rowsB.push([task.cur,task.pp]);task.facsB.push(task.pp)}
+  task.cur=qq;
+  if(qq>1){phase='fp';refresh();msg('Записали. Продолжаем раскладывать '+qq+'.','ok');return}
+  /* дошли до 1 */
+  if(task.mode==='factor'){finish();return}
+  if(task.stage==='A'){task.stage='B';task.cur=task.B;phase='fp';refresh();
+   msg(task.A+' = '+task.facsA.join(' · ')+'. Теперь разложим второе число.','ok');return}
+  task.stage='cnt';phase='cnt';refresh();
+  msg(task.B+' = '+task.facsB.join(' · ')+'. Оба разложены — собираем НОК!','ok');return}
+ if(phase==='cnt'){
+  var u=task.un[task.ci];
+  if(v===u.mx){for(var pk=0;pk<u.mx;pk++)task.picked.push(u.p);task.ci++;
+   if(task.ci>=task.un.length){task.stage='prod';phase='prod';refresh();msg('Все множители собраны — перемножь их.','ok')}
+   else{refresh();msg('Верно: берём '+(u.mx===0?'ни одного':u.mx)+' — столько, сколько в числе, где их больше.','ok')}
+   return}
+  errors++;msg('Смотри, где множителя '+u.p+' БОЛЬШЕ: в '+task.A+' его '+u.ea+', в '+task.B+' — '+u.eb+'. Берём наибольшее.','err');return}
+ if(phase==='prod'){
+  if(v===task.L){finish();return}
+  errors++;msg('Перемножь по порядку: '+task.pick.join(' · ')+'.','err');return}
+ if(phase==='comp'){var kh=seqIdx+1;msg('Считай от '+kh+' до '+task.N+' — сколько шагов добавил? Или посмотри на этаж выше.','tip');return}
+ if(phase==='c1'){msg(task.op==='+'?(task.a+', …, 10: '+(task.a+1===10?'один шаг!':'считай: '+(task.a+1)+', 10.')):('В числе '+task.a+' — десяток и ещё '+(task.a-10)+'.'),'tip');return}
+ if(phase==='c2'){msg('Вспомни домик числа '+task.b+': '+task.x1+' и '+task.x2+'.','tip');return}
+ if(phase==='c3'){msg('Десяток '+(task.op==='+'?'плюс':'минус')+' '+task.x2+'.','tip');return}
+ if(phase==='pr'){msg('Проверь по порядку: делится на 2? на 3 (сумма цифр)? на 5 (кончается на 0/5)? на 7? Если нет — простое.','tip');return}
+ if(phase==='comp'){var kf=seqIdx+1,expc=task.N-kf;
+  if(v===expc){seqIdx++;
+   if(seqIdx>=task.N-1)finish();
+   else{refresh();msg(task.N+' — это '+kf+' и '+expc+'. Следующий этаж!','ok')}}
+  else{errors++;msg('Проверь: '+kf+' + '+v+' = '+(kf+v)+', а нужно '+task.N+'. Сколько добавить к '+kf+'?','err')}
+  return}
+ if(phase==='c1'){
+  if(v===task.x1){task.s1=true;phase='c2';refresh();
+   msg(task.op==='+'?(task.a+' + '+task.x1+' = 10 — дополнили до десятка!'):(task.a+' − '+task.x1+' = 10 — дошли до десятка!'),'ok')}
+  else{errors++;msg(task.op==='+'?('Считай от '+task.a+' до 10 — сколько шагов?'):('Сколько единиц у числа '+task.a+'? Столько и вычтем.'),'err')}
+  return}
+ if(phase==='c2'){
+  if(v===task.x2){task.s2=true;phase='c3';refresh();msg(task.b+' = '+task.x1+' + '+task.x2+' — как в домике числа '+task.b+'!','ok')}
+  else{errors++;msg(task.x1+' + сколько = '+task.b+'?','err')}
+  return}
+ if(phase==='c3'){
+  if(v===task.ansv)finish();
+  else{errors++;msg('10 '+task.op+' '+task.x2+' — десяток '+(task.op==='+'?'и ещё ':'без ')+task.x2+'.','err')}
+  return}
+ if(phase==='fp'){var sph=spf(task.cur);msg('Иди по таблице простых: '+(task.cur%2===0?'число чётное!':'на 2 не делится — дальше: 3, 5, 7…')+' Наименьший простой делитель здесь — '+sph+'.','tip');return}
+ if(phase==='fq'){msg('Раздели: '+task.cur+' ÷ '+task.pp+' = ?','tip');return}
+ if(phase==='cnt'){var uh=task.un[task.ci];msg('Правило: берём столько, сколько в числе с НАИБОЛЬШИМ количеством. Здесь это '+uh.mx+'.','tip');return}
+ if(phase==='prod'){var pp2=1,st3='';for(var hz2=0;hz2<task.pick.length;hz2++){pp2*=task.pick[hz2];st3+=(hz2?' · ':'')+task.pick[hz2];if(hz2<task.pick.length-1)st3+=' = '+pp2+';'}msg('По шагам: '+st3+'…','tip');return}
+ if(phase==='red'){var g=gcd(task.ca,task.cb);
+  msg((task.ca%2===0&&task.cb%2===0?'Оба чётные — попробуй 2. ':'')+(task.ca%3===0&&task.cb%3===0?'Оба делятся на 3. ':'')+'А быстрее всего — НОД('+task.ca+', '+task.cb+') = '+g+'.','tip');return}
+ if(phase==='col'){msg('Считай: '+task.csteps[cIdx].q,'tip');return}
+ if(phase==='comma'){msg('В первом множителе и во втором — сложи количество цифр после запятых. Столько знаков отсчитай справа в ответе.','tip');return}
+ if(phase==='table'){msg('Подумай: '+task.d+' × ? = '+task.N+'.','tip');return}
+ if(phase==='remq'){msg('Подбирай: какое наибольшее число при умножении на '+task.d+' не превысит '+task.N+'?','tip');return}
+ if(phase==='remr'){msg('Остаток = '+task.N+' − '+(task.qv*task.d)+'. Он должен быть меньше делителя.','tip');return}
+ if(phase==='shiftM'){msg('В числе '+task.origB+' посчитай цифры справа от запятой.','tip');return}
+ if(phase==='shiftA'){msg('Каждый сдвиг на 1 знак — умножение на 10. '+task.origA+' × '+p10(task.m)+' = ?','tip');return}
+ if(phase==='shiftB'){msg(task.origB+' × '+p10(task.m)+' = ? Запятая исчезнет.','tip');return}
+ if(phase==='done'){msg('Ответ: '+resultText()+'.','tip');return}
+ var s=curStep();
+ if(phase==='select')msg('Бери цифры слева, пока число не станет не меньше '+task.d+'.','tip');
+ else if(phase==='digit'){if(cfg.d2){var base=Math.round(task.d/10)*10;msg('Прикинь: '+s.partial+' ÷ '+task.d+' ≈ '+s.partial+' ÷ '+base+'. Начни с '+Math.max(1,Math.min(9,Math.floor(s.partial/base)))+' и проверь.','tip')}
+  else msg(s.partial<task.d?('Делитель '+task.d+' не помещается в '+s.partial+' — какая цифра идёт в частное?'):('Вспомни таблицу умножения на '+task.d+': какое ближайшее произведение не больше '+s.partial+'?'),'tip')}
+ else if(phase==='mult')msg('Умножь '+(trialDigit!==null?trialDigit:s.qd)+' × '+task.d+' в столбик или по частям.','tip');
+ else if(phase==='sub')msg('Вычти: '+s.partial+' − '+s.prod+'.','tip')}
+function solution(){
+ if(task.mode==='compose'){seqIdx=task.N-1;phase='done';finished=true;refresh();msg(resultText()+' Разобранный пример в статистику не идёт.','tip');return}
+ if(task.mode==='cross'){task.s1=true;task.s2=true;phase='done';finished=true;refresh();msg(resultText()+'. Разобранный пример в статистику не идёт.','tip');return}
+ if(task.mode==='lcm5'){var Vv2;while(true){Vv2=task.D*task.mIdx;var dv2=Vv2%task.dm===0;task.chips.push([Vv2,dv2]);if(dv2)break;task.mIdx++}
+  phase='done';finished=true;refresh();msg(resultText()+'. Разобранный пример в статистику не идёт.','tip');return}
+ if(task.mode==='prime'){phase='done';finished=true;refresh();msg(resultText()+'. Разобранный пример в статистику не идёт.','tip');return}
+ if(task.mode==='factor'){while(task.cur>1){var sp2=spf(task.cur);task.rows.push([task.cur,sp2]);task.facs.push(sp2);task.cur/=sp2}
+  phase='done';finished=true;refresh();msg(resultText()+'. Разобранный пример в статистику не идёт.','tip');return}
+ if(task.mode==='lcm6'){
+  while(task.stage==='A'&&task.cur>1||task.stage==='A'){if(task.cur>1){var sa=spf(task.cur);task.rowsA.push([task.cur,sa]);task.facsA.push(sa);task.cur/=sa}else{task.stage='B';task.cur=task.B}}
+  while(task.stage==='B'){if(task.cur>1){var sb=spf(task.cur);task.rowsB.push([task.cur,sb]);task.facsB.push(sb);task.cur/=sb}else{task.stage='cnt'}}
+  task.picked=task.pick.slice();task.stage='prod';
+  phase='done';finished=true;refresh();msg(resultText()+'. Разобранный пример в статистику не идёт.','tip');return}
+ if(isFrac()){
+  if(task.st){task.st.N=task.N;task.st.A1=task.A1;task.st.A2=task.A2;if(task.R!=null)task.st.R=task.R;if(task.sym)task.st.sym=task.sym}
+  if(task.mode==='freduce'&&(task.ca!==task.p||task.cb!==task.q)){task.ca=task.p;task.cb=task.q;task.chain.push([task.p,task.q])}
+  if(task.mode==='fnoz'){var Vv;while(true){Vv=task.D*task.mIdx;var dv=Vv%task.dm===0;task.chips.push([Vv,dv]);if(dv)break;task.mIdx++}}
+  phase='done';finished=true;refresh();msg(resultText()+'. Разобранный пример в статистику не идёт.','tip');return}
+ if(task.mode==='mulvis'||task.mode==='pyth'){phase='done';finished=true;refresh();msg(resultText()+'. Разобранный пример в статистику не идёт.','tip');return}
+ if(task.mode==='mulseq'){seqIdx=9;phase='done';finished=true;refresh();msg(resultText()+' Разобранный пример в статистику не идёт.','tip');return}
+ if(task.mode==='simple'||task.mode==='table'||task.mode==='rem'){phase='done';finished=true;refresh();msg(resultText()+'. Разобранный пример в статистику не идёт.','tip');return}
+ if(task.mode==='col'){
+  for(;cIdx<task.csteps.length;cIdx++)applyWrites(task.csteps[cIdx]);
+  if(task.commaAsk)task.resRevealAll=true;
+  finished=true;phase='done';refresh();msg(resultText()+'. Разобранный пример в статистику не идёт.','tip');return}
+ if(task.mode==='decdec'&&(phase==='shiftM'||phase==='shiftA'||phase==='shiftB')){el('prompt').textContent=task.title+' → '+task.disp+' ÷ '+task.d}
+ stepIdx=task.steps.length;qDone=task.q.length;prodShown=false;trialDigit=null;finished=true;phase='done';refresh();
+ msg(resultText()+'. Разобранный пример в статистику не идёт.','tip')}
+function next(){task=makeTask();errors=0;selLen=1;qDone=0;stepIdx=0;cIdx=0;prodShown=false;trialDigit=null;finished=false;
+ el('prompt').textContent=task.title;
+ if(task.mode==='simple'){phase='simple';refresh();msg('Введи ответ.','');return}
+ if(task.mode==='mulvis'){phase='vis';refresh();msg('Посчитай точки — рядами, не по одной!','');return}
+ if(task.mode==='mulseq'){seqIdx=0;phase='seq';refresh();msg('Иди по ступенькам снизу вверх: каждая следующая — на '+task.N+' больше.','');return}
+ if(task.mode==='pyth'){phase='pyth';refresh();msg('Найди клетку на пересечении подсвеченных строки и столбца.','');return}
+ if(task.mode==='fshade'){phase='fshadeq';refresh();msg('Посмотри на полоску и запиши дробь.','');return}
+ if(task.mode==='fcmp0'){phase='cmp';refresh();msg('Какой знак поставим между дробями?','');return}
+ if(task.mode==='faddsame'){phase='fsame';refresh();msg('Введи ответ дробью, например 5/9.','');return}
+ if(task.mode==='fnoz'){phase='yn';refresh();msg('Идём по кратным числа '+task.D+' и проверяем каждое.','');return}
+ if(task.mode==='fbring'||task.mode==='fcmp'||task.mode==='faddsub'){phase='noz';refresh();msg('Сначала найди наименьший общий знаменатель (перебором кратных!).','');return}
+ if(task.mode==='freduce'){phase='red';refresh();msg('Найди общий делитель числителя и знаменателя.','');return}
+ if(task.mode==='compose'){seqIdx=0;phase='comp';refresh();msg('Заполняем домик снизу вверх, этаж за этажом.','');return}
+ if(task.mode==='cross'){phase='c1';refresh();msg('Считаем через десяток, в три шага.','');return}
+ if(task.mode==='lcm5'){phase='yn';refresh();msg('Идём по кратным числа '+task.D+' и проверяем каждое.','');return}
+ if(task.mode==='prime'){phase='pr';refresh();msg('Реши и заполни клетку в таблице до 50.','');return}
+ if(task.mode==='factor'){phase='fp';refresh();msg('Раскладываем столбиком. Начинай с самого маленького простого.','');return}
+ if(task.mode==='lcm6'){phase='fp';refresh();msg('Шаг 1: разложим '+task.A+' на простые множители.','');return}
+ if(task.mode==='col'){phase='col';refresh();msg(task.op==='×'?'Умножаем справа налево.':'Считаем справа налево, разряд за разрядом.','');return}
+ if(task.mode==='table'){phase='table';refresh();msg('Введи ответ.','');return}
+ if(task.mode==='rem'){phase='remq';refresh();msg('Сначала неполное частное, потом остаток.','');return}
+ if(task.mode==='decdec'){phase='shiftM';refresh();msg('Сначала избавимся от запятой в делителе.','');return}
+ phase='select';refresh();msg('Выдели первое неполное делимое.','')}
+function renderStats(){var a=stats.total?Math.round(stats.right*100/stats.total):0;
+ el('total').textContent=stats.total;el('right').textContent=stats.right;el('streak').textContent=stats.streak;
+ el('acc').textContent=a+'%';el('best').textContent=stats.best||0;el('date').textContent=stats.date||'—';
+ var st=stats.total<10?'тема начата':a>=80?'почти освоено':a<70?'нужно тренироваться':'тренируется';
+ el('status').textContent=st;el('advice').textContent=stats.total<10?'Реши первые 10 примеров.':'Проходи уровни по порядку — от класса к классу.';
+ el('history').innerHTML='';if(!stats.history||!stats.history.length){el('history').innerHTML='<div class="hist">Пока история пуста.</div>';return}
+ stats.history.forEach(function(x){var d=document.createElement('div');d.className='hist';d.textContent=x.text;el('history').appendChild(d)})}
+function reset(){stats={total:0,right:0,streak:0,best:0,date:null,history:[]};save();renderStats();msg('Статистика сброшена.','tip')}
+(function(){var cp=el('comppick');var nums=['случайное',3,4,5,6,7,8,9,10];
+ for(var i=0;i<nums.length;i++)(function(idx){
+  var b=document.createElement('button');b.textContent=idx===0?'случайное':String(nums[idx]);
+  if(idx===0)b.className='active';
+  b.onclick=function(){pickC=idx===0?0:nums[idx];
+   var bs=cp.children;for(var j=0;j<bs.length;j++)if(bs[j].tagName==='BUTTON')bs[j].className='';
+   b.className='active';next()};
+  cp.appendChild(b)})(i)})();
+(function(){var tp=el('tblpick');var names=['случайную','2','3','4','5','6','7','8','9'];
+ for(var i=0;i<names.length;i++)(function(idx){
+  var b=document.createElement('button');b.textContent=idx===0?'случайную':'на '+names[idx];
+  if(idx===0)b.className='active';
+  b.onclick=function(){pickN=idx===0?0:Number(names[idx]);
+   var bs=tp.children;for(var j=0;j<bs.length;j++)if(bs[j].tagName==='BUTTON')bs[j].className='';
+   b.className='active';next()};
+  tp.appendChild(b)})(i)})();
+el('level').onchange=function(){levelId=this.value;cfg=LEVELS[levelId];next()};
+el('less').onclick=selLess;el('more').onclick=selMore;el('selok').onclick=selOk;
+el('check').onclick=check;el('next').onclick=next;el('hint').onclick=hint;el('solution').onclick=solution;el('reset').onclick=reset;
+el('ans').onkeydown=function(e){if(e.key==='Enter')check()};
+document.addEventListener('keydown',function(e){if(phase!=='select')return;if(e.key==='ArrowRight')selMore();if(e.key==='ArrowLeft')selLess();if(e.key==='Enter')selOk()});
+load();next();renderStats();
+</script>
+</body>
+</html>

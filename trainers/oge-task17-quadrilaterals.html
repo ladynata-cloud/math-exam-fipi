@@ -1,0 +1,1364 @@
+﻿<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ОГЭ №17 — Четырёхугольники · тренажёр</title>
+<style>
+:root{--bg:#e8e4db;--card:#fffdf7;--ink:#1a1a2e;--muted:#5b5b6e;--line:#d8d2c2;--accent:#2d70b3;--good:#16a34a;--bad:#dc2626;--warn:#c2410c;--amber:#d97706;--violet:#7c3aed;--teal:#0d9488;--pink:#db2777;--soft:#eef4fa}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.wrap{max-width:980px;margin:auto;padding:14px 12px 46px}
+.head{background:#1a1a2e;color:#fffdf7;border-radius:18px 18px 0 0;padding:16px 20px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+.head h1{margin:0;font-size:clamp(19px,3vw,26px);letter-spacing:-.02em}
+.head .sub{opacity:.75;font-size:13px;margin-top:3px}
+.badge{background:rgba(255,253,247,.14);border:1px solid rgba(255,253,247,.25);border-radius:999px;padding:6px 12px;font-weight:800;font-size:13px;white-space:nowrap}
+.app{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 34px rgba(26,26,46,.14);overflow:hidden}
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--line);background:#f6f2e9;flex-wrap:wrap}
+.tab{flex:1;min-width:110px;border:0;background:transparent;padding:13px 8px;font:inherit;font-weight:850;font-size:14.5px;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent}
+.tab:hover{color:var(--ink)}
+.tab.on{color:var(--accent);border-bottom-color:var(--accent);background:var(--card)}
+.main{padding:16px}
+@media(max-width:620px){.main{padding:12px 10px}}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;font:inherit;font-size:13.5px;font-weight:800;cursor:pointer;color:var(--muted)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip .n{opacity:.65;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin-top:12px}
+.tcard{border:1px solid var(--line);border-radius:14px;background:#fff;padding:12px;cursor:pointer;transition:.12s;position:relative}
+.tcard:hover{border-color:var(--accent);box-shadow:0 6px 16px rgba(45,112,179,.14);transform:translateY(-1px)}
+.tcard h3{margin:0 0 5px;font-size:14.5px;line-height:1.3}
+.tcard .cnt{font-size:12px;color:var(--muted)}
+.tcard .done{position:absolute;top:9px;right:10px;color:var(--good);font-weight:900;font-size:13px}
+.tcard .weak{display:inline-block;margin-top:6px;background:#fef2f2;color:var(--bad);border:1px solid #fecaca;border-radius:999px;font-size:11.5px;font-weight:850;padding:2px 8px}
+.topicH{margin:16px 0 2px;font-size:13px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:900}
+.task{border:1px solid var(--line);border-radius:16px;background:#fff;padding:16px;margin-top:12px}
+.task .qtext{font-size:clamp(16.5px,2.2vw,19px);line-height:1.45}
+.pill{display:inline-block;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:850;background:#f1ede2;color:#57534e;margin:0 6px 8px 0}
+.pill.src{background:#eaf8f3;color:#006b55}.pill.gen{background:#fff7e6;color:#985b00}
+.fig{display:flex;justify-content:center;margin:12px 0;background:#fffdf7;border:1px solid #efe9da;border-radius:12px;padding:8px}
+.fig svg{max-width:100%;height:auto}
+.ansrow{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.ansrow input{flex:1;min-width:150px;border:1px solid var(--line);border-radius:12px;padding:12px 14px;font:inherit;font-size:17px;outline:none;background:#fffdf7}
+.ansrow input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,112,179,.15)}
+button{font:inherit;cursor:pointer}
+.btn{border:0;border-radius:12px;padding:12px 16px;font-weight:850;transition:.12s}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:var(--accent);color:#fff;box-shadow:0 8px 18px rgba(45,112,179,.25)}
+.btn.ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
+.btn.soft{background:var(--soft);color:#1e4e7c}
+.btn.danger{background:#fef2f2;color:var(--bad);border:1px solid #fecaca}
+.msg{border-radius:12px;padding:11px 14px;margin-top:10px;font-size:14.5px;line-height:1.5;display:none}
+.msg.ok{display:block;background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+.msg.err{display:block;background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+.msg.info{display:block;background:var(--soft);border:1px solid #cbdcec;color:#1e4e7c}
+.msg.warn{display:block;background:#fff7ed;border:1px solid #fed7aa;color:#9a3412}
+.law{background:#fffbeb;border:1px solid #fcd34d;border-radius:12px;padding:12px 14px;margin-top:10px;font-size:14.5px;line-height:1.55}
+.law b{color:#b45309}
+.sol{margin-top:10px}
+.sol .step{background:#fbfaf5;border:1px solid #eee7d6;border-radius:12px;padding:10px 13px;margin-top:8px;font-size:15px;line-height:1.6}
+.sol .step .no{display:inline-block;background:var(--accent);color:#fff;border-radius:999px;min-width:22px;height:22px;line-height:22px;text-align:center;font-size:12.5px;font-weight:900;margin-right:8px}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px;line-height:1.15}
+.frac>span:first-child{border-bottom:1.6px solid currentColor;padding:0 5px}
+.frac>span:last-child{padding:0 5px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+@media(max-width:560px){.stats{grid-template-columns:1fr 1fr}}
+.stat{border:1px solid var(--line);border-radius:12px;background:#fff;padding:9px 11px}
+.stat b{display:block;font-size:21px}.stat span{font-size:11px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.fin{text-align:center;padding:26px 14px}
+.fin .score{font-size:52px;font-weight:900;letter-spacing:-.03em}
+.dots{display:flex;gap:7px;justify-content:center;margin:14px 0;flex-wrap:wrap}
+.dot{width:16px;height:16px;border-radius:50%}
+.dot.g{background:var(--good)}.dot.y{background:#eab308}.dot.r{background:var(--bad)}
+.refblk{border:1px solid var(--line);border-radius:14px;background:#fff;padding:13px 15px;margin-top:10px;scroll-margin-top:14px}
+.refblk h3{margin:0 0 7px;font-size:15.5px}
+.refblk .fm{font-size:17px;margin:6px 0;line-height:1.7}
+.refblk.hl{border-color:var(--amber);box-shadow:0 0 0 3px rgba(217,119,6,.18)}
+.refblk .keep{display:inline-block;background:#fdf2f8;color:var(--pink);border:1px solid #fbcfe8;border-radius:999px;font-size:11px;font-weight:900;padding:2px 8px;margin-left:6px}
+.refwhy{background:#f0f7ff;border:1px dashed #a8c6e2;border-radius:10px;padding:9px 12px;margin-top:8px;font-size:13.5px;color:#1e4e7c;line-height:1.5}
+.note{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.5}
+.small{font-size:13.5px;color:#374151;line-height:1.55}
+a.reflink{color:var(--accent);font-weight:800;cursor:pointer;text-decoration:underline dotted}
+.stbox{font-family:ui-monospace,monospace;font-size:12.5px;white-space:pre-wrap;background:#111827;color:#d1fae5;border-radius:12px;padding:14px;margin-top:12px;display:none}
+
+.sheetwrap{position:relative;background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(26,26,46,.08);overflow:hidden;margin-top:10px}
+.sheetwrap img{display:block;width:100%}
+.pin{position:absolute;transform:translate(-50%,-50%);background:#2d70b3;color:#fff;border:2px solid #fffdf7;border-radius:999px;
+ min-width:30px;height:30px;padding:0 8px;font:700 13px/26px system-ui;cursor:pointer;box-shadow:0 2px 8px rgba(26,26,46,.35)}
+.pin:hover{background:#1a5a99}
+.pin.act{background:#d97706}
+.hlbox{position:absolute;border:3px solid #d97706;border-radius:8px;pointer-events:none;box-shadow:0 0 0 4000px rgba(26,26,46,.12)}
+.pinpanel{background:#fffdf7;border-radius:14px;padding:14px 16px;margin-top:10px;box-shadow:0 2px 10px rgba(26,26,46,.08)}
+.pinpanel h3{margin:0 0 4px;font-size:16px}
+.pinrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:7px 0;border-top:1px dashed #d8d2c4}
+.pinrow .nm{flex:1;min-width:160px}
+.pinrow .warn{color:#b45309;font-size:12.5px;flex-basis:100%}
+</style></head><body>
+<div class="wrap">
+<div class="head"><div><h1>ОГЭ №17 · Четырёхугольники</h1><div class="sub">квадрат · прямоугольник · ромб · параллелограмм · трапеция — архив задач и генераторы + генераторы</div></div><div class="badge" id="hdBadge">…</div></div>
+<div class="app">
+<div class="tabs">
+<button class="tab on" id="tabR" data-tab="razbor">📖 Разбор</button>
+<button class="tab" id="tabT" data-tab="train">✏️ Тренировка</button>
+<button class="tab" id="tabQ" data-tab="quiz">🏁 Зачёт</button>
+<button class="tab" id="tabS" data-tab="ref">📌 Справочник</button>
+<button class="tab" id="tabL" data-tab="sheet">🗺 Лист ОГЭ</button>
+</div>
+<div class="main" id="main"></div>
+</div>
+<div class="stbox" id="stbox"></div>
+<div class="note" style="text-align:center;margin-top:10px">Прогресс хранится на этом устройстве. Ответы: целые, десятичные (запятая или точка) и дроби вида 7/2.</div>
+</div>
+<script>
+'use strict';
+/* ================= ЯДРО: утилиты и честный SVG-слой ================= */
+const RAD=d=>d*Math.PI/180, DEG=r=>r*180/Math.PI;
+const dist=(p,q)=>Math.hypot(p.x-q.x,p.y-q.y);
+const angAt=(V,P,Q)=>{ // угол при вершине V в градусах (0..180)
+  const a1=Math.atan2(P.y-V.y,P.x-V.x), a2=Math.atan2(Q.y-V.y,Q.x-V.x);
+  let d=Math.abs(a1-a2)%(2*Math.PI); if(d>Math.PI)d=2*Math.PI-d; return DEG(d);
+};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fnum=v=>{ // вывод числа: 3.5 → «3,5»; целые без хвоста
+  if(typeof v==='string')return v;
+  const r=Math.round(v*1e6)/1e6;
+  return (Number.isInteger(r)? String(r) : String(r).replace('.',','));
+};
+const frac=(a,b)=>'<span class="frac"><span>'+a+'</span><span>'+b+'</span></span>';
+const CLR={given:'#d97706',ask:'#2d70b3',c3:'#0d9488',c4:'#7c3aed',c5:'#db2777',ink:'#1a1a2e',good:'#16a34a'};
+
+function Fig(W,H,pad){
+  W=W||440;H=H||300;pad=pad||34;
+  const parts=[], chk=[], tickGroups={};
+  let T=p=>p;
+  const F={W,H,chk,
+    fit(pts){ // вписать: равномерный масштаб + переворот y
+      let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;
+      pts.forEach(p=>{x0=Math.min(x0,p.x);x1=Math.max(x1,p.x);y0=Math.min(y0,p.y);y1=Math.max(y1,p.y)});
+      const s=Math.min((W-2*pad)/Math.max(x1-x0,1e-9),(H-2*pad)/Math.max(y1-y0,1e-9));
+      const cx=(x0+x1)/2, cy=(y0+y1)/2;
+      T=p=>({x:W/2+(p.x-cx)*s, y:H/2-(p.y-cy)*s});
+      F.scale=s; return T;
+    },
+    seg(p,q,o){o=o||{};const a=T(p),b=T(q);
+      parts.push('<line x1="'+a.x.toFixed(1)+'" y1="'+a.y.toFixed(1)+'" x2="'+b.x.toFixed(1)+'" y2="'+b.y.toFixed(1)+'" stroke="'+(o.c||CLR.ink)+'" stroke-width="'+(o.w||2.2)+'"'+(o.dash?' stroke-dasharray="7 5"':'')+' stroke-linecap="round"/>');},
+    poly(ps,o){o=o||{};const d=ps.map((p,i)=>{const t=T(p);return (i?'L':'M')+t.x.toFixed(1)+' '+t.y.toFixed(1)}).join('');
+      parts.push('<path d="'+d+(o.close?'Z':'')+'" fill="'+(o.fill||'none')+'" stroke="'+(o.c||CLR.ink)+'" stroke-width="'+(o.w||2.4)+'" stroke-linejoin="round"'+(o.dash?' stroke-dasharray="7 5"':'')+'/>');},
+    dot(p,o){o=o||{};const t=T(p);parts.push('<circle cx="'+t.x.toFixed(1)+'" cy="'+t.y.toFixed(1)+'" r="'+(o.r||3.8)+'" fill="'+(o.c||CLR.ink)+'" stroke="#fffdf7" stroke-width="1.6"/>');},
+    lab(txt,p,o){o=o||{};const t=T(p);
+      parts.push('<text x="'+(t.x+(o.dx||0)).toFixed(1)+'" y="'+(t.y+(o.dy||0)).toFixed(1)+'" font-size="'+(o.fs||16)+'" font-weight="'+(o.fw||800)+'" fill="'+(o.c||CLR.ink)+'" text-anchor="'+(o.anchor||'middle')+'" style="paint-order:stroke;stroke:#fffdf7;stroke-width:4px;stroke-linejoin:round">'+esc(txt)+'</text>');},
+    arc(V,P,Q,o){ // дуга угла полилинией; лейбл — число° => авто-chk 1.5°
+      o=o||{}; const val=angAt(V,P,Q);
+      if(o.lab){const m=String(o.lab).match(/^([\d.,]+)°/); if(m){const cl=parseFloat(m[1].replace(',','.'));
+        chk.push({ok:Math.abs(cl-val)<=1.5, m:'дуга '+o.lab+' ≠ факт '+val.toFixed(1)+'°'});}}
+      const v=T(V),p=T(P),q=T(Q);
+      let a1=Math.atan2(p.y-v.y,p.x-v.x), a2=Math.atan2(q.y-v.y,q.x-v.x);
+      let d=a2-a1; while(d>Math.PI)d-=2*Math.PI; while(d<-Math.PI)d+=2*Math.PI;
+      const r=o.r||26, N=24, pts=[];
+      for(let i=0;i<=N;i++){const a=a1+d*i/N;pts.push((v.x+r*Math.cos(a)).toFixed(1)+' '+(v.y+r*Math.sin(a)).toFixed(1));}
+      parts.push('<polyline points="'+pts.join(' ')+'" fill="none" stroke="'+(o.c||CLR.given)+'" stroke-width="3.4" stroke-linecap="round"/>');
+      if(o.lab!=null){const mid=a1+d/2, ext=(val>=140||val<=18)||o.out, rr=r+(ext?20:15);
+        parts.push('<text x="'+(v.x+rr*Math.cos(mid)+(o.dx||0)).toFixed(1)+'" y="'+(v.y+rr*Math.sin(mid)+5+(o.dy||0)).toFixed(1)+'" font-size="15" font-weight="850" fill="'+(o.c||CLR.given)+'" text-anchor="middle" style="paint-order:stroke;stroke:#fffdf7;stroke-width:4px">'+esc(o.lab)+'</text>');}
+    },
+    rsq(V,P,Q,o){ // квадратик прямого угла + авто-chk 90°
+      o=o||{}; chk.push({ok:Math.abs(angAt(V,P,Q)-90)<=1.5, m:'прямой угол при вершине нарушен: '+angAt(V,P,Q).toFixed(1)+'°'});
+      const v=T(V),p=T(P),q=T(Q),s=o.s||11;
+      const u1={x:p.x-v.x,y:p.y-v.y},u2={x:q.x-v.x,y:q.y-v.y};
+      const n1=Math.hypot(u1.x,u1.y),n2=Math.hypot(u2.x,u2.y);
+      const e1={x:u1.x/n1*s,y:u1.y/n1*s},e2={x:u2.x/n2*s,y:u2.y/n2*s};
+      parts.push('<path d="M'+(v.x+e1.x).toFixed(1)+' '+(v.y+e1.y).toFixed(1)+'L'+(v.x+e1.x+e2.x).toFixed(1)+' '+(v.y+e1.y+e2.y).toFixed(1)+'L'+(v.x+e2.x).toFixed(1)+' '+(v.y+e2.y).toFixed(1)+'" fill="none" stroke="'+(o.c||CLR.good)+'" stroke-width="2.4"/>');},
+    tick(P,Q,n,cls){ // засечки: класс равенства cls → авто-chk длин
+      (tickGroups[cls]=tickGroups[cls]||[]).push(dist(P,Q));
+      const p=T(P),q=T(Q),mx=(p.x+q.x)/2,my=(p.y+q.y)/2;
+      const dx=q.x-p.x,dy=q.y-p.y,L=Math.hypot(dx,dy),nx=-dy/L,ny=dx/L,tx=dx/L,ty=dy/L;
+      for(let i=0;i<n;i++){const off=(i-(n-1)/2)*6;
+        parts.push('<line x1="'+(mx+tx*off-nx*6).toFixed(1)+'" y1="'+(my+ty*off-ny*6).toFixed(1)+'" x2="'+(mx+tx*off+nx*6).toFixed(1)+'" y2="'+(my+ty*off+ny*6).toFixed(1)+'" stroke="'+CLR.ink+'" stroke-width="2.2"/>');}},
+    svg(){ for(const k in tickGroups){const g=tickGroups[k],m=g.reduce((a,b)=>a+b,0)/g.length;
+        chk.push({ok:g.every(v=>Math.abs(v-m)/m<=0.005), m:'засечки класса '+k+' на неравных отрезках: '+g.map(v=>v.toFixed(2)).join(', ')});}
+      return '<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" xmlns="http://www.w3.org/2000/svg">'+parts.join('')+'</svg>';}
+  };
+  return F;
+}
+/* ================= ПОСТРОИТЕЛИ ЧЕСТНЫХ ЧЕРТЕЖЕЙ ================= */
+/* Каждый строит фигуру ПО ЧИСЛАМ задачи; дуги/засечки/квадратики сами регистрируют chk */
+
+function figSquare(p){ // p:{sideLab, showDiag, diagLab}
+  const F=Fig(360,260), s=10;
+  const A={x:0,y:0},B={x:s,y:0},C={x:s,y:s},D={x:0,y:s};
+  F.fit([A,B,C,D]);
+  F.poly([A,B,C,D],{close:1});
+  if(p.showDiag){F.seg(A,C,{c:CLR.ask,w:2.4}); if(p.diagLab)F.lab(p.diagLab,{x:s*.5,y:s*.58},{c:CLR.ask,dx:14});}
+  F.rsq(A,B,D,{c:'#8a8375'});
+  F.lab(p.sideLab,{x:s/2,y:0},{dy:22});
+  F.lab('A',A,{dx:-12,dy:14});F.lab('B',B,{dx:12,dy:14});F.lab('C',C,{dx:12,dy:-8});F.lab('D',D,{dx:-12,dy:-8});
+  return F;
+}
+
+function figRect(p){ // p:{mode:'angle',alpha,askLab} | {mode:'bo',bo,ab,askLab}
+  const F=Fig(440,290);
+  let w,h;
+  if(p.mode==='angle'){ // угол alpha между диагональю и одной из сторон — честный аспект
+    const t=Math.tan(RAD(Math.min(p.alpha,90-p.alpha))); w=10; h=10*t;
+  } else { const d=2*p.bo; h=p.ab; w=Math.sqrt(d*d-h*h); }
+  const A={x:0,y:0},D={x:w,y:0},C={x:w,y:h},B={x:0,y:h},O={x:w/2,y:h/2};
+  F.fit([A,B,C,D]);
+  F.poly([A,B,C,D],{close:1});
+  F.seg(A,C,{w:2});F.seg(B,D,{w:2});F.dot(O,{r:3.2});
+  if(p.mode==='angle'){
+    if(p.alpha<=45) F.arc(A,D,C,{lab:p.alpha+'°',r:30});
+    else F.arc(A,B,C,{lab:p.alpha+'°',r:26});
+    // острый угол между диагоналями при O
+    const acute = angAt(O,A,B)<=90? [A,B]:[A,D];
+    F.arc(O,acute[0],acute[1],{lab:p.askLab||'?',c:CLR.ask,r:20});
+  } else {
+    F.tick(O,{x:0,y:0},1,'полудиагонали');F.tick(O,C,1,'полудиагонали');F.tick(O,B,1,'полудиагонали');F.tick(O,D,1,'полудиагонали');
+    F.lab('BO = '+fnum(p.bo),{x:w*0.25,y:h*0.75},{c:CLR.ink,dy:-6});
+    F.lab('AB = '+fnum(p.ab),{x:0,y:h/2},{dx:-8,anchor:'end'});
+    F.lab(p.askLab||'AC — ?',{x:w*0.75,y:h*0.25},{c:CLR.ask,dy:-6});
+  }
+  F.lab('A',A,{dx:-12,dy:12});F.lab('D',D,{dx:12,dy:12});F.lab('C',C,{dx:12,dy:-6});F.lab('B',B,{dx:-12,dy:-6});
+  F.lab('O',O,{dx:14,dy:-8});
+  return F;
+}
+
+function rhombPts(acuteA,s){ s=s||10; const a=RAD(acuteA);
+  const A={x:0,y:0},B={x:s*Math.cos(a),y:s*Math.sin(a)},D={x:s,y:0},C={x:s+s*Math.cos(a),y:s*Math.sin(a)};
+  return {A,B,C,D,s};
+}
+function rhombBase(F,P,ticks){ F.poly([P.A,P.B,P.C,P.D],{close:1});
+  if(ticks!==false){F.tick(P.A,P.B,1,'стороны ромба');F.tick(P.B,P.C,1,'стороны ромба');F.tick(P.C,P.D,1,'стороны ромба');F.tick(P.D,P.A,1,'стороны ромба');}
+  F.lab('A',P.A,{dx:-12,dy:14});F.lab('D',P.D,{dx:13,dy:14});F.lab('B',P.B,{dx:-12,dy:-7});F.lab('C',P.C,{dx:13,dy:-7});
+}
+function figRhombAngle(p){ // p:{acute, givenAt:'A'|'B', givenLab, askAt, askLab}
+  const F=Fig(440,270),P=rhombPts(p.acute); F.fit([P.A,P.B,P.C,P.D]); rhombBase(F,P);
+  const at=v=>v==='A'?[P.A,P.B,P.D]:[P.B,P.A,P.C];
+  const g=at(p.givenAt),a=at(p.askAt);
+  F.arc(g[0],g[1],g[2],{lab:p.givenLab,r:24});
+  F.arc(a[0],a[1],a[2],{lab:p.askLab||'?',c:CLR.ask,r:24});
+  return F;
+}
+function figRhombACD(p){ // ∠ABC дан (при B), диагональ CA, ∠ACD — ?
+  const F=Fig(440,270),P=rhombPts(180-p.abc); F.fit([P.A,P.B,P.C,P.D]); rhombBase(F,P);
+  F.seg(P.C,P.A,{c:CLR.c3,w:2});
+  F.arc(P.B,P.A,P.C,{lab:p.abc+'°',r:22});
+  F.arc(P.C,P.A,P.D,{lab:'?',c:CLR.ask,r:26});
+  return F;
+}
+function figRhombHeight(p){ // p:{acute, sideLab, hLab, segLabs:[AH,HD]?, angLab?}
+  const F=Fig(440,280),P=rhombPts(p.acute); F.fit([P.A,P.B,P.C,P.D]); rhombBase(F,P);
+  const H={x:P.B.x,y:0};
+  F.seg(P.B,H,{c:CLR.ask,w:2.4}); F.rsq(H,P.B,P.D);
+  if(p.hLab)F.lab(p.hLab,{x:P.B.x,y:P.B.y/2},{c:CLR.ask,dx:16});
+  if(p.sideLab)F.lab(p.sideLab,{x:P.B.x/2,y:P.B.y/2},{dx:-20});
+  if(p.angLab)F.arc(P.A,P.B,P.D,{lab:p.angLab,r:24});
+  if(p.segLabs){F.lab(p.segLabs[0],{x:P.B.x/2,y:0},{dy:22,c:CLR.ask});F.lab(p.segLabs[1],{x:(P.B.x+P.D.x)/2,y:0},{dy:22,c:CLR.ask});F.dot(H);}
+  return F;
+}
+function figRhombDiag(p){ // p:{acute, d1Lab, d2Lab, dist:{val}?, perpAng:{lab}?, askAcute?}
+  const F=Fig(440,290),P=rhombPts(p.acute); F.fit([P.A,P.B,P.C,P.D]); rhombBase(F,P);
+  const O={x:(P.A.x+P.C.x)/2,y:(P.A.y+P.C.y)/2};
+  F.seg(P.A,P.C,{w:1.9});F.seg(P.B,P.D,{w:1.9});F.rsq(O,P.A,P.B,{c:'#8a8375',s:9});F.dot(O,{r:3});F.lab('O',O,{dx:4,dy:20});
+  if(p.d1Lab)F.lab(p.d1Lab,{x:(P.A.x+O.x)/2,y:(P.A.y+O.y)/2},{dy:-8,c:CLR.ink});
+  if(p.d2Lab)F.lab(p.d2Lab,{x:(P.B.x+O.x)/2,y:(P.B.y+O.y)/2},{dx:16,c:CLR.ink});
+  if(p.dist||p.perpAng){ // перпендикуляр из O к стороне AB
+    const a=RAD(p.acute), n={x:Math.sin(a),y:-Math.cos(a)}; // нормаль к AB
+    const t=O.x*n.x+O.y*n.y; const Hp={x:O.x-t*n.x,y:O.y-t*n.y};
+    F.seg(O,Hp,{c:CLR.c3,w:2.2}); F.rsq(Hp,O,P.A,{s:9});
+    if(p.dist)F.lab(fnum(p.dist),{x:(O.x+Hp.x)/2,y:(O.y+Hp.y)/2},{c:CLR.c3,dx:-14});
+    if(p.perpAng)F.arc(O,Hp,P.B,{lab:p.perpAng,r:18,c:CLR.given});
+    if(p.askAcute)F.arc(P.A,P.B,P.D,{lab:'?',c:CLR.ask,r:24});
+  }
+  return F;
+}
+function figRhombHBD(p){ // высота из тупого B и большая диагональ AC; угол между ними — ?
+  const F=Fig(440,290),P=rhombPts(180-p.obtuse); F.fit([P.A,P.B,P.C,P.D]); rhombBase(F,P);
+  const H={x:P.B.x,y:0};
+  F.seg(P.B,H,{c:CLR.c3,w:2.3}); F.rsq(H,P.B,P.D);
+  F.seg(P.A,P.C,{w:1.9});
+  F.arc(P.B,P.A,P.C,{lab:p.obtuse+'°',r:20});
+  const k=P.C.y/P.C.x, X={x:P.B.x,y:k*P.B.x}; F.dot(X,{r:3});
+  F.arc(X,P.B,P.C,{lab:'?',c:CLR.ask,r:17});
+  return F;
+}
+function figRhombSSD(p){ // острый угол дан при A; меньшая диагональ BD; угол между стороной и BD — ?
+  const F=Fig(440,280),P=rhombPts(p.acute); F.fit([P.A,P.B,P.C,P.D]); rhombBase(F,P);
+  F.seg(P.B,P.D,{c:CLR.c3,w:2});
+  F.arc(P.A,P.B,P.D,{lab:p.acute+'°',r:22});
+  F.arc(P.B,P.A,P.D,{lab:'?',c:CLR.ask,r:20});
+  return F;
+}
+
+function parPts(angA,w,l){ w=w||13; l=l||7; const a=RAD(angA);
+  const A={x:0,y:0},D={x:w,y:0},B={x:l*Math.cos(a),y:l*Math.sin(a)},C={x:w+l*Math.cos(a),y:l*Math.sin(a)};
+  return {A,B,C,D};
+}
+function parBase(F,P){F.poly([P.A,P.B,P.C,P.D],{close:1});
+  F.lab('A',P.A,{dx:-12,dy:14});F.lab('D',P.D,{dx:12,dy:14});F.lab('B',P.B,{dx:-12,dy:-7});F.lab('C',P.C,{dx:12,dy:-7});}
+function figParE(p){ // E — середина AB, отрезок EC; трапеция DAEC / треугольник CBE
+  const F=Fig(440,270),P=parPts(58); F.fit([P.A,P.B,P.C,P.D]); parBase(F,P);
+  const E={x:P.B.x/2,y:P.B.y/2};
+  F.seg(E,P.C,{c:CLR.ask,w:2.2}); F.dot(E); F.lab('E',E,{dx:-13,dy:4});
+  F.tick(P.A,E,1,'половины AB'); F.tick(E,P.B,1,'половины AB');
+  return F;
+}
+function figParDiag(p){ // обе диагонали, O; засечки: AO=OC (1), BO=OD (2)
+  const F=Fig(440,260),P=parPts(52); F.fit([P.A,P.B,P.C,P.D]); parBase(F,P);
+  const O={x:(P.A.x+P.C.x)/2,y:(P.A.y+P.C.y)/2};
+  F.seg(P.A,P.C,{w:1.9});F.seg(P.B,P.D,{w:1.9});F.dot(O,{r:3.2});F.lab('O',O,{dx:2,dy:-10});
+  F.tick(P.A,O,1,'AO=OC');F.tick(O,P.C,1,'AO=OC');F.tick(P.B,O,2,'BO=OD');F.tick(O,P.D,2,'BO=OD');
+  return F;
+}
+function figParHeights(p){ // две высоты
+  const F=Fig(460,300),P=parPts(55); F.fit([P.A,P.B,P.C,P.D]); parBase(F,P);
+  const H1={x:P.B.x,y:0}; F.seg(P.B,H1,{c:CLR.ask,w:2.2}); F.rsq(H1,P.B,P.D);
+  const a=RAD(55),u={x:Math.cos(a),y:Math.sin(a)}, t=P.D.x*u.x+P.D.y*u.y, H2={x:t*u.x,y:t*u.y};
+  F.seg(P.A,H2,{dash:1,w:1.6,c:'#8a8375'}); F.seg(P.D,H2,{c:CLR.c3,w:2.2}); F.rsq(H2,P.D,P.A,{s:9});
+  F.lab('h₁',{x:P.B.x,y:P.B.y/2},{c:CLR.ask,dx:14});F.lab('h₂',{x:(P.D.x+H2.x)/2,y:(P.D.y+H2.y)/2},{c:CLR.c3,dy:18});
+  return F;
+}
+function figParAngle(p){ const F=Fig(440,250),P=parPts(p.acute); F.fit([P.A,P.B,P.C,P.D]); parBase(F,P);
+  const g=p.givenAt==='A'?[P.A,P.B,P.D]:[P.B,P.A,P.C], a=p.givenAt==='A'?[P.B,P.A,P.C]:[P.A,P.B,P.D];
+  F.arc(g[0],g[1],g[2],{lab:p.givenLab,r:22});F.arc(a[0],a[1],a[2],{lab:'?',c:CLR.ask,r:22});
+  return F;
+}
+function figParDiagAngles(p){ // диагональ AC, углы α (с AB) и β (с AD); ? — угол B
+  const F=Fig(460,280),P=parPts(p.a+p.b,13,8); F.fit([P.A,P.B,P.C,P.D]); parBase(F,P);
+  // честная точка C: направление AC под углом β к AD
+  // пересечение луча из A под углом β с прямой BC (y = h)
+  const h=P.B.y, Cx=h/Math.tan(RAD(p.b));
+  const w=Cx-P.B.x; P.C={x:Cx,y:h}; P.D={x:w,y:0};
+  const F2=Fig(460,280); F2.fit([P.A,P.B,P.C,P.D]); parBase(F2,P);
+  F2.seg(P.A,P.C,{w:1.9,c:'#57534e'});
+  F2.arc(P.A,P.B,P.C,{lab:p.a+'°',r:26});
+  F2.arc(P.A,P.C,P.D,{lab:p.b+'°',c:CLR.c3,r:38});
+  F2.arc(P.B,P.A,P.C,{lab:'?',c:CLR.ask,r:20});
+  return F2;
+}
+function figParBisector(p){ // биссектриса угла A до BC; угол с BC = A/2
+  const A0=2*p.half; const F=Fig(460,280),P=parPts(A0,13,7); F.fit([P.A,P.B,P.C,P.D]); parBase(F,P);
+  const h=P.B.y, Kx=h/Math.tan(RAD(p.half)), K={x:Kx,y:h};
+  F.seg(P.A,K,{c:CLR.c3,w:2});F.dot(K,{r:3.2});F.lab('K',K,{dy:-10});
+  F.arc(P.A,P.B,K,{lab:null,r:22,c:CLR.given});
+  F.arc(P.A,K,P.D,{lab:null,r:22,c:CLR.given});
+  F.arc(K,P.A,P.B,{lab:p.half+'°',r:20,c:CLR.given});
+  F.arc(P.A,P.B,P.D,{lab:'?',c:CLR.ask,r:40});
+  return F;
+}
+
+function trapPts(a,b,theta,h){ // iso-трапеция: основания a(верх)<b(низ) или через угол theta при большем основании
+  if(theta!=null){ h=h||( (b-a)/2*Math.tan(RAD(theta)) ); }
+  const dx=(b-a)/2;
+  return {A:{x:0,y:0},D:{x:b,y:0},B:{x:dx,y:h},C:{x:dx+a,y:h},h};
+}
+function trapBase(F,P,iso){F.poly([P.A,P.B,P.C,P.D],{close:1});
+  if(iso){F.tick(P.A,P.B,1,'боковые стороны');F.tick(P.C,P.D,1,'боковые стороны');}
+  F.lab('A',P.A,{dx:-12,dy:14});F.lab('D',P.D,{dx:12,dy:14});F.lab('B',P.B,{dx:-12,dy:-7});F.lab('C',P.C,{dx:12,dy:-7});}
+function figTrapMid(p){ // p:{a,b,hLab?,midAsk?,segAsk?}
+  const F=Fig(460,280),P=trapPts(p.a,p.b,null,Math.max(p.a,p.b)*0.42); F.fit([P.A,P.B,P.C,P.D]); trapBase(F,P,false);
+  const E={x:P.B.x/2,y:P.h/2},Fp={x:(P.C.x+P.D.x)/2,y:P.h/2};
+  F.seg(E,Fp,{c:CLR.c3,w:2.2});F.dot(E);F.dot(Fp);F.lab('E',E,{dx:-13});F.lab('F',Fp,{dx:13});
+  F.lab(fnum(p.a),{x:(P.B.x+P.C.x)/2,y:P.h},{dy:-10});
+  F.lab(fnum(p.b),{x:p.b/2,y:0},{dy:22});
+  if(p.segAsk){ F.seg(P.A,P.C,{w:1.8,c:'#57534e'});
+    const O={x:0,y:0}; // пересечение AC со средней линией: y=h/2 на AC
+    const t=0.5; O.x=P.C.x*t; O.y=P.h/2; F.dot(O,{r:3});F.lab('O',O,{dy:-10});
+    F.lab('?',{x:(O.x+Fp.x)/2,y:P.h/2},{dy:-8,c:CLR.ask});
+  } else if(p.midAsk){F.lab('EF — ?',{x:(E.x+Fp.x)/2,y:P.h/2},{dy:-9,c:CLR.ask});}
+  if(p.hLab){const hx=P.B.x+p.a*0.55;F.seg({x:hx,y:P.h},{x:hx,y:0},{dash:1,w:1.7,c:'#8a8375'});F.rsq({x:hx,y:0},{x:hx,y:P.h},P.D,{s:9,c:'#8a8375'});F.lab(p.hLab,{x:hx,y:P.h/2},{dx:14,c:CLR.ink});}
+  return F;
+}
+function figTrapAngle(p){ // p:{theta, givenLab?, givenAt:'A'|'B', ask:'A'|'B', rect?}
+  const th=p.theta, hh=5, dx=hh/Math.tan(RAD(th)), aa=Math.max(2,dx*0.8);
+  const P = p.rect? {A:{x:0,y:0},D:{x:aa+dx,y:0},B:{x:0,y:hh},C:{x:aa,y:hh},h:hh}
+                  : {A:{x:0,y:0},D:{x:aa+2*dx,y:0},B:{x:dx,y:hh},C:{x:dx+aa,y:hh},h:hh};
+  const F=Fig(460,260); F.fit([P.A,P.B,P.C,P.D]); trapBase(F,P,!p.rect);
+  if(p.rect){F.rsq(P.A,P.B,P.D);F.rsq(P.B,P.A,P.C);}
+  const V={A:[P.A,P.B,P.D],B:[P.B,P.A,P.C],D:[P.D,P.C,P.A],C:[P.C,P.D,P.B]};
+  if(p.givenLab!=null){const g=V[p.givenAt||'D'];F.arc(g[0],g[1],g[2],{lab:p.givenLab,r:24});}
+  const a=V[p.ask||'C'];F.arc(a[0],a[1],a[2],{lab:'?',c:CLR.ask,r:22});
+  return F;
+}
+function figTrapDiagAO(p){ // BC, AD, AC даны; AO — ?
+  const F=Fig(460,280),P=trapPts(p.bc,p.ad,null,(p.ad)*0.36); F.fit([P.A,P.B,P.C,P.D]); trapBase(F,P,false);
+  // пересечение диагоналей: делит AC как AO:OC = AD:BC
+  const t=p.ad/(p.ad+p.bc); const O={x:P.C.x*t,y:P.h*t};
+  F.seg(P.A,P.C,{w:1.9});F.seg(P.B,P.D,{w:1.9});F.dot(O,{r:3.2});F.lab('O',O,{dx:4,dy:-10});
+  F.lab(fnum(p.bc),{x:(P.B.x+P.C.x)/2,y:P.h},{dy:-10});
+  F.lab(fnum(p.ad),{x:p.ad/2,y:0},{dy:22});
+  F.lab('AC = '+fnum(p.ac),{x:P.C.x*0.32,y:P.h*0.32},{dy:-8,anchor:'end',c:CLR.ink});
+  F.lab('AO — ?',{x:O.x*0.62,y:O.y*0.62},{dy:16,c:CLR.ask});
+  return F;
+}
+function figTrapDiagArcs(p){ // общая: диагональ AC; дуги по описанию
+  // p:{theta (угол при большем основании), alpha (∠CAD), arcs:[{at,to,lab,c,r}], bd?}
+  const h=5, b=h/Math.tan(RAD(p.alpha)) + h/Math.tan(RAD(p.theta));
+  const dx=h/Math.tan(RAD(p.theta));
+  const P={A:{x:0,y:0},D:{x:b,y:0},B:{x:dx,y:h},C:{x:b-dx,y:h},h};
+  const F=Fig(470,290); F.fit([P.A,P.B,P.C,P.D]); trapBase(F,P,true);
+  F.seg(P.A,P.C,{w:1.9,c:'#57534e'});
+  const pt=n=>P[n];
+  (p.arcs||[]).forEach(a=>F.arc(pt(a.at),pt(a.p),pt(a.q),{lab:a.lab,c:a.c||CLR.given,r:a.r||24}));
+  return F;
+}
+function figTrapBDA(p){ // AB=CD, ∠BDA и ∠BDC при D; ∠ABD — ?
+  const th=p.bda+p.bdc, s=6, hh=s*Math.sin(RAD(th)), w=s*Math.cos(RAD(th))+hh/Math.tan(RAD(p.bda));
+  const P={A:{x:0,y:0},D:{x:w,y:0},B:{x:s*Math.cos(RAD(th)),y:hh},C:{x:w-s*Math.cos(RAD(th)),y:hh},h:hh};
+  const F=Fig(470,290); F.fit([P.A,P.B,P.C,P.D]); trapBase(F,P,true);
+  F.seg(P.B,P.D,{w:1.9,c:'#57534e'});
+  F.arc(P.D,P.A,P.B,{lab:p.bda+'°',r:34,c:CLR.given});
+  F.arc(P.D,P.B,P.C,{lab:p.bdc+'°',r:22,c:CLR.c3});
+  F.arc(P.B,P.A,P.D,{lab:'?',c:CLR.ask,r:19});
+  return F;
+}
+function figTrapCut(p){ // высота из C делит AD на p.big и p.small (AH=big, HD=small); BC — ?
+  const b=p.big+p.small, a=p.big-p.small, h=Math.max(2.5,b*0.3);
+  const P=trapPts(a,b,null,h), F=Fig(460,280); F.fit([P.A,P.B,P.C,P.D]); trapBase(F,P,true);
+  const H={x:P.C.x,y:0};
+  F.seg(P.C,H,{c:CLR.c3,w:2.2});F.rsq(H,P.C,P.D);F.dot(H);F.lab('H',H,{dy:22,dx:8});
+  F.lab(fnum(p.big),{x:P.C.x/2,y:0},{dy:22});F.lab(fnum(p.small),{x:(P.C.x+b)/2,y:0},{dy:22});
+  F.lab('?',{x:(P.B.x+P.C.x)/2,y:h},{dy:-9,c:CLR.ask});
+  return F;
+}
+function figTrap45(p){ // угол 45°, высота/основания
+  const b=p.b, a=p.a;
+  const P=trapPts(a,b,45), F=Fig(460,270); F.fit([P.A,P.B,P.C,P.D]); trapBase(F,P,true);
+  F.arc(P.A,P.B,P.D,{lab:'45°',r:26});
+  const H={x:P.B.x,y:0};F.seg(P.B,H,{c:CLR.c3,w:2.1});F.rsq(H,P.B,P.D);
+  if(p.hLab)F.lab(p.hLab,{x:P.B.x,y:P.h/2},{dx:15,c:CLR.c3});
+  if(p.aLab)F.lab(p.aLab,{x:(P.B.x+P.C.x)/2,y:P.h},{dy:-9});
+  if(p.bLab)F.lab(p.bLab,{x:b/2,y:0},{dy:22});
+  return F;
+}
+function figTrapDiag45(p){ // диагональ под 45° к основанию, основания a,b; высота — ?
+  const b=p.b,a=p.a;
+  const hh=(a+b)/2; // честно: при 45° высота равна проекции диагонали = (a+b)/2
+  const P=trapPts(a,b,null,hh), F=Fig(440,300); F.fit([P.A,P.B,P.C,P.D]); trapBase(F,P,true);
+  F.seg(P.A,P.C,{w:1.9,c:'#57534e'});
+  F.arc(P.A,P.C,P.D,{lab:'45°',r:26});
+  const H={x:P.C.x,y:0};F.seg(P.C,H,{dash:1,c:CLR.c3,w:2});F.rsq(H,P.C,P.A);
+  F.lab('h — ?',{x:P.C.x,y:hh/2},{dx:22,c:CLR.c3});
+  F.lab(fnum(a),{x:(P.B.x+P.C.x)/2,y:hh},{dy:-9});F.lab(fnum(b),{x:b/2,y:0},{dy:22});
+  return F;
+}
+function figTrapBisector(p){ // ∠D=θ, AC — биссектриса ∠BAD; ∠ACD — ?
+  const th=p.theta, half=th/2, h=4.6, b=h/Math.tan(RAD(half))+h/Math.tan(RAD(th));
+  const dx=h/Math.tan(RAD(th));
+  const P={A:{x:0,y:0},D:{x:b,y:0},B:{x:dx,y:h},C:{x:b-dx,y:h},h};
+  const F=Fig(470,290); F.fit([P.A,P.B,P.C,P.D]); trapBase(F,P,true);
+  F.seg(P.A,P.C,{w:1.9,c:'#57534e'});
+  F.arc(P.D,P.C,P.A,{lab:th+'°',r:26,c:CLR.given});
+  F.arc(P.A,P.B,P.C,{lab:null,r:30,c:CLR.c3});
+  F.arc(P.A,P.C,P.D,{lab:null,r:22,c:CLR.c3});
+  F.arc(P.C,P.A,P.D,{lab:'?',c:CLR.ask,r:20});
+  return F;
+}
+/* ================= СПРАВОЧНИК ================= */
+const REF=[
+ {id:'sqf',t:'Квадрат',keep:false,fm:'d = a·√2 &nbsp;&nbsp; S = a² &nbsp;&nbsp; P = 4a',
+  note:'Диагональ отсекает равнобедренный прямоугольный треугольник — отсюда √2.'},
+ {id:'rectd',t:'Диагонали прямоугольника',keep:true,fm:'AC = BD, &nbsp; AO = OC = BO = OD = '+frac('d','2'),
+  note:'Диагонали равны и точкой пересечения делятся пополам — четыре равных отрезка.'},
+ {id:'parprop',t:'Свойства параллелограмма',keep:true,fm:'∠A = ∠C, ∠B = ∠D; &nbsp; ∠A + ∠B = 180°; &nbsp; AO = OC, BO = OD',
+  note:'Противоположные углы равны, соседние в сумме дают 180°, диагонали делятся пополам (но НЕ равны!).'},
+ {id:'rhombprop',t:'Свойства ромба',keep:true,fm:'AB = BC = CD = DA; &nbsp; AC ⊥ BD; &nbsp; диагонали — биссектрисы углов',
+  note:'Ромб — параллелограмм, поэтому все свойства параллелограмма тоже работают.'},
+ {id:'srhomb',t:'Площадь ромба',keep:false,fm:'S = '+frac('d₁·d₂','2')+' = a·h = a²·sin α'},
+ {id:'spar',t:'Площадь параллелограмма',keep:false,fm:'S = a·h_a = a·b·sin α',
+  note:'К каждой стороне — своя высота: h_a = S/a. К меньшей стороне — бо́льшая высота.'},
+ {id:'strap',t:'Трапеция: площадь и средняя линия',keep:false,fm:'S = '+frac('a + b','2')+'·h; &nbsp;&nbsp; m = '+frac('a + b','2'),
+  note:'Средняя линия параллельна основаниям; диагональ делит её на отрезки a/2 и b/2.'},
+ {id:'isotrap',t:'Равнобедренная трапеция',keep:true,fm:'AB = CD ⇒ углы при каждом основании равны',
+  note:'Высота из вершины меньшего основания отсекает от большего отрезок (AD − BC)/2.'},
+ {id:'parallel',t:'Накрест лежащие углы',keep:true,fm:'BC ∥ AD ⇒ ∠(AC; BC) = ∠(AC; AD)',
+  note:'Диагональ трапеции/параллелограмма — секущая при параллельных основаниях.'},
+ {id:'isotri',t:'Равнобедренный треугольник',keep:true,fm:'AB = AC ⇒ ∠B = ∠C = '+frac('180° − ∠A','2'),
+  note:'Диагонали внутри ромба и трапеции постоянно создают равнобедренные треугольники.'},
+ {id:'simtri',t:'Подобие на диагоналях трапеции',keep:true,fm:'△BOC ∼ △DOA ⇒ '+frac('AO','OC')+' = '+frac('AD','BC'),
+  note:'Точка пересечения диагоналей делит каждую в отношении оснований.'},
+ {id:'anglesum',t:'Сумма углов',keep:true,fm:'В четырёхугольнике: 360°; в треугольнике: 180°'}
+];
+/* ================= РЕЕСТР ПОДТИПОВ ================= */
+const TOPICS={sq:'Квадрат',rect:'Прямоугольник',rhomb:'Ромб',par:'Параллелограмм',trap:'Трапеция'};
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=arr=>arr[Math.floor(Math.random()*arr.length)];
+const S17={};
+function def(k,o){o.key=k;S17[k]=o;}
+
+/* ---------- КВАДРАТ ---------- */
+def('sqDiag',{topic:'sq',name:'Диагональ квадрата по стороне a√2',
+ law:'Диагональ квадрата: <b>d = a·√2</b>. Если сторона уже содержит √2, корни перемножаются: k√2·√2 = 2k.',
+ ref:'sqf',refWhy:'Сторона дана в виде k√2 — по формуле d = a·√2 корень «схлопывается»: d = k·√2·√2 = 2k.',
+ calc:p=>2*p.k, gen:()=>({k:ri(2,12)}), proto:{k:7},
+ text:p=>'Сторона квадрата равна '+p.k+'√2. Найдите диагональ этого квадрата.',
+ fig:p=>figSquare({sideLab:p.k+'√2',showDiag:true,diagLab:'?'}),
+ sol:p=>['Диагональ квадрата равна стороне, умноженной на √2: d = a·√2.',
+  'Подставляем: d = '+p.k+'√2 · √2 = '+p.k+' · 2 = <b>'+(2*p.k)+'</b>.'],
+ diag:p=>[{v:p.k,m:'Вы разделили на √2 вместо умножения. Диагональ ДЛИННЕЕ стороны: d = a·√2.'},
+  {v:2*p.k*Math.SQRT2,m:'√2·√2 = 2, а не 2√2 — корень исчезает.'}]});
+
+def('sqAreaSide',{topic:'sq',name:'Площадь квадрата по стороне a√2',
+ law:'Площадь квадрата: <b>S = a²</b>. Квадрат произведения: (k√2)² = k²·2.',
+ ref:'sqf',refWhy:'S = a², и (√2)² = 2 — поэтому ответ 2k², без корня.',
+ calc:p=>2*p.k*p.k, gen:()=>({k:ri(3,12)}), proto:{k:4},
+ text:p=>'Сторона квадрата равна '+p.k+'√2. Найдите площадь этого квадрата.',
+ fig:p=>figSquare({sideLab:p.k+'√2'}),
+ sol:p=>['S = a² = ('+p.k+'√2)².','Возводим в квадрат каждый множитель: '+p.k+'² · (√2)² = '+(p.k*p.k)+' · 2 = <b>'+(2*p.k*p.k)+'</b>.'],
+ diag:p=>[{v:p.k*p.k,m:'Потерялся множитель (√2)² = 2.'},
+  {v:2*p.k,m:'Это диагональ, а спрашивают площадь: S = a².'}]});
+
+def('sqAreaPerim',{topic:'sq',name:'Площадь квадрата по периметру',
+ law:'Периметр квадрата P = 4a ⇒ сторона <b>a = P/4</b>, затем S = a².',
+ ref:'sqf',refWhy:'Из P = 4a достаём сторону, из S = a² — площадь: две формулы одного блока.',
+ calc:p=>Math.pow(p.P/4,2), gen:()=>({P:4*ri(4,25)}), proto:{P:160},
+ text:p=>'Периметр квадрата равен '+p.P+'. Найдите площадь этого квадрата.',
+ fig:p=>figSquare({sideLab:'a = ?'}),
+ sol:p=>['Сторона: a = P/4 = '+p.P+'/4 = '+(p.P/4)+'.','Площадь: S = a² = '+(p.P/4)+'² = <b>'+fnum(Math.pow(p.P/4,2))+'</b>.'],
+ diag:p=>[{v:p.P/4,m:'Это только сторона — площадь ещё нужно возвести в квадрат.'},
+  {v:p.P*p.P,m:'В квадрат возводят СТОРОНУ, а не периметр.'}]});
+
+/* ---------- ПРЯМОУГОЛЬНИК ---------- */
+def('rectDiagAngle',{topic:'rect',name:'Острый угол между диагоналями',
+ law:'Половины диагоналей равны (AO = BO) ⇒ треугольник у стороны равнобедренный: угол между диагоналями = <b>180° − 2α</b>. Если получилось больше 90° — острый угол смежный: 2α.',
+ ref:'rectd',refWhy:'Равенство половин диагоналей и даёт равнобедренный треугольник AOB — без него ход не работает.',
+ calc:p=>Math.min(2*p.alpha,180-2*p.alpha),
+ gen:()=>({alpha:pick([ri(20,43),ri(47,75)])}), proto:{alpha:51},
+ text:p=>'Диагональ прямоугольника образует угол '+p.alpha+'° с одной из его сторон. Найдите острый угол между диагоналями этого прямоугольника. Ответ дайте в градусах.',
+ fig:p=>figRect({mode:'angle',alpha:p.alpha}),
+ sol:p=>{const t=180-2*p.alpha;return ['Диагонали равны и делятся пополам: AO = BO ⇒ △AOB равнобедренный, углы при основании по '+p.alpha+'°.',
+  'Угол AOB = 180° − 2·'+p.alpha+'° = '+t+'°.',
+  t<=90?'Он острый (≤ 90°) — это и есть ответ: <b>'+t+'°</b>.':'Это '+t+'° — тупой. Острый угол между диагоналями — смежный: 180° − '+t+'° = <b>'+(180-t)+'°</b>.'];},
+ diag:p=>[{v:180-2*p.alpha===Math.min(2*p.alpha,180-2*p.alpha)?2*p.alpha:180-2*p.alpha,m:'Вы нашли ТУПОЙ угол между диагоналями. Проверьте: острый ≤ 90°, возьмите смежный.'},
+  {v:90-p.alpha,m:'90° − α — это второй угол диагонали со стороной, а не угол между диагоналями.'}]});
+
+def('rectDiagBO',{topic:'rect',name:'Диагональ по её половине',
+ law:'Диагонали прямоугольника равны и точкой пересечения делятся пополам: <b>AC = BD = 2·BO</b>. Длина стороны в этих задачах — отвлекающее данное.',
+ ref:'rectd',refWhy:'Вся задача — одно свойство диагоналей: AC = 2·BO. Пифагор не нужен.',
+ calc:p=>2*p.half,
+ gen:()=>{const half=ri(5,16);return {half,side:ri(3,2*half-2),hn:'BO',sn:'AB',dn:'AC'};}, proto:{half:7,side:6,hn:'BO',sn:'AB',dn:'AC'},
+ text:p=>'Диагонали AC и BD прямоугольника ABCD пересекаются в точке O, '+p.hn+' = '+p.half+', '+p.sn+' = '+p.side+'. Найдите '+p.dn+'.',
+ fig:p=>figRect({mode:'bo',bo:p.half,ab:p.side,askLab:p.dn+' — ?'}),
+ sol:p=>['Диагонали прямоугольника равны: AC = BD — значит, и половины равны.',
+  p.dn+' = 2·'+p.hn+' = 2·'+p.half+' = <b>'+(2*p.half)+'</b>. Сторона '+p.sn+' = '+p.side+' для ответа не нужна — это проверка на понимание.'],
+ diag:p=>[{v:Math.sqrt(p.half*p.half+p.side*p.side),m:'Пифагор здесь не нужен: '+p.hn+' и '+p.sn+' — не катеты одного прямоугольного треугольника.'},
+  {v:p.half+p.side,m:'Диагональ — это ДВЕ её половины: 2·'+p.hn+'.'}]});
+
+/* ---------- РОМБ ---------- */
+def('rhombAngle',{topic:'rhomb',name:'Угол ромба по соседнему',
+ law:'Ромб — параллелограмм: соседние углы в сумме дают <b>180°</b>.',
+ ref:'parprop',refWhy:'Сумма соседних углов 180° — свойство параллелограмма, а ромб им является.',
+ calc:p=>180-p.given,
+ gen:()=>{const q=pick(['big','small']);return {given:q==='big'?ri(20,88):ri(92,160),q};},
+ proto:{given:43,q:'big'},
+ text:p=>'Один из углов ромба равен '+p.given+'°. Найдите '+(p.q==='big'?'больший':'меньший')+' угол этого ромба. Ответ дайте в градусах.',
+ fig:p=>figRhombAngle({acute:Math.min(p.given,180-p.given),givenAt:p.given<90?'A':'B',givenLab:p.given+'°',askAt:p.given<90?'B':'A'}),
+ sol:p=>['Соседние углы ромба в сумме дают 180°.','180° − '+p.given+'° = <b>'+(180-p.given)+'°</b>.'],
+ diag:p=>[{v:p.given,m:'Противоположный угол равен данному — но спрашивают ДРУГОЙ из пары, соседний.'},
+  {v:90,m:'Диагонали ромба перпендикулярны, но сами углы ромба не обязаны быть 90°.'}]});
+
+def('rhombACD',{topic:'rhomb',name:'Угол между диагональю и стороной (∠ACD)',
+ law:'Диагональ ромба — <b>биссектриса</b> его угла: ∠ACD — половина угла BCD.',
+ ref:'rhombprop',refWhy:'Нужны сразу два свойства: соседние углы (∠BCD = 180° − ∠ABC) и диагональ-биссектриса.',
+ calc:p=>(180-p.abc)/2,
+ gen:()=>({abc:2*ri(15,80)}), proto:{abc:72},
+ text:p=>'В ромбе ABCD угол ABC равен '+p.abc+'°. Найдите угол ACD. Ответ дайте в градусах.',
+ fig:p=>figRhombACD({abc:p.abc}),
+ sol:p=>['Соседние углы: ∠BCD = 180° − '+p.abc+'° = '+(180-p.abc)+'°.',
+  'Диагональ CA — биссектриса угла BCD: ∠ACD = '+(180-p.abc)+'° : 2 = <b>'+fnum((180-p.abc)/2)+'</b>.'],
+ diag:p=>[{v:p.abc/2,m:'Вы поделили пополам сам угол ABC, а диагональ CA делит пополам угол BCD = 180° − ∠ABC.'},
+  {v:180-p.abc,m:'Это весь угол BCD — диагональ делит его пополам.'}]});
+
+def('rhombHeight',{topic:'rhomb',name:'Высота ромба по стороне и углу',
+ law:'Высота ромба: <b>h = a·sin α</b>. Синус угла и его смежного равны: sin 150° = sin 30°.',
+ ref:'srhomb',refWhy:'Из S = a·h = a²·sin α сокращаем a и получаем h = a·sin α.',
+ calc:p=>p.a*Math.sin(RAD(p.ang)),
+ gen:()=>({a:2*ri(2,30),ang:150}), proto:{a:4,ang:150},
+ text:p=>'Сторона ромба равна '+p.a+', а один из углов этого ромба равен '+p.ang+'°. Найдите высоту этого ромба.',
+ fig:p=>figRhombHeight({acute:180-p.ang,sideLab:fnum(p.a),hLab:'?',angLab:(180-p.ang)+'°'}),
+ sol:p=>['sin '+p.ang+'° = sin (180° − '+p.ang+'°) = sin '+(180-p.ang)+'° = 0,5.',
+  'h = a·sin α = '+p.a+' · 0,5 = <b>'+fnum(p.a/2)+'</b>.'],
+ diag:p=>[{v:p.a,m:'Высота — перпендикуляр, она КОРОЧЕ наклонной стороны: h = a·sin α.'},
+  {v:2*p.a,m:'Умножили на 2 вместо sin 30° = 0,5.'}]});
+
+def('rhombAreaDiag',{topic:'rhomb',name:'Площадь ромба по диагоналям',
+ law:'Площадь ромба: <b>S = d₁·d₂ / 2</b>.',
+ ref:'srhomb',refWhy:'Даны обе диагонали — это прямой случай формулы S = d₁·d₂/2.',
+ calc:p=>p.d1*p.d2/2,
+ gen:()=>({d1:2*ri(2,12),d2:ri(3,15)}), proto:{d1:14,d2:6},
+ text:p=>'Найдите площадь ромба, если его диагонали равны '+p.d1+' и '+p.d2+'.',
+ fig:p=>figRhombDiag({acute:2*DEG(Math.atan(Math.min(p.d1,p.d2)/Math.max(p.d1,p.d2))),d1Lab:fnum(Math.max(p.d1,p.d2)),d2Lab:fnum(Math.min(p.d1,p.d2))}),
+ sol:p=>['S = '+frac('d₁·d₂','2')+' = '+frac(p.d1+' · '+p.d2,'2')+' = <b>'+fnum(p.d1*p.d2/2)+'</b>.'],
+ diag:p=>[{v:p.d1*p.d2,m:'Забыли разделить на 2: ромб — половина прямоугольника со сторонами d₁ и d₂.'},
+  {v:(p.d1+p.d2)/2,m:'Диагонали ПЕРЕМНОЖАЮТСЯ, а не складываются.'}]});
+
+def('rhombAreaPerim',{topic:'rhomb',name:'Площадь ромба по периметру и углу',
+ law:'Сторона a = P/4, площадь <b>S = a²·sin α</b>.',
+ ref:'srhomb',refWhy:'Периметр даёт сторону (a = P/4), угол включает формулу S = a²·sin α.',
+ calc:p=>Math.pow(p.P/4,2)*Math.sin(RAD(p.ang)),
+ gen:()=>({P:4*ri(3,15),ang:30}), proto:{P:24,ang:30},
+ text:p=>'Периметр ромба равен '+p.P+', а один из углов равен '+p.ang+'°. Найдите площадь этого ромба.',
+ fig:p=>figRhombAngle({acute:p.ang,givenAt:'A',givenLab:p.ang+'°',askAt:'B',askLab:''}),
+ sol:p=>{const a=p.P/4;return ['Сторона: a = P/4 = '+p.P+'/4 = '+a+'.',
+  'S = a²·sin '+p.ang+'° = '+a+'² · 0,5 = '+(a*a)+' · 0,5 = <b>'+fnum(a*a/2)+'</b>.'];},
+ diag:p=>{const a=p.P/4;return [{v:a*a,m:'Потерян sin 30° = 0,5 — ромб «сплюснут», его площадь меньше квадрата стороны.'},
+  {v:p.P*p.P*Math.sin(RAD(p.ang)),m:'В формуле сторона, а не периметр: сначала a = P/4.'}];}});
+
+def('rhombAreaDist',{topic:'rhomb',name:'Площадь по стороне и расстоянию от центра до неё',
+ law:'Расстояние от точки пересечения диагоналей до стороны — <b>половина высоты</b> ромба (центр симметрии!): h = 2ρ, S = a·h.',
+ ref:'srhomb',refWhy:'Формула S = a·h ждёт высоту; данное расстояние — её половина, потому что центр ромба лежит посередине между противоположными сторонами.',
+ calc:p=>2*p.dist*p.a,
+ gen:()=>({a:ri(4,15),dist:ri(1,5)}), proto:{a:5,dist:2},
+ text:p=>'Сторона ромба равна '+p.a+', а расстояние от точки пересечения диагоналей ромба до неё равно '+p.dist+'. Найдите площадь этого ромба.',
+ fig:p=>figRhombDiag({acute:64,dist:p.dist,d1Lab:null,d2Lab:null}),
+ sol:p=>['Центр ромба равноудалён от противоположных сторон ⇒ высота h = 2·'+p.dist+' = '+(2*p.dist)+'.',
+  'S = a·h = '+p.a+' · '+(2*p.dist)+' = <b>'+fnum(2*p.dist*p.a)+'</b>.'],
+ diag:p=>[{v:p.a*p.dist,m:'Расстояние от ЦЕНТРА — лишь половина высоты: h = 2ρ.'},
+  {v:2*p.a+2*p.dist,m:'Это похоже на периметр, а нужна площадь S = a·h.'}]});
+
+def('rhombPerpDiag',{topic:'rhomb',name:'Перпендикуляр из центра к стороне',
+ law:'Диагонали ромба перпендикулярны и делят его на прямоугольные треугольники. Перпендикуляр из центра к стороне образует с диагоналями углы <b>α и 90° − α</b>, где α — половина угла ромба.',
+ ref:'rhombprop',refWhy:'Ход держится на двух свойствах: диагонали ⊥ и диагонали — биссектрисы. Оба — из этого блока.',
+ calc:p=>2*Math.min(p.phi,90-p.phi),
+ gen:()=>({phi:ri(20,44)}), proto:{phi:35},
+ text:p=>'Перпендикуляр, проведённый из точки пересечения диагоналей ромба к его стороне, образует с одной из его диагоналей угол '+p.phi+'°. Сколько градусов составляет острый угол ромба?',
+ fig:p=>figRhombDiag({acute:2*Math.min(p.phi,90-p.phi),perpAng:p.phi+'°',askAcute:true}),
+ sol:p=>{const a=Math.min(p.phi,90-p.phi);return [
+  'В прямоугольном △AOH (H — основание перпендикуляра): ∠AOH = 90° − ∠OAH. Перпендикуляр OH образует с диагоналями углы α и 90° − α, где α — половина угла ромба при вершине A.',
+  'Острый угол ромба = 2α < 90°, поэтому α < 45°: подходит α = '+a+'°.',
+  'Острый угол ромба = 2·'+a+'° = <b>'+(2*a)+'°</b>.'];},
+ diag:p=>[{v:p.phi,m:'Данный угол — лишь ПОЛОВИНА угла ромба (диагональ — биссектриса).'},
+  {v:2*Math.max(p.phi,90-p.phi),m:'Получился тупой угол, а спрашивают острый: берём α < 45°.'}]});
+
+def('rhombHeightBigDiag',{topic:'rhomb',name:'Угол между высотой и большей диагональю',
+ law:'Большая диагональ соединяет вершины <b>острых</b> углов и делит острый угол пополам. Высота ⊥ стороне, поэтому искомый угол = 90° − (острый угол)/2.',
+ ref:'rhombprop',refWhy:'Без «диагональ — биссектриса» не найти угол между диагональю и основанием, к которому проведена высота.',
+ calc:p=>90-(180-p.ang)/2,
+ gen:()=>({ang:2*ri(51,80)}), proto:{ang:134},
+ text:p=>'Один из углов ромба равен '+p.ang+'°. Сколько градусов составляет угол между высотой и большей диагональю ромба?',
+ fig:p=>figRhombHBD({obtuse:p.ang}),
+ sol:p=>{const ac=180-p.ang;return [
+  'Острый угол ромба: 180° − '+p.ang+'° = '+ac+'°. Большая диагональ идёт из вершин острых углов и делит их пополам: по '+fnum(ac/2)+'°.',
+  'Высота перпендикулярна стороне. В прямоугольном треугольнике между высотой и диагональю: 90° − '+fnum(ac/2)+'° = <b>'+fnum(90-ac/2)+'°</b>.'];},
+ diag:p=>[{v:(180-p.ang)/2,m:'Это половина острого угла — угол диагонали со СТОРОНОЙ, а не с высотой.'},
+  {v:180-p.ang,m:'Это весь острый угол ромба, а не угол между высотой и диагональю.'}]});
+
+def('rhombSideSmallDiag',{topic:'rhomb',name:'Угол между стороной и меньшей диагональю',
+ law:'Меньшая диагональ соединяет вершины тупых углов и отсекает <b>равнобедренный</b> треугольник на остром угле: углы при основании по (180° − α)/2.',
+ ref:'isotri',refWhy:'Стороны ромба равны ⇒ треугольник ABD равнобедренный — работает формула углов при основании.',
+ calc:p=>(180-p.ac)/2,
+ gen:()=>({ac:2*ri(15,43)}), proto:{ac:52},
+ text:p=>'Острый угол ромба равен '+p.ac+'°. Сколько градусов составляет угол между стороной и меньшей диагональю ромба?',
+ fig:p=>figRhombSSD({acute:p.ac}),
+ sol:p=>['Меньшая диагональ BD с двумя сторонами ромба образует равнобедренный треугольник ABD (AB = AD) с углом '+p.ac+'° при вершине.',
+  'Углы при основании: (180° − '+p.ac+'°) : 2 = <b>'+fnum((180-p.ac)/2)+'°</b>.'],
+ diag:p=>[{v:p.ac/2,m:'Пополам диагональ делит угол, ИЗ которого выходит, — тупой. С острым углом она образует треугольник.'},
+  {v:90-p.ac,m:'Проверьте сумму углов треугольника: '+p.ac+'° + 2x = 180°.'}]});
+
+def('rhombHeightSegments',{topic:'rhomb',name:'Высота из тупого угла делит сторону',
+ law:'Высота из вершины тупого угла падает на сторону и отсекает прямоугольный треугольник: отрезок при остром угле равен <b>a·cos α</b>.',
+ ref:'rhombprop',refWhy:'Сторона известна из «все стороны равны»; дальше прямоугольный треугольник с углом 60°.',
+ quiz:false, note:'ответ — две длины подряд по возрастанию',ansFmt:'concat',
+ calc:p=>{const s1=Math.round(p.a*Math.cos(RAD(p.ang))*1e6)/1e6, s2=p.a-s1;
+   const lo=Math.min(s1,s2),hi=Math.max(s1,s2);return String(fnum(lo))+String(fnum(hi));},
+ gen:()=>({a:2*ri(10,30),ang:60}), proto:{a:34,ang:60},
+ text:p=>'Сторона ромба равна '+p.a+', а острый угол равен '+p.ang+'°. Высота ромба, опущенная из вершины тупого угла, делит сторону на два отрезка. Каковы длины этих отрезков? Перечислите длины в ответе без пробелов в порядке возрастания.',
+ fig:p=>figRhombHeight({acute:p.ang,sideLab:fnum(p.a),angLab:p.ang+'°',segLabs:['?','?']}),
+ sol:p=>{const s1=p.a*Math.cos(RAD(p.ang));return [
+  'В прямоугольном треугольнике ABH: AH = AB·cos '+p.ang+'° = '+p.a+' · 0,5 = '+fnum(s1)+'.',
+  'Второй отрезок: HD = '+p.a+' − '+fnum(s1)+' = '+fnum(p.a-s1)+'.',
+  'В порядке возрастания без пробелов: <b>'+fnum(Math.min(s1,p.a-s1))+''+fnum(Math.max(s1,p.a-s1))+'</b>.'];},
+ diag:p=>[]});
+
+/* ---------- ПАРАЛЛЕЛОГРАММ ---------- */
+def('parTrapDAEC',{topic:'par',name:'Площадь трапеции DAEC (E — середина AB)',
+ law:'Отрезок EC отсекает треугольник CBE площадью <b>S/4</b> (половина основания, та же высота, а △ABC — половина параллелограмма). Трапеция DAEC — оставшиеся <b>3/4 S</b>.',
+ ref:'spar',refWhy:'Сравниваем площади через общую высоту: EC делит △ABC (половину параллелограмма) пополам.',
+ calc:p=>0.75*p.S, gen:()=>({S:4*ri(15,60)}), proto:{S:180},
+ text:p=>'Площадь параллелограмма ABCD равна '+p.S+'. Точка E — середина стороны AB. Найдите площадь трапеции DAEC.',
+ fig:p=>figParE({}),
+ sol:p=>['Диагональ… не нужна! △CBE: основание BE = AB/2, высота из C та же, что у △ABC. S(ABC) = S/2, значит S(CBE) = S/4 = '+fnum(p.S/4)+'.',
+  'S(DAEC) = S − S(CBE) = '+p.S+' − '+fnum(p.S/4)+' = <b>'+fnum(0.75*p.S)+'</b>.'],
+ diag:p=>[{v:p.S/2,m:'Половина — это △ABC целиком; но E — середина, трапеции достаётся 3/4.'},
+  {v:p.S/4,m:'S/4 — это отсечённый треугольник CBE, а спрашивают трапецию.'}]});
+
+def('parTriCBE',{topic:'par',name:'Площадь треугольника CBE (E — середина AB)',
+ law:'△CBE — <b>четверть</b> параллелограмма: у него половина стороны AB и та же высота, что у △ABC = S/2.',
+ ref:'spar',refWhy:'Половина основания при той же высоте — площадь вдвое меньше: так S/2 превращается в S/4.',
+ calc:p=>p.S/4, gen:()=>({S:4*ri(15,60)}), proto:{S:68},
+ text:p=>'Площадь параллелограмма ABCD равна '+p.S+'. Точка E — середина стороны AB. Найдите площадь треугольника CBE.',
+ fig:p=>figParE({}),
+ sol:p=>['△ABC — половина параллелограмма: S(ABC) = '+fnum(p.S/2)+'.',
+  'BE = AB/2 при той же высоте из C ⇒ S(CBE) = S(ABC)/2 = <b>'+fnum(p.S/4)+'</b>.'],
+ diag:p=>[{v:p.S/2,m:'S/2 — это △ABC; треугольник CBE — лишь его половина.'},
+  {v:0.75*p.S,m:'3/4 — площадь трапеции DAEC, а спрашивают треугольник.'}]});
+
+def('parDiagHalf',{topic:'par',name:'Половина диагонали параллелограмма',
+ law:'Диагонали параллелограмма точкой пересечения <b>делятся пополам</b> (но, в отличие от прямоугольника, НЕ равны друг другу).',
+ ref:'parprop',refWhy:'Вопрос про отрезок от вершины до O — это ровно половина соответствующей диагонали.',
+ calc:p=>p.tgt==='DO'||p.tgt==='BO'?p.bd/2:p.ac/2,
+ gen:()=>{const tgt=pick(['DO','AO','OC','BO']);return {ac:2*ri(4,15),bd:2*ri(4,15),ab:ri(4,12),tgt};},
+ proto:{ac:12,bd:20,ab:7,tgt:'DO'},
+ text:p=>'Диагонали AC и BD параллелограмма ABCD пересекаются в точке O, AC = '+p.ac+', BD = '+p.bd+', AB = '+p.ab+'. Найдите '+p.tgt+'.',
+ fig:p=>figParDiag({}),
+ sol:p=>{const d=p.tgt==='DO'||p.tgt==='BO'?['BD',p.bd]:['AC',p.ac];return [
+  'Диагонали параллелограмма делятся точкой пересечения пополам.',
+  p.tgt+' — половина диагонали '+d[0]+': '+d[1]+' : 2 = <b>'+fnum(d[1]/2)+'</b>. AB = '+p.ab+' — отвлекающее данное.'];},
+ diag:p=>{const wrong=p.tgt==='DO'||p.tgt==='BO'?p.ac/2:p.bd/2;return [
+  {v:wrong,m:'Вы взяли половину ДРУГОЙ диагонали: '+p.tgt+' лежит на '+(p.tgt==='DO'||p.tgt==='BO'?'BD':'AC')+'.'},
+  {v:p.ab,m:'AB — сторона, она тут для отвлечения.'}];}});
+
+def('parHeights',{topic:'par',name:'Высоты параллелограмма по площади',
+ law:'S = a·h_a = b·h_b ⇒ <b>h = S/сторона</b>. К меньшей стороне — бо́льшая высота.',
+ ref:'spar',refWhy:'Обе высоты достаются делением одной и той же площади на соответствующую сторону.',
+ calc:p=>p.q==='big'?p.S/Math.min(p.s1,p.s2):p.S/Math.max(p.s1,p.s2),
+ gen:()=>{const s1=ri(4,12),k=pick([2,2,3]),S=s1*k*ri(2,8);return {S,s1,s2:s1*k,q:pick(['big','small'])};},
+ proto:{S:40,s1:5,s2:10,q:'big'},
+ text:p=>'Площадь параллелограмма равна '+p.S+', а две его стороны равны '+p.s1+' и '+p.s2+'. Найдите его высоты. В ответе укажите '+(p.q==='big'?'бо́льшую':'ме́ньшую')+' высоту.',
+ fig:p=>figParHeights({}),
+ sol:p=>['Высота к стороне '+p.s1+': h = '+p.S+'/'+p.s1+' = '+fnum(p.S/p.s1)+'; к стороне '+p.s2+': h = '+p.S+'/'+p.s2+' = '+fnum(p.S/p.s2)+'.',
+  (p.q==='big'?'Бо́льшая':'Ме́ньшая')+' высота (она у '+(p.q==='big'?'МЕНЬШЕЙ':'БОЛЬШЕЙ')+' стороны): <b>'+fnum(p.q==='big'?p.S/Math.min(p.s1,p.s2):p.S/Math.max(p.s1,p.s2))+'</b>.'],
+ diag:p=>[{v:p.q==='big'?p.S/Math.max(p.s1,p.s2):p.S/Math.min(p.s1,p.s2),m:'Перепутаны высоты: бо́льшая высота опущена на МЕНЬШУЮ сторону.'}]});
+
+def('parAngle',{topic:'par',name:'Угол параллелограмма по соседнему',
+ law:'Соседние углы параллелограмма в сумме дают <b>180°</b>; противоположные равны.',
+ ref:'parprop',refWhy:'Задача — одно применение суммы соседних углов 180°.',
+ calc:p=>180-p.given,
+ gen:()=>{const q=pick(['big','small']);return {given:q==='big'?ri(20,88):ri(92,160),q};},
+ proto:{given:41,q:'big'},
+ text:p=>'Один из углов параллелограмма равен '+p.given+'°. Найдите '+(p.q==='big'?'больший':'меньший')+' угол этого параллелограмма. Ответ дайте в градусах.',
+ fig:p=>figParAngle({acute:Math.min(p.given,180-p.given),givenAt:p.given<90?'A':'B',givenLab:p.given+'°'}),
+ sol:p=>['Соседние углы параллелограмма в сумме дают 180°.','180° − '+p.given+'° = <b>'+(180-p.given)+'°</b>.'],
+ diag:p=>[{v:360-p.given,m:'360° — сумма ВСЕХ углов четырёхугольника; соседние дают 180°.'}]});
+
+def('parDiagAngles',{topic:'par',name:'Диагональ образует углы со сторонами',
+ law:'Диагональ разбивает угол параллелограмма: <b>∠A = α + β</b>. Больший угол — тот из ∠A и 180° − ∠A, что больше.',
+ ref:'parprop',refWhy:'Сложили угол из частей — дальше сумма соседних 180° выбирает больший.',
+ calc:p=>Math.max(p.a+p.b,180-p.a-p.b),
+ gen:()=>({a:ri(15,60),b:ri(15,60)}), proto:{a:30,b:45},
+ text:p=>'Диагональ AC параллелограмма ABCD образует с его сторонами углы, равные '+p.a+'° и '+p.b+'°. Найдите больший угол этого параллелограмма. Ответ дайте в градусах.',
+ fig:p=>figParDiagAngles({a:p.a,b:p.b}),
+ sol:p=>{const A=p.a+p.b;return ['Весь угол A: '+p.a+'° + '+p.b+'° = '+A+'°.',
+  'Соседний с ним: 180° − '+A+'° = '+(180-A)+'°. Больший из двух: <b>'+Math.max(A,180-A)+'°</b>.'];},
+ diag:p=>[{v:Math.min(p.a+p.b,180-p.a-p.b),m:'Это МЕНЬШИЙ из пары углов — сравните '+(p.a+p.b)+'° и '+(180-p.a-p.b)+'°.'},
+  {v:Math.abs(p.a-p.b),m:'Углы диагонали со сторонами СКЛАДЫВАЮТСЯ в угол параллелограмма.'}]});
+
+def('parBisector',{topic:'par',name:'Биссектриса угла A и сторона BC',
+ law:'BC ∥ AD ⇒ биссектриса образует с BC угол, <b>накрест лежащий</b> с половиной угла A. Значит ∠A = 2φ.',
+ ref:'parallel',refWhy:'Ключ — накрест лежащие углы при параллельных BC и AD и секущей-биссектрисе.',
+ calc:p=>2*p.phi,
+ gen:()=>({phi:ri(10,44)}), proto:{phi:15},
+ text:p=>'Найдите острый угол параллелограмма ABCD, если биссектриса угла A образует со стороной BC угол, равный '+p.phi+'°. Ответ дайте в градусах.',
+ fig:p=>figParBisector({half:p.phi}),
+ sol:p=>['Биссектриса — секущая при параллельных BC и AD: угол с BC накрест лежащий с углом ∠KAD = ∠A/2. Значит ∠A/2 = '+p.phi+'°.',
+  '∠A = 2·'+p.phi+'° = <b>'+(2*p.phi)+'°</b> — острый, как и требуется.'],
+ diag:p=>[{v:p.phi,m:'Это лишь ПОЛОВИНА угла: биссектриса делит угол A пополам.'},
+  {v:180-2*p.phi,m:'Получился тупой угол — а спрашивают острый: 2φ.'}]});
+
+/* ---------- ТРАПЕЦИЯ ---------- */
+def('trapMid',{topic:'trap',name:'Средняя линия трапеции',
+ law:'Средняя линия трапеции: <b>m = (a + b)/2</b>. Высота на неё не влияет.',
+ ref:'strap',refWhy:'Прямое применение формулы средней линии; высота в условии — проверка на внимательность.',
+ calc:p=>(p.a+p.b)/2,
+ gen:()=>({a:ri(2,10),b:ri(6,22),h:ri(2,9)}), proto:{a:3,b:9,h:5},
+ text:p=>'Основания трапеции равны '+p.a+' и '+p.b+', а высота равна '+p.h+'. Найдите среднюю линию этой трапеции.',
+ fig:p=>figTrapMid({a:p.a,b:p.b,hLab:fnum(p.h),midAsk:true}),
+ sol:p=>['m = '+frac('a + b','2')+' = '+frac(p.a+' + '+p.b,'2')+' = <b>'+fnum((p.a+p.b)/2)+'</b>. Высота '+p.h+' — отвлекающее данное.'],
+ diag:p=>[{v:(p.a+p.b)/2*p.h,m:'Вы посчитали площадь, а спрашивают среднюю линию.'},
+  {v:(p.b-p.a)/2,m:'Полуразность — это отрезок, который отсекает высота, а средняя линия — полуСУММА.'}]});
+
+def('trapArea',{topic:'trap',name:'Площадь трапеции',
+ law:'Площадь трапеции: <b>S = (a + b)/2 · h</b> — средняя линия, умноженная на высоту.',
+ ref:'strap',refWhy:'Даны оба основания и высота — прямой случай формулы площади.',
+ calc:p=>(p.a+p.b)/2*p.h,
+ gen:()=>{const a=ri(2,10),b=a+2*ri(1,7);return {a,b,h:ri(2,11)};}, proto:{a:4,b:10,h:5},
+ text:p=>'Основания трапеции равны '+p.a+' и '+p.b+', а высота равна '+p.h+'. Найдите площадь этой трапеции.',
+ fig:p=>figTrapMid({a:p.a,b:p.b,hLab:fnum(p.h)}),
+ sol:p=>['S = '+frac('a + b','2')+'·h = '+frac(p.a+' + '+p.b,'2')+' · '+p.h+' = '+fnum((p.a+p.b)/2)+' · '+p.h+' = <b>'+fnum((p.a+p.b)/2*p.h)+'</b>.'],
+ diag:p=>[{v:(p.a+p.b)*p.h,m:'Сумму оснований нужно поделить на 2 — трапеция «в среднем» у́же прямоугольника.'},
+  {v:(p.a+p.b)/2,m:'Это средняя линия; для площади умножьте на высоту.'}]});
+
+def('trapIso',{topic:'trap',name:'Угол равнобедренной трапеции по одному углу',
+ law:'В равнобедренной трапеции углы при каждом основании равны, а углы при разных основаниях в сумме дают <b>180°</b>.',
+ ref:'isotrap',refWhy:'Равенство углов при основании — свойство именно равнобедренной трапеции.',
+ calc:p=>180-p.given,
+ gen:()=>{const q=pick(['big','small']);return {given:q==='big'?ri(30,88):ri(92,150),q};},
+ proto:{given:66,q:'big'},
+ text:p=>'Один из углов равнобедренной трапеции равен '+p.given+'°. Найдите '+(p.q==='big'?'больший':'меньший')+' угол этой трапеции. Ответ дайте в градусах.',
+ fig:p=>figTrapAngle({theta:Math.min(p.given,180-p.given),givenAt:p.given<90?'A':'B',givenLab:p.given+'°',ask:p.given<90?'C':'D'}),
+ sol:p=>['Углы при боковой стороне (односторонние при параллельных основаниях) в сумме дают 180°.',
+  '180° − '+p.given+'° = <b>'+(180-p.given)+'°</b>.'],
+ diag:p=>[{v:p.given,m:'Равен данному — угол при ТОМ ЖЕ основании; спрашивают угол другой пары.'}]});
+
+def('trapSum',{topic:'trap',name:'Сумма двух углов равнобедренной трапеции',
+ law:'Если сумма двух углов ≠ 180°, это два <b>равных</b> угла при одном основании: каждый равен половине суммы.',
+ ref:'isotrap',refWhy:'Сумма ≠ 180° выдаёт пару равных углов — это свойство равнобедренной трапеции.',
+ calc:p=>180-p.sum/2,
+ gen:()=>{const q=pick(['big','small']);return {sum:2*(q==='big'?ri(25,85):ri(95,155)),q};},
+ proto:{sum:140,q:'big'},
+ text:p=>'Сумма двух углов равнобедренной трапеции равна '+p.sum+'°. Найдите '+(p.q==='big'?'больший':'меньший')+' угол трапеции. Ответ дайте в градусах.',
+ fig:p=>figTrapAngle({theta:Math.min(p.sum/2,180-p.sum/2),givenLab:null,ask:p.sum<180?'B':'D'}),
+ sol:p=>['Углы при разных основаниях дали бы ровно 180°. Значит, это два равных угла при одном основании: каждый по '+p.sum+'°/2 = '+fnum(p.sum/2)+'°.',
+  (p.q==='big'?'Больший':'Меньший')+' угол — при другом основании: 180° − '+fnum(p.sum/2)+'° = <b>'+fnum(180-p.sum/2)+'°</b>.'],
+ diag:p=>[{v:p.sum/2,m:'Половина суммы — это данный угол; спрашивают угол при ДРУГОМ основании.'},
+  {v:180-p.sum,m:'180° − сумма — так можно, только если углы при РАЗНЫХ основаниях, но тогда сумма была бы 180°.'}]});
+
+def('trapRect',{topic:'trap',name:'Угол прямоугольной трапеции',
+ law:'У прямоугольной трапеции два угла по 90°. Оставшиеся два — при параллельных основаниях: их сумма <b>180°</b>.',
+ ref:'anglesum',refWhy:'Два прямых угла известны, третий дан — четвёртый добирается до 360° (или через 180° при боковой стороне).',
+ calc:p=>180-p.given,
+ gen:()=>{const q=pick(['big','small']);return {given:q==='big'?ri(30,88):ri(92,150),q};},
+ proto:{given:64,q:'big'},
+ text:p=>'Один из углов прямоугольной трапеции равен '+p.given+'°. Найдите '+(p.q==='big'?'больший':'меньший')+' угол этой трапеции. Ответ дайте в градусах.',
+ fig:p=>figTrapAngle({theta:Math.min(p.given,180-p.given),rect:true,givenAt:p.given<90?'D':'C',givenLab:p.given+'°',ask:p.given<90?'C':'D'}),
+ sol:p=>['Два угла прямоугольной трапеции — по 90°. Данный угол '+p.given+'° — не прямой, искомый — четвёртый.',
+  'Углы при наклонной боковой стороне: 180° − '+p.given+'° = <b>'+(180-p.given)+'°</b>.'],
+ diag:p=>[{v:90,m:'90° — это прямые углы трапеции; спрашивают про пару наклонной стороны.'}]});
+
+def('trapDiagAO',{topic:'trap',name:'Диагонали трапеции и подобие',
+ law:'Диагонали трапеции при пересечении дают подобные треугольники: <b>AO : OC = AD : BC</b>, поэтому AO = AC · AD/(AD + BC).',
+ ref:'simtri',refWhy:'△BOC ∼ △DOA по двум углам (накрест лежащие) — отсюда пропорция для AO.',
+ calc:p=>p.ac*p.ad/(p.ad+p.bc),
+ gen:()=>{const bc=ri(1,8),k=ri(2,4),ad=bc*k,ac=(bc+ad)*ri(1,3);return {bc,ad,ac};},
+ proto:{bc:3,ad:7,ac:20},
+ text:p=>'Диагонали AC и BD трапеции ABCD с основаниями BC и AD пересекаются в точке O, BC = '+p.bc+', AD = '+p.ad+', AC = '+p.ac+'. Найдите AO.',
+ fig:p=>figTrapDiagAO(p),
+ sol:p=>['△BOC ∼ △DOA (накрест лежащие углы при BC ∥ AD) с коэффициентом AD : BC = '+p.ad+' : '+p.bc+'.',
+  'Диагональ AC делится в том же отношении: AO = AC · '+frac(p.ad,p.ad+' + '+p.bc)+' = '+p.ac+' · '+frac(p.ad,String(p.ad+p.bc))+' = <b>'+fnum(p.ac*p.ad/(p.ad+p.bc))+'</b>.'],
+ diag:p=>[{v:p.ac/2,m:'Пополам диагонали делятся в ПАРАЛЛЕЛОГРАММЕ; в трапеции — в отношении оснований.'},
+  {v:p.ac*p.bc/(p.ad+p.bc),m:'Это OC — меньший отрезок. AO примыкает к БОЛЬШЕМУ основанию AD.'}]});
+
+def('trapMidSeg',{topic:'trap',name:'Диагональ делит среднюю линию',
+ law:'Диагональ пересекает среднюю линию в середине себя и делит её на отрезки <b>a/2 и b/2</b> (половины оснований — это средние линии треугольников).',
+ ref:'strap',refWhy:'Каждый кусок средней линии — средняя линия треугольника, отсечённого диагональю: половина соответствующего основания.',
+ calc:p=>Math.max(p.a,p.b)/2,
+ gen:()=>{const a=ri(1,9),b=a+ri(3,12);return {a,b};}, proto:{a:4,b:10},
+ text:p=>'Основания трапеции равны '+p.a+' и '+p.b+'. Найдите больший из отрезков, на которые делит среднюю линию этой трапеции одна из её диагоналей.',
+ fig:p=>figTrapMid({a:p.a,b:p.b,segAsk:true}),
+ sol:p=>['Диагональ AC разрезает трапецию на два треугольника; куски средней линии — их средние линии: '+p.a+'/2 = '+fnum(p.a/2)+' и '+p.b+'/2 = '+fnum(p.b/2)+'.',
+  'Больший отрезок: <b>'+fnum(Math.max(p.a,p.b)/2)+'</b>.'],
+ diag:p=>[{v:(p.a+p.b)/2,m:'Это ВСЯ средняя линия; диагональ делит её на половины оснований.'},
+  {v:Math.min(p.a,p.b)/2,m:'Это меньший отрезок — половина меньшего основания.'}]});
+
+def('trapDiagFindC',{topic:'trap',name:'Диагональ и два угла: найти угол трапеции',
+ law:'Угол трапеции складывается из частей, на которые его делит диагональ, а накрест лежащие углы при параллельных основаниях «переносят» угол с одного основания на другое. Итог: искомый угол = <b>α + β</b>.',
+ ref:'parallel',refWhy:'Перенос угла через накрест лежащие + сумма углов треугольника 180° — весь ход держится на параллельности оснований.',
+ calc:p=>p.a+p.b,
+ gen:()=>{const v=pick(['ADCD','BCAB']);const a=ri(15,45),b=ri(Math.max(20,95-a),Math.min(115,150-a));return {a,b,v};},
+ proto:{a:30,b:80,v:'ADCD'},
+ text:p=>p.v==='ADCD'
+  ?'Найдите угол ABC равнобедренной трапеции ABCD, если диагональ AC образует с основанием AD и боковой стороной CD углы, равные '+p.a+'° и '+p.b+'° соответственно.'
+  :'Найдите угол ADC равнобедренной трапеции ABCD, если диагональ AC образует с основанием BC и боковой стороной AB углы, равные '+p.a+'° и '+p.b+'° соответственно.',
+ fig:p=>p.v==='ADCD'
+  ?figTrapDiagArcs({theta:180-p.a-p.b,alpha:p.a,arcs:[{at:'A',p:'C',q:'D',lab:p.a+'°'},{at:'C',p:'A',q:'D',lab:p.b+'°',c:CLR.c3},{at:'B',p:'A',q:'C',lab:'?',c:CLR.ask,r:19}]})
+  :figTrapDiagArcs({theta:p.a+p.b,alpha:p.a,arcs:[{at:'C',p:'B',q:'A',lab:p.a+'°'},{at:'A',p:'B',q:'C',lab:p.b+'°',c:CLR.c3},{at:'D',p:'A',q:'C',lab:'?',c:CLR.ask}]}),
+ sol:p=>p.v==='ADCD'
+  ?['В △ACD сумма углов 180°: ∠ADC = 180° − '+p.a+'° − '+p.b+'° = '+(180-p.a-p.b)+'°.',
+    'Трапеция равнобедренная: ∠BAD = ∠ADC = '+(180-p.a-p.b)+'°.',
+    'Углы при боковой стороне AB в сумме дают 180°: ∠ABC = 180° − '+(180-p.a-p.b)+'° = <b>'+(p.a+p.b)+'°</b>.']
+  :['∠CAD = ∠ACB = '+p.a+'° (накрест лежащие при BC ∥ AD).',
+    '∠BAD = ∠BAC + ∠CAD = '+p.b+'° + '+p.a+'° = '+(p.a+p.b)+'°.',
+    'Трапеция равнобедренная: ∠ADC = ∠BAD = <b>'+(p.a+p.b)+'°</b>.'],
+ diag:p=>[{v:180-p.a-p.b,m:'Это угол при ДРУГОМ основании (из суммы углов треугольника); искомый — его дополнение до 180°.'},
+  {v:Math.abs(p.b-p.a),m:'Углы складываются, а не вычитаются: диагональ и параллельность «собирают» угол из двух частей.'}]});
+
+def('trapDiagBS',{topic:'trap',name:'Диагональ и два угла: больший/меньший угол',
+ law:'Диагональ AC с основанием AD и стороной AB задаёт угол ∠BAD = α + β; больший угол трапеции = <b>180° − ∠BAD</b> (если ∠BAD острый).',
+ ref:'parallel',refWhy:'Сумма углов при боковой стороне 180° переводит найденный ∠BAD в угол при другом основании.',
+ calc:p=>180-p.a-p.b,
+ gen:()=>{const a=ri(3,45),b=ri(3,Math.min(60,85-a));return {a,b};},
+ proto:{a:25,b:40},
+ text:p=>{const s=p.a+p.b<90?'больший':'меньший';
+  return p.v==='BCCD'
+   ?'Найдите '+s+' угол равнобедренной трапеции ABCD, если диагональ AC образует с основанием BC и боковой стороной CD углы, равные '+p.a+'° и '+p.b+'° соответственно.'
+   :'Найдите '+s+' угол равнобедренной трапеции ABCD, если диагональ AC образует с основанием AD и боковой стороной AB углы, равные '+p.a+'° и '+p.b+'° соответственно.';},
+ fig:p=>p.v==='BCCD'
+  ?figTrapDiagArcs({theta:180-p.a-p.b,alpha:p.a,arcs:[{at:'C',p:'B',q:'A',lab:p.a+'°',r:22},{at:'C',p:'A',q:'D',lab:p.b+'°',c:CLR.c3,r:34},{at:'A',p:'B',q:'D',lab:'?',c:CLR.ask,r:19}]})
+  :figTrapDiagArcs({theta:p.a+p.b,alpha:p.a,arcs:[{at:'A',p:'C',q:'D',lab:p.a+'°',r:34},{at:'A',p:'B',q:'C',lab:p.b+'°',c:CLR.c3,r:22},{at:'B',p:'A',q:'C',lab:'?',c:CLR.ask,r:19}]}),
+ sol:p=>{const A=p.a+p.b;return p.v==='BCCD'
+  ?['Весь угол при меньшем основании: ∠BCD = '+p.a+'° + '+p.b+'° = '+A+'°.',
+    'Углы при боковой стороне CD в сумме 180°: ∠ADC = 180° − '+A+'° = '+(180-A)+'°. '+(A<90?'Больший':'Меньший')+' угол трапеции: <b>'+(180-A)+'°</b>.']
+  :['∠BAD = '+p.b+'° + '+p.a+'° = '+A+'° — угол при большем основании.',
+    'Углы при боковой стороне в сумме 180°: второй угол = 180° − '+A+'° = '+(180-A)+'°. '+(A<90?'Больший':'Меньший')+' из них: <b>'+(180-A)+'°</b>.'];},
+ diag:p=>[{v:p.a+p.b,m:'Вы нашли ∠BAD — но спрашивают '+(p.a+p.b<90?'больший, то есть смежный с ним':'меньший, то есть смежный с ним')+'.'}]});
+
+def('trapCutBase',{topic:'trap',name:'Высота делит большее основание',
+ law:'Высота из вершины C отсекает от AD отрезок DH = (AD − BC)/2, значит <b>BC = AH − HD</b> (разность отрезков).',
+ ref:'isotrap',refWhy:'Симметрия равнобедренной трапеции: слева и справа высоты отсекают одинаковые куски.',
+ calc:p=>p.big-p.small,
+ gen:()=>{const small=ri(2,14),bc=ri(1,12);return {small,big:small+bc};},
+ proto:{big:15,small:8},
+ text:p=>'Высота равнобедренной трапеции, проведённая из вершины C, делит основание AD на отрезки длиной '+p.big+' и '+p.small+'. Найдите длину основания BC.',
+ fig:p=>figTrapCut(p),
+ sol:p=>['AD = '+p.big+' + '+p.small+' = '+(p.big+p.small)+'; из симметрии высоты отсекают по '+p.small+' с каждой стороны.',
+  'BC = AD − 2·'+p.small+' = '+(p.big+p.small)+' − '+(2*p.small)+' = <b>'+(p.big-p.small)+'</b>. (Быстро: BC = '+p.big+' − '+p.small+'.)'],
+ diag:p=>[{v:p.big+p.small,m:'Это всё основание AD; BC короче на два отсечённых куска.'},
+  {v:(p.big+p.small)/2,m:'Полусумма отрезков — это не BC; вычтите отсечённые куски: BC = AD − 2·'+p.small+'.'}]});
+
+def('trapDiag45h',{topic:'trap',name:'Диагональ под 45°: высота',
+ law:'Проекция диагонали на большее основание равна <b>средней линии</b>: AH = (a + b)/2. При угле 45° высота равна проекции: h = (a + b)/2.',
+ ref:'strap',refWhy:'Средняя линия (a+b)/2 неожиданно появляется как проекция диагонали — а 45° делает катеты равными.',
+ calc:p=>(p.a+p.b)/2,
+ gen:()=>{const a=ri(1,7),b=a+2*ri(1,6);return {a,b};}, proto:{a:2,b:5},
+ text:p=>'Диагональ равнобедренной трапеции образует с её основанием угол 45°. Найдите длину высоты трапеции, если её основания равны '+p.a+' и '+p.b+'.',
+ fig:p=>figTrapDiag45(p),
+ sol:p=>['Основание высоты из C делит AD: DH = ('+p.b+' − '+p.a+')/2 = '+fnum((p.b-p.a)/2)+', значит AH = '+p.b+' − '+fnum((p.b-p.a)/2)+' = '+fnum((p.a+p.b)/2)+'.',
+  'В прямоугольном △AHC угол 45° ⇒ катеты равны: h = AH = <b>'+fnum((p.a+p.b)/2)+'</b>.'],
+ diag:p=>[{v:(p.b-p.a)/2,m:'Полуразность — отрезок ЗА высотой (DH); проекция диагонали — полусумма.'}]});
+
+def('trap45Base',{topic:'trap',name:'Основание при угле 45° и высоте',
+ law:'При угле 45° высота отсекает от большего основания отрезки, равные <b>h</b>: b = a + 2h, a = b − 2h.',
+ ref:'isotrap',refWhy:'Симметрия отсекает два равных куска, а 45° делает каждый кусок равным высоте.',
+ calc:p=>p.q==='big'?p.a+2*p.h:p.b-2*p.h,
+ gen:()=>{const q=pick(['big','small']);const h=ri(2,7);
+   return q==='big'?{q,a:ri(2,8),h}:{q,b:ri(2,8)+2*h+2,h};},
+ proto:{q:'big',a:6,h:5},
+ text:p=>p.q==='big'
+  ?'В равнобедренной трапеции известны высота '+p.h+', меньшее основание '+p.a+' и угол при основании 45°. Найдите большее основание.'
+  :'В равнобедренной трапеции известны высота '+p.h+', большее основание '+p.b+' и угол при основании 45°. Найдите меньшее основание.',
+ fig:p=>{const a=p.q==='big'?p.a:p.b-2*p.h, b=p.q==='big'?p.a+2*p.h:p.b;
+   return figTrap45({a,b,hLab:fnum(p.h),aLab:p.q==='big'?fnum(p.a):'?',bLab:p.q==='big'?'?':fnum(p.b)});},
+ sol:p=>p.q==='big'
+  ?['Угол 45° ⇒ отсекаемый высотой отрезок равен высоте: по '+p.h+' с каждой стороны.',
+    'Большее основание: '+p.a+' + 2·'+p.h+' = <b>'+(p.a+2*p.h)+'</b>.']
+  :['Угол 45° ⇒ отсекаемый высотой отрезок равен высоте: по '+p.h+' с каждой стороны.',
+    'Меньшее основание: '+p.b+' − 2·'+p.h+' = <b>'+(p.b-2*p.h)+'</b>.'],
+ diag:p=>[p.q==='big'?{v:p.a+p.h,m:'Кусок h отсекается с ОБЕИХ сторон: прибавьте 2h.'}:{v:p.b-p.h,m:'Кусок h отсекается с ОБЕИХ сторон: вычтите 2h.'}]});
+
+def('trap45Area',{topic:'trap',name:'Площадь трапеции с углом 45° по основаниям',
+ law:'При угле 45° высота равна отсекаемому отрезку: <b>h = (b − a)/2</b>, дальше обычная формула площади.',
+ ref:'strap',refWhy:'Высоты в условии нет — её добывает угол 45°, а затем работает S = (a+b)/2·h.',
+ calc:p=>(p.a+p.b)/2*(p.b-p.a)/2,
+ gen:()=>{const a=ri(1,7),b=a+2*ri(1,6);return {a,b};}, proto:{a:3,b:9},
+ text:p=>'Найдите площадь равнобедренной трапеции с основаниями '+p.a+' и '+p.b+' и углом 45° при основании.',
+ fig:p=>figTrap45({a:p.a,b:p.b,aLab:fnum(p.a),bLab:fnum(p.b),hLab:'h'}),
+ sol:p=>{const h=(p.b-p.a)/2;return ['Высота при 45°: h = ('+p.b+' − '+p.a+')/2 = '+fnum(h)+'.',
+  'S = '+frac(p.a+' + '+p.b,'2')+' · '+fnum(h)+' = '+fnum((p.a+p.b)/2)+' · '+fnum(h)+' = <b>'+fnum((p.a+p.b)/2*h)+'</b>.'];},
+ diag:p=>[{v:(p.a+p.b)/2,m:'Это средняя линия; высоту даёт угол 45°: h = (b − a)/2, потом перемножьте.'}]});
+
+def('trapBisector',{topic:'trap',name:'Диагональ-биссектриса',
+ law:'AC — биссектриса ∠BAD ⇒ ∠CAD = ∠A/2, а в равнобедренной трапеции ∠A = ∠D. Дальше — сумма углов △ACD.',
+ ref:'isotri',refWhy:'Равенство ∠A = ∠D (равнобедренная трапеция) + сумма углов треугольника 180°.',
+ calc:p=>180-1.5*p.d,
+ gen:()=>({d:2*ri(25,55)}), proto:{d:68},
+ text:p=>'В равнобедренной трапеции ABCD угол D равен '+p.d+'°. Найдите градусную меру угла ACD, если луч AC является биссектрисой угла BAD.',
+ fig:p=>figTrapBisector({theta:p.d}),
+ sol:p=>['∠BAD = ∠D = '+p.d+'° (углы при большем основании равны); биссектриса: ∠CAD = '+fnum(p.d/2)+'°.',
+  'В △ACD: ∠ACD = 180° − '+p.d+'° − '+fnum(p.d/2)+'° = <b>'+fnum(180-1.5*p.d)+'°</b>.'],
+ diag:p=>[{v:180-2*p.d,m:'∠CAD — не весь ∠A, а его половина: биссектриса.'},
+  {v:p.d/2,m:'Это ∠CAD; искомый ∠ACD добирается из суммы углов треугольника.'}]});
+
+def('trapDiagSmallBase',{topic:'trap',name:'Угол диагонали с меньшим основанием',
+ law:'Угол диагонали с меньшим основанием <b>накрест лежащий</b> с ∠CAD = ∠A − ∠BAC. В равнобедренной трапеции ∠A = ∠D.',
+ ref:'parallel',refWhy:'BC ∥ AD переносит искомый угол вниз: ∠BCA = ∠CAD — и задача сводится к вычитанию.',
+ calc:p=>p.d-p.ab,
+ gen:()=>{const d=ri(50,86);return {d,ab:ri(10,d-15)};}, proto:{d:74,ab:21},
+ text:p=>'В равнобедренной трапеции с основаниями AD и BC угол D равен '+p.d+'°. Диагональ AC образует со стороной AB угол '+p.ab+'°. Сколько градусов составляет угол между этой диагональю и меньшим основанием трапеции?',
+ fig:p=>figTrapDiagArcs({theta:p.d,alpha:p.d-p.ab,arcs:[{at:'D',p:'C',q:'A',lab:p.d+'°'},{at:'A',p:'B',q:'C',lab:p.ab+'°',c:CLR.c3,r:20},{at:'C',p:'B',q:'A',lab:'?',c:CLR.ask,r:20}]}),
+ sol:p=>['∠BAD = ∠D = '+p.d+'°, значит ∠CAD = '+p.d+'° − '+p.ab+'° = '+(p.d-p.ab)+'°.',
+  'BC ∥ AD ⇒ ∠BCA = ∠CAD (накрест лежащие) = <b>'+(p.d-p.ab)+'°</b>.'],
+ diag:p=>[{v:p.d+p.ab,m:'Угол '+p.ab+'° — ЧАСТЬ угла A, его вычитают, а не прибавляют.'},
+  {v:180-p.d-p.ab,m:'Сумма углов треугольника тут не нужна: сработают накрест лежащие углы.'}]});
+
+def('trapBDA',{topic:'trap',name:'Диагональ BD и два угла при D',
+ law:'∠ADC = ∠BDA + ∠BDC, в равнобедренной трапеции ∠A = ∠D, а искомый ∠ABD добирается из <b>суммы углов △ABD</b>.',
+ ref:'isotrap',refWhy:'Равенство углов при основании собирает ∠BAD, а треугольник ABD выдаёт ответ.',
+ calc:p=>180-(p.bda+p.bdc)-p.bda,
+ gen:()=>{const bda=ri(10,40),bdc=ri(45,Math.min(115,160-2*bda-5));return {bda,bdc};},
+ proto:{bda:35,bdc:58},
+ text:p=>'В трапеции ABCD известно, что AB = CD, ∠BDA = '+p.bda+'° и ∠BDC = '+p.bdc+'°. Найдите угол ABD. Ответ дайте в градусах.',
+ fig:p=>figTrapBDA(p),
+ sol:p=>{const A=p.bda+p.bdc;return ['∠ADC = ∠BDA + ∠BDC = '+p.bda+'° + '+p.bdc+'° = '+A+'°; трапеция равнобедренная ⇒ ∠BAD = ∠ADC = '+A+'°.',
+  'В △ABD: ∠ABD = 180° − '+A+'° − '+p.bda+'° = <b>'+(180-A-p.bda)+'°</b>.'];},
+ diag:p=>[{v:p.bdc-p.bda,m:'Разность данных углов ничего не считает: соберите ∠ADC = ∠BDA + ∠BDC и идите в △ABD.'},
+  {v:180-(p.bda+p.bdc),m:'Вы забыли вычесть ∠BDA — в △ABD три угла, а не два.'}]});
+/* ================= АРХИВ (тонкие записи; exp — эталон, пересчитан в node до кода) ================= */
+const AR=(nums,sub,p,exp,src)=>({nums:Array.isArray(nums)?nums:[nums],sub,p,exp,src:src||'РешуОГЭ'});
+const FP='открытый банк (прототип)';
+const ARCHIVE=[
+ // Квадрат
+ AR('356728','sqDiag',{k:7},14), AR('356736','sqDiag',{k:8},16), AR('П-Кв2','sqDiag',{k:3},6,FP),
+ AR('П-Кв4','sqAreaSide',{k:4},32,FP), AR('П-Кв5','sqAreaSide',{k:6},72,FP), AR('П-Кв6','sqAreaSide',{k:5},50,FP),
+ AR('П-Кв7','sqAreaPerim',{P:160},1600,FP), AR('П-Кв8','sqAreaPerim',{P:32},64,FP), AR('П-Кв9','sqAreaPerim',{P:64},256,FP),
+ // Прямоугольник
+ AR('323537','rectDiagAngle',{alpha:51},78), AR('323543','rectDiagAngle',{alpha:74},32),
+ AR('П-Пр4','rectDiagAngle',{alpha:50},80,FP), AR('П-Пр5','rectDiagAngle',{alpha:63},54,FP),
+ AR('356927','rectDiagBO',{half:7,side:6,hn:'BO',sn:'AB',dn:'AC'},14),
+ AR('356928','rectDiagBO',{half:8,side:9,hn:'BO',sn:'AB',dn:'AC'},16),
+ AR('П-Пр3','rectDiagBO',{half:15,side:10,hn:'DO',sn:'CD',dn:'BD'},30,FP),
+ // Ромб
+ AR('356893','rhombAngle',{given:43,q:'big'},137), AR('П-Рм2','rhombAngle',{given:104,q:'small'},76,FP), AR('П-Рм3','rhombAngle',{given:24,q:'big'},156,FP),
+ AR('356939','rhombACD',{abc:72},54), AR('П-Рм5','rhombACD',{abc:40},70,FP), AR('П-Рм6','rhombACD',{abc:58},61,FP),
+ AR('356962','rhombHeight',{a:4,ang:150},2), AR('П-Рм8','rhombHeight',{a:28,ang:150},14,FP), AR('П-Рм9','rhombHeight',{a:54,ang:150},27,FP),
+ AR('П-Рм10','rhombAreaDiag',{d1:14,d2:6},42,FP), AR('П-Рм11','rhombAreaDiag',{d1:21,d2:4},42,FP), AR('П-Рм12','rhombAreaDiag',{d1:8,d2:9},36,FP),
+ AR('П-Рм13','rhombAreaPerim',{P:24,ang:30},18,FP), AR('П-Рм14','rhombAreaPerim',{P:48,ang:30},72,FP), AR('П-Рм15','rhombAreaPerim',{P:56,ang:30},98,FP),
+ AR('П-Рм16','rhombAreaDist',{a:5,dist:2},20,FP), AR('П-Рм17','rhombAreaDist',{a:8,dist:2},32,FP), AR('П-Рм18','rhombAreaDist',{a:7,dist:3},42,FP),
+ AR('472355','rhombPerpDiag',{phi:35},70), AR('472360','rhombPerpDiag',{phi:40},80),
+ AR('472365','rhombHeightBigDiag',{ang:134},67), AR('472367','rhombHeightBigDiag',{ang:118},59),
+ AR('472369','rhombSideSmallDiag',{ac:52},64), AR('472370','rhombSideSmallDiag',{ac:78},51),
+ AR('314980','rhombHeightSegments',{a:34,ang:60},'1717'),
+ // Параллелограмм
+ AR('П-Пл1','parTrapDAEC',{S:180},135,FP), AR('П-Пл2','parTrapDAEC',{S:76},57,FP), AR('П-Пл3','parTrapDAEC',{S:92},69,FP),
+ AR('П-Пл4','parTriCBE',{S:68},17,FP), AR('П-Пл5','parTriCBE',{S:132},33,FP), AR('П-Пл6','parTriCBE',{S:196},49,FP),
+ AR('П-Пл7','parDiagHalf',{ac:12,bd:20,ab:7,tgt:'DO'},10,FP), AR('П-Пл8','parDiagHalf',{ac:16,bd:8,ab:5,tgt:'AO'},8,FP), AR('П-Пл9','parDiagHalf',{ac:24,bd:15,ab:10,tgt:'OC'},12,FP),
+ AR('П-Пл10','parHeights',{S:40,s1:5,s2:10,q:'big'},8,FP), AR('П-Пл11','parHeights',{S:28,s1:14,s2:7,q:'big'},4,FP), AR('П-Пл12','parHeights',{S:48,s1:8,s2:16,q:'small'},3,FP),
+ AR('П-Пл13','parAngle',{given:41,q:'big'},139,FP), AR('П-Пл14','parAngle',{given:26,q:'big'},154,FP), AR('П-Пл15','parAngle',{given:96,q:'small'},84,FP),
+ AR('П-Пл16','parDiagAngles',{a:30,b:45},105,FP), AR('П-Пл17','parDiagAngles',{a:65,b:80},145,FP), AR('П-Пл18','parDiagAngles',{a:45,b:25},110,FP),
+ AR('П-Пл19','parBisector',{phi:15},30,FP), AR('П-Пл20','parBisector',{phi:41},82,FP),
+ // Трапеция
+ AR('356704','trapMid',{a:3,b:9,h:5},6), AR('П-Тр2','trapMid',{a:4,b:14,h:8},9,FP), AR('П-Тр3','trapMid',{a:7,b:21,h:3},14,FP),
+ AR('356717','trapArea',{a:4,b:10,h:5},35), AR('П-Тр5','trapArea',{a:6,b:8,h:4},28,FP), AR('П-Тр6','trapArea',{a:6,b:11,h:2},17,FP), AR('461847','trapArea',{a:2,b:4,h:11},33),
+ AR('356777','trapIso',{given:66,q:'big'},114), AR('П-Тр8','trapIso',{given:53,q:'big'},127,FP), AR('П-Тр9','trapIso',{given:99,q:'small'},81,FP),
+ AR('132776','trapSum',{sum:140,q:'big'},110), AR('П-Тр10','trapSum',{sum:102,q:'big'},129,FP), AR('П-Тр11','trapSum',{sum:46,q:'big'},157,FP),
+ AR('132777','trapSum',{sum:220,q:'small'},70), AR('П-Тр12','trapSum',{sum:218,q:'small'},71,FP),
+ AR('356873','trapRect',{given:64,q:'big'},116), AR('П-Тр14','trapRect',{given:113,q:'small'},67,FP),
+ AR('П-Тр16','trapDiagAO',{bc:3,ad:7,ac:20},14,FP), AR('П-Тр17','trapDiagAO',{bc:6,ad:13,ac:38},26,FP), AR('П-Тр18','trapDiagAO',{bc:2,ad:8,ac:40},32,FP),
+ AR('323800','trapMidSeg',{a:4,b:10},5), AR('461951','trapMidSeg',{a:1,b:16},8),
+ AR('П-Тр25','trapMidSeg',{a:1,b:11},5.5,FP), AR('П-Тр26','trapMidSeg',{a:8,b:17},8.5,FP), AR('П-Тр27','trapMidSeg',{a:14,b:19},9.5,FP),
+ AR('193','trapDiagFindC',{a:30,b:50,v:'BCAB'},80), AR('311455','trapDiagFindC',{a:30,b:80,v:'ADCD'},110), AR('314863','trapDiagFindC',{a:20,b:100,v:'ADCD'},120),
+ AR('315099','trapDiagBS',{a:25,b:40},115), AR('П-Тр19','trapDiagBS',{a:46,b:1},133,FP), AR('П-Тр20','trapDiagBS',{a:12,b:13},155,FP), AR('П-Тр21','trapDiagBS',{a:4,b:68},108,FP),
+ AR('311457','trapDiagBS',{a:30,b:105,v:'BCCD'},45),
+ AR('П-Тр22','trapCutBase',{big:15,small:8},7,FP), AR('П-Тр23','trapCutBase',{big:11,small:3},8,FP), AR('П-Тр24','trapCutBase',{big:19,small:14},5,FP),
+ AR('463031','trapDiag45h',{a:2,b:5},3.5),
+ AR('323796','trap45Base',{q:'big',a:6,h:5},16), AR('П-Тр31б','trap45Base',{q:'big',a:3,h:5},13,FP),
+ AR('П-Тр32а','trap45Base',{q:'small',b:15,h:5},5,FP), AR('П-Тр32б','trap45Base',{q:'small',b:14,h:5},4,FP),
+ AR('П-Тр33а','trap45Area',{a:3,b:9},18,FP), AR('П-Тр33б','trap45Area',{a:4,b:8},12,FP),
+ AR('472260','trapBisector',{d:68},78),
+ AR('472266','trapDiagSmallBase',{d:74,ab:21},53),
+ AR('П-Тр28','trapBDA',{bda:35,bdc:58},52,FP), AR('П-Тр29','trapBDA',{bda:30,bdc:110},10,FP), AR('П-Тр30','trapBDA',{bda:24,bdc:70},62,FP)
+];
+/* ================= СБОРКА ЗАДАЧИ ================= */
+function build(k,p,meta){
+  const s=S17[k]; const ans=s.calc(p);
+  const F=s.fig(p);
+  const diag=(s.diag(p)||[]).filter(d=>typeof d.v==='number'&&isFinite(d.v)&&Math.abs(d.v-ans)>1e-9);
+  const m={key:k,topic:s.topic,name:s.name,ans,ansFmt:s.ansFmt||'num',text:s.text(p),sol:s.sol(p),
+    law:s.law,ref:s.ref,refWhy:s.refWhy,svg:F.svg(),chk:F.chk,diag,p};
+  return Object.assign(m,meta||{});
+}
+/* ---- разбор ответа: целые, десятичные с запятой/точкой, дроби a/b ---- */
+function parseAns(str){
+  str=String(str||'').trim().replace(',','.').replace(/\s+/g,'');
+  if(!str)return null;
+  const fr=str.match(/^(-?\d+(?:\.\d+)?)\/(-?\d+(?:\.\d+)?)$/);
+  if(fr){const d=parseFloat(fr[2]); if(!d)return null; return parseFloat(fr[1])/d;}
+  const v=parseFloat(str);
+  return (isFinite(v)&&/^-?\d*\.?\d+$/.test(str))?v:null;
+}
+function isRight(task,raw){
+  if(task.ansFmt==='concat'){
+    const u=String(raw||'').replace(/[^\d,.\u002c]/g,'').replace(/[.,]/g,',');
+    const e=String(task.ans).replace(/[.,]/g,',');
+    return u===e || u.replace(/,/g,'')===e.replace(/,/g,'');
+  }
+  const v=parseAns(raw); if(v==null)return false;
+  const a=task.ans;
+  return Math.abs(v-a)<=Math.max(1e-9,Math.abs(a)*1e-9)+1e-9;
+}
+/* ================= ХРАНИЛИЩЕ ================= */
+const TID='oge17-chetyrehugolniki', SKEY='mathExamCourseProgress.v1';
+function loadAll(){try{return JSON.parse(localStorage.getItem(SKEY)||'{}')||{}}catch(e){return{}}}
+let ST=(loadAll()[TID])||{v:1,runs:0,best:0,events:[],razborDone:{},solved:0,tried:0,usedNums:{}};
+ST.events=ST.events||[];ST.razborDone=ST.razborDone||{};ST.usedNums=ST.usedNums||{};
+function save(){try{const all=loadAll();all[TID]=ST;localStorage.setItem(SKEY,JSON.stringify(all))}catch(e){}}
+function logE(e,d){ST.events.push(Object.assign({t:Date.now(),e},d||{}));if(ST.events.length>300)ST.events=ST.events.slice(-300);save();}
+function weakStats(){const w={};ST.events.forEach(ev=>{
+  if(ev.e==='opt_wrong'||ev.e==='quiz_wrong'||ev.e==='hint'||ev.e==='step_hint'){const k=ev.sub;if(k)w[k]=(w[k]||0)+1;}});return w;}
+/* ================= КАРТА ЛИСТА ОГЭ (стр. 6, «Геометрия») ================= */
+const SHEET_IMG='data:image/webp;base64,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';
+/* rc: [x,y,w,h] в % — зона формулы для подсветки; pin в правом краю зоны */
+const PINS=[
+ {id:'nsum', x:33,y:5,  rc:[2,3,32,5],  t:'Сумма углов n-угольника', fm:'180°·(n−2): для четырёхугольника — 360°', ref:'anglesum',
+  subs:['trapRect']},
+ {id:'midline', x:43,y:17, rc:[2,9,42,16], t:'Средняя линия трапеции', fm:'MN = (BC + AD)/2', ref:'strap',
+  subs:['trapMid','trapMidSeg','trapDiag45h']},
+ {id:'spar', x:74,y:14, rc:[56,8,20,13], t:'Площадь параллелограмма', fm:'S = a·h_a = a·b·sin γ', ref:'spar',
+  subs:['parHeights','parTrapDAEC','parTriCBE','rhombAreaDist','rhombAreaPerim','rhombHeight']},
+ {id:'strap', x:73,y:31, rc:[56,24,20,14], t:'Площадь трапеции', fm:'S = (a + b)/2 · h', ref:'strap',
+  subs:['trapArea','trap45Area']},
+ {id:'srhomb', x:96,y:29, rc:[77,23,22,12], t:'Площадь ромба', fm:'S = ½·d₁·d₂', ref:'srhomb',
+  subs:['rhombAreaDiag']},
+ {id:'trig', x:76,y:53, rc:[56,43,24,20], t:'Прямоугольный треугольник', fm:'sin, cos, tg (+ таблица значений внизу листа: sin 30° = ½, cos 60° = ½, tg 45° = 1)', ref:null,
+  subs:['rhombHeight','rhombAreaPerim','rhombHeightSegments']},
+ {id:'pyth', x:80,y:66, rc:[56,63,26,5], t:'Теорема Пифагора', fm:'a² + b² = c²', ref:null,
+  subs:['sqDiag',{k:'rectDiagBO',warn:'⚠ ловушка: в этой задаче Пифагор НЕ нужен — диагональ находят из равенства половин'}]},
+];
+const SUB2PIN={};
+PINS.forEach(pin=>pin.subs.forEach(s=>{const k=typeof s==='string'?s:s.k; if(!SUB2PIN[k])SUB2PIN[k]=pin.id;}));
+/* ================= UI ================= */
+const $=id=>document.getElementById(id);
+const MAIN=()=>$('main');
+let MODE='razbor', CUR=null, QUIZ=null, FILT={topic:'all',src:'all'};
+const SUBKEYS=Object.keys(S17);
+const QUOTA={sq:1,rect:1,rhomb:3,par:2,trap:3};
+
+function setTab(m){MODE=m;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab===m));
+  if(m==='razbor')renderRazbor(); else if(m==='train')renderTrain(true);
+  else if(m==='quiz')renderQuizStart(); else if(m==='sheet')renderSheet(null); else renderRef(null);
+}
+function hdr(){const done=Object.keys(ST.razborDone).length;
+  $('hdBadge').textContent='✔ '+ST.solved+' решено · разобрано '+done+'/'+SUBKEYS.length;}
+
+function archOf(k){return ARCHIVE.filter(r=>r.sub===k);}
+function taskHTML(t,opts){opts=opts||{};
+  const pills='<span class="pill topic">'+TOPICS[t.topic]+'</span>'+
+   (t.srcLab?'<span class="pill '+(t.gen?'gen':'src')+'">'+esc(t.srcLab)+'</span>':'')+
+   (t.note?'<span class="pill">'+esc(t.note)+'</span>':'');
+  return pills+'<div class="qtext">'+t.text+'</div><div class="fig">'+t.svg+'</div>';
+}
+/* ---------- РАЗБОР ---------- */
+function renderRazbor(){hdr();
+  const weak=weakStats();
+  let h='<div class="stats">'+
+   '<div class="stat"><b>'+ARCHIVE.length+'</b><span>задач в архиве</span></div>'+
+   '<div class="stat"><b>'+SUBKEYS.length+'</b><span>типов + генераторы</span></div>'+
+   '<div class="stat"><b>'+ST.solved+'</b><span>решено вами</span></div>'+
+   '<div class="stat"><b>'+ST.best+'/10</b><span>лучший зачёт</span></div></div>'+
+   '<div class="small">Выберите тип задачи — покажу закон, разберу прототип по шагам и отправлю тренироваться.</div>';
+  for(const tp in TOPICS){
+    h+='<div class="topicH">'+TOPICS[tp]+'</div><div class="grid">';
+    SUBKEYS.filter(k=>S17[k].topic===tp).forEach(k=>{const s=S17[k];
+      h+='<div class="tcard" data-k="'+k+'">'+(ST.razborDone[k]?'<span class="done">✔</span>':'')+
+       '<h3>'+esc(s.name)+'</h3><div class="cnt">архив: '+archOf(k).length+' · генератор'+(s.quiz===false?' · вне зачёта':'')+'</div>'+
+       ((weak[k]||0)>=2?'<span class="weak">⚠ ошибок: '+weak[k]+'</span>':'')+'</div>';});
+    h+='</div>';}
+  MAIN().innerHTML=h;
+  MAIN().querySelectorAll('.tcard').forEach(c=>c.onclick=()=>renderRazborDetail(c.dataset.k));
+}
+function renderRazborDetail(k){hdr();const s=S17[k];
+  const rec=archOf(k)[0];
+  const t=build(k,s.proto,{gen:false,srcLab:rec?(rec.src+' №'+rec.nums[0]):'прототип'});
+  CUR=t; logE('task_start',{kind:'razbor',sub:k});
+  let h='<button class="btn ghost" id="bk">← Все типы</button>'+
+   '<div class="task"><h2 style="margin:6px 0 10px;font-size:18px">'+esc(s.name)+'</h2>'+
+   '<div class="law"><b>Закон:</b> '+s.law+'</div>'+taskHTML(t)+
+   '<div class="refwhy">📌 <b>Почему эта формула:</b> '+s.refWhy+' <a class="reflink" id="toRef">→ блок в справочнике</a>'+
+   (SUB2PIN[k]?' · <a class="reflink" id="toSheet">🗺 показать на листе ОГЭ</a>':'')+'</div>'+
+   '<div class="sol" id="steps"></div><div class="row" style="margin-top:12px">'+
+   '<button class="btn primary" id="stepB">Показать шаг 1 из '+t.sol.length+'</button>'+
+   '<button class="btn soft" id="trainB" style="display:none">Тренировать этот тип →</button></div></div>';
+  MAIN().innerHTML=h;
+  $('bk').onclick=renderRazbor;
+  $('toRef').onclick=()=>renderRef(s.ref);
+  const tS=$('toSheet'); if(tS)tS.onclick=()=>renderSheet(SUB2PIN[k]);
+  let i=0;
+  $('stepB').onclick=()=>{if(i<t.sol.length){
+    $('steps').insertAdjacentHTML('beforeend','<div class="step"><span class="no">'+(i+1)+'</span>'+t.sol[i]+'</div>');
+    i++; logE('step',{sub:k,step:i});
+    if(i<t.sol.length)$('stepB').textContent='Показать шаг '+(i+1)+' из '+t.sol.length;
+    else{$('stepB').style.display='none';$('trainB').style.display='inline-block';
+      ST.razborDone[k]=1;save();hdr();}}};
+  $('trainB').onclick=()=>{FILT.topic=s.topic;FILT.sub=k;setTab('train');};
+}
+/* ---------- ТРЕНИРОВКА ---------- */
+function pickTrainTask(){
+  const pool=k=>FILT.sub? [FILT.sub] : SUBKEYS.filter(x=>FILT.topic==='all'||S17[x].topic===FILT.topic);
+  const keys=pool();
+  if(FILT.src!=='gen'){ // сперва нетронутый архив
+    const fresh=ARCHIVE.filter(r=>keys.includes(r.sub)&&!ST.usedNums[r.nums[0]]);
+    if(fresh.length){const r=fresh[Math.floor(Math.random()*fresh.length)];
+      ST.usedNums[r.nums[0]]=1;save();
+      return build(r.sub,r.p,{gen:false,srcLab:r.src+' №'+r.nums.join(', №'),note:S17[r.sub].note});}
+    if(FILT.src==='arch')return null;
+  }
+  const k=keys[Math.floor(Math.random()*keys.length)];
+  return build(k,S17[k].gen(),{gen:true,srcLab:'генератор',note:S17[k].note});
+}
+function renderTrain(newTask){hdr();
+  let h='<div class="row" id="fchips">';
+  h+='<button class="chip'+(FILT.topic==='all'&&!FILT.sub?' on':'')+'" data-t="all">Все темы</button>';
+  for(const tp in TOPICS)h+='<button class="chip'+(FILT.topic===tp&&!FILT.sub?' on':'')+'" data-t="'+tp+'">'+TOPICS[tp]+'</button>';
+  h+='</div><div class="row" style="margin-top:8px">'+
+   ['all','Архив + генератор','arch','Только архив','gen','Только генератор'].map((v,i,ar)=>i%2?'':'<button class="chip'+(FILT.src===ar[i]?' on':'')+'" data-s="'+ar[i]+'">'+ar[i+1]+'</button>').join('')+
+   (FILT.sub?'<span class="pill">тип: '+esc(S17[FILT.sub].name)+' <a class="reflink" id="clrSub">✕</a></span>':'')+'</div>'+
+   '<div id="tzone"></div>';
+  MAIN().innerHTML=h;
+  MAIN().querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{FILT.topic=b.dataset.t;delete FILT.sub;renderTrain(true);});
+  MAIN().querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{FILT.src=b.dataset.s;renderTrain(true);});
+  const cs=$('clrSub');if(cs)cs.onclick=()=>{delete FILT.sub;renderTrain(true);};
+  if(newTask)CUR=pickTrainTask();
+  const z=$('tzone');
+  if(!CUR){z.innerHTML='<div class="msg info" style="display:block">Архив по этому фильтру пройден полностью 🎉 — переключитесь на генератор или смените тему.</div>';return;}
+  const t=CUR;
+  z.innerHTML='<div class="task">'+taskHTML(t)+
+   '<div class="ansrow"><input id="ans" inputmode="decimal" autocomplete="off" placeholder="Ответ'+(t.ansFmt==='concat'?' (длины подряд)':'')+'"><button class="btn primary" id="chk">Проверить</button></div>'+
+   '<div class="msg" id="fb"></div><div class="row" style="margin-top:10px">'+
+   '<button class="btn ghost" id="hint">💡 Подсказка</button>'+
+   '<button class="btn ghost" id="stepH">🪜 Шаг за шагом</button>'+
+   '<button class="btn danger" id="give">Сдаюсь — решение</button>'+
+   '<button class="btn soft" id="nxt" style="display:none">Следующая →</button></div>'+
+   '<div class="sol" id="ssol"></div></div>';
+  logE('task_start',{kind:'train',sub:t.key});
+  const fb=$('fb');
+  const finish=()=>{$('nxt').style.display='inline-block';$('chk').disabled=true;};
+  $('chk').onclick=()=>{const raw=$('ans').value;
+    if(isRight(t,raw)){fb.className='msg ok';fb.textContent='Верно! Ответ: '+fnum(t.ans)+'.';
+      ST.solved++;save();hdr();logE('solved',{sub:t.key});finish();}
+    else{const v=parseAns(raw);
+      const d=t.diag.find(d=>v!=null&&Math.abs(v-d.v)<=Math.max(1e-9,Math.abs(d.v)*1e-9)+1e-9);
+      fb.className='msg err';
+      fb.innerHTML=d?'<b>Знакомая ловушка.</b> '+esc(d.m):'Пока неверно. Сверьтесь с законом (💡) — и попробуйте ещё раз.';
+      logE('opt_wrong',{sub:t.key,pick:raw});}};
+  $('ans').addEventListener('keydown',e=>{if(e.key==='Enter')$('chk').click();});
+  $('hint').onclick=()=>{fb.className='msg info';fb.innerHTML='<b>Закон:</b> '+t.law+
+    '<div class="refwhy" style="margin-top:8px">📌 '+t.refWhy+' <a class="reflink" id="toRef2">→ справочник</a>'+
+    (SUB2PIN[t.key]?' · <a class="reflink" id="toSheet2">🗺 на листе ОГЭ</a>':'')+'</div>';
+    logE('hint',{sub:t.key});
+    const l=$('toRef2');if(l)l.onclick=()=>renderRef(t.ref);
+    const l2=$('toSheet2');if(l2)l2.onclick=()=>renderSheet(SUB2PIN[t.key]);};
+  let si=0;
+  const showStep=()=>{$('ssol').insertAdjacentHTML('beforeend','<div class="step"><span class="no">'+(si+1)+'</span>'+t.sol[si]+'</div>');si++;};
+  $('stepH').onclick=()=>{
+    if(si>=t.sol.length)return;
+    if(si<t.sol.length-1){showStep();logE('step_hint',{sub:t.key,step:si});
+      fb.className='msg info';fb.textContent='Шаг '+si+' из '+t.sol.length+' открыт — попробуйте довести до ответа сами.';
+      $('stepH').textContent='🪜 Ещё шаг ('+(si+1)+' из '+t.sol.length+')';}
+    else{showStep(); // последний шаг содержит ответ — честно считаем как «сдаюсь»
+      fb.className='msg warn';fb.textContent='Открыт последний шаг с ответом — решение засчитано как разобранное, а не решённое.';
+      logE('giveup',{sub:t.key,via:'steps'});finish();$('stepH').disabled=true;}};
+  $('give').onclick=()=>{$('ssol').innerHTML=t.sol.map((s,i)=>'<div class="step"><span class="no">'+(i+1)+'</span>'+s+'</div>').join('');
+    fb.className='msg warn';fb.textContent='Разберите решение по шагам — этот тип ещё вернётся.';
+    logE('giveup',{sub:t.key});finish();$('stepH').disabled=true;};
+  $('nxt').onclick=()=>renderTrain(true);
+}
+/* ---------- ЗАЧЁТ ---------- */
+function quizSet(){const set=[];
+  for(const tp in QUOTA){
+    const ks=SUBKEYS.filter(k=>S17[k].topic===tp&&S17[k].quiz!==false);
+    for(let i=0;i<QUOTA[tp];i++){const k=ks[Math.floor(Math.random()*ks.length)];
+      set.push(build(k,S17[k].gen(),{gen:true}));}}
+  for(let i=set.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[set[i],set[j]]=[set[j],set[i]];}
+  return set;
+}
+function renderQuizStart(){hdr();
+  const weak=weakStats();
+  const top=Object.entries(weak).sort((a,b)=>b[1]-a[1]).slice(0,3).filter(x=>x[1]>=2);
+  MAIN().innerHTML='<div class="task" style="text-align:center"><h2 style="margin:4px 0">Зачёт: 10 задач</h2>'+
+   '<div class="small">Состав объявлен честно: квадрат — 1, прямоугольник — 1, ромб — 3, параллелограмм — 2, трапеция — 3. Без подсказок; числа — свежие, из генераторов.</div>'+
+   (top.length?'<div class="msg warn" style="display:block;text-align:left"><b>Слабые места по журналу:</b> '+top.map(x=>esc(S17[x[0]].name)+' ('+x[1]+')').join('; ')+'. Можно сначала <a class="reflink" id="goTr">потренировать</a>.</div>':'')+
+   '<div style="margin-top:14px"><button class="btn primary" id="go">Начать зачёт</button></div>'+
+   '<div class="note">Лучший результат: '+ST.best+'/10 · попыток: '+ST.runs+'</div></div>';
+  const g=$('goTr');if(g)g.onclick=()=>{FILT.sub=top[0][0];FILT.topic=S17[top[0][0]].topic;setTab('train');};
+  $('go').onclick=()=>{QUIZ={set:quizSet(),i:0,res:[]};logE('start',{kind:'quiz'});renderQuizTask();};
+}
+function renderQuizTask(){hdr();const t=QUIZ.set[QUIZ.i];CUR=t;
+  MAIN().innerHTML='<div class="row" style="justify-content:space-between"><span class="pill">Задача '+(QUIZ.i+1)+' из 10</span>'+
+   '<span class="dots">'+QUIZ.res.map(r=>'<span class="dot '+(r.m===0?'g':(r.m===1?'y':'r'))+'"></span>').join('')+'</span></div>'+
+   '<div class="task">'+taskHTML(t)+
+   '<div class="ansrow"><input id="ans" inputmode="decimal" autocomplete="off" placeholder="Ответ"><button class="btn primary" id="chk">Ответить</button></div>'+
+   '<div class="msg" id="fb"></div><div class="row" style="margin-top:10px"><button class="btn soft" id="nxt" style="display:none">Дальше →</button></div></div>';
+  let mistakes=0;const fb=$('fb');
+  $('chk').onclick=()=>{const raw=$('ans').value;
+    if(isRight(t,raw)){fb.className='msg ok';fb.textContent='Верно!';logE('quiz_ok',{sub:t.key});
+      QUIZ.res.push({m:mistakes});$('chk').disabled=true;$('nxt').style.display='inline-block';}
+    else{mistakes++;logE('quiz_wrong',{sub:t.key,pick:raw});
+      if(mistakes>=2){fb.className='msg err';fb.innerHTML='Вторая ошибка — идём дальше. Верный ответ: <b>'+fnum(t.ans)+'</b>.';
+        QUIZ.res.push({m:mistakes});$('chk').disabled=true;$('nxt').style.display='inline-block';}
+      else{fb.className='msg err';fb.textContent='Неверно — есть ещё одна попытка.';}}};
+  $('ans').addEventListener('keydown',e=>{if(e.key==='Enter')$('chk').click();});
+  $('nxt').onclick=()=>{QUIZ.i++;if(QUIZ.i<10)renderQuizTask();else renderQuizFin();};
+}
+function renderQuizFin(){const ok=QUIZ.res.filter(r=>r.m===0).length;
+  ST.runs++;ST.best=Math.max(ST.best,ok);save();hdr();logE('finish',{score:ok});
+  const weak=weakStats();const top=Object.entries(weak).sort((a,b)=>b[1]-a[1]).slice(0,3).filter(x=>x[1]>=2);
+  MAIN().innerHTML='<div class="fin"><div class="score">'+ok+'/10</div>'+
+   '<div class="dots">'+QUIZ.res.map(r=>'<span class="dot '+(r.m===0?'g':(r.m===1?'y':'r'))+'"></span>').join('')+'</div>'+
+   '<div class="law" style="text-align:left"><b>Что запомнить:</b> в №17 почти всё решают четыре факта — диагонали (равны? делятся пополам? перпендикулярны? биссектрисы?), сумма соседних углов 180°, накрест лежащие углы при основаниях и «высота отсекает (b−a)/2». Формулы площадей есть на листе, свойства — держим в голове.</div>'+
+   (top.length?'<div class="msg warn" style="display:block;text-align:left"><b>Потренировать:</b> '+top.map(x=>esc(S17[x[0]].name)).join('; ')+'</div>':'')+
+   '<div class="row" style="justify-content:center;margin-top:14px"><button class="btn primary" id="again">Пройти ещё раз</button>'+
+   '<button class="btn ghost" id="toR">К разбору</button></div></div>';
+  $('again').onclick=renderQuizStart;$('toR').onclick=()=>setTab('razbor');
+}
+/* ---------- СПРАВОЧНИК ---------- */
+function renderRef(hl){MODE='ref';
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab==='ref'));
+  hdr();
+  MAIN().innerHTML='<div class="small">Формулы площадей — <b>на листе ОГЭ</b> (стр. 6). Блоки с меткой «в голове» на лист не попали — их держим наизусть. Метка 📌 в задачах прыгает сюда.</div>'+
+   REF.map(r=>'<div class="refblk'+(hl===r.id?' hl':'')+'" id="ref-'+r.id+'"><h3>'+esc(r.t)+(r.keep?'<span class="keep">в голове</span>':'')+'</h3>'+
+   '<div class="fm">'+r.fm+'</div>'+(r.note?'<div class="small">'+esc(r.note)+'</div>':'')+'</div>').join('');
+  if(hl){const el=$('ref-'+hl);if(el&&el.scrollIntoView)el.scrollIntoView({behavior:'smooth',block:'center'});}
+}
+/* ---------- ЛИСТ ОГЭ С ПИНАМИ ---------- */
+function renderSheet(hl){MODE='sheet';
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.tab==='sheet'));
+  hdr();
+  const pinBtn=p=>'<button class="pin'+(hl===p.id?' act':'')+'" data-pin="'+p.id+'" style="left:'+p.x+'%;top:'+p.y+'%" title="'+esc(p.t)+'">'+p.subs.length+'</button>';
+  const hlP=hl?PINS.find(p=>p.id===hl):null;
+  MAIN().innerHTML='<div class="small">Официальный лист ОГЭ, страница «Геометрия». Число на кнопке — сколько типов задач №17 «прикреплено» к формуле. Свойства без формулы на листе (диагонали, накрест лежащие углы…) живут в 📌 Справочнике с меткой «в голове».</div>'+
+   '<div class="sheetwrap"><img src="'+SHEET_IMG+'" alt="Лист справочных материалов ОГЭ, страница 6: геометрия">'+
+   PINS.map(pinBtn).join('')+
+   (hlP?'<div class="hlbox" style="left:'+hlP.rc[0]+'%;top:'+hlP.rc[1]+'%;width:'+hlP.rc[2]+'%;height:'+hlP.rc[3]+'%"></div>':'')+
+   '</div><div id="pinPanel"></div>';
+  MAIN().querySelectorAll('[data-pin]').forEach(b=>b.onclick=()=>renderPinPanel(b.dataset.pin));
+  if(hl)renderPinPanel(hl);
+}
+function renderPinPanel(pid){const pin=PINS.find(p=>p.id===pid);
+  MAIN().querySelectorAll('[data-pin]').forEach(b=>b.classList.toggle('act',b.dataset.pin===pid));
+  const weak=weakStats();
+  $('pinPanel').innerHTML='<div class="pinpanel"><h3>📍 '+esc(pin.t)+'</h3><div class="fm">'+pin.fm+'</div>'+
+   (pin.ref?'<div class="small"><a class="reflink" id="pp2ref">→ этот блок в текстовом справочнике</a></div>':'')+
+   pin.subs.map(su=>{const k=typeof su==='string'?su:su.k, warn=typeof su==='string'?null:su.warn, st=S17[k];
+    return '<div class="pinrow"><span class="nm">'+(ST.razborDone[k]?'✔ ':'')+esc(st.name)+
+     ((weak[k]||0)>=2?' <span class="weak">⚠ '+weak[k]+'</span>':'')+
+     ' <span class="cnt">('+TOPICS[st.topic]+', архив: '+archOf(k).length+')</span></span>'+
+     '<button class="btn ghost" data-rz="'+k+'">Разбор</button>'+
+     '<button class="btn soft" data-tr="'+k+'">Тренировать</button>'+
+     (warn?'<span class="warn">'+esc(warn)+'</span>':'')+'</div>';}).join('')+'</div>';
+  logE('pin',{pin:pid});
+  const r=$('pp2ref'); if(r)r.onclick=()=>renderRef(pin.ref);
+  $('pinPanel').querySelectorAll('[data-rz]').forEach(b=>b.onclick=()=>{setTab('razbor');renderRazborDetail(b.dataset.rz);});
+  $('pinPanel').querySelectorAll('[data-tr]').forEach(b=>b.onclick=()=>{const k=b.dataset.tr;FILT.topic=S17[k].topic;FILT.sub=k;setTab('train');});
+}
+/* ---------- СЕЛФТЕСТ (?selftest=1) ---------- */
+function selftest(){const out=[];let bad=0;
+  const say=s=>out.push(s), fail=s=>{bad++;out.push('✘ '+s)};
+  // 1. архив: уникальность, существование подтипа, эталон
+  const seen={};ARCHIVE.forEach(r=>{r.nums.forEach(n=>{if(seen[n])fail('дубль номера '+n);seen[n]=1;});
+    const s=S17[r.sub];if(!s){fail('нет подтипа '+r.sub+' у №'+r.nums[0]);return;}
+    const v=s.calc(r.p);
+    const okv=(typeof r.exp==='string')?String(v)===r.exp:Math.abs(v-r.exp)<=Math.abs(r.exp)*1e-9+1e-9;
+    if(!okv)fail('№'+r.nums[0]+' ('+r.sub+'): calc='+v+' ≠ эталон '+r.exp);
+    if(typeof v==='number'&&!isFinite(v))fail('№'+r.nums[0]+': неконечный ответ');});
+  say('архив: '+ARCHIVE.length+' задач, эталоны сверены');
+  // 2. геоаудит архива: chk каждой фигуры
+  let gch=0;ARCHIVE.forEach(r=>{if(!S17[r.sub])return;const t=build(r.sub,r.p,{});
+    t.chk.forEach(c=>{gch++;if(!c.ok)fail('гео №'+r.nums[0]+' ('+r.sub+'): '+c.m);});
+    if(t.svg.indexOf('NaN')>=0)fail('NaN в SVG №'+r.nums[0]);});
+  say('геоаудит архива: '+gch+' ассертов');
+  // 3. стресс генераторов
+  let gen=0,gch2=0;SUBKEYS.forEach(k=>{for(let i=0;i<60;i++){const p=S17[k].gen(),t=build(k,p,{gen:true});gen++;
+    if(t.ansFmt!=='concat'&&(typeof t.ans!=='number'||!isFinite(t.ans)))fail('генератор '+k+': плохой ответ '+t.ans+' p='+JSON.stringify(p));
+    if(!t.text||t.text.indexOf('undefined')>=0)fail('генератор '+k+': текст с undefined');
+    if(t.svg.indexOf('NaN')>=0)fail('NaN в SVG генератора '+k+' p='+JSON.stringify(p));
+    t.chk.forEach(c=>{gch2++;if(!c.ok)fail('гео '+k+' p='+JSON.stringify(p)+': '+c.m);});
+    t.diag.forEach(d=>{if(Math.abs(d.v-t.ans)<1e-9)fail('ловушка = ответу в '+k);});}});
+  say('стресс: '+gen+' генераций, '+gch2+' гео-ассертов');
+  // 4. зачёт: квоты и исключения
+  let q=0;for(const tp in QUOTA){q+=QUOTA[tp];
+    if(!SUBKEYS.some(k=>S17[k].topic===tp&&S17[k].quiz!==false))fail('в теме '+tp+' нет подтипов для зачёта');}
+  if(q!==10)fail('сумма квот '+q+' ≠ 10'); else say('зачёт: квоты 1+1+3+2+3 = 10');
+  // 5. справочник: id и ссылки
+  const rid={};REF.forEach(r=>{if(rid[r.id])fail('дубль ref '+r.id);rid[r.id]=1;});
+  SUBKEYS.forEach(k=>{if(!rid[S17[k].ref])fail(k+': ссылка на несуществующий блок '+S17[k].ref);
+    if(!S17[k].refWhy)fail(k+': пустой refWhy');});
+  say('справочник: '+REF.length+' блоков, все ссылки живые');
+  // 6. карта листа: пины целостны
+  const pid={};let pinned=0;
+  PINS.forEach(p=>{if(pid[p.id])fail('дубль пина '+p.id);pid[p.id]=1;
+    if(!(p.x>0&&p.x<100&&p.y>0&&p.y<100))fail('пин '+p.id+' вне листа');
+    const[rx,ry,rw,rh]=p.rc;if(!(rx>=0&&ry>=0&&rx+rw<=100&&ry+rh<=100))fail('зона '+p.id+' вне листа');
+    if(p.ref&&!rid[p.ref])fail('пин '+p.id+' ссылается на несуществующий блок '+p.ref);
+    p.subs.forEach(su=>{const k=typeof su==='string'?su:su.k;pinned++;
+      if(!S17[k])fail('пин '+p.id+': нет подтипа '+k);});});
+  for(const k in SUB2PIN)if(!PINS.some(p=>p.id===SUB2PIN[k]))fail('SUB2PIN бьёт в пустоту: '+k);
+  if(SHEET_IMG.indexOf('data:image/webp;base64,')!==0)fail('изображение листа не вшито');
+  say('карта листа: '+PINS.length+' пинов, '+pinned+' прикреплений');
+  out.unshift(bad? '✘ СЕЛФТЕСТ: '+bad+' ошибок':'✔ СЕЛФТЕСТ ПРОЙДЕН');
+  return {ok:!bad,report:out.join('\n')};
+}
+/* ---------- СТАРТ ---------- */
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
+if(location.search.indexOf('selftest=1')>=0){
+  const r=selftest();const box=$('stbox');box.style.display='block';box.textContent=r.report;
+}
+setTab('razbor');
+
+</script>
+</body>
+</html>

@@ -1,0 +1,2182 @@
+﻿<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ОГЭ · Задание 21 · Текстовые задачи — тренажёр</title>
+<style>
+/* ===================== DESIGN TOKENS =====================
+   Subject: OGE Task 21 word-problem trainer for RU 9th-graders + teacher.
+   Voice split: SERIF = the problem (textbook voice); SANS = the tool (interface).
+   Signature: the recurring 3-column modelling table (величина·скорость·время).
+   Palette: ink slate + a calm route-indigo as the "твой ход" cue; amber for peeked. */
+:root{
+  --bg:#eef1f6;
+  --surface:#ffffff;
+  --surface-2:#f3f6fb;
+  --surface-3:#e9eef7;
+  --ink:#1b2436;
+  --ink-soft:#5a6580;
+  --ink-faint:#8a93a8;
+  --line:#dbe2ee;
+  --line-strong:#c4cee0;
+
+  --indigo:#3453d6;
+  --indigo-deep:#26379c;
+  --indigo-soft:#e7ecff;
+  --indigo-ring:#b9c6ff;
+
+  --green:#0f9d6b;
+  --green-soft:#e3f6ee;
+  --green-line:#8ed8bd;
+
+  --amber:#b9791a;
+  --amber-soft:#fbf1de;
+  --amber-line:#e6c88a;
+
+  --wrong-soft:#fdeeee;
+  --wrong-line:#f0c2c2;
+  --wrong-ink:#b33a3a;
+
+  --move:#3453d6;   /* Движение  */
+  --work:#0f8a8a;   /* Работа    */
+  --perc:#7c53c8;   /* Проценты  */
+
+  --serif:Georgia,'Times New Roman','PT Serif',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  --shadow:0 1px 2px rgba(27,36,54,.05), 0 6px 22px rgba(27,36,54,.06);
+  --shadow-lift:0 8px 30px rgba(38,55,156,.14);
+  --r:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--sans);
+  background:
+    radial-gradient(1200px 400px at 100% -10%, #f4f1fb 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(1000px 380px at -10% 0%, #eaf0ff 0%, rgba(255,255,255,0) 55%),
+    var(--bg);
+  color:var(--ink);
+  line-height:1.55;
+  -webkit-text-size-adjust:100%;
+  min-height:100vh;
+}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px 90px}
+
+/* ---------- header ---------- */
+header.top{
+  position:sticky;top:0;z-index:40;
+  backdrop-filter:saturate(1.4) blur(10px);
+  background:rgba(238,241,246,.82);
+  border-bottom:1px solid var(--line);
+}
+.top-in{max-width:960px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.glyph{width:34px;height:34px;flex:0 0 auto;border-radius:9px;background:linear-gradient(150deg,var(--indigo),var(--indigo-deep));
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;padding:6px;box-shadow:var(--shadow)}
+.glyph i{background:rgba(255,255,255,.85);border-radius:1px;display:block}
+.glyph i:nth-child(3n){background:rgba(255,255,255,.55)}
+.brand b{font-size:15px;letter-spacing:.2px;white-space:nowrap}
+.brand small{display:block;font-size:11px;color:var(--ink-soft);font-weight:500;margin-top:-2px}
+.score{margin-left:auto;display:flex;gap:8px;align-items:center}
+.pill{font-size:12px;font-weight:600;color:var(--ink-soft);background:var(--surface);border:1px solid var(--line);
+  padding:5px 10px;border-radius:999px;white-space:nowrap}
+.pill b{color:var(--indigo-deep)}
+
+/* ---------- topic rail ---------- */
+.rail{margin:16px 0 4px}
+.rail h2{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 8px 2px}
+.railrow{display:flex;gap:14px;overflow-x:auto;padding:2px 2px 10px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+.railrow::-webkit-scrollbar{height:7px}
+.railrow::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:4px}
+.catgroup{flex:0 0 auto;scroll-snap-align:start}
+.catlabel{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin:0 0 6px 4px;display:flex;align-items:center;gap:6px}
+.catlabel .dot{width:8px;height:8px;border-radius:50%}
+.chips{display:flex;gap:8px}
+.chip{flex:0 0 auto;cursor:pointer;user-select:none;border:1px solid var(--line-strong);background:var(--surface);
+  border-radius:12px;padding:9px 13px;min-width:120px;transition:.16s;box-shadow:var(--shadow)}
+.chip:hover{transform:translateY(-1px);border-color:var(--line-strong)}
+.chip .ct{font-size:13.5px;font-weight:650;color:var(--ink);line-height:1.2}
+.chip .cb{font-size:11px;color:var(--ink-soft);margin-top:3px;line-height:1.25}
+.chip[data-on="1"]{border-color:transparent;box-shadow:var(--shadow-lift);color:#fff}
+.chip[data-on="1"] .ct,.chip[data-on="1"] .cb{color:#fff}
+.chip[data-on="1"] .cb{opacity:.85}
+
+/* ---------- mode tabs ---------- */
+.modes{display:flex;gap:6px;background:var(--surface-3);border:1px solid var(--line);border-radius:13px;padding:5px;margin:14px 0 18px}
+.mode{flex:1;text-align:center;cursor:pointer;font-weight:650;font-size:14px;color:var(--ink-soft);
+  padding:9px 6px;border-radius:9px;transition:.15s;white-space:nowrap}
+.mode small{display:block;font-weight:500;font-size:11px;color:var(--ink-faint);margin-top:1px}
+.mode[data-on="1"]{background:var(--surface);color:var(--indigo-deep);box-shadow:var(--shadow)}
+.mode[data-on="1"] small{color:var(--ink-soft)}
+
+/* ---------- content ---------- */
+main{min-height:340px}
+.panel-head{display:flex;align-items:baseline;gap:12px;margin:2px 0 14px;flex-wrap:wrap}
+.panel-head h1{font-family:var(--sans);font-size:21px;font-weight:750;margin:0;letter-spacing:.1px}
+.panel-head .tag{font-size:12px;font-weight:700;color:#fff;padding:3px 9px;border-radius:999px}
+.panel-head p{margin:0;color:var(--ink-soft);font-size:13.5px;flex-basis:100%}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:18px 18px;margin:0 0 16px}
+.problem{font-family:var(--serif);font-size:17px;line-height:1.62;color:#232c40}
+.problem .q{font-style:italic;color:var(--indigo-deep)}
+.problem b{font-weight:700;font-style:normal}
+.srclabel{font-size:11px;color:var(--ink-faint);margin-top:12px;font-family:var(--sans);letter-spacing:.02em}
+
+/* theory cards */
+.tcard{border:1px solid var(--line);border-radius:12px;padding:15px 16px;margin:0 0 12px;background:var(--surface);position:relative}
+.tcard .n{position:absolute;top:-11px;left:14px;background:var(--indigo);color:#fff;font-weight:750;font-size:12px;
+  width:24px;height:24px;border-radius:7px;display:grid;place-items:center;box-shadow:var(--shadow)}
+.tcard h3{margin:4px 0 8px;font-size:15.5px;font-weight:700}
+.tcard p{margin:0 0 8px;font-size:14.5px;color:#2a3346}
+.tcard p:last-child{margin-bottom:0}
+.tcard .prose{font-family:var(--serif);font-size:15px;line-height:1.6}
+.xref{font-size:12.5px;color:var(--indigo-deep);background:var(--indigo-soft);border-radius:8px;padding:6px 10px;display:inline-block;margin-top:4px}
+.keybox{background:var(--indigo-soft);border:1px solid var(--indigo-ring);border-radius:10px;padding:10px 12px;margin:8px 0;font-size:15px;text-align:center}
+.warnbox{background:var(--amber-soft);border:1px solid var(--amber-line);border-radius:10px;padding:9px 12px;margin:8px 0;font-size:13.5px;color:#7a5310}
+.warnbox b{color:#7a5310}
+
+/* signature table */
+.mtbl{width:100%;border-collapse:separate;border-spacing:0;margin:10px 0;font-family:var(--sans);font-size:14px;overflow:hidden;border-radius:11px;border:1px solid var(--line-strong)}
+.mtbl th,.mtbl td{padding:9px 11px;text-align:center;border-bottom:1px solid var(--line);border-right:1px solid var(--line)}
+.mtbl tr:last-child th,.mtbl tr:last-child td{border-bottom:none}
+.mtbl th:last-child,.mtbl td:last-child{border-right:none}
+.mtbl thead th{background:var(--surface-3);font-weight:700;color:var(--ink);font-size:12.5px;letter-spacing:.02em}
+.mtbl tbody th{background:var(--surface-2);font-weight:650;text-align:left;color:#2a3346;font-size:13px}
+.mtbl td b{color:var(--indigo-deep)}
+
+/* fractions */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .12em;line-height:1.05}
+.frn{padding:0 .35em 1px;border-bottom:1.6px solid currentColor}
+.frd{padding:1px .35em 0}
+.rad{display:inline-flex;align-items:flex-start}
+.rad .rsign{font-size:1.05em;line-height:1}
+.rad .rbody{border-top:1.6px solid currentColor;padding:0 .18em;margin-top:.06em}
+
+/* equations */
+.eqline{font-family:var(--serif);font-size:17px;text-align:center;margin:6px 0;letter-spacing:.2px}
+.eqbig{font-size:19px}
+
+/* buttons */
+.btn{font-family:var(--sans);font-weight:650;font-size:14px;border:1px solid var(--line-strong);background:var(--surface);
+  color:var(--ink);border-radius:10px;padding:9px 15px;cursor:pointer;transition:.14s}
+.btn:hover{border-color:var(--indigo-ring);color:var(--indigo-deep)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:linear-gradient(160deg,var(--indigo),var(--indigo-deep));color:#fff;border-color:transparent;box-shadow:var(--shadow)}
+.btn.primary:hover{filter:brightness(1.06);color:#fff}
+.btn.ghost{background:transparent}
+.btn.small{padding:7px 12px;font-size:13px;border-radius:9px}
+.btn.reveal{color:var(--amber);border-color:var(--amber-line);background:var(--amber-soft)}
+.btn.reveal:hover{color:#7a5310;border-color:var(--amber)}
+.btn.more{background:var(--indigo-soft);border-color:var(--indigo-ring);color:var(--indigo-deep);font-weight:700}
+.btn.more:hover{background:#dbe4ff}
+.btn:disabled{opacity:.5;cursor:default;transform:none}
+.btnrow{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-top:12px}
+
+/* answer field */
+.af{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.af input.num{font-family:var(--sans);font-size:16px;font-weight:600;width:120px;padding:9px 11px;border:1.6px solid var(--line-strong);
+  border-radius:10px;background:var(--surface);color:var(--ink);text-align:center;outline:none;transition:.14s}
+.af input.num:focus{border-color:var(--indigo);box-shadow:0 0 0 3px var(--indigo-ring)}
+.af .unit{font-size:14px;color:var(--ink-soft);font-weight:600}
+.af.ok input.num{border-color:var(--green-line);background:var(--green-soft)}
+.af.bad input.num{border-color:var(--wrong-line);background:var(--wrong-soft)}
+.fracin{display:inline-flex;flex-direction:column;align-items:center;gap:3px}
+.fracin input.num{width:96px;text-align:center}
+.fracin .bar{width:96px;height:0;border-top:1.8px solid var(--ink-soft)}
+.fx{font-size:12px;color:var(--indigo-deep);cursor:pointer;user-select:none;border:1px dashed var(--indigo-ring);border-radius:7px;padding:3px 8px;background:var(--indigo-soft)}
+.fx:hover{background:#dbe4ff}
+.fbk{font-size:13.5px;font-weight:600;margin-left:2px}
+.fbk.ok{color:var(--green)}
+.fbk.bad{color:var(--wrong-ink)}
+.fbk.peek{color:var(--amber)}
+
+/* choice options */
+.opts{display:flex;flex-direction:column;gap:9px;margin-top:10px}
+.opt{border:1.6px solid var(--line-strong);background:var(--surface);border-radius:11px;padding:12px 14px;cursor:pointer;transition:.13s;font-size:15px;overflow-x:auto}
+.opt:hover{border-color:var(--indigo-ring);background:var(--surface-2)}
+.opt .eqline{margin:0;text-align:left}
+.opt.pick-ok{border-color:var(--green-line);background:var(--green-soft)}
+.opt.pick-bad{border-color:var(--wrong-line);background:var(--wrong-soft)}
+.opt.pick-show{border-color:var(--amber-line);background:var(--amber-soft)}
+.opt.dim{opacity:.55}
+.opt.lock{cursor:default}
+
+/* step engine */
+.steps{display:flex;flex-direction:column;gap:0}
+.stepcard{border:1px solid var(--line);border-left:3px solid var(--line);border-radius:11px;padding:14px 16px;margin:0 0 11px;background:var(--surface);transition:.18s}
+.stepcard.active{border-left-color:var(--indigo);box-shadow:var(--shadow);background:linear-gradient(180deg,#fbfcff,#fff)}
+.stepcard.done{border-left-color:var(--green-line);opacity:.98}
+.stepcard.peeked{border-left-color:var(--amber-line)}
+.steplab{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.stepno{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--ink-faint);text-transform:uppercase}
+.turn{font-size:11px;font-weight:750;color:#fff;background:var(--indigo);border-radius:999px;padding:2px 9px;box-shadow:var(--shadow)}
+.turn.done{background:var(--green)}
+.turn.peek{background:var(--amber)}
+.stepq{font-size:15px;font-weight:600;color:#232c40;margin-bottom:2px}
+.stepq .note{font-weight:500;color:var(--ink-soft);font-size:13.5px}
+.reveal-body{margin-top:10px;border-top:1px dashed var(--amber-line);padding-top:10px;font-size:14px;color:#4a3a18;background:var(--amber-soft);border-radius:0 0 8px 8px;padding:10px 12px;margin-left:-4px;margin-right:-4px}
+.reveal-body .eqline{color:#3a2f14}
+.stepdone-msg{font-size:14px;color:var(--green);font-weight:650;padding:8px 0}
+.hintline{font-size:13px;color:var(--ink-soft);margin-top:7px;font-style:italic}
+
+.empty{color:var(--ink-soft);text-align:center;padding:60px 20px;font-size:15px}
+.kbd{font-family:var(--serif);font-style:italic}
+.mini-note{font-size:13px;color:var(--ink-soft);margin-top:8px}
+hr.soft{border:none;border-top:1px solid var(--line);margin:16px 0}
+.sub-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:2px 0 14px}
+.modeseg{display:inline-flex;background:var(--surface-3);border:1px solid var(--line);border-radius:9px;padding:3px}
+.segbtn{font-family:var(--sans);font-size:12.5px;font-weight:650;color:var(--ink-soft);background:transparent;border:none;border-radius:7px;padding:6px 13px;cursor:pointer;transition:.13s}
+.segbtn.on{background:var(--surface);color:var(--indigo-deep);box-shadow:var(--shadow)}
+.sub-tab{font-size:12.5px;font-weight:600;color:var(--ink-soft);border:1px solid var(--line-strong);background:var(--surface);
+  border-radius:999px;padding:6px 12px;cursor:pointer}
+.sub-tab[data-on="1"]{background:var(--indigo-soft);border-color:var(--indigo-ring);color:var(--indigo-deep)}
+
+/* sticky "дано" bar */
+.givenbar{position:sticky;top:52px;z-index:20;display:flex;gap:6px;flex-wrap:wrap;align-items:center;
+  background:var(--surface-2);border:1px solid var(--line);border-radius:11px;padding:7px 10px;margin:0 0 12px;box-shadow:var(--shadow)}
+.givenbar .gl{font-size:10.5px;font-weight:800;letter-spacing:.08em;color:var(--ink-faint);text-transform:uppercase;margin-right:2px}
+.gchip{font-size:12.5px;font-weight:650;color:var(--indigo-deep);background:var(--indigo-soft);border:1px solid var(--indigo-ring);border-radius:8px;padding:3px 9px;white-space:nowrap}
+
+/* table-fill step */
+.tslot{font-weight:650}
+.tslot.empty{background:var(--surface-3);color:var(--ink-faint)}
+.tslot.filled{background:var(--green-soft)}
+.tslot.filled b, .tslot.filled .fr{color:var(--indigo-deep)}
+.tfq{margin-top:12px;font-size:14.5px;font-weight:600;color:#232c40}
+.tfopts{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+.tfopt{border:1.6px solid var(--line-strong);background:var(--surface);border-radius:10px;padding:9px 13px;cursor:pointer;font-size:16px;transition:.13s}
+.tfopt:hover{border-color:var(--indigo-ring);background:var(--surface-2)}
+.tfopt.bad{border-color:var(--wrong-line);background:var(--wrong-soft)}
+.tfdone{font-size:13.5px;color:var(--green);font-weight:600;margin-top:9px}
+
+/* wrong-answer explanation under options */
+.whyline{display:none;font-size:13px;color:#7a5310;background:var(--amber-soft);border:1px solid var(--amber-line);border-radius:9px;padding:8px 11px;margin-top:9px}
+.whyline b{color:#7a5310}
+
+/* full-solution panel */
+.solrow{margin-top:6px}
+.solbox{border:1px solid var(--indigo-ring);background:linear-gradient(180deg,#fbfcff,#fff);border-radius:12px;padding:14px 16px;margin-top:10px}
+.solbox h4{margin:0 0 8px;font-size:13px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--indigo-deep)}
+.solbox .prose{font-family:var(--serif);font-size:15px;line-height:1.62}
+.solbox .prose p{margin:0 0 8px}
+.solbox .eqline{text-align:left;margin:6px 0}
+.solbox .mtbl{max-width:520px}
+.solstep{color:var(--indigo-deep);font-weight:700;font-style:normal}
+
+/* progress badge on chips */
+.cbadge{position:absolute;top:-8px;right:-8px;min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:var(--green);
+  color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;box-shadow:var(--shadow);border:1.5px solid #fff}
+
+/* inline theory check */
+.minicheck{border:1px dashed var(--indigo-ring);background:var(--indigo-soft);border-radius:11px;padding:12px 14px;margin:6px 0 2px}
+.minicheck .ml{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--indigo-deep);margin-bottom:6px}
+.minicheck .mq{font-size:14.5px;font-weight:600;margin-bottom:2px}
+
+/* keyboard focus visibility */
+.chip:focus-visible,.mode:focus-visible,.opt:focus-visible,.sub-tab:focus-visible,.tfopt:focus-visible,.btn:focus-visible{
+  outline:2px solid var(--indigo);outline-offset:2px}
+.chip,.mode,.opt,.sub-tab,.tfopt{ -webkit-tap-highlight-color:transparent }
+
+/* interactive visualizations */
+.vizcard{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:6px 0 12px;background:linear-gradient(180deg,#fcfdff,#fbfcff)}
+.vizcard .vt{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--indigo-deep);margin-bottom:4px;display:flex;align-items:center;gap:7px}
+.vizcard .vt .dotpulse{width:8px;height:8px;border-radius:50%;background:var(--indigo)}
+.vizsub{font-size:13px;color:var(--ink-soft);margin-bottom:10px}
+.viz-svg{display:block;width:100%;height:auto;overflow:visible;touch-action:none}
+.viz-controls{display:flex;gap:12px 16px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.vslider{-webkit-appearance:none;appearance:none;height:6px;border-radius:4px;background:var(--surface-3);flex:1;min-width:150px;outline:none;cursor:pointer}
+.vslider::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--indigo);border:3px solid #fff;box-shadow:0 2px 6px rgba(38,55,156,.4);cursor:grab}
+.vslider::-webkit-slider-thumb:active{cursor:grabbing;transform:scale(1.08)}
+.vslider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--indigo);border:3px solid #fff;box-shadow:0 2px 6px rgba(38,55,156,.4);cursor:grab}
+.vslider:focus-visible::-webkit-slider-thumb{outline:2px solid var(--indigo);outline-offset:2px}
+.vctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.vlabel{font-size:13px;font-weight:650;color:var(--ink);white-space:nowrap}
+.vreadout{font-size:15px;font-weight:750;color:var(--indigo-deep);font-variant-numeric:tabular-nums}
+.vcap{font-size:13.5px;color:#2a3346;margin-top:10px;min-height:20px}
+.vcap.good{color:var(--green);font-weight:650}
+.vbtn{font-family:var(--sans);font-weight:650;font-size:13.5px;border:1px solid var(--indigo-ring);background:var(--indigo-soft);color:var(--indigo-deep);
+  border-radius:9px;padding:8px 14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.13s}
+.vbtn:hover{background:#dbe4ff}
+.vbtn:active{transform:translateY(1px)}
+@media (prefers-reduced-motion:reduce){ .dotpulse{animation:none!important} }
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.dotpulse{animation:pulse 1.6s ease-in-out infinite}
+
+/* printable worksheet */
+.printbtn{margin-left:6px;font-size:15px;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:5px 9px;cursor:pointer;line-height:1}
+.printbtn:hover{border-color:var(--indigo-ring)}
+#printModal{position:fixed;inset:0;z-index:100;display:none}
+#printModal.open{display:block}
+.pbackdrop{position:absolute;inset:0;background:rgba(27,36,54,.5)}
+.pdialog{position:absolute;left:50%;top:4%;transform:translateX(-50%);width:min(760px,93vw);max-height:92vh;overflow:auto;background:var(--surface);border-radius:16px;box-shadow:var(--shadow-lift)}
+.ptoolbar{position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--line);padding:11px 14px;display:flex;gap:9px;align-items:center;flex-wrap:wrap;z-index:2}
+.ptoolbar select{font-family:var(--sans);font-size:13px;font-weight:600;padding:7px 9px;border:1px solid var(--line-strong);border-radius:8px;background:var(--surface);color:var(--ink)}
+.ptoolbar .grow{flex:1}
+.psheet{padding:22px 26px;font-family:var(--serif);color:#141414}
+.psheet h2{font-family:var(--sans);font-size:19px;margin:0 0 4px}
+.pmeta{font-family:var(--sans);font-size:12px;color:var(--ink-soft);margin-bottom:16px;border-bottom:1px solid var(--line);padding-bottom:10px}
+.plist{padding-left:26px;margin:0}
+.plist li{margin:0 0 16px;font-size:15px;line-height:1.55}
+.plist .ptype{font-family:var(--sans);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--indigo-deep);margin-bottom:2px}
+.psheet .q{font-style:italic}
+.psheet b{font-weight:700}
+.pans-h{font-family:var(--sans);margin:18px 0 8px;font-size:16px}
+.pans{padding-left:26px;margin:0}
+.pans li{margin:0 0 6px;font-family:var(--sans);font-size:13.5px}
+.pbreak{page-break-before:always;height:0}
+@media print{
+  body.pm-open header.top, body.pm-open .wrap{display:none!important}
+  body.pm-open #printModal{position:static;display:block!important;background:#fff}
+  body.pm-open .pbackdrop, body.pm-open .ptoolbar{display:none!important}
+  body.pm-open .pdialog{position:static;transform:none;box-shadow:none;max-height:none;width:auto;overflow:visible;border-radius:0}
+}
+
+footer{max-width:960px;margin:24px auto 0;padding:16px;color:var(--ink-faint);font-size:12px;text-align:center;border-top:1px solid var(--line)}
+
+@media (max-width:560px){
+  .panel-head h1{font-size:19px}
+  .problem{font-size:16px}
+  .mode small{display:none}
+  .chip{min-width:112px}
+  .eqline{font-size:16px}
+  .reveal-body{overflow-x:auto}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <div class="glyph" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div><b>Текстовые задачи</b><small>ОГЭ · математика · задание 21</small></div>
+    </div>
+    <div class="score" id="score"></div>
+    <button class="printbtn" id="printBtn" title="Собрать вариант для печати" aria-label="Печать варианта">🖨</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="rail" aria-label="Разделы">
+    <h2>Выбери тип задачи</h2>
+    <div class="railrow" id="rail"></div>
+  </section>
+
+  <div class="modes" id="modes" role="tablist">
+    <div class="mode" data-mode="learn" role="tab">Учимся<small>теория и приёмы</small></div>
+    <div class="mode" data-mode="steps" role="tab">Пошагово<small>разбор с подсказками</small></div>
+    <div class="mode" data-mode="drill" role="tab">Марафон<small>решай сам</small></div>
+  </div>
+
+  <main id="content"><div class="empty">Загрузка…</div></main>
+
+  <footer>
+    Офлайн-тренажёр по заданию 21 ОГЭ. Все задачи генерируются с точной проверкой ответа.
+    Прототипы: открытый банк заданий, РЕШУ ОГЭ, задачник Е. А. Ширяевой (ОГЭ-2026).
+  </footer>
+</div>
+
+<script>
+"use strict";
+/* ==================================================================
+   CORE: rational arithmetic (BigInt), formatting, dom helpers
+   ================================================================== */
+function gcdB(a,b){a=a<0n?-a:a;b=b<0n?-b:b;while(b){const t=a%b;a=b;b=t;}return a||1n;}
+class Rn{
+  constructor(n,d){ n=BigInt(n); d=(d===undefined)?1n:BigInt(d); if(d===0n)d=1n; if(d<0n){n=-n;d=-d;} const g=gcdB(n,d); this.n=n/g; this.d=d/g; }
+  static from(x){
+    if(x instanceof Rn) return x;
+    if(typeof x==='bigint') return new Rn(x,1n);
+    if(typeof x==='number'){
+      if(Number.isInteger(x)) return new Rn(x,1);
+      const s=x.toString();
+      if(s.indexOf('e')>=0||s.indexOf('E')>=0) return new Rn(Math.round(x*1e9),1000000000);
+      const i=s.indexOf('.'); const dec=s.length-i-1; const den=Math.pow(10,dec);
+      return new Rn(Math.round(x*den), den);
+    }
+    return new Rn(0,1);
+  }
+  toNumber(){ return Number(this.n)/Number(this.d); }
+  eq(o){ o=Rn.from(o); return this.n===o.n && this.d===o.d; }
+  isInt(){ return this.d===1n; }
+  toString(){ return this.d===1n? this.n.toString() : (this.n+'/'+this.d); }
+}
+/* format a number/rational for display (RU comma) */
+function fmt(x){
+  const R = (x instanceof Rn)? x : Rn.from(x);
+  if(R.isInt()) return R.n.toString();
+  let v=R.toNumber();
+  let s=v.toFixed(6).replace(/0+$/,'').replace(/\.$/,'');
+  return s.replace('.',',');
+}
+/* dom helper */
+function el(tag,cls,html){ const e=document.createElement(tag); if(cls)e.className=cls; if(html!==undefined)e.innerHTML=html; return e; }
+function $(sel,root){ return (root||document).querySelector(sel); }
+
+/* fraction / radical html */
+function frac(n,d){ return '<span class="fr"><span class="frn">'+n+'</span><span class="frd">'+d+'</span></span>'; }
+function rad(inner){ return '<span class="rad"><span class="rsign">√</span><span class="rbody">'+inner+'</span></span>'; }
+function mtbl(head, rows){
+  let h='<table class="mtbl"><thead><tr>';
+  head.forEach((c,i)=>{ h+= (i===0?'<th>':'<th>')+c+'</th>'; });
+  h+='</tr></thead><tbody>';
+  rows.forEach(r=>{ h+='<tr><th>'+r[0]+'</th>'; for(let i=1;i<r.length;i++) h+='<td>'+r[i]+'</td>'; h+='</tr>'; });
+  h+='</tbody></table>';
+  return h;
+}
+
+/* RU plural + unit helpers */
+function plural(n,one,few,many){ const a=n%10,b=n%100; if(a===1&&b!==11)return one; if(a>=2&&a<=4&&!(b>=12&&b<=14))return few; return many; }
+function hrs(n){ return n+' '+plural(n,'час','часа','часов'); }
+function mins(n){ return n+' '+plural(n,'минуту','минуты','минут'); }
+function secs(n){ return n+' '+plural(n,'секунду','секунды','секунд'); }
+function lit(n){ return n+' '+plural(n,'литр','литра','литров'); }
+function det(n){ return n+' '+plural(n,'деталь','детали','деталей'); }
+
+/* rng */
+function rnd(a,b){ return a+Math.floor(Math.random()*(b-a+1)); }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function isqrt(n){ if(n<0)return -1; let r=Math.floor(Math.sqrt(n)); while(r*r>n)r--; while((r+1)*(r+1)<=n)r++; return r; }
+function perfSq(n){ if(n<0)return false; const r=isqrt(n); return r*r===n; }
+function shuffled(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+/* make a clickable div keyboard-accessible */
+function a11y(node){ node.setAttribute('tabindex','0'); node.setAttribute('role','button'); return node; }
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'||e.key===' '){
+    const el=document.activeElement;
+    if(el && el.getAttribute && el.getAttribute('role')==='button' && el.tagName!=='BUTTON'){ e.preventDefault(); el.click(); }
+  }
+});
+/* build a "Время"-column table row for the fill step; time = distance ÷ speed */
+function tRow(label,dist,speed){
+  return {label:label, dist:dist, speed:speed, ans:frac(dist,speed),
+    opts:[{h:frac(dist,speed),ok:true},
+          {h:frac(speed,dist),why:'Перевёрнуто. Время = расстояние ÷ скорость, а не наоборот.'},
+          {h:dist+' · '+speed,why:'Это расстояние × скорость. Время получают делением.'}]};
+}
+/* "ax² ± bx ± c = 0" */
+function qEqStr(a,b,c){
+  const aStr=a===1?'':a;
+  const bx=b===0?'':(b<0?' − '+(-b)+'x':' + '+b+'x');
+  const cc=c<0?' − '+(-c):' + '+c;
+  return '<b>'+aStr+'x²'+bx+cc+' = 0</b>';
+}
+
+/* ==================================================================
+   ANSWER FIELD  — decimal input with optional stacked-fraction toggle
+   opts: {ans:Rn|number, unit, allowFrac, hint, revealHTML, onDone(state)}
+   state: 'ok' | 'peek'
+   ================================================================== */
+function answerField(opts){
+  const ansR = (opts.ans instanceof Rn)? opts.ans : Rn.from(opts.ans);
+  const wrap = el('div','af');
+  const decBox = el('span'); decBox.style.display='inline-flex'; decBox.style.alignItems='center';
+  const inp = el('input','num'); inp.type='text'; inp.inputMode='decimal'; inp.autocomplete='off';
+  inp.setAttribute('aria-label','ответ');
+  decBox.appendChild(inp);
+  const fracBox = el('span','fracin'); fracBox.style.display='none';
+  const fn = el('input','num'); fn.type='text'; fn.inputMode='numeric'; fn.placeholder='числитель';
+  const bar = el('div','bar');
+  const fd = el('input','num'); fd.type='text'; fd.inputMode='numeric'; fd.placeholder='знаменатель';
+  fracBox.appendChild(fn); fracBox.appendChild(bar); fracBox.appendChild(fd);
+  wrap.appendChild(decBox); wrap.appendChild(fracBox);
+  if(opts.unit){ const u=el('span','unit',opts.unit); wrap.appendChild(u); }
+
+  const btnCheck = el('button','btn primary small','Проверить');
+  const btnShow  = el('button','btn reveal small','Показать');
+  wrap.appendChild(btnCheck); wrap.appendChild(btnShow);
+  let fx=null;
+  if(opts.allowFrac){ fx=el('span','fx','дробью'); wrap.appendChild(fx); }
+  const fbk = el('span','fbk'); wrap.appendChild(fbk);
+
+  let fracMode=false, locked=false;
+  if(fx) fx.onclick=()=>{ if(locked)return; fracMode=!fracMode; decBox.style.display=fracMode?'none':'inline-flex'; fracBox.style.display=fracMode?'inline-flex':'none'; fx.textContent=fracMode?'десятичной':'дробью'; (fracMode?fn:inp).focus(); };
+
+  function parseDec(s){ s=s.trim().replace(',','.').replace(/\s+/g,''); if(s==='')return null; if(!/^-?\d*\.?\d+$/.test(s))return null; return parseFloat(s); }
+  function correct(){
+    if(fracMode){
+      const a=fn.value.trim().replace(/\s/g,''), b=fd.value.trim().replace(/\s/g,'');
+      if(!/^-?\d+$/.test(a)||!/^\d+$/.test(b)||b==='0') return null;
+      return new Rn(BigInt(a),BigInt(b)).eq(ansR);
+    } else {
+      const v=parseDec(inp.value); if(v===null) return null;
+      const target=ansR.toNumber();
+      return Math.abs(v-target) <= 1e-6*Math.max(1,Math.abs(target));
+    }
+  }
+  function lock(){ locked=true; inp.disabled=true; fn.disabled=true; fd.disabled=true; btnCheck.disabled=true; btnShow.disabled=true; if(fx)fx.style.opacity=.4; }
+  btnCheck.onclick=()=>{
+    if(locked)return;
+    const r=correct();
+    if(r===null){ wrap.classList.remove('ok'); wrap.classList.add('bad'); fbk.className='fbk bad'; fbk.textContent='впиши число'; return; }
+    if(r){ wrap.classList.remove('bad'); wrap.classList.add('ok'); fbk.className='fbk ok'; fbk.textContent='верно'; lock(); opts.onDone&&opts.onDone('ok'); }
+    else { wrap.classList.remove('ok'); wrap.classList.add('bad'); fbk.className='fbk bad'; fbk.textContent='ещё раз';
+      if(opts.wrongHint && !wrap._hinted){ wrap._hinted=true; const h=el('div','hintline'); h.style.color='#7a5310'; h.style.fontStyle='normal'; h.innerHTML='💡 '+opts.wrongHint; if(wrap.parentNode)wrap.parentNode.appendChild(h); } }
+  };
+  btnShow.onclick=()=>{
+    if(locked)return;
+    wrap.classList.remove('bad'); wrap.classList.remove('ok');
+    fbk.className='fbk peek'; fbk.textContent='ответ: '+fmt(ansR)+(opts.unit?(' '+opts.unit):'');
+    if(!fracMode) inp.value=''; 
+    lock();
+    if(opts.revealHTML){ const rv=el('div','reveal-body',opts.revealHTML); wrap.parentNode&&wrap.parentNode.appendChild(rv); }
+    opts.onDone&&opts.onDone('peek');
+  };
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter')btnCheck.onclick(); });
+  fd.addEventListener('keydown',e=>{ if(e.key==='Enter')btnCheck.onclick(); });
+  if(opts.hint){ /* hint appended by caller container if desired */ }
+  return { node:wrap, focus:()=>inp.focus(), inp };
+}
+
+/* ==================================================================
+   CHOICE STEP renderer helper (returns node); options: [{h, ok?}]
+   ================================================================== */
+function choiceGroup(options, onDone){
+  const box = el('div','opts');
+  const disp = shuffled(options);
+  let locked=false;
+  const nodes=[];
+  const why = el('div','whyline');
+  disp.forEach(o=>{
+    const b=el('div','opt', (o.eq? '<div class="eqline">'+o.h+'</div>' : o.h));
+    a11y(b);
+    nodes.push({b,o});
+    b.onclick=()=>{
+      if(locked)return;
+      if(o.ok){ locked=true; b.classList.add('pick-ok'); why.style.display='none'; nodes.forEach(x=>{x.b.classList.add('lock'); if(x.o!==o)x.b.classList.add('dim');}); onDone&&onDone('ok'); }
+      else{ b.classList.add('pick-bad'); why.style.display=''; why.innerHTML='<b>Не то.</b> '+(o.why||'Присмотрись: что с чем сравнивается и какой знак должен быть.'); }
+    };
+    box.appendChild(b);
+  });
+  const show=el('button','btn reveal small','Показать');
+  const showWrap=el('div','btnrow'); showWrap.appendChild(show);
+  show.onclick=()=>{
+    if(locked)return; locked=true;
+    nodes.forEach(x=>{ x.b.classList.add('lock'); if(x.o.ok)x.b.classList.add('pick-show'); else x.b.classList.add('dim'); });
+    onDone&&onDone('peek');
+  };
+  const cont=el('div');
+  cont.appendChild(box); cont.appendChild(why); cont.appendChild(showWrap);
+  return cont;
+}
+
+/* ==================================================================
+   STEP ENGINE
+   steps: array of step objects
+     {t:'note', html}
+     {t:'pick', q, note?, options:[{h,ok,eq?}]}
+     {t:'num',  q, note?, ans, unit, allowFrac?, hint?, revealHTML?}
+   opts: {regen} -> called by "Ещё пример" button
+   ================================================================== */
+function runSteps(host, steps, opts){
+  opts=opts||{};
+  host.innerHTML='';
+  const wrap=el('div','steps'); host.appendChild(wrap);
+  const moreWrap=el('div','btnrow');
+  const more=el('button','btn more','Ещё пример этой темы →');
+  more.style.display='none';
+  more.onclick=()=>opts.regen&&opts.regen();
+  moreWrap.appendChild(more); host.appendChild(moreWrap);
+  let anyPeek=false, i=0;
+
+  function showMore(){ more.style.display=''; }
+  function finish(){
+    const d=el('div','stepcard done'); 
+    d.innerHTML='<div class="stepdone-msg">Разбор завершён'+(anyPeek?' — попробуй ещё один такой же, но уже сам.':'. Отличная работа!')+'</div>';
+    wrap.appendChild(d); showMore();
+    if(d.scrollIntoView)d.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+  function advance(){ i++; if(i<steps.length) render(i); else finish(); }
+
+  function render(k){
+    const s=steps[k];
+    const card=el('div','stepcard active');
+    const lab=el('div','steplab');
+    lab.innerHTML='<span class="stepno">Шаг '+(k+1)+' из '+steps.length+'</span>';
+    const turn=el('span','turn','твой ход'); if(s.t==='note')turn.textContent='читаем';
+    lab.appendChild(turn);
+    card.appendChild(lab);
+    if(s.q){ const q=el('div','stepq'); q.innerHTML=s.q+(s.note?' <span class="note">'+s.note+'</span>':''); card.appendChild(q); }
+    if(s.html){ const h=el('div','prose'); h.style.fontFamily='var(--serif)'; h.innerHTML=s.html; card.appendChild(h); }
+
+    function done(state){
+      if(state==='peek'){ anyPeek=true; card.classList.remove('active'); card.classList.add('peeked'); turn.className='turn peek'; turn.textContent='подсмотрено'; showMore(); }
+      else { card.classList.remove('active'); card.classList.add('done'); turn.className='turn done'; turn.textContent='готово'; }
+      setTimeout(advance,220);
+    }
+
+    if(s.t==='note'){
+      const row=el('div','btnrow'); const b=el('button','btn primary small','Далее →');
+      b.onclick=()=>{ b.disabled=true; card.classList.remove('active'); card.classList.add('done'); turn.className='turn done'; turn.textContent='ок'; setTimeout(advance,180); };
+      row.appendChild(b); card.appendChild(row);
+    } else if(s.t==='pick'){
+      card.appendChild(choiceGroup(s.options, done));
+    } else if(s.t==='tablefill'){
+      let finished=false;
+      const finish=(state)=>{ if(finished)return; finished=true; done(state); };
+      let thead='<thead><tr>'+s.head.map(h=>'<th>'+h+'</th>').join('')+'</tr></thead>';
+      let tbody='<tbody>';
+      s.rows.forEach((r,ri)=>{ tbody+='<tr><th>'+r.label+'</th><td>'+r.dist+'</td><td>'+r.speed+'</td><td class="tslot empty" data-r="'+ri+'">?</td></tr>'; });
+      const tblEl=el('table','mtbl'); tblEl.innerHTML=thead+tbody+'</tbody>';
+      card.appendChild(tblEl);
+      const qarea=el('div'); card.appendChild(qarea);
+      let slot=0;
+      function ask(){
+        qarea.innerHTML='';
+        if(slot>=s.rows.length){ qarea.appendChild(el('div','tfdone','Таблица заполнена.')); finish('ok'); return; }
+        const r=s.rows[slot];
+        const qq=el('div','tfq'); qq.innerHTML='Строка «'+r.label+'»: время = '+r.dist+' ÷ '+r.speed+' = ?';
+        qarea.appendChild(qq);
+        const opts=el('div','tfopts'); const why=el('div','whyline');
+        shuffled(r.opts).forEach(o=>{
+          const b=el('div','tfopt','<span class="eqline" style="margin:0">'+o.h+'</span>'); a11y(b);
+          b.onclick=()=>{
+            if(o.ok){ const cell=tblEl.querySelector('.tslot[data-r="'+slot+'"]'); cell.classList.remove('empty'); cell.classList.add('filled'); cell.innerHTML=r.ans; slot++; ask(); }
+            else { b.classList.add('bad'); why.style.display=''; why.innerHTML='<b>Не то.</b> '+(o.why||''); }
+          };
+          opts.appendChild(b);
+        });
+        qarea.appendChild(opts); qarea.appendChild(why);
+      }
+      const showBtn=el('button','btn reveal small','Показать');
+      showBtn.onclick=()=>{ s.rows.forEach((r,ri)=>{ const c=tblEl.querySelector('.tslot[data-r="'+ri+'"]'); c.classList.remove('empty'); c.classList.add('filled'); c.innerHTML=r.ans; }); qarea.innerHTML=''; finish('peek'); };
+      const showRow=el('div','btnrow'); showRow.appendChild(showBtn); card.appendChild(showRow);
+      ask();
+    } else if(s.t==='num'){
+      const af=answerField({ans:s.ans, unit:s.unit, allowFrac:s.allowFrac, revealHTML:s.revealHTML, onDone:done});
+      card.appendChild(af.node);
+      if(s.hint){ const h=el('div','hintline',s.hint); card.appendChild(h); }
+    }
+    wrap.appendChild(card);
+    if(card.scrollIntoView)card.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+  render(0);
+}
+
+/* ==================================================================
+   QUADRATIC reveal + generic quad steps
+   ================================================================== */
+function quadReveal(a,b,c, rootR, rejectReason){
+  const D=b*b-4*a*c; const sq=isqrt(D);
+  const denom=2*a;
+  const r1=(-b - sq)/denom, r2=(-b + sq)/denom;
+  const disp=v=> v;
+  const aStr = a===1? '' : a;
+  const bx = b===0? '' : (b<0? ' − '+(-b)+'x' : ' + '+b+'x');
+  const cc = c<0? ' − '+(-c) : ' + '+c;
+  const bSq = b===0? '0²' : (b<0? '('+b+')²' : b+'²');
+  const negb = b===0? '' : '−('+b+') ';
+  let h='';
+  h+='<div class="eqline">'+aStr+'x²'+bx+cc+' = 0</div>';
+  h+='<div class="eqline">D = '+bSq+' − 4·'+a+'·('+c+') = '+D+',&nbsp;&nbsp;'+rad(D)+' = '+sq+'</div>';
+  h+='<div class="eqline">x = '+frac(negb+'± '+sq, '2·'+a)+'&nbsp; ⟹&nbsp; x = '+disp(r2)+'&nbsp; или&nbsp; x = '+disp(r1)+'</div>';
+  if(rejectReason) h+='<div class="mini-note">'+rejectReason+'</div>';
+  return h;
+}
+/* polynomial string like "2x² + 4x − 448"  (terms: [coef, 'x²'|'x'|'']) */
+function polyStr(terms){ let out=''; terms.forEach(function(t){ const co=t[0],v=t[1]; if(co===0)return; const neg=co<0,a=Math.abs(co); let s=(a===1&&v!=='')?'':String(a); s+=v; out+= out===''?(neg?'−'+s:s):(neg?' − '+s:' + '+s); }); return out===''?'0':out; }
+/* factor with parens: (x + 2), x, (x − 5) */
+function facP(r){ return r===0?'x':('(x '+(r<0?'− '+(-r):'+ '+r)+')'); }
+/* denominator string (no parens): "x", "x + 2", "x − 5" */
+function denS(r){ return r===0?'x':('x '+(r<0?'− '+(-r):'+ '+r)); }
+/* render the clearing of  n1/(x+a1) + n2/(x+b1) = R  into ax²+bx+c=0 (matches p.quad) */
+function fracClearingHTML(cl){
+  const n1=cl.n1,a1=cl.a1,n2=cl.n2,b1=cl.b1,R=cl.R;
+  const A=R, B=R*(a1+b1)-(n1+n2), C=R*a1*b1-(n1*b1+n2*a1);
+  function cf(n,r){ const f=facP(r); if(f==='x') return (n===1?'':n===-1?'−':n)+'x'; return (n===1?'':n===-1?'−':n)+f; }
+  const denomProd=(facP(a1)==='x'?'x':facP(a1))+(facP(b1)==='x'?'x':facP(b1));
+  const normEq=frac(n1,denS(a1))+' '+(n2<0?'−':'+')+' '+frac(Math.abs(n2),denS(b1))+' = '+R;
+  const cleared=cf(n1,b1)+' '+(n2<0?'−':'+')+' '+cf(Math.abs(n2),a1)+' = '+(R===1?'':R)+denomProd;
+  const linL=polyStr([[n1+n2,'x'],[n1*b1+n2*a1,'']]);
+  const quadR=polyStr([[A,'x²'],[R*(a1+b1),'x'],[R*a1*b1,'']]);
+  let out='<div class="eqline">Соберём дроби слева: '+normEq+'</div>'+
+          '<div class="eqline">умножим обе части на общий знаменатель '+denomProd+':</div>'+
+          '<div class="eqline">'+cleared+'</div>'+
+          '<div class="eqline">раскроем скобки:&nbsp; '+linL+' = '+quadR+'</div>';
+  if(A>0) out+='<div class="eqline">перенесём всё в одну сторону:&nbsp; '+polyStr([[A,'x²'],[B,'x'],[C,'']])+' = 0</div>';
+  else out+='<div class="eqline">перенесём влево:&nbsp; '+polyStr([[A,'x²'],[B,'x'],[C,'']])+' = 0&nbsp;&nbsp;| ·(−1)</div>'+
+            '<div class="eqline">'+polyStr([[-A,'x²'],[-B,'x'],[-C,'']])+' = 0</div>';
+  return out;
+}
+/* coefficients (a,b,c) that fracClearingHTML lands on — for tests */
+function fracClearingQuad(cl){ const n1=cl.n1,a1=cl.a1,n2=cl.n2,b1=cl.b1,R=cl.R; let A=R,B=R*(a1+b1)-(n1+n2),C=R*a1*b1-(n1*b1+n2*a1); if(A<0){A=-A;B=-B;C=-C;} return {a:A,b:B,c:C}; }
+/* substitution check of the root into n1/(x+a1) + n2/(x+b1) = R */
+function fracCheckHTML(cl,root){
+  const n1=cl.n1,a1=cl.a1,n2=cl.n2,b1=cl.b1,R=cl.R;
+  const d1=root+a1,d2=root+b1,t1=n1/d1,t2=n2/d2,op=n2<0?'−':'+';
+  return '<div class="eqline">Подставим x = '+fmt(Rn.from(root))+':&nbsp; '+
+    frac(n1,d1)+' '+op+' '+frac(Math.abs(n2),d2)+' = '+f2(t1)+' '+op+' '+f2(Math.abs(t2))+' = '+f2(t1+t2)+'</div>'+
+    '<div class="eqline">Справа было '+R+' — совпало. Значит корень найден верно.</div>';
+}
+
+/* generic steps for a "reduce-to-quadratic" problem p (see module contract) */
+function quadSteps(p){
+  const steps=[];
+  steps.push({t:'pick', q:'Что удобно принять за <span class="kbd">x</span>?', options:p.varOptions});
+  if(p.table) steps.push({t:'tablefill', q:'Заполни столбец «Время».', head:p.table.head, rows:p.table.rows});
+  steps.push({t:'pick', q:'Составь уравнение по условию. Какое из них верное?', options:p.eqOptions});
+  const clearingHTML = p.clearHTML || (p.clear? fracClearingHTML(p.clear) : '');
+  if(clearingHTML) steps.push({t:'note', role:'clearing', html:'<div style="font-weight:650;margin-bottom:5px">Убираем дроби — приводим к квадратному уравнению:</div>'+clearingHTML});
+  const a=p.quad.a,b=p.quad.b,c=p.quad.c;
+  const D=b*b-4*a*c, sq=isqrt(D);
+  const r1=(-b-sq)/(2*a), r2=(-b+sq)/(2*a), rr=p.rootR.toNumber();
+  const other=(Math.abs(r1-rr)<1e-9)?r2:r1;
+  const lo=Math.min(r1,r2), hi=Math.max(r1,r2);
+  steps.push({t:'num', role:'disc',
+    q:'Теперь найди дискриминант квадратного уравнения: <span class="kbd">D = b² − 4ac</span>.',
+    note:'это задание 9',
+    ans:Rn.from(D), wrongHint:'D = b² − 4ac. Следи за знаком: c '+(c<0?'отрицательное, и «− 4·a·c» станет плюсом.':'положительное.'),
+    revealHTML: quadReveal(a,b,c,p.rootR,'') });
+  const u=p.rootUnit?(' '+p.rootUnit):'';
+  const why=p.rootWhy || (other<0? 'Это отрицательный корень, а '+(p.rootWord||'искомая величина')+' не может быть отрицательной.'
+                                  : 'Этот корень не подходит по условию задачи.');
+  steps.push({t:'pick', role:'rootpick',
+    q:'Уравнение даёт два корня: <b>'+fmt(lo)+'</b> и <b>'+fmt(hi)+'</b>. Какой из них — ответ по смыслу задачи?',
+    options:[{h:fmt(rr)+u, ok:true},{h:fmt(other)+u, why:why}] });
+  if(p.finalParts && p.finalParts.length===1 && !p.finalParts[0].ans.eq(p.rootR)){
+    const fp=p.finalParts[0];
+    steps.push({t:'num', q:fp.q||('Ответь на вопрос задачи.'), note:fp.note, ans:fp.ans, unit:fp.unit,
+      wrongHint:fp.wrongHint, revealHTML: fp.revealHTML });
+  }
+  const checkHTML = p.checkHTML || (p.clear? fracCheckHTML(p.clear, rr) : '');
+  if(checkHTML) steps.push({t:'note', role:'check', html:'<div style="font-weight:650;margin-bottom:5px">Проверка: подставим найденный корень в уравнение.</div>'+checkHTML});
+  return steps;
+}
+
+/* assemble a full worked solution from a module's own steps (always consistent) */
+function fullSolution(m,p){
+  const steps=m.steps(p);
+  let h='<div class="prose">';
+  let firstPick=true;
+  steps.forEach(s=>{
+    if(s.t==='note'){ h+='<p>'+s.html+'</p>'; }
+    else if(s.t==='pick'){
+      const ok=s.options.find(o=>o.ok); const wrong=s.options.find(o=>o.why);
+      const lead = firstPick? 'Пусть ':'';
+      firstPick=false;
+      const body = ok.eq? '<span class="eqline" style="display:inline-block;margin:0">'+ok.h+'</span>' : ok.h;
+      h+='<p><span class="solstep">▸</span> '+lead+body+'.'+(wrong&&/корень|подходит/.test(s.q)?' <span style="color:var(--ink-soft)">('+wrong.why+')</span>':'')+'</p>';
+    }
+    else if(s.t==='tablefill'){
+      let hh='<table class="mtbl"><thead><tr>'+s.head.map(x=>'<th>'+x+'</th>').join('')+'</tr></thead><tbody>';
+      s.rows.forEach(r=>{ hh+='<tr><th>'+r.label+'</th><td>'+r.dist+'</td><td>'+r.speed+'</td><td>'+r.ans+'</td></tr>'; });
+      hh+='</tbody></table>';
+      h+='<p><span class="solstep">▸</span> Заполним таблицу:</p>'+hh;
+    }
+    else if(s.t==='num'){
+      h+='<p><span class="solstep">▸</span> '+s.q+'</p>';
+      if(s.revealHTML) h+=s.revealHTML;
+      else h+='<div class="eqline">= '+fmt(s.ans)+(s.unit?(' '+s.unit):'')+'</div>';
+    }
+  });
+  h+='<p style="margin-top:10px"><b>Ответ:</b> '+m.finalParts(p).map(x=>fmt(x.ans)+(x.unit?(' '+x.unit):'')).join('; ')+'.</p>';
+  h+='</div>';
+  return h;
+}
+
+/* ==================================================================
+   MODULE REGISTRY
+   Each module: {key,title,cat,blurb, learn():html, gen():p, statement(p):html, steps(p):[], finalParts(p):[{label,ans,unit}]}
+   cat in {move,work,perc}
+   ================================================================== */
+const MODULES=[];
+const CAT={ move:{name:'Движение',color:'var(--move)',deep:'#26379c'}, work:{name:'Работа',color:'var(--work)',deep:'#0a5f5f'}, perc:{name:'Проценты',color:'var(--perc)',deep:'#573a94'} };
+const CATHEX={ move:'#3453d6', work:'#0f8a8a', perc:'#7c53c8' };
+
+function gcdInt(a,b){a=Math.abs(a);b=Math.abs(b);while(b){const t=a%b;a=b;b=t;}return a||1;}
+function lcm(a,b){return a/gcdInt(a,b)*b;}
+
+/* ---------- t1: движение навстречу с остановкой (линейное) ---------- */
+MODULES.push({
+  key:'t1', title:'Навстречу', cat:'move',
+  blurb:'встреча с остановкой',
+  long:'Двое выезжают навстречу; один делает остановку. Уравнение — линейное: приравниваем общее время в пути.',
+  learn(){return ''+
+   '<div class="tcard"><span class="n">1</span><h3>Что происходит</h3>'+
+   '<p class="prose">Двое выезжают из городов <i>одновременно</i> и едут навстречу. Один по дороге делает остановку на несколько минут, а потом едет дальше — до встречи. К моменту встречи оба находятся в пути <b>одинаковое время</b> (по настенным часам): ведь выехали вместе и встретились вместе.</p></div>'+
+   '<div class="tcard"><span class="n">2</span><h3>Главная идея</h3>'+
+   '<p>Обозначим за <span class="kbd">x</span> расстояние от одного города до места встречи. Тогда до второго — это <span class="kbd">(S−x)</span>. Время = расстояние ÷ скорость. У того, кто стоял, к времени езды добавляется остановка.</p>'+
+   '<div class="keybox">время 1-го (с остановкой) = время 2-го</div>'+
+   '<p class="mini-note">Минуты переводим в часы: делим на 60. Например, 48 мин = '+frac(48,60)+' ч.</p></div>'+
+   '<div class="tcard"><span class="n">3</span><h3>Как решать</h3>'+
+   '<p>Уравнение получается <b>линейным</b> (без квадратов) — умножаем на общий знаменатель и выражаем x. Проверять корни «по смыслу» почти не нужно: ответ один.</p>'+
+   '<span class="xref">Перевод минут в часы и работа с дробями — задания 6 и 12.</span></div>';
+  },
+  gen(){
+    let v1,v2,tau,T,x,dist1,D;
+    const TAUS=[36,42,45,48,51,54,56,20,24,30];
+    let guard=0;
+    while(true){ guard++;
+      v1=rnd(8,20); v2=rnd(12,35); tau=pick(TAUS); T=pick([2,3,4,5]);
+      if(T<=tau/60){ if(guard>9000)break; continue; }
+      x=v2*T; const d1=v1*(T-tau/60);
+      if(Math.abs(d1-Math.round(d1))>1e-9){ if(guard>9000)break; continue; }
+      dist1=Math.round(d1);
+      if(dist1<=0){ if(guard>9000)break; continue; }
+      D=x+dist1;
+      if(D<80||D>320){ if(guard>9000)break; continue; }
+      break;
+    }
+    const askSecond=Math.random()<0.5;
+    const rootVal=askSecond?x:dist1;
+    const rootR=Rn.from(rootVal);
+    const M=lcm(lcm(v1,v2),60), A=M/v1, B=M/60, C=M/v2;
+    let ok,bad1,bad2,reveal;
+    if(askSecond){
+      ok  = frac('('+D+'−x)',v1)+' + '+frac(tau,60)+' = '+frac('x',v2);
+      bad1= frac('('+D+'−x)',v1)+' = '+frac('x',v2)+' + '+frac(tau,60);
+      bad2= frac('x',v1)+' + '+frac(tau,60)+' = '+frac('('+D+'−x)',v2);
+      reveal='<div class="eqline">'+ok+'</div>'+
+        '<div class="eqline">·'+M+':&nbsp; '+A+'·('+D+'−x) + '+(B*tau)+' = '+C+'x</div>'+
+        '<div class="eqline">'+(A*D+B*tau)+' = '+(A+C)+'x&nbsp; ⟹&nbsp; x = '+rootVal+'</div>';
+    } else {
+      ok  = frac('x',v1)+' + '+frac(tau,60)+' = '+frac('('+D+'−x)',v2);
+      bad1= frac('x',v1)+' = '+frac('('+D+'−x)',v2)+' + '+frac(tau,60);
+      bad2= frac('('+D+'−x)',v1)+' + '+frac(tau,60)+' = '+frac('x',v2);
+      reveal='<div class="eqline">'+ok+'</div>'+
+        '<div class="eqline">·'+M+':&nbsp; '+A+'x + '+(B*tau)+' = '+C+'·('+D+'−x)</div>'+
+        '<div class="eqline">'+(A+C)+'x = '+(C*D-B*tau)+'&nbsp; ⟹&nbsp; x = '+rootVal+'</div>';
+    }
+    const who=askSecond?'второй':'первый';
+    const whoGen=askSecond?'второго':'первого';
+    const otherDist=askSecond?dist1:x;
+    const stmt='Из двух городов одновременно навстречу друг другу отправились два велосипедиста. '+
+      'Проехав некоторую часть пути, первый велосипедист сделал остановку на <b>'+mins(tau)+'</b>, а затем продолжил движение до встречи со вторым. '+
+      'Расстояние между городами составляет <b>'+D+' км</b>, скорость первого велосипедиста равна <b>'+v1+' км/ч</b>, скорость второго — <b>'+v2+' км/ч</b>. '+
+      '<span class="q">Определите расстояние от города, из которого выехал '+who+' велосипедист, до места встречи.</span>';
+    const varOptions = askSecond
+      ? [{h:'x — расстояние от города 2-го велосипедиста до места встречи (тогда у 1-го — ('+D+'−x) км)',ok:true},
+         {h:'x — скорость велосипедистов'},{h:'x — время до встречи'}]
+      : [{h:'x — расстояние от города 1-го велосипедиста до места встречи (тогда у 2-го — ('+D+'−x) км)',ok:true},
+         {h:'x — скорость велосипедистов'},{h:'x — время до встречи'}];
+    const eqOptions=[{h:ok,ok:true,eq:true},
+      {h:bad1,eq:true,why:'Остановку делал первый — эти минуты добавляются к его времени, а не к времени второго.'},
+      {h:bad2,eq:true,why:'Перепутано, у кого какое расстояние до места встречи.'}];
+    const table = {head:['','Расстояние (км)','Скорость (км/ч)','Время (ч)'],
+      rows: askSecond ? [tRow('1-й велосипедист','('+D+'−x)',v1), tRow('2-й велосипедист','x',v2)]
+                      : [tRow('1-й велосипедист','x',v1), tRow('2-й велосипедист','('+D+'−x)',v2)]};
+    return {D,v1,v2,tau,rootR,reveal,varOptions,eqOptions,table,stmt,viz:{D:D,v1:v1,v2:v2,tau:tau,T:T,distA:dist1,distB:x},
+      finalParts:[{label:'Расстояние от города '+whoGen+' велосипедиста до места встречи:',ans:rootR,unit:'км'}]};
+  },
+  statement(p){return p.stmt;},
+  finalParts(p){return p.finalParts;},
+  steps(p){return [
+    {t:'pick',q:'Что удобно принять за <span class="kbd">x</span>?',options:p.varOptions},
+    {t:'tablefill',q:'Заполни столбец «Время».',head:p.table.head,rows:p.table.rows},
+    {t:'pick',q:'У обоих время в пути одинаково (с учётом остановки). Какое уравнение это выражает?',options:p.eqOptions},
+    {t:'num',q:'Реши линейное уравнение и найди <span class="kbd">x</span>.',ans:p.rootR,unit:'км',revealHTML:p.reveal}
+  ];}
+});
+
+/* ---------- t2: туда и обратно (квадратное) ---------- */
+MODULES.push({
+  key:'t2', title:'Туда и обратно', cat:'move',
+  blurb:'увеличил скорость, стоял',
+  long:'Едет из A в B и назад с большей скоростью, но с остановкой. Времена туда и обратно равны. Сводится к квадратному уравнению.',
+  learn(){return ''+
+   '<div class="tcard"><span class="n">1</span><h3>Что происходит</h3>'+
+   '<p class="prose">Из A в B со скоростью x. Обратно — быстрее на Δ, но с остановкой на τ часов. Из‑за остановки обратный путь занял <b>столько же</b> времени, сколько дорога туда.</p></div>'+
+   '<div class="tcard"><span class="n">2</span><h3>Таблица</h3>'+
+   mtbl(['','Расст. (км)','Скорость','Время (ч)'],[
+     ['Туда (A→B)','S','<b>x</b>',frac('S','x')],
+     ['Обратно (B→A)','S','<b>x+Δ</b>',frac('S','x+Δ')]])+
+   '<p>Время туда = время обратно + остановка: '+frac('S','x')+' = '+frac('S','x+Δ')+' + τ.</p></div>'+
+   '<div class="tcard"><span class="n">3</span><h3>Как решать</h3>'+
+   '<p>Переносим, приводим к общему знаменателю — получается квадратное уравнение. Из двух корней берём <b>положительный</b>: скорость не бывает отрицательной.</p>'+
+   '<span class="xref">Дискриминант и корни — задание 9.</span></div>';
+  },
+  gen(){
+    let x,d,tau,D,guard=0;
+    while(true){ guard++;
+      x=rnd(6,40); d=pick([1,2,3,4,5,6,8,9,10,12]); tau=rnd(1,5);
+      const num=tau*x*(x+d);
+      if(num%d){ if(guard>9000)break; continue; }
+      D=num/d;
+      if(D<40||D>560||D%2){ if(guard>9000)break; continue; }
+      break;
+    }
+    const askOut=Math.random()<0.5;
+    const rootR=Rn.from(x);
+    const quad={a:tau,b:tau*d,c:-D*d};
+    const stmt='Велосипедист выехал с постоянной скоростью из города <b>A</b> в город <b>B</b>, расстояние между которыми равно <b>'+D+' км</b>. '+
+      'На следующий день он отправился обратно в A, увеличив скорость на <b>'+d+' км/ч</b>. По пути он сделал остановку на <b>'+hrs(tau)+'</b>, '+
+      'в результате чего затратил на обратный путь столько же времени, сколько на путь из A в B. '+
+      '<span class="q">Найдите скорость велосипедиста на пути '+(askOut?'из A в B':'из B в A')+'.</span>';
+    const eqOptions=[
+      {h:frac(D,'x')+' = '+frac(D,'x+'+d)+' + '+tau,ok:true,eq:true},
+      {h:frac(D,'x')+' = '+frac(D,'x+'+d)+' − '+tau,eq:true,why:'Остановка увеличивает время обратного пути — её прибавляют, а не вычитают.'},
+      {h:frac(D,'x+'+d)+' = '+frac(D,'x')+' + '+tau,eq:true,why:'Перепутаны стороны: время туда равно времени обратно вместе с остановкой.'}];
+    const varOptions=[
+      {h:'x — скорость на пути из A в B (тогда обратно — (x+'+d+') км/ч)',ok:true},
+      {h:'x — расстояние между городами'},{h:'x — время в пути'}];
+    const table={head:['','Расстояние (км)','Скорость (км/ч)','Время (ч)'],
+      rows:[tRow('Туда (A→B)',D,'x'), tRow('Обратно (B→A)',D,'x+'+d)]};
+    const finalParts = askOut
+      ? [{label:'Скорость на пути из A в B:',ans:rootR,unit:'км/ч'}]
+      : [{label:'Скорость на пути из B в A (на '+d+' больше):',ans:Rn.from(x+d),unit:'км/ч',
+          q:'Скорость из B в A на '+d+' км/ч больше найденной. Чему она равна?',
+          revealHTML:'<div class="eqline">'+x+' + '+d+' = '+(x+d)+'</div>'}];
+    return {D,d,tau,x,quad,rootR,rootUnit:'км/ч',rootWord:'скорость',viz:{D:D,d:d,tau:tau,x:x},clear:{n1:D,a1:0,n2:-D,b1:d,R:tau},varOptions,eqOptions,table,finalParts,stmt};
+  },
+  statement(p){return p.stmt;},
+  finalParts(p){return p.finalParts;},
+  steps(p){return quadSteps(p);}
+});
+
+/* ---------- t3: пробег, одновременный выезд (квадратное) ---------- */
+MODULES.push({
+  key:'t3', title:'Пробег', cat:'move',
+  blurb:'кто быстрее — раньше',
+  long:'Двое едут одну и ту же дистанцию; один быстрее и приходит раньше. Классическое квадратное уравнение с выбором корня.',
+  learn(){return ''+
+   '<div class="tcard"><span class="n">1</span><h3>Что происходит</h3>'+
+   '<p class="prose">Оба стартуют одновременно на дистанцию S. Первый быстрее второго на Δ км/ч и приходит на Δt часов раньше. Значит, у второго времени <b>больше</b> на Δt.</p></div>'+
+   '<div class="tcard"><span class="n">2</span><h3>Таблица и уравнение</h3>'+
+   mtbl(['','Расст.','Скорость','Время'],[
+     ['Первый','S','<b>x</b>',frac('S','x')],
+     ['Второй','S','<b>x−Δ</b>',frac('S','x−Δ')]])+
+   '<p>Быстрый приходит раньше на Δt: '+frac('S','x')+' + Δt = '+frac('S','x−Δ')+'.</p>'+
+   '<p class="mini-note">Удобно принять за x скорость <b>того, о ком спрашивают</b> — но можно и первого, а в конце добавить/убавить Δ.</p></div>'+
+   '<div class="tcard"><span class="n">3</span><h3>Выбор корня</h3>'+
+   '<p>Получаем квадратное уравнение. Отрицательный корень отбрасываем — скорость положительна.</p>'+
+   '<span class="xref">Решение квадратного уравнения — задание 9.</span></div>';
+  },
+  gen(){
+    let x,d,dt,D,guard=0;
+    while(true){ guard++;
+      x=rnd(40,110); d=pick([2,3,4,6,8,9,10,12,24,28,30]); dt=rnd(1,4);
+      if(x<=d){ if(guard>9000)break; continue; }
+      const num=dt*x*(x-d);
+      if(num%d){ if(guard>9000)break; continue; }
+      D=num/d;
+      if(D<60||D>1000){ if(guard>9000)break; continue; }
+      break;
+    }
+    const veh=pick([
+      {two:'велосипедиста',first:'первого велосипедиста',second:'велосипедиста, пришедшего к финишу вторым',word:'велосипедист'},
+      {two:'автомобиля',first:'первого автомобиля',second:'автомобиля, пришедшего к финишу вторым',word:'автомобиль'}]);
+    const askFast=Math.random()<0.5;
+    const rootR=Rn.from(x);
+    const quad={a:dt,b:-dt*d,c:-D*d};
+    const stmt='Два '+veh.two+' одновременно отправляются в <b>'+D+'-километровый</b> пробег. '+
+      'Первый едет со скоростью на <b>'+d+' км/ч</b> большей, чем второй, и прибывает к финишу на <b>'+hrs(dt)+'</b> раньше второго. '+
+      '<span class="q">Найдите скорость '+(askFast?veh.first:veh.second)+'.</span>';
+    const eqOptions=[
+      {h:frac(D,'x')+' + '+dt+' = '+frac(D,'x−'+d),ok:true,eq:true},
+      {h:frac(D,'x')+' − '+dt+' = '+frac(D,'x−'+d),eq:true,why:'Быстрый едет меньше времени, поэтому Δt прибавляют к его времени, а не вычитают.'},
+      {h:frac(D,'x−'+d)+' + '+dt+' = '+frac(D,'x'),eq:true,why:'Δt добавили к медленному, но раньше финиширует быстрый.'}];
+    const varOptions=[
+      {h:'x — скорость первого (он быстрее); тогда у второго — (x−'+d+') км/ч',ok:true},
+      {h:'x — вся дистанция пробега'},{h:'x — время первого в пути'}];
+    const table={head:['','Расстояние (км)','Скорость (км/ч)','Время (ч)'],
+      rows:[tRow('Первый',D,'x'), tRow('Второй',D,'x−'+d)]};
+    const finalParts = askFast
+      ? [{label:'Скорость '+veh.first+':',ans:rootR,unit:'км/ч'}]
+      : [{label:'Скорость '+veh.second+' (на '+d+' меньше):',ans:Rn.from(x-d),unit:'км/ч',
+          q:'Второй едет на '+d+' км/ч медленнее. Чему равна его скорость?',
+          revealHTML:'<div class="eqline">'+x+' − '+d+' = '+(x-d)+'</div>'}];
+    return {D,d,dt,x,quad,rootR,rootUnit:'км/ч',rootWord:'скорость',viz:{D:D,d:d,dt:dt,x:x},clear:{n1:D,a1:0,n2:-D,b1:-d,R:-dt},varOptions,eqOptions,table,finalParts,stmt};
+  },
+  statement(p){return p.stmt;},
+  finalParts(p){return p.finalParts;},
+  steps(p){return quadSteps(p);}
+});
+
+/* ---------- t4: две половины пути (квадратное, выбор корня по x>N) ---------- */
+MODULES.push({
+  key:'t4', title:'Две половины', cat:'move',
+  blurb:'половины на разных скоростях',
+  long:'Один едет весь путь ровно, другой — по половинам на разных скоростях, но приходят вместе. Часто с условием «скорость больше N».',
+  learn(){return ''+
+   '<div class="tcard"><span class="n">1</span><h3>Что происходит</h3>'+
+   '<p class="prose">Первый едет весь путь <b>2S</b> с одной скоростью x. Второй первую половину S едет с одной скоростью, вторую половину S — с другой. Приходят одновременно ⟹ времена равны.</p></div>'+
+   '<div class="tcard"><span class="n">2</span><h3>Уравнение</h3>'+
+   mtbl(['','Расст.','Скорость','Время'],[
+     ['Первый','2S','<b>x</b>',frac('2S','x')],
+     ['Второй (1-я пол.)','S','v₁',frac('S','v₁')],
+     ['Второй (2-я пол.)','S','v₂',frac('S','v₂')]])+
+   '<p>'+frac('2S','x')+' = '+frac('S','v₁')+' + '+frac('S','v₂')+'. Сокращаем на S:</p>'+
+   '<div class="keybox">'+frac(2,'x')+' = '+frac(1,'v₁')+' + '+frac(1,'v₂')+'</div>'+
+   '<p class="mini-note">S сокращается — конкретная длина пути не нужна.</p></div>'+
+   '<div class="tcard"><span class="n">3</span><h3>Выбор корня</h3>'+
+   '<p>Корней два, оба могут быть положительными. Поэтому в условии дают подсказку «<b>скорость больше N</b>» — берём тот корень, что больше N.</p>'+
+   '<span class="xref">Квадратное уравнение — задание 9.</span></div>';
+  },
+  gen(){
+    const useA=Math.random()<0.55;
+    if(useA){
+      let x,d,w,x2,guard=0;
+      while(true){ guard++;
+        x=rnd(24,150); d=pick([6,8,9,10,12,14,15,16,18,20,24]);
+        if(x<=2*d){ if(guard>20000)break; continue; }
+        const num=x*(x-d), den=x-2*d;
+        if(num%den){ if(guard>20000)break; continue; }
+        w=num/den;
+        if(!(w>x&&w<=200)){ if(guard>20000)break; continue; }
+        if((2*w*d)%x){ if(guard>20000)break; continue; }
+        x2=2*w*d/x;
+        if(x2>=x||x-x2<2){ if(guard>20000)break; continue; }
+        break;
+      }
+      const thresh=Math.floor((x2+x)/2);
+      const rootR=Rn.from(x);
+      const quad={a:1,b:-(d+w),c:2*w*d};
+      const stmt='Из A в B одновременно выехали два автомобиля. Первый проехал весь путь с постоянной скоростью. '+
+        'Второй проехал первую половину пути со скоростью меньше скорости первого автомобиля на <b>'+d+' км/ч</b>, '+
+        'а вторую половину пути проехал со скоростью <b>'+w+' км/ч</b>, в результате чего прибыл в B одновременно с первым автомобилем. '+
+        '<span class="q">Найдите скорость первого автомобиля, если известно, что она больше '+thresh+' км/ч.</span>';
+      const eqOptions=[
+        {h:frac('2S','x')+' = '+frac('S','x−'+d)+' + '+frac('S',w),ok:true,eq:true},
+        {h:frac('2S','x')+' = '+frac('S','x+'+d)+' + '+frac('S',w),eq:true,why:'На первой половине второй едет медленнее первого — его скорость (x−'+d+').'},
+        {h:frac('S','x')+' = '+frac('S','x−'+d)+' + '+frac('S',w),eq:true,why:'Первый проезжает весь путь 2S, поэтому у него время 2S/x.'}];
+      const varOptions=[
+        {h:'x — скорость первого (он едет весь путь ровно)',ok:true},
+        {h:'x — длина всего пути'},{h:'x — время в пути'}];
+      const table={head:['','Расстояние','Скорость (км/ч)','Время (ч)'],
+        rows:[tRow('Первый (весь путь)','2S','x'), tRow('Второй, 1-я половина','S','x−'+d), tRow('Второй, 2-я половина','S',w)]};
+      return {quad,rootR,rootUnit:'км/ч',rootWord:'скорость',varOptions,eqOptions,table,stmt,
+        clearHTML:'<div class="eqline">Сократим на S:&nbsp; '+frac(2,'x')+' = '+frac(1,'x−'+d)+' + '+frac(1,w)+'</div>'+
+          '<div class="eqline">умножим на '+w+'·x·(x−'+d+'):&nbsp; 2·'+w+'·(x−'+d+') = '+w+'x + x(x−'+d+')</div>'+
+          '<div class="eqline">'+(2*w)+'x − '+(2*w*d)+' = x² + '+(w-d)+'x</div>'+
+          '<div class="eqline">x² − '+(d+w)+'x + '+(2*w*d)+' = 0</div>',
+        checkHTML:'<div class="eqline">Подставим x = '+x+':&nbsp; '+frac(2,x)+' = '+frac(1,x-d)+' + '+frac(1,w)+'</div>'+
+          '<div class="eqline">2·'+w+'·'+(x-d)+' = '+(2*w*(x-d))+',&nbsp;&nbsp;'+w+'·'+x+' + '+x+'·'+(x-d)+' = '+(w*x+x*(x-d))+'. Совпало — корень верен.</div>',
+        rejectReason:'По условию x > '+thresh+', поэтому из двух корней берём больший: x = '+x+'.',
+        rootWhy:'Этот корень меньше '+thresh+', а по условию скорость больше '+thresh+'.',
+        viz:{branch:'A',x:x,d:d,w:w,thresh:thresh},
+        finalParts:[{label:'Скорость первого автомобиля:',ans:rootR,unit:'км/ч'}]};
+    } else {
+      let x,plus,v1,guard=0;
+      while(true){ guard++;
+        x=rnd(40,110); plus=pick([4,5,6,7,8,9,10,11,12,14,15]);
+        const num=x*(x+plus), den=x+2*plus;
+        if(num%den){ if(guard>20000)break; continue; }
+        v1=num/den;
+        if(!(v1>=20&&v1<=110&&v1<x)){ if(guard>20000)break; continue; }
+        break;
+      }
+      const rootR=Rn.from(x);
+      const quad={a:1,b:plus-v1,c:-2*plus*v1};
+      const stmt='Из A в B одновременно выехали два автомобиля. Первый проехал весь путь с постоянной скоростью. '+
+        'Второй проехал первую половину пути со скоростью <b>'+v1+' км/ч</b>, '+
+        'а вторую половину пути проехал со скоростью больше скорости первого на <b>'+plus+' км/ч</b>, в результате чего прибыл в B одновременно с первым автомобилем. '+
+        '<span class="q">Найдите скорость первого автомобиля.</span>';
+      const eqOptions=[
+        {h:frac('2S','x')+' = '+frac('S',v1)+' + '+frac('S','x+'+plus),ok:true,eq:true},
+        {h:frac('2S','x')+' = '+frac('S',v1)+' + '+frac('S','x−'+plus),eq:true,why:'На второй половине второй едет быстрее первого — его скорость (x+'+plus+').'},
+        {h:frac('S','x')+' = '+frac('S',v1)+' + '+frac('S','x+'+plus),eq:true,why:'Первый проезжает весь путь 2S, поэтому у него время 2S/x.'}];
+      const varOptions=[
+        {h:'x — скорость первого (он едет весь путь ровно)',ok:true},
+        {h:'x — скорость второго на второй половине'},{h:'x — длина пути'}];
+      const table={head:['','Расстояние','Скорость (км/ч)','Время (ч)'],
+        rows:[tRow('Первый (весь путь)','2S','x'), tRow('Второй, 1-я половина','S',v1), tRow('Второй, 2-я половина','S','x+'+plus)]};
+      const bco=plus-v1;
+      return {quad,rootR,rootUnit:'км/ч',rootWord:'скорость',varOptions,eqOptions,table,stmt,
+        clearHTML:'<div class="eqline">Сократим на S:&nbsp; '+frac(2,'x')+' = '+frac(1,v1)+' + '+frac(1,'x+'+plus)+'</div>'+
+          '<div class="eqline">умножим на '+v1+'·x·(x+'+plus+'):&nbsp; 2·'+v1+'·(x+'+plus+') = x(x+'+plus+') + '+v1+'x</div>'+
+          '<div class="eqline">'+(2*v1)+'x + '+(2*v1*plus)+' = x² + '+(plus+v1)+'x</div>'+
+          '<div class="eqline">x² '+(bco<0?'− '+(-bco):'+ '+bco)+'x − '+(2*v1*plus)+' = 0</div>',
+        checkHTML:'<div class="eqline">Подставим x = '+x+':&nbsp; '+frac(2,x)+' = '+frac(1,v1)+' + '+frac(1,x+plus)+'</div>'+
+          '<div class="eqline">2·'+v1+'·'+(x+plus)+' = '+(2*v1*(x+plus))+',&nbsp;&nbsp;'+x+'·'+(x+plus)+' + '+v1+'·'+x+' = '+(x*(x+plus)+v1*x)+'. Совпало — корень верен.</div>',
+        rejectReason:'Отрицательный корень не подходит: скорость положительна, поэтому x = '+x+'.',
+        viz:{branch:'B',x:x,v1:v1,plus:plus},
+        finalParts:[{label:'Скорость первого автомобиля:',ans:rootR,unit:'км/ч'}]};
+    }
+  },
+  statement(p){return p.stmt;},
+  finalParts(p){return p.finalParts;},
+  steps(p){return quadSteps(p);}
+});
+
+/* ---------- t5: движение по замкнутой трассе (линейное) ---------- */
+MODULES.push({
+  key:'t5', title:'По кругу', cat:'move',
+  blurb:'бегуны на трассе',
+  long:'Двое бегут по круговой трассе. Через час у одного остаётся кусок круга, второй круг уже закончил. Линейное уравнение.',
+  learn(){return ''+
+   '<div class="tcard"><span class="n">1</span><h3>Что происходит</h3>'+
+   '<p class="prose">Два бегуна стартуют вместе. Через <i>1 час</i> первому (он медленнее) остаётся ещё немного до конца первого круга, а второй этот круг уже пробежал — τ минут назад. Длина круга у них одна и та же.</p></div>'+
+   '<div class="tcard"><span class="n">2</span><h3>Две записи одной длины круга</h3>'+
+   '<p>За 1 час первый пробежал x·1 км, ему осталось <b>rem</b> км ⟹ длина круга <span class="kbd">L = x + rem</span>.</p>'+
+   '<p>Второй пробежал круг за (1 − '+frac('τ','60')+') ч (закончил τ мин назад) ⟹ <span class="kbd">L = (x+Δ)·(1 − '+frac('τ','60')+')</span>.</p>'+
+   '<div class="keybox">x + rem = (x+Δ)·(1 − '+frac('τ','60')+')</div></div>'+
+   '<div class="tcard"><span class="n">3</span><h3>Как решать</h3>'+
+   '<p>Раскрываем скобки — получается линейное уравнение, находим x. Здесь x — скорость <b>первого</b> (более медленного) бегуна.</p>'+
+   '<span class="xref">Действия с дробями — задание 6.</span></div>';
+  },
+  gen(){
+    let x,d,tau,rem,guard=0;
+    while(true){ guard++;
+      x=rnd(8,28); d=pick([2,3,5,6,8,9]); tau=pick([3,6,10,12,15,18,20,24,30]);
+      const val=((x+d)*(60-tau))/60 - x;
+      if(Math.abs(val-Math.round(val))>1e-9){ if(guard>9000)break; continue; }
+      rem=Math.round(val);
+      if(rem<1||rem>6){ if(guard>9000)break; continue; }
+      break;
+    }
+    const rootR=Rn.from(x);
+    const reveal=
+      '<div class="eqline">'+rem+' + x = (x + '+d+')·(1 − '+frac(tau,60)+')</div>'+
+      '<div class="eqline">·60:&nbsp; '+(60*rem)+' + 60x = (x + '+d+')·'+(60-tau)+'</div>'+
+      '<div class="eqline">'+tau+'x = '+((60-tau)*d-60*rem)+'&nbsp; ⟹&nbsp; x = '+x+'</div>';
+    const stmt='Два бегуна одновременно стартовали в одном направлении из одного и того же места круговой трассы в беге на несколько кругов. '+
+      'Спустя один час, когда одному из них '+(rem===1?'оставался <b>1 км</b>':'оставалось <b>'+rem+' км</b>')+' до окончания первого круга, '+
+      'ему сообщили, что второй бегун пробежал первый круг <b>'+mins(tau)+'</b> назад. '+
+      '<span class="q">Найдите скорость первого бегуна, если известно, что она на <b>'+d+' км/ч</b> меньше скорости второго.</span>';
+    const varOptions=[
+      {h:'x — скорость первого бегуна (он медленнее); тогда у второго — (x+'+d+') км/ч',ok:true},
+      {h:'x — длина круга'},{h:'x — время бега'}];
+    const eqOptions=[
+      {h:rem+' + x = (x + '+d+')·(1 − '+frac(tau,60)+')',ok:true,eq:true},
+      {h:rem+' + x = (x − '+d+')·(1 − '+frac(tau,60)+')',eq:true,why:'Второй бегун быстрее первого на '+d+' — его скорость (x+'+d+'), а не (x−'+d+').'},
+      {h:rem+' + x = (x + '+d+')·(1 + '+frac(tau,60)+')',eq:true,why:'Второй закончил круг '+tau+' мин НАЗАД — он потратил меньше часа: (1 − '+frac(tau,60)+').'}];
+    return {x,d,tau,rem,rootR,reveal,varOptions,eqOptions,stmt,viz:{x1:x,x2:x+d,rem:rem,L:x+rem},
+      finalParts:[{label:'Скорость первого бегуна:',ans:rootR,unit:'км/ч'}]};
+  },
+  statement(p){return p.stmt;},
+  finalParts(p){return p.finalParts;},
+  steps(p){return [
+    {t:'pick',q:'Что удобно принять за <span class="kbd">x</span>?',options:p.varOptions},
+    {t:'pick',q:'Длину круга можно записать двумя способами и приравнять. Какое уравнение верно?',options:p.eqOptions},
+    {t:'num',q:'Реши линейное уравнение и найди <span class="kbd">x</span>.',ans:p.rootR,unit:'км/ч',revealHTML:p.reveal}
+  ];}
+});
+
+/* ---------- t6: движение по воде (баржа / лодка / теплоход / плот) ---------- */
+MODULES.push({
+  key:'t6', title:'По реке', cat:'move',
+  blurb:'по и против течения',
+  long:'Скорость по течению = собственная + течение, против = собственная − течение. Баржи, лодки, теплоходы, плоты. Квадратное уравнение.',
+  subs:[{k:'barge',label:'Баржа'},{k:'motor',label:'Моторная лодка'},{k:'shipOwn',label:'Теплоход: скорость'},{k:'shipCur',label:'Теплоход: течение'},{k:'raft',label:'Плот и лодка'}],
+  learn(){return ''+
+   '<div class="tcard"><span class="n">1</span><h3>Две скорости</h3>'+
+   '<p class="prose">Течение помогает или мешает. Если собственная скорость судна — x, а течение — c, то:</p>'+
+   '<div class="keybox">по течению: (x + c)&nbsp;&nbsp;·&nbsp;&nbsp;против течения: (x − c)</div>'+
+   '<p class="mini-note">Плот сам не плывёт — он движется со скоростью течения c.</p></div>'+
+   '<div class="tcard"><span class="n">2</span><h3>Собираем время</h3>'+
+   '<p>Время = расстояние ÷ скорость. Дальше читаем, что сказано про <b>сумму</b> или <b>разность</b> времён, про стоянку, про «на столько-то часов больше/меньше».</p>'+
+   mtbl(['','Расст.','Скорость','Время'],[
+     ['По течению','S','x+c',frac('S','x+c')],
+     ['Против','S','x−c',frac('S','x−c')]])+'</div>'+
+   '<div class="tcard"><span class="n">3</span><h3>Виды задач</h3>'+
+   '<p>• <b>Баржа</b>: туда+обратно за T ч. • <b>Лодка</b>: обратно на Δt быстрее. • <b>Теплоход</b>: со стоянкой τ, всего T. • <b>Плот и лодка</b>: лодка выходит на час позже плота.</p>'+
+   '<p>Всегда получается квадратное уравнение; отрицательный корень отбрасываем.</p>'+
+   '<span class="xref">Решение квадратного уравнения — задание 9.</span></div>';
+  },
+  gen(){
+    const sub=this._forceSub||pick(['barge','barge','motor','motor','shipOwn','shipCur','raft','raft']);
+    if(sub==='barge'){
+      let D1,D2,T,c,x,guard=0;
+      while(true){ guard++;
+        x=rnd(8,30); c=pick([2,3,4,5]); D1=rnd(20,120); D2=rnd(20,120);
+        if(x<=c){ if(guard>20000)break; continue; }
+        const Tn=D1/(x+c)+D2/(x-c);
+        if(Math.abs(Tn-Math.round(Tn))>1e-9){ if(guard>20000)break; continue; }
+        T=Math.round(Tn); if(T<3||T>14){ if(guard>20000)break; continue; }
+        if(D1-D2>=T*c){ if(guard>20000)break; continue; } /* keep 2nd root negative */
+        break;
+      }
+      const rootR=Rn.from(x); const quad={a:T,b:-(D1+D2),c:-((D2-D1)*c+T*c*c)};
+      const stmt='Баржа прошла по течению реки <b>'+D1+' км</b> и, повернув обратно, прошла ещё <b>'+D2+' км</b>, затратив на весь путь <b>'+hrs(T)+'</b>. '+
+        '<span class="q">Найдите собственную скорость баржи, если скорость течения реки равна '+c+' км/ч.</span>';
+      return {quad,rootR,rootUnit:'км/ч',rootWord:'скорость',clear:{n1:D1,a1:c,n2:D2,b1:-c,R:T},viz:{legs:[{dist:D1,speed:x+c,dir:1,label:'по течению'},{dist:D2,speed:x-c,dir:-1,label:'против течения'}],stop:0,total:T},stmt,
+        table:{head:['','Расстояние (км)','Скорость (км/ч)','Время (ч)'],rows:[tRow('По течению',D1,'x+'+c),tRow('Против течения',D2,'x−'+c)]},
+        varOptions:[{h:'x — собственная скорость баржи; по течению (x+'+c+'), против (x−'+c+')',ok:true},
+          {h:'x — скорость течения'},{h:'x — время в пути'}],
+        eqOptions:[{h:frac(D1,'x+'+c)+' + '+frac(D2,'x−'+c)+' = '+T,ok:true,eq:true},
+          {h:frac(D1,'x−'+c)+' + '+frac(D2,'x+'+c)+' = '+T,eq:true,why:'По течению скорость больше — это (x+'+c+'); против течения — (x−'+c+').'},
+          {h:frac(D1,'x+'+c)+' − '+frac(D2,'x−'+c)+' = '+T,eq:true,why:'Времена туда и обратно складывают (весь путь занял '+T+' ч), а не вычитают.'}],
+        rejectReason:'Скорость положительна, поэтому берём положительный корень: x = '+x+'.',
+        finalParts:[{label:'Собственная скорость баржи:',ans:rootR,unit:'км/ч'}]};
+    }
+    if(sub==='motor'){
+      let D,dt,c,x,guard=0;
+      while(true){ guard++;
+        x=rnd(10,40); c=pick([2,3,4,5]); D=rnd(100,320);
+        if(x<=c){ if(guard>20000)break; continue; }
+        const v=D/(x-c)-D/(x+c);
+        if(Math.abs(v-Math.round(v))>1e-9){ if(guard>20000)break; continue; }
+        dt=Math.round(v); if(dt<2||dt>6){ if(guard>20000)break; continue; } break;
+      }
+      const rootR=Rn.from(x); const quad={a:dt,b:0,c:-(2*D*c+dt*c*c)};
+      const stmt='Моторная лодка прошла против течения реки <b>'+D+' км</b> и вернулась в пункт отправления, '+
+        'затратив на обратный путь на <b>'+hrs(dt)+'</b> меньше, чем на путь против течения. '+
+        '<span class="q">Найдите скорость лодки в неподвижной воде, если скорость течения реки равна '+c+' км/ч.</span>';
+      return {quad,rootR,rootUnit:'км/ч',rootWord:'скорость',clear:{n1:D,a1:-c,n2:-D,b1:c,R:dt},viz:{legs:[{dist:D,speed:x-c,dir:-1,label:'против течения'},{dist:D,speed:x+c,dir:1,label:'по течению'}],stop:0,total:(D/(x-c)+D/(x+c))},stmt,
+        table:{head:['','Расстояние (км)','Скорость (км/ч)','Время (ч)'],rows:[tRow('Против течения',D,'x−'+c),tRow('По течению',D,'x+'+c)]},
+        varOptions:[{h:'x — собственная скорость лодки; против (x−'+c+'), по течению (x+'+c+')',ok:true},
+          {h:'x — скорость течения'},{h:'x — расстояние'}],
+        eqOptions:[{h:frac(D,'x−'+c)+' − '+frac(D,'x+'+c)+' = '+dt,ok:true,eq:true},
+          {h:frac(D,'x+'+c)+' − '+frac(D,'x−'+c)+' = '+dt,eq:true,why:'Против течения путь дольше — из большего времени вычитают меньшее.'},
+          {h:frac(D,'x−'+c)+' + '+frac(D,'x+'+c)+' = '+dt,eq:true,why:'Здесь разность времён (обратный путь на '+dt+' ч быстрее), а не сумма.'}],
+        rejectReason:'Скорость положительна, поэтому x = '+x+'.',
+        finalParts:[{label:'Скорость лодки в неподвижной воде:',ans:rootR,unit:'км/ч'}]};
+    }
+    if(sub==='shipOwn'){
+      let D,tau,T,c,x,guard=0;
+      while(true){ guard++;
+        x=rnd(12,30); c=pick([3,4,5]); D=rnd(100,200); tau=rnd(8,24);
+        if(x<=c){ if(guard>20000)break; continue; }
+        const Tn=D/(x+c)+tau+D/(x-c);
+        if(Math.abs(Tn-Math.round(Tn))>1e-9){ if(guard>20000)break; continue; }
+        T=Math.round(Tn); if(T<=tau+2){ if(guard>20000)break; continue; } break;
+      }
+      const net=T-tau; const rootR=Rn.from(x); const quad={a:net,b:-2*D,c:-net*c*c};
+      const stmt='Теплоход проходит по течению реки до пункта назначения <b>'+D+' км</b> и после стоянки возвращается в пункт отправления. '+
+        '<span class="q">Найдите скорость теплохода в неподвижной воде,</span> если скорость течения равна '+c+' км/ч, стоянка длится <b>'+hrs(tau)+'</b>, '+
+        'а в пункт отправления теплоход возвращается через <b>'+hrs(T)+'</b> после отплытия из него.';
+      return {quad,rootR,rootUnit:'км/ч',rootWord:'скорость',clear:{n1:D,a1:c,n2:D,b1:-c,R:T-tau},viz:{legs:[{dist:D,speed:x+c,dir:1,label:'по течению'},{dist:D,speed:x-c,dir:-1,label:'против течения'}],stop:tau,total:T},stmt,
+        table:{head:['','Расстояние (км)','Скорость (км/ч)','Время (ч)'],rows:[tRow('По течению',D,'x+'+c),tRow('Против течения',D,'x−'+c)]},
+        varOptions:[{h:'x — собственная скорость теплохода; по течению (x+'+c+'), против (x−'+c+')',ok:true},
+          {h:'x — скорость течения'},{h:'x — время стоянки'}],
+        eqOptions:[{h:frac(D,'x+'+c)+' + '+tau+' + '+frac(D,'x−'+c)+' = '+T,ok:true,eq:true},
+          {h:frac(D,'x+'+c)+' + '+frac(D,'x−'+c)+' = '+T,eq:true,why:'Забыли стоянку — '+tau+' ч тоже входят в общее время до возвращения.'},
+          {h:frac(D,'x+'+c)+' + '+tau+' − '+frac(D,'x−'+c)+' = '+T,eq:true,why:'Оба времени (туда и обратно) прибавляются, а не вычитаются.'}],
+        rejectReason:'Скорость положительна, поэтому x = '+x+'.',
+        finalParts:[{label:'Скорость теплохода в неподвижной воде:',ans:rootR,unit:'км/ч'}]};
+    }
+    if(sub==='shipCur'){
+      let D,tau,T,own,c,guard=0;
+      while(true){ guard++;
+        own=rnd(12,25); c=pick([2,3,4,5,6,7]); D=rnd(100,200); tau=rnd(8,24);
+        if(own<=c){ if(guard>20000)break; continue; }
+        const Tn=D/(own+c)+tau+D/(own-c);
+        if(Math.abs(Tn-Math.round(Tn))>1e-9){ if(guard>20000)break; continue; }
+        T=Math.round(Tn); if(T<=tau+2){ if(guard>20000)break; continue; } break;
+      }
+      const net=T-tau; const rootR=Rn.from(c); const quad={a:net,b:0,c:(2*D*own-net*own*own)};
+      const stmt='Теплоход проходит по течению реки до пункта назначения <b>'+D+' км</b> и после стоянки возвращается в пункт отправления. '+
+        '<span class="q">Найдите скорость течения,</span> если скорость теплохода в неподвижной воде равна '+own+' км/ч, стоянка длится <b>'+hrs(tau)+'</b>, '+
+        'а в пункт отправления теплоход возвращается через <b>'+hrs(T)+'</b> после отплытия из него.';
+      return {quad,rootR,rootUnit:'км/ч',rootWord:'скорость течения',stmt,
+        viz:{legs:[{dist:D,speed:own+c,dir:1,label:'по течению'},{dist:D,speed:own-c,dir:-1,label:'против течения'}],stop:tau,total:T},
+        clearHTML:'<div class="eqline">Умножим на ('+own+'+x)('+own+'−x) = '+own+'² − x²:</div>'+
+          '<div class="eqline">'+D+'·('+own+'−x) + '+D+'·('+own+'+x) = '+net+'·('+own+'² − x²)</div>'+
+          '<div class="eqline">2·'+D+'·'+own+' = '+net+'·'+(own*own)+' − '+net+'x²,&nbsp; т.е. '+(2*D*own)+' = '+(net*own*own)+' − '+net+'x²</div>'+
+          '<div class="eqline">'+net+'x² − '+(net*own*own-2*D*own)+' = 0</div>',
+        checkHTML:'<div class="eqline">Подставим x = '+c+':&nbsp; '+frac(D,own+c)+' + '+frac(D,own-c)+' = '+f2(D/(own+c))+' + '+f2(D/(own-c))+' = '+f2(D/(own+c)+D/(own-c))+'</div>'+
+          '<div class="eqline">Справа было '+net+' — совпало, корень верен.</div>',
+        table:{head:['','Расстояние (км)','Скорость (км/ч)','Время (ч)'],rows:[tRow('По течению',D,own+'+x'),tRow('Против течения',D,own+'−x')]},
+        varOptions:[{h:'x — скорость течения; по течению ('+own+'+x), против ('+own+'−x)',ok:true},
+          {h:'x — собственная скорость теплохода'},{h:'x — время стоянки'}],
+        eqOptions:[{h:frac(D,own+'+x')+' + '+tau+' + '+frac(D,own+'−x')+' = '+T,ok:true,eq:true},
+          {h:frac(D,own+'+x')+' + '+frac(D,own+'−x')+' = '+T,eq:true,why:'Забыли стоянку — '+tau+' ч тоже входят в общее время.'},
+          {h:frac(D,own+'−x')+' + '+tau+' + '+frac(D,own+'+x')+' = '+T+' + x',eq:true,why:'Справа не должно быть лишнего x — общее время равно '+T+' ч.'}],
+        rejectReason:'Скорость течения положительна, поэтому x = '+c+'.',
+        finalParts:[{label:'Скорость течения:',ans:rootR,unit:'км/ч'}]};
+    }
+    /* raft + boat */
+    let D,d,cr,x,guard=0;
+    while(true){ guard++;
+      x=rnd(12,30); cr=pick([3,4,5]); d=rnd(10,60);
+      if(x<=cr){ if(guard>20000)break; continue; }
+      if(d%cr){ if(guard>20000)break; continue; }
+      const rhs=d/cr-1; if(rhs<2){ if(guard>20000)break; continue; }
+      const need=rhs/(1/(x+cr)+1/(x-cr));
+      if(Math.abs(need-Math.round(need))>1e-9){ if(guard>20000)break; continue; }
+      D=Math.round(need); if(D<15||D>120||D<d){ if(guard>20000)break; continue; }
+      break;
+    }
+    const rhs=d/cr-1; const rootR=Rn.from(x); const quad={a:rhs,b:-2*D,c:-rhs*cr*cr};
+    const stmt='Расстояние между пристанями A и B равно <b>'+D+' км</b>. Из A в B по течению реки отправился плот, '+
+      'а через час вслед за ним отправилась моторная лодка, которая, прибыв в пункт B, тотчас повернула обратно и возвратилась в A. '+
+      'К этому времени плот проплыл <b>'+d+' км</b>. '+
+      '<span class="q">Найдите скорость лодки в неподвижной воде, если скорость течения реки равна '+cr+' км/ч.</span>';
+    return {quad,rootR,rootUnit:'км/ч',rootWord:'скорость',clear:{n1:D,a1:cr,n2:D,b1:-cr,R:rhs},viz:{legs:[{dist:D,speed:x+cr,dir:1,label:'по течению'},{dist:D,speed:x-cr,dir:-1,label:'против течения'}],stop:0,total:(D/(x+cr)+D/(x-cr))},stmt,
+      table:{head:['','Расстояние (км)','Скорость (км/ч)','Время (ч)'],rows:[tRow('По течению (туда)',D,'x+'+cr),tRow('Против течения (обратно)',D,'x−'+cr)]},
+      varOptions:[{h:'x — собственная скорость лодки; по течению (x+'+cr+'), против (x−'+cr+')',ok:true},
+        {h:'x — скорость течения'},{h:'x — расстояние между пристанями'}],
+      eqOptions:[{h:frac(D,'x+'+cr)+' + '+frac(D,'x−'+cr)+' = '+(d/cr)+' − 1',ok:true,eq:true},
+        {h:frac(D,'x+'+cr)+' + '+frac(D,'x−'+cr)+' = '+(d/cr)+' + 1',eq:true,why:'Лодка вышла на час ПОЗЖЕ плота — её время на 1 ч меньше, поэтому «− 1».'},
+        {h:frac(D,'x+'+cr)+' + '+frac(D,'x−'+cr)+' = '+(d/cr),eq:true,why:'Забыли вычесть 1 ч: лодка стартовала на час позже плота.'}],
+      rejectReason:'Скорость положительна, поэтому x = '+x+'.',
+      finalParts:[{label:'Скорость лодки в неподвижной воде:',ans:rootR,unit:'км/ч'}]};
+  },
+  statement(p){return p.stmt;},
+  finalParts(p){return p.finalParts;},
+  steps(p){return quadSteps(p);}
+});
+
+/* ---------- t7: длина поезда (перевод единиц) ---------- */
+MODULES.push({
+  key:'t7', title:'Длина поезда', cat:'move',
+  blurb:'поезд и пешеход',
+  long:'Поезд проезжает мимо пешехода за t секунд. Работаем со скоростью сближения и переводом единиц. Уравнения нет — вычисление.',
+  learn(){return ''+
+   '<div class="tcard"><span class="n">1</span><h3>Скорость сближения</h3>'+
+   '<p class="prose">«Проехать мимо пешехода» — значит пройти расстояние, равное <b>длине поезда</b>, относительно пешехода. Берём скорость сближения:</p>'+
+   '<div class="keybox">навстречу: v + u&nbsp;&nbsp;·&nbsp;&nbsp;в том же направлении: v − u</div></div>'+
+   '<div class="tcard"><span class="n">2</span><h3>Переводим единицы</h3>'+
+   '<p>Скорость в км/ч, время в секундах, длина нужна в метрах. Удобно: секунды → часы (÷3600), потом км → метры (×1000).</p>'+
+   '<p class="mini-note">Например, 81 с = '+frac(81,3600)+' ч = '+frac(9,400)+' ч.</p></div>'+
+   '<div class="tcard"><span class="n">3</span><h3>Длина</h3>'+
+   '<div class="keybox">L = (скорость сближения) × (время)</div>'+
+   '<p>Считаем в километрах, затем переводим в метры (×1000).</p>'+
+   '<span class="xref">Проценты и единицы — задания 6 и 12.</span></div>';
+  },
+  gen(){
+    let v,u,t,toward,rel,Lm,guard=0;
+    while(true){ guard++;
+      toward=Math.random()<0.5;
+      v=rnd(36,130); u=pick([3,4,5,6]); t=pick([8,10,12,15,18,24,30,36,45,50,60,72,81]);
+      rel=toward? v+u : v-u;
+      if(rel<=0){ if(guard>20000)break; continue; }
+      if((rel*t)%18){ if(guard>20000)break; continue; }
+      Lm=rel*t*5/18;
+      if(Lm<200||Lm>1400||Lm%50){ if(guard>20000)break; continue; }
+      break;
+    }
+    const km=new Rn(rel*t,3600); const Lr=Rn.from(Lm);
+    const stmt='Поезд, двигаясь равномерно со скоростью <b>'+v+' км/ч</b>, проезжает мимо пешехода, '+
+      (toward? 'идущего по платформе параллельно путям со скоростью <b>'+u+' км/ч</b> навстречу поезду'
+             : 'идущего в том же направлении параллельно путям по платформе со скоростью <b>'+u+' км/ч</b>')+
+      ', за <b>'+secs(t)+'</b>. <span class="q">Найдите длину поезда в метрах.</span>';
+    return {v,u,t,toward,rel,Lm,km,Lr,stmt,viz:{v:v,u:u,t:t,rel:rel,Lm:Lm,toward:toward},
+      finalParts:[{label:'Длина поезда:',ans:Lr,unit:'м'}]};
+  },
+  statement(p){return p.stmt;},
+  finalParts(p){return p.finalParts;},
+  steps(p){
+    const relOpt=[
+      {h:p.v+' + '+p.u+' = '+(p.v+p.u)+' км/ч', ok:p.toward, why:p.toward?undefined:'Пешеход идёт в том же направлении — скорости вычитаются, а не складываются.'},
+      {h:p.v+' − '+p.u+' = '+(p.v-p.u)+' км/ч', ok:!p.toward, why:p.toward?'Пешеход идёт навстречу поезду — скорости складываются.':undefined}];
+    return [
+      {t:'pick',q:'Пешеход движется '+(p.toward?'навстречу':'в том же направлении')+'. Чему равна скорость сближения?',options:relOpt},
+      {t:'num',q:'Длина в километрах = '+p.rel+' км/ч × '+p.t+' с. Переведи время в часы и вычисли.',
+        note:'ответ в километрах', ans:p.km, allowFrac:true, unit:'км',
+        revealHTML:'<div class="eqline">'+p.t+' с = '+frac(p.t,3600)+' ч</div><div class="eqline">'+p.rel+' · '+frac(p.t,3600)+' = '+fmt(p.km)+' км</div>'},
+      {t:'num',q:'Переведи в метры: '+fmt(p.km)+' км × 1000.',ans:p.Lr,unit:'м',
+        revealHTML:'<div class="eqline">'+fmt(p.km)+' · 1000 = '+p.Lm+' м</div>'}
+    ];
+  }
+});
+
+/* ---------- t8: средняя скорость (вычисление) ---------- */
+MODULES.push({
+  key:'t8', title:'Средняя скорость', cat:'move',
+  blurb:'весь путь ÷ всё время',
+  long:'Средняя скорость — это НЕ среднее скоростей. Делим весь путь на всё время. Уравнения нет.',
+  learn(){return ''+
+   '<div class="tcard"><span class="n">1</span><h3>Определение</h3>'+
+   '<div class="keybox">v<sub>ср</sub> = '+frac('весь путь','всё время')+'</div>'+
+   '<div class="warnbox"><b>Частая ошибка:</b> средняя скорость ≠ (v₁+v₂)/2. Просто складывать и делить скорости нельзя!</div></div>'+
+   '<div class="tcard"><span class="n">2</span><h3>Участки заданы в километрах</h3>'+
+   '<p class="prose">Складываем все расстояния, отдельно — все времена (каждое = участок ÷ его скорость), затем делим.</p></div>'+
+   '<div class="tcard"><span class="n">3</span><h3>Две равные половины</h3>'+
+   '<p>Если половины пути равны, а скорости v₁ и v₂, то удобная формула:</p>'+
+   '<div class="keybox">v<sub>ср</sub> = '+frac('2·v₁·v₂','v₁ + v₂')+'</div>'+
+   '<p class="mini-note">Она получается, если взять половину пути за S и сократить.</p>'+
+   '<span class="xref">Действия с дробями — задание 6.</span></div>';
+  },
+  gen(){
+    const half=Math.random()<0.5;
+    if(!half){
+      let vs,ts,segs,S,T,avg,guard=0;
+      while(true){ guard++;
+        const pool=[30,35,40,45,50,55,60,70,80,90,100,105,110];
+        vs=shuffled(pool).slice(0,3); ts=[pick([2,3,4]),pick([2,3,4]),pick([2,3,4])];
+        segs=vs.map((v,i)=>[v*ts[i],v]); S=segs.reduce((a,s)=>a+s[0],0); T=ts.reduce((a,b)=>a+b,0);
+        if(S%T){ if(guard>9000)break; continue; }
+        avg=S/T; if(avg<30||avg>110){ if(guard>9000)break; continue; } break;
+      }
+      const Ss=segs.map(s=>s[0]), Vs=segs.map(s=>s[1]);
+      const stmt='Первые <b>'+Ss[0]+' км</b> автомобиль ехал со скоростью <b>'+Vs[0]+' км/ч</b>, '+
+        'следующие <b>'+Ss[1]+' км</b> — со скоростью <b>'+Vs[1]+' км/ч</b>, '+
+        'а последние <b>'+Ss[2]+' км</b> — со скоростью <b>'+Vs[2]+' км/ч</b>. '+
+        '<span class="q">Найдите среднюю скорость автомобиля на протяжении всего пути.</span>';
+      const avgR=Rn.from(avg);
+      return {half:false,Ss,Vs,S,T,avgR,stmt,ts,viz:{kind:'seg',Ss:Ss,Vs:Vs,avg:avgR.toNumber()},
+        finalParts:[{label:'Средняя скорость:',ans:avgR,unit:'км/ч'}]};
+    } else {
+      let v1,v2,avg,guard=0;
+      const pool=[36,40,42,48,50,60,70,72,78,84,90,96,99,100,105,110];
+      while(true){ guard++;
+        const p2=shuffled(pool).slice(0,2); v1=p2[0]; v2=p2[1];
+        const g=gcdInt(2*v1*v2, v1+v2); let den=(v1+v2)/g;
+        while(den%2===0)den/=2; while(den%5===0)den/=5;
+        if(den!==1){ if(guard>9000)break; continue; }
+        avg=(2*v1*v2)/(v1+v2); break;
+      }
+      const avgR=new Rn(2*v1*v2, v1+v2);
+      const stmt='Первую половину пути автомобиль проехал со скоростью <b>'+v1+' км/ч</b>, '+
+        'а вторую — со скоростью <b>'+v2+' км/ч</b>. '+
+        '<span class="q">Найдите среднюю скорость автомобиля на протяжении всего пути.</span>';
+      return {half:true,v1,v2,avgR,stmt,viz:{kind:'half',v1:v1,v2:v2,avg:avgR.toNumber()},
+        finalParts:[{label:'Средняя скорость:',ans:avgR,unit:'км/ч',allowFrac:true}]};
+    }
+  },
+  statement(p){return p.stmt;},
+  finalParts(p){return p.finalParts;},
+  steps(p){
+    if(!p.half){
+      const revT='<div class="eqline">'+p.ts.map((t,i)=>frac(p.Ss[i],p.Vs[i])+' = '+t).join(' ч,&nbsp; ')+' ч</div>';
+      return [
+        {t:'note',html:'Средняя скорость = весь путь ÷ всё время. Складывать скорости <b>нельзя</b>.'},
+        {t:'num',q:'Найди весь путь S (сумма участков).',ans:Rn.from(p.S),unit:'км',
+          revealHTML:'<div class="eqline">'+p.Ss.join(' + ')+' = '+p.S+' км</div>'},
+        {t:'num',q:'Найди всё время (сумма: участок ÷ скорость).',ans:Rn.from(p.T),unit:'ч',revealHTML:revT+'<div class="eqline">итого '+p.ts.join(' + ')+' = '+p.T+' ч</div>'},
+        {t:'num',q:'Раздели путь на время: v<sub>ср</sub> = '+frac(p.S,p.T)+'.',ans:p.avgR,unit:'км/ч',
+          revealHTML:'<div class="eqline">'+frac(p.S,p.T)+' = '+fmt(p.avgR)+' км/ч</div>'}
+      ];
+    } else {
+      return [
+        {t:'note',html:'Половины пути равны. Средняя скорость ≠ (v₁+v₂)/2 — это ловушка!'},
+        {t:'pick',q:'Какая формула верна для двух равных половин?',options:[
+          {h:'v<sub>ср</sub> = '+frac('2·'+p.v1+'·'+p.v2, p.v1+' + '+p.v2),ok:true,eq:true},
+          {h:'v<sub>ср</sub> = '+frac(p.v1+' + '+p.v2, 2),eq:true,why:'Это среднее арифметическое скоростей — так нельзя: на медленном участке времени больше.'},
+          {h:'v<sub>ср</sub> = '+frac(p.v1+' · '+p.v2, 2),eq:true,why:'Произведение скоростей, делённое на 2, не имеет смысла.'}]},
+        {t:'num',q:'Вычисли v<sub>ср</sub>.',ans:p.avgR,unit:'км/ч',allowFrac:true,
+          revealHTML:'<div class="eqline">'+frac('2·'+p.v1+'·'+p.v2, p.v1+'+'+p.v2)+' = '+frac(2*p.v1*p.v2, p.v1+p.v2)+' = '+fmt(p.avgR)+' км/ч</div>'}
+      ];
+    }
+  }
+});
+
+/* ---------- t9: работа (детали и трубы) — квадратное ---------- */
+MODULES.push({
+  key:'t9', title:'Работа', cat:'work',
+  blurb:'детали, трубы',
+  long:'«Работа = производительность × время». Устроена как задача на движение: путь → работа, скорость → производительность. Квадратное уравнение.',
+  subs:[{k:'parts',label:'Детали (рабочие)'},{k:'pipes',label:'Трубы (резервуар)'}],
+  learn(){return ''+
+   '<div class="tcard"><span class="n">1</span><h3>Три величины</h3>'+
+   '<p class="prose">Работа = производительность × время. Отсюда <b>время = работа ÷ производительность</b> — точно как «время = путь ÷ скорость».</p>'+
+   mtbl(['','Работа','Производит.','Время'],[
+     ['Первый','60','<b>x+Δ</b>',frac('60','x+Δ')],
+     ['Второй','60','<b>x</b>',frac('60','x')]])+'</div>'+
+   '<div class="tcard"><span class="n">2</span><h3>Кто быстрее — тратит меньше времени</h3>'+
+   '<p>Первый делает на Δ деталей в час больше ⟹ он быстрее ⟹ его времени <b>меньше</b> на Δt. Составляем разность времён.</p>'+
+   '<div class="keybox">'+frac('N','медленный')+' − '+frac('N','быстрый')+' = Δt</div></div>'+
+   '<div class="tcard"><span class="n">3</span><h3>Трубы — то же самое</h3>'+
+   '<p>Производительность трубы — литры в минуту, «работа» — объём резервуара. Быстрая труба наполняет за меньшее время.</p>'+
+   '<span class="xref">Решение квадратного уравнения — задание 9.</span></div>';
+  },
+  gen(){
+    const parts=this._forceSub?(this._forceSub==='parts'):(Math.random()<0.5);
+    if(parts){
+      let N,dlt,dt,x,guard=0;
+      while(true){ guard++;
+        x=rnd(5,40); dlt=pick([2,3,4,5,6,9,10]); dt=rnd(1,4);
+        const num=dt*x*(x+dlt);
+        if(num%dlt){ if(guard>9000)break; continue; }
+        N=num/dlt; if(N<40||N>300){ if(guard>9000)break; continue; } break;
+      }
+      const askFirst=Math.random()<0.5;
+      const rootR=Rn.from(x); const quad={a:dt,b:dt*dlt,c:-N*dlt};
+      const stmt='Первый рабочий за час делает на <b>'+det(dlt)+'</b> больше, чем второй, и выполняет заказ, состоящий из <b>'+N+' деталей</b>, '+
+        'на <b>'+hrs(dt)+'</b> быстрее, чем второй рабочий, выполняющий такой же заказ. '+
+        '<span class="q">Сколько деталей в час делает '+(askFirst?'первый':'второй')+' рабочий?</span>';
+      return {quad,rootR,rootUnit:'дет./ч',rootWord:'производительность',clear:{n1:N,a1:0,n2:-N,b1:dlt,R:dt},viz:{kind:'parts',amount:N,fast:x+dlt,slow:x,tfast:N/(x+dlt),tslow:N/x},stmt,
+        table:{head:['','Работа (деталей)','Произв. (дет./ч)','Время (ч)'],rows:[tRow('Первый',N,'x+'+dlt),tRow('Второй',N,'x')]},
+        varOptions:[{h:'x — производительность второго (он медленнее); тогда у первого — (x+'+dlt+') дет./ч',ok:true},
+          {h:'x — весь заказ'},{h:'x — время работы'}],
+        eqOptions:[{h:frac(N,'x')+' − '+frac(N,'x+'+dlt)+' = '+dt,ok:true,eq:true},
+          {h:frac(N,'x+'+dlt)+' − '+frac(N,'x')+' = '+dt,eq:true,why:'Первый быстрее — у него времени меньше. Из большего времени (второго) вычитают меньшее.'},
+          {h:frac(N,'x')+' + '+frac(N,'x+'+dlt)+' = '+dt,eq:true,why:'Здесь разность времён (первый на '+dt+' ч быстрее), а не сумма.'}],
+        rejectReason:'Производительность положительна, поэтому x = '+x+'.',
+        finalParts: askFirst
+          ? [{label:'Производительность первого рабочего (на '+dlt+' больше):',ans:Rn.from(x+dlt),unit:'дет./ч',
+              q:'Первый делает на '+dlt+' деталей больше. Сколько это?',revealHTML:'<div class="eqline">'+x+' + '+dlt+' = '+(x+dlt)+'</div>'}]
+          : [{label:'Производительность второго рабочего:',ans:rootR,unit:'дет./ч'}]};
+    } else {
+      let V,dlt,dt,x,guard=0;
+      while(true){ guard++;
+        x=rnd(8,40); dlt=pick([3,5,9,15,16]); dt=rnd(2,6);
+        if(x<=dlt){ if(guard>9000)break; continue; }
+        const num=dt*x*(x-dlt);
+        if(num%dlt){ if(guard>9000)break; continue; }
+        V=num/dlt; if(V<80||V>300){ if(guard>9000)break; continue; } break;
+      }
+      const askSecond=Math.random()<0.5;
+      const rootR=Rn.from(x); const quad={a:dt,b:-dt*dlt,c:-V*dlt};
+      const stmt='Первая труба пропускает на <b>'+lit(dlt)+' воды в минуту</b> меньше, чем вторая труба. '+
+        '<span class="q">Сколько литров воды в минуту пропускает '+(askSecond
+          ? 'вторая труба, если резервуар объёмом <b>'+V+' литров</b> она заполняет на <b>'+mins(dt)+'</b> быстрее, чем первая труба?'
+          : 'первая труба, если резервуар объёмом <b>'+V+' литров</b> она заполняет на <b>'+mins(dt)+'</b> дольше, чем вторая труба?')+'</span>';
+      return {quad,rootR,rootUnit:'л/мин',rootWord:'производительность',clear:{n1:V,a1:-dlt,n2:-V,b1:0,R:dt},viz:{kind:'pipes',amount:V,fast:x,slow:x-dlt,tfast:V/x,tslow:V/(x-dlt)},stmt,
+        table:{head:['','Объём (л)','Произв. (л/мин)','Время (мин)'],rows:[tRow('Первая труба',V,'x−'+dlt),tRow('Вторая труба',V,'x')]},
+        varOptions:[{h:'x — производительность второй трубы (она быстрее); тогда у первой — (x−'+dlt+') л/мин',ok:true},
+          {h:'x — объём резервуара'},{h:'x — время наполнения'}],
+        eqOptions:[{h:frac(V,'x−'+dlt)+' − '+frac(V,'x')+' = '+dt,ok:true,eq:true},
+          {h:frac(V,'x')+' − '+frac(V,'x−'+dlt)+' = '+dt,eq:true,why:'Первая труба медленнее — наполняет дольше. Из её времени вычитают время второй.'},
+          {h:frac(V,'x−'+dlt)+' + '+frac(V,'x')+' = '+dt,eq:true,why:'Здесь разность времён, а не сумма.'}],
+        rejectReason:'Производительность положительна, поэтому x = '+x+'.',
+        finalParts: askSecond
+          ? [{label:'Производительность второй трубы:',ans:rootR,unit:'л/мин'}]
+          : [{label:'Производительность первой трубы (на '+dlt+' меньше):',ans:Rn.from(x-dlt),unit:'л/мин',
+              q:'Первая труба пропускает на '+dlt+' л/мин меньше. Сколько это?',revealHTML:'<div class="eqline">'+x+' − '+dlt+' = '+(x-dlt)+'</div>'}]};
+    }
+  },
+  statement(p){return p.stmt;},
+  finalParts(p){return p.finalParts;},
+  steps(p){return quadSteps(p);}
+});
+
+/* ---------- t10: сушка фруктов (проценты, вычисление) ---------- */
+MODULES.push({
+  key:'t10', title:'Сушка фруктов', cat:'perc',
+  blurb:'вода уходит, мякоть — нет',
+  long:'При сушке испаряется только вода. Сухое вещество (мякоть) не меняется — на этом и держится решение.',
+  learn(){return ''+
+   '<div class="tcard"><span class="n">1</span><h3>Ключевая мысль</h3>'+
+   '<p class="prose">При сушке уходит <i>вода</i>. Масса сухого вещества (мякоти) <b>остаётся прежней</b> — она никуда не девается. Приравниваем сухое вещество до и после.</p></div>'+
+   '<div class="tcard"><span class="n">2</span><h3>Считаем проценты «наоборот»</h3>'+
+   '<p>Если воды p%, то сухого вещества — (100 − p)%. В свежих обычно много воды, в сухих — мало.</p>'+
+   '<div class="keybox">сухое в свежих = сухое в сухих</div></div>'+
+   '<div class="tcard"><span class="n">3</span><h3>Два шага</h3>'+
+   '<p>1) Находим массу сухого вещества (в тех фруктах, где всё известно). 2) Эта же масса — известный процент других фруктов; делим и находим их массу.</p>'+
+   '<span class="xref">Проценты — задание 6; уравнение — задание 9.</span></div>';
+  },
+  gen(){
+    const forDried=Math.random()<0.5;
+    const pw=pick([79,82,84,85,86,88]), qw=pick([16,23,25,29,30]);
+    if(qw>=pw) return this.gen();
+    if(forDried){
+      let M,X,guard=0;
+      while(true){ guard++;
+        M=rnd(6,80); const num=M*(100-qw);
+        if(num%(100-pw)){ if(guard>4000)break; continue; }
+        X=num/(100-pw); if(X<40||X>600){ if(guard>4000)break; continue; } break;
+      }
+      const dryR=new Rn(M*(100-qw),100), Xr=Rn.from(X);
+      const stmt='Свежие фрукты содержат <b>'+pw+'%</b> воды, а высушенные — <b>'+qw+'%</b>. '+
+        '<span class="q">Сколько требуется свежих фруктов для приготовления '+M+' кг высушенных фруктов?</span>';
+      return {mode:'forDried',pw,qw,M,X,dryR,Xr,stmt,viz:{pw:pw,qw:qw},
+        finalParts:[{label:'Требуется свежих фруктов:',ans:Xr,unit:'кг'}]};
+    } else {
+      let M,X,guard=0;
+      while(true){ guard++;
+        M=rnd(200,500); const num=M*(100-pw);
+        if(num%(100-qw)){ if(guard>4000)break; continue; }
+        X=num/(100-qw); if(X<30||X>200){ if(guard>4000)break; continue; } break;
+      }
+      const dryR=new Rn(M*(100-pw),100), Xr=Rn.from(X);
+      const stmt='Свежие фрукты содержат <b>'+pw+'%</b> воды, а высушенные — <b>'+qw+'%</b>. '+
+        '<span class="q">Сколько сухих фруктов получится из '+M+' кг свежих фруктов?</span>';
+      return {mode:'fromFresh',pw,qw,M,X,dryR,Xr,stmt,viz:{pw:pw,qw:qw},
+        finalParts:[{label:'Получится сухих фруктов:',ans:Xr,unit:'кг'}]};
+    }
+  },
+  statement(p){return p.stmt;},
+  finalParts(p){return p.finalParts;},
+  steps(p){
+    const pick1={t:'pick',q:'При сушке вода испаряется. Что остаётся неизменным?',options:[
+      {h:'масса сухого вещества (мякоти)',ok:true},
+      {h:'масса воды',why:'Именно вода испаряется — её становится меньше.'},
+      {h:'общая масса фруктов',why:'Общая масса уменьшается: часть воды уходит.'}]};
+    if(p.mode==='forDried'){
+      return [pick1,
+        {t:'num',q:'В высушенных фруктах '+(100-p.qw)+'% сухого вещества. Сколько это килограммов от '+p.M+' кг?',ans:p.dryR,unit:'кг',
+          revealHTML:'<div class="eqline">'+p.M+' · '+frac(100-p.qw,100)+' = '+fmt(p.dryR)+' кг</div>'},
+        {t:'num',q:'Столько же сухого вещества в свежих фруктах, где его '+(100-p.pw)+'%. Найди массу свежих.',ans:p.Xr,unit:'кг',
+          revealHTML:'<div class="eqline">'+fmt(p.dryR)+' : '+frac(100-p.pw,100)+' = '+p.X+' кг</div>'}];
+    } else {
+      return [pick1,
+        {t:'num',q:'В свежих фруктах '+(100-p.pw)+'% сухого вещества. Сколько это килограммов от '+p.M+' кг?',ans:p.dryR,unit:'кг',
+          revealHTML:'<div class="eqline">'+p.M+' · '+frac(100-p.pw,100)+' = '+fmt(p.dryR)+' кг</div>'},
+        {t:'num',q:'Столько же сухого вещества в высушенных, где его '+(100-p.qw)+'%. Найди массу сухих.',ans:p.Xr,unit:'кг',
+          revealHTML:'<div class="eqline">'+fmt(p.dryR)+' : '+frac(100-p.qw,100)+' = '+p.X+' кг</div>'}];
+    }
+  }
+});
+
+/* ---------- t11: сплавы и смеси (система уравнений) ---------- */
+MODULES.push({
+  key:'t11', title:'Сплавы и смеси', cat:'perc',
+  blurb:'два раствора, система',
+  long:'Два раствора сливают двумя способами. Ключ — масса чистого вещества = масса × концентрация. Получается система из двух уравнений.',
+  learn(){return ''+
+   '<div class="tcard"><span class="n">1</span><h3>Масса чистого вещества</h3>'+
+   '<div class="keybox">масса кислоты = масса раствора × концентрация</div>'+
+   '<p class="prose">Если раствора m кг, а концентрация a% = '+frac('a','100')+', то кислоты — m·'+frac('a','100')+' кг. Сколько бы растворов ни смешивали, <b>кислота складывается</b>.</p></div>'+
+   '<div class="tcard"><span class="n">2</span><h3>Два условия — два уравнения</h3>'+
+   '<p>• Слили <b>всё</b> ('+'m₁ и m₂ кг): кислоты m₁a + m₂b, а всего (m₁+m₂) при концентрации c%.</p>'+
+   '<p>• Слили <b>поровну</b> (по m кг): (a + b) при концентрации d%. Массы m сокращаются ⟹ a + b = 2d.</p>'+
+   '<div class="keybox">m₁a + m₂b = (m₁+m₂)·c&nbsp;&nbsp;и&nbsp;&nbsp;a + b = 2d</div>'+
+   '<p class="mini-note">Здесь a, b — концентрации в процентах.</p></div>'+
+   '<div class="tcard"><span class="n">3</span><h3>Решаем систему</h3>'+
+   '<p>Из второго уравнения выражаем b = 2d − a и подставляем в первое. Дальше — линейное уравнение.</p>'+
+   '<span class="xref">Системы уравнений — задание 9; проценты — задание 6.</span></div>';
+  },
+  gen(){
+    let m1,m2,c,d,a,b,guard=0;
+    while(true){ guard++;
+      a=rnd(20,90); b=rnd(20,90);
+      if(a===b){ if(guard>9000)break; continue; }
+      m1=pick([4,10,20,22,30]); m2=pick([16,18,20,42]);
+      if(m1===m2){ if(guard>9000)break; continue; }
+      if((m1*a+m2*b)%(m1+m2)){ if(guard>9000)break; continue; }
+      c=(m1*a+m2*b)/(m1+m2);
+      if((a+b)%2){ if(guard>9000)break; continue; }
+      d=(a+b)/2;
+      if(c<1||c>99||d<1||d>99){ if(guard>9000)break; continue; }
+      break;
+    }
+    const massR=new Rn(m1*a,100);
+    const stmt='Имеются два сосуда, содержащие <b>'+m1+' кг</b> и <b>'+m2+' кг</b> раствора кислоты различной концентрации. '+
+      'Если их слить вместе, то получится раствор, содержащий <b>'+c+'%</b> кислоты. '+
+      'Если же слить равные массы этих растворов, то полученный раствор будет содержать <b>'+d+'%</b> кислоты.<br>'+
+      '<span class="q">а)</span> Сколько процентов кислоты содержится в первом растворе?<br>'+
+      '<span class="q">б)</span> Сколько килограммов кислоты содержится в первом растворе?';
+    return {m1,m2,c,d,a,b,massR,stmt,viz:{m1:m1,a:a,m2:m2,b:b,cAll:c,cEq:d},
+      finalParts:[
+        {label:'<b>а)</b> Концентрация кислоты в первом растворе:',ans:Rn.from(a),unit:'%'},
+        {label:'<b>б)</b> Масса кислоты в первом растворе:',ans:massR,unit:'кг',allowFrac:true}]};
+  },
+  statement(p){return p.stmt;},
+  finalParts(p){return p.finalParts;},
+  steps(p){
+    const sys=(l1,l2)=>'<div style="display:flex;gap:9px;align-items:center"><span style="font-size:30px;line-height:1;color:var(--ink-soft)">&#123;</span>'+
+      '<div><div class="eqline" style="margin:2px 0;text-align:left">'+l1+'</div><div class="eqline" style="margin:2px 0;text-align:left">'+l2+'</div></div></div>';
+    const okSys = sys(p.m1+'a + '+p.m2+'b = '+(p.m1+p.m2)+'·'+p.c, 'a + b = 2·'+p.d);
+    const bad1  = sys(p.m1+'a + '+p.m2+'b = '+(p.m1+p.m2)+'·'+p.c, 'a + b = '+p.d);
+    const bad2  = sys(p.m1+'a + '+p.m2+'b = 2·'+p.d, 'a + b = '+(p.m1+p.m2)+'·'+p.c);
+    const total=(p.m1+p.m2)*p.c, cross=2*p.m2*p.d;
+    return [
+      {t:'pick',q:'Что примем за неизвестные?',options:[
+        {h:'a — концентрация 1-го раствора, b — 2-го (в процентах)',ok:true},
+        {h:'a и b — массы растворов',why:'Массы уже известны ('+p.m1+' и '+p.m2+' кг). Ищем концентрации.'},
+        {h:'a — масса кислоты, b — масса воды',why:'Удобнее взять концентрации в процентах, а массу кислоты найти потом.'}]},
+      {t:'pick',q:'Составь систему по двум условиям (всё вместе / поровну).',options:[
+        {h:okSys,ok:true},
+        {h:bad1,why:'При равных массах m они сокращаются, остаётся a + b = 2·'+p.d+', а не = '+p.d+'.'},
+        {h:bad2,why:'Уравнения перепутаны местами: массы кислоты — в первом условии, сумма концентраций — во втором.'}]},
+      {t:'num',q:'Реши систему (b = 2·'+p.d+' − a, подставь) и найди <b>a</b> — концентрацию первого раствора.',ans:Rn.from(p.a),unit:'%',
+        revealHTML:'<div class="eqline">'+p.m1+'a + '+p.m2+'·('+(2*p.d)+' − a) = '+(p.m1+p.m2)+'·'+p.c+' = '+total+'</div>'+
+                   '<div class="eqline">'+(p.m1-p.m2)+'a = '+total+' − '+cross+' = '+(total-cross)+'</div>'+
+                   '<div class="eqline">a = '+p.a+'%</div>'},
+      {t:'num',q:'<b>б)</b> Масса кислоты в первом растворе = '+p.m1+' кг × '+p.a+'%.',ans:p.massR,unit:'кг',allowFrac:true,
+        revealHTML:'<div class="eqline">'+p.m1+' · '+frac(p.a,100)+' = '+fmt(p.massR)+' кг</div>'}
+    ];
+  }
+});
+
+/* ---------- inline theory mini-checks (one per module) ---------- */
+const MINIS={
+  t1:function(){ const tau=pick([36,48,54,24,30,45,12,6]); return {q:'Остановка <b>'+tau+' мин</b> — сколько это часов? (десятичной дробью)', ans:new Rn(tau,60), allowFrac:true}; },
+  t2:function(){ return {q:'Обратно велосипедист ехал <i>быстрее</i>, но с остановкой, и потратил столько же времени, сколько туда. Значит чистое время <i>езды</i> обратно…', options:[
+    {h:'меньше времени туда',ok:true},
+    {h:'больше времени туда',why:'Скорость обратно больше — чистое время езды меньше. Разницу «съедает» остановка.'},
+    {h:'равно времени туда',why:'Равны полные времена (с остановкой), а чистая езда обратно короче.'}]}; },
+  t3:function(){ return {q:'Первый быстрее и приходит раньше. Кто <i>дольше</i> в пути?', options:[
+    {h:'второй (медленный)',ok:true},
+    {h:'первый (быстрый)',why:'Быстрый финиширует раньше — он в пути меньше.'},
+    {h:'одинаково',why:'Раз один приходит раньше, времена разные.'}]}; },
+  t4:function(){ return {q:'В уравнении '+frac('2S','x')+' = '+frac('S','v₁')+' + '+frac('S','v₂')+' на что можно сократить?', options:[
+    {h:'на S',ok:true},
+    {h:'на x',why:'x стоит только в одном слагаемом — на него сократить нельзя.'},
+    {h:'сократить нельзя',why:'S — общий множитель во всех дробях, на него делим.'}]}; },
+  t5:function(){ const tau=pick([15,30,12,6,45,24]); return {q:'Второй закончил круг <b>'+tau+' мин</b> назад — сколько это часов? (дробью или десятичной)', ans:new Rn(tau,60), allowFrac:true}; },
+  t6:function(){ const c=pick([2,3,4,5]); return {q:'Собственная скорость лодки x, течение <b>'+c+' км/ч</b>. Скорость <i>по течению</i> равна…', options:[
+    {h:'x + '+c,ok:true},
+    {h:'x − '+c,why:'По течению река помогает — скорость больше: x + '+c+'.'},
+    {h:c+' − x',why:'Течение медленнее лодки; по течению это x + '+c+'.'}]}; },
+  t7:function(){ return {q:'Поезд и пешеход идут <i>навстречу</i>. Скорости, чтобы найти скорость сближения, нужно…', options:[
+    {h:'сложить',ok:true},
+    {h:'вычесть',why:'Навстречу — сближаются быстрее, скорости складываются.'},
+    {h:'перемножить',why:'Скорости не перемножают.'}]}; },
+  t8:function(){ return {q:'Половины пути пройдены со скоростью 40 и 60 км/ч. Средняя скорость равна 50?', options:[
+    {h:'нет, меньше 50',ok:true},
+    {h:'да, ровно 50',why:'Усреднять скорости нельзя: на 40 км/ч времени больше, средняя ближе к 40 (тут 48).'},
+    {h:'нет, больше 50',why:'Средняя лежит между значениями и ближе к меньшему.'}]}; },
+  t9:function(){ return {q:'Первый рабочий делает <i>больше</i> деталей в час. Кто тратит <i>меньше</i> времени на тот же заказ?', options:[
+    {h:'первый (быстрый)',ok:true},
+    {h:'второй (медленный)',why:'Медленный работает дольше.'},
+    {h:'одинаково',why:'Выше производительность — меньше время.'}]}; },
+  t10:function(){ const w=pick([25,29,16,30,23]); return {q:'В высушенных фруктах <b>'+w+'%</b> воды. Сколько процентов сухого вещества?', options:[
+    {h:(100-w)+'%',ok:true},
+    {h:w+'%',why:'Это доля воды. Сухое вещество — всё остальное: '+(100-w)+'%.'},
+    {h:'100%',why:'Часть — вода ('+w+'%), значит сухого '+(100-w)+'%.'}]}; },
+  t11:function(){ const m=pick([10,20,50,40]); const a=pick([80,87,60,40,55]); return {q:'В <b>'+m+' кг</b> раствора <b>'+a+'%</b> кислоты. Сколько кг кислоты? (десятичной дробью)', ans:new Rn(m*a,100), allowFrac:true}; }
+};
+MODULES.forEach(m=>{ if(MINIS[m.key]) m.mini=MINIS[m.key]; });
+
+/* ============================ INTERACTIVE VISUALS ============================ */
+const SVGNS='http://www.w3.org/2000/svg';
+const V_INK='#1b2436',V_SOFT='#5a6580',V_LINE='#c4cee0',V_INDIGO='#3453d6',V_DEEP='#26379c',V_GREEN='#0f9d6b',V_BLUE='#3f7fe0',V_AMBER='#c47f17',V_WATER='#8fc0ef';
+function sv(tag,a){ const e=document.createElementNS(SVGNS,tag); if(a)for(const k in a)e.setAttribute(k,a[k]); return e; }
+function svT(x,y,str,a){ const t=sv('text',Object.assign({x:x,y:y},a||{})); t.textContent=str; return t; }
+function svgRoot(vb){ const s=sv('svg',{viewBox:vb,class:'viz-svg'}); s.setAttribute('preserveAspectRatio','xMidYMid meet'); return s; }
+function f2(v){ return (Math.round(v*100)/100).toString().replace('.',','); }
+function reduceMotion(){ try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){ return false; } }
+function runAnim(dur,onframe,onend){
+  if(reduceMotion()){ onframe(1); onend&&onend(); return {cancel(){}}; }
+  let start=null,raf=0,cx=false;
+  function step(ts){ if(cx)return; if(start===null)start=ts; const p=Math.min(1,(ts-start)/dur); onframe(p); if(p<1)raf=requestAnimationFrame(step); else onend&&onend(); }
+  raf=requestAnimationFrame(step); return {cancel(){ cx=true; cancelAnimationFrame(raf); }};
+}
+function vslider(min,max,val,step,oninput){ const i=el('input','vslider'); i.type='range'; i.min=min; i.max=max; i.value=val; i.step=step; i.setAttribute('aria-label','регулятор'); i.addEventListener('input',()=>oninput(parseFloat(i.value))); return i; }
+function vcard(host,title,sub){ const c=el('div','vizcard'); c.innerHTML='<div class="vt"><span class="dotpulse"></span>'+title+'</div>'+(sub?'<div class="vizsub">'+sub+'</div>':''); host.appendChild(c); return c; }
+
+/* shared: speed slider that aligns two time-bars (or a target gap) */
+function vp(p,def){ return (p&&p.viz)?p.viz:def; }
+function vizTimeBars(host,cfg){
+  var c=vcard(host,cfg.title,cfg.sub);
+  var rows=cfg.rows||2, W=520, padL=150, padR=64, H=rows*46+22;
+  var s=svgRoot('0 0 '+W+' '+H); c.appendChild(s);
+  var g=sv('g'); s.appendChild(g);
+  var maxT=0; [cfg.min,(cfg.min+cfg.max)/2,cfg.max].forEach(function(xx){ cfg.computeBars(xx).forEach(function(b){ var tot=b.segs.reduce(function(a,x){return a+x.t;},0); if(tot>maxT)maxT=tot; }); });
+  var scale=(W-padL-padR)/maxT;
+  var reado=el('span','vreadout'), cap=el('div','vcap');
+  function draw(x){
+    g.innerHTML='';
+    cfg.computeBars(x).forEach(function(b,i){
+      var y=14+i*46;
+      g.appendChild(svT(padL-10,y+20,b.name,{'text-anchor':'end','font-size':'13','font-weight':'650',fill:V_INK}));
+      var cx=padL;
+      b.segs.forEach(function(seg){ var w=Math.max(0,seg.t*scale);
+        g.appendChild(sv('rect',{x:cx,y:y,width:w,height:31,rx:5,fill:seg.color}));
+        if(w>36&&seg.label) g.appendChild(svT(cx+w/2,y+20,seg.label,{'text-anchor':'middle','font-size':'12','font-weight':'700',fill:'#fff'}));
+        cx+=w; });
+      if(cfg.showHours!==false){ var tot=b.segs.reduce(function(a,x){return a+x.t;},0); g.appendChild(svT(cx+8,y+20,f2(tot)+' ч',{'font-size':'12','font-weight':'700',fill:V_SOFT})); }
+    });
+    var res=cfg.check(x); reado.textContent=x+' '+(cfg.unit||''); cap.className='vcap'+(res.met?' good':''); cap.innerHTML=res.text;
+  }
+  var ctl=el('div','viz-controls'); var lw=el('div','vctl'); lw.appendChild(el('span','vlabel',cfg.sliderLabel+':')); lw.appendChild(reado);
+  ctl.appendChild(lw); ctl.appendChild(vslider(cfg.min,cfg.max,cfg.val,cfg.step||1,draw));
+  c.appendChild(ctl); c.appendChild(cap); draw(cfg.val);
+}
+
+const VIZ={
+  t1:function(host,p){ var V=vp(p,{D:168,v1:15,v2:30,tau:48,T:4,distA:48,distB:120});
+    var c=vcard(host,'Встреча на дороге','Тяни ползунок времени. Первый (из A) стоит '+V.tau+' мин; второй (из B) едет без остановок. Встреча через '+f2(V.T)+' ч.');
+    var W=520,H=150,padx=42,roadY=82,x0=padx,x1=W-padx,len=x1-x0; var s=svgRoot('0 0 '+W+' '+H); c.appendChild(s);
+    s.appendChild(sv('line',{x1:x0,y1:roadY,x2:x1,y2:roadY,stroke:V_LINE,'stroke-width':8,'stroke-linecap':'round'}));
+    s.appendChild(svT(x0,roadY-16,'A',{'font-size':'14','font-weight':'750',fill:V_INK,'text-anchor':'middle'}));
+    s.appendChild(svT(x1,roadY-16,'B',{'font-size':'14','font-weight':'750',fill:V_INK,'text-anchor':'middle'}));
+    s.appendChild(svT((x0+x1)/2,roadY+30,V.D+' км',{'font-size':'12','font-weight':'650',fill:V_SOFT,'text-anchor':'middle'}));
+    var a=sv('circle',{cy:roadY,r:8,fill:V_INDIGO,stroke:'#fff','stroke-width':2}), b=sv('circle',{cy:roadY,r:8,fill:V_GREEN,stroke:'#fff','stroke-width':2});
+    var mk=sv('line',{y1:roadY-22,y2:roadY+22,stroke:V_AMBER,'stroke-width':2,'stroke-dasharray':'3 3',opacity:0}); s.appendChild(mk); s.appendChild(a); s.appendChild(b);
+    var clock=svT(W/2,24,'0,0 ч',{'text-anchor':'middle','font-size':'15','font-weight':'750',fill:V_INDIGO}); s.appendChild(clock);
+    var cap=el('div','vcap'); var rideT=V.distA/V.v1, stopH=Math.max(0,V.T-rideT), ss=Math.min(rideT*0.6,V.T*0.4), se=ss+stopH;
+    function d1(h){ if(h<=ss)return V.v1*h; if(h<=se)return V.v1*ss; return V.v1*(h-stopH); }
+    function XA(km){ return x0+(km/V.D)*len; }
+    function draw(h){ var dA=d1(h),dB=V.v2*h; a.setAttribute('cx',XA(dA)); b.setAttribute('cx',x1-(dB/V.D)*len); clock.textContent=f2(h)+' ч';
+      if(h>=V.T){ mk.setAttribute('x1',XA(V.distA)); mk.setAttribute('x2',XA(V.distA)); mk.setAttribute('opacity',1); cap.className='vcap good'; cap.innerHTML='Встретились: <b>'+V.distB+' км</b> от B ('+V.distA+' км от A).'; }
+      else { mk.setAttribute('opacity',0); cap.className='vcap'; cap.textContent=(h>=ss&&h<=se)?'Первый стоит на остановке…':'Двигай ползунок к '+f2(V.T)+' ч.'; } }
+    var ctl=el('div','viz-controls'); var ro=el('span','vreadout','0,0 ч'); var lw=el('div','vctl'); lw.appendChild(el('span','vlabel','время:')); lw.appendChild(ro);
+    ctl.appendChild(lw); ctl.appendChild(vslider(0,V.T,0,0.1,function(v){ ro.textContent=f2(v)+' ч'; draw(v); }));
+    c.appendChild(ctl); c.appendChild(cap); draw(0);
+  },
+  t2:function(host,p){ var V=vp(p,{D:224,d:2,tau:2,x:14});
+    var lo=Math.max(3,Math.round(V.x-Math.max(6,V.x*0.4))), hi=Math.round(V.x+Math.max(8,V.x*0.5));
+    vizTimeBars(host,{title:'Подбери скорость: время «туда» = время «обратно»',
+      sub:'Тяни ползунок. Верхний брусок — время туда ('+V.D+'/x). Нижний — обратно ('+V.D+'/(x+'+V.d+') + остановка '+V.tau+' ч). Решено, когда бруски равны.',
+      sliderLabel:'x',unit:'км/ч',min:lo,max:hi,val:hi,step:1,rows:2,
+      computeBars:function(x){return [{name:'Туда (A→B)',segs:[{t:V.D/x,color:V_INDIGO,label:'езда'}]},{name:'Обратно (B→A)',segs:[{t:V.D/(x+V.d),color:V_BLUE,label:'езда'},{t:V.tau,color:V_AMBER,label:'стоп'}]}];},
+      check:function(x){ var a=V.D/x,b=V.D/(x+V.d)+V.tau,met=Math.abs(a-b)<0.02; return {met:met,text:met?('Времена равны — уравнение решено! x = '+x+' км/ч.'):('Разница '+f2(Math.abs(a-b))+' ч. '+(a>b?'Увеличь x.':'Уменьши x.'))}; }});
+  },
+  t3:function(host,p){ var V=vp(p,{D:720,d:30,dt:4,x:90});
+    var lo=Math.max(V.d+2,Math.round(V.x-V.x*0.35)), hi=Math.round(V.x+V.x*0.4);
+    vizTimeBars(host,{title:'Подбери скорость: быстрый на '+V.dt+' ч раньше',
+      sub:'Тяни ползунок скорости первого (быстрого). Нижний брусок (медленный) должен быть длиннее ровно на '+V.dt+' ч.',
+      sliderLabel:'x',unit:'км/ч',min:lo,max:hi,val:hi,step:1,rows:2,
+      computeBars:function(x){return [{name:'Первый (быстрый)',segs:[{t:V.D/x,color:V_INDIGO,label:''}]},{name:'Второй (медленный)',segs:[{t:V.D/(x-V.d),color:V_BLUE,label:''}]}];},
+      check:function(x){ var gg=V.D/(x-V.d)-V.D/x,met=Math.abs(gg-V.dt)<0.02; return {met:met,text:met?('Второй дольше ровно на '+V.dt+' ч — решено! x = '+x+' км/ч.'):('Разница '+f2(gg)+' ч (нужно '+V.dt+'). '+(gg>V.dt?'Увеличь x.':'Уменьши x.'))}; }});
+  },
+  t4:function(host,p){ var V=vp(p,{branch:'A',x:64,d:16,w:96,thresh:60}); var A=V.branch==='A';
+    var lo=Math.max((A?V.d:0)+3,Math.round(V.x-V.x*0.35)), hi=Math.round(V.x+V.x*0.3);
+    vizTimeBars(host,{title:'Подбери скорость первого: приезжают вместе',
+      sub:A?('Второй едет половину со скоростью (x−'+V.d+'), половину — '+V.w+'. Совмести бруски. По условию x > '+V.thresh+'.'):('Второй едет половину со скоростью '+V.v1+', половину — быстрее первого на '+V.plus+'. Совмести бруски.'),
+      sliderLabel:'x',unit:'км/ч',min:lo,max:hi,val:hi,step:1,rows:2,showHours:false,
+      computeBars:function(x){ if(A) return [{name:'Первый',segs:[{t:2/x,color:V_INDIGO,label:'весь путь'}]},{name:'Второй',segs:[{t:1/(x-V.d),color:V_BLUE,label:'1-я'},{t:1/V.w,color:'#6aa0e6',label:'2-я'}]}];
+        return [{name:'Первый',segs:[{t:2/x,color:V_INDIGO,label:'весь путь'}]},{name:'Второй',segs:[{t:1/V.v1,color:V_BLUE,label:'1-я'},{t:1/(x+V.plus),color:'#6aa0e6',label:'2-я'}]}]; },
+      check:function(x){ var a=2/x,b=A?(1/(x-V.d)+1/V.w):(1/V.v1+1/(x+V.plus)),met=Math.abs(a-b)<1e-6; return {met:met,text:met?('Времена совпали при x = '+x+' км/ч.'+(A?' (по условию берём x > '+V.thresh+')':'')):('Бруски пока разной длины. '+(a>b?'Увеличь x.':'Уменьши x.'))}; }});
+  },
+  t5:function(host,p){ var V=vp(p,{x1:13,x2:21,rem:1,L:14}); var lap2=(V.L/V.x2)*60, ago=Math.round(60-lap2);
+    var c=vcard(host,'Два бегуна на круге','Тяни ползунок времени (0…60 мин). Первый (медленный, синий) за час не доходит '+V.rem+' км до старта; второй (зелёный) круг уже прошёл. Длина круга = '+V.L+' км.');
+    var W=520,H=250,cx=175,cy=125,R=95; var s=svgRoot('0 0 '+W+' '+H); c.appendChild(s);
+    s.appendChild(sv('circle',{cx:cx,cy:cy,r:R,fill:'none',stroke:V_LINE,'stroke-width':11}));
+    s.appendChild(sv('line',{x1:cx,y1:cy-R-9,x2:cx,y2:cy-R+9,stroke:V_INK,'stroke-width':3}));
+    s.appendChild(svT(cx,cy-R-15,'старт / финиш круга',{'text-anchor':'middle','font-size':'11','font-weight':'700',fill:V_SOFT}));
+    var d1=sv('circle',{r:9,fill:V_INDIGO,stroke:'#fff','stroke-width':2}), d2=sv('circle',{r:9,fill:V_GREEN,stroke:'#fff','stroke-width':2}); s.appendChild(d1); s.appendChild(d2);
+    var clock=svT(cx,cy-2,'0 мин',{'text-anchor':'middle','font-size':'17','font-weight':'750',fill:V_INDIGO}), sub2=svT(cx,cy+20,'',{'text-anchor':'middle','font-size':'11',fill:V_SOFT}); s.appendChild(clock); s.appendChild(sub2);
+    function pos(km){ var fr=(km%V.L)/V.L, ang=(-90+fr*360)*Math.PI/180; return [cx+R*Math.cos(ang),cy+R*Math.sin(ang)]; }
+    var cap=el('div','vcap');
+    function draw(min){ var h=min/60,dist1=V.x1*h,dist2=V.x2*h,p1=pos(dist1),p2=pos(dist2);
+      d1.setAttribute('cx',p1[0]);d1.setAttribute('cy',p1[1]);d2.setAttribute('cx',p2[0]);d2.setAttribute('cy',p2[1]);
+      clock.textContent=Math.round(min)+' мин'; sub2.textContent='1-й: '+f2(dist1)+' км · 2-й: '+f2(dist2)+' км';
+      if(min>=60){ cap.className='vcap good'; cap.innerHTML='За 60 мин 1-й прошёл '+V.x1+' км, осталось '+V.rem+' км ⟹ круг = '+V.x1+' + '+V.rem+' = <b>'+V.L+' км</b>. Второй закончил круг на '+ago+' мин раньше — это «'+ago+' минут назад» из условия.'; }
+      else if(Math.abs(min-lap2)<1.4){ cap.className='vcap'; cap.innerHTML='Сейчас (≈'+Math.round(lap2)+' мин) 2-й пересекает старт. От 60 мин это <b>'+ago+' минут назад</b>.'; }
+      else { cap.className='vcap'; cap.textContent='Двигай к 60 мин.'; } }
+    var ctl=el('div','viz-controls'); var ro=el('span','vreadout','0 мин'); var lw=el('div','vctl'); lw.appendChild(el('span','vlabel','время:')); lw.appendChild(ro);
+    ctl.appendChild(lw); ctl.appendChild(vslider(0,60,0,1,function(v){ ro.textContent=Math.round(v)+' мин'; draw(v); }));
+    c.appendChild(ctl); c.appendChild(cap); draw(0);
+  },
+  t6:function(host,p){ var V=vp(p,{legs:[{dist:88,speed:22,dir:1,label:'по течению'},{dist:72,speed:12,dir:-1,label:'против течения'}],stop:0,total:10});
+    var card=vcard(host,'Рейс по реке','Нажми «Проплыть». По течению лодка идёт быстрее, против — медленнее. Внизу — общее время рейса.');
+    var W=520,H=138; var s=svgRoot('0 0 '+W+' '+H); card.appendChild(s);
+    s.appendChild(sv('rect',{x:0,y:56,width:W,height:46,fill:'#e6f0fb'}));
+    for(var i=0;i<8;i++){ var ax=22+i*64; s.appendChild(sv('path',{d:'M'+ax+' 79 h28 m-6 -5 l6 5 l-6 5',stroke:'#9fc3ea','stroke-width':2,fill:'none'})); }
+    var boat=sv('g'); boat.appendChild(sv('path',{d:'M-20 0 h40 l-7 12 h-26 z',fill:V_INDIGO})); boat.appendChild(sv('rect',{x:-2,y:-15,width:3,height:15,fill:V_DEEP})); boat.appendChild(sv('path',{d:'M1 -15 l12 5 l-12 5 z',fill:V_BLUE}));
+    s.appendChild(boat); boat.setAttribute('transform','translate(42,79)');
+    var clock=svT(W/2,22,'',{'text-anchor':'middle','font-size':'14','font-weight':'750',fill:V_INDIGO}); s.appendChild(clock);
+    var cap=el('div','vcap'), anim=null, lX=42, rX=W-42;
+    var legT=V.legs.map(function(L){return L.dist/L.speed;}), total=legT.reduce(function(a,b){return a+b;},0)+(V.stop||0);
+    function play(){ if(anim)anim.cancel();
+      anim=runAnim(3400,function(pp){ var tmin=pp*total, acc=0, placed=false;
+        for(var k=0;k<V.legs.length;k++){ var L=V.legs[k], d=legT[k];
+          if(tmin<=acc+d+1e-9){ var q=d>0?(tmin-acc)/d:1; var bx=L.dir>0?lX+(rX-lX)*q:rX+(lX-rX)*q; boat.setAttribute('transform','translate('+bx+',79) scale('+L.dir+',1)'); clock.textContent=L.label+' · '+f2(tmin)+' ч'; placed=true; break; } acc+=d; }
+        if(!placed){ boat.setAttribute('transform','translate('+lX+',79) scale(1,1)'); }
+      },function(){ clock.textContent='всего '+f2(total)+' ч'; cap.className='vcap good'; cap.innerHTML=V.legs.map(function(L,k){return L.label+' '+L.dist+'÷'+L.speed+'='+f2(legT[k])+' ч';}).join(';&nbsp; ')+(V.stop?';&nbsp; стоянка '+V.stop+' ч':'')+'.'; });
+    }
+    var ctl=el('div','viz-controls'); var b=el('button','vbtn','▶ Проплыть'); b.onclick=play; ctl.appendChild(b); card.appendChild(ctl); card.appendChild(cap);
+  },
+  t7:function(host,p){ var V=vp(p,{v:36,u:4,t:81,rel:40,Lm:900,toward:true});
+    var c=vcard(host,'Поезд проезжает мимо пешехода','Нажми «Пуск». Поезд '+(V.toward?'идёт навстречу пешеходу':'обгоняет пешехода')+' и полностью минует его за '+V.t+' с. Длина = скорость сближения × время.');
+    var W=520,H=150; var s=svgRoot('0 0 '+W+' '+H); c.appendChild(s);
+    s.appendChild(sv('line',{x1:0,y1:118,x2:W,y2:118,stroke:V_LINE,'stroke-width':2}));
+    s.appendChild(sv('line',{x1:0,y1:74,x2:W,y2:74,stroke:'#b7c0d4','stroke-width':3}));
+    var pedX=430, ped=sv('g'); ped.appendChild(sv('rect',{x:-3,y:104,width:6,height:14,rx:2,fill:V_GREEN})); ped.appendChild(sv('circle',{cx:0,cy:100,r:7,fill:V_GREEN})); s.appendChild(ped);
+    var train=sv('g'); s.appendChild(train); var carW=70,nC=3,tLen=nC*carW+(nC-1)*6;
+    for(var i=0;i<nC;i++) train.appendChild(sv('rect',{x:i*(carW+6),y:48,width:carW,height:34,rx:6,fill:i===nC-1?V_INDIGO:'#4a63d8',stroke:V_DEEP,'stroke-width':1.5}));
+    train.appendChild(sv('polygon',{points:tLen+',48 '+(tLen+22)+',65 '+tLen+',82',fill:V_INDIGO}));
+    var clock=svT(W/2,22,'0,0 с',{'text-anchor':'middle','font-size':'15','font-weight':'750',fill:V_INDIGO}); s.appendChild(clock);
+    var cap=el('div','vcap'), anim=null;
+    function frame(pp){ var startX=-tLen-20,endX=pedX+46,tx=startX+(endX-startX)*pp; train.setAttribute('transform','translate('+tx+',0)'); ped.setAttribute('transform','translate('+(pedX-16*pp*(V.toward?1:-0.4))+',0)'); clock.textContent=f2(V.t*pp)+' с'; }
+    function play(){ if(anim)anim.cancel(); cap.className='vcap'; cap.textContent=''; anim=runAnim(3200,frame,function(){ clock.textContent=V.t+' с'; cap.className='vcap good'; cap.innerHTML='Прошёл мимо за '+V.t+' с. Длина = '+V.rel+'·'+V.t+'/3600·1000 = <b>'+V.Lm+' м</b>.'; }); }
+    var ctl=el('div','viz-controls'); var b=el('button','vbtn','▶ Пуск'); b.onclick=play; var rl=el('span','vlabel'); rl.innerHTML='скорость сближения: '+V.v+(V.toward?' + ':' − ')+V.u+' = <b>'+V.rel+' км/ч</b>';
+    ctl.appendChild(b); ctl.appendChild(rl); c.appendChild(ctl); c.appendChild(cap); frame(0);
+  },
+  t8:function(host,p){ var V=vp(p,{kind:'half',v1:42,v2:48,avg:44.8});
+    var c=vcard(host,'Почему средняя ≠ среднему скоростей','Нажми «Показать». Бруски — это время на участках: где скорость меньше, там времени больше, поэтому средняя ближе к меньшей скорости.');
+    var rows;
+    if(V.kind==='half'){ var g=gcdInt(V.v1,V.v2), S=V.v1*V.v2/g; rows=[['1-я половина ('+V.v1+' км/ч)',S/V.v1],['2-я половина ('+V.v2+' км/ч)',S/V.v2]]; }
+    else { rows=V.Ss.map(function(d,i){ return ['участок '+(i+1)+' ('+V.Vs[i]+' км/ч)', d/V.Vs[i]]; }); }
+    var W=520,H=rows.length*44+18, trackW=W-210-70; var s=svgRoot('0 0 '+W+' '+H); c.appendChild(s);
+    var maxT=0; rows.forEach(function(r){ if(r[1]>maxT)maxT=r[1]; }); var scale=trackW/maxT;
+    var bars=rows.map(function(r,i){ var y=12+i*44;
+      s.appendChild(svT(200,y+20,r[0],{'text-anchor':'end','font-size':'12','font-weight':'650',fill:V_INK}));
+      s.appendChild(sv('rect',{x:208,y:y,width:trackW,height:30,rx:5,fill:'#eef2f9',stroke:'#d3ddec'}));
+      var fill=sv('rect',{x:208,y:y,width:0,height:30,rx:5,fill:i%2?V_BLUE:V_INDIGO}); s.appendChild(fill);
+      var timeT=svT(208+trackW+8,y+20,'',{'font-size':'11.5','font-weight':'700',fill:V_SOFT}); s.appendChild(timeT);
+      return {fill:fill,timeT:timeT,t:r[1]}; });
+    var cap=el('div','vcap'), anim=null;
+    function play(){ if(anim)anim.cancel(); cap.className='vcap'; cap.textContent='';
+      anim=runAnim(1500,function(pp){ bars.forEach(function(bb){ bb.fill.setAttribute('width',bb.t*scale*pp); bb.timeT.textContent=f2(bb.t*pp)+' ч'; }); },function(){ cap.className='vcap good'; cap.innerHTML='Средняя v_ср = <b>'+f2(V.avg)+' км/ч</b>'+(V.kind==='half'?' &nbsp;≠&nbsp; (v₁+v₂)/2 = '+f2((V.v1+V.v2)/2)+' (так нельзя)':''); }); }
+    var ctl=el('div','viz-controls'); var b=el('button','vbtn','▶ Показать'); b.onclick=play; ctl.appendChild(b); c.appendChild(ctl); c.appendChild(cap);
+  },
+  t9:function(host,p){ var V=vp(p,{kind:'pipes',amount:112,fast:21,slow:12,tfast:112/21,tslow:112/12});
+    var pipes=V.kind==='pipes', unitT=pipes?'мин':'ч';
+    var c=vcard(host,pipes?'Две трубы наполняют резервуар':'Два рабочих выполняют заказ','Нажми «Пуск». '+(pipes?'Более мощная труба':'Более быстрый рабочий')+' заканчивает раньше — на '+f2(Math.abs(V.tslow-V.tfast))+' '+unitT+'.');
+    var W=520,H=150; var s=svgRoot('0 0 '+W+' '+H); c.appendChild(s); var x0=170, barW=270;
+    function mkbar(y,label,color){ var g=sv('g'); s.appendChild(g);
+      g.appendChild(svT(x0-10,y+16,label,{'text-anchor':'end','font-size':'12','font-weight':'700',fill:V_INK}));
+      g.appendChild(sv('rect',{x:x0,y:y,width:barW,height:24,rx:5,fill:'#eef2f9',stroke:'#d3ddec'}));
+      var fill=sv('rect',{x:x0,y:y,width:0,height:24,rx:5,fill:color}); g.appendChild(fill);
+      var tt=svT(x0+barW+8,y+16,'0 '+unitT,{'font-size':'12','font-weight':'700',fill:color}); g.appendChild(tt);
+      return {fill:fill,tt:tt}; }
+    var fb=mkbar(36,pipes?'вторая труба':'первый рабочий',V_BLUE), sb=mkbar(88,pipes?'первая труба':'второй рабочий','#8fc0ef');
+    var cap=el('div','vcap'), anim=null, maxT=Math.max(V.tfast,V.tslow);
+    function play(){ if(anim)anim.cancel(); cap.className='vcap'; cap.textContent='';
+      anim=runAnim(3000,function(pp){ var e=maxT*pp; fb.fill.setAttribute('width',barW*Math.min(1,e/V.tfast)); sb.fill.setAttribute('width',barW*Math.min(1,e/V.tslow)); fb.tt.textContent=f2(Math.min(e,V.tfast))+' '+unitT; sb.tt.textContent=f2(Math.min(e,V.tslow))+' '+unitT; },function(){ cap.className='vcap good'; cap.innerHTML=(pipes?'Вторая':'Первый')+' — '+f2(V.tfast)+' '+unitT+', '+(pipes?'первая':'второй')+' — '+f2(V.tslow)+' '+unitT+'. Разница <b>'+f2(V.tslow-V.tfast)+' '+unitT+'</b>.'; });
+    }
+    var ctl=el('div','viz-controls'); var b=el('button','vbtn','▶ Пуск'); b.onclick=play; ctl.appendChild(b); c.appendChild(ctl); c.appendChild(cap);
+  },
+  t10:function(host,p){ var V=vp(p,{pw:88,qw:25}); var dry=100-V.pw, water0=V.pw, waterEnd=dry*V.qw/(100-V.qw);
+    var c=vcard(host,'Сушка: вода уходит, мякоть остаётся','Нажми «Высушить». Синее — вода, зелёное — сухое вещество. Вода испаряется, зелёная часть по массе не меняется — доля сухого растёт с '+dry+'% до '+(100-V.qw)+'%.');
+    var W=520,H=150; var s=svgRoot('0 0 '+W+' '+H); c.appendChild(s);
+    var X0=40,fullW=440,unit=fullW/100,barY=44,barH=46;
+    var water=sv('rect',{x:X0+dry*unit,y:barY,width:water0*unit,height:barH,fill:'#8fc0ef'}), dryR=sv('rect',{x:X0,y:barY,width:dry*unit,height:barH,fill:V_GREEN});
+    s.appendChild(water); s.appendChild(dryR);
+    var frame=sv('rect',{x:X0,y:barY,width:100*unit,height:barH,fill:'none',stroke:V_DEEP,'stroke-width':1.5}); s.appendChild(frame);
+    var tDry=svT(0,barY+barH+18,'',{'font-size':'12','font-weight':'700',fill:'#0a6f4c'}), tWat=svT(0,barY-8,'',{'font-size':'12','font-weight':'700',fill:'#2b6cb0'}); s.appendChild(tDry); s.appendChild(tWat);
+    var cap=el('div','vcap'), anim=null;
+    function render(wm){ var total=dry+wm; water.setAttribute('x',X0+dry*unit); water.setAttribute('width',wm*unit); frame.setAttribute('width',total*unit);
+      var dp=Math.round(dry/total*100); tDry.setAttribute('x',X0+dry*unit/2); tDry.textContent='сухое '+dp+'%'; tWat.setAttribute('x',X0+dry*unit+wm*unit/2); tWat.textContent='вода '+(100-dp)+'%'; }
+    function dryIt(){ if(anim)anim.cancel(); cap.className='vcap'; anim=runAnim(2600,function(pp){ render(water0+(waterEnd-water0)*pp); },function(){ cap.className='vcap good'; cap.innerHTML='Сухое вещество по массе не изменилось. Доля сухого: '+dry+'% → <b>'+(100-V.qw)+'%</b>.'; }); }
+    var ctl=el('div','viz-controls'); var b=el('button','vbtn','☀ Высушить'); b.onclick=dryIt; var b2=el('button','vbtn','↺ Сбросить'); b2.onclick=function(){ if(anim)anim.cancel(); render(water0); cap.className='vcap'; cap.textContent=''; };
+    ctl.appendChild(b); ctl.appendChild(b2); c.appendChild(ctl); c.appendChild(cap); render(water0);
+  },
+  t11:function(host,p){ var V=vp(p,{m1:10,a:87,m2:16,b:35,cAll:55,cEq:61});
+    var c=vcard(host,'Сливаем два раствора','Тёмная часть столбика — кислота. «Слить всё» ('+V.m1+'+'+V.m2+' кг) даёт '+V.cAll+'%. «Слить поровну» — '+V.cEq+'%.');
+    var W=520,H=200; var s=svgRoot('0 0 '+W+' '+H); c.appendChild(s); var maxMass=Math.max(V.m1+V.m2,26);
+    function beaker(x,mass,conc,label){ var g=sv('g'),bw=68,bh=110,by=30; g.appendChild(sv('rect',{x:x,y:by,width:bw,height:bh,fill:'none',stroke:'#94a3bd','stroke-width':2,rx:4}));
+      var fh=bh*Math.min(1,mass/maxMass); g.appendChild(sv('rect',{x:x+3,y:by+bh-fh,width:bw-6,height:fh-3,fill:'#cfe0f5'}));
+      var ah=fh*(conc/100); g.appendChild(sv('rect',{x:x+3,y:by+bh-ah,width:bw-6,height:Math.max(0,ah-1.5),fill:'#3f66c9'}));
+      g.appendChild(svT(x+bw/2,by-8,label,{'text-anchor':'middle','font-size':'11','font-weight':'700',fill:V_INK}));
+      g.appendChild(svT(x+bw/2,by+bh+16,conc+'%',{'text-anchor':'middle','font-size':'12','font-weight':'750',fill:V_DEEP})); s.appendChild(g); }
+    beaker(66,V.m1,V.a,V.m1+' кг'); beaker(164,V.m2,V.b,V.m2+' кг'); s.appendChild(svT(298,96,'→',{'font-size':'26',fill:V_SOFT}));
+    var resHost=sv('g'); s.appendChild(resHost); var cap=el('div','vcap');
+    function result(mass,conc,label){ resHost.innerHTML=''; var x=340,bw=92,bh=122,by=24;
+      resHost.appendChild(sv('rect',{x:x,y:by,width:bw,height:bh,fill:'none',stroke:V_DEEP,'stroke-width':2,rx:4}));
+      var fh=bh*Math.min(1,mass/maxMass); resHost.appendChild(sv('rect',{x:x+3,y:by+bh-fh,width:bw-6,height:fh-3,fill:'#cfe0f5'}));
+      var ah=fh*(conc/100); resHost.appendChild(sv('rect',{x:x+3,y:by+bh-ah,width:bw-6,height:Math.max(0,ah-1.5),fill:'#3f66c9'}));
+      resHost.appendChild(svT(x+bw/2,by+bh+18,label,{'text-anchor':'middle','font-size':'13','font-weight':'750',fill:V_DEEP})); }
+    var ctl=el('div','viz-controls');
+    var b1=el('button','vbtn','Слить всё'); b1.onclick=function(){ result(V.m1+V.m2,V.cAll,V.cAll+'% ('+(V.m1+V.m2)+' кг)'); cap.className='vcap good'; cap.innerHTML='('+V.m1+'·'+V.a+'% + '+V.m2+'·'+V.b+'%) / '+(V.m1+V.m2)+' = <b>'+V.cAll+'%</b>.'; };
+    var b2=el('button','vbtn','Слить поровну'); b2.onclick=function(){ result(20,V.cEq,V.cEq+'%'); cap.className='vcap good'; cap.innerHTML='(a + b)/2 = ('+V.a+' + '+V.b+')/2 = <b>'+V.cEq+'%</b>.'; };
+    ctl.appendChild(b1); ctl.appendChild(b2); c.appendChild(ctl); c.appendChild(cap);
+  }
+};
+MODULES.forEach(m=>{ if(VIZ[m.key]) m.viz=VIZ[m.key]; });
+
+/*__MODULES_INSERT__*/
+
+/* ==================================================================
+   APP CONTROLLER
+   ================================================================== */
+const SCORE={streak:0,best:0};
+const PROG=(function(){ try{ return JSON.parse(localStorage.getItem('oge21_prog')||'{}')||{}; }catch(e){ return {}; } })();
+function saveProg(){ try{ localStorage.setItem('oge21_prog', JSON.stringify(PROG)); }catch(e){} }
+function progTotal(){ let s=0; for(const k in PROG) s+=(PROG[k]||0); return s; }
+function bumpProg(key){ PROG[key]=(PROG[key]||0)+1; saveProg(); updateBadges(); renderScore(); }
+function renderScore(){
+  $('#score').innerHTML='<span class="pill">Решено: <b>'+progTotal()+'</b></span>'+
+              '<span class="pill">Серия: <b>'+SCORE.streak+'</b></span>';
+}
+function updateBadges(){
+  document.querySelectorAll('.chip').forEach(c=>{
+    const key=MODULES[+c.dataset.idx].key; const n=PROG[key]||0;
+    let b=c.querySelector('.cbadge');
+    if(n>0){ if(!b){ b=el('span','cbadge'); c.appendChild(b); } b.textContent=n>99?'99+':n; }
+    else if(b){ b.remove(); }
+  });
+}
+/* sticky "дано" bar built automatically from the bold values in the statement */
+function givenBar(stmtHTML){
+  const raw=[...stmtHTML.matchAll(/<b>(.*?)<\/b>/g)].map(x=>x[1].replace(/<[^>]+>/g,'').replace(/&minus;/g,'−').trim()).filter(Boolean);
+  const seen={}, uniq=[]; raw.forEach(x=>{ if(!seen[x]){seen[x]=1; uniq.push(x);} });
+  if(!uniq.length) return null;
+  const bar=el('div','givenbar');
+  bar.innerHTML='<span class="gl">Дано</span>'+uniq.slice(0,8).map(x=>'<span class="gchip">'+x+'</span>').join('');
+  return bar;
+}
+/* "Показать полное решение" toggle; in Marathon, opening it counts as a reveal */
+function solutionButton(m,getP,isMarathon,onReveal){
+  const wrap=el('div','solrow');
+  const btn=el('button','btn ghost small','Показать полное решение');
+  const panel=el('div'); panel.style.display='none';
+  let shown=false;
+  btn.onclick=()=>{
+    if(!shown){ panel.innerHTML='<div class="solbox"><h4>Полное решение — образец записи</h4>'+fullSolution(m,getP())+'</div>'; panel.style.display=''; btn.textContent='Скрыть решение'; shown=true; if(isMarathon&&onReveal)onReveal(); }
+    else { panel.style.display='none'; btn.textContent='Показать полное решение'; shown=false; }
+  };
+  wrap.appendChild(btn); wrap.appendChild(panel);
+  return {wrap, reset:()=>{ panel.style.display='none'; panel.innerHTML=''; btn.textContent='Показать полное решение'; shown=false; }};
+}
+/* inline theory mini-check */
+function renderMini(m){
+  const box=el('div','minicheck'); box.innerHTML='<div class="ml">Быстрая проверка</div>';
+  const body=el('div'); box.appendChild(body);
+  function go(){
+    body.innerHTML='';
+    const q=m.mini();
+    const qq=el('div','mq'); qq.innerHTML=q.q; body.appendChild(qq);
+    if(q.options){ body.appendChild(choiceGroup(q.options, ()=>{})); }
+    else { body.appendChild(answerField({ans:q.ans,unit:q.unit,allowFrac:q.allowFrac,revealHTML:q.revealHTML}).node); }
+    const r=el('div','btnrow'); const b=el('button','btn more small','Ещё вопрос →'); b.onclick=go; r.appendChild(b); body.appendChild(r);
+  }
+  go(); return box;
+}
+let CUR=0, MODE='learn';
+
+function buildRail(){
+  const rail=$('#rail'); rail.innerHTML='';
+  const byCat={move:[],work:[],perc:[]};
+  MODULES.forEach((m,idx)=>byCat[m.cat].push({m,idx}));
+  ['move','work','perc'].forEach(cat=>{
+    if(!byCat[cat].length)return;
+    const g=el('div','catgroup');
+    g.innerHTML='<div class="catlabel" style="color:'+CAT[cat].color+'"><span class="dot" style="background:'+CAT[cat].color+'"></span>'+CAT[cat].name+'</div>';
+    const chips=el('div','chips');
+    byCat[cat].forEach(({m,idx})=>{
+      const c=el('div','chip'); c.dataset.idx=idx; a11y(c);
+      c.style.setProperty('--c',CAT[cat].color);
+      c.innerHTML='<div class="ct">'+m.title+'</div><div class="cb">'+m.blurb+'</div>';
+      c.onclick=()=>{ CUR=idx; syncRail(); render(); };
+      chips.appendChild(c);
+    });
+    g.appendChild(chips); rail.appendChild(g);
+  });
+  syncRail(); updateBadges();
+}
+function syncRail(){
+  document.querySelectorAll('.chip').forEach(c=>{
+    const on = (+c.dataset.idx===CUR);
+    c.dataset.on = on?'1':'0';
+    if(on){ const cat=MODULES[CUR].cat; c.style.backgroundColor=CATHEX[cat]; c.style.backgroundImage='linear-gradient(160deg,'+CATHEX[cat]+','+CAT[cat].deep+')'; }
+    else { c.style.backgroundColor=''; c.style.backgroundImage=''; }
+  });
+}
+function bindModes(){
+  document.querySelectorAll('.mode').forEach(t=>{
+    a11y(t);
+    t.onclick=()=>{ MODE=t.dataset.mode; syncModes(); render(); };
+  });
+  syncModes();
+}
+function syncModes(){ document.querySelectorAll('.mode').forEach(t=>t.dataset.on = (t.dataset.mode===MODE)?'1':'0'); }
+
+function panelHead(m){
+  const col=CAT[m.cat].color;
+  return '<div class="panel-head"><h1>'+m.title+'</h1><span class="tag" style="background:'+col+'">'+CAT[m.cat].name+'</span><p>'+m.long+'</p></div>';
+}
+
+function subTabs(m){
+  const row=el('div','sub-tabs');
+  function mk(label,val){ const b=el('div','sub-tab'); a11y(b); b.textContent=label; b.dataset.on=((m._forceSub||null)===val)?'1':'0'; b.onclick=()=>{ m._forceSub=val; render(); }; return b; }
+  row.appendChild(mk('Все подтипы',null));
+  m.subs.forEach(function(sb){ row.appendChild(mk(sb.label,sb.k)); });
+  return row;
+}
+function render(){
+  const m=MODULES[CUR]; const host=$('#content'); host.innerHTML='';
+  host.insertAdjacentHTML('beforeend', panelHead(m));
+  if(m.subs) host.appendChild(subTabs(m));
+  if(MODE==='learn') renderLearn(m,host);
+  else if(MODE==='steps') renderStepsMode(m,host);
+  else renderDrill(m,host);
+  try{window.scrollTo({top:($('.rail').offsetTop||0)-70,behavior:'smooth'});}catch(e){}
+}
+
+function renderLearn(m,host){
+  const c=el('div'); c.innerHTML=m.learn(); host.appendChild(c);
+  if(m.viz){ const vh=el('div'); try{ m.viz(vh, m.gen()); }catch(e){ vh.innerHTML=''; } host.appendChild(vh); }
+  if(m.mini) host.appendChild(renderMini(m));
+  const demo=el('div','card');
+  demo.innerHTML='<div style="font-weight:700;margin-bottom:6px">Разбор одной задачи по шагам</div>'+
+    '<div class="problem" data-slot="stmt" style="margin-bottom:12px"></div>';
+  host.appendChild(demo);
+  const slot=$('[data-slot="stmt"]',demo);
+  const stepHost=el('div'); demo.appendChild(stepHost);
+  function go(){ const p=m.gen(); slot.innerHTML=m.statement(p); runSteps(stepHost, m.steps(p), {regen:go}); }
+  go();
+}
+
+let STEPMODE='full';
+function renderStepsMode(m,host){
+  const barSlot=el('div'); host.appendChild(barSlot);
+  const bar=el('div','btnrow'); bar.style.cssText='margin-bottom:2px;justify-content:space-between';
+  const fresh=el('button','btn ghost small','↻ Другая задача');
+  const seg=el('div','modeseg');
+  const segFull=el('button','segbtn'+(STEPMODE==='full'?' on':''),'Подробно');
+  const segShort=el('button','segbtn'+(STEPMODE==='short'?' on':''),'Коротко');
+  seg.appendChild(segFull); seg.appendChild(segShort);
+  bar.appendChild(fresh); bar.appendChild(seg); host.appendChild(bar);
+  const wrap=el('div','card');
+  wrap.innerHTML='<div class="problem" data-slot="stmt" style="margin-bottom:14px"></div>';
+  host.appendChild(wrap);
+  const slot=$('[data-slot="stmt"]',wrap);
+  const vizEl=el('div'); wrap.appendChild(vizEl);
+  const body=el('div'); wrap.appendChild(body);
+  let curP;
+  const sol=solutionButton(m,()=>curP,false); wrap.appendChild(sol.wrap);
+  function render(){
+    const st=m.statement(curP); slot.innerHTML=st;
+    barSlot.innerHTML=''; const gb=givenBar(st); if(gb)barSlot.appendChild(gb);
+    vizEl.innerHTML=''; if(m.viz){ try{ m.viz(vizEl,curP); }catch(e){} }
+    sol.reset(); body.innerHTML='';
+    if(STEPMODE==='full'){ sol.wrap.style.display='none'; runSteps(body, m.steps(curP), {regen:()=>{ curP=m.gen(); render(); }}); }
+    else { // short: answer fields + full-solution button
+      sol.wrap.style.display='';
+      const parts=m.finalParts(curP);
+      parts.forEach(part=>{ const row=el('div'); row.style.margin='10px 0';
+        const lab=el('div'); lab.style.cssText='font-weight:600;font-size:14.5px;margin-bottom:6px'; lab.innerHTML=part.label; row.appendChild(lab);
+        row.appendChild(answerField({ans:part.ans,unit:part.unit,allowFrac:part.allowFrac,revealHTML:part.revealHTML}).node);
+        body.appendChild(row); });
+    }
+  }
+  function go(){ curP=m.gen(); render(); }
+  segFull.onclick=()=>{ STEPMODE='full'; segFull.classList.add('on'); segShort.classList.remove('on'); render(); };
+  segShort.onclick=()=>{ STEPMODE='short'; segShort.classList.add('on'); segFull.classList.remove('on'); render(); };
+  fresh.onclick=go; go();
+}
+
+function renderDrill(m,host){
+  const barSlot=el('div'); host.appendChild(barSlot);
+  const card=el('div','card');
+  card.innerHTML='<div class="problem" data-slot="stmt"></div>';
+  host.appendChild(card);
+  const slot=$('[data-slot="stmt"]',card);
+  const ansHost=el('div'); ansHost.style.marginTop='16px'; card.appendChild(ansHost);
+  const stepHost=el('div'); card.appendChild(stepHost);
+
+  let p, peeked=false, solvedThis=false;
+  const sol=solutionButton(m,()=>p,true,()=>scorePeek()); card.appendChild(sol.wrap);
+  const rowBtns=el('div','btnrow');
+  const byStep=el('button','btn ghost small','Решить по шагам');
+  const vizBtn=m.viz?el('button','btn ghost small','🖼 Рисунок к задаче'):null;
+  const skip=el('button','btn ghost small','↻ Другая задача');
+  const nextB=el('button','btn primary small','Следующая задача →'); nextB.style.display='none';
+  rowBtns.appendChild(byStep); if(vizBtn)rowBtns.appendChild(vizBtn); rowBtns.appendChild(skip); rowBtns.appendChild(nextB); card.appendChild(rowBtns);
+  const vizPanel=el('div'); card.appendChild(vizPanel);
+  let vizShown=false, vizBuilt=false;
+  if(vizBtn) vizBtn.onclick=()=>{
+    if(!vizShown){ if(!vizBuilt){ try{ m.viz(vizPanel,p); }catch(e){} vizBuilt=true; } vizPanel.style.display=''; vizBtn.textContent='Скрыть рисунок'; vizShown=true; scorePeek(); }
+    else { vizPanel.style.display='none'; vizBtn.textContent='🖼 Рисунок к задаче'; vizShown=false; }
+  };
+
+  function scoreOK(){ if(solvedThis)return; solvedThis=true; if(!peeked){ SCORE.streak++; SCORE.best=Math.max(SCORE.best,SCORE.streak); bumpProg(m.key); } }
+  function scorePeek(){ peeked=true; SCORE.streak=0; renderScore(); }
+
+  function go(){
+    p=m.gen(); peeked=false; solvedThis=false;
+    const st=m.statement(p); slot.innerHTML=st;
+    barSlot.innerHTML=''; const gb=givenBar(st); if(gb)barSlot.appendChild(gb);
+    ansHost.innerHTML=''; stepHost.innerHTML=''; nextB.style.display='none'; byStep.style.display=''; sol.reset();
+    if(vizBtn){ vizPanel.innerHTML=''; vizPanel.style.display='none'; vizShown=false; vizBuilt=false; vizBtn.textContent='🖼 Рисунок к задаче'; }
+    const parts=m.finalParts(p); let doneCount=0;
+    parts.forEach(part=>{
+      const row=el('div'); row.style.margin='10px 0';
+      const lab=el('div'); lab.style.fontWeight='600'; lab.style.fontSize='14.5px'; lab.style.marginBottom='6px';
+      lab.innerHTML=part.label; row.appendChild(lab);
+      const af=answerField({ans:part.ans, unit:part.unit, allowFrac:part.allowFrac, revealHTML: part.revealHTML,
+        onDone:(state)=>{ if(state==='peek'){ scorePeek(); nextB.style.display=''; } doneCount++; if(doneCount>=parts.length){ if(!peeked)scoreOK(); nextB.style.display=''; nextB.focus(); } }});
+      row.appendChild(af.node);
+      ansHost.appendChild(row);
+    });
+  }
+  byStep.onclick=()=>{ byStep.style.display='none'; runSteps(stepHost, m.steps(p), {regen:()=>go()}); };
+  skip.onclick=go;
+  nextB.onclick=go;
+  go();
+}
+
+function fillSheet(){
+  const count=parseInt($('#pCount').value,10)||10; const scope=$('#pScope').value;
+  const items=[];
+  for(let i=0;i<count;i++){ const m=(scope==='current')?MODULES[CUR]:MODULES[Math.floor(Math.random()*MODULES.length)]; items.push({m:m,p:m.gen()}); }
+  let h='<h2>ОГЭ · Задание 21 — тренировочный вариант</h2>'+
+    '<div class="pmeta">Имя: __________________     Дата: ____________     Тип: '+(scope==='current'?MODULES[CUR].title:'вперемешку')+'     ·     задач: '+count+'</div>'+
+    '<ol class="plist">';
+  items.forEach(function(it){ h+='<li><div class="ptype">'+it.m.title+'</div><div class="pstmt">'+it.m.statement(it.p)+'</div></li>'; });
+  h+='</ol><div class="pbreak"></div><h3 class="pans-h">Ответы</h3><ol class="pans">';
+  items.forEach(function(it){ const a=it.m.finalParts(it.p).map(function(fp){ return fp.label.replace(/<[^>]+>/g,'').replace(/:\s*$/,'')+' — '+fmt(fp.ans)+(fp.unit?' '+fp.unit:''); }).join('; '); h+='<li>'+a+'</li>'; });
+  h+='</ol>';
+  $('#pSheet').innerHTML=h;
+}
+function closePrintModal(){ const m=$('#printModal'); if(m)m.classList.remove('open'); document.body.classList.remove('pm-open'); }
+function openPrintModal(){
+  let modal=$('#printModal');
+  if(!modal){
+    modal=el('div'); modal.id='printModal';
+    modal.innerHTML='<div class="pbackdrop"></div><div class="pdialog"><div class="ptoolbar">'+
+      '<span class="vlabel">Задач:</span><select id="pCount"><option>5</option><option selected>10</option><option>15</option><option>20</option></select>'+
+      '<select id="pScope"><option value="current">Текущий тип</option><option value="all">Все типы вперемешку</option></select>'+
+      '<button class="btn primary small" id="pGen">Сформировать</button>'+
+      '<span class="grow"></span>'+
+      '<button class="vbtn" id="pPrint">🖨 Печать</button>'+
+      '<button class="btn ghost small" id="pClose">Закрыть</button>'+
+      '</div><div class="psheet" id="pSheet"></div></div>';
+    document.body.appendChild(modal);
+    modal.querySelector('.pbackdrop').onclick=closePrintModal;
+    $('#pClose').onclick=closePrintModal;
+    $('#pPrint').onclick=function(){ try{ window.print(); }catch(e){} };
+    $('#pGen').onclick=fillSheet;
+    $('#pCount').onchange=fillSheet; $('#pScope').onchange=fillSheet;
+  }
+  modal.classList.add('open'); document.body.classList.add('pm-open'); fillSheet();
+}
+
+function init(){
+  buildRail(); bindModes(); renderScore(); render();
+  const pb=$('#printBtn'); if(pb) pb.onclick=openPrintModal;
+}
+window.__T={MODULES:MODULES,Rn:Rn,quadSteps:quadSteps,isqrt:isqrt,fmt:fmt,SCORE:SCORE,progTotal:progTotal,PROG:PROG,fracClearingQuad:fracClearingQuad};
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>

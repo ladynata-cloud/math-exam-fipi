@@ -1,0 +1,1179 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОГЭ. Задание 10: вероятность — тренажёр</title>
+<style>
+:root{
+  --ink:#20324b;        /* чернила */
+  --pen:#1b4fa0;        /* синяя ручка */
+  --green:#1e7a34;      /* зелёная ручка — верно */
+  --red:#c22f2f;        /* красная ручка — показанное */
+  --paper:#fdfcf7;      /* бумага */
+  --cell:#dfe9f2;       /* клетка */
+  --margin:#e88;        /* поля */
+  --hl:#ffe9a8;         /* подсветка листьев B */
+  --cA:rgba(80,140,220,.18);
+  --cB:rgba(230,170,60,.20);
+  --card:#ffffff;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; color:var(--ink);
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:17px; line-height:1.5;
+  background:
+    linear-gradient(to right, transparent 0 44px, var(--margin) 44px 45.5px, transparent 45.5px),
+    repeating-linear-gradient(var(--paper) 0 23px, var(--cell) 23px 24px),
+    repeating-linear-gradient(90deg, var(--paper) 0 23px, var(--cell) 23px 24px),
+    var(--paper);
+}
+.wrap{max-width:880px;margin:0 auto;padding:10px 14px 60px 56px}
+h1{
+  font-family:'Segoe Print','Comic Sans MS',cursive;
+  font-size:1.35em;color:var(--pen);margin:8px 0 2px;
+}
+.sub{font-size:.92em;color:#5a6b83;margin-bottom:8px}
+#selfcheck{font-family:'Segoe Print','Comic Sans MS',cursive;font-size:.8em;padding:2px 10px;border-radius:12px;display:inline-block;margin-bottom:8px}
+#selfcheck.ok{background:#e3f3e6;color:var(--green);border:1px solid #bfe3c6}
+#selfcheck.bad{background:#fde7e7;color:var(--red);border:1px solid #f3bcbc}
+
+nav.tabs{display:flex;gap:6px;position:sticky;top:0;z-index:5;background:var(--paper);padding:6px 0;border-bottom:2px solid var(--cell);flex-wrap:wrap}
+nav.tabs button{
+  font-family:'Segoe Print','Comic Sans MS',cursive;
+  font-size:1em;padding:7px 16px;border:2px solid var(--pen);border-radius:14px 14px 4px 4px;
+  background:#eef4fc;color:var(--pen);cursor:pointer;
+}
+nav.tabs button.on{background:var(--pen);color:#fff}
+section.tab{display:none;padding-top:14px}
+section.tab.on{display:block}
+
+.card{background:var(--card);border:1.5px solid #cdd9e6;border-radius:10px;padding:14px 16px;margin:12px 0;box-shadow:2px 3px 0 rgba(90,110,140,.12)}
+.tnum{font-family:'Segoe Print','Comic Sans MS',cursive;color:var(--pen);font-weight:bold}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.chip{
+  font-family:Georgia,serif;font-size:.92em;padding:6px 12px;border:1.5px solid var(--pen);
+  border-radius:16px;background:#fff;color:var(--pen);cursor:pointer;
+}
+.chip.on{background:var(--pen);color:#fff}
+.chip.q{border-color:#7d8aa0;color:#3d4a60}
+.chip.q.good{background:#e3f3e6;border-color:var(--green);color:var(--green)}
+
+button.act{
+  font-family:'Segoe Print','Comic Sans MS',cursive;font-size:.95em;
+  padding:7px 14px;border-radius:8px;cursor:pointer;margin:4px 6px 4px 0;
+  border:2px solid var(--pen);background:var(--pen);color:#fff;
+}
+button.act.ghost{background:#fff;color:var(--pen)}
+button.act.show{border-color:var(--red);background:#fff;color:var(--red)}
+button.act:disabled{opacity:.45;cursor:default}
+
+input.aw-dec,input.aw-one{
+  font-family:Georgia,serif;font-size:1.05em;width:120px;padding:6px 8px;
+  border:none;border-bottom:2px solid var(--pen);background:transparent;color:var(--pen);
+  outline:none;text-align:center;
+}
+.aw{display:inline-flex;align-items:baseline;gap:4px;flex-wrap:wrap}
+.aw-decwrap,.aw-frwrap{display:inline-flex;align-items:baseline;gap:8px}
+.aw-frwrap[hidden],.aw-decwrap[hidden]{display:none}
+.aw-tog{
+  background:none;border:none;padding:2px 2px;cursor:pointer;
+  font-family:Georgia,serif;font-size:.82em;color:#6a7a90;
+  text-decoration:underline dotted;text-underline-offset:3px;
+}
+.aw-tog:hover{color:var(--pen);text-decoration:underline solid}
+.aw-fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;gap:3px}
+.aw-cell{
+  font-family:Georgia,serif;font-size:1.05em;width:74px;height:32px;text-align:center;padding:0;
+  border:1.6px dashed #9fb6d1;border-radius:5px;background:#eef4fb;color:var(--pen);outline:none;
+}
+.aw-cell:focus{border-style:solid;border-color:var(--pen);background:#fff}
+.aw-bar{width:82px;height:3px;background:var(--ink);border-radius:2px}
+.fb{font-family:'Segoe Print','Comic Sans MS',cursive;font-size:.95em;display:block;margin-top:6px;min-height:1.3em}
+.fb.ok{color:var(--green)}
+.fb.no{color:#8a5a20}
+.fb.warn{color:#7a6a3a}
+
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;line-height:1.15}
+.frac .tt{border-bottom:1.6px solid currentColor;padding:0 5px}
+.frac .bb{padding:0 5px}
+.mnum{padding:0 2px}
+
+.hintbox{background:#fdf7e3;border:1.5px dashed #d8b74a;border-radius:8px;padding:8px 12px;margin:8px 0;font-size:.95em}
+.razbor{background:#fff5f5;border:1.5px solid #eec3c3;border-radius:8px;padding:10px 14px;margin:10px 0}
+.razbor .rz-t{font-family:'Segoe Print','Comic Sans MS',cursive;color:var(--red);margin-bottom:4px}
+.okline{font-family:'Segoe Print','Comic Sans MS',cursive;color:var(--green)}
+.redink{color:var(--red)}
+.greenink{color:var(--green)}
+
+.step{border-left:3px solid var(--cell);padding:6px 0 6px 14px;margin:10px 0}
+.step.done-ok{border-left-color:var(--green)}
+.step.done-show{border-left-color:var(--red)}
+.step .q{margin-bottom:6px}
+
+.figure{display:block;max-width:420px;width:100%;height:auto;margin:10px auto;background:#fff;border:1px solid #dde5ee;border-radius:8px}
+/* интерактивное дерево: маркерные ленты вдоль рёбер */
+.mk-band{stroke:#ffd24d;stroke-width:11;stroke-linecap:round;opacity:0;transition:opacity .25s ease}
+.mk-band.mk-on-ok{opacity:.85;stroke:#7bd493}     /* решил верно — обведено зелёным маркером */
+.mk-band.mk-on-shown{opacity:.7;stroke:#cfd6e0}   /* посмотрел шаг — серый маркер */
+.mk-band.mk-wink{animation:mkwink 1.05s ease-in-out infinite}
+@keyframes mkwink{0%,100%{opacity:0}50%{opacity:.55}}
+.svgt{font-family:Georgia,serif;font-size:17px;fill:var(--ink);text-anchor:middle}
+.svgb{font-weight:bold;font-style:italic}
+
+table.dice{border-collapse:collapse;margin:8px auto;font-size:.85em}
+table.dice td,table.dice th{border:1px solid #b9c8d8;width:2em;height:2em;text-align:center}
+table.dice th{background:#eef4fc;color:var(--pen)}
+table.dice td.hl{background:var(--hl)}
+
+.statbar{font-family:'Segoe Print','Comic Sans MS',cursive;font-size:.9em;background:#eef4fc;border:1.5px solid #c6d6ec;border-radius:8px;padding:8px 12px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.statbar b{color:var(--pen)}
+details.bytype{font-size:.9em;margin-top:6px}
+details.bytype table{border-collapse:collapse}
+details.bytype td,details.bytype th{border:1px solid #cdd9e6;padding:3px 10px;font-size:.92em}
+
+.theory-p{margin:14px 0}
+.theory-p .pn{font-family:'Segoe Print','Comic Sans MS',cursive;color:var(--pen);font-size:1.05em}
+.mini{background:#f6f9fd;border:1.5px solid #d5e2f0;border-radius:8px;padding:10px 12px;margin-top:8px}
+.mini .mq{font-size:.96em}
+.note{font-size:.9em;color:#5a6b83}
+.formula{background:#eef4fc;border-radius:8px;padding:8px 14px;display:inline-block;margin:6px 0;font-size:1.05em}
+
+@media (max-width:560px){
+  body{font-size:16px;background:
+    linear-gradient(to right, transparent 0 20px, var(--margin) 20px 21.5px, transparent 21.5px),
+    repeating-linear-gradient(var(--paper) 0 23px, var(--cell) 23px 24px),
+    repeating-linear-gradient(90deg, var(--paper) 0 23px, var(--cell) 23px 24px),
+    var(--paper);}
+  .wrap{padding:8px 10px 60px 30px}
+  nav.tabs button{font-size:.9em;padding:6px 10px}
+  input.aw-dec,input.aw-one{width:96px}
+  .aw-cell{width:64px;height:30px}
+  .aw-bar{width:72px}
+  button.act{font-size:.9em;padding:7px 10px}
+  .card{padding:12px 12px}
+}
+button:focus-visible,input:focus-visible,.chip:focus-visible{outline:3px solid #7fb0e8;outline-offset:2px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>ОГЭ по математике. Задание 10: вероятность</h1>
+<div class="sub">Три режима: сначала <b>учимся</b>, потом решаем <b>по шагам</b>, затем — <b>марафон</b>. Ошибся — пробуй снова; посмотрел решение — рядом появится свежая похожая задача для второй попытки. Ответ вводим десятичной дробью (0,25) или, нажав «ввести дробью», обыкновенной.</div>
+<span id="selfcheck">самопроверка…</span>
+
+<nav class="tabs">
+<button id="tabb-uch" class="on" onclick="showTab('uch')">Учимся</button>
+<button id="tabb-step" onclick="showTab('step')">Пошагово</button>
+<button id="tabb-mar" onclick="showTab('mar')">Марафон</button>
+</nav>
+
+<section class="tab on" id="tab-uch"><div id="uch-root"></div></section>
+<section class="tab" id="tab-step">
+  <div class="card">
+    <div><b>Выбери тип задачи:</b></div>
+    <div class="chips" id="step-chips"></div>
+  </div>
+  <div id="step-root"></div>
+</section>
+<section class="tab" id="tab-mar">
+  <div class="statbar" id="mar-stats"></div>
+  <div class="card">
+    <div><b>Какие задачи решаем:</b></div>
+    <div class="chips" id="mar-chips"></div>
+  </div>
+  <div id="mar-root"></div>
+</section>
+</div>
+<script>
+/* ===== ЯДРО: точная арифметика и парсер ответов ===== */
+function gcdB(a,b){a=a<0n?-a:a;b=b<0n?-b:b;while(b){[a,b]=[b,a%b];}return a;}
+function F(n,d){ // дробь n/d, BigInt, нормализованная
+  n=BigInt(n); d=BigInt(d===undefined?1:d);
+  if(d===0n) throw new Error('den=0');
+  if(d<0n){n=-n;d=-d;}
+  const g=gcdB(n,d)||1n;
+  return {n:n/(g||1n), d:d/(g||1n)};
+}
+function fAdd(a,b){return F(a.n*b.d+b.n*a.d, a.d*b.d);}
+function fMul(a,b){return F(a.n*b.n, a.d*b.d);}
+function fSub(a,b){return F(a.n*b.d-b.n*a.d, a.d*b.d);}
+function fEq(a,b){return a.n===b.n && a.d===b.d;}
+function fCmp(a,b){const l=a.n*b.d, r=b.n*a.d; return l<r?-1:(l>r?1:0);}
+// десятичная запись, если знаменатель вида 2^a*5^b; иначе null
+function fToDec(f){
+  let d=f.d, t2=0n, t5=0n;
+  while(d%2n===0n){d/=2n;t2++;}
+  while(d%5n===0n){d/=5n;t5++;}
+  if(d!==1n) return null;
+  const k=t2>t5?t2:t5;
+  const scale=10n**k;
+  let v=f.n*scale/f.d;
+  const neg=v<0n; if(neg)v=-v;
+  let s=v.toString().padStart(Number(k)+1,'0');
+  const kk=Number(k);
+  let out = kk===0 ? s : s.slice(0,s.length-kk)+','+s.slice(s.length-kk);
+  if(kk>0) out=out.replace(/,?0+$/,'').replace(/,$/,'');
+  return (neg?'\u2212':'')+out;
+}
+// округление до 10^-p, возвращает дробь
+function fRound(f,p){
+  const scale=10n**BigInt(p);
+  const num=f.n*scale*2n, den=f.d*2n; // округление half-up для положительных
+  let q=num/den, r=num%den;
+  if(r*2n>=den) q+=1n;
+  // q = round(f*scale) при f>=0 (у нас вероятности >=0)
+  const exact=f.n*scale, fl=exact/f.d, rem=exact%f.d;
+  q=fl; if(rem*2n>=f.d) q+=1n;
+  return F(q,scale);
+}
+function fIsTerm(f){return fToDec(f)!==null;}
+// строка вида "0,25" | "0.25" | "3/8" | "5" -> дробь или null
+function parseAns(s){
+  if(s==null) return null;
+  s=String(s).trim().replace(/\u2212/g,'-').replace(/\s+/g,'');
+  if(!s) return null;
+  let m=s.match(/^(-?\d+)\/(\d+)$/);
+  if(m){ if(BigInt(m[2])===0n) return null; return F(m[1],m[2]); }
+  m=s.match(/^(-?)(\d+)(?:[.,](\d+))?$/);
+  if(m){
+    const sign=m[1]==='-'?-1n:1n;
+    const ip=BigInt(m[2]), fp=m[3]||'';
+    const den=10n**BigInt(fp.length);
+    return F(sign*(ip*den+BigInt(fp||'0')), den);
+  }
+  return null;
+}
+// две части этажного ввода -> дробь
+function parsePair(numS,denS){
+  numS=String(numS||'').trim(); denS=String(denS||'').trim();
+  if(!/^\d+$/.test(numS)||!/^\d+$/.test(denS)) return null;
+  if(BigInt(denS)===0n) return null;
+  return F(numS,denS);
+}
+/* ГСЧ с сидом (mulberry32) — для фазз-тестов воспроизводимо */
+function RNG(seed){
+  let a=seed>>>0;
+  return function(){
+    a|=0; a=(a+0x6D2B79F5)|0;
+    let t=Math.imul(a^(a>>>15),1|a);
+    t=(t+Math.imul(t^(t>>>7),61|t))^t;
+    return ((t^(t>>>14))>>>0)/4294967296;
+  };
+}
+function makePick(rnd){
+  return {
+    ri:(a,b)=>a+Math.floor(rnd()*(b-a+1)),
+    of:(arr)=>arr[Math.floor(rnd()*arr.length)],
+    shuf:(arr)=>{const c=arr.slice();for(let i=c.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[c[i],c[j]]=[c[j],c[i]];}return c;}
+  };
+}
+/* HTML этажной дроби */
+function fracHTML(f){
+  if(f.d===1n) return '<span class="mnum">'+f.n.toString()+'</span>';
+  return '<span class="frac"><span class="tt">'+f.n.toString()+'</span><span class="bb">'+f.d.toString()+'</span></span>';
+}
+function fracHTMLraw(n,d){
+  return '<span class="frac"><span class="tt">'+n+'</span><span class="bb">'+d+'</span></span>';
+}
+/* красивое представление ответа: десятичная (если есть) и дробь */
+function ansHTML(f){
+  const dec=fToDec(f);
+  if(dec!==null && f.d!==1n) return dec+' (или '+fracHTMLcopy(f)+')';
+  if(dec!==null) return dec;
+  return fracHTMLcopy(f);
+}
+function fracHTMLcopy(f){return fracHTML(f);}
+if(typeof module!=='undefined') module.exports={F,fAdd,fMul,fSub,fEq,fCmp,fToDec,fRound,fIsTerm,parseAns,parsePair,RNG,makePick,fracHTML,fracHTMLraw,ansHTML};
+/* ===== ГЕНЕРАТОРЫ ЗАДАНИЯ 10 (вероятность) =====
+   Каждый генератор: (pick) -> task
+   task = {code, name, text, svg?, answer(Frac), needRound?, meta, hints[2], steps[], razbor}
+   step = {q, ans(Frac), show}  — вопросы про приём, ответы точные      */
+if(typeof module!=='undefined'){ Object.assign(globalThis, require('./p2_core.js')); }
+
+const NICE_DEN=[10,20,25,40,50]; // знаменатели с конечной десятичной записью
+const ONE=F(1), ZERO=F(0);
+
+function pStep(q,ans,show){return {q,ans,show};}
+function probStepText(){return 'Раздели число благоприятных исходов на число всех исходов.';}
+
+/* --- 10.1 равновозможные исходы --- */
+function gen101(pk){
+  const N=pk.of([10,20,25,40,50,80]);
+  const k=pk.ri(1,N-1);
+  const ans=F(k,N);
+  const text=`В случайном опыте ровно <b>${N}</b> равновозможных элементарных событий. Событию <i>A</i> благоприятствуют <b>${k}</b> из них. Найдите вероятность события <i>A</i>.`;
+  return {
+    code:'10.1', name:'Равновозможные исходы', text, answer:ans,
+    meta:{N,k},
+    hints:[
+      'Вероятность — это доля благоприятных исходов среди всех. Что здесь «все исходы», а что «благоприятные»?',
+      `Формула: P(A)&nbsp;=&nbsp;${fracHTMLraw('N(A)','N')}. Здесь N(A)&nbsp;=&nbsp;${k}, N&nbsp;=&nbsp;${N}.`
+    ],
+    steps:[
+      pStep('Сколько всего равновозможных исходов в опыте?',F(N),`Всего исходов N = ${N} — это число прямо названо в условии.`),
+      pStep('Сколько исходов благоприятствуют событию A?',F(k),`Благоприятных исходов N(A) = ${k}.`),
+      pStep('Найди вероятность: '+probStepText(),ans,`P(A) = ${k} : ${N}.`)
+    ],
+    razbor:`Все ${N} исходов равновозможны, благоприятных — ${k}. Значит P(A)&nbsp;=&nbsp;${fracHTMLraw(k,N)}&nbsp;=&nbsp;${fracHTML(ans)}${fToDec(ans)!==null?'&nbsp;=&nbsp;'+fToDec(ans):''}.`
+  };
+}
+
+/* --- 10.2 один выбор предмета --- */
+const OBJ102=[
+  {what:'значков', one:'значок', verb:'Покупатель наугад берёт один значок'},
+  {what:'магнитов', one:'магнит', verb:'Продавец наугад достаёт один магнит'},
+  {what:'брелоков', one:'брелок', verb:'Ученик наугад вытягивает один брелок'},
+  {what:'леденцов', one:'леденец', verb:'Ребёнок не глядя берёт один леденец'},
+  {what:'воздушных шариков', one:'шарик', verb:'Аниматор наугад берёт один шарик'}
+];
+const COLORS=[['красных','красным'],['синих','синим'],['зелёных','зелёным'],['жёлтых','жёлтым'],['оранжевых','оранжевым'],['фиолетовых','фиолетовым']];
+function gen102(pk){
+  const obj=pk.of(OBJ102);
+  const [c1,c2]=pk.shuf(COLORS).slice(0,2);
+  const total=pk.of(NICE_DEN);
+  const a=pk.ri(2,total-2), b=total-a;
+  const askFirst=pk.ri(0,1)===0;
+  const fav=askFirst?a:b, cAsk=askFirst?c1:c2;
+  const ans=F(fav,total);
+  const text=`В коробке лежат <b>${a}</b> ${c1[0]} и <b>${b}</b> ${c2[0]} ${obj.what}. ${obj.verb}. Найдите вероятность того, что он окажется ${cAsk[1]}.`;
+  return {
+    code:'10.2', name:'Один выбор предмета', text, answer:ans,
+    meta:{a,b,total,fav},
+    hints:[
+      `Сначала посчитай, сколько всего ${obj.what} в коробке — и лишь потом дели.`,
+      `P&nbsp;=&nbsp;${fracHTMLraw('нужные','все')}&nbsp;=&nbsp;${fracHTMLraw(fav,a+'&nbsp;+&nbsp;'+b)}.`
+    ],
+    steps:[
+      pStep(`Сколько всего ${obj.what} в коробке?`,F(total),`Всего: ${a} + ${b} = ${total}.`),
+      pStep(`Сколько из них ${cAsk[0]} (благоприятные исходы)?`,F(fav),`Благоприятных: ${fav}.`),
+      pStep('Найди вероятность: '+probStepText(),ans,`P = ${fav} : ${total}.`)
+    ],
+    razbor:`Всего предметов: ${a}&nbsp;+&nbsp;${b}&nbsp;=&nbsp;${total}. Благоприятных (${cAsk[0]}): ${fav}. P&nbsp;=&nbsp;${fracHTMLraw(fav,total)}&nbsp;=&nbsp;${fToDec(ans)}.`
+  };
+}
+
+/* --- 10.3 два выбора без возвращения, первый известен --- */
+function gen103(pk){
+  const obj=pk.of([['фишек','фишка','фишки'],['пуговиц','пуговица','пуговицы'],['бусин','бусина','бусины']]);
+  const cc=pk.shuf([['оранжевых','оранжевой','оранжевая'],['фиолетовых','фиолетовой','фиолетовая'],['голубых','голубой','голубая'],['розовых','розовой','розовая']]).slice(0,2);
+  const totalAfter=pk.of([10,20,25,50]); // всего минус один — красивый знаменатель
+  const total=totalAfter+1;
+  const g=pk.ri(2,total-2); // нужного цвета, >=2
+  const y=total-g;
+  const ans=F(g-1,totalAfter);
+  const [cG,cY]=cc;
+  const text=`В мешочке лежат <b>${g}</b> ${cG[0]} и <b>${y}</b> ${cY[0]} ${obj[0]}. Наугад, не глядя, по очереди достают две ${obj[2]}. Известно, что первая ${obj[1]} оказалась ${cG[2]}. Найдите вероятность того, что вторая ${obj[1]} тоже окажется ${cG[2]}.`;
+  return {
+    code:'10.3', name:'Выбор без возвращения', text, answer:ans,
+    meta:{g,y,total},
+    hints:[
+      `Одну ${cG[2].replace('ая','ую')} ${obj[1].replace('а','у')} уже достали. Пересчитай, что осталось в мешочке.`,
+      `Осталось всего ${total}&nbsp;−&nbsp;1&nbsp;=&nbsp;${totalAfter}, из них ${cG[0]}: ${g}&nbsp;−&nbsp;1&nbsp;=&nbsp;${g-1}. P&nbsp;=&nbsp;${fracHTMLraw(g-1,totalAfter)}.`
+    ],
+    steps:[
+      pStep(`Сколько всего ${obj[0]} осталось в мешочке после первого извлечения?`,F(totalAfter),`Было ${total}, одну достали: ${total} − 1 = ${totalAfter}.`),
+      pStep(`Сколько среди оставшихся ${cG[0]} ${obj[0]}?`,F(g-1),`Было ${g}, одну ${cG[2].replace('ая','ую')} уже достали: ${g} − 1 = ${g-1}.`),
+      pStep('Найди вероятность для второго извлечения: '+probStepText(),ans,`P = ${g-1} : ${totalAfter}.`)
+    ],
+    razbor:`Первая ${obj[1]} уже вынута, назад её не возвращают. Осталось ${total}&nbsp;−&nbsp;1&nbsp;=&nbsp;${totalAfter} ${obj[0]}, из них нужного цвета ${g}&nbsp;−&nbsp;1&nbsp;=&nbsp;${g-1}. P&nbsp;=&nbsp;${fracHTMLraw(g-1,totalAfter)}&nbsp;=&nbsp;${fToDec(ans)}. Главное — уменьшить <b>оба</b> числа: и нужные, и общее.`
+  };
+}
+
+/* --- 10.4 монета: известны частоты --- */
+function gen104(pk){
+  const N=pk.of([10,20,25,50]);
+  const h=pk.ri(3,N-3);
+  const t=N-h;
+  const k=pk.ri(2,N-1);
+  const ans=F(t,N);
+  const ord=k===2?'втором':k===3?'третьем':k+'-м';
+  const text=`Монету бросили <b>${N}</b> раз. Известно, что орёл выпал ровно <b>${h}</b> раз. Найдите вероятность того, что при <b>${ord}</b> броске выпала решка.`;
+  return {
+    code:'10.4', name:'Монета и частоты', text, answer:ans,
+    meta:{N,h,t},
+    hints:[
+      'Ответ «одна вторая» здесь не подходит: количество орлов уже известно. Сколько тогда было решек?',
+      `Решек: ${N}&nbsp;−&nbsp;${h}&nbsp;=&nbsp;${t}. Все ${N} позиций бросков равновозможны, значит P&nbsp;=&nbsp;${fracHTMLraw(t,N)}.`
+    ],
+    steps:[
+      pStep('Сколько раз выпала решка?',F(t),`Решек: ${N} − ${h} = ${t}.`),
+      pStep('Сколько всего было бросков (позиций)?',F(N),`Всего бросков: ${N}. Номер броска на ответ не влияет — все позиции равноправны.`),
+      pStep('Найди вероятность: '+probStepText(),ans,`P = ${t} : ${N}.`)
+    ],
+    razbor:`Раз орлов ${h}, то решек ${N}&nbsp;−&nbsp;${h}&nbsp;=&nbsp;${t}. При известном числе решек каждая из ${N} позиций одинаково «претендует» на решку, поэтому P&nbsp;=&nbsp;${fracHTMLraw(t,N)}&nbsp;=&nbsp;${fToDec(ans)}. Типичная ловушка — автоматически ответить 0,5.`
+  };
+}
+
+/* --- 10.5 две игральные кости --- */
+function countPairs(pred){let c=0;for(let a=1;a<=6;a++)for(let b=1;b<=6;b++)if(pred(a,b))c++;return c;}
+function gen105(pk){
+  const kind=pk.of(['eq','set','range','even']);
+  let condText, pred, condShort;
+  if(kind==='eq'){
+    const s=pk.ri(4,10);
+    condText=`в сумме выпадет <b>${s}</b> очков`; condShort=`сумма = ${s}`;
+    pred=(a,b)=>a+b===s;
+  }else if(kind==='set'){
+    const s=pk.ri(3,8);
+    condText=`в сумме выпадет <b>${s}</b>, <b>${s+1}</b> или <b>${s+2}</b> очка`; condShort=`сумма ${s}, ${s+1} или ${s+2}`;
+    pred=(a,b)=>a+b>=s&&a+b<=s+2;
+  }else if(kind==='range'){
+    const lo=pk.ri(4,6), hi=lo+pk.ri(2,3);
+    condText=`сумма очков будет не меньше <b>${lo}</b> и не больше <b>${hi}</b>`; condShort=`${lo} ≤ сумма ≤ ${hi}`;
+    pred=(a,b)=>a+b>=lo&&a+b<=hi;
+  }else{
+    const even=pk.ri(0,1)===0;
+    condText=`сумма очков окажется ${even?'чётной':'нечётной'}`; condShort=`сумма ${even?'чётная':'нечётная'}`;
+    pred=(a,b)=>((a+b)%2===0)===even;
+  }
+  const cnt=countPairs(pred);
+  const ans=F(cnt,36);
+  const needRound=!fIsTerm(ans);
+  const text=`Игральный кубик бросают дважды. Найдите вероятность того, что ${condText}.`+(needRound?' Результат округлите до сотых.':'');
+  const rounded=needRound?fRound(ans,2):null;
+  return {
+    code:'10.5', name:'Две игральные кости', text, answer:ans, needRound, rounded,
+    meta:{kind,cnt,condShort,pred},
+    hints:[
+      'Исход опыта — упорядоченная пара (первый бросок; второй бросок). Сколько всего таких пар?',
+      `Всего пар 6&nbsp;·&nbsp;6&nbsp;=&nbsp;36. Пересчитай пары, где ${condShort}: их ${cnt}. P&nbsp;=&nbsp;${fracHTMLraw(cnt,36)}${needRound?' ≈ '+fToDec(rounded):''}.`
+    ],
+    steps:[
+      pStep('Сколько всего равновозможных пар (первый бросок; второй бросок)?',F(36),'Каждый бросок даёт 6 вариантов: 6 · 6 = 36 пар. Считать 11 «сумм» нельзя — они не равновозможны!'),
+      pStep(`Сколько пар благоприятных (${condShort})? Переберите по таблице 6×6.`,F(cnt),`Благоприятных пар: ${cnt}.`),
+      pStep('Найди вероятность'+(needRound?' и округли до сотых':'')+': '+probStepText(),ans,`P = ${cnt} : 36`+(needRound?` ≈ ${fToDec(rounded)}`:'')+'.')
+    ],
+    razbor:`Всего исходов 6&nbsp;·&nbsp;6&nbsp;=&nbsp;36 пар. Благоприятных (${condShort}): ${cnt}. P&nbsp;=&nbsp;${fracHTMLraw(cnt,36)}&nbsp;=&nbsp;${fracHTML(ans)}${needRound?'&nbsp;≈&nbsp;'+fToDec(rounded):(fToDec(ans)!==null?'&nbsp;=&nbsp;'+fToDec(ans):'')}. Помни: пары (2;&nbsp;5) и (5;&nbsp;2) — разные исходы.`
+  };
+}
+
+/* --- 10.6 дерево случайного опыта --- */
+function decF(t){return F(t,10);} // десятые
+function gen106(pk){
+  const p1=pk.ri(1,9);                 // левая ветвь 1 уровня, в десятых
+  const q1=pk.ri(1,9), q2=pk.ri(1,9);  // «верхние» ветви 2 уровня
+  const P1=decF(p1), P2=decF(10-p1), Q1=decF(q1), Q1c=decF(10-q1), Q2=decF(q2), Q2c=decF(10-q2);
+  const leafP=[fMul(P1,Q1),fMul(P1,Q1c),fMul(P2,Q2),fMul(P2,Q2c)];
+  // событие B: 2 листа
+  const idx=pk.shuf([0,1,2,3]).slice(0,2).sort();
+  const ans=fAdd(leafP[idx[0]],leafP[idx[1]]);
+  const leafLbl=[0,1,2,3].map(i=>idx.includes(i)?'B':pk.of(['C','D','K','M']));
+  // подстрахуемся от совпадений подписей не-B листьев — не критично, но сделаем разными
+  const others=['C','D','K','M'];let oi=0;
+  for(let i=0;i<4;i++) if(!idx.includes(i)) leafLbl[i]=others[oi++];
+  const edges=[fToDec(P1),fToDec(P2),fToDec(Q1),fToDec(Q1c),fToDec(Q2),fToDec(Q2c)];
+  const svg=treeInteractiveSVG(edges,leafLbl);
+  const pathTxt=i=>{
+    const first=i<2?fToDec(P1):fToDec(P2);
+    const second=[fToDec(Q1),fToDec(Q1c),fToDec(Q2),fToDec(Q2c)][i];
+    return `${first} · ${second}`;
+  };
+  const text=`На рисунке показано дерево некоторого случайного опыта. Событию <i>B</i> благоприятствуют исходы, листья которых отмечены буквой <i>B</i>. Найдите вероятность события <i>B</i>.`;
+  const leafPdec=leafP.map(f=>fToDec(f));
+  const pA=fToDec(leafP[idx[0]]), pB=fToDec(leafP[idx[1]]);
+  return {
+    code:'10.6', name:'Дерево вероятностей', text, svg, answer:ans,
+    meta:{edges,idx,leafP:leafPdec,lbl:leafLbl},
+    razborSVG:treeSolveSVG(edges,leafLbl,idx,leafPdec,fToDec(ans)),
+    hints:[
+      'Вдоль пути от корня к листу вероятности перемножают, а вероятности разных благоприятных листьев складывают.',
+      `Листья B: P&nbsp;=&nbsp;${pathTxt(idx[0])}&nbsp;+&nbsp;${pathTxt(idx[1])}.`
+    ],
+    steps:[
+      pStep(`Найди вероятность первого листа B: перемножь вероятности на рёбрах пути (${pathTxt(idx[0])}).`,leafP[idx[0]],`${pathTxt(idx[0])} = ${fToDec(leafP[idx[0]])}. По пути — умножаем, а не складываем!`),
+      pStep(`Найди вероятность второго листа B (${pathTxt(idx[1])}).`,leafP[idx[1]],`${pathTxt(idx[1])} = ${fToDec(leafP[idx[1]])}.`),
+      pStep('Сложи вероятности всех листьев B.',ans,`${fToDec(leafP[idx[0]])} + ${fToDec(leafP[idx[1]])} = ${fToDec(ans)}.`)
+    ],
+    razbor:`Смотри на выделенные зелёным пути к листьям B. <b>Шаг 1 — умножаем вдоль каждого пути:</b> верхний лист B — ${pathTxt(idx[0])}&nbsp;=&nbsp;${pA}; второй лист B — ${pathTxt(idx[1])}&nbsp;=&nbsp;${pB}. <b>Шаг 2 — складываем листья B:</b> P(B)&nbsp;=&nbsp;${pA}&nbsp;+&nbsp;${pB}&nbsp;=&nbsp;<b>${fToDec(ans)}</b>.`
+  };
+}
+function treeSVG(edges,lbl){
+  // корень (40,110) -> узлы (170,50)/(170,170) -> листья (320, 15/85/135/205)
+  const B='var(--ink)';
+  const leafY=[16,88,136,208];
+  let s=`<svg viewBox="0 0 400 230" class="figure" role="img" aria-label="Дерево случайного опыта">`;
+  const line=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${B}" stroke-width="1.6"/>`;
+  const node=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="var(--paper)" stroke="${B}" stroke-width="1.6"/>`;
+  const txt=(x,y,t,cls)=>`<text x="${x}" y="${y}" class="${cls||'svgt'}">${t}</text>`;
+  s+=line(46,110,164,52)+line(46,110,164,168);
+  s+=line(176,50,312,leafY[0])+line(176,50,312,leafY[1]);
+  s+=line(176,170,312,leafY[2])+line(176,170,312,leafY[3]);
+  s+=node(40,110,7)+node(170,50,7)+node(170,170,7);
+  for(let i=0;i<4;i++){
+    const isB=lbl[i]==='B';
+    s+=`<circle cx="320" cy="${leafY[i]}" r="13" fill="${isB?'var(--hl)':'var(--paper)'}" stroke="${B}" stroke-width="1.6"/>`;
+    s+=txt(320,leafY[i]+5,lbl[i],'svgt svgb');
+  }
+  s+=txt(96,66,edges[0])+txt(96,158,edges[1]);
+  s+=txt(240,18,edges[2])+txt(240,86,edges[3]);
+  s+=txt(240,140,edges[4])+txt(240,212,edges[5]);
+  return s+'</svg>';
+}
+/* дерево-решение: пути к листьям B подсвечены, у каждого — произведение, снизу — сумма */
+function treeSolveSVG(edges,lbl,bIdx,leafPdec,sumDec){
+  const INK='var(--ink)', HL='var(--green)', DIM='#c3cee0';
+  const leafY=[16,88,136,208];
+  const secondEdge=[2,3,4,5];
+  const isB=i=>bIdx.indexOf(i)>=0;
+  const L=(x1,y1,x2,y2,hl)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${hl?HL:DIM}" stroke-width="${hl?4:1.6}" stroke-linecap="round"/>`;
+  const T=(x,y,t)=>`<text x="${x}" y="${y}" class="svgt">${t}</text>`;
+  let s=`<svg viewBox="0 0 470 272" class="figure" role="img" aria-label="Дерево: выделены пути к листьям B, показаны произведения и сумма">`;
+  // тусклые базовые рёбра
+  s+=L(46,110,164,52,false)+L(46,110,164,168,false);
+  s+=L(176,50,312,leafY[0],false)+L(176,50,312,leafY[1],false);
+  s+=L(176,170,312,leafY[2],false)+L(176,170,312,leafY[3],false);
+  // подсвеченные пути к листьям B (умножаем вдоль них)
+  for(const i of bIdx){
+    if(i<2){s+=L(46,110,164,52,true)+L(176,50,312,leafY[i],true);}
+    else{s+=L(46,110,164,168,true)+L(176,170,312,leafY[i],true);}
+  }
+  const topHL=isB(0)||isB(1), botHL=isB(2)||isB(3);
+  const N=(x,y,hl)=>`<circle cx="${x}" cy="${y}" r="7" fill="var(--paper)" stroke="${hl?HL:INK}" stroke-width="${hl?2.6:1.6}"/>`;
+  s+=N(40,110,bIdx.length>0)+N(170,50,topHL)+N(170,170,botHL);
+  for(let i=0;i<4;i++){
+    const hl=isB(i);
+    s+=`<circle cx="320" cy="${leafY[i]}" r="13" fill="${hl?'var(--hl)':'var(--paper)'}" stroke="${hl?HL:INK}" stroke-width="${hl?2.6:1.6}"/>`;
+    s+=`<text x="320" y="${leafY[i]+5}" class="svgt svgb">${lbl[i]}</text>`;
+  }
+  s+=T(96,66,edges[0])+T(96,158,edges[1]);
+  s+=T(240,18,edges[2])+T(240,86,edges[3]);
+  s+=T(240,140,edges[4])+T(240,212,edges[5]);
+  // произведения вдоль путей — рядом с листьями B
+  for(const i of bIdx){
+    const first=i<2?edges[0]:edges[1];
+    const second=edges[secondEdge[i]];
+    s+=`<text x="341" y="${leafY[i]+5}" class="svgt" style="text-anchor:start;font-size:13px;fill:${HL}">${first}\u00b7${second}=${leafPdec[i]}</text>`;
+  }
+  // сумма благоприятных листьев — внизу
+  const parts=bIdx.map(i=>leafPdec[i]).join(' + ');
+  s+=`<text x="235" y="258" class="svgt svgb" style="fill:${HL}">P(B) = ${parts} = ${sumDec}</text>`;
+  return s+'</svg>';
+}
+/* интерактивное дерево (вопрос): под каждым ребром — скрытая маркерная лента mk-<key> */
+function treeInteractiveSVG(edges,lbl){
+  const INK='var(--ink)';
+  const leafY=[16,88,136,208];
+  const bands=[
+    ['r0',46,110,164,52],['r1',46,110,164,168],
+    ['0',176,50,312,leafY[0]],['1',176,50,312,leafY[1]],
+    ['2',176,170,312,leafY[2]],['3',176,170,312,leafY[3]]
+  ];
+  let s=`<svg viewBox="0 0 400 230" class="figure" role="img" aria-label="Дерево случайного опыта">`;
+  for(const [k,x1,y1,x2,y2] of bands) s+=`<line class="mk-band mk-${k}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+  const line=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${INK}" stroke-width="1.6"/>`;
+  for(const [,x1,y1,x2,y2] of bands) s+=line(x1,y1,x2,y2);
+  const node=(x,y)=>`<circle cx="${x}" cy="${y}" r="7" fill="var(--paper)" stroke="${INK}" stroke-width="1.6"/>`;
+  s+=node(40,110)+node(170,50)+node(170,170);
+  for(let i=0;i<4;i++){
+    const isB=lbl[i]==='B';
+    s+=`<circle cx="320" cy="${leafY[i]}" r="13" fill="${isB?'var(--hl)':'var(--paper)'}" stroke="${INK}" stroke-width="1.6"/>`;
+    s+=`<text x="320" y="${leafY[i]+5}" class="svgt svgb">${lbl[i]}</text>`;
+  }
+  const T=(x,y,t)=>`<text x="${x}" y="${y}" class="svgt">${t}</text>`;
+  s+=T(96,66,edges[0])+T(96,158,edges[1]);
+  s+=T(240,18,edges[2])+T(240,86,edges[3]);
+  s+=T(240,140,edges[4])+T(240,212,edges[5]);
+  return s+'</svg>';
+}
+function treeEdgeKeysForLeaf(i){ return [(i<2?'r0':'r1'), String(i)]; }
+const TREE_KEYS=['r0','r1','0','1','2','3'];
+function gen107(pk){
+  const mode=pk.of(['counts','probs']);
+  let onlyA,inter,onlyB,outside,total,answer,evKey,evText,fav,areaHTML,metaExtra;
+  const EVENTS=[
+    ['A','произойдёт событие <i>A</i>', r=>r.onlyA+r.inter],
+    ['B','произойдёт событие <i>B</i>', r=>r.onlyB+r.inter],
+    ['AiB','события <i>A</i> и <i>B</i> произойдут одновременно', r=>r.inter],
+    ['AuB','произойдёт хотя бы одно из событий <i>A</i>, <i>B</i>', r=>r.onlyA+r.inter+r.onlyB],
+    ['AnotB','произойдёт событие <i>A</i>, но не произойдёт <i>B</i>', r=>r.onlyA]
+  ];
+  const ev=pk.of(EVENTS);
+  if(mode==='counts'){
+    total=pk.of([20,25,50]);
+    // разбиение total на 4 положительные части
+    do{
+      onlyA=pk.ri(2,total-6); inter=pk.ri(1,total-onlyA-4);
+      onlyB=pk.ri(2,total-onlyA-inter-1); outside=total-onlyA-inter-onlyB;
+    }while(outside<1);
+    const r={onlyA,inter,onlyB,outside};
+    fav=ev[2](r);
+    answer=F(fav,total);
+    evKey=ev[0]; evText=ev[1];
+    metaExtra={mode,onlyA,inter,onlyB,outside,total,fav,evKey};
+  }else{
+    // вероятности в сотых, сумма 1
+    total=100;
+    do{
+      onlyA=pk.ri(5,55); inter=pk.ri(5,Math.min(40,95-onlyA));
+      onlyB=pk.ri(5,Math.max(5,99-onlyA-inter)); outside=100-onlyA-inter-onlyB;
+    }while(outside<1||onlyB<1);
+    const r={onlyA,inter,onlyB,outside};
+    fav=ev[2](r);
+    answer=F(fav,100);
+    evKey=ev[0]; evText=ev[1];
+    metaExtra={mode,onlyA,inter,onlyB,outside,total:100,fav,evKey};
+  }
+  const show=v=>mode==='counts'?String(v):fToDec(F(v,100));
+  const svg=eulerSVG(show(onlyA),show(inter),show(onlyB),show(outside));
+  const text= mode==='counts'
+    ? `На диаграмме Эйлера показаны события <i>A</i> и <i>B</i>. В каждой области указано число равновозможных элементарных исходов, которые в неё входят. Найдите вероятность того, что ${evText}.`
+    : `На диаграмме Эйлера показаны события <i>A</i> и <i>B</i>. В каждой области указана её вероятность. Найдите вероятность того, что ${evText}.`;
+  const zoneNames={A:'обе части круга A (включая пересечение)',B:'обе части круга B (включая пересечение)',AiB:'только пересечение кругов',AuB:'все три области внутри кругов',AnotB:'часть круга A без пересечения'};
+  const regCount={A:2,B:2,AiB:1,AuB:3,AnotB:1}[evKey]; // из скольких областей состоит событие
+  const oneReg=regCount===1;
+  const steps= mode==='counts' ? [
+    pStep(`Сколько исходов входит в нужное событие? Нужные области: ${zoneNames[evKey]}.`,F(fav),`Благоприятных исходов: ${fav}.`),
+    pStep('Сколько всего элементарных исходов (сложи ВСЕ четыре области, включая внешнюю)?',F(total),`Всего: ${onlyA} + ${inter} + ${onlyB} + ${outside} = ${total}.`),
+    pStep('Найди вероятность: '+probStepText(),answer,`P = ${fav} : ${total} = ${fToDec(answer)}.`)
+  ] : [
+    oneReg
+      ? pStep(`Сколько областей входит в событие? Всего одна — ${zoneNames[evKey]}. Её вероятность указана на диаграмме; запиши её.`,answer,`Область одна (${zoneNames[evKey]}), складывать нечего — просто списываем её вероятность: ${fToDec(answer)}.`)
+      : pStep(`Какие области входят в событие? (${zoneNames[evKey]}.) Сложи их вероятности.`,answer,`Сумма вероятностей нужных областей: ${fToDec(answer)}.`)
+  ];
+  return {
+    code:'10.7', name:'Диаграмма Эйлера', text, svg, answer,
+    meta:metaExtra,
+    hints:[
+      evKey==='AiB'?'Пересечение — это «и то, и другое»: центральная линза диаграммы.':
+      evKey==='AuB'?'«Хотя бы одно» — это объединение: закрась мысленно оба круга целиком.':
+      'Круг A — это ВСЁ внутри левой окружности, включая пересечение с B. Не забудь про линзу в середине.',
+      mode==='counts'
+        ? `Нужные области: ${zoneNames[evKey]}. Их сумма — благоприятные исходы; дели на общее число исходов ${total} (внешнюю область тоже считаем в общее!).`
+        : (oneReg
+            ? `Событию отвечает ровно одна область — ${zoneNames[evKey]}. Её вероятность прямо написана на диаграмме: её и надо записать. Складывать и делить ничего не нужно.`
+            : `Нужные области: ${zoneNames[evKey]}. Здесь указаны сразу вероятности — просто сложи их, делить ни на что не нужно.`)
+    ],
+    steps,
+    razbor: mode==='counts'
+      ? `Событие («${evKey==='AiB'?'A и B':evKey==='AuB'?'A или B':evKey==='AnotB'?'A без B':evKey}») занимает области: ${zoneNames[evKey]} — всего ${fav} исходов. Общее число исходов: ${onlyA}&nbsp;+&nbsp;${inter}&nbsp;+&nbsp;${onlyB}&nbsp;+&nbsp;${outside}&nbsp;=&nbsp;${total}. P&nbsp;=&nbsp;${fracHTMLraw(fav,total)}&nbsp;=&nbsp;${fToDec(answer)}.`
+      : (oneReg
+          ? `На диаграмме сразу даны вероятности областей. Событие занимает ровно одну область — ${zoneNames[evKey]}, поэтому P&nbsp;=&nbsp;${fToDec(answer)} — это просто её вероятность. Складывать нечего, делить не нужно: сумма всех четырёх областей и так равна 1.`
+          : `На диаграмме уже даны вероятности областей. Нужные области: ${zoneNames[evKey]}. Складываем их: P&nbsp;=&nbsp;${fToDec(answer)}. Делить на что-либо не нужно — сумма всех четырёх областей и так равна 1.`)
+  };
+}
+function eulerSVG(a,i,b,out){
+  return `<svg viewBox="0 0 400 210" class="figure" role="img" aria-label="Диаграмма Эйлера">
+<rect x="8" y="8" width="384" height="194" rx="10" fill="none" stroke="var(--ink)" stroke-width="1.4"/>
+<circle cx="160" cy="105" r="72" fill="var(--cA)" stroke="var(--ink)" stroke-width="1.6"/>
+<circle cx="240" cy="105" r="72" fill="var(--cB)" stroke="var(--ink)" stroke-width="1.6"/>
+<text x="98" y="40" class="svgt svgb"><tspan font-style="italic">A</tspan></text>
+<text x="302" y="40" class="svgt svgb"><tspan font-style="italic">B</tspan></text>
+<text x="122" y="112" class="svgt">${a}</text>
+<text x="200" y="112" class="svgt">${i}</text>
+<text x="278" y="112" class="svgt">${b}</text>
+<text x="360" y="192" class="svgt">${out}</text>
+</svg>`;
+}
+
+const GENS={'10.1':gen101,'10.2':gen102,'10.3':gen103,'10.4':gen104,'10.5':gen105,'10.6':gen106,'10.7':gen107};
+const TYPE_LIST=[
+  ['10.1','Равновозможные исходы'],
+  ['10.2','Один выбор предмета'],
+  ['10.3','Без возвращения'],
+  ['10.4','Монета и частоты'],
+  ['10.5','Две кости'],
+  ['10.6','Дерево вероятностей'],
+  ['10.7','Диаграмма Эйлера']
+];
+function genTask(code,pk){return GENS[code](pk);}
+function genRandom(pk){return genTask(pk.of(TYPE_LIST.map(t=>t[0])),pk);}
+
+/* проверка пользовательского ответа против задачи (честные варианты) */
+function checkAnswer(task,userF){
+  if(!userF) return false;
+  if(fEq(userF,task.answer)) return true;
+  if(task.needRound && task.rounded && fEq(userF,task.rounded)) return true;
+  return false;
+}
+
+/* ===== САМОПРОВЕРКА (фазз) ===== */
+function selfTest(itersPerType){
+  let checks=0;
+  const fail=(m)=>{throw new Error('selfTest: '+m);};
+  for(const [code] of TYPE_LIST){
+    for(let it=0;it<itersPerType;it++){
+      const pk=makePick(RNG(code.charCodeAt(3)*100000+it*7+1));
+      const t=genTask(code,pk);
+      const A=t.answer;
+      if(!(A.n>0n||code==='10.5')) fail(code+' P<=0');
+      if(fCmp(A,ONE)>0) fail(code+' P>1');
+      if(fCmp(A,ZERO)<0) fail(code+' P<0');
+      checks+=3;
+      // последний шаг = ответ
+      if(!fEq(t.steps[t.steps.length-1].ans,A)) fail(code+' last step != answer'); checks++;
+      // независимая перепроверка по meta
+      const m=t.meta;
+      if(code==='10.1'){ if(!fEq(A,F(m.k,m.N))) fail('10.1 key'); }
+      if(code==='10.2'){ if(m.a+m.b!==m.total) fail('10.2 sum'); if(!fEq(A,F(m.fav,m.total))) fail('10.2 key'); }
+      if(code==='10.3'){ if(!fEq(A,F(m.g-1,m.total-1))) fail('10.3 key'); if(m.g<2) fail('10.3 g<2'); }
+      if(code==='10.4'){ if(!fEq(A,F(m.t,m.N))) fail('10.4 key'); if(m.h+m.t!==m.N) fail('10.4 sum'); }
+      if(code==='10.5'){
+        let c=0;for(let x=1;x<=6;x++)for(let y=1;y<=6;y++)if(m.pred(x,y))c++;
+        if(c!==m.cnt) fail('10.5 recount'); if(!fEq(A,F(c,36))) fail('10.5 key');
+        if(t.needRound){ const r=fRound(A,2); if(!fEq(r,t.rounded)) fail('10.5 round'); }
+      }
+      if(code==='10.6'){
+        const s=t.meta.leafP.map(x=>parseAns(x)).reduce((u,v)=>fAdd(u,v),ZERO);
+        if(!fEq(s,ONE)) fail('10.6 leaves sum != 1');
+        const bsum=t.meta.idx.map(i=>parseAns(t.meta.leafP[i])).reduce((u,v)=>fAdd(u,v),ZERO);
+        if(!fEq(bsum,A)) fail('10.6 key');
+      }
+      if(code==='10.7'){
+        const r=m; const map={A:r.onlyA+r.inter,B:r.onlyB+r.inter,AiB:r.inter,AuB:r.onlyA+r.inter+r.onlyB,AnotB:r.onlyA};
+        if(r.onlyA+r.inter+r.onlyB+r.outside!==r.total) fail('10.7 partition');
+        if(!fEq(A,F(r.fav,r.total))) fail('10.7 key');
+      }
+      checks+=2;
+      // округлость десятичной записи там, где нет округления
+      if(!t.needRound && fToDec(A)===null) fail(code+' non-terminating without rounding'); checks++;
+      // парсер: десятичная запись и дробь принимаются
+      const dec=t.needRound?fToDec(t.rounded):fToDec(A);
+      if(dec!==null && !checkAnswer(t,parseAns(dec))) fail(code+' dec not accepted'); checks++;
+      if(!checkAnswer(t,F(A.n,A.d))) fail(code+' frac not accepted'); checks++;
+      // хвостовой ноль
+      if(dec!==null && dec.includes(',') && !checkAnswer(t,parseAns(dec+'0'))) fail(code+' trailing zero'); checks++;
+      // шаги: ответы шагов конечны в десятичной записи или дробь (для ввода)
+      for(const st of t.steps){ if(fCmp(st.ans,ZERO)<0) fail(code+' step<0'); checks++; }
+    }
+  }
+  return checks;
+}
+if(typeof module!=='undefined') module.exports={GENS,TYPE_LIST,genTask,genRandom,checkAnswer,selfTest,treeSolveSVG,treeInteractiveSVG,treeEdgeKeysForLeaf,TREE_KEYS};
+/* ===== ДВИЖОК ИНТЕРФЕЙСА ===== */
+function el(id){return document.getElementById(id);}
+const RT=(function(){ // рабочий ГСЧ
+  const r=Math.random;
+  return {ri:(a,b)=>a+Math.floor(r()*(b-a+1)),of:(arr)=>arr[Math.floor(r()*arr.length)],
+    shuf:(arr)=>{const c=arr.slice();for(let i=c.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[c[i],c[j]]=[c[j],c[i]];}return c;}};
+})();
+let UID=0;
+
+/* --- виджет ответа: десятичная или этажная дробь --- */
+/* --- виджет ответа: ОДНО поле за раз, переключатель десятичная ⇄ дробь --- */
+function awHTML(id,intOnly){
+  if(intOnly) return `<input id="${id}-dec" class="aw-one" inputmode="numeric" autocomplete="off" aria-label="ответ — целое число">`;
+  return `<span class="aw" id="${id}-aw">
+    <span class="aw-decwrap">
+      <input id="${id}-dec" class="aw-dec" inputmode="decimal" placeholder="0,25" autocomplete="off" aria-label="ответ десятичной дробью">
+      <button type="button" class="aw-tog" id="${id}-tofrac">ввести дробью</button>
+    </span>
+    <span class="aw-frwrap" hidden>
+      <span class="aw-fr" title="обыкновенная дробь">
+        <input id="${id}-n" inputmode="numeric" class="aw-cell aw-n" autocomplete="off" aria-label="числитель">
+        <span class="aw-bar" aria-hidden="true"></span>
+        <input id="${id}-d" inputmode="numeric" class="aw-cell aw-d" autocomplete="off" aria-label="знаменатель">
+      </span>
+      <button type="button" class="aw-tog" id="${id}-todec">ввести десятичной</button>
+    </span>
+  </span>`;
+}
+function awMode(id){const aw=el(id+'-aw');return aw&&aw.classList.contains('fr-mode')?'fr':'dec';}
+function awRead(id){
+  if(awMode(id)==='fr'){const n=el(id+'-n'),d=el(id+'-d');return parsePair(n&&n.value,d&&d.value);}
+  const dec=el(id+'-dec');
+  if(dec&&dec.value.trim()!=='') return parseAns(dec.value);
+  return null;
+}
+function awLock(id){['-dec','-n','-d','-tofrac','-todec','-ck','-sh'].forEach(s=>{const e=el(id+s);if(e)e.disabled=true;});}
+function setFB(id,cls,html){const f=el(id+'-fb');if(!f)return;f.className='fb'+(cls?' '+cls:'');f.innerHTML=html;}
+function bindEnter(id,fn){['-dec','-n','-d'].forEach(s=>{const e=el(id+s);if(e)e.addEventListener('keydown',ev=>{if(ev.key==='Enter')fn();});});}
+const MSG_EMPTY='Введи ответ: десятичной дробью (например 0,25) или этажной дробью справа.';
+const MSG_WRONG='Пока неверно — попробуй ещё раз.';
+
+/* --- проверка шага (последний шаг уважает округление задачи) --- */
+function stepOK(task,s,isLast,v){
+  if(!v) return false;
+  if(fEq(v,s.ans)) return true;
+  if(isLast&&task.needRound&&task.rounded&&fEq(v,task.rounded)) return true;
+  return false;
+}
+
+/* --- пошаговый раннер (общий для «Пошагово» и марафона) --- */
+function mountSteps(root,task,onDone,hooks){
+  const st={shown:false,i:0};
+  function renderStep(){
+    if(st.i>=task.steps.length){onDone(st);return;}
+    hooks&&hooks.onActive&&hooks.onActive(st.i);
+    const s=task.steps[st.i], isLast=st.i===task.steps.length-1;
+    const id='w'+(++UID);
+    const div=document.createElement('div');
+    div.className='step';
+    div.innerHTML=`<div class="q"><span class="tnum">Шаг ${st.i+1}.</span> ${s.q}</div>`
+      +awHTML(id, s.ans.d===1n)
+      +` <button class="act" id="${id}-ck">Проверить</button>`
+      +`<button class="act show" id="${id}-sh">Показать шаг</button>`
+      +`<span class="fb" id="${id}-fb"></span>`;
+    root.appendChild(div);
+    const check=()=>{
+      const v=awRead(id);
+      if(!v){setFB(id,'warn',MSG_EMPTY);return;}
+      if(stepOK(task,s,isLast,v)){
+        setFB(id,'ok','Верно!');awLock(id);div.classList.add('done-ok');
+        hooks&&hooks.onResolved&&hooks.onResolved(st.i,true);st.i++;renderStep();
+      } else setFB(id,'no',MSG_WRONG);
+    };
+    el(id+'-ck').onclick=check;
+    bindEnter(id,check);
+    el(id+'-sh').onclick=()=>{
+      st.shown=true;
+      setFB(id,'', '<span class="redink">'+s.show+' Ответ: '+ansHTML(s.ans)+'</span>');
+      awLock(id);div.classList.add('done-show');
+      hooks&&hooks.onResolved&&hooks.onResolved(st.i,false);st.i++;renderStep();
+    };
+    const first=el(id+'-dec');if(first)first.focus();
+  }
+  renderStep();
+  return st;
+}
+/* подмигивание и обводка маркером рёбер дерева */
+function treeWink(svgEl,keys,on){
+  if(!svgEl)return;
+  keys.forEach(k=>svgEl.querySelectorAll('.mk-'+k).forEach(b=>{
+    if(on){ if(!b.classList.contains('mk-on-ok')&&!b.classList.contains('mk-on-shown')) b.classList.add('mk-wink'); }
+    else b.classList.remove('mk-wink');
+  }));
+}
+function treeMark(svgEl,keys,kind){
+  if(!svgEl)return;
+  keys.forEach(k=>svgEl.querySelectorAll('.mk-'+k).forEach(b=>{
+    b.classList.remove('mk-wink','mk-on-ok','mk-on-shown');b.classList.add('mk-on-'+kind);
+  }));
+}
+function treeStepHooks(svgEl,idxArr){
+  const paths=[treeEdgeKeysForLeaf(idxArr[0]),treeEdgeKeysForLeaf(idxArr[1]),[]];
+  return {
+    onActive:(i)=>{treeWink(svgEl,TREE_KEYS,false);const p=paths[i];if(p&&p.length)treeWink(svgEl,p,true);},
+    onResolved:(i,ok)=>{const p=paths[i];if(p&&p.length){treeWink(svgEl,p,false);treeMark(svgEl,p,ok?'ok':'shown');}}
+  };
+}
+
+function taskHead(t){
+  return `<div class="tnum">${t.code} · ${t.name}</div><div style="margin:6px 0">${t.text}</div>${t.svg||''}`;
+}
+function razborHTML(t){
+  return `<div class="razbor"><div class="rz-t">Разбор</div>${t.razborSVG||''}${t.razbor}<div style="margin-top:6px"><b>Ответ:</b> ${t.needRound?fToDec(t.rounded)+' (точно: '+fracHTMLraw(t.answer.n,t.answer.d)+')':ansHTML(t.answer)}</div></div>`;
+}
+
+/* ===== ВКЛАДКА «ПОШАГОВО» ===== */
+let stepType='10.1';
+function stepChips(){
+  const box=el('step-chips');box.innerHTML='';
+  TYPE_LIST.forEach(([code,name])=>{
+    const b=document.createElement('button');
+    b.className='chip'+(code===stepType?' on':'');b.textContent=code+' '+name;
+    b.onclick=()=>{stepType=code;stepChips();stepNew();};
+    box.appendChild(b);
+  });
+  const r=document.createElement('button');
+  r.className='chip'+(stepType==='rnd'?' on':'');r.textContent='Случайный тип';
+  r.onclick=()=>{stepType='rnd';stepChips();stepNew();};
+  box.appendChild(r);
+}
+function stepNew(presetTask){
+  const root=el('step-root');root.innerHTML='';
+  const t=presetTask||(stepType==='rnd'?genRandom(RT):genTask(stepType,RT));
+  const card=document.createElement('div');card.className='card';
+  card.innerHTML=taskHead(t)+'<div class="note">Решаем по шагам. Рядом с каждой проверкой есть «Показать шаг» — но показанное не засчитывается.</div>';
+  root.appendChild(card);
+  const treeSvgEl = t.code==='10.6' ? card.querySelector('svg') : null;
+  const hooks = t.code==='10.6' ? treeStepHooks(treeSvgEl, t.meta.idx) : null;
+  const stepsBox=document.createElement('div');card.appendChild(stepsBox);
+  mountSteps(stepsBox,t,(st)=>{
+    if(treeSvgEl) treeWink(treeSvgEl,TREE_KEYS,false);
+    const fin=document.createElement('div');
+    fin.innerHTML= st.shown
+      ? '<p><span class="redink" style="font-family:\'Segoe Print\',\'Comic Sans MS\',cursive">Были показанные шаги.</span> Ничего страшного: посмотри разбор и реши похожую задачу сама — она засчитается.</p>'
+      : '<p class="okline">Задача разобрана полностью самостоятельно — отлично!</p>';
+    fin.innerHTML+=razborHTML(t)+'<button class="act" id="step-next">Новая задача</button>';
+    card.appendChild(fin);
+    el('step-next').onclick=()=>stepNew();
+  }, hooks);
+}
+
+/* ===== ВКЛАДКА «МАРАФОН» ===== */
+const LS_KEY='oge10_progress_v1';
+function freshStats(){const byType={};TYPE_LIST.forEach(([c])=>byType[c]={done:0,correct:0,shown:0});return {done:0,correct:0,shown:0,streak:0,best:0,byType};}
+let STATS=freshStats();
+function loadStats(){try{const s=localStorage.getItem(LS_KEY);if(s){const o=JSON.parse(s);if(o&&o.byType)STATS=Object.assign(freshStats(),o,{byType:Object.assign(freshStats().byType,o.byType)});}}catch(e){}}
+function saveStats(){try{localStorage.setItem(LS_KEY,JSON.stringify(STATS));}catch(e){}}
+function record(kind,code){
+  const bt=STATS.byType[code]||(STATS.byType[code]={done:0,correct:0,shown:0});
+  if(kind==='correct'){STATS.done++;STATS.correct++;STATS.streak++;STATS.best=Math.max(STATS.best,STATS.streak);bt.done++;bt.correct++;}
+  else {STATS.shown++;STATS.streak=0;bt.shown++;}
+  saveStats();renderStats();
+}
+function renderStats(){
+  const s=STATS;
+  let rows='';TYPE_LIST.forEach(([c,n])=>{const b=s.byType[c];if(b&&(b.correct||b.shown))rows+=`<tr><td>${c} ${n}</td><td>${b.correct}</td><td>${b.shown}</td></tr>`;});
+  el('mar-stats').innerHTML=
+    `<span>Решено верно: <b>${s.correct}</b></span><span>Показано разборов: <b>${s.shown}</b></span>`+
+    `<span>Серия: <b>${s.streak}</b> (лучшая ${s.best})</span>`+
+    `<button class="act ghost" id="mar-reset" style="margin:0">Сбросить прогресс</button>`+
+    (rows?`<details class="bytype" style="flex-basis:100%"><summary>по типам</summary><table><tr><th>тип</th><th>верно</th><th>показано</th></tr>${rows}</table></details>`:'');
+  el('mar-reset').onclick=()=>{STATS=freshStats();saveStats();renderStats();};
+}
+let marFilter='all';
+function marChips(){
+  const box=el('mar-chips');box.innerHTML='';
+  const all=document.createElement('button');
+  all.className='chip'+(marFilter==='all'?' on':'');all.textContent='Все типы вперемешку';
+  all.onclick=()=>{marFilter='all';marChips();marNew();};
+  box.appendChild(all);
+  TYPE_LIST.forEach(([code,name])=>{
+    const b=document.createElement('button');
+    b.className='chip'+(code===marFilter?' on':'');b.textContent=code+' '+name;
+    b.onclick=()=>{marFilter=code;marChips();marNew();};
+    box.appendChild(b);
+  });
+}
+function marNew(){
+  const root=el('mar-root');root.innerHTML='';
+  const t=marFilter==='all'?genRandom(RT):genTask(marFilter,RT);
+  let hintN=0, finished=false;
+  const card=document.createElement('div');card.className='card';
+  const id='w'+(++UID);
+  card.innerHTML=taskHead(t)
+    +`<div style="margin:10px 0"><b>Ответ:</b> `+awHTML(id,false)+`</div>`
+    +`<div><button class="act" id="${id}-ck">Проверить</button>`
+    +`<button class="act ghost" id="${id}-hint">Подсказка</button>`
+    +`<button class="act ghost" id="${id}-steps">Решить по шагам</button>`
+    +`<button class="act show" id="${id}-sh">Показать разбор</button></div>`
+    +`<div id="${id}-hintbox"></div><span class="fb" id="${id}-fb"></span><div id="${id}-after"></div>`;
+  root.appendChild(card);
+  const marTreeSvg = t.code==='10.6' ? card.querySelector('svg') : null;
+  const after=()=>{
+    finished=true;
+    el(id+'-hint').disabled=true;el(id+'-steps').disabled=true;el(id+'-sh').disabled=true;
+    const a=el(id+'-after');
+    a.innerHTML+=`<button class="act" id="${id}-next">Следующая задача</button>`;
+    el(id+'-next').onclick=()=>marNew();
+    el(id+'-next').focus();
+  };
+  const check=()=>{
+    if(finished)return;
+    const v=awRead(id);
+    if(!v){setFB(id,'warn',MSG_EMPTY);return;}
+    if(checkAnswer(t,v)){
+      setFB(id,'ok','Верно!');awLock(id);record('correct',t.code);
+      el(id+'-after').innerHTML=razborHTML(t);after();
+    } else {
+      setFB(id,'no',MSG_WRONG+(t.needRound?' Не забудь про округление до сотых (точную дробь тоже приму).':''));
+    }
+  };
+  el(id+'-ck').onclick=check;bindEnter(id,check);
+  el(id+'-hint').onclick=()=>{
+    if(hintN<2){el(id+'-hintbox').innerHTML+=`<div class="hintbox"><b>Подсказка ${hintN+1}.</b> ${t.hints[hintN]}</div>`;hintN++;}
+    if(hintN>=2)el(id+'-hint').disabled=true;
+  };
+  el(id+'-sh').onclick=()=>{
+    if(finished)return;
+    awLock(id);record('shown',t.code);
+    setFB(id,'', '<span class="redink">Разбор показан — задача не засчитана. Реши похожую!</span>');
+    el(id+'-after').innerHTML=razborHTML(t);after();
+  };
+  el(id+'-steps').onclick=()=>{
+    if(finished)return;
+    awLock(id);el(id+'-steps').disabled=true;el(id+'-ck').disabled=true;
+    const box=document.createElement('div');el(id+'-after').appendChild(box);
+    const hooks = marTreeSvg ? treeStepHooks(marTreeSvg, t.meta.idx) : null;
+    mountSteps(box,t,(st)=>{
+      if(marTreeSvg) treeWink(marTreeSvg,TREE_KEYS,false);
+      if(st.shown){record('shown',t.code);
+        el(id+'-after').insertAdjacentHTML('beforeend','<p><span class="redink">Были показанные шаги — задача не засчитана.</span></p>'+razborHTML(t));}
+      else {record('correct',t.code);
+        el(id+'-after').insertAdjacentHTML('beforeend','<p class="okline">Решено по шагам самостоятельно — засчитано!</p>'+razborHTML(t));}
+      after();
+    }, hooks);
+  };
+  const first=el(id+'-dec');if(first)first.focus();
+}
+
+/* ===== ВКЛАДКА «УЧИМСЯ» ===== */
+function revealAns(spec){
+  return spec.needRound&&spec.rounded ? fToDec(spec.rounded)+' (точно '+fracHTML(spec.ansF)+')' : ansHTML(spec.ansF);
+}
+function mkGenSpec(code){
+  const t=genTask(code,RT);
+  return {html:t.text+(t.svg||''), ansF:t.answer, intOnly:t.answer.d===1n,
+          showHTML:(t.razborSVG||'')+t.razbor, needRound:t.needRound, rounded:t.rounded, typeCode:code};
+}
+function buildMini(box, spec, fixedId){
+  const id=fixedId||('mini'+(++UID));
+  box.innerHTML=`<div class="mq">${spec.html}</div>
+  <div style="margin-top:8px">${awHTML(id,!!spec.intOnly)} <button class="act" id="${id}-ck">Проверить</button><button class="act show" id="${id}-sh">Показать</button>
+  <span class="fb" id="${id}-fb"></span></div><div id="${id}-more"></div>`;
+  const accept=(v)=>!!v&&(fEq(v,spec.ansF)||(spec.needRound&&spec.rounded&&fEq(v,spec.rounded)));
+  const more=(pre)=>{
+    el(id+'-more').innerHTML=(pre||'')+`<button class="act ghost" id="${id}-again">Ещё пример этой темы →</button>`;
+    el(id+'-again').onclick=()=>buildMini(box, mkGenSpec(spec.typeCode)); // свежая задача той же темы
+  };
+  const check=()=>{
+    const v=awRead(id);
+    if(v===null){setFB(id,'warn',MSG_EMPTY);return;}
+    if(accept(v)){setFB(id,'ok','Верно!');awLock(id);more();}
+    else setFB(id,'no',MSG_WRONG); // не блокируем — можно сразу пробовать снова
+  };
+  el(id+'-ck').onclick=check;bindEnter(id,check);
+  el(id+'-sh').onclick=()=>{
+    awLock(id);
+    setFB(id,'', '<span class="redink">'+spec.showHTML+' Ответ: '+revealAns(spec)+'</span>');
+    more('<div class="note" style="margin:6px 0 8px">Ответ уже виден — поэтому вот новая похожая задача. Это и есть вторая попытка: реши её сама.</div>');
+  };
+}
+const FIXED_MINIS=[
+ {box:'m1-box', typeCode:'10.1', ansF:F(3,12),
+  html:'Из 12 равновозможных исходов событию благоприятствуют 3. Чему равна вероятность?',
+  showHTML:'P = 3 : 12 = 0,25.'},
+ {box:'m2-box', typeCode:'10.2', ansF:F(16,20),
+  html:'В коробке 4 красных и 16 синих значков. Наугад берут один. Какова вероятность, что он синий?',
+  showHTML:'Всего 4 + 16 = 20, синих 16. P = 16 : 20 = 0,8.'},
+ {box:'m3-box', typeCode:'10.3', ansF:F(4,10),
+  html:'В мешке 5 белых и 6 тёмных пуговиц. Первая вынутая пуговица — белая. Вероятность, что вторая тоже белая?',
+  showHTML:'Осталось 10 пуговиц, белых 4. P = 4 : 10 = 0,4.'},
+ {box:'m4-box', typeCode:'10.4', ansF:F(7,20),
+  html:'Монету бросили 20 раз, орёл выпал 13 раз. Вероятность, что при 5-м броске выпала решка?',
+  showHTML:'Решек 20 − 13 = 7, всего бросков 20. P = 7 : 20 = 0,35.'},
+ {box:'m5-box', typeCode:'10.5', intOnly:true, ansF:F(3),
+  html:'Кубик бросают дважды. Сколько пар дают сумму 10? (Смотри таблицу.)',
+  showHTML:'Пары (4;6), (5;5), (6;4) — всего 3.'},
+ {box:'m6-box', typeCode:'10.6', ansF:F(29,100),
+  html:'Найди P(B) для дерева на рисунке.',
+  showHTML:treeSolveSVG(['0,3','0,7','0,5','0,5','0,2','0,8'],['B','C','B','D'],[0,2],['0,15','0,15','0,14','0,56'],'0,29')
+    +'<b>Шаг 1 — умножаем вдоль путей к B:</b> верхний лист B — 0,3·0,5&nbsp;=&nbsp;0,15; нижний лист B — 0,7·0,2&nbsp;=&nbsp;0,14. <b>Шаг 2 — складываем листья B:</b> P(B)&nbsp;=&nbsp;0,15&nbsp;+&nbsp;0,14&nbsp;=&nbsp;0,29.'},
+ {box:'m7-box', typeCode:'10.7', ansF:F(10,20),
+  html:'На диаграмме указаны количества исходов. Найди вероятность события A.',
+  showHTML:'Круг A: 7 + 3 = 10 исходов. Всего 7 + 3 + 6 + 4 = 20. P(A) = 10 : 20 = 0,5.'}
+];
+function diceTable(hlSum){
+  let h='<table class="dice"><tr><th>+</th>';
+  for(let b=1;b<=6;b++)h+='<th>'+b+'</th>';h+='</tr>';
+  for(let a=1;a<=6;a++){h+='<tr><th>'+a+'</th>';
+    for(let b=1;b<=6;b++)h+='<td'+((a+b)===hlSum?' class="hl"':'')+'>'+(a+b)+'</td>';h+='</tr>';}
+  return h+'</table>';
+}
+function buildUch(){
+  const r=el('uch-root');
+  const treeEx=treeSVG(['0,3','0,7','0,5','0,5','0,2','0,8'],['B','C','B','D']);
+  const eulerEx=eulerSVG('7','3','6','4');
+  r.innerHTML=`
+<div class="card theory-p"><span class="pn">П.1. Что такое вероятность</span>
+<p>Опыт случайный, но все его элементарные исходы <b>равновозможны</b>. Тогда вероятность события — это доля благоприятных исходов:</p>
+<div class="formula">P(A) = ${fracHTMLraw('число благоприятных исходов','число всех исходов')}</div>
+<p>Вероятность — число от 0 до 1. В ответ пишем десятичную дробь (0,25) или обыкновенную; проценты в ответ не пишут.</p>
+<div class="mini" id="m1-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.2. Один выбор предмета (типы 10.1–10.2)</span>
+<p>Классика: предметы двух видов, наугад берут один. Порядок действий: <b>1)</b> сложи ВСЕ предметы; <b>2)</b> найди, сколько «нужных»; <b>3)</b> раздели нужные на все.</p>
+<p class="note">Ловушки: делят нужные на ненужные; забывают сложить все предметы; отвечают не про тот цвет, который спросили.</p>
+<div class="mini" id="m2-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.3. Выбор без возвращения (тип 10.3)</span>
+<p>Достали предмет — назад не вернули. Если известно, что первый оказался «нужным», то перед вторым выбором <b>пересчитай остаток</b>: и нужных стало на 1 меньше, и всего стало на 1 меньше.</p>
+<div class="formula">P(второй нужный) = ${fracHTMLraw('нужных − 1','всего − 1')}</div>
+<div class="mini" id="m3-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.4. Монета: частоты уже известны (тип 10.4)</span>
+<p>«Монету бросили 20 раз, орёл выпал 13 раз. Какова вероятность, что при 5-м броске — решка?» Рефлекс «0,5» здесь <b>не работает</b>: состав серии уже известен! Решек было 20 − 13 = 7, и каждая из 20 позиций равноправна:</p>
+<div class="formula">P = ${fracHTMLraw('число решек','число всех бросков')}</div>
+<div class="mini" id="m4-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.5. Две игральные кости (тип 10.5)</span>
+<p>Исход опыта — <b>упорядоченная пара</b> (первый бросок; второй бросок). Всего пар 6 · 6 = 36, и именно они равновозможны. Суммы (их 11 штук) равновозможными НЕ являются — это ловушка №1.</p>
+<p><b>Школьный способ:</b> таблица 6×6 — выписал, отметил нужные клетки, посчитал. Надёжно всегда.</p>
+<p><b>Способ «отчаянного девятиклассника»:</b> считать пары в уме перебором по первому кубику. Быстрее, но цена — легко потерять пару или посчитать (2; 5) и (5; 2) как одну. На экзамене при сомнении рисуй таблицу.</p>
+${diceTable(10)}
+<p class="note">Подсвечены клетки с суммой 10 — их ровно 3: (4;6), (5;5), (6;4).</p>
+<p>Если дробь вида ${fracHTMLraw('5','36')} не переводится в конечную десятичную — в условии попросят <b>округлить до сотых</b>.</p>
+<div class="mini" id="m5-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.6. Дерево случайного опыта (тип 10.6)</span>
+<p>Два правила: <b>вдоль пути — умножаем</b>, <b>разные благоприятные листья — складываем</b>. Проверка себя: вероятности на ветвях каждой развилки в сумме дают 1, а вероятности всех листьев в сумме дают 1.</p>
+${treeEx}
+<p class="note">На рисунке событию B отвечают два подсвеченных листа: верхний путь 0,3 · 0,5 и нижний путь 0,7 · 0,2.</p>
+<div class="mini" id="m6-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.7. Диаграмма Эйлера (тип 10.7)</span>
+<p>Четыре области: только A, пересечение (и A, и B), только B, снаружи (ни A, ни B). Запомни соответствие слов и областей:</p>
+<p>«произойдёт A» — весь круг A, <b>включая пересечение</b>; «A и B одновременно» — только линза-пересечение; «хотя бы одно из A, B» — всё внутри обоих кругов; «A, но не B» — круг A без линзы.</p>
+<p>Если в областях <b>количества исходов</b> — дели сумму нужных областей на сумму всех четырёх (внешнюю не забудь!). Если в областях уже <b>вероятности</b> — просто складывай нужные, делить не надо.</p>
+${eulerEx}
+<div class="mini" id="m7-box"></div>
+</div>
+
+<div class="card theory-p"><span class="pn">П.8. Квиз: определи тип — и реши</span>
+<p>Читай условие, назови тип задачи, а затем реши её по шагам. Так ты учишься первому и главному экзаменационному навыку — узнавать задачу «в лицо».</p>
+<div id="quiz-area"></div>
+<button class="act" id="quiz-new">Новый пример</button>
+</div>`;
+  FIXED_MINIS.forEach(sp=>buildMini(el(sp.box), sp, sp.box.replace('-box','')));
+  el('quiz-new').onclick=quizNew;
+  quizNew();
+}
+let quizTask=null;
+function quizNew(){
+  quizTask=genRandom(RT);
+  const a=el('quiz-area');
+  let chips='';
+  TYPE_LIST.forEach(([code,name])=>{chips+=`<button class="chip q" data-code="${code}">${code} ${name}</button>`;});
+  a.innerHTML=`<div class="card"><div style="margin:6px 0">${quizTask.text}</div>${quizTask.svg||''}
+  <div><b>Какой это тип?</b></div><div class="chips">${chips}</div>
+  <span class="fb" id="quiz-fb"></span><div id="quiz-after"></div></div>`;
+  a.querySelectorAll('.chip.q').forEach(b=>{
+    b.onclick=()=>{
+      if(b.dataset.code===quizTask.code){
+        b.classList.add('good');
+        const f=el('quiz-fb');f.className='fb ok';f.textContent='Верно, это «'+quizTask.name+'»!';
+        if(!el('quiz-solve')){
+          el('quiz-after').innerHTML='<button class="act" id="quiz-solve">Решить эту задачу по шагам</button>';
+          el('quiz-solve').onclick=()=>{showTab('step');stepNew(quizTask);};
+        }
+      } else {
+        const f=el('quiz-fb');f.className='fb no';f.textContent='Не совсем. Перечитай: что за опыт описан и что дано на рисунке?';
+      }
+    };
+  });
+}
+
+/* ===== ВКЛАДКИ И СТАРТ ===== */
+function showTab(name){
+  ['uch','step','mar'].forEach(k=>{
+    el('tab-'+k).classList.toggle('on',k===name);
+    el('tabb-'+k).classList.toggle('on',k===name);
+  });
+  window.scrollTo({top:0});
+}
+function boot(){
+  document.addEventListener('click',function(e){
+    const b=e.target.closest&&e.target.closest('.aw-tog');
+    if(!b)return;
+    const aw=b.closest('.aw');if(!aw)return;
+    const toFrac=b.id.endsWith('-tofrac');
+    aw.querySelector('.aw-decwrap').hidden=toFrac;
+    aw.querySelector('.aw-frwrap').hidden=!toFrac;
+    aw.classList.toggle('fr-mode',toFrac);
+    const f=toFrac?aw.querySelector('.aw-n'):aw.querySelector('.aw-dec');
+    if(f&&!f.disabled)f.focus();
+  });
+  buildUch();
+  stepChips();stepNew();
+  loadStats();renderStats();marChips();marNew();
+  const badge=el('selfcheck');
+  setTimeout(()=>{
+    try{const n=selfTest(60);badge.className='ok';badge.textContent='самопроверка пройдена: '+n.toLocaleString('ru-RU')+' проверок';}
+    catch(e){badge.className='bad';badge.textContent='самопроверка не пройдена: '+e.message;}
+  },50);
+}
+document.addEventListener('DOMContentLoaded',boot);
+</script>
+</body>
+</html>

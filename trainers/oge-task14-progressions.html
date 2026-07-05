@@ -1,0 +1,2489 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОГЭ №14. Прогрессии: формулы и здравый смысл</title>
+<style>
+:root{
+  --paper:#fbfaf3; --grid:#e4edf6; --card:#ffffff;
+  --ink:#26364a; --muted:#68727f; --line:#d9dee8;
+  --pen:#2456a6; --penbg:#eaf1fb; --pen2:#7a4dbf; --pen2bg:#f2ecfb;
+  --ok:#2e7d4f; --okbg:#e9f5ee; --okline:#bfe0cc;
+  --peek:#a8731d; --peekbg:#fdf4e0; --peekline:#ecd9ad;
+  --warn:#9a5b12;
+  --btn:#2456a6; --btnText:#fff;
+  --r:14px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; color:var(--ink);
+  font:16px/1.55 "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+  background:var(--paper);
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 23px, var(--grid) 23px, var(--grid) 24px),
+    repeating-linear-gradient(90deg, transparent, transparent 23px, var(--grid) 23px, var(--grid) 24px);
+}
+.wrap{max-width:880px;margin:0 auto;padding:14px 12px 80px}
+header.top{padding:10px 4px 2px}
+h1{font-size:22px;line-height:1.25;margin:0 0 4px;color:var(--pen)}
+.subtitle{color:var(--muted);font-size:14px;margin:0 0 10px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:6px 2px 10px;position:sticky;top:0;background:linear-gradient(var(--paper) 85%,transparent);z-index:30}
+.tab{flex:0 0 auto;border:1.5px solid var(--line);background:var(--card);border-radius:999px;
+  padding:9px 16px;font-size:15px;font-weight:600;color:var(--ink);cursor:pointer}
+.tab.active{background:var(--pen);border-color:var(--pen);color:#fff}
+.page{display:none}
+.page.active{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:16px 16px 14px;margin:0 0 14px;box-shadow:0 1px 2px rgba(38,54,74,.05)}
+.card h2{font-size:18px;margin:0 0 8px;color:var(--pen)}
+.card h3{font-size:16px;margin:14px 0 6px}
+p{margin:8px 0}
+.muted{color:var(--muted)}
+.small{font-size:13.5px}
+b.num{white-space:nowrap}
+/* точки-пункты теории */
+.tpoint{border-left:4px solid var(--penbg);padding-left:12px;margin:18px 0}
+.tpoint .pn{display:inline-block;background:var(--pen);color:#fff;border-radius:8px;
+  font-weight:700;font-size:14px;padding:2px 9px;margin-right:8px}
+.tpoint h3{display:inline;font-size:17px;color:var(--pen)}
+.xref{color:var(--pen);text-decoration:underline dotted;cursor:pointer;white-space:nowrap}
+/* формулы */
+.formula{font-family:Georgia,"Times New Roman",serif;font-size:20px;background:#f7f9fd;
+  border:1px solid var(--line);border-radius:10px;padding:10px 14px;display:inline-block;margin:6px 8px 6px 0}
+.formula i{font-style:italic}
+.formula sub{font-size:12px}
+.formula sup{font-size:13px}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px}
+.frac>.fn{padding:0 6px;border-bottom:1.6px solid currentColor;line-height:1.25}
+.frac>.fd{padding:0 6px;line-height:1.25}
+.human{background:var(--okbg);border:1px solid var(--okline);border-radius:10px;padding:8px 12px;margin:6px 0;font-size:15px}
+/* лента шагов */
+.tape{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin:10px 0;font-size:16px}
+.tape .cell{background:#fff;border:1.6px solid var(--pen);color:var(--ink);border-radius:10px;
+  padding:6px 10px;min-width:44px;text-align:center;font-weight:600}
+.tape .cell .idx{display:block;font-size:11px;font-weight:400;color:var(--muted)}
+.tape .cell.hl{background:var(--penbg)}
+.tape .cell.gp{border-color:var(--pen2)}
+.tape .cell.gp.hl{background:var(--pen2bg)}
+.tape .arr{color:var(--pen);font-weight:700;font-size:14px;padding:0 1px;white-space:nowrap}
+.tape .arr.gp{color:var(--pen2)}
+.tape .dots{color:var(--muted);font-weight:700;padding:0 4px}
+/* задания */
+.task-text{font-size:16.5px}
+.task-chip{display:inline-block;background:var(--penbg);color:var(--pen);border-radius:8px;
+  font-size:12.5px;font-weight:700;padding:3px 9px;margin-bottom:8px}
+.task-chip.gp{background:var(--pen2bg);color:var(--pen2)}
+.svgbox{margin:10px 0;text-align:center}
+.svgbox svg{max-width:100%;height:auto}
+/* ввод ответа */
+.ansrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:12px 0 4px}
+.ansfield input{font-size:19px;padding:9px 10px;border:1.8px solid var(--line);border-radius:10px;
+  width:130px;text-align:center;color:var(--ink);background:#fff}
+.ansfield input:focus{outline:2px solid var(--pen);border-color:var(--pen)}
+.ansfield.wide input{width:min(420px,100%)}
+.fracIn{display:inline-flex;flex-direction:column;align-items:center;gap:0}
+.fracIn input{width:96px;font-size:18px;text-align:center;padding:6px 8px;border:1.8px solid var(--line);border-radius:9px;background:#fff}
+.fracIn .bar{width:112px;height:0;border-bottom:2.4px solid var(--ink);margin:5px 0}
+.unit{font-size:15px;color:var(--muted)}
+.togglefrac{border:1.5px dashed var(--line);background:#fff;color:var(--muted);border-radius:9px;
+  font-size:12.5px;padding:7px 10px;cursor:pointer}
+/* кнопки */
+button.btn{border:0;background:var(--btn);color:var(--btnText);border-radius:11px;
+  font-size:15.5px;font-weight:600;padding:11px 18px;cursor:pointer;touch-action:manipulation}
+button.btn:active{transform:translateY(1px)}
+button.ghost{background:#fff;color:var(--pen);border:1.6px solid var(--pen)}
+button.peekbtn{background:#fff;color:var(--peek);border:1.6px solid var(--peekline)}
+button.soft{background:var(--penbg);color:var(--pen)}
+button.mini{font-size:14px;padding:8px 13px;border-radius:10px}
+button.choice{background:#fff;border:1.6px solid var(--line);color:var(--ink);border-radius:11px;
+  font-size:15px;padding:10px 14px;cursor:pointer;margin:4px 6px 4px 0}
+button.choice.sel-ok{border-color:var(--ok);background:var(--okbg);color:var(--ok);font-weight:700}
+button.choice.sel-no{border-color:var(--peekline);background:var(--peekbg);color:var(--peek)}
+button:disabled{opacity:.45;cursor:default}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+/* обратная связь */
+.fb{border-radius:10px;padding:9px 13px;margin:10px 0 2px;font-size:15px;display:none}
+.fb.ok{display:block;background:var(--okbg);border:1px solid var(--okline);color:var(--ok);font-weight:600}
+.fb.try{display:block;background:var(--peekbg);border:1px solid var(--peekline);color:var(--warn)}
+.fb.info{display:block;background:var(--penbg);border:1px solid #c6d7f0;color:var(--pen)}
+/* шаги */
+.step{border:1.6px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0;background:#fff}
+.step.active{border-color:var(--pen);box-shadow:0 0 0 3px var(--penbg)}
+.step.done{border-color:var(--okline);background:var(--okbg)}
+.step.peeked{border-color:var(--peekline);background:var(--peekbg)}
+.step .yourmove{display:inline-block;background:var(--pen);color:#fff;border-radius:7px;font-size:11.5px;
+  font-weight:700;padding:2px 8px;margin-bottom:6px}
+.step .stq{font-size:15.5px;margin-bottom:8px}
+.step .stgot{font-weight:700;font-size:16px}
+.step .peeknote{color:var(--peek);font-size:13.5px;margin-top:6px}
+/* сравнение двух способов */
+.ways{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.way{border:1.4px solid var(--line);border-radius:12px;padding:12px}
+.way h4{margin:0 0 6px;font-size:15px}
+.way.wf h4{color:var(--pen)} .way.wt h4{color:var(--ok)}
+@media(max-width:640px){.ways{grid-template-columns:1fr}}
+.cmp-line{border-top:1px dashed var(--line);padding:7px 0}
+.cmp-line:first-child{border-top:0}
+.cmp-q{font-size:13.5px;color:var(--muted);line-height:1.4}
+.cmp-a{font-size:16px;font-weight:700;margin-top:2px;color:var(--ink)}
+/* двойная запись Гаусса */
+.gauss{display:grid;gap:5px 4px;margin:12px 0;text-align:center;font-size:14px}
+.gcell{border:1.5px solid var(--line);border-radius:8px;padding:6px 2px;min-height:32px;background:#fff}
+.gcell.fwd{border-color:var(--pen);color:var(--pen)}
+.gcell.rev{border-color:var(--pen2);color:var(--pen2)}
+.gcell.sum{border-color:var(--okline);background:var(--okbg);color:var(--ok);font-weight:700;border-top-width:2.4px}
+.gcell.gcol{box-shadow:0 0 0 2.5px var(--pen);font-weight:700}
+/* цена метода */
+.price{font-size:13.5px;color:var(--muted);margin-top:4px}
+/* выбор случая */
+.cases{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin:10px 0}
+.casebtn{text-align:left;border:1.6px solid var(--line);border-radius:12px;background:#fff;
+  padding:12px 13px;font-size:15px;cursor:pointer;color:var(--ink)}
+.casebtn.sel{border-color:var(--pen);background:var(--penbg)}
+.casebtn .cc{display:block;font-size:12px;color:var(--muted);margin-top:3px}
+.grouplbl{font-weight:700;color:var(--pen);margin:12px 0 4px}
+.grouplbl.gp{color:var(--pen2)}
+/* марафон */
+.mstats{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.stat{background:#fff;border:1.4px solid var(--line);border-radius:10px;padding:7px 12px;font-size:14px}
+.stat b{color:var(--pen)}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.fchip{border:1.4px solid var(--line);background:#fff;border-radius:999px;font-size:13px;
+  padding:6px 12px;cursor:pointer;color:var(--ink)}
+.fchip.on{background:var(--pen);border-color:var(--pen);color:#fff}
+.selfcheck{font-size:12.5px;color:var(--muted);text-align:center;margin-top:22px}
+.selfcheck b{color:var(--ok)}
+details.spoil{border:1.4px dashed var(--line);border-radius:10px;padding:8px 12px;margin:8px 0;background:#fff}
+details.spoil summary{cursor:pointer;color:var(--pen);font-weight:600;font-size:14.5px}
+hr.thin{border:0;border-top:1px solid var(--line);margin:14px 0}
+.footer-note{color:var(--muted);font-size:13px;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <h1>ОГЭ №14. Прогрессии: формулы и здравый смысл</h1>
+  <p class="subtitle">Каждую задачу можно решить двумя путями: таблицей шагов и формулой из справочника. Здесь тренируем оба.</p>
+</header>
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-page="ref">📖 Справочник</button>
+  <button class="tab" data-page="learn">🌱 Учимся</button>
+  <button class="tab" data-page="compare">⚖️ Сравнить</button>
+  <button class="tab" data-page="steps">🪜 Пошагово</button>
+  <button class="tab" data-page="marathon">🏁 Марафон</button>
+</nav>
+<main>
+  <section class="page active" id="page-ref"></section>
+  <section class="page" id="page-learn"></section>
+  <section class="page" id="page-compare"></section>
+  <section class="page" id="page-steps"></section>
+  <section class="page" id="page-marathon"></section>
+</main>
+<div class="selfcheck" id="selfcheck">самопроверка генераторов…</div>
+</div>
+
+<script>
+/* ===== ОГЭ №14: ядро (точная арифметика, форматирование, SVG) ===== */
+"use strict";
+const T14 = {};
+
+/* ---------- Дроби на BigInt ---------- */
+function _gcd(a,b){ a=a<0n?-a:a; b=b<0n?-b:b; while(b){ const t=a%b; a=b; b=t; } return a; }
+function F(n, d){
+  if(d===undefined) d=1n;
+  n=BigInt(n); d=BigInt(d);
+  if(d===0n) throw new Error("знаменатель 0");
+  if(d<0n){ n=-n; d=-d; }
+  const g=_gcd(n,d)||1n;
+  return { n:n/g, d:d/g };
+}
+const Fr = {
+  of:F,
+  add:(a,b)=>F(a.n*b.d + b.n*a.d, a.d*b.d),
+  sub:(a,b)=>F(a.n*b.d - b.n*a.d, a.d*b.d),
+  mul:(a,b)=>F(a.n*b.n, a.d*b.d),
+  div:(a,b)=>F(a.n*b.d, a.d*b.n),
+  neg:(a)=>F(-a.n, a.d),
+  abs:(a)=>F(a.n<0n?-a.n:a.n, a.d),
+  eq:(a,b)=>a.n===b.n && a.d===b.d,
+  cmp:(a,b)=>{ const l=a.n*b.d, r=b.n*a.d; return l<r?-1:(l>r?1:0); },
+  isInt:(a)=>a.d===1n,
+  int:(a)=>{ if(a.d!==1n) throw new Error("не целое"); return a.n; },
+  pow:(a,k)=>{ let r=F(1n); for(let i=0;i<k;i++) r=Fr.mul(r,a); return r; }
+};
+T14.F=F; T14.Fr=Fr;
+
+/* ---------- Случайные числа (детерминируемые по seed) ---------- */
+function rng(seed){
+  let a = seed>>>0;
+  return function(){
+    a|=0; a=a+0x6D2B79F5|0;
+    let t=Math.imul(a^a>>>15,1|a);
+    t=t+Math.imul(t^t>>>7,61|t)^t;
+    return ((t^t>>>14)>>>0)/4294967296;
+  };
+}
+const ri=(r,a,b)=>a+Math.floor(r()*(b-a+1));
+const pick=(r,arr)=>arr[Math.floor(r()*arr.length)];
+T14.rng=rng; T14.ri=ri; T14.pick=pick;
+
+/* ---------- Форматирование чисел (запятая, разряды) ---------- */
+function groupInt(s){
+  const neg = s.startsWith("-");
+  let x = neg? s.slice(1): s;
+  if(x.length>4){
+    let out="";
+    while(x.length>3){ out="\u202F"+x.slice(-3)+out; x=x.slice(0,-3); }
+    x=x+out;
+  }
+  return (neg?"\u2212":"")+x;
+}
+/* конечная десятичная запись или null */
+function decParts(f){
+  let d=f.d, a=0n, b=0n;
+  while(d%2n===0n){ d/=2n; a++; }
+  while(d%5n===0n){ d/=5n; b++; }
+  if(d!==1n) return null;
+  const k = a>b?a:b;
+  const scale = 10n**k;
+  let v = f.n*scale/f.d;
+  const neg = v<0n; if(neg) v=-v;
+  let s=v.toString();
+  const kk=Number(k);
+  while(s.length<=kk) s="0"+s;
+  let ip=s.slice(0, s.length-kk), fp= kk? s.slice(s.length-kk):"";
+  fp=fp.replace(/0+$/,"");
+  return { neg, ip, fp };
+}
+function fmtN(f){
+  if(typeof f==="number") f=F(f);
+  if(typeof f==="bigint") f=F(f);
+  const p=decParts(f);
+  if(p){
+    const sign=p.neg?"\u2212":"";
+    return sign+groupInt(p.ip).replace("\u2212","")+(p.fp? ","+p.fp : "");
+  }
+  /* этажная дробь (в ответах не встречается, но пусть будет) */
+  return fracHTML(f.n.toString(), f.d.toString());
+}
+function fracHTML(top,bot){
+  return '<span class="frac"><span class="fn">'+top+'</span><span class="fd">'+bot+'</span></span>';
+}
+T14.fmtN=fmtN; T14.fracHTML=fracHTML; T14.decParts=decParts;
+
+/* ---------- Разбор введённого ответа ---------- */
+function parseDec(str){
+  if(str==null) return null;
+  let s=String(str).replace(/[\s\u00A0\u202F]/g,"").replace(/[,]/g,".").replace(/[\u2212\u2013\u2014]/g,"-");
+  if(!s) return null;
+  const m=s.match(/^(-?)(\d+)(?:\.(\d*))?$/) || s.match(/^(-?)()\.(\d+)$/);
+  if(!m) return null;
+  const sign=m[1]==="-"?-1n:1n;
+  const ip=m[2]||"0", fp=(m[3]||"").replace(/0+$/,"") || "";
+  const den=10n**BigInt(fp.length);
+  const num=BigInt(ip+ (fp||"")) ;
+  return F(sign*num, den);
+}
+/* дробный ввод: числитель/знаменатель */
+function parseFracPair(topStr, botStr){
+  const t=parseDec(topStr), b=parseDec(botStr);
+  if(!t||!b) return null;
+  if(b.n===0n) return null;
+  try{ return Fr.div(t,b); }catch(e){ return null; }
+}
+T14.parseDec=parseDec; T14.parseFracPair=parseFracPair;
+
+/* ---------- Мелкие текстовые помощники ---------- */
+const nb = (s)=>'<b class="num">'+s+'</b>';
+const N = (x)=>nb(fmtN(typeof x==="object"?x:F(x)));
+function minWord(n){ n=Number(n); const t=n%100, u=n%10;
+  if(t>=11&&t<=14) return "минут";
+  if(u===1) return "минуту"; if(u>=2&&u<=4) return "минуты"; return "минут"; }
+function minWordN(n){ n=Number(n); const t=n%100, u=n%10;
+  if(t>=11&&t<=14) return "минут";
+  if(u===1) return "минута"; if(u>=2&&u<=4) return "минуты"; return "минут"; }
+function hourWord(n){ n=Number(n); const t=n%100,u=n%10;
+  if(t>=11&&t<=14) return "часов";
+  if(u===1) return "час"; if(u>=2&&u<=4) return "часа"; return "часов"; }
+function dayWordN(n){ n=Number(n); const t=n%100,u=n%10;
+  if(t>=11&&t<=14) return "дней";
+  if(u===1) return "день"; if(u>=2&&u<=4) return "дня"; return "дней"; }
+/* универсальное склонение: plur(n,["место","места","мест"]) */
+function plur(n, forms){ n=Math.abs(Number(n)); const t=n%100, u=n%10;
+  if(t>=11&&t<=14) return forms[2];
+  if(u===1) return forms[0]; if(u>=2&&u<=4) return forms[1]; return forms[2]; }
+const seatW=(n)=>plur(n,["место","места","мест"]);
+const timesW=(n)=>plur(n,["раз","раза","раз"]);
+T14.words={minWord,minWordN,hourWord,dayWordN,plur,seatW,timesW};
+T14.nb=nb; T14.N=N;
+
+/* ---------- Лента шагов (HTML) ---------- */
+/* cells: [{idx, val, hl}], arrows: строка над переходами, gp: фиолетовый стиль */
+function tapeHTML(cells, arrow, opt){
+  opt=opt||{};
+  const gp=opt.gp?" gp":"";
+  let h='<div class="tape">';
+  cells.forEach((c,i)=>{
+    if(i>0) h+='<span class="arr'+gp+'">'+ (c.dots? "" : "→<br>"+(c.arr!==undefined?c.arr:arrow)) +'</span>';
+    if(c.dots){ h+='<span class="dots">…</span>'; return; }
+    h+='<span class="cell'+gp+(c.hl?" hl":"")+'">'+(c.idx!=null?('<span class="idx">'+c.idx+'</span>'):'')+c.val+'</span>';
+  });
+  h+='</div>';
+  return h;
+}
+T14.tapeHTML=tapeHTML;
+
+/* ---------- SVG для задач с рисунком ---------- */
+const SVG_INK="#2456a6", SVG_FILL="#eaf1fb", SVG_DOT="#7a4dbf";
+function svgTables(m){
+  /* m сдвинутых квадратных столиков: сверху и снизу по m мест, по одному на торцах */
+  const cs=46, pad=26, w=m*cs+pad*2, h=cs+pad*2;
+  let s='<svg viewBox="0 0 '+w+' '+h+'" width="'+Math.min(w, 340)+'" role="img" aria-label="столики">';
+  for(let i=0;i<m;i++){
+    s+='<rect x="'+(pad+i*cs)+'" y="'+pad+'" width="'+cs+'" height="'+cs+'" fill="'+SVG_FILL+'" stroke="'+SVG_INK+'" stroke-width="2"/>';
+  }
+  const r=6;
+  for(let i=0;i<m;i++){
+    const cx=pad+i*cs+cs/2;
+    s+='<circle cx="'+cx+'" cy="'+(pad-12)+'" r="'+r+'" fill="'+SVG_DOT+'"/>';
+    s+='<circle cx="'+cx+'" cy="'+(pad+cs+12)+'" r="'+r+'" fill="'+SVG_DOT+'"/>';
+  }
+  s+='<circle cx="'+(pad-12)+'" cy="'+(pad+cs/2)+'" r="'+r+'" fill="'+SVG_DOT+'"/>';
+  s+='<circle cx="'+(pad+m*cs+12)+'" cy="'+(pad+cs/2)+'" r="'+r+'" fill="'+SVG_DOT+'"/>';
+  s+='</svg>';
+  return s;
+}
+function svgLogs(rows){
+  /* пирамида брёвен: внизу rows штук, вверху одно */
+  const R=13, gap=3, step=2*R+gap;
+  const w=rows*step+30, h=rows*step*0.9+30;
+  let s='<svg viewBox="0 0 '+w+' '+h+'" width="'+Math.min(w,300)+'" role="img" aria-label="кладка брёвен">';
+  for(let row=0; row<rows; row++){
+    const count=rows-row;
+    const y=h-18-row*(step*0.87);
+    const x0=(w-count*step)/2+R;
+    for(let i=0;i<count;i++){
+      const x=x0+i*step;
+      s+='<circle cx="'+x+'" cy="'+y+'" r="'+R+'" fill="'+SVG_FILL+'" stroke="'+SVG_INK+'" stroke-width="2"/>';
+      s+='<circle cx="'+x+'" cy="'+y+'" r="'+(R-6)+'" fill="none" stroke="'+SVG_INK+'" stroke-width="1" opacity="0.5"/>';
+    }
+  }
+  s+='</svg>';
+  return s;
+}
+function svgSnake(k){
+  /* спираль со звеньями 1,1,2,2,…,k,k; клетка u px */
+  const u=17;
+  let x=0,y=0, dir=0; /* 0:→ 1:↑ 2:← 3:↓ */
+  const pts=[[0,0]];
+  const lens=[];
+  for(let L=1; L<=k; L++){ lens.push(L,L); }
+  let minx=0,maxx=0,miny=0,maxy=0;
+  for(const L of lens){
+    if(dir===0) x+=L; else if(dir===1) y-=L; else if(dir===2) x-=L; else y+=L;
+    pts.push([x,y]);
+    minx=Math.min(minx,x); maxx=Math.max(maxx,x);
+    miny=Math.min(miny,y); maxy=Math.max(maxy,y);
+    dir=(dir+1)%4;
+  }
+  const pad=14;
+  const w=(maxx-minx)*u+pad*2, h=(maxy-miny)*u+pad*2;
+  const gx=(v)=>pad+(v-minx)*u, gy=(v)=>pad+(v-miny)*u;
+  let s='<svg viewBox="0 0 '+w+' '+h+'" width="'+Math.min(w,300)+'" role="img" aria-label="змейка">';
+  /* клетчатый фон */
+  for(let i=0;i<= (maxx-minx); i++) s+='<line x1="'+(pad+i*u)+'" y1="'+pad+'" x2="'+(pad+i*u)+'" y2="'+(h-pad)+'" stroke="#e4edf6" stroke-width="1"/>';
+  for(let j=0;j<= (maxy-miny); j++) s+='<line x1="'+pad+'" y1="'+(pad+j*u)+'" x2="'+(w-pad)+'" y2="'+(pad+j*u)+'" stroke="#e4edf6" stroke-width="1"/>';
+  let path="M "+gx(pts[0][0])+" "+gy(pts[0][1]);
+  for(let i=1;i<pts.length;i++) path+=" L "+gx(pts[i][0])+" "+gy(pts[i][1]);
+  s+='<path d="'+path+'" fill="none" stroke="'+SVG_INK+'" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>';
+  /* подпись последнего звена */
+  const a=pts[pts.length-2], b=pts[pts.length-1];
+  const mx=(gx(a[0])+gx(b[0]))/2, my=(gy(a[1])+gy(b[1]))/2;
+  s+='<text x="'+(mx+10)+'" y="'+my+'" font-size="14" fill="'+SVG_DOT+'" font-weight="bold">'+k+'</text>';
+  s+='</svg>';
+  return s;
+}
+T14.svgTables=svgTables; T14.svgLogs=svgLogs; T14.svgSnake=svgSnake;
+
+if(typeof module!=="undefined") module.exports=T14;
+if(typeof globalThis!=="undefined") globalThis.T14=T14;
+
+/* ===== ОГЭ №14: генераторы задач ===== */
+"use strict";
+(function(T){
+const {F, Fr, rng, ri, pick, fmtN, N, nb} = T;
+const W = T.words;
+
+/* Готовый ответ должен быть целым или конечной десятичной дробью */
+function mkDistract(list, ans){
+  const out=[]; const seen=new Set([key(ans)]);
+  for(const d of list){
+    if(!d || !d.v) continue;
+    if(!(d.v.n!==undefined && d.v.d!==undefined)) continue;
+    if(!T.decParts(d.v)) continue;      // только целые/конечные десятичные
+    if(d.v.n===0n && ans.n!==0n) continue;
+    const k=key(d.v);
+    if(seen.has(k)) continue;
+    seen.add(k); out.push(d);
+  }
+  return out;
+}
+function key(f){ return f.n.toString()+"/"+f.d.toString(); }
+// безопасное построение дроби из целочисленных выражений (никогда не бросает)
+function iF(num, den){ try{ return F(BigInt(Math.round(num)), den===undefined?1n:BigInt(Math.round(den))); }catch(e){ return F(0); } }
+
+const GENS = {};
+
+/* ================= АП: значение на n-м шаге ================= */
+GENS["AP-VAL"] = {
+  code:"AP-VAL", group:"ap", title:"Значение на n-м шаге",
+  desc:"амфитеатр, охлаждение, осадок, давление, часы",
+  methods:["formula","table"],
+  price:"Таблица: надёжно, каждый шаг виден, но строк столько же, сколько переходов. Формула: три числа и готово, но легко забыть, что переходов n − 1.",
+  gen(seed){
+    const r=rng(seed);
+    const sub=pick(r,["rows","rows","time","sediment","clock","sun"]);
+    let facts, text, unit, chip="АП: n-й член";
+    if(sub==="rows"){
+      const a1=ri(r,15,30), d=ri(r,2,5), n=ri(r,6,9), R=n+ri(r,2,6);
+      const place=pick(r,["амфитеатре","зрительном зале","концертном зале"]);
+      facts={sub, a1:F(a1), d:F(d), n, base:1, noun:"ряд", nounPr:"ряду"};
+      text="В "+place+" "+N(R)+" рядов. В первом ряду "+N(a1)+" "+W.seatW(a1)+", а в каждом следующем на "+N(d)+
+        " "+W.seatW(d)+" больше, чем в предыдущем. Сколько мест в "+n+"-м ряду?";
+      unit="мест";
+    } else if(sub==="time"){
+      const a0=ri(r,-5,25), d=ri(r,3,7), t=ri(r,3,8), X=t+ri(r,2,5);
+      facts={sub, a1:F(a0), d:F(-d), n:t, base:0, noun:"минута", nounPr:"минуте"};
+      text="При проведении опыта вещество равномерно охлаждали в течение "+N(X)+" "+W.minWord(X)+
+        ": каждую минуту его температура уменьшалась на "+N(d)+"&nbsp;°C. Начальная температура вещества была "+
+        N(a0)+"&nbsp;°C. Найдите температуру вещества (в градусах Цельсия) через "+N(t)+" "+W.minWord(t)+" после начала опыта.";
+      unit="°C";
+    } else if(sub==="clock"){
+      const a1=ri(r,3,8), d=ri(r,2,4), t=ri(r,5,9), H=ri(r,7,11);
+      facts={sub, a1:F(a1), d:F(d), n:t, base:1, noun:"час", nounPr:"часе"};
+      text="В "+H+":00 часы начали спешить. За первый час они ушли вперёд на "+N(a1)+" "+W.minWord(a1)+
+        ", и за каждый следующий час уходят вперёд на "+N(d)+" "+W.minWord(d)+" больше, чем за предыдущий. На сколько минут часы уйдут вперёд за "+
+        t+"-й час после начала?";
+      unit="минут";
+    } else if(sub==="sun"){
+      const a1=ri(r,10,18), d=ri(r,3,6), t=ri(r,5,9);
+      facts={sub, a1:F(a1), d:F(d), n:t, base:1, noun:"день", nounPr:"дне"};
+      text="Виктор начинает курс солнечных ванн с "+N(a1)+" "+W.minWord(a1)+" в первый день и каждый следующий день увеличивает время процедуры на "+
+        N(d)+" "+W.minWord(d)+". Сколько минут будет длиться процедура в "+t+"-й день?";
+      unit="минут";
+    } else {
+      const dv=pick(r,[F(1,2),F(3,2),F(2),F(5,2),F(3)]), t=ri(r,4,9);
+      facts={sub, a1:F(0), d:dv, n:t, base:0, noun:"минута", nounPr:"минуте"};
+      text="При проведении химической реакции каждую минуту в растворе образуется "+N(dv)+
+        "&nbsp;г осадка. В начальный момент осадка в растворе не было. Найдите массу осадка (в граммах) через "+
+        N(t)+" "+W.minWord(t)+" после начала реакции.";
+      unit="г";
+    }
+    const trans = facts.base===1? facts.n-1 : facts.n;
+    facts.trans=trans;
+    const ans=Fr.add(facts.a1, Fr.mul(facts.d, F(trans)));
+    const distract=mkDistract([
+      { v:Fr.add(facts.a1, Fr.mul(facts.d, F(trans+1))),
+        hint: facts.base===1
+          ? "Похоже, получился один лишний переход. Первый "+facts.noun+" уже дан, поэтому от 1-го до "+facts.n+"-го всего "+trans+" переход"+((trans%10>=2&&trans%10<=4&&(trans%100<10||trans%100>20))?"а":(trans%10===1&&trans%100!==11?"":"ов"))+"."
+          : "Похоже, получился один лишний переход. Пересчитай, сколько минут прошло от начального момента." },
+      { v:Fr.add(facts.a1, Fr.mul(facts.d, F(trans-1))),
+        hint: facts.base===1
+          ? "Кажется, ты сделал на один переход меньше. От 1-го до "+facts.n+"-го шага переходов "+trans+"."
+          : "Здесь отсчёт идёт от начального момента (0 минут), поэтому переходов ровно столько, сколько минут прошло: "+trans+"." },
+      facts.d.n<0n ? { v:Fr.sub(facts.a1, Fr.mul(facts.d, F(trans))),
+        hint:"Температура уменьшалась, значит на каждом шаге число не прибавляется, а вычитается." } : null
+    ], ans);
+    return { code:"AP-VAL", seed, chip, gp:false, text, svg:null, unit, ans, distract,
+      hint1:"Каждый шаг меняется на одно и то же. Сначала пойми, сколько переходов, потом умножь прибавку на их число.",
+      facts, methods: GENS["AP-VAL"].methods };
+  },
+  sim(t){
+    let v=t.facts.a1;
+    for(let i=0;i<t.facts.trans;i++) v=Fr.add(v,t.facts.d);
+    return v;
+  }
+};
+
+/* ================= АП: сумма первых n шагов ================= */
+GENS["AP-SUM"] = {
+  code:"AP-SUM", group:"ap", title:"Сумма первых n шагов",
+  desc:"камень, детали, штрафы, ряды",
+  methods:["gauss","table","formula"],
+  price:"Метод Гаусса: записать сумму дважды и увидеть одинаковые столбики — понятно, почему делим на 2. Таблица: выписать все шаги и сложить по порядку — надёжно, но при большом n долго. Формула: самая короткая запись того же самого.",
+  gen(seed){
+    const r=rng(seed);
+    const sub=pick(r,["stone","parts","penalty","rings"]);
+    let a1,d,n,text,unit;
+    if(sub==="stone"){
+      a1=ri(r,6,14); d=ri(r,6,12); n=ri(r,4,7);
+      text="Камень бросают в глубокое ущелье. В первую секунду он пролетает "+N(a1)+
+        "&nbsp;м, а в каждую следующую секунду на "+N(d)+" м больше, чем в предыдущую. Сколько метров пролетит камень за первые "+
+        N(n)+" "+W.plur(n,["секунду","секунды","секунд"])+"?";
+      unit="м";
+    } else if(sub==="penalty"){
+      a1=ri(r,2,4); const dv=F(1,2); n=ri(r,5,8);
+      const facts={sub, a1:F(a1), d:dv, n};
+      const S=Fr.div(Fr.mul(Fr.add(Fr.mul(F(2),F(a1)),Fr.mul(dv,F(n-1))),F(n)),F(2));
+      const aN=Fr.add(F(a1),Fr.mul(dv,F(n-1)));
+      const ans=S;
+      const distract=mkDistract([
+        { v:aN, hint:"Это штраф только за последний промах. А спрашивают все штрафные очки за "+n+" промахов." },
+        { v:Fr.mul(F(a1),F(n)), hint:"Штрафы растут: каждый следующий на 0,5 больше. Выпиши их или сложи парами." },
+        { v:Fr.mul(Fr.add(F(a1),aN),F(n)), hint:"Пара «первый + последний» — верно, но не забудь разделить на 2." }
+      ], ans);
+      text="За первый промах в стрельбе начисляют "+N(F(a1))+" штрафных очка, а за каждый следующий промах на "+N(dv)+
+        " очка больше, чем за предыдущий. Сколько всего штрафных очков наберёт стрелок за "+N(n)+" "+W.plur(n,["промах","промаха","промахов"])+"?";
+      return { code:"AP-SUM", seed, chip:"АП: сумма", gp:false, text, svg:null, unit:"очков", ans, distract,
+        hint1:"«Сколько всего» значит сумма. Выпиши штрафы или сложи парами «первый + последний» (метод Гаусса).",
+        facts, methods:GENS["AP-SUM"].methods };
+    } else if(sub==="rings"){
+      a1=ri(r,20,35); d=ri(r,2,5); n=ri(r,5,8);
+      const R=n+ri(r,1,4);
+      text="В нижнем ряду стеллажа "+N(a1)+" "+W.plur(a1,["книга","книги","книг"])+", а в каждом ряду выше на "+N(d)+
+        " "+W.plur(d,["книгу","книги","книг"])+" меньше. Сколько всего книг в первых "+N(n)+" рядах снизу, если всего рядов "+N(R)+"?";
+      unit="книг";
+      // здесь d отрицательная в смысле «меньше», но сумма первых n снизу вверх: a1, a1-d, ...
+      const facts={sub, a1:F(a1), d:F(-d), n};
+      const aN=a1-d*(n-1);
+      const S=(2*a1-d*(n-1))*n/2;
+      const ans=F(S);
+      const distract=mkDistract([
+        { v:F(aN), hint:"Это только "+n+"-й ряд. А спрашивают все книги в первых "+n+" рядах вместе." },
+        { v:F(a1*n), hint:"Ряды разные: в каждом выше на "+d+" меньше. Сложи их или используй формулу суммы." },
+        { v:F((a1+aN)*n), hint:"Пара «первый + последний» посчитана верно, но нужно разделить на 2." }
+      ], ans);
+      return { code:"AP-SUM", seed, chip:"АП: сумма", gp:false, text, svg:null, unit, ans, distract,
+        hint1:"«Сколько всего» значит сумма. Выпиши ряды или сложи парами «первый + последний» (метод Гаусса).",
+        facts, methods:GENS["AP-SUM"].methods };
+    } else {
+      a1=ri(r,12,30); d=ri(r,3,8); n=ri(r,5,8);
+      text="В первый день мастер изготовил "+N(a1)+" "+W.plur(a1,["деталь","детали","деталей"])+", а в каждый следующий день изготавливал на "+
+        N(d)+" "+W.plur(d,["деталь","детали","деталей"])+" больше, чем в предыдущий. Сколько всего деталей мастер изготовил за первые "+N(n)+" дней?";
+      unit="деталей";
+    }
+    const facts={sub, a1:F(a1), d:F(d), n};
+    const aN=a1+d*(n-1);
+    const S=(2*a1+d*(n-1))*n/2;
+    const ans=F(S);
+    const distract=mkDistract([
+      { v:F(aN), hint:"Это значение только последнего шага. А спрашивают всё вместе, за "+n+" шагов сразу: сложи их." },
+      { v:F(a1*n), hint:"Шаги не одинаковые: каждый следующий больше предыдущего. Выпиши их или используй формулу суммы." },
+      { v:F((a1+aN)*n), hint:"Хороший ход с парой «первый + последний», но в конце нужно разделить на 2." }
+    ], ans);
+    return { code:"AP-SUM", seed, chip:"АП: сумма", gp:false, text, svg:null, unit, ans, distract,
+      hint1:"«Сколько всего» значит сумма. Выпиши шаги или сложи парами «первый + последний» (метод Гаусса).",
+      facts, methods:GENS["AP-SUM"].methods };
+  },
+  sim(t){
+    let v=t.facts.a1, s=F(0);
+    for(let i=0;i<t.facts.n;i++){ s=Fr.add(s,v); v=Fr.add(v,t.facts.d); }
+    return s;
+  }
+};
+
+/* ================= АП: прибавка по двум известным шагам ================= */
+GENS["AP-2PT"] = {
+  code:"AP-2PT", group:"ap", title:"Прибавка по двум известным шагам",
+  desc:"акции, население, часы, давление",
+  methods:["formula"],
+  price:"Здесь один надёжный путь: сначала найти прибавку за один переход, а уже потом идти к нужному шагу.",
+  gen(seed){
+    const r=rng(seed);
+    const sub=pick(r,["stock","people","clock","press"]);
+    let facts, text, unit, chip="АП: шаг по двум точкам";
+    if(sub==="press"){
+      const s=pick(r,[F(8),F(10),F(12),F(21,2)]);
+      let k=ri(r,12,40); if(!Fr.isInt(s)) k=2*Math.round(k/2);
+      const P1=ri(r,420,760);
+      const dh=Fr.mul(s,F(k));
+      const h1=ri(r,40,180)*10;
+      const h2f=Fr.add(F(h1), dh);
+      facts={sub, P1:F(P1), h1:F(h1), h2:h2f, s, k};
+      text="На высоте "+N(h1)+" м над уровнем моря атмосферное давление равно "+N(P1)+
+        " мм рт. ст. При подъёме на каждые "+N(s)+" м давление уменьшается на 1 мм рт. ст. Определите атмосферное давление на высоте "+
+        N(h2f)+" м над уровнем моря.";
+      unit="мм рт. ст.";
+      const ans=F(P1-k);
+      const distract=mkDistract([
+        { v:F(P1+k), hint:"При подъёме давление уменьшается, а не растёт." },
+        { v:F(P1-k-1), hint:"Проверь число отрезков по "+fmtN(s)+" м: раздели разницу высот на "+fmtN(s)+"." },
+        { v:F(P1-k+1), hint:"Проверь число отрезков по "+fmtN(s)+" м: раздели разницу высот на "+fmtN(s)+"." }
+      ], ans);
+      return { code:"AP-2PT", seed, chip, gp:false, text, svg:null, unit, ans, distract,
+        hint1:"Сначала узнай, сколько отрезков по "+fmtN(s)+" м помещается в разнице высот.", facts, methods:["formula"] };
+    }
+    let k,m,p,ak,am,noun;
+    if(sub==="stock"){
+      k=ri(r,3,8); m=k+ri(r,4,7); const Nd=m+ri(r,5,15); p=Nd;
+      const d=ri(r,8,25); ak=ri(r,300,1200); am=ak+d*(m-k);
+      noun="день";
+      text="В течение "+N(Nd)+" банковских дней акции компании дорожали каждый день на одну и ту же сумму. В "+k+"-й день акция стоила "+
+        N(ak)+" рублей, а в "+m+"-й день "+N(am)+" рублей. Сколько стоила акция в последний, "+p+"-й день этого периода?";
+      unit="рублей";
+    } else if(sub==="people"){
+      const y0=2008+ri(r,0,7); k=y0; m=y0+ri(r,5,9); p=k+ri(r,2,m-k-1);
+      const d=ri(r,60,420)*5; ak=ri(r,30,90)*1000+ri(r,0,9)*100; am=ak+d*(m-k);
+      noun="год";
+      text="К концу "+k+" года в городе проживало "+N(ak)+" человек. Каждый год число жителей увеличивалось на одну и ту же величину. К концу "+
+        m+" года в городе проживало "+N(am)+" человек. Сколько человек проживало в городе к концу "+p+" года?";
+      unit="человек";
+    } else {
+      const H=ri(r,7,11); const t1=ri(r,6,10); const d=ri(r,2,5);
+      k=0; m=t1; p=ri(r,18,30); ak=0; am=d*t1; noun="час";
+      facts={sub, k,m,p, ak:F(ak), am:F(am), H, noun};
+      text="В "+H+":00 часы сломались, и с этого момента каждый час они дополнительно отстают на одно и то же число минут. В "+
+        (H+t1)+":00 того же дня часы отставали на "+N(am)+" "+W.minWord(am)+". На сколько минут будут отставать часы через "+
+        N(p)+" "+W.hourWord(p)+" после поломки?";
+      unit="минут";
+      const dts=(am)/(t1);
+      const ans=F(dts*p);
+      const distract=mkDistract([
+        { v:F(dts*(p-1)), hint:"Отставание копится с самого момента поломки: за "+p+" "+W.hourWord(p)+" набежит "+p+" одинаковых прибавок." },
+        { v:F(Math.round(am/(t1+1))*p), hint:"Прибавку за час найди делением: "+fmtN(F(am))+" минут раздели на число прошедших часов, то есть на "+t1+"." }
+      ], ans);
+      return { code:"AP-2PT", seed, chip, gp:false, text, svg:null, unit, ans, distract,
+        hint1:"Узнай, на сколько минут часы отстают за один час, а потом умножь на нужное число часов.", facts, methods:["formula"] };
+    }
+    facts={sub, k,m,p, ak:F(ak), am:F(am), noun};
+    const d=(am-ak)/(m-k);
+    const ans=F(ak+d*(p-k));
+    const distract=mkDistract([
+      { v: (am-ak)%(m-k+1)===0 ? F(ak+ (am-ak)/(m-k+1)*(p-k)) : null,
+        hint:"Дели изменение на число переходов между известными шагами, а их "+(m-k)+", а не "+(m-k+1)+"." },
+      { v:F(ak+d*(p-k+1)), hint:"Проверь число переходов до нужного шага: от "+k+"-го до "+p+"-го их "+(p-k)+"." },
+      { v:F(am), hint:"Это значение на "+m+"-м шаге, а спрашивают про "+p+"-й." }
+    ].filter(x=>x&&x.v), ans);
+    return { code:"AP-2PT", seed, chip, gp:false, text, svg:null, unit, ans, distract,
+      hint1:"Сначала найди прибавку за один переход: раздели изменение на число переходов между известными шагами.",
+      facts, methods:["formula"] };
+  },
+  sim(t){
+    const f=t.facts;
+    if(f.sub==="press"){
+      let P=f.P1, h=f.h1;
+      while(Fr.cmp(h,f.h2)<0){ h=Fr.add(h,f.s); P=Fr.sub(P,F(1)); }
+      return P;
+    }
+    const d=Fr.div(Fr.sub(f.am,f.ak), F(f.m-f.k));
+    let v=f.ak;
+    for(let i=f.k;i<f.p;i++) v=Fr.add(v,d);
+    /* контроль: значение в точке m совпадает с данным */
+    let vm=f.ak; for(let i=f.k;i<f.m;i++) vm=Fr.add(vm,d);
+    if(!Fr.eq(vm,f.am)) throw new Error("AP-2PT: несостыковка точек");
+    return v;
+  }
+};
+
+/* ================= АП: известна вся сумма, найти день ================= */
+GENS["AP-SUM2DAY"] = {
+  code:"AP-SUM2DAY", group:"ap", title:"Известна вся сумма: найти нужный день",
+  desc:"открытки, щебень, улитка",
+  methods:["formula"],
+  price:"Ключ: сумма и число дней сразу дают пару «первый + последний». Дальше обычные переходы.",
+  gen(seed){
+    const r=rng(seed);
+    const sub=pick(r,["cards","gravel","snail"]);
+    if(sub==="snail"){
+      const n=pick(r,[8,10,12,14,16]);
+      let Fs;
+      if(n%4===0 && r()<0.5) Fs=F(2*ri(r,3,7)+1,2); else Fs=F(ri(r,6,14));
+      const S=Fr.div(Fr.mul(Fs,F(n)),F(2));
+      const facts={sub, n, Fs, S};
+      const text="Улитка ползёт от одного дерева до другого. Каждый день она проползает на одно и то же расстояние меньше, чем в предыдущий день. За первый и последний дни улитка проползла в сумме "+
+        N(Fs)+" м. Сколько дней улитка потратила на весь путь, если расстояние между деревьями равно "+N(S)+" м?";
+      const ans=F(n);
+      const distract=mkDistract([
+        { v:Fr.div(S,Fs), hint:"Пар «первый + последний» в сумме столько, сколько половина дней. Умножь результат деления на 2." },
+        { v:F(n+1), hint:"Дней ровно столько, сколько слагаемых в сумме: 2·путь разделить на сумму пары." }
+      ], ans);
+      return { code:"AP-SUM2DAY", seed, chip:"АП: сумма и дни", gp:false, text, svg:null, unit:"дней", ans, distract,
+        hint1:"Весь путь равен сумме пары «первый + последний», умноженной на половину числа дней.", facts, methods:["formula"] };
+    }
+    const a1= sub==="cards"? ri(r,8,24) : ri(r,4,12);
+    const d= ri(r,2,6), Nd=ri(r,12,18), kk=ri(r,6,Nd-2);
+    const S=(2*a1+d*(Nd-1))*Nd/2;
+    const facts={sub, a1:F(a1), d:F(d), Nd, k:kk, S:F(S)};
+    let text, unit;
+    if(sub==="cards"){
+      text="Саше надо подписать "+N(S)+" открыток. Каждый день она подписывает на одно и то же число открыток больше, чем в предыдущий день. За первый день Саша подписала "+
+        N(a1)+" открыток, а вся работа была выполнена за "+N(Nd)+" дней. Сколько открыток было подписано за "+kk+"-й день?";
+      unit="открыток";
+    } else {
+      text="Грузовик перевозит партию щебня массой "+N(S)+" тонн, каждый день увеличивая норму перевозки на одно и то же число тонн. За первый день было перевезено "+
+        N(a1)+" тонн. Сколько тонн щебня было перевезено за "+kk+"-й день, если вся работа была выполнена за "+N(Nd)+" дней?";
+      unit="тонн";
+    }
+    const aN=2*S/Nd - a1;
+    const ans=F(a1+d*(kk-1));
+    const distract=mkDistract([
+      { v:F(S/Nd % 1===0? S/Nd : 0), hint:"Это средняя дневная норма, а спрашивают именно про "+kk+"-й день." },
+      { v:F(a1+d*kk), hint:"От первого дня до "+kk+"-го всего "+(kk-1)+" переходов, а не "+kk+"." },
+      { v:F(aN), hint:"Это последний день, а спрашивают про "+kk+"-й." }
+    ].filter(x=>x.v && x.v.n!==0n), ans);
+    return { code:"AP-SUM2DAY", seed, chip:"АП: сумма и дни", gp:false, text, svg:null, unit, ans, distract,
+      hint1:"Сумма и число дней дают пару «первый + последний»: она равна 2·сумма ÷ дни. Дальше найди прибавку.",
+      facts, methods:["formula"] };
+  },
+  sim(t){
+    const f=t.facts;
+    if(f.sub==="snail"){
+      /* проверка тождества: 2S = Fs · n */
+      if(!Fr.eq(Fr.mul(F(2),f.S), Fr.mul(f.Fs,F(f.n)))) throw new Error("snail: тождество");
+      return F(f.n);
+    }
+    let v=f.a1, s=F(0), got=null;
+    for(let i=1;i<=f.Nd;i++){ if(i===f.k) got=v; s=Fr.add(s,v); v=Fr.add(v,f.d); }
+    if(!Fr.eq(s,f.S)) throw new Error("sum2day: сумма не сошлась");
+    return got;
+  }
+};
+
+/* ================= ГП: умножаем или делим каждые N минут ================= */
+GENS["GP-VAL"] = {
+  code:"GP-VAL", group:"gp", title:"Умножаем или делим каждые N минут",
+  desc:"распад, колония, инфузории, фильтры, закваска",
+  methods:["formula","table"],
+  price:"Таблица: выписать значения по периодам, для 3–6 периодов это очень быстро. Формула со степенью: короче, но сначала посчитай число периодов.",
+  gen(seed){
+    const r=rng(seed);
+    const sub=pick(r,["decay","decay","grow","back","filter","dough"]);
+    let facts, text, unit;
+    if(sub==="decay"){
+      const P=pick(r,[5,7,8,10,12,15]), k=ri(r,3,6), v=ri(r,5,40);
+      const m0=v*Math.pow(2,k), Tm=P*k;
+      facts={sub, q:F(2), k, P, T:Tm, m0:F(m0)};
+      text="В ходе распада радиоактивного изотопа его масса уменьшается вдвое каждые "+N(P)+" "+W.minWord(P)+
+        ". В начальный момент масса изотопа была "+N(m0)+" мг. Найдите массу изотопа через "+N(Tm)+" "+W.minWord(Tm)+". Ответ дайте в миллиграммах.";
+      unit="мг";
+      const ans=F(v);
+      const distract=mkDistract([
+        { v:iF(m0/Math.pow(2,k-1)), hint:"Сначала посчитай, сколько полных периодов прошло: "+Tm+" минут раздели на "+P+"." },
+        { v:iF(m0/Math.pow(2,k+1)), hint:"Периодов здесь "+k+": раздели "+Tm+" минут на длину периода "+P+"." },
+        { v:F(m0-2*k), hint:"Масса не убавляется на число, а каждый раз делится на 2." }
+      ], ans);
+      return { code:"GP-VAL", seed, chip:"ГП: n-й член", gp:true, text, svg:null, unit, ans, distract,
+        hint1:"Сколько полных периодов по "+P+" минут в "+Tm+" минутах? Столько раз и делим на 2.", facts, methods:GENS["GP-VAL"].methods };
+    }
+    if(sub==="filter"){
+      const k=ri(r,3,5), v=ri(r,3,15);
+      const I0=v*Math.pow(2,k);
+      facts={sub, q:F(2), k, P:1, T:k, m0:F(I0)};
+      text="Каждый светофильтр пропускает ровно половину падающего на него света. На первый фильтр падает свет яркостью "+
+        N(I0)+" условных единиц. Какой будет яркость света после того, как он пройдёт через "+N(k)+" "+W.plur(k,["фильтр","фильтра","фильтров"])+", поставленных подряд?";
+      unit="усл. ед.";
+      const ans=F(v);
+      const distract=mkDistract([
+        { v:iF(I0/Math.pow(2,k-1)), hint:"Фильтров ровно "+k+": свет делится пополам столько же раз." },
+        { v:F(I0-2*k), hint:"Каждый фильтр не отнимает число, а делит яркость пополам." }
+      ], ans);
+      return { code:"GP-VAL", seed, chip:"ГП: n-й член", gp:true, text, svg:null, unit, ans, distract,
+        hint1:"Каждый из "+k+" фильтров делит яркость на 2. Начни с "+fmtN(F(I0))+" и дели пополам "+k+" раз.", facts, methods:GENS["GP-VAL"].methods };
+    }
+    if(sub==="grow"){
+      const q=pick(r,[2,3]); const k= q===3? ri(r,2,4): ri(r,3,5);
+      const m0=ri(r,3,20); const P=pick(r,[10,15,20,30]); const Tm=P*k;
+      facts={sub, q:F(q), k, P, T:Tm, m0:F(m0)};
+      text="В чашку Петри с питательной средой поместили колонию микроорганизмов массой "+N(m0)+
+        " мг. Каждые "+N(P)+" "+W.minWord(P)+" масса колонии увеличивается в "+N(q)+" "+W.timesW(q)+". Найдите массу колонии через "+
+        N(Tm)+" "+W.minWord(Tm)+" после начала эксперимента. Ответ дайте в миллиграммах.";
+      unit="мг";
+      const ans=F(m0*Math.pow(q,k));
+      const distract=mkDistract([
+        { v:iF(m0*Math.pow(q,k-1)), hint:"Пересчитай периоды: "+Tm+" минут при периоде "+P+" минут это "+k+" умножений." },
+        { v:iF(m0*Math.pow(q,k+1)), hint:"Пересчитай периоды: "+Tm+" минут при периоде "+P+" минут это "+k+" умножений." },
+        { v:F(m0*q*k), hint:"Масса не прибавляется, а каждый период умножается на "+q+": умножения повторяются."}
+      ], ans);
+      return { code:"GP-VAL", seed, chip:"ГП: n-й член", gp:true, text, svg:null, unit, ans, distract,
+        hint1:"Сколько полных периодов по "+P+" минут прошло? Столько раз масса умножится на "+q+".", facts, methods:GENS["GP-VAL"].methods };
+    }
+    if(sub==="dough"){
+      const q=2; const k=ri(r,3,5); const m0=ri(r,20,60)*5; const P=pick(r,[60,90,120]); const Tm=P*k;
+      facts={sub, q:F(q), k, P, T:Tm, m0:F(m0)};
+      text="Кусок теста на закваске увеличивается в объёме вдвое каждые "+N(P)+" "+W.minWord(P)+
+        ". Сейчас его объём "+N(m0)+" мл. Каким станет объём теста через "+N(Tm)+" "+W.minWord(Tm)+"? Ответ дайте в миллилитрах.";
+      unit="мл";
+      const ans=F(m0*Math.pow(q,k));
+      const distract=mkDistract([
+        { v:iF(m0*Math.pow(q,k-1)), hint:"Пересчитай периоды: "+Tm+" минут при периоде "+P+" минут это "+k+" удвоений." },
+        { v:F(m0*q*k), hint:"Объём не прибавляется, а каждый период умножается на 2." }
+      ], ans);
+      return { code:"GP-VAL", seed, chip:"ГП: n-й член", gp:true, text, svg:null, unit, ans, distract,
+        hint1:"Сколько раз по "+P+" минут в "+Tm+" минутах? Столько раз объём удвоится.", facts, methods:GENS["GP-VAL"].methods };
+    }
+    const k=ri(r,4,7), v=ri(r,3,12);
+    const now=v*Math.pow(2,k);
+    facts={sub, q:F(2), k, m0:F(now)};
+    text="Одноклеточный организм инфузория-туфелька размножается делением на две части. Сколько инфузорий было первоначально, если после "+
+      k+"-кратного деления их стало "+N(now)+"?";
+    unit="инфузорий";
+    const ans=F(v);
+    const distract=mkDistract([
+      { v:iF(now/Math.pow(2,k-1)), hint:"Делений было ровно "+k+": столько раз число делится на 2, если идти назад." },
+      { v:F(now-2*k), hint:"При каждом делении число инфузорий не прибавляется, а удваивается. Назад: делим на 2." }
+    ], ans);
+    return { code:"GP-VAL", seed, chip:"ГП: назад", gp:true, text, svg:null, unit, ans, distract,
+      hint1:"Иди назад: каждое деление удваивало число, значит назад делим на 2, и так "+k+" раз.", facts, methods:GENS["GP-VAL"].methods };
+  },
+  sim(t){
+    const f=t.facts;
+    const up = (f.sub==="grow" || f.sub==="dough");
+    if(up){ let v=f.m0; for(let i=0;i<f.k;i++) v=Fr.mul(v,f.q); return v; }
+    let v=f.m0; for(let i=0;i<f.k;i++) v=Fr.div(v,f.q); return v;
+  }
+};
+
+/* ================= ГП: осталось и образовалось ================= */
+GENS["GP-COMPL"] = {
+  code:"GP-COMPL", group:"gp", title:"Осталось и образовалось",
+  desc:"изотоп А переходит в изотоп Б",
+  methods:["formula","table"],
+  price:"Два действия: сначала сколько осталось А, потом вычесть из начальной массы. Спрашивают всегда про Б.",
+  gen(seed){
+    const r=rng(seed);
+    const styleB = r()<0.5;
+    const P=pick(r,[6,8,10,12]), k=ri(r,3,5), v=ri(r,5,30);
+    const m0=v*Math.pow(2,k), Tm=P*k;
+    const facts={P,k,T:Tm,m0:F(m0),rest:F(v)};
+    let text;
+    if(styleB){
+      text="В ходе распада каждые "+N(P)+" "+W.minWord(P)+" половина атомов радиоактивного изотопа А без потери массы превращается в атомы стабильного изотопа Б. В начальный момент масса изотопа А была "+
+        N(m0)+" мг. Найдите массу образовавшегося изотопа Б через "+N(Tm)+" "+W.minWord(Tm)+". Ответ дайте в миллиграммах.";
+    } else {
+      text="В растворе идёт реакция: каждые "+N(P)+" "+W.minWord(P)+" половина оставшегося реагента переходит в осадок. Вначале реагента было "+
+        N(m0)+" мг. Сколько миллиграммов реагента перешло в осадок через "+N(Tm)+" "+W.minWord(Tm)+"?";
+    }
+    facts.styleB=styleB;
+    const ans=F(m0-v);
+    const distract=mkDistract([
+      { v:F(v), hint: styleB
+          ? "Это то, сколько осталось изотопа А. А спрашивают, сколько образовалось изотопа Б: вычти остаток из начальной массы."
+          : "Это сколько реагента осталось. А спрашивают, сколько ушло в осадок: вычти остаток из начального количества." },
+      { v:F(m0-2*v), hint:"Осталось ровно "+fmtN(F(v))+" мг, всё остальное перешло: вычитай один раз." },
+      { v:iF(m0-m0/Math.pow(2,k-1)), hint:"Проверь число периодов: "+Tm+" минут при периоде "+P+" минут это "+k+" делений пополам." }
+    ].filter(x=>x.v.n!==0n), ans);
+    return { code:"GP-COMPL", seed, chip:"ГП: осталось и образовалось", gp:true, text, svg:null, unit:"мг", ans, distract,
+      hint1:"Сначала узнай, сколько осталось (дели пополам "+k+" раз"+(k>=5?"":"а")+"), потом вычти это из начального количества.",
+      facts, methods:GENS["GP-COMPL"].methods };
+  },
+  sim(t){
+    const f=t.facts;
+    let a=f.m0;
+    for(let i=0;i<f.k;i++) a=Fr.div(a,F(2));
+    return Fr.sub(f.m0,a);
+  }
+};
+
+/* ================= Порог: сколько шагов до условия ================= */
+GENS["THRESH"] = {
+  code:"THRESH", group:"story", title:"Сколько шагов до условия",
+  desc:"отскоки мячика, очки удваиваются",
+  methods:["table"],
+  price:"Здесь честнее всего таблица: выписываем шаг за шагом и берём первый, на котором условие уже выполнилось.",
+  gen(seed){
+    const r=rng(seed);
+    const sub=pick(r,["bounce","bounce","points"]);
+    if(sub==="bounce"){
+      const q=pick(r,[2,3]);
+      const nAns= q===3? ri(r,4,5) : ri(r,4,6);
+      const v= q===3? ri(r,4,12) : ri(r,4,30);
+      const L=ri(r,v+1, v*q-1);
+      const h1=v*Math.pow(q,nAns-1);
+      const seq=[]; let h=h1; for(let i=1;i<=nAns;i++){ seq.push(h); h=h/q; }
+      const facts={sub,q:F(q),L:F(L),nAns,h1:F(h1),seq:seq.map(x=>F(x))};
+      const text="Мячик со всей силы бросили об асфальт. После первого отскока он подлетел на высоту "+
+        N(h1)+" см, а после каждого следующего отскока подлетал на высоту в "+N(q)+" "+W.timesW(q)+
+        " меньше предыдущей. После какого по счёту отскока высота подлёта станет меньше "+N(L)+" см?";
+      const ans=F(nAns);
+      const distract=mkDistract([
+        { v:F(nAns-1), hint:"После этого отскока высота ещё не меньше "+fmtN(F(L))+" см. Нужен первый отскок, после которого условие уже выполнилось." },
+        { v:F(nAns+1), hint:"Условие выполняется уже раньше: сравни высоты с "+fmtN(F(L))+" см по порядку и возьми первую подходящую." }
+      ], ans);
+      return { code:"THRESH", seed, chip:"Порог: первый подходящий шаг", gp:true, text, svg:null, unit:"(номер отскока)", ans, distract,
+        hint1:"Выпиши высоты по порядку: "+fmtN(F(h1))+", дальше дели на "+q+". Останавливайся на первой высоте меньше "+fmtN(F(L))+".",
+        facts, methods:["table"] };
+    }
+    const nAns=ri(r,9,13);
+    const Sn=Math.pow(2,nAns+1)-2, Sp=Math.pow(2,nAns)-2;
+    let X=Math.round(ri(r,Sp+1,Sn)/500)*500;
+    if(X<=Sp) X=Sp+1; if(X>Sn) X=Sn;
+    const adds=[], sums=[]; let a=2,s=0;
+    for(let i=1;i<=nAns;i++){ adds.push(a); s+=a; sums.push(s); a*=2; }
+    const facts={sub,X:F(X),nAns,adds:adds.map(x=>F(x)),sums:sums.map(x=>F(x))};
+    const text="Игра начинается с 0 очков. После первой минуты игры начисляется 2 очка, после второй 4 очка, после третьей 8 очков, и после каждой следующей минуты начисляется вдвое больше очков, чем после предыдущей. Для перехода на новый уровень нужно набрать не менее "+
+      N(X)+" очков. Через сколько минут игрок перейдёт на новый уровень?";
+    const ans=F(nAns);
+    const distract=mkDistract([
+      { v:F(nAns-1), hint:"К этой минуте очков ещё меньше, чем "+fmtN(F(X))+". Возьми первую минуту, когда сумма уже не меньше порога." },
+      { v:F(nAns+1), hint:"Порог достигается раньше: следи за суммой очков, а не за последней прибавкой." },
+      { v:iF(Math.pow(2,nAns)), hint:"Это очки только за последнюю минуту. А сравнивать с порогом нужно сумму всех очков." }
+    ], ans);
+    return { code:"THRESH", seed, chip:"Порог: первый подходящий шаг", gp:true, text, svg:null, unit:"минут", ans, distract,
+      hint1:"Копи сумму: 2, потом 2+4, потом 2+4+8, и так далее. Ответ: первая минута, когда сумма не меньше "+fmtN(F(X))+".",
+      facts, methods:["table"] };
+  },
+  sim(t){
+    const f=t.facts;
+    if(f.sub==="bounce"){
+      let h=f.h1, n=0;
+      while(true){ n++; if(Fr.cmp(h,f.L)<0) return F(n); h=Fr.div(h,f.q); if(n>60) throw new Error("bounce: цикл"); }
+    }
+    let a=F(2), s=F(0), n=0;
+    while(true){ n++; s=Fr.add(s,a); if(Fr.cmp(s,f.X)>=0) return F(n); a=Fr.mul(a,F(2)); if(n>60) throw new Error("points: цикл"); }
+  }
+};
+
+/* ================= Задача с рисунком ================= */
+GENS["PIC"] = {
+  code:"PIC", group:"story", title:"Задача с рисунком",
+  desc:"столики, брёвна, змейка",
+  methods:["formula"],
+  price:"Начни с рисунка: выпиши первые случаи, увидишь одинаковую прибавку, а дальше обычные переходы.",
+  gen(seed){
+    const r=rng(seed);
+    const sub=pick(r,["tables","logs","snake"]);
+    if(sub==="tables"){
+      const m=ri(r,2,4), n=ri(r,12,25);
+      const facts={sub,m,n};
+      const text="В кафе квадратные столики: за отдельный столик могут сесть 4 человека. Если сдвинуть два столика вплотную, за получившийся стол могут сесть 6 человек. На рисунке показан случай, когда сдвинули "+
+        N(m)+" столик"+(m===2?"а":(m===3||m===4?"а":"ов"))+": за такой стол могут сесть "+N(2*m+2)+
+        " человек. Сколько человек сможет сесть за стол, который получится, если сдвинуть в один ряд "+N(n)+" столиков?";
+      const ans=F(2*n+2);
+      const distract=mkDistract([
+        { v:F(4*n), hint:"Столики стоят вплотную, поэтому места на соприкасающихся сторонах пропадают: считай по рисунку." },
+        { v:F(2*n), hint:"Сверху и снизу мест по "+n+", но не забудь ещё два места на торцах стола." },
+        { v:F(2*n+4), hint:"Торцевых мест ровно два: по одному с каждого конца ряда." }
+      ], ans);
+      return { code:"PIC", seed, chip:"Рисунок: столики", gp:false, text, svg:T.svgTables(m), unit:"человек", ans, distract,
+        hint1:"Выпиши первые случаи: 1 столик — 4, 2 — 6, 3 — 8. Какая прибавка на каждый новый столик?",
+        facts, methods:["formula"] };
+    }
+    if(sub==="logs"){
+      const base=ri(r,8,14);
+      const facts={sub,base};
+      const text="Брёвна укладывают рядами так, что в каждом следующем ряду сверху на одно бревно меньше, чем в предыдущем, а в верхнем ряду одно бревно. На рисунке показана кладка, у которой в нижнем ряду 4 бревна. Сколько всего брёвен в кладке, у которой в нижнем ряду "+
+        N(base)+" брёвен?";
+      const ans=F(base*(base+1)/2);
+      const distract=mkDistract([
+        { v:F(base*(base+1)), hint:"В приёме «первый ряд + последний» каждая пара посчитана дважды: раздели результат на 2." },
+        { v:F(base*base), hint:"Ряды разные: от 1 бревна наверху до "+base+" внизу. Сложи 1 + 2 + … + "+base+"." },
+        { v:F((base-1)*base/2), hint:"Рядов столько же, сколько брёвен в нижнем ряду: "+base+", не забудь верхнее бревно." }
+      ], ans);
+      return { code:"PIC", seed, chip:"Рисунок: брёвна", gp:false, text, svg:T.svgLogs(4), unit:"брёвен", ans, distract,
+        hint1:"Ряды: 1, 2, 3, …, "+base+". Сложи их методом Гаусса: (1 + "+base+") умножить на число рядов и пополам.",
+        facts, methods:["formula"] };
+    }
+    const K=2*ri(r,20,70);
+    const facts={sub,K};
+    const text="На клетчатой бумаге с клеткой 1×1 нарисована «змейка»: ломаная из чётного числа звеньев, идущих по линиям сетки. Длины звеньев по порядку: 1, 1, 2, 2, 3, 3 и так далее. На рисунке показана змейка, у которой последнее звено имеет длину 6. Найдите длину всей ломаной, построенной так же, у которой последнее звено имеет длину "+
+      N(K)+".";
+    const ans=F(K*(K+1));
+    const distract=mkDistract([
+      { v:F(K*(K+1)/2), hint:"Каждая длина встречается в змейке дважды: сумму 1 + 2 + … + "+K+" нужно удвоить." },
+      { v:F(2*K), hint:"Складывать нужно все звенья, а не только последние: длины растут от 1 до "+K+", и каждая по два раза." }
+    ], ans);
+    return { code:"PIC", seed, chip:"Рисунок: змейка", gp:false, text, svg:T.svgSnake(6), unit:"", ans, distract,
+      hint1:"Длины звеньев: 1, 1, 2, 2, …, "+K+", "+K+". Сначала сложи 1 + 2 + … + "+K+" методом Гаусса, потом удвой.",
+      facts, methods:["formula"] };
+  },
+  sim(t){
+    const f=t.facts;
+    if(f.sub==="tables"){ let seats=4; for(let i=2;i<=f.n;i++) seats+=2; return F(seats); }
+    if(f.sub==="logs"){ let s=0; for(let i=1;i<=f.base;i++) s+=i; return F(s); }
+    let s=0; for(let L=1;L<=f.K;L++) s+=2*L; return F(s);
+  }
+};
+
+/* ================= Старт плюс плата за минуту ================= */
+GENS["TAXI"] = {
+  code:"TAXI", group:"story", title:"Старт плюс плата за минуту",
+  desc:"такси, самокат",
+  methods:["formula"],
+  price:"Раздели оплату на две части: стартовая сумма уже покрывает первые минуты, дальше идёт одинаковая цена за минуту.",
+  gen(seed){
+    const r=rng(seed);
+    const sub=pick(r,["taxi","scooter"]);
+    const K=pick(r,[3,5]), p=ri(r,7,14), M=pick(r,[10,15,20]);
+    const C0=100+ri(r,2,12)*10+9;
+    const S2=p*M;
+    let Tv=pick(r,[40,45,60,75,90]);
+    while(Tv<=K+M+5) Tv=pick(r,[45,60,75,90]);
+    const facts={sub,K,p,M,C0:F(C0),S2:F(S2),T:Tv};
+    const veh= sub==="taxi" ? "поездки на такси" : "поездки на самокате";
+    const start= sub==="taxi" ? "Подача машины и первые" : "Разблокировка самоката и первые";
+    const text=start+" "+N(K)+" "+W.minWordN(K)+" поездки вместе стоят "+N(C0)+
+      " рублей, а каждая следующая минута стоит одинаково. Известно, что минуты с "+(K+1)+"-й по "+(K+M)+
+      "-ю (включительно) стоили "+N(S2)+" рублей. Найдите стоимость "+veh+" длительностью "+N(Tv)+" "+W.minWord(Tv)+".";
+    const ans=F(C0+(Tv-K)*p);
+    const distract=mkDistract([
+      { v:F(C0+Tv*p), hint:"Первые "+K+" "+W.minWord(K)+" уже оплачены стартовой суммой, второй раз их оплачивать не нужно." },
+      { v:F((Tv-K)*p), hint:"Не забудь прибавить стартовую сумму: она тоже часть стоимости." },
+      { v:F(C0+(Tv-K-M)*p+S2), hint:"Верная идея! Проверь арифметику: должно получиться то же самое, что старт плюс "+(Tv-K)+" минут по "+p+" рублей." }
+    ], ans);
+    return { code:"TAXI", seed, chip:"Старт + минуты", gp:false, text, svg:null, unit:"рублей", ans, distract,
+      hint1:"Сначала найди цену одной минуты: "+fmtN(F(S2))+" рублей раздели на "+M+" минут.", facts, methods:["formula"] };
+  },
+  sim(t){
+    const f=t.facts;
+    let total=f.C0;
+    for(let minute=f.K+1; minute<=f.T; minute++) total=Fr.add(total,F(f.p));
+    /* контроль второй суммы */
+    let chk=F(0); for(let i=0;i<f.M;i++) chk=Fr.add(chk,F(f.p));
+    if(!Fr.eq(chk,f.S2)) throw new Error("taxi: вторая сумма");
+    return total;
+  }
+};
+
+/* Порядок и веса для марафона и выбора случаев */
+T.GEN_ORDER=[
+  {group:"АП. Одинаковая прибавка", gp:false, codes:["AP-VAL","AP-SUM","AP-2PT","AP-SUM2DAY"]},
+  {group:"ГП. Одинаковый множитель", gp:true, codes:["GP-VAL","GP-COMPL"]},
+  {group:"Особые ходы", gp:false, codes:["THRESH","PIC","TAXI"]}
+];
+T.GEN_WEIGHTS={ "AP-VAL":3,"AP-SUM":2,"AP-2PT":3,"AP-SUM2DAY":2,"GP-VAL":2,"GP-COMPL":1,"THRESH":2,"PIC":2,"TAXI":2 };
+T.GENS=GENS;
+T.makeTask=function(code,seed){ return GENS[code].gen(seed); };
+T.randomTask=function(codes, seed){
+  const r=rng(seed);
+  const pool=[];
+  (codes && codes.length? codes : Object.keys(GENS)).forEach(c=>{
+    const w=T.GEN_WEIGHTS[c]||1;
+    for(let i=0;i<w;i++) pool.push(c);
+  });
+  const code=pool[Math.floor(r()*pool.length)];
+  return GENS[code].gen(ri(r,1,1e9));
+};
+})(typeof T14!=="undefined"?T14:module.exports);
+
+/* ===== ОГЭ №14: пошаговые решения и разбор двумя способами ===== */
+"use strict";
+(function(T){
+const {F, Fr, fmtN, N, fracHTML, tapeHTML} = T;
+
+const plusStr=(d)=> (Fr.cmp(d,F(0))>=0? "+"+fmtN(d) : "\u2212"+fmtN(Fr.abs(d)));
+const mulStr=(q)=> "×"+fmtN(q);
+const divStr=(q)=> "÷"+fmtN(q);
+
+function st(q, a, hint, revealNote, extra){
+  const s={ q, a, hint, reveal:(revealNote||"")+" Получается "+nb(fmtN(a))+".", };
+  if(extra) Object.assign(s, extra);
+  return s;
+}
+const nb=T.nb;
+
+/* Лента для табличного метода: заполнено до idx, следующий знак вопроса */
+function tapeProgress(vals, labels, opShort, upto, gp){
+  const cells=[];
+  for(let i=0;i<vals.length;i++){
+    if(i<upto) cells.push({idx:labels[i], val:fmtN(vals[i]), hl:i===upto-1});
+    else if(i===upto){ cells.push({idx:labels[i], val:"?", hl:true}); break; }
+  }
+  return tapeHTML(cells, opShort, {gp});
+}
+
+/* Двойная запись Гаусса. opt:
+   sumRow  — рисовать ли нижнюю строку столбиков (по умолчанию да, заполненную);
+   hlCol   — индекс столбика для подсветки (по умолчанию нет) */
+function gaussVisual(vals, opt){
+  opt=opt||{};
+  const sumRow = opt.sumRow!==false;
+  const hl = (opt.hlCol!=null) ? opt.hlCol : -1;
+  const n=vals.length;
+  const rev=[...vals].reverse();
+  const pair=Fr.add(vals[0], vals[n-1]);
+  let h='<div class="gauss" style="grid-template-columns:repeat('+n+',1fr)">';
+  for(let i=0;i<n;i++) h+='<span class="gcell fwd'+(i===hl?' gcol':'')+'">'+fmtN(vals[i])+'</span>';
+  for(let i=0;i<n;i++) h+='<span class="gcell rev'+(i===hl?' gcol':'')+'">'+fmtN(rev[i])+'</span>';
+  if(sumRow) for(let i=0;i<n;i++) h+='<span class="gcell sum'+(i===hl?' gcol':'')+'">'+fmtN(pair)+'</span>';
+  h+='</div>';
+  return h;
+}
+/* Строка последовательного сложения: "21 + 17 + 13 + … = 56" */
+function runSumStr(vals){
+  return vals.map(v=>fmtN(v)).join(" + ");
+}
+
+/* ---------- Построители шагов ---------- */
+function buildSteps(task, method){
+  const f=task.facts, c=task.code;
+  const steps=[];
+  const gp=task.gp;
+
+  if(c==="AP-VAL"){
+    const d=f.d, a1=f.a1, n=f.n, trans=f.trans;
+    if(method==="table"){
+      const vals=[a1]; for(let i=1;i<=trans;i++) vals.push(Fr.add(vals[i-1],d));
+      const labels=[]; for(let i=0;i<=trans;i++) labels.push(f.base===1? (i+1)+"-й "+f.noun : (i)+" мин");
+      for(let i=1;i<=trans;i++){
+        steps.push(st(
+          "Заполни ленту: какое значение на шаге «"+labels[i]+"»?"+tapeProgress(vals,labels,plusStr(d),i,gp),
+          vals[i],
+          "К предыдущему значению "+nb(fmtN(vals[i-1]))+" прибавь "+nb(plusStr(d))+".",
+          "К "+fmtN(vals[i-1])+" прибавляем "+plusStr(d)+"."
+        ));
+      }
+    } else {
+      steps.push(st("На сколько меняется значение за один переход? Укажи со знаком: если уменьшается, пиши со знаком минус.",
+        d, "Смотри на слова «на … больше» или «на … меньше»: это и есть прибавка за один переход.",
+        "Каждый шаг значение меняется на "+plusStr(d)+"."));
+      steps.push(st(
+        f.base===1
+          ? "Сколько переходов от 1-го до "+n+"-го шага?"
+          : "Сколько переходов от начального момента (0 минут) до отметки "+n+" минут?",
+        F(trans),
+        f.base===1
+          ? "Первый шаг уже дан, шагать начинаем со второго: переходов на один меньше, чем номер."
+          : "Отсчёт идёт от нуля, поэтому переходов ровно столько, сколько минут прошло.",
+        f.base===1? "От 1-го до "+n+"-го шага переходов n \u2212 1." : "От 0 до "+n+" минут переходов ровно "+n+"."));
+      steps.push(st("На сколько всего изменится значение за все переходы?",
+        Fr.mul(d,F(trans)),
+        "Одинаковая прибавка повторяется "+trans+" раз"+(trans%10>=2&&trans%10<=4&&(trans%100<12||trans%100>14)?"а":"")+": умножь "+fmtN(d)+" на "+trans+".",
+        "Умножаем прибавку на число переходов: "+fmtN(d)+" · "+trans+"."));
+      steps.push(st("Ответ: чему равно значение на нужном шаге?",
+        task.ans,
+        "К начальному значению "+nb(fmtN(a1))+" прибавь общее изменение.",
+        "К "+fmtN(a1)+" прибавляем "+fmtN(Fr.mul(d,F(trans)))+"."));
+    }
+  }
+
+  else if(c==="AP-SUM"){
+    const a1=f.a1, d=f.d, n=f.n;
+    const aN=Fr.add(a1,Fr.mul(d,F(n-1)));
+    if(method==="table"){
+      const vals=[a1]; for(let i=1;i<n;i++) vals.push(Fr.add(vals[i-1],d));
+      const labels=vals.map((_,i)=>(i+1)+"-й");
+      for(let i=1;i<n;i++){
+        steps.push(st("Выпиши слагаемые: значение на "+(i+1)+"-м шаге?"+tapeProgress(vals,labels,plusStr(d),i,gp),
+          vals[i], "К "+fmtN(vals[i-1])+" прибавь "+fmtN(d)+".", "Очередное слагаемое: "+fmtN(vals[i-1])+" + "+fmtN(d)+"."));
+      }
+      steps.push(st("Теперь сложи все "+n+" выписанных чисел по порядку.",
+        task.ans, "Складывай слева направо: "+runSumStr(vals)+".",
+        "Сумма всех слагаемых."));
+    } else if(method==="gauss"){
+      const vals=[a1]; for(let i=1;i<n;i++) vals.push(Fr.add(vals[i-1],d));
+      const pair=Fr.add(a1,aN);
+      const twoS=Fr.mul(pair,F(n));
+      steps.push(st("Метод Гаусса: запишем сумму дважды — сверху по порядку, снизу наоборот. Сложи первый столбик (он выделен): "+fmtN(a1)+" + "+fmtN(aN)+"?"+
+        gaussVisual(vals, {sumRow:false, hlCol:0}),
+        pair, "Сложи выделенные числа: верхнее "+fmtN(a1)+" и нижнее "+fmtN(aN)+".",
+        "Первый столбик даёт "+fmtN(a1)+" + "+fmtN(aN)+"."));
+      steps.push(st("В каждом столбике верхнее и нижнее числа меняются на одинаковую величину в разные стороны, поэтому все столбики равны "+fmtN(pair)+" (нижняя строка). Сколько всего столбиков?"+
+        gaussVisual(vals, {sumRow:true}),
+        F(n), "Столбиков столько же, сколько было слагаемых.",
+        "Столбиков ровно "+n+"."));
+      steps.push(st("Обе строки вместе — это удвоенная сумма, 2S. Чему она равна: столбик × число столбиков?",
+        twoS, "Умножь "+fmtN(pair)+" на "+n+".",
+        "2S = "+fmtN(pair)+" · "+n+"."));
+      steps.push(st("Мы посчитали сумму дважды, поэтому раздели на 2 — это ответ.",
+        task.ans, "Раздели "+fmtN(twoS)+" на 2.",
+        "Делим удвоенную сумму пополам."));
+    } else {
+      steps.push(st("Какая прибавка за один переход?", d,
+        "Смотри на «на … больше, чем в предыдущий».", "Прибавка за переход."));
+      steps.push(st("Сколько переходов от 1-го до последнего, "+n+"-го шага?", F(n-1),
+        "Первый уже дан: переходов на один меньше, чем шагов.", "Переходов n \u2212 1."));
+      steps.push(st("Чему равно значение на последнем, "+n+"-м шаге?", aN,
+        "К "+fmtN(a1)+" прибавь "+fmtN(d)+" · "+(n-1)+".", "Последний член: "+fmtN(a1)+" + "+fmtN(d)+" · "+(n-1)+"."));
+      steps.push(st("Сумма пары «первый + последний»?", Fr.add(a1,aN),
+        "Просто сложи "+fmtN(a1)+" и "+fmtN(aN)+".", "Пара даёт "+fmtN(a1)+" + "+fmtN(aN)+"."));
+      steps.push(st("Умножь эту пару на число шагов "+n+".", Fr.mul(Fr.add(a1,aN),F(n)),
+        "Каждый из "+n+" шагов входит ровно в одну «половинку пары».", "Умножаем пару на n."));
+      steps.push(st("Каждый шаг посчитан дважды, поэтому раздели на 2. Это и есть ответ.",
+        task.ans, "Раздели "+fmtN(Fr.mul(Fr.add(a1,aN),F(n)))+" на 2.", "Делим на 2 и получаем сумму."));
+    }
+  }
+
+  else if(c==="AP-2PT"){
+    if(f.sub==="press"){
+      const dh=Fr.sub(f.h2,f.h1);
+      steps.push(st("На сколько метров изменилась высота?", dh,
+        "Вычти меньшую высоту из большей.", "Разница высот."));
+      steps.push(st("Сколько отрезков по "+fmtN(f.s)+" м помещается в этой разнице?", F(f.k),
+        "Раздели "+fmtN(dh)+" на "+fmtN(f.s)+".", "Число отрезков подъёма."));
+      steps.push(st("Ответ: чему равно давление на большей высоте? Каждый отрезок отнимает 1 мм рт. ст.",
+        task.ans, "Из "+fmtN(f.P1)+" вычти "+f.k+".", "Давление уменьшилось на "+f.k+" мм."));
+    } else {
+      const span=f.m-f.k, delta=Fr.sub(f.am,f.ak);
+      const d=Fr.div(delta,F(span));
+      const kName= f.sub==="clock" ? "момента поломки" : (f.sub==="people"? "конца "+f.k+" года" : f.k+"-го дня");
+      const mName= f.sub==="clock" ? "второго известного момента" : (f.sub==="people"? "конца "+f.m+" года" : f.m+"-го дня");
+      const pName= f.sub==="clock" ? "нужного момента" : (f.sub==="people"? "конца "+f.p+" года" : f.p+"-го дня");
+      steps.push(st("Сколько переходов между известными шагами, от "+kName+" до "+mName+"?", F(span),
+        "Вычти номера (или годы, или часы): "+f.m+" \u2212 "+f.k+".", "Переходов между известными точками."));
+      steps.push(st("На сколько изменилось значение за эти переходы?", delta,
+        "Вычти: "+fmtN(f.am)+" \u2212 "+fmtN(f.ak)+".", "Общее изменение между точками."));
+      steps.push(st("Какая прибавка за один переход?", d,
+        "Раздели изменение "+fmtN(delta)+" на число переходов "+span+".", "Прибавка за один переход."));
+      steps.push(st("Сколько переходов от "+kName+" до "+pName+"?", F(f.p-f.k),
+        "Снова вычти номера: "+f.p+" \u2212 "+f.k+".", "Переходов до цели."));
+      steps.push(st("На сколько изменится значение за них?", Fr.mul(d,F(f.p-f.k)),
+        "Умножь прибавку "+fmtN(d)+" на "+(f.p-f.k)+".", "Изменение до цели."));
+      steps.push(st("Ответ: чему равно значение в нужной точке?", task.ans,
+        "К "+fmtN(f.ak)+" прибавь найденное изменение.", "Стартовое значение плюс изменение."));
+    }
+  }
+
+  else if(c==="AP-SUM2DAY"){
+    if(f.sub==="snail"){
+      steps.push(st("Чему равен удвоенный путь, 2 · "+fmtN(f.S)+"?", Fr.mul(F(2),f.S),
+        "Просто умножь путь на 2.", "Удвоенный путь равен сумме пары, взятой столько раз, сколько дней."));
+      steps.push(st("Ответ: раздели удвоенный путь на сумму пары «первый + последний день». Сколько дней шла улитка?",
+        task.ans, "Раздели "+fmtN(Fr.mul(F(2),f.S))+" на "+fmtN(f.Fs)+".", "Число дней."));
+    } else {
+      const twoS=Fr.mul(F(2),f.S), pairSum=Fr.div(twoS,F(f.Nd));
+      const aN=Fr.sub(pairSum,f.a1), diff=Fr.sub(aN,f.a1);
+      const d=Fr.div(diff,F(f.Nd-1));
+      steps.push(st("Чему равна удвоенная вся работа, 2 · "+fmtN(f.S)+"?", twoS,
+        "Умножь на 2.", "Удвоенная сумма."));
+      steps.push(st("Раздели на число дней "+f.Nd+". Получится сумма «первый день + последний день».", pairSum,
+        "Дели: "+fmtN(twoS)+" ÷ "+f.Nd+".", "Пара «первый + последний»."));
+      steps.push(st("Чему равна норма последнего дня?", aN,
+        "Из пары "+fmtN(pairSum)+" вычти первый день "+fmtN(f.a1)+".", "Последний день."));
+      steps.push(st("На сколько последний день больше первого?", diff,
+        "Вычти: "+fmtN(aN)+" \u2212 "+fmtN(f.a1)+".", "Общий рост за все переходы."));
+      steps.push(st("Сколько переходов от 1-го до "+f.Nd+"-го дня?", F(f.Nd-1),
+        "Переходов на один меньше, чем дней.", "Число переходов."));
+      steps.push(st("Какая прибавка за один день?", d,
+        "Раздели "+fmtN(diff)+" на "+(f.Nd-1)+".", "Дневная прибавка."));
+      steps.push(st("Сколько переходов от 1-го до "+f.k+"-го дня?", F(f.k-1),
+        "Снова на один меньше, чем номер дня.", "Переходов до нужного дня."));
+      steps.push(st("На сколько вырастет норма за эти переходы?", Fr.mul(d,F(f.k-1)),
+        "Умножь "+fmtN(d)+" на "+(f.k-1)+".", "Рост до нужного дня."));
+      steps.push(st("Ответ: сколько сделано за "+f.k+"-й день?", task.ans,
+        "К "+fmtN(f.a1)+" прибавь найденный рост.", "Норма нужного дня."));
+    }
+  }
+
+  else if(c==="GP-VAL"){
+    const q=f.q;
+    // сюжетные слова: периодная единица и что именно меняется
+    const info = f.sub==="filter" ? {down:true, per:"фильтр", perN:(i)=>i+" "+T.words.plur(i,["фильтр","фильтра","фильтров"]), val:"яркость", thru:true}
+      : f.sub==="dough" ? {down:false, per:"мин", perN:(i)=>(i*f.P)+" мин", val:"объём"}
+      : f.sub==="grow" ? {down:false, per:"мин", perN:(i)=>(i*f.P)+" мин", val:"масса"}
+      : {down:true, per:"мин", perN:(i)=>(i*f.P)+" мин", val:"масса"};
+    const down=info.down;
+    if(f.sub==="back"){
+      steps.push(st("Сколько делений произошло?", F(f.k),
+        "Число прямо названо в условии.", "Число делений."));
+      steps.push(st("Во сколько раз выросло число инфузорий за все деления?", Fr.pow(F(2),f.k),
+        "Каждое деление удваивает: 2 умножается само на себя "+f.k+" раз"+(f.k>=5?"":"а")+".", "Общий множитель 2 в степени "+f.k+"."));
+      steps.push(st("Ответ: сколько инфузорий было сначала?", task.ans,
+        "Иди назад: раздели "+fmtN(f.m0)+" на "+fmtN(Fr.pow(F(2),f.k))+".", "Назад делим на общий множитель."));
+    } else if(method==="table"){
+      const vals=[f.m0]; for(let i=1;i<=f.k;i++) vals.push(down? Fr.div(vals[i-1],q): Fr.mul(vals[i-1],q));
+      const labels=[]; for(let i=0;i<=f.k;i++) labels.push(info.perN(i));
+      for(let i=1;i<=f.k;i++){
+        const where = info.thru ? "после "+info.perN(i) : "через "+info.perN(i);
+        steps.push(st("Заполни ленту: "+info.val+" "+where+"?"+
+          tapeProgress(vals,labels, down? divStr(q):mulStr(q), i, true),
+          vals[i],
+          (down? "Раздели ":"Умножь ")+fmtN(vals[i-1])+" на "+fmtN(q)+".",
+          "Ещё один "+(info.thru?"фильтр":"период")+": "+(down? "делим":"умножаем")+" на "+fmtN(q)+"."));
+      }
+    } else {
+      const periodQ = info.thru
+        ? "Сколько фильтров проходит свет?"
+        : "Сколько полных периодов по "+f.P+" минут в "+f.T+" минутах?";
+      const periodHint = info.thru ? "Число фильтров прямо названо в условии." : "Раздели "+f.T+" на "+f.P+".";
+      steps.push(st(periodQ, F(f.k), periodHint, info.thru?"Число фильтров.":"Число периодов."));
+      steps.push(st("Во сколько раз "+(down?"уменьшится":"вырастет")+" "+info.val+" за все "+(info.thru?"фильтры":"периоды")+"?", Fr.pow(q,f.k),
+        "Множитель "+fmtN(q)+" повторяется "+f.k+" раз"+(f.k>=5?"":"а")+".", "Общий множитель: "+fmtN(q)+" в степени "+f.k+"."));
+      const finalQ = info.thru ? "Ответ: "+info.val+" после всех фильтров?" : "Ответ: "+info.val+" через "+f.T+" минут?";
+      steps.push(st(finalQ, task.ans,
+        (down? "Раздели ":"Умножь ")+fmtN(f.m0)+" на "+fmtN(Fr.pow(q,f.k))+".",
+        (down? "Делим":"Умножаем")+" начальное значение на общий множитель."));
+    }
+  }
+
+  else if(c==="GP-COMPL"){
+    const A = f.styleB===false ? "реагента" : "изотопа А";
+    const B = f.styleB===false ? "осадка" : "изотопа Б";
+    const Bverb = f.styleB===false ? "перешло в осадок" : "образовалось изотопа Б";
+    const restNote = f.styleB===false ? "Остаток реагента." : "Остаток А.";
+    const minusNote = f.styleB===false ? "Начальное количество минус остаток." : "Начальная масса минус остаток А.";
+    if(method==="table"){
+      const vals=[f.m0]; for(let i=1;i<=f.k;i++) vals.push(Fr.div(vals[i-1],F(2)));
+      const labels=[]; for(let i=0;i<=f.k;i++) labels.push((i*f.P)+" мин");
+      for(let i=1;i<=f.k;i++){
+        steps.push(st("Сколько "+A+" останется через "+(i*f.P)+" минут?"+
+          tapeProgress(vals,labels,divStr(F(2)),i,true),
+          vals[i], "Раздели "+fmtN(vals[i-1])+" пополам.", "Половина предыдущего."));
+      }
+      steps.push(st("Ответ: сколько "+Bverb+"? Всё, что «ушло», перешло в другую часть.",
+        task.ans, "Из начального "+fmtN(f.m0)+" вычти остаток "+fmtN(f.rest)+".", minusNote));
+    } else {
+      steps.push(st("Сколько полных периодов по "+f.P+" минут в "+f.T+" минутах?", F(f.k),
+        "Раздели "+f.T+" на "+f.P+".", "Число периодов."));
+      steps.push(st("Сколько "+A+" останется после всех делений пополам?", f.rest,
+        "Раздели "+fmtN(f.m0)+" пополам "+f.k+" раз"+(f.k>=5?"":"а")+" подряд.", restNote));
+      steps.push(st("Ответ: сколько "+Bverb+"?", task.ans,
+        "Из "+fmtN(f.m0)+" вычти остаток "+fmtN(f.rest)+". Спрашивают про то, что перешло, а не про остаток!",
+        minusNote));
+    }
+  }
+
+  else if(c==="THRESH"){
+    if(f.sub==="bounce"){
+      const labels=f.seq.map((_,i)=>"после "+(i+1)+"-го");
+      for(let i=1;i<f.seq.length;i++){
+        steps.push(st("Высота после "+(i+1)+"-го отскока?"+
+          tapeProgress(f.seq,labels,divStr(f.q),i,true),
+          f.seq[i], "Раздели "+fmtN(f.seq[i-1])+" на "+fmtN(f.q)+".", "Делим предыдущую высоту."));
+      }
+      steps.push({ q:"Высота "+nb(fmtN(f.seq[f.seq.length-1]))+" см уже меньше порога "+nb(fmtN(f.L))+" см?",
+        choice:{ options:[{t:"Да, впервые меньше",ok:true},{t:"Нет, ещё не меньше",ok:false}],
+          why:"Сравниваем: "+fmtN(f.seq[f.seq.length-1])+" &lt; "+fmtN(f.L)+", а предыдущая высота "+fmtN(f.seq[f.seq.length-2])+" ещё не была меньше порога." } });
+      steps.push(st("Ответ: после какого по счёту отскока высота впервые стала меньше "+fmtN(f.L)+" см?",
+        task.ans, "Возьми номер первой высоты в ленте, которая меньше порога.",
+        "Берём первый подходящий шаг, а не предыдущий."));
+    } else {
+      steps.push({ q:"Что нужно сравнивать с порогом "+nb(fmtN(f.X))+" очков?",
+        choice:{ options:[{t:"Сумму всех начисленных очков",ok:true},{t:"Очки за последнюю минуту",ok:false}],
+          why:"Игрок копит очки, поэтому с порогом сравнивается сумма: 2, потом 2 + 4, потом 2 + 4 + 8 и так далее." } });
+      steps.push({ build:{ adds:f.adds, sums:f.sums, X:f.X },
+        q:"Построй таблицу по минутам кнопкой «Добавить минуту», пока сумма впервые не станет не меньше "+nb(fmtN(f.X))+" очков." });
+      steps.push(st("Ответ: через сколько минут сумма впервые стала не меньше "+fmtN(f.X)+" очков?",
+        task.ans, "Смотри на последнюю строку таблицы: её номер и есть ответ.",
+        "Берём первую минуту, когда условие уже выполнилось."));
+    }
+  }
+
+  else if(c==="PIC"){
+    if(f.sub==="tables"){
+      steps.push(st("Сравни первые случаи: 4, 6, 8 мест. Сколько мест добавляет каждый новый столик?", F(2),
+        "Вычти соседние: 6 \u2212 4.", "Одинаковая прибавка."));
+      steps.push(st("Сколько переходов от 1 столика до "+f.n+" столиков?", F(f.n-1),
+        "Первый столик уже есть: добавляем остальные.", "Переходов n \u2212 1."));
+      steps.push(st("На сколько мест больше станет за все добавления?", F(2*(f.n-1)),
+        "Умножь 2 на "+(f.n-1)+".", "Общая прибавка мест."));
+      steps.push(st("Ответ: сколько человек сядет за стол из "+f.n+" столиков?", task.ans,
+        "К 4 местам первого столика прибавь общую прибавку.", "Старт 4 плюс прибавка."));
+    } else if(f.sub==="logs"){
+      const rows=[]; for(let i=1;i<=f.base;i++) rows.push(F(i));
+      steps.push(st("Сколько рядов в кладке?", F(f.base),
+        "Ряды идут от 1 бревна наверху до "+f.base+" внизу: рядов столько, сколько брёвен в нижнем ряду.", "Число рядов."));
+      steps.push(st("Значит нужно сложить 1 + 2 + … + "+f.base+". Метод Гаусса: запишем эту сумму дважды, наоборот. Сложи первый столбик (выделен): 1 + "+f.base+"?"+
+        gaussVisual(rows, {sumRow:false, hlCol:0}),
+        F(f.base+1), "Сложи выделенные числа: 1 и "+f.base+".", "Столбик равен 1 + "+f.base+"."));
+      steps.push(st("Все столбики одинаковые (нижняя строка). Удвоенная сумма — это столбик × число столбиков?"+
+        gaussVisual(rows, {sumRow:true}),
+        F((f.base+1)*f.base), "Умножь "+(f.base+1)+" на "+f.base+".", "2S = "+(f.base+1)+" · "+f.base+"."));
+      steps.push(st("Разделим на 2 — вот сколько всего брёвен.", task.ans,
+        "Дели "+fmtN(F((f.base+1)*f.base))+" пополам.", "Сумма посчитана дважды, делим на 2."));
+    } else {
+      const lens=[]; for(let i=1;i<=f.K;i++) lens.push(F(i));
+      steps.push(st("Разные длины идут 1, 2, …, "+f.K+". Сложим их методом Гаусса: запишем дважды, наоборот. Сложи первый столбик (выделен): 1 + "+f.K+"?"+
+        gaussVisual(lens, {sumRow:false, hlCol:0}),
+        F(f.K+1), "Сложи выделенные числа: 1 и "+f.K+".", "Столбик равен 1 + "+f.K+"."));
+      steps.push(st("Все столбики одинаковые (нижняя строка). Удвоенная сумма разных длин — столбик × их количество?"+
+        gaussVisual(lens, {sumRow:true}),
+        F(f.K*(f.K+1)), "Умножь "+(f.K+1)+" на "+f.K+".", "2S = "+(f.K+1)+" · "+f.K+"."));
+      steps.push(st("Раздели на 2: это сумма 1 + 2 + … + "+f.K+".", F(f.K*(f.K+1)/2),
+        "Дели "+fmtN(F(f.K*(f.K+1)))+" пополам.", "Сумма разных длин."));
+      steps.push(st("В змейке каждая длина встречается два раза. Удвой сумму — это ответ.", task.ans,
+        "Умножь "+fmtN(F(f.K*(f.K+1)/2))+" на 2.", "Каждое звено идёт парой."));
+    }
+  }
+
+  else if(c==="TAXI"){
+    steps.push(st("Сколько стоит одна минута после стартовых?", F(f.p),
+      "Раздели "+fmtN(f.S2)+" рублей на "+f.M+" минут.", "Цена минуты."));
+    steps.push(st("Сколько минут поездки не покрыто стартовой суммой?", F(f.T-f.K),
+      "Стартовая сумма уже оплатила первые "+f.K+" "+T.words.minWord(f.K)+": вычти их из "+f.T+".", "Минуты сверх старта."));
+    steps.push(st("Сколько стоят эти минуты?", F((f.T-f.K)*f.p),
+      "Умножь "+(f.T-f.K)+" минут на цену минуты.", "Оплата поминутной части."));
+    steps.push(st("Ответ: полная стоимость поездки?", task.ans,
+      "Прибавь стартовую сумму "+fmtN(f.C0)+".", "Старт плюс поминутная часть."));
+  }
+
+  return steps;
+}
+
+/* ---------- Разбор двумя способами ---------- */
+function fx(s){ return '<span class="formula">'+s+'</span>'; }
+function sub_(v){ return '<i>'+v+'</i>'; }
+const AN='<i>a</i><sub><i>n</i></sub>', A1='<i>a</i><sub>1</sub>', BN='<i>b</i><sub><i>n</i></sub>', B1='<i>b</i><sub>1</sub>', SN='<i>S</i><sub><i>n</i></sub>';
+
+function shortTape(vals, labels, arrow, gp, maxCells){
+  maxCells=maxCells||5;
+  const cells=[];
+  if(vals.length<=maxCells){
+    vals.forEach((v,i)=>cells.push({idx:labels[i], val:fmtN(v), hl:i===vals.length-1}));
+  } else {
+    for(let i=0;i<3;i++) cells.push({idx:labels[i], val:fmtN(vals[i])});
+    cells.push({dots:true});
+    cells.push({idx:labels[vals.length-1], val:fmtN(vals[vals.length-1]), hl:true});
+  }
+  return tapeHTML(cells, arrow, {gp});
+}
+
+function ways(task){
+  const f=task.facts, c=task.code;
+  let wf="", wt="";
+  const ansS=nb(fmtN(task.ans))+(task.unit? " "+task.unit:"");
+
+  if(c==="AP-VAL"){
+    const trans=f.trans;
+    const vals=[f.a1]; for(let i=1;i<=trans;i++) vals.push(Fr.add(vals[i-1],f.d));
+    const labels=vals.map((_,i)=> f.base===1? (i+1)+"-й" : i+" мин");
+    wt=shortTape(vals,labels,plusStr(f.d),false)+"<p>Каждый шаг одна и та же прибавка "+nb(plusStr(f.d))+". Доходим до нужного шага: "+ansS+".</p>";
+    wf="<p>"+fx(AN+" = "+A1+" + <i>d</i>(<i>n</i> \u2212 1)")+"</p><p>Переходов: "+nb(String(trans))+
+      ". Подставляем: "+nb(fmtN(f.a1))+" + "+nb(fmtN(f.d))+" · "+nb(String(trans))+" = "+ansS+".</p>"+
+      (f.base===0? "<p class='small muted'>Здесь отсчёт от нулевой минуты, поэтому переходов ровно "+trans+".</p>":"");
+  }
+  else if(c==="AP-SUM"){
+    const vals=[f.a1]; for(let i=1;i<f.n;i++) vals.push(Fr.add(vals[i-1],f.d));
+    const aN=vals[vals.length-1];
+    const pair=Fr.add(f.a1,aN), twoS=Fr.mul(pair,F(f.n));
+    wt=gaussVisual(vals, {sumRow:true})+
+      "<p>Метод Гаусса: записали сумму дважды, все столбики по "+nb(fmtN(pair))+". Удвоенная сумма "+nb(fmtN(pair))+" · "+nb(String(f.n))+" = "+nb(fmtN(twoS))+", делим на 2: "+ansS+".</p>";
+    wf="<p>"+fx(SN+" = "+fracHTML("("+A1+" + "+AN+") · <i>n</i>","2"))+"</p><p>Последний член: "+nb(fmtN(aN))+
+      ". Сумма: ("+nb(fmtN(f.a1))+" + "+nb(fmtN(aN))+") · "+nb(String(f.n))+" ÷ 2 = "+ansS+".</p>";
+  }
+  else if(c==="AP-2PT"){
+    if(f.sub==="press"){
+      wt="<p>Каждые "+nb(fmtN(f.s))+" м давление падает на 1 мм. Отрезков подъёма: "+nb(String(f.k))+". Значит давление ниже на "+nb(String(f.k))+" мм: "+ansS+".</p>";
+      wf="<p>Та же лесенка формулой: "+fx("<i>P</i> = <i>P</i><sub>1</sub> \u2212 "+fracHTML("\u0394<i>h</i>", fmtN(f.s)))+" = "+nb(fmtN(f.P1))+" \u2212 "+nb(String(f.k))+" = "+ansS+".</p>";
+    } else {
+      const span=f.m-f.k, d=Fr.div(Fr.sub(f.am,f.ak),F(span));
+      wt="<p>Между известными точками "+nb(String(span))+" переходов и изменение "+nb(fmtN(Fr.sub(f.am,f.ak)))+
+        ". Значит за один переход "+nb(plusStr(d))+". Шагаем дальше до цели: "+ansS+".</p>";
+      wf="<p>"+fx("<i>d</i> = "+fracHTML("<i>a</i><sub><i>m</i></sub> \u2212 <i>a</i><sub><i>k</i></sub>","<i>m</i> \u2212 <i>k</i>"))+
+        " = "+nb(fmtN(d))+", затем "+fx(AN+" = "+A1+" + <i>d</i>(<i>n</i> \u2212 1)")+" от известной точки: "+nb(fmtN(f.ak))+" + "+nb(fmtN(d))+" · "+nb(String(f.p-f.k))+" = "+ansS+".</p>";
+    }
+  }
+  else if(c==="AP-SUM2DAY"){
+    if(f.sub==="snail"){
+      wt="<p>Пары «первый + последний», «второй + предпоследний» и так далее одинаковые: по "+nb(fmtN(f.Fs))+" м. Пар: половина числа дней. Значит дней 2 · "+nb(fmtN(f.S))+" ÷ "+nb(fmtN(f.Fs))+" = "+ansS+".</p>";
+      wf="<p>"+fx(SN+" = "+fracHTML("("+A1+" + "+AN+") · <i>n</i>","2"))+" ⇒ "+fx("<i>n</i> = "+fracHTML("2"+sub_("S"),fmtN(f.Fs)))+" = "+ansS+".</p>";
+    } else {
+      const pairSum=Fr.div(Fr.mul(F(2),f.S),F(f.Nd));
+      wt="<p>Средняя пара «первый + последний» = 2 · сумма ÷ дни = "+nb(fmtN(pairSum))+". Отсюда последний день, дневная прибавка "+nb(fmtN(f.d))+" и шагаем к "+f.k+"-му дню: "+ansS+".</p>";
+      wf="<p>Из "+fx(SN+" = "+fracHTML("("+A1+" + "+AN+") · <i>n</i>","2"))+" находим "+AN+" = "+nb(fmtN(Fr.sub(pairSum,f.a1)))+
+        ", затем <i>d</i> = "+nb(fmtN(f.d))+" и "+fx("<i>a</i><sub>"+f.k+"</sub> = "+A1+" + <i>d</i> · "+(f.k-1))+" = "+ansS+".</p>";
+    }
+  }
+  else if(c==="GP-VAL"){
+    const up = (f.sub==="grow" || f.sub==="dough");
+    const down=!up;
+    const vals=[f.m0]; for(let i=1;i<=f.k;i++) vals.push(down? Fr.div(vals[i-1],f.q):Fr.mul(vals[i-1],f.q));
+    const labels= f.sub==="back"? vals.map((_,i)=>i===0?"стало":("\u2212"+i+" дел."))
+      : f.sub==="filter"? vals.map((_,i)=>i===0?"вход":(i+" ф."))
+      : vals.map((_,i)=>(i*(f.P||1))+" мин");
+    const unitWord = f.sub==="filter"? "фильтру" : "периоду";
+    wt=shortTape(vals,labels,(down?divStr(f.q):mulStr(f.q)),true,7)+
+      "<p>По одному "+unitWord+" за раз: "+(down?"делим":"умножаем")+" на "+nb(fmtN(f.q))+". Итог "+ansS+".</p>";
+    const countWord = f.sub==="filter"? "Фильтров" : "Периодов";
+    wf="<p>"+fx(BN+" = "+B1+" · <i>q</i><sup><i>n</i> \u2212 1</sup>")+"</p><p>"+countWord+": "+nb(String(f.k))+
+      ", общий множитель "+nb(fmtN(Fr.pow(f.q,f.k)))+". "+(down?"Делим":"Умножаем")+" "+nb(fmtN(f.m0))+": получаем "+ansS+".</p>";
+  }
+  else if(c==="GP-COMPL"){
+    const A = f.styleB===false ? "реагента" : "А";
+    const moved = f.styleB===false ? "перешло в осадок" : "стало Б";
+    const vals=[f.m0]; for(let i=1;i<=f.k;i++) vals.push(Fr.div(vals[i-1],F(2)));
+    wt=shortTape(vals,vals.map((_,i)=>(i*f.P)+" мин"),divStr(F(2)),true,7)+
+      "<p>Осталось "+A+": "+nb(fmtN(f.rest))+" мг. Всё «ушедшее» "+moved+": "+nb(fmtN(f.m0))+" \u2212 "+nb(fmtN(f.rest))+" = "+ansS+".</p>";
+    wf="<p>Остаток: "+fx(B1+" · "+fracHTML("1","2<sup>"+f.k+"</sup>"))+" = "+nb(fmtN(f.rest))+" мг. Что перешло: начальное количество минус остаток, то есть "+ansS+".</p>";
+  }
+  else if(c==="THRESH"){
+    if(f.sub==="bounce"){
+      wt=shortTape(f.seq,f.seq.map((_,i)=>"после "+(i+1)+"-го"),divStr(f.q),true,7)+
+        "<p>Первая высота меньше "+nb(fmtN(f.L))+" см появляется на шаге "+ansS+". Берём именно первый подходящий шаг.</p>";
+      wf="<p>Формула тут не короче таблицы: высоты "+fx("<i>h</i><sub><i>n</i></sub> = "+fmtN(f.h1)+" · "+fracHTML("1",fmtN(f.q)+"<sup><i>n</i> \u2212 1</sup>"))+", и всё равно проверяем номера по очереди до первого, где "+
+        "<i>h</i><sub><i>n</i></sub> &lt; "+fmtN(f.L)+". Ответ "+ansS+".</p>";
+    } else {
+      const rows=Math.min(f.sums.length,4);
+      let mini="<div class='small'>";
+      for(let i=0;i<rows;i++) mini+= (i+1)+"-я мин: +"+fmtN(f.adds[i])+", всего "+fmtN(f.sums[i])+"<br>";
+      mini+="…<br>"+f.sums.length+"-я мин: +"+fmtN(f.adds[f.sums.length-1])+", всего "+nb(fmtN(f.sums[f.sums.length-1]))+"</div>";
+      wt=mini+"<p>Первая минута, когда сумма не меньше "+nb(fmtN(f.X))+": "+ansS+".</p>";
+      wf="<p>Сумма удвоений 2 + 4 + … + 2<sup><i>n</i></sup> = "+fx("2<sup><i>n</i>+1</sup> \u2212 2")+". Подбираем первую степень, дающую не меньше "+nb(fmtN(f.X))+": получается "+ansS+". Таблица обычно надёжнее.</p>";
+    }
+  }
+  else if(c==="PIC"){
+    if(f.sub==="tables"){
+      wt="<p>Первые случаи: 1 столик — 4, 2 — 6, 3 — 8. Каждый новый столик даёт "+nb("+2")+" места. До "+f.n+" столиков "+nb(String(f.n-1))+" добавлений: "+ansS+".</p>";
+      wf="<p>"+fx(AN+" = 4 + 2(<i>n</i> \u2212 1) = 2<i>n</i> + 2")+" при <i>n</i> = "+nb(String(f.n))+": "+ansS+".</p>";
+    } else if(f.sub==="logs"){
+      const rows=[]; for(let i=1;i<=f.base;i++) rows.push(F(i));
+      wt=gaussVisual(rows, {sumRow:true})+
+        "<p>Метод Гаусса: ряды 1 + 2 + … + "+nb(String(f.base))+", все столбики по "+nb(String(f.base+1))+". Удвоенная сумма "+nb(String((f.base+1)*f.base))+", делим на 2: "+ansS+".</p>";
+      wf="<p>"+fx(SN+" = "+fracHTML("(1 + <i>n</i>) · <i>n</i>","2"))+" при <i>n</i> = "+nb(String(f.base))+": "+ansS+".</p>";
+    } else {
+      const lens=[]; for(let i=1;i<=f.K;i++) lens.push(F(i));
+      wt=gaussVisual(lens, {sumRow:true})+
+        "<p>Метод Гаусса: 1 + 2 + … + "+nb(String(f.K))+" = "+nb(fmtN(F(f.K*(f.K+1)/2)))+" (столбики по "+nb(String(f.K+1))+", делим на 2). Каждая длина в змейке дважды — удваиваем: "+ansS+".</p>";
+      wf="<p>"+fx("<i>L</i> = 2 · "+fracHTML("(1 + <i>K</i>) · <i>K</i>","2")+" = <i>K</i>(<i>K</i> + 1)")+" при <i>K</i> = "+nb(String(f.K))+": "+ansS+".</p>";
+    }
+  }
+  else if(c==="TAXI"){
+    wt="<p>Старт покрывает первые "+nb(String(f.K))+" мин. Минута стоит "+nb(fmtN(f.S2))+" ÷ "+nb(String(f.M))+" = "+nb(String(f.p))+" руб. Сверх старта "+nb(String(f.T-f.K))+" минут: "+nb(fmtN(f.C0))+" + "+nb(String(f.T-f.K))+" · "+nb(String(f.p))+" = "+ansS+".</p>";
+    wf="<p>Это линейная схема: "+fx("<i>C</i> = <i>C</i><sub>0</sub> + <i>p</i>(<i>T</i> \u2212 <i>K</i>)")+", подстановка даёт "+ansS+".</p>";
+  }
+  return { f:wf, t:wt };
+}
+
+T.buildSteps=buildSteps;
+T.ways=ways;
+})(typeof T14!=="undefined"?T14:module.exports);
+
+/* ===== ОГЭ №14: контент «Справочник» и «Учимся» ===== */
+"use strict";
+(function(T){
+const {F, Fr, fmtN, N, nb, fracHTML} = T;
+
+/* ---------- СПРАВОЧНИК ---------- */
+function renderRef(el){
+  el.innerHTML = `
+  <div class="card">
+    <h2>Что спрашивают в задании 14</h2>
+    <p>Дана последовательность чисел, которая меняется по простому закону: ряды в зале, минуты распада, дни работы, отскоки мяча. Нужно найти либо <b>одно значение</b> в нужном месте, либо <b>сумму</b> нескольких значений, либо <b>номер шага</b>, на котором что-то произойдёт.</p>
+    <div class="human">Почти любую такую задачу можно решить <b>двумя путями</b>: выписать шаги в таблицу или подставить в формулу из справочных материалов. Формула — это просто короткая запись той же таблицы.</div>
+  </div>
+
+  <div class="card">
+    <h2>Две прогрессии — по одному признаку</h2>
+    <p><b>Арифметическая</b> прогрессия: каждый следующий член на <b>одно и то же число больше или меньше</b> предыдущего. Это число называют разностью <i>d</i>.</p>
+    ${T.tapeHTML([{idx:"1-й",val:"20"},{idx:"2-й",val:"23"},{idx:"3-й",val:"26"},{idx:"4-й",val:"29"}],"+3")}
+    <p><b>Геометрическая</b> прогрессия: каждый следующий член в <b>одно и то же число раз больше или меньше</b> предыдущего. Это число называют знаменателем <i>q</i>.</p>
+    ${T.tapeHTML([{idx:"0 мин",val:"640"},{idx:"7 мин",val:"320"},{idx:"14 мин",val:"160"},{idx:"21 мин",val:"80"}],"÷2",{gp:true})}
+    <div class="human">Как отличить: если между шагами всё время <b>прибавляют</b> одинаково — арифметическая. Если <b>умножают или делят</b> в одинаковое число раз — геометрическая.</div>
+  </div>
+
+  <div class="card">
+    <h2>Формулы из справочных материалов ОГЭ</h2>
+    <p>Ровно эти четыре формулы лежат в справочнике на экзамене. Рядом с каждой — перевод на человеческий язык.</p>
+
+    <h3>n-й член арифметической прогрессии</h3>
+    <span class="formula"><i>a</i><sub><i>n</i></sub> = <i>a</i><sub>1</sub> + <i>d</i>(<i>n</i> &minus; 1)</span>
+    <div class="human">К первому члену прибавляем разность столько раз, сколько переходов до нужного члена, а переходов на один меньше номера.</div>
+
+    <h3>Сумма первых n членов арифметической прогрессии</h3>
+    <span class="formula"><i>S</i><sub><i>n</i></sub> = ${fracHTML('(<i>a</i><sub>1</sub> + <i>a</i><sub><i>n</i></sub>) · <i>n</i>','2')}</span>
+    <div class="human">Складываем первый и последний члены (пара всегда одинаковая), умножаем на число членов и делим на 2, потому что каждый член попал в пары дважды.</div>
+
+    <h3>n-й член геометрической прогрессии</h3>
+    <span class="formula"><i>b</i><sub><i>n</i></sub> = <i>b</i><sub>1</sub> · <i>q</i><sup><i>n</i> &minus; 1</sup></span>
+    <div class="human">Первый член умножаем на знаменатель столько раз, сколько переходов, снова на один меньше номера.</div>
+
+    <h3>Сумма первых n членов геометрической прогрессии</h3>
+    <span class="formula"><i>S</i><sub><i>n</i></sub> = ${fracHTML('(<i>q</i><sup><i>n</i></sup> &minus; 1) · <i>b</i><sub>1</sub>','<i>q</i> &minus; 1')}</span>
+    <div class="human">Для ОГЭ это самая редкая формула: обычно проще выписать несколько слагаемых 2 + 4 + 8 + … и сложить их напрямую.</div>
+  </div>
+
+  <div class="card">
+    <h2>Почему в формулах стоит n &minus; 1</h2>
+    <p>Первый член уже дан — он у нас в руках. Шагать начинаем только со второго. Поэтому от 1-го члена до 2-го один переход, до 3-го два перехода, а до <i>n</i>-го всего <b>n &minus; 1</b> переход.</p>
+    ${T.tapeHTML([{idx:"1-й",val:"25"},{idx:"2-й",val:"28"},{idx:"3-й",val:"31"},{idx:"…",val:"",dots:true},{idx:"8-й",val:"46",hl:true}],"+3")}
+    <p class="small muted">От 1-го до 8-го ряда — 7 прибавок, а не 8.</p>
+  </div>
+
+  <div class="card">
+    <h2>Значение и сумма — это разное</h2>
+    <p><b>Значение</b> — это один ряд, одна минута, один день: сколько мест именно в 8-м ряду.</p>
+    <p><b>Сумма</b> — это всё вместе за несколько рядов, минут или дней: сколько мест во всех восьми рядах.</p>
+    <div class="human">Если в вопросе есть слова «всего», «за первые … секунд», «в сумме» — почти наверняка нужна сумма. Если «в … ряду», «через … минут», «на … день» — нужно одно значение.</div>
+  </div>
+
+  <div class="card">
+    <h2>Метод Гаусса: как быстро сложить много чисел</h2>
+    <p>Есть история: маленькому Гауссу велели сложить все числа от 1 до 100. Он не стал складывать по порядку, а заметил хитрость и ответил почти сразу. Тот же приём работает в задании 14.</p>
+    <p>Запишем сумму дважды — обычным порядком и в обратном — и сложим по столбикам:</p>
+    <div class="gauss" style="grid-template-columns:repeat(6,1fr)">
+      <span class="gcell fwd">9</span><span class="gcell fwd">19</span><span class="gcell fwd">29</span><span class="gcell fwd">39</span><span class="gcell fwd">49</span><span class="gcell fwd">59</span>
+      <span class="gcell rev">59</span><span class="gcell rev">49</span><span class="gcell rev">39</span><span class="gcell rev">29</span><span class="gcell rev">19</span><span class="gcell rev">9</span>
+      <span class="gcell sum">68</span><span class="gcell sum">68</span><span class="gcell sum">68</span><span class="gcell sum">68</span><span class="gcell sum">68</span><span class="gcell sum">68</span>
+    </div>
+    <p>Все столбики одинаковые: верхнее число растёт, а нижнее ровно на столько же убывает. Здесь 6 столбиков по 68, то есть удвоенная сумма равна <b>6 · 68 = 408</b>. Значит сама сумма <b>408 : 2 = 204</b>.</p>
+    <div class="human">Отсюда и берётся формула суммы: пара «первый + последний», умножить на число чисел и разделить на 2 — потому что мы посчитали всё дважды. Формула — это просто короткая запись приёма Гаусса.</div>
+  </div>
+
+  <div class="card">
+    <h2>Ловушки, на которых теряют баллы</h2>
+    <p><b>Периоды, а не минуты.</b> «Через 42 минуты, если каждые 7 минут» — это 42 ÷ 7 = 6 периодов, а не 42.</p>
+    <p><b>Осталось или образовалось.</b> «Половина А перешла в Б» — сначала найди, сколько осталось А, потом вычти из начальной массы. Спрашивают про Б.</p>
+    <p><b>Стартовая плата.</b> В такси и самокате стартовая сумма уже покрывает первые минуты — не считай их второй раз в поминутной оплате.</p>
+    <p><b>Первый подходящий шаг.</b> «Когда станет меньше порога» — бери первый шаг, на котором условие уже выполнилось, а не предыдущий.</p>
+  </div>
+  `;
+}
+
+/* ---------- УЧИМСЯ ---------- */
+let learnState={};
+function renderLearn(el){
+  el.innerHTML=`
+  <div class="card">
+    <h2>Учимся: смысл важнее формулы</h2>
+    <p>Пройди пункты по порядку. В каждом есть маленький пример, который можно потрогать. Формулы появятся в конце — уже как короткая запись того, что ты и так поймёшь.</p>
+  </div>
+  <div class="card" id="L1"></div>
+  <div class="card" id="L2"></div>
+  <div class="card" id="L3"></div>
+  <div class="card" id="L4"></div>
+  <div class="card" id="L5"></div>
+  `;
+  learnState={};
+  renderL1(); renderL2(); renderL3(); renderL4(); renderL5();
+}
+
+/* Пункт 1: одинаковая прибавка -> лента шагов, дозаполнение */
+function renderL1(seed){
+  const el=document.getElementById("L1"); if(!el) return;
+  const r=T.rng(seed||(1000+Math.floor(Math.random()*1e6)));
+  const a1=T.ri(r,10,30), d=T.ri(r,2,6), n=T.ri(r,5,7);
+  const vals=[a1]; for(let i=1;i<=n-1;i++) vals.push(vals[i-1]+d);
+  const ansVal=vals[n-1];
+  learnState.l1={a1,d,n,ans:ansVal, revealed:false};
+  const cells=[];
+  for(let i=0;i<n;i++){
+    if(i<n-1) cells.push({idx:(i+1)+"-й",val:fmtN(F(vals[i])), hl:i===n-2});
+    else cells.push({idx:(i+1)+"-й",val:"?", hl:true});
+  }
+  el.innerHTML=`
+    <div class="tpoint"><span class="pn">1</span><h3>Одинаковая прибавка — это арифметическая прогрессия</h3></div>
+    <p>Когда каждый следующий шаг больше предыдущего на <b>одно и то же</b>, значения удобно выписать лентой. Вот ряд, где к каждому шагу прибавляют ${nb("+"+d)}:</p>
+    ${T.tapeHTML(cells,"+"+d)}
+    <p>Продолжи ленту в уме: какое число должно стоять на ${n}-м шаге?</p>
+    <div class="ansrow"><span class="ansfield"><input id="l1in" inputmode="numeric" placeholder="?"></span>
+      <button class="btn mini" id="l1ck">Проверить</button>
+      <button class="ghost btn mini peekbtn" id="l1show">Показать шаг</button></div>
+    <div class="fb" id="l1fb"></div>
+    <div id="l1more"></div>
+  `;
+  const inp=el.querySelector("#l1in"), fb=el.querySelector("#l1fb");
+  el.querySelector("#l1ck").onclick=()=>{
+    const v=T.parseDec(inp.value);
+    if(v===null){ fb.className="fb try"; fb.textContent="Впиши число."; return; }
+    if(Fr.eq(v,F(ansVal))){ fb.className="fb ok"; fb.innerHTML="Верно. На ленте видно: к предыдущему "+nb(fmtN(F(vals[n-2])))+" прибавили "+nb("+"+d)+"."; addMore1(); }
+    else if(Fr.eq(v,F(vals[n-2]+2*d))){ fb.className="fb try"; fb.textContent="Кажется, прибавил дважды. Между соседними шагами ровно одна прибавка."; }
+    else { fb.className="fb try"; fb.textContent="Пока не то. Возьми предыдущее число и прибавь "+d+"."; }
+  };
+  el.querySelector("#l1show").onclick=()=>{
+    inp.value=fmtN(F(ansVal));
+    fb.className="fb info"; fb.innerHTML="Ответ: "+nb(fmtN(F(ansVal)))+". К "+nb(fmtN(F(vals[n-2])))+" прибавили "+nb("+"+d)+".";
+    addMore1();
+  };
+  function addMore1(){
+    const more=el.querySelector("#l1more");
+    if(learnState.l1.revealed) return; learnState.l1.revealed=true;
+    more.innerHTML=`<div class="btnrow"><button class="btn mini soft" id="l1again">Ещё пример этой темы</button></div>`;
+    more.querySelector("#l1again").onclick=()=>renderL1();
+  }
+}
+
+/* Пункт 2: n-1 переходов */
+function renderL2(seed){
+  const el=document.getElementById("L2"); if(!el) return;
+  const r=T.rng(seed||(2000+Math.floor(Math.random()*1e6)));
+  const n=T.ri(r,6,12);
+  learnState.l2={n, ans:n-1, revealed:false};
+  el.innerHTML=`
+    <div class="tpoint"><span class="pn">2</span><h3>Переходов на один меньше, чем шагов</h3></div>
+    <p>Это место, где чаще всего ошибаются. Первый шаг <b>уже дан</b>. Прибавлять начинаем только со второго. Значит от первого шага до ${n}-го — сколько прибавок нужно сделать?</p>
+    <div class="ansrow"><span class="ansfield"><input id="l2in" inputmode="numeric" placeholder="?"></span>
+      <button class="btn mini" id="l2ck">Проверить</button>
+      <button class="ghost btn mini peekbtn" id="l2show">Показать ответ</button></div>
+    <div class="fb" id="l2fb"></div>
+    <div id="l2more"></div>
+  `;
+  const inp=el.querySelector("#l2in"), fb=el.querySelector("#l2fb");
+  el.querySelector("#l2ck").onclick=()=>{
+    const v=T.parseDec(inp.value);
+    if(v===null){ fb.className="fb try"; fb.textContent="Впиши число."; return; }
+    if(Fr.eq(v,F(n-1))){ fb.className="fb ok"; fb.innerHTML="Верно: "+nb(String(n)+" \u2212 1 = "+(n-1))+" переход"+((n-1)%10===1&&(n-1)%100!==11?"":((n-1)%10>=2&&(n-1)%10<=4&&((n-1)%100<10||(n-1)%100>20))?"а":"ов")+". Именно это и стоит в формуле как <i>n</i> \u2212 1."; addMore2(); }
+    else if(Fr.eq(v,F(n))){ fb.className="fb try"; fb.innerHTML="Почти! Но первый шаг уже дан — его не нужно «допрыгивать». Переходов на один меньше: "+nb(String(n-1))+"."; }
+    else { fb.className="fb try"; fb.textContent="Подумай: до 2-го шага 1 прибавка, до 3-го 2 прибавки… до "+n+"-го?"; }
+  };
+  el.querySelector("#l2show").onclick=()=>{
+    inp.value=String(n-1);
+    fb.className="fb info"; fb.innerHTML="Ответ: "+nb(String(n-1))+" переход"+((n-1)%10===1&&(n-1)%100!==11?"":((n-1)%10>=2&&(n-1)%10<=4?"а":"ов"))+". В формуле это <i>n</i> \u2212 1.";
+    addMore2();
+  };
+  function addMore2(){
+    const more=el.querySelector("#l2more"); if(learnState.l2.revealed) return; learnState.l2.revealed=true;
+    more.innerHTML=`<div class="btnrow"><button class="btn mini soft" id="l2again">Ещё пример этой темы</button></div>`;
+    more.querySelector("#l2again").onclick=()=>renderL2();
+  }
+}
+
+/* Пункт 3: сумма парами */
+function renderL3(seed){
+  const el=document.getElementById("L3"); if(!el) return;
+  const r=T.rng(seed||(3000+Math.floor(Math.random()*1e6)));
+  const a1=T.ri(r,3,10), d=T.ri(r,2,4), n=T.ri(r,4,6);
+  const vals=[a1]; for(let i=1;i<n;i++) vals.push(vals[i-1]+d);
+  const S=vals.reduce((x,y)=>x+y,0);
+  learnState.l3={ans:S, revealed:false, vals};
+  el.innerHTML=`
+    <div class="tpoint"><span class="pn">3</span><h3>Сумма — это все шаги вместе</h3></div>
+    <p>«Сколько всего» значит сложить все выписанные числа. Вот они:</p>
+    ${T.tapeHTML(vals.map((v,i)=>({idx:(i+1)+"-й",val:fmtN(F(v))})),"+"+d)}
+    <p>Сложи все ${n} чисел. Хитрость Гаусса: пара «первый + последний» = ${nb(fmtN(F(a1))+" + "+fmtN(F(vals[n-1])))} = ${nb(String(a1+vals[n-1]))}, и все такие пары одинаковые. Подробнее про этот приём — в справочнике.</p>
+    <div class="ansrow"><span class="ansfield"><input id="l3in" inputmode="numeric" placeholder="сумма"></span>
+      <button class="btn mini" id="l3ck">Проверить</button>
+      <button class="ghost btn mini peekbtn" id="l3show">Показать ответ</button></div>
+    <div class="fb" id="l3fb"></div>
+    <div id="l3more"></div>
+  `;
+  const inp=el.querySelector("#l3in"), fb=el.querySelector("#l3fb");
+  el.querySelector("#l3ck").onclick=()=>{
+    const v=T.parseDec(inp.value);
+    if(v===null){ fb.className="fb try"; fb.textContent="Впиши число."; return; }
+    if(Fr.eq(v,F(S))){ fb.className="fb ok"; fb.innerHTML="Верно, сумма "+nb(String(S))+". По формуле это ("+nb(fmtN(F(a1)))+" + "+nb(fmtN(F(vals[n-1])))+") · "+nb(String(n))+" ÷ 2."; addMore3(); }
+    else if(Fr.eq(v,F(vals[n-1]))){ fb.className="fb try"; fb.textContent="Это только последнее число. Нужно сложить все "+n+"."; }
+    else { fb.className="fb try"; fb.textContent="Пока не то. Сложи числа по порядку или парами."; }
+  };
+  el.querySelector("#l3show").onclick=()=>{
+    inp.value=String(S);
+    fb.className="fb info"; fb.innerHTML="Сумма "+nb(String(S))+" = ("+nb(fmtN(F(a1)))+" + "+nb(fmtN(F(vals[n-1])))+") · "+nb(String(n))+" ÷ 2.";
+    addMore3();
+  };
+  function addMore3(){
+    const more=el.querySelector("#l3more"); if(learnState.l3.revealed) return; learnState.l3.revealed=true;
+    more.innerHTML=`<div class="btnrow"><button class="btn mini soft" id="l3again">Ещё пример этой темы</button></div>`;
+    more.querySelector("#l3again").onclick=()=>renderL3();
+  }
+}
+
+/* Пункт 4: множитель -> геометрическая */
+function renderL4(seed){
+  const el=document.getElementById("L4"); if(!el) return;
+  const r=T.rng(seed||(4000+Math.floor(Math.random()*1e6)));
+  const down=r()<0.6;
+  const q= down? 2 : T.pick(r,[2,3]);
+  const k=T.ri(r,3,4);
+  const base= down? T.ri(r,3,12) : T.ri(r,3,10);
+  const start= down? base*Math.pow(q,k) : base;
+  const vals=[start]; for(let i=1;i<=k;i++) vals.push(down? vals[i-1]/q : vals[i-1]*q);
+  const ansVal=vals[k];
+  learnState.l4={ans:ansVal, revealed:false, down, q};
+  const cells=[];
+  for(let i=0;i<=k;i++){
+    if(i<k) cells.push({idx:(i*7)+" мин",val:fmtN(F(vals[i])), hl:i===k-1});
+    else cells.push({idx:(i*7)+" мин",val:"?", hl:true});
+  }
+  el.innerHTML=`
+    <div class="tpoint"><span class="pn">4</span><h3>Одинаковый множитель — это геометрическая прогрессия</h3></div>
+    <p>Здесь между шагами не прибавляют, а ${down?"делят":"умножают"} на ${nb(String(q))}. Каждые 7 минут ${down?"масса уменьшается в "+q+" "+T.words.timesW(q):"масса растёт в "+q+" "+T.words.timesW(q)}:</p>
+    ${T.tapeHTML(cells,(down?"÷":"×")+q,{gp:true})}
+    <p>Какое число будет через ${k*7} минут?</p>
+    <div class="ansrow"><span class="ansfield"><input id="l4in" inputmode="numeric" placeholder="?"></span>
+      <button class="btn mini" id="l4ck">Проверить</button>
+      <button class="ghost btn mini peekbtn" id="l4show">Показать шаг</button></div>
+    <div class="fb" id="l4fb"></div>
+    <div id="l4more"></div>
+  `;
+  const inp=el.querySelector("#l4in"), fb=el.querySelector("#l4fb");
+  el.querySelector("#l4ck").onclick=()=>{
+    const v=T.parseDec(inp.value);
+    if(v===null){ fb.className="fb try"; fb.textContent="Впиши число."; return; }
+    if(Fr.eq(v,F(ansVal))){ fb.className="fb ok"; fb.innerHTML="Верно. Каждый шаг "+(down?"делим":"умножаем")+" на "+nb(String(q))+", а не прибавляем. Это и есть геометрическая прогрессия."; addMore4(); }
+    else if(Fr.eq(v,F(down? vals[k-1]-q : vals[k-1]+q))){ fb.className="fb try"; fb.textContent="Здесь не прибавляют и не вычитают число — каждый раз "+(down?"делят":"умножают")+" на "+q+"."; }
+    else { fb.className="fb try"; fb.textContent="Пока не то. Возьми предыдущее число и "+(down?"раздели":"умножь")+" на "+q+"."; }
+  };
+  el.querySelector("#l4show").onclick=()=>{
+    inp.value=fmtN(F(ansVal));
+    fb.className="fb info"; fb.innerHTML="Ответ: "+nb(fmtN(F(ansVal)))+". Предыдущее "+nb(fmtN(F(vals[k-1])))+" "+(down?"делим":"умножаем")+" на "+nb(String(q))+".";
+    addMore4();
+  };
+  function addMore4(){
+    const more=el.querySelector("#l4more"); if(learnState.l4.revealed) return; learnState.l4.revealed=true;
+    more.innerHTML=`<div class="btnrow"><button class="btn mini soft" id="l4again">Ещё пример этой темы</button></div>`;
+    more.querySelector("#l4again").onclick=()=>renderL4();
+  }
+}
+
+/* Пункт 5: квиз определи тип */
+const QUIZ=[
+  { text:"В зале 20 рядов. В первом ряду 30 мест, в каждом следующем на 4 места больше. Сколько мест в 15-м ряду?", type:"ap-val",
+    why:"Каждый ряд на одинаковое число больше — арифметическая прогрессия. Спрашивают одно значение, значение в 15-м ряду." },
+  { text:"Масса вещества уменьшается вдвое каждые 6 минут. Сколько её останется через 30 минут, если было 320 мг?", type:"gp-val",
+    why:"Каждый период делим на 2 — геометрическая прогрессия. Спрашивают одно значение через 30 минут." },
+  { text:"В первую секунду камень пролетел 8 м, в каждую следующую на 6 м больше. Сколько всего он пролетит за первые 5 секунд?", type:"ap-sum",
+    why:"Прибавка одинаковая — арифметическая. Слово «всего за первые 5 секунд» означает сумму." },
+  { text:"Мяч после первого отскока подлетел на 240 см, после каждого следующего — в 2 раза ниже. После какого отскока высота станет меньше 20 см?", type:"thr",
+    why:"Делим на 2 — геометрическая, но спрашивают номер шага, на котором выполнится условие. Тут удобнее таблица до порога." },
+];
+function renderL5(idx){
+  const el=document.getElementById("L5"); if(!el) return;
+  idx = idx==null? Math.floor(Math.random()*QUIZ.length) : idx;
+  const q=QUIZ[idx];
+  learnState.l5={idx, answered:false};
+  el.innerHTML=`
+    <div class="tpoint"><span class="pn">5</span><h3>Определи тип задачи</h3></div>
+    <p>Теперь самое полезное умение: до всякого счёта понять, что перед тобой. Прочитай условие и выбери, что здесь происходит.</p>
+    <p class="task-text">${q.text}</p>
+    <div class="grouplbl">Что происходит каждый шаг?</div>
+    <div id="l5a"></div>
+    <div class="grouplbl">Что спрашивают?</div>
+    <div id="l5b"></div>
+    <div class="btnrow"><button class="btn mini" id="l5ck" disabled>Проверить</button></div>
+    <div class="fb" id="l5fb"></div>
+    <div id="l5more"></div>
+  `;
+  const correctChange = q.type.startsWith("ap")? "add" : "mul";
+  const correctAsk = q.type==="ap-sum"? "sum" : (q.type==="thr"? "step" : "val");
+  const changeOpts=[["add","Прибавляем одинаково"],["mul","Умножаем или делим одинаково"]];
+  const askOpts=[["val","Одно значение"],["sum","Сумму нескольких шагов"],["step","Номер шага"]];
+  let selChange=null, selAsk=null;
+  const aWrap=el.querySelector("#l5a"), bWrap=el.querySelector("#l5b");
+  changeOpts.forEach(([v,t])=>{ const b=document.createElement("button"); b.className="choice"; b.textContent=t;
+    b.onclick=()=>{ if(learnState.l5.answered) return; selChange=v; [...aWrap.children].forEach(x=>x.classList.remove("sel-ok")); b.classList.add("sel-ok"); upd(); }; aWrap.appendChild(b); });
+  askOpts.forEach(([v,t])=>{ const b=document.createElement("button"); b.className="choice"; b.textContent=t;
+    b.onclick=()=>{ if(learnState.l5.answered) return; selAsk=v; [...bWrap.children].forEach(x=>x.classList.remove("sel-ok")); b.classList.add("sel-ok"); upd(); }; bWrap.appendChild(b); });
+  const ck=el.querySelector("#l5ck"), fb=el.querySelector("#l5fb");
+  function upd(){ ck.disabled = !(selChange&&selAsk); }
+  ck.onclick=()=>{
+    learnState.l5.answered=true;
+    const okC=selChange===correctChange, okA=selAsk===correctAsk;
+    [...aWrap.children].forEach(b=>{ const v=changeOpts[[...aWrap.children].indexOf(b)][0]; if(v===correctChange) b.classList.add("sel-ok"); else if(v===selChange) b.classList.add("sel-no"); });
+    [...bWrap.children].forEach(b=>{ const v=askOpts[[...bWrap.children].indexOf(b)][0]; if(v===correctAsk) b.classList.add("sel-ok"); else if(v===selAsk) b.classList.add("sel-no"); });
+    if(okC&&okA){ fb.className="fb ok"; fb.innerHTML="Верно. "+q.why; }
+    else { fb.className="fb try"; fb.innerHTML="Смотри внимательнее. "+q.why; }
+    const more=el.querySelector("#l5more");
+    more.innerHTML=`<div class="btnrow"><button class="btn mini soft" id="l5again">Ещё условие</button></div>`;
+    more.querySelector("#l5again").onclick=()=>renderL5((idx+1+Math.floor(Math.random()*(QUIZ.length-1)))%QUIZ.length);
+  };
+}
+
+T.renderRef=renderRef;
+T.renderLearn=renderLearn;
+})(typeof T14!=="undefined"?T14:module.exports);
+
+/* ===== ОГЭ №14: вкладка «Сравнить два способа» ===== */
+"use strict";
+(function(T){
+const {F, Fr, fmtN, N, nb} = T;
+
+/* типы, у которых есть ОБА пути (формула и таблица) */
+const BOTH = ["AP-VAL","AP-SUM","GP-VAL","GP-COMPL"];
+const cmp = {};
+
+function renderCompare(el){
+  el.innerHTML=`
+  <div class="card">
+    <h2>Сравнить два способа</h2>
+    <p>Одна и та же задача решается слева по формуле, справа таблицей. Раскрывай по одному шагу с обеих сторон и смотри, как они идут параллельно и сходятся к одному ответу.</p>
+    <div class="grouplbl">Выбери тип задачи</div>
+    <div id="cmp-cases" class="filters"></div>
+  </div>
+  <div id="cmp-task"></div>`;
+  const host=el.querySelector("#cmp-cases");
+  BOTH.forEach((code,i)=>{
+    const b=document.createElement("button");
+    b.className="fchip"+(i===0?" on":"");
+    b.textContent=T.GENS[code].title;
+    b.onclick=()=>{ host.querySelectorAll(".fchip").forEach(x=>x.classList.remove("on")); b.classList.add("on"); cmp.code=code; newCompare(); };
+    host.appendChild(b);
+  });
+  cmp.code=BOTH[0];
+  newCompare();
+}
+
+function newCompare(){
+  const seed=Math.floor(Math.random()*1e9);
+  const task=T.makeTask(cmp.code, seed);
+  cmp.task=task;
+  cmp.fSteps=T.buildSteps(task,"formula").filter(s=>s.a!==undefined || s.choice);
+  cmp.tSteps=T.buildSteps(task,"table").filter(s=>s.a!==undefined || s.choice);
+  cmp.shown=0;
+  const host=document.getElementById("cmp-task");
+  host.innerHTML=`
+  <div class="card">
+    <div class="task-chip${task.gp?" gp":""}">${task.chip}</div>
+    <p class="task-text">${task.text}</p>
+    ${task.svg?`<div class="svgbox">${task.svg}</div>`:""}
+    <div class="ways" style="margin-top:12px">
+      <div class="way wf"><h4>📐 Формула</h4><div id="cmp-f"></div></div>
+      <div class="way wt"><h4>🪜 Здравый смысл</h4><div id="cmp-t"></div></div>
+    </div>
+    <div class="btnrow" style="margin-top:12px">
+      <button class="btn" id="cmp-step">Показать следующий шаг с обеих сторон</button>
+      <button class="ghost btn" id="cmp-all">Показать всё</button>
+      <button class="ghost btn" id="cmp-new">Другая задача</button>
+    </div>
+    <div id="cmp-final"></div>
+  </div>`;
+  host.querySelector("#cmp-step").onclick=stepCompare;
+  host.querySelector("#cmp-all").onclick=()=>{ while(cmp.shown < Math.max(cmp.fSteps.length,cmp.tSteps.length)) cmp.shown++; drawCompare(); };
+  host.querySelector("#cmp-new").onclick=newCompare;
+  drawCompare();
+}
+
+function stepCompare(){
+  const maxN=Math.max(cmp.fSteps.length, cmp.tSteps.length);
+  if(cmp.shown<maxN){ cmp.shown++; drawCompare(); }
+}
+
+function stepLine(s, done){
+  if(!s) return "";
+  const q = s.choice ? s.q : s.q;
+  const a = s.choice ? s.choice.options.find(o=>o.ok).t : nb(fmtN(s.a));
+  // берём только суть вопроса без встроенной ленты (обрезаем HTML ленты)
+  const qClean = q.replace(/<div class="tape">[\s\S]*?<\/div>/g,"").trim();
+  if(done) return `<div class="cmp-line done"><div class="cmp-q">${qClean}</div><div class="cmp-a">${a}</div></div>`;
+  return "";
+}
+
+function drawCompare(){
+  const task=cmp.task;
+  const fBox=document.getElementById("cmp-f"), tBox=document.getElementById("cmp-t");
+  let fh="", th="";
+  for(let i=0;i<cmp.fSteps.length;i++) fh+= i<cmp.shown ? stepLine(cmp.fSteps[i], true) : "";
+  for(let i=0;i<cmp.tSteps.length;i++) th+= i<cmp.shown ? stepLine(cmp.tSteps[i], true) : "";
+  if(!fh) fh=`<p class="muted small">Нажимай «Показать следующий шаг» — здесь появятся действия по формуле.</p>`;
+  if(!th) th=`<p class="muted small">…а здесь параллельно те же действия таблицей.</p>`;
+  fBox.innerHTML=fh; tBox.innerHTML=th;
+
+  const doneF = cmp.shown>=cmp.fSteps.length, doneT = cmp.shown>=cmp.tSteps.length;
+  const final=document.getElementById("cmp-final");
+  const stepBtn=document.getElementById("cmp-step");
+  if(doneF && doneT){
+    if(stepBtn) stepBtn.disabled=true;
+    final.innerHTML=`
+      <div class="fb ok" style="display:block;margin-top:12px">Ответ: ${nb(fmtN(task.ans))} ${task.unit||""}. Оба столбца пришли к одному числу.</div>
+      <div class="human">Формула короче, но это ровно та же цепочка действий, что и в таблице: столько же переходов, тот же множитель или та же прибавка. Формула — это просто сжатая запись таблицы шагов.</div>`;
+  } else {
+    if(stepBtn) stepBtn.disabled=false;
+    final.innerHTML="";
+  }
+}
+
+T.renderCompare=renderCompare;
+})(typeof T14!=="undefined"?T14:module.exports);
+
+/* ===== ОГЭ №14: режимы «Пошагово» и «Марафон» ===== */
+"use strict";
+(function(T){
+const {F, Fr, fmtN, N, nb} = T;
+
+/* ---------- Общий ввод ответа (десятичная ⇄ дробь) ---------- */
+function answerInput(hostId, onCheck, onShow){
+  return `
+  <div class="ansrow" id="${hostId}-row">
+    <div id="${hostId}-field"></div>
+    <button class="togglefrac" id="${hostId}-toggle" type="button">дробью</button>
+  </div>`;
+}
+function mountAnswer(hostId, unit){
+  const field=document.getElementById(hostId+"-field");
+  const toggle=document.getElementById(hostId+"-toggle");
+  const st={mode:"dec", unit};
+  function render(){
+    if(st.mode==="dec"){
+      field.innerHTML=`<span class="ansfield"><input id="${hostId}-dec" inputmode="decimal" placeholder="ответ"></span>${unit?`<span class="unit">${unit}</span>`:""}`;
+      toggle.textContent="дробью";
+    } else {
+      field.innerHTML=`<span class="fracIn"><input id="${hostId}-top" inputmode="numeric" placeholder=""><span class="bar"></span><input id="${hostId}-bot" inputmode="numeric" placeholder=""></span>${unit?`<span class="unit">${unit}</span>`:""}`;
+      toggle.textContent="десятичной";
+    }
+  }
+  toggle.onclick=()=>{ st.mode = st.mode==="dec"?"frac":"dec"; render(); };
+  render();
+  return {
+    read(){
+      if(st.mode==="dec") return T.parseDec(document.getElementById(hostId+"-dec").value);
+      return T.parseFracPair(document.getElementById(hostId+"-top").value, document.getElementById(hostId+"-bot").value);
+    },
+    fill(f){
+      if(Fr.isInt(f) || T.decParts(f)){ st.mode="dec"; render(); document.getElementById(hostId+"-dec").value=fmtN(f).replace(/\u2212/g,"-").replace(/[\u202F\u00A0]/g,""); }
+      else { st.mode="frac"; render(); document.getElementById(hostId+"-top").value=(f.n<0n?"-":"")+(f.n<0n?-f.n:f.n).toString(); document.getElementById(hostId+"-bot").value=f.d.toString(); }
+    }
+  };
+}
+
+/* ================= ПОШАГОВО ================= */
+const stepsUI={};
+function renderStepsMode(el){
+  el.innerHTML=`
+  <div class="card">
+    <h2>Пошагово: решаем вместе</h2>
+    <p>Выбери тип задачи. Затем реши её по шагам — на каждом шаге впиши число и нажми «Проверить». Если застрял, рядом всегда есть «Показать шаг». Подсмотренный шаг не считается решённым, но помогает идти дальше.</p>
+    <div id="st-cases"></div>
+    <div id="st-method"></div>
+  </div>
+  <div id="st-task"></div>`;
+  renderCases();
+}
+function renderCases(){
+  const host=document.getElementById("st-cases");
+  let h="";
+  T.GEN_ORDER.forEach(g=>{
+    h+=`<div class="grouplbl${g.gp?" gp":""}">${g.group}</div><div class="cases">`;
+    g.codes.forEach(code=>{
+      const G=T.GENS[code];
+      h+=`<button class="casebtn" data-code="${code}">${G.title}<span class="cc">${G.desc}</span></button>`;
+    });
+    h+=`</div>`;
+  });
+  host.innerHTML=h;
+  host.querySelectorAll(".casebtn").forEach(b=>{
+    b.onclick=()=>{
+      host.querySelectorAll(".casebtn").forEach(x=>x.classList.remove("sel"));
+      b.classList.add("sel");
+      stepsUI.code=b.dataset.code;
+      chooseMethod();
+    };
+  });
+}
+const METHOD_LABEL={ table:"🪜 Таблицей шагов", gauss:"⚖️ Метод Гаусса", formula:"📐 По формуле справочника" };
+function chooseMethod(){
+  const G=T.GENS[stepsUI.code];
+  const host=document.getElementById("st-method");
+  if(!G.methods.includes(stepsUI.method)) stepsUI.method=G.methods[0];
+  if(G.methods.length<2){ stepsUI.method=G.methods[0]; host.innerHTML=""; newStepTask(); return; }
+  const btns=G.methods.map(m=>`<button class="choice ${stepsUI.method===m?"sel-ok":""}" data-m="${m}">${METHOD_LABEL[m]||m}</button>`).join("");
+  host.innerHTML=`<div class="grouplbl">Каким путём решаем?</div>
+    <div class="btnrow">${btns}</div>
+    <div class="price">${G.price}</div>`;
+  host.querySelectorAll("[data-m]").forEach(b=>{
+    b.onclick=()=>{ stepsUI.method=b.dataset.m; host.querySelectorAll("[data-m]").forEach(x=>x.classList.remove("sel-ok")); b.classList.add("sel-ok"); newStepTask(); };
+  });
+  newStepTask();
+}
+function newStepTask(){
+  const seed=Math.floor(Math.random()*1e9);
+  const task=T.makeTask(stepsUI.code, seed);
+  stepsUI.task=task;
+  const steps=T.buildSteps(task, stepsUI.method);
+  stepsUI.steps=steps; stepsUI.cur=0; stepsUI.state={vals:{}};
+  const host=document.getElementById("st-task");
+  host.innerHTML=`
+  <div class="card">
+    <div class="task-chip${task.gp?" gp":""}">${task.chip}</div>
+    <p class="task-text">${task.text}</p>
+    ${task.svg?`<div class="svgbox">${task.svg}</div>`:""}
+    <div id="st-steps"></div>
+    <div class="btnrow"><button class="ghost btn mini" id="st-new">Другая задача этого типа</button></div>
+  </div>`;
+  host.querySelector("#st-new").onclick=newStepTask;
+  renderStepList();
+}
+function renderStepList(){
+  const host=document.getElementById("st-steps");
+  host.innerHTML="";
+  stepsUI.steps.forEach((s,i)=>{
+    const div=document.createElement("div");
+    div.className="step"+(i<stepsUI.cur?(s._peeked?" peeked done":" done"):(i===stepsUI.cur?" active":""));
+    div.id="stp-"+i;
+    if(i>stepsUI.cur){ div.style.display="none"; }
+    host.appendChild(div);
+    if(i<stepsUI.cur) fillDone(div,s,i);
+    else if(i===stepsUI.cur) fillActive(div,s,i);
+  });
+  if(stepsUI.cur>=stepsUI.steps.length) showStepDone();
+}
+function fillDone(div,s,i){
+  if(s.choice){ div.innerHTML=`<div class="stq">${s.q}</div><div class="stgot">${s._peeked?"Показано":"Верно"}: ${s.choice.options.find(o=>o.ok).t}</div>`; return; }
+  if(s.build){ div.innerHTML=`<div class="stq">${s.q}</div><div class="stgot">Таблица построена</div>`; return; }
+  div.innerHTML=`<div class="stq">${s.q}</div><div class="stgot">${s._peeked?"Показано":"Ответ"}: ${nb(fmtN(s.a))}</div>${s._peeked?'<div class="peeknote">Подсмотрено — не засчитано</div>':''}`;
+}
+function fillActive(div,s,i){
+  if(s.choice){ renderChoiceStep(div,s,i); return; }
+  if(s.build){ renderBuildStep(div,s,i); return; }
+  div.innerHTML=`
+    <span class="yourmove">твой ход</span>
+    <div class="stq">${s.q}</div>
+    ${answerInput("stp"+i)}
+    <div class="btnrow">
+      <button class="btn mini" id="stp${i}-ck">Проверить</button>
+      <button class="ghost btn mini peekbtn" id="stp${i}-sh">Показать шаг</button>
+    </div>
+    <div class="fb" id="stp${i}-fb"></div>`;
+  const ans=mountAnswer("stp"+i, "");
+  const fb=div.querySelector("#stp"+i+"-fb");
+  div.querySelector("#stp"+i+"-ck").onclick=()=>{
+    const v=ans.read();
+    if(v===null){ fb.className="fb try"; fb.textContent="Впиши число."; return; }
+    if(Fr.eq(v,s.a)){ advance(i,false); }
+    else {
+      /* мягкая проверка знака */
+      if(Fr.eq(Fr.abs(v),Fr.abs(s.a)) && !Fr.eq(v,s.a)){ fb.className="fb try"; fb.textContent="Почти! У числа не тот знак — поправь и нажми «Проверить»."; }
+      else { fb.className="fb try"; fb.textContent=s.hint; }
+    }
+  };
+  div.querySelector("#stp"+i+"-sh").onclick=()=>{
+    s._peeked=true; ans.fill(s.a);
+    fb.className="fb info"; fb.innerHTML=s.reveal;
+    setTimeout(()=>advance(i,true),50);
+  };
+}
+function renderChoiceStep(div,s,i){
+  div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div><div class="btnrow" id="stp${i}-opts"></div><div class="fb" id="stp${i}-fb"></div>`;
+  const opts=div.querySelector("#stp"+i+"-opts"), fb=div.querySelector("#stp"+i+"-fb");
+  let handled=false;
+  s.choice.options.forEach(o=>{
+    const b=document.createElement("button"); b.className="choice"; b.innerHTML=o.t;
+    b.onclick=()=>{
+      if(handled) return;
+      if(o.ok){ handled=true; [...opts.children].forEach(x=>{ x.disabled=true; }); b.classList.add("sel-ok"); fb.className="fb ok"; fb.innerHTML=s.choice.why; setTimeout(()=>advance(i,false),50); }
+      else { b.classList.add("sel-no"); b.disabled=true; fb.className="fb try"; fb.innerHTML="Не совсем. "+s.choice.why; }
+    };
+    opts.appendChild(b);
+  });
+}
+function renderBuildStep(div,s,i){
+  const b=s.build;
+  stepsUI.buildIdx=0;
+  div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div>
+    <div id="stp${i}-tape"></div>
+    <div class="btnrow"><button class="btn mini" id="stp${i}-add">Добавить минуту</button>
+    <button class="ghost btn mini" id="stp${i}-done" disabled>Готово</button></div>
+    <div class="fb" id="stp${i}-fb"></div>`;
+  const tape=div.querySelector("#stp"+i+"-tape"), fb=div.querySelector("#stp"+i+"-fb");
+  const doneBtn=div.querySelector("#stp"+i+"-done"), addBtn=div.querySelector("#stp"+i+"-add");
+  function draw(){
+    let h='<div class="tape">';
+    for(let j=0;j<stepsUI.buildIdx;j++){
+      const reached = Fr.cmp(b.sums[j], b.X)>=0;
+      h+=`<span class="cell gp${j===stepsUI.buildIdx-1?" hl":""}"><span class="idx">${j+1} мин</span>${fmtN(b.sums[j])}</span>`;
+      if(j<stepsUI.buildIdx-1) h+='<span class="arr gp">→<br>+'+fmtN(b.adds[j+1])+'</span>';
+    }
+    h+='</div>';
+    tape.innerHTML=h;
+    const reached = stepsUI.buildIdx>0 && Fr.cmp(b.sums[stepsUI.buildIdx-1], b.X)>=0;
+    doneBtn.disabled=!reached;
+    if(reached){ fb.className="fb info"; fb.innerHTML="Сумма "+nb(fmtN(b.sums[stepsUI.buildIdx-1]))+" уже не меньше "+nb(fmtN(b.X))+". Можно нажать «Готово»."; addBtn.disabled=true; }
+  }
+  addBtn.onclick=()=>{ if(stepsUI.buildIdx<b.sums.length){ stepsUI.buildIdx++; draw(); } };
+  doneBtn.onclick=()=>advance(i,false);
+  draw();
+}
+function advance(i, peeked){
+  // защита от повторного/устаревшего вызова: продвигаемся только с текущего активного шага
+  if(i!==stepsUI.cur) return;
+  const s=stepsUI.steps[i];
+  if(!s) return;
+  if(!s.choice && !s.build) stepsUI.state.vals[i]=s.a;
+  stepsUI.cur=i+1;
+  renderStepList();
+  const next=document.getElementById("stp-"+stepsUI.cur);
+  if(next) next.scrollIntoView({behavior:"smooth",block:"center"});
+}
+function showStepDone(){
+  const host=document.getElementById("st-steps");
+  const task=stepsUI.task;
+  const anyPeek=stepsUI.steps.some(s=>s._peeked);
+  const w=T.ways(task);
+  const div=document.createElement("div");
+  div.className="card"; div.style.marginTop="10px";
+  div.innerHTML=`<div class="fb ok" style="display:block">${anyPeek?"Разобрали задачу до конца. Часть шагов была подсмотрена — попробуй следующую без подсказок.":"Отлично, решено полностью и без подсказок!"}</div>
+    <p><b>Ответ:</b> ${nb(fmtN(task.ans))} ${task.unit||""}</p>
+    <details class="spoil"><summary>Тот же ответ двумя способами</summary>
+      <div class="ways">
+        <div class="way wf"><h4>📐 Формула</h4>${w.f}</div>
+        <div class="way wt"><h4>🪜 Здравый смысл</h4>${w.t}</div>
+      </div>
+      <div class="human">Формула — это короткая запись той же таблицы. Оба пути дают одно число.</div>
+    </details>`;
+  host.appendChild(div);
+}
+
+/* ================= МАРАФОН ================= */
+const M={ filters:new Set(), streak:0 };
+try{ if(typeof window!=="undefined") window.__M=M; }catch(e){}
+const STORE_KEY="oge14_progress_v1";
+function loadStore(){ try{ return JSON.parse(localStorage.getItem(STORE_KEY))||{}; }catch(e){ return {}; } }
+function saveStore(s){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(s)); }catch(e){} }
+
+function renderMarathon(el){
+  el.innerHTML=`
+  <div class="card">
+    <h2>Марафон: как на экзамене</h2>
+    <p>Только условие и поле ответа. После первой ошибки — одна подсказка, после второй — предложение разобрать по шагам. Ответ всегда целое число или конечная десятичная дробь.</p>
+    <div class="filters" id="m-filters"></div>
+    <div class="mstats" id="m-stats"></div>
+  </div>
+  <div id="m-task"></div>`;
+  buildFilters();
+  renderStats();
+  nextMarathon();
+}
+function buildFilters(){
+  const host=document.getElementById("m-filters");
+  let h=`<button class="fchip ${M.filters.size===0?"on":""}" data-all="1">Все типы</button>`;
+  const chips=[
+    ["ap","Арифметическая",["AP-VAL","AP-SUM","AP-2PT","AP-SUM2DAY"]],
+    ["gp","Геометрическая",["GP-VAL","GP-COMPL"]],
+    ["sum","Суммы",["AP-SUM","AP-SUM2DAY"]],
+    ["thr","Порог",["THRESH"]],
+    ["pic","Рисунки",["PIC"]],
+    ["trap","Ловушки",["GP-COMPL","TAXI","THRESH"]],
+  ];
+  M.chipDefs=chips;
+  chips.forEach(([id,label])=>{ h+=`<button class="fchip ${M.filters.has(id)?"on":""}" data-f="${id}">${label}</button>`; });
+  host.innerHTML=h;
+  host.querySelector("[data-all]").onclick=()=>{ M.filters.clear(); buildFilters(); nextMarathon(); };
+  host.querySelectorAll("[data-f]").forEach(b=>{
+    b.onclick=()=>{ const id=b.dataset.f; if(M.filters.has(id)) M.filters.delete(id); else M.filters.add(id); buildFilters(); nextMarathon(); };
+  });
+}
+function activeCodes(){
+  if(M.filters.size===0) return null;
+  const set=new Set();
+  M.chipDefs.forEach(([id,label,codes])=>{ if(M.filters.has(id)) codes.forEach(c=>set.add(c)); });
+  return [...set];
+}
+function renderStats(){
+  const s=loadStore();
+  const host=document.getElementById("m-stats");
+  const today=new Date().toISOString().slice(0,10);
+  const solvedToday=(s.byDay&&s.byDay[today])||0;
+  const best= s.errByCode? Object.entries(s.errByCode).sort((a,b)=>b[1]-a[1])[0] : null;
+  const strong= s.okByCode? Object.entries(s.okByCode).sort((a,b)=>b[1]-a[1])[0] : null;
+  const hasData = (s.totalOk||0)+(s.totalErr||0) > 0;
+  host.innerHTML=`
+    <div class="stat">Серия верных: <b>${M.streak}</b></div>
+    <div class="stat">Сегодня решено: <b>${solvedToday}</b></div>
+    <div class="stat">Всего решено: <b>${s.totalOk||0}</b></div>
+    ${strong?`<div class="stat">Лучше всего: <b>${T.GENS[strong[0]].title}</b></div>`:""}
+    ${best?`<div class="stat">Стоит повторить: <b>${T.GENS[best[0]].title}</b></div>`:""}
+    ${hasData?`<div class="stat" style="cursor:pointer" id="m-export">⬇ Сохранить прогресс</div>
+    <div class="stat" style="cursor:pointer" id="m-reset">↺ Сбросить</div>`:""}`;
+  const ex=host.querySelector("#m-export"); if(ex) ex.onclick=exportProgress;
+  const rs=host.querySelector("#m-reset"); if(rs) rs.onclick=resetProgress;
+}
+function exportProgress(){
+  const s=loadStore();
+  const report={
+    сохранено: new Date().toLocaleString("ru-RU"),
+    всего_решено: s.totalOk||0,
+    всего_ошибок: s.totalErr||0,
+    по_дням: s.byDay||{},
+    верно_по_типам: {}, ошибки_по_типам: {}
+  };
+  if(s.okByCode) for(const [c,n] of Object.entries(s.okByCode)) report.верно_по_типам[T.GENS[c]?T.GENS[c].title:c]=n;
+  if(s.errByCode) for(const [c,n] of Object.entries(s.errByCode)) report.ошибки_по_типам[T.GENS[c]?T.GENS[c].title:c]=n;
+  try{
+    const blob=new Blob([JSON.stringify(report,null,2)],{type:"application/json"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement("a");
+    a.href=url; a.download="progress_zadanie14_"+new Date().toISOString().slice(0,10)+".json";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }catch(e){}
+}
+function resetProgress(){
+  const host=document.getElementById("m-stats");
+  const old=host.innerHTML;
+  host.innerHTML=`<div class="stat" style="border-color:var(--peekline);background:var(--peekbg)">Сбросить весь прогресс? <button class="btn mini" id="rs-yes" style="margin-left:8px">Да, очистить</button> <button class="ghost btn mini" id="rs-no">Отмена</button></div>`;
+  host.querySelector("#rs-yes").onclick=()=>{ try{ localStorage.removeItem(STORE_KEY); }catch(e){} M.streak=0; renderStats(); };
+  host.querySelector("#rs-no").onclick=()=>renderStats();
+}
+function bump(field, code){
+  const s=loadStore();
+  s[field]=(s[field]||0)+1;
+  const map=field==="totalOk"?"okByCode":(field==="totalErr"?"errByCode":null);
+  if(map){ s[map]=s[map]||{}; s[map][code]=(s[map][code]||0)+1; }
+  if(field==="totalOk"){ const d=new Date().toISOString().slice(0,10); s.byDay=s.byDay||{}; s.byDay[d]=(s.byDay[d]||0)+1; }
+  saveStore(s);
+}
+function nextMarathon(){
+  const seed=Math.floor(Math.random()*1e9);
+  const task=T.randomTask(activeCodes(), seed);
+  M.task=task; M.tries=0; M.done=false;
+  const host=document.getElementById("m-task");
+  host.innerHTML=`
+  <div class="card">
+    <div class="task-chip${task.gp?" gp":""}">${task.chip}</div>
+    <p class="task-text">${task.text}</p>
+    ${task.svg?`<div class="svgbox">${task.svg}</div>`:""}
+    ${answerInput("m")}
+    <div class="btnrow">
+      <button class="btn" id="m-ck">Проверить</button>
+      <button class="ghost btn" id="m-skip">Пропустить</button>
+    </div>
+    <div class="fb" id="m-fb"></div>
+    <div id="m-after"></div>
+  </div>`;
+  const ans=mountAnswer("m", task.unit);
+  M.ans=ans;
+  const fb=host.querySelector("#m-fb");
+  host.querySelector("#m-ck").onclick=()=>checkMarathon(ans,fb);
+  host.querySelector("#m-skip").onclick=()=>{ M.streak=0; renderStats(); nextMarathon(); };
+}
+function checkMarathon(ans, fb){
+  if(M.done) return;
+  const v=ans.read();
+  const task=M.task;
+  if(v===null){ fb.className="fb try"; fb.textContent="Впиши число в поле ответа."; return; }
+  if(Fr.eq(v,task.ans)){
+    M.done=true; M.streak++; bump("totalOk", task.code); renderStats();
+    fb.className="fb ok"; fb.innerHTML="Верно! Ответ "+nb(fmtN(task.ans))+" "+(task.unit||"")+".";
+    showMarAfter(true);
+    return;
+  }
+  M.tries++;
+  if(M.tries===1){ bump("totalErr", task.code); M.streak=0; renderStats(); }
+  /* точечная подсказка на конкретный неверный ответ */
+  const d=task.distract.find(x=>Fr.eq(x.v, v));
+  if(M.tries===1){
+    fb.className="fb try";
+    fb.innerHTML= d? d.hint : task.hint1;
+  } else {
+    fb.className="fb try";
+    fb.innerHTML=(d? d.hint : task.hint1)+" <br>Хочешь — разберём по шагам.";
+    showMarAfter(false);
+  }
+}
+function showMarAfter(correct){
+  const host=document.getElementById("m-after");
+  const task=M.task;
+  if(correct){
+    const w=T.ways(task);
+    host.innerHTML=`
+      <details class="spoil"><summary>Как это решить двумя способами</summary>
+        <div class="ways">
+          <div class="way wf"><h4>📐 Формула</h4>${w.f}</div>
+          <div class="way wt"><h4>🪜 Здравый смысл</h4>${w.t}</div>
+        </div>
+      </details>
+      <div class="btnrow"><button class="btn" id="m-next">Следующая задача →</button></div>`;
+    host.querySelector("#m-next").onclick=nextMarathon;
+  } else {
+    if(host.querySelector("#m-solve")) return;
+    host.innerHTML=`<div class="btnrow">
+      <button class="btn" id="m-solve">Разобрать по шагам</button>
+      <button class="ghost btn" id="m-reveal">Показать ответ</button></div>
+      <div id="m-solvebox"></div>`;
+    host.querySelector("#m-solve").onclick=()=>solveInMarathon();
+    host.querySelector("#m-reveal").onclick=()=>{
+      M.done=true;
+      M.ans.fill(task.ans);
+      const fb=document.getElementById("m-fb");
+      const w=T.ways(task);
+      fb.className="fb info"; fb.innerHTML="Ответ: "+nb(fmtN(task.ans))+" "+(task.unit||"")+".";
+      host.innerHTML=`<details class="spoil" open><summary>Разбор двумя способами</summary>
+        <div class="ways"><div class="way wf"><h4>📐 Формула</h4>${w.f}</div><div class="way wt"><h4>🪜 Здравый смысл</h4>${w.t}</div></div></details>
+        <div class="btnrow"><button class="btn" id="m-next2">Следующая задача →</button></div>`;
+      host.querySelector("#m-next2").onclick=nextMarathon;
+    };
+  }
+}
+function solveInMarathon(){
+  const box=document.getElementById("m-solvebox");
+  const task=M.task;
+  const method = task.methods.includes("table")? "table" : task.methods[0];
+  const steps=T.buildSteps(task, method);
+  box.innerHTML=`<div class="card" style="margin-top:8px"><div class="grouplbl">Пошаговый разбор</div><div id="mstep-list"></div></div>`;
+  const local={ steps, cur:0, host:document.getElementById("mstep-list") };
+  M.local=local;
+  drawMStep(local, task);
+}
+function drawMStep(local, task){
+  local.host.innerHTML="";
+  local.steps.forEach((s,i)=>{
+    const div=document.createElement("div");
+    div.className="step"+(i<local.cur?(s._peeked?" peeked done":" done"):(i===local.cur?" active":""));
+    if(i>local.cur) div.style.display="none";
+    local.host.appendChild(div);
+    if(i<local.cur) fillDone(div,s,i);
+    else if(i===local.cur) fillActiveM(div,s,i,local,task);
+  });
+  if(local.cur>=local.steps.length){
+    const w=T.ways(task);
+    const div=document.createElement("div"); div.style.marginTop="8px";
+    div.innerHTML=`<div class="fb ok" style="display:block">Разобрали. Ответ ${nb(fmtN(task.ans))} ${task.unit||""}.</div>
+      <div class="btnrow"><button class="btn" id="m-next3">Следующая задача →</button></div>`;
+    local.host.appendChild(div);
+    div.querySelector("#m-next3").onclick=nextMarathon;
+  }
+}
+function fillActiveM(div,s,i,local,task){
+  if(s.choice){
+    div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div><div class="btnrow" id="mo${i}"></div><div class="fb" id="mf${i}"></div>`;
+    const opts=div.querySelector("#mo"+i), fb=div.querySelector("#mf"+i);
+    s.choice.options.forEach(o=>{ const b=document.createElement("button"); b.className="choice"; b.innerHTML=o.t;
+      b.onclick=()=>{ if(o.ok){ b.classList.add("sel-ok"); [...opts.children].forEach(x=>{if(x!==b)x.disabled=true;}); fb.className="fb ok"; fb.innerHTML=s.choice.why; setTimeout(()=>{local.cur=i+1;drawMStep(local,task);},50); }
+        else { b.classList.add("sel-no"); b.disabled=true; fb.className="fb try"; fb.innerHTML="Не совсем. "+s.choice.why; } };
+      opts.appendChild(b); });
+    return;
+  }
+  if(s.build){
+    stepsUI.buildIdx=0;
+    const b=s.build;
+    div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div><div id="mt${i}"></div>
+      <div class="btnrow"><button class="btn mini" id="ma${i}">Добавить минуту</button><button class="ghost btn mini" id="md${i}" disabled>Готово</button></div><div class="fb" id="mf${i}"></div>`;
+    const tape=div.querySelector("#mt"+i), fb=div.querySelector("#mf"+i), dn=div.querySelector("#md"+i), ad=div.querySelector("#ma"+i);
+    let idx=0;
+    function draw(){ let h='<div class="tape">';
+      for(let j=0;j<idx;j++){ h+=`<span class="cell gp${j===idx-1?" hl":""}"><span class="idx">${j+1} мин</span>${fmtN(b.sums[j])}</span>`; if(j<idx-1) h+='<span class="arr gp">→<br>+'+fmtN(b.adds[j+1])+'</span>'; }
+      h+='</div>'; tape.innerHTML=h;
+      const reached=idx>0&&Fr.cmp(b.sums[idx-1],b.X)>=0; dn.disabled=!reached;
+      if(reached){ ad.disabled=true; fb.className="fb info"; fb.innerHTML="Сумма "+nb(fmtN(b.sums[idx-1]))+" достигла порога."; } }
+    ad.onclick=()=>{ if(idx<b.sums.length){ idx++; draw(); } };
+    dn.onclick=()=>{ local.cur=i+1; drawMStep(local,task); };
+    draw(); return;
+  }
+  div.innerHTML=`<span class="yourmove">твой ход</span><div class="stq">${s.q}</div>${answerInput("ms"+i)}
+    <div class="btnrow"><button class="btn mini" id="msck${i}">Проверить</button><button class="ghost btn mini peekbtn" id="mssh${i}">Показать шаг</button></div><div class="fb" id="mf${i}"></div>`;
+  const ans=mountAnswer("ms"+i,""); const fb=div.querySelector("#mf"+i);
+  div.querySelector("#msck"+i).onclick=()=>{ const v=ans.read(); if(v===null){ fb.className="fb try"; fb.textContent="Впиши число."; return; }
+    if(Fr.eq(v,s.a)){ local.cur=i+1; drawMStep(local,task); }
+    else if(Fr.eq(Fr.abs(v),Fr.abs(s.a))){ fb.className="fb try"; fb.textContent="Почти! Не тот знак — поправь."; }
+    else { fb.className="fb try"; fb.textContent=s.hint; } };
+  div.querySelector("#mssh"+i).onclick=()=>{ s._peeked=true; ans.fill(s.a); fb.className="fb info"; fb.innerHTML=s.reveal; setTimeout(()=>{local.cur=i+1;drawMStep(local,task);},50); };
+}
+
+T.renderStepsMode=renderStepsMode;
+T.renderMarathon=renderMarathon;
+})(typeof T14!=="undefined"?T14:module.exports);
+
+/* ===== ОГЭ №14: запуск ===== */
+"use strict";
+(function(T){
+const pages={};
+let rendered={};
+function show(id){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active", t.dataset.page===id));
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  const p=document.getElementById("page-"+id); p.classList.add("active");
+  if(!rendered[id]){
+    rendered[id]=true;
+    if(id==="ref") T.renderRef(p);
+    else if(id==="learn") T.renderLearn(p);
+    else if(id==="compare") T.renderCompare(p);
+    else if(id==="steps") T.renderStepsMode(p);
+    else if(id==="marathon") T.renderMarathon(p);
+  }
+  window.scrollTo({top:0,behavior:"instant"});
+}
+document.getElementById("tabs").addEventListener("click",e=>{
+  const b=e.target.closest(".tab"); if(!b) return; show(b.dataset.page);
+});
+/* стартовая страница */
+show("ref");
+
+/* ---- Самопроверка генераторов на странице ---- */
+function selfCheck(){
+  const out=document.getElementById("selfcheck");
+  let checks=0, fails=[];
+  const codes=Object.keys(T.GENS);
+  for(const code of codes){
+    for(let s=1;s<=140;s++){
+      let task;
+      try{
+        task=T.makeTask(code, s*7919+13);
+        const sim=T.GENS[code].sim(task);
+        checks++;
+        if(!T.Fr.eq(sim, task.ans)){ fails.push(code+"#"+s+": sim="+T.fmtN(sim)+" ans="+T.fmtN(task.ans)); }
+        /* ответ должен быть конечной десятичной дробью или целым */
+        if(!T.decParts(task.ans)){ fails.push(code+"#"+s+": ответ не десятичный "+task.ans.n+"/"+task.ans.d); }
+        /* дистракторы не равны ответу */
+        for(const d of task.distract){ if(T.Fr.eq(d.v, task.ans)) fails.push(code+"#"+s+": дистрактор = ответ"); }
+        if(fails.length>8) break;
+      }catch(e){ fails.push(code+"#"+s+": "+e.message); }
+    }
+    if(fails.length>8) break;
+  }
+  if(fails.length===0){ out.innerHTML="✓ самопроверка: <b>"+checks+"</b> задач сгенерировано и решено сходящимся кодом, ошибок нет"; }
+  else { out.innerHTML="⚠ найдены расхождения ("+fails.length+"): "+fails.slice(0,4).join(" | "); out.style.color="#9a5b12"; }
+}
+setTimeout(selfCheck, 30);
+})(typeof T14!=="undefined"?T14:window.T14);
+
+</script>
+</body>
+</html>

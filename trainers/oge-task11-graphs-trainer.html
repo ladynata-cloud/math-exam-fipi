@@ -1,0 +1,1843 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОГЭ, задание 11 — Графики функций. Интерактивный тренажёр</title>
+<style>
+/* ============================================================
+   ОГЭ задание 11 · Графики функций · mathexam.space
+   Один файл, без внешних зависимостей.
+   Дизайн: «тетрадь в клетку» — бумажно-синяя сетка, серифные
+   заголовки как в учебнике, крупные кнопки для телефона.
+   ============================================================ */
+:root{
+  --paper:#f3f6fb;        /* фон страницы */
+  --card:#ffffff;         /* карточки */
+  --ink:#1e2a44;          /* основной текст */
+  --muted:#5b6b8c;        /* вторичный текст */
+  --grid:#dbe4f3;         /* линии клетки */
+  --line:#c9d5ea;         /* рамки */
+  --accent:#2c5fd8;       /* действия */
+  --accent-dark:#1f47a8;
+  --ok:#177a4c;           /* верно */
+  --ok-bg:#e7f6ee;
+  --soft:#8a5a12;         /* мягкое «пока не совпало» */
+  --soft-bg:#fdf3e3;
+  --hint-bg:#eef3fe;
+  --f-line:#2563eb;       /* цвет прямой */
+  --f-par:#c2255c;        /* цвет параболы */
+  --f-hyp:#0f766e;        /* цвет гиперболы */
+  --f-root:#9a3ed0;       /* цвет корня */
+  --r:12px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:16px/1.55 "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+}
+h1,h2,h3{font-family:Georgia, "Times New Roman", serif; font-weight:700; line-height:1.25}
+h1{font-size:1.5rem; margin:.2rem 0}
+h2{font-size:1.25rem; margin:0 0 .6rem}
+h3{font-size:1.05rem; margin:1rem 0 .4rem}
+p{margin:.4rem 0}
+.wrap{max-width:960px; margin:0 auto; padding:0 14px 40px}
+
+/* ---------- шапка ---------- */
+header.site{
+  background:linear-gradient(180deg,#ffffff, #f6f9ff);
+  border-bottom:1px solid var(--line);
+  padding:18px 0 0;
+}
+.brand{color:var(--muted); font-size:.85rem; letter-spacing:.06em; text-transform:uppercase}
+.lead{color:var(--muted); max-width:720px}
+/* вкладки модулей */
+nav.tabs{
+  display:flex; gap:8px; overflow-x:auto; padding:14px 0 12px;
+  -webkit-overflow-scrolling:touch; scrollbar-width:none;
+}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{
+  flex:0 0 auto; border:1px solid var(--line); background:#fff; color:var(--ink);
+  border-radius:999px; padding:10px 16px; font-size:.95rem; cursor:pointer;
+  min-height:44px;
+}
+nav.tabs button.active{background:var(--accent); border-color:var(--accent); color:#fff}
+nav.tabs button .n{
+  display:inline-block; min-width:1.35em; margin-right:.35em; text-align:center;
+  background:rgba(44,95,216,.12); color:var(--accent-dark); border-radius:6px; font-weight:600;
+}
+nav.tabs button.active .n{background:rgba(255,255,255,.25); color:#fff}
+
+/* ---------- карточки ---------- */
+section.module{display:none; padding-top:18px}
+section.module.active{display:block}
+.card{
+  background:var(--card); border:1px solid var(--line); border-radius:var(--r);
+  padding:16px; margin:14px 0;
+}
+.card.intro{background:#fbfdff}
+.note{color:var(--muted); font-size:.92rem}
+.badge{display:inline-block; background:var(--hint-bg); color:var(--accent-dark);
+  border-radius:8px; padding:2px 10px; font-size:.85rem; margin-left:6px}
+
+/* ---------- математика ---------- */
+.math{font-family:Georgia,"Times New Roman",serif; font-size:1.08em; white-space:nowrap}
+.math i{font-style:italic}
+.math sup{font-size:.72em}
+.frac{display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle;
+  margin:0 .18em; line-height:1.05}
+.frac > .fn{padding:0 .28em .1em; border-bottom:1.5px solid currentColor}
+.frac > .fd{padding:.1em .28em 0}
+.formula-big{font-size:1.3rem; margin:.3rem 0}
+.calc-line{margin:.35rem 0; font-size:1.12rem}
+
+/* ---------- графики ---------- */
+.graphwrap{
+  background:
+    repeating-linear-gradient(0deg, transparent 0 23px, rgba(219,228,243,.5) 23px 24px),
+    repeating-linear-gradient(90deg, transparent 0 23px, rgba(219,228,243,.5) 23px 24px),
+    #fdfefe;
+  border:1px solid var(--line); border-radius:10px; padding:8px; display:block;
+  max-width:380px;
+}
+.graphwrap svg{display:block; width:100%; height:auto; max-width:360px}
+.graphrow{display:flex; flex-wrap:wrap; gap:14px; justify-content:flex-start}
+.graphrow .gitem{flex:1 1 240px; max-width:320px}
+.gnum{font-weight:700; margin:4px 0 2px}
+.gitem{border:1px solid var(--line); border-radius:12px; padding:10px; background:#fbfdff}
+.gitem .gname{font-weight:700; font-family:Georgia,serif; color:var(--ink)}
+.gitem .formula-big{font-size:1.05rem; margin:.1rem 0 .35rem}
+.gitem .graphwrap{display:block; width:100%}
+.gitem .graphwrap svg{max-width:100%}
+.gitem input[type=range]{width:100%; margin:.2rem 0}
+.gitem .gsl{display:flex; align-items:center; gap:8px; margin-top:.4rem}
+.gitem .gsl .slval{font-weight:700; min-width:2ch; text-align:center}
+.gitem .note{margin-top:.35rem; min-height:2.4em}
+
+/* ---------- кнопки ---------- */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:.4em;
+  border-radius:10px; border:1px solid var(--line); background:#fff; color:var(--ink);
+  padding:10px 18px; font-size:1rem; cursor:pointer; min-height:44px;
+}
+.btn:hover{border-color:var(--accent)}
+.btn-primary{background:var(--accent); border-color:var(--accent); color:#fff}
+.btn-primary:hover{background:var(--accent-dark)}
+.btn-ghost{background:transparent}
+.btn[disabled]{opacity:.45; cursor:default}
+.btnrow{display:flex; flex-wrap:wrap; gap:10px; margin:12px 0 4px; align-items:center}
+.opts{display:flex; flex-wrap:wrap; gap:10px; margin:10px 0}
+.opts .btn{min-width:120px}
+.opts .btn.picked{outline:3px solid rgba(44,95,216,.35)}
+.opts .btn.good{background:var(--ok-bg); border-color:var(--ok); color:var(--ok)}
+
+/* ---------- обратная связь ---------- */
+.fb{border-radius:10px; padding:12px 14px; margin:10px 0; display:none}
+.fb.show{display:block}
+.fb.good{background:var(--ok-bg); color:var(--ok); border:1px solid #bfe6d0}
+.fb.soft{background:var(--soft-bg); color:var(--soft); border:1px solid #f0dcb2}
+.fb.hint{background:var(--hint-bg); color:var(--accent-dark); border:1px solid #cfdcf7}
+.fb .math{color:inherit}
+.notice-title{font-weight:700; margin-bottom:4px}
+
+/* ---------- ползунки конструктора ---------- */
+.sliders{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px}
+.slbox{border:1px solid var(--line); border-radius:10px; padding:10px 12px; background:#fbfcff}
+.slbox label{display:flex; flex-wrap:wrap; justify-content:space-between; gap:2px 8px; font-weight:600}
+.slbox label .math{white-space:normal; min-width:0}
+.slbox input[type=range]{width:100%; margin-top:8px; accent-color:var(--accent); height:32px}
+.slval{font-family:Georgia,serif; font-size:1.15rem}
+.construct-grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(260px,380px); gap:16px; align-items:start}
+@media (max-width:760px){ .construct-grid{grid-template-columns:1fr} }
+.verdict{font-size:1.05rem; font-weight:600; margin-top:6px}
+.verdict.left{color:var(--f-par)} .verdict.right{color:var(--f-hyp)} .verdict.zero{color:var(--accent-dark)}
+
+/* ---------- таблицы точек ---------- */
+table.pts{border-collapse:collapse; margin:10px 0; width:100%; max-width:520px}
+table.pts th, table.pts td{
+  border:1px solid var(--line); padding:8px 6px; text-align:center; font-family:Georgia,serif;
+  font-size:1.05rem; min-width:58px;
+}
+table.pts th{background:#f2f6fd}
+table.pts input{
+  width:64px; max-width:100%; border:1.5px solid var(--line); border-radius:8px;
+  padding:8px 4px; font-size:1.05rem; text-align:center; font-family:Georgia,serif;
+}
+table.pts input:focus{outline:none; border-color:var(--accent)}
+table.pts input.good{background:var(--ok-bg); border-color:var(--ok)}
+table.pts input.soft{background:var(--soft-bg); border-color:var(--soft)}
+input.ans{
+  border:1.5px solid var(--line); border-radius:10px; padding:10px 12px; font-size:1.1rem;
+  font-family:Georgia,serif; width:120px; text-align:center;
+}
+input.ans:focus{outline:none; border-color:var(--accent)}
+input.ans.good{background:var(--ok-bg); border-color:var(--ok)}
+input.ans.soft{background:var(--soft-bg); border-color:var(--soft)}
+
+/* ---------- ОГЭ-сопоставление ---------- */
+.match-desc{margin:8px 0}
+.match-desc .row{display:flex; align-items:center; gap:10px; padding:8px 10px;
+  border:1px solid var(--line); border-radius:10px; margin:8px 0; flex-wrap:wrap; background:#fbfcff}
+.match-desc .letter{font-weight:700; font-size:1.1rem; min-width:1.4em}
+.match-desc select{
+  margin-left:auto; font-size:1.05rem; padding:8px 10px; border-radius:10px;
+  border:1.5px solid var(--line); background:#fff; min-height:44px;
+}
+.answer-line{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:10px}
+.chips{display:flex; gap:8px; flex-wrap:wrap; margin:8px 0}
+.chips .btn{padding:8px 14px; min-height:40px; font-size:.92rem}
+.chips .btn.picked{background:var(--accent); color:#fff; border-color:var(--accent)}
+
+/* ---------- диагностика ---------- */
+.skillmap{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px}
+.skill{border:1px solid var(--line); border-radius:10px; padding:12px}
+.skill .name{font-weight:600}
+.skill .st{margin-top:4px; font-size:.92rem}
+.st.done{color:var(--ok)} .st.mid{color:var(--soft)} .st.todo{color:var(--muted)}
+.bar{height:8px; border-radius:6px; background:#e9eef8; margin-top:8px; overflow:hidden}
+.bar > i{display:block; height:100%; background:var(--ok)}
+ul.errlist{margin:.4rem 0 .4rem 1.1rem; padding:0}
+ul.errlist li{margin:.25rem 0}
+
+/* ---------- шаги подсказок ---------- */
+.steps p{margin:.35rem 0}
+.steps p::before{content:"→ "; color:var(--accent)}
+
+/* ---------- футер ---------- */
+footer.site{border-top:1px solid var(--line); margin-top:30px; padding:20px 0; color:var(--muted); font-size:.92rem}
+footer.site a{color:var(--accent-dark); text-decoration:none; margin-right:14px}
+footer.site a:hover{text-decoration:underline}
+.dlrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
+
+@media (prefers-reduced-motion:no-preference){
+  .fb.show{animation:fbin .18s ease-out}
+  @keyframes fbin{from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none}}
+}
+@media (max-width:520px){
+  body{font-size:15px}
+  .opts .btn{flex:1 1 46%; min-width:0}
+  .graphwrap svg{max-width:100%}
+  table.pts input{width:52px}
+}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand">mathexam.space · ОГЭ по математике</div>
+    <h1>Задание 11. Графики функций — тренажёр, который учит читать графики</h1>
+    <p class="lead">График не нужно угадывать. В задании 11 всего четыре семейства функций —
+      прямая, парабола, гипербола и корень, — и у каждого есть признаки, по которым сразу видно,
+      как выглядит его график. Пройди модули по порядку — и задание 11 станет предсказуемым.</p>
+    <nav class="tabs" id="tabs">
+      <button data-m="m1" class="active"><span class="n">1</span>Разминка: читаем график</button>
+      <button data-m="m2"><span class="n">2</span>Конструктор функций</button>
+      <button data-m="m3"><span class="n">3</span>Строим сами</button>
+      <button data-m="m4"><span class="n">4</span>ОГЭ-режим</button>
+      <button data-m="m5"><span class="n">5</span>Мои результаты</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ================= МОДУЛЬ 1. РАЗМИНКА ================= -->
+<section class="module active" id="m1">
+  <div class="card intro">
+    <h2>Четыре семейства функций</h2>
+    <p>В задании 11 встречаются всего четыре вида графиков — вот они все сразу, с полным набором коэффициентов.
+      Подвигай ползунки под каждым (у прямой их два — <span class="math"><i>k</i></span> и <span class="math"><i>b</i></span>,
+      у параболы три — <span class="math"><i>a</i>, <i>b</i>, <i>c</i></span>) и посмотри, как формула управляет графиком.
+      Парабола разобрана подробнее остальных в модуле 2, потому что у неё самый хитрый признак — вершина.</p>
+    <div class="graphrow" id="fam-grid"></div>
+  </div>
+  <div class="card intro">
+    <h2>Разминка: учимся видеть признаки</h2>
+    <p>Смотри на график и отвечай на короткий вопрос. Цель — научиться <b>читать</b> график:
+      куда идёт линия, где она пересекает ось <span class="math"><i>y</i></span>, какое это семейство функций.</p>
+    <p class="note">Правильные ответы с первой попытки идут в «карту навыков» (модуль 5).
+      Подсказка всегда рядом — пользоваться ей не стыдно, просто такая попытка не засчитывается как самостоятельная.</p>
+  </div>
+  <div class="card">
+    <div id="m1-progress" class="note"></div>
+    <h3 id="m1-question">…</h3>
+    <div class="graphwrap"><div id="m1-graph"></div></div>
+    <div class="opts" id="m1-opts"></div>
+    <div class="btnrow">
+      <button class="btn btn-ghost" id="m1-hint">Подсказка</button>
+      <button class="btn" id="m1-next">Следующее задание</button>
+    </div>
+    <div class="fb hint" id="m1-hintbox"></div>
+    <div class="fb soft" id="m1-soft"></div>
+    <div class="fb good" id="m1-good"></div>
+  </div>
+</section>
+
+<!-- ================= МОДУЛЬ 2. КОНСТРУКТОР ПАРАБОЛЫ ================= -->
+<section class="module" id="m2">
+  <div class="card intro">
+    <h2>Конструктор функций</h2>
+    <p>У каждой функции есть коэффициенты, которыми можно «покрутить» и сразу увидеть, что меняется в графике.
+      Ползунков ровно столько, сколько у функции коэффициентов: у прямой два (<span class="math"><i>k</i></span> и <span class="math"><i>b</i></span>),
+      у параболы три (<span class="math"><i>a</i></span>, <span class="math"><i>b</i></span>, <span class="math"><i>c</i></span>),
+      у гиперболы один (<span class="math"><i>k</i></span>), у корня два (сдвиги <span class="math"><i>c</i></span> и <span class="math"><i>d</i></span>).
+      Выбери семейство и подвигай ползунки — рядом тренажёр объясняет, что именно видно по формуле.
+      У параболы вдобавок есть вершина и игра «угадай до построения»: она самая хитрая, поэтому разобрана подробнее.</p>
+    <div class="chips" id="m2-chips">
+      <button class="btn picked" data-k="lin">Прямая</button>
+      <button class="btn" data-k="par">Парабола</button>
+      <button class="btn" data-k="hyp">Гипербола</button>
+      <button class="btn" data-k="root">Корень</button>
+    </div>
+  </div>
+
+  <div id="con-par" class="con-panel" style="display:none">
+  <div class="card">
+    <div class="construct-grid">
+      <div>
+        <div class="formula-big math" id="m2-formula"></div>
+        <div class="sliders">
+          <div class="slbox">
+            <label><span class="math"><i>a</i> — крутизна и направление ветвей</span> <span class="slval" id="m2-aval"></span></label>
+            <input type="range" id="m2-a" min="-5" max="5" step="1" value="1">
+            <div class="note">Знак <span class="math"><i>a</i></span> — «настроение» параболы: <span class="math"><i>a</i> &gt; 0</span> — весёлая улыбка, ветви вверх (∪); <span class="math"><i>a</i> &lt; 0</span> — грустная, ветви вниз (∩). Ноль пропускается: при <span class="math"><i>a</i> = 0</span> параболы нет.</div>
+            <div class="note" id="m2-mood"></div>
+          </div>
+          <div class="slbox">
+            <label><span class="math"><i>b</i> — сдвигает вершину влево-вправо</span> <span class="slval" id="m2-bval"></span></label>
+            <input type="range" id="m2-b" min="-10" max="10" step="1" value="-4">
+          </div>
+          <div class="slbox">
+            <label><span class="math"><i>c</i> — точка на оси <i>y</i></span> <span class="slval" id="m2-cval"></span></label>
+            <input type="range" id="m2-c" min="-10" max="10" step="1" value="-2">
+          </div>
+        </div>
+        <h3>Считаем вершину</h3>
+        <div class="calc-line math" id="m2-calc"></div>
+        <div class="verdict" id="m2-verdict"></div>
+        <div class="note" id="m2-yint"></div>
+      </div>
+      <div>
+        <div class="graphwrap"><div id="m2-graph"></div></div>
+        <p class="note">Пунктир — ось симметрии <span class="math"><i>x</i> = <i>x</i><sub>0</sub></span>.
+          Точка на кривой — вершина. Точка на оси <span class="math"><i>y</i></span> — это <span class="math"><i>c</i></span>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Почему вершина бывает левее или правее оси <span class="math"><i>y</i></span>?</h2>
+    <p>Всё решает дробь <span class="math"><i>x</i><sub>0</sub> = <span class="frac"><span class="fn">−<i>b</i></span><span class="fd">2<i>a</i></span></span></span>.
+      Смотрим на знаки:</p>
+    <div class="steps">
+      <p>Если <span class="math"><i>a</i></span> и <span class="math"><i>b</i></span> <b>одного знака</b>,
+        дробь получается отрицательной: <span class="math"><i>x</i><sub>0</sub> &lt; 0</span> — вершина <b>левее</b> оси <span class="math"><i>y</i></span>.</p>
+      <p>Если <span class="math"><i>a</i></span> и <span class="math"><i>b</i></span> <b>разных знаков</b>,
+        дробь положительная: <span class="math"><i>x</i><sub>0</sub> &gt; 0</span> — вершина <b>правее</b>.</p>
+      <p>Если <span class="math"><i>b</i> = 0</span>, то <span class="math"><i>x</i><sub>0</sub> = 0</span> — вершина <b>на самой оси</b>.</p>
+    </div>
+    <p>Но правило легко забыть, а вычисление — нет. Два примера с числами:</p>
+    <p class="calc-line math">1) <i>a</i> = 2, <i>b</i> = −8:&nbsp; <i>x</i><sub>0</sub> =
+      <span class="frac"><span class="fn">−(−8)</span><span class="fd">2·2</span></span> =
+      <span class="frac"><span class="fn">8</span><span class="fd">4</span></span> = 2 &gt; 0 — вершина правее оси <i>y</i>.</p>
+    <p class="calc-line math">2) <i>a</i> = 2, <i>b</i> = 8:&nbsp; <i>x</i><sub>0</sub> =
+      <span class="frac"><span class="fn">−8</span><span class="fd">2·2</span></span> =
+      <span class="frac"><span class="fn">−8</span><span class="fd">4</span></span> = −2 &lt; 0 — вершина левее оси <i>y</i>.</p>
+    <div class="fb hint show" id="m2-livecase"></div>
+  </div>
+
+  <div class="card">
+    <h2>Угадай до построения <span class="badge">игра</span></h2>
+    <p>Дана формула. Реши <b>без графика</b>: где вершина? Потом нажми «Построить» и проверь себя.</p>
+    <div class="formula-big math" id="m2g-formula"></div>
+    <div class="opts" id="m2g-opts">
+      <button class="btn" data-v="left">Левее оси <span class="math"><i>y</i></span></button>
+      <button class="btn" data-v="zero">На оси <span class="math"><i>y</i></span></button>
+      <button class="btn" data-v="right">Правее оси <span class="math"><i>y</i></span></button>
+    </div>
+    <div class="btnrow">
+      <button class="btn btn-primary" id="m2g-build" disabled>Построить</button>
+      <button class="btn btn-ghost" id="m2g-hint">Подсказка</button>
+      <button class="btn" id="m2g-next">Следующая формула</button>
+    </div>
+    <div class="fb hint" id="m2g-hintbox"></div>
+    <div class="fb soft" id="m2g-soft"></div>
+    <div class="fb good" id="m2g-good"></div>
+    <div class="graphwrap" id="m2g-graphwrap" style="display:none"><div id="m2g-graph"></div></div>
+    <div class="calc-line math" id="m2g-calc"></div>
+  </div>
+  </div><!-- /con-par -->
+
+  <div id="con-lin" class="con-panel">
+  <div class="card">
+    <div class="construct-grid">
+      <div>
+        <div class="formula-big math" id="cl-formula"></div>
+        <div class="sliders">
+          <div class="slbox">
+            <label><span class="math"><i>k</i> — наклон (угловой коэффициент)</span> <span class="slval" id="cl-kval"></span></label>
+            <input type="range" id="cl-k" min="-4" max="4" step="1" value="2">
+            <div class="note">Знак <span class="math"><i>k</i></span> — направление, модуль — крутизна. При <span class="math"><i>k</i> = 0</span> прямая горизонтальна.</div>
+          </div>
+          <div class="slbox">
+            <label><span class="math"><i>b</i> — сдвиг вверх-вниз</span> <span class="slval" id="cl-bval"></span></label>
+            <input type="range" id="cl-b" min="-5" max="5" step="1" value="1">
+          </div>
+        </div>
+        <h3>Что видно по формуле</h3>
+        <div class="verdict" id="cl-dir"></div>
+        <div class="note" id="cl-notice"></div>
+      </div>
+      <div>
+        <div class="graphwrap"><div id="cl-graph"></div></div>
+        <p class="note">Точка на оси <span class="math"><i>y</i></span> — это <span class="math"><i>b</i></span>. Наклон задаёт <span class="math"><i>k</i></span>: за шаг вправо прямая поднимается на <span class="math"><i>k</i></span>.</p>
+      </div>
+    </div>
+  </div>
+  </div><!-- /con-lin -->
+
+  <div id="con-hyp" class="con-panel" style="display:none">
+  <div class="card">
+    <div class="construct-grid">
+      <div>
+        <div class="formula-big math" id="ch-formula"></div>
+        <div class="sliders">
+          <div class="slbox">
+            <label><span class="math"><i>k</i></span> — знак и размах ветвей <span class="slval" id="ch-kval"></span></label>
+            <input type="range" id="ch-k" min="-6" max="6" step="1" value="2">
+            <div class="note">Ноль пропускается: при <span class="math"><i>k</i> = 0</span> гиперболы нет.</div>
+          </div>
+          <div class="slbox">
+            <label><span class="math"><i>a</i></span> — число в знаменателе, сдвиг вбок <span class="slval" id="ch-aval"></span></label>
+            <input type="range" id="ch-a" min="-4" max="4" step="1" value="0">
+            <div class="note">Знаменатель <span class="math"><i>x</i> \u2212 <i>a</i></span> обращается в ноль при <span class="math"><i>x</i> = <i>a</i></span> — там вертикальная асимптота.</div>
+          </div>
+          <div class="slbox">
+            <label><span class="math"><i>b</i></span> — сдвиг вверх-вниз <span class="slval" id="ch-bval"></span></label>
+            <input type="range" id="ch-b" min="-4" max="4" step="1" value="0">
+          </div>
+        </div>
+        <h3>Что видно по формуле</h3>
+        <div class="verdict" id="ch-quad"></div>
+        <div class="note" id="ch-notice"></div>
+      </div>
+      <div>
+        <div class="graphwrap"><div id="ch-graph"></div></div>
+        <p class="note">Пунктирные прямые — асимптоты <span class="math"><i>x</i> = <i>a</i></span> и <span class="math"><i>y</i> = <i>b</i></span>. Ветви к ним прилипают, но никогда не касаются. Точка — контрольная.</p>
+      </div>
+    </div>
+  </div>
+  </div><!-- /con-hyp -->
+
+  <div id="con-root" class="con-panel" style="display:none">
+  <div class="card">
+    <div class="construct-grid">
+      <div>
+        <div class="formula-big math" id="cr-formula"></div>
+        <div class="sliders">
+          <div class="slbox">
+            <label><span class="math"><i>c</i> — сдвиг влево-вправо</span> <span class="slval" id="cr-cval"></span></label>
+            <input type="range" id="cr-c" min="-4" max="4" step="1" value="0">
+          </div>
+          <div class="slbox">
+            <label><span class="math"><i>d</i> — сдвиг вверх-вниз</span> <span class="slval" id="cr-dval"></span></label>
+            <input type="range" id="cr-d" min="-4" max="4" step="1" value="0">
+          </div>
+        </div>
+        <h3>Что видно по формуле</h3>
+        <div class="verdict" id="cr-start"></div>
+        <div class="note" id="cr-notice"></div>
+      </div>
+      <div>
+        <div class="graphwrap"><div id="cr-graph"></div></div>
+        <p class="note">Точка — начало графика. Дальше он идёт только вправо и вверх.</p>
+      </div>
+    </div>
+  </div>
+  </div><!-- /con-root -->
+</section>
+
+<!-- ================= МОДУЛЬ 3. СТРОИМ САМИ ================= -->
+<section class="module" id="m3">
+  <div class="card intro">
+    <h2>Строим график сами</h2>
+    <p>Здесь график не дан — его строишь ты. У каждой функции своя опора: у параболы — вершина,
+      у прямой — точка на оси <span class="math"><i>y</i></span> и наклон, у гиперболы — четверти,
+      у корня — начало графика. Сначала находим её, потом несколько точек — и тренажёр проводит линию.
+      Так задание 11 перестаёт быть «картинкой» и становится вычислением.</p>
+    <div class="chips" id="m3-chips">
+      <button class="btn picked" data-k="par">Парабола</button>
+      <button class="btn" data-k="lin">Прямая</button>
+      <button class="btn" data-k="hyp">Гипербола</button>
+      <button class="btn" data-k="root">Корень</button>
+    </div>
+  </div>
+  <div class="card" id="m3-card">
+    <h3 id="m3-title"></h3>
+    <div class="formula-big math" id="m3-formula"></div>
+    <div id="m3-stage"></div>
+    <div class="fb hint" id="m3-hintbox"></div>
+    <div class="fb soft" id="m3-soft"></div>
+    <div class="fb good" id="m3-good"></div>
+    <div class="graphwrap" id="m3-graphwrap" style="display:none"><div id="m3-graph"></div></div>
+    <div class="btnrow"><button class="btn" id="m3-next">Следующее задание</button></div>
+  </div>
+</section>
+
+<!-- ================= МОДУЛЬ 4. ОГЭ-РЕЖИМ ================= -->
+<section class="module" id="m4">
+  <div class="card intro">
+    <h2>ОГЭ-режим: сопоставление</h2>
+    <p>Формат как на экзамене: три графика и три описания. Установи соответствие и запиши
+      ответ — три цифры без пробелов, например <b>312</b>. Можно выбирать цифры списками или
+      набрать ответ одной строкой: тренажёр принимает оба способа.</p>
+    <div class="chips" id="m4-chips">
+      <button class="btn picked" data-t="rand">Случайный тип</button>
+      <button class="btn" data-t="t41">Знаки a и c</button>
+      <button class="btn" data-t="t42">Формулы парабол</button>
+      <button class="btn" data-t="t43">Прямые</button>
+      <button class="btn" data-t="t44">Гиперболы</button>
+      <button class="btn" data-t="t45">Смешанные</button>
+    </div>
+  </div>
+  <div class="card">
+    <div id="m4-progress" class="note"></div>
+    <h3 id="m4-title"></h3>
+    <p id="m4-taskline"></p>
+    <div class="graphrow" id="m4-graphs"></div>
+    <div class="match-desc" id="m4-desc"></div>
+    <div class="answer-line">
+      <span>Ответ одной строкой:</span>
+      <input class="ans" id="m4-answer" inputmode="numeric" maxlength="3" placeholder="312">
+    </div>
+    <div class="btnrow">
+      <button class="btn btn-primary" id="m4-check">Проверить</button>
+      <button class="btn btn-ghost" id="m4-hint">Подсказка</button>
+      <button class="btn btn-ghost" id="m4-show">Показать разбор</button>
+      <button class="btn" id="m4-next">Следующее задание</button>
+    </div>
+    <div class="fb hint" id="m4-hintbox"></div>
+    <div class="fb soft" id="m4-soft"></div>
+    <div class="fb good" id="m4-good"></div>
+    <div class="fb hint" id="m4-razbor"></div>
+  </div>
+</section>
+
+<!-- ================= МОДУЛЬ 5. РЕЗУЛЬТАТЫ ================= -->
+<section class="module" id="m5">
+  <div class="card intro">
+    <h2>Мои результаты и карта навыков</h2>
+    <p>Тренажёр запоминает прогресс прямо в браузере (ничего никуда не отправляется).
+      «Освоено» — когда навык решается уверенно и без подсказок.</p>
+  </div>
+  <div class="card">
+    <div id="m5-summary"></div>
+    <h3>Карта навыков</h3>
+    <div class="skillmap" id="m5-map"></div>
+    <h3>На что чаще всего попадаются ошибки</h3>
+    <div id="m5-errors"></div>
+    <div class="btnrow"><button class="btn" id="m5-reset">Сбросить прогресс</button></div>
+  </div>
+</section>
+
+<!-- ================= СКАЧАТЬ / ФУТЕР ================= -->
+<div class="card">
+  <h2>Скачать и адаптировать</h2>
+  <p>Этот тренажёр можно использовать как пример педагогического веб-кодинга: скачать HTML,
+    изучить структуру и адаптировать под свою тему.</p>
+  <div class="dlrow">
+    <button class="btn btn-primary" id="dl-html">Скачать HTML</button>
+    <!-- Кнопки-заглушки: файлы появятся позже -->
+    <button class="btn" disabled title="Файл появится позже">Скачать промпт для DeepSeek</button>
+    <button class="btn" disabled title="Файл появится позже">Скачать архивом</button>
+  </div>
+</div>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div><b>Mathexam.space</b> — интерактивные тренажёры по математике</div>
+    <div style="margin-top:6px">
+      <a href="/">Главная</a>
+      <a href="/trainers/">Каталог</a>
+      <a href="/oge/">ОГЭ</a>
+      <a href="/pedagogam/">Педагогам</a>
+    </div>
+  </div>
+</footer>
+<script>
+"use strict";
+/* ============================================================
+   ЧАСТЬ 1. Утилиты, форматирование формул, движок графиков SVG,
+   хранение статистики. Никаких внешних библиотек и eval.
+   ============================================================ */
+
+const $ = id => document.getElementById(id);
+const MIN = "\u2212"; // математический минус
+
+// ---------- случайности ----------
+function ri(a, b){ return a + Math.floor(Math.random() * (b - a + 1)); } // целое [a;b]
+function pick(arr){ return arr[Math.floor(Math.random() * arr.length)]; }
+function shuffle(arr){
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function gcd(x, y){ x = Math.abs(x); y = Math.abs(y); while (y){ [x, y] = [y, x % y]; } return x || 1; }
+
+// ---------- форматирование чисел и формул ----------
+function fnum(n){ // число с математическим минусом
+  if (typeof n === "number" && !Number.isInteger(n)){
+    // выводим конечную десятичную дробь аккуратно (0.5 и т.п.)
+    return String(Math.round(n * 100) / 100).replace("-", MIN).replace(".", ",");
+  }
+  return String(n).replace("-", MIN);
+}
+function fracHtml(num, den){ // этажная дробь
+  return '<span class="frac"><span class="fn">' + num + '</span><span class="fd">' + den + '</span></span>';
+}
+// коэффициент перед переменной: 1 и −1 не пишем, дробные k — этажной дробью
+function coefHtml(k){
+  if (k === 1) return "";
+  if (k === -1) return MIN;
+  if (Number.isInteger(k)) return fnum(k);
+  // k вида p/q (у нас только ±1/2)
+  const sign = k < 0 ? MIN : "";
+  return sign + fracHtml("1", "2");
+}
+function termSign(v){ return v < 0 ? " " + MIN + " " : " + "; }
+
+function fmtLin(k, b){ // y = kx + b
+  let s = "<i>y</i> = " + coefHtml(k) + "<i>x</i>";
+  if (b !== 0) s += termSign(b) + fnum(Math.abs(b));
+  return s;
+}
+function fmtQuad(a, b, c){ // y = ax² + bx + c
+  let s = "<i>y</i> = " + coefHtml(a) + "<i>x</i><sup>2</sup>";
+  if (b !== 0) s += termSign(b) + (Math.abs(b) === 1 ? "" : fnum(Math.abs(b))) + "<i>x</i>";
+  if (c !== 0) s += termSign(c) + fnum(Math.abs(c));
+  return s;
+}
+function fmtHyp(m){ // y = m/x, этажной дробью
+  const sign = m < 0 ? MIN : "";
+  return "<i>y</i> = " + sign + fracHtml(fnum(Math.abs(m)), "<i>x</i>");
+}
+function fmtRoot(d){ // y = √x + d
+  let s = "<i>y</i> = \u221A<i>x</i>";
+  if (d !== 0) s += termSign(d) + fnum(Math.abs(d));
+  return s;
+}
+function fmtConst(n){ return "<i>y</i> = " + fnum(n); }
+
+// красивое значение x0: целое или несократимая этажная дробь
+function x0Html(b, a){
+  const num = -b, den = 2 * a;
+  if (num % den === 0) return fnum(num / den);
+  const g = gcd(num, den);
+  let p = num / g, q = den / g;
+  if (q < 0){ p = -p; q = -q; }
+  return (p < 0 ? MIN : "") + fracHtml(fnum(Math.abs(p)), fnum(q));
+}
+
+// ---------- движок графиков (SVG) ----------
+/*
+  svgGraph(plots, marks, opts) -> строка SVG
+  plots: [{ fn: x=>y, color, w, domain:[x1,x2] (необязательно), gap: x-разрыв }]
+  marks: [{type:'point',x,y,color,r}, {type:'vline',x,color}, {type:'label',x,y,text}]
+*/
+function svgGraph(plots, marks, opts){
+  const o = Object.assign({ size: 340, range: 6 }, opts || {});
+  const R = o.range, W = o.size, H = o.size;
+  const world = R + 0.8; // запас под стрелки
+  const sc = W / (2 * world);
+  const px = x => (x + world) * sc;
+  const py = y => (world - y) * sc;
+  let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="график функции">';
+
+  // сетка
+  for (let i = -R; i <= R; i++){
+    s += '<line x1="' + px(i) + '" y1="' + py(-R) + '" x2="' + px(i) + '" y2="' + py(R) + '" stroke="#dbe4f3" stroke-width="1"/>';
+    s += '<line x1="' + px(-R) + '" y1="' + py(i) + '" x2="' + px(R) + '" y2="' + py(i) + '" stroke="#dbe4f3" stroke-width="1"/>';
+  }
+  // оси со стрелками
+  const axc = "#41506e";
+  s += '<line x1="' + px(-world) + '" y1="' + py(0) + '" x2="' + px(world - 0.15) + '" y2="' + py(0) + '" stroke="' + axc + '" stroke-width="1.6"/>';
+  s += '<line x1="' + px(0) + '" y1="' + py(-world) + '" x2="' + px(0) + '" y2="' + py(world - 0.15) + '" stroke="' + axc + '" stroke-width="1.6"/>';
+  s += '<polygon points="' + px(world) + ',' + py(0) + ' ' + px(world - 0.45) + ',' + (py(0) - 5) + ' ' + px(world - 0.45) + ',' + (py(0) + 5) + '" fill="' + axc + '"/>';
+  s += '<polygon points="' + px(0) + ',' + py(world) + ' ' + (px(0) - 5) + ',' + py(world - 0.45) + ' ' + (px(0) + 5) + ',' + py(world - 0.45) + '" fill="' + axc + '"/>';
+  // подписи осей, 0 и 1 + засечки единиц
+  const fs = Math.round(W * 0.045);
+  s += '<text x="' + (px(world) - 4) + '" y="' + (py(0) + fs + 6) + '" font-size="' + fs + '" font-style="italic" font-family="Georgia,serif" fill="' + axc + '" text-anchor="end">x</text>';
+  s += '<text x="' + (px(0) + 8) + '" y="' + (py(world) + fs) + '" font-size="' + fs + '" font-style="italic" font-family="Georgia,serif" fill="' + axc + '">y</text>';
+  s += '<text x="' + (px(0) - 6) + '" y="' + (py(0) + fs + 4) + '" font-size="' + fs + '" font-family="Georgia,serif" fill="' + axc + '" text-anchor="end">0</text>';
+  s += '<line x1="' + px(1) + '" y1="' + (py(0) - 4) + '" x2="' + px(1) + '" y2="' + (py(0) + 4) + '" stroke="' + axc + '" stroke-width="1.6"/>';
+  s += '<text x="' + px(1) + '" y="' + (py(0) + fs + 6) + '" font-size="' + fs + '" font-family="Georgia,serif" fill="' + axc + '" text-anchor="middle">1</text>';
+  s += '<line x1="' + (px(0) - 4) + '" y1="' + py(1) + '" x2="' + (px(0) + 4) + '" y2="' + py(1) + '" stroke="' + axc + '" stroke-width="1.6"/>';
+  s += '<text x="' + (px(0) - 7) + '" y="' + (py(1) + 4) + '" font-size="' + fs + '" font-family="Georgia,serif" fill="' + axc + '" text-anchor="end">1</text>';
+
+  // пунктиры (асимптоты / ось симметрии) — под графиком
+  (marks || []).forEach(m => {
+    if (m.type === "vline"){
+      s += '<line x1="' + px(m.x) + '" y1="' + py(-R) + '" x2="' + px(m.x) + '" y2="' + py(R) +
+           '" stroke="' + (m.color || "#8a97b5") + '" stroke-width="1.6" stroke-dasharray="6 5"/>';
+    } else if (m.type === "hline"){
+      s += '<line x1="' + px(-R) + '" y1="' + py(m.y) + '" x2="' + px(R) + '" y2="' + py(m.y) +
+           '" stroke="' + (m.color || "#8a97b5") + '" stroke-width="1.6" stroke-dasharray="6 5"/>';
+    }
+  });
+
+  // кривые: сэмплируем и рвём сегменты на разрывах/уходе за экран
+  const LIM = R + 2.5;
+  (plots || []).forEach(p => {
+    const d0 = p.domain ? Math.max(p.domain[0], -world) : -world;
+    const d1 = p.domain ? Math.min(p.domain[1], world) : world;
+    const step = (d1 - d0) / 400;
+    let seg = [], paths = [];
+    for (let x = d0; x <= d1 + 1e-9; x += step){
+      const y = p.fn(x);
+      const bad = !isFinite(y) || Math.abs(y) > LIM;
+      if (bad){ if (seg.length > 1) paths.push(seg); seg = []; }
+      else seg.push([px(x), py(y)]);
+    }
+    if (seg.length > 1) paths.push(seg);
+    paths.forEach(pts => {
+      s += '<polyline fill="none" stroke="' + (p.color || "#1e2a44") + '" stroke-width="' + (p.w || 2.6) +
+           '" stroke-linecap="round" stroke-linejoin="round" points="' +
+           pts.map(q => q[0].toFixed(1) + "," + q[1].toFixed(1)).join(" ") + '"/>';
+    });
+  });
+
+  // точки и подписи — поверх
+  (marks || []).forEach(m => {
+    if (m.type === "point"){
+      s += '<circle cx="' + px(m.x) + '" cy="' + py(m.y) + '" r="' + (m.r || 5) + '" fill="' + (m.color || "#1e2a44") +
+           '" stroke="#fff" stroke-width="1.6"/>';
+    } else if (m.type === "label"){
+      s += '<text x="' + px(m.x) + '" y="' + py(m.y) + '" font-size="' + fs + '" font-family="Georgia,serif" fill="' +
+           (m.color || "#1e2a44") + '">' + m.text + '</text>';
+    }
+  });
+  return s + "</svg>";
+}
+
+// ---------- статистика в localStorage ----------
+const SKILLS = {
+  lin_k:      "Прямые: знак k (возрастает/убывает)",
+  lin_b:      "Прямые: коэффициент b и ось y",
+  par_a:      "Параболы: направление ветвей (знак a)",
+  par_c:      "Параболы: пересечение с осью y (знак c)",
+  par_vertex: "Параболы: вершина и формула x\u2080 = \u2212b/(2a)",
+  hyp:        "Гиперболы: четверти и коэффициент",
+  family:     "Узнавание семейства графика",
+  build:      "Построение графика по точкам",
+  oge:        "ОГЭ-сопоставление"
+};
+const ERR_NAMES = {
+  a: "Перепутан знак a (направление ветвей)",
+  c: "Перепутан знак c (пересечение с осью y)",
+  k: "Перепутан знак k у прямой",
+  b: "Не увидел(а) коэффициент b",
+  x0: "Ошибка в формуле вершины x\u2080 = \u2212b/(2a)",
+  side: "Перепутано «левее/правее оси y»",
+  family: "Перепутаны семейства графиков (гипербола/корень/парабола)",
+  match: "Сопоставление «на глаз», без признаков",
+  calc: "Вычислительная ошибка в таблице точек"
+};
+const LS_KEY = "mathexam_oge11_stats_v1";
+function loadStats(){
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) { /* localStorage может быть недоступен — работаем без сохранения */ }
+  return { skills: {}, errors: {} };
+}
+let STATS = loadStats();
+function saveStats(){
+  try { localStorage.setItem(LS_KEY, JSON.stringify(STATS)); } catch (e) {}
+}
+// result: 'first' (с первой попытки без подсказок) | 'hinted' | 'retry'
+function recordSkill(skill, result){
+  const s = STATS.skills[skill] || (STATS.skills[skill] = { total: 0, first: 0, hinted: 0 });
+  s.total++;
+  if (result === "first") s.first++;
+  if (result === "hinted") s.hinted++;
+  saveStats(); renderProgressNotes();
+}
+function recordError(type){
+  STATS.errors[type] = (STATS.errors[type] || 0) + 1;
+  saveStats();
+}
+function renderProgressNotes(){
+  const t = Object.values(STATS.skills).reduce((acc, s) => acc + s.total, 0);
+  const f = Object.values(STATS.skills).reduce((acc, s) => acc + s.first, 0);
+  const txt = t ? ("Решено заданий: " + t + " · самостоятельно с первой попытки: " + f) : "Пока ничего не решено — самое время начать.";
+  if ($("m1-progress")) $("m1-progress").textContent = txt;
+  if ($("m4-progress")) $("m4-progress").textContent = txt;
+}
+
+// ---------- вкладки ----------
+document.querySelectorAll("#tabs button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("#tabs button").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    document.querySelectorAll("section.module").forEach(sec => sec.classList.remove("active"));
+    $(btn.dataset.m).classList.add("active");
+    if (btn.dataset.m === "m5") renderDiagnostics();
+    window.scrollTo({ top: 0 });
+  });
+});
+
+// ---------- служебные помощники интерфейса ----------
+function fb(el, html){ el.innerHTML = html; el.classList.add("show"); }
+function fbHide(...els){ els.forEach(el => { el.classList.remove("show"); el.innerHTML = ""; }); }
+function parseNum(str){
+  // принимаем "−2", "-2", "2,5", "2.5", " 2 "
+  if (str == null) return NaN;
+  const t = String(str).trim().replace(MIN, "-").replace(",", ".").replace(/\s+/g, "");
+  if (t === "" ) return NaN;
+  if (!/^-?\d+(\.\d+)?$/.test(t)) return NaN;
+  return parseFloat(t);
+}
+// скачать текущий HTML-файл
+$("dl-html").addEventListener("click", () => {
+  const blob = new Blob(["<!DOCTYPE html>\n" + document.documentElement.outerHTML], { type: "text/html" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "oge-task11-graphs-trainer.html";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+});
+</script>
+<script>
+"use strict";
+/* ============================================================
+   ЧАСТЬ 2. Генераторы функций, Модуль 1 (разминка),
+   Модуль 2 (конструктор параболы + «угадай до построения»).
+   ============================================================ */
+
+// ---------- генераторы «удобных» функций ----------
+// Парабола с контролируемой вершиной: сначала выбираем a и целое x0,
+// затем b = -2*a*x0, а c подбираем через желаемую высоту вершины y0:
+// y0 = y(x0) = c - a*x0^2  =>  c = y0 + a*x0^2. Так график точно виден.
+function genParabola(opt){
+  const o = Object.assign({ x0min: -3, x0max: 3, needX0: null, needCsign: 0, aSign: 0 }, opt || {});
+  for (let tries = 0; tries < 400; tries++){
+    let a = pick([-3, -2, -1, 1, 2, 3]);
+    if (o.aSign) a = Math.abs(a) * o.aSign;
+    const x0 = (o.needX0 !== null) ? o.needX0 : ri(o.x0min, o.x0max);
+    const b = -2 * a * x0;
+    const y0 = ri(-4, 4);
+    const c = y0 + a * x0 * x0;
+    if (Math.abs(b) > 10 || Math.abs(c) > 6) continue;
+    if (o.needCsign > 0 && c <= 0) continue;
+    if (o.needCsign < 0 && c >= 0) continue;
+    if (o.cNonZero && c === 0) continue;
+    return { a, b, c, x0, y0 };
+  }
+  return { a: 1, b: -2, c: -3, x0: 1, y0: -4 }; // запасной вариант
+}
+function quadFn(p){ return x => p.a * x * x + p.b * x + p.c; }
+function genLine(opt){
+  const o = opt || {};
+  let k = pick(o.ks || [-3, -2, -1, 1, 2, 3]);
+  if (o.kSign) k = Math.abs(k) * o.kSign;
+  let b = ri(-4, 4);
+  if (o.bNonZero) while (b === 0) b = ri(-4, 4);
+  if (o.bSign) b = Math.abs(b || 1) * o.bSign;
+  return { k, b };
+}
+function genHyp(){ return { m: pick([-9, -6, -4, -3, -2, -1, 1, 2, 3, 4, 6, 9]) }; }
+
+// готовые описания «плоттеров» для каждого семейства
+function plotQuad(p, color){ return { fn: quadFn(p), color: color || "var-par" }; }
+const COLORS = { lin: "#2563eb", par: "#c2255c", hyp: "#0f766e", root: "#9a3ed0", ink: "#1e2a44" };
+
+/* =================== МОДУЛЬ 1. РАЗМИНКА =================== */
+const M1 = {
+  q: null, hintStep: 0, wrong: false, hinted: false,
+  types: ["linK", "linB", "parA", "parC", "family"]
+};
+function m1New(){
+  fbHide($("m1-hintbox"), $("m1-soft"), $("m1-good"));
+  M1.hintStep = 0; M1.wrong = false; M1.hinted = false;
+  const t = pick(M1.types);
+  let q = { type: t };
+  if (t === "linK"){
+    const L = genLine({ bNonZero: true });
+    q.title = "Прямая на графике: какой знак у коэффициента " +
+      '<span class="math"><i>k</i></span> в формуле <span class="math">' + "<i>y</i> = <i>k</i><i>x</i> + <i>b</i>" + "</span>?";
+    q.svg = svgGraph([{ fn: x => L.k * x + L.b, color: COLORS.lin }]);
+    q.opts = [
+      { html: '<span class="math"><i>k</i> &gt; 0</span>', ok: L.k > 0 },
+      { html: '<span class="math"><i>k</i> &lt; 0</span>', ok: L.k < 0 }
+    ];
+    q.skill = "lin_k"; q.err = "k";
+    q.hints = [
+      "Иди по прямой слева направо. Она поднимается или опускается?",
+      "Поднимается — прямая возрастает, значит <i>k</i> &gt; 0. Опускается — убывает, <i>k</i> &lt; 0."
+    ];
+    q.explain = "Слева направо прямая " + (L.k > 0 ? "поднимается — возрастает, поэтому <i>k</i> &gt; 0." :
+      "опускается — убывает, поэтому <i>k</i> &lt; 0.");
+  } else if (t === "linB"){
+    const L = genLine({ bNonZero: true });
+    q.title = "Где эта прямая пересекает ось <span class=\"math\"><i>y</i></span>: какой знак у " +
+      '<span class="math"><i>b</i></span>?';
+    q.svg = svgGraph([{ fn: x => L.k * x + L.b, color: COLORS.lin }],
+      [{ type: "point", x: 0, y: L.b, color: COLORS.lin }]);
+    q.opts = [
+      { html: '<span class="math"><i>b</i> &gt; 0</span>', ok: L.b > 0 },
+      { html: '<span class="math"><i>b</i> &lt; 0</span>', ok: L.b < 0 }
+    ];
+    q.skill = "lin_b"; q.err = "b";
+    q.hints = [
+      "<i>b</i> — это значение <i>y</i> при <i>x</i> = 0, то есть точка, где прямая протыкает ось <i>y</i>.",
+      "Точка пересечения отмечена на графике. Она выше нуля или ниже?"
+    ];
+    q.explain = "Прямая пересекает ось <i>y</i> в точке (0; " + fnum(L.b) + "), значит <i>b</i> " +
+      (L.b > 0 ? "&gt; 0." : "&lt; 0.");
+  } else if (t === "parA"){
+    const P = genParabola({});
+    q.title = "Куда направлены ветви параболы: какой знак у <span class=\"math\"><i>a</i></span>?";
+    q.svg = svgGraph([{ fn: quadFn(P), color: COLORS.par }]);
+    q.opts = [
+      { html: '<span class="math"><i>a</i> &gt; 0</span> (ветви вверх)', ok: P.a > 0 },
+      { html: '<span class="math"><i>a</i> &lt; 0</span> (ветви вниз)', ok: P.a < 0 }
+    ];
+    q.skill = "par_a"; q.err = "a";
+    q.hints = [
+      "Представь улыбку: весёлая (уголки вверх) или грустная (уголки вниз)?",
+      "Весёлая улыбка — ветви вверх — <i>a</i> &gt; 0. Грустная улыбка — ветви вниз — <i>a</i> &lt; 0."
+    ];
+    q.explain = "Ветви смотрят " + (P.a > 0 ? "вверх — «весёлая» парабола, значит <i>a</i> &gt; 0." : "вниз — «грустная» парабола, значит <i>a</i> &lt; 0.");
+  } else if (t === "parC"){
+    const P = genParabola({ cNonZero: true });
+    q.title = "Парабола <span class=\"math\"><i>y</i> = <i>a</i><i>x</i><sup>2</sup> + <i>b</i><i>x</i> + <i>c</i></span>: какой знак у <span class=\"math\"><i>c</i></span>?";
+    q.svg = svgGraph([{ fn: quadFn(P), color: COLORS.par }],
+      [{ type: "point", x: 0, y: P.c, color: COLORS.par }]);
+    q.opts = [
+      { html: '<span class="math"><i>c</i> &gt; 0</span>', ok: P.c > 0 },
+      { html: '<span class="math"><i>c</i> &lt; 0</span>', ok: P.c < 0 }
+    ];
+    q.skill = "par_c"; q.err = "c";
+    q.hints = [
+      "<i>c</i> — это <i>y</i>(0): подставь <i>x</i> = 0, останется только <i>c</i>.",
+      "Значит, смотри на точку, где парабола пересекает ось <i>y</i> (она отмечена). Выше нуля или ниже?"
+    ];
+    q.explain = "При <i>x</i> = 0 получаем <i>y</i> = <i>c</i>. Парабола пересекает ось <i>y</i> в точке (0; " +
+      fnum(P.c) + "), значит <i>c</i> " + (P.c > 0 ? "&gt; 0." : "&lt; 0.");
+  } else { // family
+    const fam = pick(["lin", "par", "hyp", "root"]);
+    let plot, explain;
+    if (fam === "lin"){ const L = genLine({}); plot = { fn: x => L.k * x + L.b, color: COLORS.ink };
+      explain = "Это прямая линия — так выглядит только линейная функция <i>y</i> = <i>k</i><i>x</i> + <i>b</i>."; }
+    if (fam === "par"){ const P = genParabola({}); plot = { fn: quadFn(P), color: COLORS.ink };
+      explain = "Симметричная «чаша» с вершиной — парабола, график квадратичной функции."; }
+    if (fam === "hyp"){ const Hh = genHyp(); plot = { fn: x => Hh.m / x, color: COLORS.ink };
+      explain = "Две отдельные ветви, прижимающиеся к осям, — гипербола <i>y</i> = <i>k</i>/<i>x</i>. Оси она никогда не пересекает."; }
+    if (fam === "root"){ const d = ri(-2, 2); plot = { fn: x => Math.sqrt(x) + d, color: COLORS.ink, domain: [0, 7] };
+      explain = "График существует только при <i>x</i> \u2265 0 и растёт всё медленнее — это корень."; }
+    q.title = "Какое семейство функций изображено на графике?";
+    q.svg = svgGraph([plot]);
+    q.opts = shuffle([
+      { html: '<span class="math"><i>y</i> = <i>k</i><i>x</i> + <i>b</i></span> (прямая)', ok: fam === "lin" },
+      { html: '<span class="math"><i>y</i> = <i>a</i><i>x</i><sup>2</sup> + <i>b</i><i>x</i> + <i>c</i></span> (парабола)', ok: fam === "par" },
+      { html: '<span class="math"><i>y</i> = <i>k</i>/<i>x</i></span> (гипербола)', ok: fam === "hyp" },
+      { html: '<span class="math"><i>y</i> = \u221A<i>x</i> + <i>d</i></span> (корень)', ok: fam === "root" }
+    ]);
+    q.skill = "family"; q.err = "family";
+    q.hints = [
+      "Сначала спроси: линия одна или из двух кусков? Две ветви — это гипербола.",
+      "Прямая — ровная линия. Парабола — симметричная чаша. Корень — «полупарабола, положенная на бок», начинается на границе <i>x</i> = 0."
+    ];
+    q.explain = explain;
+  }
+  M1.q = q;
+  $("m1-question").innerHTML = q.title;
+  $("m1-graph").innerHTML = q.svg;
+  const box = $("m1-opts");
+  box.innerHTML = "";
+  q.opts.forEach(op => {
+    const bBtn = document.createElement("button");
+    bBtn.className = "btn"; bBtn.innerHTML = op.html;
+    bBtn.addEventListener("click", () => m1Answer(bBtn, op));
+    box.appendChild(bBtn);
+  });
+}
+function m1Answer(btn, op){
+  const q = M1.q;
+  if (op.ok){
+    btn.classList.add("good");
+    fbHide($("m1-soft"));
+    fb($("m1-good"), '<div class="notice-title">Верно!</div><span class="math">' + q.explain + "</span>");
+    if (!q.done){
+      q.done = true;
+      recordSkill(q.skill, M1.hinted ? "hinted" : (M1.wrong ? "retry" : "first"));
+    }
+  } else {
+    if (!M1.wrong && !q.done) recordError(q.err);
+    M1.wrong = true;
+    btn.classList.add("picked");
+    fb($("m1-soft"), "Пока не совпало. " + (q.hints[0] ? '<span class="math">' + q.hints[0] + "</span>" : "Посмотри на график ещё раз."));
+  }
+}
+$("m1-hint").addEventListener("click", () => {
+  const q = M1.q; if (!q) return;
+  M1.hinted = true;
+  const h = q.hints[Math.min(M1.hintStep, q.hints.length - 1)];
+  M1.hintStep++;
+  fb($("m1-hintbox"), '<span class="math">' + h + "</span>");
+});
+$("m1-next").addEventListener("click", m1New);
+
+/* =================== МОДУЛЬ 2. КОНСТРУКТОР =================== */
+function m2Read(){
+  let a = parseInt($("m2-a").value, 10);
+  if (a === 0){
+    // ноль запрещён: перескакиваем в ту сторону, куда двигался ползунок
+    a = (M2prevA || 1) > 0 ? -1 : 1;
+    $("m2-a").value = a;
+  }
+  M2prevA = a;
+  return { a, b: parseInt($("m2-b").value, 10), c: parseInt($("m2-c").value, 10) };
+}
+let M2prevA = 1;
+function m2Render(){
+  const { a, b, c } = m2Read();
+  $("m2-aval").textContent = fnum(a);
+  $("m2-bval").textContent = fnum(b);
+  $("m2-cval").textContent = fnum(c);
+  $("m2-formula").innerHTML = fmtQuad(a, b, c);
+  $("m2-mood").innerHTML = a > 0
+    ? '<span class="math"><i>a</i> = ' + fnum(a) + ' &gt; 0</span> — ветви вверх, «весёлая» ∪.'
+    : '<span class="math"><i>a</i> = ' + fnum(a) + ' &lt; 0</span> — ветви вниз, «грустная» ∩.';
+  const x0 = -b / (2 * a);
+  const y0 = a * x0 * x0 + b * x0 + c;
+  // вычисление с подстановкой конкретных чисел, дробь этажная
+  const sub = fracHtml(MIN + "(" + fnum(b) + ")", "2·(" + fnum(a) + ")");
+  const mid = fracHtml(fnum(-b), fnum(2 * a));
+  $("m2-calc").innerHTML =
+    "<i>x</i><sub>0</sub> = " + fracHtml(MIN + "<i>b</i>", "2<i>a</i>") + " = " + sub + " = " + mid + " = " + x0Html(b, a);
+  const v = $("m2-verdict");
+  if (b === 0){ v.textContent = "x\u2080 = 0 — вершина ровно на оси y."; v.className = "verdict zero"; }
+  else if (x0 < 0){ v.textContent = "x\u2080 < 0 — вершина левее оси y."; v.className = "verdict left"; }
+  else { v.textContent = "x\u2080 > 0 — вершина правее оси y."; v.className = "verdict right"; }
+  $("m2-yint").innerHTML = 'График пересекает ось <span class="math"><i>y</i></span> в точке (0; ' + fnum(c) + ") — это и есть <span class=\"math\"><i>c</i></span>.";
+  // живой пример в блоке «почему слева/справа»
+  let caseTxt;
+  if (b === 0) caseTxt = "Сейчас <i>b</i> = 0, поэтому <i>x</i><sub>0</sub> = 0: вершина на оси <i>y</i>.";
+  else if ((a > 0) === (b > 0)) caseTxt = "Сейчас <i>a</i> = " + fnum(a) + " и <i>b</i> = " + fnum(b) +
+    " — одного знака, поэтому <i>x</i><sub>0</sub> &lt; 0: вершина левее оси <i>y</i>.";
+  else caseTxt = "Сейчас <i>a</i> = " + fnum(a) + " и <i>b</i> = " + fnum(b) +
+    " — разных знаков, поэтому <i>x</i><sub>0</sub> &gt; 0: вершина правее оси <i>y</i>.";
+  $("m2-livecase").innerHTML = '<div class="notice-title">Проверь на своих ползунках</div><span class="math">' + caseTxt + "</span>";
+  const marks = [{ type: "vline", x: x0, color: "#c2255c" }];
+  if (Math.abs(x0) <= 6 && Math.abs(y0) <= 6) marks.push({ type: "point", x: x0, y: y0, color: COLORS.par });
+  if (Math.abs(c) <= 6) marks.push({ type: "point", x: 0, y: c, color: "#41506e", r: 4 });
+  $("m2-graph").innerHTML = svgGraph([{ fn: x => a * x * x + b * x + c, color: COLORS.par }], marks);
+}
+["m2-a", "m2-b", "m2-c"].forEach(id => $(id).addEventListener("input", m2Render));
+
+/* ---- игра «угадай до построения» ---- */
+const M2G = { p: null, picked: null, wrong: false, hinted: false, done: false };
+function m2gNew(){
+  fbHide($("m2g-hintbox"), $("m2g-soft"), $("m2g-good"));
+  $("m2g-graphwrap").style.display = "none";
+  $("m2g-graph").innerHTML = ""; $("m2g-calc").innerHTML = "";
+  // иногда даём b = 0, чтобы вариант «на оси» был честным
+  const p = Math.random() < 0.22 ? genParabola({ needX0: 0 }) : genParabola({ x0min: -3, x0max: 3, cNonZero: false });
+  Object.assign(M2G, { p, picked: null, wrong: false, hinted: false, done: false });
+  $("m2g-formula").innerHTML = fmtQuad(p.a, p.b, p.c);
+  $("m2g-build").disabled = true;
+  document.querySelectorAll("#m2g-opts .btn").forEach(bb => bb.classList.remove("picked", "good"));
+}
+document.querySelectorAll("#m2g-opts .btn").forEach(bb => {
+  bb.addEventListener("click", () => {
+    document.querySelectorAll("#m2g-opts .btn").forEach(x => x.classList.remove("picked"));
+    bb.classList.add("picked");
+    M2G.picked = bb.dataset.v;
+    $("m2g-build").disabled = false;
+  });
+});
+$("m2g-hint").addEventListener("click", () => {
+  M2G.hinted = true;
+  const p = M2G.p;
+  fb($("m2g-hintbox"), '<span class="math">Не гадай — посчитай: <i>x</i><sub>0</sub> = ' +
+    fracHtml(MIN + "<i>b</i>", "2<i>a</i>") + ". Здесь <i>b</i> = " + fnum(p.b) + ", <i>a</i> = " + fnum(p.a) + ".</span>");
+});
+$("m2g-build").addEventListener("click", () => {
+  const p = M2G.p;
+  const truth = p.x0 === 0 ? "zero" : (p.x0 < 0 ? "left" : "right");
+  const x0 = p.x0, y0 = quadFn(p)(x0);
+  $("m2g-graphwrap").style.display = "inline-block";
+  $("m2g-graph").innerHTML = svgGraph(
+    [{ fn: quadFn(p), color: COLORS.par }],
+    [{ type: "vline", x: x0, color: "#c2255c" }, { type: "point", x: x0, y: y0, color: COLORS.par }]);
+  const calc = "<i>x</i><sub>0</sub> = " + fracHtml(MIN + "(" + fnum(p.b) + ")", "2·(" + fnum(p.a) + ")") +
+    " = " + fracHtml(fnum(-p.b), fnum(2 * p.a)) + " = " + fnum(x0);
+  $("m2g-calc").innerHTML = calc;
+  const verdictTxt = truth === "zero" ? "вершина на оси <i>y</i>" : (truth === "left" ? "вершина левее оси <i>y</i>" : "вершина правее оси <i>y</i>");
+  if (M2G.picked === truth){
+    fbHide($("m2g-soft"));
+    fb($("m2g-good"), '<div class="notice-title">Точно!</div><span class="math">' + calc + ", значит " + verdictTxt + ".</span>");
+    if (!M2G.done){ M2G.done = true; recordSkill("par_vertex", M2G.hinted ? "hinted" : (M2G.wrong ? "retry" : "first")); }
+  } else {
+    if (!M2G.wrong && !M2G.done) recordError("side");
+    M2G.wrong = true;
+    fb($("m2g-soft"), '<div class="notice-title">Пока не совпало — но график уже подсказывает</div>' +
+      '<span class="math">' + calc + ", значит " + verdictTxt +
+      ". Сравни знаки <i>a</i> и <i>b</i>: одинаковые — влево, разные — вправо.</span>");
+    if (!M2G.done){ M2G.done = true; recordSkill("par_vertex", "retry"); }
+  }
+});
+$("m2g-next").addEventListener("click", m2gNew);
+</script>
+<script>
+"use strict";
+/* ============================================================
+   ЧАСТЬ 3. Модуль 3 «Строим сами», Модуль 4 «ОГЭ-режим»,
+   Модуль 5 «Диагностика», запуск.
+   ============================================================ */
+
+/* =================== МОДУЛЬ 3. СТРОИМ САМИ =================== */
+const M3 = { kind: "par", task: null, hinted: false, wrong: false, hintStep: 0 };
+
+document.querySelectorAll("#m3-chips .btn").forEach(bb => {
+  bb.addEventListener("click", () => {
+    document.querySelectorAll("#m3-chips .btn").forEach(x => x.classList.remove("picked"));
+    bb.classList.add("picked");
+    M3.kind = bb.dataset.k;
+    m3New();
+  });
+});
+$("m3-next").addEventListener("click", m3New);
+
+function m3Reset(){
+  fbHide($("m3-hintbox"), $("m3-soft"), $("m3-good"));
+  $("m3-graphwrap").style.display = "none";
+  $("m3-graph").innerHTML = "";
+  M3.hinted = false; M3.wrong = false; M3.hintStep = 0;
+}
+// подобрать диапазон осей так, чтобы все точки поместились
+function fitRange(points){
+  let need = 6;
+  points.forEach(p => { need = Math.max(need, Math.abs(p[0]) + 1, Math.abs(p[1]) + 1); });
+  return Math.min(Math.ceil(need), 12);
+}
+// общая таблица точек: xs — значения x, ys — правильные y
+function tableHtml(xs){
+  let h = '<table class="pts"><tr><th class="math"><i>x</i></th>';
+  xs.forEach(x => { h += "<td>" + fnum(x) + "</td>"; });
+  h += '</tr><tr><th class="math"><i>y</i></th>';
+  xs.forEach((x, i) => { h += '<td><input data-i="' + i + '" inputmode="numeric" aria-label="y при x = ' + fnum(x) + '"></td>'; });
+  return h + "</tr></table>";
+}
+function checkTable(container, ys){
+  const inputs = container.querySelectorAll("table.pts input");
+  let ok = true, empty = false;
+  inputs.forEach(inp => {
+    const i = +inp.dataset.i;
+    const v = parseNum(inp.value);
+    inp.classList.remove("good", "soft");
+    if (isNaN(v)){ empty = true; ok = false; return; }
+    if (Math.abs(v - ys[i]) < 1e-9) inp.classList.add("good");
+    else { inp.classList.add("soft"); ok = false; }
+  });
+  return { ok, empty };
+}
+function fillTable(container, ys){
+  container.querySelectorAll("table.pts input").forEach(inp => {
+    inp.value = fnum(ys[+inp.dataset.i]);
+    inp.classList.remove("soft"); inp.classList.add("good");
+  });
+}
+
+function m3New(){
+  m3Reset();
+  const stage = $("m3-stage");
+  if (M3.kind === "par"){
+    // целый x0 недалеко от нуля, умеренная крутизна — чтобы точки поместились
+    let p;
+    do { p = genParabola({ x0min: -2, x0max: 2 }); } while (Math.abs(p.a) > 2);
+    const xs = [p.x0 - 2, p.x0 - 1, p.x0, p.x0 + 1, p.x0 + 2];
+    const ys = xs.map(quadFn(p));
+    M3.task = { p, xs, ys, step: 1 };
+    $("m3-title").textContent = "Парабола: сначала вершина, потом точки";
+    $("m3-formula").innerHTML = fmtQuad(p.a, p.b, p.c);
+    stage.innerHTML =
+      '<p><b>Шаг 1.</b> Найди абсциссу вершины <span class="math"><i>x</i><sub>0</sub> = ' +
+      fracHtml(MIN + "<i>b</i>", "2<i>a</i>") + '</span>.</p>' +
+      '<div class="btnrow"><span class="math"><i>x</i><sub>0</sub> =</span> <input class="ans" id="m3-x0" inputmode="numeric">' +
+      '<button class="btn btn-primary" id="m3-check1">Проверить</button>' +
+      '<button class="btn btn-ghost" id="m3-show1">Показать шаг</button></div>' +
+      '<div id="m3-step2"></div>';
+    $("m3-check1").addEventListener("click", () => {
+      const v = parseNum($("m3-x0").value);
+      if (isNaN(v)){ fb($("m3-soft"), "Введи число, например 2 или \u22123."); return; }
+      if (Math.abs(v - p.x0) < 1e-9){
+        $("m3-x0").classList.remove("soft"); $("m3-x0").classList.add("good");
+        fbHide($("m3-soft"));
+        fb($("m3-good"), '<span class="math"><i>x</i><sub>0</sub> = ' +
+          fracHtml(MIN + "(" + fnum(p.b) + ")", "2·(" + fnum(p.a) + ")") + " = " + fnum(p.x0) +
+          ". Теперь берём точки вокруг вершины.</span>");
+        m3ParStep2();
+      } else {
+        if (!M3.wrong) recordError("x0");
+        M3.wrong = true;
+        $("m3-x0").classList.add("soft");
+        fb($("m3-soft"), '<span class="math">Пока не совпало. Подставь числа: <i>b</i> = ' + fnum(p.b) +
+          ", <i>a</i> = " + fnum(p.a) + ", и не потеряй минус перед <i>b</i>.</span>");
+      }
+    });
+    $("m3-show1").addEventListener("click", () => {
+      M3.hinted = true;
+      $("m3-x0").value = fnum(p.x0);
+      $("m3-x0").classList.add("good");
+      fb($("m3-hintbox"), '<span class="math"><i>x</i><sub>0</sub> = ' +
+        fracHtml(MIN + "(" + fnum(p.b) + ")", "2·(" + fnum(p.a) + ")") + " = " +
+        fracHtml(fnum(-p.b), fnum(2 * p.a)) + " = " + fnum(p.x0) + "</span> (показанный шаг не засчитывается как самостоятельный).");
+      m3ParStep2();
+    });
+  } else if (M3.kind === "lin"){
+    const halves = Math.random() < 0.3;
+    const k = halves ? pick([-0.5, 0.5]) : pick([-3, -2, -1, 1, 2, 3]);
+    const b = ri(-3, 3);
+    const xs = halves ? [0, 2] : [0, 1];
+    const ys = xs.map(x => k * x + b);
+    M3.task = { xs, ys, plot: { fn: x => k * x + b, color: COLORS.lin } };
+    $("m3-title").textContent = "Прямая: точка на оси y, потом наклон";
+    $("m3-formula").innerHTML = fmtLin(k, b);
+    stage.innerHTML =
+      "<p><b>Шаг 1.</b> Свободный член <span class=\"math\"><i>b</i></span> сразу даёт одну точку — там, где прямая пересекает ось <span class=\"math\"><i>y</i></span>. Какая это точка?</p>" +
+      '<div class="opts" id="m3-linstart"></div><div id="m3-step2"></div>';
+    const opts = shuffle([
+      { html: "(0; " + fnum(b) + ")", ok: true },
+      { html: "(" + fnum(b) + "; 0)", ok: false },
+      { html: "(0; 0)", ok: false }
+    ]);
+    const box = $("m3-linstart");
+    opts.forEach(op => {
+      const bb = document.createElement("button");
+      bb.className = "btn math"; bb.innerHTML = op.html;
+      bb.addEventListener("click", () => {
+        if (op.ok){
+          bb.classList.add("good");
+          fbHide($("m3-soft"));
+          fb($("m3-good"), '<span class="math">Верно: при <i>x</i> = 0 член <i>k</i>·<i>x</i> обнуляется, остаётся <i>y</i> = <i>b</i>, то есть точка (0; ' + fnum(b) + "). Наклон <i>k</i> = " + fnum(k) +
+            (k > 0 ? " положительный — прямая идёт вверх слева направо." : " отрицательный — прямая идёт вниз слева направо.") + "</span>");
+          $("m3-step2").innerHTML = "<p><b>Шаг 2.</b> Коэффициент <span class=\"math\"><i>k</i></span> — это наклон: он даёт вторую точку. Заполни таблицу (первая строка — уже найденная точка на оси <span class=\"math\"><i>y</i></span>):</p>" +
+            tableHtml(xs) + m3TableButtons();
+          m3BindTable("Две точки есть — проводим через них единственную прямую.",
+            "Проверь подстановку: сначала умножь <i>k</i> на <i>x</i>, потом прибавь <i>b</i>.");
+        } else {
+          if (!M3.wrong) recordError("b");
+          M3.wrong = true;
+          fb($("m3-soft"), '<span class="math">Подставь <i>x</i> = 0 в формулу: <i>k</i>·0 = 0, значит <i>y</i> = <i>b</i>. Точка стоит на оси <i>y</i> — это (0; <i>b</i>).</span>');
+        }
+      });
+      box.appendChild(bb);
+    });
+  } else if (M3.kind === "hyp"){
+    const m = pick([-9, -6, -4, -3, -2, 2, 3, 4, 6, 9]);
+    const divs = [];
+    for (let d = 1; d <= Math.abs(m); d++) if (Math.abs(m) % d === 0) divs.push(d);
+    const xs = divs.slice(0, 3);
+    const ys = xs.map(x => m / x);
+    M3.task = { m, xs, ys, plot: { fn: x => m / x, color: COLORS.hyp } };
+    $("m3-title").textContent = "Гипербола: сначала четверти, потом точки";
+    $("m3-formula").innerHTML = fmtHyp(m);
+    stage.innerHTML =
+      "<p><b>Шаг 1.</b> В каких четвертях лежат ветви этой гиперболы?</p>" +
+      '<div class="opts" id="m3-quad">' +
+      '<button class="btn" data-q="13">В I и III</button>' +
+      '<button class="btn" data-q="24">Во II и IV</button></div>' +
+      '<div id="m3-step2"></div>';
+    const truth = m > 0 ? "13" : "24";
+    document.querySelectorAll("#m3-quad .btn").forEach(bb => {
+      bb.addEventListener("click", () => {
+        if (bb.dataset.q === truth){
+          bb.classList.add("good");
+          fbHide($("m3-soft"));
+          fb($("m3-good"), '<span class="math">Да: коэффициент ' + fnum(m) + (m > 0 ?
+            " положительный — при <i>x</i> &gt; 0 и <i>y</i> &gt; 0, ветви в I и III четвертях." :
+            " отрицательный — при <i>x</i> &gt; 0 получается <i>y</i> &lt; 0, ветви во II и IV четвертях.") + "</span>");
+          $("m3-step2").innerHTML = "<p><b>Шаг 2.</b> Найди несколько точек правой части графика:</p>" +
+            tableHtml(xs) + m3TableButtons();
+          m3BindTable("Точки готовы! Смотри, как ветви прижимаются к осям, но не касаются их.",
+            "Раздели коэффициент на <i>x</i>. Знак не потеряй!");
+        } else {
+          if (!M3.wrong) recordError("family");
+          M3.wrong = true;
+          fb($("m3-soft"), '<span class="math">Проверь на пробной точке: возьми <i>x</i> = 1 и посчитай <i>y</i>. В какой четверти окажется точка?</span>');
+        }
+      });
+    });
+  } else { // root
+    let d = ri(-2, 2); while (d === 0) d = ri(-2, 2);
+    const xs = [0, 1, 4];
+    const ys = xs.map(x => Math.sqrt(x) + d);
+    M3.task = { d, xs, ys, plot: { fn: x => Math.sqrt(x) + d, color: COLORS.root, domain: [0, 12] } };
+    $("m3-title").textContent = "Корень: график начинается с границы";
+    $("m3-formula").innerHTML = fmtRoot(d);
+    stage.innerHTML =
+      "<p><b>Шаг 1.</b> Корень существует только при <span class=\"math\"><i>x</i> \u2265 0</span>. " +
+      "С какой точки начинается график?</p>" +
+      '<div class="opts" id="m3-start"></div><div id="m3-step2"></div>';
+    const opts = shuffle([
+      { html: "(0; " + fnum(d) + ")", ok: true },
+      { html: "(" + fnum(d) + "; 0)", ok: false },
+      { html: "(0; 0)", ok: false }
+    ]);
+    const box = $("m3-start");
+    opts.forEach(op => {
+      const bb = document.createElement("button");
+      bb.className = "btn math"; bb.innerHTML = op.html;
+      bb.addEventListener("click", () => {
+        if (op.ok){
+          bb.classList.add("good");
+          fbHide($("m3-soft"));
+          fb($("m3-good"), '<span class="math">Верно: при <i>x</i> = 0 получаем <i>y</i> = \u221A0 ' +
+            termSign(d) + fnum(Math.abs(d)) + " = " + fnum(d) + ".</span>");
+          $("m3-step2").innerHTML = "<p><b>Шаг 2.</b> Удобные точки — те, где корень извлекается нацело:</p>" +
+            tableHtml(xs) + m3TableButtons();
+          m3BindTable("График медленно, но упорно растёт вправо и вверх.",
+            "Сначала извлеки корень (\u221A1 = 1, \u221A4 = 2), потом прибавь число.");
+        } else {
+          if (!M3.wrong) recordError("family");
+          M3.wrong = true;
+          fb($("m3-soft"), '<span class="math">Подставь <i>x</i> = 0 в формулу: что получится для <i>y</i>?</span>');
+        }
+      });
+      box.appendChild(bb);
+    });
+  }
+}
+function m3TableButtons(){
+  return '<div class="btnrow"><button class="btn btn-primary" id="m3-checkT">Проверить значения</button>' +
+    '<button class="btn btn-ghost" id="m3-showT">Показать значения</button></div>';
+}
+function m3ParStep2(){
+  const t = M3.task;
+  if ($("m3-step2").innerHTML) return;
+  $("m3-step2").innerHTML =
+    "<p><b>Шаг 2.</b> Возьмём точки вокруг вершины и заполним таблицу значений:</p>" +
+    tableHtml(t.xs) + m3TableButtons();
+  M3.task.plot = { fn: quadFn(t.p), color: COLORS.par };
+  m3BindTable("Пять точек — и парабола рисуется сама. Обрати внимание на симметрию значений вокруг вершины!",
+    "Подставляй аккуратно: сначала возведи <i>x</i> в квадрат, потом умножай.");
+}
+function m3BindTable(goodMsg, softMsg){
+  const t = M3.task;
+  $("m3-checkT").addEventListener("click", () => {
+    const r = checkTable($("m3-stage"), t.ys);
+    if (r.ok){
+      fbHide($("m3-soft"));
+      fb($("m3-good"), goodMsg);
+      m3Draw();
+      if (!t.recorded){ t.recorded = true;
+        recordSkill("build", M3.hinted ? "hinted" : (M3.wrong ? "retry" : "first")); }
+    } else {
+      if (!M3.wrong && !r.empty) recordError("calc");
+      M3.wrong = true;
+      fb($("m3-soft"), r.empty ? "Заполни все клетки таблицы — потом проверим." :
+        '<span class="math">Подсвеченные клетки пока не совпали. ' + softMsg + "</span>");
+    }
+  });
+  $("m3-showT").addEventListener("click", () => {
+    M3.hinted = true;
+    fillTable($("m3-stage"), t.ys);
+    fb($("m3-hintbox"), "Значения показаны — сверь со своими вычислениями. Показанное не засчитывается как самостоятельное.");
+    m3Draw();
+    if (!t.recorded){ t.recorded = true; recordSkill("build", "hinted"); }
+  });
+}
+function m3Draw(){
+  const t = M3.task;
+  const pts = t.xs.map((x, i) => [x, t.ys[i]]);
+  const range = fitRange(pts);
+  const marks = pts.map(pt => ({ type: "point", x: pt[0], y: pt[1], color: t.plot.color }));
+  if (t.p) marks.push({ type: "vline", x: t.p.x0, color: "#c2255c" });
+  $("m3-graphwrap").style.display = "inline-block";
+  $("m3-graph").innerHTML = svgGraph([t.plot], marks, { range });
+}
+
+/* =================== МОДУЛЬ 4. ОГЭ-РЕЖИМ =================== */
+const M4 = { type: "rand", task: null, attempts: 0, hinted: false, done: false };
+const LETTERS = ["А", "Б", "В"];
+
+document.querySelectorAll("#m4-chips .btn").forEach(bb => {
+  bb.addEventListener("click", () => {
+    document.querySelectorAll("#m4-chips .btn").forEach(x => x.classList.remove("picked"));
+    bb.classList.add("picked");
+    M4.type = bb.dataset.t;
+    m4New();
+  });
+});
+
+// --- генераторы задач сопоставления ---
+// каждый возвращает: {title, taskline, items:[{desc, plotObj, explain, sig}], hint, notice, err}
+function gen41(){
+  const patterns = shuffle([[1, 1], [1, -1], [-1, 1], [-1, -1]]).slice(0, 3);
+  const items = patterns.map(pt => {
+    const p = genParabola({ aSign: pt[0], needCsign: pt[1], x0min: -2, x0max: 2, cNonZero: true });
+    return {
+      p,
+      desc: '<span class="math"><i>a</i> ' + (pt[0] > 0 ? "&gt;" : "&lt;") + " 0,&nbsp; <i>c</i> " + (pt[1] > 0 ? "&gt;" : "&lt;") + " 0</span>",
+      plot: { fn: quadFn(p), color: COLORS.ink },
+      explain: "ветви " + (p.a > 0 ? "вверх (<i>a</i> &gt; 0)" : "вниз (<i>a</i> &lt; 0)") +
+        ", ось <i>y</i> пересекается " + (p.c > 0 ? "выше нуля (<i>c</i> &gt; 0)" : "ниже нуля (<i>c</i> &lt; 0)"),
+      sig: pt.join()
+    };
+  });
+  return {
+    title: "Тип 1. Знаки коэффициентов параболы",
+    taskline: 'На рисунках изображены графики функций вида <span class="math"><i>y</i> = <i>a</i><i>x</i><sup>2</sup> + <i>b</i><i>x</i> + <i>c</i></span>. Установи соответствие между знаками коэффициентов и графиками.',
+    items,
+    hint: "Два признака решают всё: куда смотрят ветви (это знак <i>a</i>) и где парабола протыкает ось <i>y</i> — выше или ниже нуля (это знак <i>c</i>).",
+    notice: "Направление ветвей = знак <i>a</i>. Точка на оси <i>y</i> = знак <i>c</i>. Больше ничего проверять не нужно.",
+    err: "a"
+  };
+}
+function gen42(){
+  const combos = shuffle([[1, -1], [1, 1], [-1, -1], [-1, 1]]).slice(0, 3); // [знак a, сторона x0]
+  const items = combos.map(cb => {
+    const x0 = cb[1] > 0 ? ri(1, 2) : -ri(1, 2);
+    const p = genParabola({ aSign: cb[0], needX0: x0 });
+    return {
+      p,
+      desc: '<span class="math">' + fmtQuad(p.a, p.b, p.c) + "</span>",
+      plot: { fn: quadFn(p), color: COLORS.ink },
+      explain: "ветви " + (p.a > 0 ? "вверх" : "вниз") + "; <i>x</i><sub>0</sub> = " +
+        fracHtml(MIN + "(" + fnum(p.b) + ")", "2·(" + fnum(p.a) + ")") + " = " + fnum(p.x0) +
+        " — вершина " + (p.x0 < 0 ? "левее" : "правее") + " оси <i>y</i>; и контроль: <i>c</i> = " + fnum(p.c),
+      sig: cb.join()
+    };
+  });
+  return {
+    title: "Тип 2. Формулы парабол и графики",
+    taskline: "Установи соответствие между формулами и графиками. Не угадывай: сначала знак <span class=\"math\"><i>a</i></span>, потом вершина через <span class=\"math\"><i>x</i><sub>0</sub> = " + fracHtml(MIN + "<i>b</i>", "2<i>a</i>") + "</span>.",
+    items,
+    hint: "План из трёх шагов: 1) знак <i>a</i> — ветви; 2) <i>x</i><sub>0</sub> = " + fracHtml(MIN + "<i>b</i>", "2<i>a</i>") + " — вершина левее или правее; 3) если сомневаешься, сверь <i>c</i> с точкой на оси <i>y</i>.",
+    notice: "Пара «знак <i>a</i> + сторона вершины» различает любые две параболы здесь. Формула вершины надёжнее глазомера.",
+    err: "x0"
+  };
+}
+function gen43(){
+  const combos = shuffle([[1, 1], [1, -1], [-1, 1], [-1, -1]]).slice(0, 3);
+  const items = combos.map(cb => {
+    const L = genLine({ kSign: cb[0], bSign: cb[1], bNonZero: true });
+    return {
+      L,
+      desc: '<span class="math">' + fmtLin(L.k, L.b) + "</span>",
+      plot: { fn: x => L.k * x + L.b, color: COLORS.ink },
+      explain: "<i>k</i> = " + fnum(L.k) + (L.k > 0 ? " &gt; 0 — прямая возрастает" : " &lt; 0 — прямая убывает") +
+        "; <i>b</i> = " + fnum(L.b) + " — пересекает ось <i>y</i> в точке (0; " + fnum(L.b) + ")",
+      sig: cb.join()
+    };
+  });
+  return {
+    title: "Тип 3. Линейные функции",
+    taskline: "Установи соответствие между формулами вида <span class=\"math\"><i>y</i> = <i>k</i><i>x</i> + <i>b</i></span> и графиками.",
+    items,
+    hint: "Сначала знак <i>k</i>: вверх или вниз идёт прямая. Потом <i>b</i>: в какой точке она пересекает ось <i>y</i>.",
+    notice: "Знак <i>k</i> — направление, <i>b</i> — точка на оси <i>y</i>. Этой пары признаков всегда достаточно.",
+    err: "k"
+  };
+}
+function gen44(){
+  const sets = [[1, 6, -3], [2, 9, -4], [-1, -6, 3], [-2, -9, 4], [1, 4, -2], [-1, -4, 2]];
+  const ms = shuffle(pick(sets));
+  const items = ms.map(m => ({
+    m,
+    desc: '<span class="math">' + fmtHyp(m) + "</span>",
+    plot: { fn: x => m / x, color: COLORS.ink },
+    explain: "коэффициент " + fnum(m) + (m > 0 ? " &gt; 0 — ветви в I и III четвертях" : " &lt; 0 — ветви во II и IV четвертях") +
+      "; контрольная точка (1; " + fnum(m) + "): чем больше модуль коэффициента, тем дальше ветвь от осей",
+    sig: String(m)
+  }));
+  return {
+    title: "Тип 4. Гиперболы",
+    taskline: "Установи соответствие между формулами и графиками гипербол.",
+    items,
+    hint: "Шаг 1: знак коэффициента — четверти (плюс: I и III, минус: II и IV). Шаг 2: подставь <i>x</i> = 1 — получишь высоту ветви.",
+    notice: "Гиперболу выдают четверти и «размах»: при <i>x</i> = 1 значение <i>y</i> равно коэффициенту.",
+    err: "family"
+  };
+}
+function gen45(){
+  const fams = shuffle(["lin", "par", "hyp", "root", "const"]).slice(0, 3);
+  const items = fams.map(f => {
+    if (f === "lin"){
+      const L = genLine({ bNonZero: true });
+      return { desc: '<span class="math">' + fmtLin(L.k, L.b) + "</span>",
+        plot: { fn: x => L.k * x + L.b, color: COLORS.ink },
+        explain: "прямая линия — линейная функция", sig: f };
+    }
+    if (f === "par"){
+      const p = genParabola({ x0min: -2, x0max: 2 });
+      return { desc: '<span class="math">' + fmtQuad(p.a, p.b, p.c) + "</span>",
+        plot: { fn: quadFn(p), color: COLORS.ink },
+        explain: "симметричная «чаша» — парабола, квадратичная функция", sig: f };
+    }
+    if (f === "hyp"){
+      const m = pick([-4, -3, -2, 2, 3, 4]);
+      return { desc: '<span class="math">' + fmtHyp(m) + "</span>",
+        plot: { fn: x => m / x, color: COLORS.ink },
+        explain: "две ветви, прижимающиеся к осям и не пересекающие их, — гипербола", sig: f };
+    }
+    if (f === "root"){
+      const d = ri(-2, 2);
+      return { desc: '<span class="math">' + fmtRoot(d) + "</span>",
+        plot: { fn: x => Math.sqrt(x) + d, color: COLORS.ink, domain: [0, 7] },
+        explain: "график начинается на границе <i>x</i> = 0 и медленно растёт вправо — корень", sig: f };
+    }
+    const n = pick([-3, -2, -1, 1, 2, 3]);
+    return { desc: '<span class="math">' + fmtConst(n) + "</span>",
+      plot: { fn: () => n, color: COLORS.ink },
+      explain: "горизонтальная прямая на высоте " + fnum(n) + " — постоянная функция", sig: f };
+  });
+  return {
+    title: "Тип 5. Смешанные функции",
+    taskline: "Здесь функции разных семейств. Сначала определи «семейство» каждого графика, потом сопоставляй.",
+    items,
+    hint: "Не считай коэффициенты сразу. Сначала назови семейство: прямая, парабола, гипербола, корень или горизонтальная прямая.",
+    notice: "В смешанных задачах первый вопрос всегда один: «к какому семейству относится график?» Дальше всё решается само.",
+    err: "family"
+  };
+}
+
+function m4New(){
+  fbHide($("m4-hintbox"), $("m4-soft"), $("m4-good"), $("m4-razbor"));
+  M4.attempts = 0; M4.hinted = false; M4.done = false;
+  const gens = { t41: gen41, t42: gen42, t43: gen43, t44: gen44, t45: gen45 };
+  const g = M4.type === "rand" ? pick(Object.values(gens)) : gens[M4.type];
+  let T;
+  // страховка: у трёх пунктов должны быть разные «сигнатуры признаков»
+  for (let tries = 0; tries < 50; tries++){
+    T = g();
+    const sigs = T.items.map(it => it.sig);
+    if (new Set(sigs).size === 3) break;
+  }
+  // перемешиваем графики: order[i] — номер графика (1..3) для буквы i
+  const order = shuffle([0, 1, 2]);
+  T.key = LETTERS.map((_, i) => order.indexOf(i) + 1); // буква i -> график key[i]
+  // рисуем графики в порядке order
+  const gr = $("m4-graphs");
+  gr.innerHTML = "";
+  order.forEach((itemIdx, pos) => {
+    const div = document.createElement("div");
+    div.className = "gitem";
+    div.innerHTML = '<div class="gnum">' + (pos + 1) + ")</div>" +
+      '<div class="graphwrap">' + svgGraph([T.items[itemIdx].plot], [], { size: 300 }) + "</div>";
+    gr.appendChild(div);
+  });
+  // описания с выпадающими списками
+  const dbox = $("m4-desc");
+  dbox.innerHTML = "";
+  T.items.forEach((it, i) => {
+    const row = document.createElement("div");
+    row.className = "row";
+    row.innerHTML = '<span class="letter">' + LETTERS[i] + ")</span> <span>" + it.desc + "</span>" +
+      '<select data-i="' + i + '" aria-label="график для пункта ' + LETTERS[i] + '">' +
+      '<option value="">график…</option><option>1</option><option>2</option><option>3</option></select>';
+    dbox.appendChild(row);
+  });
+  dbox.querySelectorAll("select").forEach(sel => sel.addEventListener("change", () => {
+    const vals = [...dbox.querySelectorAll("select")].map(s => s.value);
+    $("m4-answer").value = vals.every(v => v) ? vals.join("") : $("m4-answer").value;
+  }));
+  $("m4-answer").value = "";
+  M4.task = T;
+  $("m4-title").innerHTML = T.title;
+  $("m4-taskline").innerHTML = T.taskline;
+  renderProgressNotes();
+}
+// строка ответа синхронизируется со списками
+$("m4-answer").addEventListener("input", () => {
+  const v = $("m4-answer").value.trim();
+  if (/^[1-3]{3}$/.test(v)){
+    document.querySelectorAll("#m4-desc select").forEach((sel, i) => { sel.value = v[i]; });
+  }
+});
+function m4ReadAnswer(){
+  const typed = $("m4-answer").value.trim();
+  if (/^[1-3]{3}$/.test(typed)) return typed.split("").map(Number);
+  const vals = [...document.querySelectorAll("#m4-desc select")].map(s => s.value);
+  if (vals.every(v => v)) return vals.map(Number);
+  return null;
+}
+$("m4-check").addEventListener("click", () => {
+  const T = M4.task; if (!T || M4.done) return;
+  const ans = m4ReadAnswer();
+  if (!ans){ fb($("m4-soft"), "Заполни соответствие для всех трёх букв — списками или строкой из трёх цифр."); return; }
+  if (new Set(ans).size !== 3){ fb($("m4-soft"), "Каждый график используется ровно один раз — проверь, нет ли повторов."); return; }
+  M4.attempts++;
+  const wrong = LETTERS.filter((_, i) => ans[i] !== T.key[i]);
+  if (wrong.length === 0){
+    fbHide($("m4-soft"));
+    let ex = '<div class="notice-title">Верно! Короткий разбор:</div>';
+    T.items.forEach((it, i) => { ex += '<p class="math"><b>' + LETTERS[i] + " \u2192 " + T.key[i] + ":</b> " + it.explain + ".</p>"; });
+    fb($("m4-good"), ex);
+    M4.done = true;
+    recordSkill("oge", M4.hinted ? "hinted" : (M4.attempts === 1 ? "first" : "retry"));
+  } else {
+    if (M4.attempts === 1){
+      recordError(T.err); recordError("match");
+      fb($("m4-soft"), "Пока не совпало. Стоит пересмотреть соответствия для: <b>" + wrong.join(", ") +
+        "</b>. Вернись к признакам — не сравнивай картинки «на глаз».");
+    } else {
+      fb($("m4-soft"), "Снова не совпало для: <b>" + wrong.join(", ") + "</b>. Открываю полный разбор — сверь каждый шаг.");
+      m4ShowRazbor();
+      M4.done = true;
+      recordSkill("oge", "retry");
+    }
+  }
+});
+$("m4-hint").addEventListener("click", () => {
+  const T = M4.task; if (!T) return;
+  M4.hinted = true;
+  fb($("m4-hintbox"), '<span class="math">' + T.hint + "</span>");
+});
+$("m4-show").addEventListener("click", () => {
+  if (!M4.task) return;
+  M4.hinted = true;
+  m4ShowRazbor();
+  if (!M4.done){ M4.done = true; recordSkill("oge", "hinted"); }
+});
+function m4ShowRazbor(){
+  const T = M4.task;
+  let h = '<div class="notice-title">Полный разбор</div>';
+  h += "<p>Ответ: <b>" + T.key.join("") + "</b>.</p>";
+  T.items.forEach((it, i) => { h += '<p class="math"><b>' + LETTERS[i] + " \u2192 " + T.key[i] + ":</b> " + it.explain + ".</p>"; });
+  h += '<div class="notice-title" style="margin-top:8px">Что я должен был заметить</div><p class="math">' + T.notice + "</p>";
+  fb($("m4-razbor"), h);
+}
+$("m4-next").addEventListener("click", m4New);
+
+/* =================== МОДУЛЬ 5. ДИАГНОСТИКА =================== */
+function renderDiagnostics(){
+  const sm = $("m5-map");
+  sm.innerHTML = "";
+  let totalAll = 0, firstAll = 0;
+  Object.keys(SKILLS).forEach(id => {
+    const s = STATS.skills[id] || { total: 0, first: 0, hinted: 0 };
+    totalAll += s.total; firstAll += s.first;
+    const rate = s.total ? s.first / s.total : 0;
+    let stClass = "todo", stText = "мало данных — реши хотя бы 3 задания";
+    if (s.total >= 3 && rate >= 0.8){ stClass = "done"; stText = "освоено — решается уверенно"; }
+    else if (s.total >= 3 && rate >= 0.5){ stClass = "mid"; stText = "почти получается — закрепи ещё немного"; }
+    else if (s.total >= 3){ stClass = "mid"; stText = "нужно повторить — загляни в модули 1–3"; }
+    const div = document.createElement("div");
+    div.className = "skill";
+    div.innerHTML = '<div class="name">' + SKILLS[id] + "</div>" +
+      '<div class="st ' + stClass + '">' + stText + "</div>" +
+      '<div class="note">решено: ' + s.total + " · с первой попытки: " + s.first + "</div>" +
+      '<div class="bar"><i style="width:' + Math.round(rate * 100) + '%"></i></div>';
+    sm.appendChild(div);
+  });
+  $("m5-summary").innerHTML = totalAll ?
+    "<p>Всего решено: <b>" + totalAll + "</b>, из них самостоятельно с первой попытки: <b>" + firstAll + "</b>.</p>" :
+    "<p>Пока пусто. Начни с разминки — это займёт пару минут.</p>";
+  const errs = Object.entries(STATS.errors).sort((x, y) => y[1] - x[1]);
+  $("m5-errors").innerHTML = errs.length ?
+    '<ul class="errlist">' + errs.map(e => "<li>" + (ERR_NAMES[e[0]] || e[0]) + " — " + e[1] + " раз(а)</li>").join("") + "</ul>" :
+    '<p class="note">Ошибок пока не зафиксировано — так держать.</p>';
+}
+$("m5-reset").addEventListener("click", () => {
+  if (confirm("Точно сбросить весь прогресс?")){
+    STATS = { skills: {}, errors: {} };
+    saveStats(); renderDiagnostics(); renderProgressNotes();
+  }
+});
+
+/* =================== КОНСТРУКТОРЫ: ПРЯМАЯ / ГИПЕРБОЛА / КОРЕНЬ =================== */
+const conPrev = {};
+function fmtRootShift(c, d){
+  let s;
+  if (c === 0) s = "<i>y</i> = \u221A<i>x</i>";
+  else s = "<i>y</i> = \u221A(<i>x</i>" + (c > 0 ? " \u2212 " + fnum(c) : " + " + fnum(-c)) + ")";
+  if (d !== 0) s += termSign(d) + fnum(Math.abs(d));
+  return s;
+}
+function clRender(){
+  const k = parseInt($("cl-k").value, 10);   // прямую разрешаем и горизонтальную (k = 0)
+  const b = parseInt($("cl-b").value, 10);
+  $("cl-kval").textContent = fnum(k);
+  $("cl-bval").textContent = fnum(b);
+  $("cl-formula").innerHTML = (k === 0 ? fmtConst(b) : fmtLin(k, b));
+  const dv = $("cl-dir");
+  if (k > 0){ dv.textContent = "k > 0 — прямая возрастает (идёт вверх слева направо)."; dv.className = "verdict right"; }
+  else if (k < 0){ dv.textContent = "k < 0 — прямая убывает (идёт вниз слева направо)."; dv.className = "verdict left"; }
+  else { dv.textContent = "k = 0 — прямая горизонтальна: y = " + fnum(b) + "."; dv.className = "verdict zero"; }
+  let notice = 'Точка на оси <i>y</i>: (0; ' + fnum(b) + ").";
+  if (k !== 0) notice += " Вторая точка по наклону: (1; " + fnum(k + b) + "). " +
+    (Math.abs(k) >= 3 ? "Большой |k| — прямая крутая." : "Небольшой |k| — прямая пологая.");
+  $("cl-notice").innerHTML = '<span class="math">' + notice + "</span>";
+  const marks = [{ type: "point", x: 0, y: b, color: "#41506e", r: 4 }];
+  if (k !== 0 && Math.abs(k + b) <= 6) marks.push({ type: "point", x: 1, y: k + b, color: COLORS.lin });
+  $("cl-graph").innerHTML = svgGraph([{ fn: x => k * x + b, color: COLORS.lin }], marks, { range: 6 });
+}
+function fmtHypShift(k, a, b){
+  const sign = k < 0 ? MIN : "";
+  const denom = a === 0 ? "<i>x</i>" : ("<i>x</i>" + (a > 0 ? " \u2212 " + fnum(a) : " + " + fnum(-a)));
+  let s = "<i>y</i> = " + sign + fracHtml(fnum(Math.abs(k)), denom);
+  if (b !== 0) s += termSign(b) + fnum(Math.abs(b));
+  return s;
+}
+function chRender(){
+  let k = parseInt($("ch-k").value, 10);
+  if (k === 0){ k = (conPrev.hyp || 1) > 0 ? -1 : 1; $("ch-k").value = k; }
+  conPrev.hyp = k;
+  const a = parseInt($("ch-a").value, 10);
+  const b = parseInt($("ch-b").value, 10);
+  $("ch-kval").textContent = fnum(k);
+  $("ch-aval").textContent = fnum(a);
+  $("ch-bval").textContent = fnum(b);
+  $("ch-formula").innerHTML = fmtHypShift(k, a, b);
+  const qv = $("ch-quad");
+  if (a === 0 && b === 0){
+    qv.textContent = k > 0 ? "k > 0 — ветви в I и III четвертях." : "k < 0 — ветви во II и IV четвертях.";
+  } else {
+    qv.textContent = (k > 0 ? "k > 0 — ветви справа-сверху и слева-снизу" : "k < 0 — ветви слева-сверху и справа-снизу") +
+      " от центра (" + fnum(a) + "; " + fnum(b) + ").";
+  }
+  qv.className = "verdict " + (k > 0 ? "right" : "left");
+  let notice;
+  if (a === 0 && b === 0){
+    notice = "Асимптоты — сами оси: <i>x</i> = 0 и <i>y</i> = 0. Ветви прилипают к осям, но не касаются. Чем больше |k| = " +
+      fnum(Math.abs(k)) + ", тем дальше ветви от начала координат.";
+  } else {
+    notice = "Вертикальная асимптота <i>x</i> = " + fnum(a) + " (там знаменатель обращается в ноль), горизонтальная <i>y</i> = " +
+      fnum(b) + ". Ветви прилипают к этим прямым (пунктир), но никогда их не касаются. Чем больше |k| = " +
+      fnum(Math.abs(k)) + ", тем шире размах ветвей.";
+  }
+  $("ch-notice").innerHTML = '<span class="math">' + notice + "</span>";
+  const marks = [
+    { type: "vline", x: a, color: "#8a97b5" },
+    { type: "hline", y: b, color: "#8a97b5" }
+  ];
+  if (Math.abs(a + 1) <= 6 && Math.abs(b + k) <= 6) marks.push({ type: "point", x: a + 1, y: b + k, color: COLORS.hyp });
+  $("ch-graph").innerHTML = svgGraph([{ fn: x => k / (x - a) + b, color: COLORS.hyp }], marks, { range: 6 });
+}
+function crRender(){
+  const c = parseInt($("cr-c").value, 10);
+  const d = parseInt($("cr-d").value, 10);
+  $("cr-cval").textContent = fnum(c);
+  $("cr-dval").textContent = fnum(d);
+  $("cr-formula").innerHTML = fmtRootShift(c, d);
+  const sv = $("cr-start");
+  sv.textContent = "Начало графика — точка (" + fnum(c) + "; " + fnum(d) + ").";
+  sv.className = "verdict zero";
+  $("cr-notice").innerHTML = '<span class="math">Область определения: <i>x</i> \u2265 ' + fnum(c) +
+    " — под корнем не может стоять отрицательное число. Дальше график идёт только вправо и вверх.</span>";
+  const marks = [];
+  if (Math.abs(c) <= 6 && Math.abs(d) <= 6) marks.push({ type: "point", x: c, y: d, color: COLORS.root, r: 5 });
+  $("cr-graph").innerHTML = svgGraph([{ fn: x => Math.sqrt(x - c) + d, color: COLORS.root, domain: [c, c + 16] }], marks, { range: 6 });
+}
+function conShow(kind){
+  const map = { lin: "con-lin", par: "con-par", hyp: "con-hyp", root: "con-root" };
+  Object.keys(map).forEach(k => { const el = $(map[k]); if (el) el.style.display = (k === kind ? "block" : "none"); });
+  document.querySelectorAll("#m2-chips .btn").forEach(b => b.classList.toggle("picked", b.dataset.k === kind));
+  if (kind === "lin") clRender();
+  else if (kind === "hyp") chRender();
+  else if (kind === "root") crRender();
+  else m2Render();
+}
+document.querySelectorAll("#m2-chips .btn").forEach(b => {
+  b.addEventListener("click", () => conShow(b.dataset.k));
+});
+["cl-k", "cl-b"].forEach(id => $(id).addEventListener("input", clRender));
+$("ch-k").addEventListener("input", chRender);
+$("ch-a").addEventListener("input", chRender);
+$("ch-b").addEventListener("input", chRender);
+["cr-c", "cr-d"].forEach(id => $(id).addEventListener("input", crRender));
+
+/* =================== ГАЛЕРЕЯ СЕМЕЙСТВ (вверху модуля 1) =================== */
+const FAMS = [
+  { key:"lin",  name:"Линейная",  color:COLORS.lin,
+    sliders:[ { p:"k", min:-4, max:4, val:2, skip0:false }, { p:"b", min:-5, max:5, val:1, skip0:false } ],
+    fml:v => (v.k === 0 ? fmtConst(v.b) : fmtLin(v.k, v.b)),
+    fn:v => (x => v.k * x + v.b),
+    marks:v => [{ type:"point", x:0, y:v.b, color:"#41506e", r:4 }],
+    sign:v => (v.k > 0 ? "<i>k</i> &gt; 0 — вверх" : v.k < 0 ? "<i>k</i> &lt; 0 — вниз" : "<i>k</i> = 0 — горизонтальная") +
+      "; точка на оси <i>y</i>: (0; " + fnum(v.b) + ")." },
+  { key:"par",  name:"Парабола",  color:COLORS.par,
+    sliders:[ { p:"a", min:-3, max:3, val:1, skip0:true }, { p:"b", min:-6, max:6, val:0, skip0:false }, { p:"c", min:-5, max:5, val:0, skip0:false } ],
+    fml:v => fmtQuad(v.a, v.b, v.c),
+    fn:v => (x => v.a * x * x + v.b * x + v.c),
+    marks:v => { const x0 = -v.b / (2 * v.a), y0 = v.a * x0 * x0 + v.b * x0 + v.c;
+      const m = [{ type:"vline", x:x0, color:"#c2255c" }];
+      if (Math.abs(x0) <= 6 && Math.abs(y0) <= 6) m.push({ type:"point", x:x0, y:y0, color:COLORS.par });
+      return m; },
+    sign:v => (v.a > 0 ? "<i>a</i> &gt; 0 — ветви вверх, «весёлая» \u222A" : "<i>a</i> &lt; 0 — ветви вниз, «грустная» \u2229") +
+      "; точка на оси <i>y</i>: (0; " + fnum(v.c) + ")." },
+  { key:"hyp",  name:"Гипербола", color:COLORS.hyp,
+    sliders:[ { p:"k", min:-8, max:8, val:3, skip0:true } ],
+    fml:v => fmtHyp(v.k),
+    fn:v => (x => v.k / x),
+    marks:v => Math.abs(v.k) <= 6 ? [{ type:"point", x:1, y:v.k, color:COLORS.hyp }] : [],
+    sign:v => v.k > 0 ? "<i>k</i> &gt; 0 — ветви в I и III четвертях." : "<i>k</i> &lt; 0 — ветви во II и IV четвертях." },
+  { key:"root", name:"Корень",    color:COLORS.root,
+    sliders:[ { p:"c", min:-4, max:4, val:0, skip0:false }, { p:"d", min:-4, max:4, val:0, skip0:false } ],
+    domain:v => [v.c, v.c + 16],
+    fml:v => fmtRootShift(v.c, v.d),
+    fn:v => (x => Math.sqrt(x - v.c) + v.d),
+    marks:v => (Math.abs(v.c) <= 6 && Math.abs(v.d) <= 6) ? [{ type:"point", x:v.c, y:v.d, color:COLORS.root, r:5 }] : [],
+    sign:v => "начало графика — (" + fnum(v.c) + "; " + fnum(v.d) + "); область <i>x</i> \u2265 " + fnum(v.c) + "." }
+];
+const famPrev = {};
+function famRender(f){
+  const v = {};
+  f.sliders.forEach(sl => {
+    let val = parseInt($("fam-" + f.key + "-" + sl.p).value, 10);
+    if (sl.skip0 && val === 0){ val = (famPrev[f.key + sl.p] || 1) > 0 ? -1 : 1; $("fam-" + f.key + "-" + sl.p).value = val; }
+    if (sl.skip0) famPrev[f.key + sl.p] = val;
+    v[sl.p] = val;
+    $("fam-" + f.key + "-" + sl.p + "-val").textContent = fnum(val);
+  });
+  $("fam-fml-" + f.key).innerHTML = f.fml(v);
+  $("fam-sign-" + f.key).innerHTML = '<span class="math">' + f.sign(v) + "</span>";
+  const plot = { fn: f.fn(v), color: f.color };
+  if (f.domain) plot.domain = f.domain(v);
+  $("fam-graph-" + f.key).innerHTML = svgGraph([plot], f.marks ? f.marks(v) : [], { size: 300, range: 6 });
+}
+function buildFamGallery(){
+  const grid = $("fam-grid");
+  if (!grid) return;
+  grid.innerHTML = FAMS.map(f =>
+    '<div class="gitem">' +
+      '<div class="gname">' + f.name + "</div>" +
+      '<div class="formula-big math" id="fam-fml-' + f.key + '"></div>' +
+      '<div class="graphwrap"><div id="fam-graph-' + f.key + '"></div></div>' +
+      f.sliders.map(sl =>
+        '<div class="gsl"><span class="math"><i>' + sl.p + '</i> =</span>' +
+        '<input type="range" id="fam-' + f.key + '-' + sl.p + '" min="' + sl.min + '" max="' + sl.max + '" step="1" value="' + sl.val + '">' +
+        '<span class="slval" id="fam-' + f.key + '-' + sl.p + '-val"></span></div>'
+      ).join("") +
+      '<div class="note" id="fam-sign-' + f.key + '"></div>' +
+    "</div>"
+  ).join("");
+  FAMS.forEach(f => {
+    f.sliders.forEach(sl => $("fam-" + f.key + "-" + sl.p).addEventListener("input", () => famRender(f)));
+    famRender(f);
+  });
+}
+
+/* =================== ЗАПУСК =================== */
+buildFamGallery();
+conShow("lin");
+m1New();
+m2Render();
+m2gNew();
+m3New();
+m4New();
+renderProgressNotes();
+</script>
+</body>
+</html>

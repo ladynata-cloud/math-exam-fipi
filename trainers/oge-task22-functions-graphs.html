@@ -1,0 +1,1506 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>ОГЭ · Задание 22 — Графики функций</title>
+<style>:root{
+  --bg:#f4f6f9; --card:#ffffff; --ink:#1e2733; --muted:#667085; --line:#e4e8ee;
+  --blue:#2563eb; --blue-d:#1d4ed8; --blue-l:#eef4ff; --blue-r:#c7dbff;
+  --green:#15803d; --green-l:#e9fbf0; --green-b:#a7e8bf;
+  --amber:#b45309; --amber-l:#fdf3e3; --amber-b:#f0d199;
+  --curve:#2563eb; --measure:#e8590c; --grid:#eaeef4; --axis:#8794a5; --mark:#e8590c;
+  --radius:14px; --shadow:0 1px 2px rgba(16,24,40,.05),0 8px 24px rgba(16,24,40,.04);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;padding-bottom:60px}
+.wrap{max-width:820px;margin:0 auto;padding:20px 16px}
+header.app-head{padding:14px 16px 4px}
+header.app-head .eyebrow{color:var(--blue-d);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+header.app-head h1{margin:.15em 0 .1em;font-size:24px;letter-spacing:-.01em}
+header.app-head p{margin:0;color:var(--muted);font-size:15px}
+.hidden{display:none !important}
+
+/* module nav */
+.module-nav{display:flex;gap:8px;margin:8px 0 16px;flex-wrap:wrap}
+.mod-btn{flex:1 1 200px;min-width:180px;text-align:left;cursor:pointer;background:var(--card);
+  border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;transition:.15s;box-shadow:var(--shadow)}
+.mod-btn:hover{border-color:var(--blue-r)}
+.mod-btn.active{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-l)}
+.mb-title{display:block;font-weight:700;font-size:15.5px}
+.mb-sub{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+
+/* mode tabs */
+.modes{display:inline-flex;gap:4px;background:#eceff4;border-radius:11px;padding:4px;margin-bottom:14px}
+.mode-btn{border:0;background:transparent;color:var(--muted);font-weight:600;font-size:14px;
+  padding:7px 16px;border-radius:8px;cursor:pointer;transition:.15s}
+.mode-btn.active{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+
+/* cards */
+.card{display:flex;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px 18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.cnum{flex:none;width:28px;height:28px;border-radius:50%;background:var(--blue-l);color:var(--blue-d);
+  font-weight:700;display:flex;align-items:center;justify-content:center;font-size:14px}
+.cbody{flex:1;min-width:0}
+.cbody h3{margin:.1em 0 .4em;font-size:16.5px}
+.cbody p{margin:.45em 0;font-size:15px}
+.cbody .idea{background:var(--blue-l);border-left:3px solid var(--blue);padding:8px 12px;border-radius:0 8px 8px 0;color:#274690}
+code{background:#f0f2f6;border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:13.5px;
+  font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace}
+sub{font-size:.78em}
+
+/* graph */
+.gview{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:10px;margin:6px 0 10px;box-shadow:var(--shadow)}
+svg.grapher{display:block;width:100%;height:auto;max-height:440px;background:#fff;border-radius:8px;touch-action:none}
+.grid{stroke:var(--grid);stroke-width:1}
+.axis{stroke:var(--axis);stroke-width:1.4}
+.axis-lab{fill:var(--muted);font-size:13px;font-weight:600}
+.tick{fill:#9aa5b4;font-size:11px;text-anchor:middle}
+.tick.tickY{text-anchor:end}
+.curveline{stroke:var(--curve);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.dot-filled{fill:var(--curve);stroke:#fff;stroke-width:1.5}
+.dot-open{fill:#fff;stroke:var(--curve);stroke-width:2.2}
+.measure{stroke:var(--measure);stroke-width:2.2;stroke-dasharray:7 5;opacity:.95}
+.measure-lab{fill:var(--measure);font-size:12px;font-weight:700;text-anchor:end}
+.xmark{fill:var(--mark);stroke:#fff;stroke-width:1.5}
+.badge-bg{fill:#fff;stroke:var(--line);stroke-width:1}
+.badge-t1{fill:var(--muted);font-size:9.5px;text-anchor:middle}
+.badge-t2{fill:var(--measure);font-size:17px;font-weight:800;text-anchor:middle}
+
+/* slider */
+.slider-wrap{display:flex;align-items:center;gap:12px;padding:8px 6px 4px}
+.slider-lab{flex:none;min-width:78px;font-weight:700;color:var(--measure);font-size:14px}
+.mslider{flex:1;accent-color:var(--measure);height:22px}
+
+/* statement */
+.statement{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.st-expr{font-size:20px;margin-bottom:8px;overflow-x:auto}
+.st-task{color:var(--ink);font-size:15px}
+.pw{display:inline-flex;align-items:center;gap:6px}
+.pw-brace{font-size:40px;font-weight:300;line-height:.8}
+.pw-rows{display:inline-flex;flex-direction:column;gap:4px}
+.pw-rows>.pw-expr{display:inline}
+.pw-expr{margin-right:14px}
+.pw-cond{color:var(--muted);font-size:14px;margin-left:10px}
+.pw-rows{display:grid;grid-template-columns:auto auto;gap:3px 14px;align-items:center}
+.frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;margin:0 2px}
+.frac .fn{border-bottom:1.6px solid currentColor;padding:0 4px;line-height:1.25}
+.frac .fd{padding:0 4px;line-height:1.25}
+.frac.big{font-size:.92em}
+
+/* buttons */
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);font-weight:600;font-size:14px;
+  padding:8px 15px;border-radius:9px;cursor:pointer;transition:.13s}
+.btn:hover{border-color:var(--blue-r)}
+.btn:disabled{opacity:.5;cursor:default}
+.btn-check{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn-check:hover{background:var(--blue-d)}
+.btn-show,.btn-hint{color:var(--amber);border-color:var(--amber-b);background:var(--amber-l)}
+.btn-retry{background:var(--green-l);border-color:var(--green-b);color:var(--green)}
+.btn-step{background:#f3f0fb;border-color:#dccff2;color:#6d28d9}
+.btn-new{color:var(--muted)}
+
+/* feedback */
+.fb{margin-top:10px;font-size:14.5px;font-weight:600;min-height:1px}
+.fb-ok{color:var(--green)}
+.fb-bad{color:#b42318}
+.fb-peek{color:var(--amber)}
+.fb-peek b{color:var(--ink)}
+
+/* value input */
+.vinput{display:inline-flex;align-items:center;gap:6px;vertical-align:middle}
+.v-dec{width:74px;padding:7px 8px;border:1.5px solid var(--line);border-radius:8px;font-size:15px;text-align:center}
+.v-dec:focus,.v-num:focus,.v-den:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-l)}
+.v-frac{display:inline-flex;flex-direction:column;align-items:center}
+.v-num,.v-den{width:64px;padding:4px 6px;border:1.5px solid var(--line);border-radius:7px;font-size:14px;text-align:center}
+.v-bar{width:64px;height:0;border-top:2px solid var(--ink);margin:3px 0}
+.v-tog{border:1px solid var(--line);background:#f6f8fb;border-radius:7px;width:30px;height:30px;cursor:pointer;font-size:15px;color:var(--muted)}
+.v-tog:hover{border-color:var(--blue-r);color:var(--blue)}
+
+/* answer builder */
+.abuilder{margin-top:4px}
+.ab-parts{display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
+.ab-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:#f8fafc;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.ab-lab{font-weight:700;color:var(--blue-d);font-size:15px}
+.ab-bracket{border:1.5px solid var(--line);border-radius:7px;padding:6px 4px;font-size:16px;background:#fff;cursor:pointer}
+.ab-semi{color:var(--muted);font-weight:700}
+.ab-add{border:1px dashed var(--blue-r);background:var(--blue-l);color:var(--blue-d);font-weight:600;font-size:13.5px;padding:7px 12px;border-radius:9px;cursor:pointer;margin-right:8px}
+.ab-add:hover{background:#e2edff}
+.ab-rm{border:0;background:transparent;color:#b0b8c4;font-size:20px;cursor:pointer;line-height:1;padding:0 4px}
+.ab-rm:hover{color:#b42318}
+.ans-lab{font-weight:700;margin:6px 0 4px;font-size:15px}
+.ans-host{margin:8px 0}
+
+/* steps */
+.steps{margin-top:6px}
+.step-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);transition:.2s}
+.step-card.active{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-l)}
+.step-card.solved{border-color:var(--green-b);background:var(--green-l)}
+.step-card.peeked{border-color:var(--amber-b);background:var(--amber-l)}
+.step-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.step-n{font-weight:800;color:var(--blue-d);font-size:12.5px;background:var(--blue-l);padding:3px 9px;border-radius:20px}
+.step-title{font-weight:700;font-size:15.5px}
+.step-cue{margin-left:auto;font-size:12px;font-weight:700;color:var(--blue);background:#fff;border:1px solid var(--blue-r);padding:2px 9px;border-radius:20px}
+.step-card:not(.active) .step-cue{display:none}
+.step-prompt{font-size:15px;margin-bottom:8px}
+.step-input{margin:6px 0}
+.choices{display:flex;flex-direction:column;gap:7px;margin:4px 0}
+.choice{display:flex;align-items:center;gap:9px;background:#f8fafc;border:1px solid var(--line);border-radius:9px;padding:9px 12px;cursor:pointer;font-size:14.5px}
+.choice:hover{border-color:var(--blue-r)}
+.choice input{accent-color:var(--blue);width:16px;height:16px}
+.all-done{background:var(--green-l);border:1px solid var(--green-b);color:var(--green);font-weight:700;padding:12px 16px;border-radius:var(--radius);text-align:center}
+.step-graph{margin:8px 0}
+.step-footer{margin-top:6px}
+
+/* marathon misc */
+.score{font-size:14px;color:var(--muted);margin-bottom:8px}
+.score b{color:var(--ink)}
+.mhelp{font-size:13px;color:var(--muted);margin:2px 0 8px}
+
+/* quiz */
+.quiz{margin-top:6px}
+.quiz-q{font-size:15px;margin-bottom:8px;font-weight:600}
+.vtx{fill:#fff;stroke:var(--curve);stroke-width:2}
+.vtx-lab{fill:#7a8496;font-size:11px;text-anchor:middle;font-weight:600}
+.asymptote{stroke:#9aa5b4;stroke-width:1.5;stroke-dasharray:4 5}
+
+/* ---- larger tap targets on touch / small screens ---- */
+.mslider{height:26px}
+@media (max-width:560px){
+  .btn{min-height:44px;padding:11px 16px;font-size:15px}
+  .mode-btn{min-height:40px;padding:9px 14px;font-size:15px}
+  .ab-add{min-height:42px;padding:11px 14px;font-size:15px}
+  .ab-bracket{min-height:44px;min-width:44px;font-size:19px;padding:8px}
+  .v-dec{min-height:44px;width:88px;font-size:16px;padding:10px}
+  .v-num,.v-den{min-height:38px;font-size:16px}
+  .choice{min-height:46px;padding:13px 14px;font-size:15.5px}
+  .choice input{width:20px;height:20px}
+  .mslider{height:40px}
+  .slider-wrap{gap:10px;padding:10px 4px 6px}
+  .st-expr{font-size:18px}
+}
+
+/* ---- marathon subtype chips ---- */
+.sub-chips{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:4px 0 12px}
+.chips-lab{color:var(--muted);font-size:13px;font-weight:600;margin-right:2px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--muted);font-weight:600;font-size:13px;padding:6px 12px;border-radius:999px;cursor:pointer;transition:.12s}
+.chip:hover{border-color:var(--blue-r)}
+.chip-on{background:var(--blue);color:#fff;border-color:var(--blue)}
+@media(max-width:560px){.chip{min-height:38px;font-size:14px;padding:8px 14px}.chips-lab{width:100%;margin-bottom:2px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="app-head">
+<div class="eyebrow">ОГЭ · математика · задание 22</div>
+<h1>Графики функций</h1>
+<p>Строим график, ведём прямую — и считаем общие точки. Кусочные функции, модуль и гипербола с выколотой точкой.</p>
+</header>
+<div id="app"></div>
+</div>
+<script>
+(function(){
+/* ===== ENGINE ===== */
+// ===== Exact rational engine for OGE Task 22 (BigInt fractions) =====
+function bgcd(a,b){a=a<0n?-a:a;b=b<0n?-b:b;while(b){[a,b]=[b,a%b];}return a;}
+class Frac{
+  constructor(n,d=1n){n=BigInt(n);d=BigInt(d);if(d===0n)throw new Error('den 0');if(d<0n){n=-n;d=-d;}const g=bgcd(n,d)||1n;this.n=n/g;this.d=d/g;}
+  static fromNum(x){ // exact from decimal string/number
+    if(typeof x==='bigint')return new Frac(x,1n);
+    if(typeof x==='number')x=x.toString();
+    x=String(x).trim();let neg=false;if(x[0]==='-'){neg=true;x=x.slice(1);}else if(x[0]==='+')x=x.slice(1);
+    let n,d;if(x.includes('/')){const[a,b]=x.split('/');n=BigInt(a);d=BigInt(b);}
+    else if(x.includes('.')){const[i,f]=x.split('.');n=BigInt((i||'0')+f);d=10n**BigInt(f.length);}
+    else{n=BigInt(x||'0');d=1n;}
+    if(neg)n=-n;return new Frac(n,d);
+  }
+  add(o){return new Frac(this.n*o.d+o.n*this.d,this.d*o.d);}
+  sub(o){return new Frac(this.n*o.d-o.n*this.d,this.d*o.d);}
+  mul(o){return new Frac(this.n*o.n,this.d*o.d);}
+  div(o){return new Frac(this.n*o.d,this.d*o.n);}
+  neg(){return new Frac(-this.n,this.d);}
+  cmp(o){const l=this.n*o.d,r=o.n*this.d;return l<r?-1:(l>r?1:0);}
+  eq(o){return this.cmp(o)===0;}
+  sign(){return this.n<0n?-1:(this.n>0n?1:0);}
+  isZero(){return this.n===0n;}
+  toNum(){return Number(this.n)/Number(this.d);}
+  toString(){return this.d===1n?`${this.n}`:`${this.n}/${this.d}`;}
+}
+const Fr=(n,d=1n)=>new Frac(n,d);
+const NEG_INF=Symbol('-inf'),POS_INF=Symbol('+inf');
+
+// quadratic root counts for a x^2 + b x + c = m
+function quadCounts(a,b,c,m){
+  const cm=c.sub(m);
+  const D=b.mul(b).sub(Fr(4).mul(a).mul(cm)); // b^2-4a(c-m)
+  if(D.sign()<0)return {ge:()=>0,gt:()=>0,total:0};
+  const xv=b.neg().div(a.mul(Fr(2)));
+  const total=D.isZero()?1:2;
+  const gval=t=>a.mul(t).mul(t).add(b.mul(t)).add(cm);
+  const ge=t=>{
+    if(D.isZero())return t.cmp(xv)<=0?1:0;
+    const s=gval(t).sign(),below=t.cmp(xv)<0;
+    if(a.sign()>0){if(s<0)return 1;if(s>0)return below?2:0;return below?2:1;}
+    else{if(s>0)return 1;if(s<0)return below?2:0;return below?2:1;}
+  };
+  const gt=t=>{
+    if(D.isZero())return t.cmp(xv)<0?1:0;
+    const s=gval(t).sign(),below=t.cmp(xv)<0;
+    if(a.sign()>0){if(s<0)return 1;if(s>0)return below?2:0;return below?1:0;}
+    else{if(s>0)return 1;if(s<0)return below?2:0;return below?1:0;}
+  };
+  return {ge,gt,total};
+}
+function segCount(seg,m){
+  if(seg.kind==='lin'){
+    const[p,q]=seg.coef;
+    if(p.isZero())return 0;
+    const x=m.sub(q).div(p);
+    const lo=seg.lo,hi=seg.hi;
+    const okl=(lo===NEG_INF)||(x.cmp(lo)>0)||(x.cmp(lo)===0&&seg.loCl);
+    const okh=(hi===POS_INF)||(x.cmp(hi)<0)||(x.cmp(hi)===0&&seg.hiCl);
+    return (okl&&okh)?1:0;
+  } else if(seg.kind==='hyp'){
+    const[k,a,b]=seg.coef;
+    if(m.eq(b))return 0;               // y=b is horizontal asymptote, no solution
+    const x=a.add(k.div(m.sub(b)));    // k/(x-a)+b=m  =>  x=a+k/(m-b)
+    const lo=seg.lo,hi=seg.hi;
+    const okl=(lo===NEG_INF)||(x.cmp(lo)>0)||(x.cmp(lo)===0&&seg.loCl);
+    const okh=(hi===POS_INF)||(x.cmp(hi)<0)||(x.cmp(hi)===0&&seg.hiCl);
+    return (okl&&okh)?1:0;
+  } else {
+    const[a,b,c]=seg.coef;const{ge,gt,total}=quadCounts(a,b,c,m);
+    const lo=seg.lo,hi=seg.hi;
+    if(lo===NEG_INF&&hi===POS_INF)return total;
+    if(lo===NEG_INF)return seg.hiCl?total-gt(hi):total-ge(hi);
+    if(hi===POS_INF)return seg.loCl?ge(lo):gt(lo);
+    const left=seg.loCl?ge(lo):gt(lo);
+    const excl=seg.hiCl?gt(hi):ge(hi);
+    return left-excl;
+  }
+}
+function countH(pieces,m){let s=0;for(const p of pieces)s+=segCount(p,m);return s;}
+function pieceVal(seg,x){if(seg.kind==='lin'){const[p,q]=seg.coef;return p.mul(x).add(q);}if(seg.kind==='hyp'){const[k,a,b]=seg.coef;return k.div(x.sub(a)).add(b);}const[a,b,c]=seg.coef;return a.mul(x).mul(x).add(b.mul(x)).add(c);}
+function criticalMs(pieces){
+  const arr=[];const seen=new Set();
+  const push=f=>{const k=f.toString();if(!seen.has(k)){seen.add(k);arr.push(f);}};
+  for(const s of pieces){
+    if(s.lo!==NEG_INF)push(pieceVal(s,s.lo));
+    if(s.hi!==POS_INF)push(pieceVal(s,s.hi));
+    if(s.kind==='quad'){const[a,b,c]=s.coef;const xv=b.neg().div(a.mul(Fr(2)));push(a.mul(xv).mul(xv).add(b.mul(xv)).add(c));}
+    if(s.kind==='hyp'){push(s.coef[2]);}
+  }
+  arr.sort((x,y)=>x.cmp(y));return arr;
+}
+function solveTarget(pieces,target){
+  const cs=criticalMs(pieces);const seq=[];
+  if(cs.length===0){seq.push({t:'int',lo:NEG_INF,hi:POS_INF,c:countH(pieces,Fr(0))});}
+  else{
+    seq.push({t:'int',lo:NEG_INF,hi:cs[0],c:countH(pieces,cs[0].sub(Fr(1)))});
+    for(let i=0;i<cs.length;i++){
+      seq.push({t:'pt',v:cs[i],c:countH(pieces,cs[i])});
+      if(i+1<cs.length){const mid=cs[i].add(cs[i+1]).div(Fr(2));seq.push({t:'int',lo:cs[i],hi:cs[i+1],c:countH(pieces,mid)});}
+    }
+    seq.push({t:'int',lo:cs[cs.length-1],hi:POS_INF,c:countH(pieces,cs[cs.length-1].add(Fr(1)))});
+  }
+  const out=[];let i=0;const n=seq.length;
+  while(i<n){
+    if(seq[i].c!==target){i++;continue;}
+    let j=i;while(j+1<n&&seq[j+1].c===target)j++;
+    const run=seq.slice(i,j+1),first=run[0],last=run[run.length-1];
+    if(run.length===1&&first.t==='pt'){out.push({type:'point',v:first.v});}
+    else{
+      let lo=first.t==='int'?first.lo:first.v;let loCl=first.t==='pt';
+      let hi=last.t==='int'?last.hi:last.v;let hiCl=last.t==='pt';
+      if(lo===NEG_INF)loCl=false;if(hi===POS_INF)hiCl=false;
+      out.push({type:'interval',lo,hi,loCl,hiCl});
+    }
+    i=j+1;
+  }
+  return out;
+}
+function numStr(x){if(x===NEG_INF)return'-∞';if(x===POS_INF)return'+∞';return x.toString();}
+function fmtAnswer(atoms){
+  if(atoms.length===0)return'нет таких значений';
+  return atoms.map(a=>a.type==='point'?`m=${numStr(a.v)}`:`m∈${a.loCl?'[':'('}${numStr(a.lo)};${numStr(a.hi)}${a.hiCl?']':')'}`).join(' и ');
+}
+
+/* ===== GENERATORS ===== */
+
+// ---------- set equality (for grading) ----------
+function memberPoint(atoms,p){
+  for(const a of atoms){
+    if(a.type==='point'){if(a.v.eq(p))return true;}
+    else{
+      const gl=(a.lo===NEG_INF)||(p.cmp(a.lo)>0)||(p.cmp(a.lo)===0&&a.loCl);
+      const gh=(a.hi===POS_INF)||(p.cmp(a.hi)<0)||(p.cmp(a.hi)===0&&a.hiCl);
+      if(gl&&gh)return true;
+    }
+  } return false;
+}
+function memberInterior(atoms,p){ // p strictly interior to some interval atom
+  for(const a of atoms){ if(a.type==='interval'){
+    const gl=(a.lo===NEG_INF)||(p.cmp(a.lo)>0);
+    const gh=(a.hi===POS_INF)||(p.cmp(a.hi)<0);
+    if(gl&&gh)return true;
+  }} return false;
+}
+function setsEqual(A,B){
+  const pts=[];
+  for(const S of [A,B])for(const a of S){
+    if(a.type==='point')pts.push(a.v);
+    else{if(a.lo!==NEG_INF)pts.push(a.lo);if(a.hi!==POS_INF)pts.push(a.hi);}
+  }
+  // unique sorted
+  const seen=new Set(),U=[];
+  for(const p of pts){const k=p.toString();if(!seen.has(k)){seen.add(k);U.push(p);}}
+  U.sort((x,y)=>x.cmp(y));
+  // test each endpoint
+  for(const p of U){if(memberPoint(A,p)!==memberPoint(B,p))return false;}
+  // test gaps: before first, between, after last
+  const test=q=>{if(memberInterior(A,q)!==memberInterior(B,q))return false;return true;};
+  if(U.length===0){return memberInterior(A,Fr(0))===memberInterior(B,Fr(0));}
+  if(!test(U[0].sub(Fr(1))))return false;
+  if(!test(U[U.length-1].add(Fr(1))))return false;
+  for(let i=0;i+1<U.length;i++){if(!test(U[i].add(U[i+1]).div(Fr(2))))return false;}
+  return true;
+}
+
+// ---------- helpers ----------
+const rint=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=arr=>arr[Math.floor(Math.random()*arr.length)];
+const cf=x=>x instanceof Frac?x:Frac.fromNum(x);
+function segQuad(a,b,c,lo,hi,loCl=true,hiCl=true){return{kind:'quad',coef:[cf(a),cf(b),cf(c)],lo,hi,loCl,hiCl};}
+function segLin(p,q,lo,hi,loCl=true,hiCl=true){return{kind:'lin',coef:[cf(p),cf(q)],lo,hi,loCl,hiCl};}
+function answerComplexity(atoms){ // reward "point + interval" style answers, penalize trivial/empty
+  if(atoms.length===0)return -1;
+  let pts=0,ints=0,badDen=false;
+  for(const a of atoms){
+    if(a.type==='point'){pts++;if(a.v.d>16n)badDen=true;}
+    else{ints++;if((a.lo!==NEG_INF&&a.lo.d>16n)||(a.hi!==POS_INF&&a.hi.d>16n))badDen=true;
+          if(a.lo===NEG_INF||a.hi===POS_INF)return -1;} // reject infinite rays (ugly for these targets)
+  }
+  if(badDen)return -1;
+  return atoms.length + pts; // prefer 2-part answers with a point
+}
+
+// ---------- Module 1: parabola + line ----------
+function genPiecewise(){
+  for(let tries=0;tries<4000;tries++){
+    const a=pick([Fr(1),Fr(-1)]);
+    const xv=Fr(rint(-3,3));                 // integer vertex x
+    const yv=Fr(rint(-4,5));                 // integer vertex y
+    const b=Fr(-2).mul(a).mul(xv);
+    const c=yv.add(a.mul(xv).mul(xv));       // c so that q(xv)=yv
+    const paraRight=Math.random()<0.7;       // parabola on x>=x0 (else x<=x0)
+    const xvn=Math.round(xv.toNum());
+    const bp=Fr(rint(xvn-3,xvn+3));           // integer breakpoint near vertex
+    const p=pick([Fr(1),Fr(-1),Fr(2),Fr(-2),Fr(3,2),Fr(-3,2),Fr(5,2),Fr(-5,2)]);
+    const q=Fr(rint(-6,6)).add(pick([Fr(0),Fr(1,2),Fr(-1,2)]));
+    const target=pick([2,2,2,1]);
+    let pieces;
+    if(paraRight){
+      pieces=[segQuad(a,b,c,bp,POS_INF,true,true), segLin(p,q,NEG_INF,bp,true,false)];
+    }else{
+      pieces=[segQuad(a,b,c,NEG_INF,bp,true,true), segLin(p,q,bp,POS_INF,false,true)];
+    }
+    const atoms=solveTarget(pieces,target);
+    if(answerComplexity(atoms)<2)continue;
+    // require at least one bounded interval AND coefficients readable
+    const hasInterval=atoms.some(x=>x.type==='interval');
+    const hasPoint=atoms.some(x=>x.type==='point');
+    if(!(hasInterval&&hasPoint))continue;
+    return {kind:'piecewise',a,b,c,p,q,bp,paraRight,xv,yv,target,pieces,atoms,answer:fmtAnswer(atoms)};
+  }
+  return null;
+}
+
+// ---------- Module 2: modulus ----------
+function genModulus(){
+  for(let t=0;t<4000;t++){
+    const sub=pick(['absquad','xabsx','sqminuslin','alinplusquad']);
+    let pieces,target,meta;
+    if(sub==='absquad'){ // |x^2+bx+c| with two distinct integer roots, target 3 -> m=|vertex|
+      const r1=rint(-5,3), r2=r1+rint(1,5); // r1<r2
+      const b=-(r1+r2), c=r1*r2;            // x^2+bx+c=(x-r1)(x-r2)
+      const xvN=(r1+r2)/2; // may be half
+      // decompose |q|: (-inf,r1) up, [r1,r2] reflected, (r2,inf) up
+      pieces=[segQuad(1,b,c,NEG_INF,Fr(r1),true,false),
+              segQuad(-1,-b,-c,Fr(r1),Fr(r2),true,true),
+              segQuad(1,b,c,Fr(r2),POS_INF,false,true)];
+      target=pick([4,4,3]); meta={type:'absquad',b,c,r1,r2};
+    } else if(sub==='xabsx'){ // x|x| + B|x| + Cx, breakpoint 0, two parabolas through origin, target 2
+      const B=rint(-4,4), C=pick([-6,-5,-4,-3,-2,2,3,4,5,6]);
+      // x>=0: x^2 + B x + C x = x^2+(B+C)x ; x<0: -x^2 -B x + C x = -x^2 +(C-B)x
+      pieces=[segQuad(1,B+C,0,Fr(0),POS_INF,true,true),
+              segQuad(-1,C-B,0,NEG_INF,Fr(0),true,false)];
+      target=2; meta={type:'xabsx',B,C};
+    } else if(sub==='sqminuslin'){ // x^2 - |k x + t|, breakpoint -t/k, two up-parabolas, target 3
+      const k=pick([2,3,4,6]), t=pick([1,3,5,7]);
+      const bp=Fr(-t,k);
+      // x>=-t/k: x^2 -(kx+t)=x^2 -k x - t ; x<-t/k: x^2+(kx+t)=x^2+k x + t
+      pieces=[segQuad(1,k,t,NEG_INF,bp,true,false),
+              segQuad(1,-k,-t,bp,POS_INF,true,true)];
+      target=3; meta={type:'sqminuslin',k,t,bp};
+    } else { // a|x+p| + quadratic (down parabola family like #19-21), target 3
+      const s=pick([2,3,5]); const P=rint(-8,8);
+      const A=pick([1,-1]);  const bq=rint(-6,6), cq=rint(-8,8);
+      const bp=Fr(-P);
+      // x>=-P: s(x+P)+A x^2+bq x+cq ; x<-P: -s(x+P)+...
+      pieces=[segQuad(A,bq+s,cq+s*P,bp,POS_INF,true,true),
+              segQuad(A,bq-s,cq-s*P,NEG_INF,bp,true,false)];
+      target=3; meta={type:'alinplusquad',s,P,A,bq,cq};
+    }
+    const atoms=solveTarget(pieces,target);
+    if(answerComplexity(atoms)<1)continue;
+    // want the classic 2-value answer (two isolated m, or interval+point)
+    if(atoms.length<1||atoms.length>3)continue;
+    return {kind:'modulus',sub,pieces,target,atoms,answer:fmtAnswer(atoms),meta};
+  }
+  return null;
+}
+
+// ---------- Module 3: hyperbola / parabola with hole ----------
+function fmtVals(vals,varname){return vals.map(v=>`${varname}=${numStr(v)}`).join(' и ');}
+function genHyperbola(){
+  const sub=pick(['inv_kx','shift_m']);
+  if(sub==='inv_kx'){ // y=(a x+b)/(a x^2+b x) = 1/x, hole x_h=-b/a ; y=kx one point ; k=1/x_h^2
+    for(let t=0;t<2000;t++){
+      const a=pick([1,2,3,4,5,7,9]); const b=pick([-9,-7,-6,-5,-4,-3,-2,-1,1,2,3,4,5,6,7]);
+      if(b%a===0)continue; // hole at integer -> still fine but keep variety
+      const xh=Fr(-b,a);        // hole x
+      if(xh.isZero())continue;
+      const k=Fr(1).div(xh.mul(xh)); // = a^2/b^2
+      if(k.d>200n||k.n>2000n)continue;
+      return {kind:'hyperbola',sub,a,b,xh,yh:Fr(1).div(xh),vals:[k],varname:'k',
+              answer:fmtVals([k],'k'),target:1,mode:'kx_one'};
+    }
+  } else { // y = C - (x+p)/(x^2+p x) = C - 1/x, hole x_h=-p ; y=m no points ; m in {C, C-1/x_h}
+    for(let t=0;t<2000;t++){
+      const C=rint(-4,4); const p=pick([-6,-5,-4,-3,-2,-1,1,2,3,4,5,6]);
+      const xh=Fr(-p); if(xh.isZero())continue;
+      const mHole=Fr(C).sub(Fr(1).div(xh));
+      const vals=[Fr(C),mHole];
+      // ensure distinct & clean
+      if(vals[0].eq(vals[1]))continue;
+      if(mHole.d>16n)continue;
+      return {kind:'hyperbola',sub,C,p,xh,vals,varname:'m',
+              answer:fmtVals(vals,'m'),target:0,mode:'m_none'};
+    }
+  }
+  return null;
+}
+
+
+/* ---------- (A) Module 3: parabola with hole, y=kx one common point ---------- */
+// downward parabola y = -(x^2+p), hole at x_h. line kx: x^2 + k x + p = 0.
+function countPH(p,xh,k){
+  const disc=k.mul(k).sub(Fr(4).mul(p));const s=disc.sign();
+  const holeRoot=xh.mul(xh).add(k.mul(xh)).add(p).isZero();
+  if(s<0)return 0;
+  if(s===0){const xr=k.neg().div(Fr(2));return xr.eq(xh)?0:1;}
+  return holeRoot?1:2;
+}
+function genParabHole(){
+  for(let t=0;t<4000;t++){
+    const sq=pick([Fr(1),Fr(2),Fr(3)]);           // p = sq^2 (integer perfect square)
+    const p=sq.mul(sq);
+    const xh=Fr(rint(-3,3));                        // integer hole abscissa
+    if(xh.isZero())continue;
+    if(xh.eq(sq)||xh.eq(sq.neg()))continue;         // hole = tangent point -> degenerate
+    const yh=xh.mul(xh).add(p).neg();               // -(x_h^2+p)
+    const cand=[sq.mul(Fr(2)),sq.mul(Fr(-2)),yh.div(xh)];
+    const vals=[],seen=new Set();
+    for(const k of cand){if(countPH(p,xh,k)===1){const key=k.toString();if(!seen.has(key)){seen.add(key);vals.push(k);}}}
+    vals.sort((a,b)=>a.cmp(b));
+    if(vals.length<2)continue;                       // want an interesting multi-answer
+    if(vals.some(v=>v.d>16n))continue;
+    return {kind:'hyperbola',sub:'parab_kx',sq,p,xh,yh,vals,varname:'k',
+            answer:fmtVals(vals,'k'),target:1};
+  }
+  return null;
+}
+
+/* ---------- (B) Module 1: piecewise parabola + hyperbola branch ---------- */
+function genPieceHyp(){
+  for(let t=0;t<6000;t++){
+    const x0=Fr(rint(-2,2));
+    const hypRight=Math.random()<0.5;
+    const d=rint(1,2);
+    const asym=hypRight?x0.sub(Fr(d)):x0.add(Fr(d));  // asymptote kept outside the hyp domain
+    const kk=pick([1,2,3])*d*(Math.random()<0.5?1:-1); // divisible by d -> v0 integer
+    const k=Fr(kk);
+    const b=Fr(rint(-3,3));
+    const v0=k.div(x0.sub(asym)).add(b);              // continuity value at x0 (integer)
+    const ap=pick([Fr(1),Fr(-1)]);
+    const bp=Fr(rint(-4,4));
+    const cp=v0.sub(ap.mul(x0).mul(x0)).sub(bp.mul(x0));
+    let pieces;
+    if(hypRight){
+      pieces=[{kind:'quad',coef:[ap,bp,cp],lo:NEG_INF,hi:x0,loCl:true,hiCl:true},
+              {kind:'hyp',coef:[k,asym,b],lo:x0,hi:POS_INF,loCl:false,hiCl:true}];
+    }else{
+      pieces=[{kind:'hyp',coef:[k,asym,b],lo:NEG_INF,hi:x0,loCl:true,hiCl:false},
+              {kind:'quad',coef:[ap,bp,cp],lo:x0,hi:POS_INF,loCl:true,hiCl:true}];
+    }
+    const target=pick([2,2,3]);
+    const atoms=solveTarget(pieces,target);
+    if(answerComplexity(atoms)<2)continue;
+    if(atoms.length>3)continue;
+    const hasInt=atoms.some(x=>x.type==='interval'),hasPt=atoms.some(x=>x.type==='point');
+    if(!(hasInt&&hasPt)&&atoms.length<2)continue;
+    return {kind:'piecewise',variant:'parhyp',pieces,target,atoms,answer:fmtAnswer(atoms),
+            hypRight,x0,asym,b,k,ap,bp,cp,v0};
+  }
+  return null;
+}
+
+
+/* ===== APP ===== */
+/* ============================================================
+   OGE Task 22 trainer — UI layer (grapher, widgets, modules)
+   Relies on engine + generators inlined into the same scope.
+   ============================================================ */
+'use strict';
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;};
+const SVGNS='http://www.w3.org/2000/svg';
+const svgEl=(tag,attrs={})=>{const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);return e;};
+
+/* ---------- math -> HTML ---------- */
+function supX2(s){return s;}
+function polyN(terms){let out='',first=true;
+  for(const [c,suf] of terms){ if(c===0)continue;
+    if(first){out+=coefLead(c,suf);first=false;} else out+=(suf===''?constAdd(c):coefAdd(c,suf)); }
+  return out===''?'0':out;}
+function hypExprHtml(coef){
+  const k=coef[0],a=coef[1],b=coef[2];
+  const kn=k.sign()<0?'−':''; const kabs=k.sign()<0?k.neg():k;
+  const denom=a.isZero()?'x':(a.sign()>0?`x − ${fracHtml(a)}`:`x + ${fracHtml(a.neg())}`);
+  const frac=`${kn}${fracFromParts(fracHtml(kabs),denom)}`;
+  return frac+(b.isZero()?'':(b.sign()<0?` − ${fracHtml(b.neg())}`:` + ${fracHtml(b)}`));
+}
+function polyHtml(kind,coef){
+  if(kind==='hyp')return hypExprHtml(coef);
+  const f=x=>x instanceof Frac?x:Frac.fromNum(x);
+  const term=(c,suffix,first)=>{
+    c=f(c); if(c.isZero())return '';
+    let sign=c.sign()<0?'−':(first?'':'+');
+    let mag=c.sign()<0?c.neg():c;
+    let num=(mag.eq(Fr(1))&&suffix)?'':fracHtml(mag);
+    return `${first?(c.sign()<0?'−':''):' '+sign+' '}${num}${suffix}`;
+  };
+  if(kind==='lin'){
+    const[p,q]=coef.map(f); let out=''; let first=true;
+    if(!p.isZero()){out+=term(p,'x',true);first=false;}
+    if(!q.isZero()){out+=term(q,'',first);}
+    if(out==='')out='0';
+    return out;
+  }else{
+    const[a,b,c]=coef.map(f); let out=''; let first=true;
+    if(!a.isZero()){out+=term(a,'x²',true);first=false;}
+    if(!b.isZero()){out+=term(b,'x',first);first=false;}
+    if(!c.isZero()){out+=term(c,'',first);}
+    if(out==='')out='0';
+    return out;
+  }
+}
+function fracHtml(fr){
+  fr=fr instanceof Frac?fr:Frac.fromNum(fr);
+  if(fr.d===1n)return `${fr.n}`;
+  const neg=fr.n<0n;const n=neg?-fr.n:fr.n;
+  return `${neg?'−':''}<span class="frac"><span class="fn">${n}</span><span class="fd">${fr.d}</span></span>`;
+}
+function ineqHtml(sym,x){const xn=x instanceof Frac?x:Frac.fromNum(x);return `x ${sym} ${fracHtml(xn)}`;}
+function condHtml(seg){
+  const lo=seg.lo,hi=seg.hi;
+  if(lo===NEG_INF&&hi!==POS_INF)return ineqHtml(seg.hiCl?'≤':'<',hi);
+  if(lo!==NEG_INF&&hi===POS_INF)return ineqHtml(seg.loCl?'≥':'>',lo);
+  if(lo!==NEG_INF&&hi!==POS_INF)return `${fracHtml(lo)} ${seg.loCl?'≤':'<'} x ${seg.hiCl?'≤':'<'} ${fracHtml(hi)}`;
+  return 'x — любое';
+}
+function piecewiseHtml(pieces){
+  const rows=pieces.map(s=>`<span class="pw-expr">${polyHtml(s.kind,s.coef)}</span><span class="pw-cond">${condHtml(s)}</span>`).join('');
+  return `<span class="pw">y =<span class="pw-brace">{</span><span class="pw-rows">${rows}</span></span>`;
+}
+
+/* ============================================================
+   GRAPHER
+   ============================================================ */
+class Grapher{
+  constructor(svg){this.svg=svg;this.W=560;this.H=420;this.pad=8;
+    svg.setAttribute('viewBox',`0 0 ${this.W} ${this.H}`);svg.setAttribute('class','grapher');}
+  setRange(xmin,xmax,ymin,ymax){this.xmin=xmin;this.xmax=xmax;this.ymin=ymin;this.ymax=ymax;
+    this.sx=(this.W-2*this.margin())/(xmax-xmin);this.sy=(this.H-2*this.margin())/(ymax-ymin);
+    // keep square-ish unit if possible
+  }
+  margin(){return 30;}
+  X(x){return this.margin()+(x-this.xmin)*(this.W-2*this.margin())/(this.xmax-this.xmin);}
+  Y(y){return this.H-this.margin()-(y-this.ymin)*(this.H-2*this.margin())/(this.ymax-this.ymin);}
+  clear(){while(this.svg.firstChild)this.svg.removeChild(this.svg.firstChild);}
+  drawAxes(){
+    const g=svgEl('g');this.svg.appendChild(g);
+    const x0=this.xmin,x1=this.xmax,y0=this.ymin,y1=this.ymax;
+    for(let x=Math.ceil(x0);x<=x1;x++){
+      const px=this.X(x);
+      g.appendChild(svgEl('line',{x1:px,y1:this.Y(y0),x2:px,y2:this.Y(y1),class:x===0?'axis':'grid'}));
+    }
+    for(let y=Math.ceil(y0);y<=y1;y++){
+      const py=this.Y(y);
+      g.appendChild(svgEl('line',{x1:this.X(x0),y1:py,x2:this.X(x1),y2:py,class:y===0?'axis':'grid'}));
+    }
+    // arrows + labels
+    g.appendChild(svgEl('line',{x1:this.X(x0),y1:this.Y(0),x2:this.X(x1),y2:this.Y(0),class:'axis'}));
+    g.appendChild(svgEl('line',{x1:this.X(0),y1:this.Y(y0),x2:this.X(0),y2:this.Y(y1),class:'axis'}));
+    const ax=el;
+    const lx=svgEl('text',{x:this.X(x1)-4,y:this.Y(0)-6,class:'axis-lab'});lx.textContent='x';g.appendChild(lx);
+    const ly=svgEl('text',{x:this.X(0)+6,y:this.Y(y1)+12,class:'axis-lab'});ly.textContent='y';g.appendChild(ly);
+    // integer ticks labels (sparse)
+    for(let x=Math.ceil(x0);x<=x1;x++){if(x===0)continue;if((x1-x0)>16&&x%2)continue;
+      const t=svgEl('text',{x:this.X(x),y:this.Y(0)+14,class:'tick'});t.textContent=x;g.appendChild(t);}
+    for(let y=Math.ceil(y0);y<=y1;y++){if(y===0)continue;if((y1-y0)>16&&y%2)continue;
+      const t=svgEl('text',{x:this.X(0)-8,y:this.Y(y)+4,class:'tick tickY'});t.textContent=y;g.appendChild(t);}
+  }
+  // sample one piece into polyline points (math coords), breaking on out-of-range jumps
+  samplePiece(seg,N=240){
+    let lo=seg.lo===NEG_INF?this.xmin-1:Math.max(this.xmin-1,seg.lo.toNum());
+    let hi=seg.hi===POS_INF?this.xmax+1:Math.min(this.xmax+1,seg.hi.toNum());
+    if(hi<lo)return [];
+    const pts=[];
+    for(let i=0;i<=N;i++){const x=lo+(hi-lo)*i/N;
+      const y=pieceVal(seg,Frac.fromNum(x.toFixed(6))).toNum();
+      pts.push([x,y]);}
+    return pts;
+  }
+  drawCurvePieces(pieces,color='curve'){
+    for(const seg of pieces){
+      const pts=this.samplePiece(seg);
+      if(!pts.length)continue;
+      // split into runs that stay within an extended y band to avoid huge spikes
+      let run=[];const flush=()=>{if(run.length>1){
+        const d='M'+run.map(p=>`${this.X(p[0]).toFixed(2)},${this.Y(p[1]).toFixed(2)}`).join(' L');
+        this.svg.appendChild(svgEl('path',{d,class:'curveline '+color,fill:'none'}));}run=[];};
+      const yb0=this.ymin-3,yb1=this.ymax+3;
+      for(const p of pts){if(p[1]<yb0||p[1]>yb1){flush();}else run.push(p);}
+      flush();
+    }
+    this.drawBreakDots(pieces);
+  }
+  drawBreakDots(pieces){
+    // gather endpoints
+    const marks=[]; // {x, y, closed}
+    for(const seg of pieces){
+      if(seg.lo!==NEG_INF)marks.push({x:seg.lo,y:pieceVal(seg,seg.lo),closed:seg.loCl});
+      if(seg.hi!==POS_INF)marks.push({x:seg.hi,y:pieceVal(seg,seg.hi),closed:seg.hiCl});
+    }
+    // group by (x,y): if any closed at that point, it's filled; hollow only if no closed with same value
+    const byXY={};
+    for(const m of marks){const k=m.x.toString()+'|'+m.y.toString();(byXY[k]=byXY[k]||[]).push(m);}
+    for(const k in byXY){
+      const arr=byXY[k];const anyClosed=arr.some(m=>m.closed);const m=arr[0];
+      const px=this.X(m.x.toNum()),py=this.Y(m.y.toNum());
+      if(px<0||px>this.W||py<0||py>this.H)continue;
+      if(anyClosed)this.svg.appendChild(svgEl('circle',{cx:px,cy:py,r:4.5,class:'dot-filled'}));
+      else this.svg.appendChild(svgEl('circle',{cx:px,cy:py,r:4.5,class:'dot-open'}));
+    }
+  }
+  drawHyperbola(fn,holeX,color='curve'){
+    // fn: x(number)->y(number); domain all reals except 0 (asymptote at x=0)
+    for(const [a,b] of [[this.xmin-1,-0.02],[0.02,this.xmax+1]]){
+      const pts=[];const N=400;
+      for(let i=0;i<=N;i++){const x=a+(b-a)*i/N; if(Math.abs(x)<1e-6)continue; pts.push([x,fn(x)]);}
+      let run=[];const flush=()=>{if(run.length>1){const d='M'+run.map(p=>`${this.X(p[0]).toFixed(2)},${this.Y(p[1]).toFixed(2)}`).join(' L');this.svg.appendChild(svgEl('path',{d,class:'curveline '+color,fill:'none'}));}run=[];};
+      const yb0=this.ymin-3,yb1=this.ymax+3;
+      for(const p of pts){if(p[1]<yb0||p[1]>yb1)flush();else run.push(p);}flush();
+    }
+    if(holeX!=null){const hy=fn(holeX);const px=this.X(holeX),py=this.Y(hy);
+      if(px>=0&&px<=this.W&&py>=0&&py<=this.H)this.svg.appendChild(svgEl('circle',{cx:px,cy:py,r:4.5,class:'dot-open'}));}
+  }
+  addMeasureH(m,pieces,extraCount){
+    // draw y=m line + intersection markers; return count
+    const py=this.Y(m);
+    const ln=svgEl('line',{x1:this.X(this.xmin),y1:py,x2:this.X(this.xmax),y2:py,class:'measure'});
+    this.svg.appendChild(ln);this._mline=ln;
+    // markers
+    const g=svgEl('g');this.svg.appendChild(g);this._mmarks=g;
+    const xs=this.intersectH(pieces,m);
+    for(const x of xs){g.appendChild(svgEl('circle',{cx:this.X(x),cy:py,r:5,class:'xmark'}));}
+    // count badge
+    const cnt=(extraCount!=null)?extraCount:countH(pieces,Frac.fromNum(m.toFixed(4)));
+    const badge=svgEl('g');this.svg.appendChild(badge);this._mbadge=badge;
+    const bx=this.W-96,by=14;
+    badge.appendChild(svgEl('rect',{x:bx,y:by,width:86,height:38,rx:6,class:'badge-bg'}));
+    const t1=svgEl('text',{x:bx+43,y:by+16,class:'badge-t1'});t1.textContent='общих точек';badge.appendChild(t1);
+    const t2=svgEl('text',{x:bx+43,y:by+33,class:'badge-t2'});t2.textContent=xs.length;badge.appendChild(t2);
+    const lab=svgEl('text',{x:this.X(this.xmax)-4,y:py-5,class:'measure-lab'});lab.textContent='y='+(Math.round(m*100)/100);badge.appendChild(lab);
+    return xs.length;
+  }
+  intersectH(pieces,m){
+    const out=[];
+    for(const seg of pieces){
+      if(seg.kind==='lin'){const[p,q]=seg.coef.map(c=>c.toNum());if(Math.abs(p)<1e-12)continue;const x=(m-q)/p;if(this.inDom(seg,x))out.push(x);}
+      else if(seg.kind==='hyp'){const[k,a,b]=seg.coef.map(c=>c.toNum());if(Math.abs(m-b)<1e-12)continue;const x=a+k/(m-b);if(this.inDom(seg,x))out.push(x);}
+      else{const[a,b,c]=seg.coef.map(c=>c.toNum());const D=b*b-4*a*(c-m);if(D<-1e-9)continue;const sq=Math.sqrt(Math.max(0,D));
+        for(const x of (D<1e-9?[-b/(2*a)]:[(-b-sq)/(2*a),(-b+sq)/(2*a)])){if(this.inDom(seg,x))out.push(x);}}
+    }
+    // dedupe near-equal
+    out.sort((a,b)=>a-b);const r=[];for(const x of out){if(!r.length||Math.abs(x-r[r.length-1])>1e-6)r.push(x);}return r;
+  }
+  inDom(seg,x){const lo=seg.lo===NEG_INF?-Infinity:seg.lo.toNum();const hi=seg.hi===POS_INF?Infinity:seg.hi.toNum();
+    const okl=(lo===-Infinity)||x>lo+1e-9||(Math.abs(x-lo)<1e-9&&seg.loCl);
+    const okh=(hi===Infinity)||x<hi-1e-9||(Math.abs(x-hi)<1e-9&&seg.hiCl);
+    return okl&&okh;}
+  addLineK(k,drawFn){ // for module 3: line y=kx through origin, count via drawFn(k)->xs
+    const px1=this.X(this.xmin),py1=this.Y(k*this.xmin),px2=this.X(this.xmax),py2=this.Y(k*this.xmax);
+    this.svg.appendChild(svgEl('line',{x1:px1,y1:py1,x2:px2,y2:py2,class:'measure'}));
+    const xs=drawFn(k);const g=svgEl('g');this.svg.appendChild(g);
+    for(const x of xs)g.appendChild(svgEl('circle',{cx:this.X(x),cy:this.Y(k*x),r:5,class:'xmark'}));
+    const bx=this.W-96,by=14;const badge=svgEl('g');this.svg.appendChild(badge);
+    badge.appendChild(svgEl('rect',{x:bx,y:by,width:86,height:38,rx:6,class:'badge-bg'}));
+    const t1=svgEl('text',{x:bx+43,y:by+16,class:'badge-t1'});t1.textContent='общих точек';badge.appendChild(t1);
+    const t2=svgEl('text',{x:bx+43,y:by+33,class:'badge-t2'});t2.textContent=xs.length;badge.appendChild(t2);
+    return xs.length;
+  }
+}
+Grapher.prototype.drawVertex=function(xN,yN,label){
+  const px=this.X(xN),py=this.Y(yN);
+  if(px<-5||px>this.W+5||py<-5||py>this.H+5)return;
+  this.svg.appendChild(svgEl('circle',{cx:px,cy:py,r:3.5,class:'vtx'}));
+  if(label){const t=svgEl('text',{x:px,y:py-9,class:'vtx-lab'});t.textContent=label;this.svg.appendChild(t);}
+};
+Grapher.prototype.drawHLine=function(m,cls,label){
+  const py=this.Y(m);
+  this.svg.appendChild(svgEl('line',{x1:this.X(this.xmin),y1:py,x2:this.X(this.xmax),y2:py,class:cls||'measure'}));
+  if(label!==false){const lab=svgEl('text',{x:this.X(this.xmax)-4,y:py-5,class:'measure-lab'});lab.textContent='y='+(Math.round(m*100)/100);this.svg.appendChild(lab);}
+};
+Grapher.prototype.drawKLine=function(k,cls){
+  this.svg.appendChild(svgEl('line',{x1:this.X(this.xmin),y1:this.Y(k*this.xmin),x2:this.X(this.xmax),y2:this.Y(k*this.xmax),class:cls||'asymptote'}));
+};
+Grapher.prototype.drawHoleDot=function(xN,yN){
+  const px=this.X(xN),py=this.Y(yN);
+  if(px<-5||px>this.W+5||py<-5||py>this.H+5)return;
+  this.svg.appendChild(svgEl('circle',{cx:px,cy:py,r:4.5,class:'dot-open'}));
+};
+function vtxIfIn(g,seg,label){
+  if(seg.kind!=='quad')return;
+  const a=seg.coef[0],b=seg.coef[1];const xv=b.neg().div(a.mul(Fr(2)));
+  const inl=seg.lo===NEG_INF||xv.cmp(seg.lo)>=0;const inh=seg.hi===POS_INF||xv.cmp(seg.hi)<=0;
+  if(inl&&inh){const yv=pieceVal(seg,xv);g.drawVertex(xv.toNum(),yv.toNum(),label);}
+}
+function autoRange(pieces){
+  const ys=[];const xsC=[];
+  for(const s of pieces){
+    if(s.lo!==NEG_INF){ys.push(pieceVal(s,s.lo).toNum());xsC.push(s.lo.toNum());}
+    if(s.hi!==POS_INF){ys.push(pieceVal(s,s.hi).toNum());xsC.push(s.hi.toNum());}
+    if(s.kind==='quad'){const[a,b,c]=s.coef;const xv=b.neg().div(a.mul(Fr(2)));ys.push(pieceVal(s,xv).toNum());xsC.push(xv.toNum());}
+  }
+  // sample within candidate window to catch branch extents
+  let xlo=Math.min(...xsC),xhi=Math.max(...xsC);
+  if(!isFinite(xlo))xlo=-4;if(!isFinite(xhi))xhi=4;
+  let xmin=Math.floor(Math.min(xlo,-1)-2),xmax=Math.ceil(Math.max(xhi,1)+2);
+  for(const s of pieces){for(let x=xmin;x<=xmax;x+=0.5){
+    const inl=s.lo===NEG_INF||x>=s.lo.toNum();const inh=s.hi===POS_INF||x<=s.hi.toNum();
+    if(inl&&inh)ys.push(pieceVal(s,Frac.fromNum(x)).toNum());}}
+  let ymin=Math.min(...ys),ymax=Math.max(...ys);
+  if(!isFinite(ymin))ymin=-6;if(!isFinite(ymax))ymax=6;
+  ymin=Math.floor(ymin-1.5);ymax=Math.ceil(ymax+1.5);
+  // clamp size
+  if(ymax-ymin>22){ymin=Math.max(ymin,-11);ymax=Math.min(ymax,11);}
+  if(xmax-xmin>22){const mid=(xmin+xmax)/2;xmin=Math.floor(mid-10);xmax=Math.ceil(mid+10);}
+  return {xmin,xmax,ymin,ymax};
+}
+
+/* ============================================================
+   VALUE INPUT (decimal <-> stacked fraction) + builders
+   ============================================================ */
+function makeValueInput(){
+  const wrap=el('span','vinput');
+  const dec=el('input','v-dec');dec.type='text';dec.inputMode='decimal';dec.placeholder='0';
+  const frac=el('span','v-frac hidden');
+  const num=el('input','v-num');num.type='text';num.placeholder='';
+  const den=el('input','v-den');den.type='text';den.placeholder='';
+  const bar=el('span','v-bar');
+  frac.append(num,bar,den);
+  const tog=el('button','v-tog');tog.type='button';tog.title='Дробь / десятичная';tog.textContent='½';
+  let mode='dec';
+  tog.onclick=()=>{if(mode==='dec'){mode='frac';dec.classList.add('hidden');frac.classList.remove('hidden');
+      // migrate if possible
+      const f=readDec();if(f){num.value=`${f.n<0n?'-':''}${f.n<0n?-f.n:f.n}`;den.value=`${f.d}`;}num.focus();}
+    else{mode='dec';frac.classList.add('hidden');dec.classList.remove('hidden');
+      try{const f=readFrac();if(f)dec.value=f.d===1n?`${f.n}`:f.toString();}catch(e){}dec.focus();}};
+  function readDec(){const v=dec.value.trim();if(v==='')return null;try{return Frac.fromNum(v.replace(',','.'));}catch(e){return null;}}
+  function readFrac(){const n=num.value.trim(),d=den.value.trim();if(n===''||d==='')return null;try{return new Frac(BigInt(n),BigInt(d));}catch(e){return null;}}
+  wrap.append(dec,frac,tog);
+  return {el:wrap,getFrac:()=>mode==='dec'?readDec():readFrac(),
+    setFrac:(f)=>{mode='dec';frac.classList.add('hidden');dec.classList.remove('hidden');dec.value=f?(f.d===1n?`${f.n}`:f.toString()):'';},
+    clear:()=>{dec.value='';num.value='';den.value='';}};
+}
+
+function makeAnswerBuilder(){
+  const box=el('div','abuilder');
+  const parts=el('div','ab-parts');
+  const controls=el('div','ab-controls');
+  const addP=el('button','ab-add');addP.type='button';addP.textContent='+ отдельное значение';
+  const addI=el('button','ab-add');addI.type='button';addI.textContent='+ промежуток';
+  controls.append(addP,addI);box.append(parts,controls);
+  const items=[];
+  function rmBtn(row,item){const b=el('button','ab-rm');b.type='button';b.textContent='×';b.title='Удалить';b.onclick=()=>{parts.removeChild(row);const i=items.indexOf(item);if(i>=0)items.splice(i,1);};return b;}
+  addP.onclick=()=>{const row=el('div','ab-row');const vi=makeValueInput();
+    const item={type:'point',vi};row.append(el('span','ab-lab','m ='),vi.el,rmBtn(row,item));parts.appendChild(row);items.push(item);};
+  addI.onclick=()=>{const row=el('div','ab-row');
+    const lb=el('select','ab-bracket');lb.innerHTML='<option value="[">[</option><option value="(">(</option>';
+    const rb=el('select','ab-bracket');rb.innerHTML='<option value="]">]</option><option value=")">)</option>';
+    const v1=makeValueInput(),v2=makeValueInput();
+    const item={type:'interval',lb,rb,v1,v2};
+    row.append(el('span','ab-lab','m ∈'),lb,v1.el,el('span','ab-semi',';'),v2.el,rb,rmBtn(row,item));
+    parts.appendChild(row);items.push(item);};
+  return {el:box,
+    getAtoms:()=>{const atoms=[];for(const it of items){
+      if(it.type==='point'){const f=it.vi.getFrac();if(f===null)return null;atoms.push({type:'point',v:f});}
+      else{const a=it.v1.getFrac(),b=it.v2.getFrac();if(a===null||b===null)return null;
+        if(a.cmp(b)>0)return null; atoms.push({type:'interval',lo:a,hi:b,loCl:it.lb.value==='[',hiCl:it.rb.value===']'});}
+    }return atoms;},
+    isEmpty:()=>items.length===0,
+    clear:()=>{items.length=0;parts.innerHTML='';}};
+}
+
+function makeValueList(varname){
+  const box=el('div','abuilder');const parts=el('div','ab-parts');
+  const add=el('button','ab-add');add.type='button';add.textContent='+ значение';
+  box.append(parts,add);const items=[];
+  function rmBtn(row,item){const b=el('button','ab-rm');b.type='button';b.textContent='×';b.onclick=()=>{parts.removeChild(row);const i=items.indexOf(item);if(i>=0)items.splice(i,1);};return b;}
+  add.onclick=()=>{const row=el('div','ab-row');const vi=makeValueInput();const item={vi};row.append(el('span','ab-lab',varname+' ='),vi.el,rmBtn(row,item));parts.appendChild(row);items.push(item);};
+  add.onclick();
+  return {el:box,getVals:()=>{const v=[];for(const it of items){const f=it.vi.getFrac();if(f===null)return null;v.push(f);}return v;},
+    clear:()=>{items.length=0;parts.innerHTML='';add.onclick();}};
+}
+function valsEqual(a,b){if(a.length!==b.length)return false;const norm=x=>x.map(f=>f.toString()).sort();const A=norm(a),B=norm(b);return A.every((x,i)=>x===B[i]);}
+
+/* feedback helper */
+function feedback(node,ok,msgOk,msgBad){node.className='fb '+(ok?'fb-ok':'fb-bad');node.textContent=ok?msgOk:msgBad;}
+function feedbackPeek(node,msg){node.className='fb fb-peek';node.textContent=msg;}
+
+
+/* ============================================================
+   GRAPH VIEW helpers
+   ============================================================ */
+function graphSpec(problem){
+  if(problem.kind==='hyperbola'){
+    if(problem.sub==='inv_kx'){
+      const xh=problem.xh.toNum();
+      return {type:'hyper',fn:x=>1/x,holeX:xh,measure:'K',
+        intersectK:k=>{if(k<=0)return[];const r=1/Math.sqrt(k);return [-r,r].filter(x=>Math.abs(x-xh)>1e-6);}};
+    }else if(problem.sub==='parab_kx'){
+      const pN=problem.p.toNum(),xhN=problem.xh.toNum(),yhN=problem.yh.toNum();
+      const quadSeg={kind:'quad',coef:[Fr(-1),Fr(0),problem.p.neg()],lo:NEG_INF,hi:POS_INF,loCl:true,hiCl:true};
+      return {type:'parabhole',quadSeg,holeX:xhN,holeY:yhN,pN,measure:'K',
+        intersectK:k=>{const D=k*k-4*pN;if(D<-1e-9)return[];const s=Math.sqrt(Math.max(0,D));
+          const xs=D<1e-9?[-k/2]:[(-k-s)/2,(-k+s)/2];return xs.filter(x=>Math.abs(x-xhN)>1e-6);}};
+    }else{
+      const C=problem.C,xh=problem.xh.toNum();
+      return {type:'hyper',fn:x=>C-1/x,holeX:xh,measure:'H',
+        intersectHm:m=>{if(Math.abs(m-C)<1e-9)return[];const x=1/(C-m);return Math.abs(x-xh)>1e-6?[x]:[];}};
+    }
+  }
+  return {type:'pieces',pieces:problem.pieces,measure:problem.kind==='hyperbola'?'H':'H'};
+}
+function hyperRange(holeX,fn){
+  let xmin=-7,xmax=7,ymin=-7,ymax=7;
+  const hx=holeX,hy=fn(holeX);
+  if(hx<xmin+1)xmin=Math.floor(hx-2);if(hx>xmax-1)xmax=Math.ceil(hx+2);
+  if(hy<ymin+1)ymin=Math.floor(hy-2);if(hy>ymax-1)ymax=Math.ceil(hy+2);
+  return {xmin,xmax,ymin,ymax};
+}
+function parabHoleRange(spec){
+  const R=Math.max(Math.abs(spec.holeX),Math.sqrt(spec.pN),3)+1.5;
+  const xm=Math.ceil(R);
+  let ymin=Math.min(spec.holeY,-2*spec.pN)-1.5; ymin=Math.max(Math.floor(ymin),-12);
+  return {xmin:-xm,xmax:xm,ymin,ymax:2};
+}
+function specRange(spec){
+  if(spec.type==='pieces')return autoRange(spec.pieces);
+  if(spec.type==='hyper')return hyperRange(spec.holeX,spec.fn);
+  return parabHoleRange(spec);
+}
+function drawStatic(g,problem){
+  const spec=graphSpec(problem);const r=specRange(spec);
+  g.setRange(r.xmin,r.xmax,r.ymin,r.ymax);g.clear();g.drawAxes();
+  if(spec.type==='pieces')g.drawCurvePieces(spec.pieces);
+  else if(spec.type==='hyper')g.drawHyperbola(spec.fn,spec.holeX);
+  else {g.drawCurvePieces([spec.quadSeg]);g.drawHoleDot(spec.holeX,spec.holeY);}
+  return spec;
+}
+function drawWithMeasure(g,problem,val){
+  const spec=drawStatic(g,problem);
+  if(spec.type==='pieces')g.addMeasureH(val,spec.pieces);
+  else if(spec.measure==='K')g.addLineK(val,spec.intersectK);
+  else g.addMeasureH(val,[],spec.intersectHm(val).length),g.svg.appendChild(svgEl('g')); // count already set
+  return spec;
+}
+function makeGraphView(withSlider,measureKind){
+  const box=el('div','gview');
+  const svg=svgEl('svg');box.appendChild(svg);
+  const g=new Grapher(svg);
+  let slider,label,problem,curSpec;
+  if(withSlider){
+    const sc=el('div','slider-wrap');
+    label=el('span','slider-lab','');
+    slider=el('input','mslider');slider.type='range';
+    sc.append(label,slider);box.appendChild(sc);
+    slider.addEventListener('input',()=>redraw());
+  }
+  function redraw(){
+    if(!problem)return;
+    const spec=graphSpec(problem);curSpec=spec;
+    if(!withSlider){drawStatic(g,problem);return;}
+    const v=parseFloat(slider.value);
+    if(spec.type==='pieces'){drawStatic(g,problem);g.addMeasureH(v,spec.pieces);label.innerHTML=(spec.measure==='H'?'y = ':'y = ')+fmtNum(v);}
+    else if(spec.measure==='K'){drawStatic(g,problem);g.addLineK(v,spec.intersectK);label.innerHTML='y = '+fmtNum(v)+'·x';}
+    else{drawStatic(g,problem);g.addMeasureH(v,[],spec.intersectHm(v).length);label.innerHTML='y = '+fmtNum(v);}
+  }
+  function fmtNum(v){return (Math.round(v*100)/100).toString();}
+  return {el:box,
+    show(prob){problem=prob;const spec=graphSpec(prob);
+      if(withSlider){
+        if(spec.type==='pieces'){const r=specRange(spec);slider.min=r.ymin;slider.max=r.ymax;slider.step=0.5;slider.value=((r.ymin+r.ymax)/2).toFixed(1);}
+        else if(spec.measure==='K'){
+          let kmax=3;
+          if(prob.vals&&prob.vals.length)kmax=Math.max(kmax,...prob.vals.map(v=>Math.abs(v.toNum())));
+          kmax=Math.min(Math.ceil(kmax)+1,12);
+          slider.min=-kmax;slider.max=kmax;slider.step=0.05;slider.value=1;}
+        else{const r=hyperRange(spec.holeX,spec.fn);slider.min=r.ymin;slider.max=r.ymax;slider.step=0.25;slider.value=((r.ymin+r.ymax)/2).toFixed(2);}
+      }
+      redraw();},
+    stage(range,drawFn){g.setRange(range.xmin,range.xmax,range.ymin,range.ymax);g.clear();g.drawAxes();drawFn(g);},
+    grapher:g};
+}
+
+/* ============================================================
+   THEORY content
+   ============================================================ */
+const THEORY={
+m1:`
+<div class="card"><div class="cnum">1</div><div class="cbody">
+<h3>Что требуется</h3>
+<p>Дана функция из двух кусков — <b>парабола</b> и <b>прямая</b>, склеенные в точке-границе. Прямая <b>y = m</b> горизонтальна. Нужно найти все <i>m</i>, при которых у неё с графиком <b>ровно N</b> общих точек.</p>
+<p class="idea">Главная идея: построить график и мысленно вести горизонтальную прямую снизу вверх, считая точки пересечения. Число меняется скачком только на «особых» высотах.</p>
+</div></div>
+<div class="card"><div class="cnum">2</div><div class="cbody">
+<h3>Строим каждый кусок</h3>
+<p><b>Парабола</b> y=ax²+bx+c: ветви вверх при a&gt;0, вниз при a&lt;0; вершина x<sub>в</sub> = −b/2a, затем y<sub>в</sub>. <b>Прямая</b> — по двум точкам.</p>
+<p>Каждый кусок рисуем <b>только на своей области</b> (x≥x₀ или x&lt;x₀). Ссылка на карточку 3 — про границу.</p>
+</div></div>
+<div class="card"><div class="cnum">3</div><div class="cbody">
+<h3>Выколотая точка на границе</h3>
+<p>На границе x₀ один кусок задан с «≥» или «≤» — его крайняя точка <b>закрашена</b> (● входит в график). Второй задан со строгим «&lt;» или «&gt;» — его крайняя точка <b>выколота</b> (○ не входит).</p>
+<p>Именно это определяет <b>квадратные</b> [ ] или <b>круглые</b> ( ) скобки в ответе. Не путать!</p>
+</div></div>
+<div class="card explorer"><div class="cnum">4</div><div class="cbody">
+<h3>Двигаем прямую — считаем точки</h3>
+<p>Тяните ползунок: горизонтальная прямая едет вверх-вниз, счётчик показывает число общих точек. Заметьте: число меняется на высоте <b>вершины</b>, <b>выколотой</b> точки и <b>значения на границе</b>.</p>
+<div class="explorer-slot"></div>
+</div></div>
+<div class="card"><div class="cnum">5</div><div class="cbody">
+<h3>Записываем ответ</h3>
+<p>Ответ — объединение промежутков и отдельных значений, например <code>m∈[0;2] и m=4</code>. Следим за скобками: закрашенный конец → <code>[</code> или <code>]</code>, выколотый → <code>(</code> или <code>)</code>.</p>
+<div class="quiz-slot"></div>
+</div></div>`,
+m2:`
+<div class="card"><div class="cnum">1</div><div class="cbody">
+<h3>Модуль меняет часть графика</h3>
+<p>Знак модуля можно раскрыть по знаку выражения внутри — тогда график распадается на <b>два куска-параболы</b>, склеенных в точке, где внутреннее выражение равно нулю.</p>
+<p>Частный случай <b>|f(x)|</b>: часть графика ниже оси Ox <b>отражается вверх</b>.</p>
+</div></div>
+<div class="card"><div class="cnum">2</div><div class="cbody">
+<h3>График |x²+bx+c|</h3>
+<p>Парабола с двумя корнями «ныряет» под ось; после отражения получается <b>горка</b> высотой |y<sub>в</sub>|. Горизонтальная прямая даёт: 0 точек (ниже оси), 2 (на уровне 0), 4 (между 0 и пиком), <b>3 — на высоте пика</b>, 2 (выше пика).</p>
+<p>Наибольшее число общих точек с горизонтальной прямой — <b>4</b>.</p>
+</div></div>
+<div class="card"><div class="cnum">3</div><div class="cbody">
+<h3>Раскрываем модуль</h3>
+<p>Точка излома — там, где <b>внутри модуля ноль</b>. Слева и справа получаем две параболы (или параболу и её отражение). Строим обе на своих областях, находим вершины и значение в точке излома.</p>
+</div></div>
+<div class="card explorer"><div class="cnum">4</div><div class="cbody">
+<h3>Двигаем прямую</h3>
+<p>Ползунок ведёт горизонтальную прямую; счётчик — число общих точек. Особые высоты — вершины кусков и точка стыка.</p>
+<div class="explorer-slot"></div>
+</div></div>
+<div class="card"><div class="cnum">5</div><div class="cbody">
+<h3>Ответ</h3>
+<p>Чаще всего это <b>два особых значения</b> m (высоты вершин/стыка) или значение и промежуток. Аккуратно с концами промежутков.</p>
+</div></div>`,
+m3:`
+<div class="card"><div class="cnum">1</div><div class="cbody">
+<h3>Сокращаем дробь</h3>
+<p>В числителе и знаменателе есть общий множитель. После сокращения остаётся <b>гипербола</b> y=1/x (иногда сдвинутая), но <b>с выколотой точкой</b> там, где сокращённый множитель обращал знаменатель в нуль.</p>
+</div></div>
+<div class="card"><div class="cnum">2</div><div class="cbody">
+<h3>Гипербола с «дыркой»</h3>
+<p>Рисуем 1/x (две ветви), в выколотой точке ставим ○. Абсцисса x₀ выколотой точки — из условия «знаменатель = 0», ордината — по формуле функции.</p>
+</div></div>
+<div class="card"><div class="cnum">3</div><div class="cbody">
+<h3>Прямая y=kx через начало</h3>
+<p>Она всегда проходит через (0;0). С гиперболой 1/x при k&gt;0 у неё <b>две</b> точки пересечения. <b>Ровно одна</b> — когда прямая проходит через выколотую точку: тогда одно из пересечений «пропадает». Отсюда <b>k = 1/x₀²</b>.</p>
+</div></div>
+<div class="card explorer"><div class="cnum">4</div><div class="cbody">
+<h3>Вращаем прямую</h3>
+<p>Меняйте наклон k: следите, когда прямая проходит через выколотую точку — число общих точек падает с 2 до 1.</p>
+<div class="explorer-slot"></div>
+</div></div>
+<div class="card"><div class="cnum">5</div><div class="cbody">
+<h3>Вариант: y=m без общих точек</h3>
+<p>Для <b>сдвинутой</b> гиперболы y=C−1/x горизонтальная прямая y=m не пересекает график в двух случаях: m равно <b>горизонтальной асимптоте</b> y=C (её график не достигает) и m равно высоте <b>выколотой</b> точки.</p>
+</div></div>`
+};
+
+/* ============================================================
+   STEP PLANS
+   ============================================================ */
+function stepPlan(problem){
+  const P=problem;
+
+  /* -------- Module 1: parabola + line -------- */
+  if(P.kind==='piecewise'){
+    if(P.variant==='parhyp'){
+      const quadSeg=P.pieces.find(s=>s.kind==='quad'), hypSeg=P.pieces.find(s=>s.kind==='hyp');
+      const up=quadSeg.coef[0].sign()>0, asymY=hypSeg.coef[2];
+      const dPar=g=>{g.drawCurvePieces([quadSeg]);vtxIfIn(g,quadSeg,'вершина');};
+      const dJoin=g=>{g.drawCurvePieces([quadSeg]);g.drawVertex(P.x0.toNum(),P.v0.toNum(),'стык');};
+      const dBoth=g=>{g.drawCurvePieces([quadSeg,hypSeg]);vtxIfIn(g,quadSeg,'вершина');};
+      return [
+        {title:'Ветви параболы',kind:'choice',draw:dPar,
+         promptHtml:`Один кусок графика — парабола. Коэффициент при x² равен <b>${quadSeg.coef[0].toString()}</b>. Куда направлены ветви?`,
+         options:['вверх','вниз'],answer:up?0:1,
+         showHtml:`Ветви <b>${up?'вверх':'вниз'}</b>. Парабола на графике.`},
+        {title:'Точка стыка',kind:'value',draw:dJoin,
+         promptHtml:`Куски склеены в точке x = <b>${P.x0.toString()}</b>, график непрерывен. Найдите ординату точки стыка — подставьте x = ${P.x0.toString()} в формулу параболы.`,answer:P.v0,
+         hintHtml:`Возьмите тот кусок-параболу и подставьте x = ${P.x0.toString()}.`,
+         showHtml:`Точка стыка (${P.x0.toString()}; ${P.v0.toString()}) — здесь парабола переходит в ветвь гиперболы.`},
+        {title:'Асимптота гиперболы',kind:'value',draw:dBoth,
+         promptHtml:`Второй кусок — ветвь гиперболы. К какой горизонтальной прямой y = ? она приближается (её асимптота)?`,answer:asymY,
+         hintHtml:`В записи k/(x − a) + b горизонтальная асимптота — это y = b.`,
+         showHtml:`Горизонтальная асимптота y = <b>${asymY.toString()}</b>. График построен полностью.`},
+        {title:'Считаем точки',kind:'atoms',draw:dBoth,
+         promptHtml:`График готов. Двигайте прямую ползунком снизу вверх — счётчик показывает число общих точек. При каких m их ровно <b>${P.target}</b>?`,answer:P.atoms,
+         showHtml:`Ответ: <b>${P.answer}</b>.`}
+      ];
+    }
+    const up=P.a.sign()>0, xv=P.xv, yv=P.yv, bp=P.bp;
+    const quadSeg=P.pieces.find(s=>s.kind==='quad'), linSeg=P.pieces.find(s=>s.kind==='lin');
+    const openY=pieceVal(linSeg,bp);
+    const dQuad=g=>{g.drawCurvePieces([quadSeg]);vtxIfIn(g,quadSeg,'вершина');};
+    const dBoth=g=>{g.drawCurvePieces([quadSeg,linSeg]);vtxIfIn(g,quadSeg,'вершина');};
+    return [
+      {title:'Ветви параболы',kind:'choice',draw:dQuad,
+       promptHtml:`Строим первый кусок — параболу. Коэффициент при x² равен <b>${P.a.toString()}</b>. Куда направлены ветви?`,
+       options:['вверх','вниз'],answer:up?0:1,
+       showHtml:`a ${up?'&gt;':'&lt;'} 0 ⇒ ветви <b>${up?'вверх':'вниз'}</b>. Парабола появилась на графике.`},
+      {title:'Вершина параболы',kind:'value',draw:dQuad,
+       promptHtml:`Отметим вершину. Её абсцисса x<sub>в</sub> = ${P.xv.toString()}. Найдите ординату y<sub>в</sub>.`,answer:yv,
+       hintHtml:`Подставьте x = ${P.xv.toString()} в формулу параболы.`,
+       showHtml:`Вершина (${P.xv.toString()}; ${yv.toString()}).`},
+      {title:'Прямая и выколотая точка',kind:'value',draw:dBoth,
+       promptHtml:`Достраиваем второй кусок — прямую (x ${P.paraRight?'&lt;':'&gt;'} ${bp.toString()}). На границе x = ${bp.toString()} её конец <b>выколот</b> ○. Чему равна ордината этой точки?`,answer:openY,
+       hintHtml:`Подставьте x = ${bp.toString()} в формулу прямой.`,
+       showHtml:`Выколота точка (${bp.toString()}; ${openY.toString()}). График построен полностью.`},
+      {title:'Считаем точки',kind:'atoms',draw:dBoth,
+       promptHtml:`График готов. Двигайте прямую ползунком снизу вверх — счётчик показывает число общих точек. При каких m их ровно <b>${P.target}</b>?`,answer:P.atoms,
+       showHtml:`Ответ: <b>${P.answer}</b>.`}
+    ];
+  }
+
+  /* -------- Module 2: modulus -------- */
+  if(P.kind==='modulus'){
+    const m=P.meta;
+    if(m.type==='absquad'){
+      // reflect method
+      const xvO=Fr(-m.b,2), yvO=pieceVal({kind:'quad',coef:[Fr(1),Fr(m.b),Fr(m.c)]},xvO);
+      const peak=yvO.neg();
+      const origSeg={kind:'quad',coef:[Fr(1),Fr(m.b),Fr(m.c)],lo:NEG_INF,hi:POS_INF,loCl:true,hiCl:true};
+      const dOrig=g=>{g.drawCurvePieces([origSeg]);g.drawVertex(xvO.toNum(),yvO.toNum(),'вершина');};
+      const dRefl=g=>{g.drawCurvePieces(P.pieces);g.drawVertex(xvO.toNum(),peak.toNum(),'пик');};
+      return [
+        {title:'Строим параболу под модулем',kind:'value',draw:dOrig,
+         promptHtml:`Сначала строим параболу y = ${quadStr(1,m.b,m.c)} <b>без модуля</b>. Её ветви вверх, она опускается под ось. Найдите ординату вершины y<sub>в</sub>.`,answer:yvO,
+         hintHtml:`x<sub>в</sub> = ${xvO.toString()}; подставьте в параболу (получится отрицательное число).`,
+         showHtml:`Вершина (${xvO.toString()}; ${yvO.toString()}) — ниже оси Ox.`},
+        {title:'Отражаем часть под осью',kind:'value',draw:dRefl,
+         promptHtml:`Модуль <b>отражает</b> часть графика ниже оси Ox вверх. Получается «горка». Какова высота её пика?`,answer:peak,
+         hintHtml:`Пик — это |y<sub>в</sub>|, т.е. ${peak.toString()}.`,
+         showHtml:`Пик горки на высоте <b>${peak.toString()}</b>. График |выражения| построен.`},
+        {title:'Считаем точки',kind:'atoms',draw:dRefl,
+         promptHtml:`Двигайте прямую ползунком снизу вверх: 2 точки (на уровне корней), затем 4 (между 0 и пиком), 3 (ровно на пике). При каких m их ровно <b>${P.target}</b>?`,answer:P.atoms,
+         showHtml:`Ответ: <b>${P.answer}</b>.`}
+      ];
+    }
+    // two-parabola subtypes: раскрытие модуля
+    const bp = m.type==='xabsx'?Fr(0):(m.type==='sqminuslin'?m.bp:Fr(-m.P));
+    const sorted=[...P.pieces].sort((s1,s2)=>{
+      const k1=s1.lo===NEG_INF?-1e9:s1.lo.toNum(), k2=s2.lo===NEG_INF?-1e9:s2.lo.toNum();return k1-k2;});
+    const left=sorted[0], right=sorted[1];
+    const leftUp=left.coef[0].sign()>0, rightUp=right.coef[0].sign()>0;
+    const dLeft=g=>{g.drawCurvePieces([left]);vtxIfIn(g,left);};
+    const dBoth=g=>{g.drawCurvePieces([left,right]);vtxIfIn(g,left);vtxIfIn(g,right);};
+    return [
+      {title:'Раскрываем модуль',kind:'value',draw:g=>{},
+       promptHtml:`Модуль раскрывается по знаку выражения внутри. Точка излома — там, где внутри модуля ноль. Найдите её абсциссу x₀.`,answer:bp,
+       hintHtml:`Приравняйте выражение под модулем к нулю и решите.`,
+       showHtml:`Излом при x = <b>${bp.toString()}</b>. Слева и справа — две параболы.`},
+      {title:'Левый кусок',kind:'choice',draw:dLeft,
+       promptHtml:`Слева от x₀ раскрываем модуль и получаем параболу. Куда направлены её ветви?`,
+       options:['вверх','вниз'],answer:leftUp?0:1,
+       showHtml:`Левая парабола: ветви <b>${leftUp?'вверх':'вниз'}</b>. Появилась на графике.`},
+      {title:'Правый кусок',kind:'choice',draw:dBoth,
+       promptHtml:`Справа от x₀ — вторая парабола. Куда направлены её ветви?`,
+       options:['вверх','вниз'],answer:rightUp?0:1,
+       showHtml:`Правая парабола: ветви <b>${rightUp?'вверх':'вниз'}</b>. График построен.`},
+      {title:'Считаем точки',kind:'atoms',draw:dBoth,
+       promptHtml:`График готов. При каких m прямая y = m даёт ровно <b>${P.target}</b> общих точки?`,answer:P.atoms,
+       showHtml:`Ответ: <b>${P.answer}</b>.`}
+    ];
+  }
+
+  /* -------- Module 3: hyperbola -------- */
+  const spec=graphSpec(P);
+  if(P.sub==='inv_kx'){
+    const dHyp=g=>{g.drawHyperbola(spec.fn,spec.holeX);};
+    const dLine=g=>{g.drawHyperbola(spec.fn,spec.holeX);g.addLineK(P.vals[0].toNum(),spec.intersectK);};
+    return [
+      {title:'Сокращаем дробь',kind:'choice',draw:dHyp,
+       promptHtml:`В числителе и знаменателе есть общий множитель. Сократите дробь. Какой график получается?`,
+       options:['гипербола y = 1/x (с выколотой точкой)','парабола','прямая'],answer:0,
+       showHtml:`После сокращения — <b>гипербола y = 1/x</b>. На месте сокращённого множителя — выколотая точка ○.`},
+      {title:'Выколотая точка',kind:'value',draw:dHyp,
+       promptHtml:`Сокращённый множитель обращал знаменатель в нуль — там дырка. Найдите абсциссу выколотой точки x₀.`,answer:P.xh,
+       hintHtml:`Это корень сокращённого множителя (нуль исходного знаменателя).`,
+       showHtml:`Выколота точка (${P.xh.toString()}; ${P.yh.toString()}).`},
+      {title:'Проводим прямую y = kx',kind:'vals',varname:'k',draw:dLine,
+       promptHtml:`Прямая y = kx идёт через начало и обычно пересекает гиперболу в двух точках. Ровно одна получится, если прямая пройдёт через выколотую точку. При каком k?`,answer:P.vals,
+       hintHtml:`k = 1/x₀². Подставьте x₀.`,
+       showHtml:`k = 1/x₀² = <b>${P.vals[0].toString()}</b>. Прямая проходит через дырку — остаётся одна точка.`}
+    ];
+  }else if(P.sub==='parab_kx'){
+    const dPar=g=>{g.drawCurvePieces([spec.quadSeg]);g.drawHoleDot(spec.holeX,spec.holeY);};
+    const dLines=g=>{g.drawCurvePieces([spec.quadSeg]);g.drawHoleDot(spec.holeX,spec.holeY);P.vals.forEach(v=>g.drawKLine(v.toNum(),'asymptote'));};
+    return [
+      {title:'Сокращаем дробь',kind:'choice',draw:dPar,
+       promptHtml:`Числитель делится на (x − x₀) из знаменателя. Сократите дробь. Какой график получается?`,
+       options:['парабола с выколотой точкой','гипербола','прямая'],answer:0,
+       showHtml:`После сокращения — <b>парабола</b> y = −(x² + p) с выколотой точкой ○.`},
+      {title:'Выколотая точка',kind:'value',draw:dPar,
+       promptHtml:`Сокращённый множитель обращал знаменатель в нуль — там дырка. Найдите абсциссу выколотой точки x₀.`,answer:P.xh,
+       hintHtml:`Это нуль знаменателя (x − x₀).`,
+       showHtml:`Выколота точка (${P.xh.toString()}; ${P.yh.toString()}).`},
+      {title:'Прямые y = kx: одна общая точка',kind:'vals',varname:'k',draw:dLines,
+       promptHtml:`Ровно одна общая точка бывает двух видов: прямая <b>касается</b> параболы (таких две) либо проходит через <b>выколотую</b> точку (секущая, одно пересечение пропадает). Укажите все k.`,answer:P.vals,
+       hintHtml:`Касательные: k = ±2√p (здесь p = ${P.p.toString()}). Секущая: k = y₀ / x₀.`,
+       showHtml:`Ответ: <b>${P.answer}</b>.`}
+    ];
+  }else{
+    const dHyp=g=>{g.drawHyperbola(spec.fn,spec.holeX);};
+    const dAsym=g=>{g.drawHyperbola(spec.fn,spec.holeX);g.drawHLine(P.C,'asymptote');};
+    const dLines=g=>{g.drawHyperbola(spec.fn,spec.holeX);P.vals.forEach(v=>g.drawHLine(v.toNum(),'asymptote'));};
+    return [
+      {title:'Сокращаем дробь',kind:'choice',draw:dHyp,
+       promptHtml:`Сократите дробь. Какой график получается?`,
+       options:['сдвинутая гипербола y = C − 1/x','обычная парабола','прямая'],answer:0,
+       showHtml:`Получается <b>гипербола y = ${P.C} − 1/x</b> с выколотой точкой.`},
+      {title:'Горизонтальная асимптота',kind:'value',draw:dAsym,
+       promptHtml:`При x → ±∞ дробь стремится к нулю. К какой прямой y = m график приближается, но не достигает?`,answer:Frac.fromNum(P.C),
+       hintHtml:`Это горизонтальная асимптота y = C.`,
+       showHtml:`Асимптота y = <b>${P.C}</b> — одно из значений, где общих точек нет.`},
+      {title:'Значения без пересечений',kind:'vals',varname:'m',draw:dLines,
+       promptHtml:`Прямая y = m не пересекает график в двух случаях: на уровне асимптоты и на уровне выколотой точки. Укажите оба значения m.`,answer:P.vals,
+       hintHtml:`Первое — асимптота y = ${P.C}; второе — ордината выколотой точки.`,
+       showHtml:`Ответ: <b>${P.answer}</b>.`}
+    ];
+  }
+}
+
+/* ============================================================
+   MODULE registry
+   ============================================================ */
+function genM1(){return Math.random()<0.3?(genPieceHyp()||genPiecewise()):genPiecewise();}
+function genM3(){return Math.random()<0.33?(genParabHole()||genHyperbola()):genHyperbola();}
+const MODULES=[
+  {id:'m1',title:'Кусочные функции',sub:'парабола + прямая · парабола + гипербола',gen:genM1,answerKind:'atoms',explorer:()=>demoM1(),quiz:true},
+  {id:'m2',title:'Параболы с модулем',sub:'|квадрат|, x|x|, x²−|лин|',gen:genModulus,answerKind:'atoms',explorer:()=>demoM2()},
+  {id:'m3',title:'Дробь с выколотой точкой',sub:'гипербола · парабола',gen:genM3,answerKind:'vals',explorer:()=>demoM3()},
+];
+MODULES[0].subs=[{k:null,l:'Все'},{k:'parline',l:'Парабола + прямая'},{k:'parhyp',l:'Парабола + гипербола'}];
+MODULES[1].subs=[{k:null,l:'Все'},{k:'absquad',l:'|квадрат|'},{k:'xabsx',l:'x|x|'},{k:'sqminuslin',l:'x² − |лин|'},{k:'alinplusquad',l:'a|x+p| + квадрат'}];
+MODULES[2].subs=[{k:null,l:'Все'},{k:'inv_kx',l:'Гипербола 1/x'},{k:'shift_m',l:'Сдвинутая гипербола'},{k:'parab_kx',l:'Парабола с дыркой'}];
+function genProblem(mod){for(let i=0;i<120;i++){const p=mod.gen();if(p)return p;}return mod.explorer();}
+function subtypeOf(p){if(p.kind==='piecewise')return p.variant||'parline';if(p.kind==='modulus')return p.meta.type;if(p.kind==='hyperbola')return p.sub;return 'other';}
+function genProblemFiltered(mod,key){if(!key)return genProblem(mod);for(let i=0;i<600;i++){const p=mod.gen();if(p&&subtypeOf(p)===key)return p;}return genProblem(mod);}
+function demoM1(){return {kind:'piecewise',pieces:[
+  {kind:'quad',coef:[Fr(-1),Fr(2),Fr(3)],lo:Fr(-1),hi:POS_INF,loCl:true,hiCl:true},
+  {kind:'lin',coef:[Fr(-1),Fr(1)],lo:NEG_INF,hi:Fr(-1),loCl:true,hiCl:false}],target:2};}
+function demoM2(){const r1=-1,r2=3,b=-(r1+r2),c=r1*r2;return {kind:'modulus',pieces:[
+  {kind:'quad',coef:[Fr(1),Fr(b),Fr(c)],lo:NEG_INF,hi:Fr(r1),loCl:true,hiCl:false},
+  {kind:'quad',coef:[Fr(-1),Fr(-b),Fr(-c)],lo:Fr(r1),hi:Fr(r2),loCl:true,hiCl:true},
+  {kind:'quad',coef:[Fr(1),Fr(b),Fr(c)],lo:Fr(r2),hi:POS_INF,loCl:false,hiCl:true}],target:3};}
+function demoM3(){return {kind:'hyperbola',sub:'inv_kx',a:3,b:5,xh:Fr(-5,3),yh:Fr(-3,5),vals:[Fr(9,25)],varname:'k'};}
+
+/* ============================================================
+   STATEMENT rendering (original problem expression)
+   ============================================================ */
+
+/* clean sub-expression builders (suppress 0 and unit coefficients) */
+function coefLead(c,v){ // leading term coef*v : 1->v, -1->−v, 0->'', n->nv
+  if(c===0)return ''; const s=c<0?'−':''; const m=Math.abs(c);
+  return s+((m===1&&v)?'':m)+v;
+}
+function coefAdd(c,v){ // non-leading term: ' + 3x' / ' − x' / ''
+  if(c===0)return ''; const s=c<0?' − ':' + '; const m=Math.abs(c);
+  return s+((m===1&&v)?'':m)+v;
+}
+function constAdd(c){return c===0?'':(c<0?' − '+(-c):' + '+c);}
+function quadStr(a,b,c){let out=coefLead(a,'x²');if(out==='')out=coefLead(b,'x');else out+=coefAdd(b,'x');
+  if(out==='')out=(c===0?'0':''+c);else out+=constAdd(c);return out;}
+function linStr(p,q){let out=coefLead(p,'x');if(out==='')out=(q===0?'0':''+q);else out+=constAdd(q);return out;}
+function fracFromParts(numHtml,denHtml,big){return `<span class="frac${big?' big':''}"><span class="fn">${numHtml}</span><span class="fd">${denHtml}</span></span>`;}
+
+
+function sc(n){return (n<0?'−':'+')+' '+Math.abs(n);} // signed term with leading + / −
+function sc0(n){return (n<0?'−':'')+Math.abs(n);}     // signed, no leading +
+function statementHtml(P){
+  let expr,task;
+  if(P.kind==='piecewise'){
+    expr=piecewiseHtml(P.pieces);
+    task=`Определите, при каких значениях <i>m</i> прямая <b>y = m</b> имеет с графиком ровно <b>${P.target}</b> общ${P.target===1?'ую точку':'их точки'}.`;
+  }else if(P.kind==='modulus'){
+    const m=P.meta;
+    if(m.type==='absquad'){expr=`y = |${quadStr(1,m.b,m.c)}|`;}
+    else if(m.type==='xabsx'){expr=`y = x|x|${coefAdd(m.B,'|x|')}${coefAdd(m.C,'x')}`;}
+    else if(m.type==='sqminuslin'){expr=`y = x² − |${linStr(m.k,m.t)}|`;}
+    else{const inner = m.P===0?'|x|':(m.P>0?`|x + ${m.P}|`:`|x − ${-m.P}|`);
+         const stem = coefLead(m.s,'')+inner; // s>=2 always
+         expr=`y = ${stem}${coefAdd(m.A,'x²')}${coefAdd(m.bq,'x')}${constAdd(m.cq)}`;}
+    task=`Определите, при каких значениях <i>m</i> прямая <b>y = m</b> имеет с графиком ровно <b>${P.target}</b> общих точки.`;
+  }else{
+    if(P.sub==='inv_kx'){
+      const numr=linStr(P.a,P.b), den=quadStr(P.a,P.b,0);
+      expr=`y = ${fracFromParts(numr,den,true)}`;
+      task=`Определите, при каком значении <i>k</i> прямая <b>y = kx</b> имеет с графиком ровно <b>одну</b> общую точку.`;
+    }else if(P.sub==='parab_kx'){
+      const xhN=P.xh.toNum(), pN=P.p.toNum();
+      const num=polyN([[-1,'x³'],[xhN,'x²'],[-pN,'x'],[pN*xhN,'']]);
+      const den=linStr(1,-xhN);
+      expr=`y = ${fracFromParts(num,den,true)}`;
+      task=`Определите все значения <i>k</i>, при которых прямая <b>y = kx</b> имеет с графиком ровно <b>одну</b> общую точку.`;
+    }else{
+      const numr=linStr(1,P.p), den=quadStr(1,P.p,0), frac=fracFromParts(numr,den,true);
+      expr = P.C===0 ? `y = −${frac}` : `y = ${P.C} − ${frac}`;
+      task=`Определите, при каких значениях <i>m</i> прямая <b>y = m</b> <b>не имеет</b> с графиком общих точек.`;
+    }
+  }
+  return `<div class="statement"><div class="st-expr">${expr}</div><div class="st-task">${task}</div></div>`;
+}
+
+/* ============================================================
+   Reusable button + retry
+   ============================================================ */
+function btn(cls,txt,on){const b=el('button','btn '+cls,txt);b.type='button';if(on)b.onclick=on;return b;}
+function retryBtn(on){return btn('btn-retry','Ещё пример этой темы →',on);}
+
+/* ============================================================
+   STEP MODE
+   ============================================================ */
+function renderStep(mod,host,preset){
+  host.innerHTML='';
+  const problem=preset||genProblem(mod);
+  const stmt=el('div');stmt.innerHTML=statementHtml(problem);host.appendChild(stmt);
+  const plan=stepPlan(problem);host.__problem=problem;host.__plan=plan;
+  const stepsWrap=el('div','steps');host.appendChild(stepsWrap);
+  const graphHost=el('div','step-graph hidden');host.appendChild(graphHost);
+  const gv=makeGraphView(false);graphHost.appendChild(gv.el);
+  let range;
+  range=specRange(graphSpec(problem));
+  const footer=el('div','step-footer');host.appendChild(footer);
+  const retry=retryBtn(()=>renderStep(mod,host));retry.classList.add('hidden');footer.appendChild(retry);
+  let revealedOnce=false;
+  function showRetry(){if(!revealedOnce){revealedOnce=true;retry.classList.remove('hidden');}}
+
+  let idx=0;
+  function renderNext(){ try{
+    if(idx>=plan.length){const done=el('div','all-done','Все шаги пройдены. Отличная работа!');stepsWrap.appendChild(done);return;}
+    const step=plan[idx];const sIdx=idx;idx++;
+    const card=el('div','step-card active');
+    card.innerHTML=`<div class="step-head"><span class="step-n">Шаг ${sIdx+1}</span><span class="step-title">${step.title}</span><span class="step-cue">твой ход</span></div>`;
+    const prompt=el('div','step-prompt');prompt.innerHTML=step.promptHtml;card.appendChild(prompt);
+    if(step.draw){graphHost.classList.remove('hidden');
+      if(step.kind==='atoms'||step.kind==='vals'){
+        // counting/answer step: give the same draggable line + live counter as in theory/marathon
+        graphHost.innerHTML='';
+        const igv=makeGraphView(true);graphHost.appendChild(igv.el);
+        const gtype=graphSpec(problem).measure==='K'?'Двигайте прямую y = kx ползунком — счётчик покажет число общих точек.':'Двигайте прямую ползунком снизу вверх — счётчик покажет число общих точек.';
+        graphHost.appendChild(el('div','mhelp',gtype));
+        try{igv.show(problem);}catch(e){console.error('interactive step error',e);}
+      } else {
+        try{gv.stage(range,step.draw);}catch(e){console.error('draw layer error',e);}
+      }
+    }
+    const inputWrap=el('div','step-input');card.appendChild(inputWrap);
+    const fb=el('div','fb');card.appendChild(fb);
+    const row=el('div','btn-row');card.appendChild(row);
+    let getVal,checkFn,input;
+    if(step.kind==='choice'){
+      input=el('div','choices');step.options.forEach((o,i)=>{const id=`c${sIdx}_${i}`;
+        const lab=el('label','choice');const r=el('input');r.type='radio';r.name='st'+sIdx;r.value=i;lab.append(r,el('span',null,o));input.appendChild(lab);});
+      inputWrap.appendChild(input);
+      checkFn=()=>{const sel=input.querySelector('input:checked');if(!sel)return null;return +sel.value===step.answer;};
+    }else if(step.kind==='value'){
+      const vi=makeValueInput();input=vi;inputWrap.appendChild(vi.el);
+      checkFn=()=>{const f=vi.getFrac();if(f===null)return null;return f.eq(step.answer);};
+    }else if(step.kind==='atoms'){
+      const ab=makeAnswerBuilder();input=ab;inputWrap.appendChild(ab.el);
+      checkFn=()=>{const at=ab.getAtoms();if(at===null||at.length===0)return null;return setsEqual(at,step.answer);};
+    }else{ // vals
+      const vl=makeValueList(step.varname);input=vl;inputWrap.appendChild(vl.el);
+      checkFn=()=>{const vs=vl.getVals();if(vs===null||vs.length===0)return null;return valsEqual(vs,step.answer);};
+    }
+    let solved=false;
+    const check=btn('btn-check','Проверить',()=>{const r=checkFn();
+      if(r===null){feedback(fb,false,'','Введите ответ.');return;}
+      if(r){feedback(fb,true,'Верно!','');solved=true;card.classList.remove('active');card.classList.add('solved');
+        row.querySelectorAll('button').forEach(b=>b.disabled=true);advance();}
+      else{feedback(fb,false,'','Не сходится — попробуйте ещё раз.');}});
+    row.appendChild(check);
+    if(step.hintHtml){row.appendChild(btn('btn-hint','Подсказка',()=>{feedbackPeek(fb,'');fb.innerHTML=step.hintHtml;}));}
+    row.appendChild(btn('btn-show','Показать шаг',()=>{feedbackPeek(fb,'');fb.innerHTML=step.showHtml;
+      card.classList.remove('active');card.classList.add('peeked');showRetry();
+      if(!solved){advance();}}));
+    stepsWrap.appendChild(card);
+    let advanced=false;function advance(){if(advanced)return;advanced=true;setTimeout(renderNext,120);}
+  }catch(e){console.error('step render error',e);const c=el('div','step-card');const p=el('div','step-prompt');p.textContent='Не удалось отобразить этот шаг. Возьмите новый пример.';c.appendChild(p);stepsWrap.appendChild(c);showRetry();} }
+  renderNext();
+}
+
+/* ============================================================
+   MARATHON MODE
+   ============================================================ */
+function renderMarathon(mod,host){
+  host.innerHTML='';
+  const score={solved:0,tries:0};
+  const scoreEl=el('div','score');host.appendChild(scoreEl);
+  let subFilter=null;
+  const subs=mod.subs||[{k:null,l:'Все'}];
+  if(subs.length>1){
+    const chipRow=el('div','sub-chips');
+    const lab=el('span','chips-lab','Тип задач:');chipRow.appendChild(lab);
+    subs.forEach(s=>{const c=el('button','chip'+(s.k===subFilter?' chip-on':''),s.l);c.type='button';
+      c.onclick=()=>{subFilter=s.k;[...chipRow.querySelectorAll('.chip')].forEach(x=>x.classList.remove('chip-on'));c.classList.add('chip-on');newProblem();};
+      chipRow.appendChild(c);});
+    host.appendChild(chipRow);
+  }
+  const stmt=el('div');host.appendChild(stmt);
+  const gv=makeGraphView(true);host.appendChild(gv.el);
+  const help=el('div','mhelp','Подвигайте прямую ползунком, чтобы прикинуть ответ, затем соберите его ниже.');host.appendChild(help);
+  const ansHost=el('div','ans-host');host.appendChild(ansHost);
+  const fb=el('div','fb');host.appendChild(fb);
+  const row=el('div','btn-row');host.appendChild(row);
+  const retryRow=el('div','btn-row');host.appendChild(retryRow);
+  let problem,input,peeked;
+  function updScore(){scoreEl.innerHTML=`Решено: <b>${score.solved}</b> · попыток: ${score.tries}`;}
+  function makeInput(){ansHost.innerHTML='';
+    if(mod.answerKind==='atoms'){input=makeAnswerBuilder();ansHost.appendChild(el('div','ans-lab','Ответ:'));ansHost.appendChild(input.el);}
+    else{input=makeValueList(problem.varname);ansHost.appendChild(el('div','ans-lab','Ответ:'));ansHost.appendChild(input.el);}}
+  function grade(){
+    if(mod.answerKind==='atoms'){const at=input.getAtoms();if(at===null||at.length===0)return null;return setsEqual(at,problem.atoms);}
+    else{const vs=input.getVals();if(vs===null||vs.length===0)return null;return valsEqual(vs,problem.vals);}}
+  function newProblem(){try{problem=genProblemFiltered(mod,subFilter);host.__problem=problem;peeked=false;stmt.innerHTML=statementHtml(problem);gv.show(problem);makeInput();fb.className='fb';fb.textContent='';retryRow.innerHTML='';}catch(e){console.error('marathon problem error',e);setTimeout(newProblem,0);}}
+  row.appendChild(btn('btn-check','Проверить',()=>{const r=grade();
+    if(r===null){feedback(fb,false,'','Соберите ответ выше.');return;}
+    score.tries++;
+    if(r){if(!peeked)score.solved++;feedback(fb,true,peeked?'Верно (ответ был показан).':'Верно! Отлично.','');updScore();}
+    else{feedback(fb,false,'','Пока не совпадает — проверьте концы промежутков и значения.');updScore();}}));
+  row.appendChild(btn('btn-show','Показать ответ',()=>{peeked=true;feedbackPeek(fb,'');fb.innerHTML='Ответ: <b>'+problem.answer+'</b>';
+    if(!retryRow.querySelector('.btn-retry'))retryRow.appendChild(retryBtn(newProblem));}));
+  if(mod.answerKind==='atoms')row.appendChild(btn('btn-step','Решить по шагам',()=>{
+    // jump to step mode with this problem
+    const modeNav=host.closest('.panel').querySelector('.modes');
+    const stepBtn=[...modeNav.children].find(b=>b.dataset.mode==='step');
+    stepHostFor(mod.id).__preset=problem;stepBtn.click();}));
+  row.appendChild(btn('btn-new','Новая задача',newProblem));
+  updScore();newProblem();
+}
+
+/* ============================================================
+   THEORY MODE (cards + explorer + quiz)
+   ============================================================ */
+function renderTheory(mod,host){
+  host.innerHTML=THEORY[mod.id];
+  const slot=host.querySelector('.explorer-slot');
+  if(slot){const gv=makeGraphView(true);slot.appendChild(gv.el);gv.show(mod.explorer());}
+  const qslot=host.querySelector('.quiz-slot');
+  if(qslot&&mod.quiz)buildQuiz(qslot);
+}
+function buildQuiz(host){
+  // simple: given a described graph feature, choose correct bracket usage
+  const items=[
+    {q:'Прямая совпадает с высотой <b>выколотой</b> точки на границе промежутка. Какой конец?',opts:['закрашенный [ ]','выколотый ( )'],a:1,
+     exp:'Выколотая точка в график не входит ⇒ конец круглый ( ).'},
+    {q:'Прямая на уровне <b>вершины</b> параболы (ветви вверх): сколько точек добавляет сама вершина?',opts:['одну','две'],a:0,
+     exp:'Вершина — одна точка касания; выше неё появляются две ветви.'},
+    {q:'Значение m равно ординате на границе, и эта точка <b>закрашена</b>. Конец промежутка?',opts:['[ ] включаем','( ) исключаем'],a:0,
+     exp:'Закрашенная точка входит в график ⇒ конец квадратный [ ].'}
+  ];
+  let i=0;const card=el('div','quiz');host.appendChild(card);
+  function draw(){const it=items[i];card.innerHTML='';const q=el('div','quiz-q');q.innerHTML=it.q;card.appendChild(q);
+    const opts=el('div','choices');it.opts.forEach((o,k)=>{const lab=el('label','choice');const r=el('input');r.type='radio';r.name='q'+i;r.value=k;lab.append(r,el('span',null,o));opts.appendChild(lab);});card.appendChild(opts);
+    const fb=el('div','fb');card.appendChild(fb);const row=el('div','btn-row');card.appendChild(row);
+    row.appendChild(btn('btn-check','Проверить',()=>{const s=opts.querySelector('input:checked');if(!s){feedback(fb,false,'','Выберите вариант.');return;}
+      if(+s.value===it.a){feedback(fb,true,'Верно!','');}else{feedback(fb,false,'','Не то — см. пояснение по кнопке.');}}));
+    row.appendChild(btn('btn-show','Пояснение',()=>{feedbackPeek(fb,'');fb.innerHTML=it.exp;
+      if(!row.querySelector('.btn-retry'))row.appendChild(btn('btn-retry',i<items.length-1?'Следующий →':'Сначала',()=>{i=(i+1)%items.length;draw();}));}));}
+  draw();
+}
+
+/* ============================================================
+   BOOTSTRAP
+   ============================================================ */
+const stepHosts={};
+function stepHostFor(id){return stepHosts[id];}
+function boot(){
+  const root=$('#app');
+  const modNav=el('div','module-nav');root.appendChild(modNav);
+  const panels=el('div','panels');root.appendChild(panels);
+  MODULES.forEach((mod,mi)=>{
+    const mb=el('button','mod-btn'+(mi===0?' active':''),'');mb.innerHTML=`<span class="mb-title">${mod.title}</span><span class="mb-sub">${mod.sub}</span>`;mb.dataset.mod=mod.id;modNav.appendChild(mb);
+    const panel=el('section','panel'+(mi===0?'':' hidden'));panel.dataset.mod=mod.id;panels.appendChild(panel);
+    const modes=el('div','modes');
+    const defs=[['learn','Учимся'],['step','Пошагово'],['marathon','Марафон']];
+    const hosts={};
+    defs.forEach((d,di)=>{const b=el('button','mode-btn'+(di===0?' active':''),d[1]);b.dataset.mode=d[0];modes.appendChild(b);});
+    panel.appendChild(modes);
+    const body=el('div','panel-body');panel.appendChild(body);
+    defs.forEach((d,di)=>{const h=el('div','mode-host'+(di===0?'':' hidden'));h.dataset.mode=d[0];body.appendChild(h);hosts[d[0]]=h;});
+    stepHosts[mod.id]=hosts.step;
+    // lazy render flags
+    const rendered={};
+    function activate(mode){
+      [...modes.children].forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+      Object.entries(hosts).forEach(([k,h])=>h.classList.toggle('hidden',k!==mode));
+      if(mode==='learn'&&!rendered.learn){renderTheory(mod,hosts.learn);rendered.learn=true;}
+      if(mode==='step'){const preset=hosts.step.__preset;hosts.step.__preset=null;renderStep(mod,hosts.step,preset);}
+      if(mode==='marathon'&&!rendered.marathon){renderMarathon(mod,hosts.marathon);rendered.marathon=true;}
+    }
+    modes.querySelectorAll('.mode-btn').forEach(b=>b.onclick=()=>activate(b.dataset.mode));
+    // initial
+    renderTheory(mod,hosts.learn);rendered.learn=true;
+    mb.onclick=()=>{[...modNav.children].forEach(x=>x.classList.toggle('active',x===mb));
+      [...panels.children].forEach(p=>p.classList.toggle('hidden',p.dataset.mod!==mod.id));};
+  });
+}
+if(typeof window!=='undefined'&&window.__TESTHOOK__)window.__api={genPiecewise,genModulus,genHyperbola,setsEqual,valsEqual,solveTarget,fmtAnswer,Frac,Fr,NEG_INF,POS_INF,pieceVal};
+if(typeof document!=='undefined'&&document.getElementById('app'))boot();
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1186 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Задание 8 ОГЭ — степени и корни</title>
+<style>
+:root{
+  --paper:#fefdf6; --cell:#dbe7f0; --marg:#e88a8a;
+  --ink:#22324d; --pen:#1a3b8b; --green:#1e7a2e; --red:#c62828;
+  --chip:#eef4fb; --chipbd:#b9cfe8; --gold:#b8860b;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; color:var(--ink);
+  font:16px/1.55 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  background:var(--paper);
+  background-image:
+    linear-gradient(var(--cell) 1px, transparent 1px),
+    linear-gradient(90deg, var(--cell) 1px, transparent 1px);
+  background-size:24px 24px;
+}
+.hand{font-family:"Segoe Print","Comic Sans MS","Comic Neue",cursive}
+header{
+  position:sticky; top:0; z-index:30;
+  background:rgba(254,253,246,.96); backdrop-filter:blur(3px);
+  border-bottom:2px solid var(--marg);
+  padding:10px 14px 0;
+}
+.htitle{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.htitle h1{margin:0;font-size:22px;color:var(--pen)}
+.htitle .sub{color:#5b6b85;font-size:14px}
+nav.tabs{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+nav.tabs button{
+  border:2px solid var(--chipbd); border-bottom:none; background:var(--chip);
+  padding:8px 14px; border-radius:10px 10px 0 0; cursor:pointer;
+  font:inherit; font-weight:600; color:var(--pen);
+}
+nav.tabs button.on{background:#fff;border-color:var(--marg);color:var(--ink);box-shadow:0 2px 0 #fff}
+main{max-width:1060px;margin:0 auto;padding:18px 14px 90px;position:relative}
+main::before{content:"";position:fixed;top:0;bottom:0;left:calc(50% - 553px);width:2px;background:var(--marg);opacity:.55;pointer-events:none}
+@media(max-width:1140px){main::before{left:10px}}
+section.view{display:none}
+section.view.on{display:block}
+.card{
+  background:#fff;border:1.5px solid var(--chipbd);border-radius:12px;
+  padding:16px 18px;margin:14px 0;box-shadow:2px 3px 0 rgba(120,150,190,.15);
+}
+.card h2{margin:0 0 8px;color:var(--pen);font-size:20px}
+.card h3{margin:14px 0 6px;color:var(--pen);font-size:17px}
+.num{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:28px;border-radius:50%;
+  background:var(--pen);color:#fff;font-weight:700;margin-right:8px;font-size:15px;padding:0 6px}
+.pill{display:inline-block;border:1.5px solid var(--chipbd);background:var(--chip);border-radius:999px;
+  padding:3px 12px;margin:3px 4px 3px 0;font-size:14px;cursor:pointer;color:var(--pen);user-select:none}
+.pill:hover{border-color:var(--pen)}
+.pill.on{background:var(--pen);color:#fff;border-color:var(--pen)}
+.pill.ghost{cursor:default}
+.pill.ghost:hover{border-color:var(--chipbd)}
+button.act{
+  font:inherit;font-weight:600;border-radius:10px;padding:8px 16px;cursor:pointer;
+  border:2px solid var(--pen);background:var(--pen);color:#fff;
+}
+button.act.sec{background:#fff;color:var(--pen)}
+button.act.show{border-color:var(--gold);background:#fff;color:var(--gold)}
+button.act:disabled{opacity:.45;cursor:default}
+input.ans{
+  font:inherit;font-size:18px;width:110px;padding:6px 10px;border:2px solid var(--chipbd);
+  border-radius:8px;text-align:center;background:#fffef8;
+}
+input.ans:focus{outline:none;border-color:var(--pen)}
+input.ans.ok{border-color:var(--green);background:#f0faf0}
+input.ans.no{border-color:var(--red);background:#fdf2f2}
+.fb{font-weight:600;margin-left:8px}
+.fb.ok{color:var(--green)} .fb.no{color:var(--red)} .fb.shown{color:var(--gold)}
+/* ---------- математика ---------- */
+.m{white-space:nowrap;font-size:19px;font-family:Georgia,"Times New Roman",serif;font-style:italic}
+.m b, .m .up{font-style:normal}
+.m sup{font-size:.68em;font-style:normal}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px;line-height:1.15}
+.fr>.fn{border-bottom:1.6px solid currentColor;padding:0 6px}
+.fr>.fd{padding:0 6px}
+.rt{display:inline-flex;align-items:stretch;vertical-align:middle;margin:0 2px;line-height:1}
+.rt>.rsv{flex:none;width:.6em;align-self:stretch;display:block;overflow:visible}
+.rt>.rsv path{fill:none;stroke:currentColor;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round;vector-effect:non-scaling-stroke}
+.rt>.ru{border-top:1.5px solid currentColor;padding:2.5px 5px 0 3px;min-height:1em;margin-left:-1px}
+.big{font-size:22px}
+.expr{margin:8px 0 12px}
+.ok-ink{color:var(--green);font-weight:600}
+.red-ink{color:var(--red);font-weight:600}
+.gold-ink{color:var(--gold);font-weight:600}
+/* ---------- справочник ---------- */
+.refwrap{background:#fff;border:2px solid var(--ink);border-radius:6px;padding:20px 22px;margin:14px 0;position:relative}
+.refwrap::before{content:"СПРАВОЧНЫЕ МАТЕРИАЛЫ · то, что пригодится в задании 8";display:block;text-align:center;
+  font-weight:700;letter-spacing:.06em;color:var(--ink);margin-bottom:4px;font-size:15px}
+.refrow{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:12px 6px;border-bottom:1px dashed var(--chipbd)}
+.refrow:last-child{border-bottom:none}
+.refrow .formula{flex:0 0 auto;min-width:210px}
+.refrow .links{flex:1;min-width:230px}
+.refrow .links .lbl{font-size:13px;color:#5b6b85;margin-right:6px}
+.refhead{margin:16px 0 4px;font-weight:700;color:var(--pen);font-size:17px}
+.refnote{font-size:13px;color:#5b6b85}
+/* таблица квадратов */
+table.sq{border-collapse:collapse;font-size:13.5px;margin-top:8px}
+table.sq td,table.sq th{border:1px solid #9db4cc;padding:3px 6px;text-align:center;min-width:44px}
+table.sq th{background:var(--chip);color:var(--pen)}
+table.sq td{cursor:pointer;background:#fff}
+table.sq td.hl{background:#ffe9a8;font-weight:700}
+.sqtool{margin:10px 0}
+/* ---------- учимся ---------- */
+.tool{border:1.5px dashed var(--chipbd);border-radius:10px;padding:12px 14px;margin:10px 0;background:#fbfdff}
+.tool .tl{font-size:13px;color:#5b6b85;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.ladder{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:19px}
+.ladder .rung{border:1.5px solid var(--chipbd);border-radius:8px;padding:6px 10px;background:#fff}
+.ladder .rung.now{border-color:var(--pen);box-shadow:0 0 0 2px #dfe9fb}
+.crosslink{color:var(--pen);text-decoration:underline dotted;cursor:pointer}
+.note{background:#fff8e6;border:1.5px solid #eedc9a;border-radius:10px;padding:10px 14px;margin:10px 0}
+.seen-tbl{width:100%;border-collapse:collapse;margin:8px 0}
+.seen-tbl td,.seen-tbl th{border:1px solid var(--chipbd);padding:7px 10px;text-align:left;vertical-align:top}
+.seen-tbl th{background:var(--chip);color:var(--pen)}
+.seen-tbl td:first-child{white-space:nowrap}
+/* ---------- шаги ---------- */
+.steps{margin-top:10px}
+.step{border-left:4px solid var(--chipbd);padding:8px 12px;margin:8px 0;background:#fbfdff;border-radius:0 10px 10px 0}
+.step.done{border-left-color:var(--green)}
+.step.shown{border-left-color:var(--gold)}
+.step .q{margin-bottom:6px}
+.step .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.step .hint{margin-top:6px;color:#5b6b85;font-size:14.5px;display:none}
+.step .hint.on{display:block}
+.finline{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center}
+.score{position:fixed;bottom:0;left:0;right:0;background:#fffdf2;border-top:2px solid var(--marg);
+  padding:8px 14px;font-size:15px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap;z-index:20}
+.score b{color:var(--pen)}
+/* ---------- марафон ---------- */
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px;margin-top:12px}
+.mtask{background:#fff;border:1.5px solid var(--chipbd);border-radius:12px;padding:12px 14px}
+.mtask.ok{border-color:var(--green)} .mtask.shown{border-color:var(--gold)}
+.mtask .mid{font-size:13px;color:#5b6b85;margin-bottom:4px;display:flex;justify-content:space-between;gap:6px}
+.mtask .mrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.mtask .msteps{margin-top:8px}
+.filters{display:flex;flex-wrap:wrap;gap:2px;margin-top:6px}
+.hintbox{font-size:13px;color:#5b6b85;margin-top:4px}
+.quiz-choice{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.quiz-choice button{font:inherit;border:2px solid var(--chipbd);border-radius:10px;background:#fff;
+  padding:8px 12px;cursor:pointer;color:var(--pen);font-weight:600}
+.quiz-choice button.pick-ok{border-color:var(--green);color:var(--green)}
+.quiz-choice button.pick-no{border-color:var(--red);color:var(--red)}
+a.jump{color:var(--pen)}
+.small{font-size:14px;color:#5b6b85}
+@media(max-width:640px){
+  .m{font-size:17px} .big{font-size:19px}
+  .refrow .formula{min-width:100%}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="htitle">
+    <h1 class="hand">Задание 8 ОГЭ · степени и корни</h1>
+    <span class="sub">числа, вычисления и алгебраические выражения</span>
+  </div>
+  <nav class="tabs">
+    <button data-v="ref" class="on">📋 Справочник</button>
+    <button data-v="learn">📖 Учимся</button>
+    <button data-v="step">🪜 Пошагово</button>
+    <button data-v="mar">🏃 Марафон</button>
+  </nav>
+</header>
+<main>
+<section class="view on" id="view-ref"></section>
+<section class="view" id="view-learn"></section>
+<section class="view" id="view-step"></section>
+<section class="view" id="view-mar"></section>
+</main>
+<div class="score" id="scorebar"></div>
+<script>
+"use strict";
+/* ================= точная арифметика ================= */
+function gcdB(a,b){a=a<0n?-a:a;b=b<0n?-b:b;while(b){const t=a%b;a=b;b=t}return a}
+function Fr(n,d=1n){n=BigInt(n);d=BigInt(d);if(d<0n){n=-n;d=-d}const g=gcdB(n,d)||1n;return{n:n/g,d:d/g}}
+const fadd=(a,b)=>Fr(a.n*b.d+b.n*a.d,a.d*b.d);
+const fmul=(a,b)=>Fr(a.n*b.n,a.d*b.d);
+const fdiv=(a,b)=>Fr(a.n*b.d,a.d*b.n);
+const feq=(a,b)=>a.n===b.n&&a.d===b.d;
+const fint=a=>a.d===1n;
+function ipow(b,e){b=BigInt(b);e=BigInt(e);let r=1n;for(let i=0n;i<e;i++)r*=b;return r}
+function fpow(f,e){e=Number(e);return e>=0?Fr(ipow(f.n,e),ipow(f.d,e)):Fr(ipow(f.d,-e),ipow(f.n,-e))}
+function isqrtB(x){if(x<0n)return null;if(x<2n)return x;let r=BigInt(Math.floor(Math.sqrt(Number(x))));while(r*r>x)r--;while((r+1n)*(r+1n)<=x)r++;return r*r===x?r:null}
+function fsqrt(f){const a=isqrtB(f.n),b=isqrtB(f.d);return(a===null||b===null)?null:Fr(a,b)}
+function fmtFr(f){ // человеческая запись: целое, десятичная с запятой или a/b
+  if(fint(f))return f.n.toString();
+  let d=f.d,two=0,five=0;
+  while(d%2n===0n){d/=2n;two++} while(d%5n===0n){d/=5n;five++}
+  if(d===1n){const k=Math.max(two,five);const num=f.n*ipow(2n,k-two)*ipow(5n,k-five);
+    let s=(num<0n?-num:num).toString().padStart(k+1,"0");
+    s=s.slice(0,s.length-k)+","+s.slice(s.length-k);
+    return (f.n<0n?"−":"")+s;}
+  return f.n+"/"+f.d;
+}
+function parseAns(s){
+  if(s==null)return null;
+  s=String(s).trim().replace(/\s+/g,"").replace(",",".").replace("−","-");
+  if(!s)return null;
+  let m=s.match(/^(-?\d+)\/(\d+)$/); if(m)return Fr(m[1],m[2]);
+  m=s.match(/^(-?)(\d+)\.(\d+)$/);
+  if(m){const sign=m[1]==="-"?-1n:1n;const den=ipow(10n,m[3].length);
+    return Fr(sign*(BigInt(m[2])*den+BigInt(m[3])),den);}
+  m=s.match(/^-?\d+$/); if(m)return Fr(s);
+  return null;
+}
+/* ================= отрисовка математики ================= */
+const M=h=>`<span class="m">${h}</span>`;
+const sup=e=>{const n=Number(e);if(!Number.isFinite(n))return `<sup>${e}</sup>`;return n===1?"":`<sup>${n<0?"−"+(-n):n}</sup>`};
+const pw=(b,e)=>`${b}${sup(e)}`;
+const fr=(a,b)=>`<span class="fr"><span class="fn">${a}</span><span class="fd">${b}</span></span>`;
+const rt=x=>`<span class="rt"><svg class="rsv" viewBox="0 0 12 24" preserveAspectRatio="none" aria-hidden="true"><path d="M1 13 L4.6 22.6 L12 0"/></svg><span class="ru">${x}</span></span>`;
+const par=x=>`<span class="up">(</span>${x}<span class="up">)</span>`;
+const dot=" · ";
+const numFr=f=>{ // этажная дробь для смешанного/обычного числа из Fr
+  if(fint(f))return f.n.toString();
+  const neg=f.n<0n, n=neg?-f.n:f.n;
+  const w=n/f.d, r=n%f.d;
+  const core=w>0n?`${w}${fr(r,f.d)}`:fr(r,f.d);
+  return (neg?"−":"")+core;
+};
+function atVals(pairs){ // "при a = 2, b = 3" c этажными дробями
+  return ` <span class="up" style="font-style:italic">при ${pairs.map(([k,v])=>`${k} = ${typeof v==="object"?numFr(v):v}`).join(", ")}</span>`;
+}
+/* ---- рендер каждого типа ---- */
+const R={
+ rootpow:p=>rt(pw(p.b,p.n)),
+ rootmono:p=>rt(`${p.c}x${sup(p.p)}y${sup(p.q)}`)+atVals([["x",p.x],["y",p.y]]),
+ rootfrac1:p=>fr(rt(pw(p.c1+"a",1).replace("a","a")+"") , "")&&fr(rt(`${p.c1}a${sup(p.p)}`)+dot+rt(`${p.c2}b${sup(p.q)}`), rt("ab"))+atVals([["a",p.a],["b",p.b]]),
+ rootfrac2:p=>fr(rt(`${p.c1}a${sup(p.p)}`)+dot+rt(`${p.c2}b${sup(p.q)}`), rt(`a${sup(p.r)}b${sup(p.s)}`))+atVals([["a",p.a],["b",p.b]]),
+ sq_over_d:p=>fr(par(`${p.k}${rt(p.m)}`)+"<sup>2</sup>", p.d),
+ d_over_sq:p=>fr(p.d, par(`${p.k}${rt(p.m)}`)+"<sup>2</sup>"),
+ rootmuldiv:p=>fr(rt(p.m)+dot+rt(p.n), rt(p.d)),
+ rootprod3:p=>`${p.k1}${rt(p.m1)}${dot}${p.k2}${rt(p.m2)}${dot}${rt(p.m3)}`,
+ rootprod2:p=>rt(`${p.m} · ${p.n}`)+dot+rt(p.k),
+ diffsq_int:p=>par(rt(p.a)+" − "+p.b)+par(rt(p.a)+" + "+p.b),
+ diffsq_root:p=>par(rt(p.a)+" − "+rt(p.b))+par(rt(p.a)+" + "+rt(p.b)),
+ distrib:p=>par(rt(p.A)+(p.sign<0?" − ":" + ")+rt(p.B))+dot+rt(p.B),
+ pow_mul_div:p=>fr(pw(p.b,p.p)+dot+pw(p.b,p.q), pw(p.b,p.r)),
+ pow_pow_div:p=>fr(par(pw(p.b,p.p))+sup(p.q), pw(p.b,p.r)),
+ pow_mul_pow:p=>pw(p.b,p.p)+dot+par(pw(p.b,p.q))+sup(p.r),
+ pow_prodbase_div:p=>fr(pw(p.b1,p.p)+dot+pw(p.b2,p.q), pw(p.b1*p.b2,p.r)),
+ prodbase_over:p=>fr(par(p.b1+" · "+p.b2)+sup(p.p), pw(p.b1,p.q)+dot+pw(p.b2,p.r)),
+ sqsum:p=>p.sign>0
+   ? par(rt(p.m)+" + "+p.k)+"<sup>2</sup> − "+(2*p.k)+rt(p.m)
+   : par(rt(p.m)+" − "+p.k)+"<sup>2</sup> + "+(2*p.k)+rt(p.m),
+ pow_over_num:p=>fr(pw(p.b,p.p), p.d),
+ recip_pow:p=>fr(1,pw(p.b,p.p))+dot+fr(1,pw(p.b,p.q)),
+ pow_var_div:p=>par(pw("a",p.pp))+sup(p.q)+" : "+pw("a",p.r)+atVals([["a",p.a]]),
+ pow_ab:p=>fr(pw("a",p.pp)+dot+par(pw("b",p.q))+sup(p.r), par("a · b")+sup(p.s))+atVals([["a",p.a],["b",rt(p.a)]]),
+ root_neg:p=>rt(p.negfirst? par("−a")+sup(p.pp)+dot+pw("a",p.q) : pw("a",p.pp)+dot+par("−a")+sup(p.q))+atVals([["a",p.a]]),
+ root_frac_a:p=>rt(fr(`${p.c}a${sup(p.pp)}`, pw("a",p.q)))+atVals([["a",p.a]]),
+ root_invc:p=>rt(fr(1,p.c)+" · "+`x${sup(p.pp)}y${sup(p.q)}`)+atVals([["x",p.x],["y",p.y]]),
+ root_xy_frac:p=>rt(fr(`${p.c}x${sup(p.pp)}`, pw("y",p.q)))+atVals([["x",p.x],["y",p.y]]),
+ fold_square:p=>{
+   const A=Math.round(Math.sqrt(p.A)), B=Math.round(Math.sqrt(p.B));
+   const t1=(A===1?"":A*A)+"a<sup>2</sup>", t3=(B===1?"":B*B)+"b<sup>2</sup>";
+   const t2=(p.K<0?" − ":" + ")+Math.abs(p.K)+"ab";
+   return rt(t1+t2+" + "+t3)+atVals([["a",Fr(p.an,p.ad)],["b",Fr(p.bn,p.bd)]]);
+ },
+ sci:p=>par(`${p.c} · ${pw(10,p.pp)}`)+sup(p.q)+dot+par(`${p.d} · ${pw(10,p.r)}`),
+};
+function renderTask(t){return M('<span class="big">'+R[t.type](t.p)+'</span>')}
+/* rootfrac1 hack above is ugly — переопределим начисто */
+R.rootfrac1=p=>fr(rt(`${p.c1}a${sup(p.p)}`)+dot+rt(`${p.c2}b${sup(p.q)}`), rt("ab"))+atVals([["a",p.a],["b",p.b]]);
+</script>
+<script>
+"use strict";
+/* ================= построители шагов =================
+   Шаг: {q: html-вопрос, ins:[{lbl, val:Fr}], hint: html, show: html}
+   Последний шаг — итоговый ответ задачи (одно поле).            */
+const I=(val,lbl="")=>({lbl,val:(typeof val==="object"&&val.n!==undefined)?val:Fr(val)});
+const S=(q,ins,hint,show)=>({q,ins,hint,show});
+const isq=x=>{const r=isqrtB(BigInt(x));return r===null?null:Number(r)};
+
+function buildSteps(t){
+  const p=t.p, ty=t.type, st=[];
+  const V=(x)=>fmtFr(typeof x==="object"?x:Fr(x));
+  switch(ty){
+  case "rootpow":{
+    if(p.n%2===0){
+      const h=p.n/2, v=fpow(Fr(p.b),h);
+      st.push(S(`Корень — это «степень пополам»: ${M(rt(pw(p.b,p.n))+" = "+pw(p.b,"?"))}. Какой будет показатель?`,
+        [I(h,"показатель")],
+        `Проверь себя: ${M(par(pw(p.b,h))+"<sup>2</sup>")} = ${M(pw(p.b,p.n))} — показатели при возведении перемножаются.`,
+        `${M(rt(pw(p.b,p.n))+" = "+pw(p.b,h))} — показатель ${p.n} делим пополам: ${h}.`));
+      st.push(S(`Осталось вычислить: ${M(pw(p.b,h))} = ?`,[I(v,"ответ")],
+        `${M(pw(p.b,h))} — это ${p.b}, умноженное само на себя ${h} раз${h>4?"":""}.`,
+        `${M(pw(p.b,h)+" = "+V(v))}.`));
+    }else{
+      const r=isq(p.b), n2=2*p.n, v=fpow(Fr(r),p.n);
+      st.push(S(`Показатель ${p.n} — нечётный, пополам не делится. Но основание — полный квадрат! ${p.b} = ?<sup>2</sup>`,
+        [I(r,"основание")],
+        `Найди в таблице квадратов (вкладка «Справочник»): какое число в квадрате даёт ${p.b}?`,
+        `${p.b} = ${M(pw(r,2))}, значит ${M(pw(p.b,p.n)+" = "+par(pw(r,2))+sup(p.n)+" = "+pw(r,n2))}.`));
+      st.push(S(`Теперь под корнем ${M(pw(r,n2))}. Показатели при «степени в степени» перемножаются: 2 · ${p.n} = ${n2}. Извлекаем корень — показатель пополам: ${M(rt(pw(r,n2))+" = "+pw(r,"?"))}`,
+        [I(p.n,"показатель")],
+        `${n2} : 2 = ?`,
+        `${M(rt(pw(r,n2))+" = "+pw(r,p.n))}.`));
+      st.push(S(`Вычисли: ${M(pw(r,p.n))} = ?`,[I(v,"ответ")],
+        `Перемножай по одному: ${r}, ${r*r}, …`,
+        `${M(pw(r,p.n)+" = "+V(v))}.`));
+    }
+    break;}
+  case "rootmono":{
+    const r=isq(p.c), e1=p.p/2, e2=p.q/2;
+    const v=fmul(Fr(r),fmul(fpow(Fr(p.x),e1),fpow(Fr(p.y),e2)));
+    st.push(S(`Корень из произведения — произведение корней: извлекаем из каждого множителя отдельно. ${M(rt(p.c))} = ?`,
+      [I(r,"")],`Таблица квадратов в помощь: ?² = ${p.c}.`,`${M(rt(p.c)+" = "+r)}.`));
+    st.push(S(`У букв показатели делятся пополам: ${M(rt("x"+sup(p.p))+" = x<sup>?</sup>")} и ${M(rt("y"+sup(p.q))+" = y<sup>?</sup>")}`,
+      [I(e1,"показатель x"),I(e2,"показатель y")],
+      `√(x<sup>n</sup>) = x<sup>n/2</sup> при x ≥ 0.`,
+      `Получилось ${M(r+"x"+sup(e1)+"y"+sup(e2))}.`));
+    st.push(S(`Подставь x = ${p.x}, y = ${p.y}: ${M(r+" · "+pw(p.x,e1)+" · "+pw(p.y,e2))} = ?`,
+      [I(v,"ответ")],
+      `Считай по очереди: ${M(pw(p.x,e1))} = ${V(fpow(Fr(p.x),e1))}, ${M(pw(p.y,e2))} = ${V(fpow(Fr(p.y),e2))}, потом перемножь всё.`,
+      `${V(v)}.`));
+    break;}
+  case "rootfrac1": case "rootfrac2":{
+    const r0=ty==="rootfrac1"?1:p.r, s0=ty==="rootfrac1"?1:p.s;
+    const ea=p.p-r0, eb=p.q-s0, c=p.c1*p.c2, rc=isq(c);
+    const v=fmul(Fr(rc),fmul(fpow(Fr(p.a),ea/2),fpow(Fr(p.b),eb/2)));
+    st.push(S(`Загони всё под один корень: ${M(rt(`${p.c1}·${p.c2}·`+fr("a"+sup(p.p)+"b"+sup(p.q),"a"+sup(r0)+"b"+sup(s0))))}. При делении показатели вычитаются. Показатель a = ? Показатель b = ?`,
+      [I(ea,"a"),I(eb,"b")],
+      `a: ${p.p} − ${r0}; b: ${p.q} − ${s0}.`,
+      `Под корнем: ${M(`${c}·a${sup(ea)}b${sup(eb)}`)}.`));
+    st.push(S(`Число под корнем: ${p.c1} · ${p.c2} = ${c}. ${M(rt(c))} = ?`,
+      [I(rc,"")],`?² = ${c} — смотри таблицу квадратов.`,`${M(rt(c)+" = "+rc)}.`));
+    st.push(S(`Извлеки корень (показатели пополам) и подставь a = ${p.a}, b = ${p.b}: ${M(rc+(ea?" · "+pw(p.a,ea/2):"")+(eb?" · "+pw(p.b,eb/2):""))} = ?`,
+      [I(v,"ответ")],
+      `${ea?`${M(pw(p.a,ea/2))} = ${V(fpow(Fr(p.a),ea/2))}. `:""}${eb?`${M(pw(p.b,eb/2))} = ${V(fpow(Fr(p.b),eb/2))}.`:""}`,
+      `${V(v)}.`));
+    break;}
+  case "sq_over_d": case "d_over_sq":{
+    const sq=p.k*p.k*p.m;
+    const v=ty==="sq_over_d"?Fr(sq,p.d):Fr(p.d,sq);
+    st.push(S(`Квадрат убирает корень: ${M(par(p.k+rt(p.m))+"<sup>2</sup> = "+pw(p.k,2)+" · "+par(rt(p.m))+"<sup>2</sup>")} = ${p.k*p.k} · ${p.m} = ?`,
+      [I(sq,"")],
+      `${M(par(rt(p.m))+"<sup>2</sup>")} = ${p.m} — корень и квадрат взаимно уничтожаются.`,
+      `${M(par(p.k+rt(p.m))+"<sup>2</sup>")} = ${sq}.`));
+    st.push(S(`Осталась обычная дробь: ${M(ty==="sq_over_d"?fr(sq,p.d):fr(p.d,sq))} = ? ${fint(v)?"":"(запиши десятичной дробью, как в бланке ОГЭ: например 0,5)"}`,
+      [I(v,"ответ")],
+      `Сократи дробь на общий делитель.`,
+      `${V(v)}.`));
+    break;}
+  case "rootmuldiv":{
+    const u=(p.m*p.n)/p.d, v=isq(u);
+    st.push(S(`Всё под один корень: ${M(rt(fr(p.m+" · "+p.n,p.d)))}. Сократи и посчитай число под корнем: ${M(fr(p.m+" · "+p.n,p.d))} = ?`,
+      [I(u,"")],
+      `Не перемножай в лоб! Сначала сократи: например, ${p.d} раскладывается на множители, которые есть в ${p.m} и ${p.n}.`,
+      `${M(fr(p.m+" · "+p.n,p.d)+" = "+u)}.`));
+    st.push(S(`${M(rt(u))} = ?`,[I(v,"ответ")],`?² = ${u}.`,`${V(Fr(v))}.`));
+    break;}
+  case "rootprod3":{
+    const k=p.k1*p.k2, P=p.m1*p.m2*p.m3, r=isq(P), v=k*r;
+    st.push(S(`Числа перед корнями перемножаются отдельно: ${p.k1} · ${p.k2} = ?`,[I(k,"")],
+      `Множители можно переставлять: ${M(p.k1+" · "+p.k2+" · "+rt(p.m1)+" · "+rt(p.m2)+" · "+rt(p.m3))}.`,
+      `Перед корнем: ${k}.`));
+    st.push(S(`Корни — под один корень: ${p.m1} · ${p.m2} · ${p.m3} = ?`,[I(P,"")],
+      `Перемножай постепенно: ${p.m1} · ${p.m2} = ${p.m1*p.m2}, потом на ${p.m3}.`,
+      `Под корнем: ${P}.`));
+    st.push(S(`${M(rt(P))} = ?`,[I(r,"")],`Подбери: ?² = ${P}.`,`${M(rt(P))} = ${r}.`));
+    st.push(S(`Итог: ${k} · ${r} = ?`,[I(v,"ответ")],``,`${V(Fr(v))}.`));
+    break;}
+  case "rootprod2":{
+    const P=p.m*p.n*p.k, r=isq(P);
+    st.push(S(`Всё под один корень: ${p.m} · ${p.n} · ${p.k} = ?`,[I(P,"")],
+      `Сгруппируй удобно: ${p.m} · ${p.k} = ${p.m*p.k}, потом на ${p.n}.`,
+      `Под корнем: ${P}.`));
+    st.push(S(`${M(rt(P))} = ?`,[I(r,"ответ")],`?² = ${P}.`,`${V(Fr(r))}.`));
+    break;}
+  case "diffsq_int":{
+    const b2=p.b*p.b, v=p.a-b2;
+    st.push(S(`Это разность квадратов: (x − y)(x + y) = x² − y². Здесь x = ${M(rt(p.a))}, значит x² = ?`,
+      [I(p.a,"")],`Корень в квадрате — само число: ${M(par(rt(p.a))+"<sup>2</sup>")} = ${p.a}.`,`x² = ${p.a}.`));
+    st.push(S(`y = ${p.b}, значит y² = ?`,[I(b2,"")],``,`y² = ${b2}.`));
+    st.push(S(`Ответ: ${p.a} − ${b2} = ?`,[I(v,"ответ")],``,`${v}.`));
+    break;}
+  case "diffsq_root":{
+    const v=p.a-p.b;
+    st.push(S(`Разность квадратов: x² − y². Корни в квадрате исчезают: ${M(par(rt(p.a))+"<sup>2</sup>")} = ? и ${M(par(rt(p.b))+"<sup>2</sup>")} = ?`,
+      [I(p.a,"первое"),I(p.b,"второе")],
+      `${M(par(rt("a"))+"<sup>2</sup>")} = a — по определению корня.`,
+      `${p.a} и ${p.b}.`));
+    st.push(S(`Ответ: ${p.a} − ${p.b} = ?`,[I(v,"ответ")],``,`${v}.`));
+    break;}
+  case "distrib":{
+    const P=p.A*p.B, r=isq(P), v=r+p.sign*p.B;
+    st.push(S(`Раскрой скобки: каждый корень умножается на ${M(rt(p.B))}. Первое произведение: ${M(rt(p.A)+" · "+rt(p.B)+" = "+rt(p.A+" · "+p.B))} = ${M(rt(P))} = ?`,
+      [I(r,"")],`${p.A} · ${p.B} = ${P}; ?² = ${P}.`,`${M(rt(P))} = ${r}.`));
+    st.push(S(`Второе произведение: ${M(rt(p.B)+" · "+rt(p.B))} = ?`,
+      [I(p.B,"")],`Корень сам на себя — число под корнем.`,`${p.B}.`));
+    st.push(S(`Ответ: ${r} ${p.sign<0?"−":"+"} ${p.B} = ?`,[I(v,"ответ")],``,`${v}.`));
+    break;}
+  case "pow_mul_div":{
+    const e1=p.p+p.q, e=e1-p.r, v=fpow(Fr(p.b),e);
+    st.push(S(`При умножении степеней показатели складываются: ${M(pw(p.b,p.p)+" · "+pw(p.b,p.q)+" = "+pw(p.b,"?"))}`,
+      [I(e1,"показатель")],`(${p.p}) + ${p.q} = ? Минус не теряй!`,`${M(pw(p.b,e1))}.`));
+    st.push(S(`При делении — вычитаются: ${M(fr(pw(p.b,e1),pw(p.b,p.r))+" = "+pw(p.b,"?"))}`,
+      [I(e,"показатель")],`${e1} − ${p.r} = ?`,`${M(pw(p.b,e))}.`));
+    st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`));
+    break;}
+  case "pow_pow_div":{
+    const e1=p.p*p.q, e=e1-p.r, v=fpow(Fr(p.b),e);
+    st.push(S(`Степень в степени — показатели перемножаются: ${M(par(pw(p.b,p.p))+sup(p.q)+" = "+pw(p.b,"?"))}`,
+      [I(e1,"показатель")],`${p.p} · (${p.q}) = ?`,`${M(pw(p.b,e1))}.`));
+    st.push(S(`Деление — показатели вычитаются: ${M(fr(pw(p.b,e1),pw(p.b,p.r))+" = "+pw(p.b,"?"))}`,
+      [I(e,"показатель")],`(${e1}) − (${p.r}) = ? Минус на минус даёт плюс.`,`${M(pw(p.b,e))}.`));
+    st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`));
+    break;}
+  case "pow_mul_pow":{
+    const e1=p.q*p.r, e=p.p+e1, v=fpow(Fr(p.b),e);
+    st.push(S(`Сначала степень в степени: ${M(par(pw(p.b,p.q))+sup(p.r)+" = "+pw(p.b,"?"))}`,
+      [I(e1,"показатель")],`${p.q} · ${p.r} = ?`,`${M(pw(p.b,e1))}.`));
+    st.push(S(`Теперь умножение — показатели складываются: ${M(pw(p.b,p.p)+" · "+pw(p.b,e1)+" = "+pw(p.b,"?"))}`,
+      [I(e,"показатель")],`(${p.p}) + ${e1} = ?`,`${M(pw(p.b,e))}.`));
+    st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`));
+    break;}
+  case "pow_prodbase_div":{
+    const ea=p.p-p.r, eb=p.q-p.r;
+    const v=fmul(fpow(Fr(p.b1),ea),fpow(Fr(p.b2),eb));
+    st.push(S(`Знаменатель ${M(pw(p.b1*p.b2,p.r))} — это степень произведения: ${p.b1*p.b2} = ${p.b1} · ${p.b2}, значит ${M(pw(p.b1*p.b2,p.r)+" = "+pw(p.b1,"?")+" · "+pw(p.b2,"?"))}. Какой показатель у каждого?`,
+      [I(p.r,"")],`(ab)ⁿ = aⁿbⁿ — показатель раздаётся каждому множителю.`,
+      `${M(pw(p.b1*p.b2,p.r)+" = "+pw(p.b1,p.r)+" · "+pw(p.b2,p.r))}.`));
+    st.push(S(`Сокращай: показатель ${p.b1} = ? и показатель ${p.b2} = ? (вычитание показателей)`,
+      [I(ea,String(p.b1)),I(eb,String(p.b2))],
+      `${p.b1}: ${p.p} − ${p.r}; ${p.b2}: ${p.q} − ${p.r}.`,
+      `Осталось ${M(pw(p.b1,ea)+(eb?" · "+pw(p.b2,eb):""))}.`));
+    st.push(S(`Вычисли: ${M((ea?pw(p.b1,ea):"")+(ea&&eb?" · ":"")+(eb?pw(p.b2,eb):""))} = ?`,
+      [I(v,"ответ")],``,`${V(v)}.`));
+    break;}
+  case "prodbase_over":{
+    const ea=p.p-p.q, eb=p.p-p.r;
+    const v=fmul(fpow(Fr(p.b1),ea),fpow(Fr(p.b2),eb));
+    st.push(S(`Числитель — степень произведения: ${M(par(p.b1+" · "+p.b2)+sup(p.p)+" = "+pw(p.b1,"?")+" · "+pw(p.b2,"?"))}. Показатель каждого?`,
+      [I(p.p,"")],`(ab)ⁿ = aⁿbⁿ.`,`${M(pw(p.b1,p.p)+" · "+pw(p.b2,p.p))}.`));
+    st.push(S(`Сокращай: показатель ${p.b1} = ? и показатель ${p.b2} = ?`,
+      [I(ea,String(p.b1)),I(eb,String(p.b2))],
+      `${p.b1}: ${p.p} − ${p.q}; ${p.b2}: ${p.p} − ${p.r}.`,
+      `Осталось ${M((ea?pw(p.b1,ea):"1")+(eb?" · "+pw(p.b2,eb):""))}.`));
+    st.push(S(`Вычисли: = ?`,[I(v,"ответ")],``,`${V(v)}.`));
+    break;}
+  case "sqsum":{
+    const k2=p.k*p.k, v=p.m+k2, sgn=p.sign>0?"+":"−";
+    st.push(S(`Раскрой квадрат по формуле: ${M(par(rt(p.m)+" "+sgn+" "+p.k)+"<sup>2</sup>")} = ${M(par(rt(p.m))+"<sup>2</sup>")} ${sgn} 2 · ${p.k}${M(rt(p.m))} + ${p.k}². Чему равно ${M(par(rt(p.m))+"<sup>2</sup>")}?`,
+      [I(p.m,"")],`Корень в квадрате — число под корнем.`,`${p.m}.`));
+    st.push(S(`${p.k}² = ?`,[I(k2,"")],``,`${k2}.`));
+    st.push(S(`Смотри: в раскрытом квадрате есть ${sgn}${2*p.k}${M(rt(p.m))}, а в задаче добавлено ${p.sign>0?"−":"+"}${2*p.k}${M(rt(p.m))} — они взаимно уничтожаются! Остались числа: ${p.m} + ${k2} = ?`,
+      [I(v,"ответ")],`Корни исчезли — складываем только рациональные части.`,`${v}.`));
+    break;}
+  case "pow_over_num":{
+    let q=0,dd=p.d; while(dd>1){dd/=p.b;q++;}
+    const e=p.p-q, v=fpow(Fr(p.b),e);
+    st.push(S(`Внизу спряталась степень: ${p.d} = ${M(pw(p.b,"?"))}`,
+      [I(q,"показатель")],`${p.b} · ${p.b} = ${p.b*p.b}, дальше сам.`,`${p.d} = ${M(pw(p.b,q))}.`));
+    st.push(S(`Деление степеней: ${M(fr(pw(p.b,p.p),pw(p.b,q))+" = "+pw(p.b,"?"))}`,
+      [I(e,"показатель")],`${p.p} − ${q} = ?`,`${M(pw(p.b,e))}.`));
+    st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`));
+    break;}
+  case "recip_pow":{
+    const e1=-p.p, e2=-p.q, e=e1+e2, v=fpow(Fr(p.b),e);
+    st.push(S(`«Единица делить на степень» — это минус в показателе: ${M(fr(1,pw(p.b,p.p))+" = "+pw(p.b,"?"))} и ${M(fr(1,pw(p.b,p.q))+" = "+pw(p.b,"?"))}`,
+      [I(e1,"первый"),I(e2,"второй")],
+      `1/aⁿ = a⁻ⁿ: знак показателя меняется. Минус на минус — плюс!`,
+      `${M(pw(p.b,e1)+" · "+pw(p.b,e2))}.`));
+    st.push(S(`Умножение — показатели складываются: (${e1}) + (${e2}) = ?`,
+      [I(e,"показатель")],``,`${M(pw(p.b,e))}.`));
+    st.push(S(`Вычисли: ${M(pw(p.b,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`));
+    break;}
+  case "pow_var_div":{
+    const e1=p.pp*p.q, e=e1-p.r, v=fpow(Fr(p.a),e);
+    st.push(S(`Степень в степени: ${M(par(pw("a",p.pp))+sup(p.q)+" = a<sup>?</sup>")}`,
+      [I(e1,"показатель")],`${p.pp} · (${p.q}) = ?`,`${M("a"+sup(e1))}.`));
+    st.push(S(`Деление — показатели вычитаются: ${M("a"+sup(e1)+" : a"+sup(p.r)+" = a<sup>?</sup>")}`,
+      [I(e,"показатель")],`(${e1}) − (${p.r}) = ? Вычесть минус — значит прибавить.`,`${M("a"+sup(e))}.`));
+    st.push(S(`Подставь a = ${p.a}: ${M(pw(p.a,e))} = ?`,[I(v,"ответ")],``,`${V(v)}.`));
+    break;}
+  case "pow_ab":{
+    const e1=p.q*p.r, ea=p.pp-p.s, eb=e1-p.s, v=fpow(Fr(p.a),ea);
+    st.push(S(`Степень в степени: ${M(par(pw("b",p.q))+sup(p.r)+" = b<sup>?</sup>")}`,
+      [I(e1,"показатель")],`${p.q} · ${p.r} = ?`,`${M("b"+sup(e1))}.`));
+    st.push(S(`Знаменатель: ${M(par("a · b")+sup(p.s)+" = a"+sup(p.s)+"b"+sup(p.s))}. После сокращения: показатель a = ? и показатель b = ?`,
+      [I(ea,"a"),I(eb,"b")],
+      `a: ${p.pp} − ${p.s}; b: ${e1} − ${p.s}.`,
+      `Осталось ${M("a"+sup(ea)+(eb?"b"+sup(eb):""))}.`));
+    st.push(S(`Показатель b получился ${eb} — буква b ${eb===0?"исчезла (b⁰ = 1)! Подставлять b = "+M(rt(p.a))+" вообще не нужно":"остался"}. Подставь a = ${p.a}: ${M(pw(p.a,ea))} = ?`,
+      [I(v,"ответ")],``,`${V(v)}.`));
+    break;}
+  case "root_neg":{
+    const e=p.pp+p.q, h=e/2, v=fpow(Fr(p.a),h);
+    st.push(S(`Минус в чётной степени исчезает: ${M(par("−a")+sup(p.negfirst?p.pp:p.q)+" = a"+sup(p.negfirst?p.pp:p.q))}. Под корнем перемножаем: показатель a = ?`,
+      [I(e,"показатель")],`${p.pp} + ${p.q} = ? (показатели складываются)`,
+      `Под корнем ${M("a"+sup(e))}.`));
+    st.push(S(`Корень — показатель пополам: ${M(rt("a"+sup(e))+" = a<sup>?</sup>")}`,
+      [I(h,"показатель")],`${e} : 2 = ?`,`${M("a"+sup(h))}.`));
+    st.push(S(`Подставь a = ${p.a}: ${M(pw(p.a,h))} = ?`,[I(v,"ответ")],``,`${V(v)}.`));
+    break;}
+  case "root_frac_a":{
+    const e=p.pp-p.q, r=isq(p.c), h=e/2, v=fmul(Fr(r),fpow(Fr(p.a),h));
+    st.push(S(`Сначала сократи дробь под корнем: ${M(fr("a"+sup(p.pp),"a"+sup(p.q))+" = a<sup>?</sup>")}`,
+      [I(e,"показатель")],`Показатели вычитаются: ${p.pp} − ${p.q}.`,`Под корнем ${M(p.c+"a"+sup(e))}.`));
+    st.push(S(`Извлекаем: ${M(rt(p.c))} = ? и показатель a пополам: ${e} : 2 = ?`,
+      [I(r,"корень"),I(h,"показатель")],`?² = ${p.c}.`,`${M(r+"a"+sup(h))}.`));
+    st.push(S(`Подставь a = ${p.a}: ${r} · ${M(pw(p.a,h))} = ?`,[I(v,"ответ")],
+      `${M(pw(p.a,h))} = ${V(fpow(Fr(p.a),h))}.`,`${V(v)}.`));
+    break;}
+  case "root_invc":{
+    const r=isq(p.c), e1=p.pp/2, e2=p.q/2;
+    const v=fdiv(fmul(fpow(Fr(p.x),e1),fpow(Fr(p.y),e2)),Fr(r));
+    st.push(S(`${M(rt(fr(1,p.c)))} — тоже дробь: ${M(fr(1,rt(p.c)))}. Чему равен ${M(rt(p.c))}?`,
+      [I(r,"")],`?² = ${p.c}.`,`${M(rt(fr(1,p.c))+" = "+fr(1,r))}.`));
+    st.push(S(`Буквы: показатели пополам. x → ? и y → ?`,
+      [I(e1,"x"),I(e2,"y")],``,`${M(fr("x"+sup(e1)+"y"+sup(e2),r))}.`));
+    st.push(S(`Подставь x = ${p.x}, y = ${p.y}: ${M(fr(pw(p.x,e1)+" · "+pw(p.y,e2),r))} = ?`,
+      [I(v,"ответ")],`${M(pw(p.x,e1))} = ${V(fpow(Fr(p.x),e1))}, ${M(pw(p.y,e2))} = ${V(fpow(Fr(p.y),e2))}; перемножь и раздели на ${r}.`,
+      `${V(v)}.`));
+    break;}
+  case "root_xy_frac":{
+    const r=isq(p.c), e1=p.pp/2, e2=p.q/2;
+    const v=fdiv(fmul(Fr(r),fpow(Fr(p.x),e1)),fpow(Fr(p.y),e2));
+    st.push(S(`Корень берём отдельно от числителя и знаменателя. ${M(rt(p.c))} = ?`,
+      [I(r,"")],`?² = ${p.c}.`,`${r}.`));
+    st.push(S(`Показатели букв пополам: x → ? и y → ?`,
+      [I(e1,"x"),I(e2,"y")],``,`${M(fr(r+"x"+sup(e1),"y"+sup(e2)))}.`));
+    st.push(S(`Подставь x = ${p.x}, y = ${p.y}: ${M(fr(r+" · "+pw(p.x,e1),pw(p.y,e2)))} = ?`,
+      [I(v,"ответ")],`Сверху: ${r} · ${V(fpow(Fr(p.x),e1))}; снизу: ${V(fpow(Fr(p.y),e2))}.`,
+      `${V(v)}.`));
+    break;}
+  case "fold_square":{
+    const sa=isq(p.A), sb=isq(p.B), sg=p.K<0?-1:1;
+    const a=Fr(p.an,p.ad), b=Fr(p.bn,p.bd);
+    const inner=fadd(fmul(Fr(sa),a),fmul(Fr(sg*sb),b));
+    const v=inner.n<0n?fmul(inner,Fr(-1)):inner;
+    st.push(S(`Под корнем — свёрнутый квадрат: ${M(par((sa===1?"":sa)+"a "+(sg<0?"−":"+")+" "+(sb===1?"":sb)+"b")+"<sup>2</sup>")}. Проверь: число при a = ? и число при b = ?`,
+      [I(sa,"при a"),I(sb,"при b")],
+      `Крайние члены — квадраты: ${p.A}a² = (?a)², ${p.B}b² = (?b)². Средний член ${p.K}ab должен равняться 2 · (при a) · (при b) · ab ${p.K<0?"со знаком минус — значит, в скобке минус":""}.`,
+      `${M(rt(par((sa===1?"":sa)+"a "+(sg<0?"−":"+")+" "+(sb===1?"":sb)+"b")+"<sup>2</sup>"))}.`));
+    st.push(S(`Подставь a = ${M(numFr(a))}, b = ${M(numFr(b))} внутрь скобки: ${(sa===1?"":sa+" · ")}a ${sg<0?"−":"+"} ${(sb===1?"":sb+" · ")}b = ? (может выйти отрицательное число или дробь — пиши как есть)`,
+      [I(inner,"в скобке")],
+      `${a.d!==1n?`Знаменатели одинаковые — складывай числители: считай в тринадцатых/одиннадцатых и т. п.`:`Обычная арифметика со знаками.`}`,
+      `В скобке: ${fmtFr(inner)}.`));
+    st.push(S(`Корень из квадрата — это модуль: ${M(rt("(…)"+"<sup>2</sup>"))} = |…|. Ответ = |${fmtFr(inner)}| = ?`,
+      [I(v,"ответ")],`Модуль убирает минус.`,`${V(v)}.`));
+    break;}
+  case "sci":{
+    const cq=Number(ipow(BigInt(p.c),p.q)), e1=p.pp*p.q;
+    const Mnum=cq*p.d, E=e1+p.r;
+    const v=fmul(Fr(Mnum),fpow(Fr(10),E));
+    st.push(S(`Раскрой скобку: показатель ${p.q} раздаётся каждому множителю: ${M(par(p.c+" · "+pw(10,p.pp))+sup(p.q)+" = "+pw(p.c,p.q)+" · "+par(pw(10,p.pp))+sup(p.q))}. Введи ${M(pw(p.c,p.q))} = ? и показатель десятки: ${p.pp} · ${p.q} = ?`,
+      [I(cq,"число"),I(e1,"показатель 10")],
+      `(ab)ⁿ = aⁿbⁿ, а у десятки показатели перемножаются.`,
+      `${M(cq+" · "+pw(10,e1))}.`));
+    st.push(S(`Перемножь с второй скобкой: числа ${cq} · ${p.d} = ? и показатели десятки ${e1} + (${p.r}) = ?`,
+      [I(Mnum,"число"),I(E,"показатель 10")],
+      `Числа — отдельно, десятки — отдельно (показатели складываются).`,
+      `${M(Mnum+" · "+pw(10,E))}.`));
+    st.push(S(`Запиши обычным числом: ${M(Mnum+" · "+pw(10,E))} = ?`,
+      [I(v,"ответ")],`${E>=0?`Припиши ${E} нулей.`:`Сдвинь запятую на ${-E} влево.`}`,`${V(v)}.`));
+    break;}
+  default: throw new Error("нет шагов для "+ty);
+  }
+  return st;
+}
+</script>
+<script>"use strict";const BANK=[{"id": "1.1", "type": "rootpow", "p": {"b": 4, "n": 6}, "ans": [64, 1]}, {"id": "1.2", "type": "rootpow", "p": {"b": 4, "n": 4}, "ans": [16, 1]}, {"id": "1.3", "type": "rootpow", "p": {"b": 6, "n": 4}, "ans": [36, 1]}, {"id": "1.4", "type": "rootpow", "p": {"b": 8, "n": 4}, "ans": [64, 1]}, {"id": "1.5", "type": "rootpow", "p": {"b": 5, "n": 6}, "ans": [125, 1]}, {"id": "2.1", "type": "rootpow", "p": {"b": 4, "n": 3}, "ans": [8, 1]}, {"id": "2.2", "type": "rootpow", "p": {"b": 9, "n": 5}, "ans": [243, 1]}, {"id": "2.3", "type": "rootpow", "p": {"b": 4, "n": 5}, "ans": [32, 1]}, {"id": "2.4", "type": "rootpow", "p": {"b": 16, "n": 3}, "ans": [64, 1]}, {"id": "2.5", "type": "rootpow", "p": {"b": 25, "n": 3}, "ans": [125, 1]}, {"id": "3.1", "type": "rootmono", "p": {"c": 49, "p": 8, "q": 4, "x": 2, "y": 3}, "ans": [1008, 1]}, {"id": "3.2", "type": "rootmono", "p": {"c": 9, "p": 4, "q": 6, "x": 5, "y": 3}, "ans": [2025, 1]}, {"id": "3.3", "type": "rootmono", "p": {"c": 36, "p": 4, "q": 4, "x": 5, "y": 3}, "ans": [1350, 1]}, {"id": "3.4", "type": "rootmono", "p": {"c": 25, "p": 4, "q": 4, "x": 3, "y": 7}, "ans": [2205, 1]}, {"id": "3.5", "type": "rootmono", "p": {"c": 16, "p": 4, "q": 6, "x": 7, "y": 2}, "ans": [1568, 1]}, {"id": "4.1", "type": "rootfrac1", "p": {"c1": 36, "p": 1, "c2": 9, "q": 5, "a": 9, "b": 4}, "ans": [288, 1]}, {"id": "4.2", "type": "rootfrac1", "p": {"c1": 36, "p": 3, "c2": 4, "q": 1, "a": 7, "b": 5}, "ans": [84, 1]}, {"id": "4.3", "type": "rootfrac1", "p": {"c1": 16, "p": 5, "c2": 36, "q": 1, "a": 4, "b": 5}, "ans": [384, 1]}, {"id": "4.4", "type": "rootfrac1", "p": {"c1": 25, "p": 3, "c2": 9, "q": 1, "a": 2, "b": 9}, "ans": [30, 1]}, {"id": "4.5", "type": "rootfrac1", "p": {"c1": 9, "p": 1, "c2": 16, "q": 5, "a": 5, "b": 2}, "ans": [48, 1]}, {"id": "5.1", "type": "rootfrac2", "p": {"c1": 25, "p": 8, "c2": 9, "q": 5, "r": 4, "s": 5, "a": 7, "b": 10}, "ans": [735, 1]}, {"id": "5.2", "type": "rootfrac2", "p": {"c1": 25, "p": 5, "c2": 36, "q": 6, "r": 5, "s": 4, "a": 4, "b": 9}, "ans": [270, 1]}, {"id": "5.3", "type": "rootfrac2", "p": {"c1": 4, "p": 11, "c2": 9, "q": 4, "r": 7, "s": 4, "a": 7, "b": 9}, "ans": [294, 1]}, {"id": "5.4", "type": "rootfrac2", "p": {"c1": 25, "p": 9, "c2": 16, "q": 8, "r": 5, "s": 8, "a": 4, "b": 7}, "ans": [320, 1]}, {"id": "5.5", "type": "rootfrac2", "p": {"c1": 4, "p": 6, "c2": 25, "q": 7, "r": 2, "s": 7, "a": 9, "b": 7}, "ans": [810, 1]}, {"id": "6.1", "type": "sq_over_d", "p": {"k": 4, "m": 2, "d": 64}, "ans": [1, 2]}, {"id": "6.2", "type": "sq_over_d", "p": {"k": 3, "m": 2, "d": 180}, "ans": [1, 10]}, {"id": "6.3", "type": "sq_over_d", "p": {"k": 2, "m": 10, "d": 160}, "ans": [1, 4]}, {"id": "6.4", "type": "sq_over_d", "p": {"k": 3, "m": 5, "d": 75}, "ans": [3, 5]}, {"id": "6.5", "type": "sq_over_d", "p": {"k": 4, "m": 3, "d": 60}, "ans": [4, 5]}, {"id": "7.1", "type": "d_over_sq", "p": {"k": 2, "m": 8, "d": 64}, "ans": [2, 1]}, {"id": "7.2", "type": "d_over_sq", "p": {"k": 2, "m": 10, "d": 360}, "ans": [9, 1]}, {"id": "7.3", "type": "d_over_sq", "p": {"k": 2, "m": 5, "d": 160}, "ans": [8, 1]}, {"id": "7.4", "type": "d_over_sq", "p": {"k": 2, "m": 5, "d": 220}, "ans": [11, 1]}, {"id": "7.5", "type": "d_over_sq", "p": {"k": 3, "m": 2, "d": 54}, "ans": [3, 1]}, {"id": "8.1", "type": "rootmuldiv", "p": {"m": 21, "n": 14, "d": 6}, "ans": [7, 1]}, {"id": "8.2", "type": "rootmuldiv", "p": {"m": 32, "n": 6, "d": 12}, "ans": [4, 1]}, {"id": "8.3", "type": "rootmuldiv", "p": {"m": 35, "n": 21, "d": 15}, "ans": [7, 1]}, {"id": "8.4", "type": "rootmuldiv", "p": {"m": 20, "n": 32, "d": 10}, "ans": [8, 1]}, {"id": "8.5", "type": "rootmuldiv", "p": {"m": 22, "n": 33, "d": 6}, "ans": [11, 1]}, {"id": "9.1", "type": "rootprod3", "p": {"k1": 5, "m1": 11, "k2": 2, "m2": 2, "m3": 22}, "ans": [220, 1]}, {"id": "9.2", "type": "rootprod3", "p": {"k1": 7, "m1": 15, "k2": 2, "m2": 2, "m3": 30}, "ans": [420, 1]}, {"id": "9.3", "type": "rootprod3", "p": {"k1": 4, "m1": 17, "k2": 5, "m2": 2, "m3": 34}, "ans": [680, 1]}, {"id": "9.4", "type": "rootprod3", "p": {"k1": 5, "m1": 7, "k2": 6, "m2": 3, "m3": 21}, "ans": [630, 1]}, {"id": "9.5", "type": "rootprod3", "p": {"k1": 5, "m1": 11, "k2": 4, "m2": 3, "m3": 33}, "ans": [660, 1]}, {"id": "10.1", "type": "rootprod2", "p": {"m": 5, "n": 12, "k": 15}, "ans": [30, 1]}, {"id": "10.2", "type": "rootprod2", "p": {"m": 7, "n": 18, "k": 14}, "ans": [42, 1]}, {"id": "10.3", "type": "rootprod2", "p": {"m": 7, "n": 12, "k": 21}, "ans": [42, 1]}, {"id": "10.4", "type": "rootprod2", "p": {"m": 2, "n": 45, "k": 10}, "ans": [30, 1]}, {"id": "10.5", "type": "rootprod2", "p": {"m": 11, "n": 18, "k": 22}, "ans": [66, 1]}, {"id": "11.1", "type": "diffsq_int", "p": {"a": 23, "b": 2}, "ans": [19, 1]}, {"id": "11.2", "type": "diffsq_int", "p": {"a": 31, "b": 3}, "ans": [22, 1]}, {"id": "11.3", "type": "diffsq_int", "p": {"a": 47, "b": 5}, "ans": [22, 1]}, {"id": "11.4", "type": "diffsq_int", "p": {"a": 19, "b": 4}, "ans": [3, 1]}, {"id": "11.5", "type": "diffsq_int", "p": {"a": 37, "b": 5}, "ans": [12, 1]}, {"id": "12.1", "type": "diffsq_root", "p": {"a": 5, "b": 2}, "ans": [3, 1]}, {"id": "12.2", "type": "diffsq_root", "p": {"a": 7, "b": 3}, "ans": [4, 1]}, {"id": "12.3", "type": "diffsq_root", "p": {"a": 7, "b": 2}, "ans": [5, 1]}, {"id": "12.4", "type": "diffsq_root", "p": {"a": 17, "b": 3}, "ans": [14, 1]}, {"id": "12.5", "type": "diffsq_root", "p": {"a": 19, "b": 5}, "ans": [14, 1]}, {"id": "13.1", "type": "distrib", "p": {"A": 27, "B": 3, "sign": -1}, "ans": [6, 1]}, {"id": "13.2", "type": "distrib", "p": {"A": 8, "B": 2, "sign": -1}, "ans": [2, 1]}, {"id": "13.3", "type": "distrib", "p": {"A": 18, "B": 2, "sign": -1}, "ans": [4, 1]}, {"id": "13.4", "type": "distrib", "p": {"A": 50, "B": 2, "sign": -1}, "ans": [8, 1]}, {"id": "13.5", "type": "distrib", "p": {"A": 32, "B": 2, "sign": -1}, "ans": [6, 1]}, {"id": "14.1", "type": "distrib", "p": {"A": 8, "B": 2, "sign": 1}, "ans": [6, 1]}, {"id": "14.2", "type": "distrib", "p": {"A": 12, "B": 3, "sign": 1}, "ans": [9, 1]}, {"id": "14.3", "type": "distrib", "p": {"A": 32, "B": 2, "sign": 1}, "ans": [10, 1]}, {"id": "14.4", "type": "distrib", "p": {"A": 27, "B": 3, "sign": 1}, "ans": [12, 1]}, {"id": "14.5", "type": "distrib", "p": {"A": 48, "B": 3, "sign": 1}, "ans": [15, 1]}, {"id": "15.1", "type": "pow_mul_div", "p": {"b": 2, "p": -7, "q": 17, "r": 8}, "ans": [4, 1]}, {"id": "15.2", "type": "pow_mul_div", "p": {"b": 7, "p": -3, "q": 13, "r": 8}, "ans": [49, 1]}, {"id": "15.3", "type": "pow_mul_div", "p": {"b": 9, "p": -6, "q": 15, "r": 7}, "ans": [81, 1]}, {"id": "15.4", "type": "pow_mul_div", "p": {"b": 3, "p": -5, "q": 15, "r": 7}, "ans": [27, 1]}, {"id": "15.5", "type": "pow_mul_div", "p": {"b": 11, "p": -3, "q": 12, "r": 8}, "ans": [11, 1]}, {"id": "16.1", "type": "pow_pow_div", "p": {"b": 8, "p": 3, "q": -7, "r": -23}, "ans": [64, 1]}, {"id": "16.2", "type": "pow_pow_div", "p": {"b": 2, "p": 9, "q": -3, "r": -29}, "ans": [4, 1]}, {"id": "16.3", "type": "pow_pow_div", "p": {"b": 5, "p": 2, "q": -8, "r": -18}, "ans": [25, 1]}, {"id": "16.4", "type": "pow_pow_div", "p": {"b": 6, "p": 2, "q": -9, "r": -20}, "ans": [36, 1]}, {"id": "16.5", "type": "pow_pow_div", "p": {"b": 7, "p": 7, "q": -3, "r": -23}, "ans": [49, 1]}, {"id": "17.1", "type": "pow_mul_pow", "p": {"b": 3, "p": -7, "q": 5, "r": 2}, "ans": [27, 1]}, {"id": "17.2", "type": "pow_mul_pow", "p": {"b": 11, "p": -5, "q": 3, "r": 2}, "ans": [11, 1]}, {"id": "17.3", "type": "pow_mul_pow", "p": {"b": 13, "p": -5, "q": 3, "r": 2}, "ans": [13, 1]}, {"id": "17.4", "type": "pow_mul_pow", "p": {"b": 7, "p": -6, "q": 2, "r": 4}, "ans": [49, 1]}, {"id": "17.5", "type": "pow_mul_pow", "p": {"b": 3, "p": -8, "q": 6, "r": 2}, "ans": [81, 1]}, {"id": "18.1", "type": "pow_prodbase_div", "p": {"b1": 4, "p": 8, "b2": 11, "q": 10, "r": 8}, "ans": [121, 1]}, {"id": "18.2", "type": "pow_prodbase_div", "p": {"b1": 2, "p": 10, "b2": 11, "q": 7, "r": 7}, "ans": [8, 1]}, {"id": "18.3", "type": "pow_prodbase_div", "p": {"b1": 7, "p": 8, "b2": 10, "q": 6, "r": 6}, "ans": [49, 1]}, {"id": "18.4", "type": "pow_prodbase_div", "p": {"b1": 3, "p": 8, "b2": 10, "q": 5, "r": 5}, "ans": [27, 1]}, {"id": "18.5", "type": "pow_prodbase_div", "p": {"b1": 7, "p": 4, "b2": 9, "q": 6, "r": 4}, "ans": [81, 1]}, {"id": "19.1", "type": "prodbase_over", "p": {"b1": 3, "b2": 4, "p": 4, "q": 2, "r": 3}, "ans": [36, 1]}, {"id": "19.2", "type": "prodbase_over", "p": {"b1": 2, "b2": 6, "p": 7, "q": 5, "r": 6}, "ans": [24, 1]}, {"id": "19.3", "type": "prodbase_over", "p": {"b1": 2, "b2": 10, "p": 5, "q": 2, "r": 4}, "ans": [80, 1]}, {"id": "19.4", "type": "prodbase_over", "p": {"b1": 2, "b2": 5, "p": 6, "q": 4, "r": 5}, "ans": [20, 1]}, {"id": "19.5", "type": "prodbase_over", "p": {"b1": 3, "b2": 6, "p": 4, "q": 2, "r": 3}, "ans": [54, 1]}, {"id": "20.1", "type": "sqsum", "p": {"m": 5, "k": 9, "sign": 1}, "ans": [86, 1]}, {"id": "20.2", "type": "sqsum", "p": {"m": 3, "k": 8, "sign": 1}, "ans": [67, 1]}, {"id": "20.3", "type": "sqsum", "p": {"m": 19, "k": 5, "sign": 1}, "ans": [44, 1]}, {"id": "20.4", "type": "sqsum", "p": {"m": 11, "k": 3, "sign": 1}, "ans": [20, 1]}, {"id": "20.5", "type": "sqsum", "p": {"m": 7, "k": 3, "sign": 1}, "ans": [16, 1]}, {"id": "21.1", "type": "sqsum", "p": {"m": 19, "k": 7, "sign": -1}, "ans": [68, 1]}, {"id": "21.2", "type": "sqsum", "p": {"m": 11, "k": 7, "sign": -1}, "ans": [60, 1]}, {"id": "21.3", "type": "sqsum", "p": {"m": 15, "k": 2, "sign": -1}, "ans": [19, 1]}, {"id": "21.4", "type": "sqsum", "p": {"m": 17, "k": 6, "sign": -1}, "ans": [53, 1]}, {"id": "21.5", "type": "sqsum", "p": {"m": 13, "k": 3, "sign": -1}, "ans": [22, 1]}, {"id": "22.1", "type": "pow_over_num", "p": {"b": 2, "p": 9, "d": 16}, "ans": [32, 1]}, {"id": "22.2", "type": "pow_over_num", "p": {"b": 2, "p": 5, "d": 4}, "ans": [8, 1]}, {"id": "22.3", "type": "pow_over_num", "p": {"b": 3, "p": 5, "d": 27}, "ans": [9, 1]}, {"id": "22.4", "type": "pow_over_num", "p": {"b": 5, "p": 5, "d": 25}, "ans": [125, 1]}, {"id": "22.5", "type": "pow_over_num", "p": {"b": 4, "p": 5, "d": 16}, "ans": [64, 1]}, {"id": "23.1", "type": "recip_pow", "p": {"b": 5, "p": -11, "q": 10}, "ans": [5, 1]}, {"id": "23.2", "type": "recip_pow", "p": {"b": 2, "p": -12, "q": 10}, "ans": [4, 1]}, {"id": "23.3", "type": "recip_pow", "p": {"b": 3, "p": -8, "q": 7}, "ans": [3, 1]}, {"id": "23.4", "type": "recip_pow", "p": {"b": 3, "p": -10, "q": 8}, "ans": [9, 1]}, {"id": "23.5", "type": "recip_pow", "p": {"b": 4, "p": -10, "q": 9}, "ans": [4, 1]}, {"id": "24.1", "type": "pow_var_div", "p": {"pp": 4, "q": -4, "r": -19, "a": 5}, "ans": [125, 1]}, {"id": "24.2", "type": "pow_var_div", "p": {"pp": 2, "q": -6, "r": -15, "a": 4}, "ans": [64, 1]}, {"id": "24.3", "type": "pow_var_div", "p": {"pp": 5, "q": -3, "r": -19, "a": 3}, "ans": [81, 1]}, {"id": "24.4", "type": "pow_var_div", "p": {"pp": 4, "q": -3, "r": -15, "a": 3}, "ans": [27, 1]}, {"id": "24.5", "type": "pow_var_div", "p": {"pp": 7, "q": -2, "r": -16, "a": 3}, "ans": [9, 1]}, {"id": "25.1", "type": "pow_ab", "p": {"pp": 21, "q": 6, "r": 3, "s": 18, "a": 3}, "ans": [27, 1]}, {"id": "25.2", "type": "pow_ab", "p": {"pp": 18, "q": 7, "r": 2, "s": 14, "a": 3}, "ans": [81, 1]}, {"id": "25.3", "type": "pow_ab", "p": {"pp": 21, "q": 9, "r": 2, "s": 18, "a": 5}, "ans": [125, 1]}, {"id": "25.4", "type": "pow_ab", "p": {"pp": 18, "q": 8, "r": 2, "s": 16, "a": 5}, "ans": [25, 1]}, {"id": "25.5", "type": "pow_ab", "p": {"pp": 14, "q": 6, "r": 2, "s": 12, "a": 6}, "ans": [36, 1]}, {"id": "26.1", "type": "root_neg", "p": {"pp": 4, "q": 6, "a": 2, "negfirst": 1}, "ans": [32, 1]}, {"id": "26.2", "type": "root_neg", "p": {"pp": 2, "q": 6, "a": 2, "negfirst": 0}, "ans": [16, 1]}, {"id": "26.3", "type": "root_neg", "p": {"pp": 4, "q": 4, "a": 2, "negfirst": 1}, "ans": [16, 1]}, {"id": "26.4", "type": "root_neg", "p": {"pp": 6, "q": 2, "a": 3, "negfirst": 0}, "ans": [81, 1]}, {"id": "26.5", "type": "root_neg", "p": {"pp": 4, "q": 2, "a": 5, "negfirst": 1}, "ans": [125, 1]}, {"id": "27.1", "type": "root_frac_a", "p": {"c": 9, "pp": 14, "q": 8, "a": 2}, "ans": [24, 1]}, {"id": "27.2", "type": "root_frac_a", "p": {"c": 4, "pp": 16, "q": 12, "a": 5}, "ans": [50, 1]}, {"id": "27.3", "type": "root_frac_a", "p": {"c": 25, "pp": 15, "q": 9, "a": 2}, "ans": [40, 1]}, {"id": "27.4", "type": "root_frac_a", "p": {"c": 9, "pp": 19, "q": 9, "a": 2}, "ans": [96, 1]}, {"id": "27.5", "type": "root_frac_a", "p": {"c": 25, "pp": 19, "q": 11, "a": 2}, "ans": [80, 1]}, {"id": "28.1", "type": "root_invc", "p": {"c": 4, "pp": 2, "q": 8, "x": 5, "y": 2}, "ans": [40, 1]}, {"id": "28.2", "type": "root_invc", "p": {"c": 4, "pp": 8, "q": 4, "x": 2, "y": 3}, "ans": [72, 1]}, {"id": "28.3", "type": "root_invc", "p": {"c": 25, "pp": 6, "q": 4, "x": 5, "y": 2}, "ans": [100, 1]}, {"id": "28.4", "type": "root_invc", "p": {"c": 25, "pp": 8, "q": 2, "x": 3, "y": 5}, "ans": [81, 1]}, {"id": "28.5", "type": "root_invc", "p": {"c": 9, "pp": 2, "q": 6, "x": 7, "y": 3}, "ans": [63, 1]}, {"id": "29.1", "type": "root_xy_frac", "p": {"c": 9, "pp": 4, "q": 6, "x": 9, "y": 3}, "ans": [9, 1]}, {"id": "29.2", "type": "root_xy_frac", "p": {"c": 9, "pp": 2, "q": 4, "x": 6, "y": 3}, "ans": [2, 1]}, {"id": "29.3", "type": "root_xy_frac", "p": {"c": 36, "pp": 2, "q": 4, "x": 6, "y": 2}, "ans": [9, 1]}, {"id": "29.4", "type": "root_xy_frac", "p": {"c": 16, "pp": 4, "q": 10, "x": 8, "y": 2}, "ans": [8, 1]}, {"id": "29.5", "type": "root_xy_frac", "p": {"c": 25, "pp": 2, "q": 4, "x": 10, "y": 5}, "ans": [2, 1]}, {"id": "30.1", "type": "fold_square", "p": {"A": 1, "K": 8, "B": 16, "an": 11, "ad": 3, "bn": 1, "bd": 3}, "ans": [5, 1]}, {"id": "30.2", "type": "fold_square", "p": {"A": 1, "K": 10, "B": 25, "an": 188, "ad": 13, "bn": 4, "bd": 13}, "ans": [16, 1]}, {"id": "30.3", "type": "fold_square", "p": {"A": 1, "K": 10, "B": 25, "an": 84, "ad": 11, "bn": 3, "bd": 11}, "ans": [9, 1]}, {"id": "30.4", "type": "fold_square", "p": {"A": 36, "K": 12, "B": 1, "an": 4, "ad": 5, "bn": 41, "bd": 5}, "ans": [13, 1]}, {"id": "30.5", "type": "fold_square", "p": {"A": 9, "K": 6, "B": 1, "an": 5, "ad": 13, "bn": 89, "bd": 13}, "ans": [8, 1]}, {"id": "31.1", "type": "fold_square", "p": {"A": 1, "K": 8, "B": 16, "an": 3, "ad": 1, "bn": -4, "bd": 1}, "ans": [13, 1]}, {"id": "31.2", "type": "fold_square", "p": {"A": 1, "K": -4, "B": 4, "an": 2, "ad": 1, "bn": -4, "bd": 1}, "ans": [10, 1]}, {"id": "31.3", "type": "fold_square", "p": {"A": 1, "K": -8, "B": 16, "an": 4, "ad": 1, "bn": 3, "bd": 1}, "ans": [8, 1]}, {"id": "31.4", "type": "fold_square", "p": {"A": 1, "K": 10, "B": 25, "an": 8, "ad": 1, "bn": -2, "bd": 1}, "ans": [2, 1]}, {"id": "31.5", "type": "fold_square", "p": {"A": 1, "K": -10, "B": 25, "an": 7, "ad": 1, "bn": 2, "bd": 1}, "ans": [3, 1]}, {"id": "32.1", "type": "sci", "p": {"c": 8, "pp": 2, "q": 2, "d": 3, "r": -2}, "ans": [19200, 1]}, {"id": "32.2", "type": "sci", "p": {"c": 6, "pp": 2, "q": 2, "d": 14, "r": -2}, "ans": [50400, 1]}, {"id": "32.3", "type": "sci", "p": {"c": 9, "pp": -2, "q": 2, "d": 11, "r": 5}, "ans": [8910, 1]}, {"id": "32.4", "type": "sci", "p": {"c": 2, "pp": 2, "q": 4, "d": 19, "r": -6}, "ans": [30400, 1]}, {"id": "32.5", "type": "sci", "p": {"c": 8, "pp": 2, "q": 3, "d": 12, "r": -5}, "ans": [61440, 1]}];</script>
+<script>
+"use strict";
+/* ================= счёт ================= */
+const score={solved:0,hints:0,shown:0};
+function updScore(){
+  document.getElementById("scorebar").innerHTML=
+   `<span>решено задач: <b>${score.solved}</b></span>
+    <span>подсказок: <b>${score.hints}</b></span>
+    <span>показано шагов и ответов: <b>${score.shown}</b></span>`;
+}
+/* ================= вкладки ================= */
+const views={};
+document.querySelectorAll("nav.tabs button").forEach(b=>{
+  b.onclick=()=>showView(b.dataset.v);
+});
+function showView(v){
+  document.querySelectorAll("nav.tabs button").forEach(x=>x.classList.toggle("on",x.dataset.v===v));
+  document.querySelectorAll("section.view").forEach(x=>x.classList.toggle("on",x.id==="view-"+v));
+  window.scrollTo({top:0});
+}
+function gotoLearn(anchor){
+  showView("learn");
+  const el=document.getElementById(anchor);
+  if(el){el.scrollIntoView({behavior:"smooth",block:"start"});
+    el.style.boxShadow="0 0 0 3px #ffd76e";setTimeout(()=>el.style.boxShadow="",1600);}
+}
+function gotoMarathon(groupKey){
+  showView("mar");
+  marSetFilter(groupKey);
+}
+function gotoStep(famKey){
+  showView("step");
+  stepSetFam(famKey);
+}
+/* ================= движок шагов =================
+   mountSteps(container, steps, {onSolved, taskLabel}) */
+function mountSteps(box, steps, opts={}){
+  box.innerHTML="";
+  let idx=0, usedShow=false, usedHint=false;
+  const wrap=document.createElement("div");wrap.className="steps";box.appendChild(wrap);
+  function renderStep(){
+    const s=steps[idx], last=idx===steps.length-1;
+    const div=document.createElement("div");div.className="step";
+    const inputs=s.ins.map((inp,i)=>`
+      <label style="display:inline-flex;align-items:center;gap:5px">${inp.lbl?`<span class="small">${inp.lbl}:</span>`:""}
+      <input class="ans" data-i="${i}" inputmode="text" autocomplete="off"></label>`).join(" ");
+    div.innerHTML=`<div class="q">${s.q}</div>
+      <div class="row">${inputs}
+        <button class="act ck">Проверить</button>
+        ${s.hint?`<button class="act sec hb">Подсказка</button>`:""}
+        <button class="act show sb">${last?"Показать ответ":"Показать шаг"}</button>
+        <span class="fb"></span></div>
+      ${s.hint?`<div class="hint">${s.hint}</div>`:""}`;
+    wrap.appendChild(div);
+    const fb=div.querySelector(".fb");
+    const ins=[...div.querySelectorAll("input.ans")];
+    ins[0].focus({preventScroll:true});
+    function finish(shown){
+      div.classList.add(shown?"shown":"done");
+      div.querySelectorAll("button").forEach(b=>b.disabled=true);
+      ins.forEach(x=>x.disabled=true);
+      idx++;
+      if(idx<steps.length){renderStep();}
+      else{
+        const fin=document.createElement("div");
+        fin.className="step "+(usedShow?"shown":"done");
+        fin.innerHTML=usedShow
+          ?`<span class="gold-ink">Задача разобрана с показом — в «решено» не идёт. Возьми похожую и добей сам!</span>`
+          :`<span class="ok-ink">✓ Задача решена${usedHint?" (с подсказкой)":""} — молодец!</span>`;
+        wrap.appendChild(fin);
+        if(!usedShow){score.solved++;}
+        updScore();
+        if(opts.onSolved)opts.onSolved(!usedShow);
+      }
+    }
+    div.querySelector(".ck").onclick=()=>{
+      let allOk=true;
+      ins.forEach((inp,i)=>{
+        const v=parseAns(inp.value);
+        const ok=v&&feq(v,s.ins[i].val);
+        inp.classList.toggle("ok",!!ok);inp.classList.toggle("no",!ok);
+        if(!ok)allOk=false;
+      });
+      if(allOk){fb.textContent="верно ✓";fb.className="fb ok";finish(false);}
+      else{fb.textContent="не то, попробуй ещё";fb.className="fb no";}
+    };
+    const hb=div.querySelector(".hb");
+    if(hb)hb.onclick=()=>{div.querySelector(".hint").classList.add("on");
+      if(!usedHint){usedHint=true;score.hints++;updScore();}};
+    div.querySelector(".sb").onclick=()=>{
+      ins.forEach((inp,i)=>{inp.value=fmtFr(s.ins[i].val);inp.classList.add("ok");});
+      fb.innerHTML=`— ${last?"ответ показан":"шаг показан"}`;fb.className="fb shown";
+      if(s.show){const d2=document.createElement("div");d2.className="hint on";d2.innerHTML=s.show;div.appendChild(d2);}
+      usedShow=true;score.shown++;updScore();
+      finish(true);
+    };
+    ins.forEach(inp=>inp.addEventListener("keydown",e=>{if(e.key==="Enter")div.querySelector(".ck").click();}));
+  }
+  renderStep();
+}
+/* ================= группы типов ================= */
+const GROUPS=[
+ {k:"rootdeg", name:"Корень из степени", types:["rootpow"], nums:"№1–2", learn:"p3", fam:"F"},
+ {k:"letters", name:"Корни с буквами", types:["rootmono","rootfrac1","rootfrac2","root_neg","root_frac_a","root_invc","root_xy_frac"], nums:"№3–5, 26–29", learn:"p3", fam:"F"},
+ {k:"sqroot", name:"Квадрат бьёт корень", types:["sq_over_d","d_over_sq"], nums:"№6–7", learn:"p5", fam:"C"},
+ {k:"prod", name:"Произведение корней", types:["rootmuldiv","rootprod3","rootprod2","distrib"], nums:"№8–10, 13–14", learn:"p4", fam:"C"},
+ {k:"dsq", name:"Разность квадратов", types:["diffsq_int","diffsq_root"], nums:"№11–12", learn:"p5", fam:"D"},
+ {k:"sqsum", name:"Квадрат суммы", types:["sqsum"], nums:"№20–21", learn:"p5", fam:"E"},
+ {k:"fold", name:"Свернуть в квадрат", types:["fold_square"], nums:"№30–31", learn:"p5", fam:"G"},
+ {k:"pow1", name:"Степени: одно основание", types:["pow_mul_div","pow_pow_div","pow_mul_pow","pow_over_num","recip_pow","pow_var_div"], nums:"№15–17, 22–24", learn:"p2", fam:"A"},
+ {k:"pow2", name:"Степени: два основания", types:["pow_prodbase_div","prodbase_over","pow_ab"], nums:"№18–19, 25", learn:"p2", fam:"B"},
+ {k:"sci", name:"Стандартный вид числа", types:["sci"], nums:"№32", learn:"p2", fam:"H"},
+];
+const typeGroup={};GROUPS.forEach(g=>g.types.forEach(t=>typeGroup[t]=g.k));
+const grpByK=Object.fromEntries(GROUPS.map(g=>[g.k,g]));
+
+/* ================= СПРАВОЧНИК ================= */
+function chipsFor(gkeys){
+  return gkeys.map(k=>{const g=grpByK[k];
+    return `<span class="pill" onclick="gotoMarathon('${k}')" title="открыть эти задачи в марафоне">${g.nums} · ${g.name}</span>`;
+  }).join("");
+}
+function refRow(formulaHtml, learnAnchor, gkeys, note=""){
+  return `<div class="refrow">
+    <div class="formula">${M('<span class="big">'+formulaHtml+'</span>')}${note?`<div class="refnote">${note}</div>`:""}</div>
+    <div class="links">
+      <span class="lbl">разобраться:</span><span class="pill" onclick="gotoLearn('${learnAnchor}')">📖 объяснение</span>
+      <span class="lbl">где встречается:</span>${chipsFor(gkeys)}
+    </div></div>`;
+}
+function buildRef(){
+  const v=document.getElementById("view-ref");
+  let sq="";
+  {// таблица квадратов
+    let head=`<tr><th></th>`;for(let u=0;u<10;u++)head+=`<th>${u}</th>`;head+="</tr>";
+    let rows="";
+    for(let d=1;d<=9;d++){
+      rows+=`<tr><th>${d}</th>`;
+      for(let u=0;u<10;u++){const n=d*10+u;rows+=`<td data-n="${n}" onclick="sqCell(${n})">${n*n}</td>`;}
+      rows+="</tr>";
+    }
+    sq=`<table class="sq"><tr><th rowspan="2">Десятки</th><th colspan="10">Единицы</th></tr>${head}${rows}</table>`;
+  }
+  v.innerHTML=`
+  <div class="card">
+    <h2>Как устроен этот лист</h2>
+    <p>Это — те строчки из официального справочного материала ОГЭ, которые кормят <b>задание 8</b>. Такой же лист будет лежать перед тобой на экзамене. Рядом с каждой формулой — кнопки: <span class="pill ghost">📖 объяснение</span> ведёт к понятному разбору, а кнопки с номерами открывают в марафоне именно те задачи, где формула работает.</p>
+  </div>
+  <div class="refwrap">
+    <div class="refhead">Свойства арифметического квадратного корня</div>
+    ${refRow(rt("ab")+" = "+rt("a")+" · "+rt("b"),"p4",["prod","letters","sqroot"],"при a ≥ 0, b ≥ 0")}
+    ${refRow(rt(fr("a","b"))+" = "+fr(rt("a"),rt("b")),"p4",["prod","letters"],"при a ≥ 0, b > 0")}
+    ${refRow(par(rt("a"))+"<sup>2</sup> = a","p5",["sqroot","dsq","sqsum"],"этой строчки нет на листе — но это само определение корня")}
+    <div class="refhead">Свойства степени (a > 0, b > 0)</div>
+    ${refRow("a<sup>−n</sup> = "+fr(1,"a<sup>n</sup>"),"p1",["pow1"])}
+    ${refRow("a<sup>n</sup> · a<sup>m</sup> = a<sup>n+m</sup>","p2",["pow1"])}
+    ${refRow(fr("a<sup>n</sup>","a<sup>m</sup>")+" = a<sup>n−m</sup>","p2",["pow1","pow2"])}
+    ${refRow(par("a<sup>n</sup>")+"<sup>m</sup> = a<sup>nm</sup>","p2",["pow1","sci"])}
+    ${refRow(par("ab")+"<sup>n</sup> = a<sup>n</sup>b<sup>n</sup>","p2",["pow2","sci"])}
+    ${refRow(par(fr("a","b"))+"<sup>n</sup> = "+fr("a<sup>n</sup>","b<sup>n</sup>"),"p2",["pow1"])}
+    <div class="refhead">Формулы сокращённого умножения</div>
+    ${refRow(par("a + b")+"<sup>2</sup> = a<sup>2</sup> + 2ab + b<sup>2</sup>","p5",["sqsum","fold"])}
+    ${refRow(par("a − b")+"<sup>2</sup> = a<sup>2</sup> − 2ab + b<sup>2</sup>","p5",["sqsum","fold"])}
+    ${refRow("a<sup>2</sup> − b<sup>2</sup> = "+par("a − b")+par("a + b"),"p5",["dsq"])}
+    <div class="refhead">Таблица квадратов двузначных чисел</div>
+    <div class="sqtool">
+      Твой лучший друг на экзамене. Проверь: введи число — найдём его в таблице и узнаем корень.
+      <div style="margin:6px 0"><input class="ans" id="sqFind" style="width:130px" placeholder="напр. 2116">
+      <button class="act" onclick="sqSearch()">Найти корень</button> <span class="fb" id="sqFb"></span></div>
+      ${sq}
+      <div class="hintbox">Клик по клетке подсветит её: строка — десятки, столбец — единицы. Например, 46² = 2116, значит ${M(rt(2116)+" = 46")}.</div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>С чего начать</h3>
+    <p>Если тема новая — иди во вкладку <span class="crosslink" onclick="showView('learn')">📖 Учимся</span>: там всё по пунктам и с тренажёрчиками. Если хочешь набить руку — <span class="crosslink" onclick="showView('step')">🪜 Пошагово</span> генерирует задачи бесконечно и проверяет каждый шаг. Готов к бою — <span class="crosslink" onclick="showView('mar')">🏃 Марафон</span>: все 160 задач из реальных подборок к ОГЭ 2026.</p>
+  </div>`;
+}
+window.sqCell=function(n){
+  document.querySelectorAll("table.sq td").forEach(td=>td.classList.toggle("hl",+td.dataset.n===n));
+  const fb=document.getElementById("sqFb");
+  fb.textContent=`${n}² = ${n*n}, значит √${n*n} = ${n}`;fb.className="fb ok";
+};
+window.sqSearch=function(){
+  const fb=document.getElementById("sqFb");
+  const x=parseAns(document.getElementById("sqFind").value);
+  if(!x||!fint(x)){fb.textContent="введи целое число";fb.className="fb no";return;}
+  const r=isqrtB(x.n<0n?-x.n:x.n);
+  if(r!==null&&r>=10n&&r<=99n){sqCell(Number(r));}
+  else if(r!==null){fb.textContent=`√${x.n} = ${r} (это вне таблицы, но точный квадрат)`;fb.className="fb ok";
+    document.querySelectorAll("table.sq td.hl").forEach(td=>td.classList.remove("hl"));}
+  else{fb.textContent=`${x.n} — не точный квадрат, в таблице его нет`;fb.className="fb no";
+    document.querySelectorAll("table.sq td.hl").forEach(td=>td.classList.remove("hl"));}
+};
+</script>
+<script>
+"use strict";
+/* ================= УЧИМСЯ ================= */
+function buildLearn(){
+  const v=document.getElementById("view-learn");
+  v.innerHTML=`
+  <div class="card" id="p1">
+    <h2><span class="num">1</span>Степень. И что значит «минус» в показателе</h2>
+    <p>${M("a<sup>n</sup>")} — это a, умноженное само на себя n раз: ${M("2<sup>4</sup> = 2 · 2 · 2 · 2 = 16")}.</p>
+    <p>А теперь фокус. Спустись по лесенке степеней и следи, что происходит с числом:</p>
+    <div class="tool"><div class="tl">лесенка степеней · каждый шаг вниз — деление на основание</div>
+      <div class="ladder" id="ladder"></div>
+      <div style="margin-top:8px">
+        <button class="act sec" onclick="ladderMove(-1)">⬇ шаг вниз</button>
+        <button class="act sec" onclick="ladderMove(1)">⬆ шаг вверх</button>
+        <span class="small" style="margin-left:8px">основание:</span>
+        <span class="pill" onclick="ladderBase(2)">2</span><span class="pill" onclick="ladderBase(3)">3</span><span class="pill" onclick="ladderBase(5)">5</span>
+      </div>
+      <div class="hintbox" id="ladderNote"></div>
+    </div>
+    <p>Вот и весь секрет: <b>отрицательная степень — это «перевернуть»</b>: ${M("a<sup>−n</sup> = "+fr(1,"a<sup>n</sup>"))}. И наоборот: ${M(fr(1,"a<sup>−n</sup>")+" = a<sup>n</sup>")} — минус выпрыгивает из знаменателя, меняя знак. Это спасает в задачах <span class="crosslink" onclick="gotoMarathon('pow1')">№15–17 и 23</span>.</p>
+    <div class="note">Никогда не путай: ${M("2<sup>−3</sup>")} — это не отрицательное число! Это ${M(fr(1,8))}. Минус в показателе про «перевернуть», а не про «ниже нуля».</div>
+  </div>
+
+  <div class="card" id="p2">
+    <h2><span class="num">2</span>Пять правил степеней — и почему они работают</h2>
+    <p>Все пять есть на справочном листе (вкладка «Справочник»). Учить наизусть не обязательно — достаточно один раз <i>увидеть</i>, почему они верны. Жми на правило:</p>
+    <div class="tool"><div class="tl">разворачивалка · правило превращается в честное умножение</div>
+      <div class="quiz-choice" id="ruleBtns"></div>
+      <div id="ruleShow" style="min-height:60px"></div>
+    </div>
+    <p>Рабочая тройка для задания 8:</p>
+    <table class="seen-tbl">
+      <tr><th>что делаешь</th><th>что с показателями</th><th>пример</th></tr>
+      <tr><td>умножаешь степени</td><td>складываются</td><td>${M("2<sup>−7</sup> · 2<sup>17</sup> = 2<sup>10</sup>")}</td></tr>
+      <tr><td>делишь степени</td><td>вычитаются</td><td>${M(fr("2<sup>10</sup>","2<sup>8</sup>")+" = 2<sup>2</sup> = 4")}</td></tr>
+      <tr><td>степень в степени</td><td>перемножаются</td><td>${M(par("2<sup>3</sup>")+"<sup>−7</sup> = 2<sup>−21</sup>")}</td></tr>
+    </table>
+    <p>И ещё одно, для задач с <span class="crosslink" onclick="gotoMarathon('pow2')">двумя основаниями (№18–19)</span>: ${M(par("ab")+"<sup>n</sup> = a<sup>n</sup>b<sup>n</sup>")} — показатель раздаётся каждому множителю. Увидел ${M("44<sup>8</sup>")} под дробью, где сверху четвёрки и одиннадцатые? Разбей: ${M("44<sup>8</sup> = 4<sup>8</sup> · 11<sup>8</sup>")} — и сокращай.</p>
+  </div>
+
+  <div class="card" id="p3">
+    <h2><span class="num">3</span>Корень из степени: показатель — пополам</h2>
+    <p>${M(rt("a<sup>n</sup>")+" = a<sup>n/2</sup>")} (при a ≥ 0). Почему? Потому что квадрат и корень — взаимно обратные: ${M(par("a<sup>3</sup>")+"<sup>2</sup> = a<sup>6</sup>")}, значит ${M(rt("a<sup>6</sup>")+" = a<sup>3</sup>")}.</p>
+    <div class="tool"><div class="tl">проверь идею · введи показатель — увидишь результат</div>
+      ${M(rt("5<sup>n</sup>"))} где n = <input class="ans" id="halfIn" style="width:70px" value="6">
+      <button class="act" onclick="halfGo()">извлечь корень</button>
+      <div class="hintbox" id="halfOut"></div>
+    </div>
+    <h3>Случай 1: показатель чётный</h3>
+    <p>Просто дели пополам: ${M(rt("4<sup>6</sup>")+" = 4<sup>3</sup> = 64")}. Это задачи <span class="crosslink" onclick="gotoMarathon('rootdeg')">№1</span>.</p>
+    <h3>Случай 2: показатель нечётный</h3>
+    <p>Пополам не делится… но посмотри на <b>основание</b>: в ОГЭ оно всегда будет полным квадратом. ${M(rt("4<sup>3</sup>"))}: замени 4 = 2², получится ${M(rt(par("2<sup>2</sup>")+"<sup>3</sup>")+" = "+rt("2<sup>6</sup>")+" = 2<sup>3</sup> = 8")}. Это задачи <span class="crosslink" onclick="gotoMarathon('rootdeg')">№2</span>.</p>
+    <h3>Случай 3: под корнем буквы</h3>
+    <p>То же правило работает с каждой буквой отдельно: ${M(rt("49x<sup>8</sup>y<sup>4</sup>")+" = 7x<sup>4</sup>y<sup>2</sup>")} — корень из числа по таблице квадратов, показатели букв пополам. Потом подставляй значения. Это <span class="crosslink" onclick="gotoMarathon('letters')">№3–5 и 26–29</span>.</p>
+    <div class="note">Если встретил ${M(par("−a")+"<sup>4</sup>")} — чётная степень съедает минус: ${M(par("−a")+"<sup>4</sup> = a<sup>4</sup>")}. Задачи №26 только этим и пугают.</div>
+  </div>
+
+  <div class="card" id="p4">
+    <h2><span class="num">4</span>Корни: под один корень и обратно</h2>
+    <p>Главное свойство: ${M(rt("a")+" · "+rt("b")+" = "+rt("ab"))}. Работает в обе стороны, и с дробью тоже: ${M(fr(rt("a"),rt("b"))+" = "+rt(fr("a","b")))}.</p>
+    <p><b>Зачем:</b> по отдельности ${M(rt(21))} и ${M(rt(14))} — страшные бесконечные дроби. А вместе: ${M(fr(rt(21)+" · "+rt(14),rt(6))+" = "+rt(fr("21 · 14","6"))+" = "+rt(49)+" = 7")}. Некрасивое стало красивым.</p>
+    <div class="tool"><div class="tl">объединялка · два корня — под один</div>
+      ${M(rt('<input class="ans" id="unA" style="width:70px" value="32">'))} · ${M(rt('<input class="ans" id="unB" style="width:70px" value="2">'))}
+      <button class="act" onclick="uniGo()">под один корень</button>
+      <button class="act sec" onclick="uniRnd()">случайная пара</button>
+      <div class="hintbox" id="unOut"></div>
+    </div>
+    <p><b>Совет из практики:</b> не перемножай числа в лоб. Сначала сократи с знаменателем, раскладывая на множители: ${M(fr("21 · 14","6"))} = ${M(fr("3 · 7 · 2 · 7","2 · 3"))} = 49. Оба пути дают одно и то же — иди тем, который видишь.</p>
+    <p>Так решаются <span class="crosslink" onclick="gotoMarathon('prod')">№8–10, 13–14</span>.</p>
+  </div>
+
+  <div class="card" id="p5">
+    <h2><span class="num">5</span>Формулы сокращённого умножения + корни</h2>
+    <p>Сначала — самое простое и самое важное: <b>корень в квадрате исчезает</b>: ${M(par(rt("a"))+"<sup>2</sup> = a")}. Например ${M(par("4"+rt(2))+"<sup>2</sup> = 16 · 2 = 32")} — и задачи <span class="crosslink" onclick="gotoMarathon('sqroot')">№6–7</span> уже решены.</p>
+    <h3>Разность квадратов — корни исчезают парой</h3>
+    <p>${M(par(rt(23)+" − 2")+par(rt(23)+" + 2")+" = "+par(rt(23))+"<sup>2</sup> − 2<sup>2</sup> = 23 − 4 = 19")}. Увидел скобки-близнецы с разными знаками — это <span class="crosslink" onclick="gotoMarathon('dsq')">№11–12</span>, решается в одну строчку.</p>
+    <h3>Квадрат суммы — корни уничтожаются</h3>
+    <div class="tool"><div class="tl">раскрывалка · смотри, как сокращается средний член</div>
+      <div id="fsuShow"></div>
+      <button class="act sec" onclick="fsuNext()">другой пример</button>
+    </div>
+    <p>В задачах <span class="crosslink" onclick="gotoMarathon('sqsum')">№20–21</span> к квадрату всегда пристроено слагаемое, которое ровно гасит корневую часть. Значит, ответ — просто «число под корнем + квадрат числа». Проверь на любой задаче!</p>
+    <h3>Та же формула задом наперёд</h3>
+    <p>В <span class="crosslink" onclick="gotoMarathon('fold')">№30–31</span> под корнем лежит уже раскрытый квадрат: ${M(rt("a<sup>2</sup> + 8ab + 16b<sup>2</sup>")+" = "+rt(par("a + 4b")+"<sup>2</sup>")+" = |a + 4b|")}. Узнать его просто: крайние члены — квадраты, средний — удвоенное произведение. Модуль не забудь: корень из квадрата всегда неотрицательный!</p>
+  </div>
+
+  <div class="card" id="p6">
+    <h2><span class="num">6</span>Опознай задачу с одного взгляда</h2>
+    <p>На экзамене полдела — понять, <i>какой</i> это тип. Тренируй глаз:</p>
+    <table class="seen-tbl">
+      <tr><th>вижу</th><th>делаю</th><th>пункт</th></tr>
+      <tr><td>${M(rt("4<sup>6</sup>"))}</td><td>показатель пополам (нечётный? основание = квадрат)</td><td><span class="crosslink" onclick="gotoLearn('p3')">п. 3</span></td></tr>
+      <tr><td>${M(rt("…")+" · "+rt("…"))}, дробь из корней</td><td>всё под один корень, сократить</td><td><span class="crosslink" onclick="gotoLearn('p4')">п. 4</span></td></tr>
+      <tr><td>скобки-близнецы (… − …)(… + …)</td><td>разность квадратов</td><td><span class="crosslink" onclick="gotoLearn('p5')">п. 5</span></td></tr>
+      <tr><td>${M(par("… ± …")+"<sup>2</sup>")} и рядом ещё корень</td><td>раскрыть квадрат — корни сократятся</td><td><span class="crosslink" onclick="gotoLearn('p5')">п. 5</span></td></tr>
+      <tr><td>под корнем a² + …ab + …b²</td><td>свернуть в квадрат, взять модуль</td><td><span class="crosslink" onclick="gotoLearn('p5')">п. 5</span></td></tr>
+      <tr><td>степени с одинаковым основанием</td><td>плюс / минус / умножить показатели</td><td><span class="crosslink" onclick="gotoLearn('p2')">п. 2</span></td></tr>
+      <tr><td>${M("44<sup>8</sup>")}, ${M("63<sup>4</sup>")} — составное основание</td><td>разбить: (ab)ⁿ = aⁿbⁿ</td><td><span class="crosslink" onclick="gotoLearn('p2')">п. 2</span></td></tr>
+      <tr><td>${M("(8 · 10<sup>2</sup>)<sup>2</sup> · …")}</td><td>числа отдельно, десятки отдельно</td><td><span class="crosslink" onclick="gotoLearn('p2')">п. 2</span></td></tr>
+    </table>
+  </div>
+
+  <div class="card" id="p7">
+    <h2><span class="num">7</span>Квиз: определи приём → реши</h2>
+    <p>Настоящая задача из банка. Сначала скажи, <b>каким приёмом</b> её решать, потом добей до ответа.</p>
+    <div class="tool" id="quizBox"></div>
+    <button class="act" onclick="quizNew()">Новая задача</button>
+  </div>`;
+  ladderBase(2);ruleBtnsInit();fsuNext();quizNew();
+}
+/* --- лесенка --- */
+let LB=2,LE=3;
+window.ladderBase=function(b){LB=b;LE=3;ladderDraw();};
+window.ladderMove=function(d){LE=Math.max(-3,Math.min(4,LE+d));ladderDraw();};
+function ladderDraw(){
+  const box=document.getElementById("ladder");let h="";
+  for(let e=4;e>=-3;e--){
+    const val=e>=0?fmtFr(fpow(Fr(LB),e)):fr(1,fmtFr(fpow(Fr(LB),-e)));
+    h+=`<span class="rung ${e===LE?"now":""}">${M(pw(LB,e)+" = "+val)}</span>`;
+  }
+  box.innerHTML=h;
+  const n=document.getElementById("ladderNote");
+  n.innerHTML=LE>0?`Пока всё привычно: ${M(pw(LB,LE))} — это ${LE===1?"просто "+LB:LB+" перемножили "+LE+" раз(а)"}. Спускайся ниже нуля!`
+    :LE===0?`Шаг вниз — деление на ${LB}. Из ${M(pw(LB,1)+" = "+LB)} получаем ${M(pw(LB,0)+" = 1")}. Любое число в нулевой степени — единица!`
+    :`Продолжаем делить на ${LB} — и уходим в дроби: ${M(pw(LB,LE)+" = "+fr(1,pw(LB,-LE)))}. Отрицательная степень = перевёрнутая положительная.`;
+}
+/* --- разворачивалка правил --- */
+const RULES=[
+ {t:"aⁿ · aᵐ = aⁿ⁺ᵐ",show:()=>`${M("2<sup>3</sup> · 2<sup>2</sup>")} = ${M("(2 · 2 · 2) · (2 · 2)")} — всего двоек: 3 + 2 = 5 штук = ${M("2<sup>5</sup>")}. Множители просто выстраиваются в один ряд, поэтому показатели <b>складываются</b>.`},
+ {t:"aⁿ / aᵐ = aⁿ⁻ᵐ",show:()=>`${M(fr("2<sup>5</sup>","2<sup>2</sup>"))} = ${M(fr("2 · 2 · 2 · 2 · 2","2 · 2"))} — две двойки снизу съедают две сверху, остаётся 5 − 2 = 3: ${M("2<sup>3</sup>")}. Показатели <b>вычитаются</b>.`},
+ {t:"(aⁿ)ᵐ = aⁿᵐ",show:()=>`${M(par("2<sup>3</sup>")+"<sup>2</sup>")} = ${M("2<sup>3</sup> · 2<sup>3</sup>")} — тройка двоек, взятая 2 раза: 3 · 2 = 6 двоек = ${M("2<sup>6</sup>")}. Показатели <b>перемножаются</b>.`},
+ {t:"(ab)ⁿ = aⁿbⁿ",show:()=>`${M(par("2 · 5")+"<sup>3</sup>")} = ${M("(2·5)(2·5)(2·5)")} = ${M("2·2·2 · 5·5·5")} = ${M("2<sup>3</sup> · 5<sup>3</sup>")}. Показатель <b>раздаётся каждому</b>. Проверка: 10³ = 1000 = 8 · 125 ✓`},
+ {t:"a⁻ⁿ = 1/aⁿ",show:()=>`Смотри лесенку в пункте 1: каждый шаг показателя вниз — деление на a. Ниже ${M("a<sup>0</sup> = 1")} начинаются дроби: ${M("2<sup>−3</sup> = "+fr(1,"2<sup>3</sup>")+" = "+fr(1,8))}.`},
+];
+function ruleBtnsInit(){
+  const b=document.getElementById("ruleBtns");
+  b.innerHTML=RULES.map((r,i)=>`<button onclick="ruleShow(${i})">${r.t}</button>`).join("");
+  ruleShow(0);
+}
+window.ruleShow=function(i){document.getElementById("ruleShow").innerHTML=`<div class="note">${RULES[i].show()}</div>`;};
+/* --- корень из степени: проверялка --- */
+window.halfGo=function(){
+  const o=document.getElementById("halfOut");
+  const x=parseAns(document.getElementById("halfIn").value);
+  if(!x||!fint(x)||x.n<1n||x.n>12n){o.innerHTML="возьми целый показатель от 1 до 12";return;}
+  const n=Number(x.n);
+  if(n%2===0){o.innerHTML=`${M(rt("5<sup>"+n+"</sup>")+" = 5<sup>"+(n/2)+"</sup>")} — показатель пополам. Проверка: ${M(par("5<sup>"+(n/2)+"</sup>")+"<sup>2</sup> = 5<sup>"+n+"</sup>")} ✓`;}
+  else{o.innerHTML=`${n} — нечётный, пополам не делится. С основанием 5 корень «красиво» не берётся: ${M(rt("5<sup>"+n+"</sup>")+" = 5<sup>"+((n-1)/2)+"</sup>"+rt(5))}. В ОГЭ при нечётном показателе основание всегда будет полным квадратом (4, 9, 16, 25) — тогда работает случай 2 ниже.`;}
+};
+/* --- объединялка корней --- */
+window.uniGo=function(){
+  const o=document.getElementById("unOut");
+  const a=parseAns(document.getElementById("unA").value),b=parseAns(document.getElementById("unB").value);
+  if(!a||!b||!fint(a)||!fint(b)||a.n<1n||b.n<1n||a.n>10000n||b.n>10000n){o.innerHTML="введи два натуральных числа";return;}
+  const P=a.n*b.n,r=isqrtB(P);
+  o.innerHTML=`${M(rt(String(a.n))+" · "+rt(String(b.n))+" = "+rt(a.n+" · "+b.n)+" = "+rt(String(P)))}${r!==null?M(" = "+r)+` — полный квадрат, корень взялся!`:` — не полный квадрат: так и останется ${M(rt(String(P)))}. Подбери пару, чтобы произведение стало квадратом (например ${a.n} и ${a.n}).`}`;
+};
+window.uniRnd=function(){
+  const pairs=[[32,2],[27,3],[8,2],[18,2],[12,3],[50,2],[20,5],[48,3],[45,5],[24,6]];
+  const p=pairs[Math.floor(Math.random()*pairs.length)];
+  document.getElementById("unA").value=p[0];document.getElementById("unB").value=p[1];
+  uniGo();
+};
+/* --- ФСУ раскрывалка --- */
+const FSU=[{m:5,k:9},{m:19,k:7},{m:3,k:8},{m:11,k:3},{m:13,k:3},{m:17,k:6}];
+let fsuI=-1;
+window.fsuNext=function(){
+  fsuI=(fsuI+1)%FSU.length;
+  const {m,k}=FSU[fsuI];const minus=fsuI%2===1;const s1=minus?"−":"+",s2=minus?"+":"−";
+  document.getElementById("fsuShow").innerHTML=
+   `<p>${M('<span class="big">'+par(rt(m)+" "+s1+" "+k)+"<sup>2</sup> "+s2+" "+(2*k)+rt(m)+'</span>')}</p>
+    <p>Раскрываем квадрат: ${M(par(rt(m))+"<sup>2</sup> "+s1+" 2 · "+k+" · "+rt(m)+" + "+k+"<sup>2</sup>")} = ${M(m+" "+s1+" "+(2*k)+rt(m)+" + "+(k*k))}</p>
+    <p>Теперь вместе с хвостом: ${M(m+" "+s1+" "+(2*k)+rt(m)+" + "+(k*k)+" "+s2+" "+(2*k)+rt(m))} — слагаемые <b>${s1}${2*k}${"√"+m}</b> и <b>${s2}${2*k}${"√"+m}</b> взаимно уничтожились.</p>
+    <p class="ok-ink">Ответ: ${m} + ${k*k} = ${m+k*k}. Корень даже вычислять не пришлось.</p>`;
+};
+/* --- квиз «определи приём» --- */
+const QUIZFAMS=[
+ {k:"deg",n:"корень из степени / с буквами",g:["rootdeg","letters"]},
+ {k:"prod",n:"корни — под один корень",g:["prod"]},
+ {k:"dsq",n:"разность квадратов",g:["dsq"]},
+ {k:"sq",n:"раскрыть или свернуть квадрат",g:["sqsum","fold","sqroot"]},
+ {k:"pow",n:"правила степеней",g:["pow1","pow2","sci"]},
+];
+let quizTask=null;
+window.quizNew=function(){
+  quizTask=BANK[Math.floor(Math.random()*BANK.length)];
+  const fam=QUIZFAMS.find(f=>f.g.includes(typeGroup[quizTask.type]));
+  const box=document.getElementById("quizBox");
+  box.innerHTML=`<div class="tl">задача №${quizTask.id} из банка</div>
+   <div class="expr">${renderTask(quizTask)}</div>
+   <p><b>Шаг 1.</b> Каким приёмом решается?</p>
+   <div class="quiz-choice">${QUIZFAMS.map(f=>`<button data-k="${f.k}">${f.n}</button>`).join("")}</div>
+   <div id="quizStage2"></div>`;
+  box.querySelectorAll(".quiz-choice button").forEach(b=>{
+    b.onclick=()=>{
+      if(b.dataset.k===fam.k){
+        b.classList.add("pick-ok");
+        box.querySelectorAll(".quiz-choice button").forEach(x=>x.disabled=true);
+        const s2=document.getElementById("quizStage2");
+        s2.innerHTML=`<p class="ok-ink">верно ✓ — это «${fam.n}»</p><p><b>Шаг 2.</b> Теперь реши по шагам:</p><div class="qsteps"></div>`;
+        mountSteps(s2.querySelector(".qsteps"),buildSteps(quizTask));
+      }else{
+        b.classList.add("pick-no");
+        setTimeout(()=>b.classList.remove("pick-no"),900);
+      }
+    };
+  });
+};
+</script>
+<script>
+"use strict";
+/* ================= генераторы для «Пошагово» ================= */
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[ri(0,a.length-1)];
+const NONSQ=[2,3,5,6,7,10,11,13,14,15,17,19,21,22,23,26,29,31,33,37,41,43,47];
+function maxE(b){return b<3?6:b<4?5:b<6?4:b<10?3:2;}
+const GEN={
+ pow_mul_div(){const b=pick([2,3,5,7,11]),e=ri(2,maxE(b)),p=-ri(2,9),r=ri(4,12);
+   return{type:"pow_mul_div",p:{b,p,q:e+r-p,r}};},
+ pow_pow_div(){const b=pick([2,3,5,7,11]),e=ri(2,maxE(b)),pp=ri(2,8),q=-ri(2,5);
+   return{type:"pow_pow_div",p:{b,p:pp,q,r:pp*q-e}};},
+ pow_mul_pow(){const b=pick([2,3,5,7,11]),e=ri(1,maxE(b)),q=ri(2,7),r=ri(2,4);
+   return{type:"pow_mul_pow",p:{b,p:e-q*r,q,r}};},
+ pow_over_num(){const b=pick([2,3,4,5]),e=ri(1,maxE(b)),q=ri(2,b===2?6:b===3?4:3);
+   return{type:"pow_over_num",p:{b,p:q+e,d:Number(ipow(BigInt(b),q))}};},
+ recip_pow(){const b=pick([2,3,5,7]),e=ri(1,maxE(b)),p=-ri(6,14);
+   return{type:"recip_pow",p:{b,p,q:-p-e}};},
+ pow_var_div(){const a=pick([3,4,5]),e=ri(2,maxE(a)),pp=ri(2,7),q=-ri(2,5);
+   return{type:"pow_var_div",p:{pp,q,r:pp*q-e,a}};},
+ pow_prodbase_div(){
+   for(;;){const [b1,b2]=pick([[4,11],[2,11],[7,10],[3,10],[7,9],[2,7],[3,5],[5,6],[2,13]]);
+     const r=ri(4,9),e1=ri(0,2),e2=ri(0,2);
+     if(e1===0&&e2===0)continue;
+     const val=Math.pow(b1,e1)*Math.pow(b2,e2);
+     if(val>20000)continue;
+     return{type:"pow_prodbase_div",p:{b1,p:r+e1,b2,q:r+e2,r}};}},
+ prodbase_over(){
+   for(;;){const [b1,b2]=pick([[3,4],[2,6],[2,10],[2,5],[3,6],[3,7],[2,7]]);
+     const pp=ri(4,8),e1=ri(0,2),e2=ri(0,2);
+     if(e1===0&&e2===0)continue;
+     const val=Math.pow(b1,e1)*Math.pow(b2,e2);
+     if(val>20000)continue;
+     return{type:"prodbase_over",p:{b1,b2,p:pp,q:pp-e1,r:pp-e2}};}},
+ pow_ab(){const a=pick([3,5,6]),r=pick([2,3]),q=ri(5,9),s=q*r,extra=ri(2,maxE(a));
+   return{type:"pow_ab",p:{pp:s+extra,q,r,s,a}};},
+ rootmuldiv(){const a=ri(2,9);let x=pick([2,3,5,6,7]),y=pick([2,3,5,7]);
+   if(x===y)y=y===7?5:y+1;
+   return{type:"rootmuldiv",p:{m:a*x,n:a*y,d:x*y}};},
+ rootprod3(){const k1=ri(2,7),k2=ri(2,6),u=pick([2,3,5,6,7,10,11,13,15]),v=pick([2,3]);
+   return u===v?GEN.rootprod3():{type:"rootprod3",p:{k1,m1:u,k2,m2:v,m3:u*v}};},
+ rootprod2(){const s=pick([2,3,5,7,11]),t=pick([2,5]),a=ri(2,3);
+   return{type:"rootprod2",p:{m:s,n:a*a*t,k:s*t}};},
+ distrib(){const B=pick([2,3,5]),c=ri(2,5);
+   return{type:"distrib",p:{A:B*c*c,B,sign:pick([-1,1])}};},
+ sq_over_d(){const k=ri(2,4),m=pick([2,3,5,10]),sq=k*k*m;
+   if(Math.random()<0.5){const mult=pick([2,4,5,10]);return{type:"sq_over_d",p:{k,m,d:sq*mult}};}
+   const divs=[];for(let i=1;i<=sq;i++)if(sq%i===0&&sq/i>1&&sq/i<=12)divs.push(i);
+   return{type:"sq_over_d",p:{k,m,d:pick(divs)}};},
+ d_over_sq(){const k=ri(2,4),m=pick([2,3,5,10]),mult=ri(2,12);
+   return{type:"d_over_sq",p:{k,m,d:k*k*m*mult}};},
+ diffsq_int(){for(;;){const a=ri(5,90),b=ri(2,8);
+   if(isqrtB(BigInt(a))!==null||a-b*b<1)continue;
+   return{type:"diffsq_int",p:{a,b}};}},
+ diffsq_root(){const a=pick(NONSQ.filter(x=>x>4)),b=pick(NONSQ.filter(x=>x<a));
+   return{type:"diffsq_root",p:{a,b}};},
+ sqsum(){return{type:"sqsum",p:{m:pick(NONSQ.filter(x=>x<31)),k:ri(2,9),sign:pick([-1,1])}};},
+ rootpow(){
+   if(Math.random()<0.5){const b=ri(2,9),n=pick(b<4?[4,6,8]:[4,6]);
+     if(Math.pow(b,n/2)>100000)return GEN.rootpow();
+     return{type:"rootpow",p:{b,n}};}
+   const b=pick([4,9,16,25]),n=b>9?3:pick([3,5]);
+   return{type:"rootpow",p:{b,n}};},
+ rootmono(){for(;;){const c=pick([4,9,16,25,36,49]),pp=pick([2,4]),q=pick([2,4,6]),x=ri(2,7),y=ri(2,7);
+   const v=Math.sqrt(c)*Math.pow(x,pp/2)*Math.pow(y,q/2);
+   if(v>30000)continue;
+   return{type:"rootmono",p:{c,p:pp,q,x,y}};}},
+ root_frac_a(){const c=pick([4,9,16,25]),a=pick([2,3,5]),diff=a>3?pick([2,4]):pick([2,4,6]),q=ri(6,12);
+   return{type:"root_frac_a",p:{c,pp:q+diff,q,a}};},
+ root_xy_frac(){for(;;){const c=pick([4,9,16,25,36]),pp=pick([2,4]),q=pick([2,4]),x=ri(2,12),y=ri(2,5);
+   const num=Math.sqrt(c)*Math.pow(x,pp/2),den=Math.pow(y,q/2);
+   if(num%den!==0||num/den>500||num/den<2)continue;
+   return{type:"root_xy_frac",p:{c,pp,q,x,y}};}},
+ root_neg(){for(;;){const a=ri(2,5),pp=pick([2,4,6]),q=pick([2,4,6]);
+   if(Math.pow(a,(pp+q)/2)>100000)continue;
+   return{type:"root_neg",p:{pp,q,a,negfirst:pick([0,1])}};}},
+ fold_square(){
+   if(Math.random()<0.5){ // целые, со знаками и модулем
+     const sa=pick([1,1,1,2,3,6]),sb=sa===1?pick([2,3,4,5]):1,sg=pick([-1,1]);
+     const a=ri(2,9),b=pick([-1,1])*ri(2,9);
+     return{type:"fold_square",p:{A:sa*sa,K:sg*2*sa*sb,B:sb*sb,an:a,ad:1,bn:b,bd:1}};}
+   const den=pick([3,5,7,11,13]),R=ri(4,16),sb=pick([2,3,4,5,6]);
+   const n2=ri(1,Math.max(1,Math.floor((R*den-1)/sb))),n1=R*den-sb*n2;
+   return{type:"fold_square",p:{A:1,K:2*sb,B:sb*sb,an:n1,ad:den,bn:n2,bd:den}};},
+ sci(){for(;;){const c=pick([2,3,6,8,9]),q=c>3?2:pick([2,3]),pp=pick([2,-2]),E=ri(1,3),d=ri(3,19);
+   if(Math.pow(c,q)*d*Math.pow(10,E)>1000000)continue;
+   return{type:"sci",p:{c,pp,q,d,r:E-pp*q}};}},
+};
+const FAMS=[
+ {k:"A",name:"Степени: одно основание",gens:["pow_mul_div","pow_pow_div","pow_mul_pow","pow_over_num","recip_pow","pow_var_div"],learn:"p2"},
+ {k:"B",name:"Степени: два основания",gens:["pow_prodbase_div","prodbase_over","pow_ab"],learn:"p2"},
+ {k:"C",name:"Произведение корней",gens:["rootmuldiv","rootprod3","rootprod2","distrib","sq_over_d","d_over_sq"],learn:"p4"},
+ {k:"D",name:"Разность квадратов",gens:["diffsq_int","diffsq_root"],learn:"p5"},
+ {k:"E",name:"Квадрат суммы",gens:["sqsum"],learn:"p5"},
+ {k:"F",name:"Корень из степени, буквы",gens:["rootpow","rootmono","root_frac_a","root_xy_frac","root_neg"],learn:"p3"},
+ {k:"G",name:"Свернуть в квадрат",gens:["fold_square"],learn:"p5"},
+ {k:"H",name:"Стандартный вид",gens:["sci"],learn:"p2"},
+];
+let curFam="A";
+function buildStep(){
+  const v=document.getElementById("view-step");
+  v.innerHTML=`<div class="card">
+    <h2>Пошаговый решатель</h2>
+    <p>Выбери семейство — тренажёр будет выдавать такие задачи бесконечно и проверять каждый шаг. Застрял — жми «Подсказка» или «Показать шаг» (показанное честно не идёт в счёт решённых).</p>
+    <div class="filters" id="famChips"></div>
+    <div class="small" style="margin-top:6px">не помнишь приём? <span class="crosslink" id="famLearn"></span></div>
+  </div>
+  <div class="card">
+    <div class="expr" id="stepExpr"></div>
+    <div id="stepBox"></div>
+    <div style="margin-top:10px"><button class="act" onclick="stepNew()">Новая задача</button></div>
+  </div>`;
+  const ch=document.getElementById("famChips");
+  ch.innerHTML=FAMS.map(f=>`<span class="pill" data-k="${f.k}">${f.name}</span>`).join("");
+  ch.querySelectorAll(".pill").forEach(p=>p.onclick=()=>stepSetFam(p.dataset.k));
+  stepSetFam("A");
+}
+window.stepSetFam=function(k){
+  curFam=k;
+  document.querySelectorAll("#famChips .pill").forEach(p=>p.classList.toggle("on",p.dataset.k===k));
+  const f=FAMS.find(f=>f.k===k);
+  const L=document.getElementById("famLearn");
+  L.textContent=`открой объяснение в «Учимся»`;
+  L.onclick=()=>gotoLearn(f.learn);
+  stepNew();
+};
+window.stepNew=function(){
+  const f=FAMS.find(f=>f.k===curFam);
+  const t=GEN[pick(f.gens)]();
+  document.getElementById("stepExpr").innerHTML=`<span class="small">найди значение выражения:</span><br>${renderTask(t)}`;
+  mountSteps(document.getElementById("stepBox"),buildSteps(t));
+};
+/* ================= МАРАФОН ================= */
+let marFilter="all";
+const marState={}; // id -> "ok"|"shown"
+function buildMar(){
+  const v=document.getElementById("view-mar");
+  v.innerHTML=`<div class="card">
+    <h2>Марафон · 160 задач формата ОГЭ 2026</h2>
+    <p>Подборка Math4Skill по заданию 8, все 32 сюжета. Вводи ответ как в бланке: целое число или десятичная дробь через запятую (например <b>0,5</b>). У каждой задачи есть «Решить по шагам» — та же задача, разобранная на проверяемые шаги.</p>
+    <div class="filters" id="marChips"></div>
+    <div class="small" id="marCount" style="margin-top:6px"></div>
+  </div>
+  <div class="mgrid" id="marGrid"></div>`;
+  const ch=document.getElementById("marChips");
+  ch.innerHTML=`<span class="pill" data-k="all">все</span>`+GROUPS.map(g=>`<span class="pill" data-k="${g.k}">${g.nums} ${g.name}</span>`).join("");
+  ch.querySelectorAll(".pill").forEach(p=>p.onclick=()=>marSetFilter(p.dataset.k));
+  marSetFilter("all");
+}
+window.marSetFilter=function(k){
+  marFilter=k;
+  document.querySelectorAll("#marChips .pill").forEach(p=>p.classList.toggle("on",p.dataset.k===k));
+  const list=BANK.filter(t=>k==="all"||typeGroup[t.type]===k);
+  document.getElementById("marCount").textContent=`показано задач: ${list.length}`;
+  const grid=document.getElementById("marGrid");
+  grid.innerHTML="";
+  list.forEach(t=>grid.appendChild(marCard(t)));
+};
+function marCard(t){
+  const g=grpByK[typeGroup[t.type]];
+  const ansFr=Fr(t.ans[0],t.ans[1]);
+  const div=document.createElement("div");
+  div.className="mtask"+(marState[t.id]==="ok"?" ok":marState[t.id]==="shown"?" shown":"");
+  div.innerHTML=`<div class="mid"><span>№ ${t.id} · ${g.name}</span>
+      <span class="crosslink" data-a="learn">теория</span></div>
+    <div class="expr">${renderTask(t)}</div>
+    <div class="mrow">
+      <input class="ans" placeholder="ответ">
+      <button class="act ck">Проверить</button>
+      <button class="act show sa">Показать ответ</button>
+      <span class="fb"></span></div>
+    <div class="mrow"><button class="act sec bs">🪜 Решить по шагам</button></div>
+    <div class="msteps"></div>`;
+  const inp=div.querySelector("input"),fb=div.querySelector(".fb");
+  const markDone=(shown)=>{
+    if(marState[t.id])return;
+    marState[t.id]=shown?"shown":"ok";
+    div.classList.add(shown?"shown":"ok");
+    if(!shown){score.solved++;updScore();}
+  };
+  div.querySelector('[data-a="learn"]').onclick=()=>gotoLearn(g.learn);
+  div.querySelector(".ck").onclick=()=>{
+    const v=parseAns(inp.value);
+    if(v&&feq(v,ansFr)){inp.classList.remove("no");inp.classList.add("ok");
+      fb.textContent="верно ✓";fb.className="fb ok";markDone(false);}
+    else{inp.classList.remove("ok");inp.classList.add("no");
+      fb.textContent="не то, попробуй ещё";fb.className="fb no";}
+  };
+  inp.addEventListener("keydown",e=>{if(e.key==="Enter")div.querySelector(".ck").click();});
+  div.querySelector(".sa").onclick=()=>{
+    inp.value=fmtFr(ansFr);inp.classList.add("ok");inp.classList.remove("no");
+    fb.textContent="— ответ показан";fb.className="fb shown";
+    score.shown++;updScore();markDone(true);
+  };
+  div.querySelector(".bs").onclick=()=>{
+    const box=div.querySelector(".msteps");
+    if(box.childElementCount){box.innerHTML="";return;}
+    mountSteps(box,buildSteps(t),{onSolved:(clean)=>{
+      if(marState[t.id])return;
+      // счёт уже обновил mountSteps; здесь только помечаем карточку
+      marState[t.id]=clean?"ok":"shown";
+      div.classList.add(clean?"ok":"shown");
+    }});
+  };
+  return div;
+}
+/* ================= старт ================= */
+buildRef();buildLearn();buildStep();buildMar();updScore();
+</script>
+</body>
+</html>

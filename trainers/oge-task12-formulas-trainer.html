@@ -1,0 +1,1541 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ОГЭ, задание 12 — расчёты по формулам. Тренажёр</title>
+<style>
+:root{
+  --paper:#f3f5f7;
+  --card:#ffffff;
+  --ink:#22303d;
+  --ink-soft:#5b6b7a;
+  --blue:#2b4c9b;        /* «чернила» */
+  --blue-dark:#1f3a78;
+  --green:#1d7a4f;       /* «зелёная ручка» */
+  --green-bg:#e9f5ee;
+  --amber:#a06a14;       /* подсказки */
+  --amber-bg:#fbf3e2;
+  --soft:#e3e9f0;
+  --margin-red:rgba(210,110,110,.55);
+  --grid:#e7edf4;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:17px;
+  line-height:1.55;
+}
+.wrap{max-width:760px;margin:0 auto;padding:16px 14px 60px}
+header h1{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:26px;line-height:1.25;margin:6px 0 4px;
+}
+header p.sub{margin:0 0 14px;color:var(--ink-soft);font-size:15px}
+
+/* режимы */
+.modes{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 10px;-webkit-overflow-scrolling:touch}
+.modes button{
+  flex:0 0 auto;border:1px solid var(--soft);background:#fff;color:var(--ink);
+  border-radius:999px;padding:8px 14px;font-size:14.5px;cursor:pointer;white-space:nowrap;
+}
+.modes button.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.mode-desc{font-size:14.5px;color:var(--ink-soft);margin:2px 2px 10px}
+
+/* фильтр типов */
+.types{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.types button{
+  border:1px solid var(--soft);background:#fff;border-radius:999px;
+  padding:5px 11px;font-size:13.5px;color:var(--ink-soft);cursor:pointer;
+}
+.types button.active{background:#eef2fa;border-color:var(--blue);color:var(--blue)}
+.types-label{font-size:13.5px;color:var(--ink-soft);margin:0 0 4px}
+
+/* полоса «что тренируем» */
+.focus{
+  background:#eef2fa;border:1px solid #d8e0f0;border-radius:10px;
+  padding:9px 13px;font-size:15px;margin-bottom:14px;color:var(--blue-dark);
+}
+.focus b{font-weight:600}
+
+/* карточка задания — тетрадный лист */
+.card{
+  position:relative;
+  background-color:var(--card);
+  background-image:
+    linear-gradient(90deg, transparent 34px, var(--margin-red) 34px, var(--margin-red) 35.5px, transparent 35.5px),
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:100% 100%, 24px 24px, 24px 24px;
+  border:1px solid var(--soft);
+  border-radius:var(--radius);
+  padding:18px 18px 18px 48px;
+  box-shadow:0 1px 3px rgba(30,50,80,.06);
+}
+.badge{
+  display:inline-block;background:#fff;border:1px solid var(--soft);border-radius:6px;
+  font-size:12.5px;color:var(--ink-soft);padding:2px 8px;margin-bottom:8px;
+}
+.story{margin:0 0 12px}
+.story b{color:var(--blue-dark)}
+.formula-box{
+  display:inline-block;background:#fff;border:1.5px solid var(--blue);
+  border-radius:10px;padding:10px 18px;margin:2px 0 12px;
+  font-family:Georgia,"Times New Roman",serif;font-size:21px;color:var(--blue-dark);
+}
+.f-inline{font-family:Georgia,serif;white-space:nowrap;color:var(--blue-dark)}
+/* этажная дробь */
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 3px}
+.fr>span{display:block;padding:0 5px;line-height:1.2}
+.fr>span:first-child{border-bottom:1.5px solid currentColor}
+
+.answer-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 0 4px}
+.answer-row label{font-size:15px;color:var(--ink-soft)}
+input.ans{
+  font-size:19px;padding:9px 12px;border:1.5px solid var(--soft);border-radius:10px;
+  width:170px;background:#fff;color:var(--ink);
+}
+input.ans:focus{outline:none;border-color:var(--blue)}
+
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+button.btn{
+  border:none;border-radius:10px;padding:10px 16px;font-size:15.5px;cursor:pointer;
+}
+.btn-check{background:var(--blue);color:#fff}
+.btn-check:active{background:var(--blue-dark)}
+.btn-ghost{background:#fff;border:1px solid var(--soft);color:var(--ink)}
+.btn-hint{background:var(--amber-bg);border:1px solid #ecd9ae;color:var(--amber)}
+.btn-next{background:var(--green);color:#fff}
+button.btn:disabled{opacity:.45;cursor:default}
+
+.feedback{border-radius:10px;padding:11px 14px;margin-top:12px;font-size:15.5px;display:none}
+.feedback.ok{display:block;background:var(--green-bg);border:1px solid #bfe0cd;color:var(--green)}
+.feedback.warn{display:block;background:var(--amber-bg);border:1px solid #ecd9ae;color:#7a5510}
+.feedback.info{display:block;background:#eef2fa;border:1px solid #d8e0f0;color:var(--blue-dark)}
+
+.solution{
+  display:none;margin-top:12px;background:#fff;border:1px dashed var(--blue);
+  border-radius:10px;padding:12px 15px;font-size:15.5px;
+}
+.solution.show{display:block}
+.solution .line{margin:2px 0}
+.solution .title{font-weight:600;color:var(--blue-dark);margin-bottom:4px}
+
+/* варианты (MC) */
+.mc{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.mc button{
+  text-align:left;background:#fff;border:1.5px solid var(--soft);border-radius:10px;
+  padding:10px 13px;font-size:15.5px;cursor:pointer;color:var(--ink);
+}
+.mc button.right{border-color:var(--green);background:var(--green-bg)}
+.mc button.dim{opacity:.55}
+
+/* сборка подстановки */
+.slots{font-family:Georgia,serif;font-size:22px;color:var(--blue-dark);margin:8px 0 12px;display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+.slot{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:64px;height:42px;border:1.5px dashed var(--blue);border-radius:8px;
+  background:#fff;cursor:pointer;font-size:19px;padding:0 8px;
+}
+.slot.active{border-style:solid;background:#eef2fa}
+.slot.filled{border-style:solid}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 4px}
+.chips button{
+  border:1.5px solid var(--soft);background:#fff;border-radius:10px;
+  padding:8px 14px;font-size:17px;cursor:pointer;
+}
+.chips button:disabled{opacity:.35}
+
+/* решение ученика (режим ошибок) */
+.student{
+  background:#fff;border:1px solid var(--soft);border-radius:10px;
+  padding:12px 15px;margin:6px 0 10px;font-family:Georgia,serif;font-size:19px;color:#7a3b3b;
+}
+.student .who{font-family:inherit;font-size:13px;color:var(--ink-soft);display:block;margin-bottom:4px;font-family:"Segoe UI",sans-serif}
+
+/* шаги */
+.step-done{
+  background:var(--green-bg);border:1px solid #bfe0cd;border-radius:10px;
+  padding:8px 12px;margin-bottom:8px;font-size:15px;color:var(--green);
+}
+.step-cur{margin-top:6px}
+.step-cur .prompt{font-weight:600;margin-bottom:6px}
+
+/* диагностика */
+.diag-bar{font-size:14.5px;color:var(--ink-soft);margin-bottom:8px}
+.diag-report{margin-top:8px}
+.diag-report .row{
+  display:flex;justify-content:space-between;gap:10px;background:#fff;
+  border:1px solid var(--soft);border-radius:10px;padding:9px 13px;margin-bottom:7px;font-size:15px;
+}
+.diag-report .good{color:var(--green);font-weight:600}
+.diag-report .redo{color:var(--amber);font-weight:600}
+
+/* прогресс */
+.panel{
+  background:#fff;border:1px solid var(--soft);border-radius:var(--radius);
+  padding:14px 17px;margin-top:20px;
+}
+.panel h2{font-size:17px;margin:0 0 8px;font-family:Georgia,serif}
+.stat-line{font-size:15px;margin:3px 0;color:var(--ink-soft)}
+.stat-line b{color:var(--ink)}
+.type-stats{margin-top:8px;display:grid;grid-template-columns:1fr auto;gap:3px 12px;font-size:14.5px}
+.type-stats .ok{color:var(--green)}
+.type-stats .redo{color:var(--amber)}
+
+details.teacher{margin-top:20px;background:#fff;border:1px solid var(--soft);border-radius:var(--radius);padding:12px 17px}
+details.teacher summary{cursor:pointer;font-weight:600;font-size:16px}
+details.teacher li{margin:4px 0}
+.note{font-size:13.5px;color:var(--ink-soft);margin-top:6px}
+
+@media (max-width:480px){
+  body{font-size:16px}
+  .card{padding:15px 13px 15px 42px;background-size:100% 100%,22px 22px,22px 22px}
+  .formula-box{font-size:19px;padding:8px 14px}
+  input.ans{width:140px;font-size:18px}
+  header h1{font-size:22px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>ОГЭ, задание 12: расчёты по формулам</h1>
+  <p class="sub">Задание несложное — важно спокойно пройти цепочку: <b>прочитал формулу → понял, что ищем → подставил → посчитал → проверил формат ответа</b>. Это тренажёр навыка, а не тест на скорость.</p>
+</header>
+
+<div class="modes" id="modes"></div>
+<p class="mode-desc" id="modeDesc"></p>
+
+<div id="typesWrap">
+  <p class="types-label">Тип задания:</p>
+  <div class="types" id="types"></div>
+</div>
+
+<div class="focus" id="focus"></div>
+
+<div id="taskArea"></div>
+
+<div class="panel" id="progressPanel">
+  <h2>Мой прогресс</h2>
+  <div id="progressBody"></div>
+  <div class="btns" style="margin-top:10px">
+    <button class="btn btn-check" id="copyBtn">Скопировать для учителя</button>
+    <button class="btn btn-ghost" id="resetBtn">Сбросить прогресс</button>
+  </div>
+  <div id="copyArea"></div>
+  <p class="note">Прогресс хранится только в этом браузере. Если разбор или шаг был показан до проверки, задание не идёт в зачёт — но разобраться важнее, чем набрать очки.</p>
+</div>
+
+<details class="teacher">
+  <summary>Для учителя</summary>
+  <ul>
+    <li>Задание 12 проверяет умение читать формулу, подставлять значения и выполнять несложные вычисления. Основные проблемы слабых учеников — не «сложная математика», а последовательность действий.</li>
+    <li>Рекомендуемый маршрут: сначала режим «Найди, что спрашивают», затем «Собери подстановку», затем «Считаем по шагам», затем «ОГЭ-режим», в конце — «Диагностика».</li>
+    <li>Тренажёр классифицирует задачи по типичным проблемам: подстановка, выражение неизвестной, порядок действий, дроби, квадраты и корни, десятичные дроби, знаки, большие числа, лишние данные.</li>
+    <li>Для домашней работы лучше давать 10–15 минут тренажёра, а не большой лист задач.</li>
+    <li>В блоке «Мой прогресс» видно, какие типы получаются, а какие стоит повторить.</li>
+  </ul>
+</details>
+
+<p class="note">Тренажёр принимает и запятую, и точку в десятичных дробях. В бланке ОГЭ пишем только число, без единиц измерения: десятичные дроби — через запятую.</p>
+</div>
+
+<script>
+'use strict';
+/* ===================== helpers ===================== */
+var $=function(s){return document.querySelector(s)};
+function ri(a,b){return a+Math.floor(Math.random()*(b-a+1))}
+function pick(a){return a[ri(0,a.length-1)]}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=ri(0,i);var t=a[i];a[i]=a[j];a[j]=t}return a}
+function r6(n){return Math.round(n*1e6)/1e6}
+function fmt(n){n=r6(n);return String(n).replace('-','−').replace('.',',')}
+function fmtSp(n){ /* с тонкими пробелами для чтения условия */
+  n=r6(n);var neg=n<0;var s=String(Math.abs(n)).split('.');
+  var i=s[0].replace(/\B(?=(\d{3})+(?!\d))/g,'\u2009');
+  return (neg?'−':'')+i+(s[1]?','+s[1]:'');
+}
+function frac(a,b){return '<span class="fr"><span>'+a+'</span><span>'+b+'</span></span>'}
+function esc(s){return String(s)}
+
+/* нормализация ответа */
+function parseAns(raw){
+  var s=String(raw||'').trim().toLowerCase().replace(/−/g,'-');
+  var hadUnit=false;
+  var unitRe=/(руб(лей|ля)?|р\.|км\/ч|м\/с|км|кг|гр|г|м|см|мм|мин|час(а|ов)?|ч|сек|с|°c|°|шт(ук|уки)?|л|дж|вт|а)\.?\s*$/;
+  var guard=0;
+  while(unitRe.test(s)&&guard<5){s=s.replace(unitRe,'').trim();hadUnit=true;guard++}
+  s=s.replace(/\s+/g,'').replace(/,/g,'.').replace(/^\+/,'');
+  if(s===''||isNaN(Number(s)))return {value:null,hadUnit:hadUnit};
+  return {value:Number(s),hadUnit:hadUnit};
+}
+function near(a,b){return Math.abs(a-b)<1e-6+1e-9*Math.max(Math.abs(a),Math.abs(b))}
+
+/* ===================== типы ===================== */
+var TYPES={
+  1:{name:'Прямая подстановка',risk:'подставить все значения и не перепутать буквы'},
+  2:{name:'Выразить неизвестную',risk:'не умножить там, где нужно делить'},
+  3:{name:'Сумма и произведение',risk:'порядок действий: сначала умножение, потом сложение'},
+  4:{name:'Формула с дробью',risk:'не перепутать числитель и знаменатель'},
+  5:{name:'Квадрат и степень',risk:'v² — это v·v, а не 2v'},
+  6:{name:'Корень',risk:'корень — обратное действие к квадрату'},
+  7:{name:'Десятичные дроби',risk:'аккуратное положение запятой'},
+  8:{name:'Отрицательные числа',risk:'не потерять минус'},
+  9:{name:'Большие числа',risk:'количество нулей в ответе'},
+  10:{name:'Внимание к условию',risk:'использовать только нужные данные'}
+};
+var DIAG_GROUP={1:'Подстановка',2:'Выражение неизвестной',3:'Порядок действий',4:'Дроби',5:'Квадраты и корни',6:'Квадраты и корни',7:'Десятичные дроби',8:'Знаки',9:'Большие числа',10:'Внимание к условию'};
+
+/* ===================== генераторы задач ===================== */
+var GENS=[];
+
+/* --- Тип 1. Прямая подстановка --- */
+GENS.push({t:1,make:function(){
+  var v=ri(9,16),t=ri(3,6),ans=v*t;
+  return {t:1,target:'S',answer:ans,
+    story:'Велосипедист едет с постоянной скоростью. Путь <b>S</b> (в километрах) за время <b>t</b> часов при скорости <b>v</b> км/ч находят по формуле <span class="f-inline">S = v · t</span>. Найдите путь, который велосипедист проедет за '+t+' ч, если его скорость равна '+v+' км/ч.',
+    formula:'S = v · t',
+    letters:[{n:'S',lab:'путь (это ищем)'},{n:'v',lab:'скорость, '+v+' км/ч'},{n:'t',lab:'время, '+t+' ч'}],
+    rearr:null,firstOp:null,
+    hints:['Выпиши, чему равна каждая буква: v = '+v+', t = '+t+'.','Искомая величина S уже стоит слева — формулу преобразовывать не нужно. Просто подставь: S = '+v+' · '+t+'.'],
+    solution:['Формула: S = v · t.','Дано: v = '+v+', t = '+t+'.','Подставим: S = '+v+' · '+t+'.','Считаем: '+v+' · '+t+' = '+ans+'.','Ответ: '+ans+'.'],
+    distract:[{v:v+t,msg:'Похоже, числа сложили, а между v и t в формуле стоит умножение.'}],
+    subst:{tpl:'S = %0 · %1',vals:[v,t],decoys:[v+t],ev:function(a){return a[0]*a[1]}},
+    mistake:{sol:'S = '+v+' + '+t+' = '+(v+t),label:'Сложил вместо умножения'}
+  };
+}});
+GENS.push({t:1,make:function(){
+  var p=5*ri(7,18),n=ri(6,12),ans=p*n;
+  return {t:1,target:'C',answer:ans,
+    story:'Одна тетрадь стоит <b>p</b> рублей. Стоимость <b>C</b> покупки из <b>n</b> одинаковых тетрадей находят по формуле <span class="f-inline">C = p · n</span>. Найдите стоимость покупки, если p = '+p+' руб., n = '+n+'.',
+    formula:'C = p · n',
+    letters:[{n:'C',lab:'стоимость (это ищем)'},{n:'p',lab:'цена тетради, '+p+' руб.'},{n:'n',lab:'число тетрадей, '+n}],
+    rearr:null,firstOp:null,
+    hints:['Что дано? p = '+p+', n = '+n+'. Что ищем? C.','C стоит слева, преобразований не нужно: C = '+p+' · '+n+'. В ответ пиши только число, без «руб.».'],
+    solution:['Формула: C = p · n.','Дано: p = '+p+', n = '+n+'.','Подставим: C = '+p+' · '+n+' = '+ans+'.','Ответ: '+ans+' (в бланк пишем только число).'],
+    distract:[{v:p+n,msg:'Похоже, цену и количество сложили, а нужно перемножить.'}],
+    subst:{tpl:'C = %0 · %1',vals:[p,n],decoys:[p+n],ev:function(a){return a[0]*a[1]}},
+    mistake:{sol:'C = '+p+' + '+n+' = '+(p+n),label:'Сложил вместо умножения'}
+  };
+}});
+
+/* --- Тип 2. Выразить неизвестную --- */
+GENS.push({t:2,make:function(){
+  var t=ri(3,7),v=5*ri(8,18),S=v*t;
+  return {t:2,target:'t',answer:t,
+    story:'Путь, скорость и время связаны формулой <span class="f-inline">S = v · t</span>. Автомобиль проехал S = '+S+' км со скоростью v = '+v+' км/ч. Найдите время <b>t</b> (в часах).',
+    formula:'S = v · t',
+    letters:[{n:'S',lab:'путь, '+S+' км'},{n:'v',lab:'скорость, '+v+' км/ч'},{n:'t',lab:'время (это ищем)'}],
+    rearr:{options:[{html:'t = '+frac('S','v'),ok:true},{html:'t = '+frac('v','S'),ok:false},{html:'t = S · v',ok:false},{html:'t = S − v',ok:false}]},
+    firstOp:null,
+    hints:['Искомая буква t стоит в произведении. Чтобы найти множитель, произведение делят на известный множитель.','t = S / v = '+S+' / '+v+'.'],
+    solution:['Формула: S = v · t. Нужно найти t.','Выразим t: t = S / v.','Дано: S = '+S+', v = '+v+'.','Подставим: t = '+S+' / '+v+' = '+t+'.','Ответ: '+t+'.'],
+    distract:[{v:S*v,msg:'Похоже, S умножили на v. Чтобы найти множитель, произведение нужно разделить на известный множитель.'},{v:r6(v/S),msg:'Деление выполнено в другую сторону: путь делим на скорость, t = S / v.'}],
+    subst:{tpl:'t = '+frac('%0','%1'),vals:[S,v],decoys:[t],ev:function(a){return a[0]/a[1]}},
+    mistake:{sol:'t = '+S+' · '+v+' = '+fmtSp(S*v),label:'Умножил вместо деления'}
+  };
+}});
+GENS.push({t:2,make:function(){
+  var U=pick([110,220]),I=ri(2,9),P=U*I;
+  return {t:2,target:'I',answer:I,
+    story:'Мощность электроприбора находят по формуле <span class="f-inline">P = U · I</span>, где <b>U</b> — напряжение (В), <b>I</b> — сила тока (А). Мощность прибора P = '+fmtSp(P)+' Вт, напряжение U = '+U+' В. Найдите силу тока <b>I</b> (в амперах).',
+    formula:'P = U · I',
+    letters:[{n:'P',lab:'мощность, '+fmtSp(P)+' Вт'},{n:'U',lab:'напряжение, '+U+' В'},{n:'I',lab:'сила тока (это ищем)'}],
+    rearr:{options:[{html:'I = '+frac('P','U'),ok:true},{html:'I = '+frac('U','P'),ok:false},{html:'I = P · U',ok:false},{html:'I = P − U',ok:false}]},
+    firstOp:null,
+    hints:['Спроси себя: что неизвестно — всё произведение или один множитель? Здесь неизвестен множитель I.','I = P / U = '+P+' / '+U+'.'],
+    solution:['Формула: P = U · I. Нужно найти I.','Выразим I: I = P / U.','Подставим: I = '+P+' / '+U+' = '+I+'.','Ответ: '+I+'.'],
+    distract:[{v:P*U,msg:'Похоже, P умножили на U, а множитель находят делением: I = P / U.'},{v:r6(U/P),msg:'Деление выполнено в другую сторону: мощность делим на напряжение.'}],
+    subst:{tpl:'I = '+frac('%0','%1'),vals:[P,U],decoys:[I],ev:function(a){return a[0]/a[1]}},
+    mistake:{sol:'I = '+fmtSp(P)+' · '+U+' = '+fmtSp(P*U),label:'Умножил вместо деления'}
+  };
+}});
+
+/* --- Тип 3. Сумма и произведение --- */
+GENS.push({t:3,make:function(){
+  var a=10*ri(8,15),b=ri(10,25),n=ri(4,12),ans=a+b*n;
+  return {t:3,target:'T',answer:ans,
+    story:'Стоимость поездки на такси считают по формуле <span class="f-inline">T = a + b · n</span>, где <b>a</b> — плата за посадку (руб.), <b>b</b> — цена одного километра (руб.), <b>n</b> — длина поездки (км). Найдите стоимость поездки, если a = '+a+', b = '+b+', n = '+n+'.',
+    formula:'T = a + b · n',
+    letters:[{n:'T',lab:'стоимость поездки (это ищем)'},{n:'a',lab:'посадка, '+a+' руб.'},{n:'b',lab:'цена километра, '+b+' руб.'},{n:'n',lab:'километры, '+n}],
+    rearr:null,
+    firstOp:{prompt:'В формуле есть и сложение, и умножение. Сначала умножение: '+b+' · '+n+' = ?',value:b*n,show:b+' · '+n+' = '+(b*n)},
+    hints:['Сначала выполняем умножение b · n, и только потом прибавляем a.','T = '+a+' + '+b+' · '+n+' = '+a+' + '+(b*n)+'.'],
+    solution:['Формула: T = a + b · n.','Дано: a = '+a+', b = '+b+', n = '+n+'.','Сначала умножение: '+b+' · '+n+' = '+(b*n)+'.','Потом сложение: '+a+' + '+(b*n)+' = '+ans+'.','Ответ: '+ans+'.'],
+    distract:[{v:(a+b)*n,msg:'Похоже, сначала сложили a и b. Порядок действий: сначала умножение b · n, потом сложение.'},{v:b*n,msg:'Это только стоимость километров ('+b+' · '+n+'). Не забудь прибавить плату за посадку a = '+a+'.'},{v:a*n+b,msg:'Проверь, какая буква на что умножается: на n умножается цена километра b.'}],
+    subst:{tpl:'T = %0 + %1 · %2',vals:[a,b,n],decoys:[a+b],ev:function(a2){return a2[0]+a2[1]*a2[2]}},
+    mistake:{sol:'T = ('+a+' + '+b+') · '+n+' = '+fmtSp((a+b)*n),label:'Нарушен порядок действий: сложение раньше умножения'}
+  };
+}});
+GENS.push({t:3,make:function(){
+  var L0=ri(20,60),v=ri(3,9),t=ri(5,12),ans=L0+v*t;
+  return {t:3,target:'L',answer:ans,
+    story:'В бак наливают воду. Уровень воды <b>L</b> (в сантиметрах) через <b>t</b> минут находят по формуле <span class="f-inline">L = L₀ + v · t</span>, где <b>L₀</b> — уровень в начале, <b>v</b> — скорость подъёма уровня (см/мин). Найдите уровень воды через '+t+' минут, если L₀ = '+L0+' см, v = '+v+' см/мин.',
+    formula:'L = L₀ + v · t',
+    letters:[{n:'L',lab:'уровень в конце (это ищем)'},{n:'L₀',lab:'уровень в начале, '+L0+' см'},{n:'v',lab:'скорость подъёма, '+v+' см/мин'},{n:'t',lab:'время, '+t+' мин'}],
+    rearr:null,
+    firstOp:{prompt:'Сначала умножение: '+v+' · '+t+' = ?',value:v*t,show:v+' · '+t+' = '+(v*t)},
+    hints:['L₀ — это постоянная часть (что было в начале), v · t — то, что прибавилось.','Сначала умножение: '+v+' · '+t+' = '+(v*t)+', потом прибавь L₀ = '+L0+'.'],
+    solution:['Формула: L = L₀ + v · t.','Дано: L₀ = '+L0+', v = '+v+', t = '+t+'.','Сначала умножение: '+v+' · '+t+' = '+(v*t)+'.','Потом сложение: '+L0+' + '+(v*t)+' = '+ans+'.','Ответ: '+ans+'.'],
+    distract:[{v:(L0+v)*t,msg:'Похоже, сложение выполнено до умножения. Сначала v · t, потом + L₀.'},{v:v*t,msg:'Это только прибавка уровня. Не забудь начальный уровень L₀ = '+L0+'.'}],
+    subst:{tpl:'L = %0 + %1 · %2',vals:[L0,v,t],decoys:[L0+v],ev:function(a){return a[0]+a[1]*a[2]}},
+    mistake:{sol:'L = ('+L0+' + '+v+') · '+t+' = '+fmtSp((L0+v)*t),label:'Нарушен порядок действий: сложение раньше умножения'}
+  };
+}});
+
+/* --- Тип 4. Формула с дробью --- */
+GENS.push({t:4,make:function(){
+  var t=ri(3,6),v=ri(12,24),S=v*t;
+  return {t:4,target:'v',answer:v,
+    story:'Среднюю скорость находят по формуле <span class="f-inline">v = '+frac('S','t')+'</span>, где <b>S</b> — путь (км), <b>t</b> — время (ч). Турист прошёл S = '+S+' км за t = '+t+' ч. Найдите среднюю скорость <b>v</b> (в км/ч).',
+    formula:'v = '+frac('S','t'),
+    letters:[{n:'v',lab:'скорость (это ищем)'},{n:'S',lab:'путь, '+S+' км'},{n:'t',lab:'время, '+t+' ч'}],
+    rearr:null,firstOp:null,
+    hints:['Проверь, что в числителе, а что в знаменателе: сверху путь S, снизу время t.','v = '+S+' / '+t+'.'],
+    solution:['Формула: v = S / t (путь делим на время).','Дано: S = '+S+', t = '+t+'.','Подставим: v = '+S+' / '+t+' = '+v+'.','Ответ: '+v+'.'],
+    distract:[{v:S*t,msg:'S и t перемножили, а дробная черта означает деление: путь делим на время.'},{v:r6(t/S),msg:'Перепутаны числитель и знаменатель: сверху стоит путь S, снизу время t.'}],
+    subst:{tpl:'v = '+frac('%0','%1'),vals:[S,t],decoys:[v],ev:function(a){return a[0]/a[1]}},
+    mistake:{sol:'v = '+t+' / '+S+' = '+fmt(r6(t/S)),label:'Перепутал числитель и знаменатель'}
+  };
+}});
+GENS.push({t:4,make:function(){
+  var x=ri(6,30);var y=x+2*ri(1,10);var ans=(x+y)/2;
+  return {t:4,target:'A',answer:ans,
+    story:'Среднее арифметическое двух чисел находят по формуле <span class="f-inline">A = '+frac('x + y','2')+'</span>. Найдите среднее арифметическое чисел x = '+x+' и y = '+y+'.',
+    formula:'A = '+frac('x + y','2'),
+    letters:[{n:'A',lab:'среднее (это ищем)'},{n:'x',lab:'первое число, '+x},{n:'y',lab:'второе число, '+y}],
+    rearr:null,
+    firstOp:{prompt:'В числителе сумма. Сначала найди её: '+x+' + '+y+' = ?',value:x+y,show:x+' + '+y+' = '+(x+y)},
+    hints:['Вся сумма (x + y) стоит в числителе, поэтому на 2 делится вся сумма целиком.','('+x+' + '+y+') / 2 = '+(x+y)+' / 2.'],
+    solution:['Формула: A = (x + y) / 2.','Сначала числитель: '+x+' + '+y+' = '+(x+y)+'.','Теперь делим: '+(x+y)+' / 2 = '+fmt(ans)+'.','Ответ: '+fmt(ans)+'.'],
+    distract:[{v:x+y/2,msg:'Разделили только y. В числителе стоит вся сумма (x + y) — она делится на 2 целиком.'},{v:x+y,msg:'Сумма найдена верно, осталось разделить её на 2.'}],
+    subst:{tpl:'A = '+frac('%0 + %1','%2'),vals:[x,y,2],decoys:[x+y],ev:function(a){return (a[0]+a[1])/a[2]}},
+    mistake:{sol:'A = '+x+' + '+y+' / 2 = '+fmt(r6(x+y/2)),label:'Разделил только одно слагаемое, а не всю сумму'}
+  };
+}});
+
+/* --- Тип 5. Квадрат и степень --- */
+GENS.push({t:5,make:function(){
+  var a=ri(6,15),ans=a*a;
+  return {t:5,target:'S',answer:ans,
+    story:'Площадь квадрата находят по формуле <span class="f-inline">S = a²</span>, где <b>a</b> — сторона квадрата (см). Найдите площадь квадрата со стороной a = '+a+' см (в см²).',
+    formula:'S = a²',
+    letters:[{n:'S',lab:'площадь (это ищем)'},{n:'a',lab:'сторона, '+a+' см'}],
+    rearr:null,firstOp:null,
+    hints:['a² означает a · a, а не 2 · a.','S = '+a+' · '+a+'.'],
+    solution:['Формула: S = a².','a² — это a · a: '+a+' · '+a+' = '+ans+'.','Ответ: '+ans+'.'],
+    distract:[{v:2*a,msg:'Похоже, a² посчитано как 2a. Квадрат — это число, умноженное само на себя: '+a+' · '+a+'.'}],
+    subst:{tpl:'S = %0 · %1',vals:[a,a],decoys:[2*a],ev:function(v){return v[0]*v[1]}},
+    mistake:{sol:'S = 2 · '+a+' = '+(2*a),label:'Посчитал a² как 2a'}
+  };
+}});
+GENS.push({t:5,make:function(){
+  var m=2*ri(1,4),v=ri(3,8),ans=m*v*v/2;
+  return {t:5,target:'E',answer:ans,
+    story:'Кинетическую энергию тела находят по формуле <span class="f-inline">E = '+frac('m · v²','2')+'</span>, где <b>m</b> — масса (кг), <b>v</b> — скорость (м/с). Найдите энергию <b>E</b> (в джоулях), если m = '+m+' кг, v = '+v+' м/с.',
+    formula:'E = '+frac('m · v²','2'),
+    letters:[{n:'E',lab:'энергия (это ищем)'},{n:'m',lab:'масса, '+m+' кг'},{n:'v',lab:'скорость, '+v+' м/с'}],
+    rearr:null,
+    firstOp:{prompt:'Сначала степень: v² = '+v+' · '+v+' = ?',value:v*v,show:v+'² = '+(v*v)},
+    hints:['Сначала вычисли степень: v² означает v · v, а не 2v.','E = '+m+' · '+(v*v)+' / 2.'],
+    solution:['Формула: E = m · v² / 2.','Сначала степень: v² = '+v+' · '+v+' = '+(v*v)+'.','Умножаем: '+m+' · '+(v*v)+' = '+(m*v*v)+'.','Делим на 2: '+(m*v*v)+' / 2 = '+fmt(ans)+'.','Ответ: '+fmt(ans)+'.'],
+    distract:[{v:m*v,msg:'Похоже, v² посчитано как 2v (двойки сократились). Квадрат — это v · v = '+(v*v)+'.'},{v:m*v*v,msg:'Почти готово, но в формуле есть ещё деление на 2.'}],
+    subst:null,
+    mistake:{sol:'E = '+m+' · 2 · '+v+' / 2 = '+(m*v),label:'Посчитал v² как 2v'}
+  };
+}});
+
+/* --- Тип 6. Корень --- */
+GENS.push({t:6,make:function(){
+  var a=ri(6,15),S=a*a;
+  return {t:6,target:'a',answer:a,
+    story:'Сторону квадрата по его площади находят по формуле <span class="f-inline">a = √S</span>. Площадь квадратного участка равна S = '+S+' м². Найдите сторону участка <b>a</b> (в метрах).',
+    formula:'a = √S',
+    letters:[{n:'a',lab:'сторона (это ищем)'},{n:'S',lab:'площадь, '+S+' м²'}],
+    rearr:null,firstOp:null,
+    hints:['Корень — это число, квадрат которого равен подкоренному выражению. Какое число при умножении само на себя даёт '+S+'?','Проверь себя: ответ · ответ должно быть '+S+'.'],
+    solution:['Формула: a = √S.','Ищем число, которое в квадрате даёт '+S+': '+a+' · '+a+' = '+S+'.','Значит, a = '+a+'.','Длина положительна, берём '+a+'.','Ответ: '+a+'.'],
+    distract:[{v:S/2,msg:'√S — это не деление на 2. Корень: какое число в квадрате даёт '+S+'?'}],
+    subst:null,mistake:{sol:'a = '+S+' / 2 = '+fmt(S/2),label:'Спутал корень с делением на 2'}
+  };
+}});
+GENS.push({t:6,make:function(){
+  var k=pick([2,3,5]),t=ri(3,7),S=k*t*t;
+  return {t:6,target:'t',answer:t,
+    story:'При разгоне путь тележки считают по формуле <span class="f-inline">S = k · t²</span>, где <b>t</b> — время (с). Известно, что k = '+k+' и S = '+S+' м. Найдите время <b>t</b> (в секундах).',
+    formula:'S = k · t²',
+    letters:[{n:'S',lab:'путь, '+S+' м'},{n:'k',lab:'коэффициент, '+k},{n:'t',lab:'время (это ищем)'}],
+    rearr:{options:[{html:'t² = '+frac('S','k')+', затем t = √(S / k)',ok:true},{html:'t = '+frac('S','k'),ok:false},{html:'t = '+frac('S','2k'),ok:false},{html:'t = √S · k',ok:false}]},
+    firstOp:{prompt:'Сначала найдём квадрат: t² = S / k = '+S+' / '+k+' = ?',value:t*t,show:'t² = '+S+' / '+k+' = '+(t*t)},
+    hints:['Сначала найди t² = S / k, а потом извлеки корень.','t² = '+(t*t)+'. Какое число в квадрате даёт '+(t*t)+'?'],
+    solution:['Формула: S = k · t². Нужно найти t.','Сначала t² = S / k = '+S+' / '+k+' = '+(t*t)+'.','Извлекаем корень: t = √'+(t*t)+' = '+t+'.','Время положительно, берём '+t+'.','Ответ: '+t+'.'],
+    distract:[{v:t*t,msg:'Вы нашли t², а спрашивают t. Остался последний шаг — извлечь корень.'},{v:r6(S/(2*k)),msg:'Похоже, квадрат заменили умножением на 2. t² находим делением S на k, потом корень.'}],
+    subst:null,mistake:{sol:'t = '+S+' / '+k+' = '+(t*t),label:'Остановился на промежуточном результате (нашёл t², а не t)'}
+  };
+}});
+
+/* --- Тип 7. Десятичные дроби --- */
+GENS.push({t:7,make:function(){
+  var pairs=[[0.012,50],[0.012,500],[0.025,200],[0.025,400],[0.04,300],[0.008,500],[0.015,200],[0.04,50]];
+  var pr=pick(pairs),m0=pr[0],n=pr[1],ans=r6(m0*n);
+  return {t:7,target:'m',answer:ans,
+    story:'Масса одной детали равна '+fmt(m0)+' кг. Массу партии из <b>n</b> деталей находят по формуле <span class="f-inline">m = m₀ · n</span>. Найдите массу партии из '+n+' деталей (в килограммах).',
+    formula:'m = m₀ · n',
+    letters:[{n:'m',lab:'масса партии (это ищем)'},{n:'m₀',lab:'масса детали, '+fmt(m0)+' кг'},{n:'n',lab:'число деталей, '+n}],
+    rearr:null,firstOp:null,
+    hints:['Умножь как с целыми числами, а потом проверь количество знаков после запятой.','При умножении на 10, 100, 1000 запятая сдвигается вправо на 1, 2, 3 знака.'],
+    solution:['Формула: m = m₀ · n.','Подставим: m = '+fmt(m0)+' · '+n+'.','Считаем: '+fmt(m0)+' · '+n+' = '+fmt(ans)+'.','Проверь положение запятой.','Ответ: '+fmt(ans)+' (в бланке запятая, не точка).'],
+    distract:[{v:r6(ans*10),msg:'Ответ в 10 раз больше нужного — проверь положение запятой.'},{v:r6(ans/10),msg:'Ответ в 10 раз меньше нужного — проверь положение запятой.'}],
+    subst:{tpl:'m = %0 · %1',vals:[m0,n],decoys:[],ev:function(a){return r6(a[0]*a[1])}},
+    mistake:{sol:'m = '+fmt(m0)+' · '+n+' = '+fmt(r6(ans*10)),label:'Сдвинул запятую не на то число знаков'}
+  };
+}});
+GENS.push({t:7,make:function(){
+  var p=r6(ri(480,600)/10),V=ri(10,40),ans=r6(p*V);
+  return {t:7,target:'C',answer:ans,
+    story:'Литр бензина стоит '+fmt(p)+' руб. Стоимость заправки находят по формуле <span class="f-inline">C = p · V</span>, где <b>V</b> — объём топлива (л). Найдите стоимость заправки '+V+' литров (в рублях).',
+    formula:'C = p · V',
+    letters:[{n:'C',lab:'стоимость (это ищем)'},{n:'p',lab:'цена литра, '+fmt(p)+' руб.'},{n:'V',lab:'объём, '+V+' л'}],
+    rearr:null,firstOp:null,
+    hints:['Выпиши данные: p = '+fmt(p)+', V = '+V+'. Ищем C.','Умножь '+fmt(p)+' на '+V+' и проверь, где окажется запятая.'],
+    solution:['Формула: C = p · V.','Подставим: C = '+fmt(p)+' · '+V+' = '+fmt(ans)+'.','Ответ: '+fmt(ans)+' (только число, без «руб.»).'],
+    distract:[{v:r6(ans*10),msg:'Ответ в 10 раз больше нужного — проверь положение запятой.'},{v:r6(ans/10),msg:'Ответ в 10 раз меньше нужного — проверь положение запятой.'}],
+    subst:{tpl:'C = %0 · %1',vals:[p,V],decoys:[],ev:function(a){return r6(a[0]*a[1])}},
+    mistake:null
+  };
+}});
+
+/* --- Тип 8. Отрицательные числа --- */
+GENS.push({t:8,make:function(){
+  var t0=ri(8,20),h=ri(2,5),ans=t0-6*h;
+  return {t:8,target:'t',answer:ans,
+    story:'При подъёме температура воздуха понижается. Температуру на высоте <b>h</b> км считают по формуле <span class="f-inline">t = t₀ − 6 · h</span>, где <b>t₀</b> — температура у земли (°C). Найдите температуру на высоте '+h+' км, если у земли t₀ = '+t0+' °C.',
+    formula:'t = t₀ − 6 · h',
+    letters:[{n:'t',lab:'температура на высоте (это ищем)'},{n:'t₀',lab:'температура у земли, '+t0+' °C'},{n:'h',lab:'высота, '+h+' км'}],
+    rearr:null,
+    firstOp:{prompt:'Сначала умножение: 6 · '+h+' = ?',value:6*h,show:'6 · '+h+' = '+(6*h)},
+    hints:['Сначала умножение 6 · h, потом вычитание из t₀.','t = '+t0+' − '+(6*h)+'. Проверь знак: температура могла опуститься ниже нуля.'],
+    solution:['Формула: t = t₀ − 6 · h.','Сначала умножение: 6 · '+h+' = '+(6*h)+'.','Вычитаем: '+t0+' − '+(6*h)+' = '+fmt(ans)+'.','Ответ: '+fmt(ans)+(ans<0?' (минус — часть ответа, не теряй его).':'.')],
+    distract:[{v:t0+6*h,msg:'Минус из формулы потерялся: из t₀ нужно вычесть 6 · h.'}].concat(ans!==0?[{v:-ans,msg:'Число верное, а знак — нет. Проверь: величина уменьшилась или выросла?'}]:[]),
+    subst:{tpl:'t = %0 − 6 · %1',vals:[t0,h],decoys:[6*h],ev:function(a){return a[0]-6*a[1]}},
+    mistake:{sol:'t = '+t0+' + 6 · '+h+' = '+(t0+6*h),label:'Потерял минус'}
+  };
+}});
+GENS.push({t:8,make:function(){
+  var d=ri(30,80),n=ri(2,9),a=10*ri(10,40),ans=d*n-a;
+  return {t:8,target:'P',answer:ans,
+    story:'Прибыль маленькой мастерской за день считают по формуле <span class="f-inline">P = d · n − a</span>, где <b>d</b> — доход с одного заказа (руб.), <b>n</b> — число заказов, <b>a</b> — дневная аренда (руб.). Найдите прибыль, если d = '+d+', n = '+n+', a = '+a+'. Ответ может быть отрицательным (это убыток).',
+    formula:'P = d · n − a',
+    letters:[{n:'P',lab:'прибыль (это ищем)'},{n:'d',lab:'доход с заказа, '+d+' руб.'},{n:'n',lab:'число заказов, '+n},{n:'a',lab:'аренда, '+a+' руб.'}],
+    rearr:null,
+    firstOp:{prompt:'Сначала умножение: '+d+' · '+n+' = ?',value:d*n,show:d+' · '+n+' = '+(d*n)},
+    hints:['Сначала умножение d · n, потом из результата вычитаем a.','P = '+(d*n)+' − '+a+'. Если вычитаемое больше — ответ отрицательный, и минус нужно записать.'],
+    solution:['Формула: P = d · n − a.','Сначала умножение: '+d+' · '+n+' = '+(d*n)+'.','Вычитаем аренду: '+(d*n)+' − '+a+' = '+fmt(ans)+'.','Ответ: '+fmt(ans)+(ans<0?' (мастерская в этот день в убытке, минус обязателен).':'.')],
+    distract:[{v:d*n+a,msg:'Аренду нужно вычесть, а не прибавить.'}].concat(ans!==0?[{v:-ans,msg:'Число верное, а знак — нет. Сравни: доход больше аренды или меньше?'}]:[]),
+    subst:{tpl:'P = %0 · %1 − %2',vals:[d,n,a],decoys:[],ev:function(v){return v[0]*v[1]-v[2]}},
+    mistake:{sol:'P = '+d+' · '+n+' + '+a+' = '+fmtSp(d*n+a),label:'Потерял минус'}
+  };
+}});
+
+/* --- Тип 9. Большие числа --- */
+GENS.push({t:9,make:function(){
+  var p=100*ri(18,35),n=ri(12,25),ans=p*n;
+  return {t:9,target:'C',answer:ans,
+    story:'За одну смену работнику платят '+fmtSp(p)+' руб. Заработок за <b>n</b> смен находят по формуле <span class="f-inline">C = p · n</span>. Найдите заработок за '+n+' смен (в рублях). Ответ запишите без пробелов.',
+    formula:'C = p · n',
+    letters:[{n:'C',lab:'заработок (это ищем)'},{n:'p',lab:'оплата смены, '+fmtSp(p)+' руб.'},{n:'n',lab:'число смен, '+n}],
+    rearr:null,firstOp:null,
+    hints:['Не пугайся больших чисел: умножь как обычно и проверь количество нулей.','Прикинь порядок: '+fmtSp(p)+' · '+n+' — это десятки тысяч рублей.'],
+    solution:['Формула: C = p · n.','Подставим: C = '+fmtSp(p)+' · '+n+' = '+fmtSp(ans)+'.','В бланк пишем без пробелов: '+ans+'.','Ответ: '+ans+'.'],
+    distract:[{v:ans*10,msg:'Похоже, появился лишний ноль. Проверь количество нулей.'},{v:ans/10,msg:'Похоже, потерялся ноль. Проверь количество нулей.'}],
+    subst:{tpl:'C = %0 · %1',vals:[p,n],decoys:[],ev:function(a){return a[0]*a[1]}},
+    mistake:{sol:'C = '+fmtSp(p)+' · '+n+' = '+fmtSp(ans*10),label:'Лишний ноль в ответе'}
+  };
+}});
+GENS.push({t:9,make:function(){
+  var v=pick([750,800,850,900]),t=ri(4,9),ans=v*t;
+  return {t:9,target:'S',answer:ans,
+    story:'Самолёт летит со скоростью '+fmtSp(v)+' км/ч. Путь находят по формуле <span class="f-inline">S = v · t</span>. Найдите путь за '+t+' часов полёта (в километрах).',
+    formula:'S = v · t',
+    letters:[{n:'S',lab:'путь (это ищем)'},{n:'v',lab:'скорость, '+fmtSp(v)+' км/ч'},{n:'t',lab:'время, '+t+' ч'}],
+    rearr:null,firstOp:null,
+    hints:['Умножь '+v+' на '+t+' и проверь порядок величины: должны получиться тысячи километров.','Проверь количество нулей в ответе.'],
+    solution:['Формула: S = v · t.','Подставим: S = '+fmtSp(v)+' · '+t+' = '+fmtSp(ans)+'.','В бланк пишем без пробелов: '+ans+'.','Ответ: '+ans+'.'],
+    distract:[{v:ans*10,msg:'Похоже, появился лишний ноль.'},{v:ans/10,msg:'Похоже, потерялся ноль. Ответ должен быть в тысячах километров.'}],
+    subst:{tpl:'S = %0 · %1',vals:[v,t],decoys:[],ev:function(a){return a[0]*a[1]}},
+    mistake:null
+  };
+}});
+
+/* --- Тип 10. Лишние данные / «найдите не то» --- */
+GENS.push({t:10,make:function(){
+  var m=ri(6,12),n=ri(8,20),p=ri(60,120),ans=m*n;
+  return {t:10,target:'M',answer:ans,
+    story:'В магазин привезли '+n+' коробок с яблоками, в каждой по '+m+' кг. Цена килограмма яблок — '+p+' руб. Массу всех яблок находят по формуле <span class="f-inline">M = m · n</span>. Найдите массу всех привезённых яблок (в килограммах).',
+    formula:'M = m · n',
+    letters:[{n:'M',lab:'масса всех яблок (это ищем)'},{n:'m',lab:'масса в коробке, '+m+' кг'},{n:'n',lab:'число коробок, '+n},{n:'p',lab:'цена килограмма, '+p+' руб. — а нужна ли она?'}],
+    rearr:null,firstOp:null,
+    hints:['Не все числа из условия обязаны использоваться. Спрашивают массу, а не стоимость.','Для формулы M = m · n нужны только m = '+m+' и n = '+n+'. Цена — лишнее данное.'],
+    solution:['Спрашивают массу, формула: M = m · n.','Цена килограмма ('+p+' руб.) в этой задаче не нужна.','Подставим: M = '+m+' · '+n+' = '+fmtSp(ans)+'.','Ответ: '+ans+'.'],
+    distract:[{v:m*n*p,msg:'Использованы все числа подряд, но спрашивают массу — цена килограмма не нужна.'},{v:m*p,msg:'Похоже, посчитана стоимость одной коробки, а спрашивают массу всех яблок.'},{v:n*p,msg:'Проверь, какие данные нужны: для массы нужны кг в коробке и число коробок.'}],
+    subst:{tpl:'M = %0 · %1',vals:[m,n],decoys:[p],ev:function(a){return a[0]*a[1]}},
+    mistake:{sol:'M = '+m+' · '+n+' · '+p+' = '+fmtSp(m*n*p),label:'Использовал лишнее число из условия'}
+  };
+}});
+GENS.push({t:10,make:function(){
+  var a,b,P,S,guard=0;
+  do{a=ri(6,14);b=ri(3,9);if(b===a)b++;P=2*(a+b);S=a*b;guard++}
+  while(S===P&&guard<20);
+  if(S===P){b++;P=2*(a+b);S=a*b}
+  return {t:10,target:'P',answer:P,
+    story:'Стороны прямоугольного участка равны a = '+a+' м и b = '+b+' м. Периметр находят по формуле <span class="f-inline">P = 2 · (a + b)</span>, а площадь — по формуле <span class="f-inline">S = a · b</span>. Найдите <b>периметр</b> участка (в метрах).',
+    formula:'P = 2 · (a + b)',
+    letters:[{n:'P',lab:'периметр (это ищем)'},{n:'S',lab:'площадь — её не спрашивают'},{n:'a',lab:'сторона, '+a+' м'},{n:'b',lab:'сторона, '+b+' м'}],
+    rearr:null,
+    firstOp:{prompt:'Сначала скобки: '+a+' + '+b+' = ?',value:a+b,show:a+' + '+b+' = '+(a+b)},
+    hints:['Перед вычислением подчеркни, что именно нужно найти: спрашивают периметр, а не площадь.','P = 2 · ('+a+' + '+b+') = 2 · '+(a+b)+'.'],
+    solution:['Спрашивают периметр, формула: P = 2 · (a + b).','Сначала скобки: '+a+' + '+b+' = '+(a+b)+'.','Умножаем: 2 · '+(a+b)+' = '+P+'.','Ответ: '+P+'.'],
+    distract:[{v:S,msg:'Это площадь (a · b), а спрашивали периметр.'},{v:a+b,msg:'Это только сумма сторон — не забудь умножить её на 2.'},{v:2*a+b,msg:'На 2 умножается вся сумма (a + b), поэтому она в скобках.'}],
+    subst:{tpl:'P = 2 · (%0 + %1)',vals:[a,b],decoys:[a*b],ev:function(v){return 2*(v[0]+v[1])}},
+    mistake:{sol:'P = '+a+' · '+b+' = '+S,label:'Нашёл не ту величину (площадь вместо периметра)'}
+  };
+}});
+
+/* ============ Второй набор генераторов (по 2 на тип) ============ */
+
+/* --- Тип 1 --- */
+GENS.push({t:1,make:function(){
+  var m=ri(3,20),ans=10*m;
+  return {t:1,target:'P',answer:ans,
+    story:'Вес тела находят по формуле <span class="f-inline">P = m · g</span>, где <b>m</b> — масса (кг), <b>g</b> = 10 Н/кг. Найдите вес тела массой m = '+m+' кг (в ньютонах).',
+    formula:'P = m · g',
+    letters:[{n:'P',lab:'вес (это ищем)'},{n:'m',lab:'масса, '+m+' кг'},{n:'g',lab:'коэффициент, 10 Н/кг'}],
+    rearr:null,firstOp:null,
+    hints:['Выпиши данные: m = '+m+', g = 10.','P уже слева — просто подставь: P = '+m+' · 10.'],
+    solution:['Формула: P = m · g.','Дано: m = '+m+', g = 10.','Подставим: P = '+m+' · 10 = '+ans+'.','Ответ: '+ans+'.'],
+    distract:[{v:m+10,msg:'Похоже, числа сложили, а нужно перемножить.'}],
+    subst:{tpl:'P = %0 · %1',vals:[m,10],decoys:[m+10],ev:function(a){return a[0]*a[1]}},
+    mistake:{sol:'P = '+m+' + 10 = '+(m+10),label:'Сложил вместо умножения'}
+  };
+}});
+GENS.push({t:1,make:function(){
+  var F=ri(2,12),a=ri(2,9);if(F===2&&a===2)a=3;var ans=F*a;
+  return {t:1,target:'A',answer:ans,
+    story:'Работу постоянной силы на прямом пути находят по формуле <span class="f-inline">A = F · s</span>, где <b>F</b> — сила (Н), <b>s</b> — путь (м). Найдите работу, если F = '+F+' Н, s = '+a+' м (в джоулях).',
+    formula:'A = F · s',
+    letters:[{n:'A',lab:'работа (это ищем)'},{n:'F',lab:'сила, '+F+' Н'},{n:'s',lab:'путь, '+a+' м'}],
+    rearr:null,firstOp:null,
+    hints:['Что дано? F = '+F+', s = '+a+'. Что ищем? A.','A стоит слева — подставляем: A = '+F+' · '+a+'.'],
+    solution:['Формула: A = F · s.','Подставим: A = '+F+' · '+a+' = '+ans+'.','Ответ: '+ans+'.'],
+    distract:[{v:F+a,msg:'Сложили вместо умножения: между F и s стоит знак умножения.'}],
+    subst:{tpl:'A = %0 · %1',vals:[F,a],decoys:[F+a],ev:function(v){return v[0]*v[1]}},
+    mistake:{sol:'A = '+F+' + '+a+' = '+(F+a),label:'Сложил вместо умножения'}
+  };
+}});
+
+/* --- Тип 2 --- */
+GENS.push({t:2,make:function(){
+  var ro=pick([2,4,5,8]),V=ri(3,12),m=ro*V;
+  return {t:2,target:'V',answer:V,
+    story:'Массу тела находят по формуле <span class="f-inline">m = ρ · V</span>, где <b>ρ</b> — плотность (г/см³), <b>V</b> — объём (см³). Масса тела m = '+m+' г, плотность ρ = '+ro+' г/см³. Найдите объём <b>V</b> (в см³).',
+    formula:'m = ρ · V',
+    letters:[{n:'m',lab:'масса, '+m+' г'},{n:'ρ',lab:'плотность, '+ro+' г/см³'},{n:'V',lab:'объём (это ищем)'}],
+    rearr:{options:[{html:'V = '+frac('m','ρ'),ok:true},{html:'V = '+frac('ρ','m'),ok:false},{html:'V = m · ρ',ok:false},{html:'V = m − ρ',ok:false}]},
+    firstOp:null,
+    hints:['Искомая буква V — множитель. Множитель находят делением произведения на известный множитель.','V = m / ρ = '+m+' / '+ro+'.'],
+    solution:['Формула: m = ρ · V. Нужно найти V.','Выразим V: V = m / ρ.','Подставим: V = '+m+' / '+ro+' = '+V+'.','Ответ: '+V+'.'],
+    distract:[{v:m*ro,msg:'Похоже, массу умножили на плотность, а множитель находят делением: V = m / ρ.'},{v:r6(ro/m),msg:'Деление в другую сторону: массу делим на плотность.'}],
+    subst:{tpl:'V = '+frac('%0','%1'),vals:[m,ro],decoys:[V],ev:function(a){return a[0]/a[1]}},
+    mistake:{sol:'V = '+m+' · '+ro+' = '+fmtSp(m*ro),label:'Умножил вместо деления'}
+  };
+}});
+GENS.push({t:2,make:function(){
+  var k=pick([15,20,25,30,40,50]),n=ri(4,12),C=k*n;
+  return {t:2,target:'n',answer:n,
+    story:'Стоимость покупки одинаковых ручек находят по формуле <span class="f-inline">C = k · n</span>, где <b>k</b> — цена ручки (руб.), <b>n</b> — их количество. Покупка обошлась в C = '+C+' руб., цена ручки k = '+k+' руб. Сколько ручек купили (<b>n</b>)?',
+    formula:'C = k · n',
+    letters:[{n:'C',lab:'стоимость, '+C+' руб.'},{n:'k',lab:'цена ручки, '+k+' руб.'},{n:'n',lab:'число ручек (это ищем)'}],
+    rearr:{options:[{html:'n = '+frac('C','k'),ok:true},{html:'n = '+frac('k','C'),ok:false},{html:'n = C · k',ok:false},{html:'n = C + k',ok:false}]},
+    firstOp:null,
+    hints:['Что неизвестно — вся стоимость или число ручек? Число ручек, значит делим.','n = C / k = '+C+' / '+k+'.'],
+    solution:['Формула: C = k · n. Нужно найти n.','Выразим n: n = C / k.','Подставим: n = '+C+' / '+k+' = '+n+'.','Ответ: '+n+'.'],
+    distract:[{v:C*k,msg:'Стоимость умножили на цену. Число ручек находят делением: n = C / k.'},{v:r6(k/C),msg:'Деление в другую сторону: стоимость делим на цену.'}],
+    subst:{tpl:'n = '+frac('%0','%1'),vals:[C,k],decoys:[n],ev:function(a){return a[0]/a[1]}},
+    mistake:{sol:'n = '+C+' · '+k+' = '+fmtSp(C*k),label:'Умножил вместо деления'}
+  };
+}});
+
+/* --- Тип 3 --- */
+GENS.push({t:3,make:function(){
+  var C0=ri(150,400),k=ri(20,60),n=ri(3,9),ans=C0+k*n;
+  return {t:3,target:'C',answer:ans,
+    story:'Абонемент в бассейн стоит по формуле <span class="f-inline">C = C₀ + k · n</span>, где <b>C₀</b> — цена карты (руб.), <b>k</b> — цена одного занятия (руб.), <b>n</b> — число занятий. Найдите стоимость, если C₀ = '+C0+', k = '+k+', n = '+n+'.',
+    formula:'C = C₀ + k · n',
+    letters:[{n:'C',lab:'итоговая стоимость (это ищем)'},{n:'C₀',lab:'цена карты, '+C0+' руб.'},{n:'k',lab:'цена занятия, '+k+' руб.'},{n:'n',lab:'число занятий, '+n}],
+    rearr:null,
+    firstOp:{prompt:'Сначала умножение: '+k+' · '+n+' = ?',value:k*n,show:k+' · '+n+' = '+(k*n)},
+    hints:['Сначала умножение k · n, потом прибавляем C₀.','C = '+C0+' + '+k+' · '+n+' = '+C0+' + '+(k*n)+'.'],
+    solution:['Формула: C = C₀ + k · n.','Сначала умножение: '+k+' · '+n+' = '+(k*n)+'.','Потом сложение: '+C0+' + '+(k*n)+' = '+ans+'.','Ответ: '+ans+'.'],
+    distract:[{v:(C0+k)*n,msg:'Сложение выполнено до умножения. Сначала k · n, потом + C₀.'},{v:k*n,msg:'Это только стоимость занятий — не забудь прибавить цену карты C₀ = '+C0+'.'}],
+    subst:{tpl:'C = %0 + %1 · %2',vals:[C0,k,n],decoys:[C0+k],ev:function(a){return a[0]+a[1]*a[2]}},
+    mistake:{sol:'C = ('+C0+' + '+k+') · '+n+' = '+fmtSp((C0+k)*n),label:'Нарушен порядок действий: сложение раньше умножения'}
+  };
+}});
+GENS.push({t:3,make:function(){
+  var L0=ri(8,20),k=ri(2,6),m=ri(3,9),ans=L0+k*m;
+  return {t:3,target:'L',answer:ans,
+    story:'Длину пружины под грузом находят по формуле <span class="f-inline">L = L₀ + k · m</span>, где <b>L₀</b> — длина без груза (см), <b>k</b> — удлинение на 1 кг (см), <b>m</b> — масса груза (кг). Найдите длину пружины, если L₀ = '+L0+', k = '+k+', m = '+m+'.',
+    formula:'L = L₀ + k · m',
+    letters:[{n:'L',lab:'длина под грузом (это ищем)'},{n:'L₀',lab:'длина без груза, '+L0+' см'},{n:'k',lab:'удлинение на кг, '+k+' см'},{n:'m',lab:'масса, '+m+' кг'}],
+    rearr:null,
+    firstOp:{prompt:'Сначала умножение: '+k+' · '+m+' = ?',value:k*m,show:k+' · '+m+' = '+(k*m)},
+    hints:['L₀ — постоянная длина, k · m — на сколько пружина растянулась. Сначала умножение.','L = '+L0+' + '+(k*m)+'.'],
+    solution:['Формула: L = L₀ + k · m.','Сначала умножение: '+k+' · '+m+' = '+(k*m)+'.','Потом сложение: '+L0+' + '+(k*m)+' = '+ans+'.','Ответ: '+ans+'.'],
+    distract:[{v:(L0+k)*m,msg:'Сначала сложили — а нужно сначала умножение k · m, потом + L₀.'},{v:k*m,msg:'Это только удлинение. Прибавь длину без груза L₀ = '+L0+'.'}],
+    subst:{tpl:'L = %0 + %1 · %2',vals:[L0,k,m],decoys:[L0+k],ev:function(a){return a[0]+a[1]*a[2]}},
+    mistake:{sol:'L = ('+L0+' + '+k+') · '+m+' = '+fmtSp((L0+k)*m),label:'Нарушен порядок действий: сложение раньше умножения'}
+  };
+}});
+
+/* --- Тип 4 --- */
+GENS.push({t:4,make:function(){
+  var ro=pick([2,4,5,8]),V=ri(3,12),m=ro*V;
+  return {t:4,target:'ρ',answer:ro,
+    story:'Плотность вещества находят по формуле <span class="f-inline">ρ = '+frac('m','V')+'</span>, где <b>m</b> — масса (г), <b>V</b> — объём (см³). Тело массой m = '+m+' г занимает объём V = '+V+' см³. Найдите плотность <b>ρ</b> (в г/см³).',
+    formula:'ρ = '+frac('m','V'),
+    letters:[{n:'ρ',lab:'плотность (это ищем)'},{n:'m',lab:'масса, '+m+' г'},{n:'V',lab:'объём, '+V+' см³'}],
+    rearr:null,firstOp:null,
+    hints:['Сверху масса m, снизу объём V. Значит, массу делим на объём.','ρ = '+m+' / '+V+'.'],
+    solution:['Формула: ρ = m / V.','Подставим: ρ = '+m+' / '+V+' = '+ro+'.','Ответ: '+ro+'.'],
+    distract:[{v:m*V,msg:'m и V перемножили, а дробная черта — это деление: массу делим на объём.'},{v:r6(V/m),msg:'Перепутаны числитель и знаменатель: сверху масса, снизу объём.'}],
+    subst:{tpl:'ρ = '+frac('%0','%1'),vals:[m,V],decoys:[ro],ev:function(a){return a[0]/a[1]}},
+    mistake:{sol:'ρ = '+V+' / '+m+' = '+fmt(r6(V/m)),label:'Перепутал числитель и знаменатель'}
+  };
+}});
+GENS.push({t:4,make:function(){
+  var I=ri(2,8),U=I*pick([10,15,20,25]),R=U/I;
+  return {t:4,target:'R',answer:R,
+    story:'Сопротивление участка цепи находят по формуле <span class="f-inline">R = '+frac('U','I')+'</span>, где <b>U</b> — напряжение (В), <b>I</b> — сила тока (А). Найдите сопротивление, если U = '+U+' В, I = '+I+' А (в омах).',
+    formula:'R = '+frac('U','I'),
+    letters:[{n:'R',lab:'сопротивление (это ищем)'},{n:'U',lab:'напряжение, '+U+' В'},{n:'I',lab:'сила тока, '+I+' А'}],
+    rearr:null,firstOp:null,
+    hints:['В числителе напряжение U, в знаменателе ток I.','R = '+U+' / '+I+'.'],
+    solution:['Формула: R = U / I.','Подставим: R = '+U+' / '+I+' = '+R+'.','Ответ: '+R+'.'],
+    distract:[{v:U*I,msg:'Перемножили, а нужно делить: напряжение делим на ток.'},{v:r6(I/U),msg:'Перепутаны числитель и знаменатель.'}],
+    subst:{tpl:'R = '+frac('%0','%1'),vals:[U,I],decoys:[R],ev:function(a){return a[0]/a[1]}},
+    mistake:{sol:'R = '+I+' / '+U+' = '+fmt(r6(I/U)),label:'Перепутал числитель и знаменатель'}
+  };
+}});
+
+/* --- Тип 5 --- */
+GENS.push({t:5,make:function(){
+  var k=pick([2,3,4,5]),t=ri(3,7),ans=k*t*t;
+  return {t:5,target:'S',answer:ans,
+    story:'Путь при равноускоренном движении из покоя находят по формуле <span class="f-inline">S = k · t²</span>. Найдите путь <b>S</b> (в метрах), если k = '+k+' и t = '+t+' с.',
+    formula:'S = k · t²',
+    letters:[{n:'S',lab:'путь (это ищем)'},{n:'k',lab:'коэффициент, '+k},{n:'t',lab:'время, '+t+' с'}],
+    rearr:null,
+    firstOp:{prompt:'Сначала степень: t² = '+t+' · '+t+' = ?',value:t*t,show:t+'² = '+(t*t)},
+    hints:['Сначала возведи в квадрат: t² = t · t, а не 2t.','S = '+k+' · '+(t*t)+'.'],
+    solution:['Формула: S = k · t².','Сначала степень: t² = '+t+' · '+t+' = '+(t*t)+'.','Умножаем: '+k+' · '+(t*t)+' = '+ans+'.','Ответ: '+ans+'.'],
+    distract:[{v:k*2*t,msg:'Похоже, t² посчитано как 2t. Квадрат — это '+t+' · '+t+' = '+(t*t)+'.'},{v:t*t,msg:'Квадрат найден верно, осталось умножить на k = '+k+'.'}],
+    subst:null,
+    mistake:{sol:'S = '+k+' · 2 · '+t+' = '+(k*2*t),label:'Посчитал t² как 2t'}
+  };
+}});
+GENS.push({t:5,make:function(){
+  var r=ri(3,9),ans=3*r*r;
+  return {t:5,target:'S',answer:ans,
+    story:'Площадь круга приближённо считают по формуле <span class="f-inline">S ≈ 3 · r²</span>, где <b>r</b> — радиус (см). Найдите приближённую площадь круга радиусом r = '+r+' см (в см²).',
+    formula:'S ≈ 3 · r²',
+    letters:[{n:'S',lab:'площадь (это ищем)'},{n:'r',lab:'радиус, '+r+' см'}],
+    rearr:null,
+    firstOp:{prompt:'Сначала степень: r² = '+r+' · '+r+' = ?',value:r*r,show:r+'² = '+(r*r)},
+    hints:['Сначала возведи радиус в квадрат: r² = r · r.','S = 3 · '+(r*r)+'.'],
+    solution:['Формула: S ≈ 3 · r².','Сначала степень: r² = '+r+' · '+r+' = '+(r*r)+'.','Умножаем: 3 · '+(r*r)+' = '+ans+'.','Ответ: '+ans+'.'],
+    distract:[{v:3*2*r,msg:'Похоже, r² посчитано как 2r. Квадрат — это '+r+' · '+r+'.'},{v:r*r,msg:'Квадрат найден, осталось умножить на 3.'}],
+    subst:null,
+    mistake:{sol:'S = 3 · 2 · '+r+' = '+(6*r),label:'Посчитал r² как 2r'}
+  };
+}});
+
+/* --- Тип 6 --- */
+GENS.push({t:6,make:function(){
+  var v=ri(3,9),m=2*ri(1,5),E=m*v*v/2;
+  return {t:6,target:'v',answer:v,
+    story:'Скорость тела по его кинетической энергии находят из формулы <span class="f-inline">E = '+frac('m · v²','2')+'</span>. Тело массой m = '+m+' кг имеет энергию E = '+E+' Дж. Найдите скорость <b>v</b> (в м/с).',
+    formula:'E = '+frac('m · v²','2'),
+    letters:[{n:'E',lab:'энергия, '+E+' Дж'},{n:'m',lab:'масса, '+m+' кг'},{n:'v',lab:'скорость (это ищем)'}],
+    rearr:{options:[{html:'v² = '+frac('2E','m')+', затем v = √(2E / m)',ok:true},{html:'v = '+frac('2E','m'),ok:false},{html:'v = '+frac('E','m'),ok:false},{html:'v = √(E · m)',ok:false}]},
+    firstOp:{prompt:'Сначала найдём квадрат: v² = 2E / m = '+(2*E)+' / '+m+' = ?',value:v*v,show:'v² = '+(2*E)+' / '+m+' = '+(v*v)},
+    hints:['Сначала найди v² = 2E / m, потом извлеки корень.','v² = '+(v*v)+'. Какое число в квадрате даёт '+(v*v)+'?'],
+    solution:['Формула: E = m · v² / 2. Нужно найти v.','Выразим квадрат: v² = 2E / m = '+(2*E)+' / '+m+' = '+(v*v)+'.','Извлекаем корень: v = √'+(v*v)+' = '+v+'.','Скорость положительна, берём '+v+'.','Ответ: '+v+'.'],
+    distract:[{v:v*v,msg:'Вы нашли v², а спрашивают v. Остался корень.'},{v:r6(E/m),msg:'Забыли умножить на 2: сначала v² = 2E / m, потом корень.'}],
+    subst:null,
+    mistake:{sol:'v = '+(2*E)+' / '+m+' = '+(v*v),label:'Остановился на промежуточном результате (нашёл v², а не v)'}
+  };
+}});
+GENS.push({t:6,make:function(){
+  var a=ri(5,14),S=a*a;
+  return {t:6,target:'a',answer:a,
+    story:'Ковёр имеет форму квадрата площадью S = '+S+' дм². Сторону квадрата находят по формуле <span class="f-inline">a = √S</span>. Найдите сторону ковра <b>a</b> (в дециметрах).',
+    formula:'a = √S',
+    letters:[{n:'a',lab:'сторона (это ищем)'},{n:'S',lab:'площадь, '+S+' дм²'}],
+    rearr:null,firstOp:null,
+    hints:['Корень — число, квадрат которого равен '+S+'. Какое число само на себя даёт '+S+'?','Проверь: ответ · ответ должно быть '+S+'.'],
+    solution:['Формула: a = √S.','Ищем число, дающее в квадрате '+S+': '+a+' · '+a+' = '+S+'.','Длина положительна: a = '+a+'.','Ответ: '+a+'.'],
+    distract:[{v:S/2,msg:'√S — не деление на 2. Корень: какое число в квадрате даёт '+S+'?'}],
+    subst:null,
+    mistake:{sol:'a = '+S+' / 2 = '+fmt(S/2),label:'Спутал корень с делением на 2'}
+  };
+}});
+
+/* --- Тип 7 --- */
+GENS.push({t:7,make:function(){
+  var pairs=[[0.08,20],[0.08,50],[0.06,50],[0.12,25],[0.05,40],[0.15,20],[0.04,60],[0.02,150]];
+  var pr=pick(pairs),d=pr[0],n=pr[1],ans=r6(d*n);
+  return {t:7,target:'h',answer:ans,
+    story:'Толщина одного листа картона равна '+fmt(d)+' см. Высоту стопки из <b>n</b> листов находят по формуле <span class="f-inline">h = d · n</span>. Найдите высоту стопки из '+n+' листов (в сантиметрах).',
+    formula:'h = d · n',
+    letters:[{n:'h',lab:'высота стопки (это ищем)'},{n:'d',lab:'толщина листа, '+fmt(d)+' см'},{n:'n',lab:'число листов, '+n}],
+    rearr:null,firstOp:null,
+    hints:['Умножь как с целыми, потом посчитай знаки после запятой.','При умножении на 10, 100 запятая сдвигается вправо.'],
+    solution:['Формула: h = d · n.','Подставим: h = '+fmt(d)+' · '+n+' = '+fmt(ans)+'.','Проверь положение запятой.','Ответ: '+fmt(ans)+'.'],
+    distract:[{v:r6(ans*10),msg:'Ответ в 10 раз больше — проверь запятую.'},{v:r6(ans/10),msg:'Ответ в 10 раз меньше — проверь запятую.'}],
+    subst:{tpl:'h = %0 · %1',vals:[d,n],decoys:[],ev:function(a){return r6(a[0]*a[1])}},
+    mistake:{sol:'h = '+fmt(d)+' · '+n+' = '+fmt(r6(ans*10)),label:'Сдвинул запятую не на то число знаков'}
+  };
+}});
+GENS.push({t:7,make:function(){
+  var t=r6(ri(12,20)/10),n=ri(6,30),ans=r6(t*n);
+  return {t:7,target:'C',answer:ans,
+    story:'Минута разговора по тарифу стоит '+fmt(t)+' руб. Стоимость разговора находят по формуле <span class="f-inline">C = t · n</span>, где <b>n</b> — число минут. Найдите стоимость разговора длиной '+n+' минут (в рублях).',
+    formula:'C = t · n',
+    letters:[{n:'C',lab:'стоимость (это ищем)'},{n:'t',lab:'цена минуты, '+fmt(t)+' руб.'},{n:'n',lab:'число минут, '+n}],
+    rearr:null,firstOp:null,
+    hints:['Выпиши: t = '+fmt(t)+', n = '+n+'. Ищем C.','Умножь '+fmt(t)+' на '+n+' и проверь запятую.'],
+    solution:['Формула: C = t · n.','Подставим: C = '+fmt(t)+' · '+n+' = '+fmt(ans)+'.','Ответ: '+fmt(ans)+'.'],
+    distract:[{v:r6(ans*10),msg:'Ответ в 10 раз больше — проверь запятую.'},{v:r6(ans/10),msg:'Ответ в 10 раз меньше — проверь запятую.'}],
+    subst:{tpl:'C = %0 · %1',vals:[t,n],decoys:[],ev:function(a){return r6(a[0]*a[1])}},
+    mistake:null
+  };
+}});
+
+/* --- Тип 8 --- */
+GENS.push({t:8,make:function(){
+  var B0=100*ri(3,10),c=ri(120,320),n=ri(2,7),ans=B0-c*n;
+  return {t:8,target:'B',answer:ans,
+    story:'Остаток на карте после нескольких списаний считают по формуле <span class="f-inline">B = B₀ − c · n</span>, где <b>B₀</b> — начальный остаток (руб.), <b>c</b> — сумма одного списания (руб.), <b>n</b> — число списаний. Найдите остаток, если B₀ = '+B0+', c = '+c+', n = '+n+'. Остаток может быть отрицательным (долг).',
+    formula:'B = B₀ − c · n',
+    letters:[{n:'B',lab:'остаток (это ищем)'},{n:'B₀',lab:'начальный остаток, '+B0+' руб.'},{n:'c',lab:'одно списание, '+c+' руб.'},{n:'n',lab:'число списаний, '+n}],
+    rearr:null,
+    firstOp:{prompt:'Сначала умножение: '+c+' · '+n+' = ?',value:c*n,show:c+' · '+n+' = '+(c*n)},
+    hints:['Сначала умножение c · n, потом вычитаем из B₀.','B = '+B0+' − '+(c*n)+'. Если списали больше, чем было — остаток отрицательный.'],
+    solution:['Формула: B = B₀ − c · n.','Сначала умножение: '+c+' · '+n+' = '+(c*n)+'.','Вычитаем: '+B0+' − '+(c*n)+' = '+fmt(ans)+'.','Ответ: '+fmt(ans)+(ans<0?' (минус означает долг, его нельзя терять).':'.')],
+    distract:[{v:B0+c*n,msg:'Списания нужно вычесть, а не прибавить.'}].concat(ans!==0?[{v:-ans,msg:'Число верное, а знак — нет. Сравни: осталось больше или ушло в минус?'}]:[]),
+    subst:{tpl:'B = %0 − %1 · %2',vals:[B0,c,n],decoys:[],ev:function(v){return v[0]-v[1]*v[2]}},
+    mistake:{sol:'B = '+B0+' + '+c+' · '+n+' = '+fmtSp(B0+c*n),label:'Потерял минус'}
+  };
+}});
+GENS.push({t:8,make:function(){
+  var t2=ri(3,12),t1=ri(3,12);if(t1===t2)t1+=2;var ans=t2-t1;
+  return {t:8,target:'Δ',answer:ans,
+    story:'Изменение температуры за ночь находят по формуле <span class="f-inline">Δ = t₂ − t₁</span>, где <b>t₁</b> — температура вечером, <b>t₂</b> — утром (°C). Вечером было t₁ = '+t1+' °C, утром t₂ = '+t2+' °C. Найдите изменение <b>Δ</b> (в градусах).',
+    formula:'Δ = t₂ − t₁',
+    letters:[{n:'Δ',lab:'изменение (это ищем)'},{n:'t₁',lab:'вечером, '+t1+' °C'},{n:'t₂',lab:'утром, '+t2+' °C'}],
+    rearr:null,firstOp:null,
+    hints:['Из температуры утром вычитаем температуру вечером: Δ = '+t2+' − '+t1+'.','Если утром холоднее, чем вечером, изменение отрицательное.'],
+    solution:['Формула: Δ = t₂ − t₁.','Подставим: Δ = '+t2+' − '+t1+' = '+fmt(ans)+'.','Ответ: '+fmt(ans)+(ans<0?' (стало холоднее, поэтому минус).':'.')],
+    distract:[{v:t1-t2,msg:'Перепутан порядок: из утренней вычитаем вечернюю, Δ = t₂ − t₁.'},{v:t1+t2,msg:'Здесь вычитание, а не сложение.'}],
+    subst:{tpl:'Δ = %0 − %1',vals:[t2,t1],decoys:[t1+t2],ev:function(v){return v[0]-v[1]}},
+    mistake:{sol:'Δ = '+t1+' − '+t2+' = '+fmt(t1-t2),label:'Перепутал порядок вычитания'}
+  };
+}});
+
+/* --- Тип 9 --- */
+GENS.push({t:9,make:function(){
+  var a=ri(120,220),b=ri(150,300),ans=a*b;
+  return {t:9,target:'N',answer:ans,
+    story:'На трибуне <b>a</b> рядов, в каждом ряду <b>b</b> мест. Число мест находят по формуле <span class="f-inline">N = a · b</span>. Найдите число мест, если a = '+a+', b = '+b+'. Ответ запишите без пробелов.',
+    formula:'N = a · b',
+    letters:[{n:'N',lab:'число мест (это ищем)'},{n:'a',lab:'число рядов, '+a},{n:'b',lab:'мест в ряду, '+b}],
+    rearr:null,firstOp:null,
+    hints:['Умножь как обычно и прикинь порядок: получатся десятки тысяч.','Проверь количество нулей в ответе.'],
+    solution:['Формула: N = a · b.','Подставим: N = '+a+' · '+b+' = '+fmtSp(ans)+'.','В бланк без пробелов: '+ans+'.','Ответ: '+ans+'.'],
+    distract:[{v:ans*10,msg:'Похоже, лишний ноль. Проверь количество нулей.'},{v:ans/10,msg:'Похоже, потерялся ноль.'},{v:a+b,msg:'Ряды и места сложили, а нужно перемножить.'}],
+    subst:{tpl:'N = %0 · %1',vals:[a,b],decoys:[a+b],ev:function(v){return v[0]*v[1]}},
+    mistake:{sol:'N = '+a+' · '+b+' = '+fmtSp(ans*10),label:'Лишний ноль в ответе'}
+  };
+}});
+GENS.push({t:9,make:function(){
+  var p=1000*ri(25,60),n=ri(6,12),ans=p*n;
+  return {t:9,target:'C',answer:ans,
+    story:'Аренда квартиры стоит '+fmtSp(p)+' руб. в месяц. Плату за <b>n</b> месяцев находят по формуле <span class="f-inline">C = p · n</span>. Найдите плату за '+n+' месяцев (в рублях). Ответ запишите без пробелов.',
+    formula:'C = p · n',
+    letters:[{n:'C',lab:'плата (это ищем)'},{n:'p',lab:'за месяц, '+fmtSp(p)+' руб.'},{n:'n',lab:'число месяцев, '+n}],
+    rearr:null,firstOp:null,
+    hints:['Не пугайся нулей: умножь '+p/1000+' тысяч на '+n+', потом верни тысячи.','Проверь количество нулей.'],
+    solution:['Формула: C = p · n.','Подставим: C = '+fmtSp(p)+' · '+n+' = '+fmtSp(ans)+'.','В бланк без пробелов: '+ans+'.','Ответ: '+ans+'.'],
+    distract:[{v:ans*10,msg:'Лишний ноль. Проверь количество нулей.'},{v:ans/10,msg:'Потерялся ноль.'}],
+    subst:{tpl:'C = %0 · %1',vals:[p,n],decoys:[],ev:function(v){return v[0]*v[1]}},
+    mistake:null
+  };
+}});
+
+/* --- Тип 10 --- */
+GENS.push({t:10,make:function(){
+  var v=ri(40,80),t=ri(2,6),m=ri(800,1500),ans=v*t;
+  return {t:10,target:'S',answer:ans,
+    story:'Автомобиль массой '+m+' кг едет со скоростью '+v+' км/ч в течение '+t+' ч. Путь находят по формуле <span class="f-inline">S = v · t</span>. Найдите путь автомобиля (в километрах).',
+    formula:'S = v · t',
+    letters:[{n:'S',lab:'путь (это ищем)'},{n:'v',lab:'скорость, '+v+' км/ч'},{n:'t',lab:'время, '+t+' ч'},{n:'m',lab:'масса, '+m+' кг — а нужна ли она?'}],
+    rearr:null,firstOp:null,
+    hints:['Не все числа нужны. Для пути важны скорость и время, а не масса.','S = v · t = '+v+' · '+t+'. Масса ('+m+' кг) — лишнее данное.'],
+    solution:['Спрашивают путь, формула: S = v · t.','Масса ('+m+' кг) в этой задаче не нужна.','Подставим: S = '+v+' · '+t+' = '+ans+'.','Ответ: '+ans+'.'],
+    distract:[{v:v*t*m,msg:'Использованы все числа, но масса не нужна: S = v · t.'},{v:m,msg:'Это масса из условия, а спрашивают путь.'},{v:v+t,msg:'Скорость и время перемножают, а не складывают.'}],
+    subst:{tpl:'S = %0 · %1',vals:[v,t],decoys:[m],ev:function(a){return a[0]*a[1]}},
+    mistake:{sol:'S = '+v+' · '+t+' · '+m+' = '+fmtSp(v*t*m),label:'Использовал лишнее число из условия'}
+  };
+}});
+GENS.push({t:10,make:function(){
+  var a,b,P,S,guard=0;
+  do{a=ri(5,12);b=ri(6,14);if(b===a)b++;P=2*(a+b);S=a*b;guard++}while(S===P&&guard<20);
+  if(S===P){b++;P=2*(a+b);S=a*b}
+  return {t:10,target:'S',answer:S,
+    story:'Стороны прямоугольной комнаты равны a = '+a+' м и b = '+b+' м. Площадь находят по формуле <span class="f-inline">S = a · b</span>, а периметр — по формуле <span class="f-inline">P = 2 · (a + b)</span>. Найдите <b>площадь</b> комнаты (в м²).',
+    formula:'S = a · b',
+    letters:[{n:'S',lab:'площадь (это ищем)'},{n:'P',lab:'периметр — его не спрашивают'},{n:'a',lab:'сторона, '+a+' м'},{n:'b',lab:'сторона, '+b+' м'}],
+    rearr:null,firstOp:null,
+    hints:['Подчеркни, что спрашивают: площадь, а не периметр.','S = a · b = '+a+' · '+b+'.'],
+    solution:['Спрашивают площадь, формула: S = a · b.','Подставим: S = '+a+' · '+b+' = '+S+'.','Ответ: '+S+'.'],
+    distract:[{v:P,msg:'Это периметр (2 · (a + b)), а спрашивали площадь.'},{v:a+b,msg:'Это только сумма сторон, а площадь — это произведение a · b.'}],
+    subst:{tpl:'S = %0 · %1',vals:[a,b],decoys:[a+b],ev:function(v){return v[0]*v[1]}},
+    mistake:{sol:'S = 2 · ('+a+' + '+b+') = '+P,label:'Нашёл не ту величину (периметр вместо площади)'}
+  };
+}});
+
+/* ===================== режимы ===================== */
+var MODES=[
+  {id:'quick',label:'1. Быстрый старт',desc:'Лёгкие задания «подставить и посчитать» — чтобы почувствовать, что задание 12 тебе по силам.'},
+  {id:'find',label:'2. Найди, что спрашивают',desc:'Без вычислений: определяем, какую букву ищем и нужно ли преобразовывать формулу.'},
+  {id:'subst',label:'3. Собери подстановку',desc:'Расставь числа из условия по местам букв в формуле.'},
+  {id:'steps',label:'4. Считаем по шагам',desc:'Тренажёр ведёт по одному маленькому шагу за раз. Рядом с каждой проверкой есть «Показать шаг».'},
+  {id:'errors',label:'5. Типичные ошибки',desc:'Перед тобой чужое решение с ошибкой. Найди, в чём она.'},
+  {id:'exam',label:'6. ОГЭ-режим',desc:'Задание как на экзамене: условие, формула, одно поле ответа.'},
+  {id:'diag',label:'7. Диагностика',desc:'10 заданий разных типов подряд — в конце карта: что освоено, что повторить.'}
+];
+
+var mode='quick';
+var typeFilter=0; // 0 = все
+var cur=null;      // текущая задача
+var A=null;        // состояние попытки
+var diag=null;     // состояние диагностики
+
+/* прогресс */
+var LS='mx-oge12-v1';
+function loadStats(){
+  try{var s=JSON.parse(localStorage.getItem(LS));if(s&&s.byType)return s}catch(e){}
+  return {solved:0,correct:0,byType:{},bestDiag:null,lastDate:null};
+}
+var stats=loadStats();
+function saveStats(){stats.lastDate=new Date().toISOString().slice(0,10);try{localStorage.setItem(LS,JSON.stringify(stats))}catch(e){}}
+function record(t,ok){
+  stats.solved++;if(ok)stats.correct++;
+  if(!stats.byType[t])stats.byType[t]={a:0,c:0};
+  stats.byType[t].a++;if(ok)stats.byType[t].c++;
+  saveStats();renderProgress();
+}
+
+/* ===================== выбор задачи ===================== */
+function gensFor(m,tf){
+  var list=GENS;
+  if(m==='quick')list=GENS.filter(function(g){return g.t===1});
+  if(m==='subst')list=GENS.filter(function(g){return !!g.make().subst});
+  if(m==='errors')list=GENS.filter(function(g){return !!g.make().mistake});
+  if(tf&&m!=='quick'&&m!=='diag'){
+    var f=list.filter(function(g){return g.t===tf});
+    if(f.length)list=f;
+  }
+  return list;
+}
+function newTask(){
+  var g=pick(gensFor(mode,typeFilter));
+  cur=g.make();
+  A={checkedOnce:false,revealed:false,hintIdx:0,done:false,stepIdx:0,stepRevealed:false,mcTries:0};
+  renderTask();
+}
+
+/* ===================== общие куски разметки ===================== */
+function focusLine(t){
+  var T=TYPES[t];
+  $('#focus').innerHTML='Сейчас тренируем: <b>'+T.name.toLowerCase()+'</b>. Главный риск — '+T.risk+'.';
+}
+function badge(t){return '<span class="badge">Тип '+t+': '+TYPES[t].name+'</span>'}
+function solutionBlock(task){
+  return '<div class="solution" id="sol"><div class="title">Разбор</div>'+task.solution.map(function(l){return '<div class="line">'+l+'</div>'}).join('')+'</div>';
+}
+function showFeedback(cls,html){var f=$('#fb');f.className='feedback '+cls;f.innerHTML=html}
+function revealSolution(){
+  var s=$('#sol');if(!s)return;
+  s.classList.add('show');
+  if(!A.done){A.revealed=true}
+}
+
+/* ===================== проверка числового ответа ===================== */
+function checkNumeric(inputEl,task){
+  var p=parseAns(inputEl.value);
+  if(p.value===null){showFeedback('info','Введи число. Десятичную дробь можно писать и через запятую, и через точку.');return}
+  var unitNote=p.hadUnit?' Кстати: в бланке ОГЭ пишем только число, без единиц измерения.':'';
+  if(near(p.value,task.answer)){
+    var counted=!A.checkedOnce&&!A.revealed;
+    if(!A.done){
+      A.done=true;
+      record(task.t,counted);
+    }
+    var extra=counted?'':' (Разбор был открыт или уже была попытка — задание не идёт в зачёт, но главное, что разобрались.)';
+    showFeedback('ok','Верно! Ответ: '+fmt(task.answer)+'.'+unitNote+extra);
+    return;
+  }
+  /* неверно */
+  if(!A.checkedOnce){A.checkedOnce=true}
+  var msg='Пока не сходится.';
+  for(var i=0;i<task.distract.length;i++){
+    if(near(p.value,task.distract[i].v)){msg='Пока не сходится. '+task.distract[i].msg;break}
+  }
+  if(msg==='Пока не сходится.')msg+=' Ещё раз, спокойно. Главное здесь — '+TYPES[task.t].risk+'. Если нужно, нажми «Подсказка» или «Показать разбор».';
+  showFeedback('warn',msg+unitNote);
+}
+
+/* ===================== рендер режимов ===================== */
+function renderTask(){
+  focusLine(cur.t);
+  if(mode==='find')return renderFind();
+  if(mode==='subst')return renderSubst();
+  if(mode==='steps')return renderSteps();
+  if(mode==='errors')return renderErrors();
+  if(mode==='diag')return renderDiagTask();
+  renderPlain(); // quick, exam
+}
+
+/* --- обычная карточка с полем ответа (quick / exam / diag) --- */
+function plainCardHTML(task,extraTop){
+  return '<div class="card">'+(extraTop||'')+badge(task.t)+
+    '<p class="story">'+task.story+'</p>'+
+    '<div class="formula-box">'+task.formula+'</div>'+
+    '<div class="answer-row"><label for="ansIn">Ответ:</label><input class="ans" id="ansIn" type="text" inputmode="decimal" autocomplete="off"></div>'+
+    '<div class="btns">'+
+      '<button class="btn btn-check" id="checkBtn">Проверить</button>'+
+      '<button class="btn btn-hint" id="hintBtn">Подсказка</button>'+
+      '<button class="btn btn-ghost" id="solBtn">Показать разбор</button>'+
+      '<button class="btn btn-next" id="nextBtn">Следующее задание</button>'+
+    '</div>'+
+    '<div class="feedback" id="fb"></div>'+
+    solutionBlock(task)+
+  '</div>';
+}
+function bindPlain(task,onNext){
+  $('#checkBtn').onclick=function(){checkNumeric($('#ansIn'),task)};
+  $('#ansIn').addEventListener('keydown',function(e){if(e.key==='Enter')checkNumeric($('#ansIn'),task)});
+  $('#hintBtn').onclick=function(){
+    if(A.hintIdx<task.hints.length){showFeedback('warn','Подсказка: '+task.hints[A.hintIdx]);A.hintIdx++}
+    else{showFeedback('warn','Подсказки закончились — открой «Показать разбор» и пройди решение по строчкам.')}
+  };
+  $('#solBtn').onclick=function(){revealSolution()};
+  $('#nextBtn').onclick=onNext;
+  $('#ansIn').focus();
+}
+function renderPlain(){
+  $('#taskArea').innerHTML=plainCardHTML(cur);
+  bindPlain(cur,newTask);
+}
+
+/* --- режим «Найди, что спрашивают» --- */
+function renderFind(){
+  var q1='<div class="step-cur"><div class="prompt">Вопрос 1. Какую величину нужно найти?</div><div class="mc" id="mc1">'+
+    cur.letters.map(function(L,i){return '<button data-i="'+i+'"><b>'+L.n+'</b> — '+L.lab.replace(' (это ищем)','')+'</button>'}).join('')+'</div></div>';
+  $('#taskArea').innerHTML='<div class="card">'+badge(cur.t)+
+    '<p class="story">'+cur.story+'</p>'+
+    '<div class="formula-box">'+cur.formula+'</div>'+q1+
+    '<div class="feedback" id="fb"></div>'+
+    '<div class="btns"><button class="btn btn-hint" id="hintBtn">Подсказка</button><button class="btn btn-next" id="nextBtn">Следующее задание</button></div>'+
+  '</div>';
+  $('#nextBtn').onclick=newTask;
+  var q1done=false;
+  $('#hintBtn').onclick=function(){
+    if(!q1done){
+      showFeedback('warn','Подсказка: смотри на вопрос задачи, а не на формулу. Какая величина спрашивается? У неё в условии обычно ещё нет числа.');
+    }else{
+      showFeedback('warn','Подсказка: посмотри, стоит ли '+cur.target+' одна слева от знака «=». Если да — просто подставляем; если она спрятана внутри формулы — сначала её выражаем.');
+    }
+  };
+  var correct1=cur.letters.findIndex(function(L){return L.n===cur.target});
+  var mistakes=0;
+  Array.prototype.forEach.call(document.querySelectorAll('#mc1 button'),function(b){
+    b.onclick=function(){
+      if(q1done)return;
+      var i=Number(b.dataset.i);
+      if(i===correct1){
+        q1done=true;b.classList.add('right');
+        Array.prototype.forEach.call(document.querySelectorAll('#mc1 button'),function(x){if(x!==b)x.classList.add('dim')});
+        showFeedback('ok','Верно, ищем '+cur.target+'. Теперь второй вопрос. Если нужно — снова «Подсказка».');
+        askRearrQuestion(mistakes);
+      }else{
+        mistakes++;b.classList.add('dim');
+        showFeedback('warn','Это '+cur.letters[i].n+' — оно дано в условии. Перечитай вопрос задачи: что нужно найти?');
+      }
+    };
+  });
+}
+function askRearrQuestion(prevMistakes){
+  var card=document.querySelector('.card');
+  var div=document.createElement('div');
+  div.className='step-cur';
+  div.innerHTML='<div class="prompt">Вопрос 2. Нужно ли преобразовывать формулу?</div><div class="mc" id="mc2">'+
+    '<button data-i="0">Нет: искомая величина уже стоит слева, просто подставляем</button>'+
+    '<button data-i="1">Да: искомая буква внутри формулы, сначала её выражаем</button></div>';
+  card.insertBefore(div,$('#fb'));
+  var correct=cur.rearr?1:0,done=false;
+  Array.prototype.forEach.call(document.querySelectorAll('#mc2 button'),function(b){
+    b.onclick=function(){
+      if(done)return;
+      if(Number(b.dataset.i)===correct){
+        done=true;b.classList.add('right');
+        Array.prototype.forEach.call(document.querySelectorAll('#mc2 button'),function(x){if(x!==b)x.classList.add('dim')});
+        var ok=prevMistakes===0;
+        record(cur.t,ok);
+        showFeedback('ok',(cur.rearr?'Верно: '+cur.target+' стоит внутри формулы, её нужно выразить.':'Верно: '+cur.target+' уже слева, преобразований не нужно.')+' Жми «Следующее задание».');
+      }else{
+        prevMistakes++;b.classList.add('dim');
+        showFeedback('warn',cur.rearr?'Посмотри ещё раз: '+cur.target+' стоит не слева, а внутри формулы.':'Посмотри ещё раз: '+cur.target+' уже стоит слева от знака «равно».');
+      }
+    };
+  });
+}
+
+/* --- режим «Собери подстановку» --- */
+function renderSubst(){
+  var sub=cur.subst;
+  var slotCount=sub.vals.length;
+  var parts=sub.tpl.split(/%(\d)/);
+  var html='';
+  for(var i=0;i<parts.length;i++){
+    if(i%2===0){html+=parts[i]}
+    else{html+='<button class="slot" data-slot="'+parts[i]+'"></button>'}
+  }
+  var chips=shuffle(sub.vals.concat(sub.decoys));
+  $('#taskArea').innerHTML='<div class="card">'+badge(cur.t)+
+    '<p class="story">'+cur.story+'</p>'+
+    '<p style="margin:0 0 4px;color:var(--ink-soft);font-size:15px">Нажимай на числа — они встают в пустые окошки. Нажми на окошко, чтобы очистить его.</p>'+
+    '<div class="slots" id="slots">'+html+'</div>'+
+    '<div class="chips" id="chips">'+chips.map(function(c,i){return '<button data-i="'+i+'" data-v="'+c+'">'+fmt(c)+'</button>'}).join('')+'</div>'+
+    '<div class="btns">'+
+      '<button class="btn btn-check" id="checkBtn">Проверить</button>'+
+      '<button class="btn btn-hint" id="hintBtn">Подсказка</button>'+
+      '<button class="btn btn-ghost" id="solBtn">Показать разбор</button>'+
+      '<button class="btn btn-next" id="nextBtn">Следующее задание</button>'+
+    '</div>'+
+    '<div class="feedback" id="fb"></div>'+
+    solutionBlock(cur)+
+  '</div>';
+  var slots=Array.prototype.slice.call(document.querySelectorAll('.slot'));
+  var filled={}; // slotIndex -> {v, chipIdx}
+  function activeSlot(){for(var i=0;i<slots.length;i++){if(filled[i]===undefined)return i}return -1}
+  function paint(){
+    slots.forEach(function(s,i){
+      s.classList.toggle('filled',filled[i]!==undefined);
+      s.classList.toggle('active',i===activeSlot());
+      s.textContent=filled[i]!==undefined?fmt(filled[i].v):'';
+    });
+  }
+  paint();
+  Array.prototype.forEach.call(document.querySelectorAll('#chips button'),function(b){
+    b.onclick=function(){
+      var i=activeSlot();if(i<0)return;
+      filled[i]={v:Number(b.dataset.v),chip:b};
+      b.disabled=true;paint();
+    };
+  });
+  slots.forEach(function(s,i){
+    s.onclick=function(){
+      if(filled[i]!==undefined){filled[i].chip.disabled=false;delete filled[i];paint()}
+    };
+  });
+  $('#checkBtn').onclick=function(){
+    if(activeSlot()!==-1){showFeedback('info','Заполни все окошки: на каждое место буквы нужно поставить число.');return}
+    var vals=slots.map(function(s,i){return filled[i].v});
+    var res=r6(sub.ev(vals));
+    if(near(res,cur.answer)){
+      if(!A.done){A.done=true;record(cur.t,!A.checkedOnce&&!A.revealed)}
+      showFeedback('ok','Верно! Подстановка собрана правильно, и тогда '+cur.target+' = '+fmt(cur.answer)+'.');
+    }else{
+      A.checkedOnce=true;
+      var msg='Пока не сходится. Сверь каждое окошко с условием: какая буква что означает?';
+      for(var d=0;d<cur.distract.length;d++){if(near(res,cur.distract[d].v)){msg='Пока не сходится. '+cur.distract[d].msg;break}}
+      showFeedback('warn',msg);
+    }
+  };
+  $('#solBtn').onclick=revealSolution;
+  $('#nextBtn').onclick=newTask;
+  var hintStep=0;
+  $('#hintBtn').onclick=function(){
+    if(hintStep===0){
+      showFeedback('warn','Подсказка: сначала по условию определи, чему равна каждая буква. Потом ставь числа в том же порядке, в каком буквы стоят в формуле — слева направо.');
+      hintStep=1;
+    }else{
+      showFeedback('warn','Подсказка: в первое окошко идёт число '+fmt(sub.vals[0])+'. Дальше расставь остальные сам.');
+    }
+  };
+}
+
+/* --- режим «Считаем по шагам» --- */
+function buildSteps(task){
+  var s=[];
+  s.push({kind:'mc',prompt:'Шаг 1. Какую величину нужно найти?',
+    options:task.letters.map(function(L){return '<b>'+L.n+'</b> — '+L.lab.replace(' (это ищем)','')}),
+    correct:task.letters.findIndex(function(L){return L.n===task.target}),
+    doneText:'Ищем '+task.target+'.'});
+  s.push({kind:'mc',prompt:'Шаг 2. Нужно ли преобразовывать формулу?',
+    options:['Нет: искомая величина уже стоит слева','Да: сначала выражаем искомую букву'],
+    correct:task.rearr?1:0,
+    doneText:task.rearr?'Да, сначала выражаем '+task.target+'.':'Нет, '+task.target+' уже слева — подставляем.'});
+  if(task.rearr){
+    s.push({kind:'mc',prompt:'Шаг 3. Как правильно выразить '+task.target+'?',
+      options:shuffleWithIndex(task.rearr.options),
+      correctByFlag:true,
+      doneText:'Формула преобразована верно.'});
+  }
+  if(task.firstOp){
+    s.push({kind:'num',prompt:task.firstOp.prompt,answer:task.firstOp.value,doneText:task.firstOp.show});
+  }
+  s.push({kind:'num',prompt:'Последний шаг. Подставь значения и запиши ответ:',answer:task.answer,doneText:'Ответ: '+fmt(task.answer)});
+  return s;
+}
+function shuffleWithIndex(opts){
+  return shuffle(opts.map(function(o){return {html:o.html,ok:o.ok}}));
+}
+var stepList=null;
+function renderSteps(){
+  stepList=buildSteps(cur);
+  A.stepIdx=0;A.stepHadReveal=false;A.stepHadMistake=false;
+  drawSteps();
+}
+function drawSteps(){
+  var doneHtml='';
+  for(var i=0;i<A.stepIdx;i++){
+    doneHtml+='<div class="step-done">✓ '+stepList[i].doneText+'</div>';
+  }
+  var finished=A.stepIdx>=stepList.length;
+  var curHtml='';
+  if(!finished){
+    var st=stepList[A.stepIdx];
+    if(st.kind==='mc'){
+      var opts=st.correctByFlag?st.options:st.options.map(function(o,i2){return {html:o,ok:i2===st.correct}});
+      st._opts=opts;
+      curHtml='<div class="step-cur"><div class="prompt">'+st.prompt+'</div><div class="mc" id="stepMc">'+
+        opts.map(function(o,i2){return '<button data-i="'+i2+'">'+o.html+'</button>'}).join('')+'</div>'+
+        '<div class="btns"><button class="btn btn-hint" id="stepShow">Показать шаг</button></div></div>';
+    }else{
+      curHtml='<div class="step-cur"><div class="prompt">'+st.prompt+'</div>'+
+        '<div class="answer-row"><input class="ans" id="stepIn" type="text" inputmode="decimal" autocomplete="off"></div>'+
+        '<div class="btns"><button class="btn btn-check" id="stepCheck">Проверить шаг</button>'+
+        '<button class="btn btn-hint" id="stepShow">Показать шаг</button></div></div>';
+    }
+  }
+  $('#taskArea').innerHTML='<div class="card">'+badge(cur.t)+
+    '<p class="story">'+cur.story+'</p>'+
+    '<div class="formula-box">'+cur.formula+'</div>'+
+    doneHtml+curHtml+
+    '<div class="feedback" id="fb"></div>'+
+    '<div class="btns" style="margin-top:14px"><button class="btn btn-next" id="nextBtn">Следующее задание</button></div>'+
+  '</div>';
+  $('#nextBtn').onclick=newTask;
+  if(finished){
+    var ok=!A.stepHadReveal&&!A.stepHadMistake;
+    if(!A.done){A.done=true;record(cur.t,ok)}
+    showFeedback('ok','Все шаги пройдены! Ответ: '+fmt(cur.answer)+'.'+(ok?'':' (Были показы или неверные пробы — в зачёт не идёт, но цепочка пройдена, и это главное.)'));
+    return;
+  }
+  var st=stepList[A.stepIdx];
+  var isLast=(A.stepIdx===stepList.length-1);
+  $('#stepShow').onclick=function(){
+    A.stepHadReveal=true;
+    A.stepIdx++;drawSteps();
+    if(!isLast)showFeedback('info','Шаг показан: '+st.doneText+' Продолжаем.');
+  };
+  if(st.kind==='mc'){
+    Array.prototype.forEach.call(document.querySelectorAll('#stepMc button'),function(b){
+      b.onclick=function(){
+        var o=st._opts[Number(b.dataset.i)];
+        if(o.ok){A.stepIdx++;drawSteps();if(!isLast)showFeedback('ok','Верно. Следующий шаг.')}
+        else{A.stepHadMistake=true;b.classList.add('dim');showFeedback('warn','Не этот вариант. Перечитай формулу и попробуй ещё раз — или нажми «Показать шаг».')}
+      };
+    });
+  }else{
+    var doCheck=function(){
+      var p=parseAns($('#stepIn').value);
+      if(p.value===null){showFeedback('info','Введи число (запятая и точка — обе подходят).');return}
+      if(near(p.value,st.answer)){A.stepIdx++;drawSteps();if(!isLast)showFeedback('ok','Верно. Следующий шаг.')}
+      else{
+        A.stepHadMistake=true;
+        var msg='Пока не сходится. Посчитай ещё раз аккуратно';
+        if(A.stepIdx===stepList.length-1){
+          for(var d=0;d<cur.distract.length;d++){if(near(p.value,cur.distract[d].v)){msg='Пока не сходится. '+cur.distract[d].msg;break}}
+        }
+        showFeedback('warn',msg+'. Если застрял — «Показать шаг».');
+      }
+    };
+    $('#stepCheck').onclick=doCheck;
+    $('#stepIn').addEventListener('keydown',function(e){if(e.key==='Enter')doCheck()});
+    $('#stepIn').focus();
+  }
+}
+
+/* --- режим «Типичные ошибки» --- */
+var ERROR_POOL=['Сложил вместо умножения','Умножил вместо деления','Перепутал числитель и знаменатель','Потерял минус','Нарушен порядок действий: сложение раньше умножения','Посчитал a² как 2a','Посчитал v² как 2v','Забыл разделить на 2','Использовал лишнее число из условия','Остановился на промежуточном результате (нашёл t², а не t)','Нашёл не ту величину (площадь вместо периметра)','Разделил только одно слагаемое, а не всю сумму','Сдвинул запятую не на то число знаков','Лишний ноль в ответе','Спутал корень с делением на 2'];
+function renderErrors(){
+  var mk=cur.mistake;
+  var wrong=[mk.label];
+  var pool=shuffle(ERROR_POOL.filter(function(l){return l!==mk.label}));
+  var options=shuffle([mk.label,pool[0],pool[1],pool[2]]);
+  $('#taskArea').innerHTML='<div class="card">'+badge(cur.t)+
+    '<p class="story">'+cur.story+'</p>'+
+    '<div class="formula-box">'+cur.formula+'</div>'+
+    '<div class="student"><span class="who">Решение ученика (с ошибкой):</span>'+mk.sol+'</div>'+
+    '<div class="step-cur"><div class="prompt">В чём ошибка?</div><div class="mc" id="mcErr">'+
+      options.map(function(o,i){return '<button data-i="'+i+'">'+o+'</button>'}).join('')+
+    '</div></div>'+
+    '<div class="feedback" id="fb"></div>'+
+    solutionBlock(cur)+
+    '<div class="btns" style="margin-top:12px"><button class="btn btn-ghost" id="solBtn">Показать верное решение</button><button class="btn btn-next" id="nextBtn">Следующее задание</button></div>'+
+  '</div>';
+  $('#nextBtn').onclick=newTask;
+  $('#solBtn').onclick=revealSolution;
+  var done=false,tries=0;
+  Array.prototype.forEach.call(document.querySelectorAll('#mcErr button'),function(b){
+    b.onclick=function(){
+      if(done)return;
+      if(options[Number(b.dataset.i)]===mk.label){
+        done=true;b.classList.add('right');
+        Array.prototype.forEach.call(document.querySelectorAll('#mcErr button'),function(x){if(x!==b)x.classList.add('dim')});
+        record(cur.t,tries===0);
+        showFeedback('ok','Точно! Ошибка: '+mk.label.toLowerCase()+'. Верный ответ здесь: '+fmt(cur.answer)+'. Можно открыть верное решение.');
+      }else{
+        tries++;b.classList.add('dim');
+        showFeedback('warn','Не эта ошибка. Сравни решение ученика с формулой: какое действие выполнено не так?');
+      }
+    };
+  });
+}
+
+/* --- режим «Диагностика» --- */
+function startDiag(){
+  var order=shuffle([1,2,3,4,5,6,7,8,9,10]);
+  diag={idx:0,results:[],tasks:order.map(function(t){
+    var pool=GENS.filter(function(g){return g.t===t});
+    return pick(pool).make();
+  })};
+  cur=diag.tasks[0];
+  A={checkedOnce:false,revealed:false,hintIdx:0,done:false};
+  renderDiagTask();
+}
+function renderDiagTask(){
+  focusLine(cur.t);
+  var top='<p class="diag-bar">Диагностика: задание '+(diag.idx+1)+' из 10</p>';
+  $('#taskArea').innerHTML='<div class="card">'+top+badge(cur.t)+
+    '<p class="story">'+cur.story+'</p>'+
+    '<div class="formula-box">'+cur.formula+'</div>'+
+    '<div class="answer-row"><label for="ansIn">Ответ:</label><input class="ans" id="ansIn" type="text" inputmode="decimal" autocomplete="off"></div>'+
+    '<div class="btns">'+
+      '<button class="btn btn-check" id="checkBtn">Ответить</button>'+
+      '<button class="btn btn-ghost" id="skipBtn">Пропустить</button>'+
+    '</div>'+
+    '<div class="feedback" id="fb"></div>'+
+  '</div>';
+  var answered=false;
+  function submit(skipped){
+    if(answered)return;
+    var ok=false;
+    if(!skipped){
+      var p=parseAns($('#ansIn').value);
+      if(p.value===null){showFeedback('info','Введи число или нажми «Пропустить».');return}
+      ok=near(p.value,cur.answer);
+    }
+    answered=true;
+    diag.results.push({t:cur.t,ok:ok});
+    record(cur.t,ok);
+    showFeedback(ok?'ok':'warn',ok?'Верно!':'Правильный ответ: '+fmt(cur.answer)+'. Ничего страшного — в конце будет карта, что повторить.');
+    setTimeout(nextDiag,ok?750:2400);
+  }
+  function nextDiag(){
+    diag.idx++;
+    if(diag.idx>=diag.tasks.length){renderDiagReport();return}
+    cur=diag.tasks[diag.idx];
+    A={checkedOnce:false,revealed:false,hintIdx:0,done:false};
+    renderDiagTask();
+  }
+  $('#checkBtn').onclick=function(){submit(false)};
+  $('#skipBtn').onclick=function(){submit(true)};
+  $('#ansIn').addEventListener('keydown',function(e){if(e.key==='Enter')submit(false)});
+  $('#ansIn').focus();
+}
+function renderDiagReport(){
+  var score=diag.results.filter(function(r){return r.ok}).length;
+  if(stats.bestDiag===null||score>stats.bestDiag){stats.bestDiag=score;saveStats();renderProgress()}
+  var groups={};
+  diag.results.forEach(function(r){
+    var g=DIAG_GROUP[r.t];
+    if(!groups[g])groups[g]={a:0,c:0};
+    groups[g].a++;if(r.ok)groups[g].c++;
+  });
+  var rows=Object.keys(groups).map(function(g){
+    var ok=groups[g].c===groups[g].a;
+    return '<div class="row"><span>'+g+'</span><span class="'+(ok?'good':'redo')+'">'+(ok?'освоено':'нужно повторить')+'</span></div>';
+  }).join('');
+  $('#focus').innerHTML='Диагностика завершена. Результат: <b>'+score+' из 10</b>. Лучший результат: '+stats.bestDiag+' из 10.';
+  $('#taskArea').innerHTML='<div class="card">'+
+    '<p class="story"><b>Карта результатов.</b> Зелёное — получается. Жёлтое — вернись к этому типу в режимах «Считаем по шагам» или «ОГЭ-режим».</p>'+
+    '<div class="diag-report">'+rows+'</div>'+
+    '<div class="btns" style="margin-top:12px">'+
+      '<button class="btn btn-check" id="againBtn">Пройти диагностику ещё раз</button>'+
+      '<button class="btn btn-ghost" id="copyDiagBtn">Скопировать результат</button>'+
+      '<button class="btn btn-ghost" id="toStepsBtn">Перейти к режиму «Считаем по шагам»</button>'+
+    '</div>'+
+    '<div id="copyDiagArea"></div>'+
+  '</div>';
+  $('#againBtn').onclick=startDiag;
+  $('#toStepsBtn').onclick=function(){setMode('steps')};
+  $('#copyDiagBtn').onclick=function(){
+    var lines=['ОГЭ, задание 12 — диагностика','Дата: '+(stats.lastDate||new Date().toISOString().slice(0,10)),'Результат: '+score+' из 10','',' По темам:'];
+    Object.keys(groups).forEach(function(g){
+      lines.push('  '+g+' — '+(groups[g].c===groups[g].a?'освоено':'повторить'));
+    });
+    copyText(lines.join('\n'),$('#copyDiagArea'));
+  };
+}
+
+/* ===================== верхняя навигация ===================== */
+function renderModes(){
+  $('#modes').innerHTML=MODES.map(function(m){
+    return '<button data-id="'+m.id+'" class="'+(m.id===mode?'active':'')+'">'+m.label+'</button>';
+  }).join('');
+  Array.prototype.forEach.call(document.querySelectorAll('#modes button'),function(b){
+    b.onclick=function(){setMode(b.dataset.id)};
+  });
+  var m=MODES.filter(function(x){return x.id===mode})[0];
+  $('#modeDesc').textContent=m.desc;
+}
+function renderTypes(){
+  var hide=(mode==='quick'||mode==='diag');
+  $('#typesWrap').style.display=hide?'none':'';
+  if(hide)return;
+  var avail={};
+  gensFor(mode,0).forEach(function(g){avail[g.t]=true});
+  var html='<button data-t="0" class="'+(typeFilter===0?'active':'')+'">Все типы</button>';
+  for(var t=1;t<=10;t++){
+    if(!avail[t])continue;
+    html+='<button data-t="'+t+'" class="'+(typeFilter===t?'active':'')+'">'+t+'. '+TYPES[t].name+'</button>';
+  }
+  $('#types').innerHTML=html;
+  Array.prototype.forEach.call(document.querySelectorAll('#types button'),function(b){
+    b.onclick=function(){typeFilter=Number(b.dataset.t);renderTypes();mode==='diag'?startDiag():newTask()};
+  });
+}
+function setMode(id){
+  mode=id;
+  renderModes();
+  var avail={};gensFor(mode,0).forEach(function(g){avail[g.t]=true});
+  if(typeFilter&&!avail[typeFilter])typeFilter=0;
+  renderTypes();
+  if(mode==='diag'){startDiag()}else{newTask()}
+}
+
+/* ===================== прогресс ===================== */
+function renderProgress(){
+  var pct=stats.solved?Math.round(100*stats.correct/stats.solved):0;
+  var html='<p class="stat-line">Заданий пройдено: <b>'+stats.solved+'</b>, в зачёт: <b>'+stats.correct+'</b>'+(stats.solved?' ('+pct+'%)':'')+'</p>';
+  if(stats.bestDiag!==null)html+='<p class="stat-line">Лучший результат диагностики: <b>'+stats.bestDiag+' из 10</b></p>';
+  if(stats.lastDate)html+='<p class="stat-line">Последнее занятие: '+stats.lastDate+'</p>';
+  var keys=Object.keys(stats.byType);
+  if(keys.length){
+    html+='<div class="type-stats">';
+    keys.sort(function(a,b){return a-b}).forEach(function(t){
+      var s=stats.byType[t];
+      var p=Math.round(100*s.c/s.a);
+      var cls=p>=70?'ok':'redo';
+      html+='<span>'+t+'. '+TYPES[t].name+'</span><span class="'+cls+'">'+s.c+' / '+s.a+(p>=70?' — получается':' — повторить')+'</span>';
+    });
+    html+='</div>';
+  }
+  $('#progressBody').innerHTML=html;
+}
+$('#resetBtn').onclick=function(){
+  if(confirm('Точно сбросить весь прогресс?')){
+    stats={solved:0,correct:0,byType:{},bestDiag:null,lastDate:null};
+    saveStats();renderProgress();$('#copyArea').innerHTML='';
+  }
+};
+
+/* ===================== выгрузка для учителя ===================== */
+function buildReport(){
+  var pct=stats.solved?Math.round(100*stats.correct/stats.solved):0;
+  var lines=[];
+  lines.push('ОГЭ, задание 12 — расчёты по формулам');
+  lines.push('Отчёт тренажёра, дата: '+(stats.lastDate||new Date().toISOString().slice(0,10)));
+  lines.push('');
+  lines.push('Всего заданий: '+stats.solved+', в зачёт: '+stats.correct+(stats.solved?' ('+pct+'%)':''));
+  if(stats.bestDiag!==null)lines.push('Лучшая диагностика: '+stats.bestDiag+' из 10');
+  lines.push('');
+  var keys=Object.keys(stats.byType).sort(function(a,b){return a-b});
+  if(keys.length){
+    lines.push('По типам заданий:');
+    keys.forEach(function(t){
+      var s=stats.byType[t];var p=Math.round(100*s.c/s.a);
+      lines.push('  '+t+'. '+TYPES[t].name+' — '+s.c+'/'+s.a+(p>=70?' (получается)':' (повторить)'));
+    });
+    var redo=keys.filter(function(t){var s=stats.byType[t];return Math.round(100*s.c/s.a)<70});
+    lines.push('');
+    lines.push(redo.length?('Повторить: '+redo.map(function(t){return TYPES[t].name.toLowerCase()}).join(', ')+'.'):'Слабых тем нет — все типы получаются.');
+  }else{
+    lines.push('Пока нет решённых заданий.');
+  }
+  return lines.join('\n');
+}
+function copyText(text,statusEl){
+  function fallback(){
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.style.position='fixed';ta.style.left='-9999px';
+    document.body.appendChild(ta);ta.focus();ta.select();
+    var ok=false;try{ok=document.execCommand('copy')}catch(e){}
+    document.body.removeChild(ta);
+    if(ok){statusEl.innerHTML='<div class="feedback ok" style="display:block">Скопировано в буфер обмена. Можно вставить в сообщение или документ.</div>'}
+    else{showManual()}
+  }
+  function showManual(){
+    statusEl.innerHTML='<div class="feedback info" style="display:block">Не удалось скопировать автоматически. Выделите текст ниже и скопируйте вручную:</div>'+
+      '<textarea readonly style="width:100%;min-height:150px;margin-top:8px;font-family:inherit;font-size:14px;padding:10px;border:1px solid var(--soft);border-radius:10px">'+text.replace(/</g,'&lt;')+'</textarea>';
+    var t=statusEl.querySelector('textarea');if(t){t.focus();t.select()}
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){
+      statusEl.innerHTML='<div class="feedback ok" style="display:block">Скопировано в буфер обмена. Можно вставить в сообщение или документ.</div>';
+    }).catch(fallback);
+  }else{fallback()}
+}
+$('#copyBtn').onclick=function(){
+  if(!stats.solved){$('#copyArea').innerHTML='<div class="feedback info" style="display:block">Пока нечего выгружать — сначала реши хотя бы одно задание.</div>';return}
+  copyText(buildReport(),$('#copyArea'));
+};
+
+/* ===================== старт ===================== */
+renderModes();
+renderTypes();
+renderProgress();
+newTask();
+</script>
+</body>
+</html>
