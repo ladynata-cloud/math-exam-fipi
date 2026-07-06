@@ -66,6 +66,11 @@ function publicState(room) {
   };
 }
 
+function normalizeTrainerUrl(value) {
+  const url = typeof value === 'string' ? value.trim() : '';
+  return url ? url.slice(0, 1000) : '';
+}
+
 function normalizeSnapshot(snapshot) {
   if (!snapshot || !Array.isArray(snapshot.pages) || snapshot.pages.length === 0) return null;
   return {
@@ -75,7 +80,7 @@ function normalizeSnapshot(snapshot) {
       bg: ['grid', 'lined', 'blank'].includes(page.bg) ? page.bg : 'grid',
       strokes: Array.isArray(page.strokes) ? page.strokes : []
     })),
-    trainerUrl: typeof snapshot.trainerUrl === 'string' ? snapshot.trainerUrl : 'negative-numbers-line.html'
+    trainerUrl: normalizeTrainerUrl(snapshot.trainerUrl) || 'negative-numbers-line.html'
   };
 }
 
@@ -172,14 +177,22 @@ io.on('connection', socket => {
     'board:clear-page',
     'board:page-add',
     'board:page-switch',
-    'board:bg-change',
-    'board:trainer-url-change'
+    'board:bg-change'
   ].forEach(eventName => {
     socket.on(eventName, payload => {
       const room = requireTeacher(socket, payload);
       if (!room) return;
       socket.to(room.roomId).emit(eventName, payload);
     });
+  });
+
+  socket.on('board:trainer-url-change', payload => {
+    const room = requireTeacher(socket, payload);
+    if (!room) return;
+    const trainerUrl = normalizeTrainerUrl(payload?.trainerUrl);
+    if (!trainerUrl) return;
+    room.trainerUrl = trainerUrl;
+    socket.to(room.roomId).emit('board:trainer-url-change', { trainerUrl });
   });
 
   socket.on('board:snapshot', payload => {
