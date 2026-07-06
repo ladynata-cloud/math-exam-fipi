@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: mathexam-board-server
+    runtime: node
+    plan: free
+    rootDir: board-server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://mathexam.space,http://localhost,http://localhost:3000,http://localhost:3001,http://127.0.0.1,http://127.0.0.1:3000,http://127.0.0.1:3001
