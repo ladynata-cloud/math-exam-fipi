@@ -1,0 +1,15 @@
+{
+  "name": "mathexam-board-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Socket.IO server for Mathexam Board v2-lite teacher-to-student viewing mode.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  }
+}
