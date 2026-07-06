@@ -155,7 +155,7 @@ io.on('connection', socket => {
     socket.data.role = role;
     socket.data.token = payload.token;
     socket.join(auth.room.roomId);
-    socket.emit('room:state', { role, state: publicState(auth.room) });
+    socket.emit('room:state', { role, state: role === 'student' ? publicState(auth.room) : null });
   });
 
   socket.on('room:state', () => {
