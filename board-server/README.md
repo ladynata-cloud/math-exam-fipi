@@ -2,14 +2,14 @@
 
 MVP-сервер для режима `v2-lite`: учитель пишет на доске, ученик открывает ссылку и видит доску в реальном времени. Ученик пока только смотрит.
 
-## Установка
+## Установка локально
 
 ```bash
 cd board-server
 npm install
 ```
 
-## Запуск
+## Запуск локально
 
 ```bash
 npm start
@@ -22,6 +22,26 @@ npm start
 ```bash
 PORT=4000 npm start
 ```
+
+## Выкладка на Render
+
+В корне репозитория есть `render.yaml`. Он описывает отдельный web service:
+
+- имя сервиса: `mathexam-board-server`
+- рабочая папка: `board-server`
+- build command: `npm install`
+- start command: `npm start`
+- health check: `/health`
+
+Порядок действий:
+
+1. Откройте Render.
+2. Создайте новый Blueprint / Web Service из GitHub-репозитория `ladynata-cloud/math-exam-fipi`.
+3. Render прочитает `render.yaml` и создаст сервис `mathexam-board-server`.
+4. После деплоя откройте URL сервиса, например `https://mathexam-board-server.onrender.com/health`.
+5. Если виден JSON с `ok: true`, сервер работает.
+6. На странице `https://mathexam.space/trainers/trainer-board.html` вставьте URL сервера без `/health`, например `https://mathexam-board-server.onrender.com`.
+7. Нажмите “Создать комнату” и скопируйте ссылку ученика.
 
 ## CORS
 
