@@ -31,6 +31,20 @@ PORT=4000 npm start
 
 В корне репозитория есть amvera.yml, он сообщает Amvera, что контейнер слушает порт 3000.
 
+Рабочий адрес Amvera:
+
+```text
+https://mathexam-board-ladynata.amvera.io
+```
+
+Проверка рабочего сервера:
+
+```text
+https://mathexam-board-ladynata.amvera.io/health
+```
+
+Если доска не используется, приложение на Amvera можно остановить, чтобы не тратить баланс.
+
 Что делает Dockerfile:
 
 ```bash
