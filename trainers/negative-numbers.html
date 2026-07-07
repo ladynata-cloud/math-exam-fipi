@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Отрицательные числа: числовая прямая и сравнение | MathExam</title>
+  <meta name="description" content="Один вход в тренажёры по отрицательным числам: маркерная числовая прямая для сложения и вычитания, затем игра «Кто сильнее?» для сравнения чисел.">
+  <link rel="canonical" href="https://mathexam.space/trainers/negative-numbers.html">
+  <link rel="stylesheet" href="/assets/site.css">
+  <style>
+    .topic-hero{padding:42px 0 28px;background:linear-gradient(180deg,#f7fbff,#fff)}
+    .topic-hero .container{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:24px;align-items:center}
+    .topic-hero h1{margin:0 0 14px;font-size:clamp(34px,5vw,58px);line-height:1.04}
+    .topic-hero p{max-width:58ch}
+    .number-strip{background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:0 12px 28px rgba(37,99,235,.08)}
+    .axis{position:relative;height:92px;margin-top:8px}
+    .axis-line{position:absolute;left:0;right:0;top:42px;height:3px;background:#d9e3f3;border-radius:999px}
+    .ticks{display:grid;grid-template-columns:repeat(11,1fr);height:100%;align-items:end}
+    .tick{position:relative;text-align:center;color:#475569;font-weight:700;font-size:13px;padding-bottom:2px}
+    .tick::before{content:"";position:absolute;left:50%;top:34px;width:2px;height:17px;background:#9fb0c8;transform:translateX(-50%)}
+    .tick.zero{color:#1d4ed8}
+    .tick.zero::before{height:25px;top:30px;background:#2563eb}
+    .marker{position:absolute;left:20%;top:30px;width:26px;height:26px;border-radius:50%;background:#2563eb;box-shadow:0 0 0 8px rgba(37,99,235,.16)}
+    .topic-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+    .topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:18px}
+    .trainer-card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:20px;box-shadow:0 8px 18px rgba(17,24,39,.06)}
+    .trainer-card h3{margin:0 0 8px;font-size:22px}
+    .trainer-card p{margin:0;color:var(--ink-soft)}
+    .trainer-card .btn{margin-top:16px}
+    .lesson-note{max-width:760px;background:#fff;border-left:4px solid var(--pen);padding:18px 20px;border-radius:8px;box-shadow:0 8px 18px rgba(17,24,39,.05)}
+    @media(max-width:760px){.topic-hero .container,.topic-grid{grid-template-columns:1fr}.number-strip{order:-1}.topic-actions .btn{width:100%}}
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a class="logo" href="/"><span class="logo-mark">∑</span><span>MathExam</span></a>
+    <nav class="site-nav" aria-label="Основные разделы">
+      <a href="/">Главная</a>
+      <a href="/trainers/" aria-current="page">Каталог</a>
+      <a href="/oge/">ОГЭ</a>
+      <a href="/geometry-course/">Геометрия 7</a>
+      <a href="/pedagogam/">Педагогам</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="topic-hero">
+    <div class="container">
+      <div>
+        <p class="kicker">База 5-6 класса</p>
+        <h1>Отрицательные числа</h1>
+        <p class="lead">Один спокойный вход в тему: сначала ученик двигается по маркерной числовой прямой, видит направление и смысл знаков, а затем закрепляет сравнение чисел в короткой игре.</p>
+        <div class="topic-actions">
+          <a class="btn" href="/trainers/negative-numbers-line.html">Открыть маркерную прямую</a>
+          <a class="btn secondary" href="/trainers/oge-course/">Вернуться к курсу ОГЭ</a>
+        </div>
+      </div>
+      <div class="number-strip" aria-hidden="true">
+        <strong>Числовая прямая</strong>
+        <div class="axis">
+          <div class="axis-line"></div>
+          <div class="marker"></div>
+          <div class="ticks">
+            <span class="tick">-5</span><span class="tick">-4</span><span class="tick">-3</span><span class="tick">-2</span><span class="tick">-1</span><span class="tick zero">0</span><span class="tick">1</span><span class="tick">2</span><span class="tick">3</span><span class="tick">4</span><span class="tick">5</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2>Тренажёры темы</h2>
+      <div class="topic-grid">
+        <article class="trainer-card">
+          <h3>Маркерная числовая прямая</h3>
+          <p>Основной тренажёр: ученик нажимает на старт, делает шаги вправо или влево и только потом вводит ответ. Хорошо подходит для первого объяснения и отработки.</p>
+          <a class="btn" href="/trainers/negative-numbers-line.html">Открыть</a>
+        </article>
+        <article class="trainer-card">
+          <h3>Кто сильнее?</h3>
+          <p>Дополнительная игра после числовой прямой: сравнение положительных и отрицательных чисел, модуль и знак результата без лишнего напряжения.</p>
+          <a class="btn secondary" href="/trainers/who-is-stronger.html">Открыть</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container">
+      <div class="lesson-note">
+        <h2>Как давать ученику</h2>
+        <p>Начните с маркерной прямой: пусть ученик проговаривает, где старт и в какую сторону двигается. Когда движение стало понятным, можно дать «Кто сильнее?» для сравнения чисел и закрепления знаков.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div>
+      <h4>MathExam</h4>
+      <p>Интерактивные тренажёры по математике.<br>Помогают учителю и ученику — не заменяют их.</p>
+    </div>
+    <div>
+      <h4>Разделы</h4>
+      <ul>
+        <li><a href="/">Главная</a></li>
+        <li><a href="/trainers/">Каталог тренажёров</a></li>
+        <li><a href="/oge/">Подготовка к ОГЭ</a></li>
+        <li><a href="/geometry-course/">Геометрия 7 класс</a></li>
+        <li><a href="/pedagogam/">Педагогам</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Автор на связи</h4>
+      <ul>
+        <li><a href="https://vk.com/mathexamspace" rel="noopener">ВКонтакте</a></li>
+        <li><a href="https://dzen.ru/mathexamspace" rel="noopener">Дзен</a></li>
+        <li><a href="mailto:nata4os@bk.ru">Написать письмо</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">MathExam · mathexam.space · Наталья Михайловна</div>
+</footer>
+</body>
+</html>
