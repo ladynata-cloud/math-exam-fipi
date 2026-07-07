@@ -109,6 +109,10 @@ function publicState(room) {
   };
 }
 
+function participantsState(room) {
+  return { participants: publicParticipants(room) };
+}
+
 function findParticipant(room, role) {
   return (room.participants || []).find(participant => participant.role === role) || null;
 }
@@ -116,20 +120,27 @@ function findParticipant(room, role) {
 function markParticipantConnected(room, role, socket) {
   const participant = findParticipant(room, role);
   if (!participant) return;
+  const now = new Date().toISOString();
+  if (socket.data.participantId === participant.id) {
+    participant.connected = true;
+    participant.lastSeen = now;
+    return;
+  }
   participant.connected = true;
   participant.onlineCount += 1;
-  participant.lastSeen = new Date().toISOString();
+  participant.lastSeen = now;
   socket.data.participantId = participant.id;
 }
 
 function markParticipantDisconnected(socket) {
   const room = rooms.get(socket.data.roomId);
-  if (!room || !socket.data.participantId) return;
+  if (!room || !socket.data.participantId) return null;
   const participant = (room.participants || []).find(item => item.id === socket.data.participantId);
-  if (!participant) return;
+  if (!participant) return null;
   participant.onlineCount = Math.max(0, participant.onlineCount - 1);
   participant.connected = participant.onlineCount > 0;
   participant.lastSeen = new Date().toISOString();
+  return room;
 }
 
 function normalizeTrainerUrl(value) {
@@ -240,10 +251,12 @@ io.on('connection', socket => {
     markParticipantConnected(auth.room, role, socket);
     socket.join(auth.room.roomId);
     socket.emit('room:state', { role, state: role === 'student' ? publicState(auth.room) : null });
+    io.to(auth.room.roomId).emit('participants:state', participantsState(auth.room));
   });
 
   socket.on('disconnect', () => {
-    markParticipantDisconnected(socket);
+    const room = markParticipantDisconnected(socket);
+    if (room) io.to(room.roomId).emit('participants:state', participantsState(room));
   });
 
   socket.on('room:state', () => {
