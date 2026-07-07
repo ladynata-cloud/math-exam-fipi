@@ -120,9 +120,15 @@ function findParticipant(room, role) {
 function markParticipantConnected(room, role, socket) {
   const participant = findParticipant(room, role);
   if (!participant) return;
+  const now = new Date().toISOString();
+  if (socket.data.participantId === participant.id) {
+    participant.connected = true;
+    participant.lastSeen = now;
+    return;
+  }
   participant.connected = true;
   participant.onlineCount += 1;
-  participant.lastSeen = new Date().toISOString();
+  participant.lastSeen = now;
   socket.data.participantId = participant.id;
 }
 
