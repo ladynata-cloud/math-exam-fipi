@@ -41,20 +41,60 @@ function blankPage() {
   return { id: makeId(6), bg: 'grid', strokes: [] };
 }
 
+function createParticipant(role, joinedAt) {
+  const isTeacher = role === 'teacher';
+  return {
+    id: makeId(10),
+    role,
+    name: isTeacher ? 'Учитель' : 'Ученик',
+    color: isTeacher ? '#172033' : '#ea580c',
+    caps: {
+      moderate: isTeacher,
+      structure: isTeacher,
+      draw: isTeacher,
+      controlTrainer: isTeacher,
+      view: true
+    },
+    connected: false,
+    onlineCount: 0,
+    lastSeen: null,
+    joinedAt
+  };
+}
+
 function createRoom() {
   const roomId = makeId(9);
+  const createdAt = new Date().toISOString();
   const room = {
     roomId,
     teacherToken: makeId(18),
     studentToken: makeId(18),
-    createdAt: new Date().toISOString(),
+    createdAt,
     currentPage: 0,
     pages: [blankPage()],
     trainerUrl: 'negative-numbers-line.html',
-    latestTrainerState: null
+    latestTrainerState: null,
+    participants: [
+      createParticipant('teacher', createdAt),
+      createParticipant('student', createdAt)
+    ]
   };
   rooms.set(roomId, room);
   return room;
+}
+
+function publicParticipants(room) {
+  return (room.participants || []).map(participant => ({
+    id: participant.id,
+    role: participant.role,
+    name: participant.name,
+    color: participant.color,
+    caps: { ...participant.caps },
+    connected: participant.connected,
+    onlineCount: participant.onlineCount,
+    lastSeen: participant.lastSeen,
+    joinedAt: participant.joinedAt
+  }));
 }
 
 function publicState(room) {
@@ -64,8 +104,32 @@ function publicState(room) {
     currentPage: room.currentPage,
     pages: room.pages,
     trainerUrl: room.trainerUrl,
-    latestTrainerState: room.latestTrainerState
+    latestTrainerState: room.latestTrainerState,
+    participants: publicParticipants(room)
   };
+}
+
+function findParticipant(room, role) {
+  return (room.participants || []).find(participant => participant.role === role) || null;
+}
+
+function markParticipantConnected(room, role, socket) {
+  const participant = findParticipant(room, role);
+  if (!participant) return;
+  participant.connected = true;
+  participant.onlineCount += 1;
+  participant.lastSeen = new Date().toISOString();
+  socket.data.participantId = participant.id;
+}
+
+function markParticipantDisconnected(socket) {
+  const room = rooms.get(socket.data.roomId);
+  if (!room || !socket.data.participantId) return;
+  const participant = (room.participants || []).find(item => item.id === socket.data.participantId);
+  if (!participant) return;
+  participant.onlineCount = Math.max(0, participant.onlineCount - 1);
+  participant.connected = participant.onlineCount > 0;
+  participant.lastSeen = new Date().toISOString();
 }
 
 function normalizeTrainerUrl(value) {
@@ -173,8 +237,13 @@ io.on('connection', socket => {
     socket.data.roomId = auth.room.roomId;
     socket.data.role = role;
     socket.data.token = payload.token;
+    markParticipantConnected(auth.room, role, socket);
     socket.join(auth.room.roomId);
     socket.emit('room:state', { role, state: role === 'student' ? publicState(auth.room) : null });
+  });
+
+  socket.on('disconnect', () => {
+    markParticipantDisconnected(socket);
   });
 
   socket.on('room:state', () => {
