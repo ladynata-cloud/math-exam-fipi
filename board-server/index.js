@@ -58,6 +58,7 @@ function createParticipant(role, joinedAt) {
     connected: false,
     onlineCount: 0,
     lastSeen: null,
+    handRaisedAt: null,
     joinedAt
   };
 }
@@ -93,6 +94,7 @@ function publicParticipants(room) {
     connected: participant.connected,
     onlineCount: participant.onlineCount,
     lastSeen: participant.lastSeen,
+    handRaisedAt: participant.handRaisedAt || null,
     joinedAt: participant.joinedAt
   }));
 }
@@ -111,6 +113,13 @@ function publicState(room) {
 
 function participantsState(room) {
   return { participants: publicParticipants(room) };
+}
+
+function findSocketParticipant(socket) {
+  const room = rooms.get(socket.data.roomId);
+  if (!room || !socket.data.participantId) return { room: null, participant: null };
+  const participant = (room.participants || []).find(item => item.id === socket.data.participantId) || null;
+  return { room, participant };
 }
 
 function findParticipant(room, role) {
@@ -226,6 +235,10 @@ const io = new Server(httpServer, {
   maxHttpBufferSize: 2e6
 });
 
+function emitParticipantsState(room) {
+  io.to(room.roomId).emit('participants:state', participantsState(room));
+}
+
 io.on('connection', socket => {
   socket.on('room:create', callback => {
     const room = createRoom();
@@ -251,12 +264,35 @@ io.on('connection', socket => {
     markParticipantConnected(auth.room, role, socket);
     socket.join(auth.room.roomId);
     socket.emit('room:state', { role, state: role === 'student' ? publicState(auth.room) : null });
-    io.to(auth.room.roomId).emit('participants:state', participantsState(auth.room));
+    emitParticipantsState(auth.room);
   });
 
   socket.on('disconnect', () => {
     const room = markParticipantDisconnected(socket);
-    if (room) io.to(room.roomId).emit('participants:state', participantsState(room));
+    if (room) emitParticipantsState(room);
+  });
+
+  socket.on('participant:hand-raise', () => {
+    const { room, participant } = findSocketParticipant(socket);
+    if (!room || !participant) return;
+    participant.handRaisedAt = new Date().toISOString();
+    emitParticipantsState(room);
+  });
+
+  socket.on('participant:hand-lower', () => {
+    const { room, participant } = findSocketParticipant(socket);
+    if (!room || !participant) return;
+    participant.handRaisedAt = null;
+    emitParticipantsState(room);
+  });
+
+  socket.on('participant:hand-clear', payload => {
+    const room = requireTeacher(socket, payload);
+    if (!room) return;
+    const target = (room.participants || []).find(participant => participant.id === payload?.participantId);
+    if (!target) return;
+    target.handRaisedAt = null;
+    emitParticipantsState(room);
   });
 
   socket.on('room:state', () => {
