@@ -50,7 +50,8 @@ function createRoom() {
     createdAt: new Date().toISOString(),
     currentPage: 0,
     pages: [blankPage()],
-    trainerUrl: 'negative-numbers-line.html'
+    trainerUrl: 'negative-numbers-line.html',
+    latestTrainerState: null
   };
   rooms.set(roomId, room);
   return room;
@@ -62,13 +63,25 @@ function publicState(room) {
     createdAt: room.createdAt,
     currentPage: room.currentPage,
     pages: room.pages,
-    trainerUrl: room.trainerUrl
+    trainerUrl: room.trainerUrl,
+    latestTrainerState: room.latestTrainerState
   };
 }
 
 function normalizeTrainerUrl(value) {
   const url = typeof value === 'string' ? value.trim() : '';
   return url ? url.slice(0, 1000) : '';
+}
+
+function normalizeTrainerState(payload) {
+  if (!payload || payload.trainer !== 'negative-numbers-line' || !payload.state || typeof payload.state !== 'object') {
+    return null;
+  }
+  return {
+    trainer: 'negative-numbers-line',
+    state: payload.state,
+    updatedAt: new Date().toISOString()
+  };
 }
 
 function normalizeSnapshot(snapshot) {
@@ -192,7 +205,17 @@ io.on('connection', socket => {
     const trainerUrl = normalizeTrainerUrl(payload?.trainerUrl);
     if (!trainerUrl) return;
     room.trainerUrl = trainerUrl;
+    room.latestTrainerState = null;
     socket.to(room.roomId).emit('board:trainer-url-change', { trainerUrl });
+  });
+
+  socket.on('board:trainer-state-change', payload => {
+    const room = requireTeacher(socket, payload);
+    if (!room) return;
+    const latestTrainerState = normalizeTrainerState(payload);
+    if (!latestTrainerState) return;
+    room.latestTrainerState = latestTrainerState;
+    socket.to(room.roomId).emit('board:trainer-state-change', latestTrainerState);
   });
 
   socket.on('board:snapshot', payload => {
