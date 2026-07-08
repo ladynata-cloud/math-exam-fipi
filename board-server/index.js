@@ -18,6 +18,18 @@ const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS || DEFAULT_ORIGINS.join
   .split(',')
   .map(origin => origin.trim())
   .filter(Boolean);
+const DEFAULT_ROOM_TTL_MS = 6 * 60 * 60 * 1000;
+const DEFAULT_ROOM_CLEANUP_INTERVAL_MS = 5 * 60 * 1000;
+const ROOM_TTL_MS = parsePositiveInteger(process.env.ROOM_TTL_MS, DEFAULT_ROOM_TTL_MS);
+const ROOM_CLEANUP_INTERVAL_MS = parsePositiveInteger(
+  process.env.ROOM_CLEANUP_INTERVAL_MS,
+  DEFAULT_ROOM_CLEANUP_INTERVAL_MS
+);
+
+function parsePositiveInteger(value, fallback) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
 
 function isLocalDevOrigin(origin) {
   try {
@@ -41,6 +53,30 @@ app.use(express.json({ limit: '2mb' }));
 app.use(cors({ origin: corsOrigin }));
 
 const rooms = new Map();
+
+function nowIso() {
+  return new Date().toISOString();
+}
+
+function touchRoom(room, timestamp = nowIso()) {
+  if (room) room.lastActivityAt = timestamp;
+}
+
+function hasOnlineParticipants(room) {
+  return (room?.participants || []).some(participant => Number(participant?.onlineCount || 0) > 0);
+}
+
+function cleanupRooms(now = Date.now()) {
+  let removed = 0;
+  for (const [roomId, room] of rooms) {
+    const lastActivity = Date.parse(room.lastActivityAt || room.createdAt || '') || 0;
+    if (now - lastActivity > ROOM_TTL_MS && !hasOnlineParticipants(room)) {
+      rooms.delete(roomId);
+      removed += 1;
+    }
+  }
+  return removed;
+}
 
 function makeId(size = 12) {
   return crypto.randomBytes(size).toString('base64url');
@@ -73,12 +109,13 @@ function createParticipant(role, joinedAt) {
 
 function createRoom() {
   const roomId = makeId(9);
-  const createdAt = new Date().toISOString();
+  const createdAt = nowIso();
   const room = {
     roomId,
     teacherToken: makeId(18),
     studentToken: makeId(18),
     createdAt,
+    lastActivityAt: createdAt,
     currentPage: 0,
     pages: [blankPage()],
     trainerUrl: 'negative-numbers-line.html',
@@ -129,16 +166,18 @@ function findParticipant(room, role) {
 function markParticipantConnected(room, role, socket) {
   const participant = findParticipant(room, role);
   if (!participant) return;
-  const now = new Date().toISOString();
+  const now = nowIso();
   if (socket.data.participantId === participant.id) {
     participant.connected = participant.onlineCount > 0;
     participant.lastSeen = now;
+    touchRoom(room, now);
     return;
   }
   participant.connected = true;
   participant.onlineCount += 1;
   participant.lastSeen = now;
   socket.data.participantId = participant.id;
+  touchRoom(room, now);
 }
 
 function markParticipantDisconnected(socket) {
@@ -146,9 +185,11 @@ function markParticipantDisconnected(socket) {
   if (!room || !socket.data.participantId) return null;
   const participant = (room.participants || []).find(item => item.id === socket.data.participantId);
   if (!participant) return null;
+  const now = nowIso();
   participant.onlineCount = Math.max(0, participant.onlineCount - 1);
   participant.connected = participant.onlineCount > 0;
-  participant.lastSeen = new Date().toISOString();
+  participant.lastSeen = now;
+  touchRoom(room, now);
   return room;
 }
 
@@ -210,6 +251,7 @@ function requireTeacher(socket, payload = {}) {
 }
 
 app.get('/health', (_req, res) => {
+  cleanupRooms();
   res.json({ ok: true, rooms: rooms.size });
 });
 
@@ -286,6 +328,7 @@ io.on('connection', socket => {
     socket.on(eventName, payload => {
       const room = requireTeacher(socket, payload);
       if (!room) return;
+      touchRoom(room);
       socket.to(room.roomId).emit(eventName, payload);
     });
   });
@@ -297,6 +340,7 @@ io.on('connection', socket => {
     if (!trainerUrl) return;
     room.trainerUrl = trainerUrl;
     room.latestTrainerState = null;
+    touchRoom(room);
     socket.to(room.roomId).emit('board:trainer-url-change', { trainerUrl });
   });
 
@@ -306,6 +350,7 @@ io.on('connection', socket => {
     const latestTrainerState = normalizeTrainerState(payload);
     if (!latestTrainerState) return;
     room.latestTrainerState = latestTrainerState;
+    touchRoom(room);
     socket.to(room.roomId).emit('board:trainer-state-change', latestTrainerState);
   });
 
@@ -313,7 +358,11 @@ io.on('connection', socket => {
     const room = requireTeacher(socket, payload);
     if (!room) return;
     if (applySnapshot(room, payload?.state)) {
+      touchRoom(room);
       socket.to(room.roomId).emit('board:snapshot', { state: publicState(room) });
     }
   });
 });
+
+const cleanupTimer = setInterval(cleanupRooms, ROOM_CLEANUP_INTERVAL_MS);
+cleanupTimer.unref?.();
