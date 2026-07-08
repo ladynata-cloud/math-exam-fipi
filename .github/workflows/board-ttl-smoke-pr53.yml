@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - ci/board-ttl-check-pr53
+  pull_request:
+    branches:
+      - main
 
 jobs:
   board-ttl-smoke:
@@ -131,8 +134,8 @@ jobs:
             const initialHealth = await getHealth();
             assert.equal(initialHealth.rooms, 0, 'fresh server starts with zero rooms');
 
-            const inactive = await createRoom();
-            let afterCreate = await getHealth();
+            await createRoom();
+            const afterCreate = await getHealth();
             assert.ok(afterCreate.rooms >= 1, 'health rooms increments after create');
             await waitFor(async () => (await getHealth()).rooms === 0, 'inactive room cleanup', 5000);
 
