@@ -122,7 +122,7 @@ function markParticipantConnected(room, role, socket) {
   if (!participant) return;
   const now = new Date().toISOString();
   if (socket.data.participantId === participant.id) {
-    participant.connected = true;
+    participant.connected = participant.onlineCount > 0;
     participant.lastSeen = now;
     return;
   }
