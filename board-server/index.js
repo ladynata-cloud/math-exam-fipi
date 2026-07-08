@@ -19,17 +19,26 @@ const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS || DEFAULT_ORIGINS.join
   .map(origin => origin.trim())
   .filter(Boolean);
 
+function isLocalDevOrigin(origin) {
+  try {
+    const url = new URL(origin);
+    return url.protocol === 'http:' && ['localhost', '127.0.0.1'].includes(url.hostname);
+  } catch (_error) {
+    return false;
+  }
+}
+
+function corsOrigin(origin, callback) {
+  if (!origin || allowedOrigins.includes(origin) || isLocalDevOrigin(origin)) {
+    callback(null, true);
+    return;
+  }
+  callback(new Error(`Origin ${origin} is not allowed`));
+}
+
 const app = express();
 app.use(express.json({ limit: '2mb' }));
-app.use(cors({
-  origin(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-      return;
-    }
-    callback(new Error(`Origin ${origin} is not allowed`));
-  }
-}));
+app.use(cors({ origin: corsOrigin }));
 
 const rooms = new Map();
 
@@ -220,7 +229,7 @@ const httpServer = app.listen(PORT, HOST, () => {
 
 const io = new Server(httpServer, {
   cors: {
-    origin: allowedOrigins,
+    origin: corsOrigin,
     methods: ['GET', 'POST']
   },
   maxHttpBufferSize: 2e6
