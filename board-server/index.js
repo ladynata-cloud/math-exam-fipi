@@ -5,6 +5,7 @@ const { Server } = require('socket.io');
 
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
+const SERVER_STARTED_AT = new Date().toISOString();
 const DEFAULT_ORIGINS = [
   'http://localhost',
   'http://localhost:3000',
@@ -252,7 +253,14 @@ function requireTeacher(socket, payload = {}) {
 
 app.get('/health', (_req, res) => {
   cleanupRooms();
-  res.json({ ok: true, rooms: rooms.size });
+  res.json({
+    ok: true,
+    rooms: rooms.size,
+    serverStartedAt: SERVER_STARTED_AT,
+    roomTtlMs: ROOM_TTL_MS,
+    roomCleanupIntervalMs: ROOM_CLEANUP_INTERVAL_MS,
+    features: { roomTtlCleanup: true }
+  });
 });
 
 app.post('/api/rooms', (_req, res) => {
