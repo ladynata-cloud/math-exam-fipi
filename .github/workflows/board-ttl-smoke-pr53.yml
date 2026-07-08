@@ -59,7 +59,7 @@ jobs:
           PORT: '43553'
           HOST: '127.0.0.1'
         run: |
-          cat > ttl-smoke.js <<'NODE'
+          cat > ttl-smoke.cjs <<'NODE'
           const assert = require('node:assert/strict');
           const { spawn } = require('node:child_process');
           const { io } = require('socket.io-client');
@@ -118,7 +118,7 @@ jobs:
             return participants.find(item => item.role === role);
           }
 
-          const server = spawn(process.execPath, ['index.js'], {
+          const server = spawn('npm', ['start'], {
             cwd: process.cwd(),
             env: { ...process.env },
             stdio: ['ignore', 'pipe', 'pipe']
@@ -214,4 +214,4 @@ jobs:
             server.kill();
           }
           NODE
-          node ttl-smoke.js
+          node ttl-smoke.cjs
