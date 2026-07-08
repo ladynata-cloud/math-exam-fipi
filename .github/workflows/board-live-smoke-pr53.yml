@@ -23,8 +23,8 @@ jobs:
         env:
           BOARD_BASE_URL: 'https://mathexam-board-ladynata.amvera.io'
         run: |
-          node <<'NODE'
-          const assert = require('node:assert/strict');
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
 
           async function getHealth(label) {
             const res = await fetch(`${process.env.BOARD_BASE_URL}/health`, {
