@@ -59,30 +59,27 @@ jobs:
           PORT: '43553'
           HOST: '127.0.0.1'
         run: |
-          cat > ttl-smoke.cjs <<'NODE'
-          const assert = require('node:assert/strict');
-          const { spawn } = require('node:child_process');
-          const { io } = require('socket.io-client');
+          cat > ttl-smoke.mjs <<'NODE'
+          import assert from 'node:assert/strict';
+          import { spawn } from 'node:child_process';
+          import { io } from 'socket.io-client';
 
           const port = Number(process.env.PORT || 43553);
           const baseUrl = `http://127.0.0.1:${port}`;
           const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-          function waitFor(predicate, label, timeoutMs = 4000) {
+          async function waitFor(predicate, label, timeoutMs = 4000) {
             const start = Date.now();
-            return new Promise((resolve, reject) => {
-              const tick = async () => {
-                try {
-                  const value = await predicate();
-                  if (value) return resolve(value);
-                } catch (_error) {
-                  // keep polling until timeout
-                }
-                if (Date.now() - start > timeoutMs) return reject(new Error(`Timed out waiting for ${label}`));
-                setTimeout(tick, 40);
-              };
-              tick();
-            });
+            while (Date.now() - start <= timeoutMs) {
+              try {
+                const value = await predicate();
+                if (value) return value;
+              } catch (_error) {
+                // keep polling until timeout
+              }
+              await sleep(40);
+            }
+            throw new Error(`Timed out waiting for ${label}`);
           }
 
           async function getHealth() {
@@ -105,13 +102,13 @@ jobs:
             return body;
           }
 
-          function connectClient(label) {
+          async function connectClient(label) {
             const socket = io(baseUrl, {
               transports: ['websocket'],
               reconnection: false,
               timeout: 1500
             });
-            return waitFor(() => socket.connected && socket, `${label} socket connect`, 2500).then(() => socket);
+            return waitFor(() => socket.connected && socket, `${label} socket connect`, 2500);
           }
 
           function participant(participants, role) {
@@ -196,7 +193,6 @@ jobs:
             await waitFor(async () => (await getHealth()).rooms === 0, 'room cleanup after all participants disconnect', 5000);
 
             console.log(JSON.stringify({
-              nodeCheck: 'passed before smoke step',
               apiSmoke: 'passed',
               inactiveCleanup: 'passed',
               activeProtection: 'passed',
@@ -214,4 +210,4 @@ jobs:
             server.kill();
           }
           NODE
-          node ttl-smoke.cjs
+          node ttl-smoke.mjs
