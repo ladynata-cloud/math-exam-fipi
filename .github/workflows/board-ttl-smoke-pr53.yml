@@ -1,0 +1,214 @@
+name: Board TTL Smoke PR53
+
+on:
+  push:
+    branches:
+      - ci/board-ttl-check-pr53
+
+jobs:
+  board-ttl-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check hidden/bidi Unicode controls
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const text = fs.readFileSync('board-server/index.js', 'utf8');
+          const disallowed = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069]/u;
+          const matches = [];
+          for (let i = 0; i < text.length; i += 1) {
+            const char = text[i];
+            if (disallowed.test(char)) {
+              matches.push({ index: i, codePoint: `U+${char.codePointAt(0).toString(16).toUpperCase().padStart(4, '0')}` });
+            }
+          }
+          if (matches.length) {
+            console.error('Disallowed Unicode controls found:', JSON.stringify(matches, null, 2));
+            process.exit(1);
+          }
+          console.log('No hidden/bidi Unicode controls found.');
+          NODE
+
+      - name: Syntax check
+        run: node --check board-server/index.js
+
+      - name: Install board-server dependencies
+        working-directory: board-server
+        run: |
+          npm install
+          npm install socket.io-client@4.7.5 --no-save
+
+      - name: Run TTL and Socket.IO smoke
+        working-directory: board-server
+        env:
+          ROOM_TTL_MS: '200'
+          ROOM_CLEANUP_INTERVAL_MS: '50'
+          PORT: '43553'
+          HOST: '127.0.0.1'
+        run: |
+          cat > ttl-smoke.js <<'NODE'
+          const assert = require('node:assert/strict');
+          const { spawn } = require('node:child_process');
+          const { io } = require('socket.io-client');
+
+          const port = Number(process.env.PORT || 43553);
+          const baseUrl = `http://127.0.0.1:${port}`;
+          const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+          function waitFor(predicate, label, timeoutMs = 4000) {
+            const start = Date.now();
+            return new Promise((resolve, reject) => {
+              const tick = async () => {
+                try {
+                  const value = await predicate();
+                  if (value) return resolve(value);
+                } catch (_error) {
+                  // keep polling until timeout
+                }
+                if (Date.now() - start > timeoutMs) return reject(new Error(`Timed out waiting for ${label}`));
+                setTimeout(tick, 40);
+              };
+              tick();
+            });
+          }
+
+          async function getHealth() {
+            const res = await fetch(`${baseUrl}/health`);
+            assert.equal(res.status, 200, 'GET /health status');
+            const body = await res.json();
+            assert.equal(body.ok, true, 'GET /health ok');
+            assert.equal(typeof body.rooms, 'number', 'GET /health rooms type');
+            return body;
+          }
+
+          async function createRoom() {
+            const res = await fetch(`${baseUrl}/api/rooms`, { method: 'POST' });
+            assert.equal(res.status, 201, 'POST /api/rooms status');
+            const body = await res.json();
+            assert.ok(body.roomId, 'roomId returned');
+            assert.ok(body.teacherToken, 'teacherToken returned');
+            assert.ok(body.studentToken, 'studentToken returned');
+            assert.ok(body.state, 'state returned');
+            return body;
+          }
+
+          function connectClient(label) {
+            const socket = io(baseUrl, {
+              transports: ['websocket'],
+              reconnection: false,
+              timeout: 1500
+            });
+            return waitFor(() => socket.connected && socket, `${label} socket connect`, 2500).then(() => socket);
+          }
+
+          function participant(participants, role) {
+            return participants.find(item => item.role === role);
+          }
+
+          const server = spawn(process.execPath, ['index.js'], {
+            cwd: process.cwd(),
+            env: { ...process.env },
+            stdio: ['ignore', 'pipe', 'pipe']
+          });
+
+          let stdout = '';
+          let stderr = '';
+          server.stdout.on('data', chunk => { stdout += chunk.toString(); });
+          server.stderr.on('data', chunk => { stderr += chunk.toString(); });
+
+          try {
+            await waitFor(getHealth, 'server health', 5000);
+            const initialHealth = await getHealth();
+            assert.equal(initialHealth.rooms, 0, 'fresh server starts with zero rooms');
+
+            const inactive = await createRoom();
+            let afterCreate = await getHealth();
+            assert.ok(afterCreate.rooms >= 1, 'health rooms increments after create');
+            await waitFor(async () => (await getHealth()).rooms === 0, 'inactive room cleanup', 5000);
+
+            const room = await createRoom();
+            const teacher = await connectClient('teacher');
+            const student = await connectClient('student');
+            const teacherParticipants = [];
+            const studentParticipants = [];
+            teacher.on('participants:state', payload => teacherParticipants.push(payload.participants || []));
+            student.on('participants:state', payload => studentParticipants.push(payload.participants || []));
+
+            teacher.emit('room:join', { roomId: room.roomId, token: room.teacherToken, role: 'teacher' });
+            student.emit('room:join', { roomId: room.roomId, token: room.studentToken, role: 'student' });
+
+            const bothOnline = await waitFor(() => {
+              const latest = teacherParticipants.at(-1) || [];
+              const teacherInfo = participant(latest, 'teacher');
+              const studentInfo = participant(latest, 'student');
+              return teacherInfo?.onlineCount === 1 && studentInfo?.onlineCount === 1 && latest;
+            }, 'teacher/student online');
+            assert.equal(participant(bothOnline, 'teacher').connected, true, 'teacher connected');
+            assert.equal(participant(bothOnline, 'student').connected, true, 'student connected');
+
+            teacher.emit('room:join', { roomId: room.roomId, token: room.teacherToken, role: 'teacher' });
+            await sleep(250);
+            const afterDuplicate = teacherParticipants.at(-1) || [];
+            assert.equal(participant(afterDuplicate, 'teacher').onlineCount, 1, 'duplicate teacher room:join does not overcount');
+
+            const studentErrors = [];
+            const teacherUnexpected = [];
+            student.on('room:error', payload => studentErrors.push(payload));
+            teacher.on('board:stroke-start', payload => teacherUnexpected.push(payload));
+            student.emit('board:stroke-start', { roomId: room.roomId, token: room.studentToken, strokeId: 'student-blocked' });
+            await waitFor(() => studentErrors.length > 0, 'student board:* rejection');
+            await sleep(150);
+            assert.equal(teacherUnexpected.length, 0, 'student board:* not forwarded to teacher');
+
+            const studentBoardEvents = [];
+            student.on('board:stroke-start', payload => studentBoardEvents.push(['start', payload]));
+            student.on('board:stroke-end', payload => studentBoardEvents.push(['end', payload]));
+            teacher.emit('board:stroke-start', { roomId: room.roomId, token: room.teacherToken, strokeId: 'teacher-stroke' });
+            teacher.emit('board:stroke-end', { roomId: room.roomId, token: room.teacherToken, strokeId: 'teacher-stroke' });
+            await waitFor(() => studentBoardEvents.some(([type]) => type === 'start'), 'teacher stroke-start forwarded');
+            await waitFor(() => studentBoardEvents.some(([type]) => type === 'end'), 'teacher stroke-end forwarded');
+
+            await sleep(650);
+            const activeHealth = await getHealth();
+            assert.ok(activeHealth.rooms >= 1, 'active online room survives TTL cleanup');
+
+            student.disconnect();
+            await waitFor(() => {
+              const latest = teacherParticipants.at(-1) || [];
+              const studentInfo = participant(latest, 'student');
+              return studentInfo?.onlineCount === 0 && studentInfo.connected === false && latest;
+            }, 'student offline after disconnect');
+
+            teacher.disconnect();
+            await waitFor(async () => (await getHealth()).rooms === 0, 'room cleanup after all participants disconnect', 5000);
+
+            console.log(JSON.stringify({
+              nodeCheck: 'passed before smoke step',
+              apiSmoke: 'passed',
+              inactiveCleanup: 'passed',
+              activeProtection: 'passed',
+              socketSmoke: 'passed',
+              duplicateJoin: 'passed',
+              studentReadonly: 'passed',
+              disconnectOffline: 'passed'
+            }, null, 2));
+          } catch (error) {
+            console.error('Smoke failed:', error);
+            console.error('server stdout:', stdout);
+            console.error('server stderr:', stderr);
+            process.exitCode = 1;
+          } finally {
+            server.kill();
+          }
+          NODE
+          node ttl-smoke.js
