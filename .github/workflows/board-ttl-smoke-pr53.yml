@@ -67,6 +67,10 @@ jobs:
           const port = Number(process.env.PORT || 43553);
           const baseUrl = `http://127.0.0.1:${port}`;
           const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+          const hardTimeout = setTimeout(() => {
+            console.error('Smoke failed: hard timeout');
+            process.exit(1);
+          }, 15000);
 
           async function waitFor(predicate, label, timeoutMs = 4000) {
             const start = Date.now();
@@ -118,6 +122,7 @@ jobs:
           const server = spawn('npm', ['start'], {
             cwd: process.cwd(),
             env: { ...process.env },
+            detached: true,
             stdio: ['ignore', 'pipe', 'pipe']
           });
 
@@ -127,14 +132,18 @@ jobs:
           server.stderr.on('data', chunk => { stderr += chunk.toString(); });
 
           try {
+            console.log('smoke: waiting for npm start health');
             await waitFor(getHealth, 'server health', 5000);
             const initialHealth = await getHealth();
             assert.equal(initialHealth.rooms, 0, 'fresh server starts with zero rooms');
+            console.log('smoke: health ok');
 
             await createRoom();
             const afterCreate = await getHealth();
             assert.ok(afterCreate.rooms >= 1, 'health rooms increments after create');
+            console.log('smoke: API room create ok');
             await waitFor(async () => (await getHealth()).rooms === 0, 'inactive room cleanup', 5000);
+            console.log('smoke: inactive TTL cleanup ok');
 
             const room = await createRoom();
             const teacher = await connectClient('teacher');
@@ -155,11 +164,13 @@ jobs:
             }, 'teacher/student online');
             assert.equal(participant(bothOnline, 'teacher').connected, true, 'teacher connected');
             assert.equal(participant(bothOnline, 'student').connected, true, 'student connected');
+            console.log('smoke: teacher/student join ok');
 
             teacher.emit('room:join', { roomId: room.roomId, token: room.teacherToken, role: 'teacher' });
             await sleep(250);
             const afterDuplicate = teacherParticipants.at(-1) || [];
             assert.equal(participant(afterDuplicate, 'teacher').onlineCount, 1, 'duplicate teacher room:join does not overcount');
+            console.log('smoke: duplicate join guard ok');
 
             const studentErrors = [];
             const teacherUnexpected = [];
@@ -169,6 +180,7 @@ jobs:
             await waitFor(() => studentErrors.length > 0, 'student board:* rejection');
             await sleep(150);
             assert.equal(teacherUnexpected.length, 0, 'student board:* not forwarded to teacher');
+            console.log('smoke: student board events rejected ok');
 
             const studentBoardEvents = [];
             student.on('board:stroke-start', payload => studentBoardEvents.push(['start', payload]));
@@ -177,10 +189,12 @@ jobs:
             teacher.emit('board:stroke-end', { roomId: room.roomId, token: room.teacherToken, strokeId: 'teacher-stroke' });
             await waitFor(() => studentBoardEvents.some(([type]) => type === 'start'), 'teacher stroke-start forwarded');
             await waitFor(() => studentBoardEvents.some(([type]) => type === 'end'), 'teacher stroke-end forwarded');
+            console.log('smoke: teacher board events forwarded ok');
 
             await sleep(650);
             const activeHealth = await getHealth();
             assert.ok(activeHealth.rooms >= 1, 'active online room survives TTL cleanup');
+            console.log('smoke: active room protection ok');
 
             student.disconnect();
             await waitFor(() => {
@@ -188,9 +202,11 @@ jobs:
               const studentInfo = participant(latest, 'student');
               return studentInfo?.onlineCount === 0 && studentInfo.connected === false && latest;
             }, 'student offline after disconnect');
+            console.log('smoke: student disconnect offline ok');
 
             teacher.disconnect();
             await waitFor(async () => (await getHealth()).rooms === 0, 'room cleanup after all participants disconnect', 5000);
+            console.log('smoke: cleanup after all participants disconnect ok');
 
             console.log(JSON.stringify({
               apiSmoke: 'passed',
@@ -207,7 +223,12 @@ jobs:
             console.error('server stderr:', stderr);
             process.exitCode = 1;
           } finally {
-            server.kill();
+            clearTimeout(hardTimeout);
+            try {
+              process.kill(-server.pid, 'SIGTERM');
+            } catch (_error) {
+              server.kill('SIGTERM');
+            }
           }
           NODE
           node ttl-smoke.mjs
