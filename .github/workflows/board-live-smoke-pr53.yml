@@ -1,0 +1,190 @@
+name: Board Live Smoke PR53
+
+on:
+  push:
+    branches:
+      - ci/board-ttl-live-check-pr53
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  board-live-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install smoke dependency
+        run: npm install socket.io-client@4.7.5
+
+      - name: Run live API CORS Socket.IO smoke
+        env:
+          BOARD_BASE_URL: 'https://mathexam-board-ladynata.amvera.io'
+        run: |
+          cat > board-live-smoke.mjs <<'NODE'
+          import assert from 'node:assert/strict';
+          import { io } from 'socket.io-client';
+
+          const baseUrl = process.env.BOARD_BASE_URL;
+          const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+          const hardTimeout = setTimeout(() => {
+            console.error('Live smoke failed: hard timeout');
+            process.exit(1);
+          }, 20000);
+
+          async function waitFor(predicate, label, timeoutMs = 6000) {
+            const start = Date.now();
+            while (Date.now() - start <= timeoutMs) {
+              try {
+                const value = await predicate();
+                if (value) return value;
+              } catch (_error) {
+                // retry until timeout
+              }
+              await sleep(50);
+            }
+            throw new Error(`Timed out waiting for ${label}`);
+          }
+
+          async function getHealth() {
+            const res = await fetch(`${baseUrl}/health`);
+            assert.equal(res.status, 200, 'GET /health status');
+            const body = await res.json();
+            assert.equal(body.ok, true, 'GET /health ok');
+            assert.equal(typeof body.rooms, 'number', 'GET /health rooms type');
+            return body;
+          }
+
+          async function checkCors(origin) {
+            const res = await fetch(`${baseUrl}/api/rooms`, {
+              method: 'OPTIONS',
+              headers: {
+                Origin: origin,
+                'Access-Control-Request-Method': 'POST'
+              }
+            });
+            assert.ok([200, 204].includes(res.status), `CORS preflight status for ${origin}`);
+            assert.equal(res.headers.get('access-control-allow-origin'), origin, `CORS allow-origin for ${origin}`);
+            return { origin, status: res.status, allowOrigin: res.headers.get('access-control-allow-origin') };
+          }
+
+          async function createRoom() {
+            const res = await fetch(`${baseUrl}/api/rooms`, { method: 'POST' });
+            assert.equal(res.status, 201, 'POST /api/rooms status');
+            const body = await res.json();
+            assert.ok(body.roomId, 'roomId returned');
+            assert.ok(body.teacherToken, 'teacherToken returned');
+            assert.ok(body.studentToken, 'studentToken returned');
+            assert.ok(body.state, 'state returned');
+            return body;
+          }
+
+          async function connectClient(label) {
+            const socket = io(baseUrl, {
+              transports: ['websocket'],
+              reconnection: false,
+              timeout: 2500
+            });
+            socket.on('connect_error', error => {
+              console.error(`${label} connect_error`, error.message);
+            });
+            return waitFor(() => socket.connected && socket, `${label} socket connect`, 6000);
+          }
+
+          function participant(participants, role) {
+            return participants.find(item => item.role === role);
+          }
+
+          try {
+            const healthBefore = await getHealth();
+            console.log('live: health before', JSON.stringify(healthBefore));
+
+            const corsMathexam = await checkCors('https://mathexam.space');
+            const corsLocalhost = await checkCors('http://localhost:5173');
+            console.log('live: CORS ok', JSON.stringify([corsMathexam, corsLocalhost]));
+
+            const room = await createRoom();
+            const afterCreate = await getHealth();
+            assert.ok(afterCreate.rooms >= healthBefore.rooms, 'rooms remains numeric after create');
+            console.log('live: POST /api/rooms ok', JSON.stringify({ roomId: room.roomId, roomsAfterCreate: afterCreate.rooms }));
+
+            const teacher = await connectClient('teacher');
+            const student = await connectClient('student');
+            const teacherParticipants = [];
+            const studentParticipants = [];
+            const studentErrors = [];
+            const teacherUnexpected = [];
+            const studentBoardEvents = [];
+
+            teacher.on('participants:state', payload => teacherParticipants.push(payload.participants || []));
+            student.on('participants:state', payload => studentParticipants.push(payload.participants || []));
+            student.on('room:error', payload => studentErrors.push(payload));
+            teacher.on('board:stroke-start', payload => teacherUnexpected.push(payload));
+            student.on('board:stroke-start', payload => studentBoardEvents.push(['start', payload]));
+            student.on('board:stroke-end', payload => studentBoardEvents.push(['end', payload]));
+
+            teacher.emit('room:join', { roomId: room.roomId, token: room.teacherToken, role: 'teacher' });
+            student.emit('room:join', { roomId: room.roomId, token: room.studentToken, role: 'student' });
+
+            const bothOnline = await waitFor(() => {
+              const latest = teacherParticipants.at(-1) || [];
+              const teacherInfo = participant(latest, 'teacher');
+              const studentInfo = participant(latest, 'student');
+              return teacherInfo?.onlineCount === 1 && studentInfo?.onlineCount === 1 && latest;
+            }, 'teacher/student online');
+            assert.equal(participant(bothOnline, 'teacher').connected, true, 'teacher connected');
+            assert.equal(participant(bothOnline, 'student').connected, true, 'student connected');
+            console.log('live: teacher/student join ok');
+
+            teacher.emit('room:join', { roomId: room.roomId, token: room.teacherToken, role: 'teacher' });
+            await sleep(300);
+            const afterDuplicate = teacherParticipants.at(-1) || [];
+            assert.equal(participant(afterDuplicate, 'teacher').onlineCount, 1, 'duplicate teacher room:join does not overcount');
+            console.log('live: duplicate room:join guard ok');
+
+            student.emit('board:stroke-start', { roomId: room.roomId, token: room.studentToken, strokeId: 'student-blocked' });
+            await waitFor(() => studentErrors.length > 0, 'student board:* rejection');
+            await sleep(200);
+            assert.equal(teacherUnexpected.length, 0, 'student board:* not forwarded to teacher');
+            console.log('live: student board events rejected ok');
+
+            teacher.emit('board:stroke-start', { roomId: room.roomId, token: room.teacherToken, strokeId: 'teacher-stroke' });
+            teacher.emit('board:stroke-end', { roomId: room.roomId, token: room.teacherToken, strokeId: 'teacher-stroke' });
+            await waitFor(() => studentBoardEvents.some(([type]) => type === 'start'), 'teacher stroke-start forwarded');
+            await waitFor(() => studentBoardEvents.some(([type]) => type === 'end'), 'teacher stroke-end forwarded');
+            console.log('live: teacher board events forwarded ok');
+
+            student.disconnect();
+            await waitFor(() => {
+              const latest = teacherParticipants.at(-1) || [];
+              const studentInfo = participant(latest, 'student');
+              return studentInfo?.onlineCount === 0 && studentInfo.connected === false && latest;
+            }, 'student offline after disconnect');
+            console.log('live: student disconnect offline ok');
+            teacher.disconnect();
+
+            const healthAfter = await getHealth();
+            console.log(JSON.stringify({
+              healthBefore,
+              healthAfter,
+              postRoomsAfterCreate: afterCreate.rooms,
+              cors: [corsMathexam, corsLocalhost],
+              apiSmoke: 'passed',
+              socketSmoke: 'passed',
+              duplicateJoin: 'passed',
+              studentReadonly: 'passed',
+              disconnectOffline: 'passed'
+            }, null, 2));
+          } catch (error) {
+            console.error('Live smoke failed:', error);
+            process.exitCode = 1;
+          } finally {
+            clearTimeout(hardTimeout);
+          }
+          NODE
+          node board-live-smoke.mjs
