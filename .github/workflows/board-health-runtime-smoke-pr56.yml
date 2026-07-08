@@ -1,0 +1,200 @@
+name: Board Health Runtime Smoke PR56
+
+on:
+  push:
+    branches:
+      - ci/board-health-runtime-check-pr56
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  board-health-runtime-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Syntax check
+        run: node --check board-server/index.js
+
+      - name: Install board-server dependencies
+        working-directory: board-server
+        run: |
+          npm install
+          npm install socket.io-client@4.7.5 --no-save
+
+      - name: Run health runtime and Socket.IO smoke
+        working-directory: board-server
+        env:
+          ROOM_TTL_MS: '200'
+          ROOM_CLEANUP_INTERVAL_MS: '50'
+          PORT: '43563'
+          HOST: '127.0.0.1'
+        run: |
+          cat > health-runtime-smoke.mjs <<'NODE'
+          import assert from 'node:assert/strict';
+          import { spawn } from 'node:child_process';
+          import { io } from 'socket.io-client';
+
+          const port = Number(process.env.PORT || 43563);
+          const baseUrl = `http://127.0.0.1:${port}`;
+          const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+          const hardTimeout = setTimeout(() => {
+            console.error('Health runtime smoke failed: hard timeout');
+            process.exit(1);
+          }, 20000);
+
+          async function waitFor(predicate, label, timeoutMs = 5000) {
+            const start = Date.now();
+            while (Date.now() - start <= timeoutMs) {
+              try {
+                const value = await predicate();
+                if (value) return value;
+              } catch (_error) {
+                // retry until timeout
+              }
+              await sleep(40);
+            }
+            throw new Error(`Timed out waiting for ${label}`);
+          }
+
+          async function getHealth() {
+            const res = await fetch(`${baseUrl}/health`);
+            assert.equal(res.status, 200, 'GET /health status');
+            const body = await res.json();
+            assert.equal(body.ok, true, 'health ok');
+            assert.equal(typeof body.rooms, 'number', 'health rooms type');
+            assert.equal(typeof body.serverStartedAt, 'string', 'serverStartedAt type');
+            assert.ok(!Number.isNaN(Date.parse(body.serverStartedAt)), 'serverStartedAt parseable');
+            assert.equal(body.roomTtlMs, 200, 'roomTtlMs env reflected');
+            assert.equal(body.roomCleanupIntervalMs, 50, 'roomCleanupIntervalMs env reflected');
+            assert.equal(body.features?.roomTtlCleanup, true, 'roomTtlCleanup feature marker');
+            return body;
+          }
+
+          async function createRoom() {
+            const res = await fetch(`${baseUrl}/api/rooms`, { method: 'POST' });
+            assert.equal(res.status, 201, 'POST /api/rooms status');
+            const body = await res.json();
+            assert.ok(body.roomId, 'roomId returned');
+            assert.ok(body.teacherToken, 'teacherToken returned');
+            assert.ok(body.studentToken, 'studentToken returned');
+            assert.ok(body.state, 'state returned');
+            return body;
+          }
+
+          async function connectClient(label) {
+            const socket = io(baseUrl, {
+              transports: ['websocket'],
+              reconnection: false,
+              timeout: 2000
+            });
+            return waitFor(() => socket.connected && socket, `${label} socket connect`, 4000);
+          }
+
+          function participant(participants, role) {
+            return participants.find(item => item.role === role);
+          }
+
+          const server = spawn('npm', ['start'], {
+            cwd: process.cwd(),
+            env: { ...process.env },
+            detached: true,
+            stdio: ['ignore', 'pipe', 'pipe']
+          });
+
+          let stdout = '';
+          let stderr = '';
+          server.stdout.on('data', chunk => { stdout += chunk.toString(); });
+          server.stderr.on('data', chunk => { stderr += chunk.toString(); });
+
+          try {
+            const health = await waitFor(getHealth, 'server health', 5000);
+            assert.equal(health.rooms, 0, 'fresh rooms count');
+            console.log('smoke: /health runtime fields ok', JSON.stringify(health));
+
+            const room = await createRoom();
+            console.log('smoke: POST /api/rooms ok', room.roomId);
+
+            const teacher = await connectClient('teacher');
+            const student = await connectClient('student');
+            const teacherParticipants = [];
+            const studentErrors = [];
+            const teacherUnexpected = [];
+            const studentBoardEvents = [];
+
+            teacher.on('participants:state', payload => teacherParticipants.push(payload.participants || []));
+            student.on('room:error', payload => studentErrors.push(payload));
+            teacher.on('board:stroke-start', payload => teacherUnexpected.push(payload));
+            student.on('board:stroke-start', payload => studentBoardEvents.push(['start', payload]));
+            student.on('board:stroke-end', payload => studentBoardEvents.push(['end', payload]));
+
+            teacher.emit('room:join', { roomId: room.roomId, token: room.teacherToken, role: 'teacher' });
+            student.emit('room:join', { roomId: room.roomId, token: room.studentToken, role: 'student' });
+
+            await waitFor(() => {
+              const latest = teacherParticipants.at(-1) || [];
+              const teacherInfo = participant(latest, 'teacher');
+              const studentInfo = participant(latest, 'student');
+              return teacherInfo?.onlineCount === 1 && studentInfo?.onlineCount === 1 && latest;
+            }, 'teacher/student online');
+            console.log('smoke: teacher/student join ok');
+
+            teacher.emit('room:join', { roomId: room.roomId, token: room.teacherToken, role: 'teacher' });
+            await sleep(250);
+            const afterDuplicate = teacherParticipants.at(-1) || [];
+            assert.equal(participant(afterDuplicate, 'teacher').onlineCount, 1, 'duplicate room:join does not overcount');
+            console.log('smoke: duplicate room:join guard ok');
+
+            student.emit('board:stroke-start', { roomId: room.roomId, token: room.studentToken, strokeId: 'student-blocked' });
+            await waitFor(() => studentErrors.length > 0, 'student board:* rejection');
+            await sleep(150);
+            assert.equal(teacherUnexpected.length, 0, 'student board:* not forwarded');
+            console.log('smoke: student board:* rejected ok');
+
+            teacher.emit('board:stroke-start', { roomId: room.roomId, token: room.teacherToken, strokeId: 'teacher-stroke' });
+            teacher.emit('board:stroke-end', { roomId: room.roomId, token: room.teacherToken, strokeId: 'teacher-stroke' });
+            await waitFor(() => studentBoardEvents.some(([type]) => type === 'start'), 'teacher stroke-start forwarded');
+            await waitFor(() => studentBoardEvents.some(([type]) => type === 'end'), 'teacher stroke-end forwarded');
+            console.log('smoke: teacher board events forwarded ok');
+
+            student.disconnect();
+            await waitFor(() => {
+              const latest = teacherParticipants.at(-1) || [];
+              const studentInfo = participant(latest, 'student');
+              return studentInfo?.onlineCount === 0 && studentInfo.connected === false && latest;
+            }, 'student offline after disconnect');
+            teacher.disconnect();
+            console.log('smoke: disconnect offline ok');
+
+            console.log(JSON.stringify({
+              healthRuntime: 'passed',
+              apiSmoke: 'passed',
+              socketSmoke: 'passed',
+              duplicateJoin: 'passed',
+              studentReadonly: 'passed',
+              disconnectOffline: 'passed'
+            }, null, 2));
+          } catch (error) {
+            console.error('Health runtime smoke failed:', error);
+            console.error('server stdout:', stdout);
+            console.error('server stderr:', stderr);
+            process.exitCode = 1;
+          } finally {
+            clearTimeout(hardTimeout);
+            try {
+              process.kill(-server.pid, 'SIGTERM');
+            } catch (_error) {
+              server.kill('SIGTERM');
+            }
+          }
+          NODE
+          node health-runtime-smoke.mjs
