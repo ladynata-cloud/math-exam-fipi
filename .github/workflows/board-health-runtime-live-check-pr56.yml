@@ -23,8 +23,8 @@ jobs:
           BOARD_URL: https://mathexam-board-ladynata.amvera.io
           MERGE_TIME: '2026-07-08T23:08:30Z'
         run: |
-          node <<'NODE'
-          const { io } = require('socket.io-client');
+          node --input-type=module <<'NODE'
+          import { io } from 'socket.io-client';
 
           const base = process.env.BOARD_URL;
           const mergeTime = Date.parse(process.env.MERGE_TIME);
@@ -39,7 +39,7 @@ jobs:
           function parseJson(text, label) {
             try {
               return JSON.parse(text);
-            } catch (error) {
+            } catch (_error) {
               throw new Error(`${label} did not return JSON: ${text}`);
             }
           }
@@ -135,8 +135,9 @@ jobs:
             }, timeoutMs);
           }
 
-          function connectSocket(label) {
+          function makeSocket(label) {
             const socket = io(base, {
+              autoConnect: false,
               transports: ['websocket'],
               reconnection: false,
               timeout: 5000,
@@ -146,13 +147,13 @@ jobs:
             return socket;
           }
 
-          const teacher = connectSocket('teacher');
-          const student = connectSocket('student');
-
-          await Promise.all([
-            waitFor(teacher, 'connect', () => true, 8000),
-            waitFor(student, 'connect', () => true, 8000)
-          ]);
+          const teacher = makeSocket('teacher');
+          const student = makeSocket('student');
+          const teacherConnected = waitFor(teacher, 'connect', () => true, 8000);
+          const studentConnected = waitFor(student, 'connect', () => true, 8000);
+          teacher.connect();
+          student.connect();
+          await Promise.all([teacherConnected, studentConnected]);
 
           const teacherJoin = waitFor(teacher, 'room:state', payload => payload?.role === 'teacher');
           const teacherOnline = waitParticipants(teacher, 'teacher', 1, true);
