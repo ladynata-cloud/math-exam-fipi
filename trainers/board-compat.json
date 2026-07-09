@@ -8,7 +8,8 @@
       "boardCompatibility": "board-mirror",
       "supportsSeed": true,
       "supportsBoardMirror": true,
-      "notes": "Эталонный зеркальный тренажёр."
+      "notes": "Эталонный зеркальный тренажёр.",
+      "group": "Отрицательные числа"
     },
     {
       "trainerId": "negative-numbers",
@@ -17,7 +18,8 @@
       "boardCompatibility": "opens-in-board",
       "supportsSeed": false,
       "supportsBoardMirror": false,
-      "notes": "Открывается в iframe доски; mirror не подключён."
+      "notes": "Открывается в iframe доски; mirror не подключён.",
+      "group": "Отрицательные числа"
     },
     {
       "trainerId": "negative-numbers-alternative",
@@ -26,7 +28,8 @@
       "boardCompatibility": "opens-in-board",
       "supportsSeed": false,
       "supportsBoardMirror": false,
-      "notes": "Открывается в iframe доски; использует локальную статистику."
+      "notes": "Открывается в iframe доски; использует локальную статистику.",
+      "group": "Отрицательные числа"
     },
     {
       "trainerId": "oge-task7-number-line",
@@ -35,7 +38,8 @@
       "boardCompatibility": "opens-in-board",
       "supportsSeed": false,
       "supportsBoardMirror": false,
-      "notes": "Открывается в iframe доски; mirror не подключён."
+      "notes": "Открывается в iframe доски; mirror не подключён.",
+      "group": "Отрицательные числа"
     },
     {
       "trainerId": "inequalities-number-line",
@@ -44,7 +48,8 @@
       "boardCompatibility": "opens-in-board",
       "supportsSeed": false,
       "supportsBoardMirror": false,
-      "notes": "Открывается в iframe доски; mirror не подключён."
+      "notes": "Открывается в iframe доски; mirror не подключён.",
+      "group": "Отрицательные числа"
     },
     {
       "trainerId": "linear-inequalities-basic",
@@ -53,7 +58,8 @@
       "boardCompatibility": "opens-in-board",
       "supportsSeed": false,
       "supportsBoardMirror": false,
-      "notes": "Открывается в iframe доски; mirror не подключён."
+      "notes": "Открывается в iframe доски; mirror не подключён.",
+      "group": "Отрицательные числа"
     },
     {
       "trainerId": "linear-inequalities-stepwise",
@@ -62,7 +68,8 @@
       "boardCompatibility": "opens-in-board",
       "supportsSeed": false,
       "supportsBoardMirror": false,
-      "notes": "Открывается в iframe доски; mirror для этого hotfix не добавлялся."
+      "notes": "Открывается в iframe доски; mirror для этого hotfix не добавлялся.",
+      "group": "Отрицательные числа"
     },
     {
       "trainerId": "like-terms-trainer",
@@ -71,7 +78,41 @@
       "boardCompatibility": "opens-in-board",
       "supportsSeed": false,
       "supportsBoardMirror": false,
-      "notes": "Загружен для ближайшего урока; mirror позже отдельным PR."
+      "notes": "Загружен для ближайшего урока; mirror позже отдельным PR.",
+      "group": "Алгебра"
+    },
+    {
+      "trainerId": "percent-part-whole",
+      "file": "trainers/percent-part-whole-trainer.html",
+      "title": "Проценты: часть и целое",
+      "group": "Алгебра",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Выложен как открываемый в доске тренажёр; mirror позже отдельным PR."
+    },
+    {
+      "trainerId": "ege-t1-planimetry",
+      "file": "trainers/ege-t1-planimetry-trainer.html",
+      "title": "ЕГЭ №1: планиметрия",
+      "group": "Геометрия / ЕГЭ",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Выложен как открываемый в доске тренажёр; mirror позже отдельным PR."
+    },
+    {
+      "trainerId": "ege-t2-vectors",
+      "file": "trainers/ege-t2-vectors-trainer.html",
+      "title": "ЕГЭ №2: векторы",
+      "group": "Геометрия / ЕГЭ",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Тренажёр имеет собственный встроенный холст; в доске пока открывается как iframe."
     }
   ]
 }
