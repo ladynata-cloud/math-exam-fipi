@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "trainers": [
+    {
+      "trainerId": "negative-numbers-line",
+      "file": "trainers/negative-numbers-line.html",
+      "title": "Числовая прямая / отрицательные числа",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": true,
+      "supportsBoardMirror": true,
+      "notes": "Эталонный зеркальный тренажёр."
+    },
+    {
+      "trainerId": "negative-numbers",
+      "file": "trainers/negative-numbers.html",
+      "title": "Отрицательные числа",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "notes": "Открывается в iframe доски; mirror не подключён."
+    },
+    {
+      "trainerId": "negative-numbers-alternative",
+      "file": "trainers/negative-numbers-alternative.html",
+      "title": "Отрицательные числа — альтернативный",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "notes": "Открывается в iframe доски; использует локальную статистику."
+    },
+    {
+      "trainerId": "oge-task7-number-line",
+      "file": "trainers/oge-task7-number-line.html",
+      "title": "ОГЭ №7 / числовая прямая",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "notes": "Открывается в iframe доски; mirror не подключён."
+    },
+    {
+      "trainerId": "inequalities-number-line",
+      "file": "trainers/inequalities-number-line.html",
+      "title": "Неравенства на числовой прямой",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "notes": "Открывается в iframe доски; mirror не подключён."
+    },
+    {
+      "trainerId": "linear-inequalities-basic",
+      "file": "trainers/linear-inequalities-basic.html",
+      "title": "Линейные неравенства — база",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "notes": "Открывается в iframe доски; mirror не подключён."
+    },
+    {
+      "trainerId": "linear-inequalities-stepwise",
+      "file": "trainers/linear-inequalities-stepwise.html",
+      "title": "Линейные неравенства — пошагово",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "notes": "Открывается в iframe доски; mirror для этого hotfix не добавлялся."
+    },
+    {
+      "trainerId": "like-terms-trainer",
+      "file": "trainers/like-terms-trainer.html",
+      "title": "Театр формул / приведение подобных слагаемых",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "notes": "Загружен для ближайшего урока; mirror позже отдельным PR."
+    }
+  ]
+}

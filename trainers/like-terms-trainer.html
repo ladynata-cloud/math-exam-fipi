@@ -1,64 +1,1550 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Приведение подобных слагаемых</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#eef2f5;color:#142033;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;min-height:100vh}.top{background:#213447;color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.top h1{font-size:20px;margin:0}.top p{font-size:12px;margin:2px 0 0;color:#cbd5e1}.back{color:#cbd5e1;text-decoration:none;font-weight:800;font-size:13px}.wrap{max-width:1100px;margin:0 auto;padding:18px}.hero{background:linear-gradient(135deg,#fff,#eef8ff);border:1px solid #d8e5ef;border-radius:22px;padding:18px;box-shadow:0 12px 30px #0f172a14;margin-bottom:14px}.hero h2{margin:0 0 8px;font-size:28px;letter-spacing:-.03em}.hero p{margin:0;color:#64748b;line-height:1.5}.layout{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}@media(max-width:860px){.layout{grid-template-columns:1fr}}.card{background:#fff;border:1px solid #dbe4ee;border-radius:20px;padding:16px;box-shadow:0 10px 25px #0f172a12}.label{font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:#64748b;margin-bottom:8px}.expr{font-family:Cambria Math,Georgia,serif;font-size:38px;font-weight:900;text-align:center;line-height:1.25;padding:20px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;word-break:break-word}.target{display:inline-block;color:#7c3aed;background:#ede9fe;border:2px solid #c4b5fd;border-radius:12px;padding:2px 8px}.chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:16px}.chip{font-family:Cambria Math,Georgia,serif;font-size:28px;font-weight:900;border:2px solid #dbe4ee;background:#fff;border-radius:14px;padding:9px 14px;cursor:pointer;transition:.15s}.chip:hover{transform:translateY(-2px);border-color:#93c5fd;background:#eff6ff}.chip.on{border-color:#2563eb;background:#dbeafe;color:#1d4ed8}.chip.good{border-color:#16a34a;background:#dcfce7;color:#166534}.chip.bad{border-color:#dc2626;background:#fee2e2;color:#991b1b}.chip.dim{opacity:.35}.steps{display:grid;gap:10px}.step{border:1.5px solid #dbe4ee;border-radius:16px;padding:13px;background:#f8fafc}.step.active{border-color:#2563eb;background:#eff6ff}.step.done{border-color:#16a34a;background:#f0fdf4}.step h3{margin:0 0 8px;font-size:15px}.num{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#2563eb;color:#fff;font-weight:950;font-size:12px;margin-right:7px}.done .num{background:#16a34a}.hint{font-size:13px;color:#64748b;line-height:1.5}.warn{color:#92400e;background:#fef3c7;border-left:4px solid #f59e0b;border-radius:10px;padding:10px 12px;margin-top:10px}.okbox{color:#166534;background:#dcfce7;border-left:4px solid #16a34a;border-radius:10px;padding:10px 12px;margin-top:10px}.errbox{color:#991b1b;background:#fee2e2;border-left:4px solid #dc2626;border-radius:10px;padding:10px 12px;margin-top:10px}.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}button{border:0;border-radius:12px;padding:10px 15px;font-weight:900;cursor:pointer;background:#2563eb;color:#fff}button.secondary{background:#fff;color:#334155;border:2px solid #dbe4ee}button.secondary:hover{border-color:#94a3b8}.inputRow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.inputRow input{width:100px;text-align:center;border:2px solid #cbd5e1;border-radius:12px;padding:8px;font-size:22px;font-family:Cambria Math,Georgia,serif;font-weight:900}.mini{font-size:13px;color:#64748b;line-height:1.5}.answerChoices{display:grid;gap:8px}.answer{font-family:Cambria Math,Georgia,serif;font-size:20px;font-weight:900;text-align:left;background:#fff;color:#142033;border:2px solid #dbe4ee}.answer.on{border-color:#2563eb;background:#dbeafe;color:#1d4ed8}.answer.good{border-color:#16a34a;background:#dcfce7;color:#166534}.answer.bad{border-color:#dc2626;background:#fee2e2;color:#991b1b}.modes{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.mode{background:#fff;color:#334155;border:2px solid #dbe4ee}.mode.on{background:#213447;color:#fff;border-color:#213447}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.stat{background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:10px;text-align:center}.stat b{font-size:20px;color:#2563eb}.stat span{display:block;font-size:11px;color:#64748b;text-transform:uppercase;font-weight:900}.rule{display:grid;gap:8px;margin-top:10px}.rule div{background:#f8fafc;border:1px solid #e2e8f0;border-radius:13px;padding:10px;font-size:14px;color:#475569;line-height:1.45}.rule b{color:#142033}.history{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px}.dot{width:15px;height:15px;border-radius:5px;background:#cbd5e1}.dot.y{background:#16a34a}.dot.n{background:#dc2626}.footer{margin-top:14px;text-align:center;color:#64748b;font-size:12px}
+  :root{
+    --paper:#f6f8fb;
+    --grid:rgba(96,140,225,.09);
+    --sheet:#ffffff;
+    --sheet-line:#dbe4ee;
+    --margin-red:#f2b3b3;
+    --ink:#243b53;
+    --ink-soft:#627d98;
+    --ink-faint:#9fb3c8;
+    --blue:#3a5fc4;
+    --blue-soft:#eef3fd;
+    --red:#c94444;
+    --red-soft:#fdeeee;
+    --green:#2e8f5b;
+    --green-soft:#e9f7ef;
+    --g0:#e0a800; --g0bg:rgba(255,214,68,.38);
+    --g1:#1f9fb4; --g1bg:rgba(69,196,214,.28);
+    --g2:#d4548e; --g2bg:rgba(242,119,168,.26);
+    --g3:#3d9e5c; --g3bg:rgba(88,187,112,.28);
+    --g4:#d97c1f; --g4bg:rgba(247,154,62,.30);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px,transparent 1px),
+      linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:22px 22px;
+    min-height:100vh;line-height:1.5;
+    padding-bottom:48px;
+  }
+  .math{font-family:Georgia,'Times New Roman',serif;font-style:italic}
+  sup{font-size:.62em;vertical-align:super;font-style:inherit}
+
+  /* ---------- Шапка ---------- */
+  header{
+    background:var(--sheet);border-bottom:1px solid var(--sheet-line);
+    padding:10px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    position:sticky;top:0;z-index:20;
+  }
+  .back{color:var(--ink-soft);text-decoration:none;font-size:14px;white-space:nowrap}
+  .back:hover{color:var(--blue)}
+  h1{
+    font-family:Georgia,serif;font-size:19px;font-weight:700;letter-spacing:.01em;
+    border-bottom:3px double var(--red);padding-bottom:2px;
+  }
+  .hgrow{flex:1}
+  .badges{display:flex;gap:8px;flex-wrap:wrap}
+  .badge{
+    font-size:12px;color:var(--ink-soft);background:var(--paper);
+    border:1px solid var(--sheet-line);border-radius:999px;padding:4px 10px;white-space:nowrap;
+  }
+  .badge b{color:var(--ink)}
+
+  /* ---------- Вкладки ---------- */
+  .wrap{max-width:1020px;margin:0 auto;padding:18px 14px 0}
+  nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+  .tab{
+    border:1.5px solid var(--sheet-line);background:var(--sheet);color:var(--ink-soft);
+    padding:8px 16px;border-radius:999px;cursor:pointer;font:600 14px inherit;transition:.15s;
+  }
+  .tab:hover{color:var(--ink);border-color:var(--ink-faint)}
+  .tab.active{background:var(--ink);border-color:var(--ink);color:#fff}
+  .tab .tick{color:var(--green);margin-left:4px}
+  .tab.active .tick{color:#8fe3b4}
+
+  /* ---------- Лист тетради ---------- */
+  .sheet{
+    position:relative;background:var(--sheet);
+    border:1px solid var(--sheet-line);border-radius:4px 12px 12px 4px;
+    box-shadow:0 2px 10px rgba(36,59,83,.06);
+    padding:22px 26px 24px 58px;
+  }
+  .sheet::before{
+    content:'';position:absolute;top:0;bottom:0;left:36px;width:1.5px;
+    background:var(--margin-red);
+  }
+  @media(max-width:560px){
+    .sheet{padding:18px 14px 20px 40px}
+    .sheet::before{left:24px}
+  }
+  .sheet + .sheet{margin-top:16px}
+  .pane{display:none}
+  .pane.active{display:block;animation:fadein .2s}
+  @keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  .eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-faint);font-weight:700;margin-bottom:6px}
+  h2{font-family:Georgia,serif;font-size:22px;margin-bottom:10px}
+  h3{font-family:Georgia,serif;font-size:17px;margin:14px 0 6px}
+  p{margin:8px 0}
+  .muted{color:var(--ink-soft);font-size:14px}
+
+  /* ---------- Выражение ---------- */
+  .exprline{
+    font-family:Georgia,serif;font-style:italic;
+    font-size:clamp(22px,4.6vw,32px);letter-spacing:.01em;
+    padding:14px 6px;text-align:center;line-height:1.6;
+  }
+  .exprline .sg{color:var(--ink-soft);font-style:normal;padding:0 .18em}
+  .exprline .tm{padding:1px 3px;border-radius:3px}
+
+  /* маркер + подчёркивания групп (как в тетради) */
+  .gm0,.gm1,.gm2,.gm3,.gm4{text-decoration-line:underline;text-decoration-thickness:2.6px;text-underline-offset:5px}
+  .gm0{background:linear-gradient(transparent 58%,var(--g0bg) 58%);text-decoration-color:var(--g0);text-decoration-style:solid}
+  .gm1{background:linear-gradient(transparent 58%,var(--g1bg) 58%);text-decoration-color:var(--g1);text-decoration-style:double;text-decoration-thickness:3.4px}
+  .gm2{background:linear-gradient(transparent 58%,var(--g2bg) 58%);text-decoration-color:var(--g2);text-decoration-style:wavy;text-decoration-thickness:2px}
+  .gm3{background:linear-gradient(transparent 58%,var(--g3bg) 58%);text-decoration-color:var(--g3);text-decoration-style:dotted}
+  .gm4{background:linear-gradient(transparent 58%,var(--g4bg) 58%);text-decoration-color:var(--g4);text-decoration-style:dashed}
+  .dotm{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:8px;vertical-align:-1px}
+  .dotm.gm0{background:var(--g0bg);border-bottom:2.6px solid var(--g0)}
+  .dotm.gm1{background:var(--g1bg);border-bottom:3.4px double var(--g1)}
+  .dotm.gm2{background:var(--g2bg);border-bottom:2px solid var(--g2)}
+  .dotm.gm3{background:var(--g3bg);border-bottom:2.6px dotted var(--g3)}
+  .dotm.gm4{background:var(--g4bg);border-bottom:2.6px dashed var(--g4)}
+
+  /* ---------- Карточки-слагаемые ---------- */
+  .chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:8px 0 4px}
+  .chip{
+    display:inline-flex;align-items:baseline;gap:2px;
+    border:1.5px solid var(--ink-faint);border-radius:9px;background:#fff;
+    padding:7px 13px;cursor:pointer;user-select:none;
+    font-family:Georgia,serif;font-style:italic;font-size:22px;
+    transition:transform .12s,box-shadow .12s,border-color .12s;
+  }
+  .chip:hover{transform:translateY(-2px);border-color:var(--blue)}
+  .chip .sg{font-style:normal;font-weight:700;font-size:18px;color:var(--ink)}
+  .chip .sg.plus{color:var(--ink-faint);font-weight:400}
+  .chip.sel{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft);transform:translateY(-2px)}
+  .chip.done{cursor:default;border-color:transparent;box-shadow:none;transform:none}
+  .chip.shake{animation:shake .35s}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+  /* ---------- Кнопки ---------- */
+  .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .btn{
+    border:1.5px solid var(--ink-faint);background:#fff;color:var(--ink);
+    padding:9px 16px;border-radius:9px;cursor:pointer;font:600 14px inherit;transition:.12s;
+  }
+  .btn:hover{border-color:var(--ink);transform:translateY(-1px)}
+  .btn:active{transform:none}
+  .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+  .btn.pri{background:var(--ink);border-color:var(--ink);color:#fff}
+  .btn.pri:hover{background:#1b2d40}
+  .btn.grn{background:var(--green);border-color:var(--green);color:#fff}
+  .btn:focus-visible,.chip:focus-visible,.tab:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+  /* ---------- Пометки учителя ---------- */
+  .fb{display:none;margin-top:12px;padding:11px 14px;border-radius:9px;font-size:14.5px;line-height:1.55}
+  .fb.show{display:block;animation:fadein .18s}
+  .fb.ok{background:var(--green-soft);border-left:4px solid var(--green);color:#1c5e3c}
+  .fb.err{background:var(--red-soft);border-left:4px solid var(--red);color:#8c2f2f}
+  .fb.hint{background:var(--blue-soft);border-left:4px solid var(--blue);color:#2c4a86}
+  .fb .math{font-size:1.08em}
+
+  /* ---------- Теория ---------- */
+  .tdots{display:flex;gap:7px;margin-bottom:14px}
+  .tdots span{width:10px;height:10px;border-radius:50%;background:var(--sheet-line)}
+  .tdots span.cur{background:var(--blue)}
+  .tdots span.done{background:var(--green)}
+  .defbox{
+    border:1.5px solid var(--ink);border-radius:10px;padding:12px 16px;margin:12px 0;
+    background:var(--blue-soft);font-size:16px;
+  }
+  .defbox .math{font-size:1.1em}
+  .anat{display:flex;justify-content:center;gap:0;margin:16px 0 4px}
+  .anat .ap{
+    font-family:Georgia,serif;font-style:italic;font-size:40px;line-height:1;
+    padding:12px 16px;border:2px solid var(--ink);background:#fff;
+  }
+  .anat .ap.s{border-radius:12px 0 0 12px;border-right-width:1px;color:var(--red);font-style:normal}
+  .anat .ap.c{border-left-width:1px;border-right-width:1px;color:var(--blue)}
+  .anat .ap.l{border-radius:0 12px 12px 0;border-left-width:1px}
+  .anatlbl{display:flex;justify-content:center;gap:0;margin-bottom:12px;text-align:center;font-size:12px;color:var(--ink-soft)}
+  .anatlbl div{padding:4px 6px}
+  .anatlbl .a1{width:66px;color:var(--red)}
+  .anatlbl .a2{width:64px;color:var(--blue)}
+  .anatlbl .a3{width:78px}
+  .extable{width:100%;border-collapse:collapse;margin:10px 0;font-size:15px}
+  .extable td{border-bottom:1px solid var(--sheet-line);padding:7px 8px}
+  .extable td:first-child{font-family:Georgia,serif;font-style:italic;font-size:18px;white-space:nowrap}
+  .yes{color:var(--green);font-weight:700}
+  .no{color:var(--red);font-weight:700}
+  .tiles{display:flex;gap:5px;justify-content:center;align-items:center;flex-wrap:wrap;margin:12px 0}
+  .tile{
+    width:34px;height:34px;border:2px solid var(--g0);background:var(--g0bg);
+    border-radius:7px;display:grid;place-items:center;
+    font-family:Georgia,serif;font-style:italic;font-size:18px;
+  }
+  .tiles .plus,.tiles .arr{font-size:22px;color:var(--ink-soft);padding:0 4px}
+  .quiz{margin-top:16px;padding-top:14px;border-top:1.5px dashed var(--sheet-line)}
+  .quiz .q{font-weight:600;margin-bottom:10px}
+  .quiz .q .math{font-size:1.15em}
+  .qopts{display:flex;gap:10px;flex-wrap:wrap}
+  .qopt{
+    border:1.5px solid var(--ink-faint);background:#fff;border-radius:9px;
+    padding:8px 18px;cursor:pointer;font-family:Georgia,serif;font-style:italic;font-size:20px;transition:.12s;
+  }
+  .qopt:hover{border-color:var(--blue)}
+  .qopt.ok{border-color:var(--green);background:var(--green-soft)}
+  .qopt.no{border-color:var(--red);background:var(--red-soft);animation:shake .35s}
+  .algolist{counter-reset:st;list-style:none;margin:10px 0}
+  .algolist li{
+    counter-increment:st;position:relative;padding:8px 0 8px 44px;font-size:15.5px;
+  }
+  .algolist li::before{
+    content:counter(st);position:absolute;left:0;top:6px;
+    width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;
+    display:grid;place-items:center;font:700 15px Georgia,serif;
+  }
+  .special{margin:10px 0;padding:10px 14px;background:#fffbe8;border:1.5px dashed var(--g0);border-radius:9px;font-size:14.5px}
+  .special .math{font-size:1.1em}
+
+  /* ---------- Разбор ---------- */
+  .expick{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+  .stepnote{
+    min-height:56px;margin-top:10px;padding:12px 14px;border-radius:9px;
+    background:var(--blue-soft);border-left:4px solid var(--blue);font-size:15px;line-height:1.6;
+  }
+  .stepnote .math{font-size:1.1em}
+  .sums{margin-top:8px;display:none}
+  .sums.show{display:block}
+  .sumrow{
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+    padding:9px 4px;border-bottom:1px dashed var(--sheet-line);
+    font-family:Georgia,serif;font-style:italic;font-size:20px;
+  }
+  .sumrow:last-child{border-bottom:none}
+  .sumrow .who{min-width:64px}
+  .sumrow .chain{color:var(--ink-soft)}
+  .sumrow .lone{font-size:14px;font-style:normal;font-family:inherit;color:var(--ink-soft)}
+  .sumin{
+    width:64px;border:none;border-bottom:2px solid var(--ink-faint);background:transparent;
+    font-family:Georgia,serif;font-style:italic;font-size:20px;text-align:center;color:var(--ink);
+    padding:2px 4px;
+  }
+  .sumin:focus{outline:none;border-color:var(--blue)}
+  .sumin.ok{border-color:var(--green);color:var(--green)}
+  .sumin.no{border-color:var(--red);color:var(--red)}
+  .finalline{
+    display:none;margin-top:14px;padding:14px;border-radius:10px;text-align:center;
+    background:var(--green-soft);border:1.5px solid var(--green);
+  }
+  .finalline.show{display:block;animation:fadein .25s}
+  .finalline .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--green);font-weight:700}
+  .finalline .chainline{font-size:16px;color:var(--ink-soft);margin-bottom:8px;font-style:italic;line-height:1.5}
+  .finalline .val{font-family:Georgia,serif;font-style:italic;font-size:clamp(24px,5vw,32px);margin-top:4px}
+  .finalline .notes{margin-top:8px;font-size:13.5px;color:var(--ink-soft);text-align:left}
+  .finalline .notes div{padding:2px 0}
+
+  /* ---------- Тренировка ---------- */
+  .lvls{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+  .lvl{
+    border:1.5px solid var(--sheet-line);background:#fff;color:var(--ink-soft);
+    padding:6px 13px;border-radius:999px;cursor:pointer;font:600 13px inherit;transition:.12s;
+  }
+  .lvl:hover{border-color:var(--ink-faint);color:var(--ink)}
+  .lvl.active{background:var(--blue);border-color:var(--blue);color:#fff}
+  .phases{display:flex;gap:6px;align-items:center;margin:4px 0 8px;font-size:12.5px;color:var(--ink-faint)}
+  .phases .ph{padding:3px 10px;border-radius:999px;background:var(--paper);border:1px solid var(--sheet-line)}
+  .phases .ph.cur{background:var(--ink);border-color:var(--ink);color:#fff}
+  .phases .ph.did{color:var(--green);border-color:var(--green)}
+  .taskmeta{font-size:13px;color:var(--ink-soft);margin-top:4px}
+  .stats{
+    margin-top:18px;padding-top:14px;border-top:1.5px dashed var(--sheet-line);
+    display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center;
+  }
+  @media(max-width:520px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat .v{font:700 26px Georgia,serif;color:var(--ink)}
+  .stat .l{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint)}
+  .reset{margin-top:10px;text-align:center}
+  .reset button{background:none;border:none;color:var(--ink-faint);font-size:12.5px;cursor:pointer;text-decoration:underline}
+  .reset button:hover{color:var(--red)}
+
+  /* ---------- Зачёт ---------- */
+  .exam-start{text-align:center;padding:14px 0}
+  .exam-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+  .exam-prog{display:flex;gap:6px}
+  .exam-prog span{
+    width:30px;height:30px;border-radius:8px;border:1.5px solid var(--sheet-line);
+    display:grid;place-items:center;font:700 14px Georgia,serif;color:var(--ink-faint);
+  }
+  .exam-prog span.cur{border-color:var(--blue);color:var(--blue)}
+  .exam-prog span.win{background:var(--green-soft);border-color:var(--green);color:var(--green)}
+  .exam-prog span.lose{background:var(--red-soft);border-color:var(--red);color:var(--red)}
+  .ansrow{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:8px}
+  .ansin{
+    min-width:min(340px,80vw);border:none;border-bottom:2.5px solid var(--ink-faint);background:transparent;
+    font-family:Georgia,serif;font-style:italic;font-size:26px;text-align:center;color:var(--ink);
+    padding:6px 8px;
+  }
+  .ansin:focus{outline:none;border-color:var(--blue)}
+  .keys{display:flex;gap:6px}
+  .key{
+    border:1.5px solid var(--ink-faint);background:#fff;border-radius:8px;
+    width:40px;height:40px;font:italic 700 18px Georgia,serif;cursor:pointer;color:var(--ink);
+  }
+  .key:hover{border-color:var(--blue);color:var(--blue)}
+  .solution{display:none;margin-top:12px;padding:12px 14px;border-radius:9px;background:var(--paper);border:1px solid var(--sheet-line);font-size:15px}
+  .solution.show{display:block}
+  .solution .sr{padding:3px 0;font-family:Georgia,serif;font-style:italic;font-size:18px}
+  .exam-res{text-align:center;padding:10px 0}
+  .exam-res .big{font:700 54px Georgia,serif}
+  .exam-res .big .of{color:var(--ink-faint);font-size:30px}
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
 </style>
 </head>
 <body>
-<header class="top"><div><h1>🧩 Приведение подобных</h1><p>коэффициент 1 · xy = yx · группировка слагаемых</p></div><a class="back" href="../index.html">← Назад</a></header>
-<main class="wrap">
-  <section class="hero"><h2>Похожие буквы — складываем коэффициенты</h2><p>Тренажёр учит видеть подобные слагаемые: <b>x</b> и <b>2x</b>, <b>xy</b> и <b>yx</b>, а также не забывать невидимый коэффициент <b>1</b>.</p></section>
-  <div class="modes"><button id="modeGroup" class="mode on" onclick="setMode('group')">Группировка</button><button id="modeFull" class="mode" onclick="setMode('full')">Упростить всё выражение</button></div>
-  <section class="layout">
-    <div class="card">
-      <div class="label">Выражение</div>
-      <div class="expr" id="expr"></div>
-      <div id="chips" class="chips"></div>
-      <div class="controls"><button onclick="checkStep()">Проверить</button><button class="secondary" onclick="showHint()">Подсказка</button><button class="secondary" onclick="showSolution()">Показать решение</button><button class="secondary" onclick="nextTask()">Следующий пример →</button></div>
-      <div id="msg"></div>
+
+<header>
+  <a class="back" href="../index.html">← К курсу</a>
+  <h1>Приведение подобных слагаемых</h1>
+  <div class="hgrow"></div>
+  <div class="badges">
+    <span class="badge" id="bTheory">📖 теория: <b>0/5</b></span>
+    <span class="badge" id="bExam">🏁 зачёт: <b>—</b></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav>
+    <button class="tab active" data-pane="theory">📖 Теория<span class="tick" id="tkTheory" hidden>✓</span></button>
+    <button class="tab" data-pane="demo">🔍 Разбор</button>
+    <button class="tab" data-pane="train">✏️ Тренировка</button>
+    <button class="tab" data-pane="exam">🏁 Зачёт</button>
+  </nav>
+
+  <!-- ================= ТЕОРИЯ ================= -->
+  <section class="pane active" id="pane-theory">
+    <div class="sheet">
+      <div class="tdots" id="tdots"></div>
+      <div id="tcard"><!-- карточка теории --></div>
+      <div class="btns">
+        <button class="btn" id="tPrev">← Назад</button>
+        <button class="btn pri" id="tNext" disabled>Дальше →</button>
+      </div>
     </div>
-    <aside class="card">
-      <div class="label">Что делаем</div>
-      <div id="side"></div>
-      <div class="stats"><div class="stat"><b id="solved">0</b><span>решено</span></div><div class="stat"><b id="correct">0</b><span>верно</span></div><div class="stat"><b id="streak">0</b><span>серия</span></div><div class="stat"><b id="best">0</b><span>рекорд</span></div></div>
-      <div class="history" id="history"></div>
-      <div class="rule"><div><b>Правило 1.</b> Подобные слагаемые имеют одинаковую буквенную часть.</div><div><b>Правило 2.</b> Порядок букв в произведении не важен: <b>xy = yx</b>.</div><div><b>Правило 3.</b> Если перед буквой нет числа, коэффициент равен <b>1</b>: <b>x = 1x</b>, <b>−x = −1x</b>.</div></div>
-    </aside>
   </section>
-  <div class="footer">topic id: likeTermsTrainer · ключ статистики: mathExamCourseProgress.v1</div>
-</main>
+
+  <!-- ================= РАЗБОР ================= -->
+  <section class="pane" id="pane-demo">
+    <div class="sheet">
+      <div class="eyebrow">Разбор с объяснением каждого шага</div>
+      <div class="expick" id="expick"></div>
+      <div class="exprline" id="demoExpr"></div>
+      <div class="sums" id="demoSums"></div>
+      <div class="finalline" id="demoFinal">
+        <div class="lbl">Ответ</div>
+        <div class="val math" id="demoFinalVal"></div>
+      </div>
+      <div class="stepnote" id="demoNote"></div>
+      <div class="btns">
+        <button class="btn" id="dPrev">← Шаг назад</button>
+        <button class="btn pri" id="dNext">Следующий шаг →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ТРЕНИРОВКА ================= -->
+  <section class="pane" id="pane-train">
+    <div class="sheet">
+      <div class="lvls" id="lvls">
+        <span class="muted" style="font-size:13px;margin-right:2px">Уровень:</span>
+      </div>
+      <div class="muted" id="lvlCap" style="font-size:12.5px;margin:-2px 0 8px"></div>
+      <div class="phases">
+        <span class="ph" data-ph="0">1 · группы</span>
+        <span class="ph" data-ph="1">2 · суммы</span>
+        <span class="ph" data-ph="2">3 · ответ</span>
+      </div>
+      <div class="exprline" id="trExpr"></div>
+      <div class="chips" id="trChips"></div>
+      <div class="taskmeta" id="trMeta"></div>
+      <div class="sums" id="trSums"></div>
+      <div class="finalline" id="trFinal">
+        <div class="chainline math" id="trChain"></div>
+        <div class="lbl">Ответ</div>
+        <div class="val math" id="trFinalVal"></div>
+        <div class="notes" id="trNotes"></div>
+      </div>
+      <div class="btns">
+        <button class="btn pri" id="trCheck">✓ Отметить группу</button>
+        <button class="btn" id="trHint">💡 Подсказка</button>
+        <button class="btn" id="trStep">Показать шаг</button>
+        <button class="btn grn" id="trNext" style="display:none">Следующая задача →</button>
+      </div>
+      <div class="fb" id="trFb"></div>
+
+      <div class="stats">
+        <div class="stat"><div class="v" id="sSolved">0</div><div class="l">Решено</div></div>
+        <div class="stat"><div class="v" id="sClean">0</div><div class="l">Без ошибок</div></div>
+        <div class="stat"><div class="v" id="sStreak">0</div><div class="l">Серия</div></div>
+        <div class="stat"><div class="v" id="sBest">0</div><div class="l">Рекорд серии</div></div>
+      </div>
+      <div class="reset"><button id="sReset">сбросить статистику</button></div>
+    </div>
+  </section>
+
+  <!-- ================= ЗАЧЁТ ================= -->
+  <section class="pane" id="pane-exam">
+    <div class="sheet" id="examStart">
+      <div class="eyebrow">Проверка «как на контрольной»</div>
+      <h2>Зачёт: 5 выражений</h2>
+      <p>Пять заданий от простого к сложному. Ответ вводишь сам — как записал бы в тетради: <span class="math">3x − 2y</span>. Степень можно писать как <span class="math">x²</span>, <span class="math">x^2</span> или <span class="math">x2</span>; русские буквы х, у тоже пойму. На каждое задание — три попытки.</p>
+      <div class="exam-start">
+        <button class="btn pri" id="exGo" style="font-size:16px;padding:12px 26px">Начать зачёт</button>
+      </div>
+    </div>
+    <div class="sheet" id="examTask" style="display:none">
+      <div class="exam-head">
+        <div class="eyebrow" id="exLbl">Задание 1 из 5</div>
+        <div class="exam-prog" id="exProg"></div>
+      </div>
+      <div class="exprline" id="exExpr"></div>
+      <p class="muted" style="text-align:center;margin-top:0">Приведи подобные слагаемые и запиши результат:</p>
+      <div class="ansrow">
+        <input class="ansin math" id="exIn" autocomplete="off" spellcheck="false" placeholder="твой ответ">
+        <div class="keys">
+          <button class="key" data-ins="²">x²</button>
+          <button class="key" data-ins="³">x³</button>
+          <button class="key" data-ins="−">−</button>
+        </div>
+      </div>
+      <div class="btns" style="justify-content:center">
+        <button class="btn pri" id="exCheck">✓ Проверить</button>
+        <button class="btn grn" id="exNext" style="display:none">Дальше →</button>
+      </div>
+      <div class="fb" id="exFb"></div>
+      <div class="solution" id="exSol"></div>
+    </div>
+    <div class="sheet" id="examEnd" style="display:none">
+      <div class="exam-res">
+        <div class="eyebrow">Результат зачёта</div>
+        <div class="big"><span id="exScore">0</span><span class="of"> / 5</span></div>
+        <p class="muted" id="exVerdict"></p>
+        <div class="btns" style="justify-content:center">
+          <button class="btn pri" id="exAgain">Пройти ещё раз</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
 <script>
-const STORE='mathExamCourseProgress.v1',TOPIC='likeTermsTrainer';
-const TASKS=[
-{level:1,terms:[['x',1,'x'],['2x',2,'x']],target:'x',sum:3,full:'3x',choices:['3x','2x²','x+2x','4x']},
-{level:1,terms:[['5a',5,'a'],['−a',-1,'a'],['2b',2,'b']],target:'a',sum:4,full:'4a+2b',choices:['4a+2b','6a+2b','5a−a+2b','4ab']},
-{level:1,terms:[['−b',-1,'b'],['4b',4,'b'],['3',3,'']],target:'b',sum:3,full:'3b+3',choices:['3b+3','5b+3','−5b+3','3b']},
-{level:2,terms:[['3xy',3,'xy'],['2yx',2,'xy'],['−xy',-1,'xy'],['x',1,'x']],target:'xy',sum:4,full:'4xy+x',choices:['4xy+x','4yx+x','6xy+x','4x+y']},
-{level:2,terms:[['2x',2,'x'],['3y',3,'y'],['−x',-1,'x'],['y',1,'y']],target:'y',sum:4,full:'x+4y',choices:['x+4y','3x+4y','x+3y','4xy']},
-{level:2,terms:[['ab',1,'ab'],['3ba',3,'ab'],['−2a',-2,'a'],['a',1,'a']],target:'ab',sum:4,full:'4ab−a',choices:['4ab−a','4ba−a','ab+3ba−a','4a−ab']},
-{level:3,terms:[['x²',1,'x2'],['2x',2,'x'],['−3x²',-3,'x2'],['x',1,'x']],target:'x2',sum:-2,full:'−2x²+3x',choices:['−2x²+3x','−2x+3x²','−2x²+x','3x²−2x']},
-{level:3,terms:[['xy',1,'xy'],['−yx',-1,'xy'],['5x',5,'x'],['−x',-1,'x']],target:'xy',sum:0,full:'4x',choices:['4x','0xy+4x','2xy+4x','4xy']},
-{level:3,terms:[['−mn',-1,'mn'],['4nm',4,'mn'],['−m',-1,'m'],['m',1,'m'],['7',7,'']],target:'mn',sum:3,full:'3mn+7',choices:['3mn+7','5mn+7','3m+n+7','3mn']},
-{level:4,terms:[['2xy',2,'xy'],['−3x',-3,'x'],['yx',1,'xy'],['x',1,'x'],['−5xy',-5,'xy']],target:'xy',sum:-2,full:'−2xy−2x',choices:['−2xy−2x','−2xy−4x','8xy−2x','−2x−2y']},
-{level:4,terms:[['a²',1,'a2'],['−a',-1,'a'],['3a²',3,'a2'],['5a',5,'a'],['−4',-4,'']],target:'a',sum:4,full:'4a²+4a−4',choices:['4a²+4a−4','4a²−6a−4','3a²+4a−4','4a+4']},
-{level:4,terms:[['−pq',-1,'pq'],['2qp',2,'pq'],['−3p',-3,'p'],['p',1,'p'],['q',1,'q']],target:'pq',sum:1,full:'pq−2p+q',choices:['pq−2p+q','3pq−2p+q','pq−4p+q','pq−2pq']}
+/* ============================================================
+   ДВИЖОК v2 — разбор, нормализация, сравнение, диагностика
+   ============================================================ */
+
+// --- нормализация пользовательского ввода ---
+const CYR = {'а':'a','в':'b','с':'c','д':'d','е':'e','к':'k','м':'m','н':'n','о':'o','р':'p','х':'x','у':'y','т':'t'};
+function normalizeInput(s){
+  s = String(s||'').toLowerCase();
+  s = s.replace(/[−–—]/g,'-');
+  s = s.replace(/\*\*/g,'^');
+  s = s.replace(/[·*×]/g,'');
+  s = s.replace(/\s+/g,'');
+  s = s.replace(/[а-яё]/g, ch => CYR[ch] !== undefined ? CYR[ch] : ch);
+  s = s.replace(/\^2/g,'²').replace(/\^3/g,'³');
+  return s;
+}
+
+// --- разбор строгий: возвращает {terms} или {error} ---
+function parseExprStrict(s, opts){
+  opts = opts || {};
+  s = opts.raw ? s : normalizeInput(s);
+  if(!s) return {error:'empty'};
+  if(s === '0') return {terms:[{coeff:0, vars:{}, key:'_const', hasNum:true, raw:'', src:'0'}]};
+  if(!/^[-+0-9a-z²³]+$/.test(s)) return {error:'format'};
+  if(/[-+]{2,}/.test(s)) return {error:'format'};
+  if(/[-+]$/.test(s)) return {error:'format'};
+  if(s[0] !== '-' && s[0] !== '+') s = '+' + s;
+  const toks = []; let buf='';
+  for(const c of s){
+    if((c==='+'||c==='-') && buf){ toks.push(buf); buf=c; }
+    else buf += c;
+  }
+  if(buf) toks.push(buf);
+  const terms = [];
+  for(const tok of toks){
+    const t = parseTermStrict(tok);
+    if(t.error) return {error:t.error, at:tok};
+    terms.push(t);
+  }
+  return {terms};
+}
+
+function parseTermStrict(str){
+  const src = str;
+  let i = 0, sign = 1;
+  if(str[0]==='+') i=1;
+  else if(str[0]==='-'){ sign=-1; i=1; }
+  let digits = '';
+  while(i < str.length && /[0-9]/.test(str[i])){ digits += str[i]; i++; }
+  const hasNum = digits.length > 0;
+  const coeff0 = hasNum ? parseInt(digits,10) : 1;
+  const vars = {};
+  let raw = '';
+  while(i < str.length){
+    const ch = str[i];
+    if(/[a-z]/.test(ch)){
+      let p = 1, pc = '';
+      i++;
+      if(i < str.length){
+        if(str[i]==='²'){ p=2; pc='²'; i++; }
+        else if(str[i]==='³'){ p=3; pc='³'; i++; }
+        else if(/[0-9]/.test(str[i])){
+          // цифра после буквы = степень (запись x2 означает x²)
+          const d = parseInt(str[i],10);
+          if(d===2){ p=2; pc='²'; i++; }
+          else if(d===3){ p=3; pc='³'; i++; }
+          else return {error:'power'};
+        }
+      }
+      raw += ch + pc;
+      vars[ch] = (vars[ch]||0) + p;
+    } else {
+      return {error:'format'};
+    }
+  }
+  for(const k in vars){ if(vars[k] > 3) return {error:'power'}; }
+  return {coeff: coeff0*sign, vars, key: keyOf(vars), hasNum, raw, src};
+}
+
+function keyOf(vars){
+  const ks = Object.keys(vars).sort();
+  if(!ks.length) return '_const';
+  return ks.map(k => vars[k]===1 ? k : k + (vars[k]===2 ? '²' : '³')).join('');
+}
+function displayKey(key){ return key === '_const' ? '' : key; }
+function keyLetters(key){ return key === '_const' ? '' : key.replace(/[²³]/g,''); }
+
+// --- группировка ---
+function buildGroups(terms){
+  const map = new Map();
+  terms.forEach((t,i) => {
+    if(!map.has(t.key)) map.set(t.key, {key:t.key, idxs:[], sum:0});
+    const g = map.get(t.key);
+    g.idxs.push(i);
+    g.sum += t.coeff;
+  });
+  const groups = [...map.values()];
+  groups.sort(groupOrder);
+  return groups;
+}
+function groupOrder(a,b){
+  if(a.key==='_const') return 1;
+  if(b.key==='_const') return -1;
+  const la = keyLetters(a.key), lb = keyLetters(b.key);
+  if(la !== lb) return la.length !== lb.length ? lb.length - la.length : la.localeCompare(lb);
+  // одни буквы, разные степени: старшая степень раньше
+  return b.key.length - a.key.length;
+}
+
+// --- форматирование ---
+function fmtHtml(s){ return String(s).replace(/²/g,'<sup>2</sup>').replace(/³/g,'<sup>3</sup>'); }
+function termText(coeff, key){
+  if(key==='_const' || key==='') return (coeff<0?'−':'') + Math.abs(coeff);
+  const a = Math.abs(coeff);
+  return (coeff<0?'−':'') + (a===1?'':a) + displayKey(key);
+}
+function exprText(groups){
+  const live = groups.filter(g => g.sum !== 0).slice().sort(groupOrder);
+  if(!live.length) return '0';
+  let out = '';
+  live.forEach((g,i) => {
+    if(i===0) out += termText(g.sum, g.key);
+    else {
+      out += g.sum < 0 ? ' − ' : ' + ';
+      const a = Math.abs(g.sum);
+      out += (a===1 && g.key!=='_const' ? '' : a) + displayKey(g.key);
+    }
+  });
+  return out;
+}
+// текст выражения из списка слагаемых (сохраняет raw-порядок букв)
+function exprFromTerms(terms){
+  let out = '';
+  terms.forEach((t,i) => {
+    const a = Math.abs(t.coeff);
+    const body = (t.key==='_const') ? String(a) : ((a===1 && !t.forceOne ? '' : a) + t.raw);
+    if(i===0) out += (t.coeff<0?'−':'') + body;
+    else out += (t.coeff<0 ? ' − ' : ' + ') + body;
+  });
+  return out;
+}
+// цепочка коэффициентов группы: "3 − 1 + 2"
+function coeffChain(terms, idxs){
+  let out = '';
+  idxs.forEach((i,k) => {
+    const c = terms[i].coeff;
+    if(k===0) out += (c<0 ? '−'+Math.abs(c) : String(c));
+    else out += c<0 ? ' − '+Math.abs(c) : ' + '+c;
+  });
+  return out;
+}
+
+// --- сравнение ответа ученика с правильным ---
+function nonzeroMap(groups){
+  const m = {};
+  groups.forEach(g => { if(g.sum !== 0) m[g.key] = g.sum; });
+  return m;
+}
+function compareAnswer(studentStr, correctTerms){
+  const parsed = parseExprStrict(studentStr);
+  if(parsed.error === 'empty') return {verdict:'empty'};
+  if(parsed.error) return {verdict:'format', at:parsed.at};
+  const sTerms = parsed.terms;
+  const sGroups = buildGroups(sTerms);
+  const cGroups = buildGroups(correctTerms);
+  const sMap = nonzeroMap(sGroups);
+  const cMap = nonzeroMap(cGroups);
+  const sKeys = Object.keys(sMap).sort();
+  const cKeys = Object.keys(cMap).sort();
+  const sameKeys = sKeys.join('|') === cKeys.join('|');
+  const mapsEqual = sameKeys && sKeys.every(k => sMap[k] === cMap[k]);
+
+  if(mapsEqual){
+    const notes = [];
+    // дубликаты ключей = не до конца приведено
+    const seen = new Set(); let dup = null;
+    for(const t of sTerms){
+      if(t.coeff === 0) continue;
+      if(seen.has(t.key)){ dup = t.key; break; }
+      seen.add(t.key);
+    }
+    if(dup) return {verdict:'notSimplified', key:dup};
+    // записанный нулевой член
+    if(sTerms.some(t => t.coeff===0 && sTerms.length>1)) notes.push('zero');
+    // явная единица "1x"
+    if(sTerms.some(t => t.hasNum && Math.abs(t.coeff)===1 && t.key!=='_const')) notes.push('one');
+    return {verdict:'correct', notes};
+  }
+
+  // ключи совпадают, значения нет
+  if(sameKeys){
+    const diffs = sKeys.filter(k => sMap[k] !== cMap[k]);
+    if(diffs.length && diffs.every(k => sMap[k] === -cMap[k]))
+      return {verdict:'sign', keys:diffs};
+    // потерянная невидимая единица
+    const lost = diffs.filter(k => {
+      const g = cGroups.find(g => g.key===k);
+      const delta = cMap[k] - sMap[k];
+      return g && g.idxs.some(i => !correctTerms[i].hasNum && correctTerms[i].coeff === delta);
+    });
+    if(lost.length === diffs.length) return {verdict:'lostOne', keys:diffs};
+    return {verdict:'arith', keys:diffs};
+  }
+
+  // разные наборы буквенных частей
+  const extra = sKeys.filter(k => !cKeys.includes(k));
+  const missing = cKeys.filter(k => !sKeys.includes(k));
+  // случай: перепутана степень (те же буквы, другая степень)
+  const powerMix = missing.some(m => sKeys.some(s => s !== m && keyLetters(s) === keyLetters(m)))
+               || extra.some(e => cKeys.some(c => c !== e && keyLetters(c) === keyLetters(e)));
+  return {verdict:'letters', extra, missing, powerMix};
+}
+
+/* ============================================================
+   ГЕНЕРАТОР ЗАДАЧ (5 уровней)
+   ============================================================ */
+function ri(a,b){ return a + Math.floor(Math.random()*(b-a+1)); }
+function pick(arr){ return arr[ri(0,arr.length-1)]; }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=ri(0,i); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function coeffNZ(lim){ let c=0; while(c===0) c=ri(-lim,lim); return c; }
+const LETTERS = ['x','y','a','b','m','n','c','k','p'];
+
+function mkTerm(coeff, raw){
+  const t = parseTermStrict((coeff<0?'-':'')+ (Math.abs(coeff)===1 && raw ? '' : Math.abs(coeff)) + raw);
+  // parseTermStrict сам вычислит vars/key; но для coeff=±1 без цифры hasNum=false — нам это и нужно
+  return t;
+}
+function mkNum(coeff){
+  return parseTermStrict((coeff<0?'-':'')+Math.abs(coeff));
+}
+
+function genLevel(level){
+  for(let attempt=0; attempt<60; attempt++){
+    const t = tryGen(level);
+    if(t) return t;
+  }
+  return tryGen(1); // страховка
+}
+function tryGen(level){
+  let terms = [];
+  if(level===1){
+    const v = pick(LETTERS);
+    const n = ri(2,3);
+    let bare = ri(0,1)===1;
+    for(let i=0;i<n;i++){
+      let c = coeffNZ(6);
+      if(bare && i===ri(0,n-1)){ c = pick([1,-1]); }
+      terms.push(mkTerm(c, v));
+    }
+    // гарантируем хотя бы одну «голую» единицу в половине случаев
+    if(bare && !terms.some(t=>!t.hasNum)) terms[0] = mkTerm(pick([1,-1]), v);
+  }
+  else if(level===2){
+    const [v1,v2] = shuffle(LETTERS.slice()).slice(0,2);
+    const n1 = 2, n2 = ri(1,2);
+    for(let i=0;i<n1;i++) terms.push(mkTerm(coeffNZ(6), v1));
+    for(let i=0;i<n2;i++) terms.push(mkTerm(coeffNZ(6), v2));
+    shuffle(terms);
+  }
+  else if(level===3){
+    const [v1,v2] = shuffle(LETTERS.slice()).slice(0,2);
+    terms.push(mkTerm(coeffNZ(6), v1));
+    terms.push(mkTerm(pick([1,-1]), v1));      // голая единица обязательна
+    terms.push(mkTerm(coeffNZ(6), v2));
+    if(ri(0,1)) terms.push(mkTerm(coeffNZ(5), v2));
+    terms.push(mkNum(coeffNZ(9)));
+    if(ri(0,1)) terms.push(mkNum(coeffNZ(9)));
+    shuffle(terms);
+  }
+  else if(level===4){
+    const [v1,v2] = shuffle(['x','y','a','b','m','n']).slice(0,2);
+    const fw = v1+v2, bw = v2+v1;
+    const n = ri(3,3);
+    let usedBw = false;
+    for(let i=0;i<n;i++){
+      const raw = (i===1 || (!usedBw && i===n-1)) ? bw : pick([fw,bw]);
+      if(raw===bw) usedBw = true;
+      let c = coeffNZ(5);
+      if(i===2 && ri(0,1)) c = pick([1,-1]);
+      terms.push(mkTerm(c, raw));
+    }
+    if(!usedBw) terms[1] = mkTerm(terms[1].coeff, bw);
+    // одиночная буква-дистрактор
+    terms.push(mkTerm(coeffNZ(5), v1));
+    if(ri(0,1)) terms.push(mkTerm(pick([1,-1]), v1));
+    shuffle(terms);
+  }
+  else { // level 5: степени, ловушки, исчезающие группы
+    const v = pick(['x','y','a','n','m']);
+    const zeroGroup = ri(0,2)===0; // в трети случаев одна группа схлопнется в 0
+    const c1 = coeffNZ(4), c2 = zeroGroup ? -c1 : coeffNZ(4);
+    terms.push(mkTerm(c1, v+'²'));
+    terms.push(mkTerm(c2, v+'²'));
+    terms.push(mkTerm(coeffNZ(5), v));
+    terms.push(mkTerm(pick([1,-1]), v));
+    if(ri(0,1)) terms.push(mkNum(coeffNZ(7)));
+    shuffle(terms);
+  }
+
+  // валидации
+  const groups = buildGroups(terms);
+  const live = groups.filter(g=>g.sum!==0);
+  if(level<=4 && live.length !== groups.length) return null;       // до 5 уровня группы не схлопываются
+  if(level<=2 && live.length===0) return null;
+  if(live.length===0 && level===5) return null;                    // совсем 0 не даём даже на 5
+  if(groups.some(g => Math.abs(g.sum) > 19)) return null;          // без монструозных сумм
+  if(terms.length > 7) return null;
+  return {terms, groups, level};
+}
+
+// Курируемые «злые» задачи для уровней 4–5
+const CURATED = [
+  {e:'2xy − 3x + yx + x − 5xy', l:4},
+  {e:'3xy + 2yx − xy + x', l:4},
+  {e:'ab + 3ba − 2a + a', l:4},
+  {e:'−mn + 4nm − m + m', l:5},
+  {e:'a² − a + 3a² + 5a − 4', l:5},
+  {e:'x² + 2x − 3x² + x', l:5},
+  {e:'2y² + 3y − y² + y', l:5},
+  {e:'xy − yx + 5x − x', l:5},
+  {e:'2x² + 3x − x² − 3x + 5', l:5}
 ];
-let mode='group',order=[],pos=0,selected=[],phase='select',mistake=false;
-const $=id=>document.getElementById(id);function sh(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}function st(){try{let d=JSON.parse(localStorage.getItem(STORE)||'{}');if(!d.topics)d.topics={};if(!d.topics[TOPIC])d.topics[TOPIC]={solved:0,correct:0,streak:0,bestStreak:0,history:[]};return d}catch{return{topics:{[TOPIC]:{solved:0,correct:0,streak:0,bestStreak:0,history:[]}}}}}function save(d){localStorage.setItem(STORE,JSON.stringify(d))}function rec(ok){let d=st(),s=d.topics[TOPIC];s.solved++;if(ok){s.correct++;s.streak++;s.bestStreak=Math.max(s.bestStreak,s.streak);s.history.unshift(1)}else{s.streak=0;s.history.unshift(0)}s.history=s.history.slice(0,10);save(d);stats()}
-function stats(){let s=st().topics[TOPIC];solved.textContent=s.solved;correct.textContent=s.correct;streak.textContent=s.streak;best.textContent=s.bestStreak;history.innerHTML='';for(let i=9;i>=0;i--){let d=document.createElement('div');d.className='dot';if(s.history[i]===1)d.classList.add('y');if(s.history[i]===0)d.classList.add('n');history.appendChild(d)}}
-function setMode(m){mode=m;modeGroup.classList.toggle('on',m==='group');modeFull.classList.toggle('on',m==='full');order=sh(TASKS.map((_,i)=>i));pos=0;render()}
-function t(){return TASKS[order[pos]]}function exprText(tt){let s='';tt.terms.forEach((a,i)=>{let txt=a[0];if(i===0)s+=txt;else if(txt.startsWith('−'))s+=' − '+txt.slice(1);else s+=' + '+txt});return s}
-function render(){selected=[];phase=mode==='group'?'select':'full';mistake=false;let tt=t();expr.innerHTML=mode==='group'?exprText(tt).replace(tt.target.includes('2')?'x²':tt.target, '<span class="target">'+prettyTarget(tt.target)+'</span>'):exprText(tt);msg.innerHTML='';chips.innerHTML='';if(mode==='group'){tt.terms.forEach((tr,i)=>{let b=document.createElement('button');b.className='chip';b.innerHTML=tr[0];b.onclick=()=>{b.classList.toggle('on');let j=selected.indexOf(i);if(j>=0)selected.splice(j,1);else selected.push(i)};chips.appendChild(b)});side.innerHTML=`<div class="steps"><div class="step active"><h3><span class="num">1</span>Найди все подобные к <b>${prettyTarget(tt.target)}</b></h3><div class="hint">Кликни все слагаемые с такой же буквенной частью. Помни: <b>xy</b> и <b>yx</b> — одно и то же.</div></div><div class="step"><h3><span class="num">2</span>Сложи коэффициенты</h3><div class="inputRow"><span class="mini">коэффициент =</span><input id="coef" type="number" placeholder="?"></div><div class="hint">У одинокой буквы коэффициент <b>1</b>, у минуса перед буквой — <b>−1</b>.</div></div></div>`}else{let choices=sh(tt.choices);side.innerHTML=`<div class="steps"><div class="step active"><h3><span class="num">1</span>Упрости выражение целиком</h3><div class="answerChoices">${choices.map(c=>`<button class="answer" onclick="chooseFull(this,'${c}')">${c}</button>`).join('')}</div><div class="hint">Сначала сгруппируй одинаковые буквенные части: x с x, xy с yx, x² отдельно от x.</div></div></div>`}stats()}
-function prettyTarget(k){return k==='xy'?'xy (= yx)':k==='ab'?'ab (= ba)':k==='mn'?'mn (= nm)':k==='pq'?'pq (= qp)':k==='x2'?'x²':k==='a2'?'a²':k||'числа'}
-function checkStep(){let tt=t();if(mode==='full'){msg.innerHTML='<div class="warn">В этом режиме выбери ответ справа.</div>';return}if(phase==='select'){let good=tt.terms.map((tr,i)=>tr[2]===tt.target?i:null).filter(x=>x!==null).sort((a,b)=>a-b);let sel=[...selected].sort((a,b)=>a-b);let ok=good.length===sel.length&&good.every((v,i)=>v===sel[i]);[...chips.children].forEach((b,i)=>{if(good.includes(i))b.classList.add('good');else if(sel.includes(i))b.classList.add('bad');else b.classList.add('dim')});if(ok){phase='coef';msg.innerHTML='<div class="okbox">Верно. Теперь сложи коэффициенты выбранных слагаемых.</div>';let steps=side.querySelectorAll('.step');steps[0].className='step done';steps[1].className='step active'}else{mistake=true;msg.innerHTML='<div class="errbox">Пока не все подобные выбраны. Проверь буквенную часть: порядок букв не важен, но степень важна.</div>'}return}if(phase==='coef'){let val=Number($('coef').value),ok=val===tt.sum;if(ok){msg.innerHTML=`<div class="okbox">Верно: коэффициент ${tt.sum}. Всё выражение упрощается до <b>${tt.full}</b>.</div>`;rec(!mistake);phase='done'}else{mistake=true;msg.innerHTML='<div class="errbox">Проверь коэффициенты. У одиночной буквы коэффициент 1, у минуса перед буквой −1.</div>'}}}
-function chooseFull(btn,val){let tt=t(),ok=val===tt.full;[...document.querySelectorAll('.answer')].forEach(b=>{if(b.textContent===tt.full)b.classList.add('good');else if(b===btn)b.classList.add('bad')});if(ok){msg.innerHTML='<div class="okbox">Верно. Подобные слагаемые собраны правильно.</div>';rec(true)}else{msg.innerHTML='<div class="errbox">Ошибка. Сначала собери группы по буквенной части, потом сложи коэффициенты.</div>';rec(false)}}
-function showHint(){let tt=t();msg.innerHTML=`<div class="warn">Подсказка: цель — <b>${prettyTarget(tt.target)}</b>. Коэффициенты нужной группы: ${tt.terms.filter(x=>x[2]===tt.target).map(x=>x[1]).join(' + ').replace('+ -','− ')}.</div>`}
-function showSolution(){let tt=t();msg.innerHTML=`<div class="okbox"><b>Решение:</b><br>Выражение: ${exprText(tt)}<br>Группа ${prettyTarget(tt.target)}: ${tt.terms.filter(x=>x[2]===tt.target).map(x=>x[0]).join(', ')}.<br>Коэффициент: ${tt.sum}.<br>Полный ответ: <b>${tt.full}</b>.</div>`}
-function nextTask(){pos=(pos+1)%order.length;render()}setMode('group');
+function genProblem(level){
+  if(level>=4 && Math.random() < 0.35){
+    const pool = CURATED.filter(c=>c.l===level);
+    if(pool.length){
+      const p = pick(pool);
+      const parsed = parseExprStrict(p.e);
+      return {terms:parsed.terms, groups:buildGroups(parsed.terms), level};
+    }
+  }
+  return genLevel(level);
+}
+
+
+/*__DOM__*/ /* всё выше — чистый движок, тестируется отдельно */
+
+/* ============================================================
+   ОБЩИЕ ХЕЛПЕРЫ РЕНДЕРА
+   ============================================================ */
+const $ = id => document.getElementById(id);
+function el(tag, cls, html){
+  const e = document.createElement(tag);
+  if(cls) e.className = cls;
+  if(html !== undefined) e.innerHTML = html;
+  return e;
+}
+function termBody(t){
+  const a = Math.abs(t.coeff);
+  if(t.key === '_const') return String(a);
+  return (a === 1 ? '' : a) + t.raw;
+}
+// выражение из спанов; styleByKey: {key -> индекс стиля 0..4}
+function renderExprInto(container, terms, styleByKey){
+  container.innerHTML = '';
+  terms.forEach((t,i) => {
+    if(i === 0){
+      if(t.coeff < 0) container.appendChild(el('span','sg','−'));
+    } else {
+      container.appendChild(el('span','sg', t.coeff < 0 ? '−' : '+'));
+    }
+    const s = el('span','tm math', fmtHtml(termBody(t)));
+    if(styleByKey && styleByKey[t.key] !== undefined) s.classList.add('gm'+styleByKey[t.key]);
+    container.appendChild(s);
+  });
+}
+function groupLabel(key){
+  return key === '_const' ? 'числа' : fmtHtml(displayKey(key));
+}
+function fb(elm, type, msg){
+  elm.className = 'fb show ' + type;
+  elm.innerHTML = msg;
+}
+function fbHide(elm){ elm.classList.remove('show'); }
+function plural(n, one, few, many){
+  const m10 = n % 10, m100 = n % 100;
+  if(m10 === 1 && m100 !== 11) return one;
+  if(m10 >= 2 && m10 <= 4 && (m100 < 10 || m100 >= 20)) return few;
+  return many;
+}
+
+/* ============================================================
+   ХРАНИЛИЩЕ (совместимо с курсом)
+   ============================================================ */
+const STORAGE_KEY = 'mathExamCourseProgress.v1';
+const TOPIC_ID = 'likeTermsFactory';
+function loadState(){
+  let base = {solved:0, correct:0, streak:0, bestStreak:0, history:[],
+              theory:{card:0, done:false}, exam:{best:null, runs:0}};
+  try{
+    const all = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const t = all[TOPIC_ID] || {};
+    base.solved = t.solved|0; base.correct = t.correct|0;
+    base.streak = t.streak|0; base.bestStreak = t.bestStreak|0;
+    base.history = Array.isArray(t.history) ? t.history : [];
+    if(t.theory) base.theory = {card: t.theory.card|0, done: !!t.theory.done};
+    if(t.exam) base.exam = {best: (t.exam.best ?? null), runs: t.exam.runs|0};
+  }catch(e){}
+  return base;
+}
+function saveState(){
+  try{
+    const all = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    all[TOPIC_ID] = Object.assign({}, all[TOPIC_ID] || {}, ST); // не трогаем чужие подключи
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+  }catch(e){}
+}
+let ST = loadState();
+function renderBadges(){
+  $('bTheory').innerHTML = ST.theory.done
+    ? '📖 теория: <b>✓ пройдена</b>'
+    : '📖 теория: <b>' + Math.min(ST.theory.card, 5) + '/5</b>';
+  $('bExam').innerHTML = '🏁 зачёт: <b>' + (ST.exam.best === null ? '—' : ST.exam.best + '/5') + '</b>';
+  $('tkTheory').hidden = !ST.theory.done;
+}
+function renderStats(){
+  $('sSolved').textContent = ST.solved;
+  $('sClean').textContent = ST.correct;
+  $('sStreak').textContent = ST.streak;
+  $('sBest').textContent = ST.bestStreak;
+}
+function statPush(clean, level){
+  ST.solved++;
+  if(clean){ ST.correct++; ST.streak++; if(ST.streak > ST.bestStreak) ST.bestStreak = ST.streak; }
+  else ST.streak = 0;
+  ST.history.unshift({ok: clean, l: level, t: Date.now()});
+  if(ST.history.length > 10) ST.history.length = 10;
+  saveState(); renderStats(); renderBadges();
+}
+
+/* ============================================================
+   ВКЛАДКИ
+   ============================================================ */
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.pane').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    $('pane-' + t.dataset.pane).classList.add('active');
+  });
+});
+
+/* ============================================================
+   ТЕОРИЯ — 5 карточек с мини-вопросами
+   ============================================================ */
+const THEORY = [
+{
+  title:'Яблоки и груши',
+  body:`
+    <p>Три яблока и два яблока — это пять яблок:</p>
+    <p style="text-align:center;font-size:26px">🍎🍎🍎 + 🍎🍎 = 🍎🍎🍎🍎🍎</p>
+    <p>В алгебре так же. Если <span class="math">x</span> — «яблоко», то:</p>
+    <div class="defbox" style="text-align:center"><span class="math">3x + 2x = 5x</span></div>
+    <p>А вот <b>яблоки с грушами не складываются</b>: 🍎🍎🍎 + 🍐🍐 — это просто «3 яблока и 2 груши», короче не скажешь. Поэтому <span class="math">3x + 2y</span> так и остаётся: <span class="math">3x + 2y</span>.</p>`,
+  q:'Посчитай: <span class="math">2a + 4a</span> = ?',
+  opts:['6a','8a','6a²'], correct:0,
+  explain:'Складываем только числа: 2 + 4 = 6, а буква остаётся той же: <span class="math">6a</span>. Буквы не перемножаются и не удваиваются.'
+},
+{
+  title:'Из чего состоит слагаемое',
+  body:`
+    <p>У каждого слагаемого три части:</p>
+    <div class="anat">
+      <span class="ap s">−</span><span class="ap c">7</span><span class="ap l">xy</span>
+    </div>
+    <div class="anatlbl"><div class="a1">знак</div><div class="a2">коэффи-<br>циент</div><div class="a3">буквенная<br>часть</div></div>
+    <p><b>Знак принадлежит слагаемому.</b> В записи <span class="math">5a − 7xy</span> минус — это не «действие между», а знак слагаемого <span class="math">−7xy</span>.</p>
+    <p><b>Невидимая единица.</b> Если перед буквой нет числа — коэффициент всё равно есть:</p>
+    <div class="defbox" style="text-align:center"><span class="math">x = 1·x</span> &nbsp;&nbsp;&nbsp; <span class="math">−y = −1·y</span></div>`,
+  q:'Какой коэффициент у слагаемого <span class="math">−x</span>?',
+  opts:['−1','0','1'], correct:0,
+  explain:'Число не написано — значит, коэффициент 1. А знак минус делает его равным −1: <span class="math">−x = −1·x</span>.'
+},
+{
+  title:'Какие слагаемые — подобные',
+  body:`
+    <div class="defbox"><b>Подобные слагаемые</b> — это слагаемые с <b>одинаковой буквенной частью</b>. Коэффициенты могут быть любыми.</div>
+    <table class="extable">
+      <tr><td>3x и −5x</td><td class="yes">подобные</td><td>одна буквенная часть: x</td></tr>
+      <tr><td>xy и yx</td><td class="yes">подобные</td><td>порядок букв не важен: xy = yx</td></tr>
+      <tr><td>4 и −9</td><td class="yes">подобные</td><td>числа без букв — тоже группа</td></tr>
+      <tr><td>x и x²</td><td class="no">нет</td><td>степень — часть буквенной части!</td></tr>
+      <tr><td>2x и 2y</td><td class="no">нет</td><td>буквы разные</td></tr>
+      <tr><td>5 и 5x</td><td class="no">нет</td><td>у одного буква есть, у другого нет</td></tr>
+    </table>`,
+  q:'Какая пара — подобные слагаемые?',
+  opts:['3n и −n','m и m²','2a и 2b'], correct:0,
+  explain:'У <span class="math">3n</span> и <span class="math">−n</span> одинаковая буквенная часть <span class="math">n</span>. Во второй паре разные степени, в третьей — разные буквы.'
+},
+{
+  title:'Почему коэффициенты складываются',
+  body:`
+    <p>Это распределительное свойство, вынесение общего множителя:</p>
+    <div class="defbox" style="text-align:center"><span class="math">5x + 3x = (5 + 3)·x = 8x</span></div>
+    <div class="tiles">
+      <span class="tile math">x</span><span class="tile math">x</span><span class="tile math">x</span><span class="tile math">x</span><span class="tile math">x</span>
+      <span class="plus">+</span>
+      <span class="tile math">x</span><span class="tile math">x</span><span class="tile math">x</span>
+      <span class="arr">=</span>
+      <span class="math" style="font-size:24px">8x</span>
+    </div>
+    <p>С вычитанием то же самое: <span class="math">5x − 3x = (5 − 3)·x = 2x</span>. Мы работаем <b>только с числами</b>, буквенная часть переписывается без изменений.</p>`,
+  q:'Посчитай: <span class="math">7y − y</span> = ?',
+  opts:['6y','7','6'], correct:0,
+  explain:'(7 − 1)·y = <span class="math">6y</span>. Единица у второго слагаемого невидима, но она есть.'
+},
+{
+  title:'Алгоритм и особые случаи',
+  body:`
+    <p><b>Привести подобные слагаемые</b> — значит заменить каждую группу одним слагаемым. Отсюда и название темы. Делается это в три шага:</p>
+    <ol class="algolist">
+      <li><b>Найди группы</b> подобных слагаемых — подчеркни каждую группу по-своему (одной чертой, двумя, волнистой…). Знак бери вместе со слагаемым.</li>
+      <li><b>Сложи коэффициенты</b> внутри каждой группы. Буквенную часть не трогай.</li>
+      <li><b>Запиши результат</b> — по одному слагаемому от каждой группы.</li>
+    </ol>
+    <div class="special">⚡ Если коэффициенты дали <b>0</b> — слагаемое исчезает: <span class="math">3x − 3x = 0</span> (в ответ не пишем).</div>
+    <div class="special">⚡ Коэффициент <b>1</b> не записывают: вместо <span class="math">1a</span> пишем просто <span class="math">a</span>.</div>
+    <div class="special">⚡ Порядок слагаемых в ответе не важен: <span class="math">3x − 2y</span> и <span class="math">−2y + 3x</span> — один и тот же ответ.</div>`,
+  q:'Чему равно <span class="math">5m − 5m</span>?',
+  opts:['0','m','5'], correct:0,
+  explain:'Коэффициенты: 5 − 5 = 0. Ноль умножить на <span class="math">m</span> — ноль. Слагаемое просто исчезает.'
+}
+];
+
+let tCard = Math.min(ST.theory.card, THEORY.length - 1);
+let tAnswered = ST.theory.done;
+
+function renderTheory(){
+  const dots = $('tdots'); dots.innerHTML = '';
+  THEORY.forEach((_,i) => {
+    const d = el('span');
+    if(i < tCard || ST.theory.done) d.classList.add('done');
+    if(i === tCard) d.classList.add('cur');
+    dots.appendChild(d);
+  });
+  const c = THEORY[tCard];
+  const box = $('tcard');
+  box.innerHTML = '';
+  box.appendChild(el('div','eyebrow','Карточка ' + (tCard+1) + ' из ' + THEORY.length));
+  box.appendChild(el('h2', null, c.title));
+  box.appendChild(el('div', null, c.body));
+  const quiz = el('div','quiz');
+  quiz.appendChild(el('div','q','Проверь себя: ' + c.q));
+  const opts = el('div','qopts');
+  const exp = el('div','fb');
+  c.opts.forEach((o,i) => {
+    const b = el('button','qopt', fmtHtml(o));
+    b.addEventListener('click', () => {
+      if(i === c.correct){
+        opts.querySelectorAll('.qopt').forEach(x => x.disabled = true);
+        b.classList.add('ok');
+        fb(exp,'ok','✓ Верно! ' + c.explain);
+        tAnswered = true;
+        $('tNext').disabled = false;
+        if(tCard >= ST.theory.card && !ST.theory.done){
+          ST.theory.card = tCard + 1;
+          if(ST.theory.card >= THEORY.length) ST.theory.done = true;
+          saveState(); renderBadges();
+        }
+      } else {
+        b.classList.add('no');
+        fb(exp,'err','Пока нет. ' + c.explain + ' Попробуй ещё раз.');
+        setTimeout(() => b.classList.remove('no'), 450);
+      }
+    });
+    opts.appendChild(b);
+  });
+  quiz.appendChild(opts);
+  quiz.appendChild(exp);
+  box.appendChild(quiz);
+
+  $('tPrev').disabled = tCard === 0;
+  const passedBefore = ST.theory.done || tCard < ST.theory.card;
+  $('tNext').disabled = !passedBefore;
+  $('tNext').textContent = tCard === THEORY.length - 1 ? 'К разбору →' : 'Дальше →';
+}
+$('tPrev').addEventListener('click', () => { if(tCard > 0){ tCard--; renderTheory(); } });
+$('tNext').addEventListener('click', () => {
+  if(tCard < THEORY.length - 1){ tCard++; renderTheory(); }
+  else { document.querySelector('[data-pane="demo"]').click(); }
+});
+
+/* ============================================================
+   РАЗБОР — примеры с пошаговым объяснением
+   ============================================================ */
+const EXAMPLES = [
+{
+  expr:'5a + 2b − 3a + b',
+  steps:[
+    {note:'Перед нами четыре слагаемых. Вспоминаем: подобные — это слагаемые с <b>одинаковой буквенной частью</b>. Пойдём по шагам.'},
+    {mark:['a'], note:'<b>Шаг 1.</b> Ищем первую группу. Буквенная часть «<span class="math">a</span>» есть у <span class="math">5a</span> и <span class="math">−3a</span> — подчёркиваем их одной чертой. Минус берём вместе со слагаемым!'},
+    {mark:['a','b'], note:'<b>Шаг 2.</b> Вторая группа — «<span class="math">b</span>»: это <span class="math">2b</span> и <span class="math">b</span>. У <span class="math">b</span> коэффициент не написан, но он есть: <span class="math">b = 1·b</span>.'},
+    {mark:['a','b'], sums:true, note:'<b>Шаг 3.</b> Складываем коэффициенты в каждой группе. Буквы не трогаем — просто переписываем.'},
+    {mark:['a','b'], sums:true, final:true, note:'<b>Шаг 4.</b> Записываем по одному слагаемому от каждой группы: <span class="math">5a + 2b − 3a + b = 2a + 3b</span>. Готово!'}
+  ]
+},
+{
+  expr:'3xy + 2yx − xy + x',
+  steps:[
+    {note:'Здесь есть хитрость: посмотри внимательно на буквенные части. <span class="math">xy</span> и <span class="math">yx</span> — это одно и то же или нет?'},
+    {mark:['xy'], note:'<b>Шаг 1.</b> От перестановки множителей произведение не меняется: <span class="math">yx = xy</span>. Значит <span class="math">3xy</span>, <span class="math">2yx</span> и <span class="math">−xy</span> — одна группа из трёх слагаемых.'},
+    {mark:['xy','x'], note:'<b>Шаг 2.</b> А вот у <span class="math">x</span> пары нет: буквенная часть «<span class="math">x</span>» — это не «<span class="math">xy</span>». Одинокое слагаемое просто перенесём в ответ без изменений.'},
+    {mark:['xy','x'], sums:true, note:'<b>Шаг 3.</b> Считаем коэффициенты группы <span class="math">xy</span>: 3 + 2 − 1 = 4. Слагаемое <span class="math">x</span> переносим как есть.'},
+    {mark:['xy','x'], sums:true, final:true, note:'<b>Шаг 4.</b> Ответ: <span class="math">4xy + x</span>. Дальше упростить нельзя — буквенные части разные.'}
+  ]
+},
+{
+  expr:'2x² + 3x − x² − 3x + 5',
+  steps:[
+    {note:'Самый коварный пример. Кандидатов три: <span class="math">x²</span>, <span class="math">x</span> и просто число. Не перепутай степени!'},
+    {mark:['x²'], note:'<b>Шаг 1.</b> Группа «<span class="math">x²</span>»: это <span class="math">2x²</span> и <span class="math">−x²</span>. Важно: <span class="math">x</span> и <span class="math">x²</span> — <b>разные</b> буквенные части, их складывать нельзя.'},
+    {mark:['x²','x'], note:'<b>Шаг 2.</b> Группа «<span class="math">x</span>»: <span class="math">3x</span> и <span class="math">−3x</span>. Подчёркиваем волнистой.'},
+    {mark:['x²','x','_const'], note:'<b>Шаг 3.</b> Число <span class="math">5</span> — тоже группа, хоть и из одного слагаемого. Числа без букв подобны друг другу.'},
+    {mark:['x²','x','_const'], sums:true, note:'<b>Шаг 4.</b> Считаем: у <span class="math">x²</span> выходит 2 − 1 = 1 → пишем просто <span class="math">x²</span> (единицу не пишут). У <span class="math">x</span> выходит 3 − 3 = 0 → группа <b>исчезает</b>!'},
+    {mark:['x²','x','_const'], sums:true, final:true, note:'<b>Шаг 5.</b> Ответ: <span class="math">x² + 5</span>. Два слагаемых из пяти — вот зачем нужно приведение.'}
+  ]
+}
+];
+let demoIdx = 0, demoStep = 0, demoP = null;
+
+function loadDemo(i){
+  demoIdx = i; demoStep = 0;
+  const parsed = parseExprStrict(EXAMPLES[i].expr);
+  demoP = {terms: parsed.terms, groups: buildGroups(parsed.terms)};
+  document.querySelectorAll('#expick .lvl').forEach((b,k) => b.classList.toggle('active', k === i));
+  renderDemo();
+}
+function renderDemo(){
+  const ex = EXAMPLES[demoIdx];
+  const st = ex.steps[demoStep];
+  const styleByKey = {};
+  (st.mark || []).forEach((k,i) => styleByKey[k] = i);
+  renderExprInto($('demoExpr'), demoP.terms, styleByKey);
+
+  const sums = $('demoSums');
+  sums.classList.toggle('show', !!st.sums);
+  if(st.sums){
+    sums.innerHTML = '';
+    (st.mark || []).forEach((key,i) => {
+      const g = demoP.groups.find(g => g.key === key);
+      const row = el('div','sumrow');
+      row.appendChild(el('span','dotm gm'+i));
+      row.appendChild(el('span','who', groupLabel(key) + ':'));
+      if(g.idxs.length > 1){
+        row.appendChild(el('span','chain', coeffChain(demoP.terms, g.idxs) + ' ='));
+        row.appendChild(el('span', null, '<b>' + (g.sum<0?'−':'') + Math.abs(g.sum) + '</b>'));
+        if(g.sum === 0) row.appendChild(el('span','lone','→ слагаемое исчезает'));
+        else if(Math.abs(g.sum) === 1 && key !== '_const') row.appendChild(el('span','lone','→ пишем просто ' + displayKey(key)));
+      } else {
+        row.appendChild(el('span','chain', fmtHtml(termText(g.sum, key))));
+        row.appendChild(el('span','lone','→ переносится без изменений'));
+      }
+      sums.appendChild(row);
+    });
+  }
+  const fin = $('demoFinal');
+  fin.classList.toggle('show', !!st.final);
+  if(st.final) $('demoFinalVal').innerHTML = fmtHtml(exprText(demoP.groups));
+
+  $('demoNote').innerHTML = st.note;
+  $('dPrev').disabled = demoStep === 0;
+  $('dNext').textContent = demoStep === ex.steps.length - 1
+    ? (demoIdx < EXAMPLES.length - 1 ? 'Следующий пример →' : 'К тренировке →')
+    : 'Следующий шаг →';
+}
+$('dPrev').addEventListener('click', () => { if(demoStep > 0){ demoStep--; renderDemo(); } });
+$('dNext').addEventListener('click', () => {
+  const ex = EXAMPLES[demoIdx];
+  if(demoStep < ex.steps.length - 1){ demoStep++; renderDemo(); }
+  else if(demoIdx < EXAMPLES.length - 1){ loadDemo(demoIdx + 1); }
+  else { document.querySelector('[data-pane="train"]').click(); }
+});
+const DEMO_TAGS = ['базовый', 'yx = xy', 'степени и ноль'];
+(function initDemoPicker(){
+  const pick = $('expick');
+  EXAMPLES.forEach((ex,i) => {
+    const b = el('button','lvl','Пример ' + (i+1) + ' · ' + DEMO_TAGS[i]);
+    b.addEventListener('click', () => loadDemo(i));
+    pick.appendChild(b);
+  });
+})();
+
+/* ============================================================
+   ТРЕНИРОВКА — направляемое решение в 3 фазы
+   ============================================================ */
+let trLevel = 1, trMix = false;
+const LVL_CAP = {
+  1:'Уровень 1 — одна буква: учимся складывать коэффициенты.',
+  2:'Уровень 2 — две буквы: раскладываем слагаемые на группы.',
+  3:'Уровень 3 — появляются числа и невидимые единицы.',
+  4:'Уровень 4 — xy и yx: порядок букв не важен.',
+  5:'Уровень 5 — степени, ловушки и исчезающие группы.'
+};
+let TP = null; // {terms, groups, level}
+let trPhase = 0, trConfirmed = [], trErr = 0, trRevealed = false, trDone = false;
+
+(function initLevels(){
+  const box = $('lvls');
+  for(let l = 1; l <= 5; l++){
+    const b = el('button','lvl','' + l);
+    b.dataset.l = l;
+    b.addEventListener('click', () => { trMix = false; trLevel = l; markLvls(); newTrainProblem(); });
+    box.appendChild(b);
+  }
+  const mix = el('button','lvl','Микс');
+  mix.dataset.l = 'mix';
+  mix.addEventListener('click', () => { trMix = true; markLvls(); newTrainProblem(); });
+  box.appendChild(mix);
+})();
+function markLvls(){
+  document.querySelectorAll('#lvls .lvl').forEach(b => {
+    b.classList.toggle('active', trMix ? b.dataset.l === 'mix' : +b.dataset.l === trLevel);
+  });
+}
+function setPhase(p){
+  trPhase = p;
+  document.querySelectorAll('.phases .ph').forEach(x => {
+    const i = +x.dataset.ph;
+    x.classList.toggle('cur', i === p);
+    x.classList.toggle('did', i < p);
+  });
+  $('trCheck').textContent = p === 0 ? '✓ Отметить группу' : '✓ Проверить суммы';
+  $('trCheck').style.display = p === 2 ? 'none' : '';
+  $('trHint').style.display = p === 2 ? 'none' : '';
+  $('trStep').style.display = p === 2 ? 'none' : '';
+  $('trNext').style.display = p === 2 ? '' : 'none';
+}
+function styleMap(){
+  const m = {};
+  trConfirmed.forEach((c,i) => m[c.key] = i);
+  return m;
+}
+function newTrainProblem(){
+  const lvl = trMix ? pick([1,2,3,3,4,4,5,5]) : trLevel;
+  TP = genProblem(lvl);
+  $('lvlCap').textContent = (trMix ? 'Микс · ' : '') + LVL_CAP[TP.level];
+  trConfirmed = []; trErr = 0; trRevealed = false; trDone = false;
+  fbHide($('trFb'));
+  $('trSums').classList.remove('show'); $('trSums').innerHTML = '';
+  $('trFinal').classList.remove('show'); $('trNotes').innerHTML = '';
+  setPhase(0);
+  renderTrain();
+}
+function renderTrain(){
+  renderExprInto($('trExpr'), TP.terms, styleMap());
+  const chips = $('trChips'); chips.innerHTML = '';
+  const doneIdx = new Set(trConfirmed.flatMap(c => c.idxs));
+  TP.terms.forEach((t,i) => {
+    const b = el('button','chip');
+    const sg = el('span','sg' + (t.coeff >= 0 ? ' plus' : ''), t.coeff < 0 ? '−' : '+');
+    b.appendChild(sg);
+    b.appendChild(el('span','math', fmtHtml(termBody(t))));
+    b.dataset.i = i;
+    if(doneIdx.has(i)){
+      b.classList.add('done');
+      const ci = trConfirmed.findIndex(c => c.idxs.includes(i));
+      b.classList.add('gm' + ci);
+      b.disabled = true;
+    } else {
+      b.addEventListener('click', () => { b.classList.toggle('sel'); });
+    }
+    chips.appendChild(b);
+  });
+  $('trMeta').textContent = 'Отмечено групп: ' + trConfirmed.length + ' из ' + TP.groups.length +
+    (trPhase === 0 ? ' · кликай слагаемые одной группы и жми «Отметить группу»' : '');
+}
+function selectedIdxs(){
+  return [...document.querySelectorAll('#trChips .chip.sel')].map(b => +b.dataset.i);
+}
+/* --- Фаза A: проверка выделенной группы --- */
+function checkGroupSelection(){
+  const sel = selectedIdxs();
+  const F = $('trFb');
+  if(!sel.length){
+    fb(F,'hint','Сначала кликни по слагаемым, которые считаешь подобными, — они выделятся синим.');
+    return;
+  }
+  const keys = [...new Set(sel.map(i => TP.terms[i].key))];
+  if(keys.length > 1){
+    trErr++;
+    // диагностика смешения
+    for(const a of keys) for(const b of keys){
+      if(a < b && a !== '_const' && b !== '_const' && keyLetters(a) === keyLetters(b)){
+        fb(F,'err','Ловушка со степенью! <span class="math">' + fmtHtml(displayKey(a)) + '</span> и <span class="math">' + fmtHtml(displayKey(b)) + '</span> — <b>разные</b> буквенные части: степень должна совпадать.');
+        return shakeSel();
+      }
+    }
+    if(keys.includes('_const')){
+      fb(F,'err','Числа без букв — отдельная группа. Их нельзя смешивать со слагаемыми, у которых есть буквы.');
+      return shakeSel();
+    }
+    fb(F,'err','В выделении разные буквенные части: ' + keys.map(k => '«' + groupLabel(k) + '»').join(' и ') + '. Подобные — только с одинаковой.');
+    return shakeSel();
+  }
+  const key = keys[0];
+  const g = TP.groups.find(g => g.key === key);
+  if(trConfirmed.some(c => c.key === key)){
+    fb(F,'hint','Эта группа уже отмечена. Выбери слагаемые другой группы.');
+    return;
+  }
+  const gset = new Set(g.idxs);
+  const missing = g.idxs.filter(i => !sel.includes(i));
+  if(missing.length){
+    trErr++;
+    const mt = TP.terms[missing[0]];
+    if(!mt.hasNum && mt.key !== '_const'){
+      fb(F,'err','В этой группе есть ещё слагаемое. Подсказка: у <span class="math">' + fmtHtml((mt.coeff<0?'−':'') + mt.raw) + '</span> тоже есть коэффициент — невидимая ' + (mt.coeff<0?'−1':'1') + '.');
+    } else if(mt.key !== '_const' && mt.raw !== keyLetters(mt.key)){
+      fb(F,'err','Есть ещё! Помни: порядок букв не важен — <span class="math">' + fmtHtml(mt.raw) + '</span> это то же самое, что <span class="math">' + fmtHtml(keyLetters(mt.key)) + '</span>.');
+    } else {
+      fb(F,'err','Группа неполная — в выражении есть ещё ' + (missing.length === 1 ? 'одно подобное слагаемое' : 'подобные слагаемые') + '. Поищи внимательнее.');
+    }
+    return shakeSel();
+  }
+  // sel ⊆ g.idxs и покрывает всё → группа верна
+  trConfirmed.push({key, idxs: g.idxs.slice()});
+  document.querySelectorAll('#trChips .chip.sel').forEach(b => b.classList.remove('sel'));
+  if(g.idxs.length === 1){
+    fb(F,'ok','Верно: у <span class="math">' + fmtHtml(termText(TP.terms[g.idxs[0]].coeff, key)) + '</span> пары нет — перенесём его в ответ без изменений.');
+  } else {
+    fb(F,'ok','Группа «' + groupLabel(key) + '» собрана: ' + g.idxs.length + ' ' + plural(g.idxs.length,'слагаемое','слагаемых','слагаемых') + '. Отлично!');
+  }
+  renderTrain();
+  if(trConfirmed.length === TP.groups.length) setTimeout(startSums, 500);
+}
+function shakeSel(){
+  document.querySelectorAll('#trChips .chip.sel').forEach(b => {
+    b.classList.add('shake');
+    setTimeout(() => b.classList.remove('shake'), 380);
+  });
+}
+/* --- Фаза B: суммы коэффициентов --- */
+function startSums(){
+  setPhase(1);
+  fbHide($('trFb'));
+  const box = $('trSums'); box.innerHTML = ''; box.classList.add('show');
+  trConfirmed.forEach((c,i) => {
+    const g = TP.groups.find(g => g.key === c.key);
+    const row = el('div','sumrow');
+    row.appendChild(el('span','dotm gm' + i));
+    row.appendChild(el('span','who', groupLabel(c.key) + ':'));
+    if(g.idxs.length > 1){
+      row.appendChild(el('span','chain', coeffChain(TP.terms, g.idxs) + ' ='));
+      const inp = el('input','sumin');
+      inp.type = 'text'; inp.dataset.key = c.key; inp.placeholder = '?';
+      inp.addEventListener('input', () => inp.classList.remove('no'));
+      inp.addEventListener('keydown', e => { if(e.key === 'Enter') checkSums(); });
+      row.appendChild(inp);
+      if(c.key !== '_const') row.appendChild(el('span', 'math', '· ' + fmtHtml(displayKey(c.key))));
+    } else {
+      row.appendChild(el('span','chain', fmtHtml(termText(g.sum, c.key))));
+      row.appendChild(el('span','lone','→ переносится без изменений'));
+    }
+    box.appendChild(row);
+  });
+  $('trMeta').textContent = 'Сложи коэффициенты каждой группы. Буквы не трогаем!';
+  const first = box.querySelector('.sumin');
+  if(first) first.focus();
+  else finishTrain(); // все группы одиночные
+}
+function checkSums(){
+  if(trPhase !== 1) return;
+  const inputs = [...document.querySelectorAll('#trSums .sumin')];
+  let allOk = true, anyWrong = false;
+  inputs.forEach(inp => {
+    const g = TP.groups.find(g => g.key === inp.dataset.key);
+    const v = inp.value.trim().replace(/[−–—]/g,'-');
+    const n = /^[-+]?\d+$/.test(v) ? parseInt(v,10) : NaN;
+    if(n === g.sum){ inp.classList.add('ok'); inp.classList.remove('no'); inp.disabled = true; }
+    else { inp.classList.add('no'); inp.classList.remove('ok'); allOk = false; if(v !== '') anyWrong = true; }
+  });
+  const F = $('trFb');
+  if(allOk){ finishTrain(); }
+  else {
+    if(anyWrong) trErr++;
+    fb(F,'err','Не всё сходится. Помни: складываем <b>только коэффициенты</b>, со знаками. Красные поля — заполни или пересчитай.');
+  }
+}
+/* --- Фаза C: итог --- */
+function finishTrain(){
+  setPhase(2);
+  trDone = true;
+  const F = $('trFb'); fbHide(F);
+  $('trFinalVal').innerHTML = fmtHtml(exprText(TP.groups));
+  $('trChain').innerHTML = fmtHtml(exprFromTerms(TP.terms) + ' = ' + exprText(TP.groups));
+  const notes = $('trNotes'); notes.innerHTML = '';
+  TP.groups.forEach(g => {
+    if(g.sum === 0)
+      notes.appendChild(el('div', null, '⚡ Группа «' + groupLabel(g.key) + '»: коэффициенты дали 0 — слагаемое исчезло.'));
+    else if(Math.abs(g.sum) === 1 && g.key !== '_const')
+      notes.appendChild(el('div', null, '⚡ Коэффициент 1 не пишем: вместо 1·' + displayKey(g.key) + ' — просто ' + (g.sum<0?'−':'') + displayKey(g.key) + '.'));
+  });
+  if(TP.terms.some(t => t.key !== '_const' && t.raw !== keyLetters(t.key)))
+    notes.appendChild(el('div', null, '⚡ Порядок букв выровняли: например, yx записываем как xy.'));
+  $('trFinal').classList.add('show');
+  $('trMeta').textContent = '';
+  const clean = trErr === 0 && !trRevealed;
+  statPush(clean, TP.level);
+  fb(F, clean ? 'ok' : 'hint', clean
+    ? '🎉 Решено без единой ошибки! Серия: ' + ST.streak + '.' + (ST.streak >= 3 ? ' Похоже, ты готов — загляни во вкладку «Зачёт»!' : '')
+    : 'Задача разобрана' + (trRevealed ? ' (с показом шагов)' : ', но были ошибки: ' + trErr) + '. В статистику «без ошибок» не идёт — но ты разобрался, это главное.');
+}
+/* --- Подсказка и показ шага --- */
+$('trHint').addEventListener('click', () => {
+  const F = $('trFb');
+  if(trPhase === 0){
+    if(trErr >= 2){
+      const left = TP.groups.filter(g => !trConfirmed.some(c => c.key === g.key));
+      fb(F,'hint','Всего групп: ' + TP.groups.length + '. Осталось найти: ' + left.map(g => '«' + groupLabel(g.key) + '»').join(', ') + '. Смотри только на буквенные части.');
+    } else {
+      fb(F,'hint','Смотри только на <b>буквенные части</b> (буквы и их степени). Коэффициенты и знаки не важны для поиска группы. Не забудь: числа без букв — тоже группа, а yx = xy.');
+    }
+  } else if(trPhase === 1){
+    fb(F,'hint','Иди по цепочке слева направо: первый коэффициент, потом прибавляй или вычитай следующие. Знак принадлежит числу: «− 3» значит прибавить (−3).');
+  }
+});
+$('trStep').addEventListener('click', () => {
+  trRevealed = true;
+  if(trPhase === 0){
+    const g = TP.groups.find(g => !trConfirmed.some(c => c.key === g.key));
+    if(!g) return;
+    trConfirmed.push({key: g.key, idxs: g.idxs.slice()});
+    fb($('trFb'),'hint','Показываю: группа «' + groupLabel(g.key) + '» — это ' + g.idxs.map(i => '<span class="math">' + fmtHtml((TP.terms[i].coeff < 0 ? '−' : '+') + termBody(TP.terms[i])) + '</span>').join(', ') + '.');
+    renderTrain();
+    if(trConfirmed.length === TP.groups.length) setTimeout(startSums, 600);
+  } else if(trPhase === 1){
+    const inp = [...document.querySelectorAll('#trSums .sumin')].find(i => !i.disabled);
+    if(!inp) return;
+    const g = TP.groups.find(g => g.key === inp.dataset.key);
+    inp.value = g.sum; inp.classList.add('ok'); inp.disabled = true;
+    if([...document.querySelectorAll('#trSums .sumin')].every(i => i.disabled)) finishTrain();
+  }
+});
+$('trCheck').addEventListener('click', () => { trPhase === 0 ? checkGroupSelection() : checkSums(); });
+$('trNext').addEventListener('click', newTrainProblem);
+$('sReset').addEventListener('click', () => {
+  if(!confirm('Сбросить статистику тренировки?')) return;
+  ST.solved = 0; ST.correct = 0; ST.streak = 0; ST.bestStreak = 0; ST.history = [];
+  saveState(); renderStats();
+});
+
+/* ============================================================
+   ЗАЧЁТ — свободный ввод ответа, 5 задач, 3 попытки
+   ============================================================ */
+let EX = null; // {tasks, idx, score, attempts, states[]}
+function examStart(){
+  EX = {tasks: [1,2,3,4,5].map(l => genProblem(l)), idx: 0, score: 0, attempts: 0, states: [null,null,null,null,null]};
+  $('examStart').style.display = 'none';
+  $('examEnd').style.display = 'none';
+  $('examTask').style.display = '';
+  examRenderTask();
+}
+function examRenderTask(){
+  const t = EX.tasks[EX.idx];
+  EX.attempts = 0;
+  $('exLbl').textContent = 'Задание ' + (EX.idx + 1) + ' из 5';
+  renderExprInto($('exExpr'), t.terms, null);
+  $('exIn').value = ''; $('exIn').disabled = false;
+  $('exCheck').style.display = ''; $('exNext').style.display = 'none';
+  fbHide($('exFb'));
+  $('exSol').classList.remove('show'); $('exSol').innerHTML = '';
+  const prog = $('exProg'); prog.innerHTML = '';
+  for(let i = 0; i < 5; i++){
+    const s = el('span', null, '' + (i+1));
+    if(EX.states[i] === true) s.classList.add('win');
+    if(EX.states[i] === false) s.classList.add('lose');
+    if(i === EX.idx) s.classList.add('cur');
+    prog.appendChild(s);
+  }
+  $('exIn').focus();
+}
+function examShowSolution(t){
+  const box = $('exSol');
+  box.innerHTML = '<b>Решение.</b>';
+  const style = {};
+  t.groups.forEach((g,i) => style[g.key] = i);
+  const line = el('div','sr');
+  renderExprInto(line, t.terms, style);
+  box.appendChild(line);
+  t.groups.forEach((g,i) => {
+    const r = el('div','sr');
+    r.appendChild(el('span','dotm gm' + i));
+    if(g.idxs.length > 1)
+      r.appendChild(el('span', null, groupLabel(g.key) + ': ' + coeffChain(t.terms, g.idxs) + ' = <b>' + (g.sum<0?'−':'')+Math.abs(g.sum) + '</b>' + (g.sum === 0 ? ' → исчезает' : '')));
+    else
+      r.appendChild(el('span', null, groupLabel(g.key) + ': ' + fmtHtml(termText(g.sum, g.key)) + ' → без изменений'));
+    box.appendChild(r);
+  });
+  box.appendChild(el('div','sr','Ответ: <b>' + fmtHtml(exprText(t.groups)) + '</b>'));
+  box.classList.add('show');
+}
+function examMsg(res, t){
+  const parts = t.groups.filter(g => g.sum !== 0).map(g => '«' + groupLabel(g.key) + '»').join(', ');
+  switch(res.verdict){
+    case 'empty': return {t:'hint', m:'Введи ответ — как записал бы в тетради, например <span class="math">3x − 2y</span>.', free:true};
+    case 'format': return {t:'err', m:'Не могу разобрать запись' + (res.at ? ' возле «' + res.at + '»' : '') + '. Пиши так: <span class="math">3x − 2y</span>; степень — <span class="math">x²</span>, x^2 или x2.', free:true};
+    case 'notSimplified': return {t:'err', m:'Значение верное, но выражение <b>не приведено до конца</b>: слагаемые с частью «' + groupLabel(res.key) + '» ещё можно сложить.'};
+    case 'sign': return {t:'err', m:'Проверь <b>знаки</b> у ' + res.keys.map(groupLabel).map(k => '«' + k + '»').join(', ') + '. Помни: знак принадлежит слагаемому — минус перед слагаемым делает его коэффициент отрицательным.'};
+    case 'lostOne': return {t:'err', m:'Похоже, потерялась <b>невидимая единица</b>: у слагаемого вида <span class="math">x</span> коэффициент 1, у <span class="math">−x</span> это −1. Пересчитай ' + res.keys.map(groupLabel).map(k => '«' + k + '»').join(', ') + '.'};
+    case 'arith': return {t:'err', m:'Ошибка в сумме коэффициентов у ' + res.keys.map(groupLabel).map(k => '«' + k + '»').join(', ') + '. Пересчитай аккуратно, со знаками.', arith:res.keys};
+    case 'letters': {
+      let m = 'Складывать можно только слагаемые с <b>одинаковой буквенной частью</b>.';
+      if(res.powerMix) m += ' Осторожно: <span class="math">x</span> и <span class="math">x²</span> — разные части!';
+      m += ' В ответе должны остаться: ' + parts + '.';
+      return {t:'err', m};
+    }
+  }
+}
+function examCheck(){
+  const t = EX.tasks[EX.idx];
+  const res = compareAnswer($('exIn').value, t.terms);
+  const F = $('exFb');
+  if(res.verdict === 'correct'){
+    EX.score++; EX.states[EX.idx] = true;
+    let m = '✓ Верно! <span class="math">' + fmtHtml(exprText(t.groups)) + '</span>';
+    if(res.notes && res.notes.includes('one')) m += '<br>· Мелочь: коэффициент 1 обычно не пишут — вместо 1x пишут x.';
+    if(res.notes && res.notes.includes('zero')) m += '<br>· Мелочь: ноль в ответе не записывают.';
+    fb(F,'ok',m);
+    examLock();
+    return;
+  }
+  const info = examMsg(res, t);
+  if(info.free){ fb(F, info.t, info.m); return; } // формат/пусто попытку не тратят
+  EX.attempts++;
+  if(EX.attempts >= 3){
+    EX.states[EX.idx] = false;
+    fb(F,'err','Три попытки использованы. Смотри разбор ниже — и обрати внимание, где именно ошибка.');
+    examShowSolution(t);
+    examLock();
+    return;
+  }
+  let m = info.m;
+  if(EX.attempts === 2 && info.arith){
+    const g = t.groups.find(g => g.key === info.arith[0]);
+    if(g && g.idxs.length > 1) m += '<br>Цепочка: ' + coeffChain(t.terms, g.idxs) + ' = ?';
+  }
+  fb($('exFb'),'err', m + '<br><span class="muted">Попытка ' + (EX.attempts + 1) + ' из 3.</span>');
+  $('exIn').focus();
+}
+function examLock(){
+  $('exIn').disabled = true;
+  $('exCheck').style.display = 'none';
+  $('exNext').style.display = '';
+  const prog = $('exProg').children[EX.idx];
+  prog.classList.remove('cur');
+  prog.classList.add(EX.states[EX.idx] ? 'win' : 'lose');
+  $('exNext').focus();
+}
+function examNext(){
+  if(EX.idx < 4){ EX.idx++; examRenderTask(); return; }
+  // финиш
+  $('examTask').style.display = 'none';
+  $('examEnd').style.display = '';
+  $('exScore').textContent = EX.score;
+  const v = EX.score === 5 ? 'Идеально! Тема закрыта — можешь идти дальше по курсу.'
+    : EX.score === 4 ? 'Отлично! Одна осечка — глянь разбор той задачи и всё.'
+    : EX.score === 3 ? 'Неплохо, но стоит ещё потренироваться. Вернись во вкладку «Тренировка».'
+    : 'Пока рано на контрольную. Перечитай теорию и пройди разбор — потом возвращайся.';
+  $('exVerdict').textContent = v;
+  ST.exam.runs++;
+  if(ST.exam.best === null || EX.score > ST.exam.best) ST.exam.best = EX.score;
+  saveState(); renderBadges();
+}
+$('exGo').addEventListener('click', examStart);
+$('exCheck').addEventListener('click', examCheck);
+$('exNext').addEventListener('click', examNext);
+$('exAgain').addEventListener('click', examStart);
+$('exIn').addEventListener('keydown', e => {
+  if(e.key === 'Enter'){
+    if($('exNext').style.display !== 'none') examNext(); else examCheck();
+  }
+});
+document.querySelectorAll('.key').forEach(k => {
+  k.addEventListener('click', () => {
+    const inp = $('exIn');
+    if(inp.disabled) return;
+    const pos = inp.selectionStart ?? inp.value.length;
+    inp.value = inp.value.slice(0, pos) + k.dataset.ins + inp.value.slice(pos);
+    inp.focus();
+    inp.selectionStart = inp.selectionEnd = pos + 1;
+  });
+});
+
+/* ============================================================
+   СТАРТ
+   ============================================================ */
+renderBadges();
+renderStats();
+renderTheory();
+loadDemo(0);
+newTrainProblem();
 </script>
 </body>
 </html>
