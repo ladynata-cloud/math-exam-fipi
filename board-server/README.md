@@ -178,9 +178,12 @@ CORS_ALLOWED_ORIGINS=https://mathexam.space,http://localhost:3000,http://127.0.0
 После первичного seed сервер становится владельцем `room.pages`. Новые участники получают актуальный `publicState(room)` из памяти сервера и больше не ждут клиентский `board:snapshot` от уже подключённого учителя.
 
 - Новая комната стартует с `initialized:false` и `stateVersion:0`.
-- Первый валидный `board:snapshot` от teacher используется как seed, выставляет `initialized:true` и увеличивает `stateVersion`.
-- Клиенты с `proto:2` после инициализации комнаты больше не могут рутинным snapshot перезаписать `room.pages`.
-- Legacy-клиенты без `proto:2` сохраняют fallback: их snapshot после инициализации всё ещё применяется и ретранслируется.
+- Первый валидный `board:snapshot` от teacher используется как initial seed, выставляет `initialized:true` и увеличивает `stateVersion`.
+- После PR #67 `board:snapshot` используется как initial seed или legacy fallback.
+- Для `proto:2` clients routine snapshots после `initialized:true` не перезаписывают `room.pages`.
+- Legacy clients без `proto:2` всё ещё могут применять snapshot как fallback: их snapshot после инициализации применяется и ретранслируется.
+- `page-add`, `page-delete`, `undo` и `redo` дополнительно отправляют synthesized `board:snapshot` для legacy clients.
+- `clear-page`, `bg-change` и `page-switch` не требуют такого bridge, потому что старый клиент понимает эти события нативно.
 - `stateVersion` растёт после server-applied board mutations и отдаётся в `publicState`.
 
 Server-applied events:
@@ -225,7 +228,7 @@ The current `requireWriter` and `requireStructure` gates are still teacher-only 
 
 Snapshot-нормализация сохраняет валидную историческую metadata существующего participant, но legacy-объекты без metadata и fake/unknown `authorId` перештамповывает владельцем комнаты. Это нужно для совместимости с будущими слоями, группами и ИИ-участником, но запись ученикам сейчас не открыта: права по-прежнему определяются серверными проверками, токенами комнаты и `requireTeacher`.
 
-Snapshot-перезапись остаётся известным ограничением до будущего server-owned state: текущий foundation только добавляет метки объектов и не включает передачу хода, группы, открытую запись ученика или ИИ-участника.
+После PR #67 snapshot-перезапись больше не является штатным механизмом для `proto:2` clients: сервер защищает `room.pages` после initial seed. Этот foundation не включает передачу хода, группы или открытую запись ученика.
 
 ## Ограничения MVP
 
