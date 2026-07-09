@@ -1,0 +1,29 @@
+name: Board Server Owned State Smoke
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install smoke dependency
+        run: npm install --silent --no-save socket.io-client@4.7.5
+      - name: Live deploy smoke
+        env:
+          BASE_URL: https://mathexam-board-ladynata.amvera.io
+          PUBLIC_PAGE: https://mathexam.space/trainers/trainer-board.html
+          OLD_SERVER_STARTED_AT: '2026-07-09T02:14:29.449Z'
+          MERGED_AT: '2026-07-09T15:56:08Z'
+        run: node .github/smoke/pr67-live-deploy-smoke.mjs
