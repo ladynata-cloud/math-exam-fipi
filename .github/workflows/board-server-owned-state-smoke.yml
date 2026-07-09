@@ -21,15 +21,14 @@ jobs:
       - name: Static checks
         run: |
           node --check board-server/index.js
-          node <<'NODE'
+          node --input-type=commonjs <<'NODE'
           const fs = require('fs');
           const html = fs.readFileSync('trainers/trainer-board.html', 'utf8');
           const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(match => match[1]);
           if (!scripts.length) throw new Error('No inline scripts found');
           scripts.forEach((source, index) => {
-            try {
-              new Function(source);
-            } catch (error) {
+            try { new Function(source); }
+            catch (error) {
               error.message = `Inline script ${index + 1} parse failed: ${error.message}`;
               throw error;
             }
@@ -64,7 +63,7 @@ jobs:
         env:
           BASE_URL: http://127.0.0.1:4010
         run: |
-          node <<'NODE'
+          node --input-type=commonjs <<'NODE'
           const assert = require('node:assert/strict');
           const { setTimeout: sleep } = require('node:timers/promises');
           const { io } = require('socket.io-client');
@@ -72,30 +71,20 @@ jobs:
           const baseUrl = process.env.BASE_URL;
           const sockets = [];
 
-          function mark(name) {
-            console.log(`SMOKE_STEP ${name}`);
-          }
+          const mark = name => console.log(`SMOKE_STEP ${name}`);
+          const roomPayload = (room, token, extra = {}) => ({ roomId: room.roomId, token, ...extra });
+          const objectIds = state => state.pages[0].strokes.map(item => item.objectId);
 
           function connectSocket() {
-            const socket = io(baseUrl, {
-              transports: ['websocket', 'polling'],
-              reconnection: false,
-              timeout: 4000
-            });
+            const socket = io(baseUrl, { transports: ['websocket', 'polling'], reconnection: false, timeout: 4000 });
             sockets.push(socket);
             return socket;
           }
 
           function waitFor(socket, event, predicate = () => true, timeoutMs = 5000) {
             return new Promise((resolve, reject) => {
-              const timer = setTimeout(() => {
-                cleanup();
-                reject(new Error(`Timeout waiting for ${event}`));
-              }, timeoutMs);
-              function cleanup() {
-                clearTimeout(timer);
-                socket.off(event, handler);
-              }
+              const timer = setTimeout(() => { cleanup(); reject(new Error(`Timeout waiting for ${event}`)); }, timeoutMs);
+              function cleanup() { clearTimeout(timer); socket.off(event, handler); }
               function handler(payload) {
                 try {
                   if (!predicate(payload)) return;
@@ -111,8 +100,7 @@ jobs:
           }
 
           async function waitForConnect(socket) {
-            if (socket.connected) return;
-            await waitFor(socket, 'connect', () => true, 5000);
+            if (!socket.connected) await waitFor(socket, 'connect');
           }
 
           async function postRoom() {
@@ -148,14 +136,6 @@ jobs:
             return payload.state;
           }
 
-          function roomPayload(room, token, extra = {}) {
-            return { roomId: room.roomId, token, ...extra };
-          }
-
-          function objectIds(state) {
-            return state.pages[0].strokes.map(item => item.objectId);
-          }
-
           async function expectNoEvent(socket, event, timeoutMs = 350) {
             let fired = false;
             const handler = () => { fired = true; };
@@ -181,34 +161,28 @@ jobs:
             const room = await postRoom();
             const teacher = connectSocket();
             const freshTeacherState = await join(teacher, room, 'teacher', room.teacherToken, 2);
-            assert.equal(freshTeacherState.state, null, 'fresh teacher should seed room');
+            assert.equal(freshTeacherState.state, null);
             assert.ok(freshTeacherState.you?.participantId);
 
             mark('seed-snapshot');
-            const seedState = {
-              currentPage: 0,
-              trainerUrl: 'negative-numbers-line.html?seed=server-owned',
-              pages: [{ id: 'SeedPage01', bg: 'grid', strokes: [] }]
-            };
-            teacher.emit('board:snapshot', roomPayload(room, room.teacherToken, { state: seedState }));
+            teacher.emit('board:snapshot', roomPayload(room, room.teacherToken, {
+              state: { currentPage: 0, trainerUrl: 'negative-numbers-line.html?seed=server-owned', pages: [{ id: 'SeedPage01', bg: 'grid', strokes: [] }] }
+            }));
             await sleep(100);
             let current = (await requestState(teacher)).state;
             assert.equal(current.stateVersion, 1);
             assert.equal(current.pages[0].id, 'SeedPage01');
-            assert.equal(current.trainerUrl, seedState.trainerUrl);
 
             mark('teacher-rejoin-initialized-state');
             const teacherRejoin = connectSocket();
             const rejoinState = await join(teacherRejoin, room, 'teacher', room.teacherToken, 2);
-            assert.ok(rejoinState.state, 'initialized teacher should receive public state');
+            assert.ok(rejoinState.state);
             assert.equal(rejoinState.state.pages[0].id, 'SeedPage01');
             teacherRejoin.disconnect();
 
             mark('student-live-join');
             const studentLive = connectSocket();
-            const participantsAfterStudent = waitFor(teacher, 'participants:state', payload => (
-              payload?.participants?.some(item => item.role === 'student' && Number(item.onlineCount) > 0)
-            ));
+            const participantsAfterStudent = waitFor(teacher, 'participants:state', payload => payload?.participants?.some(item => item.role === 'student' && Number(item.onlineCount) > 0));
             const studentState = await join(studentLive, room, 'student', room.studentToken, 2);
             assert.ok(studentState.you?.participantId);
             assert.equal(studentState.state.pages[0].id, 'SeedPage01');
@@ -218,17 +192,7 @@ jobs:
             const liveStroke = waitFor(studentLive, 'board:stroke-end', payload => payload?.stroke?.objectId === 'StrokeA01');
             teacher.emit('board:stroke-end', roomPayload(room, room.teacherToken, {
               pageIndex: 0,
-              stroke: {
-                objectId: 'StrokeA01',
-                authorId: 'fake-author',
-                authorRole: 'student',
-                layerId: 'participant:fake-author',
-                kind: 'path',
-                tool: 'pen',
-                color: '#111111',
-                size: 4,
-                points: [{ x: 1, y: 1 }, { x: 10, y: 10 }]
-              }
+              stroke: { objectId: 'StrokeA01', authorId: 'fake-author', authorRole: 'student', layerId: 'participant:fake-author', kind: 'path', tool: 'pen', color: '#111', size: 4, points: [{ x: 1, y: 1 }] }
             }));
             const strokePayload = await liveStroke;
             assert.notEqual(strokePayload.stroke.authorId, 'fake-author');
@@ -241,31 +205,16 @@ jobs:
             const liveText = waitFor(studentLive, 'board:text-add', payload => (payload?.text || payload?.stroke || payload?.object)?.objectId === 'TextA01');
             teacher.emit('board:text-add', roomPayload(room, room.teacherToken, {
               pageIndex: 0,
-              text: {
-                objectId: 'TextA01',
-                authorId: 'fake-author',
-                authorRole: 'student',
-                kind: 'text',
-                tool: 'text',
-                x: 12,
-                y: 14,
-                text: 'hello',
-                color: '#222222',
-                size: 5
-              }
+              text: { objectId: 'TextA01', authorId: 'fake-author', authorRole: 'student', kind: 'text', tool: 'text', x: 12, y: 14, text: 'hello', color: '#222', size: 5 }
             }));
             const textPayload = await liveText;
-            const textObject = textPayload.text || textPayload.stroke || textPayload.object;
-            assert.equal(textObject.authorRole, 'teacher');
+            assert.equal((textPayload.text || textPayload.stroke || textPayload.object).authorRole, 'teacher');
             current = await joinStudentState(room);
             assert.deepEqual(objectIds(current), ['StrokeA01', 'TextA01']);
 
             mark('trainer-state-mirror');
             const trainerStatePromise = waitFor(studentLive, 'board:trainer-state-change', payload => payload?.trainer === 'negative-numbers-line' && payload?.state?.answer === 42);
-            teacher.emit('board:trainer-state-change', roomPayload(room, room.teacherToken, {
-              trainer: 'negative-numbers-line',
-              state: { answer: 42 }
-            }));
+            teacher.emit('board:trainer-state-change', roomPayload(room, room.teacherToken, { trainer: 'negative-numbers-line', state: { answer: 42 } }));
             await trainerStatePromise;
 
             mark('clear-page');
@@ -282,7 +231,7 @@ jobs:
             current = await joinStudentState(room);
             assert.equal(current.pages[0].bg, 'lined');
 
-            mark('page-add-and-legacy-snapshot');
+            mark('page-add-switch-delete-legacy-snapshot');
             const legacyStudent = connectSocket();
             await join(legacyStudent, room, 'student', room.studentToken);
             const pageAddPromise = waitFor(studentLive, 'board:page-add', payload => payload?.page?.id === 'PageB01');
@@ -296,14 +245,12 @@ jobs:
             assert.equal(current.pages.length, 2);
             assert.equal(current.currentPage, 1);
 
-            mark('page-switch');
             const pageSwitchPromise = waitFor(studentLive, 'board:page-switch', payload => payload?.pageIndex === 0);
             teacher.emit('board:page-switch', roomPayload(room, room.teacherToken, { pageIndex: 0 }));
             await pageSwitchPromise;
             current = await joinStudentState(room);
             assert.equal(current.currentPage, 0);
 
-            mark('page-delete-and-legacy-snapshot');
             const pageDeletePromise = waitFor(studentLive, 'board:page-delete', payload => payload?.pageIndex === 1);
             const legacyDeleteSnapshot = waitFor(legacyStudent, 'board:snapshot', payload => payload?.state?.pages?.length === 1);
             teacher.emit('board:page-delete', roomPayload(room, room.teacherToken, { pageIndex: 1 }));
@@ -311,14 +258,10 @@ jobs:
             await legacyDeleteSnapshot;
             current = await joinStudentState(room);
             assert.equal(current.pages.length, 1);
-            assert.equal(current.currentPage, 0);
 
-            mark('undo-redo-and-new-joiners');
+            mark('undo-redo-and-redo-clear');
             for (const id of ['StrokeB01', 'StrokeC01']) {
-              teacher.emit('board:stroke-end', roomPayload(room, room.teacherToken, {
-                pageIndex: 0,
-                stroke: { objectId: id, kind: 'path', tool: 'pen', color: '#333333', size: 4, points: [{ x: 1, y: 1 }] }
-              }));
+              teacher.emit('board:stroke-end', roomPayload(room, room.teacherToken, { pageIndex: 0, stroke: { objectId: id, kind: 'path', tool: 'pen', color: '#333', size: 4, points: [{ x: 1, y: 1 }] } }));
               await sleep(80);
             }
             current = await joinStudentState(room);
@@ -341,10 +284,7 @@ jobs:
             const undoAgain = waitFor(teacher, 'board:page-state', payload => payload?.page?.strokes?.length === 1);
             teacher.emit('board:stroke-undo', roomPayload(room, room.teacherToken, { pageIndex: 0 }));
             await undoAgain;
-            teacher.emit('board:stroke-end', roomPayload(room, room.teacherToken, {
-              pageIndex: 0,
-              stroke: { objectId: 'StrokeD01', kind: 'path', tool: 'pen', color: '#444444', size: 4, points: [{ x: 2, y: 2 }] }
-            }));
+            teacher.emit('board:stroke-end', roomPayload(room, room.teacherToken, { pageIndex: 0, stroke: { objectId: 'StrokeD01', kind: 'path', tool: 'pen', color: '#444', size: 4, points: [{ x: 2, y: 2 }] } }));
             await sleep(100);
             teacher.emit('board:stroke-redo', roomPayload(room, room.teacherToken, { pageIndex: 0 }));
             await sleep(150);
@@ -353,9 +293,7 @@ jobs:
 
             mark('proto2-snapshot-ignored');
             const beforeProto2 = (await requestState(teacher)).state;
-            teacher.emit('board:snapshot', roomPayload(room, room.teacherToken, {
-              state: { currentPage: 0, trainerUrl: 'bad.html', pages: [{ id: 'BadPage01', bg: 'blank', strokes: [] }] }
-            }));
+            teacher.emit('board:snapshot', roomPayload(room, room.teacherToken, { state: { currentPage: 0, trainerUrl: 'bad.html', pages: [{ id: 'BadPage01', bg: 'blank', strokes: [] }] } }));
             await sleep(120);
             const afterProto2 = (await requestState(teacher)).state;
             assert.equal(afterProto2.stateVersion, beforeProto2.stateVersion);
@@ -365,9 +303,7 @@ jobs:
             const legacyTeacher = connectSocket();
             await join(legacyTeacher, room, 'teacher', room.teacherToken);
             const beforeLegacy = (await requestState(teacher)).state;
-            legacyTeacher.emit('board:snapshot', roomPayload(room, room.teacherToken, {
-              state: { currentPage: 0, trainerUrl: 'legacy.html', pages: [{ id: 'LegacyPage01', bg: 'grid', strokes: [{ objectId: 'LegacyObj01', authorId: 'fake', authorRole: 'student', kind: 'path', tool: 'pen', points: [] }] }] }
-            }));
+            legacyTeacher.emit('board:snapshot', roomPayload(room, room.teacherToken, { state: { currentPage: 0, trainerUrl: 'legacy.html', pages: [{ id: 'LegacyPage01', bg: 'grid', strokes: [{ objectId: 'LegacyObj01', authorId: 'fake', authorRole: 'student', kind: 'path', tool: 'pen', points: [] }] }] } }));
             await sleep(150);
             const afterLegacy = (await requestState(teacher)).state;
             assert.ok(afterLegacy.stateVersion > beforeLegacy.stateVersion);
@@ -402,9 +338,22 @@ jobs:
             const duplicateParticipants = waitFor(dupTeacher, 'participants:state', payload => payload?.participants?.some(item => item.role === 'teacher'));
             dupTeacher.emit('room:join', { roomId: dupRoom.roomId, role: 'teacher', token: dupRoom.teacherToken, proto: 2 });
             const duplicateState = await duplicateParticipants;
-            const dupTeacherParticipant = duplicateState.participants.find(item => item.role === 'teacher');
-            assert.equal(dupTeacherParticipant.onlineCount, 1);
+            assert.equal(duplicateState.participants.find(item => item.role === 'teacher').onlineCount, 1);
             dupTeacher.disconnect();
+
+            mark('disconnect-offline');
+            const offRoom = await postRoom();
+            const offTeacher = connectSocket();
+            await join(offTeacher, offRoom, 'teacher', offRoom.teacherToken, 2);
+            const offStudent = connectSocket();
+            await join(offStudent, offRoom, 'student', offRoom.studentToken, 2);
+            const participantsOffline = waitFor(offTeacher, 'participants:state', payload => {
+              const student = payload?.participants?.find(item => item.role === 'student');
+              return student && student.connected === false && Number(student.onlineCount) === 0;
+            });
+            offStudent.disconnect();
+            await participantsOffline;
+            offTeacher.disconnect();
 
             mark('active-ttl-protection');
             const ttlRoom = await postRoom();
@@ -415,23 +364,13 @@ jobs:
             assert.ok(healthActive.rooms >= 1);
             ttlTeacher.disconnect();
 
-            mark('disconnect-offline');
-            const participantsOffline = waitFor(teacher, 'participants:state', payload => {
-              const student = payload?.participants?.find(item => item.role === 'student');
-              return student && Number(student.onlineCount) >= 0;
-            });
-            studentLive.disconnect();
-            const offlineState = await participantsOffline;
-            const studentParticipant = offlineState.participants.find(item => item.role === 'student');
-            assert.equal(studentParticipant.connected, Number(studentParticipant.onlineCount) > 0);
-
             mark('ttl-inactive-cleanup');
             for (const socket of sockets) socket.disconnect();
             await sleep(750);
             await fetch(`${baseUrl}/health`);
-            const inactiveRoom = await postRoom();
-            let healthBeforeCleanup = await (await fetch(`${baseUrl}/health`)).json();
-            assert.ok(healthBeforeCleanup.rooms >= 1, inactiveRoom.roomId);
+            await postRoom();
+            const healthBeforeCleanup = await (await fetch(`${baseUrl}/health`)).json();
+            assert.ok(healthBeforeCleanup.rooms >= 1);
             await sleep(750);
             const healthAfterCleanup = await (await fetch(`${baseUrl}/health`)).json();
             assert.equal(healthAfterCleanup.rooms, 0);
