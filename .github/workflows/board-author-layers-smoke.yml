@@ -1,0 +1,270 @@
+name: Board Author Layers Smoke
+
+on:
+  pull_request:
+    branches:
+      - feature/board-author-layers-foundation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install board server dependencies
+        run: |
+          cd board-server
+          npm install
+          npm install --no-save socket.io-client@4.7.5
+
+      - name: Static checks
+        run: |
+          node --check board-server/index.js
+          node <<'NODE'
+          const fs = require('node:fs');
+          const vm = require('node:vm');
+          const { execSync } = require('node:child_process');
+
+          function assert(condition, message) {
+            if (!condition) throw new Error(message);
+          }
+
+          const files = [
+            'board-server/index.js',
+            'board-server/README.md',
+            'trainers/trainer-board.html'
+          ];
+          const hidden = /[\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069\uFEFF]/u;
+          for (const file of files) {
+            const text = fs.readFileSync(file, 'utf8');
+            for (const [index, char] of [...text].entries()) {
+              if (hidden.test(char)) {
+                const code = char.codePointAt(0).toString(16).toUpperCase().padStart(4, '0');
+                throw new Error(`${file} contains hidden/bidi control U+${code} at char ${index}`);
+              }
+            }
+          }
+          console.log('hidden-bidi-check: ok');
+
+          const html = fs.readFileSync('trainers/trainer-board.html', 'utf8');
+          const script = html.match(/<script>([\s\S]*?)<\/script>/);
+          assert(script, 'trainer-board inline script not found');
+          new vm.Script(script[1], { filename: 'trainer-board-inline.js' });
+          for (const needle of ['shared.me', 'function newObjectMeta', 'objectId:genObjectId()', 'setSharedMe(payload?.you)', 'function exportPng', 'function render()', 'function readonly()']) {
+            assert(html.includes(needle), `missing ${needle}`);
+          }
+          console.log('trainer-board-inline-parse: ok');
+
+          const mainHtml = execSync('git show origin/main:trainers/trainer-board.html', { encoding: 'utf8' });
+          function normalize(text) {
+            return text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+          }
+          function functionSource(text, name) {
+            const normalized = normalize(text);
+            const marker = `    function ${name}`;
+            const start = normalized.indexOf(marker);
+            assert(start >= 0, `function ${name} not found`);
+            const next = normalized.indexOf('\n    function ', start + marker.length);
+            return next === -1 ? normalized.slice(start) : normalized.slice(start, next);
+          }
+          for (const name of ['render', 'exportPng', 'undo', 'redo', 'readonly']) {
+            assert(functionSource(html, name) === functionSource(mainHtml, name), `${name} changed unexpectedly`);
+          }
+          const crlf = (html.match(/\r\n/g) || []).length;
+          const bareLf = (html.replace(/\r\n/g, '').match(/\n/g) || []).length;
+          const bareCr = (html.replace(/\r\n/g, '').match(/\r/g) || []).length;
+          console.log(`trainer-board-line-endings: CRLF=${crlf}, bareLF=${bareLf}, bareCR=${bareCr}`);
+          console.log('static-checks: ok');
+          NODE
+
+      - name: Start server and run API/Socket.IO smoke
+        run: |
+          cd board-server
+          PORT=3210 HOST=127.0.0.1 npm start > ../board-server.log 2>&1 &
+          echo $! > ../board-server.pid
+          node <<'NODE'
+          const { io } = require('socket.io-client');
+
+          const baseUrl = 'http://127.0.0.1:3210';
+
+          function assert(condition, message) {
+            if (!condition) throw new Error(message);
+          }
+
+          function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+          }
+
+          async function waitForHealth() {
+            for (let attempt = 0; attempt < 60; attempt += 1) {
+              try {
+                const response = await fetch(`${baseUrl}/health`);
+                if (response.ok) return response.json();
+              } catch (_error) {
+                // wait for server start
+              }
+              await delay(250);
+            }
+            throw new Error('server did not become healthy');
+          }
+
+          function once(socket, event, timeoutMs = 3000) {
+            return new Promise((resolve, reject) => {
+              const timer = setTimeout(() => {
+                socket.off(event, handler);
+                reject(new Error(`timeout waiting for ${event}`));
+              }, timeoutMs);
+              function handler(payload) {
+                clearTimeout(timer);
+                resolve(payload);
+              }
+              socket.once(event, handler);
+            });
+          }
+
+          function connectSocket() {
+            const socket = io(baseUrl, {
+              transports: ['websocket', 'polling'],
+              reconnection: false,
+              forceNew: true
+            });
+            return once(socket, 'connect').then(() => socket);
+          }
+
+          (async () => {
+            const health = await waitForHealth();
+            assert(health.ok === true, '/health ok failed');
+            assert(typeof health.rooms === 'number', '/health rooms failed');
+            assert(typeof health.serverStartedAt === 'string', '/health serverStartedAt failed');
+            assert(typeof health.roomTtlMs === 'number', '/health roomTtlMs failed');
+            assert(typeof health.roomCleanupIntervalMs === 'number', '/health roomCleanupIntervalMs failed');
+            assert(health.features?.roomTtlCleanup === true, '/health features failed');
+
+            const createResponse = await fetch(`${baseUrl}/api/rooms`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' }
+            });
+            assert(createResponse.status === 201, 'POST /api/rooms status failed');
+            const room = await createResponse.json();
+            assert(room.roomId && room.teacherToken && room.studentToken && room.state, 'POST /api/rooms payload failed');
+
+            const teacher = await connectSocket();
+            const student = await connectSocket();
+
+            const teacherStatePromise = once(teacher, 'room:state');
+            teacher.emit('room:join', { roomId: room.roomId, role: 'teacher', token: room.teacherToken });
+            const teacherState = await teacherStatePromise;
+            assert(teacherState.you?.participantId, 'teacher room:state missing you.participantId');
+            assert(teacherState.you.role === 'teacher', 'teacher role failed');
+
+            const studentStatePromise = once(student, 'room:state');
+            student.emit('room:join', { roomId: room.roomId, role: 'student', token: room.studentToken });
+            const studentState = await studentStatePromise;
+            assert(studentState.you?.participantId, 'student room:state missing you.participantId');
+            assert(studentState.you.role === 'student', 'student role failed');
+
+            teacher.emit('room:join', { roomId: room.roomId, role: 'teacher', token: room.teacherToken });
+            await delay(250);
+            const stateAfterDuplicatePromise = once(student, 'room:state');
+            student.emit('room:state');
+            const stateAfterDuplicate = await stateAfterDuplicatePromise;
+            const teacherParticipant = stateAfterDuplicate.state.participants.find(item => item.role === 'teacher');
+            assert(teacherParticipant.onlineCount === 1, 'duplicate room:join inflated teacher onlineCount');
+
+            const fakeStroke = {
+              objectId: 'bad id!',
+              authorId: studentState.you.participantId,
+              authorRole: 'student',
+              layerId: 'evil',
+              createdAt: '1999-01-01T00:00:00.000Z',
+              kind: 'path',
+              points: []
+            };
+            const teacherStrokePromise = once(student, 'board:stroke-end');
+            teacher.emit('board:stroke-end', { roomId: room.roomId, token: room.teacherToken, pageIndex: 0, stroke: fakeStroke });
+            const teacherStroke = await teacherStrokePromise;
+            assert(teacherStroke.stroke.authorId === teacherState.you.participantId, 'teacher fake authorId was not restamped');
+            assert(teacherStroke.stroke.authorRole === 'teacher', 'teacher fake authorRole was not restamped');
+            assert(teacherStroke.stroke.layerId === `participant:${teacherState.you.participantId}`, 'teacher fake layerId was not restamped');
+            assert(/^[A-Za-z0-9_-]{6,64}$/.test(teacherStroke.stroke.objectId), 'invalid live objectId was not replaced');
+            assert(teacherStroke.stroke.createdAt !== '1999-01-01T00:00:00.000Z', 'live fake createdAt was preserved');
+
+            let teacherReceivedStudentBoardEvent = false;
+            teacher.once('board:stroke-end', () => { teacherReceivedStudentBoardEvent = true; });
+            const studentErrorPromise = once(student, 'room:error');
+            student.emit('board:stroke-end', {
+              roomId: room.roomId,
+              token: room.studentToken,
+              stroke: { kind: 'path', objectId: 'studentFake01', authorId: teacherState.you.participantId, authorRole: 'teacher', layerId: 'evil' }
+            });
+            await studentErrorPromise;
+            await delay(300);
+            assert(!teacherReceivedStudentBoardEvent, 'student board:* was retransmitted to teacher');
+
+            const validObjectId = 'validStudent01';
+            const validCreatedAt = '2026-01-01T00:00:00.000Z';
+            const snapshotPromise = once(student, 'board:snapshot');
+            teacher.emit('board:snapshot', {
+              roomId: room.roomId,
+              token: room.teacherToken,
+              state: {
+                currentPage: 0,
+                trainerUrl: 'negative-numbers-line.html',
+                pages: [{
+                  id: 'p1',
+                  bg: 'grid',
+                  strokes: [
+                    { kind: 'path', points: [] },
+                    { kind: 'path', points: [], objectId: 'validFake01', authorId: 'missing', authorRole: 'student', layerId: 'evil', createdAt: validCreatedAt },
+                    { kind: 'path', points: [], objectId: validObjectId, authorId: studentState.you.participantId, authorRole: 'student', layerId: `participant:${studentState.you.participantId}`, createdAt: validCreatedAt },
+                    { kind: 'path', points: [], objectId: 'bad id!', authorId: teacherState.you.participantId, authorRole: 'teacher', layerId: `participant:${teacherState.you.participantId}` }
+                  ]
+                }]
+              }
+            });
+            const snapshot = await snapshotPromise;
+            const [legacy, fake, historical, invalidObject] = snapshot.state.pages[0].strokes;
+            assert(legacy.authorId === teacherState.you.participantId && legacy.authorRole === 'teacher', 'legacy snapshot object did not get owner metadata');
+            assert(fake.authorId === teacherState.you.participantId && fake.authorRole === 'teacher', 'fake snapshot author was not restamped to owner');
+            assert(fake.layerId === `participant:${teacherState.you.participantId}`, 'fake snapshot layer was not restamped to owner');
+            assert(historical.authorId === studentState.you.participantId && historical.authorRole === 'student', 'valid historical author metadata was not preserved');
+            assert(historical.layerId === `participant:${studentState.you.participantId}`, 'valid historical layer metadata was not preserved');
+            assert(historical.objectId === validObjectId, 'valid objectId was not preserved');
+            assert(historical.createdAt === validCreatedAt, 'valid createdAt was not preserved');
+            assert(/^[A-Za-z0-9_-]{6,64}$/.test(invalidObject.objectId) && invalidObject.objectId !== 'bad id!', 'invalid snapshot objectId was not replaced');
+
+            student.disconnect();
+            await delay(300);
+            const afterDisconnectPromise = once(teacher, 'room:state');
+            teacher.emit('room:state');
+            const afterDisconnect = await afterDisconnectPromise;
+            const offlineStudent = afterDisconnect.state.participants.find(item => item.role === 'student');
+            assert(offlineStudent.onlineCount === 0 && offlineStudent.connected === false, 'student disconnect did not mark offline');
+
+            teacher.disconnect();
+            console.log('remote-board-author-layers-smoke: ok');
+          })().catch(error => {
+            console.error(error);
+            process.exit(1);
+          });
+          NODE
+
+      - name: Stop server
+        if: always()
+        run: |
+          if [ -f board-server.pid ]; then kill $(cat board-server.pid) || true; fi
+          if [ -f board-server.log ]; then cat board-server.log; fi
