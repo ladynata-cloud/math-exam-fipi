@@ -1,6 +1,6 @@
 # Mathexam Board Server
 
-MVP-сервер для режима `v2-lite`: учитель пишет на доске, ученик открывает ссылку и видит доску в реальном времени. Ученик пока только смотрит.
+MVP-сервер для режима `v2-lite`: учитель пишет на доске, ученик открывает ссылку и видит доску в реальном времени. По умолчанию ученик только смотрит, но учитель может временно передать ему ход.
 
 ## Установка локально
 
@@ -152,9 +152,13 @@ CORS_ALLOWED_ORIGINS=https://mathexam.space,http://localhost:3000,http://127.0.0
 4. Откройте student-ссылку во второй вкладке или другом браузере.
 5. Нарисуйте линию у учителя.
 6. Убедитесь, что ученик видит линию.
-7. Проверьте маркер, ластик, текст, очистку листа, новый лист, переключение листов и фон.
-8. Обновите student-вкладку: она должна получить актуальное состояние комнаты.
-9. Убедитесь, что student не может рисовать и очищать доску.
+7. Убедитесь, что student по умолчанию не может рисовать.
+8. Нажмите “Передать ход” у teacher.
+9. Убедитесь, что student может рисовать на доске и управлять текущим тренажёром.
+10. Нажмите “Вернуть ход” у student или “Забрать ход” у teacher.
+11. Убедитесь, что student снова не может рисовать.
+12. Проверьте маркер, ластик, текст, очистку листа, новый лист, переключение листов и фон.
+13. Обновите student-вкладку: она должна получить актуальное состояние комнаты.
 
 ## Реализованные события Socket.IO
 
@@ -162,22 +166,43 @@ CORS_ALLOWED_ORIGINS=https://mathexam.space,http://localhost:3000,http://127.0.0
 - `room:join`
 - `room:state`
 - `room:error`
+- `control:grant`
+- `control:revoke`
+- `control:release`
+- `control:changed`
 - `board:stroke-start`
 - `board:stroke-points`
 - `board:stroke-end`
 - `board:text-add`
 - `board:clear-page`
 - `board:page-add`
+- `board:page-delete`
 - `board:page-switch`
+- `board:page-state`
 - `board:bg-change`
+- `board:stroke-undo`
+- `board:stroke-redo`
 - `board:snapshot`
 - `board:trainer-url-change`
+- `board:trainer-state-change`
+
+## Матрица прав
+
+`control` хранится как `participantId`, а не как роль. Новая комната создаётся с `control` у teacher participant и `controlVersion:0`.
+
+- writer = текущий control participant.
+- structure = teacher-only.
+- `teacher` может писать по умолчанию, передать ход student, забрать ход обратно и менять структуру урока в любой момент.
+- `student` получает capability `draw:true` и `controlTrainer:true`, но право писать появляется только временно, когда `room.control === student.id`.
+- Student writing не открыт по роли: без текущего `control` writer-события student тихо отбрасываются.
+- Листы, фон, смена тренажёра, initial seed / legacy snapshot остаются teacher-only.
+- Co-teacher, groups, hands/openBoard и AI-участники не входят в этот PR и остаются будущими этапами.
 
 ## Модель состояния доски
 
 После первичного seed сервер становится владельцем `room.pages`. Новые участники получают актуальный `publicState(room)` из памяти сервера и больше не ждут клиентский `board:snapshot` от уже подключённого учителя.
 
-- Новая комната стартует с `initialized:false` и `stateVersion:0`.
+- Новая комната стартует с `initialized:false`, `stateVersion:0`, `control:<teacher participantId>` и `controlVersion:0`.
 - Первый валидный `board:snapshot` от teacher используется как initial seed, выставляет `initialized:true` и увеличивает `stateVersion`.
 - После PR #67 `board:snapshot` используется как initial seed или legacy fallback.
 - Для `proto:2` clients routine snapshots после `initialized:true` не перезаписывают `room.pages`.
@@ -185,6 +210,7 @@ CORS_ALLOWED_ORIGINS=https://mathexam.space,http://localhost:3000,http://127.0.0
 - `page-add`, `page-delete`, `undo` и `redo` дополнительно отправляют synthesized `board:snapshot` для legacy clients.
 - `clear-page`, `bg-change` и `page-switch` не требуют такого bridge, потому что старый клиент понимает эти события нативно.
 - `stateVersion` растёт после server-applied board mutations и отдаётся в `publicState`.
+- `control` и `controlVersion` также отдаются в `publicState`.
 
 Server-applied events:
 
@@ -197,8 +223,9 @@ Server-applied events:
 - `board:bg-change`
 - `board:stroke-undo`
 - `board:stroke-redo`
+- `board:trainer-state-change` for the current writer
 - `board:snapshot` only as initial seed or legacy fallback
-- `board:trainer-url-change` and `board:trainer-state-change` keep the existing trainer mirror behavior
+- `board:trainer-url-change` stays teacher-only because it changes lesson structure
 
 Relay-only events:
 
@@ -212,7 +239,15 @@ New compatibility events:
 - `board:page-delete` deletes or replaces a page and clears redo entries for that page id.
 - `board:page-state` broadcasts an authoritative page after undo/redo.
 
-The current `requireWriter` and `requireStructure` gates are still teacher-only wrappers. Policies, hand queue, turn transfer, open student writing, groups, and AI participants are intentionally left for later PRs.
+Control events:
+
+- `control:grant` is teacher/moderator-only and passes writer control to the student participant.
+- `control:revoke` is teacher/moderator-only and returns writer control to the teacher participant.
+- `control:release` is available only to the current non-moderator holder, so the student can return the turn.
+- `control:changed` broadcasts `{ control, controlVersion }` after every accepted control change.
+- If the current student holder disconnects and `onlineCount` becomes `0`, control automatically returns to teacher.
+
+`requireWriter` now checks `canWrite(room, participant)`: the participant must be the current `room.control`. `requireStructure` remains teacher-only. Policies, hand queue, open group board, co-teacher and AI participants are intentionally left for later PRs.
 
 ## Метаданные объектов доски
 
@@ -226,17 +261,17 @@ The current `requireWriter` and `requireStructure` gates are still teacher-only 
 
 Сервер не доверяет клиентским `authorId`, `authorRole`, `layerId` и `createdAt` как источнику прав. Live-события доски всегда штампуются реальным socket-участником, который прошёл серверную проверку.
 
-Snapshot-нормализация сохраняет валидную историческую metadata существующего participant, но legacy-объекты без metadata и fake/unknown `authorId` перештамповывает владельцем комнаты. Это нужно для совместимости с будущими слоями, группами и ИИ-участником, но запись ученикам сейчас не открыта: права по-прежнему определяются серверными проверками, токенами комнаты и `requireTeacher`.
+Snapshot-нормализация сохраняет валидную историческую metadata существующего participant, но legacy-объекты без metadata и fake/unknown `authorId` перештамповывает владельцем комнаты. Это нужно для совместимости с будущими слоями, группами и ИИ-участником. Запись ученика появляется только временно через `control`: права по-прежнему определяются серверными проверками, токенами комнаты и текущим control participant.
 
-После PR #67 snapshot-перезапись больше не является штатным механизмом для `proto:2` clients: сервер защищает `room.pages` после initial seed. Этот foundation не включает передачу хода, группы или открытую запись ученика.
+После PR #67 snapshot-перезапись больше не является штатным механизмом для `proto:2` clients: сервер защищает `room.pages` после initial seed. Этот PR добавляет только передачу хода между teacher и student; группы, открытая групповая доска, co-teacher, очередь рук и AI не входят в scope.
 
 ## Ограничения MVP
 
 - Комнаты хранятся только в памяти сервера.
 - Нет базы данных и долговременного хранения уроков.
 - Нет регистрации и личного кабинета.
-- Нет роли “ученик-писатель”.
-- Нет совместного редактирования тренажёра.
+- Нет постоянной роли “ученик-писатель”: запись ученика работает только на время control.
+- Нет совместного редактирования структуры урока: листы, фон, смена тренажёра и initial seed остаются teacher-only.
 - Нет чата, видеосвязи, CRM и сложной админки.
 
-Следующий разумный этап: добавить срок жизни комнат, аккуратное удаление старых комнат и простую страницу статуса сервера.
+Следующие этапы вне этого PR: policies/control model для нескольких участников, очередь рук, группы, co-teacher и AI.

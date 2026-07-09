@@ -116,8 +116,8 @@ function createParticipant(role, joinedAt) {
     caps: {
       moderate: isTeacher,
       structure: isTeacher,
-      draw: isTeacher,
-      controlTrainer: isTeacher,
+      draw: true,
+      controlTrainer: true,
       view: true
     },
     connected: false,
@@ -130,6 +130,11 @@ function createParticipant(role, joinedAt) {
 function createRoom() {
   const roomId = makeId(9);
   const createdAt = nowIso();
+  const participants = [
+    createParticipant('teacher', createdAt),
+    createParticipant('student', createdAt)
+  ];
+  const teacher = participants.find(participant => participant.role === 'teacher');
   const room = {
     roomId,
     teacherToken: makeId(18),
@@ -138,15 +143,14 @@ function createRoom() {
     lastActivityAt: createdAt,
     initialized: false,
     stateVersion: 0,
+    control: teacher.id,
+    controlVersion: 0,
     redoStacks: {},
     currentPage: 0,
     pages: [blankPage()],
     trainerUrl: 'negative-numbers-line.html',
     latestTrainerState: null,
-    participants: [
-      createParticipant('teacher', createdAt),
-      createParticipant('student', createdAt)
-    ]
+    participants
   };
   rooms.set(roomId, room);
   return room;
@@ -171,6 +175,8 @@ function publicState(room) {
     roomId: room.roomId,
     createdAt: room.createdAt,
     stateVersion: Number(room.stateVersion || 0),
+    control: room.control,
+    controlVersion: Number(room.controlVersion || 0),
     currentPage: room.currentPage,
     pages: room.pages,
     trainerUrl: room.trainerUrl,
@@ -185,6 +191,11 @@ function participantsState(room) {
 
 function findParticipant(room, role) {
   return (room.participants || []).find(participant => participant.role === role) || null;
+}
+
+function findParticipantById(room, participantId) {
+  if (typeof participantId !== 'string') return null;
+  return (room.participants || []).find(participant => participant.id === participantId) || null;
 }
 
 function findParticipantByIdAndRole(room, authorId, authorRole) {
@@ -224,6 +235,25 @@ function publicYou(participant, role) {
     name: participant.name,
     color: participant.color,
     caps: { ...(participant.caps || {}) }
+  };
+}
+
+function canWrite(room, participant) {
+  return Boolean(room && participant && room.control === participant.id);
+}
+
+function setRoomControl(room, participant) {
+  if (!room || !participant || room.control === participant.id) return false;
+  room.control = participant.id;
+  room.controlVersion = Number(room.controlVersion || 0) + 1;
+  touchRoom(room);
+  return true;
+}
+
+function controlState(room) {
+  return {
+    control: room.control,
+    controlVersion: Number(room.controlVersion || 0)
   };
 }
 
@@ -421,12 +451,41 @@ function requireTeacherAccess(socket, payload = {}) {
   return auth.room;
 }
 
+function requireAuthenticatedParticipant(socket, payload = {}) {
+  const roomId = payload.roomId || socket.data.roomId;
+  const token = payload.token || socket.data.token;
+  const role = socket.data.role;
+  const auth = authenticate(roomId, role, token);
+  if (auth.error) {
+    socket.emit('room:error', { message: auth.error });
+    return null;
+  }
+  const participant = findParticipantById(auth.room, socket.data.participantId);
+  if (!participant) {
+    socket.emit('room:error', { message: 'Нет участника комнаты' });
+    return null;
+  }
+  return { room: auth.room, participant };
+}
+
 function requireWriter(socket, payload = {}) {
-  return requireTeacherAccess(socket, payload);
+  const access = requireAuthenticatedParticipant(socket, payload);
+  if (!access) return null;
+  if (!canWrite(access.room, access.participant)) return null;
+  return access.room;
 }
 
 function requireStructure(socket, payload = {}) {
   return requireTeacherAccess(socket, payload);
+}
+
+function returnControlToTeacher(room) {
+  const teacher = findParticipant(room, 'teacher');
+  return teacher && setRoomControl(room, teacher);
+}
+
+function emitControlChanged(room) {
+  io.to(room.roomId).emit('control:changed', controlState(room));
 }
 
 app.get('/health', (_req, res) => {
@@ -493,22 +552,78 @@ io.on('connection', socket => {
     socket.emit('room:state', {
       role,
       state: role === 'student' || auth.room.initialized ? publicState(auth.room) : null,
-      you: publicYou(participant, role)
+      you: publicYou(participant, role),
+      ...controlState(auth.room)
     });
     io.to(auth.room.roomId).emit('participants:state', participantsState(auth.room));
   });
 
   socket.on('disconnect', () => {
     const room = markParticipantDisconnected(socket);
-    if (room) io.to(room.roomId).emit('participants:state', participantsState(room));
+    if (room) {
+      const participant = findParticipantById(room, socket.data.participantId);
+      io.to(room.roomId).emit('participants:state', participantsState(room));
+      if (
+        participant
+        && room.control === participant.id
+        && Number(participant.onlineCount || 0) === 0
+        && !participant.caps?.moderate
+        && returnControlToTeacher(room)
+      ) {
+        emitControlChanged(room);
+      }
+    }
   });
 
   socket.on('room:state', () => {
     const room = rooms.get(socket.data.roomId);
     if (room) {
       const role = socket.data.role;
-      socket.emit('room:state', { role, state: publicState(room), you: publicYou(socketParticipant(room, socket), role) });
+      socket.emit('room:state', {
+        role,
+        state: publicState(room),
+        you: publicYou(socketParticipant(room, socket), role),
+        ...controlState(room)
+      });
     }
+  });
+
+  socket.on('control:grant', payload => {
+    const access = requireAuthenticatedParticipant(socket, payload);
+    if (!access) return;
+    if (!access.participant.caps?.moderate) {
+      emitBoardError(socket, 'Нет прав на передачу хода');
+      return;
+    }
+    const student = findParticipant(access.room, 'student');
+    if (!student) {
+      emitBoardError(socket, 'Ученик не найден');
+      return;
+    }
+    if (setRoomControl(access.room, student)) emitControlChanged(access.room);
+  });
+
+  socket.on('control:revoke', payload => {
+    const access = requireAuthenticatedParticipant(socket, payload);
+    if (!access) return;
+    if (!access.participant.caps?.moderate) {
+      emitBoardError(socket, 'Нет прав на передачу хода');
+      return;
+    }
+    if (returnControlToTeacher(access.room)) emitControlChanged(access.room);
+  });
+
+  socket.on('control:release', payload => {
+    const access = requireAuthenticatedParticipant(socket, payload);
+    if (!access) return;
+    if (
+      access.participant.caps?.moderate
+      || access.room.control !== access.participant.id
+    ) {
+      emitBoardError(socket, 'Нет прав на передачу хода');
+      return;
+    }
+    if (returnControlToTeacher(access.room)) emitControlChanged(access.room);
   });
 
   socket.on('board:stroke-start', payload => {
