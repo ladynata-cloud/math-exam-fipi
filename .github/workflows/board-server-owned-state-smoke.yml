@@ -1,0 +1,364 @@
+name: TEMP Board Server Owned State Smoke
+
+on:
+  pull_request:
+    branches:
+      - feature/board-server-owned-state
+
+jobs:
+  smoke:
+    if: github.head_ref == 'ci/board-server-owned-state-smoke'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.20.2'
+
+      - name: Static checks
+        run: |
+          node --check board-server/index.js
+          node - <<'NODE'
+          const fs = require('fs');
+          const html = fs.readFileSync('trainers/trainer-board.html', 'utf8');
+          const match = html.match(/<script>([\s\S]*)<\/script>/);
+          if (!match) throw new Error('inline script not found');
+          new Function(match[1]);
+          for (const needle of [
+            'const DEFAULT_SERVER=\'https://mathexam-board-ladynata.amvera.io\'',
+            'proto:2',
+            'board:stroke-undo',
+            'board:stroke-redo',
+            'board:page-delete',
+            'board:page-state',
+            'function render',
+            'function exportPng',
+            'function readonly'
+          ]) {
+            if (!html.includes(needle)) throw new Error(`missing ${needle}`);
+          }
+          console.log('inline-js-parse: ok');
+          NODE
+
+      - name: Install server dependencies
+        working-directory: board-server
+        run: |
+          npm install
+          npm install --no-save socket.io-client@4.7.5
+
+      - name: Start test server
+        run: |
+          cd board-server
+          PORT=3212 HOST=127.0.0.1 ROOM_TTL_MS=500 ROOM_CLEANUP_INTERVAL_MS=100 npm start > ../server.log 2>&1 &
+          echo $! > ../server.pid
+          cd ..
+          node - <<'NODE'
+          async function waitHealth() {
+            for (let i = 0; i < 40; i += 1) {
+              try {
+                const response = await fetch('http://127.0.0.1:3212/health');
+                const json = await response.json();
+                if (json.ok) return;
+              } catch (_error) {}
+              await new Promise(resolve => setTimeout(resolve, 250));
+            }
+            throw new Error('server did not become healthy');
+          }
+          waitHealth();
+          NODE
+
+      - name: API and Socket.IO smoke
+        run: |
+          node - <<'NODE'
+          const assert = require('node:assert/strict');
+          const { io } = require('./board-server/node_modules/socket.io-client');
+
+          const BASE = 'http://127.0.0.1:3212';
+          const VALID_A = 'ValidA_123456';
+          const VALID_B = 'ValidB_123456';
+          const VALID_C = 'ValidC_123456';
+
+          const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+          function waitFor(socket, eventName, predicate = () => true, timeoutMs = 5000) {
+            return new Promise((resolve, reject) => {
+              const timer = setTimeout(() => {
+                cleanup();
+                reject(new Error(`Timed out waiting for ${eventName}`));
+              }, timeoutMs);
+              function handler(payload) {
+                try {
+                  if (!predicate(payload)) return;
+                  cleanup();
+                  resolve(payload);
+                } catch (error) {
+                  cleanup();
+                  reject(error);
+                }
+              }
+              function cleanup() {
+                clearTimeout(timer);
+                socket.off(eventName, handler);
+              }
+              socket.on(eventName, handler);
+            });
+          }
+
+          function connectSocket() {
+            return io(BASE, { transports: ['websocket', 'polling'], timeout: 5000, reconnection: false });
+          }
+
+          async function fetchJson(path, options = {}) {
+            const response = await fetch(`${BASE}${path}`, options);
+            const text = await response.text();
+            let json;
+            try { json = JSON.parse(text); } catch (_error) { throw new Error(`Expected JSON from ${path}: ${text}`); }
+            return { response, json };
+          }
+
+          async function createRoom() {
+            const { response, json } = await fetchJson('/api/rooms', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+            assert.equal(response.status, 201);
+            assert.ok(json.roomId);
+            assert.ok(json.teacherToken);
+            assert.ok(json.studentToken);
+            assert.ok(json.state);
+            assert.equal(json.state.stateVersion, 0);
+            return json;
+          }
+
+          async function join(socket, room, role, token, proto = 2) {
+            if (!socket.connected) await waitFor(socket, 'connect');
+            const statePromise = waitFor(socket, 'room:state', payload => payload?.role === role && payload?.you?.participantId !== undefined);
+            const payload = { roomId: room.roomId, role, token };
+            if (proto !== null) payload.proto = proto;
+            socket.emit('room:join', payload);
+            return statePromise;
+          }
+
+          async function newJoinState(room, role = 'student', proto = 2) {
+            const socket = connectSocket();
+            const token = role === 'teacher' ? room.teacherToken : room.studentToken;
+            const state = await join(socket, room, role, token, proto);
+            socket.disconnect();
+            return state;
+          }
+
+          function roomPayload(room, token, extra = {}) {
+            return { roomId: room.roomId, token, ...extra };
+          }
+
+          function stroke(objectId, points = [{ x: 1, y: 1 }, { x: 30, y: 30 }]) {
+            return {
+              kind: 'path',
+              tool: 'pen',
+              objectId,
+              authorId: 'fake-author',
+              authorRole: 'student',
+              layerId: 'fake-layer',
+              createdAt: '1999-01-01T00:00:00.000Z',
+              color: '#111111',
+              size: 5,
+              points
+            };
+          }
+
+          function textObject(objectId) {
+            return {
+              kind: 'text',
+              tool: 'text',
+              objectId,
+              authorId: 'fake-author',
+              authorRole: 'student',
+              layerId: 'fake-layer',
+              createdAt: '1999-01-01T00:00:00.000Z',
+              x: 12,
+              y: 18,
+              text: 'Smoke text',
+              color: '#111111',
+              size: 5
+            };
+          }
+
+          async function expectStudentReject(student, eventName, payload) {
+            const errorPromise = waitFor(student, 'room:error', value => Boolean(value?.message), 2000);
+            student.emit(eventName, payload);
+            const error = await errorPromise;
+            assert.match(error.message, /Нет доступа|Комната/);
+          }
+
+          const health = await fetchJson('/health');
+          assert.equal(health.response.status, 200);
+          assert.equal(health.json.ok, true);
+          assert.equal(typeof health.json.rooms, 'number');
+          assert.equal(typeof health.json.serverStartedAt, 'string');
+          assert.equal(typeof health.json.roomTtlMs, 'number');
+          assert.equal(typeof health.json.roomCleanupIntervalMs, 'number');
+          assert.equal(health.json.features.roomTtlCleanup, true);
+
+          await createRoom();
+          await delay(900);
+          const ttlHealth = await fetchJson('/health');
+          assert.equal(ttlHealth.json.rooms, 0, 'inactive room should be cleaned by short TTL');
+
+          const room = await createRoom();
+          const teacher = connectSocket();
+          const teacherState = await join(teacher, room, 'teacher', room.teacherToken, 2);
+          assert.equal(teacherState.state, null, 'fresh proto:2 teacher must get state:null');
+          const teacherId = teacherState.you.participantId;
+
+          teacher.emit('board:snapshot', roomPayload(room, room.teacherToken, {
+            state: { currentPage: 0, trainerUrl: 'negative-numbers-line.html', pages: [{ id: 'SeedPage_1', bg: 'grid', strokes: [] }] }
+          }));
+          await delay(150);
+
+          const rejoinTeacherState = await newJoinState(room, 'teacher', 2);
+          assert.ok(rejoinTeacherState.state, 'initialized teacher rejoin must get state');
+          assert.equal(rejoinTeacherState.state.stateVersion, 1, 'seed snapshot increments stateVersion');
+
+          const student = connectSocket();
+          const studentState = await join(student, room, 'student', room.studentToken, 2);
+          const studentId = studentState.you.participantId;
+          assert.ok(studentState.state, 'student gets state');
+
+          const participantState = await waitFor(teacher, 'participants:state', payload => {
+            const teacherParticipant = payload.participants.find(item => item.id === teacherId);
+            const studentParticipant = payload.participants.find(item => item.id === studentId);
+            return teacherParticipant?.connected && studentParticipant?.connected;
+          });
+          const onlineBeforeDuplicate = participantState.participants.find(item => item.id === teacherId).onlineCount;
+          teacher.emit('room:join', { roomId: room.roomId, role: 'teacher', token: room.teacherToken, proto: 2 });
+          const duplicateParticipants = await waitFor(teacher, 'participants:state', payload => payload.participants.some(item => item.id === teacherId));
+          assert.equal(duplicateParticipants.participants.find(item => item.id === teacherId).onlineCount, onlineBeforeDuplicate, 'duplicate join inflated onlineCount');
+
+          const trainerMirror = waitFor(student, 'board:trainer-state-change', payload => payload?.trainer === 'negative-numbers-line');
+          teacher.emit('board:trainer-state-change', roomPayload(room, room.teacherToken, { trainer: 'negative-numbers-line', state: { value: 42 } }));
+          await trainerMirror;
+
+          const strokeLive = waitFor(student, 'board:stroke-end', payload => payload?.stroke?.objectId);
+          teacher.emit('board:stroke-end', roomPayload(room, room.teacherToken, { pageIndex: 0, stroke: stroke(VALID_A) }));
+          const strokePayload = await strokeLive;
+          assert.equal(strokePayload.stroke.authorId, teacherId);
+          assert.equal(strokePayload.stroke.authorRole, 'teacher');
+          assert.equal(strokePayload.stroke.layerId, `participant:${teacherId}`);
+          let state = await newJoinState(room);
+          assert.equal(state.state.pages[0].strokes.length, 1, 'new joiner should see persisted stroke without snapshot');
+
+          const textLive = waitFor(student, 'board:text-add', payload => payload?.text?.objectId === VALID_B);
+          teacher.emit('board:text-add', roomPayload(room, room.teacherToken, { pageIndex: 0, text: textObject(VALID_B) }));
+          await textLive;
+          state = await newJoinState(room);
+          assert.equal(state.state.pages[0].strokes.length, 2, 'new joiner should see text object without snapshot');
+          assert.equal(state.state.pages[0].strokes[1].objectId, VALID_B);
+
+          teacher.emit('board:clear-page', roomPayload(room, room.teacherToken, { pageIndex: 0 }));
+          await delay(100);
+          state = await newJoinState(room);
+          assert.equal(state.state.pages[0].strokes.length, 0, 'clear-page should persist');
+
+          teacher.emit('board:bg-change', roomPayload(room, room.teacherToken, { pageIndex: 0, bg: 'lined' }));
+          await delay(100);
+          state = await newJoinState(room);
+          assert.equal(state.state.pages[0].bg, 'lined', 'bg-change should persist');
+
+          teacher.emit('board:page-add', roomPayload(room, room.teacherToken, { pageIndex: 1, page: { id: 'PageOk_123', bg: 'blank', strokes: [stroke('Ignored_123')] } }));
+          await delay(100);
+          state = await newJoinState(room);
+          assert.equal(state.state.pages.length, 2, 'page-add should persist');
+          assert.equal(state.state.pages[1].id, 'PageOk_123');
+          assert.equal(state.state.pages[1].strokes.length, 0, 'page-add must ignore payload strokes');
+          assert.equal(state.state.currentPage, 1);
+
+          teacher.emit('board:page-switch', roomPayload(room, room.teacherToken, { pageIndex: 0 }));
+          await delay(100);
+          state = await newJoinState(room);
+          assert.equal(state.state.currentPage, 0, 'page-switch should persist');
+
+          teacher.emit('board:page-delete', roomPayload(room, room.teacherToken, { pageIndex: 1 }));
+          await delay(100);
+          state = await newJoinState(room);
+          assert.equal(state.state.pages.length, 1, 'page-delete should persist');
+
+          teacher.emit('board:stroke-end', roomPayload(room, room.teacherToken, { pageIndex: 0, stroke: stroke(VALID_A, [{ x: 1, y: 1 }]) }));
+          await delay(60);
+          teacher.emit('board:stroke-end', roomPayload(room, room.teacherToken, { pageIndex: 0, stroke: stroke(VALID_B, [{ x: 2, y: 2 }]) }));
+          await delay(100);
+          state = await newJoinState(room);
+          assert.equal(state.state.pages[0].strokes.length, 2, 'setup for undo should have two strokes');
+
+          const undoState = waitFor(teacher, 'board:page-state', payload => payload?.page?.strokes?.length === 1);
+          teacher.emit('board:stroke-undo', roomPayload(room, room.teacherToken, { pageIndex: 0 }));
+          await undoState;
+          state = await newJoinState(room);
+          assert.deepEqual(state.state.pages[0].strokes.map(item => item.objectId), [VALID_A], 'undo should remove latest author stroke');
+
+          const redoState = waitFor(teacher, 'board:page-state', payload => payload?.page?.strokes?.length === 2);
+          teacher.emit('board:stroke-redo', roomPayload(room, room.teacherToken, { pageIndex: 0 }));
+          await redoState;
+          state = await newJoinState(room);
+          assert.deepEqual(state.state.pages[0].strokes.map(item => item.objectId), [VALID_A, VALID_B], 'redo should restore stroke');
+
+          await waitFor(teacher, 'board:page-state', payload => payload?.page?.strokes?.length === 1).then(() => {}, () => {});
+          teacher.emit('board:stroke-undo', roomPayload(room, room.teacherToken, { pageIndex: 0 }));
+          await delay(100);
+          teacher.emit('board:stroke-end', roomPayload(room, room.teacherToken, { pageIndex: 0, stroke: stroke(VALID_C, [{ x: 3, y: 3 }]) }));
+          await delay(100);
+          teacher.emit('board:stroke-redo', roomPayload(room, room.teacherToken, { pageIndex: 0 }));
+          await delay(150);
+          state = await newJoinState(room);
+          assert.deepEqual(state.state.pages[0].strokes.map(item => item.objectId), [VALID_A, VALID_C], 'new stroke after undo should clear redo');
+
+          const beforeIgnoredSnapshot = state.state;
+          teacher.emit('board:snapshot', roomPayload(room, room.teacherToken, {
+            state: { currentPage: 0, trainerUrl: 'negative-numbers-line.html', pages: [{ id: 'BadSnap_1', bg: 'blank', strokes: [] }] }
+          }));
+          await delay(150);
+          state = await newJoinState(room);
+          assert.equal(state.state.stateVersion, beforeIgnoredSnapshot.stateVersion, 'proto:2 snapshot after initialized should not change stateVersion');
+          assert.deepEqual(state.state.pages[0].strokes.map(item => item.objectId), [VALID_A, VALID_C], 'proto:2 snapshot after initialized should not overwrite state');
+
+          const legacyTeacher = connectSocket();
+          await join(legacyTeacher, room, 'teacher', room.teacherToken, null);
+          legacyTeacher.emit('board:snapshot', roomPayload(room, room.teacherToken, {
+            state: { currentPage: 0, trainerUrl: 'negative-numbers-line.html', pages: [{ id: 'Legacy_1', bg: 'blank', strokes: [stroke('Legacy_123')] }] }
+          }));
+          await delay(150);
+          state = await newJoinState(room);
+          assert.equal(state.state.pages[0].id, 'Legacy_1', 'legacy snapshot should apply as fallback');
+          assert.equal(state.state.pages[0].bg, 'blank');
+          assert.equal(state.state.pages[0].strokes.length, 1);
+          legacyTeacher.disconnect();
+
+          const legacyStudent = connectSocket();
+          await join(legacyStudent, room, 'student', room.studentToken, null);
+          teacher.emit('board:stroke-end', roomPayload(room, room.teacherToken, { pageIndex: 0, stroke: stroke(VALID_B, [{ x: 4, y: 4 }]) }));
+          await delay(100);
+          const legacyUndoSnapshot = waitFor(legacyStudent, 'board:snapshot', payload => payload?.state?.pages?.[0]?.strokes?.length === 1);
+          teacher.emit('board:stroke-undo', roomPayload(room, room.teacherToken, { pageIndex: 0 }));
+          await legacyUndoSnapshot;
+          const legacyPageAddSnapshot = waitFor(legacyStudent, 'board:snapshot', payload => payload?.state?.pages?.length === 2);
+          teacher.emit('board:page-add', roomPayload(room, room.teacherToken, { pageIndex: 1, page: { id: 'LegacyPage_2', bg: 'grid' } }));
+          await legacyPageAddSnapshot;
+          const legacyPageDeleteSnapshot = waitFor(legacyStudent, 'board:snapshot', payload => payload?.state?.pages?.length === 1);
+          teacher.emit('board:page-delete', roomPayload(room, room.teacherToken, { pageIndex: 1 }));
+          await legacyPageDeleteSnapshot;
+
+          let retransmitted = false;
+          teacher.on('board:stroke-end', () => { retransmitted = true; });
+          await expectStudentReject(student, 'board:stroke-end', roomPayload(room, room.studentToken, { pageIndex: 0, stroke: stroke('Student_123') }));
+          await expectStudentReject(student, 'board:stroke-undo', roomPayload(room, room.studentToken, { pageIndex: 0 }));
+          await expectStudentReject(student, 'board:page-delete', roomPayload(room, room.studentToken, { pageIndex: 0 }));
+          await delay(150);
+          assert.equal(retransmitted, false, 'student board event was retransmitted');
+
+          legacyStudent.disconnect();
+          student.disconnect();
+          teacher.disconnect();
+
+          console.log('board-server-owned-state-smoke: ok');
+          NODE
+
+      - name: Dump server log on failure
+        if: failure()
+        run: cat server.log || true
