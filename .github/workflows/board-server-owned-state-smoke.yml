@@ -1,0 +1,86 @@
+name: Board Server Owned State Smoke
+
+on:
+  pull_request:
+    branches:
+      - feature/board-server-owned-state
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Static checks
+        run: |
+          node --check board-server/index.js
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const files = ['board-server/index.js', 'trainers/trainer-board.html', 'board-server/README.md'];
+          const bidi = /[\u061c\u200e\u200f\u202a-\u202e\u2066-\u2069]/u;
+          const hiddenControls = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f]/u;
+          for (const file of files) {
+            const text = fs.readFileSync(file, 'utf8');
+            for (let index = 0; index < text.length; index += 1) {
+              const char = text[index];
+              if (bidi.test(char) || hiddenControls.test(char)) {
+                throw new Error(`${file} contains hidden/control U+${char.codePointAt(0).toString(16).toUpperCase().padStart(4, '0')} at offset ${index}`);
+              }
+            }
+          }
+          const html = fs.readFileSync('trainers/trainer-board.html', 'utf8');
+          const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map(match => match[1]);
+          if (!scripts.length) throw new Error('No inline scripts found');
+          scripts.forEach((source, index) => {
+            try { new Function(source); }
+            catch (error) {
+              error.message = `Inline script ${index + 1} parse failed: ${error.message}`;
+              throw error;
+            }
+          });
+          console.log(`No hidden/bidi controls in ${files.join(', ')}`);
+          console.log(`Parsed ${scripts.length} inline script(s)`);
+          NODE
+      - name: Install dependencies
+        working-directory: board-server
+        run: |
+          npm install --silent
+          npm install --silent --no-save socket.io-client@4.7.5
+      - name: Start test server
+        working-directory: board-server
+        env:
+          HOST: 127.0.0.1
+          PORT: 4010
+          ROOM_TTL_MS: 500
+          ROOM_CLEANUP_INTERVAL_MS: 100
+        run: |
+          npm start > ../board-server.log 2>&1 &
+          echo $! > ../board-server.pid
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:4010/health >/dev/null; then
+              exit 0
+            fi
+            sleep 0.2
+          done
+          cat ../board-server.log
+          exit 1
+      - name: API and Socket.IO smoke
+        env:
+          BASE_URL: http://127.0.0.1:4010
+        run: node .github/smoke/board-server-owned-state-smoke.mjs
+      - name: Dump server log on failure
+        if: failure()
+        run: cat board-server.log || true
+      - name: Stop test server
+        if: always()
+        run: |
+          if [ -f board-server.pid ]; then
+            kill "$(cat board-server.pid)" 2>/dev/null || true
+          fi
