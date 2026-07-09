@@ -165,6 +165,13 @@ function findParticipant(room, role) {
   return (room.participants || []).find(participant => participant.role === role) || null;
 }
 
+function findParticipantByIdAndRole(room, authorId, authorRole) {
+  if (typeof authorId !== 'string' || !AUTHOR_ROLES.has(authorRole)) return null;
+  return (room.participants || []).find(participant => (
+    participant.id === authorId && participant.role === authorRole
+  )) || null;
+}
+
 function roomOwner(room) {
   return findParticipant(room, 'teacher') || (room.participants || [])[0] || {
     id: 'room-owner',
@@ -209,10 +216,18 @@ function isValidIsoDate(value) {
 function normalizeObjectMeta(room, object, author, options = {}) {
   if (!object || typeof object !== 'object') return object;
   const fallbackAuthor = author && AUTHOR_ROLES.has(author.role) ? author : roomOwner(room);
+  const existingAuthor = options.preserveExistingAuthor
+    ? findParticipantByIdAndRole(room, object.authorId, object.authorRole)
+    : null;
+  const resolvedAuthor = existingAuthor || fallbackAuthor;
   object.objectId = isValidObjectId(object.objectId) ? object.objectId : makeId(9);
-  object.authorId = fallbackAuthor.id;
-  object.authorRole = AUTHOR_ROLES.has(fallbackAuthor.role) ? fallbackAuthor.role : 'teacher';
-  object.layerId = `participant:${object.authorId}`;
+  object.authorId = resolvedAuthor.id;
+  object.authorRole = AUTHOR_ROLES.has(resolvedAuthor.role) ? resolvedAuthor.role : 'teacher';
+  if (existingAuthor && typeof object.layerId === 'string' && object.layerId.length > 0 && object.layerId.length <= 80) {
+    object.layerId = object.layerId;
+  } else {
+    object.layerId = `participant:${object.authorId}`;
+  }
   object.createdAt = options.preserveCreatedAt && isValidIsoDate(object.createdAt) ? object.createdAt : nowIso();
   return object;
 }
@@ -272,7 +287,10 @@ function normalizeSnapshot(room, snapshot) {
       id: String(page.id || `page-${index + 1}`),
       bg: ['grid', 'lined', 'blank'].includes(page.bg) ? page.bg : 'grid',
       strokes: Array.isArray(page.strokes)
-        ? page.strokes.map(stroke => normalizeObjectMeta(room, { ...stroke }, owner, { preserveCreatedAt: true }))
+        ? page.strokes.map(stroke => normalizeObjectMeta(room, { ...stroke }, owner, {
+          preserveCreatedAt: true,
+          preserveExistingAuthor: true
+        }))
         : []
     })),
     trainerUrl: normalizeTrainerUrl(snapshot.trainerUrl) || 'negative-numbers-line.html'
@@ -402,12 +420,24 @@ io.on('connection', socket => {
       if (!room) return;
       const participant = socketParticipant(room, socket);
       if (eventName === 'board:stroke-start' || eventName === 'board:stroke-end') {
-        normalizeObjectMeta(room, payload?.stroke, participant, { preserveCreatedAt: false });
+        normalizeObjectMeta(room, payload?.stroke, participant, {
+          preserveCreatedAt: false,
+          preserveExistingAuthor: false
+        });
       }
       if (eventName === 'board:text-add') {
-        normalizeObjectMeta(room, payload?.stroke, participant, { preserveCreatedAt: false });
-        normalizeObjectMeta(room, payload?.text, participant, { preserveCreatedAt: false });
-        normalizeObjectMeta(room, payload?.object, participant, { preserveCreatedAt: false });
+        normalizeObjectMeta(room, payload?.stroke, participant, {
+          preserveCreatedAt: false,
+          preserveExistingAuthor: false
+        });
+        normalizeObjectMeta(room, payload?.text, participant, {
+          preserveCreatedAt: false,
+          preserveExistingAuthor: false
+        });
+        normalizeObjectMeta(room, payload?.object, participant, {
+          preserveCreatedAt: false,
+          preserveExistingAuthor: false
+        });
       }
       touchRoom(room);
       socket.to(room.roomId).emit(eventName, payload);
