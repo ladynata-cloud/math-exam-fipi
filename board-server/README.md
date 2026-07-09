@@ -173,6 +173,44 @@ CORS_ALLOWED_ORIGINS=https://mathexam.space,http://localhost:3000,http://127.0.0
 - `board:snapshot`
 - `board:trainer-url-change`
 
+## Модель состояния доски
+
+После первичного seed сервер становится владельцем `room.pages`. Новые участники получают актуальный `publicState(room)` из памяти сервера и больше не ждут клиентский `board:snapshot` от уже подключённого учителя.
+
+- Новая комната стартует с `initialized:false` и `stateVersion:0`.
+- Первый валидный `board:snapshot` от teacher используется как seed, выставляет `initialized:true` и увеличивает `stateVersion`.
+- Клиенты с `proto:2` после инициализации комнаты больше не могут рутинным snapshot перезаписать `room.pages`.
+- Legacy-клиенты без `proto:2` сохраняют fallback: их snapshot после инициализации всё ещё применяется и ретранслируется.
+- `stateVersion` растёт после server-applied board mutations и отдаётся в `publicState`.
+
+Server-applied events:
+
+- `board:stroke-end`
+- `board:text-add`
+- `board:clear-page`
+- `board:page-add`
+- `board:page-delete`
+- `board:page-switch`
+- `board:bg-change`
+- `board:stroke-undo`
+- `board:stroke-redo`
+- `board:snapshot` only as initial seed or legacy fallback
+- `board:trainer-url-change` and `board:trainer-state-change` keep the existing trainer mirror behavior
+
+Relay-only events:
+
+- `board:stroke-start`
+- `board:stroke-points`
+
+New compatibility events:
+
+- `board:stroke-undo` removes the last object authored by the current participant on the selected page.
+- `board:stroke-redo` restores the last undo entry for an existing page id.
+- `board:page-delete` deletes or replaces a page and clears redo entries for that page id.
+- `board:page-state` broadcasts an authoritative page after undo/redo.
+
+The current `requireWriter` and `requireStructure` gates are still teacher-only wrappers. Policies, hand queue, turn transfer, open student writing, groups, and AI participants are intentionally left for later PRs.
+
 ## Метаданные объектов доски
 
 Объекты доски могут содержать служебные поля:

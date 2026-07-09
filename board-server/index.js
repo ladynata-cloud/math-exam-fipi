@@ -27,6 +27,7 @@ const ROOM_CLEANUP_INTERVAL_MS = parsePositiveInteger(
   DEFAULT_ROOM_CLEANUP_INTERVAL_MS
 );
 const AUTHOR_ROLES = new Set(['teacher', 'student', 'bot']);
+const PAGE_BACKGROUNDS = new Set(['grid', 'lined', 'blank']);
 
 function parsePositiveInteger(value, fallback) {
   const parsed = Number(value);
@@ -84,8 +85,24 @@ function makeId(size = 12) {
   return crypto.randomBytes(size).toString('base64url');
 }
 
+function normalizePageId(value) {
+  return isValidObjectId(value) ? value : makeId(6);
+}
+
+function normalizeBoardBg(value) {
+  return PAGE_BACKGROUNDS.has(value) ? value : 'grid';
+}
+
 function blankPage() {
   return { id: makeId(6), bg: 'grid', strokes: [] };
+}
+
+function safePageFromPayload(page = {}) {
+  return {
+    id: normalizePageId(page.id),
+    bg: normalizeBoardBg(page.bg),
+    strokes: []
+  };
 }
 
 function createParticipant(role, joinedAt) {
@@ -118,6 +135,9 @@ function createRoom() {
     studentToken: makeId(18),
     createdAt,
     lastActivityAt: createdAt,
+    initialized: false,
+    stateVersion: 0,
+    redoStacks: {},
     currentPage: 0,
     pages: [blankPage()],
     trainerUrl: 'negative-numbers-line.html',
@@ -149,6 +169,7 @@ function publicState(room) {
   return {
     roomId: room.roomId,
     createdAt: room.createdAt,
+    stateVersion: Number(room.stateVersion || 0),
     currentPage: room.currentPage,
     pages: room.pages,
     trainerUrl: room.trainerUrl,
@@ -284,8 +305,8 @@ function normalizeSnapshot(room, snapshot) {
   return {
     currentPage: Math.max(0, Math.min(Number(snapshot.currentPage || 0), snapshot.pages.length - 1)),
     pages: snapshot.pages.map((page, index) => ({
-      id: String(page.id || `page-${index + 1}`),
-      bg: ['grid', 'lined', 'blank'].includes(page.bg) ? page.bg : 'grid',
+      id: normalizePageId(page.id || `page-${index + 1}`),
+      bg: normalizeBoardBg(page.bg),
       strokes: Array.isArray(page.strokes)
         ? page.strokes.map(stroke => normalizeObjectMeta(room, { ...stroke }, owner, {
           preserveCreatedAt: true,
@@ -303,7 +324,81 @@ function applySnapshot(room, snapshot) {
   room.currentPage = next.currentPage;
   room.pages = next.pages;
   room.trainerUrl = next.trainerUrl;
+  room.redoStacks = {};
   return true;
+}
+
+function pageRef(room, pageIndex) {
+  const index = Number(pageIndex);
+  if (!Number.isInteger(index) || index < 0 || index >= room.pages.length) return null;
+  return { pageIndex: index, page: room.pages[index] };
+}
+
+function insertionIndex(room, pageIndex) {
+  const index = Number(pageIndex);
+  if (!Number.isInteger(index) || index < 0 || index > room.pages.length) return room.pages.length;
+  return index;
+}
+
+function emitBoardError(socket, message = 'Некорректное состояние доски') {
+  socket.emit('room:error', { message });
+}
+
+function markBoardStateChanged(room) {
+  room.initialized = true;
+  room.stateVersion = Number(room.stateVersion || 0) + 1;
+  touchRoom(room);
+}
+
+function redoStack(room, participantId) {
+  room.redoStacks = room.redoStacks || {};
+  if (!Array.isArray(room.redoStacks[participantId])) room.redoStacks[participantId] = [];
+  return room.redoStacks[participantId];
+}
+
+function clearRedoForAuthorPage(room, authorId, pageId) {
+  const stack = redoStack(room, authorId);
+  room.redoStacks[authorId] = stack.filter(entry => entry.pageId !== pageId);
+}
+
+function clearRedoForPage(room, pageId) {
+  room.redoStacks = room.redoStacks || {};
+  Object.keys(room.redoStacks).forEach(authorId => {
+    room.redoStacks[authorId] = (room.redoStacks[authorId] || []).filter(entry => entry.pageId !== pageId);
+  });
+}
+
+function normalizeLiveBoardObject(room, payload, participant) {
+  if (!payload || typeof payload !== 'object') return null;
+  ['stroke', 'text', 'object'].forEach(key => {
+    normalizeObjectMeta(room, payload[key], participant, {
+      preserveCreatedAt: false,
+      preserveExistingAuthor: false
+    });
+  });
+  return payload.stroke || payload.text || payload.object || null;
+}
+
+function persistBoardObject(room, payload, participant) {
+  const target = pageRef(room, payload?.pageIndex);
+  if (!target) return null;
+  const object = normalizeLiveBoardObject(room, payload, participant);
+  if (!object) return null;
+  target.page.strokes.push(object);
+  clearRedoForAuthorPage(room, participant.id, target.page.id);
+  markBoardStateChanged(room);
+  return { ...payload, pageIndex: target.pageIndex };
+}
+
+function emitLegacySnapshot(socket, room) {
+  socket.to(room.roomId).emit('board:snapshot', { state: publicState(room) });
+}
+
+function findLastAuthoredStrokeIndex(page, authorId) {
+  for (let index = page.strokes.length - 1; index >= 0; index -= 1) {
+    if (page.strokes[index]?.authorId === authorId) return index;
+  }
+  return -1;
 }
 
 function authenticate(roomId, role, token) {
@@ -314,7 +409,7 @@ function authenticate(roomId, role, token) {
   return { error: 'Нет доступа к комнате' };
 }
 
-function requireTeacher(socket, payload = {}) {
+function requireTeacherAccess(socket, payload = {}) {
   const roomId = payload.roomId || socket.data.roomId;
   const token = payload.token || socket.data.token;
   const auth = authenticate(roomId, 'teacher', token);
@@ -323,6 +418,14 @@ function requireTeacher(socket, payload = {}) {
     return null;
   }
   return auth.room;
+}
+
+function requireWriter(socket, payload = {}) {
+  return requireTeacherAccess(socket, payload);
+}
+
+function requireStructure(socket, payload = {}) {
+  return requireTeacherAccess(socket, payload);
 }
 
 app.get('/health', (_req, res) => {
@@ -381,12 +484,14 @@ io.on('connection', socket => {
     socket.data.roomId = auth.room.roomId;
     socket.data.role = role;
     socket.data.token = payload.token;
+    const proto = Number(payload?.proto);
+    socket.data.proto = Number.isFinite(proto) && proto > 0 ? proto : 1;
     markParticipantConnected(auth.room, role, socket);
     const participant = findParticipant(auth.room, role);
     socket.join(auth.room.roomId);
     socket.emit('room:state', {
       role,
-      state: role === 'student' ? publicState(auth.room) : null,
+      state: role === 'student' || auth.room.initialized ? publicState(auth.room) : null,
       you: publicYou(participant, role)
     });
     io.to(auth.room.roomId).emit('participants:state', participantsState(auth.room));
@@ -405,47 +510,186 @@ io.on('connection', socket => {
     }
   });
 
-  [
-    'board:stroke-start',
-    'board:stroke-points',
-    'board:stroke-end',
-    'board:text-add',
-    'board:clear-page',
-    'board:page-add',
-    'board:page-switch',
-    'board:bg-change'
-  ].forEach(eventName => {
-    socket.on(eventName, payload => {
-      const room = requireTeacher(socket, payload);
-      if (!room) return;
-      const participant = socketParticipant(room, socket);
-      if (eventName === 'board:stroke-start' || eventName === 'board:stroke-end') {
-        normalizeObjectMeta(room, payload?.stroke, participant, {
-          preserveCreatedAt: false,
-          preserveExistingAuthor: false
-        });
-      }
-      if (eventName === 'board:text-add') {
-        normalizeObjectMeta(room, payload?.stroke, participant, {
-          preserveCreatedAt: false,
-          preserveExistingAuthor: false
-        });
-        normalizeObjectMeta(room, payload?.text, participant, {
-          preserveCreatedAt: false,
-          preserveExistingAuthor: false
-        });
-        normalizeObjectMeta(room, payload?.object, participant, {
-          preserveCreatedAt: false,
-          preserveExistingAuthor: false
-        });
-      }
-      touchRoom(room);
-      socket.to(room.roomId).emit(eventName, payload);
+  socket.on('board:stroke-start', payload => {
+    const room = requireWriter(socket, payload);
+    if (!room) return;
+    normalizeObjectMeta(room, payload?.stroke, socketParticipant(room, socket), {
+      preserveCreatedAt: false,
+      preserveExistingAuthor: false
+    });
+    touchRoom(room);
+    socket.to(room.roomId).emit('board:stroke-start', payload);
+  });
+
+  socket.on('board:stroke-points', payload => {
+    const room = requireWriter(socket, payload);
+    if (!room) return;
+    touchRoom(room);
+    socket.to(room.roomId).emit('board:stroke-points', payload);
+  });
+
+  socket.on('board:stroke-end', payload => {
+    const room = requireWriter(socket, payload);
+    if (!room) return;
+    const nextPayload = persistBoardObject(room, payload, socketParticipant(room, socket));
+    if (!nextPayload) {
+      emitBoardError(socket);
+      return;
+    }
+    socket.to(room.roomId).emit('board:stroke-end', nextPayload);
+  });
+
+  socket.on('board:text-add', payload => {
+    const room = requireWriter(socket, payload);
+    if (!room) return;
+    const nextPayload = persistBoardObject(room, payload, socketParticipant(room, socket));
+    if (!nextPayload) {
+      emitBoardError(socket);
+      return;
+    }
+    socket.to(room.roomId).emit('board:text-add', nextPayload);
+  });
+
+  socket.on('board:clear-page', payload => {
+    const room = requireWriter(socket, payload);
+    if (!room) return;
+    const target = pageRef(room, payload?.pageIndex);
+    if (!target) {
+      emitBoardError(socket);
+      return;
+    }
+    target.page.strokes = [];
+    clearRedoForPage(room, target.page.id);
+    markBoardStateChanged(room);
+    socket.to(room.roomId).emit('board:clear-page', { pageIndex: target.pageIndex, stateVersion: room.stateVersion });
+  });
+
+  socket.on('board:page-add', payload => {
+    const room = requireStructure(socket, payload);
+    if (!room) return;
+    const page = safePageFromPayload(payload?.page);
+    const pageIndex = insertionIndex(room, payload?.pageIndex);
+    room.pages.splice(pageIndex, 0, page);
+    room.currentPage = pageIndex;
+    markBoardStateChanged(room);
+    socket.to(room.roomId).emit('board:page-add', {
+      pageIndex,
+      currentPage: room.currentPage,
+      page,
+      stateVersion: room.stateVersion
+    });
+    emitLegacySnapshot(socket, room);
+  });
+
+  socket.on('board:page-delete', payload => {
+    const room = requireStructure(socket, payload);
+    if (!room) return;
+    const target = pageRef(room, payload?.pageIndex);
+    if (!target) {
+      emitBoardError(socket);
+      return;
+    }
+    const deletedPageId = target.page.id;
+    if (room.pages.length === 1) {
+      room.pages[0] = blankPage();
+      room.currentPage = 0;
+    } else {
+      room.pages.splice(target.pageIndex, 1);
+      room.currentPage = Math.min(room.currentPage, room.pages.length - 1);
+    }
+    clearRedoForPage(room, deletedPageId);
+    markBoardStateChanged(room);
+    socket.to(room.roomId).emit('board:page-delete', {
+      pageIndex: target.pageIndex,
+      currentPage: room.currentPage,
+      page: room.pages[room.currentPage],
+      stateVersion: room.stateVersion
+    });
+    emitLegacySnapshot(socket, room);
+  });
+
+  socket.on('board:page-switch', payload => {
+    const room = requireStructure(socket, payload);
+    if (!room) return;
+    const target = pageRef(room, payload?.pageIndex);
+    if (!target) {
+      emitBoardError(socket);
+      return;
+    }
+    room.currentPage = target.pageIndex;
+    markBoardStateChanged(room);
+    socket.to(room.roomId).emit('board:page-switch', { pageIndex: target.pageIndex, stateVersion: room.stateVersion });
+  });
+
+  socket.on('board:bg-change', payload => {
+    const room = requireStructure(socket, payload);
+    if (!room) return;
+    const target = pageRef(room, payload?.pageIndex);
+    if (!target) {
+      emitBoardError(socket);
+      return;
+    }
+    target.page.bg = normalizeBoardBg(payload?.bg);
+    markBoardStateChanged(room);
+    socket.to(room.roomId).emit('board:bg-change', {
+      pageIndex: target.pageIndex,
+      bg: target.page.bg,
+      stateVersion: room.stateVersion
     });
   });
 
+  socket.on('board:stroke-undo', payload => {
+    const room = requireWriter(socket, payload);
+    if (!room) return;
+    const participant = socketParticipant(room, socket);
+    const target = pageRef(room, payload?.pageIndex);
+    if (!target) {
+      emitBoardError(socket);
+      return;
+    }
+    const strokeIndex = findLastAuthoredStrokeIndex(target.page, participant.id);
+    if (strokeIndex < 0) return;
+    const [stroke] = target.page.strokes.splice(strokeIndex, 1);
+    redoStack(room, participant.id).push({ pageId: target.page.id, stroke });
+    markBoardStateChanged(room);
+    io.to(room.roomId).emit('board:page-state', {
+      pageIndex: target.pageIndex,
+      page: target.page,
+      stateVersion: room.stateVersion
+    });
+    emitLegacySnapshot(socket, room);
+  });
+
+  socket.on('board:stroke-redo', payload => {
+    const room = requireWriter(socket, payload);
+    if (!room) return;
+    const participant = socketParticipant(room, socket);
+    const stack = redoStack(room, participant.id);
+    let entry = null;
+    let pageIndex = -1;
+    while (stack.length > 0) {
+      const candidate = stack.pop();
+      const candidatePageIndex = room.pages.findIndex(page => page.id === candidate.pageId);
+      if (candidatePageIndex >= 0) {
+        entry = candidate;
+        pageIndex = candidatePageIndex;
+        break;
+      }
+    }
+    if (!entry) return;
+    const page = room.pages[pageIndex];
+    page.strokes.push(entry.stroke);
+    markBoardStateChanged(room);
+    io.to(room.roomId).emit('board:page-state', {
+      pageIndex,
+      page,
+      stateVersion: room.stateVersion
+    });
+    emitLegacySnapshot(socket, room);
+  });
+
   socket.on('board:trainer-url-change', payload => {
-    const room = requireTeacher(socket, payload);
+    const room = requireStructure(socket, payload);
     if (!room) return;
     const trainerUrl = normalizeTrainerUrl(payload?.trainerUrl);
     if (!trainerUrl) return;
@@ -456,7 +700,7 @@ io.on('connection', socket => {
   });
 
   socket.on('board:trainer-state-change', payload => {
-    const room = requireTeacher(socket, payload);
+    const room = requireWriter(socket, payload);
     if (!room) return;
     const latestTrainerState = normalizeTrainerState(payload);
     if (!latestTrainerState) return;
@@ -466,10 +710,11 @@ io.on('connection', socket => {
   });
 
   socket.on('board:snapshot', payload => {
-    const room = requireTeacher(socket, payload);
+    const room = requireStructure(socket, payload);
     if (!room) return;
+    if (room.initialized && Number(socket.data.proto || 1) >= 2) return;
     if (applySnapshot(room, payload?.state)) {
-      touchRoom(room);
+      markBoardStateChanged(room);
       socket.to(room.roomId).emit('board:snapshot', { state: publicState(room) });
     }
   });
