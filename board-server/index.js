@@ -98,6 +98,7 @@ function blankPage() {
 }
 
 function safePageFromPayload(page = {}) {
+  if (!page || typeof page !== 'object') page = {};
   return {
     id: normalizePageId(page.id),
     bg: normalizeBoardBg(page.bg),
