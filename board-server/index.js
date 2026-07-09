@@ -591,12 +591,19 @@ io.on('connection', socket => {
       return;
     }
     const deletedPageId = target.page.id;
+    const oldCurrentPage = room.currentPage;
     if (room.pages.length === 1) {
       room.pages[0] = blankPage();
       room.currentPage = 0;
     } else {
       room.pages.splice(target.pageIndex, 1);
-      room.currentPage = Math.min(room.currentPage, room.pages.length - 1);
+      if (target.pageIndex < oldCurrentPage) {
+        room.currentPage = oldCurrentPage - 1;
+      } else if (target.pageIndex === oldCurrentPage) {
+        room.currentPage = Math.min(oldCurrentPage, room.pages.length - 1);
+      } else {
+        room.currentPage = Math.min(oldCurrentPage, room.pages.length - 1);
+      }
     }
     clearRedoForPage(room, deletedPageId);
     markBoardStateChanged(room);
