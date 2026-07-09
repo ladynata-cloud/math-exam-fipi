@@ -1,0 +1,96 @@
+name: Apply PR67 Review Gates Patch
+
+on:
+  pull_request:
+    branches:
+      - feature/board-server-owned-state
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/board-server-owned-state
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Apply focused patch
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          index_path = Path('board-server/index.js')
+          index_text = index_path.read_text(encoding='utf-8')
+          old_index = """    const deletedPageId = target.page.id;
+    if (room.pages.length === 1) {
+      room.pages[0] = blankPage();
+      room.currentPage = 0;
+    } else {
+      room.pages.splice(target.pageIndex, 1);
+      room.currentPage = Math.min(room.currentPage, room.pages.length - 1);
+    }
+"""
+          new_index = """    const deletedPageId = target.page.id;
+    const oldCurrentPage = room.currentPage;
+    if (room.pages.length === 1) {
+      room.pages[0] = blankPage();
+      room.currentPage = 0;
+    } else {
+      room.pages.splice(target.pageIndex, 1);
+      if (target.pageIndex < oldCurrentPage) {
+        room.currentPage = oldCurrentPage - 1;
+      } else if (target.pageIndex === oldCurrentPage) {
+        room.currentPage = Math.min(oldCurrentPage, room.pages.length - 1);
+      } else {
+        room.currentPage = Math.min(oldCurrentPage, room.pages.length - 1);
+      }
+    }
+"""
+          if old_index not in index_text:
+              raise SystemExit('Expected page-delete block not found')
+          index_path.write_text(index_text.replace(old_index, new_index), encoding='utf-8')
+
+          readme_path = Path('board-server/README.md')
+          readme_text = readme_path.read_text(encoding='utf-8')
+          old_model = """- Новая комната стартует с `initialized:false` и `stateVersion:0`.
+- Первый валидный `board:snapshot` от teacher используется как seed, выставляет `initialized:true` и увеличивает `stateVersion`.
+- Клиенты с `proto:2` после инициализации комнаты больше не могут рутинным snapshot перезаписать `room.pages`.
+- Legacy-клиенты без `proto:2` сохраняют fallback: их snapshot после инициализации всё ещё применяется и ретранслируется.
+- `stateVersion` растёт после server-applied board mutations и отдаётся в `publicState`.
+"""
+          new_model = """- Новая комната стартует с `initialized:false` и `stateVersion:0`.
+- Первый валидный `board:snapshot` от teacher используется как initial seed, выставляет `initialized:true` и увеличивает `stateVersion`.
+- После PR #67 `board:snapshot` используется как initial seed или legacy fallback.
+- Для `proto:2` clients routine snapshots после `initialized:true` не перезаписывают `room.pages`.
+- Legacy clients без `proto:2` всё ещё могут применять snapshot как fallback: их snapshot после инициализации применяется и ретранслируется.
+- `page-add`, `page-delete`, `undo` и `redo` дополнительно отправляют synthesized `board:snapshot` для legacy clients.
+- `clear-page`, `bg-change` и `page-switch` не требуют такого bridge, потому что старый клиент понимает эти события нативно.
+- `stateVersion` растёт после server-applied board mutations и отдаётся в `publicState`.
+"""
+          if old_model not in readme_text:
+              raise SystemExit('Expected server-owned README bullet block not found')
+          readme_text = readme_text.replace(old_model, new_model)
+
+          old_snapshot_limit = """Snapshot-перезапись остаётся известным ограничением до будущего server-owned state: текущий foundation только добавляет метки объектов и не включает передачу хода, группы, открытую запись ученика или ИИ-участника.
+"""
+          new_snapshot_limit = """После PR #67 snapshot-перезапись больше не является штатным механизмом для `proto:2` clients: сервер защищает `room.pages` после initial seed. Этот foundation не включает передачу хода, группы, открытую запись ученика или ИИ-участника.
+"""
+          if old_snapshot_limit not in readme_text:
+              raise SystemExit('Expected old snapshot limitation paragraph not found')
+          readme_text = readme_text.replace(old_snapshot_limit, new_snapshot_limit)
+          readme_path.write_text(readme_text, encoding='utf-8')
+          PY
+      - name: Commit and push
+        run: |
+          git config user.name "codex-review-gate-bot"
+          git config user.email "actions@github.com"
+          git add board-server/index.js board-server/README.md
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+          git commit -m "Close PR67 review gates"
+          git push origin HEAD:feature/board-server-owned-state
