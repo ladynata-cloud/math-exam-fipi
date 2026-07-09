@@ -180,7 +180,7 @@ CORS_ALLOWED_ORIGINS=https://mathexam.space,http://localhost:3000,http://127.0.0
 - `objectId` - стабильный идентификатор объекта доски.
 - `authorId` - историческая метка участника, создавшего объект.
 - `authorRole` - историческая роль автора: `teacher`, `student` или `bot`.
-- `layerId` - идентификатор слоя, сейчас по умолчанию `participant:<authorId>`.
+- `layerId` — идентификатор слоя, сейчас по умолчанию `participant:<authorId>`.
 - `createdAt` - ISO-время создания объекта.
 
 Сервер не доверяет клиентским `authorId`, `authorRole`, `layerId` и `createdAt` как источнику прав. Live-события доски всегда штампуются реальным socket-участником, который прошёл серверную проверку.
