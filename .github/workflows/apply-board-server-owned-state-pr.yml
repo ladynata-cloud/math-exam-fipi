@@ -1,0 +1,80 @@
+name: TEMP Trigger Board Server Owned State Patch
+
+on:
+  pull_request:
+    branches:
+      - feature/board-server-owned-state
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.head_ref == 'ci/apply-board-server-owned-state'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout workflow branch
+        uses: actions/checkout@v4
+        with:
+          ref: ci/apply-board-server-owned-state
+          path: head
+
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/board-server-owned-state
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          path: target
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.20.2'
+
+      - name: Extract and apply patch script
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const workflow = fs.readFileSync('head/.github/workflows/apply-board-server-owned-state.yml', 'utf8');
+          const match = workflow.match(/cat > \/tmp\/apply-board-server-owned-state\.js <<'NODE'\n([\s\S]*?)\n          NODE/);
+          if (!match) throw new Error('patch script block not found');
+          const script = match[1].split('\n').map(line => line.replace(/^          /, '')).join('\n');
+          fs.writeFileSync('/tmp/apply-board-server-owned-state.js', script);
+          NODE
+          cd target
+          node /tmp/apply-board-server-owned-state.js
+
+      - name: Static checks
+        working-directory: target
+        run: |
+          node --check board-server/index.js
+          node - <<'NODE'
+          const fs = require('fs');
+          const html = fs.readFileSync('trainers/trainer-board.html', 'utf8');
+          const match = html.match(/<script>([\s\S]*)<\/script>/);
+          if (!match) throw new Error('inline script not found');
+          new Function(match[1]);
+          for (const needle of [
+            'proto:2',
+            'board:stroke-undo',
+            'board:stroke-redo',
+            'board:page-delete',
+            'board:page-state',
+            'function exportPng',
+            'function render'
+          ]) {
+            if (!html.includes(needle)) throw new Error(`missing ${needle}`);
+          }
+          console.log('inline-js-parse: ok');
+          NODE
+
+      - name: Commit changes to target branch
+        working-directory: target
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git status --short
+          git add board-server/index.js trainers/trainer-board.html board-server/README.md
+          git commit -m "Add server owned board state foundation"
+          git push origin HEAD:feature/board-server-owned-state
