@@ -1,0 +1,475 @@
+name: TEMP Apply Board Server Owned State
+
+on:
+  push:
+    branches:
+      - ci/apply-board-server-owned-state
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.ref_name == 'ci/apply-board-server-owned-state'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/board-server-owned-state
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.20.2'
+
+      - name: Apply patch
+        run: |
+          cat > /tmp/apply-board-server-owned-state.js <<'NODE'
+          const fs = require('fs');
+
+          function read(path) {
+            return fs.readFileSync(path, 'utf8').replace(/\r\n/g, '\n');
+          }
+
+          function write(path, content, eol = '\n') {
+            fs.writeFileSync(path, eol === '\n' ? content : content.replace(/\n/g, eol));
+          }
+
+          function replaceOnce(source, from, to, label) {
+            if (!source.includes(from)) throw new Error(`Missing pattern: ${label}`);
+            return source.replace(from, to);
+          }
+
+          function replaceBetween(source, startNeedle, endNeedle, replacement, label) {
+            const start = source.indexOf(startNeedle);
+            if (start < 0) throw new Error(`Missing start: ${label}`);
+            const end = source.indexOf(endNeedle, start);
+            if (end < 0) throw new Error(`Missing end: ${label}`);
+            return source.slice(0, start) + replacement + source.slice(end);
+          }
+
+          let server = read('board-server/index.js');
+          server = replaceOnce(
+            server,
+            "const AUTHOR_ROLES = new Set(['teacher', 'student', 'bot']);",
+            "const AUTHOR_ROLES = new Set(['teacher', 'student', 'bot']);\nconst PAGE_BACKGROUNDS = new Set(['grid', 'lined', 'blank']);",
+            'page background constants'
+          );
+          server = replaceOnce(
+            server,
+            "function blankPage() {\n  return { id: makeId(6), bg: 'grid', strokes: [] };\n}",
+            "function normalizePageId(value) {\n  return isValidObjectId(value) ? value : makeId(6);\n}\n\nfunction normalizeBoardBg(value) {\n  return PAGE_BACKGROUNDS.has(value) ? value : 'grid';\n}\n\nfunction blankPage() {\n  return { id: makeId(6), bg: 'grid', strokes: [] };\n}\n\nfunction safePageFromPayload(page = {}) {\n  return {\n    id: normalizePageId(page.id),\n    bg: normalizeBoardBg(page.bg),\n    strokes: []\n  };\n}",
+            'page helpers'
+          );
+          server = replaceOnce(
+            server,
+            "    lastActivityAt: createdAt,\n    currentPage: 0,",
+            "    lastActivityAt: createdAt,\n    initialized: false,\n    stateVersion: 0,\n    redoStacks: {},\n    currentPage: 0,",
+            'room server-owned fields'
+          );
+          server = replaceOnce(
+            server,
+            "    roomId: room.roomId,\n    createdAt: room.createdAt,\n    currentPage: room.currentPage,",
+            "    roomId: room.roomId,\n    createdAt: room.createdAt,\n    stateVersion: Number(room.stateVersion || 0),\n    currentPage: room.currentPage,",
+            'public stateVersion'
+          );
+          server = replaceOnce(
+            server,
+            "      id: String(page.id || `page-${index + 1}`),\n      bg: ['grid', 'lined', 'blank'].includes(page.bg) ? page.bg : 'grid',",
+            "      id: normalizePageId(page.id || `page-${index + 1}`),\n      bg: normalizeBoardBg(page.bg),",
+            'snapshot page id/bg normalization'
+          );
+          server = replaceOnce(
+            server,
+            "  room.pages = next.pages;\n  room.trainerUrl = next.trainerUrl;\n  return true;\n}",
+            "  room.pages = next.pages;\n  room.trainerUrl = next.trainerUrl;\n  room.redoStacks = {};\n  return true;\n}\n\nfunction pageRef(room, pageIndex) {\n  const index = Number(pageIndex);\n  if (!Number.isInteger(index) || index < 0 || index >= room.pages.length) return null;\n  return { pageIndex: index, page: room.pages[index] };\n}\n\nfunction insertionIndex(room, pageIndex) {\n  const index = Number(pageIndex);\n  if (!Number.isInteger(index) || index < 0 || index > room.pages.length) return room.pages.length;\n  return index;\n}\n\nfunction emitBoardError(socket, message = 'Некорректное состояние доски') {\n  socket.emit('room:error', { message });\n}\n\nfunction markBoardStateChanged(room) {\n  room.initialized = true;\n  room.stateVersion = Number(room.stateVersion || 0) + 1;\n  touchRoom(room);\n}\n\nfunction redoStack(room, participantId) {\n  room.redoStacks = room.redoStacks || {};\n  if (!Array.isArray(room.redoStacks[participantId])) room.redoStacks[participantId] = [];\n  return room.redoStacks[participantId];\n}\n\nfunction clearRedoForAuthorPage(room, authorId, pageId) {\n  const stack = redoStack(room, authorId);\n  room.redoStacks[authorId] = stack.filter(entry => entry.pageId !== pageId);\n}\n\nfunction clearRedoForPage(room, pageId) {\n  room.redoStacks = room.redoStacks || {};\n  Object.keys(room.redoStacks).forEach(authorId => {\n    room.redoStacks[authorId] = (room.redoStacks[authorId] || []).filter(entry => entry.pageId !== pageId);\n  });\n}\n\nfunction normalizeLiveBoardObject(room, payload, participant) {\n  if (!payload || typeof payload !== 'object') return null;\n  ['stroke', 'text', 'object'].forEach(key => {\n    normalizeObjectMeta(room, payload[key], participant, {\n      preserveCreatedAt: false,\n      preserveExistingAuthor: false\n    });\n  });\n  return payload.stroke || payload.text || payload.object || null;\n}\n\nfunction persistBoardObject(room, payload, participant) {\n  const target = pageRef(room, payload?.pageIndex);\n  if (!target) return null;\n  const object = normalizeLiveBoardObject(room, payload, participant);\n  if (!object) return null;\n  target.page.strokes.push(object);\n  clearRedoForAuthorPage(room, participant.id, target.page.id);\n  markBoardStateChanged(room);\n  return { ...payload, pageIndex: target.pageIndex };\n}\n\nfunction emitLegacySnapshot(socket, room) {\n  socket.to(room.roomId).emit('board:snapshot', { state: publicState(room) });\n}\n\nfunction findLastAuthoredStrokeIndex(page, authorId) {\n  for (let index = page.strokes.length - 1; index >= 0; index -= 1) {\n    if (page.strokes[index]?.authorId === authorId) return index;\n  }\n  return -1;\n}",
+            'applySnapshot + server-owned helpers'
+          );
+          server = replaceOnce(
+            server,
+            "function requireTeacher(socket, payload = {}) {\n  const roomId = payload.roomId || socket.data.roomId;\n  const token = payload.token || socket.data.token;\n  const auth = authenticate(roomId, 'teacher', token);\n  if (auth.error) {\n    socket.emit('room:error', { message: auth.error });\n    return null;\n  }\n  return auth.room;\n}",
+            "function requireTeacherAccess(socket, payload = {}) {\n  const roomId = payload.roomId || socket.data.roomId;\n  const token = payload.token || socket.data.token;\n  const auth = authenticate(roomId, 'teacher', token);\n  if (auth.error) {\n    socket.emit('room:error', { message: auth.error });\n    return null;\n  }\n  return auth.room;\n}\n\nfunction requireWriter(socket, payload = {}) {\n  return requireTeacherAccess(socket, payload);\n}\n\nfunction requireStructure(socket, payload = {}) {\n  return requireTeacherAccess(socket, payload);\n}",
+            'split gates'
+          );
+          server = replaceOnce(
+            server,
+            "    socket.data.token = payload.token;\n    markParticipantConnected(auth.room, role, socket);",
+            "    socket.data.token = payload.token;\n    const proto = Number(payload?.proto);\n    socket.data.proto = Number.isFinite(proto) && proto > 0 ? proto : 1;\n    markParticipantConnected(auth.room, role, socket);",
+            'room join proto'
+          );
+          server = replaceOnce(
+            server,
+            "      state: role === 'student' ? publicState(auth.room) : null,",
+            "      state: role === 'student' || auth.room.initialized ? publicState(auth.room) : null,",
+            'teacher initialized state'
+          );
+
+          const oldEventStart = "  [\n    'board:stroke-start',\n    'board:stroke-points',\n    'board:stroke-end',\n    'board:text-add',\n    'board:clear-page',\n    'board:page-add',\n    'board:page-switch',\n    'board:bg-change'\n  ].forEach(eventName => {";
+          const newEventBlock = `  socket.on('board:stroke-start', payload => {
+    const room = requireWriter(socket, payload);
+    if (!room) return;
+    normalizeObjectMeta(room, payload?.stroke, socketParticipant(room, socket), {
+      preserveCreatedAt: false,
+      preserveExistingAuthor: false
+    });
+    touchRoom(room);
+    socket.to(room.roomId).emit('board:stroke-start', payload);
+  });
+
+  socket.on('board:stroke-points', payload => {
+    const room = requireWriter(socket, payload);
+    if (!room) return;
+    touchRoom(room);
+    socket.to(room.roomId).emit('board:stroke-points', payload);
+  });
+
+  socket.on('board:stroke-end', payload => {
+    const room = requireWriter(socket, payload);
+    if (!room) return;
+    const nextPayload = persistBoardObject(room, payload, socketParticipant(room, socket));
+    if (!nextPayload) {
+      emitBoardError(socket);
+      return;
+    }
+    socket.to(room.roomId).emit('board:stroke-end', nextPayload);
+  });
+
+  socket.on('board:text-add', payload => {
+    const room = requireWriter(socket, payload);
+    if (!room) return;
+    const nextPayload = persistBoardObject(room, payload, socketParticipant(room, socket));
+    if (!nextPayload) {
+      emitBoardError(socket);
+      return;
+    }
+    socket.to(room.roomId).emit('board:text-add', nextPayload);
+  });
+
+  socket.on('board:clear-page', payload => {
+    const room = requireWriter(socket, payload);
+    if (!room) return;
+    const target = pageRef(room, payload?.pageIndex);
+    if (!target) {
+      emitBoardError(socket);
+      return;
+    }
+    target.page.strokes = [];
+    clearRedoForPage(room, target.page.id);
+    markBoardStateChanged(room);
+    socket.to(room.roomId).emit('board:clear-page', { pageIndex: target.pageIndex, stateVersion: room.stateVersion });
+  });
+
+  socket.on('board:page-add', payload => {
+    const room = requireStructure(socket, payload);
+    if (!room) return;
+    const page = safePageFromPayload(payload?.page);
+    const pageIndex = insertionIndex(room, payload?.pageIndex);
+    room.pages.splice(pageIndex, 0, page);
+    room.currentPage = pageIndex;
+    markBoardStateChanged(room);
+    socket.to(room.roomId).emit('board:page-add', {
+      pageIndex,
+      currentPage: room.currentPage,
+      page,
+      stateVersion: room.stateVersion
+    });
+    emitLegacySnapshot(socket, room);
+  });
+
+  socket.on('board:page-delete', payload => {
+    const room = requireStructure(socket, payload);
+    if (!room) return;
+    const target = pageRef(room, payload?.pageIndex);
+    if (!target) {
+      emitBoardError(socket);
+      return;
+    }
+    const deletedPageId = target.page.id;
+    if (room.pages.length === 1) {
+      room.pages[0] = blankPage();
+      room.currentPage = 0;
+    } else {
+      room.pages.splice(target.pageIndex, 1);
+      room.currentPage = Math.min(room.currentPage, room.pages.length - 1);
+    }
+    clearRedoForPage(room, deletedPageId);
+    markBoardStateChanged(room);
+    socket.to(room.roomId).emit('board:page-delete', {
+      pageIndex: target.pageIndex,
+      currentPage: room.currentPage,
+      page: room.pages[room.currentPage],
+      stateVersion: room.stateVersion
+    });
+    emitLegacySnapshot(socket, room);
+  });
+
+  socket.on('board:page-switch', payload => {
+    const room = requireStructure(socket, payload);
+    if (!room) return;
+    const target = pageRef(room, payload?.pageIndex);
+    if (!target) {
+      emitBoardError(socket);
+      return;
+    }
+    room.currentPage = target.pageIndex;
+    markBoardStateChanged(room);
+    socket.to(room.roomId).emit('board:page-switch', { pageIndex: target.pageIndex, stateVersion: room.stateVersion });
+  });
+
+  socket.on('board:bg-change', payload => {
+    const room = requireStructure(socket, payload);
+    if (!room) return;
+    const target = pageRef(room, payload?.pageIndex);
+    if (!target) {
+      emitBoardError(socket);
+      return;
+    }
+    target.page.bg = normalizeBoardBg(payload?.bg);
+    markBoardStateChanged(room);
+    socket.to(room.roomId).emit('board:bg-change', {
+      pageIndex: target.pageIndex,
+      bg: target.page.bg,
+      stateVersion: room.stateVersion
+    });
+  });
+
+  socket.on('board:stroke-undo', payload => {
+    const room = requireWriter(socket, payload);
+    if (!room) return;
+    const participant = socketParticipant(room, socket);
+    const target = pageRef(room, payload?.pageIndex);
+    if (!target) {
+      emitBoardError(socket);
+      return;
+    }
+    const strokeIndex = findLastAuthoredStrokeIndex(target.page, participant.id);
+    if (strokeIndex < 0) return;
+    const [stroke] = target.page.strokes.splice(strokeIndex, 1);
+    redoStack(room, participant.id).push({ pageId: target.page.id, stroke });
+    markBoardStateChanged(room);
+    io.to(room.roomId).emit('board:page-state', {
+      pageIndex: target.pageIndex,
+      page: target.page,
+      stateVersion: room.stateVersion
+    });
+    emitLegacySnapshot(socket, room);
+  });
+
+  socket.on('board:stroke-redo', payload => {
+    const room = requireWriter(socket, payload);
+    if (!room) return;
+    const participant = socketParticipant(room, socket);
+    const stack = redoStack(room, participant.id);
+    let entry = null;
+    let pageIndex = -1;
+    while (stack.length > 0) {
+      const candidate = stack.pop();
+      const candidatePageIndex = room.pages.findIndex(page => page.id === candidate.pageId);
+      if (candidatePageIndex >= 0) {
+        entry = candidate;
+        pageIndex = candidatePageIndex;
+        break;
+      }
+    }
+    if (!entry) return;
+    const page = room.pages[pageIndex];
+    page.strokes.push(entry.stroke);
+    markBoardStateChanged(room);
+    io.to(room.roomId).emit('board:page-state', {
+      pageIndex,
+      page,
+      stateVersion: room.stateVersion
+    });
+    emitLegacySnapshot(socket, room);
+  });`;
+          server = replaceBetween(server, oldEventStart, "\n\n  socket.on('board:trainer-url-change'", newEventBlock, 'board event handlers');
+          server = replaceOnce(server, "const room = requireTeacher(socket, payload);", "const room = requireStructure(socket, payload);", 'trainer-url gate');
+          server = replaceOnce(server, "const room = requireTeacher(socket, payload);", "const room = requireWriter(socket, payload);", 'trainer-state gate');
+          server = replaceOnce(
+            server,
+            "  socket.on('board:snapshot', payload => {\n    const room = requireTeacher(socket, payload);\n    if (!room) return;\n    if (applySnapshot(room, payload?.state)) {\n      touchRoom(room);\n      socket.to(room.roomId).emit('board:snapshot', { state: publicState(room) });\n    }\n  });",
+            "  socket.on('board:snapshot', payload => {\n    const room = requireStructure(socket, payload);\n    if (!room) return;\n    if (room.initialized && Number(socket.data.proto || 1) >= 2) return;\n    if (applySnapshot(room, payload?.state)) {\n      markBoardStateChanged(room);\n      socket.to(room.roomId).emit('board:snapshot', { state: publicState(room) });\n    }\n  });",
+            'snapshot seed/legacy semantics'
+          );
+          write('board-server/index.js', server);
+
+          let htmlRaw = fs.readFileSync('trainers/trainer-board.html', 'utf8');
+          const htmlEol = htmlRaw.includes('\r\n') ? '\r\n' : '\n';
+          let html = htmlRaw.replace(/\r\n/g, '\n');
+          html = replaceOnce(
+            html,
+            "    function setParticipants(participants){shared.participants=Array.isArray(participants)?participants:[];fallbackSharedMe();renderParticipants()}\n    function genObjectId(){",
+            "    function setParticipants(participants){shared.participants=Array.isArray(participants)?participants:[];fallbackSharedMe();renderParticipants()}\n    function genPageId(){return `local-${Date.now()}-${Math.random().toString(36).slice(2,9)}`}\n    function ensurePageId(p){if(!p.id)p.id=genPageId();return p.id}\n    function remotePage(p,i=0){return{id:p?.id||`remote-${i+1}`,bg:p?.bg||'grid',strokes:Array.isArray(p?.strokes)?p.strokes:[],redo:[]}}\n    function genObjectId(){",
+            'client page helpers'
+          );
+          html = replaceOnce(
+            html,
+            "    function publicSnapshot(){return{currentPage:state.current,trainerUrl:state.trainerUrl,pages:state.pages.map((p,i)=>({id:p.id||`page-${i+1}`,bg:p.bg||'grid',strokes:p.strokes||[]}))}}",
+            "    function publicSnapshot(){return{currentPage:state.current,trainerUrl:state.trainerUrl,pages:state.pages.map((p,i)=>({id:ensurePageId(p)||`page-${i+1}`,bg:p.bg||'grid',strokes:p.strokes||[]}))}}",
+            'public snapshot page id'
+          );
+          html = replaceOnce(
+            html,
+            "    function applySnapshot(remote){if(remote&&Array.isArray(remote.participants))setParticipants(remote.participants);if(!remote||!Array.isArray(remote.pages)||!remote.pages.length)return;applyingRemote=true;state.pages=remote.pages.map((p,i)=>({id:p.id||`remote-${i+1}`,bg:p.bg||'grid',strokes:Array.isArray(p.strokes)?p.strokes:[],redo:[]}));state.current=Math.min(Math.max(remote.currentPage||0,0),state.pages.length-1);state.trainerUrl=remote.trainerUrl||state.trainerUrl;trainerUrl.value=state.trainerUrl;setTrainerFrameSrc(state.trainerUrl);sync(false);applyingRemote=false;if(remote.latestTrainerState)applyTrainerStateToFrame(remote.latestTrainerState)}",
+            "    function applySnapshot(remote){if(remote&&Array.isArray(remote.participants))setParticipants(remote.participants);if(!remote||!Array.isArray(remote.pages)||!remote.pages.length)return;applyingRemote=true;state.pages=remote.pages.map((p,i)=>remotePage(p,i));state.current=Math.min(Math.max(remote.currentPage||0,0),state.pages.length-1);state.trainerUrl=remote.trainerUrl||state.trainerUrl;trainerUrl.value=state.trainerUrl;setTrainerFrameSrc(state.trainerUrl);sync(false);applyingRemote=false;if(remote.latestTrainerState)applyTrainerStateToFrame(remote.latestTrainerState)}",
+            'client applySnapshot remotePage'
+          );
+          html = replaceOnce(
+            html,
+            "    function openTrainer(u){if(readonly())return;let next=normalizeTrainer(u||trainerUrl.value);next=addBoardSeedToTrainerUrl(next,shared.roomId);trainerUrl.value=next;setTrainerFrameSrc(next);state.trainerUrl=next;save();emit('board:trainer-url-change',{trainerUrl:next});emitSnapshot()}",
+            "    function openTrainer(u){if(readonly())return;let next=normalizeTrainer(u||trainerUrl.value);next=addBoardSeedToTrainerUrl(next,shared.roomId);trainerUrl.value=next;setTrainerFrameSrc(next);state.trainerUrl=next;save();emit('board:trainer-url-change',{trainerUrl:next})}",
+            'openTrainer no snapshot'
+          );
+          html = replaceOnce(
+            html,
+            "    function addStroke(s,remote=false){if(!s)return;page().strokes.push(s);page().redo=[];render();if(!remote){save();emit(s.kind==='text'?'board:text-add':'board:stroke-end',{stroke:s,pageIndex:state.current});emitSnapshot()}}",
+            "    function addStroke(s,remote=false){if(!s)return;page().strokes.push(s);page().redo=[];render();if(!remote){save();emit(s.kind==='text'?'board:text-add':'board:stroke-end',{stroke:s,pageIndex:state.current})}}",
+            'addStroke no snapshot'
+          );
+          html = replaceOnce(
+            html,
+            "    function undo(){if(readonly())return;finishText();const x=page().strokes.pop();if(x){page().redo.push(x);render();save();emitSnapshot()}}",
+            "    function undo(){if(readonly())return;finishText();const x=page().strokes.pop();if(x){page().redo.push(x);render();save();emit('board:stroke-undo',{pageIndex:state.current})}}",
+            'undo event'
+          );
+          html = replaceOnce(
+            html,
+            "    function redo(){if(readonly())return;finishText();const x=page().redo.pop();if(x){page().strokes.push(x);render();save();emitSnapshot()}}",
+            "    function redo(){if(readonly())return;finishText();const x=page().redo.pop();if(x){page().strokes.push(x);render();save();emit('board:stroke-redo',{pageIndex:state.current})}}",
+            'redo event'
+          );
+          html = replaceOnce(
+            html,
+            "    function clearPage(){if(readonly())return;finishText();if(!page().strokes.length||confirm('Очистить текущий лист?')){page().strokes=[];page().redo=[];render();save();emit('board:clear-page',{pageIndex:state.current});emitSnapshot()}}",
+            "    function clearPage(){if(readonly())return;finishText();if(!page().strokes.length||confirm('Очистить текущий лист?')){page().strokes=[];page().redo=[];render();save();emit('board:clear-page',{pageIndex:state.current})}}",
+            'clearPage no snapshot'
+          );
+          html = replaceOnce(
+            html,
+            "    function addSheet(){if(readonly())return;finishText();state.pages.splice(state.current+1,0,blank());state.current++;sync();emit('board:page-add',{pageIndex:state.current});emitSnapshot()}",
+            "    function addSheet(){if(readonly())return;finishText();const next=blank();ensurePageId(next);state.pages.splice(state.current+1,0,next);state.current++;sync();emit('board:page-add',{pageIndex:state.current,page:{id:next.id,bg:next.bg}})}",
+            'addSheet server event'
+          );
+          html = replaceOnce(
+            html,
+            "    function delSheet(){if(readonly())return;finishText();if(state.pages.length===1){state.pages[0]=blank();sync();emitSnapshot();return}if(confirm('Удалить текущий лист?')){state.pages.splice(state.current,1);state.current=Math.min(state.current,state.pages.length-1);sync();emitSnapshot()}}",
+            "    function delSheet(){if(readonly())return;finishText();const pageIndex=state.current;if(state.pages.length===1){state.pages[0]=blank();state.current=0;sync();emit('board:page-delete',{pageIndex});return}if(confirm('Удалить текущий лист?')){state.pages.splice(pageIndex,1);state.current=Math.min(pageIndex,state.pages.length-1);sync();emit('board:page-delete',{pageIndex})}}",
+            'delSheet server event'
+          );
+          html = replaceOnce(
+            html,
+            "    function switchSheet(d){if(readonly())return;finishText();const n=state.current+d;if(n<0||n>=state.pages.length)return;state.current=n;sync();emit('board:page-switch',{pageIndex:state.current});emitSnapshot()}",
+            "    function switchSheet(d){if(readonly())return;finishText();const n=state.current+d;if(n<0||n>=state.pages.length)return;state.current=n;sync();emit('board:page-switch',{pageIndex:state.current})}",
+            'switchSheet no snapshot'
+          );
+          const remoteHelpers = `    function applyRemotePageAdd(payload){if(!payload?.page)return;applyingRemote=true;const index=Number.isInteger(Number(payload.pageIndex))?Math.min(Math.max(Number(payload.pageIndex),0),state.pages.length):state.pages.length;state.pages.splice(index,0,remotePage(payload.page,index));state.current=Number.isInteger(Number(payload.currentPage))?Math.min(Math.max(Number(payload.currentPage),0),state.pages.length-1):index;sync(false);applyingRemote=false}
+    function applyRemotePageDelete(payload){const index=Number(payload?.pageIndex);if(!Number.isInteger(index)||index<0||index>=state.pages.length)return;applyingRemote=true;if(state.pages.length===1){state.pages[0]=payload?.page?remotePage(payload.page,0):blank();state.current=0}else{state.pages.splice(index,1);state.current=Number.isInteger(Number(payload.currentPage))?Math.min(Math.max(Number(payload.currentPage),0),state.pages.length-1):Math.min(index,state.pages.length-1)}sync(false);applyingRemote=false}
+    function applyRemotePageState(payload){const index=Number(payload?.pageIndex);if(!Number.isInteger(index)||index<0||index>=state.pages.length||!payload?.page)return;applyingRemote=true;state.pages[index]=remotePage(payload.page,index);state.current=Math.min(state.current,state.pages.length-1);sync(false);applyingRemote=false}
+
+`;
+          html = replaceOnce(html, "    function pageUrl(){", remoteHelpers + "    function pageUrl(){", 'remote page listeners helpers');
+          html = replaceOnce(
+            html,
+            "shared.socket.emit('room:join',{roomId:shared.roomId,role:shared.role,token:shared.token})",
+            "shared.socket.emit('room:join',{roomId:shared.roomId,role:shared.role,token:shared.token,proto:2})",
+            'room join proto2'
+          );
+          html = replaceOnce(
+            html,
+            "shared.socket.on('room:state',payload=>{setSharedMe(payload?.you);if(payload?.state)applySnapshot(payload.state);else if(shared.role==='teacher'){emitSnapshot();frame.contentWindow?.postMessage({type:'mathexam:request-trainer-state'},'*')}fallbackSharedMe();setStatus('подключено','ok')})",
+            "shared.socket.on('room:state',payload=>{setSharedMe(payload?.you);if(payload?.state){applySnapshot(payload.state);if(shared.role==='teacher')frame.contentWindow?.postMessage({type:'mathexam:request-trainer-state'},'*')}else if(shared.role==='teacher'){emitSnapshot();frame.contentWindow?.postMessage({type:'mathexam:request-trainer-state'},'*')}fallbackSharedMe();setStatus('подключено','ok')})",
+            'teacher initialized room state handling'
+          );
+          html = replaceOnce(
+            html,
+            "shared.socket.on('board:text-add',payload=>{if(payload?.stroke)addStroke(payload.stroke,true)});shared.socket.on('board:clear-page'",
+            "shared.socket.on('board:text-add',payload=>{const object=payload?.stroke||payload?.text||payload?.object;if(object)addStroke(object,true)});shared.socket.on('board:page-add',payload=>applyRemotePageAdd(payload));shared.socket.on('board:page-delete',payload=>applyRemotePageDelete(payload));shared.socket.on('board:page-state',payload=>applyRemotePageState(payload));shared.socket.on('board:clear-page'",
+            'new socket listeners'
+          );
+          html = replaceOnce(
+            html,
+            "bg.onchange=()=>{if(readonly())return;page().bg=bg.value;render();save();emit('board:bg-change',{bg:bg.value,pageIndex:state.current});emitSnapshot()};",
+            "bg.onchange=()=>{if(readonly())return;page().bg=bg.value;render();save();emit('board:bg-change',{bg:bg.value,pageIndex:state.current})};",
+            'bg no snapshot'
+          );
+          write('trainers/trainer-board.html', html, htmlEol);
+
+          let readme = read('board-server/README.md');
+          const modelSection = `## Модель состояния доски
+
+После первичного seed сервер становится владельцем ` + '`room.pages`' + `. Новые участники получают актуальный ` + '`publicState(room)`' + ` из памяти сервера и больше не ждут клиентский ` + '`board:snapshot`' + ` от уже подключённого учителя.
+
+- Новая комната стартует с ` + '`initialized:false`' + ` и ` + '`stateVersion:0`' + `.
+- Первый валидный ` + '`board:snapshot`' + ` от teacher используется как seed, выставляет ` + '`initialized:true`' + ` и увеличивает ` + '`stateVersion`' + `.
+- Клиенты с ` + '`proto:2`' + ` после инициализации комнаты больше не могут рутинным snapshot перезаписать ` + '`room.pages`' + `.
+- Legacy-клиенты без ` + '`proto:2`' + ` сохраняют fallback: их snapshot после инициализации всё ещё применяется и ретранслируется.
+- ` + '`stateVersion`' + ` растёт после server-applied board mutations и отдаётся в ` + '`publicState`' + `.
+
+Server-applied events:
+
+- ` + '`board:stroke-end`' + `
+- ` + '`board:text-add`' + `
+- ` + '`board:clear-page`' + `
+- ` + '`board:page-add`' + `
+- ` + '`board:page-delete`' + `
+- ` + '`board:page-switch`' + `
+- ` + '`board:bg-change`' + `
+- ` + '`board:stroke-undo`' + `
+- ` + '`board:stroke-redo`' + `
+- ` + '`board:snapshot`' + ` only as initial seed or legacy fallback
+- ` + '`board:trainer-url-change`' + ` and ` + '`board:trainer-state-change`' + ` keep the existing trainer mirror behavior
+
+Relay-only events:
+
+- ` + '`board:stroke-start`' + `
+- ` + '`board:stroke-points`' + `
+
+New compatibility events:
+
+- ` + '`board:stroke-undo`' + ` removes the last object authored by the current participant on the selected page.
+- ` + '`board:stroke-redo`' + ` restores the last undo entry for an existing page id.
+- ` + '`board:page-delete`' + ` deletes or replaces a page and clears redo entries for that page id.
+- ` + '`board:page-state`' + ` broadcasts an authoritative page after undo/redo.
+
+The current ` + '`requireWriter`' + ` and ` + '`requireStructure`' + ` gates are still teacher-only wrappers. Policies, hand queue, turn transfer, open student writing, groups, and AI participants are intentionally left for later PRs.
+
+`;
+          readme = replaceOnce(readme, '## Метаданные объектов доски\n', modelSection + '## Метаданные объектов доски\n', 'README state model section');
+          write('board-server/README.md', readme);
+          NODE
+          node /tmp/apply-board-server-owned-state.js
+
+      - name: Static checks
+        run: |
+          node --check board-server/index.js
+          node - <<'NODE'
+          const fs = require('fs');
+          const html = fs.readFileSync('trainers/trainer-board.html', 'utf8');
+          const match = html.match(/<script>([\s\S]*)<\/script>/);
+          if (!match) throw new Error('inline script not found');
+          new Function(match[1]);
+          for (const needle of [
+            'proto:2',
+            'board:stroke-undo',
+            'board:stroke-redo',
+            'board:page-delete',
+            'board:page-state',
+            'function exportPng',
+            'function render'
+          ]) {
+            if (!html.includes(needle)) throw new Error(`missing ${needle}`);
+          }
+          console.log('inline-js-parse: ok');
+          NODE
+
+      - name: Commit changes to target branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git status --short
+          git add board-server/index.js trainers/trainer-board.html board-server/README.md
+          git commit -m "Add server owned board state foundation"
+          git push origin HEAD:feature/board-server-owned-state
