@@ -26,6 +26,7 @@ const ROOM_CLEANUP_INTERVAL_MS = parsePositiveInteger(
   process.env.ROOM_CLEANUP_INTERVAL_MS,
   DEFAULT_ROOM_CLEANUP_INTERVAL_MS
 );
+const AUTHOR_ROLES = new Set(['teacher', 'student', 'bot']);
 
 function parsePositiveInteger(value, fallback) {
   const parsed = Number(value);
@@ -164,6 +165,73 @@ function findParticipant(room, role) {
   return (room.participants || []).find(participant => participant.role === role) || null;
 }
 
+function findParticipantByIdAndRole(room, authorId, authorRole) {
+  if (typeof authorId !== 'string' || !AUTHOR_ROLES.has(authorRole)) return null;
+  return (room.participants || []).find(participant => (
+    participant.id === authorId && participant.role === authorRole
+  )) || null;
+}
+
+function roomOwner(room) {
+  return findParticipant(room, 'teacher') || (room.participants || [])[0] || {
+    id: 'room-owner',
+    role: 'teacher',
+    name: 'Учитель',
+    color: '#172033',
+    caps: {
+      moderate: true,
+      structure: true,
+      draw: true,
+      controlTrainer: true,
+      view: true
+    }
+  };
+}
+
+function socketParticipant(room, socket) {
+  return (room.participants || []).find(participant => participant.id === socket.data.participantId)
+    || findParticipant(room, socket.data.role)
+    || roomOwner(room);
+}
+
+function publicYou(participant, role) {
+  if (!participant) return null;
+  return {
+    participantId: participant.id,
+    role: participant.role || role,
+    name: participant.name,
+    color: participant.color,
+    caps: { ...(participant.caps || {}) }
+  };
+}
+
+function isValidObjectId(value) {
+  return typeof value === 'string' && /^[A-Za-z0-9_-]{6,64}$/.test(value);
+}
+
+function isValidIsoDate(value) {
+  return typeof value === 'string' && Number.isFinite(Date.parse(value));
+}
+
+function normalizeObjectMeta(room, object, author, options = {}) {
+  if (!object || typeof object !== 'object') return object;
+  const fallbackAuthor = author && AUTHOR_ROLES.has(author.role) ? author : roomOwner(room);
+  const existingAuthor = options.preserveExistingAuthor
+    ? findParticipantByIdAndRole(room, object.authorId, object.authorRole)
+    : null;
+  const resolvedAuthor = existingAuthor || fallbackAuthor;
+  object.objectId = isValidObjectId(object.objectId) ? object.objectId : makeId(9);
+  object.authorId = resolvedAuthor.id;
+  object.authorRole = AUTHOR_ROLES.has(resolvedAuthor.role) ? resolvedAuthor.role : 'teacher';
+  if (existingAuthor && typeof object.layerId === 'string' && object.layerId.length > 0 && object.layerId.length <= 80) {
+    object.layerId = object.layerId;
+  } else {
+    object.layerId = `participant:${object.authorId}`;
+  }
+  object.createdAt = options.preserveCreatedAt && isValidIsoDate(object.createdAt) ? object.createdAt : nowIso();
+  return object;
+}
+
 function markParticipantConnected(room, role, socket) {
   const participant = findParticipant(room, role);
   if (!participant) return;
@@ -210,21 +278,27 @@ function normalizeTrainerState(payload) {
   };
 }
 
-function normalizeSnapshot(snapshot) {
+function normalizeSnapshot(room, snapshot) {
   if (!snapshot || !Array.isArray(snapshot.pages) || snapshot.pages.length === 0) return null;
+  const owner = roomOwner(room);
   return {
     currentPage: Math.max(0, Math.min(Number(snapshot.currentPage || 0), snapshot.pages.length - 1)),
     pages: snapshot.pages.map((page, index) => ({
       id: String(page.id || `page-${index + 1}`),
       bg: ['grid', 'lined', 'blank'].includes(page.bg) ? page.bg : 'grid',
-      strokes: Array.isArray(page.strokes) ? page.strokes : []
+      strokes: Array.isArray(page.strokes)
+        ? page.strokes.map(stroke => normalizeObjectMeta(room, { ...stroke }, owner, {
+          preserveCreatedAt: true,
+          preserveExistingAuthor: true
+        }))
+        : []
     })),
     trainerUrl: normalizeTrainerUrl(snapshot.trainerUrl) || 'negative-numbers-line.html'
   };
 }
 
 function applySnapshot(room, snapshot) {
-  const next = normalizeSnapshot(snapshot);
+  const next = normalizeSnapshot(room, snapshot);
   if (!next) return false;
   room.currentPage = next.currentPage;
   room.pages = next.pages;
@@ -308,8 +382,13 @@ io.on('connection', socket => {
     socket.data.role = role;
     socket.data.token = payload.token;
     markParticipantConnected(auth.room, role, socket);
+    const participant = findParticipant(auth.room, role);
     socket.join(auth.room.roomId);
-    socket.emit('room:state', { role, state: role === 'student' ? publicState(auth.room) : null });
+    socket.emit('room:state', {
+      role,
+      state: role === 'student' ? publicState(auth.room) : null,
+      you: publicYou(participant, role)
+    });
     io.to(auth.room.roomId).emit('participants:state', participantsState(auth.room));
   });
 
@@ -320,7 +399,10 @@ io.on('connection', socket => {
 
   socket.on('room:state', () => {
     const room = rooms.get(socket.data.roomId);
-    if (room) socket.emit('room:state', { role: socket.data.role, state: publicState(room) });
+    if (room) {
+      const role = socket.data.role;
+      socket.emit('room:state', { role, state: publicState(room), you: publicYou(socketParticipant(room, socket), role) });
+    }
   });
 
   [
@@ -336,6 +418,27 @@ io.on('connection', socket => {
     socket.on(eventName, payload => {
       const room = requireTeacher(socket, payload);
       if (!room) return;
+      const participant = socketParticipant(room, socket);
+      if (eventName === 'board:stroke-start' || eventName === 'board:stroke-end') {
+        normalizeObjectMeta(room, payload?.stroke, participant, {
+          preserveCreatedAt: false,
+          preserveExistingAuthor: false
+        });
+      }
+      if (eventName === 'board:text-add') {
+        normalizeObjectMeta(room, payload?.stroke, participant, {
+          preserveCreatedAt: false,
+          preserveExistingAuthor: false
+        });
+        normalizeObjectMeta(room, payload?.text, participant, {
+          preserveCreatedAt: false,
+          preserveExistingAuthor: false
+        });
+        normalizeObjectMeta(room, payload?.object, participant, {
+          preserveCreatedAt: false,
+          preserveExistingAuthor: false
+        });
+      }
       touchRoom(room);
       socket.to(room.roomId).emit(eventName, payload);
     });
