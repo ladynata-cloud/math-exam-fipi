@@ -1,0 +1,106 @@
+name: TEMP Apply Board Author Client Foundation
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/board-author-layers-apply-client.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply-client:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/board-author-layers-foundation
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Apply client and README patch
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          function replaceOnce(file, oldText, newText) {
+            let source = fs.readFileSync(file, 'utf8');
+            if (source.includes(newText)) return;
+            if (!source.includes(oldText)) throw new Error(`Pattern not found in ${file}: ${oldText.slice(0, 160)}`);
+            source = source.replace(oldText, newText);
+            fs.writeFileSync(file, source);
+          }
+
+          const client = 'trainers/trainer-board.html';
+          replaceOnce(client,
+`const shared={role:initialRole,roomId:params.get('room')||'',token:params.get('token')||'',server:normalizeServer(params.get('server')||localStorage.getItem(SERVER_KEY)||DEFAULT_SERVER),studentToken:'',studentLink:'',socket:null,connected:false,loadingClient:null,clientServer:'',participants:[]};`,
+`const shared={role:initialRole,roomId:params.get('room')||'',token:params.get('token')||'',server:normalizeServer(params.get('server')||localStorage.getItem(SERVER_KEY)||DEFAULT_SERVER),studentToken:'',studentLink:'',socket:null,connected:false,loadingClient:null,clientServer:'',participants:[],me:null};`);
+
+          replaceOnce(client,
+`    function setParticipants(participants){shared.participants=Array.isArray(participants)?participants:[];renderParticipants()}
+`,
+`    function participantToMe(participant,role=participant?.role||shared.role){if(!participant?.id)return null;return{participantId:participant.id,role,name:participant.name,color:participant.color,caps:{...(participant.caps||{})}}}
+    function setSharedMe(you){if(!you?.participantId)return;shared.me={participantId:you.participantId,role:you.role||shared.role,name:you.name,color:you.color,caps:{...(you.caps||{})}}}
+    function fallbackSharedMe(){if(shared.me)return;const participant=(shared.participants||[]).find(item=>item?.role===shared.role);if(participant)shared.me=participantToMe(participant)}
+    function setParticipants(participants){shared.participants=Array.isArray(participants)?participants:[];fallbackSharedMe();renderParticipants()}
+    function genObjectId(){const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';const bytes=new Uint8Array(14);if(window.crypto?.getRandomValues){window.crypto.getRandomValues(bytes);return Array.from(bytes,b=>alphabet[b&63]).join('')}return \`obj-\${Date.now().toString(36)}-\${Math.random().toString(36).slice(2,9)}\`}
+    function newObjectMeta(){const meta={objectId:genObjectId(),createdAt:new Date().toISOString()};if(shared.me?.participantId){meta.authorId=shared.me.participantId;meta.authorRole=shared.me.role;meta.layerId=\`participant:\${meta.authorId}\`}else if(shared.role==='teacher'){meta.authorId='local-teacher';meta.authorRole='teacher';meta.layerId='participant:local-teacher'}return meta}
+`);
+
+          replaceOnce(client,
+`current=(tool==='pen'||tool==='marker'||tool==='eraser')?{kind:'path',tool,color:color.value,size:+size.value,points:[p]}:{kind:tool==='rect'?'rect':'line',tool,color:color.value,size:+size.value,start:p,end:p};`,
+`current=(tool==='pen'||tool==='marker'||tool==='eraser')?{...newObjectMeta(),kind:'path',tool,color:color.value,size:+size.value,points:[p]}:{...newObjectMeta(),kind:tool==='rect'?'rect':'line',tool,color:color.value,size:+size.value,start:p,end:p};`);
+
+          replaceOnce(client,
+`if(text&&textPoint)addStroke({kind:'text',tool:'text',x:textPoint.x,y:textPoint.y,text,color:color.value,size:+size.value});`,
+`if(text&&textPoint)addStroke({...newObjectMeta(),kind:'text',tool:'text',x:textPoint.x,y:textPoint.y,text,color:color.value,size:+size.value});`);
+
+          replaceOnce(client,
+`shared.socket.on('room:state',payload=>{if(payload?.state)applySnapshot(payload.state);else if(shared.role==='teacher'){emitSnapshot();frame.contentWindow?.postMessage({type:'mathexam:request-trainer-state'},'*')}setStatus('подключено','ok')});`,
+`shared.socket.on('room:state',payload=>{setSharedMe(payload?.you);if(payload?.state)applySnapshot(payload.state);else if(shared.role==='teacher'){emitSnapshot();frame.contentWindow?.postMessage({type:'mathexam:request-trainer-state'},'*')}fallbackSharedMe();setStatus('подключено','ok')});`);
+
+          const readme = 'board-server/README.md';
+          replaceOnce(readme,
+`## Ограничения MVP
+`,
+`## Метаданные объектов доски
+
+Объекты доски могут содержать служебные поля:
+
+- \`objectId\` — стабильный идентификатор объекта доски.
+- \`authorId\` — историческая метка участника, создавшего объект.
+- \`authorRole\` — историческая роль автора: \`teacher\`, \`student\` или \`bot\`.
+- \`layerId\` — идентификатор слоя, сейчас по умолчанию \`participant:<authorId>\`.
+- \`createdAt\` — ISO-время создания объекта.
+
+Сервер не доверяет client-supplied \`authorId\`, \`authorRole\`, \`layerId\` и \`createdAt\` как источнику прав. Права по-прежнему определяются серверными проверками, токенами комнаты и \`requireTeacher\`: запись ученикам не открыта.
+
+Объект без metadata считается legacy-объектом и при snapshot-нормализации штампуется владельцем комнаты. Snapshot-перезапись остаётся известным архитектурным долгом будущего server-owned state: текущий foundation только добавляет метки объектов и не превращает доску в открытую групповую модель.
+
+Эти поля — фундамент для будущих слоёв, передачи хода, открытой доски и ИИ-участника.
+
+## Ограничения MVP
+`);
+          NODE
+      - name: Basic syntax checks
+        run: |
+          node --check board-server/index.js
+          node <<'NODE'
+          const fs = require('node:fs');
+          const html = fs.readFileSync('trainers/trainer-board.html', 'utf8');
+          const scripts = [...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/gi)].map(match => match[1]);
+          if (!scripts.length) throw new Error('No inline scripts found');
+          for (const script of scripts) new Function(script);
+          console.log(`Parsed ${scripts.length} inline script(s)`);
+          NODE
+      - name: Commit client patch to feature branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git diff -- board-server/README.md trainers/trainer-board.html
+          git add board-server/README.md trainers/trainer-board.html
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Add board client object metadata"
+            git push origin HEAD:feature/board-author-layers-foundation
+          fi
