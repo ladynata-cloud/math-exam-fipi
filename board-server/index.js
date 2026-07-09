@@ -209,20 +209,10 @@ function isValidIsoDate(value) {
 function normalizeObjectMeta(room, object, author, options = {}) {
   if (!object || typeof object !== 'object') return object;
   const fallbackAuthor = author && AUTHOR_ROLES.has(author.role) ? author : roomOwner(room);
-  const clientAuthor = (room.participants || []).find(participant => (
-    participant.id === object.authorId
-      && participant.role === object.authorRole
-      && AUTHOR_ROLES.has(participant.role)
-  ));
-  const resolvedAuthor = clientAuthor || fallbackAuthor;
   object.objectId = isValidObjectId(object.objectId) ? object.objectId : makeId(9);
-  object.authorId = resolvedAuthor.id;
-  object.authorRole = AUTHOR_ROLES.has(resolvedAuthor.role) ? resolvedAuthor.role : 'teacher';
-  if (clientAuthor && typeof object.layerId === 'string' && object.layerId.length <= 80) {
-    object.layerId = object.layerId;
-  } else {
-    object.layerId = `participant:${object.authorId}`;
-  }
+  object.authorId = fallbackAuthor.id;
+  object.authorRole = AUTHOR_ROLES.has(fallbackAuthor.role) ? fallbackAuthor.role : 'teacher';
+  object.layerId = `participant:${object.authorId}`;
   object.createdAt = options.preserveCreatedAt && isValidIsoDate(object.createdAt) ? object.createdAt : nowIso();
   return object;
 }
