@@ -1,0 +1,44 @@
+name: TEMP Harden Board Page Payload
+
+on:
+  pull_request:
+    branches:
+      - feature/board-server-owned-state
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.head_ref == 'ci/harden-board-page-payload'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout target branch
+        uses: actions/checkout@v4
+        with:
+          ref: feature/board-server-owned-state
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Patch safe page payload
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const path = 'board-server/index.js';
+          let source = fs.readFileSync(path, 'utf8');
+          const from = "function safePageFromPayload(page = {}) {\n  return {";
+          const to = "function safePageFromPayload(page = {}) {\n  if (!page || typeof page !== 'object') page = {};\n  return {";
+          if (!source.includes(from)) throw new Error('safePageFromPayload pattern not found');
+          source = source.replace(from, to);
+          fs.writeFileSync(path, source);
+          NODE
+          node --check board-server/index.js
+
+      - name: Commit changes to target branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git status --short
+          git add board-server/index.js
+          git commit -m "Harden board page payload normalization"
+          git push origin HEAD:feature/board-server-owned-state
