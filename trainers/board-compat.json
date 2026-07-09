@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "trainers": [
+    {
+      "trainerId": "negative-numbers-line",
+      "file": "trainers/negative-numbers-line.html",
+      "title": "Сложение и вычитание отрицательных чисел на прямой",
+      "topics": ["negative numbers", "number line"],
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": true,
+      "supportsBoardMirror": true,
+      "notes": "Existing full board mirror trainer; accepts seed from URL."
+    },
+    {
+      "trainerId": "simple-equations-stepwise",
+      "file": "trainers/simple-equations-stepwise.html",
+      "title": "Простые уравнения",
+      "topics": ["equations", "stepwise"],
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "notes": "Pilot board mirror: current task, chosen operation, answer, feedback and visible step are mirrored."
+    },
+    {
+      "trainerId": "rounding-stepwise",
+      "file": "trainers/rounding-stepwise.html",
+      "title": "Округление чисел",
+      "topics": ["rounding", "place value"],
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "notes": "Pilot board mirror: task, current step, selected digits, answer and feedback are mirrored."
+    },
+    {
+      "trainerId": "long-division-stepwise",
+      "file": "trainers/long-division-stepwise.html",
+      "title": "Деление уголком",
+      "topics": ["division", "arithmetic"],
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "notes": "Pilot board mirror: current dividend/divisor, quotient progress, highlighted block, written steps and answer are mirrored."
+    },
+    {
+      "trainerId": "linear-inequalities-stepwise",
+      "file": "trainers/linear-inequalities-stepwise.html",
+      "title": "Линейные неравенства",
+      "topics": ["inequalities", "number line"],
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "notes": "Pilot board mirror: current fixed task, solution step, answer fields, number-line result and feedback are mirrored."
+    },
+    {
+      "trainerId": "oge-task6-fractions",
+      "file": "trainers/oge-task6-fractions.html",
+      "title": "ОГЭ задание 6: дроби",
+      "topics": ["OGE", "fractions"],
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "notes": "Good future candidate, but current state spans bank index, attempts and reveal flags."
+    },
+    {
+      "trainerId": "oge-task7-number-line",
+      "file": "trainers/oge-task7-number-line.html",
+      "title": "ОГЭ задание 7: числовая прямая",
+      "topics": ["OGE", "number line"],
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "notes": "Large catalog trainer; safe to open in board, risky to mirror without a separate focused pass."
+    },
+    {
+      "trainerId": "oge-task8-powers-roots",
+      "file": "trainers/oge-task8-powers-roots.html",
+      "title": "ОГЭ задание 8: степени и корни",
+      "topics": ["OGE", "powers", "roots"],
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "notes": "Large task bank with internal state; keep as opens-in-board for this PR."
+    },
+    {
+      "trainerId": "oge-task9-equations",
+      "file": "trainers/oge-task9-equations.html",
+      "title": "ОГЭ задание 9: уравнения",
+      "topics": ["OGE", "equations"],
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "notes": "Very large trainer with many modes and generated tasks; risky to touch in the first compatibility pass."
+    },
+    {
+      "trainerId": "credit-payment-table-trainer",
+      "file": "trainers/credit-payment-table-trainer.html",
+      "title": "Кредитная таблица платежей",
+      "topics": ["finance", "word problems"],
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "notes": "Uses localStorage progress and a richer table state; audit before mirroring."
+    },
+    {
+      "trainerId": "finance-nonstandard-trainer",
+      "file": "trainers/finance-nonstandard-trainer.html",
+      "title": "Финансовые задачи: нестандартные",
+      "topics": ["finance", "word problems"],
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "notes": "Large real trainer with localStorage; keep read-only/open-only until a dedicated state adapter pass."
+    }
+  ]
+}
