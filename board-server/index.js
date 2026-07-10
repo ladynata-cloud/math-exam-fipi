@@ -319,12 +319,46 @@ function normalizeTrainerUrl(value) {
   return url ? url.slice(0, 1000) : '';
 }
 
-function normalizeTrainerState(payload) {
-  if (!payload || payload.trainer !== 'negative-numbers-line' || !payload.state || typeof payload.state !== 'object') {
+const BOARD_MIRROR_TRAINER_IDS = new Set([
+  'negative-numbers-line',
+  'linear-inequalities-stepwise'
+]);
+
+const BOARD_MIRROR_TRAINER_FILES = new Map([
+  ['negative-numbers-line.html', 'negative-numbers-line'],
+  ['linear-inequalities-stepwise.html', 'linear-inequalities-stepwise']
+]);
+
+function trainerIdFromUrl(value) {
+  const trainerUrl = normalizeTrainerUrl(value);
+  if (!trainerUrl) return null;
+  try {
+    const url = new URL(trainerUrl, 'https://mathexam.space/');
+    const fileName = url.pathname.split('/').pop();
+    return BOARD_MIRROR_TRAINER_FILES.get(fileName) || null;
+  } catch {
+    return null;
+  }
+}
+
+function normalizeTrainerState(room, payload) {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) return null;
+  const hasTrainerId = Object.prototype.hasOwnProperty.call(payload, 'trainerId');
+  const hasCompatibleTrainerId = Object.prototype.hasOwnProperty.call(payload, 'trainer');
+  if (hasTrainerId && typeof payload.trainerId !== 'string') return null;
+  if (hasCompatibleTrainerId && typeof payload.trainer !== 'string') return null;
+  const trainerId = hasTrainerId ? payload.trainerId.trim() : '';
+  const compatibleTrainerId = hasCompatibleTrainerId ? payload.trainer.trim() : '';
+  if (hasTrainerId && hasCompatibleTrainerId && trainerId !== compatibleTrainerId) return null;
+  const canonicalTrainerId = hasTrainerId ? trainerId : compatibleTrainerId;
+  if (!BOARD_MIRROR_TRAINER_IDS.has(canonicalTrainerId)) return null;
+  if (trainerIdFromUrl(room?.trainerUrl) !== canonicalTrainerId) return null;
+  if (!payload.state || typeof payload.state !== 'object' || Array.isArray(payload.state)) {
     return null;
   }
   return {
-    trainer: 'negative-numbers-line',
+    trainerId: canonicalTrainerId,
+    trainer: canonicalTrainerId,
     state: payload.state,
     updatedAt: new Date().toISOString()
   };
@@ -825,7 +859,7 @@ io.on('connection', socket => {
   socket.on('board:trainer-state-change', payload => {
     const room = requireWriter(socket, payload);
     if (!room) return;
-    const latestTrainerState = normalizeTrainerState(payload);
+    const latestTrainerState = normalizeTrainerState(room, payload);
     if (!latestTrainerState) return;
     room.latestTrainerState = latestTrainerState;
     touchRoom(room);
