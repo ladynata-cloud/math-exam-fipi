@@ -65,10 +65,10 @@
       "trainerId": "linear-inequalities-stepwise",
       "file": "trainers/linear-inequalities-stepwise.html",
       "title": "Линейные неравенства — пошагово",
-      "boardCompatibility": "opens-in-board",
+      "boardCompatibility": "board-mirror",
       "supportsSeed": false,
-      "supportsBoardMirror": false,
-      "notes": "Открывается в iframe доски; mirror для этого hotfix не добавлялся.",
+      "supportsBoardMirror": true,
+      "notes": "Зеркалируется видимое состояние решения: задание, шаг, ответ, feedback и числовая прямая.",
       "group": "Отрицательные числа"
     },
     {
