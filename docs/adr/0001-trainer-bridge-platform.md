@@ -66,6 +66,167 @@ Hydration выполняется в фиксированном порядке:
 
 Handshake должен быть устойчив к reload, late join, повторной навигации iframe и смене control holder.
 
+## Protocol messages v1
+
+Все сообщения используют общий envelope:
+
+```js
+{
+  type,
+  protocolVersion: 1,
+  trainerId,
+  trainerVersion,
+  stateSchemaVersion,
+  bridgeInstanceId
+}
+```
+
+`bridgeInstanceId` создаётся заново при каждом `register()` или при каждой загрузке документа trainer iframe.
+
+Board обязан повторять тот же `bridgeInstanceId` в ответных сообщениях.
+
+Trainer и board игнорируют сообщения:
+
+- с другим `bridgeInstanceId`;
+- от неактуального iframe;
+- с другим `trainerId`;
+- с недоверенным origin.
+
+Version-поля находятся только в envelope. Объект `state` содержит только предметные данные тренажёра.
+
+### 1. `mathexam:trainer-ready`
+
+Направление: trainer → board.
+
+Отправляется после успешного `register()`. Не содержит `state`.
+
+После отправки trainer остаётся в состоянии `hydrated = false`.
+
+Пока `hydrated === false`:
+
+- trainer продолжает работать локально;
+- `notifyStateChanged()` не отправляет состояние наружу;
+- последнее локальное состояние можно позднее получить через `getState()`;
+- обычный `mathexam:apply-trainer-state` ещё не применяется.
+
+### 2. `mathexam:hydrate`
+
+Направление: board → trainer.
+
+Это единственный сигнал завершения начальной hydration.
+
+Board имеет право отправить `hydrate` только после получения авторитетного `room:state` для текущей комнаты и текущего trainer.
+
+Отсутствие ещё не полученного `room:state` нельзя считать пустым состоянием.
+
+Сообщение имеет ровно один из двух режимов.
+
+Существующее состояние комнаты:
+
+```js
+{
+  ...envelope,
+  type: "mathexam:hydrate",
+  mode: "state",
+  state
+}
+```
+
+Пустое состояние комнаты:
+
+```js
+{
+  ...envelope,
+  type: "mathexam:hydrate",
+  mode: "empty"
+}
+```
+
+При `mode: "state"`:
+
+1. Bridge проверяет версии и state.
+2. Вызывает `applyState(state)` под remote-apply guard.
+3. Только после успешного apply устанавливает `hydrated = true`.
+
+Если validation или apply завершились ошибкой:
+
+- `hydrated` остаётся `false`;
+- исходящие сообщения остаются заблокированными;
+- создаётся diagnostic;
+- board показывает понятный compatibility status.
+
+При `mode: "empty"`:
+
+- Bridge устанавливает `hydrated = true`;
+- trainer не отправляет initial state автоматически;
+- board текущего writer затем явно отправляет `mathexam:request-trainer-state`.
+
+### 3. `mathexam:request-trainer-state`
+
+Направление: board → trainer.
+
+Отправляется только после `hydrate` с `mode: "empty"`.
+
+Запрос выполняет только board-клиент текущего writer к собственному актуальному trainer iframe.
+
+Viewer-клиенты начальное состояние не запрашивают.
+
+Trainer отвечает сообщением `mathexam:trainer-state` с результатом текущего `getState()`.
+
+### 4. `mathexam:trainer-state`
+
+Направление: trainer → board.
+
+Разрешено только после `hydrated === true`.
+
+Используется:
+
+- как ответ на `request-trainer-state`;
+- после локального изменения trainer;
+- через debounce/deduplication Bridge.
+
+Board дополнительно проверяет:
+
+- текущий iframe/source;
+- `trainerId`;
+- `bridgeInstanceId`;
+- origin;
+- что текущий участник имеет право записи.
+
+### 5. `mathexam:apply-trainer-state`
+
+Направление: board → trainer.
+
+Используется только после завершения initial hydration для последующих remote changes.
+
+До `hydrated === true` сообщение игнорируется с diagnostic.
+
+Remote apply:
+
+- выполняется под remote-apply guard;
+- не вызывает обратный `trainer-state`;
+- не пишет learner progress/statistics.
+
+### Hydration timeout
+
+Если `hydrate` не получен в течение 10 секунд после `mathexam:trainer-ready`:
+
+- создаётся diagnostic `hydration-timeout`;
+- mirror остаётся выключенным;
+- исходящие trainer-state остаются заблокированными;
+- trainer продолжает работать автономно;
+- пользователю не показывается ложное синхронизированное состояние.
+
+Timeout должен быть конфигурируемым; production default — 10 секунд.
+
+### Rollout compatibility
+
+В PR A существующая legacy-поддержка двух reference trainers сохраняется на переходный период.
+
+Новый trainer bridge при работе со старым board, который не понимает `trainer-ready`, после timeout безопасно остаётся в автономном режиме.
+
+Legacy path удаляется не раньше отдельного последующего PR после проверки cache/version rollout.
+
 ### 3. Origin model
 
 Production не использует `targetOrigin: "*"`.
@@ -114,7 +275,7 @@ State содержит только JSON-safe данные:
 - serialized size не более 64 KiB;
 - depth не более 8;
 - array length не более 2000;
-- обязательные `protocolVersion`, `trainerVersion` и `stateSchemaVersion`.
+- `protocolVersion`, `trainerVersion` и `stateSchemaVersion` обязательны в envelope каждого protocol message и не входят в предметный объект state.
 
 Запрещены:
 
