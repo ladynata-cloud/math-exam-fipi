@@ -8,6 +8,9 @@
       "boardCompatibility": "board-mirror",
       "supportsSeed": true,
       "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
       "notes": "Эталонный зеркальный тренажёр.",
       "group": "Отрицательные числа"
     },
@@ -68,6 +71,9 @@
       "boardCompatibility": "board-mirror",
       "supportsSeed": false,
       "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
       "notes": "Зеркалируется видимое состояние решения: задание, шаг, ответ, feedback и числовая прямая.",
       "group": "Отрицательные числа"
     },

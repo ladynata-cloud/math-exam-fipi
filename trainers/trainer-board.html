@@ -73,6 +73,7 @@
     </section>
   </main>
 
+  <script src="board-bridge.js"></script>
   <script>
     const KEY='mathexam.trainerBoard.v1';
     const SERVER_KEY='mathexam.trainerBoard.serverUrl';
@@ -83,7 +84,7 @@
     const lesson=$('lesson'),canvas=$('canvas'),ctx=canvas.getContext('2d'),wrap=$('wrap'),editor=$('editor');
     const trainerUrl=$('trainerUrl'),frame=$('trainerFrame'),trainerQuick=$('trainerQuick'),trainerQuickStatus=$('trainerQuickStatus'),color=$('color'),size=$('size'),sizeText=$('sizeText'),bg=$('bg'),sheetCount=$('sheetCount');
     const serverUrl=$('serverUrl'),shareStatus=$('shareStatus'),roleBadge=$('roleBadge'),roomBadge=$('roomBadge'),controlBadge=$('controlBadge'),controlToggle=$('controlToggle'),releaseControl=$('releaseControl'),studentLink=$('studentLink'),participantsList=$('participantsList');
-    let dpr=1,view={w:1,h:1},tool='pen',drawing=false,current=null,textPoint=null,timer=null,applyingRemote=false,frameLoaded=false,pendingTrainerState=null;
+    let dpr=1,view={w:1,h:1},tool='pen',drawing=false,current=null,textPoint=null,timer=null,applyingRemote=false,frameLoaded=false,pendingTrainerState=null,roomStateReceived=false,latestTrainerState=null,bridgeSession=null,bridgeHydrationTimer=null,legacyTrainerTimer=null;
     const lessonTrainers=[
       {group:'Отрицательные числа',trainerId:'negative-numbers-line',file:'trainers/negative-numbers-line.html',title:'Числовая прямая / отрицательные числа',boardCompatibility:'board-mirror'},
       {group:'Отрицательные числа',trainerId:'negative-numbers',file:'trainers/negative-numbers.html',title:'Отрицательные числа',boardCompatibility:'opens-in-board'},
@@ -113,13 +114,32 @@
     function compatLabel(value){return value==='board-mirror'?'Полное зеркало действий':value==='seed-ready'?'Seed-ready':'Открывается в доске'}
     function trainerQuickUrl(entry){return String(entry?.file||'').replace(/^trainers\//,'')}
     async function loadTrainerQuickSelect(){if(!trainerQuick)return;let list=lessonTrainers;try{const res=await fetch('board-compat.json',{cache:'no-store'});const data=await res.json();if(res.ok&&Array.isArray(data?.trainers)&&data.trainers.length)list=data.trainers}catch(_e){}trainerQuick.replaceChildren(new Option('Быстрый выбор тренажёра',''));const groups=new Map();list.forEach(entry=>{const url=trainerQuickUrl(entry);if(!url)return;const option=new Option(entry.title||url,url);option.dataset.compat=entry.boardCompatibility||'opens-in-board';const group=String(entry.group||'Другое');if(!groups.has(group)){const optgroup=document.createElement('optgroup');optgroup.label=group;groups.set(group,optgroup);trainerQuick.add(optgroup)}groups.get(group).append(option)});trainerQuick.onchange=()=>{const option=trainerQuick.selectedOptions[0];if(!trainerQuick.value)return;trainerQuickStatus.textContent=compatLabel(option?.dataset.compat);openTrainer(trainerQuick.value)}}
-    const mirroredTrainers=new Map([['negative-numbers-line','negative-numbers-line.html'],['linear-inequalities-stepwise','linear-inequalities-stepwise.html']]);
-    function mirrorTrainerFromPayload(payload){const trainer=String(payload?.trainerId||payload?.trainer||'').trim();return mirroredTrainers.has(trainer)?trainer:''}
-    function mirrorTrainerFromUrl(url){try{const raw=normalizeTrainer(url||state.trainerUrl);const parsed=new URL(raw,location.protocol==='file:'?'https://mathexam.space/trainers/trainer-board.html':location.href);const file=parsed.pathname.split('/').pop();for(const [trainer,trainerFile] of mirroredTrainers){if(file===trainerFile)return trainer}return''}catch(_e){const raw=String(url||state.trainerUrl||'').split(/[?#]/)[0].toLowerCase();for(const [trainer,trainerFile] of mirroredTrainers){const file=trainerFile.toLowerCase();if(raw===file||raw.endsWith('/'+file))return trainer}return''}}
+    const mirroredTrainers=new Map([
+      ['negative-numbers-line',{file:'negative-numbers-line.html',trainerVersion:'1.0.0',stateSchemaVersion:1,protocolVersion:1}],
+      ['linear-inequalities-stepwise',{file:'linear-inequalities-stepwise.html',trainerVersion:'1.0.0',stateSchemaVersion:1,protocolVersion:1}]
+    ]);
+    function mirrorTrainerFromPayload(payload){const trainerId=String(payload?.trainerId||'').trim(),compatible=String(payload?.trainer||'').trim();if(trainerId&&compatible&&trainerId!==compatible)return'';const trainer=trainerId||compatible;return mirroredTrainers.has(trainer)?trainer:''}
+    function mirrorTrainerFromUrl(url){try{const raw=normalizeTrainer(url||state.trainerUrl);const parsed=new URL(raw,location.protocol==='file:'?'https://mathexam.space/trainers/trainer-board.html':location.href);const file=parsed.pathname.split('/').pop();for(const [trainer,config] of mirroredTrainers){if(file===config.file)return trainer}return''}catch(_e){const raw=String(url||state.trainerUrl||'').split(/[?#]/)[0].toLowerCase();for(const [trainer,config] of mirroredTrainers){const file=config.file.toLowerCase();if(raw===file||raw.endsWith('/'+file))return trainer}return''}}
     function isMirroredTrainerUrl(trainer,url){return !!trainer&&mirrorTrainerFromUrl(url)===trainer}
-    function setTrainerFrameSrc(url){const next=normalizeTrainer(url);if(frame.getAttribute('src')===next)return;frameLoaded=false;frame.src=next}
-    function flushPendingTrainerState(){if(!pendingTrainerState||!frame.contentWindow||!frameLoaded)return;const trainer=pendingTrainerState.trainer;if(canWrite()||!isMirroredTrainerUrl(trainer,state.trainerUrl))return;frame.contentWindow.postMessage({type:'mathexam:apply-trainer-state',trainer,trainerId:trainer,state:pendingTrainerState.state},'*');pendingTrainerState=null}
-    function applyTrainerStateToFrame(payload){const trainer=mirrorTrainerFromPayload(payload);if(canWrite()||!payload||!trainer||!payload.state)return;if(!isMirroredTrainerUrl(trainer,state.trainerUrl))return;pendingTrainerState={trainer,trainerId:trainer,state:payload.state};flushPendingTrainerState()}
+    function trainerOrigin(url){try{return new URL(normalizeTrainer(url||state.trainerUrl),location.protocol==='file:'?'https://mathexam.space/trainers/trainer-board.html':location.href).origin}catch(_e){return''}}
+    function trustedTrainerOrigin(){const origin=trainerOrigin(state.trainerUrl);return origin&&origin!=='null'&&origin===location.origin?origin:''}
+    function setMirrorStatus(text){if(trainerQuickStatus)trainerQuickStatus.textContent=text}
+    function clearBridgeTimers(){clearTimeout(bridgeHydrationTimer);clearTimeout(legacyTrainerTimer);bridgeHydrationTimer=null;legacyTrainerTimer=null}
+    function invalidateTrainerBridge(){clearBridgeTimers();bridgeSession=null;pendingTrainerState=null}
+    function setTrainerFrameSrc(url){const next=normalizeTrainer(url);if(frame.getAttribute('src')===next)return;invalidateTrainerBridge();frameLoaded=false;frame.src=next}
+    function postTrainerMessage(message,origin=trustedTrainerOrigin()){if(!origin||!frame.contentWindow)return false;try{frame.contentWindow.postMessage(message,origin);return true}catch(_e){setMirrorStatus('Зеркало недоступно: ошибка сообщения');return false}}
+    function bridgeEnvelope(type,extra={}){if(!bridgeSession)return null;return{type,protocolVersion:bridgeSession.protocolVersion,trainerId:bridgeSession.trainerId,trainerVersion:bridgeSession.trainerVersion,stateSchemaVersion:bridgeSession.stateSchemaVersion,bridgeInstanceId:bridgeSession.bridgeInstanceId,...extra}}
+    function plainTextFromHtml(value){const template=document.createElement('template');template.innerHTML=String(value||'');return template.content.textContent||''}
+    function normalizeLegacyTrainerState(trainer,value){if(!value||typeof value!=='object'||Array.isArray(value))return null;let next;try{next=JSON.parse(JSON.stringify(value))}catch(_e){return null}if(trainer==='negative-numbers-line'&&Object.prototype.hasOwnProperty.call(next,'instrHtml')){next.instructionText=plainTextFromHtml(next.instrHtml);next.instructionClass=next.instrClass;delete next.instrHtml;delete next.instrClass}if(trainer==='linear-inequalities-stepwise'&&Object.prototype.hasOwnProperty.call(next,'numberLineHtml')){const sign=String(next.answerSign||''),number=Number(String(next.answerValue??'').replace(',','.'));next.numberLine={visible:!!next.numberLineHtml&&['lt','lte','gt','gte'].includes(sign)&&Number.isFinite(number),sign:['lt','lte','gt','gte'].includes(sign)?sign:null,value:Number.isFinite(number)?number:null};delete next.numberLineHtml}return next}
+    function bridgeStateFromPayload(payload,trainer){const config=mirroredTrainers.get(trainer);if(!config||!payload||!payload.state)return null;const metadataKeys=['protocolVersion','trainerVersion','stateSchemaVersion'];const hasMetadata=metadataKeys.some(key=>Object.prototype.hasOwnProperty.call(payload,key));let trainerState=payload.state;if(hasMetadata){if(payload.protocolVersion!==config.protocolVersion||payload.trainerVersion!==config.trainerVersion||payload.stateSchemaVersion!==config.stateSchemaVersion){setMirrorStatus('Зеркало недоступно: несовместимая версия');return null}}else{trainerState=normalizeLegacyTrainerState(trainer,trainerState)}const validation=MathExamBoard.validateState(trainerState);if(!validation.ok){setMirrorStatus('Зеркало недоступно: несовместимое состояние');return null}return trainerState}
+    function requestTrainerState(){if(!canWrite()||!roomStateReceived)return;if(bridgeSession?.hydrated){postTrainerMessage(bridgeEnvelope('mathexam:request-trainer-state'),bridgeSession.origin);return}if(!bridgeSession)postTrainerMessage({type:'mathexam:request-trainer-state'})}
+    function scheduleLegacyTrainerRequest(){clearTimeout(legacyTrainerTimer);if(!canWrite()||!roomStateReceived)return;legacyTrainerTimer=setTimeout(()=>{if(!bridgeSession)requestTrainerState()},250)}
+    function maybeHydrateTrainer(){if(!bridgeSession||bridgeSession.hydrated||bridgeSession.timedOut||!roomStateReceived)return;let mode='empty',trainerState=null;if(latestTrainerState){const latestTrainer=mirrorTrainerFromPayload(latestTrainerState);if(latestTrainer!==bridgeSession.trainerId){setMirrorStatus('Зеркало недоступно: состояние другого тренажёра');return}trainerState=bridgeStateFromPayload(latestTrainerState,latestTrainer);if(!trainerState)return;mode='state'}const message=bridgeEnvelope('mathexam:hydrate',mode==='state'?{mode,state:trainerState}:{mode});if(!postTrainerMessage(message,bridgeSession.origin))return;bridgeSession.hydrated=true;clearTimeout(bridgeHydrationTimer);setMirrorStatus('Зеркало подключено');if(mode==='empty'&&canWrite())requestTrainerState()}
+    function handleTrainerReady(event,data){const trainer=mirrorTrainerFromPayload(data),config=mirroredTrainers.get(trainer),origin=trustedTrainerOrigin();if(!trainer||!config||!isMirroredTrainerUrl(trainer,state.trainerUrl))return;if(!origin||event.origin!==origin)return;if(data.protocolVersion!==config.protocolVersion||data.trainerVersion!==config.trainerVersion||data.stateSchemaVersion!==config.stateSchemaVersion||typeof data.bridgeInstanceId!=='string'||!data.bridgeInstanceId||data.bridgeInstanceId.length>128){setMirrorStatus('Зеркало недоступно: несовместимая версия');return}clearBridgeTimers();pendingTrainerState=null;bridgeSession={trainerId:trainer,trainerVersion:config.trainerVersion,stateSchemaVersion:config.stateSchemaVersion,protocolVersion:config.protocolVersion,bridgeInstanceId:data.bridgeInstanceId,origin,source:event.source,hydrated:false,timedOut:false};bridgeHydrationTimer=setTimeout(()=>{if(bridgeSession&&!bridgeSession.hydrated){bridgeSession.timedOut=true;setMirrorStatus('Зеркало недоступно: таймаут синхронизации')}},10000);maybeHydrateTrainer()}
+    function bridgeMessageMatches(event,data){return !!bridgeSession&&event.source===bridgeSession.source&&event.origin===bridgeSession.origin&&data.protocolVersion===bridgeSession.protocolVersion&&data.trainerId===bridgeSession.trainerId&&data.trainerVersion===bridgeSession.trainerVersion&&data.stateSchemaVersion===bridgeSession.stateSchemaVersion&&data.bridgeInstanceId===bridgeSession.bridgeInstanceId}
+    function flushPendingTrainerState(){if(bridgeSession||!pendingTrainerState||!frame.contentWindow||!frameLoaded)return;const trainer=mirrorTrainerFromPayload(pendingTrainerState);if(canWrite()||!isMirroredTrainerUrl(trainer,state.trainerUrl))return;const validation=MathExamBoard.validateState(pendingTrainerState.state,{allowHtml:true});if(!validation.ok)return;postTrainerMessage({type:'mathexam:apply-trainer-state',trainer,trainerId:trainer,state:pendingTrainerState.state});pendingTrainerState=null}
+    function postBridgeTrainerState(payload){const trainer=mirrorTrainerFromPayload(payload);if(!bridgeSession?.hydrated||!payload||!trainer||!payload.state||!isMirroredTrainerUrl(trainer,state.trainerUrl))return false;const trainerState=bridgeStateFromPayload(payload,trainer);return !!trainerState&&postTrainerMessage(bridgeEnvelope('mathexam:apply-trainer-state',{state:trainerState}),bridgeSession.origin)}
+    function applyTrainerStateToFrame(payload){const trainer=mirrorTrainerFromPayload(payload);if(!payload||!trainer||!payload.state||!isMirroredTrainerUrl(trainer,state.trainerUrl))return;latestTrainerState=payload;if(canWrite())return;if(bridgeSession){if(!bridgeSession.hydrated){maybeHydrateTrainer();return}postBridgeTrainerState(payload);return}pendingTrainerState=payload;flushPendingTrainerState()}
     function setStatus(text,kind=''){shareStatus.textContent=text;shareStatus.className=`status ${kind}`.trim()}
     function participantRole(role){return role==='teacher'?'Учитель':role==='student'?'Ученик':'Участник'}
     function participantColor(value){const color=String(value||'');return /^#[0-9a-f]{3,8}$/i.test(color)?color:'#647086'}
@@ -140,12 +160,12 @@
     function renderParticipants(){if(!participantsList)return;participantsList.replaceChildren();const list=Array.isArray(shared.participants)?shared.participants:[];if(!shared.roomId&&!list.length){const pill=document.createElement('span');pill.className='participant local';const dot=document.createElement('span');dot.className='participant-dot';dot.style.background='#172033';const label=document.createElement('span');label.textContent='Локально: только вы';pill.append(dot,label);participantsList.append(pill);return}if(!list.length){const empty=document.createElement('span');empty.className='participants-empty';empty.textContent='Участники появятся после подключения';participantsList.append(empty);return}list.forEach(participant=>{const role=participantRole(participant?.role);const online=participant?.connected===true||Number(participant?.onlineCount)>0;const nameText=String(participant?.name||role);const pill=document.createElement('span');pill.className=`participant ${online?'online':'offline'}`;const dot=document.createElement('span');dot.className='participant-dot';dot.style.background=participantColor(participant?.color);const name=document.createElement('span');name.textContent=nameText;const roleText=document.createElement('span');roleText.className='participant-role';roleText.textContent=role;const status=document.createElement('span');status.className='participant-status';status.textContent=online?'в сети':'не в сети';pill.append(dot,name,roleText,document.createTextNode('—'),status);participantsList.append(pill)})}
     function roomPayload(extra={}){return{roomId:shared.roomId,token:shared.token,...extra}}
     function publicSnapshot(){return{currentPage:state.current,trainerUrl:state.trainerUrl,pages:state.pages.map((p,i)=>({id:ensurePageId(p)||`page-${i+1}`,bg:p.bg||'grid',strokes:p.strokes||[]}))}}
-    function applySnapshot(remote){if(remote)setControlState(remote);if(remote&&Array.isArray(remote.participants))setParticipants(remote.participants);if(!remote||!Array.isArray(remote.pages)||!remote.pages.length){updateControlUi();return}applyingRemote=true;state.pages=remote.pages.map((p,i)=>remotePage(p,i));state.current=Math.min(Math.max(remote.currentPage||0,0),state.pages.length-1);state.trainerUrl=remote.trainerUrl||state.trainerUrl;trainerUrl.value=state.trainerUrl;setTrainerFrameSrc(state.trainerUrl);sync(false);applyingRemote=false;if(remote.latestTrainerState)applyTrainerStateToFrame(remote.latestTrainerState);updateControlUi()}
+    function applySnapshot(remote){if(remote)setControlState(remote);if(remote&&Array.isArray(remote.participants))setParticipants(remote.participants);if(remote&&Object.prototype.hasOwnProperty.call(remote,'latestTrainerState'))latestTrainerState=remote.latestTrainerState||null;if(!remote||!Array.isArray(remote.pages)||!remote.pages.length){if(bridgeSession){if(bridgeSession.hydrated&&latestTrainerState)postBridgeTrainerState(latestTrainerState);else maybeHydrateTrainer()}else if(latestTrainerState)applyTrainerStateToFrame(latestTrainerState);updateControlUi();return}applyingRemote=true;state.pages=remote.pages.map((p,i)=>remotePage(p,i));state.current=Math.min(Math.max(remote.currentPage||0,0),state.pages.length-1);state.trainerUrl=remote.trainerUrl||state.trainerUrl;trainerUrl.value=state.trainerUrl;setTrainerFrameSrc(state.trainerUrl);sync(false);applyingRemote=false;if(bridgeSession){if(bridgeSession.hydrated&&latestTrainerState)postBridgeTrainerState(latestTrainerState);else maybeHydrateTrainer()}else if(latestTrainerState)applyTrainerStateToFrame(latestTrainerState);updateControlUi()}
     function emit(name,data={}){if(shared.connected&&shared.role==='teacher')shared.socket.emit(name,roomPayload(data))}
     function emitWriter(name,data={}){if(shared.connected&&canWrite())shared.socket.emit(name,roomPayload(data))}
     function emitSnapshot(){if(shared.connected&&shared.role==='teacher')shared.socket.emit('board:snapshot',roomPayload({state:publicSnapshot()}))}
 
-    function openTrainer(u){if(shared.role!=='teacher')return;let next=normalizeTrainer(u||trainerUrl.value);next=addBoardSeedToTrainerUrl(next,shared.roomId);trainerUrl.value=next;setTrainerFrameSrc(next);state.trainerUrl=next;save();emit('board:trainer-url-change',{trainerUrl:next})}
+    function openTrainer(u){if(shared.role!=='teacher')return;let next=normalizeTrainer(u||trainerUrl.value);next=addBoardSeedToTrainerUrl(next,shared.roomId);trainerUrl.value=next;state.trainerUrl=next;latestTrainerState=null;pendingTrainerState=null;setTrainerFrameSrc(next);save();emit('board:trainer-url-change',{trainerUrl:next})}
     function setTrainerHidden(hidden){if(shared.role!=='teacher')return;state.trainerHidden=hidden;lesson.classList.toggle('hide-trainer',hidden);$('toggleTrainer').textContent=hidden?'Показать тренажёр':'Скрыть тренажёр';$('toggleTrainerBoard').textContent=hidden?'Показать тренажёр':'Скрыть тренажёр';requestAnimationFrame(resize);save()}
     function setTool(t){if(canWrite())finishText();else closeTextEditor();tool=t;document.querySelectorAll('[data-tool]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.tool===t?'true':'false'));canvas.style.cursor=readonly()?'default':t==='text'?'text':t==='eraser'?'cell':'crosshair'}
     function point(e){const r=canvas.getBoundingClientRect();return{x:Math.min(Math.max(e.clientX-r.left,0),r.width),y:Math.min(Math.max(e.clientY-r.top,0),r.height)}}
@@ -187,20 +207,21 @@
         await loadSocketClient(shared.server);
         if(shared.socket)shared.socket.disconnect();
         shared.socket=io(shared.server,{transports:['websocket','polling'],reconnection:true});
-        shared.socket.on('connect',()=>{shared.connected=true;setStatus('подключено','ok');shared.socket.emit('room:join',{roomId:shared.roomId,role:shared.role,token:shared.token,proto:2})});
-        shared.socket.on('disconnect',()=>{shared.connected=false;setStatus('нет связи','bad');updateControlUi()});
+        shared.socket.on('connect',()=>{shared.connected=true;roomStateReceived=false;setStatus('подключено','ok');shared.socket.emit('room:join',{roomId:shared.roomId,role:shared.role,token:shared.token,proto:2})});
+        shared.socket.on('disconnect',()=>{shared.connected=false;roomStateReceived=false;setStatus('нет связи','bad');updateControlUi()});
         shared.socket.on('reconnect_attempt',()=>setStatus('переподключение','wait'));
         shared.socket.on('room:error',e=>setStatus(e?.message||'нет доступа','bad'));
         shared.socket.on('room:state',payload=>{
           setControlState(payload?.state||payload||{});
           setSharedMe(payload?.you);
+          roomStateReceived=true;
+          latestTrainerState=payload?.state?.latestTrainerState||null;
           if(payload?.state){
-            applySnapshot(payload.state);
-            if(canWrite())frame.contentWindow?.postMessage({type:'mathexam:request-trainer-state'},'*')
+            applySnapshot(payload.state)
           }else if(shared.role==='teacher'){
-            emitSnapshot();
-            frame.contentWindow?.postMessage({type:'mathexam:request-trainer-state'},'*')
+            emitSnapshot()
           }
+          if(bridgeSession)maybeHydrateTrainer();else{if(latestTrainerState&&!canWrite())applyTrainerStateToFrame(latestTrainerState);scheduleLegacyTrainerRequest()}
           fallbackSharedMe();setStatus('подключено','ok');updateControlUi()
         });
         shared.socket.on('participants:state',payload=>{setParticipants(payload?.participants);updateControlUi()});
@@ -209,11 +230,11 @@
           setControlState(payload||{});
           const isMine=canWrite();
           if(wasMine&&!isMine){drawing=false;current=null;closeTextEditor();if(shared.role==='student')setStatus('Учитель забрал ход','wait')}
-          if(!wasMine&&isMine)frame.contentWindow?.postMessage({type:'mathexam:request-trainer-state'},'*');
+          if(!wasMine&&isMine)requestTrainerState();
           updateControlUi();setTool(tool)
         });
         shared.socket.on('board:snapshot',payload=>applySnapshot(payload?.state));
-        shared.socket.on('board:trainer-url-change',payload=>{if(payload?.trainerUrl){state.trainerUrl=payload.trainerUrl;trainerUrl.value=payload.trainerUrl;setTrainerFrameSrc(payload.trainerUrl)}});
+        shared.socket.on('board:trainer-url-change',payload=>{if(payload?.trainerUrl){state.trainerUrl=payload.trainerUrl;trainerUrl.value=payload.trainerUrl;latestTrainerState=null;pendingTrainerState=null;setTrainerFrameSrc(payload.trainerUrl)}});
         shared.socket.on('board:trainer-state-change',payload=>applyTrainerStateToFrame(payload));
         shared.socket.on('board:stroke-start',payload=>{if(payload?.pageIndex!==undefined)state.current=payload.pageIndex;current=payload?.stroke||null;render()});
         shared.socket.on('board:stroke-points',payload=>{if(!current)return;if(payload.kind==='path'&&Array.isArray(payload.points))current.points.push(...payload.points);if(payload.end)current.end=payload.end;render()});
@@ -230,8 +251,29 @@
     function copyLink(){const value=studentLink.value.trim();if(!value)return;navigator.clipboard?.writeText(value).then(()=>setStatus('ссылка скопирована','ok')).catch(()=>{studentLink.select();document.execCommand('copy');setStatus('ссылка скопирована','ok')})}
     function applyRole(){document.body.classList.toggle('student-mode',shared.role==='student');roleBadge.textContent=shared.role;serverUrl.value=shared.server||DEFAULT_SERVER;trainerUrl.readOnly=shared.role!=='teacher';roomBadge.textContent=shared.roomId?`комната ${shared.roomId}`:'комната не создана';if(shared.role==='student')setStatus(shared.server?'подключение':'режим просмотра','wait');renderParticipants();updateControlUi()}
 
-    frame.onload=()=>{frameLoaded=true;flushPendingTrainerState()};
-    addEventListener('message',event=>{if(event.source!==frame.contentWindow)return;const data=event.data||{};const trainer=mirrorTrainerFromPayload(data);if(data.type!=='mathexam:trainer-state'||!trainer)return;if(!canWrite()||!shared.connected||!shared.roomId||!isMirroredTrainerUrl(trainer,state.trainerUrl))return;emitWriter('board:trainer-state-change',{trainer,trainerId:trainer,state:data.state})});
+    frame.onload=()=>{frameLoaded=true;flushPendingTrainerState();if(!bridgeSession)scheduleLegacyTrainerRequest()};
+    addEventListener('message',event=>{
+      if(event.source!==frame.contentWindow)return;
+      const data=event.data||{};
+      if(data.type==='mathexam:trainer-ready'){handleTrainerReady(event,data);return}
+      if(data.type!=='mathexam:trainer-state')return;
+      const trainer=mirrorTrainerFromPayload(data);
+      if(!trainer||!isMirroredTrainerUrl(trainer,state.trainerUrl)||!canWrite()||!shared.connected||!shared.roomId||!roomStateReceived)return;
+      const hasProtocol=data.protocolVersion!==undefined||data.bridgeInstanceId!==undefined;
+      if(hasProtocol){
+        if(!bridgeMessageMatches(event,data)){if(bridgeSession&&event.source===bridgeSession.source&&event.origin===bridgeSession.origin&&data.trainerId===bridgeSession.trainerId&&data.bridgeInstanceId===bridgeSession.bridgeInstanceId)setMirrorStatus('Зеркало недоступно: несовместимая версия');return}
+        const validation=MathExamBoard.validateState(data.state);
+        if(!validation.ok){setMirrorStatus('Зеркало недоступно: несовместимое состояние');return}
+        latestTrainerState={trainer,trainerId:trainer,state:data.state,protocolVersion:data.protocolVersion,trainerVersion:data.trainerVersion,stateSchemaVersion:data.stateSchemaVersion};
+        emitWriter('board:trainer-state-change',latestTrainerState);
+        return
+      }
+      if(event.origin!==trustedTrainerOrigin())return;
+      const validation=MathExamBoard.validateState(data.state,{allowHtml:true});
+      if(!validation.ok)return;
+      latestTrainerState={trainer,trainerId:trainer,state:data.state};
+      emitWriter('board:trainer-state-change',latestTrainerState)
+    });
     $('openTrainer').onclick=()=>openTrainer();$('toggleTrainer').onclick=()=>setTrainerHidden(!state.trainerHidden);$('toggleTrainerBoard').onclick=()=>setTrainerHidden(!state.trainerHidden);trainerUrl.onkeydown=e=>{if(e.key==='Enter')openTrainer()};document.querySelectorAll('[data-url]').forEach(b=>b.onclick=()=>openTrainer(b.dataset.url));document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>setTool(b.dataset.tool));size.oninput=()=>{sizeText.textContent=`${size.value} px`;if(canWrite())finishText()};color.onchange=()=>{if(canWrite())finishText()};bg.onchange=()=>{if(shared.role!=='teacher')return;page().bg=bg.value;render();save();emit('board:bg-change',{bg:bg.value,pageIndex:state.current})};$('undo').onclick=undo;$('redo').onclick=redo;$('clear').onclick=clearPage;$('export').onclick=exportPng;$('prevSheet').onclick=()=>switchSheet(-1);$('nextSheet').onclick=()=>switchSheet(1);$('addSheet').onclick=addSheet;$('deleteSheet').onclick=delSheet;$('checkServer').onclick=checkServer;$('createRoom').onclick=createRoom;$('connectRoom').onclick=connectRoom;$('copyStudentLink').onclick=copyLink;controlToggle.onclick=()=>{if(!shared.connected)return;const studentHasControl=controlHolder()?.role==='student';shared.socket.emit(studentHasControl?'control:revoke':'control:grant',roomPayload())};releaseControl.onclick=()=>{if(shared.connected)shared.socket.emit('control:release',roomPayload())};canvas.onpointerdown=down;canvas.onpointermove=move;canvas.onpointerup=up;canvas.onpointercancel=up;editor.onblur=finishText;editor.onkeydown=e=>{if(e.key==='Escape'){closeTextEditor()}if(e.key==='Enter'&&(e.ctrlKey||e.metaKey))finishText()};addEventListener('resize',()=>requestAnimationFrame(resize));addEventListener('beforeunload',()=>{if(shared.role!=='student')localStorage.setItem(KEY,JSON.stringify(state))});
     trainerUrl.value=state.trainerUrl;setTrainerFrameSrc(state.trainerUrl);applyRole();setTrainerHidden(state.trainerHidden);setTool(tool);loadTrainerQuickSelect();sync(false);requestAnimationFrame(resize);if(shared.roomId&&shared.token&&shared.server)connectRoom();else setStatus('локальный режим','');
   </script>

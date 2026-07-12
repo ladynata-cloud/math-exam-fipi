@@ -329,6 +329,20 @@ const BOARD_MIRROR_TRAINER_FILES = new Map([
   ['linear-inequalities-stepwise.html', 'linear-inequalities-stepwise']
 ]);
 
+const TRAINER_BRIDGE_PROTOCOL_VERSION = 1;
+const TRAINER_STATE_MAX_BYTES = 64 * 1024;
+const TRAINER_STATE_MAX_DEPTH = 8;
+const TRAINER_STATE_MAX_ARRAY_LENGTH = 2000;
+const TRAINER_STATE_VERSION_KEYS = new Set([
+  'protocolVersion',
+  'trainerVersion',
+  'stateSchemaVersion'
+]);
+const BOARD_MIRROR_TRAINER_META = new Map([
+  ['negative-numbers-line', { trainerVersion: '1.0.0', stateSchemaVersion: 1 }],
+  ['linear-inequalities-stepwise', { trainerVersion: '1.0.0', stateSchemaVersion: 1 }]
+]);
+
 function trainerIdFromUrl(value) {
   const trainerUrl = normalizeTrainerUrl(value);
   if (!trainerUrl) return null;
@@ -338,6 +352,49 @@ function trainerIdFromUrl(value) {
     return BOARD_MIRROR_TRAINER_FILES.get(fileName) || null;
   } catch {
     return null;
+  }
+}
+
+function validateTrainerState(state, { allowLegacyHtml = false } = {}) {
+  if (!state || typeof state !== 'object' || Array.isArray(state)) return false;
+  const seen = new Set();
+
+  function visit(value, depth) {
+    if (depth > TRAINER_STATE_MAX_DEPTH) return false;
+    if (value === null) return true;
+    const type = typeof value;
+    if (type === 'string') {
+      return allowLegacyHtml || !/<\/?[a-z][^>]*>/i.test(value);
+    }
+    if (type === 'number') return Number.isFinite(value);
+    if (type === 'boolean') return true;
+    if (type !== 'object' || seen.has(value)) return false;
+    seen.add(value);
+    if (Array.isArray(value)) {
+      if (value.length > TRAINER_STATE_MAX_ARRAY_LENGTH) return false;
+      for (const entry of value) {
+        if (!visit(entry, depth + 1)) return false;
+      }
+      seen.delete(value);
+      return true;
+    }
+    const prototype = Object.getPrototypeOf(value);
+    if (prototype !== Object.prototype && prototype !== null) return false;
+    for (const [key, entry] of Object.entries(value)) {
+      if (key === '__proto__' || key === 'prototype' || key === 'constructor') return false;
+      if (depth === 1 && TRAINER_STATE_VERSION_KEYS.has(key)) return false;
+      if (!allowLegacyHtml && /html$/i.test(key)) return false;
+      if (!visit(entry, depth + 1)) return false;
+    }
+    seen.delete(value);
+    return true;
+  }
+
+  if (!visit(state, 1)) return false;
+  try {
+    return Buffer.byteLength(JSON.stringify(state), 'utf8') <= TRAINER_STATE_MAX_BYTES;
+  } catch {
+    return false;
   }
 }
 
@@ -353,15 +410,30 @@ function normalizeTrainerState(room, payload) {
   const canonicalTrainerId = hasTrainerId ? trainerId : compatibleTrainerId;
   if (!BOARD_MIRROR_TRAINER_IDS.has(canonicalTrainerId)) return null;
   if (trainerIdFromUrl(room?.trainerUrl) !== canonicalTrainerId) return null;
-  if (!payload.state || typeof payload.state !== 'object' || Array.isArray(payload.state)) {
-    return null;
+  const metadataKeys = ['protocolVersion', 'trainerVersion', 'stateSchemaVersion'];
+  const hasProtocolMetadata = metadataKeys.some(key => (
+    Object.prototype.hasOwnProperty.call(payload, key)
+  ));
+  const trainerMeta = BOARD_MIRROR_TRAINER_META.get(canonicalTrainerId);
+  if (hasProtocolMetadata) {
+    if (!metadataKeys.every(key => Object.prototype.hasOwnProperty.call(payload, key))) return null;
+    if (payload.protocolVersion !== TRAINER_BRIDGE_PROTOCOL_VERSION) return null;
+    if (payload.trainerVersion !== trainerMeta.trainerVersion) return null;
+    if (payload.stateSchemaVersion !== trainerMeta.stateSchemaVersion) return null;
   }
-  return {
+  if (!validateTrainerState(payload.state, { allowLegacyHtml: !hasProtocolMetadata })) return null;
+  const normalized = {
     trainerId: canonicalTrainerId,
     trainer: canonicalTrainerId,
     state: payload.state,
     updatedAt: new Date().toISOString()
   };
+  if (hasProtocolMetadata) {
+    normalized.protocolVersion = TRAINER_BRIDGE_PROTOCOL_VERSION;
+    normalized.trainerVersion = trainerMeta.trainerVersion;
+    normalized.stateSchemaVersion = trainerMeta.stateSchemaVersion;
+  }
+  return normalized;
 }
 
 function normalizeSnapshot(room, snapshot) {
