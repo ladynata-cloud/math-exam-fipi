@@ -2,6 +2,7 @@ const crypto = require('node:crypto');
 const express = require('express');
 const cors = require('cors');
 const { Server } = require('socket.io');
+const { loadTrainerRegistry } = require('./trainer-registry');
 
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
@@ -28,6 +29,7 @@ const ROOM_CLEANUP_INTERVAL_MS = parsePositiveInteger(
 );
 const AUTHOR_ROLES = new Set(['teacher', 'student', 'bot']);
 const PAGE_BACKGROUNDS = new Set(['grid', 'lined', 'blank']);
+const trainerRegistry = loadTrainerRegistry();
 
 function parsePositiveInteger(value, fallback) {
   const parsed = Number(value);
@@ -319,17 +321,6 @@ function normalizeTrainerUrl(value) {
   return url ? url.slice(0, 1000) : '';
 }
 
-const BOARD_MIRROR_TRAINER_IDS = new Set([
-  'negative-numbers-line',
-  'linear-inequalities-stepwise'
-]);
-
-const BOARD_MIRROR_TRAINER_FILES = new Map([
-  ['negative-numbers-line.html', 'negative-numbers-line'],
-  ['linear-inequalities-stepwise.html', 'linear-inequalities-stepwise']
-]);
-
-const TRAINER_BRIDGE_PROTOCOL_VERSION = 1;
 const TRAINER_STATE_MAX_BYTES = 64 * 1024;
 const TRAINER_STATE_MAX_DEPTH = 8;
 const TRAINER_STATE_MAX_ARRAY_LENGTH = 2000;
@@ -338,21 +329,8 @@ const TRAINER_STATE_VERSION_KEYS = new Set([
   'trainerVersion',
   'stateSchemaVersion'
 ]);
-const BOARD_MIRROR_TRAINER_META = new Map([
-  ['negative-numbers-line', { trainerVersion: '1.0.0', stateSchemaVersion: 1 }],
-  ['linear-inequalities-stepwise', { trainerVersion: '1.0.0', stateSchemaVersion: 1 }]
-]);
-
 function trainerIdFromUrl(value) {
-  const trainerUrl = normalizeTrainerUrl(value);
-  if (!trainerUrl) return null;
-  try {
-    const url = new URL(trainerUrl, 'https://mathexam.space/');
-    const fileName = url.pathname.split('/').pop();
-    return BOARD_MIRROR_TRAINER_FILES.get(fileName) || null;
-  } catch {
-    return null;
-  }
+  return trainerRegistry.getByTrainerUrl(normalizeTrainerUrl(value))?.trainerId || null;
 }
 
 function validateTrainerState(state, { allowLegacyHtml = false } = {}) {
@@ -408,20 +386,22 @@ function normalizeTrainerState(room, payload) {
   const compatibleTrainerId = hasCompatibleTrainerId ? payload.trainer.trim() : '';
   if (hasTrainerId && hasCompatibleTrainerId && trainerId !== compatibleTrainerId) return null;
   const canonicalTrainerId = hasTrainerId ? trainerId : compatibleTrainerId;
-  if (!BOARD_MIRROR_TRAINER_IDS.has(canonicalTrainerId)) return null;
+  const trainerMeta = trainerRegistry.getById(canonicalTrainerId);
+  if (!trainerMeta) return null;
   if (trainerIdFromUrl(room?.trainerUrl) !== canonicalTrainerId) return null;
   const metadataKeys = ['protocolVersion', 'trainerVersion', 'stateSchemaVersion'];
-  const hasProtocolMetadata = metadataKeys.some(key => (
+  const hasProtocolMetadata = [...metadataKeys, 'bridgeInstanceId'].some(key => (
     Object.prototype.hasOwnProperty.call(payload, key)
   ));
-  const trainerMeta = BOARD_MIRROR_TRAINER_META.get(canonicalTrainerId);
   if (hasProtocolMetadata) {
     if (!metadataKeys.every(key => Object.prototype.hasOwnProperty.call(payload, key))) return null;
-    if (payload.protocolVersion !== TRAINER_BRIDGE_PROTOCOL_VERSION) return null;
-    if (payload.trainerVersion !== trainerMeta.trainerVersion) return null;
+    if (payload.protocolVersion !== trainerMeta.bridgeProtocolVersion) return null;
+    if (payload.trainerVersion !== trainerMeta.version) return null;
     if (payload.stateSchemaVersion !== trainerMeta.stateSchemaVersion) return null;
-  }
-  if (!validateTrainerState(payload.state, { allowLegacyHtml: !hasProtocolMetadata })) return null;
+  } else if (!trainerMeta.allowLegacyHtml) return null;
+  if (!validateTrainerState(payload.state, {
+    allowLegacyHtml: !hasProtocolMetadata && trainerMeta.allowLegacyHtml
+  })) return null;
   const normalized = {
     trainerId: canonicalTrainerId,
     trainer: canonicalTrainerId,
@@ -429,8 +409,8 @@ function normalizeTrainerState(room, payload) {
     updatedAt: new Date().toISOString()
   };
   if (hasProtocolMetadata) {
-    normalized.protocolVersion = TRAINER_BRIDGE_PROTOCOL_VERSION;
-    normalized.trainerVersion = trainerMeta.trainerVersion;
+    normalized.protocolVersion = trainerMeta.bridgeProtocolVersion;
+    normalized.trainerVersion = trainerMeta.version;
     normalized.stateSchemaVersion = trainerMeta.stateSchemaVersion;
   }
   return normalized;
@@ -602,8 +582,19 @@ app.get('/health', (_req, res) => {
     serverStartedAt: SERVER_STARTED_AT,
     roomTtlMs: ROOM_TTL_MS,
     roomCleanupIntervalMs: ROOM_CLEANUP_INTERVAL_MS,
-    features: { roomTtlCleanup: true }
+    features: { roomTtlCleanup: true },
+    registryLoaded: trainerRegistry.loaded,
+    registrySchemaVersion: trainerRegistry.schemaVersion,
+    registryDigest: trainerRegistry.digest,
+    registrySource: trainerRegistry.source,
+    registryEntryCount: trainerRegistry.entries.length,
+    registryError: trainerRegistry.error
   });
+});
+
+app.get('/api/trainer-registry', (_req, res) => {
+  res.set('Cache-Control', 'no-store');
+  res.status(trainerRegistry.loaded ? 200 : 503).json(trainerRegistry.publicPayload);
 });
 
 app.post('/api/rooms', (_req, res) => {

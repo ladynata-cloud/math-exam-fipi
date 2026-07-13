@@ -3,11 +3,15 @@ services:
     name: mathexam-board-server
     runtime: node
     plan: free
-    rootDir: board-server
-    buildCommand: npm install
-    startCommand: npm start
+    buildCommand: npm --prefix board-server install
+    startCommand: npm --prefix board-server start
     healthCheckPath: /health
     autoDeploy: true
+    buildFilter:
+      paths:
+        - board-server/**
+        - trainers/board-compat.json
+        - render.yaml
     envVars:
       - key: NODE_ENV
         value: production
