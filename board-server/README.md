@@ -45,6 +45,10 @@ https://mathexam-board-ladynata.amvera.io/health
 
 Если доска не используется, приложение на Amvera можно остановить, чтобы не тратить баланс.
 
+Dockerfile сохраняет структуру `/app/board-server` и кладёт manifest в
+`/app/trainers/board-compat.json`, поэтому server loader использует один и тот
+же путь относительно `__dirname` локально и в контейнере.
+
 Что делает Dockerfile:
 
 ```bash
@@ -103,10 +107,15 @@ https://ВАШ-АМВЕРА-ДОМЕН
 В корне репозитория есть `render.yaml`. Он описывает отдельный web service:
 
 - имя сервиса: `mathexam-board-server`
-- рабочая папка: `board-server`
-- build command: `npm install`
-- start command: `npm start`
+- build context: корень репозитория
+- build command: `npm --prefix board-server install`
+- start command: `npm --prefix board-server start`
 - health check: `/health`
+
+Manifest находится вне `board-server`, поэтому `rootDir` намеренно не задан.
+Build filter следит за `board-server/**`, `trainers/board-compat.json` и
+`render.yaml`: изменение registry запускает backend deploy и manifest доступен
+процессу по тому же пути относительно `__dirname`, что и при локальном запуске.
 
 Порядок действий:
 
@@ -135,6 +144,55 @@ https://ВАШ-АМВЕРА-ДОМЕН
 ```bash
 CORS_ALLOWED_ORIGINS=https://mathexam.space,http://localhost:3000,http://127.0.0.1:3000 npm start
 ```
+
+## Registry зеркальных тренажёров
+
+Источник registry: `trainers/board-compat.json`. Сервер загружает и строго
+проверяет его при старте, строит неизменяемую mirror-проекцию и вычисляет
+детерминированный SHA-256 digest. Каталоговые поля не входят в digest.
+
+По умолчанию loader открывает `../trainers/board-compat.json` относительно
+`board-server/index.js`. Для отдельного runtime artifact можно задать путь без
+изменения кода:
+
+```bash
+TRAINER_REGISTRY_PATH=/run/config/board-compat.json npm start
+```
+
+Относительное значение `TRAINER_REGISTRY_PATH` разрешается относительно папки
+server-модуля, а не `process.cwd()`. Абсолютный путь никогда не публикуется.
+
+Публичный endpoint:
+
+```text
+GET /api/trainer-registry
+```
+
+Для валидного manifest он возвращает `200`, `schemaVersion`, `digest` и только
+безопасную mirror-проекцию. Для missing/invalid manifest он возвращает `503`,
+пустой список и безопасный error code. Оба ответа используют
+`Cache-Control: no-store`.
+
+`/health` остаётся обратно совместимым и дополнительно возвращает:
+
+- `registryLoaded`;
+- `registrySchemaVersion`;
+- `registryDigest`;
+- `registrySource` (`env` или `bundled-default`);
+- `registryEntryCount`;
+- `registryError`.
+
+Invalid registry не останавливает комнаты, presence, canvas или control, но
+fail-closed отключает bridge и legacy trainer-state mirror.
+
+Deployment checklist:
+
+1. Убедиться, что `/health` показывает `registryLoaded:true` и две mirror entries.
+2. Получить `/api/trainer-registry` и проверить `Cache-Control: no-store`.
+3. Сверить digest endpoint с `/health`.
+4. Проверить CORS для `https://mathexam.space` и локального origin.
+5. Выполнить smoke обоих reference mirror trainers и grant/revoke.
+6. При `registryLoaded:false` не включать client cutover и проверить `registryError`.
 
 ## Как открыть доску локально
 

@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "schemaVersion": 1,
   "trainers": [
     {
       "trainerId": "negative-numbers-line",
@@ -11,6 +12,7 @@
       "version": "1.0.0",
       "stateSchemaVersion": 1,
       "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": true,
       "notes": "Эталонный зеркальный тренажёр.",
       "group": "Отрицательные числа"
     },
@@ -74,6 +76,7 @@
       "version": "1.0.0",
       "stateSchemaVersion": 1,
       "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": true,
       "notes": "Зеркалируется видимое состояние решения: задание, шаг, ответ, feedback и числовая прямая.",
       "group": "Отрицательные числа"
     },

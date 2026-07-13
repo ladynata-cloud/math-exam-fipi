@@ -2,6 +2,7 @@ const crypto = require('node:crypto');
 const express = require('express');
 const cors = require('cors');
 const { Server } = require('socket.io');
+const { loadTrainerRegistry } = require('./trainer-registry');
 
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
@@ -28,6 +29,7 @@ const ROOM_CLEANUP_INTERVAL_MS = parsePositiveInteger(
 );
 const AUTHOR_ROLES = new Set(['teacher', 'student', 'bot']);
 const PAGE_BACKGROUNDS = new Set(['grid', 'lined', 'blank']);
+const trainerRegistry = loadTrainerRegistry();
 
 function parsePositiveInteger(value, fallback) {
   const parsed = Number(value);
@@ -343,6 +345,25 @@ const BOARD_MIRROR_TRAINER_META = new Map([
   ['linear-inequalities-stepwise', { trainerVersion: '1.0.0', stateSchemaVersion: 1 }]
 ]);
 
+function registryMatchesLegacyAuthorization(registry) {
+  if (!registry.loaded || registry.entries.length !== BOARD_MIRROR_TRAINER_IDS.size) return false;
+  return registry.entries.every(entry => {
+    const legacyTrainerId = BOARD_MIRROR_TRAINER_FILES.get(entry.file.split('/').pop());
+    const legacyMeta = BOARD_MIRROR_TRAINER_META.get(entry.trainerId);
+    return BOARD_MIRROR_TRAINER_IDS.has(entry.trainerId)
+      && legacyTrainerId === entry.trainerId
+      && entry.bridgeProtocolVersion === TRAINER_BRIDGE_PROTOCOL_VERSION
+      && entry.version === legacyMeta?.trainerVersion
+      && entry.stateSchemaVersion === legacyMeta?.stateSchemaVersion
+      && entry.allowLegacyHtml === true;
+  });
+}
+
+const TRAINER_REGISTRY_PARITY = registryMatchesLegacyAuthorization(trainerRegistry);
+if (trainerRegistry.loaded && !TRAINER_REGISTRY_PARITY) {
+  console.error('Trainer registry parity check failed');
+}
+
 function trainerIdFromUrl(value) {
   const trainerUrl = normalizeTrainerUrl(value);
   if (!trainerUrl) return null;
@@ -602,8 +623,19 @@ app.get('/health', (_req, res) => {
     serverStartedAt: SERVER_STARTED_AT,
     roomTtlMs: ROOM_TTL_MS,
     roomCleanupIntervalMs: ROOM_CLEANUP_INTERVAL_MS,
-    features: { roomTtlCleanup: true }
+    features: { roomTtlCleanup: true },
+    registryLoaded: trainerRegistry.loaded,
+    registrySchemaVersion: trainerRegistry.schemaVersion,
+    registryDigest: trainerRegistry.digest,
+    registrySource: trainerRegistry.source,
+    registryEntryCount: trainerRegistry.entries.length,
+    registryError: trainerRegistry.error
   });
+});
+
+app.get('/api/trainer-registry', (_req, res) => {
+  res.set('Cache-Control', 'no-store');
+  res.status(trainerRegistry.loaded ? 200 : 503).json(trainerRegistry.publicPayload);
 });
 
 app.post('/api/rooms', (_req, res) => {

@@ -1,11 +1,12 @@
 FROM node:20-alpine
 
-WORKDIR /app
+WORKDIR /app/board-server
 
 COPY board-server/package*.json ./
 RUN npm install --omit=dev
 
 COPY board-server/ ./
+COPY trainers/board-compat.json /app/trainers/board-compat.json
 
 ENV NODE_ENV=production
 ENV PORT=3000
