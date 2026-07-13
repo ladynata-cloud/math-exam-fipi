@@ -94,19 +94,19 @@
     const lesson=$('lesson'),canvas=$('canvas'),ctx=canvas.getContext('2d'),wrap=$('wrap'),editor=$('editor');
     const trainerUrl=$('trainerUrl'),frame=$('trainerFrame'),trainerQuick=$('trainerQuick'),trainerQuickStatus=$('trainerQuickStatus'),mirrorStatus=$('mirrorStatus'),retryTrainerRegistry=$('retryTrainerRegistry'),color=$('color'),size=$('size'),sizeText=$('sizeText'),bg=$('bg'),sheetCount=$('sheetCount');
     const serverUrl=$('serverUrl'),shareStatus=$('shareStatus'),roleBadge=$('roleBadge'),roomBadge=$('roomBadge'),controlBadge=$('controlBadge'),controlToggle=$('controlToggle'),releaseControl=$('releaseControl'),studentLink=$('studentLink'),participantsList=$('participantsList');
-    let dpr=1,view={w:1,h:1},tool='pen',drawing=false,current=null,textPoint=null,timer=null,applyingRemote=false,frameLoaded=false,pendingTrainerState=null,roomStateReceived=false,latestTrainerState=null,bridgeSession=null,readyCandidate=null,bridgeHydrationTimer=null,legacyTrainerTimer=null,frameGeneration=0,lastFrameLoadAt=0,automaticRecoveryGeneration=-1;
+    let dpr=1,view={w:1,h:1},tool='pen',drawing=false,current=null,textPoint=null,timer=null,applyingRemote=false,frameLoaded=false,pendingTrainerState=null,roomStateReceived=false,latestTrainerState=null,bridgeSession=null,readyCandidate=null,bridgeHydrationTimer=null,legacyTrainerTimer=null,frameGeneration=0,lastFrameLoadAt=0,automaticRecoveryGeneration=-1,bridgeReloadNeeded=false;
     const lessonTrainers=[
-      {group:'Отрицательные числа',trainerId:'negative-numbers-line',file:'trainers/negative-numbers-line.html',title:'Числовая прямая / отрицательные числа',boardCompatibility:'board-mirror'},
-      {group:'Отрицательные числа',trainerId:'negative-numbers',file:'trainers/negative-numbers.html',title:'Отрицательные числа',boardCompatibility:'opens-in-board'},
-      {group:'Отрицательные числа',trainerId:'negative-numbers-alternative',file:'trainers/negative-numbers-alternative.html',title:'Отрицательные числа — альтернативный',boardCompatibility:'opens-in-board'},
-      {group:'Отрицательные числа',trainerId:'oge-task7-number-line',file:'trainers/oge-task7-number-line.html',title:'ОГЭ №7 / числовая прямая',boardCompatibility:'opens-in-board'},
-      {group:'Отрицательные числа',trainerId:'inequalities-number-line',file:'trainers/inequalities-number-line.html',title:'Неравенства на числовой прямой',boardCompatibility:'opens-in-board'},
-      {group:'Отрицательные числа',trainerId:'linear-inequalities-basic',file:'trainers/linear-inequalities-basic.html',title:'Линейные неравенства — база',boardCompatibility:'opens-in-board'},
-      {group:'Отрицательные числа',trainerId:'linear-inequalities-stepwise',file:'trainers/linear-inequalities-stepwise.html',title:'Линейные неравенства — пошагово',boardCompatibility:'board-mirror'},
-      {group:'Алгебра',trainerId:'like-terms-trainer',file:'trainers/like-terms-trainer.html',title:'Театр формул / приведение подобных слагаемых',boardCompatibility:'opens-in-board'},
-      {group:'Алгебра',trainerId:'percent-part-whole',file:'trainers/percent-part-whole-trainer.html',title:'Проценты: часть и целое',boardCompatibility:'opens-in-board'},
-      {group:'Геометрия / ЕГЭ',trainerId:'ege-t1-planimetry',file:'trainers/ege-t1-planimetry-trainer.html',title:'ЕГЭ №1: планиметрия',boardCompatibility:'opens-in-board'},
-      {group:'Геометрия / ЕГЭ',trainerId:'ege-t2-vectors',file:'trainers/ege-t2-vectors-trainer.html',title:'ЕГЭ №2: векторы',boardCompatibility:'opens-in-board'}
+      {group:'Отрицательные числа',file:'trainers/negative-numbers-line.html',title:'Числовая прямая / отрицательные числа',boardCompatibility:'board-mirror'},
+      {group:'Отрицательные числа',file:'trainers/negative-numbers.html',title:'Отрицательные числа',boardCompatibility:'opens-in-board'},
+      {group:'Отрицательные числа',file:'trainers/negative-numbers-alternative.html',title:'Отрицательные числа — альтернативный',boardCompatibility:'opens-in-board'},
+      {group:'Отрицательные числа',file:'trainers/oge-task7-number-line.html',title:'ОГЭ №7 / числовая прямая',boardCompatibility:'opens-in-board'},
+      {group:'Отрицательные числа',file:'trainers/inequalities-number-line.html',title:'Неравенства на числовой прямой',boardCompatibility:'opens-in-board'},
+      {group:'Отрицательные числа',file:'trainers/linear-inequalities-basic.html',title:'Линейные неравенства — база',boardCompatibility:'opens-in-board'},
+      {group:'Отрицательные числа',file:'trainers/linear-inequalities-stepwise.html',title:'Линейные неравенства — пошагово',boardCompatibility:'board-mirror'},
+      {group:'Алгебра',file:'trainers/like-terms-trainer.html',title:'Театр формул / приведение подобных слагаемых',boardCompatibility:'opens-in-board'},
+      {group:'Алгебра',file:'trainers/percent-part-whole-trainer.html',title:'Проценты: часть и целое',boardCompatibility:'opens-in-board'},
+      {group:'Геометрия / ЕГЭ',file:'trainers/ege-t1-planimetry-trainer.html',title:'ЕГЭ №1: планиметрия',boardCompatibility:'opens-in-board'},
+      {group:'Геометрия / ЕГЭ',file:'trainers/ege-t2-vectors-trainer.html',title:'ЕГЭ №2: векторы',boardCompatibility:'opens-in-board'}
     ];
     const blank=()=>({id:`local-${Date.now()}-${Math.random().toString(36).slice(2,7)}`,bg:'grid',strokes:[],redo:[]});
     const defaults=()=>({current:0,trainerUrl:'negative-numbers-line.html',trainerHidden:false,pages:[blank()]});
@@ -132,10 +132,6 @@
     const REGISTRY_TOTAL_BUDGET_MS=8500;
     const BRIDGE_HYDRATION_TIMEOUT_MS=10000;
     const MAX_REGISTRY_ENTRIES=200;
-    const mirroredTrainers=new Map([
-      ['negative-numbers-line',{file:'trainers/negative-numbers-line.html',trainerVersion:'1.0.0',stateSchemaVersion:1,protocolVersion:1,allowLegacyHtml:true}],
-      ['linear-inequalities-stepwise',{file:'trainers/linear-inequalities-stepwise.html',trainerVersion:'1.0.0',stateSchemaVersion:1,protocolVersion:1,allowLegacyHtml:true}]
-    ]);
     const trainerRegistry={status:'idle',server:'',digest:'',byId:new Map(),byFile:new Map(),request:null,controller:null,requestGeneration:0,errorCode:'',lastValid:null};
     const mirrorStatuses=Object.freeze({
       pending:{text:'Подключаем синхронизацию…',kind:'wait',retry:false},
@@ -169,7 +165,6 @@
       }
       return Object.freeze({schemaVersion:data.schemaVersion,digest:data.digest,entries:Object.freeze(entries),byId,byFile})
     }
-    function shadowRegistryParity(projection){const shape=entry=>[entry.trainerId,entry.file,entry.trainerVersion,entry.stateSchemaVersion,entry.protocolVersion,entry.allowLegacyHtml];const actual=projection.entries.map(shape).sort((a,b)=>a[0].localeCompare(b[0]));const shadow=[...mirroredTrainers].map(([trainerId,entry])=>shape({trainerId,...entry})).sort((a,b)=>a[0].localeCompare(b[0]));if(JSON.stringify(actual)!==JSON.stringify(shadow))console.warn('TRAINER_REGISTRY_SHADOW_MISMATCH')}
     function clearActiveTrainerRegistry(server,status='pending'){trainerRegistry.status=status;trainerRegistry.server=server;trainerRegistry.digest='';trainerRegistry.byId=new Map();trainerRegistry.byFile=new Map();trainerRegistry.errorCode='';setMirrorStatus(status==='pending'?'pending':'registry-unavailable')}
     async function fetchTrainerRegistryAttempt(server,requestGeneration,budgetMs){
       const controller=new AbortController();trainerRegistry.controller=controller;let timedOut=false;const timeout=setTimeout(()=>{timedOut=true;controller.abort()},Math.min(REGISTRY_ATTEMPT_TIMEOUT_MS,Math.max(1,budgetMs)));
@@ -185,7 +180,7 @@
         throw error
       }finally{clearTimeout(timeout);if(trainerRegistry.controller===controller)trainerRegistry.controller=null}
     }
-    function applyTrainerRegistry(projection,server){trainerRegistry.status='ready';trainerRegistry.server=server;trainerRegistry.digest=projection.digest;trainerRegistry.byId=projection.byId;trainerRegistry.byFile=projection.byFile;trainerRegistry.errorCode='';trainerRegistry.lastValid=projection;shadowRegistryParity(projection);reconcileTrainerMirror();recoverExpiredBridgeOnce()}
+    function applyTrainerRegistry(projection,server){trainerRegistry.status='ready';trainerRegistry.server=server;trainerRegistry.digest=projection.digest;trainerRegistry.byId=projection.byId;trainerRegistry.byFile=projection.byFile;trainerRegistry.errorCode='';trainerRegistry.lastValid=projection;reconcileTrainerMirror();recoverExpiredBridgeOnce()}
     async function loadTrainerRegistry({force=false}={}){
       const server=normalizeServer(shared.server);
       if(!server){clearActiveTrainerRegistry('', 'failed');trainerRegistry.errorCode='REGISTRY_SERVER_INVALID';return null}
@@ -205,15 +200,15 @@
     function clearBridgeTimers(){clearTimeout(bridgeHydrationTimer);clearTimeout(legacyTrainerTimer);bridgeHydrationTimer=null;legacyTrainerTimer=null}
     function invalidateTrainerBridge(){clearBridgeTimers();bridgeSession=null;readyCandidate=null;pendingTrainerState=null}
     function updateMirrorStatusForCurrentTrainer(){if(trainerRegistry.status==='pending'||trainerRegistry.status==='idle'){setMirrorStatus('pending');return}if(trainerRegistry.status==='failed'){setMirrorStatus('registry-unavailable');return}const entry=mirrorEntryFromUrl(state.trainerUrl);if(!entry){setMirrorStatus('unsupported-trainer');return}if(bridgeSession?.hydrated){setMirrorStatus('connected');return}setMirrorStatus(readyCandidate?.timedOut?'bridge-timeout':'pending')}
-    function setTrainerFrameSrc(url){const next=normalizeTrainer(url);if(frame.getAttribute('src')===next)return;invalidateTrainerBridge();frameLoaded=false;frameGeneration++;frame.src=next;updateMirrorStatusForCurrentTrainer()}
-    function reloadTrainerFrameForBridge(){const next=normalizeTrainer(state.trainerUrl);if(!mirrorEntryFromUrl(next))return false;invalidateTrainerBridge();frameLoaded=false;frameGeneration++;frame.src=next;setMirrorStatus('pending');return true}
+    function setTrainerFrameSrc(url){const next=normalizeTrainer(url);if(frame.getAttribute('src')===next)return;bridgeReloadNeeded=false;invalidateTrainerBridge();frameLoaded=false;frameGeneration++;frame.src=next;updateMirrorStatusForCurrentTrainer()}
+    function reloadTrainerFrameForBridge(){const next=normalizeTrainer(state.trainerUrl);if(!mirrorEntryFromUrl(next))return false;bridgeReloadNeeded=false;invalidateTrainerBridge();frameLoaded=false;frameGeneration++;frame.src=next;setMirrorStatus('pending');return true}
     function bridgeDeadlineExpired(candidate=readyCandidate){return !!candidate&&(candidate.timedOut||Date.now()>=candidate.deadline)}
     function recoverExpiredBridgeOnce(){if(!roomStateReceived||trainerRegistry.status!=='ready'||!readyCandidate||!bridgeDeadlineExpired(readyCandidate)||automaticRecoveryGeneration===frameGeneration)return false;automaticRecoveryGeneration=frameGeneration;return reloadTrainerFrameForBridge()}
     function postTrainerMessage(message,origin=trustedTrainerOrigin()){if(!origin||!frame.contentWindow)return false;try{frame.contentWindow.postMessage(message,origin);return true}catch(_e){setMirrorStatus('registry-unavailable');return false}}
     function bridgeEnvelope(type,extra={}){if(!bridgeSession)return null;return{type,protocolVersion:bridgeSession.protocolVersion,trainerId:bridgeSession.trainerId,trainerVersion:bridgeSession.trainerVersion,stateSchemaVersion:bridgeSession.stateSchemaVersion,bridgeInstanceId:bridgeSession.bridgeInstanceId,...extra}}
     function plainTextFromHtml(value){const template=document.createElement('template');template.innerHTML=String(value||'');return template.content.textContent||''}
-    function normalizeLegacyTrainerState(trainer,value){if(!value||typeof value!=='object'||Array.isArray(value))return null;let next;try{next=JSON.parse(JSON.stringify(value))}catch(_e){return null}if(trainer==='negative-numbers-line'&&Object.prototype.hasOwnProperty.call(next,'instrHtml')){next.instructionText=plainTextFromHtml(next.instrHtml);next.instructionClass=next.instrClass;delete next.instrHtml;delete next.instrClass}if(trainer==='linear-inequalities-stepwise'&&Object.prototype.hasOwnProperty.call(next,'numberLineHtml')){const sign=String(next.answerSign||''),number=Number(String(next.answerValue??'').replace(',','.'));next.numberLine={visible:!!next.numberLineHtml&&['lt','lte','gt','gte'].includes(sign)&&Number.isFinite(number),sign:['lt','lte','gt','gte'].includes(sign)?sign:null,value:Number.isFinite(number)?number:null};delete next.numberLineHtml}return next}
-    function bridgeStateFromPayload(payload,trainer){const config=trainerRegistry.byId.get(trainer);if(trainerRegistry.status!=='ready'||!config||!payload||!payload.state||!isMirroredTrainerUrl(trainer,state.trainerUrl))return null;const metadataKeys=['protocolVersion','trainerVersion','stateSchemaVersion'];const hasMetadata=metadataKeys.some(key=>Object.prototype.hasOwnProperty.call(payload,key));let trainerState=payload.state;if(hasMetadata){if(payload.protocolVersion!==config.protocolVersion||payload.trainerVersion!==config.trainerVersion||payload.stateSchemaVersion!==config.stateSchemaVersion){setMirrorStatus('version-mismatch');return null}}else{if(!config.allowLegacyHtml)return null;trainerState=normalizeLegacyTrainerState(trainer,trainerState)}const validation=MathExamBoard.validateState(trainerState);if(!validation.ok){setMirrorStatus('state-invalid');return null}return trainerState}
+    function normalizeLegacyTrainerState(value){if(!value||typeof value!=='object'||Array.isArray(value))return null;let next;try{next=JSON.parse(JSON.stringify(value))}catch(_e){return null}if(Object.prototype.hasOwnProperty.call(next,'instrHtml')){next.instructionText=plainTextFromHtml(next.instrHtml);next.instructionClass=next.instrClass;delete next.instrHtml;delete next.instrClass}if(Object.prototype.hasOwnProperty.call(next,'numberLineHtml')){const sign=String(next.answerSign||''),number=Number(String(next.answerValue??'').replace(',','.'));next.numberLine={visible:!!next.numberLineHtml&&['lt','lte','gt','gte'].includes(sign)&&Number.isFinite(number),sign:['lt','lte','gt','gte'].includes(sign)?sign:null,value:Number.isFinite(number)?number:null};delete next.numberLineHtml}return next}
+    function bridgeStateFromPayload(payload,trainer){const config=trainerRegistry.byId.get(trainer);if(trainerRegistry.status!=='ready'||!config||!payload||!payload.state||!isMirroredTrainerUrl(trainer,state.trainerUrl))return null;const metadataKeys=['protocolVersion','trainerVersion','stateSchemaVersion'];const hasMetadata=metadataKeys.some(key=>Object.prototype.hasOwnProperty.call(payload,key));let trainerState=payload.state;if(hasMetadata){if(payload.protocolVersion!==config.protocolVersion||payload.trainerVersion!==config.trainerVersion||payload.stateSchemaVersion!==config.stateSchemaVersion){setMirrorStatus('version-mismatch');return null}}else{if(!config.allowLegacyHtml)return null;trainerState=normalizeLegacyTrainerState(trainerState)}const validation=MathExamBoard.validateState(trainerState);if(!validation.ok){setMirrorStatus('state-invalid');return null}return trainerState}
     function requestTrainerState(){if(!canWrite()||!roomStateReceived||trainerRegistry.status!=='ready')return;const entry=mirrorEntryFromUrl(state.trainerUrl);if(!entry)return;if(bridgeSession?.hydrated){postTrainerMessage(bridgeEnvelope('mathexam:request-trainer-state'),bridgeSession.origin);return}if(bridgeSession||readyCandidate){maybeHydrateTrainer();return}if(entry.allowLegacyHtml)postTrainerMessage({type:'mathexam:request-trainer-state'})}
     function scheduleLegacyTrainerRequest(){clearTimeout(legacyTrainerTimer);const entry=mirrorEntryFromUrl(state.trainerUrl);if(!canWrite()||!roomStateReceived||!frameLoaded||trainerRegistry.status!=='ready'||!entry?.allowLegacyHtml||bridgeSession||readyCandidate)return;legacyTrainerTimer=setTimeout(()=>{if(!bridgeSession&&!readyCandidate&&trainerRegistry.status==='ready')requestTrainerState()},250)}
     function markBridgeTimedOut(candidate){if(!candidate||readyCandidate!==candidate||bridgeSession?.hydrated)return;candidate.timedOut=true;if(bridgeSession?.bridgeInstanceId===candidate.bridgeInstanceId)bridgeSession.timedOut=true;setMirrorStatus('bridge-timeout')}
@@ -232,7 +227,8 @@
     function reconcileTrainerMirror(){
       updateMirrorStatusForCurrentTrainer();if(trainerRegistry.status!=='ready')return;
       const currentEntry=mirrorEntryFromUrl(state.trainerUrl);
-      if(!currentEntry){if(bridgeSession||readyCandidate)invalidateTrainerBridge();setMirrorStatus('unsupported-trainer');return}
+      if(!currentEntry){if(bridgeSession||readyCandidate){bridgeReloadNeeded=true;invalidateTrainerBridge()}setMirrorStatus('unsupported-trainer');return}
+      if(bridgeReloadNeeded&&frameLoaded){reloadTrainerFrameForBridge();return}
       if(readyCandidate)promoteReadyCandidate();
       if(bridgeSession){if(bridgeSession.hydrated){setMirrorStatus('connected');if(canWrite()&&roomStateReceived)requestTrainerState();else if(latestTrainerState)postBridgeTrainerState(latestTrainerState)}else maybeHydrateTrainer()}
       else if(frameLoaded)scheduleLegacyTrainerRequest();
