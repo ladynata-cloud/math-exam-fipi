@@ -321,17 +321,6 @@ function normalizeTrainerUrl(value) {
   return url ? url.slice(0, 1000) : '';
 }
 
-const BOARD_MIRROR_TRAINER_IDS = new Set([
-  'negative-numbers-line',
-  'linear-inequalities-stepwise'
-]);
-
-const BOARD_MIRROR_TRAINER_FILES = new Map([
-  ['negative-numbers-line.html', 'negative-numbers-line'],
-  ['linear-inequalities-stepwise.html', 'linear-inequalities-stepwise']
-]);
-
-const TRAINER_BRIDGE_PROTOCOL_VERSION = 1;
 const TRAINER_STATE_MAX_BYTES = 64 * 1024;
 const TRAINER_STATE_MAX_DEPTH = 8;
 const TRAINER_STATE_MAX_ARRAY_LENGTH = 2000;
@@ -340,40 +329,8 @@ const TRAINER_STATE_VERSION_KEYS = new Set([
   'trainerVersion',
   'stateSchemaVersion'
 ]);
-const BOARD_MIRROR_TRAINER_META = new Map([
-  ['negative-numbers-line', { trainerVersion: '1.0.0', stateSchemaVersion: 1 }],
-  ['linear-inequalities-stepwise', { trainerVersion: '1.0.0', stateSchemaVersion: 1 }]
-]);
-
-function registryMatchesLegacyAuthorization(registry) {
-  if (!registry.loaded || registry.entries.length !== BOARD_MIRROR_TRAINER_IDS.size) return false;
-  return registry.entries.every(entry => {
-    const legacyTrainerId = BOARD_MIRROR_TRAINER_FILES.get(entry.file.split('/').pop());
-    const legacyMeta = BOARD_MIRROR_TRAINER_META.get(entry.trainerId);
-    return BOARD_MIRROR_TRAINER_IDS.has(entry.trainerId)
-      && legacyTrainerId === entry.trainerId
-      && entry.bridgeProtocolVersion === TRAINER_BRIDGE_PROTOCOL_VERSION
-      && entry.version === legacyMeta?.trainerVersion
-      && entry.stateSchemaVersion === legacyMeta?.stateSchemaVersion
-      && entry.allowLegacyHtml === true;
-  });
-}
-
-const TRAINER_REGISTRY_PARITY = registryMatchesLegacyAuthorization(trainerRegistry);
-if (trainerRegistry.loaded && !TRAINER_REGISTRY_PARITY) {
-  console.error('Trainer registry parity check failed');
-}
-
 function trainerIdFromUrl(value) {
-  const trainerUrl = normalizeTrainerUrl(value);
-  if (!trainerUrl) return null;
-  try {
-    const url = new URL(trainerUrl, 'https://mathexam.space/');
-    const fileName = url.pathname.split('/').pop();
-    return BOARD_MIRROR_TRAINER_FILES.get(fileName) || null;
-  } catch {
-    return null;
-  }
+  return trainerRegistry.getByTrainerUrl(normalizeTrainerUrl(value))?.trainerId || null;
 }
 
 function validateTrainerState(state, { allowLegacyHtml = false } = {}) {
@@ -429,20 +386,22 @@ function normalizeTrainerState(room, payload) {
   const compatibleTrainerId = hasCompatibleTrainerId ? payload.trainer.trim() : '';
   if (hasTrainerId && hasCompatibleTrainerId && trainerId !== compatibleTrainerId) return null;
   const canonicalTrainerId = hasTrainerId ? trainerId : compatibleTrainerId;
-  if (!BOARD_MIRROR_TRAINER_IDS.has(canonicalTrainerId)) return null;
+  const trainerMeta = trainerRegistry.getById(canonicalTrainerId);
+  if (!trainerMeta) return null;
   if (trainerIdFromUrl(room?.trainerUrl) !== canonicalTrainerId) return null;
   const metadataKeys = ['protocolVersion', 'trainerVersion', 'stateSchemaVersion'];
-  const hasProtocolMetadata = metadataKeys.some(key => (
+  const hasProtocolMetadata = [...metadataKeys, 'bridgeInstanceId'].some(key => (
     Object.prototype.hasOwnProperty.call(payload, key)
   ));
-  const trainerMeta = BOARD_MIRROR_TRAINER_META.get(canonicalTrainerId);
   if (hasProtocolMetadata) {
     if (!metadataKeys.every(key => Object.prototype.hasOwnProperty.call(payload, key))) return null;
-    if (payload.protocolVersion !== TRAINER_BRIDGE_PROTOCOL_VERSION) return null;
-    if (payload.trainerVersion !== trainerMeta.trainerVersion) return null;
+    if (payload.protocolVersion !== trainerMeta.bridgeProtocolVersion) return null;
+    if (payload.trainerVersion !== trainerMeta.version) return null;
     if (payload.stateSchemaVersion !== trainerMeta.stateSchemaVersion) return null;
-  }
-  if (!validateTrainerState(payload.state, { allowLegacyHtml: !hasProtocolMetadata })) return null;
+  } else if (!trainerMeta.allowLegacyHtml) return null;
+  if (!validateTrainerState(payload.state, {
+    allowLegacyHtml: !hasProtocolMetadata && trainerMeta.allowLegacyHtml
+  })) return null;
   const normalized = {
     trainerId: canonicalTrainerId,
     trainer: canonicalTrainerId,
@@ -450,8 +409,8 @@ function normalizeTrainerState(room, payload) {
     updatedAt: new Date().toISOString()
   };
   if (hasProtocolMetadata) {
-    normalized.protocolVersion = TRAINER_BRIDGE_PROTOCOL_VERSION;
-    normalized.trainerVersion = trainerMeta.trainerVersion;
+    normalized.protocolVersion = trainerMeta.bridgeProtocolVersion;
+    normalized.trainerVersion = trainerMeta.version;
     normalized.stateSchemaVersion = trainerMeta.stateSchemaVersion;
   }
   return normalized;

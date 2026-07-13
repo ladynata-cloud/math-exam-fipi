@@ -7,6 +7,7 @@ const net = require('node:net');
 const os = require('node:os');
 const path = require('node:path');
 const test = require('node:test');
+const { io: createSocketClient } = require('socket.io-client');
 
 const serverDir = path.resolve(__dirname, '..');
 const manifestPath = path.resolve(serverDir, '../trainers/board-compat.json');
@@ -49,6 +50,11 @@ async function startServer(registryPath, runtimeServerDir = serverDir) {
   };
   delete env.TRAINER_REGISTRY_PATH;
   if (registryPath) env.TRAINER_REGISTRY_PATH = registryPath;
+  if (runtimeServerDir !== serverDir) {
+    env.NODE_PATH = [path.join(serverDir, 'node_modules'), env.NODE_PATH]
+      .filter(Boolean)
+      .join(path.delimiter);
+  }
   const child = spawn(process.execPath, ['index.js'], {
     cwd: runtimeServerDir,
     env,
@@ -82,6 +88,76 @@ async function temporaryFile(content, callback) {
   } finally {
     fs.rmSync(directory, { recursive: true, force: true });
   }
+}
+
+function waitForSocketEvent(socket, event, predicate = () => true, timeoutMs = 2500) {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      socket.off(event, listener);
+      reject(new Error(`timed out waiting for ${event}`));
+    }, timeoutMs);
+    function listener(payload) {
+      if (!predicate(payload)) return;
+      clearTimeout(timer);
+      socket.off(event, listener);
+      resolve(payload);
+    }
+    socket.on(event, listener);
+  });
+}
+
+function expectNoSocketEvent(socket, event, action, timeoutMs = 250) {
+  return new Promise((resolve, reject) => {
+    const listener = payload => {
+      clearTimeout(timer);
+      socket.off(event, listener);
+      reject(new Error(`unexpected ${event}: ${JSON.stringify(payload)}`));
+    };
+    const timer = setTimeout(() => {
+      socket.off(event, listener);
+      resolve();
+    }, timeoutMs);
+    socket.on(event, listener);
+    action();
+  });
+}
+
+async function connectParticipant(baseUrl, room, role) {
+  const token = role === 'teacher' ? room.teacherToken : room.studentToken;
+  const socket = createSocketClient(baseUrl, {
+    autoConnect: false,
+    forceNew: true,
+    reconnection: false,
+    transports: ['websocket', 'polling']
+  });
+  const connected = waitForSocketEvent(socket, 'connect');
+  socket.connect();
+  await connected;
+  const roomState = waitForSocketEvent(socket, 'room:state');
+  socket.emit('room:join', { roomId: room.roomId, role, token, proto: 2 });
+  return { socket, token, state: await roomState };
+}
+
+async function createRoom(baseUrl) {
+  const response = await fetch(`${baseUrl}/api/rooms`, { method: 'POST' });
+  assert.equal(response.status, 201);
+  return response.json();
+}
+
+function authPayload(room, participant, extra = {}) {
+  return { roomId: room.roomId, token: participant.token, ...extra };
+}
+
+function bridgeState(room, participant, trainerId, state, extra = {}) {
+  return authPayload(room, participant, {
+    trainerId,
+    trainer: trainerId,
+    protocolVersion: 1,
+    trainerVersion: '1.0.0',
+    stateSchemaVersion: 1,
+    state,
+    ...extra
+  });
 }
 
 test('valid registry endpoint, health, CORS, and room API are compatible', async t => {
@@ -207,4 +283,285 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     await server.stop();
     fs.rmSync(directory, { recursive: true, force: true });
   }
+});
+
+test('runtime registry authorizes bridge and legacy mirror state for both reference trainers', async t => {
+  const server = await startServer();
+  t.after(() => server.stop());
+  const room = await createRoom(server.baseUrl);
+  const teacher = await connectParticipant(server.baseUrl, room, 'teacher');
+  const student = await connectParticipant(server.baseUrl, room, 'student');
+  t.after(() => teacher.socket.disconnect());
+  t.after(() => student.socket.disconnect());
+  const roomErrors = [];
+  teacher.socket.on('room:error', error => roomErrors.push(error));
+  student.socket.on('room:error', error => roomErrors.push(error));
+
+  const negativeState = { taskIndex: 1, answer: 0 };
+  const negativeReceived = waitForSocketEvent(student.socket, 'board:trainer-state-change');
+  teacher.socket.emit(
+    'board:trainer-state-change',
+    bridgeState(room, teacher, 'negative-numbers-line', negativeState)
+  );
+  const normalizedNegative = await negativeReceived;
+  assert.equal(normalizedNegative.trainerId, 'negative-numbers-line');
+  assert.equal(normalizedNegative.trainer, 'negative-numbers-line');
+  assert.deepEqual(normalizedNegative.state, negativeState);
+
+  const legacyState = { instrHtml: '<strong>legacy</strong>', phase: 'answer' };
+  const legacyReceived = waitForSocketEvent(student.socket, 'board:trainer-state-change');
+  teacher.socket.emit('board:trainer-state-change', authPayload(room, teacher, {
+    trainer: 'negative-numbers-line',
+    state: legacyState
+  }));
+  assert.deepEqual((await legacyReceived).state, legacyState);
+
+  await expectNoSocketEvent(student.socket, 'board:trainer-state-change', () => {
+    teacher.socket.emit('board:trainer-state-change', authPayload(room, teacher, {
+      trainerId: 'negative-numbers-line',
+      trainer: 'negative-numbers-line',
+      protocolVersion: 1,
+      state: { partial: true }
+    }));
+  });
+  await expectNoSocketEvent(student.socket, 'board:trainer-state-change', () => {
+    teacher.socket.emit(
+      'board:trainer-state-change',
+      bridgeState(room, teacher, 'unknown-trainer', { invalid: true })
+    );
+  });
+  for (const mismatch of [
+    { trainerVersion: '2.0.0' },
+    { stateSchemaVersion: 2 },
+    { protocolVersion: 2 }
+  ]) {
+    await expectNoSocketEvent(student.socket, 'board:trainer-state-change', () => {
+      teacher.socket.emit(
+        'board:trainer-state-change',
+        bridgeState(room, teacher, 'negative-numbers-line', { mismatch: true }, mismatch)
+      );
+    });
+  }
+
+  const urlChanged = waitForSocketEvent(student.socket, 'board:trainer-url-change');
+  teacher.socket.emit('board:trainer-url-change', authPayload(room, teacher, {
+    trainerUrl: '/trainers/linear-inequalities-stepwise.html?seed=registry-test#step'
+  }));
+  await urlChanged;
+  await expectNoSocketEvent(student.socket, 'board:trainer-state-change', () => {
+    teacher.socket.emit(
+      'board:trainer-state-change',
+      bridgeState(room, teacher, 'negative-numbers-line', { wrongFile: true })
+    );
+  });
+
+  const linearState = { taskIndex: 2, step: 3, answerValue: '4' };
+  const linearReceived = waitForSocketEvent(student.socket, 'board:trainer-state-change');
+  teacher.socket.emit(
+    'board:trainer-state-change',
+    bridgeState(room, teacher, 'linear-inequalities-stepwise', linearState)
+  );
+  assert.deepEqual((await linearReceived).state, linearState);
+
+  const duplicateParticipants = waitForSocketEvent(
+    teacher.socket,
+    'participants:state',
+    payload => Array.isArray(payload?.participants)
+  );
+  teacher.socket.emit('room:join', {
+    roomId: room.roomId,
+    role: 'teacher',
+    token: teacher.token,
+    proto: 2
+  });
+  const duplicateState = await duplicateParticipants;
+  assert.equal(
+    duplicateState.participants.find(item => item.role === 'teacher').onlineCount,
+    1
+  );
+
+  const lateStudent = await connectParticipant(server.baseUrl, room, 'student');
+  t.after(() => lateStudent.socket.disconnect());
+  assert.deepEqual(lateStudent.state.state.latestTrainerState.state, linearState);
+
+  const studentControl = waitForSocketEvent(student.socket, 'control:changed');
+  teacher.socket.emit('control:grant', authPayload(room, teacher));
+  await studentControl;
+  const studentState = { taskIndex: 2, step: 4, answerValue: '5' };
+  const teacherReceived = waitForSocketEvent(teacher.socket, 'board:trainer-state-change');
+  student.socket.emit(
+    'board:trainer-state-change',
+    bridgeState(room, student, 'linear-inequalities-stepwise', studentState)
+  );
+  assert.deepEqual((await teacherReceived).state, studentState);
+
+  const teacherBg = waitForSocketEvent(student.socket, 'board:bg-change');
+  teacher.socket.emit('board:bg-change', authPayload(room, teacher, {
+    pageIndex: 0,
+    bg: 'lined'
+  }));
+  assert.equal((await teacherBg).bg, 'lined');
+
+  const started = waitForSocketEvent(teacher.socket, 'board:stroke-start');
+  student.socket.emit('board:stroke-start', authPayload(room, student, {
+    pageIndex: 0,
+    stroke: { kind: 'path', points: [{ x: 10, y: 10 }] }
+  }));
+  await started;
+
+  const teacherControl = waitForSocketEvent(student.socket, 'control:changed');
+  teacher.socket.emit('control:revoke', authPayload(room, teacher));
+  await teacherControl;
+  await expectNoSocketEvent(teacher.socket, 'board:stroke-end', () => {
+    student.socket.emit('board:stroke-end', authPayload(room, student, {
+      pageIndex: 0,
+      stroke: { kind: 'path', points: [{ x: 10, y: 10 }, { x: 20, y: 20 }] }
+    }));
+  });
+  await expectNoSocketEvent(teacher.socket, 'board:trainer-state-change', () => {
+    student.socket.emit(
+      'board:trainer-state-change',
+      bridgeState(room, student, 'linear-inequalities-stepwise', { revoked: true })
+    );
+  });
+  assert.deepEqual(roomErrors, []);
+});
+
+test('empty registry rejects bridge and legacy mirror while room, canvas, and control stay live', async () => {
+  await temporaryFile('{ invalid json', async file => {
+    const server = await startServer(file);
+    const sockets = [];
+    try {
+      const room = await createRoom(server.baseUrl);
+      const teacher = await connectParticipant(server.baseUrl, room, 'teacher');
+      const student = await connectParticipant(server.baseUrl, room, 'student');
+      sockets.push(teacher.socket, student.socket);
+      const roomErrors = [];
+      teacher.socket.on('room:error', error => roomErrors.push(error));
+      student.socket.on('room:error', error => roomErrors.push(error));
+
+      await expectNoSocketEvent(student.socket, 'board:trainer-state-change', () => {
+        teacher.socket.emit(
+          'board:trainer-state-change',
+          bridgeState(room, teacher, 'negative-numbers-line', { bridge: true })
+        );
+      });
+      await expectNoSocketEvent(student.socket, 'board:trainer-state-change', () => {
+        teacher.socket.emit('board:trainer-state-change', authPayload(room, teacher, {
+          trainer: 'negative-numbers-line',
+          state: { instrHtml: '<b>legacy</b>' }
+        }));
+      });
+
+      const teacherStroke = waitForSocketEvent(student.socket, 'board:stroke-end');
+      teacher.socket.emit('board:stroke-end', authPayload(room, teacher, {
+        pageIndex: 0,
+        stroke: { kind: 'path', points: [{ x: 1, y: 1 }, { x: 2, y: 2 }] }
+      }));
+      await teacherStroke;
+
+      const studentControl = waitForSocketEvent(student.socket, 'control:changed');
+      teacher.socket.emit('control:grant', authPayload(room, teacher));
+      await studentControl;
+      const studentStroke = waitForSocketEvent(teacher.socket, 'board:stroke-end');
+      student.socket.emit('board:stroke-end', authPayload(room, student, {
+        pageIndex: 0,
+        stroke: { kind: 'path', points: [{ x: 3, y: 3 }, { x: 4, y: 4 }] }
+      }));
+      await studentStroke;
+
+      const teacherControl = waitForSocketEvent(student.socket, 'control:changed');
+      teacher.socket.emit('control:revoke', authPayload(room, teacher));
+      await teacherControl;
+      await expectNoSocketEvent(teacher.socket, 'board:stroke-end', () => {
+        student.socket.emit('board:stroke-end', authPayload(room, student, {
+          pageIndex: 0,
+          stroke: { kind: 'path', points: [{ x: 5, y: 5 }, { x: 6, y: 6 }] }
+        }));
+      });
+      assert.deepEqual(roomErrors, []);
+    } finally {
+      sockets.forEach(socket => socket.disconnect());
+      await server.stop();
+    }
+  });
+});
+
+test('synthetic manifest entry is authorized without a core edit', async () => {
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  const synthetic = {
+    ...manifest.trainers.find(entry => entry.trainerId === 'linear-inequalities-stepwise'),
+    trainerId: 'synthetic-registry-trainer',
+    file: 'trainers/synthetic-registry-trainer.html',
+    title: 'Synthetic registry trainer',
+    allowLegacyHtml: false
+  };
+  manifest.trainers.push(synthetic);
+  await temporaryFile(JSON.stringify(manifest), async file => {
+    const server = await startServer(file);
+    const sockets = [];
+    try {
+      const room = await createRoom(server.baseUrl);
+      const teacher = await connectParticipant(server.baseUrl, room, 'teacher');
+      const student = await connectParticipant(server.baseUrl, room, 'student');
+      sockets.push(teacher.socket, student.socket);
+      const urlChanged = waitForSocketEvent(student.socket, 'board:trainer-url-change');
+      teacher.socket.emit('board:trainer-url-change', authPayload(room, teacher, {
+        trainerUrl: 'synthetic-registry-trainer.html'
+      }));
+      await urlChanged;
+      const received = waitForSocketEvent(student.socket, 'board:trainer-state-change');
+      teacher.socket.emit(
+        'board:trainer-state-change',
+        bridgeState(room, teacher, synthetic.trainerId, { synthetic: true })
+      );
+      assert.deepEqual((await received).state, { synthetic: true });
+      await expectNoSocketEvent(student.socket, 'board:trainer-state-change', () => {
+        teacher.socket.emit('board:trainer-state-change', authPayload(room, teacher, {
+          trainer: synthetic.trainerId,
+          state: { legacy: true }
+        }));
+      });
+    } finally {
+      sockets.forEach(socket => socket.disconnect());
+      await server.stop();
+    }
+  });
+});
+
+test('removing a manifest entry revokes bridge and legacy authorization', async () => {
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  manifest.trainers = manifest.trainers.filter(
+    entry => entry.trainerId !== 'linear-inequalities-stepwise'
+  );
+  await temporaryFile(JSON.stringify(manifest), async file => {
+    const server = await startServer(file);
+    const sockets = [];
+    try {
+      const room = await createRoom(server.baseUrl);
+      const teacher = await connectParticipant(server.baseUrl, room, 'teacher');
+      const student = await connectParticipant(server.baseUrl, room, 'student');
+      sockets.push(teacher.socket, student.socket);
+      const urlChanged = waitForSocketEvent(student.socket, 'board:trainer-url-change');
+      teacher.socket.emit('board:trainer-url-change', authPayload(room, teacher, {
+        trainerUrl: 'linear-inequalities-stepwise.html'
+      }));
+      await urlChanged;
+      await expectNoSocketEvent(student.socket, 'board:trainer-state-change', () => {
+        teacher.socket.emit(
+          'board:trainer-state-change',
+          bridgeState(room, teacher, 'linear-inequalities-stepwise', { removed: true })
+        );
+      });
+      await expectNoSocketEvent(student.socket, 'board:trainer-state-change', () => {
+        teacher.socket.emit('board:trainer-state-change', authPayload(room, teacher, {
+          trainer: 'linear-inequalities-stepwise',
+          state: { removedLegacy: true }
+        }));
+      });
+    } finally {
+      sockets.forEach(socket => socket.disconnect());
+      await server.stop();
+    }
+  });
 });
