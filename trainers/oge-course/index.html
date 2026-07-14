@@ -17,6 +17,14 @@
   .pill:hover{border-color:var(--pen);background:#f4f7ff}
   .entry.soon{background:rgba(255,255,255,.68);border-style:dashed}
   .entry.soon .go{color:var(--ink-soft)}
+  .oge-download-panel{margin-top:16px;padding:14px;border:1px solid #c9d6ea;border-radius:8px;background:#fff;box-shadow:0 8px 18px rgba(17,24,39,.04)}
+  .oge-download-panel h4{margin:0 0 6px;font-family:var(--font-serif, Georgia, serif);font-size:20px;color:var(--ink)}
+  .oge-download-panel p{margin:0;color:var(--ink-soft);font-size:14px;line-height:1.45}
+  .oge-download-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+  .oge-download-actions a,.oge-download-actions button{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 14px;border-radius:8px;border:1px solid var(--line);font:700 14px var(--font-sans, system-ui, sans-serif);text-decoration:none;background:#fff;color:var(--pen);cursor:pointer}
+  .oge-download-actions a{background:var(--pen);border-color:var(--pen);color:#fff}
+  .oge-download-actions button:disabled{color:#8b95a5;background:#f8fafc;cursor:not-allowed;opacity:.9}
+  @media(max-width:680px){.oge-download-actions a,.oge-download-actions button{width:100%}}
 </style>
 </head>
 <body>
@@ -166,5 +174,55 @@
     MathExam · mathexam.space · Наталья Михайловна
   </div>
 </footer>
+<script>
+(function(){
+  const downloadMap = {
+    '/trainers/oge-1-5-trainers/': '/trainers/oge-1-5-trainers/index.html',
+    '/trainers/oge-task13-inequalities.html': '/trainers/oge13-inequalities-series.html'
+  };
+
+  function downloadHref(href){
+    if (downloadMap[href]) return downloadMap[href];
+    return href.endsWith('/') ? href + 'index.html' : href;
+  }
+
+  document.querySelectorAll('#part1 .entry, #geometry .entry, #part2 .entry').forEach((card) => {
+    if (card.querySelector('.oge-download-panel')) return;
+    const openLink = card.querySelector('a.go[href]');
+    if (!openLink) return;
+
+    const panel = document.createElement('div');
+    panel.className = 'oge-download-panel';
+
+    const title = document.createElement('h4');
+    title.textContent = 'Скачать и адаптировать';
+
+    const text = document.createElement('p');
+    text.textContent = 'Этот тренажёр можно использовать как пример педагогического веб-кодинга: скачать HTML, изучить структуру и адаптировать под свою тему.';
+
+    const actions = document.createElement('div');
+    actions.className = 'oge-download-actions';
+
+    const html = document.createElement('a');
+    html.href = downloadHref(openLink.getAttribute('href'));
+    html.setAttribute('download', '');
+    html.textContent = 'Скачать HTML';
+
+    const prompt = document.createElement('button');
+    prompt.type = 'button';
+    prompt.disabled = true;
+    prompt.textContent = 'Скачать промпт для DeepSeek';
+
+    const archive = document.createElement('button');
+    archive.type = 'button';
+    archive.disabled = true;
+    archive.textContent = 'Скачать архивом';
+
+    actions.append(html, prompt, archive);
+    panel.append(title, text, actions);
+    card.appendChild(panel);
+  });
+})();
+</script>
 </body>
 </html>
