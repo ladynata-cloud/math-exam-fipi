@@ -13,6 +13,7 @@ task. One independent task maps to one specification, one branch, and one PR.
 - Planned branch:
 - Review level: `SMALL` / `MEDIUM` / `HIGH` / `NEW_ARCHETYPE`
 - Related issue or ADR:
+- ADR status, if applicable: `Accepted` / `Proposed` / other
 
 ## Goal
 
@@ -20,8 +21,12 @@ Describe the user or product outcome in one short paragraph.
 
 ## Context and evidence
 
-List verified facts, existing code or documents, and relevant accepted ADRs.
-Separate facts from assumptions and model suggestions.
+List verified facts, existing code or documents, and relevant ADRs. Treat only
+an ADR with `Status: Accepted` as an architectural source of truth. Treat a
+Proposed ADR as advisory unless a decision from it is fixed by a separate
+approved scope. Establish implemented B1/B2 behavior from code, gates, and
+production evidence rather than an assumed ADR status. Separate facts from
+assumptions and model suggestions.
 
 ## Approved scope
 

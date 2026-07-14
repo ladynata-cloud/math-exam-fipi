@@ -9,7 +9,7 @@ add local constraints, but they must not weaken this file.
 - [Roadmap](docs/ROADMAP.md)
 - [Review policy](docs/REVIEW_POLICY.md)
 - [Task specification template](docs/tasks/TASK_TEMPLATE.md)
-- [Trainer Bridge Platform ADR](docs/adr/0001-trainer-bridge-platform.md)
+- [Trainer Bridge Platform ADR (Proposed)](docs/adr/0001-trainer-bridge-platform.md)
 - [PR workflow skill](.agents/skills/mathexam-pr/SKILL.md)
 - [Release workflow skill](.agents/skills/mathexam-release/SKILL.md)
 
@@ -40,6 +40,11 @@ code
 
 Escalate a real contradiction to the owner. Do not silently reinterpret an
 approved scope or accepted ADR.
+
+Only an ADR with `Status: Accepted` is an architectural source of truth. A
+Proposed ADR remains advisory unless a decision from it is fixed by a separate
+approved scope. Implemented B1/B2 behavior is established by code, gates, and
+production evidence, not by assuming acceptance for ADR 0001.
 
 ## Task and permission boundaries
 
@@ -112,7 +117,8 @@ Recommendation:
 Next user decision:
 ```
 
-After every merge, Codex updates [PROJECT_STATUS.md](docs/PROJECT_STATUS.md) with
-the production `main`, current stage, open PR, last confirmed gate, blockers,
-and next three actions. When that update cannot be part of the merged change,
-handle it as a separate docs-only task without bypassing branch protection.
+At the start of the next approved task, Codex reconciles
+[PROJECT_STATUS.md](docs/PROJECT_STATUS.md) against production evidence. Create
+a separate status-only PR only by explicit owner decision or when a real
+operational need justifies it. Never create a recursive PR solely to record the
+merge of the preceding status-only PR.

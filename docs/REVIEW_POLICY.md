@@ -19,6 +19,11 @@ code
 A model opinion is input, not authority. A passing gate does not authorize scope
 expansion or merge.
 
+Only an ADR with `Status: Accepted` has the architectural authority shown in the
+source-of-truth order. A Proposed ADR is advisory unless a separate approved
+scope fixes one of its decisions. Review evidence for implemented B1/B2 behavior
+comes from code, gates, and production evidence, not an assumed ADR status.
+
 ## Review levels
 
 | Level | Typical scope | Required review |

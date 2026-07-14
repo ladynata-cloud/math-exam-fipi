@@ -2,9 +2,9 @@
 
 Updated: 2026-07-14
 
-This is the short operational snapshot. Update it after every merge; use
-[ROADMAP.md](ROADMAP.md) for sequence and [REVIEW_POLICY.md](REVIEW_POLICY.md)
-for review requirements.
+This is the short operational snapshot. Reconcile it against production evidence
+at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
+and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
 ## Production main
 
@@ -21,8 +21,8 @@ nested paths, and the roads-grid proof are intentionally unchanged.
 
 ## Open PR
 
-MathExam Workflow v1 from branch `agent/mathexam-workflow-v1` (Draft PR; number
-is assigned after publication).
+Draft PR #84: MathExam Workflow v1 from branch
+`agent/mathexam-workflow-v1`.
 
 ## Last confirmed gate
 
@@ -41,7 +41,10 @@ is assigned after publication).
 
 ## Maintenance rule
 
-After a merge, replace the production commit with the actual remote `main`,
-record the new stage and last verified post-merge gate, update blockers, and keep
-exactly the next three concrete actions. Do not predict a successful merge or
-deployment before it happens.
+At the start of each approved task, compare this snapshot with the actual remote
+`main`, open PRs, gates, and production evidence. Update it within that task when
+the status is stale and keep exactly the next three concrete actions. Create a
+separate status-only PR only by explicit owner decision or when a real
+operational need cannot wait for the next approved task. Never create a
+recursive PR solely to record the merge of the preceding status-only PR. Do not
+predict a successful merge or deployment before it happens.

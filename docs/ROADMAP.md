@@ -6,9 +6,12 @@ separate task specification, branch, PR, and explicit `START` under
 
 ## Baseline
 
-Trainer Registry B2 is complete on production `main`. The accepted architecture
-context remains [ADR 0001](adr/0001-trainer-bridge-platform.md). Current
-operational state is tracked in [PROJECT_STATUS.md](PROJECT_STATUS.md).
+Trainer Registry B2 is complete on production `main`, as confirmed by code,
+gates, and production evidence. [ADR 0001](adr/0001-trainer-bridge-platform.md)
+has `Status: Proposed` and remains advisory unless a decision from it is fixed
+by a separate approved scope. Its status is not evidence that B1 or B2 was
+implemented. Current operational state is tracked in
+[PROJECT_STATUS.md](PROJECT_STATUS.md).
 
 ## Ordered work
 
