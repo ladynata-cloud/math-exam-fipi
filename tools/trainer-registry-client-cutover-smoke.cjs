@@ -53,12 +53,21 @@ const PATH_FIXTURE = loadPathFixture();
 assert.equal(PATH_FIXTURE.vectors.length, 82, 'committed fixture vector count');
 assert.throws(
   () => loadPathFixture(resolve(REPO_ROOT, 'tools', 'fixtures', 'fixture-missing-fail.json')),
-  /ENOENT/
+  /ENOENT/,
+  'fixture-missing-fail'
 );
-assert.throws(() => validatePathFixture(null), /fixture schemaVersion/);
+assert.throws(
+  () => validatePathFixture(null),
+  /fixture schemaVersion/,
+  'fixture-malformed-fail'
+);
 const wrongFixtureLimits = clone(PATH_FIXTURE);
 wrongFixtureLimits.limits.maxTotalLength += 1;
-assert.throws(() => validatePathFixture(wrongFixtureLimits), /fixture limits/);
+assert.throws(
+  () => validatePathFixture(wrongFixtureLimits),
+  /fixture limits/,
+  'fixture-limits-mismatch-fail'
+);
 
 async function freePort() {
   return new Promise((resolvePromise, reject) => {

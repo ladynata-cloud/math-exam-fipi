@@ -110,12 +110,21 @@ test('committed path fixture is present, well formed, unique, and limit-locked',
 
   assert.throws(
     () => loadConformanceFixture(path.join(os.tmpdir(), 'fixture-missing-fail.json')),
-    /ENOENT/
+    /ENOENT/,
+    'fixture-missing-fail'
   );
-  assert.throws(() => validateConformanceFixture(null), /fixture schemaVersion/);
+  assert.throws(
+    () => validateConformanceFixture(null),
+    /fixture schemaVersion/,
+    'fixture-malformed-fail'
+  );
   const wrongLimits = copy(fixture);
   wrongLimits.limits.maxTotalLength += 1;
-  assert.throws(() => validateConformanceFixture(wrongLimits), /fixture limits/);
+  assert.throws(
+    () => validateConformanceFixture(wrongLimits),
+    /fixture limits/,
+    'fixture-limits-mismatch-fail'
+  );
 });
 
 test('server consumes every committed registry-file and trainer-url vector', () => {
