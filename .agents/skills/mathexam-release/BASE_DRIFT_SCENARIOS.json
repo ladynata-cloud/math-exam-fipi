@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "fixture": "mathexam-release-base-drift-merge-guard",
+  "symbols": {
+    "authorizedBase": "B0",
+    "advancedBase": "B1",
+    "reviewedHead": "H0",
+    "virtualMergeTree": "V1",
+    "mergeCommit": "M1"
+  },
+  "invariants": {
+    "driftAction": "STOP",
+    "staleAuthorization": "invalid",
+    "branchRepair": "forbidden",
+    "fullTreeIdentity": "base_unchanged_only",
+    "driftIdentity": [
+      "parent_to_merge_delta",
+      "exact_changed_files",
+      "affected_file_blob_identity",
+      "stable_patch_id",
+      "no_extra_files",
+      "exact_merge_parent"
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "base_unchanged",
+      "authorizedBase": "B0",
+      "actualMain": "B0",
+      "expected": {
+        "baseDriftDetected": false,
+        "authorization": "valid",
+        "virtualMerge": "not_required",
+        "fullTreeComparison": "allowed",
+        "decision": "continue_identity_and_gate_checks"
+      }
+    },
+    {
+      "id": "base_advanced_before_merge",
+      "authorizedBase": "B0",
+      "actualMain": "B1",
+      "expected": {
+        "baseDriftDetected": true,
+        "authorization": "invalid",
+        "decision": "STOP",
+        "newOwnerAuthorizationRequired": true
+      }
+    },
+    {
+      "id": "old_authorization_invalidated",
+      "authorizedBase": "B0",
+      "actualMain": "B1",
+      "ownerAuthorizationBase": "B0",
+      "expected": {
+        "authorization": "invalid",
+        "mergeAllowed": false,
+        "branchRepair": "forbidden"
+      }
+    },
+    {
+      "id": "virtual_merge_clean",
+      "authorizedBase": "B0",
+      "actualMain": "B1",
+      "virtualMerge": "clean",
+      "expected": {
+        "oldAuthorizationRevived": false,
+        "rerunGates": "required",
+        "newOwnerAuthorizationRequired": true
+      }
+    },
+    {
+      "id": "virtual_merge_conflict",
+      "authorizedBase": "B0",
+      "actualMain": "B1",
+      "virtualMerge": "conflict",
+      "expected": {
+        "mergeAllowed": false,
+        "decision": "STOP",
+        "resolutionTaskRequired": true
+      }
+    },
+    {
+      "id": "reviewed_patch_cleanly_applies_to_new_base",
+      "actualMain": "B1",
+      "virtualMerge": "clean",
+      "reviewedPatchApplies": true,
+      "expected": {
+        "rerunGates": "required",
+        "newBaseHeadDiffReport": "required",
+        "newOwnerAuthorizationRequired": true
+      }
+    },
+    {
+      "id": "extra_file_in_merge_delta",
+      "newlyAuthorizedBase": "B1",
+      "reviewedChangedFiles": ["docs/REVIEW_POLICY.md"],
+      "mergeDeltaFiles": ["docs/REVIEW_POLICY.md", "unexpected.txt"],
+      "expected": {
+        "identity": "fail",
+        "decision": "STOP"
+      }
+    },
+    {
+      "id": "identical_blob_and_patch_id",
+      "newlyAuthorizedBase": "B1",
+      "affectedFileBlobs": "identical",
+      "stablePatchId": "identical",
+      "extraFiles": false,
+      "expected": {
+        "identity": "pass",
+        "mergeAllowed": "only_with_new_owner_authorization"
+      }
+    },
+    {
+      "id": "different_blob_or_patch_id",
+      "newlyAuthorizedBase": "B1",
+      "affectedFileBlobs": "different",
+      "stablePatchId": "different",
+      "expected": {
+        "identity": "fail",
+        "decision": "STOP"
+      }
+    },
+    {
+      "id": "merge_parent_mismatch",
+      "newlyAuthorizedBase": "B1",
+      "actualMergeParent": "B0",
+      "expected": {
+        "identity": "fail",
+        "decision": "STOP"
+      }
+    },
+    {
+      "id": "concurrent_commits_unknown_authorization",
+      "authorizedBase": "B0",
+      "actualMain": "B1",
+      "concurrentCommitProvenance": "unknown",
+      "expected": {
+        "includedInOldAuthorization": false,
+        "classificationRequired": true,
+        "decision": "STOP"
+      }
+    },
+    {
+      "id": "full_tree_comparison_only_when_base_unchanged",
+      "authorizedBase": "B0",
+      "actualMain": "B1",
+      "requestedIdentityMethod": "full_tree",
+      "expected": {
+        "methodAllowed": false,
+        "requiredMethod": "parent_delta_blob_and_stable_patch_id",
+        "decision": "STOP"
+      }
+    }
+  ]
+}
