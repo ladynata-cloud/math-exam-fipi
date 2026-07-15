@@ -492,7 +492,7 @@ test('synthetic manifest entry is authorized without a core edit', async () => {
   const synthetic = {
     ...manifest.trainers.find(entry => entry.trainerId === 'linear-inequalities-stepwise'),
     trainerId: 'synthetic-registry-trainer',
-    file: 'trainers/synthetic-registry-trainer.html',
+    file: 'trainers/synthetic/series/shared.html',
     title: 'Synthetic registry trainer',
     allowLegacyHtml: false
   };
@@ -505,9 +505,14 @@ test('synthetic manifest entry is authorized without a core edit', async () => {
       const teacher = await connectParticipant(server.baseUrl, room, 'teacher');
       const student = await connectParticipant(server.baseUrl, room, 'student');
       sockets.push(teacher.socket, student.socket);
+      await expectNoSocketEvent(student.socket, 'board:trainer-url-change', () => {
+        teacher.socket.emit('board:trainer-url-change', authPayload(room, teacher, {
+          trainerUrl: `/trainers/synthetic/series/shared.html?${'q'.repeat(2049)}`
+        }));
+      });
       const urlChanged = waitForSocketEvent(student.socket, 'board:trainer-url-change');
       teacher.socket.emit('board:trainer-url-change', authPayload(room, teacher, {
-        trainerUrl: 'synthetic-registry-trainer.html'
+        trainerUrl: '/trainers/synthetic/series/shared.html?seed=room#state'
       }));
       await urlChanged;
       const received = waitForSocketEvent(student.socket, 'board:trainer-state-change');
@@ -516,6 +521,36 @@ test('synthetic manifest entry is authorized without a core edit', async () => {
         bridgeState(room, teacher, synthetic.trainerId, { synthetic: true })
       );
       assert.deepEqual((await received).state, { synthetic: true });
+
+      const collisionUrlChanged = waitForSocketEvent(student.socket, 'board:trainer-url-change');
+      teacher.socket.emit('board:trainer-url-change', authPayload(room, teacher, {
+        trainerUrl: '/trainers/other/shared.html'
+      }));
+      await collisionUrlChanged;
+      await expectNoSocketEvent(student.socket, 'board:trainer-state-change', () => {
+        teacher.socket.emit(
+          'board:trainer-state-change',
+          bridgeState(room, teacher, synthetic.trainerId, { basenameFallback: true })
+        );
+      });
+
+      const caseUrlChanged = waitForSocketEvent(student.socket, 'board:trainer-url-change');
+      teacher.socket.emit('board:trainer-url-change', authPayload(room, teacher, {
+        trainerUrl: '/trainers/Synthetic/series/shared.html'
+      }));
+      await caseUrlChanged;
+      await expectNoSocketEvent(student.socket, 'board:trainer-state-change', () => {
+        teacher.socket.emit(
+          'board:trainer-state-change',
+          bridgeState(room, teacher, synthetic.trainerId, { caseMismatch: true })
+        );
+      });
+
+      const restoredUrl = waitForSocketEvent(student.socket, 'board:trainer-url-change');
+      teacher.socket.emit('board:trainer-url-change', authPayload(room, teacher, {
+        trainerUrl: 'trainers/synthetic/series/shared.html'
+      }));
+      await restoredUrl;
       await expectNoSocketEvent(student.socket, 'board:trainer-state-change', () => {
         teacher.socket.emit('board:trainer-state-change', authPayload(room, teacher, {
           trainer: synthetic.trainerId,

@@ -1,0 +1,695 @@
+{
+  "schemaVersion": 1,
+  "limits": {
+    "maxComponents": 8,
+    "maxComponentLength": 64,
+    "maxTotalLength": 96,
+    "maxUrlLength": 2048
+  },
+  "vectors": [
+    {
+      "id": "registry-top-level-accept",
+      "kind": "registry-file",
+      "input": "trainers/a.html",
+      "expected": "accept",
+      "canonical": "trainers/a.html",
+      "note": "Existing canonical top-level path"
+    },
+    {
+      "id": "registry-nested-accept",
+      "kind": "registry-file",
+      "input": "trainers/series/algebra/a.html",
+      "expected": "accept",
+      "canonical": "trainers/series/algebra/a.html",
+      "note": "Canonical nested path"
+    },
+    {
+      "id": "input-empty-reject",
+      "kind": "registry-file",
+      "input": "",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Empty manifest file"
+    },
+    {
+      "id": "input-type-reject",
+      "kind": "registry-file",
+      "input": 42,
+      "expected": "reject",
+      "canonical": null,
+      "note": "Wrong JSON type"
+    },
+    {
+      "id": "manifest-whitespace-reject",
+      "kind": "registry-file",
+      "input": " trainers/a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "No trimming or repair"
+    },
+    {
+      "id": "root-wrong-reject",
+      "kind": "registry-file",
+      "input": "other/a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Wrong root"
+    },
+    {
+      "id": "segment-empty-reject",
+      "kind": "registry-file",
+      "input": "trainers/",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Missing file component"
+    },
+    {
+      "id": "path-double-slash-reject",
+      "kind": "registry-file",
+      "input": "trainers/series//a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Empty nested component"
+    },
+    {
+      "id": "path-trailing-slash-reject",
+      "kind": "registry-file",
+      "input": "trainers/series/a.html/",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Trailing separator"
+    },
+    {
+      "id": "segment-dot-reject",
+      "kind": "registry-file",
+      "input": "trainers/./a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Literal dot segment"
+    },
+    {
+      "id": "segment-dotdot-reject",
+      "kind": "registry-file",
+      "input": "trainers/../a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Traversal at root"
+    },
+    {
+      "id": "segment-dotdot-middle-reject",
+      "kind": "registry-file",
+      "input": "trainers/series/../a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Traversal in the middle"
+    },
+    {
+      "id": "segment-dotdot-deep-reject",
+      "kind": "registry-file",
+      "input": "trainers/a/b/c/d/e/../a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Traversal at nested depth"
+    },
+    {
+      "id": "limit-components-7-accept",
+      "kind": "registry-file",
+      "input": "trainers/a/a/a/a/a/a/file.html",
+      "expected": "accept",
+      "canonical": "trainers/a/a/a/a/a/a/file.html",
+      "note": "Seven components after trainers"
+    },
+    {
+      "id": "limit-components-8-accept",
+      "kind": "registry-file",
+      "input": "trainers/a/a/a/a/a/a/a/file.html",
+      "expected": "accept",
+      "canonical": "trainers/a/a/a/a/a/a/a/file.html",
+      "note": "Eight components after trainers"
+    },
+    {
+      "id": "limit-components-9-reject",
+      "kind": "registry-file",
+      "input": "trainers/a/a/a/a/a/a/a/a/file.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Nine components after trainers"
+    },
+    {
+      "id": "limit-component-63-accept",
+      "kind": "registry-file",
+      "input": "trainers/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.html",
+      "expected": "accept",
+      "canonical": "trainers/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.html",
+      "note": "N-1 component length"
+    },
+    {
+      "id": "limit-component-64-accept",
+      "kind": "registry-file",
+      "input": "trainers/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.html",
+      "expected": "accept",
+      "canonical": "trainers/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.html",
+      "note": "N component length"
+    },
+    {
+      "id": "limit-component-65-reject",
+      "kind": "registry-file",
+      "input": "trainers/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "N+1 component length"
+    },
+    {
+      "id": "limit-total-95-accept",
+      "kind": "registry-file",
+      "input": "trainers/dddddddddddddddddddddd/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.html",
+      "expected": "accept",
+      "canonical": "trainers/dddddddddddddddddddddd/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.html",
+      "note": "N-1 total length"
+    },
+    {
+      "id": "limit-total-96-accept",
+      "kind": "registry-file",
+      "input": "trainers/ddddddddddddddddddddddd/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.html",
+      "expected": "accept",
+      "canonical": "trainers/ddddddddddddddddddddddd/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.html",
+      "note": "N total length"
+    },
+    {
+      "id": "limit-total-97-reject",
+      "kind": "registry-file",
+      "input": "trainers/dddddddddddddddddddddddd/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "N+1 total length"
+    },
+    {
+      "id": "path-posix-absolute-reject",
+      "kind": "registry-file",
+      "input": "/trainers/a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Filesystem absolute path"
+    },
+    {
+      "id": "path-drive-reject",
+      "kind": "registry-file",
+      "input": "C:/trainers/a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Windows drive path"
+    },
+    {
+      "id": "path-unc-reject",
+      "kind": "registry-file",
+      "input": "\\\\server\\share\\trainers\\a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Windows UNC path"
+    },
+    {
+      "id": "path-backslash-reject",
+      "kind": "registry-file",
+      "input": "trainers\\a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Windows separator"
+    },
+    {
+      "id": "path-uri-scheme-reject",
+      "kind": "registry-file",
+      "input": "https://mathexam.space/trainers/a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "URL is not a registry file"
+    },
+    {
+      "id": "device-con-file-reject",
+      "kind": "registry-file",
+      "input": "trainers/con.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Reserved file stem"
+    },
+    {
+      "id": "device-aux-dir-reject",
+      "kind": "registry-file",
+      "input": "trainers/aux/a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Reserved directory stem"
+    },
+    {
+      "id": "device-com1-extension-reject",
+      "kind": "registry-file",
+      "input": "trainers/com1.txt.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Reserved stem before first dot"
+    },
+    {
+      "id": "device-lpt9-reject",
+      "kind": "registry-file",
+      "input": "trainers/lpt9/a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Reserved LPT stem"
+    },
+    {
+      "id": "device-console-accept",
+      "kind": "registry-file",
+      "input": "trainers/console.html",
+      "expected": "accept",
+      "canonical": "trainers/console.html",
+      "note": "Non-device prefix"
+    },
+    {
+      "id": "device-com0-accept",
+      "kind": "registry-file",
+      "input": "trainers/com0.html",
+      "expected": "accept",
+      "canonical": "trainers/com0.html",
+      "note": "COM0 is not reserved"
+    },
+    {
+      "id": "device-com10-accept",
+      "kind": "registry-file",
+      "input": "trainers/com10.html",
+      "expected": "accept",
+      "canonical": "trainers/com10.html",
+      "note": "COM10 is not reserved"
+    },
+    {
+      "id": "component-trailing-dot-reject",
+      "kind": "registry-file",
+      "input": "trainers/series./a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Windows trailing-dot alias"
+    },
+    {
+      "id": "component-internal-dot-accept",
+      "kind": "registry-file",
+      "input": "trainers/series.v1/a.html",
+      "expected": "accept",
+      "canonical": "trainers/series.v1/a.html",
+      "note": "Internal dot is canonical"
+    },
+    {
+      "id": "component-nonascii-reject",
+      "kind": "registry-file",
+      "input": "trainers/caf\u00e9.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "ASCII-only grammar"
+    },
+    {
+      "id": "component-normalization-confusable-reject",
+      "kind": "registry-file",
+      "input": "trainers/cafe\u0301.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "No Unicode normalization"
+    },
+    {
+      "id": "url-bare-top-level-accept",
+      "kind": "trainer-url",
+      "input": "a.html",
+      "expected": "accept",
+      "canonical": "trainers/a.html",
+      "note": "Legacy bare top-level URL"
+    },
+    {
+      "id": "url-canonical-relative-accept",
+      "kind": "trainer-url",
+      "input": "trainers/a.html?seed=x#state",
+      "expected": "accept",
+      "canonical": "trainers/a.html",
+      "note": "Canonical relative URL"
+    },
+    {
+      "id": "url-root-relative-accept",
+      "kind": "trainer-url",
+      "input": "/trainers/a.html",
+      "expected": "accept",
+      "canonical": "trainers/a.html",
+      "note": "Root-relative URL"
+    },
+    {
+      "id": "url-same-origin-absolute-accept",
+      "kind": "trainer-url",
+      "input": "https://mathexam.space/trainers/a.html?seed=x",
+      "expected": "accept",
+      "canonical": "trainers/a.html",
+      "note": "Same-origin absolute URL"
+    },
+    {
+      "id": "url-nested-relative-accept",
+      "kind": "trainer-url",
+      "input": "trainers/series/a.html",
+      "expected": "accept",
+      "canonical": "trainers/series/a.html",
+      "note": "Explicit nested canonical URL"
+    },
+    {
+      "id": "url-nested-root-accept",
+      "kind": "trainer-url",
+      "input": "/trainers/series/a.html",
+      "expected": "accept",
+      "canonical": "trainers/series/a.html",
+      "note": "Explicit nested root URL"
+    },
+    {
+      "id": "url-nested-absolute-accept",
+      "kind": "trainer-url",
+      "input": "https://mathexam.space/trainers/series/a.html",
+      "expected": "accept",
+      "canonical": "trainers/series/a.html",
+      "note": "Explicit nested absolute URL"
+    },
+    {
+      "id": "url-relative-nested-reject",
+      "kind": "trainer-url",
+      "input": "series/a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Ambiguous relative nested URL"
+    },
+    {
+      "id": "url-protocol-relative-reject",
+      "kind": "trainer-url",
+      "input": "//mathexam.space/trainers/a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Protocol-relative URL"
+    },
+    {
+      "id": "url-cross-origin-reject",
+      "kind": "trainer-url",
+      "input": "https://example.com/trainers/a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Cross-origin URL"
+    },
+    {
+      "id": "url-scheme-reject",
+      "kind": "trainer-url",
+      "input": "file:///trainers/a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Non-HTTP scheme"
+    },
+    {
+      "id": "pathname-percent-separator-lower-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/a%2fb.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Encoded POSIX separator"
+    },
+    {
+      "id": "pathname-percent-separator-upper-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/a%2Fb.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Encoded POSIX separator uppercase"
+    },
+    {
+      "id": "pathname-percent-backslash-lower-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/a%5cb.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Encoded Windows separator"
+    },
+    {
+      "id": "pathname-percent-backslash-upper-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/a%5Cb.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Encoded Windows separator uppercase"
+    },
+    {
+      "id": "pathname-percent-dotsegment-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/%2e%2e/a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Encoded traversal"
+    },
+    {
+      "id": "pathname-percent-dotsegment-mixed-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/%2e%2E/a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Mixed-case encoded traversal"
+    },
+    {
+      "id": "pathname-percent-double-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/%252e%252e/a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Double encoding"
+    },
+    {
+      "id": "pathname-percent-stray-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/a%b.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Stray percent"
+    },
+    {
+      "id": "pathname-percent-malformed-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/a%2.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Malformed escape"
+    },
+    {
+      "id": "pathname-parser-dotsegment-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/series/../a.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Reject before WHATWG normalization"
+    },
+    {
+      "id": "control-c0-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/a\u0001b.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "C0 control in pathname"
+    },
+    {
+      "id": "control-del-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/a\u007fb.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "DEL in pathname"
+    },
+    {
+      "id": "control-c1-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/a\u0085b.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "C1 control in pathname"
+    },
+    {
+      "id": "control-bidi-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/a\u202eb.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Bidi override in pathname"
+    },
+    {
+      "id": "separator-unicode-lookalike-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/a\u2044b.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Fraction slash"
+    },
+    {
+      "id": "separator-unicode-2215-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/a\u2215b.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Division slash"
+    },
+    {
+      "id": "separator-unicode-29f8-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/a\u29f8b.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Big solidus"
+    },
+    {
+      "id": "separator-unicode-ff0f-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/a\uff0fb.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Fullwidth solidus"
+    },
+    {
+      "id": "separator-unicode-ff3c-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/a\uff3cb.html",
+      "expected": "reject",
+      "canonical": null,
+      "note": "Fullwidth reverse solidus"
+    },
+    {
+      "id": "url-query-percent-accept",
+      "kind": "trainer-url",
+      "input": "/trainers/a.html?next=%2Fseries%2Fa",
+      "expected": "accept",
+      "canonical": "trainers/a.html",
+      "note": "Percent in query is identity-neutral"
+    },
+    {
+      "id": "url-fragment-percent-accept",
+      "kind": "trainer-url",
+      "input": "/trainers/a.html#next=%2Fseries%2Fa",
+      "expected": "accept",
+      "canonical": "trainers/a.html",
+      "note": "Percent in fragment is identity-neutral"
+    },
+    {
+      "id": "url-query-before-fragment-accept",
+      "kind": "trainer-url",
+      "input": "/trainers/a.html?q=%2F#f=%2E",
+      "expected": "accept",
+      "canonical": "trainers/a.html",
+      "note": "Question delimiter first"
+    },
+    {
+      "id": "url-fragment-before-question-accept",
+      "kind": "trainer-url",
+      "input": "/trainers/a.html#f=%2E?q=%2F",
+      "expected": "accept",
+      "canonical": "trainers/a.html",
+      "note": "Fragment delimiter first"
+    },
+    {
+      "id": "url-empty-query-accept",
+      "kind": "trainer-url",
+      "input": "/trainers/a.html?",
+      "expected": "accept",
+      "canonical": "trainers/a.html",
+      "note": "Empty query"
+    },
+    {
+      "id": "url-empty-fragment-accept",
+      "kind": "trainer-url",
+      "input": "/trainers/a.html#",
+      "expected": "accept",
+      "canonical": "trainers/a.html",
+      "note": "Empty fragment"
+    },
+    {
+      "id": "limit-url-2047-accept",
+      "kind": "trainer-url",
+      "input": "/trainers/a.html?qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+      "expected": "accept",
+      "canonical": "trainers/a.html",
+      "note": "N-1 URL length"
+    },
+    {
+      "id": "limit-url-2048-accept",
+      "kind": "trainer-url",
+      "input": "/trainers/a.html?qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+      "expected": "accept",
+      "canonical": "trainers/a.html",
+      "note": "N URL length"
+    },
+    {
+      "id": "limit-url-2049-reject",
+      "kind": "trainer-url",
+      "input": "/trainers/a.html?qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq",
+      "expected": "reject",
+      "canonical": null,
+      "note": "N+1 URL length"
+    },
+    {
+      "id": "manifest-file-casefold-twin-reject",
+      "kind": "manifest",
+      "input": {
+        "files": [
+          "trainers/Series/a.html",
+          "trainers/series/A.html"
+        ],
+        "error": "REGISTRY_DUPLICATE_FILE_CASEFOLD"
+      },
+      "expected": "reject",
+      "canonical": null,
+      "note": "ASCII case-folded full-path collision"
+    },
+    {
+      "id": "url-case-mismatch-reject",
+      "kind": "manifest",
+      "input": {
+        "files": [
+          "trainers/series/a.html"
+        ],
+        "authorizeUrl": "/trainers/Series/a.html"
+      },
+      "expected": "reject",
+      "canonical": null,
+      "note": "Authorization remains case-sensitive"
+    },
+    {
+      "id": "manifest-same-basename-different-path-accept",
+      "kind": "manifest",
+      "input": {
+        "files": [
+          "trainers/one/shared.html",
+          "trainers/two/shared.html"
+        ],
+        "authorizeUrl": "/trainers/two/shared.html"
+      },
+      "expected": "accept",
+      "canonical": "trainers/two/shared.html",
+      "note": "Basename may repeat across full paths"
+    },
+    {
+      "id": "manifest-exact-file-duplicate-reject",
+      "kind": "manifest",
+      "input": {
+        "files": [
+          "trainers/series/a.html",
+          "trainers/series/a.html"
+        ],
+        "error": "REGISTRY_DUPLICATE_FILE"
+      },
+      "expected": "reject",
+      "canonical": null,
+      "note": "Exact full-path duplicate"
+    },
+    {
+      "id": "manifest-nested-authorization-accept",
+      "kind": "manifest",
+      "input": {
+        "files": [
+          "trainers/series/deep/a.html"
+        ],
+        "authorizeUrl": "/trainers/series/deep/a.html?seed=x#state"
+      },
+      "expected": "accept",
+      "canonical": "trainers/series/deep/a.html",
+      "note": "Nested full-path authorization"
+    }
+  ]
+}
