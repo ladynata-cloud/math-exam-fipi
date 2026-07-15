@@ -66,6 +66,29 @@ Merge always requires a separate, explicit owner authorization. `START`, task
 approval, review approval, and permission to push or open a PR do not authorize
 merge, auto-merge, or deployment.
 
+### Base-drift merge guard
+
+Immediately before every merge, query the authoritative current remote `main`
+SHA and compare it with the base SHA named in the owner's merge authorization.
+A cached local tracking ref is not sufficient when it may be stale, and
+`mergeable=true` does not replace this comparison.
+
+If the SHAs differ, stop before merge. The prior merge authorization is invalid,
+and Codex must not update, merge, rebase, reset, or otherwise repair the branch
+automatically. Build a read-only virtual merge on the new `main`, rerun the
+applicable gates, classify the provenance of concurrent commits, and report the
+new base, head, and diff. A new explicit owner merge authorization is required.
+
+When the base is unchanged, release verification may compare the full reviewed
+head tree with the expected squash-merge tree. After base drift and a new owner
+authorization, do not compare the composed `main` tree with the old reviewed
+head tree. Verify the newly authorized base-to-merge delta, changed-file set,
+affected-file blob identity, stable patch ID, absence of extra files, and that
+the merge parent is the newly authorized base. Follow
+[the review policy](docs/REVIEW_POLICY.md) and
+[the release workflow](.agents/skills/mathexam-release/SKILL.md) for the full
+procedure.
+
 Without separate explicit owner authorization, do not use force operations,
 `reset`, `rebase`, a non-fast-forward merge, admin override, or disabled TLS
 verification. Do not weaken tests, gates, or branch protection to obtain a
@@ -115,6 +138,19 @@ Not run:
 Scope deviations:
 Recommendation:
 Next user decision:
+```
+
+After merge authorization, release reports must also state these fields
+separately:
+
+```text
+Authorized base:
+Actual current main:
+Base drift detected:
+Authorization valid/invalid:
+Virtual merge result:
+Rerun gates:
+New owner authorization required:
 ```
 
 At the start of the next approved task, Codex reconciles

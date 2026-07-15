@@ -75,6 +75,52 @@ merge without separate explicit owner authorization.
 insufficient to merge. Merge and auto-merge always require a separate explicit
 owner decision for the current PR and head SHA.
 
+## Base-drift merge guard
+
+The owner merge authorization is bound to its named base SHA as well as the PR
+and head SHA. Immediately before merge, obtain the authoritative current remote
+`main` SHA and compare it with that authorized base. Do not rely only on a
+possibly stale local tracking ref. GitHub reporting `mergeable=true` is not a
+substitute for this equality check.
+
+Any base drift is a hard stop, not a warning:
+
+1. prohibit the merge immediately and mark the old authorization invalid;
+2. do not update, merge, rebase, reset, or otherwise repair the PR branch;
+3. classify every concurrent `main` commit by provenance; unknown provenance is
+   not silently included in the old authorization;
+4. construct a read-only virtual merge on the new `main` and record whether it
+   is clean or conflicting;
+5. rerun all applicable gates against the virtual composed result;
+6. issue a new base/head/diff report and obtain a new explicit owner merge
+   authorization.
+
+If the base is unchanged, a full-tree identity comparison between the reviewed
+head and expected squash-merge tree is allowed. If the base advanced and the
+owner later authorizes the new base after the repeated gate, full-tree equality
+with the old reviewed head is invalid because the composed tree legitimately
+contains concurrent changes. In that case verify all of the following:
+
+- the parent-to-merge delta is computed from the newly authorized base;
+- the changed-file set exactly matches the reviewed patch and contains no extra
+  files;
+- blobs for every patch-touched file match the reviewed result;
+- the stable patch ID from `git patch-id --stable` matches for the reviewed
+  patch and the virtual or merged delta;
+- the actual merge parent equals the newly authorized base.
+
+A clean virtual merge, matching patch ID, or matching blobs establishes
+identity evidence only. None of them revives the invalid authorization. Another
+base movement repeats the hard stop and authorization cycle.
+
+Repository owners should configure GitHub branch protection or a merge queue to
+reduce this race. This policy does not authorize Codex to change those settings.
+
+Release reports after an owner merge authorization must state: authorized base,
+actual current `main`, whether drift was detected, whether authorization is
+valid, virtual merge result, rerun gates, and whether new owner authorization is
+required.
+
 ## Standard short report
 
 ```text
