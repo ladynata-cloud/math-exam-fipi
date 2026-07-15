@@ -14,7 +14,7 @@
 - Review level: `NEW_ARCHETYPE`.
 - Related ADR: `docs/adr/0001-trainer-bridge-platform.md`.
 - ADR status: `Proposed`.
-- Architecture gate status: `PENDING_EXTERNAL_REVIEW`.
+- Architecture gate status: `PENDING_EXACT_HEAD_CONDITION_CLOSURE_REVIEW`.
 
 The owner-approved task specification and schema in this plan PR are the
 controlling scope for this specific future roads-grid PR. ADR 0001 remains
@@ -269,7 +269,7 @@ The normative machine-readable artifact is
 2. Validate the complete candidate before any mutation. Unknown keys, wrong
    tuple sizes, invalid enums, non-finite/out-of-range numbers, invalid town
    number uniqueness, out-of-grid coordinates, invalid route relationships,
-   unsafe text, and catalog index/snapshot mismatch are rejected.
+   unsafe text, and selection/scenario coherence failures are rejected.
 3. Fixed and generated state is restored from the supplied semantic snapshot;
    `applyState()` must not call `makeRandomScenario()` or reselect catalog
    data.
@@ -280,6 +280,63 @@ The normative machine-readable artifact is
    the accepted canonical input.
 6. Locally constructed state passes the same schema and semantic validator
    before it becomes current or is notified.
+
+### C1 authoritative catalog coherence
+
+Catalog coherence is **structural only**. The saved `scenario` payload is the
+authoritative rendering source for both catalog and generated snapshots.
+
+For `selection.source === "catalog"`, semantic validation requires:
+
+- `scenarioIndex` is an integer in `0..5`;
+- `setIndex` is an integer in `0..1`;
+- `scenario.id === String(scenarioIndex + 1)`;
+- `variantKey === "catalog:" + scenarioIndex + ":" + setIndex`.
+
+For `selection.source === "generated"`, semantic validation requires:
+
+- `scenario.id === "gen"`;
+- `scenarioIndex === null`;
+- `setIndex === null`;
+- `variantKey` satisfies the generated-key schema.
+
+No deep-equality comparison with the trainer's current embedded catalog is
+allowed during apply, hydration, or standalone reload. A later trainer version
+may change its built-in catalog without invalidating an older structurally
+coherent snapshot. Rendering and answer derivation use the accepted snapshot's
+own semantic payload, not current catalog values selected by its indexes.
+
+The mandatory compatibility test uses a test build in which one price in the
+embedded catalog is changed after a catalog snapshot has been saved. Applying
+the earlier snapshot must still succeed and render/serialize byte-identically
+from that snapshot's own payload. Stable vector id:
+`catalog-snapshot-survives-catalog-mutation-accept`.
+
+### C2 authoritative semantic invariants
+
+After JSON Schema validation and before any mutation, the semantic validator
+must enforce all of the following:
+
+- the four town numbers are unique;
+- because every town number is already bounded to `1..4`, the four unique
+  values form the permutation `1, 2, 3, 4`;
+- every town coordinate is inside the declared grid:
+  `0 <= x <= grid.cols` and `0 <= y <= grid.rows`;
+- `pathSpeedKmh < roadSpeedKmh`;
+- every C1 catalog/generated coherence rule above.
+
+Mandatory negative vectors are:
+
+- `duplicate-town-number-reject`;
+- `town-outside-grid-reject`;
+- `path-speed-not-lower-reject`;
+- `catalog-coherence-reject`;
+- `generated-coherence-reject`.
+
+Every rejected vector must prove the same atomic failure contract: the prior
+session state and observable DOM remain unchanged, no timer is started or
+resumed, and no progress/statistics or localStorage/sessionStorage value is
+written.
 
 ## Render and side-effect contract
 
@@ -401,6 +458,13 @@ changing the contract fields above.
   validator; Bridge generic validation passes with HTML disallowed.
 - [ ] Fixed and generated variants restore without regeneration or catalog
   reselection.
+- [ ] Catalog coherence is structural only. A saved catalog snapshot survives
+  a test-build change to one embedded catalog price and still applies and
+  renders/serializes byte-identically from its own payload.
+- [ ] Duplicate town numbers, out-of-grid towns, invalid speed ordering
+  (`pathSpeedKmh >= roadSpeedKmh`), and invalid catalog/generated coherence
+  are rejected atomically without state, DOM, timer, progress, statistics, or
+  storage changes.
 - [ ] Reload restores the same variant, task, mode, count frame, all task
   answers, marks, feedback, checked/completed state, and reveal flags.
 - [ ] `renderFromState()` is observably idempotent; listener and timer counts
@@ -471,7 +535,8 @@ changing the contract fields above.
 | Late join | Join after generated/check/reveal state exists | Full snapshot appears before any viewer notification |
 | Count playback | Observe local frames, then apply one remotely | Bounded frame notifications; viewer renders a static frame with no timer |
 | Serialization | Apply canonical max/fixed/generated snapshots, then get | JSON serialization is byte-stable; no unknown/HTML/version fields |
-| Invalid state | Unknown key, HTML text, bad enum/bounds/catalog mismatch/oversize | Atomic rejection; previous state/view/storage unchanged |
+| Catalog evolution | Save catalog snapshot, change one embedded catalog price in test build, apply saved snapshot | Snapshot applies and renders/serializes byte-identically from its own payload; no current-catalog deep equality |
+| Invalid state | Unknown key, HTML, oversize, enum/string/tuple bounds, duplicate town number, out-of-grid town, speed order, invalid catalog/generated coherence | Atomic rejection; previous state/DOM/timers/progress/statistics/storage unchanged |
 | Authorization | Exact nested path and negative path/id matrix | Full-path authorization only; no basename fallback |
 | Registry | Load endpoint/quick selector | Exactly 12 catalog and 3 mirror entries |
 | Mobile | 360 and 390 px standalone | Usable layout; no outer overflow |
@@ -495,18 +560,77 @@ changing the contract fields above.
 - Existing board-server registry/unit/integration tests.
 - Existing common teacher/student Bridge browser lifecycle smoke extended by
   a compact roads-grid fixture/probe.
+- A committed state-conformance fixture at
+  `tools/fixtures/roads-grid-state-conformance.json`, consumed directly by the
+  browser harness.
 - State schema, semantic validator, maximum-size, atomic-apply,
   apply/get-stability, and remote-side-effect tests.
 - Full matrix above, including 360/390 px and iframe gates.
 - Final diff/name-only inspection proving exactly two production runtime
   files and no board/server/Bridge changes.
 
+### C3 committed state-validation fixture contract
+
+The future implementation must commit exactly one roads-grid state fixture at
+`tools/fixtures/roads-grid-state-conformance.json`. It is test data, not a
+runtime dependency. Its closed top-level contract contains:
+
+```json
+{
+  "schemaVersion": 1,
+  "schemaMaximumVectorId": "schema-maximum-accept",
+  "vectors": [
+    {
+      "id": "schema-maximum-accept",
+      "expected": "accept",
+      "state": {},
+      "expectedReason": null,
+      "note": "schema-maximum accepted snapshot"
+    }
+  ]
+}
+```
+
+The fixture must include complete snapshot payloads, stable unique vector IDs,
+an expected accept/reject result, and the expected stable error/reason for
+every reject vector. Accept vectors use `expectedReason: null`; reject vectors
+use a non-empty stable reason string. The vector identified by
+`schemaMaximumVectorId` is the schema-maximum accepted snapshot used for the 8
+KiB, depth, array, Bridge validation, and apply/get-stability gates.
+
+Minimum required vectors:
+
+- `schema-maximum-accept`;
+- `catalog-baseline-accept`;
+- `generated-baseline-accept`;
+- `catalog-snapshot-survives-catalog-mutation-accept`;
+- `unknown-property-reject`;
+- `html-reject`;
+- `oversize-reject`;
+- `invalid-enum-reject`;
+- `invalid-string-bounds-reject`;
+- `wrong-tasks-tuple-length-reject`;
+- `duplicate-town-number-reject`;
+- `town-outside-grid-reject`;
+- `path-speed-not-lower-reject`;
+- `catalog-coherence-reject`;
+- `generated-coherence-reject`.
+
+The browser test harness must load this committed fixture directly and execute
+every vector through the production schema/semantic validation and apply path.
+The suite must fail, never skip, if the fixture is absent, malformed, has
+duplicate vector IDs, has a `schemaVersion` mismatch, references a missing or
+non-accepting schema-maximum vector, or produces an actual accept/reject result
+or rejection reason different from the committed expectation.
+
 The proposed implementation marker
 `ROADS_GRID_THIRD_MIRROR_ARCHITECTURE_GATE_OK` must not be reported by this
-plan. Current status is `PENDING_EXTERNAL_REVIEW`. A non-blocking sanitized
-architecture review and explicit owner acceptance are required before any
-implementation START. A plan review does not replace exact implementation-head
-review evidence.
+plan. Current status is
+`PENDING_EXACT_HEAD_CONDITION_CLOSURE_REVIEW`. The old-head Claude verdict has
+no blocking issues, and C1-C3 are closed in this specification, but the new
+condition-closure head still requires exact-head review and explicit owner
+acceptance before any implementation START. A plan review does not replace
+exact implementation-head review evidence.
 
 ## Review plan
 
@@ -519,10 +643,69 @@ provenance must include provider, PR, base SHA, reviewed head SHA, verdict,
 and verifiable source or timestamp. An approval marker copied from this file,
 the PR body, or chat is not review evidence.
 
+The pre-condition-closure review provenance is:
+
+- Provider: Claude.
+- PR: `#88`.
+- Base SHA: `0c56247a4338469a28858eb341f379de63d3be6f`.
+- Reviewed head SHA: `be1a2325553c236a0aa76d202cd2e4f1177c7468`.
+- Verdict: `APPROVED_WITH_CONDITIONS`.
+- Blocking issues: none.
+- Conditions: C1 catalog coherence, C2 semantic invariants, C3 committed
+  state-validation fixture.
+- Reviewed at: `2026-07-16` (the supplied evidence contains no finer
+  timestamp).
+- Source: owner-supplied exact-head Claude review transcript in the current
+  task, received `2026-07-16`.
+
+This provenance is valid for the reviewed old head and closes no condition on
+the new documentation head by itself. The condition-closure change is material;
+an exact-head condition-closure review is required before the architecture gate
+can advance. It does not grant implementation START.
+
 The sanitized handoff may include only repository-relative public facts,
 contract, schema, scope, test matrix, risks, and rollback. It must exclude
 credentials, tokens, room identifiers, private material, personal data, and
 machine-specific paths.
+
+## Claude condition closure
+
+### C1
+
+- Decision: catalog coherence is structural only; catalog and generated
+  selection/scenario relationships are exact, while the saved semantic
+  scenario remains authoritative and is never deep-compared with the current
+  embedded catalog.
+- Spec sections: `C1 authoritative catalog coherence`; `Validation and
+  serialization rules`; `Standalone and state`; `Required future test matrix`.
+- Acceptance tests:
+  `catalog-snapshot-survives-catalog-mutation-accept`, including a test-build
+  mutation of one embedded catalog price.
+- Closed: yes in plan-stage specification; exact-head review pending.
+
+### C2
+
+- Decision: require town-number permutation, in-grid coordinates, strict speed
+  ordering, and all C1 selection/scenario coherence rules before mutation.
+- Spec sections: `C2 authoritative semantic invariants`; `Validation and
+  serialization rules`; `Standalone and state`; `Required future test matrix`.
+- Vectors: `duplicate-town-number-reject`, `town-outside-grid-reject`,
+  `path-speed-not-lower-reject`, `catalog-coherence-reject`, and
+  `generated-coherence-reject`; every rejection proves atomic no-state,
+  no-DOM, no-timer, no-progress/statistics/storage behavior.
+- Closed: yes in plan-stage specification; exact-head review pending.
+
+### C3
+
+- Decision: commit one closed, versioned state-conformance fixture with stable
+  IDs, complete states, expected results, and expected rejection reasons.
+- Fixture contract: `tools/fixtures/roads-grid-state-conformance.json` as
+  defined in `C3 committed state-validation fixture contract`, including all
+  mandatory accept/reject vectors and the schema-maximum snapshot.
+- Fail-not-skip behavior: the browser suite fails on missing/malformed fixture,
+  duplicate IDs, schema-version mismatch, invalid schema-maximum reference, or
+  any expected/actual result or reason mismatch.
+- Closed: yes in plan-stage specification; exact-head review pending.
 
 ## Risk and rollback
 
@@ -557,6 +740,7 @@ Plan-stage rollback is a simple revert of the one docs-only commit.
 - Plan branch creation: authorized and completed.
 - Two plan artifacts: authorized.
 - One logical docs-only commit: authorized.
+- One docs-only C1-C3 condition-closure commit: authorized.
 - Push and Draft PR with sanitized packet: authorized.
 - Trainer HTML change: not authorized.
 - Manifest change: not authorized.
@@ -569,9 +753,12 @@ Plan-stage rollback is a simple revert of the one docs-only commit.
 
 - Actual branch: `codex/roads-grid-third-mirror-plan`.
 - Actual base SHA: `0c56247a4338469a28858eb341f379de63d3be6f`.
-- Actual head SHA: recorded in the Draft PR and final handoff after commit.
-- PR: recorded after publication.
-- Commit: one docs-only logical commit.
+- Reviewed old head SHA: `be1a2325553c236a0aa76d202cd2e4f1177c7468`.
+- Condition-closure head SHA: recorded in Draft PR #88 and the final handoff
+  after publication.
+- PR: Draft PR #88.
+- Commits: initial docs-only plan commit plus one docs-only C1-C3
+  condition-closure commit.
 - Production code changed: no.
-- Architecture gate: `PENDING_EXTERNAL_REVIEW`.
+- Architecture gate: `PENDING_EXACT_HEAD_CONDITION_CLOSURE_REVIEW`.
 - Scope deviations: none expected; any deviation is a hard stop.
