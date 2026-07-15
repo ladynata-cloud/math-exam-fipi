@@ -11,6 +11,13 @@ const { chromium } = require('playwright');
 
 const REPO_ROOT = resolve(__dirname, '..');
 const BOARD_SERVER_DIR = resolve(REPO_ROOT, 'board-server');
+const PATH_FIXTURE_FILE = resolve(REPO_ROOT, 'tools', 'fixtures', 'trainer-path-conformance.json');
+const TRAINER_PATH_LIMITS = Object.freeze({
+  maxComponents: 8,
+  maxComponentLength: 64,
+  maxTotalLength: 96,
+  maxUrlLength: 2048
+});
 const BASE_SHA = 'e9097137b6cd66d80962cadcef336255db28e9b1';
 const EDGE_PATHS = [
   process.env.BROWSER_EXECUTABLE_PATH,
@@ -20,6 +27,38 @@ const EDGE_PATHS = [
 ].filter(Boolean);
 
 const wait = ms => new Promise(resolvePromise => setTimeout(resolvePromise, ms));
+
+function validatePathFixture(value) {
+  assert.equal(value?.schemaVersion, 1, 'fixture schemaVersion');
+  assert.deepEqual(value?.limits, TRAINER_PATH_LIMITS, 'fixture limits');
+  assert.ok(Array.isArray(value?.vectors) && value.vectors.length > 0, 'fixture vectors');
+  const ids = new Set();
+  for (const vector of value.vectors) {
+    assert.equal(typeof vector?.id, 'string', 'fixture vector id');
+    assert.ok(!ids.has(vector.id), `duplicate fixture vector ${vector.id}`);
+    ids.add(vector.id);
+    assert.ok(['registry-file', 'trainer-url', 'manifest'].includes(vector.kind));
+    assert.ok(['accept', 'reject'].includes(vector.expected));
+    assert.equal(vector.canonical === null || typeof vector.canonical === 'string', true);
+    assert.equal(typeof vector.note, 'string');
+  }
+  return value;
+}
+
+function loadPathFixture(file = PATH_FIXTURE_FILE) {
+  return validatePathFixture(JSON.parse(readFileSync(file, 'utf8')));
+}
+
+const PATH_FIXTURE = loadPathFixture();
+assert.equal(PATH_FIXTURE.vectors.length, 82, 'committed fixture vector count');
+assert.throws(
+  () => loadPathFixture(resolve(REPO_ROOT, 'tools', 'fixtures', 'fixture-missing-fail.json')),
+  /ENOENT/
+);
+assert.throws(() => validatePathFixture(null), /fixture schemaVersion/);
+const wrongFixtureLimits = clone(PATH_FIXTURE);
+wrongFixtureLimits.limits.maxTotalLength += 1;
+assert.throws(() => validatePathFixture(wrongFixtureLimits), /fixture limits/);
 
 async function freePort() {
   return new Promise((resolvePromise, reject) => {
@@ -164,6 +203,7 @@ async function installRegistryRoute(page, origin, control) {
     const mode = typeof control.mode === 'function' ? control.mode(control.calls) : control.mode;
     if (mode === 'live') { await route.continue(); return; }
     if (mode === 'abort') { await route.abort('connectionfailed'); return; }
+    if (mode?.waitFor) await mode.waitFor;
     if (mode?.delay) await wait(mode.delay);
     if (mode?.abort) { try { await route.abort('timedout'); } catch (_error) {} return; }
     await fulfillJson(route, origin, mode?.body ?? control.registry, mode?.status ?? 200);
@@ -203,7 +243,13 @@ async function waitForRegistryAuthorization(page, file, expected, timeout = 1500
     await wait(100);
   }
   const status = await page.locator('#mirrorStatus').getAttribute('data-mirror-status').catch(() => 'missing');
-  throw new Error(`REGISTRY_AUTHORIZATION_TIMEOUT file=${file} expected=${expected} status=${status}`);
+  const diagnostic = await page.evaluate(value => ({
+    canonical: canonicalTrainerFileFromUrl(value),
+    registryStatus: trainerRegistry.status,
+    registryError: trainerRegistry.errorCode,
+    files: [...trainerRegistry.byFile.keys()]
+  }), file).catch(() => null);
+  throw new Error(`REGISTRY_AUTHORIZATION_TIMEOUT file=${file} expected=${expected} status=${status} diagnostic=${JSON.stringify(diagnostic)}`);
 }
 
 async function trainerFrame(page, suffix) {
@@ -323,6 +369,63 @@ async function canonicalPathMatrix(browser, siteOrigin, boardOrigin, otherOrigin
   await installRegistryRoute(page, siteOrigin, control);
   await gotoBoard(page, siteOrigin, boardOrigin);
   await waitForRegistryAuthorization(page, 'negative-numbers-line.html', 'negative-numbers-line');
+  for (const vector of PATH_FIXTURE.vectors) {
+    if (vector.kind === 'registry-file') {
+      const actual = await page.evaluate(input => canonicalRegistryFile(input), vector.input);
+      assert.equal(actual || null, vector.canonical, vector.id);
+      assert.equal(actual ? 'accept' : 'reject', vector.expected, vector.id);
+      continue;
+    }
+    if (vector.kind === 'trainer-url') {
+      const input = typeof vector.input === 'string'
+        ? vector.input.replaceAll('https://mathexam.space', siteOrigin)
+        : vector.input;
+      const actual = await page.evaluate(value => canonicalTrainerFileFromUrl(value), input);
+      assert.equal(actual || null, vector.canonical, vector.id);
+      assert.equal(actual ? 'accept' : 'reject', vector.expected, vector.id);
+      continue;
+    }
+
+    const input = {
+      ...vector.input,
+      authorizeUrl: typeof vector.input.authorizeUrl === 'string'
+        ? vector.input.authorizeUrl.replaceAll('https://mathexam.space', siteOrigin)
+        : vector.input.authorizeUrl
+    };
+    const actual = await page.evaluate(manifestInput => {
+      const projection = {
+        schemaVersion: 1,
+        digest: `sha256:${'f'.repeat(64)}`,
+        trainers: manifestInput.files.map((file, index) => ({
+          trainerId: `fixture-${index + 1}`,
+          file,
+          version: '1.0.0',
+          stateSchemaVersion: 1,
+          bridgeProtocolVersion: 1,
+          allowLegacyHtml: false
+        }))
+      };
+      try {
+        const validated = validateTrainerRegistryResponse(projection);
+        const file = manifestInput.authorizeUrl
+          ? canonicalTrainerFileFromUrl(manifestInput.authorizeUrl)
+          : '';
+        const entry = file ? validated.byFile.get(file) : null;
+        return {
+          expected: manifestInput.authorizeUrl ? (entry ? 'accept' : 'reject') : 'accept',
+          canonical: entry?.file || null,
+          error: null
+        };
+      } catch (error) {
+        return { expected: 'reject', canonical: null, error: error?.code || '' };
+      }
+    }, input);
+    assert.equal(actual.expected, vector.expected, vector.id);
+    assert.equal(actual.canonical, vector.canonical, vector.id);
+    if (vector.input.error === 'REGISTRY_DUPLICATE_FILE_CASEFOLD') {
+      assert.equal(actual.error, vector.input.error, vector.id);
+    }
+  }
   const matrix = [
     ['negative-numbers-line.html', 'trainers/negative-numbers-line.html'],
     ['/trainers/negative-numbers-line.html', 'trainers/negative-numbers-line.html'],
@@ -343,6 +446,11 @@ async function canonicalPathMatrix(browser, siteOrigin, boardOrigin, otherOrigin
   for (const [value, expected] of matrix) {
     assert.equal(await page.evaluate(input => canonicalTrainerFileFromUrl(input), value), expected, value);
   }
+  assert.equal(
+    await page.evaluate(() => trainerQuickUrl({ file: 'trainers/future/nested-trainer.html' })),
+    '/trainers/future/nested-trainer.html',
+    'nested quick-select paths remain explicit'
+  );
   assert.equal(await registryAuthorized(page, '/trainers/collision/negative-numbers-line.html'), '', 'same basename at another full path is not authorized');
   assertCleanBrowser(evidence);
   await context.close();
@@ -537,7 +645,11 @@ async function liveTeacherStudent(browser, siteOrigin, boardOrigin, registry) {
   assert.equal(await student.evaluate(() => window.__mirrorMessages), 0, 'remote apply does not echo trainer state');
 
   const beforePendingRevoke = await teacherLinear.inputValue('#val');
-  studentRegistryControl.mode = { delay: 1200, body: registry };
+  let releasePendingRegistry;
+  const pendingRegistryGate = new Promise(resolvePromise => {
+    releasePendingRegistry = resolvePromise;
+  });
+  studentRegistryControl.mode = { waitFor: pendingRegistryGate, body: registry };
   await student.evaluate(() => { window.__pendingRegistryRefresh = loadTrainerRegistry({ force: true }); });
   await waitMirror(student, 'pending');
   await teacher.click('#controlToggle');
@@ -545,6 +657,7 @@ async function liveTeacherStudent(browser, siteOrigin, boardOrigin, registry) {
   await studentLinear.fill('#val', '66');
   await teacher.click('#controlToggle');
   await student.waitForFunction(() => !document.body.classList.contains('control-owner'), null, { polling: 100 });
+  releasePendingRegistry();
   await waitMirror(student, 'connected');
   assert.equal(await teacherLinear.inputValue('#val'), beforePendingRevoke, 'revoke during pending registry hydration drops student state');
   studentRegistryControl.mode = 'live';

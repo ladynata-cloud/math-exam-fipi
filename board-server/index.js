@@ -2,7 +2,7 @@ const crypto = require('node:crypto');
 const express = require('express');
 const cors = require('cors');
 const { Server } = require('socket.io');
-const { loadTrainerRegistry } = require('./trainer-registry');
+const { loadTrainerRegistry, TRAINER_PATH_LIMITS } = require('./trainer-registry');
 
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
@@ -317,8 +317,14 @@ function markParticipantDisconnected(socket) {
 }
 
 function normalizeTrainerUrl(value) {
-  const url = typeof value === 'string' ? value.trim() : '';
-  return url ? url.slice(0, 1000) : '';
+  if (
+    typeof value !== 'string'
+    || !value
+    || value.length > TRAINER_PATH_LIMITS.maxUrlLength
+  ) {
+    return '';
+  }
+  return value.trim();
 }
 
 const TRAINER_STATE_MAX_BYTES = 64 * 1024;

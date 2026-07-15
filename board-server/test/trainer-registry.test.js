@@ -7,6 +7,8 @@ const path = require('node:path');
 const test = require('node:test');
 
 const {
+  TRAINER_PATH_LIMITS,
+  canonicalTrainerFile,
   canonicalRegistryJson,
   loadTrainerRegistry,
   registryDigest,
@@ -15,6 +17,10 @@ const {
 } = require('../trainer-registry');
 
 const manifestPath = path.resolve(__dirname, '../../trainers/board-compat.json');
+const conformanceFixturePath = path.resolve(
+  __dirname,
+  '../../tools/fixtures/trainer-path-conformance.json'
+);
 const expectedCatalogFiles = [
   'trainers/negative-numbers-line.html',
   'trainers/negative-numbers.html',
@@ -57,6 +63,98 @@ function withTempManifest(content, callback) {
     fs.rmSync(directory, { recursive: true, force: true });
   }
 }
+
+function validateConformanceFixture(value) {
+  assert.equal(value?.schemaVersion, 1, 'fixture schemaVersion');
+  assert.deepEqual(value?.limits, TRAINER_PATH_LIMITS, 'fixture limits');
+  assert.ok(Array.isArray(value?.vectors) && value.vectors.length > 0, 'fixture vectors');
+  const ids = new Set();
+  for (const vector of value.vectors) {
+    assert.equal(typeof vector?.id, 'string', 'fixture vector id');
+    assert.ok(!ids.has(vector.id), `duplicate fixture vector ${vector.id}`);
+    ids.add(vector.id);
+    assert.ok(['registry-file', 'trainer-url', 'manifest'].includes(vector.kind));
+    assert.ok(['accept', 'reject'].includes(vector.expected));
+    assert.equal(vector.canonical === null || typeof vector.canonical === 'string', true);
+    assert.equal(typeof vector.note, 'string');
+  }
+  return value;
+}
+
+function loadConformanceFixture(file = conformanceFixturePath) {
+  return validateConformanceFixture(JSON.parse(fs.readFileSync(file, 'utf8')));
+}
+
+function fixtureManifest(files) {
+  return {
+    version: 1,
+    schemaVersion: 1,
+    trainers: files.map((file, index) => ({
+      trainerId: `fixture-${index + 1}`,
+      file,
+      title: `Fixture ${index + 1}`,
+      group: 'Fixture',
+      boardCompatibility: 'board-mirror',
+      supportsBoardMirror: true,
+      version: '1.0.0',
+      stateSchemaVersion: 1,
+      bridgeProtocolVersion: 1,
+      allowLegacyHtml: false
+    }))
+  };
+}
+
+test('committed path fixture is present, well formed, unique, and limit-locked', () => {
+  const fixture = loadConformanceFixture();
+  assert.equal(fixture.vectors.length, 82);
+
+  assert.throws(
+    () => loadConformanceFixture(path.join(os.tmpdir(), 'fixture-missing-fail.json')),
+    /ENOENT/
+  );
+  assert.throws(() => validateConformanceFixture(null), /fixture schemaVersion/);
+  const wrongLimits = copy(fixture);
+  wrongLimits.limits.maxTotalLength += 1;
+  assert.throws(() => validateConformanceFixture(wrongLimits), /fixture limits/);
+});
+
+test('server consumes every committed registry-file and trainer-url vector', () => {
+  const fixture = loadConformanceFixture();
+  for (const vector of fixture.vectors) {
+    let actual;
+    if (vector.kind === 'registry-file') actual = canonicalTrainerFile(vector.input);
+    else if (vector.kind === 'trainer-url') actual = trainerFileFromUrl(vector.input);
+    else continue;
+    assert.equal(actual, vector.canonical, vector.id);
+    assert.equal(actual ? 'accept' : 'reject', vector.expected, vector.id);
+  }
+});
+
+test('server consumes every committed manifest and authorization vector', () => {
+  const fixture = loadConformanceFixture();
+  for (const vector of fixture.vectors.filter(item => item.kind === 'manifest')) {
+    const manifest = fixtureManifest(vector.input.files);
+    if (vector.input.error) {
+      assert.deepEqual(
+        validateTrainerManifest(manifest),
+        { ok: false, error: vector.input.error },
+        vector.id
+      );
+      assert.equal(vector.expected, 'reject', vector.id);
+      continue;
+    }
+    const validation = validateTrainerManifest(manifest);
+    assert.equal(validation.ok, true, vector.id);
+    withTempManifest(JSON.stringify(manifest), file => {
+      const registry = loadTrainerRegistry({ env: { TRAINER_REGISTRY_PATH: file } });
+      assert.equal(registry.loaded, true, vector.id);
+      const entry = registry.getByTrainerUrl(vector.input.authorizeUrl);
+      const actual = entry?.file || null;
+      assert.equal(actual, vector.canonical, vector.id);
+      assert.equal(actual ? 'accept' : 'reject', vector.expected, vector.id);
+    });
+  }
+});
 
 test('current manifest validates and preserves the legacy catalog shape', () => {
   const manifest = currentManifest();

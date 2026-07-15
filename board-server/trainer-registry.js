@@ -14,7 +14,22 @@ const BOARD_COMPATIBILITY_VALUES = new Set([
 ]);
 const TRAINER_ID_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const TRAINER_VERSION_PATTERN = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
-const TRAINER_FILE_PATTERN = /^trainers\/[A-Za-z0-9][A-Za-z0-9._-]*\.html$/;
+const TRAINER_PATH_LIMITS = Object.freeze({
+  maxComponents: 8,
+  maxComponentLength: 64,
+  maxTotalLength: 96,
+  maxUrlLength: 2048
+});
+const TRAINER_COMPONENT_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
+const WINDOWS_RESERVED_STEMS = new Set([
+  'CON',
+  'PRN',
+  'AUX',
+  'NUL',
+  ...Array.from({ length: 9 }, (_value, index) => `COM${index + 1}`),
+  ...Array.from({ length: 9 }, (_value, index) => `LPT${index + 1}`)
+]);
+const UNSAFE_PATH_TEXT_PATTERN = /[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069\u2044\u2215\u29f8\uff0f\uff3c]/u;
 
 function isPlainObject(value) {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
@@ -57,8 +72,42 @@ function registryDigest(schemaVersion, trainers) {
     .digest('hex')}`;
 }
 
+function trainerFileComponents(file) {
+  if (typeof file !== 'string' || !file || file !== file.trim()) return null;
+  if (file.length > TRAINER_PATH_LIMITS.maxTotalLength) return null;
+  if (!file.startsWith('trainers/')) return null;
+  const components = file.slice('trainers/'.length).split('/');
+  if (
+    components.length < 1
+    || components.length > TRAINER_PATH_LIMITS.maxComponents
+  ) {
+    return null;
+  }
+  for (const component of components) {
+    if (
+      !component
+      || component.length > TRAINER_PATH_LIMITS.maxComponentLength
+      || component === '.'
+      || component === '..'
+      || component.endsWith('.')
+      || !TRAINER_COMPONENT_PATTERN.test(component)
+      || WINDOWS_RESERVED_STEMS.has(component.split('.', 1)[0].toUpperCase())
+    ) {
+      return null;
+    }
+  }
+  if (!components.at(-1).endsWith('.html')) return null;
+  return components;
+}
+
+function canonicalTrainerFile(file) {
+  return trainerFileComponents(file) ? file : null;
+}
+
 function validateTrainerFile(file) {
-  if (typeof file !== 'string' || !file) return 'REGISTRY_ENTRY_FILE_INVALID';
+  if (typeof file !== 'string' || !file || file !== file.trim()) {
+    return 'REGISTRY_ENTRY_FILE_INVALID';
+  }
   if (
     path.posix.isAbsolute(file)
     || path.win32.isAbsolute(file)
@@ -71,11 +120,12 @@ function validateTrainerFile(file) {
     || file.includes('?')
     || file.includes('#')
     || file.includes('%')
-    || file.split('/').includes('..')
+    || file.split('/').some(component => component === '.' || component === '..')
+    || UNSAFE_PATH_TEXT_PATTERN.test(file)
   ) {
     return 'REGISTRY_ENTRY_FILE_UNSAFE';
   }
-  return TRAINER_FILE_PATTERN.test(file) ? '' : 'REGISTRY_ENTRY_FILE_INVALID';
+  return canonicalTrainerFile(file) ? '' : 'REGISTRY_ENTRY_FILE_INVALID';
 }
 
 function validateTrainerManifest(manifest) {
@@ -98,6 +148,7 @@ function validateTrainerManifest(manifest) {
 
   const trainerIds = new Set();
   const files = new Set();
+  const caseFoldedFiles = new Set();
   const mirrorTrainers = [];
 
   for (const entry of manifest.trainers) {
@@ -123,8 +174,13 @@ function validateTrainerManifest(manifest) {
       return validationFailure('REGISTRY_DUPLICATE_TRAINER_ID');
     }
     if (files.has(entry.file)) return validationFailure('REGISTRY_DUPLICATE_FILE');
+    const caseFoldedFile = entry.file.toLowerCase();
+    if (caseFoldedFiles.has(caseFoldedFile)) {
+      return validationFailure('REGISTRY_DUPLICATE_FILE_CASEFOLD');
+    }
     trainerIds.add(entry.trainerId);
     files.add(entry.file);
+    caseFoldedFiles.add(caseFoldedFile);
 
     const isMirror = entry.boardCompatibility === 'board-mirror';
     if (entry.supportsBoardMirror !== isMirror) {
@@ -162,18 +218,66 @@ function validateTrainerManifest(manifest) {
   };
 }
 
-function trainerFileFromUrl(value) {
-  const raw = typeof value === 'string' ? value.trim() : '';
-  if (!raw) return null;
-  let normalized = raw;
-  if (!/^[a-z][a-z\d+.-]*:\/\//i.test(raw)) {
-    if (raw.startsWith('trainers/')) normalized = `/${raw}`;
-    else if (!raw.startsWith('/') && !raw.includes('/')) normalized = `/trainers/${raw}`;
+function rawPathnameFromUrlInput(raw) {
+  if (raw.startsWith('//')) return null;
+  const absoluteMatch = raw.match(/^([a-z][a-z\d+.-]*):\/\//i);
+  if (absoluteMatch) {
+    if (!/^https?$/i.test(absoluteMatch[1])) return null;
+    const authorityStart = absoluteMatch[0].length;
+    const delimiterOffset = raw.slice(authorityStart).search(/[\/?#]/);
+    if (delimiterOffset < 0) return '/';
+    const delimiterIndex = authorityStart + delimiterOffset;
+    return raw[delimiterIndex] === '/'
+      ? raw.slice(delimiterIndex).split(/[?#]/, 1)[0]
+      : '/';
   }
+  if (/^[a-z][a-z\d+.-]*:/i.test(raw)) return null;
+  return raw.split(/[?#]/, 1)[0];
+}
+
+function trainerFileFromUrl(value, options = {}) {
+  if (typeof value !== 'string' || !value || value.length > TRAINER_PATH_LIMITS.maxUrlLength) {
+    return null;
+  }
+  const raw = value.trim();
+  if (!raw) return null;
+  const rawPathname = rawPathnameFromUrlInput(raw);
+  if (
+    !rawPathname
+    || rawPathname.includes('\\')
+    || rawPathname.includes('%')
+    || UNSAFE_PATH_TEXT_PATTERN.test(rawPathname)
+  ) {
+    return null;
+  }
+
+  const suffix = raw.slice(rawPathname.length);
+  const isAbsoluteUrl = /^https?:\/\//i.test(raw);
+  let normalized = raw;
+  let preparseFile = null;
+  if (isAbsoluteUrl) {
+    preparseFile = rawPathname.startsWith('/') ? rawPathname.slice(1) : '';
+  } else if (rawPathname.startsWith('/trainers/')) {
+    preparseFile = rawPathname.slice(1);
+  } else if (rawPathname.startsWith('trainers/')) {
+    preparseFile = rawPathname;
+    normalized = `/${raw}`;
+  } else if (!rawPathname.includes('/')) {
+    preparseFile = `trainers/${rawPathname}`;
+    normalized = `/trainers/${rawPathname}${suffix}`;
+  }
+  if (!canonicalTrainerFile(preparseFile)) return null;
+
+  const origin = typeof options.origin === 'string' && options.origin
+    ? options.origin
+    : 'https://mathexam.space';
   try {
-    const url = new URL(normalized, 'https://mathexam.space/');
-    const file = url.pathname.replace(/^\/+/, '');
-    return validateTrainerFile(file) ? null : file;
+    const base = new URL('/trainers/trainer-board.html', origin);
+    const url = new URL(normalized, base);
+    if (!['http:', 'https:'].includes(url.protocol) || url.origin !== base.origin) return null;
+    if (!url.pathname.startsWith('/') || url.pathname.startsWith('//')) return null;
+    const file = url.pathname.slice(1);
+    return canonicalTrainerFile(file);
   } catch (_error) {
     return null;
   }
@@ -281,6 +385,8 @@ function loadTrainerRegistry(options = {}) {
 
 module.exports = Object.freeze({
   REGISTRY_SCHEMA_VERSION,
+  TRAINER_PATH_LIMITS,
+  canonicalTrainerFile,
   canonicalRegistryJson,
   loadTrainerRegistry,
   registryDigest,
