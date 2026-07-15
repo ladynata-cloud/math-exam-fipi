@@ -1,0 +1,508 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathexam.space/schemas/roads-grid-board-state-v1.schema.json",
+  "title": "Roads-grid board state v1",
+  "description": "Closed JSON-only semantic session snapshot. Bridge envelope versions and learner statistics are intentionally excluded.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["selection", "scenario", "view", "tasks"],
+  "properties": {
+    "selection": {
+      "$ref": "#/$defs/selection"
+    },
+    "scenario": {
+      "$ref": "#/$defs/scenario"
+    },
+    "view": {
+      "$ref": "#/$defs/view"
+    },
+    "tasks": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "prefixItems": [
+        {
+          "$ref": "#/$defs/identificationTask"
+        },
+        {
+          "$ref": "#/$defs/numericTask"
+        },
+        {
+          "$ref": "#/$defs/numericTask"
+        },
+        {
+          "$ref": "#/$defs/numericTask"
+        },
+        {
+          "$ref": "#/$defs/numericTask"
+        }
+      ],
+      "items": false
+    }
+  },
+  "$defs": {
+    "safeText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[^<>\\u0000-\\u001F\\u007F-\\u009F\\uD800-\\uDFFF]*$"
+    },
+    "role": {
+      "type": "string",
+      "enum": ["start", "inter", "corner", "dest"]
+    },
+    "selection": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source", "scenarioIndex", "setIndex", "variantKey"],
+          "properties": {
+            "source": {
+              "const": "catalog"
+            },
+            "scenarioIndex": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 5
+            },
+            "setIndex": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "variantKey": {
+              "type": "string",
+              "minLength": 11,
+              "maxLength": 11,
+              "pattern": "^catalog:[0-5]:[0-1]$"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["source", "scenarioIndex", "setIndex", "variantKey"],
+          "properties": {
+            "source": {
+              "const": "generated"
+            },
+            "scenarioIndex": {
+              "type": "null"
+            },
+            "setIndex": {
+              "type": "null"
+            },
+            "variantKey": {
+              "type": "string",
+              "minLength": 11,
+              "maxLength": 58,
+              "pattern": "^generated:[A-Za-z0-9_-]{1,48}$"
+            }
+          }
+        }
+      ]
+    },
+    "point": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y"],
+      "properties": {
+        "x": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 32,
+          "multipleOf": 0.5
+        },
+        "y": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 32,
+          "multipleOf": 0.5
+        }
+      }
+    },
+    "town": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["num", "x", "y", "name", "short"],
+      "properties": {
+        "num": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "x": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 32
+        },
+        "y": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 32
+        },
+        "name": {
+          "$ref": "#/$defs/safeText"
+        },
+        "short": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 48,
+          "pattern": "^[^<>\\u0000-\\u001F\\u007F-\\u009F\\uD800-\\uDFFF]*$"
+        }
+      }
+    },
+    "towns": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "inter", "corner", "dest"],
+      "properties": {
+        "start": {
+          "$ref": "#/$defs/town"
+        },
+        "inter": {
+          "$ref": "#/$defs/town"
+        },
+        "corner": {
+          "$ref": "#/$defs/town"
+        },
+        "dest": {
+          "$ref": "#/$defs/town"
+        }
+      }
+    },
+    "priceSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["milk", "bread", "cheese", "beef", "potato"],
+      "properties": {
+        "milk": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 999
+        },
+        "bread": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 999
+        },
+        "cheese": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 999
+        },
+        "beef": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 999
+        },
+        "potato": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 999
+        }
+      }
+    },
+    "prices": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "inter", "corner", "dest"],
+      "properties": {
+        "start": {
+          "$ref": "#/$defs/priceSet"
+        },
+        "inter": {
+          "$ref": "#/$defs/priceSet"
+        },
+        "corner": {
+          "$ref": "#/$defs/priceSet"
+        },
+        "dest": {
+          "$ref": "#/$defs/priceSet"
+        }
+      }
+    },
+    "basket": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 2,
+      "maxProperties": 3,
+      "properties": {
+        "milk": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9
+        },
+        "bread": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9
+        },
+        "cheese": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9
+        },
+        "beef": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9
+        },
+        "potato": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9
+        }
+      }
+    },
+    "variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ident", "route2From", "route3From", "route4", "basket"],
+      "properties": {
+        "ident": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/role"
+          }
+        },
+        "route2From": {
+          "type": "string",
+          "enum": ["start", "inter"]
+        },
+        "route3From": {
+          "type": "string",
+          "enum": ["start", "inter"]
+        },
+        "route4": {
+          "type": "string",
+          "enum": ["highway", "forest", "mixed"]
+        },
+        "basket": {
+          "$ref": "#/$defs/basket"
+        }
+      }
+    },
+    "scenario": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "hero",
+        "seniorRole",
+        "cellKm",
+        "roadSpeedKmh",
+        "pathSpeedKmh",
+        "pathKind",
+        "grid",
+        "towns",
+        "pond",
+        "prices",
+        "variant"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 3,
+          "pattern": "^(?:[1-6]|gen)$"
+        },
+        "hero": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32,
+          "pattern": "^[^<>\\u0000-\\u001F\\u007F-\\u009F\\uD800-\\uDFFF]*$"
+        },
+        "seniorRole": {
+          "type": "string",
+          "enum": ["father", "grandfather", "grandmother", "uncle"]
+        },
+        "cellKm": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "roadSpeedKmh": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 120
+        },
+        "pathSpeedKmh": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 120
+        },
+        "pathKind": {
+          "type": "string",
+          "enum": ["forest", "dirt"]
+        },
+        "grid": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["cols", "rows"],
+          "properties": {
+            "cols": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 32
+            },
+            "rows": {
+              "type": "integer",
+              "minimum": 2,
+              "maximum": 32
+            }
+          }
+        },
+        "towns": {
+          "$ref": "#/$defs/towns"
+        },
+        "pond": {
+          "$ref": "#/$defs/point"
+        },
+        "prices": {
+          "$ref": "#/$defs/prices"
+        },
+        "variant": {
+          "$ref": "#/$defs/variant"
+        }
+      }
+    },
+    "view": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["taskIndex", "mode", "countMode", "countFrame"],
+      "properties": {
+        "taskIndex": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["learn", "practice", "teacher"]
+        },
+        "countMode": {
+          "type": "string",
+          "enum": ["off", "pairs", "triples"]
+        },
+        "countFrame": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 32
+            }
+          ]
+        }
+      }
+    },
+    "identificationTask": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "answers",
+        "marks",
+        "checked",
+        "completed",
+        "feedback",
+        "hintOpen",
+        "solutionOpen"
+      ],
+      "properties": {
+        "kind": {
+          "const": "identification"
+        },
+        "answers": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4
+              }
+            ]
+          }
+        },
+        "marks": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "string",
+            "enum": ["none", "correct", "wrong"]
+          }
+        },
+        "checked": {
+          "type": "boolean"
+        },
+        "completed": {
+          "type": "boolean"
+        },
+        "feedback": {
+          "type": "string",
+          "enum": ["none", "incomplete", "correct", "incorrect"]
+        },
+        "hintOpen": {
+          "type": "boolean"
+        },
+        "solutionOpen": {
+          "type": "boolean"
+        }
+      }
+    },
+    "numericTask": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "answer",
+        "checked",
+        "completed",
+        "feedback",
+        "hintOpen",
+        "solutionOpen"
+      ],
+      "properties": {
+        "kind": {
+          "const": "numeric"
+        },
+        "answer": {
+          "type": "string",
+          "minLength": 0,
+          "maxLength": 32,
+          "pattern": "^[0-9+.,\\- ]*$"
+        },
+        "checked": {
+          "type": "boolean"
+        },
+        "completed": {
+          "type": "boolean"
+        },
+        "feedback": {
+          "type": "string",
+          "enum": ["none", "invalid-number", "correct", "incorrect"]
+        },
+        "hintOpen": {
+          "type": "boolean"
+        },
+        "solutionOpen": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}
