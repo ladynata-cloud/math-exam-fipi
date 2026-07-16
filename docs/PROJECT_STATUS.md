@@ -1,6 +1,6 @@
 # MathExam project status
 
-Updated: 2026-07-15
+Updated: 2026-07-17
 
 This is the short operational snapshot. Reconcile it against production evidence
 at the start of the next approved task; use [ROADMAP.md](ROADMAP.md) for sequence
@@ -10,40 +10,49 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
 - Repository: `ladynata-cloud/math-exam-fipi`
 - Branch: `main`
-- Commit: `d9a61f27f7bdf17a642e45faff719cf216e4ef0d`
-- Confirmed state: Workflow v1 and the reviewed Nested-path foundation plan are
-  merged. The owner accepted concurrent commits `3e762d3`, `4e53c18`, and
-  `0d37369` for the current composed `main` without revert.
+- Commit: `495d9f8303de1ec90c15b8f38bf014599bfa463d`
+- Confirmed state: Workflow v1.1, Nested-path foundation implementation, the
+  roads-grid plan, and the roads-grid third standard mirror are present in the
+  exact `main` history. Existing top-level trainer URLs and the B1/B2 foundation
+  remain the baseline for subsequent work.
 
 ## Current stage
 
-MathExam Workflow v1.1 base-drift merge guard is the current docs-only task.
-Nested-path production implementation, roads-grid, deployment, and the planned
-SMALL download-panel UX follow-up are not part of this task.
+Trainer Factory v1 is in a docs-only `HIGH` plan stage. Owner plan-review
+conditions are incorporated: four publication tracks are separated from four
+publication surfaces, runtime descriptor authority is fail-closed, platform
+changes leave Factory, and the candidate pilot has independent trainer and
+batch acceptance. This stage does not implement skills, adapt trainers, or
+change production behavior.
 
 ## Open PR
 
-Draft PR #86: MathExam Workflow v1.1 from branch
-`codex/mathexam-workflow-v1-1-base-drift-merge-guard`.
+The Trainer Factory v1 plan is published as a Draft PR from branch
+`codex/trainer-factory-v1-plan`. Its exact PR number and head are authoritative
+in GitHub and in the task publication report.
 
 ## Last confirmed gate
 
-`MATHEXAM_WORKFLOW_V1_1_BASE_DRIFT_GATE_OK` on the current docs-only task
-branch. The preceding merged plan gate was
-`TRAINER_REGISTRY_NESTED_PATH_ARCHITECTURE_GATE_OK` for PR #85.
+The exact `main` contains the merged Nested-path implementation and roads-grid
+third mirror. No Trainer Factory gate has run. Its proposed plan marker,
+`TRAINER_FACTORY_V1_ARCHITECTURE_GATE_OK`, remains pending external exact-head
+architecture review.
 
 ## Blockers
 
-- No implementation blocker is known for this docs-only task.
-- Merge remains blocked until the owner reviews the exact Draft PR head and
-  gives a separate explicit merge authorization.
+- The architecture gate remains blocked until independent external review is
+  bound to the exact Draft PR base and head.
+- Production implementation, pilot publication, skill implementation, merge,
+  and deployment are not authorized by the plan request.
 
 ## Next three actions
 
-1. Review the Workflow v1.1 Draft PR and its base-drift scenario fixture.
-2. Merge Workflow v1.1 only after a separate exact-head owner authorization.
-3. Decide whether the next approved task is Nested-path implementation or the
-   separate SMALL download-panel UX follow-up.
+1. Obtain independent exact-head architecture review of the Trainer Factory v1
+   Draft PR.
+2. Close any review conditions on an exact head and repeat the plan-stage checks
+   before reporting the architecture gate.
+3. Request separate owner merge authorization for the reviewed plan PR; do not
+   start Factory implementation or publish the pilot.
 
 ## Maintenance rule
 
