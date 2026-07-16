@@ -1,0 +1,2519 @@
+{
+  "schemaVersion": 1,
+  "schemaMaximumVectorId": "schema-maximum-accept",
+  "vectors": [
+    {
+      "id": "schema-maximum-accept",
+      "expected": "accept",
+      "state": {
+        "selection": {
+          "source": "generated",
+          "scenarioIndex": null,
+          "setIndex": null,
+          "variantKey": "generated:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "scenario": {
+          "id": "gen",
+          "hero": "ЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯЯ",
+          "seniorRole": "father",
+          "cellKm": 3,
+          "roadSpeedKmh": 120,
+          "pathSpeedKmh": 119,
+          "pathKind": "dirt",
+          "grid": {
+            "cols": 32,
+            "rows": 32
+          },
+          "towns": {
+            "start": {
+              "num": 1,
+              "x": 0,
+              "y": 0,
+              "name": "1111111111111111111111111111111111111111111111111111111111111111",
+              "short": "111111111111111111111111111111111111111111111111"
+            },
+            "inter": {
+              "num": 2,
+              "x": 32,
+              "y": 0,
+              "name": "2222222222222222222222222222222222222222222222222222222222222222",
+              "short": "222222222222222222222222222222222222222222222222"
+            },
+            "corner": {
+              "num": 3,
+              "x": 0,
+              "y": 32,
+              "name": "3333333333333333333333333333333333333333333333333333333333333333",
+              "short": "333333333333333333333333333333333333333333333333"
+            },
+            "dest": {
+              "num": 4,
+              "x": 32,
+              "y": 32,
+              "name": "4444444444444444444444444444444444444444444444444444444444444444",
+              "short": "444444444444444444444444444444444444444444444444"
+            }
+          },
+          "pond": {
+            "x": 32,
+            "y": 32
+          },
+          "prices": {
+            "start": {
+              "milk": 999,
+              "bread": 999,
+              "cheese": 999,
+              "beef": 999,
+              "potato": 999
+            },
+            "dest": {
+              "milk": 999,
+              "bread": 999,
+              "cheese": 999,
+              "beef": 999,
+              "potato": 999
+            },
+            "inter": {
+              "milk": 999,
+              "bread": 999,
+              "cheese": 999,
+              "beef": 999,
+              "potato": 999
+            },
+            "corner": {
+              "milk": 999,
+              "bread": 999,
+              "cheese": 999,
+              "beef": 999,
+              "potato": 999
+            }
+          },
+          "variant": {
+            "ident": [
+              "start",
+              "inter",
+              "corner"
+            ],
+            "route2From": "inter",
+            "route3From": "inter",
+            "route4": "mixed",
+            "basket": {
+              "milk": 9,
+              "cheese": 9,
+              "beef": 9
+            }
+          }
+        },
+        "view": {
+          "taskIndex": 4,
+          "mode": "teacher",
+          "countMode": "triples",
+          "countFrame": 32
+        },
+        "tasks": [
+          {
+            "kind": "identification",
+            "answers": [
+              4,
+              4,
+              4
+            ],
+            "marks": [
+              "wrong",
+              "correct",
+              "wrong"
+            ],
+            "checked": true,
+            "completed": true,
+            "feedback": "incorrect",
+            "hintOpen": true,
+            "solutionOpen": true
+          },
+          {
+            "kind": "numeric",
+            "answer": "99999999999999999999999999999999",
+            "checked": true,
+            "completed": true,
+            "feedback": "incorrect",
+            "hintOpen": true,
+            "solutionOpen": true
+          },
+          {
+            "kind": "numeric",
+            "answer": "99999999999999999999999999999999",
+            "checked": true,
+            "completed": true,
+            "feedback": "incorrect",
+            "hintOpen": true,
+            "solutionOpen": true
+          },
+          {
+            "kind": "numeric",
+            "answer": "99999999999999999999999999999999",
+            "checked": true,
+            "completed": true,
+            "feedback": "incorrect",
+            "hintOpen": true,
+            "solutionOpen": true
+          },
+          {
+            "kind": "numeric",
+            "answer": "99999999999999999999999999999999",
+            "checked": true,
+            "completed": true,
+            "feedback": "incorrect",
+            "hintOpen": true,
+            "solutionOpen": true
+          }
+        ]
+      },
+      "expectedReason": null,
+      "note": "Schema-maximum accepted snapshot used for size, depth, Bridge, and byte-stability gates."
+    },
+    {
+      "id": "catalog-baseline-accept",
+      "expected": "accept",
+      "state": {
+        "selection": {
+          "source": "catalog",
+          "scenarioIndex": 0,
+          "setIndex": 0,
+          "variantKey": "catalog:0:0"
+        },
+        "scenario": {
+          "id": "1",
+          "hero": "Никита",
+          "seniorRole": "father",
+          "cellKm": 1,
+          "roadSpeedKmh": 25,
+          "pathSpeedKmh": 15,
+          "pathKind": "forest",
+          "grid": {
+            "cols": 17,
+            "rows": 10
+          },
+          "towns": {
+            "start": {
+              "num": 4,
+              "x": 1,
+              "y": 9,
+              "name": "д. Лягушкино",
+              "short": "Лягушкино"
+            },
+            "inter": {
+              "num": 1,
+              "x": 10,
+              "y": 9,
+              "name": "д. Куровка",
+              "short": "Куровка"
+            },
+            "corner": {
+              "num": 3,
+              "x": 16,
+              "y": 9,
+              "name": "д. Марусино",
+              "short": "Марусино"
+            },
+            "dest": {
+              "num": 2,
+              "x": 16,
+              "y": 1,
+              "name": "с. Вятское",
+              "short": "Вятское"
+            }
+          },
+          "pond": {
+            "x": 13,
+            "y": 5
+          },
+          "prices": {
+            "start": {
+              "milk": 32,
+              "bread": 26,
+              "cheese": 220,
+              "beef": 360,
+              "potato": 16
+            },
+            "dest": {
+              "milk": 38,
+              "bread": 28,
+              "cheese": 260,
+              "beef": 350,
+              "potato": 15
+            },
+            "inter": {
+              "milk": 31,
+              "bread": 35,
+              "cheese": 230,
+              "beef": 330,
+              "potato": 22
+            },
+            "corner": {
+              "milk": 44,
+              "bread": 25,
+              "cheese": 240,
+              "beef": 400,
+              "potato": 17
+            }
+          },
+          "variant": {
+            "ident": [
+              "start",
+              "dest",
+              "inter"
+            ],
+            "route2From": "start",
+            "route3From": "start",
+            "route4": "highway",
+            "basket": {
+              "bread": 3,
+              "beef": 2,
+              "potato": 3
+            }
+          }
+        },
+        "view": {
+          "taskIndex": 0,
+          "mode": "learn",
+          "countMode": "off",
+          "countFrame": null
+        },
+        "tasks": [
+          {
+            "kind": "identification",
+            "answers": [
+              null,
+              null,
+              null
+            ],
+            "marks": [
+              "none",
+              "none",
+              "none"
+            ],
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          }
+        ]
+      },
+      "expectedReason": null,
+      "note": "Structurally coherent catalog snapshot."
+    },
+    {
+      "id": "generated-baseline-accept",
+      "expected": "accept",
+      "state": {
+        "selection": {
+          "source": "generated",
+          "scenarioIndex": null,
+          "setIndex": null,
+          "variantKey": "generated:fixture"
+        },
+        "scenario": {
+          "id": "gen",
+          "hero": "Никита",
+          "seniorRole": "father",
+          "cellKm": 1,
+          "roadSpeedKmh": 25,
+          "pathSpeedKmh": 15,
+          "pathKind": "forest",
+          "grid": {
+            "cols": 17,
+            "rows": 10
+          },
+          "towns": {
+            "start": {
+              "num": 4,
+              "x": 1,
+              "y": 9,
+              "name": "д. Лягушкино",
+              "short": "Лягушкино"
+            },
+            "inter": {
+              "num": 1,
+              "x": 10,
+              "y": 9,
+              "name": "д. Куровка",
+              "short": "Куровка"
+            },
+            "corner": {
+              "num": 3,
+              "x": 16,
+              "y": 9,
+              "name": "д. Марусино",
+              "short": "Марусино"
+            },
+            "dest": {
+              "num": 2,
+              "x": 16,
+              "y": 1,
+              "name": "с. Вятское",
+              "short": "Вятское"
+            }
+          },
+          "pond": {
+            "x": 13,
+            "y": 5
+          },
+          "prices": {
+            "start": {
+              "milk": 32,
+              "bread": 26,
+              "cheese": 220,
+              "beef": 360,
+              "potato": 16
+            },
+            "dest": {
+              "milk": 38,
+              "bread": 28,
+              "cheese": 260,
+              "beef": 350,
+              "potato": 15
+            },
+            "inter": {
+              "milk": 31,
+              "bread": 35,
+              "cheese": 230,
+              "beef": 330,
+              "potato": 22
+            },
+            "corner": {
+              "milk": 44,
+              "bread": 25,
+              "cheese": 240,
+              "beef": 400,
+              "potato": 17
+            }
+          },
+          "variant": {
+            "ident": [
+              "start",
+              "dest",
+              "inter"
+            ],
+            "route2From": "start",
+            "route3From": "start",
+            "route4": "highway",
+            "basket": {
+              "bread": 3,
+              "beef": 2,
+              "potato": 3
+            }
+          }
+        },
+        "view": {
+          "taskIndex": 0,
+          "mode": "learn",
+          "countMode": "off",
+          "countFrame": null
+        },
+        "tasks": [
+          {
+            "kind": "identification",
+            "answers": [
+              null,
+              null,
+              null
+            ],
+            "marks": [
+              "none",
+              "none",
+              "none"
+            ],
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          }
+        ]
+      },
+      "expectedReason": null,
+      "note": "Structurally coherent generated snapshot."
+    },
+    {
+      "id": "catalog-snapshot-survives-catalog-mutation-accept",
+      "expected": "accept",
+      "state": {
+        "selection": {
+          "source": "catalog",
+          "scenarioIndex": 0,
+          "setIndex": 0,
+          "variantKey": "catalog:0:0"
+        },
+        "scenario": {
+          "id": "1",
+          "hero": "Никита",
+          "seniorRole": "father",
+          "cellKm": 1,
+          "roadSpeedKmh": 25,
+          "pathSpeedKmh": 15,
+          "pathKind": "forest",
+          "grid": {
+            "cols": 17,
+            "rows": 10
+          },
+          "towns": {
+            "start": {
+              "num": 4,
+              "x": 1,
+              "y": 9,
+              "name": "д. Лягушкино",
+              "short": "Лягушкино"
+            },
+            "inter": {
+              "num": 1,
+              "x": 10,
+              "y": 9,
+              "name": "д. Куровка",
+              "short": "Куровка"
+            },
+            "corner": {
+              "num": 3,
+              "x": 16,
+              "y": 9,
+              "name": "д. Марусино",
+              "short": "Марусино"
+            },
+            "dest": {
+              "num": 2,
+              "x": 16,
+              "y": 1,
+              "name": "с. Вятское",
+              "short": "Вятское"
+            }
+          },
+          "pond": {
+            "x": 13,
+            "y": 5
+          },
+          "prices": {
+            "start": {
+              "milk": 32,
+              "bread": 26,
+              "cheese": 220,
+              "beef": 360,
+              "potato": 16
+            },
+            "dest": {
+              "milk": 38,
+              "bread": 28,
+              "cheese": 260,
+              "beef": 350,
+              "potato": 15
+            },
+            "inter": {
+              "milk": 31,
+              "bread": 35,
+              "cheese": 230,
+              "beef": 330,
+              "potato": 22
+            },
+            "corner": {
+              "milk": 44,
+              "bread": 25,
+              "cheese": 240,
+              "beef": 400,
+              "potato": 17
+            }
+          },
+          "variant": {
+            "ident": [
+              "start",
+              "dest",
+              "inter"
+            ],
+            "route2From": "start",
+            "route3From": "start",
+            "route4": "highway",
+            "basket": {
+              "bread": 3,
+              "beef": 2,
+              "potato": 3
+            }
+          }
+        },
+        "view": {
+          "taskIndex": 0,
+          "mode": "learn",
+          "countMode": "off",
+          "countFrame": null
+        },
+        "tasks": [
+          {
+            "kind": "identification",
+            "answers": [
+              null,
+              null,
+              null
+            ],
+            "marks": [
+              "none",
+              "none",
+              "none"
+            ],
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          }
+        ]
+      },
+      "expectedReason": null,
+      "note": "Saved catalog semantics remain authoritative after an embedded catalog price changes."
+    },
+    {
+      "id": "unknown-property-reject",
+      "expected": "reject",
+      "state": {
+        "selection": {
+          "source": "catalog",
+          "scenarioIndex": 0,
+          "setIndex": 0,
+          "variantKey": "catalog:0:0"
+        },
+        "scenario": {
+          "id": "1",
+          "hero": "Никита",
+          "seniorRole": "father",
+          "cellKm": 1,
+          "roadSpeedKmh": 25,
+          "pathSpeedKmh": 15,
+          "pathKind": "forest",
+          "grid": {
+            "cols": 17,
+            "rows": 10
+          },
+          "towns": {
+            "start": {
+              "num": 4,
+              "x": 1,
+              "y": 9,
+              "name": "д. Лягушкино",
+              "short": "Лягушкино"
+            },
+            "inter": {
+              "num": 1,
+              "x": 10,
+              "y": 9,
+              "name": "д. Куровка",
+              "short": "Куровка"
+            },
+            "corner": {
+              "num": 3,
+              "x": 16,
+              "y": 9,
+              "name": "д. Марусино",
+              "short": "Марусино"
+            },
+            "dest": {
+              "num": 2,
+              "x": 16,
+              "y": 1,
+              "name": "с. Вятское",
+              "short": "Вятское"
+            }
+          },
+          "pond": {
+            "x": 13,
+            "y": 5
+          },
+          "prices": {
+            "start": {
+              "milk": 32,
+              "bread": 26,
+              "cheese": 220,
+              "beef": 360,
+              "potato": 16
+            },
+            "dest": {
+              "milk": 38,
+              "bread": 28,
+              "cheese": 260,
+              "beef": 350,
+              "potato": 15
+            },
+            "inter": {
+              "milk": 31,
+              "bread": 35,
+              "cheese": 230,
+              "beef": 330,
+              "potato": 22
+            },
+            "corner": {
+              "milk": 44,
+              "bread": 25,
+              "cheese": 240,
+              "beef": 400,
+              "potato": 17
+            }
+          },
+          "variant": {
+            "ident": [
+              "start",
+              "dest",
+              "inter"
+            ],
+            "route2From": "start",
+            "route3From": "start",
+            "route4": "highway",
+            "basket": {
+              "bread": 3,
+              "beef": 2,
+              "potato": 3
+            }
+          }
+        },
+        "view": {
+          "taskIndex": 0,
+          "mode": "learn",
+          "countMode": "off",
+          "countFrame": null
+        },
+        "tasks": [
+          {
+            "kind": "identification",
+            "answers": [
+              null,
+              null,
+              null
+            ],
+            "marks": [
+              "none",
+              "none",
+              "none"
+            ],
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          }
+        ],
+        "unexpected": true
+      },
+      "expectedReason": "schema:unknown-property",
+      "note": "Closed top-level object rejects an unknown property."
+    },
+    {
+      "id": "html-reject",
+      "expected": "reject",
+      "state": {
+        "selection": {
+          "source": "catalog",
+          "scenarioIndex": 0,
+          "setIndex": 0,
+          "variantKey": "catalog:0:0"
+        },
+        "scenario": {
+          "id": "1",
+          "hero": "<b>unsafe</b>",
+          "seniorRole": "father",
+          "cellKm": 1,
+          "roadSpeedKmh": 25,
+          "pathSpeedKmh": 15,
+          "pathKind": "forest",
+          "grid": {
+            "cols": 17,
+            "rows": 10
+          },
+          "towns": {
+            "start": {
+              "num": 4,
+              "x": 1,
+              "y": 9,
+              "name": "д. Лягушкино",
+              "short": "Лягушкино"
+            },
+            "inter": {
+              "num": 1,
+              "x": 10,
+              "y": 9,
+              "name": "д. Куровка",
+              "short": "Куровка"
+            },
+            "corner": {
+              "num": 3,
+              "x": 16,
+              "y": 9,
+              "name": "д. Марусино",
+              "short": "Марусино"
+            },
+            "dest": {
+              "num": 2,
+              "x": 16,
+              "y": 1,
+              "name": "с. Вятское",
+              "short": "Вятское"
+            }
+          },
+          "pond": {
+            "x": 13,
+            "y": 5
+          },
+          "prices": {
+            "start": {
+              "milk": 32,
+              "bread": 26,
+              "cheese": 220,
+              "beef": 360,
+              "potato": 16
+            },
+            "dest": {
+              "milk": 38,
+              "bread": 28,
+              "cheese": 260,
+              "beef": 350,
+              "potato": 15
+            },
+            "inter": {
+              "milk": 31,
+              "bread": 35,
+              "cheese": 230,
+              "beef": 330,
+              "potato": 22
+            },
+            "corner": {
+              "milk": 44,
+              "bread": 25,
+              "cheese": 240,
+              "beef": 400,
+              "potato": 17
+            }
+          },
+          "variant": {
+            "ident": [
+              "start",
+              "dest",
+              "inter"
+            ],
+            "route2From": "start",
+            "route3From": "start",
+            "route4": "highway",
+            "basket": {
+              "bread": 3,
+              "beef": 2,
+              "potato": 3
+            }
+          }
+        },
+        "view": {
+          "taskIndex": 0,
+          "mode": "learn",
+          "countMode": "off",
+          "countFrame": null
+        },
+        "tasks": [
+          {
+            "kind": "identification",
+            "answers": [
+              null,
+              null,
+              null
+            ],
+            "marks": [
+              "none",
+              "none",
+              "none"
+            ],
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          }
+        ]
+      },
+      "expectedReason": "schema:html",
+      "note": "HTML-bearing state is rejected before mutation."
+    },
+    {
+      "id": "oversize-reject",
+      "expected": "reject",
+      "state": {
+        "selection": {
+          "source": "catalog",
+          "scenarioIndex": 0,
+          "setIndex": 0,
+          "variantKey": "catalog:0:0"
+        },
+        "scenario": {
+          "id": "1",
+          "hero": "Никита",
+          "seniorRole": "father",
+          "cellKm": 1,
+          "roadSpeedKmh": 25,
+          "pathSpeedKmh": 15,
+          "pathKind": "forest",
+          "grid": {
+            "cols": 17,
+            "rows": 10
+          },
+          "towns": {
+            "start": {
+              "num": 4,
+              "x": 1,
+              "y": 9,
+              "name": "д. Лягушкино",
+              "short": "Лягушкино"
+            },
+            "inter": {
+              "num": 1,
+              "x": 10,
+              "y": 9,
+              "name": "д. Куровка",
+              "short": "Куровка"
+            },
+            "corner": {
+              "num": 3,
+              "x": 16,
+              "y": 9,
+              "name": "д. Марусино",
+              "short": "Марусино"
+            },
+            "dest": {
+              "num": 2,
+              "x": 16,
+              "y": 1,
+              "name": "с. Вятское",
+              "short": "Вятское"
+            }
+          },
+          "pond": {
+            "x": 13,
+            "y": 5
+          },
+          "prices": {
+            "start": {
+              "milk": 32,
+              "bread": 26,
+              "cheese": 220,
+              "beef": 360,
+              "potato": 16
+            },
+            "dest": {
+              "milk": 38,
+              "bread": 28,
+              "cheese": 260,
+              "beef": 350,
+              "potato": 15
+            },
+            "inter": {
+              "milk": 31,
+              "bread": 35,
+              "cheese": 230,
+              "beef": 330,
+              "potato": 22
+            },
+            "corner": {
+              "milk": 44,
+              "bread": 25,
+              "cheese": 240,
+              "beef": 400,
+              "potato": 17
+            }
+          },
+          "variant": {
+            "ident": [
+              "start",
+              "dest",
+              "inter"
+            ],
+            "route2From": "start",
+            "route3From": "start",
+            "route4": "highway",
+            "basket": {
+              "bread": 3,
+              "beef": 2,
+              "potato": 3
+            }
+          }
+        },
+        "view": {
+          "taskIndex": 0,
+          "mode": "learn",
+          "countMode": "off",
+          "countFrame": null
+        },
+        "tasks": [
+          {
+            "kind": "identification",
+            "answers": [
+              null,
+              null,
+              null
+            ],
+            "marks": [
+              "none",
+              "none",
+              "none"
+            ],
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          }
+        ],
+        "padding": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+      },
+      "expectedReason": "schema:size",
+      "note": "Adapter 8 KiB budget rejects an oversized snapshot."
+    },
+    {
+      "id": "invalid-enum-reject",
+      "expected": "reject",
+      "state": {
+        "selection": {
+          "source": "catalog",
+          "scenarioIndex": 0,
+          "setIndex": 0,
+          "variantKey": "catalog:0:0"
+        },
+        "scenario": {
+          "id": "1",
+          "hero": "Никита",
+          "seniorRole": "father",
+          "cellKm": 1,
+          "roadSpeedKmh": 25,
+          "pathSpeedKmh": 15,
+          "pathKind": "forest",
+          "grid": {
+            "cols": 17,
+            "rows": 10
+          },
+          "towns": {
+            "start": {
+              "num": 4,
+              "x": 1,
+              "y": 9,
+              "name": "д. Лягушкино",
+              "short": "Лягушкино"
+            },
+            "inter": {
+              "num": 1,
+              "x": 10,
+              "y": 9,
+              "name": "д. Куровка",
+              "short": "Куровка"
+            },
+            "corner": {
+              "num": 3,
+              "x": 16,
+              "y": 9,
+              "name": "д. Марусино",
+              "short": "Марусино"
+            },
+            "dest": {
+              "num": 2,
+              "x": 16,
+              "y": 1,
+              "name": "с. Вятское",
+              "short": "Вятское"
+            }
+          },
+          "pond": {
+            "x": 13,
+            "y": 5
+          },
+          "prices": {
+            "start": {
+              "milk": 32,
+              "bread": 26,
+              "cheese": 220,
+              "beef": 360,
+              "potato": 16
+            },
+            "dest": {
+              "milk": 38,
+              "bread": 28,
+              "cheese": 260,
+              "beef": 350,
+              "potato": 15
+            },
+            "inter": {
+              "milk": 31,
+              "bread": 35,
+              "cheese": 230,
+              "beef": 330,
+              "potato": 22
+            },
+            "corner": {
+              "milk": 44,
+              "bread": 25,
+              "cheese": 240,
+              "beef": 400,
+              "potato": 17
+            }
+          },
+          "variant": {
+            "ident": [
+              "start",
+              "dest",
+              "inter"
+            ],
+            "route2From": "start",
+            "route3From": "start",
+            "route4": "highway",
+            "basket": {
+              "bread": 3,
+              "beef": 2,
+              "potato": 3
+            }
+          }
+        },
+        "view": {
+          "taskIndex": 0,
+          "mode": "observer",
+          "countMode": "off",
+          "countFrame": null
+        },
+        "tasks": [
+          {
+            "kind": "identification",
+            "answers": [
+              null,
+              null,
+              null
+            ],
+            "marks": [
+              "none",
+              "none",
+              "none"
+            ],
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          }
+        ]
+      },
+      "expectedReason": "schema:enum",
+      "note": "Unknown mode enum is rejected."
+    },
+    {
+      "id": "invalid-string-bounds-reject",
+      "expected": "reject",
+      "state": {
+        "selection": {
+          "source": "catalog",
+          "scenarioIndex": 0,
+          "setIndex": 0,
+          "variantKey": "catalog:0:0"
+        },
+        "scenario": {
+          "id": "1",
+          "hero": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+          "seniorRole": "father",
+          "cellKm": 1,
+          "roadSpeedKmh": 25,
+          "pathSpeedKmh": 15,
+          "pathKind": "forest",
+          "grid": {
+            "cols": 17,
+            "rows": 10
+          },
+          "towns": {
+            "start": {
+              "num": 4,
+              "x": 1,
+              "y": 9,
+              "name": "д. Лягушкино",
+              "short": "Лягушкино"
+            },
+            "inter": {
+              "num": 1,
+              "x": 10,
+              "y": 9,
+              "name": "д. Куровка",
+              "short": "Куровка"
+            },
+            "corner": {
+              "num": 3,
+              "x": 16,
+              "y": 9,
+              "name": "д. Марусино",
+              "short": "Марусино"
+            },
+            "dest": {
+              "num": 2,
+              "x": 16,
+              "y": 1,
+              "name": "с. Вятское",
+              "short": "Вятское"
+            }
+          },
+          "pond": {
+            "x": 13,
+            "y": 5
+          },
+          "prices": {
+            "start": {
+              "milk": 32,
+              "bread": 26,
+              "cheese": 220,
+              "beef": 360,
+              "potato": 16
+            },
+            "dest": {
+              "milk": 38,
+              "bread": 28,
+              "cheese": 260,
+              "beef": 350,
+              "potato": 15
+            },
+            "inter": {
+              "milk": 31,
+              "bread": 35,
+              "cheese": 230,
+              "beef": 330,
+              "potato": 22
+            },
+            "corner": {
+              "milk": 44,
+              "bread": 25,
+              "cheese": 240,
+              "beef": 400,
+              "potato": 17
+            }
+          },
+          "variant": {
+            "ident": [
+              "start",
+              "dest",
+              "inter"
+            ],
+            "route2From": "start",
+            "route3From": "start",
+            "route4": "highway",
+            "basket": {
+              "bread": 3,
+              "beef": 2,
+              "potato": 3
+            }
+          }
+        },
+        "view": {
+          "taskIndex": 0,
+          "mode": "learn",
+          "countMode": "off",
+          "countFrame": null
+        },
+        "tasks": [
+          {
+            "kind": "identification",
+            "answers": [
+              null,
+              null,
+              null
+            ],
+            "marks": [
+              "none",
+              "none",
+              "none"
+            ],
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          }
+        ]
+      },
+      "expectedReason": "schema:string-bounds",
+      "note": "Bounded semantic text rejects an overlong hero name."
+    },
+    {
+      "id": "wrong-tasks-tuple-length-reject",
+      "expected": "reject",
+      "state": {
+        "selection": {
+          "source": "catalog",
+          "scenarioIndex": 0,
+          "setIndex": 0,
+          "variantKey": "catalog:0:0"
+        },
+        "scenario": {
+          "id": "1",
+          "hero": "Никита",
+          "seniorRole": "father",
+          "cellKm": 1,
+          "roadSpeedKmh": 25,
+          "pathSpeedKmh": 15,
+          "pathKind": "forest",
+          "grid": {
+            "cols": 17,
+            "rows": 10
+          },
+          "towns": {
+            "start": {
+              "num": 4,
+              "x": 1,
+              "y": 9,
+              "name": "д. Лягушкино",
+              "short": "Лягушкино"
+            },
+            "inter": {
+              "num": 1,
+              "x": 10,
+              "y": 9,
+              "name": "д. Куровка",
+              "short": "Куровка"
+            },
+            "corner": {
+              "num": 3,
+              "x": 16,
+              "y": 9,
+              "name": "д. Марусино",
+              "short": "Марусино"
+            },
+            "dest": {
+              "num": 2,
+              "x": 16,
+              "y": 1,
+              "name": "с. Вятское",
+              "short": "Вятское"
+            }
+          },
+          "pond": {
+            "x": 13,
+            "y": 5
+          },
+          "prices": {
+            "start": {
+              "milk": 32,
+              "bread": 26,
+              "cheese": 220,
+              "beef": 360,
+              "potato": 16
+            },
+            "dest": {
+              "milk": 38,
+              "bread": 28,
+              "cheese": 260,
+              "beef": 350,
+              "potato": 15
+            },
+            "inter": {
+              "milk": 31,
+              "bread": 35,
+              "cheese": 230,
+              "beef": 330,
+              "potato": 22
+            },
+            "corner": {
+              "milk": 44,
+              "bread": 25,
+              "cheese": 240,
+              "beef": 400,
+              "potato": 17
+            }
+          },
+          "variant": {
+            "ident": [
+              "start",
+              "dest",
+              "inter"
+            ],
+            "route2From": "start",
+            "route3From": "start",
+            "route4": "highway",
+            "basket": {
+              "bread": 3,
+              "beef": 2,
+              "potato": 3
+            }
+          }
+        },
+        "view": {
+          "taskIndex": 0,
+          "mode": "learn",
+          "countMode": "off",
+          "countFrame": null
+        },
+        "tasks": [
+          {
+            "kind": "identification",
+            "answers": [
+              null,
+              null,
+              null
+            ],
+            "marks": [
+              "none",
+              "none",
+              "none"
+            ],
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          }
+        ]
+      },
+      "expectedReason": "schema:tasks-tuple",
+      "note": "Tasks must be the exact five-record tuple."
+    },
+    {
+      "id": "duplicate-town-number-reject",
+      "expected": "reject",
+      "state": {
+        "selection": {
+          "source": "catalog",
+          "scenarioIndex": 0,
+          "setIndex": 0,
+          "variantKey": "catalog:0:0"
+        },
+        "scenario": {
+          "id": "1",
+          "hero": "Никита",
+          "seniorRole": "father",
+          "cellKm": 1,
+          "roadSpeedKmh": 25,
+          "pathSpeedKmh": 15,
+          "pathKind": "forest",
+          "grid": {
+            "cols": 17,
+            "rows": 10
+          },
+          "towns": {
+            "start": {
+              "num": 4,
+              "x": 1,
+              "y": 9,
+              "name": "д. Лягушкино",
+              "short": "Лягушкино"
+            },
+            "inter": {
+              "num": 1,
+              "x": 10,
+              "y": 9,
+              "name": "д. Куровка",
+              "short": "Куровка"
+            },
+            "corner": {
+              "num": 3,
+              "x": 16,
+              "y": 9,
+              "name": "д. Марусино",
+              "short": "Марусино"
+            },
+            "dest": {
+              "num": 4,
+              "x": 16,
+              "y": 1,
+              "name": "с. Вятское",
+              "short": "Вятское"
+            }
+          },
+          "pond": {
+            "x": 13,
+            "y": 5
+          },
+          "prices": {
+            "start": {
+              "milk": 32,
+              "bread": 26,
+              "cheese": 220,
+              "beef": 360,
+              "potato": 16
+            },
+            "dest": {
+              "milk": 38,
+              "bread": 28,
+              "cheese": 260,
+              "beef": 350,
+              "potato": 15
+            },
+            "inter": {
+              "milk": 31,
+              "bread": 35,
+              "cheese": 230,
+              "beef": 330,
+              "potato": 22
+            },
+            "corner": {
+              "milk": 44,
+              "bread": 25,
+              "cheese": 240,
+              "beef": 400,
+              "potato": 17
+            }
+          },
+          "variant": {
+            "ident": [
+              "start",
+              "dest",
+              "inter"
+            ],
+            "route2From": "start",
+            "route3From": "start",
+            "route4": "highway",
+            "basket": {
+              "bread": 3,
+              "beef": 2,
+              "potato": 3
+            }
+          }
+        },
+        "view": {
+          "taskIndex": 0,
+          "mode": "learn",
+          "countMode": "off",
+          "countFrame": null
+        },
+        "tasks": [
+          {
+            "kind": "identification",
+            "answers": [
+              null,
+              null,
+              null
+            ],
+            "marks": [
+              "none",
+              "none",
+              "none"
+            ],
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          }
+        ]
+      },
+      "expectedReason": "semantic:town-numbers",
+      "note": "Town numbers must be a permutation of 1 through 4."
+    },
+    {
+      "id": "town-outside-grid-reject",
+      "expected": "reject",
+      "state": {
+        "selection": {
+          "source": "catalog",
+          "scenarioIndex": 0,
+          "setIndex": 0,
+          "variantKey": "catalog:0:0"
+        },
+        "scenario": {
+          "id": "1",
+          "hero": "Никита",
+          "seniorRole": "father",
+          "cellKm": 1,
+          "roadSpeedKmh": 25,
+          "pathSpeedKmh": 15,
+          "pathKind": "forest",
+          "grid": {
+            "cols": 10,
+            "rows": 10
+          },
+          "towns": {
+            "start": {
+              "num": 4,
+              "x": 1,
+              "y": 9,
+              "name": "д. Лягушкино",
+              "short": "Лягушкино"
+            },
+            "inter": {
+              "num": 1,
+              "x": 10,
+              "y": 9,
+              "name": "д. Куровка",
+              "short": "Куровка"
+            },
+            "corner": {
+              "num": 3,
+              "x": 16,
+              "y": 9,
+              "name": "д. Марусино",
+              "short": "Марусино"
+            },
+            "dest": {
+              "num": 2,
+              "x": 16,
+              "y": 1,
+              "name": "с. Вятское",
+              "short": "Вятское"
+            }
+          },
+          "pond": {
+            "x": 13,
+            "y": 5
+          },
+          "prices": {
+            "start": {
+              "milk": 32,
+              "bread": 26,
+              "cheese": 220,
+              "beef": 360,
+              "potato": 16
+            },
+            "dest": {
+              "milk": 38,
+              "bread": 28,
+              "cheese": 260,
+              "beef": 350,
+              "potato": 15
+            },
+            "inter": {
+              "milk": 31,
+              "bread": 35,
+              "cheese": 230,
+              "beef": 330,
+              "potato": 22
+            },
+            "corner": {
+              "milk": 44,
+              "bread": 25,
+              "cheese": 240,
+              "beef": 400,
+              "potato": 17
+            }
+          },
+          "variant": {
+            "ident": [
+              "start",
+              "dest",
+              "inter"
+            ],
+            "route2From": "start",
+            "route3From": "start",
+            "route4": "highway",
+            "basket": {
+              "bread": 3,
+              "beef": 2,
+              "potato": 3
+            }
+          }
+        },
+        "view": {
+          "taskIndex": 0,
+          "mode": "learn",
+          "countMode": "off",
+          "countFrame": null
+        },
+        "tasks": [
+          {
+            "kind": "identification",
+            "answers": [
+              null,
+              null,
+              null
+            ],
+            "marks": [
+              "none",
+              "none",
+              "none"
+            ],
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          }
+        ]
+      },
+      "expectedReason": "semantic:town-grid",
+      "note": "Every town coordinate must be inside the declared grid."
+    },
+    {
+      "id": "path-speed-not-lower-reject",
+      "expected": "reject",
+      "state": {
+        "selection": {
+          "source": "catalog",
+          "scenarioIndex": 0,
+          "setIndex": 0,
+          "variantKey": "catalog:0:0"
+        },
+        "scenario": {
+          "id": "1",
+          "hero": "Никита",
+          "seniorRole": "father",
+          "cellKm": 1,
+          "roadSpeedKmh": 25,
+          "pathSpeedKmh": 25,
+          "pathKind": "forest",
+          "grid": {
+            "cols": 17,
+            "rows": 10
+          },
+          "towns": {
+            "start": {
+              "num": 4,
+              "x": 1,
+              "y": 9,
+              "name": "д. Лягушкино",
+              "short": "Лягушкино"
+            },
+            "inter": {
+              "num": 1,
+              "x": 10,
+              "y": 9,
+              "name": "д. Куровка",
+              "short": "Куровка"
+            },
+            "corner": {
+              "num": 3,
+              "x": 16,
+              "y": 9,
+              "name": "д. Марусино",
+              "short": "Марусино"
+            },
+            "dest": {
+              "num": 2,
+              "x": 16,
+              "y": 1,
+              "name": "с. Вятское",
+              "short": "Вятское"
+            }
+          },
+          "pond": {
+            "x": 13,
+            "y": 5
+          },
+          "prices": {
+            "start": {
+              "milk": 32,
+              "bread": 26,
+              "cheese": 220,
+              "beef": 360,
+              "potato": 16
+            },
+            "dest": {
+              "milk": 38,
+              "bread": 28,
+              "cheese": 260,
+              "beef": 350,
+              "potato": 15
+            },
+            "inter": {
+              "milk": 31,
+              "bread": 35,
+              "cheese": 230,
+              "beef": 330,
+              "potato": 22
+            },
+            "corner": {
+              "milk": 44,
+              "bread": 25,
+              "cheese": 240,
+              "beef": 400,
+              "potato": 17
+            }
+          },
+          "variant": {
+            "ident": [
+              "start",
+              "dest",
+              "inter"
+            ],
+            "route2From": "start",
+            "route3From": "start",
+            "route4": "highway",
+            "basket": {
+              "bread": 3,
+              "beef": 2,
+              "potato": 3
+            }
+          }
+        },
+        "view": {
+          "taskIndex": 0,
+          "mode": "learn",
+          "countMode": "off",
+          "countFrame": null
+        },
+        "tasks": [
+          {
+            "kind": "identification",
+            "answers": [
+              null,
+              null,
+              null
+            ],
+            "marks": [
+              "none",
+              "none",
+              "none"
+            ],
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          }
+        ]
+      },
+      "expectedReason": "semantic:speed-order",
+      "note": "Path speed must be strictly lower than road speed."
+    },
+    {
+      "id": "catalog-coherence-reject",
+      "expected": "reject",
+      "state": {
+        "selection": {
+          "source": "catalog",
+          "scenarioIndex": 0,
+          "setIndex": 0,
+          "variantKey": "catalog:0:1"
+        },
+        "scenario": {
+          "id": "1",
+          "hero": "Никита",
+          "seniorRole": "father",
+          "cellKm": 1,
+          "roadSpeedKmh": 25,
+          "pathSpeedKmh": 15,
+          "pathKind": "forest",
+          "grid": {
+            "cols": 17,
+            "rows": 10
+          },
+          "towns": {
+            "start": {
+              "num": 4,
+              "x": 1,
+              "y": 9,
+              "name": "д. Лягушкино",
+              "short": "Лягушкино"
+            },
+            "inter": {
+              "num": 1,
+              "x": 10,
+              "y": 9,
+              "name": "д. Куровка",
+              "short": "Куровка"
+            },
+            "corner": {
+              "num": 3,
+              "x": 16,
+              "y": 9,
+              "name": "д. Марусино",
+              "short": "Марусино"
+            },
+            "dest": {
+              "num": 2,
+              "x": 16,
+              "y": 1,
+              "name": "с. Вятское",
+              "short": "Вятское"
+            }
+          },
+          "pond": {
+            "x": 13,
+            "y": 5
+          },
+          "prices": {
+            "start": {
+              "milk": 32,
+              "bread": 26,
+              "cheese": 220,
+              "beef": 360,
+              "potato": 16
+            },
+            "dest": {
+              "milk": 38,
+              "bread": 28,
+              "cheese": 260,
+              "beef": 350,
+              "potato": 15
+            },
+            "inter": {
+              "milk": 31,
+              "bread": 35,
+              "cheese": 230,
+              "beef": 330,
+              "potato": 22
+            },
+            "corner": {
+              "milk": 44,
+              "bread": 25,
+              "cheese": 240,
+              "beef": 400,
+              "potato": 17
+            }
+          },
+          "variant": {
+            "ident": [
+              "start",
+              "dest",
+              "inter"
+            ],
+            "route2From": "start",
+            "route3From": "start",
+            "route4": "highway",
+            "basket": {
+              "bread": 3,
+              "beef": 2,
+              "potato": 3
+            }
+          }
+        },
+        "view": {
+          "taskIndex": 0,
+          "mode": "learn",
+          "countMode": "off",
+          "countFrame": null
+        },
+        "tasks": [
+          {
+            "kind": "identification",
+            "answers": [
+              null,
+              null,
+              null
+            ],
+            "marks": [
+              "none",
+              "none",
+              "none"
+            ],
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          }
+        ]
+      },
+      "expectedReason": "semantic:catalog-coherence",
+      "note": "Catalog index, id, and variant key must be structurally coherent."
+    },
+    {
+      "id": "generated-coherence-reject",
+      "expected": "reject",
+      "state": {
+        "selection": {
+          "source": "generated",
+          "scenarioIndex": null,
+          "setIndex": null,
+          "variantKey": "generated:fixture"
+        },
+        "scenario": {
+          "id": "1",
+          "hero": "Никита",
+          "seniorRole": "father",
+          "cellKm": 1,
+          "roadSpeedKmh": 25,
+          "pathSpeedKmh": 15,
+          "pathKind": "forest",
+          "grid": {
+            "cols": 17,
+            "rows": 10
+          },
+          "towns": {
+            "start": {
+              "num": 4,
+              "x": 1,
+              "y": 9,
+              "name": "д. Лягушкино",
+              "short": "Лягушкино"
+            },
+            "inter": {
+              "num": 1,
+              "x": 10,
+              "y": 9,
+              "name": "д. Куровка",
+              "short": "Куровка"
+            },
+            "corner": {
+              "num": 3,
+              "x": 16,
+              "y": 9,
+              "name": "д. Марусино",
+              "short": "Марусино"
+            },
+            "dest": {
+              "num": 2,
+              "x": 16,
+              "y": 1,
+              "name": "с. Вятское",
+              "short": "Вятское"
+            }
+          },
+          "pond": {
+            "x": 13,
+            "y": 5
+          },
+          "prices": {
+            "start": {
+              "milk": 32,
+              "bread": 26,
+              "cheese": 220,
+              "beef": 360,
+              "potato": 16
+            },
+            "dest": {
+              "milk": 38,
+              "bread": 28,
+              "cheese": 260,
+              "beef": 350,
+              "potato": 15
+            },
+            "inter": {
+              "milk": 31,
+              "bread": 35,
+              "cheese": 230,
+              "beef": 330,
+              "potato": 22
+            },
+            "corner": {
+              "milk": 44,
+              "bread": 25,
+              "cheese": 240,
+              "beef": 400,
+              "potato": 17
+            }
+          },
+          "variant": {
+            "ident": [
+              "start",
+              "dest",
+              "inter"
+            ],
+            "route2From": "start",
+            "route3From": "start",
+            "route4": "highway",
+            "basket": {
+              "bread": 3,
+              "beef": 2,
+              "potato": 3
+            }
+          }
+        },
+        "view": {
+          "taskIndex": 0,
+          "mode": "learn",
+          "countMode": "off",
+          "countFrame": null
+        },
+        "tasks": [
+          {
+            "kind": "identification",
+            "answers": [
+              null,
+              null,
+              null
+            ],
+            "marks": [
+              "none",
+              "none",
+              "none"
+            ],
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          },
+          {
+            "kind": "numeric",
+            "answer": "",
+            "checked": false,
+            "completed": false,
+            "feedback": "none",
+            "hintOpen": false,
+            "solutionOpen": false
+          }
+        ]
+      },
+      "expectedReason": "semantic:generated-coherence",
+      "note": "Generated selection requires scenario id gen."
+    }
+  ]
+}

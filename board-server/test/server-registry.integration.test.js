@@ -174,10 +174,10 @@ test('valid registry endpoint, health, CORS, and room API are compatible', async
   const registry = await endpoint.json();
   assert.equal(registry.schemaVersion, 1);
   assert.match(registry.digest, /^sha256:[0-9a-f]{64}$/);
-  assert.equal(registry.trainers.length, 2);
+  assert.equal(registry.trainers.length, 3);
   assert.deepEqual(
     registry.trainers.map(entry => entry.trainerId),
-    ['linear-inequalities-stepwise', 'negative-numbers-line']
+    ['linear-inequalities-stepwise', 'negative-numbers-line', 'practice-1-5-roads-grid']
   );
 
   const localhostCors = await fetch(`${server.baseUrl}/api/trainer-registry`, {
@@ -200,7 +200,7 @@ test('valid registry endpoint, health, CORS, and room API are compatible', async
   assert.equal(health.registrySchemaVersion, 1);
   assert.equal(health.registryDigest, registry.digest);
   assert.equal(health.registrySource, 'bundled-default');
-  assert.equal(health.registryEntryCount, 2);
+  assert.equal(health.registryEntryCount, 3);
   assert.equal(health.registryError, null);
 
   const roomResponse = await fetch(`${server.baseUrl}/api/rooms`, { method: 'POST' });
@@ -278,14 +278,14 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
     const health = await (await fetch(`${server.baseUrl}/health`, { cache: 'no-store' })).json();
     assert.equal(health.registryLoaded, true);
     assert.equal(health.registrySource, 'bundled-default');
-    assert.equal(health.registryEntryCount, 2);
+    assert.equal(health.registryEntryCount, 3);
   } finally {
     await server.stop();
     fs.rmSync(directory, { recursive: true, force: true });
   }
 });
 
-test('runtime registry authorizes bridge and legacy mirror state for both reference trainers', async t => {
+test('runtime registry authorizes bridge state for reference trainers and the nested roads-grid mirror', async t => {
   const server = await startServer();
   t.after(() => server.stop());
   const room = await createRoom(server.baseUrl);
@@ -424,6 +424,19 @@ test('runtime registry authorizes bridge and legacy mirror state for both refere
       bridgeState(room, student, 'linear-inequalities-stepwise', { revoked: true })
     );
   });
+
+  const roadsUrlChanged = waitForSocketEvent(student.socket, 'board:trainer-url-change');
+  teacher.socket.emit('board:trainer-url-change', authPayload(room, teacher, {
+    trainerUrl: '/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html'
+  }));
+  await roadsUrlChanged;
+  const roadsState = { selection: { source: 'catalog' }, view: { taskIndex: 0 } };
+  const roadsReceived = waitForSocketEvent(student.socket, 'board:trainer-state-change');
+  teacher.socket.emit(
+    'board:trainer-state-change',
+    bridgeState(room, teacher, 'practice-1-5-roads-grid', roadsState)
+  );
+  assert.deepEqual((await roadsReceived).state, roadsState);
   assert.deepEqual(roomErrors, []);
 });
 

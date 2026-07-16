@@ -57,6 +57,7 @@
   .selector .div { width: 1px; align-self: stretch; background: var(--line); margin: 0 4px; }
 
   .layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 26px; align-items: start; }
+  .layout > main, .layout > .sidebar { min-width: 0; }
   @media (max-width: 1040px) { .layout { grid-template-columns: 1fr; } }
 
   .map-card { background: var(--bg-card); border: 1px solid var(--line); border-radius: 16px; padding: 22px; box-shadow: var(--shadow); }
@@ -216,6 +217,46 @@
   .cnt-marker { fill: var(--green); stroke: white; stroke-width: 2.5; filter: drop-shadow(0 1px 3px rgba(74,124,89,.5)); }
   .cnt-marker-bg { fill: var(--green); }
   .cnt-marker-tx { font-family: Georgia, serif; font-size: 13px; font-weight: 700; fill: white; text-anchor: middle; dominant-baseline: central; }
+
+  @media (max-width: 600px) {
+    html, body { max-width: 100%; }
+    .topnav-inner { padding: 9px 12px; flex-wrap: wrap; gap: 8px 10px; }
+    .back-link { font-size: 12px; }
+    .topic-id { font-size: 9px; padding: 3px 7px; }
+    .mode-switch { width: 100%; order: 3; }
+    .mode-switch button { flex: 1; min-width: 0; padding: 7px 4px; font-size: 11.5px; }
+    .wrap { padding: 18px 12px 48px; }
+    .title-block { margin-bottom: 14px; }
+    h1 { font-size: 28px; }
+    .subtitle { font-size: 14px; }
+    .selector { padding: 12px; margin: 14px 0; }
+    .selector .label { min-width: 100%; }
+    .selector .div { display: none; }
+    .chip { padding: 6px 9px; font-size: 12px; }
+    .setpick { max-width: 100%; }
+    .setpick button { padding: 6px 10px; font-size: 12px; }
+    .layout { gap: 18px; }
+    .map-card { padding: 14px; border-radius: 12px; }
+    .map-header { align-items: flex-start; }
+    .map-svg-wrap { padding: 6px; }
+    .legend { padding: 9px 10px; gap: 8px 12px; }
+    .count-panel { padding: 9px 10px; }
+    .count-switch { width: 100%; }
+    .count-switch button { flex: 1; min-width: 0; padding: 6px 4px; }
+    .task-stepper { gap: 3px; padding: 5px; }
+    .step-btn { min-width: 0; padding: 7px 2px; }
+    .step-btn .step-num { font-size: 13px; }
+    .step-btn .step-name { font-size: 8.5px; }
+    .step-btn.done::after { top: 1px; right: 3px; font-size: 9px; }
+    .task-card { padding: 16px 14px; border-radius: 12px; }
+    .task-question { font-size: 15px; }
+    .id-table th, .id-table td { padding: 9px 8px; font-size: 12.5px; }
+    .answer-input { min-width: 0; width: 100%; flex-basis: 100%; }
+    .answer-row .btn-primary { flex: 1; }
+    .button-row .btn { flex: 1 1 135px; padding: 10px 8px; }
+    .problem-card { padding: 14px; }
+    .side-card { padding: 14px; }
+  }
 </style>
 </head>
 <body data-mode="learn">
@@ -329,6 +370,7 @@
   </div>
 </div>
 
+<script src="../board-bridge.js"></script>
 <script>
 'use strict';
 
@@ -1090,16 +1132,277 @@ function makeRandomScenario(){
 // ============================================================
 // СОСТОЯНИЕ
 // ============================================================
-const STORAGE_KEY='mathExamCourseProgress.v1', TOPIC='practiceRoadsGridTrainer';
-let state={ scenIdx:0, setIdx:0, task:0, mode:'learn', gen:false, genScenario:null, count:'off', solved:0, streak:0, done:{} };
-let COUNT_ANIM=null, countTimer=null;
+const STORAGE_KEY='mathExamCourseProgress.v1';
+const SESSION_KEY='mathExamRoadsGridSession.v1';
+const TOPIC='practiceRoadsGridTrainer';
+const IS_STANDALONE=window.parent===window;
+const ROLE_KEYS=['start','inter','corner','dest'];
+const SENIOR_TO_ROLE={"папа":"father","дедушка":"grandfather","бабушка":"grandmother","дядя":"uncle"};
+const ROLE_TO_SENIOR={father:"папа",grandfather:"дедушка",grandmother:"бабушка",uncle:"дядя"};
+const SAFE_TEXT_RE=/^[^<>\u0000-\u001F\u007F-\u009F\uD800-\uDFFF]*$/;
+const NUMERIC_ANSWER_RE=/^[0-9+.,\- ]*$/;
+const localSubscribers=new Set();
+let sessionState=null;
+let progressState={solved:0,streak:0};
+let COUNT_ANIM=null, countTimer=null, boardBridge=null, localNotificationCount=0;
+let lastCatalogScenarioIndex=0, lastCatalogSetIndex=0;
 
+function deepCopy(value){ return JSON.parse(JSON.stringify(value)); }
+function freshTasks(){
+  return [
+    {kind:'identification',answers:[null,null,null],marks:['none','none','none'],checked:false,completed:false,feedback:'none',hintOpen:false,solutionOpen:false},
+    ...Array.from({length:4},()=>({kind:'numeric',answer:'',checked:false,completed:false,feedback:'none',hintOpen:false,solutionOpen:false}))
+  ];
+}
+function generatedVariantKey(){
+  let value='';
+  try{ if(crypto&&typeof crypto.randomUUID==='function') value=crypto.randomUUID().replace(/-/g,''); }catch(e){}
+  if(!value) value=Date.now().toString(36)+Math.random().toString(36).slice(2,14);
+  return 'generated:'+value.slice(0,48);
+}
+function semanticScenarioFromLegacy(source,variant){
+  return {
+    id:String(source.id),
+    hero:String(source.hero),
+    seniorRole:SENIOR_TO_ROLE[source.senior],
+    cellKm:source.cell,
+    roadSpeedKmh:source.road,
+    pathSpeedKmh:source.path,
+    pathKind:String(source.pathNoun||'').indexOf('грунт')>=0?'dirt':'forest',
+    grid:{cols:source.gridCols,rows:source.gridRows},
+    towns:deepCopy(source.towns),
+    pond:deepCopy(source.pond),
+    prices:deepCopy(source.shopsByRole),
+    variant:{
+      ident:deepCopy(variant.ident),
+      route2From:variant.t2from,
+      route3From:variant.t3from,
+      route4:variant.t4,
+      basket:deepCopy(variant.basket)
+    }
+  };
+}
+function catalogSession(scenarioIndex,setIndex,mode,countMode){
+  const source=SCENARIOS[scenarioIndex], variant=source.variants[setIndex];
+  return {
+    selection:{source:'catalog',scenarioIndex,setIndex,variantKey:'catalog:'+scenarioIndex+':'+setIndex},
+    scenario:semanticScenarioFromLegacy(source,variant),
+    view:{taskIndex:0,mode:mode||'learn',countMode:countMode||'off',countFrame:null},
+    tasks:freshTasks()
+  };
+}
+function generatedSession(mode,countMode){
+  const source=makeRandomScenario();
+  return {
+    selection:{source:'generated',scenarioIndex:null,setIndex:null,variantKey:generatedVariantKey()},
+    scenario:semanticScenarioFromLegacy(source,source.variants[0]),
+    view:{taskIndex:0,mode:mode||'learn',countMode:countMode||'off',countFrame:null},
+    tasks:freshTasks()
+  };
+}
+function renderScenarioFromSemantic(source){
+  const senior=ROLE_TO_SENIOR[source.seniorRole];
+  const forest=source.pathKind==='forest';
+  return {
+    id:source.id,hero:source.hero,senior,
+    cell:source.cellKm,road:source.roadSpeedKmh,path:source.pathSpeedKmh,
+    roadWord:'шоссе',pathWord:forest?'лесной дорожке':'грунтовой дороге',
+    pathNoun:forest?'лесная дорожка':'грунтовая дорога',
+    scaleNote:source.cellKm===1?'Сторона клетки = 1 км.':'Клетка плана = '+source.cellKm+' км.',
+    gridCols:source.grid.cols,gridRows:source.grid.rows,
+    towns:source.towns,pond:source.pond,shopsByRole:source.prices,
+    variants:[{
+      label:sessionState&&sessionState.selection.source==='generated'?'случайная':'',
+      ident:source.variant.ident,t2from:source.variant.route2From,t3from:source.variant.route3From,
+      t4:source.variant.route4,basket:source.variant.basket
+    }]
+  };
+}
+
+function objectShape(value,required){
+  if(!value||typeof value!=='object'||Array.isArray(value)) return 'schema:type';
+  const allowed=new Set(required);
+  for(const key of Object.keys(value)) if(!allowed.has(key)) return 'schema:unknown-property';
+  for(const key of required) if(!Object.prototype.hasOwnProperty.call(value,key)) return 'schema:required';
+  return '';
+}
+function boundedString(value,min,max,pattern){
+  if(typeof value!=='string') return 'schema:type';
+  if(value.length<min||value.length>max) return 'schema:string-bounds';
+  if(pattern&&!pattern.test(value)) return 'schema:string-pattern';
+  return '';
+}
+function boundedNumber(value,min,max,integer,multiple){
+  if(typeof value!=='number'||!Number.isFinite(value)) return 'schema:type';
+  if(integer&&!Number.isInteger(value)) return 'schema:number-bounds';
+  if(value<min||value>max) return 'schema:number-bounds';
+  if(multiple&&Math.abs(value/multiple-Math.round(value/multiple))>1e-9) return 'schema:number-bounds';
+  return '';
+}
+function enumValue(value,values){ return values.includes(value)?'':'schema:enum'; }
+function stateBytes(serialized){ return typeof TextEncoder==='function'?new TextEncoder().encode(serialized).length:unescape(encodeURIComponent(serialized)).length; }
+function platformReason(code){
+  if(code==='state-html-not-allowed') return 'schema:html';
+  if(code==='state-too-large') return 'schema:size';
+  return 'schema:json';
+}
+function validateTown(value){
+  let reason=objectShape(value,['num','x','y','name','short']); if(reason) return reason;
+  reason=boundedNumber(value.num,1,4,true); if(reason) return reason;
+  reason=boundedNumber(value.x,0,32,true); if(reason) return reason;
+  reason=boundedNumber(value.y,0,32,true); if(reason) return reason;
+  reason=boundedString(value.name,1,64,SAFE_TEXT_RE); if(reason) return reason;
+  return boundedString(value.short,1,48,SAFE_TEXT_RE);
+}
+function validatePrices(value){
+  let reason=objectShape(value,ROLE_KEYS); if(reason) return reason;
+  for(const role of ROLE_KEYS){
+    reason=objectShape(value[role],GOODS); if(reason) return reason;
+    for(const good of GOODS){ reason=boundedNumber(value[role][good],1,999,true); if(reason) return reason; }
+  }
+  return '';
+}
+function validateBasket(value){
+  if(!value||typeof value!=='object'||Array.isArray(value)) return 'schema:type';
+  const keys=Object.keys(value);
+  if(keys.length<2||keys.length>3) return 'schema:basket-size';
+  for(const key of keys){
+    if(!GOODS.includes(key)) return 'schema:unknown-property';
+    const reason=boundedNumber(value[key],1,9,true); if(reason) return reason;
+  }
+  return '';
+}
+function validateScenarioSchema(value){
+  let reason=objectShape(value,['id','hero','seniorRole','cellKm','roadSpeedKmh','pathSpeedKmh','pathKind','grid','towns','pond','prices','variant']); if(reason) return reason;
+  reason=boundedString(value.id,1,3,/^(?:[1-6]|gen)$/); if(reason) return reason;
+  reason=boundedString(value.hero,1,32,SAFE_TEXT_RE); if(reason) return reason;
+  reason=enumValue(value.seniorRole,['father','grandfather','grandmother','uncle']); if(reason) return reason;
+  reason=boundedNumber(value.cellKm,1,3,true); if(reason) return reason;
+  reason=boundedNumber(value.roadSpeedKmh,1,120,true); if(reason) return reason;
+  reason=boundedNumber(value.pathSpeedKmh,1,120,true); if(reason) return reason;
+  reason=enumValue(value.pathKind,['forest','dirt']); if(reason) return reason;
+  reason=objectShape(value.grid,['cols','rows']); if(reason) return reason;
+  reason=boundedNumber(value.grid.cols,2,32,true); if(reason) return reason;
+  reason=boundedNumber(value.grid.rows,2,32,true); if(reason) return reason;
+  reason=objectShape(value.towns,ROLE_KEYS); if(reason) return reason;
+  for(const role of ROLE_KEYS){ reason=validateTown(value.towns[role]); if(reason) return reason; }
+  reason=objectShape(value.pond,['x','y']); if(reason) return reason;
+  reason=boundedNumber(value.pond.x,0,32,false,.5); if(reason) return reason;
+  reason=boundedNumber(value.pond.y,0,32,false,.5); if(reason) return reason;
+  reason=validatePrices(value.prices); if(reason) return reason;
+  reason=objectShape(value.variant,['ident','route2From','route3From','route4','basket']); if(reason) return reason;
+  if(!Array.isArray(value.variant.ident)||value.variant.ident.length!==3) return 'schema:ident';
+  if(new Set(value.variant.ident).size!==3) return 'schema:ident';
+  for(const role of value.variant.ident){ reason=enumValue(role,ROLE_KEYS); if(reason) return reason; }
+  reason=enumValue(value.variant.route2From,['start','inter']); if(reason) return reason;
+  reason=enumValue(value.variant.route3From,['start','inter']); if(reason) return reason;
+  reason=enumValue(value.variant.route4,['highway','forest','mixed']); if(reason) return reason;
+  return validateBasket(value.variant.basket);
+}
+function validateTaskSchema(value,index){
+  if(index===0){
+    let reason=objectShape(value,['kind','answers','marks','checked','completed','feedback','hintOpen','solutionOpen']); if(reason) return reason;
+    if(value.kind!=='identification') return 'schema:enum';
+    if(!Array.isArray(value.answers)||value.answers.length!==3||!Array.isArray(value.marks)||value.marks.length!==3) return 'schema:tasks-tuple';
+    for(const answer of value.answers) if(answer!==null&&boundedNumber(answer,1,4,true)) return 'schema:number-bounds';
+    for(const mark of value.marks){ reason=enumValue(mark,['none','correct','wrong']); if(reason) return reason; }
+    reason=enumValue(value.feedback,['none','incomplete','correct','incorrect']); if(reason) return reason;
+  }else{
+    let reason=objectShape(value,['kind','answer','checked','completed','feedback','hintOpen','solutionOpen']); if(reason) return reason;
+    if(value.kind!=='numeric') return 'schema:enum';
+    reason=boundedString(value.answer,0,32,NUMERIC_ANSWER_RE); if(reason) return reason;
+    reason=enumValue(value.feedback,['none','invalid-number','correct','incorrect']); if(reason) return reason;
+  }
+  for(const key of ['checked','completed','hintOpen','solutionOpen']) if(typeof value[key]!=='boolean') return 'schema:type';
+  return '';
+}
+function validateSessionState(candidate){
+  const generic=MathExamBoard.validateState(candidate,{allowHtml:false});
+  if(!generic.ok) return {ok:false,reason:platformReason(generic.code)};
+  if(stateBytes(generic.serialized)>8192) return {ok:false,reason:'schema:size'};
+  let reason=objectShape(candidate,['selection','scenario','view','tasks']); if(reason) return {ok:false,reason};
+  reason=objectShape(candidate.selection,['source','scenarioIndex','setIndex','variantKey']); if(reason) return {ok:false,reason};
+  if(!['catalog','generated'].includes(candidate.selection.source)) return {ok:false,reason:'schema:enum'};
+  if(candidate.selection.source==='catalog'){
+    reason=boundedNumber(candidate.selection.scenarioIndex,0,5,true); if(reason) return {ok:false,reason};
+    reason=boundedNumber(candidate.selection.setIndex,0,1,true); if(reason) return {ok:false,reason};
+    reason=boundedString(candidate.selection.variantKey,11,11,/^catalog:[0-5]:[0-1]$/); if(reason) return {ok:false,reason};
+  }else{
+    if(candidate.selection.scenarioIndex!==null||candidate.selection.setIndex!==null) return {ok:false,reason:'schema:type'};
+    reason=boundedString(candidate.selection.variantKey,11,58,/^generated:[A-Za-z0-9_-]{1,48}$/); if(reason) return {ok:false,reason};
+  }
+  reason=validateScenarioSchema(candidate.scenario); if(reason) return {ok:false,reason};
+  reason=objectShape(candidate.view,['taskIndex','mode','countMode','countFrame']); if(reason) return {ok:false,reason};
+  reason=boundedNumber(candidate.view.taskIndex,0,4,true); if(reason) return {ok:false,reason};
+  reason=enumValue(candidate.view.mode,['learn','practice','teacher']); if(reason) return {ok:false,reason};
+  reason=enumValue(candidate.view.countMode,['off','pairs','triples']); if(reason) return {ok:false,reason};
+  if(candidate.view.countFrame!==null){ reason=boundedNumber(candidate.view.countFrame,0,32,true); if(reason) return {ok:false,reason}; }
+  if(!Array.isArray(candidate.tasks)||candidate.tasks.length!==5) return {ok:false,reason:'schema:tasks-tuple'};
+  for(let index=0;index<5;index++){ reason=validateTaskSchema(candidate.tasks[index],index); if(reason) return {ok:false,reason}; }
+
+  const towns=ROLE_KEYS.map(role=>candidate.scenario.towns[role]);
+  if(new Set(towns.map(town=>town.num)).size!==4) return {ok:false,reason:'semantic:town-numbers'};
+  if(towns.some(town=>town.x>candidate.scenario.grid.cols||town.y>candidate.scenario.grid.rows)) return {ok:false,reason:'semantic:town-grid'};
+  if(candidate.scenario.pathSpeedKmh>=candidate.scenario.roadSpeedKmh) return {ok:false,reason:'semantic:speed-order'};
+  if(candidate.selection.source==='catalog'){
+    const expected='catalog:'+candidate.selection.scenarioIndex+':'+candidate.selection.setIndex;
+    if(candidate.scenario.id!==String(candidate.selection.scenarioIndex+1)||candidate.selection.variantKey!==expected) return {ok:false,reason:'semantic:catalog-coherence'};
+  }else if(candidate.scenario.id!=='gen') return {ok:false,reason:'semantic:generated-coherence'};
+  return {ok:true,reason:null,serialized:generic.serialized};
+}
+function prepareSession(candidate){
+  const validation=validateSessionState(candidate);
+  if(!validation.ok) return validation;
+  try{
+    const copy=JSON.parse(validation.serialized);
+    const scenario=renderScenarioFromSemantic(copy.scenario);
+    computeAnswers(scenario,scenario.variants[0]);
+    return {...validation,copy};
+  }catch(e){ return {ok:false,reason:'semantic:derived-model'}; }
+}
+function persistStandaloneSession(){
+  if(!IS_STANDALONE) return;
+  try{ sessionStorage.setItem(SESSION_KEY,JSON.stringify(sessionState)); }catch(e){}
+}
+function emitLocalChange(){
+  localNotificationCount++;
+  localSubscribers.forEach(notify=>{ try{ notify(); }catch(e){} });
+}
+function commitLocalState(candidate,options){
+  const prepared=prepareSession(candidate);
+  if(!prepared.ok) throw new TypeError(prepared.reason);
+  sessionState=prepared.copy;
+  if(!options||options.render!==false) renderFromState();
+  persistStandaloneSession();
+  emitLocalChange();
+}
+function getState(){ return deepCopy(sessionState); }
+function applyState(candidate){
+  const prepared=prepareSession(candidate);
+  if(!prepared.ok) throw new TypeError(prepared.reason);
+  stopCount();
+  sessionState=prepared.copy;
+  renderFromState();
+}
+function subscribe(notify){ localSubscribers.add(notify); return ()=>localSubscribers.delete(notify); }
+function loadStoredSession(){
+  if(!IS_STANDALONE) return null;
+  try{
+    const candidate=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'null');
+    const prepared=prepareSession(candidate);
+    return prepared.ok?prepared.copy:null;
+  }catch(e){ return null; }
+}
 function loadProgress(){ try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}'); }catch(e){ return {}; } }
-function saveProgress(){ try{ const d=loadProgress(); d[TOPIC]={solved:state.solved,streak:state.streak,total:SCENARIOS.length*2*5}; localStorage.setItem(STORAGE_KEY,JSON.stringify(d)); }catch(e){} }
-function doneKey(){ return (state.gen?'gen':('s'+state.scenIdx))+'.'+state.setIdx+'.'+state.task; }
-
-function currentScenario(){ return state.gen ? state.genScenario : SCENARIOS[state.scenIdx]; }
-function currentVariant(){ const s=currentScenario(); return s.variants[state.gen?0:state.setIdx]; }
+function saveProgress(){
+  try{
+    const data=loadProgress();
+    data[TOPIC]={solved:progressState.solved,streak:progressState.streak,total:SCENARIOS.length*2*5};
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+  }catch(e){}
+}
+function currentScenario(){ return renderScenarioFromSemantic(sessionState.scenario); }
+function currentVariant(){ return currentScenario().variants[0]; }
 
 // ============================================================
 // ГЕОМЕТРИЯ И ОТВЕТЫ
@@ -1132,7 +1435,7 @@ const NS='http://www.w3.org/2000/svg';
 function E(tag,attrs){ const n=document.createElementNS(NS,tag); for(const k in attrs) n.setAttribute(k,attrs[k]); return n; }
 
 function planForTask(s, vr){
-  const t=state.task, a=computeAnswers(s,vr), A='start',B='inter',C='corner',D='dest';
+  const t=sessionState.view.taskIndex, a=computeAnswers(s,vr), A='start',B='inter',C='corner',D='dest';
   const p={ overlays:[], labels:[], tri:null, raNeighbors:null };
   if(t===1){
     const from = vr.t2from==='start'?A:B;
@@ -1157,7 +1460,7 @@ function renderMap(){
   stopCount(); svg.innerHTML='';
   const CELL=Math.max(16, Math.min(40, Math.floor(560/s.gridCols)));
   const W=s.gridCols*CELL, H=s.gridRows*CELL, PADB=32;
-  const MG = state.count!=='off' ? 26 : 0;
+  const MG = sessionState.view.countMode!=='off' ? 26 : 0;
   svg.setAttribute('viewBox', (-MG)+' '+(-MG)+' '+(W+2*MG)+' '+(H+PADB+2*MG));
   const T=s.towns;
   const px=r=>({x:T[r].x*CELL, y:T[r].y*CELL});
@@ -1217,7 +1520,7 @@ function renderMap(){
   drawCounting(svg, s, CELL, W, H, plan, px);
 
   // города: номера всегда; названия — НЕ в задаче 1 (определение) и не в режиме тренировки
-  const showNames = (state.task!==0) && (state.mode!=='practice');
+  const showNames = (sessionState.view.taskIndex!==0) && (sessionState.view.mode!=='practice');
   ['start','inter','corner','dest'].forEach(r=>{
     const p=px(r);
     const grp=E('g',{});
@@ -1232,6 +1535,7 @@ function renderMap(){
     svg.appendChild(grp);
   });
 
+  renderCountFrameMarker(sessionState.view.countFrame);
   updateCountUI(s);
 }
 function unit(x,y){ const l=Math.hypot(x,y)||1; return {x:x/l,y:y/l}; }
@@ -1249,8 +1553,8 @@ function stopCount(){ if(countTimer){ clearInterval(countTimer); countTimer=null
 
 function drawCounting(svg, s, CELL, W, H, plan, px){
   COUNT_ANIM=null;
-  if(state.count==='off') return;
-  const k = state.count==='pairs' ? 2 : 3;
+  if(sessionState.view.countMode==='off') return;
+  const k = sessionState.view.countMode==='pairs' ? 2 : 3;
   const animLegs=[];
   plan.labels.forEach(l=>{
     const r1=l.pair[0], r2=l.pair[1], t1=s.towns[r1], t2=s.towns[r2];
@@ -1290,42 +1594,54 @@ function drawCounting(svg, s, CELL, W, H, plan, px){
   COUNT_ANIM = animLegs.length ? {legs:animLegs} : null;
 }
 
-function playCount(){
-  if(!COUNT_ANIM) return;
-  stopCount();
+function renderCountFrameMarker(frame){
   const svg=document.getElementById('map');
   svg.querySelectorAll('.cnt-anim').forEach(n=>n.remove());
-  const legs=COUNT_ANIM.legs.map(L=>{
+  if(frame===null||!COUNT_ANIM) return;
+  COUNT_ANIM.legs.forEach(L=>{
+    const index=Math.min(frame,L.pts.length-1), p=L.pts[index];
     const g=E('g',{class:'cnt-anim'});
     const c=E('circle',{r:13,class:'cnt-marker'});
     const tx=E('text',{class:'cnt-marker-tx'});
+    c.setAttribute('cx',p.x); c.setAttribute('cy',p.y);
+    tx.setAttribute('x',p.x); tx.setAttribute('y',p.y); tx.textContent=fmt(L.cum[index]);
     g.appendChild(c); g.appendChild(tx); svg.appendChild(g);
-    return {L,c,tx,idx:0};
   });
-  const place=o=>{ const p=o.L.pts[o.idx];
-    o.c.setAttribute('cx',p.x); o.c.setAttribute('cy',p.y);
-    o.tx.setAttribute('x',p.x); o.tx.setAttribute('y',p.y); o.tx.textContent=fmt(o.L.cum[o.idx]); };
-  legs.forEach(place);
+}
+
+function playCount(){
+  if(!COUNT_ANIM) return;
+  stopCount();
+  const maxFrame=Math.min(32,Math.max(...COUNT_ANIM.legs.map(leg=>leg.pts.length-1)));
+  let frame=0;
+  const publishFrame=()=>{
+    const candidate=getState();
+    candidate.view.countFrame=frame;
+    commitLocalState(candidate,{render:false});
+    renderCountFrameMarker(frame);
+  };
+  publishFrame();
+  if(maxFrame===0) return;
   countTimer=setInterval(()=>{
-    let moved=false;
-    legs.forEach(o=>{ if(o.idx<o.L.pts.length-1){ o.idx++; place(o); moved=true; } });
-    if(!moved) stopCount();
+    if(frame>=maxFrame){ stopCount(); return; }
+    frame++;
+    publishFrame();
   }, 650);
 }
 
 function updateCountUI(s){
-  const applicable = (state.task===1 || state.task===2);   // «по шоссе» и «по прямой»
+  const applicable = (sessionState.view.taskIndex===1 || sessionState.view.taskIndex===2);   // «по шоссе» и «по прямой»
   const panel=document.getElementById('count-panel');
   if(panel) panel.style.display = applicable ? '' : 'none';
   if(!applicable) return;                                   // вне этих задач панели нет — путаницы нет
-  document.querySelectorAll('#count-switch button').forEach(b=>b.classList.toggle('active', b.dataset.count===state.count));
+  document.querySelectorAll('#count-switch button').forEach(b=>b.classList.toggle('active', b.dataset.count===sessionState.view.countMode));
   const play=document.getElementById('count-play'); if(play) play.disabled = !COUNT_ANIM;
   const hint=document.getElementById('count-hint');
   if(hint){
-    if(state.count==='off')
+    if(sessionState.view.countMode==='off')
       hint.textContent='Считаете длину по клеткам? Включите «парами» или «тройками» — клетки вдоль дороги разобьются на группы, а километры наберутся сами.';
     else
-      hint.textContent='Дорога размечена группами по '+(state.count==='pairs'?'2':'3')+' клетки от узла «0» до итога. Числа — километры нарастающим итогом. Кнопка ▶ проведёт маркер по клеткам.';
+      hint.textContent='Дорога размечена группами по '+(sessionState.view.countMode==='pairs'?'2':'3')+' клетки от узла «0» до итога. Числа — километры нарастающим итогом. Кнопка ▶ проведёт маркер по клеткам.';
   }
 }
 
@@ -1343,22 +1659,74 @@ function commonButtonsHTML(lastLabel){
     '<button class="btn btn-secondary" id="next-btn">'+lastLabel+'</button></div>';
 }
 
+function appendStory(root,text,tag){
+  if(!tag){ root.appendChild(document.createTextNode(text)); return; }
+  const node=document.createElement(tag); node.textContent=text; root.appendChild(node);
+}
+function renderNarrative(s){
+  const root=document.getElementById('story-text'), T=s.towns;
+  const A=T.start,C=T.corner,D=T.dest;
+  const cross=(C.x-A.x)*(D.y-C.y)-(C.y-A.y)*(D.x-C.x);
+  const turn=cross<0?'налево':'направо';
+  root.replaceChildren();
+  appendStory(root,s.hero+' летом отдыхает у '+relGen(s.senior)+' в ');
+  appendStory(root,T.start.name,'b');
+  appendStory(root,'. '+kidsOf(s)+' собираются съездить на велосипедах в ');
+  appendStory(root,T.dest.name,'b');
+  appendStory(root,'. Из '+T.start.short+' в '+T.dest.short+' можно проехать по прямой ('+s.pathNoun+'). Есть более длинный путь — по ');
+  appendStory(root,'шоссе через '+T.inter.short+' до '+T.corner.short,'b');
+  appendStory(root,', где поворот под прямым углом '+turn+', и до '+T.dest.short+'. Третий маршрут — в '+T.inter.short+' свернуть на прямую ');
+  appendStory(root,'тропинку','b');
+  appendStory(root,' в '+T.dest.short+', которая идёт мимо пруда. ');
+  appendStory(root,s.scaleNote,'em');
+}
+function feedbackText(record,answer,unit,nums){
+  if(record.feedback==='none') return '';
+  if(record.kind==='identification'){
+    if(record.feedback==='incomplete') return 'Заполните все строки.';
+    if(record.feedback==='correct') return 'Верно! Последовательность цифр: '+nums.join('')+'.';
+    return 'Не всё верно. Сверьтесь с описанием: кто где относительно шоссе и поворота.';
+  }
+  if(record.feedback==='invalid-number') return 'Введите число. Например, 25 или 12,5.';
+  if(record.feedback==='correct') return 'Верно! Ответ: '+fmt(answer)+' '+unit+'.';
+  return 'Не совсем. Проверьте расчёт или откройте «Подсказку».';
+}
+function restoreTaskUI(record,answer,unit,nums){
+  if(record.kind==='identification'){
+    document.querySelectorAll('.id-sel').forEach((select,index)=>{
+      select.value=record.answers[index]===null?'':String(record.answers[index]);
+      select.classList.toggle('correct',record.marks[index]==='correct');
+      select.classList.toggle('wrong',record.marks[index]==='wrong');
+    });
+  }else{
+    const input=document.getElementById('answer-input');
+    if(input) input.value=record.answer;
+  }
+  const feedback=document.getElementById('feedback');
+  if(feedback){
+    feedback.textContent=feedbackText(record,answer,unit,nums||[]);
+    feedback.className='feedback'+(record.feedback==='none'?'':(record.feedback==='correct'?' correct show':' warn show'));
+  }
+}
 function renderTask(){
   const s=currentScenario(), vr=currentVariant(), a=computeAnswers(s,vr);
-  document.getElementById('story-text').innerHTML=s.story;
+  const taskIndex=sessionState.view.taskIndex, record=sessionState.tasks[taskIndex];
+  renderNarrative(s);
   document.getElementById('speed-road').textContent=s.road;
   document.getElementById('speed-path').textContent=s.path;
   document.getElementById('speed-path-lbl').textContent='км/ч по '+(s.pathWord.indexOf('грунт')>=0?'дороге':'дорожке');
   document.getElementById('scale-tag').textContent='1 клетка = '+s.cell+' км';
-  const narr = state.gen ? 'Случайная задача' : ('Сюжет '+s.id);
-  document.getElementById('map-narrative').textContent = (state.task===0)
+  const narr = sessionState.selection.source==='generated' ? 'Случайная задача' : ('Сюжет '+s.id);
+  document.getElementById('map-narrative').textContent = (taskIndex===0)
     ? (narr+' · определите пункты по описанию')
     : (narr+' · '+s.towns.start.short+' → '+s.towns.dest.short);
-  const prefix=(state.gen?'gen':'s'+state.scenIdx)+'.'+state.setIdx+'.';
-  document.querySelectorAll('#task-stepper .step-btn').forEach((b,i)=>{ b.classList.toggle('active',i===state.task); b.classList.toggle('done', !!state.done[prefix+i]); });
-  [renderTask1,renderTask2,renderTask3,renderTask4,renderTask5][state.task](s,vr,a);
+  document.querySelectorAll('#task-stepper .step-btn').forEach((b,i)=>{ b.classList.toggle('active',i===taskIndex); b.classList.toggle('done',sessionState.tasks[i].completed); });
+  [renderTask1,renderTask2,renderTask3,renderTask4,renderTask5][taskIndex](s,vr,a);
+  if(taskIndex===0) restoreTaskUI(record,null,'',vr.ident.map(role=>s.towns[role].num));
+  else restoreTaskUI(record,[a.t2,a.t3,a.t4,a.minTotal][taskIndex-1],['км','км','мин','руб'][taskIndex-1]);
   renderMap(); applyMode(); updateStats(); updateSetHint();
 }
+function renderFromState(){ stopCount(); syncSelectorUI(); renderTask(); }
 
 // ---- Задача 1: определение пунктов ----
 function renderTask1(s,vr){
@@ -1383,15 +1751,24 @@ function renderTask1(s,vr){
       roles.map((r,i)=>'<div class="step">'+tName(s,r)+' — цифра <b>'+nums[i]+'</b></div>').join('')+
       '<div class="answer-display">Ответ: '+nums.join('')+'</div></div>'+
     commonButtonsHTML('Следующая задача →');
+  card.querySelectorAll('.id-sel').forEach((select,index)=>select.addEventListener('change',()=>{
+    const candidate=getState(), record=candidate.tasks[0], value=parseInt(select.value,10);
+    record.answers[index]=Number.isInteger(value)?value:null;
+    record.marks[index]='none'; record.checked=false; record.feedback='none';
+    commitLocalState(candidate);
+  }));
   document.getElementById('check-btn').addEventListener('click',()=>{
-    const sels=card.querySelectorAll('.id-sel'); let allOk=true, filled=true;
-    sels.forEach((sel,i)=>{ const v=parseInt(sel.value,10); if(!v){ filled=false; return; }
-      if(v===nums[i]){ sel.classList.remove('wrong'); sel.classList.add('correct'); }
-      else { sel.classList.remove('correct'); sel.classList.add('wrong'); allOk=false; } });
-    const fb=document.getElementById('feedback');
-    if(!filled){ fb.className='feedback warn show'; fb.innerHTML='Заполните все строки.'; return; }
-    if(allOk){ fb.className='feedback correct show'; fb.innerHTML='<b>Верно!</b> Последовательность цифр: <b>'+nums.join('')+'</b>.'; onCorrect(); }
-    else { fb.className='feedback warn show'; fb.innerHTML='Не всё верно. Сверьтесь с описанием: кто где относительно шоссе и поворота.'; onWrong(); }
+    const candidate=getState(), record=candidate.tasks[0], wasCompleted=record.completed;
+    const answers=[...card.querySelectorAll('.id-sel')].map(select=>{ const value=parseInt(select.value,10); return Number.isInteger(value)?value:null; });
+    const filled=answers.every(value=>value!==null), allOk=filled&&answers.every((value,index)=>value===nums[index]);
+    record.answers=answers;
+    record.marks=answers.map((value,index)=>value===null?'none':(value===nums[index]?'correct':'wrong'));
+    record.checked=true;
+    record.feedback=!filled?'incomplete':(allOk?'correct':'incorrect');
+    if(allOk) record.completed=true;
+    commitLocalState(candidate);
+    if(!filled) return;
+    if(allOk) onCorrect(wasCompleted); else onWrong();
   });
   bindCommon();
 }
@@ -1509,7 +1886,7 @@ function renderTask5(s,vr,a){
       roles.map((r,i)=>'<div class="step">'+s.towns[r].short+': <b>'+a.totals[i]+' руб</b></div>').join('')+
       '<div class="step" style="margin-top:6px;">Дешевле всего — <b>'+s.towns[roles[a.minIdx]].short+'</b>: <b>'+a.minTotal+' руб</b>.</div>'+
       '<div class="answer-display">Ответ: '+a.minTotal+' руб</div></div>'+
-    commonButtonsHTML(state.gen?'Новая случайная →':'Следующий вариант →');
+    commonButtonsHTML(sessionState.selection.source==='generated'?'Новая случайная →':'Следующий вариант →');
   bindNumeric(a.minTotal,'руб'); bindCommon();
 }
 // ============================================================
@@ -1517,50 +1894,82 @@ function renderTask5(s,vr,a){
 // ============================================================
 function bindNumeric(answer, unit){
   const check=()=>{
-    const input=document.getElementById('answer-input'), fb=document.getElementById('feedback');
+    const input=document.getElementById('answer-input');
     const raw=input.value.trim().replace(',', '.').replace(/\s/g,'');
-    const val=parseFloat(raw);
-    if(isNaN(val)){ fb.className='feedback warn show'; fb.innerHTML='Введите число. Например, <b>25</b> или <b>12,5</b>.'; return; }
+    const val=raw===''?NaN:Number(raw);
+    const candidate=getState(), record=candidate.tasks[candidate.view.taskIndex], wasCompleted=record.completed;
+    record.answer=input.value; record.checked=true;
+    if(!Number.isFinite(val)){
+      record.feedback='invalid-number';
+      commitLocalState(candidate);
+      return;
+    }
     const tol=Math.max(Math.abs(answer)*0.005, 0.05);
-    if(Math.abs(val-answer)<tol){ fb.className='feedback correct show'; fb.innerHTML='<b>Верно!</b> Ответ: '+fmt(answer)+' '+unit+'.'; onCorrect(); }
-    else { fb.className='feedback warn show'; fb.innerHTML='Не совсем. Проверьте расчёт или откройте «Подсказку».'; onWrong(); }
+    const correct=Math.abs(val-answer)<tol;
+    record.feedback=correct?'correct':'incorrect';
+    if(correct) record.completed=true;
+    commitLocalState(candidate);
+    if(correct) onCorrect(wasCompleted); else onWrong();
   };
   document.getElementById('check-btn').addEventListener('click',check);
-  document.getElementById('answer-input').addEventListener('keydown',e=>{ if(e.key==='Enter') check(); });
+  const input=document.getElementById('answer-input');
+  input.maxLength=32;
+  input.addEventListener('input',()=>{
+    const cleaned=input.value.replace(/[^0-9+.,\- ]/g,'').slice(0,32);
+    if(cleaned!==input.value) input.value=cleaned;
+    const candidate=getState(), record=candidate.tasks[candidate.view.taskIndex];
+    record.answer=input.value; record.checked=false; record.feedback='none';
+    commitLocalState(candidate,{render:false});
+  });
+  input.addEventListener('keydown',e=>{ if(e.key==='Enter') check(); });
 }
 
 function bindCommon(){
-  document.getElementById('hint-btn').addEventListener('click',()=>document.getElementById('hint-box').classList.add('show'));
+  document.getElementById('hint-btn').addEventListener('click',()=>{
+    const candidate=getState(), record=candidate.tasks[candidate.view.taskIndex];
+    record.hintOpen=true;
+    commitLocalState(candidate);
+  });
   document.getElementById('show-btn').addEventListener('click',()=>{
-    document.getElementById('hint-box').classList.add('show');
-    document.getElementById('teacher-block').classList.add('show');
-    const input=document.getElementById('answer-input');
-    if(input){ const ans=document.querySelector('#teacher-block .answer-display'); if(ans){ const m=ans.textContent.match(/-?[\d]+(?:,[\d]+)?/); if(m) input.value=m[0]; } }
+    const candidate=getState(), index=candidate.view.taskIndex, record=candidate.tasks[index];
+    record.hintOpen=true; record.solutionOpen=true;
+    if(record.kind==='numeric'){
+      const scenario=currentScenario(), variant=currentVariant(), answers=computeAnswers(scenario,variant);
+      record.answer=fmt([answers.t2,answers.t3,answers.t4,answers.minTotal][index-1]);
+    }
+    commitLocalState(candidate);
   });
   document.getElementById('next-btn').addEventListener('click',goNext);
 }
 
 function goNext(){
-  if(state.task<4){ state.task++; renderTask(); return; }
-  if(state.gen){ state.genScenario=makeRandomScenario(); state.task=0; renderTask(); return; }
-  if(state.setIdx===0){ state.setIdx=1; }
-  else { state.setIdx=0; state.scenIdx=(state.scenIdx+1)%SCENARIOS.length; }
-  state.task=0; syncSelectorUI(); renderTask();
+  if(sessionState.view.taskIndex<4){
+    const candidate=getState(); candidate.view.taskIndex++; candidate.view.countFrame=null;
+    commitLocalState(candidate); return;
+  }
+  const mode=sessionState.view.mode, countMode=sessionState.view.countMode;
+  if(sessionState.selection.source==='generated'){
+    commitLocalState(generatedSession(mode,countMode)); return;
+  }
+  let scenarioIndex=sessionState.selection.scenarioIndex, setIndex=sessionState.selection.setIndex;
+  if(setIndex===0) setIndex=1;
+  else{ setIndex=0; scenarioIndex=(scenarioIndex+1)%SCENARIOS.length; }
+  commitLocalState(catalogSession(scenarioIndex,setIndex,mode,countMode));
 }
 
-function onCorrect(){
-  if(!state.done[doneKey()]) state.solved++;
-  state.done[doneKey()]=true; state.streak++; saveProgress(); updateStats();
-  const btn=document.querySelector('#task-stepper .step-btn[data-task="'+state.task+'"]'); if(btn) btn.classList.add('done');
+function onCorrect(wasCompleted){
+  if(!wasCompleted) progressState.solved++;
+  progressState.streak++; saveProgress(); updateStats();
 }
-function onWrong(){ state.streak=0; saveProgress(); updateStats(); }
-function updateStats(){ document.getElementById('stat-solved').textContent=state.solved; document.getElementById('stat-streak').textContent=state.streak; }
+function onWrong(){ progressState.streak=0; saveProgress(); updateStats(); }
+function updateStats(){ document.getElementById('stat-solved').textContent=progressState.solved; document.getElementById('stat-streak').textContent=progressState.streak; }
 
 function applyMode(){
-  document.body.dataset.mode=state.mode;
-  const learn=state.mode==='learn', teacher=state.mode==='teacher';
-  document.querySelectorAll('.hint-box').forEach(b=>b.classList.toggle('show', learn||teacher));
-  document.querySelectorAll('.teacher-block').forEach(b=>b.classList.toggle('show', teacher));
+  const mode=sessionState.view.mode, record=sessionState.tasks[sessionState.view.taskIndex];
+  document.body.dataset.mode=mode;
+  const learn=mode==='learn', teacher=mode==='teacher';
+  document.querySelectorAll('.hint-box').forEach(b=>b.classList.toggle('show',learn||teacher||record.hintOpen||record.solutionOpen));
+  document.querySelectorAll('.teacher-block').forEach(b=>b.classList.toggle('show',teacher||record.solutionOpen));
 }
 
 function updateSetHint(){
@@ -1571,46 +1980,93 @@ function updateSetHint(){
 }
 
 function syncSelectorUI(){
-  document.querySelectorAll('#scenario-chips .chip').forEach((c,i)=>c.classList.toggle('active', !state.gen && i===state.scenIdx));
-  document.getElementById('gen-chip').classList.toggle('active', state.gen);
-  document.querySelectorAll('#setpick button').forEach((b,i)=>b.classList.toggle('active', i===state.setIdx));
-  document.getElementById('setpick').style.opacity = state.gen ? 0.5 : 1;
+  const generated=sessionState.selection.source==='generated';
+  if(!generated){
+    lastCatalogScenarioIndex=sessionState.selection.scenarioIndex;
+    lastCatalogSetIndex=sessionState.selection.setIndex;
+  }
+  document.querySelectorAll('#scenario-chips .chip').forEach((c,i)=>c.classList.toggle('active',!generated&&i===sessionState.selection.scenarioIndex));
+  document.getElementById('gen-chip').classList.toggle('active',generated);
+  document.querySelectorAll('#setpick button').forEach((b,i)=>b.classList.toggle('active',!generated&&i===sessionState.selection.setIndex));
+  document.getElementById('setpick').style.opacity=generated?0.5:1;
+  document.querySelectorAll('#mode-switch button').forEach(button=>button.classList.toggle('active',button.dataset.mode===sessionState.view.mode));
 }
 
 // ============================================================
 // ИНИЦИАЛИЗАЦИЯ
 // ============================================================
 (function init(){
+  const progress=loadProgress();
+  if(progress[TOPIC]){
+    progressState.solved=Number.isFinite(Number(progress[TOPIC].solved))?Math.max(0,Math.trunc(Number(progress[TOPIC].solved))):0;
+    progressState.streak=Number.isFinite(Number(progress[TOPIC].streak))?Math.max(0,Math.trunc(Number(progress[TOPIC].streak))):0;
+  }
+  sessionState=loadStoredSession()||catalogSession(0,0,'learn','off');
   const chips=document.getElementById('scenario-chips');
   SCENARIOS.forEach((s,i)=>{
     const b=document.createElement('button');
-    b.className='chip'+(i===0?' active':'');
-    b.innerHTML='<span class="n">'+s.id+'</span>'+s.towns.start.short;
-    b.addEventListener('click',()=>{ state.gen=false; state.scenIdx=i; state.task=0; syncSelectorUI(); renderTask(); });
+    b.className='chip';
+    const number=document.createElement('span'); number.className='n'; number.textContent=s.id;
+    b.append(number,document.createTextNode(s.towns.start.short));
+    b.addEventListener('click',()=>commitLocalState(catalogSession(i,lastCatalogSetIndex,sessionState.view.mode,sessionState.view.countMode)));
     chips.appendChild(b);
   });
   document.querySelectorAll('#setpick button').forEach(b=>b.addEventListener('click',()=>{
-    state.gen=false; state.setIdx=parseInt(b.dataset.set,10); state.task=0; syncSelectorUI(); renderTask();
+    const setIndex=parseInt(b.dataset.set,10);
+    commitLocalState(catalogSession(lastCatalogScenarioIndex,setIndex,sessionState.view.mode,sessionState.view.countMode));
   }));
-  document.getElementById('gen-chip').addEventListener('click',()=>{
-    state.gen=true; state.genScenario=makeRandomScenario(); state.task=0; syncSelectorUI(); renderTask();
-  });
+  document.getElementById('gen-chip').addEventListener('click',()=>commitLocalState(generatedSession(sessionState.view.mode,sessionState.view.countMode)));
   document.querySelectorAll('#mode-switch button').forEach(b=>b.addEventListener('click',()=>{
-    document.querySelectorAll('#mode-switch button').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active'); state.mode=b.dataset.mode; applyMode(); renderMap();
+    const candidate=getState(); candidate.view.mode=b.dataset.mode;
+    commitLocalState(candidate);
   }));
   document.querySelectorAll('#task-stepper .step-btn').forEach(b=>b.addEventListener('click',()=>{
-    state.task=parseInt(b.dataset.task,10); renderTask();
+    const candidate=getState(); candidate.view.taskIndex=parseInt(b.dataset.task,10); candidate.view.countFrame=null;
+    commitLocalState(candidate);
   }));
   document.querySelectorAll('#count-switch button').forEach(b=>b.addEventListener('click',()=>{
-    state.count=b.dataset.count; renderMap();
+    const candidate=getState(); candidate.view.countMode=b.dataset.count; candidate.view.countFrame=null;
+    commitLocalState(candidate);
   }));
   document.getElementById('count-play').addEventListener('click', playCount);
   document.getElementById('reset-progress').addEventListener('click',()=>{
-    if(confirm('Сбросить прогресс тренажёра?')){ state.solved=0; state.streak=0; state.done={}; saveProgress(); updateStats(); renderTask(); }
+    if(!confirm('Сбросить прогресс тренажёра?')) return;
+    progressState={solved:0,streak:0}; saveProgress(); updateStats();
+    const candidate=getState(); candidate.tasks=freshTasks(); candidate.view.countFrame=null;
+    commitLocalState(candidate);
   });
-  const d=loadProgress(); if(d[TOPIC]){ state.solved=d[TOPIC].solved||0; state.streak=d[TOPIC].streak||0; }
-  syncSelectorUI(); renderTask();
+  renderFromState();
+
+  window.getBoardTrainerState=getState;
+  window.applyBoardTrainerState=applyState;
+  window.validateBoardTrainerState=validateSessionState;
+  window.renderBoardTrainerState=renderFromState;
+  window.getRoadsGridTestProbe=()=>({
+    state:getState(),
+    dom:{
+      story:document.getElementById('story-text').textContent,
+      task:document.getElementById('task-card').textContent,
+      taskHtml:document.getElementById('task-card').innerHTML,
+      map:document.getElementById('map').innerHTML,
+      activeTask:document.querySelector('#task-stepper .step-btn.active')?.dataset.task||'',
+      answer:document.getElementById('answer-input')?.value||'',
+      feedback:document.getElementById('feedback')?.textContent||''
+    },
+    timerActive:countTimer!==null,
+    progress:deepCopy(progressState),
+    localStorage:localStorage.getItem(STORAGE_KEY),
+    sessionStorage:sessionStorage.getItem(SESSION_KEY),
+    localNotificationCount
+  });
+  boardBridge=MathExamBoard.register({
+    id:'practice-1-5-roads-grid',
+    version:'1.0.0',
+    stateSchemaVersion:1,
+    parentOrigin:location.origin,
+    getState,
+    applyState,
+    subscribe
+  });
 })();
 </script>
 </body>

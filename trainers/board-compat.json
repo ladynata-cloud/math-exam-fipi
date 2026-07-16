@@ -122,6 +122,20 @@
       "supportsBoardMirror": false,
       "supportsSemanticEvents": false,
       "notes": "Тренажёр имеет собственный встроенный холст; в доске пока открывается как iframe."
+    },
+    {
+      "trainerId": "practice-1-5-roads-grid",
+      "file": "trainers/oge-1-5-trainers/practice-1-5-roads-grid.html",
+      "title": "ОГЭ №1–5: дороги по клеткам",
+      "group": "ОГЭ / задачи 1–5",
+      "boardCompatibility": "board-mirror",
+      "supportsSeed": false,
+      "supportsBoardMirror": true,
+      "version": "1.0.0",
+      "stateSchemaVersion": 1,
+      "bridgeProtocolVersion": 1,
+      "allowLegacyHtml": false,
+      "notes": "Зеркалируется закрытый семантический snapshot выбранного сюжета, пяти задач и статического кадра счёта."
     }
   ]
 }

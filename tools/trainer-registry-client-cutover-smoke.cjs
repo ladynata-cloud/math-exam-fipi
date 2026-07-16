@@ -12,6 +12,8 @@ const { chromium } = require('playwright');
 const REPO_ROOT = resolve(__dirname, '..');
 const BOARD_SERVER_DIR = resolve(REPO_ROOT, 'board-server');
 const PATH_FIXTURE_FILE = resolve(REPO_ROOT, 'tools', 'fixtures', 'trainer-path-conformance.json');
+const ROADS_FIXTURE_FILE = resolve(REPO_ROOT, 'tools', 'fixtures', 'roads-grid-state-conformance.json');
+const ROADS_TRAINER_PATH = '/trainers/oge-1-5-trainers/practice-1-5-roads-grid.html';
 const TRAINER_PATH_LIMITS = Object.freeze({
   maxComponents: 8,
   maxComponentLength: 64,
@@ -68,6 +70,63 @@ assert.throws(
   /fixture limits/,
   'fixture-limits-mismatch-fail'
 );
+
+const REQUIRED_ROADS_VECTOR_IDS = [
+  'schema-maximum-accept',
+  'catalog-baseline-accept',
+  'generated-baseline-accept',
+  'catalog-snapshot-survives-catalog-mutation-accept',
+  'unknown-property-reject',
+  'html-reject',
+  'oversize-reject',
+  'invalid-enum-reject',
+  'invalid-string-bounds-reject',
+  'wrong-tasks-tuple-length-reject',
+  'duplicate-town-number-reject',
+  'town-outside-grid-reject',
+  'path-speed-not-lower-reject',
+  'catalog-coherence-reject',
+  'generated-coherence-reject'
+];
+
+function validateRoadsFixture(value) {
+  assert.deepEqual(Object.keys(value || {}), ['schemaVersion', 'schemaMaximumVectorId', 'vectors'], 'roads fixture top-level shape');
+  assert.equal(value.schemaVersion, 1, 'roads fixture schemaVersion');
+  assert.equal(typeof value.schemaMaximumVectorId, 'string', 'roads fixture schemaMaximumVectorId');
+  assert.ok(Array.isArray(value.vectors) && value.vectors.length >= REQUIRED_ROADS_VECTOR_IDS.length, 'roads fixture vectors');
+  const ids = new Set();
+  for (const vector of value.vectors) {
+    assert.deepEqual(Object.keys(vector), ['id', 'expected', 'state', 'expectedReason', 'note'], `roads vector shape ${vector?.id || ''}`);
+    assert.equal(typeof vector.id, 'string', 'roads vector id');
+    assert.ok(!ids.has(vector.id), `duplicate roads fixture vector ${vector.id}`);
+    ids.add(vector.id);
+    assert.ok(['accept', 'reject'].includes(vector.expected), vector.id);
+    assert.ok(vector.state && typeof vector.state === 'object' && !Array.isArray(vector.state), `${vector.id} complete state`);
+    assert.equal(vector.expected === 'accept' ? vector.expectedReason === null : typeof vector.expectedReason === 'string' && vector.expectedReason.length > 0, true, `${vector.id} expected reason`);
+    assert.equal(typeof vector.note, 'string', `${vector.id} note`);
+  }
+  for (const id of REQUIRED_ROADS_VECTOR_IDS) assert.ok(ids.has(id), `missing roads fixture vector ${id}`);
+  const maximum = value.vectors.find(vector => vector.id === value.schemaMaximumVectorId);
+  assert.ok(maximum && maximum.expected === 'accept' && maximum.expectedReason === null, 'roads fixture schema maximum reference');
+  return value;
+}
+
+function loadRoadsFixture(file = ROADS_FIXTURE_FILE) {
+  return validateRoadsFixture(JSON.parse(readFileSync(file, 'utf8')));
+}
+
+const ROADS_FIXTURE = loadRoadsFixture();
+assert.throws(() => loadRoadsFixture(resolve(REPO_ROOT, 'tools', 'fixtures', 'roads-fixture-missing-fail.json')), /ENOENT/, 'roads-fixture-missing-fail');
+assert.throws(() => validateRoadsFixture(null), /roads fixture top-level shape/, 'roads-fixture-malformed-fail');
+const duplicateRoadsFixture = clone(ROADS_FIXTURE);
+duplicateRoadsFixture.vectors.push(clone(duplicateRoadsFixture.vectors[0]));
+assert.throws(() => validateRoadsFixture(duplicateRoadsFixture), /duplicate roads fixture vector/, 'roads-fixture-duplicate-fail');
+const wrongRoadsSchema = clone(ROADS_FIXTURE);
+wrongRoadsSchema.schemaVersion = 2;
+assert.throws(() => validateRoadsFixture(wrongRoadsSchema), /roads fixture schemaVersion/, 'roads-fixture-schema-version-fail');
+const wrongRoadsMaximum = clone(ROADS_FIXTURE);
+wrongRoadsMaximum.schemaMaximumVectorId = 'missing-maximum';
+assert.throws(() => validateRoadsFixture(wrongRoadsMaximum), /roads fixture schema maximum reference/, 'roads-fixture-maximum-reference-fail');
 
 async function freePort() {
   return new Promise((resolvePromise, reject) => {
@@ -773,6 +832,293 @@ async function liveTeacherStudent(browser, siteOrigin, boardOrigin, registry) {
   await teacherContext.close();
 }
 
+async function waitRoadsState(frame, expected, timeout = 20000) {
+  const serialized = typeof expected === 'string' ? expected : JSON.stringify(expected);
+  await frame.waitForFunction(value => JSON.stringify(window.getBoardTrainerState()) === value, serialized, { polling: 100, timeout });
+}
+
+async function roadsGridStandaloneAndConformance(browser, siteOrigin) {
+  const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const page = await context.newPage();
+  const evidence = instrument(page, 'roads-standalone');
+  await page.goto(`${siteOrigin}${ROADS_TRAINER_PATH}`, { waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.getBoardTrainerState === 'function');
+
+  for (let scenarioIndex = 0; scenarioIndex < 6; scenarioIndex++) {
+    await page.locator('#scenario-chips .chip').nth(scenarioIndex).click();
+    for (let setIndex = 0; setIndex < 2; setIndex++) {
+      await page.locator('#setpick button').nth(setIndex).click();
+      const local = await page.evaluate(() => ({ state: window.getBoardTrainerState(), validation: window.validateBoardTrainerState(window.getBoardTrainerState()) }));
+      assert.equal(local.validation.ok, true, `catalog ${scenarioIndex}:${setIndex} local constructor validates`);
+      assert.deepEqual(local.state.selection, { source: 'catalog', scenarioIndex, setIndex, variantKey: `catalog:${scenarioIndex}:${setIndex}` });
+    }
+  }
+  for (let index = 0; index < 6; index++) {
+    await page.click('#gen-chip');
+    const generated = await page.evaluate(() => ({ state: window.getBoardTrainerState(), validation: window.validateBoardTrainerState(window.getBoardTrainerState()) }));
+    assert.equal(generated.validation.ok, true, `generated local constructor ${index} validates`);
+    assert.equal(generated.state.selection.source, 'generated');
+    assert.equal(generated.state.scenario.id, 'gen');
+  }
+
+  const maximum = ROADS_FIXTURE.vectors.find(vector => vector.id === ROADS_FIXTURE.schemaMaximumVectorId);
+  const maximumBytes = Buffer.byteLength(JSON.stringify(maximum.state), 'utf8');
+  assert.ok(maximumBytes <= 8192, `schema maximum is ${maximumBytes} bytes`);
+  assert.deepEqual(
+    await page.evaluate(state => MathExamBoard.validateState(state, { allowHtml: false }), maximum.state),
+    { ok: true, serialized: JSON.stringify(maximum.state) },
+    'schema maximum passes Bridge generic validation with HTML disabled'
+  );
+
+  const baseline = ROADS_FIXTURE.vectors.find(vector => vector.id === 'catalog-baseline-accept').state;
+  for (const vector of ROADS_FIXTURE.vectors) {
+    await page.evaluate(state => window.applyBoardTrainerState(state), baseline);
+    await page.evaluate(() => {
+      localStorage.setItem('mathExamCourseProgress.v1', JSON.stringify({ unrelated: { keep: 'local' }, practiceRoadsGridTrainer: { solved: 4, streak: 2, total: 60 } }));
+      sessionStorage.setItem('mathExamRoadsGridSession.v1', 'standalone-sentinel');
+    });
+    const before = await page.evaluate(() => window.getRoadsGridTestProbe());
+    const actual = await page.evaluate(state => {
+      const validation = window.validateBoardTrainerState(state);
+      let applyReason = null;
+      try { window.applyBoardTrainerState(state); } catch (error) { applyReason = error.message; }
+      return {
+        expected: validation.ok ? 'accept' : 'reject',
+        reason: validation.reason,
+        applyReason,
+        serialized: validation.ok ? JSON.stringify(window.getBoardTrainerState()) : null
+      };
+    }, vector.state);
+    assert.equal(actual.expected, vector.expected, vector.id);
+    assert.equal(actual.reason, vector.expectedReason, `${vector.id} reason`);
+    if (vector.expected === 'accept') {
+      assert.equal(actual.applyReason, null, `${vector.id} applies`);
+      assert.equal(actual.serialized, JSON.stringify(vector.state), `${vector.id} apply/get byte stability`);
+      const after = await page.evaluate(() => window.getRoadsGridTestProbe());
+      assert.equal(after.timerActive, false, `${vector.id} remote apply leaves no timer`);
+      assert.equal(after.localNotificationCount, before.localNotificationCount, `${vector.id} remote apply does not notify`);
+      assert.equal(after.localStorage, before.localStorage, `${vector.id} remote apply does not write localStorage`);
+      assert.equal(after.sessionStorage, before.sessionStorage, `${vector.id} remote apply does not write sessionStorage`);
+      assert.deepEqual(after.progress, before.progress, `${vector.id} remote apply does not update progress`);
+    } else {
+      assert.equal(actual.applyReason, vector.expectedReason, `${vector.id} stable apply rejection`);
+      assert.deepEqual(await page.evaluate(() => window.getRoadsGridTestProbe()), before, `${vector.id} atomic rejection`);
+    }
+  }
+
+  const catalogMutation = ROADS_FIXTURE.vectors.find(vector => vector.id === 'catalog-snapshot-survives-catalog-mutation-accept').state;
+  await page.evaluate(state => window.applyBoardTrainerState(state), catalogMutation);
+  const savedCatalog = JSON.stringify(catalogMutation);
+  await page.evaluate(() => { SCENARIOS[0].shopsByRole.start.milk += 137; });
+  await page.evaluate(state => window.applyBoardTrainerState(state), catalogMutation);
+  assert.equal(await page.evaluate(() => JSON.stringify(window.getBoardTrainerState())), savedCatalog, 'catalog mutation does not invalidate or normalize saved semantics');
+  assert.equal(await page.evaluate(() => window.getBoardTrainerState().scenario.prices.start.milk), catalogMutation.scenario.prices.start.milk, 'render state uses saved catalog price');
+
+  await page.evaluate(state => window.applyBoardTrainerState(state), baseline);
+  const beforeIdempotentRender = await page.evaluate(() => window.getRoadsGridTestProbe());
+  await page.evaluate(() => { window.renderBoardTrainerState(); window.renderBoardTrainerState(); });
+  const afterIdempotentRender = await page.evaluate(() => window.getRoadsGridTestProbe());
+  assert.deepEqual(afterIdempotentRender, beforeIdempotentRender, 'renderFromState is observably idempotent and side-effect free');
+
+  await page.evaluate(() => {
+    localStorage.setItem('mathExamCourseProgress.v1', JSON.stringify({ unrelated: { keep: 'reload' }, practiceRoadsGridTrainer: { solved: 0, streak: 0, total: 60 } }));
+    sessionStorage.removeItem('mathExamRoadsGridSession.v1');
+  });
+  await page.click('#gen-chip');
+  await page.click('#task-stepper .step-btn[data-task="1"]');
+  await page.fill('#answer-input', '+');
+  await page.click('#check-btn');
+  await page.click('#show-btn');
+  await page.click('#check-btn');
+  await page.click('#mode-switch button[data-mode="practice"]');
+  await page.click('#count-switch button[data-count="pairs"]');
+  await page.click('#count-play');
+  await page.waitForFunction(() => {
+    const probe = window.getRoadsGridTestProbe();
+    return probe.state.view.countFrame !== null && probe.timerActive === false;
+  }, null, { polling: 100, timeout: 20000 });
+  const standaloneBeforeReload = await page.evaluate(() => window.getRoadsGridTestProbe());
+  assert.equal(JSON.parse(standaloneBeforeReload.localStorage).unrelated.keep, 'reload', 'local progress write preserves unrelated storage keys');
+  assert.equal(standaloneBeforeReload.sessionStorage, JSON.stringify(standaloneBeforeReload.state), 'top-level local action persists exact validated session');
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await page.waitForFunction(() => typeof window.getBoardTrainerState === 'function');
+  const standaloneAfterReload = await page.evaluate(() => window.getRoadsGridTestProbe());
+  assert.deepEqual(standaloneAfterReload.state, standaloneBeforeReload.state, 'standalone reload restores complete generated snapshot and task UI state');
+  assert.equal(standaloneAfterReload.localStorage, standaloneBeforeReload.localStorage, 'standalone reload preserves local progress payload');
+  assert.equal(standaloneAfterReload.timerActive, false, 'standalone reload renders saved count frame statically');
+
+  assertCleanBrowser(evidence);
+  await context.close();
+
+  for (const viewport of [{ width: 360, height: 800 }, { width: 390, height: 844 }]) {
+    const mobileContext = await browser.newContext({ viewport });
+    const mobile = await mobileContext.newPage();
+    const mobileEvidence = instrument(mobile, `roads-mobile-${viewport.width}`);
+    await mobile.goto(`${siteOrigin}${ROADS_TRAINER_PATH}`, { waitUntil: 'domcontentloaded' });
+    await mobile.click('#task-stepper .step-btn[data-task="4"]');
+    const layout = await mobile.evaluate(() => ({
+      clientWidth: document.documentElement.clientWidth,
+      scrollWidth: document.documentElement.scrollWidth,
+      bodyWidth: document.body.scrollWidth,
+      topnavBottom: document.querySelector('.topnav').getBoundingClientRect().bottom,
+      modeBottom: document.querySelector('#mode-switch').getBoundingClientRect().bottom,
+      stepperWidth: document.querySelector('#task-stepper').getBoundingClientRect().width,
+      shopClient: document.querySelector('.shop-wrap').clientWidth,
+      shopScroll: document.querySelector('.shop-wrap').scrollWidth
+    }));
+    assert.ok(layout.scrollWidth <= layout.clientWidth + 1 && layout.bodyWidth <= layout.clientWidth + 1, `${viewport.width}px has no outer horizontal overflow: ${JSON.stringify(layout)}`);
+    assert.ok(layout.topnavBottom > 0 && layout.modeBottom <= viewport.height, `${viewport.width}px top navigation and mode controls are reachable`);
+    assert.ok(layout.stepperWidth <= layout.clientWidth, `${viewport.width}px stepper fits viewport`);
+    assert.ok(layout.shopScroll >= layout.shopClient, `${viewport.width}px shop table owns its horizontal scroller`);
+    assertCleanBrowser(mobileEvidence);
+    await mobileContext.close();
+  }
+}
+
+async function roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registry) {
+  assert.equal(registry.trainers.length, 3, 'runtime registry exposes exactly three mirror entries');
+  assert.deepEqual(registry.trainers.map(entry => entry.trainerId), ['linear-inequalities-stepwise', 'negative-numbers-line', 'practice-1-5-roads-grid']);
+  const catalog = await (await fetch(`${siteOrigin}/trainers/board-compat.json`)).json();
+  assert.equal(catalog.trainers.length, 12, 'catalog exposes exactly twelve trainers');
+  assert.equal(catalog.trainers.filter(entry => entry.boardCompatibility === 'board-mirror').length, 3, 'catalog exposes exactly three mirrors');
+
+  const teacherContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const teacher = await teacherContext.newPage();
+  const teacherEvidence = instrument(teacher, 'roads-teacher');
+  await installRegistryRoute(teacher, siteOrigin, { calls: 0, registry, mode: 'live' });
+  await gotoBoard(teacher, siteOrigin, boardOrigin);
+  const studentLink = await createRoom(teacher);
+  await waitMirror(teacher, 'connected');
+
+  const studentContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const student = await studentContext.newPage();
+  const studentEvidence = instrument(student, 'roads-student');
+  await installRegistryRoute(student, siteOrigin, { calls: 0, registry, mode: 'live' });
+  await student.goto(studentLink, { waitUntil: 'domcontentloaded' });
+  await waitMirror(student, 'connected');
+
+  await teacher.selectOption('#trainerQuick', ROADS_TRAINER_PATH);
+  const teacherRoads = await trainerFrame(teacher, 'practice-1-5-roads-grid.html');
+  const studentRoads = await trainerFrame(student, 'practice-1-5-roads-grid.html');
+  await waitMirror(teacher, 'connected');
+  await waitMirror(student, 'connected');
+  await teacher.waitForFunction(() => document.querySelectorAll('#trainerQuick option').length === 13, null, { polling: 100 });
+
+  const teacherStorage = JSON.stringify({ unrelated: { owner: 'teacher' }, practiceRoadsGridTrainer: { solved: 2, streak: 1, total: 60 } });
+  const studentStorage = JSON.stringify({ unrelated: { owner: 'student' }, practiceRoadsGridTrainer: { solved: 17, streak: 9, total: 60 } });
+  await teacherRoads.evaluate(value => localStorage.setItem('mathExamCourseProgress.v1', value), teacherStorage);
+  await studentRoads.evaluate(value => localStorage.setItem('mathExamCourseProgress.v1', value), studentStorage);
+  await student.evaluate(() => {
+    window.__roadsMirrorMessages = 0;
+    addEventListener('message', event => { if (event.data?.type === 'mathexam:trainer-state') window.__roadsMirrorMessages++; });
+  });
+
+  await teacherRoads.click('#gen-chip');
+  for (let index = 0; index < 3; index++) {
+    const expected = await teacherRoads.evaluate(i => {
+      const state = window.getBoardTrainerState();
+      return state.scenario.towns[state.scenario.variant.ident[i]].num;
+    }, index);
+    await teacherRoads.locator('.id-sel').nth(index).selectOption(String(expected));
+  }
+  await teacherRoads.click('#check-btn');
+  await teacherRoads.click('#task-stepper .step-btn[data-task="1"]');
+  await teacherRoads.click('#show-btn');
+  await teacherRoads.click('#check-btn');
+  await teacherRoads.click('#mode-switch button[data-mode="teacher"]');
+  await teacherRoads.click('#count-switch button[data-count="triples"]');
+  await teacherRoads.click('#count-play');
+  await teacherRoads.waitForFunction(() => {
+    const probe = window.getRoadsGridTestProbe();
+    return probe.state.view.countFrame !== null && probe.timerActive === false;
+  }, null, { polling: 100, timeout: 20000 });
+  const teacherState = await teacherRoads.evaluate(() => window.getBoardTrainerState());
+  await waitRoadsState(studentRoads, teacherState);
+  const teacherStorageAfterLocalChecks = await teacherRoads.evaluate(() => localStorage.getItem('mathExamCourseProgress.v1'));
+  assert.equal(JSON.parse(teacherStorageAfterLocalChecks).unrelated.owner, 'teacher', 'teacher local checks preserve unrelated storage keys');
+  assert.equal(await student.evaluate(() => window.__roadsMirrorMessages), 0, 'remote roads-grid apply emits no viewer echo');
+  const studentProbe = await studentRoads.evaluate(() => window.getRoadsGridTestProbe());
+  assert.equal(studentProbe.timerActive, false, 'remote count frame remains static');
+  assert.equal(studentProbe.localStorage, studentStorage, 'viewer statistics and unrelated keys remain byte-identical');
+  assert.equal(studentProbe.sessionStorage, null, 'embedded viewer remote apply does not write standalone session storage');
+
+  await teacher.click('#controlToggle');
+  await student.waitForFunction(() => document.body.classList.contains('control-owner'), null, { polling: 100 });
+  await studentRoads.click('#task-stepper .step-btn[data-task="2"]');
+  await studentRoads.fill('#answer-input', '7');
+  await teacherRoads.waitForFunction(() => window.getBoardTrainerState().tasks[2].answer === '7', null, { polling: 100 });
+
+  const revokeTarget = Date.now() + 500;
+  await Promise.all([
+    teacher.evaluate(target => { setTimeout(() => shared.socket.emit('control:revoke', roomPayload()), Math.max(0, target + 10 - Date.now())); }, revokeTarget),
+    studentRoads.evaluate(target => new Promise(resolvePromise => {
+      setTimeout(() => {
+        const input = document.querySelector('#answer-input');
+        input.value = '88';
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+        resolvePromise();
+      }, Math.max(0, target - Date.now()));
+    }), revokeTarget)
+  ]);
+  await student.waitForFunction(() => !document.body.classList.contains('control-owner'), null, { polling: 100 });
+  await teacher.waitForTimeout(150);
+  assert.equal(await teacherRoads.evaluate(() => window.getBoardTrainerState().tasks[2].answer), '7', 'revoke drops roads-grid debounced pending input');
+
+  await teacher.click('#controlToggle');
+  await student.waitForFunction(() => document.body.classList.contains('control-owner'), null, { polling: 100 });
+  await studentRoads.fill('#answer-input', '9');
+  await teacherRoads.waitForFunction(() => window.getBoardTrainerState().tasks[2].answer === '9', null, { polling: 100 });
+  await teacher.reload({ waitUntil: 'domcontentloaded' });
+  await teacher.waitForFunction(() => document.querySelector('#shareStatus')?.textContent === 'подключено', null, { polling: 100 });
+  await waitMirror(teacher, 'connected');
+  const reloadedTeacherRoads = await trainerFrame(teacher, 'practice-1-5-roads-grid.html');
+  await reloadedTeacherRoads.waitForFunction(() => window.getBoardTrainerState().tasks[2].answer === '9', null, { polling: 100 });
+  await teacher.click('#controlToggle');
+  await student.waitForFunction(() => !document.body.classList.contains('control-owner'), null, { polling: 100 });
+  const authoritativeState = await reloadedTeacherRoads.evaluate(() => window.getBoardTrainerState());
+
+  await student.reload({ waitUntil: 'domcontentloaded' });
+  await student.waitForFunction(() => document.querySelector('#shareStatus')?.textContent === 'подключено', null, { polling: 100 });
+  await waitMirror(student, 'connected');
+  const reloadedStudentRoads = await trainerFrame(student, 'practice-1-5-roads-grid.html');
+  await waitRoadsState(reloadedStudentRoads, authoritativeState);
+  assert.equal(await reloadedStudentRoads.evaluate(() => localStorage.getItem('mathExamCourseProgress.v1')), studentStorage, 'student reload preserves viewer statistics');
+
+  const lateContext = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const late = await lateContext.newPage();
+  const lateEvidence = instrument(late, 'roads-late-join');
+  await installRegistryRoute(late, siteOrigin, { calls: 0, registry, mode: 'live' });
+  await late.goto(studentLink, { waitUntil: 'domcontentloaded' });
+  await waitMirror(late, 'connected');
+  const lateRoads = await trainerFrame(late, 'practice-1-5-roads-grid.html');
+  await lateRoads.evaluate(() => localStorage.setItem('mathExamCourseProgress.v1', JSON.stringify({ unrelated: { owner: 'late' }, practiceRoadsGridTrainer: { solved: 23, streak: 4, total: 60 } })));
+  await waitRoadsState(lateRoads, authoritativeState);
+  assert.equal((await lateRoads.evaluate(() => window.getRoadsGridTestProbe())).timerActive, false, 'late join count frame remains static');
+
+  for (const viewport of [{ width: 1280, height: 900 }, { width: 1000, height: 800 }, { width: 700, height: 800 }]) {
+    await teacher.setViewportSize(viewport);
+    await teacher.waitForTimeout(150);
+    const boardLayout = await teacher.evaluate(() => ({ client: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth, frame: document.querySelector('#trainerFrame').getBoundingClientRect().toJSON() }));
+    assert.ok(boardLayout.scroll <= boardLayout.client + 1, `board ${viewport.width}px has no outer horizontal overflow`);
+    assert.ok(boardLayout.frame.width > 0 && boardLayout.frame.height > 0, `board ${viewport.width}px iframe remains reachable`);
+    const trainerLayout = await reloadedTeacherRoads.evaluate(() => ({ client: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth, height: document.documentElement.scrollHeight }));
+    assert.ok(trainerLayout.scroll <= trainerLayout.client + 1, `iframe ${viewport.width}px has no outer horizontal overflow`);
+    assert.ok(trainerLayout.height > 0, `iframe ${viewport.width}px retains internal content`);
+  }
+
+  const settledMessages = await student.evaluate(() => window.__roadsMirrorMessages || 0);
+  await student.waitForTimeout(200);
+  assert.equal(await student.evaluate(() => window.__roadsMirrorMessages || 0), settledMessages, 'roads-grid synchronization settles without a message loop');
+  assert.equal(await reloadedTeacherRoads.evaluate(() => localStorage.getItem('mathExamCourseProgress.v1')), teacherStorageAfterLocalChecks, 'teacher local statistics stay isolated from viewer state');
+
+  assertCleanBrowser(teacherEvidence);
+  assertCleanBrowser(studentEvidence);
+  assertCleanBrowser(lateEvidence);
+  await lateContext.close();
+  await studentContext.close();
+  await teacherContext.close();
+}
+
 async function main() {
   const [sitePort, otherSitePort, boardPort] = await Promise.all([freePort(), freePort(), freePort()]);
   const siteOrigin = `http://127.0.0.1:${sitePort}`;
@@ -801,6 +1147,10 @@ async function main() {
     if (section === 'all' || section === 'fail-closed') await arrivalAndFailClosed(browser, siteOrigin, boardOrigin, registry);
     if (section === 'all' || section === 'reconnect') await reconnectRegistryMatrix(browser, siteOrigin, boardOrigin, registry);
     if (section === 'all' || section === 'live') await liveTeacherStudent(browser, siteOrigin, boardOrigin, registry);
+    if (section === 'all' || section === 'roads') {
+      await roadsGridStandaloneAndConformance(browser, siteOrigin);
+      await roadsGridTeacherStudent(browser, siteOrigin, boardOrigin, registry);
+    }
     console.log('TRAINER_REGISTRY_B2_BROWSER_REGRESSION_OK');
   } finally {
     if (browser) await browser.close();
