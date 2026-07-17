@@ -39,20 +39,20 @@ const schemaPath = path.join(
 const emptyManifest = Object.freeze({ version: 1, schemaVersion: 1, trainers: [] });
 const pilotExpected = Object.freeze({
   'trainers/oge-task6-fractions.html': {
-    sha256: '90749aa78b4e616bd88c30c1ec92e7f51d185a8726375ed07b1e5e231ba827d7',
-    sizeBytes: 82720
+    sha256: '24f7b404bc944fa9a528d50a3b76ece0c4526afb66eed3b96453fd94965fcd03',
+    sizeBytes: 82390
   },
   'trainers/oge-task8-powers-roots.html': {
-    sha256: '01611bf4dbea3c5ad1e672b2ea933413425638fbe4e8e6eab952383dd8388e67',
-    sizeBytes: 99754
+    sha256: 'df283d5147edaf536a885203dc8b8cc540c424f32d29369cb176e79823d6120a',
+    sizeBytes: 98568
   },
   'trainers/oge-task9-equations.html': {
-    sha256: '57a3bc830e17815dac57bef12ea4444a5df3084c496a0a8fde3ae97547f6a01e',
-    sizeBytes: 184896
+    sha256: 'c4813016e37b4e5b87524f1e3270cb3856027b01f89c616d4bcd619d58f343be',
+    sizeBytes: 181899
   },
   'trainers/oge-task20-equations.html': {
-    sha256: '38fee8ee8cb32497ec79fe8f63bb5e0e76be590a97b991dc286aa1bc9af812fa',
-    sizeBytes: 165321
+    sha256: '839f2fcd27bea701be1e3178ff3863bd72283905b91c57c626395404629e90ad',
+    sizeBytes: 163028
   }
 });
 
@@ -426,24 +426,73 @@ test('incremental run reuses unchanged analysis and preserves stable IDs', async
   }
 });
 
-test('5,000-candidate synthetic cohort records exact scale and remains deterministic', async t => {
-  const before = process.memoryUsage().rss;
-  const started = performance.now();
-  const report = await inventoryCandidates({
+test('incremental reuse preserves malformed HTML findings and deterministic output', async () => {
+  const malformed = {
+    sourceKind: 'synthetic',
+    canonicalPath: 'trainers/incremental-malformed.html',
+    content: Buffer.from('<html><head><title>Unclosed</title></head><body>')
+  };
+  const fresh = await inventoryCandidates({
     repoRoot,
-    candidates: generateSyntheticCandidates(5000),
+    candidates: [malformed],
     manifest: emptyManifest
   });
-  const elapsedMs = performance.now() - started;
+  const incremental = await inventoryCandidates({
+    repoRoot,
+    candidates: [malformed],
+    manifest: emptyManifest,
+    previousReport: fresh
+  });
+  assert.ok(incremental.run.incrementalReused > 0);
+  assert.deepEqual(incremental.descriptors[0].errors, fresh.descriptors[0].errors);
+  assert.deepEqual(incremental.descriptors[0], fresh.descriptors[0]);
+  assert.deepEqual(incremental.findings.counts, fresh.findings.counts);
+  assert.equal(incremental.deterministicFingerprint, fresh.deterministicFingerprint);
+});
+
+test('5,000-candidate synthetic cohort records exact scale and remains deterministic', async t => {
+  const candidates = generateSyntheticCandidates(5000);
+  const before = process.memoryUsage().rss;
+  const started = performance.now();
+  const fresh = await inventoryCandidates({
+    repoRoot,
+    candidates,
+    manifest: emptyManifest
+  });
+  const freshElapsedMs = performance.now() - started;
+  const repeatedStarted = performance.now();
+  const repeated = await inventoryCandidates({
+    repoRoot,
+    candidates: [...candidates].reverse(),
+    manifest: emptyManifest
+  });
+  const repeatedElapsedMs = performance.now() - repeatedStarted;
+  const incrementalStarted = performance.now();
+  const incremental = await inventoryCandidates({
+    repoRoot,
+    candidates,
+    manifest: emptyManifest,
+    previousReport: fresh
+  });
+  const incrementalElapsedMs = performance.now() - incrementalStarted;
   const rssDeltaBytes = process.memoryUsage().rss - before;
-  assert.equal(report.findings.counts.candidates, 5000);
-  assert.equal(report.descriptors.length, 5000);
-  assert.equal(report.findings.counts.releaseBlockers, 0);
-  assert.equal(report.descriptors[0].canonicalPath, 'trainers/synthetic/cohort-00000.html');
-  assert.equal(report.descriptors.at(-1).canonicalPath, 'trainers/synthetic/cohort-04999.html');
-  assert.equal(new Set(report.descriptors.map(item => item.inventoryId)).size, 5000);
-  assert.ok(report.deterministicFingerprint);
-  t.diagnostic(`synthetic5000 durationMs=${elapsedMs.toFixed(1)} rssDeltaBytes=${rssDeltaBytes}`);
+  assert.equal(fresh.findings.counts.candidates, 5000);
+  assert.equal(fresh.descriptors.length, 5000);
+  assert.equal(fresh.findings.counts.releaseBlockers, 0);
+  assert.equal(fresh.descriptors[0].canonicalPath, 'trainers/synthetic/cohort-00000.html');
+  assert.equal(fresh.descriptors.at(-1).canonicalPath, 'trainers/synthetic/cohort-04999.html');
+  assert.equal(new Set(fresh.descriptors.map(item => item.inventoryId)).size, 5000);
+  assert.equal(repeated.deterministicFingerprint, fresh.deterministicFingerprint);
+  assert.equal(incremental.deterministicFingerprint, fresh.deterministicFingerprint);
+  assert.deepEqual(repeated.descriptors, fresh.descriptors);
+  assert.deepEqual(incremental.descriptors, fresh.descriptors);
+  assert.equal(incremental.run.incrementalReused, 5000);
+  t.diagnostic(
+    `synthetic5000 freshMs=${freshElapsedMs.toFixed(1)} `
+    + `repeatedMs=${repeatedElapsedMs.toFixed(1)} `
+    + `incrementalMs=${incrementalElapsedMs.toFixed(1)} `
+    + `rssDeltaBytes=${rssDeltaBytes}`
+  );
 });
 
 test('repository collection is opt-in for intake and uses only tracked trainer HTML by default', async () => {
@@ -481,7 +530,12 @@ test('Pilot A reconciles exact hashes, references, surfaces, and pending reviews
 });
 
 test('repository inputs remain byte-identical before and after inventory', async () => {
-  const tracked = [...PILOT_A_PATHS, 'trainers/board-compat.json', 'sitemap.xml', 'trainers/oge-course/index.html'];
+  const { stdout } = await execFileAsync(
+    'git',
+    ['ls-files', '-z'],
+    { cwd: repoRoot, windowsHide: true, encoding: 'buffer', maxBuffer: 8 * 1024 * 1024 }
+  );
+  const tracked = stdout.toString('utf8').split('\0').filter(Boolean);
   const before = Object.fromEntries(await Promise.all(
     tracked.map(async relative => [relative, sha256(await readFile(path.join(repoRoot, ...relative.split('/'))))])
   ));
@@ -569,6 +623,30 @@ test('inventory source contains exact-path runtime lookup and no basename author
   assert.doesNotMatch(source, /manifestByFile\.get\(.*basename/);
 });
 
+test('scoped CLI marker cannot claim the full gate', async () => {
+  const { stdout } = await execFileAsync(
+    process.execPath,
+    ['tools/trainer-inventory/cli.mjs', '--check'],
+    { cwd: repoRoot, windowsHide: true, maxBuffer: 4 * 1024 * 1024 }
+  );
+  assert.match(stdout, /TRAINER_FACTORY_INVENTORY_V1_CHECK_OK/);
+  assert.doesNotMatch(stdout, /TRAINER_FACTORY_INVENTORY_V1_GATE_OK/);
+
+  const cliSource = await readFile(
+    path.join(repoRoot, 'tools', 'trainer-inventory', 'cli.mjs'),
+    'utf8'
+  );
+  const gateSource = await readFile(
+    path.join(repoRoot, 'tools', 'trainer-inventory', 'gate.mjs'),
+    'utf8'
+  );
+  assert.doesNotMatch(cliSource, /TRAINER_FACTORY_INVENTORY_V1_GATE_OK/);
+  assert.match(gateSource, /TRAINER_FACTORY_INVENTORY_V1_GATE_OK/);
+  assert.match(gateSource, /Phase 1 tests/);
+  assert.match(gateSource, /Board-server regression/);
+  assert.match(gateSource, /Committed diff check/);
+});
+
 test('working diff stays inside the approved docs, skill, fixture, and tool scope', async () => {
   const { stdout } = await execFileAsync(
     'git',
@@ -579,7 +657,21 @@ test('working diff stays inside the approved docs, skill, fixture, and tool scop
     .split(/\r?\n/)
     .filter(Boolean)
     .map(line => line.slice(3).replaceAll('\\', '/'));
-  const allowed = changed.filter(relative => (
+  const { stdout: baseStdout } = await execFileAsync(
+    'git',
+    ['merge-base', 'HEAD', 'origin/main'],
+    { cwd: repoRoot, windowsHide: true }
+  );
+  const { stdout: committedStdout } = await execFileAsync(
+    'git',
+    ['diff', '--name-only', `${baseStdout.trim()}..HEAD`],
+    { cwd: repoRoot, windowsHide: true }
+  );
+  const allChanged = [
+    ...changed,
+    ...committedStdout.split(/\r?\n/).filter(Boolean).map(value => value.replaceAll('\\', '/'))
+  ];
+  const allowed = allChanged.filter(relative => (
     relative === '.gitignore'
     || relative === '.agents/skills/trainer-inventory/SKILL.md'
     || relative === 'docs/TRAINER_INVENTORY_FORMAT.md'
@@ -587,7 +679,7 @@ test('working diff stays inside the approved docs, skill, fixture, and tool scop
     || relative === 'tools/fixtures/trainer-public-url-conformance.json'
     || relative.startsWith('tools/trainer-inventory/')
   ));
-  assert.deepEqual(changed.sort(), allowed.sort());
+  assert.deepEqual(allChanged.sort(), allowed.sort());
 });
 
 test('committed-scope sources contain no secret assignment or machine absolute path', async () => {

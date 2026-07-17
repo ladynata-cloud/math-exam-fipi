@@ -51,8 +51,16 @@ Run:
 ```text
 node --test tools/trainer-inventory/test/*.test.mjs
 node tools/trainer-inventory/cli.mjs --check
-git diff --check
+node tools/trainer-inventory/gate.mjs
 ```
+
+`--check` is a scoped inventory check and may emit only
+`TRAINER_FACTORY_INVENTORY_V1_CHECK_OK`. It does not prove the Phase 1 test,
+server-regression, committed-diff, or clean-worktree gates. Only `gate.mjs`
+runs the complete sequence above, including the board-server regression and
+committed `git diff --check`, and may emit
+`TRAINER_FACTORY_INVENTORY_V1_GATE_OK`. Any failed subprocess or dirty
+worktree prevents the full marker.
 
 The gate must cover the committed public-URL conformance fixture, descriptor
 schema, manifest equality checks, Pilot A, at least 5,000 synthetic candidates,

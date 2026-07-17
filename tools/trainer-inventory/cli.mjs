@@ -62,7 +62,7 @@ async function main() {
     output: options.check ? 'not-written' : 'ignored-output-directory'
   })}\n`);
   if (options.check) {
-    process.stdout.write('TRAINER_FACTORY_INVENTORY_V1_GATE_OK\n');
+    process.stdout.write('TRAINER_FACTORY_INVENTORY_V1_CHECK_OK\n');
   }
 }
 

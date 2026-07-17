@@ -143,6 +143,19 @@ acceptance. This task does not publish, delist, relink, render, or approve them.
 10. Generated outputs are ignored; committed JSON and Markdown parse; links,
     secrets, absolute paths, scope, and `git diff --check` pass.
 
+## Gate-marker safety
+
+`node tools/trainer-inventory/cli.mjs --check` performs the scoped repository
+inventory check and may emit only
+`TRAINER_FACTORY_INVENTORY_V1_CHECK_OK`. That marker is not the final gate.
+
+Only `node tools/trainer-inventory/gate.mjs` runs the Phase 1 tests, scoped CLI
+check, board-server regression, committed-range `git diff --check`, and clean
+worktree check as one fail-closed sequence. It may emit
+`TRAINER_FACTORY_INVENTORY_V1_GATE_OK` only after every step succeeds. A
+subprocess failure, skipped dependency, diff failure, or dirty worktree prevents
+the final marker.
+
 ## Rollback
 
 Rollback removes only the Phase 1 tools, schemas, fixtures, tests, documentation,

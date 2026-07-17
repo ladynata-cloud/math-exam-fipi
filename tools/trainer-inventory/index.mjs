@@ -820,7 +820,15 @@ export async function inventoryCandidates(options) {
     const previous = previousByPath.get(candidate.canonicalPath);
     let analysis;
     if (previous?.sourceSha256 === sourceSha256) {
-      analysis = { html: previous.html, dependencies: previous.dependencies, errors: [] };
+      analysis = {
+        html: previous.html,
+        dependencies: previous.dependencies,
+        errors: Array.isArray(previous.errors)
+          ? previous.errors.filter(
+              item => typeof item === 'string' && item.startsWith('HTML_')
+            )
+          : []
+      };
       incrementalReused += 1;
     } else {
       analysis = analyzeHtml(bytes.toString('utf8'), candidate.canonicalPath);
