@@ -1,0 +1,280 @@
+{
+  "schemaVersion": 1,
+  "canonicalOrigin": "https://mathexam.space",
+  "vectors": [
+    {
+      "id": "same-origin-absolute-normalized",
+      "family": "input-form",
+      "input": "https://mathexam.space/trainers/example.html",
+      "expected": "NORMALIZED",
+      "canonicalResult": "https://mathexam.space/trainers/example.html",
+      "reason": "same-origin HTTPS absolute trainer URL"
+    },
+    {
+      "id": "root-relative-normalized",
+      "family": "input-form",
+      "input": "/trainers/example.html",
+      "expected": "NORMALIZED",
+      "canonicalResult": "https://mathexam.space/trainers/example.html",
+      "reason": "root-relative trainer URL"
+    },
+    {
+      "id": "canonical-relative-normalized",
+      "family": "input-form",
+      "input": "trainers/example.html",
+      "expected": "NORMALIZED",
+      "canonicalResult": "https://mathexam.space/trainers/example.html",
+      "reason": "canonical relative trainer URL"
+    },
+    {
+      "id": "hostname-case-normalized",
+      "family": "hostname-case",
+      "input": "https://MATHEXAM.SPACE/trainers/example.html",
+      "expected": "NORMALIZED",
+      "canonicalResult": "https://mathexam.space/trainers/example.html",
+      "reason": "WHATWG hostname normalization is case-insensitive"
+    },
+    {
+      "id": "https-default-port-normalized",
+      "family": "port",
+      "input": "https://mathexam.space:443/trainers/example.html",
+      "expected": "NORMALIZED",
+      "canonicalResult": "https://mathexam.space/trainers/example.html",
+      "reason": "HTTPS default port is removed"
+    },
+    {
+      "id": "query-identity-collision",
+      "family": "query",
+      "input": "/trainers/example.html?mode=practice",
+      "compareTo": "/trainers/example.html?mode=exam",
+      "expected": "COLLISION",
+      "canonicalResult": "https://mathexam.space/trainers/example.html",
+      "compareCanonicalResult": "https://mathexam.space/trainers/example.html",
+      "reason": "query does not participate in public URL identity"
+    },
+    {
+      "id": "fragment-identity-collision",
+      "family": "fragment",
+      "input": "/trainers/example.html#one",
+      "compareTo": "/trainers/example.html#two",
+      "expected": "COLLISION",
+      "canonicalResult": "https://mathexam.space/trainers/example.html",
+      "compareCanonicalResult": "https://mathexam.space/trainers/example.html",
+      "reason": "fragment does not participate in public URL identity"
+    },
+    {
+      "id": "query-percent-is-identity-neutral",
+      "family": "query",
+      "input": "/trainers/example.html?q=%2F",
+      "expected": "NORMALIZED",
+      "canonicalResult": "https://mathexam.space/trainers/example.html",
+      "reason": "percent encoding in query is outside raw pathname validation"
+    },
+    {
+      "id": "fragment-percent-is-identity-neutral",
+      "family": "fragment",
+      "input": "/trainers/example.html#%2e%2e",
+      "expected": "NORMALIZED",
+      "canonicalResult": "https://mathexam.space/trainers/example.html",
+      "reason": "percent encoding in fragment is outside raw pathname validation"
+    },
+    {
+      "id": "index-directory-collision",
+      "family": "index-html",
+      "input": "/articles/index.html",
+      "compareTo": "/articles/",
+      "expected": "COLLISION",
+      "canonicalResult": "https://mathexam.space/articles/",
+      "compareCanonicalResult": "https://mathexam.space/articles/",
+      "reason": "terminal index.html and its directory share discovery identity"
+    },
+    {
+      "id": "non-index-trailing-slash-distinct",
+      "family": "trailing-slash",
+      "input": "/articles/topic",
+      "compareTo": "/articles/topic/",
+      "expected": "DISTINCT",
+      "canonicalResult": "https://mathexam.space/articles/topic",
+      "compareCanonicalResult": "https://mathexam.space/articles/topic/",
+      "reason": "non-index trailing slash is identity-significant"
+    },
+    {
+      "id": "trainer-html-trailing-slash-rejected",
+      "family": "trailing-slash",
+      "input": "/trainers/example.html/",
+      "expected": "REJECT",
+      "reason": "trainer HTML cannot have a trailing slash"
+    },
+    {
+      "id": "pathname-case-distinct",
+      "family": "pathname-case",
+      "input": "/trainers/Example.html",
+      "compareTo": "/trainers/example.html",
+      "expected": "DISTINCT",
+      "canonicalResult": "https://mathexam.space/trainers/Example.html",
+      "compareCanonicalResult": "https://mathexam.space/trainers/example.html",
+      "reason": "URL normalization preserves pathname case"
+    },
+    {
+      "id": "raw-percent-rejected",
+      "family": "raw-percent",
+      "input": "/trainers/100%25.html",
+      "expected": "REJECT",
+      "reason": "any percent sign in raw pathname is rejected"
+    },
+    {
+      "id": "encoded-slash-rejected",
+      "family": "encoded-separator",
+      "input": "/trainers/group%2Fexample.html",
+      "expected": "REJECT",
+      "reason": "encoded slash is rejected before parsing"
+    },
+    {
+      "id": "encoded-backslash-rejected",
+      "family": "encoded-separator",
+      "input": "/trainers/group%5Cexample.html",
+      "expected": "REJECT",
+      "reason": "encoded backslash is rejected before parsing"
+    },
+    {
+      "id": "encoded-dot-segment-rejected",
+      "family": "encoded-dot-segment",
+      "input": "/trainers/%2e%2e/example.html",
+      "expected": "REJECT",
+      "reason": "encoded dot segment is rejected before parsing"
+    },
+    {
+      "id": "double-encoded-dot-rejected",
+      "family": "encoded-dot-segment",
+      "input": "/trainers/%252e%252e/example.html",
+      "expected": "REJECT",
+      "reason": "double encoding is rejected without repair"
+    },
+    {
+      "id": "stray-percent-rejected",
+      "family": "raw-percent",
+      "input": "/trainers/example%.html",
+      "expected": "REJECT",
+      "reason": "stray percent is rejected"
+    },
+    {
+      "id": "malformed-percent-rejected",
+      "family": "raw-percent",
+      "input": "/trainers/example%2.html",
+      "expected": "REJECT",
+      "reason": "malformed encoding is rejected"
+    },
+    {
+      "id": "literal-dot-segment-rejected",
+      "family": "dot-segment",
+      "input": "/trainers/./example.html",
+      "expected": "REJECT",
+      "reason": "literal dot segment is rejected before WHATWG repair"
+    },
+    {
+      "id": "literal-dotdot-segment-rejected",
+      "family": "dot-segment",
+      "input": "/trainers/../example.html",
+      "expected": "REJECT",
+      "reason": "literal dot-dot segment is rejected before WHATWG repair"
+    },
+    {
+      "id": "duplicate-slash-rejected",
+      "family": "duplicate-slash",
+      "input": "/trainers//example.html",
+      "expected": "REJECT",
+      "reason": "duplicate pathname slash is rejected"
+    },
+    {
+      "id": "literal-backslash-rejected",
+      "family": "separator",
+      "input": "/trainers\\example.html",
+      "expected": "REJECT",
+      "reason": "literal backslash is rejected"
+    },
+    {
+      "id": "unicode-division-slash-rejected",
+      "family": "unicode-separator",
+      "input": "/trainers∕example.html",
+      "expected": "REJECT",
+      "reason": "ambiguous Unicode separator is rejected"
+    },
+    {
+      "id": "cross-origin-rejected",
+      "family": "origin",
+      "input": "https://example.com/trainers/example.html",
+      "expected": "REJECT",
+      "reason": "cross-origin URL is not canonical"
+    },
+    {
+      "id": "credentials-rejected",
+      "family": "credentials",
+      "input": "https://user:pass@mathexam.space/trainers/example.html",
+      "expected": "REJECT",
+      "reason": "credentials are forbidden"
+    },
+    {
+      "id": "http-scheme-rejected",
+      "family": "scheme",
+      "input": "http://mathexam.space/trainers/example.html",
+      "expected": "REJECT",
+      "reason": "canonical public URLs require HTTPS"
+    },
+    {
+      "id": "javascript-scheme-rejected",
+      "family": "scheme",
+      "input": "javascript:alert(1)",
+      "expected": "REJECT",
+      "reason": "non-HTTP schemes are forbidden"
+    },
+    {
+      "id": "non-default-port-rejected",
+      "family": "port",
+      "input": "https://mathexam.space:444/trainers/example.html",
+      "expected": "REJECT",
+      "reason": "non-default port is forbidden"
+    },
+    {
+      "id": "protocol-relative-rejected",
+      "family": "input-form",
+      "input": "//mathexam.space/trainers/example.html",
+      "expected": "REJECT",
+      "reason": "protocol-relative input is forbidden"
+    },
+    {
+      "id": "drive-path-rejected",
+      "family": "filesystem-form",
+      "input": "C:/trainers/example.html",
+      "expected": "REJECT",
+      "reason": "drive paths are forbidden"
+    },
+    {
+      "id": "unc-path-rejected",
+      "family": "filesystem-form",
+      "input": "\\\\server\\share\\example.html",
+      "expected": "REJECT",
+      "reason": "UNC paths are forbidden"
+    },
+    {
+      "id": "malformed-url-rejected",
+      "family": "malformed",
+      "input": "https://[::1/trainers/example.html",
+      "expected": "REJECT",
+      "reason": "malformed absolute URL is rejected"
+    },
+    {
+      "id": "control-character-rejected",
+      "family": "unsafe-text",
+      "input": "/trainers/\u0001example.html",
+      "expected": "REJECT",
+      "reason": "control characters are forbidden"
+    },
+    {
+      "id": "bidi-control-rejected",
+      "family": "unsafe-text",
+      "input": "/trainers/\u202eexample.html",
+      "expected": "REJECT",
+      "reason": "bidi controls are forbidden"
+    }
+  ]
+}

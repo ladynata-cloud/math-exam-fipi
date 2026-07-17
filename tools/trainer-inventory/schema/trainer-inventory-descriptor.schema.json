@@ -1,0 +1,241 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mathexam.space/schemas/trainer-inventory-descriptor-v1.json",
+  "title": "MathExam trainer inventory descriptor",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "descriptorVersion",
+    "inventoryId",
+    "sourceKind",
+    "sourceSha256",
+    "sizeBytes",
+    "basename",
+    "trainerId",
+    "canonicalPath",
+    "canonicalUrl",
+    "mime",
+    "publishedBaseline",
+    "publicationSurfaces",
+    "references",
+    "html",
+    "dependencies",
+    "runtimeCrossCheck",
+    "classification",
+    "provenance",
+    "review",
+    "duplicate",
+    "risks",
+    "errors",
+    "unresolvedQuestions"
+  ],
+  "properties": {
+    "descriptorVersion": { "const": 1 },
+    "inventoryId": { "type": "string", "pattern": "^inv-(repo|intake|synthetic)-[a-f0-9]{24}$" },
+    "sourceKind": { "enum": ["repo", "intake", "synthetic"] },
+    "sourceSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "sizeBytes": { "type": "integer", "minimum": 0 },
+    "basename": { "type": "string", "minLength": 1 },
+    "trainerId": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" }
+      ]
+    },
+    "canonicalPath": { "type": "string", "pattern": "^trainers/.+\\.html$" },
+    "canonicalUrl": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^https://mathexam\\.space/trainers/.+\\.html$" }
+      ]
+    },
+    "mime": { "const": "text/html" },
+    "publishedBaseline": { "type": "boolean" },
+    "publicationSurfaces": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["FILE_PUBLISHED", "SITE_DISCOVERY", "BOARD_DISCOVERY", "BOARD_MIRROR"],
+      "properties": {
+        "FILE_PUBLISHED": { "type": "boolean" },
+        "SITE_DISCOVERY": { "type": "boolean" },
+        "BOARD_DISCOVERY": { "type": "boolean" },
+        "BOARD_MIRROR": { "type": "boolean" }
+      }
+    },
+    "references": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sitemap", "course", "manual", "site"],
+      "properties": {
+        "sitemap": { "$ref": "#/$defs/stringArray" },
+        "course": { "$ref": "#/$defs/stringArray" },
+        "manual": { "$ref": "#/$defs/stringArray" },
+        "site": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "html": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "metadata",
+        "hasViewport",
+        "language",
+        "inlineScriptCount",
+        "inlineStyleCount",
+        "iframeCount",
+        "usesRandom",
+        "usesBridge",
+        "usesPostMessage",
+        "usesSocketIo",
+        "stateSignals"
+      ],
+      "properties": {
+        "title": { "type": "string" },
+        "metadata": {
+          "type": "object",
+          "propertyNames": { "type": "string", "minLength": 1 },
+          "additionalProperties": { "type": "string" }
+        },
+        "hasViewport": { "type": "boolean" },
+        "language": { "type": ["string", "null"] },
+        "inlineScriptCount": { "type": "integer", "minimum": 0 },
+        "inlineStyleCount": { "type": "integer", "minimum": 0 },
+        "iframeCount": { "type": "integer", "minimum": 0 },
+        "usesRandom": { "type": "boolean" },
+        "usesBridge": { "type": "boolean" },
+        "usesPostMessage": { "type": "boolean" },
+        "usesSocketIo": { "type": "boolean" },
+        "stateSignals": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "internalAssets",
+        "externalOrigins",
+        "networkSignals",
+        "storageSignals",
+        "scriptSources",
+        "styleSources",
+        "malformedReferences"
+      ],
+      "properties": {
+        "internalAssets": { "$ref": "#/$defs/stringArray" },
+        "externalOrigins": { "$ref": "#/$defs/stringArray" },
+        "networkSignals": { "$ref": "#/$defs/stringArray" },
+        "storageSignals": { "$ref": "#/$defs/stringArray" },
+        "scriptSources": { "$ref": "#/$defs/stringArray" },
+        "styleSources": { "$ref": "#/$defs/stringArray" },
+        "malformedReferences": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "runtimeCrossCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority",
+        "registryEntryExpected",
+        "fields",
+        "grantsRuntimeAuthorization"
+      ],
+      "properties": {
+        "authority": { "const": "cross-check-only" },
+        "registryEntryExpected": { "type": "boolean" },
+        "fields": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "trainerId": { "type": "string" },
+            "file": { "type": "string" },
+            "title": { "type": "string" },
+            "group": { "type": "string" },
+            "boardCompatibility": { "type": "string" },
+            "supportsSeed": { "type": "boolean" },
+            "supportsBoardMirror": { "type": "boolean" },
+            "supportsSemanticEvents": { "type": "boolean" },
+            "version": { "type": "string" },
+            "stateSchemaVersion": { "type": "integer" },
+            "bridgeProtocolVersion": { "type": "integer" },
+            "allowLegacyHtml": { "type": "boolean" }
+          }
+        },
+        "grantsRuntimeAuthorization": { "const": false }
+      }
+    },
+    "classification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["archetype", "proposedTrack", "evidence", "ownerApprovalRequired"],
+      "properties": {
+        "archetype": { "type": "string", "minLength": 1 },
+        "proposedTrack": {
+          "enum": ["STATIC_ASSET", "CATALOG_ONLY", "MIRROR_STANDARD", "NEW_ARCHETYPE"]
+        },
+        "evidence": { "$ref": "#/$defs/stringArray" },
+        "ownerApprovalRequired": { "const": true }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "usageAuthority", "sourceLocationDisclosed"],
+      "properties": {
+        "status": { "enum": ["REPOSITORY_TRACKED_UNVERIFIED", "UNVERIFIED"] },
+        "usageAuthority": { "const": "PENDING_OWNER_CONFIRMATION" },
+        "sourceLocationDisclosed": { "const": false }
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pedagogical",
+        "standaloneDesktop",
+        "standaloneMobile",
+        "iframeManualUrl",
+        "consoleErrors",
+        "pageErrors"
+      ],
+      "properties": {
+        "pedagogical": { "const": "PENDING_OWNER_REVIEW" },
+        "standaloneDesktop": { "const": "NOT_RUN" },
+        "standaloneMobile": { "const": "NOT_RUN" },
+        "iframeManualUrl": { "const": "NOT_RUN" },
+        "consoleErrors": { "const": "NOT_RUN" },
+        "pageErrors": { "const": "NOT_RUN" }
+      }
+    },
+    "duplicate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "blockers", "groupKeys", "authorizationUsesBasename"],
+      "properties": {
+        "status": {
+          "enum": [
+            "CANONICAL",
+            "ALIAS",
+            "REDIRECT_WRAPPER",
+            "ARCHIVE_COPY",
+            "EXACT_DUPLICATE_APPROVED",
+            "DUPLICATE_UNRESOLVED"
+          ]
+        },
+        "blockers": { "$ref": "#/$defs/stringArray" },
+        "groupKeys": { "$ref": "#/$defs/stringArray" },
+        "authorizationUsesBasename": { "const": false }
+      }
+    },
+    "risks": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "errors": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "unresolvedQuestions": { "$ref": "#/$defs/stringArray" }
+  },
+  "$defs": {
+    "stringArray": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    }
+  }
+}
