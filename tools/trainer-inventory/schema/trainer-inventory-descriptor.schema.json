@@ -8,6 +8,7 @@
     "descriptorVersion",
     "inventoryId",
     "sourceKind",
+    "hashBasis",
     "sourceSha256",
     "sizeBytes",
     "basename",
@@ -33,8 +34,19 @@
     "descriptorVersion": { "const": 1 },
     "inventoryId": { "type": "string", "pattern": "^inv-(repo|intake|synthetic)-[a-f0-9]{24}$" },
     "sourceKind": { "enum": ["repo", "intake", "synthetic"] },
-    "sourceSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
-    "sizeBytes": { "type": "integer", "minimum": 0 },
+    "hashBasis": { "enum": ["GIT_OBJECT", "FILESYSTEM_BYTES"] },
+    "sourceSha256": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      ]
+    },
+    "sizeBytes": {
+      "oneOf": [
+        { "type": "null" },
+        { "type": "integer", "minimum": 0 }
+      ]
+    },
     "basename": { "type": "string", "minLength": 1 },
     "trainerId": {
       "oneOf": [
