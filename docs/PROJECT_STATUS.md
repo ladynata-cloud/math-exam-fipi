@@ -19,40 +19,42 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 ## Current stage
 
 Trainer Factory v1 is in a docs-only `HIGH` plan stage. Owner plan-review
-conditions are incorporated: four publication tracks are separated from four
-publication surfaces, runtime descriptor authority is fail-closed, platform
-changes leave Factory, and the candidate pilot has independent trainer and
-batch acceptance. This stage does not implement skills, adapt trainers, or
-change production behavior.
+conditions and Claude review conditions C1-C5 are incorporated. The four-trainer
+pilot is treated as reconciliation of an already published cohort; executable
+per-trainer reverse deltas preserve its pre-Factory references. Public-URL
+normalization, exact-release-head descriptor/manifest equality, and mechanical
+mirror-template rules are specified fail-closed. This stage does not implement
+skills, adapt trainers, or change production behavior.
 
 ## Open PR
 
-The Trainer Factory v1 plan is published as a Draft PR from branch
-`codex/trainer-factory-v1-plan`. Its exact PR number and head are authoritative
-in GitHub and in the task publication report.
+The Trainer Factory v1 plan is Draft PR `#90` from branch
+`codex/trainer-factory-v1-plan`. The condition-closure commit requires a new
+exact-head architecture review; its remote head remains authoritative in GitHub.
 
 ## Last confirmed gate
 
 The exact `main` contains the merged Nested-path implementation and roads-grid
 third mirror. No Trainer Factory gate has run. Its proposed plan marker,
-`TRAINER_FACTORY_V1_ARCHITECTURE_GATE_OK`, remains pending external exact-head
-architecture review.
+`TRAINER_FACTORY_V1_ARCHITECTURE_GATE_OK`, remains
+`PENDING_EXACT_HEAD_CONDITION_CLOSURE_REVIEW`.
 
 ## Blockers
 
-- The architecture gate remains blocked until independent external review is
-  bound to the exact Draft PR base and head.
+- Claude reviewed the prior exact head with `APPROVED_WITH_CONDITIONS` and no
+  blocking issues. C1-C5 are closed in the plan, but the resulting new exact
+  head still requires independent condition-closure review.
 - Production implementation, pilot publication, skill implementation, merge,
   and deployment are not authorized by the plan request.
 
 ## Next three actions
 
-1. Obtain independent exact-head architecture review of the Trainer Factory v1
-   Draft PR.
-2. Close any review conditions on an exact head and repeat the plan-stage checks
-   before reporting the architecture gate.
-3. Request separate owner merge authorization for the reviewed plan PR; do not
-   start Factory implementation or publish the pilot.
+1. Obtain independent exact-head review confirming closure of C1-C5 on Draft PR
+   `#90`.
+2. Re-verify provenance and repeat the plan-stage checks before reporting the
+   architecture gate.
+3. If the exact-head review approves, request separate owner merge authorization;
+   do not start Factory implementation or publish the pilot.
 
 ## Maintenance rule
 

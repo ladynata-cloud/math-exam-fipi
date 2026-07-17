@@ -19,7 +19,8 @@
 - Related ADR: [Trainer Bridge Platform ADR 0001](../adr/0001-trainer-bridge-platform.md).
 - ADR status: `Proposed`; it is advisory unless a decision is fixed by a
   separate approved scope.
-- Plan-stage architecture gate: `PENDING_EXTERNAL_ARCHITECTURE_REVIEW`.
+- Plan-stage architecture gate:
+  `PENDING_EXACT_HEAD_CONDITION_CLOSURE_REVIEW`.
 
 This document defines a factory architecture and a future implementation
 roadmap. It does not authorize adapting or publishing any trainer.
@@ -180,11 +181,12 @@ records the exact combination; `SITE_DISCOVERY` and `BOARD_DISCOVERY` are never
 inferred from each other. `BOARD_DISCOVERY=true` may add only the current
 `opens-in-board` registry mode. It does not imply or permit `BOARD_MIRROR`.
 
-For the proposed pilot the requested combination is
+For the proposed pilot, read-only baseline reconciliation has verified
 `FILE_PUBLISHED=true`, `SITE_DISCOVERY=true`, `BOARD_DISCOVERY=false`, and
-`BOARD_MIRROR=false`. Inventory may reveal that a file or URL is already live,
-but discovery does not itself authorize retaining or changing any surface; the
-owner must approve the reconciled values before publication work starts.
+`BOARD_MIRROR=false`. These are facts about the existing cohort, not requested
+new publication actions. Discovery does not itself authorize changing any
+surface; the owner must approve the reconciled baseline and every proposed
+delta before Factory work starts.
 
 ## Track contracts
 
@@ -415,6 +417,51 @@ Preserve the pre-existing trainer URL and standalone behavior. Downgrading to
 `opens-in-board` is allowed only if that fallback was tested and separately
 approved; otherwise restore the exact prior manifest state.
 
+### C5 machine-checkable mechanical `MIRROR_STANDARD`
+
+Phase 3 must create an owner-accepted, versioned standard-template contract
+before any no-Claude mechanical classification is allowed. The contract
+contains at least:
+
+- `templateId`, `templateVersion`, and `archetype`;
+- `allowedChangedFiles` and `forbiddenChangedFiles`;
+- machine-readable allowed substitution points and immutable template regions;
+- allowed manifest fields and allowed descriptor fields;
+- allowed state-schema bounds;
+- required fixture/vector families and lifecycle gates;
+- immutable-region template fingerprint/hash;
+- accepted owner decision and verifiable provenance.
+
+Substitution points use named regions, structured placeholders, schema-driven
+fields, or another deterministic machine-readable mechanism. Human judgment
+that a diff merely "looks like the template" is never mechanical proof.
+
+No-Claude `MIRROR_STANDARD` classification requires all of these on the exact
+head:
+
+1. The exact owner-accepted template ID and version.
+2. Changed files are a subset of `allowedChangedFiles` and disjoint from
+   `forbiddenChangedFiles`.
+3. Every change inside a template-controlled file is confined to declared
+   substitution points.
+4. Every immutable-region fingerprint matches the accepted template.
+5. Zero-core proof passes.
+6. The complete standard gate and required lifecycle/vector families pass.
+7. C4 descriptor-manifest equality passes on the same exact head.
+8. No new semantic or lifecycle primitive is introduced.
+
+Any diff outside the file allowlist or substitution points, or any immutable
+fingerprint mismatch, automatically forbids mechanical classification and
+`TRAINER_FACTORY_MIRROR_STANDARD_GATE_OK`. It escalates to `NEW_ARCHETYPE` when
+platform contracts remain unchanged, or exits Factory into a separate
+`PLATFORM_CHANGE` task when core, protocol, security, runtime, server, registry,
+Socket.IO, authorization, or deployment behavior must change.
+
+The mandatory negative acceptance test modifies one line outside an allowed
+substitution point in an otherwise zero-core candidate. The machine checker
+must reject mechanical classification, select the correct escalation, and
+block `TRAINER_FACTORY_MIRROR_STANDARD_GATE_OK`.
+
 ### `NEW_ARCHETYPE`
 
 Purpose: evaluate a new trainer-local pattern that does not fit the three proven
@@ -625,6 +672,31 @@ is validated against the actual runtime manifest and server registry rules and
 fails closed on any mismatch. No descriptor field, approval marker, or Factory
 classification can substitute for runtime authorization.
 
+### C4 descriptor-manifest equality on the exact release head
+
+`TRAINER_FACTORY_BATCH_RELEASE_GATE_OK` must rerun the authority cross-check on
+the exact release head. A result from the authoring head, review head, or an
+earlier release candidate never carries forward automatically.
+
+The release gate must:
+
+1. Load every batch descriptor from the exact release tree.
+2. Load `trainers/board-compat.json` from the same tree.
+3. Build the validated server-equivalent projection or an owner-approved
+   deterministic cross-check proven equivalent to it.
+4. Compare every repeated runtime field and expected entry absence/presence for
+   the selected track.
+5. Fail closed on stale, missing, extra, differently typed, or differently
+   valued fields.
+6. Record release base SHA, head SHA, tree SHA, descriptor input hashes, manifest
+   hash, checker version, and result in gate evidence.
+
+Any descriptor or manifest change after the last successful check invalidates
+that check and requires the complete equality gate again. The acceptance test
+first passes a descriptor against one head, changes the manifest on a new head,
+and proves the now-stale descriptor blocks release even though it passed
+previously.
+
 ## State-contract template
 
 Every `MIRROR_STANDARD` descriptor links to a trainer-specific contract that
@@ -794,6 +866,99 @@ Deduplication rules:
    mass-migrate them, but a touched candidate cannot ship with unresolved
    identity or ownership.
 
+### C3 deterministic normalized public URL contract
+
+URL normalization exists only for read-only inventory and collision detection.
+It does not authorize a runtime trainer, create an alias, replace canonical
+path validation, or change the server registry lookup.
+
+The exact-base sitemap audit found 152 URLs: all use `https`, all use host
+`mathexam.space`, 142 end in `.html`, 10 directory resources use a trailing
+slash, none end in `/index.html`, and none contain query, fragment, or duplicate
+pathname slashes. The normative canonical site origin is therefore:
+
+```text
+https://mathexam.space
+```
+
+`trainer-inventory` must implement this deterministic algorithm before the
+Phase 1 gate:
+
+1. Accept only a string of at most the existing `maxUrlLength = 2048` contract;
+   do not trim, decode, repair, or Unicode-normalize it.
+2. Before parsing, split the input at the earlier of the first `?` or `#`;
+   delimiter order does not matter. For an absolute URL, take the undecoded
+   substring from the first slash after its authority (or `/` when it has no
+   path); for a root-relative input, take the pre-delimiter string; for a
+   canonical relative input, prefix that string with `/`. This value is the raw
+   pathname used by step 3. Query and fragment may be recorded separately but
+   are excluded from collision identity and never participate in raw-path
+   rejection.
+3. Before WHATWG parsing, reject controls, bidi or invisible controls,
+   backslashes, ambiguous Unicode separators, literal `.` or `..` segments,
+   duplicate pathname slashes, and any percent sign in the raw pathname. The
+   last rule inherits the nested-path contract and rejects encoded slash,
+   encoded backslash, encoded dot segments, double encoding, stray percent, and
+   malformed percent without decode-and-revalidate repair.
+4. Parse with WHATWG `URL` relative to `https://mathexam.space/`. Accepted input
+   forms for a canonical trainer are same-origin absolute HTTPS, root-relative
+   `/trainers/...`, and canonical relative `trainers/...`. Protocol-relative,
+   filesystem, drive, UNC, and other relative-base forms are rejected.
+5. Require empty username and password. Require `https:` and the canonical
+   hostname after the URL parser's case-insensitive hostname normalization.
+   The HTTPS default port is removed; any non-default port is rejected.
+6. Cross-origin values cannot be a canonical trainer public URL. Inventory may
+   retain them only under the separate `EXTERNAL_REFERENCE` classification;
+   canonical-URL validation returns `REJECT`.
+7. Re-run the accepted nested-path contract on the case-preserving pathname
+   without its leading slash. Path case is never folded by URL normalization.
+   Case-different valid paths are `DISTINCT` here; the separate canonical-path
+   ASCII case-fold collision gate may still block them.
+8. A normal trainer file path ends in lowercase `.html` and has no trailing
+   slash. A trailing slash after `.html` is `REJECT`.
+9. For repository-wide discovery collision scanning, terminal `/index.html`
+   and the corresponding directory `/` have one collision identity: remove
+   `index.html` and keep the trailing slash. For every other resource, a
+   trailing slash is case-preserved and significant; `/x` and `/x/` are
+   `DISTINCT`. This equivalence is inventory-only and never changes registry
+   file identity.
+10. Serialize the canonical origin plus normalized pathname. Never decode or
+    repair an input into an owner-approved alias or runtime authorization.
+
+The future committed fixture is
+`tools/fixtures/trainer-public-url-conformance.json`. Its closed contract is:
+
+```json
+{
+  "schemaVersion": 1,
+  "canonicalOrigin": "https://mathexam.space",
+  "vectors": [
+    {
+      "id": "same-origin-root-relative-normalized",
+      "input": "/trainers/example.html?mode=practice#task",
+      "expected": "NORMALIZED",
+      "canonicalResult": "https://mathexam.space/trainers/example.html",
+      "reason": "query and fragment are identity-neutral"
+    }
+  ]
+}
+```
+
+Vector IDs are stable and unique. `expected` is exactly one of `NORMALIZED`,
+`COLLISION`, `DISTINCT`, or `REJECT`; every accepted vector has an exact
+`canonicalResult`, and every vector has a deterministic `reason`.
+
+Mandatory vector families cover hostname case, HTTPS default port, query,
+fragment, trailing slash, `/index.html`, pathname case, raw percent encoding,
+encoded slash/backslash, encoded and literal dot segments, duplicate slashes,
+same-origin absolute/root-relative/canonical-relative inputs, cross-origin,
+credentials, schemes, ports, and malformed URLs. The fixture and one executable
+normalizer are consumed by all applicable inventory/collision tests and fail on
+missing, duplicate, skipped, or disagreed vectors.
+
+The Phase 1 gate must not claim or enforce the normalized-public-URL collision
+blocker until this fixture and executable check are committed and passing.
+
 ## Owner publication boundary
 
 No local, unpublished, archive, draft, or newly discovered inventory file is
@@ -854,6 +1019,39 @@ pass, fail, and not-run separately.
   evidence is collected per URL; no manual deployment is implied.
 - The aggregate marker is `TRAINER_FACTORY_BATCH_RELEASE_GATE_OK` and is valid
   only together with every included track marker.
+
+### C2 executable per-trainer reverse delta
+
+Every shared discovery file edited by a future batch must support a
+machine-applicable reverse delta for each trainer:
+
+- each trainer contribution is one contiguous, order-stable block;
+- the block has stable attribution identity derived from `trainerId`, canonical
+  public URL, and a format-specific selector;
+- a trainer block contains no shared derived counter or aggregate value;
+- authoring one trainer block does not reformat, reorder, or rewrite another
+  trainer block;
+- shared aggregate values, if introduced, are rebuilt by a separate
+  deterministic generator and verified by its gate, never restored through a
+  hand-written reverse patch.
+
+Authoring-stage evidence includes the forward delta and executable reverse
+delta for every trainer, the shared-file input hashes, and the expected hashes
+or selectors after reversal. A prose rollback instruction is insufficient.
+
+The mandatory acceptance test for a batch of `N` trainers is:
+
+1. Build the candidate merged tree for all `N` trainers.
+2. Apply the reverse delta for trainer `K` without changing the other deltas.
+3. Prove all remaining `N-1` entries are intact.
+4. Re-run HTML, link, render, collision, and deduplication checks.
+5. Validate every shared file and deterministic aggregate.
+6. Prove all pre-Factory baseline references remain byte-identical.
+7. Repeat steps 2-6 for every trainer in the batch.
+
+`TRAINER_FACTORY_BATCH_RELEASE_GATE_OK` fails if any reverse delta is missing,
+ambiguous, non-deterministic, cannot apply cleanly, changes another trainer's
+formatting, or removes a baseline reference.
 
 ## Review policy and Claude use
 
@@ -943,19 +1141,57 @@ iframe, localStorage, or sessionStorage use:
 3. `trainers/oge-task9-equations.html`;
 4. `trainers/oge-task20-equations.html`.
 
+### C1 verified pilot baseline
+
+The pilot is a Factory reconciliation of an existing published cohort, not
+primary publication. The baseline below was re-audited read-only on reviewed
+head `aadf0d2e6ba014e9bdbfcd4f2ed625c3fd23b28a`:
+
+- `sitemap.xml` baseline blob:
+  `ec583f582f9196eacbbe0527d650f50014dcd8e3`;
+- `trainers/oge-course/index.html` baseline blob:
+  `33435f0d93c89b410f200c1eb9a7391196a70b59`;
+- stable sitemap selector: exact `<loc>{canonicalPublicUrl}</loc>`;
+- stable OGE-course selector: the single contiguous
+  `<article class="entry">` containing exact
+  `href="/trainers/{basename}"` references.
+
+| Trainer | Trainer blob | Existing canonical public URL | Sitemap line | OGE-course line | Other tracked discovery references | `board-compat` entry |
+| --- | --- | --- | ---: | ---: | --- | --- |
+| `trainers/oge-task6-fractions.html` | `cc71b02fbcdbe3f5b03a8d8e8131ce2b5b180e92` | `https://mathexam.space/trainers/oge-task6-fractions.html` | 814 | 106 | none found | absent |
+| `trainers/oge-task8-powers-roots.html` | `e93f6e6dc035733d6ecf7f4d80c2a331ec617dd2` | `https://mathexam.space/trainers/oge-task8-powers-roots.html` | 826 | 108 | none found | absent |
+| `trainers/oge-task9-equations.html` | `fde6982c69734dc47e5be4909829fc21706b819c` | `https://mathexam.space/trainers/oge-task9-equations.html` | 832 | 109 | none found | absent |
+| `trainers/oge-task20-equations.html` | `efb12d423848c97ff396268a2adbb359f38d4160` | `https://mathexam.space/trainers/oge-task20-equations.html` | 880 | 136 | none found | absent |
+
+Every future pilot descriptor must record all pre-existing references, the
+baseline blob for each containing file, and either its current line identity or
+the stable selectors above. Line numbers are audit evidence, not durable
+identity by themselves.
+
+`FILE_PUBLISHED` and `SITE_DISCOVERY` are derived from this verified baseline,
+not from a planned Factory action. The pilot delta is computed only relative to
+that baseline. Factory rollback must never remove or rewrite a sitemap,
+OGE-course, URL, or other reference that existed before Factory.
+
+Per-trainer simulated rollback is an acceptance test: after removing only the
+candidate Factory delta, the pre-existing sitemap and OGE-course reference
+blocks must be byte-identical to their baseline blobs/selectors. The test is
+performed for all four trainers and fails closed on any baseline change.
+
 They form one technical archetype: standalone single-file OGE mathematics
-trainers. The proposed pilot surfaces are `FILE_PUBLISHED=true`,
+trainers. Their reconciled baseline surfaces are `FILE_PUBLISHED=true`,
 `SITE_DISCOVERY=true`, `BOARD_DISCOVERY=false`, and `BOARD_MIRROR=false`.
 Manual board-iframe URL smoke is a test surface only; it does not add board
 discovery or mirror authorization. This is a candidate cohort, not approval to
-publish. A failed candidate is not silently replaced or edited; the owner
-approves any revised pilot list.
+change existing publication. A failed candidate is not silently replaced or
+edited; the owner approves any revised pilot list or surface delta.
 
 ### Per-trainer pilot acceptance
 
 Each of the four candidates must have, independently:
 
 - a validated inventory descriptor and duplicate/alias status;
+- its verified pre-existing references and baseline blob/selector identities;
 - confirmed provenance and usage authority;
 - dependency and storage/statistics audit;
 - standalone desktop and mobile smoke;
@@ -993,20 +1229,26 @@ The batch must have:
 - Implement descriptor/request schemas, inventory artifacts, deduplication,
   common smoke harness, and the four proposed skills in a separate approved
   task or explicitly split task-specs.
+- Commit the C3 public-URL conformance fixture and executable normalizer before
+  enabling the normalized-URL collision blocker or passing the Phase 1 gate.
 - Run a full read-only inventory and classify every trainer/reference into a
   known archetype, publication state, duplicate disposition, or owner-review
   queue.
 
 ### Phase 2 - `CATALOG_ONLY` pilot
 
-- Re-approve the exact 3-5 trainer cohort after inventory.
-- Publish one bounded batch, gather visual/pedagogical review and production
-  URL evidence, then validate rollback documentation.
+- Reconcile and re-approve the exact existing 3-5 trainer cohort after
+  inventory; do not classify its pre-existing URLs or references as new
+  publication.
+- Apply only an owner-approved delta relative to the recorded baseline, gather
+  visual/pedagogical evidence, and prove per-trainer reverse deltas preserve all
+  pre-Factory references.
 
 ### Phase 3 - `MIRROR_STANDARD` factory proof
 
 - Select a separately approved trainer that fits the existing mirror model.
-- Exercise generated contract/schema/fixture templates and prove no core diff.
+- Create and owner-accept the C5 versioned, machine-checkable template contract;
+  exercise its contract/schema/fixture templates and prove no core diff.
 - Do not reuse this plan as `START` for that trainer.
 
 ### Phase 4 - controlled batch scale-up
@@ -1024,6 +1266,9 @@ The batch must have:
 ## Factory v1 acceptance criteria
 
 - [ ] Every trainer begins with one validated request and descriptor.
+- [ ] Existing pilot trainers reconcile `FILE_PUBLISHED`, discovery surfaces,
+  URLs, and pre-existing reference blob/selectors from factual baseline; no
+  Factory rollback removes a baseline reference.
 - [ ] Inventory covers files, assets, site discovery, sitemap, course/manual
   links, board discovery/runtime registry, public URLs, storage, dependencies,
   provenance, and duplicates.
@@ -1035,16 +1280,26 @@ The batch must have:
   repeated field exactly matches the current manifest or fails closed.
 - [ ] File, trainerId, ASCII-casefold path, normalized URL, and exact-blob
   collisions are blocked or have an explicit approved disposition.
+- [ ] Normalized-URL blocking remains disabled until the C3 fixture and
+  executable deterministic normalizer are committed and passing.
 - [ ] Basename is never used for identity or authorization.
 - [ ] Mobile, iframe, HTTP, site-discovery/manual URL, board-discovery, console,
   pageerror, security, visual, and pedagogical gates are captured per trainer.
 - [ ] `MIRROR_STANDARD` proves schema/fixture parity, lifecycle behavior,
   localStorage/statistics isolation, no basename fallback, and no core diff.
+- [ ] No-Claude mechanical mirror classification passes the exact accepted C5
+  template version, file/substitution allowlists, immutable fingerprints,
+  zero-core proof, complete standard gate, and exact-head C4 equality.
 - [ ] Any required platform change produces a hard Factory stop and separate
   `HIGH` platform task; `PLATFORM_CHANGE` is never treated as a Factory track.
 - [ ] Batch reports are independently pass/fail per trainer and atomically
   rollback-capable, including a one-trainer rollback that preserves the rest of
   the batch.
+- [ ] Every shared discovery edit has an executable per-trainer reverse delta;
+  removing each trainer in turn preserves the other entries and all baseline
+  references.
+- [ ] `TRAINER_FACTORY_BATCH_RELEASE_GATE_OK` reruns descriptor-manifest
+  equality on the exact release head and records all input identities/hashes.
 - [ ] Review level and external-review provenance follow
   [REVIEW_POLICY.md](../REVIEW_POLICY.md).
 - [ ] No factory action merges, auto-merges, deploys, disables protection, or
@@ -1058,6 +1313,8 @@ The batch must have:
 | Duplicate file, blob, trainerId, or URL | Repository-wide hashes, canonical URL graph, exact and casefold collision checks | Preserve canonical item; do not publish ambiguous alias |
 | Site discovery and board registry drift | Generated site/sitemap/course/registry cross-reference report and link/runtime tests | Revert the exact affected discovery-surface delta |
 | Existing public URL changes | Snapshot URLs and inbound references before diff; parent-to-head URL comparison | Restore exact prior path/blob; never reuse URL |
+| Factory rollback removes a pre-existing reference | Baseline blobs/selectors plus simulated per-trainer reversal | Block batch; restore byte-identical baseline reference |
+| URL normalizer creates alias authority | C3 raw-path rejection, shared fixture, and inventory-only scope | Disable collision blocker until deterministic fixture passes |
 | localStorage/statistics collision | Key inventory plus unrelated-key byte sentinels in standalone/iframe/mirror flows | Block trainer; redesign namespace in separately approved scope |
 | Mirror leaks private/transient state | Closed schema, semantic validator, side-effect probes, lifecycle matrix | Revert adapter/manifest; preserve standalone URL |
 | Mobile or iframe regression | Fixed viewport matrix and actual board iframe smoke | Remove from batch or revert publication delta |
@@ -1065,6 +1322,8 @@ The batch must have:
 | Unapproved dependency or unsafe code | Origin/dependency closure, secrets/local-path/control/bidi/navigation scans | Block publication and remove new dependency delta |
 | Batch blast radius | Homogeneous caps, independent per-trainer gates, exact shared-file attribution | Apply the reviewed per-trainer rollback or revert the complete batch |
 | Core creep in Factory work | Platform-core changed-file denylist and diff gate | Hard stop; create a separate `HIGH` platform task |
+| Descriptor or manifest changes after authoring gate | C4 exact-release-head hashes and server-equivalent equality | Invalidate old gate and rerun on the new exact head |
+| Mechanical template drift | C5 substitution allowlist and immutable-region fingerprints | Forbid mechanical classification and escalate |
 | Stale or fabricated review evidence | Exact PR/base/head provenance verification | Invalidate verdict; require new independent review |
 
 ## Rollback policy
@@ -1079,7 +1338,9 @@ The batch must have:
    coherent track unit.
 5. Every batch stores a per-trainer reverse delta, including attributable edits
    to shared discovery files, so one trainer can be rolled back by a normal
-   reviewed PR while other accepted batch members remain unchanged.
+   reviewed PR while other accepted batch members remain unchanged. The reverse
+   delta excludes all pre-Factory baseline blocks and must reproduce their
+   recorded blob/selector identity byte-for-byte.
 6. Storage migration is prohibited in Factory v1 without a separate approved
    plan. Rollback must not erase learner statistics.
 7. Plan-stage rollback is a simple revert of this docs-only task-spec if it is
@@ -1104,13 +1365,112 @@ No production, npm, browser, HTTP, visual, or deployment test is required for
 this docs-only plan because no runtime file changes. Those checks are normative
 future gates and must not be reported as run on this stage.
 
+The exact-head plan scan is clean for prohibited control, bidi, and invisible
+characters. U+2192 is a visible permitted symbol used in the documentation
+flow block. A future documentation scanner may allowlist only U+2192 in that
+flow-block context; zero tolerance remains for every other prohibited control,
+bidi, or invisible character.
+
 The architecture marker is:
 
 `TRAINER_FACTORY_V1_ARCHITECTURE_GATE_OK`
 
-It remains `PENDING_EXTERNAL_ARCHITECTURE_REVIEW`. It may be reported only after
-an exact-head independent review resolves all blocking questions and the
+It remains `PENDING_EXACT_HEAD_CONDITION_CLOSURE_REVIEW`. It may be reported
+only after an exact-head independent review confirms closure of C1-C5 and the
 plan-stage checks pass on that same head.
+
+## External review provenance
+
+- Provider: Claude.
+- PR: `#90`.
+- Reviewed base: `495d9f8303de1ec90c15b8f38bf014599bfa463d`.
+- Reviewed head: `aadf0d2e6ba014e9bdbfcd4f2ed625c3fd23b28a`.
+- Reviewed tree: `8c6726f0bce9e036a52e18553eb51e7e12fa0150`.
+- Verdict: `APPROVED_WITH_CONDITIONS`.
+- Blocking issues: none.
+- Conditions: C1-C5.
+- Evidence timestamp: `2026-07-16T23:33:01.1888063Z`, the timestamp of the
+  owner-supplied review artifact; no separate provider timestamp was present.
+- Source: owner-supplied exact-head Claude review text, SHA-256
+  `8A216B04C4B205D90D25099D84BEE3D2845E52EC03E6D261BD1733EBD21A0219`.
+
+This provenance validates the old reviewed head only. The condition-closure
+commit creates a new head and requires a new exact-head review before the
+architecture gate can pass.
+
+## Condition closure table
+
+### C1
+
+- Decision: treat the four pilot trainers as reconciliation of an existing
+  published cohort; compute Factory deltas and rollback only against verified
+  pre-Factory references.
+- Spec sections: `Publication surfaces`, `C1 verified pilot baseline`,
+  `Per-trainer pilot acceptance`, and `Rollback policy`.
+- Evidence: all four files exist; each has one exact sitemap URL and one
+  OGE-course entry; no other tracked discovery reference or `board-compat`
+  entry was found; containing and trainer blob identities are recorded.
+- Acceptance tests: simulated per-trainer reversal leaves pre-existing sitemap
+  and OGE-course blocks byte-identical for all four trainers.
+- Closed: yes.
+
+### C2
+
+- Decision: require a contiguous, order-stable, attributed trainer block and an
+  executable reverse delta for every shared discovery edit.
+- Spec sections: `C2 executable per-trainer reverse delta`, `Batch publication
+  policy`, `Aggregate pilot acceptance`, and `Rollback policy`.
+- Evidence: authoring proof records forward/reverse deltas, input hashes, stable
+  selectors, and deterministic aggregate handling.
+- Acceptance tests: build the `N`-trainer tree, reverse each trainer in turn,
+  preserve `N-1`, rerun HTML/link/render/collision checks, validate shared
+  files, and preserve baseline references.
+- Closed: yes.
+
+### C3
+
+- Decision: URL normalization is deterministic inventory/collision evidence
+  only and never runtime or alias authority.
+- Normalization contract: WHATWG URL relative to explicit
+  `https://mathexam.space`, raw-path fail-closed preflight, exact nested-path
+  validation, credentials/origin/port restrictions, identity-neutral query and
+  fragment, case-preserving path, explicit `/index.html` equivalence, and no
+  decode/repair.
+- Fixture contract: future closed
+  `tools/fixtures/trainer-public-url-conformance.json` with version, origin,
+  stable vector IDs, four outcomes, canonical results, reasons, and all required
+  vector families.
+- Acceptance tests: the executable normalizer consumes every vector and the
+  Phase 1 normalized-URL blocker remains disabled until fixture parity passes.
+- Closed: yes.
+
+### C4
+
+- Decision: descriptor-manifest equality is rerun on the exact release head;
+  an authoring-head result never carries forward.
+- Exact-head check: load descriptors and `board-compat.json` from one tree,
+  build the server-equivalent cross-check, verify absence/presence and every
+  repeated field, fail closed, and record base/head/tree plus input hashes.
+- Evidence: a descriptor or manifest change invalidates prior equality evidence.
+- Acceptance tests: a descriptor that passed on an older head blocks release
+  after the manifest changes.
+- Closed: yes.
+
+### C5
+
+- Decision: no-Claude mechanical `MIRROR_STANDARD` requires an owner-accepted,
+  versioned, machine-checkable template contract.
+- Template contract: ID/version/archetype, file allow/deny lists, structured
+  substitution points, immutable fingerprints, allowed manifest/descriptor/
+  schema fields, required vectors/lifecycle gates, and owner provenance.
+- Mechanical proof: exact template version, allowlisted files and substitution
+  points, matching immutable fingerprints, zero-core proof, full standard gate,
+  C4 exact-head equality, and no new semantic/lifecycle primitive.
+- Escalation: out-of-template trainer-local changes go to `NEW_ARCHETYPE`;
+  platform contract changes exit to a separate `PLATFORM_CHANGE` task.
+- Acceptance tests: one line outside an allowed substitution point rejects
+  mechanical classification and blocks the mirror gate.
+- Closed: yes.
 
 ## External architecture review questions
 
@@ -1165,7 +1525,7 @@ plan-stage checks pass on that same head.
 - Actual base SHA: `495d9f8303de1ec90c15b8f38bf014599bfa463d`.
 - Actual head SHA: recorded in the publication report and Draft PR body because
   a commit cannot contain its own SHA.
-- PR: Draft PR assigned after the plan commit is published.
+- PR: Draft PR `#90`; exact remote head is authoritative in GitHub.
 - Production files changed: none.
-- Architecture gate: `PENDING_EXTERNAL_ARCHITECTURE_REVIEW`.
+- Architecture gate: `PENDING_EXACT_HEAD_CONDITION_CLOSURE_REVIEW`.
 - Scope deviations: none.
