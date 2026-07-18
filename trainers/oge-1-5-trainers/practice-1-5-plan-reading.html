@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Интерактивный тренажёр: как читать план и условие в заданиях 1–5 ОГЭ по математике 2026">
+<title>Как читать план и условие · ОГЭ 1–5</title>
+<style>
+  :root {
+    --bg:#faf7f2; --card:#fff; --soft:#f5f1e8; --ink:#1a2332; --ink2:#4a5568; --muted:#8a93a3;
+    --line:#e8e3d8; --line2:#d4cfc2; --accent:#1e3a5f; --accent2:#142a44; --accent-soft:#dbe4f0;
+    --gold:#b8924b; --gold-soft:#f3e9d4; --green:#4a7c59; --green-soft:#dcebe0;
+    --warm:#d4956a; --warm-soft:#f5e3d4; --error:#8a4d3a;
+    --shadow:0 1px 3px rgba(26,35,50,.05),0 4px 24px rgba(26,35,50,.06);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{min-height:100vh;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PT Sans",Roboto,sans-serif;line-height:1.55;background-image:radial-gradient(circle at 14% 8%,rgba(184,146,75,.05),transparent 38%),radial-gradient(circle at 88% 82%,rgba(30,58,95,.05),transparent 40%)}
+  button,input,select{font:inherit}
+  button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid rgba(184,146,75,.45);outline-offset:2px}
+  [hidden]{display:none!important}
+  .topnav{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line);background:rgba(250,247,242,.92);backdrop-filter:blur(10px)}
+  .topnav-inner{max-width:1160px;margin:auto;padding:12px 22px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+  .nav-left,.nav-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .back{color:var(--ink2);text-decoration:none;font-size:14px}.back:hover{color:var(--accent)}
+  .topic{font:11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);background:var(--soft);padding:5px 9px;border-radius:7px}
+  .badge{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:5px 9px;border-radius:999px}
+  .modes{display:flex;background:var(--soft);padding:3px;border-radius:10px;gap:2px}
+  .modes button{border:0;background:transparent;color:var(--ink2);padding:7px 11px;border-radius:7px;cursor:pointer;font-size:12px}
+  .modes button.active{background:var(--card);color:var(--accent);box-shadow:0 1px 3px rgba(0,0,0,.07);font-weight:600}
+  .wrap{max-width:1160px;margin:auto;padding:34px 22px 80px}
+  .eyebrow{color:var(--gold);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.18em;margin-bottom:9px}
+  h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(30px,5vw,46px);font-weight:400;line-height:1.12;letter-spacing:-.015em} h1 em{color:var(--accent);font-style:italic}
+  .subtitle{max-width:760px;margin-top:10px;color:var(--ink2)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+  .intro{margin-top:24px;padding:clamp(22px,4vw,34px);display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:28px;align-items:start}
+  .intro h2,.result h2{font-family:Georgia,serif;font-size:25px;font-weight:400;margin-bottom:12px}.intro p{color:var(--ink2);margin-bottom:12px}
+  .intro ul{margin:12px 0 0 20px;color:var(--ink2)}.intro li{margin:7px 0}
+  .setup{background:var(--soft);border:1px solid var(--line);border-radius:13px;padding:20px}.setup label{display:block;font-size:12px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px}
+  .setup select{width:100%;padding:11px 12px;border:1.5px solid var(--line2);border-radius:9px;background:#fff;color:var(--ink);cursor:pointer;margin-bottom:14px}
+  .mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:4px 0 15px}.mini{padding:10px;border:1px solid var(--line);background:#fff;border-radius:9px;text-align:center}.mini strong{display:block;font-family:Georgia,serif;font-size:22px;color:var(--accent);font-weight:400}.mini span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+  .btn{border:1.5px solid transparent;border-radius:9px;padding:11px 18px;cursor:pointer;font-size:14px;font-weight:600;transition:.18s}.btn:hover{transform:translateY(-1px)}.btn:disabled{opacity:.48;cursor:not-allowed;transform:none}
+  .primary{background:var(--accent);color:#fff}.primary:hover{background:var(--accent2)}.secondary{background:#fff;color:var(--ink2);border-color:var(--line2)}.secondary:hover{border-color:var(--accent);color:var(--accent)}.gold{background:var(--gold-soft);color:#765820}.gold:hover{background:var(--gold);color:#fff}.block{width:100%}
+  .workspace{margin-top:24px;display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:24px;align-items:start}.side{display:flex;flex-direction:column;gap:14px;position:sticky;top:82px}.main{min-width:0}
+  .progress-card{padding:16px}.progress-head{display:flex;justify-content:space-between;gap:12px;color:var(--ink2);font-size:13px;margin-bottom:9px}.bar{height:8px;background:var(--accent-soft);border-radius:999px;overflow:hidden}.bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold));width:0;transition:width .3s}
+  .task-card{padding:clamp(20px,4vw,30px)}.task-meta{display:flex;justify-content:space-between;gap:12px;align-items:center;color:var(--muted);font-size:12px;margin-bottom:12px}.skill{color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:.08em}.question{font-size:18px;line-height:1.55;margin-bottom:18px}.context{padding:15px 17px;background:var(--soft);border:1px solid var(--line);border-radius:11px;color:var(--ink2);margin:0 0 18px}.visual{margin:0 0 18px;border:1px solid var(--line);background:linear-gradient(180deg,#fdfcf8,#f5f1e8);border-radius:12px;padding:14px;overflow:auto}
+  .mini-grid{position:relative;width:310px;height:210px;margin:auto;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:35px 35px;border:1px solid var(--line2);background-color:#fff}.map-point{position:absolute;width:34px;height:34px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;transform:translate(-50%,-50%);box-shadow:0 2px 8px rgba(30,58,95,.18)}.road-line{position:absolute;height:4px;background:var(--accent);transform-origin:left center;border-radius:3px}.trail-line{position:absolute;height:3px;background:repeating-linear-gradient(90deg,var(--gold) 0 7px,transparent 7px 12px);transform-origin:left center}
+  .data-table{width:100%;border-collapse:collapse;min-width:420px}.data-table th,.data-table td{padding:9px 11px;border-bottom:1px solid var(--line);text-align:left;font-size:14px}.data-table th{background:var(--accent-soft);color:var(--accent)}
+  .options{display:grid;gap:10px}.option{border:1.5px solid var(--line2);background:#fff;border-radius:10px;padding:12px 14px;text-align:left;color:var(--ink);cursor:pointer;transition:.15s;display:flex;gap:10px;align-items:flex-start}.option:hover{border-color:var(--accent);background:var(--accent-soft)}.option.selected{border-color:var(--accent);background:var(--accent-soft)}.option.correct{border-color:var(--green);background:var(--green-soft)}.option.wrong{border-color:var(--warm);background:var(--warm-soft)}.mark{width:22px;height:22px;border:1.5px solid var(--line2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto;font-size:12px}.multi .mark{border-radius:6px}.option.selected .mark{background:var(--accent);border-color:var(--accent);color:#fff}
+  .number-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.answer-input{min-width:180px;flex:1;padding:12px 14px;border:1.5px solid var(--line2);border-radius:10px;font-family:Georgia,serif;font-size:18px;color:var(--accent)}.answer-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}.unit{color:var(--muted)}
+  .order-bank,.order-answer{display:flex;flex-wrap:wrap;gap:9px;min-height:54px;padding:10px;border:1px dashed var(--line2);border-radius:10px;background:var(--soft);margin-bottom:12px}.order-answer{background:#fff}.token{border:1px solid var(--line2);background:#fff;color:var(--ink2);border-radius:9px;padding:8px 11px;cursor:pointer}.order-answer .token{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.feedback{margin-top:16px;padding:14px 16px;border-radius:11px;font-size:14px}.feedback.ok{background:var(--green-soft);color:#315a3d;border:1px solid rgba(74,124,89,.25)}.feedback.bad{background:var(--warm-soft);color:var(--error);border:1px solid rgba(212,149,106,.3)}.feedback strong{display:block;margin-bottom:4px;color:var(--ink)}
+  .side-card{padding:17px}.side-card h3{font-family:Georgia,serif;font-size:17px;font-weight:400;margin-bottom:10px}.side-card p{font-size:13px;color:var(--ink2)}.side-card ul{margin:8px 0 0 18px;color:var(--ink2);font-size:13px}.side-card li{margin:6px 0}.score-big{font-family:Georgia,serif;font-size:38px;color:var(--accent);line-height:1}.score-big small{font-size:15px;color:var(--muted)}
+  .result{margin-top:24px;padding:clamp(22px,4vw,34px);max-width:900px}.result-grid{display:grid;grid-template-columns:210px 1fr;gap:28px;align-items:start}.result-score{background:var(--soft);border:1px solid var(--line);border-radius:13px;padding:22px;text-align:center}.result-score strong{display:block;font-family:Georgia,serif;font-size:50px;color:var(--accent);font-weight:400}.result-score span{color:var(--muted);font-size:13px}.skill-list{display:grid;gap:10px;margin-top:14px}.skill-row{display:grid;grid-template-columns:minmax(120px,1fr) 120px 44px;gap:10px;align-items:center;font-size:13px;color:var(--ink2)}.skill-bar{height:7px;background:var(--accent-soft);border-radius:999px;overflow:hidden}.skill-bar i{display:block;height:100%;background:var(--green);border-radius:999px}.result-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.copy-note{font-size:12px;color:var(--muted);margin-top:8px}
+  @media(max-width:900px){.workspace{grid-template-columns:1fr}.side{position:static}.intro{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr}.skill-row{grid-template-columns:minmax(120px,1fr) 100px 40px}}
+  @media(max-width:560px){.topnav-inner{align-items:flex-start}.nav-left,.nav-right{width:100%}.topic{display:none}.modes{width:100%}.modes button{flex:1}.wrap{padding-left:14px;padding-right:14px}.task-meta{align-items:flex-start;flex-direction:column}.actions .btn{flex:1}.mini-grid{transform:scale(.85);transform-origin:top left;margin-right:-46px;margin-bottom:-30px}}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="nav-left">
+      <a class="back" href="practice-1-5-map.html">← К карте тренажёров</a>
+      <span class="topic">practicePlanReadingTrainer</span>
+      <span class="badge">ОГЭ-2026</span>
+    </div>
+    <div class="nav-right">
+      <div class="modes" role="group" aria-label="Режим работы">
+        <button type="button" data-mode="learn" class="active">Обучение</button>
+        <button type="button" data-mode="train">Тренировка</button>
+        <button type="button" data-mode="teacher">Учитель</button>
+      </div>
+    </div>
+  </div>
+</nav>
+<main class="wrap">
+  <header>
+    <div class="eyebrow">Задания 1–5 · базовый навык</div>
+    <h1>Как читать <em>план и условие</em></h1>
+    <p class="subtitle">Мини-тренажёр учит не бросаться сразу считать: сначала увидеть вопрос, масштаб, нужные данные и единицы ответа.</p>
+  </header>
+
+  <section id="intro" class="card intro">
+    <div>
+      <h2>Сначала понять — потом считать</h2>
+      <p>В заданиях 1–5 много ошибок возникает не из-за формул, а из-за невнимательного чтения. Здесь десять коротких ситуаций без длинных вычислений.</p>
+      <ul>
+        <li>определяем, что именно спрашивают;</li>
+        <li>находим масштаб и нужные данные;</li>
+        <li>выбираем единицы измерения;</li>
+        <li>строим правильный порядок решения.</li>
+      </ul>
+    </div>
+    <div class="setup">
+      <label for="variant">Комплект заданий</label>
+      <select id="variant">
+        <option value="1">Комплект 1</option>
+        <option value="2">Комплект 2</option>
+      </select>
+      <div class="mini-stats">
+        <div class="mini"><strong>10</strong><span>заданий</span></div>
+        <div class="mini"><strong>10–15</strong><span>минут</span></div>
+      </div>
+      <button id="start" class="btn primary block" type="button">Начать</button>
+    </div>
+  </section>
+
+  <section id="workspace" class="workspace" hidden>
+    <div class="main">
+      <div class="card progress-card">
+        <div class="progress-head"><span id="progress-label">Задание 1 из 10</span><span id="score-label">Верно: 0</span></div>
+        <div class="bar"><div id="bar-fill" class="bar-fill"></div></div>
+      </div>
+      <article class="card task-card" style="margin-top:14px">
+        <div class="task-meta"><span id="skill" class="skill"></span><span id="mode-note"></span></div>
+        <div id="question" class="question"></div>
+        <div id="context" class="context" hidden></div>
+        <div id="visual" class="visual" hidden></div>
+        <div id="answer-area"></div>
+        <div class="actions">
+          <button id="check" class="btn primary" type="button">Проверить</button>
+          <button id="hint" class="btn gold" type="button">Подсказка</button>
+          <button id="reset-answer" class="btn secondary" type="button">Очистить ответ</button>
+          <button id="next" class="btn primary" type="button" hidden>Следующее задание</button>
+        </div>
+        <div id="feedback" class="feedback" hidden></div>
+      </article>
+    </div>
+    <aside class="side">
+      <div class="card side-card">
+        <h3>Текущий результат</h3>
+        <div class="score-big"><span id="side-score">0</span><small> / 10</small></div>
+      </div>
+      <div class="card side-card">
+        <h3>Памятка</h3>
+        <ul>
+          <li>сначала прочитайте вопрос;</li>
+          <li>отметьте объекты на плане;</li>
+          <li>найдите масштаб;</li>
+          <li>проверьте единицы ответа.</li>
+        </ul>
+      </div>
+      <div class="card side-card" id="teacher-panel" hidden>
+        <h3>Режим учителя</h3>
+        <p>Правильный ответ и объяснение показываются сразу. Результат в прогресс ученика не записывается.</p>
+      </div>
+    </aside>
+  </section>
+
+  <section id="result" class="card result" hidden>
+    <div class="result-grid">
+      <div class="result-score"><strong id="final-score">0</strong><span>из 10</span></div>
+      <div>
+        <h2 id="result-title">Готово</h2>
+        <p id="result-text" style="color:var(--ink2)"></p>
+        <div id="skill-list" class="skill-list"></div>
+        <div class="result-actions">
+          <button id="copy" class="btn primary" type="button">Скопировать результат для Stepik</button>
+          <button id="again" class="btn secondary" type="button">Пройти ещё раз</button>
+        </div>
+        <div id="copy-note" class="copy-note"></div>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+(() => {
+  'use strict';
+  const STORAGE_KEY = 'mathExamCourseProgress.v1';
+  const TOPIC_ID = 'practicePlanReadingTrainer';
+  const skills = ['Вопрос','Масштаб','Данные','Единицы','Алгоритм'];
+  const visualGrid = `
+    <div class="mini-grid" aria-label="План на клетчатой сетке">
+      <div class="road-line" style="left:35px;top:175px;width:175px"></div>
+      <div class="road-line" style="left:210px;top:35px;width:140px;transform:rotate(90deg)"></div>
+      <div class="trail-line" style="left:35px;top:35px;width:224px;transform:rotate(38.7deg)"></div>
+      <span class="map-point" style="left:35px;top:35px">A</span>
+      <span class="map-point" style="left:35px;top:175px">B</span>
+      <span class="map-point" style="left:210px;top:175px">C</span>
+      <span class="map-point" style="left:210px;top:35px">D</span>
+    </div>
+    <p style="margin-top:10px;color:var(--ink2);font-size:13px;text-align:center">Сторона клетки — 2 км. Сплошная линия — шоссе, пунктир — тропа.</p>`;
+  const visualTable = `<table class="data-table"><thead><tr><th>Маршрут</th><th>Расстояние</th><th>Скорость</th></tr></thead><tbody><tr><td>по шоссе</td><td>12 км</td><td>24 км/ч</td></tr><tr><td>по тропе</td><td>8 км</td><td>12 км/ч</td></tr></tbody></table>`;
+  const bank = [
+    {skill:'Вопрос',type:'single',q:'В условии спрашивают: «Сколько минут займёт поездка?» Какую величину нужно найти?',options:['расстояние','время','скорость','стоимость'],answer:1,hint:'Смотрите на существительное после слова «сколько».',explain:'Нужно найти время. В ответе ожидаются минуты.',context:'Не начинайте с чисел: сначала назовите искомую величину.'},
+    {skill:'Масштаб',type:'number',q:'Маршрут занимает 5 клеток. Сторона каждой клетки равна 2 км. Какова длина маршрута?',answer:10,tolerance:0.001,unit:'км',hint:'Число клеток умножьте на длину стороны одной клетки.',explain:'5 · 2 = 10 км.',visual:visualGrid},
+    {skill:'Данные',type:'multi',q:'Какие данные нужны, чтобы найти стоимость бензина для поездки?',options:['длина маршрута','расход топлива на 100 км','цена одного литра','время отправления'],answer:[0,1,2],hint:'Стоимость зависит от количества израсходованного топлива и цены литра.',explain:'Нужны расстояние, расход топлива и цена литра. Время отправления на стоимость не влияет.'},
+    {skill:'Единицы',type:'number',q:'На плане получено расстояние 3600 м. Сколько это километров?',answer:3.6,tolerance:0.001,unit:'км',hint:'В одном километре 1000 метров.',explain:'3600 : 1000 = 3,6 км.'},
+    {skill:'Алгоритм',type:'order',q:'Расположите действия в правильном порядке.',options:['выполнить вычисления','прочитать вопрос','найти масштаб и нужные данные','проверить единицы ответа'],answer:['прочитать вопрос','найти масштаб и нужные данные','выполнить вычисления','проверить единицы ответа'],hint:'Начинаем не с вычислений, а с вопроса.',explain:'Надёжный порядок: вопрос → данные и масштаб → вычисления → проверка единиц.'},
+    {skill:'Алгоритм',type:'single',q:'Прямая тропа образует диагональ прямоугольника со сторонами 3 км и 4 км. Какой приём нужен?',options:['проценты','теорема Пифагора','среднее арифметическое','пропорция'],answer:1,hint:'Известны два катета прямоугольного треугольника.',explain:'Диагональ — гипотенуза: √(3² + 4²) = 5 км.',visual:visualGrid},
+    {skill:'Вопрос',type:'number',q:'По таблице найдите время движения по шоссе в минутах.',answer:30,tolerance:0.001,unit:'мин',hint:'t = S : v, затем часы переведите в минуты.',explain:'12 : 24 = 0,5 часа = 30 минут.',visual:visualTable},
+    {skill:'Единицы',type:'single',q:'Вопрос требует ответ «в километрах». Вы получили 18 000 м. Что записать в поле ответа?',options:['18 000','1800','18','0,18'],answer:2,hint:'Переведите метры в километры.',explain:'18 000 м = 18 км, поэтому в поле ответа записываем 18.'},
+    {skill:'Данные',type:'single',q:'На обычном плане север расположен сверху. Где находится объект, лежащий восточнее школы?',options:['слева','справа','выше','ниже'],answer:1,hint:'Восток на стандартной карте — справа.',explain:'Объект восточнее школы находится справа от неё.'},
+    {skill:'Данные',type:'single',q:'Нужно выбрать самый короткий маршрут. Какое данное лишнее?',options:['длины участков дороги','масштаб плана','время работы кафе','расположение развилок'],answer:2,hint:'Ищем длину, а не планируем остановку.',explain:'Время работы кафе не влияет на длину маршрута.'},
+    {skill:'Масштаб',type:'number',q:'Сторона клетки равна 1,5 км. Отрезок занимает 7 клеток. Найдите его длину.',answer:10.5,tolerance:0.001,unit:'км',hint:'7 · 1,5.',explain:'7 · 1,5 = 10,5 км.'},
+    {skill:'Вопрос',type:'single',q:'Вопрос: «На сколько минут путь по шоссе быстрее?» Что нужно сделать после вычисления двух времён?',options:['сложить времена','разделить большее на меньшее','вычесть меньшее время из большего','перевести минуты в километры'],answer:2,hint:'Фраза «на сколько» означает разность.',explain:'Нужно найти разность двух времён: большее минус меньшее.'}
+  ];
+  const sets = {1:[0,1,2,3,4,5,6,7,8,9],2:[2,3,4,5,6,7,8,9,10,11]};
+  const $ = id => document.getElementById(id);
+  const state = {mode:'learn',variant:1,tasks:[],index:0,score:0,checked:false,answers:{},skillStats:{}};
+
+  function setMode(mode){
+    state.mode=mode;
+    document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
+    $('teacher-panel').hidden = mode!=='teacher';
+    if(!$('workspace').hidden) render();
+  }
+  document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+
+  function start(){
+    state.variant=Number($('variant').value);
+    state.tasks=sets[state.variant].map(i=>bank[i]); state.index=0; state.score=0; state.checked=false; state.answers={}; state.skillStats={};
+    skills.forEach(s=>state.skillStats[s]={right:0,total:0});
+    $('intro').hidden=true; $('result').hidden=true; $('workspace').hidden=false; render(); window.scrollTo({top:0,behavior:'smooth'});
+  }
+  $('start').addEventListener('click',start);
+
+  function render(){
+    const t=state.tasks[state.index]; state.checked=false;
+    $('progress-label').textContent=`Задание ${state.index+1} из ${state.tasks.length}`;
+    $('score-label').textContent=`Верно: ${state.score}`; $('side-score').textContent=state.score;
+    $('bar-fill').style.width=`${state.index/state.tasks.length*100}%`;
+    $('skill').textContent=t.skill;
+    $('mode-note').textContent=state.mode==='teacher'?'Ответ показан':state.mode==='learn'?'Можно пользоваться подсказкой':'Без подсказки до первой проверки';
+    $('question').innerHTML=t.q;
+    $('context').hidden=!t.context; $('context').innerHTML=t.context||'';
+    $('visual').hidden=!t.visual; $('visual').innerHTML=t.visual||'';
+    $('feedback').hidden=true; $('feedback').className='feedback'; $('feedback').innerHTML='';
+    $('next').hidden=true; $('check').hidden=state.mode==='teacher'; $('hint').hidden=state.mode==='teacher'; $('reset-answer').hidden=state.mode==='teacher';
+    renderAnswer(t);
+    if(state.mode==='teacher') showTeacher(t);
+  }
+
+  function renderAnswer(t){
+    const area=$('answer-area'); area.innerHTML='';
+    if(t.type==='single'||t.type==='multi'){
+      const box=document.createElement('div'); box.className='options '+(t.type==='multi'?'multi':'');
+      t.options.forEach((text,i)=>{
+        const b=document.createElement('button'); b.type='button'; b.className='option'; b.dataset.index=i;
+        b.innerHTML=`<span class="mark">${t.type==='multi'?'':'○'}</span><span>${text}</span>`;
+        b.addEventListener('click',()=>{
+          if(state.checked||state.mode==='teacher')return;
+          if(t.type==='single'){box.querySelectorAll('.option').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');state.answers[state.index]=i;}
+          else{b.classList.toggle('selected');state.answers[state.index]=[...box.querySelectorAll('.option.selected')].map(x=>Number(x.dataset.index));}
+        }); box.appendChild(b);
+      }); area.appendChild(box);
+    } else if(t.type==='number'){
+      const row=document.createElement('div'); row.className='number-row';
+      row.innerHTML=`<input class="answer-input" id="number-answer" inputmode="decimal" autocomplete="off" placeholder="Введите ответ"><span class="unit">${t.unit||''}</span>`;
+      area.appendChild(row); const inp=$('number-answer'); inp.value=state.answers[state.index]??''; inp.addEventListener('input',()=>state.answers[state.index]=inp.value);
+      inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!state.checked)check();});
+    } else if(t.type==='order'){
+      const ans=document.createElement('div'); ans.className='order-answer'; ans.id='order-answer';
+      const bankBox=document.createElement('div'); bankBox.className='order-bank'; bankBox.id='order-bank';
+      area.innerHTML='<p style="font-size:13px;color:var(--muted);margin-bottom:8px">Нажимайте на действия по порядку:</p>'; area.append(ans,bankBox);
+      const chosen=state.answers[state.index]||[];
+      chosen.forEach(x=>ans.appendChild(makeToken(x,t,true)));
+      t.options.filter(x=>!chosen.includes(x)).forEach(x=>bankBox.appendChild(makeToken(x,t,false)));
+    }
+  }
+  function makeToken(text,t,inAnswer){
+    const b=document.createElement('button');b.type='button';b.className='token';b.textContent=text;
+    b.addEventListener('click',()=>{if(state.checked||state.mode==='teacher')return;let a=state.answers[state.index]||[];if(inAnswer)a=a.filter(x=>x!==text);else a=[...a,text];state.answers[state.index]=a;renderAnswer(t);});return b;
+  }
+
+  function normalizedNumber(v){return Number(String(v??'').trim().replace(',','.').replace(/\s/g,''));}
+  function isCorrect(t,a){
+    if(t.type==='single')return Number(a)===t.answer;
+    if(t.type==='multi'){const x=[...(a||[])].sort((m,n)=>m-n),y=[...t.answer].sort((m,n)=>m-n);return JSON.stringify(x)===JSON.stringify(y);}
+    if(t.type==='number'){const n=normalizedNumber(a);return Number.isFinite(n)&&Math.abs(n-t.answer)<=(t.tolerance||0);}
+    if(t.type==='order')return JSON.stringify(a||[])===JSON.stringify(t.answer);
+    return false;
+  }
+  function hasAnswer(t,a){
+    if(t.type==='single')return Number.isInteger(a);
+    if(t.type==='multi'||t.type==='order')return Array.isArray(a)&&a.length>0;
+    return String(a??'').trim()!=='';
+  }
+  function check(){
+    const t=state.tasks[state.index],a=state.answers[state.index];
+    if(!hasAnswer(t,a)){showFeedback(false,'Сначала выберите или введите ответ.');return;}
+    const ok=isCorrect(t,a); state.checked=true; state.skillStats[t.skill].total++;
+    if(ok){state.score++;state.skillStats[t.skill].right++;}
+    markOptions(t,ok); showFeedback(ok,t.explain); $('check').hidden=true; $('hint').hidden=true; $('reset-answer').hidden=true; $('next').hidden=false;
+    $('score-label').textContent=`Верно: ${state.score}`;$('side-score').textContent=state.score;
+  }
+  $('check').addEventListener('click',check);
+  function markOptions(t){
+    if(t.type==='single')document.querySelectorAll('.option').forEach((b,i)=>{if(i===t.answer)b.classList.add('correct');else if(b.classList.contains('selected'))b.classList.add('wrong');});
+    if(t.type==='multi')document.querySelectorAll('.option').forEach((b,i)=>{if(t.answer.includes(i))b.classList.add('correct');else if(b.classList.contains('selected'))b.classList.add('wrong');});
+  }
+  function showFeedback(ok,text){const f=$('feedback');f.hidden=false;f.className='feedback '+(ok?'ok':'bad');f.innerHTML=`<strong>${ok?'Верно':'Проверьте ещё раз'}</strong>${text}`;}
+  $('hint').addEventListener('click',()=>{const t=state.tasks[state.index];showFeedback(false,`Подсказка: ${t.hint}`);});
+  $('reset-answer').addEventListener('click',()=>{delete state.answers[state.index];renderAnswer(state.tasks[state.index]);$('feedback').hidden=true;});
+  $('next').addEventListener('click',()=>{if(state.index<state.tasks.length-1){state.index++;render();window.scrollTo({top:0,behavior:'smooth'});}else finish();});
+
+  function showTeacher(t){
+    state.answers[state.index]=t.type==='single'?t.answer:t.type==='multi'?[...t.answer]:t.type==='number'?String(t.answer):[...t.answer];
+    renderAnswer(t); markOptions(t,true); showFeedback(true,`Правильный ответ. ${t.explain}`); $('next').hidden=false;
+  }
+
+  function finish(){
+    $('workspace').hidden=true;$('result').hidden=false;$('bar-fill').style.width='100%';
+    $('final-score').textContent=state.score;
+    let title,text;
+    if(state.score===10){title='Отличная читательская привычка';text='Вы уверенно находите вопрос, масштаб, нужные данные и единицы ответа.';}
+    else if(state.score>=8){title='Хорошая основа';text='Навык уже устойчивый. Перед вычислениями продолжайте делать короткую остановку: «что ищу и в каких единицах?»';}
+    else if(state.score>=5){title='Нужна ещё одна короткая тренировка';text='Основная логика понятна, но отдельные детали пока ускользают. Повторите комплект в режиме обучения.';}
+    else{title='Начинаем с алгоритма';text='Это нормальный старт. Проходите задания медленно: вопрос → объекты → масштаб → данные → единицы.';}
+    $('result-title').textContent=title;$('result-text').textContent=text;
+    const list=$('skill-list');list.innerHTML='';
+    skills.forEach(s=>{const st=state.skillStats[s],pct=st.total?Math.round(st.right/st.total*100):0;const row=document.createElement('div');row.className='skill-row';row.innerHTML=`<span>${s}</span><span class="skill-bar"><i style="width:${pct}%"></i></span><strong>${st.right}/${st.total}</strong>`;list.appendChild(row);});
+    if(state.mode!=='teacher')saveProgress();window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function saveProgress(){
+    let data={};try{data=JSON.parse(localStorage.getItem(STORAGE_KEY)||'{}')||{};}catch(e){}
+    const old=data[TOPIC_ID]||{};const best=Math.max(Number(old.bestScore)||0,state.score);
+    data[TOPIC_ID]={...old,solved:best,total:10,lastScore:state.score,bestScore:best,completed:best>=8,attempts:(Number(old.attempts)||0)+1,updatedAt:new Date().toISOString()};
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data));}catch(e){}
+  }
+  function resultText(){
+    const weak=skills.filter(s=>{const st=state.skillStats[s];return st.total&&st.right<st.total;});
+    return `Тренажёр «Как читать план и условие» (ОГЭ-2026): ${state.score} из 10. Комплект: ${state.variant}. ${weak.length?'Повторить: '+weak.join(', ')+'.':'Все базовые навыки выполнены без ошибок.'}`;
+  }
+  $('copy').addEventListener('click',async()=>{const text=resultText();try{await navigator.clipboard.writeText(text);$('copy-note').textContent='Результат скопирован. Вернитесь в Stepik и вставьте его в поле ответа.';}catch(e){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();$('copy-note').textContent='Результат скопирован.';}});
+  $('again').addEventListener('click',()=>{$('result').hidden=true;$('intro').hidden=false;window.scrollTo({top:0,behavior:'smooth'});});
+})();
+</script>
+</body>
+</html>

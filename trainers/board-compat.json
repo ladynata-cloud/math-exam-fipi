@@ -158,6 +158,28 @@
       "supportsBoardMirror": false,
       "supportsSemanticEvents": false,
       "notes": "Открывается в iframe доски; хранит локальный результат, mirror не подключён."
+    },
+    {
+      "trainerId": "practice-1-5-plan-reading",
+      "file": "trainers/oge-1-5-trainers/practice-1-5-plan-reading.html",
+      "title": "ОГЭ №1–5: как читать план и условие",
+      "group": "ОГЭ / задачи 1–5",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Открывается в iframe доски; хранит локальный прогресс, mirror не подключён."
+    },
+    {
+      "trainerId": "practice-1-5-routes-checkpoint-2026",
+      "file": "trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html",
+      "title": "ОГЭ-2026 №1–5: проверочная по планам и маршрутам",
+      "group": "ОГЭ / задачи 1–5",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Открывается в iframe доски; хранит локальный результат, mirror не подключён."
     }
   ]
 }
