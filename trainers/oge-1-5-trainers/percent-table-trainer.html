@@ -3,229 +3,1531 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Проценты · тренажёр · ОГЭ 1–5</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<meta name="color-scheme" content="light">
+<title>Проценты без паники · обучающий тренажёр ОГЭ</title>
 <style>
   :root{
-    --bg:#f5f7fc; --card:#fff; --ink:#1b2140; --ink-soft:#545c7e; --ink-muted:#9298b4;
-    --line:#e7eaf4; --accent:#8B5CF6; --accent-ink:#6d28d9; --accent-soft:#ede9fe;
-    --ok:#16a34a; --ok-soft:#e7f7ee; --no:#e0574a; --no-soft:#fdecea; --star:#F2542D;
-    --font-display:"Fredoka","Baloo 2",ui-rounded,"Segoe UI",system-ui,sans-serif;
-    --font-body:"Nunito",ui-rounded,-apple-system,"Segoe UI",system-ui,sans-serif;
-    --shadow:0 2px 6px rgba(27,33,64,.05),0 14px 40px rgba(27,33,64,.10);
+    --bg:#f6f7fb;
+    --card:#ffffff;
+    --ink:#1e2744;
+    --ink-soft:#56617d;
+    --muted:#8d95aa;
+    --line:#e3e7f0;
+    --violet:#7254d8;
+    --violet-deep:#5036b4;
+    --violet-soft:#eeeafd;
+    --green:#2f8b61;
+    --green-deep:#1d6644;
+    --green-soft:#e8f6ef;
+    --blue:#3377b7;
+    --blue-deep:#245889;
+    --blue-soft:#e9f3fb;
+    --gold:#aa6b22;
+    --gold-soft:#fff2df;
+    --red:#aa4e46;
+    --red-soft:#fcedeb;
+    --shadow-sm:0 2px 8px rgba(30,39,68,.06);
+    --shadow:0 6px 18px rgba(30,39,68,.07),0 26px 58px rgba(30,39,68,.09);
+    --radius:22px;
+    --radius-sm:14px;
   }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  html,body{background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;line-height:1.5;}
-  body{background-image:radial-gradient(circle at 10% 4%,rgba(139,92,246,.06) 0,transparent 34%),radial-gradient(circle at 92% 96%,rgba(139,92,246,.05) 0,transparent 34%);}
-  .wrap{max-width:760px;margin:0 auto;padding:34px 18px 80px;}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 8% 5%,rgba(114,84,216,.09),transparent 31%),
+      radial-gradient(circle at 92% 90%,rgba(47,139,97,.075),transparent 29%),
+      linear-gradient(180deg,#fafbfe 0%,var(--bg) 72%);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans",Arial,sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  button,input{font:inherit}
+  button{touch-action:manipulation}
+  a{color:inherit}
+  [hidden]{display:none!important}
+  :focus-visible{outline:4px solid rgba(51,119,183,.27);outline-offset:3px}
 
-  header.top{margin-bottom:20px;}
-  .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:5px 12px;border-radius:999px;margin-bottom:12px;}
-  h1{font-family:var(--font-display);font-weight:600;font-size:clamp(27px,5vw,38px);line-height:1.05;margin-bottom:6px;}
-  .sub{font-size:15.5px;color:var(--ink-soft);font-weight:600;}
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(250,251,254,.94);
+    border-bottom:1px solid rgba(227,231,240,.94);
+    backdrop-filter:blur(12px);
+  }
+  .topbar-inner{
+    max-width:1180px;margin:0 auto;padding:10px 18px;
+    display:flex;align-items:center;gap:14px;
+  }
+  .brand-link{
+    display:flex;align-items:center;gap:10px;text-decoration:none;min-width:max-content;
+  }
+  .brand-mark{
+    width:38px;height:38px;border-radius:13px;display:grid;place-items:center;
+    color:white;font-size:20px;font-weight:950;
+    background:linear-gradient(145deg,var(--violet),#9b7de7);
+    box-shadow:0 7px 18px rgba(114,84,216,.27);
+  }
+  .brand-text{display:grid;line-height:1.12}
+  .brand-text b{font-size:13px}
+  .brand-text span{font-size:11px;color:var(--muted);font-weight:700}
+  .nav-scroll{overflow-x:auto;scrollbar-width:none;margin-left:auto}
+  .nav-scroll::-webkit-scrollbar{display:none}
+  .main-nav{display:flex;gap:5px;min-width:max-content;padding:3px;background:#edf0f6;border-radius:14px}
+  .main-nav button{
+    border:0;background:transparent;color:var(--ink-soft);font-size:12.5px;font-weight:850;
+    padding:8px 11px;border-radius:11px;cursor:pointer;white-space:nowrap;
+  }
+  .main-nav button:hover{color:var(--violet-deep)}
+  .main-nav button.active{background:white;color:var(--violet-deep);box-shadow:var(--shadow-sm)}
 
-  .card{background:var(--card);border:1.5px solid var(--line);border-radius:18px;box-shadow:var(--shadow);}
+  .wrap{max-width:1180px;margin:0 auto;padding:30px 18px 80px}
+  .view{animation:fade-up .28s ease both}
+  @keyframes fade-up{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
 
-  .picker{padding:14px 16px;margin-bottom:16px;}
-  .picker .lbl{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-muted);margin-bottom:9px;}
-  .chips{display:flex;gap:7px;flex-wrap:wrap;}
-  .chip{font-family:var(--font-body);font-weight:800;font-size:12.5px;color:var(--ink-soft);background:#f1f3fb;border:1.5px solid var(--line);border-radius:10px;padding:7px 12px;cursor:pointer;transition:border-color .15s,background .15s,color .15s;display:inline-flex;align-items:center;gap:6px;}
-  .chip:hover{border-color:var(--accent);}
-  .chip.active{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink);}
-  .chip .cnt{color:var(--ink-muted);font-weight:700;}
-  .chip.done{color:var(--ok);border-color:#bfe6cd;} .chip.done.active{background:var(--accent-soft);} .chip.done .cnt{color:var(--ok);}
-  .chip.mix{color:var(--accent-ink);border-style:dashed;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:5px 11px;border-radius:999px;background:var(--violet-soft);color:var(--violet-deep);
+    font-size:11.5px;font-weight:950;text-transform:uppercase;letter-spacing:.055em;
+  }
+  h1{font-size:clamp(32px,5vw,54px);line-height:1.04;letter-spacing:-.035em}
+  h2{font-size:clamp(24px,3.6vw,34px);line-height:1.15;letter-spacing:-.02em}
+  h3{line-height:1.25}
+  .lead{font-size:17px;color:var(--ink-soft);max-width:780px}
+  .muted{color:var(--muted)}
+  .part-text{color:var(--violet-deep);font-weight:900}
+  .whole-text{color:var(--green-deep);font-weight:900}
 
-  .progress{padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
-  .progress .big{font-family:var(--font-display);font-weight:600;font-size:23px;line-height:1;}
-  .progress .big b{color:var(--accent-ink);}
-  .progress .plbl{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-muted);}
-  .progress .streak{margin-left:auto;font-weight:800;font-size:13.5px;color:var(--star);}
+  .card{
+    background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
+  }
+  .card-flat{box-shadow:none}
 
-  .task{padding:24px;}
-  .task .badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:5px 11px;border-radius:999px;margin-bottom:14px;}
-  .task .q{font-size:19px;font-weight:700;color:var(--ink);line-height:1.55;}
-  .task .q b{font-weight:800;}
-  .mini{margin-top:12px;border:1px solid var(--line);border-radius:10px;overflow:hidden;max-width:320px;}
-  .mini table{width:100%;border-collapse:collapse;font-size:14px;font-weight:600;}
-  .mini td{padding:8px 13px;border-bottom:1px solid var(--line);}
-  .mini tr:last-child td{border-bottom:none;}
-  .mini td:last-child{text-align:right;color:var(--ink-soft);}
+  /* Главная */
+  .home-hero{
+    display:grid;grid-template-columns:minmax(0,1.16fr) minmax(310px,.84fr);gap:24px;align-items:stretch;
+    margin-bottom:22px;
+  }
+  .hero-copy{padding:30px}
+  .hero-copy h1{margin:12px 0 12px}
+  .hero-copy .lead{margin-bottom:22px}
+  .hero-actions{display:flex;gap:10px;flex-wrap:wrap}
+  .formula-stage{
+    padding:25px;display:grid;place-items:center;overflow:hidden;position:relative;
+    background:
+      radial-gradient(circle at 18% 16%,rgba(114,84,216,.14),transparent 34%),
+      radial-gradient(circle at 84% 82%,rgba(47,139,97,.13),transparent 34%),
+      #fff;
+  }
+  .formula-stage::before,.formula-stage::after{
+    content:"";position:absolute;border-radius:999px;filter:blur(.2px);opacity:.75
+  }
+  .formula-stage::before{width:110px;height:110px;background:var(--violet-soft);left:-38px;top:-40px}
+  .formula-stage::after{width:130px;height:130px;background:var(--green-soft);right:-47px;bottom:-54px}
+  .formula-visual{position:relative;z-index:1;width:100%;max-width:390px;text-align:center}
+  .formula-caption{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:900;margin-bottom:15px}
+  .formula-row{display:flex;justify-content:center;align-items:center;gap:13px;flex-wrap:wrap;font-size:clamp(23px,3.6vw,34px);font-weight:950}
+  .fraction{display:inline-grid;grid-template-rows:auto auto;min-width:100px;line-height:1.08}
+  .fraction span:first-child{padding:0 10px 6px;border-bottom:3px solid currentColor}
+  .fraction span:last-child{padding:6px 10px 0}
+  .fraction.part-whole span:first-child{color:var(--violet-deep)}
+  .fraction.part-whole span:last-child{color:var(--green-deep)}
+  .fraction.percent span:first-child{color:var(--blue-deep)}
+  .fraction.percent span:last-child{color:var(--green-deep)}
+  .formula-note{margin-top:18px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.78);color:var(--ink-soft);font-size:14px;font-weight:750}
 
-  .answer{margin-top:20px;}
-  .num-in{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-  .num-in input{font-family:var(--font-display);font-weight:600;font-size:24px;width:190px;padding:12px 18px;border:2px solid var(--line);border-radius:14px;color:var(--ink);outline:none;background:#fbfcff;}
-  .num-in input:focus{border-color:var(--accent);}
-  .num-in .unit{font-weight:800;color:var(--ink-muted);font-size:16px;}
+  .route-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;margin-bottom:22px}
+  .route-card{
+    padding:20px;position:relative;overflow:hidden;box-shadow:var(--shadow-sm);cursor:pointer;
+    transition:transform .17s,border-color .17s,box-shadow .17s;text-align:left;width:100%;
+  }
+  .route-card:hover{transform:translateY(-3px);border-color:#c8c0ec;box-shadow:var(--shadow)}
+  .route-icon{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:24px;margin-bottom:14px}
+  .route-card.learn .route-icon{background:var(--violet-soft)}
+  .route-card.practice .route-icon{background:var(--green-soft)}
+  .route-card.check .route-icon{background:var(--blue-soft)}
+  .route-card h3{font-size:19px;margin-bottom:6px}
+  .route-card p{font-size:14px;color:var(--ink-soft);min-height:64px}
+  .route-meta{margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;font-weight:850;color:var(--muted)}
+  .route-arrow{font-size:19px;color:var(--violet-deep)}
 
-  .actions{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;}
-  .btn{font-family:var(--font-display);font-weight:600;font-size:16px;border:none;border-radius:14px;padding:12px 24px;cursor:pointer;transition:transform .15s,box-shadow .15s;}
-  .btn.primary{background:var(--accent);color:#fff;box-shadow:0 6px 16px rgba(139,92,246,.3);}
-  .btn.primary:hover{transform:translateY(-2px);}
-  .btn.ghost{background:#f1f3fb;color:var(--ink-soft);border:1.5px solid var(--line);}
-  .btn.ghost:hover{border-color:var(--accent);color:var(--accent-ink);}
-  .btn[disabled]{opacity:.5;cursor:default;transform:none;box-shadow:none;}
+  .dashboard{padding:22px;display:grid;grid-template-columns:230px minmax(0,1fr);gap:22px;align-items:center}
+  .dashboard-main{display:flex;align-items:center;gap:17px}
+  .progress-ring{
+    --p:0;flex:0 0 auto;width:108px;height:108px;border-radius:50%;display:grid;place-items:center;
+    background:conic-gradient(var(--violet) var(--p),#edf0f6 0);
+    position:relative;
+  }
+  .progress-ring::before{content:"";position:absolute;inset:11px;border-radius:50%;background:white}
+  .progress-ring-content{position:relative;text-align:center;line-height:1.05}
+  .progress-ring-content b{display:block;font-size:26px;color:var(--violet-deep)}
+  .progress-ring-content span{font-size:10px;color:var(--muted);font-weight:900;text-transform:uppercase}
+  .dashboard-copy h3{font-size:18px;margin-bottom:5px}
+  .dashboard-copy p{font-size:13.5px;color:var(--ink-soft)}
+  .skill-list{display:grid;gap:9px}
+  .skill-row{display:grid;grid-template-columns:minmax(145px,1fr) minmax(130px,1.4fr) auto;gap:10px;align-items:center;font-size:12.5px}
+  .skill-row-name{font-weight:800;color:var(--ink-soft)}
+  .skill-bar{height:8px;background:#eef0f6;border-radius:99px;overflow:hidden}
+  .skill-bar span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--violet),#9f85e9)}
+  .skill-row-score{font-weight:900;color:var(--muted);min-width:36px;text-align:right}
 
-  .fb{margin-top:18px;border-radius:16px;padding:15px 17px;font-weight:600;font-size:14.5px;line-height:1.55;display:none;}
-  .fb.show{display:block;}
-  .fb.good{background:var(--ok-soft);border:1.5px solid #bfe6cd;color:#15633a;}
-  .fb.bad{background:var(--no-soft);border:1.5px solid #f3c4bf;color:#8f2f26;}
-  .fb .title{font-family:var(--font-display);font-weight:600;font-size:16px;margin-bottom:5px;}
-  .fb .sol{background:rgba(255,255,255,.65);border-radius:10px;padding:10px 12px;margin-top:8px;font-weight:700;color:var(--ink);}
+  /* Кнопки */
+  .btn{
+    border:0;border-radius:13px;padding:11px 18px;font-weight:900;cursor:pointer;
+    transition:transform .14s,box-shadow .14s,background .14s,border-color .14s;color:var(--ink);
+  }
+  .btn:hover:not(:disabled){transform:translateY(-1px)}
+  .btn.primary{background:var(--violet);color:white;box-shadow:0 8px 20px rgba(114,84,216,.25)}
+  .btn.primary:hover:not(:disabled){background:var(--violet-deep)}
+  .btn.green{background:var(--green);color:white;box-shadow:0 8px 20px rgba(47,139,97,.22)}
+  .btn.blue{background:var(--blue);color:white;box-shadow:0 8px 20px rgba(51,119,183,.22)}
+  .btn.secondary{background:#f2f4f8;border:1.5px solid var(--line);color:var(--ink-soft)}
+  .btn.secondary:hover:not(:disabled){border-color:#beb5e8;color:var(--violet-deep)}
+  .btn.soft{background:var(--violet-soft);color:var(--violet-deep)}
+  .btn.small{padding:8px 12px;font-size:13px}
+  .btn:disabled{opacity:.45;cursor:default;transform:none}
+  .text-link{border:0;background:transparent;color:var(--blue-deep);font-weight:850;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 
-  .foot{margin-top:26px;text-align:center;}
-  .foot button{font-family:var(--font-body);font-weight:800;font-size:13px;color:var(--ink-soft);background:#f1f3fb;border:1.5px solid var(--line);padding:9px 16px;border-radius:11px;cursor:pointer;}
-  .foot button:hover{border-color:var(--star);color:var(--star);}
-  .foot .key{margin-top:9px;font-size:12px;color:var(--ink-muted);}
+  /* Обучение */
+  .section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;margin-bottom:19px}
+  .section-head .lead{margin-top:7px}
+  .learn-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
+  .lesson-card{padding:25px}
+  .lesson-top{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+  .lesson-count{font-size:12px;font-weight:950;color:var(--violet-deep);text-transform:uppercase;letter-spacing:.055em;white-space:nowrap}
+  .lesson-progress{height:8px;flex:1;background:#edf0f6;border-radius:99px;overflow:hidden}
+  .lesson-progress span{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--violet),#a589eb);transition:width .25s}
+  .lesson-content h2{margin-bottom:9px}
+  .lesson-lead{font-size:16px;color:var(--ink-soft);margin-bottom:18px}
+  .lesson-actions{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+  .side-stack{display:grid;gap:14px;position:sticky;top:78px}
+  .side-card{padding:17px;box-shadow:none}
+  .side-card h3{font-size:16px;margin-bottom:9px}
+  .side-card p,.side-card li{font-size:13.5px;color:var(--ink-soft)}
+  .side-card ol{padding-left:19px;display:grid;gap:7px}
+  .rule-card{background:linear-gradient(145deg,#fff,var(--violet-soft));border-color:#d7cff7}
+  .rule-box{margin-top:11px;padding:11px 12px;border-radius:13px;background:rgba(255,255,255,.78);font-size:13.5px;font-weight:900;color:var(--violet-deep)}
+  .learn-rail{display:grid;gap:7px}
+  .learn-rail button{
+    border:1px solid var(--line);background:#f8f9fc;color:var(--ink-soft);padding:8px 9px;border-radius:10px;
+    font-size:12px;font-weight:800;text-align:left;cursor:pointer;display:flex;gap:8px;align-items:center;
+  }
+  .learn-rail button.active{background:var(--violet-soft);border-color:#c9bdf2;color:var(--violet-deep)}
+  .learn-rail button.done::before{content:"✓";color:var(--green);font-weight:950}
+  .learn-rail button:not(.done)::before{content:"•";color:var(--muted)}
 
-  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}.btn.primary:hover{transform:none;}}
+  .feedback{display:none;margin-top:15px;padding:13px 15px;border-radius:14px;font-size:14px;font-weight:750}
+  .feedback.show{display:block}
+  .feedback.good{background:var(--green-soft);border:1.5px solid #a9d8be;color:var(--green-deep)}
+  .feedback.warn{background:var(--gold-soft);border:1.5px solid #ecc89a;color:#7d4c16}
+  .feedback.bad{background:var(--red-soft);border:1.5px solid #e7b5b0;color:#873d36}
+  .feedback.info{background:var(--blue-soft);border:1.5px solid #b8d7ee;color:var(--blue-deep)}
+
+  .hundred-zone{display:grid;grid-template-columns:230px minmax(0,1fr);gap:22px;align-items:center}
+  .hundred-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:3px;width:min(230px,100%);aspect-ratio:1;padding:8px;border-radius:17px;background:#eef1f6;border:1px solid var(--line)}
+  .hundred-cell{border-radius:3px;background:white;border:1px solid #e6e9f0}
+  .hundred-cell.on{background:var(--violet);border-color:var(--violet)}
+  .percent-picks{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
+  .percent-picks button{border:1.5px solid var(--line);background:white;border-radius:10px;padding:7px 11px;font-weight:900;color:var(--ink-soft);cursor:pointer}
+  .percent-picks button.active{background:var(--violet-soft);border-color:#b9aaf0;color:var(--violet-deep)}
+  .big-equality{font-size:clamp(22px,3.5vw,31px);font-weight:950;color:var(--violet-deep)}
+  .plain-note{margin-top:9px;color:var(--ink-soft)}
+  .mini-question{margin-top:17px;padding:15px;border-radius:16px;background:#f8f9fc;border:1.5px solid var(--line)}
+  .mini-question p{font-weight:850;margin-bottom:10px}
+  .answer-line{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+  .answer-input{width:190px;max-width:100%;padding:11px 14px;border:2px solid var(--line);border-radius:13px;font-size:21px;font-weight:900;color:var(--ink);outline:none;background:white}
+  .answer-input:focus{border-color:var(--blue);box-shadow:0 0 0 4px var(--blue-soft)}
+  .answer-input.correct{border-color:var(--green);background:var(--green-soft)}
+  .answer-input.wrong{border-color:var(--red);background:var(--red-soft)}
+  .answer-unit{color:var(--muted);font-weight:850}
+
+  .one-percent-flow{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch;margin-top:16px}
+  .flow-step{padding:17px;border-radius:16px;border:1.5px solid var(--line);background:#fafbfe}
+  .flow-step .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:11px;background:var(--blue-soft);color:var(--blue-deep);font-weight:950;margin-bottom:10px}
+  .flow-step h3{font-size:16px;margin-bottom:6px}
+  .flow-step p{font-size:14px;color:var(--ink-soft)}
+  .flow-arrow{display:grid;place-items:center;color:var(--muted);font-size:25px;font-weight:900}
+  .two-inputs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-top:15px}
+  .input-card{padding:13px;border:1.5px solid var(--line);border-radius:14px;background:white}
+  .input-card label{display:block;font-size:12px;font-weight:900;color:var(--ink-soft);margin-bottom:7px}
+  .input-card input{width:100%;padding:9px 11px;border:2px solid var(--line);border-radius:10px;font-size:18px;font-weight:900;outline:none}
+  .input-card input:focus{border-color:var(--blue)}
+
+  .choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-top:14px}
+  .choice{border:2px solid var(--line);background:#fbfcff;border-radius:15px;padding:15px;text-align:left;color:var(--ink);font-weight:850;cursor:pointer;min-height:76px}
+  .choice:hover{border-color:#bdb2eb}
+  .choice.correct{border-color:#8ac6a6;background:var(--green-soft);color:var(--green-deep)}
+  .choice.wrong{border-color:#dfa8a3;background:var(--red-soft);color:#883f38}
+  .quiz-progress{display:flex;gap:6px;margin:12px 0 4px}
+  .quiz-dot{width:10px;height:10px;border-radius:50%;background:#e3e7ef}
+  .quiz-dot.done{background:var(--green)}
+  .quiz-dot.active{box-shadow:0 0 0 4px var(--green-soft)}
+
+  .table-shell{overflow-x:auto;margin-top:14px}
+  .percent-table{width:100%;min-width:540px;border-collapse:separate;border-spacing:0;border:1.5px solid var(--line);border-radius:16px;overflow:hidden}
+  .percent-table th,.percent-table td{padding:13px 14px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center}
+  .percent-table th:last-child,.percent-table td:last-child{border-right:0}
+  .percent-table tr:last-child td{border-bottom:0}
+  .percent-table th{background:#f3f5f9;color:var(--ink-soft);font-size:13px}
+  .percent-table .row-label{text-align:left;min-width:215px;font-weight:900}
+  .percent-table .row-label small{display:block;margin-top:2px;font-weight:700;color:var(--muted)}
+  .percent-table tr.part-row .row-label{background:var(--violet-soft);color:var(--violet-deep)}
+  .percent-table tr.whole-row .row-label{background:var(--green-soft);color:var(--green-deep)}
+  .cell-known{font-size:18px;font-weight:950}
+  .cell-x{font-size:21px;font-weight:950;color:var(--violet-deep)}
+  .hundred-badge{display:inline-block;padding:4px 9px;border-radius:999px;background:var(--green-soft);color:var(--green-deep);font-weight:950}
+
+  .token-bank{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+  .token{border:2px solid #cfc7ee;background:var(--violet-soft);color:var(--violet-deep);padding:8px 12px;border-radius:11px;font-weight:900;cursor:grab}
+  .token.selected{box-shadow:0 0 0 4px rgba(114,84,216,.15);border-color:var(--violet)}
+  .token.placed{opacity:.35;cursor:default}
+  .drop-slot{min-width:110px;min-height:46px;border:2px dashed #cfd5e2;border-radius:11px;display:grid;place-items:center;color:var(--muted);font-weight:850;background:#fbfcfe;cursor:pointer}
+  .drop-slot.filled{border-style:solid;border-color:#b7ace6;background:white;color:var(--ink)}
+  .drop-slot.correct{border-color:#83c39f;background:var(--green-soft);color:var(--green-deep)}
+  .drop-slot.wrong{border-color:#dda39e;background:var(--red-soft);color:#8a4039}
+
+  .proportion-options{display:grid;gap:10px;margin-top:14px}
+  .proportion-option{border:2px solid var(--line);background:white;border-radius:15px;padding:14px;cursor:pointer;display:flex;justify-content:center;align-items:center;font-size:22px;font-weight:950;color:var(--blue-deep)}
+  .proportion-option:hover{border-color:#9ec7e6}
+  .proportion-option.correct{border-color:#83c39f;background:var(--green-soft)}
+  .proportion-option.wrong{border-color:#dda39e;background:var(--red-soft)}
+  .frac{display:inline-grid;grid-template-rows:auto auto;line-height:1.04;min-width:55px;text-align:center}
+  .frac span:first-child{border-bottom:2px solid currentColor;padding:0 7px 5px}
+  .frac span:last-child{padding:5px 7px 0}
+
+  .method-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0 10px}
+  .method-tabs button{border:1.5px solid var(--line);background:#f5f6fa;border-radius:11px;padding:8px 12px;font-weight:900;color:var(--ink-soft);cursor:pointer}
+  .method-tabs button.active{background:var(--blue-soft);border-color:#acd0ea;color:var(--blue-deep)}
+  .method-panel{padding:16px;border:1.5px solid #c8dded;background:#f8fcff;border-radius:16px}
+  .method-panel h3{font-size:16px;margin-bottom:8px;color:var(--blue-deep)}
+  .method-panel ol{padding-left:20px;display:grid;gap:6px;color:var(--ink-soft)}
+
+  .finish-panel{text-align:center;padding:13px 0 3px}
+  .finish-mark{width:76px;height:76px;border-radius:26px;margin:0 auto 15px;display:grid;place-items:center;background:linear-gradient(145deg,var(--green-soft),#d5f0e1);font-size:36px}
+  .finish-panel h2{margin-bottom:9px}
+  .finish-panel p{color:var(--ink-soft);max-width:650px;margin:0 auto 17px}
+  .finish-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+  /* Практика */
+  .practice-layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:20px;align-items:start}
+  .control-card{padding:16px;margin-bottom:14px;box-shadow:none}
+  .control-row{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}
+  .control-label{font-size:11.5px;text-transform:uppercase;letter-spacing:.055em;font-weight:950;color:var(--muted);margin-bottom:8px}
+  .segmented{display:flex;gap:4px;padding:4px;background:#eef1f6;border-radius:13px;flex-wrap:wrap}
+  .segmented button{border:0;background:transparent;border-radius:10px;padding:8px 11px;font-size:12.5px;font-weight:900;color:var(--ink-soft);cursor:pointer}
+  .segmented button.active{background:white;color:var(--violet-deep);box-shadow:var(--shadow-sm)}
+  .skill-chips{display:flex;gap:7px;flex-wrap:wrap}
+  .skill-chip{border:1.5px solid var(--line);background:#f5f6fa;border-radius:11px;padding:8px 10px;font-size:12.5px;font-weight:850;color:var(--ink-soft);cursor:pointer}
+  .skill-chip:hover{border-color:#bdb2eb}
+  .skill-chip.active{background:var(--violet-soft);border-color:#b9aaef;color:var(--violet-deep)}
+  .skill-chip.mastered{background:#f3fbf7;border-color:#a6d6bb;color:var(--green-deep)}
+  .skill-chip .mini-count{font-size:10.5px;color:var(--muted);margin-left:3px}
+  .task-card{padding:24px}
+  .task-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
+  .task-badge{display:inline-flex;padding:5px 10px;border-radius:999px;background:var(--violet-soft);color:var(--violet-deep);font-size:11.5px;font-weight:950;text-transform:uppercase;letter-spacing:.045em;margin-bottom:8px}
+  .task-title{font-size:25px;line-height:1.16}
+  .credit-chip{padding:7px 10px;border-radius:11px;background:var(--green-soft);color:var(--green-deep);font-size:11.5px;font-weight:900;max-width:220px;text-align:center}
+  .credit-chip.supported{background:var(--gold-soft);color:#7e4d18}
+  .credit-chip.reviewed{background:var(--blue-soft);color:var(--blue-deep)}
+  .question{font-size:19px;font-weight:780;line-height:1.62}
+  .question b{font-weight:950}
+  .mini-data{margin-top:13px;border:1px solid var(--line);border-radius:12px;overflow:hidden;max-width:430px}
+  .mini-data table{width:100%;border-collapse:collapse;font-size:14px}
+  .mini-data td{padding:8px 12px;border-bottom:1px solid var(--line)}
+  .mini-data tr:last-child td{border-bottom:0}
+  .mini-data td:last-child{text-align:right;font-weight:850}
+  .task-answer{margin-top:19px;padding-top:18px;border-top:1px solid var(--line)}
+  .task-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+  .hint-stack{display:grid;gap:10px;margin-top:15px}
+  .hint-card{padding:14px 15px;border-radius:15px;border:1.5px solid #c6dceb;background:#f8fcff}
+  .hint-card h3{font-size:14px;color:var(--blue-deep);margin-bottom:7px}
+  .hint-card p{font-size:14px;color:var(--ink-soft)}
+  .solution-panel{display:none;margin-top:15px;padding:15px;border-radius:16px;background:#f7f8fc;border:1.5px solid var(--line)}
+  .solution-panel.show{display:block}
+  .solution-panel h3{font-size:16px;margin-bottom:9px}
+  .solution-steps{display:grid;gap:8px}
+  .solution-step{padding:11px 13px;border-radius:12px;background:white;color:var(--ink-soft);font-size:14px;font-weight:750}
+  .solution-step strong{color:var(--ink)}
+  .outcome-line{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:10px;font-size:12.5px;color:var(--muted);font-weight:800}
+  .outcome-dot{width:10px;height:10px;border-radius:50%;background:var(--green)}
+  .outcome-dot.supported{background:var(--gold)}
+  .outcome-dot.reviewed{background:var(--blue)}
+  .progress-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:11px}
+  .progress-summary div{padding:11px 8px;border-radius:13px;background:#f7f8fc;text-align:center}
+  .progress-summary b{display:block;font-size:20px;color:var(--violet-deep)}
+  .progress-summary span{font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:900}
+  .status-list{display:grid;gap:8px;margin-top:12px}
+  .status-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;font-size:12.5px;align-items:center}
+  .status-item span:first-child{color:var(--ink-soft);font-weight:800}
+  .status-item b{color:var(--violet-deep)}
+  .checkpoint-cta{margin-top:13px;padding:13px;border-radius:14px;background:linear-gradient(145deg,var(--blue-soft),#f7fbff);border:1.5px solid #bdd9ed}
+  .checkpoint-cta p{font-size:13px;color:var(--blue-deep);font-weight:800;margin-bottom:9px}
+
+  /* Проверка */
+  .check-shell{max-width:880px;margin:0 auto}
+  .check-start{padding:27px}
+  .check-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+  .check-choice{padding:19px;border:2px solid var(--line);background:#fbfcff;border-radius:18px;text-align:left;cursor:pointer}
+  .check-choice:hover{border-color:#b9cfe0;transform:translateY(-1px)}
+  .check-choice h3{font-size:18px;margin-bottom:5px}
+  .check-choice p{font-size:13.5px;color:var(--ink-soft)}
+  .check-choice.standard{background:linear-gradient(145deg,#fff,var(--blue-soft))}
+  .check-choice.advanced{background:linear-gradient(145deg,#fff,var(--violet-soft))}
+  .check-card{padding:25px}
+  .check-top{display:flex;align-items:center;gap:13px;margin-bottom:19px}
+  .check-counter{font-size:12px;text-transform:uppercase;letter-spacing:.05em;font-weight:950;color:var(--blue-deep);white-space:nowrap}
+  .check-bar{height:8px;flex:1;background:#edf0f6;border-radius:99px;overflow:hidden}
+  .check-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),#72a6d2);border-radius:99px}
+  .check-time{font-size:12px;color:var(--muted);font-weight:850;white-space:nowrap}
+  .check-note{padding:12px 14px;border-radius:14px;background:var(--blue-soft);border:1.5px solid #bed9ed;color:var(--blue-deep);font-size:13px;font-weight:800;margin-bottom:15px}
+  .check-result{padding:27px}
+  .score-hero{text-align:center;margin-bottom:20px}
+  .score-orb{width:126px;height:126px;border-radius:42px;margin:0 auto 14px;display:grid;place-items:center;background:linear-gradient(145deg,var(--blue-soft),#dfeefa);box-shadow:var(--shadow-sm)}
+  .score-orb b{font-size:42px;color:var(--blue-deep)}
+  .score-orb span{font-size:12px;color:var(--muted);font-weight:900}
+  .score-hero h2{margin-bottom:7px}
+  .score-hero p{color:var(--ink-soft)}
+  .result-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:17px}
+  .result-box{padding:15px;border-radius:15px;border:1.5px solid var(--line);background:#fafbfe}
+  .result-box h3{font-size:14px;margin-bottom:8px}
+  .result-box ul{padding-left:19px;color:var(--ink-soft);font-size:13.5px}
+  .result-details{display:grid;gap:9px}
+  details.result-item{border:1.5px solid var(--line);border-radius:14px;background:white;overflow:hidden}
+  details.result-item summary{cursor:pointer;padding:12px 14px;font-weight:850;list-style:none;display:flex;justify-content:space-between;gap:10px}
+  details.result-item summary::-webkit-details-marker{display:none}
+  .result-item-body{padding:0 14px 14px;color:var(--ink-soft);font-size:13.5px}
+  .result-item.ok summary{color:var(--green-deep);background:#f6fbf8}
+  .result-item.no summary{color:#8a4039;background:#fff9f8}
+  .result-actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:18px}
+
+  /* Разбор */
+  .review-layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:20px;align-items:start}
+  .review-banner{padding:13px 15px;border-radius:15px;background:var(--blue-soft);border:1.5px solid #bdd9ed;color:var(--blue-deep);font-size:13.5px;font-weight:800;margin-bottom:14px}
+  .review-answer{margin-top:15px;padding:13px 15px;border-radius:14px;background:var(--green-soft);border:1.5px solid #a8d7bc;color:var(--green-deep);font-weight:900}
+
+  .footer{margin-top:25px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center;color:var(--muted);font-size:12px;flex-wrap:wrap}
+  .footer-actions{display:flex;gap:8px;flex-wrap:wrap}
+  .footer a{text-decoration:none}
+
+  @media(max-width:900px){
+    .home-hero,.learn-layout,.practice-layout,.review-layout{grid-template-columns:1fr}
+    .formula-stage{min-height:300px}
+    .side-stack{position:static}
+    .dashboard{grid-template-columns:1fr}
+  }
+  @media(max-width:720px){
+    .route-grid{grid-template-columns:1fr}
+    .route-card p{min-height:0}
+    .hundred-zone{grid-template-columns:1fr}
+    .hundred-grid{margin:0 auto}
+    .one-percent-flow{grid-template-columns:1fr}
+    .flow-arrow{transform:rotate(90deg)}
+    .two-inputs,.choice-grid,.check-choice-grid,.result-columns{grid-template-columns:1fr}
+    .dashboard-main{align-items:flex-start}
+  }
+  @media(max-width:610px){
+    .topbar-inner{align-items:flex-start;flex-wrap:wrap;padding:9px 12px}
+    .nav-scroll{width:100%;margin-left:0}
+    .main-nav{width:max-content}
+    .wrap{padding:21px 12px 62px}
+    .hero-copy,.formula-stage,.lesson-card,.task-card,.check-card,.check-start,.check-result{padding:18px}
+    .home-hero{gap:14px}
+    .section-head{align-items:flex-start;flex-direction:column}
+    .lesson-top,.task-head,.check-top{align-items:flex-start;flex-direction:column}
+    .lesson-progress,.check-bar{width:100%}
+    .credit-chip{max-width:none}
+    .progress-summary{grid-template-columns:1fr 1fr}
+    .skill-row{grid-template-columns:1fr auto}
+    .skill-bar{grid-column:1/-1;grid-row:2}
+  }
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<div class="wrap">
-
-  <header class="top">
-    <span class="eyebrow">📊 ОГЭ · база · проценты</span>
-    <h1>Проценты и таблицы</h1>
-    <p class="sub">Начни отсюда: этот навык нужен в каждой задаче 1–5 — в тарифах, шинах, участке. Пять типов, чистые числа.</p>
-  </header>
-
-  <div class="card picker">
-    <div class="lbl">Что тренируем</div>
-    <div class="chips" id="chips"></div>
-  </div>
-
-  <div class="card progress">
-    <span class="big"><b id="mastered">0</b> / 5</span>
-    <span class="plbl">типов освоено</span>
-    <span class="streak" id="streak"></span>
-  </div>
-
-  <div class="card task">
-    <span class="badge" id="badge">Проценты</span>
-    <div class="q" id="q"></div>
-    <div class="answer" id="answer"></div>
-    <div class="actions">
-      <button class="btn primary" id="check">Проверить</button>
-      <button class="btn ghost" id="next" disabled>Дальше →</button>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand-link" href="practice-1-5-map.html" aria-label="Вернуться к карте тренажёров">
+      <span class="brand-mark">%</span>
+      <span class="brand-text"><b>Проценты без паники</b><span>ОГЭ · база курса</span></span>
+    </a>
+    <div class="nav-scroll">
+      <nav class="main-nav" aria-label="Разделы тренажёра">
+        <button type="button" data-view="home" class="active">Главная</button>
+        <button type="button" data-view="learn">Обучение</button>
+        <button type="button" data-view="practice">Тренировка</button>
+        <button type="button" data-view="check">Проверить себя</button>
+        <button type="button" data-view="review">Разбор</button>
+      </nav>
     </div>
-    <div class="fb" id="fb" role="status" aria-live="polite"></div>
   </div>
+</header>
 
-  <div class="foot">
-    <button id="reset">Сбросить прогресс</button>
-    <div class="key">прогресс сохраняется в браузере · виден на общей карте тренажёров</div>
-  </div>
+<div class="wrap">
+  <main>
+    <section class="view" id="view-home">
+      <div class="home-hero">
+        <article class="card hero-copy">
+          <span class="eyebrow">Навык, который встречается повсюду</span>
+          <h1>Проценты<br>без паники</h1>
+          <p class="lead">Не угадываем формулу. Сначала находим <span class="whole-text">целое, равное 100%</span>, затем связываем его с <span class="part-text">частью</span>. Подходит и тем, кто начинает с нуля, и тем, кому нужна быстрая проверка.</p>
+          <div class="hero-actions">
+            <button type="button" class="btn primary" data-route="learn">Разобраться с нуля</button>
+            <button type="button" class="btn secondary" data-route="check">Быстро проверить себя</button>
+          </div>
+        </article>
+        <aside class="card formula-stage" aria-label="Главная схема решения процентных задач">
+          <div class="formula-visual">
+            <div class="formula-caption">Одна схема для большинства задач</div>
+            <div class="formula-row">
+              <span class="fraction part-whole"><span>часть</span><span>целое</span></span>
+              <span>=</span>
+              <span class="fraction percent"><span>процент</span><span>100</span></span>
+            </div>
+            <div class="formula-note"><span class="whole-text">Целое</span> — это то, с чем сравнивают. Именно оно принимается за 100%.</div>
+          </div>
+        </aside>
+      </div>
 
+      <div class="route-grid" aria-label="Выберите маршрут">
+        <button type="button" class="card route-card learn" data-route="learn">
+          <span class="route-icon">🧭</span>
+          <h3>Разобраться с нуля</h3>
+          <p>Наглядно разберём 100%, способ через 1%, таблицу 2×2 и пропорцию. Вы будете собирать решение сами.</p>
+          <span class="route-meta"><span>9 коротких шагов</span><span class="route-arrow">→</span></span>
+        </button>
+        <button type="button" class="card route-card practice" data-route="practice">
+          <span class="route-icon">✍️</span>
+          <h3>Потренироваться</h3>
+          <p>Отдельные типы задач, смешанный режим и усложнённый уровень. Подсказки открываются постепенно.</p>
+          <span class="route-meta"><span>в своём темпе</span><span class="route-arrow">→</span></span>
+        </button>
+        <button type="button" class="card route-card check" data-route="check">
+          <span class="route-icon">🎯</span>
+          <h3>Проверить себя</h3>
+          <p>Пять задач без подсказок и без названия типа. В конце — честный результат и маршрут повторения.</p>
+          <span class="route-meta"><span>около 7 минут</span><span class="route-arrow">→</span></span>
+        </button>
+      </div>
+
+      <section class="card dashboard" aria-label="Прогресс">
+        <div class="dashboard-main">
+          <div class="progress-ring" id="home-ring" style="--p:0%">
+            <div class="progress-ring-content"><b id="home-mastered">0/5</b><span>навыков</span></div>
+          </div>
+          <div class="dashboard-copy">
+            <h3 id="home-progress-title">Ваш прогресс начнётся здесь</h3>
+            <p id="home-progress-copy">Самостоятельно решите по три задачи каждого типа, а затем пройдите смешанную проверку.</p>
+          </div>
+        </div>
+        <div class="skill-list" id="home-skill-list"></div>
+      </section>
+    </section>
+
+    <section class="view" id="view-learn" hidden>
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Пошаговое обучение</span>
+          <h2 style="margin-top:10px">Сначала смысл, потом формула</h2>
+          <p class="lead">Каждый шаг требует небольшого действия: выбрать, посчитать, заполнить или распознать.</p>
+        </div>
+        <button type="button" class="btn secondary small" data-view-go="home">К выбору маршрута</button>
+      </div>
+      <div class="learn-layout">
+        <article class="card lesson-card">
+          <div class="lesson-top">
+            <span class="lesson-count" id="learn-count">Шаг 1 из 9</span>
+            <div class="lesson-progress" aria-hidden="true"><span id="learn-progress-bar"></span></div>
+          </div>
+          <div class="lesson-content" id="learn-content"></div>
+          <div class="feedback" id="learn-feedback" role="status" aria-live="polite"></div>
+          <div class="lesson-actions">
+            <button type="button" class="btn secondary" id="learn-back">← Назад</button>
+            <button type="button" class="btn primary" id="learn-next">Дальше →</button>
+          </div>
+        </article>
+        <aside class="side-stack">
+          <div class="card side-card rule-card">
+            <h3>Главная мысль</h3>
+            <p>100% — это не число 100. Это <b>всё целое</b>, с которым сравнивают.</p>
+            <div class="rule-box"><span class="part-text">часть</span> ÷ <span class="whole-text">целое</span> = процент ÷ 100</div>
+          </div>
+          <div class="card side-card">
+            <h3>Маршрут обучения</h3>
+            <div class="learn-rail" id="learn-rail"></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="view" id="view-practice" hidden>
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Практика</span>
+          <h2 style="margin-top:10px">От отдельного навыка — к смешанным задачам</h2>
+          <p class="lead">Тренажёр различает самостоятельное решение, решение с подсказкой и разобранную задачу.</p>
+        </div>
+        <button type="button" class="btn blue small" id="practice-to-check">Мини-зачёт</button>
+      </div>
+      <div class="practice-layout">
+        <main>
+          <section class="card control-card">
+            <div class="control-row">
+              <div>
+                <div class="control-label">Уровень</div>
+                <div class="segmented" id="difficulty-switch">
+                  <button type="button" data-difficulty="standard" class="active">Базовый</button>
+                  <button type="button" data-difficulty="advanced">Для уверенных</button>
+                </div>
+              </div>
+              <div id="skill-control-wrap">
+                <div class="control-label">Что тренируем</div>
+                <div class="skill-chips" id="skill-chips"></div>
+              </div>
+            </div>
+          </section>
+
+          <article class="card task-card">
+            <div class="task-head">
+              <div>
+                <span class="task-badge" id="task-badge">Смешанная задача</span>
+                <h2 class="task-title" id="task-title">Задача</h2>
+              </div>
+              <span class="credit-chip" id="credit-chip">Без подсказок — можно получить «Самостоятельно»</span>
+            </div>
+            <div class="question" id="practice-question"></div>
+            <div class="hint-stack" id="hint-stack"></div>
+            <div class="solution-panel" id="practice-solution">
+              <h3>Решение по шагам</h3>
+              <div class="solution-steps" id="practice-solution-steps"></div>
+            </div>
+            <div class="task-answer">
+              <div class="answer-line">
+                <input class="answer-input" id="practice-input" type="text" inputmode="decimal" autocomplete="off" placeholder="ответ" aria-label="Ответ">
+                <span class="answer-unit" id="practice-unit"></span>
+                <button type="button" class="btn primary" id="practice-check">Проверить</button>
+              </div>
+              <div class="feedback" id="practice-feedback" role="status" aria-live="polite"></div>
+              <div class="outcome-line" id="outcome-line"><span class="outcome-dot"></span><span>Самостоятельно: верно с первой попытки и без подсказок.</span></div>
+            </div>
+            <div class="task-actions">
+              <button type="button" class="btn soft" id="hint-btn">Подсказка 1: найти 100%</button>
+              <button type="button" class="btn secondary" id="solution-btn">Показать решение</button>
+              <button type="button" class="btn secondary" id="next-task" disabled>Следующая задача →</button>
+            </div>
+          </article>
+        </main>
+        <aside class="side-stack">
+          <div class="card side-card rule-card">
+            <h3>Надёжная схема</h3>
+            <div class="rule-box"><span class="part-text">часть</span> / <span class="whole-text">целое</span> = процент / 100</div>
+            <p style="margin-top:9px">В строку <b>«Основа — 100%»</b> ставим то, с чем сравниваем.</p>
+          </div>
+          <div class="card side-card">
+            <h3>Честный прогресс</h3>
+            <div class="progress-summary">
+              <div><b id="stat-independent">0</b><span>самостоятельно</span></div>
+              <div><b id="stat-supported">0</b><span>с подсказкой</span></div>
+              <div><b id="stat-reviewed">0</b><span>разобрано</span></div>
+            </div>
+            <div class="status-list" id="practice-status-list"></div>
+            <div class="checkpoint-cta" id="checkpoint-cta">
+              <p id="checkpoint-cta-copy">Когда будете готовы, проверьте себя на пяти смешанных задачах.</p>
+              <button type="button" class="btn blue small" id="checkpoint-cta-btn">Открыть мини-зачёт</button>
+            </div>
+          </div>
+          <div class="card side-card">
+            <h3>Что считается освоением</h3>
+            <p><b>3 самостоятельных решения</b> каждого типа. Подсказка помогает учиться, но не выдаёт её за самостоятельный навык.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="view" id="view-check" hidden>
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Самопроверка</span>
+          <h2 style="margin-top:10px">Пять задач без подсказок</h2>
+          <p class="lead">Тип задачи заранее не называется. Именно так проверяется, умеете ли вы выбрать способ решения самостоятельно.</p>
+        </div>
+        <button type="button" class="btn secondary small" data-view-go="home">К выбору маршрута</button>
+      </div>
+      <div class="check-shell">
+        <section class="card check-start" id="check-start">
+          <h2>Выберите проверку</h2>
+          <p class="lead" style="margin-top:7px">В базовой проверке будет по одному заданию каждого типа. Усложнённая проверка включает дробные проценты и составные изменения.</p>
+          <div class="check-choice-grid">
+            <button type="button" class="check-choice standard" data-check-level="standard">
+              <h3>Базовая проверка</h3>
+              <p>Пять основных типов. Рекомендуется после обучения или смешанной тренировки.</p>
+            </button>
+            <button type="button" class="check-choice advanced" data-check-level="advanced">
+              <h3>Усложнённая проверка</h3>
+              <p>2,5%, 12,5%, 125%, сравнения и последовательные изменения.</p>
+            </button>
+          </div>
+          <div class="feedback show info" id="check-best-line">Лучший результат пока не зафиксирован.</div>
+        </section>
+
+        <section class="card check-card" id="check-active" hidden>
+          <div class="check-top">
+            <span class="check-counter" id="check-counter">Задание 1 из 5</span>
+            <div class="check-bar"><span id="check-progress-bar"></span></div>
+            <span class="check-time" id="check-time">00:00</span>
+          </div>
+          <div class="check-note">Подсказок и мгновенной проверки здесь нет. Ответы и разбор появятся после пятого задания.</div>
+          <span class="task-badge" id="check-badge">Тип задачи скрыт</span>
+          <h2 class="task-title" id="check-title">Задача</h2>
+          <div class="question" id="check-question" style="margin-top:13px"></div>
+          <div class="task-answer">
+            <div class="answer-line">
+              <input class="answer-input" id="check-input" type="text" inputmode="decimal" autocomplete="off" placeholder="ответ" aria-label="Ответ на задание проверки">
+              <span class="answer-unit" id="check-unit"></span>
+              <button type="button" class="btn blue" id="check-save">Сохранить ответ</button>
+            </div>
+            <div class="feedback" id="check-feedback" role="status" aria-live="polite"></div>
+          </div>
+        </section>
+
+        <section class="card check-result" id="check-result" hidden>
+          <div class="score-hero">
+            <div class="score-orb"><div><b id="result-score">0/5</b><span id="result-time">00:00</span></div></div>
+            <h2 id="result-title">Результат проверки</h2>
+            <p id="result-recommendation"></p>
+          </div>
+          <div class="result-columns">
+            <div class="result-box"><h3>Уже получается</h3><ul id="result-strong"></ul></div>
+            <div class="result-box"><h3>Стоит повторить</h3><ul id="result-weak"></ul></div>
+          </div>
+          <div class="result-details" id="result-details"></div>
+          <div class="result-actions">
+            <button type="button" class="btn blue" id="copy-result">Скопировать результат для Stepik</button>
+            <button type="button" class="btn secondary" id="repeat-check">Пройти ещё раз</button>
+            <button type="button" class="btn secondary" id="result-practice">К тренировке</button>
+            <a class="btn green" id="stepik-result-link" href="https://stepik.org/lesson/2488519/step/1">Вернуться в Stepik</a>
+          </div>
+          <div class="feedback" id="copy-feedback" role="status" aria-live="polite"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="view" id="view-review" hidden>
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Разбор</span>
+          <h2 style="margin-top:10px">Смотрим ход решения без зачёта</h2>
+          <p class="lead">Этот режим предназначен для объяснения с учителем или спокойного разбора. Задачи отсюда не засчитываются в прогресс.</p>
+        </div>
+        <button type="button" class="btn secondary small" data-view-go="practice">Вернуться к тренировке</button>
+      </div>
+      <div class="review-layout">
+        <main>
+          <div class="review-banner">Решение открыто сразу. Когда вернётесь в тренировку, тренажёр создаст новую задачу, чтобы ответ нельзя было подсмотреть заранее.</div>
+          <article class="card task-card">
+            <span class="task-badge" id="review-badge">Разбор</span>
+            <h2 class="task-title" id="review-title">Задача</h2>
+            <div class="question" id="review-question" style="margin-top:13px"></div>
+            <div class="hint-stack" id="review-hints"></div>
+            <div class="review-answer" id="review-answer"></div>
+            <div class="solution-panel show">
+              <h3>Решение по шагам</h3>
+              <div class="solution-steps" id="review-steps"></div>
+            </div>
+            <div class="task-actions">
+              <button type="button" class="btn blue" id="new-review-task">Другая задача для разбора</button>
+              <button type="button" class="btn secondary" id="try-similar">Попробовать похожую самостоятельно</button>
+            </div>
+          </article>
+        </main>
+        <aside class="side-stack">
+          <div class="card side-card">
+            <h3>Выберите тему</h3>
+            <div class="skill-chips" id="review-chips"></div>
+          </div>
+          <div class="card side-card rule-card">
+            <h3>Как разбирать</h3>
+            <ol>
+              <li>Назовите величину, равную 100%.</li>
+              <li>Объясните каждую строку таблицы.</li>
+              <li>Проверьте ответ здравым смыслом.</li>
+            </ol>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Прогресс сохраняется только в этом браузере. Персональные данные не собираются.</span>
+    <div class="footer-actions">
+      <a class="btn secondary small" href="https://stepik.org/lesson/2488519/step/1">Вернуться в Stepik</a>
+      <button type="button" class="btn secondary small" id="reset-all">Сбросить прогресс</button>
+    </div>
+  </footer>
 </div>
 
 <script src="progress.js"></script>
 <script>
 (function(){
-const rnd=n=>Math.floor(Math.random()*n), pick=a=>a[rnd(a.length)];
-function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
-const m20=(lo,hi)=>{const a=[];for(let v=lo;v<=hi;v+=20)a.push(v);return pick(a);};
-const near=(a,b)=>Math.abs(a-b)<1e-6;
+'use strict';
 
-/* ---------- 5 навыков (ответы всегда целые) ---------- */
-function of(){const P=pick([5,10,15,20,25,30,40,50,60,75,80]);const N=m20(120,600);const a=P*N/100;
-  return{skill:'of',unit:'',answer:a,q:`Найдите <b>${P}%</b> от числа <b>${N}</b>.`,sol:`${N} · ${P} : 100 = <b>${a}</b>.`};}
-function table(){
-  const total=pick([200,300,400,500,800,1000]);let p1,p2,p3;
-  do{p1=pick([15,20,25,30,35,40]);p2=pick([15,20,25,30,35]);p3=100-p1-p2;}while(p3<10||p3>60||p3%5);
-  const cats=shuffle(['Хлеб','Молоко','Мясо','Овощи','Фрукты','Сладкое']).slice(0,3);
-  const ps=[p1,p2,p3],parts=ps.map(p=>total*p/100),i=rnd(3);
-  const rows=cats.map((c,j)=>`<tr><td>${c}</td><td>${parts[j]} руб</td></tr>`).join('');
-  return{skill:'table',unit:'%',answer:ps[i],
-    q:`В таблице — расходы за месяц, всего <b>${total} руб</b>.<div class="mini"><table>${rows}</table></div>Какой процент от всех расходов составляет «<b>${cats[i]}</b>»?`,
-    sol:`${parts[i]} : ${total} · 100% = <b>${ps[i]}%</b>.`};}
-function change(){const N1=m20(100,500);const d=pick([10,20,25,50,75,100]);
-  const dir=d>=100?'up':(Math.random()<0.5?'up':'down');
-  const N2=dir==='up'?N1*(100+d)/100:N1*(100-d)/100;
-  return{skill:'change',unit:'%',answer:d,
-    q:`Цена изменилась с <b>${N1} руб</b> до <b>${N2} руб</b>. На сколько процентов она ${dir==='up'?'выросла':'снизилась'}?`,
-    sol:`${dir==='up'?N2+' − '+N1:N1+' − '+N2} = ${Math.abs(N2-N1)}; &nbsp; ${Math.abs(N2-N1)} : ${N1} · 100% = <b>${d}%</b>.`};}
-function apply(){const N=m20(100,600);const P=pick([5,10,15,20,25,30,40,50]);const dir=Math.random()<0.5?'up':'down';
-  const res=dir==='up'?N*(100+P)/100:N*(100-P)/100;
-  return{skill:'apply',unit:'руб',answer:res,
-    q:`Товар стоил <b>${N} руб</b> и ${dir==='up'?'подорожал':'подешевел'} на <b>${P}%</b>. Сколько он стал стоить?`,
-    sol:`${N} · (100 ${dir==='up'?'+':'−'} ${P}) : 100 = ${N} · ${dir==='up'?(100+P):(100-P)} : 100 = <b>${res} руб</b>.`};}
-function reverse(){const orig=m20(100,500);const P=pick([10,20,25,50]);const dir=Math.random()<0.5?'up':'down';
-  const M=dir==='up'?orig*(100+P)/100:orig*(100-P)/100;
-  return{skill:'reverse',unit:'руб',answer:orig,
-    q:`После ${dir==='up'?'повышения':'снижения'} на <b>${P}%</b> цена стала <b>${M} руб</b>. Какой была цена до изменения?`,
-    sol:`${M} : ${dir==='up'?(100+P):(100-P)} · 100 = <b>${orig} руб</b>.`};}
+const OWN_KEY='percentTrainer.v1';
+const MAP_KEY='mathExamCourseProgress.v1';
+const TOPIC='percentTableTrainer';
+const STEPIK_URL='https://stepik.org/lesson/2488519/step/1';
+const SKILLS=['of','table','change','apply','reverse'];
+const MASTERY=3;
+const LEARN_COUNT=9;
+const SKILL_META={
+  of:{name:'Найти p% от числа',short:'p% от числа'},
+  table:{name:'Сколько это процентов',short:'доля в процентах'},
+  change:{name:'На сколько % изменилось',short:'процент изменения'},
+  apply:{name:'Увеличить или уменьшить',short:'изменение на p%'},
+  reverse:{name:'Найти исходное',short:'исходная величина'}
+};
+const LEARN_TITLES=[
+  '100% — это целое',
+  'Способ через 1%',
+  'Находим часть и целое',
+  'Собираем таблицу',
+  'Выбираем пропорцию',
+  'Сравниваем два способа',
+  'Распознаём тип задачи',
+  'Решаем с поддержкой',
+  'Выбираем следующий шаг'
+];
 
-const SKILLS={of,table,change,apply,reverse};
-const ORDER=['of','table','change','apply','reverse'];
-const LABEL={of:'% от числа',table:'Доля в таблице',change:'На сколько %',apply:'Изменить на %',reverse:'Найти исходное'};
-const MASTERY=3, TOTAL=5;
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const round=(n,d=2)=>Math.round(n*10**d)/10**d;
+const format=n=>Number.isInteger(Number(n))?Number(n).toLocaleString('ru-RU'):String(round(Number(n),2)).replace('.',',');
+const parseNumber=s=>{
+  const cleaned=String(s||'').replace(/\s/g,'').replace(',','.').replace(/[^0-9.\-]/g,'');
+  return cleaned===''?NaN:Number(cleaned);
+};
+const near=(a,b)=>Number.isFinite(a)&&Math.abs(a-b)<=Math.max(.01,Math.abs(b)*.0001);
+const frac=(a,b)=>`<span class="frac"><span>${a}</span><span>${b}</span></span>`;
+const nowId=()=>`${Date.now()}-${Math.random().toString(36).slice(2,8)}`;
+const sum=o=>Object.values(o).reduce((a,b)=>a+b,0);
 
-/* ---------- прогресс + карта ---------- */
-const OWN='percentTrainer.v1', MAP='mathExamCourseProgress.v1', TOPIC='percentTableTrainer';
-let state={perType:{},streak:0,mode:'mix',cur:null,answered:false};
-ORDER.forEach(k=>state.perType[k]=0);
-function load(){try{const s=JSON.parse(localStorage.getItem(OWN));if(s){ORDER.forEach(k=>state.perType[k]=(s.perType&&s.perType[k])||0);state.streak=s.streak||0;}}catch(e){}}
-const mastered=()=>ORDER.filter(k=>state.perType[k]>=MASTERY).length;
+function emptyStat(){return{independent:0,supported:0,reviewed:0,attempts:0,errors:0};}
+function initialState(){
+  const stats={};SKILLS.forEach(k=>stats[k]=emptyStat());
+  return{
+    version:2,
+    view:'home',
+    learnStep:0,
+    learnDone:false,
+    stats,
+    independentStreak:0,
+    difficulty:'standard',
+    skill:'mix',
+    advanced:{independent:0,supported:0,reviewed:0},
+    checkpointBest:{standard:0,advanced:0},
+    checkpointLast:null,
+    current:null,
+    taskState:null,
+    reviewSkill:'mix',
+    reviewCurrent:null,
+    checkpoint:null
+  };
+}
+let state=initialState();
+let learnGate=true;
+let learnLocal={};
+let checkTimerId=null;
+
+function normalizeStats(saved){
+  const stats={};
+  SKILLS.forEach(k=>{
+    const raw=saved&&saved.stats&&saved.stats[k];
+    if(raw&&typeof raw==='object')stats[k]={...emptyStat(),...raw};
+    else{
+      const legacy=Number(saved&&saved.perType&&saved.perType[k])||0;
+      stats[k]={...emptyStat(),independent:legacy,attempts:legacy};
+    }
+  });
+  return stats;
+}
+function load(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(OWN_KEY)||'null');
+    if(!saved)return;
+    state.stats=normalizeStats(saved);
+    state.learnDone=Boolean(saved.learnDone||saved.lessonDone);
+    state.learnStep=Math.max(0,Math.min(LEARN_COUNT-1,Number(saved.learnStep??saved.lessonStep)||0));
+    state.difficulty=['standard','advanced'].includes(saved.difficulty)?saved.difficulty:'standard';
+    state.skill=['mix',...SKILLS].includes(saved.skill)?saved.skill:'mix';
+    state.independentStreak=Number(saved.independentStreak??saved.streak)||0;
+    state.advanced={...state.advanced,...(saved.advanced||{})};
+    state.checkpointBest={...state.checkpointBest,...(saved.checkpointBest||{})};
+    state.checkpointLast=saved.checkpointLast||null;
+    state.reviewSkill=['mix','advanced',...SKILLS].includes(saved.reviewSkill)?saved.reviewSkill:'mix';
+  }catch(e){}
+}
+function masteredCount(){return SKILLS.filter(k=>state.stats[k].independent>=MASTERY).length;}
+function topicComplete(){
+  const mastered=masteredCount(),best=state.checkpointBest.standard||0;
+  return best===5||(mastered===5&&best>=4);
+}
+function topicSolved(){
+  const mastered=masteredCount(),best=state.checkpointBest.standard||0;
+  if(topicComplete())return 5;
+  return Math.min(4,Math.max(mastered,best>=4?4:0));
+}
+function totalBy(kind){return SKILLS.reduce((n,k)=>n+(Number(state.stats[k][kind])||0),0)+(Number(state.advanced[kind])||0);}
 function save(){
-  try{localStorage.setItem(OWN,JSON.stringify({perType:state.perType,streak:state.streak}));}catch(e){}
-  if(window.CourseProgress){CourseProgress.write(TOPIC,mastered(),TOTAL);}else try{const d=JSON.parse(localStorage.getItem(MAP)||'{}');d[TOPIC]={...(d[TOPIC]||{}),solved:mastered(),total:TOTAL};localStorage.setItem(MAP,JSON.stringify(d));}catch(e){}
+  const legacyPerType={};SKILLS.forEach(k=>legacyPerType[k]=state.stats[k].independent);
+  try{
+    localStorage.setItem(OWN_KEY,JSON.stringify({
+      version:2,
+      perType:legacyPerType,
+      stats:state.stats,
+      learnDone:state.learnDone,
+      lessonDone:state.learnDone,
+      learnStep:state.learnStep,
+      lessonStep:state.learnStep,
+      independentStreak:state.independentStreak,
+      streak:state.independentStreak,
+      difficulty:state.difficulty,
+      skill:state.skill,
+      advanced:state.advanced,
+      checkpointBest:state.checkpointBest,
+      checkpointLast:state.checkpointLast,
+      reviewSkill:state.reviewSkill,
+      lastMode:state.view==='learn'?'learn':state.view==='review'?'teacher':'practice'
+    }));
+  }catch(e){}
+  try{
+    const solved=topicSolved();
+    if(window.CourseProgress&&typeof window.CourseProgress.write==='function')window.CourseProgress.write(TOPIC,solved,SKILLS.length);
+    else{
+      const data=JSON.parse(localStorage.getItem(MAP_KEY)||'{}');
+      data[TOPIC]={...(data[TOPIC]||{}),solved,total:SKILLS.length};
+      localStorage.setItem(MAP_KEY,JSON.stringify(data));
+    }
+  }catch(e){}
 }
 
-/* ---------- отрисовка ---------- */
-function renderChips(){
-  const box=document.getElementById('chips');box.innerHTML='';
-  const mix=document.createElement('button');
-  mix.className='chip mix'+(state.mode==='mix'?' active':'');mix.setAttribute('aria-pressed',state.mode==='mix'?'true':'false');mix.textContent='🎲 Вперемешку';
-  mix.addEventListener('click',()=>{state.mode='mix';newQ();});
-  box.appendChild(mix);
-  ORDER.forEach(k=>{const c=state.perType[k],d=c>=MASTERY;const b=document.createElement('button');
-    b.className='chip'+(state.mode===k?' active':'')+(d?' done':'');b.setAttribute('aria-pressed',state.mode===k?'true':'false');
-    b.innerHTML=`${d?'✓ ':''}${LABEL[k]} <span class="cnt">${Math.min(c,MASTERY)}/${MASTERY}</span>`;
-    b.addEventListener('click',()=>{state.mode=k;newQ();});box.appendChild(b);});
-}
-function renderProgress(){
-  document.getElementById('mastered').textContent=mastered();
-  document.getElementById('streak').textContent=state.streak>=2?('🔥 подряд: '+state.streak):'';
-}
-function newQ(){
-  const key=state.mode==='mix'?pick(ORDER):state.mode;
-  state.cur=SKILLS[key]();state.answered=false;
-  document.getElementById('badge').textContent=LABEL[key];
-  document.getElementById('q').innerHTML=state.cur.q;
-  document.getElementById('answer').innerHTML=`<div class="num-in"><input id="in" type="text" inputmode="numeric" autocomplete="off" placeholder="ответ"><span class="unit">${state.cur.unit||''}</span></div>`;
-  const fb=document.getElementById('fb');fb.className='fb';fb.innerHTML='';
-  document.getElementById('check').disabled=false;
-  document.getElementById('next').disabled=true;
-  renderChips();
-  const inp=document.getElementById('in');inp.focus();inp.addEventListener('keydown',e=>{if(e.key==='Enter')doCheck();});
-}
-function doCheck(){
-  if(state.answered)return;
-  const raw=(document.getElementById('in').value||'').trim();if(raw==='')return;
-  const v=parseFloat(raw.replace(',','.').replace(/[^\d.\-]/g,''));
-  const ok=isFinite(v)&&near(v,state.cur.answer);
-  state.answered=true;document.getElementById('in').disabled=true;
-  if(ok){state.perType[state.cur.skill]=Math.min(MASTERY,state.perType[state.cur.skill]+1);state.streak++;}else state.streak=0;
-  save();renderProgress();renderChips();
-  const fb=document.getElementById('fb');fb.className='fb show '+(ok?'good':'bad');
-  fb.innerHTML=ok?`<div class="title">✓ Верно!</div><div class="sol">${state.cur.sol}</div>`
-                 :`<div class="title">Не совсем</div>Правильный ответ: <b>${state.cur.answer}${state.cur.unit?' '+state.cur.unit:''}</b>.<div class="sol">${state.cur.sol}</div>`;
-  document.getElementById('check').disabled=true;
-  const nb=document.getElementById('next');nb.disabled=false;nb.focus();
-}
-document.getElementById('check').addEventListener('click',doCheck);
-document.getElementById('next').addEventListener('click',newQ);
-document.getElementById('reset').addEventListener('click',()=>{
-  if(confirm('Сбросить прогресс по процентам?')){
-    ORDER.forEach(k=>state.perType[k]=0);state.streak=0;
-    try{localStorage.removeItem(OWN);if(window.CourseProgress)CourseProgress.clear(TOPIC);else{const d=JSON.parse(localStorage.getItem(MAP)||'{}');delete d[TOPIC];localStorage.setItem(MAP,JSON.stringify(d));}}catch(e){}
-    renderProgress();newQ();
+function setView(view,options={}){
+  if(!['home','learn','practice','check','review'].includes(view))view='home';
+  const leavingReview=state.view==='review'&&view==='practice';
+  state.view=view;
+  document.querySelectorAll('.view').forEach(el=>el.hidden=el.id!==`view-${view}`);
+  document.querySelectorAll('.main-nav [data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
+  if(view==='home')renderHome();
+  if(view==='learn')renderLearn();
+  if(view==='practice'){
+    if(leavingReview||options.fresh||!state.current)newPracticeTask();
+    else renderPractice();
   }
+  if(view==='check')renderCheckLanding();
+  if(view==='review'){
+    if(!state.reviewCurrent||options.fresh)newReviewTask();
+    else renderReview();
+  }
+  save();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderHome(){
+  const mastered=masteredCount();
+  const p=mastered/SKILLS.length*100;
+  document.getElementById('home-ring').style.setProperty('--p',`${p}%`);
+  document.getElementById('home-mastered').textContent=`${mastered}/5`;
+  const best=state.checkpointBest.standard||0;
+  document.getElementById('home-progress-title').textContent=mastered===0&&best===0?'Ваш прогресс начнётся здесь':topicComplete()?'База процентов освоена':`Освоено навыков: ${mastered} из 5`;
+  document.getElementById('home-progress-copy').textContent=topicComplete()
+    ?`Смешанная проверка: ${best}/5. Можно переходить к усложнённому уровню.`
+    :best>=4?`Проверка пройдена на ${best}/5. Закрепите слабый тип в тренировке.`
+    :best?`Лучший результат смешанной проверки: ${best}/5.`:'Самостоятельно решите по три задачи каждого типа, а затем пройдите смешанную проверку.';
+  document.getElementById('home-skill-list').innerHTML=SKILLS.map(k=>{
+    const n=Math.min(MASTERY,state.stats[k].independent);
+    return `<div class="skill-row"><span class="skill-row-name">${SKILL_META[k].name}</span><span class="skill-bar"><span style="width:${n/MASTERY*100}%"></span></span><span class="skill-row-score">${n}/${MASTERY}</span></div>`;
+  }).join('');
+}
+
+function showFeedback(id,kind,html){
+  const el=document.getElementById(id);if(!el)return;
+  el.className=`feedback show ${kind}`;el.innerHTML=html;
+}
+function clearFeedback(id){const el=document.getElementById(id);if(el){el.className='feedback';el.innerHTML='';}}
+function markInput(input,ok){input.classList.remove('correct','wrong');input.classList.add(ok?'correct':'wrong');}
+
+/* ---------------- Обучение ---------------- */
+function renderLearnRail(){
+  document.getElementById('learn-rail').innerHTML=LEARN_TITLES.map((t,i)=>`<button type="button" data-learn-jump="${i}" class="${i===state.learnStep?'active ':''}${i<state.learnStep||state.learnDone?'done':''}" ${i>state.learnStep&&!state.learnDone?'disabled':''}>${t}</button>`).join('');
+  document.querySelectorAll('[data-learn-jump]').forEach(b=>b.addEventListener('click',()=>{state.learnStep=Number(b.dataset.learnJump);renderLearn();}));
+}
+function hundredGrid(pct){return Array.from({length:100},(_,i)=>`<span class="hundred-cell${i<pct?' on':''}"></span>`).join('');}
+function learnMarkup(step){
+  if(step===0)return `
+    <h2>100% — это целое, а не число 100</h2>
+    <p class="lesson-lead"><b>1%</b> — одна сотая часть целого. Но само целое может быть любым: 100 клеток, 240 рублей или весь класс.</p>
+    <div class="hundred-zone">
+      <div class="hundred-grid" id="learn-grid" aria-label="Сетка из ста клеток">${hundredGrid(25)}</div>
+      <div>
+        <div class="big-equality" id="grid-equality">25% = 25 из 100</div>
+        <div class="percent-picks">
+          <button type="button" data-grid="10">10%</button><button type="button" data-grid="25" class="active">25%</button><button type="button" data-grid="50">50%</button><button type="button" data-grid="100">100%</button>
+        </div>
+        <p class="plain-note"><b>25% от 100</b> — это 25, а <b>25% от 200</b> — уже 50. Результат зависит от целого.</p>
+        <div class="mini-question"><p>Чему равны 100% от числа 240?</p><div class="answer-line"><input class="answer-input" id="learn-whole-input" inputmode="numeric" placeholder="ответ"><button type="button" class="btn soft" id="learn-whole-check">Проверить</button></div></div>
+      </div>
+    </div>`;
+  if(step===1)return `
+    <h2>Слабое место превращаем в понятный способ: через 1%</h2>
+    <p class="lesson-lead">Найдём 25% от 200. Сначала узнаем, сколько составляет один процент.</p>
+    <div class="one-percent-flow">
+      <div class="flow-step"><span class="num">1</span><h3>Находим 1%</h3><p>Целое делим на 100: 200 ÷ 100.</p></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><span class="num">2</span><h3>Находим 25%</h3><p>Значение 1% умножаем на 25.</p></div>
+    </div>
+    <div class="two-inputs">
+      <div class="input-card"><label for="one-pct-input">1% от 200</label><input id="one-pct-input" inputmode="decimal" placeholder="?" aria-label="Один процент от 200"></div>
+      <div class="input-card"><label for="twenty-five-input">25% от 200</label><input id="twenty-five-input" inputmode="decimal" placeholder="?" aria-label="Двадцать пять процентов от 200"></div>
+    </div>
+    <button type="button" class="btn blue" id="one-pct-check" style="margin-top:13px">Проверить оба шага</button>`;
+  if(step===2)return `
+    <h2>Находим часть и целое</h2>
+    <p class="lesson-lead">В каждой ситуации выберите величину, которую нужно принять за 100%.</p>
+    <div class="quiz-progress" id="whole-quiz-progress"></div>
+    <div id="whole-quiz"></div>`;
+  if(step===3)return `
+    <h2>Собираем таблицу 2×2 своими руками</h2>
+    <p class="lesson-lead">В классе 25 учеников, из них 10 девочек. Перенесите четыре карточки в нужные клетки. Можно перетаскивать или сначала нажать карточку, затем клетку.</p>
+    <div class="token-bank" id="token-bank"></div>
+    <div class="table-shell">
+      <table class="percent-table" aria-label="Таблица для заполнения">
+        <thead><tr><th></th><th>Значение</th><th>Процент</th></tr></thead>
+        <tbody>
+          <tr class="part-row"><td class="row-label">Часть, которую рассматриваем<small>девочки</small></td><td><button class="drop-slot" data-slot="partValue">поместите карточку</button></td><td><button class="drop-slot" data-slot="partPercent">поместите карточку</button></td></tr>
+          <tr class="whole-row"><td class="row-label">Целое, равное 100%<small>весь класс</small></td><td><button class="drop-slot" data-slot="wholeValue">поместите карточку</button></td><td><button class="drop-slot" data-slot="wholePercent">поместите карточку</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:13px"><button type="button" class="btn blue" id="table-check">Проверить таблицу</button><button type="button" class="btn secondary" id="table-reset">Начать заново</button></div>`;
+  if(step===4)return `
+    <h2>Из таблицы выбираем правильную пропорцию</h2>
+    <p class="lesson-lead">Часть и целое должны стоять в одной дроби, а соответствующие им проценты — в другой.</p>
+    <div class="table-shell">
+      <table class="percent-table"><thead><tr><th></th><th>Значение</th><th>Процент</th></tr></thead><tbody>
+        <tr class="part-row"><td class="row-label">Часть<small>10 девочек</small></td><td><span class="cell-known">10</span></td><td><span class="cell-x">x%</span></td></tr>
+        <tr class="whole-row"><td class="row-label">Целое<small>25 учеников</small></td><td><span class="cell-known">25</span></td><td><span class="hundred-badge">100%</span></td></tr>
+      </tbody></table>
+    </div>
+    <div class="proportion-options">
+      <button type="button" class="proportion-option" data-prop="correct">${frac('10','25')} <span style="margin:0 12px">=</span> ${frac('x','100')}</button>
+      <button type="button" class="proportion-option" data-prop="wrong1">${frac('25','10')} <span style="margin:0 12px">=</span> ${frac('x','100')}</button>
+      <button type="button" class="proportion-option" data-prop="wrong2">${frac('10','x')} <span style="margin:0 12px">=</span> ${frac('25','100')}</button>
+    </div>`;
+  if(step===5)return `
+    <h2>Три способа — один ответ</h2>
+    <p class="lesson-lead">Для задачи «найти 40% от 250» можно идти через 1%, составить пропорцию или использовать быстрый коэффициент. Откройте все три и выберите понятный вам.</p>
+    <div class="method-tabs"><button type="button" data-method="one">Через 1%</button><button type="button" data-method="prop">Через пропорцию</button><button type="button" data-method="quick">Быстрый коэффициент</button></div>
+    <div class="method-panel" id="method-panel"><h3>Выберите способ</h3><p>Все три приводят к ответу 100. Надёжный способ важнее самого короткого.</p></div>
+    <p class="plain-note"><b>Для изменения величины:</b> увеличить на 20% → умножить на 1,2; уменьшить на 20% → умножить на 0,8.</p>`;
+  if(step===6)return `
+    <h2>Сначала распознаём тип задачи</h2>
+    <p class="lesson-lead">На экзамене никто не подпишет формулу. Выберите, что именно требуется сделать.</p>
+    <div class="quiz-progress" id="type-quiz-progress"></div>
+    <div id="type-quiz"></div>`;
+  if(step===7)return `
+    <h2>Решаем с поддержкой</h2>
+    <p class="lesson-lead">Найдите 20% от 350. Сначала заполните значение 1%, затем итоговый ответ.</p>
+    <div class="two-inputs">
+      <div class="input-card"><label for="guided-one">1% от 350</label><input id="guided-one" inputmode="decimal" placeholder="?"></div>
+      <div class="input-card"><label for="guided-answer">20% от 350</label><input id="guided-answer" inputmode="decimal" placeholder="?"></div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:13px"><button type="button" class="btn blue" id="guided-check">Проверить</button><button type="button" class="btn secondary" id="guided-hint">Показать первый шаг</button></div>`;
+  return `
+    <div class="finish-panel">
+      <div class="finish-mark">✓</div>
+      <h2>Основа готова</h2>
+      <p>Вы увидели, почему 100% — это целое, научились находить 1%, собирать таблицу и распознавать тип задачи. Теперь выберите подходящий следующий шаг.</p>
+      <div class="finish-actions"><button type="button" class="btn green" data-finish-route="practice">Потренироваться</button><button type="button" class="btn blue" data-finish-route="check">Проверить себя</button></div>
+    </div>`;
+}
+
+const wholeQuizData=[
+  {q:'Из 30 учеников 18 посещают кружок. Какую величину принимаем за 100%?',choices:['18 учеников кружка','30 учеников — весь класс'],correct:1,why:'Сравниваем 18 с общим числом 30.'},
+  {q:'Цена выросла с 400 до 500 рублей. На сколько процентов она выросла?',choices:['400 рублей — старая цена','500 рублей — новая цена'],correct:0,why:'Процент изменения считают относительно того, что было сначала.'},
+  {q:'После скидки 20% товар стоит 800 рублей. Нужно найти старую цену.',choices:['800 рублей после скидки','Цена до скидки, которую ещё ищем'],correct:1,why:'Именно исходная цена была целым и соответствовала 100%.'}
+];
+const typeQuizData=[
+  {q:'Найдите 15% от 300.',correct:'of'},
+  {q:'Цена выросла с 400 до 460 рублей. На сколько процентов?',correct:'change'},
+  {q:'После скидки 20% товар стоит 800 рублей. Сколько стоил раньше?',correct:'reverse'}
+];
+
+function renderLearn(){
+  clearFeedback('learn-feedback');
+  learnGate=state.learnStep===8;
+  learnLocal={};
+  document.getElementById('learn-count').textContent=`Шаг ${state.learnStep+1} из ${LEARN_COUNT}`;
+  document.getElementById('learn-progress-bar').style.width=`${(state.learnStep+1)/LEARN_COUNT*100}%`;
+  document.getElementById('learn-content').innerHTML=learnMarkup(state.learnStep);
+  document.getElementById('learn-back').disabled=state.learnStep===0;
+  document.getElementById('learn-next').textContent=state.learnStep===8?'К тренировке →':'Дальше →';
+  renderLearnRail();
+  mountLearnStep(state.learnStep);
+  save();
+}
+function mountLearnStep(step){
+  if(step===0){
+    learnGate=false;
+    document.querySelectorAll('[data-grid]').forEach(b=>b.addEventListener('click',()=>{
+      const pct=Number(b.dataset.grid);document.getElementById('learn-grid').innerHTML=hundredGrid(pct);document.getElementById('grid-equality').textContent=`${pct}% = ${pct} из 100`;document.querySelectorAll('[data-grid]').forEach(x=>x.classList.toggle('active',x===b));
+    }));
+    document.getElementById('learn-whole-check').addEventListener('click',()=>{
+      const input=document.getElementById('learn-whole-input');const ok=near(parseNumber(input.value),240);markInput(input,ok);
+      if(ok){learnGate=true;showFeedback('learn-feedback','good','Верно: <b>100% от 240 — это все 240</b>. Процент 100% возвращает целое.');}
+      else showFeedback('learn-feedback','bad','100% означает всё число целиком. Попробуйте ещё раз: ответ равен самому числу.');
+    });
+  }
+  if(step===1){
+    learnGate=false;
+    document.getElementById('one-pct-check').addEventListener('click',()=>{
+      const a=document.getElementById('one-pct-input'),b=document.getElementById('twenty-five-input');const okA=near(parseNumber(a.value),2),okB=near(parseNumber(b.value),50);markInput(a,okA);markInput(b,okB);
+      learnGate=okA&&okB;
+      if(learnGate)showFeedback('learn-feedback','good','Верно: 1% = 200 ÷ 100 = 2, поэтому 25% = 2 · 25 = <b>50</b>.');
+      else showFeedback('learn-feedback','bad','Проверьте цепочку: сначала 200 ÷ 100, затем полученное число умножьте на 25.');
+    });
+  }
+  if(step===2){
+    learnGate=false;learnLocal.index=0;renderWholeQuiz();
+  }
+  if(step===3){
+    learnGate=false;mountTableBuilder();
+  }
+  if(step===4){
+    learnGate=false;
+    document.querySelectorAll('[data-prop]').forEach(b=>b.addEventListener('click',()=>{
+      document.querySelectorAll('[data-prop]').forEach(x=>x.classList.remove('correct','wrong'));
+      const ok=b.dataset.prop==='correct';b.classList.add(ok?'correct':'wrong');learnGate=ok;
+      if(ok)showFeedback('learn-feedback','good','Верно. Часть и целое стоят в первой дроби, соответствующие им проценты — во второй.');
+      else showFeedback('learn-feedback','bad','Проверьте пары из одной строки таблицы: 10 соответствует x%, а 25 соответствует 100%.');
+    }));
+  }
+  if(step===5){
+    learnGate=false;learnLocal.methods=new Set();
+    document.querySelectorAll('[data-method]').forEach(b=>b.addEventListener('click',()=>{
+      const method=b.dataset.method;learnLocal.methods.add(method);document.querySelectorAll('[data-method]').forEach(x=>x.classList.toggle('active',x===b));
+      document.getElementById('method-panel').innerHTML=method==='one'
+        ?'<h3>Через 1%</h3><ol><li>1% от 250: 250 ÷ 100 = 2,5.</li><li>40%: 2,5 · 40 = <b>100</b>.</li></ol>'
+        :method==='prop'
+          ?`<h3>Через пропорцию</h3><div style="font-size:22px;font-weight:950;color:var(--blue-deep);text-align:center">${frac('x','250')} = ${frac('40','100')}</div><ol style="margin-top:10px"><li>x = 250 · 40 ÷ 100.</li><li>x = <b>100</b>.</li></ol>`
+          :'<h3>Быстрый коэффициент</h3><ol><li>40% = 40 ÷ 100 = 0,4.</li><li>250 · 0,4 = <b>100</b>.</li></ol><p class="plain-note">Этот способ быстрый, когда вы уже уверенно понимаете, что именно принято за 100%.</p>';
+      learnGate=learnLocal.methods.size===3;
+      if(learnGate)showFeedback('learn-feedback','good','Все три способа дают 100. Выбирайте тот, который помогает не ошибиться.');
+    }));
+  }
+  if(step===6){
+    learnGate=false;learnLocal.index=0;renderTypeQuiz();
+  }
+  if(step===7){
+    learnGate=false;
+    document.getElementById('guided-check').addEventListener('click',()=>{
+      const a=document.getElementById('guided-one'),b=document.getElementById('guided-answer');const okA=near(parseNumber(a.value),3.5),okB=near(parseNumber(b.value),70);markInput(a,okA);markInput(b,okB);learnGate=okA&&okB;
+      if(learnGate)showFeedback('learn-feedback','good','Верно: 350 ÷ 100 = 3,5; затем 3,5 · 20 = <b>70</b>.');
+      else showFeedback('learn-feedback','bad','Сначала найдите 1%: 350 ÷ 100. Затем умножьте результат на 20.');
+    });
+    document.getElementById('guided-hint').addEventListener('click',()=>showFeedback('learn-feedback','info','Первый шаг: <b>350 ÷ 100 = 3,5</b>. Теперь найдите 20 таких частей.'));
+  }
+  if(step===8){
+    learnGate=true;state.learnDone=true;save();
+    document.querySelectorAll('[data-finish-route]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.finishRoute,{fresh:true})));
+  }
+}
+function renderWholeQuiz(){
+  const i=learnLocal.index,d=wholeQuizData[i];
+  document.getElementById('whole-quiz-progress').innerHTML=wholeQuizData.map((_,j)=>`<span class="quiz-dot ${j<i?'done':j===i?'active':''}"></span>`).join('');
+  document.getElementById('whole-quiz').innerHTML=`<div class="mini-question"><p>${d.q}</p><div class="choice-grid">${d.choices.map((c,j)=>`<button type="button" class="choice" data-whole-choice="${j}">${c}</button>`).join('')}</div></div>`;
+  document.querySelectorAll('[data-whole-choice]').forEach(b=>b.addEventListener('click',()=>{
+    const ok=Number(b.dataset.wholeChoice)===d.correct;b.classList.add(ok?'correct':'wrong');
+    if(!ok){showFeedback('learn-feedback','bad','Это не основа сравнения. Подумайте: что было целым или исходным значением?');return;}
+    showFeedback('learn-feedback','good',d.why);
+    setTimeout(()=>{learnLocal.index++;if(learnLocal.index>=wholeQuizData.length){learnGate=true;document.getElementById('whole-quiz-progress').innerHTML=wholeQuizData.map(()=>'<span class="quiz-dot done"></span>').join('');document.getElementById('whole-quiz').innerHTML='<div class="feedback show good">Все три основы выбраны верно.</div>';}else{clearFeedback('learn-feedback');renderWholeQuiz();}},650);
+  }));
+}
+function mountTableBuilder(){
+  const tokens=[{id:'ten',text:'10'},{id:'twentyfive',text:'25'},{id:'x',text:'x%'},{id:'hundred',text:'100%'}];
+  const correct={partValue:'ten',partPercent:'x',wholeValue:'twentyfive',wholePercent:'hundred'};
+  learnLocal.placements={};learnLocal.selected=null;
+  const bank=document.getElementById('token-bank');
+  bank.innerHTML=tokens.map(t=>`<button type="button" class="token" draggable="true" data-token="${t.id}">${t.text}</button>`).join('');
+  function refresh(){
+    document.querySelectorAll('[data-token]').forEach(t=>{const used=Object.values(learnLocal.placements).includes(t.dataset.token);t.classList.toggle('placed',used);t.classList.toggle('selected',learnLocal.selected===t.dataset.token);t.disabled=used;});
+    document.querySelectorAll('[data-slot]').forEach(s=>{const id=learnLocal.placements[s.dataset.slot];const tok=tokens.find(t=>t.id===id);s.textContent=tok?tok.text:'поместите карточку';s.classList.toggle('filled',Boolean(tok));s.classList.remove('correct','wrong');});
+  }
+  function place(slot,id){
+    Object.keys(learnLocal.placements).forEach(k=>{if(learnLocal.placements[k]===id)delete learnLocal.placements[k];});
+    learnLocal.placements[slot]=id;learnLocal.selected=null;refresh();
+  }
+  document.querySelectorAll('[data-token]').forEach(t=>{
+    t.addEventListener('click',()=>{learnLocal.selected=t.dataset.token;refresh();});
+    t.addEventListener('dragstart',e=>e.dataTransfer.setData('text/plain',t.dataset.token));
+  });
+  document.querySelectorAll('[data-slot]').forEach(s=>{
+    s.addEventListener('click',()=>{if(learnLocal.selected)place(s.dataset.slot,learnLocal.selected);else if(learnLocal.placements[s.dataset.slot]){delete learnLocal.placements[s.dataset.slot];refresh();}});
+    s.addEventListener('dragover',e=>e.preventDefault());
+    s.addEventListener('drop',e=>{e.preventDefault();const id=e.dataTransfer.getData('text/plain');if(id)place(s.dataset.slot,id);});
+  });
+  document.getElementById('table-check').addEventListener('click',()=>{
+    let ok=true;document.querySelectorAll('[data-slot]').forEach(s=>{const good=learnLocal.placements[s.dataset.slot]===correct[s.dataset.slot];s.classList.add(good?'correct':'wrong');if(!good)ok=false;});learnGate=ok;
+    if(ok)showFeedback('learn-feedback','good','Таблица собрана верно: 10 девочек — рассматриваемая часть, 25 учеников — целое, равное 100%.');
+    else showFeedback('learn-feedback','bad','Есть несовпадение. Нижняя строка — целое: 25 учеников и 100%. Верхняя — 10 девочек и x%.');
+  });
+  document.getElementById('table-reset').addEventListener('click',()=>{learnLocal.placements={};learnLocal.selected=null;learnGate=false;clearFeedback('learn-feedback');refresh();});
+  refresh();
+}
+function renderTypeQuiz(){
+  const i=learnLocal.index,d=typeQuizData[i];
+  document.getElementById('type-quiz-progress').innerHTML=typeQuizData.map((_,j)=>`<span class="quiz-dot ${j<i?'done':j===i?'active':''}"></span>`).join('');
+  document.getElementById('type-quiz').innerHTML=`<div class="mini-question"><p>${d.q}</p><div class="choice-grid">${SKILLS.map(k=>`<button type="button" class="choice" data-type-choice="${k}">${SKILL_META[k].name}</button>`).join('')}</div></div>`;
+  document.querySelectorAll('[data-type-choice]').forEach(b=>b.addEventListener('click',()=>{
+    const ok=b.dataset.typeChoice===d.correct;b.classList.add(ok?'correct':'wrong');
+    if(!ok){showFeedback('learn-feedback','bad','Прочитайте вопрос ещё раз: что нужно найти — часть, процент изменения, новую или исходную величину?');return;}
+    showFeedback('learn-feedback','good',`Верно: это тип «${SKILL_META[d.correct].name}».`);
+    setTimeout(()=>{learnLocal.index++;if(learnLocal.index>=typeQuizData.length){learnGate=true;document.getElementById('type-quiz-progress').innerHTML=typeQuizData.map(()=>'<span class="quiz-dot done"></span>').join('');document.getElementById('type-quiz').innerHTML='<div class="feedback show good">Вы распознали все три типа.</div>';}else{clearFeedback('learn-feedback');renderTypeQuiz();}},650);
+  }));
+}
+
+/* ---------------- Генераторы ---------------- */
+function tableHtml(t){
+  if(!t.table)return '';
+  return `<div class="table-shell"><table class="percent-table" aria-label="Таблица сравнения"><thead><tr><th></th><th>Значение</th><th>Процент</th></tr></thead><tbody>
+    <tr class="part-row"><td class="row-label">${t.table.topLabel}<small>${t.table.topSub||''}</small></td><td>${t.table.topValue}</td><td>${t.table.topPercent}</td></tr>
+    <tr class="whole-row"><td class="row-label">${t.table.bottomLabel}<small>${t.table.bottomSub||''}</small></td><td>${t.table.bottomValue}</td><td><span class="hundred-badge">${t.table.bottomPercent}</span></td></tr>
+  </tbody></table></div>`;
+}
+function standardTask(skill){
+  if(skill==='of'){
+    const percent=pick([5,10,15,20,25,30,40,50,60,75,80]);const whole=pick([120,160,200,240,300,400,500,600,800]);const answer=whole*percent/100;
+    return{id:nowId(),skill,label:SKILL_META[skill].name,title:'Найти процент от числа',unit:'',answer,
+      question:`Найдите <b>${percent}%</b> от числа <b>${format(whole)}</b>.`,
+      hints:[
+        `<h3>1. Найдите основу</h3><p><span class="whole-text">${format(whole)}</span> — это всё число, значит оно равно 100%.</p>`,
+        `<h3>2. Заполните таблицу</h3>${tableHtml({table:{topLabel:'Искомая часть',topSub:`${percent}% от числа`,topValue:'<span class="cell-x">x</span>',topPercent:`<span class="part-text">${percent}%</span>`,bottomLabel:'Целое, равное 100%',bottomSub:'всё число',bottomValue:`<span class="whole-text">${format(whole)}</span>`,bottomPercent:'100%'}})}`,
+        `<h3>3. Составьте связь</h3><p style="font-size:21px;font-weight:950;color:var(--blue-deep);text-align:center">${frac('x',format(whole))} = ${frac(format(percent),'100')}</p>`
+      ],
+      steps:[`Целое ${format(whole)} соответствует 100%.`,`Можно найти 1%: ${format(whole)} ÷ 100 = ${format(whole/100)}.`,`Умножаем на ${percent}: ${format(whole/100)} · ${percent} = <strong>${format(answer)}</strong>.`],
+      diagnose:()=>`Сначала назовите целое: <b>${format(whole)} = 100%</b>. Затем найдите 1% или составьте пропорцию.`};
+  }
+  if(skill==='table'){
+    const total=pick([200,300,400,500,800,1000]);const p=pick([15,20,25,30,35,40,45,50]);const part=total*p/100;const names=shuffle(['книги','проезд','продукты','связь','спорт','канцелярия']);const other1=total*pick([15,20,25,30])/100;const other2=total-part-other1;const rows=[[names[0],part],[names[1],other1],[names[2],other2]].map(r=>`<tr><td>${r[0]}</td><td>${format(r[1])} руб</td></tr>`).join('');
+    return{id:nowId(),skill,label:SKILL_META[skill].name,title:'Найти долю в процентах',unit:'%',answer:p,
+      question:`Всего потрачено <b>${format(total)} руб</b>.<div class="mini-data"><table>${rows}</table></div>Какой процент всех расходов приходится на «<b>${names[0]}</b>»?`,
+      hints:[
+        `<h3>1. Найдите основу</h3><p>Все расходы <span class="whole-text">${format(total)} руб</span> — это 100%.</p>`,
+        `<h3>2. Заполните таблицу</h3>${tableHtml({table:{topLabel:'Часть расходов',topSub:names[0],topValue:`<span class="part-text">${format(part)}</span>`,topPercent:'<span class="cell-x">x%</span>',bottomLabel:'Все расходы',bottomSub:'целое',bottomValue:`<span class="whole-text">${format(total)}</span>`,bottomPercent:'100%'}})}`,
+        `<h3>3. Составьте связь</h3><p style="font-size:21px;font-weight:950;color:var(--blue-deep);text-align:center">${frac(format(part),format(total))} = ${frac('x','100')}</p>`
+      ],
+      steps:[`Часть: ${format(part)} руб. Целое: ${format(total)} руб = 100%.`,`x = ${format(part)} · 100 ÷ ${format(total)}.`,`x = <strong>${format(p)}%</strong>.`],
+      diagnose:v=>near(v,total/part*100)?'Похоже, дробь перевёрнута. Делим <b>часть на целое</b>, а не целое на часть.':`Сравните ${format(part)} руб со всеми ${format(total)} руб.`};
+  }
+  if(skill==='change'){
+    const before=pick([120,160,200,240,300,400,500,600,800]);const percent=pick([10,15,20,25,30,40,50]);const direction=Math.random()<.5?'up':'down';const diff=before*percent/100;const after=direction==='up'?before+diff:before-diff;
+    return{id:nowId(),skill,label:SKILL_META[skill].name,title:'Найти процент изменения',unit:'%',answer:percent,
+      question:`Цена изменилась с <b>${format(before)} руб</b> до <b>${format(after)} руб</b>. На сколько процентов она ${direction==='up'?'выросла':'снизилась'}?`,
+      hints:[
+        `<h3>1. Найдите основу</h3><p>Старая цена <span class="whole-text">${format(before)} руб</span> — это 100%. Сравниваем с ней не новую цену, а <span class="part-text">изменение</span>.</p>`,
+        `<h3>2. Найдите изменение</h3><p>|${format(after)} − ${format(before)}| = <b>${format(diff)} руб</b>.</p>${tableHtml({table:{topLabel:'Изменение',topSub:'на сколько рублей',topValue:`<span class="part-text">${format(diff)}</span>`,topPercent:'<span class="cell-x">x%</span>',bottomLabel:'Старая цена',bottomSub:'основа сравнения',bottomValue:`<span class="whole-text">${format(before)}</span>`,bottomPercent:'100%'}})}`,
+        `<h3>3. Составьте связь</h3><p style="font-size:21px;font-weight:950;color:var(--blue-deep);text-align:center">${frac(format(diff),format(before))} = ${frac('x','100')}</p>`
+      ],
+      steps:[`Изменение: ${format(diff)} руб.`,`Старая цена ${format(before)} руб — это 100%.`,`x = ${format(diff)} · 100 ÷ ${format(before)} = <strong>${format(percent)}%</strong>.`],
+      diagnose:v=>near(v,after/before*100)?'Вы нашли, сколько процентов новая цена составляет от старой. Вопрос просит <b>процент изменения</b>, поэтому сначала нужна разница.':`Сначала найдите разницу между ${format(after)} и ${format(before)}.`};
+  }
+  if(skill==='apply'){
+    const before=pick([120,160,200,240,300,400,500,600,800]);const percent=pick([10,15,20,25,30,40,50]);const direction=Math.random()<.5?'up':'down';const newPercent=direction==='up'?100+percent:100-percent;const answer=before*newPercent/100;
+    return{id:nowId(),skill,label:SKILL_META[skill].name,title:'Изменить величину на процент',unit:'руб',answer,
+      question:`Товар стоил <b>${format(before)} руб</b> и ${direction==='up'?'подорожал':'подешевел'} на <b>${percent}%</b>. Сколько он стал стоить?`,
+      hints:[
+        `<h3>1. Найдите основу</h3><p>Старая цена <span class="whole-text">${format(before)} руб</span> — это 100%.</p>`,
+        `<h3>2. Определите новый процент</h3><p>${direction==='up'?'100 +':'100 −'} ${percent} = <b>${newPercent}%</b>. Новая цена соответствует ${newPercent}% от старой.</p>`,
+        `<h3>3. Составьте связь</h3>${tableHtml({table:{topLabel:'Новая цена',topSub:'ищем',topValue:'<span class="cell-x">x</span>',topPercent:`<span class="part-text">${newPercent}%</span>`,bottomLabel:'Старая цена',bottomSub:'основа',bottomValue:`<span class="whole-text">${format(before)}</span>`,bottomPercent:'100%'}})}`
+      ],
+      steps:[`После изменения стало ${newPercent}% от старой цены.`,`x = ${format(before)} · ${newPercent} ÷ 100.`,`x = <strong>${format(answer)} руб</strong>.`],
+      diagnose:v=>near(v,Math.abs(answer-before))?'Вы нашли только величину изменения. В ответе нужна <b>новая цена целиком</b>.':`Сначала определите, сколько процентов стало: ${newPercent}%.`};
+  }
+  const original=pick([120,160,200,240,300,400,500,600,800]);const percent=pick([10,20,25,40,50]);const direction=Math.random()<.5?'up':'down';const currentPercent=direction==='up'?100+percent:100-percent;const current=original*currentPercent/100;
+  return{id:nowId(),skill:'reverse',label:SKILL_META.reverse.name,title:'Найти величину до изменения',unit:'руб',answer:original,
+    question:`После ${direction==='up'?'повышения':'снижения'} на <b>${percent}%</b> цена стала <b>${format(current)} руб</b>. Какой была цена до изменения?`,
+    hints:[
+      `<h3>1. Найдите основу</h3><p>Цена <b>до изменения</b> — это неизвестное целое, равное 100%. Текущая цена соответствует <span class="part-text">${currentPercent}%</span>.</p>`,
+      `<h3>2. Заполните таблицу</h3>${tableHtml({table:{topLabel:'Цена после изменения',topSub:`${currentPercent}% от исходной`,topValue:`<span class="part-text">${format(current)}</span>`,topPercent:`<span class="part-text">${currentPercent}%</span>`,bottomLabel:'Исходная цена',bottomSub:'ищем целое',bottomValue:'<span class="cell-x">x</span>',bottomPercent:'100%'}})}`,
+      `<h3>3. Составьте связь</h3><p style="font-size:21px;font-weight:950;color:var(--blue-deep);text-align:center">${frac(format(current),'x')} = ${frac(format(currentPercent),'100')}</p>`
+    ],
+    steps:[`После изменения текущая цена составляет ${currentPercent}% от исходной.`,`x = ${format(current)} · 100 ÷ ${currentPercent}.`,`x = <strong>${format(original)} руб</strong>.`],
+    diagnose:()=>`Не применяйте процент к ${format(current)} ещё раз. Эта цена уже получена после изменения; нужно восстановить исходные 100%.`};
+}
+
+function advancedTask(){
+  const type=pick(['fractional','ratio','compare','sequential','over100']);
+  if(type==='fractional'){
+    const percent=pick([2.5,7.5,12.5,37.5]);const whole=pick([160,240,320,480,640,800]);const answer=whole*percent/100;
+    return{id:nowId(),skill:'advanced',label:'Дробные проценты',title:'Найти дробный процент',unit:'',answer,
+      question:`Найдите <b>${format(percent)}%</b> от числа <b>${format(whole)}</b>.`,
+      hints:[`<h3>1. Основа</h3><p>${format(whole)} = 100%.</p>`,`<h3>2. Быстрый смысл</h3><p>${format(percent)}% = ${format(percent/100)} от целого.</p>`,`<h3>3. Вычисление</h3><p>${format(whole)} · ${format(percent)} ÷ 100.</p>`],
+      steps:[`${format(percent)}% переводим в долю: ${format(percent/100)}.`,`${format(whole)} · ${format(percent/100)} = <strong>${format(answer)}</strong>.`],diagnose:()=>`Разделите ${format(percent)} на 100 и умножьте на ${format(whole)}.`};
+  }
+  if(type==='ratio'){
+    const whole=pick([144,160,240,320,480]);const p=pick([12.5,37.5,62.5]);const part=whole*p/100;
+    return{id:nowId(),skill:'advanced',label:'Дробная доля',title:'Определить процент',unit:'%',answer:p,
+      question:`Число <b>${format(part)}</b> составляет сколько процентов от числа <b>${format(whole)}</b>?`,
+      hints:[`<h3>1. Основа</h3><p>${format(whole)} = 100%.</p>`,`<h3>2. Дробь</h3><p>Часть ÷ целое = ${format(part)} ÷ ${format(whole)}.</p>`,`<h3>3. В проценты</h3><p>Полученную долю умножьте на 100.</p>`],
+      steps:[`${format(part)} ÷ ${format(whole)} = ${format(part/whole)}.`,` ${format(part/whole)} · 100 = <strong>${format(p)}%</strong>.`],diagnose:()=>`Делите часть ${format(part)} на целое ${format(whole)}.`};
+  }
+  if(type==='compare'){
+    const base=pick([160,200,240,320,400]);const p=pick([12.5,20,25,37.5,50]);const higher=Math.random()<.5;const other=higher?base*(1+p/100):base*(1-p/100);const larger=higher?other:base;const smaller=higher?base:other;const wording=higher?`На сколько процентов число <b>${format(other)}</b> больше числа <b>${format(base)}</b>?`:`На сколько процентов число <b>${format(other)}</b> меньше числа <b>${format(base)}</b>?`;
+    return{id:nowId(),skill:'advanced',label:'Сравнение чисел',title:'На сколько процентов больше или меньше',unit:'%',answer:p,question:wording,
+      hints:[`<h3>1. Основа</h3><p>Сравниваем с числом ${format(base)}: оно равно 100%.</p>`,`<h3>2. Изменение</h3><p>Разница: |${format(other)} − ${format(base)}| = ${format(Math.abs(other-base))}.</p>`,`<h3>3. Процент</h3><p>Разницу делим на основу ${format(base)} и умножаем на 100.</p>`],
+      steps:[`Разница равна ${format(Math.abs(other-base))}.`,`Основа сравнения: ${format(base)}.`,` ${format(Math.abs(other-base))} ÷ ${format(base)} · 100 = <strong>${format(p)}%</strong>.`],diagnose:()=>`Процент изменения считают от числа, с которым сравнивают: ${format(base)}.`};
+  }
+  if(type==='sequential'){
+    const start=pick([500,800,1000,1200,1600]);const p1=pick([10,20,25]);const p2=pick([10,20,25]);const dir1=Math.random()<.5?'up':'down';const dir2=dir1==='up'?'down':'up';const factor1=dir1==='up'?1+p1/100:1-p1/100;const factor2=dir2==='up'?1+p2/100:1-p2/100;const answer=start*factor1*factor2;
+    return{id:nowId(),skill:'advanced',label:'Два изменения подряд',title:'Последовательные проценты',unit:'руб',answer,
+      question:`Цена была <b>${format(start)} руб</b>. Сначала она ${dir1==='up'?'выросла':'снизилась'} на <b>${p1}%</b>, затем ${dir2==='up'?'выросла':'снизилась'} на <b>${p2}%</b>. Какой стала цена?`,
+      hints:[`<h3>1. Важная ловушка</h3><p>Второе изменение применяется уже к <b>новой</b> цене, а не к исходной.</p>`,`<h3>2. Первый множитель</h3><p>${dir1==='up'?'Увеличить':'Уменьшить'} на ${p1}% → умножить на ${format(factor1)}.</p>`,`<h3>3. Второй множитель</h3><p>${dir2==='up'?'Увеличить':'Уменьшить'} на ${p2}% → умножить результат на ${format(factor2)}.</p>`],
+      steps:[`После первого изменения: ${format(start)} · ${format(factor1)} = ${format(start*factor1)}.`,`После второго: ${format(start*factor1)} · ${format(factor2)} = <strong>${format(answer)} руб</strong>.`,`Обратные по знаку проценты не всегда взаимно уничтожаются: основы отличаются.`],diagnose:()=>`Применяйте изменения по очереди: сначала к ${format(start)}, затем к полученному результату.`};
+  }
+  const percent=pick([110,125,150,175]);const whole=pick([80,120,160,240,320]);const answer=whole*percent/100;
+  return{id:nowId(),skill:'advanced',label:'Больше 100%',title:'Найти процент больше ста',unit:'',answer,
+    question:`Найдите <b>${percent}%</b> от числа <b>${whole}</b>.`,
+    hints:[`<h3>1. Смысл</h3><p>${percent}% — это всё число и ещё ${percent-100}%.</p>`,`<h3>2. Доля</h3><p>${percent}% = ${format(percent/100)} от целого.</p>`,`<h3>3. Вычисление</h3><p>${whole} · ${format(percent/100)}.</p>`],
+    steps:[`${percent}% = ${format(percent/100)}.`,` ${whole} · ${format(percent/100)} = <strong>${format(answer)}</strong>.`],diagnose:()=>`${percent}% больше целого: ответ должен быть больше ${whole}.`};
+}
+
+/* ---------------- Практика ---------------- */
+function newPracticeTask(){
+  const task=state.difficulty==='advanced'?advancedTask():standardTask(state.skill==='mix'?pick(SKILLS):state.skill);
+  state.current=task;
+  state.taskState={hintLevel:0,wrongAttempts:0,answered:false,solutionShown:false,outcome:null,reviewRecorded:false};
+  renderPractice();save();
+}
+function renderSkillChips(){
+  const box=document.getElementById('skill-chips');
+  if(state.difficulty==='advanced'){
+    box.innerHTML='<span style="font-size:13px;color:var(--ink-soft);font-weight:800">Смешанные усложнённые задачи</span>';return;
+  }
+  box.innerHTML=[{key:'mix',name:'🎲 Вперемешку'},...SKILLS.map(k=>({key:k,name:SKILL_META[k].short}))].map(item=>{
+    const stat=item.key==='mix'?null:state.stats[item.key];const mastered=stat&&stat.independent>=MASTERY;
+    return `<button type="button" class="skill-chip ${state.skill===item.key?'active ':''}${mastered?'mastered':''}" data-skill="${item.key}">${item.name}${stat?` <span class="mini-count">${Math.min(MASTERY,stat.independent)}/${MASTERY}</span>`:''}</button>`;
+  }).join('');
+  document.querySelectorAll('[data-skill]').forEach(b=>b.addEventListener('click',()=>{state.skill=b.dataset.skill;newPracticeTask();}));
+}
+function renderPracticeStats(){
+  document.getElementById('stat-independent').textContent=totalBy('independent');
+  document.getElementById('stat-supported').textContent=totalBy('supported');
+  document.getElementById('stat-reviewed').textContent=totalBy('reviewed');
+  document.getElementById('practice-status-list').innerHTML=SKILLS.map(k=>`<div class="status-item"><span>${SKILL_META[k].short}</span><b>${Math.min(MASTERY,state.stats[k].independent)}/${MASTERY}</b></div>`).join('');
+  const mastered=masteredCount(),best=state.checkpointBest.standard||0;
+  document.getElementById('checkpoint-cta-copy').textContent=mastered===5?`Все пять навыков отработаны. Лучший мини-зачёт: ${best}/5.`:`Освоено ${mastered} из 5 навыков. Мини-зачёт можно пройти в любой момент.`;
+}
+function renderPractice(){
+  document.querySelectorAll('#difficulty-switch [data-difficulty]').forEach(b=>b.classList.toggle('active',b.dataset.difficulty===state.difficulty));
+  document.getElementById('skill-control-wrap').style.opacity=state.difficulty==='advanced'?'.75':'1';
+  renderSkillChips();renderPracticeStats();
+  if(!state.current){newPracticeTask();return;}
+  const t=state.current,ts=state.taskState;
+  const mixed=state.difficulty==='standard'&&state.skill==='mix';
+  document.getElementById('task-badge').textContent=(mixed&&!ts.answered&&!ts.solutionShown)?'Смешанная задача':t.label;
+  document.getElementById('task-title').textContent=(mixed&&!ts.answered&&!ts.solutionShown)?'Определите способ решения':t.title;
+  document.getElementById('practice-question').innerHTML=t.question;
+  document.getElementById('practice-unit').textContent=t.unit||'';
+  const input=document.getElementById('practice-input');
+  if(!ts.answered&&!ts.solutionShown){input.value='';input.disabled=false;input.classList.remove('correct','wrong');}
+  document.getElementById('practice-check').disabled=ts.answered||ts.solutionShown;
+  document.getElementById('next-task').disabled=!(ts.answered||ts.solutionShown);
+  clearFeedback('practice-feedback');
+  document.getElementById('hint-stack').innerHTML=t.hints.slice(0,ts.hintLevel).map((h,i)=>`<div class="hint-card">${h}</div>`).join('');
+  const sol=document.getElementById('practice-solution');sol.classList.toggle('show',ts.answered||ts.solutionShown);
+  document.getElementById('practice-solution-steps').innerHTML=t.steps.map((s,i)=>`<div class="solution-step"><strong>${i+1}.</strong> ${s}</div>`).join('');
+  const hintLabels=['Подсказка 1: найти 100%','Подсказка 2: заполнить схему','Подсказка 3: выбрать действие','Все подсказки открыты'];
+  document.getElementById('hint-btn').textContent=hintLabels[Math.min(ts.hintLevel,3)];
+  document.getElementById('hint-btn').disabled=ts.hintLevel>=3||ts.answered||ts.solutionShown;
+  document.getElementById('solution-btn').disabled=ts.answered||ts.solutionShown;
+  updateCreditChip();
+  if(ts.answered||ts.solutionShown){
+    input.value=format(t.answer);input.disabled=true;input.classList.add('correct');
+    const kind=ts.outcome==='independent'?'good':ts.outcome==='supported'?'warn':'info';
+    const msg=ts.outcome==='independent'?`Самостоятельно и с первой попытки. Ответ: <b>${format(t.answer)}${t.unit?' '+t.unit:''}</b>.`:
+      ts.outcome==='supported'?`Верно после подсказки или исправления. Это полезная практика, но она не добавляет самостоятельное освоение. Ответ: <b>${format(t.answer)}${t.unit?' '+t.unit:''}</b>.`:
+      `Решение разобрано. Эта задача не идёт в самостоятельный прогресс.`;
+    showFeedback('practice-feedback',kind,msg);
+  }else setTimeout(()=>input.focus(),0);
+}
+function updateCreditChip(){
+  const ts=state.taskState,chip=document.getElementById('credit-chip'),line=document.getElementById('outcome-line');
+  chip.className='credit-chip';line.innerHTML='';
+  if(ts.solutionShown){chip.classList.add('reviewed');chip.textContent='Разобрано — без зачёта';line.innerHTML='<span class="outcome-dot reviewed"></span><span>Полное решение открыто.</span>';return;}
+  if(ts.hintLevel>0||ts.wrongAttempts>0){chip.classList.add('supported');chip.textContent='С подсказкой / после исправления';line.innerHTML='<span class="outcome-dot supported"></span><span>Правильный ответ будет отмечен как решение с поддержкой.</span>';return;}
+  chip.textContent='Без подсказок — можно получить «Самостоятельно»';line.innerHTML='<span class="outcome-dot"></span><span>Верно с первой попытки и без подсказок.</span>';
+}
+function practiceCheck(){
+  const ts=state.taskState;if(ts.answered||ts.solutionShown)return;
+  const input=document.getElementById('practice-input'),value=parseNumber(input.value);
+  if(!Number.isFinite(value)){showFeedback('practice-feedback','warn','Введите число. Знак процента и слово «руб» писать не нужно.');return;}
+  if(near(value,state.current.answer)){
+    const independent=ts.wrongAttempts===0&&ts.hintLevel===0;
+    ts.answered=true;ts.outcome=independent?'independent':'supported';
+    input.disabled=true;markInput(input,true);
+    if(state.current.skill==='advanced')state.advanced[ts.outcome]++;
+    else state.stats[state.current.skill][ts.outcome]++;
+    if(state.current.skill!=='advanced')state.stats[state.current.skill].attempts++;
+    state.independentStreak=independent?state.independentStreak+1:0;
+    save();renderPractice();
+  }else{
+    ts.wrongAttempts++;
+    if(state.current.skill!=='advanced'){state.stats[state.current.skill].errors++;state.stats[state.current.skill].attempts++;}
+    state.independentStreak=0;markInput(input,false);
+    if(ts.wrongAttempts>=2&&ts.hintLevel===0){ts.hintLevel=1;showFeedback('practice-feedback','warn',`${state.current.diagnose?state.current.diagnose(value):'Проверьте основу.'}<br><b>Первая подсказка открылась автоматически.</b>`);}
+    else showFeedback('practice-feedback','bad',state.current.diagnose?state.current.diagnose(value):'Проверьте, что принято за 100%.');
+    updateCreditChip();document.getElementById('hint-stack').innerHTML=state.current.hints.slice(0,ts.hintLevel).map(h=>`<div class="hint-card">${h}</div>`).join('');save();
+  }
+}
+function revealPracticeHint(){
+  const ts=state.taskState;if(ts.answered||ts.solutionShown)return;ts.hintLevel=Math.min(3,ts.hintLevel+1);state.independentStreak=0;renderPractice();save();
+}
+function revealPracticeSolution(){
+  const ts=state.taskState;if(ts.answered||ts.solutionShown)return;ts.solutionShown=true;ts.outcome='reviewed';
+  if(!ts.reviewRecorded){if(state.current.skill==='advanced')state.advanced.reviewed++;else state.stats[state.current.skill].reviewed++;ts.reviewRecorded=true;}
+  state.independentStreak=0;save();renderPractice();
+}
+
+/* ---------------- Проверка ---------------- */
+function renderCheckLanding(){
+  stopCheckTimer();
+  document.getElementById('check-start').hidden=false;document.getElementById('check-active').hidden=true;document.getElementById('check-result').hidden=true;
+  const s=state.checkpointBest.standard||0,a=state.checkpointBest.advanced||0;
+  document.getElementById('check-best-line').innerHTML=(s||a)?`Лучшие результаты: базовая — <b>${s}/5</b>, усложнённая — <b>${a}/5</b>.`:'Лучший результат пока не зафиксирован.';
+}
+function startCheckpoint(level){
+  const tasks=level==='standard'?shuffle(SKILLS.map(k=>standardTask(k))):Array.from({length:5},()=>advancedTask());
+  state.checkpoint={level,tasks,index:0,answers:[],startedAt:Date.now(),finished:false,duration:0,score:0};
+  document.getElementById('check-start').hidden=true;document.getElementById('check-active').hidden=false;document.getElementById('check-result').hidden=true;
+  startCheckTimer();renderCheckpointQuestion();
+}
+function startCheckTimer(){stopCheckTimer();checkTimerId=setInterval(()=>{if(state.checkpoint&&!state.checkpoint.finished)document.getElementById('check-time').textContent=formatDuration(Date.now()-state.checkpoint.startedAt);},1000);}
+function stopCheckTimer(){if(checkTimerId){clearInterval(checkTimerId);checkTimerId=null;}}
+function formatDuration(ms){const sec=Math.max(0,Math.round(ms/1000)),m=Math.floor(sec/60),s=sec%60;return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
+function renderCheckpointQuestion(){
+  const cp=state.checkpoint,t=cp.tasks[cp.index];
+  document.getElementById('check-counter').textContent=`Задание ${cp.index+1} из 5`;
+  document.getElementById('check-progress-bar').style.width=`${(cp.index+1)/5*100}%`;
+  document.getElementById('check-badge').textContent=cp.level==='advanced'?'Усложнённый уровень':'Тип задачи скрыт';
+  document.getElementById('check-title').textContent='Решите самостоятельно';
+  document.getElementById('check-question').innerHTML=t.question;
+  document.getElementById('check-unit').textContent=t.unit||'';
+  const input=document.getElementById('check-input');input.value='';input.classList.remove('correct','wrong');clearFeedback('check-feedback');setTimeout(()=>input.focus(),0);
+  document.getElementById('check-save').textContent=cp.index===4?'Завершить проверку':'Сохранить ответ';
+}
+function saveCheckpointAnswer(){
+  const cp=state.checkpoint;if(!cp||cp.finished)return;const value=parseNumber(document.getElementById('check-input').value);
+  if(!Number.isFinite(value)){showFeedback('check-feedback','warn','Введите числовой ответ.');return;}
+  cp.answers.push(value);
+  if(cp.index<4){cp.index++;renderCheckpointQuestion();}
+  else finishCheckpoint();
+}
+function finishCheckpoint(){
+  const cp=state.checkpoint;cp.finished=true;cp.duration=Date.now()-cp.startedAt;cp.score=cp.tasks.reduce((n,t,i)=>n+(near(cp.answers[i],t.answer)?1:0),0);stopCheckTimer();
+  state.checkpointBest[cp.level]=Math.max(state.checkpointBest[cp.level]||0,cp.score);
+  state.checkpointLast={level:cp.level,score:cp.score,duration:cp.duration,date:new Date().toISOString()};save();renderCheckpointResult();
+}
+function resultRecommendation(score,level){
+  if(level==='advanced')return score>=4?'Отличный результат: усложнённые проценты вам по силам.':score>=3?'База крепкая, но отдельные сложные ситуации стоит разобрать.':'Вернитесь к смешанной базовой тренировке, затем повторите вызов.';
+  return score<=2?'Начните или повторите пошаговое обучение: сейчас важнее смысл 100%, чем скорость.':score<=4?'База есть. Потренируйтесь вперемешку и повторите проверку.':'Все пять типов распознаны верно. Можно открыть усложнённый уровень.';
+}
+function renderCheckpointResult(){
+  const cp=state.checkpoint;document.getElementById('check-active').hidden=true;document.getElementById('check-result').hidden=false;
+  document.getElementById('result-score').textContent=`${cp.score}/5`;document.getElementById('result-time').textContent=formatDuration(cp.duration);
+  document.getElementById('result-title').textContent=cp.level==='advanced'?'Усложнённая проверка завершена':'Базовая проверка завершена';
+  document.getElementById('result-recommendation').textContent=resultRecommendation(cp.score,cp.level);
+  const strong=[],weak=[];
+  cp.tasks.forEach((t,i)=>(near(cp.answers[i],t.answer)?strong:weak).push(t.label));
+  document.getElementById('result-strong').innerHTML=(strong.length?strong:['Пока нет — это нормальная отправная точка']).map(x=>`<li>${x}</li>`).join('');
+  document.getElementById('result-weak').innerHTML=(weak.length?weak:['Ошибок нет']).map(x=>`<li>${x}</li>`).join('');
+  document.getElementById('result-details').innerHTML=cp.tasks.map((t,i)=>{
+    const ok=near(cp.answers[i],t.answer);
+    return `<details class="result-item ${ok?'ok':'no'}"><summary><span>${i+1}. ${t.label}</span><span>${ok?'✓ верно':'нужно повторить'}</span></summary><div class="result-item-body"><div>${t.question}</div><p style="margin-top:7px">Ваш ответ: <b>${format(cp.answers[i])}</b>. Правильный: <b>${format(t.answer)}${t.unit?' '+t.unit:''}</b>.</p><div class="solution-steps" style="margin-top:9px">${t.steps.map((s,j)=>`<div class="solution-step"><strong>${j+1}.</strong> ${s}</div>`).join('')}</div></div></details>`;
+  }).join('');
+  clearFeedback('copy-feedback');
+}
+function checkpointReport(){
+  const cp=state.checkpoint;const strong=[],weak=[];cp.tasks.forEach((t,i)=>(near(cp.answers[i],t.answer)?strong:weak).push(t.label));
+  return `Тренажёр «Проценты без паники» — ${cp.level==='advanced'?'усложнённая':'базовая'} проверка\nРезультат: ${cp.score} из 5\nВремя: ${formatDuration(cp.duration)}\nПолучается: ${strong.length?strong.join(', '):'пока не определено'}\nПовторить: ${weak.length?weak.join(', '):'ошибок нет'}\n${resultRecommendation(cp.score,cp.level)}`;
+}
+async function copyCheckpointResult(){
+  const text=checkpointReport();let ok=false;
+  try{await navigator.clipboard.writeText(text);ok=true;}catch(e){
+    const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{ok=document.execCommand('copy');}catch(err){}ta.remove();
+  }
+  showFeedback('copy-feedback',ok?'good':'warn',ok?'Результат скопирован. Вернитесь в Stepik и вставьте его в поле ответа.':'Не удалось скопировать автоматически. Выделите текст результата вручную.');
+}
+
+/* ---------------- Разбор ---------------- */
+function makeReviewTask(){return state.reviewSkill==='advanced'?advancedTask():standardTask(state.reviewSkill==='mix'?pick(SKILLS):state.reviewSkill);}
+function newReviewTask(){state.reviewCurrent=makeReviewTask();renderReview();save();}
+function renderReviewChips(){
+  document.getElementById('review-chips').innerHTML=[{key:'mix',name:'🎲 Вперемешку'},...SKILLS.map(k=>({key:k,name:SKILL_META[k].short})),{key:'advanced',name:'★ Усложнённые'}].map(x=>`<button type="button" class="skill-chip ${state.reviewSkill===x.key?'active':''}" data-review-skill="${x.key}">${x.name}</button>`).join('');
+  document.querySelectorAll('[data-review-skill]').forEach(b=>b.addEventListener('click',()=>{state.reviewSkill=b.dataset.reviewSkill;newReviewTask();}));
+}
+function renderReview(){
+  if(!state.reviewCurrent){newReviewTask();return;}const t=state.reviewCurrent;
+  renderReviewChips();document.getElementById('review-badge').textContent=t.label;document.getElementById('review-title').textContent=t.title;document.getElementById('review-question').innerHTML=t.question;
+  document.getElementById('review-hints').innerHTML=t.hints.map(h=>`<div class="hint-card">${h}</div>`).join('');
+  document.getElementById('review-answer').innerHTML=`Ответ: ${format(t.answer)}${t.unit?' '+t.unit:''}`;
+  document.getElementById('review-steps').innerHTML=t.steps.map((s,i)=>`<div class="solution-step"><strong>${i+1}.</strong> ${s}</div>`).join('');
+}
+
+/* ---------------- События ---------------- */
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.view,b.dataset.view==='review'?{fresh:true}:{})));
+document.querySelectorAll('[data-route]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.route,{fresh:b.dataset.route==='practice'})));
+document.querySelectorAll('[data-view-go]').forEach(b=>b.addEventListener('click',()=>setView(b.dataset.viewGo,{fresh:b.dataset.viewGo==='practice'})));
+document.getElementById('learn-back').addEventListener('click',()=>{if(state.learnStep>0){state.learnStep--;renderLearn();}});
+document.getElementById('learn-next').addEventListener('click',()=>{
+  if(!learnGate){showFeedback('learn-feedback','warn','Сначала выполните действие на этом шаге.');return;}
+  if(state.learnStep<LEARN_COUNT-1){state.learnStep++;renderLearn();}
+  else{state.learnDone=true;save();setView('practice',{fresh:true});}
 });
-load();renderProgress();save();newQ();
+document.querySelectorAll('#difficulty-switch [data-difficulty]').forEach(b=>b.addEventListener('click',()=>{state.difficulty=b.dataset.difficulty;if(state.difficulty==='advanced')state.skill='mix';newPracticeTask();}));
+document.getElementById('practice-check').addEventListener('click',practiceCheck);
+document.getElementById('practice-input').addEventListener('keydown',e=>{if(e.key==='Enter')practiceCheck();});
+document.getElementById('hint-btn').addEventListener('click',revealPracticeHint);
+document.getElementById('solution-btn').addEventListener('click',revealPracticeSolution);
+document.getElementById('next-task').addEventListener('click',newPracticeTask);
+document.getElementById('practice-to-check').addEventListener('click',()=>setView('check'));
+document.getElementById('checkpoint-cta-btn').addEventListener('click',()=>setView('check'));
+document.querySelectorAll('[data-check-level]').forEach(b=>b.addEventListener('click',()=>startCheckpoint(b.dataset.checkLevel)));
+document.getElementById('check-save').addEventListener('click',saveCheckpointAnswer);
+document.getElementById('check-input').addEventListener('keydown',e=>{if(e.key==='Enter')saveCheckpointAnswer();});
+document.getElementById('copy-result').addEventListener('click',copyCheckpointResult);
+document.getElementById('repeat-check').addEventListener('click',()=>renderCheckLanding());
+document.getElementById('result-practice').addEventListener('click',()=>setView('practice',{fresh:true}));
+document.getElementById('new-review-task').addEventListener('click',newReviewTask);
+document.getElementById('try-similar').addEventListener('click',()=>{state.difficulty=state.reviewSkill==='advanced'?'advanced':'standard';state.skill=SKILLS.includes(state.reviewSkill)?state.reviewSkill:'mix';setView('practice',{fresh:true});});
+document.getElementById('reset-all').addEventListener('click',()=>{
+  if(!confirm('Сбросить обучение, результаты и весь прогресс по процентам?'))return;
+  try{
+    localStorage.removeItem(OWN_KEY);
+    if(window.CourseProgress&&typeof window.CourseProgress.clear==='function')window.CourseProgress.clear(TOPIC);
+    else{const data=JSON.parse(localStorage.getItem(MAP_KEY)||'{}');delete data[TOPIC];localStorage.setItem(MAP_KEY,JSON.stringify(data));}
+  }catch(e){}
+  state=initialState();setView('home');
+});
+
+window.__PERCENT_TRAINER_TEST__={
+  SKILLS,SKILL_META,standardTask,advancedTask,near,parseNumber,format,
+  storage:{own:OWN_KEY,map:MAP_KEY,topic:TOPIC},
+  getState:()=>JSON.parse(JSON.stringify(state)),
+  masteredCount,topicComplete,topicSolved,
+  startCheckpoint
+};
+
+load();
+renderHome();
+setView('home');
 })();
 </script>
 </body>
