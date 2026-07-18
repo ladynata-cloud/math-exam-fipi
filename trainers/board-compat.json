@@ -136,6 +136,28 @@
       "bridgeProtocolVersion": 1,
       "allowLegacyHtml": false,
       "notes": "Зеркалируется закрытый семантический snapshot выбранного сюжета, пяти задач и статического кадра счёта."
+    },
+    {
+      "trainerId": "practice-1-5-map",
+      "file": "trainers/oge-1-5-trainers/practice-1-5-map.html",
+      "title": "ОГЭ №1–5: карта тренажёров",
+      "group": "ОГЭ / задачи 1–5",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Открывается в iframe доски; mirror не подключён."
+    },
+    {
+      "trainerId": "practice-1-5-entry-diagnostic-2026",
+      "file": "trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html",
+      "title": "ОГЭ-2026 №1–5: входная диагностика",
+      "group": "ОГЭ / задачи 1–5",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Открывается в iframe доски; хранит локальный результат, mirror не подключён."
     }
   ]
 }

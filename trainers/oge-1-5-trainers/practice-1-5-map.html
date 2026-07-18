@@ -3,512 +3,483 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Практические задачи 1–5 · тренажёры ОГЭ</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<title>ОГЭ 1–5 · диагностика и карта тренажёров</title>
 <style>
   :root {
-    --bg: #f5f7fc;
-    --card: #ffffff;
-    --ink: #1b2140;
-    --ink-soft: #545c7e;
-    --ink-muted: #9298b4;
-    --line: #e7eaf4;
-    --shadow-sm: 0 2px 6px rgba(27,33,64,.05);
-    --shadow-lg: 0 14px 40px rgba(27,33,64,.14);
-    --font-display: "Fredoka", "Baloo 2", ui-rounded, "Segoe UI", system-ui, sans-serif;
-    --font-body: "Nunito", ui-rounded, -apple-system, "Segoe UI", system-ui, sans-serif;
-    --r: 22px;
+    --bg: #faf7f2;
+    --bg-card: #ffffff;
+    --ink: #1a2332;
+    --ink-soft: #4a5568;
+    --ink-muted: #8a93a3;
+    --line: #e8e3d8;
+    --accent: #1e3a5f;
+    --accent-soft: #dbe4f0;
+    --gold: #b8924b;
+    --green: #4a7c59;
+    --warm: #d4956a;
+    --shadow: 0 1px 3px rgba(26,35,50,.05), 0 4px 24px rgba(26,35,50,.06);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
-    background: var(--bg); color: var(--ink);
-    font-family: var(--font-body); font-size: 16px; line-height: 1.55;
-    min-height: 100vh; -webkit-font-smoothing: antialiased;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PT Sans", Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    min-height: 100vh;
   }
-  /* лёгкая «миллиметровка» — сюжет-то про клетки, планы и чертежи */
   body {
     background-image:
-      linear-gradient(rgba(27,33,64,.028) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(27,33,64,.028) 1px, transparent 1px),
-      radial-gradient(circle at 12% 4%, rgba(124,58,237,.10) 0, transparent 34%),
-      radial-gradient(circle at 92% 8%, rgba(6,182,212,.10) 0, transparent 32%),
-      radial-gradient(circle at 78% 96%, rgba(244,63,94,.08) 0, transparent 34%);
-    background-size: 26px 26px, 26px 26px, 100% 100%, 100% 100%, 100% 100%;
+      radial-gradient(circle at 15% 10%, rgba(184,146,75,.04) 0, transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(30,58,95,.04) 0, transparent 40%);
   }
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 44px 22px 90px; }
-  a { color: inherit; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
 
-  /* ---------- ШАПКА ---------- */
+  .head { margin-bottom: 56px; }
   .eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 12.5px; font-weight: 800; letter-spacing: .04em;
-    color: #7C3AED; background: #efe8fe;
-    padding: 6px 13px; border-radius: 999px; margin-bottom: 18px;
+    font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .18em;
+    color: var(--gold); margin-bottom: 14px;
   }
-  .eyebrow::before { content: "🎯"; font-size: 13px; }
   h1 {
-    font-family: var(--font-display); font-weight: 600;
-    font-size: clamp(32px, 6vw, 54px); line-height: 1.04;
-    letter-spacing: -.01em; color: var(--ink); margin-bottom: 16px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(34px, 5vw, 52px);
+    font-weight: 400; line-height: 1.1;
+    letter-spacing: -.02em; margin-bottom: 18px;
   }
-  h1 .grad {
-    background: linear-gradient(92deg, #7C3AED 0%, #F43F5E 55%, #F59E0B 100%);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  .lede { max-width: 620px; font-size: 17.5px; color: var(--ink-soft); font-weight: 500; }
-  .lede b { color: var(--ink); font-weight: 800; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .lede { max-width: 640px; font-size: 17px; color: var(--ink-soft); }
+  .lede strong { color: var(--ink); font-weight: 600; }
 
-  /* ---------- ОБЩИЙ ПРОГРЕСС ---------- */
-  .overall {
-    margin-top: 30px; background: var(--card); border: 1px solid var(--line);
-    border-radius: var(--r); padding: 22px 24px; box-shadow: var(--shadow-sm);
-    display: flex; align-items: center; gap: 26px; flex-wrap: wrap;
+  .progress-summary {
+    margin-top: 32px; padding: 20px 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
   }
-  .overall .stat { display: flex; flex-direction: column; gap: 2px; }
-  .overall .stat .big {
-    font-family: var(--font-display); font-weight: 600; font-size: 34px; line-height: 1;
-    color: var(--ink);
+  .progress-summary .label {
+    font-size: 13px; color: var(--ink-muted);
+    text-transform: uppercase; letter-spacing: .1em;
   }
-  .overall .stat .big b {
-    background: linear-gradient(92deg,#7C3AED,#C026D3); -webkit-background-clip: text;
-    background-clip: text; color: transparent; font-weight: 700;
+  .progress-bar {
+    flex: 1; min-width: 200px; height: 8px;
+    background: var(--accent-soft); border-radius: 4px; overflow: hidden;
   }
-  .overall .stat .cap { font-size: 12.5px; font-weight: 700; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .05em; }
-  .segs { flex: 1; min-width: 220px; display: flex; gap: 5px; }
-  .segs .seg {
-    flex: 1; height: 12px; border-radius: 6px; background: #e6e9f4;
-    transition: background .5s ease;
+  .progress-bar .fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+    border-radius: 4px; width: 0%;
+    transition: width .6s cubic-bezier(.4,0,.2,1);
   }
-  .divider { width: 1px; align-self: stretch; background: var(--line); }
-  @media (max-width: 560px){ .divider { display: none; } }
+  .progress-summary .num {
+    font-family: Georgia, serif; font-size: 28px;
+    font-weight: 400; color: var(--accent); line-height: 1;
+  }
+  .progress-summary .num small { font-size: 14px; color: var(--ink-muted); }
 
-  /* ---------- СЕКЦИИ ---------- */
-  .section { margin-top: 52px; }
-  .section-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
-  .section-head h2 { font-family: var(--font-display); font-weight: 600; font-size: 25px; color: var(--ink); }
-  .section-head p { font-size: 14.5px; color: var(--ink-muted); font-weight: 600; }
+  .section { margin-top: 56px; }
+  .section-title {
+    font-family: Georgia, serif; font-size: 22px;
+    margin-bottom: 8px; font-weight: 400;
+  }
+  .section-sub { color: var(--ink-muted); font-size: 14px; margin-bottom: 24px; }
 
-  /* ---------- КАРТОЧКА ---------- */
   .grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
-    gap: 18px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
   }
+
   .card {
-    --c: #7C3AED;
-    position: relative; display: flex; flex-direction: column; gap: 12px;
-    background: var(--card); border: 1.5px solid var(--line);
-    border-radius: var(--r); padding: 22px 22px 26px; text-decoration: none;
-    overflow: hidden; cursor: pointer;
-    transition: transform .22s cubic-bezier(.34,1.4,.5,1), box-shadow .22s, border-color .22s;
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 24px;
+    text-decoration: none; color: inherit;
+    display: flex; flex-direction: column; gap: 14px;
+    transition: transform .25s, box-shadow .25s, border-color .25s;
+    position: relative; overflow: hidden; cursor: pointer;
   }
-  .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--c); }
-  .card:focus-visible { outline: 3px solid var(--c); outline-offset: 3px; }
-
-  .card .row-top { display: flex; align-items: flex-start; justify-content: space-between; }
-  .card .chip {
-    width: 56px; height: 56px; border-radius: 16px; flex: none;
-    display: flex; align-items: center; justify-content: center;
-    color: var(--c); background: #eef1f9;
-    background: color-mix(in srgb, var(--c) 13%, #fff);
-    transition: transform .22s cubic-bezier(.34,1.4,.5,1);
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+    border-color: var(--accent-soft);
   }
-  .card:hover .chip { transform: rotate(-6deg) scale(1.06); }
-  .card .chip svg { width: 32px; height: 32px; }
-  .card .badge {
-    font-family: var(--font-display); font-weight: 600; font-size: 15px;
-    color: var(--c); background: color-mix(in srgb, var(--c) 12%, #fff);
-    width: 34px; height: 26px; border-radius: 8px;
+  .card .num-badge {
+    position: absolute; top: 18px; right: 18px;
+    font-family: Georgia, serif; font-size: 14px;
+    color: var(--ink-muted); font-style: italic;
+  }
+  .card .icon {
+    width: 56px; height: 56px;
+    background: var(--accent-soft); border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
   }
-  .card h3 { font-family: var(--font-display); font-weight: 600; font-size: 21px; line-height: 1.15; color: var(--ink); }
-  .card p { font-size: 14.5px; color: var(--ink-soft); font-weight: 500; line-height: 1.5; }
-
+  .card .icon svg { width: 32px; height: 32px; stroke: var(--accent); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .card h3 {
+    font-family: Georgia, serif; font-size: 19px;
+    font-weight: 400; line-height: 1.25; color: var(--ink);
+  }
+  .card p { font-size: 14px; color: var(--ink-soft); line-height: 1.5; }
   .card .meta {
-    margin-top: auto; padding-top: 14px; display: flex; align-items: center;
-    justify-content: space-between; gap: 10px;
+    margin-top: auto; padding-top: 14px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: var(--ink-muted);
   }
-  .status {
-    display: inline-flex; align-items: center; gap: 7px;
-    font-size: 13px; font-weight: 800; color: var(--ink-muted);
+  .card .status-dot {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--line); margin-right: 6px; vertical-align: middle;
   }
-  .status .dot { width: 9px; height: 9px; border-radius: 50%; background: #cdd3e6; }
-  .card.started .status { color: var(--c); }
-  .card.started .status .dot { background: var(--c); }
-  .card.done .status { color: #16a34a; }
-  .card.done .status .dot { background: #16a34a; }
-  .solved { font-size: 12.5px; font-weight: 700; color: var(--ink-muted); }
+  .card.done .status-dot { background: var(--green); }
+  .card.started .status-dot { background: var(--gold); }
 
-  .go {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-family: var(--font-display); font-weight: 500; font-size: 14.5px; color: var(--c);
-    opacity: .0; transform: translateX(-4px); transition: opacity .2s, transform .2s;
+  .card.highlight {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2d4a72 100%);
+    color: white; border-color: transparent;
+    grid-column: span 2;
   }
-  .card:hover .go { opacity: 1; transform: translateX(0); }
-
-  /* прогресс-полоса снизу карточки */
-  .pbar { position: absolute; left: 0; right: 0; bottom: 0; height: 7px; background: #eef0f8; }
-  .pbar .fill { height: 100%; width: 0%; background: var(--c); border-radius: 0 6px 0 0; transition: width .6s cubic-bezier(.4,0,.2,1); }
-
-  /* ---------- ГЕРОЙ (проценты) ---------- */
-  .hero {
-    --c: #ffffff;
-    grid-column: 1 / -1;
-    background: linear-gradient(125deg, #7C3AED 0%, #A21CD6 52%, #C026D3 100%);
-    border: none; color: #fff;
-    display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px;
-    padding: 30px 34px;
-  }
-  .hero::after {
-    content: ""; position: absolute; right: -40px; top: -40px; width: 220px; height: 220px;
-    background: radial-gradient(circle, rgba(255,255,255,.18) 0, transparent 70%);
-  }
-  .hero:hover { transform: translateY(-5px); box-shadow: 0 20px 50px rgba(124,58,237,.4); }
-  .hero:focus-visible { outline: 3px solid #fff; outline-offset: 4px; }
-  .hero .chip { width: 68px; height: 68px; border-radius: 20px; background: rgba(255,255,255,.16); color: #fff; }
-  .hero .chip svg { width: 40px; height: 40px; }
-  .hero .tag {
-    display: inline-flex; align-items: center; gap: 6px; font-weight: 800; font-size: 12px;
-    letter-spacing: .06em; text-transform: uppercase; color: #fff;
-    background: rgba(255,255,255,.18); padding: 5px 11px; border-radius: 999px; margin-bottom: 9px;
-  }
-  .hero .tag::before { content: "⭐"; }
-  .hero h3 { font-family: var(--font-display); font-weight: 600; font-size: clamp(23px,3vw,29px); color: #fff; line-height: 1.1; }
-  .hero p { color: rgba(255,255,255,.9); font-size: 15px; font-weight: 500; margin-top: 7px; max-width: 560px; }
-  .hero .cta {
-    flex: none; font-family: var(--font-display); font-weight: 600; font-size: 16px; color: #7C3AED;
-    background: #fff; padding: 13px 22px; border-radius: 14px; white-space: nowrap;
-    display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 6px 18px rgba(0,0,0,.15);
-    transition: transform .2s;
-  }
-  .hero:hover .cta { transform: scale(1.04); }
-  .hero .meta-inline { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
-  .hero .status { color: rgba(255,255,255,.85); }
-  .hero .status .dot { background: rgba(255,255,255,.6); }
-  .hero.done .status, .hero.started .status { color: #fff; }
-  .hero.done .status .dot, .hero.started .status .dot { background: #fff; }
-  .hero .pbar { background: rgba(255,255,255,.22); }
-  .hero .pbar .fill { background: #fff; }
-  @media (max-width: 760px){
-    .hero { grid-template-columns: auto 1fr; }
-    .hero .cta { grid-column: 1 / -1; justify-content: center; }
+  @media (max-width: 600px) { .card.highlight { grid-column: span 1; } }
+  .card.highlight h3 { color: white; }
+  .card.highlight p { color: rgba(255,255,255,.8); }
+  .card.highlight .icon { background: rgba(255,255,255,.12); }
+  .card.highlight .icon svg { stroke: white; }
+  .card.highlight .num-badge { color: rgba(255,255,255,.5); }
+  .card.highlight .meta { color: rgba(255,255,255,.6); border-color: rgba(255,255,255,.15); }
+  .card.highlight .eyebrow-inline {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    letter-spacing: .15em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 4px;
   }
 
-  /* ---------- ПОДВАЛ ---------- */
   .foot {
-    margin-top: 66px; padding: 22px 24px; background: var(--card);
-    border: 1px solid var(--line); border-radius: var(--r);
-    display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
-    font-size: 13.5px; color: var(--ink-muted); font-weight: 600;
+    margin-top: 72px; padding-top: 32px;
+    border-top: 1px solid var(--line);
+    color: var(--ink-muted); font-size: 13px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
   }
-  .foot code { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: #7C3AED; }
   .foot button {
-    font-family: var(--font-body); font-weight: 800; font-size: 13px; color: var(--ink-soft);
-    background: #f1f3fb; border: 1.5px solid var(--line); padding: 9px 16px; border-radius: 11px; cursor: pointer;
-    transition: border-color .2s, color .2s, background .2s;
+    background: none; border: 1px solid var(--line);
+    color: var(--ink-soft); padding: 6px 14px; border-radius: 8px;
+    font-size: 12px; cursor: pointer; font-family: inherit;
   }
-  .foot button:hover { border-color: #F43F5E; color: #F43F5E; background: #fff; }
+  .foot button:hover { border-color: var(--accent); color: var(--accent); }
 
-  /* ---------- АНИМАЦИЯ ПОЯВЛЕНИЯ ---------- */
-  @keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
-  .card { animation: pop .5s cubic-bezier(.34,1.2,.5,1) backwards; }
-  .grid .card:nth-child(1){animation-delay:.02s}.grid .card:nth-child(2){animation-delay:.06s}
-  .grid .card:nth-child(3){animation-delay:.10s}.grid .card:nth-child(4){animation-delay:.14s}
-  .grid .card:nth-child(5){animation-delay:.18s}.grid .card:nth-child(6){animation-delay:.22s}
-  .grid .card:nth-child(7){animation-delay:.26s}.grid .card:nth-child(8){animation-delay:.30s}
-
-  @media (prefers-reduced-motion: reduce){
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-    .card:hover { transform: none; }
+  @keyframes fadeup {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
   }
+  .card { animation: fadeup .5s cubic-bezier(.4,0,.2,1) backwards; }
+  .card:nth-child(1) { animation-delay: 0.00s; }
+  .card:nth-child(2) { animation-delay: 0.05s; }
+  .card:nth-child(3) { animation-delay: 0.10s; }
+  .card:nth-child(4) { animation-delay: 0.15s; }
+  .card:nth-child(5) { animation-delay: 0.20s; }
+  .card:nth-child(6) { animation-delay: 0.25s; }
+  .card:nth-child(7) { animation-delay: 0.30s; }
+  .card:nth-child(8) { animation-delay: 0.35s; }
+  .card:nth-child(9) { animation-delay: 0.40s; }
 </style>
-<link rel="stylesheet" href="/assets/download-panel.css">
 </head>
 <body>
 <div class="wrap">
 
-  <!-- ШАПКА -->
-  <header>
-    <span class="eyebrow">ОГЭ · математика · 9 класс</span>
-    <h1>Практические задачи <span class="grad">1–5</span></h1>
+  <header class="head">
+    <div class="eyebrow">ОГЭ · математика · 9 класс</div>
+    <h1>Практические задачи 1–5 ·<br><em>восемь сюжетов и проценты</em></h1>
     <p class="lede">
-      Восемь реальных сюжетов — от дачного участка до тарифов — и один универсальный приём с процентами.
-      <b>Выбирай тренажёр, решай и следи, как заполняется прогресс.</b>
+      Сначала пройдите <strong>входную диагностику ОГЭ-2026</strong>, затем работайте с девятью тренажёрами:
+      восемь стандартных сюжетов задач 1–5 и универсальный тренажёр на проценты.
+      Прогресс сохраняется автоматически в этом браузере.
     </p>
 
-    <div class="overall">
-      <div class="stat">
-        <div class="big"><b id="done-count">0</b> / 9</div>
-        <div class="cap">Сюжетов пройдено</div>
+    <div class="progress-summary">
+      <div>
+        <div class="label">Пройдено</div>
+        <div class="num"><span id="done-count">0</span><small> / 10</small></div>
       </div>
-      <div class="divider"></div>
-      <div class="segs" id="segs" aria-hidden="true"></div>
-      <div class="divider"></div>
-      <div class="stat">
-        <div class="big" id="tasks-solved">0</div>
-        <div class="cap">Задач решено</div>
+      <div class="progress-bar"><div class="fill" id="progress-fill"></div></div>
+      <div>
+        <div class="label">Задач решено</div>
+        <div class="num" id="tasks-solved">0</div>
       </div>
     </div>
   </header>
 
-  <!-- ГЕРОЙ: ПРОЦЕНТЫ -->
   <section class="section">
-    <div class="section-head">
-      <h2>Начни отсюда</h2>
-      <p>базовый приём — он пригодится в каждом сюжете</p>
-    </div>
+    <h2 class="section-title">Начните здесь</h2>
+    <p class="section-sub">Диагностика покажет, какие сюжеты уже получаются, а какие лучше пройти в режиме обучения</p>
     <div class="grid">
-      <a class="card hero" data-topic="percentTableTrainer" data-color="#7C3AED" href="percent-table-trainer.html" aria-label="Тренажёр: проценты">
-        <div class="chip" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="8" cy="8" r="2.6" fill="currentColor" fill-opacity=".2"/><circle cx="8" cy="8" r="2.6"/>
-            <circle cx="16" cy="16" r="2.6" fill="currentColor" fill-opacity=".2"/><circle cx="16" cy="16" r="2.6"/>
-            <line x1="17.5" y1="6.5" x2="6.5" y2="17.5"/>
+
+      <a class="card highlight" data-topic="practiceEntryDiagnostic2026" data-diagnostic="true" href="practice-1-5-entry-diagnostic-2026.html">
+        <div class="num-badge">СТАРТ</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 4h16v16H4z"/>
+            <path d="M8 8h8M8 12h5M8 16h7"/>
+            <path d="M17 11l1.4 1.4L21 9.8" stroke-width="2"/>
           </svg>
         </div>
         <div>
-          <span class="tag">универсальный приём</span>
-          <h3>Проценты — таблица 2×2</h3>
-          <p>Что сравниваем и с чем. Один алгоритм на все случаи: «на сколько больше», «во сколько раз», «увеличить на p%». С него начинается каждый другой сюжет.</p>
-          <div class="meta-inline">
-            <span class="status"><span class="dot"></span><span class="status-text">не начато</span></span>
-            <span class="solved solved-count"></span>
-          </div>
+          <div class="eyebrow-inline">ОГЭ-2026 · 10 заданий</div>
+          <h3>Входная диагностика по заданиям 1–5</h3>
         </div>
-        <span class="cta">Открыть →</span>
-        <div class="pbar"><div class="fill"></div></div>
+        <p>Короткая проверка по восьми сюжетам и процентам. В конце — результат, разбор ошибок и персональный маршрут по тренажёрам.</p>
+        <div class="meta">
+          <span><span class="status-dot"></span><span class="status-text">не пройдена</span></span>
+          <span class="solved-count">10 заданий</span>
+        </div>
       </a>
+
     </div>
   </section>
 
-  <!-- ВОСЕМЬ СЮЖЕТОВ -->
   <section class="section">
-    <div class="section-head">
-      <h2>Восемь сюжетов</h2>
-      <p>каждый отрабатывает свой набор приёмов — порядок любой</p>
-    </div>
+    <h2 class="section-title">Методическая база</h2>
+    <p class="section-sub">Начните с тренажёра процентов — он работает во всех остальных сюжетах</p>
     <div class="grid">
 
-      <a class="card" data-topic="practiceRoadsGridTrainer" data-color="#0EA5A4" href="practice-1-5-roads-grid.html" style="--c:#0EA5A4" aria-label="Тренажёр: дороги по клеткам">
-        <div class="row-top">
-          <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2" fill="currentColor" fill-opacity=".1" stroke="none"/>
-            <path d="M3 9h18M3 15h18M9 3v18M15 3v18" opacity=".4"/>
-            <path d="M5 19 19 5" stroke-width="2.6"/>
-            <circle cx="5" cy="19" r="1.7" fill="currentColor" stroke="none"/><circle cx="19" cy="5" r="1.7" fill="currentColor" stroke="none"/>
-          </svg></div>
-          <span class="badge">01</span>
+      <a class="card" data-topic="percentTableTrainer" href="percent-table-trainer.html">
+        <div class="num-badge">00</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="17" r="3"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+        </div>
+        <div>
+          <div class="eyebrow-inline">универсальный приём</div>
+          <h3>Проценты — таблица 2×2 и пропорция</h3>
+        </div>
+        <p>Что сравниваем — с чем сравниваем. Натуральная величина — процент. Один алгоритм для всех типов задач: «на сколько больше», «во сколько раз», «увеличить на p%».</p>
+        <div class="meta">
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Восемь сюжетов задач 1–5</h2>
+    <p class="section-sub">Тренажёры разделены по типам — каждый отрабатывает свой набор приёмов</p>
+    <div class="grid">
+
+      <a class="card" data-topic="practiceRoadsGridTrainer" href="practice-1-5-roads-grid.html">
+        <div class="num-badge">01</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M3 3h18v18H3z" opacity=".3"/>
+            <path d="M3 9h18M3 15h18M9 3v18M15 3v18" opacity=".3"/>
+            <path d="M5 19 L19 5" stroke-width="2"/>
+          </svg>
         </div>
         <h3>Дороги по клеткам</h3>
-        <p>Карта на сетке: расстояния и время по шоссе и тропинке, прямоугольные треугольники.</p>
+        <p>Карта на сетке, прямоугольные треугольники, расстояния и время по шоссе и тропинке.</p>
         <div class="meta">
-          <span class="status"><span class="dot"></span><span class="status-text">не начато</span></span>
-          <span class="go">Открыть →</span>
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
         </div>
-        <div class="pbar"><div class="fill"></div></div>
       </a>
 
-      <a class="card" data-topic="practiceRoadsSchemaTrainer" data-color="#2563EB" href="practice-1-5-roads-schema.html" style="--c:#2563EB" aria-label="Тренажёр: дороги без клеток">
-        <div class="row-top">
-          <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 5H18V18"/>
-            <path d="M6 5 18 18" stroke-dasharray="2.6 2.6"/>
-            <circle cx="6" cy="5" r="2.1" fill="currentColor" fill-opacity=".2"/><circle cx="6" cy="5" r="2.1"/>
-            <circle cx="18" cy="5" r="2.1" fill="currentColor" fill-opacity=".2"/><circle cx="18" cy="5" r="2.1"/>
-            <circle cx="18" cy="18" r="2.1" fill="currentColor" fill-opacity=".2"/><circle cx="18" cy="18" r="2.1"/>
-          </svg></div>
-          <span class="badge">02</span>
+      <a class="card" data-topic="practiceRoadsSchemaTrainer" href="practice-1-5-roads-schema.html">
+        <div class="num-badge">02</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="5" cy="5" r="1.5" fill="currentColor"/>
+            <circle cx="19" cy="5" r="1.5" fill="currentColor"/>
+            <circle cx="19" cy="19" r="1.5" fill="currentColor"/>
+            <path d="M5 5h14v14"/>
+            <path d="M5 5 L19 19" stroke-dasharray="2,2"/>
+          </svg>
         </div>
         <h3>Дороги без клеток</h3>
-        <p>Схема деревень с расстояниями. Теорема Пифагора и выбор самого короткого маршрута.</p>
+        <p>Схема деревень с известными расстояниями, теорема Пифагора, выбор маршрута.</p>
         <div class="meta">
-          <span class="status"><span class="dot"></span><span class="status-text">не начато</span></span>
-          <span class="go">Открыть →</span>
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
         </div>
-        <div class="pbar"><div class="fill"></div></div>
       </a>
 
-      <a class="card" data-topic="practiceTiresTrainer" data-color="#F59E0B" href="practice-1-5-tires.html" style="--c:#F59E0B" aria-label="Тренажёр: шины">
-        <div class="row-top">
-          <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="9" fill="currentColor" fill-opacity=".1"/><circle cx="12" cy="12" r="9"/>
-            <circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/>
-            <path d="M12 3v2.4M12 18.6V21M3 12h2.4M18.6 12H21"/>
-          </svg></div>
-          <span class="badge">03</span>
+      <a class="card" data-topic="practiceTiresTrainer" href="practice-1-5-tires.html">
+        <div class="num-badge">03</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+          </svg>
         </div>
         <h3>Шины</h3>
-        <p>Маркировка 195/65 R15 перестанет быть шифром: ширина, боковина, диск и всё колесо.</p>
+        <p>Маркировка 195/65 R15: ширина, высота боковины, диаметр диска и колеса.</p>
         <div class="meta">
-          <span class="status"><span class="dot"></span><span class="status-text">не начато</span></span>
-          <span class="go">Открыть →</span>
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
         </div>
-        <div class="pbar"><div class="fill"></div></div>
       </a>
 
-      <a class="card" data-topic="practiceStovesTrainer" data-color="#F2542D" href="practice-1-5-stoves.html" style="--c:#F2542D" aria-label="Тренажёр: печки">
-        <div class="row-top">
-          <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="4.5" y="7" width="15" height="13" rx="1.6" fill="currentColor" fill-opacity=".1"/><rect x="4.5" y="7" width="15" height="13" rx="1.6"/>
-            <path d="M8.5 7V4M15.5 7V4"/>
-            <path d="M12 11c1.6 1.2 2.3 2.4 2.3 3.6a2.3 2.3 0 0 1-4.6 0c0-.8.4-1.6 1.1-2.3.3.5.7.8 1.2.9-.2-1 .1-1.8 0-2.2z" fill="currentColor" fill-opacity=".28" stroke-width="1.5"/>
-          </svg></div>
-          <span class="badge">04</span>
+      <a class="card" data-topic="practiceStovesTrainer" href="practice-1-5-stoves.html">
+        <div class="num-badge">04</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="4" y="6" width="16" height="14" rx="1"/>
+            <path d="M8 12c0-2 1.5-3 4-3s4 1 4 3"/>
+            <path d="M8 6V3M16 6V3"/>
+          </svg>
         </div>
         <h3>Печки</h3>
-        <p>Выбираем печь по объёму, считаем скидки и геометрию: радиус арки кожуха, размеры дверцы.</p>
+        <p>Выбор печи по объёму, скидки, радиус арки кожуха, геометрия дверцы.</p>
         <div class="meta">
-          <span class="status"><span class="dot"></span><span class="status-text">не начато</span></span>
-          <span class="go">Открыть →</span>
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
         </div>
-        <div class="pbar"><div class="fill"></div></div>
       </a>
 
-      <a class="card" data-topic="practiceLandPlotsTrainer" data-color="#16A34A" href="practice-1-5-land-plots.html" style="--c:#16A34A" aria-label="Тренажёр: участки">
-        <div class="row-top">
-          <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="1.6" fill="currentColor" fill-opacity=".08"/><rect x="3" y="3" width="18" height="18" rx="1.6"/>
-            <rect x="6" y="6" width="5" height="4" rx="1" fill="currentColor" fill-opacity=".32" stroke="none"/>
-            <rect x="14" y="13.5" width="4.5" height="4.8" rx="1" fill="currentColor" fill-opacity=".32" stroke="none"/>
-            <path d="M11 9v4h3" stroke-dasharray="2 2"/>
-          </svg></div>
-          <span class="badge">05</span>
+      <a class="card" data-topic="practiceLandPlotsTrainer" href="practice-1-5-land-plots.html">
+        <div class="num-badge">05</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18"/>
+            <rect x="6" y="6" width="5" height="4" opacity=".3" fill="currentColor"/>
+            <rect x="14" y="13" width="5" height="5" opacity=".3" fill="currentColor"/>
+            <path d="M11 9v4h3"/>
+          </svg>
         </div>
         <h3>Участки</h3>
-        <p>План дачи: дорожки и плитка, расстояния между постройками, проценты площади, газ против электричества.</p>
+        <p>План дачи, дорожки и плитка, расстояния между постройками, газовое vs электрическое.</p>
         <div class="meta">
-          <span class="status"><span class="dot"></span><span class="status-text">не начато</span></span>
-          <span class="go">Открыть →</span>
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
         </div>
-        <div class="pbar"><div class="fill"></div></div>
       </a>
 
-      <a class="card" data-topic="practiceApartmentsTrainer" data-color="#F43F5E" href="practice-1-5-apartments.html" style="--c:#F43F5E" aria-label="Тренажёр: квартиры">
-        <div class="row-top">
-          <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="1.6" fill="currentColor" fill-opacity=".08"/><rect x="3" y="3" width="18" height="18" rx="1.6"/>
-            <path d="M3 11h11M14 3v18M14 15h7"/>
-          </svg></div>
-          <span class="badge">06</span>
+      <a class="card" data-topic="practiceApartmentsTrainer" href="practice-1-5-apartments.html">
+        <div class="num-badge">06</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="18"/>
+            <line x1="3" y1="11" x2="14" y2="11"/>
+            <line x1="14" y1="3" x2="14" y2="21"/>
+            <line x1="14" y1="15" x2="21" y2="15"/>
+          </svg>
         </div>
         <h3>Квартиры</h3>
-        <p>План квартиры: площади комнат, сколько нужно паркетной доски, выбор техники по параметрам.</p>
+        <p>План двухкомнатной квартиры, площади помещений, паркетная доска, выбор техники.</p>
         <div class="meta">
-          <span class="status"><span class="dot"></span><span class="status-text">не начато</span></span>
-          <span class="go">Открыть →</span>
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
         </div>
-        <div class="pbar"><div class="fill"></div></div>
       </a>
 
-      <a class="card" data-topic="practiceTariffsTrainer" data-color="#06B6D4" href="practice-1-5-tariffs.html" style="--c:#06B6D4" aria-label="Тренажёр: тарифы">
-        <div class="row-top">
-          <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 20h18" opacity=".35"/>
-            <path d="M3 17l4-6 4 4 4-8 6 9" stroke-width="2.6"/>
-            <circle cx="7" cy="11" r="1.7" fill="currentColor" stroke="none"/><circle cx="11" cy="15" r="1.7" fill="currentColor" stroke="none"/><circle cx="15" cy="7" r="1.7" fill="currentColor" stroke="none"/>
-          </svg></div>
-          <span class="badge">07</span>
+      <a class="card" data-topic="practiceTariffsTrainer" href="practice-1-5-tariffs.html">
+        <div class="num-badge">07</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <path d="M3 17l4-6 4 4 4-8 6 9"/>
+            <circle cx="7" cy="11" r="1.5" fill="currentColor"/>
+            <circle cx="11" cy="15" r="1.5" fill="currentColor"/>
+            <circle cx="15" cy="7" r="1.5" fill="currentColor"/>
+          </svg>
         </div>
         <h3>Тарифы</h3>
-        <p>График минут и гигабайтов: абонентка, перерасход и какой тариф выгоднее именно тут.</p>
+        <p>График минут и гигабайтов, абонентская плата, перерасход и сравнение тарифов.</p>
         <div class="meta">
-          <span class="status"><span class="dot"></span><span class="status-text">не начато</span></span>
-          <span class="go">Открыть →</span>
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
         </div>
-        <div class="pbar"><div class="fill"></div></div>
       </a>
 
-      <a class="card" data-topic="practicePaperSheetsTrainer" data-color="#8B5CF6" href="practice-1-5-paper-sheets.html" style="--c:#8B5CF6" aria-label="Тренажёр: листы">
-        <div class="row-top">
-          <div class="chip" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="6" y="4" width="12" height="16" rx="1.6" fill="currentColor" fill-opacity=".1"/><rect x="6" y="4" width="12" height="16" rx="1.6"/>
-            <path d="M12 4v16" opacity=".45"/><path d="M6 12h12" opacity=".45"/>
-          </svg></div>
-          <span class="badge">08</span>
+      <a class="card" data-topic="practicePaperSheetsTrainer" href="practice-1-5-paper-sheets.html">
+        <div class="num-badge">08</div>
+        <div class="icon">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="3" width="18" height="14"/>
+            <rect x="3" y="3" width="9" height="14" opacity=".3" fill="currentColor"/>
+            <rect x="3" y="3" width="9" height="7"/>
+            <line x1="12" y1="3" x2="12" y2="17"/>
+          </svg>
         </div>
         <h3>Листы</h3>
-        <p>Форматы A0–A6: как деление пополам и подобие дают размеры, площадь и массу пачки.</p>
+        <p>Форматы A0–A6, деление пополам, подобие, размеры, площадь, масса пачки.</p>
         <div class="meta">
-          <span class="status"><span class="dot"></span><span class="status-text">не начато</span></span>
-          <span class="go">Открыть →</span>
+          <span><span class="status-dot"></span><span class="status-text">не начато</span></span>
+          <span class="solved-count">0 задач</span>
         </div>
-        <div class="pbar"><div class="fill"></div></div>
       </a>
 
     </div>
   </section>
 
   <footer class="foot">
-    <div>Прогресс сохраняется в этом браузере · ключ <code>mathExamCourseProgress.v1</code></div>
-    <button id="reset-btn">Сбросить прогресс</button>
+    <div>
+      Прогресс хранится локально в этом браузере · ключ <code style="font-family:monospace;font-size:12px;color:var(--accent);">mathExamCourseProgress.v1</code>
+    </div>
+    <button id="reset-btn">Сбросить весь прогресс</button>
   </footer>
 
 </div>
 
-<script src="progress.js"></script>
 <script>
-(function () {
+(function() {
   const STORAGE_KEY = 'mathExamCourseProgress.v1';
-  const cards = Array.from(document.querySelectorAll('.card[data-topic]')); // порядок: проценты, затем 01–08
-  const TOTAL_TOPICS = cards.length;
 
   function loadProgress() {
-    if (window.CourseProgress) return CourseProgress.readAll();
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') || {}; }
-    catch (e) { return {}; }
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return {};
+      return JSON.parse(raw) || {};
+    } catch(e) { return {}; }
   }
-
-  // строим полоски общего прогресса — по одной на сюжет, в цвете сюжета
-  const segsBox = document.getElementById('segs');
-  const segEls = cards.map(card => {
-    const s = document.createElement('div');
-    s.className = 'seg';
-    s.dataset.color = card.dataset.color || '#7C3AED';
-    segsBox.appendChild(s);
-    return s;
-  });
 
   function applyProgress() {
     const data = loadProgress();
-    let done = 0, solvedAll = 0;
-
-    cards.forEach((card, i) => {
-      const t = data[card.dataset.topic] || {};
-      const solved = t.solved || 0;
-      const total = t.total || 0;
+    let totalDone = 0;
+    let totalSolved = 0;
+    const cards = document.querySelectorAll('.card[data-topic]');
+    cards.forEach(card => {
+      const topic = card.dataset.topic;
+      const t = data[topic] || {};
+      const solved = Number(t.solved) || 0;
+      const total = Number(t.total) || 0;
       const statusText = card.querySelector('.status-text');
-      const solvedEl = card.querySelector('.solved-count');
-      const fill = card.querySelector('.pbar .fill');
+      const solvedCount = card.querySelector('.solved-count');
 
-      card.classList.remove('done', 'started');
-      segEls[i].style.background = '';
+      if (card.dataset.diagnostic === 'true') {
+        if (t.completed) {
+          const last = Number(t.lastScore) || solved;
+          const best = Number(t.bestScore) || solved;
+          statusText.textContent = 'пройдена · ' + last + ' / 10';
+          solvedCount.textContent = 'лучший результат ' + best + ' / 10';
+          card.classList.add('done');
+          totalDone++;
+        } else {
+          statusText.textContent = 'не пройдена';
+          solvedCount.textContent = '10 заданий';
+        }
+        return;
+      }
 
       if (solved === 0) {
         statusText.textContent = 'не начато';
       } else if (total > 0 && solved >= total) {
-        statusText.textContent = 'пройдено ✓';
+        statusText.textContent = 'пройдено';
         card.classList.add('done');
-        segEls[i].style.background = '#16a34a';
-        done++;
+        totalDone++;
       } else {
         statusText.textContent = 'в работе';
         card.classList.add('started');
-        segEls[i].style.background = segEls[i].dataset.color;
       }
-
-      if (fill) fill.style.width = (total > 0 ? Math.min(100, solved / total * 100) : (solved > 0 ? 8 : 0)) + '%';
-      if (solvedEl && solved > 0) solvedEl.textContent = solved + (total > 0 ? ' / ' + total : '') + ' решено';
-
-      solvedAll += solved;
+      if (solved > 0) {
+        solvedCount.textContent = solved + (total > 0 ? ' / ' + total : '') + ' задач';
+      }
+      totalSolved += solved;
     });
-
-    document.getElementById('done-count').textContent = done;
-    document.getElementById('tasks-solved').textContent = solvedAll;
+    document.getElementById('done-count').textContent = totalDone;
+    document.getElementById('tasks-solved').textContent = totalSolved;
+    document.getElementById('progress-fill').style.width = (totalDone / cards.length * 100) + '%';
   }
 
   document.getElementById('reset-btn').addEventListener('click', () => {
-    if (confirm('Сбросить весь прогресс? Данные по всем тренажёрам будут удалены.')) {
+    if (confirm('Точно сбросить весь прогресс? Это удалит данные по всем тренажёрам.')) {
       localStorage.removeItem(STORAGE_KEY);
       applyProgress();
     }
@@ -517,17 +488,5 @@
   applyProgress();
 })();
 </script>
-<!-- download-panel:start:oge-1-5-trainers -->
-<section class="download-panel" id="download">
-  <h2>Скачать и адаптировать</h2>
-  <p>Этот тренажёр можно скачать как HTML-файл, открыть у себя на компьютере или использовать как основу для создания похожего тренажёра. Промпт для DeepSeek поможет адаптировать идею под другую тему, класс или тип ошибки.</p>
-  <div class="download-actions">
-    <a class="btn" href="/downloads/trainers/oge-1-5-trainers/oge-1-5-trainers.html" download>Скачать тренажёр HTML</a>
-    <a class="btn secondary btn-secondary" href="/downloads/trainers/oge-1-5-trainers/oge-1-5-trainers-deepseek-prompt.md" download>Скачать промпт для DeepSeek</a>
-    <a class="btn secondary btn-secondary" href="/downloads/trainers/oge-1-5-trainers/oge-1-5-trainers-package.zip" download>Скачать HTML + промпт архивом</a>
-  </div>
-  <p class="download-note">Если в тренажёре есть дополнительные файлы, удобнее скачать архив. <a href="/pedagogam/kak-skachat-i-adaptirovat-trenazher/">Как скачать и адаптировать тренажёр</a>.</p>
-</section>
-<!-- download-panel:end:oge-1-5-trainers -->
 </body>
 </html>
