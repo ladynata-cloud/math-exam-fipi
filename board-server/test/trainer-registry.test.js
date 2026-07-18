@@ -31,6 +31,7 @@ const expectedCatalogFiles = [
   'trainers/linear-inequalities-stepwise.html',
   'trainers/like-terms-trainer.html',
   'trainers/percent-part-whole-trainer.html',
+  'trainers/oge-1-5-trainers/percent-table-trainer.html',
   'trainers/ege-t1-planimetry-trainer.html',
   'trainers/ege-t2-vectors-trainer.html',
   'trainers/oge-1-5-trainers/practice-1-5-roads-grid.html',
@@ -170,14 +171,14 @@ test('server consumes every committed manifest and authorization vector', () => 
   }
 });
 
-test('current manifest validates with sixteen catalog entries and three mirrors', () => {
+test('current manifest validates with seventeen catalog entries and three mirrors', () => {
   const manifest = currentManifest();
   const result = validateTrainerManifest(manifest);
   assert.equal(result.ok, true);
   assert.equal(manifest.version, 1);
   assert.equal(manifest.schemaVersion, 1);
   assert.deepEqual(manifest.trainers.map(entry => entry.file), expectedCatalogFiles);
-  assert.equal(manifest.trainers.length, 16);
+  assert.equal(manifest.trainers.length, 17);
   assert.equal(result.trainers.length, 3);
 });
 
