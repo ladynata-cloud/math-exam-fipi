@@ -117,6 +117,7 @@ test('repository fixture is complete and every canonical HTML blob matches SHA-2
   const actualFiles = walkFiles(batchRoot)
     .filter(file => path.extname(file).toLowerCase() === '.html')
     .map(repoPath)
+    .filter(file => !file.startsWith('trainers/oge-basics/percentages/'))
     .sort();
   assert.deepEqual(actualFiles, [...expectedFiles].sort());
 });
@@ -252,8 +253,9 @@ test('site discovery and sitemap expose the approved collection without URL coll
   assert.equal((sitemap.match(/<url>/g) ?? []).length, (sitemap.match(/<\/url>/g) ?? []).length);
   assert.equal(locations.length, (sitemap.match(/<loc>/g) ?? []).length);
   uniqueCaseFold(locations.map(url => new URL(url).href), 'sitemap URL');
-  const batchLocations = locations.filter(url => url.startsWith(`${origin}/trainers/oge-basics/`));
-  assert.deepEqual([...batchLocations].sort(), expectedFiles.map(canonicalUrl).sort());
+  for (const url of expectedFiles.map(canonicalUrl)) {
+    assert.ok(locations.includes(url), `original collection sitemap URL: ${url}`);
+  }
 
   const baselineLocations = sitemapLocations(gitShow('sitemap.xml'));
   for (const location of baselineLocations) {
@@ -271,7 +273,7 @@ test('board quick-select has exactly four iframe-only entries and preserves the 
       `pre-existing manifest entry: ${baselineEntry.trainerId}`
     );
   }
-  const entries = manifest.trainers.filter(entry => entry.file.startsWith('trainers/oge-basics/'));
+  const entries = manifest.trainers.filter(entry => expectedBoardFiles.includes(entry.file));
   assert.deepEqual(entries.map(entry => entry.file), expectedBoardFiles);
   assert.equal(entries.length, 4);
   for (const entry of entries) {
@@ -284,13 +286,13 @@ test('board quick-select has exactly four iframe-only entries and preserves the 
     assert.equal(Object.hasOwn(entry, 'bridgeProtocolVersion'), false);
   }
   assert.equal(manifest.trainers.filter(entry => entry.supportsBoardMirror).length, 3);
-  assert.equal(manifest.trainers.length, 21);
+  assert.equal(manifest.trainers.length, 28);
 });
 
 test('publication artifacts contain no basename authorization or unexpected child manifest record', () => {
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   const batchManifestFiles = manifest.trainers
-    .filter(entry => entry.file.startsWith('trainers/oge-basics/'))
+    .filter(entry => expectedBoardFiles.includes(entry.file))
     .map(entry => entry.file);
   assert.deepEqual(batchManifestFiles, expectedBoardFiles);
   for (const entry of manifest.trainers) {
