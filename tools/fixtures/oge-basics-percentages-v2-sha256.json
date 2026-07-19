@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "sourcePackage": "percentages-proportions-v2-for-codex.zip",
+  "sourcePackageSha256": "195b5a668743ce1872bde3f6b8f201582f66b317bf60f5869a58dddd237eb0fa",
+  "expectedHtmlCount": 7,
+  "files": [
+    {
+      "path": "trainers/oge-basics/percentages/index.html",
+      "sha256": "cf1a5e5f03fef8f95a989d546d5e2fb447c3a22dbfa982ee8e61f014e5c6dcfa",
+      "sourceIdentity": "original"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-change.html",
+      "sha256": "ccdf8b6aa46acc6f9e2aa67407a152039de92e903316f3be6490964ee2fb72c1",
+      "sourceIdentity": "corrected-idempotent-review-guard"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-choose-question.html",
+      "sha256": "190669321809a97ba3c2e1312aafd8619c9ec86076a8713d9f80d206334a3649",
+      "sourceIdentity": "corrected-idempotent-review-guard"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-final-checkpoint.html",
+      "sha256": "cec2e69c70eb4ae2cc5480ed097360f0a4ff084ccf4d57f4798675a3e6aa52ea",
+      "sourceIdentity": "corrected-idempotent-review-guard"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-meaning.html",
+      "sha256": "0692b789f9acaed3bf6b5101f479800427329f026fea1b68674113686c01f16c",
+      "sourceIdentity": "corrected-idempotent-review-guard"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-of-number-and-whole.html",
+      "sha256": "8c33299ebc788e2505418c910306baad5ef06b386eec5975fe8592c3dbf86720",
+      "sourceIdentity": "corrected-idempotent-review-guard"
+    },
+    {
+      "path": "trainers/oge-basics/percentages/proportion.html",
+      "sha256": "f6397ef4d789d73549478aa18cfc02fb7190d7cba83f77569ca6edf71a0183a3",
+      "sourceIdentity": "corrected-idempotent-review-guard"
+    }
+  ]
+}

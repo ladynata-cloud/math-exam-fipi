@@ -42,7 +42,14 @@ const expectedCatalogFiles = [
   'trainers/oge-basics/index.html',
   'trainers/oge-basics/multiplication-division/index.html',
   'trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html',
-  'trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html'
+  'trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html',
+  'trainers/oge-basics/percentages/index.html',
+  'trainers/oge-basics/percentages/percent-meaning.html',
+  'trainers/oge-basics/percentages/percent-of-number-and-whole.html',
+  'trainers/oge-basics/percentages/percent-choose-question.html',
+  'trainers/oge-basics/percentages/percent-change.html',
+  'trainers/oge-basics/percentages/proportion.html',
+  'trainers/oge-basics/percentages/percent-final-checkpoint.html'
 ];
 
 function currentManifest() {
@@ -175,14 +182,14 @@ test('server consumes every committed manifest and authorization vector', () => 
   }
 });
 
-test('current manifest validates with twenty-one catalog entries and three mirrors', () => {
+test('current manifest validates with twenty-eight catalog entries and three mirrors', () => {
   const manifest = currentManifest();
   const result = validateTrainerManifest(manifest);
   assert.equal(result.ok, true);
   assert.equal(manifest.version, 1);
   assert.equal(manifest.schemaVersion, 1);
   assert.deepEqual(manifest.trainers.map(entry => entry.file), expectedCatalogFiles);
-  assert.equal(manifest.trainers.length, 21);
+  assert.equal(manifest.trainers.length, 28);
   assert.equal(result.trainers.length, 3);
 });
 

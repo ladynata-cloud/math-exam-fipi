@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light"><title>Проценты и пропорции · Математический ликбез</title>
+<style>:root{--bg:#f6f8fc;--card:#fff;--ink:#1e2943;--soft:#5b6680;--muted:#8e97aa;--line:#e3e8f1;
+--accent:#5b63d3;--accent-soft:#eceefe;--green:#2f8c62;--green-soft:#e8f6ef;--blue:#2f77b7;--blue-soft:#e8f3fb;
+--gold:#a86a20;--gold-soft:#fff2dd;--red:#a54a43;--red-soft:#fcedeb;--r:20px;
+--shadow:0 8px 24px rgba(30,41,67,.07),0 26px 56px rgba(30,41,67,.07)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);line-height:1.55;padding:22px 14px 64px;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+:focus-visible{outline:4px solid rgba(47,119,183,.3);outline-offset:3px;border-radius:6px}
+.wrap{max-width:760px;margin:auto;display:grid;gap:16px}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:20px}
+.eyebrow{display:inline-block;padding:5px 11px;border-radius:999px;background:var(--accent-soft);color:var(--accent);
+font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+h1{font-size:clamp(23px,5vw,30px);letter-spacing:-.025em;margin:9px 0 5px}
+h2{font-size:19px;letter-spacing:-.012em;margin-bottom:5px}
+h3{font-size:15.5px;margin-bottom:4px}
+p{color:var(--soft)}
+b,strong{font-weight:850;color:var(--ink)}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.87em;font-weight:600;
+background:rgba(30,41,67,.055);padding:1.5px 5px;border-radius:5px;white-space:nowrap;color:var(--ink)}
+nav{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:2px}
+nav button{flex:1 1 auto;min-width:88px;padding:9px 12px;border:1.5px solid var(--line);border-radius:12px;
+background:var(--card);color:var(--soft);font:inherit;font-size:13.5px;font-weight:850;cursor:pointer}
+nav button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn{padding:11px 17px;border:1.5px solid var(--accent);border-radius:13px;background:var(--accent);color:#fff;
+font:inherit;font-size:14.5px;font-weight:900;cursor:pointer}
+.btn.ghost{background:var(--card);color:var(--accent)}
+.btn.quiet{background:var(--card);color:var(--soft);border-color:var(--line)}
+.btn:disabled{opacity:.42;cursor:default}
+.row{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+.routes{display:grid;gap:9px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-top:14px}
+.route{text-align:left;padding:14px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);
+cursor:pointer;font:inherit;color:var(--ink)}
+.route:hover{border-color:var(--accent)}
+.route b{display:block;font-size:15px;margin-bottom:2px}
+.route span{font-size:13px;color:var(--soft)}
+.ring{--p:0%;width:82px;height:82px;border-radius:50%;flex:0 0 82px;
+background:conic-gradient(var(--accent) var(--p),var(--line) 0);display:grid;place-items:center}
+.ring i{width:64px;height:64px;border-radius:50%;background:var(--card);display:grid;place-items:center;
+font-style:normal;font-weight:900;font-size:16px}
+.summary{display:flex;gap:15px;align-items:center;margin-top:14px}
+.skill-row{display:grid;grid-template-columns:1fr 96px 42px;gap:10px;align-items:center;padding:7px 0;
+border-top:1px solid var(--line);font-size:14px}
+.skill-row:first-child{border-top:0}
+.skill-row b{font-weight:800}
+.bar{height:8px;background:var(--line);border-radius:5px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--accent);border-radius:5px}
+.skill-row.done .bar span{background:var(--green)}
+.score{font-size:12.5px;font-weight:900;color:var(--muted);text-align:right}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:13px}
+.chip{padding:7px 12px;border:1.5px solid var(--line);border-radius:999px;background:var(--card);
+color:var(--soft);font:inherit;font-size:13px;font-weight:850;cursor:pointer}
+.chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip.done{border-color:var(--green);color:var(--green)}
+.chip.active.done{background:var(--green);color:#fff}
+.prompt{font-size:17px;font-weight:800;line-height:1.5;margin-bottom:13px}
+.answer{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.answer input{flex:1 1 150px;min-width:0;padding:12px 14px;border:1.5px solid var(--line);border-radius:13px;
+font:inherit;font-size:17px;font-weight:800;color:var(--ink);background:var(--card)}
+.answer .unit{font-size:15px;font-weight:850;color:var(--soft)}
+.choices{display:grid;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border:1.5px solid var(--line);
+border-radius:13px;cursor:pointer;font-size:15px;background:var(--card)}
+.choice:hover{border-color:var(--accent)}
+.choice input{margin-top:3px;accent-color:var(--accent);flex:0 0 auto}
+.choice.picked{border-color:var(--accent);background:var(--accent-soft)}
+.fb{margin-top:13px;padding:12px 14px;border-radius:13px;font-size:14.5px;display:none}
+.fb.show{display:block}
+.fb.good{background:var(--green-soft);color:#1d6646;border:1px solid #bfe3d1}
+.fb.bad{background:var(--red-soft);color:#8a3b35;border:1px solid #f0c9c4}
+.fb.tip{background:var(--gold-soft);color:#7d521e;border:1px solid #efd29d}
+.fb .why{margin-top:7px;padding-top:7px;border-top:1px solid rgba(0,0,0,.09);font-size:14px}
+.grid100{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;max-width:230px;margin:11px auto}
+.grid100 span{aspect-ratio:1;border-radius:2px;background:var(--line)}
+.grid100 span.on{background:var(--accent)}
+.grid100 span.alt{background:var(--green)}
+.bars{display:grid;gap:6px;margin:11px 0}
+.barline{display:grid;grid-template-columns:64px 1fr;gap:9px;align-items:center;font-size:13px;font-weight:850}
+.barline i{font-style:normal;color:var(--soft)}
+.barline u{text-decoration:none;display:block;height:20px;border-radius:5px;background:var(--accent-soft);
+border:1.5px solid var(--accent);position:relative}
+.barline u b{position:absolute;right:7px;top:-1px;font-size:12px;color:var(--accent)}
+.rail{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.rail button{padding:6px 11px;border:1.5px solid var(--line);border-radius:999px;background:var(--card);
+color:var(--soft);font:inherit;font-size:12.5px;font-weight:850;cursor:pointer}
+.rail button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.rail button.ok{border-color:var(--green);color:var(--green)}
+.rail button.active.ok{background:var(--green);color:#fff}
+.rail button:disabled{opacity:.4;cursor:default}
+.progress{height:5px;background:var(--line);border-radius:4px;overflow:hidden;margin:11px 0 14px}
+.progress span{display:block;height:100%;background:var(--accent);border-radius:4px;transition:width .25s}
+.concept{background:#f9fafc;border:1.5px solid var(--line);border-radius:14px;padding:15px;margin:12px 0}
+.concept p+p{margin-top:9px}
+.note{background:var(--gold-soft);border:1px solid #efd29d;border-radius:13px;padding:11px 13px;
+font-size:14px;color:#7d521e;margin-top:11px}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:13px;border-top:1px solid var(--line)}
+.stat{flex:1 1 96px;background:#f9fafc;border:1.5px solid var(--line);border-radius:12px;padding:9px 11px}
+.stat b{display:block;font-size:19px;line-height:1.25}
+.stat span{font-size:11.5px;color:var(--muted);font-weight:800}
+.qlist{display:grid;gap:10px}
+.qitem{border:1.5px solid var(--line);border-radius:14px;padding:14px}
+.qitem .no{font-size:11.5px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.qitem.ok{border-color:var(--green);background:var(--green-soft)}
+.qitem.no-ok{border-color:var(--red);background:var(--red-soft)}
+.big{font-size:36px;font-weight:900;letter-spacing:-.03em}
+@media(max-width:560px){.card{padding:16px}.prompt{font-size:16px}.skill-row{grid-template-columns:1fr 62px 38px}}
+
+.map{display:grid;gap:11px;margin-top:15px}
+.item{display:grid;grid-template-columns:38px 1fr;gap:13px;padding:15px;border:1.5px solid var(--line);
+border-radius:16px;background:var(--card);text-decoration:none;color:inherit}
+.item:hover{border-color:var(--accent)}
+.item.ready{border-color:var(--green)}
+.num{width:38px;height:38px;border-radius:11px;background:var(--accent-soft);color:var(--accent);
+display:grid;place-items:center;font-weight:900;font-size:16px}
+.item.ready .num{background:var(--green-soft);color:var(--green)}
+.item h3{margin-bottom:3px}
+.item p{font-size:14px}
+.meta{margin-top:8px;display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.tag{font-size:11.5px;font-weight:900;padding:3px 9px;border-radius:999px;background:#f1f3f9;color:var(--soft)}
+.tag.ok{background:var(--green-soft);color:var(--green)}
+.tag.now{background:var(--accent-soft);color:var(--accent)}
+.mini{height:6px;background:var(--line);border-radius:4px;overflow:hidden;flex:1 1 90px;min-width:70px}
+.mini span{display:block;height:100%;background:var(--accent);border-radius:4px}
+.item.ready .mini span{background:var(--green)}
+</style></head>
+<body><div class="wrap">
+
+<header class="card">
+<span class="eyebrow">Модуль курса</span>
+<h1>Проценты и пропорции</h1>
+<p>Шесть тренажёров в том порядке, в каком одна тема опирается на другую. Каждый работает
+самостоятельно, прогресс хранится в этом браузере.</p>
+<div class="summary" style="margin-top:15px">
+<div class="ring" id="ring" role="img" aria-label="Общий прогресс по модулю"><i id="ring-num">0%</i></div>
+<div><p id="overall"></p><p id="advice" style="margin-top:4px;font-size:13.5px"></p></div>
+</div>
+</header>
+
+<section class="card">
+<h2>Порядок прохождения</h2>
+<p>Первые два тренажёра дают смысл и вычисление. Третий — единственный, где не нужно считать:
+он тренирует выбор действия по тексту, и именно на этом шаге чаще всего теряют баллы.</p>
+<div class="map" id="map"></div>
+</section>
+
+<section class="card">
+<h2>Как устроен каждый тренажёр</h2>
+<p><b>Разбор</b> — короткие шаги, на каждом свой вопрос. Пока не ответите, следующий шаг закрыт.</p>
+<p style="margin-top:7px"><b>Тренировка</b> — задачи с подсказками и разбором. Навык считается освоенным
+после трёх верных решений подряд без помощи: подсказка, разбор или ошибка обнуляют серию.</p>
+<p style="margin-top:7px"><b>Проверка</b> — задания по всем навыкам темы, без подсказок. Показывает,
+что останется, когда помощи не будет.</p>
+<div class="note">Если ответ неверный, тренажёр по возможности называет саму ошибку, а не просто
+сообщает о ней: «вы нашли 30% от 180, но 180 — это уже часть, целое больше».</div>
+</section>
+
+<footer style="text-align:center;font-size:12.5px;color:var(--muted)">
+Данные никуда не отправляются. Чтобы сбросить прогресс, очистите данные сайта в браузере.
+</footer>
+
+</div>
+<script>
+const TOPICS=[
+{id:'ogeBasicsPercentMeaning',file:'percent-meaning.html',n:3,t:'100%, 1% и доля',
+ d:'Что берут за целое, чему равен один процент, как выразить часть в процентах.'},
+{id:'ogeBasicsPercentParts',file:'percent-of-number-and-whole.html',n:3,t:'Три вопроса о проценте',
+ d:'Процент от числа, число по его проценту и «сколько процентов» — через один общий приём.'},
+{id:'ogeBasicsPercentChoose',file:'percent-choose-question.html',n:3,t:'Что спрашивают в задаче',
+ d:'Разобрать условие и выбрать действие. Здесь ничего не считают — только рассуждают.'},
+{id:'ogeBasicsPercentChange',file:'percent-change.html',n:4,t:'Увеличение, уменьшение и изменение',
+ d:'Изменить величину на процент, найти процент изменения, два изменения подряд.'},
+{id:'ogeBasicsProportion',file:'proportion.html',n:3,t:'Пропорция',
+ d:'Крест-накрест, составление пропорции по задаче и проценты как её частный случай.'},
+{id:'ogeBasicsPercentFinal',file:'percent-final-checkpoint.html',n:8,t:'Итоговая проверка',
+ d:'Все навыки вперемешку — так, как они встречаются в задачах 1–5.'}];
+let store={};
+try{store=(JSON.parse(localStorage.getItem('mathExamCourseProgress.v1')||'{}').topics)||{}}catch(e){}
+const box=document.getElementById('map');
+let doneTotal=0,allTotal=0,firstOpen=-1;
+TOPICS.forEach((t,i)=>{
+ const p=store[t.id]||{},solved=Math.min(t.n,p.solved||0),ready=solved>=t.n;
+ doneTotal+=solved;allTotal+=t.n;
+ if(!ready&&firstOpen<0)firstOpen=i;
+ const a=document.createElement('a');a.className='item'+(ready?' ready':'');a.href=t.file;
+ a.innerHTML='<div class="num">'+(ready?'✓':(i+1))+'</div><div><h3>'+t.t+'</h3><p>'+t.d+'</p>'+
+  '<div class="meta"><span class="tag'+(ready?' ok':'')+'">'+solved+' из '+t.n+' '+
+  (t.n===1?'навыка':'навыков')+'</span>'+
+  (p.bestCheck?'<span class="tag">проверка: '+p.bestCheck+'</span>':'')+
+  '<div class="mini"><span style="width:'+(solved/t.n*100)+'%"></span></div></div></div>';
+ box.appendChild(a)});
+const pct=allTotal?Math.round(doneTotal/allTotal*100):0;
+document.getElementById('ring').style.setProperty('--p',pct+'%');
+document.getElementById('ring-num').textContent=pct+'%';
+document.getElementById('overall').textContent='Освоено '+doneTotal+' из '+allTotal+' навыков модуля.';
+document.getElementById('advice').textContent=firstOpen<0?'Модуль пройден полностью.'
+ :('Продолжить стоит с темы «'+TOPICS[firstOpen].t+'».');
+if(firstOpen>=0)box.children[firstOpen].querySelector('.tag').classList.add('now');
+</script></body></html>

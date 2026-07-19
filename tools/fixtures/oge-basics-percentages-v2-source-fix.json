@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "sourcePackage": "percentages-proportions-v2-for-codex.zip",
+  "fix": "idempotent-review-guard",
+  "files": [
+    {
+      "path": "trainers/oge-basics/percentages/percent-change.html",
+      "originalSha256": "0fdc910159450bd35f0adc8bf67ab8ddee02b882dc01e6b63e9ed84ab7f46c7a",
+      "correctedSha256": "ccdf8b6aa46acc6f9e2aa67407a152039de92e903316f3be6490964ee2fb72c1",
+      "changedLines": 2,
+      "change": "Make full-review counting idempotent for the current task and keep answer checking available as supported work.",
+      "onlyIdempotentReviewGuard": true
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-choose-question.html",
+      "originalSha256": "ab5561c8b43b743734ba5efdd8ed392236deb04c3bfa3b4eec976496ad01c1ff",
+      "correctedSha256": "190669321809a97ba3c2e1312aafd8619c9ec86076a8713d9f80d206334a3649",
+      "changedLines": 2,
+      "change": "Make full-review counting idempotent for the current task and keep answer checking available as supported work.",
+      "onlyIdempotentReviewGuard": true
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-final-checkpoint.html",
+      "originalSha256": "8d0084bca0c2be2743a532da581d871e0e674d2c962780ee8e4dc92f45c3dd69",
+      "correctedSha256": "cec2e69c70eb4ae2cc5480ed097360f0a4ff084ccf4d57f4798675a3e6aa52ea",
+      "changedLines": 2,
+      "change": "Make full-review counting idempotent for the current task and keep answer checking available as supported work.",
+      "onlyIdempotentReviewGuard": true
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-meaning.html",
+      "originalSha256": "b69e147a231abbeded0abafbddf8cd303a16cdcec81302ddd0a6a29e6ff1d561",
+      "correctedSha256": "0692b789f9acaed3bf6b5101f479800427329f026fea1b68674113686c01f16c",
+      "changedLines": 2,
+      "change": "Make full-review counting idempotent for the current task and keep answer checking available as supported work.",
+      "onlyIdempotentReviewGuard": true
+    },
+    {
+      "path": "trainers/oge-basics/percentages/percent-of-number-and-whole.html",
+      "originalSha256": "1bf4a6be52e218e7794bd6c6e2e9460c93aa29ed2c38766ab593af2d9eef1b34",
+      "correctedSha256": "8c33299ebc788e2505418c910306baad5ef06b386eec5975fe8592c3dbf86720",
+      "changedLines": 2,
+      "change": "Make full-review counting idempotent for the current task and keep answer checking available as supported work.",
+      "onlyIdempotentReviewGuard": true
+    },
+    {
+      "path": "trainers/oge-basics/percentages/proportion.html",
+      "originalSha256": "f520ef3f1e77e3b451d8b780bddf7c02774e79edb467632f2069988f28525ae5",
+      "correctedSha256": "f6397ef4d789d73549478aa18cfc02fb7190d7cba83f77569ca6edf71a0183a3",
+      "changedLines": 2,
+      "change": "Make full-review counting idempotent for the current task and keep answer checking available as supported work.",
+      "onlyIdempotentReviewGuard": true
+    }
+  ]
+}

@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light"><title>Что спрашивают в задаче · Математический ликбез</title>
+<style>:root{--bg:#f6f8fc;--card:#fff;--ink:#1e2943;--soft:#5b6680;--muted:#8e97aa;--line:#e3e8f1;
+--accent:#5b63d3;--accent-soft:#eceefe;--green:#2f8c62;--green-soft:#e8f6ef;--blue:#2f77b7;--blue-soft:#e8f3fb;
+--gold:#a86a20;--gold-soft:#fff2dd;--red:#a54a43;--red-soft:#fcedeb;--r:20px;
+--shadow:0 8px 24px rgba(30,41,67,.07),0 26px 56px rgba(30,41,67,.07)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);line-height:1.55;padding:22px 14px 64px;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;-webkit-text-size-adjust:100%}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+:focus-visible{outline:4px solid rgba(47,119,183,.3);outline-offset:3px;border-radius:6px}
+.wrap{max-width:760px;margin:auto;display:grid;gap:16px}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:20px}
+.eyebrow{display:inline-block;padding:5px 11px;border-radius:999px;background:var(--accent-soft);color:var(--accent);
+font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+h1{font-size:clamp(23px,5vw,30px);letter-spacing:-.025em;margin:9px 0 5px}
+h2{font-size:19px;letter-spacing:-.012em;margin-bottom:5px}
+h3{font-size:15.5px;margin-bottom:4px}
+p{color:var(--soft)}
+b,strong{font-weight:850;color:var(--ink)}
+code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.87em;font-weight:600;
+background:rgba(30,41,67,.055);padding:1.5px 5px;border-radius:5px;white-space:nowrap;color:var(--ink)}
+nav{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:2px}
+nav button{flex:1 1 auto;min-width:88px;padding:9px 12px;border:1.5px solid var(--line);border-radius:12px;
+background:var(--card);color:var(--soft);font:inherit;font-size:13.5px;font-weight:850;cursor:pointer}
+nav button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn{padding:11px 17px;border:1.5px solid var(--accent);border-radius:13px;background:var(--accent);color:#fff;
+font:inherit;font-size:14.5px;font-weight:900;cursor:pointer}
+.btn.ghost{background:var(--card);color:var(--accent)}
+.btn.quiet{background:var(--card);color:var(--soft);border-color:var(--line)}
+.btn:disabled{opacity:.42;cursor:default}
+.row{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+.routes{display:grid;gap:9px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-top:14px}
+.route{text-align:left;padding:14px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);
+cursor:pointer;font:inherit;color:var(--ink)}
+.route:hover{border-color:var(--accent)}
+.route b{display:block;font-size:15px;margin-bottom:2px}
+.route span{font-size:13px;color:var(--soft)}
+.ring{--p:0%;width:82px;height:82px;border-radius:50%;flex:0 0 82px;
+background:conic-gradient(var(--accent) var(--p),var(--line) 0);display:grid;place-items:center}
+.ring i{width:64px;height:64px;border-radius:50%;background:var(--card);display:grid;place-items:center;
+font-style:normal;font-weight:900;font-size:16px}
+.summary{display:flex;gap:15px;align-items:center;margin-top:14px}
+.skill-row{display:grid;grid-template-columns:1fr 96px 42px;gap:10px;align-items:center;padding:7px 0;
+border-top:1px solid var(--line);font-size:14px}
+.skill-row:first-child{border-top:0}
+.skill-row b{font-weight:800}
+.bar{height:8px;background:var(--line);border-radius:5px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--accent);border-radius:5px}
+.skill-row.done .bar span{background:var(--green)}
+.score{font-size:12.5px;font-weight:900;color:var(--muted);text-align:right}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:13px}
+.chip{padding:7px 12px;border:1.5px solid var(--line);border-radius:999px;background:var(--card);
+color:var(--soft);font:inherit;font-size:13px;font-weight:850;cursor:pointer}
+.chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip.done{border-color:var(--green);color:var(--green)}
+.chip.active.done{background:var(--green);color:#fff}
+.prompt{font-size:17px;font-weight:800;line-height:1.5;margin-bottom:13px}
+.answer{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.answer input{flex:1 1 150px;min-width:0;padding:12px 14px;border:1.5px solid var(--line);border-radius:13px;
+font:inherit;font-size:17px;font-weight:800;color:var(--ink);background:var(--card)}
+.answer .unit{font-size:15px;font-weight:850;color:var(--soft)}
+.choices{display:grid;gap:8px}
+.choice{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border:1.5px solid var(--line);
+border-radius:13px;cursor:pointer;font-size:15px;background:var(--card)}
+.choice:hover{border-color:var(--accent)}
+.choice input{margin-top:3px;accent-color:var(--accent);flex:0 0 auto}
+.choice.picked{border-color:var(--accent);background:var(--accent-soft)}
+.fb{margin-top:13px;padding:12px 14px;border-radius:13px;font-size:14.5px;display:none}
+.fb.show{display:block}
+.fb.good{background:var(--green-soft);color:#1d6646;border:1px solid #bfe3d1}
+.fb.bad{background:var(--red-soft);color:#8a3b35;border:1px solid #f0c9c4}
+.fb.tip{background:var(--gold-soft);color:#7d521e;border:1px solid #efd29d}
+.fb .why{margin-top:7px;padding-top:7px;border-top:1px solid rgba(0,0,0,.09);font-size:14px}
+.grid100{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;max-width:230px;margin:11px auto}
+.grid100 span{aspect-ratio:1;border-radius:2px;background:var(--line)}
+.grid100 span.on{background:var(--accent)}
+.grid100 span.alt{background:var(--green)}
+.bars{display:grid;gap:6px;margin:11px 0}
+.barline{display:grid;grid-template-columns:64px 1fr;gap:9px;align-items:center;font-size:13px;font-weight:850}
+.barline i{font-style:normal;color:var(--soft)}
+.barline u{text-decoration:none;display:block;height:20px;border-radius:5px;background:var(--accent-soft);
+border:1.5px solid var(--accent);position:relative}
+.barline u b{position:absolute;right:7px;top:-1px;font-size:12px;color:var(--accent)}
+.rail{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.rail button{padding:6px 11px;border:1.5px solid var(--line);border-radius:999px;background:var(--card);
+color:var(--soft);font:inherit;font-size:12.5px;font-weight:850;cursor:pointer}
+.rail button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.rail button.ok{border-color:var(--green);color:var(--green)}
+.rail button.active.ok{background:var(--green);color:#fff}
+.rail button:disabled{opacity:.4;cursor:default}
+.progress{height:5px;background:var(--line);border-radius:4px;overflow:hidden;margin:11px 0 14px}
+.progress span{display:block;height:100%;background:var(--accent);border-radius:4px;transition:width .25s}
+.concept{background:#f9fafc;border:1.5px solid var(--line);border-radius:14px;padding:15px;margin:12px 0}
+.concept p+p{margin-top:9px}
+.note{background:var(--gold-soft);border:1px solid #efd29d;border-radius:13px;padding:11px 13px;
+font-size:14px;color:#7d521e;margin-top:11px}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:13px;border-top:1px solid var(--line)}
+.stat{flex:1 1 96px;background:#f9fafc;border:1.5px solid var(--line);border-radius:12px;padding:9px 11px}
+.stat b{display:block;font-size:19px;line-height:1.25}
+.stat span{font-size:11.5px;color:var(--muted);font-weight:800}
+.qlist{display:grid;gap:10px}
+.qitem{border:1.5px solid var(--line);border-radius:14px;padding:14px}
+.qitem .no{font-size:11.5px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.qitem.ok{border-color:var(--green);background:var(--green-soft)}
+.qitem.no-ok{border-color:var(--red);background:var(--red-soft)}
+.big{font-size:36px;font-weight:900;letter-spacing:-.03em}
+@media(max-width:560px){.card{padding:16px}.prompt{font-size:16px}.skill-row{grid-template-columns:1fr 62px 38px}}
+</style></head>
+<body><div class="wrap">
+
+<header class="card">
+<span class="eyebrow">Проценты и пропорции</span>
+<h1 id="doc-title"></h1>
+<p id="doc-sub"></p>
+<nav style="margin-top:14px" aria-label="Разделы тренажёра">
+<button data-nav="home">Обзор</button><button data-nav="learn">Разбор</button>
+<button data-nav="practice">Тренировка</button><button data-nav="check">Проверка</button>
+</nav>
+</header>
+
+<section class="view card" id="view-home">
+<h2>Где вы сейчас</h2>
+<div class="summary">
+<div class="ring" id="ring" role="img" aria-label="Доля освоенных навыков"><i id="ring-num">0/0</i></div>
+<div><p id="home-status"></p><p id="home-best" style="margin-top:4px;font-size:13.5px"></p></div>
+</div>
+<div id="home-skills" style="margin-top:14px"></div>
+<div class="note">Навык считается освоенным после <b>трёх верных решений подряд без подсказок</b>. Подсказка, разбор или ошибка обнуляют серию — счётчик показывает не количество попыток, а устойчивость.</div>
+<div class="routes">
+<button class="route" data-go="learn"><b>Разобраться</b><span>Короткие шаги с вопросом на каждом</span></button>
+<button class="route" data-go="practice"><b>Тренироваться</b><span>Задачи с подсказками и разбором</span></button>
+<button class="route" data-go="check"><b>Проверить себя</b><span>Без подсказок, по всем навыкам</span></button>
+</div>
+</section>
+
+<section class="view card" id="view-learn" hidden>
+<div class="rail" id="l-rail"></div>
+<div style="font-size:12px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.05em" id="l-count"></div>
+<div class="progress"><span id="l-bar" style="width:0"></span></div>
+<h2 id="l-title"></h2>
+<p id="l-intro"></p>
+<div class="concept" id="l-concept"></div>
+<h3>Вопрос на понимание</h3>
+<div id="l-q"></div>
+<div class="fb" id="l-fb" aria-live="polite" role="status"></div>
+<div class="row">
+<button class="btn" id="l-check">Проверить</button>
+<button class="btn quiet" id="l-prev">← Назад</button>
+<button class="btn ghost" id="l-next">Дальше →</button>
+</div>
+</section>
+
+<section class="view card" id="view-practice" hidden>
+<h2>Тренировка</h2>
+<p style="margin-bottom:13px">Выберите навык или решайте вперемешку.</p>
+<div class="chips" id="chips" role="group" aria-label="Выбор навыка"></div>
+<div style="font-size:12px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px" id="p-badge"></div>
+<div id="p-q"></div>
+<div class="fb" id="p-fb" aria-live="polite" role="status"></div>
+<div class="row">
+<button class="btn" id="p-check">Проверить</button>
+<button class="btn ghost" id="p-next">Новый пример</button>
+<button class="btn quiet" id="p-h1">Подсказка 1</button>
+<button class="btn quiet" id="p-h2">Подсказка 2</button>
+<button class="btn quiet" id="p-sol">Показать разбор</button>
+</div>
+<div class="stats">
+<div class="stat"><b id="s-ind">0</b><span>самостоятельно</span></div>
+<div class="stat"><b id="s-sup">0</b><span>с поддержкой</span></div>
+<div class="stat"><b id="s-rev">0</b><span>разобрано</span></div>
+</div>
+</section>
+
+<section class="view card" id="view-check" hidden>
+<div id="check-intro">
+<h2>Проверка</h2>
+<p id="check-desc"></p>
+<div class="note">Подсказок и разбора здесь нет. Проверка не влияет на счётчики навыков — она показывает, что останется, когда помощи не будет.</div>
+<div class="row"><button class="btn" id="check-start">Начать</button></div>
+</div>
+<div id="check-run" hidden>
+<h2>Проверка</h2>
+<div class="qlist" id="check-list" style="margin-top:13px"></div>
+<div class="row"><button class="btn" id="check-finish">Завершить и увидеть результат</button></div>
+</div>
+<div id="check-result" hidden>
+<h2>Результат</h2>
+<div class="big" id="r-score" style="margin:9px 0 3px"></div>
+<p id="r-word"></p>
+<p id="r-weak" style="margin-top:7px;font-weight:800;color:var(--ink)"></p>
+<div class="qlist" id="r-list" style="margin-top:14px"></div>
+<div class="row">
+<button class="btn" id="check-again">Другой вариант</button>
+<button class="btn quiet" id="copy-btn">Скопировать результат</button>
+<button class="btn quiet" data-go="practice">Вернуться к тренировке</button>
+</div>
+<p id="copy-note" style="margin-top:8px;font-size:13px;font-weight:800;color:var(--green)" aria-live="polite"></p>
+</div>
+</section>
+
+<footer style="text-align:center;font-size:12.5px;color:var(--muted);padding:4px 0 0">
+Прогресс хранится только в этом браузере. Данные никуда не отправляются.
+</footer>
+
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const rnd=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=a=>a[rnd(0,a.length-1)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(0,i);[a[i],a[j]]=[a[j],a[i]]}return a};
+const r2=x=>Math.round(x*100)/100;
+const plural=(n,a,b,c)=>{const x=Math.abs(n)%100,y=x%10;return (x>10&&x<20)?c:y===1?a:(y>=2&&y<=4)?b:c};
+const fmt=n=>{const v=r2(n);return Number.isInteger(v)?String(v):String(v).replace('.',',')};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const grid=(n,cls)=>'<div class="grid100" aria-hidden="true">'+Array.from({length:100},(_,i)=>
+  '<span class="'+(i<n?(cls||'on'):'')+'"></span>').join('')+'</div>';
+const bars=rows=>'<div class="bars">'+rows.map(r=>'<div class="barline"><i>'+r[0]+'</i>'+
+  '<u style="width:'+Math.max(4,Math.min(100,r[1]))+'%"><b>'+(r[2]||'')+'</b></u></div>').join('')+'</div>';
+function norm(t){if(t&&Array.isArray(t.traps)){const seen=new Set();
+ t.traps=t.traps.filter(x=>Number.isFinite(x.v)&&Math.abs(x.v-t.answer)>1e-9&&!seen.has(r2(x.v))&&seen.add(r2(x.v)))}
+ return t}
+
+
+const TITLE='Что спрашивают в задаче';
+const SUBTITLE='Разобрать условие и выбрать действие — не считая. Именно на этом шаге чаще всего теряют баллы.';
+const TOPIC='ogeBasicsPercentChoose';
+const OWN_KEY='ogeBasicsPercentChoose.v2';
+const MASTERY=3;
+const CHECK_PLAN=['which','base','estimate','which','base','estimate'];
+const SKILLS={
+ which:{label:'Какой это вопрос',error:'Посмотрите, какое из трёх чисел — целое, часть, процент — в условии не названо. Его и ищут.'},
+ base:{label:'Что здесь 100%',error:'За 100% берут исходную величину: то, о части или изменении чего идёт речь.'},
+ estimate:{label:'Прикидка ответа',error:'Сравните с целым: часть меньше целого, а увеличение больше исходного.'}
+};
+
+const KIND={
+ part:'Найти процент от числа',
+ whole:'Найти число по его проценту',
+ percent:'Узнать, сколько это процентов',
+ change:'Узнать, на сколько процентов изменилось'
+};
+const NOT={
+ part:'Так называют задачу, где целое дано, а ищут его часть. Здесь ищут не это.',
+ whole:'Так называют задачу, где дана часть и её процент, а ищут само целое. Здесь ищут не это.',
+ percent:'Так называют задачу, где оба числа даны, а неизвестен именно процент. Здесь не так.',
+ change:'Так называют задачу, где у одной величины есть значение «до» и «после». Здесь второго значения нет.'
+};
+
+const STORIES={
+ part:[
+  ()=>{const n=pick([400,500,600,800,1200]),p=pick([15,20,25,30,40]);
+   return 'В школе <b>'+n+'</b> учеников. <b>'+p+'%</b> из них занимаются спортом. Сколько это учеников?'},
+  ()=>{const n=pick([1200,1500,2400,3000]),p=pick([10,15,20,25]);
+   return 'Товар стоит <b>'+n+'</b> ₽, скидка <b>'+p+'%</b>. На сколько рублей он подешевеет?'}],
+ whole:[
+  ()=>{const p=pick([20,25,30,40]),v=pick([60,80,120,150]);
+   return '<b>'+p+'%</b> учеников школы — это <b>'+v+'</b> человек. Сколько всего учеников в школе?'},
+  ()=>{const p=pick([15,20,25,40]),v=pick([180,240,300,450]);
+   return 'Скидка <b>'+p+'%</b> составила <b>'+v+'</b> ₽. Сколько товар стоил до скидки?'}],
+ percent:[
+  ()=>{const n=pick([200,250,400,500]),v=pick([40,60,80,120]);
+   return 'В школе <b>'+n+'</b> учеников, <b>'+v+'</b> из них занимаются спортом. Какую часть в процентах они составляют?'},
+  ()=>{const n=pick([40,50,80,200]),v=pick([12,20,30,32]);
+   return 'В зале <b>'+n+'</b> мест, занято <b>'+v+'</b>. Какой процент мест занят?'}],
+ change:[
+  ()=>{const a=pick([200,400,500,800]),b=r2(a*pick([1.1,1.2,1.25,1.5]));
+   return 'Цена выросла с <b>'+a+'</b> ₽ до <b>'+fmt(b)+'</b> ₽. На сколько процентов она выросла?'},
+  ()=>{const a=pick([300,600,800,1000]),b=r2(a*pick([0.8,0.75,0.9,0.6]));
+   return 'Посещаемость упала с <b>'+a+'</b> человек до <b>'+fmt(b)+'</b>. На сколько процентов она снизилась?'}]
+};
+
+function taskWhich(){
+ const right=pick(Object.keys(STORIES));
+ const story=pick(STORIES[right])();
+ const mix=shuffle(Object.keys(KIND));
+ return {type:'choice',prompt:story+'<br><b>Какой это вопрос?</b>',
+  options:mix.map(k=>KIND[k]),answer:mix.indexOf(right),
+  wrong:Object.fromEntries(mix.map((k,i)=>[i,NOT[k]]).filter(x=>mix[x[0]]!==right)),
+  hint1:'Выпишите, какие числа даны. Целое? Часть? Процент? Два значения одной величины?',
+  hint2:'То, чего в условии нет, и есть ответ на вопрос задачи.',
+  solution:'В условии не хватает как раз этого: <b>'+KIND[right].toLowerCase()+'</b>. Остальные числа уже даны.'};
+}
+
+function taskBase(){
+ const kind=rnd(0,2);
+ if(kind===0){
+  const a=pick([200,400,500,600,800]),k=pick([1.15,1.2,1.25,1.4]),b=r2(a*k);
+  const mix=shuffle([{t:a+' ₽ — цена до изменения',w:null},
+   {t:fmt(b)+' ₽ — цена после изменения',w:'Проценты изменения всегда считают от <b>исходного</b> значения, а не от нового.'},
+   {t:fmt(b-a)+' ₽ — величина прироста',w:'Это то, на что цена изменилась. Целым служит не прирост, а то, к чему его прибавили.'},
+   {t:'100 ₽',w:'Числа 100 в условии нет. Сто — это количество процентов, а не рублей.'}]);
+  return {type:'choice',prompt:'Цена выросла с <b>'+a+'</b> ₽ до <b>'+fmt(b)+'</b> ₽.<br><b>Что здесь принято за 100%?</b>',
+   options:mix.map(o=>o.t),answer:mix.findIndex(o=>!o.w),
+   wrong:Object.fromEntries(mix.map((o,i)=>[i,o.w]).filter(x=>x[1])),
+   hint1:'Спросите: рост произошёл <b>от чего</b>? Это «от чего» и есть 100%.',
+   hint2:'Изменение всегда отсчитывают от того, что было раньше.',
+   solution:'Рост шёл от старой цены, поэтому 100% — это <b>'+a+' ₽</b>. Прирост '+fmt(b-a)+' ₽ сравнивают именно с ней.'};
+ }
+ if(kind===1){
+  let w,p,v;
+  do{w=pick([400,500,600,800]);p=pick([20,25,40,60]);v=r2(w*p/100)}
+  while(v===100||v===p||v===w||p===w||w===100);
+  const mix=shuffle([{t:'Число '+w,w:null},
+   {t:'Число '+fmt(v),w:'Это часть — те самые '+p+'%. Целое больше неё.'},
+   {t:'Число '+p,w:'Это количество процентов, а не величина целого.'},
+   {t:'Число 100',w:'Сто здесь — только количество процентов в целом.'}]);
+  return {type:'choice',prompt:'<b>'+p+'%</b> числа <b>'+w+'</b> равны <b>'+fmt(v)+'</b>.<br><b>Что здесь принято за 100%?</b>',
+   options:mix.map(o=>o.t),answer:mix.findIndex(o=>!o.w),
+   wrong:Object.fromEntries(mix.map((o,i)=>[i,o.w]).filter(x=>x[1])),
+   hint1:'Процент всегда берут <b>от</b> какого-то числа. Найдите в условии слово «от».',
+   hint2:'Целое — то число, часть которого посчитали.',
+   solution:'Проценты взяли от числа '+w+', значит 100% — это <b>'+w+'</b>.'};
+ }
+ const t=pick([25,40,50,60,80]),p=pick([5,8,12,15,20]);
+ const mix=shuffle([{t:'Все '+t+' — весь класс',w:null},
+  {t:'Только '+p+' — те, кто опоздал',w:'Это часть. Её как раз и выделили из целого.'},
+  {t:'Разность '+(t-p),w:'Это остальные ученики — тоже часть, а не целое.'},
+  {t:'Число 100',w:'В условии нет ста учеников. Сто — количество процентов.'}]);
+ return {type:'choice',prompt:'В классе <b>'+t+'</b> '+plural(t,'ученик','ученика','учеников')+', <b>'+p+'</b> из них опоздали.<br><b>Что здесь принято за 100%?</b>',
+  options:mix.map(o=>o.t),answer:mix.findIndex(o=>!o.w),
+  wrong:Object.fromEntries(mix.map((o,i)=>[i,o.w]).filter(x=>x[1])),
+  hint1:'Опоздавших выделили из какой группы? Она и есть целое.',
+  hint2:'Целое больше любой своей части.',
+  solution:'Опоздавших выделили из всего класса, поэтому 100% — это <b>'+t+'</b>.'};
+}
+
+function taskEstimate(){
+ const kind=rnd(0,3);
+ const YES='Больше',NO='Меньше',EQ='Ровно столько же';
+ if(kind===0){
+  const p=pick([20,25,40,60,80]),v=pick([120,180,240,300]);
+  return {type:'choice',prompt:'<b>'+p+'%</b> числа равны <b>'+v+'</b>. Само число будет больше или меньше '+v+'?<br><span style="color:var(--soft);font-weight:600">Считать не нужно.</span>',
+   options:[YES,NO,EQ],answer:0,
+   wrong:{1:'Часть не может быть больше целого. Раз '+v+' — это только '+p+'%, целое обязано быть больше.',
+          2:'Равенство было бы только при 100%, а здесь '+p+'%.'},
+   hint1:'Число '+v+' — это лишь часть целого, причём не всё целое.',
+   hint2:'Целое всегда больше своей части.',
+   solution:'<b>Больше.</b> '+v+' — это только '+p+'% целого, значит целое больше. Это и есть проверка ответа: если получилось меньше '+v+', где-то ошибка.'};
+ }
+ if(kind===1){
+  const n=pick([400,600,800,1200]),p=pick([10,15,20,25]);
+  return {type:'choice',prompt:'Цену <b>'+n+'</b> ₽ снизили на <b>'+p+'%</b>. Новая цена больше или меньше '+n+' ₽?<br><span style="color:var(--soft);font-weight:600">Считать не нужно.</span>',
+   options:[YES,NO,EQ],answer:1,
+   wrong:{0:'Снижение уменьшает величину. Больше исходного она стать не может.',
+          2:'Ровно столько же было бы при снижении на 0%.'},
+   hint1:'Слово «снизили» задаёт направление.',
+   hint2:'Уменьшение всегда даёт число меньше исходного.',
+   solution:'<b>Меньше.</b> Снижение на '+p+'% отнимает часть от '+n+' ₽, поэтому результат меньше.'};
+ }
+ if(kind===2){
+  const n=pick([200,400,500,600]),p=pick([110,120,140,150,180]);
+  return {type:'choice',prompt:'Новое значение составляет <b>'+p+'%</b> от старого, равного <b>'+n+'</b>. Новое больше или меньше старого?<br><span style="color:var(--soft);font-weight:600">Считать не нужно.</span>',
+   options:[YES,NO,EQ],answer:0,
+   wrong:{1:'Больше ста процентов — это больше целого.',
+          2:'Ровно столько же было бы при 100%, а здесь '+p+'%.'},
+   hint1:'Сто процентов — это всё старое значение целиком.',
+   hint2:'Если процентов больше ста, величина выросла.',
+   solution:'<b>Больше.</b> 100% — это само старое значение, а '+p+'% больше ста, значит величина выросла на '+(p-100)+'%.'};
+ }
+ const n=pick([500,800,1000,1200]),p=pick([10,20,25]);
+ return {type:'choice',prompt:'Число <b>'+n+'</b> увеличили на <b>'+p+'%</b>, а результат уменьшили на <b>'+p+'%</b>. Итог больше, меньше или равен '+n+'?<br><span style="color:var(--soft);font-weight:600">Считать не нужно.</span>',
+  options:[YES,NO,EQ],answer:1,
+  wrong:{0:'Прибавили '+p+'% от '+n+', а вычли '+p+'% уже от большего числа. Вычли больше, чем прибавили.',
+         2:'Проценты брали от разных чисел, поэтому они не гасят друг друга.'},
+  hint1:'От какого числа считали прибавку? А от какого — вычитание?',
+  hint2:'Второй раз процент брали от уже увеличенного числа, то есть от большего.',
+  solution:'<b>Меньше.</b> Прибавка — '+p+'% от '+n+', а вычитание — '+p+'% от числа побольше. Вычли больше, чем прибавили, поэтому итог ниже исходного.'};
+}
+
+function makeTask(skill){return {which:taskWhich,base:taskBase,estimate:taskEstimate}[skill]()}
+
+const LESSONS=[
+{title:'Считать — второй шаг',short:'Зачем',
+ intro:'На экзамене ошибаются не в арифметике. Ошибаются в том, какое действие выполнять.',
+ html:'<p>Сравните два условия. Числа одни и те же:</p>'
+  +'<p>«<b>30%</b> от <b>200</b> — сколько это?» → ответ 60, меньше двухсот.<br>'
+  +'«<b>30%</b> числа равны <b>200</b>. Найдите число» → ответ 666,7, больше двухсот.</p>'
+  +'<p>Разница только в одном слове, а ответы отличаются в десять раз. Тот, кто сразу хватается за калькулятор, этой разницы не замечает.</p>'
+  +'<div class="note">В этом тренажёре вы не будете считать. Только разбирать условие: что дано, что ищут, каким примерно будет ответ.</div>',
+ question:()=>({type:'choice',prompt:'«20% числа равны 50. Найдите число.» Ответ будет больше или меньше 50?',
+  options:['Больше 50','Меньше 50','Ровно 50'],answer:0,
+  wrong:{1:'Пятьдесят — это только пятая часть числа. Само число больше.',
+         2:'Равенство было бы при 100%.'}}),
+ success:'Часть меньше целого, значит целое больше пятидесяти.',
+ error:'Пятьдесят — это часть. Целое всегда больше своей части.'},
+
+{title:'Три вопроса и как их узнать',short:'Три вопроса',
+ intro:'Задач на проценты по сути три. Различить их можно по тому, какого числа не хватает.',
+ html:'<p><b>Дано целое и процент</b> → ищут часть.<br>«В школе 600 учеников, 20% занимаются спортом. Сколько это?»</p>'
+  +'<p><b>Дана часть и процент</b> → ищут целое.<br>«20% учеников — это 120 человек. Сколько всего учеников?»</p>'
+  +'<p><b>Даны два числа</b> → ищут процент.<br>«В школе 600 учеников, 120 занимаются спортом. Сколько это процентов?»</p>'
+  +'<p>Полезная примета: слово <b>«от»</b> почти всегда стоит перед целым. «20% <u>от</u> 600» — целое здесь 600.</p>',
+ question:()=>({type:'choice',prompt:'«Скидка 15% составила 450 ₽. Сколько стоил товар?» Что ищут?',
+  options:['Часть','Целое','Процент'],answer:1,
+  wrong:{0:'Часть уже названа: это 450 ₽, размер скидки.',
+         2:'Процент дан — пятнадцать.'}}),
+ success:'Даны часть и процент, ищут целое — цену до скидки.',
+ error:'Проверьте, какое из трёх чисел в условии отсутствует.'},
+
+{title:'Сто процентов — это исходное',short:'Основа',
+ intro:'В задачах на изменение легко перепутать, от чего считать процент.',
+ html:'<p>«Цена выросла с 400 ₽ до 500 ₽. На сколько процентов?»</p>'
+  +'<p>Прирост равен 100 ₽. Но 100 ₽ сравнивают со <b>старой</b> ценой: 100 : 400 = 25%.</p>'
+  +bars([['было 400',80,'100%'],['стало 500',100,'125%']])
+  +'<p>Если по ошибке разделить на новую цену, получится 20% — и ответ будет неверным.</p>'
+  +'<div class="note">Правило одно: 100% — это то, <b>что было до изменения</b>. Именно с ним сравнивают прирост или убыль.</div>',
+ question:()=>({type:'choice',prompt:'Число уменьшилось с 80 до 60. От какого числа считают процент снижения?',
+  options:['От 80','От 60','От 20'],answer:0,
+  wrong:{1:'Шестьдесят — это результат. Изменение отсчитывают от того, что было раньше.',
+         2:'Двадцать — сама убыль. Её и сравнивают с исходным числом.'}}),
+ success:'Считают от восьмидесяти — от значения до изменения.',
+ error:'Процент изменения всегда берут от исходного значения.'},
+
+{title:'Прикидка вместо проверки',short:'Прикидка',
+ intro:'До вычислений почти всегда можно сказать, каким будет ответ по величине.',
+ html:'<p>Три ориентира, которые ловят большинство ошибок:</p>'
+  +'<p>1. <b>Часть меньше целого.</b> Если ищете целое по его части — ответ обязан быть больше части.<br>'
+  +'2. <b>Меньше 100% — уменьшение, больше 100% — увеличение.</b><br>'
+  +'3. <b>50% — половина, 10% — примерно десятая.</b> Сравните с ними на глаз.</p>'
+  +'<p>«40% числа равны 260» → целое заметно больше 260, где-то около 650. Ответ 104 отпадает сразу.</p>'
+  +'<p>Прикидка не заменяет решения. Она отсекает ответ, отличающийся в разы, — а это самая частая потеря балла.</p>',
+ question:()=>({type:'choice',prompt:'«60% числа равны 300.» Какой ответ точно неверен?',
+  options:['500','250','Оба могут быть верны'],answer:1,
+  wrong:{0:'Пятьсот больше трёхсот — по величине это возможно.',
+         2:'Один из них противоречит прикидке: целое не может быть меньше своей части.'}}),
+ success:'250 меньше 300, а целое обязано быть больше части.',
+ error:'Сравните каждый вариант с числом 300: целое не может оказаться меньше своей части.'}
+];
+
+
+const MAP_KEY='mathExamCourseProgress.v1';
+const parseNum=s=>{const t=String(s??'').trim().replace(/\s/g,'').replace(',','.')
+  .replace(/%|руб(?:\.|лей|ля)?|₽|км|см|мм|кг|г|л|шт\.?|человек|мин|ч/gi,'');
+  if(!t||!/^-?\d+(?:\.\d+)?$/.test(t))return NaN;return Number(t)};
+const eq=(a,b)=>Number.isFinite(a)&&Math.abs(a-b)<1e-9;
+
+function blank(){const s={lessonDone:Array(LESSONS.length).fill(false),streak:{},independent:{},supported:{},
+  reviewed:0,bestCheck:0,lastCheck:null};
+  Object.keys(SKILLS).forEach(k=>{s.streak[k]=0;s.independent[k]=0;s.supported[k]=0});return s}
+let state=blank(),view='home',lessonIndex=0,mode='mix',task=null,tries=0,hint=0,solved=false,done=false;
+let check=null;
+
+function load(){try{const raw=JSON.parse(localStorage.getItem(OWN_KEY));if(!raw)return;
+  const b=blank();state={...b,...raw};
+  ['streak','independent','supported'].forEach(f=>{state[f]={...b[f],...(raw[f]||{})}});
+  if(!Array.isArray(state.lessonDone)||state.lessonDone.length!==LESSONS.length)state.lessonDone=b.lessonDone;
+}catch(e){}}
+const mastered=k=>(state.streak[k]||0)>=MASTERY;
+const masteredCount=()=>Object.keys(SKILLS).filter(mastered).length;
+function save(){try{localStorage.setItem(OWN_KEY,JSON.stringify(state));
+  const root=JSON.parse(localStorage.getItem(MAP_KEY)||'{"topics":{}}');root.topics=root.topics||{};
+  root.topics[TOPIC]={solved:masteredCount(),total:Object.keys(SKILLS).length,bestCheck:state.bestCheck||0};
+  localStorage.setItem(MAP_KEY,JSON.stringify(root))}catch(e){}}
+
+function setView(v){view=v;document.querySelectorAll('.view').forEach(x=>x.hidden=true);$('view-'+v).hidden=false;
+  document.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav===v));
+  ({home:renderHome,learn:renderLesson,practice:renderPractice,check:renderCheckStart}[v])();
+  window.scrollTo({top:0,behavior:'smooth'})}
+
+function renderHome(){const total=Object.keys(SKILLS).length,mc=masteredCount();
+  $('ring').style.setProperty('--p',Math.round(mc/total*100)+'%');
+  $('ring-num').textContent=mc+'/'+total;
+  $('home-status').textContent=mc===total?'Все навыки освоены самостоятельно.'
+    :mc?'Осталось закрыть '+(total-mc)+' '+plural(total-mc,'навык','навыка','навыков')+'.'
+    :'Начните с разбора, если тема новая.';
+  $('home-best').textContent=state.bestCheck?('Лучший результат проверки: '+state.bestCheck+' из '+CHECK_PLAN.length)
+    :'Проверка ещё не пройдена.';
+  const box=$('home-skills');box.innerHTML='';
+  Object.entries(SKILLS).forEach(([k,s])=>{const n=Math.min(MASTERY,state.streak[k]||0),row=document.createElement('div');
+    row.className='skill-row'+(mastered(k)?' done':'');
+    row.innerHTML='<b>'+esc(s.label)+'</b><div class="bar"><span style="width:'+(n/MASTERY*100)+'%"></span></div>'+
+      '<span class="score">'+n+'/'+MASTERY+'</span>';box.appendChild(row)})}
+
+function renderTask(t,host,name){host.innerHTML='';
+  const p=document.createElement('div');p.className='prompt';p.innerHTML=t.prompt;host.appendChild(p);
+  if(t.type==='choice'){const list=document.createElement('div');list.className='choices';
+    t.options.forEach((o,i)=>{const lab=document.createElement('label');lab.className='choice';
+      lab.innerHTML='<input type="radio" name="'+name+'" value="'+i+'"><span>'+o+'</span>';
+      lab.querySelector('input').onchange=()=>{list.querySelectorAll('.choice').forEach(c=>c.classList.remove('picked'));lab.classList.add('picked')};
+      list.appendChild(lab)});host.appendChild(list)}
+  else{const row=document.createElement('div');row.className='answer';
+    row.innerHTML='<input id="'+name+'-in" type="text" inputmode="decimal" autocomplete="off" placeholder="ответ" '+
+      'aria-label="Ваш ответ'+(t.unit?', '+esc(t.unit):'')+'"><span class="unit">'+esc(t.unit||'')+'</span>';
+    host.appendChild(row);
+    row.querySelector('input').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();
+      (view==='learn'?checkLesson:practiceCheck)()}})}}
+function readAns(t,host,name){if(t.type==='choice'){const x=host.querySelector('input[name="'+name+'"]:checked');
+    return x?Number(x.value):null}
+  const x=host.querySelector('#'+name+'-in');return x?parseNum(x.value):NaN}
+const right=(t,v)=>t.type==='choice'?v===t.answer:eq(v,t.answer);
+const shown=t=>t.type==='choice'?String(t.options[t.answer]).replace(/<[^>]+>/g,''):fmt(t.answer)+(t.unit?' '+t.unit:'');
+function diagnose(t,v){if(t.type==='choice'){const o=(t.wrong||{})[v];return o||null}
+  const hit=(t.traps||[]).find(x=>eq(v,x.v));return hit?hit.msg:null}
+
+function renderLesson(){lessonIndex=Math.max(0,Math.min(lessonIndex,LESSONS.length-1));
+  const L=LESSONS[lessonIndex];
+  $('l-count').textContent='Шаг '+(lessonIndex+1)+' из '+LESSONS.length;
+  $('l-bar').style.width=((lessonIndex+1)/LESSONS.length*100)+'%';
+  $('l-title').textContent=L.title;$('l-intro').textContent=L.intro;$('l-concept').innerHTML=L.html;
+  const fb=$('l-fb');fb.className='fb';fb.innerHTML='';
+  lessonTask=norm(L.question());renderTask(lessonTask,$('l-q'),'lesson');
+  $('l-prev').disabled=lessonIndex===0;
+  $('l-next').disabled=!state.lessonDone[lessonIndex];
+  $('l-next').textContent=lessonIndex===LESSONS.length-1?'К тренировке →':'Дальше →';
+  renderRail()}
+let lessonTask=null;
+function renderRail(){const rail=$('l-rail');rail.innerHTML='';
+  LESSONS.forEach((x,i)=>{const b=document.createElement('button');b.textContent=(i+1)+'. '+x.short;
+    b.className=(i===lessonIndex?'active ':'')+(state.lessonDone[i]?'ok':'');
+    b.disabled=i>lessonIndex&&!state.lessonDone[i-1];
+    b.onclick=()=>{lessonIndex=i;renderLesson()};rail.appendChild(b)})}
+function checkLesson(){const v=readAns(lessonTask,$('l-q'),'lesson'),fb=$('l-fb');
+  if(v===null||Number.isNaN(v)){fb.className='fb show tip';fb.textContent='Сначала введите или выберите ответ.';return}
+  if(right(lessonTask,v)){state.lessonDone[lessonIndex]=true;save();
+    fb.className='fb show good';fb.innerHTML='<b>Верно.</b> '+LESSONS[lessonIndex].success;
+    $('l-next').disabled=false;renderRail()}
+  else{const d=diagnose(lessonTask,v);fb.className='fb show bad';
+    fb.innerHTML='<b>Пока нет.</b> '+(d||LESSONS[lessonIndex].error)}}
+
+function renderChips(){const box=$('chips');box.innerHTML='';
+  const mk=(key,label,on)=>{const b=document.createElement('button');
+    b.className='chip'+(mode===key?' active':'')+(on?' done':'');b.textContent=label;
+    b.onclick=()=>{mode=key;newTask()};box.appendChild(b)};
+  mk('mix','Вперемешку',false);
+  Object.entries(SKILLS).forEach(([k,s])=>mk(k,(mastered(k)?'✓ ':'')+s.label,mastered(k)))}
+function newTask(){const key=mode==='mix'?pick(Object.keys(SKILLS)):mode;
+  task=norm(makeTask(key));task.skill=key;tries=0;hint=0;solved=false;done=false;renderPractice()}
+function renderPractice(){renderChips();if(!task){newTask();return}
+  $('p-badge').textContent=SKILLS[task.skill].label;
+  const fb=$('p-fb');fb.className='fb';fb.innerHTML='';
+  renderTask(task,$('p-q'),'practice');
+  $('p-check').disabled=false;$('p-next').disabled=true;
+  $('p-h1').disabled=false;$('p-h2').disabled=false;$('p-sol').disabled=false;
+  renderStats()}
+function renderStats(){const sum=o=>Object.values(o).reduce((a,b)=>a+b,0);
+  $('s-ind').textContent=sum(state.independent);$('s-sup').textContent=sum(state.supported);
+  $('s-rev').textContent=state.reviewed||0}
+function practiceCheck(){if(done)return;const v=readAns(task,$('p-q'),'practice'),fb=$('p-fb');
+  if(v===null||Number.isNaN(v)){fb.className='fb show tip';fb.textContent='Сначала введите или выберите ответ.';return}
+  tries++;
+  if(right(task,v)){done=true;const solo=tries===1&&!hint&&!solved;
+    if(solo){state.independent[task.skill]++;state.streak[task.skill]=(state.streak[task.skill]||0)+1}
+    else{state.supported[task.skill]++;state.streak[task.skill]=0}
+    save();fb.className='fb show good';
+    fb.innerHTML='<b>'+(solo?'Самостоятельно — отлично.':'Верно, с поддержкой.')+'</b><div class="why">'+task.solution+'</div>';
+    $('p-check').disabled=true;$('p-next').disabled=false;renderStats();renderChips()}
+  else{state.streak[task.skill]=0;save();
+    const d=diagnose(task,v);fb.className='fb show bad';
+    fb.innerHTML='<b>Пока неверно.</b> '+(d||SKILLS[task.skill].error);
+    renderChips();if(tries>=2&&!hint)showHint(1)}}
+function showHint(n){hint=Math.max(hint,n);const fb=$('p-fb');fb.className='fb show tip';
+  fb.innerHTML='<b>Подсказка '+n+'.</b> '+(n===1?task.hint1:task.hint2)}
+function showSolution(){if(solved)return;solved=true;state.reviewed=(state.reviewed||0)+1;state.streak[task.skill]=0;save();
+  const fb=$('p-fb');fb.className='fb show tip';
+  fb.innerHTML='<b>Разбор.</b> '+task.solution+'<div class="why">Разбор не засчитывается как самостоятельное решение — решите следующий пример сами.</div>';
+  $('p-check').disabled=false;$('p-next').disabled=false;renderStats();renderChips()}
+
+function buildCheck(){const seen=new Set(),out=[];
+  CHECK_PLAN.forEach(k=>{let t,g=0;do{t=norm(makeTask(k));t.skill=k;g++}while(seen.has(t.prompt)&&g<60);
+    seen.add(t.prompt);out.push(t)});return out}
+function renderCheckStart(){check=null;$('check-run').hidden=true;$('check-result').hidden=true;$('check-intro').hidden=false;
+  $('check-desc').textContent=CHECK_PLAN.length+' '+plural(CHECK_PLAN.length,'задание','задания','заданий')+
+    ' без подсказок, по всем навыкам темы. Результат можно скопировать.'}
+function startCheck(){check=buildCheck();$('check-intro').hidden=true;$('check-result').hidden=true;$('check-run').hidden=false;
+  const box=$('check-list');box.innerHTML='';
+  check.forEach((t,i)=>{const d=document.createElement('div');d.className='qitem';
+    d.innerHTML='<div class="no">Задание '+(i+1)+' · '+esc(SKILLS[t.skill].label)+'</div>';
+    const host=document.createElement('div');d.appendChild(host);box.appendChild(d);
+    renderTask(t,host,'chk'+i);t._host=host})}
+function finishCheck(){let ok=0;const per={};
+  check.forEach((t,i)=>{const v=readAns(t,t._host,'chk'+i),good=right(t,v);
+    t._v=v;t._ok=good;if(good)ok++;
+    per[t.skill]=per[t.skill]||{ok:0,n:0};per[t.skill].n++;if(good)per[t.skill].ok++});
+  state.bestCheck=Math.max(state.bestCheck||0,ok);
+  state.lastCheck={score:ok,total:check.length,at:new Date().toISOString().slice(0,10)};save();
+  $('check-run').hidden=true;$('check-result').hidden=false;
+  $('r-score').textContent=ok+' / '+check.length;
+  $('r-word').textContent=ok===check.length?'Тема закрыта.':ok>=Math.ceil(check.length*.7)
+    ?'Почти всё уверенно. Ниже — что стоит повторить.':'Есть пробелы. Ниже — что именно.';
+  const box=$('r-list');box.innerHTML='';
+  check.forEach((t,i)=>{const d=document.createElement('div');d.className='qitem '+(t._ok?'ok':'no-ok');
+    d.innerHTML='<div class="no">Задание '+(i+1)+' · '+esc(SKILLS[t.skill].label)+'</div>'+
+      '<div style="margin:5px 0 7px">'+t.prompt+'</div>'+
+      (t._ok?'<b>Верно.</b>':'<b>Ваш ответ: '+(t._v===null||Number.isNaN(t._v)?'пусто':esc(t.type==='choice'?String(t.options[t._v]).replace(/<[^>]+>/g,''):fmt(t._v)))+
+        '. Верно: '+esc(shown(t))+'</b><div class="why">'+t.solution+'</div>');
+    box.appendChild(d)});
+  const weak=Object.entries(per).filter(([k,v])=>v.ok<v.n).map(([k])=>SKILLS[k].label);
+  $('r-weak').textContent=weak.length?'Стоит вернуться в тренировку: '+weak.join(', ')+'.':'Все навыки темы отработаны.';
+  $('copy-note').textContent=''}
+function copyResult(){const l=state.lastCheck;if(!l)return;
+  const txt=TITLE+' — проверка: '+l.score+' из '+l.total+', '+l.at;
+  const done=()=>{$('copy-note').textContent='Скопировано.'};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(done,()=>{});
+  else{const a=document.createElement('textarea');a.value=txt;document.body.appendChild(a);a.select();
+    try{document.execCommand('copy');done()}catch(e){}a.remove()}}
+
+function boot(){document.title=TITLE+' · Математический ликбез';
+  $('doc-title').textContent=TITLE;$('doc-sub').textContent=SUBTITLE;
+  load();
+  document.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>setView(b.dataset.nav));
+  document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>setView(b.dataset.go));
+  $('l-prev').onclick=()=>{lessonIndex--;renderLesson()};
+  $('l-next').onclick=()=>{if(lessonIndex===LESSONS.length-1)setView('practice');else{lessonIndex++;renderLesson()}};
+  $('l-check').onclick=checkLesson;
+  $('p-check').onclick=practiceCheck;$('p-next').onclick=newTask;
+  $('p-h1').onclick=()=>showHint(1);$('p-h2').onclick=()=>showHint(2);$('p-sol').onclick=showSolution;
+  $('check-start').onclick=startCheck;$('check-finish').onclick=finishCheck;
+  $('check-again').onclick=startCheck;$('copy-btn').onclick=copyResult;
+  setView('home')}
+document.addEventListener('DOMContentLoaded',boot);
+
+</script></body></html>
