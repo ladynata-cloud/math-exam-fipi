@@ -235,6 +235,83 @@
       "supportsBoardMirror": false,
       "supportsSemanticEvents": false,
       "notes": "Итоговая проверка открывается в iframe доски; mirror не подключён."
+    },
+    {
+      "trainerId": "oge-basics-percentages-map",
+      "file": "trainers/oge-basics/percentages/index.html",
+      "title": "Математическая база: проценты и пропорции",
+      "group": "Математическая база / проценты",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Открывается в iframe доски; mirror не подключён."
+    },
+    {
+      "trainerId": "oge-basics-percent-meaning",
+      "file": "trainers/oge-basics/percentages/percent-meaning.html",
+      "title": "Проценты: 100%, 1% и доля",
+      "group": "Математическая база / проценты",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Открывается в iframe доски; mirror не подключён."
+    },
+    {
+      "trainerId": "oge-basics-percent-parts",
+      "file": "trainers/oge-basics/percentages/percent-of-number-and-whole.html",
+      "title": "Проценты: три вопроса",
+      "group": "Математическая база / проценты",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Открывается в iframe доски; mirror не подключён."
+    },
+    {
+      "trainerId": "oge-basics-percent-choose",
+      "file": "trainers/oge-basics/percentages/percent-choose-question.html",
+      "title": "Проценты: что спрашивают в задаче",
+      "group": "Математическая база / проценты",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Открывается в iframe доски; mirror не подключён."
+    },
+    {
+      "trainerId": "oge-basics-percent-change",
+      "file": "trainers/oge-basics/percentages/percent-change.html",
+      "title": "Проценты: увеличение и уменьшение",
+      "group": "Математическая база / проценты",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Открывается в iframe доски; mirror не подключён."
+    },
+    {
+      "trainerId": "oge-basics-proportion",
+      "file": "trainers/oge-basics/percentages/proportion.html",
+      "title": "Пропорция как общий способ",
+      "group": "Математическая база / проценты",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Открывается в iframe доски; mirror не подключён."
+    },
+    {
+      "trainerId": "oge-basics-percent-final",
+      "file": "trainers/oge-basics/percentages/percent-final-checkpoint.html",
+      "title": "Проценты: итоговая проверка",
+      "group": "Математическая база / проценты",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Открывается в iframe доски; mirror не подключён."
     }
   ]
 }
