@@ -67,7 +67,7 @@ const SPEC = {"title": "Дроби: общий знаменатель и сло�
   const simplify=(n,d)=>{if(d<0){n=-n;d=-d}const g=gcd(n,d);return {n:n/g,d:d/g}};
   const cleanNum=n=>{const v=Math.round(Number(n)*1e10)/1e10;return Math.abs(v-Math.round(v))<1e-10?Math.round(v):v};
   const niceNum=n=>String(cleanNum(n)).replace('.',',');
-  
+
 const gg=(a,b)=>{while(b){[a,b]=[b,a%b]}return a},ll=(a,b)=>a/gg(a,b)*b;
 function makePracticeTask(){
  const pairs=[[2,3],[2,5],[3,4],[3,5],[4,6],[4,5],[6,8]], [d1,d2]=pairs[Math.floor(Math.random()*pairs.length)],common=ll(d1,d2),type=Math.floor(Math.random()*3);

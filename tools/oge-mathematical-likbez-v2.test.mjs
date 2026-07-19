@@ -15,6 +15,12 @@ const fixturePath = path.join(
   'fixtures',
   'oge-mathematical-likbez-v2-sha256.json'
 );
+const normalizationFixturePath = path.join(
+  repoRoot,
+  'tools',
+  'fixtures',
+  'oge-mathematical-likbez-v2-whitespace-normalization.json'
+);
 const manifestPath = path.join(repoRoot, 'trainers', 'board-compat.json');
 const sitemapPath = path.join(repoRoot, 'sitemap.xml');
 const baseSha = '452f4658da04990fd31d73e35c499e86c16cd180';
@@ -92,9 +98,12 @@ function resolveInternalReference(sourceFile, rawReference) {
 }
 
 const fixture = JSON.parse(fs.readFileSync(fixturePath, 'utf8'));
+const normalizationFixture = JSON.parse(
+  fs.readFileSync(normalizationFixturePath, 'utf8')
+);
 const expectedFiles = fixture.files.map(item => item.path);
 
-test('delivery fixture is complete and every copied HTML byte matches SHA-256', () => {
+test('repository fixture is complete and every canonical HTML blob matches SHA-256', () => {
   assert.equal(fixture.schemaVersion, 1);
   assert.equal(fixture.sourcePackage, 'mathexam-oge-basics-v2-for-codex.zip');
   assert.equal(fixture.expectedHtmlCount, 31);
@@ -110,6 +119,44 @@ test('delivery fixture is complete and every copied HTML byte matches SHA-256', 
     .map(repoPath)
     .sort();
   assert.deepEqual(actualFiles, [...expectedFiles].sort());
+});
+
+test('source provenance records only the approved EOL-whitespace normalization', () => {
+  assert.equal(normalizationFixture.schemaVersion, 1);
+  assert.equal(normalizationFixture.sourcePackage, fixture.sourcePackage);
+  assert.equal(
+    normalizationFixture.oldReviewedHead,
+    'ce192d21d3236232650f257c4fbcc24f4b3d3e0d'
+  );
+  assert.equal(
+    normalizationFixture.normalization,
+    'trailing-eol-ascii-whitespace-only'
+  );
+  assert.equal(normalizationFixture.files.length, 19);
+  assert.equal(
+    new Set(normalizationFixture.files.map(item => item.path)).size,
+    normalizationFixture.files.length
+  );
+
+  const canonicalShaByPath = new Map(
+    fixture.files.map(item => [item.path, item.sha256])
+  );
+  for (const item of normalizationFixture.files) {
+    assert.equal(canonicalShaByPath.has(item.path), true, item.path);
+    assert.match(item.oldSha256, /^[0-9a-f]{64}$/);
+    assert.match(item.newSha256, /^[0-9a-f]{64}$/);
+    assert.notEqual(item.oldSha256, item.newSha256);
+    assert.equal(item.changedLines, 1);
+    assert.equal(item.removedAsciiSpaces, 2);
+    assert.equal(item.eolWhitespaceOnly, true);
+    assert.equal(canonicalShaByPath.get(item.path), item.newSha256, item.path);
+    assert.equal(sha256(path.join(repoRoot, item.path)), item.newSha256, item.path);
+    assert.doesNotMatch(
+      fs.readFileSync(path.join(repoRoot, item.path), 'utf8'),
+      /[ \t]+(?:\r?\n|$)/,
+      item.path
+    );
+  }
 });
 
 test('paths, public URLs, effective titles, topic IDs, and owned storage keys are unique', () => {

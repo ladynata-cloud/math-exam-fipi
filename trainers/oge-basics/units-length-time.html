@@ -67,7 +67,7 @@ const SPEC = {"title": "Единицы длины и времени", "shortTitl
   const simplify=(n,d)=>{if(d<0){n=-n;d=-d}const g=gcd(n,d);return {n:n/g,d:d/g}};
   const cleanNum=n=>{const v=Math.round(Number(n)*1e10)/1e10;return Math.abs(v-Math.round(v))<1e-10?Math.round(v):v};
   const niceNum=n=>String(cleanNum(n)).replace('.',',');
-  
+
 function makePracticeTask(){const type=Math.floor(Math.random()*4);
  if(type===0){const m=(10+Math.floor(Math.random()*190))/10;return {kind:'input',skill:'mcm',label:'Метры в сантиметры',prompt:`Переведите <strong>${String(m).replace('.',',')} м</strong> в сантиметры.`,answer:cleanNum(m*100),unit:'см',hint1:'Из больших единиц в маленькие умножаем.',hint2:'1 м = 100 см.',solution:`${String(m).replace('.',',')} · 100 = <strong>${niceNum(m*100)} см</strong>.`}}
  if(type===1){const cm=50+Math.floor(Math.random()*1950);return {kind:'input',skill:'cmm',label:'Сантиметры в метры',prompt:`Переведите <strong>${cm} см</strong> в метры.`,answer:cleanNum(cm/100),unit:'м',hint1:'Из маленьких единиц в большие делим.',hint2:'Разделите на 100.',solution:`${cm} : 100 = <strong>${niceNum(cm/100)} м</strong>.`}}

@@ -68,7 +68,7 @@ const SPEC = {"title": "Отрицательные числа: сложение 
   const cleanNum=n=>{const v=Math.round(Number(n)*1e10)/1e10;return Math.abs(v-Math.round(v))<1e-10?Math.round(v):v};
   const niceNum=n=>String(cleanNum(n)).replace('.',',');
   const plural=(n,a,b,c)=>{const x=Math.abs(n)%100,y=x%10;return (x>10&&x<20)?c:y===1?a:(y>=2&&y<=4)?b:c};
-  
+
 function makePracticeTask(){const a=-8+Math.floor(Math.random()*17),b=1+Math.floor(Math.random()*8),type=Math.floor(Math.random()*4);let prompt,ans,label,h1;
  if(type===0){prompt=`${a} + ${b}`;ans=a+b;label='Прибавляем положительное';h1='Двигайтесь вправо.'}
  if(type===1){prompt=`${a} + (−${b})`;ans=a-b;label='Прибавляем отрицательное';h1='Двигайтесь влево.'}

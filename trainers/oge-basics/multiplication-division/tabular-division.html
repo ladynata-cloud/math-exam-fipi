@@ -66,7 +66,7 @@ const SPEC = {"eyebrow": "Математическая база · один на
   const simplify=(n,d)=>{if(d<0){n=-n;d=-d}const g=gcd(n,d);return {n:n/g,d:d/g}};
   const cleanNum=n=>{const v=Math.round(Number(n)*1e10)/1e10;return Math.abs(v-Math.round(v))<1e-10?Math.round(v):v};
   const niceNum=n=>String(cleanNum(n)).replace('.',',');
-  
+
 function makePracticeTask(){const d=2+Math.floor(Math.random()*8),q=2+Math.floor(Math.random()*8),n=d*q,type=Math.floor(Math.random()*3);if(type===0)return {kind:'input',skill:'division',label:'Табличное деление',prompt:`<strong>${n} : ${d} = ?</strong>`,answer:q,hint1:`Какое число при умножении на ${d} даёт ${n}?`,hint2:`${d} · ? = ${n}.`,solution:`${n} : ${d} = <strong>${q}</strong>.`};if(type===1)return {kind:'input',skill:'divisor',label:'Неизвестный делитель',prompt:`<strong>${n} : ? = ${q}</strong>`,answer:d,hint1:`Составьте умножение: ? · ${q} = ${n}.`,hint2:`${n} : ${q}.`,solution:`Неизвестный делитель равен <strong>${d}</strong>.`};return {kind:'input',skill:'factor',label:'Неизвестный множитель',prompt:`<strong>${d} · ? = ${n}</strong>`,answer:q,hint1:`Произведение разделите на ${d}.`,hint2:`${n} : ${d}.`,solution:`${n} : ${d} = <strong>${q}</strong>.`}}
 function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length<5&&guard++<200){const t=makePracticeTask();const k=t.prompt+'|'+(t.options?t.options.map(o=>o.html).join(','):'');if(seen.has(k))continue;seen.add(k);out.push(t)}while(out.length<5)out.push(makePracticeTask());return out}
 

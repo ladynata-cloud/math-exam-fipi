@@ -66,7 +66,7 @@ const SPEC = {"eyebrow": "Математическая база · один на
   const simplify=(n,d)=>{if(d<0){n=-n;d=-d}const g=gcd(n,d);return {n:n/g,d:d/g}};
   const cleanNum=n=>{const v=Math.round(Number(n)*1e10)/1e10;return Math.abs(v-Math.round(v))<1e-10?Math.round(v):v};
   const niceNum=n=>String(cleanNum(n)).replace('.',',');
-  
+
 function makePracticeTask(){
  const n=2+Math.floor(Math.random()*8),k=1+Math.floor(Math.random()*9),dir=Math.random()<.72?'next':'prev';
  if(dir==='next'&&k<10){const known=n*k,ans=n*(k+1);return {kind:'input',skill:'next',label:`Таблица на ${n}`,prompt:`Известно: <strong>${n} · ${k} = ${known}</strong>. Найдите ${n} · ${k+1}.`,answer:ans,hint1:`Следующая ступень на ${n} больше.`,hint2:`${known} + ${n}.`,solution:`${known} + ${n} = <strong>${ans}</strong>.`}}

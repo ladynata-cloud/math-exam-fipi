@@ -67,7 +67,7 @@ const SPEC = {"title": "Десятичные дроби: сложение и в�
   const simplify=(n,d)=>{if(d<0){n=-n;d=-d}const g=gcd(n,d);return {n:n/g,d:d/g}};
   const cleanNum=n=>{const v=Math.round(Number(n)*1e10)/1e10;return Math.abs(v-Math.round(v))<1e-10?Math.round(v):v};
   const niceNum=n=>String(cleanNum(n)).replace('.',',');
-  
+
 const fmtDec=n=>String((n/100).toFixed(2)).replace('.',',').replace(/0$/,'').replace(/,0$/,'');
 function makePracticeTask(){
  const add=Math.random()<.55;let a=100+Math.floor(Math.random()*1900),b=20+Math.floor(Math.random()*900);if(!add&&b>a)[a,b]=[b,a];const ans=(add?a+b:a-b)/100;

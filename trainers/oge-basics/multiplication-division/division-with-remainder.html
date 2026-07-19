@@ -66,7 +66,7 @@ const SPEC = {"eyebrow": "Математическая база · один на
   const simplify=(n,d)=>{if(d<0){n=-n;d=-d}const g=gcd(n,d);return {n:n/g,d:d/g}};
   const cleanNum=n=>{const v=Math.round(Number(n)*1e10)/1e10;return Math.abs(v-Math.round(v))<1e-10?Math.round(v):v};
   const niceNum=n=>String(cleanNum(n)).replace('.',',');
-  
+
 function makePracticeTask(){const d=2+Math.floor(Math.random()*8),q=2+Math.floor(Math.random()*9),r=1+Math.floor(Math.random()*(d-1)),n=d*q+r,type=Math.floor(Math.random()*3);if(type===0)return {kind:'input',skill:'q',label:'Неполное частное',prompt:`Найдите неполное частное: <strong>${n} : ${d}</strong>`,answer:q,hint1:`Сравните ${d} · ${q} и ${d} · ${q+1} с числом ${n}.`,hint2:`${d} · ${q} = ${d*q}, а ${d} · ${q+1} = ${d*(q+1)}.`,solution:`Частное <strong>${q}</strong>.`};if(type===1)return {kind:'input',skill:'r',label:'Остаток',prompt:`Найдите остаток: <strong>${n} : ${d} = ${q} (ост. ?)</strong>`,answer:r,hint1:`Вычтите ${d} · ${q} из ${n}.`,hint2:`${n} − ${d*q}.`,solution:`Остаток <strong>${r}</strong>.`};return {kind:'choice',skill:'check',label:'Проверка',prompt:`Какая проверка верна для ${n} : ${d} = ${q} (ост. ${r})?`,options:[{id:'a',html:`${d} · ${q} + ${r} = ${n}`},{id:'b',html:`${d} + ${q} + ${r} = ${n}`},{id:'c',html:`${n} − ${q} = ${d}`}],answer:'a',hint1:'Делитель умножьте на частное и прибавьте остаток.',hint2:`${d*q} + ${r}.`,solution:`${d} · ${q} + ${r} = <strong>${n}</strong>.`}}
 function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length<5&&guard++<200){const t=makePracticeTask();const k=t.prompt+'|'+(t.options?t.options.map(o=>o.html).join(','):'');if(seen.has(k))continue;seen.add(k);out.push(t)}while(out.length<5)out.push(makePracticeTask());return out}
 

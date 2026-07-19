@@ -66,7 +66,7 @@ const SPEC = {"eyebrow": "Математическая база · один на
   const simplify=(n,d)=>{if(d<0){n=-n;d=-d}const g=gcd(n,d);return {n:n/g,d:d/g}};
   const cleanNum=n=>{const v=Math.round(Number(n)*1e10)/1e10;return Math.abs(v-Math.round(v))<1e-10?Math.round(v):v};
   const niceNum=n=>String(cleanNum(n)).replace('.',',');
-  
+
 function trickTask(){const n=3+Math.floor(Math.random()*12),m=[4,5,6,7,8,9][Math.floor(Math.random()*6)],p=n*m;let h1='',h2='',sol='';if(m===4){h1='Удвойте число дважды.';h2=`${n} → ${2*n} → ${4*n}.`;sol=`${n} · 4 = ${2*n} · 2 = <strong>${p}</strong>.`}if(m===5){h1='Умножьте на 10 и возьмите половину.';h2=`${n*10} : 2.`;sol=`${n} · 5 = ${n*10} : 2 = <strong>${p}</strong>.`}if(m===6){h1='Умножьте на 5 и прибавьте ещё одно число.';h2=`${n*5} + ${n}.`;sol=`${n} · 6 = ${n*5} + ${n} = <strong>${p}</strong>.`}if(m===7){h1='Умножьте на 5 и на 2, результаты сложите.';h2=`${n*5} + ${n*2}.`;sol=`${n} · 7 = ${n*5} + ${n*2} = <strong>${p}</strong>.`}if(m===8){h1='Удвойте число три раза.';h2=`${n} → ${2*n} → ${4*n} → ${8*n}.`;sol=`${n} · 8 = <strong>${p}</strong>.`}if(m===9){h1='Умножьте на 10 и вычтите само число.';h2=`${n*10} − ${n}.`;sol=`${n} · 9 = ${n*10} − ${n} = <strong>${p}</strong>.`}return {kind:'input',skill:'trick'+m,label:`Приём ×${m}`,prompt:`Вычислите: <strong>${n} · ${m}</strong>`,answer:p,hint1:h1,hint2:h2,solution:sol}}
 function makePracticeTask(){return trickTask()}
 function makeCheckSet(){return [4,5,6,7,9].map(m=>{const n=3+Math.floor(Math.random()*12),p=n*m;return {kind:'input',skill:'trick'+m,label:`Приём ×${m}`,prompt:`Вычислите: <strong>${n} · ${m}</strong>`,answer:p,hint1:'Выберите удобный приём.',hint2:`Можно разложить множитель ${m} на знакомые части.`,solution:`${n} · ${m} = <strong>${p}</strong>.`}})}

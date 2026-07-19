@@ -66,7 +66,7 @@ const SPEC = {"eyebrow": "Математическая база · один на
   const simplify=(n,d)=>{if(d<0){n=-n;d=-d}const g=gcd(n,d);return {n:n/g,d:d/g}};
   const cleanNum=n=>{const v=Math.round(Number(n)*1e10)/1e10;return Math.abs(v-Math.round(v))<1e-10?Math.round(v):v};
   const niceNum=n=>String(cleanNum(n)).replace('.',',');
-  
+
 function steps(a,m){const ds=String(a).split('').reverse().map(Number);let c=0,arr=[];for(const d of ds){const p=d*m+c;arr.push({d,p,write:p%10,carry:Math.floor(p/10)});c=Math.floor(p/10)}return arr}
 function makePracticeTask(){const a=10+Math.floor(Math.random()*989),m=2+Math.floor(Math.random()*8),ans=a*m,st=steps(a,m),desc=st.map((x,i)=>`${m} · ${x.d}${i?` + перенос`:''} = ${x.p}`).join('; ');return {kind:'input',skill:'column1',label:'Умножение столбиком',prompt:`Вычислите: <strong>${a} · ${m}</strong>`,answer:ans,hint1:'Начните с цифры единиц и двигайтесь справа налево.',hint2:desc+'.',solution:`${a} · ${m} = <strong>${ans}</strong>.`}}
 function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length<5&&guard++<200){const t=makePracticeTask();const k=t.prompt+'|'+(t.options?t.options.map(o=>o.html).join(','):'');if(seen.has(k))continue;seen.add(k);out.push(t)}while(out.length<5)out.push(makePracticeTask());return out}

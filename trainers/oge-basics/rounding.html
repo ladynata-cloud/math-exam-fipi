@@ -68,7 +68,7 @@ const SPEC = {"title": "Округление: четыре шага и упак�
   const cleanNum=n=>{const v=Math.round(Number(n)*1e10)/1e10;return Math.abs(v-Math.round(v))<1e-10?Math.round(v):v};
   const niceNum=n=>String(cleanNum(n)).replace('.',',');
   const plural=(n,a,b,c)=>{const x=Math.abs(n)%100,y=x%10;return (x>10&&x<20)?c:y===1?a:(y>=2&&y<=4)?b:c};
-  
+
 function roundTo(n,place){const m=Number(n+'e'+place);return Number((n<0?-Math.round(-m):Math.round(m))+'e-'+place)}
 function makePracticeTask(){const type=Math.floor(Math.random()*3);
  if(type===0){let n,p,ans;do{n=100+Math.floor(Math.random()*8900);p=Math.random()<.5?10:100;ans=Math.round(n/p)*p}while(ans===n);return {kind:'input',skill:'int',label:`До ${p===10?'десятков':'сотен'}`,prompt:`Округлите <strong>${n}</strong> до ${p===10?'десятков':'сотен'}.`,answer:ans,hint1:`Найдите разряд ${p===10?'десятков':'сотен'}.`,hint2:'Посмотрите на цифру справа: 0–4 оставить, 5–9 увеличить.',solution:`Получаем <strong>${ans}</strong>.`}}

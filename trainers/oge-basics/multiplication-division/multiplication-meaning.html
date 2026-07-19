@@ -67,7 +67,7 @@ const SPEC = {"eyebrow": "Математическая база · один на
   const cleanNum=n=>{const v=Math.round(Number(n)*1e10)/1e10;return Math.abs(v-Math.round(v))<1e-10?Math.round(v):v};
   const niceNum=n=>String(cleanNum(n)).replace('.',',');
   const plural=(n,a,b,c)=>{const x=Math.abs(n)%100,y=x%10;return (x>10&&x<20)?c:y===1?a:(y>=2&&y<=4)?b:c};
-  
+
 function makePracticeTask(){
  const a=2+Math.floor(Math.random()*7),b=2+Math.floor(Math.random()*8),type=Math.floor(Math.random()*4),p=a*b;
  if(type===0)return {kind:'input',skill:'groups',label:'Одинаковые группы',prompt:`${a} ${plural(a,'одинаковая группа','одинаковые группы','одинаковых групп')} по ${b} ${plural(b,'предмету','предмета','предметов')}. Сколько предметов всего?`,answer:p,hint1:`Запишите сложение: ${Array(a).fill(b).join(' + ')}.`,hint2:`Это ${a} · ${b}.`,solution:`${a} · ${b} = <strong>${p}</strong>.`};

@@ -67,7 +67,7 @@ const SPEC = {"title": "Квадратные единицы без ловуше�
   const simplify=(n,d)=>{if(d<0){n=-n;d=-d}const g=gcd(n,d);return {n:n/g,d:d/g}};
   const cleanNum=n=>{const v=Math.round(Number(n)*1e10)/1e10;return Math.abs(v-Math.round(v))<1e-10?Math.round(v):v};
   const niceNum=n=>String(cleanNum(n)).replace('.',',');
-  
+
 function makePracticeTask(){const type=Math.floor(Math.random()*3);
  if(type===0){const m=(1+Math.floor(Math.random()*30))/2;return {kind:'input',skill:'m2cm2',label:'м² в см²',prompt:`Переведите <strong>${String(m).replace('.',',')} м²</strong> в см².`,answer:cleanNum(m*10000),unit:'см²',hint1:'1 м² = 10 000 см².',hint2:'Умножьте на 10 000.',solution:`Получаем <strong>${niceNum(m*10000)} см²</strong>.`}}
  if(type===1){const m=(1+Math.floor(Math.random()*20))/2,cm=m*10000;return {kind:'input',skill:'cm2m2',label:'см² в м²',prompt:`Переведите <strong>${cm} см²</strong> в м².`,answer:cleanNum(m),unit:'м²',hint1:'Из маленьких единиц в большие делим.',hint2:'Разделите на 10 000.',solution:`${cm}:10000=<strong>${String(m).replace('.',',')} м²</strong>.`}}

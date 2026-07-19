@@ -67,7 +67,7 @@ const SPEC = {"title": "Порядок действий без путаницы"
   const simplify=(n,d)=>{if(d<0){n=-n;d=-d}const g=gcd(n,d);return {n:n/g,d:d/g}};
   const cleanNum=n=>{const v=Math.round(Number(n)*1e10)/1e10;return Math.abs(v-Math.round(v))<1e-10?Math.round(v):v};
   const niceNum=n=>String(cleanNum(n)).replace('.',',');
-  
+
 function makePracticeTask(){
  const type=Math.floor(Math.random()*5),a=2+Math.floor(Math.random()*8),b=2+Math.floor(Math.random()*7),c=2+Math.floor(Math.random()*6);
  if(type===0)return {kind:'input',skill:'priority',label:'Умножение раньше',prompt:`Вычислите: <strong>${a} + ${b} · ${c}</strong>`,answer:a+b*c,hint1:'Сначала выполните умножение.',hint2:`Найдите ${b} · ${c}, затем прибавьте ${a}.`,solution:`${b} · ${c} = ${b*c}; ${a} + ${b*c} = <strong>${a+b*c}</strong>.`};

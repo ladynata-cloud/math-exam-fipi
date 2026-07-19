@@ -67,7 +67,7 @@ const SPEC = {"title": "Умножение и деление: одна семь�
   const simplify=(n,d)=>{if(d<0){n=-n;d=-d}const g=gcd(n,d);return {n:n/g,d:d/g}};
   const cleanNum=n=>{const v=Math.round(Number(n)*1e10)/1e10;return Math.abs(v-Math.round(v))<1e-10?Math.round(v):v};
   const niceNum=n=>String(cleanNum(n)).replace('.',',');
-  
+
 function makePracticeTask(){
  const a=2+Math.floor(Math.random()*8),b=2+Math.floor(Math.random()*8),p=a*b,type=Math.floor(Math.random()*3);
  if(type===0)return {kind:'input',skill:'mul',label:'Умножение',prompt:`Вычислите: <strong>${a} · ${b}</strong>`,answer:p,hint1:'Вспомните равные группы или переставьте множители.',hint2:`Можно представить ${a} групп по ${b}.`,solution:`${a} · ${b} = <strong>${p}</strong>.`};

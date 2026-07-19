@@ -34,15 +34,21 @@ another board entry.
 
 - Source package: `mathexam-oge-basics-v2-for-codex.zip`
 - Expected HTML count: 31
-- Exact file paths and SHA-256 values:
+- Canonical repository file paths and SHA-256 values:
   [`tools/fixtures/oge-mathematical-likbez-v2-sha256.json`](../../tools/fixtures/oge-mathematical-likbez-v2-sha256.json)
-- The 31 HTML files are immutable delivery artifacts. Copy them byte for byte;
-  do not edit, format, normalize line endings, or add repository-specific
-  markup to them.
+- The validated archive remains the provenance source. Nineteen supplied HTML
+  files received only removal of trailing ASCII spaces from one otherwise
+  empty source line so that the mandatory `git diff --check` gate remains
+  strict. The machine-readable old-to-new SHA-256 evidence is in
+  [`tools/fixtures/oge-mathematical-likbez-v2-whitespace-normalization.json`](../../tools/fixtures/oge-mathematical-likbez-v2-whitespace-normalization.json).
+- The resulting repository blobs are the canonical publication version. No
+  other formatting, line-ending normalization, content, DOM, CSS, JavaScript,
+  URL, storage, or behavior change is allowed.
 
 ## Scope
 
-1. Publish the exact delivery tree under `trainers/oge-basics/`.
+1. Publish the canonical repository tree derived from the validated delivery
+   under `trainers/oge-basics/`.
 2. Add one prominent card to the “Сначала закрыть пробелы” section of
    `trainers/oge-course/index.html` while keeping all existing large trainers
    below it.
@@ -71,7 +77,8 @@ another board entry.
 - Socket.IO, authentication, security policy, or deployment topology
 - Mirror state, semantic events, seed support, or mirror UI
 - Manifest records for the other 27 pages
-- Edits to the supplied trainer HTML
+- Edits to the supplied trainer HTML beyond the approved EOL-whitespace
+  normalization
 - Changes to other trainers, bulk migration, or alias creation
 - Manual deployment, merge, auto-merge, or feature-branch deletion
 
@@ -84,6 +91,8 @@ implementation change, stop and request a separate platform task.
 
 - Exactly 31 HTML files exist under `trainers/oge-basics/`.
 - Every file has the committed expected SHA-256.
+- The 19 normalized files have complete old/new SHA-256 provenance, one changed
+  line each, and a machine-checked EOL-whitespace-only delta.
 - Canonical file paths and canonical public URLs are unique under ASCII
   case-folding.
 - Effective page titles, trainer topic IDs, and trainer-owned localStorage keys
@@ -136,6 +145,7 @@ implementation change, stop and request a separate platform task.
 5. Focused educational scenario suite for the trainer routes
 6. Secret, path, control/bidi, outbound-network, collision, and basename scans
 7. `git diff --check`
+8. Old-to-new SHA-256 and EOL-whitespace-only normalization evidence
 
 The final gate passes only when all applicable checks pass, failures are zero,
 and no required check is left unrun.
@@ -148,7 +158,8 @@ Revert the publication delta as one batch:
 2. remove only their 31 sitemap URLs;
 3. remove only the three discovery entries;
 4. remove only the four quick-select records;
-5. revert the focused fixture/test and the mechanical registry expectation.
+5. revert the focused fixtures/test and the mechanical registry expectation;
+6. remove this task specification with the rest of the batch documentation.
 
 Rollback must not change any pre-existing public URL, manifest record, trainer,
 server implementation, or deployment configuration.

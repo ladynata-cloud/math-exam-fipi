@@ -66,7 +66,7 @@ const SPEC = {"eyebrow": "Математическая база · один на
   const simplify=(n,d)=>{if(d<0){n=-n;d=-d}const g=gcd(n,d);return {n:n/g,d:d/g}};
   const cleanNum=n=>{const v=Math.round(Number(n)*1e10)/1e10;return Math.abs(v-Math.round(v))<1e-10?Math.round(v):v};
   const niceNum=n=>String(cleanNum(n)).replace('.',',');
-  
+
 function makePracticeTask(){const a=20+Math.floor(Math.random()*480),b=11+Math.floor(Math.random()*88),u=b%10,t=Math.floor(b/10),p1=a*u,p2=a*t*10,ans=a*b;return {kind:'input',skill:'column2',label:'Два неполных произведения',prompt:`Вычислите: <strong>${a} · ${b}</strong>`,answer:ans,hint1:`Первое: ${a} · ${u} = ${p1}.`,hint2:`Второе: ${a} · ${t} десятков = ${p2}. Сложите ${p1} + ${p2}.`,solution:`${p1} + ${p2} = <strong>${ans}</strong>.`}}
 function makeCheckSet(){const out=[],seen=new Set();let guard=0;while(out.length<5&&guard++<200){const t=makePracticeTask();const k=t.prompt+'|'+(t.options?t.options.map(o=>o.html).join(','):'');if(seen.has(k))continue;seen.add(k);out.push(t)}while(out.length<5)out.push(makePracticeTask());return out}
 
