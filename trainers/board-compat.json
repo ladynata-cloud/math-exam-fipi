@@ -191,6 +191,50 @@
       "supportsBoardMirror": false,
       "supportsSemanticEvents": false,
       "notes": "Открывается в iframe доски; хранит локальный результат, mirror не подключён."
+    },
+    {
+      "trainerId": "oge-basics-map",
+      "file": "trainers/oge-basics/index.html",
+      "title": "Математическая база для ОГЭ",
+      "group": "ОГЭ / математическая база",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Карта ликбеза открывается в iframe доски; mirror не подключён."
+    },
+    {
+      "trainerId": "oge-basics-multiplication-division-map",
+      "file": "trainers/oge-basics/multiplication-division/index.html",
+      "title": "Умножение и деление: линия тренажёров",
+      "group": "ОГЭ / математическая база",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Карта линии открывается в iframe доски; mirror не подключён."
+    },
+    {
+      "trainerId": "oge-basics-long-division-path",
+      "file": "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+      "title": "Деление уголком: от первого шага до десятичных дробей",
+      "group": "ОГЭ / математическая база",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Сквозной маршрут открывается в iframe доски; mirror не подключён."
+    },
+    {
+      "trainerId": "oge-basics-long-division-checkpoint",
+      "file": "trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html",
+      "title": "Смешанная проверка: деление уголком",
+      "group": "ОГЭ / математическая база",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Итоговая проверка открывается в iframe доски; mirror не подключён."
     }
   ]
 }

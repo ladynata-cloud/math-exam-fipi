@@ -38,7 +38,11 @@ const expectedCatalogFiles = [
   'trainers/oge-1-5-trainers/practice-1-5-map.html',
   'trainers/oge-1-5-trainers/practice-1-5-entry-diagnostic-2026.html',
   'trainers/oge-1-5-trainers/practice-1-5-plan-reading.html',
-  'trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html'
+  'trainers/oge-1-5-trainers/practice-1-5-routes-checkpoint-2026.html',
+  'trainers/oge-basics/index.html',
+  'trainers/oge-basics/multiplication-division/index.html',
+  'trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html',
+  'trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html'
 ];
 
 function currentManifest() {
@@ -171,14 +175,14 @@ test('server consumes every committed manifest and authorization vector', () => 
   }
 });
 
-test('current manifest validates with seventeen catalog entries and three mirrors', () => {
+test('current manifest validates with twenty-one catalog entries and three mirrors', () => {
   const manifest = currentManifest();
   const result = validateTrainerManifest(manifest);
   assert.equal(result.ok, true);
   assert.equal(manifest.version, 1);
   assert.equal(manifest.schemaVersion, 1);
   assert.deepEqual(manifest.trainers.map(entry => entry.file), expectedCatalogFiles);
-  assert.equal(manifest.trainers.length, 17);
+  assert.equal(manifest.trainers.length, 21);
   assert.equal(result.trainers.length, 3);
 });
 

@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "sourcePackage": "mathexam-oge-basics-v2-for-codex.zip",
+  "expectedHtmlCount": 31,
+  "files": [
+    {
+      "path": "trainers/oge-basics/decimal-add-subtract.html",
+      "sha256": "ec5207ba1c2431fd94e6050f7e2f8247e507d18ac6fbdb5ef6703050fd3e5186"
+    },
+    {
+      "path": "trainers/oge-basics/fraction-common-denominator.html",
+      "sha256": "43a1a827359f0a7d2832e1ebecef9a2cd8d65122e5cacc6ac25979dd11485f7d"
+    },
+    {
+      "path": "trainers/oge-basics/fraction-meaning.html",
+      "sha256": "a00ce812fcbd6a0230cfc12e0de45267972b52d30624c6e5397d8cbef8e67853"
+    },
+    {
+      "path": "trainers/oge-basics/index.html",
+      "sha256": "b2dafcbad1150eaba4de005993c47e7a49446abce36c65c33b1a3961e19d3194"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html",
+      "sha256": "87f9d5af0430502ef186a53e184cc3e294278d51c411c5bdc6ed255e043c94f1"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html",
+      "sha256": "08b8713c902e6c688618f9eb08578ebeba515b27d3d967783bd153cfd3583f08"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/decimal-division-natural.html",
+      "sha256": "90b308662fdce5ad549bb814745d62ab582f651dabbd4bb0b0a8e088e387228a"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/decimal-divisor-shift.html",
+      "sha256": "0f1170df2edc116b3c2b4581a20de7531edf2e3a3bb5c3cceb436069de63df23"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/division-append-zeros.html",
+      "sha256": "ac668143b0d541d83b41064e36a02900b06b3cb288bc6d391516eca08fd70c84"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/division-with-remainder.html",
+      "sha256": "eca589a9b42ea43355cdbe959ae5ba13deb15c4d7ff3f76432506ee36f7bf656"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/index.html",
+      "sha256": "6ba9eb5514f5d2132e565fc99c2f7ac5311ac927504e34a01e44a1d7ae9f56e7"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/long-division-from-simple-to-decimals.html",
+      "sha256": "9d6bc063d4b0576c488dec2739901512ba1f966fcc5a4a03ab65f4ee8b766e5b"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/long-division-mixed-checkpoint.html",
+      "sha256": "b63fbd6538d1d0c09b2c01c9ccdc887e3f275c4eafc5bc38a6428d4a151b1797"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/long-division-one-digit.html",
+      "sha256": "6eebc16a6f85f4efe3741578e867734be0a3c1fa058767af1a5cbb05a8506e9b"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/long-division-quotient-digit.html",
+      "sha256": "a9e44a0ad4178f12b791b02ba32394b5acc6e6384d02ac2d1af50fda109b3135"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/long-division-two-digit.html",
+      "sha256": "303e78c64519d805b9ee38c3350e949c33773bf565915e80a8f051ce0435cf80"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/long-division-with-remainder.html",
+      "sha256": "d974c734baaa56032f5afb59fc39b994ab7db9423fe5504d86b4aafd605a86c5"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/long-division-zero-in-quotient.html",
+      "sha256": "b899f0373a008127503351ad84bbf4324b22730d729ab40681966ed7f1c31210"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-ladder.html",
+      "sha256": "d2a0106f36880dd1b9051b282004ffe2b8163aa742e000bddc7d2c8108a0886e"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-meaning.html",
+      "sha256": "76f97edd19987d85c4d5ae73063c12185520c8af8b425d22fa39bb9902f5dfef"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-mixed.html",
+      "sha256": "2aecc4acc383258ad52bb5e19cc181f18e0c40d7b66f3ab63be4f23eee1976d6"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html",
+      "sha256": "42faeab6b706cc3c168429bf82bf7612ca6f469c89b4c57a6ab3d6a4e85bac2d"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-tricks.html",
+      "sha256": "20f748812b3b6baa60942eabbb0d161195b80089b97f88f91988e365b4303c80"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/tabular-division.html",
+      "sha256": "84db22f5793f9bda42351dc9f9155a39141f1dc09bb7a73a74fe0d7df52fbf9e"
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division.html",
+      "sha256": "fb5f376e0933e648b14ee8cdfc5f088b4e113142ca62d1d78f60171cd2fab25e"
+    },
+    {
+      "path": "trainers/oge-basics/negative-add-subtract.html",
+      "sha256": "9d664d1ed9590839abebd03edeb90085f1d7192e10974e2e5c25cb33938f643e"
+    },
+    {
+      "path": "trainers/oge-basics/negative-number-line.html",
+      "sha256": "1e75394b0e9bed5df56f1081fab0935f4cce5a90fcffa3c3056f1db380e67b8d"
+    },
+    {
+      "path": "trainers/oge-basics/order-of-operations.html",
+      "sha256": "49b13aeb41c4a8879dc20c66ff98b6f1fdc652c4212a36486293c60e841ce9ea"
+    },
+    {
+      "path": "trainers/oge-basics/rounding.html",
+      "sha256": "f27b29f62d0b7c02cbec4dbeff0cab15d47b259d6fac9e00bb8023fabc5fdf88"
+    },
+    {
+      "path": "trainers/oge-basics/units-area.html",
+      "sha256": "f6d96424a631a7d576d8c0a956828a929c195ab91f733a6e9a44607a1d1d4ae2"
+    },
+    {
+      "path": "trainers/oge-basics/units-length-time.html",
+      "sha256": "9edf2891fa878e1e3b43210c2613a9cb8ba8f1164e2685b6c476f25de9cc2c5b"
+    }
+  ]
+}

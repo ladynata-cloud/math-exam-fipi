@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "sourcePackage": "mathexam-oge-basics-v2-for-codex.zip",
+  "oldReviewedHead": "ce192d21d3236232650f257c4fbcc24f4b3d3e0d",
+  "normalization": "trailing-eol-ascii-whitespace-only",
+  "files": [
+    {
+      "path": "trainers/oge-basics/decimal-add-subtract.html",
+      "oldSha256": "a69be5ea64182d4c1d3f636101a38e7e5671061f0845f1f44e739169633c0dc1",
+      "newSha256": "ec5207ba1c2431fd94e6050f7e2f8247e507d18ac6fbdb5ef6703050fd3e5186",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/fraction-common-denominator.html",
+      "oldSha256": "1c978efb51b323404bc7273938ddb3e6b257aea73acaba73ff8f453d6ed5e983",
+      "newSha256": "43a1a827359f0a7d2832e1ebecef9a2cd8d65122e5cacc6ac25979dd11485f7d",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/fraction-meaning.html",
+      "oldSha256": "d18cb405a269bc0634d3d77df33dee6f2b6877d4a8cace1a46d676e643b84960",
+      "newSha256": "a00ce812fcbd6a0230cfc12e0de45267972b52d30624c6e5397d8cbef8e67853",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division.html",
+      "oldSha256": "472c0b724248766fb96b4a27af939ec8e427a6ee733688897d77c80808444366",
+      "newSha256": "fb5f376e0933e648b14ee8cdfc5f088b4e113142ca62d1d78f60171cd2fab25e",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/column-multiplication-one-digit.html",
+      "oldSha256": "9cf06db46ee7d8a738067b232373b7fb12204e5d202d0ff8577fbb35938f1b61",
+      "newSha256": "87f9d5af0430502ef186a53e184cc3e294278d51c411c5bdc6ed255e043c94f1",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/column-multiplication-two-digit.html",
+      "oldSha256": "c15cc92f009f22ee7659e35ba8d73fd57d41800a6d8cd432497ed9f63420fae3",
+      "newSha256": "08b8713c902e6c688618f9eb08578ebeba515b27d3d967783bd153cfd3583f08",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/division-with-remainder.html",
+      "oldSha256": "cc39b90364de8e2a7a915df29a8bac72e9a1fe56efb4592bd950a64fc6bd19e7",
+      "newSha256": "eca589a9b42ea43355cdbe959ae5ba13deb15c4d7ff3f76432506ee36f7bf656",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-ladder.html",
+      "oldSha256": "af191549fa8f4d0556b59905801a991f36f1ce1171fec5ae69b48c3449e0417e",
+      "newSha256": "d2a0106f36880dd1b9051b282004ffe2b8163aa742e000bddc7d2c8108a0886e",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-meaning.html",
+      "oldSha256": "f9590abe887fd5b405eb097d75beefcaa7ae893bb4c0e3c1e22d27faeeb8a83e",
+      "newSha256": "76f97edd19987d85c4d5ae73063c12185520c8af8b425d22fa39bb9902f5dfef",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-mixed.html",
+      "oldSha256": "7a2dcf43fc13baa421a559e7ace613528689e6038cf52434c1ee41ee9a5b8cc8",
+      "newSha256": "2aecc4acc383258ad52bb5e19cc181f18e0c40d7b66f3ab63be4f23eee1976d6",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-pythagoras-table.html",
+      "oldSha256": "0e08c0688735a16aa1b5caa09492f9ec4ea5e0573cbf3fed61fa6e79831b9bb9",
+      "newSha256": "42faeab6b706cc3c168429bf82bf7612ca6f469c89b4c57a6ab3d6a4e85bac2d",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/multiplication-tricks.html",
+      "oldSha256": "3d63293ae6b99205f5bb0f460b18ddd13719b52fbe7f065c21f3103a2a24c586",
+      "newSha256": "20f748812b3b6baa60942eabbb0d161195b80089b97f88f91988e365b4303c80",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/multiplication-division/tabular-division.html",
+      "oldSha256": "c3b2f0db6cb434b1505d1350b812968c637b05855b9e4b9b2a23824feeb47284",
+      "newSha256": "84db22f5793f9bda42351dc9f9155a39141f1dc09bb7a73a74fe0d7df52fbf9e",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/negative-add-subtract.html",
+      "oldSha256": "e6cc9efa2864309077ccf875eb6dab589c63a43aa56cc316f954237bb0c828ed",
+      "newSha256": "9d664d1ed9590839abebd03edeb90085f1d7192e10974e2e5c25cb33938f643e",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/negative-number-line.html",
+      "oldSha256": "86cd2687dedc41be9bfb3cf4d5d4e31ea269224d12d1d8048a1f2bccbcf212d6",
+      "newSha256": "1e75394b0e9bed5df56f1081fab0935f4cce5a90fcffa3c3056f1db380e67b8d",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/order-of-operations.html",
+      "oldSha256": "174ca112823239d7975f0ee785d8a57f8d3a87595aaaac59a7dff0d8dd0d49f8",
+      "newSha256": "49b13aeb41c4a8879dc20c66ff98b6f1fdc652c4212a36486293c60e841ce9ea",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/rounding.html",
+      "oldSha256": "3de1739a54e6dfc9b458f8276677f97ec136069a47d647ceca7d5806192f628c",
+      "newSha256": "f27b29f62d0b7c02cbec4dbeff0cab15d47b259d6fac9e00bb8023fabc5fdf88",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/units-area.html",
+      "oldSha256": "e17518df71a05bbc991121fdc4d17c89936ad92e94afce9d76ab97c486821c9f",
+      "newSha256": "f6d96424a631a7d576d8c0a956828a929c195ab91f733a6e9a44607a1d1d4ae2",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    },
+    {
+      "path": "trainers/oge-basics/units-length-time.html",
+      "oldSha256": "6e02bc83b58ecccd51e7d4f935c6d5606f6c775fbea1aeaa6a7d234bbc7ef403",
+      "newSha256": "9edf2891fa878e1e3b43210c2613a9cb8ba8f1164e2685b6c476f25de9cc2c5b",
+      "changedLines": 1,
+      "removedAsciiSpaces": 2,
+      "eolWhitespaceOnly": true
+    }
+  ]
+}
