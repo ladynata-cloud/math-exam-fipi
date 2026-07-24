@@ -62,6 +62,7 @@ async function main() {
   if (status) throw new Error('Working tree is not clean');
 
   process.stdout.write('\nTRAINER_FACTORY_INVENTORY_V1_GATE_OK\n');
+  process.stdout.write('TRAINER_FACTORY_INVENTORY_HASH_BASIS_V1_GATE_OK\n');
 }
 
 main().catch(error => {

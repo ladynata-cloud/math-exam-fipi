@@ -36,6 +36,24 @@ The default ignored output directory is
 Volatile duration and memory measurements are excluded from the deterministic
 fingerprint. Candidate descriptors and findings are deterministic.
 
+## Hash basis
+
+Every descriptor declares one closed `hashBasis` value:
+
+- `GIT_OBJECT` for tracked repository candidates. `sourceSha256` and
+  `sizeBytes` use the exact blob bytes from the analyzed source Git `HEAD`, not
+  the checkout. Run evidence records `sourceGitHead` and `sourceGitTree`.
+- `FILESYSTEM_BYTES` for explicitly approved unpublished intake candidates.
+  Hash and size use exact raw filesystem bytes; LF and CRLF inputs are distinct.
+
+Test-only synthetic candidates use `FILESYSTEM_BYTES` semantics for their
+explicit raw buffers. No input is normalized, trimmed, or rewritten.
+
+Git-object lookup never falls back to a worktree file. A per-candidate lookup
+failure records `sourceSha256: null`, `sizeBytes: null`, an explicit
+`GIT_OBJECT_READ_FAILED` error, and a run finding while allowing independent
+candidates to complete.
+
 ## Status interpretation
 
 `CANONICAL` is an inventory classification, not publication approval.

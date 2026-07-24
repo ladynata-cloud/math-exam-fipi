@@ -50,12 +50,17 @@ async function main() {
     intakeRoot: options.intakeRoot ? path.resolve(options.intakeRoot) : null,
     outputDir: options.check ? null : outputDir
   });
-  const missingPilot = report.pilotA.filter(item => PILOT_A_PATHS.includes(item.canonicalPath) && item.error);
+  const missingPilot = report.pilotA.filter(item => (
+    PILOT_A_PATHS.includes(item.canonicalPath)
+    && (item.error || item.errors?.length)
+  ));
   if (missingPilot.length) throw new Error('PILOT_A_INCOMPLETE');
   if (!options.check) await writeInventoryOutputs(outputDir, report);
   process.stdout.write(`${JSON.stringify({
     candidates: report.findings.counts.candidates,
     errors: report.findings.counts.descriptorsWithErrors,
+    hashReadFailures: report.findings.counts.hashReadFailures,
+    referenceReadFailures: report.findings.counts.referenceReadFailures,
     releaseBlockersReported: report.findings.counts.releaseBlockers,
     fixtureVectors: fixtureResult.executed,
     deterministicFingerprint: report.deterministicFingerprint,
