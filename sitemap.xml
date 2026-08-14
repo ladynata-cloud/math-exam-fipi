@@ -1174,4 +1174,18 @@
     <priority>0.8</priority>
   </url>
   <!-- algebra7-control:end -->
+  <!-- dvi-math-18-20:start -->
+  <url>
+    <loc>https://mathexam.space/trainers/dvi/math-18-20.html</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://mathexam.space/trainers/dvi/math-18-20-video-studio.html</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <!-- dvi-math-18-20:end -->
 </urlset>

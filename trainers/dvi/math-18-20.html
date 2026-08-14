@@ -1,0 +1,1691 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ДВИ Математика · Тренажёр задач 18–20 — Mathexam.space</title>
+<style>
+:root{
+  --paper:#fafbfd; --cell:#e7edf6; --card:#ffffff; --ink:#1f2a44; --muted:#5d6a85;
+  --pen:#2f5fe3; --pen-soft:#e8eefc; --margin:#e2554d; --ok:#199a58; --ok-soft:#e7f6ee;
+  --bad:#d64545; --bad-soft:#fdecec; --warn:#b96e00; --warn-soft:#fff5e0; --line:#dfe5f0;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; color:var(--ink);
+  font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--paper);
+  background-image:linear-gradient(var(--cell) 1px,transparent 1px),linear-gradient(90deg,var(--cell) 1px,transparent 1px);
+  background-size:24px 24px;
+}
+.wrap{max-width:840px;margin:0 auto;padding:0 14px}
+h1,h2,.gt{font-family:Georgia,"Times New Roman",serif}
+
+/* ---------- шапка ---------- */
+.hero{background:var(--card);border-bottom:2px solid var(--ink);position:relative}
+.hero .wrap{padding:22px 14px 18px;position:relative}
+.hero .wrap::before{content:"";position:absolute;left:44px;top:0;bottom:0;width:2px;background:var(--margin);opacity:.55}
+.hero .in{padding-left:52px}
+.kicker{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--pen);font-weight:700}
+h1{margin:4px 0 6px;font-size:clamp(24px,4.6vw,34px);line-height:1.15}
+.sub{margin:0;color:var(--muted);max-width:60ch}
+
+/* ---------- вкладки ---------- */
+.tabs{display:flex;gap:8px;flex-wrap:wrap;padding-top:14px;padding-bottom:6px}
+.tab{
+  border:1.5px solid var(--line);background:var(--card);color:var(--ink);
+  padding:9px 14px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;
+}
+.tab.on{background:var(--pen);border-color:var(--pen);color:#fff}
+.tab:not(.on):hover{border-color:var(--pen)}
+
+main.wrap{padding-bottom:40px}
+.page{display:none}
+.page.on{display:block;animation:fadein .25s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* ---------- теория ---------- */
+details.theory{background:var(--card);border:1.5px solid var(--line);border-radius:14px;margin:12px 0;overflow:hidden}
+details.theory summary{cursor:pointer;padding:13px 16px;font-weight:700;list-style:none}
+details.theory summary::-webkit-details-marker{display:none}
+details.theory summary::before{content:"▸ ";color:var(--pen)}
+details.theory[open] summary::before{content:"▾ "}
+details.theory .tb{padding:2px 16px 16px;border-top:1px dashed var(--line)}
+.tb p{margin:10px 0}
+.ex{background:var(--pen-soft);border-radius:10px;padding:10px 14px;margin:10px 0}
+.ex .gt{font-weight:700;margin-bottom:4px}
+table.cos{border-collapse:collapse;margin:8px 0;font-size:14px;max-width:100%;display:block;overflow-x:auto}
+table.cos th,table.cos td{border:1px solid var(--line);padding:4px 9px;text-align:center;white-space:nowrap}
+table.cos th{background:var(--pen-soft)}
+
+/* ---------- шпаргалка + панель ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 4px}
+.chip{background:var(--card);border:1px dashed var(--pen);color:var(--ink);border-radius:9px;padding:5px 10px;font-size:13.5px}
+.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0}
+.lbl{color:var(--muted);font-size:14px}
+.btn{border:1.5px solid var(--pen);background:var(--pen);color:#fff;border-radius:11px;padding:10px 16px;font-size:15px;font-weight:700;cursor:pointer}
+.btn.ghost{background:var(--card);color:var(--pen)}
+.btn.small{padding:7px 12px;font-size:14px}
+.btn:hover{filter:brightness(1.05)}
+select{border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px;background:var(--card);color:var(--ink)}
+
+/* ---------- условие задачи: лист с полями ---------- */
+.stmt{background:var(--card);border:1.5px solid var(--line);border-radius:14px;margin:12px 0;position:relative;overflow:hidden}
+.stmt::before{content:"";position:absolute;left:40px;top:0;bottom:0;width:2px;background:var(--margin);opacity:.55}
+.stmt .stmt-k{position:absolute;left:0;top:12px;width:40px;text-align:center;color:var(--margin);font-weight:800;font-size:13px;line-height:1.2}
+.stmt .stmt-b{padding:14px 16px 14px 56px;font-size:17px}
+.stmt .stt{color:var(--muted);font-size:13.5px;margin-top:4px}
+
+/* ---------- прогресс ---------- */
+.dots{display:flex;align-items:center;gap:7px;margin:14px 2px 8px}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--line);display:inline-block}
+.dots i.done{background:var(--ok)}
+.dots i.cur{background:var(--card);border:3px solid var(--pen);width:14px;height:14px}
+.dtxt{color:var(--muted);font-size:13.5px;margin-left:4px}
+
+/* ---------- шаг ---------- */
+.step{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:16px;margin:10px 0}
+.q{font-size:16.5px;font-weight:700;margin-bottom:6px}
+.qn{font-weight:400}
+.opts{display:grid;gap:9px;margin-top:12px}
+.opt{
+  text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:12px;
+  padding:12px 14px;font-size:16px;color:var(--ink);cursor:pointer;line-height:1.45;
+}
+.opt:not(:disabled):hover{border-color:var(--pen);transform:translateY(-1px)}
+.opt:disabled{cursor:default;opacity:.92}
+.opt.ok{background:var(--ok-soft);border-color:var(--ok);font-weight:700}
+.opt.bad{background:var(--bad-soft);border-color:var(--bad);animation:shake .3s;opacity:.75}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.fb .good{background:var(--ok-soft);border:1.5px solid var(--ok);border-radius:10px;padding:10px 13px;margin-top:11px}
+.fb .hint{background:var(--warn-soft);border:1.5px solid #e5b567;border-radius:10px;padding:10px 13px;margin-top:11px}
+.linkbtn{background:none;border:none;color:var(--pen);text-decoration:underline;cursor:pointer;font-size:14px;padding:6px 0 0}
+.tip{background:var(--pen-soft);border-radius:10px;padding:9px 13px;margin-top:9px;font-size:15px}
+.hid{display:none}
+.nextbar{display:flex;justify-content:flex-end;margin-top:12px}
+
+/* ---------- рисунок ---------- */
+.fig{display:flex;justify-content:center;margin:12px 0 2px}
+.fig svg{width:100%;max-width:360px;height:auto}
+.v3d{position:relative;width:100%;max-width:410px;margin:0 auto;touch-action:none}
+.v3d .v3s svg{width:100%;max-width:none;height:auto;display:block;cursor:grab;user-select:none;-webkit-user-select:none}
+.v3d .v3s svg:active{cursor:grabbing}
+.v3d .rst{position:absolute;top:2px;right:2px;border:1.5px solid var(--line);background:var(--card);border-radius:9px;width:34px;height:34px;font-size:18px;line-height:1;cursor:pointer;color:var(--pen)}
+.v3d .rst:hover{border-color:var(--pen)}
+.v3d .cap{text-align:center;color:var(--muted);font-size:12.5px;margin-top:2px}
+
+/* ---------- финал ---------- */
+.win{background:var(--card);border:1.5px solid var(--ok);border-radius:14px;padding:18px;margin:12px 0}
+.stars{font-size:30px;text-align:center}
+.wmsg{text-align:center;color:var(--muted);margin:4px 0 12px}
+.ansbox{background:var(--ok-soft);border-radius:11px;padding:12px 15px;font-size:19px;text-align:center}
+.recap{margin-top:14px}
+.recap .rt{font-weight:800;margin-bottom:4px;font-family:Georgia,serif}
+.recap ol{margin:6px 0 0;padding-left:22px}
+.recap li{margin:7px 0}
+.win .nextbar{justify-content:center;gap:10px}
+
+/* ---------- математика ---------- */
+.frac{display:inline-flex;flex-direction:column;vertical-align:-0.55em;text-align:center;line-height:1.15;margin:0 2px;font-size:.95em}
+.frac>span{padding:0 4px}
+.frac>span:first-child{border-bottom:1.5px solid currentColor}
+.sys{display:flex;align-items:center;gap:6px;margin:8px 0}
+.sys .brace{font-size:44px;font-weight:300;line-height:1;color:var(--ink);font-family:Georgia,serif}
+.sys .syseq{display:flex;flex-direction:column;gap:5px;font-size:17px}
+sub,sup{font-size:.72em}
+
+/* ---------- режим записи ---------- */
+body.rec .tabs,body.rec details.theory,body.rec .chips,body.rec .toolbar,body.rec footer.wrap,body.rec .hero .sub{display:none}
+body.rec .hero .wrap{padding-bottom:12px}
+body.rec .v3d .cap{visibility:hidden}
+.recbar{
+  position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:40;
+  display:flex;align-items:center;gap:10px;background:var(--ink);color:#fff;
+  border-radius:999px;padding:8px 10px 8px 16px;font-size:14px;box-shadow:0 6px 22px rgba(31,42,68,.28)
+}
+.recbar .rdot{width:10px;height:10px;border-radius:50%;background:#ff5b5b;animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.recbar select{border:none;border-radius:9px;padding:5px 8px;font-size:13.5px}
+.recbar .btn{border-color:#fff;background:#fff;color:var(--ink);padding:6px 12px}
+@media (prefers-reduced-motion:reduce){.recbar .rdot{animation:none}}
+
+/* ---------- окно сценария ---------- */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(31,42,68,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.mbox{background:var(--card);border-radius:16px;padding:16px;width:100%;max-width:680px;max-height:86vh;display:flex;flex-direction:column;gap:10px}
+.mhead{display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:Georgia,serif;font-size:17px}
+.mnote{margin:0;color:var(--muted);font-size:13.5px}
+.mta{flex:1;min-height:44vh;width:100%;border:1.5px solid var(--line);border-radius:11px;padding:12px;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;color:var(--ink);resize:vertical}
+.mrow{display:flex;gap:9px;flex-wrap:wrap}
+
+/* ---------- персональный прогресс ---------- */
+.progress-shell{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--card);border:1.5px solid var(--line);border-radius:14px;margin-top:12px;padding:10px 13px;box-shadow:0 4px 16px rgba(31,42,68,.07)}
+.progress-copy{display:flex;align-items:center;gap:10px;min-width:0}
+.progress-dot{width:11px;height:11px;border-radius:50%;background:var(--muted);flex:0 0 auto}
+.progress-dot.ok{background:var(--ok)}.progress-dot.wait{background:var(--warn)}.progress-dot.err{background:var(--bad)}
+.progress-title{font-weight:800}.progress-detail{color:var(--muted);font-size:13.5px}
+.progress-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.progress-link{display:inline-flex;align-items:center;border:1.5px solid var(--pen);border-radius:10px;padding:7px 10px;color:var(--pen);background:var(--card);font-size:13.5px;font-weight:750;text-decoration:none;white-space:nowrap}
+.progress-link:hover{background:var(--pen-soft)}
+
+footer.wrap{color:var(--muted);font-size:13.5px;padding:8px 14px 34px;text-align:center}
+@media (max-width:480px){
+  .stmt .stmt-b{padding-left:50px;font-size:16px}
+  .hero .in{padding-left:46px}
+  .hero .wrap::before{left:38px}
+  .stmt::before{left:36px}
+  .stmt .stmt-k{width:36px}
+  .progress-shell{align-items:stretch;flex-direction:column}.progress-actions{justify-content:stretch}.progress-link{flex:1;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){
+  .page.on,.opt.bad{animation:none}
+}
+</style>
+</head>
+<body>
+
+<header class="hero"><div class="wrap"><div class="in">
+  <div class="kicker">Гимназия ТюмГУ · ДВИ по математике · 2026</div>
+  <h1>Задачи 18–20: решаем по шагам</h1>
+  <p class="sub">На каждом шаге выбирай ответ. Ошибёшься — тренажёр объяснит, в чём дело, и даст попробовать снова. Числа в задачах каждый раз новые, тренируйся сколько хочешь.</p>
+</div></div></header>
+
+<div class="wrap">
+  <section class="progress-shell" aria-live="polite">
+    <div class="progress-copy"><i class="progress-dot" id="dviProgressDot" aria-hidden="true"></i><div>
+      <div class="progress-title" id="dviProgressTitle">Прогресс сохраняется</div>
+      <div class="progress-detail" id="dviProgressDetail">На этом устройстве. По персональной ссылке — ещё и у преподавателя.</div>
+    </div></div>
+    <div class="progress-actions">
+      <a class="progress-link" href="math-18-20-video-studio.html">🎬 Видеостудия</a>
+      <a class="progress-link" href="math-18-20-teacher.html">Выдать ученику</a>
+    </div>
+  </section>
+</div>
+
+<nav class="tabs wrap" id="tabs">
+  <button class="tab on" data-tab="t18">18 · Тригонометрия</button>
+  <button class="tab" data-tab="t19">19 · Система с log</button>
+  <button class="tab" data-tab="t20">20 · Пирамида</button>
+</nav>
+
+<main class="wrap">
+
+<!-- ================= 18 ================= -->
+<section id="t18" class="page on">
+  <details class="theory"><summary>📖 Как решаются такие задачи + разбор примера</summary><div class="tb">
+    <p><b>План из 4 шагов:</b> 1) сделать замену t = cos x; 2) решить обычное квадратное уравнение; 3) выбросить корни, которые не попадают в отрезок [−1; 1] — ведь косинус других значений не принимает; 4) вернуться к x.</p>
+    <div class="ex"><div class="gt">Пример: 2cos²x − 3cos x − 2 = 0</div>
+      Замена t = cos x: &nbsp;2t² − 3t − 2 = 0.<br>
+      D = (−3)² − 4·2·(−2) = 9 + 16 = 25, &nbsp;√D = 5.<br>
+      t = (3 ± 5)/4, то есть t = 2 или t = −<span class="frac"><span>1</span><span>2</span></span>.<br>
+      t = 2 не подходит: cos x не бывает больше 1. Остаётся cos x = −<span class="frac"><span>1</span><span>2</span></span>.<br>
+      Ответ: x = ±<span class="frac"><span>2π</span><span>3</span></span> + 2πk, k ∈ ℤ.
+    </div>
+    <p><b>Табличные значения косинуса</b> (пригодятся на последнем шаге):</p>
+    <table class="cos">
+      <tr><th>x</th><td>0</td><td>π/6</td><td>π/4</td><td>π/3</td><td>π/2</td><td>2π/3</td><td>3π/4</td><td>5π/6</td><td>π</td></tr>
+      <tr><th>cos x</th><td>1</td><td>√3/2</td><td>√2/2</td><td>1/2</td><td>0</td><td>−1/2</td><td>−√2/2</td><td>−√3/2</td><td>−1</td></tr>
+    </table>
+  </div></details>
+  <div class="chips">
+    <span class="chip">Замена: t = cos x</span>
+    <span class="chip">−1 ≤ cos x ≤ 1</span>
+    <span class="chip">D = b² − 4ac</span>
+    <span class="chip">t = (−b ± √D) / 2a</span>
+    <span class="chip">cos x = a ⇒ x = ±arccos a + 2πk</span>
+  </div>
+  <div class="toolbar">
+    <button class="btn" data-new="t18">🎲 Новый вариант</button>
+    <span class="lbl">задачи с карточек:</span>
+    <button class="btn ghost small" data-tab2="t18" data-preset="1">№1</button>
+    <button class="btn ghost small" data-tab2="t18" data-preset="2">№2</button>
+    <button class="btn ghost small" data-tab2="t18" data-preset="3">№3</button>
+    <button class="btn ghost small" data-play="t18" title="Тренажёр сам пройдёт задачу — удобно записывать экран">🎬 Автопроход</button>
+    <button class="btn ghost small" data-script="t18" title="Текст для записи голоса или ИИ-озвучки">📝 Сценарий озвучки</button>
+  </div>
+  <div id="tr18"></div>
+</section>
+
+<!-- ================= 19 ================= -->
+<section id="t19" class="page">
+  <details class="theory"><summary>📖 Как решаются такие задачи + разбор примера</summary><div class="tb">
+    <p><b>Главная идея.</b> Логарифм убирается по определению: <b>log<sub>b</sub> A = c &nbsp;⇔&nbsp; A = b<sup>c</sup></b>. После этого остаются два обычных линейных уравнения.</p>
+    <div class="ex"><div class="gt">Пример: x + 2y = 10 и log₂(x + y) = 3</div>
+      По определению: x + y = 2³ = 8.<br>
+      Система: x + 2y = 10 и x + y = 8. Вычитаем из первого второе: y = 2.<br>
+      Тогда x = 8 − y = 6.<br>
+      Проверка ОДЗ: под логарифмом x + y = 8 &gt; 0 — всё честно.<br>
+      Ответ: (6; 2).
+    </div>
+    <p><b>Не забывай ОДЗ:</b> выражение под логарифмом обязано быть положительным. Проверка занимает одну строчку, а на экзамене спасает баллы.</p>
+  </div></details>
+  <div class="chips">
+    <span class="chip">log<sub>b</sub> A = c ⇔ A = b<sup>c</sup></span>
+    <span class="chip">ОДЗ: под log только положительное</span>
+    <span class="chip">Приём: вычесть одно уравнение из другого</span>
+    <span class="chip">Ответ записываем парой (x; y)</span>
+  </div>
+  <div class="toolbar">
+    <button class="btn" data-new="t19">🎲 Новый вариант</button>
+    <span class="lbl">задачи с карточек:</span>
+    <button class="btn ghost small" data-tab2="t19" data-preset="1">№1</button>
+    <button class="btn ghost small" data-tab2="t19" data-preset="2">№2</button>
+    <button class="btn ghost small" data-tab2="t19" data-preset="3">№3</button>
+    <button class="btn ghost small" data-play="t19" title="Тренажёр сам пройдёт задачу — удобно записывать экран">🎬 Автопроход</button>
+    <button class="btn ghost small" data-script="t19" title="Текст для записи голоса или ИИ-озвучки">📝 Сценарий озвучки</button>
+  </div>
+  <div id="tr19"></div>
+</section>
+
+<!-- ================= 20 ================= -->
+<section id="t20" class="page">
+  <details class="theory"><summary>📖 Как решаются такие задачи + формулы</summary><div class="tb">
+    <p><b>База:</b> объём любой пирамиды V = <span class="frac"><span>1</span><span>3</span></span>·S<sub>осн</sub>·h. Значит, весь план — найти площадь основания и высоту.</p>
+    <p><b>Полезные формулы.</b> Равносторонний треугольник: S = <span class="frac"><span>√3</span><span>4</span></span>a², радиус вписанной окружности r = <span class="frac"><span>a</span><span>2√3</span></span>. Прямоугольный треугольник с катетами a, b и гипотенузой c: S = <span class="frac"><span>ab</span><span>2</span></span>, r = <span class="frac"><span>a + b − c</span><span>2</span></span>.</p>
+    <p><b>Два ключевых факта.</b> Двугранный угол при основании — это угол между боковой гранью и основанием, он «живёт» в треугольнике из высоты SO и отрезка OM ⊥ стороне. Если все грани наклонены к основанию под одним углом, вершина проецируется в центр <i>вписанной</i> окружности (а если равны боковые рёбра — в центр <i>описанной</i>).</p>
+    <div class="ex"><div class="gt">Пример: правильная пирамида, h = 6, угол при основании 45°</div>
+      tan 45° = SO/OM ⇒ OM = r = 6. Сторона основания a = 2√3·r = 12√3.<br>
+      S = <span class="frac"><span>√3</span><span>4</span></span>·(12√3)² = 108√3. &nbsp;V = <span class="frac"><span>1</span><span>3</span></span>·108√3·6 = 216√3.
+    </div>
+  </div></details>
+  <div class="chips">
+    <span class="chip">V = ⅓·S·h</span>
+    <span class="chip">S = √3a²/4</span>
+    <span class="chip">S = ab/2</span>
+    <span class="chip">r = a/(2√3)</span>
+    <span class="chip">r = (a+b−c)/2</span>
+    <span class="chip">tan α = SO/OM</span>
+  </div>
+  <div class="toolbar">
+    <button class="btn" data-new="t20">🎲 Новый вариант</button>
+    <select id="sub20">
+      <option value="rand">случайный тип</option>
+      <option value="R">двугранный угол при основании</option>
+      <option value="P">основание — прямоугольный △</option>
+      <option value="C">прямые углы при вершине</option>
+    </select>
+  </div>
+  <div class="toolbar">
+    <span class="lbl">задачи с карточек:</span>
+    <button class="btn ghost small" data-tab2="t20" data-preset="1">№1</button>
+    <button class="btn ghost small" data-tab2="t20" data-preset="2">№2</button>
+    <button class="btn ghost small" data-tab2="t20" data-preset="3">№3</button>
+    <button class="btn ghost small" data-play="t20" title="Тренажёр сам пройдёт задачу — удобно записывать экран">🎬 Автопроход</button>
+    <button class="btn ghost small" data-script="t20" title="Текст для записи голоса или ИИ-озвучки">📝 Сценарий озвучки</button>
+  </div>
+  <div id="tr20"></div>
+</section>
+
+</main>
+<footer class="wrap">Вариант генерируется случайно — можно решать бесконечно. Ошибки при тренировке — это нормально: именно на них учатся.</footer>
+<script>
+'use strict';
+/* ДВИ Математика · тренажёр задач 18–20 */
+
+/* ================= персональный прогресс ================= */
+var DVI_TRAINER_ID='dvi-math-18-20';
+var DVI_STORAGE_KEY='mathExam.dvi18_20.v1';
+var DVI_STUDENT_CODE_PREFIX='mathExamStudentAccess.v1.';
+var DVI_PROGRESS_API=/^(localhost|127\.0\.0\.1)$/.test(window.location.hostname)
+  ?'http://127.0.0.1:3000':'https://mathexam-board-ladynata.amvera.io';
+var DVI_ASSIGNMENT_RE=/^[A-Za-z0-9_-]{10,64}$/;
+var DVI_CODE_RE=/^[A-Za-z0-9_-]{32,256}$/;
+var DVI_STATE_RANK={clean:3,helped:2,seen:1};
+var DVI_TOPICS={
+  t18:{id:'t1-18',line:1},
+  t19:{id:'t1-19',line:1},
+  t20:{id:'t2-20',line:2}
+};
+
+function dviLocalGet(key){try{return localStorage.getItem(key)||'';}catch(_){return '';}}
+function dviLocalSet(key,value){try{localStorage.setItem(key,value);return true;}catch(_){return false;}}
+function dviReadAssignment(){
+  var url;
+  try{url=new URL(window.location.href);}catch(_){return{assignmentId:'',studentCode:'',invalid:true};}
+  var rawId=url.searchParams.get('assignment')||'';
+  var assignmentId=DVI_ASSIGNMENT_RE.test(rawId)?rawId:'';
+  var fragment=new URLSearchParams(url.hash.replace(/^#/,''));
+  var fragmentCode=fragment.get('student')||'';
+  var hadStudent=fragment.has('student');
+  var studentCode='';
+  if(assignmentId&&DVI_CODE_RE.test(fragmentCode)){
+    studentCode=fragmentCode;dviLocalSet(DVI_STUDENT_CODE_PREFIX+assignmentId,studentCode);
+  }else if(assignmentId&&!hadStudent){
+    studentCode=dviLocalGet(DVI_STUDENT_CODE_PREFIX+assignmentId);
+    if(!DVI_CODE_RE.test(studentCode))studentCode='';
+  }
+  if(hadStudent){try{history.replaceState(null,'',url.pathname+url.search);}catch(_){}}
+  return{assignmentId:assignmentId,studentCode:studentCode,
+    invalid:(!!rawId&&!assignmentId)||(hadStudent&&!DVI_CODE_RE.test(fragmentCode))};
+}
+function dviReadStored(key){try{return JSON.parse(dviLocalGet(key)||'{}')||{};}catch(_){return {};}}
+function dviStronger(current,incoming){
+  if(!current)return incoming||null;if(!incoming)return current;
+  return DVI_STATE_RANK[incoming]>DVI_STATE_RANK[current]?incoming:current;
+}
+function dviNormalizeProgress(value){
+  var raw=value&&typeof value==='object'?value:{};var tasks={};
+  Object.keys(DVI_TOPICS).forEach(function(tab){
+    var meta=DVI_TOPICS[tab],item=raw.tasks&&raw.tasks[meta.id];if(!item||typeof item!=='object')return;
+    var state=['seen','helped','clean'].indexOf(item.state)>=0?item.state:null;
+    var attempts=Math.max(0,Math.floor(Number(item.attempts)||0));
+    tasks[meta.id]={line:meta.line,state:state,attempts:attempts,
+      errors:Math.min(attempts,Math.max(0,Math.floor(Number(item.errors)||0))),
+      hints:Math.max(0,Math.floor(Number(item.hints)||0))};
+  });
+  return{tasks:tasks,runs:Math.max(0,Math.floor(Number(raw.runs)||0)),
+    best:Math.min(3,Math.max(0,Math.floor(Number(raw.best)||0))),passed:!!raw.passed};
+}
+
+var dviAssignment=dviReadAssignment();
+var DVI_LOCAL_KEY=DVI_STORAGE_KEY+(dviAssignment.assignmentId?'@'+dviAssignment.assignmentId:'');
+var dviStored=dviReadStored(DVI_LOCAL_KEY);
+var dviProgress=dviNormalizeProgress(dviStored.progress);
+var dviSync={ready:false,dirty:false,syncing:false,version:0,retry:null,debounce:null,studentLabel:'',lastActivityAt:''};
+
+function dviSaveLocal(){dviLocalSet(DVI_LOCAL_KEY,JSON.stringify({progress:dviProgress}));}
+function dviEnsureTopic(tab){
+  var meta=DVI_TOPICS[tab];if(!meta)return null;
+  if(!dviProgress.tasks[meta.id])dviProgress.tasks[meta.id]={line:meta.line,state:null,attempts:0,errors:0,hints:0};
+  return dviProgress.tasks[meta.id];
+}
+function dviScheduleSync(delay){
+  if(!dviAssignment.assignmentId||!dviAssignment.studentCode)return;
+  dviSync.dirty=true;if(!dviSync.ready)return;
+  clearTimeout(dviSync.debounce);dviSync.debounce=setTimeout(dviSyncNow,delay==null?700:delay);
+}
+function dviCommit(){dviSaveLocal();dviSync.version++;dviScheduleSync(700);}
+function dviRecordAttempt(tab){var task=dviEnsureTopic(tab);if(!task)return;task.state=dviStronger(task.state,'seen');task.attempts++;dviCommit();}
+function dviRecordError(tab){var task=dviEnsureTopic(tab);if(!task)return;task.errors++;if(task.errors>task.attempts)task.attempts=task.errors;dviCommit();}
+function dviRecordHint(tab){var task=dviEnsureTopic(tab);if(!task)return;task.state=dviStronger(task.state,'seen');task.hints++;dviCommit();}
+function dviCompleteTopic(tab,clean){
+  var task=dviEnsureTopic(tab);if(!task)return;task.state=dviStronger(task.state,clean?'clean':'helped');
+  dviProgress.runs++;
+  var solved=Object.keys(dviProgress.tasks).filter(function(id){var state=dviProgress.tasks[id].state;return state==='clean'||state==='helped';}).length;
+  dviProgress.best=Math.max(dviProgress.best,solved);if(solved>=3)dviProgress.passed=true;dviCommit();
+}
+function dviSnapshot(){
+  var tasks={};Object.keys(dviProgress.tasks).sort().forEach(function(id){
+    var item=dviProgress.tasks[id],line=Number(/^t(\d+)-/.exec(id)[1]);
+    var attempts=Math.max(0,Math.floor(Number(item.attempts)||0));
+    tasks[id]={line:line,state:item.state||null,attempts:attempts,
+      errors:Math.min(attempts,Math.max(0,Math.floor(Number(item.errors)||0))),
+      hints:Math.max(0,Math.floor(Number(item.hints)||0))};
+  });
+  return{schemaVersion:1,tasks:tasks,drill:{runs:dviProgress.runs,best:dviProgress.best,passed:dviProgress.passed}};
+}
+function dviMergeRemote(remote){
+  if(!remote||remote.schemaVersion!==1||!remote.tasks||!remote.drill)throw new Error('PROGRESS_REMOTE_INVALID');
+  Object.keys(remote.tasks).forEach(function(id){
+    var tab=null;Object.keys(DVI_TOPICS).forEach(function(key){if(DVI_TOPICS[key].id===id)tab=key;});
+    var meta=tab&&DVI_TOPICS[tab],incoming=remote.tasks[id];
+    if(!meta||incoming.line!==meta.line)throw new Error('PROGRESS_REMOTE_TASK_INVALID');
+    var task=dviEnsureTopic(tab);task.state=dviStronger(task.state,incoming.state);
+    task.attempts=Math.max(task.attempts,incoming.attempts||0);task.errors=Math.max(task.errors,incoming.errors||0);task.hints=Math.max(task.hints,incoming.hints||0);
+  });
+  dviProgress.runs=Math.max(dviProgress.runs,remote.drill.runs||0);
+  dviProgress.best=Math.max(dviProgress.best,remote.drill.best||0);
+  dviProgress.passed=dviProgress.passed||!!remote.drill.passed;dviSaveLocal();
+}
+function dviStatus(kind,title,detail){
+  var dot=document.getElementById('dviProgressDot'),t=document.getElementById('dviProgressTitle'),d=document.getElementById('dviProgressDetail');
+  if(dot)dot.className='progress-dot'+(kind?' '+kind:'');if(t)t.textContent=title;if(d)d.textContent=detail;
+}
+function dviRequest(path,options){
+  options=options||{};var headers={Authorization:'Bearer '+dviAssignment.studentCode};
+  if(options.body!==undefined)headers['Content-Type']='application/json';
+  return fetch(DVI_PROGRESS_API+path,{method:options.method||'GET',headers:headers,cache:'no-store',credentials:'omit',keepalive:!!options.keepalive,
+    body:options.body===undefined?undefined:JSON.stringify(options.body)}).then(function(response){
+      return response.json().catch(function(){return {};}).then(function(body){
+        if(!response.ok){var error=new Error(body.error||'PROGRESS_REQUEST_FAILED');error.status=response.status;throw error;}return body;
+      });
+    });
+}
+function dviHumanTime(value){if(!value)return'';try{return new Intl.DateTimeFormat('ru-RU',{dateStyle:'short',timeStyle:'short'}).format(new Date(value));}catch(_){return value;}}
+function dviSyncNow(){
+  if(!dviSync.ready||!dviSync.dirty||dviSync.syncing)return;
+  dviSync.syncing=true;var version=dviSync.version;
+  dviStatus('wait','Сохраняю прогресс',dviSync.studentLabel?'Ученик: '+dviSync.studentLabel:'Персональное задание');
+  dviRequest('/api/progress/assignments/'+dviAssignment.assignmentId,{method:'PUT',body:{trainerId:DVI_TRAINER_ID,progress:dviSnapshot()}}).then(function(result){
+    if(result.trainerId!==DVI_TRAINER_ID||result.assignmentId!==dviAssignment.assignmentId)throw new Error('PROGRESS_ASSIGNMENT_MISMATCH');
+    dviSync.lastActivityAt=result.lastActivityAt||result.updatedAt||'';if(version===dviSync.version)dviSync.dirty=false;
+    dviStatus('ok','Прогресс сохранён у преподавателя',(dviSync.studentLabel?'Ученик: '+dviSync.studentLabel+'. ':'')+(dviSync.lastActivityAt?'Обновлено '+dviHumanTime(dviSync.lastActivityAt):''));
+  }).catch(function(error){
+    dviSync.dirty=true;var denied=error&&(error.status===401||error.status===403||error.status===404||error.status===422);
+    dviStatus(denied?'err':'wait',denied?'Персональная ссылка не принята':'Сохранено на этом устройстве',
+      denied?'Откройте исходную ссылку преподавателя ещё раз.':'Связь с сервером недоступна — повторю автоматически.');
+    if(!denied){clearTimeout(dviSync.retry);dviSync.retry=setTimeout(dviSyncNow,10000);}
+  }).then(function(){dviSync.syncing=false;if(dviSync.dirty&&version!==dviSync.version)dviScheduleSync(250);});
+}
+function dviStartProgress(){
+  if(!dviAssignment.assignmentId){
+    if(dviAssignment.invalid)dviStatus('err','Персональная ссылка некорректна','Прогресс остаётся только на этом устройстве.');
+    else dviStatus('ok','Самостоятельный режим','Прогресс сохраняется на этом устройстве.');return;
+  }
+  if(!dviAssignment.studentCode){dviStatus('err','В персональной ссылке нет кода доступа','Попросите преподавателя скопировать ссылку целиком.');return;}
+  dviStatus('wait','Подключаю персональное задание','Код уже убран из адресной строки.');
+  dviRequest('/api/progress/assignments/'+dviAssignment.assignmentId).then(function(result){
+    if(result.trainerId!==DVI_TRAINER_ID||result.assignmentId!==dviAssignment.assignmentId)throw new Error('PROGRESS_ASSIGNMENT_MISMATCH');
+    dviMergeRemote(result.progress);dviSync.studentLabel=result.studentLabel||'';dviSync.lastActivityAt=result.lastActivityAt||result.updatedAt||'';dviSync.ready=true;
+    dviStatus('ok','Персональное задание подключено',(dviSync.studentLabel?'Ученик: '+dviSync.studentLabel+'. ':'')+'Прогресс видит преподаватель.');dviScheduleSync(0);
+  }).catch(function(error){
+    var denied=error&&(error.status===401||error.status===403||error.status===404||error.status===422);
+    dviStatus(denied?'err':'wait',denied?'Персональная ссылка не принята':'Сервер прогресса временно недоступен',
+      denied?'Попросите преподавателя выдать новую ссылку.':'Можно работать: всё сохранится на устройстве и синхронизируется позже.');
+    if(!denied){clearTimeout(dviSync.retry);dviSync.retry=setTimeout(dviStartProgress,10000);}
+  });
+}
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')dviSyncNow();});
+setInterval(function(){if(dviSync.dirty)dviSyncNow();},30000);
+
+/* ================= утилиты ================= */
+var ri = function(a,b){ return a + Math.floor(Math.random()*(b-a+1)); };
+var pick = function(arr){ return arr[Math.floor(Math.random()*arr.length)]; };
+function shuffle(a){
+  var r=a.slice();
+  for(var i=r.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=r[i]; r[i]=r[j]; r[j]=t; }
+  return r;
+}
+function gcd(a,b){ a=Math.abs(a); b=Math.abs(b); while(b){ var t=a%b; a=b; b=t; } return a||1; }
+var PI = 'π';
+function fr(n,d){ return '<span class="frac"><span>'+n+'</span><span>'+d+'</span></span>'; }
+function norm(s){ return String(s).replace(/<[^>]*>/g,'').replace(/\s|&nbsp;/g,''); }
+
+/* число, возможно ±k/2 */
+function numTxt(x){
+  if(Number.isInteger(x)) return String(x);
+  var m = Math.round(x*2);
+  return (m<0?'−':'') + fr(Math.abs(m),2);
+}
+function numPlain(x){
+  if(Number.isInteger(x)) return String(x);
+  var m=Math.round(Math.abs(x)*2);
+  return (x<0?'−':'') + m + '/2';
+}
+function redFrac(p,q){
+  var g=gcd(p,q); p/=g; q/=g;
+  return q===1 ? String(p) : fr(p,q);
+}
+
+/* сборка вариантов ответа: 1 верный + до 3 неверных, без дублей */
+function buildOpts(correct, wrongCands){
+  var seen = {}; seen[norm(correct.h)] = 1;
+  var out = [];
+  for(var i=0;i<wrongCands.length;i++){
+    var w = wrongCands[i];
+    if(!w || !w.h) continue;
+    var k = norm(w.h);
+    if(!k || seen[k]) continue;
+    seen[k]=1;
+    out.push({h:w.h, ok:0, hint:w.hint||''});
+    if(out.length===3) break;
+  }
+  var plain = String(correct.h).indexOf('<')===-1 ? String(correct.h) : null;
+  var lastNum = plain ? plain.replace(/−/g,'-').match(/-?\d+(?=\D*$)/) : null;
+  var d = 2;
+  while(out.length<2 && lastNum && d<15){
+    var nv = parseInt(lastNum[0],10)+d;
+    var nvTxt = nv<0 ? ('−'+(-nv)) : String(nv);
+    var cand = plain.replace(/(−|-)?\d+(?=\D*$)/, nvTxt);
+    var ck = norm(cand);
+    if(!seen[ck]){ seen[ck]=1; out.push({h:cand, ok:0, hint:''}); }
+    d += 3;
+  }
+  return shuffle([{h:correct.h, ok:1, exp:correct.exp||''}].concat(out));
+}
+
+/* значения вида c или c·√3 */
+function V3(c){ return {c:c, r3:true}; }
+function VI(c){ return {c:c, r3:false}; }
+function vt(x){ return x.r3 ? ((x.c===1?'':x.c)+'√3') : String(x.c); }
+function mulRt3(x){ return x.r3 ? VI(3*x.c) : V3(x.c); }
+function scale(x,k){ return {c:x.c*k, r3:x.r3}; }
+function flip(x){ return {c:x.c, r3:!x.r3}; }
+
+/* ================= SVG: геометрия ================= */
+function P(x,y){ return [x,y]; }
+function seg(A,B,cls){ return '<line x1="'+A[0]+'" y1="'+A[1]+'" x2="'+B[0]+'" y2="'+B[1]+'" class="'+cls+'"/>'; }
+function dot(A){ return '<circle cx="'+A[0]+'" cy="'+A[1]+'" r="3.4" fill="var(--ink)"/>'; }
+function txt(x,y,s,cls){ return '<text x="'+x+'" y="'+y+'" class="'+(cls||'')+'">'+s+'</text>'; }
+var SVG_CSS = '<style>.e{stroke:var(--ink);stroke-width:2;fill:none}.d{stroke:var(--muted);stroke-width:1.6;fill:none;stroke-dasharray:5 5}.p{stroke:var(--pen);stroke-width:2.4;fill:none}.pd{stroke:var(--pen);stroke-width:2;fill:none;stroke-dasharray:5 5}.m{stroke:var(--margin);stroke-width:2;fill:none}text{font:13px system-ui,sans-serif;fill:var(--ink)}.lb{font-weight:700}.ac{fill:var(--pen);font-weight:700}.mu{fill:var(--muted)}</style>';
+
+/* единичная окружность: cos x = t (t = ±1/2) */
+function unitCircleSVG(t){
+  var cx=150, cy=128, R=96;
+  var th=Math.acos(t);
+  var x1=cx+R*Math.cos(th), y1=cy-R*Math.sin(th), y2=cy+R*Math.sin(th);
+  var xv=cx+R*t;
+  var lab = t>0 ? [fr2('π','3'), fr2('−π','3')] : [fr2('2π','3'), fr2('−2π','3')];
+  function fr2(n,d){ return n+'/'+d; }
+  var s='<svg viewBox="0 0 300 268" xmlns="http://www.w3.org/2000/svg">'+SVG_CSS;
+  s+=seg(P(cx-R-18,cy),P(cx+R+18,cy),'e')+seg(P(cx,cy+R+14),P(cx,cy-R-14),'e');
+  s+=txt(cx+R+8,cy+16,'x','mu')+txt(cx+8,cy-R-4,'y','mu');
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" class="e"/>';
+  s+=seg(P(xv,y1),P(xv,y2),'d');
+  s+=seg(P(cx,cy),P(x1,y1),'p')+seg(P(cx,cy),P(x1,y2),'p');
+  s+=dot(P(x1,y1))+dot(P(x1,y2));
+  s+='<circle cx="'+xv+'" cy="'+cy+'" r="3.4" fill="var(--margin)"/>';
+  s+=txt(xv-8, cy+(t>0?20:20), numPlain(t), 'lb');
+  s+=txt(x1+(t>0?7:-58), y1-6, lab[0], 'ac');
+  s+=txt(x1+(t>0?7:-70), y2+16, lab[1], 'ac');
+  s+=txt(16,258,'cos x = '+numPlain(t)+' — две точки на окружности','mu');
+  return s+'</svg>';
+}
+
+/* ================= 3D-движок (стиль GeoGebra) ================= */
+var CSS3D = '<style>text{font:13.5px system-ui,sans-serif;fill:#1f2a44}.lb{font-weight:700;font-size:14.5px}.ac{fill:#2f5fe3;font-weight:700}.mu{fill:#5d6a85}.fL{fill:rgba(47,95,227,0.10);stroke:#1f2a44;stroke-width:1.8;stroke-linejoin:round}.fB{fill:rgba(47,95,227,0.20);stroke:#1f2a44;stroke-width:1.8;stroke-linejoin:round}.s3{stroke:#2f5fe3;stroke-width:2.6;fill:none}.d3{stroke:#2f5fe3;stroke-width:2.2;fill:none;stroke-dasharray:6 5}.g3{stroke:#a7b1c6;stroke-width:1.2;fill:none;stroke-dasharray:4 4}.c3{stroke:#5d6a85;stroke-width:1.6;fill:none;stroke-dasharray:5 4}.m3{stroke:#e2554d;stroke-width:2.2;fill:none}.k3{stroke:#1f2a44;stroke-width:1.5;fill:none}</style>';
+
+function v3sub(a,b){ return [a[0]-b[0], a[1]-b[1], a[2]-b[2]]; }
+function v3add(a,b){ return [a[0]+b[0], a[1]+b[1], a[2]+b[2]]; }
+function v3mul(a,k){ return [a[0]*k, a[1]*k, a[2]*k]; }
+function v3len(a){ return Math.hypot(a[0],a[1],a[2]); }
+function v3norm(a){ var L=v3len(a)||1; return [a[0]/L, a[1]/L, a[2]/L]; }
+
+/* один кадр сцены при углах поворота th (вокруг вертикали) и ph (наклон) */
+function render3DFrame(spec, th, ph){
+  var W=380, Hh=310;
+  var ct=Math.cos(th), st=Math.sin(th), cp=Math.cos(ph), sp=Math.sin(ph);
+  var maxR=0.001, k;
+  for(k in spec.pts){ maxR=Math.max(maxR, v3len(spec.pts[k])); }
+  var s=Math.min(W,Hh)*0.5*0.78/maxR, cx=W/2, cy=Hh/2+10;
+  function pr(p){
+    var x1=p[0]*ct-p[1]*st, y1=p[0]*st+p[1]*ct, z1=p[2];
+    var depth=y1*cp - z1*sp;
+    var up=y1*sp + z1*cp;
+    return [cx+x1*s, cy-up*s, depth];
+  }
+  function T(x,y,t,cls){ return '<text x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" class="'+(cls||'')+'">'+t+'</text>'; }
+  function L(A,B,cls){ return '<line x1="'+A[0].toFixed(1)+'" y1="'+A[1].toFixed(1)+'" x2="'+B[0].toFixed(1)+'" y2="'+B[1].toFixed(1)+'" class="'+cls+'"/>'; }
+  var P2={}; for(k in spec.pts) P2[k]=pr(spec.pts[k]);
+  var cg3=[0,0,0], n3=0;
+  for(k in spec.pts){ cg3=v3add(cg3,spec.pts[k]); n3++; }
+  cg3=v3mul(cg3,1/n3);
+  function labelPos(p3, ex){
+    var d=v3sub(p3,cg3), Ld=v3len(d);
+    if(Ld<0.22) return null;
+    return pr(v3add(p3, v3mul(d,(ex||0.5)/Ld)));
+  }
+  var out='<svg viewBox="0 0 '+W+' '+Hh+'" xmlns="http://www.w3.org/2000/svg">'+CSS3D;
+
+  /* призрачный куб */
+  if(spec.ghost){
+    for(var g=0; g<spec.ghost.length; g++){
+      out+=L(pr(spec.ghost[g][0]), pr(spec.ghost[g][1]), 'g3');
+    }
+  }
+  /* грани: дальние рисуем первыми */
+  var faces=[];
+  for(var fi=0; fi<spec.faces.length; fi++){
+    var f=spec.faces[fi], d=0, ps=[];
+    for(var vi=0; vi<f.v.length; vi++){ var q=P2[f.v[vi]]; d+=q[2]; ps.push(q[0].toFixed(1)+','+q[1].toFixed(1)); }
+    faces.push({d:d/f.v.length, s:ps.join(' '), cls:f.cls||'fL'});
+  }
+  faces.sort(function(a,b){ return b.d-a.d; });
+  for(fi=0; fi<faces.length; fi++) out+='<polygon points="'+faces[fi].s+'" class="'+faces[fi].cls+'"/>';
+
+  /* вписанная окружность в плоскости основания */
+  if(spec.circle){
+    var cp2='';
+    for(var ci=0; ci<=30; ci++){
+      var an=ci/30*2*Math.PI;
+      var pw=[spec.circle.c[0]+spec.circle.r*Math.cos(an), spec.circle.c[1]+spec.circle.r*Math.sin(an), spec.circle.c[2]];
+      var pq=pr(pw);
+      cp2+=(ci?'L':'M')+pq[0].toFixed(1)+','+pq[1].toFixed(1);
+    }
+    out+='<path d="'+cp2+'" class="c3"/>';
+  }
+  /* спецотрезки (высота, радиус, апофема) + подписи */
+  if(spec.segs){
+    for(var si=0; si<spec.segs.length; si++){
+      var sg=spec.segs[si], A2=P2[sg.a], B2=P2[sg.b];
+      out+=L(A2,B2,sg.cls);
+      if(sg.lab){
+        var t5=(sg.labAt!=null?sg.labAt:0.5);
+        var mx=A2[0]*(1-t5)+B2[0]*t5, my=A2[1]*(1-t5)+B2[1]*t5;
+        var dx=B2[0]-A2[0], dy=B2[1]-A2[1], Ln=Math.hypot(dx,dy)||1;
+        var sd=sg.side||1;
+        out+=T(mx-dy/Ln*13*sd-6, my+dx/Ln*13*sd+5, sg.lab, 'ac');
+      }
+    }
+  }
+  /* подписи рёбер (a, b, c, ℓ) */
+  if(spec.elabels){
+    for(var ei=0; ei<spec.elabels.length; ei++){
+      var el2=spec.elabels[ei];
+      var at=(el2.at!=null?el2.at:0.5);
+      var pa=spec.pts[el2.a], pb=spec.pts[el2.b];
+      var m4=[pa[0]*(1-at)+pb[0]*at, pa[1]*(1-at)+pb[1]*at, pa[2]*(1-at)+pb[2]*at];
+      var lp4=labelPos(m4,0.78);
+      if(!lp4){ var A3=P2[el2.a], B3=P2[el2.b]; lp4=[(A3[0]+B3[0])/2+14,(A3[1]+B3[1])/2-6]; }
+      out+=T(lp4[0]-10, lp4[1]+5, el2.t, el2.cls||'ac');
+    }
+  }
+  /* дуга угла в 3D (сферическая интерполяция) */
+  if(spec.arc){
+    var ar=spec.arc, Pw=spec.pts[ar.at];
+    var u=v3norm(v3sub(spec.pts[ar.u],Pw)), v=v3norm(v3sub(spec.pts[ar.v],Pw));
+    var duv=Math.max(-1,Math.min(1,u[0]*v[0]+u[1]*v[1]+u[2]*v[2]));
+    var Om=Math.acos(duv)||0.001, rr=ar.r||0.5;
+    var pth='', dmid=null;
+    for(var ai=0; ai<=12; ai++){
+      var tt=ai/12;
+      var w1=Math.sin((1-tt)*Om)/Math.sin(Om), w2=Math.sin(tt*Om)/Math.sin(Om);
+      var dw=[u[0]*w1+v[0]*w2, u[1]*w1+v[1]*w2, u[2]*w1+v[2]*w2];
+      var pq2=pr(v3add(Pw, v3mul(dw, rr)));
+      pth+=(ai?'L':'M')+pq2[0].toFixed(1)+','+pq2[1].toFixed(1);
+      if(ai===6) dmid=dw;
+    }
+    out+='<path d="'+pth+'" class="m3"/>';
+    if(ar.lab){
+      var lq=pr(v3add(Pw, v3mul(v3norm(dmid), rr+0.5)));
+      out+=T(lq[0]-17, lq[1]+7, ar.lab, 'lb');
+    }
+  }
+  /* знаки прямых углов */
+  if(spec.ras){
+    for(var ri2=0; ri2<spec.ras.length; ri2++){
+      var ra=spec.ras[ri2], Pw2=spec.pts[ra.at];
+      var uu=v3norm(v3sub(spec.pts[ra.u],Pw2)), vv=v3norm(v3sub(spec.pts[ra.v],Pw2));
+      var sc2=ra.s||0.25;
+      var q1=pr(v3add(Pw2,v3mul(uu,sc2))), q2=pr(v3add(Pw2,v3mul(v3add(uu,vv),sc2))), q3=pr(v3add(Pw2,v3mul(vv,sc2)));
+      out+='<path d="M'+q1[0].toFixed(1)+','+q1[1].toFixed(1)+' L'+q2[0].toFixed(1)+','+q2[1].toFixed(1)+' L'+q3[0].toFixed(1)+','+q3[1].toFixed(1)+'" class="k3"/>';
+    }
+  }
+  /* точки и их подписи (сдвиг наружу от центра модели) */
+  if(spec.dots){
+    for(var di=0; di<spec.dots.length; di++){
+      var dq=P2[spec.dots[di]];
+      out+='<circle cx="'+dq[0].toFixed(1)+'" cy="'+dq[1].toFixed(1)+'" r="3.6" fill="#1f2a44"/>';
+    }
+  }
+  if(spec.labels){
+    for(var li=0; li<spec.labels.length; li++){
+      var lb=spec.labels[li], q4=P2[lb.p];
+      if(lb.fx!=null){ out+=T(q4[0]+lb.fx, q4[1]+lb.fy, lb.t, lb.cls||'lb'); continue; }
+      var lp5=labelPos(spec.pts[lb.p],0.42);
+      if(lp5) out+=T(lp5[0]-5, lp5[1]+5, lb.t, lb.cls||'lb');
+      else out+=T(q4[0]+9, q4[1]+15, lb.t, lb.cls||'lb');
+    }
+  }
+  return out+'</svg>';
+}
+
+/* --- модели трёх типов пирамид (пропорции настоящие) --- */
+function spec20R(h, alpha){
+  var t=Math.tan(alpha*Math.PI/180), S3=Math.sqrt(3);
+  return {
+    th0:-0.55, ph0:0.44,
+    pts:{ A:[S3,-1,0], B:[-S3,-1,0], C:[0,2,0], O:[0,0,0], M:[0,-1,0], S:[0,0,0.55+t*0.95] },
+    faces:[{v:['A','B','S']},{v:['B','C','S']},{v:['C','A','S']},{v:['A','B','C'],cls:'fB'}],
+    segs:[{a:'S',b:'O',cls:'d3',lab:'h = '+h,labAt:0.28},{a:'O',b:'M',cls:'d3',lab:'r',labAt:0.55,side:-1},{a:'S',b:'M',cls:'s3'}],
+    arc:{at:'M',u:'S',v:'O',r:0.55,lab:'α = '+alpha+'°'},
+    ras:[{at:'O',u:'S',v:'M',s:0.22}],
+    dots:['S','A','B','C','O','M'],
+    labels:[{p:'S',t:'S'},{p:'A',t:'A'},{p:'B',t:'B'},{p:'C',t:'C'},{p:'O',t:'O',cls:'mu',fx:9,fy:20},{p:'M',t:'M',cls:'mu'}]
+  };
+}
+function spec20P(a,b,alpha){
+  var t=Math.tan(alpha*Math.PI/180);
+  var sc=3.6/Math.max(a,b);
+  var c=Math.hypot(a,b), r=(a+b-c)/2*sc;
+  var A=[b*sc,0,0], B=[0,a*sc,0], Cv=[0,0,0];
+  var shx=(A[0]+B[0]+Cv[0])/3, shy=(A[1]+B[1]+Cv[1])/3;
+  function sh(p){ return [p[0]-shx, p[1]-shy, p[2]]; }
+  return {
+    th0:-0.75, ph0:0.78,
+    pts:{ A:sh(A), B:sh(B), C:sh(Cv), O:sh([r,r,0]), K:sh([r,0,0]), S:sh([r,r,r*(0.5+t*1.1)+0.6]) },
+    faces:[{v:['A','B','S']},{v:['B','C','S']},{v:['C','A','S']},{v:['A','B','C'],cls:'fB'}],
+    circle:{c:sh([r,r,0]), r:r},
+    segs:[{a:'S',b:'O',cls:'d3',lab:'h',labAt:0.72},{a:'O',b:'K',cls:'d3'},{a:'S',b:'K',cls:'s3'}],
+    elabels:[{a:'C',b:'B',t:'a = '+a,at:0.3},{a:'C',b:'A',t:'b = '+b},{a:'A',b:'B',t:'c',cls:'mu'}],
+    arc:{at:'K',u:'S',v:'O',r:Math.min(0.5,r*0.6),lab:'α = '+alpha+'°'},
+    ras:[{at:'C',u:'A',v:'B',s:0.3}],
+    dots:['S','A','B','C','O','K'],
+    labels:[{p:'S',t:'S'},{p:'A',t:'A'},{p:'B',t:'B'},{p:'C',t:'C'},{p:'O',t:'O',cls:'mu',fx:11,fy:18},{p:'K',t:'K',cls:'mu'}]
+  };
+}
+function spec20C(aTxt){
+  var q=1.15;
+  function cc(x,y,z){ return [(x-0.5)*2*q, (y-0.5)*2*q, (z-0.5)*2*q]; }
+  var c000=cc(0,0,0), c100=cc(1,0,0), c010=cc(0,1,0), c001=cc(0,0,1),
+      c110=cc(1,1,0), c101=cc(1,0,1), c011=cc(0,1,1), c111=cc(1,1,1);
+  return {
+    th0:0.55, ph0:0.42,
+    pts:{ S:c111, A:c011, B:c101, C:c110 },
+    ghost:[[c000,c100],[c000,c010],[c000,c001],[c100,c110],[c100,c101],[c010,c110],[c010,c011],[c001,c101],[c001,c011],[c110,c111],[c101,c111],[c011,c111]],
+    faces:[{v:['S','A','B']},{v:['S','B','C']},{v:['S','A','C']},{v:['A','B','C'],cls:'fB'}],
+    ras:[{at:'S',u:'A',v:'B',s:0.3},{at:'S',u:'B',v:'C',s:0.3}],
+    elabels:[{a:'S',b:'A',t:'ℓ'},{a:'S',b:'C',t:'ℓ'},{a:'A',b:'B',t:'a = '+aTxt}],
+    dots:['S','A','B','C'],
+    labels:[{p:'S',t:'S'},{p:'A',t:'A'},{p:'B',t:'B'},{p:'C',t:'C'}]
+  };
+}
+
+/* --- регистрация и оживление 3D-фигур --- */
+var FIG3D_REG={}, FIG3D_SEQ=0;
+function fig3d(spec){
+  FIG3D_SEQ++;
+  var id='f3d'+FIG3D_SEQ;
+  FIG3D_REG[id]=spec;
+  return '<div class="v3d" data-f3d="'+id+'"></div>';
+}
+function boot3D(scope){
+  if(typeof document==='undefined' || !document) return;
+  var els=scope.querySelectorAll('[data-f3d]');
+  for(var i=0;i<els.length;i++) init3D(els[i], FIG3D_REG[els[i].getAttribute('data-f3d')]);
+}
+function spin3D(scope, on){
+  if(typeof document==='undefined' || !document) return;
+  var els=scope.querySelectorAll('[data-f3d]');
+  for(var i=0;i<els.length;i++){ if(els[i]._spin) els[i]._spin(on); }
+}
+function init3D(el, spec){
+  if(!spec) return;
+  var th=spec.th0!=null?spec.th0:-0.55, ph=spec.ph0!=null?spec.ph0:0.44;
+  el.innerHTML='';
+  var stage=document.createElement('div'); stage.className='v3s'; el.appendChild(stage);
+  var rst=document.createElement('button'); rst.className='rst'; rst.type='button'; rst.title='Вернуть вид'; rst.textContent='⟲'; el.appendChild(rst);
+  var cap=document.createElement('div'); cap.className='cap'; cap.textContent='🖐 3D-модель: поверни её пальцем или мышью'; el.appendChild(cap);
+  function draw(){ stage.innerHTML=render3DFrame(spec,th,ph); }
+  rst.onclick=function(){ th=spec.th0!=null?spec.th0:-0.55; ph=spec.ph0!=null?spec.ph0:0.44; draw(); };
+  var spin=null;
+  el._spin=function(on){
+    if(on && !spin){ spin=setInterval(function(){ th+=0.005; draw(); }, 40); }
+    else if(!on && spin){ clearInterval(spin); spin=null; }
+  };
+  var drag=null;
+  el.addEventListener('pointerdown',function(e){
+    if(e.target===rst) return;
+    el._spin(false);
+    drag=[e.clientX,e.clientY];
+    try{ el.setPointerCapture(e.pointerId); }catch(_){ }
+    e.preventDefault();
+  });
+  el.addEventListener('pointermove',function(e){
+    if(!drag) return;
+    th+=(e.clientX-drag[0])*0.011;
+    ph+=(e.clientY-drag[1])*0.011;
+    if(ph<0.06) ph=0.06;
+    if(ph>1.45) ph=1.45;
+    drag=[e.clientX,e.clientY];
+    draw();
+  });
+  el.addEventListener('pointerup',function(){ drag=null; });
+  el.addEventListener('pointercancel',function(){ drag=null; });
+  draw();
+}
+
+/* ================= форматирование выражений ================= */
+function fmtQuad(a,b,c,v){
+  var s=(a===1?'':(a===-1?'−':a))+v.sq;
+  if(b!==0){ s+=(b<0?' − ':' + ')+((Math.abs(b)===1)?'':Math.abs(b))+v.lin; }
+  if(c!==0){ s+=(c<0?' − ':' + ')+Math.abs(c); }
+  return s+' = 0';
+}
+function plin(p,q,C){
+  var s=(p===1?'x':p+'x');
+  s+= q<0?' − ':' + ';
+  var aq=Math.abs(q);
+  s+=(aq===1?'y':aq+'y');
+  return s+' = '+C;
+}
+function logTxt(b,arg,c){ return 'log<sub>'+b+'</sub>('+arg+') = '+c; }
+function sysHTML(l1,l2){
+  return '<div class="sys"><span class="brace">{</span><span class="syseq"><span>'+l1+'</span><span>'+l2+'</span></span></div>';
+}
+function pairTxt(x,y){ return '('+x+'; '+y+')'; }
+
+/* ================= ЗАДАЧА 18 ================= */
+var PRESET18 = {1:{s:-1,t1:2}, 2:{s:-1,t1:1.5}, 3:{s:1,t1:3}};
+
+function gen18(preset){
+  var s = preset ? preset.s : pick([1,-1]);
+  var t1 = preset ? preset.t1 : pick([2,3,-2,-3,1.5,-1.5,2.5]);
+  var t0 = s/2;
+  var a,b,c;
+  if(Number.isInteger(t1)){ a=2; b=-(2*t1+s); c=s*t1; }
+  else { var m=Math.round(2*t1); a=4; b=-2*(s+m); c=s*m; }
+  var D=b*b-4*a*c, sq=Math.round(Math.sqrt(D));
+  var rA=(-b+sq)/(2*a), rB=(-b-sq)/(2*a);
+  var eqCos=fmtQuad(a,b,c,{sq:'cos²x',lin:'cos x'});
+  var eqT=fmtQuad(a,b,c,{sq:'t²',lin:'t'});
+  var t0txt=numTxt(t0), t1txt=numTxt(t1);
+  var ansTxt = (s===1)
+    ? 'x = ±'+fr(PI,3)+' + 2'+PI+'k, k ∈ ℤ'
+    : 'x = ±'+fr('2'+PI,3)+' + 2'+PI+'k, k ∈ ℤ';
+
+  var steps=[];
+  steps.push({
+    q:'В уравнении косинус встречается дважды: в квадрате и в первой степени. С чего начать?',
+    tip:'Посмотри на структуру: это «что-то в квадрате» минус «то же самое» — совсем как квадратное уравнение.',
+    opts: buildOpts(
+      {h:'Сделать замену t = cos x', exp:'Уравнение превратится в обычное квадратное относительно t.'},
+      [
+        {h:'Сделать замену t = cos²x', hint:'Тогда cos x в первой степени останется в уравнении, и проще не станет. Заменяем именно cos x.'},
+        {h:'Разделить обе части на cos x', hint:'Делить на cos x нельзя: он может оказаться равным нулю. И квадрат всё равно останется.'},
+        {h:'Сразу применить формулу корней к x', hint:'Формула корней работает для квадратного уравнения, а здесь пока стоит cos x. Сначала замена.'}
+      ])
+  });
+  steps.push({
+    q:'Выполни замену t = cos x. Какое уравнение получится?',
+    opts: buildOpts(
+      {h:eqT, exp:'Каждый cos x стал буквой t.'},
+      [
+        {h:fmtQuad(a,-b,c,{sq:'t²',lin:'t'}), hint:'Проверь знак среднего слагаемого — он должен остаться таким же, как в исходном уравнении.'},
+        {h:fmtQuad(a,b,-c,{sq:'t²',lin:'t'}), hint:'Свободный член переносить не нужно — просто переписываем уравнение с t. Сверь знаки.'},
+        {h:fmtQuad(a,b,c,{sq:'t²',lin:'cos x'}), hint:'Замену делаем во всех местах сразу: и cos²x, и cos x превращаются в t² и t.'}
+      ])
+  });
+  steps.push({
+    q:'Считаем дискриминант: D = b² − 4ac, где a = '+a+', b = '+(b<0?'−'+(-b):b)+', c = '+(c<0?'−'+(-c):c)+'. Чему равен D?',
+    tip:'D = ('+(b<0?'−'+(-b):b)+')² − 4·'+a+'·('+(c<0?'−'+(-c):c)+'). Минус на минус даёт плюс!',
+    opts: buildOpts(
+      {h:String(D), exp:'√D = '+sq+' — корень извлекается нацело, значит считаем верно.'},
+      [
+        {h:String(b*b+4*a*c), hint:'Похоже, потерялся знак: −4ac при отрицательном c превращается в «плюс». Пересчитай внимательно.'},
+        {h:String(b*b-2*a*c), hint:'В формуле коэффициент 4, а не 2: D = b² − 4ac.'},
+        {h:String(b*b-4*a), hint:'Не забудь умножить на c: D = b² − 4·a·c.'}
+      ])
+  });
+  steps.push({
+    q:'Корни: t = '+fr('−b ± √D','2a')+' = '+fr((b<0?''+(-b):'−'+b)+' ± '+sq, 2*a)+'. Что получается?',
+    opts: buildOpts(
+      {h:'t₁ = '+numTxt(rA)+', &nbsp;t₂ = '+numTxt(rB), exp:''},
+      [
+        {h:'t₁ = '+numTxt(-rA)+', &nbsp;t₂ = '+numTxt(-rB), hint:'Проверь знак перед b: в формуле стоит именно −b.'},
+        {h:'t₁ = '+numTxt((-b+sq)/a)+', &nbsp;t₂ = '+numTxt((-b-sq)/a), hint:'В знаменателе 2a, а не a. Раздели ещё на 2.'},
+        {h:'t₁ = '+numTxt(rA)+', &nbsp;t₂ = '+numTxt(-rB), hint:'Один из корней посчитан с ошибкой в знаке. Аккуратно: (−b − √D)/2a.'}
+      ])
+  });
+  steps.push({
+    q:'Вспоминаем: t — это cos x, а косинус принимает значения только от −1 до 1. Какие корни оставляем?',
+    tip:'Сравни каждый корень с единицей по модулю.',
+    opts: buildOpts(
+      {h:'Только t = '+t0txt+' — второй корень по модулю больше 1', exp:'cos x = '+t1txt+' невозможно, этот корень — посторонний.'},
+      [
+        {h:'Только t = '+t1txt, hint:'Наоборот! |'+numPlain(t1)+'| > 1, а косинус таким не бывает. Годится корень поменьше.'},
+        {h:'Оба корня', hint:'Проверь каждый: попадает ли он в отрезок [−1; 1]? Один из корней явно выпадает.'},
+        {h:'Ни один — решений нет', hint:'Не спеши: один из корней как раз лежит между −1 и 1, значит решение есть.'}
+      ])
+  });
+  var wrongAng = (s===1)
+    ? [
+        {h:'x = ±'+fr('2'+PI,3)+' + 2'+PI+'k, k ∈ ℤ', hint:'±2π/3 — это ответ для cos x = −½. У нас cos x = ½ — угол острее.'},
+        {h:'x = ±'+fr(PI,6)+' + 2'+PI+'k, k ∈ ℤ', hint:'cos(π/6) = √3/2, а не ½. Загляни в таблицу: ½ даёт угол π/3.'},
+        {h:'x = ±'+fr(PI,3)+' + '+PI+'k, k ∈ ℤ', hint:'Период косинуса 2π, поэтому прибавляем 2πk, а не πk.'},
+        {h:'x = (−1)<sup>k</sup>·'+fr(PI,3)+' + '+PI+'k, k ∈ ℤ', hint:'Формула с (−1)ᵏ — для синуса. Для косинуса ответ пишут как ±arccos + 2πk.'}
+      ]
+    : [
+        {h:'x = ±'+fr(PI,3)+' + 2'+PI+'k, k ∈ ℤ', hint:'±π/3 — это ответ для cos x = ½. У нас минус: угол тупой, во второй четверти.'},
+        {h:'x = ±'+fr('5'+PI,6)+' + 2'+PI+'k, k ∈ ℤ', hint:'cos(5π/6) = −√3/2, а не −½. По таблице −½ даёт 2π/3.'},
+        {h:'x = ±'+fr('2'+PI,3)+' + '+PI+'k, k ∈ ℤ', hint:'Период косинуса 2π, поэтому прибавляем 2πk, а не πk.'},
+        {h:'x = (−1)<sup>k</sup>·'+fr('2'+PI,3)+' + '+PI+'k, k ∈ ℤ', hint:'Формула с (−1)ᵏ — для синуса. Для косинуса пишем ±угол + 2πk.'}
+      ];
+  steps.push({
+    q:'Остался последний шаг: реши cos x = '+t0txt+'. Смотри на окружность!',
+    fig: unitCircleSVG(t0),
+    tip:'Найди на горизонтальной оси число '+numPlain(t0)+' и посмотри, каким двум точкам окружности оно отвечает.',
+    opts: buildOpts({h:ansTxt, exp:'Две симметричные точки на окружности — поэтому в ответе ±, а период добавляет 2πk.'}, wrongAng)
+  });
+
+  return {
+    badge:'Задача 18',
+    statement:'Решите уравнение: <b>'+eqCos+'</b>',
+    answer: ansTxt,
+    fig: unitCircleSVG(t0),
+    steps: steps,
+    recap:[
+      'Замена t = cos x: '+eqT+'.',
+      'D = b² − 4ac = '+D+', √D = '+sq+'.',
+      'Корни: t = '+numTxt(rA)+' и t = '+numTxt(rB)+'.',
+      'Косинус лежит в [−1; 1], поэтому t = '+t1txt+' — посторонний корень.',
+      'cos x = '+t0txt+' ⇒ '+ansTxt+'.'
+    ],
+    _dbg:{a:a,b:b,c:c,t0:t0,t1:t1,D:D}
+  };
+}
+
+/* ================= ЗАДАЧА 19 ================= */
+var PRESET19 = {
+  1:{form:'E', b:3, c:2, C:1},
+  2:{form:'A', b:2, c:3, v:2},
+  3:{form:'B', b:2, c:3, v:-3}
+};
+var F19 = {
+  A:{argS:'x + y',  lin:[1,2],  logv:[1,1],  sub:'y', mk:function(M,pv){ var y0=(pv==null)?ri(-4,9):pv;  return {x0:M-y0,  y0:y0, C:M+y0}; }},
+  B:{argS:'2x − y', lin:[3,-1], logv:[2,-1], sub:'x', mk:function(M,pv){ var x0=(pv==null)?ri(-4,9):pv;  return {x0:x0, y0:2*x0-M, C:x0+M}; }},
+  C:{argS:'x − y',  lin:[2,-1], logv:[1,-1], sub:'x', mk:function(M,pv){ var x0=(pv==null)?ri(-3,10):pv; return {x0:x0, y0:x0-M,  C:x0+M}; }},
+  D:{argS:'x + 2y', lin:[1,3],  logv:[1,2],  sub:'y', mk:function(M,pv){ var y0=(pv==null)?ri(-3,8):pv;  return {x0:M-2*y0, y0:y0, C:M+y0}; }},
+  E:{argS:'x − y',  lin:[2,-3], logv:[1,-1], sub:null, mk:function(M,pC){ var C=(pC==null)?ri(-5,9):pC; var y0=2*M-C; return {x0:y0+M, y0:y0, C:C}; }}
+};
+
+function gen19(preset){
+  var form = preset ? preset.form : pick(['A','B','C','D','E']);
+  var bc;
+  if(preset){ bc=[preset.b, preset.c]; }
+  else if(form==='E'){ bc=pick([[2,2],[2,3],[3,2]]); }
+  else { bc=pick([[2,2],[2,3],[2,3],[3,2],[3,2],[5,1]]); }
+  var b=bc[0], c=bc[1], M=Math.pow(b,c);
+  var F=F19[form];
+  var vv = F.mk(M, preset ? (form==='E'?preset.C:preset.v) : null);
+  var x0=vv.x0, y0=vv.y0, C=vv.C;
+  var linS = plin(F.lin[0], F.lin[1], C);
+  var logS = logTxt(b, F.argS, c);
+  var bs = b+'<sup>'+c+'</sup>';
+  var sysNew = sysHTML(linS, F.argS+' = '+M);
+
+  var steps=[];
+  steps.push({
+    q:'Первым делом уберём логарифм. Что означает запись '+logTxt(b,'A',c)+'?',
+    tip:'Логарифм отвечает на вопрос: «в какую степень возвести '+b+', чтобы получить A?»',
+    opts: buildOpts(
+      {h:'A = '+bs+' — «'+b+' в степени '+c+' равно A»', exp:'Это определение логарифма: log'+'<sub>'+b+'</sub>A = '+c+' ⇔ A = '+bs+'.'},
+      [
+        {h:'A = '+c+'<sup>'+b+'</sup>', hint:'Основание и показатель перепутаны: в степень возводится основание логарифма, то есть '+b+'.'},
+        {h:'A = '+b+' · '+c, hint:'Логарифм — это про степень, а не про умножение. log'+'<sub>b</sub>A = c значит A = b<sup>c</sup>.'},
+        {h:'A = '+b+' + '+c, hint:'Сложение здесь ни при чём. По определению: A = b<sup>c</sup>.'}
+      ])
+  });
+  steps.push({
+    q:'Вычисли '+bs+'.',
+    opts: buildOpts(
+      {h:String(M), exp:''},
+      [
+        {h:String(b*c), hint:'Это '+b+'·'+c+', то есть умножение. А степень — это '+b+', умноженное само на себя '+c+' раз(а).'},
+        {h:String(Math.pow(c,b)), hint:'Перепутаны основание и показатель: нужно '+bs+'.'},
+        {h:String(b+c), hint:'Это сумма, а нужна степень: '+bs+'.'},
+        {h:String(2*M), hint:'Пересчитай аккуратно: '+bs+' = '+M+'.'}
+      ])
+  });
+  steps.push({
+    q:'Значит, второе уравнение превращается в «'+F.argS+' = '+M+'». Какая система получается?',
+    opts: buildOpts(
+      {h:sysNew, exp:'Логарифма больше нет — осталась пара линейных уравнений.'},
+      [
+        {h:sysHTML(linS, F.argS+' = '+(b*c)), hint:''+bs+' — это степень, а не произведение '+b+'·'+c+'.'},
+        {h:sysHTML(linS, F.argS+' = '+c), hint:'Просто «отбросить» логарифм нельзя: правая часть становится равной '+bs+' = '+M+'.'},
+        {h:sysHTML(F.argS+' = '+M, F.argS+' = '+C), hint:'Первое уравнение системы не трогаем — оно и так линейное.'}
+      ])
+  });
+
+  if(form!=='E'){
+    var subVal = C-M;
+    var subVar = F.sub;
+    var othVar = subVar==='x' ? 'y' : 'x';
+    var othVal = subVar==='x' ? y0 : x0;
+    steps.push({
+      q:'Оба уравнения линейные. Вычти из первого уравнения второе: ('+linS.split(' = ')[0]+') − ('+F.argS+') = '+C+' − ('+M+'). Что останется?',
+      tip:'Одинаковые слагаемые сократятся, останется одна буква.',
+      opts: buildOpts(
+        {h:subVar+' = '+subVal, exp:'Одна переменная уже найдена!'},
+        [
+          {h:subVar+' = '+(M-C), hint:'Знак! Вычитаем из первого второе, значит справа '+C+' − '+M+' = '+subVal+'.'},
+          {h:othVar+' = '+subVal, hint:'Посмотри, какая буква сокращается при вычитании, а какая остаётся. Остаётся '+subVar+'.'},
+          {h:subVar+' = '+(C+M), hint:'Мы вычитаем, а не складываем: '+C+' − '+M+' = '+subVal+'.'}
+        ])
+    });
+    var secondQ, secondOk, secondWrong;
+    if(form==='A'){
+      secondQ='Подставь '+subVar+' = '+subVal+' в уравнение x + y = '+M+' и найди x.';
+      secondOk='x = '+M+' − ('+subVal+') = '+x0;
+      secondWrong=[{h:'x = '+(M+subVal), hint:'x = '+M+' − y, то есть вычитаем: '+M+' − ('+subVal+') = '+x0+'.'},
+                   {h:'x = '+(subVal-M), hint:'Не перепутай порядок: из '+M+' вычитаем y.'},
+                   {h:'x = '+(C-subVal), hint:'Удобнее подставить во второе уравнение: x = '+M+' − y = '+x0+'.'}];
+    } else if(form==='B'){
+      secondQ='Подставь x = '+subVal+' в уравнение 2x − y = '+M+' и найди y.';
+      secondOk='y = 2·('+subVal+') − '+M+' = '+y0;
+      secondWrong=[{h:'y = '+(2*subVal+M), hint:'y = 2x − '+M+', то есть '+M+' вычитаем: получится '+y0+'.'},
+                   {h:'y = '+(M-2*subVal), hint:'Выражаем y: из 2x − y = '+M+' следует y = 2x − '+M+'.'},
+                   {h:'y = '+(subVal-M), hint:'Не забудь умножить x на 2: y = 2x − '+M+' = '+y0+'.'}];
+    } else if(form==='C'){
+      secondQ='Подставь x = '+subVal+' в уравнение x − y = '+M+' и найди y.';
+      secondOk='y = '+subVal+' − '+M+' = '+y0;
+      secondWrong=[{h:'y = '+(M-subVal), hint:'Из x − y = '+M+' получаем y = x − '+M+', а не наоборот.'},
+                   {h:'y = '+(subVal+M), hint:'Вычитаем, а не складываем: y = x − '+M+' = '+y0+'.'},
+                   {h:'y = '+(C-subVal), hint:'Подставляй во второе уравнение: y = x − '+M+'.'}];
+    } else {
+      secondQ='Подставь y = '+subVal+' в уравнение x + 2y = '+M+' и найди x.';
+      secondOk='x = '+M+' − 2·('+subVal+') = '+x0;
+      secondWrong=[{h:'x = '+(M-subVal), hint:'Перед y стоит двойка: x = '+M+' − 2y = '+x0+'.'},
+                   {h:'x = '+(M+2*subVal), hint:'2y нужно вычесть: x = '+M+' − 2y.'},
+                   {h:'x = '+(2*subVal-M), hint:'Порядок: из '+M+' вычитаем 2y, получается '+x0+'.'}];
+    }
+    steps.push({ q:secondQ, opts: buildOpts({h:secondOk, exp:''}, secondWrong) });
+  } else {
+    steps.push({
+      q:'Здесь удобна подстановка. Вырази x из второго уравнения x − y = '+M+'.',
+      opts: buildOpts(
+        {h:'x = y + '+M, exp:'Теперь этим выражением заменим x в первом уравнении.'},
+        [
+          {h:'x = y − '+M, hint:'Переносим −y вправо со сменой знака: x = y + '+M+'.'},
+          {h:'x = '+M+' − y', hint:'Из x − y = '+M+' следует x = y + '+M+', а не '+M+' − y.'},
+          {h:'y = x + '+M, hint:'Выражаем именно x — его удобно подставить в первое уравнение.'}
+        ])
+    });
+    steps.push({
+      q:'Подставь x = y + '+M+' в первое уравнение: 2(y + '+M+') − 3y = '+C+'. Найди y.',
+      tip:'Раскрой скобки: 2y + '+(2*M)+' − 3y = '+C+', то есть −y + '+(2*M)+' = '+C+'.',
+      opts: buildOpts(
+        {h:'y = '+y0, exp:'2M − C = '+(2*M)+' − ('+C+') = '+y0+'.'},
+        [
+          {h:'y = '+(C-2*M), hint:'После раскрытия скобок: −y = '+C+' − '+(2*M)+', значит y = '+(2*M)+' − '+C+' = '+y0+'.'},
+          {h:'y = '+(C-M), hint:'Не забудь умножить '+M+' на 2 при раскрытии скобок: 2(y + '+M+') = 2y + '+(2*M)+'.'},
+          {h:'y = '+(2*M+C), hint:'Со знаком аккуратнее: y = '+(2*M)+' − ('+C+') = '+y0+'.'}
+        ])
+    });
+    steps.push({
+      q:'Теперь найди x = y + '+M+'.',
+      opts: buildOpts(
+        {h:'x = '+x0, exp:''},
+        [
+          {h:'x = '+(y0-M), hint:'Прибавляем, а не вычитаем: x = '+y0+' + '+M+' = '+x0+'.'},
+          {h:'x = '+(M-y0), hint:'x = y + '+M+', подставь y = '+y0+'.'},
+          {h:'x = '+(x0+M), hint:'Пересчитай: '+y0+' + '+M+' = '+x0+'.'}
+        ])
+    });
+  }
+
+  steps.push({
+    q:'Обязательная проверка ОДЗ: под логарифмом стоит '+F.argS+'. Чему оно равно и всё ли в порядке?',
+    opts: buildOpts(
+      {h:F.argS+' = '+M+' &gt; 0 — решение подходит', exp:'Проверку ОДЗ делаем всегда: это одна строчка, но без неё решение неполное.'},
+      [
+        {h:'Проверка не нужна — и так всё ясно', hint:'Нужна всегда! Если под логарифмом получится ноль или минус, «решение» придётся выбросить.'},
+        {h:F.argS+' = '+M+' &lt; 0 — решений нет', hint:''+M+' — число положительное, так что всё в порядке.'},
+        {h:'Нужно проверить, что x и y положительные', hint:'Сами x и y могут быть любыми — положительным должно быть выражение под логарифмом.'}
+      ])
+  });
+  var wrongPairs=[
+    {h:pairTxt(y0,x0), hint:'Порядок в ответе: сначала x, потом y.'},
+    {h:pairTxt(x0,-y0), hint:'Проверь знак y — подставь пару в первое уравнение.'},
+    {h:pairTxt(-x0,y0), hint:'Проверь знак x — подставь пару во второе уравнение.'},
+    {h:pairTxt(M,C), hint:'Это правые части уравнений, а не корни. Ответ: x = '+x0+', y = '+y0+'.'}
+  ];
+  steps.push({
+    q:'Записываем ответ парой (x; y).',
+    opts: buildOpts({h:pairTxt(x0,y0), exp:''}, wrongPairs)
+  });
+
+  var recap=[
+    'По определению логарифма: '+F.argS+' = '+bs+' = '+M+'.',
+    'Система: '+linS+' и '+F.argS+' = '+M+'.'
+  ];
+  if(form!=='E'){
+    recap.push('Вычитаем из первого уравнения второе: '+F.sub+' = '+C+' − '+M+' = '+(C-M)+'.');
+    recap.push('Подставляем и находим вторую переменную: x = '+x0+', y = '+y0+'.');
+  } else {
+    recap.push('Выражаем x = y + '+M+' и подставляем: 2(y + '+M+') − 3y = '+C+' ⇒ y = '+y0+'.');
+    recap.push('Тогда x = y + '+M+' = '+x0+'.');
+  }
+  recap.push('ОДЗ: под логарифмом '+F.argS+' = '+M+' &gt; 0 — верно.');
+
+  return {
+    badge:'Задача 19',
+    statement:'Решите систему уравнений: '+sysHTML(linS, logS),
+    answer:'(x; y) = '+pairTxt(x0,y0),
+    steps: steps,
+    recap: recap,
+    _dbg:{form:form,b:b,c:c,M:M,C:C,x0:x0,y0:y0,lin:F.lin,logv:F.logv}
+  };
+}
+
+/* ================= ЗАДАЧА 20 ================= */
+var PRESET20 = {
+  1:{type:'R', h:6, alpha:45},
+  2:{type:'C', n:1},
+  3:{type:'P', legs:[6,8], alpha:45}
+};
+var TAN_TXT = {45:'1', 60:'√3', 30:fr('√3',3)};
+
+function gen20R(h, alpha){
+  var cfg={45:[2,3,6], 60:[3,6], 30:[1,2,3]};
+  alpha = alpha || pick([45,60,30]);
+  h = h || pick(cfg[alpha]);
+  var r = (alpha===45)?VI(h):(alpha===60)?V3(h/3):V3(h);
+  var a = scale(mulRt3(r),2);
+  var Sc = (a.r3 ? 3*a.c*a.c : a.c*a.c)/4;
+  var S = V3(Sc);
+  var Vv = V3(Sc*h/3);
+  var mulTan = (alpha===45)?String(h):(alpha===60)?((h===1?'':h)+'√3'):((h%3===0)?vt(V3(h/3)):fr(h+'√3',3));
+  var fig = fig3d(spec20R(h, alpha));
+
+  var steps=[];
+  steps.push(stepFormula());
+  steps.push({
+    q:'Двугранный угол при основании — какой это угол на чертеже?',
+    fig: fig,
+    tip:'Проведи OM перпендикулярно стороне AB. Угол между гранью и основанием «сидит» при точке M.',
+    opts: buildOpts(
+      {h:'Угол SMO: между апофемой SM боковой грани и отрезком OM в основании', exp:'OM ⊥ AB и SM ⊥ AB, поэтому именно ∠SMO измеряет наклон грани.'},
+      [
+        {h:'Угол SAO — между боковым ребром и основанием', hint:'Это угол наклона ребра, другой угол. Грань наклонена под углом при точке M — середине стороны.'},
+        {h:'Плоский угол ASB при вершине', hint:'Угол при вершине лежит внутри боковой грани и с наклоном грани к основанию не связан.'},
+        {h:'Угол SOM', hint:'∠SOM = 90°: высота перпендикулярна основанию. Нужный угол — при точке M.'}
+      ])
+  });
+  steps.push({
+    q:'Треугольник SOM прямоугольный (∠O = 90°): SO = h = '+h+', ∠SMO = '+alpha+'°. Из tan '+alpha+'° = SO / OM найди r = OM.',
+    fig: fig,
+    tip:'tan '+alpha+'° = '+TAN_TXT[alpha]+'. Значит r = h / tan '+alpha+'°.',
+    opts: buildOpts(
+      {h:'r = '+vt(r), exp:''},
+      [
+        {h:'r = '+mulTan, hint:'r = h / tan α, то есть высоту делим на тангенс, а не умножаем.'},
+        {h:'r = '+vt(flip(r)), hint:'Проверь, куда делся (или откуда взялся) √3: tan '+alpha+'° = '+TAN_TXT[alpha]+'.'},
+        {h:'r = '+vt(scale(r,2)), hint:'Похоже на лишнюю двойку. r = '+h+' / tan '+alpha+'° = '+vt(r)+'.'}
+      ])
+  });
+  steps.push({
+    q:'OM — радиус вписанной окружности основания: r = '+fr('a','2√3')+'. Отсюда a = 2√3·r. Найди сторону a.',
+    opts: buildOpts(
+      {h:'a = '+vt(a), exp:''},
+      [
+        {h:'a = '+vt(mulRt3(r)), hint:'Не хватает двойки: a = 2√3·r, множитель именно 2√3.'},
+        {h:'a = '+vt(scale(r,2)), hint:'Потерялся √3: a = 2√3·r = '+vt(a)+'.'},
+        {h:'a = '+vt(flip(a)), hint:'Аккуратнее с √3: перемножь 2√3 и '+vt(r)+' заново.'}
+      ])
+  });
+  steps.push({
+    q:'Площадь равностороннего треугольника: S = '+fr('√3',4)+'·a². Вычисли S для a = '+vt(a)+'.',
+    tip:(a.r3?('a² = ('+vt(a)+')² = '+(3*a.c*a.c)+'.'):('a² = '+(a.c*a.c)+'.')),
+    opts: buildOpts(
+      {h:'S = '+vt(S), exp:''},
+      [
+        {h:'S = '+vt(scale(S,2)), hint:'В формуле делим на 4, а не на 2: S = √3·a²/4.'},
+        {h:'S = '+vt(scale(S,4)), hint:'Про четвёрку в знаменателе забывать нельзя: S = √3·a²/4 = '+vt(S)+'.'},
+        {h:'S = '+vt(flip(S)), hint:'Куда пропал (или откуда появился) √3? Пересчитай: '+(a.r3?('a² = '+(3*a.c*a.c)):('a² = '+(a.c*a.c)))+', затем умножь на √3/4.'}
+      ])
+  });
+  steps.push(stepVolume(S, VI(h), Vv));
+
+  return {
+    badge:'Задача 20',
+    statement:'Найдите объём правильной треугольной пирамиды, если её высота равна <b>'+h+'</b>, а двугранный угол при основании равен <b>'+alpha+'°</b>.',
+    answer:'V = '+vt(Vv),
+    fig: fig,
+    steps: steps,
+    recap:[
+      'Двугранный угол при основании — это ∠SMO, где OM ⊥ стороне основания.',
+      'Из △SOM: r = OM = h / tan '+alpha+'° = '+vt(r)+'.',
+      'Сторона основания: a = 2√3·r = '+vt(a)+'.',
+      'Площадь: S = √3·a²/4 = '+vt(S)+'.',
+      'V = ⅓·S·h = ⅓·'+vt(S)+'·'+h+' = '+vt(Vv)+'.'
+    ],
+    _dbg:{type:'R',h:h,alpha:alpha,V:Vv}
+  };
+}
+
+function gen20P(legs, alpha){
+  var T=[[3,4,5],[6,8,10],[5,12,13],[9,12,15],[8,15,17]];
+  var tri = legs ? T.filter(function(t){return t[0]===legs[0]&&t[1]===legs[1];})[0] : pick(T);
+  var A=tri[0], B=tri[1], Cc=tri[2];
+  alpha = alpha || pick([45,45,45,60]);
+  var S=A*B/2, r=(A+B-Cc)/2;
+  var hV = (alpha===45)?VI(r):V3(r);
+  var Vv = (alpha===45)?VI(S*r/3):V3(S*r/3);
+  var fig = fig3d(spec20P(A, B, alpha));
+
+  var steps=[];
+  steps.push(stepFormula());
+  steps.push({
+    q:'Найди гипотенузу основания: катеты '+A+' и '+B+'.',
+    tip:'Теорема Пифагора: c² = a² + b².',
+    opts: buildOpts(
+      {h:'c = '+Cc, exp:'√('+(A*A)+' + '+(B*B)+') = √'+(Cc*Cc)+' = '+Cc+'.'},
+      [
+        {h:'c = '+(A+B), hint:'Катеты не складывают: c = √(a² + b²).'},
+        {h:'c = '+(A*A+B*B), hint:'Это c², а из него ещё нужно извлечь корень: √'+(A*A+B*B)+' = '+Cc+'.'},
+        {h:'c = '+Math.max(A,B), hint:'Гипотенуза длиннее любого катета. Считай по Пифагору.'}
+      ])
+  });
+  steps.push({
+    q:'Площадь основания — прямоугольного треугольника.',
+    opts: buildOpts(
+      {h:'S = '+fr(A+' · '+B,2)+' = '+S, exp:''},
+      [
+        {h:'S = '+(A*B), hint:'Половина произведения катетов: S = ab/2 = '+S+'.'},
+        {h:'S = '+(A+B), hint:'Это сумма катетов. Площадь: S = ab/2.'},
+        {h:'S = '+fr(A+' · '+Cc,2)+' = '+(A*Cc/2), hint:'Берём два катета, а не катет с гипотенузой: S = '+A+'·'+B+'/2.'}
+      ])
+  });
+  steps.push({
+    q:'Все боковые грани наклонены к основанию под одним углом '+alpha+'°. Куда проецируется вершина S?',
+    fig: fig,
+    tip:'Раз углы наклона равны, точка O одинаково удалена от всех сторон основания.',
+    opts: buildOpts(
+      {h:'В центр вписанной окружности основания', exp:'Точка O равноудалена от всех сторон — а это и есть центр вписанной окружности.'},
+      [
+        {h:'В центр описанной окружности', hint:'Центр описанной — когда равны боковые рёбра. У нас равны углы наклона граней.'},
+        {h:'В вершину прямого угла', hint:'Тогда две грани были бы перпендикулярны основанию, а не наклонены под 45°–60°.'},
+        {h:'В середину гипотенузы', hint:'Середина гипотенузы — это центр описанной окружности прямоугольного треугольника, случай равных рёбер.'}
+      ])
+  });
+  steps.push({
+    q:'Радиус вписанной окружности прямоугольного треугольника: r = '+fr('a + b − c',2)+'. Вычисли r.',
+    opts: buildOpts(
+      {h:'r = '+fr(A+' + '+B+' − '+Cc,2)+' = '+r, exp:''},
+      [
+        {h:'r = '+((A+B+Cc)/2), hint:'В формуле гипотенуза вычитается: r = (a + b − c)/2 = '+r+'.'},
+        {h:'r = '+(A+B-Cc), hint:'Не забудь разделить на 2: r = '+r+'.'},
+        {h:'r = '+((A+B)/2), hint:'Гипотенузу тоже учитываем: r = (a + b − c)/2.'}
+      ])
+  });
+  steps.push({
+    q:'Высота пирамиды из △SOK: h = r · tan '+alpha+'° (tan '+alpha+'° = '+TAN_TXT[alpha]+'). Найди h.',
+    fig: fig,
+    opts: buildOpts(
+      {h:'h = '+vt(hV), exp:''},
+      (alpha===45
+        ? [
+            {h:'h = '+(2*r), hint:'tan 45° = 1, поэтому h = r·1 = '+r+'.'},
+            {h:'h = '+r+'√3', hint:'√3 — это tan 60°, а у нас 45°: h = r = '+r+'.'},
+            {h:'h = '+numTxt(r/2), hint:'Умножаем на tan 45° = 1, ничего не делим: h = '+r+'.'}
+          ]
+        : [
+            {h:'h = '+r, hint:'tan 60° = √3, его нельзя терять: h = '+r+'√3.'},
+            {h:'h = '+(3*r), hint:'√3 — это корень, а не тройка: h = '+r+'·√3 = '+vt(hV)+'.'},
+            {h:'h = '+(2*r)+'√3', hint:'Лишняя двойка: h = r·√3 = '+vt(hV)+'.'}
+          ])
+    )
+  });
+  steps.push(stepVolume(VI(S), hV, Vv));
+
+  return {
+    badge:'Задача 20',
+    statement:'Основанием пирамиды служит прямоугольный треугольник с катетами <b>'+A+'</b> и <b>'+B+'</b>. Все боковые грани наклонены к плоскости основания под углом <b>'+alpha+'°</b>. Найдите объём пирамиды.',
+    answer:'V = '+vt(Vv),
+    fig: fig,
+    steps: steps,
+    recap:[
+      'Гипотенуза: c = √('+A+'² + '+B+'²) = '+Cc+'; площадь S = '+A+'·'+B+'/2 = '+S+'.',
+      'Грани наклонены одинаково ⇒ вершина проецируется в центр вписанной окружности.',
+      'r = (a + b − c)/2 = ('+A+' + '+B+' − '+Cc+')/2 = '+r+'.',
+      'h = r·tan '+alpha+'° = '+vt(hV)+'.',
+      'V = ⅓·S·h = ⅓·'+S+'·'+vt(hV)+' = '+vt(Vv)+'.'
+    ],
+    _dbg:{type:'P',a:A,b:B,c:Cc,alpha:alpha,V:Vv}
+  };
+}
+
+function gen20C(n){
+  n = n || pick([1,2,3]);
+  var aTxt=(n===1?'':n)+'√2';
+  var Vp=n*n*n, Vq=6, g=gcd(Vp,Vq);
+  var Vtxt=redFrac(n*n*n,6);
+  var fig=fig3d(spec20C(aTxt));
+
+  var steps=[];
+  steps.push({
+    q:'Все плоские углы при вершине S прямые: рёбра SA, SB, SC попарно перпендикулярны. На что похожа такая пирамида?',
+    fig: fig,
+    opts: buildOpts(
+      {h:'На угол куба: три ребра выходят из одной вершины под прямыми углами', exp:'Значит, можно считать как «отрезанный уголок» куба.'},
+      [
+        {h:'На правильный тетраэдр', hint:'В правильном тетраэдре углы при вершине по 60°, а у нас все по 90°.'},
+        {h:'На половину куба', hint:'Половина куба — призма. Здесь именно уголок: три взаимно перпендикулярных ребра.'},
+        {h:'На конус', hint:'У конуса нет рёбер и плоских углов. Три прямых угла — это вершина куба.'}
+      ])
+  });
+  steps.push({
+    q:'Пусть SA = SB = SC = ℓ. Тогда AB — гипотенуза прямоугольного треугольника ASB, то есть AB = ℓ√2. По условию AB = '+aTxt+'. Найди ℓ.',
+    tip:'Сравни: ℓ√2 = '+aTxt+'.',
+    opts: buildOpts(
+      {h:'ℓ = '+n, exp:''},
+      [
+        {h:'ℓ = '+(2*n), hint:'ℓ√2 = '+aTxt+' ⇒ ℓ = '+n+'. Двойка появляться не должна.'},
+        {h:'ℓ = '+(n===1?'':n)+'√2', hint:'√2 сокращается: ℓ = '+aTxt+' / √2 = '+n+'.'},
+        {h:'ℓ = '+numTxt(n/2), hint:'Делим на √2, а не на 2: ℓ = '+n+'.'}
+      ])
+  });
+  steps.push({
+    q:'Как удобнее всего посчитать объём такой пирамиды?',
+    tip:'Основанием можно объявить любую грань — лишь бы высота к ней была известна.',
+    opts: buildOpts(
+      {h:'Взять основанием прямоугольный △ASB (катеты по ℓ), а высотой — ребро SC ⊥ этой грани', exp:'Тогда всё известно: S = ℓ²/2 и h = ℓ.'},
+      [
+        {h:'Только через основание ABC и высоту из S — иначе нельзя', hint:'Можно! Основанием пирамиды разрешается взять любую грань. Через △ASB выходит в разы проще.'},
+        {h:'V = ℓ³, как у куба', hint:'Это объём целого куба с ребром ℓ, а наш «уголок» гораздо меньше.'},
+        {h:'Сложить площади всех граней', hint:'Сумма площадей — это поверхность, а не объём. Считаем V = ⅓·S·h.'}
+      ])
+  });
+  steps.push({
+    q:'Итак: V = '+fr(1,3)+' · '+fr('ℓ²',2)+' · ℓ = '+fr('ℓ³',6)+'. Вычисли для ℓ = '+n+'.',
+    opts: buildOpts(
+      {h:'V = '+Vtxt, exp:''},
+      [
+        {h:'V = '+redFrac(n*n*n,3), hint:'Площадь основания ℓ²/2 — двойку в знаменателе терять нельзя: V = ℓ³/6.'},
+        {h:'V = '+(n*n*n), hint:'Не забудь и ⅓, и ½: V = ℓ³/6 = '+Vtxt+'.'},
+        {h:'V = '+redFrac(n*n*n,2), hint:'Есть ещё множитель ⅓ из формулы объёма: V = ℓ³/6.'}
+      ])
+  });
+
+  return {
+    badge:'Задача 20',
+    statement:'Все плоские углы при вершине правильной треугольной пирамиды — прямые. Найдите объём пирамиды, если сторона её основания равна <b>'+aTxt+'</b>.',
+    answer:'V = '+Vtxt,
+    fig: fig,
+    steps: steps,
+    recap:[
+      'Рёбра SA, SB, SC попарно перпендикулярны — это «уголок куба».',
+      'AB — гипотенуза △ASB: ℓ√2 = '+aTxt+' ⇒ ℓ = '+n+'.',
+      'Берём основанием △ASB: S = ℓ²/2, высота — ребро SC = ℓ.',
+      'V = ⅓ · (ℓ²/2) · ℓ = ℓ³/6 = '+Vtxt+'.'
+    ],
+    _dbg:{type:'C',n:n,Vp:Vp/g,Vq:Vq/g}
+  };
+}
+
+function stepFormula(){
+  return {
+    q:'С какой формулы начинается любая задача про объём пирамиды?',
+    opts: buildOpts(
+      {h:'V = '+fr(1,3)+' · S<sub>осн</sub> · h', exp:'Весь план решения: найти площадь основания и высоту.'},
+      [
+        {h:'V = S<sub>осн</sub> · h', hint:'Это объём призмы. У пирамиды есть множитель ⅓.'},
+        {h:'V = '+fr(1,2)+' · S<sub>осн</sub> · h', hint:'½ — из площади треугольника. Для объёма пирамиды множитель ⅓.'},
+        {h:'V = '+fr(1,3)+' · S<sub>осн</sub> · a', hint:'Умножаем на высоту пирамиды h, а не на сторону основания.'}
+      ])
+  };
+}
+function stepVolume(S, hV, Vv){
+  return {
+    q:'Финал: V = '+fr(1,3)+' · S · h = '+fr(1,3)+' · '+vt(S)+' · '+vt(hV)+'. Чему равен объём?',
+    opts: buildOpts(
+      {h:'V = '+vt(Vv), exp:''},
+      [
+        {h:'V = '+vt(scale(Vv,3)), hint:'Потерялась ⅓ из формулы объёма пирамиды.'},
+        {h:'V = '+vt(flip(Vv)), hint:'Проследи за √3: перемножь '+vt(S)+' и '+vt(hV)+' ещё раз внимательно.'},
+        {h:'V = '+vt(S), hint:'Это площадь основания. Её ещё нужно умножить на h и на ⅓.'}
+      ])
+  };
+}
+
+function gen20(opts){
+  opts = opts || {};
+  var t = opts.type || 'rand';
+  if(t==='rand') t = pick(['R','R','P','P','C']);
+  if(t==='R') return gen20R(opts.h, opts.alpha);
+  if(t==='P') return gen20P(opts.legs, opts.alpha);
+  return gen20C(opts.n);
+}
+
+/* ================= сценарий озвучки ================= */
+function tts(s){
+  var t=String(s);
+  t=t.replace(/<span class="frac"><span>(.*?)<\/span><span>(.*?)<\/span><\/span>/g,'$1/$2');
+  t=t.replace(/<span class="brace">\{<\/span><span class="syseq"><span>(.*?)<\/span><span>(.*?)<\/span><\/span>/g,'система: $1, и второе уравнение: $2');
+  t=t.replace(/log<sub>(\d+)<\/sub>/g,'логарифм по основанию $1 от ');
+  t=t.replace(/<sub>осн<\/sub>/g,' основания');
+  t=t.replace(/<sup>(.*?)<\/sup>/g,' в степени $1');
+  t=t.replace(/<sub>(.*?)<\/sub>/g,'$1');
+  t=t.replace(/<[^>]*>/g,' ');
+  t=t.replace(/&nbsp;/g,' ').replace(/&gt;/g,' больше ').replace(/&lt;/g,' меньше ').replace(/&amp;/g,'и');
+  t=t.replace(/,\s*k\s*∈\s*ℤ/g,', где k — любое целое число');
+  t=t.replace(/√(\d+)/g,'корень из $1').replace(/√D/g,'корень из D').replace(/√/g,'корень из ');
+  t=t.replace(/²/g,' в квадрате ').replace(/³/g,' в кубе ').replace(/°/g,' градусов');
+  t=t.replace(/arccos/g,'арккосинус ').replace(/cos/g,'косинус ').replace(/sin/g,'синус ').replace(/tan/g,'тангенс ');
+  t=t.replace(/₀/g,'0').replace(/₁/g,'1').replace(/₂/g,'2');
+  t=t.replace(/⅓/g,'одна третья').replace(/½/g,'одна вторая');
+  t=t.replace(/±/g,'плюс-минус ').replace(/−/g,'-').replace(/·/g,' умножить на ');
+  t=t.replace(/≤/g,' меньше или равно ').replace(/≥/g,' больше или равно ');
+  t=t.replace(/⇔/g,' равносильно ').replace(/⇒/g,' значит ');
+  t=t.replace(/π/g,'пи ').replace(/ℓ/g,'эль').replace(/△/g,'треугольник ').replace(/∠/g,'угол ').replace(/⊥/g,' перпендикулярно ');
+  t=t.replace(/[🎲📖🤔✅💡🌟→]/g,'');
+  t=t.replace(/(\d)(корень из)/g,'$1 $2');
+  t=t.replace(/\s+([,.;:!?)])/g,'$1').replace(/\(\s+/g,'(');
+  return t.replace(/\s+/g,' ').trim();
+}
+function narration(model){
+  var L=['ЗАДАЧА', tts(model.statement), ''];
+  for(var k=0;k<model.steps.length;k++){
+    var st=model.steps[k], ok=null;
+    for(var j=0;j<st.opts.length;j++){ if(st.opts[j].ok) ok=st.opts[j]; }
+    L.push('[ШАГ '+(k+1)+']');
+    L.push(tts(st.q));
+    L.push('Правильный ответ: '+tts(ok.h)+'.'+(ok.exp?' '+tts(ok.exp):''));
+    L.push('');
+  }
+  L.push('[ОТВЕТ]');
+  L.push('Итак, ответ: '+tts(model.answer)+'.');
+  L.push('');
+  L.push('[РАЗБОР ЦЕЛИКОМ]');
+  for(k=0;k<model.recap.length;k++) L.push((k+1)+'. '+tts(model.recap[k]));
+  return L.join('\n');
+}
+function showScript(model, title){
+  var back=document.createElement('div'); back.className='modal';
+  var txt=narration(model);
+  back.innerHTML='<div class="mbox"><div class="mhead"><b>Сценарий озвучки · '+title+'</b>'
+    +'<button class="btn ghost small" id="mx">Закрыть</button></div>'
+    +'<p class="mnote">Черновик под запись голоса: метки [ШАГ n] совпадают с шагами автопрохода — по ним удобно сводить звук с видео. Правь текст под свою манеру речи.</p>'
+    +'<textarea class="mta" id="mta" spellcheck="false"></textarea>'
+    +'<div class="mrow"><button class="btn" id="mcopy">Скопировать</button>'
+    +'<button class="btn ghost" id="mdl">Скачать .txt</button></div></div>';
+  document.body.appendChild(back);
+  var ta=back.querySelector('#mta'); ta.value=txt;
+  function close(){ document.body.removeChild(back); }
+  back.querySelector('#mx').onclick=close;
+  back.onclick=function(e){ if(e.target===back) close(); };
+  back.querySelector('#mcopy').onclick=function(){
+    ta.select();
+    var done=false;
+    try{ done=document.execCommand('copy'); }catch(_){ }
+    if(!done && navigator.clipboard) navigator.clipboard.writeText(ta.value);
+    this.textContent='Скопировано ✓';
+    var b=this; setTimeout(function(){ b.textContent='Скопировать'; },1600);
+  };
+  back.querySelector('#mdl').onclick=function(){
+    var a=document.createElement('a');
+    a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(ta.value);
+    a.download='ozvuchka-'+title.replace(/[^0-9a-zA-Zа-яА-Я]+/g,'-')+'.txt';
+    a.click();
+  };
+}
+
+/* ================= движок шагов ================= */
+function mountTrainer(host, model, onNew, topicKey){
+  var i=0, errs=0, auto=false, timer=null, mult=1, usedHelp=false, finishedRecorded=false, hintedSteps={};
+
+  function stmt(){
+    return '<div class="stmt"><div class="stmt-k">'+model.badge+'</div><div class="stmt-b">'+model.statement+'</div></div>';
+  }
+  function dots(){
+    var s='<div class="dots">';
+    for(var k=0;k<model.steps.length;k++){
+      s+='<i class="'+(k<i?'done':(k===i?'cur':''))+'"></i>';
+    }
+    return s+'<span class="dtxt">шаг '+Math.min(i+1,model.steps.length)+' из '+model.steps.length+'</span></div>';
+  }
+  function render(){
+    if(i>=model.steps.length){
+      if(!auto&&!finishedRecorded){dviCompleteTopic(topicKey,errs===0&&!usedHelp);finishedRecorded=true;}
+      host.innerHTML = stmt()+finale(); wire(null); boot3D(host); if(auto) spin3D(host, true); return;
+    }
+    var st=model.steps[i];
+    var h = stmt()+dots();
+    h+='<div class="step"><div class="q">'+st.q+'</div>';
+    if(st.fig) h+='<div class="fig">'+st.fig+'</div>';
+    h+='<div class="opts">';
+    for(var k=0;k<st.opts.length;k++) h+='<button class="opt" data-k="'+k+'">'+st.opts[k].h+'</button>';
+    h+='</div>';
+    if(st.tip) h+='<button class="linkbtn" id="tipb">🤔 Нужна подсказка</button><div class="tip hid" id="tip">'+st.tip+'</div>';
+    h+='<div class="fb" id="fb"></div><div class="nextbar" id="nb"></div></div>';
+    host.innerHTML=h;
+    wire(st);
+    boot3D(host);
+    if(auto) spin3D(host, true);
+  }
+  function wire(st){
+    if(st){
+      var btns=host.querySelectorAll('.opt');
+      for(var k=0;k<btns.length;k++){
+        (function(btn){
+          btn.onclick=function(){
+            if(auto) stopAuto();
+            var o=st.opts[+btn.getAttribute('data-k')];
+            var fb=host.querySelector('#fb');
+            dviRecordAttempt(topicKey);
+            if(o.ok){
+              var all=host.querySelectorAll('.opt');
+              for(var j=0;j<all.length;j++) all[j].disabled=true;
+              btn.classList.add('ok');
+              fb.innerHTML='<div class="good">✅ Верно!'+(o.exp?' '+o.exp:'')+'</div>';
+              var last=(i===model.steps.length-1);
+              host.querySelector('#nb').innerHTML='<button class="btn" id="nx">'+(last?'Показать решение целиком':'Дальше →')+'</button>';
+              host.querySelector('#nx').onclick=function(){ i++; render(); };
+              host.querySelector('#nx').focus();
+            } else {
+              errs++;
+              dviRecordError(topicKey);
+              btn.classList.add('bad');
+              btn.disabled=true;
+              fb.innerHTML='<div class="hint">💡 '+(o.hint||'Не то. Попробуй другой вариант!')+'</div>';
+            }
+          };
+        })(btns[k]);
+      }
+      var tb=host.querySelector('#tipb');
+      if(tb) tb.onclick=function(){
+        var tip=host.querySelector('#tip'),opening=tip.classList.contains('hid');tip.classList.toggle('hid');
+        if(opening&&!hintedSteps[i]){hintedSteps[i]=1;usedHelp=true;dviRecordHint(topicKey);}
+      };
+    }
+    var nv=host.querySelector('#newvar'); if(nv) nv.onclick=function(){ stopAuto(); onNew(); };
+    var rr=host.querySelector('#retry'); if(rr) rr.onclick=function(){ stopAuto(); i=0; errs=0; usedHelp=false; finishedRecorded=false; hintedSteps={}; render(); };
+  }
+  function reveal(st){
+    var btns=host.querySelectorAll('.opt'), okBtn=null, o=null;
+    for(var k=0;k<btns.length;k++){
+      var oo=st.opts[+btns[k].getAttribute('data-k')];
+      btns[k].disabled=true;
+      if(oo.ok){ okBtn=btns[k]; o=oo; }
+    }
+    if(okBtn) okBtn.classList.add('ok');
+    var fb=host.querySelector('#fb');
+    if(fb) fb.innerHTML='<div class="good">✅ Верно!'+(o&&o.exp?' '+o.exp:'')+'</div>';
+    return o;
+  }
+  function readMs(txt, per, lo, hi){
+    var n=tts(txt).length;
+    return Math.max(lo, Math.min(hi, 1800 + n*per)) * mult;
+  }
+  function autoStep(){
+    if(!auto) return;
+    if(i>=model.steps.length){ stopAuto(); return; }
+    var st=model.steps[i], all=st.q;
+    for(var k=0;k<st.opts.length;k++) all+=' '+st.opts[k].h;
+    timer=setTimeout(function(){
+      if(!auto) return;
+      var o=reveal(st);
+      timer=setTimeout(function(){
+        if(!auto) return;
+        i++;
+        render();
+        if(i>=model.steps.length){ stopAuto(); return; }
+        autoStep();
+      }, readMs(o&&o.exp?o.exp:'', 42, 2400, 8000));
+    }, readMs(all, 34, 4000, 14000));
+  }
+  function bar(){
+    var b=document.createElement('div'); b.className='recbar'; b.id='recbar';
+    b.innerHTML='<span class="rdot"></span><span>Идёт автопроход — можно записывать экран</span>'
+      +'<select id="rsp"><option value="1.4">медленно</option><option value="1" selected>обычно</option><option value="0.7">быстро</option></select>'
+      +'<button class="btn small" id="rstop">⏹ Остановить</button>';
+    document.body.appendChild(b);
+    b.querySelector('#rstop').onclick=stopAuto;
+    b.querySelector('#rsp').onchange=function(){ mult=parseFloat(this.value); };
+  }
+  function startAuto(){
+    if(auto) return;
+    auto=true; i=0; errs=0;
+    document.body.classList.add('rec');
+    if(!document.getElementById('recbar')) bar();
+    render();
+    autoStep();
+  }
+  function stopAuto(){
+    auto=false;
+    if(timer){ clearTimeout(timer); timer=null; }
+    spin3D(host, false);
+    document.body.classList.remove('rec');
+    var b=document.getElementById('recbar');
+    if(b && b.parentNode) b.parentNode.removeChild(b);
+  }
+  function finale(){
+    var st = errs===0 ? ['🌟🌟🌟','Идеально — ни одной ошибки!']
+           : errs<=2 ? ['🌟🌟','Отлично! Пара подсказок — и всё получилось.']
+           : ['🌟','Задача решена. Ошибки при тренировке — это нормально: пробеги глазами решение и возьми новый вариант.'];
+    var h='<div class="win"><div class="stars">'+st[0]+'</div><div class="wmsg">'+st[1]+'</div>';
+    h+='<div class="ansbox">Ответ: <b>'+model.answer+'</b></div>';
+    if(model.fig) h+='<div class="fig">'+model.fig+'</div>';
+    h+='<div class="recap"><div class="rt">Решение целиком</div><ol>';
+    for(var k=0;k<model.recap.length;k++) h+='<li>'+model.recap[k]+'</li>';
+    h+='</ol></div>';
+    h+='<div class="nextbar"><button class="btn ghost" id="retry">Пройти ещё раз</button><button class="btn" id="newvar">🎲 Новый вариант</button></div></div>';
+    return h;
+  }
+  render();
+  return { play:startAuto, stop:stopAuto, model:model };
+}
+
+/* ================= загрузка ================= */
+function boot(){
+  var state={}, RUN={};
+  function newTask(tab, presetKey){
+    var model;
+    if(tab==='t18') model=gen18(presetKey?PRESET18[presetKey]:null);
+    else if(tab==='t19') model=gen19(presetKey?PRESET19[presetKey]:null);
+    else {
+      if(presetKey){ model=gen20(PRESET20[presetKey]); }
+      else {
+        var sel=document.getElementById('sub20');
+        model=gen20({type: sel?sel.value:'rand'});
+      }
+    }
+    state[tab]=model;
+    var host=document.getElementById('tr'+tab.slice(1));
+    if(RUN[tab]) RUN[tab].stop();
+    RUN[tab]=mountTrainer(host, model, function(){ newTask(tab,null); }, tab);
+  }
+  var tabs=document.querySelectorAll('.tab');
+  for(var k=0;k<tabs.length;k++){
+    (function(b){
+      b.onclick=function(){
+        for(var j=0;j<tabs.length;j++) tabs[j].classList.toggle('on', tabs[j]===b);
+        var pages=document.querySelectorAll('.page');
+        for(var j2=0;j2<pages.length;j2++) pages[j2].classList.toggle('on', pages[j2].id===b.getAttribute('data-tab'));
+      };
+    })(tabs[k]);
+  }
+  var news=document.querySelectorAll('[data-new]');
+  for(var k2=0;k2<news.length;k2++){
+    (function(b){ b.onclick=function(){ newTask(b.getAttribute('data-new'), null); }; })(news[k2]);
+  }
+  var pres=document.querySelectorAll('[data-preset]');
+  for(var k3=0;k3<pres.length;k3++){
+    (function(b){ b.onclick=function(){ newTask(b.getAttribute('data-tab2'), b.getAttribute('data-preset')); }; })(pres[k3]);
+  }
+  var plays=document.querySelectorAll('[data-play]');
+  for(var k4=0;k4<plays.length;k4++){
+    (function(b){ b.onclick=function(){ var t=b.getAttribute('data-play'); if(RUN[t]) RUN[t].play(); }; })(plays[k4]);
+  }
+  var scr=document.querySelectorAll('[data-script]');
+  for(var k5=0;k5<scr.length;k5++){
+    (function(b){ b.onclick=function(){
+      var t=b.getAttribute('data-script');
+      if(RUN[t]) showScript(RUN[t].model, RUN[t].model.badge);
+    }; })(scr[k5]);
+  }
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){ for(var t in RUN) RUN[t].stop(); }
+  });
+  var s20=document.getElementById('sub20');
+  if(s20) s20.onchange=function(){ newTask('t20', null); };
+  newTask('t18'); newTask('t19'); newTask('t20');
+}
+if(typeof document!=='undefined' && document) boot();
+dviStartProgress();
+</script>
+</body>
+</html>

@@ -53,7 +53,9 @@ const expectedCatalogFiles = [
   'trainers/oge-basics/percentages/proportion.html',
   'trainers/oge-basics/percentages/percent-final-checkpoint.html',
   'trainers/ege-profile/yashchenko-lines-1-2.html',
-  'trainers/algebra-7/control-work.html'
+  'trainers/algebra-7/control-work.html',
+  'trainers/dvi/math-18-20.html',
+  'trainers/dvi/math-18-20-video-studio.html'
 ];
 
 function currentManifest() {
@@ -186,14 +188,14 @@ test('server consumes every committed manifest and authorization vector', () => 
   }
 });
 
-test('current manifest validates with thirty catalog entries and three mirrors', () => {
+test('current manifest validates with thirty-two catalog entries and three mirrors', () => {
   const manifest = currentManifest();
   const result = validateTrainerManifest(manifest);
   assert.equal(result.ok, true);
   assert.equal(manifest.version, 1);
   assert.equal(manifest.schemaVersion, 1);
   assert.deepEqual(manifest.trainers.map(entry => entry.file), expectedCatalogFiles);
-  assert.equal(manifest.trainers.length, 30);
+  assert.equal(manifest.trainers.length, 32);
   assert.equal(result.trainers.length, 3);
   assert.deepEqual(result.progressTrainers, [{
     trainerId: 'yashchenko-t12',
@@ -202,6 +204,10 @@ test('current manifest validates with thirty catalog entries and three mirrors',
   }, {
     trainerId: 'algebra7-control',
     file: 'trainers/algebra-7/control-work.html',
+    progressSchemaVersion: 1
+  }, {
+    trainerId: 'dvi-math-18-20',
+    file: 'trainers/dvi/math-18-20.html',
     progressSchemaVersion: 1
   }]);
 });
@@ -360,6 +366,10 @@ test('progress tracking is an explicit registry capability independent of mirror
   }, {
     trainerId: 'algebra7-control',
     file: 'trainers/algebra-7/control-work.html',
+    progressSchemaVersion: 1
+  }, {
+    trainerId: 'dvi-math-18-20',
+    file: 'trainers/dvi/math-18-20.html',
     progressSchemaVersion: 1
   }]);
   assert.match(progressRegistryDigest(1, validation.progressTrainers), /^sha256:[0-9a-f]{64}$/);
