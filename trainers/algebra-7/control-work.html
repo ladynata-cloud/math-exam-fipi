@@ -1,0 +1,1992 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Контрольная: алгебра, 7 класс — Mathexam.space</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ============ ТЕМА «ШКОЛЬНАЯ ТЕТРАДЬ» ============ */
+:root{
+  --bg:#f7f8f4;            /* бумага */
+  --cell:#dfe7ee;          /* тетрадная клетка */
+  --panel:#ffffff;
+  --ink:#23304a;           /* чернила */
+  --muted:#738195;
+  --line:#e3e6df;
+  --pen:#2f5fd0;           /* синяя ручка */
+  --pen-soft:#eaf0fc;
+  --green:#1d9e6f;         /* зелёная ручка проверки */
+  --green-soft:#e6f5ee;
+  --red:#d24545;           /* ошибки */
+  --red-soft:#fbecec;
+  --pencil:#c9860b;        /* карандашные подсказки */
+  --pencil-soft:#fdf3e0;
+  --violet:#7c5cd6;        /* третья «семья» слагаемых */
+  --violet-soft:#f0ebff;
+  --axis:#3c4a68;
+  --shadow:0 12px 28px rgba(35,48,74,.10);
+  --mono:'JetBrains Mono',ui-monospace,'Cascadia Mono',Consolas,monospace;
+  --sans:'Manrope',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+[data-theme=dark]{
+  --bg:#151a24;            /* доска */
+  --cell:#222b3c;
+  --panel:#1c2230;
+  --ink:#e7ebf4;
+  --muted:#93a0b8;
+  --line:#2b3345;
+  --pen:#7fa3ef;
+  --pen-soft:#232e46;
+  --green:#3ecb96;
+  --green-soft:#1d3a30;
+  --red:#f08080;
+  --red-soft:#3d2426;
+  --pencil:#e8b45a;
+  --pencil-soft:#3a3120;
+  --violet:#b6a0f2;
+  --violet-soft:#302942;
+  --axis:#aab6cf;
+  --shadow:0 12px 28px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  font-family:var(--sans);color:var(--ink);background:var(--bg);
+  background-image:linear-gradient(var(--cell) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--cell) 1px,transparent 1px);
+  background-size:26px 26px;
+  min-height:100vh;display:flex;flex-direction:column;
+}
+.wrap{max-width:1020px;width:100%;margin:0 auto;padding:0 16px}
+main.wrap{flex:1;padding-top:18px;padding-bottom:28px}
+
+/* ---------- шапка ---------- */
+.site{position:sticky;top:0;z-index:6;border-bottom:1.5px solid var(--line);
+  background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(8px)}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px}
+.brand{display:flex;align-items:center;gap:12px}
+.brandlink{color:inherit;text-decoration:none}
+.header-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.sigil{width:42px;height:42px;border-radius:12px;background:var(--pen);color:#fff;
+  display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:21px;flex:none}
+.brand b{font-size:1.02rem;font-weight:800;display:block;line-height:1.2}
+.brand small{display:block;color:var(--muted);font-weight:700;font-size:.78rem}
+
+/* ---------- карточки ---------- */
+.card{background:var(--panel);border:1.5px solid var(--line);border-radius:18px;
+  box-shadow:var(--shadow);padding:20px;margin-bottom:16px}
+.cardtitle{font-size:.78rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:10px}
+h1{font-size:1.5rem;font-weight:800;margin:0 0 8px}
+h2{font-size:1.2rem;font-weight:800;margin:6px 0}
+.intro p{margin:0;color:var(--muted);line-height:1.6;font-weight:500}
+.muted{color:var(--muted)}
+
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.skillcard{display:flex;flex-direction:column;margin-bottom:0}
+.tag{font-size:.74rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--pen)}
+.skillcard p{color:var(--muted);line-height:1.55;font-weight:500;flex:1;margin:8px 0 4px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+.chip{font-size:.8rem;font-weight:700;padding:4px 11px;border-radius:999px;background:var(--pen-soft);color:var(--pen)}
+.chip.good{background:var(--green-soft);color:var(--green)}
+.chip.gold{background:var(--pencil-soft);color:var(--pencil)}
+
+/* ---------- кнопки ---------- */
+.btn{font:inherit;font-weight:800;border:none;border-radius:13px;padding:11px 18px;
+  cursor:pointer;color:var(--ink);background:var(--panel);transition:transform .12s,box-shadow .12s;user-select:none}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--pen);color:#fff}
+.btn.primary:hover{box-shadow:0 6px 16px color-mix(in srgb,var(--pen) 40%,transparent)}
+.btn.good{background:var(--green);color:#fff}
+.btn.ghost{background:transparent;border:1.7px solid var(--line);color:var(--muted)}
+.btn.ghost:hover{border-color:var(--pen);color:var(--pen)}
+.start{width:100%;font-size:1.02rem;padding:13px}
+.bigact{width:100%;font-size:1.1rem;padding:14px 22px}
+
+/* ---------- условие и формулы ---------- */
+.statement{font-size:1rem;line-height:1.7;font-weight:600}
+.task-goal{margin-top:10px;padding:8px 11px;border-left:4px solid var(--pen);border-radius:0 9px 9px 0;
+  background:var(--pen-soft);font-size:.9rem;line-height:1.5}
+.task-goal b{color:var(--pen)}
+.bigform{font-family:var(--mono);font-size:1.28rem;font-weight:700;color:var(--pen);
+  background:var(--pen-soft);border-radius:12px;padding:9px 14px;display:inline-block;margin:6px 0;
+  max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.m{font-family:var(--mono);font-weight:700;background:var(--pen-soft);color:var(--pen);
+  padding:1px 7px;border-radius:7px;white-space:normal;overflow-wrap:anywhere;
+  box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.mexp{font-family:var(--mono);font-weight:700;background:var(--pen-soft);
+  padding:3px 9px;border-radius:8px;display:inline-block;line-height:1.75;
+  max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.tx2,.txy,.ty2{display:inline-block;padding:0 4px;border-bottom:2px solid currentColor;
+  border-radius:4px;font-weight:800}
+.tx2{color:var(--pen);background:color-mix(in srgb,var(--pen) 9%,transparent)}
+.txy{color:var(--pencil);background:color-mix(in srgb,var(--pencil) 10%,transparent)}
+.ty2{color:var(--violet);background:var(--violet-soft)}
+.inputtip{width:100%;font-size:.78rem;font-weight:700;color:var(--muted);margin-top:2px}
+.sys{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:clamp(.88rem,4vw,1.2rem);
+  font-weight:700;color:var(--pen);background:var(--pen-soft);border-radius:12px;padding:8px 12px;margin:6px 0;
+  max-width:100%}
+.sys .brace{font-size:2.5em;font-weight:400;line-height:.9}
+.sys .eqs{display:flex;flex-direction:column;gap:3px}
+
+/* ---------- доска решения: полная цепочка преобразований ---------- */
+.solution-board{margin:0 0 18px;padding:0 0 4px;border-bottom:1.5px solid var(--line)}
+.board-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  margin-bottom:10px;flex-wrap:wrap}
+.board-head b{font-size:.98rem}.board-head span{font-size:.78rem;font-weight:700;color:var(--muted)}
+.phase-map{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
+.phase-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 9px;border-radius:999px;
+  border:1.5px solid var(--line);font-size:.73rem;font-weight:800;color:var(--muted);background:var(--panel)}
+.phase-chip.done{color:var(--green);border-color:color-mix(in srgb,var(--green) 38%,var(--line));background:var(--green-soft)}
+.phase-chip.current{color:var(--pen);border-color:var(--pen);background:var(--pen-soft)}
+.board-phase{margin:12px 0 5px;font-size:.72rem;font-weight:800;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--muted)}
+.board-line{display:grid;grid-template-columns:22px minmax(0,1fr);gap:7px;align-items:start;
+  padding:8px 10px;margin:4px 0;border-left:3px solid transparent;line-height:1.65}
+.board-line .mark{font-weight:800;color:var(--muted);text-align:center}
+.board-line.origin{background:color-mix(in srgb,var(--panel) 84%,var(--pen-soft));
+  border-left-color:var(--muted)}
+.board-line.done{border-left-color:var(--green);color:color-mix(in srgb,var(--ink) 88%,var(--green))}
+.board-line.done .mark{color:var(--green)}
+.board-line.current{border-left-color:var(--pen);background:var(--pen-soft);border-radius:0 11px 11px 0}
+.board-line.current .mark{color:var(--pen)}
+.board-line.resolved{border-left-color:var(--green);background:var(--green-soft);border-radius:0 11px 11px 0}
+.board-line.resolved .mark{color:var(--green)}
+.board-math{min-width:0;font-family:var(--mono);font-size:.93rem;font-weight:600;
+  overflow-wrap:anywhere;word-break:normal}
+.board-math .board-note{font-family:var(--sans);font-size:.82rem;color:var(--muted);font-weight:700}
+.board-focus,.work-focus{display:inline;padding:1px 6px;margin:0 1px;border-radius:6px;
+  font-weight:800;color:var(--work-color,var(--pencil));background:var(--work-soft,var(--pencil-soft));
+  border-bottom:2px solid var(--work-color,var(--pencil));
+  box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.work-focus.blue{--work-color:var(--pen);--work-soft:color-mix(in srgb,var(--pen) 12%,var(--panel))}
+.work-focus.gold{--work-color:var(--pencil);--work-soft:color-mix(in srgb,var(--pencil) 13%,var(--panel))}
+.work-focus.violet{--work-color:var(--violet);--work-soft:var(--violet-soft)}
+.work-focus.green{--work-color:var(--green);--work-soft:var(--green-soft)}
+.work-focus.red{--work-color:var(--red);--work-soft:var(--red-soft)}
+.board-line.current .work-focus.active,.board-line.current .board-focus.active,
+.board-line.current .board-input,.board-line.current .board-blank,
+.stepq .m.active,.stepq .mexp .active{
+  animation:workPulse 1.25s ease-in-out 2;transform-origin:center}
+.board-line.current .board-input,.board-line.current .board-blank{--work-color:var(--pen)}
+.stepq .m{--work-color:var(--pen);border-bottom:2px solid var(--pen)}
+.stepq .mexp{background:color-mix(in srgb,var(--panel) 72%,var(--pen-soft))}
+.stepq .mexp .tx2{--work-color:var(--pen)}
+.stepq .mexp .txy{--work-color:var(--pencil);animation-delay:.14s}
+.stepq .mexp .ty2{--work-color:var(--violet);animation-delay:.28s}
+.board-blank{display:inline-block;min-width:72px;padding:0 7px;border:1.5px dashed var(--pen);border-radius:7px;
+  color:var(--pen);text-align:center;font-weight:800}
+.board-pending{display:inline-block;min-width:72px;padding:0 7px;border:1.5px dashed var(--line);border-radius:7px;
+  color:var(--muted);background:color-mix(in srgb,var(--panel) 82%,var(--pen-soft));text-align:center;font-weight:700}
+.board-input{display:inline-block;width:132px!important;max-width:100%;min-width:86px;margin:0 3px;padding:5px 8px!important;
+  border:2px solid var(--pen)!important;border-radius:8px!important;background:var(--panel)!important;
+  color:var(--ink)!important;font-family:var(--mono)!important;font-size:1rem!important;font-weight:700!important;
+  text-align:center;vertical-align:baseline}
+.board-input:focus{outline:3px solid color-mix(in srgb,var(--pen) 25%,transparent);outline-offset:1px}
+.board-current-label{display:block;margin-top:4px;font-family:var(--sans);font-size:.76rem;
+  font-weight:800;color:var(--pen)}
+.board-final{font-weight:800;color:var(--green)}
+.board-action{margin-top:12px;padding-top:12px;border-top:1.5px solid color-mix(in srgb,var(--pen) 28%,var(--line));
+  font-family:var(--sans);font-size:.94rem;font-weight:500;color:var(--ink)}
+.rule-card{padding:10px 12px;border-left:4px solid var(--pencil);border-radius:0 10px 10px 0;
+  background:var(--pencil-soft);line-height:1.55;margin-bottom:10px}
+.rule-card b{display:block;color:var(--pencil);font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+.now-card{padding:10px 12px;border-left:4px solid var(--pen);background:color-mix(in srgb,var(--panel) 72%,var(--pen-soft));
+  border-radius:0 10px 10px 0;line-height:1.55;margin-bottom:10px}
+.now-card b{color:var(--pen)}
+.work-visual{margin:9px 0 11px}
+.square-laws{display:grid;gap:8px}
+.square-law{padding:10px 12px;border-left:4px solid var(--violet);border-radius:0 10px 10px 0;
+  background:var(--violet-soft);font-family:var(--mono);overflow-wrap:anywhere}
+.square-law-name{font-family:var(--sans);font-size:.76rem;font-weight:800;color:var(--violet);
+  letter-spacing:.04em;text-transform:uppercase;margin-bottom:5px}
+.square-law-formula{font-size:clamp(.9rem,2.7vw,1.08rem);font-weight:800;line-height:1.7}
+.square-law .fa{color:var(--pen);background:var(--pen-soft);border-bottom:2px solid var(--pen);
+  border-radius:5px;padding:0 3px}
+.square-law .fb{color:var(--pencil);background:var(--pencil-soft);border-bottom:2px solid var(--pencil);
+  border-radius:5px;padding:0 3px}
+.square-map{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;font-family:var(--sans);font-weight:800}
+.square-map span{padding:4px 8px;border-radius:7px}
+.square-map .map-a{color:var(--pen);background:var(--pen-soft)}
+.square-map .map-b{color:var(--pencil);background:var(--pencil-soft)}
+.sign-flip{display:grid;gap:7px;padding:10px 12px;border-left:4px solid var(--red);
+  background:var(--red-soft);border-radius:0 10px 10px 0;font-family:var(--mono);overflow-wrap:anywhere}
+.sign-flip-row{display:grid;grid-template-columns:116px minmax(0,1fr);gap:9px;align-items:center}
+.sign-flip-label{font-family:var(--sans);font-size:.76rem;font-weight:800;color:var(--muted)}
+.sign-token{display:inline-block;margin:2px 3px;padding:2px 6px;border-radius:6px;font-weight:800}
+.sign-token.before{color:var(--red);background:color-mix(in srgb,var(--panel) 55%,var(--red-soft))}
+.sign-token.after{color:var(--green);background:var(--green-soft)}
+.linear-parts{display:grid;gap:8px;padding:10px 12px;border-left:4px solid var(--pen);
+  background:var(--pen-soft);border-radius:0 10px 10px 0}
+.linear-formula{font-family:var(--mono);font-weight:800;font-size:clamp(.9rem,2.7vw,1.08rem)}
+.linear-tags{display:flex;gap:8px;flex-wrap:wrap;font-weight:800}
+.linear-tags span{padding:4px 8px;border-radius:7px}
+.linear-k{color:var(--pen);background:color-mix(in srgb,var(--panel) 62%,var(--pen-soft))}
+.linear-b{color:var(--pencil);background:var(--pencil-soft)}
+.zero-choice{padding:9px 11px;border-left:4px solid var(--green);background:var(--green-soft);
+  border-radius:0 9px 9px 0;font-family:var(--mono);font-weight:800;line-height:1.65}
+.resolved-box{font-family:var(--sans);margin-top:12px;padding:11px 12px;border-radius:11px;
+  background:color-mix(in srgb,var(--panel) 58%,var(--green-soft));border:1.5px solid var(--green);line-height:1.55}
+.resolved-box strong{color:var(--green)}
+.resolved-actions{display:flex;justify-content:flex-end;margin-top:10px}
+.hint-progress{font-size:.76rem;font-weight:800;color:var(--muted);align-self:center}
+.factor-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.82rem;background:var(--panel)}
+.factor-table th,.factor-table td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:center}
+.factor-table th:first-child,.factor-table td:first-child{text-align:left}
+.factor-table .active-col{background:var(--pen-soft);color:var(--pen);font-weight:800}
+.factor-table .known{color:var(--green);font-weight:800}
+.divide-wrap{display:grid;gap:7px}
+.power-law{padding:7px 10px;border-left:4px solid var(--violet);background:var(--violet-soft);
+  border-radius:0 8px 8px 0;font-family:var(--mono);font-weight:800}
+.divide-table{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.82rem;background:var(--panel)}
+.divide-table th,.divide-table td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left}
+.divide-table th{font-family:var(--sans);color:var(--muted);font-size:.76rem}
+.divide-table td:last-child{font-weight:800;color:var(--green)}
+.sign-ready{padding:7px 10px;border-left:4px solid var(--red);background:var(--red-soft);
+  border-radius:0 8px 8px 0;font-weight:800}
+.group-guide{display:grid;gap:7px;padding:9px 11px;border-left:4px solid var(--violet);
+  background:var(--violet-soft);border-radius:0 9px 9px 0}
+.group-guide-row{display:flex;gap:7px;align-items:baseline;flex-wrap:wrap}
+.group-guide-row b{font-family:var(--mono);color:var(--violet)}
+.sub-demo{display:grid;gap:7px;padding:10px 12px;border-radius:10px;background:var(--panel);border:1.5px solid var(--line);
+  font-family:var(--mono);overflow-wrap:anywhere}
+.sub-demo .replace{display:inline-block;color:var(--violet);background:var(--violet-soft);border-bottom:2px solid var(--violet);
+  border-radius:5px;padding:1px 5px;animation:subDrop .8s ease-out 1}
+.sub-demo .arrow{font-family:var(--sans);font-size:.78rem;font-weight:800;color:var(--muted)}
+.replace-action{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:8px 0}
+.replace-action .replace-y{font-family:var(--mono);font-size:1.08rem;min-width:54px}
+.term-picker{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.term-pick{font-family:var(--mono);font-size:1rem;font-weight:800;padding:9px 13px;border-radius:10px;
+  border:2px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer}
+.term-pick.selected{border-color:var(--pen);background:var(--pen-soft);color:var(--pen)}
+.term-pick.wrongpick{border-color:var(--red);background:var(--red-soft);color:var(--red);animation:shake .4s}
+.coord-read{display:flex;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-weight:800}
+.coord-read span{padding:5px 9px;border-radius:8px;border-bottom:2px solid currentColor}
+.coord-x{color:var(--pen);background:var(--pen-soft)}.coord-y{color:var(--pencil);background:var(--pencil-soft)}
+.law-card{margin:14px auto 0;max-width:720px;text-align:left;padding:13px 15px;border-left:5px solid var(--green);
+  border-radius:0 12px 12px 0;background:var(--green-soft);line-height:1.55}
+.law-card b{display:block;color:var(--green);margin-bottom:4px}
+@media(max-width:520px){
+  .wrap{padding-left:8px;padding-right:8px}
+  .card{padding:14px;border-radius:14px}
+  .stepcard{padding:12px}
+  .bigform{font-size:1.05rem;padding:7px 9px}
+  .board-line{grid-template-columns:18px minmax(0,1fr);padding:7px 5px;gap:5px}
+  .board-math{font-size:.84rem}.board-input{width:112px!important;font-size:.9rem!important}
+  .phase-chip{font-size:.68rem;padding:4px 7px}
+  .factor-table{font-size:.73rem}.factor-table th,.factor-table td{padding:5px 4px}
+  .sign-flip-row{grid-template-columns:1fr;gap:2px}
+  .divide-table th,.divide-table td{padding:5px 4px;font-size:.73rem}
+}
+
+/* ---------- текущий шаг ---------- */
+.stepcard{border:2px dashed var(--pen);border-radius:15px;padding:16px;background:color-mix(in srgb,var(--pen) 4%,transparent)}
+.stepcard.wrong{animation:shake .4s}
+.stepq{font-size:1.04rem;font-weight:600;line-height:1.65;margin-bottom:13px}
+.praise{display:inline-block;background:var(--green-soft);color:var(--green);font-weight:800;
+  font-size:.9rem;padding:4px 13px;border-radius:999px;margin-bottom:10px;animation:pop .3s}
+.answerrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+input.num{font-family:var(--mono);font-size:1.25rem;font-weight:700;width:128px;text-align:center;
+  padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:var(--panel);color:var(--ink)}
+input.num:focus{outline:none;border-color:var(--pen)}
+.unitlab{font-family:var(--mono);font-size:1.2rem;font-weight:700;color:var(--pen)}
+.choices{display:flex;flex-direction:column;gap:9px}
+.choice{display:flex;gap:12px;align-items:flex-start;text-align:left;font:inherit;font-size:.98rem;
+  font-weight:600;line-height:1.5;color:var(--ink);padding:12px 14px;border:2px solid var(--line);
+  border-radius:12px;background:var(--panel);cursor:pointer;transition:border-color .15s}
+.choice:hover{border-color:var(--pen)}
+.choice .lett{font-weight:800;color:var(--pen);flex:none}
+.choice.wrongpick{border-color:var(--red);animation:shake .4s}
+.choice.correct-guide{border-color:var(--green);background:var(--green-soft)}
+.choice.mono span:last-child{font-family:var(--mono);font-size:1.02rem}
+.pointnote{background:var(--pen-soft);color:var(--pen);font-weight:700;padding:12px 14px;border-radius:12px}
+.hintbox{margin-top:12px;padding:10px 14px;border-radius:12px;font-size:.95rem;font-weight:600;line-height:1.55}
+.hintbox.bad{background:var(--red-soft);border:1.5px solid color-mix(in srgb,var(--red) 45%,transparent);color:var(--red)}
+.hintbox.tip{background:var(--pencil-soft);border:1.5px solid color-mix(in srgb,var(--pencil) 45%,transparent);color:var(--pencil)}
+.helpers{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.btn:disabled{opacity:.58;cursor:default}
+.board-action.wrong{animation:shake .4s}
+
+/* ---------- прогресс ---------- */
+.topbar{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.progresswrap{flex:1;display:flex;align-items:center;gap:10px}
+.progress{flex:1;height:9px;border-radius:999px;background:var(--line);overflow:hidden}
+.progress i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--pen),var(--green));transition:width .35s}
+.ptext{font-size:.84rem;font-weight:800;color:var(--muted);white-space:nowrap}
+
+/* ---------- сетка экрана задачи ---------- */
+.playgrid{display:grid;gap:16px;grid-template-areas:"a" "b" "c"}
+.ga{grid-area:a;margin-bottom:0}.gb{grid-area:b;margin-bottom:0}.gc{grid-area:c;margin-bottom:0}
+@media(min-width:900px){
+  .playgrid.withplane{grid-template-columns:1.02fr .98fr;grid-template-areas:"a b" "c b";align-items:start}
+}
+.planecard svg{width:100%;height:auto;display:block;border-radius:12px;background:var(--panel);touch-action:manipulation}
+.planehint{margin-top:8px;text-align:center;font-size:.84rem;font-weight:700;color:var(--muted)}
+
+/* ---------- финал ---------- */
+.finish{text-align:center;padding:14px 6px}
+.finish .big{font-size:3rem;line-height:1}
+.badge{display:inline-block;padding:6px 15px;border-radius:999px;font-weight:800;margin:8px 4px;font-size:.92rem}
+.badge.clean{background:var(--green-soft);color:var(--green);border:1.7px solid var(--green)}
+.badge.helped{background:var(--pencil-soft);color:var(--pencil);border:1.7px solid var(--pencil)}
+.finishbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+
+/* ---------- шпаргалка ---------- */
+details.cheat summary{cursor:pointer;font-weight:800;font-size:1rem}
+.cheatgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:12px}
+.formula{font-family:var(--mono);font-size:.9rem;font-weight:600;line-height:1.5;
+  background:var(--pen-soft);color:var(--pen);border-radius:11px;padding:10px 12px}
+
+/* ---------- svg-анимации ---------- */
+.drawline{stroke-dasharray:1200;stroke-dashoffset:1200;animation:draw 1.1s ease forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.miss{animation:fadeout 1.2s forwards}
+@keyframes fadeout{70%{opacity:1}to{opacity:0}}
+.target{animation:pulse 1s ease-in-out 3}
+@keyframes pulse{0%,100%{opacity:.25}50%{opacity:1}}
+@keyframes workPulse{
+  0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--work-color,var(--pen)) 0%,transparent)}
+  50%{box-shadow:0 0 0 4px color-mix(in srgb,var(--work-color,var(--pen)) 18%,transparent)}
+}
+@keyframes subDrop{0%{transform:translateY(-9px);opacity:.25}100%{transform:translateY(0);opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+@keyframes pop{0%{transform:scale(.95);opacity:.3}100%{transform:scale(1);opacity:1}}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+.foot{color:var(--muted);text-align:center;font-size:.8rem;font-weight:600;padding:20px 16px}
+.cloudcard{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:13px 15px;
+  border:1.5px solid var(--line);border-radius:14px;background:color-mix(in srgb,var(--panel) 94%,transparent);
+  box-shadow:var(--shadow);margin:16px auto 0}
+.cloudcopy{display:flex;gap:9px;align-items:flex-start;min-width:0}
+.clouddot{width:10px;height:10px;border-radius:50%;background:var(--muted);margin-top:6px;flex:0 0 auto}
+.clouddot.ok{background:var(--green)}.clouddot.wait{background:var(--pencil)}.clouddot.err{background:var(--red)}
+.cloudtitle{font-weight:800;color:var(--ink)}
+.clouddetail{font-size:13px;color:var(--muted);margin-top:2px;overflow-wrap:anywhere}
+.btn:focus-visible,.choice:focus-visible,input.num:focus-visible{outline:3px solid color-mix(in srgb,var(--pen) 55%,transparent);outline-offset:2px}
+@media(max-width:620px){
+  .hrow{align-items:flex-start}.brand small{display:none}.header-actions{max-width:170px}
+  .header-actions .btn{padding:9px 11px;font-size:.82rem}.cloudcard{flex-direction:column}.cloudcard .btn{width:100%}
+}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap hrow">
+    <a class="brand brandlink" href="../../index.html" aria-label="На главную Mathexam.space">
+      <span class="sigil">Σ</span>
+      <span><b>Алгебра · 7 класс</b><small>Тренажёр: выражения и график функции</small></span>
+    </a>
+    <div class="header-actions">
+      <a class="btn ghost" href="control-work-teacher.html">Преподавателю</a>
+      <button class="btn ghost" id="themeBtn" aria-label="Переключить светлую и тёмную тему">🌙</button>
+    </div>
+  </div>
+</header>
+<div class="wrap">
+  <section class="cloudcard" id="progressCard" aria-live="polite">
+    <div class="cloudcopy">
+      <i class="clouddot" id="progressDot" aria-hidden="true"></i>
+      <div>
+        <div class="cloudtitle" id="progressTitle">Прогресс сохраняется</div>
+        <div class="clouddetail" id="progressDetail">На этом устройстве. По персональной ссылке — ещё и у преподавателя.</div>
+      </div>
+    </div>
+    <a class="btn ghost" href="control-work-teacher.html">Выдать ученику</a>
+  </section>
+</div>
+<main class="wrap" id="app"></main>
+<footer class="foot">Прогресс сохраняется в браузере; по персональной ссылке — ещё и у преподавателя</footer>
+<script>
+'use strict';
+/* ============ ХРАНИЛИЩЕ (с запасным вариантом в памяти) ============ */
+const store=(()=>{let mem={},ok=true;
+  try{localStorage.setItem('__t','1');localStorage.removeItem('__t');}catch(e){ok=false;}
+  return{
+    get(k,d){try{if(ok){const v=localStorage.getItem(k);if(v!=null)return JSON.parse(v);}}catch(e){}return (k in mem)?mem[k]:d;},
+    set(k,v){try{if(ok){localStorage.setItem(k,JSON.stringify(v));return;}}catch(e){}mem[k]=v;}
+  };
+})();
+const TID='algebra7-control';
+const STORAGE_KEY_BASE='alg7-vyr-grafik-v1';
+const STUDENT_CODE_PREFIX='mathExamStudentAccess.v1.';
+const PRODUCTION_PROGRESS_API='https://mathexam-board-ladynata.amvera.io';
+const PROGRESS_API_BASE=/^(localhost|127\.0\.0\.1)$/.test(window.location.hostname)
+  ?'http://127.0.0.1:3000':PRODUCTION_PROGRESS_API;
+const ASSIGNMENT_ID_RE=/^[A-Za-z0-9_-]{10,64}$/;
+const ACCESS_CODE_RE=/^[A-Za-z0-9_-]{32,256}$/;
+const PROGRESS_STATE_RANK={clean:3,helped:2,seen:1};
+const TASK_BY_SKILL={
+  s1:{id:'t1-1',line:1},s4:{id:'t1-2',line:1},
+  s2:{id:'t2-1',line:2},s3:{id:'t2-2',line:2}
+};
+const SKILL_BY_TASK=Object.fromEntries(Object.entries(TASK_BY_SKILL).map(([skill,item])=>[item.id,skill]));
+
+function safeLocalGet(key){try{return localStorage.getItem(key)||'';}catch(e){return '';}}
+function safeLocalSet(key,value){try{localStorage.setItem(key,value);return true;}catch(e){return false;}}
+
+/* Код ученика принимается только из fragment и убирается до первого запроса. */
+function readAssignmentContext(){
+  let url;
+  try{url=new URL(window.location.href);}catch(e){return{assignmentId:'',studentCode:'',invalid:true};}
+  const rawId=url.searchParams.get('assignment')||'';
+  const assignmentId=ASSIGNMENT_ID_RE.test(rawId)?rawId:'';
+  const fragment=new URLSearchParams(url.hash.replace(/^#/,''));
+  const fragmentCode=fragment.get('student')||'';
+  const hadStudentFragment=fragment.has('student');
+  let studentCode='';
+  if(assignmentId&&ACCESS_CODE_RE.test(fragmentCode)){
+    studentCode=fragmentCode;
+    safeLocalSet(STUDENT_CODE_PREFIX+assignmentId,studentCode);
+  }else if(assignmentId&&!hadStudentFragment){
+    studentCode=safeLocalGet(STUDENT_CODE_PREFIX+assignmentId);
+    if(!ACCESS_CODE_RE.test(studentCode))studentCode='';
+  }
+  if(hadStudentFragment){
+    try{history.replaceState(null,'',url.pathname+url.search);}catch(e){}
+  }
+  return{
+    assignmentId,studentCode,
+    invalid:(!!rawId&&!assignmentId)||(hadStudentFragment&&!ACCESS_CODE_RE.test(fragmentCode))
+  };
+}
+
+const assignmentContext=readAssignmentContext();
+const KEY=STORAGE_KEY_BASE+(assignmentContext.assignmentId?'@'+assignmentContext.assignmentId:'');
+const loaded=store.get(KEY,{})||{};
+
+function strongerProgressState(current,incoming){
+  if(!current)return incoming||null;
+  if(!incoming)return current;
+  return PROGRESS_STATE_RANK[incoming]>PROGRESS_STATE_RANK[current]?incoming:current;
+}
+function normalizeStoredProgress(value){
+  const raw=value&&typeof value==='object'?value:{};
+  const tasks={};
+  Object.values(TASK_BY_SKILL).forEach(meta=>{
+    const item=raw.tasks&&raw.tasks[meta.id];
+    if(!item||typeof item!=='object')return;
+    const state=['seen','helped','clean'].includes(item.state)?item.state:null;
+    const attempts=Math.max(0,Number(item.attempts)||0);
+    const errors=Math.min(attempts,Math.max(0,Number(item.errors)||0));
+    tasks[meta.id]={line:meta.line,state,attempts,errors,hints:Math.max(0,Number(item.hints)||0)};
+  });
+  return{
+    tasks,
+    runs:Math.max(0,Number(raw.runs)||0),
+    best:Math.min(4,Math.max(0,Number(raw.best)||0)),
+    passed:!!raw.passed
+  };
+}
+const stats={
+  s1:Object.assign({clean:0,helped:0},loaded.s1||{}),
+  s2:Object.assign({clean:0,helped:0},loaded.s2||{}),
+  s3:Object.assign({clean:0,helped:0},loaded.s3||{}),
+  s4:Object.assign({clean:0,helped:0},loaded.s4||{}),
+  theme:loaded.theme||'light',
+  progress:normalizeStoredProgress(loaded.progress)
+};
+function saveStats(){store.set(KEY,stats);}
+
+const progressSync={
+  ready:false,dirty:false,syncing:false,retryTimer:null,debounceTimer:null,
+  changeVersion:0,studentLabel:'',lastActivityAt:''
+};
+function ensureProgressTask(skill){
+  const meta=TASK_BY_SKILL[skill];if(!meta)return null;
+  const tasks=stats.progress.tasks;
+  if(!tasks[meta.id])tasks[meta.id]={line:meta.line,state:null,attempts:0,errors:0,hints:0};
+  return tasks[meta.id];
+}
+function requestProgressSync(delay){
+  if(!assignmentContext.assignmentId||!assignmentContext.studentCode)return;
+  progressSync.dirty=true;
+  if(!progressSync.ready)return;
+  clearTimeout(progressSync.debounceTimer);
+  progressSync.debounceTimer=setTimeout(syncProgressNow,delay==null?700:delay);
+}
+function commitProgressChange(){
+  saveStats();progressSync.changeVersion++;requestProgressSync(700);
+}
+function markSkillStarted(skill){
+  const task=ensureProgressTask(skill);if(!task)return;
+  task.state=strongerProgressState(task.state,'seen');commitProgressChange();
+}
+function recordCurrentAttempt(){
+  const task=S.prob&&ensureProgressTask(S.prob.skill);if(!task)return;
+  task.state=strongerProgressState(task.state,'seen');task.attempts++;commitProgressChange();
+}
+function recordCurrentError(){
+  const task=S.prob&&ensureProgressTask(S.prob.skill);if(!task)return;
+  task.errors++;if(task.errors>task.attempts)task.attempts=task.errors;commitProgressChange();
+}
+function recordCurrentHint(){
+  const task=S.prob&&ensureProgressTask(S.prob.skill);if(!task)return;
+  task.state=strongerProgressState(task.state,'seen');task.hints++;commitProgressChange();
+}
+function completeSkill(skill,clean){
+  const task=ensureProgressTask(skill);if(!task)return;
+  task.state=strongerProgressState(task.state,clean?'clean':'helped');
+  stats.progress.runs++;
+  const solved=Object.values(stats.progress.tasks).filter(item=>item.state==='clean'||item.state==='helped').length;
+  stats.progress.best=Math.max(stats.progress.best,solved);
+  if(solved>=4)stats.progress.passed=true;
+  commitProgressChange();
+}
+function localProgressSnapshot(){
+  const tasks={};
+  Object.entries(stats.progress.tasks).sort().forEach(([id,item])=>{
+    if(!SKILL_BY_TASK[id])return;
+    const meta=TASK_BY_SKILL[SKILL_BY_TASK[id]];
+    const attempts=Math.max(0,Math.floor(Number(item.attempts)||0));
+    const errors=Math.min(attempts,Math.max(0,Math.floor(Number(item.errors)||0)));
+    tasks[id]={line:meta.line,state:item.state||null,attempts,errors,hints:Math.max(0,Math.floor(Number(item.hints)||0))};
+  });
+  return{schemaVersion:1,tasks,drill:{
+    runs:Math.max(0,Math.floor(Number(stats.progress.runs)||0)),
+    best:Math.min(4,Math.max(0,Math.floor(Number(stats.progress.best)||0))),
+    passed:!!stats.progress.passed
+  }};
+}
+function mergeRemoteProgress(remote){
+  if(!remote||remote.schemaVersion!==1||!remote.tasks||!remote.drill)throw new Error('PROGRESS_REMOTE_INVALID');
+  Object.entries(remote.tasks).forEach(([id,incoming])=>{
+    const skill=SKILL_BY_TASK[id],meta=TASK_BY_SKILL[skill];
+    if(!skill||!meta||incoming.line!==meta.line)throw new Error('PROGRESS_REMOTE_TASK_INVALID');
+    const task=ensureProgressTask(skill);
+    task.state=strongerProgressState(task.state,incoming.state);
+    task.attempts=Math.max(task.attempts||0,incoming.attempts||0);
+    task.errors=Math.max(task.errors||0,incoming.errors||0);
+    task.hints=Math.max(task.hints||0,incoming.hints||0);
+    if(task.state==='clean')stats[skill].clean=Math.max(stats[skill].clean,1);
+    else if(task.state==='helped')stats[skill].helped=Math.max(stats[skill].helped,1);
+  });
+  stats.progress.runs=Math.max(stats.progress.runs,remote.drill.runs||0);
+  stats.progress.best=Math.max(stats.progress.best,remote.drill.best||0);
+  stats.progress.passed=stats.progress.passed||!!remote.drill.passed;
+  saveStats();
+}
+function setProgressStatus(kind,title,detail){
+  const dot=document.getElementById('progressDot'),titleNode=document.getElementById('progressTitle');
+  const detailNode=document.getElementById('progressDetail');
+  if(dot)dot.className='clouddot'+(kind?' '+kind:'');
+  if(titleNode)titleNode.textContent=title;
+  if(detailNode)detailNode.textContent=detail;
+}
+function progressRequest(path,options={}){
+  const headers={Authorization:'Bearer '+assignmentContext.studentCode};
+  if(options.body!==undefined)headers['Content-Type']='application/json';
+  return fetch(PROGRESS_API_BASE+path,{
+    method:options.method||'GET',headers,cache:'no-store',credentials:'omit',keepalive:!!options.keepalive,
+    body:options.body===undefined?undefined:JSON.stringify(options.body)
+  }).then(response=>response.json().catch(()=>({})).then(body=>{
+    if(!response.ok){const error=new Error(body.error||'PROGRESS_REQUEST_FAILED');error.status=response.status;throw error;}
+    return body;
+  }));
+}
+function humanProgressTime(value){
+  if(!value)return'';
+  try{return new Intl.DateTimeFormat('ru-RU',{dateStyle:'short',timeStyle:'short'}).format(new Date(value));}
+  catch(e){return value;}
+}
+function syncProgressNow(){
+  if(!progressSync.ready||!progressSync.dirty||progressSync.syncing)return;
+  progressSync.syncing=true;
+  const version=progressSync.changeVersion;
+  setProgressStatus('wait','Сохраняю прогресс',progressSync.studentLabel?'Ученик: '+progressSync.studentLabel:'Персональное задание');
+  progressRequest('/api/progress/assignments/'+assignmentContext.assignmentId,{
+    method:'PUT',body:{trainerId:TID,progress:localProgressSnapshot()}
+  }).then(result=>{
+    if(result.trainerId!==TID||result.assignmentId!==assignmentContext.assignmentId)throw new Error('PROGRESS_ASSIGNMENT_MISMATCH');
+    progressSync.lastActivityAt=result.lastActivityAt||result.updatedAt||'';
+    if(version===progressSync.changeVersion)progressSync.dirty=false;
+    setProgressStatus('ok','Прогресс сохранён у преподавателя',
+      (progressSync.studentLabel?'Ученик: '+progressSync.studentLabel+'. ':'')+
+      (progressSync.lastActivityAt?'Обновлено '+humanProgressTime(progressSync.lastActivityAt):''));
+  }).catch(error=>{
+    progressSync.dirty=true;
+    const denied=error&&(error.status===401||error.status===403||error.status===404||error.status===422);
+    setProgressStatus(denied?'err':'wait',denied?'Персональная ссылка не принята':'Сохранено на этом устройстве',
+      denied?'Откройте исходную ссылку преподавателя ещё раз.':'Связь с сервером недоступна — повторю автоматически.');
+    if(!denied){clearTimeout(progressSync.retryTimer);progressSync.retryTimer=setTimeout(syncProgressNow,10000);}
+  }).finally(()=>{
+    progressSync.syncing=false;
+    if(progressSync.dirty&&version!==progressSync.changeVersion)requestProgressSync(250);
+  });
+}
+function startProgressClient(){
+  if(!assignmentContext.assignmentId){
+    if(assignmentContext.invalid)setProgressStatus('err','Персональная ссылка некорректна','Прогресс остаётся только на этом устройстве.');
+    else setProgressStatus('ok','Самостоятельный режим','Прогресс сохраняется на этом устройстве.');
+    return;
+  }
+  if(!assignmentContext.studentCode){
+    setProgressStatus('err','В персональной ссылке нет кода доступа','Попросите преподавателя скопировать ссылку целиком.');return;
+  }
+  setProgressStatus('wait','Подключаю персональное задание','Код уже убран из адресной строки.');
+  progressRequest('/api/progress/assignments/'+assignmentContext.assignmentId).then(result=>{
+    if(result.trainerId!==TID||result.assignmentId!==assignmentContext.assignmentId)throw new Error('PROGRESS_ASSIGNMENT_MISMATCH');
+    mergeRemoteProgress(result.progress);
+    progressSync.studentLabel=result.studentLabel||'';
+    progressSync.lastActivityAt=result.lastActivityAt||result.updatedAt||'';
+    progressSync.ready=true;
+    if(S.view==='menu')render();
+    setProgressStatus('ok','Персональное задание подключено',
+      (progressSync.studentLabel?'Ученик: '+progressSync.studentLabel+'. ':'')+'Прогресс видит преподаватель.');
+    requestProgressSync(0);
+  }).catch(error=>{
+    const denied=error&&(error.status===401||error.status===403||error.status===404||error.status===422);
+    setProgressStatus(denied?'err':'wait',denied?'Персональная ссылка не принята':'Сервер прогресса временно недоступен',
+      denied?'Попросите преподавателя выдать новую ссылку.':'Можно работать: всё сохранится на устройстве и синхронизируется позже.');
+    if(!denied){clearTimeout(progressSync.retryTimer);progressSync.retryTimer=setTimeout(startProgressClient,10000);}
+  });
+}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')syncProgressNow();});
+setInterval(()=>{if(progressSync.dirty)syncProgressNow();},30000);
+
+/* ============ ПОМОЩНИКИ ============ */
+const ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+const pick=a=>a[ri(0,a.length-1)];
+const num=n=>String(n).replace(/-/g,'\u2212');           /* красивый минус */
+const pn=n=>n<0?`(${num(n)})`:String(n);                  /* скобки у отрицательных */
+function parseNum(v){
+  v=String(v).trim().replace(/\u2212/g,'-').replace(/\s+/g,'');
+  if(!/^-?\d+$/.test(v))return null;
+  return parseInt(v,10);
+}
+function mkChoices(arr,mono){
+  const c=arr.map((o,sourceIndex)=>({t:o.t,ok:!!o.ok,mono:!!mono,sourceIndex,why:o.why||''}));
+  for(let i=c.length-1;i>0;i--){const j=ri(0,i);[c[i],c[j]]=[c[j],c[i]];}
+  return c;
+}
+const PRAISE=['Верно! 👍','Отлично! ✨','Точно! 🎯','Молодец! 💪','Так держать! 🌟','Правильно! ✅'];
+/* цветные «семьи» слагаемых */
+const T2=s=>`<span class="tx2">${s}</span>`;
+const TXY=s=>`<span class="txy">${s}</span>`;
+const TY2=s=>`<span class="ty2">${s}</span>`;
+/* склонение: 1 клеточку, 2 клеточки, 5 клеточек */
+function kl(n){
+  n=Math.abs(n);const d=n%10;
+  if(d===1&&n!==11)return n+' клеточку';
+  if(d>=2&&d<=4&&(n<12||n>14))return n+' клеточки';
+  return n+' клеточек';
+}
+
+/* ============ ГЕНЕРАТОР · ЗАДАНИЕ 1 (упростить выражение) ============ */
+/* Вид: Ax(Bx + Cy) − (x ± Dy)²  →  (AB−1)x² + (AC∓2D)xy − D²y² */
+function genSimplify(){
+  let A,B,C,D,s;
+  for(let g=0;g<300;g++){
+    A=pick([2,3]);B=pick([2,3]);C=pick([2,3,4]);D=pick([1,2]);s=pick([1,-1]);
+    if(s===1&&A*C-2*D<1)continue;      /* коэффициент при xy оставляем положительным */
+    break;
+  }
+  const AB=A*B,AC=A*C,twoD=2*D,D2=D*D;
+  const xy=s===1?AC-twoD:AC+twoD;
+  const x2c=AB-1;
+  const Dy=(D===1?'':D)+'y';
+  const inS=s===1?'+':'\u2212';        /* знак внутри квадрата */
+  const opS=s===1?'\u2212':'+';        /* знак 2Dxy после раскрытия минуса */
+  const sq=`(x ${inS} ${Dy})\u00b2`;
+  const stmtCore=`${A}x(${B}x + ${C}y) \u2212 ${sq}`;
+  const finalStr=(a,bb,cc)=>`${a}x\u00b2 ${bb>=0?'+':'\u2212'} ${Math.abs(bb)}xy ${cc>=0?'+':'\u2212'} ${Math.abs(cc)}y\u00b2`;
+  const correct=finalStr(x2c,xy,-D2);
+  const wrong1=finalStr(x2c,xy,D2);    /* забыли минус у y² */
+  const wrong2=finalStr(AB,xy,-D2);    /* забыли вычесть x² */
+  const steps=[
+    {type:'choice',
+     prompt:`С чего правильно начать упрощение?`,
+     choices:mkChoices([
+       {t:`Раскрыть скобки: первую — умножением, вторую — по формуле квадрата`,ok:true},
+       {t:`Сразу сложить ${A}x и ${B}x — это же похожие буквы`},
+       {t:`Сложить между собой всё, что стоит в двух скобках`}]),
+     hint:`Пока есть скобки, складывать ничего нельзя. Сначала раскрываем обе скобки, и только потом приводим подобные.`,
+     done:`План: 1) раскрыть обе скобки \u2192 2) привести подобные слагаемые.`},
+    {type:'choice',
+     prompt:`Начнём с <span class="m">${A}x(${B}x + ${C}y)</span>. Как раскрывают такую скобку?`,
+     choices:mkChoices([
+       {t:`Умножить ${A}x на КАЖДОЕ слагаемое: сначала на ${B}x, потом на ${C}y`,ok:true},
+       {t:`Умножить ${A}x только на ${B}x, а ${C}y переписать как есть`},
+       {t:`Сложить ${A}x с ${B}x и с ${C}y`}]),
+     hint:`То, что стоит перед скобкой, умножается на каждое слагаемое внутри неё. Здесь внутри два слагаемых — значит, будет два умножения.`,
+     done:`${A}x(${B}x + ${C}y) = ${A}x\u00b7${B}x + ${A}x\u00b7${C}y — два умножения.`},
+    {type:'choice',
+     prompt:`Мини-разминка, чтобы не запутаться: <span class="m">x \u00b7 x = ?</span>`,
+     choices:mkChoices([
+       {t:`x\u00b2`,ok:true},
+       {t:`2x`},
+       {t:`x`}],true),
+     hint:`Не путай: x + x = 2x (это сложение), а x \u00b7 x = x\u00b2 (умножение — «x во второй степени»).`,
+     done:`Запомнили: x\u00b7x = x\u00b2, а вот x + x = 2x.`},
+    {type:'number',answer:AB,unit:'x\u00b2',
+     prompt:`Первое умножение: <span class="m">${A}x \u00b7 ${B}x</span>.<br>Числа умножаем на числа: ${A}\u00b7${B}. Буквы на буквы: x\u00b7x = x\u00b2.<br>Получится <span class="m">?x\u00b2</span> — введи число.`,
+     hint:`${A}\u00b7${B} = ${AB}. Значит ${A}x\u00b7${B}x = ${AB}x\u00b2.`,
+     done:`${A}x \u00b7 ${B}x = ${AB}x\u00b2`},
+    {type:'number',answer:AC,unit:'xy',
+     prompt:`Второе умножение: <span class="m">${A}x \u00b7 ${C}y</span>.<br>Числа: ${A}\u00b7${C}. Буквы разные — их просто пишем рядом: x\u00b7y = xy.<br>Получится <span class="m">?xy</span>.`,
+     hint:`${A}\u00b7${C} = ${AC}. Итого ${A}x\u00b7${C}y = ${AC}xy.`,
+     done:`${A}x \u00b7 ${C}y = ${AC}xy \u2192 первая скобка раскрыта: ${AB}x\u00b2 + ${AC}xy`},
+    {type:'choice',
+     prompt:`Дальше по условию идёт <span class="m">${sq}</span>. Какая формула сокращённого умножения нужна?`,
+     choices: s===1?mkChoices([
+       {t:`(a + b)\u00b2 = a\u00b2 + 2ab + b\u00b2`,ok:true},
+       {t:`(a + b)\u00b2 = a\u00b2 + b\u00b2`},
+       {t:`(a \u2212 b)\u00b2 = a\u00b2 \u2212 2ab + b\u00b2`}],true)
+      :mkChoices([
+       {t:`(a \u2212 b)\u00b2 = a\u00b2 \u2212 2ab + b\u00b2`,ok:true},
+       {t:`(a \u2212 b)\u00b2 = a\u00b2 \u2212 b\u00b2`},
+       {t:`(a + b)\u00b2 = a\u00b2 + 2ab + b\u00b2`}],true),
+     hint:`Внутри скобки знак «${inS}», значит это квадрат ${s===1?'суммы':'разности'}: a\u00b2 ${inS} 2ab + b\u00b2. Средний член 2ab не теряем!`,
+     done:`Формула: (a ${inS} b)\u00b2 = a\u00b2 ${inS} 2ab + b\u00b2.`},
+    {type:'choice',
+     prompt:`Сравни формулу и нашу скобку: <span class="m">(a ${inS} b)\u00b2</span> и <span class="m">${sq}</span>. Что здесь a, а что b?`,
+     choices:mkChoices([
+       {t:`a = x,  b = ${Dy}`,ok:true},
+       {t:`a = x\u00b2,  b = (${Dy})\u00b2`},
+       {t:`a = 1,  b = ${D}`}],true),
+     hint:`a — то, что стоит в скобке ПЕРВЫМ (до знака «${inS}»), b — то, что вторым. У нас первым стоит x.`,
+     done:`a = x, b = ${Dy}. Подставляем их в формулу по очереди.`},
+    {type:'number',answer:twoD,unit:'xy',
+     prompt:`Первый член формулы готов сразу: a\u00b2 = x\u00b7x = x\u00b2.<br>Считаем средний: <span class="m">2 \u00b7 a \u00b7 b = 2 \u00b7 x \u00b7 ${Dy} = ?xy</span>.`,
+     hint:`Числа: 2\u00b7${D} = ${twoD}. Буквы: x\u00b7y = xy.`,
+     done:`Средний член: 2 \u00b7 x \u00b7 ${Dy} = ${twoD}xy`},
+    {type:'number',answer:D2,unit:'y\u00b2',
+     prompt:`И последний член: <span class="m">b\u00b2 = (${Dy})\u00b2 = ?y\u00b2</span>. Это ${Dy}, умноженное само на себя.`,
+     hint:D===1?`(y)\u00b2 = y\u00b7y = 1y\u00b2 — то есть просто y\u00b2. Введи 1.`:`(${D}y)\u00b7(${D}y): числа ${D}\u00b7${D} = ${D2}, буквы y\u00b7y = y\u00b2.`,
+     done:`(${Dy})\u00b2 = ${D2}y\u00b2 \u2192 значит ${sq} = x\u00b2 ${inS} ${twoD}xy + ${D2}y\u00b2`},
+    {type:'choice',
+     prompt:`Перед квадратом в условии стоит минус: <span class="m">\u2212 (x\u00b2 ${inS} ${twoD}xy + ${D2}y\u00b2)</span>. Что делаем со знаками?`,
+     choices:mkChoices([
+       {t:`Меняем знак у КАЖДОГО слагаемого в скобке`,ok:true},
+       {t:`Меняем знак только у первого слагаемого`},
+       {t:`Просто убираем скобки, знаки не трогаем`}]),
+     hint:`Минус перед скобкой — это как умножить всё на \u22121. Каждое слагаемое меняет знак: было «плюс» — станет «минус», и наоборот.`,
+     done:`\u2212 (x\u00b2 ${inS} ${twoD}xy + ${D2}y\u00b2) = \u2212x\u00b2 ${opS} ${twoD}xy \u2212 ${D2}y\u00b2`},
+    {type:'choice',
+     prompt:`Соберём всё в одну строку. Цвет показывает «семью» каждого слагаемого:<br><span class="mexp">${T2(AB+'x\u00b2')} + ${TXY(AC+'xy')} ${T2('\u2212 x\u00b2')} ${TXY(opS+' '+twoD+'xy')} ${TY2('\u2212 '+D2+'y\u00b2')}</span><br>Можно ли сложить ${T2(AB+'x\u00b2')} и ${TXY(AC+'xy')}?`,
+     choices:mkChoices([
+       {t:`Нельзя: буквенные части разные (x\u00b2 и xy) — это НЕ подобные слагаемые`,ok:true},
+       {t:`Можно: складываем числа ${AB} и ${AC}, буквы не мешают`},
+       {t:`Можно, если сначала стереть буквы`}]),
+     hint:`Складывать можно только подобные слагаемые — у которых буквенная часть совпадает полностью. x\u00b2 и xy — разные «семьи», их не смешиваем.`,
+     done:`Складываем только своих: x\u00b2 — с x\u00b2, xy — с xy, y\u00b2 — с y\u00b2.`},
+    {type:'number',answer:x2c,unit:'x\u00b2',
+     prompt:`Синяя семья: <span class="mexp">${T2(AB+'x\u00b2')} ${T2('\u2212 x\u00b2')}</span> = <span class="m">?x\u00b2</span>`,
+     hint:`x\u00b2 без числа — это 1x\u00b2. Считаем числа: ${AB} \u2212 1 = ${x2c}.`,
+     done:`${AB}x\u00b2 \u2212 x\u00b2 = ${x2c}x\u00b2`},
+    {type:'number',answer:xy,unit:'xy',
+     prompt:`Оранжевая семья: <span class="mexp">${TXY(AC+'xy')} ${TXY(opS+' '+twoD+'xy')}</span> = <span class="m">?xy</span>`,
+     hint:s===1?`Считаем числа: ${AC} \u2212 ${twoD} = ${xy}.`:`Считаем числа: ${AC} + ${twoD} = ${xy}.`,
+     done:`${AC}xy ${opS} ${twoD}xy = ${xy}xy`},
+    {type:'choice',
+     prompt:`Осталась фиолетовая семья: <span class="mexp">${TY2('\u2212'+D2+'y\u00b2')}</span>. С чем её сложить?`,
+     choices:mkChoices([
+       {t:`Не с чем: слагаемое с y\u00b2 одно, переписываем его в ответ как есть`,ok:true},
+       {t:`С ${x2c}x\u00b2 — они рядом стоят`},
+       {t:`Ни с чем, значит его можно просто выбросить`}]),
+     hint:`Пары для \u2212${D2}y\u00b2 нет, поэтому оно переходит в ответ без изменений. Выбрасывать слагаемые нельзя!`,
+     done:`\u2212${D2}y\u00b2 остаётся в ответе как есть.`},
+    {type:'choice',
+     prompt:`Осталось записать ответ. Выбери правильный вариант:`,
+     choices:mkChoices([{t:correct,ok:true},{t:wrong1},{t:wrong2}],true),
+     hint:`Проверь три места: при x\u00b2 должно быть ${AB}\u22121 = ${x2c}, при xy — ${AC} ${opS} ${twoD} = ${xy}, а перед y\u00b2 остался минус!`,
+     done:`Ответ: ${correct}`}
+  ];
+  return{skill:'s1',title:'Задание 1 · Упростить выражение',
+    statement:`Упростите выражение:<br><span class="bigform">${stmtCore}</span>`,
+    steps,meta:{A,B,C,D,s,AB,AC,twoD,D2,xy,x2c}};
+}
+
+/* ============ ГЕНЕРАТОР · ЗАДАНИЕ 2 (система уравнений) ============ */
+/* Вид: a1·x − y = c1;  a2·x + b2·y = c2. Решение подстановкой, ответ (x0; y0). */
+function genSystem(){
+  let a1,a2,b2,x0,y0,c1,c2,K,R;
+  for(let g=0;g<800;g++){
+    a1=pick([2,3,4]);a2=pick([2,3,5]);b2=pick([2,3,4,5,6,7]);
+    x0=pick([1,2,3]);y0=pick([-3,-2,-1,1,2,3]);
+    c1=a1*x0-y0;c2=a2*x0+b2*y0;
+    K=a2+b2*a1;R=K*x0;
+    if(c1<1||c1>15)continue;        /* y выражается с «красивым» числом */
+    if(b2*c1>60)continue;           /* арифметика остаётся посильной */
+    if(K>33||R>99)continue;
+    break;
+  }
+  const b2a1=b2*a1,b2c1=b2*c1,a1x0=a1*x0,a2x0=a2*x0,b2y0=b2*y0;
+  const eq1=`${a1}x \u2212 y = ${c1}`;
+  const eq2=`${a2}x + ${b2}y = ${num(c2)}`;
+  const steps=[
+    {type:'choice',
+     prompt:`В первом уравнении <span class="m">${eq1}</span> перед y нет числа — y стоит «в одиночку». Какой способ решения тут самый удобный?`,
+     choices:mkChoices([
+       {t:`Выразить y из первого уравнения и подставить во второе (метод подстановки)`,ok:true},
+       {t:`Просто сложить два уравнения столбиком как есть`},
+       {t:`Подбирать x и y наугад, пока не совпадёт`}]),
+     hint:`Раз y стоит без числа, его легко выразить: получится «y = что-то с иксом». Потом это подставим во второе уравнение.`,
+     done:`Метод подстановки: выражаем y из первого уравнения.`},
+    {type:'choice',
+     prompt:`Выразим y из первого уравнения: <span class="m">${a1}x \u2212 y = ${c1}</span>. Что получится?`,
+     choices:mkChoices([
+       {t:`y = ${a1}x \u2212 ${c1}`,ok:true},
+       {t:`y = ${c1} \u2212 ${a1}x`},
+       {t:`y = ${a1}x + ${c1}`}],true),
+     hint:`Перенеси \u2212y вправо (там оно станет +y), а ${c1} влево (станет \u2212${c1}). Получится ${a1}x \u2212 ${c1} = y.`,
+     done:`Выразили: y = ${a1}x \u2212 ${c1}`},
+    {type:'choice',
+     prompt:`Теперь подставим это во ВТОРОЕ уравнение <span class="m">${eq2}</span>. Как правильно?`,
+     choices:mkChoices([
+       {t:`Вместо y записать скобку: ${a2}x + ${b2}(${a1}x \u2212 ${c1}) = ${num(c2)}`,ok:true},
+       {t:`Вместо x записать скобку (${a1}x \u2212 ${c1})`},
+       {t:`Приписать скобку в конец уравнения через плюс`}]),
+     hint:`Мы выразили именно y — значит, во втором уравнении заменяем букву y на скобку (${a1}x \u2212 ${c1}). Скобка обязательна!`,
+     done:`Подставили: ${a2}x + ${b2}(${a1}x \u2212 ${c1}) = ${num(c2)}`},
+    {type:'number',answer:b2a1,unit:'x',
+     prompt:`Раскроем скобку: ${b2} умножаем на каждое слагаемое внутри. Первое: <span class="m">${b2} \u00b7 ${a1}x = ?x</span>`,
+     hint:`${b2}\u00b7${a1} = ${b2a1}.`,
+     done:`${b2} \u00b7 ${a1}x = ${b2a1}x`},
+    {type:'number',answer:-b2c1,unit:'',
+     prompt:`Второе: <span class="m">${b2} \u00b7 (\u2212${c1}) = ?</span>`,
+     hint:`«Плюс» на «минус» даёт «минус»: ${b2}\u00b7${c1} = ${b2c1}, значит ответ \u2212${b2c1}.`,
+     done:`${b2} \u00b7 (\u2212${c1}) = \u2212${b2c1} \u2192 уравнение: ${a2}x + ${b2a1}x \u2212 ${b2c1} = ${num(c2)}`},
+    {type:'number',answer:K,unit:'x',
+     prompt:`Соберём иксы вместе: <span class="m">${a2}x + ${b2a1}x = ?x</span>`,
+     hint:`${a2} + ${b2a1} = ${K}.`,
+     done:`${a2}x + ${b2a1}x = ${K}x \u2192 получилось: ${K}x \u2212 ${b2c1} = ${num(c2)}`},
+    {type:'number',answer:R,unit:'',
+     prompt:`Перенесём \u2212${b2c1} вправо — при переносе через «=» знак меняется на плюс: <span class="m">${K}x = ${num(c2)} + ${b2c1} = ?</span>`,
+     hint:`${num(c2)} + ${b2c1} = ${R}.${c2<0?' Начни с '+num(c2)+' и шагай на '+b2c1+' вправо по числовой прямой.':''}`,
+     done:`${K}x = ${R}`},
+    {type:'number',answer:x0,unit:'',
+     prompt:`${K}x — это ${K} умножить на x. Чтобы найти x, делим: <span class="m">x = ${R} : ${K} = ?</span>`,
+     hint:`Проверь себя умножением: ${K} \u00b7 ${x0} = ${R}. Значит x = ${x0}.`,
+     done:`x = ${x0} \u2713`},
+    {type:'number',answer:a1x0,unit:'',
+     prompt:`x нашли! Теперь вернёмся к формуле <span class="m">y = ${a1}x \u2212 ${c1}</span> и подставим x = ${x0}.<br>Действие 1 — умножение: <span class="m">${a1} \u00b7 ${x0} = ?</span>`,
+     hint:`${a1}\u00b7${x0} = ${a1x0}.`,
+     done:`${a1} \u00b7 ${x0} = ${a1x0}`},
+    {type:'number',answer:y0,unit:'',
+     prompt:`Действие 2 — вычитание: <span class="m">y = ${a1x0} \u2212 ${c1} = ?</span>`,
+     hint:y0<0?`${a1x0} меньше, чем ${c1}, поэтому уходим в минус: ${a1x0} \u2212 ${c1} = ${num(y0)}.`:`${a1x0} \u2212 ${c1} = ${num(y0)}.`,
+     done:`y = ${num(y0)} \u2713`},
+    {type:'choice',
+     prompt:`Проверим себя по второму уравнению: <span class="m">${a2}\u00b7${x0} + ${b2}\u00b7${pn(y0)} = ${a2x0} ${b2y0>=0?'+':'\u2212'} ${Math.abs(b2y0)} = ${num(c2)}</span>.<br>Правая часть второго уравнения тоже ${num(c2)}. Что это значит?`,
+     choices:mkChoices([
+       {t:`Совпало — система решена верно`,ok:true},
+       {t:`Совпало случайно, надо решать заново`},
+       {t:`Проверка ничего не показывает`}]),
+     hint:`Если подставить найденные x и y в уравнение и левая часть совпала с правой — решение верное. Это и есть проверка.`,
+     done:`Проверка пройдена: ${num(c2)} = ${num(c2)} \u2713`},
+    {type:'choice',
+     prompt:`Записываем ответ. Как правильно?`,
+     choices:mkChoices([
+       {t:`(${x0}; ${num(y0)}) — сначала x, потом y`,ok:true},
+       {t:`(${num(y0)}; ${x0}) — сначала y, потом x`},
+       {t:`Достаточно написать только x = ${x0}`}]),
+     hint:`В ответе — пара чисел в круглых скобках, порядок строгий: сначала x, потом y.`,
+     done:`Ответ: (${x0}; ${num(y0)})`}
+  ];
+  return{skill:'s2',title:'Задание 2 · Система уравнений',
+    statement:`Решите систему уравнений:<br><span class="sys"><span class="brace">{</span><span class="eqs"><span>${eq1},</span><span>${eq2}.</span></span></span>`,
+    steps,meta:{a1,a2,b2,x0,y0,c1,c2,K,R}};
+}
+
+/* ============ ГЕНЕРАТОР · ЗАДАНИЕ 3 (график y = kx + b) ============ */
+function fmtF(k,b){
+  const ks=k===1?'x':k===-1?'\u2212x':`${num(k)}x`;
+  return `y = ${ks} ${b>=0?'+':'\u2212'} ${Math.abs(b)}`;
+}
+function signHint(k,p){
+  const a=k>0?'плюс':'минус',c=p>0?'плюс':'минус',r=k*p>0?'плюс':'минус';
+  return `${Math.abs(k)}\u00b7${Math.abs(p)} = ${Math.abs(k*p)}, а знак: «${a}» умножить на «${c}» даёт «${r}».`;
+}
+function genGraph(){
+  const k=pick([-3,-2,-1,1,2,3]);
+  const b=pick([-5,-4,-3,-2,-1,1,2,3,4,5]);
+  const x2=Math.abs(k*2+b)<=8?2:1;
+  const y2=k*x2+b;
+  const p=pick([-1,1])*ri(6,12);
+  const ty=k*p+b;
+  const passes=Math.random()<0.5;
+  const q=passes?ty:ty+pick([-4,-3,-2,2,3,4]);
+  const f=fmtF(k,b);
+  const kd=num(k);
+  const bAbs=Math.abs(b),bSign=b>=0?'+':'\u2212';
+  const bWord=b>=0?`прибавим ${bAbs}`:`вычтем ${bAbs}`;
+  const kp=k*p,kx2=k*x2;
+  const stepWord=bAbs===1?'шаг':(bAbs<5?'шага':'шагов');
+  const steps=[
+    {type:'choice',
+     prompt:`Функция <span class="m">${f}</span> — линейная. Как выглядит её график?`,
+     choices:mkChoices([
+       {t:`Прямая линия`,ok:true},
+       {t:`Парабола (дуга)`},
+       {t:`Ломаная из отрезков`}]),
+     hint:`Линейная функция y = kx + b всегда даёт прямую линию — поэтому она и называется линейной.`,
+     done:`График линейной функции — прямая.`},
+    {type:'choice',
+     prompt:`Сколько точек достаточно найти, чтобы провести прямую?`,
+     choices:mkChoices([
+       {t:`Две`,ok:true},
+       {t:`Одну`},
+       {t:`Не меньше пяти`}]),
+     hint:`Через две точки проходит ровно одна прямая. Значит, двух точек хватит.`,
+     done:`Достаточно двух точек. Найдём их!`},
+    {type:'choice',
+     prompt:`Чтобы найти точку графика, берут какое-нибудь число x и по формуле считают y. Возьмём самое простое: <span class="m">x = 0</span>.<br>Что значит «подставить x = 0» в формулу <span class="m">${f}</span>?`,
+     choices:mkChoices([
+       {t:`Записать 0 вместо буквы x: получится y = ${kd}\u00b70 ${bSign} ${bAbs}`,ok:true},
+       {t:`Записать 0 вместо буквы y`},
+       {t:`Просто приписать 0 в конец формулы`}]),
+     hint:`Подставить — значит заменить БУКВУ x на число. Буква y остаётся: её-то мы и ищем.`,
+     done:`Подставили x = 0 \u2192 y = ${kd}\u00b70 ${bSign} ${bAbs}. Считаем по действиям.`},
+    {type:'number',answer:0,unit:'',
+     prompt:`Действие 1 — умножение: <span class="m">${kd}\u00b70 = ?</span>`,
+     hint:`Любое число, умноженное на 0, даёт 0. Даже ${kd}.`,
+     done:`${kd}\u00b70 = 0`},
+    {type:'number',answer:b,unit:'',
+     prompt:`Действие 2: <span class="m">0 ${bSign} ${bAbs} = ?</span>`,
+     hint:b>=0?`0 + ${bAbs} = ${num(b)}.`:`0 \u2212 ${bAbs} = ${num(b)} — ушли в минус.`,
+     done:`y = 0 ${bSign} ${bAbs} = ${num(b)}. Первая точка: (0; ${num(b)})`},
+    {type:'number',answer:kx2,unit:'',
+     prompt:`Ищем вторую точку. Теперь возьмём <span class="m">x = ${x2}</span>: y = ${kd}\u00b7${x2} ${bSign} ${bAbs}.<br>Действие 1 — умножение: <span class="m">${kd}\u00b7${x2} = ?</span>`,
+     hint:k>0?`${k}\u00b7${x2} = ${kx2}.`:`${Math.abs(k)}\u00b7${x2} = ${Math.abs(kx2)}, и минус никуда не девается: ${num(kx2)}.`,
+     done:`${kd}\u00b7${x2} = ${num(kx2)}`},
+    {type:'number',answer:y2,unit:'',
+     prompt:`Действие 2 — ${bWord}: <span class="m">${num(kx2)} ${bSign} ${bAbs} = ?</span>`,
+     hint:`Начни с ${num(kx2)} и сделай ${bAbs} ${stepWord} ${b>=0?'вправо (к плюсу)':'влево (к минусу)'} по числовой прямой: получится ${num(y2)}.`,
+     done:`y = ${num(y2)}. Вторая точка: (${x2}; ${num(y2)})`},
+    {type:'choice',
+     prompt:`Точки найдены: (0; ${num(b)}) и (${x2}; ${num(y2)}). Прежде чем их отмечать, вспомним: что показывает ПЕРВОЕ число в записи точки?`,
+     choices:mkChoices([
+       {t:`Шаги по горизонтали \u2192 (вправо, а с минусом — влево)`,ok:true},
+       {t:`Шаги по вертикали \u2191 (вверх или вниз)`},
+       {t:`Просто номер точки по порядку`}]),
+     hint:`Порядок всегда один: первое число — по горизонтальной оси x, второе — по вертикальной оси y. Запоминалка: «сначала идём по коридору, потом поднимаемся по лестнице».`,
+     done:`Первое число — вправо/влево, второе — вверх/вниз.`},
+    {type:'point',x:0,y:b,
+     prompt:`Отметь первую точку <span class="m">(0; ${num(b)})</span>: от центра 0 клеточек вбок, потом ${kl(b)} ${b>=0?'вверх':'вниз'}. Нажми на этот узел сетки.`,
+     hint:`Вбок идти не нужно — точка стоит прямо на вертикальной оси y, на высоте ${num(b)}.`,
+     done:`Точка (0; ${num(b)}) отмечена \u2713`},
+    {type:'point',x:x2,y:y2,
+     prompt:`Теперь вторая точка <span class="m">(${x2}; ${num(y2)})</span>: ${kl(x2)} вправо, потом ${kl(y2)} ${y2>=0?'вверх':'вниз'}.`,
+     hint:`Считай по клеточкам от центра: ${x2} вправо и ${Math.abs(y2)} ${y2>=0?'вверх':'вниз'}.`,
+     done:`Точка (${x2}; ${num(y2)}) отмечена \u2713`},
+    {type:'action',action:'\ud83d\udccf Провести прямую',effect:'line',
+     prompt:`Обе точки на месте! Приложи «линейку» и проведи через них прямую.`,
+     hint:`Просто нажми кнопку — прямая пройдёт через обе отмеченные точки.`,
+     done:`Прямая проведена — пункт а) готов! \ud83d\udcc8`},
+    {type:'choice',
+     prompt:`Пункт б): проходит ли график через точку <span class="m">A(${num(p)}; ${num(q)})</span>? На нашем рисунке её не видно — она слишком далеко. Как проверить?`,
+     choices:mkChoices([
+       {t:`Подставить x = ${num(p)} в формулу и посмотреть, получится ли y = ${num(q)}`,ok:true},
+       {t:`Продлить прямую карандашом за край экрана`},
+       {t:`Подставить в формулу y = ${num(q)} вместо x`}]),
+     hint:`Рисунок ограничен, а формула работает для любых x! Первую координату точки подставляем вместо x.`,
+     done:`Проверяем по формуле: подставляем x = ${num(p)} в ${f}.`},
+    {type:'choice',
+     prompt:`Считаем <span class="m">${kd}\u00b7${pn(p)}</span>. Сначала разберёмся со ЗНАКОМ: «${k>0?'плюс':'минус'}» умножить на «${p>0?'плюс':'минус'}» — что получится?`,
+     choices:mkChoices([
+       {t:`Плюс`,ok:kp>0},
+       {t:`Минус`,ok:kp<0}]),
+     hint:`Правило знаков: одинаковые знаки дают плюс, разные — минус.`,
+     done:`Знак результата: ${kp>0?'плюс':'минус'}.`},
+    {type:'number',answer:kp,unit:'',
+     prompt:`Теперь само умножение: <span class="m">${kd}\u00b7${pn(p)} = ?</span> (знак ты уже знаешь).`,
+     hint:signHint(k,p)+` Итого: ${num(kp)}.`,
+     done:`${kd}\u00b7${pn(p)} = ${num(kp)}`},
+    {type:'number',answer:ty,unit:'',
+     prompt:`Последнее действие — ${bWord}: <span class="m">${num(kp)} ${bSign} ${bAbs} = ?</span>`,
+     hint:`Начни с числа ${num(kp)} и сделай ${bAbs} ${stepWord} ${b>=0?'вправо (к плюсу)':'влево (к минусу)'} по числовой прямой.`,
+     done:`y = ${num(kp)} ${bSign} ${bAbs} = ${num(ty)}`},
+    {type:'choice',
+     prompt:`Итог: подставили x = ${num(p)} — получили y = <span class="m">${num(ty)}</span>. А у точки A вторая координата: <span class="m">${num(q)}</span>. Сравни эти два числа. Какой вывод?`,
+     choices:mkChoices([
+       {t:`Числа совпали — график ПРОХОДИТ через точку A`,ok:passes},
+       {t:`Числа разные — график НЕ проходит через точку A`,ok:!passes}]),
+     hint:`Сравни: ${num(ty)} и ${num(q)}. Если они равны — график проходит через точку, если нет — не проходит.`,
+     done:passes?`${num(ty)} = ${num(q)} \u2192 график проходит через точку A \u2705`
+                :`${num(ty)} \u2260 ${num(q)} \u2192 график НЕ проходит через точку A \u274c`}
+  ];
+  return{skill:'s3',title:'Задание 3 · Линейная функция',
+    statement:`а) Постройте график функции<br><span class="bigform">${f}</span><br>б) Определите, проходит ли график через точку <span class="m">A(${num(p)}; ${num(q)})</span>.`,
+    steps,meta:{k,b,x2,y2,p,q,ty,passes}};
+}
+
+/* ============ ГЕНЕРАТОР · ЗАДАНИЕ 4 (разложение на множители) ============ */
+/* а) P·a³x³ − P·a³x² − Q·a²x = P·a²x(ax² − ax − N), Q = P·N
+   б) a² + G·a + G·b − b² = (a + b)(a − b + G) */
+function genFactor(){
+  const P=pick([2,3,4]);
+  const N=pick([2,3,5,6,7]);
+  const Q=P*N;
+  const G=pick([2,3,4,5,6,7]);
+  const exprA=`${P}a\u00b3x\u00b3 \u2212 ${P}a\u00b3x\u00b2 \u2212 ${Q}a\u00b2x`;
+  const ansA=`${P}a\u00b2x(ax\u00b2 \u2212 ax \u2212 ${N})`;
+  const wrongA1=`${P}a\u00b2x(ax\u00b2 + ax + ${N})`;
+  const wrongA2=`${P}a\u00b2x(ax\u00b2 \u2212 ax)`;
+  const exprB=`a\u00b2 + ${G}a + ${G}b \u2212 b\u00b2`;
+  const ansB=`(a + b)(a \u2212 b + ${G})`;
+  const wrongB2=`(a + b)(a + b \u2212 ${G})`;
+  const steps=[
+    {type:'choice',
+     prompt:`«Разложить на множители» — что это значит?`,
+     choices:mkChoices([
+       {t:`Превратить сумму в ПРОИЗВЕДЕНИЕ — записать выражение как умножение`,ok:true},
+       {t:`Посчитать выражение и получить одно число`},
+       {t:`Раскрыть все скобки`}]),
+     hint:`Разложить на множители — записать выражение в виде умножения (множителей). Это действие, ОБРАТНОЕ раскрытию скобок.`,
+     done:`Цель: записать каждое выражение в виде произведения.`},
+    {type:'choice',
+     prompt:`Пункт а): <span class="m">${exprA}</span>. С чего начинаем?`,
+     choices:mkChoices([
+       {t:`Ищем общий множитель у всех трёх слагаемых`,ok:true},
+       {t:`Сразу группируем слагаемые парами`},
+       {t:`Применяем формулу квадрата суммы`}]),
+     hint:`Первый инструмент всегда один и тот же: посмотреть, что ОБЩЕГО есть у всех слагаемых, и вынести это за скобку.`,
+     done:`План для а): найти и вынести общий множитель.`},
+    {type:'number',answer:P,unit:'',
+     prompt:`Смотрим на числа: ${P}, ${P} и ${Q}. Какое САМОЕ БОЛЬШОЕ число делит все три?`,
+     hint:`${Q} = ${P}\u00b7${N}, а ${P} делится сам на себя. Значит, подходит ${P}.`,
+     done:`Общее число: ${P}.`},
+    {type:'choice',
+     prompt:`Буква a: в слагаемых она в степенях a\u00b3, a\u00b3 и a\u00b2. Сколько «a» выносим за скобку?`,
+     choices:mkChoices([
+       {t:`a\u00b2 — наименьшую степень`,ok:true},
+       {t:`a\u00b3 — наибольшую степень`},
+       {t:`a\u2078 — сумму всех степеней`}],true),
+     hint:`Вынести можно только то, что есть в КАЖДОМ слагаемом. В последнем всего a\u00b2 — больше взять неоткуда. Берём наименьшую степень.`,
+     done:`Выносим a\u00b2 (наименьшая степень).`},
+    {type:'choice',
+     prompt:`Буква x: степени x\u00b3, x\u00b2 и x. Что выносим?`,
+     choices:mkChoices([
+       {t:`x`,ok:true},
+       {t:`x\u00b3`},
+       {t:`x\u00b2`}],true),
+     hint:`Снова наименьшая степень: в последнем слагаемом x стоит всего один раз.`,
+     done:`Выносим x. Итого общий множитель: ${P}a\u00b2x.`},
+    {type:'choice',
+     prompt:`Теперь делим каждое слагаемое на ${P}a\u00b2x. Первое: <span class="m">${P}a\u00b3x\u00b3 : ${P}a\u00b2x = ?</span>`,
+     choices:mkChoices([
+       {t:`ax\u00b2`,ok:true},
+       {t:`a\u00b2x\u00b2`},
+       {t:`ax\u00b3`}],true),
+     hint:`Числа: ${P}:${P} = 1. Степени при делении ВЫЧИТАЮТСЯ: a\u00b3:a\u00b2 = a, x\u00b3:x = x\u00b2.`,
+     done:`${P}a\u00b3x\u00b3 : ${P}a\u00b2x = ax\u00b2`},
+    {type:'choice',
+     prompt:`Второе: <span class="m">${P}a\u00b3x\u00b2 : ${P}a\u00b2x = ?</span>`,
+     choices:mkChoices([
+       {t:`ax`,ok:true},
+       {t:`a`},
+       {t:`x`}],true),
+     hint:`a\u00b3:a\u00b2 = a, x\u00b2:x = x. Вместе: ax.`,
+     done:`${P}a\u00b3x\u00b2 : ${P}a\u00b2x = ax`},
+    {type:'number',answer:N,unit:'',
+     prompt:`Третье: <span class="m">${Q}a\u00b2x : ${P}a\u00b2x = ?</span> Буквы сократились полностью — осталось только число.`,
+     hint:`${Q} : ${P} = ${N}.`,
+     done:`${Q}a\u00b2x : ${P}a\u00b2x = ${N}`},
+    {type:'choice',
+     prompt:`Собираем пункт а): за скобкой ${P}a\u00b2x, внутри — три результата деления со знаками из условия. Что получилось?`,
+     choices:mkChoices([
+       {t:ansA,ok:true},
+       {t:wrongA1},
+       {t:wrongA2}],true),
+     hint:`Знаки берём из условия: минус, минус. Внутри скобки должно быть: ax\u00b2 \u2212 ax \u2212 ${N}. Ничего не теряем!`,
+     done:`а) ${exprA} = ${ansA}`},
+    {type:'choice',
+     prompt:`Пункт б): <span class="m">${exprB}</span>. Общего множителя у всех четырёх слагаемых нет. Что делать?`,
+     choices:mkChoices([
+       {t:`Сгруппировать слагаемые парами`,ok:true},
+       {t:`Значит, разложить на множители нельзя`},
+       {t:`Вычеркнуть \u2212b\u00b2 — он мешает`}]),
+     hint:`Когда общего множителя нет, пробуем ГРУППИРОВКУ: разбиваем слагаемые на пары и у каждой пары ищем своё общее.`,
+     done:`План для б): группировка.`},
+    {type:'choice',
+     prompt:`Какая группировка удачная?`,
+     choices:mkChoices([
+       {t:`(a\u00b2 \u2212 b\u00b2) и (${G}a + ${G}b)`,ok:true},
+       {t:`(a\u00b2 + ${G}a) и (${G}b \u2212 b\u00b2)`},
+       {t:`(a\u00b2 + ${G}b) и (${G}a \u2212 b\u00b2)`}],true),
+     hint:`Ищем пары, которые дадут ОДИНАКОВЫЕ скобки. a\u00b2 \u2212 b\u00b2 — это разность квадратов, а из ${G}a + ${G}b выносится ${G}. Обе пары дадут скобку (a + b)!`,
+     done:`Группируем: (a\u00b2 \u2212 b\u00b2) + (${G}a + ${G}b).`},
+    {type:'choice',
+     prompt:`Первая пара — разность квадратов: <span class="m">a\u00b2 \u2212 b\u00b2 = ?</span>`,
+     choices:mkChoices([
+       {t:`(a \u2212 b)(a + b)`,ok:true},
+       {t:`(a \u2212 b)\u00b2`},
+       {t:`(a + b)\u00b2`}],true),
+     hint:`Формула: a\u00b2 \u2212 b\u00b2 = (a \u2212 b)(a + b). Не путай с квадратом разности (a \u2212 b)\u00b2 — это другое!`,
+     done:`a\u00b2 \u2212 b\u00b2 = (a \u2212 b)(a + b)`},
+    {type:'choice',
+     prompt:`Вторая пара: <span class="m">${G}a + ${G}b</span>. Выносим общий множитель ${G}. Что получится?`,
+     choices:mkChoices([
+       {t:`${G}(a + b)`,ok:true},
+       {t:`${G}(a \u2212 b)`},
+       {t:`${G}ab`}],true),
+     hint:`${G}a + ${G}b = ${G}\u00b7a + ${G}\u00b7b. Выносим ${G}, внутри остаётся a + b.`,
+     done:`${G}a + ${G}b = ${G}(a + b)`},
+    {type:'choice',
+     prompt:`Получилось: <span class="m">(a \u2212 b)(a + b) + ${G}(a + b)</span>. Что общего у этих двух слагаемых?`,
+     choices:mkChoices([
+       {t:`Скобка (a + b) — её можно вынести как общий множитель`,ok:true},
+       {t:`Число ${G}`},
+       {t:`Общего нет — дальше никак`}]),
+     hint:`Скобка (a + b) есть и в первом слагаемом, и во втором. Целую скобку можно выносить так же, как обычное число или букву!`,
+     done:`Общий множитель — скобка (a + b).`},
+    {type:'choice',
+     prompt:`Выносим (a + b) за скобку. Что останется во второй скобке?`,
+     choices:mkChoices([
+       {t:`a \u2212 b + ${G}`,ok:true},
+       {t:`(a \u2212 b) \u00b7 ${G}`},
+       {t:`a + b + ${G}`}],true),
+     hint:`От первого слагаемого остаётся (a \u2212 b), от второго — ${G}. Записываем их через плюс: a \u2212 b + ${G}.`,
+     done:`б) ${exprB} = ${ansB}`},
+    {type:'choice',
+     prompt:`Соберём весь ответ задания 4:`,
+     choices:mkChoices([
+       {t:`а) ${ansA};   б) ${ansB}`,ok:true},
+       {t:`а) ${wrongA1};   б) ${ansB}`},
+       {t:`а) ${ansA};   б) ${wrongB2}`}],true),
+     hint:`Сверь знаки: в а) внутри скобки два минуса, в б) вторая скобка — a \u2212 b + ${G}.`,
+     done:`Задание 4 решено! а) ${ansA};  б) ${ansB}`}
+  ];
+  return{skill:'s4',title:'Задание 4 · Разложение на множители',
+    statement:`Разложите на множители:<br>а) <span class="bigform">${exprA}</span><br>б) <span class="bigform">${exprB}</span>`,
+    steps,meta:{P,N,Q,G,ansA,ansB}};
+}
+
+/* ============ ОПОРА ДЛЯ ОЧЕНЬ СЛАБОГО УЧЕНИКА ============
+   Один маршрут: правило видно ДО действия, вопрос короткий, разбор не
+   перелистывает шаг автоматически. Сообщения wrong привязаны к конкретному
+   выбранному варианту через sourceIndex, который сохраняет mkChoices. */
+const gd=(rule,now,extra={})=>Object.assign({rule,now},extra);
+function factorTableVisual(m,stage){
+  const {P,Q}=m;
+  const active=stage===0?1:stage===1?2:3;
+  const cls=i=>i===active?' class="active-col"':'';
+  const common=[
+    'Общее',
+    stage===0?'введите':`<span class="known">${P}</span>`,
+    stage<1?'—':stage===1?'выберите':'<span class="known">a²</span>',
+    stage<2?'—':'выберите'
+  ];
+  return `<table class="factor-table" aria-label="Ищем общий множитель по частям">
+    <thead><tr><th>Слагаемое</th><th${cls(1)}>Число</th><th${cls(2)}>Степень a</th><th${cls(3)}>Степень x</th></tr></thead>
+    <tbody>
+      <tr><td>${P}a³x³</td><td${cls(1)}>${P}</td><td${cls(2)}>a³</td><td${cls(3)}>x³</td></tr>
+      <tr><td>−${P}a³x²</td><td${cls(1)}>${P}</td><td${cls(2)}>a³</td><td${cls(3)}>x²</td></tr>
+      <tr><td>−${Q}a²x</td><td${cls(1)}>${Q}</td><td${cls(2)}>a²</td><td${cls(3)}>x</td></tr>
+      <tr><th>${common[0]}</th><th${cls(1)}>${common[1]}</th><th${cls(2)}>${common[2]}</th><th${cls(3)}>${common[3]}</th></tr>
+    </tbody></table>`;
+}
+function substitutionVisual(m){
+  return `<div class="sub-demo" aria-label="Подстановка выражения вместо y">
+    <div>y = <span class="replace">${m.a1}x − ${m.c1}</span></div>
+    <div class="arrow">↓ эту скобку нужно поставить точно на место буквы y во втором уравнении</div>
+    <div>${m.a2}x + ${m.b2}<span class="replace">y</span> = ${num(m.c2)}</div>
+  </div>`;
+}
+function coordinateVisual(x,y){
+  return `<div class="coord-read" aria-label="Как читаются координаты точки">
+    <span class="coord-x">${num(x)} — сначала по x</span>
+    <span class="coord-y">${num(y)} — затем по y</span>
+  </div>`;
+}
+function squareFormulaVisual(inS,Dy,showMap=false){
+  const word=inS==='+'?'Квадрат суммы':'Квадрат разности';
+  const signWord=inS==='+'?'плюс':'минус';
+  return `<div class="square-law" aria-label="${word}: открывается скобка a ${signWord} b, квадрат, равно a в квадрате ${signWord} 2ab плюс b в квадрате">
+    <div class="square-law-name">${word}${showMap?' — формула, которую применяем':''}</div>
+    <div class="square-law-formula">(<span class="fa">a</span> ${inS} <span class="fb">b</span>)² = <span class="fa">a²</span> ${inS} 2<span class="fa">a</span><span class="fb">b</span> + <span class="fb">b²</span></div>
+    ${showMap?`<div class="square-map"><span class="map-a">a = x</span><span class="map-b">b = ${Dy}</span></div>`:''}
+  </div>`;
+}
+function squareFormulaPairVisual(){
+  return `<div class="square-laws" aria-label="Две формулы квадрата суммы и квадрата разности">
+    ${squareFormulaVisual('+','',false)}
+    ${squareFormulaVisual('−','',false)}
+  </div>`;
+}
+function signFlipVisual(inS,twoD,D2){
+  const middleBefore=inS==='+'?`+ ${twoD}xy`:`− ${twoD}xy`;
+  const middleAfter=inS==='+'?`− ${twoD}xy`:`+ ${twoD}xy`;
+  return `<div class="sign-flip" aria-label="Внешний минус меняет знак каждого слагаемого">
+    <div class="sign-flip-row"><span class="sign-flip-label">Было внутри</span><span>
+      <span class="sign-token before">+ x²</span><span class="sign-token before">${middleBefore}</span><span class="sign-token before">+ ${D2}y²</span></span></div>
+    <div class="sign-flip-row"><span class="sign-flip-label">Умножили на −1</span><span>
+      <span class="sign-token after">− x²</span><span class="sign-token after">${middleAfter}</span><span class="sign-token after">− ${D2}y²</span></span></div>
+  </div>`;
+}
+function linearPartsVisual(k,b){
+  const f=fmtF(k,b);
+  return `<div class="linear-parts" aria-label="Сопоставление данной функции с формулой y равно kx плюс b">
+    <div class="linear-formula">${f} &nbsp;↔&nbsp; y = kx + b</div>
+    <div class="linear-tags"><span class="linear-k">k = ${num(k)} — число перед x</span>
+      <span class="linear-b">b = ${num(b)} — свободное число</span></div>
+  </div>`;
+}
+function zeroChoiceVisual(k,b){
+  const sign=b>=0?'+':'−',abs=Math.abs(b);
+  return `<div class="zero-choice" aria-label="Почему удобно выбрать x равным нулю">
+    x = 0 ⇒ y = ${num(k)}·0 ${sign} ${abs} ⇒ y = 0 ${sign} ${abs}
+  </div>`;
+}
+function monomialDivisionVisual(m,stage){
+  const coef=m.P,Q=m.Q;
+  const rows=stage===0
+    ?[['Число',`${coef}:${coef}`,'1'],['Буква a','a³:a²','a³⁻² = a'],['Буква x','x³:x','x³⁻¹ = x²']]
+    :stage===1
+      ?[['Число',`${coef}:${coef}`,'1'],['Буква a','a³:a²','a³⁻² = a'],['Буква x','x²:x','x²⁻¹ = x']]
+      :[['Число',`${Q}:${coef}`,'вычислите'],['Буква a','a²:a²','a²⁻² = 1'],['Буква x','x:x','x¹⁻¹ = 1']];
+  const final=stage===0?'1·a·x² → выберите запись':stage===1?'1·a·x → выберите запись':`осталось только ${Q}:${coef}`;
+  return `<div class="divide-wrap" aria-label="Делим одночлен по частям">
+    <div class="power-law">Правило степеней: aᵐ : aⁿ = aᵐ⁻ⁿ</div>
+    <table class="divide-table"><thead><tr><th>Часть</th><th>Делим</th><th>Получаем</th></tr></thead>
+      <tbody>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</tbody>
+      <tfoot><tr><th>Собираем</th><td colspan="2">${final}</td></tr></tfoot></table>
+    ${stage===2?'<div class="sign-ready">Минус уже стоит перед полем. В поле вводим только положительное частное.</div>':''}
+  </div>`;
+}
+function groupingVisual(G){
+  return `<div class="group-guide" aria-label="Как найти две полезные пары">
+    <div class="group-guide-row"><span>Пара квадратов с минусом:</span><b>a² и −b²</b><span>→ a² − b²</span></div>
+    <div class="group-guide-row"><span>Оставшаяся пара с общим числом:</span><b>${G}a и ${G}b</b><span>→ ${G}(a + b)</span></div>
+  </div>`;
+}
+function differenceSquaresVisual(){
+  return '<div class="power-law" aria-label="Формула разности квадратов">a² − b² = (a − b)(a + b)</div>';
+}
+function guideProblem(P){
+  const m=P.meta;let g=[];
+  if(P.skill==='s1'){
+    const {A,B,C,D,s,AB,AC,twoD,D2,xy,x2c}=m;
+    const Dy=(D===1?'':D)+'y',inS=s===1?'+':'−',opS=s===1?'−':'+';
+    g=[
+      gd('Пока в выражении есть скобки, подобные слагаемые не собираем. Сначала раскрываем обе скобки, затем упрощаем.','Выберите правильный порядок решения.',{blankLabel:'порядок действий',wrong:[null,'Складывать слагаемые из разных частей до раскрытия скобок нельзя. Сначала нужно увидеть все слагаемые.','Содержимое разных скобок нельзя просто сложить: между ними стоят умножение и квадрат.']}),
+      gd('Множитель перед скобкой умножается на КАЖДОЕ слагаемое внутри неё.','Покажите, как раскрыть первую скобку.',{blankLabel:'способ раскрытия',wrong:[null,`${A}x нужно умножить и на ${B}x, и на ${C}y. Второе слагаемое нельзя переписывать без умножения.`,'При раскрытии скобок выполняют умножение, а не складывают внешнее и внутренние слагаемые.']}),
+      gd('При умножении одинаковых букв показатели складываются: x·x = x². При сложении было бы x+x=2x.','Выберите результат произведения x·x.',{blankLabel:'результат',wrong:[null,'2x получается при сложении x+x. Здесь стоит умножение, поэтому x·x=x².','При умножении на x буква не остаётся без изменения: x·x=x².']}),
+      gd('Коэффициенты умножаем отдельно, буквенную часть — отдельно.','Вычислите коэффициент в первом произведении.',{inputLabel:'коэффициент',walkthrough:`${A}·${B}=${AB}, а x·x=x². Значит, ${A}x·${B}x=${AB}x². Впишите число ${AB}.`,diagnose:n=>n===A+B?`Вы сложили ${A}+${B}. Здесь множители, поэтому нужно ${A}·${B}.`:`Сейчас требуется только произведение коэффициентов: ${A}·${B}.`} ),
+      gd('Разные буквы при умножении пишем рядом: x·y=xy.','Вычислите коэффициент во втором произведении.',{inputLabel:'коэффициент',walkthrough:`${A}·${C}=${AC}, x·y=xy. Получаем ${AC}xy. Впишите ${AC}.`,diagnose:n=>n===A+C?`Вы сложили ${A}+${C}. Здесь нужно умножить коэффициенты ${A}·${C}.`:`Вычислите отдельно числа: ${A}·${C}. Буквенная часть xy уже записана.`}),
+      gd(`Знак внутри скобки определяет формулу. Сравните две формулы ниже и не потеряйте средний член 2ab.`,`Выберите формулу для квадрата ${s===1?'суммы':'разности'}.`,{blankLabel:'формула',visual:squareFormulaPairVisual(),wrong:[null,'В квадрате суммы нельзя терять средний член 2ab.','Посмотрите на знак внутри исходной скобки: нужна формула с тем же знаком у среднего члена.']}),
+      gd('Формула остаётся перед глазами. В ней a — первое выражение в скобке, b — второе.','Сопоставьте a и b с выражениями x и '+Dy+'.',{blankLabel:'a и b',visual:squareFormulaVisual(inS,Dy,true),wrong:[null,'Квадрат относится ко всей скобке, поэтому a и b — сами выражения x и '+Dy+', а не их квадраты.','Буквы x и y терять нельзя: в формулу подставляются выражения, а не только их числовые коэффициенты.']}),
+      gd('По формуле средний член равен 2·a·b. Подставляем a=x и b='+Dy+', затем перемножаем числа и буквы.','Найдите коэффициент среднего члена.',{inputLabel:'коэффициент',visual:squareFormulaVisual(inS,Dy,true),walkthrough:`2·x·${Dy} = 2·${D}·xy = ${twoD}xy. Впишите ${twoD}.`,diagnose:n=>n===D?`Вы учли ${D}, но забыли множитель 2 из формулы 2ab.`:`Считаем только числа: 2·${D}. Буквенная часть xy уже стоит после поля.`}),
+      gd('Последний член формулы — b². Здесь b='+Dy+', поэтому возводим в квадрат всё выражение '+Dy+'.','Найдите коэффициент при y².',{inputLabel:'коэффициент',visual:squareFormulaVisual(inS,Dy,true),walkthrough:`(${Dy})²: число ${D} умножаем на ${D}, получаем ${D2}; y·y=y². Впишите ${D2}.`,diagnose:n=>n===2*D?`Вы удвоили ${D}, но квадрат — это умножение ${D}·${D}.`:`Нужно возвести число ${D} в квадрат: ${D}·${D}.`}),
+      gd('Минус перед скобкой означает умножение каждого слагаемого на −1. Поэтому отдельно меняем первый, второй и третий знак.','Выберите, что сделать со знаками после раскрытия квадрата.',{blankLabel:'действие со знаками',visual:signFlipVisual(inS,twoD,D2),nudge:'Сравните две строки «было» и «после −1»: изменились все три знака, а сами слагаемые сохранились.',wrong:[null,'Минус относится ко всей скобке, поэтому изменить только первый знак недостаточно.','Просто убрать скобки нельзя: внешний минус должен изменить каждый знак.']}),
+      gd('Подобные слагаемые имеют полностью одинаковую буквенную часть: x² только с x², xy только с xy, y² только с y².','Определите, какие слагаемые можно объединять.',{blankLabel:'вывод',wrong:[null,'У x² и xy разные буквенные части. Совпадения одной буквы x недостаточно.','Буквенные части нельзя стирать: именно по ним мы определяем подобные слагаемые.']}),
+      gd('Если перед x² не написано число, коэффициент равен 1: x²=1x².','Соберите синюю пару с x².',{inputLabel:'коэффициент',walkthrough:`${AB}x²−x² = (${AB}−1)x² = ${x2c}x². Впишите ${x2c}.`,diagnose:n=>n===AB?`Вы переписали ${AB}, но не вычли x²=1x².`:n===AB+1?`Вы сложили коэффициенты. Между слагаемыми стоит минус: ${AB}−1.`:n===-x2c?`Результат положительный: ${AB} больше 1.`:`Считаем коэффициенты синей пары: ${AB}−1.`}),
+      gd('У подобных слагаемых складывают или вычитают только коэффициенты. Буквенная часть xy сохраняется.','Соберите оранжевую пару с xy.',{inputLabel:'коэффициент',walkthrough:`${AC}xy ${opS} ${twoD}xy = (${AC} ${opS} ${twoD})xy = ${xy}xy. Впишите ${xy}.`,diagnose:n=>n===AC?`Вы оставили ${AC}, но второе слагаемое ${opS}${twoD}xy тоже нужно учесть.`:s===1&&n===AC+twoD?`После внешнего минуса между этими слагаемыми стоит вычитание: ${AC}−${twoD}.`:s===-1&&n===AC-twoD?`После раскрытия внешнего минуса здесь получился плюс: ${AC}+${twoD}.`:`Считайте только коэффициенты: ${AC} ${opS} ${twoD}.`}),
+      gd('Если подобного слагаемого нет, его не убирают и ни с чем не складывают — переписывают без изменения.','Решите, что делать с единственным слагаемым −'+D2+'y².',{blankLabel:'что сделать',wrong:[null,'x² и y² — разные буквенные части, поэтому складывать их нельзя.','Одинокое слагаемое нельзя выбрасывать: оно остаётся в ответе.']}),
+      gd('В ответ переносим результаты всех трёх цветовых семей и ещё раз проверяем знаки.','Выберите полную итоговую запись.',{blankLabel:'полный ответ',wrong:[null,'Перед y² должен остаться минус: внешний минус изменил знак последнего члена квадрата.','При x² нужно учесть второе слагаемое −x², то есть вычесть коэффициент 1.']})
+    ];
+    P.goal='Получить равное выражение без скобок и собрать в нём все подобные слагаемые.';
+    P.law='Сначала раскрываем скобки, затем меняем все знаки после внешнего минуса и только потом объединяем слагаемые с одинаковой буквенной частью.';
+    P.watch='Проверяйте три места: средний член 2ab, каждый знак после минуса перед скобкой и коэффициент 1 у «одинокого» x².';
+  }
+  if(P.skill==='s2'){
+    const {a1,a2,b2,x0,y0,c1,c2,K,R}=m,b2a1=b2*a1,b2c1=b2*c1,a1x0=a1*x0;
+    g=[
+      gd('Если одна буква в уравнении стоит с коэффициентом 1 или −1, её удобно выразить и подставить в другое уравнение.','Выберите способ решения системы.',{blankLabel:'способ',wrong:[null,'При простом сложении коэффициент при y не уничтожится. Здесь удобнее сначала выразить y.','Подбор не объясняет решение и может занять долгое время. Используем точный метод подстановки.']}),
+      gd('Равенство сохраняется, если выполнить одинаковое действие с обеими частями. Так получаем y=a₁x−c₁.','Выразите y из первого уравнения.',{blankLabel:'формула для y',walkthrough:`${a1}x−y=${c1}. Прибавим y к обеим частям и вычтем ${c1} из обеих частей: y=${a1}x−${c1}.`,wrong:[null,'После умножения обеих частей на −1 знаки должны измениться у обоих слагаемых. Получается y='+a1+'x−'+c1+'.','Число '+c1+' вычитается: y='+a1+'x−'+c1+'.']}),
+      gd('Подставить — значит заменить букву найденным выражением. Всё выражение обязательно заключаем в скобки.','Замените y во втором уравнении выражением '+a1+'x−'+c1+'.',{blankLabel:'выражение вместо y',visual:substitutionVisual(m),wrong:[null,'Мы выразили y, поэтому заменять нужно именно букву y, а не x.','Выражение ставят точно на место y внутри уравнения, а не дописывают в конце.']}),
+      gd('Число перед скобкой умножается на каждое слагаемое внутри неё.','Вычислите первое произведение при раскрытии скобки.',{inputLabel:'коэффициент при x',walkthrough:`${b2}·${a1}x = (${b2}·${a1})x = ${b2a1}x. Впишите ${b2a1}.`,diagnose:n=>n===b2+a1?`Вы сложили ${b2}+${a1}. Перед скобкой стоит умножение: ${b2}·${a1}.`:`Вычислите произведение коэффициентов ${b2}·${a1}.`}),
+      gd('Положительное число, умноженное на отрицательное, даёт отрицательный результат.','Вычислите второе произведение.',{inputLabel:'результат со знаком',walkthrough:`${b2}·(−${c1}) = −(${b2}·${c1}) = −${b2c1}. Введите −${b2c1}.`,diagnose:n=>n===b2c1?`Модуль найден верно, но потерян минус: плюс умножить на минус даёт минус.`:`Сначала ${b2}·${c1}=${b2c1}, затем поставьте знак «−».`}),
+      gd('Подобные слагаемые с x складываем по коэффициентам.','Соберите два слагаемых с x.',{inputLabel:'коэффициент при x',walkthrough:`${a2}x+${b2a1}x=(${a2}+${b2a1})x=${K}x. Впишите ${K}.`,diagnose:n=>`Сложите коэффициенты перед x: ${a2}+${b2a1}. Буква x сохраняется.`}),
+      gd('Чтобы убрать вычитаемое слева, прибавляем одно и то же число к обеим частям уравнения.','Вычислите правую часть после прибавления '+b2c1+'.',{inputLabel:'правая часть',walkthrough:`${K}x−${b2c1}=${num(c2)}. Прибавим ${b2c1} к обеим частям: ${K}x=${num(c2)}+${b2c1}=${R}.`,diagnose:n=>n===c2-b2c1?`Вы ещё раз вычли ${b2c1}. Чтобы убрать −${b2c1} слева, его прибавляют к обеим частям.`:`Вычислите ${num(c2)}+${b2c1}.`}),
+      gd('Если Kx=R, обе части делим на K. Тогда x=R:K.','Найдите x делением.',{inputLabel:'значение x',walkthrough:`x=${R}:${K}=${x0}. Проверка: ${K}·${x0}=${R}.`,diagnose:n=>`Нужно разделить ${R} на коэффициент ${K}, а не умножать.`}),
+      gd('Найденное x подставляем в уже полученную формулу для y. Сначала выполняем умножение.','Вычислите произведение '+a1+'·'+x0+'.',{inputLabel:'произведение',walkthrough:`y=${a1}·${x0}−${c1}. Первое действие: ${a1}·${x0}=${a1x0}.`,diagnose:n=>`Выполните умножение ${a1}·${x0}. Вычитание ${c1} будет следующим шагом.`}),
+      gd('После умножения выполняем оставшееся вычитание.','Найдите значение y.',{inputLabel:'значение y',walkthrough:`y=${a1x0}−${c1}=${num(y0)}. Введите число вместе с минусом, если результат отрицательный.`,diagnose:n=>y0<0&&n===Math.abs(y0)?`Модуль верный, но результат отрицательный: ${a1x0} меньше ${c1}.`:`Вычислите ${a1x0}−${c1}.`}),
+      gd('Проверка: подставляем найденные x и y в исходное уравнение. Левая и правая части должны совпасть.','Оцените результат проверки.',{blankLabel:'вывод проверки',wrong:[null,'Совпадение левой и правой частей и есть математическая проверка решения.','Проверка показывает, удовлетворяет ли найденная пара исходному уравнению.']}),
+      gd('Ответ системы записывают парой (x; y): сначала значение x, затем значение y.','Выберите правильную запись ответа.',{blankLabel:'пара (x; y)',wrong:[null,'Порядок координат фиксирован: сначала x, потом y.','Система ищет два числа, поэтому одного значения x в ответе недостаточно.']})
+    ];
+    P.goal='Найти два числа x и y, которые одновременно подходят обоим уравнениям.';
+    P.law='Метод подстановки: выразить одну букву, заменить ею эту букву во втором уравнении, найти первую переменную, затем вернуться за второй и выполнить проверку.';
+    P.watch='Выражение вместо y ставится в скобках. При равносильных преобразованиях одинаковое действие выполняется с обеими частями уравнения.';
+  }
+  if(P.skill==='s3'){
+    const {k,b,x2,y2,p,q,ty,passes}=m,kd=num(k),bAbs=Math.abs(b),bSign=b>=0?'+':'−',kp=k*p,kx2=k*x2;
+    const f=fmtF(k,b);
+    const yMove=y2===0?'по вертикали не двигаемся':`${kl(y2)} ${y2>0?'вверх':'вниз'}`;
+    g=[
+      gd(`Данная функция имеет вид y=kx+b: здесь k=${num(k)}, а b=${num(b)}. График любой такой функции — прямая линия.`,'Выберите вид графика.',{blankLabel:'вид графика',visual:linearPartsVisual(k,b),nudge:'Сравните данную формулу с y=kx+b: буква x только в первой степени, поэтому график не изгибается.',wrong:[null,'Парабола получается у функции с x². Здесь степень x равна 1.','Линейная функция изображается одной прямой, а не ломаной.']}),
+      gd('Через две различные точки проходит ровно одна прямая.','Выберите, сколько точек достаточно для построения.',{blankLabel:'число точек',wrong:[null,'Одной точки недостаточно: через неё можно провести много разных прямых.','Пять точек тоже лежат на прямой, но для построения достаточно двух.']}),
+      gd('Для первой точки удобно взять x=0: тогда произведение k·0 сразу равно 0, и значение y находится одним действием. Подставить — значит заменить только букву x.','Выберите правильную подстановку.',{blankLabel:'подстановка',visual:zeroChoiceVisual(k,b),nudge:'Найдите в формуле букву x и поставьте 0 точно на её место. Букву y не заменяем — её значение мы ищем.',wrong:[null,'Мы задаём значение x и по нему ищем y, поэтому заменяется x, а не y.','Число ставится точно на место буквы x, а не приписывается к формуле.']}),
+      gd('Любое число, умноженное на 0, равно 0.','Выполните первое действие для точки с x=0.',{inputLabel:'произведение',walkthrough:`${kd}·0=0. Впишите 0.`,diagnose:n=>`В произведении есть множитель 0, поэтому весь результат равен 0.`}),
+      gd('После умножения выполняем сложение или вычитание с числом b.','Найдите y первой точки.',{inputLabel:'значение y',walkthrough:`y=0 ${bSign} ${bAbs}=${num(b)}. Первая точка: (0; ${num(b)}).`,diagnose:n=>`Начните с 0 и ${b>=0?'прибавьте':'вычтите'} ${bAbs}.`}),
+      gd('Для второй точки берём новое x и снова считаем по формуле: сначала умножение.','Вычислите произведение для x='+x2+'.',{inputLabel:'произведение',walkthrough:`${kd}·${x2}=${num(kx2)}. Введите результат вместе со знаком.`,diagnose:n=>k<0&&n===Math.abs(kx2)?`Модуль верный, но отрицательное число умножено на положительное: результат отрицательный.`:`Вычислите ${kd}·${x2}.`}),
+      gd('После умножения выполняем оставшееся действие с b.','Найдите y второй точки.',{inputLabel:'значение y',walkthrough:`y=${num(kx2)} ${bSign} ${bAbs}=${num(y2)}. Вторая точка: (${x2}; ${num(y2)}).`,diagnose:n=>`Выполните действие ${num(kx2)} ${bSign} ${bAbs}.`}),
+      gd('В точке (x; y) первое число показывает движение по горизонтальной оси x, второе — по вертикальной оси y.','Что показывает первая координата точки?',{blankLabel:'смысл первой координаты',visual:coordinateVisual('x','y'),nudge:'Посмотрите на порядок букв в записи (x; y): первой записана x, значит первое движение выполняется по оси x.',wrong:[null,'Вертикальное движение задаёт второе число — координата y.','Первое число — не номер точки, а её координата по оси x.']}),
+      gd(`У первой точки x=0, поэтому по горизонтали не двигаемся. Затем по y идём на ${kl(b)} ${b>=0?'вверх':'вниз'} от нуля.`,'Отметьте первую точку на координатной плоскости.',{visual:coordinateVisual(0,b),nudge:`Ищите точку на вертикальной оси y: на ${kl(b)} ${b>=0?'выше':'ниже'} нуля.`}),
+      gd(`Для точки (${x2}; ${num(y2)}) каждый раз начинаем от начала координат: сначала ${kl(x2)} вправо, затем ${yMove}.`,'Отметьте вторую точку.',{visual:coordinateVisual(x2,y2),nudge:`От нуля пройдите ${kl(x2)} вправо; затем ${yMove}. Нажмите на конечный узел.`}),
+      gd('Прямая должна проходить через центры обеих отмеченных точек. Эти две точки полностью определяют её положение.','Соедините две отмеченные точки прямой.',{nudge:'Обе точки уже стоят на поле. Проверьте их подписи и нажмите кнопку соединения.'}),
+      gd(`Для точки A(${num(p)}; ${num(q)}) подставляем в формулу её первую координату ${num(p)} вместо x. Полученный результат сравниваем со второй координатой ${num(q)}.`,'Выберите способ проверки далёкой точки.',{blankLabel:'способ проверки',nudge:`В записи A(${num(p)}; ${num(q)}) первое число — это x. Именно ${num(p)} нужно поставить в формулу.`,wrong:[null,'Рисунок ограничен экраном, поэтому точнее проверить точку по формуле.',`Вместо x подставляется первая координата ${num(p)}, а полученное значение затем сравнивается с ${num(q)}.`]}),
+      gd('При умножении одинаковые знаки дают плюс, разные — минус.','Определите знак произведения.',{blankLabel:'знак',wrong:[kp>0?null:'Знаки множителей разные, поэтому произведение отрицательное.',kp<0?null:'Знаки множителей одинаковые, поэтому произведение положительное.']}),
+      gd('Сначала определяем знак, затем перемножаем модули чисел.','Вычислите произведение после подстановки.',{inputLabel:'произведение',walkthrough:`${kd}·${pn(p)}=${num(kp)}. Введите результат вместе со знаком.`,diagnose:n=>n===Math.abs(kp)&&kp<0?'Модуль верный, но знаки множителей разные — нужен минус.':`Вычислите произведение ${kd}·${pn(p)}.`}),
+      gd('После произведения выполняем последнее действие с b.','Вычислите значение функции при x='+num(p)+'.',{inputLabel:'значение функции',walkthrough:`y=${num(kp)} ${bSign} ${bAbs}=${num(ty)}.`,diagnose:n=>`Выполните действие ${num(kp)} ${bSign} ${bAbs}.`}),
+      gd('Сравниваем полученное значение функции со второй координатой точки. Равны — точка лежит на графике; не равны — не лежит.','Сделайте итоговый вывод.',{blankLabel:'вывод',wrong:passes?[null,'Числа в проверке совпали, поэтому точка лежит на графике.']:['Числа различаются, поэтому точка не лежит на графике.',null]})
+    ];
+    P.goal='Построить прямую по двум точкам и по формуле проверить указанную точку A.';
+    P.law='Для построения прямой достаточно двух точек. Для проверки точки подставляем её первую координату вместо x и сравниваем результат со второй координатой.';
+    P.watch='В записи (x; y) сначала идём по горизонтали, затем по вертикали. При вычислениях сначала выполняется умножение, потом действие с b.';
+  }
+  if(P.skill==='s4'){
+    const {P:coef,N,Q,G,ansA,ansB}=m;
+    const exprA=`${coef}a³x³ − ${coef}a³x² − ${Q}a²x`,exprB=`a² + ${G}a + ${G}b − b²`;
+    g=[
+      gd('Разложить на множители — значит превратить сумму или разность в произведение. Это действие обратно раскрытию скобок.','Выберите смысл задания.',{blankLabel:'цель',wrong:[null,'Здесь нет значений букв, поэтому получить одно число невозможно. Нужно изменить форму выражения.','Раскрытие скобок превращает произведение в сумму, а нам требуется обратное действие.']}),
+      gd('Сначала проверяем, есть ли общий множитель у всех слагаемых.','Выберите первый шаг для пункта а).',{blankLabel:'первый шаг',wrong:[null,'Группировку обычно пробуют, когда общего множителя у всех слагаемых нет. Здесь он есть.','Квадрата суммы в этом выражении нет. Начинаем с общего множителя.']}),
+      gd('Общее число должно делить коэффициент каждого слагаемого. Берём наибольшее подходящее число.','Найдите общую числовую часть.',{inputLabel:'общее число',visual:factorTableVisual(m,0),walkthrough:`Числа ${coef}, ${coef} и ${Q}. Так как ${Q}=${coef}·${N}, наибольшее общее число — ${coef}. Впишите ${coef}.`,diagnose:n=>n===Q?`${Q} не делит коэффициент ${coef} первых двух слагаемых. Общее число должно подходить всем трём.`:`Проверьте, какое наибольшее число делит ${coef}, ${coef} и ${Q}.`}),
+      gd('Из одинаковой буквы выносим наименьшую степень: она гарантированно есть в каждом слагаемом.','Выберите общую степень буквы a.',{blankLabel:'степень a',visual:factorTableVisual(m,1),wrong:[null,'a³ нет в третьем слагаемом, где записано только a². Поэтому a³ вынести из всех трёх нельзя.','Степени при поиске общего множителя не складывают. Берём наименьшую из имеющихся.']}),
+      gd('Снова берём наименьшую степень, которая присутствует во всех слагаемых.','Выберите общую степень буквы x.',{blankLabel:'степень x',visual:factorTableVisual(m,2),wrong:[null,'x³ есть только в первом слагаемом и не делит остальные два.','x² отсутствует в последнем слагаемом, где есть только x.']}),
+      gd('Одночлен делим по частям: число на число, одинаковые буквы — друг на друга. При делении степеней показатели вычитаются: aᵐ:aⁿ=aᵐ⁻ⁿ.','Найдите первое частное.',{blankLabel:'первое частное',visual:monomialDivisionVisual(m,0),nudge:'Прочитайте таблицу сверху вниз: числовая часть дала 1, буква a осталась один раз, а x — два раза.',wrong:[null,'При делении степеней показатели вычитаются: a³:a²=a, x³:x=x².','x³:x=x², поэтому степень x не может остаться равной 3.']}),
+      gd('Второе слагаемое делим на тот же общий множитель тем же способом. Для каждой буквы отдельно вычитаем показатели степеней.','Найдите второе частное.',{blankLabel:'второе частное',visual:monomialDivisionVisual(m,1),nudge:'После деления чисел остаётся 1. Из a³:a² остаётся a, а из x²:x остаётся x. Соедините оставшиеся буквы.',wrong:[null,'x²:x=x, поэтому буква x должна остаться.','a³:a²=a и x²:x=x — остаются обе буквы.']}),
+      gd('В третьем слагаемом a²:a²=1 и x:x=1, поэтому остаётся только деление чисел. Минус уже напечатан перед полем.','Найдите положительное число, которое стоит после уже записанного минуса.',{inputLabel:'число после минуса',visual:monomialDivisionVisual(m,2),nudge:`Не вводите минус повторно. В поле нужно только положительное частное ${Q}:${coef}.`,walkthrough:`В строке уже стоит знак «−». ${Q}a²x:${coef}a²x = ${Q}:${coef} = ${N}, поэтому в поле вводим ${N}.`,success:`Верно: ${Q}a²x : ${coef}a²x = ${N}. В скобке получилось −${N}, потому что минус уже стоял перед полем.`,diagnose:n=>n===-N?`Число найдено верно, но минус уже стоит перед полем. Введите только ${N}.`:`Буквы сократились. Осталось разделить коэффициенты: ${Q}:${coef}.`}),
+      gd('За скобкой пишем общий множитель, внутри — три найденных частных с исходными знаками.','Выберите собранное разложение пункта а).',{blankLabel:'разложение а)',wrong:[null,'При вынесении общего множителя знаки исходных слагаемых сохраняются: внутри должны быть два минуса.','Третье слагаемое нельзя потерять: после деления оно даёт число '+N+'.']}),
+      gd('Если общего множителя у всех слагаемых нет, пробуем объединить их в полезные пары.','Выберите способ для пункта б).',{blankLabel:'способ',wrong:[null,'Отсутствие общего множителя у всех четырёх слагаемых не означает, что разложение невозможно: можно группировать пары.','Слагаемое −b² участвует в разности квадратов и удалять его нельзя.']}),
+      gd('Сначала ищем два квадрата с минусом между ними: a² и −b² образуют разность квадратов. Два оставшихся слагаемых составят вторую пару.','Выберите два слагаемых для первой пары.',{blankLabel:'первая пара',visual:groupingVisual(G),nudge:'Найдите два слагаемых, которые уже являются квадратами. Между ними в исходном выражении должен сохраниться минус.',wrong:[null,'В этой паре общие множители дадут разные скобки, поэтому общий множитель второго уровня не появится.','Эта группировка не создаёт одновременно разность квадратов и пару с общим числом '+G+'.']}),
+      gd('Первую пару раскрываем по формуле разности квадратов. Формула остаётся перед глазами до выбора ответа.','Разложите первую пару.',{blankLabel:'разность квадратов',visual:differenceSquaresVisual(),nudge:'В формуле первая скобка содержит разность a−b, а вторая — сумму a+b.',wrong:[null,'(a−b)² раскрывается в a²−2ab+b² и не равно a²−b².','(a+b)² содержит средний член 2ab и не равно разности квадратов.']}),
+      gd('В сумме '+G+'a+'+G+'b общий множитель '+G+' выносится за скобку; внутри остаётся a+b.','Разложите вторую пару.',{blankLabel:'вторая пара',wrong:[null,'В исходной паре стоит плюс, поэтому внутри скобки тоже должно быть a+b.','После вынесения '+G+' внутри остаются два слагаемых a и b, а не произведение ab.']}),
+      gd('Целая одинаковая скобка может быть общим множителем так же, как число или буква.','Найдите общий множитель двух полученных слагаемых.',{blankLabel:'общая скобка',wrong:[null,'Число '+G+' есть только во втором слагаемом, поэтому оно не является общим для обоих.','Одинаковая скобка (a+b) присутствует в обоих слагаемых.']}),
+      gd('После вынесения (a+b) от первого слагаемого остаётся (a−b), от второго — число '+G+'.','Соберите вторую скобку.',{blankLabel:'что осталось',wrong:[null,'Остатки от двух слагаемых складываются, а не перемножаются.','От первой части остаётся a−b, поэтому знак перед b нельзя заменить на плюс.']}),
+      gd('В полном ответе должны присутствовать оба разложения и все исходные знаки.','Выберите полный ответ задания 4.',{blankLabel:'полный ответ',wrong:[null,'В пункте а) при раскрытии проверочной скобки должны вернуться два минуса.','В пункте б) после вынесения (a+b) остаётся a−b+'+G+'.']})
+    ];
+    P.goal='Каждую сумму записать как произведение множителей.';
+    P.law='Сначала ищем общий множитель у всех слагаемых. Если его нет, группируем слагаемые так, чтобы после преобразования появилась одинаковая скобка.';
+    P.watch='Общий множитель должен делить каждое слагаемое; для букв берём наименьшую степень. Знаки внутри скобки сохраняют знаки исходных слагаемых.';
+  }
+  if(g.length!==P.steps.length)throw new Error(`Guidance mismatch ${P.skill}: ${g.length}/${P.steps.length}`);
+  P.steps.forEach((st,i)=>{
+    const x=g[i];Object.assign(st,x);
+    if(P.skill==='s2'&&i===2){
+      st.type='replace';st.action=`Поставить (${m.a1}x − ${m.c1}) на место y`;
+    }
+    if(P.skill==='s4'&&i===10){
+      st.type='group';
+      st.terms=['a²',`${m.G}a`,`${m.G}b`,'− b²'];
+      st.correctTerms=[0,3];
+    }
+    if(P.skill==='s3'&&i===8){
+      st.hint=`Так как x=0, точка лежит на вертикальной оси y. От нуля пройдите ${kl(m.b)} ${m.b>=0?'вверх':'вниз'}.`;
+      st.walkthrough=`Первая координата равна 0 — по горизонтали не двигаемся. По второй координате идём ${kl(m.b)} ${m.b>=0?'вверх':'вниз'} и нажимаем на конечный узел.`;
+    }
+    if(P.skill==='s3'&&i===9){
+      const vertical=m.y2===0?'по вертикали не двигаемся':`проходим ${kl(m.y2)} ${m.y2>0?'вверх':'вниз'}`;
+      st.hint=`От начала координат пройдите ${kl(m.x2)} вправо, затем ${vertical}.`;
+      st.walkthrough=`Первая координата ${m.x2}: идём ${kl(m.x2)} вправо. Вторая координата ${num(m.y2)}: ${vertical}. Нажимаем на конечный узел.`;
+    }
+    if(P.skill==='s3'&&i===10){
+      st.action='📏 Соединить отмеченные точки';
+      st.hint='Прямая должна пройти точно через центры обеих отмеченных точек.';
+      st.walkthrough='Обе точки уже отмечены. Нажмите «Соединить отмеченные точки»: тренажёр проведёт через них единственную прямую.';
+    }
+    st.inputLabel=st.inputLabel||'число';
+    st.blankLabel=st.blankLabel||'выберите';
+    st.walkthrough=st.walkthrough||`${st.hint}<br><b>Строка после шага:</b> ${st.done}`;
+    if(P.skill!=='s2'){
+      st.nudge=st.nudge||(st.type==='number'
+        ?`Посмотрите только на выделенное действие. В поле вводится ${st.inputLabel}; остальная часть строки уже записана.`
+        :st.type==='choice'
+          ?`Сравните варианты только с местом «${st.blankLabel}» в текущей строке.`
+          :st.type==='point'
+            ?'Начинайте от нуля: сначала движение по горизонтали x, затем по вертикали y.'
+            :st.type==='group'
+              ?'Сначала найдите два квадратных слагаемых с минусом между ними.'
+              :'Проверьте отмеченные объекты и выполните только указанное действие.');
+      st.success=st.success||`Верно. Получили: ${st.done}`;
+    }else{
+      st.success=st.success||'Верно. Посмотрите на зелёную строку: именно это изменилось после шага.';
+    }
+  });
+  return P;
+}
+
+/* ============ ЦЕЛЬНАЯ ДОСКА РЕШЕНИЯ ============
+   Для каждого микрошагa хранится не обрывок вычисления, а полная текущая
+   строка решения. [[ANS]] превращается в поле ввода, [[CHOICE]] — в пустое
+   место, которое заполняется после выбора ответа. */
+const BOARD_ANS='[[ANS]]',BOARD_CHOICE='[[CHOICE]]';
+const wf=(s,tone='blue')=>`<span class="work-focus ${tone}">${s}</span>`;
+const bf=s=>wf(s,'gold');
+const bp=s=>`<span class="board-blank">${s}</span>`;
+const waitPart=s=>`<span class="board-pending">${s}</span>`;
+function buildSolutionBoard(P){
+  const m=P.meta;
+  if(P.skill==='s1'){
+    const {A,B,C,D,s,AB,AC,twoD,D2,xy,x2c}=m;
+    const Dy=(D===1?'':D)+'y',inS=s===1?'+':'−',opS=s===1?'−':'+';
+    const sq=`(x ${inS} ${Dy})²`;
+    const original=`${A}x(${B}x + ${C}y) − ${sq}`;
+    const distributed=`= ${A}x·${B}x + ${A}x·${C}y − ${sq}`;
+    const first=`= ${AB}x² + ${A}x·${C}y − ${sq}`;
+    const both=`= ${AB}x² + ${AC}xy − ${sq}`;
+    const squareMid=`= ${AB}x² + ${AC}xy − (x² ${inS} ${twoD}xy + (${Dy})²)`;
+    const squareFull=`= ${AB}x² + ${AC}xy − (x² ${inS} ${twoD}xy + ${D2}y²)`;
+    const open=`= ${AB}x² + ${AC}xy − x² ${opS} ${twoD}xy − ${D2}y²`;
+    const xDone=`= ${x2c}x² + ${AC}xy ${opS} ${twoD}xy − ${D2}y²`;
+    const final=`= ${x2c}x² + ${xy}xy − ${D2}y²`;
+    return{start:original,entries:[
+      {section:'План решения',current:`${wf(original,'blue')} <span class="board-note">← сначала раскрываем скобки, затем собираем подобные</span>`,done:original},
+      {section:'Раскрываем первую скобку',current:`= ${wf(A+'x·'+B+'x','blue')} + ${wf(A+'x·'+C+'y','gold')} − ${sq}`,done:distributed},
+      {current:`= ${A}·${B}·${wf('x·x','blue')} + ${A}x·${C}y − ${sq}`,done:distributed},
+      {current:`= ${wf(A+'·'+B,'blue')}x² + ${A}x·${C}y − ${sq} → = ${BOARD_ANS}x² + ${A}x·${C}y − ${sq}`,done:first},
+      {current:`= ${AB}x² + ${wf(A+'·'+C,'gold')}xy − ${sq} → = ${AB}x² + ${BOARD_ANS}xy − ${sq}`,done:both},
+      {section:'Раскрываем квадрат',current:`= ${AB}x² + ${AC}xy − ${wf(sq,'violet')} <span class="board-note">← выбираем формулу по знаку внутри скобки</span>`,done:both},
+      {current:`= ${AB}x² + ${AC}xy − (${wf('a','blue')} ${inS} ${wf('b','gold')})²<br><span class="board-note">Сопоставьте первое и второе выражения в скобке с a и b: ${BOARD_CHOICE}</span>`,done:both},
+      {current:`= ${AB}x² + ${AC}xy − (x² ${inS} ${wf('2·x·'+Dy,'gold')} + (${Dy})²) → = ${AB}x² + ${AC}xy − (x² ${inS} ${BOARD_ANS}xy + (${Dy})²)`,done:squareMid},
+      {current:`= ${AB}x² + ${AC}xy − (x² ${inS} ${twoD}xy + ${wf('('+Dy+')²','violet')}) → = ${AB}x² + ${AC}xy − (x² ${inS} ${twoD}xy + ${BOARD_ANS}y²)`,done:squareFull},
+      {section:'Убираем внешний минус',current:`= ${AB}x² + ${AC}xy ${wf('− (x² '+inS+' '+twoD+'xy + '+D2+'y²)','red')} <span class="board-note">← меняем знак каждого слагаемого</span>`,done:open},
+      {section:'Приводим подобные',current:`= ${wf(AB+'x²','blue')} + ${wf(AC+'xy','gold')} ${wf('− x²','blue')} ${wf(opS+' '+twoD+'xy','gold')} ${wf('− '+D2+'y²','violet')}<br><span class="board-note">Одинаковый цвет = одинаковая буквенная часть. Синие складываем только с синими, оранжевые — с оранжевыми.</span>`,done:open},
+      {current:`= ${wf(AB+'x² − x²','blue')} + ${AC}xy ${opS} ${twoD}xy − ${D2}y² → = ${BOARD_ANS}x² + ${AC}xy ${opS} ${twoD}xy − ${D2}y²`,done:xDone},
+      {current:`= ${x2c}x² + ${wf(AC+'xy '+opS+' '+twoD+'xy','gold')} − ${D2}y² → = ${x2c}x² + ${BOARD_ANS}xy − ${D2}y²`,done:final},
+      {current:`= ${x2c}x² + ${xy}xy ${wf('− '+D2+'y²','violet')} <span class="board-note">← пары нет, поэтому слагаемое переписываем без изменения</span>`,done:final},
+      {section:'Ответ',current:`${wf(original,'blue')} = ${BOARD_CHOICE}`,done:`<span class="board-final">${original} = ${x2c}x² + ${xy}xy − ${D2}y²</span>`}
+    ]};
+  }
+  if(P.skill==='s2'){
+    const {a1,a2,b2,x0,y0,c1,c2,K,R}=m;
+    const b2a1=b2*a1,b2c1=b2*c1,a1x0=a1*x0,a2x0=a2*x0,b2y0=b2*y0;
+    const eq1=`${a1}x − y = ${c1}`,eq2=`${a2}x + ${b2}y = ${num(c2)}`;
+    const start=`{ ${eq1}; &nbsp; ${eq2} }`;
+    return{start,entries:[
+      {section:'Выбираем способ',current:`{ ${wf(eq1,'blue')}; &nbsp; ${eq2} } <span class="board-note">← в первом уравнении удобно выразить y</span>`,done:start},
+      {section:'Выражаем y',current:`${wf(eq1,'blue')} ⇒ ${wf('y','gold')} = ${BOARD_CHOICE}`,done:`y = ${a1}x − ${c1}`},
+      {section:'Подставляем во второе уравнение',current:`${a2}x + ${b2}${wf('y','gold')} = ${num(c2)}, &nbsp; ${wf('y = '+a1+'x − '+c1,'gold')}<br>⇒ ${a2}x + ${b2}(${BOARD_CHOICE}) = ${num(c2)}`,done:`${a2}x + ${b2}(${a1}x − ${c1}) = ${num(c2)}`},
+      {section:'Решаем уравнение с x',current:`${a2}x + ${wf(b2+'·'+a1+'x','blue')} + ${b2}·(−${c1}) = ${num(c2)} → ${a2}x + ${BOARD_ANS}x + ${b2}·(−${c1}) = ${num(c2)}`,done:`${a2}x + ${b2a1}x + ${b2}·(−${c1}) = ${num(c2)}`},
+      {current:`${a2}x + ${b2a1}x + ${wf(b2+'·(−'+c1+')','red')} = ${num(c2)} → ${a2}x + ${b2a1}x + ${BOARD_ANS} = ${num(c2)}`,done:`${a2}x + ${b2a1}x − ${b2c1} = ${num(c2)}`},
+      {current:`${wf(a2+'x + '+b2a1+'x','blue')} − ${b2c1} = ${num(c2)} → ${BOARD_ANS}x − ${b2c1} = ${num(c2)}`,done:`${K}x − ${b2c1} = ${num(c2)}`},
+      {current:`${K}x ${wf('− '+b2c1,'red')} = ${num(c2)} → ${K}x = ${wf(num(c2)+' + '+b2c1,'gold')} = ${BOARD_ANS}`,done:`${K}x = ${R}`},
+      {current:`${wf(K+'x = '+R,'blue')} → x = ${wf(R+' : '+K,'blue')} = ${BOARD_ANS}`,done:`x = ${x0}`},
+      {section:'Возвращаемся к y',current:`${wf('y = '+a1+'x − '+c1,'gold')}, &nbsp; x = ${x0}<br>⇒ y = ${wf(a1+'·'+x0,'blue')} − ${c1} = ${BOARD_ANS} − ${c1}`,done:`y = ${a1x0} − ${c1}`},
+      {current:`y = ${wf(a1x0+' − '+c1,'gold')} = ${BOARD_ANS}`,done:`y = ${num(y0)}`},
+      {section:'Проверка',current:`${wf(a2+'·'+x0+' + '+b2+'·'+pn(y0),'green')} = ${a2x0} ${b2y0>=0?'+':'−'} ${Math.abs(b2y0)} = ${num(c2)} ${BOARD_CHOICE}`,done:`Проверка: ${a2}·${x0} + ${b2}·${pn(y0)} = ${num(c2)} ✓`},
+      {section:'Ответ',current:`${wf('(x; y)','green')} = ${BOARD_CHOICE}`,done:`<span class="board-final">Ответ: (${x0}; ${num(y0)})</span>`}
+    ]};
+  }
+  if(P.skill==='s3'){
+    const {k,b,x2,y2,p,q,ty,passes}=m;
+    const f=fmtF(k,b),kd=num(k),bAbs=Math.abs(b),bSign=b>=0?'+':'−',kp=k*p,kx2=k*x2;
+    const start=`а) ${f}; &nbsp; б) A(${num(p)}; ${num(q)})`;
+    return{start,entries:[
+      {section:'Что строим',current:`${wf(f,'blue')} → график: ${BOARD_CHOICE}`,done:`${f} → график — прямая`},
+      {current:`Для ${wf('прямой','blue')} достаточно ${BOARD_CHOICE} точек`,done:`Для прямой достаточно двух точек`},
+      {section:'Первая точка',current:`${wf('x = 0','blue')} ⇒ y = ${kd}·0 ${bSign} ${bAbs} <span class="board-note">← вместо x записали 0</span>`,done:`x = 0 ⇒ y = ${kd}·0 ${bSign} ${bAbs}`},
+      {current:`x = 0 ⇒ y = ${wf(kd+'·0','gold')} ${bSign} ${bAbs} → y = ${BOARD_ANS} ${bSign} ${bAbs}`,done:`x = 0 ⇒ y = 0 ${bSign} ${bAbs}`},
+      {current:`x = 0 ⇒ y = ${wf('0 '+bSign+' '+bAbs,'gold')} = ${BOARD_ANS} ⇒ ${wf('точка (0; y)','violet')}`,done:`x = 0 ⇒ y = ${num(b)} ⇒ (0; ${num(b)})`},
+      {section:'Вторая точка',current:`${wf('x = '+x2,'blue')} ⇒ y = ${wf(kd+'·'+x2,'gold')} ${bSign} ${bAbs} → y = ${BOARD_ANS} ${bSign} ${bAbs}`,done:`x = ${x2} ⇒ y = ${num(kx2)} ${bSign} ${bAbs}`},
+      {current:`x = ${x2} ⇒ y = ${wf(num(kx2)+' '+bSign+' '+bAbs,'gold')} = ${BOARD_ANS} ⇒ ${wf('точка ('+x2+'; y)','violet')}`,done:`x = ${x2} ⇒ y = ${num(y2)} ⇒ (${x2}; ${num(y2)})`},
+      {section:'Отмечаем точки',current:`${wf('(0; '+num(b)+')','violet')}, ${wf('('+x2+'; '+num(y2)+')','violet')}<br><span class="board-note">В каждой точке первое число — движение по горизонтали. Выберите направление ниже: ${BOARD_CHOICE}</span>`,done:`Точки для построения: (0; ${num(b)}) и (${x2}; ${num(y2)})`},
+      {current:`${wf('(0; '+num(b)+')','green')} → отметьте первую точку`,done:`Первая точка: (0; ${num(b)})`},
+      {current:`${wf('('+x2+'; '+num(y2)+')','green')} → отметьте вторую точку`,done:`Вторая точка: (${x2}; ${num(y2)})`},
+      {current:`${wf('(0; '+num(b)+')','green')} ↔ ${wf('('+x2+'; '+num(y2)+')','green')} → ${wf('проводим прямую','blue')}`,done:`График ${f} построен по точкам (0; ${num(b)}) и (${x2}; ${num(y2)})`},
+      {section:'Проверяем точку A',current:`A(${num(p)}; ${num(q)}): ${wf('x = '+num(p),'blue')} подставляем в ${f}<br>${wf('y = '+kd+'·'+pn(p)+' '+bSign+' '+bAbs,'gold')}; сравним с ${wf('y = '+num(q),'violet')} → ${BOARD_CHOICE}`,done:`Для A(${num(p)}; ${num(q)}) считаем y = ${kd}·${pn(p)} ${bSign} ${bAbs}`},
+      {current:`${wf(kd+'·'+pn(p),'gold')}: знак результата = ${BOARD_CHOICE}`,done:`${kd}·${pn(p)} имеет знак «${kp>0?'плюс':'минус'}»`},
+      {current:`y = ${wf(kd+'·'+pn(p),'gold')} ${bSign} ${bAbs} = ${BOARD_ANS} ${bSign} ${bAbs}`,done:`y = ${num(kp)} ${bSign} ${bAbs}`},
+      {current:`y = ${wf(num(kp)+' '+bSign+' '+bAbs,'gold')} = ${BOARD_ANS}`,done:`y = ${num(ty)}`},
+      {section:'Вывод',current:`A(${num(p)}; ${num(q)}): ${wf(num(q),'violet')} ${passes?'=':'≠'} ${wf(num(ty),'blue')} ⇒ ${BOARD_CHOICE}`,done:`<span class="board-final">${passes?'Точка A лежит на графике':'Точка A не лежит на графике'}: ${num(q)} ${passes?'=':'≠'} ${num(ty)}</span>`}
+    ]};
+  }
+  if(P.skill==='s4'){
+    const {P:coef,N,Q,G,ansA,ansB}=m;
+    const exprA=`${coef}a³x³ − ${coef}a³x² − ${Q}a²x`;
+    const exprB=`a² + ${G}a + ${G}b − b²`;
+    const start=`а) ${exprA}<br>б) ${exprB}`;
+    return{start,entries:[
+      {section:'Цель задания',current:`${wf('а) '+exprA,'blue')}<br>${wf('б) '+exprB,'gold')}<br><span class="board-note">← каждую сумму нужно превратить в произведение</span>`,done:start},
+      {section:'Пункт а) Общий множитель',current:`${wf(exprA,'blue')} = ${BOARD_CHOICE}`,done:exprA},
+      {current:`${exprA}<br>Общие числа: ${wf(coef+', '+coef+' и '+Q,'blue')} → общее число ${BOARD_ANS}<span class="board-note">; затем добавим общие степени a и x</span>`,done:`${exprA} = ${coef}·${bp('степень a')}·${bp('степень x')}·(остаток)`},
+      {current:`${exprA}<br>Степени a: ${wf('a³, a³ и a²','gold')} → общий множитель: ${coef}·${BOARD_CHOICE}·${bp('степень x')}`,done:`${exprA} = ${coef}a²·${bp('степень x')}·(остаток)`},
+      {current:`${exprA}<br>Степени x: ${wf('x³, x² и x','violet')} → общий множитель: ${coef}a²·${BOARD_CHOICE}`,done:`${exprA} = ${coef}a²x·(остаток)`},
+      {section:'Заполняем скобку',current:`${exprA} = ${wf(coef+'a²x','green')}(${waitPart('1-е частное')} − ${waitPart('2-е частное')} − ${waitPart('3-е частное')})<br><span class="board-note">Первое: ${wf(coef+'a³x³ : '+coef+'a²x','blue')} = ${BOARD_CHOICE}</span>`,done:`${exprA} = ${coef}a²x(ax² − ${waitPart('2-е частное')} − ${waitPart('3-е частное')})`},
+      {current:`${exprA} = ${coef}a²x(ax² − ${waitPart('2-е частное')} − ${waitPart('3-е частное')})<br><span class="board-note">Второе: ${wf(coef+'a³x² : '+coef+'a²x','gold')} = ${BOARD_CHOICE}</span>`,done:`${exprA} = ${coef}a²x(ax² − ax − ${waitPart('3-е частное')})`},
+      {current:`${exprA} = ${coef}a²x(ax² − ax − ${BOARD_ANS})<br><span class="board-note">Третье: ${wf(Q+'a²x : '+coef+'a²x','violet')}. Знак «−» уже стоит перед полем.</span>`,done:`${exprA} = ${ansA}`},
+      {current:`${wf('а) '+exprA,'blue')} = ${BOARD_CHOICE}`,done:`<span class="board-final">а) ${exprA} = ${ansA}</span>`},
+      {section:'Пункт б) Группировка',current:`${wf(exprB,'gold')} = ${BOARD_CHOICE}`,done:exprB},
+      {current:`${wf('a²','blue')} + ${wf(G+'a','gold')} + ${wf(G+'b','gold')} ${wf('− b²','blue')} → ${BOARD_CHOICE}<br><span class="board-note">Сначала выберите два синих квадрата с минусом между ними. Два оставшихся слагаемых станут второй парой.</span>`,done:`${exprB} = (a² − b²) + (${G}a + ${G}b)`},
+      {current:`= ${wf('(a² − b²)','blue')} + (${G}a + ${G}b) → ${BOARD_CHOICE} + (${G}a + ${G}b)`,done:`= (a − b)(a + b) + (${G}a + ${G}b)`},
+      {current:`= (a − b)(a + b) + ${wf('('+G+'a + '+G+'b)','gold')} → = (a − b)(a + b) + ${BOARD_CHOICE}`,done:`= (a − b)(a + b) + ${G}(a + b)`},
+      {current:`= (a − b)${wf('(a + b)','violet')} + ${G}${wf('(a + b)','violet')}<br><span class="board-note">Одинаковые фиолетовые скобки — это общий множитель: ${BOARD_CHOICE}</span>`,done:`= (a + b)((a − b) + ${G})`},
+      {current:`= ${wf('(a + b)','violet')}(${BOARD_CHOICE})`,done:`<span class="board-final">б) ${exprB} = ${ansB}</span>`},
+      {section:'Полный ответ',current:`${wf('а)','blue')} ${BOARD_CHOICE};<br>${wf('б)','gold')} ${BOARD_CHOICE}`,done:`<span class="board-final">а) ${ansA};<br>б) ${ansB}</span>`}
+    ]};
+  }
+  return{start:P.statement,entries:P.steps.map(st=>({current:st.done,done:st.done}))};
+}
+
+/* ============ ДВИЖОК ПОШАГОВОГО РЕШЕНИЯ ============ */
+const S={view:'menu',prob:null,i:0,errors:0,helped:false,placed:[],lineDrawn:false,
+         msg:null,inputVal:'',wrongPick:null,praise:'',miss:null,missCount:0,
+         resolved:false,hintLevel:0,breakdown:false,hints:0,seenErrors:new Set(),
+         groupPicks:[],groupWrong:[]};
+
+function cur(){return S.prob&&S.i<S.prob.steps.length?S.prob.steps[S.i]:null;}
+function finished(){return S.prob&&S.i>=S.prob.steps.length;}
+
+function startSkill(id){
+  const gens={s1:genSimplify,s2:genSystem,s3:genGraph,s4:genFactor};
+  S.prob=guideProblem(gens[id]());
+  S.prob.board=buildSolutionBoard(S.prob);
+  S.i=0;S.errors=0;S.helped=false;S.placed=[];S.lineDrawn=false;
+  S.msg=null;S.inputVal='';S.wrongPick=null;S.praise='';S.miss=null;S.missCount=0;
+  S.resolved=false;S.hintLevel=0;S.breakdown=false;S.hints=0;S.seenErrors=new Set();
+  S.groupPicks=[];S.groupWrong=[];
+  S.view='play';markSkillStarted(id);render();
+}
+function goMenu(){S.view='menu';render();}
+
+function resolveStep(customPraise){
+  const st=cur();if(!st)return;
+  S.resolved=true;S.msg=null;S.praise=customPraise||pick(PRAISE);render();
+}
+function continueStep(){
+  if(!S.resolved)return;
+  S.i++;S.msg=null;S.inputVal='';S.wrongPick=null;S.miss=null;S.missCount=0;
+  S.resolved=false;S.hintLevel=0;S.breakdown=false;S.praise='';S.seenErrors=new Set();
+  S.groupPicks=[];S.groupWrong=[];
+  if(finished()){
+    const clean=!S.helped&&S.errors===0;
+    const rec=stats[S.prob.skill];
+    if(clean)rec.clean++;else rec.helped++;
+    completeSkill(S.prob.skill,clean);
+  }
+  render();
+}
+function advance(){continueStep();}
+function fail(text,key='error'){
+  if(!S.seenErrors.has(key)){S.seenErrors.add(key);S.errors++;recordCurrentError();}
+  S.msg={type:'bad',text};render();
+}
+
+function submit(v){
+  const st=cur();if(!st||st.type!=='number'||S.resolved)return;
+  recordCurrentAttempt();
+  S.inputVal=String(v);
+  const n=parseNum(v);
+  if(n===null){fail(`В поле «${st.inputLabel}» нужно ввести целое число. Для отрицательного числа используйте знак «−» или «-».`,'format');return;}
+  if(n===st.answer)resolveStep();
+  else{
+    const detail=typeof st.diagnose==='function'?st.diagnose(n):st.hint;
+    fail(detail||st.hint,`number:${n}`);
+  }
+}
+function choose(i){
+  const st=cur();if(!st||st.type!=='choice'||S.resolved)return;
+  const c=st.choices[i];if(!c)return;
+  recordCurrentAttempt();
+  if(c.ok)resolveStep();
+  else{
+    S.wrongPick=i;
+    const detail=c.why||(st.wrong&&st.wrong[c.sourceIndex])||st.hint;
+    fail(detail,`choice:${c.sourceIndex}`);
+  }
+}
+function clickPoint(gx,gy){
+  const st=cur();if(!st||st.type!=='point'||S.resolved)return;
+  recordCurrentAttempt();
+  if(gx===st.x&&gy===st.y){
+    if(!S.placed.some(p=>p.x===gx&&p.y===gy))S.placed.push({x:gx,y:gy});
+    resolveStep();
+  }else{
+    S.miss={x:gx,y:gy};
+    S.missCount++;
+    const t=`Вы отметили (${num(gx)}; ${num(gy)}). Нужна (${num(st.x)}; ${num(st.y)}): сначала ${num(st.x)} по горизонтали x, затем ${num(st.y)} по вертикали y. Направляющие и кружок на поле показывают нужный путь.`;
+    fail(t,`point:${gx}:${gy}`);
+    const m=S.miss;
+    setTimeout(()=>{if(S.miss===m){S.miss=null;render();}},1300);
+  }
+}
+function act(){
+  const st=cur();if(!st||!['action','replace'].includes(st.type)||S.resolved)return;
+  recordCurrentAttempt();
+  if(st.effect==='line')S.lineDrawn=true;
+  resolveStep();
+}
+function pickGroup(i){
+  const st=cur();if(!st||st.type!=='group'||S.resolved||!st.terms[i])return;
+  S.groupWrong=[];
+  const at=S.groupPicks.indexOf(i);
+  if(at>=0)S.groupPicks.splice(at,1);else if(S.groupPicks.length<2)S.groupPicks.push(i);
+  if(S.groupPicks.length<2){render();return;}
+  recordCurrentAttempt();
+  const got=[...S.groupPicks].sort((a,b)=>a-b),want=[...st.correctTerms].sort((a,b)=>a-b);
+  if(got.every((x,j)=>x===want[j]))resolveStep('Пара найдена! 🎯');
+  else{
+    S.groupWrong=[...got];S.groupPicks=[];
+    fail('Эта пара не даёт разность квадратов. Нужны два слагаемых-квадрата с минусом между ними: a² и −b².',`group:${got.join('-')}`);
+  }
+}
+function useHint(){
+  const st=cur();if(!st||S.resolved)return;
+  recordCurrentHint();
+  S.helped=true;S.hints++;S.hintLevel=Math.min(3,S.hintLevel+1);
+  const text=S.hintLevel===1
+    ?(st.nudge||`Сосредоточьтесь только на выделенной части. ${st.rule}`)
+    :S.hintLevel===2?st.hint:st.walkthrough;
+  S.msg={type:'tip',text};render();
+}
+function breakDown(){
+  const st=cur();if(!st||S.resolved)return;
+  recordCurrentHint();
+  S.helped=true;S.hints++;S.breakdown=true;S.hintLevel=3;
+  S.msg={type:'tip',text:`<b>Разбор шага.</b> ${st.walkthrough}<br>Теперь выполните это действие сами — тренажёр останется на текущем шаге.`};
+  render();
+}
+function reveal(){breakDown();}
+
+/* ============ ОТРИСОВКА ============ */
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+  .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+function skillCardHTML(id,tag,title,desc,chip,st){
+  return `<div class="card skillcard">
+    <div class="tag">${tag}</div><h2>${title}</h2><p>${desc}</p>
+    <div class="chips"><span class="chip">${chip}</span>
+      <span class="chip good">Сам: ${st.clean}</span>
+      <span class="chip gold">С подсказками: ${st.helped}</span></div>
+    <button class="btn primary start" data-skill="${id}">Начать \u2192</button>
+  </div>`;
+}
+function menuHTML(){
+  return `
+  <div class="card intro"><h1>Выбери задание</h1>
+    <p>У каждого шага один и тот же понятный порядок: сначала правило, затем одно выделенное действие, после него — обновлённая полная запись. Верный результат остаётся на экране до кнопки «Продолжить», а разбор шага не перелистывает задачу. Числа каждый раз новые.</p></div>
+  <div class="menu-grid">
+    ${skillCardHTML('s1','Задание 1','Упростить выражение','Раскрываем скобки, применяем формулу квадрата суммы или разности, приводим подобные — по одному маленькому действию за шаг.','15 маленьких шагов',stats.s1)}
+    ${skillCardHTML('s2','Задание 2','Система уравнений','Выражаем y из первого уравнения, подставляем во второе, шаг за шагом находим x и y — и в конце проверяем ответ.','12 маленьких шагов',stats.s2)}
+    ${skillCardHTML('s3','Задание 3 · а) и б)','График линейной функции','Считаем две точки, отмечаем их прямо на клетчатом поле, проводим прямую — а потом проверяем далёкую точку по формуле.','16 маленьких шагов',stats.s3)}
+    ${skillCardHTML('s4','Задание 4 · а) и б)','Разложение на множители','а) выносим общий множитель: общее число и наименьшие степени; б) группируем и применяем разность квадратов.','16 маленьких шагов',stats.s4)}
+  </div>
+  <details class="cheat card"><summary>\ud83d\udcce Шпаргалка</summary>
+    <div class="cheatgrid">
+      <div class="formula">(a + b)\u00b2 = a\u00b2 + 2ab + b\u00b2</div>
+      <div class="formula">(a \u2212 b)\u00b2 = a\u00b2 \u2212 2ab + b\u00b2</div>
+      <div class="formula">a(b + c) = ab + ac</div>
+      <div class="formula">y = kx + b — прямая; b показывает, где она пересекает ось y</div>
+      <div class="formula">Минус перед скобкой меняет знак каждого слагаемого</div>
+      <div class="formula">Точка (p; q) лежит на графике \u21d4 q = k\u00b7p + b</div>
+      <div class="formula">a\u00b2 \u2212 b\u00b2 = (a \u2212 b)(a + b)</div>
+      <div class="formula">Система: выражаем букву из одного уравнения и подставляем в другое</div>
+      <div class="formula">Общий множитель: общее число и НАИМЕНЬШИЕ степени букв</div>
+    </div></details>`;
+}
+
+function boardKey(html){
+  return String(html).replace(/<span class="board-note">[\s\S]*?<\/span>/g,'')
+    .replace(/<[^>]*>/g,'').replace(/\[\[(?:ANS|CHOICE)\]\]/g,'поле').replace(/\s+/g,' ').trim();
+}
+function activateCurrentFocus(html){
+  const hit=String(html).match(/class="work-focus (blue|gold|violet|green|red)"/);
+  if(!hit)return html;
+  const tone=hit[1];
+  return String(html).replace(new RegExp(`class="work-focus ${tone}"`,'g'),`class="work-focus ${tone} active"`);
+}
+function boardTemplate(html,current,st){
+  let out=String(html||'');
+  const choiceLabel=esc(st&&st.blankLabel?st.blankLabel:'выберите');
+  const numberLabel=esc(st&&st.inputLabel?st.inputLabel:'число');
+  const blank=`<span class="board-blank" aria-label="место: ${choiceLabel}">${choiceLabel}</span>`;
+  out=out.split(BOARD_CHOICE).join(blank);
+  if(current&&st&&st.type==='number'){
+    const field=`<input id="ans" class="board-input" type="text" inputmode="numeric" autocomplete="off"
+      value="${esc(S.inputVal)}" placeholder="${numberLabel}" aria-label="Введите: ${numberLabel}">`;
+    out=out.replace(BOARD_ANS,field);
+  }
+  const numberBlank=`<span class="board-blank" aria-label="место: ${numberLabel}">${numberLabel}</span>`;
+  out=out.split(BOARD_ANS).join(numberBlank);
+  return current?activateCurrentFocus(out):out;
+}
+function boardPhaseData(b){
+  let phase='Решение';
+  const labels=b.entries.map(e=>{if(e.section)phase=e.section;return phase;});
+  const unique=[];labels.forEach(x=>{if(!unique.includes(x))unique.push(x);});
+  return{labels,unique};
+}
+function phaseMapHTML(b){
+  const {labels,unique}=boardPhaseData(b);
+  const active=finished()?unique.length:Math.max(0,unique.indexOf(labels[S.i]));
+  return `<div class="phase-map" aria-label="Этапы решения">${unique.map((name,i)=>{
+    const state=finished()||i<active?'done':i===active?'current':'';
+    const mark=state==='done'?'✓':`${i+1}.`;
+    return `<span class="phase-chip ${state}">${mark} ${name}</span>`;
+  }).join('')}</div>`;
+}
+function phaseProgressText(){
+  if(finished())return 'Готово!';
+  const {labels,unique}=boardPhaseData(S.prob.board),phase=labels[S.i];
+  const total=labels.filter(x=>x===phase).length;
+  const local=labels.slice(0,S.i+1).filter(x=>x===phase).length;
+  return `Этап ${unique.indexOf(phase)+1} из ${unique.length} · действие ${local} из ${total}`;
+}
+function stepActionHTML(st){
+  if(S.resolved){
+    return `<div class="resolved-box" role="status" aria-live="polite">
+      <strong>${S.praise||'Верно!'}</strong>
+      <div>${st.success}</div>
+      <div class="resolved-actions"><button class="btn good" id="continuebtn">${S.i===S.prob.steps.length-1?'Посмотреть итог':'Продолжить →'}</button></div>
+    </div>`;
+  }
+  let controls='';
+  if(st.type==='number'){
+    controls=`<div class="answerrow"><button class="btn primary" id="okbtn">Проверить: ${esc(st.inputLabel)}</button></div>
+      <div class="inputtip">Поле «${esc(st.inputLabel)}» находится в строке выше. Можно нажать Enter.</div>`;
+  }else if(st.type==='choice'){
+    controls=`<div class="choices">${st.choices.map((c,i)=>
+      `<button class="choice ${c.mono?'mono':''} ${S.wrongPick===i?'wrongpick':''} ${S.breakdown&&c.ok?'correct-guide':''}" data-i="${i}">
+         <span class="lett">${'АБВГ'[i]}</span><span>${c.t}</span></button>`).join('')}</div>`;
+  }else if(st.type==='point'){
+    controls=`<div class="pointnote">Сначала двигайтесь по горизонтали x, затем по вертикали y. Нажмите на нужный узел сетки.</div>`;
+  }else if(st.type==='replace'){
+    controls=`<div class="replace-action"><button class="btn primary replace-y" id="replacebtn">y</button>
+      <span>Нажмите на y: вместо неё появится выражение в скобках.</span></div>`;
+  }else if(st.type==='group'){
+    controls=`<div class="pointnote">Выберите два слагаемых для первой пары. Два оставшихся образуют вторую пару.</div>
+      <div class="term-picker">${st.terms.map((term,i)=>`<button class="term-pick ${S.groupPicks.includes(i)?'selected':''} ${S.groupWrong.includes(i)?'wrongpick':''}" data-term="${i}">${term}</button>`).join('')}</div>`;
+  }else if(st.type==='action'){
+    controls=`<button class="btn good bigact" id="actbtn">${st.action}</button>`;
+  }
+  const msg=S.msg?`<div class="hintbox ${S.msg.type}" role="status">${S.msg.type==='bad'?'✗ ':'💡 '}${S.msg.text}</div>`:'';
+  const hintText=S.hintLevel===0?'Подсказка 1 из 3':S.hintLevel<3?`Ещё подсказка ${S.hintLevel+1} из 3`:'Все подсказки открыты';
+  return `<div class="board-action ${S.msg&&S.msg.type==='bad'?'wrong':''}">
+    <div class="rule-card"><b>Правило</b>${st.rule}</div>
+    ${st.visual?`<div class="work-visual">${st.visual}</div>`:''}
+    <div class="now-card"><b>Сейчас делаем один шаг.</b><br>${st.now}</div>
+    ${controls}${msg}
+    <div class="helpers">
+      <button class="btn ghost" id="hintbtn" ${S.hintLevel>=3?'disabled':''}>💡 ${hintText}</button>
+      <button class="btn ghost" id="breakbtn">🪜 Разобрать этот шаг</button>
+      <span class="hint-progress">Разбор не перелистывает задачу</span>
+    </div>
+  </div>`;
+}
+function solutionBoardHTML(){
+  const P=S.prob,b=P.board,rows=[];
+  function add(state,html,section,stepIndex){
+    if(!html)return;
+    const key=boardKey(html),last=rows[rows.length-1];
+    if(state==='done'&&last&&last.key===key)return;
+    if((state==='current'||state==='resolved')&&last&&last.key===key)rows.pop();
+    rows.push({state,html,section,stepIndex,key});
+  }
+  add('origin',b.start,'Условие',-1);
+  const {labels,unique}=boardPhaseData(b);
+  if(finished()){
+    unique.forEach(phase=>{
+      const ids=labels.map((x,i)=>x===phase?i:-1).filter(i=>i>=0);
+      const j=ids[ids.length-1],e=b.entries[j]||{};
+      add('done',e.done,phase,j);
+    });
+  }else{
+    const currentPhase=labels[S.i],activePhase=unique.indexOf(currentPhase);
+    unique.slice(0,activePhase).forEach(phase=>{
+      const ids=labels.map((x,i)=>x===phase&&i<S.i?i:-1).filter(i=>i>=0);
+      if(ids.length){const j=ids[ids.length-1],e=b.entries[j]||{};add('done',e.done,phase,j);}
+    });
+    const phaseStart=labels.indexOf(currentPhase);
+    for(let j=phaseStart;j<S.i;j++){
+      const e=b.entries[j]||{};add('done',e.done,currentPhase,j);
+    }
+    const e=b.entries[S.i]||{};
+    add(S.resolved?'resolved':'current',S.resolved?e.done:(e.current||e.done),currentPhase,S.i);
+  }
+  let lastSection='';
+  const body=rows.map(r=>{
+    let section='';
+    if(r.section&&r.section!==lastSection){lastSection=r.section;section=`<div class="board-phase">${r.section}</div>`;}
+    const active=r.state==='current'||r.state==='resolved';
+    const mark=r.state==='done'||r.state==='resolved'?'✓':r.state==='current'?'→':'•';
+    const st=active?cur():null;
+    return `${section}<div class="board-line ${r.state}" ${active?'aria-current="step"':''}>
+      <span class="mark" aria-hidden="true">${mark}</span>
+      <div class="board-math">${boardTemplate(r.html,r.state==='current',st)}
+        ${active?stepActionHTML(st):''}
+      </div></div>`;
+  }).join('');
+  return `<section class="solution-board" aria-label="Полный ход решения">
+    <div class="board-head"><b>Доска решения</b><span>Пульсирует только рабочая часть; зелёная строка — шаг выполнен</span></div>
+    ${phaseMapHTML(b)}
+    ${body}</section>`;
+}
+function finishHTML(){
+  const clean=!S.helped&&S.errors===0,P=S.prob;
+  return `<div class="finish">
+    <div class="big">${clean?'\ud83c\udfc6':'\u2705'}</div>
+    <h2>Задача решена!</h2>
+    <div><span class="badge ${clean?'clean':'helped'}">${clean?'Полностью самостоятельно':'С подсказками'}</span></div>
+    <p class="muted">${S.errors===0?'Ни одной ошибки по пути — отлично!':'Разобранных ошибок: '+S.errors+'. Ошибка засчитывается один раз для каждого ответа.'}${S.hints?' Подсказок открыто: '+S.hints+'.':''}</p>
+    <div class="law-card"><b>Главное правило задачи</b>${P.law}<br><br><strong>Что особенно проверить:</strong> ${P.watch}</div>
+    <div class="finishbtns">
+      <button class="btn primary" id="againbtn">\ud83d\udd01 Похожая задача</button>
+      <button class="btn ghost" id="menubtn">В меню</button>
+    </div></div>`;
+}
+function planeHintText(){
+  const st=cur();
+  if(st&&st.type==='point'&&S.resolved)return `Точка (${num(st.x)}; ${num(st.y)}) отмечена. Посмотрите на неё и нажмите «Продолжить».`;
+  if(st&&st.type==='point')return `1) ${num(st.x)} по горизонтали x. 2) ${num(st.y)} по вертикали y. Нажмите на конечный узел.`;
+  if(S.lineDrawn)return 'График построен';
+  if(S.placed.length)return 'Точки отмечены — продолжай!';
+  return 'Здесь появятся твои точки';
+}
+function playHTML(){
+  const P=S.prob,N=P.steps.length,fin=finished();
+  const pct=Math.round(100*(S.i+(S.resolved?1:0))/N);
+  const withPlane=P.skill==='s3';
+  return `
+  <div class="topbar">
+    <button class="btn ghost" id="backbtn">\u2190 Меню</button>
+    <div class="progresswrap">
+      <div class="progress"><i style="width:${pct}%"></i></div>
+      <span class="ptext">${phaseProgressText()}</span>
+    </div>
+  </div>
+  <div class="playgrid ${withPlane?'withplane':''}">
+    <div class="card ga"><div class="cardtitle">${P.title}</div><div class="statement">${P.statement}</div>
+      <div class="task-goal"><b>Цель:</b> ${P.goal}</div></div>
+    ${withPlane?`<div class="card gb planecard"><div class="cardtitle">Координатная плоскость</div>${planeSVG()}<div class="planehint">${planeHintText()}</div></div>`:''}
+    <div class="card gc">
+      ${solutionBoardHTML()}
+      ${fin?finishHTML():''}
+    </div>
+  </div>`;
+}
+
+/* ============ КООРДИНАТНАЯ ПЛОСКОСТЬ (SVG, интерактивная) ============ */
+const U=21,CN=231,SZ=462;   /* клетка, центр, размер */
+function planeSVG(){
+  const M=S.prob.meta;
+  let g='';
+  /* клетчатая сетка */
+  for(let i=-10;i<=10;i++){
+    const t=CN+i*U;
+    g+=`<line x1="${t}" y1="21" x2="${t}" y2="441" stroke="var(--cell)" stroke-width="1"/>`;
+    g+=`<line x1="21" y1="${t}" x2="441" y2="${t}" stroke="var(--cell)" stroke-width="1"/>`;
+  }
+  /* оси со стрелками */
+  g+=`<line x1="10" y1="${CN}" x2="450" y2="${CN}" stroke="var(--axis)" stroke-width="2"/>`;
+  g+=`<polygon points="458,${CN} 446,${CN-5} 446,${CN+5}" fill="var(--axis)"/>`;
+  g+=`<line x1="${CN}" y1="452" x2="${CN}" y2="12" stroke="var(--axis)" stroke-width="2"/>`;
+  g+=`<polygon points="${CN},4 ${CN-5},16 ${CN+5},16" fill="var(--axis)"/>`;
+  g+=`<text x="448" y="${CN-10}" font-size="14" font-style="italic" fill="var(--axis)">x</text>`;
+  g+=`<text x="${CN+10}" y="18" font-size="14" font-style="italic" fill="var(--axis)">y</text>`;
+  g+=`<text x="${CN-13}" y="${CN+15}" font-size="11" fill="var(--muted)">0</text>`;
+  /* подписи целых чисел на осях */
+  for(let i=-10;i<=10;i++){
+    if(i===0)continue;
+    g+=`<text x="${CN+i*U}" y="${CN+14}" font-size="8" fill="var(--muted)" text-anchor="middle">${num(i)}</text>`;
+    g+=`<text x="${CN-5}" y="${CN-i*U+3}" font-size="8" fill="var(--muted)" text-anchor="end">${num(i)}</text>`;
+  }
+  /* текущая точка: сначала путь по x, затем по y */
+  const stp=cur();
+  if(stp&&stp.type==='point'&&!S.resolved){
+    const px=CN+stp.x*U,py=CN-stp.y*U;
+    g+=`<line x1="${CN}" y1="${CN}" x2="${px}" y2="${CN}" stroke="var(--pen)" stroke-width="3" stroke-dasharray="7 5" stroke-linecap="round"/>`;
+    g+=`<line x1="${px}" y1="${CN}" x2="${px}" y2="${py}" stroke="var(--pencil)" stroke-width="3" stroke-dasharray="7 5" stroke-linecap="round"/>`;
+    g+=`<circle cx="${px}" cy="${py}" r="7" fill="var(--panel)" stroke="var(--muted)" stroke-width="2" stroke-dasharray="3 3"/>`;
+  }
+  /* прямая (после «Провести прямую») */
+  if(S.lineDrawn){
+    const xa=-11,xb=11,ya=M.k*xa+M.b,yb=M.k*xb+M.b;
+    g+=`<g clip-path="url(#clipA)"><line class="drawline" x1="${CN+xa*U}" y1="${CN-ya*U}" x2="${CN+xb*U}" y2="${CN-yb*U}" stroke="var(--pen)" stroke-width="2.6" stroke-linecap="round"/></g>`;
+    for(const lx of [7,-7,5,-5,4,-4,3,-3]){
+      const ly=M.k*lx+M.b;
+      if(Math.abs(ly)<=8.3){
+        g+=`<text x="${CN+lx*U+(lx>0?8:-8)}" y="${CN-ly*U-10}" font-size="12" font-weight="700" fill="var(--pen)" font-family="var(--mono)" ${lx>0?'':'text-anchor="end"'}>${fmtF(M.k,M.b)}</text>`;
+        break;
+      }
+    }
+  }
+  /* отмеченные точки */
+  for(const pt of S.placed){
+    const px=CN+pt.x*U,py=CN-pt.y*U;
+    g+=`<circle cx="${px}" cy="${py}" r="5.6" fill="var(--green)" stroke="var(--panel)" stroke-width="2"/>`;
+    const right=pt.x<=6;
+    g+=`<text x="${px+(right?9:-9)}" y="${py-9}" font-size="11" font-weight="700" font-family="var(--mono)" fill="var(--green)" ${right?'':'text-anchor="end"'}>(${num(pt.x)}; ${num(pt.y)})</text>`;
+  }
+  /* после первого промаха или разбора нужный узел дополнительно пульсирует */
+  if(stp&&stp.type==='point'&&!S.resolved&&(S.missCount>=1||S.breakdown)){
+    g+=`<circle class="target" cx="${CN+stp.x*U}" cy="${CN-stp.y*U}" r="10" fill="none" stroke="var(--pencil)" stroke-width="3"/>`;
+  }
+  /* промах — красный крестик, тает */
+  if(S.miss){
+    const px=CN+S.miss.x*U,py=CN-S.miss.y*U;
+    g+=`<g class="miss" stroke="var(--red)" stroke-width="2.6" stroke-linecap="round">
+        <line x1="${px-6}" y1="${py-6}" x2="${px+6}" y2="${py+6}"/>
+        <line x1="${px-6}" y1="${py+6}" x2="${px+6}" y2="${py-6}"/></g>`;
+  }
+  const desc=stp&&stp.type==='point'&&!S.resolved
+    ?`Сначала пройдите ${num(stp.x)} по оси x, затем ${num(stp.y)} по оси y.`
+    :'На плоскости отмечаются найденные точки и построенная прямая.';
+  return `<svg id="plane" viewBox="0 0 ${SZ} ${SZ}" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="planeTitle planeDesc">
+    <title id="planeTitle">Координатная плоскость</title><desc id="planeDesc">${desc}</desc>
+    <defs><clipPath id="clipA"><rect x="18" y="18" width="426" height="426"/></clipPath></defs>${g}</svg>`;
+}
+
+/* ============ ПРИВЯЗКА СОБЫТИЙ ============ */
+const $=id=>document.getElementById(id);
+function bindMenu(){
+  document.querySelectorAll('.start').forEach(b=>
+    b.addEventListener('click',()=>startSkill(b.dataset.skill)));
+}
+function bindPlay(){
+  const back=$('backbtn');if(back)back.addEventListener('click',goMenu);
+  const ok=$('okbtn'),ans=$('ans');
+  if(ok&&ans){
+    ok.addEventListener('click',()=>submit(ans.value));
+    ans.addEventListener('keydown',e=>{if(e.key==='Enter')submit(ans.value);});
+    ans.focus();
+    ans.setSelectionRange(ans.value.length,ans.value.length);
+  }
+  document.querySelectorAll('.choice').forEach(b=>
+    b.addEventListener('click',()=>choose(+b.dataset.i)));
+  const ab=$('actbtn');if(ab)ab.addEventListener('click',act);
+  const rp=$('replacebtn');if(rp)rp.addEventListener('click',act);
+  document.querySelectorAll('.term-pick').forEach(b=>
+    b.addEventListener('click',()=>pickGroup(+b.dataset.term)));
+  const hb=$('hintbtn');if(hb)hb.addEventListener('click',useHint);
+  const bb=$('breakbtn');if(bb)bb.addEventListener('click',breakDown);
+  const cb=$('continuebtn');if(cb)cb.addEventListener('click',continueStep);
+  const ag=$('againbtn');if(ag)ag.addEventListener('click',()=>startSkill(S.prob.skill));
+  const mb=$('menubtn');if(mb)mb.addEventListener('click',goMenu);
+  const svg=$('plane');
+  if(svg){
+    const st=cur();
+    svg.style.cursor=(st&&st.type==='point'&&!S.resolved)?'crosshair':'default';
+    svg.addEventListener('click',e=>{
+      const r=svg.getBoundingClientRect();
+      if(!r.width||!r.height)return;
+      const sx=(e.clientX-r.left)*SZ/r.width;
+      const sy=(e.clientY-r.top)*SZ/r.height;
+      const gx=Math.round((sx-CN)/U),gy=Math.round((CN-sy)/U);
+      if(Math.abs(gx)>10||Math.abs(gy)>10)return;
+      clickPoint(gx,gy);
+    });
+  }
+}
+function render(){
+  const app=$('app');
+  if(S.view==='menu'){app.innerHTML=menuHTML();bindMenu();}
+  else{app.innerHTML=playHTML();bindPlay();}
+}
+
+/* ============ ТЕМА И ЗАПУСК ============ */
+function applyTheme(){
+  document.documentElement.setAttribute('data-theme',stats.theme);
+  const tb=$('themeBtn');if(tb)tb.textContent=stats.theme==='dark'?'\u2600\ufe0f':'\ud83c\udf19';
+}
+$('themeBtn').addEventListener('click',()=>{
+  stats.theme=stats.theme==='dark'?'light':'dark';
+  saveStats();applyTheme();
+});
+applyTheme();
+render();
+startProgressClient();
+
+/* API для автопроверки */
+window.App={
+  get S(){return S;},
+  stats:()=>stats,
+  startSkill,goMenu,submit,choose,clickPoint,act,pickGroup,useHint,breakDown,reveal,continueStep,
+  genSimplify,genSystem,genGraph,genFactor,guideProblem,buildSolutionBoard,render
+};
+</script>
+</body>
+</html>

@@ -325,6 +325,19 @@
       "supportsProgressTracking": true,
       "progressSchemaVersion": 1,
       "notes": "Открывается в iframe доски; персональный прогресс синхронизируется через Progress Workspaces API v1, mirror не подключён."
+    },
+    {
+      "trainerId": "algebra7-control",
+      "file": "trainers/algebra-7/control-work.html",
+      "title": "Алгебра, 7 класс: контрольная по выражениям и графику",
+      "group": "Алгебра / 7 класс",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "supportsProgressTracking": true,
+      "progressSchemaVersion": 1,
+      "notes": "Открывается в iframe доски; персональный прогресс по четырём темам синхронизируется через Progress Workspaces API v1, mirror не подключён."
     }
   ]
 }

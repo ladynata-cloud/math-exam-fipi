@@ -1166,4 +1166,12 @@
     <priority>0.8</priority>
   </url>
   <!-- yashchenko-lines-1-2:end -->
+  <!-- algebra7-control:start -->
+  <url>
+    <loc>https://mathexam.space/trainers/algebra-7/control-work.html</loc>
+    <lastmod>2026-08-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- algebra7-control:end -->
 </urlset>
