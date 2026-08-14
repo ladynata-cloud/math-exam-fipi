@@ -49,8 +49,13 @@ for (const file of [
   run(process.execPath, ['--check', file]);
 }
 
-const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
-run(npm, ['test'], { cwd: path.join(root, 'board-server') });
+if (process.platform === 'win32') {
+  run(process.env.ComSpec || 'cmd.exe', ['/d', '/s', '/c', 'npm.cmd test'], {
+    cwd: path.join(root, 'board-server')
+  });
+} else {
+  run('npm', ['test'], { cwd: path.join(root, 'board-server') });
+}
 
 run('git', ['diff', '--check', `${base}...HEAD`]);
 const status = run('git', ['status', '--porcelain'], { capture: true }).trim();
