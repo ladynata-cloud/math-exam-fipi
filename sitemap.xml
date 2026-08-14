@@ -1158,4 +1158,12 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <!-- yashchenko-lines-1-2:start -->
+  <url>
+    <loc>https://mathexam.space/trainers/ege-profile/yashchenko-lines-1-2.html</loc>
+    <lastmod>2026-08-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- yashchenko-lines-1-2:end -->
 </urlset>

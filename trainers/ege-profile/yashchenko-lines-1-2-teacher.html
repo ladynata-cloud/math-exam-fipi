@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Панель преподавателя · Задания 1 и 2 Ященко — Mathexam.space</title>
+<style>
+  :root{
+    --paper:#fafaf4;--surface:#fff;--ink:#1e3a9f;--ink-strong:#16307f;--text:#2a2f38;
+    --muted:#67707e;--line:rgba(42,47,56,.16);--ok:#1e7a3c;--ok-bg:#e7f3ea;
+    --warn:#9a7526;--warn-bg:#fff6e5;--danger:#b42318;--danger-bg:#fff0ee;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--text);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    background:linear-gradient(rgba(88,140,190,.12) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(88,140,190,.12) 1px,transparent 1px),var(--paper);
+    background-size:26px 26px}
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 20px 64px}
+  a{color:var(--ink)}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .back{font:650 13px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;text-decoration:none;color:var(--muted)}
+  .back:hover{color:var(--ink)}
+  .eyebrow{font:650 12px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    letter-spacing:.14em;text-transform:uppercase;color:#c22f2a;margin:20px 0 8px}
+  h1{margin:0;color:var(--ink-strong);font-size:clamp(28px,4vw,42px);line-height:1.08;letter-spacing:-.02em}
+  h2{margin:0 0 8px;color:var(--ink-strong);font-size:21px}
+  h3{margin:0;color:var(--ink-strong);font-size:17px}
+  p{margin:6px 0}.lede{max-width:760px;margin:10px 0 20px}.muted{color:var(--muted)}.small{font-size:13.5px}
+  .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.72fr);gap:16px;align-items:start}
+  .card{background:rgba(255,255,255,.95);border:1.5px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px;
+    box-shadow:0 8px 24px rgba(22,48,127,.06)}
+  .card.primary{border-color:var(--ink)}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.grow{flex:1}
+  label{display:block;font-weight:700;color:var(--ink-strong);font-size:13px;margin:12px 0 5px}
+  input{width:100%;border:1.5px solid var(--line);border-radius:8px;background:#fff;padding:10px 12px;
+    color:var(--text);font:600 15px/1.2 inherit}
+  input:focus{outline:3px solid rgba(30,58,159,.22);border-color:var(--ink)}
+  input[readonly]{background:#f5f6f8;color:var(--muted)}
+  .btn{border:1.5px solid var(--ink);border-radius:8px;background:var(--ink);color:#fff;padding:9px 15px;
+    font:750 14px/1.15 inherit;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+  .btn:hover{background:var(--ink-strong)}.btn.ghost{background:#fff;color:var(--ink)}
+  .btn.ghost:hover{background:#eef2ff}.btn.danger{border-color:var(--danger);background:#fff;color:var(--danger)}
+  .btn.small{padding:7px 11px;font-size:13px}.btn:disabled{opacity:.45;cursor:default}
+  .status{display:flex;gap:9px;align-items:flex-start;border-radius:9px;padding:11px 12px;margin:14px 0;background:#f5f6f8}
+  .status.ok{background:var(--ok-bg);color:var(--ok)}.status.wait{background:var(--warn-bg);color:var(--warn)}
+  .status.err{background:var(--danger-bg);color:var(--danger)}
+  .dot{width:10px;height:10px;border-radius:50%;background:currentColor;flex:0 0 auto;margin-top:6px}
+  .security{border-left:4px solid var(--ink);background:#eef2ff;padding:12px 14px;border-radius:8px;font-size:13.5px}
+  .secret{border:1px solid #e0b457;background:var(--warn-bg);padding:12px;border-radius:9px;margin-top:14px}
+  .secret strong{color:#785b17}.hidden{display:none!important}
+  .workspace-id{font:650 13px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--muted);overflow-wrap:anywhere}
+  .summarybar{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:0 0 12px;flex-wrap:wrap}
+  .students{display:grid;gap:12px}
+  .student{border:1.5px solid var(--line);border-radius:11px;padding:15px;background:#fff}
+  .studenthead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+  .studentname{font-size:18px;font-weight:800;color:var(--ink-strong)}
+  .metricgrid{display:grid;grid-template-columns:repeat(4,minmax(110px,1fr));gap:8px;margin-top:13px}
+  .metric{border:1px solid var(--line);border-radius:8px;padding:9px;background:#fafafa}
+  .metric b{display:block;font-size:18px;color:var(--ink-strong)}.metric span{font-size:12px;color:var(--muted)}
+  .linegrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+  .linebox{border-radius:8px;background:#eef2ff;padding:9px 11px;font-size:13px}
+  .linebox b{color:var(--ink-strong)}
+  .badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .badge{border:1px solid var(--line);border-radius:999px;padding:4px 9px;font-size:12px;color:var(--muted);background:#fff}
+  .badge.ok{border-color:var(--ok);color:var(--ok);background:var(--ok-bg)}
+  .empty{text-align:center;padding:28px 16px;color:var(--muted);border:1.5px dashed var(--line);border-radius:10px}
+  .copyline{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:10px}
+  .toast{position:fixed;right:18px;bottom:18px;background:var(--ink-strong);color:#fff;padding:10px 14px;border-radius:8px;
+    box-shadow:0 8px 24px rgba(0,0,0,.22);z-index:10}
+  @media(max-width:800px){.grid{grid-template-columns:1fr}.metricgrid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.wrap{padding:20px 12px 44px}.metricgrid,.linegrid{grid-template-columns:1fr}.copyline{grid-template-columns:1fr}.btn{width:100%}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="topbar">
+    <a class="back" href="yashchenko-lines-1-2.html">← к тренажёру</a>
+    <a class="back" href="../../index.html">на главную</a>
+  </div>
+  <p class="eyebrow">Профильный ЕГЭ · преподавателю</p>
+  <h1>Прогресс по заданиям 1 и 2</h1>
+  <p class="lede">Создайте персональную ссылку, отправьте её ученику и смотрите результат после прохождения. Регистрация и почта не нужны.</p>
+
+  <div class="security">
+    В адресе панели хранится только безопасный идентификатор. Код преподавателя остаётся на вашем устройстве;
+    для входа с другого устройства введите его отдельно.
+  </div>
+
+  <div class="grid" style="margin-top:16px">
+    <section>
+      <div class="card primary" id="accessCard">
+        <h2>1. Подключить панель</h2>
+        <p class="muted small">Если это первая выдача — создайте панель. Если открываете её на другом устройстве — введите адресный ID и сохранённый код.</p>
+        <div id="panelStatus" class="status wait" aria-live="polite"><i class="dot"></i><span>Панель ещё не подключена.</span></div>
+        <div class="row">
+          <button class="btn" id="createWorkspace" type="button">Создать панель</button>
+          <button class="btn ghost" id="showConnect" type="button">Уже есть код</button>
+        </div>
+        <form id="connectForm" class="hidden" autocomplete="off">
+          <label for="workspaceId">ID панели</label>
+          <input id="workspaceId" name="workspaceId" maxlength="64" autocomplete="off" placeholder="например, AbCdEf123456">
+          <label for="teacherCode">Код преподавателя</label>
+          <input id="teacherCode" name="teacherCode" type="password" maxlength="256" autocomplete="off" placeholder="вставьте сохранённый код">
+          <div class="row" style="margin-top:12px">
+            <button class="btn" type="submit">Открыть прогресс</button>
+            <button class="btn ghost" id="cancelConnect" type="button">Отмена</button>
+          </div>
+        </form>
+        <div id="workspaceInfo" class="hidden" style="margin-top:14px">
+          <div class="workspace-id" id="workspaceLabel"></div>
+          <div class="row" style="margin-top:10px">
+            <button class="btn ghost small" id="copyPanelUrl" type="button">Скопировать адрес панели</button>
+            <button class="btn danger small" id="forgetAccess" type="button">Забыть код на устройстве</button>
+          </div>
+        </div>
+        <div id="recoveryBox" class="secret hidden">
+          <strong>Сохраните код преподавателя сейчас.</strong>
+          <p class="small">Он нужен для другого устройства и повторно с сервера не выдаётся.</p>
+          <div class="copyline">
+            <input id="recoveryCode" readonly aria-label="код преподавателя">
+            <button class="btn small" id="copyRecovery" type="button">Скопировать код</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card hidden" id="assignmentCard">
+        <h2>2. Выдать ссылку ученику</h2>
+        <form id="assignmentForm">
+          <label for="studentLabel">Имя или метка ученика</label>
+          <div class="row">
+            <input class="grow" id="studentLabel" maxlength="80" autocomplete="off" placeholder="Например: Анна, 11А" required>
+            <button class="btn" type="submit">Создать ссылку</button>
+          </div>
+        </form>
+        <div id="studentLinkBox" class="secret hidden" aria-live="polite">
+          <strong>Персональная ссылка готова.</strong>
+          <p class="small">Отправьте её только этому ученику. Код находится после символа # и будет убран из адресной строки при открытии.</p>
+          <div class="copyline">
+            <input id="studentLink" readonly aria-label="персональная ссылка ученика">
+            <button class="btn small" id="copyStudentLink" type="button">Скопировать ссылку</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="card">
+      <h2>Как это работает</h2>
+      <ol class="small" style="padding-left:20px;margin-bottom:0">
+        <li>Создайте панель и сохраните код преподавателя.</li>
+        <li>Введите имя ученика и скопируйте персональную ссылку.</li>
+        <li>Ученик решает задачи; прогресс сохраняется и на его устройстве, и на сервере.</li>
+        <li>Вернитесь сюда: данные обновляются автоматически каждые 30 секунд.</li>
+      </ol>
+      <p class="small muted" style="margin-top:14px">В панели нет аккаунтов и паролей. Не публикуйте код преподавателя и персональные ссылки в открытом доступе.</p>
+    </aside>
+  </div>
+
+  <section class="card hidden" id="progressCard">
+    <div class="summarybar">
+      <div>
+        <h2>Прогресс учеников</h2>
+        <p class="small muted" id="updatedLabel">Ещё не обновлялся</p>
+      </div>
+      <button class="btn ghost small" id="refreshProgress" type="button">Обновить</button>
+    </div>
+    <div id="students" class="students"></div>
+  </section>
+</main>
+<div id="toast" class="toast hidden" role="status"></div>
+
+<script>
+(function(){
+  "use strict";
+  var PRODUCTION_API = "https://mathexam-board-ladynata.amvera.io";
+  var API_BASE = /^(localhost|127\.0\.0\.1)$/.test(window.location.hostname)
+    ? "http://127.0.0.1:3000" : PRODUCTION_API;
+  var TRAINER_ID = "yashchenko-t12";
+  var WORKSPACE_RE = /^[A-Za-z0-9_-]{10,64}$/;
+  var CODE_RE = /^[A-Za-z0-9_-]{32,256}$/;
+  var ACCESS_PREFIX = "mathExamTeacherAccess.v1.";
+  var LINKS_PREFIX = "mathExamTeacherStudentLinks.v1.";
+  var current = {workspaceId:"", teacherCode:"", assignments:[], polling:null};
+
+  var panelStatus = document.getElementById("panelStatus");
+  var createWorkspaceButton = document.getElementById("createWorkspace");
+  var showConnectButton = document.getElementById("showConnect");
+  var connectForm = document.getElementById("connectForm");
+  var workspaceInput = document.getElementById("workspaceId");
+  var codeInput = document.getElementById("teacherCode");
+  var assignmentCard = document.getElementById("assignmentCard");
+  var progressCard = document.getElementById("progressCard");
+  var studentsNode = document.getElementById("students");
+
+  function safeGet(key){ try{return localStorage.getItem(key)||"";}catch(_error){return "";} }
+  function safeSet(key,value){ try{localStorage.setItem(key,value);return true;}catch(_error){return false;} }
+  function safeRemove(key){ try{localStorage.removeItem(key);}catch(_error){} }
+  function readLinks(){
+    try{var value=JSON.parse(safeGet(LINKS_PREFIX+current.workspaceId)||"{}");return value&&typeof value==="object"?value:{};}
+    catch(_error){return {};}
+  }
+  function saveLink(assignmentId,link){var links=readLinks();links[assignmentId]=link;safeSet(LINKS_PREFIX+current.workspaceId,JSON.stringify(links));}
+  function setStatus(kind,text){panelStatus.className="status "+kind;panelStatus.querySelector("span").textContent=text;}
+  function toast(text){
+    var node=document.getElementById("toast");node.textContent=text;node.classList.remove("hidden");
+    clearTimeout(toast.timer);toast.timer=setTimeout(function(){node.classList.add("hidden");},2200);
+  }
+  function humanTime(value){
+    if(!value)return "нет активности";
+    try{return new Intl.DateTimeFormat("ru-RU",{dateStyle:"short",timeStyle:"short"}).format(new Date(value));}
+    catch(_error){return value;}
+  }
+  function copyText(value){
+    if(navigator.clipboard&&window.isSecureContext){return navigator.clipboard.writeText(value).then(function(){toast("Скопировано");});}
+    var area=document.createElement("textarea");area.value=value;area.setAttribute("readonly","");area.style.position="fixed";area.style.opacity="0";
+    document.body.appendChild(area);area.select();var ok=false;try{ok=document.execCommand("copy");}catch(_error){}area.remove();
+    if(ok){toast("Скопировано");return Promise.resolve();}toast("Не удалось скопировать");return Promise.reject(new Error("COPY_FAILED"));
+  }
+  function publicPanelUrl(workspaceId){
+    var url=new URL(window.location.href);url.search="";url.searchParams.set("workspace",workspaceId);url.hash="";return url.toString();
+  }
+  function studentUrl(assignmentId,studentCode){
+    var url=new URL("yashchenko-lines-1-2.html",window.location.href);url.search="";url.searchParams.set("assignment",assignmentId);
+    url.hash="student="+encodeURIComponent(studentCode);return url.toString();
+  }
+  function replacePanelUrl(workspaceId){try{history.replaceState(null,"",publicPanelUrl(workspaceId));}catch(_error){}}
+  function api(path,options){
+    options=options||{};var headers={};
+    if(options.teacherCode)headers.Authorization="Bearer "+options.teacherCode;
+    if(options.body!==undefined)headers["Content-Type"]="application/json";
+    return fetch(API_BASE+path,{method:options.method||"GET",headers:headers,cache:"no-store",credentials:"omit",
+      body:options.body===undefined?undefined:JSON.stringify(options.body)}).then(function(response){
+        return response.json().catch(function(){return {};}).then(function(body){
+          if(!response.ok){var error=new Error(body.error||"PROGRESS_REQUEST_FAILED");error.status=response.status;throw error;}return body;
+        });
+      });
+  }
+  function errorText(error){
+    if(error&&error.status===403)return "Код преподавателя не принят.";
+    if(error&&error.status===404)return "Панель не найдена.";
+    if(error&&error.status===429)return "Слишком много попыток. Повторите позже.";
+    if(error&&error.status===503)return "Сервис прогресса временно недоступен.";
+    return "Не удалось связаться с сервисом прогресса.";
+  }
+  function metric(label,value){var node=document.createElement("div");node.className="metric";var b=document.createElement("b");b.textContent=value;
+    var span=document.createElement("span");span.textContent=label;node.appendChild(b);node.appendChild(span);return node;}
+  function badge(text,ok){var node=document.createElement("span");node.className="badge"+(ok?" ok":"");node.textContent=text;return node;}
+  function lineBox(number,line){
+    line=line||{started:0,solved:0,clean:0,helped:0,seen:0};var node=document.createElement("div");node.className="linebox";
+    var b=document.createElement("b");b.textContent="Линия "+number+": "+line.solved+" из 36";node.appendChild(b);
+    node.appendChild(document.createTextNode(" · начато "+line.started+", сам "+line.clean+", с подсказкой "+line.helped));return node;
+  }
+  function renderAssignments(assignments){
+    current.assignments=assignments||[];studentsNode.textContent="";var links=readLinks();
+    if(!current.assignments.length){var empty=document.createElement("div");empty.className="empty";empty.textContent="Пока нет учеников. Создайте первую персональную ссылку.";studentsNode.appendChild(empty);return;}
+    current.assignments.slice().sort(function(a,b){return String(b.lastActivityAt).localeCompare(String(a.lastActivityAt));}).forEach(function(item){
+      var s=item.summary||{};var drill=s.drill||{};var card=document.createElement("article");card.className="student";
+      var head=document.createElement("div");head.className="studenthead";var left=document.createElement("div");
+      var name=document.createElement("div");name.className="studentname";name.textContent=item.studentLabel;left.appendChild(name);
+      var meta=document.createElement("div");meta.className="small muted";meta.textContent="Последняя активность: "+humanTime(item.lastActivityAt);left.appendChild(meta);head.appendChild(left);
+      var rev=document.createElement("div");rev.className="workspace-id";rev.textContent="ревизия "+item.revision;head.appendChild(rev);card.appendChild(head);
+      var metrics=document.createElement("div");metrics.className="metricgrid";
+      metrics.appendChild(metric("начато",(s.started||0)+" / 72"));metrics.appendChild(metric("решено",(s.solved||0)+" / 72"));
+      metrics.appendChild(metric("попытки",s.attempts||0));metrics.appendChild(metric("ошибки",s.errors||0));card.appendChild(metrics);
+      var lines=document.createElement("div");lines.className="linegrid";lines.appendChild(lineBox(1,s.lines&&s.lines[1]));lines.appendChild(lineBox(2,s.lines&&s.lines[2]));card.appendChild(lines);
+      var badges=document.createElement("div");badges.className="badges";badges.appendChild(badge("самостоятельно: "+(s.clean||0),false));
+      badges.appendChild(badge("с подсказками: "+(s.helped||0),false));badges.appendChild(badge("разобрано: "+(s.seen||0),false));
+      badges.appendChild(badge("подсказки: "+(s.hints||0),false));badges.appendChild(badge("лучший зачёт: "+(drill.best||0)+" / 12",!!drill.passed));
+      badges.appendChild(badge(drill.passed?"зачёт сдан":"зачёт не сдан",!!drill.passed));card.appendChild(badges);
+      if(links[item.assignmentId]){var row=document.createElement("div");row.className="row";row.style.marginTop="11px";
+        var copy=document.createElement("button");copy.type="button";copy.className="btn ghost small";copy.textContent="Скопировать ссылку ученика";
+        copy.addEventListener("click",function(){copyText(links[item.assignmentId]).catch(function(){});});row.appendChild(copy);card.appendChild(row);}
+      studentsNode.appendChild(card);
+    });
+  }
+  function showConnected(){
+    document.getElementById("workspaceInfo").classList.remove("hidden");
+    document.getElementById("workspaceLabel").textContent="ID панели: "+current.workspaceId;
+    assignmentCard.classList.remove("hidden");progressCard.classList.remove("hidden");
+    createWorkspaceButton.classList.add("hidden");showConnectButton.classList.add("hidden");connectForm.classList.add("hidden");
+    replacePanelUrl(current.workspaceId);
+  }
+  function loadAssignments(silent){
+    if(!current.workspaceId||!current.teacherCode)return Promise.reject(new Error("ACCESS_REQUIRED"));
+    if(!silent)setStatus("wait","Обновляю прогресс…");
+    return api("/api/progress/workspaces/"+current.workspaceId+"/assignments",{teacherCode:current.teacherCode}).then(function(result){
+      if(result.workspaceId!==current.workspaceId||!Array.isArray(result.assignments))throw new Error("WORKSPACE_MISMATCH");
+      renderAssignments(result.assignments);showConnected();setStatus("ok","Панель подключена. Данные хранятся на сервере.");
+      document.getElementById("updatedLabel").textContent="Обновлено: "+humanTime(new Date().toISOString());return result;
+    }).catch(function(error){if(!silent)setStatus("err",errorText(error));throw error;});
+  }
+  function connect(workspaceId,teacherCode,remember){
+    if(!WORKSPACE_RE.test(workspaceId)||!CODE_RE.test(teacherCode)){setStatus("err","Проверьте ID панели и код преподавателя.");return Promise.reject(new Error("ACCESS_INVALID"));}
+    current.workspaceId=workspaceId;current.teacherCode=teacherCode;setStatus("wait","Проверяю доступ…");
+    return loadAssignments(false).then(function(){
+      codeInput.value="";
+      if(remember&&!safeSet(ACCESS_PREFIX+workspaceId,teacherCode))setStatus("wait","Панель открыта, но браузер не сохранил код. Скопируйте его отдельно.");
+      clearInterval(current.polling);current.polling=setInterval(function(){loadAssignments(true).catch(function(){});},30000);
+    }).catch(function(error){current.teacherCode="";throw error;});
+  }
+
+  createWorkspaceButton.addEventListener("click",function(){
+    createWorkspaceButton.disabled=true;setStatus("wait","Создаю защищённую панель…");
+    api("/api/progress/workspaces",{method:"POST",body:{}}).then(function(result){
+      if(!WORKSPACE_RE.test(result.workspaceId)||!CODE_RE.test(result.teacherCode))throw new Error("WORKSPACE_RESPONSE_INVALID");
+      current.workspaceId=result.workspaceId;current.teacherCode=result.teacherCode;replacePanelUrl(result.workspaceId);
+      var stored=safeSet(ACCESS_PREFIX+result.workspaceId,result.teacherCode);document.getElementById("recoveryCode").value=result.teacherCode;
+      document.getElementById("recoveryBox").classList.remove("hidden");
+      return loadAssignments(false).then(function(){
+        setStatus(stored?"ok":"wait",stored?"Панель создана. Сохраните код для другого устройства.":"Панель создана, но браузер не сохранил код. Скопируйте его сейчас.");
+        clearInterval(current.polling);current.polling=setInterval(function(){loadAssignments(true).catch(function(){});},30000);
+      });
+    }).catch(function(error){setStatus("err",errorText(error));}).then(function(){createWorkspaceButton.disabled=false;});
+  });
+  showConnectButton.addEventListener("click",function(){connectForm.classList.remove("hidden");showConnectButton.classList.add("hidden");workspaceInput.focus();});
+  document.getElementById("cancelConnect").addEventListener("click",function(){connectForm.classList.add("hidden");showConnectButton.classList.remove("hidden");});
+  connectForm.addEventListener("submit",function(event){event.preventDefault();connect(workspaceInput.value.trim(),codeInput.value.trim(),true).catch(function(){});});
+  document.getElementById("copyPanelUrl").addEventListener("click",function(){copyText(publicPanelUrl(current.workspaceId)).catch(function(){});});
+  document.getElementById("copyRecovery").addEventListener("click",function(){copyText(document.getElementById("recoveryCode").value).catch(function(){});});
+  document.getElementById("forgetAccess").addEventListener("click",function(){
+    safeRemove(ACCESS_PREFIX+current.workspaceId);current.teacherCode="";codeInput.value="";clearInterval(current.polling);assignmentCard.classList.add("hidden");progressCard.classList.add("hidden");
+    document.getElementById("workspaceInfo").classList.add("hidden");createWorkspaceButton.classList.remove("hidden");showConnectButton.classList.remove("hidden");
+    workspaceInput.value=current.workspaceId;connectForm.classList.remove("hidden");setStatus("wait","Код удалён только с этого устройства.");
+  });
+  document.getElementById("assignmentForm").addEventListener("submit",function(event){
+    event.preventDefault();var label=document.getElementById("studentLabel").value.trim();if(!label)return;
+    var button=event.target.querySelector("button[type=submit]");button.disabled=true;setStatus("wait","Создаю персональную ссылку…");
+    api("/api/progress/workspaces/"+current.workspaceId+"/assignments",{method:"POST",teacherCode:current.teacherCode,
+      body:{studentLabel:label,trainerId:TRAINER_ID}}).then(function(result){
+        if(!WORKSPACE_RE.test(result.assignmentId)||!CODE_RE.test(result.studentCode)||result.trainerId!==TRAINER_ID)throw new Error("ASSIGNMENT_RESPONSE_INVALID");
+        var link=studentUrl(result.assignmentId,result.studentCode);saveLink(result.assignmentId,link);document.getElementById("studentLink").value=link;
+        document.getElementById("studentLinkBox").classList.remove("hidden");document.getElementById("studentLabel").value="";
+        setStatus("ok","Ссылка для «"+result.studentLabel+"» создана.");return loadAssignments(true);
+      }).catch(function(error){setStatus("err",errorText(error));}).then(function(){button.disabled=false;});
+  });
+  document.getElementById("copyStudentLink").addEventListener("click",function(){copyText(document.getElementById("studentLink").value).catch(function(){});});
+  document.getElementById("refreshProgress").addEventListener("click",function(){loadAssignments(false).catch(function(){});});
+
+  /* Панель никогда не принимает код из query или fragment. */
+  var initialUrl=new URL(window.location.href);var forbidden=false;
+  ["teacher","teacherCode","token","code","access"].forEach(function(key){
+    if(initialUrl.searchParams.has(key)){forbidden=true;initialUrl.searchParams.delete(key);}
+  });
+  if(initialUrl.hash){forbidden=true;initialUrl.hash="";try{history.replaceState(null,"",initialUrl.pathname+initialUrl.search);}catch(_error){}}
+  if(forbidden){try{history.replaceState(null,"",initialUrl.pathname+initialUrl.search);}catch(_error){}}
+  var initialWorkspace=initialUrl.searchParams.get("workspace")||"";
+  if(forbidden)setStatus("err","Коды в адресе запрещены и были проигнорированы.");
+  if(initialWorkspace&&WORKSPACE_RE.test(initialWorkspace)){
+    workspaceInput.value=initialWorkspace;var saved=safeGet(ACCESS_PREFIX+initialWorkspace);
+    if(CODE_RE.test(saved)&&!forbidden){connect(initialWorkspace,saved,false).catch(function(){connectForm.classList.remove("hidden");codeInput.focus();});}
+    else{connectForm.classList.remove("hidden");showConnectButton.classList.add("hidden");codeInput.focus();}
+  }else if(initialWorkspace){setStatus("err","Некорректный ID панели в адресе.");connectForm.classList.remove("hidden");showConnectButton.classList.add("hidden");}
+})();
+</script>
+</body>
+</html>
