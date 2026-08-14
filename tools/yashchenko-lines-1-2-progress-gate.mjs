@@ -28,7 +28,7 @@ function inlineScripts(html) {
 }
 
 function taskPayload(html) {
-  const match = html.match(/var TASKS = (\[[\s\S]*?\]);\r?\nvar TID/);
+  const match = html.match(/var TASKS = (\[[^\r\n]*\]);/);
   assert.ok(match, 'trainer must contain one parseable TASKS payload');
   return match[1];
 }
@@ -54,6 +54,9 @@ assert.match(trainer, /PRODUCTION_PROGRESS_API = "https:\/\/mathexam-board-ladyn
 assert.match(trainer, /storageTopicId\(\)[\s\S]*TID \+ "@" \+ assignmentContext\.assignmentId/);
 assert.match(trainer, /saveTaskActivity\(key, \{attempts:1, errors:correct \? 0 : 1\}\)/);
 assert.match(trainer, /saveTaskActivity\(key, \{hints:1\}\)/);
+assert.match(trainer, /saveTaskActivity\(key,\{attempts:1,errors:1\}\)/);
+assert.match(trainer, /saveTaskActivity\(key,\{attempts:1\}\)/);
+assert.match(trainer, /saveTaskActivity\(key,\{hints:1\}\)/);
 
 const payload = taskPayload(trainer);
 const payloadHash = crypto.createHash('sha256').update(payload, 'utf8').digest('hex');
