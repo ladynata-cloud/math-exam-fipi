@@ -10,49 +10,51 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
 - Repository: `ladynata-cloud/math-exam-fipi`
 - Branch: `main`
-- Commit: `c1217cda05725b0ba8bfde327c76281d7917853f`
+- Commit: `9833d8971c1ab291ba477967d47a2d2904a5f818`
 - Confirmed state: Workflow v1.1, Nested-path foundation, the roads-grid mirror,
   the two catalog-only OGE plans/routes trainers, the 31-page `oge-basics`
-  mathematical-likbez series, and the seven-page percentages/proportions v2
-  module are present in the exact `main` history and on production. Baseline
-  HTTP verification on 2026-08-14 returned `200` for the homepage and the
-  percentages module. The board health endpoint also returned `200`, three
-  registry mirrors, and the pre-progress feature set.
+  mathematical-likbez series, the seven-page percentages/proportions v2 module,
+  and Progress Workspaces API v1 are present in the exact `main` history.
+  Amvera has persistent `/data`, `PROGRESS_PERSISTENCE_CONFIRMED=1`, and the
+  board service restarted successfully on 2026-08-14. A direct post-restart
+  health request was blocked by the current browser client and remains not run.
 
 ## Current stage
 
-The `HIGH` Progress Workspaces API v1 platform task is in progress on
-`agent/progress-workspaces-api`. It adds fail-closed durable learner-progress
-storage, teacher workspaces, personal assignments, hashed bearer codes, and an
-opt-in registry capability. It intentionally does not publish or edit a
-trainer. The supplied 72-task Yashchenko trainer requires a later independent
-publication task after this platform contract is reviewed, merged, deployed,
-and verified.
+The independent `HIGH` Yashchenko lines 1-2 publication task is in progress on
+`agent/yashchenko-lines-1-2-progress`. It publishes the supplied 72-task
+trainer, adds an assignment-isolated learner sync client and teacher panel, and
+opts the trainer into the already merged progress registry contract. It must
+not change board-server production code or deployment core; focused test
+expectations may include the new registry entry.
 
 ## Open PRs
 
 - Draft PR `#92` contains the Trainer Inventory v1.0.1 cross-platform
   Git-object hashing fix and still requires independent exact-head review.
+- Trainer publication PR: pending implementation and local gates.
 - Older unrelated PRs remain open but do not alter this task's exact base.
 
 ## Last confirmed gate
 
-The Progress Workspaces working tree reports 41/41 board-server tests passing,
-including role separation, registry opt-in, atomic persistence, restart,
-monotonic merge, raw-code absence, unavailable-store `503`, and unchanged room,
-board, Bridge, and registry regressions. The exact-head task gate remains
-pending until the branch is committed and clean. Trainer Inventory v1.0.1
-reports its own full gate on Draft PR `#92`, but exact-head independent review
-is not yet recorded.
+The current trainer working tree passes
+`YASHCHENKO_LINES_1_2_PROGRESS_V1_AUTHORING_CHECK_OK`, all 41 board-server
+tests, and a direct local API smoke covering workspace/assignment creation,
+learner write, teacher read, required summaries, and raw-code absence in the
+progress file. The in-app browser blocked localhost by URL policy, so
+visual/browser smoke is not run rather than reported as passed; the final
+release gate remains pending production HTTP/API and browser smoke. Trainer
+Inventory v1.0.1 reports its own full gate on Draft PR `#92`, but exact-head
+independent review is not yet recorded and its CLI is not available on
+production `main`.
 
 ## Blockers
 
-- The Progress Workspaces task must not merge until its exact head receives the
-  required independent `HIGH` security/code review and the owner gives separate
-  merge authorization.
-- Production progress must remain disabled unless `/data` is backed by a real
-  persistent volume and the restart smoke passes; an ephemeral file is not an
-  acceptable fallback.
+- The Yashchenko trainer task must not merge until its exact head receives the
+  required `HIGH` security/code review or a current exact-head owner waiver,
+  followed by separate merge authorization.
+- Production progress HTTP and cross-restart checks must be recorded after the
+  trainer deploy; Amvera status/log evidence alone is not an HTTP smoke.
 - Draft PR `#92` must not merge until an independent reviewer records valid
   exact-head provenance.
 - Merge and deployment of any new task remain separately authorized release
@@ -60,12 +62,13 @@ is not yet recorded.
 
 ## Next three actions
 
-1. Commit, gate, publish, and independently review the Progress Workspaces Draft
-   PR on its exact head.
-2. Request separate owner merge and deployment authorization only after the
-   persistent-volume plan and exact-head evidence are confirmed.
-3. After production restart persistence is proven, open the separate trainer
-   publication/panel task for the supplied Yashchenko lines 1-2 trainer.
+1. Complete the trainer/panel implementation and local exact-head gates, then
+   open its Draft PR.
+2. Obtain exact-head `HIGH` review or an explicit owner waiver and separate
+   merge/deployment authorization for that trainer PR.
+3. After release, run canonical trainer, panel, registry, learner-write,
+   teacher-read, and restart-persistence production smoke and report the exact
+   public URLs.
 
 ## Maintenance rule
 

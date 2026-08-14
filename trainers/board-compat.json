@@ -312,6 +312,19 @@
       "supportsBoardMirror": false,
       "supportsSemanticEvents": false,
       "notes": "Открывается в iframe доски; mirror не подключён."
+    },
+    {
+      "trainerId": "yashchenko-t12",
+      "file": "trainers/ege-profile/yashchenko-lines-1-2.html",
+      "title": "ЕГЭ №1–2: 36 вариантов Ященко",
+      "group": "Геометрия / ЕГЭ",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "supportsProgressTracking": true,
+      "progressSchemaVersion": 1,
+      "notes": "Открывается в iframe доски; персональный прогресс синхронизируется через Progress Workspaces API v1, mirror не подключён."
     }
   ]
 }

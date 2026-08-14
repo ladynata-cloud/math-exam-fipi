@@ -51,7 +51,8 @@ const expectedCatalogFiles = [
   'trainers/oge-basics/percentages/percent-choose-question.html',
   'trainers/oge-basics/percentages/percent-change.html',
   'trainers/oge-basics/percentages/proportion.html',
-  'trainers/oge-basics/percentages/percent-final-checkpoint.html'
+  'trainers/oge-basics/percentages/percent-final-checkpoint.html',
+  'trainers/ege-profile/yashchenko-lines-1-2.html'
 ];
 
 function currentManifest() {
@@ -184,16 +185,20 @@ test('server consumes every committed manifest and authorization vector', () => 
   }
 });
 
-test('current manifest validates with twenty-eight catalog entries and three mirrors', () => {
+test('current manifest validates with twenty-nine catalog entries and three mirrors', () => {
   const manifest = currentManifest();
   const result = validateTrainerManifest(manifest);
   assert.equal(result.ok, true);
   assert.equal(manifest.version, 1);
   assert.equal(manifest.schemaVersion, 1);
   assert.deepEqual(manifest.trainers.map(entry => entry.file), expectedCatalogFiles);
-  assert.equal(manifest.trainers.length, 28);
+  assert.equal(manifest.trainers.length, 29);
   assert.equal(result.trainers.length, 3);
-  assert.deepEqual(result.progressTrainers, []);
+  assert.deepEqual(result.progressTrainers, [{
+    trainerId: 'yashchenko-t12',
+    file: 'trainers/ege-profile/yashchenko-lines-1-2.html',
+    progressSchemaVersion: 1
+  }]);
 });
 
 test('runtime registry has exact parity with all three mirror authorizations', () => {
@@ -342,6 +347,10 @@ test('progress tracking is an explicit registry capability independent of mirror
   assert.deepEqual(validation.progressTrainers, [{
     trainerId: 'ege-t1-planimetry',
     file: 'trainers/ege-t1-planimetry-trainer.html',
+    progressSchemaVersion: 1
+  }, {
+    trainerId: 'yashchenko-t12',
+    file: 'trainers/ege-profile/yashchenko-lines-1-2.html',
     progressSchemaVersion: 1
   }]);
   assert.match(progressRegistryDigest(1, validation.progressTrainers), /^sha256:[0-9a-f]{64}$/);
