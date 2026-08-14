@@ -9,8 +9,10 @@ const test = require('node:test');
 const {
   TRAINER_PATH_LIMITS,
   canonicalTrainerFile,
+  canonicalProgressRegistryJson,
   canonicalRegistryJson,
   loadTrainerRegistry,
+  progressRegistryDigest,
   registryDigest,
   trainerFileFromUrl,
   validateTrainerManifest
@@ -191,6 +193,7 @@ test('current manifest validates with twenty-eight catalog entries and three mir
   assert.deepEqual(manifest.trainers.map(entry => entry.file), expectedCatalogFiles);
   assert.equal(manifest.trainers.length, 28);
   assert.equal(result.trainers.length, 3);
+  assert.deepEqual(result.progressTrainers, []);
 });
 
 test('runtime registry has exact parity with all three mirror authorizations', () => {
@@ -328,6 +331,55 @@ test('catalog-only entries do not enter the mirror registry', () => {
   assert.equal(result.trainers.some(entry => entry.trainerId === 'negative-numbers'), false);
 });
 
+test('progress tracking is an explicit registry capability independent of mirror', () => {
+  const manifest = currentManifest();
+  const entry = manifest.trainers.find(item => item.trainerId === 'ege-t1-planimetry');
+  entry.supportsProgressTracking = true;
+  entry.progressSchemaVersion = 1;
+
+  const validation = validateTrainerManifest(manifest);
+  assert.equal(validation.ok, true);
+  assert.deepEqual(validation.progressTrainers, [{
+    trainerId: 'ege-t1-planimetry',
+    file: 'trainers/ege-t1-planimetry-trainer.html',
+    progressSchemaVersion: 1
+  }]);
+  assert.match(progressRegistryDigest(1, validation.progressTrainers), /^sha256:[0-9a-f]{64}$/);
+  assert.equal(
+    canonicalProgressRegistryJson(1, validation.progressTrainers),
+    JSON.stringify({ schemaVersion: 1, trainers: validation.progressTrainers })
+  );
+  assert.equal(validation.trainers.some(item => item.trainerId === entry.trainerId), false);
+
+  withTempManifest(JSON.stringify(manifest), file => {
+    const registry = loadTrainerRegistry({ env: { TRAINER_REGISTRY_PATH: file } });
+    assert.equal(registry.loaded, true);
+    assert.equal(registry.allowsProgress(entry.trainerId), true);
+    assert.equal(registry.progressDigest, progressRegistryDigest(1, validation.progressTrainers));
+    assert.deepEqual(registry.getProgressById(entry.trainerId), validation.progressTrainers[0]);
+    assert.equal(registry.getById(entry.trainerId), null);
+    assert.equal(JSON.stringify(registry.publicPayload).includes('progressSchemaVersion'), false);
+  });
+});
+
+test('progress registry capability fails closed on flag and schema mismatch', () => {
+  expectError(
+    manifest => { manifest.trainers[1].supportsProgressTracking = 'yes'; },
+    'REGISTRY_ENTRY_PROGRESS_FLAG_INVALID'
+  );
+  expectError(
+    manifest => { manifest.trainers[1].progressSchemaVersion = 1; },
+    'REGISTRY_ENTRY_PROGRESS_SCHEMA_UNEXPECTED'
+  );
+  expectError(
+    manifest => {
+      manifest.trainers[1].supportsProgressTracking = true;
+      manifest.trainers[1].progressSchemaVersion = 2;
+    },
+    'REGISTRY_ENTRY_PROGRESS_SCHEMA_UNSUPPORTED'
+  );
+});
+
 test('digest is deterministic across manifest and entry order', () => {
   const first = validateTrainerManifest(currentManifest());
   const reorderedManifest = currentManifest();
@@ -337,6 +389,10 @@ test('digest is deterministic across manifest and entry order', () => {
   assert.equal(second.ok, true);
   assert.equal(registryDigest(1, first.trainers), registryDigest(1, second.trainers));
   assert.equal(canonicalRegistryJson(1, first.trainers), canonicalRegistryJson(1, second.trainers));
+  assert.equal(
+    progressRegistryDigest(1, first.progressTrainers),
+    progressRegistryDigest(1, second.progressTrainers)
+  );
 });
 
 test('an additional synthetic mirror entry needs no registry core change', () => {
@@ -370,9 +426,11 @@ test('runtime entries and public projection are immutable', () => {
   assert.equal(Object.isFrozen(registry), true);
   assert.equal(Object.isFrozen(registry.entries), true);
   assert.equal(Object.isFrozen(registry.entries[0]), true);
+  assert.equal(Object.isFrozen(registry.progressEntries), true);
   assert.equal(Object.isFrozen(registry.publicPayload), true);
   assert.throws(() => { registry.entries.push({}); }, TypeError);
   assert.throws(() => { registry.entries[0].trainerId = 'changed'; }, TypeError);
+  assert.throws(() => { registry.progressEntries.push({}); }, TypeError);
 });
 
 test('trainer URLs map to canonical manifest files', () => {

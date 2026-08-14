@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const { Server } = require('socket.io');
 const { loadTrainerRegistry, TRAINER_PATH_LIMITS } = require('./trainer-registry');
+const { ProgressStoreError, loadProgressStore } = require('./progress-store');
 
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
@@ -30,6 +31,14 @@ const ROOM_CLEANUP_INTERVAL_MS = parsePositiveInteger(
 const AUTHOR_ROLES = new Set(['teacher', 'student', 'bot']);
 const PAGE_BACKGROUNDS = new Set(['grid', 'lined', 'blank']);
 const trainerRegistry = loadTrainerRegistry();
+const progressPersistenceConfirmed = process.env.PROGRESS_PERSISTENCE_CONFIRMED === '1';
+const progressStore = loadProgressStore({
+  filePath: process.env.PROGRESS_STORE_PATH,
+  persistenceConfirmed: progressPersistenceConfirmed,
+  isTrainerAllowed: trainerId => trainerRegistry.loaded && trainerRegistry.allowsProgress(trainerId)
+});
+const PROGRESS_CREATE_WINDOW_MS = 60 * 60 * 1000;
+const PROGRESS_CREATE_LIMIT = parsePositiveInteger(process.env.PROGRESS_CREATE_LIMIT, 20);
 
 function parsePositiveInteger(value, fallback) {
   const parsed = Number(value);
@@ -54,10 +63,12 @@ function corsOrigin(origin, callback) {
 }
 
 const app = express();
+app.disable('x-powered-by');
 app.use(express.json({ limit: '2mb' }));
 app.use(cors({ origin: corsOrigin }));
 
 const rooms = new Map();
+const progressCreateAttempts = new Map();
 
 function nowIso() {
   return new Date().toISOString();
@@ -85,6 +96,49 @@ function cleanupRooms(now = Date.now()) {
 
 function makeId(size = 12) {
   return crypto.randomBytes(size).toString('base64url');
+}
+
+function bearerCode(req) {
+  const header = req.get('authorization');
+  if (typeof header !== 'string') return '';
+  const match = /^Bearer ([A-Za-z0-9_-]{32,256})$/.exec(header);
+  return match ? match[1] : '';
+}
+
+function progressNoStore(_req, res, next) {
+  res.set('Cache-Control', 'no-store');
+  res.set('Pragma', 'no-cache');
+  next();
+}
+
+function allowProgressWorkspaceCreation(req, res, next) {
+  const address = req.socket?.remoteAddress || 'unknown';
+  const timestamp = Date.now();
+  const current = progressCreateAttempts.get(address);
+  const record = !current || timestamp - current.startedAt >= PROGRESS_CREATE_WINDOW_MS
+    ? { startedAt: timestamp, count: 0 }
+    : current;
+  record.count += 1;
+  progressCreateAttempts.set(address, record);
+  if (record.count > PROGRESS_CREATE_LIMIT) {
+    res.status(429).json({ ok: false, error: 'PROGRESS_CREATE_RATE_LIMITED' });
+    return;
+  }
+  next();
+}
+
+function progressHandler(handler) {
+  return (req, res) => {
+    try {
+      handler(req, res);
+    } catch (error) {
+      const known = error instanceof ProgressStoreError;
+      res.status(known ? error.status : 500).json({
+        ok: false,
+        error: known ? error.code : 'PROGRESS_INTERNAL_ERROR'
+      });
+    }
+  };
 }
 
 function normalizePageId(value) {
@@ -588,13 +642,18 @@ app.get('/health', (_req, res) => {
     serverStartedAt: SERVER_STARTED_AT,
     roomTtlMs: ROOM_TTL_MS,
     roomCleanupIntervalMs: ROOM_CLEANUP_INTERVAL_MS,
-    features: { roomTtlCleanup: true },
+    features: { roomTtlCleanup: true, progressWorkspaces: true },
     registryLoaded: trainerRegistry.loaded,
     registrySchemaVersion: trainerRegistry.schemaVersion,
     registryDigest: trainerRegistry.digest,
     registrySource: trainerRegistry.source,
     registryEntryCount: trainerRegistry.entries.length,
-    registryError: trainerRegistry.error
+    registryError: trainerRegistry.error,
+    progressStoreReady: progressStore.ready,
+    progressStoreError: progressStore.error,
+    progressPersistenceConfirmed,
+    progressAuthorizedTrainerCount: trainerRegistry.progressEntries.length,
+    progressRegistryDigest: trainerRegistry.progressDigest
   });
 });
 
@@ -602,6 +661,74 @@ app.get('/api/trainer-registry', (_req, res) => {
   res.set('Cache-Control', 'no-store');
   res.status(trainerRegistry.loaded ? 200 : 503).json(trainerRegistry.publicPayload);
 });
+
+app.post(
+  '/api/progress/workspaces',
+  progressNoStore,
+  allowProgressWorkspaceCreation,
+  progressHandler((req, res) => {
+    if (
+      !req.body
+      || typeof req.body !== 'object'
+      || Array.isArray(req.body)
+      || Object.keys(req.body).length !== 0
+    ) {
+      throw new ProgressStoreError('PROGRESS_WORKSPACE_REQUEST_INVALID');
+    }
+    const workspace = progressStore.createWorkspace();
+    res.status(201).json({ ok: true, ...workspace });
+  })
+);
+
+app.get(
+  '/api/progress/workspaces/:workspaceId/assignments',
+  progressNoStore,
+  progressHandler((req, res) => {
+    const workspace = progressStore.listAssignments(
+      req.params.workspaceId,
+      bearerCode(req)
+    );
+    res.json({ ok: true, ...workspace });
+  })
+);
+
+app.post(
+  '/api/progress/workspaces/:workspaceId/assignments',
+  progressNoStore,
+  progressHandler((req, res) => {
+    const assignment = progressStore.createAssignment(
+      req.params.workspaceId,
+      bearerCode(req),
+      req.body
+    );
+    res.status(201).json({ ok: true, ...assignment });
+  })
+);
+
+app.get(
+  '/api/progress/assignments/:assignmentId',
+  progressNoStore,
+  progressHandler((req, res) => {
+    const assignment = progressStore.getAssignment(
+      req.params.assignmentId,
+      bearerCode(req)
+    );
+    res.json({ ok: true, ...assignment });
+  })
+);
+
+app.put(
+  '/api/progress/assignments/:assignmentId',
+  progressNoStore,
+  progressHandler((req, res) => {
+    const assignment = progressStore.updateAssignment(
+      req.params.assignmentId,
+      bearerCode(req),
+      req.body
+    );
+    res.json({ ok: true, ...assignment });
+  })
+);
 
 app.post('/api/rooms', (_req, res) => {
   const room = createRoom();
