@@ -194,6 +194,85 @@ Deployment checklist:
 5. Выполнить smoke обоих reference mirror trainers и grant/revoke.
 6. При `registryLoaded:false` не включать client cutover и проверить `registryError`.
 
+## Долговременный прогресс учеников
+
+Сервер содержит отдельный fail-closed API для преподавательских рабочих
+пространств и персональных заданий. Он не меняет комнаты, доску или Socket.IO.
+Тренажёр получает право записывать прогресс только через явный opt-in в
+`trainers/board-compat.json`: `supportsProgressTracking:true` и
+`progressSchemaVersion:1`. Отсутствующая или невалидная registry-запись
+запрещает создание задания и обновление прогресса.
+
+Хранилище включается только двумя явными переменными после подключения
+постоянного диска:
+
+```bash
+PROGRESS_STORE_PATH=/data/progress.json \
+PROGRESS_PERSISTENCE_CONFIRMED=1 npm start
+```
+
+Файловый backend рассчитан на один server process: один и тот же файл нельзя
+одновременно подключать к нескольким репликам. Записи идут через временный файл,
+`fsync` и atomic rename; размер store ограничен 64 MiB, workspace — 500
+assignments, snapshot — 200 task records. Для горизонтального масштабирования
+потребуется отдельный согласованный database-backend task.
+
+Если подтверждение или путь отсутствуют, файл повреждён или запись невозможна, все
+`/api/progress/*` endpoints отвечают `503`. Сервер не подменяет долговременное
+хранилище памятью и не сообщает ложный успешный sync. Комнаты и доска при этом
+продолжают работать.
+
+Docker image задаёт `/data/progress.json` и объявляет `/data` как volume, но
+намеренно не задаёт `PROGRESS_PERSISTENCE_CONFIRMED`. Это deployment guard: его
+можно включить только после подтверждения постоянного диска и restart smoke.
+В Amvera или другом контейнерном хостинге к `/data` необходимо подключить
+постоянный диск. Само наличие Docker volume declaration не заменяет настройку
+постоянного диска у провайдера. Текущий бесплатный Render blueprint намеренно
+не включает progress store: включать `PROGRESS_STORE_PATH` и
+`PROGRESS_PERSISTENCE_CONFIRMED=1` там можно только после добавления постоянного
+диска.
+
+Контракт доступа:
+
+- `POST /api/progress/workspaces` создаёт workspace и один раз возвращает
+  `teacherCode`;
+- `GET /api/progress/workspaces/:workspaceId/assignments` читает список
+  учеников по teacher bearer code;
+- `POST /api/progress/workspaces/:workspaceId/assignments` создаёт персональное
+  задание и один раз возвращает `studentCode`;
+- `GET /api/progress/assignments/:assignmentId` читает прогресс по student
+  bearer code;
+- `PUT /api/progress/assignments/:assignmentId` записывает строгий snapshot по
+  student bearer code.
+
+Коды передаются только заголовком `Authorization: Bearer ...`. Query parameters
+и URL path для кодов не поддерживаются. В файле хранятся только SHA-256 hashes
+случайных 192-bit кодов. Публичный URL панели преподавателя должен содержать
+только не-секретный `workspaceId`; на другом устройстве преподаватель отдельно
+вводит сохранённый `teacherCode`. Ученический клиент может передать
+`studentCode` в одноразовом URL fragment, сохранить его локально и сразу убрать
+fragment через `history.replaceState`, потому что fragment не отправляется
+серверу как часть HTTP request.
+
+Проверка постоянства после настройки volume:
+
+1. Подключить постоянный volume к `/data`, затем установить
+   `PROGRESS_PERSISTENCE_CONFIRMED=1` и запустить сервис.
+2. Создать workspace и assignment, записать тестовый snapshot.
+3. Сохранить `workspaceId`, `teacherCode`, `assignmentId` и `studentCode` вне
+   логов и URL.
+4. Перезапустить контейнер, не меняя подключённый `/data` и переменные.
+5. Проверить `/health`: `progressStoreReady:true` и
+   `progressPersistenceConfirmed:true`.
+6. Прочитать тот же assignment с прежним bearer code и сверить revision,
+   counters и `lastActivityAt`.
+
+`/health` публикует только безопасные признаки:
+`progressStoreReady`, `progressStoreError`, `progressPersistenceConfirmed` и
+`progressAuthorizedTrainerCount`, а также отдельный
+`progressRegistryDigest`, который не меняет digest board-mirror registry. Путь
+к файлу, коды и token hashes не выдаются.
+
 ## Как открыть доску локально
 
 1. Запустите сервер.

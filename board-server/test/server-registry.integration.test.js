@@ -49,6 +49,8 @@ async function startServer(registryPath, runtimeServerDir = serverDir) {
     PORT: String(port)
   };
   delete env.TRAINER_REGISTRY_PATH;
+  delete env.PROGRESS_STORE_PATH;
+  delete env.PROGRESS_PERSISTENCE_CONFIRMED;
   if (registryPath) env.TRAINER_REGISTRY_PATH = registryPath;
   if (runtimeServerDir !== serverDir) {
     env.NODE_PATH = [path.join(serverDir, 'node_modules'), env.NODE_PATH]
@@ -256,6 +258,8 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   assert.match(dockerfile, /WORKDIR \/app\/board-server/);
   assert.match(dockerfile, /COPY board-server\/ \.\//);
   assert.match(dockerfile, /COPY trainers\/board-compat\.json \/app\/trainers\/board-compat\.json/);
+  assert.match(dockerfile, /ENV PROGRESS_STORE_PATH=\/data\/progress\.json/);
+  assert.match(dockerfile, /VOLUME \["\/data"\]/);
 
   const renderConfig = fs.readFileSync(path.join(rootDir, 'render.yaml'), 'utf8');
   assert.doesNotMatch(renderConfig, /^\s*rootDir:/m);
@@ -268,7 +272,7 @@ test('Docker and Render-equivalent runtime layout resolves the bundled manifest'
   const runtimeTrainerDir = path.join(directory, 'app', 'trainers');
   fs.mkdirSync(runtimeServerDir, { recursive: true });
   fs.mkdirSync(runtimeTrainerDir, { recursive: true });
-  for (const file of ['index.js', 'trainer-registry.js']) {
+  for (const file of ['index.js', 'trainer-registry.js', 'progress-store.js']) {
     fs.copyFileSync(path.join(serverDir, file), path.join(runtimeServerDir, file));
   }
   fs.copyFileSync(manifestPath, path.join(runtimeTrainerDir, 'board-compat.json'));

@@ -7,6 +7,7 @@ const path = require('node:path');
 const REGISTRY_SCHEMA_VERSION = 1;
 const SUPPORTED_STATE_SCHEMA_VERSIONS = new Set([1]);
 const SUPPORTED_BRIDGE_PROTOCOL_VERSIONS = new Set([1]);
+const SUPPORTED_PROGRESS_SCHEMA_VERSIONS = new Set([1]);
 const BOARD_COMPATIBILITY_VALUES = new Set([
   'opens-in-board',
   'seed-ready',
@@ -49,6 +50,14 @@ function canonicalMirrorEntry(entry) {
     stateSchemaVersion: entry.stateSchemaVersion,
     bridgeProtocolVersion: entry.bridgeProtocolVersion,
     allowLegacyHtml: entry.allowLegacyHtml
+  };
+}
+
+function canonicalProgressEntry(entry) {
+  return {
+    trainerId: entry.trainerId,
+    file: entry.file,
+    progressSchemaVersion: entry.progressSchemaVersion
   };
 }
 
@@ -150,6 +159,7 @@ function validateTrainerManifest(manifest) {
   const files = new Set();
   const caseFoldedFiles = new Set();
   const mirrorTrainers = [];
+  const progressTrainers = [];
 
   for (const entry of manifest.trainers) {
     if (!isPlainObject(entry)) return validationFailure('REGISTRY_ENTRY_INVALID');
@@ -186,6 +196,21 @@ function validateTrainerManifest(manifest) {
     if (entry.supportsBoardMirror !== isMirror) {
       return validationFailure('REGISTRY_ENTRY_FLAGS_INCONSISTENT');
     }
+    if (
+      Object.prototype.hasOwnProperty.call(entry, 'supportsProgressTracking')
+      && typeof entry.supportsProgressTracking !== 'boolean'
+    ) {
+      return validationFailure('REGISTRY_ENTRY_PROGRESS_FLAG_INVALID');
+    }
+    const supportsProgressTracking = entry.supportsProgressTracking === true;
+    if (supportsProgressTracking) {
+      if (!SUPPORTED_PROGRESS_SCHEMA_VERSIONS.has(entry.progressSchemaVersion)) {
+        return validationFailure('REGISTRY_ENTRY_PROGRESS_SCHEMA_UNSUPPORTED');
+      }
+      progressTrainers.push(canonicalProgressEntry(entry));
+    } else if (Object.prototype.hasOwnProperty.call(entry, 'progressSchemaVersion')) {
+      return validationFailure('REGISTRY_ENTRY_PROGRESS_SCHEMA_UNEXPECTED');
+    }
     if (!isMirror) {
       if (
         Object.prototype.hasOwnProperty.call(entry, 'allowLegacyHtml')
@@ -214,8 +239,23 @@ function validateTrainerManifest(manifest) {
   return {
     ok: true,
     schemaVersion: manifest.schemaVersion,
-    trainers: mirrorTrainers
+    trainers: mirrorTrainers,
+    progressTrainers
   };
+}
+
+function canonicalProgressRegistryJson(schemaVersion, trainers) {
+  return JSON.stringify({
+    schemaVersion,
+    trainers: trainers.map(canonicalProgressEntry).sort(compareTrainerIds)
+  });
+}
+
+function progressRegistryDigest(schemaVersion, trainers) {
+  return `sha256:${crypto
+    .createHash('sha256')
+    .update(canonicalProgressRegistryJson(schemaVersion, trainers), 'utf8')
+    .digest('hex')}`;
 }
 
 function rawPathnameFromUrlInput(raw) {
@@ -287,7 +327,7 @@ function freezeEntry(entry) {
   return Object.freeze(canonicalMirrorEntry(entry));
 }
 
-function createRuntimeRegistry({ source, schemaVersion, trainers }) {
+function createRuntimeRegistry({ source, schemaVersion, trainers, progressTrainers }) {
   const entries = Object.freeze(
     trainers
       .map(freezeEntry)
@@ -295,16 +335,25 @@ function createRuntimeRegistry({ source, schemaVersion, trainers }) {
   );
   const byId = new Map(entries.map(entry => [entry.trainerId, entry]));
   const byFile = new Map(entries.map(entry => [entry.file, entry]));
+  const progressEntries = Object.freeze(
+    progressTrainers
+      .map(entry => Object.freeze(canonicalProgressEntry(entry)))
+      .sort(compareTrainerIds)
+  );
+  const progressById = new Map(progressEntries.map(entry => [entry.trainerId, entry]));
   const digest = registryDigest(schemaVersion, entries);
+  const progressDigest = progressRegistryDigest(schemaVersion, progressEntries);
   const publicPayload = Object.freeze({ schemaVersion, digest, trainers: entries });
 
   return Object.freeze({
     loaded: true,
     schemaVersion,
     digest,
+    progressDigest,
     source,
     error: null,
     entries,
+    progressEntries,
     publicPayload,
     getById(trainerId) {
       return byId.get(trainerId) || null;
@@ -315,19 +364,28 @@ function createRuntimeRegistry({ source, schemaVersion, trainers }) {
     getByTrainerUrl(value) {
       const file = trainerFileFromUrl(value);
       return file ? byFile.get(file) || null : null;
+    },
+    getProgressById(trainerId) {
+      return progressById.get(trainerId) || null;
+    },
+    allowsProgress(trainerId) {
+      return progressById.has(trainerId);
     }
   });
 }
 
 function createUnavailableRegistry(source, error) {
   const entries = Object.freeze([]);
+  const progressEntries = Object.freeze([]);
   return Object.freeze({
     loaded: false,
     schemaVersion: REGISTRY_SCHEMA_VERSION,
     digest: null,
+    progressDigest: null,
     source,
     error,
     entries,
+    progressEntries,
     publicPayload: Object.freeze({
       schemaVersion: REGISTRY_SCHEMA_VERSION,
       digest: null,
@@ -342,6 +400,12 @@ function createUnavailableRegistry(source, error) {
     },
     getByTrainerUrl() {
       return null;
+    },
+    getProgressById() {
+      return null;
+    },
+    allowsProgress() {
+      return false;
     }
   });
 }
@@ -379,7 +443,8 @@ function loadTrainerRegistry(options = {}) {
   return createRuntimeRegistry({
     source,
     schemaVersion: validation.schemaVersion,
-    trainers: validation.trainers
+    trainers: validation.trainers,
+    progressTrainers: validation.progressTrainers
   });
 }
 
@@ -388,8 +453,10 @@ module.exports = Object.freeze({
   TRAINER_PATH_LIMITS,
   canonicalTrainerFile,
   canonicalRegistryJson,
+  canonicalProgressRegistryJson,
   loadTrainerRegistry,
   registryDigest,
+  progressRegistryDigest,
   trainerFileFromUrl,
   validateTrainerManifest
 });

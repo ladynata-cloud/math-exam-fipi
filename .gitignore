@@ -1,3 +1,5 @@
 *.pdf
+node_modules/
 tools/oge_db/input/*.pdf
 tools/trainer-inventory/.output/
+board-server/data/
