@@ -249,7 +249,7 @@ test('valid store still rejects trainers without registry opt-in', async t => {
   const server = await startServer({ progressPath: path.join(directory, 'progress.json') });
   t.after(() => server.stop());
   assert.equal(server.health.progressStoreReady, true);
-  assert.equal(server.health.progressAuthorizedTrainerCount, 2);
+  assert.equal(server.health.progressAuthorizedTrainerCount, 3);
   assert.match(server.health.progressRegistryDigest, /^sha256:[0-9a-f]{64}$/);
 
   const workspace = await jsonRequest(`${server.baseUrl}/api/progress/workspaces`, {

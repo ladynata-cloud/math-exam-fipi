@@ -338,6 +338,30 @@
       "supportsProgressTracking": true,
       "progressSchemaVersion": 1,
       "notes": "Открывается в iframe доски; персональный прогресс по четырём темам синхронизируется через Progress Workspaces API v1, mirror не подключён."
+    },
+    {
+      "trainerId": "dvi-math-18-20",
+      "file": "trainers/dvi/math-18-20.html",
+      "title": "ДВИ по математике: задачи 18–20",
+      "group": "ДВИ / математика",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "supportsProgressTracking": true,
+      "progressSchemaVersion": 1,
+      "notes": "Открывается в iframe доски; персональный прогресс по задачам 18–20 синхронизируется через Progress Workspaces API v1, mirror не подключён."
+    },
+    {
+      "trainerId": "dvi-math-18-20-video-studio",
+      "file": "trainers/dvi/math-18-20-video-studio.html",
+      "title": "ДВИ по математике: видеостудия задач 18–20",
+      "group": "ДВИ / инструменты преподавателя",
+      "boardCompatibility": "opens-in-board",
+      "supportsSeed": false,
+      "supportsBoardMirror": false,
+      "supportsSemanticEvents": false,
+      "notes": "Открывается в iframe доски; автопоказ, сценарий и экспорт сцен не изменяют прогресс ученика."
     }
   ]
 }
