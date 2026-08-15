@@ -18,9 +18,8 @@ export class WorkerLock {
   constructor(config) {
     this.lockDir = path.join(config.dataDir, 'worker.lock');
     this.token = crypto.randomBytes(24).toString('base64url');
-    this.staleMs = config.workerLockStaleMs || 90_000;
     this.waitMs = config.workerLockWaitMs || 0;
-    this.heartbeatMs = Math.max(5000, Math.floor(this.staleMs / 3));
+    this.heartbeatMs = config.workerLockHeartbeatMs || 10_000;
     this.timer = null;
     this.held = false;
   }
@@ -47,34 +46,22 @@ export class WorkerLock {
     while (true) {
       try {
         await fs.mkdir(this.lockDir, { mode: 0o700 });
-        await this.writeHeartbeat();
-        this.held = true;
-        this.timer = setInterval(() => {
-          this.assertOwnership()
-            .then(() => this.writeHeartbeat())
-            .catch(() => { this.held = false; });
-        }, this.heartbeatMs);
-        this.timer.unref();
-        return this;
+        try {
+          await this.writeHeartbeat();
+          this.held = true;
+          this.timer = setInterval(() => {
+            this.assertOwnership()
+              .then(() => this.writeHeartbeat())
+              .catch(() => { this.held = false; });
+          }, this.heartbeatMs);
+          this.timer.unref();
+          return this;
+        } catch (error) {
+          await fs.rm(this.lockDir, { recursive: true, force: true }).catch(() => {});
+          throw error;
+        }
       } catch (error) {
         if (error.code !== 'EEXIST') throw error;
-      }
-
-      const owner = await this.owner();
-      let age = owner ? Date.now() - Date.parse(owner.heartbeatAt) : 0;
-      if (!owner) {
-        const stat = await fs.stat(this.lockDir).catch(() => null);
-        age = stat ? Date.now() - stat.mtimeMs : 0;
-      }
-      if (Number.isFinite(age) && age > this.staleMs) {
-        const quarantine = `${this.lockDir}.stale-${crypto.randomBytes(8).toString('hex')}`;
-        try {
-          await fs.rename(this.lockDir, quarantine);
-          await fs.rm(quarantine, { recursive: true, force: true });
-          continue;
-        } catch (error) {
-          if (!['ENOENT', 'EEXIST'].includes(error.code)) throw error;
-        }
       }
       if (Date.now() >= deadline) throw lockError('Another video worker owns the persistent volume');
       await delay(1000);

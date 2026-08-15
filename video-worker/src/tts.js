@@ -9,7 +9,17 @@ function ttsError(message, code = 'TTS_RESPONSE_INVALID') {
   return error;
 }
 
-export async function writeSpeechResponse(response, target, provider, maxBytes = MAX_AUDIO_BYTES) {
+function requestSignal(signal) {
+  const timeout = AbortSignal.timeout(120_000);
+  return signal ? AbortSignal.any([signal, timeout]) : timeout;
+}
+
+function aborted(signal) {
+  if (!signal?.aborted) return;
+  throw ttsError('Speech synthesis was cancelled', 'JOB_ABORTED');
+}
+
+export async function writeSpeechResponse(response, target, provider, maxBytes = MAX_AUDIO_BYTES, signal) {
   if (!response.ok) throw ttsError(`${provider} speech request failed (${response.status})`, 'TTS_PROVIDER_FAILED');
   const length = Number(response.headers.get('content-length') || 0);
   if (Number.isFinite(length) && length > maxBytes) {
@@ -19,10 +29,13 @@ export async function writeSpeechResponse(response, target, provider, maxBytes =
 
   const handle = await fs.open(target, 'wx', 0o600);
   const reader = response.body.getReader();
+  const onAbort = () => { reader.cancel('speech synthesis cancelled').catch(() => {}); };
+  signal?.addEventListener('abort', onAbort, { once: true });
   let written = 0;
   let failed = false;
   try {
     while (true) {
+      aborted(signal);
       const { done, value } = await reader.read();
       if (done) break;
       written += value.byteLength;
@@ -32,11 +45,13 @@ export async function writeSpeechResponse(response, target, provider, maxBytes =
       }
       await handle.write(Buffer.from(value));
     }
+    aborted(signal);
     if (!written) throw ttsError(`${provider} speech response is empty`);
   } catch (error) {
     failed = true;
     throw error;
   } finally {
+    signal?.removeEventListener('abort', onAbort);
     await handle.close();
     if (failed) await fs.rm(target, { force: true }).catch(() => {});
   }
@@ -46,23 +61,28 @@ export async function writeSpeechResponse(response, target, provider, maxBytes =
 function openai(config) {
   return {
     extension: 'mp3',
-    async synthesize(text, basePath) {
-      const response = await fetch('https://api.openai.com/v1/audio/speech', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${config.openaiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: config.openaiModel,
-          voice: config.openaiVoice,
-          input: text,
-          response_format: 'mp3',
-          instructions: 'Speak in clear, calm Russian as a mathematics teacher. Read formulas carefully.',
-        }),
-        signal: AbortSignal.timeout(120_000),
-      });
-      return writeSpeechResponse(response, `${basePath}.mp3`, 'OpenAI');
+    async synthesize(text, basePath, options = {}) {
+      try {
+        const response = await fetch('https://api.openai.com/v1/audio/speech', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${config.openaiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: config.openaiModel,
+            voice: config.openaiVoice,
+            input: text,
+            response_format: 'mp3',
+            instructions: 'Speak in clear, calm Russian as a mathematics teacher. Read formulas carefully.',
+          }),
+          signal: requestSignal(options.signal),
+        });
+        return await writeSpeechResponse(response, `${basePath}.mp3`, 'OpenAI', MAX_AUDIO_BYTES, options.signal);
+      } catch (error) {
+        aborted(options.signal);
+        throw error;
+      }
     },
   };
 }
@@ -70,7 +90,7 @@ function openai(config) {
 function yandex(config) {
   return {
     extension: 'ogg',
-    async synthesize(text, basePath) {
+    async synthesize(text, basePath, options = {}) {
       const form = new URLSearchParams({
         text,
         lang: 'ru-RU',
@@ -78,16 +98,21 @@ function yandex(config) {
         format: 'oggopus',
         folderId: config.yandexFolderId,
       });
-      const response = await fetch('https://tts.api.cloud.yandex.net/speech/v1/tts:synthesize', {
-        method: 'POST',
-        headers: {
-          Authorization: `Api-Key ${config.yandexKey}`,
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: form,
-        signal: AbortSignal.timeout(120_000),
-      });
-      return writeSpeechResponse(response, `${basePath}.ogg`, 'Yandex');
+      try {
+        const response = await fetch('https://tts.api.cloud.yandex.net/speech/v1/tts:synthesize', {
+          method: 'POST',
+          headers: {
+            Authorization: `Api-Key ${config.yandexKey}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: form,
+          signal: requestSignal(options.signal),
+        });
+        return await writeSpeechResponse(response, `${basePath}.ogg`, 'Yandex', MAX_AUDIO_BYTES, options.signal);
+      } catch (error) {
+        aborted(options.signal);
+        throw error;
+      }
     },
   };
 }
@@ -95,7 +120,7 @@ function yandex(config) {
 function mock(config) {
   return {
     extension: 'wav',
-    async synthesize(text, basePath) {
+    async synthesize(text, basePath, options = {}) {
       const target = `${basePath}.wav`;
       const duration = Math.max(1.5, Math.min(8, 1 + String(text).length / 45));
       await runCommand(config.ffmpegPath, [
@@ -106,6 +131,7 @@ function mock(config) {
         timeoutMs: config.commandTimeoutMs,
         monitorFile: target,
         maxFileBytes: MAX_AUDIO_BYTES,
+        signal: options.signal,
       });
       return target;
     },

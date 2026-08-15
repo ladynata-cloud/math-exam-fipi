@@ -120,11 +120,13 @@ the progress server and must not change student progress.
 - Actual base SHA: `e9347d544a90a8d151051ee29a047d51a906196f`
 - Actual head SHA: recorded in the Draft PR
 - PR: Draft PR created from the exact production base
-- Tests passed: Video Factory authoring gate; DVI authoring gate; 17/17 worker
+- Tests passed: Video Factory authoring gate; DVI authoring gate; 21/21 worker
   unit/integration tests; 41/41 board-server regression tests; inline studio
   script parse; authorization/origin, create/status/download, persistence and
   interrupted-job recovery tests; atomic admission/idempotency, hourly/daily
-  budget and media quota, exclusive worker handoff, subprocess deadline,
+  budget and media quota, exclusive worker handoff without stale takeover,
+  bounded graceful cancellation and re-queue, attempt-media cleanup,
+  fail-closed cleanup errors, subprocess deadline,
   streamed TTS size cap, persistence-failure and path-sanitization tests;
   reproducible package-lock tree validation; `git diff --check`
 - Tests failed: none in the final run

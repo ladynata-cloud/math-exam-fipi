@@ -17,7 +17,7 @@ async function rootFixture(t) {
 
 test('worker lock prevents overlapping recovery and permits a clean handoff', async (t) => {
   const root = await rootFixture(t);
-  const lockConfig = { dataDir: root, workerLockStaleMs: 60_000, workerLockWaitMs: 0 };
+  const lockConfig = { dataDir: root, workerLockWaitMs: 0 };
   const firstLock = await new WorkerLock(lockConfig).acquire();
   t.after(() => firstLock.release());
   const overlappingLock = new WorkerLock(lockConfig);
@@ -42,11 +42,42 @@ test('worker lock prevents overlapping recovery and permits a clean handoff', as
   assert.equal(recovered.get(job.id).attemptId, null);
 });
 
+test('worker lock never performs an automatic stale takeover', async (t) => {
+  const root = await rootFixture(t);
+  const lockConfig = {
+    dataDir: root, workerLockWaitMs: 0, workerLockHeartbeatMs: 60_000,
+  };
+  const firstLock = await new WorkerLock(lockConfig).acquire();
+  t.after(() => firstLock.release());
+  clearInterval(firstLock.timer);
+  firstLock.timer = null;
+  await fs.writeFile(path.join(firstLock.lockDir, 'owner.json'), `${JSON.stringify({
+    token: firstLock.token,
+    heartbeatAt: '2000-01-01T00:00:00.000Z',
+  })}\n`, { mode: 0o600 });
+
+  const replacement = new WorkerLock(lockConfig);
+  await assert.rejects(replacement.acquire(), (error) => error.code === 'WORKER_LOCKED');
+  assert.equal((await firstLock.owner()).token, firstLock.token);
+  await firstLock.assertOwnership();
+});
+
 test('commands are terminated at their deadline', async () => {
   await assert.rejects(
     runCommand(process.execPath, ['-e', 'setInterval(() => {}, 1000)'], { timeoutMs: 100 }),
     (error) => error.code === 'COMMAND_TIMEOUT',
   );
+});
+
+test('shutdown cancellation terminates an active command', async () => {
+  const controller = new AbortController();
+  const command = runCommand(
+    process.execPath,
+    ['-e', 'setInterval(() => {}, 1000)'],
+    { timeoutMs: 5000, signal: controller.signal },
+  );
+  setTimeout(() => controller.abort(), 50);
+  await assert.rejects(command, (error) => error.code === 'JOB_ABORTED');
 });
 
 test('chunked speech is cancelled before crossing the file limit', async (t) => {
@@ -77,7 +108,7 @@ test('public and logged errors do not expose configured filesystem paths', () =>
   assert.equal(exposed.errorCode, 'VIDEO_RENDER_FAILED');
 });
 
-test('orphaned media is removed while an active attempt remains protected', async (t) => {
+test('only the exact active attempt is protected and recovery removes it', async (t) => {
   const root = await rootFixture(t);
   const config = {
     dataDir: root,
@@ -86,11 +117,35 @@ test('orphaned media is removed while an active attempt remains protected', asyn
   };
   const store = await new JobStore(config).init();
   const job = await store.create({ task: '18', preset: 1, format: '16:9', captions: true });
-  const active = path.join(config.mediaDir, `${job.id}.attempt.tmp.mp4`);
+  await store.update(job.id, { status: 'rendering', attemptId: 'current-attempt' });
+  const active = path.join(config.mediaDir, `${job.id}.current-attempt.tmp.mp4`);
+  const stale = path.join(config.mediaDir, `${job.id}.stale-attempt.tmp.mp4`);
   const orphan = path.join(config.mediaDir, 'orphan.tmp.mp4');
   await fs.writeFile(active, 'active');
+  await fs.writeFile(stale, 'stale');
   await fs.writeFile(orphan, 'orphan');
   await store.prune();
   assert.equal((await fs.readFile(active, 'utf8')), 'active');
+  await assert.rejects(fs.stat(stale), (error) => error.code === 'ENOENT');
   await assert.rejects(fs.stat(orphan), (error) => error.code === 'ENOENT');
+  await store.update(job.id, { status: 'queued', attemptId: null });
+  await assert.rejects(fs.stat(active), (error) => error.code === 'ENOENT');
+});
+
+test('cleanup failure keeps metadata visible and health fail-closed', async (t) => {
+  const root = await rootFixture(t);
+  const config = {
+    dataDir: root,
+    jobDir: path.join(root, 'jobs'), mediaDir: path.join(root, 'videos'), workDir: path.join(root, 'work'),
+    retentionDays: 30, maxRetainedBytes: 20 * 1024 * 1024, maxOutputBytes: 1024 * 1024,
+  };
+  const store = await new JobStore(config).init();
+  const created = await store.create({ task: '18', preset: 1, format: '16:9', captions: true });
+  const job = await store.update(created.id, { status: 'failed', attemptId: null });
+  await fs.mkdir(store.expectedOutput(job.id));
+
+  await assert.rejects(store.removeCompleted(job), (error) => error.code === 'PERSISTENCE_CLEANUP_FAILED');
+  assert.equal(store.get(job.id).id, job.id);
+  assert.equal(store.health().ok, false);
+  await fs.stat(path.join(config.jobDir, `${job.id}.json`));
 });

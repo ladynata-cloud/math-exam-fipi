@@ -53,6 +53,32 @@ test('queue processes jobs one at a time in creation order', async (t) => {
   assert.deepEqual(events, ['start:18', 'end:18', 'start:19', 'end:19']);
 });
 
+test('graceful queue shutdown aborts active work and safely re-queues it', async (t) => {
+  const config = await fixture(t);
+  const store = await new JobStore(config).init();
+  const job = await store.create(request);
+  let signalWorkStarted;
+  const workStarted = new Promise((resolve) => { signalWorkStarted = resolve; });
+  const queue = new JobQueue(store, async (activeJob, activeStore, { signal }) => {
+    await activeStore.update(activeJob.id, { status: 'rendering', attemptId: 'shutdown-attempt' });
+    signalWorkStarted();
+    await new Promise((resolve, reject) => {
+      signal.addEventListener('abort', () => {
+        const error = new Error('cancelled by shutdown');
+        error.code = 'JOB_ABORTED';
+        reject(error);
+      }, { once: true });
+    });
+  });
+  queue.start();
+  await workStarted;
+  await queue.stop({ graceMs: 1000 });
+
+  assert.equal(queue.running, false);
+  assert.equal(store.get(job.id).status, 'queued');
+  assert.equal(store.get(job.id).attemptId, null);
+});
+
 test('a failed metadata write never publishes an in-memory ghost job', async (t) => {
   const config = await fixture(t);
   const store = await new JobStore(config).init();

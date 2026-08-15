@@ -23,9 +23,11 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 Video Factory v1 is in implementation on `agent/video-factory-v1`. It adds an
 isolated persistent render queue, server-side OpenAI/Yandex speech, Chromium and
 FFmpeg MP4 assembly, and one-click controls in the existing DVI studio. The
-first independent review requested changes; admission, cost/storage quotas,
-worker fencing, deadlines, streaming, persistence and reproducible-build
-findings have been remediated and require exact-head re-review.
+first independent review findings were remediated. Re-review of head
+`b78fc9b6b5bf5e1630f8fe572465c7a4484a61e0` then found a race in automatic
+stale-lock takeover plus recovery/shutdown cleanup gaps. Automatic takeover is
+now removed fail-closed, cancellation is bounded and propagated, and cleanup
+failures are surfaced; the next exact head requires another independent review.
 
 This is a `NEW_ARCHETYPE`. ADR 0002 is Proposed. A Draft PR may demonstrate the
 prototype, but merge/deployment remain blocked until explicit ADR acceptance,
@@ -43,7 +45,7 @@ authorization.
 ## Last confirmed gate
 
 The DVI release passed its exact-head local gates and production smoke on PR
-`#102`. Video Factory authoring, DVI regression, 17/17 worker API/storage/queue
+`#102`. Video Factory authoring, DVI regression, 21/21 worker API/storage/queue
 tests and 41/41 board-server tests pass. Local visual browser smoke is blocked
 by the browser's local-URL policy; a real Chromium/FFmpeg/TTS render remains a
 required container/staging gate.
@@ -59,10 +61,10 @@ required container/staging gate.
 
 ## Next three actions
 
-1. Finish Video Factory tests and local mocked end-to-end smoke, then open the
-   exact-base Draft PR with architecture and test evidence.
-2. Obtain explicit owner acceptance of ADR 0002 and exact-head independent
-   security/code review (or a policy-compliant waiver).
+1. Publish the shutdown/lock/cleanup remediation on Draft PR `#103` and obtain
+   independent review of that exact new head.
+2. After a clean review, obtain explicit owner acceptance of ADR 0002 for the
+   exact reviewed implementation.
 3. After separate merge/deployment authorization, configure the second Amvera
    app, publish it and run the canonical production smoke.
 

@@ -66,13 +66,10 @@ export function loadConfig(env = process.env) {
   const maxRetainedBytes = integer(env.VIDEO_MAX_RETAINED_MB, 4096, 100, 20_000) * 1024 * 1024;
   const maxWorkBytes = integer(env.VIDEO_MAX_WORK_MB, 1024, 100, 5000) * 1024 * 1024;
   const commandTimeoutMs = integer(env.VIDEO_COMMAND_TIMEOUT_SECONDS, 180, 30, 900) * 1000;
-  const workerLockStaleMs = integer(env.VIDEO_WORKER_LOCK_STALE_SECONDS, 300, 60, 3600) * 1000;
   const workerLockWaitMs = integer(env.VIDEO_WORKER_LOCK_WAIT_SECONDS, 360, 0, 3600) * 1000;
+  const shutdownGraceMs = integer(env.VIDEO_SHUTDOWN_GRACE_SECONDS, 30, 10, 120) * 1000;
   if (maxRetainedBytes < maxOutputBytes) {
     throw new Error('VIDEO_MAX_RETAINED_MB must be at least VIDEO_MAX_OUTPUT_MB');
-  }
-  if (workerLockStaleMs <= Math.max(commandTimeoutMs, 120_000) + 30_000) {
-    throw new Error('VIDEO_WORKER_LOCK_STALE_SECONDS must exceed the longest external operation by 30 seconds');
   }
 
   return Object.freeze({
@@ -101,8 +98,9 @@ export function loadConfig(env = process.env) {
     maxWorkBytes,
     retentionDays: integer(env.VIDEO_RETENTION_DAYS, 30, 1, 365),
     commandTimeoutMs,
-    workerLockStaleMs,
     workerLockWaitMs,
+    workerLockHeartbeatMs: 10_000,
+    shutdownGraceMs,
     ffmpegPath: env.FFMPEG_PATH || 'ffmpeg',
     ffprobePath: env.FFPROBE_PATH || 'ffprobe',
   });

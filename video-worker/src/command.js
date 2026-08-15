@@ -9,6 +9,10 @@ function commandError(message, code) {
 
 export function runCommand(command, args, options = {}) {
   return new Promise((resolve, reject) => {
+    if (options.signal?.aborted) {
+      reject(commandError(`${command} was cancelled`, 'JOB_ABORTED'));
+      return;
+    }
     const detached = process.platform !== 'win32';
     const child = spawn(command, args, {
       cwd: options.cwd,
@@ -41,6 +45,8 @@ export function runCommand(command, args, options = {}) {
       const hardKill = setTimeout(() => signalTree('SIGKILL'), 5000);
       hardKill.unref();
     };
+    const onAbort = () => stop(commandError(`${command} was cancelled`, 'JOB_ABORTED'));
+    options.signal?.addEventListener('abort', onAbort, { once: true });
     const collect = (target) => (chunk) => {
       outputBytes += chunk.length;
       if (outputBytes <= maxBytes) target.push(chunk);
@@ -68,6 +74,7 @@ export function runCommand(command, args, options = {}) {
     const cleanup = () => {
       clearTimeout(timeout);
       if (monitor) clearInterval(monitor);
+      options.signal?.removeEventListener('abort', onAbort);
     };
     child.once('error', (error) => {
       if (settled) return;

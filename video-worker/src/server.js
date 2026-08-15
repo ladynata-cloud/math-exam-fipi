@@ -12,13 +12,35 @@ let workerLock = null;
 let server = null;
 let queue = null;
 let shuttingDown = false;
+let shutdownGraceMs = 30_000;
+
+async function closeHttpServer(graceMs) {
+  if (!server) return;
+  await new Promise((resolve, reject) => {
+    let settled = false;
+    const finish = (error) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      if (error) reject(error);
+      else resolve();
+    };
+    const timer = setTimeout(() => {
+      server.closeAllConnections?.();
+      finish();
+    }, graceMs);
+    server.close(finish);
+  });
+}
 
 async function shutdown(signal) {
   if (shuttingDown) return;
   shuttingDown = true;
   console.log(`Video worker stopping after ${signal}`);
-  if (server) await new Promise((resolve) => server.close(resolve));
-  if (queue) await queue.stop();
+  await Promise.all([
+    closeHttpServer(shutdownGraceMs),
+    queue ? queue.stop({ graceMs: shutdownGraceMs }) : Promise.resolve(),
+  ]);
   if (workerLock) await workerLock.release().catch((error) => {
     console.error('Video worker lock release failed:', safeError(error));
   });
@@ -26,6 +48,7 @@ async function shutdown(signal) {
 
 async function main() {
   const config = loadConfig();
+  shutdownGraceMs = config.shutdownGraceMs;
   workerLock = await new WorkerLock(config).acquire();
   const store = await new JobStore(config, { lock: workerLock }).init();
   const processor = createRenderer(config, createTts(config));

@@ -25,11 +25,18 @@ function validateManifest(manifest, task) {
   return manifest;
 }
 
-async function audioDuration(config, audioPath) {
+function throwIfAborted(signal) {
+  if (!signal?.aborted) return;
+  const error = new Error('Video job was cancelled');
+  error.code = 'JOB_ABORTED';
+  throw error;
+}
+
+async function audioDuration(config, audioPath, signal) {
   const result = await runCommand(config.ffprobePath, [
     '-v', 'error', '-show_entries', 'format=duration',
     '-of', 'default=noprint_wrappers=1:nokey=1', audioPath,
-  ], { timeoutMs: config.commandTimeoutMs });
+  ], { timeoutMs: config.commandTimeoutMs, signal });
   const duration = Number.parseFloat(result.stdout.trim());
   if (!Number.isFinite(duration) || duration <= 0 || duration > 300) {
     throw new Error('Speech audio has an invalid duration');
@@ -37,7 +44,7 @@ async function audioDuration(config, audioPath) {
   return duration;
 }
 
-async function renderSegment(config, framePath, audioPath, targetPath, duration) {
+async function renderSegment(config, framePath, audioPath, targetPath, duration, signal) {
   await runCommand(config.ffmpegPath, [
     '-hide_banner', '-loglevel', 'error', '-y',
     '-loop', '1', '-framerate', '30', '-i', framePath, '-i', audioPath,
@@ -50,6 +57,7 @@ async function renderSegment(config, framePath, audioPath, targetPath, duration)
     timeoutMs: config.commandTimeoutMs,
     monitorFile: targetPath,
     maxFileBytes: config.maxOutputBytes,
+    signal,
   });
 }
 
@@ -100,7 +108,8 @@ async function addCaption(page, caption, enabled, portrait) {
 }
 
 export function createRenderer(config, tts) {
-  return async function processJob(job, store) {
+  return async function processJob(job, store, options = {}) {
+    const { signal } = options;
     const attemptId = crypto.randomBytes(12).toString('base64url');
     const working = path.join(config.workDir, `${job.id}-${attemptId}`);
     const output = path.join(config.mediaDir, `${job.id}.mp4`);
@@ -108,10 +117,13 @@ export function createRenderer(config, tts) {
     const viewport = viewportFor(request.format);
     let browser;
     let temporaryOutput;
+    const closeBrowser = () => { if (browser) browser.close().catch(() => {}); };
+    signal?.addEventListener('abort', closeBrowser, { once: true });
     await fs.rm(working, { recursive: true, force: true });
     await fs.mkdir(working, { recursive: true });
 
     try {
+      throwIfAborted(signal);
       await store.assertOwnership();
       const { chromium } = await import('playwright');
       browser = await chromium.launch({
@@ -141,6 +153,7 @@ export function createRenderer(config, tts) {
       ), request.task);
 
       const audioFiles = [];
+      throwIfAborted(signal);
       await store.update(job.id, {
         status: 'synthesizing',
         progress: { stage: 'synthesizing', current: 0, total: manifest.scenes.length },
@@ -149,9 +162,14 @@ export function createRenderer(config, tts) {
         ttsCharacters: manifest.scenes.reduce((total, scene) => total + scene.narration.length, 0),
       });
       for (let index = 0; index < manifest.scenes.length; index++) {
+        throwIfAborted(signal);
         await store.assertOwnership();
         const scene = manifest.scenes[index];
-        audioFiles.push(await tts.synthesize(scene.narration, path.join(working, `audio-${String(index).padStart(3, '0')}`)));
+        audioFiles.push(await tts.synthesize(
+          scene.narration,
+          path.join(working, `audio-${String(index).padStart(3, '0')}`),
+          { signal },
+        ));
         await enforceWorkBudget(config, working);
         await store.update(job.id, {
           progress: { stage: 'synthesizing', current: index + 1, total: manifest.scenes.length },
@@ -164,6 +182,7 @@ export function createRenderer(config, tts) {
       });
       const segments = [];
       for (let index = 0; index < manifest.scenes.length; index++) {
+        throwIfAborted(signal);
         await store.assertOwnership();
         const scene = manifest.scenes[index];
         await page.evaluate(
@@ -176,8 +195,8 @@ export function createRenderer(config, tts) {
         const frame = path.join(working, `frame-${String(index).padStart(3, '0')}.png`);
         const segment = path.join(working, `segment-${String(index).padStart(3, '0')}.mp4`);
         await page.screenshot({ path: frame, fullPage: false });
-        const duration = await audioDuration(config, audioFiles[index]);
-        await renderSegment(config, frame, audioFiles[index], segment, duration);
+        const duration = await audioDuration(config, audioFiles[index], signal);
+        await renderSegment(config, frame, audioFiles[index], segment, duration, signal);
         await enforceWorkBudget(config, working);
         segments.push(path.basename(segment));
         await store.update(job.id, {
@@ -196,9 +215,11 @@ export function createRenderer(config, tts) {
         timeoutMs: config.commandTimeoutMs,
         monitorFile: temporaryOutput,
         maxFileBytes: config.maxOutputBytes,
+        signal,
       });
       const stat = await fs.stat(temporaryOutput);
       if (!stat.size || stat.size > config.maxOutputBytes) throw new Error('Rendered video has an invalid size');
+      throwIfAborted(signal);
       await store.assertOwnership();
       await fs.rename(temporaryOutput, output);
       temporaryOutput = null;
@@ -210,6 +231,7 @@ export function createRenderer(config, tts) {
         attemptId: null,
       });
     } finally {
+      signal?.removeEventListener('abort', closeBrowser);
       if (browser) await browser.close().catch(() => {});
       if (temporaryOutput) await fs.rm(temporaryOutput, { force: true }).catch(() => {});
       await fs.rm(working, { recursive: true, force: true }).catch(() => {});

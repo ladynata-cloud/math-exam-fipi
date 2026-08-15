@@ -179,6 +179,9 @@ export class JobStore {
     const job = { ...current, ...changes, updatedAt: new Date().toISOString() };
     await this.write(job);
     this.jobs.set(id, job);
+    if (['queued', 'ready', 'failed'].includes(job.status)) {
+      await this.removeAttemptMedia(job.id);
+    }
     return job;
   }
 
@@ -215,21 +218,43 @@ export class JobStore {
     const ready = new Set([...this.jobs.values()]
       .filter((job) => job.status === 'ready')
       .map((job) => path.basename(this.expectedOutput(job.id))));
-    const pending = [...this.jobs.values()].filter((job) => PENDING.has(job.status)).map((job) => job.id);
+    const activeAttempts = new Set([...this.jobs.values()]
+      .filter((job) => ACTIVE.has(job.status) && job.attemptId)
+      .map((job) => `${job.id}.${job.attemptId}.tmp.mp4`));
     const entries = await fs.readdir(this.config.mediaDir, { withFileTypes: true });
     for (const entry of entries) {
-      if (!entry.isFile() || !entry.name.endsWith('.mp4') || ready.has(entry.name)) continue;
-      if (pending.some((id) => entry.name === `${id}.mp4` || entry.name.startsWith(`${id}.`))) continue;
-      await fs.rm(path.join(this.config.mediaDir, entry.name), { force: true });
+      if (!entry.isFile() || !entry.name.endsWith('.mp4')) continue;
+      if (ready.has(entry.name) || activeAttempts.has(entry.name)) continue;
+      await this.removePersistentFile(path.join(this.config.mediaDir, entry.name));
+    }
+  }
+
+  async removePersistentFile(target) {
+    try {
+      await fs.rm(target, { force: true });
+    } catch (error) {
+      this.persistenceHealthy = false;
+      const wrapped = storeError(`Persistent cleanup failed: ${safeError(error)}`, 'PERSISTENCE_CLEANUP_FAILED', 507,
+        'Не удалось очистить постоянное хранилище видео.');
+      wrapped.cause = error;
+      throw wrapped;
+    }
+  }
+
+  async removeAttemptMedia(id) {
+    const entries = await fs.readdir(this.config.mediaDir, { withFileTypes: true });
+    const prefix = `${id}.`;
+    for (const entry of entries) {
+      if (!entry.isFile() || !entry.name.startsWith(prefix) || !entry.name.endsWith('.tmp.mp4')) continue;
+      await this.removePersistentFile(path.join(this.config.mediaDir, entry.name));
     }
   }
 
   async removeCompleted(job) {
+    await this.removeAttemptMedia(job.id);
+    await this.removePersistentFile(this.expectedOutput(job.id));
+    await this.removePersistentFile(path.join(this.config.jobDir, `${job.id}.json`));
     this.jobs.delete(job.id);
-    await Promise.allSettled([
-      fs.rm(path.join(this.config.jobDir, `${job.id}.json`), { force: true }),
-      fs.rm(this.expectedOutput(job.id), { force: true }),
-    ]);
   }
 
   async prune(now = Date.now()) {

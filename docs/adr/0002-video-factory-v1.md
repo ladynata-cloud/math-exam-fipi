@@ -30,10 +30,12 @@ Create `video-worker` as an independently deployed Amvera application.
 3. The worker navigates only to its configured trusted studio URL. Clients
    cannot submit a URL, HTML, script, narration or FFmpeg arguments.
 4. A file-backed queue under the worker's persistent `/data` is the v1 source of
-   truth. An exclusive heartbeat lock and fencing checks prevent overlapping
-   containers from replaying the same active job. Interrupted active jobs are
-   re-queued only after the new worker owns that lock. Each attempt uses unique
-   work and temporary-output names.
+   truth. An exclusive heartbeat lock prevents overlapping containers from
+   replaying the same active job. V1 deliberately never takes over a stale lock
+   automatically: a crashed owner's lock is removed manually only after the
+   operator confirms that no old container can still write to the volume.
+   Interrupted active jobs are re-queued only after exclusive ownership, and
+   each attempt uses unique work and temporary-output names.
 5. TTS is behind a provider interface. V1 implements OpenAI and Yandex
    SpeechKit using server-only environment variables.
 6. Chromium renders the existing studio API one scene at a time. The worker
@@ -78,6 +80,8 @@ include request authorization or provider payloads.
 
 - Amvera needs a second application, domain, persistent `/data` and secrets;
 - file-backed v1 is single-replica and deliberately limited to one renderer;
+- a crashed worker leaves a fail-closed lock that requires verified manual
+  recovery before another worker can use the same volume;
 - the teacher must keep the studio tab/session or re-enter the service secret;
 - output is downloadable but not automatically published to video platforms;
 - object storage and multi-worker leasing are deferred until real volume needs it.

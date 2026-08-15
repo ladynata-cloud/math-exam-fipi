@@ -15,16 +15,15 @@ test('production configuration fails closed', () => {
     OPENAI_API_KEY: 'test-key',
   };
   assert.throws(() => loadConfig(base), /VIDEO_PERSISTENCE_CONFIRMED/);
-  const config = loadConfig({ ...base, VIDEO_PERSISTENCE_CONFIRMED: '1' });
+  const config = loadConfig({
+    ...base,
+    VIDEO_PERSISTENCE_CONFIRMED: '1',
+    VIDEO_SHUTDOWN_GRACE_SECONDS: '20',
+  });
   assert.equal(config.production, true);
   assert.deepEqual(config.allowedOrigins, ['https://mathexam.space']);
   assert.equal(config.ttsProvider, 'openai');
-  assert.throws(() => loadConfig({
-    ...base,
-    VIDEO_PERSISTENCE_CONFIRMED: '1',
-    VIDEO_COMMAND_TIMEOUT_SECONDS: '900',
-    VIDEO_WORKER_LOCK_STALE_SECONDS: '300',
-  }), /WORKER_LOCK_STALE/);
+  assert.equal(config.shutdownGraceMs, 20_000);
 });
 
 test('job request accepts only the fixed render contract', () => {
