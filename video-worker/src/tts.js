@@ -138,8 +138,11 @@ function mock(config) {
   };
 }
 
-export function silentDuration(text) {
-  return Math.max(3.5, Math.min(16, 1.8 + String(text).length / 16));
+export function silentDuration(text, durationHintMs) {
+  const derived = 1.8 + String(text).length / 16;
+  const hinted = Number(durationHintMs) / 1000;
+  const target = Number.isFinite(hinted) && hinted > 0 ? Math.max(derived, hinted) : derived;
+  return Math.max(3.5, Math.min(30, target));
 }
 
 function silent(config) {
@@ -147,7 +150,7 @@ function silent(config) {
     extension: 'wav',
     async synthesize(text, basePath, options = {}) {
       const target = `${basePath}.wav`;
-      const duration = silentDuration(text);
+      const duration = silentDuration(text, options.durationHintMs);
       const fadeOutStart = Math.max(0, duration - 0.8).toFixed(3);
       await runCommand(config.ffmpegPath, [
         '-hide_banner', '-loglevel', 'error', '-y',

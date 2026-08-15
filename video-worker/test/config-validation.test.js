@@ -44,6 +44,10 @@ test('job request accepts only the fixed render contract', () => {
   assert.deepEqual(validateJobRequest({ task: '18', preset: 2, format: '9:16', captions: false }), {
     task: '18', preset: 2, format: '9:16', captions: false,
   });
+  assert.deepEqual(
+    validateJobRequest({ task: '18', preset: 2, format: '9:16', captions: false }, { ttsProvider: 'silent' }),
+    { task: '18', preset: 2, format: '9:16', captions: true },
+  );
   assert.throws(() => validateJobRequest({ task: '17', preset: 1 }), /18, 19 и 20/);
   assert.throws(() => validateJobRequest({ task: '18', preset: 4 }), /1, 2 и 3/);
   assert.throws(() => validateJobRequest({ task: '18', preset: 1, url: 'https://evil.test' }), /Неизвестный/);

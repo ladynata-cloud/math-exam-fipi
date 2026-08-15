@@ -258,7 +258,7 @@ footer.wrap{color:var(--muted);font-size:13.5px;padding:8px 14px 34px;text-align
     <button class="btn ghost small" data-tab2="t18" data-preset="3">№3</button>
     <button class="btn ghost small" data-play="t18" data-studio-only title="Автоматический показ сцен">▶ Предпросмотр</button>
     <button class="btn" data-render="t18" data-studio-only title="Автоматически озвучить и собрать ролик">🎥 Создать MP4</button>
-    <button class="btn ghost small" data-script="t18" data-studio-only title="Текст и разметка сцен для озвучки">📝 Текст озвучки</button>
+    <button class="btn ghost small" data-script="t18" data-studio-only title="Текст и разметка объясняющих сцен">📝 Сценарий</button>
   </div>
   <div id="tr18"></div>
 </section>
@@ -290,7 +290,7 @@ footer.wrap{color:var(--muted);font-size:13.5px;padding:8px 14px 34px;text-align
     <button class="btn ghost small" data-tab2="t19" data-preset="3">№3</button>
     <button class="btn ghost small" data-play="t19" data-studio-only title="Автоматический показ сцен">▶ Предпросмотр</button>
     <button class="btn" data-render="t19" data-studio-only title="Автоматически озвучить и собрать ролик">🎥 Создать MP4</button>
-    <button class="btn ghost small" data-script="t19" data-studio-only title="Текст и разметка сцен для озвучки">📝 Текст озвучки</button>
+    <button class="btn ghost small" data-script="t19" data-studio-only title="Текст и разметка объясняющих сцен">📝 Сценарий</button>
   </div>
   <div id="tr19"></div>
 </section>
@@ -330,7 +330,7 @@ footer.wrap{color:var(--muted);font-size:13.5px;padding:8px 14px 34px;text-align
     <button class="btn ghost small" data-tab2="t20" data-preset="3">№3</button>
     <button class="btn ghost small" data-play="t20" data-studio-only title="Автоматический показ сцен">▶ Предпросмотр</button>
     <button class="btn" data-render="t20" data-studio-only title="Автоматически озвучить и собрать ролик">🎥 Создать MP4</button>
-    <button class="btn ghost small" data-script="t20" data-studio-only title="Текст и разметка сцен для озвучки">📝 Текст озвучки</button>
+    <button class="btn ghost small" data-script="t20" data-studio-only title="Текст и разметка объясняющих сцен">📝 Сценарий</button>
   </div>
   <div id="tr20"></div>
 </section>
@@ -1408,7 +1408,7 @@ function gen20(opts){
   return gen20C(opts.n);
 }
 
-/* ================= сценарий озвучки ================= */
+/* ================= сценарий видео ================= */
 function tts(s){
   var t=String(s);
   t=t.replace(/<span class="frac"><span>(.*?)<\/span><span>(.*?)<\/span><\/span>/g,'$1/$2');
@@ -1464,8 +1464,12 @@ function videoManifest(model, tab){
     scenes.push({id:'step-'+(k+1)+'-question',phase:'question',step:k,focus:st.focus||[],narration:q,duration_hint_ms:dur(q,4200,18000)});
     scenes.push({id:'step-'+(k+1)+'-answer',phase:'answer',step:k,focus:st.focus||[],narration:a,duration_hint_ms:dur(a,3800,16000)});
   }
-  var fin='Соберём решение целиком. '+model.recap.map(tts).join(' ')+' Ответ: '+tts(model.answer)+'.';
-  scenes.push({id:'final',phase:'final',step:model.steps.length,focus:[],narration:fin,duration_hint_ms:dur(fin,6500,30000)});
+  for(k=0;k<model.recap.length;k++){
+    var recap='Итог, шаг '+(k+1)+'. '+tts(model.recap[k]);
+    scenes.push({id:'recap-'+(k+1),phase:'final',step:model.steps.length,focus:[],narration:recap,duration_hint_ms:dur(recap,5000,18000)});
+  }
+  var fin='Ответ: '+tts(model.answer)+'.';
+  scenes.push({id:'final',phase:'final',step:model.steps.length,focus:[],narration:fin,duration_hint_ms:dur(fin,4500,9000)});
   return {
     format:'mathexam-video-manifest',version:1,tab:tab||'',badge:model.badge,
     subtype:model._dbg&&model._dbg.type?model._dbg.type:null,
@@ -1477,7 +1481,7 @@ function showScript(model, title){
   var txt=narration(model);
   back.innerHTML='<div class="mbox"><div class="mhead"><b>Сценарий видеостудии · '+title+'</b>'
     +'<button class="btn ghost small" id="mx">Закрыть</button></div>'
-    +'<p class="mnote">Текст и JSON можно передать автоматическому рендереру: он создаст ИИ-озвучку, синхронизирует сцены и соберёт MP4. Ручная запись не требуется.</p>'
+    +'<p class="mnote">Текст и JSON можно передать автоматическому рендереру: он покажет решение по сценам, добавит подписи и соберёт MP4 без речи. Ручная запись не требуется.</p>'
     +'<textarea class="mta" id="mta" spellcheck="false"></textarea>'
     +'<div class="mrow"><button class="btn" id="mcopy">Скопировать</button>'
     +'<button class="btn ghost" id="mdl">Скачать .txt</button>'
@@ -1498,7 +1502,7 @@ function showScript(model, title){
   back.querySelector('#mdl').onclick=function(){
     var a=document.createElement('a');
     a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(ta.value);
-    a.download='ozvuchka-'+title.replace(/[^0-9a-zA-Zа-яА-Я]+/g,'-')+'.txt';
+    a.download='scenario-'+title.replace(/[^0-9a-zA-Zа-яА-Я]+/g,'-')+'.txt';
     a.click();
   };
   back.querySelector('#mjson').onclick=function(){

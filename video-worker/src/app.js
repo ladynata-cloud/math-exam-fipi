@@ -98,7 +98,7 @@ export function createRequestHandler({ config, store, queue }) {
         }
         let jobRequest;
         try {
-          jobRequest = validateJobRequest(await readJson(request));
+          jobRequest = validateJobRequest(await readJson(request), { ttsProvider: config.ttsProvider });
         } catch (error) {
           if (!Number.isInteger(error.status)) error.status = 400;
           throw error;

@@ -87,6 +87,22 @@ test('API rejects arbitrary render fields and reports health without secrets', a
   assert.equal(response.status, 400);
 });
 
+test('silent API forces explanatory captions on', async (t) => {
+  const { base, store } = await setup(t, { ttsProvider: 'silent' });
+  const response = await fetch(`${base}/api/v1/jobs`, {
+    method: 'POST',
+    headers: {
+      Origin: origin, Authorization: `Bearer ${token}`, 'Content-Type': 'application/json',
+      'Idempotency-Key': 'silent-caption-contract-0001',
+    },
+    body: JSON.stringify({ task: '18', preset: 1, format: '9:16', captions: false }),
+  });
+  assert.equal(response.status, 202);
+  const created = (await response.json()).job;
+  assert.equal(store.get(created.id).request.captions, true);
+  assert.equal(store.get(created.id).ttsProvider, 'silent');
+});
+
 test('API admission is atomic and idempotent under parallel requests', async (t) => {
   const { base, store, enqueued } = await setup(t, { maxPendingJobs: 1 });
   const makeHeaders = (key) => ({

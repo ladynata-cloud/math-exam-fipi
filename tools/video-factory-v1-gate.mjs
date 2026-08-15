@@ -26,16 +26,36 @@ assert.doesNotMatch(studio, /[?&](?:token|secret|key)=/i, 'credentials must not 
 assert.match(studio, /Authorization:'Bearer '\+token/);
 assert.match(studio, /'Idempotency-Key':requestState\.key/);
 assert.match(studio, /Страницу можно перезагрузить/);
+assert.match(studio, /id:'recap-'/);
+assert.match(studio, /data-captions checked disabled/);
 
 const inlineScripts = [...studio.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((match) => match[1]);
 assert.ok(inlineScripts.length, 'studio inline script not found');
 for (const script of inlineScripts) new Function(script);
+
+const manifestStart = studio.indexOf('function videoManifest');
+const manifestEnd = studio.indexOf('function showScript', manifestStart);
+assert.ok(manifestStart >= 0 && manifestEnd > manifestStart, 'video manifest function must be extractable');
+const buildManifest = new Function('tts', `${studio.slice(manifestStart, manifestEnd)}; return videoManifest;`);
+const videoManifest = buildManifest((value) => String(value).replace(/<[^>]*>/g, ' '));
+const sampleManifest = videoManifest({
+  statement: 'Условие',
+  answer: '42',
+  badge: 'Задача',
+  steps: [{ q: 'Вопрос', opts: [{ ok: true, h: 'Ответ', exp: '' }] }],
+  recap: ['Первый вывод', 'Второй вывод'],
+}, 't18');
+const finalScenes = sampleManifest.scenes.filter((scene) => scene.phase === 'final');
+assert.equal(finalScenes.length, 3, 'each recap item and the answer need separate readable scenes');
+assert.ok(finalScenes.every((scene) => scene.narration.length < 200), 'final captions must stay compact');
 
 assert.match(config, /VIDEO_PERSISTENCE_CONFIRMED/);
 assert.match(config, /Mock speech is disabled in production/);
 assert.match(config, /'silent'/);
 assert.match(config, /VIDEO_STUDIO_URL must use HTTPS in production/);
 assert.match(renderer, /window\.MathExamVideoStudio\.prepare/);
+assert.match(renderer, /durationHintMs: scene\.duration_hint_ms/);
+assert.match(renderer, /TTS_PROVIDER_MISMATCH/);
 assert.match(renderer, /launchBrowser/);
 assert.match(renderer, /new URL\(config\.studioUrl\)\.origin/);
 assert.match(renderer, /chromiumSandbox: true/);

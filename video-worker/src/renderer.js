@@ -8,7 +8,7 @@ function validateManifest(manifest, task) {
   if (!manifest || manifest.format !== 'mathexam-video-manifest' || !Array.isArray(manifest.scenes)) {
     throw new Error('Studio returned an invalid scene manifest');
   }
-  if (manifest.tab !== `t${task}` || manifest.scenes.length < 2 || manifest.scenes.length > 20) {
+  if (manifest.tab !== `t${task}` || manifest.scenes.length < 2 || manifest.scenes.length > 30) {
     throw new Error('Studio returned an unexpected scene set');
   }
   let total = 0;
@@ -18,6 +18,9 @@ function validateManifest(manifest, task) {
     }
     if (typeof scene.narration !== 'string' || !scene.narration.trim() || scene.narration.length > 5000) {
       throw new Error('Studio returned invalid narration');
+    }
+    if (!Number.isFinite(scene.duration_hint_ms) || scene.duration_hint_ms < 1000 || scene.duration_hint_ms > 30_000) {
+      throw new Error('Studio returned an invalid scene duration');
     }
     total += scene.narration.length;
   }
@@ -130,10 +133,15 @@ async function addCaption(page, caption, enabled, portrait) {
 export function createRenderer(config, tts) {
   return async function processJob(job, store, options = {}) {
     const { signal } = options;
+    const request = job.request;
+    if (job.ttsProvider !== config.ttsProvider) {
+      const error = new Error('Queued job TTS provider does not match the active worker');
+      error.code = 'TTS_PROVIDER_MISMATCH';
+      throw error;
+    }
     const attemptId = crypto.randomBytes(12).toString('base64url');
     const working = path.join(config.workDir, `${job.id}-${attemptId}`);
     const output = path.join(config.mediaDir, `${job.id}.mp4`);
-    const request = job.request;
     const viewport = viewportFor(request.format);
     let browser;
     let temporaryOutput;
@@ -190,7 +198,7 @@ export function createRenderer(config, tts) {
         audioFiles.push(await tts.synthesize(
           scene.narration,
           path.join(working, `audio-${String(index).padStart(3, '0')}`),
-          { signal },
+          { signal, durationHintMs: scene.duration_hint_ms },
         ));
         await enforceWorkBudget(config, working);
         await store.update(job.id, {
@@ -211,7 +219,12 @@ export function createRenderer(config, tts) {
           ({ tab, id }) => window.MathExamVideoStudio.show(tab, id),
           { tab: `t${request.task}`, id: scene.id },
         );
-        await addCaption(page, scene.narration, request.captions, request.format === '9:16');
+        await addCaption(
+          page,
+          scene.narration,
+          config.ttsProvider === 'silent' ? true : request.captions,
+          request.format === '9:16',
+        );
         await page.evaluate(() => document.fonts && document.fonts.ready);
         await page.waitForTimeout(120);
         const frame = path.join(working, `frame-${String(index).padStart(3, '0')}.png`);

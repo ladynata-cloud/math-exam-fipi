@@ -5,7 +5,7 @@ import path from 'node:path';
 import test from 'node:test';
 import { runCommand } from '../src/command.js';
 import { JobStore } from '../src/job-store.js';
-import { launchBrowser } from '../src/renderer.js';
+import { createRenderer, launchBrowser } from '../src/renderer.js';
 import { publicJob, safeError } from '../src/security.js';
 import { silentDuration, writeSpeechResponse } from '../src/tts.js';
 import { WorkerLock } from '../src/worker-lock.js';
@@ -19,7 +19,23 @@ async function rootFixture(t) {
 test('silent captions receive a bounded readable scene duration', () => {
   assert.equal(silentDuration(''), 3.5);
   assert.ok(silentDuration('x'.repeat(160)) > 10);
-  assert.equal(silentDuration('x'.repeat(10_000)), 16);
+  assert.equal(silentDuration('short caption', 30_000), 30);
+  assert.equal(silentDuration('x'.repeat(10_000)), 30);
+});
+
+test('renderer rejects a queued job after the configured provider changes', async () => {
+  const renderer = createRenderer(
+    { ttsProvider: 'openai', workDir: 'work', mediaDir: 'media' },
+    { synthesize: async () => { throw new Error('must not synthesize'); } },
+  );
+  await assert.rejects(
+    renderer({
+      id: 'vid_provider_mismatch_test',
+      ttsProvider: 'silent',
+      request: { task: '18', preset: 1, format: '16:9', captions: true },
+    }, null),
+    (error) => error.code === 'TTS_PROVIDER_MISMATCH',
+  );
 });
 
 test('worker lock prevents overlapping recovery and permits a clean handoff', async (t) => {
