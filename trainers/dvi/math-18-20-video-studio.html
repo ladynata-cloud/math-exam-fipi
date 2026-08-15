@@ -256,7 +256,7 @@ footer.wrap{color:var(--muted);font-size:13.5px;padding:8px 14px 34px;text-align
     <button class="btn ghost small" data-tab2="t18" data-preset="1">№1</button>
     <button class="btn ghost small" data-tab2="t18" data-preset="2">№2</button>
     <button class="btn ghost small" data-tab2="t18" data-preset="3">№3</button>
-    <button class="btn ghost small" data-play="t18" data-studio-only title="Автоматический показ сцен">▶ Предпросмотр</button>
+    <button class="btn ghost small" data-play="t18" data-studio-only title="Показать решение по шагам">▶ Показать, как решать</button>
     <button class="btn" data-render="t18" data-studio-only title="Автоматически собрать ролик без речи">🎥 Создать MP4</button>
     <button class="btn ghost small" data-script="t18" data-studio-only title="Текст и разметка объясняющих сцен">📝 Сценарий</button>
   </div>
@@ -288,7 +288,7 @@ footer.wrap{color:var(--muted);font-size:13.5px;padding:8px 14px 34px;text-align
     <button class="btn ghost small" data-tab2="t19" data-preset="1">№1</button>
     <button class="btn ghost small" data-tab2="t19" data-preset="2">№2</button>
     <button class="btn ghost small" data-tab2="t19" data-preset="3">№3</button>
-    <button class="btn ghost small" data-play="t19" data-studio-only title="Автоматический показ сцен">▶ Предпросмотр</button>
+    <button class="btn ghost small" data-play="t19" data-studio-only title="Показать решение по шагам">▶ Показать, как решать</button>
     <button class="btn" data-render="t19" data-studio-only title="Автоматически собрать ролик без речи">🎥 Создать MP4</button>
     <button class="btn ghost small" data-script="t19" data-studio-only title="Текст и разметка объясняющих сцен">📝 Сценарий</button>
   </div>
@@ -328,7 +328,7 @@ footer.wrap{color:var(--muted);font-size:13.5px;padding:8px 14px 34px;text-align
     <button class="btn ghost small" data-tab2="t20" data-preset="1">№1</button>
     <button class="btn ghost small" data-tab2="t20" data-preset="2">№2</button>
     <button class="btn ghost small" data-tab2="t20" data-preset="3">№3</button>
-    <button class="btn ghost small" data-play="t20" data-studio-only title="Автоматический показ сцен">▶ Предпросмотр</button>
+    <button class="btn ghost small" data-play="t20" data-studio-only title="Показать решение по шагам">▶ Показать, как решать</button>
     <button class="btn" data-render="t20" data-studio-only title="Автоматически собрать ролик без речи">🎥 Создать MP4</button>
     <button class="btn ghost small" data-script="t20" data-studio-only title="Текст и разметка объясняющих сцен">📝 Сценарий</button>
   </div>
@@ -1551,8 +1551,8 @@ function showVideoFactory(tab){
     +'<div class="mform"><label class="mfield">Вариант задачи<select data-preset><option value="1">Вариант №1</option><option value="2">Вариант №2</option><option value="3">Вариант №3</option></select></label>'
     +'<label class="mfield">Формат видео<select data-format><option value="16:9">16:9 · урок / YouTube</option><option value="9:16">9:16 · Shorts / клипы</option></select></label></div>'
     +'<label class="mcheck"><input type="checkbox" data-captions checked disabled> Пошаговые объясняющие подписи включены</label>'
-    +'<label class="mfield">Ключ видеосервиса<input type="password" data-token autocomplete="off" placeholder="Вставьте ключ, выданный при подключении"></label>'
-    +'<p class="mnote">Ключ хранится только в этой вкладке браузера и не добавляется в ссылку.</p>'
+    +'<label class="mfield">Код доступа к сборке видео<input type="password" data-token autocomplete="off" placeholder="Введите значение VIDEO_ADMIN_TOKEN из Amvera"></label>'
+    +'<p class="mnote">Код доступа — это значение переменной VIDEO_ADMIN_TOKEN в приложении mathexam-video на Amvera. Он хранится только в этой вкладке браузера и не добавляется в ссылку.</p>'
     +'<div class="mstatus" data-status><b>Готово к запуску</b><span>Обычно сборка занимает несколько минут.</span><div class="mprogress"><i></i></div></div>'
     +'<div class="mrow"><button class="btn" data-create>Создать MP4</button><button class="btn ghost" data-download hidden>Скачать MP4</button></div></div>';
   document.body.appendChild(back);
@@ -1591,7 +1591,7 @@ function showVideoFactory(tab){
       if(['queued','synthesizing','rendering'].indexOf(payload.job.status)>=0){ timer=setTimeout(function(){ poll(id); },2500); }
     }catch(error){
       if(error.status===401){
-        status('Ключ не принят','Проверьте ключ видеосервиса.',0,true); createButton.disabled=false;
+        status('Код доступа не принят','Проверьте значение VIDEO_ADMIN_TOKEN в Amvera.',0,true); createButton.disabled=false;
       }else{
         status('Нет связи с видеосервисом','Повторяю запрос автоматически…',0,true);
         timer=setTimeout(function(){ poll(id); },5000);
@@ -1601,7 +1601,7 @@ function showVideoFactory(tab){
   createButton.onclick=async function(){
     var token=tokenInput.value.trim();
     if(!api){ status('Сервис ещё не подключён','Предпросмотр и сценарий продолжают работать.',0,true); return; }
-    if(!token){ status('Нужен ключ видеосервиса','Вставьте ключ в поле выше.',0,true); tokenInput.focus(); return; }
+    if(!token){ status('Нужен код доступа','Введите значение VIDEO_ADMIN_TOKEN из Amvera в поле выше.',0,true); tokenInput.focus(); return; }
     createButton.disabled=true; downloadButton.hidden=true;
     status('Отправляю в очередь','Проверяю выбранные параметры…',3,false);
     try{
@@ -1622,7 +1622,7 @@ function showVideoFactory(tab){
       sessionStorage.removeItem(requestKey);
       currentId=payload.job.id; sessionStorage.setItem(jobKey,currentId); showJob(payload.job); poll(currentId);
     }catch(error){
-      status(error.status===401?'Ключ не принят':'Не удалось поставить в очередь',error.message,0,true);
+      status(error.status===401?'Код доступа не принят':'Не удалось поставить в очередь',error.message,0,true);
       createButton.disabled=false;
     }
   };
