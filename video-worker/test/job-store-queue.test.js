@@ -104,6 +104,7 @@ test('admission enforces the retained media reservation quota', async (t) => {
 
 test('admission enforces hourly jobs and daily reserved TTS characters', async (t) => {
   const config = await fixture(t);
+  config.ttsProvider = 'openai';
   config.maxJobsPerHour = 1;
   const store = await new JobStore(config).init();
   await store.admit(request, 'budget-admission-key-0001');
@@ -117,4 +118,48 @@ test('admission enforces hourly jobs and daily reserved TTS characters', async (
     store.admit({ ...request, task: '19' }, 'budget-admission-key-0003'),
     (error) => error.code === 'DAILY_TTS_BUDGET',
   );
+});
+
+test('silent mode does not reserve an external TTS budget', async (t) => {
+  const config = await fixture(t);
+  config.ttsProvider = 'silent';
+  config.dailyTtsCharacterBudget = 1;
+  const store = await new JobStore(config).init();
+  const admitted = await store.admit(request, 'silent-admission-key-0001');
+  assert.equal(admitted.job.reservedTtsCharacters, 0);
+  assert.equal(admitted.job.ttsProvider, 'silent');
+});
+
+test('silent admission ignores paid TTS reservations and provider mode survives restart', async (t) => {
+  const config = await fixture(t);
+  config.ttsProvider = 'openai';
+  config.dailyTtsCharacterBudget = config.maxTtsCharactersPerJob;
+  const paidStore = await new JobStore(config).init();
+  await paidStore.admit(request, 'provider-persistence-key-0001');
+
+  const silentConfig = { ...config, ttsProvider: 'silent', dailyTtsCharacterBudget: 1 };
+  const silentStore = await new JobStore(silentConfig).init();
+  const admitted = await silentStore.admit({ ...request, task: '19' }, 'provider-persistence-key-0002');
+  assert.equal(admitted.job.ttsProvider, 'silent');
+
+  const restarted = await new JobStore({ ...silentConfig, ttsProvider: 'openai' }).init();
+  assert.equal(restarted.get(admitted.job.id).ttsProvider, 'silent');
+});
+
+test('legacy queued metadata without a provider fails closed', async (t) => {
+  const config = await fixture(t);
+  config.ttsProvider = 'silent';
+  await fs.mkdir(config.jobDir, { recursive: true });
+  const id = 'vid_legacyproviderjob12345';
+  await fs.writeFile(path.join(config.jobDir, `${id}.json`), JSON.stringify({
+    id,
+    status: 'queued',
+    request,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    progress: { stage: 'queued', current: 0, total: 0 },
+  }));
+  const store = await new JobStore(config).init();
+  assert.equal(store.get(id).status, 'failed');
+  assert.equal(store.get(id).errorCode, 'TTS_PROVIDER_MIGRATION_REQUIRED');
 });

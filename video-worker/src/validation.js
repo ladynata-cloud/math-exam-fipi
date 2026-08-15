@@ -2,7 +2,7 @@ const TASKS = new Set(['18', '19', '20']);
 const FORMATS = new Set(['16:9', '9:16']);
 const REQUEST_KEYS = new Set(['task', 'preset', 'format', 'captions']);
 
-export function validateJobRequest(input) {
+export function validateJobRequest(input, options = {}) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('Требуется описание видео');
   }
@@ -20,7 +20,8 @@ export function validateJobRequest(input) {
   if (input.captions !== undefined && typeof input.captions !== 'boolean') {
     throw new Error('Параметр субтитров должен быть логическим');
   }
-  return Object.freeze({ task, preset, format, captions: input.captions !== false });
+  const captions = options.ttsProvider === 'silent' ? true : input.captions !== false;
+  return Object.freeze({ task, preset, format, captions });
 }
 
 export function viewportFor(format) {

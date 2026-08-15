@@ -24,12 +24,30 @@ test('production configuration fails closed', () => {
   assert.deepEqual(config.allowedOrigins, ['https://mathexam.space']);
   assert.equal(config.ttsProvider, 'openai');
   assert.equal(config.shutdownGraceMs, 20_000);
+
+  const silent = loadConfig({
+    ...base,
+    VIDEO_TTS_PROVIDER: 'silent',
+    OPENAI_API_KEY: '',
+    VIDEO_PERSISTENCE_CONFIRMED: '1',
+  });
+  assert.equal(silent.ttsProvider, 'silent');
+  assert.equal(silent.openaiKey, '');
+  assert.throws(() => loadConfig({
+    ...base,
+    VIDEO_TTS_PROVIDER: 'mock',
+    VIDEO_PERSISTENCE_CONFIRMED: '1',
+  }), /Mock speech is disabled in production/);
 });
 
 test('job request accepts only the fixed render contract', () => {
   assert.deepEqual(validateJobRequest({ task: '18', preset: 2, format: '9:16', captions: false }), {
     task: '18', preset: 2, format: '9:16', captions: false,
   });
+  assert.deepEqual(
+    validateJobRequest({ task: '18', preset: 2, format: '9:16', captions: false }, { ttsProvider: 'silent' }),
+    { task: '18', preset: 2, format: '9:16', captions: true },
+  );
   assert.throws(() => validateJobRequest({ task: '17', preset: 1 }), /18, 19 и 20/);
   assert.throws(() => validateJobRequest({ task: '18', preset: 4 }), /1, 2 и 3/);
   assert.throws(() => validateJobRequest({ task: '18', preset: 1, url: 'https://evil.test' }), /Неизвестный/);

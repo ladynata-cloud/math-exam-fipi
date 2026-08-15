@@ -5,6 +5,7 @@ import { safeError } from './security.js';
 
 const ACTIVE = new Set(['synthesizing', 'rendering']);
 const PENDING = new Set(['queued', ...ACTIVE]);
+const TTS_PROVIDERS = new Set(['openai', 'yandex', 'silent', 'mock']);
 const JOB_ID = /^vid_[A-Za-z0-9_-]{20,40}$/;
 
 function storeError(message, code, status, publicMessage) {
@@ -55,14 +56,24 @@ export class JobStore {
         const job = JSON.parse(await fs.readFile(path.join(this.config.jobDir, file.name), 'utf8'));
         if (!job || !JOB_ID.test(job.id) || file.name !== `${job.id}.json` || !job.request) continue;
         if (job.output && path.resolve(job.output) !== path.resolve(this.expectedOutput(job.id))) job.output = null;
+        let metadataChanged = false;
         if (ACTIVE.has(job.status)) {
           job.status = 'queued';
           job.progress = { stage: 'queued', current: 0, total: 0 };
           job.errorCode = null;
           job.attemptId = null;
           job.updatedAt = new Date().toISOString();
-          await this.write(job);
+          metadataChanged = true;
         }
+        if (PENDING.has(job.status) && !TTS_PROVIDERS.has(job.ttsProvider)) {
+          job.status = 'failed';
+          job.progress = { stage: 'failed', current: 0, total: 0 };
+          job.errorCode = 'TTS_PROVIDER_MIGRATION_REQUIRED';
+          job.attemptId = null;
+          job.updatedAt = new Date().toISOString();
+          metadataChanged = true;
+        }
+        if (metadataChanged) await this.write(job);
         this.jobs.set(job.id, job);
       } catch (error) {
         console.error('Skipping unreadable job metadata:', safeError(error));
@@ -90,6 +101,7 @@ export class JobStore {
       errorCode: null,
       output: null,
       attemptId: null,
+      ttsProvider: this.config.ttsProvider || 'mock',
       ...extra,
     };
     await this.write(job);
@@ -129,7 +141,10 @@ export class JobStore {
       const reservedToday = [...this.jobs.values()]
         .filter((job) => String(job.createdAt).slice(0, 10) === today)
         .reduce((total, job) => total + Number(job.reservedTtsCharacters || 0), 0);
-      if (reservedToday + this.config.maxTtsCharactersPerJob > this.config.dailyTtsCharacterBudget) {
+      const ttsReservation = ['openai', 'yandex'].includes(this.config.ttsProvider)
+        ? this.config.maxTtsCharactersPerJob
+        : 0;
+      if (ttsReservation > 0 && reservedToday + ttsReservation > this.config.dailyTtsCharacterBudget) {
         throw storeError('Daily TTS budget reached', 'DAILY_TTS_BUDGET', 429,
           'Достигнут дневной лимит озвучки. Новое видео можно создать после обновления лимита.');
       }
@@ -142,7 +157,7 @@ export class JobStore {
 
       const job = await this.createPersisted(request, {
         idempotencyHash,
-        reservedTtsCharacters: this.config.maxTtsCharactersPerJob,
+        reservedTtsCharacters: ttsReservation,
       });
       return { job, reused: false };
     });
