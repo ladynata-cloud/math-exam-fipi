@@ -10,69 +10,61 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
 - Repository: `ladynata-cloud/math-exam-fipi`
 - Branch: `main`
-- Commit: `dcfa7107597c7f78be58323c83234a22b235f289`
-- Confirmed state: Workflow v1.1, Nested-path foundation, the roads-grid mirror,
-  the two catalog-only OGE plans/routes trainers, the 31-page `oge-basics`
-  mathematical-likbez series, the seven-page percentages/proportions v2 module,
-  Progress Workspaces API v1, the Yashchenko lines 1–2 trainer, and the Algebra
-  7 control-work trainer with their teacher panels are present in the exact
-  `main` history.
-  Amvera has persistent `/data`, `PROGRESS_PERSISTENCE_CONFIRMED=1`, and the
-  board service restarted successfully on 2026-08-14. Production student and
-  teacher HTTP/browser smoke, server write/read, and reload recovery passed for
-  both progress-enabled trainer releases after deployment.
+- Commit: `e9347d544a90a8d151051ee29a047d51a906196f`
+- Confirmed state: Progress Workspaces API v1 and persistent board `/data`; the
+  Yashchenko lines 1–2, Algebra 7 control-work and DVI mathematics tasks 18–20
+  releases with student progress and teacher panels; and the DVI video studio.
+- PR `#102` is merged and its student, teacher, video-studio, registry,
+  learner-write, teacher-read, reload and autoplay-isolation production smoke
+  passed on 2026-08-15.
 
 ## Current stage
 
-The independent `HIGH` DVI mathematics publication task is in progress on
-`agent/dvi-math-18-20`. It publishes the supplied student trainer and video
-studio for tasks 18–20, adds assignment-isolated learner synchronization and a
-teacher panel, and keeps video autoplay outside student progress accounting.
+Video Factory v1 is in implementation on `agent/video-factory-v1`. It adds an
+isolated persistent render queue, server-side OpenAI/Yandex speech, Chromium and
+FFmpeg MP4 assembly, and one-click controls in the existing DVI studio.
+
+This is a `NEW_ARCHETYPE`. ADR 0002 is Proposed. A Draft PR may demonstrate the
+prototype, but merge/deployment remain blocked until explicit ADR acceptance,
+independent review or a policy-compliant exact-head waiver, and separate release
+authorization.
 
 ## Open PRs
 
 - Draft PR `#92` contains the Trainer Inventory v1.0.1 cross-platform
   Git-object hashing fix and still requires independent exact-head review.
-- DVI tasks 18–20 publication PR: pending Draft PR creation.
+- Video Factory v1 Draft PR: pending creation.
 - Older unrelated PRs remain open but do not alter this task's exact base.
 
 ## Last confirmed gate
 
-The Algebra 7 release passed its production gate on PR `#101`. The current DVI
-task pins both supplied source hashes and both learning-generator anchor hashes;
-its exact-head authoring, board-server, browser/API, and diff gates are pending
-the final implementation run. Trainer Inventory v1.0.1 reports its own full
-gate on Draft PR `#92`, but exact-head independent review is not yet recorded
-and its CLI is not available on production `main`.
+The DVI release passed its exact-head local gates and production smoke on PR
+`#102`. Video Factory authoring, DVI regression, 8/8 worker API/storage/queue
+tests and 41/41 board-server tests pass. Local visual browser smoke is blocked
+by the browser's local-URL policy; a real Chromium/FFmpeg/TTS render remains a
+required container/staging gate.
 
 ## Blockers
 
-- The DVI publication task must not merge until its exact head receives the
-  required `HIGH` security/code review or a current exact-head owner waiver,
-  followed by separate merge and deployment authorization.
-- Production trainer, video studio, panel, registry, learner-write,
-  teacher-read, autoplay-isolation, and reload smoke must be recorded after
-  deployment.
-- Draft PR `#92` must not merge until an independent reviewer records valid
-  exact-head provenance.
-- Merge and deployment of any new task remain separately authorized release
-  actions.
+- ADR 0002 must be accepted for the exact reviewed implementation before merge.
+- The exact head needs independent security/code review or an explicit
+  policy-compliant owner waiver.
+- The separate Amvera application needs its own persistent `/data`, TTS secret,
+  admin secret, allowlisted origins and `video.mathexam.space` domain.
+- Merge, deployment and production smoke remain separately authorized actions.
 
 ## Next three actions
 
-1. Finish the DVI exact-head gate and local browser/API smoke, then open its
-   Draft PR with the exact base, head, hashes, and test evidence.
-2. Obtain exact-head `HIGH` review or an explicit owner waiver and separate
-   merge/deployment authorization for that PR.
-3. After release, run canonical trainer, video-studio, panel, registry,
-   learner-write, teacher-read, autoplay-isolation, and reload production smoke.
+1. Finish Video Factory tests and local mocked end-to-end smoke, then open the
+   exact-base Draft PR with architecture and test evidence.
+2. Obtain explicit owner acceptance of ADR 0002 and exact-head independent
+   security/code review (or a policy-compliant waiver).
+3. After separate merge/deployment authorization, configure the second Amvera
+   app, publish it and run the canonical production smoke.
 
 ## Maintenance rule
 
-At the start of each approved task, compare this snapshot with the actual remote
-`main`, open PRs, gates, and production evidence. Update it within that task when
-the status is stale and keep exactly the next three concrete actions. Create a
-separate status-only PR only by explicit owner decision or when a real
-operational need cannot wait for the next approved task. Never create a
-recursive PR solely to record the merge of the preceding status-only PR. Do not
-predict a successful merge or deployment before it happens.
+At the start of each approved task, compare this snapshot with actual remote
+`main`, open PRs, gates and production evidence. Update it within that task when
+stale and keep exactly the next three concrete actions. Never predict a
+successful merge or deployment before it happens.

@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ДВИ Математика · Видеостудия задач 18–20 — Mathexam.space</title>
+<meta name="mathexam-video-api" content="https://video.mathexam.space">
 <style>
 :root{
   --paper:#fafbfd; --cell:#e7edf6; --card:#ffffff; --ink:#1f2a44; --muted:#5d6a85;
@@ -181,6 +182,17 @@ body.rec[data-video-phase="answer"] .opt:not(.ok),body.rec[data-video-phase="ans
 .mnote{margin:0;color:var(--muted);font-size:13.5px}
 .mta{flex:1;min-height:44vh;width:100%;border:1.5px solid var(--line);border-radius:11px;padding:12px;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;color:var(--ink);resize:vertical}
 .mrow{display:flex;gap:9px;flex-wrap:wrap}
+.mform{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mfield{display:grid;gap:5px;font-size:13.5px;color:var(--muted)}
+.mfield input,.mfield select{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px 11px;font:inherit;color:var(--ink);background:var(--card)}
+.mcheck{display:flex;align-items:center;gap:8px;color:var(--ink);font-size:14px}
+.mcheck input{width:18px;height:18px}
+.mstatus{border:1.5px solid var(--line);border-radius:12px;padding:12px;background:var(--paper);min-height:64px}
+.mstatus b{display:block;margin-bottom:3px}
+.mprogress{height:8px;border-radius:999px;background:var(--line);overflow:hidden;margin-top:8px}
+.mprogress i{display:block;height:100%;width:0;background:var(--pen);transition:width .25s}
+.merror{color:var(--bad)}
+@media (max-width:560px){.mform{grid-template-columns:1fr}}
 
 footer.wrap{color:var(--muted);font-size:13.5px;padding:8px 14px 34px;text-align:center}
 @media (max-width:480px){
@@ -244,8 +256,9 @@ footer.wrap{color:var(--muted);font-size:13.5px;padding:8px 14px 34px;text-align
     <button class="btn ghost small" data-tab2="t18" data-preset="1">№1</button>
     <button class="btn ghost small" data-tab2="t18" data-preset="2">№2</button>
     <button class="btn ghost small" data-tab2="t18" data-preset="3">№3</button>
-    <button class="btn ghost small" data-play="t18" data-studio-only title="Автоматический показ сцен для сборки видео">🎬 Видеостудия</button>
-    <button class="btn ghost small" data-script="t18" data-studio-only title="Текст и разметка сцен для автоматической озвучки">📝 Сценарий</button>
+    <button class="btn ghost small" data-play="t18" data-studio-only title="Автоматический показ сцен">▶ Предпросмотр</button>
+    <button class="btn" data-render="t18" data-studio-only title="Автоматически озвучить и собрать ролик">🎥 Создать MP4</button>
+    <button class="btn ghost small" data-script="t18" data-studio-only title="Текст и разметка сцен для озвучки">📝 Текст озвучки</button>
   </div>
   <div id="tr18"></div>
 </section>
@@ -275,8 +288,9 @@ footer.wrap{color:var(--muted);font-size:13.5px;padding:8px 14px 34px;text-align
     <button class="btn ghost small" data-tab2="t19" data-preset="1">№1</button>
     <button class="btn ghost small" data-tab2="t19" data-preset="2">№2</button>
     <button class="btn ghost small" data-tab2="t19" data-preset="3">№3</button>
-    <button class="btn ghost small" data-play="t19" data-studio-only title="Автоматический показ сцен для сборки видео">🎬 Видеостудия</button>
-    <button class="btn ghost small" data-script="t19" data-studio-only title="Текст и разметка сцен для автоматической озвучки">📝 Сценарий</button>
+    <button class="btn ghost small" data-play="t19" data-studio-only title="Автоматический показ сцен">▶ Предпросмотр</button>
+    <button class="btn" data-render="t19" data-studio-only title="Автоматически озвучить и собрать ролик">🎥 Создать MP4</button>
+    <button class="btn ghost small" data-script="t19" data-studio-only title="Текст и разметка сцен для озвучки">📝 Текст озвучки</button>
   </div>
   <div id="tr19"></div>
 </section>
@@ -314,8 +328,9 @@ footer.wrap{color:var(--muted);font-size:13.5px;padding:8px 14px 34px;text-align
     <button class="btn ghost small" data-tab2="t20" data-preset="1">№1</button>
     <button class="btn ghost small" data-tab2="t20" data-preset="2">№2</button>
     <button class="btn ghost small" data-tab2="t20" data-preset="3">№3</button>
-    <button class="btn ghost small" data-play="t20" data-studio-only title="Автоматический показ сцен для сборки видео">🎬 Видеостудия</button>
-    <button class="btn ghost small" data-script="t20" data-studio-only title="Текст и разметка сцен для автоматической озвучки">📝 Сценарий</button>
+    <button class="btn ghost small" data-play="t20" data-studio-only title="Автоматический показ сцен">▶ Предпросмотр</button>
+    <button class="btn" data-render="t20" data-studio-only title="Автоматически озвучить и собрать ролик">🎥 Создать MP4</button>
+    <button class="btn ghost small" data-script="t20" data-studio-only title="Текст и разметка сцен для озвучки">📝 Текст озвучки</button>
   </div>
   <div id="tr20"></div>
 </section>
@@ -1494,6 +1509,123 @@ function showScript(model, title){
   };
 }
 
+/* ================= автоматическая сборка MP4 ================= */
+function videoApiBase(){
+  var meta=document.querySelector('meta[name="mathexam-video-api"]');
+  return meta && meta.content ? meta.content.replace(/\/+$/,'') : '';
+}
+async function factoryRequest(api, path, token, options){
+  options=options||{};
+  var headers=options.headers||{};
+  headers.Authorization='Bearer '+token;
+  if(options.body) headers['Content-Type']='application/json';
+  var response=await fetch(api+path,{method:options.method||'GET',headers:headers,body:options.body||null});
+  var payload=null;
+  try{ payload=await response.json(); }catch(_){ }
+  if(!response.ok){
+    var error=new Error(payload&&payload.error?payload.error:'Видеосервис временно недоступен');
+    error.status=response.status;
+    throw error;
+  }
+  return payload;
+}
+function showVideoFactory(tab){
+  var task=tab.slice(1), api=videoApiBase(), timer=null, currentId='';
+  var tokenKey='mathexam_video_admin_token';
+  var jobKey='mathexam_video_job_'+tab;
+  var back=document.createElement('div'); back.className='modal';
+  back.innerHTML='<div class="mbox"><div class="mhead"><b>Создать видео · задача '+task+'</b>'
+    +'<button class="btn ghost small" data-close>Закрыть</button></div>'
+    +'<p class="mnote">Выберите готовый вариант и формат. Сервис сам озвучит шаги, добавит субтитры и соберёт MP4. Страницу можно перезагрузить — задание останется в очереди.</p>'
+    +'<div class="mform"><label class="mfield">Вариант задачи<select data-preset><option value="1">Вариант №1</option><option value="2">Вариант №2</option><option value="3">Вариант №3</option></select></label>'
+    +'<label class="mfield">Формат видео<select data-format><option value="16:9">16:9 · урок / YouTube</option><option value="9:16">9:16 · Shorts / клипы</option></select></label></div>'
+    +'<label class="mcheck"><input type="checkbox" data-captions checked> Показывать текст объяснения в кадре</label>'
+    +'<label class="mfield">Ключ видеосервиса<input type="password" data-token autocomplete="off" placeholder="Вставьте ключ, выданный при подключении"></label>'
+    +'<p class="mnote">Ключ хранится только в этой вкладке браузера и не добавляется в ссылку.</p>'
+    +'<div class="mstatus" data-status><b>Готово к запуску</b><span>Обычно сборка занимает несколько минут.</span><div class="mprogress"><i></i></div></div>'
+    +'<div class="mrow"><button class="btn" data-create>Создать MP4</button><button class="btn ghost" data-download hidden>Скачать MP4</button></div></div>';
+  document.body.appendChild(back);
+  var tokenInput=back.querySelector('[data-token]');
+  var createButton=back.querySelector('[data-create]');
+  var downloadButton=back.querySelector('[data-download]');
+  var statusBox=back.querySelector('[data-status]');
+  try{ tokenInput.value=sessionStorage.getItem(tokenKey)||''; }catch(_){ }
+
+  function close(){ if(timer) clearTimeout(timer); if(back.parentNode) back.parentNode.removeChild(back); }
+  back.querySelector('[data-close]').onclick=close;
+  back.onclick=function(e){ if(e.target===back) close(); };
+  function status(title, text, percent, isError){
+    statusBox.querySelector('b').textContent=title;
+    statusBox.querySelector('span').textContent=text||'';
+    statusBox.querySelector('i').style.width=Math.max(0,Math.min(100,percent||0))+'%';
+    statusBox.classList.toggle('merror',!!isError);
+  }
+  function showJob(job){
+    var names={queued:'В очереди',synthesizing:'Создаётся озвучка',rendering:'Собирается видео',ready:'Видео готово',failed:'Сборка остановлена'};
+    var progress=job.progress||{}, total=Number(progress.total)||0, current=Number(progress.current)||0;
+    var percent=job.status==='ready'?100:(total?Math.round(current/total*100):(job.status==='queued'?5:0));
+    var text=job.status==='queued'?'Сервис начнёт работу, когда завершит предыдущий ролик.':
+      job.status==='ready'?'Можно скачать готовый MP4.':
+      job.status==='failed'?(job.error||'Попробуйте создать видео ещё раз.'):
+      (current&&total?'Сцена '+current+' из '+total+'.':'Подготовка сцен…');
+    status(names[job.status]||'Обработка',text,percent,job.status==='failed');
+    createButton.disabled=!['ready','failed'].includes(job.status);
+    downloadButton.hidden=job.status!=='ready';
+  }
+  async function poll(id){
+    currentId=id;
+    try{
+      var payload=await factoryRequest(api,'/api/v1/jobs/'+encodeURIComponent(id),tokenInput.value.trim());
+      showJob(payload.job);
+      if(['queued','synthesizing','rendering'].indexOf(payload.job.status)>=0){ timer=setTimeout(function(){ poll(id); },2500); }
+    }catch(error){
+      if(error.status===401){
+        status('Ключ не принят','Проверьте ключ видеосервиса.',0,true); createButton.disabled=false;
+      }else{
+        status('Нет связи с видеосервисом','Повторяю запрос автоматически…',0,true);
+        timer=setTimeout(function(){ poll(id); },5000);
+      }
+    }
+  }
+  createButton.onclick=async function(){
+    var token=tokenInput.value.trim();
+    if(!api){ status('Сервис ещё не подключён','Предпросмотр и текст озвучки продолжают работать.',0,true); return; }
+    if(!token){ status('Нужен ключ видеосервиса','Вставьте ключ в поле выше.',0,true); tokenInput.focus(); return; }
+    createButton.disabled=true; downloadButton.hidden=true;
+    status('Отправляю в очередь','Проверяю выбранные параметры…',3,false);
+    try{
+      sessionStorage.setItem(tokenKey,token);
+      var body={
+        task:task,
+        preset:Number(back.querySelector('[data-preset]').value),
+        format:back.querySelector('[data-format]').value,
+        captions:back.querySelector('[data-captions]').checked
+      };
+      var payload=await factoryRequest(api,'/api/v1/jobs',token,{method:'POST',body:JSON.stringify(body)});
+      currentId=payload.job.id; sessionStorage.setItem(jobKey,currentId); showJob(payload.job); poll(currentId);
+    }catch(error){
+      status(error.status===401?'Ключ не принят':'Не удалось поставить в очередь',error.message,0,true);
+      createButton.disabled=false;
+    }
+  };
+  downloadButton.onclick=async function(){
+    if(!currentId) return;
+    downloadButton.disabled=true;
+    try{
+      var response=await fetch(api+'/api/v1/jobs/'+encodeURIComponent(currentId)+'/video',{headers:{Authorization:'Bearer '+tokenInput.value.trim()}});
+      if(!response.ok) throw new Error('Не удалось скачать видео');
+      var blob=await response.blob(), href=URL.createObjectURL(blob), a=document.createElement('a');
+      a.href=href; a.download='mathexam-zadacha-'+task+'.mp4'; a.click();
+      setTimeout(function(){ URL.revokeObjectURL(href); },60000);
+    }catch(error){ status('Не удалось скачать',error.message,100,true); }
+    downloadButton.disabled=false;
+  };
+  try{
+    var saved=sessionStorage.getItem(jobKey);
+    if(saved && tokenInput.value){ currentId=saved; status('Проверяю прежнее задание','Получаю состояние очереди…',2,false); poll(saved); }
+  }catch(_){ }
+}
+
 /* ================= движок шагов ================= */
 function mountTrainer(host, model, onNew){
   var i=0, errs=0, auto=false, timer=null, mult=1, solved=[];
@@ -1727,6 +1859,10 @@ function boot(){
   for(var k4=0;k4<plays.length;k4++){
     (function(b){ b.onclick=function(){ var t=b.getAttribute('data-play'); if(RUN[t]) RUN[t].play(); }; })(plays[k4]);
   }
+  var renders=document.querySelectorAll('[data-render]');
+  for(var kr=0;kr<renders.length;kr++){
+    (function(b){ b.onclick=function(){ showVideoFactory(b.getAttribute('data-render')); }; })(renders[kr]);
+  }
   var scr=document.querySelectorAll('[data-script]');
   for(var k5=0;k5<scr.length;k5++){
     (function(b){ b.onclick=function(){
@@ -1741,7 +1877,7 @@ function boot(){
   if(s20) s20.onchange=function(){ newTask('t20', null); };
   newTask('t18'); newTask('t19'); newTask('t20');
   window.MathExamVideoStudio={
-    version:'1.0',
+    version:'1.1',
     tabs:['t18','t19','t20'],
     prepare:function(tab,preset){
       if(this.tabs.indexOf(tab)<0) throw new Error('Неизвестная вкладка: '+tab);

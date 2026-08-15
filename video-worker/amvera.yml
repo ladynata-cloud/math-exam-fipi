@@ -1,0 +1,11 @@
+meta:
+  environment: docker
+  toolchain:
+    name: docker
+    version: latest
+build:
+  dockerfile: video-worker/Dockerfile
+run:
+  containerPort: 3000
+  persistenceMount: /data
+
