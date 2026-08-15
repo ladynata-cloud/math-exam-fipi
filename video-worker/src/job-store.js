@@ -182,6 +182,9 @@ export class JobStore {
     if (['queued', 'ready', 'failed'].includes(job.status)) {
       await this.removeAttemptMedia(job.id);
     }
+    if (['queued', 'failed'].includes(job.status)) {
+      await this.removePersistentFile(this.expectedOutput(job.id));
+    }
     return job;
   }
 
@@ -221,10 +224,13 @@ export class JobStore {
     const activeAttempts = new Set([...this.jobs.values()]
       .filter((job) => ACTIVE.has(job.status) && job.attemptId)
       .map((job) => `${job.id}.${job.attemptId}.tmp.mp4`));
+    const activeOutputs = new Set([...this.jobs.values()]
+      .filter((job) => ACTIVE.has(job.status))
+      .map((job) => path.basename(this.expectedOutput(job.id))));
     const entries = await fs.readdir(this.config.mediaDir, { withFileTypes: true });
     for (const entry of entries) {
       if (!entry.isFile() || !entry.name.endsWith('.mp4')) continue;
-      if (ready.has(entry.name) || activeAttempts.has(entry.name)) continue;
+      if (ready.has(entry.name) || activeAttempts.has(entry.name) || activeOutputs.has(entry.name)) continue;
       await this.removePersistentFile(path.join(this.config.mediaDir, entry.name));
     }
   }

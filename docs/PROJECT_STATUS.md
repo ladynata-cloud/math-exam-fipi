@@ -45,7 +45,7 @@ authorization.
 ## Last confirmed gate
 
 The DVI release passed its exact-head local gates and production smoke on PR
-`#102`. Video Factory authoring, DVI regression, 21/21 worker API/storage/queue
+`#102`. Video Factory authoring, DVI regression, 23/23 worker API/storage/queue
 tests and 41/41 board-server tests pass. Local visual browser smoke is blocked
 by the browser's local-URL policy; a real Chromium/FFmpeg/TTS render remains a
 required container/staging gate.

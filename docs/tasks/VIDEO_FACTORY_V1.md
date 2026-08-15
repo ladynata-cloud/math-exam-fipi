@@ -120,7 +120,7 @@ the progress server and must not change student progress.
 - Actual base SHA: `e9347d544a90a8d151051ee29a047d51a906196f`
 - Actual head SHA: recorded in the Draft PR
 - PR: Draft PR created from the exact production base
-- Tests passed: Video Factory authoring gate; DVI authoring gate; 21/21 worker
+- Tests passed: Video Factory authoring gate; DVI authoring gate; 23/23 worker
   unit/integration tests; 41/41 board-server regression tests; inline studio
   script parse; authorization/origin, create/status/download, persistence and
   interrupted-job recovery tests; atomic admission/idempotency, hourly/daily

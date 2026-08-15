@@ -13,6 +13,9 @@ let server = null;
 let queue = null;
 let shuttingDown = false;
 let shutdownGraceMs = 30_000;
+const startupAbortController = new AbortController();
+let resolveStartupDone;
+const startupDone = new Promise((resolve) => { resolveStartupDone = resolve; });
 
 async function closeHttpServer(graceMs) {
   if (!server) return;
@@ -36,7 +39,9 @@ async function closeHttpServer(graceMs) {
 async function shutdown(signal) {
   if (shuttingDown) return;
   shuttingDown = true;
+  startupAbortController.abort();
   console.log(`Video worker stopping after ${signal}`);
+  await startupDone;
   await Promise.all([
     closeHttpServer(shutdownGraceMs),
     queue ? queue.stop({ graceMs: shutdownGraceMs }) : Promise.resolve(),
@@ -47,19 +52,27 @@ async function shutdown(signal) {
 }
 
 async function main() {
-  const config = loadConfig();
-  shutdownGraceMs = config.shutdownGraceMs;
-  workerLock = await new WorkerLock(config).acquire();
-  const store = await new JobStore(config, { lock: workerLock }).init();
-  const processor = createRenderer(config, createTts(config));
-  queue = new JobQueue(store, processor);
-  server = http.createServer(createRequestHandler({ config, store, queue }));
-  server.requestTimeout = 30_000;
-  server.headersTimeout = 15_000;
-  server.listen(config.port, '0.0.0.0', () => {
-    console.log(`Mathexam video worker listening on port ${config.port}`);
-    queue.start();
-  });
+  try {
+    const config = loadConfig();
+    shutdownGraceMs = config.shutdownGraceMs;
+    workerLock = new WorkerLock(config);
+    await workerLock.acquire({ signal: startupAbortController.signal });
+    if (shuttingDown) return;
+    const store = await new JobStore(config, { lock: workerLock }).init();
+    if (shuttingDown) return;
+    const processor = createRenderer(config, createTts(config));
+    queue = new JobQueue(store, processor);
+    server = http.createServer(createRequestHandler({ config, store, queue }));
+    server.requestTimeout = 30_000;
+    server.headersTimeout = 15_000;
+    server.listen(config.port, '0.0.0.0', () => {
+      if (shuttingDown) return;
+      console.log(`Mathexam video worker listening on port ${config.port}`);
+      queue.start();
+    });
+  } finally {
+    resolveStartupDone();
+  }
 }
 
 for (const signal of ['SIGTERM', 'SIGINT']) {
@@ -74,6 +87,7 @@ for (const signal of ['SIGTERM', 'SIGINT']) {
 }
 
 main().catch(async (error) => {
+  if (shuttingDown && error.code === 'WORKER_STARTUP_ABORTED') return;
   console.error('Video worker startup failed:', safeError(error));
   if (workerLock) await workerLock.release().catch(() => {});
   process.exitCode = 1;

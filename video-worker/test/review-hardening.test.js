@@ -5,6 +5,7 @@ import path from 'node:path';
 import test from 'node:test';
 import { runCommand } from '../src/command.js';
 import { JobStore } from '../src/job-store.js';
+import { launchBrowser } from '../src/renderer.js';
 import { publicJob, safeError } from '../src/security.js';
 import { writeSpeechResponse } from '../src/tts.js';
 import { WorkerLock } from '../src/worker-lock.js';
@@ -60,6 +61,35 @@ test('worker lock never performs an automatic stale takeover', async (t) => {
   await assert.rejects(replacement.acquire(), (error) => error.code === 'WORKER_LOCKED');
   assert.equal((await firstLock.owner()).token, firstLock.token);
   await firstLock.assertOwnership();
+});
+
+test('startup cancellation stops a worker waiting for the volume lock', async (t) => {
+  const root = await rootFixture(t);
+  const firstLock = await new WorkerLock({ dataDir: root, workerLockWaitMs: 0 }).acquire();
+  t.after(() => firstLock.release());
+  const controller = new AbortController();
+  const waiting = new WorkerLock({ dataDir: root, workerLockWaitMs: 5000 })
+    .acquire({ signal: controller.signal });
+  setTimeout(() => controller.abort(), 25);
+  await assert.rejects(waiting, (error) => error.code === 'WORKER_STARTUP_ABORTED');
+  assert.equal((await firstLock.owner()).token, firstLock.token);
+});
+
+test('browser launch cancellation returns promptly and closes a late browser', async () => {
+  let finishLaunch;
+  let closed = false;
+  const chromium = {
+    launch() {
+      return new Promise((resolve) => { finishLaunch = resolve; });
+    },
+  };
+  const controller = new AbortController();
+  const launching = launchBrowser(chromium, {}, controller.signal);
+  controller.abort();
+  await assert.rejects(launching, (error) => error.code === 'JOB_ABORTED');
+  finishLaunch({ close: async () => { closed = true; } });
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(closed, true);
 });
 
 test('commands are terminated at their deadline', async () => {
@@ -119,17 +149,21 @@ test('only the exact active attempt is protected and recovery removes it', async
   const job = await store.create({ task: '18', preset: 1, format: '16:9', captions: true });
   await store.update(job.id, { status: 'rendering', attemptId: 'current-attempt' });
   const active = path.join(config.mediaDir, `${job.id}.current-attempt.tmp.mp4`);
+  const canonical = store.expectedOutput(job.id);
   const stale = path.join(config.mediaDir, `${job.id}.stale-attempt.tmp.mp4`);
   const orphan = path.join(config.mediaDir, 'orphan.tmp.mp4');
   await fs.writeFile(active, 'active');
+  await fs.writeFile(canonical, 'canonical-active');
   await fs.writeFile(stale, 'stale');
   await fs.writeFile(orphan, 'orphan');
   await store.prune();
   assert.equal((await fs.readFile(active, 'utf8')), 'active');
+  assert.equal((await fs.readFile(canonical, 'utf8')), 'canonical-active');
   await assert.rejects(fs.stat(stale), (error) => error.code === 'ENOENT');
   await assert.rejects(fs.stat(orphan), (error) => error.code === 'ENOENT');
   await store.update(job.id, { status: 'queued', attemptId: null });
   await assert.rejects(fs.stat(active), (error) => error.code === 'ENOENT');
+  await assert.rejects(fs.stat(canonical), (error) => error.code === 'ENOENT');
 });
 
 test('cleanup failure keeps metadata visible and health fail-closed', async (t) => {

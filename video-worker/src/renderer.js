@@ -25,11 +25,31 @@ function validateManifest(manifest, task) {
   return manifest;
 }
 
-function throwIfAborted(signal) {
-  if (!signal?.aborted) return;
+function jobAbortError() {
   const error = new Error('Video job was cancelled');
   error.code = 'JOB_ABORTED';
-  throw error;
+  return error;
+}
+
+function throwIfAborted(signal) {
+  if (signal?.aborted) throw jobAbortError();
+}
+
+export async function launchBrowser(chromium, launchOptions, signal) {
+  throwIfAborted(signal);
+  const pending = chromium.launch(launchOptions);
+  if (!signal) return pending;
+
+  pending.then((launched) => {
+    if (signal.aborted) launched.close().catch(() => {});
+  }, () => {});
+  return new Promise((resolve, reject) => {
+    const onAbort = () => reject(jobAbortError());
+    signal.addEventListener('abort', onAbort, { once: true });
+    pending.then(resolve, reject).finally(() => {
+      signal.removeEventListener('abort', onAbort);
+    });
+  });
 }
 
 async function audioDuration(config, audioPath, signal) {
@@ -126,12 +146,12 @@ export function createRenderer(config, tts) {
       throwIfAborted(signal);
       await store.assertOwnership();
       const { chromium } = await import('playwright');
-      browser = await chromium.launch({
+      browser = await launchBrowser(chromium, {
         headless: true,
         chromiumSandbox: true,
         args: ['--disable-dev-shm-usage'],
         timeout: Math.min(config.commandTimeoutMs, 60_000),
-      });
+      }, signal);
       const context = await browser.newContext({ viewport, deviceScaleFactor: 1, serviceWorkers: 'block' });
       const page = await context.newPage();
       const trustedOrigin = new URL(config.studioUrl).origin;

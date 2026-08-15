@@ -10,8 +10,28 @@ function lockError(message, code = 'WORKER_LOCKED') {
   return error;
 }
 
-async function delay(milliseconds) {
-  await new Promise((resolve) => setTimeout(resolve, milliseconds));
+function startupAbortError() {
+  return lockError('Video worker startup was cancelled', 'WORKER_STARTUP_ABORTED');
+}
+
+async function delay(milliseconds, signal) {
+  if (signal?.aborted) throw startupAbortError();
+  await new Promise((resolve, reject) => {
+    let timer;
+    const cleanup = () => signal?.removeEventListener('abort', onAbort);
+    const finish = () => {
+      cleanup();
+      resolve();
+    };
+    const onAbort = () => {
+      clearTimeout(timer);
+      cleanup();
+      reject(startupAbortError());
+    };
+    timer = setTimeout(finish, milliseconds);
+    signal?.addEventListener('abort', onAbort, { once: true });
+    if (signal?.aborted) onAbort();
+  });
 }
 
 export class WorkerLock {
@@ -40,14 +60,18 @@ export class WorkerLock {
     await fs.rename(temporary, target);
   }
 
-  async acquire() {
+  async acquire(options = {}) {
+    const { signal } = options;
+    if (signal?.aborted) throw startupAbortError();
     await fs.mkdir(path.dirname(this.lockDir), { recursive: true });
     const deadline = Date.now() + this.waitMs;
     while (true) {
       try {
         await fs.mkdir(this.lockDir, { mode: 0o700 });
         try {
+          if (signal?.aborted) throw startupAbortError();
           await this.writeHeartbeat();
+          if (signal?.aborted) throw startupAbortError();
           this.held = true;
           this.timer = setInterval(() => {
             this.assertOwnership()
@@ -64,7 +88,7 @@ export class WorkerLock {
         if (error.code !== 'EEXIST') throw error;
       }
       if (Date.now() >= deadline) throw lockError('Another video worker owns the persistent volume');
-      await delay(1000);
+      await delay(1000, signal);
     }
   }
 
