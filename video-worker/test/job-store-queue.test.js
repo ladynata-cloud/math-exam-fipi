@@ -104,6 +104,7 @@ test('admission enforces the retained media reservation quota', async (t) => {
 
 test('admission enforces hourly jobs and daily reserved TTS characters', async (t) => {
   const config = await fixture(t);
+  config.ttsProvider = 'openai';
   config.maxJobsPerHour = 1;
   const store = await new JobStore(config).init();
   await store.admit(request, 'budget-admission-key-0001');
@@ -117,4 +118,13 @@ test('admission enforces hourly jobs and daily reserved TTS characters', async (
     store.admit({ ...request, task: '19' }, 'budget-admission-key-0003'),
     (error) => error.code === 'DAILY_TTS_BUDGET',
   );
+});
+
+test('silent mode does not reserve an external TTS budget', async (t) => {
+  const config = await fixture(t);
+  config.ttsProvider = 'silent';
+  config.dailyTtsCharacterBudget = 1;
+  const store = await new JobStore(config).init();
+  const admitted = await store.admit(request, 'silent-admission-key-0001');
+  assert.equal(admitted.job.reservedTtsCharacters, 0);
 });

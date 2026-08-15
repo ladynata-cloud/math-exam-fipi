@@ -1543,10 +1543,10 @@ function showVideoFactory(tab){
   var back=document.createElement('div'); back.className='modal';
   back.innerHTML='<div class="mbox"><div class="mhead"><b>Создать видео · задача '+task+'</b>'
     +'<button class="btn ghost small" data-close>Закрыть</button></div>'
-    +'<p class="mnote">Выберите готовый вариант и формат. Сервис сам озвучит шаги, добавит субтитры и соберёт MP4. Страницу можно перезагрузить — задание останется в очереди.</p>'
+    +'<p class="mnote">Выберите готовый вариант и формат. Сервис покажет решение по шагам, выделит важные блоки, добавит объясняющие подписи и тихую фоновую музыку, затем соберёт MP4 без речи. Страницу можно перезагрузить — задание останется в очереди.</p>'
     +'<div class="mform"><label class="mfield">Вариант задачи<select data-preset><option value="1">Вариант №1</option><option value="2">Вариант №2</option><option value="3">Вариант №3</option></select></label>'
     +'<label class="mfield">Формат видео<select data-format><option value="16:9">16:9 · урок / YouTube</option><option value="9:16">9:16 · Shorts / клипы</option></select></label></div>'
-    +'<label class="mcheck"><input type="checkbox" data-captions checked> Показывать текст объяснения в кадре</label>'
+    +'<label class="mcheck"><input type="checkbox" data-captions checked disabled> Пошаговые объясняющие подписи включены</label>'
     +'<label class="mfield">Ключ видеосервиса<input type="password" data-token autocomplete="off" placeholder="Вставьте ключ, выданный при подключении"></label>'
     +'<p class="mnote">Ключ хранится только в этой вкладке браузера и не добавляется в ссылку.</p>'
     +'<div class="mstatus" data-status><b>Готово к запуску</b><span>Обычно сборка занимает несколько минут.</span><div class="mprogress"><i></i></div></div>'
@@ -1568,7 +1568,7 @@ function showVideoFactory(tab){
     statusBox.classList.toggle('merror',!!isError);
   }
   function showJob(job){
-    var names={queued:'В очереди',synthesizing:'Создаётся озвучка',rendering:'Собирается видео',ready:'Видео готово',failed:'Сборка остановлена'};
+    var names={queued:'В очереди',synthesizing:'Готовятся сцены',rendering:'Собирается видео',ready:'Видео готово',failed:'Сборка остановлена'};
     var progress=job.progress||{}, total=Number(progress.total)||0, current=Number(progress.current)||0;
     var percent=job.status==='ready'?100:(total?Math.round(current/total*100):(job.status==='queued'?5:0));
     var text=job.status==='queued'?'Сервис начнёт работу, когда завершит предыдущий ролик.':

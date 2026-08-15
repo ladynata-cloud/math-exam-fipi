@@ -179,7 +179,9 @@ export function createRenderer(config, tts) {
         progress: { stage: 'synthesizing', current: 0, total: manifest.scenes.length },
         errorCode: null,
         attemptId,
-        ttsCharacters: manifest.scenes.reduce((total, scene) => total + scene.narration.length, 0),
+        ttsCharacters: ['openai', 'yandex'].includes(config.ttsProvider)
+          ? manifest.scenes.reduce((total, scene) => total + scene.narration.length, 0)
+          : 0,
       });
       for (let index = 0; index < manifest.scenes.length; index++) {
         throwIfAborted(signal);

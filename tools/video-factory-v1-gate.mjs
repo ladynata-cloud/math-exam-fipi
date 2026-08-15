@@ -33,6 +33,7 @@ for (const script of inlineScripts) new Function(script);
 
 assert.match(config, /VIDEO_PERSISTENCE_CONFIRMED/);
 assert.match(config, /Mock speech is disabled in production/);
+assert.match(config, /'silent'/);
 assert.match(config, /VIDEO_STUDIO_URL must use HTTPS in production/);
 assert.match(renderer, /window\.MathExamVideoStudio\.prepare/);
 assert.match(renderer, /launchBrowser/);
@@ -61,6 +62,7 @@ assert.match(jobStore, /PERSISTENCE_CLEANUP_FAILED/);
 assert.match(jobStore, /activeAttempts/);
 assert.match(jobStore, /activeOutputs/);
 assert.match(tts, /response\.body\.getReader\(\)/);
+assert.match(tts, /config\.ttsProvider === 'silent'/);
 assert.match(adr, /Status: Proposed/);
 assert.match(adr, /independently deployed Amvera application/i);
 assert.match(deployment, /video\.mathexam\.space/);

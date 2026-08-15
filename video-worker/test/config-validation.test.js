@@ -24,6 +24,20 @@ test('production configuration fails closed', () => {
   assert.deepEqual(config.allowedOrigins, ['https://mathexam.space']);
   assert.equal(config.ttsProvider, 'openai');
   assert.equal(config.shutdownGraceMs, 20_000);
+
+  const silent = loadConfig({
+    ...base,
+    VIDEO_TTS_PROVIDER: 'silent',
+    OPENAI_API_KEY: '',
+    VIDEO_PERSISTENCE_CONFIRMED: '1',
+  });
+  assert.equal(silent.ttsProvider, 'silent');
+  assert.equal(silent.openaiKey, '');
+  assert.throws(() => loadConfig({
+    ...base,
+    VIDEO_TTS_PROVIDER: 'mock',
+    VIDEO_PERSISTENCE_CONFIRMED: '1',
+  }), /Mock speech is disabled in production/);
 });
 
 test('job request accepts only the fixed render contract', () => {

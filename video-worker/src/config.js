@@ -45,8 +45,8 @@ export function loadConfig(env = process.env) {
   );
   const dataDir = path.resolve(env.VIDEO_DATA_DIR || (production ? '/data' : './.video-data'));
 
-  if (!['openai', 'yandex', 'mock'].includes(ttsProvider)) {
-    throw new Error('VIDEO_TTS_PROVIDER must be openai, yandex or mock');
+  if (!['openai', 'yandex', 'silent', 'mock'].includes(ttsProvider)) {
+    throw new Error('VIDEO_TTS_PROVIDER must be openai, yandex, silent or mock');
   }
   if (production) {
     if (!allowedOrigins.length || allowedOrigins.some((origin) => !origin.startsWith('https://'))) {

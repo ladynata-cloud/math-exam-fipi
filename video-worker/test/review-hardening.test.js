@@ -7,7 +7,7 @@ import { runCommand } from '../src/command.js';
 import { JobStore } from '../src/job-store.js';
 import { launchBrowser } from '../src/renderer.js';
 import { publicJob, safeError } from '../src/security.js';
-import { writeSpeechResponse } from '../src/tts.js';
+import { silentDuration, writeSpeechResponse } from '../src/tts.js';
 import { WorkerLock } from '../src/worker-lock.js';
 
 async function rootFixture(t) {
@@ -15,6 +15,12 @@ async function rootFixture(t) {
   t.after(() => fs.rm(root, { recursive: true, force: true }));
   return root;
 }
+
+test('silent captions receive a bounded readable scene duration', () => {
+  assert.equal(silentDuration(''), 3.5);
+  assert.ok(silentDuration('x'.repeat(160)) > 10);
+  assert.equal(silentDuration('x'.repeat(10_000)), 16);
+});
 
 test('worker lock prevents overlapping recovery and permits a clean handoff', async (t) => {
   const root = await rootFixture(t);

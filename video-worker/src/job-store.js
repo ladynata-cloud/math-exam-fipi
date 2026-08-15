@@ -129,7 +129,10 @@ export class JobStore {
       const reservedToday = [...this.jobs.values()]
         .filter((job) => String(job.createdAt).slice(0, 10) === today)
         .reduce((total, job) => total + Number(job.reservedTtsCharacters || 0), 0);
-      if (reservedToday + this.config.maxTtsCharactersPerJob > this.config.dailyTtsCharacterBudget) {
+      const ttsReservation = ['openai', 'yandex'].includes(this.config.ttsProvider)
+        ? this.config.maxTtsCharactersPerJob
+        : 0;
+      if (reservedToday + ttsReservation > this.config.dailyTtsCharacterBudget) {
         throw storeError('Daily TTS budget reached', 'DAILY_TTS_BUDGET', 429,
           'Достигнут дневной лимит озвучки. Новое видео можно создать после обновления лимита.');
       }
@@ -142,7 +145,7 @@ export class JobStore {
 
       const job = await this.createPersisted(request, {
         idempotencyHash,
-        reservedTtsCharacters: this.config.maxTtsCharactersPerJob,
+        reservedTtsCharacters: ttsReservation,
       });
       return { job, reused: false };
     });
