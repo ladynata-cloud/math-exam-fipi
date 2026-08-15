@@ -21,7 +21,7 @@ function learningAnchor(html) {
   const start = html.indexOf('var ri = function');
   const end = html.indexOf('/* ================= сценарий озвучки ================= */');
   assert.ok(start >= 0 && end > start, 'learning-generator anchor must be present');
-  return html.slice(start, end);
+  return html.slice(start, end).replace(/\r\n/g, '\n');
 }
 
 function inlineScripts(html) {
