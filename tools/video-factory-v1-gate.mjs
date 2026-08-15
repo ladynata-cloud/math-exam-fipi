@@ -7,6 +7,7 @@ function count(source, pattern) { return (source.match(pattern) || []).length; }
 const studio = read('trainers/dvi/math-18-20-video-studio.html');
 const config = read('video-worker/src/config.js');
 const renderer = read('video-worker/src/renderer.js');
+const validation = read('video-worker/src/validation.js');
 const app = read('video-worker/src/app.js');
 const command = read('video-worker/src/command.js');
 const queue = read('video-worker/src/job-queue.js');
@@ -19,7 +20,7 @@ const adr = read('docs/adr/0002-video-factory-v1.md');
 const deployment = read('docs/VIDEO_FACTORY_DEPLOYMENT.md');
 
 assert.equal(count(studio, /data-render="t(?:18|19|20)"/g), 3, 'all DVI tabs need one MP4 action');
-assert.equal(count(studio, />▶ Предпросмотр</g), 3, 'preview actions must remain visible');
+assert.equal(count(studio, />▶ Показать, как решать</g), 3, 'learner-journey preview actions must remain visible');
 assert.match(studio, /mathexam-video-api/);
 assert.match(studio, /sessionStorage\.setItem\(tokenKey,token\)/);
 assert.doesNotMatch(studio, /[?&](?:token|secret|key)=/i, 'credentials must not enter URLs');
@@ -28,32 +29,63 @@ assert.match(studio, /'Idempotency-Key':requestState\.key/);
 assert.match(studio, /Страницу можно перезагрузить/);
 assert.match(studio, /id:'recap-'/);
 assert.match(studio, /data-captions checked disabled/);
+assert.match(studio, /data-video-type/);
+assert.match(studio, /videoType:back\.querySelector/);
+assert.match(studio, /value="student-path"/);
+assert.match(studio, /value="ideal-solution"/);
+assert.match(studio, /video-focus-ring/);
+assert.match(studio, /video-pointer/);
+assert.match(studio, /video-click-label/);
+assert.match(studio, /ВИДЕО 1 — ИДЕАЛЬНОЕ РЕШЕНИЕ/);
+assert.match(studio, /ВИДЕО 2 — КАК ПРОХОДИТЬ ТРЕНАЖЁР/);
+assert.match(studio, /без фоновой музыки/);
+assert.doesNotMatch(studio, /тихую фоновую музыку/);
 
 const inlineScripts = [...studio.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((match) => match[1]);
 assert.ok(inlineScripts.length, 'studio inline script not found');
 for (const script of inlineScripts) new Function(script);
 
-const manifestStart = studio.indexOf('function videoManifest');
+const manifestStart = studio.indexOf('function idealVideoManifest');
 const manifestEnd = studio.indexOf('function showScript', manifestStart);
 assert.ok(manifestStart >= 0 && manifestEnd > manifestStart, 'video manifest function must be extractable');
 const buildManifest = new Function('tts', `${studio.slice(manifestStart, manifestEnd)}; return videoManifest;`);
 const videoManifest = buildManifest((value) => String(value).replace(/<[^>]*>/g, ' '));
-const sampleManifest = videoManifest({
+const sampleModel = {
   statement: 'Условие',
   answer: '42',
   badge: 'Задача',
-  steps: [{ q: 'Вопрос', opts: [{ ok: true, h: 'Ответ', exp: '' }] }],
+  steps: [{ q: 'Вопрос', tip: 'Подсказка', opts: [
+    { ok: false, h: 'Ошибка', hint: 'Проверьте ход' },
+    { ok: true, h: 'Ответ', exp: '' },
+  ] }],
   recap: ['Первый вывод', 'Второй вывод'],
-}, 't18');
+};
+const sampleManifest = videoManifest(sampleModel, 't18', 'ideal-solution');
 const finalScenes = sampleManifest.scenes.filter((scene) => scene.phase === 'final');
 assert.equal(finalScenes.length, 3, 'each recap item and the answer need separate readable scenes');
 assert.ok(finalScenes.every((scene) => scene.narration.length < 200), 'final captions must stay compact');
+assert.equal(sampleManifest.videoType, 'ideal-solution');
+const journey = videoManifest(sampleModel, 't18', 'student-path');
+assert.equal(journey.videoType, 'student-path');
+assert.ok(journey.scenes.length <= 30, 'learner journey must fit the renderer scene cap');
+assert.ok(journey.scenes.every((scene) => scene.videoType === 'student-path'), 'every learner scene must retain its rendering mode');
+assert.deepEqual(
+  journey.scenes.map((scene) => scene.action),
+  ['observe', 'wrong', 'hint', 'correct', 'next', 'final'],
+  'learner journey must demonstrate error, hint, recovery and completion',
+);
+assert.ok(journey.scenes.filter((scene) => ['wrong', 'hint', 'correct', 'next'].includes(scene.action)).every((scene) => scene.click));
 
 assert.match(config, /VIDEO_PERSISTENCE_CONFIRMED/);
 assert.match(config, /Mock speech is disabled in production/);
 assert.match(config, /'silent'/);
 assert.match(config, /VIDEO_STUDIO_URL must use HTTPS in production/);
 assert.match(renderer, /window\.MathExamVideoStudio\.prepare/);
+assert.match(renderer, /clickDelayMs/);
+assert.match(renderer, /amix=inputs=2/);
+assert.match(renderer, /videoType === 'student-path' && scene\.click === true/);
+assert.match(renderer, /scene\.videoType !== 'student-path'/);
+assert.match(renderer, /presentation\?\.targetY/);
 assert.match(renderer, /durationHintMs: scene\.duration_hint_ms/);
 assert.match(renderer, /TTS_PROVIDER_MISMATCH/);
 assert.match(renderer, /launchBrowser/);
@@ -83,6 +115,10 @@ assert.match(jobStore, /activeAttempts/);
 assert.match(jobStore, /activeOutputs/);
 assert.match(tts, /response\.body\.getReader\(\)/);
 assert.match(tts, /config\.ttsProvider === 'silent'/);
+assert.match(tts, /anullsrc=r=24000:cl=mono/);
+assert.doesNotMatch(tts, /aevalsrc|sin\(2\*PI\*/, 'silent mode must not generate background music');
+assert.match(validation, /'ideal-solution', 'student-path'/);
+assert.match(validation, /videoType/);
 assert.match(adr, /Status: Proposed/);
 assert.match(adr, /independently deployed Amvera application/i);
 assert.match(deployment, /video\.mathexam\.space/);

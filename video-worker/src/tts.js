@@ -151,12 +151,10 @@ function silent(config) {
     async synthesize(text, basePath, options = {}) {
       const target = `${basePath}.wav`;
       const duration = silentDuration(text, options.durationHintMs);
-      const fadeOutStart = Math.max(0, duration - 0.8).toFixed(3);
       await runCommand(config.ffmpegPath, [
         '-hide_banner', '-loglevel', 'error', '-y',
-        '-f', 'lavfi', '-i',
-        `aevalsrc=0.018*(sin(2*PI*220*t)+sin(2*PI*277.18*t)+sin(2*PI*329.63*t)):s=24000:d=${duration.toFixed(3)}:c=mono`,
-        '-af', `afade=t=in:st=0:d=0.6,afade=t=out:st=${fadeOutStart}:d=0.8`,
+        '-f', 'lavfi', '-i', 'anullsrc=r=24000:cl=mono',
+        '-t', duration.toFixed(3),
         '-c:a', 'pcm_s16le', '-fs', String(MAX_AUDIO_BYTES), target,
       ], {
         timeoutMs: config.commandTimeoutMs,

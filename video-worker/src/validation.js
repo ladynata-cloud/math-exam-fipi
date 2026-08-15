@@ -1,6 +1,7 @@
 const TASKS = new Set(['18', '19', '20']);
 const FORMATS = new Set(['16:9', '9:16']);
-const REQUEST_KEYS = new Set(['task', 'preset', 'format', 'captions']);
+const VIDEO_TYPES = new Set(['ideal-solution', 'student-path']);
+const REQUEST_KEYS = new Set(['task', 'preset', 'format', 'captions', 'videoType']);
 
 export function validateJobRequest(input, options = {}) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
@@ -20,8 +21,12 @@ export function validateJobRequest(input, options = {}) {
   if (input.captions !== undefined && typeof input.captions !== 'boolean') {
     throw new Error('Параметр субтитров должен быть логическим');
   }
+  const videoType = input.videoType === undefined ? 'ideal-solution' : String(input.videoType);
+  if (!VIDEO_TYPES.has(videoType)) {
+    throw new Error('Тип видео должен быть ideal-solution или student-path');
+  }
   const captions = options.ttsProvider === 'silent' ? true : input.captions !== false;
-  return Object.freeze({ task, preset, format, captions });
+  return Object.freeze({ task, preset, format, captions, videoType });
 }
 
 export function viewportFor(format) {

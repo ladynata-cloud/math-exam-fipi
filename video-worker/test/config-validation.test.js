@@ -42,15 +42,16 @@ test('production configuration fails closed', () => {
 
 test('job request accepts only the fixed render contract', () => {
   assert.deepEqual(validateJobRequest({ task: '18', preset: 2, format: '9:16', captions: false }), {
-    task: '18', preset: 2, format: '9:16', captions: false,
+    task: '18', preset: 2, format: '9:16', captions: false, videoType: 'ideal-solution',
   });
   assert.deepEqual(
-    validateJobRequest({ task: '18', preset: 2, format: '9:16', captions: false }, { ttsProvider: 'silent' }),
-    { task: '18', preset: 2, format: '9:16', captions: true },
+    validateJobRequest({ task: '18', preset: 2, format: '9:16', captions: false, videoType: 'student-path' }, { ttsProvider: 'silent' }),
+    { task: '18', preset: 2, format: '9:16', captions: true, videoType: 'student-path' },
   );
   assert.throws(() => validateJobRequest({ task: '17', preset: 1 }), /18, 19 и 20/);
   assert.throws(() => validateJobRequest({ task: '18', preset: 4 }), /1, 2 и 3/);
   assert.throws(() => validateJobRequest({ task: '18', preset: 1, url: 'https://evil.test' }), /Неизвестный/);
+  assert.throws(() => validateJobRequest({ task: '18', preset: 1, videoType: 'custom-html' }), /Тип видео/);
   assert.deepEqual(viewportFor('16:9'), { width: 1920, height: 1080 });
   assert.deepEqual(viewportFor('9:16'), { width: 1080, height: 1920 });
 });

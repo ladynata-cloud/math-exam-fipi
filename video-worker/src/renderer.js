@@ -4,12 +4,17 @@ import path from 'node:path';
 import { runCommand } from './command.js';
 import { viewportFor } from './validation.js';
 
-function validateManifest(manifest, task) {
+const SCENE_ACTIONS = new Set(['observe', 'wrong', 'hint', 'correct', 'next', 'final']);
+
+function validateManifest(manifest, task, videoType) {
   if (!manifest || manifest.format !== 'mathexam-video-manifest' || !Array.isArray(manifest.scenes)) {
     throw new Error('Studio returned an invalid scene manifest');
   }
   if (manifest.tab !== `t${task}` || manifest.scenes.length < 2 || manifest.scenes.length > 30) {
     throw new Error('Studio returned an unexpected scene set');
+  }
+  if ((manifest.videoType || 'ideal-solution') !== videoType) {
+    throw new Error('Studio returned an unexpected video type');
   }
   let total = 0;
   for (const scene of manifest.scenes) {
@@ -21,6 +26,12 @@ function validateManifest(manifest, task) {
     }
     if (!Number.isFinite(scene.duration_hint_ms) || scene.duration_hint_ms < 1000 || scene.duration_hint_ms > 30_000) {
       throw new Error('Studio returned an invalid scene duration');
+    }
+    if (!SCENE_ACTIONS.has(scene.action || 'observe') || (scene.click !== undefined && typeof scene.click !== 'boolean')) {
+      throw new Error('Studio returned an invalid learner action');
+    }
+    if (videoType === 'student-path' && scene.videoType !== 'student-path') {
+      throw new Error('Studio lost the learner video type on a scene');
     }
     total += scene.narration.length;
   }
@@ -67,16 +78,37 @@ async function audioDuration(config, audioPath, signal) {
   return duration;
 }
 
-async function renderSegment(config, framePath, audioPath, targetPath, duration, signal) {
-  await runCommand(config.ffmpegPath, [
+export function clickDelayMs(duration, enabled) {
+  if (!enabled) return 0;
+  const seconds = Number(duration);
+  if (!Number.isFinite(seconds) || seconds <= 0.8) return 250;
+  return Math.round(Math.max(650, Math.min((seconds - 0.45) * 1000, seconds * 720)));
+}
+
+async function renderSegment(config, framePath, audioPath, targetPath, duration, signal, clickSound = false) {
+  const args = [
     '-hide_banner', '-loglevel', 'error', '-y',
     '-loop', '1', '-framerate', '30', '-i', framePath, '-i', audioPath,
-    '-t', duration.toFixed(3), '-r', '30',
+  ];
+  if (clickSound) {
+    args.push('-f', 'lavfi', '-i', 'sine=frequency=1450:sample_rate=24000:duration=0.075');
+  }
+  args.push('-t', duration.toFixed(3), '-r', '30');
+  if (clickSound) {
+    const delay = clickDelayMs(duration, true);
+    args.push(
+      '-filter_complex',
+      `[2:a]adelay=${delay},volume=0.72[click];[1:a][click]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[mixed]`,
+      '-map', '0:v:0', '-map', '[mixed]',
+    );
+  }
+  args.push(
     '-c:v', 'libx264', '-preset', 'medium', '-tune', 'stillimage',
     '-c:a', 'aac', '-b:a', '160k', '-pix_fmt', 'yuv420p',
     '-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2',
     '-movflags', '+faststart', '-shortest', '-fs', String(config.maxOutputBytes), targetPath,
-  ], {
+  );
+  await runCommand(config.ffmpegPath, args, {
     timeoutMs: config.commandTimeoutMs,
     monitorFile: targetPath,
     maxFileBytes: config.maxOutputBytes,
@@ -103,8 +135,8 @@ async function enforceWorkBudget(config, directory) {
   }
 }
 
-async function addCaption(page, caption, enabled, portrait) {
-  await page.evaluate(({ text, visible, isPortrait }) => {
+async function addCaption(page, caption, enabled, portrait, targetY, viewportHeight) {
+  await page.evaluate(({ text, visible, isPortrait, targetCenterY, screenHeight }) => {
     let box = document.getElementById('mathexam-video-caption');
     if (!box) {
       box = document.createElement('div');
@@ -115,9 +147,10 @@ async function addCaption(page, caption, enabled, portrait) {
     Object.assign(box.style, {
       display: visible ? 'block' : 'none',
       position: 'fixed',
-      zIndex: '2147483647',
+      zIndex: '2147483500',
       left: isPortrait ? '42px' : '80px',
       right: isPortrait ? '42px' : '80px',
+      top: 'auto',
       bottom: isPortrait ? '90px' : '46px',
       padding: isPortrait ? '28px 32px' : '20px 28px',
       borderRadius: '18px',
@@ -127,7 +160,18 @@ async function addCaption(page, caption, enabled, portrait) {
       textAlign: 'center',
       boxShadow: '0 10px 35px rgba(0,0,0,.25)',
     });
-  }, { text: caption, visible: enabled, isPortrait: portrait });
+    const targetIsLow = Number.isFinite(targetCenterY) && targetCenterY > screenHeight * 0.42;
+    if (targetIsLow) {
+      box.style.top = isPortrait ? '90px' : '38px';
+      box.style.bottom = 'auto';
+    }
+  }, {
+    text: caption,
+    visible: enabled,
+    isPortrait: portrait,
+    targetCenterY: targetY,
+    screenHeight: viewportHeight,
+  });
 }
 
 export function createRenderer(config, tts) {
@@ -175,10 +219,11 @@ export function createRenderer(config, tts) {
       studio.searchParams.set('studio', '1');
       await page.goto(studio.toString(), { waitUntil: 'domcontentloaded', timeout: 45_000 });
       await page.waitForFunction(() => window.__MATH_EXAM_VIDEO_READY__ === true, null, { timeout: 20_000 });
+      const videoType = request.videoType || 'ideal-solution';
       const manifest = validateManifest(await page.evaluate(
-        ({ tab, preset }) => window.MathExamVideoStudio.prepare(tab, preset),
-        { tab: `t${request.task}`, preset: request.preset },
-      ), request.task);
+        ({ tab, preset, type }) => window.MathExamVideoStudio.prepare(tab, preset, type),
+        { tab: `t${request.task}`, preset: request.preset, type: videoType },
+      ), request.task, videoType);
 
       const audioFiles = [];
       throwIfAborted(signal);
@@ -215,15 +260,17 @@ export function createRenderer(config, tts) {
         throwIfAborted(signal);
         await store.assertOwnership();
         const scene = manifest.scenes[index];
-        await page.evaluate(
-          ({ tab, id }) => window.MathExamVideoStudio.show(tab, id),
-          { tab: `t${request.task}`, id: scene.id },
+        const presentation = await page.evaluate(
+          ({ tab, id, type }) => window.MathExamVideoStudio.show(tab, id, type),
+          { tab: `t${request.task}`, id: scene.id, type: videoType },
         );
         await addCaption(
           page,
           scene.narration,
           config.ttsProvider === 'silent' ? true : request.captions,
           request.format === '9:16',
+          presentation?.targetY,
+          viewport.height,
         );
         await page.evaluate(() => document.fonts && document.fonts.ready);
         await page.waitForTimeout(120);
@@ -231,7 +278,15 @@ export function createRenderer(config, tts) {
         const segment = path.join(working, `segment-${String(index).padStart(3, '0')}.mp4`);
         await page.screenshot({ path: frame, fullPage: false });
         const duration = await audioDuration(config, audioFiles[index], signal);
-        await renderSegment(config, frame, audioFiles[index], segment, duration, signal);
+        await renderSegment(
+          config,
+          frame,
+          audioFiles[index],
+          segment,
+          duration,
+          signal,
+          videoType === 'student-path' && scene.click === true,
+        );
         await enforceWorkBudget(config, working);
         segments.push(path.basename(segment));
         await store.update(job.id, {

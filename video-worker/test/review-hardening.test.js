@@ -5,7 +5,7 @@ import path from 'node:path';
 import test from 'node:test';
 import { runCommand } from '../src/command.js';
 import { JobStore } from '../src/job-store.js';
-import { createRenderer, launchBrowser } from '../src/renderer.js';
+import { clickDelayMs, createRenderer, launchBrowser } from '../src/renderer.js';
 import { publicJob, safeError } from '../src/security.js';
 import { silentDuration, writeSpeechResponse } from '../src/tts.js';
 import { WorkerLock } from '../src/worker-lock.js';
@@ -21,6 +21,13 @@ test('silent captions receive a bounded readable scene duration', () => {
   assert.ok(silentDuration('x'.repeat(160)) > 10);
   assert.equal(silentDuration('short caption', 30_000), 30);
   assert.equal(silentDuration('x'.repeat(10_000)), 30);
+});
+
+test('student click sound is placed near the end of a readable scene', () => {
+  assert.equal(clickDelayMs(8, false), 0);
+  assert.equal(clickDelayMs(0.5, true), 250);
+  assert.equal(clickDelayMs(10, true), 7200);
+  assert.ok(clickDelayMs(4, true) < 4000);
 });
 
 test('renderer rejects a queued job after the configured provider changes', async () => {
