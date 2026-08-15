@@ -257,7 +257,7 @@ footer.wrap{color:var(--muted);font-size:13.5px;padding:8px 14px 34px;text-align
     <button class="btn ghost small" data-tab2="t18" data-preset="2">№2</button>
     <button class="btn ghost small" data-tab2="t18" data-preset="3">№3</button>
     <button class="btn ghost small" data-play="t18" data-studio-only title="Автоматический показ сцен">▶ Предпросмотр</button>
-    <button class="btn" data-render="t18" data-studio-only title="Автоматически озвучить и собрать ролик">🎥 Создать MP4</button>
+    <button class="btn" data-render="t18" data-studio-only title="Автоматически собрать ролик без речи">🎥 Создать MP4</button>
     <button class="btn ghost small" data-script="t18" data-studio-only title="Текст и разметка объясняющих сцен">📝 Сценарий</button>
   </div>
   <div id="tr18"></div>
@@ -289,7 +289,7 @@ footer.wrap{color:var(--muted);font-size:13.5px;padding:8px 14px 34px;text-align
     <button class="btn ghost small" data-tab2="t19" data-preset="2">№2</button>
     <button class="btn ghost small" data-tab2="t19" data-preset="3">№3</button>
     <button class="btn ghost small" data-play="t19" data-studio-only title="Автоматический показ сцен">▶ Предпросмотр</button>
-    <button class="btn" data-render="t19" data-studio-only title="Автоматически озвучить и собрать ролик">🎥 Создать MP4</button>
+    <button class="btn" data-render="t19" data-studio-only title="Автоматически собрать ролик без речи">🎥 Создать MP4</button>
     <button class="btn ghost small" data-script="t19" data-studio-only title="Текст и разметка объясняющих сцен">📝 Сценарий</button>
   </div>
   <div id="tr19"></div>
@@ -329,7 +329,7 @@ footer.wrap{color:var(--muted);font-size:13.5px;padding:8px 14px 34px;text-align
     <button class="btn ghost small" data-tab2="t20" data-preset="2">№2</button>
     <button class="btn ghost small" data-tab2="t20" data-preset="3">№3</button>
     <button class="btn ghost small" data-play="t20" data-studio-only title="Автоматический показ сцен">▶ Предпросмотр</button>
-    <button class="btn" data-render="t20" data-studio-only title="Автоматически озвучить и собрать ролик">🎥 Создать MP4</button>
+    <button class="btn" data-render="t20" data-studio-only title="Автоматически собрать ролик без речи">🎥 Создать MP4</button>
     <button class="btn ghost small" data-script="t20" data-studio-only title="Текст и разметка объясняющих сцен">📝 Сценарий</button>
   </div>
   <div id="tr20"></div>
@@ -1600,7 +1600,7 @@ function showVideoFactory(tab){
   }
   createButton.onclick=async function(){
     var token=tokenInput.value.trim();
-    if(!api){ status('Сервис ещё не подключён','Предпросмотр и текст озвучки продолжают работать.',0,true); return; }
+    if(!api){ status('Сервис ещё не подключён','Предпросмотр и сценарий продолжают работать.',0,true); return; }
     if(!token){ status('Нужен ключ видеосервиса','Вставьте ключ в поле выше.',0,true); tokenInput.focus(); return; }
     createButton.disabled=true; downloadButton.hidden=true;
     status('Отправляю в очередь','Проверяю выбранные параметры…',3,false);
