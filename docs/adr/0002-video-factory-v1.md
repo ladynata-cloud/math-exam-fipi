@@ -30,25 +30,33 @@ Create `video-worker` as an independently deployed Amvera application.
 3. The worker navigates only to its configured trusted studio URL. Clients
    cannot submit a URL, HTML, script, narration or FFmpeg arguments.
 4. A file-backed queue under the worker's persistent `/data` is the v1 source of
-   truth. Interrupted active jobs are safely re-queued at startup. Concurrency
-   is one. Finished media and metadata have size/age limits and can be pruned.
+   truth. An exclusive heartbeat lock and fencing checks prevent overlapping
+   containers from replaying the same active job. Interrupted active jobs are
+   re-queued only after the new worker owns that lock. Each attempt uses unique
+   work and temporary-output names.
 5. TTS is behind a provider interface. V1 implements OpenAI and Yandex
    SpeechKit using server-only environment variables.
 6. Chromium renders the existing studio API one scene at a time. The worker
    adds a controlled narration caption, takes a frame in the requested aspect
    ratio, and FFmpeg combines each frame and audio segment before concatenating
    an H.264/AAC MP4.
-7. Production configuration is fail-closed: startup requires a strong admin
+7. Admission is atomic and requires an idempotency key. Global hourly job,
+   daily reserved TTS-character, pending-job, retained-media and per-job work
+   quotas bound provider cost and disk usage. TTS responses are streamed with a
+   byte cap, and subprocesses have deadlines and output-file limits. Provider
+   account spend caps remain a mandatory deployment control.
+8. Production configuration is fail-closed: startup requires a strong admin
    token, an HTTPS studio URL, explicit allowed origins, a real TTS provider and
    `VIDEO_PERSISTENCE_CONFIRMED=1`. Development may use the mock provider and
    localhost only when `NODE_ENV` is not `production`.
-8. The studio treats automation as an enhancement. Preview and script export
+9. The studio treats automation as an enhancement. Preview and script export
    continue to work when the worker is missing or unavailable.
 
 ## API boundary
 
 - `GET /healthz` — non-secret health and queue counts.
-- `POST /api/v1/jobs` — validate and enqueue a job; bearer required.
+- `POST /api/v1/jobs` — atomically validate and enqueue a job; bearer and
+  `Idempotency-Key` required.
 - `GET /api/v1/jobs/:id` — sanitized status; bearer required.
 - `GET /api/v1/jobs/:id/video` — stream a ready MP4; bearer required.
 

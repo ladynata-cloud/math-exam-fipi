@@ -1,11 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { authorized, isAllowedOrigin, publicJob, safeError } from './security.js';
+import { authorized, isAllowedOrigin, publicError, publicJob } from './security.js';
 import { validateJobRequest } from './validation.js';
 
 const BODY_LIMIT = 16 * 1024;
 const JOB_ROUTE = /^\/api\/v1\/jobs\/(vid_[A-Za-z0-9_-]{20,40})$/;
 const VIDEO_ROUTE = /^\/api\/v1\/jobs\/(vid_[A-Za-z0-9_-]{20,40})\/video$/;
+const IDEMPOTENCY_KEY = /^[A-Za-z0-9._~-]{16,128}$/;
 
 function setCommon(response) {
   response.setHeader('Cache-Control', 'no-store');
@@ -52,7 +53,7 @@ function allowCors(request, response, config) {
   if (!isAllowedOrigin(origin, config.allowedOrigins)) return false;
   response.setHeader('Access-Control-Allow-Origin', origin);
   response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  response.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+  response.setHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type, Idempotency-Key');
   response.setHeader('Access-Control-Max-Age', '600');
   response.setHeader('Vary', 'Origin');
   return true;
@@ -71,7 +72,10 @@ export function createRequestHandler({ config, store, queue }) {
     try {
       const url = new URL(request.url || '/', 'http://video-worker.local');
       if (request.method === 'GET' && url.pathname === '/healthz') {
-        return json(response, 200, { ok: true, service: 'mathexam-video-worker', queue: store.counts() });
+        const health = store.health();
+        return json(response, health.ok ? 200 : 503, {
+          ok: health.ok, service: 'mathexam-video-worker', queue: store.counts(),
+        });
       }
 
       const corsAllowed = allowCors(request, response, config);
@@ -88,12 +92,20 @@ export function createRequestHandler({ config, store, queue }) {
       }
 
       if (request.method === 'POST' && url.pathname === '/api/v1/jobs') {
-        if (store.countPending() >= config.maxPendingJobs) {
-          return json(response, 429, { error: 'Очередь заполнена. Попробуйте позже.' });
+        const idempotencyKey = String(request.headers['idempotency-key'] || '');
+        if (!IDEMPOTENCY_KEY.test(idempotencyKey)) {
+          return json(response, 400, { error: 'Требуется корректный Idempotency-Key' });
         }
-        const job = await store.create(validateJobRequest(await readJson(request)));
-        queue.enqueue(job.id);
-        return json(response, 202, { job: publicJob(job) });
+        let jobRequest;
+        try {
+          jobRequest = validateJobRequest(await readJson(request));
+        } catch (error) {
+          if (!Number.isInteger(error.status)) error.status = 400;
+          throw error;
+        }
+        const admitted = await store.admit(jobRequest, idempotencyKey);
+        if (!admitted.reused) queue.enqueue(admitted.job.id);
+        return json(response, admitted.reused ? 200 : 202, { job: publicJob(admitted.job), reused: admitted.reused });
       }
 
       const videoMatch = url.pathname.match(VIDEO_ROUTE);
@@ -120,9 +132,8 @@ export function createRequestHandler({ config, store, queue }) {
 
       return json(response, 404, { error: 'Not found' });
     } catch (error) {
-      const status = Number.isInteger(error.status) ? error.status : 400;
-      return json(response, status, { error: safeError(error) });
+      const status = Number.isInteger(error.status) ? error.status : 500;
+      return json(response, status, { error: publicError(error), code: error.code || 'VIDEO_SERVICE_ERROR' });
     }
   };
 }
-

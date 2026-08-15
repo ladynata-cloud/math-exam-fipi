@@ -120,14 +120,18 @@ the progress server and must not change student progress.
 - Actual base SHA: `e9347d544a90a8d151051ee29a047d51a906196f`
 - Actual head SHA: recorded in the Draft PR
 - PR: Draft PR created from the exact production base
-- Tests passed: Video Factory authoring gate; DVI authoring gate; 8/8 worker
+- Tests passed: Video Factory authoring gate; DVI authoring gate; 17/17 worker
   unit/integration tests; 41/41 board-server regression tests; inline studio
   script parse; authorization/origin, create/status/download, persistence and
-  interrupted-job recovery tests; `git diff --check`
-- Tests failed: none in the final run (two initial test expectations were fixed)
+  interrupted-job recovery tests; atomic admission/idempotency, hourly/daily
+  budget and media quota, exclusive worker handoff, subprocess deadline,
+  streamed TTS size cap, persistence-failure and path-sanitization tests;
+  reproducible package-lock tree validation; `git diff --check`
+- Tests failed: none in the final run
 - Tests not run: local visual browser smoke was blocked by the browser's local
   URL policy; full Chromium/FFmpeg/TTS container render awaits CI/staging secrets;
   production smoke awaits ADR acceptance, merge and deployment authorization
-- Scope deviations: npm registry access is restricted in the local environment,
-  so the Docker build installs the exact pinned Playwright `1.55.0` package
-  without a locally generated lockfile; container build must verify that pin
+- Scope deviations: npm registry access is restricted in the local environment.
+  A lockfile with verified Playwright `1.55.0` package metadata is committed and
+  `npm ls --package-lock-only --all` passes; real container `npm ci` remains a
+  staging check.

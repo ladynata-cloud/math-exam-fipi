@@ -10,12 +10,15 @@ import { JobStore } from '../src/job-store.js';
 const origin = 'https://mathexam.space';
 const token = 'integration-test-token-that-is-long-enough';
 
-async function setup(t) {
+async function setup(t, overrides = {}) {
   const root = await fs.mkdtemp(path.join(os.tmpdir(), 'mathexam-video-api-'));
   t.after(() => fs.rm(root, { recursive: true, force: true }));
   const config = {
     jobDir: path.join(root, 'jobs'), mediaDir: path.join(root, 'videos'), workDir: path.join(root, 'work'),
     retentionDays: 30, allowedOrigins: [origin], adminToken: token, maxPendingJobs: 5,
+    maxJobsPerHour: 10, dailyTtsCharacterBudget: 300_000, maxTtsCharactersPerJob: 30_000,
+    maxOutputBytes: 1024 * 1024, maxRetainedBytes: 20 * 1024 * 1024,
+    ...overrides,
   };
   const store = await new JobStore(config).init();
   const enqueued = [];
@@ -38,7 +41,10 @@ test('API rejects missing origins and missing bearer credentials', async (t) => 
 
 test('API creates, reads and downloads a sanitized durable job', async (t) => {
   const { base, config, store, enqueued } = await setup(t);
-  const headers = { Origin: origin, Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
+  const headers = {
+    Origin: origin, Authorization: `Bearer ${token}`, 'Content-Type': 'application/json',
+    'Idempotency-Key': 'integration-create-key-0001',
+  };
   const createdResponse = await fetch(`${base}/api/v1/jobs`, {
     method: 'POST', headers,
     body: JSON.stringify({ task: '20', preset: 3, format: '9:16', captions: true }),
@@ -72,9 +78,36 @@ test('API rejects arbitrary render fields and reports health without secrets', a
   assert.deepEqual(Object.keys(await health.json()).sort(), ['ok', 'queue', 'service']);
   const response = await fetch(`${base}/api/v1/jobs`, {
     method: 'POST',
-    headers: { Origin: origin, Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    headers: {
+      Origin: origin, Authorization: `Bearer ${token}`, 'Content-Type': 'application/json',
+      'Idempotency-Key': 'integration-invalid-key-0001',
+    },
     body: JSON.stringify({ task: '18', preset: 1, format: '16:9', url: 'https://evil.test' }),
   });
   assert.equal(response.status, 400);
 });
 
+test('API admission is atomic and idempotent under parallel requests', async (t) => {
+  const { base, store, enqueued } = await setup(t, { maxPendingJobs: 1 });
+  const makeHeaders = (key) => ({
+    Origin: origin,
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json',
+    'Idempotency-Key': key,
+  });
+  const body = JSON.stringify({ task: '18', preset: 1, format: '16:9', captions: true });
+  const [first, second] = await Promise.all([
+    fetch(`${base}/api/v1/jobs`, { method: 'POST', headers: makeHeaders('parallel-admission-key-0001'), body }),
+    fetch(`${base}/api/v1/jobs`, { method: 'POST', headers: makeHeaders('parallel-admission-key-0002'), body }),
+  ]);
+  assert.deepEqual([first.status, second.status].sort(), [202, 429]);
+  assert.equal(store.countPending(), 1);
+  assert.equal(enqueued.length, 1);
+
+  const acceptedKey = first.status === 202 ? 'parallel-admission-key-0001' : 'parallel-admission-key-0002';
+  const repeated = await fetch(`${base}/api/v1/jobs`, { method: 'POST', headers: makeHeaders(acceptedKey), body });
+  assert.equal(repeated.status, 200);
+  assert.equal((await repeated.json()).reused, true);
+  assert.equal(store.countPending(), 1);
+  assert.equal(enqueued.length, 1);
+});

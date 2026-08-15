@@ -19,6 +19,12 @@ test('production configuration fails closed', () => {
   assert.equal(config.production, true);
   assert.deepEqual(config.allowedOrigins, ['https://mathexam.space']);
   assert.equal(config.ttsProvider, 'openai');
+  assert.throws(() => loadConfig({
+    ...base,
+    VIDEO_PERSISTENCE_CONFIRMED: '1',
+    VIDEO_COMMAND_TIMEOUT_SECONDS: '900',
+    VIDEO_WORKER_LOCK_STALE_SECONDS: '300',
+  }), /WORKER_LOCK_STALE/);
 });
 
 test('job request accepts only the fixed render contract', () => {
@@ -48,4 +54,3 @@ test('authorization is header-only and public jobs are sanitized', () => {
   assert.equal('output' in exposed, false);
   assert.equal('providerKey' in exposed, false);
 });
-

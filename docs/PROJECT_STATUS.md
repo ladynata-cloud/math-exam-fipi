@@ -22,7 +22,10 @@ and [REVIEW_POLICY.md](REVIEW_POLICY.md) for review requirements.
 
 Video Factory v1 is in implementation on `agent/video-factory-v1`. It adds an
 isolated persistent render queue, server-side OpenAI/Yandex speech, Chromium and
-FFmpeg MP4 assembly, and one-click controls in the existing DVI studio.
+FFmpeg MP4 assembly, and one-click controls in the existing DVI studio. The
+first independent review requested changes; admission, cost/storage quotas,
+worker fencing, deadlines, streaming, persistence and reproducible-build
+findings have been remediated and require exact-head re-review.
 
 This is a `NEW_ARCHETYPE`. ADR 0002 is Proposed. A Draft PR may demonstrate the
 prototype, but merge/deployment remain blocked until explicit ADR acceptance,
@@ -33,13 +36,14 @@ authorization.
 
 - Draft PR `#92` contains the Trainer Inventory v1.0.1 cross-platform
   Git-object hashing fix and still requires independent exact-head review.
-- Video Factory v1 Draft PR: pending creation.
+- Draft PR `#103` contains Video Factory v1 and remains unmergeable until its
+  remediated exact head passes independent re-review and ADR 0002 is accepted.
 - Older unrelated PRs remain open but do not alter this task's exact base.
 
 ## Last confirmed gate
 
 The DVI release passed its exact-head local gates and production smoke on PR
-`#102`. Video Factory authoring, DVI regression, 8/8 worker API/storage/queue
+`#102`. Video Factory authoring, DVI regression, 17/17 worker API/storage/queue
 tests and 41/41 board-server tests pass. Local visual browser smoke is blocked
 by the browser's local-URL policy; a real Chromium/FFmpeg/TTS render remains a
 required container/staging gate.

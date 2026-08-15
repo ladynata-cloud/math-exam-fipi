@@ -62,6 +62,19 @@ export function loadConfig(env = process.env) {
     throw new Error('YANDEX_API_KEY and YANDEX_FOLDER_ID are required');
   }
 
+  const maxOutputBytes = integer(env.VIDEO_MAX_OUTPUT_MB, 500, 20, 2000) * 1024 * 1024;
+  const maxRetainedBytes = integer(env.VIDEO_MAX_RETAINED_MB, 4096, 100, 20_000) * 1024 * 1024;
+  const maxWorkBytes = integer(env.VIDEO_MAX_WORK_MB, 1024, 100, 5000) * 1024 * 1024;
+  const commandTimeoutMs = integer(env.VIDEO_COMMAND_TIMEOUT_SECONDS, 180, 30, 900) * 1000;
+  const workerLockStaleMs = integer(env.VIDEO_WORKER_LOCK_STALE_SECONDS, 300, 60, 3600) * 1000;
+  const workerLockWaitMs = integer(env.VIDEO_WORKER_LOCK_WAIT_SECONDS, 360, 0, 3600) * 1000;
+  if (maxRetainedBytes < maxOutputBytes) {
+    throw new Error('VIDEO_MAX_RETAINED_MB must be at least VIDEO_MAX_OUTPUT_MB');
+  }
+  if (workerLockStaleMs <= Math.max(commandTimeoutMs, 120_000) + 30_000) {
+    throw new Error('VIDEO_WORKER_LOCK_STALE_SECONDS must exceed the longest external operation by 30 seconds');
+  }
+
   return Object.freeze({
     production,
     port: integer(env.PORT, 3000, 1, 65535),
@@ -79,9 +92,17 @@ export function loadConfig(env = process.env) {
     yandexKey: env.YANDEX_API_KEY || '',
     yandexFolderId: env.YANDEX_FOLDER_ID || '',
     yandexVoice: env.YANDEX_TTS_VOICE || 'alena',
-    maxPendingJobs: integer(env.VIDEO_MAX_PENDING_JOBS, 20, 1, 100),
-    maxOutputBytes: integer(env.VIDEO_MAX_OUTPUT_MB, 500, 20, 2000) * 1024 * 1024,
+    maxPendingJobs: integer(env.VIDEO_MAX_PENDING_JOBS, 4, 1, 100),
+    maxJobsPerHour: integer(env.VIDEO_MAX_JOBS_PER_HOUR, 4, 1, 100),
+    dailyTtsCharacterBudget: integer(env.VIDEO_DAILY_TTS_CHAR_BUDGET, 120_000, 30_000, 3_000_000),
+    maxTtsCharactersPerJob: 30_000,
+    maxOutputBytes,
+    maxRetainedBytes,
+    maxWorkBytes,
     retentionDays: integer(env.VIDEO_RETENTION_DAYS, 30, 1, 365),
+    commandTimeoutMs,
+    workerLockStaleMs,
+    workerLockWaitMs,
     ffmpegPath: env.FFMPEG_PATH || 'ffmpeg',
     ffprobePath: env.FFPROBE_PATH || 'ffprobe',
   });

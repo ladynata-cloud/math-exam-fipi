@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { runCommand } from './command.js';
@@ -28,7 +29,7 @@ async function audioDuration(config, audioPath) {
   const result = await runCommand(config.ffprobePath, [
     '-v', 'error', '-show_entries', 'format=duration',
     '-of', 'default=noprint_wrappers=1:nokey=1', audioPath,
-  ]);
+  ], { timeoutMs: config.commandTimeoutMs });
   const duration = Number.parseFloat(result.stdout.trim());
   if (!Number.isFinite(duration) || duration <= 0 || duration > 300) {
     throw new Error('Speech audio has an invalid duration');
@@ -44,8 +45,31 @@ async function renderSegment(config, framePath, audioPath, targetPath, duration)
     '-c:v', 'libx264', '-preset', 'medium', '-tune', 'stillimage',
     '-c:a', 'aac', '-b:a', '160k', '-pix_fmt', 'yuv420p',
     '-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2',
-    '-movflags', '+faststart', '-shortest', targetPath,
-  ]);
+    '-movflags', '+faststart', '-shortest', '-fs', String(config.maxOutputBytes), targetPath,
+  ], {
+    timeoutMs: config.commandTimeoutMs,
+    monitorFile: targetPath,
+    maxFileBytes: config.maxOutputBytes,
+  });
+}
+
+async function directoryBytes(directory) {
+  let total = 0;
+  const entries = await fs.readdir(directory, { withFileTypes: true });
+  for (const entry of entries) {
+    const target = path.join(directory, entry.name);
+    if (entry.isDirectory()) total += await directoryBytes(target);
+    else if (entry.isFile()) total += (await fs.stat(target)).size;
+  }
+  return total;
+}
+
+async function enforceWorkBudget(config, directory) {
+  if (await directoryBytes(directory) > config.maxWorkBytes) {
+    const error = new Error('Per-job working disk budget exceeded');
+    error.code = 'WORK_BUDGET_EXCEEDED';
+    throw error;
+  }
 }
 
 async function addCaption(page, caption, enabled, portrait) {
@@ -77,7 +101,8 @@ async function addCaption(page, caption, enabled, portrait) {
 
 export function createRenderer(config, tts) {
   return async function processJob(job, store) {
-    const working = path.join(config.workDir, job.id);
+    const attemptId = crypto.randomBytes(12).toString('base64url');
+    const working = path.join(config.workDir, `${job.id}-${attemptId}`);
     const output = path.join(config.mediaDir, `${job.id}.mp4`);
     const request = job.request;
     const viewport = viewportFor(request.format);
@@ -87,8 +112,14 @@ export function createRenderer(config, tts) {
     await fs.mkdir(working, { recursive: true });
 
     try {
+      await store.assertOwnership();
       const { chromium } = await import('playwright');
-      browser = await chromium.launch({ headless: true, chromiumSandbox: true, args: ['--disable-dev-shm-usage'] });
+      browser = await chromium.launch({
+        headless: true,
+        chromiumSandbox: true,
+        args: ['--disable-dev-shm-usage'],
+        timeout: Math.min(config.commandTimeoutMs, 60_000),
+      });
       const context = await browser.newContext({ viewport, deviceScaleFactor: 1, serviceWorkers: 'block' });
       const page = await context.newPage();
       const trustedOrigin = new URL(config.studioUrl).origin;
@@ -113,11 +144,15 @@ export function createRenderer(config, tts) {
       await store.update(job.id, {
         status: 'synthesizing',
         progress: { stage: 'synthesizing', current: 0, total: manifest.scenes.length },
-        error: null,
+        errorCode: null,
+        attemptId,
+        ttsCharacters: manifest.scenes.reduce((total, scene) => total + scene.narration.length, 0),
       });
       for (let index = 0; index < manifest.scenes.length; index++) {
+        await store.assertOwnership();
         const scene = manifest.scenes[index];
         audioFiles.push(await tts.synthesize(scene.narration, path.join(working, `audio-${String(index).padStart(3, '0')}`)));
+        await enforceWorkBudget(config, working);
         await store.update(job.id, {
           progress: { stage: 'synthesizing', current: index + 1, total: manifest.scenes.length },
         });
@@ -129,6 +164,7 @@ export function createRenderer(config, tts) {
       });
       const segments = [];
       for (let index = 0; index < manifest.scenes.length; index++) {
+        await store.assertOwnership();
         const scene = manifest.scenes[index];
         await page.evaluate(
           ({ tab, id }) => window.MathExamVideoStudio.show(tab, id),
@@ -142,6 +178,7 @@ export function createRenderer(config, tts) {
         await page.screenshot({ path: frame, fullPage: false });
         const duration = await audioDuration(config, audioFiles[index]);
         await renderSegment(config, frame, audioFiles[index], segment, duration);
+        await enforceWorkBudget(config, working);
         segments.push(path.basename(segment));
         await store.update(job.id, {
           progress: { stage: 'rendering', current: index + 1, total: manifest.scenes.length },
@@ -149,21 +186,28 @@ export function createRenderer(config, tts) {
       }
       const concatFile = path.join(working, 'segments.txt');
       await fs.writeFile(concatFile, `${segments.map((name) => `file '${name}'`).join('\n')}\n`, 'utf8');
-      temporaryOutput = `${output}.${process.pid}.tmp.mp4`;
+      temporaryOutput = `${output}.${attemptId}.tmp.mp4`;
       await runCommand(config.ffmpegPath, [
         '-hide_banner', '-loglevel', 'error', '-y',
         '-f', 'concat', '-safe', '0', '-i', path.basename(concatFile),
-        '-c', 'copy', '-movflags', '+faststart', temporaryOutput,
-      ], { cwd: working });
+        '-c', 'copy', '-movflags', '+faststart', '-fs', String(config.maxOutputBytes), temporaryOutput,
+      ], {
+        cwd: working,
+        timeoutMs: config.commandTimeoutMs,
+        monitorFile: temporaryOutput,
+        maxFileBytes: config.maxOutputBytes,
+      });
       const stat = await fs.stat(temporaryOutput);
       if (!stat.size || stat.size > config.maxOutputBytes) throw new Error('Rendered video has an invalid size');
+      await store.assertOwnership();
       await fs.rename(temporaryOutput, output);
       temporaryOutput = null;
       await store.update(job.id, {
         status: 'ready',
         progress: { stage: 'ready', current: manifest.scenes.length, total: manifest.scenes.length },
         output,
-        error: null,
+        errorCode: null,
+        attemptId: null,
       });
     } finally {
       if (browser) await browser.close().catch(() => {});

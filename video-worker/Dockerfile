@@ -13,8 +13,8 @@ RUN apt-get update \
     && chown -R mathexam:mathexam /app /data
 
 WORKDIR /app
-COPY --chown=mathexam:mathexam video-worker/package.json ./
-RUN npm install --omit=dev --ignore-scripts --no-audit --no-fund
+COPY --chown=mathexam:mathexam video-worker/package.json video-worker/package-lock.json ./
+RUN npm ci --omit=dev --ignore-scripts --no-audit --no-fund
 COPY --chown=mathexam:mathexam video-worker/src ./src
 
 USER mathexam

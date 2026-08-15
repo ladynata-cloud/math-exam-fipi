@@ -22,8 +22,6 @@ export function validateJobRequest(input) {
   }
   return Object.freeze({ task, preset, format, captions: input.captions !== false });
 }
-
 export function viewportFor(format) {
   return format === '9:16' ? { width: 1080, height: 1920 } : { width: 1920, height: 1080 };
 }
-

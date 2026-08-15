@@ -12,7 +12,9 @@ async function fixture(t) {
   return {
     root,
     jobDir: path.join(root, 'jobs'), mediaDir: path.join(root, 'videos'), workDir: path.join(root, 'work'),
-    retentionDays: 30,
+    retentionDays: 30, maxRetainedBytes: 20 * 1024 * 1024, maxOutputBytes: 1024 * 1024,
+    maxPendingJobs: 5, maxJobsPerHour: 10, dailyTtsCharacterBudget: 300_000,
+    maxTtsCharactersPerJob: 30_000,
   };
 }
 
@@ -49,4 +51,44 @@ test('queue processes jobs one at a time in creation order', async (t) => {
     await new Promise((resolve) => setTimeout(resolve, 10));
   }
   assert.deepEqual(events, ['start:18', 'end:18', 'start:19', 'end:19']);
+});
+
+test('a failed metadata write never publishes an in-memory ghost job', async (t) => {
+  const config = await fixture(t);
+  const store = await new JobStore(config).init();
+  const blocked = path.join(config.root, 'not-a-directory');
+  await fs.writeFile(blocked, 'blocked');
+  config.jobDir = blocked;
+  await assert.rejects(store.create(request), (error) => error.code === 'PERSISTENCE_WRITE_FAILED');
+  assert.equal(store.countPending(), 0);
+  assert.equal(store.counts().queued, 0);
+  assert.equal(store.health().ok, false);
+});
+
+test('admission enforces the retained media reservation quota', async (t) => {
+  const config = await fixture(t);
+  config.maxRetainedBytes = config.maxOutputBytes;
+  const store = await new JobStore(config).init();
+  await store.admit(request, 'storage-reservation-key-0001');
+  await assert.rejects(
+    store.admit({ ...request, task: '19' }, 'storage-reservation-key-0002'),
+    (error) => error.status === 507 && error.code === 'MEDIA_QUOTA',
+  );
+});
+
+test('admission enforces hourly jobs and daily reserved TTS characters', async (t) => {
+  const config = await fixture(t);
+  config.maxJobsPerHour = 1;
+  const store = await new JobStore(config).init();
+  await store.admit(request, 'budget-admission-key-0001');
+  await assert.rejects(
+    store.admit({ ...request, task: '19' }, 'budget-admission-key-0002'),
+    (error) => error.code === 'HOURLY_JOB_BUDGET',
+  );
+  config.maxJobsPerHour = 10;
+  config.dailyTtsCharacterBudget = 30_000;
+  await assert.rejects(
+    store.admit({ ...request, task: '19' }, 'budget-admission-key-0003'),
+    (error) => error.code === 'DAILY_TTS_BUDGET',
+  );
 });

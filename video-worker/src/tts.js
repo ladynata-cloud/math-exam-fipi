@@ -3,15 +3,44 @@ import { runCommand } from './command.js';
 
 const MAX_AUDIO_BYTES = 24 * 1024 * 1024;
 
-async function responseBuffer(response, provider) {
-  if (!response.ok) throw new Error(`${provider} speech request failed (${response.status})`);
+function ttsError(message, code = 'TTS_RESPONSE_INVALID') {
+  const error = new Error(message);
+  error.code = code;
+  return error;
+}
+
+export async function writeSpeechResponse(response, target, provider, maxBytes = MAX_AUDIO_BYTES) {
+  if (!response.ok) throw ttsError(`${provider} speech request failed (${response.status})`, 'TTS_PROVIDER_FAILED');
   const length = Number(response.headers.get('content-length') || 0);
-  if (length > MAX_AUDIO_BYTES) throw new Error(`${provider} speech response is too large`);
-  const buffer = Buffer.from(await response.arrayBuffer());
-  if (!buffer.length || buffer.length > MAX_AUDIO_BYTES) {
-    throw new Error(`${provider} speech response has an invalid size`);
+  if (Number.isFinite(length) && length > maxBytes) {
+    throw ttsError(`${provider} speech response is too large`, 'TTS_RESPONSE_TOO_LARGE');
   }
-  return buffer;
+  if (!response.body) throw ttsError(`${provider} speech response has no body`);
+
+  const handle = await fs.open(target, 'wx', 0o600);
+  const reader = response.body.getReader();
+  let written = 0;
+  let failed = false;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      written += value.byteLength;
+      if (written > maxBytes) {
+        await reader.cancel('speech response limit exceeded').catch(() => {});
+        throw ttsError(`${provider} speech response is too large`, 'TTS_RESPONSE_TOO_LARGE');
+      }
+      await handle.write(Buffer.from(value));
+    }
+    if (!written) throw ttsError(`${provider} speech response is empty`);
+  } catch (error) {
+    failed = true;
+    throw error;
+  } finally {
+    await handle.close();
+    if (failed) await fs.rm(target, { force: true }).catch(() => {});
+  }
+  return target;
 }
 
 function openai(config) {
@@ -33,9 +62,7 @@ function openai(config) {
         }),
         signal: AbortSignal.timeout(120_000),
       });
-      const target = `${basePath}.mp3`;
-      await fs.writeFile(target, await responseBuffer(response, 'OpenAI'), { mode: 0o600 });
-      return target;
+      return writeSpeechResponse(response, `${basePath}.mp3`, 'OpenAI');
     },
   };
 }
@@ -60,9 +87,7 @@ function yandex(config) {
         body: form,
         signal: AbortSignal.timeout(120_000),
       });
-      const target = `${basePath}.ogg`;
-      await fs.writeFile(target, await responseBuffer(response, 'Yandex'), { mode: 0o600 });
-      return target;
+      return writeSpeechResponse(response, `${basePath}.ogg`, 'Yandex');
     },
   };
 }
@@ -76,8 +101,12 @@ function mock(config) {
       await runCommand(config.ffmpegPath, [
         '-hide_banner', '-loglevel', 'error', '-y',
         '-f', 'lavfi', '-i', 'anullsrc=r=24000:cl=mono',
-        '-t', duration.toFixed(3), '-c:a', 'pcm_s16le', target,
-      ]);
+        '-t', duration.toFixed(3), '-c:a', 'pcm_s16le', '-fs', String(MAX_AUDIO_BYTES), target,
+      ], {
+        timeoutMs: config.commandTimeoutMs,
+        monitorFile: target,
+        maxFileBytes: MAX_AUDIO_BYTES,
+      });
       return target;
     },
   };
