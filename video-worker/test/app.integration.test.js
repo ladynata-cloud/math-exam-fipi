@@ -47,7 +47,7 @@ test('API creates, reads and downloads a sanitized durable job', async (t) => {
   };
   const createdResponse = await fetch(`${base}/api/v1/jobs`, {
     method: 'POST', headers,
-    body: JSON.stringify({ task: '20', preset: 3, format: '9:16', captions: true }),
+    body: JSON.stringify({ task: '20', preset: 3, format: '9:16', captions: true, videoType: 'student-path' }),
   });
   assert.equal(createdResponse.status, 202);
   const created = (await createdResponse.json()).job;
@@ -60,6 +60,7 @@ test('API creates, reads and downloads a sanitized durable job', async (t) => {
   assert.equal(statusResponse.status, 200);
   const status = (await statusResponse.json()).job;
   assert.equal(status.task, '20');
+  assert.equal(status.videoType, 'student-path');
   assert.equal('output' in status, false);
 
   const output = path.join(config.mediaDir, `${created.id}.mp4`);
@@ -100,6 +101,7 @@ test('silent API forces explanatory captions on', async (t) => {
   assert.equal(response.status, 202);
   const created = (await response.json()).job;
   assert.equal(store.get(created.id).request.captions, true);
+  assert.equal(store.get(created.id).request.videoType, 'ideal-solution');
   assert.equal(store.get(created.id).ttsProvider, 'silent');
 });
 

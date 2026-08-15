@@ -48,6 +48,7 @@ export function publicJob(job) {
     preset: job.request.preset,
     format: job.request.format,
     captions: job.request.captions,
+    videoType: job.request.videoType || 'ideal-solution',
     createdAt: job.createdAt,
     updatedAt: job.updatedAt,
     progress: job.progress || null,

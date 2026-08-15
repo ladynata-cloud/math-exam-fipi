@@ -164,6 +164,10 @@ body.rec .v3d .cap,body.rec .v3d .v3ctl{display:none}
 body.rec[data-video-phase="intro"] .step,body.rec[data-video-phase="intro"] .dots,body.rec[data-video-phase="intro"] .solution-board{display:none}
 body.rec[data-video-phase="question"] .opts,body.rec[data-video-phase="question"] .linkbtn,body.rec[data-video-phase="question"] .tip{display:none}
 body.rec[data-video-phase="answer"] .opt:not(.ok),body.rec[data-video-phase="answer"] .linkbtn,body.rec[data-video-phase="answer"] .tip{display:none}
+.video-focus-ring{position:fixed;z-index:2147483601;pointer-events:none;border:5px solid #ffd43b;border-radius:16px;box-shadow:0 0 0 11px rgba(255,212,59,.3),0 10px 34px rgba(106,79,0,.3)}
+.video-pointer{position:fixed;z-index:2147483647;pointer-events:none;width:38px;height:48px;filter:drop-shadow(0 3px 3px rgba(0,0,0,.35))}
+.video-pointer svg{width:100%;height:100%;display:block}
+.video-click-label{position:fixed;z-index:2147483646;pointer-events:none;background:#ffd43b;color:#312500;border:2px solid #8b6a00;border-radius:999px;padding:7px 13px;font:800 18px/1.1 system-ui,sans-serif;box-shadow:0 5px 18px rgba(76,55,0,.25)}
 .recbar{
   position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:40;
   display:flex;align-items:center;gap:10px;background:var(--ink);color:#fff;
@@ -183,6 +187,7 @@ body.rec[data-video-phase="answer"] .opt:not(.ok),body.rec[data-video-phase="ans
 .mta{flex:1;min-height:44vh;width:100%;border:1.5px solid var(--line);border-radius:11px;padding:12px;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace;color:var(--ink);resize:vertical}
 .mrow{display:flex;gap:9px;flex-wrap:wrap}
 .mform{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mform .mfull{grid-column:1/-1}
 .mfield{display:grid;gap:5px;font-size:13.5px;color:var(--muted)}
 .mfield input,.mfield select{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px 11px;font:inherit;color:var(--ink);background:var(--card)}
 .mcheck{display:flex;align-items:center;gap:8px;color:var(--ink);font-size:14px}
@@ -1434,7 +1439,7 @@ function tts(s){
   t=t.replace(/\s+([,.;:!?)])/g,'$1').replace(/\(\s+/g,'(');
   return t.replace(/\s+/g,' ').trim();
 }
-function narration(model){
+function idealNarration(model){
   var L=['ЗАДАЧА', tts(model.statement), ''];
   for(var k=0;k<model.steps.length;k++){
     var st=model.steps[k], ok=null;
@@ -1451,37 +1456,95 @@ function narration(model){
   for(k=0;k<model.recap.length;k++) L.push((k+1)+'. '+tts(model.recap[k]));
   return L.join('\n');
 }
-function videoManifest(model, tab){
+function idealVideoManifest(model, tab){
   function okOf(st){ for(var j=0;j<st.opts.length;j++) if(st.opts[j].ok) return st.opts[j]; return null; }
   function dur(s,lo,hi){ return Math.max(lo,Math.min(hi,2200+String(s).length*58)); }
   var scenes=[];
   var intro='Решим задачу. '+tts(model.statement)+' Сначала выделим данные и составим план решения.';
-  scenes.push({id:'intro',phase:'intro',step:null,focus:[],narration:intro,duration_hint_ms:dur(intro,5000,18000)});
+  scenes.push({id:'intro',phase:'intro',step:null,action:'observe',click:false,focus:[],narration:intro,duration_hint_ms:dur(intro,5000,18000)});
   for(var k=0;k<model.steps.length;k++){
     var st=model.steps[k], ok=okOf(st);
     var q='Шаг '+(k+1)+'. '+tts(st.q);
     var a='Правильный ход: '+tts(ok.h)+'.'+(ok.exp?' '+tts(ok.exp):'');
-    scenes.push({id:'step-'+(k+1)+'-question',phase:'question',step:k,focus:st.focus||[],narration:q,duration_hint_ms:dur(q,4200,18000)});
-    scenes.push({id:'step-'+(k+1)+'-answer',phase:'answer',step:k,focus:st.focus||[],narration:a,duration_hint_ms:dur(a,3800,16000)});
+    scenes.push({id:'step-'+(k+1)+'-question',phase:'question',step:k,action:'observe',click:false,focus:st.focus||[],narration:q,duration_hint_ms:dur(q,4200,18000)});
+    scenes.push({id:'step-'+(k+1)+'-answer',phase:'answer',step:k,action:'observe',click:false,focus:st.focus||[],narration:a,duration_hint_ms:dur(a,3800,16000)});
   }
   for(k=0;k<model.recap.length;k++){
     var recap='Итог, шаг '+(k+1)+'. '+tts(model.recap[k]);
-    scenes.push({id:'recap-'+(k+1),phase:'final',step:model.steps.length,focus:[],narration:recap,duration_hint_ms:dur(recap,5000,18000)});
+    scenes.push({id:'recap-'+(k+1),phase:'final',step:model.steps.length,action:'final',click:false,focus:[],narration:recap,duration_hint_ms:dur(recap,5000,18000)});
   }
   var fin='Ответ: '+tts(model.answer)+'.';
-  scenes.push({id:'final',phase:'final',step:model.steps.length,focus:[],narration:fin,duration_hint_ms:dur(fin,4500,9000)});
+  scenes.push({id:'final',phase:'final',step:model.steps.length,action:'final',click:false,focus:[],narration:fin,duration_hint_ms:dur(fin,4500,9000)});
   return {
-    format:'mathexam-video-manifest',version:1,tab:tab||'',badge:model.badge,
+    format:'mathexam-video-manifest',version:2,videoType:'ideal-solution',tab:tab||'',badge:model.badge,
     subtype:model._dbg&&model._dbg.type?model._dbg.type:null,
     statement:tts(model.statement),answer:tts(model.answer),scenes:scenes
   };
 }
-function showScript(model, title){
+function firstWrongIndex(st){
+  for(var j=0;j<st.opts.length;j++) if(!st.opts[j].ok) return j;
+  return -1;
+}
+function studentPathManifest(model, tab){
+  function dur(s,lo,hi){ return Math.max(lo,Math.min(hi,2600+String(s).length*54)); }
+  var scenes=[], intro='Это видеоинструкция по тренажёру '+tts(model.badge)+'. Сначала прочитайте условие и вопрос. На каждом шаге выбирайте ответ кнопкой, а после верного ответа переходите дальше.';
+  scenes.push({id:'journey-intro',phase:'intro',step:null,action:'observe',click:false,focus:[],narration:intro,duration_hint_ms:dur(intro,6500,12000)});
+  for(var k=0;k<model.steps.length;k++){
+    var st=model.steps[k], wrong=firstWrongIndex(st), text;
+    if(k===0 && wrong>=0){
+      text='На первом шаге прочитайте вопрос и варианты. Для примера нажмём неверный ответ. Курсор и жёлтая рамка показывают, куда нажать.';
+      scenes.push({id:'journey-step-1-wrong',phase:'journey',step:k,action:'wrong',click:true,focus:st.focus||[],narration:text,duration_hint_ms:dur(text,6500,10000)});
+      if(st.tip){
+        text='Неверный вариант становится красным, а под ответами появляется объяснение. Если пока непонятно, нажмите кнопку «Нужна подсказка».';
+        scenes.push({id:'journey-step-1-hint',phase:'journey',step:k,action:'hint',click:true,focus:st.focus||[],narration:text,duration_hint_ms:dur(text,6500,10000)});
+      }
+    }
+    text=k===0
+      ? 'Подсказка раскрылась. Прочитайте её и нажмите правильный вариант ответа.'
+      : 'Шаг '+(k+1)+'. Прочитайте новый вопрос и нажмите подходящий вариант ответа.';
+    scenes.push({id:'journey-step-'+(k+1)+'-correct',phase:'journey',step:k,action:'correct',click:true,focus:st.focus||[],narration:text,duration_hint_ms:dur(text,5200,8500)});
+    text=k===model.steps.length-1
+      ? 'Верный ответ отмечен зелёным. Теперь нажмите «Показать решение целиком».'
+      : 'Верный ответ отмечен зелёным, а строка добавлена в ход решения. Нажмите «Дальше», чтобы открыть следующий шаг.';
+    scenes.push({id:'journey-step-'+(k+1)+'-next',phase:'journey',step:k,action:'next',click:true,focus:st.focus||[],narration:text,duration_hint_ms:dur(text,5200,8500)});
+  }
+  var finalText='Тренажёр пройден. На итоговом экране видны результат, ответ и решение целиком. Здесь можно пройти задачу ещё раз или получить новый вариант.';
+  scenes.push({id:'journey-final',phase:'final',step:model.steps.length,action:'final',click:false,focus:[],narration:finalText,duration_hint_ms:dur(finalText,7000,11000)});
+  return {
+    format:'mathexam-video-manifest',version:2,videoType:'student-path',tab:tab||'',badge:model.badge,
+    subtype:model._dbg&&model._dbg.type?model._dbg.type:null,
+    statement:tts(model.statement),answer:tts(model.answer),scenes:scenes
+  };
+}
+function videoManifest(model, tab, videoType){
+  var manifest=videoType==='student-path' ? studentPathManifest(model,tab) : idealVideoManifest(model,tab);
+  for(var i=0;i<manifest.scenes.length;i++) manifest.scenes[i].videoType=manifest.videoType;
+  return manifest;
+}
+function clock(ms){
+  var sec=Math.max(0,Math.round(ms/1000)), min=Math.floor(sec/60);
+  return String(min).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
+}
+function manifestVoiceover(manifest){
+  var at=0, lines=[];
+  for(var i=0;i<manifest.scenes.length;i++){
+    var scene=manifest.scenes[i], end=at+scene.duration_hint_ms;
+    lines.push(clock(at)+'–'+clock(end)+'  '+scene.narration+(scene.click?'  [пауза — щелчок в конце сцены]':''));
+    at=end;
+  }
+  return lines.join('\n\n');
+}
+function narration(model, tab){
+  return 'ВИДЕО 1 — ИДЕАЛЬНОЕ РЕШЕНИЕ\n\n'+manifestVoiceover(idealVideoManifest(model,tab))
+    +'\n\n\nВИДЕО 2 — КАК ПРОХОДИТЬ ТРЕНАЖЁР\n\n'
+    +manifestVoiceover(studentPathManifest(model,tab));
+}
+function showScript(model, title, tab){
   var back=document.createElement('div'); back.className='modal';
-  var txt=narration(model);
+  var txt=narration(model,tab);
   back.innerHTML='<div class="mbox"><div class="mhead"><b>Сценарий видеостудии · '+title+'</b>'
     +'<button class="btn ghost small" id="mx">Закрыть</button></div>'
-    +'<p class="mnote">Текст и JSON можно передать автоматическому рендереру: он покажет решение по сценам, добавит подписи и соберёт MP4 без речи. Ручная запись не требуется.</p>'
+    +'<p class="mnote">Здесь два текста: для идеального решения и для видеоинструкции. Начитайте выбранный раздел своим голосом, сохраняя короткие паузы у пометок «щелчок».</p>'
     +'<textarea class="mta" id="mta" spellcheck="false"></textarea>'
     +'<div class="mrow"><button class="btn" id="mcopy">Скопировать</button>'
     +'<button class="btn ghost" id="mdl">Скачать .txt</button>'
@@ -1507,7 +1570,10 @@ function showScript(model, title){
   };
   back.querySelector('#mjson').onclick=function(){
     var a=document.createElement('a');
-    a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(videoManifest(model,title),null,2));
+    a.href='data:application/json;charset=utf-8,'+encodeURIComponent(JSON.stringify({
+      idealSolution:videoManifest(model,tab,'ideal-solution'),
+      studentPath:videoManifest(model,tab,'student-path')
+    },null,2));
     a.download='video-scenes-'+title.replace(/[^0-9a-zA-Zа-яА-Я]+/g,'-')+'.json';
     a.click();
   };
@@ -1547,9 +1613,10 @@ function showVideoFactory(tab){
   var back=document.createElement('div'); back.className='modal';
   back.innerHTML='<div class="mbox"><div class="mhead"><b>Создать видео · задача '+task+'</b>'
     +'<button class="btn ghost small" data-close>Закрыть</button></div>'
-    +'<p class="mnote">Выберите готовый вариант и формат. Сервис покажет решение по шагам, выделит важные блоки, добавит объясняющие подписи и тихую фоновую музыку, затем соберёт MP4 без речи. Страницу можно перезагрузить — задание останется в очереди.</p>'
+    +'<p class="mnote">Выберите один из двух роликов. «Как проходить тренажёр» показывает ошибку, подсказку, правильный ответ и переход дальше с курсором, жёлтой подсветкой и щелчками. «Идеальное решение» объясняет математику без ошибочных действий. Оба MP4 собираются без речи и без фоновой музыки — готовый текст озвучки находится в разделе «Сценарий». Страницу можно перезагрузить — задание останется в очереди.</p>'
     +'<div class="mform"><label class="mfield">Вариант задачи<select data-preset><option value="1">Вариант №1</option><option value="2">Вариант №2</option><option value="3">Вариант №3</option></select></label>'
-    +'<label class="mfield">Формат видео<select data-format><option value="16:9">16:9 · урок / YouTube</option><option value="9:16">9:16 · Shorts / клипы</option></select></label></div>'
+    +'<label class="mfield">Формат видео<select data-format><option value="16:9">16:9 · урок / YouTube</option><option value="9:16">9:16 · Shorts / клипы</option></select></label>'
+    +'<label class="mfield mfull">Тип ролика<select data-video-type><option value="student-path">Как проходить тренажёр · видеоинструкция</option><option value="ideal-solution">Идеальное решение · разбор задачи</option></select></label></div>'
     +'<label class="mcheck"><input type="checkbox" data-captions checked disabled> Пошаговые объясняющие подписи включены</label>'
     +'<label class="mfield">Код доступа к сборке видео<input type="password" data-token autocomplete="off" placeholder="Введите значение VIDEO_ADMIN_TOKEN из Amvera"></label>'
     +'<p class="mnote">Код доступа — это значение переменной VIDEO_ADMIN_TOKEN в приложении mathexam-video на Amvera. Он хранится только в этой вкладке браузера и не добавляется в ссылку.</p>'
@@ -1610,7 +1677,8 @@ function showVideoFactory(tab){
         task:task,
         preset:Number(back.querySelector('[data-preset]').value),
         format:back.querySelector('[data-format]').value,
-        captions:back.querySelector('[data-captions]').checked
+        captions:back.querySelector('[data-captions]').checked,
+        videoType:back.querySelector('[data-video-type]').value
       };
       var serialized=JSON.stringify(body), requestState=null;
       try{ requestState=JSON.parse(sessionStorage.getItem(requestKey)||'null'); }catch(_){ }
@@ -1633,7 +1701,7 @@ function showVideoFactory(tab){
       var response=await fetch(api+'/api/v1/jobs/'+encodeURIComponent(currentId)+'/video',{headers:{Authorization:'Bearer '+tokenInput.value.trim()}});
       if(!response.ok) throw new Error('Не удалось скачать видео');
       var blob=await response.blob(), href=URL.createObjectURL(blob), a=document.createElement('a');
-      a.href=href; a.download='mathexam-zadacha-'+task+'.mp4'; a.click();
+      a.href=href; a.download='mathexam-zadacha-'+task+'-'+back.querySelector('[data-video-type]').value+'.mp4'; a.click();
       setTimeout(function(){ URL.revokeObjectURL(href); },60000);
     }catch(error){ status('Не удалось скачать',error.message,100,true); }
     downloadButton.disabled=false;
@@ -1646,7 +1714,7 @@ function showVideoFactory(tab){
 
 /* ================= движок шагов ================= */
 function mountTrainer(host, model, onNew){
-  var i=0, errs=0, auto=false, timer=null, mult=1, solved=[];
+  var i=0, errs=0, auto=false, timer=null, clickTimer=null, mult=1, solved=[], autoScenes=[], autoSceneIndex=0;
 
   function stmt(){
     return '<div class="stmt"><div class="stmt-k">'+model.badge+'</div><div class="stmt-b">'+model.statement+'</div></div>';
@@ -1736,30 +1804,119 @@ function mountTrainer(host, model, onNew){
     if(fb) fb.innerHTML='<div class="good">✅ Верно!'+(o&&o.exp?' '+o.exp:'')+'</div>';
     return o;
   }
-  function readMs(txt, per, lo, hi){
-    var n=tts(txt).length;
-    return Math.max(lo, Math.min(hi, 1800 + n*per)) * mult;
+  function correctIndexOf(st){
+    for(var k=0;k<st.opts.length;k++) if(st.opts[k].ok) return k;
+    return -1;
+  }
+  function markWrong(st, optionIndex){
+    var btn=host.querySelector('.opt[data-k="'+optionIndex+'"]');
+    var option=optionIndex>=0?st.opts[optionIndex]:null;
+    if(!btn||!option) return null;
+    btn.classList.add('bad'); btn.disabled=true;
+    var fb=host.querySelector('[data-role="feedback"]');
+    if(fb) fb.innerHTML='<div class="hint">💡 '+(option.hint||'Не то. Попробуй другой вариант!')+'</div>';
+    return btn;
+  }
+  function markCorrect(st){
+    var btns=host.querySelectorAll('.opt'), optionIndex=correctIndexOf(st), btn=null, option=null;
+    for(var k=0;k<btns.length;k++){
+      btns[k].disabled=true;
+      if(+btns[k].getAttribute('data-k')===optionIndex) btn=btns[k];
+    }
+    if(optionIndex>=0) option=st.opts[optionIndex];
+    if(btn) btn.classList.add('ok');
+    if(option) remember(i,st,option);
+    var fb=host.querySelector('[data-role="feedback"]');
+    if(fb) fb.innerHTML='<div class="good">✅ Верно!'+(option&&option.exp?' '+option.exp:'')+'</div>';
+    var nextbar=host.querySelector('[data-role="nextbar"]');
+    if(nextbar){
+      var last=(i===model.steps.length-1);
+      nextbar.innerHTML='<button class="btn" data-role="next">'+(last?'Показать решение целиком':'Дальше →')+'</button>';
+    }
+    return {button:btn,option:option};
+  }
+  function clearVideoPointer(){
+    var overlays=document.querySelectorAll('.video-focus-ring,.video-pointer,.video-click-label');
+    for(var k=0;k<overlays.length;k++) if(overlays[k].parentNode) overlays[k].parentNode.removeChild(overlays[k]);
+  }
+  function showVideoPointer(target){
+    clearVideoPointer();
+    if(!target) return null;
+    if(target.scrollIntoView) target.scrollIntoView({block:'center',inline:'center'});
+    var r=target.getBoundingClientRect(), pad=8;
+    var ring=document.createElement('div'); ring.className='video-focus-ring';
+    ring.style.left=Math.max(4,r.left-pad)+'px'; ring.style.top=Math.max(4,r.top-pad)+'px';
+    ring.style.width=Math.max(22,r.width+pad*2)+'px'; ring.style.height=Math.max(22,r.height+pad*2)+'px';
+    var pointer=document.createElement('div'); pointer.className='video-pointer';
+    pointer.style.left=Math.min(window.innerWidth-45,r.left+r.width*.58)+'px';
+    pointer.style.top=Math.min(window.innerHeight-54,r.top+r.height*.58)+'px';
+    pointer.innerHTML='<svg viewBox="0 0 40 50" aria-hidden="true"><path d="M4 2L4 40L14 31L22 47L29 43L21 28L34 27Z" fill="#fff" stroke="#111827" stroke-width="3" stroke-linejoin="round"/></svg>';
+    var label=document.createElement('div'); label.className='video-click-label'; label.textContent='Нажмите здесь';
+    label.style.left=Math.max(8,Math.min(window.innerWidth-190,r.left+r.width*.5-65))+'px';
+    label.style.top=Math.max(8,r.top-54)+'px';
+    document.body.appendChild(ring); document.body.appendChild(pointer); document.body.appendChild(label);
+    return r.top+r.height/2;
+  }
+  function previewClickSound(){
+    try{
+      var AudioCtx=window.AudioContext||window.webkitAudioContext;
+      if(!AudioCtx) return;
+      var ctx=new AudioCtx(), osc=ctx.createOscillator(), gain=ctx.createGain(), now=ctx.currentTime;
+      osc.type='square'; osc.frequency.setValueAtTime(1050,now); osc.frequency.exponentialRampToValueAtTime(420,now+.045);
+      gain.gain.setValueAtTime(.0001,now); gain.gain.exponentialRampToValueAtTime(.18,now+.004); gain.gain.exponentialRampToValueAtTime(.0001,now+.055);
+      osc.connect(gain); gain.connect(ctx.destination); osc.start(now); osc.stop(now+.06);
+      osc.onended=function(){ ctx.close(); };
+    }catch(_){ }
+  }
+  function applyStudioScene(scene){
+    scene=scene||{};
+    clearVideoPointer();
+    var videoType=scene.videoType||'ideal-solution', phase=scene.phase||'question', action=scene.action||'observe';
+    document.body.classList.add('rec');
+    document.body.setAttribute('data-video-phase',videoType==='student-path'?'journey':phase);
+    if(phase==='intro'){
+      i=0; errs=0; solved=[]; render();
+    } else if(phase==='final'){
+      fillSolved(model.steps.length); i=model.steps.length; errs=videoType==='student-path'?1:0; render();
+    } else {
+      i=Math.max(0,Math.min(model.steps.length-1,Number(scene.step)||0));
+      fillSolved(i); errs=videoType==='student-path'&&i>0?1:0; render();
+      var st=model.steps[i];
+      if(videoType==='student-path'){
+        var wrongIndex=firstWrongIndex(st), tip=host.querySelector('[data-role="tip"]');
+        if(i===0 && ['hint','correct','next'].indexOf(action)>=0) markWrong(st,wrongIndex);
+        if(i===0 && ['correct','next'].indexOf(action)>=0 && tip) tip.classList.remove('hid');
+        if(action==='next') markCorrect(st);
+      } else if(phase==='answer') reveal(st);
+    }
+    var target=null;
+    if(videoType==='student-path' && i<model.steps.length){
+      var active=model.steps[i];
+      if(action==='wrong') target=host.querySelector('.opt[data-k="'+firstWrongIndex(active)+'"]');
+      else if(action==='hint') target=host.querySelector('[data-role="tip-button"]');
+      else if(action==='correct') target=host.querySelector('.opt[data-k="'+correctIndexOf(active)+'"]');
+      else if(action==='next') target=host.querySelector('[data-role="next"]');
+    }
+    var targetY=showVideoPointer(target);
+    var detail={phase:phase,step:i,badge:model.badge,videoType:videoType,action:action,click:!!scene.click,targetY:targetY};
+    window.dispatchEvent(new CustomEvent('mathexam-video-scene',{detail:detail}));
+    return detail;
   }
   function autoStep(){
     if(!auto) return;
-    if(i>=model.steps.length){ stopAuto(); return; }
-    var st=model.steps[i], all=st.q;
-    for(var k=0;k<st.opts.length;k++) all+=' '+st.opts[k].h;
+    if(autoSceneIndex>=autoScenes.length){ stopAuto(); return; }
+    var scene=autoScenes[autoSceneIndex], duration=Math.max(1800,Number(scene.duration_hint_ms)||4500)*mult;
+    applyStudioScene(scene);
+    if(scene.click) clickTimer=setTimeout(function(){ if(auto) previewClickSound(); },Math.max(350,duration*.72));
     timer=setTimeout(function(){
       if(!auto) return;
-      var o=reveal(st);
-      timer=setTimeout(function(){
-        if(!auto) return;
-        i++;
-        render();
-        if(i>=model.steps.length){ stopAuto(); return; }
-        autoStep();
-      }, readMs(o&&o.exp?o.exp:'', 42, 2400, 8000));
-    }, readMs(all, 34, 4000, 14000));
+      autoSceneIndex++;
+      autoStep();
+    },duration);
   }
   function bar(){
     var b=document.createElement('div'); b.className='recbar'; b.id='recbar';
-    b.innerHTML='<span class="rdot"></span><span>Идёт сценарный показ для автоматической сборки видео</span>'
+    b.innerHTML='<span class="rdot"></span><span>Идёт показ видеоинструкции: ошибка, подсказка, верный ответ и переход дальше</span>'
       +'<select id="rsp"><option value="1.4">медленно</option><option value="1" selected>обычно</option><option value="0.7">быстро</option></select>'
       +'<button class="btn small" id="rstop">⏹ Остановить</button>';
     document.body.appendChild(b);
@@ -1768,21 +1925,22 @@ function mountTrainer(host, model, onNew){
   }
   function startAuto(){
     if(auto) return;
-    auto=true; i=0; errs=0; solved=[];
+    auto=true; i=0; errs=0; solved=[]; autoSceneIndex=0; autoScenes=videoManifest(model,'','student-path').scenes;
     document.body.removeAttribute('data-video-phase');
     document.body.classList.add('rec');
     if(!document.getElementById('recbar')) bar();
-    render();
     autoStep();
   }
   function stopAuto(){
     auto=false;
     if(timer){ clearTimeout(timer); timer=null; }
+    if(clickTimer){ clearTimeout(clickTimer); clickTimer=null; }
     spin3D(host, false);
     document.body.classList.remove('rec');
     document.body.removeAttribute('data-video-phase');
     var b=document.getElementById('recbar');
     if(b && b.parentNode) b.parentNode.removeChild(b);
+    clearVideoPointer();
   }
   function correctOf(st){ for(var k=0;k<st.opts.length;k++) if(st.opts[k].ok) return st.opts[k]; return null; }
   function fillSolved(count){
@@ -1792,22 +1950,10 @@ function mountTrainer(host, model, onNew){
       solved[k]=(st.board||o.h)+(o.exp?' — '+o.exp:'');
     }
   }
-  function studioScene(stepIndex, phase){
+  function studioScene(scene, legacyPhase){
     stopAuto();
-    document.body.classList.add('rec');
-    document.body.setAttribute('data-video-phase',phase||'question');
-    if(phase==='intro'){
-      i=0; solved=[]; render();
-    } else if(phase==='final'){
-      fillSolved(model.steps.length); i=model.steps.length; render();
-    } else {
-      i=Math.max(0,Math.min(model.steps.length-1,Number(stepIndex)||0));
-      fillSolved(i); render();
-      if(phase==='answer') reveal(model.steps[i]);
-    }
-    var detail={phase:phase||'question',step:i,badge:model.badge};
-    window.dispatchEvent(new CustomEvent('mathexam-video-scene',{detail:detail}));
-    return detail;
+    if(typeof scene!=='object') scene={step:scene,phase:legacyPhase||'question',videoType:'ideal-solution',action:legacyPhase==='answer'?'observe':'observe',click:false};
+    return applyStudioScene(scene);
   }
   function exitStudioFrame(){ stopAuto(); document.body.removeAttribute('data-video-phase'); }
   function finale(){
@@ -1885,7 +2031,7 @@ function boot(){
   for(var k5=0;k5<scr.length;k5++){
     (function(b){ b.onclick=function(){
       var t=b.getAttribute('data-script');
-      if(RUN[t]) showScript(RUN[t].model, RUN[t].model.badge);
+      if(RUN[t]) showScript(RUN[t].model, RUN[t].model.badge, t);
     }; })(scr[k5]);
   }
   document.addEventListener('keydown',function(e){
@@ -1895,27 +2041,26 @@ function boot(){
   if(s20) s20.onchange=function(){ newTask('t20', null); };
   newTask('t18'); newTask('t19'); newTask('t20');
   window.MathExamVideoStudio={
-    version:'1.1',
+    version:'1.2',
     tabs:['t18','t19','t20'],
-    prepare:function(tab,preset){
+    prepare:function(tab,preset,videoType){
       if(this.tabs.indexOf(tab)<0) throw new Error('Неизвестная вкладка: '+tab);
       document.body.classList.add('studio'); activateTab(tab);
       var run=newTask(tab,preset==null?null:String(preset));
-      return videoManifest(run.model,tab);
+      return videoManifest(run.model,tab,videoType||'ideal-solution');
     },
-    manifest:function(tab){
+    manifest:function(tab,videoType){
       if(!RUN[tab]) throw new Error('Тренажёр не подготовлен: '+tab);
-      return videoManifest(RUN[tab].model,tab);
+      return videoManifest(RUN[tab].model,tab,videoType||'ideal-solution');
     },
-    show:function(tab,sceneRef){
+    show:function(tab,sceneRef,videoType){
       if(!RUN[tab]) throw new Error('Тренажёр не подготовлен: '+tab);
       activateTab(tab); document.body.classList.add('studio');
-      var m=videoManifest(RUN[tab].model,tab), scene=null;
+      var m=videoManifest(RUN[tab].model,tab,videoType||'ideal-solution'), scene=null;
       if(typeof sceneRef==='number') scene=m.scenes[sceneRef];
       else for(var i=0;i<m.scenes.length;i++) if(m.scenes[i].id===sceneRef){ scene=m.scenes[i]; break; }
       if(!scene) throw new Error('Сцена не найдена: '+sceneRef);
-      RUN[tab].showScene(scene.step,scene.phase);
-      return scene;
+      return RUN[tab].showScene(scene);
     },
     play:function(tab){ activateTab(tab); document.body.classList.add('studio'); RUN[tab].play(); },
     stop:function(){ for(var tab in RUN) RUN[tab].exitStudioFrame(); },
