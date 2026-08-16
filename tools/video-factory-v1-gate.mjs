@@ -28,14 +28,17 @@ assert.doesNotMatch(
   /(?:^|[^А-ЯЁ])ДВИ(?:$|[^А-ЯЁ])/u,
   'the unexplained DVI label must not be user-facing on any tasks 18–20 page',
 );
-assert.match(studio, /.frac\{display:inline-grid;[^}]*vertical-align:middle/, 'fractions must align to the surrounding line');
-assert.match(studio, /\.q\{display:flex;align-items:center;[^}]*min-height:4em/, 'questions need stable vertical alignment');
-assert.match(studio, /\.opt\{[\s\S]*?display:flex;align-items:center;[^}]*min-height:64px/, 'answer rows need stable vertical alignment');
-assert.match(studio, /\.v3d\{[^}]*max-width:680px/, 'pyramid models must remain large enough to read');
-assert.equal(count(studio, /lockGround:true/g), 3, 'all pyramid presets must keep the base plane anchored');
-assert.equal(count(studio, /groundBase:\['A','B','C'\]/g), 3, 'all pyramid bases must be placed on the ground plane');
-assert.equal(count(studio, /key:'height',lab:'h'/g), 3, 'all pyramid presets must draw and label a height');
-assert.match(studio, /Основание ABC закреплено на горизонтальной плоскости/);
+for (const trainer of [studio, learner]) {
+  assert.match(trainer, /.frac\{display:inline-grid;[^}]*vertical-align:middle/, 'fractions must align to the surrounding line');
+  assert.match(trainer, /\.q\{display:flex;align-items:center;[^}]*min-height:4em/, 'questions need stable vertical alignment');
+  assert.match(trainer, /\.opt\{[\s\S]*?display:flex;align-items:center;[^}]*min-height:64px/, 'answer rows need stable vertical alignment');
+  assert.match(trainer, /\.v3d\{[^}]*max-width:680px/, 'pyramid models must remain large enough to read');
+  assert.equal(count(trainer, /lockGround:true/g), 3, 'all pyramid presets must keep the base plane anchored');
+  assert.equal(count(trainer, /groundBase:\['A','B','C'\]/g), 3, 'all pyramid bases must be placed on the ground plane');
+  assert.equal(count(trainer, /key:'height',lab:'h'/g), 3, 'all pyramid presets must draw and label a height');
+  assert.match(trainer, /Основание ABC закреплено на горизонтальной плоскости/);
+  assert.match(trainer, /Начинаем с первого уравнения/);
+}
 assert.match(studio, /mathexam-video-api/);
 assert.match(studio, /sessionStorage\.setItem\(tokenKey,token\)/);
 assert.doesNotMatch(studio, /[?&](?:token|secret|key)=/i, 'credentials must not enter URLs');
@@ -56,9 +59,26 @@ assert.match(studio, /ВИДЕО 2 — КАК ПРОХОДИТЬ ТРЕНАЖЁ�
 assert.match(studio, /без фоновой музыки/);
 assert.doesNotMatch(studio, /тихую фоновую музыку/);
 
-const inlineScripts = [...studio.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((match) => match[1]);
-assert.ok(inlineScripts.length, 'studio inline script not found');
+const inlineScripts = [studio, learner].flatMap((page) => [...page.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((match) => match[1]));
+assert.ok(inlineScripts.length >= 2, 'trainer inline scripts not found');
 for (const script of inlineScripts) new Function(script);
+
+function between(source, start, end) {
+  const from = source.indexOf(start);
+  const to = source.indexOf(end, from + start.length);
+  assert.ok(from >= 0 && to > from, `shared trainer section missing: ${start}`);
+  return source.slice(from, to);
+}
+assert.equal(
+  between(learner, '/* ================= 3D-движок', '/* ================= форматирование выражений'),
+  between(studio, '/* ================= 3D-движок', '/* ================= форматирование выражений'),
+  'learner and studio must use the same anchored-pyramid engine',
+);
+assert.equal(
+  between(learner, 'function f19ConstMinus', 'function gen20R'),
+  between(studio, 'function f19ConstMinus', 'function gen20R'),
+  'learner and studio must use the same substitution-first logarithmic generator',
+);
 
 const generatorStart = studio.indexOf("'use strict';");
 const generatorEnd = studio.indexOf('/* ================= движок шагов', generatorStart);
