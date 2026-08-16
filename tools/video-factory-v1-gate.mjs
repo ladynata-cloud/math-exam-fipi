@@ -5,6 +5,8 @@ function read(file) { return fs.readFileSync(file, 'utf8'); }
 function count(source, pattern) { return (source.match(pattern) || []).length; }
 
 const studio = read('trainers/dvi/math-18-20-video-studio.html');
+const learner = read('trainers/dvi/math-18-20.html');
+const teacher = read('trainers/dvi/math-18-20-teacher.html');
 const config = read('video-worker/src/config.js');
 const renderer = read('video-worker/src/renderer.js');
 const validation = read('video-worker/src/validation.js');
@@ -21,7 +23,11 @@ const deployment = read('docs/VIDEO_FACTORY_DEPLOYMENT.md');
 
 assert.equal(count(studio, /data-render="t(?:18|19|20)"/g), 3, 'all task tabs need one MP4 action');
 assert.equal(count(studio, />▶ Показать, как решать</g), 3, 'learner-journey preview actions must remain visible');
-assert.doesNotMatch(studio, /(?:^|[^А-ЯЁ])ДВИ(?:$|[^А-ЯЁ])/u, 'the unexplained DVI label must not be user-facing');
+assert.doesNotMatch(
+  [studio, learner, teacher].join('\n'),
+  /(?:^|[^А-ЯЁ])ДВИ(?:$|[^А-ЯЁ])/u,
+  'the unexplained DVI label must not be user-facing on any tasks 18–20 page',
+);
 assert.match(studio, /.frac\{display:inline-grid;[^}]*vertical-align:middle/, 'fractions must align to the surrounding line');
 assert.match(studio, /\.q\{display:flex;align-items:center;[^}]*min-height:4em/, 'questions need stable vertical alignment');
 assert.match(studio, /\.opt\{[\s\S]*?display:flex;align-items:center;[^}]*min-height:64px/, 'answer rows need stable vertical alignment');
