@@ -86,12 +86,12 @@ select{border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;font-s
 
 /* ---------- шаг ---------- */
 .step{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:16px;margin:10px 0}
-.q{font-size:16.5px;font-weight:700;margin-bottom:6px}
+.q{display:flex;align-items:center;align-content:center;flex-wrap:wrap;min-height:4em;font-size:16.5px;font-weight:700;line-height:1.65;margin-bottom:6px}
 .qn{font-weight:400}
 .opts{display:grid;gap:9px;margin-top:12px}
 .opt{
   text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:12px;
-  padding:12px 14px;font-size:16px;color:var(--ink);cursor:pointer;line-height:1.45;
+  display:flex;align-items:center;align-content:center;flex-wrap:wrap;min-height:64px;padding:12px 14px;font-size:16px;color:var(--ink);cursor:pointer;line-height:1.6;
 }
 .opt:not(:disabled):hover{border-color:var(--pen);transform:translateY(-1px)}
 .opt:disabled{cursor:default;opacity:.92}
@@ -108,12 +108,20 @@ select{border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;font-s
 /* ---------- рисунок ---------- */
 .fig{display:flex;justify-content:center;margin:12px 0 2px}
 .fig svg{width:100%;max-width:360px;height:auto}
-.v3d{position:relative;width:100%;max-width:410px;margin:0 auto;touch-action:none}
+.v3d{position:relative;width:100%;max-width:680px;margin:0 auto}
+.v3d .v3stage{position:relative;touch-action:none}
 .v3d .v3s svg{width:100%;max-width:none;height:auto;display:block;cursor:grab;user-select:none;-webkit-user-select:none}
 .v3d .v3s svg:active{cursor:grabbing}
-.v3d .rst{position:absolute;top:2px;right:2px;border:1.5px solid var(--line);background:var(--card);border-radius:9px;width:34px;height:34px;font-size:18px;line-height:1;cursor:pointer;color:var(--pen)}
-.v3d .rst:hover{border-color:var(--pen)}
-.v3d .cap{text-align:center;color:var(--muted);font-size:12.5px;margin-top:2px}
+.v3d .v3ctl{display:flex;justify-content:center;align-items:center;gap:6px;flex-wrap:wrap;margin-top:7px}
+.v3d .v3ctl button{border:1.5px solid var(--line);background:var(--card);color:var(--pen);border-radius:9px;padding:6px 10px;font-size:14px;cursor:pointer}
+.v3d .v3ctl button:hover{border-color:var(--pen)}
+.v3d .v3zoom{min-width:104px;text-align:center;color:var(--ink);font-variant-numeric:tabular-nums}
+.v3d .cap{text-align:center;color:var(--muted);font-size:13px;margin-top:4px}
+.v3facts{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:8px}
+.v3given{width:100%;text-align:center;font-size:14px;color:var(--ink)}
+.v3fact{background:var(--card);border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;font-size:14px;transition:background .18s,border-color .18s,transform .18s}
+.v3fact.is-active{background:var(--warn-soft);border-color:var(--warn);transform:translateY(-1px);font-weight:700}
+.section-note{background:var(--pen-soft);border-radius:9px;padding:7px 10px;margin-top:7px;text-align:center;font-size:14px}
 
 /* ---------- финал ---------- */
 .win{background:var(--card);border:1.5px solid var(--ok);border-radius:14px;padding:18px;margin:12px 0}
@@ -127,18 +135,19 @@ select{border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;font-s
 .win .nextbar{justify-content:center;gap:10px}
 
 /* ---------- математика ---------- */
-.frac{display:inline-flex;flex-direction:column;vertical-align:-0.55em;text-align:center;line-height:1.15;margin:0 2px;font-size:.95em}
-.frac>span{padding:0 4px}
+.frac{display:inline-grid;align-self:center;grid-template-rows:minmax(1.05em,auto) minmax(1.05em,auto);vertical-align:middle;text-align:center;line-height:1;margin:0 .2em;font-size:.95em;white-space:nowrap;transform:translateY(-.02em)}
+.frac>span{display:flex;align-items:center;justify-content:center;min-width:100%;min-height:1.05em;padding:.06em .34em;line-height:1.05}
 .frac>span:first-child{border-bottom:1.5px solid currentColor}
-.sys{display:flex;align-items:center;gap:6px;margin:8px 0}
+.sys{display:inline-flex;align-self:center;align-items:center;gap:6px;vertical-align:middle;margin:4px 0;line-height:1.35}
 .sys .brace{font-size:44px;font-weight:300;line-height:1;color:var(--ink);font-family:Georgia,serif}
 .sys .syseq{display:flex;flex-direction:column;gap:5px;font-size:17px}
-sub,sup{font-size:.72em}
+sub,sup{font-size:.72em;line-height:0}
+.q,.opt,.stmt-b,.ex,.solution-board,.recap,.ansbox{font-variant-numeric:tabular-nums}
 
 /* ---------- режим записи ---------- */
 body.rec .tabs,body.rec details.theory,body.rec .chips,body.rec .toolbar,body.rec footer.wrap,body.rec .hero .sub{display:none}
 body.rec .hero .wrap{padding-bottom:12px}
-body.rec .v3d .cap{visibility:hidden}
+body.rec .v3d .cap,body.rec .v3d .v3ctl{display:none}
 .recbar{
   position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:40;
   display:flex;align-items:center;gap:10px;background:var(--ink);color:#fff;
@@ -205,7 +214,7 @@ footer.wrap{color:var(--muted);font-size:13.5px;padding:8px 14px 34px;text-align
 
 <nav class="tabs wrap" id="tabs">
   <button class="tab on" data-tab="t18">18 · Тригонометрия</button>
-  <button class="tab" data-tab="t19">19 · Система с log</button>
+  <button class="tab" data-tab="t19">19 · Система с логарифмом</button>
   <button class="tab" data-tab="t20">20 · Пирамида</button>
 </nav>
 
@@ -250,11 +259,11 @@ footer.wrap{color:var(--muted);font-size:13.5px;padding:8px 14px 34px;text-align
 <!-- ================= 19 ================= -->
 <section id="t19" class="page">
   <details class="theory"><summary>📖 Как решаются такие задачи + разбор примера</summary><div class="tb">
-    <p><b>Главная идея.</b> Логарифм убирается по определению: <b>log<sub>b</sub> A = c &nbsp;⇔&nbsp; A = b<sup>c</sup></b>. После этого остаются два обычных линейных уравнения.</p>
+    <p><b>Главная идея.</b> Сначала в первом, линейном, уравнении вырази одну переменную через другую. Подставь полученное выражение во второе уравнение — тогда логарифмическое уравнение останется только с одной переменной. После этого используй определение <b>log<sub>b</sub> A = c &nbsp;⇔&nbsp; A = b<sup>c</sup></b>.</p>
     <div class="ex"><div class="gt">Пример: x + 2y = 10 и log₂(x + y) = 3</div>
-      По определению: x + y = 2³ = 8.<br>
-      Система: x + 2y = 10 и x + y = 8. Вычитаем из первого второе: y = 2.<br>
-      Тогда x = 8 − y = 6.<br>
+      Из первого уравнения выражаем x: x = 10 − 2y.<br>
+      Подставляем во второе: log₂(10 − 2y + y) = 3, то есть log₂(10 − y) = 3.<br>
+      По определению: 10 − y = 2³ = 8, поэтому y = 2. Тогда x = 10 − 2·2 = 6.<br>
       Проверка ОДЗ: под логарифмом x + y = 8 &gt; 0 — всё честно.<br>
       Ответ: (6; 2).
     </div>
@@ -574,7 +583,7 @@ function unitCircleSVG(t){
 }
 
 /* ================= 3D-движок (стиль GeoGebra) ================= */
-var CSS3D = '<style>text{font:13.5px system-ui,sans-serif;fill:#1f2a44}.lb{font-weight:700;font-size:14.5px}.ac{fill:#2f5fe3;font-weight:700}.mu{fill:#5d6a85}.fL{fill:rgba(47,95,227,0.10);stroke:#1f2a44;stroke-width:1.8;stroke-linejoin:round}.fB{fill:rgba(47,95,227,0.20);stroke:#1f2a44;stroke-width:1.8;stroke-linejoin:round}.s3{stroke:#2f5fe3;stroke-width:2.6;fill:none}.d3{stroke:#2f5fe3;stroke-width:2.2;fill:none;stroke-dasharray:6 5}.g3{stroke:#a7b1c6;stroke-width:1.2;fill:none;stroke-dasharray:4 4}.c3{stroke:#5d6a85;stroke-width:1.6;fill:none;stroke-dasharray:5 4}.m3{stroke:#e2554d;stroke-width:2.2;fill:none}.k3{stroke:#1f2a44;stroke-width:1.5;fill:none}</style>';
+var CSS3D = '<style>text{font:17px system-ui,sans-serif;fill:var(--ink);paint-order:stroke;stroke:var(--card);stroke-width:3px;stroke-linejoin:round}.lb{font-weight:700;font-size:18px}.ac{fill:var(--pen);font-weight:700}.mu{fill:var(--muted)}.pl3{fill:rgba(231,237,246,.48);stroke:var(--line);stroke-width:1.2}.pg3{stroke:var(--line);stroke-width:.9;fill:none}.fL{fill:rgba(47,95,227,0.10);stroke:var(--ink);stroke-width:1.8;stroke-linejoin:round}.fB{fill:rgba(47,95,227,0.20);stroke:var(--ink);stroke-width:1.8;stroke-linejoin:round}.s3{stroke:var(--pen);stroke-width:2.8;fill:none}.d3{stroke:var(--pen);stroke-width:2.4;fill:none;stroke-dasharray:6 5}.g3{stroke:var(--line);stroke-width:1.2;fill:none;stroke-dasharray:4 4}.c3{stroke:var(--muted);stroke-width:1.6;fill:none;stroke-dasharray:5 4}.m3{stroke:var(--margin);stroke-width:2.4;fill:none}.k3{stroke:var(--ink);stroke-width:1.7;fill:none}.l3{stroke:var(--muted);stroke-width:1;fill:none}</style>';
 
 function v3sub(a,b){ return [a[0]-b[0], a[1]-b[1], a[2]-b[2]]; }
 function v3add(a,b){ return [a[0]+b[0], a[1]+b[1], a[2]+b[2]]; }
@@ -583,12 +592,24 @@ function v3len(a){ return Math.hypot(a[0],a[1],a[2]); }
 function v3norm(a){ var L=v3len(a)||1; return [a[0]/L, a[1]/L, a[2]/L]; }
 
 /* один кадр сцены при углах поворота th (вокруг вертикали) и ph (наклон) */
-function render3DFrame(spec, th, ph){
+function render3DFrame(spec, th, ph, zoom){
   var W=380, Hh=310;
   var ct=Math.cos(th), st=Math.sin(th), cp=Math.cos(ph), sp=Math.sin(ph);
-  var maxR=0.001, k;
+  var maxR=0.001, k, ground=null;
+  if(spec.groundBase && spec.groundBase.length){
+    var gx0=Infinity, gx1=-Infinity, gy0=Infinity, gy1=-Infinity;
+    for(var gi0=0;gi0<spec.groundBase.length;gi0++){
+      var gp0=spec.pts[spec.groundBase[gi0]];
+      gx0=Math.min(gx0,gp0[0]); gx1=Math.max(gx1,gp0[0]);
+      gy0=Math.min(gy0,gp0[1]); gy1=Math.max(gy1,gp0[1]);
+    }
+    var gpx=Math.max(.24,(gx1-gx0)*.14), gpy=Math.max(.24,(gy1-gy0)*.14);
+    ground=[[gx0-gpx,gy0-gpy,0],[gx1+gpx,gy0-gpy,0],[gx1+gpx,gy1+gpy,0],[gx0-gpx,gy1+gpy,0]];
+  }
   for(k in spec.pts){ maxR=Math.max(maxR, v3len(spec.pts[k])); }
-  var s=Math.min(W,Hh)*0.5*0.78/maxR, cx=W/2, cy=Hh/2+10;
+  if(ground){ for(var gi1=0;gi1<ground.length;gi1++) maxR=Math.max(maxR,v3len(ground[gi1])); }
+  zoom=zoom||1;
+  var s=Math.min(W,Hh)*0.5*0.86/maxR*zoom, cx=W/2, cy=Hh/2+10;
   function pr(p){
     var x1=p[0]*ct-p[1]*st, y1=p[0]*st+p[1]*ct, z1=p[2];
     var depth=y1*cp - z1*sp;
@@ -601,12 +622,82 @@ function render3DFrame(spec, th, ph){
   var cg3=[0,0,0], n3=0;
   for(k in spec.pts){ cg3=v3add(cg3,spec.pts[k]); n3++; }
   cg3=v3mul(cg3,1/n3);
+  var pcg=pr(cg3), usedLabels=[];
+  function labelBox(x,y,t){
+    var w=Math.max(12,String(t).length*10.2);
+    return {x:x-3,y:y-20,w:w+6,h:26,cx:x+w/2,cy:y-8};
+  }
+  function overlapArea(a,b){
+    var w=Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x);
+    var h=Math.min(a.y+a.h,b.y+b.h)-Math.max(a.y,b.y);
+    return w>0&&h>0?w*h:0;
+  }
+  function labelPenalty(box, own){
+    var z=0;
+    for(var ui=0;ui<usedLabels.length;ui++) z+=overlapArea(box,usedLabels[ui])*90;
+    for(var pk in P2){
+      if(pk===own) continue;
+      var pp=P2[pk];
+      if(pp[0]>box.x-5&&pp[0]<box.x+box.w+5&&pp[1]>box.y-5&&pp[1]<box.y+box.h+5) z+=4200;
+    }
+    if(box.x<4) z+=(4-box.x)*500;
+    if(box.y<4) z+=(4-box.y)*500;
+    if(box.x+box.w>W-4) z+=(box.x+box.w-W+4)*500;
+    if(box.y+box.h>Hh-4) z+=(box.y+box.h-Hh+4)*500;
+    return z;
+  }
+  function reserveLabel(x,y,t){ usedLabels.push(labelBox(x,y,t)); }
+  function pointLabel(lb,q){
+    var t=lb.t, w=Math.max(12,String(t).length*10.2), dx=q[0]-pcg[0], dy=q[1]-pcg[1];
+    if(lb.fx!=null){
+      var fixedX=q[0]+lb.fx, fixedY=q[1]+lb.fy;
+      reserveLabel(fixedX,fixedY,t);
+      return T(fixedX,fixedY,t,lb.cls||'lb');
+    }
+    var dl=Math.hypot(dx,dy)||1, ux=dx/dl, uy=dy/dl;
+    var slots=[[28,0],[20,-20],[0,-28],[-20,-20],[-28,0],[-20,20],[0,28],[20,20]];
+    var pref=Math.round(Math.atan2(uy,ux)/(Math.PI/4));
+    if(pref<0) pref+=8;
+    var order=[pref];
+    for(var oi=0;oi<8;oi++) if(order.indexOf(oi)<0) order.push(oi);
+    var prev=spec._labelSlots&&spec._labelSlots[lb.p], candidates=[];
+    for(oi=0;oi<order.length;oi++){
+      var id=order[oi], sl=slots[id];
+      candidates.push({id:id,x:q[0]+sl[0]-w/2,y:q[1]+sl[1]+8});
+    }
+    var best=null;
+    for(var ci2=0;ci2<candidates.length;ci2++){
+      var ca=candidates[ci2], box=labelBox(ca.x,ca.y,t);
+      var sc=labelPenalty(box,lb.p)+ci2*14;
+      if(prev!=null&&prev!==ca.id) sc+=180;
+      if(!best||sc<best.score) best={score:sc,id:ca.id,x:ca.x,y:ca.y,box:box};
+    }
+    if(!spec._labelSlots) spec._labelSlots={};
+    spec._labelSlots[lb.p]=best.id;
+    usedLabels.push(best.box);
+    var leader='';
+    var moved=best.id!=='fixed'&&best.id!==pref;
+    if(moved){ leader=L(q,[best.box.cx,best.box.cy],'l3'); }
+    return leader+T(best.x,best.y,t,lb.cls||'lb');
+  }
   function labelPos(p3, ex){
     var d=v3sub(p3,cg3), Ld=v3len(d);
     if(Ld<0.22) return null;
     return pr(v3add(p3, v3mul(d,(ex||0.5)/Ld)));
   }
-  var out='<svg viewBox="0 0 '+W+' '+Hh+'" xmlns="http://www.w3.org/2000/svg">'+CSS3D;
+  var out='<svg viewBox="0 0 '+W+' '+Hh+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Интерактивная модель пирамиды"><title>Модель пирамиды</title><desc>Основание закреплено на горизонтальной плоскости. Модель можно поворачивать и увеличивать. Точные данные перечислены под рисунком.</desc>'+CSS3D;
+
+  /* горизонтальная опорная плоскость: основание пирамиды всегда лежит на ней */
+  if(ground){
+    var g2=[];
+    for(var gi2=0;gi2<ground.length;gi2++) g2.push(pr(ground[gi2]));
+    out+='<polygon points="'+g2.map(function(q){return q[0].toFixed(1)+','+q[1].toFixed(1);}).join(' ')+'" class="pl3"/>';
+    for(var gi3=1;gi3<5;gi3++){
+      var gt=gi3/5;
+      out+=L([g2[0][0]*(1-gt)+g2[3][0]*gt,g2[0][1]*(1-gt)+g2[3][1]*gt],[g2[1][0]*(1-gt)+g2[2][0]*gt,g2[1][1]*(1-gt)+g2[2][1]*gt],'pg3');
+      out+=L([g2[0][0]*(1-gt)+g2[1][0]*gt,g2[0][1]*(1-gt)+g2[1][1]*gt],[g2[3][0]*(1-gt)+g2[2][0]*gt,g2[3][1]*(1-gt)+g2[2][1]*gt],'pg3');
+    }
+  }
 
   /* призрачный куб */
   if(spec.ghost){
@@ -644,8 +735,8 @@ function render3DFrame(spec, th, ph){
         var t5=(sg.labAt!=null?sg.labAt:0.5);
         var mx=A2[0]*(1-t5)+B2[0]*t5, my=A2[1]*(1-t5)+B2[1]*t5;
         var dx=B2[0]-A2[0], dy=B2[1]-A2[1], Ln=Math.hypot(dx,dy)||1;
-        var sd=sg.side||1;
-        out+=T(mx-dy/Ln*13*sd-6, my+dx/Ln*13*sd+5, sg.lab, 'ac');
+        var sd=sg.side||1, labGap=sg.labGap||13;
+        out+=T(mx-dy/Ln*labGap*sd-6, my+dx/Ln*labGap*sd+5, sg.lab, 'ac');
       }
     }
   }
@@ -679,7 +770,8 @@ function render3DFrame(spec, th, ph){
     out+='<path d="'+pth+'" class="m3"/>';
     if(ar.lab){
       var lq=pr(v3add(Pw, v3mul(v3norm(dmid), rr+0.5)));
-      out+=T(lq[0]-17, lq[1]+7, ar.lab, 'lb');
+      var alx=lq[0]-17, aly=lq[1]+7;
+      out+=T(alx,aly,ar.lab,'lb'); reserveLabel(alx,aly,ar.lab);
     }
   }
   /* знаки прямых углов */
@@ -696,33 +788,37 @@ function render3DFrame(spec, th, ph){
   if(spec.dots){
     for(var di=0; di<spec.dots.length; di++){
       var dq=P2[spec.dots[di]];
-      out+='<circle cx="'+dq[0].toFixed(1)+'" cy="'+dq[1].toFixed(1)+'" r="3.6" fill="#1f2a44"/>';
+      out+='<circle cx="'+dq[0].toFixed(1)+'" cy="'+dq[1].toFixed(1)+'" r="3.8" fill="var(--ink)"/>';
     }
   }
   if(spec.labels){
     for(var li=0; li<spec.labels.length; li++){
       var lb=spec.labels[li], q4=P2[lb.p];
-      if(lb.fx!=null){ out+=T(q4[0]+lb.fx, q4[1]+lb.fy, lb.t, lb.cls||'lb'); continue; }
-      var lp5=labelPos(spec.pts[lb.p],0.42);
-      if(lp5) out+=T(lp5[0]-5, lp5[1]+5, lb.t, lb.cls||'lb');
-      else out+=T(q4[0]+9, q4[1]+15, lb.t, lb.cls||'lb');
+      out+=pointLabel(lb,q4);
     }
   }
   return out+'</svg>';
 }
 
-/* --- модели трёх типов пирамид (пропорции настоящие) --- */
+/* --- модели трёх типов пирамид: все отношения длин и углы настоящие --- */
 function spec20R(h, alpha){
   var t=Math.tan(alpha*Math.PI/180), S3=Math.sqrt(3);
   return {
-    th0:-0.55, ph0:0.44,
-    pts:{ A:[S3,-1,0], B:[-S3,-1,0], C:[0,2,0], O:[0,0,0], M:[0,-1,0], S:[0,0,0.55+t*0.95] },
+    th0:-0.55, ph0:0.68, lockGround:true, groundBase:['A','B','C'],
+    pts:{ A:[S3,-1,0], B:[-S3,-1,0], C:[0,2,0], O:[0,0,0], M:[0,-1,0], S:[0,0,t] },
     faces:[{v:['A','B','S']},{v:['B','C','S']},{v:['C','A','S']},{v:['A','B','C'],cls:'fB'}],
-    segs:[{a:'S',b:'O',cls:'d3',lab:'h = '+h,labAt:0.28},{a:'O',b:'M',cls:'d3',lab:'r',labAt:0.55,side:-1},{a:'S',b:'M',cls:'s3'}],
-    arc:{at:'M',u:'S',v:'O',r:0.55,lab:'α = '+alpha+'°'},
-    ras:[{at:'O',u:'S',v:'M',s:0.22}],
+    segs:[{a:'S',b:'O',cls:'d3',key:'height',lab:'h',side:-1,labGap:24},{a:'O',b:'M',cls:'d3',key:'radius'},{a:'S',b:'M',cls:'s3',key:'angle'}],
+    arc:{at:'M',u:'S',v:'O',r:0.42,lab:'α'},
+    ras:[{at:'O',u:'S',v:'M',s:0.20},{at:'M',u:'O',v:'A',s:0.17},{at:'M',u:'S',v:'A',s:0.17}],
     dots:['S','A','B','C','O','M'],
-    labels:[{p:'S',t:'S'},{p:'A',t:'A'},{p:'B',t:'B'},{p:'C',t:'C'},{p:'O',t:'O',cls:'mu',fx:9,fy:20},{p:'M',t:'M',cls:'mu'}]
+    labels:[{p:'S',t:'S',fx:18,fy:-12},{p:'A',t:'A'},{p:'B',t:'B'},{p:'C',t:'C'},{p:'O',t:'O',cls:'mu',fx:-28,fy:25},{p:'M',t:'M',cls:'mu',fx:16,fy:24}],
+    facts:[
+      {key:'height',t:'SO = h = '+h},
+      {key:'radius',t:'OM = r'},
+      {key:'angle',t:'∠SMO = α = '+alpha+'°'},
+      {key:'base',t:'AB = BC = CA = a'}
+    ],
+    section:'Главное сечение для решения: прямоугольный треугольник SOM.'
   };
 }
 function spec20P(a,b,alpha){
@@ -733,32 +829,44 @@ function spec20P(a,b,alpha){
   var shx=(A[0]+B[0]+Cv[0])/3, shy=(A[1]+B[1]+Cv[1])/3;
   function sh(p){ return [p[0]-shx, p[1]-shy, p[2]]; }
   return {
-    th0:-0.75, ph0:0.78,
-    pts:{ A:sh(A), B:sh(B), C:sh(Cv), O:sh([r,r,0]), K:sh([r,0,0]), S:sh([r,r,r*(0.5+t*1.1)+0.6]) },
+    th0:-0.75, ph0:0.72, lockGround:true, groundBase:['A','B','C'],
+    pts:{ A:sh(A), B:sh(B), C:sh(Cv), O:sh([r,r,0]), K:sh([r,0,0]), S:sh([r,r,r*t]) },
     faces:[{v:['A','B','S']},{v:['B','C','S']},{v:['C','A','S']},{v:['A','B','C'],cls:'fB'}],
     circle:{c:sh([r,r,0]), r:r},
-    segs:[{a:'S',b:'O',cls:'d3',lab:'h',labAt:0.72},{a:'O',b:'K',cls:'d3'},{a:'S',b:'K',cls:'s3'}],
-    elabels:[{a:'C',b:'B',t:'a = '+a,at:0.3},{a:'C',b:'A',t:'b = '+b},{a:'A',b:'B',t:'c',cls:'mu'}],
-    arc:{at:'K',u:'S',v:'O',r:Math.min(0.5,r*0.6),lab:'α = '+alpha+'°'},
-    ras:[{at:'C',u:'A',v:'B',s:0.3}],
+    segs:[{a:'S',b:'O',cls:'d3',key:'height',lab:'h',side:-1,labGap:24},{a:'O',b:'K',cls:'d3',key:'radius'},{a:'S',b:'K',cls:'s3',key:'angle'}],
+    arc:{at:'K',u:'S',v:'O',r:Math.min(0.45,r*0.55),lab:'α'},
+    ras:[{at:'C',u:'A',v:'B',s:0.26},{at:'O',u:'S',v:'K',s:0.18},{at:'K',u:'O',v:'C',s:0.16},{at:'K',u:'S',v:'C',s:0.16}],
     dots:['S','A','B','C','O','K'],
-    labels:[{p:'S',t:'S'},{p:'A',t:'A'},{p:'B',t:'B'},{p:'C',t:'C'},{p:'O',t:'O',cls:'mu',fx:11,fy:18},{p:'K',t:'K',cls:'mu'}]
+    labels:[{p:'S',t:'S',fx:18,fy:-12},{p:'A',t:'A'},{p:'B',t:'B'},{p:'C',t:'C'},{p:'O',t:'O',cls:'mu',fx:-28,fy:25},{p:'K',t:'K',cls:'mu',fx:-28,fy:25}],
+    facts:[
+      {key:'base',t:'CB = a = '+a},
+      {key:'base',t:'CA = b = '+b},
+      {key:'hyp',t:'AB = c'},
+      {key:'radius',t:'OK = r'},
+      {key:'height',t:'SO = h'},
+      {key:'angle',t:'∠SKO = α = '+alpha+'°'}
+    ],
+    section:'Главное сечение для решения: прямоугольный треугольник SOK.'
   };
 }
-function spec20C(aTxt){
-  var q=1.15;
-  function cc(x,y,z){ return [(x-0.5)*2*q, (y-0.5)*2*q, (z-0.5)*2*q]; }
-  var c000=cc(0,0,0), c100=cc(1,0,0), c010=cc(0,1,0), c001=cc(0,0,1),
-      c110=cc(1,1,0), c101=cc(1,0,1), c011=cc(0,1,1), c111=cc(1,1,1);
+function spec20C(aTxt, hTxt){
+  /* SA, SB и SC попарно перпендикулярны, а ABC лежит в плоскости z = 0. */
+  var ell=2.15, hh=ell/Math.sqrt(3), rr=ell*Math.sqrt(2/3), s3=Math.sqrt(3);
   return {
-    th0:0.55, ph0:0.42,
-    pts:{ S:c111, A:c011, B:c101, C:c110 },
-    ghost:[[c000,c100],[c000,c010],[c000,c001],[c100,c110],[c100,c101],[c010,c110],[c010,c011],[c001,c101],[c001,c011],[c110,c111],[c101,c111],[c011,c111]],
+    th0:0.42, ph0:0.48, lockGround:true, groundBase:['A','B','C'],
+    pts:{ S:[0,0,hh], O:[0,0,0], A:[rr,0,0], B:[-rr/2,rr*s3/2,0], C:[-rr/2,-rr*s3/2,0] },
     faces:[{v:['S','A','B']},{v:['S','B','C']},{v:['S','A','C']},{v:['A','B','C'],cls:'fB'}],
-    ras:[{at:'S',u:'A',v:'B',s:0.3},{at:'S',u:'B',v:'C',s:0.3}],
-    elabels:[{a:'S',b:'A',t:'ℓ'},{a:'S',b:'C',t:'ℓ'},{a:'A',b:'B',t:'a = '+aTxt}],
-    dots:['S','A','B','C'],
-    labels:[{p:'S',t:'S'},{p:'A',t:'A'},{p:'B',t:'B'},{p:'C',t:'C'}]
+    segs:[{a:'S',b:'O',cls:'d3',key:'height',lab:'h',labAt:0.43,side:-1,labGap:25}],
+    ras:[{at:'O',u:'S',v:'A',s:0.22},{at:'S',u:'A',v:'B',s:0.22}],
+    dots:['S','A','B','C','O'],
+    labels:[{p:'S',t:'S',fx:18,fy:-10},{p:'A',t:'A'},{p:'B',t:'B'},{p:'C',t:'C'},{p:'O',t:'O',cls:'mu',fx:-28,fy:25}],
+    facts:[
+      {key:'lateral',t:'SA = SB = SC = ℓ'},
+      {key:'base',t:'AB = BC = CA = a = '+aTxt},
+      {key:'height',t:'SO = h = '+hTxt},
+      {key:'right',t:'∠ASB = ∠BSC = ∠CSA = 90°'}
+    ],
+    section:'Основание ABC закреплено на горизонтальной плоскости; SO — высота пирамиды.'
   };
 }
 
@@ -780,40 +888,89 @@ function spin3D(scope, on){
   var els=scope.querySelectorAll('[data-f3d]');
   for(var i=0;i<els.length;i++){ if(els[i]._spin) els[i]._spin(on); }
 }
+function set3DFocus(scope, keys){
+  if(typeof document==='undefined' || !document) return;
+  var els=scope.querySelectorAll('[data-f3d]');
+  for(var i=0;i<els.length;i++){ if(els[i]._setFocus) els[i]._setFocus(keys||[]); }
+}
 function init3D(el, spec){
   if(!spec) return;
-  var th=spec.th0!=null?spec.th0:-0.55, ph=spec.ph0!=null?spec.ph0:0.44;
+  if(!spec._view) spec._view={th:spec.th0!=null?spec.th0:-0.55,ph:spec.ph0!=null?spec.ph0:0.44,zoom:1};
+  var view=spec._view, th=view.th, ph=view.ph, zoom=view.zoom||1;
   el.innerHTML='';
-  var stage=document.createElement('div'); stage.className='v3s'; el.appendChild(stage);
-  var rst=document.createElement('button'); rst.className='rst'; rst.type='button'; rst.title='Вернуть вид'; rst.textContent='⟲'; el.appendChild(rst);
-  var cap=document.createElement('div'); cap.className='cap'; cap.textContent='🖐 3D-модель: поверни её пальцем или мышью'; el.appendChild(cap);
-  function draw(){ stage.innerHTML=render3DFrame(spec,th,ph); }
-  rst.onclick=function(){ th=spec.th0!=null?spec.th0:-0.55; ph=spec.ph0!=null?spec.ph0:0.44; draw(); };
-  var spin=null;
+  var shell=document.createElement('div'); shell.className='v3stage'; el.appendChild(shell);
+  var stage=document.createElement('div'); stage.className='v3s'; shell.appendChild(stage);
+  var ctl=document.createElement('div'); ctl.className='v3ctl';
+  ctl.innerHTML='<button type="button" data-z="out" aria-label="Уменьшить модель">−</button>'
+    +'<span class="v3zoom" aria-live="polite">Масштаб 100%</span>'
+    +'<button type="button" data-z="in" aria-label="Увеличить модель">+</button>'
+    +'<button type="button" data-z="fit">По размеру</button>'
+    +'<button type="button" data-z="reset">Исходный вид</button>';
+  el.appendChild(ctl);
+  var cap=document.createElement('div'); cap.className='cap'; cap.textContent=spec.lockGround?'🖐 Основание закреплено на горизонтальной плоскости. Поворачивай модель влево и вправо.':'🖐 Поверни модель мышью или пальцем. Точные данные записаны ниже.'; el.appendChild(cap);
+  var facts=document.createElement('div'); facts.className='v3facts';
+  var given=document.createElement('strong'); given.className='v3given'; given.textContent='Дано на рисунке:'; facts.appendChild(given);
+  var farr=spec.facts||[];
+  for(var fi=0;fi<farr.length;fi++){
+    var fact=document.createElement('span'); fact.className='v3fact'; fact.setAttribute('data-fact',farr[fi].key||''); fact.textContent=farr[fi].t; facts.appendChild(fact);
+  }
+  el.appendChild(facts);
+  if(spec.section){ var sn=document.createElement('div'); sn.className='section-note'; sn.textContent=spec.section; el.appendChild(sn); }
+  var raf=0;
+  function remember(){ view.th=th; view.ph=ph; view.zoom=zoom; }
+  function drawNow(){ raf=0; remember(); stage.innerHTML=render3DFrame(spec,th,ph,zoom); ctl.querySelector('.v3zoom').textContent='Масштаб '+Math.round(zoom*100)+'%'; }
+  function draw(){ if(!raf) raf=requestAnimationFrame(drawNow); }
+  ctl.onclick=function(e){
+    var b=e.target.closest('button[data-z]'); if(!b) return;
+    var z=b.getAttribute('data-z');
+    if(z==='in') zoom=Math.min(1.6,Math.round((zoom+0.1)*10)/10);
+    else if(z==='out') zoom=Math.max(0.7,Math.round((zoom-0.1)*10)/10);
+    else if(z==='fit') zoom=1;
+    else { th=spec.th0!=null?spec.th0:-0.55; ph=spec.ph0!=null?spec.ph0:0.44; zoom=1; }
+    draw();
+  };
+  var spin=0, spinLast=0;
   el._spin=function(on){
-    if(on && !spin){ spin=setInterval(function(){ th+=0.005; draw(); }, 40); }
-    else if(!on && spin){ clearInterval(spin); spin=null; }
+    if(on && !spin){
+      spinLast=performance.now();
+      var tick=function(now){
+        if(!spin) return;
+        th+=(now-spinLast)*0.000055;
+        spinLast=now; draw(); spin=requestAnimationFrame(tick);
+      };
+      spin=requestAnimationFrame(tick);
+    } else if(!on && spin){ cancelAnimationFrame(spin); spin=0; }
+  };
+  el._setFocus=function(keys){
+    var a=Array.isArray(keys)?keys:[keys];
+    var fs=facts.querySelectorAll('.v3fact');
+    for(var i=0;i<fs.length;i++) fs[i].classList.toggle('is-active',a.indexOf(fs[i].getAttribute('data-fact'))>=0);
   };
   var drag=null;
-  el.addEventListener('pointerdown',function(e){
-    if(e.target===rst) return;
+  shell.addEventListener('pointerdown',function(e){
     el._spin(false);
     drag=[e.clientX,e.clientY];
-    try{ el.setPointerCapture(e.pointerId); }catch(_){ }
+    try{ shell.setPointerCapture(e.pointerId); }catch(_){ }
     e.preventDefault();
   });
-  el.addEventListener('pointermove',function(e){
+  shell.addEventListener('pointermove',function(e){
     if(!drag) return;
     th+=(e.clientX-drag[0])*0.011;
-    ph+=(e.clientY-drag[1])*0.011;
-    if(ph<0.06) ph=0.06;
-    if(ph>1.45) ph=1.45;
+    if(!spec.lockGround){
+      ph+=(e.clientY-drag[1])*0.011;
+      if(ph<0.06) ph=0.06;
+      if(ph>1.45) ph=1.45;
+    }
     drag=[e.clientX,e.clientY];
     draw();
   });
-  el.addEventListener('pointerup',function(){ drag=null; });
-  el.addEventListener('pointercancel',function(){ drag=null; });
-  draw();
+  function endDrag(e){
+    drag=null;
+    try{ if(shell.hasPointerCapture(e.pointerId)) shell.releasePointerCapture(e.pointerId); }catch(_){ }
+  }
+  shell.addEventListener('pointerup',endDrag);
+  shell.addEventListener('pointercancel',endDrag);
+  drawNow();
 }
 
 /* ================= форматирование выражений ================= */
@@ -960,6 +1117,60 @@ var F19 = {
   E:{argS:'x − y',  lin:[2,-3], logv:[1,-1], sub:null, mk:function(M,pC){ var C=(pC==null)?ri(-5,9):pC; var y0=2*M-C; return {x0:y0+M, y0:y0, C:C}; }}
 };
 
+function f19ConstMinus(C,coef,v){
+  var term=(coef===1?'':coef)+v;
+  return C===0?'−'+term:numTxt(C)+' − '+term;
+}
+function f19TermMinusConst(term,C){
+  if(C===0) return term;
+  return term+(C>0?' − ':' + ')+Math.abs(C);
+}
+function f19TermPlusConst(term,C){
+  if(C===0) return term;
+  return term+(C>0?' + ':' − ')+Math.abs(C);
+}
+function f19Method(form,C,M,x0,y0){
+  var m={};
+  if(form==='A'){
+    m.expressVar='x'; m.otherVar='y'; m.exprR=f19ConstMinus(C,2,'y');
+    m.subArg=f19ConstMinus(C,1,'y'); m.wrongArg=f19TermPlusConst('y',C);
+    m.subWork='('+m.exprR+') + y = '+m.subArg;
+    m.targetVar='y'; m.targetVal=y0; m.solveEq=m.subArg+' = '+M;
+    m.restoreVar='x'; m.restoreVal=x0; m.restoreCalc='x = '+C+' − 2·('+y0+') = '+x0;
+    m.wrongExpr=[f19TermPlusConst('2y',C),f19TermMinusConst('2y',C),f19ConstMinus(C,2,'x')];
+  } else if(form==='B'){
+    m.expressVar='y'; m.otherVar='x'; m.exprR=f19TermMinusConst('3x',C);
+    m.subArg=f19ConstMinus(C,1,'x'); m.wrongArg=f19TermPlusConst('x',C);
+    m.subWork='2x − ('+m.exprR+') = '+m.subArg;
+    m.targetVar='x'; m.targetVal=x0; m.solveEq=m.subArg+' = '+M;
+    m.restoreVar='y'; m.restoreVal=y0; m.restoreCalc='y = 3·('+x0+') − ('+C+') = '+y0;
+    m.wrongExpr=[f19TermPlusConst('3x',C),f19ConstMinus(C,3,'x'),f19TermMinusConst('3y',C)];
+  } else if(form==='C'){
+    m.expressVar='y'; m.otherVar='x'; m.exprR=f19TermMinusConst('2x',C);
+    m.subArg=f19ConstMinus(C,1,'x'); m.wrongArg=f19TermPlusConst('x',C);
+    m.subWork='x − ('+m.exprR+') = '+m.subArg;
+    m.targetVar='x'; m.targetVal=x0; m.solveEq=m.subArg+' = '+M;
+    m.restoreVar='y'; m.restoreVal=y0; m.restoreCalc='y = 2·('+x0+') − ('+C+') = '+y0;
+    m.wrongExpr=[f19TermPlusConst('2x',C),f19ConstMinus(C,2,'x'),f19TermMinusConst('2y',C)];
+  } else if(form==='D'){
+    m.expressVar='x'; m.otherVar='y'; m.exprR=f19ConstMinus(C,3,'y');
+    m.subArg=f19ConstMinus(C,1,'y'); m.wrongArg=f19TermPlusConst('y',C);
+    m.subWork='('+m.exprR+') + 2y = '+m.subArg;
+    m.targetVar='y'; m.targetVal=y0; m.solveEq=m.subArg+' = '+M;
+    m.restoreVar='x'; m.restoreVal=x0; m.restoreCalc='x = '+C+' − 3·('+y0+') = '+x0;
+    m.wrongExpr=[f19TermPlusConst('3y',C),f19TermMinusConst('3y',C),f19ConstMinus(C,3,'x')];
+  } else {
+    m.expressVar='x'; m.otherVar='y'; m.exprR=fr(f19TermPlusConst('3y',C),2);
+    m.subArg=fr(f19TermPlusConst('y',C),2); m.wrongArg=fr(f19TermMinusConst('y',C),2);
+    m.subWork=m.exprR+' − y = '+m.subArg;
+    m.targetVar='y'; m.targetVal=y0; m.solveEq=m.subArg+' = '+M;
+    m.restoreVar='x'; m.restoreVal=x0; m.restoreCalc='x = ('+C+' + 3·('+y0+')) / 2 = '+x0;
+    m.wrongExpr=[fr(f19TermMinusConst('3y',C),2),f19TermPlusConst('3y',C),fr(f19TermPlusConst('2y',C),3)];
+  }
+  m.expr=m.expressVar+' = '+m.exprR;
+  return m;
+}
+
 function gen19(preset){
   var form = preset ? preset.form : pick(['A','B','C','D','E']);
   var bc;
@@ -973,118 +1184,58 @@ function gen19(preset){
   var linS = plin(F.lin[0], F.lin[1], C);
   var logS = logTxt(b, F.argS, c);
   var bs = b+'<sup>'+c+'</sup>';
-  var sysNew = sysHTML(linS, F.argS+' = '+M);
+  var method=f19Method(form,C,M,x0,y0);
 
   var steps=[];
   steps.push({
-    q:'Первым делом уберём логарифм. Что означает запись '+logTxt(b,'A',c)+'?',
-    tip:'Логарифм отвечает на вопрос: «в какую степень возвести '+b+', чтобы получить A?»',
+    q:'Начинаем с первого уравнения: '+linS+'. Вырази '+method.expressVar+' через '+method.otherVar+'.',
+    tip:'Перенеси остальные слагаемые в правую часть и не потеряй знаки.',
     opts: buildOpts(
-      {h:'A = '+bs+' — «'+b+' в степени '+c+' равно A»', exp:'Это определение логарифма: log'+'<sub>'+b+'</sub>A = '+c+' ⇔ A = '+bs+'.'},
+      {h:method.expr, exp:'Теперь вместо '+method.expressVar+' во втором уравнении можно подставить выражение '+method.exprR+'.'},
+      method.wrongExpr.map(function(w){ return {h:method.expressVar+' = '+w,hint:'Проверь перенос слагаемых в уравнении '+linS+'.'}; }))
+  });
+  steps.push({
+    q:'Подставь '+method.exprR+' вместо '+method.expressVar+' в логарифмическое уравнение. Как упростится выражение под логарифмом?',
+    tip:'После подстановки приведи подобные слагаемые внутри скобок.',
+    opts: buildOpts(
+      {h:logTxt(b,method.subArg,c), exp:method.subWork+'. Теперь во втором уравнении осталась только одна переменная.'},
       [
-        {h:'A = '+c+'<sup>'+b+'</sup>', hint:'Основание и показатель перепутаны: в степень возводится основание логарифма, то есть '+b+'.'},
-        {h:'A = '+b+' · '+c, hint:'Логарифм — это про степень, а не про умножение. log'+'<sub>b</sub>A = c значит A = b<sup>c</sup>.'},
-        {h:'A = '+b+' + '+c, hint:'Сложение здесь ни при чём. По определению: A = b<sup>c</sup>.'}
+        {h:logS, hint:'Это исходное уравнение. Нужно заменить '+method.expressVar+' выражением '+method.exprR+'.'},
+        {h:logTxt(b,method.wrongArg,c), hint:'Перепроверь знаки после подстановки: '+method.subWork+'.'},
+        {h:method.subArg+' = '+c, hint:'Логарифм пока нельзя просто отбросить. Сначала запиши уравнение после подстановки.'}
       ])
   });
   steps.push({
-    q:'Вычисли '+bs+'.',
+    q:'Теперь применим определение логарифма: '+logTxt(b,method.subArg,c)+'. В какое обычное уравнение оно превращается?',
+    tip:'log<sub>b</sub>A = c означает A = b<sup>c</sup>. Здесь '+bs+' = '+M+'.',
     opts: buildOpts(
-      {h:String(M), exp:''},
+      {h:method.subArg+' = '+bs+' = '+M, exp:'Логарифм убран по определению. Осталось решить одно линейное уравнение.'},
       [
-        {h:String(b*c), hint:'Это '+b+'·'+c+', то есть умножение. А степень — это '+b+', умноженное само на себя '+c+' раз(а).'},
-        {h:String(Math.pow(c,b)), hint:'Перепутаны основание и показатель: нужно '+bs+'.'},
-        {h:String(b+c), hint:'Это сумма, а нужна степень: '+bs+'.'},
-        {h:String(2*M), hint:'Пересчитай аккуратно: '+bs+' = '+M+'.'}
+        {h:method.subArg+' = '+(b*c), hint:''+bs+' — это степень, а не произведение '+b+'·'+c+'.'},
+        {h:method.subArg+' = '+c, hint:'Справа должно появиться '+bs+', а не просто показатель '+c+'.'},
+        {h:method.subArg+' = '+c+'<sup>'+b+'</sup>', hint:'Основание и показатель перепутаны: нужно '+bs+' = '+M+'.'}
       ])
   });
   steps.push({
-    q:'Значит, второе уравнение превращается в «'+F.argS+' = '+M+'». Какая система получается?',
+    q:'Реши уравнение '+method.solveEq+'. Найди '+method.targetVar+'.',
     opts: buildOpts(
-      {h:sysNew, exp:'Логарифма больше нет — осталась пара линейных уравнений.'},
+      {h:method.targetVar+' = '+method.targetVal, exp:'Первая переменная найдена.'},
       [
-        {h:sysHTML(linS, F.argS+' = '+(b*c)), hint:''+bs+' — это степень, а не произведение '+b+'·'+c+'.'},
-        {h:sysHTML(linS, F.argS+' = '+c), hint:'Просто «отбросить» логарифм нельзя: правая часть становится равной '+bs+' = '+M+'.'},
-        {h:sysHTML(F.argS+' = '+M, F.argS+' = '+C), hint:'Первое уравнение системы не трогаем — оно и так линейное.'}
+        {h:method.targetVar+' = '+(-method.targetVal), hint:'Проверь знак при переносе слагаемого.'},
+        {h:method.targetVar+' = '+(M-C), hint:'Не меняй порядок вычитания: реши '+method.solveEq+'.'},
+        {h:method.otherVar+' = '+method.targetVal, hint:'Сейчас уравнение содержит переменную '+method.targetVar+', её и нужно найти.'}
       ])
   });
-
-  if(form!=='E'){
-    var subVal = C-M;
-    var subVar = F.sub;
-    var othVar = subVar==='x' ? 'y' : 'x';
-    var othVal = subVar==='x' ? y0 : x0;
-    steps.push({
-      q:'Оба уравнения линейные. Вычти из первого уравнения второе: ('+linS.split(' = ')[0]+') − ('+F.argS+') = '+C+' − ('+M+'). Что останется?',
-      tip:'Одинаковые слагаемые сократятся, останется одна буква.',
-      opts: buildOpts(
-        {h:subVar+' = '+subVal, exp:'Одна переменная уже найдена!'},
-        [
-          {h:subVar+' = '+(M-C), hint:'Знак! Вычитаем из первого второе, значит справа '+C+' − '+M+' = '+subVal+'.'},
-          {h:othVar+' = '+subVal, hint:'Посмотри, какая буква сокращается при вычитании, а какая остаётся. Остаётся '+subVar+'.'},
-          {h:subVar+' = '+(C+M), hint:'Мы вычитаем, а не складываем: '+C+' − '+M+' = '+subVal+'.'}
-        ])
-    });
-    var secondQ, secondOk, secondWrong;
-    if(form==='A'){
-      secondQ='Подставь '+subVar+' = '+subVal+' в уравнение x + y = '+M+' и найди x.';
-      secondOk='x = '+M+' − ('+subVal+') = '+x0;
-      secondWrong=[{h:'x = '+(M+subVal), hint:'x = '+M+' − y, то есть вычитаем: '+M+' − ('+subVal+') = '+x0+'.'},
-                   {h:'x = '+(subVal-M), hint:'Не перепутай порядок: из '+M+' вычитаем y.'},
-                   {h:'x = '+(C-subVal), hint:'Удобнее подставить во второе уравнение: x = '+M+' − y = '+x0+'.'}];
-    } else if(form==='B'){
-      secondQ='Подставь x = '+subVal+' в уравнение 2x − y = '+M+' и найди y.';
-      secondOk='y = 2·('+subVal+') − '+M+' = '+y0;
-      secondWrong=[{h:'y = '+(2*subVal+M), hint:'y = 2x − '+M+', то есть '+M+' вычитаем: получится '+y0+'.'},
-                   {h:'y = '+(M-2*subVal), hint:'Выражаем y: из 2x − y = '+M+' следует y = 2x − '+M+'.'},
-                   {h:'y = '+(subVal-M), hint:'Не забудь умножить x на 2: y = 2x − '+M+' = '+y0+'.'}];
-    } else if(form==='C'){
-      secondQ='Подставь x = '+subVal+' в уравнение x − y = '+M+' и найди y.';
-      secondOk='y = '+subVal+' − '+M+' = '+y0;
-      secondWrong=[{h:'y = '+(M-subVal), hint:'Из x − y = '+M+' получаем y = x − '+M+', а не наоборот.'},
-                   {h:'y = '+(subVal+M), hint:'Вычитаем, а не складываем: y = x − '+M+' = '+y0+'.'},
-                   {h:'y = '+(C-subVal), hint:'Подставляй во второе уравнение: y = x − '+M+'.'}];
-    } else {
-      secondQ='Подставь y = '+subVal+' в уравнение x + 2y = '+M+' и найди x.';
-      secondOk='x = '+M+' − 2·('+subVal+') = '+x0;
-      secondWrong=[{h:'x = '+(M-subVal), hint:'Перед y стоит двойка: x = '+M+' − 2y = '+x0+'.'},
-                   {h:'x = '+(M+2*subVal), hint:'2y нужно вычесть: x = '+M+' − 2y.'},
-                   {h:'x = '+(2*subVal-M), hint:'Порядок: из '+M+' вычитаем 2y, получается '+x0+'.'}];
-    }
-    steps.push({ q:secondQ, opts: buildOpts({h:secondOk, exp:''}, secondWrong) });
-  } else {
-    steps.push({
-      q:'Здесь удобна подстановка. Вырази x из второго уравнения x − y = '+M+'.',
-      opts: buildOpts(
-        {h:'x = y + '+M, exp:'Теперь этим выражением заменим x в первом уравнении.'},
-        [
-          {h:'x = y − '+M, hint:'Переносим −y вправо со сменой знака: x = y + '+M+'.'},
-          {h:'x = '+M+' − y', hint:'Из x − y = '+M+' следует x = y + '+M+', а не '+M+' − y.'},
-          {h:'y = x + '+M, hint:'Выражаем именно x — его удобно подставить в первое уравнение.'}
-        ])
-    });
-    steps.push({
-      q:'Подставь x = y + '+M+' в первое уравнение: 2(y + '+M+') − 3y = '+C+'. Найди y.',
-      tip:'Раскрой скобки: 2y + '+(2*M)+' − 3y = '+C+', то есть −y + '+(2*M)+' = '+C+'.',
-      opts: buildOpts(
-        {h:'y = '+y0, exp:'2M − C = '+(2*M)+' − ('+C+') = '+y0+'.'},
-        [
-          {h:'y = '+(C-2*M), hint:'После раскрытия скобок: −y = '+C+' − '+(2*M)+', значит y = '+(2*M)+' − '+C+' = '+y0+'.'},
-          {h:'y = '+(C-M), hint:'Не забудь умножить '+M+' на 2 при раскрытии скобок: 2(y + '+M+') = 2y + '+(2*M)+'.'},
-          {h:'y = '+(2*M+C), hint:'Со знаком аккуратнее: y = '+(2*M)+' − ('+C+') = '+y0+'.'}
-        ])
-    });
-    steps.push({
-      q:'Теперь найди x = y + '+M+'.',
-      opts: buildOpts(
-        {h:'x = '+x0, exp:''},
-        [
-          {h:'x = '+(y0-M), hint:'Прибавляем, а не вычитаем: x = '+y0+' + '+M+' = '+x0+'.'},
-          {h:'x = '+(M-y0), hint:'x = y + '+M+', подставь y = '+y0+'.'},
-          {h:'x = '+(x0+M), hint:'Пересчитай: '+y0+' + '+M+' = '+x0+'.'}
-        ])
-    });
-  }
+  steps.push({
+    q:'Вернись к выражению '+method.expr+' и найди '+method.restoreVar+'.',
+    opts: buildOpts(
+      {h:method.restoreVar+' = '+method.restoreVal, exp:method.restoreCalc+'.'},
+      [
+        {h:method.restoreVar+' = '+(-method.restoreVal), hint:'Подставь '+method.targetVar+' = '+method.targetVal+' в '+method.expr+' и проверь знак.'},
+        {h:method.restoreVar+' = '+method.targetVal, hint:'Это значение другой переменной. Выполни подстановку в '+method.expr+'.'},
+        {h:method.otherVar+' = '+method.restoreVal, hint:'В ответе сейчас ищем именно '+method.restoreVar+'.'}
+      ])
+  });
 
   steps.push({
     q:'Обязательная проверка ОДЗ: под логарифмом стоит '+F.argS+'. Чему оно равно и всё ли в порядке?',
@@ -1108,16 +1259,12 @@ function gen19(preset){
   });
 
   var recap=[
-    'По определению логарифма: '+F.argS+' = '+bs+' = '+M+'.',
-    'Система: '+linS+' и '+F.argS+' = '+M+'.'
+    'Из первого уравнения выражаем переменную: '+method.expr+'.',
+    'Подставляем во второе: '+logTxt(b,method.subArg,c)+'.',
+    'По определению логарифма: '+method.subArg+' = '+bs+' = '+M+'.',
+    'Решаем уравнение с одной переменной: '+method.targetVar+' = '+method.targetVal+'.',
+    'Возвращаемся к '+method.expr+' и получаем '+method.restoreVar+' = '+method.restoreVal+'.'
   ];
-  if(form!=='E'){
-    recap.push('Вычитаем из первого уравнения второе: '+F.sub+' = '+C+' − '+M+' = '+(C-M)+'.');
-    recap.push('Подставляем и находим вторую переменную: x = '+x0+', y = '+y0+'.');
-  } else {
-    recap.push('Выражаем x = y + '+M+' и подставляем: 2(y + '+M+') − 3y = '+C+' ⇒ y = '+y0+'.');
-    recap.push('Тогда x = y + '+M+' = '+x0+'.');
-  }
   recap.push('ОДЗ: под логарифмом '+F.argS+' = '+M+' &gt; 0 — верно.');
 
   return {
@@ -1311,14 +1458,16 @@ function gen20P(legs, alpha){
 function gen20C(n){
   n = n || pick([1,2,3]);
   var aTxt=(n===1?'':n)+'√2';
+  var hTxt=n===3?'√3':(n===1?'√3/3':n+'√3/3');
   var Vp=n*n*n, Vq=6, g=gcd(Vp,Vq);
   var Vtxt=redFrac(n*n*n,6);
-  var fig=fig3d(spec20C(aTxt));
+  var fig=fig3d(spec20C(aTxt,hTxt));
 
   var steps=[];
   steps.push({
     q:'Все плоские углы при вершине S прямые: рёбра SA, SB, SC попарно перпендикулярны. На что похожа такая пирамида?',
     fig: fig,
+    focus:['right','lateral'],
     opts: buildOpts(
       {h:'На угол куба: три ребра выходят из одной вершины под прямыми углами', exp:'Значит, можно считать как «отрезанный уголок» куба.'},
       [
@@ -1329,6 +1478,7 @@ function gen20C(n){
   });
   steps.push({
     q:'Пусть SA = SB = SC = ℓ. Тогда AB — гипотенуза прямоугольного треугольника ASB, то есть AB = ℓ√2. По условию AB = '+aTxt+'. Найди ℓ.',
+    focus:['lateral','base'],
     tip:'Сравни: ℓ√2 = '+aTxt+'.',
     opts: buildOpts(
       {h:'ℓ = '+n, exp:''},
@@ -1340,17 +1490,19 @@ function gen20C(n){
   });
   steps.push({
     q:'Как удобнее всего посчитать объём такой пирамиды?',
+    focus:['lateral','right'],
     tip:'Основанием можно объявить любую грань — лишь бы высота к ней была известна.',
     opts: buildOpts(
-      {h:'Взять основанием прямоугольный △ASB (катеты по ℓ), а высотой — ребро SC ⊥ этой грани', exp:'Тогда всё известно: S = ℓ²/2 и h = ℓ.'},
+      {h:'Взять основанием прямоугольный △ASB (катеты по ℓ), а высотой — ребро SC ⊥ этой грани', exp:'Тогда всё известно: S основания = ℓ²/2 и h = ℓ.'},
       [
         {h:'Только через основание ABC и высоту из S — иначе нельзя', hint:'Можно! Основанием пирамиды разрешается взять любую грань. Через △ASB выходит в разы проще.'},
         {h:'V = ℓ³, как у куба', hint:'Это объём целого куба с ребром ℓ, а наш «уголок» гораздо меньше.'},
-        {h:'Сложить площади всех граней', hint:'Сумма площадей — это поверхность, а не объём. Считаем V = ⅓·S·h.'}
+        {h:'Сложить площади всех граней', hint:'Сумма площадей — это поверхность, а не объём. Считаем V = ⅓·S основания·h.'}
       ])
   });
   steps.push({
     q:'Итак: V = '+fr(1,3)+' · '+fr('ℓ²',2)+' · ℓ = '+fr('ℓ³',6)+'. Вычисли для ℓ = '+n+'.',
+    focus:['lateral','base'],
     opts: buildOpts(
       {h:'V = '+Vtxt, exp:''},
       [
@@ -1365,11 +1517,12 @@ function gen20C(n){
     statement:'Все плоские углы при вершине правильной треугольной пирамиды — прямые. Найдите объём пирамиды, если сторона её основания равна <b>'+aTxt+'</b>.',
     answer:'V = '+Vtxt,
     fig: fig,
+    persistentFig:true,
     steps: steps,
     recap:[
       'Рёбра SA, SB, SC попарно перпендикулярны — это «уголок куба».',
       'AB — гипотенуза △ASB: ℓ√2 = '+aTxt+' ⇒ ℓ = '+n+'.',
-      'Берём основанием △ASB: S = ℓ²/2, высота — ребро SC = ℓ.',
+      'Берём основанием △ASB: S<sub>осн</sub> = ℓ²/2, высота — ребро SC = ℓ.',
       'V = ⅓ · (ℓ²/2) · ℓ = ℓ³/6 = '+Vtxt+'.'
     ],
     _dbg:{type:'C',n:n,Vp:Vp/g,Vq:Vq/g}
@@ -1390,13 +1543,13 @@ function stepFormula(){
 }
 function stepVolume(S, hV, Vv){
   return {
-    q:'Финал: V = '+fr(1,3)+' · S · h = '+fr(1,3)+' · '+vt(S)+' · '+vt(hV)+'. Чему равен объём?',
+    q:'Финал: V = '+fr(1,3)+' · S<sub>осн</sub> · h = '+fr(1,3)+' · '+vt(S)+' · '+vt(hV)+'. Чему равен объём?',
     opts: buildOpts(
       {h:'V = '+vt(Vv), exp:''},
       [
         {h:'V = '+vt(scale(Vv,3)), hint:'Потерялась ⅓ из формулы объёма пирамиды.'},
         {h:'V = '+vt(flip(Vv)), hint:'Проследи за √3: перемножь '+vt(S)+' и '+vt(hV)+' ещё раз внимательно.'},
-        {h:'V = '+vt(S), hint:'Это площадь основания. Её ещё нужно умножить на h и на ⅓.'}
+        {h:'V = '+vt(S), hint:'Это только S основания. Её ещё нужно умножить на h и на ⅓.'}
       ])
   };
 }
@@ -1410,7 +1563,7 @@ function gen20(opts){
   return gen20C(opts.n);
 }
 
-/* ================= сценарий озвучки ================= */
+/* ================= сценарий видео ================= */
 function tts(s){
   var t=String(s);
   t=t.replace(/<span class="frac"><span>(.*?)<\/span><span>(.*?)<\/span><\/span>/g,'$1/$2');
@@ -1436,7 +1589,7 @@ function tts(s){
   t=t.replace(/\s+([,.;:!?)])/g,'$1').replace(/\(\s+/g,'(');
   return t.replace(/\s+/g,' ').trim();
 }
-function narration(model){
+function idealNarration(model){
   var L=['ЗАДАЧА', tts(model.statement), ''];
   for(var k=0;k<model.steps.length;k++){
     var st=model.steps[k], ok=null;
