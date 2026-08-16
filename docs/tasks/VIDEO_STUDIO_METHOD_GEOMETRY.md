@@ -116,4 +116,3 @@ Scope deviations: none
 Recommendation: pending checks
 Next user decision: review the Draft PR; merge/deploy remains a separate decision
 ```
-
