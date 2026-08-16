@@ -180,4 +180,3 @@ assert.match(adr, /independently deployed Amvera application/i);
 assert.match(deployment, /video\.mathexam\.space/);
 
 console.log('VIDEO_FACTORY_V1_AUTHORING_CHECK_OK');
-
