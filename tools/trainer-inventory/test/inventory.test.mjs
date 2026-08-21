@@ -7,6 +7,7 @@ import { promisify } from 'node:util';
 import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 import {
+  HASH_BASES,
   PILOT_A_PATHS,
   analyzeHtml,
   applyDuplicateAnalysis,
@@ -57,6 +58,7 @@ const pilotExpected = Object.freeze({
 });
 
 let fullReportPromise;
+let gitFixtureSequence = 0;
 
 async function json(relativeOrAbsolute) {
   const target = path.isAbsolute(relativeOrAbsolute)
@@ -78,12 +80,44 @@ async function fullReport() {
 function syntheticCandidate(canonicalPath, body = '') {
   return {
     sourceKind: 'synthetic',
+    hashBasis: 'FILESYSTEM_BYTES',
     canonicalPath,
     content: Buffer.from(
       `<!doctype html><html lang="ru"><head><title>${canonicalPath}</title></head><body>${body}</body></html>`,
       'utf8'
     )
   };
+}
+
+async function git(cwd, args) {
+  return execFileAsync('git', args, {
+    cwd,
+    windowsHide: true,
+    maxBuffer: 8 * 1024 * 1024
+  });
+}
+
+async function createInventoryTestRepository(files) {
+  const temporary = await mkdtemp(path.join(os.tmpdir(), 'trainer-inventory-git-object-'));
+  gitFixtureSequence += 1;
+  await mkdir(path.join(temporary, 'trainers'), { recursive: true });
+  await writeFile(
+    path.join(temporary, 'trainers', 'board-compat.json'),
+    `${JSON.stringify(emptyManifest, null, 2)}\n${' '.repeat(gitFixtureSequence)}\n`,
+    'utf8'
+  );
+  for (const [relative, content] of Object.entries(files)) {
+    const absolute = path.join(temporary, ...relative.split('/'));
+    await mkdir(path.dirname(absolute), { recursive: true });
+    await writeFile(absolute, content);
+  }
+  await git(temporary, ['init', '-b', 'main']);
+  await git(temporary, ['config', 'user.name', 'Trainer Inventory Test']);
+  await git(temporary, ['config', 'user.email', 'trainer-inventory@example.invalid']);
+  await git(temporary, ['config', 'core.autocrlf', 'false']);
+  await git(temporary, ['add', '.']);
+  await git(temporary, ['commit', '-m', 'test fixture']);
+  return temporary;
 }
 
 function duplicateCandidate({
@@ -165,6 +199,8 @@ test('descriptor schema and fixture JSON parse without extensions', async () => 
   const schema = await json(schemaPath);
   assert.equal(schema.additionalProperties, false);
   assert.equal(schema.properties.descriptorVersion.const, 1);
+  assert.deepEqual(schema.properties.hashBasis.enum, HASH_BASES);
+  assert.ok(schema.required.includes('hashBasis'));
   assert.ok(schema.required.includes('provenance'));
   assert.ok(schema.required.includes('trainerId'));
 });
@@ -189,6 +225,7 @@ test('skill frontmatter and new documentation links are valid', async () => {
   const markdownFiles = [
     '.agents/skills/trainer-inventory/SKILL.md',
     'docs/tasks/TRAINER_FACTORY_INVENTORY_V1.md',
+    'docs/tasks/TRAINER_INVENTORY_HASH_BASIS_V1.md',
     'docs/TRAINER_INVENTORY_FORMAT.md'
   ];
   for (const relative of markdownFiles) {
@@ -308,8 +345,11 @@ test('malformed HTML and missing assets are isolated as candidate errors', async
       repoRoot: temporary,
       candidates: [{
         sourceKind: 'repo',
+        hashBasis: 'GIT_OBJECT',
         canonicalPath: 'trainers/malformed.html',
-        content: Buffer.from('<html><head><title>Broken</title></head><body><img src="missing.png">')
+        gitObjectBytes: Buffer.from(
+          '<html><head><title>Broken</title></head><body><img src="missing.png">'
+        )
       }],
       manifest: emptyManifest,
       includeRunMetadata: false
@@ -322,7 +362,7 @@ test('malformed HTML and missing assets are isolated as candidate errors', async
   }
 });
 
-test('an unreadable candidate is reported without aborting the cohort', async () => {
+test('Git-object read failure is explicit and does not abort the cohort', async () => {
   const temporary = await mkdtemp(path.join(os.tmpdir(), 'trainer-inventory-error-'));
   try {
     const report = await inventoryCandidates({
@@ -331,15 +371,27 @@ test('an unreadable candidate is reported without aborting the cohort', async ()
         syntheticCandidate('trainers/good.html'),
         {
           sourceKind: 'repo',
+          hashBasis: 'GIT_OBJECT',
           canonicalPath: 'trainers/missing.html',
-          absolutePath: path.join(temporary, 'does-not-exist.html')
+          gitObjectError: 'GIT_OBJECT_READ_FAILED:trainers/missing.html'
         }
       ],
       manifest: emptyManifest,
       includeRunMetadata: false
     });
     assert.equal(report.descriptors.length, 2);
-    assert.ok(report.descriptors.find(item => item.canonicalPath === 'trainers/missing.html').errors.length > 0);
+    const missing = report.descriptors.find(
+      item => item.canonicalPath === 'trainers/missing.html'
+    );
+    assert.equal(missing.hashBasis, 'GIT_OBJECT');
+    assert.equal(missing.sourceSha256, null);
+    assert.equal(missing.sizeBytes, null);
+    assert.ok(missing.errors.includes('GIT_OBJECT_READ_FAILED:trainers/missing.html'));
+    assert.equal(report.findings.counts.hashReadFailures, 1);
+    assert.deepEqual(report.findings.hashReadFailures, [{
+      canonicalPath: 'trainers/missing.html',
+      error: 'GIT_OBJECT_READ_FAILED:trainers/missing.html'
+    }]);
   } finally {
     await rm(temporary, { recursive: true, force: true });
   }
@@ -499,17 +551,215 @@ test('repository collection is opt-in for intake and uses only tracked trainer H
   const inputs = await collectRepositoryInputs(repoRoot);
   assert.ok(inputs.candidates.length >= 200);
   assert.ok(inputs.candidates.every(item => item.sourceKind === 'repo'));
+  assert.ok(inputs.candidates.every(item => item.hashBasis === 'GIT_OBJECT'));
+  assert.ok(inputs.candidates.every(item => Buffer.isBuffer(item.gitObjectBytes)));
+  assert.ok(inputs.candidates.every(item => !Object.hasOwn(item, 'absolutePath')));
   assert.ok(inputs.candidates.every(item => item.canonicalPath.startsWith('trainers/')));
   assert.ok(inputs.candidates.every(item => !item.canonicalPath.includes('\\')));
+  assert.match(inputs.sourceGitHead, /^[a-f0-9]{40,64}$/);
+  assert.match(inputs.sourceGitTree, /^[a-f0-9]{40,64}$/);
+});
+
+test('LF Git blob remains the hash source for a CRLF worktree representation', async () => {
+  const relative = 'trainers/line-endings.html';
+  const lf = Buffer.from(
+    '<!doctype html>\n<html><head><title>LF blob</title></head><body>one\ntwo</body></html>\n',
+    'utf8'
+  );
+  const crlf = Buffer.from(lf.toString('utf8').replaceAll('\n', '\r\n'), 'utf8');
+  const temporary = await createInventoryTestRepository({ [relative]: lf });
+  try {
+    await writeFile(path.join(temporary, ...relative.split('/')), crlf);
+    const report = await runRepositoryInventory({ repoRoot: temporary });
+    const descriptor = report.descriptors[0];
+    assert.equal(descriptor.hashBasis, 'GIT_OBJECT');
+    assert.equal(descriptor.sourceSha256, sha256(lf));
+    assert.equal(descriptor.sizeBytes, lf.length);
+    assert.notEqual(sha256(crlf), descriptor.sourceSha256);
+    assert.notEqual(crlf.length, descriptor.sizeBytes);
+    assert.match(report.run.sourceGitHead, /^[a-f0-9]{40,64}$/);
+    assert.match(report.run.sourceGitTree, /^[a-f0-9]{40,64}$/);
+  } finally {
+    await rm(temporary, { recursive: true, force: true });
+  }
+});
+
+test('one Git HEAD has cross-platform descriptor and fingerprint identity', async () => {
+  const relative = 'trainers/cross-platform.html';
+  const lf = Buffer.from(
+    '<!doctype html>\n<html><head><title>Cross platform</title></head><body>same</body></html>\n',
+    'utf8'
+  );
+  const temporary = await createInventoryTestRepository({ [relative]: lf });
+  try {
+    const linuxLike = await runRepositoryInventory({ repoRoot: temporary });
+    await writeFile(
+      path.join(temporary, ...relative.split('/')),
+      Buffer.from(lf.toString('utf8').replaceAll('\n', '\r\n'), 'utf8')
+    );
+    const windowsLike = await runRepositoryInventory({ repoRoot: temporary });
+    assert.deepEqual(windowsLike.descriptors, linuxLike.descriptors);
+    assert.deepEqual(windowsLike.findings, linuxLike.findings);
+    assert.equal(
+      windowsLike.deterministicFingerprint,
+      linuxLike.deterministicFingerprint
+    );
+    assert.equal(windowsLike.run.sourceGitHead, linuxLike.run.sourceGitHead);
+    assert.equal(windowsLike.run.sourceGitTree, linuxLike.run.sourceGitTree);
+  } finally {
+    await rm(temporary, { recursive: true, force: true });
+  }
+});
+
+test('unpublished LF and CRLF inputs retain distinct filesystem-byte hashes', async () => {
+  const temporary = await mkdtemp(path.join(os.tmpdir(), 'trainer-inventory-intake-bytes-'));
+  const lfPath = path.join(temporary, 'lf.html');
+  const crlfPath = path.join(temporary, 'crlf.html');
+  const lf = Buffer.from(
+    '<!doctype html>\n<html><head><title>LF</title></head><body></body></html>\n',
+    'utf8'
+  );
+  const crlf = Buffer.from(lf.toString('utf8').replaceAll('\n', '\r\n'), 'utf8');
+  try {
+    await writeFile(lfPath, lf);
+    await writeFile(crlfPath, crlf);
+    const report = await inventoryCandidates({
+      repoRoot,
+      candidates: [
+        {
+          sourceKind: 'intake',
+          hashBasis: 'FILESYSTEM_BYTES',
+          canonicalPath: 'trainers/intake/lf.html',
+          absolutePath: lfPath
+        },
+        {
+          sourceKind: 'intake',
+          hashBasis: 'FILESYSTEM_BYTES',
+          canonicalPath: 'trainers/intake/crlf.html',
+          absolutePath: crlfPath
+        }
+      ],
+      manifest: emptyManifest,
+      includeRunMetadata: false
+    });
+    const byPath = new Map(report.descriptors.map(item => [item.canonicalPath, item]));
+    assert.equal(byPath.get('trainers/intake/lf.html').hashBasis, 'FILESYSTEM_BYTES');
+    assert.equal(byPath.get('trainers/intake/crlf.html').hashBasis, 'FILESYSTEM_BYTES');
+    assert.equal(byPath.get('trainers/intake/lf.html').sourceSha256, sha256(lf));
+    assert.equal(byPath.get('trainers/intake/crlf.html').sourceSha256, sha256(crlf));
+    assert.notEqual(
+      byPath.get('trainers/intake/lf.html').sourceSha256,
+      byPath.get('trainers/intake/crlf.html').sourceSha256
+    );
+  } finally {
+    await rm(temporary, { recursive: true, force: true });
+  }
+});
+
+test('committed Git blob mutation changes descriptor and invalidates reuse', async () => {
+  const relative = 'trainers/blob-mutation.html';
+  const original = Buffer.from(
+    '<!doctype html>\n<html><head><title>Original</title></head><body></body></html>\n',
+    'utf8'
+  );
+  const changed = Buffer.from(
+    '<!doctype html>\n<html><head><title>Changed</title></head><body></body></html>\n',
+    'utf8'
+  );
+  const temporary = await createInventoryTestRepository({ [relative]: original });
+  try {
+    const first = await runRepositoryInventory({ repoRoot: temporary });
+    await writeFile(path.join(temporary, ...relative.split('/')), changed);
+    await git(temporary, ['add', relative]);
+    await git(temporary, ['commit', '-m', 'mutate blob']);
+    const second = await runRepositoryInventory({
+      repoRoot: temporary,
+      previousReport: first
+    });
+    assert.notEqual(
+      second.descriptors[0].sourceSha256,
+      first.descriptors[0].sourceSha256
+    );
+    assert.notDeepEqual(second.descriptors[0], first.descriptors[0]);
+    assert.notEqual(second.run.sourceGitHead, first.run.sourceGitHead);
+    assert.equal(second.run.incrementalReused, 0);
+  } finally {
+    await rm(temporary, { recursive: true, force: true });
+  }
+});
+
+test('checkout-only line-ending mutation preserves descriptor, ID, and fingerprint', async () => {
+  const relative = 'trainers/checkout-only.html';
+  const lf = Buffer.from(
+    '<!doctype html>\n<html><head><title>Checkout only</title></head><body></body></html>\n',
+    'utf8'
+  );
+  const temporary = await createInventoryTestRepository({ [relative]: lf });
+  try {
+    const first = await runRepositoryInventory({ repoRoot: temporary });
+    await writeFile(
+      path.join(temporary, ...relative.split('/')),
+      Buffer.from(lf.toString('utf8').replaceAll('\n', '\r\n'), 'utf8')
+    );
+    const second = await runRepositoryInventory({
+      repoRoot: temporary,
+      previousReport: first
+    });
+    assert.deepEqual(second.descriptors[0], first.descriptors[0]);
+    assert.equal(second.descriptors[0].inventoryId, first.descriptors[0].inventoryId);
+    assert.equal(second.deterministicFingerprint, first.deterministicFingerprint);
+    assert.equal(second.run.incrementalReused, 1);
+  } finally {
+    await rm(temporary, { recursive: true, force: true });
+  }
+});
+
+test('repository duplicate groups use Git-object hashes instead of checkout bytes', async () => {
+  const firstPath = 'trainers/duplicate-a.html';
+  const secondPath = 'trainers/duplicate-b.html';
+  const lf = Buffer.from(
+    '<!doctype html>\n<html><head><title>Duplicate</title></head><body></body></html>\n',
+    'utf8'
+  );
+  const temporary = await createInventoryTestRepository({
+    [firstPath]: lf,
+    [secondPath]: lf
+  });
+  try {
+    await writeFile(
+      path.join(temporary, ...secondPath.split('/')),
+      Buffer.from(lf.toString('utf8').replaceAll('\n', '\r\n'), 'utf8')
+    );
+    const report = await runRepositoryInventory({ repoRoot: temporary });
+    assert.equal(report.descriptors[0].sourceSha256, report.descriptors[1].sourceSha256);
+    assert.ok(report.descriptors.every(item => item.hashBasis === 'GIT_OBJECT'));
+    assert.ok(report.descriptors.every(
+      item => item.duplicate.status === 'DUPLICATE_UNRESOLVED'
+    ));
+    assert.ok(report.findings.blockers.some(
+      item => item.type === 'UNRESOLVED_EXACT_BLOB_DUPLICATE'
+    ));
+  } finally {
+    await rm(temporary, { recursive: true, force: true });
+  }
 });
 
 test('Pilot A reconciles exact hashes, references, surfaces, and pending reviews', async () => {
   const report = await fullReport();
+  assert.equal(report.toolVersion, '1.0.1');
+  const { stdout: head } = await git(repoRoot, ['rev-parse', 'HEAD']);
+  const { stdout: tree } = await git(repoRoot, ['rev-parse', 'HEAD^{tree}']);
+  assert.equal(report.run.sourceGitHead, head.trim());
+  assert.equal(report.run.sourceGitTree, tree.trim());
+  assert.equal(report.run.repositoryHashBasis, 'GIT_OBJECT');
+  assert.equal(report.run.intakeHashBasis, 'FILESYSTEM_BYTES');
   assert.deepEqual(report.pilotA.map(item => item.canonicalPath), PILOT_A_PATHS);
   for (const pilot of report.pilotA) {
     const expected = pilotExpected[pilot.canonicalPath];
+    assert.equal(pilot.hashBasis, 'GIT_OBJECT');
     assert.equal(pilot.sourceSha256, expected.sha256, pilot.canonicalPath);
     assert.equal(pilot.sizeBytes, expected.sizeBytes, pilot.canonicalPath);
+    assert.deepEqual(pilot.errors, []);
     assert.equal(pilot.canonicalUrl, `https://mathexam.space/${pilot.canonicalPath}`);
     assert.equal(pilot.sitemapReferenced, true);
     assert.equal(pilot.courseReferenced, true);
@@ -631,6 +881,7 @@ test('scoped CLI marker cannot claim the full gate', async () => {
   );
   assert.match(stdout, /TRAINER_FACTORY_INVENTORY_V1_CHECK_OK/);
   assert.doesNotMatch(stdout, /TRAINER_FACTORY_INVENTORY_V1_GATE_OK/);
+  assert.doesNotMatch(stdout, /TRAINER_FACTORY_INVENTORY_HASH_BASIS_V1_GATE_OK/);
 
   const cliSource = await readFile(
     path.join(repoRoot, 'tools', 'trainer-inventory', 'cli.mjs'),
@@ -641,7 +892,9 @@ test('scoped CLI marker cannot claim the full gate', async () => {
     'utf8'
   );
   assert.doesNotMatch(cliSource, /TRAINER_FACTORY_INVENTORY_V1_GATE_OK/);
+  assert.doesNotMatch(cliSource, /TRAINER_FACTORY_INVENTORY_HASH_BASIS_V1_GATE_OK/);
   assert.match(gateSource, /TRAINER_FACTORY_INVENTORY_V1_GATE_OK/);
+  assert.match(gateSource, /TRAINER_FACTORY_INVENTORY_HASH_BASIS_V1_GATE_OK/);
   assert.match(gateSource, /Phase 1 tests/);
   assert.match(gateSource, /Board-server regression/);
   assert.match(gateSource, /Committed diff check/);
@@ -676,6 +929,7 @@ test('working diff stays inside the approved docs, skill, fixture, and tool scop
     || relative === '.agents/skills/trainer-inventory/SKILL.md'
     || relative === 'docs/TRAINER_INVENTORY_FORMAT.md'
     || relative === 'docs/tasks/TRAINER_FACTORY_INVENTORY_V1.md'
+    || relative === 'docs/tasks/TRAINER_INVENTORY_HASH_BASIS_V1.md'
     || relative === 'tools/fixtures/trainer-public-url-conformance.json'
     || relative.startsWith('tools/trainer-inventory/')
   ));
@@ -687,6 +941,7 @@ test('committed-scope sources contain no secret assignment or machine absolute p
     '.agents/skills/trainer-inventory/SKILL.md',
     'docs/TRAINER_INVENTORY_FORMAT.md',
     'docs/tasks/TRAINER_FACTORY_INVENTORY_V1.md',
+    'docs/tasks/TRAINER_INVENTORY_HASH_BASIS_V1.md',
     'tools/fixtures/trainer-public-url-conformance.json',
     'tools/trainer-inventory/cli.mjs',
     'tools/trainer-inventory/index.mjs',

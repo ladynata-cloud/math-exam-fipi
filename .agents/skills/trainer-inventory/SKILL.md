@@ -31,6 +31,16 @@ Use `--intake-root <path>` only for the exact owner-approved root. The tool must
 remain read-only for all inputs. Generated output belongs under
 `tools/trainer-inventory/.output/`, which is ignored by Git.
 
+Hash evidence is source-specific:
+
+- tracked repository candidates use `hashBasis: GIT_OBJECT`; hash, size, and
+  HTML analysis come from the exact blob at the analyzed Git `HEAD`;
+- explicitly approved intake candidates use
+  `hashBasis: FILESYSTEM_BYTES`; LF and CRLF remain distinct raw blobs;
+- source Git head and tree are recorded as non-authoritative run evidence;
+- a Git-object lookup failure is explicit and never falls back to worktree
+  bytes.
+
 The run must:
 
 - compute stable candidate IDs, byte hashes, sizes, canonical paths, canonical
@@ -61,6 +71,10 @@ runs the complete sequence above, including the board-server regression and
 committed `git diff --check`, and may emit
 `TRAINER_FACTORY_INVENTORY_V1_GATE_OK`. Any failed subprocess or dirty
 worktree prevents the full marker.
+
+Version 1.0.1 also emits
+`TRAINER_FACTORY_INVENTORY_HASH_BASIS_V1_GATE_OK` only after the same complete
+gate passes with the Git-object/filesystem-byte regressions.
 
 The gate must cover the committed public-URL conformance fixture, descriptor
 schema, manifest equality checks, Pilot A, at least 5,000 synthetic candidates,

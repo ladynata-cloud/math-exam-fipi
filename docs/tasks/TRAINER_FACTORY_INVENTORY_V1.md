@@ -75,6 +75,23 @@ Generated output is ignored and contains:
 No output may contain credentials, secret values, personal data, or a
 machine-specific absolute path.
 
+## Cross-platform hash basis
+
+[Trainer Inventory v1.0.1](TRAINER_INVENTORY_HASH_BASIS_V1.md) fixes the
+candidate hash source explicitly:
+
+- tracked repository candidates use `hashBasis: GIT_OBJECT`, exact blob bytes
+  from the analyzed Git `HEAD`, and Git-object byte size;
+- explicitly approved unpublished intake candidates use
+  `hashBasis: FILESYSTEM_BYTES` and exact raw filesystem bytes;
+- source Git head and tree are non-authoritative run evidence;
+- a tracked object-read failure is explicit and fail-closed, never a hidden
+  fallback to checkout bytes.
+
+This keeps repository descriptors, duplicate groups, reuse, and deterministic
+fingerprints independent of checkout line endings and Git filters while
+preserving byte-exact intake identity.
+
 ## Authority boundary
 
 The descriptor is evidence, not runtime authority.
@@ -155,6 +172,10 @@ worktree check as one fail-closed sequence. It may emit
 `TRAINER_FACTORY_INVENTORY_V1_GATE_OK` only after every step succeeds. A
 subprocess failure, skipped dependency, diff failure, or dirty worktree prevents
 the final marker.
+
+Version 1.0.1 additionally emits
+`TRAINER_FACTORY_INVENTORY_HASH_BASIS_V1_GATE_OK` only after that same complete
+sequence passes with the cross-platform hash-basis regressions.
 
 ## Rollback
 

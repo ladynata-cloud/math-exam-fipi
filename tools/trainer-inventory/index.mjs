@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { execFile } from 'node:child_process';
+import { execFile, spawn } from 'node:child_process';
 import { readFile, readdir, lstat, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { promisify } from 'node:util';
@@ -13,10 +13,14 @@ const {
   validateTrainerManifest
 } = require('../../board-server/trainer-registry.js');
 
-export const TOOL_VERSION = '1.0.0';
+export const TOOL_VERSION = '1.0.1';
 export const CANONICAL_ORIGIN = 'https://mathexam.space';
 export const DESCRIPTOR_VERSION = 1;
 export const REPORT_SCHEMA_VERSION = 1;
+export const HASH_BASES = Object.freeze([
+  'GIT_OBJECT',
+  'FILESYSTEM_BYTES'
+]);
 export const DUPLICATE_STATUSES = Object.freeze([
   'CANONICAL',
   'ALIAS',
@@ -68,6 +72,7 @@ const DESCRIPTOR_KEYS = new Set([
   'descriptorVersion',
   'inventoryId',
   'sourceKind',
+  'hashBasis',
   'sourceSha256',
   'sizeBytes',
   'basename',
@@ -540,13 +545,29 @@ export function validateDescriptorShape(descriptor) {
   const missing = [...DESCRIPTOR_KEYS].filter(key => !Object.hasOwn(descriptor, key));
   if (unknown.length) return { ok: false, error: `DESCRIPTOR_UNKNOWN:${unknown.join(',')}` };
   if (missing.length) return { ok: false, error: `DESCRIPTOR_MISSING:${missing.join(',')}` };
+  const hashUnavailable = descriptor.sourceSha256 === null && descriptor.sizeBytes === null;
+  const hashReadFailed = descriptor.errors.some(
+    error => typeof error === 'string' && error.startsWith('GIT_OBJECT_READ_FAILED')
+  );
+  const expectedHashBasis = descriptor.sourceKind === 'repo'
+    ? 'GIT_OBJECT'
+    : 'FILESYSTEM_BYTES';
   if (
     descriptor.descriptorVersion !== DESCRIPTOR_VERSION
     || !/^inv-(?:repo|intake|synthetic)-[a-f0-9]{24}$/.test(descriptor.inventoryId)
     || !['repo', 'intake', 'synthetic'].includes(descriptor.sourceKind)
-    || !/^[a-f0-9]{64}$/.test(descriptor.sourceSha256)
-    || !Number.isInteger(descriptor.sizeBytes)
-    || descriptor.sizeBytes < 0
+    || !HASH_BASES.includes(descriptor.hashBasis)
+    || descriptor.hashBasis !== expectedHashBasis
+    || (
+      !hashUnavailable
+      && (
+        !/^[a-f0-9]{64}$/.test(descriptor.sourceSha256)
+        || !Number.isInteger(descriptor.sizeBytes)
+        || descriptor.sizeBytes < 0
+      )
+    )
+    || (hashUnavailable && !hashReadFailed)
+    || ((descriptor.sourceSha256 === null) !== (descriptor.sizeBytes === null))
     || !DUPLICATE_STATUSES.includes(descriptor.duplicate.status)
   ) {
     return { ok: false, error: 'DESCRIPTOR_FIELD_INVALID' };
@@ -554,21 +575,96 @@ export function validateDescriptorShape(descriptor) {
   return { ok: true };
 }
 
-async function gitFiles(repoRoot, patterns = []) {
-  const args = ['ls-files', '-z'];
-  if (patterns.length) args.push('--', ...patterns);
+async function gitOutput(repoRoot, args) {
   const { stdout } = await execFileAsync('git', args, {
     cwd: repoRoot,
-    encoding: 'buffer',
+    encoding: 'utf8',
     windowsHide: true,
-    maxBuffer: 64 * 1024 * 1024
+    maxBuffer: 8 * 1024 * 1024
   });
+  return stdout.trim();
+}
+
+async function gitTreeFiles(repoRoot, sourceGitHead) {
+  const { stdout } = await execFileAsync(
+    'git',
+    ['ls-tree', '-r', '-z', '--name-only', sourceGitHead],
+    {
+      cwd: repoRoot,
+      encoding: 'buffer',
+      windowsHide: true,
+      maxBuffer: 64 * 1024 * 1024
+    }
+  );
   return stdout
     .toString('utf8')
     .split('\0')
     .filter(Boolean)
     .map(value => value.replaceAll('\\', '/'))
     .sort();
+}
+
+async function readGitObjects(repoRoot, sourceGitHead, canonicalPaths) {
+  const paths = uniqueSorted(canonicalPaths);
+  if (paths.length === 0) return new Map();
+  if (paths.some(relative => /[\r\n]/.test(relative))) {
+    throw new Error('GIT_OBJECT_PATH_CONTROL_FORBIDDEN');
+  }
+  const specs = paths.map(relative => `${sourceGitHead}:${relative}`);
+  const stdout = await new Promise((resolve, reject) => {
+    const child = spawn('git', ['cat-file', '--batch'], {
+      cwd: repoRoot,
+      windowsHide: true,
+      stdio: ['pipe', 'pipe', 'pipe']
+    });
+    const output = [];
+    child.stdout.on('data', chunk => output.push(chunk));
+    child.stderr.resume();
+    child.on('error', () => reject(new Error('GIT_OBJECT_BATCH_START_FAILED')));
+    child.on('close', code => {
+      if (code !== 0) {
+        reject(new Error('GIT_OBJECT_BATCH_FAILED'));
+        return;
+      }
+      resolve(Buffer.concat(output));
+    });
+    child.stdin.end(`${specs.join('\n')}\n`, 'utf8');
+  });
+  const records = new Map();
+  let offset = 0;
+  for (let index = 0; index < paths.length; index += 1) {
+    const relative = paths[index];
+    const newline = stdout.indexOf(0x0a, offset);
+    if (newline < 0) throw new Error('GIT_OBJECT_BATCH_PROTOCOL_FAILED');
+    const header = stdout
+      .subarray(offset, newline)
+      .toString('utf8')
+      .replace(/\r$/, '');
+    offset = newline + 1;
+    if (header.endsWith(' missing')) {
+      records.set(relative, {
+        bytes: null,
+        objectId: null,
+        error: `GIT_OBJECT_READ_FAILED:${relative}`
+      });
+      continue;
+    }
+    const match = header.match(/^([a-f0-9]+) blob ([0-9]+)$/);
+    if (!match) throw new Error('GIT_OBJECT_BATCH_PROTOCOL_FAILED');
+    const size = Number(match[2]);
+    const end = offset + size;
+    if (!Number.isSafeInteger(size) || end >= stdout.length || stdout[end] !== 0x0a) {
+      throw new Error('GIT_OBJECT_BATCH_PROTOCOL_FAILED');
+    }
+    records.set(relative, {
+      bytes: Buffer.from(stdout.subarray(offset, end)),
+      objectId: match[1],
+      error: null
+    });
+    offset = end + 1;
+  }
+  if (offset !== stdout.length) throw new Error('GIT_OBJECT_BATCH_TRAILING_DATA');
+  return records;
 }
 
 async function walkHtml(root, relative = '') {
@@ -587,6 +683,13 @@ async function walkHtml(root, relative = '') {
 }
 
 async function readCandidate(candidate) {
+  if (candidate.sourceKind === 'repo') {
+    if (candidate.gitObjectError) throw new Error(candidate.gitObjectError);
+    if (!Buffer.isBuffer(candidate.gitObjectBytes)) {
+      throw new Error(`GIT_OBJECT_READ_FAILED:${candidate.canonicalPath}`);
+    }
+    return Buffer.from(candidate.gitObjectBytes);
+  }
   if (candidate.content) return Buffer.from(candidate.content);
   const stat = await lstat(candidate.absolutePath);
   if (stat.isSymbolicLink()) throw new Error('CANDIDATE_SYMLINK_FORBIDDEN');
@@ -690,18 +793,26 @@ function buildReferenceIndex(referenceSources) {
   return index;
 }
 
-async function collectReferenceSources(repoRoot) {
-  const paths = await gitFiles(repoRoot, ['*.html', '**/*.html', '*.xml', '**/*.xml']);
+function collectReferenceSources(paths, gitObjects) {
   const sources = [];
+  const failures = [];
   for (const relative of paths) {
-    const size = (await lstat(path.join(repoRoot, ...relative.split('/')))).size;
-    if (size > 2 * 1024 * 1024) continue;
+    if (!relative.endsWith('.html') && !relative.endsWith('.xml')) continue;
+    const record = gitObjects.get(relative);
+    if (!record || record.error) {
+      failures.push({
+        canonicalPath: relative,
+        error: `REFERENCE_GIT_OBJECT_READ_FAILED:${relative}`
+      });
+      continue;
+    }
+    if (record.bytes.length > 2 * 1024 * 1024) continue;
     sources.push({
       path: relative,
-      text: await readFile(path.join(repoRoot, ...relative.split('/')), 'utf8')
+      text: record.bytes.toString('utf8')
     });
   }
-  return sources;
+  return { sources, failures };
 }
 
 function candidateErrorsForMissingAssets(repoRoot, dependencies, sourceKind) {
@@ -793,8 +904,11 @@ export async function inventoryCandidates(options) {
     candidates,
     manifest,
     referenceSources = [],
+    referenceReadFailures = [],
     previousReport = null,
-    includeRunMetadata = true
+    includeRunMetadata = true,
+    sourceGitHead = null,
+    sourceGitTree = null
   } = options;
   const startNs = process.hrtime.bigint();
   const startRss = process.memoryUsage().rss;
@@ -809,17 +923,20 @@ export async function inventoryCandidates(options) {
   let incrementalReused = 0;
   for (const candidate of [...candidates].sort((a, b) => a.canonicalPath.localeCompare(b.canonicalPath))) {
     const errors = [];
-    let bytes;
+    const hashBasis = candidate.sourceKind === 'repo'
+      ? 'GIT_OBJECT'
+      : 'FILESYSTEM_BYTES';
+    let bytes = null;
     try {
       bytes = await readCandidate(candidate);
     } catch (error) {
-      bytes = Buffer.alloc(0);
       errors.push(error.message);
     }
-    const sourceSha256 = sha256(bytes);
+    const sourceSha256 = bytes === null ? null : sha256(bytes);
+    const sizeBytes = bytes === null ? null : bytes.length;
     const previous = previousByPath.get(candidate.canonicalPath);
     let analysis;
-    if (previous?.sourceSha256 === sourceSha256) {
+    if (sourceSha256 !== null && previous?.sourceSha256 === sourceSha256) {
       analysis = {
         html: previous.html,
         dependencies: previous.dependencies,
@@ -831,7 +948,7 @@ export async function inventoryCandidates(options) {
       };
       incrementalReused += 1;
     } else {
-      analysis = analyzeHtml(bytes.toString('utf8'), candidate.canonicalPath);
+      analysis = analyzeHtml(bytes?.toString('utf8') ?? '', candidate.canonicalPath);
     }
     errors.push(...analysis.errors);
     errors.push(...await candidateErrorsForMissingAssets(repoRoot, analysis.dependencies, candidate.sourceKind));
@@ -853,8 +970,9 @@ export async function inventoryCandidates(options) {
       descriptorVersion: DESCRIPTOR_VERSION,
       inventoryId: inventoryId(candidate.sourceKind, candidate.canonicalPath),
       sourceKind: candidate.sourceKind,
+      hashBasis,
       sourceSha256,
-      sizeBytes: bytes.length,
+      sizeBytes,
       basename: path.posix.basename(candidate.canonicalPath),
       trainerId: manifestEntry?.trainerId ?? null,
       canonicalPath: candidate.canonicalPath,
@@ -914,6 +1032,7 @@ export async function inventoryCandidates(options) {
   const duplicate = applyDuplicateAnalysis(descriptors);
   const inputEntries = descriptors.map(descriptor => ({
     canonicalPath: descriptor.canonicalPath,
+    hashBasis: descriptor.hashBasis,
     sha256: descriptor.sourceSha256,
     sizeBytes: descriptor.sizeBytes
   }));
@@ -923,6 +1042,7 @@ export async function inventoryCandidates(options) {
       ? {
           canonicalPath: pilotPath,
           inventoryId: descriptor.inventoryId,
+          hashBasis: descriptor.hashBasis,
           sourceSha256: descriptor.sourceSha256,
           sizeBytes: descriptor.sizeBytes,
           canonicalUrl: descriptor.canonicalUrl,
@@ -933,13 +1053,22 @@ export async function inventoryCandidates(options) {
           archetype: descriptor.classification.archetype,
           proposedTrack: descriptor.classification.proposedTrack,
           duplicateStatus: descriptor.duplicate.status,
-          unresolvedReview: descriptor.review
+          unresolvedReview: descriptor.review,
+          errors: descriptor.errors
         }
       : { canonicalPath: pilotPath, error: 'PILOT_CANDIDATE_MISSING' };
   });
+  const hashReadFailures = descriptors
+    .filter(item => item.errors.some(error => error.startsWith('GIT_OBJECT_READ_FAILED')))
+    .map(item => ({
+      canonicalPath: item.canonicalPath,
+      error: item.errors.find(error => error.startsWith('GIT_OBJECT_READ_FAILED'))
+    }));
   const counts = {
     candidates: descriptors.length,
     descriptorsWithErrors: descriptors.filter(item => item.errors.length).length,
+    hashReadFailures: hashReadFailures.length,
+    referenceReadFailures: referenceReadFailures.length,
     releaseBlockers: duplicate.blockers.length,
     basenameWarnings: duplicate.basenameWarnings.length
   };
@@ -955,6 +1084,8 @@ export async function inventoryCandidates(options) {
     descriptors,
     findings: {
       counts,
+      hashReadFailures,
+      referenceReadFailures,
       blockers: duplicate.blockers,
       basenameWarnings: duplicate.basenameWarnings
     },
@@ -967,35 +1098,69 @@ export async function inventoryCandidates(options) {
       durationMs: Number(process.hrtime.bigint() - startNs) / 1e6,
       rssDeltaBytes: process.memoryUsage().rss - startRss,
       incrementalReused,
-      outboundRequests: 0
+      outboundRequests: 0,
+      sourceGitHead,
+      sourceGitTree,
+      repositoryHashBasis: 'GIT_OBJECT',
+      intakeHashBasis: 'FILESYSTEM_BYTES'
     };
   }
   return report;
 }
 
 export async function collectRepositoryInputs(repoRoot, options = {}) {
-  const trackedTrainerHtml = (await gitFiles(repoRoot, ['trainers/*.html', 'trainers/**/*.html']))
-    .filter(relative => relative.endsWith('.html'));
-  const candidates = trackedTrainerHtml.map(canonicalPath => ({
-    sourceKind: 'repo',
-    canonicalPath,
-    absolutePath: path.join(repoRoot, ...canonicalPath.split('/'))
-  }));
+  const sourceGitHead = await gitOutput(repoRoot, ['rev-parse', '--verify', 'HEAD']);
+  const sourceGitTree = await gitOutput(repoRoot, ['rev-parse', '--verify', 'HEAD^{tree}']);
+  const treePaths = await gitTreeFiles(repoRoot, sourceGitHead);
+  const trackedTrainerHtml = treePaths.filter(
+    relative => relative.startsWith('trainers/') && relative.endsWith('.html')
+  );
+  const referencePaths = treePaths.filter(
+    relative => relative.endsWith('.html') || relative.endsWith('.xml')
+  );
+  const manifestPath = 'trainers/board-compat.json';
+  const gitObjects = await readGitObjects(
+    repoRoot,
+    sourceGitHead,
+    [...trackedTrainerHtml, ...referencePaths, manifestPath]
+  );
+  const candidates = trackedTrainerHtml.map(canonicalPath => {
+    const record = gitObjects.get(canonicalPath);
+    return {
+      sourceKind: 'repo',
+      hashBasis: 'GIT_OBJECT',
+      canonicalPath,
+      gitObjectBytes: record?.bytes ?? null,
+      gitObjectId: record?.objectId ?? null,
+      gitObjectError: record ? record.error : `GIT_OBJECT_READ_FAILED:${canonicalPath}`
+    };
+  });
   if (options.intakeRoot) {
     const intakeFiles = await walkHtml(options.intakeRoot);
     for (const relative of intakeFiles) {
       const proposed = `trainers/intake/${relative}`;
       candidates.push({
         sourceKind: 'intake',
+        hashBasis: 'FILESYSTEM_BYTES',
         canonicalPath: proposed,
         absolutePath: path.join(options.intakeRoot, ...relative.split('/'))
       });
     }
   }
-  const manifestPath = path.join(repoRoot, 'trainers', 'board-compat.json');
-  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
-  const referenceSources = await collectReferenceSources(repoRoot);
-  return { candidates, manifest, referenceSources };
+  const manifestRecord = gitObjects.get(manifestPath);
+  if (!manifestRecord || manifestRecord.error) {
+    throw new Error('RUNTIME_MANIFEST_GIT_OBJECT_READ_FAILED');
+  }
+  const manifest = JSON.parse(manifestRecord.bytes.toString('utf8'));
+  const referenceEvidence = collectReferenceSources(referencePaths, gitObjects);
+  return {
+    candidates,
+    manifest,
+    referenceSources: referenceEvidence.sources,
+    referenceReadFailures: referenceEvidence.failures,
+    sourceGitHead,
+    sourceGitTree
+  };
 }
 
 export function generateSyntheticCandidates(count = 5000) {
@@ -1004,6 +1169,7 @@ export function generateSyntheticCandidates(count = 5000) {
     const canonicalPath = `trainers/synthetic/cohort-${serial}.html`;
     return {
       sourceKind: 'synthetic',
+      hashBasis: 'FILESYSTEM_BYTES',
       canonicalPath,
       content: Buffer.from(
         `<!doctype html><html lang="ru"><head><meta name="viewport" content="width=device-width"><title>Synthetic ${serial}</title></head><body data-id="${serial}"></body></html>`,
@@ -1021,6 +1187,8 @@ function humanSummary(report) {
     `- Deterministic fingerprint: \`${report.deterministicFingerprint}\``,
     `- Candidates: ${report.findings.counts.candidates}`,
     `- Candidate errors: ${report.findings.counts.descriptorsWithErrors}`,
+    `- Git-object read failures: ${report.findings.counts.hashReadFailures}`,
+    `- Reference-object read failures: ${report.findings.counts.referenceReadFailures}`,
     `- Release blockers reported: ${report.findings.counts.releaseBlockers}`,
     `- Same-basename warnings: ${report.findings.counts.basenameWarnings}`,
     `- Incremental analyses reused: ${report.run?.incrementalReused ?? 0}`,
@@ -1037,8 +1205,14 @@ function sanitizedHandoff(report) {
     toolVersion: report.toolVersion,
     deterministicFingerprint: report.deterministicFingerprint,
     counts: report.findings.counts,
+    hashReadFailures: report.findings.hashReadFailures,
+    referenceReadFailures: report.findings.referenceReadFailures,
     blockers: report.findings.blockers,
     pilotA: report.pilotA,
+    sourceGitHead: report.run?.sourceGitHead ?? null,
+    sourceGitTree: report.run?.sourceGitTree ?? null,
+    repositoryHashBasis: 'GIT_OBJECT',
+    intakeHashBasis: 'FILESYSTEM_BYTES',
     containsFileContents: false,
     containsCredentials: false,
     containsAbsoluteLocalPaths: false,
