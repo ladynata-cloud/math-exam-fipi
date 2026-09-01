@@ -689,7 +689,7 @@ const TASKS = [
  steps:[{q:'Площади трёх разных граней',a:'3 · 4 = 12, 3 · 5 = 15, 4 · 5 = 20'},{q:'Сумма',a:'12 + 15 + 20 = 47'},{q:'Каждая грань встречается дважды',a:'47 · 2 = 94 см²'}],
  traps:{60:'60 см³ — это объём коробки. В вопросе спрашивают площадь поверхности.',
         47:'Вы сложили площади трёх разных граней. Каждая из них у параллелепипеда встречается дважды.',
-        12:'Это площадь одной грани.'}},
+        12:'К 12 ведут два разных пути: 3 · 4 — площадь одной грани, 3 + 4 + 5 — сумма трёх измерений. Ни то, ни другое не даёт площадь поверхности: считать нужно все шесть граней.'}},
 
 {pos:11,id:'p11c',answerType:'number',answer:5,unit:'см',
  fig:{kind:'cylinders',h1:45,k:3},
@@ -1288,27 +1288,38 @@ const FIG={
   return SVG('0 0 540 160',s,'Координатная прямая');
  },
  cutRect(f){
-  const ox=110,oy=26,W=320,H=190,vx=ox+W*.45,hy=oy+H*.42;
+  // Разрезы выводятся из подписанных периметров, а не из констант: полупериметры
+  // дают a+c, b+c, b+d, a+d. Свободный параметр c берём серединой допустимого
+  // промежутка, поэтому нарисованные периметры пропорциональны подписанным.
+  const hp=f.p.map(v=>v==null?null:v/2), k=hp.findIndex(v=>v==null);
+  if(k>=0) hp[k]=hp[(k+1)%4]+hp[(k+3)%4]-hp[(k+2)%4];
+  const lo=Math.max(0,(hp[1]-hp[2])/2), hi=Math.min(hp[0],hp[1])/2, cc=(lo+hi)/2;
+  const aa=hp[0]-cc, bb=hp[1]-cc, dd=hp[2]-bb, ww=aa+bb, hh=cc+dd;
+  const u=Math.min(320/ww,190/hh), W=ww*u, H=hh*u, ox=270-W/2, oy=26;
+  const vx=ox+aa*u, hy=oy+cc*u;
   const lab=['левый верхний','правый верхний','правый нижний','левый нижний'];
-  const box=[[ox,oy,vx-ox,hy-oy],[vx,oy,ox+W-vx,hy-oy],[vx,hy,ox+W-vx,oy+H-hy],[ox,hy,vx-ox,oy+H-hy]];
+  const box=[[ox,oy,vx-ox,hy-oy],[vx,oy,ox+W-vx,hy-oy],[vx,hy,ox+W-vx,oy+H-hy],[ox,hy,vx-ox,oy+H-hy]].map(b=>b.map(R2));
   let s='';
   box.forEach((b,i)=>{
    s+=`<rect x="${b[0]}" y="${b[1]}" width="${b[2]}" height="${b[3]}" fill="${f.p[i]==null?'#fff3d8':'#eceafb'}" stroke="#5b6b85" stroke-width="1.6"/>`;
    s+=`<text class="lbl-b" x="${R2(b[0]+b[2]/2)}" y="${R2(b[1]+b[3]/2+6)}" text-anchor="middle" font-size="17">${f.p[i]==null?'?':f.p[i]}</text>`;});
-  s+=`<rect x="${ox}" y="${oy}" width="${W}" height="${H}" fill="none" stroke="#312a92" stroke-width="2.4"/>`;
-  s+=`<text class="lbl" x="${ox+W/2}" y="${oy+H+24}" text-anchor="middle">в клетках указаны периметры</text>`;
+  s+=`<rect x="${R2(ox)}" y="${oy}" width="${R2(W)}" height="${R2(H)}" fill="none" stroke="#312a92" stroke-width="2.4"/>`;
+  s+=`<text class="lbl" x="${R2(ox+W/2)}" y="${R2(oy+H+24)}" text-anchor="middle">в клетках указаны периметры</text>`;
   return SVG('0 0 540 260',s,'Прямоугольник, разрезанный на четыре');
  },
  ring(f){
   const cx=270,cy=138,r=104;
   let s=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#8f9db3" stroke-width="12"/>`;
   s+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="9 9"/>`;
+  const dist=f.arcs.map(a=>Number(a[2])||0), tot=dist.reduce((s,v)=>s+v,0)||f.arcs.length;
+  const cum=[]; dist.reduce((s,v,i)=>{cum[i]=s;return s+v;},0);
+  const ang=v=>-Math.PI/2+2*Math.PI*v/tot;
   const names=f.arcs.map(a=>a[0]);
-  names.forEach((nm,i)=>{const a=-Math.PI/2+2*Math.PI*i/names.length;
+  names.forEach((nm,i)=>{const a=ang(cum[i]);
    const x=R2(cx+r*Math.cos(a)),y=R2(cy+r*Math.sin(a));
    s+=`<circle cx="${x}" cy="${y}" r="9" fill="#4338ca"/>`;
    s+=`<text class="lbl-b" x="${R2(cx+(r+26)*Math.cos(a))}" y="${R2(cy+(r+26)*Math.sin(a)+5)}" text-anchor="middle">${esc(nm)}</text>`;});
-  f.arcs.forEach((arc,i)=>{const a=-Math.PI/2+2*Math.PI*(i+.5)/f.arcs.length;
+  f.arcs.forEach((arc,i)=>{const a=ang(cum[i]+dist[i]/2);
    s+=`<text class="lbl" x="${R2(cx+(r-30)*Math.cos(a))}" y="${R2(cy+(r-30)*Math.sin(a)+4)}" text-anchor="middle">${arc[2]} км</text>`;});
   return SVG('0 0 540 290',s,'Кольцевая дорога с четырьмя колонками');
  }
@@ -1325,6 +1336,8 @@ function figCap(t){
  if(k==='numline') return 'Точки расставлены по своим координатам, поэтому расстояния на прямой настоящие.';
  if(k==='isoTri'||k==='rightTri'||k==='circleChord') return 'Чертёж построен по числам из условия: длины сторон на рисунке пропорциональны данным.';
  if(k==='plot') return 'Стороны на плане пропорциональны размерам из условия.';
+ if(k==='ring') return 'Колонки расставлены по кольцу пропорционально расстояниям из условия.';
+ if(k==='cutRect') return 'Разрезы проведены по данным периметрам: размеры частей на чертеже им соответствуют.';
  return 'Схематический рисунок: пропорции переданы приблизительно, размеры даны подписями.';
 }
 
@@ -1489,15 +1502,18 @@ LAB.avgSpeedLab=function(t,st){
 };
 LAB.ringLab=function(t,st){
  const arcs=t.fig.arcs, cx=270,cy=125,r=92, n=arcs.length;
+ const dist=arcs.map(a=>Number(a[2])||0), tot=dist.reduce((s,v)=>s+v,0)||n;
+ const cum=[]; dist.reduce((s,v,i)=>{cum[i]=s;return s+v;},0);
+ const ang=v=>-Math.PI/2+2*Math.PI*v/tot;
  let s='';
- arcs.forEach((a,i)=>{const a0=-Math.PI/2+2*Math.PI*i/n, a1=a0+2*Math.PI/n, on=st.sel.includes(i);
-  const p=`M ${R2(cx+r*Math.cos(a0))} ${R2(cy+r*Math.sin(a0))} A ${r} ${r} 0 0 1 ${R2(cx+r*Math.cos(a1))} ${R2(cy+r*Math.sin(a1))}`;
+ arcs.forEach((a,i)=>{const a0=ang(cum[i]), a1=ang(cum[i]+dist[i]), on=st.sel.includes(i);
+  const p=`M ${R2(cx+r*Math.cos(a0))} ${R2(cy+r*Math.sin(a0))} A ${r} ${r} 0 ${a1-a0>Math.PI?1:0} 1 ${R2(cx+r*Math.cos(a1))} ${R2(cy+r*Math.sin(a1))}`;
   s+=`<path d="${p}" fill="none" stroke="${on?'#4338ca':'#c3ccdb'}" stroke-width="${on?14:10}" stroke-linecap="butt"/>`;
   s+=`<path class="grab" data-lab="arc" data-i="${i}" d="${p}" fill="none" stroke="transparent" stroke-width="34" style="cursor:pointer"/>`;
   const am=(a0+a1)/2; s+=`<text class="lbl${on?'-b':''}" x="${R2(cx+(r-30)*Math.cos(am))}" y="${R2(cy+(r-30)*Math.sin(am)+4)}" text-anchor="middle" pointer-events="none">${a[2]}</text>`;});
- arcs.forEach((a,i)=>{const ang=-Math.PI/2+2*Math.PI*i/n;
-  s+=`<circle cx="${R2(cx+r*Math.cos(ang))}" cy="${R2(cy+r*Math.sin(ang))}" r="9" fill="#312a92" pointer-events="none"/>`;
-  s+=`<text class="lbl-b" x="${R2(cx+(r+24)*Math.cos(ang))}" y="${R2(cy+(r+24)*Math.sin(ang)+5)}" text-anchor="middle">${esc(a[0])}</text>`;});
+ arcs.forEach((a,i)=>{const st1=ang(cum[i]);
+  s+=`<circle cx="${R2(cx+r*Math.cos(st1))}" cy="${R2(cy+r*Math.sin(st1))}" r="9" fill="#312a92" pointer-events="none"/>`;
+  s+=`<text class="lbl-b" x="${R2(cx+(r+24)*Math.cos(st1))}" y="${R2(cy+(r+24)*Math.sin(st1)+5)}" text-anchor="middle">${esc(a[0])}</text>`;});
  const sum=st.sel.reduce((a,i)=>a+arcs[i][2],0);
  const read=st.sel.length?`Выбрано участков: <b>${st.sel.length}</b>, их длина вместе <b>${sum} км</b>.`:'Нажмите на участки дороги, из которых складывается маршрут.';
  return `<div class="lab"><div class="lab-head">Эксперимент: собирайте маршрут из участков</div>${SVG('0 0 540 250',s,'Кольцевая дорога')}<div class="lab-read">${read}<br><span class="muted">Между двумя колонками всегда два пути — по одной дуге кольца и по другой.</span></div></div>`;
