@@ -1,0 +1,2193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Базовый ЕГЭ по математике · тренажёр по 21 заданию</title>
+<style>
+:root{
+ --ink:#16202f; --muted:#5a6a80; --faint:#8b98ab;
+ --line:#dde4ee; --page:#f4f6fb; --card:#fff;
+ --accent:#4338ca; --accent-dark:#312a92; --accent-soft:#ecebfb;
+ --ok:#146c43; --ok-bg:#e9f6ef; --ok-line:#b6ddc6;
+ --no:#9f2d3c; --no-bg:#fdf0f2; --no-line:#f0c4cb;
+ --tip:#8a5a00; --tip-bg:#fff7e3; --tip-line:#e8d5a6;
+ --r:14px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--page);color:var(--ink);
+ font:16px/1.62 system-ui,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+ font-variant-numeric:tabular-nums}
+h1,h2,h3,h4,p,figure{margin:0}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;min-height:44px;border:1px solid var(--line);border-radius:10px;
+ background:#fff;padding:9px 15px;font-weight:600}
+button:hover:not(:disabled){background:#f3f5fa;border-color:#bcc7d8}
+button:disabled{opacity:.5;cursor:default}
+:focus-visible{outline:3px solid #b45309;outline-offset:2px}
+.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.primary:hover:not(:disabled){background:var(--accent-dark);border-color:var(--accent-dark)}
+.ghost{border-color:transparent;background:transparent}
+.small{font-size:13px;line-height:1.55}
+.muted{color:var(--muted)}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:fixed;left:14px;top:-70px;background:#fff;padding:12px;z-index:60;border-radius:8px}
+.skip:focus{top:10px}
+
+header.top{background:#fff;border-bottom:1px solid var(--line);padding:16px 26px}
+.top-in{max-width:1180px;margin:auto;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.mark{width:42px;height:42px;border-radius:12px;background:var(--accent);color:#fff;
+ display:grid;place-items:center;font-weight:700;font-size:19px;letter-spacing:-.5px}
+.brand{display:flex;gap:12px;align-items:center}
+.brand h1{font-size:18px;line-height:1.2;letter-spacing:-.3px}
+.brand p{font-size:12.5px;color:var(--muted);margin-top:2px}
+.lessonBadge{font-size:12.5px;font-weight:650;color:var(--accent-dark);background:var(--accent-soft);
+ border-radius:20px;padding:6px 13px;align-self:center}
+.lchoice{border:1px solid var(--line);border-radius:11px;padding:12px 14px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+.lchoice b{font-size:14px;display:block}
+.lchoice p{font-size:12.5px;color:var(--muted);margin-top:3px}
+.lchoice .row{display:flex;gap:8px;flex-shrink:0}
+.lchoice button{font-size:12.5px;min-height:36px;padding:6px 11px}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+.top-actions button{font-size:13.5px;min-height:40px;padding:7px 12px}
+
+.wrap{max-width:1180px;margin:0 auto;padding:22px 26px 60px;display:grid;
+ grid-template-columns:236px minmax(0,1fr);gap:26px;align-items:start}
+
+/* ── бланк: 21 клетка, повторяет структуру КИМ ── */
+.blank{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:15px;position:sticky;top:16px}
+.blank h2{font-size:13px;font-weight:700;letter-spacing:.2px}
+.blank .sub{font-size:11.5px;color:var(--faint);margin:3px 0 12px;line-height:1.45}
+.cells{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.cell{min-height:0;height:34px;padding:0;border-radius:7px;font-size:13px;font-weight:650;
+ background:#f7f9fc;border:1px solid var(--line);color:var(--muted);position:relative;display:grid;place-items:center}
+.cell:hover:not(:disabled){background:#eef1f8}
+.cell.here{background:var(--accent);border-color:var(--accent);color:#fff}
+.cell.done{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok)}
+.cell.part{background:var(--tip-bg);border-color:var(--tip-line);color:var(--tip)}
+.cell.here.done,.cell.here.part{background:var(--accent);border-color:var(--accent);color:#fff}
+.legend{margin-top:12px;display:flex;flex-direction:column;gap:5px;font-size:11.5px;color:var(--muted)}
+.legend i{width:11px;height:11px;border-radius:3px;display:inline-block;vertical-align:-1px;margin-right:6px;border:1px solid}
+.i-done{background:var(--ok-bg);border-color:var(--ok-line)}
+.i-part{background:var(--tip-bg);border-color:var(--tip-line)}
+.i-open{background:#f7f9fc;border-color:var(--line)}
+.score{margin-top:14px;padding-top:13px;border-top:1px solid var(--line)}
+.score .big{font-size:30px;font-weight:700;letter-spacing:-1px;line-height:1.1}
+.score .big span{font-size:15px;font-weight:500;color:var(--muted)}
+.bar{height:6px;background:#e7ecf4;border-radius:4px;overflow:hidden;margin:9px 0 11px}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:4px;transition:width .3s}
+.krow{display:flex;justify-content:space-between;font-size:12.5px;padding:1px 0}
+.blank .ghost{width:100%;margin-top:11px;font-size:12.5px;min-height:38px}
+
+/* ── карточка задания ── */
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.head{padding:20px 24px 17px;border-bottom:1px solid var(--line);background:#fcfdff}
+.head-row{display:flex;gap:12px;align-items:baseline;justify-content:space-between;flex-wrap:wrap;margin-bottom:9px}
+.pos{font-size:13px;font-weight:700;color:var(--accent-dark)}
+.pos b{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:7px;
+ background:var(--accent-soft);margin-right:8px;vertical-align:-7px;font-size:13px}
+.tag{font-size:12px;color:var(--muted);background:#f2f5fa;border-radius:20px;padding:3px 10px}
+.head h3{font-size:17px;font-weight:600;color:var(--muted);letter-spacing:-.1px}
+.qtext{font-size:17.5px;line-height:1.75;margin-top:11px;max-width:62ch}
+.body{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.86fr)}
+.left{padding:22px 24px;min-width:0}
+.right{padding:22px 24px;border-left:1px solid var(--line);background:#fcfdff;min-width:0}
+.figbox{border:1px solid #e6ebf3;border-radius:12px;background:#fff;overflow:hidden}
+.figbox svg{display:block;width:100%;height:auto}
+figcaption{font-size:12px;color:var(--muted);padding:9px 12px;border-top:1px solid #eef1f6;line-height:1.5}
+table.data{width:100%;border-collapse:collapse;font-size:14px}
+table.data th,table.data td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+table.data th{background:#f4f6fb;font-weight:650;font-size:13px}
+.nofig{font-size:14px;color:var(--muted);line-height:1.7}
+.recall{margin-top:14px;background:#f7f9fd;border:1px solid #e4eaf4;border-radius:11px;padding:11px 14px;font-size:13.5px;line-height:1.7}
+.recall summary{cursor:pointer;font-weight:650;color:var(--accent-dark);font-size:13px;min-height:26px;list-style-position:outside}
+.recall summary:hover{color:var(--accent)}
+.recall p{margin-top:9px;padding-top:9px;border-top:1px solid #e4eaf4;color:#3b4759}
+.intro{display:flex;gap:14px;align-items:flex-start;justify-content:space-between;
+ background:#f1f0fc;border:1px solid #ddd9f6;border-radius:var(--r);padding:14px 17px;margin-bottom:16px;color:#3a3563}
+.intro b{font-size:14px}
+.intro p{font-size:13.5px;line-height:1.65;margin-top:5px}
+.intro button{flex:0 0 auto;min-height:30px;padding:0 8px;color:#5a539a}
+.pending{color:var(--faint);font-style:italic}
+button.wide{width:100%;margin-top:9px;font-size:13.5px;min-height:40px}
+.solution ol li b{margin-bottom:2px}
+
+.right h4{font-size:14.5px;margin-bottom:9px}
+label.fl{display:block;font-size:13.5px;font-weight:650;margin-bottom:6px}
+.ansrow{display:flex;gap:10px;align-items:center;margin-bottom:9px}
+input[type=text]{flex:1;min-width:0;min-height:48px;padding:10px 13px;border:2px solid #c3ccdb;
+ border-radius:10px;background:#fff;font-size:19px;font-weight:600}
+input[type=text]:focus{border-color:var(--accent)}
+input[aria-invalid=true]{border-color:var(--no)}
+.unit{font-size:15px;font-weight:600;color:var(--muted);white-space:nowrap}
+.fmt{font-size:12px;color:var(--faint);margin-bottom:13px;line-height:1.5}
+.matchgrid{display:flex;flex-direction:column;gap:8px;margin-bottom:13px}
+.mrow{display:grid;grid-template-columns:1fr 78px;gap:10px;align-items:center;
+ background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.mrow span{font-size:13.5px;line-height:1.5}
+.mrow select{min-height:40px;border:1px solid #c3ccdb;border-radius:8px;padding:6px 8px;background:#fff;font-weight:600}
+.opts{list-style:none;padding:0;margin:0 0 13px;counter-reset:o}
+.opts li{display:flex;gap:9px;font-size:13.5px;line-height:1.55;padding:5px 0}
+.opts li b{color:var(--accent-dark);font-weight:700;flex:0 0 auto}
+.checks{display:flex;flex-direction:column;gap:7px;margin-bottom:13px}
+.chk{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;
+ padding:10px 12px;background:#fff;cursor:pointer;font-size:14px;line-height:1.5}
+.chk:hover{border-color:#a9a2dd;background:#fafaff}
+.chk:has(input:checked){background:var(--accent-soft);border-color:var(--accent)}
+.chk input{margin:4px 0 0;width:17px;height:17px;accent-color:var(--accent);flex:0 0 auto}
+.bets{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:4px 0 12px}
+.bets-label{grid-column:1/-1;font-size:13px;font-weight:650;color:var(--muted)}
+.bet{min-height:52px;padding:7px 6px;font-size:13.5px;line-height:1.25;display:flex;flex-direction:column;align-items:center;gap:2px}
+.bet small{font-size:11px;font-weight:500;color:var(--faint)}
+.bet.active{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-dark)}
+.bet.active small{color:var(--accent-dark)}
+.betline{margin-top:10px;font-size:14px;font-weight:600;padding:9px 12px;border-radius:9px}
+.betline.up{background:var(--ok-bg);color:var(--ok)}
+.betline.down{background:var(--no-bg);color:var(--no)}
+.eyebrow-s{font-size:12px;font-weight:700}
+.side-hint{font-size:11.5px;color:var(--muted);line-height:1.55;margin-top:9px}
+.lab{margin-top:14px;border:1px solid #e6dcc3;border-radius:12px;background:#fffdf7;overflow:hidden}
+.lab-head{font-size:12.5px;font-weight:650;color:#7a5a12;padding:9px 13px;border-bottom:1px solid #eee3c9;background:#fff8e6}
+.lab svg{display:block;width:100%;height:auto;touch-action:none} /* иначе Chromium принимает жест за прокрутку и шлёт pointercancel */
+.lab-read{font-size:14px;line-height:1.7;padding:10px 13px;border-top:1px solid #eee3c9}
+.lab-read b.hit{color:var(--ok);background:var(--ok-bg);border-radius:6px;padding:1px 6px}
+.tiles{display:flex;flex-wrap:wrap;gap:6px;padding:12px 13px}
+.tiles.slots{gap:8px;padding-bottom:4px}
+.tile{min-height:40px;min-width:40px;padding:0 8px;font-size:15px;font-weight:650;border-radius:9px}
+.tile.s1{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok)}
+.tile.s2{background:var(--no-bg);border-color:var(--no-line);color:var(--no)}
+.tile.dig{font-size:18px;min-width:44px}
+.tile.struck{text-decoration:line-through;opacity:.4}
+.tile.slot{min-width:48px;min-height:48px;font-size:22px;background:#fff;border:2px dashed #c3ccdb}
+.tile.slot.filled{border-style:solid;border-color:#8f9db3}
+.tile.slot.active{border-color:#b45309;box-shadow:0 0 0 3px #f5d9b8;background:#fff8ef}
+.tile.clear{font-size:12.5px;font-weight:600;color:var(--muted);align-self:center;min-height:36px}
+.cross-wrap{padding:14px 16px 6px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.cross-cols{display:grid;grid-template-columns:1fr 1fr;width:min(100%,360px);text-align:center;font-size:12.5px;font-weight:650;color:var(--muted)}
+.cross-grid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:26px 44px;width:min(100%,360px);padding:6px 0}
+.lab .cross-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.cross-svg line{stroke:#b45309;stroke-width:2.2;vector-effect:non-scaling-stroke;stroke-dasharray:6 5;opacity:.75}
+.ccell,.xcell{position:relative;z-index:1;min-height:56px;display:flex;align-items:center;justify-content:center}
+.cin{width:100%;min-height:52px;text-align:center;font-size:20px;font-weight:650;border:2px solid #c3ccdb;border-radius:10px;background:#fff;padding:6px 34px 6px 10px}
+.cin:focus{border-color:var(--accent)}
+.setx{position:absolute;right:6px;top:50%;transform:translateY(-50%);min-height:30px;padding:0 7px;font-size:11.5px;color:var(--faint);border-color:transparent;background:transparent}
+.setx:hover{color:var(--accent-dark);background:var(--accent-soft)}
+.xcell{flex-direction:column;gap:1px;background:#fff8ef;border:2px solid #b45309;border-radius:10px}
+.xmark{font-size:24px;font-weight:700;color:#b45309;font-style:italic;line-height:1.1}
+.xhint{font-size:10.5px;color:#7a5a12}
+.cross-eq{font-size:15px;line-height:1.75}
+.selftest{position:sticky;top:0;z-index:70;padding:10px 16px;font-size:13.5px;line-height:1.6;border-bottom:1px solid}
+.selftest.ok{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok)}
+.selftest.no{background:var(--no-bg);border-color:var(--no-line);color:var(--no)}
+.selftest ul{margin:6px 0 0;padding-left:18px}
+.acts{display:flex;gap:9px;flex-wrap:wrap}
+.acts .primary{flex:1 1 150px}
+.msg{margin-top:13px;padding:12px 14px;border-radius:11px;font-size:14px;line-height:1.65;border:1px solid}
+.msg.no{background:var(--no-bg);border-color:var(--no-line);color:#7f2531}
+.msg.ok{background:var(--ok-bg);border-color:var(--ok-line);color:#0f5334}
+.msg.neutral{background:#eef2fb;border-color:#d3dcf2;color:#33436e}
+.tipbox{margin-top:13px;padding:12px 14px;border-radius:11px;background:var(--tip-bg);
+ border:1px solid var(--tip-line);font-size:14px;line-height:1.7}
+.tipbox p+p{margin-top:8px}
+.tipbox .n{font-size:11.5px;font-weight:700;color:var(--tip);letter-spacing:.4px;display:block;margin-bottom:4px}
+.solution{margin-top:15px;border-top:1px solid var(--line);padding-top:14px}
+.solution h4{font-size:12.5px;color:var(--muted);font-weight:700;margin-bottom:9px}
+.solution ol{margin:0;padding-left:20px}
+.solution li{font-size:14px;line-height:1.7;padding:4px 0}
+.solution li b{display:block;font-weight:600}
+.solution li span{color:var(--muted)}
+.done-line{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:4px}
+.seal{width:42px;height:42px;border-radius:50%;background:var(--ok-bg);border:1px solid var(--ok-line);
+ color:var(--ok);display:grid;place-items:center;font-size:21px}
+.done-line h4{font-size:21px;color:var(--ok);font-weight:700}
+.howmark{font-size:12px;border-radius:20px;padding:3px 10px;background:#f2f5fa;color:var(--muted)}
+.foot{display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap;
+ padding:13px 22px;border-top:1px solid var(--line);background:#fff}
+.dots{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.dot{min-height:32px!important;width:32px;padding:0!important;border-radius:8px!important;font-size:13px}
+.dot.here{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-dark)}
+.dot.done:after{content:'';position:absolute}
+.dot.done{background:var(--ok-bg);border-color:var(--ok-line);color:var(--ok)}
+.note{font-size:12px;color:var(--faint);margin:14px 4px 0;line-height:1.65}
+dialog{width:min(700px,calc(100% - 24px));max-height:85vh;border:1px solid var(--line);
+ border-radius:16px;padding:24px;color:var(--ink)}
+dialog::backdrop{background:#12203366}
+.rep{font:13px/1.7 ui-monospace,Consolas,monospace;white-space:pre-wrap;background:#f5f7fb;
+ border:1px solid var(--line);border-radius:10px;padding:15px;margin:15px 0;max-height:46vh;overflow:auto}
+.warn{padding:10px 14px;border:1px solid var(--tip-line);background:var(--tip-bg);
+ border-radius:10px;font-size:13px;margin-bottom:14px}
+svg .ax{stroke:#8f9db3;stroke-width:1.6;fill:none}
+svg .gl{stroke:#e4e9f2;stroke-width:1}
+svg .glz{stroke:#b9c4d5;stroke-width:1.4}
+svg .bar-r{fill:#c7cdf2;stroke:#6f66c9;stroke-width:1.2}
+svg .bar-hi{fill:#4338ca;stroke:#312a92}
+svg .ln{stroke:#4338ca;stroke-width:2.6;fill:none;stroke-linejoin:round;stroke-linecap:round}
+svg .pt{fill:#4338ca}
+svg .lbl{font:12px system-ui,sans-serif;fill:#5a6a80}
+svg .lbl-b{font:600 13px system-ui,sans-serif;fill:#16202f}
+svg .shape{fill:#e7e6fa;stroke:#4338ca;stroke-width:2.2;stroke-linejoin:round}
+svg .edge{fill:none;stroke:#5b6b85;stroke-width:2}
+svg .hid{fill:none;stroke:#a3aec1;stroke-width:1.5;stroke-dasharray:6 5}
+svg .aux{fill:none;stroke:#b45309;stroke-width:2}
+svg .cellgrid{stroke:#dbe2ee;stroke-width:1}
+@media(max-width:900px){
+ .wrap{grid-template-columns:1fr;padding:16px 14px 40px;gap:16px}
+ .blank{position:static}
+ .cells{grid-template-columns:repeat(11,1fr)}
+ .body{grid-template-columns:1fr}
+ .right{border-left:0;border-top:1px solid var(--line)}
+ .head,.left,.right{padding:18px 17px}
+ .figbox svg{max-height:44vh}
+ .intro p{font-size:13px}
+ .qtext{font-size:16.5px}
+}
+@media(max-width:420px){.cells{grid-template-columns:repeat(7,1fr)}.top-in{gap:11px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{header.top,.blank,.foot,.acts,.note{display:none!important}
+ .wrap{display:block;padding:0}.card{border:0}.body{display:block}.right{border:0}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Перейти к заданию</a>
+<header class="top">
+ <div class="top-in">
+  <div class="brand">
+   <div class="mark" aria-hidden="true">21</div>
+   <div>
+    <h1>Базовый ЕГЭ по математике</h1>
+    <p>Тренажёр по всем 21 заданию · демоверсия 2027</p>
+   </div>
+  </div>
+  <div class="top-actions">
+   <span class="lessonBadge" id="lessonBadge"></span>
+   <button id="btnLessons">Ссылки для учеников</button>
+   <button id="btnBet">Аукцион уверенности: выкл</button>
+   <button id="btnVariant">Собрать вариант</button>
+   <button id="btnRef">Справочные материалы</button>
+   <button id="btnReport">Отчёт</button>
+  </div>
+ </div>
+</header>
+
+<div class="wrap">
+ <aside class="blank" aria-label="Задания и прогресс">
+  <h2>Задания 1–21</h2>
+  <p class="sub">Нумерация совпадает с бланком ответов. Выберите номер, чтобы перейти к заданию.</p>
+  <div class="cells" id="cells" role="group" aria-label="Номера заданий"></div>
+  <div class="legend">
+   <span><i class="i-done"></i>решено без помощи</span>
+   <span><i class="i-part"></i>решено с подсказкой или разбором</span>
+   <span><i class="i-open"></i>ещё не решено</span>
+  </div>
+  <div class="score">
+   <div class="big" id="scoreBig">0<span> / 21</span></div>
+   <p class="small muted">позиций закрыто</p>
+   <div class="bar"><i id="scoreBar" style="width:0%"></i></div>
+   <div class="krow"><span>Без помощи</span><b id="kSolo">0</b></div>
+   <div class="krow"><span>С подсказкой</span><b id="kHint">0</b></div>
+   <div class="krow"><span>С разбором</span><b id="kSol">0</b></div>
+   <button class="ghost small" id="btnReset">Начать заново</button>
+  </div>
+  <div class="score" id="auction" hidden></div>
+ </aside>
+
+ <main id="main" tabindex="-1">
+  <div id="warn" class="warn" hidden>Браузер не разрешил сохранение. Заниматься можно, но после закрытия страницы прогресс не сохранится.</div>
+  <div id="host"></div>
+  <p class="note">Формулировки заданий оригинальные; типы, форма ответа и уровень сложности соответствуют демонстрационному варианту базового ЕГЭ 2027 года. Чертежи построены по числовым данным задачи, поэтому пропорции на них настоящие. Прогресс хранится только в вашем браузере.</p>
+ </main>
+</div>
+
+<dialog id="dlgLessons" aria-labelledby="lesT">
+ <div style="display:flex;justify-content:space-between;gap:12px;align-items:start">
+  <h2 id="lesT" style="font-size:20px">Ссылки для учеников</h2>
+  <button class="ghost" data-close="dlgLessons" aria-label="Закрыть">✕</button>
+ </div>
+ <p class="small muted" style="margin-top:10px">Отправьте ученику одну ссылку — тренажёр сам откроется на нужном уроке. Полный курс — для самостоятельной отработки всех 21 задания.</p>
+ <label class="chk" style="margin-top:12px"><input type="checkbox" id="linkBet"><span>Включить в ссылку аукцион уверенности — ученик будет ставить очки на каждый ответ</span></label>
+ <div id="lessonLinks" style="margin-top:14px;display:flex;flex-direction:column;gap:10px"></div>
+</dialog>
+
+<dialog id="dlgRef" aria-labelledby="refT">
+ <div style="display:flex;justify-content:space-between;gap:12px;align-items:start">
+  <h2 id="refT" style="font-size:20px">Справочные материалы</h2>
+  <button class="ghost" data-close="dlgRef" aria-label="Закрыть">✕</button>
+ </div>
+ <div id="refBody" style="margin-top:16px"></div>
+</dialog>
+
+<dialog id="dlgRep" aria-labelledby="repT">
+ <div style="display:flex;justify-content:space-between;gap:12px;align-items:start">
+  <h2 id="repT" style="font-size:20px">Отчёт по занятию</h2>
+  <button class="ghost" data-close="dlgRep" aria-label="Закрыть">✕</button>
+ </div>
+ <div class="rep" id="repBody"></div>
+ <div style="display:flex;gap:9px;flex-wrap:wrap">
+  <button class="primary" id="btnCopy">Скопировать</button>
+  <button id="btnDl">Сохранить файлом</button>
+ </div>
+ <p class="small muted" style="margin-top:11px">Отчёт никуда не отправляется автоматически.</p>
+</dialog>
+<script>
+
+/*__EGE_DATA_START__*/
+/* Банк заданий: 21 позиция базового ЕГЭ.
+   Формулировки оригинальные, типы и уровень — по демоверсии 2027.
+   answerType: 'number' | 'digits' | 'match' | 'multi' | 'rule'
+   traps: конкретный неверный ответ -> адресный разбор ошибки.
+   Ключи traps проверяются на коллизии автотестом. */
+
+const POSITIONS = [
+ {n:1, name:'Считаем на практике', hint:'Сдача, упаковки, наименьшее число',
+  recall:'Если что-то продаётся только целиком, неполную часть всё равно берут целиком: 23 : 6 — это 4 упаковки, а не 3.'},
+ {n:2, name:'Прикидка величин', hint:'Что сколько весит, длится и измеряет',
+  recall:'1 т = 1000 кг, 1 кг = 1000 г, 1 г = 1000 мг. 1 км = 1000 м, 1 м = 100 см, 1 см = 10 мм. 1 ч = 60 мин, 1 мин = 60 с.'},
+ {n:3, name:'Чтение диаграмм', hint:'Найти значение по рисунку или таблице',
+  recall:'Сначала посмотрите на подписи оси и определите цену деления. Затем: нужная отметка внизу → точка графика → значение слева.'},
+ {n:4, name:'Подстановка в формулу', hint:'Заменить буквы числами и посчитать',
+  recall:'Порядок действий сохраняется: сначала степени, потом умножение и деление, потом сложение и вычитание. Скобки — всегда первыми.'},
+ {n:5, name:'Вероятность', hint:'Благоприятные исходы делим на все',
+  recall:'P = (число благоприятных исходов) : (число всех исходов). Ответ всегда от 0 до 1. Вероятность противоположного события: 1 − P.'},
+ {n:6, name:'Выбор выгодного варианта', hint:'Сравнить предложения по таблице',
+  recall:'Посчитайте итог для каждого варианта отдельно и только потом сравнивайте. Не забудьте проверить дополнительные условия из таблицы.'},
+ {n:7, name:'График и описание', hint:'Росло, падало, не менялось',
+  recall:'Для каждого промежутка сравните значение в начале и в конце. Наибольший рост — где разность больше, а не где точка выше.'},
+ {n:8, name:'Верные утверждения', hint:'Что следует из условия, а что нет',
+  recall:'Выпишите известные сравнения в строчку, например Катя < Оля < Вера. Если два объекта в этой цепочке напрямую не связаны, сравнивать их нельзя.'},
+ {n:9, name:'Площадь по клеткам', hint:'Фигура на клетчатой бумаге',
+  recall:'Треугольник S = a·h : 2. Трапеция S = (a + b) : 2 · h. Если диагонали перпендикулярны, S = d₁·d₂ : 2.'},
+ {n:10, name:'Геометрия вокруг нас', hint:'Участок, забор, углы колеса',
+  recall:'Площадь прямоугольника a·b, периметр 2(a + b). Полный угол вокруг точки — 360°.'},
+ {n:11, name:'Объём и поверхность', hint:'Коробка, бак, цилиндр',
+  recall:'Параллелепипед: V = abc, поверхность 2(ab + bc + ac). Цилиндр V = πr²h. При погружении тела объём воды растёт ровно на объём тела.'},
+ {n:12, name:'Треугольник и окружность', hint:'Пифагор, медиана, косинус',
+  recall:'a² + b² = c². В равнобедренном треугольнике медиана к основанию является и высотой. Угол, опирающийся на диаметр, прямой. cos — прилежащий катет к гипотенузе.'},
+ {n:13, name:'Конус, пирамида, подобие', hint:'Объёмы и боковые поверхности',
+  recall:'Конус S₍бок₎ = πrl. Пирамида: боковая поверхность — сумма площадей боковых граней. У подобных тел длины относятся как k, площади как k², объёмы как k³.'},
+ {n:14, name:'Дроби и десятичные', hint:'Порядок действий',
+  recall:'Делить на дробь — умножать на перевёрнутую. Умножение и деление выполняются раньше сложения и вычитания.'},
+ {n:15, name:'Проценты и части', hint:'Скидка, налог, отношение',
+  recall:'Проценты — это пропорция в две строки: целое, от которого считают, — 100 %; часть — её проценты. Записали две строки, перемножили крест-накрест, разделили. В отношении 4 : 5 «целое» — все 9 частей.'},
+ {n:16, name:'Корни, логарифмы, синусы', hint:'Упростить и посчитать',
+  recall:'√a · √b = √(ab). log bᵏ = k · log b. sin 30° = 0,5. У синуса и косинуса период 360°.'},
+ {n:17, name:'Уравнения', hint:'Найти корень',
+  recall:'Приведите обе части к одному основанию и приравняйте показатели. Разность логарифмов — логарифм частного. Из-под корня выходят возведением в квадрат.'},
+ {n:18, name:'Числа на прямой', hint:'Оценить и сравнить',
+  recall:'Зажмите число между соседними целыми: 3² = 9, 4² = 16, значит √11 лежит между 3 и 4. Так же с логарифмом: 2² = 4, 2³ = 8, значит log₂ 5 между 2 и 3.'},
+ {n:19, name:'Подбор числа', hint:'Признаки делимости',
+  recall:'На 3 и на 9 — по сумме цифр. На 5 — по последней цифре (0 или 5). На 2 — по чётности последней. Кратно 15 = кратно 3 и 5; кратно 18 = чётное и сумма цифр кратна 9.'},
+ {n:20, name:'Текстовые задачи', hint:'Движение, растворы, средняя скорость',
+  recall:'Навстречу — скорости складываются. Средняя скорость = весь путь : всё время, а не среднее скоростей. При доливании воды масса вещества не меняется.'},
+ {n:21, name:'Задача на рассуждение', hint:'Перебор и оценка',
+  recall:'Составьте уравнение и переберите небольшое число вариантов, отбрасывая невозможные. Иногда помогает посчитать одну и ту же величину двумя способами.'}
+];
+
+
+/* Три урока курса. Каждая позиция входит ровно в один урок —
+   так рассылка задания по ссылке (?lesson=N) не оставляет дыр
+   и не дублирует материал. */
+const LESSONS = [
+ {n:1, title:'Практика и данные', positions:[1,2,3,4,5,6,7,8],
+  blurb:'Прикидки, проценты в быту, диаграммы, вероятность, таблицы, логика утверждений.'},
+ {n:2, title:'Геометрия', positions:[9,10,11,12,13],
+  blurb:'Площадь по клеткам, объёмы, планиметрия и стереометрия.'},
+ {n:3, title:'Алгебра', positions:[14,15,16,17,18,19,20,21],
+  blurb:'Вычисления, проценты, корни и логарифмы, уравнения, текстовые задачи.'}
+];
+const lessonOf = pos => LESSONS.find(l=>l.positions.includes(pos));
+
+const TASKS = [
+
+/* ───────── 1. Практический счёт ───────── */
+{pos:1,id:'p1a',answerType:'number',answer:12,unit:'уп.',
+ text:'Для укладки дорожки требуется 94 плитки. Плитки продаются упаковками по 8 штук. Какое наименьшее количество упаковок нужно купить?',
+ hints:['Разделите 94 на 8 и посмотрите на остаток.','94 = 8 · 11 + 6. Одиннадцати упаковок не хватит: останется 6 плиток.'],
+ steps:[{q:'Сколько плиток в 11 упаковках?',a:'8 · 11 = 88'},{q:'Хватит ли 88 плиток?',a:'Нет, нужно 94. Не хватает 6.'},{q:'Сколько упаковок купить?',a:'Ещё одну целую: 11 + 1 = 12'}],
+ traps:{11:'Одиннадцать упаковок — это 88 плиток, на 6 меньше нужного. Неполную упаковку купить нельзя, поэтому берут ещё одну целую.',
+        94:'94 — число плиток, а в ответе требуется число упаковок.',
+        '11.75':'В ответе должно быть целое число упаковок: неполную упаковку не продают.'}},
+
+{pos:1,id:'p1b',answerType:'number',answer:985,unit:'руб.',
+ text:'Покупатель отдал кассиру 2000 рублей и купил 7 кг яблок по цене 145 рублей за килограмм. Сколько рублей сдачи он должен получить?',
+ hints:['Сначала найдите стоимость всей покупки.','7 · 145 = 1015 рублей — это стоимость яблок.'],
+ steps:[{q:'Сколько стоят 7 кг яблок?',a:'7 · 145 = 1015 руб.'},{q:'Сколько сдачи?',a:'2000 − 1015 = 985 руб.'}],
+ traps:{1015:'Это стоимость яблок — верный промежуточный результат. Осталось вычесть его из 2000.',
+        2000:'2000 рублей покупатель отдал. Сдача — это разность между отданной суммой и стоимостью покупки.'}},
+
+{pos:1,id:'p1c',answerType:'number',answer:7,unit:'рейсов',
+ text:'В автобус помещается не более 45 пассажиров. Какое наименьшее количество рейсов потребуется, чтобы перевезти 310 человек?',
+ hints:['Разделите 310 на 45 и оцените остаток.','45 · 6 = 270. Остаётся 40 человек — им тоже нужен рейс.'],
+ steps:[{q:'Сколько человек увезут 6 рейсов?',a:'45 · 6 = 270'},{q:'Сколько человек останется?',a:'310 − 270 = 40'},{q:'Сколько рейсов всего?',a:'6 + 1 = 7'}],
+ traps:{6:'Шесть рейсов увезут 270 человек, останется ещё 40. Для них нужен седьмой рейс.',
+        310:'310 — число пассажиров, а в ответе требуется число рейсов.'}},
+
+/* ───────── 2. Величины и значения ───────── */
+{pos:2,id:'p2a',answerType:'match',answer:'4123',
+ text:'Установите соответствие между величинами и их возможными значениями: к каждому элементу первого столбца подберите соответствующий элемент из второго.',
+ rows:['масса взрослого слона','масса пшеничного зерна','масса школьного рюкзака','масса легкового автомобиля'],
+ cols:['40 мг','4 кг','1,4 т','5 т'],
+ hints:['Начните с самой маленькой и самой большой величины — их спутать труднее всего.','Рюкзак ученик носит на плечах: это единицы килограммов, а не тонны.'],
+ steps:[{q:'Самая маленькая величина?',a:'Пшеничное зерно — 40 мг'},{q:'Самая большая?',a:'Слон — 5 т, автомобиль легче: 1,4 т'},{q:'Что осталось?',a:'Рюкзак — 4 кг'}],
+ traps:{'1423':'Слон тяжелее легкового автомобиля: слону соответствует 5 т, а не 1,4 т.'}},
+
+{pos:2,id:'p2b',answerType:'match',answer:'2134',
+ text:'Установите соответствие между величинами и их возможными значениями: к каждому элементу первого столбца подберите соответствующий элемент из второго.',
+ rows:['продолжительность школьного урока','время одного моргания','продолжительность футбольного матча','продолжительность земных суток'],
+ cols:['0,3 секунды','45 минут','90 минут','24 часа'],
+ hints:['Урок и матч измеряются в минутах, но матч длиннее.','Моргание — доли секунды.'],
+ steps:[{q:'Что измеряется долями секунды?',a:'Моргание — 0,3 с'},{q:'Урок или матч длиннее?',a:'Матч: два тайма по 45 минут, всего 90'},{q:'Что осталось?',a:'Сутки — 24 часа'}],
+ traps:{'3124':'Урок длится 45 минут, а 90 минут — это футбольный матч из двух таймов.'}},
+
+{pos:2,id:'p2c',answerType:'match',answer:'4312',
+ text:'Установите соответствие между величинами и их возможными значениями: к каждому элементу первого столбца подберите соответствующий элемент из второго.',
+ rows:['длина футбольного поля','толщина монеты','высота девятиэтажного дома','длина экватора Земли'],
+ cols:['27 м','40 000 км','2 мм','105 м'],
+ hints:['Один этаж жилого дома — примерно 3 метра.','Поле длиннее высоты девятиэтажки.'],
+ steps:[{q:'Высота девятиэтажного дома?',a:'Около 9 · 3 = 27 м'},{q:'Длина поля?',a:'105 м — больше высоты дома'},{q:'Что осталось?',a:'Монета — 2 мм, экватор — 40 000 км'}],
+ traps:{'1342':'27 метров — это высота девятиэтажного дома, а не длина футбольного поля.'}},
+
+/* ───────── 3. Диаграммы и графики ───────── */
+{pos:3,id:'p3a',answerType:'number',answer:90,unit:'мм',
+ fig:{kind:'bars',values:[38,31,34,45,62,78,90,84,59,52,47,41],
+      labels:['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'],
+      tick:10,max:100,yLabel:'Осадки, мм',xLabel:'Месяц'},
+ text:'На диаграмме показано количество осадков в городе по месяцам за один год. Определите наибольшее месячное количество осадков. Ответ дайте в миллиметрах.',
+ hints:['Найдите самый высокий столбик и проведите от его вершины горизонталь влево.','Одна клетка по вертикали — 10 мм: считайте по подписям оси, а не по числу клеток.'],
+ steps:[{q:'Какой столбик выше всех?',a:'Июль'},{q:'Какова цена деления?',a:'Соседние подписи различаются на 10, значит одно деление — 10 мм'},{q:'Какое значение у вершины?',a:'90 мм'}],
+ traps:{7:'Это номер месяца, а не количество осадков. Ответ нужен в миллиметрах.',
+        100:'100 мм — это верхняя подпись оси, а вершина столбика до неё не доходит.',
+        84:'84 мм — это август. Сравните его со столбиком июля.'}},
+
+{pos:3,id:'p3b',answerType:'number',answer:2,unit:'',
+ fig:{kind:'dots',values:[6,2,5,11,17,21,24,23,19,13,8,7],
+      labels:['1','2','3','4','5','6','7','8','9','10','11','12'],
+      tick:4,max:28,yLabel:'Температура, °C',xLabel:'Номер месяца'},
+ text:'На рисунке точками показана среднемесячная температура воздуха в городе за каждый месяц одного года. По горизонтали указаны номера месяцев. Определите, в каком месяце температура была наименьшей. В ответе запишите номер этого месяца.',
+ hints:['Ищите самую низкую точку, а не самую левую.','Ответом должен быть номер месяца, а не температура.'],
+ steps:[{q:'Где график расположен ниже всего?',a:'Над отметкой 2 на горизонтальной оси'},{q:'Что записать в ответ?',a:'Номер месяца — 2'}],
+ traps:{1:'Самая левая точка — не обязательно самая низкая. Сравните её с точкой над отметкой 2.',
+        6:'6 °C — это температура первого месяца. В ответе требуется номер месяца.'}},
+
+{pos:3,id:'p3c',answerType:'number',answer:2,unit:'место',
+ table:{head:['Команда','I этап','II этап','III этап'],
+        rows:[['«Вымпел»','3','2','4'],['«Ракета»','1','4','2'],['«Стрела»','2','1','3'],['«Комета»','4','3','1']]},
+ text:'В нескольких этапах соревнования команды набрали баллы, показанные в таблице. Итог подводится сложением баллов по всем этапам, побеждает команда с наибольшей суммой. Какое итоговое место заняла команда «Комета»?',
+ hints:['Сложите баллы по каждой строке.','Суммы: «Вымпел» 9, «Ракета» 7, «Стрела» 6, «Комета» 8.'],
+ steps:[{q:'Сумма «Кометы»?',a:'4 + 3 + 1 = 8'},{q:'Суммы остальных?',a:'«Вымпел» 9, «Ракета» 7, «Стрела» 6'},{q:'Какое место у 8 баллов?',a:'Больше только у «Вымпела» (9), значит «Комета» вторая'}],
+ traps:{8:'8 — сумма баллов «Кометы». В ответе требуется место, а не сумма.',
+        1:'Наибольшая сумма у «Вымпела» — 9 баллов.'}},
+
+/* ───────── 4. Вычисление по формуле ───────── */
+{pos:4,id:'p4a',answerType:'number',answer:50,unit:'Дж',
+ text:'Кинетическую энергию тела (в джоулях) вычисляют по формуле E = mv² / 2, где m — масса тела (в килограммах), v — его скорость (в метрах в секунду). Пользуясь этой формулой, найдите E, если m = 4 кг и v = 5 м/с.',
+ hints:['Сначала возведите скорость в квадрат, только потом умножайте.','v² = 25, дальше 4 · 25 : 2.'],
+ steps:[{q:'Чему равно v²?',a:'5² = 25'},{q:'Чему равно m · v²?',a:'4 · 25 = 100'},{q:'Разделите на 2',a:'100 : 2 = 50'}],
+ traps:{100:'Вы нашли m · v². По формуле результат ещё нужно разделить на 2.',
+        200:'Похоже, скорость умножена на 2 вместо возведения в квадрат: 5² = 25, а не 10.',
+        10:'Здесь v возведено в квадрат, но потерян множитель m и деление на 2.'}},
+
+{pos:4,id:'p4b',answerType:'number',answer:56,unit:'',
+ text:'Площадь трапеции вычисляется по формуле S = (a + b) / 2 · h, где a и b — основания трапеции, h — её высота. Найдите площадь трапеции, если a = 6, b = 10 и h = 7.',
+ hints:['Сначала выполните действие в скобках.','(6 + 10) : 2 = 8 — это полусумма оснований.'],
+ steps:[{q:'Сумма оснований?',a:'6 + 10 = 16'},{q:'Полусумма?',a:'16 : 2 = 8'},{q:'Умножьте на высоту',a:'8 · 7 = 56'}],
+ traps:{112:'Деление на 2 потерялось: (6 + 10) · 7 = 112, а по формуле полусумму умножают на высоту.',
+        23:'Здесь всё сложено. В формуле высота умножается, а не прибавляется.'}},
+
+{pos:4,id:'p4c',answerType:'number',answer:77,unit:'',
+ text:'Чтобы перевести температуру из шкалы Цельсия в шкалу Фаренгейта, пользуются формулой tF = 1,8 · tC + 32, где tC — температура в градусах Цельсия. Скольким градусам по шкале Фаренгейта соответствует 25 градусов по шкале Цельсия?',
+ hints:['Порядок действий: сначала умножение, потом сложение.','1,8 · 25 = 45.'],
+ steps:[{q:'Чему равно 1,8 · 25?',a:'45'},{q:'Прибавьте 32',a:'45 + 32 = 77'}],
+ traps:{45:'Это результат умножения. По формуле к нему ещё прибавляют 32.',
+        102.6:'Похоже, 32 прибавили до умножения. Сначала умножение, потом сложение.'}},
+
+/* ───────── 5. Вероятность ───────── */
+{pos:5,id:'p5a',answerType:'number',answer:0.98,unit:'',
+ text:'В партии из 400 сумок в среднем 8 сумок имеют скрытый дефект. Найдите вероятность того, что случайно выбранная сумка окажется без дефекта.',
+ hints:['Сначала найдите, сколько сумок без дефекта.','400 − 8 = 392 сумки без дефекта.'],
+ steps:[{q:'Сколько сумок без дефекта?',a:'400 − 8 = 392'},{q:'Вероятность?',a:'392 : 400 = 0,98'}],
+ traps:{'0.02':'Это вероятность того, что сумка бракованная. В вопросе — вероятность обратного события.',
+        392:'392 — количество сумок без дефекта. Вероятность — это отношение к общему числу: 392 : 400.',
+        8:'8 — число бракованных сумок, а не вероятность.'}},
+
+{pos:5,id:'p5b',answerType:'number',answer:0.3,unit:'',
+ text:'В соревнованиях по прыжкам в воду выступают 30 спортсменов, среди них 6 из Италии и 9 из Норвегии. Порядок выступлений определяется жеребьёвкой. Найдите вероятность того, что первым будет выступать спортсмен из Норвегии.',
+ hints:['Благоприятные исходы — спортсмены из Норвегии.','9 из 30.'],
+ steps:[{q:'Сколько благоприятных исходов?',a:'9 спортсменов из Норвегии'},{q:'Сколько всего исходов?',a:'30 спортсменов'},{q:'Вероятность?',a:'9 : 30 = 0,3'}],
+ traps:{'0.2':'0,2 — это вероятность для спортсмена из Италии (6 из 30).',
+        9:'9 — число спортсменов из Норвегии. Вероятность — отношение 9 к 30.'}},
+
+{pos:5,id:'p5c',answerType:'number',answer:0.6,unit:'',
+ text:'В фирме такси в наличии 20 автомобилей: 8 из них синие с белыми надписями, остальные белые с синими надписями. Найдите вероятность того, что на случайный вызов приедет белый автомобиль с синими надписями.',
+ hints:['Сначала найдите, сколько белых автомобилей.','20 − 8 = 12.'],
+ steps:[{q:'Сколько белых автомобилей?',a:'20 − 8 = 12'},{q:'Вероятность?',a:'12 : 20 = 0,6'}],
+ traps:{'0.4':'0,4 — вероятность приезда синего автомобиля. В вопросе спрашивают про белый.',
+        12:'12 — количество белых автомобилей. Нужно отношение к общему числу.'}},
+
+/* ───────── 6. Выбор варианта ───────── */
+{pos:6,id:'p6a',answerType:'number',answer:3750,unit:'руб.',
+ table:{head:['Магазин','Цена за штуку (руб.)','Доставка (руб.)','Условие'],
+        rows:[['А','260','300','Нет'],['Б','250','500','Доставка бесплатная при заказе дороже 3600 руб.'],['В','280','200','Доставка бесплатная при заказе дороже 4500 руб.']]},
+ text:'Нужно купить 15 одинаковых наборов. Цены и условия доставки в трёх магазинах приведены в таблице. Во сколько рублей обойдётся самый дешёвый вариант покупки с доставкой?',
+ hints:['Посчитайте стоимость товара отдельно для каждого магазина, а потом проверьте условие бесплатной доставки.','В магазине Б заказ стоит 3750 руб., это больше 3600 — доставка бесплатная.'],
+ steps:[{q:'Магазин А',a:'15 · 260 = 3900, плюс доставка 300 → 4200'},{q:'Магазин Б',a:'15 · 250 = 3750 > 3600, доставка бесплатна → 3750'},{q:'Магазин В',a:'15 · 280 = 4200 < 4500, плюс доставка 200 → 4400'},{q:'Самый дешёвый',a:'3750 руб.'}],
+ traps:{4250:'Похоже, в магазине Б доставка добавлена. Но заказ там стоит 3750 руб., это дороже 3600, значит доставка бесплатная.',
+        4200:'4200 — это вариант А (и товар в В). В магазине Б получается дешевле.',
+        4400:'Это вариант В. Сравните с магазином Б.'}},
+
+{pos:6,id:'p6b',answerType:'multi',answer:'25',
+ table:{head:['№','Длина (см)','Высота (см)','Ширина (см)','Масса (кг)'],
+        rows:[['1','58','36','18','7,2'],['2','54','38','19','8,4'],['3','50','42','16','9,1'],['4','52','39','22','6,8'],['5','48','34','20','9,6'],['6','55','40','21','7,9']]},
+ text:'По правилам авиакомпании в ручную кладь можно взять сумку, у которой длина не превышает 55 см, высота — 40 см, ширина — 20 см, а масса — 10 кг. Данные о шести сумках приведены в таблице. Какие сумки можно взять в ручную кладь? В ответе укажите номера всех подходящих сумок.',
+ items:['Сумка 1','Сумка 2','Сумка 3','Сумка 4','Сумка 5','Сумка 6'],
+ hints:['Проверяйте все четыре ограничения сразу: достаточно одного нарушения, чтобы сумка не подошла.','«Не превышает» означает «меньше или равно»: 55 см и 40 см допустимы.'],
+ steps:[{q:'Сумка 1',a:'Длина 58 > 55 — не подходит'},{q:'Сумка 2',a:'54 ≤ 55, 38 ≤ 40, 19 ≤ 20, 8,4 ≤ 10 — подходит'},{q:'Сумка 3',a:'Высота 42 > 40 — не подходит'},{q:'Сумка 4',a:'Ширина 22 > 20 — не подходит'},{q:'Сумка 5',a:'48 ≤ 55, 34 ≤ 40, 20 ≤ 20, 9,6 ≤ 10 — подходит'},{q:'Сумка 6',a:'Ширина 21 > 20 — не подходит'}],
+ traps:{'256':'У сумки 6 ширина 21 см, а разрешено не более 20 см.',
+        '2':'Сумка 5 тоже проходит: 20 см — это ровно предел, «не превышает» его допускает.'}},
+
+{pos:6,id:'p6c',answerType:'number',answer:8144,unit:'руб.',
+ table:{head:['Автомобиль','Топливо','Расход (л на 100 км)','Аренда за сутки (руб.)'],
+        rows:[['А','Дизельное','9','5600'],['Б','Бензин','11','4800'],['В','Газ','14','4500']]},
+ text:'Клиент арендует автомобиль на сутки для поездки протяжённостью 400 км и оплачивает топливо на всю поездку. Дизельное топливо стоит 72 рубля за литр, бензин — 76 рублей, газ — 68 рублей. Сколько рублей заплатит клиент, если выберет самый дешёвый вариант?',
+ hints:['Для каждого автомобиля посчитайте расход топлива на 400 км, затем его стоимость, затем прибавьте аренду.','400 км — это четыре раза по 100 км, поэтому расход умножается на 4.'],
+ steps:[{q:'Автомобиль А',a:'9 · 4 = 36 л; 36 · 72 = 2592; 2592 + 5600 = 8192'},{q:'Автомобиль Б',a:'11 · 4 = 44 л; 44 · 76 = 3344; 3344 + 4800 = 8144'},{q:'Автомобиль В',a:'14 · 4 = 56 л; 56 · 68 = 3808; 3808 + 4500 = 8308'},{q:'Самый дешёвый',a:'8144 руб.'}],
+ traps:{4500:'Это только аренда самого дешёвого по аренде автомобиля. Нужно прибавить стоимость топлива.',
+        3344:'Это стоимость бензина для автомобиля Б. К ней нужно прибавить аренду.',
+        8192:'Это вариант А. Сравните с вариантом Б.'}},
+
+/* ───────── 7. График и характеристика ───────── */
+{pos:7,id:'p7a',answerType:'match',answer:'3142',
+ fig:{kind:'dots',values:[754,757,757,755,753,756,759,759,757,762,766,764],
+      labels:['0:00','6:00','12:00','18:00','0:00','6:00','12:00','18:00','0:00','6:00','12:00','18:00'],
+      tick:2,max:768,min:752,yLabel:'Давление, мм рт. ст.',xLabel:'Время',
+      groups:[{from:0,to:3,label:'1 марта'},{from:4,to:7,label:'2 марта'},{from:8,to:11,label:'3 марта'}]},
+ text:'На рисунке точками показано атмосферное давление в городе на протяжении трёх суток. Давление измеряется четыре раза в сутки. Поставьте в соответствие каждому периоду характеристику давления в этот период.',
+ rows:['вечер 1 марта (с 18 до 0 часов)','утро 2 марта (с 0 до 6 часов)','день 2 марта (с 12 до 18 часов)','утро 3 марта (с 6 до 12 часов)'],
+ cols:['давление росло, но не превышало 760 мм рт. ст.','наибольший рост давления','давление падало','давление не изменялось'],
+ hints:['Для каждого периода сравните значение в начале и в конце.','Наибольший рост определяется величиной разности, а не высотой точек над осью.'],
+ steps:[{q:'Вечер 1 марта',a:'с 755 до 753 — давление падало'},{q:'Утро 2 марта',a:'с 753 до 756: рост на 3, и всё время ниже 760'},{q:'День 2 марта',a:'759 и 759 — давление не изменялось'},{q:'Утро 3 марта',a:'с 762 до 766: рост на 4 — это наибольший рост'}],
+ traps:{'3124':'Проверьте день 2 марта: в 12:00 и в 18:00 значения совпадают, значит давление не изменялось.',
+        '1342':'Вечером 1 марта давление снизилось с 755 до 753, то есть падало.'}},
+
+{pos:7,id:'p7b',answerType:'match',answer:'4213',
+ fig:{kind:'line',values:[0,18,38,55,62,68,74,78,80,72,66,64],
+      labels:['0','1','2','3','4','5','6','7','8','9','10','11'],
+      tick:10,max:90,yLabel:'Температура, °C',xLabel:'Время, мин'},
+ text:'На графике показано, как менялась температура двигателя после запуска. По горизонтальной оси отложено время в минутах. Поставьте в соответствие каждому интервалу времени характеристику температуры на этом интервале.',
+ rows:['0–1 мин','1–2 мин','8–10 мин','3–5 мин'],
+ cols:['температура падала','самый быстрый рост температуры','температура была в пределах от 55 °C до 70 °C','температура росла и не превышала 20 °C'],
+ hints:['Для каждого интервала посмотрите на значения в его начале и в конце.','Самый быстрый рост — там, где прибавка за одну минуту наибольшая.'],
+ steps:[{q:'0–1 мин',a:'с 0 до 18: температура росла и не превышала 20 °C'},{q:'1–2 мин',a:'с 18 до 38: прибавка 20 °C — наибольшая среди всех минут'},{q:'8–10 мин',a:'с 80 до 66 — температура падала'},{q:'3–5 мин',a:'с 55 до 68 — значения не выходят за пределы от 55 до 70 °C'}],
+ traps:{'2413':'Интервал 8–10 мин: температура снижается с 80 до 66 °C, значит она падала.',
+        '4231':'Проверьте интервал 3–5 мин: там температура держится между 55 и 68 °C.'}},
+
+/* ───────── 8. Верные утверждения ───────── */
+{pos:8,id:'p8a',answerType:'multi',answer:'124',
+ text:'Оля младше Веры на 2 года, но старше Кати на 3 года. Выберите все утверждения, которые верны при указанных условиях.',
+ items:['Вера старше Кати.',
+        'Среди указанных девочек нет никого старше Веры.',
+        'Катя и Вера одного возраста.',
+        'Любая девочка, помимо указанных, которая старше Веры, старше и Оли.'],
+ hints:['Расставьте девочек по возрасту в одну линию.','Катя < Оля < Вера.'],
+ steps:[{q:'Порядок по возрасту',a:'Катя младше Оли, Оля младше Веры: Катя < Оля < Вера'},{q:'Утверждение 1',a:'Вера старше Оли, Оля старше Кати, значит Вера старше Кати — верно'},{q:'Утверждение 2',a:'Вера самая старшая из трёх — верно'},{q:'Утверждение 3',a:'Между Катей и Верой разница 5 лет — неверно'},{q:'Утверждение 4',a:'Кто старше Веры, тот старше и Оли — верно'}],
+ traps:{'12':'Проверьте четвёртое утверждение: Вера старше Оли, поэтому всякий, кто старше Веры, старше и Оли.',
+        '1234':'Третье утверждение неверно: Катя младше Оли на 3 года, а Оля младше Веры на 2 — разница между Катей и Верой 5 лет.'}},
+
+{pos:8,id:'p8b',answerType:'multi',answer:'13',
+ text:'В доме Игоря больше этажей, чем в доме Лены. В доме Саши меньше этажей, чем в доме Лены. В доме Марины больше этажей, чем в доме Саши. Выберите все утверждения, которые верны при указанных условиях.',
+ items:['В доме Игоря больше этажей, чем в доме Саши.',
+        'Дом Марины самый высокий из перечисленных.',
+        'Дом Саши самый низкий из перечисленных четырёх.',
+        'В доме Лены больше этажей, чем в доме Марины.'],
+ hints:['Про Марину известно только то, что её дом выше дома Саши. Сравнить её с Леной и Игорем нельзя.','Саша ниже Лены, Лена ниже Игоря, Саша ниже Марины.'],
+ steps:[{q:'Что известно точно',a:'Саша < Лена < Игорь и Саша < Марина'},{q:'Утверждение 1',a:'Саша < Лена < Игорь — верно'},{q:'Утверждение 2',a:'Про Марину и Игоря сравнения нет — не обязано выполняться'},{q:'Утверждение 3',a:'Саша ниже всех трёх остальных — верно'},{q:'Утверждение 4',a:'Лена и Марина не сравнимы — не обязано выполняться'}],
+ traps:{'123':'Второе утверждение не следует из условия: про дом Марины известно только то, что он выше дома Саши.',
+        '1':'Третье утверждение верно: Саша ниже Лены, Лены ниже Игоря, и Саша ниже Марины.'}},
+
+{pos:8,id:'p8c',answerType:'multi',answer:'12',
+ text:'Школа купила стол, шкаф, доску и проектор. Известно, что проектор дороже доски, а шкаф дешевле доски и дешевле стола. Выберите все утверждения, которые верны при указанных условиях.',
+ items:['Проектор дороже шкафа.',
+        'Шкаф дешевле проектора.',
+        'Стол дороже проектора.',
+        'Доска — самая дешёвая из покупок.'],
+ hints:['Выпишите известные неравенства: доска < проектор, шкаф < доска, шкаф < стол.','Про стол и проектор прямого сравнения в условии нет.'],
+ steps:[{q:'Известные сравнения',a:'шкаф < доска < проектор и шкаф < стол'},{q:'Утверждения 1 и 2',a:'Это одно и то же: шкаф < доска < проектор — верно'},{q:'Утверждение 3',a:'Стол и проектор не сравнимы — не обязано выполняться'},{q:'Утверждение 4',a:'Самый дешёвый — шкаф, а не доска — неверно'}],
+ traps:{'124':'Самая дешёвая покупка — шкаф: он дешевле и доски, и стола.',
+        '1':'Второе утверждение говорит ровно то же, что и первое, поэтому тоже верно.'}},
+
+/* ───────── 9. Площадь по клеткам ───────── */
+{pos:9,id:'p9a',answerType:'number',answer:18,unit:'м²',
+ fig:{kind:'grid',w:10,h:8,poly:[[1,1],[9,1],[7,4],[3,4]]},
+ text:'План участка разбит на клетки. Каждая клетка обозначает квадрат 1 м × 1 м. Найдите площадь участка, изображённого на плане. Ответ дайте в квадратных метрах.',
+ hints:['Это трапеция: у неё две параллельные стороны.','Основания 8 и 4, высота 3.'],
+ steps:[{q:'Длины оснований',a:'Нижнее 8 клеток, верхнее 4 клетки'},{q:'Высота',a:'3 клетки'},{q:'Площадь',a:'(8 + 4) : 2 · 3 = 18'}],
+ traps:{24:'Похоже, посчитан прямоугольник 8 × 3. У трапеции берут полусумму оснований, а не большее из них.',
+        6:'6 — это полусумма оснований. Её ещё нужно умножить на высоту.',
+        36:'36 — это (8 + 4) · 3. В формуле трапеции сумму оснований делят на 2.'}},
+
+{pos:9,id:'p9b',answerType:'number',answer:15,unit:'м²',
+ fig:{kind:'grid',w:10,h:8,poly:[[1,1],[7,1],[4,6]]},
+ text:'План участка разбит на клетки. Каждая клетка обозначает квадрат 1 м × 1 м. Найдите площадь треугольного участка, изображённого на плане. Ответ дайте в квадратных метрах.',
+ hints:['У треугольника есть горизонтальная сторона — возьмите её за основание.','Основание 6 клеток, высота 5 клеток.'],
+ steps:[{q:'Основание',a:'6 клеток'},{q:'Высота',a:'5 клеток'},{q:'Площадь',a:'6 · 5 : 2 = 15'}],
+ traps:{30:'Это произведение основания на высоту. Для треугольника результат делят на 2.',
+        11:'Похоже, клетки пересчитаны на глаз. Надёжнее применить формулу: основание 6, высота 5.'}},
+
+{pos:9,id:'p9c',answerType:'number',answer:28,unit:'м²',
+ fig:{kind:'grid',w:11,h:9,poly:[[5,1],[9,5],[5,8],[1,5]]},
+ text:'План участка разбит на клетки. Каждая клетка обозначает квадрат 1 м × 1 м. Найдите площадь участка, изображённого на плане. Ответ дайте в квадратных метрах.',
+ hints:['Это четырёхугольник с перпендикулярными диагоналями.','Горизонтальная диагональ 8 клеток, вертикальная 7 клеток.'],
+ steps:[{q:'Диагонали',a:'Горизонтальная 8, вертикальная 7'},{q:'Площадь через диагонали',a:'8 · 7 : 2 = 28'}],
+ traps:{56:'Это произведение диагоналей. Для четырёхугольника с перпендикулярными диагоналями его делят на 2.',
+        30:'Похоже, клетки пересчитаны на глаз. Надёжнее через диагонали: 8 и 7.',
+        15:'15 — это половина суммы диагоналей. Нужна половина их произведения.'}},
+
+/* ───────── 10. Практическая геометрия ───────── */
+{pos:10,id:'p10a',answerType:'number',answer:976,unit:'м²',
+ fig:{kind:'plot',W:40,H:25,hw:6,hh:4},
+ text:'Дачный участок имеет форму прямоугольника со сторонами 40 м и 25 м. Дом на участке имеет форму прямоугольника со сторонами 6 м и 4 м. Найдите площадь части участка, не занятой домом. Ответ дайте в квадратных метрах.',
+ hints:['Найдите площадь всего участка и площадь дома отдельно.','40 · 25 = 1000, 6 · 4 = 24.'],
+ steps:[{q:'Площадь участка',a:'40 · 25 = 1000 м²'},{q:'Площадь дома',a:'6 · 4 = 24 м²'},{q:'Разность',a:'1000 − 24 = 976 м²'}],
+ traps:{1000:'Это площадь всего участка. Нужно вычесть площадь дома.',
+        24:'Это площадь дома, а требуется площадь незанятой части.',
+        1024:'Площадь дома не прибавляют, а вычитают: дом занимает часть участка.'}},
+
+{pos:10,id:'p10b',answerType:'number',answer:20,unit:'°',
+ fig:{kind:'wheel',spokes:18},
+ text:'Колесо имеет 18 спиц. Углы между любыми двумя соседними спицами равны. Найдите величину угла (в градусах), который образуют две соседние спицы.',
+ hints:['Спицы делят полный угол вокруг центра на равные части.','Полный угол — 360°.'],
+ steps:[{q:'На сколько частей делится полный угол?',a:'На 18 равных частей'},{q:'Величина одного угла',a:'360 : 18 = 20°'}],
+ traps:{18:'18 — число спиц, а не величина угла.',
+        10:'Похоже, 180° разделили на 18. Спицы расходятся во все стороны, поэтому делить нужно полный угол 360°.',
+        40:'Проверьте деление: 360 : 18 = 20.'}},
+
+{pos:10,id:'p10c',answerType:'number',answer:125,unit:'м',
+ fig:{kind:'plot',W:45,H:20,gate:5},
+ text:'Участок земли имеет прямоугольную форму со сторонами 45 м и 20 м. Найдите длину забора (в метрах), которым нужно огородить участок, если предусмотрен проезд шириной 5 м.',
+ hints:['Сначала найдите периметр прямоугольника.','Проезд — это участок, где забора нет.'],
+ steps:[{q:'Периметр участка',a:'2 · (45 + 20) = 130 м'},{q:'Учтём проезд',a:'130 − 5 = 125 м'}],
+ traps:{130:'Это полный периметр. На месте проезда шириной 5 м забора нет.',
+        900:'900 — это площадь участка. В вопросе спрашивают длину забора.',
+        135:'Проезд уменьшает длину забора, поэтому 5 м вычитают, а не прибавляют.'}},
+
+/* ───────── 11. Объём и поверхность ───────── */
+{pos:11,id:'p11a',answerType:'number',answer:4000,unit:'см³',
+ fig:{kind:'tank',fill:0.55,rise:1.5},
+ text:'В бак, имеющий форму правильной четырёхугольной призмы, налито 8 л воды. После полного погружения в воду детали уровень воды в баке увеличился в 1,5 раза. Найдите объём детали. Ответ дайте в кубических сантиметрах, зная, что в одном литре 1000 кубических сантиметров.',
+ hints:['Уровень вырос в 1,5 раза, значит объём воды вместе с деталью тоже вырос в 1,5 раза.','8 л = 8000 см³.'],
+ steps:[{q:'Объём воды в см³',a:'8 · 1000 = 8000 см³'},{q:'Объём после погружения',a:'8000 · 1,5 = 12 000 см³'},{q:'Объём детали',a:'12 000 − 8000 = 4000 см³'}],
+ traps:{12000:'Это общий объём воды вместе с деталью. Объём детали — прирост, то есть разность.',
+        8000:'Это начальный объём воды.',
+        4:'Ответ нужен в кубических сантиметрах, а не в литрах: 4 л = 4000 см³.'}},
+
+{pos:11,id:'p11b',answerType:'number',answer:94,unit:'см²',
+ fig:{kind:'box',a:3,b:4,c:5},
+ text:'Коробка имеет форму прямоугольного параллелепипеда с рёбрами 3 см, 4 см и 5 см. Найдите площадь поверхности этой коробки. Ответ дайте в квадратных сантиметрах.',
+ hints:['У параллелепипеда шесть граней, попарно равных.','Площади трёх разных граней: 3 · 4, 3 · 5 и 4 · 5.'],
+ steps:[{q:'Площади трёх разных граней',a:'3 · 4 = 12, 3 · 5 = 15, 4 · 5 = 20'},{q:'Сумма',a:'12 + 15 + 20 = 47'},{q:'Каждая грань встречается дважды',a:'47 · 2 = 94 см²'}],
+ traps:{60:'60 см³ — это объём коробки. В вопросе спрашивают площадь поверхности.',
+        47:'Вы сложили площади трёх разных граней. Каждая из них у параллелепипеда встречается дважды.',
+        12:'Это площадь одной грани.'}},
+
+{pos:11,id:'p11c',answerType:'number',answer:5,unit:'см',
+ fig:{kind:'cylinders',h1:45,k:3},
+ text:'Вода в сосуде цилиндрической формы находится на уровне 45 см. Её перелили в другой цилиндрический сосуд, радиус основания которого в 3 раза больше. На каком уровне окажется вода во втором сосуде? Ответ дайте в сантиметрах.',
+ hints:['Объём воды не изменился, изменилась только площадь основания.','Если радиус вырос в 3 раза, площадь основания выросла в 9 раз.'],
+ steps:[{q:'Во сколько раз выросла площадь основания?',a:'Радиус в 3 раза, площадь в 3² = 9 раз'},{q:'Что происходит с уровнем?',a:'Объём тот же, значит уровень уменьшается в 9 раз'},{q:'Новый уровень',a:'45 : 9 = 5 см'}],
+ traps:{15:'Уровень уменьшается не в 3 раза, а в 9: площадь основания зависит от квадрата радиуса.',
+        135:'При переливании в более широкий сосуд уровень понижается, а не повышается.',
+        405:'Уровень нужно разделить, а не умножить: сосуд шире.'}},
+
+/* ───────── 12. Планиметрия ───────── */
+{pos:12,id:'p12a',answerType:'number',answer:7,unit:'',
+ fig:{kind:'isoTri',ab:25,ac:48,median:true},
+ text:'В треугольнике ABC известно, что AB = BC = 25, AC = 48. Найдите длину медианы BM.',
+ hints:['В равнобедренном треугольнике медиана к основанию является и высотой.','AM = 48 : 2 = 24, и треугольник ABM прямоугольный.'],
+ steps:[{q:'Чему равен AM?',a:'Медиана делит основание пополам: 48 : 2 = 24'},{q:'Какой треугольник рассматриваем?',a:'ABM прямоугольный: медиана к основанию равнобедренного треугольника — высота'},{q:'Теорема Пифагора',a:'BM² = 25² − 24² = 625 − 576 = 49, BM = 7'}],
+ traps:{24:'24 — это половина основания AM, а не медиана BM.',
+        49:'49 — это квадрат медианы. Осталось извлечь корень.',
+        1:'Похоже, из 25 вычли 24. По теореме Пифагора вычитают квадраты: 625 − 576.'}},
+
+{pos:12,id:'p12b',answerType:'number',answer:8,unit:'',
+ fig:{kind:'circleChord',r:5,ac:6},
+ text:'На окружности радиусом 5 отмечена точка C. Отрезок AB — диаметр окружности, AC = 6. Найдите длину хорды BC.',
+ hints:['Вспомните, какой угол опирается на диаметр.','Угол ACB прямой, а гипотенуза AB равна диаметру.'],
+ steps:[{q:'Чему равен диаметр?',a:'AB = 2 · 5 = 10'},{q:'Что за угол ACB?',a:'Вписанный угол, опирающийся на диаметр, — прямой'},{q:'Теорема Пифагора',a:'BC² = 10² − 6² = 100 − 36 = 64, BC = 8'}],
+ traps:{10:'10 — это диаметр AB, а не хорда BC.',
+        4:'Похоже, из 10 вычли 6. По теореме Пифагора вычитают квадраты: 100 − 36.',
+        64:'64 — квадрат искомой длины. Осталось извлечь корень.'}},
+
+{pos:12,id:'p12c',answerType:'number',answer:0.8,unit:'',
+ fig:{kind:'rightTri',hyp:10,leg:6},
+ text:'В треугольнике ABC угол C равен 90°, AB = 10, AC = 6. Найдите cos B.',
+ hints:['Косинус угла — отношение прилежащего катета к гипотенузе.','К углу B прилежит катет BC. Найдите его.'],
+ steps:[{q:'Найдите BC',a:'BC² = 100 − 36 = 64, BC = 8'},{q:'Какой катет прилежит к углу B?',a:'BC = 8'},{q:'Косинус',a:'cos B = 8 : 10 = 0,8'}],
+ traps:{'0.6':'0,6 — это отношение AC к AB, то есть косинус угла A (или синус угла B). К углу B прилежит катет BC.',
+        8:'8 — длина катета BC. Косинус — это отношение, его нужно разделить на гипотенузу.',
+        '1.25':'Дробь перевёрнута: косинус — это катет, делённый на гипотенузу, а не наоборот.'}},
+
+{pos:12,id:'p12d',answerType:'number',answer:48,unit:'',
+ fig:{kind:'isoTri',ab:10,ac:12,height:true},
+ text:'В треугольнике ABC известно, что AB = BC = 10, AC = 12. Найдите площадь треугольника ABC.',
+ hints:['Проведите высоту к основанию AC — она делит его пополам.','Половина основания равна 6, боковая сторона 10.'],
+ steps:[{q:'Половина основания',a:'12 : 2 = 6'},{q:'Высота',a:'h² = 10² − 6² = 100 − 36 = 64, h = 8'},{q:'Площадь',a:'12 · 8 : 2 = 48'}],
+ traps:{96:'Это произведение основания на высоту. Для площади треугольника его делят на 2.',
+        60:'Похоже, за высоту принята боковая сторона 10. Высота к основанию равна 8.',
+        8:'8 — длина высоты. Осталось найти площадь: основание умножить на высоту и разделить на 2.'}},
+
+/* ───────── 13. Стереометрия ───────── */
+{pos:13,id:'p13a',answerType:'number',answer:6,unit:'',
+ fig:{kind:'twoCones',r1:2,l1:5,r2:6,l2:10},
+ text:'Даны два конуса. Радиус основания и образующая первого конуса равны 2 и 5, а второго — 6 и 10. Во сколько раз площадь боковой поверхности второго конуса больше площади боковой поверхности первого?',
+ hints:['Площадь боковой поверхности конуса равна π·r·l.','При делении число π сокращается.'],
+ steps:[{q:'Боковая поверхность первого',a:'π · 2 · 5 = 10π'},{q:'Боковая поверхность второго',a:'π · 6 · 10 = 60π'},{q:'Отношение',a:'60π : 10π = 6'}],
+ traps:{3:'3 — это отношение радиусов. Площадь зависит и от образующей: нужно сравнить произведения r·l.',
+        2:'2 — это отношение образующих. Нужно отношение произведений r·l.',
+        50:'50 — это разность площадей без π, а в вопросе спрашивают, во сколько раз, то есть нужно деление.'}},
+
+{pos:13,id:'p13b',answerType:'number',answer:360,unit:'',
+ fig:{kind:'pyramid',sides:6,base:10,edge:13},
+ text:'Сторона основания правильной шестиугольной пирамиды равна 10, боковое ребро равно 13. Найдите площадь боковой поверхности этой пирамиды.',
+ hints:['Боковая поверхность состоит из шести одинаковых равнобедренных треугольников.','В каждом треугольнике основание 10, боковые стороны 13. Проведите в нём высоту к основанию.'],
+ steps:[{q:'Высота боковой грани',a:'h² = 13² − 5² = 169 − 25 = 144, h = 12'},{q:'Площадь одной грани',a:'10 · 12 : 2 = 60'},{q:'Шесть граней',a:'60 · 6 = 360'}],
+ traps:{60:'Это площадь одной боковой грани. У шестиугольной пирамиды их шесть.',
+        390:'Похоже, за высоту грани принято боковое ребро 13. Высота грани равна 12.',
+        720:'Проверьте деление на 2 в площади треугольника: 10 · 12 : 2 = 60, а не 120.'}},
+
+{pos:13,id:'p13c',answerType:'number',answer:320,unit:'',
+ fig:{kind:'cutCone',ratio:0.25},
+ text:'Через точку, делящую высоту конуса в отношении 1 : 3, считая от вершины, проведена плоскость, параллельная основанию. Объём конуса, отсечённого от данного этой плоскостью, равен 5. Найдите объём исходного конуса.',
+ hints:['Отсечённый конус подобен исходному.','Высота отсечённого конуса составляет 1/4 высоты исходного.'],
+ steps:[{q:'Коэффициент подобия',a:'Точка делит высоту в отношении 1 : 3 от вершины, значит отсечённая часть — 1/4 высоты'},{q:'Как относятся объёмы?',a:'Как куб коэффициента: (1/4)³ = 1/64'},{q:'Объём исходного',a:'5 · 64 = 320'}],
+ traps:{20:'Объёмы подобных тел относятся как куб коэффициента, а не как сам коэффициент: множитель 64, а не 4.',
+        80:'Похоже, использован квадрат коэффициента. У объёмов — куб: 4³ = 64.',
+        135:'Коэффициент подобия здесь 1/4, а не 1/3: отношение 1 : 3 означает, что отсечённая высота — четверть всей.'}},
+
+/* ───────── 14. Вычисления ───────── */
+{pos:14,id:'p14a',answerType:'number',answer:10.1,unit:'',
+ text:'Найдите значение выражения 3,4 · 2,5 + 1,6.',
+ hints:['Сначала умножение, потом сложение.','3,4 · 2,5 = 8,5.'],
+ steps:[{q:'Умножение',a:'3,4 · 2,5 = 8,5'},{q:'Сложение',a:'8,5 + 1,6 = 10,1'}],
+ traps:{12.5:'Похоже, сложение выполнено раньше умножения. Сначала умножают.',
+        8.5:'Это результат умножения. Осталось прибавить 1,6.'}},
+
+{pos:14,id:'p14b',answerType:'number',answer:4,unit:'',
+ text:'Найдите значение выражения (2,4 + 3,6) : 1,5.',
+ hints:['Сначала выполните действие в скобках.','2,4 + 3,6 = 6.'],
+ steps:[{q:'Скобки',a:'2,4 + 3,6 = 6'},{q:'Деление',a:'6 : 1,5 = 4'}],
+ traps:{6:'Это сумма в скобках. Её ещё нужно разделить на 1,5.',
+        '4.8':'Похоже, на 1,5 разделено только одно слагаемое. Скобки выполняются первыми.'}},
+
+{pos:14,id:'p14c',answerType:'number',answer:2,unit:'',
+ text:'Найдите значение выражения 3/4 + 5/6 : 2/3.',
+ hints:['Деление выполняется раньше сложения.','Делить на дробь — то же, что умножить на перевёрнутую: 5/6 · 3/2.'],
+ steps:[{q:'Деление дробей',a:'5/6 : 2/3 = 5/6 · 3/2 = 15/12 = 1,25'},{q:'Сложение',a:'0,75 + 1,25 = 2'}],
+ traps:{'2.375':'Похоже, сложение выполнено раньше деления. Деление имеет приоритет.',
+        '1.25':'Это результат деления. Осталось прибавить 3/4.',
+        '1.3125':'Дробь при делении не перевёрнута: 5/6 : 2/3 = 5/6 · 3/2.'}},
+
+{pos:14,id:'p14d',answerType:'number',answer:1,unit:'',
+ text:'Найдите значение выражения 1/4 · 6,4 − 0,6.',
+ hints:['Одна четвёртая от числа — это деление на 4.','6,4 : 4 = 1,6.'],
+ steps:[{q:'Умножение',a:'1/4 · 6,4 = 1,6'},{q:'Вычитание',a:'1,6 − 0,6 = 1'}],
+ traps:{'1.6':'Это результат умножения. Осталось вычесть 0,6.',
+        '1.45':'Похоже, вычитание выполнено раньше умножения.'}},
+
+/* ───────── 15. Проценты и части ───────── */
+{pos:15,id:'p15a',answerType:'number',answer:368,unit:'руб.',
+ lab:{kind:'crossLab',cols:['рублей','процентов']},
+ text:'Ежемесячная плата за интернет составляет 320 рублей. В следующем году она увеличится на 15 %. Сколько рублей будет составлять ежемесячная плата за интернет в следующем году?',
+ hints:['Запишите две строки: 320 рублей соответствуют 100 %, а x рублей — 15 %.','Крест-накрест: x · 100 = 320 · 15. Найденный x — это прибавка, её ещё нужно прибавить к 320.'],
+ steps:[{q:'Что принять за 100 %?',a:'Прежнюю плату: 320 рублей — это 100 %'},{q:'Составьте пропорцию',a:'320 руб. — 100 %, x руб. — 15 %'},{q:'Перемножьте крест-накрест',a:'x · 100 = 320 · 15, откуда x = 4800 : 100 = 48 руб.'},{q:'Ответьте на вопрос задачи',a:'Плата вырастет на 48 рублей: 320 + 48 = 368 руб.'}],
+ traps:{48:'Это величина повышения. К ней нужно прибавить прежнюю плату.',
+        272:'Плата увеличивается, поэтому 48 рублей прибавляют, а не вычитают.',
+        335:'Похоже, к 320 прибавили 15 — само число процентов. Проценты сначала переводят в рубли через пропорцию.'}},
+
+{pos:15,id:'p15b',answerType:'number',answer:360,unit:'руб.',
+ lab:{kind:'crossLab',cols:['рублей','процентов']},
+ text:'Держатели дисконтной карты книжного магазина получают при покупке скидку 20 %. Книга стоит 450 рублей. Сколько рублей заплатит держатель дисконтной карты за эту книгу?',
+ hints:['За 100 % берётся цена без скидки — 450 рублей. Во второй строке — x рублей и 20 %.','Крест-накрест: x · 100 = 450 · 20. Это размер скидки, а платят цену без неё.'],
+ steps:[{q:'Что принять за 100 %?',a:'Цену до скидки: 450 рублей'},{q:'Составьте пропорцию',a:'450 руб. — 100 %, x руб. — 20 %'},{q:'Перемножьте крест-накрест',a:'x · 100 = 450 · 20, x = 9000 : 100 = 90 руб. — это скидка'},{q:'Ответьте на вопрос задачи',a:'Платят цену без скидки: 450 − 90 = 360 руб.'}],
+ traps:{90:'Это размер скидки. В вопросе спрашивают, сколько заплатит покупатель.',
+        540:'Скидка уменьшает цену, поэтому 90 рублей вычитают.',
+        430:'Похоже, из 450 вычли 20 — число процентов, а не рубли.'}},
+
+{pos:15,id:'p15c',answerType:'number',answer:25,unit:'га',
+ lab:{kind:'crossLab',cols:['гектаров','частей']},
+ text:'Площадь земель фермерского хозяйства, отведённых под посадку, составляет 45 гектаров и распределена между зерновыми и овощными культурами в отношении 4 : 5 соответственно. Сколько гектаров занимают овощные культуры?',
+ hints:['Всего частей 4 + 5 = 9. Запишите: 45 га соответствуют 9 частям, x га — 5 частям.','Крест-накрест: x · 9 = 45 · 5.'],
+ steps:[{q:'Что здесь целое?',a:'Все земли: 45 га — это все 4 + 5 = 9 частей'},{q:'Составьте пропорцию',a:'45 га — 9 частей, x га — 5 частей (овощные)'},{q:'Перемножьте крест-накрест',a:'x · 9 = 45 · 5, x = 225 : 9 = 25 га'}],
+ traps:{20:'20 га приходится на зерновые (4 части). В вопросе спрашивают про овощные — это 5 частей.',
+        5:'Похоже, найдена одна часть из девяти. Овощные культуры — это пять таких частей.',
+        9:'9 — число частей, а не гектаров.'}},
+
+{pos:15,id:'p15d',answerType:'number',answer:39150,unit:'руб.',
+ lab:{kind:'crossLab',cols:['рублей','процентов']},
+ text:'Налог на доходы составляет 13 % от заработной платы. Заработная плата Ивана Петровича равна 45 000 рублей. Какую сумму он получит после уплаты налога на доходы? Ответ дайте в рублях.',
+ hints:['Зарплата 45 000 рублей — это 100 %, налог x рублей — 13 %.','Крест-накрест: x · 100 = 45 000 · 13. Это сумма налога, а спрашивают, сколько останется.'],
+ steps:[{q:'Что принять за 100 %?',a:'Всю зарплату: 45 000 рублей'},{q:'Составьте пропорцию',a:'45 000 руб. — 100 %, x руб. — 13 %'},{q:'Перемножьте крест-накрест',a:'x · 100 = 45 000 · 13, x = 585 000 : 100 = 5850 руб. — налог'},{q:'Ответьте на вопрос задачи',a:'После уплаты налога: 45 000 − 5850 = 39 150 руб.'}],
+ traps:{5850:'Это размер налога. В вопросе спрашивают, сколько останется после его уплаты.',
+        44987:'Похоже, из 45 000 вычли 13 — число процентов, а не рубли.',
+        50850:'Налог удерживают, поэтому его вычитают из зарплаты.'}},
+
+/* ───────── 16. Корни, логарифмы, тригонометрия ───────── */
+{pos:16,id:'p16a',answerType:'number',answer:6,unit:'',
+ text:'Найдите значение выражения √18 · √5 · √10 : 5.',
+ hints:['Произведение корней равно корню из произведения.','18 · 5 · 10 = 900.'],
+ steps:[{q:'Объедините корни',a:'√18 · √5 · √10 = √(18 · 5 · 10) = √900'},{q:'Извлеките корень',a:'√900 = 30'},{q:'Разделите',a:'30 : 5 = 6'}],
+ traps:{30:'Это значение произведения корней. Осталось разделить на 5.',
+        900:'900 — это подкоренное выражение. Корень ещё не извлечён.'}},
+
+{pos:16,id:'p16b',answerType:'number',answer:7,unit:'',
+ text:'Найдите значение выражения 14 · sin 390°.',
+ hints:['Синус имеет период 360°.','390° = 360° + 30°, поэтому sin 390° = sin 30°.'],
+ steps:[{q:'Приведите угол',a:'390° − 360° = 30°'},{q:'Значение синуса',a:'sin 30° = 0,5'},{q:'Умножьте',a:'14 · 0,5 = 7'}],
+ traps:{'0.5':'0,5 — это значение синуса. Его ещё нужно умножить на 14.',
+        14:'Похоже, синус принят за 1. sin 30° = 0,5.',
+        12.12:'Похоже, использован sin 60°. Приведение даёт угол 30°.'}},
+
+{pos:16,id:'p16c',answerType:'number',answer:44,unit:'',
+ text:'Найдите значение выражения (3√5 − 1)(3√5 + 1).',
+ hints:['Это разность квадратов.','(3√5)² = 9 · 5.'],
+ steps:[{q:'Формула',a:'(a − b)(a + b) = a² − b², где a = 3√5, b = 1'},{q:'Квадрат первого',a:'(3√5)² = 9 · 5 = 45'},{q:'Разность',a:'45 − 1 = 44'}],
+ traps:{14:'Похоже, (3√5)² посчитано как 3 · 5 = 15. Возводится в квадрат весь множитель: 3² · 5 = 45.',
+        45:'45 — это (3√5)². Осталось вычесть 1.',
+        46:'В формуле разности квадратов единица вычитается, а не прибавляется.'}},
+
+{pos:16,id:'p16d',answerType:'number',answer:6,unit:'',
+ text:'Найдите значение выражения log₍√7₎ 7³.',
+ hints:['Вынесите показатель степени за знак логарифма.','Основание — √7, а 7 = (√7)².'],
+ steps:[{q:'Вынесите степень',a:'log 7³ = 3 · log 7 по основанию √7'},{q:'Чему равен log 7 по основанию √7?',a:'7 = (√7)², значит логарифм равен 2'},{q:'Итог',a:'3 · 2 = 6'}],
+ traps:{3:'Учтено вынесение степени, но не основание: log 7 по основанию √7 равен 2, а не 1.',
+        '1.5':'Похоже, деление и умножение перепутаны местами: 3 умножается на 2, а не делится.',
+        2:'2 — это log 7 по основанию √7. Осталось умножить на показатель 3.'}},
+
+/* ───────── 17. Уравнения ───────── */
+{pos:17,id:'p17a',answerType:'number',answer:5,unit:'',
+ text:'Найдите корень уравнения 3^(x−2) = 27.',
+ hints:['Представьте правую часть степенью тройки.','27 = 3³.'],
+ steps:[{q:'Приведите к одному основанию',a:'27 = 3³, уравнение принимает вид 3^(x−2) = 3³'},{q:'Приравняйте показатели',a:'x − 2 = 3'},{q:'Найдите x',a:'x = 5'}],
+ traps:{3:'3 — это показатель справа. Осталось решить уравнение x − 2 = 3.',
+        1:'Похоже, из 3 вычли 2 вместо того, чтобы прибавить: x = 3 + 2.',
+        27:'27 — правая часть уравнения, а не его корень.'}},
+
+{pos:17,id:'p17b',answerType:'number',answer:4.5,unit:'',
+ text:'Найдите корень уравнения log₃(2x + 1) − log₃ 2 = log₃ 5.',
+ hints:['Разность логарифмов — это логарифм частного.','(2x + 1) : 2 = 5.'],
+ steps:[{q:'Сверните разность',a:'log₃((2x + 1) : 2) = log₃ 5'},{q:'Приравняйте выражения',a:'(2x + 1) : 2 = 5'},{q:'Решите',a:'2x + 1 = 10, x = 4,5'}],
+ traps:{'5.5':'Похоже, деление на 2 не учтено: сначала (2x + 1) : 2 = 5, отсюда 2x + 1 = 10.',
+        10:'10 — это значение 2x + 1. Осталось найти сам x.',
+        '2.25':'Похоже, на 2 разделено дважды. Из 2x + 1 = 10 следует x = 4,5.'}},
+
+{pos:17,id:'p17c',answerType:'number',answer:2,unit:'',
+ text:'Решите уравнение x² + 3x = 10. Если уравнение имеет больше одного корня, в ответе запишите больший из них.',
+ hints:['Перенесите всё в одну часть.','x² + 3x − 10 = 0.'],
+ steps:[{q:'Приведите к стандартному виду',a:'x² + 3x − 10 = 0'},{q:'Найдите корни',a:'Дискриминант 9 + 40 = 49, корни (−3 ± 7) : 2, то есть 2 и −5'},{q:'Выберите больший',a:'2'}],
+ traps:{'-5':'−5 — это меньший корень. В условии просят записать больший.',
+        10:'10 — правая часть уравнения. Сначала перенесите её влево.',
+        '-3':'−3 — коэффициент при x, а не корень уравнения.'}},
+
+{pos:17,id:'p17d',answerType:'number',answer:2,unit:'',
+ text:'Решите уравнение √(2x + 5) = 3.',
+ hints:['Возведите обе части в квадрат.','2x + 5 = 9.'],
+ steps:[{q:'Возведите в квадрат',a:'2x + 5 = 9'},{q:'Решите линейное уравнение',a:'2x = 4, x = 2'}],
+ traps:{9:'9 — это значение подкоренного выражения. Осталось решить 2x + 5 = 9.',
+        '-1':'Похоже, 3 не возведено в квадрат: справа получается 9, а не 3.',
+        4:'4 — это 2x. Осталось разделить на 2.'}},
+
+/* ───────── 18. Числа на прямой ───────── */
+{pos:18,id:'p18a',answerType:'match',answer:'2341',
+ fig:{kind:'numline',from:0,to:6,points:[['A',2.3],['B',2.5],['C',3.3],['D',5.2]]},
+ text:'На координатной прямой отмечены точки A, B, C и D. Каждой точке соответствует одно из чисел в правом столбце. Установите соответствие между точками и числами.',
+ rows:['A','B','C','D'],
+ cols:['√27','log₂ 5','5/2','√11'],
+ hints:['Оцените каждое число между соседними целыми: √11 между 3 и 4, √27 между 5 и 6.','log₂ 5 чуть больше 2, потому что 2² = 4, а 2³ = 8.'],
+ steps:[{q:'Оцените √27',a:'5² = 25, 6² = 36, значит √27 чуть больше 5 — это точка D'},{q:'Оцените √11',a:'3² = 9, 4² = 16, значит √11 между 3 и 4 — это точка C'},{q:'Оцените log₂ 5',a:'Между 2 и 3, ближе к 2 — это точка A'},{q:'Осталось 5/2',a:'5/2 = 2,5 — это точка B'}],
+ traps:{'3241':'Проверьте порядок: log₂ 5 ≈ 2,32 меньше, чем 5/2 = 2,5, поэтому логарифму соответствует левая из двух точек.'}},
+
+{pos:18,id:'p18b',answerType:'match',answer:'3421',
+ fig:{kind:'numline',from:-3,to:3,points:[['A',-2.04],['B',-0.51],['C',0.24],['D',1.96]]},
+ text:'Число m равно √0,24. На координатной прямой отмечены точки A, B, C и D. Каждой точке соответствует одно из чисел в правом столбце. Установите соответствие между точками и числами.',
+ rows:['A','B','C','D'],
+ cols:['4m','m²','−1/m','m − 1'],
+ hints:['Оцените само m: 0,4² = 0,16, а 0,5² = 0,25, значит m чуть меньше 0,5.','m² = 0,24 по определению корня — это единственное положительное число меньше 1.'],
+ steps:[{q:'Оцените m',a:'m = √0,24, и 0,24 чуть меньше 0,25, значит m чуть меньше 0,5'},{q:'m²',a:'m² = 0,24 — точка чуть правее нуля, это C'},{q:'m − 1',a:'Около 0,49 − 1 ≈ −0,51 — это B'},{q:'4m и −1/m',a:'4m ≈ 1,96 — это D; −1/m ≈ −2,04 — это A'}],
+ traps:{'4321':'Проверьте 4m: оно положительно и близко к 2, значит соответствует правой точке D, а не A.'}},
+
+/* ───────── 19. Числа и цифры ───────── */
+{pos:19,id:'p19a',answerType:'rule',rule:'div15_odd_distinct',unit:'',
+ answerExample:1935,
+ lab:{kind:'digitBuild',slots:4},
+ text:'Найдите четырёхзначное натуральное число, кратное 15, все цифры которого различны и нечётны. В ответе запишите какое-нибудь одно такое число.',
+ hints:['Число кратно 15, если оно кратно 3 и кратно 5.','Все цифры нечётные, поэтому на 0 число оканчиваться не может — значит, оканчивается на 5.'],
+ steps:[{q:'Какая последняя цифра?',a:'Кратно 5, но 0 — чётная цифра, значит последняя цифра 5'},{q:'Какие цифры остались?',a:'Три различные из 1, 3, 7, 9'},{q:'Условие делимости на 3',a:'Сумма всех цифр должна делиться на 3. Например, 1 + 9 + 3 + 5 = 18'},{q:'Пример ответа',a:'1935 = 15 · 129'}],
+ traps:{}},
+
+{pos:19,id:'p19b',answerType:'rule',rule:'strike74123568',unit:'',
+ answerExample:74235,
+ lab:{kind:'digitStrike',digits:'74123568',keep:5},
+ text:'Вычеркните в числе 74123568 три цифры так, чтобы получившееся число делилось на 15. В ответе укажите какое-нибудь одно получившееся число.',
+ hints:['Порядок оставшихся цифр менять нельзя, вычеркнуть нужно ровно три.','Чтобы число делилось на 5, оно должно оканчиваться на 5 — значит, цифры 6 и 8 в конце вычёркиваются.'],
+ steps:[{q:'Какая цифра должна остаться последней?',a:'5, поэтому вычёркиваем 6 и 8'},{q:'Сколько ещё вычеркнуть?',a:'Одну цифру из 7, 4, 1, 2, 3'},{q:'Условие делимости на 3',a:'Сумма 7+4+1+2+3+5 = 22. Нужно убрать цифру, дающую остаток 1 при делении на 3: это 1, 4 или 7'},{q:'Пример ответа',a:'Убрали 1: получилось 74235 = 15 · 4949'}],
+ traps:{}},
+
+{pos:19,id:'p19c',answerType:'rule',rule:'div18_prod24',unit:'',
+ answerExample:2232,
+ lab:{kind:'digitBuild',slots:4},
+ text:'Найдите четырёхзначное натуральное число, кратное 18, произведение цифр которого равно 24. В ответе запишите какое-нибудь одно такое число.',
+ hints:['Число кратно 18, если оно чётное и сумма его цифр делится на 9.','Подбирайте четыре цифры с произведением 24 и суммой 9: например, 2, 2, 2 и 3.'],
+ steps:[{q:'Два условия делимости',a:'Чётность и сумма цифр, кратная 9'},{q:'Подбор цифр',a:'2 · 2 · 2 · 3 = 24 и 2 + 2 + 2 + 3 = 9'},{q:'Расставьте цифры',a:'Последняя цифра должна быть чётной: 2232'},{q:'Проверка',a:'2232 : 18 = 124'}],
+ traps:{}},
+
+/* ───────── 20. Текстовые задачи ───────── */
+{pos:20,id:'p20a',answerType:'number',answer:4.8,unit:'км',
+ lab:{kind:'roadLab',mode:'lake',L:5,vA:3,vB:5},
+ text:'Два человека одновременно отправляются из одного дома на прогулку до озера, находящегося в 6 км от дома. Один идёт со скоростью 4 км/ч, другой — со скоростью 6 км/ч. Дойдя до озера, второй с той же скоростью возвращается обратно. На каком расстоянии от дома произойдёт их встреча? Ответ дайте в километрах.',
+ hints:['К моменту встречи оба вместе пройдут путь до озера и обратно до точки встречи.','Вместе они проходят 4 + 6 = 10 км в час, а суммарный путь до встречи равен 12 км.'],
+ steps:[{q:'Какой суммарный путь пройдут двое к моменту встречи?',a:'Второй дошёл до озера и вернулся к точке встречи; вместе они покрыли 6 + 6 = 12 км'},{q:'Суммарная скорость',a:'4 + 6 = 10 км/ч'},{q:'Время до встречи',a:'12 : 10 = 1,2 ч'},{q:'Расстояние от дома',a:'4 · 1,2 = 4,8 км'}],
+ traps:{'1.2':'1,2 — это время до встречи в часах. В вопросе спрашивают расстояние от дома.',
+        6:'6 км — это расстояние до озера. Встреча произойдёт ближе к дому.',
+        '7.2':'7,2 км — путь, пройденный вторым пешеходом. Расстояние от дома меньше, потому что часть пути он прошёл обратно.',
+        3:'Похоже, расстояние до озера просто разделено пополам. Скорости у пешеходов разные.'}},
+
+{pos:20,id:'p20b',answerType:'number',answer:9,unit:'%',
+ lab:{kind:'solutionLab',solute:1,water0:3,waterMax:11},
+ text:'В сосуд, содержащий 6 кг 15-процентного водного раствора вещества, добавили 4 кг воды. Сколько процентов составляет концентрация получившегося раствора?',
+ hints:['При добавлении воды масса вещества не меняется, меняется только масса раствора.','15 % от 6 кг — это 0,9 кг вещества.'],
+ steps:[{q:'Масса вещества',a:'6 · 0,15 = 0,9 кг'},{q:'Масса нового раствора',a:'6 + 4 = 10 кг'},{q:'Концентрация',a:'0,9 : 10 = 0,09, то есть 9 %'}],
+ traps:{'0.9':'0,9 кг — это масса вещества. В ответе требуется концентрация в процентах.',
+        15:'15 % — начальная концентрация. После добавления воды раствор стал слабее.',
+        6:'Похоже, использована только начальная масса раствора. Новая масса равна 10 кг.'}},
+
+{pos:20,id:'p20c',answerType:'number',answer:75,unit:'км/ч',
+ lab:{kind:'avgSpeedLab',seg:60,v1:60},
+ text:'Первые 120 км автомобиль ехал со скоростью 60 км/ч, следующие 180 км — со скоростью 90 км/ч, а затем 150 км — со скоростью 75 км/ч. Найдите среднюю скорость автомобиля на протяжении всего пути. Ответ дайте в км/ч.',
+ hints:['Средняя скорость — это весь путь, делённый на всё время, а не среднее арифметическое скоростей.','Посчитайте время на каждом участке отдельно.'],
+ steps:[{q:'Время на участках',a:'120 : 60 = 2 ч, 180 : 90 = 2 ч, 150 : 75 = 2 ч'},{q:'Весь путь и всё время',a:'450 км за 6 ч'},{q:'Средняя скорость',a:'450 : 6 = 75 км/ч'}],
+ traps:{6:'6 — это время в пути. В ответе требуется скорость.',
+        450:'450 — весь путь в километрах. Его нужно разделить на время.'}},
+
+{pos:20,id:'p20d',answerType:'number',answer:60,unit:'км/ч',
+ lab:{kind:'roadLab',mode:'towards',L:200,t:2},
+ text:'Из городов A и B, расстояние между которыми равно 300 км, навстречу друг другу одновременно выехали два автомобиля. Они встретились через 2 часа на расстоянии 180 км от города B. Найдите скорость автомобиля, выехавшего из города A. Ответ дайте в км/ч.',
+ hints:['Сначала найдите, сколько километров проехал автомобиль из города A.','300 − 180 = 120 км.'],
+ steps:[{q:'Путь автомобиля из A',a:'300 − 180 = 120 км'},{q:'Скорость',a:'120 : 2 = 60 км/ч'}],
+ traps:{90:'90 км/ч — скорость автомобиля, выехавшего из города B: он проехал 180 км за 2 часа.',
+        120:'120 км — путь автомобиля из города A. Скорость получится после деления на время.',
+        150:'Похоже, расстояние разделено пополам. Автомобили встретились не в середине пути.'}},
+
+/* ───────── 21. Задача на рассуждение ───────── */
+{pos:21,id:'p21a',answerType:'number',answer:13,unit:'',
+ lab:{kind:'scoreTiles',total:20,plus:7,minus:10,target:51},
+ text:'Список заданий викторины состоит из 20 вопросов. За каждый правильный ответ ученик получает 7 очков, за неправильный ответ с него списывают 10 очков, а при отсутствии ответа даётся 0 очков. Сколько верных ответов дал ученик, набравший 51 очко, если известно, что по крайней мере один раз он ошибся?',
+ hints:['Обозначьте число верных ответов и число ошибок и составьте уравнение.','7a − 10b = 51, причём a + b не больше 20 и b не меньше 1.'],
+ steps:[{q:'Составьте уравнение',a:'7a − 10b = 51, где a — верные ответы, b — ошибки'},{q:'Переберите b',a:'b = 4: 7a = 51 + 40 = 91, значит a = 13, и a + b = 17 ≤ 20'},{q:'Проверьте другие варианты',a:'b = 11: 7a = 161, a = 23, тогда a + b = 34 > 20 — не подходит'},{q:'Ответ',a:'13 верных ответов'}],
+ traps:{17:'17 — это общее число данных ответов (верных и неверных). В вопросе спрашивают только число верных.',
+        4:'4 — число ошибок. В вопросе спрашивают число верных ответов.',
+        20:'20 — общее число вопросов в викторине.'}},
+
+{pos:21,id:'p21b',answerType:'number',answer:12,unit:'',
+ fig:{kind:'cutRect',p:[20,26,18,null]},
+ lab:{kind:'cutRectLab',w:20,h:12},
+ text:'Прямоугольник разбит на четыре меньших прямоугольника двумя прямолинейными разрезами. Периметры трёх из них, начиная с левого верхнего и далее по часовой стрелке, равны 20, 26 и 18. Найдите периметр четвёртого прямоугольника.',
+ hints:['Обозначьте части сторон буквами и выпишите четыре периметра.','Сумма периметров двух прямоугольников, стоящих по диагонали, одинакова для обеих диагоналей.'],
+ steps:[{q:'Обозначения',a:'Пусть верхняя часть разбита на a и b, а левая — на c и d по высоте'},{q:'Периметры',a:'Левый верхний 2(a+c), правый верхний 2(b+c), правый нижний 2(b+d), левый нижний 2(a+d)'},{q:'Ключевое равенство',a:'2(a+c) + 2(b+d) = 2(b+c) + 2(a+d) — суммы по диагоналям равны'},{q:'Найдите четвёртый',a:'20 + 18 = 26 + P, значит P = 12'}],
+ traps:{24:'Проверьте, какие периметры стоят по диагонали: складывать нужно первый с третьим, то есть 20 и 18.',
+        28:'Похоже, в равенстве переставлены местами слагаемые: 20 + 18 = 26 + P.'}},
+
+{pos:21,id:'p21c',answerType:'number',answer:160,unit:'км',
+ fig:{kind:'ring',arcs:[['А','Б',90],['Б','В',70],['В','Г',120],['Г','А',60]]},
+ lab:{kind:'ringLab'},
+ text:'На кольцевой дороге расположены четыре бензоколонки: А, Б, В и Г. Расстояния между соседними колонками вдоль дороги равны: от А до Б — 90 км, от Б до В — 70 км, от В до Г — 120 км, от Г до А — 60 км. Найдите кратчайшее расстояние (в километрах) между колонками А и В.',
+ hints:['Между А и В можно ехать в две стороны: через Б или через Г.','Сложите длины участков для каждого из двух путей и выберите меньший.'],
+ steps:[{q:'Путь через Б',a:'90 + 70 = 160 км'},{q:'Путь через Г',a:'60 + 120 = 180 км'},{q:'Кратчайшее расстояние',a:'160 км'}],
+ traps:{180:'Это путь через колонку Г. Через колонку Б получается короче.',
+        340:'340 км — длина всего кольца. Нужно расстояние только между А и В.',
+        30:'Расстояния по кольцу складывают, а не вычитают.'}},
+
+{pos:21,id:'p21d',answerType:'number',answer:17,unit:'строк',
+ text:'В таблице три столбца и несколько строк. В каждую клетку таблицы вписали по натуральному числу так, что сумма всех чисел в первом столбце равна 95, во втором — 104, в третьем — 88, а сумма чисел в каждой строке больше 15, но меньше 18. Сколько всего строк в таблице?',
+ hints:['Найдите сумму всех чисел таблицы двумя способами: по столбцам и по строкам.','Сумма в каждой строке — натуральное число, большее 15 и меньшее 18, то есть 16 или 17.'],
+ steps:[{q:'Сумма всех чисел',a:'95 + 104 + 88 = 287'},{q:'Оценка снизу',a:'Если строк n, то сумма не больше 17n, значит 17n ≥ 287, откуда n ≥ 16,9, то есть n ≥ 17'},{q:'Оценка сверху',a:'Сумма не меньше 16n, значит 16n ≤ 287, откуда n ≤ 17,9, то есть n ≤ 17'},{q:'Ответ',a:'n = 17'}],
+ traps:{287:'287 — сумма всех чисел таблицы. В вопросе спрашивают число строк.',
+        16:'Проверьте оценку снизу: 17 · 16 = 272, этого меньше, чем 287, значит строк больше 16.',
+        18:'Проверьте оценку сверху: 16 · 18 = 288, это больше 287, значит строк меньше 18.'}}
+];
+
+
+
+/*__EGE_DATA_END__*/
+/* ═══════ Чертежи. Каждый строится по числовым данным задачи,
+   поэтому пропорции на рисунке соответствуют условию. ═══════ */
+const SVG=(vb,inner,title)=>`<svg viewBox="${vb}" role="img" aria-label="${esc(title||'Чертёж к заданию')}"><title>${esc(title||'Чертёж к заданию')}</title>${inner}</svg>`;
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num=v=>String(Math.round(v*1e6)/1e6).replace('.',',');
+const R2=v=>Math.round(v*100)/100;
+
+function axesFrame(f){
+ const L=64,R=524,T=26,B=272;
+ const min=f.min??0, max=f.max, tick=f.tick;
+ const y=v=>B-(v-min)/(max-min)*(B-T);
+ let g='';
+ for(let v=min; v<=max+1e-9; v+=tick){
+  const yy=R2(y(v));
+  g+=`<line class="${v===min?'glz':'gl'}" x1="${L}" y1="${yy}" x2="${R}" y2="${yy}"/>`;
+  g+=`<text class="lbl" x="${L-7}" y="${yy+4}" text-anchor="end">${num(v)}</text>`;
+ }
+ g+=`<path class="ax" d="M ${L} ${T-6} V ${B} H ${R+6}"/>`;
+ g+=`<text class="lbl-b" x="${L-46}" y="${T-10}" text-anchor="start">${esc(f.yLabel||'')}</text>`;
+ if(!f.groups) g+=`<text class="lbl" x="${R}" y="${B+40}" text-anchor="end">${esc(f.xLabel||'')}</text>`;
+ return {L,R,T,B,y,g};
+}
+
+const FIG={
+ bars(f){
+  const A=axesFrame(f), n=f.values.length, step=(A.R-A.L)/n, w=step*.62, mx=Math.max(...f.values);
+  let s=A.g;
+  f.values.forEach((v,i)=>{
+   const x=A.L+step*i+(step-w)/2, yy=A.y(v);
+   s+=`<rect class="bar-r${v===mx?' bar-hi':''}" x="${R2(x)}" y="${R2(yy)}" width="${R2(w)}" height="${R2(A.B-yy)}" rx="2"/>`;
+   s+=`<text class="lbl" x="${R2(x+w/2)}" y="${A.B+18}" text-anchor="middle" font-size="11">${esc(f.labels[i])}</text>`;
+  });
+  return SVG('0 0 540 322',s,'Столбчатая диаграмма');
+ },
+ dots(f){ return FIG._poly(f,true); },
+ line(f){ return FIG._poly(f,true); },
+ _poly(f,dots){
+  const A=axesFrame(f), n=f.values.length, step=(A.R-A.L)/(n-1);
+  const P=f.values.map((v,i)=>[R2(A.L+step*i),R2(A.y(v))]);
+  let s=A.g+`<polyline class="ln" points="${P.map(p=>p.join(',')).join(' ')}"/>`;
+  if(dots) P.forEach(p=>s+=`<circle class="pt" cx="${p[0]}" cy="${p[1]}" r="4"/>`);
+  const every=n>8?(f.groups?1:2):1;
+  f.labels.forEach((L,i)=>{ if(i%every) return;
+   s+=`<text class="lbl" x="${P[i][0]}" y="${A.B+17}" text-anchor="middle" font-size="${f.groups?9.5:11}">${esc(L)}</text>`;});
+  (f.groups||[]).forEach(gp=>{
+   const x1=P[gp.from][0], x2=P[gp.to][0], mid=(x1+x2)/2;
+   s+=`<line class="gl" x1="${R2(Math.max(A.L,x1-step/2))}" y1="${A.B+22}" x2="${R2(Math.min(A.R,x2+step/2))}" y2="${A.B+22}" stroke="#c3ccdb"/>`;
+   s+=`<text class="lbl-b" x="${mid}" y="${A.B+38}" text-anchor="middle" font-size="12">${esc(gp.label)}</text>`;});
+  return SVG('0 0 540 '+(f.groups?318:322),s,'График');
+ },
+ grid(f){
+  const c=Math.min(440/f.w,250/f.h), W=f.w*c, H=f.h*c, ox=(540-W)/2, oy=14;
+  const X=x=>R2(ox+x*c), Y=y=>R2(oy+H-y*c);
+  let s='';
+  for(let i=0;i<=f.w;i++) s+=`<line class="cellgrid" x1="${X(i)}" y1="${Y(0)}" x2="${X(i)}" y2="${Y(f.h)}"/>`;
+  for(let j=0;j<=f.h;j++) s+=`<line class="cellgrid" x1="${X(0)}" y1="${Y(j)}" x2="${X(f.w)}" y2="${Y(j)}"/>`;
+  s+=`<polygon class="shape" points="${f.poly.map(([x,y])=>X(x)+','+Y(y)).join(' ')}"/>`;
+  f.poly.forEach(([x,y])=>s+=`<circle cx="${X(x)}" cy="${Y(y)}" r="3.4" fill="#312a92"/>`);
+  s+=`<g><rect x="${ox}" y="${oy+H+12}" width="${c}" height="${c*.62}" fill="none" stroke="#8f9db3"/>`+
+     `<text class="lbl" x="${ox+c+8}" y="${oy+H+12+c*.5}">клетка 1 × 1</text></g>`;
+  return SVG(`0 0 540 ${Math.ceil(oy+H+40)}`,s,'План на клетчатой бумаге');
+ },
+ plot(f){
+  const c=Math.min(400/f.W,190/f.H), W=f.W*c, H=f.H*c, ox=(540-W)/2, oy=34;
+  let s=`<rect class="shape" x="${R2(ox)}" y="${R2(oy)}" width="${R2(W)}" height="${R2(H)}"/>`;
+  s+=`<text class="lbl-b" x="${R2(ox+W/2)}" y="${R2(oy-11)}" text-anchor="middle">${f.W} м</text>`;
+  s+=`<text class="lbl-b" x="${R2(ox-10)}" y="${R2(oy+H/2)}" text-anchor="end">${f.H} м</text>`;
+  if(f.hw){
+   const hw=f.hw*c, hh=f.hh*c, hx=ox+W*.55, hy=oy+H*.45;
+   s+=`<rect x="${R2(hx)}" y="${R2(hy)}" width="${R2(hw)}" height="${R2(hh)}" fill="#fff" stroke="#b45309" stroke-width="2"/>`;
+   s+=`<text class="lbl" x="${R2(hx+hw/2)}" y="${R2(hy-6)}" text-anchor="middle">${f.hw} м</text>`;
+   s+=`<text class="lbl" x="${R2(hx+hw+7)}" y="${R2(hy+hh/2+4)}">${f.hh} м</text>`;
+   s+=`<text class="lbl" x="${R2(hx+hw/2)}" y="${R2(hy+hh+15)}" text-anchor="middle">дом</text>`;
+  }
+  if(f.gate){
+   const g=f.gate*c, gx=ox+W*.35;
+   s+=`<line x1="${R2(gx)}" y1="${R2(oy+H)}" x2="${R2(gx+g)}" y2="${R2(oy+H)}" stroke="#fff" stroke-width="5"/>`;
+   s+=`<line class="aux" x1="${R2(gx)}" y1="${R2(oy+H+9)}" x2="${R2(gx+g)}" y2="${R2(oy+H+9)}"/>`;
+   s+=`<text class="lbl" x="${R2(gx+g/2)}" y="${R2(oy+H+26)}" text-anchor="middle">проезд ${f.gate} м</text>`;
+  }
+  return SVG(`0 0 540 ${Math.ceil(oy+H+46)}`,s,'План участка');
+ },
+ wheel(f){
+  const cx=270,cy=150,r=118,n=f.spokes;
+  const A=i=>-Math.PI/2+2*Math.PI*i/n;
+  let s=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="#f5f6fd" stroke="#4338ca" stroke-width="2.4"/>`;
+  for(let i=0;i<n;i++){const a=A(i),hot=i<2;
+   s+=`<line x1="${cx}" y1="${cy}" x2="${R2(cx+r*Math.cos(a))}" y2="${R2(cy+r*Math.sin(a))}" stroke="${hot?'#b45309':'#9aa6ba'}" stroke-width="${hot?2.8:1.3}"/>`;}
+  const rr=56,a0=A(0),a1=A(1),am=(a0+a1)/2;
+  s+=`<path class="aux" d="M ${R2(cx+rr*Math.cos(a0))} ${R2(cy+rr*Math.sin(a0))} A ${rr} ${rr} 0 0 1 ${R2(cx+rr*Math.cos(a1))} ${R2(cy+rr*Math.sin(a1))}"/>`;
+  s+=`<text class="lbl-b" x="${R2(cx+(rr+20)*Math.cos(am))}" y="${R2(cy+(rr+20)*Math.sin(am)+5)}" text-anchor="middle" fill="#b45309">?</text>`;
+  s+=`<circle cx="${cx}" cy="${cy}" r="4.5" fill="#312a92"/>`;
+  s+=`<text class="lbl" x="${cx}" y="${cy+r+30}" text-anchor="middle">${n} спиц, углы между соседними равны</text>`;
+  return SVG('0 0 540 300',s,'Колесо со спицами');
+ },
+ tank(f){
+  const w=190,h=176,d=50,ox=(540-(w+d))/2,oy=62,base=oy+h;
+  const lv=base-h*f.fill, lv2=base-h*f.fill*f.rise;
+  const P=(x,y)=>`${R2(ox+x)} ${R2(y)}`;
+  let s='';
+  s+=`<path d="M ${P(0,lv2)} L ${P(w,lv2)} L ${P(w,base)} L ${P(0,base)} Z" fill="#cfe4f7"/>`;
+  s+=`<path d="M ${P(0,lv2)} L ${P(d,lv2-d)} L ${P(w+d,lv2-d)} L ${P(w,lv2)} Z" fill="#aed3f0"/>`;
+  s+=`<path d="M ${P(w,lv2)} L ${P(w+d,lv2-d)} L ${P(w+d,base-d)} L ${P(w,base)} Z" fill="#bcdcf4"/>`;
+  s+=`<path class="hid" d="M ${P(0,base)} L ${P(d,base-d)} L ${P(w+d,base-d)} M ${P(d,base-d)} L ${P(d,oy-d)}"/>`;
+  s+=`<path class="edge" d="M ${P(0,oy)} L ${P(0,base)} L ${P(w,base)} L ${P(w,oy)}"/>`;
+  s+=`<path class="edge" d="M ${P(0,oy)} L ${P(d,oy-d)} L ${P(w+d,oy-d)} L ${P(w,oy)} Z"/>`;
+  s+=`<path class="edge" d="M ${P(w+d,oy-d)} L ${P(w+d,base-d)} L ${P(w,base)}"/>`;
+  s+=`<path d="M ${P(0,lv)} L ${P(w,lv)} L ${P(w+d,lv-d)}" fill="none" stroke="#2b6ca3" stroke-width="1.8" stroke-dasharray="7 5"/>`;
+  s+=`<path d="M ${P(0,lv2)} L ${P(w,lv2)} L ${P(w+d,lv2-d)}" fill="none" stroke="#2b6ca3" stroke-width="2"/>`;
+  s+=`<text class="lbl" x="${R2(ox-10)}" y="${R2(lv)+4}" text-anchor="end">было</text>`;
+  s+=`<text class="lbl-b" x="${R2(ox-10)}" y="${R2(lv2)+4}" text-anchor="end">стало</text>`;
+  s+=`<text class="lbl" x="${R2(ox+w/2)}" y="${R2(base+26)}" text-anchor="middle">уровень вырос в ${num(f.rise)} раза</text>`;
+  return SVG(`0 0 540 ${Math.ceil(base+42)}`,s,'Бак с водой');
+ },
+ box(f){
+  const u=Math.min(150/Math.max(f.a,f.b,f.c),34), A=f.a*u, B=f.b*u, C=f.c*u, d=B*.62;
+  const ox=(540-(A+d))/2;
+  const y0=30+C+d; // запас сверху под заднюю верхнюю грань, которая выше передней на d
+  const P=(x,y)=>`${R2(ox+x)},${R2(y0-y)}`;
+  let s='';
+  s+=`<path class="hid" d="M ${P(d,d)} L ${P(A+d,d)} M ${P(d,d)} L ${P(0,0)} M ${P(d,d)} L ${P(d,C+d)}"/>`;
+  s+=`<path class="edge" d="M ${P(0,0)} L ${P(A,0)} L ${P(A+d,d)} L ${P(A+d,C+d)} L ${P(d,C+d)} L ${P(0,C)} Z"/>`;
+  s+=`<path class="edge" d="M ${P(0,C)} L ${P(A,C)} L ${P(A,0)} M ${P(A,C)} L ${P(A+d,C+d)}"/>`;
+  s+=`<text class="lbl-b" x="${R2(ox+A/2)}" y="${R2(y0+19)}" text-anchor="middle">${f.a} см</text>`;
+  s+=`<text class="lbl-b" x="${R2(ox+A+d/2+13)}" y="${R2(y0-d/2+13)}">${f.b} см</text>`;
+  s+=`<text class="lbl-b" x="${R2(ox-9)}" y="${R2(y0-C/2)}" text-anchor="end">${f.c} см</text>`;
+  return SVG(`0 0 540 ${Math.ceil(y0+34)}`,s,'Прямоугольный параллелепипед');
+ },
+ cylinders(f){
+  const H=150, base=214, r1=40, r2=r1*f.k;
+  const w1=112, w2=w1/(f.k*f.k);
+  const cyl=(cx,r,wat,cap,lab)=>{
+   const ey=v=>r*0.28;
+   let t=`<path class="edge" d="M ${R2(cx-r)} ${base-H} L ${R2(cx-r)} ${base} M ${R2(cx+r)} ${base-H} L ${R2(cx+r)} ${base}"/>`;
+   t+=`<path d="M ${R2(cx-r)} ${R2(base-wat)} L ${R2(cx-r)} ${base} A ${R2(r)} ${R2(ey())} 0 0 0 ${R2(cx+r)} ${base} L ${R2(cx+r)} ${R2(base-wat)} A ${R2(r)} ${R2(ey())} 0 0 1 ${R2(cx-r)} ${R2(base-wat)} Z" fill="#cfe4f7"/>`;
+   t+=`<ellipse cx="${cx}" cy="${R2(base-wat)}" rx="${R2(r)}" ry="${R2(ey())}" fill="#bcdcf4" stroke="#2b6ca3" stroke-width="1.8"/>`;
+   t+=`<path class="hid" d="M ${R2(cx-r)} ${base} A ${R2(r)} ${R2(ey())} 0 0 0 ${R2(cx+r)} ${base}"/>`;
+   t+=`<path class="edge" d="M ${R2(cx-r)} ${base} A ${R2(r)} ${R2(ey())} 0 0 1 ${R2(cx+r)} ${base}"/>`;
+   t+=`<ellipse cx="${cx}" cy="${base-H}" rx="${R2(r)}" ry="${R2(ey())}" fill="none" stroke="#5b6b85" stroke-width="2"/>`;
+   t+=`<text class="lbl-b" x="${cx}" y="${base+40}" text-anchor="middle">${lab}</text>`;
+   t+=`<text class="lbl-b" x="${R2(cx+r+10)}" y="${R2(base-wat/2+4)}" fill="#2b6ca3">${cap}</text>`;
+   return t;};
+  let s=cyl(140,r1,w1,`${f.h1} см`,'радиус r');
+  s+=cyl(378,r2,w2,'?',`радиус ${f.k}r`);
+  s+=`<path class="aux" d="M ${R2(140+r1+52)} ${R2(base-w1/2)} h 46" marker-end=""/>`;
+  s+=`<path class="aux" d="M ${R2(140+r1+92)} ${R2(base-w1/2-5)} l 8 5 l -8 5"/>`;
+  s+=`<text class="lbl" x="${R2(140+r1+75)}" y="${R2(base-w1/2-10)}" text-anchor="middle">перелили</text>`;
+  return SVG('0 0 540 280',s,'Два цилиндрических сосуда');
+ },
+ isoTri(f){
+  const h=Math.sqrt(f.ab*f.ab-(f.ac/2)*(f.ac/2));
+  const u=Math.min(400/f.ac,190/h), W=f.ac*u, H=h*u, ox=(540-W)/2, oy=32;
+  const A=[ox,oy+H], C=[ox+W,oy+H], B=[ox+W/2,oy], M=[ox+W/2,oy+H];
+  const p=q=>R2(q[0])+','+R2(q[1]);
+  let s=`<polygon class="shape" points="${p(A)} ${p(C)} ${p(B)}"/>`;
+  if(f.median||f.height){
+   s+=`<line class="aux" x1="${R2(B[0])}" y1="${R2(B[1])}" x2="${R2(M[0])}" y2="${R2(M[1])}"/>`;
+   s+=`<path class="aux" d="M ${R2(M[0])} ${R2(M[1]-15)} h 15 v 15"/>`;
+   s+=`<text class="lbl-b" x="${R2(M[0]+9)}" y="${R2((B[1]+M[1])/2)}">${f.median?'BM':'h'}</text>`;
+   s+=`<text class="lbl" x="${R2(M[0]-13)}" y="${R2(M[1]+17)}" text-anchor="end">M</text>`;
+   const t=`<path class="aux" d="M ${R2(A[0]+W*.28)} ${R2(A[1]-4)} v 8 M ${R2(M[0]+W*.22)} ${R2(A[1]-4)} v 8"/>`;
+   s+=t;
+  }
+  s+=`<text class="lbl-b" x="${R2(A[0]-11)}" y="${R2(A[1]+6)}" text-anchor="end">A</text>`;
+  s+=`<text class="lbl-b" x="${R2(C[0]+11)}" y="${R2(C[1]+6)}">C</text>`;
+  s+=`<text class="lbl-b" x="${R2(B[0])}" y="${R2(B[1]-10)}" text-anchor="middle">B</text>`;
+  s+=`<text class="lbl" x="${R2((A[0]+B[0])/2-20)}" y="${R2((A[1]+B[1])/2)}" text-anchor="end">${f.ab}</text>`;
+  s+=`<text class="lbl" x="${R2((C[0]+B[0])/2+20)}" y="${R2((C[1]+B[1])/2)}">${f.ab}</text>`;
+  s+=`<text class="lbl" x="${R2(ox+W/2)}" y="${R2(oy+H+34)}" text-anchor="middle">AC = ${f.ac}</text>`;
+  return SVG(`0 0 540 ${Math.ceil(oy+H+48)}`,s,'Равнобедренный треугольник');
+ },
+ rightTri(f){
+  const other=Math.sqrt(f.hyp*f.hyp-f.leg*f.leg);
+  const u=Math.min(330/Math.max(f.leg,other),190/Math.max(f.leg,other));
+  const a=f.leg*u, b=other*u, ox=(540-b)/2, oy=26;
+  const C=[ox,oy+a], A=[ox,oy], B=[ox+b,oy+a];
+  const p=q=>R2(q[0])+','+R2(q[1]);
+  let s=`<polygon class="shape" points="${p(A)} ${p(C)} ${p(B)}"/>`;
+  s+=`<path class="aux" d="M ${R2(C[0])} ${R2(C[1]-16)} h 16 v 16"/>`;
+  s+=`<text class="lbl-b" x="${R2(A[0]-11)}" y="${R2(A[1]+5)}" text-anchor="end">A</text>`;
+  s+=`<text class="lbl-b" x="${R2(C[0]-11)}" y="${R2(C[1]+6)}" text-anchor="end">C</text>`;
+  s+=`<text class="lbl-b" x="${R2(B[0]+11)}" y="${R2(B[1]+6)}">B</text>`;
+  s+=`<text class="lbl" x="${R2(C[0]-11)}" y="${R2((A[1]+C[1])/2)}" text-anchor="end">${f.leg}</text>`;
+  s+=`<text class="lbl" x="${R2((A[0]+B[0])/2+16)}" y="${R2((A[1]+B[1])/2-8)}">${f.hyp}</text>`;
+  s+=`<text class="lbl" x="${R2((C[0]+B[0])/2)}" y="${R2(C[1]+21)}" text-anchor="middle">?</text>`;
+  return SVG(`0 0 540 ${Math.ceil(oy+a+38)}`,s,'Прямоугольный треугольник');
+ },
+ circleChord(f){
+  const u=110/f.r, r=f.r*u, cx=270, cy=140;
+  const x=(f.ac*f.ac-2*f.r*f.r)/(2*f.r)*-1;
+  const xr=(2*f.r*f.r-f.ac*f.ac)/(2*f.r);
+  const cxr=-f.r+f.ac*f.ac/(2*f.r);
+  const yy=Math.sqrt(Math.max(0,f.r*f.r-cxr*cxr));
+  const A=[cx-r,cy], B=[cx+r,cy], C=[R2(cx+cxr*u),R2(cy-yy*u)];
+  let s=`<circle cx="${cx}" cy="${cy}" r="${R2(r)}" fill="#f7f7fd" stroke="#8f9db3" stroke-width="1.8"/>`;
+  s+=`<polygon class="shape" points="${A[0]},${A[1]} ${B[0]},${B[1]} ${C[0]},${C[1]}" fill-opacity=".55"/>`;
+  s+=`<line class="edge" x1="${A[0]}" y1="${A[1]}" x2="${B[0]}" y2="${B[1]}"/>`;
+  s+=`<circle cx="${cx}" cy="${cy}" r="3.4" fill="#312a92"/>`;
+  s+=`<text class="lbl" x="${cx+5}" y="${cy+16}">O</text>`;
+  s+=`<text class="lbl-b" x="${A[0]-12}" y="${A[1]+5}" text-anchor="end">A</text>`;
+  s+=`<text class="lbl-b" x="${B[0]+12}" y="${B[1]+5}">B</text>`;
+  s+=`<text class="lbl-b" x="${C[0]}" y="${C[1]-11}" text-anchor="middle">C</text>`;
+  s+=`<text class="lbl" x="${R2((A[0]+C[0])/2-14)}" y="${R2((A[1]+C[1])/2)}" text-anchor="end">${f.ac}</text>`;
+  s+=`<text class="lbl" x="${R2((B[0]+C[0])/2+12)}" y="${R2((B[1]+C[1])/2)}">?</text>`;
+  s+=`<text class="lbl" x="${cx}" y="${cy+r+30}" text-anchor="middle">радиус ${f.r}, AB — диаметр</text>`;
+  return SVG('0 0 540 300',s,'Окружность с хордой');
+ },
+ twoCones(f){
+  const H=(r,l)=>Math.sqrt(Math.max(0,l*l-r*r));
+  const u=Math.min(90/Math.max(f.r1,f.r2),150/Math.max(H(f.r1,f.l1),H(f.r2,f.l2)));
+  const draw=(cx,r,h,lab)=>{const R=r*u,Hh=h*u,base=210;
+   let t=`<path class="shape" d="M ${R2(cx-R)} ${base} L ${cx} ${R2(base-Hh)} L ${R2(cx+R)} ${base} Z"/>`;
+   t+=`<ellipse cx="${cx}" cy="${base}" rx="${R2(R)}" ry="${R2(R*.28)}" fill="#e7e6fa" stroke="#4338ca" stroke-width="2"/>`;
+   t+=`<path class="hid" d="M ${R2(cx-R)} ${base} A ${R2(R)} ${R2(R*.28)} 0 0 0 ${R2(cx+R)} ${base}"/>`;
+   t+=`<line class="aux" x1="${cx}" y1="${R2(base-Hh)}" x2="${R2(cx+R)}" y2="${base}"/>`;
+   t+=`<text class="lbl" x="${R2(cx+R/2+12)}" y="${R2(base-Hh/2)}">l = ${lab[1]}</text>`;
+   t+=`<text class="lbl" x="${cx}" y="${base+R*.28+22}" text-anchor="middle">r = ${lab[0]}</text>`;
+   return t;};
+  return SVG('0 0 540 288',draw(140,f.r1,H(f.r1,f.l1),[f.r1,f.l1])+draw(370,f.r2,H(f.r2,f.l2),[f.r2,f.l2]),'Два конуса');
+ },
+ pyramid(f){
+  const Rc=f.base, hh=Math.sqrt(Math.max(1,f.edge*f.edge-Rc*Rc));
+  const u=Math.min(120/Rc,120/hh), R=Rc*u, H=hh*u, cx=270, base=214, ky=.36;
+  const n=f.sides, V=[];
+  for(let i=0;i<n;i++){const a=2*Math.PI*i/n;
+   V.push({x:R2(cx+R*Math.cos(a)),y:R2(base+R*ky*Math.sin(a)),front:Math.sin(a)>0.01});}
+  const apex={x:cx,y:R2(base-H)};
+  let s=`<polygon points="${V.map(v=>v.x+','+v.y).join(' ')}" fill="#eeedfb" stroke="none"/>`;
+  V.forEach((v,i)=>{const w=V[(i+1)%n];
+   s+=`<path class="${v.front&&w.front?'edge':'hid'}" d="M ${v.x} ${v.y} L ${w.x} ${w.y}"/>`;});
+  V.forEach(v=>s+=`<path class="${v.front?'edge':'hid'}" d="M ${apex.x} ${apex.y} L ${v.x} ${v.y}"/>`);
+  const f0=V.filter(v=>v.front);
+  if(f0.length>1) s+=`<polygon class="shape" fill-opacity=".55" points="${apex.x},${apex.y} ${f0[0].x},${f0[0].y} ${f0[f0.length-1].x},${f0[f0.length-1].y}"/>`;
+  s+=`<path class="hid" d="M ${apex.x} ${apex.y} L ${cx} ${base}"/>`;
+  s+=`<text class="lbl-b" x="${R2(cx+R*.62)}" y="${R2(base-H*.62)}">ребро ${f.edge}</text>`;
+  s+=`<text class="lbl-b" x="${cx}" y="${R2(base+R*ky+32)}" text-anchor="middle">сторона основания ${f.base}</text>`;
+  return SVG(`0 0 540 ${Math.ceil(base+R*ky+48)}`,s,'Правильная пирамида');
+ },
+ cutCone(f){
+  const cx=270, base=232, H=176, R=112, k=f.ratio;
+  const apex=[cx,base-H], r=R*k, y=base-H+H*k;
+  let s=`<path class="shape" d="M ${cx-R} ${base} L ${apex.join(' ')} L ${cx+R} ${base} Z"/>`;
+  s+=`<ellipse cx="${cx}" cy="${base}" rx="${R}" ry="${R*.26}" fill="#e7e6fa" stroke="#4338ca" stroke-width="2"/>`;
+  s+=`<path class="hid" d="M ${cx-R} ${base} A ${R} ${R*.26} 0 0 0 ${cx+R} ${base}"/>`;
+  s+=`<path d="M ${R2(cx-r)} ${R2(y)} L ${apex.join(' ')} L ${R2(cx+r)} ${R2(y)} Z" fill="#c9c5f3" stroke="#312a92" stroke-width="2"/>`;
+  s+=`<ellipse cx="${cx}" cy="${R2(y)}" rx="${R2(r)}" ry="${R2(r*.26)}" fill="none" stroke="#312a92" stroke-width="1.8" stroke-dasharray="5 4"/>`;
+  s+=`<line class="hid" x1="${cx}" y1="${R2(apex[1])}" x2="${cx}" y2="${base}"/>`;
+  s+=`<text class="lbl-b" x="${cx+r+12}" y="${R2(y-4)}">объём отсечённого = 5</text>`;
+  s+=`<text class="lbl" x="${cx+8}" y="${R2(apex[1]+H*k/2)}">1</text>`;
+  s+=`<text class="lbl" x="${cx+8}" y="${R2(y+(base-y)/2)}">3</text>`;
+  return SVG('0 0 540 290',s,'Конус с сечением');
+ },
+ numline(f){
+  const L=54,R=486,y=112,span=f.to-f.from,u=(R-L)/span;
+  const X=v=>R2(L+(v-f.from)*u);
+  let s=`<line class="ax" x1="${L-14}" y1="${y}" x2="${R+18}" y2="${y}"/>`;
+  s+=`<path class="ax" d="M ${R+10} ${y-5} L ${R+20} ${y} L ${R+10} ${y+5}"/>`;
+  for(let v=f.from;v<=f.to+1e-9;v++){
+   s+=`<line class="ax" x1="${X(v)}" y1="${y-6}" x2="${X(v)}" y2="${y+6}" stroke-width="1.3"/>`;
+   s+=`<text class="lbl" x="${X(v)}" y="${y+24}" text-anchor="middle">${v}</text>`;}
+  let prev=-1e9, up=true;
+ f.points.forEach(([nm,v])=>{
+   const x=X(v); up = (x-prev<26) ? !up : true; prev=x;
+   s+=`<circle cx="${x}" cy="${y}" r="4.6" fill="#4338ca"/>`;
+   s+=`<line class="gl" x1="${x}" y1="${y-6}" x2="${x}" y2="${up?y-16:y-30}" stroke="#b3bccd"/>`;
+   s+=`<text class="lbl-b" x="${x}" y="${up?y-21:y-35}" text-anchor="middle">${esc(nm)}</text>`;});
+  return SVG('0 0 540 160',s,'Координатная прямая');
+ },
+ cutRect(f){
+  const ox=110,oy=26,W=320,H=190,vx=ox+W*.45,hy=oy+H*.42;
+  const lab=['левый верхний','правый верхний','правый нижний','левый нижний'];
+  const box=[[ox,oy,vx-ox,hy-oy],[vx,oy,ox+W-vx,hy-oy],[vx,hy,ox+W-vx,oy+H-hy],[ox,hy,vx-ox,oy+H-hy]];
+  let s='';
+  box.forEach((b,i)=>{
+   s+=`<rect x="${b[0]}" y="${b[1]}" width="${b[2]}" height="${b[3]}" fill="${f.p[i]==null?'#fff3d8':'#eceafb'}" stroke="#5b6b85" stroke-width="1.6"/>`;
+   s+=`<text class="lbl-b" x="${R2(b[0]+b[2]/2)}" y="${R2(b[1]+b[3]/2+6)}" text-anchor="middle" font-size="17">${f.p[i]==null?'?':f.p[i]}</text>`;});
+  s+=`<rect x="${ox}" y="${oy}" width="${W}" height="${H}" fill="none" stroke="#312a92" stroke-width="2.4"/>`;
+  s+=`<text class="lbl" x="${ox+W/2}" y="${oy+H+24}" text-anchor="middle">в клетках указаны периметры</text>`;
+  return SVG('0 0 540 260',s,'Прямоугольник, разрезанный на четыре');
+ },
+ ring(f){
+  const cx=270,cy=138,r=104;
+  let s=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#8f9db3" stroke-width="12"/>`;
+  s+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="9 9"/>`;
+  const names=f.arcs.map(a=>a[0]);
+  names.forEach((nm,i)=>{const a=-Math.PI/2+2*Math.PI*i/names.length;
+   const x=R2(cx+r*Math.cos(a)),y=R2(cy+r*Math.sin(a));
+   s+=`<circle cx="${x}" cy="${y}" r="9" fill="#4338ca"/>`;
+   s+=`<text class="lbl-b" x="${R2(cx+(r+26)*Math.cos(a))}" y="${R2(cy+(r+26)*Math.sin(a)+5)}" text-anchor="middle">${esc(nm)}</text>`;});
+  f.arcs.forEach((arc,i)=>{const a=-Math.PI/2+2*Math.PI*(i+.5)/f.arcs.length;
+   s+=`<text class="lbl" x="${R2(cx+(r-30)*Math.cos(a))}" y="${R2(cy+(r-30)*Math.sin(a)+4)}" text-anchor="middle">${arc[2]} км</text>`;});
+  return SVG('0 0 540 290',s,'Кольцевая дорога с четырьмя колонками');
+ }
+};
+function figureHTML(t){
+ if(t.fig&&FIG[t.fig.kind]) return `<figure class="figbox">${FIG[t.fig.kind](t.fig)}<figcaption>${esc(figCap(t))}</figcaption></figure>`;
+ if(t.table) return `<div class="figbox" style="padding:12px"><table class="data"><thead><tr>${t.table.head.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${t.table.rows.map(r=>`<tr>${r.map((c,i)=>`<td${i?'':' style="font-weight:650"'}>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+ return '';
+}
+function figCap(t){
+ const k=t.fig.kind;
+ if(k==='grid') return 'Сетка построена по данным задачи: каждая клетка — квадрат 1 × 1.';
+ if(k==='bars'||k==='dots'||k==='line') return 'Масштаб осей задан подписями. Точки построены по числовым данным.';
+ if(k==='numline') return 'Точки расставлены по своим координатам, поэтому расстояния на прямой настоящие.';
+ if(k==='isoTri'||k==='rightTri'||k==='circleChord') return 'Чертёж построен по числам из условия: длины сторон на рисунке пропорциональны данным.';
+ if(k==='plot') return 'Стороны на плане пропорциональны размерам из условия.';
+ return 'Схематический рисунок: пропорции переданы приблизительно, размеры даны подписями.';
+}
+
+/* ═══════ Лаборатории: модели, которые можно трогать.
+   Показывают связи между величинами, но не выдают ответ — решение
+   ученик по-прежнему записывает сам. Состояние моделей живёт в памяти
+   страницы (LABS), не в прогрессе: это эксперимент, а не результат. ═══════ */
+const LABS={};
+const labState=(t)=>LABS[t.id]||(LABS[t.id]=labInit(t.lab));
+function labInit(l){
+ if(l.kind==='cutRectLab') return {vx:Math.round(l.w*0.45),hy:Math.round(l.h*0.42)};
+ if(l.kind==='scoreTiles') return {marks:Array(l.total).fill(0)}; // 0 пропуск, 1 верно, 2 неверно
+ if(l.kind==='digitStrike') return {struck:[]};
+ if(l.kind==='digitBuild') return {digits:Array(l.slots).fill(null),active:0};
+ if(l.kind==='roadLab') return l.mode==='lake'?{posA:0.9}:{m:Math.round(l.L*0.3/5)*5};
+ if(l.kind==='solutionLab') return {water:l.water0};
+ if(l.kind==='avgSpeedLab') return {t2:1};
+ if(l.kind==='ringLab') return {sel:[]};
+ if(l.kind==='crossLab') return {cells:['','','',''],x:2}; // x — индекс неизвестной клетки, по умолчанию левая нижняя
+ return {};
+}
+/* Крест пропорции: клетки 0 1 (верхняя строка), 2 3 (нижняя). Диагонали 0–3 и 1–2.
+   Неизвестная x стоит в одной клетке; её диагональный сосед — множитель при x,
+   две остальные перемножаются. Возвращает null, пока чисел не хватает. */
+function crossSolve(cells,x){
+ const num=v=>{const t=String(v).trim().replace(',','.'); return /^-?\d+(\.\d+)?$/.test(t)?+t:null;};
+ const diag=i=>3-i;                       // 0↔3, 1↔2
+ const b=num(cells[diag(x)]);
+ const others=[0,1,2,3].filter(i=>i!==x&&i!==diag(x)).map(i=>num(cells[i]));
+ if(b===null||others.some(v=>v===null)) return null;
+ if(b===0) return {zero:true};
+ const prod=others[0]*others[1];
+ return {b,a:others[0],c:others[1],prod,result:Math.round(prod/b*1e6)/1e6};
+}
+/* Положение второго пешехода при движении «до озера и обратно». */
+function roadPositions(l,posA){
+ const t=posA/l.vA, raw=l.vB*t;
+ const posB=raw<=l.L?raw:Math.max(0,2*l.L-raw);
+ return {t,posA,posB,back:raw>l.L};
+}
+const GEO={road:{x0:70,x1:470,y:118}, beaker:{x:190,w:160,top:30,bottom:236}, tbar:{x0:215,y2:150,unit:80}};
+/* Периметры четырёх частей при вертикальном разрезе на расстоянии vx
+   и горизонтальном на расстоянии hy от левого верхнего угла. */
+function cutRectPerims(w,h,vx,hy){
+ return [2*(vx+hy), 2*((w-vx)+hy), 2*((w-vx)+(h-hy)), 2*(vx+(h-hy))];
+}
+const LAB={
+ cutRectLab(t,st){
+  const l=t.lab, ox=70,oy=26,W=400,H=224, ux=W/l.w, uy=H/l.h;
+  const X=ox+st.vx*ux, Y=oy+st.hy*uy;
+  const P=cutRectPerims(l.w,l.h,st.vx,st.hy);
+  const cell=(x,y,w,h,txt,i)=>`<rect x="${R2(x)}" y="${R2(y)}" width="${R2(w)}" height="${R2(h)}" fill="${i%2?'#eceafb':'#f3f2fb'}" stroke="#8f9db3" stroke-width="1.2"/>
+   <text class="lbl-b" x="${R2(x+w/2)}" y="${R2(y+h/2+6)}" text-anchor="middle" font-size="18">${txt}</text>`;
+  let s=cell(ox,oy,X-ox,Y-oy,P[0],0)+cell(X,oy,ox+W-X,Y-oy,P[1],1)+cell(X,Y,ox+W-X,oy+H-Y,P[2],2)+cell(ox,Y,X-ox,oy+H-Y,P[3],3);
+  s+=`<rect x="${ox}" y="${oy}" width="${W}" height="${H}" fill="none" stroke="#312a92" stroke-width="2.4"/>`;
+  s+=`<line x1="${R2(X)}" y1="${oy}" x2="${R2(X)}" y2="${oy+H}" stroke="#b45309" stroke-width="3"/>`;
+  s+=`<line x1="${ox}" y1="${R2(Y)}" x2="${ox+W}" y2="${R2(Y)}" stroke="#b45309" stroke-width="3"/>`;
+  s+=`<line class="grab" data-lab="cut-v" x1="${R2(X)}" y1="${oy}" x2="${R2(X)}" y2="${oy+H}" stroke="transparent" stroke-width="28" style="cursor:ew-resize;touch-action:none"/>`;
+  s+=`<line class="grab" data-lab="cut-h" x1="${ox}" y1="${R2(Y)}" x2="${ox+W}" y2="${R2(Y)}" stroke="transparent" stroke-width="28" style="cursor:ns-resize;touch-action:none"/>`;
+  s+=`<circle cx="${R2(X)}" cy="${R2(Y)}" r="7" fill="#b45309"/>`;
+  const svg=SVG('0 0 540 270',s,'Прямоугольник с двумя подвижными разрезами');
+  return `<div class="lab"><div class="lab-head">Эксперимент: потяните оранжевые линии разреза</div>${svg}
+   <div class="lab-read">По диагонали: <b>${P[0]} + ${P[2]} = ${P[0]+P[2]}</b> и <b>${P[1]} + ${P[3]} = ${P[1]+P[3]}</b>. Подвигайте разрезы и посмотрите, что происходит с этими двумя суммами.</div></div>`;
+ },
+ scoreTiles(t,st){
+  const l=t.lab;
+  const c=st.marks.filter(m=>m===1).length, w=st.marks.filter(m=>m===2).length, z=l.total-c-w;
+  const score=l.plus*c-l.minus*w;
+  const tiles=st.marks.map((m,i)=>`<button class="tile s${m}" data-lab="tile" data-i="${i}" aria-label="Вопрос ${i+1}: ${m===1?'верно':m===2?'неверно':'пропуск'}">${m===1?'✓':m===2?'✗':i+1}</button>`).join('');
+  return `<div class="lab"><div class="lab-head">Эксперимент: нажимайте на вопросы — пропуск → верно → неверно</div>
+   <div class="tiles">${tiles}</div>
+   <div class="lab-read">Верных <b>${c}</b> · неверных <b>${w}</b> · пропущено <b>${z}</b><br>
+   Очки: ${l.plus} · ${c} − ${l.minus} · ${w} = <b class="${score===l.target?'hit':''}">${score}</b> <span class="muted">(в условии — ${l.target})</span></div></div>`;
+ },
+ digitStrike(t,st){
+  const l=t.lab, ds=l.digits.split('');
+  const left=ds.filter((_,i)=>!st.struck.includes(i));
+  const tiles=ds.map((d,i)=>`<button class="tile dig${st.struck.includes(i)?' struck':''}" data-lab="strike" data-i="${i}" aria-pressed="${st.struck.includes(i)}">${d}</button>`).join('');
+  const sum=left.reduce((a,d)=>a+ +d,0);
+  const okLen=left.length===l.keep;
+  return `<div class="lab"><div class="lab-head">Эксперимент: нажимайте на цифры, чтобы вычеркнуть или вернуть</div>
+   <div class="tiles">${tiles}</div>
+   <div class="lab-read">Осталось цифр: <b>${left.length}</b>${okLen?'':` <span class="muted">(нужно ${l.keep})</span>`}<br>
+   Число: <b>${left.join('')||'—'}</b> · сумма цифр <b>${sum}</b> · последняя цифра <b>${left.at(-1)??'—'}</b><br>
+   <span class="muted">Делится ли — решайте по признакам сами; модель их не проверяет.</span></div></div>`;
+ },
+ digitBuild(t,st){
+  const l=t.lab, d=st.digits, filled=d.filter(x=>x!==null);
+  const slots=d.map((x,i)=>`<button class="tile slot${i===st.active?' active':''}${x!==null?' filled':''}" data-lab="slot" data-i="${i}" aria-pressed="${i===st.active}" aria-label="Разряд ${i+1}${x!==null?': '+x:', пусто'}">${x??'·'}</button>`).join('');
+  const pad=Array.from({length:10},(_,k)=>`<button class="tile dig" data-lab="pad" data-d="${k}">${k}</button>`).join('');
+  const pattern=d.map(x=>x??'·').join('');
+  const sum=filled.reduce((a,x)=>a+x,0);
+  let facts='';
+  if(!filled.length) facts='Выберите разряд и нажмите цифру. Начинать можно с любого — например, с последнего.';
+  else{
+   facts=`Число: <b>${pattern}</b>`;
+   if(d[l.slots-1]!==null) facts+=` · последняя цифра <b>${d[l.slots-1]}</b>`;
+   facts+=` · сумма ${filled.length<l.slots?'заполненных ':''}цифр <b>${sum}</b>`;
+   if(filled.length===l.slots){
+    const prod=filled.reduce((a,x)=>a*x,1), distinct=new Set(filled).size===filled.length, allOdd=filled.every(x=>x%2===1);
+    facts+=` · произведение <b>${prod}</b> · ${distinct?'все различны':'есть повтор'} · ${allOdd?'все нечётные':'есть чётная'}`;
+    if(d[0]===0) facts+=`<br><b>Первая цифра 0 — число не четырёхзначное.</b>`;
+   } else facts+=` <span class="muted">(заполнено ${filled.length} из ${l.slots})</span>`;
+  }
+  return `<div class="lab"><div class="lab-head">Эксперимент: выберите разряд, затем нажмите цифру</div>
+   <div class="tiles slots">${slots}<button class="tile clear" data-lab="clear" aria-label="Стереть выбранный разряд">стереть</button></div><div class="tiles pad">${pad}</div>
+   <div class="lab-read">${facts}<br><span class="muted">Делимость модель не проверяет — примените признаки сами.</span></div></div>`;
+ }
+};
+LAB.roadLab=function(t,st){
+ const l=t.lab, g=GEO.road, W=g.x1-g.x0, X=d=>R2(g.x0+d/l.L*W);
+ let s=`<line x1="${g.x0}" y1="${g.y}" x2="${g.x1}" y2="${g.y}" stroke="#8f9db3" stroke-width="10" stroke-linecap="round"/>`;
+ for(let d=0;d<=l.L;d+=l.mode==='lake'?1:50){
+  s+=`<line x1="${X(d)}" y1="${g.y-9}" x2="${X(d)}" y2="${g.y+9}" stroke="#fff" stroke-width="1.5"/>`;
+  s+=`<text class="lbl" x="${X(d)}" y="${g.y+30}" text-anchor="middle">${d}</text>`;}
+ let read='';
+ if(l.mode==='lake'){
+  const r=roadPositions(l,st.posA), meet=Math.abs(r.posA-r.posB)<0.06&&r.back;
+  s+=`<rect x="${g.x0-22}" y="${g.y-42}" width="26" height="24" fill="#e7e6fa" stroke="#4338ca" stroke-width="1.6"/><path d="M ${g.x0-25} ${g.y-42} L ${g.x0-9} ${g.y-56} L ${g.x0+7} ${g.y-42} Z" fill="#c9c5f3" stroke="#4338ca" stroke-width="1.6"/>`;
+  s+=`<ellipse cx="${g.x1+22}" cy="${g.y-24}" rx="26" ry="13" fill="#cfe4f7" stroke="#2b6ca3" stroke-width="1.6"/>`;
+  s+=`<text class="lbl" x="${g.x0-9}" y="${g.y-62}" text-anchor="middle">дом</text><text class="lbl" x="${g.x1+22}" y="${g.y-46}" text-anchor="middle">озеро</text>`;
+  s+=`<circle cx="${X(r.posB)}" cy="${g.y-4}" r="11" fill="#146c43"/><text class="lbl-b" x="${X(r.posB)}" y="${g.y-22}" text-anchor="middle" fill="#146c43">${l.vB} км/ч${r.back?' ←':' →'}</text>`;
+  s+=`<circle class="grab" data-lab="walkerA" cx="${X(r.posA)}" cy="${g.y+4}" r="18" fill="transparent" style="cursor:grab;touch-action:none"/>`;
+  s+=`<circle cx="${X(r.posA)}" cy="${g.y+4}" r="11" fill="#b45309" pointer-events="none"/><text class="lbl-b" x="${X(r.posA)}" y="${g.y+54}" text-anchor="middle" fill="#b45309">${l.vA} км/ч — тяните</text>`;
+  if(meet) s+=`<text class="lbl-b" x="${X(r.posA)}" y="${g.y-72}" text-anchor="middle" fill="#312a92">встретились</text>`;
+  read=`Прошло <b>${num(Math.round(r.t*100)/100)} ч</b>. Первый прошёл <b>${num(Math.round(r.posA*100)/100)} км</b>, второй ${r.back?'уже возвращается и находится в':'находится в'} <b>${num(Math.round(r.posB*100)/100)} км</b> от дома.${meet?' <b>Встреча.</b>':''}<br><span class="muted">Здесь озеро в ${l.L} км, скорости ${l.vA} и ${l.vB} км/ч — числа не из условия. Заметьте: к моменту встречи двое вместе проходят путь до озера и обратно.</span>`;
+ }else{
+  const mA=st.m, mB=l.L-st.m;
+  s+=`<text class="lbl-b" x="${g.x0}" y="${g.y-30}" text-anchor="middle">A</text><text class="lbl-b" x="${g.x1}" y="${g.y-30}" text-anchor="middle">B</text>`;
+  s+=`<circle class="grab" data-lab="meet" cx="${X(st.m)}" cy="${g.y}" r="18" fill="transparent" style="cursor:grab;touch-action:none"/>`;
+  s+=`<circle cx="${X(st.m)}" cy="${g.y}" r="10" fill="#b45309" pointer-events="none"/><text class="lbl-b" x="${X(st.m)}" y="${g.y-16}" text-anchor="middle" fill="#b45309">встреча — тяните</text>`;
+  s+=`<path class="aux" d="M ${g.x0} ${g.y+46} H ${X(st.m)}" stroke="#4338ca"/><text class="lbl" x="${R2((g.x0+ +X(st.m))/2)}" y="${g.y+62}" text-anchor="middle">${mA} км</text>`;
+  s+=`<path class="aux" d="M ${X(st.m)} ${g.y+46} H ${g.x1}" stroke="#146c43"/><text class="lbl" x="${R2((+X(st.m)+g.x1)/2)}" y="${g.y+62}" text-anchor="middle">${mB} км</text>`;
+  read=`Дорога <b>${l.L} км</b>, встреча через <b>${l.t} ч</b>. Из A проехали <b>${mA} км</b> → скорость <b>${num(mA/l.t)} км/ч</b>; из B проехали <b>${mB} км</b> → <b>${num(mB/l.t)} км/ч</b>.<br><span class="muted">Числа не из условия. Двигайте точку встречи: чем она ближе к B, тем быстрее ехал автомобиль из A.</span>`;
+ }
+ return `<div class="lab"><div class="lab-head">Эксперимент: ${l.mode==='lake'?'тяните первого пешехода по дороге':'тяните точку встречи'}</div>${SVG('0 0 540 195',s,'Модель движения')}<div class="lab-read">${read}</div></div>`;
+};
+LAB.solutionLab=function(t,st){
+ const l=t.lab, g=GEO.beaker, total=l.solute+st.water, H=g.bottom-g.top, kg=H/(l.solute+l.waterMax);
+ const hS=l.solute*kg, hW=st.water*kg, yW=g.bottom-hS-hW, yS=g.bottom-hS;
+ const conc=Math.round(l.solute/total*1000)/10;
+ let s=`<path d="M ${g.x} ${g.top-8} V ${g.bottom} H ${g.x+g.w} V ${g.top-8}" fill="none" stroke="#5b6b85" stroke-width="2.4"/>`;
+ s+=`<rect x="${g.x}" y="${R2(yW)}" width="${g.w}" height="${R2(hW)}" fill="#cfe4f7"/>`;
+ s+=`<rect x="${g.x}" y="${R2(yS)}" width="${g.w}" height="${R2(hS)}" fill="#7e6cd8"/>`;
+ s+=`<line class="grab" data-lab="water" x1="${g.x-16}" y1="${R2(yW)}" x2="${g.x+g.w+16}" y2="${R2(yW)}" stroke="transparent" stroke-width="30" style="cursor:ns-resize;touch-action:none"/>`;
+ s+=`<line x1="${g.x-16}" y1="${R2(yW)}" x2="${g.x+g.w+16}" y2="${R2(yW)}" stroke="#b45309" stroke-width="3" pointer-events="none"/>`;
+ s+=`<text class="lbl-b" x="${g.x+g.w+22}" y="${R2(yW+4)}" fill="#b45309">уровень — тяните</text>`;
+ s+=`<text class="lbl-b" x="${g.x+g.w/2}" y="${R2(yS+hS/2+5)}" text-anchor="middle" fill="#fff">вещество ${l.solute} кг</text>`;
+ s+=`<text class="lbl-b" x="${g.x+g.w/2}" y="${R2(yW+hW/2+5)}" text-anchor="middle" fill="#2b6ca3">вода ${st.water} кг</text>`;
+ const read=`Раствор <b>${total} кг</b>, вещества <b>${l.solute} кг</b> → концентрация <b>${num(conc)} %</b>.<br><span class="muted">Числа не из условия. Доливайте воду: столбик вещества не двигается — меняется только знаменатель.</span>`;
+ return `<div class="lab"><div class="lab-head">Эксперимент: тяните уровень воды вверх и вниз</div>${SVG('0 0 540 260',s,'Модель раствора')}<div class="lab-read">${read}</div></div>`;
+};
+LAB.avgSpeedLab=function(t,st){
+ const l=t.lab, g=GEO.tbar, t1=l.seg/l.v1, v2=Math.round(l.seg/st.t2), avg=Math.round(2*l.seg/(t1+st.t2)*10)/10, mean=Math.round((l.v1+v2)/2*10)/10;
+ const bar=(y,tt,color,label)=>`<rect x="${g.x0}" y="${y-16}" width="${R2(tt*g.unit)}" height="32" fill="${color}" rx="6"/><text class="lbl-b" x="${g.x0-10}" y="${y+5}" text-anchor="end">${label}</text><text class="lbl" x="${R2(g.x0+tt*g.unit+8)}" y="${y+5}">${num(Math.round(tt*100)/100)} ч</text>`;
+ let s=bar(70,t1,'#c9c5f3',`${l.seg} км при ${l.v1} км/ч`)+bar(g.y2,st.t2,'#a8d5be',`${l.seg} км при ${v2} км/ч`);
+ s+=`<rect class="grab" data-lab="tbar" x="${R2(g.x0+st.t2*g.unit-20)}" y="${g.y2-24}" width="40" height="48" fill="transparent" style="cursor:ew-resize;touch-action:none"/>`;
+ s+=`<rect x="${R2(g.x0+st.t2*g.unit-4)}" y="${g.y2-18}" width="8" height="36" fill="#b45309" rx="2" pointer-events="none"/>`;
+ s+=`<text class="lbl" x="${g.x0}" y="${g.y2+46}" fill="#7a5a12">тяните край зелёной полоски — это время на втором участке</text>`;
+ const read=`Путь <b>${2*l.seg} км</b>, время <b>${num(Math.round((t1+st.t2)*100)/100)} ч</b> → средняя скорость <b>${num(avg)} км/ч</b>. Среднее арифметическое скоростей было бы <b>${num(mean)}</b> — <b>${avg===mean?'совпало только потому, что времена равны':'не совпадает'}</b>.<br><span class="muted">Медленный участок занимает больше времени и тянет среднюю к себе.</span>`;
+ return `<div class="lab"><div class="lab-head">Эксперимент: два участка по ${l.seg} км, длина полоски — время</div>${SVG('0 0 540 210',s,'Модель средней скорости')}<div class="lab-read">${read}</div></div>`;
+};
+LAB.ringLab=function(t,st){
+ const arcs=t.fig.arcs, cx=270,cy=125,r=92, n=arcs.length;
+ let s='';
+ arcs.forEach((a,i)=>{const a0=-Math.PI/2+2*Math.PI*i/n, a1=a0+2*Math.PI/n, on=st.sel.includes(i);
+  const p=`M ${R2(cx+r*Math.cos(a0))} ${R2(cy+r*Math.sin(a0))} A ${r} ${r} 0 0 1 ${R2(cx+r*Math.cos(a1))} ${R2(cy+r*Math.sin(a1))}`;
+  s+=`<path d="${p}" fill="none" stroke="${on?'#4338ca':'#c3ccdb'}" stroke-width="${on?14:10}" stroke-linecap="butt"/>`;
+  s+=`<path class="grab" data-lab="arc" data-i="${i}" d="${p}" fill="none" stroke="transparent" stroke-width="34" style="cursor:pointer"/>`;
+  const am=(a0+a1)/2; s+=`<text class="lbl${on?'-b':''}" x="${R2(cx+(r-30)*Math.cos(am))}" y="${R2(cy+(r-30)*Math.sin(am)+4)}" text-anchor="middle" pointer-events="none">${a[2]}</text>`;});
+ arcs.forEach((a,i)=>{const ang=-Math.PI/2+2*Math.PI*i/n;
+  s+=`<circle cx="${R2(cx+r*Math.cos(ang))}" cy="${R2(cy+r*Math.sin(ang))}" r="9" fill="#312a92" pointer-events="none"/>`;
+  s+=`<text class="lbl-b" x="${R2(cx+(r+24)*Math.cos(ang))}" y="${R2(cy+(r+24)*Math.sin(ang)+5)}" text-anchor="middle">${esc(a[0])}</text>`;});
+ const sum=st.sel.reduce((a,i)=>a+arcs[i][2],0);
+ const read=st.sel.length?`Выбрано участков: <b>${st.sel.length}</b>, их длина вместе <b>${sum} км</b>.`:'Нажмите на участки дороги, из которых складывается маршрут.';
+ return `<div class="lab"><div class="lab-head">Эксперимент: собирайте маршрут из участков</div>${SVG('0 0 540 250',s,'Кольцевая дорога')}<div class="lab-read">${read}<br><span class="muted">Между двумя колонками всегда два пути — по одной дуге кольца и по другой.</span></div></div>`;
+};
+LAB.crossLab=function(t,st){
+ const l=t.lab;
+ const cell=i=>st.x===i
+  ?`<div class="xcell" data-i="${i}"><span class="xmark">x</span><span class="xhint">неизвестное</span></div>`
+  :`<div class="ccell"><input class="cin" data-lab="cell" data-i="${i}" inputmode="decimal" autocomplete="off" value="${esc(st.cells[i])}" aria-label="Клетка ${i+1}"><button class="setx" data-lab="setx" data-i="${i}" title="Сделать эту клетку неизвестной">x?</button></div>`;
+ return `<div class="lab"><div class="lab-head">Крест пропорции: расставьте величины так, чтобы в каждой строке они соответствовали друг другу</div>
+  <div class="cross-wrap">
+   <div class="cross-cols"><span>${esc(l.cols[0])}</span><span>${esc(l.cols[1])}</span></div>
+   <div class="cross-grid">
+    <svg class="cross-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line x1="8" y1="8" x2="92" y2="92"/><line x1="92" y1="8" x2="8" y2="92"/></svg>
+    ${cell(0)}${cell(1)}${cell(2)}${cell(3)}
+   </div>
+  </div>
+  <div class="lab-read cross-eq" data-lab="eq">${crossEqHTML(t,st)}</div></div>`;
+};
+function crossEqHTML(t,st){
+ const r=crossSolve(st.cells,st.x);
+ if(!r) return 'Заполните три клетки числами — четвёртая, помеченная <b>x</b>, неизвестная. Что стоит напротив 100 % — решаете вы.<br><span class="muted">Нажмите «x?» у клетки, чтобы сделать неизвестной её.</span>';
+ if(r.zero) return 'На нуле крест не работает: множитель при x не может быть нулём.';
+ const f=v=>num(v), shown=Math.round(r.result*100)/100, rough=Math.abs(shown-r.result)>1e-9;
+ const warn=rough?`<br><b>Результат не «круглый».</b> В задачах на проценты это чаще всего значит, что величины стоят не в своих строках — проверьте, что напротив 100 % стоит целое, от которого считают процент.`:'';
+ return `Крест-накрест: <b>x · ${f(r.b)} = ${f(r.a)} · ${f(r.c)}</b><br>Значит <b>x = ${f(r.a)} · ${f(r.c)} : ${f(r.b)} = ${f(r.prod)} : ${f(r.b)} ${rough?'≈':'='} ${f(shown)}</b>${warn}<br><span class="muted">Модель перемножила то, что вы расставили. Верна ли расстановка — проверьте по условию: это и есть смысл задачи.</span>`;
+}
+function labHTML(t){ if(!t.lab||!LAB[t.lab.kind]) return ''; return LAB[t.lab.kind](t,labState(t)); }
+
+/* ═══════ Движок ═══════ */
+const KEY='ege-baza-21-v1';
+const $=id=>document.getElementById(id);
+const byPos=p=>TASKS.filter(t=>t.pos===p);
+
+const RULES={
+ div15_odd_distinct:{
+  test:n=>/^\d{4}$/.test(n)&&+n%15===0&&[...n].every(d=>+d%2===1)&&new Set(n).size===4,
+  why:n=>{ if(!/^\d{4}$/.test(n)) return 'Нужно четырёхзначное натуральное число.';
+   if([...n].some(d=>+d%2===0)) return 'Среди цифр есть чётная, а по условию все цифры должны быть нечётными.';
+   if(new Set(n).size!==4) return 'Цифры должны быть различными, а в вашем числе есть повторы.';
+   if(+n%5) return 'Число не делится на 5. Кратное 15 обязано делиться и на 3, и на 5.';
+   return 'Сумма цифр не делится на 3, поэтому число не кратно 15.';}},
+ strike74123568:{
+  test:n=>{const src='74123568'; if(!/^\d{5}$/.test(n)) return false;
+   let i=0; for(const c of n){i=src.indexOf(c,i); if(i<0) return false; i++;} return +n%15===0;},
+  why:n=>{const src='74123568';
+   if(!/^\d{5}$/.test(n)) return 'Из восьми цифр вычёркивают три, значит должно остаться пятизначное число.';
+   let i=0; for(const c of n){i=src.indexOf(c,i); if(i<0) return 'Такую последовательность нельзя получить вычёркиванием: порядок цифр менять нельзя.'; i++;}
+   if(+n%5) return 'Число должно оканчиваться на 5 или 0, иначе оно не делится на 5.';
+   return 'Сумма цифр не делится на 3, поэтому число не кратно 15.';}},
+ div18_prod24:{
+  test:n=>/^\d{4}$/.test(n)&&+n%18===0&&[...n].reduce((a,d)=>a*+d,1)===24,
+  why:n=>{ if(!/^\d{4}$/.test(n)) return 'Нужно четырёхзначное натуральное число.';
+   const pr=[...n].reduce((a,d)=>a*+d,1);
+   if(pr!==24) return `Произведение цифр равно ${pr}, а по условию должно быть 24.`;
+   if(+n%2) return 'Число нечётное, а кратное 18 обязано быть чётным.';
+   return 'Сумма цифр не делится на 9, поэтому число не кратно 18.';}}
+};
+
+function parseNum(raw){
+ const s=String(raw).trim().replace(/[\u2212\u2013\u2014]/g,'-').replace(/[\s\u00a0\u202f]/g,'').replace(/,/g,'.');
+ if(!s) return {ok:false,empty:true,msg:'Введите ответ, затем нажмите «Проверить».'};
+ const re=/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/, parts=s.split('/');
+ if(parts.length===2&&parts.every(p=>re.test(p))){
+  const a=+parts[0], b=+parts[1];
+  if(!b) return {ok:false,msg:'На ноль делить нельзя — проверьте знаменатель.'};
+  return {ok:true,v:a/b};
+ }
+ if(!re.test(s)) return {ok:false,msg:'Запишите одно число без единиц измерения. Подойдут 0,6 · 0.6 · 3/5. Выражение сначала вычислите.'};
+ return {ok:true,v:+s};
+}
+const canon=v=>String(Math.round(v*1e9)/1e9);
+const fmtNum=v=>String(Math.round(v*1e9)/1e9).replace('.',',');
+
+/* Урок из ссылки: ?lesson=2 сужает работу ученика до позиций этого урока
+   и остаётся в состоянии, чтобы после перезагрузки страницы фильтр не слетел. */
+const urlLesson=(()=>{
+ const v=new URLSearchParams(location.search).get('lesson');
+ const n=Number(v); return LESSONS.some(l=>l.n===n)?n:null;
+})();
+
+/* Детерминированный генератор от ?seed=... — тот же принцип (FNV-1a → PRNG),
+   что уже используется в negative-numbers-line.html. Нужен, чтобы у учителя
+   и ученика в общей комнате доски «Собрать вариант» давал ОДИНАКОВЫЙ набор
+   заданий, а не два разных. Без seed в ссылке ведёт себя как раньше —
+   обычная случайность на Math.random. */
+function fnv1a(str){
+ let h=0x811c9dc5;
+ for(let i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,0x01000193); }
+ return h>>>0;
+}
+function mulberry32(seed){
+ let a=seed>>>0;
+ return function(){
+  a|=0; a=a+0x6D2B79F5|0;
+  let t=Math.imul(a^a>>>15,1|a);
+  t=t+Math.imul(t^t>>>7,61|t)^t;
+  return ((t^t>>>14)>>>0)/4294967296;
+ };
+}
+const urlSeed=new URLSearchParams(location.search).get('seed');
+/* rnd() — единственная точка случайности во всём тренажёре. Если в ссылке
+   есть seed, она детерминирована этим seed; иначе — обычный Math.random. */
+const rnd = urlSeed ? mulberry32(fnv1a(urlSeed)) : Math.random;
+const BET_STAKES=[{v:1,label:'Сомневаюсь'},{v:3,label:'Скорее да'},{v:5,label:'Уверен'}];
+const blankBet=()=>({on:false,bank:0,cal:{1:{t:0,c:0},3:{t:0,c:0},5:{t:0,c:0}}});
+function blank(){return {mode:'pos',pos:1,cur:{},recs:{},built:null,lesson:null,bet:blankBet(),betPick:null};}
+const urlBet=new URLSearchParams(location.search).get('bet')==='1';
+let state=load();
+/* Аукцион уверенности: ученик ставит очки на свой ответ ДО проверки.
+   Верно — банк растёт на ставку, неверно — падает. Калибровка по каждой
+   ставке копится отдельно: это и есть материал для разговора учителя
+   с учеником о том, где уверенность расходится с результатом. */
+if(!state.bet||typeof state.bet!=='object') state.bet=blankBet();
+for(const k of ['1','3','5']) if(!state.bet.cal[k]) state.bet.cal[k]={t:0,c:0};
+if(urlBet) state.bet.on=true;
+/* Ссылка ?lesson=N всегда старше сохранённого состояния: если по ней прислали
+   задание, оно и определяет урок, а не то, что было открыто раньше в этом
+   браузере. Позиция при этом обязана лежать внутри урока — проверяем это
+   при каждой загрузке и при каждом сбросе прогресса, а не только один раз. */
+function normalizeLesson(){
+ if(urlLesson) state.lesson=urlLesson;
+ if(state.lesson){
+  const ps=LESSONS.find(l=>l.n===state.lesson).positions;
+  if(!ps.includes(state.pos)) state.pos=ps[0];
+ }
+}
+normalizeLesson();
+function load(){
+ const b=blank();
+ try{const r=JSON.parse(localStorage.getItem(KEY)||'null');
+  if(!r||r.v!==1) return b;
+  const s={...b,...r.s};
+  s.recs=s.recs&&typeof s.recs==='object'?s.recs:{};
+  for(const k of Object.keys(s.recs)) if(!TASKS.some(t=>t.id===k)) delete s.recs[k];
+  if(!(s.pos>=1&&s.pos<=21)) s.pos=1;
+  if(!['pos','variant'].includes(s.mode)) s.mode='pos';
+  return s;
+ }catch(e){return b;}
+}
+let canSave=true;
+function save(){ if(!canSave) return;
+ try{localStorage.setItem(KEY,JSON.stringify({v:1,s:state}));}
+ catch(e){canSave=false;$('warn').hidden=false;}
+}
+const rec=id=>state.recs[id]||(state.recs[id]={done:false,hints:0,sol:false,rev:0,errs:0,ans:''});
+const helped=r=>r.hints>0||r.sol||r.rev>0;
+
+function activePositions(){
+ if(!state.lesson) return Array.from({length:21},(_,i)=>i+1);
+ return LESSONS.find(l=>l.n===state.lesson).positions;
+}
+function posStatus(p){
+ const rs=byPos(p).map(t=>state.recs[t.id]).filter(Boolean);
+ if(rs.some(r=>r.done&&!helped(r))) return 'done';
+ if(rs.some(r=>r.done)) return 'part';
+ return '';
+}
+function counts(){
+ const ap=activePositions();
+ let solo=0,hint=0,sol=0,closed=0;
+ ap.forEach(p=>{ if(posStatus(p)) closed++; });
+ TASKS.filter(t=>ap.includes(t.pos)).forEach(t=>{const r=state.recs[t.id]; if(!r||!r.done) return;
+  if(r.sol||r.rev) sol++; else if(r.hints) hint++; else solo++;});
+ return {solo,hint,sol,closed,total:ap.length};
+}
+
+/* ── текущий список заданий ── */
+function pool(){
+ if(state.mode==='variant'&&state.built) return state.built.map(id=>TASKS.find(t=>t.id===id)).filter(Boolean);
+ return byPos(state.pos);
+}
+function current(){
+ const ps=pool(), k=state.mode==='variant'?'variant':'p'+state.pos;
+ let i=state.cur[k]|0; if(i<0||i>=ps.length) i=0;
+ return {list:ps,idx:i,task:ps[i],key:k};
+}
+function goto(i){const {list,key}=current(); state.cur[key]=Math.max(0,Math.min(list.length-1,i)); save(); render();}
+
+function buildVariant(){
+ state.built=[];
+ for(const p of activePositions()){const ps=byPos(p);
+  const fresh=ps.filter(t=>!state.recs[t.id]?.done);
+  const src=fresh.length?fresh:ps;
+  state.built.push(src[Math.floor(rnd()*src.length)].id);}
+ state.mode='variant'; state.cur.variant=0; save(); render();
+}
+
+/* ── отрисовка ── */
+function renderBlank(){
+ const ap=activePositions();
+ $('cells').innerHTML=ap.map(p=>{const st=posStatus(p);
+  const here=state.mode==='pos'&&state.pos===p;
+  return `<button class="cell ${st} ${here?'here':''}" data-pos="${p}" aria-label="Задание ${p}${st==='done'?', решено без помощи':st==='part'?', решено с помощью':''}"${here?' aria-current="true"':''}>${p}</button>`;}).join('');
+ const c=counts();
+ $('scoreBig').innerHTML=`${c.closed}<span> / ${c.total}</span>`;
+ $('scoreBar').style.width=(c.closed/c.total*100)+'%';
+ $('kSolo').textContent=c.solo; $('kHint').textContent=c.hint; $('kSol').textContent=c.sol;
+ const lb=$('lessonBadge');
+ if(lb) lb.textContent = state.lesson ? `Урок ${state.lesson}: ${LESSONS.find(l=>l.n===state.lesson).title}` : 'Все 21 задание';
+ const bb=$('btnBet'); if(bb) bb.textContent = state.bet.on ? 'Аукцион уверенности: вкл' : 'Аукцион уверенности: выкл';
+ const au=$('auction');
+ if(au){
+  if(!state.bet.on){ au.hidden=true; }
+  else{
+   au.hidden=false;
+   const rows=BET_STAKES.map(b=>{const c=state.bet.cal[String(b.v)];
+    const pct=c.t?Math.round(c.c/c.t*100):null;
+    return `<div class="krow"><span>${b.label} · ${b.v}</span><b>${c.t?`${c.c} из ${c.t}${pct!==null?` · ${pct}%`:''}`:'—'}</b></div>`;}).join('');
+   au.innerHTML=`<div class="eyebrow-s">Аукцион уверенности</div><div class="big">${state.bet.bank}<span> очков</span></div><p class="small muted">банк</p>${rows}<p class="side-hint">Смотрите не на банк, а на строки: где уверенность расходится с результатом — там и повторять.</p>`;
+  }
+ }
+}
+
+function answerBlock(t,r){
+ if(r.done) return '';
+ if(t.answerType==='match'){
+  return `<p class="fl">Каждой строке подберите номер из второго столбца</p>
+   <ul class="opts">${t.cols.map((c,i)=>`<li><b>${i+1})</b><span>${esc(c)}</span></li>`).join('')}</ul>
+   <div class="matchgrid">${t.rows.map((row,i)=>`<div class="mrow"><span>${'АБВГ'[i]}) ${esc(row)}</span>
+    <select data-m="${i}" aria-label="Номер для строки ${'АБВГ'[i]}"><option value="">—</option>${t.cols.map((_,j)=>`<option value="${j+1}">${j+1}</option>`).join('')}</select></div>`).join('')}</div>`;
+ }
+ if(t.answerType==='multi'){
+  return `<p class="fl">Отметьте все подходящие варианты</p>
+   <div class="checks">${t.items.map((it,i)=>`<label class="chk"><input type="checkbox" data-c="${i+1}"><span>${i+1}) ${esc(it)}</span></label>`).join('')}</div>`;
+ }
+ const fmt=t.answerType==='rule'?'Запишите одно натуральное число.'
+  :'Число без единиц измерения. Десятичная дробь — через запятую или точку; можно записать дробью, например 3/5.';
+ return `<label class="fl" for="ans">Ваш ответ</label>
+  <div class="ansrow"><input id="ans" type="text" inputmode="${t.answerType==='rule'?'numeric':'decimal'}" autocomplete="off" value="${esc(r.ans||'')}" aria-describedby="fmt">
+   ${t.unit?`<span class="unit">${esc(t.unit)}</span>`:''}</div>
+  <p class="fmt" id="fmt">${fmt}</p>`;
+}
+
+function render(){
+ renderBlank();
+ const {list,idx,task:t}=current();
+ if(!t){$('host').innerHTML='';return;}
+ const r=rec(t.id), P=POSITIONS[t.pos-1];
+ const fig=figureHTML(t), lab=labHTML(t);
+ const left=(fig||lab)?fig+lab:`<p class="nofig">В этом задании чертёж не нужен: всё, что требуется, есть в условии.</p>`;
+ const rc=t.recall||P.recall;
+ const recall=rc?`<details class="recall"${state.openRecall?' open':''}><summary>Что нужно вспомнить для этого типа заданий</summary><p>${esc(rc)}</p></details>`:'';
+
+ let right;
+ if(r.done){
+  const how=r.sol?'решено после разбора':r.hints?'решено с подсказкой':'решено без помощи';
+  right=`<div class="done-line"><span class="seal" aria-hidden="true">✓</span>
+    <div><p class="small muted">Верный ответ</p><h4>${esc(shownAnswer(t,r))}</h4></div>
+    <span class="howmark">${how}</span></div>
+   ${state.bet.on&&r.lastBet?`<p class="betline ${r.lastBet.delta>0?'up':'down'}">Ставка ${r.lastBet.stake} сыграла: ${r.lastBet.delta>0?'+':''}${r.lastBet.delta}. Банк: ${state.bet.bank}.</p>`:''}
+   ${t.answerType==='rule'?`<p class="small muted" style="margin-top:8px">У этого задания много правильных ответов — засчитывается любое подходящее число. Ваш ответ: <b>${esc(r.ans)}</b>.</p>`
+     :`<p class="small muted" style="margin-top:8px">Вы записали: <b>${esc(r.ans)}</b>${t.unit?`. В бланк ЕГЭ единицы измерения (${esc(t.unit)}) писать не нужно`:''}.</p>`}
+   ${solutionHTML(t)}
+   <div class="acts" style="margin-top:16px">
+    <button class="primary" data-a="next">Следующее задание</button>
+    <button data-a="retry">Пройти заново</button></div>`;
+ }else{
+  right=`<h4>Решите задание</h4>
+   ${answerBlock(t,r)}
+   ${state.bet.on?`<div class="bets" role="group" aria-label="Насколько вы уверены в ответе">
+    <span class="bets-label">Насколько уверены?</span>
+    ${BET_STAKES.map(b=>`<button class="bet${state.betPick===b.v?' active':''}" data-bet="${b.v}" aria-pressed="${state.betPick===b.v}">${b.label}<small>ставка ${b.v}</small></button>`).join('')}
+   </div>`:''}
+   <div class="acts">
+    <button class="primary" data-a="check">Проверить</button>
+    <button data-a="hint"${r.hints>=t.hints.length?' disabled':''}>${r.hints?`Ещё подсказка (${r.hints} из ${t.hints.length})`:'Подсказка'}</button>
+    ${t.steps&&!r.rev?'<button data-a="step">Разобрать по шагам</button>':''}</div>
+   ${r.msg?`<div class="msg ${r.msgType}" role="status">${esc(r.msg)}</div>`:''}
+   ${r.hints?`<div class="tipbox"><span class="n">ПОДСКАЗКА</span>${t.hints.slice(0,r.hints).map(h=>`<p>${esc(h)}</p>`).join('')}</div>`:''}
+   ${r.rev?ladderHTML(t,r):''}
+   <p class="small muted" style="margin-top:14px">Подсказки и разбор не отнимают баллов и не портят результат. Они отмечаются в отчёте, чтобы было видно, какие темы стоит повторить.</p>`;
+ }
+
+ const intro=state.intro===false?'':`<div class="intro">
+   <div><b>Как здесь заниматься</b>
+   <p>Слева — 21 клетка: столько заданий в базовом ЕГЭ, и номера здесь те же, что в бланке. Решайте в любом порядке.</p>
+   <p>Не получается — сначала откройте «Что нужно вспомнить», потом подсказку, и только затем разбор по шагам. Разбор открывается по одному шагу: готового решения целиком тут нет.</p>
+   <p>Подсказки ничего не портят. Они нужны, чтобы вы и учитель видели, какие темы стоит повторить.</p></div>
+   <button class="ghost" id="introClose" aria-label="Скрыть объяснение">✕</button></div>`;
+ $('host').innerHTML=`${intro}<article class="card">
+  <div class="head">
+   <div class="head-row">
+    <span class="pos"><b>${t.pos}</b>${esc(P.name)}</span>
+    <span class="tag">${state.mode==='variant'?`вариант · ${idx+1} из 21`:`пример ${idx+1} из ${list.length}`}</span>
+   </div>
+   <h3>${esc(P.hint)}</h3>
+   <p class="qtext">${esc(t.text)}</p>
+  </div>
+  <div class="body">
+   <section class="left" aria-label="Чертёж и данные">${left}${recall}</section>
+   <section class="right" aria-label="Ответ">${right}</section>
+  </div>
+  <div class="foot">
+   <div class="dots" aria-label="Примеры этой позиции">
+    ${state.mode==='variant'?'<span class="small muted">Собран вариант: по одному заданию каждой позиции</span>'
+      :list.map((x,i)=>`<button class="dot ${i===idx?'here':''} ${state.recs[x.id]?.done?'done':''}" data-go="${i}" aria-label="Пример ${i+1}${state.recs[x.id]?.done?', решён':''}">${i+1}</button>`).join('')}
+   </div>
+   <div style="display:flex;gap:8px">
+    <button data-a="prev"${idx?'':' disabled'}>← Назад</button>
+    <button data-a="next">Дальше →</button>
+   </div>
+  </div>
+ </article>`;
+ const ai=$('ans'); if(ai&&r.msgType==='no') ai.setAttribute('aria-invalid','true');
+}
+
+function shownAnswer(t,r){
+ if(t.answerType==='number') return fmtNum(t.answer)+(t.unit?' '+t.unit:'');
+ if(t.answerType==='rule') return r.ans;
+ return String(t.answer);
+}
+function solutionHTML(t){
+ if(!t.steps) return '';
+ return `<div class="solution"><h4>Как рассуждать</h4><ol>${t.steps.map(s=>`<li><b>${esc(s.q)}</b><span>${esc(s.a)}</span></li>`).join('')}</ol></div>`;
+}
+/* Разбор открывается по одному шагу: сначала вопрос шага, потом ответ на него.
+   Готовое решение целиком не показывается — до ответа нужно дойти. */
+function ladderHTML(t,r){
+ const M=t.steps.length, rev=r.rev|0;
+ let li='';
+ for(let i=0;i<M;i++){
+  if(2*i>=rev) break;
+  const shown=2*i+1<rev;
+  li+=`<li><b>${esc(t.steps[i].q)}</b>${shown?`<span>${esc(t.steps[i].a)}</span>`:`<span class="pending">подумайте сами, затем откройте ответ шага</span>`}</li>`;
+ }
+ const more=rev<2*M;
+ const label=rev%2===0?`Показать шаг ${rev/2+1} из ${M}`:'Показать ответ на этот шаг';
+ return `<div class="solution"><h4>Разбор по шагам${rev?` · открыто ${Math.ceil(rev/2)} из ${M}`:''}</h4>
+  <ol>${li}</ol>
+  ${more?`<button data-a="step" class="wide">${label}</button>`:`<p class="small muted" style="margin-top:6px">Разбор пройден полностью. Вернитесь к полю ответа и запишите результат сами.</p>`}</div>`;
+}
+
+/* ── проверка ответа ── */
+function readAnswer(t){
+ if(t.answerType==='match'){
+  const v=[...document.querySelectorAll('[data-m]')].map(s=>s.value);
+  if(v.some(x=>!x)) return {ok:false,msg:'Заполните все четыре строки.'};
+  return {ok:true,raw:v.join(''),val:v.join('')};
+ }
+ if(t.answerType==='multi'){
+  const v=[...document.querySelectorAll('[data-c]')].filter(c=>c.checked).map(c=>c.dataset.c).sort();
+  if(!v.length) return {ok:false,msg:'Отметьте хотя бы один вариант.'};
+  return {ok:true,raw:v.join(''),val:v.join('')};
+ }
+ const raw=$('ans').value;
+ if(t.answerType==='rule'){
+  const s=raw.trim().replace(/[\s\u00a0]/g,'');
+  if(!/^\d+$/.test(s)) return {ok:false,msg:'Запишите натуральное число без пробелов и знаков.'};
+  return {ok:true,raw:s,val:s};
+ }
+ const p=parseNum(raw);
+ if(!p.ok) return {ok:false,msg:p.msg};
+ return {ok:true,raw,val:p.v};
+}
+
+function applyBet(r,right){
+ if(!state.bet.on) return '';
+ const stake=state.betPick, delta=right?stake:-stake;
+ state.bet.bank+=delta;
+ const c=state.bet.cal[String(stake)]; c.t++; if(right) c.c++;
+ r.lastBet={stake,delta};
+ state.betPick=null;
+ return ` Ставка ${stake}: ${delta>0?'+':''}${delta}, банк ${state.bet.bank}.`;
+}
+function check(){
+ const {task:t}=current(), r=rec(t.id);
+ const a=readAnswer(t);
+ if(!a.ok){ r.msg=a.msg; r.msgType='neutral'; save(); render(); focusAns(); return; }
+ if(state.bet.on&&!state.betPick){
+  r.msg='Сначала выберите, насколько вы уверены в ответе, — это и есть ставка.'; r.msgType='neutral';
+  save(); render(); return;
+ }
+ r.ans=a.raw;
+ let right=false;
+ if(t.answerType==='number') right=Math.abs(a.val-t.answer)<1e-9;
+ else if(t.answerType==='rule') right=RULES[t.rule].test(a.val);
+ else right=String(a.val)===String(t.answer);
+
+ if(right){ applyBet(r,true); r.done=true; r.msg=null; save(); render(); $('main').focus(); return; }
+
+ const betNote=applyBet(r,false);
+ r.errs++;
+ let msg;
+ if(t.answerType==='rule') msg=RULES[t.rule].why(a.val);
+ else{
+  const key=t.answerType==='number'?canon(a.val):String(a.val);
+  msg=(t.traps||{})[key];
+ }
+ if(!msg) msg=partialHint(t,a.val);
+ r.msg=msg+betNote; r.msgType='no'; save(); render(); focusAns();
+}
+/* Сколько уже стоит верно — не называя, что именно. Ученик видит, что близко,
+   но подставить ответ по подсказке не может. */
+function partialHint(t,val){
+ if(t.answerType==='match'){
+  const g=String(val), w=String(t.answer);
+  let k=0; for(let i=0;i<4;i++) if(g[i]===w[i]) k++;
+  if(k===0) return 'Пока ни одна строка не на месте. Начните с той величины, в которой уверены больше всего, и отталкивайтесь от неё.';
+  return `${k} из 4 строк ${k===1?'стоит':'стоят'} верно. Перепроверьте те, в которых сомневались, — какие именно, придётся определить самим.`;
+ }
+ if(t.answerType==='multi'){
+  const g=new Set(String(val).split('')), w=new Set(String(t.answer).split(''));
+  let extra=0,miss=0;
+  g.forEach(x=>{if(!w.has(x))extra++;}); w.forEach(x=>{if(!g.has(x))miss++;});
+  if(extra&&miss) return `Один или несколько вариантов лишние, и столько же нужных пропущено (лишних ${extra}, не хватает ${miss}). Проверьте каждый вариант отдельно.`;
+  if(extra) return `Вы отметили лишнее: ${extra===1?'один вариант не подходит':'лишних вариантов '+extra}. Проверьте каждый по всем условиям сразу.`;
+  return `Не хватает ${miss===1?'одного варианта':'вариантов: '+miss}. Проверьте те, которые вы отбросили.`;
+ }
+ return 'Пока не совпало. Проверьте вычисления и ещё раз перечитайте вопрос: иногда спрашивают не ту величину, которую вы нашли.';
+}
+function focusAns(){const a=$('ans');if(a){a.focus();a.select&&a.select();}}
+
+/* ── события ── */
+document.addEventListener('click',e=>{
+ const arc=e.target.closest('[data-lab="arc"]');
+ if(arc){ const t=current().task, st=labState(t), i=+arc.dataset.i;
+  const j=st.sel.indexOf(i); j<0?st.sel.push(i):st.sel.splice(j,1); rerenderLab(t); return; }
+ const b=e.target.closest('button'); if(!b) return;
+ if(b.dataset.lab){
+  const t=current().task; if(!t.lab) return; const st=labState(t), k=b.dataset.lab;
+  if(k==='tile'){ const i=+b.dataset.i; st.marks[i]=(st.marks[i]+1)%3; }
+  else if(k==='strike'){ const i=+b.dataset.i; const j=st.struck.indexOf(i); j<0?st.struck.push(i):st.struck.splice(j,1); }
+  else if(k==='pad'){ st.digits[st.active]=+b.dataset.d;
+   const next=st.digits.findIndex((x,i)=>x===null&&i>st.active); if(next>-1) st.active=next; }
+  else if(k==='slot'){ st.active=+b.dataset.i; }
+  else if(k==='clear'){ st.digits[st.active]=null; }
+  else if(k==='setx'){ const i=+b.dataset.i; st.cells[i]=''; st.x=i; }
+  rerenderLab(t); return;
+ }
+
+ if(b.dataset.close){ $(b.dataset.close).close(); return; }
+ if(b.dataset.bet){ state.betPick=+b.dataset.bet; const cur=rec(current().task.id); if(cur.msgType==='neutral') cur.msg=null; save(); render(); focusAns(); return; }
+ if(b.dataset.pos){ const p=+b.dataset.pos;
+  if(state.lesson && !LESSONS.find(l=>l.n===state.lesson).positions.includes(p)) return;
+  state.mode='pos'; state.pos=p; save(); render(); $('main').focus(); return; }
+ if(b.dataset.go!==undefined){ goto(+b.dataset.go); return; }
+ const a=b.dataset.a; if(!a) return;
+ const {idx,list,task:t}=current(), r=rec(t.id);
+ if(a==='check') return check();
+ if(a==='hint'){ if(r.hints<t.hints.length) r.hints++; r.msg=null; save(); render(); return; }
+ if(a==='step'){ r.rev=(r.rev|0)+1; r.sol=true; r.msg=null; save(); render();
+   const b2=document.querySelector('[data-a="step"]'); if(b2) b2.focus(); return; }
+ if(a==='retry'){ state.recs[t.id]={done:false,hints:0,sol:false,rev:0,errs:0,ans:''}; save(); render(); focusAns(); return; }
+ if(a==='prev') return goto(idx-1);
+ if(a==='next'){
+  if(idx+1<list.length) return goto(idx+1);
+  if(state.mode==='pos'){
+   const ap=activePositions(), at=ap.indexOf(state.pos);
+   if(at>-1 && at+1<ap.length){ state.pos=ap[at+1]; save(); render(); $('main').focus(); return; }
+  }
+  goto(0);
+ }
+});
+/* Перерисовка только блока лаборатории — не всей карточки, чтобы не сбивать
+   фокус с поля ответа и не терять ввод. */
+/* Обновление модели без удаления узлов. Chromium отменяет касание (pointercancel),
+   если элемент, на котором оно началось, исчез из документа, — поэтому во время
+   жеста SVG не пересобирается, а «морфится»: атрибуты переписываются на месте,
+   узел заменяется только при смене типа элемента. Тексты и панель показаний
+   обновляются содержимым. */
+function morph(oldEl,newEl){
+ for(const {name} of [...oldEl.attributes]) if(!newEl.hasAttribute(name)) oldEl.removeAttribute(name);
+ for(const {name,value} of [...newEl.attributes]) if(oldEl.getAttribute(name)!==value) oldEl.setAttribute(name,value);
+ const oc=[...oldEl.childNodes], nc=[...newEl.childNodes];
+ const n=Math.max(oc.length,nc.length);
+ for(let i=0;i<n;i++){
+  const o=oc[i], w=nc[i];
+  if(!w){ o.remove(); continue; }
+  if(!o){ oldEl.appendChild(w); continue; }
+  if(o.nodeType===3&&w.nodeType===3){ if(o.nodeValue!==w.nodeValue) o.nodeValue=w.nodeValue; continue; }
+  if(o.nodeType!==1||w.nodeType!==1||o.tagName!==w.tagName){ oldEl.replaceChild(w,o); continue; }
+  morph(o,w);
+ }
+}
+function rerenderLab(t){
+ const el=document.querySelector('.lab'); if(!el) return;
+ const tpl=document.createElement('template'); tpl.innerHTML=labHTML(t);
+ const fresh=tpl.content.firstElementChild;
+ morph(el,fresh); // весь блок целиком: ручки в SVG, плитки, клетки креста — одним правилом
+}
+let drag=null;
+function svgPoint(svg,e){
+ const r=svg.getBoundingClientRect(), vb=svg.viewBox.baseVal;
+ const k=vb.width/(r.width||vb.width); // scrK: единиц viewBox на экранный пиксель
+ return {x:(e.clientX-r.left)*k, y:(e.clientY-r.top)*k};
+}
+const DRAG_KINDS=['cut-v','cut-h','walkerA','meet','water','tbar'];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+/* Что делает каждая ручка при движении указателя. p — точка в координатах viewBox. */
+const DRAG={
+ 'cut-v':(st,l,p)=>{ st.vx=clamp(Math.round((p.x-70)/(400/l.w)),1,l.w-1); },
+ 'cut-h':(st,l,p)=>{ st.hy=clamp(Math.round((p.y-26)/(224/l.h)),1,l.h-1); },
+ walkerA:(st,l,p)=>{ const g=GEO.road; st.posA=clamp(Math.round((p.x-g.x0)/((g.x1-g.x0)/l.L)*20)/20,0,l.L); },
+ meet:(st,l,p)=>{ const g=GEO.road; st.m=clamp(Math.round((p.x-g.x0)/((g.x1-g.x0)/l.L)/5)*5,5,l.L-5); },
+ water:(st,l,p)=>{ const g=GEO.beaker, kg=(g.bottom-g.top)/(l.solute+l.waterMax); st.water=clamp(Math.round((g.bottom-l.solute*kg-p.y)/kg),1,l.waterMax); },
+ tbar:(st,l,p)=>{ const g=GEO.tbar; st.t2=clamp(Math.round((p.x-g.x0)/g.unit*4)/4,0.5,3); }
+};
+document.addEventListener('pointerdown',e=>{
+ const g=e.target.closest('[data-lab]'); if(!g||!DRAG_KINDS.includes(g.dataset.lab)) return;
+ const t=current().task; if(!t.lab) return;
+ /* Захват — на колонку, а не на ручку: ручка пересоздаётся при каждой перерисовке
+    модели, и касание, захваченное ею, после первого же шага уходит на удалённый узел.
+    Колонка живёт всю сессию, поэтому события доходят до конца жеста. */
+ const holder=g.closest('.left')||document.documentElement;
+ try{ holder.setPointerCapture(e.pointerId); }catch(err){}
+ drag={kind:g.dataset.lab,t,svg:g.closest('svg'),holder,pid:e.pointerId};
+ e.preventDefault();
+});
+document.addEventListener('pointermove',e=>{
+ if(!drag) return;
+ const st=labState(drag.t), p=svgPoint(drag.svg,e);
+ DRAG[drag.kind](st,drag.t.lab,p);
+ rerenderLab(drag.t);
+ drag.svg=document.querySelector('.lab svg')||drag.svg;
+});
+function endDrag(){ if(drag){ try{ drag.holder.releasePointerCapture(drag.pid); }catch(err){} } drag=null; }
+document.addEventListener('pointerup',endDrag);
+document.addEventListener('pointercancel',endDrag);
+document.addEventListener('keydown',e=>{
+ if(e.key==='Enter'&&e.target.id==='ans'){ e.preventDefault(); check(); }
+});
+document.addEventListener('toggle',e=>{
+ if(e.target.classList&&e.target.classList.contains('recall')){ state.openRecall=e.target.open; save(); }
+},true);
+document.addEventListener('click',e=>{
+ if(e.target.closest('#introClose')){ state.intro=false; save(); render(); }
+});
+document.addEventListener('input',e=>{
+ if(e.target.id==='ans'){ rec(current().task.id).ans=e.target.value; save(); return; }
+ if(e.target.dataset.lab==='cell'){
+  const t=current().task, st=labState(t); st.cells[+e.target.dataset.i]=e.target.value;
+  const eq=document.querySelector('[data-lab="eq"]'); if(eq) eq.innerHTML=crossEqHTML(t,st);
+ }
+});
+
+$('btnVariant').onclick=()=>{ buildVariant(); $('main').focus(); };
+$('btnLessons').onclick=()=>{ openLessonLinks(); $('dlgLessons').showModal(); };
+$('btnBet').onclick=()=>{ state.bet.on=!state.bet.on; state.betPick=null; save(); render(); };
+document.addEventListener('change',e=>{ if(e.target.id==='linkBet') openLessonLinks(); });
+document.addEventListener('click',e=>{
+ const c=e.target.closest('[data-copylink]'); if(!c) return;
+ navigator.clipboard.writeText(c.dataset.copylink).then(()=>{
+  const old=c.textContent; c.textContent='Скопировано'; setTimeout(()=>c.textContent=old,1500);
+ }).catch(()=>{});
+});
+function openLessonLinks(){
+ const base=location.origin+location.pathname;
+ const withBet=!!document.getElementById('linkBet')?.checked;
+ const q=(n)=>{const ps=[]; if(n) ps.push('lesson='+n); if(withBet) ps.push('bet=1'); return ps.length?'?'+ps.join('&'):'';};
+ const rows=[{n:null,title:'Весь курс',blurb:'Все 21 задание подряд — для самостоятельной отработки или итогового контроля.'},
+  ...LESSONS.map(l=>({n:l.n,title:`Урок ${l.n}: ${l.title}`,blurb:`${l.blurb} Позиции: ${l.positions.join(', ')}.`}))];
+ $('lessonLinks').innerHTML=rows.map(r=>{
+  const url=base+q(r.n);
+  return `<div class="lchoice"><div><b>${esc(r.title)}</b><p>${esc(r.blurb)}</p></div>
+   <div class="row"><button data-copylink="${esc(url)}">Скопировать ссылку</button></div></div>`;
+ }).join('');
+}
+$('btnReset').onclick=()=>{ if(confirm('Удалить весь прогресс и начать заново?')){ state=blank(); normalizeLesson(); save(); render(); } };
+$('btnRef').onclick=()=>{ $('refBody').innerHTML=REFERENCE; $('dlgRef').showModal(); };
+$('btnReport').onclick=()=>{ $('repBody').textContent=report(); $('dlgRep').showModal(); };
+$('btnCopy').onclick=async()=>{ try{ await navigator.clipboard.writeText(report()); $('btnCopy').textContent='Скопировано'; setTimeout(()=>$('btnCopy').textContent='Скопировать',1600);}catch(e){} };
+$('btnDl').onclick=()=>{ const b=new Blob([report()],{type:'text/plain;charset=utf-8'}), u=URL.createObjectURL(b);
+ const a=document.createElement('a'); a.href=u; a.download='ege-baza-otchet.txt'; a.click(); URL.revokeObjectURL(u); };
+
+function report(){
+ const c=counts(), ap=activePositions(), L=[];
+ L.push('БАЗОВЫЙ ЕГЭ ПО МАТЕМАТИКЕ · ТРЕНАЖЁР ПО 21 ЗАДАНИЮ');
+ L.push('Дата: '+new Date().toLocaleString('ru-RU'));
+ L.push(state.lesson ? `Задание: Урок ${state.lesson} — ${LESSONS.find(l=>l.n===state.lesson).title} (позиции ${ap.join(', ')})`
+                      : 'Задание: весь курс, все 21 позиция');
+ L.push(`Закрыто позиций: ${c.closed} из ${c.total}`);
+ if(state.bet.on){
+  L.push(`Аукцион уверенности: банк ${state.bet.bank} очков`);
+  BET_STAKES.forEach(b=>{const k=state.bet.cal[String(b.v)];
+   L.push(`  ставка «${b.label}» (${b.v}): ${k.t?`верно ${k.c} из ${k.t}`:'не использовалась'}`);});
+ }
+ L.push(`Решено заданий: без помощи ${c.solo}, с подсказкой ${c.hint}, после разбора ${c.sol}`);
+ L.push('');
+ L.push('Пометка «с подсказкой» или «после разбора» ставится только тогда, когда ученик сам открыл');
+ L.push('подсказку или разбор. Переходы между этапами и исправленные самостоятельно ошибки помощью не считаются.');
+ L.push('');
+ for(const p of ap){
+  const P=POSITIONS[p-1], ts=byPos(p);
+  const st=posStatus(p);
+  L.push(`${String(p).padStart(2)}. ${P.name}  —  ${st==='done'?'освоено самостоятельно':st==='part'?'решено с опорой':'не решено'}`);
+  ts.forEach(t=>{const r=state.recs[t.id];
+   if(!r||(!r.done&&!r.errs&&!r.hints&&!r.sol)){L.push(`      ${t.id}: не начато`);return;}
+   const st=(t.steps||[]).length;
+   const how=r.done?(r.rev?`решено после разбора (открыто шагов ${Math.ceil(r.rev/2)} из ${st})`
+     :r.hints?`решено с подсказкой (${r.hints} из ${t.hints.length})`:'решено без помощи'):'не завершено';
+   L.push(`      ${t.id}: ${how}; неверных попыток ${r.errs}`);});
+ }
+ L.push('');
+ L.push('Данные хранятся только в браузере и никуда не отправляются.');
+ return L.join('\n');
+}
+
+const REFERENCE=`
+<div class="small" style="line-height:1.85">
+<p><b>Формулы сокращённого умножения.</b> (a + b)² = a² + 2ab + b²; (a − b)² = a² − 2ab + b²; a² − b² = (a + b)(a − b).</p>
+<p><b>Корни.</b> √(ab) = √a · √b при a ≥ 0, b ≥ 0; √(a/b) = √a / √b при a ≥ 0, b &gt; 0.</p>
+<p><b>Степень и логарифм.</b> aⁿ · aᵐ = aⁿ⁺ᵐ; (aⁿ)ᵐ = aⁿᵐ; log(xy) = log x + log y; log(x/y) = log x − log y; log bᵏ = k · log b.</p>
+<p><b>Площади.</b> Треугольник S = ½ah = ½ab·sin γ. Параллелограмм S = ah. Трапеция S = (a + b)/2 · h. Ромб S = ½d₁d₂. Круг S = πr², длина окружности C = 2πr.</p>
+<p><b>Объёмы и поверхности.</b> Параллелепипед V = abc. Призма V = S₍осн₎h. Пирамида V = ⅓S₍осн₎h. Цилиндр V = πr²h, S₍бок₎ = 2πrh. Конус V = ⅓πr²h, S₍бок₎ = πrl. Шар V = 4/3·πr³, S = 4πr².</p>
+<p><b>Тригонометрия в прямоугольном треугольнике.</b> sin α = противолежащий катет / гипотенуза; cos α = прилежащий катет / гипотенуза; tg α = противолежащий / прилежащий. sin²α + cos²α = 1.</p>
+<p><b>Значения.</b> sin 30° = ½, sin 45° = √2/2, sin 60° = √3/2; cos 30° = √3/2, cos 45° = √2/2, cos 60° = ½.</p>
+<p><b>Теорема Пифагора.</b> a² + b² = c², где c — гипотенуза.</p>
+<p><b>Подобие.</b> У подобных фигур длины относятся как k, площади как k², объёмы как k³.</p>
+<p><b>Проценты.</b> 1 % — сотая часть. Чтобы найти p % от числа, разделите его на 100 и умножьте на p.</p>
+<p><b>Вероятность.</b> Отношение числа благоприятных исходов к числу всех равновозможных исходов.</p>
+<p class="muted" style="margin-top:10px">На экзамене справочные материалы выдаются вместе с бланком. Здесь приведён их краткий пересказ.</p>
+</div>`;
+
+render();
+if(!canSave) $('warn').hidden=false;
+
+/* Отладочный доступ для смоук-тестов (Node/jsdom, консоль браузера). */
+window.TrainerDebug={
+ version:'1.0.0', tasks:TASKS, positions:POSITIONS, rules:RULES, parseNum,
+ getState:()=>JSON.parse(JSON.stringify(state)),
+ go(id){const t=TASKS.find(x=>x.id===id); if(!t) throw new Error('нет задания '+id);
+  state.mode='pos'; state.pos=t.pos; state.cur['p'+t.pos]=byPos(t.pos).indexOf(t); render(); return t;},
+ check, render, reset(){state=blank(); normalizeLesson(); save(); render();},
+ lab(id){const t=TASKS.find(x=>x.id===id); return labState(t);}, rerenderLab, cutRectPerims, roadPositions, DRAG, crossSolve,
+ audit(){return TASKS.map(t=>({id:t.id,pos:t.pos,type:t.answerType,answer:t.answer??t.answerExample,
+  traps:Object.keys(t.traps||{}).length,hints:t.hints.length,steps:(t.steps||[]).length,fig:t.fig?t.fig.kind:null}));}
+};
+
+/* ═══════ Встроенная самопроверка: ?selftest=1 ═══════
+   Конвенция репозитория: харнесс внутри тренажёра, маркер в консоли.
+   Ничего не сохраняет — состояние снимается до прогона и возвращается после. */
+function svgCoords(svg){
+ const pts=[];
+ svg.querySelectorAll('*').forEach(el=>{
+  const g=n=>el.hasAttribute(n)?parseFloat(el.getAttribute(n)):null;
+  const x=g('x')??g('cx')??g('x1'), y=g('y')??g('cy')??g('y1');
+  if(x!==null&&y!==null) pts.push([x,y]);
+  if(g('x2')!==null) pts.push([g('x2'),g('y2')]);
+  if(el.hasAttribute('points')) el.getAttribute('points').trim().split(/\s+/).forEach(p=>{const [a,b]=p.split(',').map(Number); pts.push([a,b]);});
+  if(el.hasAttribute('d')){ let cx=0,cy=0;
+   for(const m of el.getAttribute('d').matchAll(/([MLHVAZmlhvaz])\s*([^MLHVAZmlhvaz]*)/g)){
+    const c=m[1], n=m[2].trim().split(/[\s,]+/).map(Number).filter(v=>!isNaN(v)), rel=c===c.toLowerCase()&&!/z/i.test(c);
+    if(/[ML]/i.test(c)) for(let i=0;i+1<n.length;i+=2){cx=rel?cx+n[i]:n[i];cy=rel?cy+n[i+1]:n[i+1];pts.push([cx,cy]);}
+    else if(/H/i.test(c)) for(const v of n){cx=rel?cx+v:v;pts.push([cx,cy]);}
+    else if(/V/i.test(c)) for(const v of n){cy=rel?cy+v:v;pts.push([cx,cy]);}
+    else if(/A/i.test(c)&&n.length>=7){const ex=n[n.length-2],ey=n[n.length-1];cx=rel?cx+ex:ex;cy=rel?cy+ey:ey;pts.push([cx,cy]);}
+   }}
+ });
+ return pts.filter(p=>Number.isFinite(p[0])&&Number.isFinite(p[1]));
+}
+function selftest(){
+ const snap=JSON.stringify(state), saveWas=canSave; canSave=false;
+ const fails=[], F=m=>fails.push(m);
+ const cover=LESSONS.flatMap(l=>l.positions);
+ if(cover.length!==21||new Set(cover).size!==21) F('уроки покрывают позиции не ровно один раз');
+ for(let p=1;p<=21;p++) if(!byPos(p).length) F('нет заданий для позиции '+p);
+ for(const t of TASKS){
+  const keys=Object.keys(t.traps||{});
+  const norm=keys.map(k=>t.answerType==='number'?canon(Number(k)):String(k));
+  if(new Set(norm).size!==norm.length) F(t.id+': две ловушки на одно значение');
+  for(const k of keys){
+   if(t.answerType==='number'?Math.abs(Number(k)-t.answer)<1e-9:String(k)===String(t.answer)) F(t.id+': ловушка совпадает с ответом ('+k+')');
+  }
+  if(t.answerType==='match'&&!(/^[1-4]{4}$/.test(t.answer)&&new Set(t.answer).size===4)) F(t.id+': ответ не перестановка 1234');
+  if(t.answerType==='multi'){const d=String(t.answer).split(''); if(d.join('')!==d.slice().sort().join('')||d.some(x=>+x<1||+x>t.items.length)) F(t.id+': ответ multi вне диапазона или не по порядку');}
+  if(t.answerType==='rule'&&!(RULES[t.rule]&&RULES[t.rule].test(String(t.answerExample)))) F(t.id+': пример ответа не проходит собственное правило');
+  if(t.lab&&!LAB[t.lab.kind]) F(t.id+': нет модели для '+t.lab.kind);
+  if(!t.hints||!t.hints.length) F(t.id+': нет подсказок');
+  state.mode='pos'; state.pos=t.pos; state.cur['p'+t.pos]=byPos(t.pos).indexOf(t); render();
+  document.querySelectorAll('#host svg').forEach(svg=>{
+   const label=svg.getAttribute('aria-label')||svg.className.baseVal||'svg';
+   if(/NaN|undefined|Infinity/.test(svg.outerHTML)) F(t.id+': NaN в «'+label+'»');
+   const vb=(svg.getAttribute('viewBox')||'').split(/\s+/).map(Number); if(vb.length!==4) return;
+   const [vx,vy,vw,vh]=vb;
+   for(const [x,y] of svgCoords(svg)) if(x<vx-1||y<vy-1||x>vx+vw+1||y>vy+vh+1){F(t.id+': точка за краем «'+label+'» ('+Math.round(x)+', '+Math.round(y)+')'); break;}
+  });
+ }
+ for(let vx=1;vx<20&&!fails.some(f=>f.startsWith('инвариант'));vx++) for(let hy=1;hy<12;hy++){const P=cutRectPerims(20,12,vx,hy); if(P[0]+P[2]!==P[1]+P[3]){F('инвариант разрезов нарушен'); break;}}
+ state=JSON.parse(snap); canSave=saveWas; render();
+ const ok=!fails.length, traps=TASKS.reduce((a,t)=>a+Object.keys(t.traps||{}).length,0), labs=TASKS.filter(t=>t.lab).length;
+ console.log(ok?'EGE_BAZA_2027_SELFTEST_OK':'EGE_BAZA_2027_SELFTEST_FAIL', {tasks:TASKS.length,traps,labs,fails});
+ const p=document.createElement('div'); p.className='selftest '+(ok?'ok':'no'); p.setAttribute('role','status');
+ p.innerHTML=`<b>Самопроверка ${ok?'пройдена':'нашла ошибки'}.</b> Заданий ${TASKS.length}, ловушек ${traps}, моделей ${labs}. Прогресс ученика не тронут.${fails.length?'<ul>'+fails.map(f=>'<li>'+esc(f)+'</li>').join('')+'</ul>':''}`;
+ document.body.prepend(p);
+ return ok;
+}
+if(new URLSearchParams(location.search).get('selftest')==='1') setTimeout(selftest,50);
+window.TrainerDebug.selftest=selftest;
+
+</script>
+</body>
+</html>
