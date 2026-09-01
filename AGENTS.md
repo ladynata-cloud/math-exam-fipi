@@ -158,3 +158,17 @@ At the start of the next approved task, Codex reconciles
 a separate status-only PR only by explicit owner decision or when a real
 operational need justifies it. Never create a recursive PR solely to record the
 merge of the preceding status-only PR.
+
+## Временное исключение — 2026-09-01
+
+Пока Codex недоступен на текущем устройстве владельца (старый ноутбук
+в ремонте), Claude Code временно допускается к работе с диском
+и git-worktree со следующими ограничениями:
+
+- Только самодостаточные HTML-тренажёры без общего состояния
+  и без сервера синхронизации (не board-server, не nginx, не развернуть).
+- Каждая задача — отдельная ветка и Pull Request, как в обычном
+  процессе Codex. Никаких прямых коммитов в main.
+- Слияние — только по явной авторизации владельца, как и раньше.
+- По возвращении Codex это исключение снимается без дополнительного
+  решения; данный раздел удаляется первым же PR, который его коснётся.
