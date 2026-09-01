@@ -1188,4 +1188,12 @@
     <priority>0.6</priority>
   </url>
   <!-- dvi-math-18-20:end -->
+  <!-- attestaciya-1-kurs:start -->
+  <url>
+    <loc>https://mathexam.space/trainers/attestaciya-1-kurs.html</loc>
+    <lastmod>2026-09-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- attestaciya-1-kurs:end -->
 </urlset>

@@ -20,10 +20,12 @@ archived pointer, not an active source of instructions.
 
 - ChatGPT is the product and management control plane. It defines goals,
   priorities, scope, and owner decisions.
-- Codex is the only agent allowed to operate on the local disk and Git
-  worktrees.
-- Claude and other external models are optional remote reviewers. They do not
-  have local disk or worktree access and must not be treated as if they do.
+- The executing agent is whichever agent the owner assigns to the current task.
+  It operates on the local disk and Git worktrees under the task and permission
+  boundaries below. There is no agent-specific restriction on disk or worktree
+  access.
+- Any model may additionally act as a remote reviewer. A review role does not by
+  itself grant or withhold local access.
 
 ## Source-of-truth order
 
@@ -51,7 +53,8 @@ production evidence, not by assuming acceptance for ADR 0001.
 One independent task means one task specification, one branch, and one pull
 request. Start from [the task template](docs/tasks/TASK_TEMPLATE.md).
 
-After the owner gives an explicit `START` for the current task, Codex may:
+After the owner gives an explicit `START` for the current task, the executing
+agent may:
 
 1. verify the repository, base branch, base commit, and clean worktree;
 2. create the task branch;
@@ -74,10 +77,11 @@ A cached local tracking ref is not sufficient when it may be stale, and
 `mergeable=true` does not replace this comparison.
 
 If the SHAs differ, stop before merge. The prior merge authorization is invalid,
-and Codex must not update, merge, rebase, reset, or otherwise repair the branch
-automatically. Build a read-only virtual merge on the new `main`, rerun the
-applicable gates, classify the provenance of concurrent commits, and report the
-new base, head, and diff. A new explicit owner merge authorization is required.
+and the executing agent must not update, merge, rebase, reset, or otherwise
+repair the branch automatically. Build a read-only virtual merge on the new
+`main`, rerun the applicable gates, classify the provenance of concurrent
+commits, and report the new base, head, and diff. A new explicit owner merge
+authorization is required.
 
 When the base is unchanged, release verification may compare the full reviewed
 head tree with the expected squash-merge tree. After base drift and a new owner
@@ -153,22 +157,8 @@ Rerun gates:
 New owner authorization required:
 ```
 
-At the start of the next approved task, Codex reconciles
+At the start of the next approved task, the executing agent reconciles
 [PROJECT_STATUS.md](docs/PROJECT_STATUS.md) against production evidence. Create
 a separate status-only PR only by explicit owner decision or when a real
 operational need justifies it. Never create a recursive PR solely to record the
 merge of the preceding status-only PR.
-
-## Временное исключение — 2026-09-01
-
-Пока Codex недоступен на текущем устройстве владельца (старый ноутбук
-в ремонте), Claude Code временно допускается к работе с диском
-и git-worktree со следующими ограничениями:
-
-- Только самодостаточные HTML-тренажёры без общего состояния
-  и без сервера синхронизации (не board-server, не nginx, не развернуть).
-- Каждая задача — отдельная ветка и Pull Request, как в обычном
-  процессе Codex. Никаких прямых коммитов в main.
-- Слияние — только по явной авторизации владельца, как и раньше.
-- По возвращении Codex это исключение снимается без дополнительного
-  решения; данный раздел удаляется первым же PR, который его коснётся.
