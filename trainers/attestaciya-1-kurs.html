@@ -2285,7 +2285,7 @@ function renderTask(){
   const fig = figureHtml(task, state.mode !== 'solo' || state.showSolution);
   const html = `<article class="task" id="taskCard">
     <div class="task-top"><div><span class="tnum">Задание ${T.num}.</span> <span class="tname">${T.name}</span></div><div>${badge}</div></div>
-    <div class="figwrap"><div class="statement">${statementHtml(task)}</div>${fig ? `<div class="figure ${task.topic === 14 ? 'wide' : ''}">${fig}</div>` : ''}</div>
+    <div class="figwrap"><div class="statement">${statementHtml(task)}</div>${fig ? `<div class="figure ${task.topic === 14 || task.topic === 20 ? 'wide' : ''}">${fig}</div>` : ''}</div>
     ${memoHtml(T, task)}
     ${ladderHtml(task)}
     ${finalHtml(task)}
@@ -2674,6 +2674,40 @@ function cornerMark(V, p1, p2, len){                             // знак п�
 const HALO = 'paint-order:stroke;stroke:#fff;stroke-width:3.5px;stroke-linejoin:round';   // белая подложка, чтобы буквы читались на линиях
 const T = (x, y, txt, extra) => `<text x="${(+x).toFixed(1)}" y="${(+y).toFixed(1)}" style="${LBL};${HALO}${extra ? ';' + extra : ''}">${txt}</text>`;
 const TEAL = 'fill:#0f766e', SOFT = 'fill:#54607a';
+/* Поле чертежа и автоподгон масштаба.
+   Раньше масштаб был вписан руками для каждого типа, и чертёж занимал 57-61% ширины поля:
+   у правильной треугольной пирамиды справа оставалось 90 px пустоты. Теперь габарит считается
+   по числам задачи и вписывается в FIG_BOX целиком, каким бы ни был тип и какими бы ни были числа. */
+const FIG_W = 320, FIG_H = 292;                                  // поле svg; внизу под легенду — три строки
+const FIG_BOX = { x: 28, y: 24, w: 264, h: 196 };                // куда вписывается геометрия: по краям остаётся на буквы
+/* base, O — в единицах задачи; hk — высота пирамиды в долях ширины основания (чертёж схематичный) */
+function fitPyramid(base, O, hk, incircle){
+  const pr = (x, y) => [x + y * EY[0], y * EY[1]];               // та же проекция при единичном масштабе
+  const P0 = base.map(v => pr(v[0], v[1])), O0 = pr(O[0], O[1]);
+  const w0 = Math.max(...P0.map(p => p[0])) - Math.min(...P0.map(p => p[0]));
+  const H0 = hk * w0;                                            // вершина над центром основания
+  const xs = P0.map(p => p[0]).concat([O0[0]]), ys = P0.map(p => p[1]).concat([O0[1], O0[1] - H0]);
+  if (incircle){                                                 // вписанная окружность шире вершин основания
+    const c = pr(incircle[0], incircle[1]), R = incircle[2];
+    xs.push(c[0] - R * Math.hypot(1, EY[0]), c[0] + R * Math.hypot(1, EY[0]));
+    ys.push(c[1] - R * Math.abs(EY[1]), c[1] + R * Math.abs(EY[1]));
+  }
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+  const s = Math.min(FIG_BOX.w / (x1 - x0), FIG_BOX.h / (y1 - y0));
+  const ox = FIG_BOX.x + (FIG_BOX.w - (x1 - x0) * s) / 2 - x0 * s;
+  const oy = FIG_BOX.y + (FIG_BOX.h - (y1 - y0) * s) / 2 - y0 * s;
+  return { proj: projFn(ox, oy, s), H: H0 * s, s };
+}
+/* тот же подгон для чертежа с готовыми экранными координатами (пирамида с «углом комнаты») */
+function fitPoints(pts){
+  const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+  const k = Math.min(FIG_BOX.w / (x1 - x0), FIG_BOX.h / (y1 - y0));
+  const ox = FIG_BOX.x + (FIG_BOX.w - (x1 - x0) * k) / 2 - x0 * k;
+  const oy = FIG_BOX.y + (FIG_BOX.h - (y1 - y0) * k) / 2 - y0 * k;
+  const at = (x, y) => [ox + x * k, oy + y * k];
+  return { pts: pts.map(p => at(p[0], p[1])), at };
+}
 /* пирамида с вершиной S над точкой O основания; M — точка касания вписанной окружности на переднем ребре */
 function pyramidFig(cfg){
   const { proj, base, names, H } = cfg;
@@ -2681,7 +2715,7 @@ function pyramidFig(cfg){
   const cen = P.reduce((a, p) => [a[0] + p[0] / P.length, a[1] + p[1] / P.length], [0, 0]);
   const O = proj(cfg.O[0], cfg.O[1]), M = proj(cfg.M[0], cfg.M[1]), S = [O[0], O[1] - H];
   const arc = angleArc(M[0], M[1], O[0], O[1], S[0], S[1], 17);
-  let s = `<svg viewBox="0 0 320 276" role="img" aria-label="${cfg.aria}">`;
+  let s = `<svg viewBox="0 0 ${FIG_W} ${FIG_H}" role="img" aria-label="${cfg.aria}">`;
   s += `<polygon points="${P.map(pt).join(' ')}" style="${SVG_STYLE};fill:#f4f6fa"/>`;
   if (cfg.incircle) s += `<path d="${circlePath(proj, cfg.incircle[0], cfg.incircle[1], cfg.incircle[2])}" style="${SVG_STYLE};stroke-width:1.2;stroke-dasharray:4 3;opacity:.75"/>`;
   P.forEach(p => { s += `<line x1="${S[0].toFixed(1)}" y1="${S[1].toFixed(1)}" x2="${p[0].toFixed(1)}" y2="${p[1].toFixed(1)}" style="${SVG_STYLE}"/>`; });
@@ -2701,36 +2735,39 @@ function pyramidFig(cfg){
   s += T(S[0] + 7, (S[1] + O[1]) / 2 + 4, cfg.hLabel);
   s += T((O[0] + M[0]) / 2 + 9, (O[1] + M[1]) / 2 + 12, 'r', TEAL);
   (cfg.sides || []).forEach(([i, j, txt, dx, dy]) => { const m = [(P[i][0] + P[j][0]) / 2, (P[i][1] + P[j][1]) / 2]; const q = outward(m, cen, 13); s += T(q[0] + (dx || 0), q[1] + 5 + (dy || 0), txt, 'text-anchor:middle'); });
-  cfg.legend.forEach((line, i) => { s += T(6, 276 - 14 * (cfg.legend.length - i) + 8, line, 'font-size:11px;' + SOFT); });
+  cfg.legend.forEach((line, i) => { s += T(6, FIG_H - 14 * (cfg.legend.length - i) + 8, line, 'font-size:11px;' + SOFT); });
   return s + '</svg>';
 }
 function fig20(f){
   if (!f) return '';
   const phiTxt = f.phi ? `, ∠SMO = φ = ${f.phi}°` : '';
   if (f.type === 'A'){
-    const proj = projFn(40, 205, 190), h3 = Math.sqrt(3) / 2;
-    return pyramidFig({ proj, base: [[0, 0], [1, 0], [0.5, h3]], names: ['A', 'B', 'C'], O: [0.5, h3 / 3], M: [0.5, 0], incircle: [0.5, h3 / 3, h3 / 3], H: 130,
+    const h3 = Math.sqrt(3) / 2, base = [[0, 0], [1, 0], [0.5, h3]], O = [0.5, h3 / 3], inc = [0.5, h3 / 3, h3 / 3];
+    const fit = fitPyramid(base, O, 0.68, inc);
+    return pyramidFig({ proj: fit.proj, base, names: ['A', 'B', 'C'], O, M: [0.5, 0], incircle: inc, H: fit.H,
       hLabel: `h = ${f.h}`, sides: [[0, 1, 'a', -48, 0]], aria: 'Правильная треугольная пирамида',
       legend: ['SO = h — высота, O — центр основания, OM = r', `SM — апофема (высота грани)${phiTxt}`, 'Чертёж схематичный, размеры — в подписях.'] });
   }
   if (f.type === 'D'){
-    const proj = projFn(30, 205, 165);
-    return pyramidFig({ proj, base: [[0, 0], [1, 0], [1, 1], [0, 1]], names: ['A', 'B', 'C', 'D'], O: [0.5, 0.5], M: [0.5, 0], incircle: [0.5, 0.5, 0.5], H: 125,
+    const base = [[0, 0], [1, 0], [1, 1], [0, 1]], O = [0.5, 0.5], inc = [0.5, 0.5, 0.5];
+    const fit = fitPyramid(base, O, 0.5, inc);
+    return pyramidFig({ proj: fit.proj, base, names: ['A', 'B', 'C', 'D'], O, M: [0.5, 0], incircle: inc, H: fit.H,
       hLabel: 'h', sides: [[0, 1, `a = ${f.a}`, -52, 0]], aria: 'Правильная четырёхугольная пирамида',
       legend: ['O — центр квадрата, OM = r = a/2, SO = h', `SM — апофема${phiTxt}`, 'Чертёж схематичный, размеры — в подписях.'] });
   }
   if (f.type === 'C'){
     const { a, b } = f, c = Math.hypot(a, b), r = (a + b - c) / 2;
-    const s = 195 / Math.max(a, 0.7 * b);
-    const proj = projFn(40, 205, s);
-    return pyramidFig({ proj, base: [[0, 0], [a, 0], [0, b]], names: ['A', 'B', 'C'], O: [r, r], M: [r, 0], incircle: [r, r, r], H: 112, rightAngleAt: 0,
+    const base = [[0, 0], [a, 0], [0, b]], O = [r, r], inc = [r, r, r];
+    const fit = fitPyramid(base, O, 0.58, inc), s = fit.s;
+    return pyramidFig({ proj: fit.proj, base, names: ['A', 'B', 'C'], O, M: [r, 0], incircle: inc, H: fit.H, rightAngleAt: 0,
       hLabel: 'h', sides: [[0, 1, `${a}`, -(a * s) / 4 - 12, 0], [0, 2, `${b}`, -16, 4], [1, 2, 'c', 4, -2]], aria: 'Пирамида с прямоугольным треугольником в основании',
       legend: ['O — центр вписанной окружности, OM = r', `SO = h — высота, SM — апофема${phiTxt}`, 'Чертёж схематичный, размеры — в подписях.'] });
   }
   if (f.type === 'B'){
-    const S = [118, 118], A = [42, 200], B = [266, 166], C = [118, 22];
+    const fitB = fitPoints([[118, 118], [42, 200], [266, 166], [118, 22]]);
+    const [S, A, B, C] = fitB.pts;
     const bl = f.b === 1 ? 'b = 1' : `b = ${f.b}`, al = f.b === 1 ? 'a = √2' : `a = ${f.b}√2`;
-    let s = `<svg viewBox="0 0 320 276" role="img" aria-label="Пирамида с прямыми плоскими углами при вершине">`;
+    let s = `<svg viewBox="0 0 ${FIG_W} ${FIG_H}" role="img" aria-label="Пирамида с прямыми плоскими углами при вершине">`;
     s += `<polygon points="${pt(S)} ${pt(A)} ${pt(B)}" style="${SVG_STYLE};fill:#e3f4f1"/>`;
     s += `<polygon points="${pt(A)} ${pt(B)} ${pt(C)}" style="${SVG_STYLE};fill:none"/>`;
     s += `<line x1="${S[0]}" y1="${S[1]}" x2="${C[0]}" y2="${C[1]}" style="${ACC}"/>`;
@@ -2739,10 +2776,11 @@ function fig20(f){
     s += T(S[0] - 6, S[1] + 18, 'S') + T(A[0] - 14, A[1] + 12, 'A') + T(B[0] + 6, B[1] + 6, 'B') + T(C[0], C[1] - 7, 'C', 'text-anchor:middle');
     s += T((S[0] + A[0]) / 2 - 30, (S[1] + A[1]) / 2 + 2, bl) + T((S[0] + B[0]) / 2 + 6, (S[1] + B[1]) / 2 - 9, bl) + T(S[0] + 8, (S[1] + C[1]) / 2 + 4, bl, TEAL);
     s += T((A[0] + B[0]) / 2 - 10, (A[1] + B[1]) / 2 + 24, al, 'text-anchor:middle;' + SOFT);
-    s += T(152, 174, 'основание — грань SAB', 'font-size:11.5px;text-anchor:middle;' + TEAL);
-    s += T(6, 240, 'SA ⊥ SB, SB ⊥ SC, SC ⊥ SA — «угол комнаты».', 'font-size:11px;' + SOFT);
-    s += T(6, 254, 'Основание — грань SAB, высота — ребро SC.', 'font-size:11px;' + SOFT);
-    s += T(6, 269, 'Чертёж схематичный, размеры — в подписях.', 'font-size:11px;' + SOFT);
+    const capB = fitB.at(152, 174);
+    s += T(capB[0], capB[1], 'основание — грань SAB', 'font-size:11.5px;text-anchor:middle;' + TEAL);
+    s += T(6, FIG_H - 44, 'SA ⊥ SB, SB ⊥ SC, SC ⊥ SA — «угол комнаты».', 'font-size:11px;' + SOFT);
+    s += T(6, FIG_H - 30, 'Основание — грань SAB, высота — ребро SC.', 'font-size:11px;' + SOFT);
+    s += T(6, FIG_H - 16, 'Чертёж схематичный, размеры — в подписях.', 'font-size:11px;' + SOFT);
     return s + '</svg>';
   }
   return '';
